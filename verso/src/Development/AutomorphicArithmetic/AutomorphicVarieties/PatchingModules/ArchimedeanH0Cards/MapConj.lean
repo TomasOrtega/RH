@@ -3,7 +3,7 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.Imports
 open Matrix Filter ReciprocityTheory.Gal UpperTheory.V.W UpperTheory.V.Pa UpperTheory.V.Pa.B2
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.mul_apply, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun k' _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm _ (algebraMap A X _), mul_comm _ (algebraMap A X' _), ← Algebra.smul_def, ← Algebra.smul_def, ← Algebra.smul_def, ← Algebra.smul_def, map_smul, map_smul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem map_conj {A X X' : Type} [CommRing A] [CommRing X] [CommRing X'] [Algebra A X] [Algebra A X'] {n : ℕ}
     (u : X →ₗ[A] X') (P Q : Matrix (Fin n) (Fin n) A) (M : Matrix (Fin n) (Fin n) X) :
@@ -25,7 +25,7 @@ private def odMap {A X X' : Type} [CommRing A] [CommRing X] [CommRing X'] [Algeb
   map_smul' c M := by ext i j; simp
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Qf12.lift_ex π hπ g hk`.
+A detailed English derivation is pending.
 -/
 private theorem lift_ex {A M Q Q' : Type} [CommRing A] [AddCommGroup M] [AddCommGroup Q]
     [AddCommGroup Q'] [Module A M] [Module A Q] [Module A Q'] (π : M →ₗ[A] Q)
@@ -34,21 +34,21 @@ private theorem lift_ex {A M Q Q' : Type} [CommRing A] [AddCommGroup M] [AddComm
   _root_.UpperTheory.Reformulated.B.Qf12.lift_ex π hπ g hk
 
 /- English proof (translation)
-Introduce `l _ L G G0 h n x X _ _ X' _ _ D D' o o' u`. Set `f : D.M.X →ₗ[x.A] D'.M.X` to `o'.e.symm.toLinearMap ∘ₗ odMap n x.a u ∘ₗ o.e.toLinearMap`. Establish `hf : ∀ m, (o'.e (f m) : Matrix (Fin n) (Fin n) X') = (o.e m : Matrix (Fin n) (Fin n) X).map u` using `fun m => by`. Simplify using `only [f, LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Establish `h0 : ∀ (g : G.G₀) m, f (D.M.ρ g m) = D'.M.ρ g (f m)` using `fun g m => by`. Apply `o'.e.injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hf, o.act, o'.act, hf]`. Conclude with `map_conj u _ _ _`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : ∀ m, f (D.M.ρ G.c m) = D'.M.ρ G.c (f m)` using `fun m => by`. Apply `o'.e.injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hf, o.actc, o'.actc, hf]`. Use extensionality with `i j`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hall : ∀ (g : G.Γ) m, f (D.M.ρ g m) = D'.M.ρ g (f m)` using `fun g m => by`. Break down `Int.units_eq_one_or (G.η g) with e | e` into its components or cases. Conclude with `h0 ⟨g, e⟩ m`. Establish `hm : g * G.c ∈ G.η.ker`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[MonoidHom.mem_ker, map_mul, e, G.η_c]`. Simplify using the standard rewrite rules. Establish `eg : g * G.c * G.c = g` using `by rw [mul_assoc, G.c_sq, mul_one]`. Establish `e1` using `h0 ⟨g * G.c, hm⟩ (D.M.ρ G.c m)`. Rewrite `e1` using `[hc, ← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `e1` using `only [eg]`. Establish `hk : ∀ w m, D.π w m = 0 → (D'.π w ∘ₗ f) m = 0`. Introduce and unpack `(v | w) m hm`. Rewrite using `[LinearMap.comp_apply, o'.kerV]`. Introduce `i j hij`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e` using `congrFun (congrFun (map_conj u (((x.w v)⁻¹ : GL (Fin n) x.A) : Matrix (Fin n) (Fin n) x.A) (x.w v : Matrix (Fin n) (Fin n) x.A) (o.e m : Matrix (Fin n) (Fin n) X)) i) j`. Rewrite using `[hf]`. Use `e.symm.trans ?_` and prove the remaining obligations. Use `(o.kerV v m).1 hm i j hij` as an intermediate fact. Rewrite using `[Matrix.map_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(congrArg u this).trans (map_zero u)`. Establish `: m = 0` using `o.kerU w (hm.trans (map_zero _).symm)`. Rewrite using `[this, map_zero]`. Use `choose q hq using fun w => lift_ex (D.π w) (D.surj w) (D'.π w ∘ₗ f) (hk w)`. Conclude with `⟨⟨f, q, hall, hq⟩, hf⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.B2.odHom :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G G0 : Glob l L) (h : G.Hom G0) (n : ℕ) (x : NP G0.frame n) (X : Type) [CommRing X] [Algebra x.A X] (X' : Type) [CommRing X'] [Algebra x.A X'] (D D' : Dat x.A (plOf G)) (o : IsOd h x X D) (o' : IsOd h x X' D') (u : X →ₗ[x.A] X'), ∃ f : D.Hom D', Induced o o' u f := by

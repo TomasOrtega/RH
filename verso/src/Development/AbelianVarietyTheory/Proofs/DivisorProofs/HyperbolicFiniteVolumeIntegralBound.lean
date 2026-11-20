@@ -8,15 +8,15 @@ open IsLocalRing Polynomial
 namespace GlobalTheory.GenFibBaseChange
 
 /- English proof (translation)
-Introduce `T O A A₁ R R₁ _ _ _ _ _ _ _ _ _ _ _ _ j i₁ hj hi₁ jA jA₁ γ ψA h1 h2 h3 h4`. Establish `hu1 : ∀ y : Algebra.algebraMapSubmonoid R₁ (nonZeroDivisors A₁), IsUnit (((algebraMap O (GlobalTheory.LocAcyc.GenFib T O)).comp jA₁) y)`. Introduce and unpack `⟨y, a, ha, rfl⟩`. Establish `ha0 : a ≠ 0` using `nonZeroDivisors.ne_zero ha`. Establish `hi : i₁ a ∈ nonZeroDivisors T` using `mem_nonZeroDivisors_of_ne_zero (fun h => ha0 (hi₁ (by simpa using h)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : jA₁ (algebraMap A₁ R₁ a) = algebraMap T O (i₁ a)`. Simplify using `using congrArg (fun f => f a) h1`. Simplify using `only [RingHom.coe_comp, Function.comp_apply, e]`. Conclude with `IsLocalization.map_units (GlobalTheory.LocAcyc.GenFib T O) (⟨algebraMap T O (i₁ a), ⟨i₁ a, hi, rfl⟩⟩ : Algebra.algebraMapSubmonoid O (nonZeroDivisors T))`. Establish `hu2 : ∀ y : Algebra.algebraMapSubmonoid R (nonZeroDivisors A), IsUnit (((algebraMap R₁ (GlobalTheory.LocAcyc.GenFib A₁ R₁)).comp γ) y)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨y, a, ha, rfl⟩`. Establish `ha0 : a ≠ 0` using `nonZeroDivisors.ne_zero ha`. Establish `hi : j a ∈ nonZeroDivisors A₁` using `mem_nonZeroDivisors_of_ne_zero (fun h => ha0 (hj (by simpa using h)))`. Establish `e : γ (algebraMap A R a) = algebraMap A₁ R₁ (j a)`. Simplify using `using congrArg (fun f => f a) h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Simplify using `only [RingHom.coe_comp, Function.comp_apply, e]`. Conclude with `IsLocalization.map_units (GlobalTheory.LocAcyc.GenFib A₁ R₁) (⟨algebraMap A₁ R₁ (j a), ⟨j a, hi, rfl⟩⟩ : Algebra.algebraMapSubmonoid R₁ (nonZeroDivisors A₁))`. Set `ψA₁ : GlobalTheory.LocAcyc.GenFib A₁ R₁ →+* GlobalTheory.LocAcyc.GenFib T O` to `IsLocalization.lift (M := Algebra.algebraMapSubmonoid R₁ (nonZeroDivisors A₁)) hu1`. Set `β : GlobalTheory.LocAcyc.GenFib A R →+* GlobalTheory.LocAcyc.GenFib A₁ R₁` to `IsLocalization.lift (M := Algebra.algebraMapSubmonoid R (nonZeroDivisors A)) hu2`. Establish `k1 : ψA₁.comp (algebraMap R₁ (GlobalTheory.LocAcyc.GenFib A₁ R₁)) = (algebraMap O (GlobalTheory.LocAcyc.GenFib T O)).comp jA₁` using `IsLocalization.lift_comp hu1`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `k3 : β.comp (algebraMap R (GlobalTheory.LocAcyc.GenFib A R)) = (algebraMap R₁ (GlobalTheory.LocAcyc.GenFib A₁ R₁)).comp γ` using `IsLocalization.lift_comp hu2`. Use `⟨ψA₁, β, k1, ?_, k3⟩` and prove the remaining obligations. Apply `IsLocalization.ringHom_ext (Algebra.algebraMapSubmonoid R (nonZeroDivisors A))` to reduce the goal to its premises. Rewrite using `[RingHom.comp_assoc, k3, ← RingHom.comp_assoc, k1, RingHom.comp_assoc, h3, h4]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_genFib_maps : ∀ (T O A A₁ R R₁ : Type) [CommRing T] [IsDomain T] [CommRing O] [Algebra T O]
     [CommRing A] [IsDomain A] [CommRing A₁] [IsDomain A₁] [CommRing R] [Algebra A R] [CommRing R₁] [Algebra A₁ R₁]

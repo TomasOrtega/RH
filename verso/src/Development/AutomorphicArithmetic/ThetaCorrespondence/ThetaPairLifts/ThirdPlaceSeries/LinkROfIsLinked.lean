@@ -38,7 +38,7 @@ namespace GlobalTheory.Fc.AllAtMemberStage0
 section large₂
 variable {KP : ∀ B : GlobalTheory.Mem.Base, Fr B.toPre → Prop} {Q Q' : V4.Slot}
 /- English proof (translation)
-The claim follows from `RowL.and (KP := KP) (Q := Q) (Q' := Q') h h'`.
+A detailed English derivation is pending.
 -/
 theorem forall_linked_bundles_and_alt {Lk : LkT _root_.GlobalTheory.Fc.BundleCondition} {H H' : ∀ 𝒜 : FamClass, RawSel _root_.GlobalTheory.Fc.BundleCondition 𝒜 → Prop}
     (h : Lg1 KP Q Q' fun S => Row S Lk H) (h' : Lg1 KP Q Q' fun S => Row S Lk H') :
@@ -46,7 +46,7 @@ theorem forall_linked_bundles_and_alt {Lk : LkT _root_.GlobalTheory.Fc.BundleCon
   RowL.and (KP := KP) (Q := Q) (Q' := Q') h h'
 end large₂
 /- English proof (translation)
-Take `⟨q, b', ⟨w⟩, e⟩` from `h`. Use `⟨q, b'.R, w.recPin, ?_⟩` and prove the remaining obligations. Conclude with `congrArg (fun t : Σ (D : D7) (O : Obj D), _root_.GlobalTheory.Fc.BundleCondition D O c => (⟨t.1, t.2.1, t.2.2.R⟩ : Σ (D : D7) (O : Obj D), _root_.GlobalTheory.Mem.Top.Bl.BoundaryReciprocity D O c)) e`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem linkR_of_isLinked' {hL : _root_.UpperTheory.Zero.LLC.RecTExists} (p : _root_.GlobalTheory.Mem.Top.Bl.Parameters hL) (K : Ctx) (β : BPt K) (c : ℝ) (b : _root_.GlobalTheory.Fc.BundleCondition β.D β.O c)
     (h : _root_.GlobalTheory.Mem.Top.Bl.BundleLinkage p K β c b) : _root_.GlobalTheory.Mem.Top.Bl.ReciprocityLinkage p K β c b.R := by
@@ -54,7 +54,7 @@ theorem linkR_of_isLinked' {hL : _root_.UpperTheory.Zero.LLC.RecTExists} (p : _r
   refine ⟨q, b'.R, w.recPin, ?_⟩
   exact congrArg (fun t : Σ (D : D7) (O : Obj D), _root_.GlobalTheory.Fc.BundleCondition D O c => (⟨t.1, t.2.1, t.2.2.R⟩ : Σ (D : D7) (O : Obj D), _root_.GlobalTheory.Mem.Top.Bl.BoundaryReciprocity D O c)) e
 /- English proof (translation)
-Introduce `hA hSW p1 p2 p3 p4 p5 h3 h4 hL N S Γ NN o hl3 hfun hN`. Establish `six` using `_root_.GlobalTheory.T.period_entries_tie_and_level_valuations_at_built (_root_.GlobalTheory.Mem.Top.Bl.parametersOfExtension N S Γ).s (_root_.GlobalTheory.Mem.Top.Bl.BundleLinkage (_root_.GlobalTheory.Mem.Top.Bl.parametersOfExtension N S Γ))`. Establish `hU` using `GlobalTheory.VolRatioFromSiegelWeil.volumeRatio hSW`. Establish `loc` using `_root_.GlobalTheory.LocalRows.lg1_sLp_sO_hTF hSW KPx (IsBuiltE (_root_.GlobalTheory.Mem.Top.Bl.parametersOfExtension N S Γ).s) (IsGoodE (_root_.GlobalTheory.Mem.Top.Bl.parametersOfExtension N S Γ).s) (_root_.GlobalTheory.Mem.Top.Bl.BundleLinkage (_root_.GlobalTheory.Mem.Top.Bl.pa …`. Conclude with `{ hn4 := eventually_coreProperty_of_forall fun Q => (R0.classCountBound_paramsLambda_constructedPoints _ Q _).1 jOn := eventually_coreProperty_mono o.hPA fun Q h => _root_.GlobalTheory.Fc.JOnBundle.row_jOn_of_row_hPA_alt Q _ h hInstR := eventually_coreProperty_of_forall fun Q => …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem allRows_of_open0_alt : GlobalTheory.Published.GlobalArtinReciprocity → HeckeCharacterZeroLocus.SiegelWeilU.SiegelWeilUnitaryConvergent → GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.DiscreteSeriesClassification → _root_.GlobalTheory.BigOn.SurjectiveOntoX → _root_.GlobalTheory.BigTop.LambdaLowerBound₂ → ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (N : _root_.GlobalTheory.Mem.Top.Bl.NormChoiceExtension hL) (S : SExt) (Γ : GeoP) (NN : FamClass → Prop), _root_.GlobalTheory.Fc.S0.OpenParameterStatements (_root_.GlobalTheory.Mem.Top.Bl.parametersOfExtension N S Γ) → _root_.GlobalTheory.Fc.RL.LinkedAt (_root_.GlobalTheory.Mem.Top.Bl.parametersOfExtension N S Γ) _root_.GlobalTheory.Fc.S0.CovolumeBoundThirdPlaceSeries → _root_.GlobalTheory.Fc.RL.LinkedAt (_root_.GlobalTheory.Mem.Top.Bl.parametersOfExtension N S Γ) _root_.GlobalTheory.Fc.S0.FunctionalCondition → _root_.GlobalTheory.Fc.RL.LinkedAt (_root_.GlobalTheory.Mem.Top.Bl.parametersOfExtension N S Γ) (fun Q L => _root_.GlobalTheory.Fc.R1.SlotNormCondition Q L NN) → _root_.GlobalTheory.Fc.AllRowsAlt KPx (IsBuiltE (_root_.GlobalTheory.Mem.Top.Bl.parametersOfExtension N S Γ).s) (IsGoodE (_root_.GlobalTheory.Mem.Top.Bl.parametersOfExtension N S Γ).s) (_root_.GlobalTheory.Mem.Top.Bl.BundleLinkage (_root_.GlobalTheory.Mem.Top.Bl.parametersOfExtension N S Γ)) NN _root_.GlobalTheory.Fc.DefiniteSideCondition := by
   intro hA hSW p1 p2 p3 p4 p5 h3 h4 hL N S Γ NN o hl3 hfun hN

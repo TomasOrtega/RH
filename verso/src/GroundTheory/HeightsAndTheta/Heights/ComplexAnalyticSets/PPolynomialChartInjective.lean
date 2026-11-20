@@ -10,21 +10,21 @@ open MvPolynomial Topology
 noncomputable section
 
 /- English proof (translation)
-Introduce `σ _ k t f w hk hlin`. Use `set g : Fin (k + 1) → MvPolynomial σ ℂ := Fin.cons t f with hg`. Use `set F : (σ → ℂ) → Fin (k + 1) → ℂ := fun z j ↦ eval z (g j) with hF`. Use `set L : (σ → ℂ) →L[ℂ] (Fin (k + 1) → ℂ) := ContinuousLinearMap.pi fun j ↦ fderiv ℂ (fun z : σ → ℂ ↦ eval z (g j)) w with hL`. Establish `hFL : HasStrictFDerivAt F L w` using `hasStrictFDerivAt_pi.2 fun j ↦ (AnalyticOnNhd.eval_mvPolynomial (𝕜 := ℂ) (g j) w trivial).hasStrictFDerivAt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `set r : Fin (k + 1) → σ → ℂ := Fin.cons (fun i ↦ eval w (pderiv i t)) (fun j i ↦ eval w (pderiv i (f j))) with hr`. Establish `hrow : ∀ j i, fderiv ℂ (fun z : σ → ℂ ↦ eval z (g j)) w (Pi.single i 1) = r j i`. Introduce `j i`. Rewrite using `[NormalCurveRegularPoint.fderiv_eval_single]`. Apply the tactic sequence `refine Fin.cases ?_ (fun j ↦ ?_) j <;> simp [g, r]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hspan : Submodule.span ℂ (Set.range r) = ⊤` using `hlin.span_eq_top_of_card_eq_finrank' (by simp [Module.finrank_fintype_fun_eq_card, hk])`. Establish `hinj : Function.Injective L`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `v hv`. Set `ψ : (σ → ℂ) →ₗ[ℂ] ℂ` to `{ toFun := fun u ↦ ∑ i, u i * v i map_add' := fun a b ↦ by simp [add_mul, Finset.sum_add_distrib] map_smul' := fun c a ↦ by simp [Finset.mul_sum, mul_assoc] }`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hker : Submodule.span ℂ (Set.range r) ≤ LinearMap.ker ψ`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Establish `h0` using `congrFun hv j`. Simplify using `only [hL, ContinuousLinearMap.pi_apply, Pi.zero_apply] at h0`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h0` using `[pi_eq_sum_univ' v, map_sum]`. Simplify using `only [map_smul, smul_eq_mul, hrow] at h0`. Simplify `h0` using `[ψ, mul_comm]`. Rewrite `hker` using `[hspan]`. Use function extensionality and compare the values at `i`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `hker (Submodule.mem_top (x := Pi.single i 1))` as an intermediate fact. Simplify `this` using `[ψ, Pi.single_apply]`. Set `e : (σ → ℂ) ≃L[ℂ] (Fin (k + 1) → ℂ)` to `(LinearMap.linearEquivOfInjective L.toLinearMap hinj (by simp [Module.finrank_fintype_fun_eq_card, hk])).toContinuousLinearEquiv`. Establish `hFe : HasStrictFDerivAt F (e : (σ → ℂ) →L[ℂ] (Fin (k + 1) → ℂ)) w`. Use `hFL using 1` and compare the differences between its conclusion and the goal.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use extensionality with `v : 1`. Both sides reduce to the same expression. Use `⟨_, hFe.eventually_left_inverse, fun x hx y hy hxy ↦ ?_⟩` and prove the remaining obligations. Establish `hFxy : F x = F y`. Use function extensionality and compare the values at `j`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Fin.cases ?_ (fun j ↦ ?_) j` and prove the remaining obligations. Simplify `hxy` using `[F, g]`. Simplify using `only [F, g, Fin.cons_succ, hx.2 j, hy.2 j]`. Rewrite using `[← hx.1, ← hy.1, hFxy]`.
+A detailed English derivation is pending.
 -/
 theorem PolynomialChartInjective.full : PolynomialChartInjective.Statement := by
   classical

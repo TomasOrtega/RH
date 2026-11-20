@@ -7,7 +7,7 @@ open scoped Classical
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `x y hx hy hxy`. Establish `hx' : e x ≠ 0` using `by simpa using hx`. Establish `hy' : e y ≠ 0` using `by simpa using hy`. Conclude with `e.injective (hΘ _ _ hx' hy' hxy)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem inj_comp {F R : Type} [Field F] [Field R] (Θ : R →* ℂ) (hΘ : Inj Θ) (e : F →+* R) :
     Inj (Θ.comp e.toMonoidHom) := by
@@ -17,11 +17,11 @@ private theorem inj_comp {F R : Type} [Field F] [Field R] (Θ : R →* ℂ) (hΘ
   exact e.injective (hΘ _ _ hx' hy' hxy)
 
 /- English proof (translation)
-Take `⟨ζ, hζ⟩` from `IsCyclic.exists_generator (α := kˣ)`. Establish `hord : orderOf ζ = Nat.card k - 1`. Rewrite using `[orderOf_eq_card_of_forall_mem_zpowers hζ, Nat.card_units]`. Establish `hz : algebraMap k (AlgebraicClosure k) (ζ : k) ≠ 0` using `by simp`. Establish `h1 : θ (algebraMap k (AlgebraicClosure k) (ζ : k) ^ c) = θ (algebraMap k (AlgebraicClosure k) (ζ : k) ^ c')`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_pow θ, map_pow θ]`. Conclude with `h ζ`. Establish `h2` using `hθ _ _ (pow_ne_zero _ hz) (pow_ne_zero _ hz) h1`. Establish `h3 : ζ ^ c = ζ ^ c'`. Apply `Units.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `(algebraMap k (AlgebraicClosure k)).injective` to reduce the goal to its premises. Simplify using `using h2`. Rewrite `h3` using `[pow_eq_pow_iff_modEq, hord]`. Conclude with `(ZMod.natCast_eq_natCast_iff _ _ _).2 h3`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cast_eq_of_pow {k : Type} [Field k] [Finite k] (θ : AlgebraicClosure k →* ℂ) (hθ : Inj θ)
     (c c' : ℕ) (h : ∀ u : kˣ, θ (algebraMap k _ (u : k)) ^ c = θ (algebraMap k _ (u : k)) ^ c') :
@@ -41,23 +41,21 @@ private theorem cast_eq_of_pow {k : Type} [Field k] [Finite k] (θ : AlgebraicCl
   exact (ZMod.natCast_eq_natCast_iff _ _ _).2 h3
 
 /- English proof (translation)
-Introduce `hOn hMix hSep hTop hPol hType hEmb hBase hCard E Ω _ _ _ _ _ _ n hn π Y hY A v w h h' g _ i hi hI τ τ' hτ hτ' hM f hf hs`. Take `⟨⟨e, he⟩, Θ, hΘ⟩` from `hEmb E Ω A v h`. Take `⟨⟨e', he'⟩, -⟩` from `hEmb Y.K Ω A w h'`. Take `⟨a, s, ha, hApart, hS, hL⟩` from `hMix E Ω A v h g i hi (Θ.comp e.toMonoidHom) (inj_comp Θ hΘ e) n τ hM`. Take `⟨b, hab, hb⟩` from `hOn E Ω n hn (Pt.base Ω π) Y hY A Θ hΘ hI v w h h' e e' he he' τ τ' hτ hτ' a trivial ha`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hag : a.q = g` using `ha.2.1.trans (hBase E v g i hi).2.1`. Establish `hbQ : b.q = g ^ f` using `by rw [hb.2.1, hCard, hf]`. Establish `hb2 : 2 ≤ b.q` using `hb.1.1`. Establish `hf0 : 0 < f`. Break down `Nat.eq_zero_or_pos f with h0 | h0` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `hb2` using `[hbQ, h0]`. Simplify using `at hb2`. Conclude with `h0`. Establish `hsp : a.Splits b.q` using `⟨f, hf0, by rw [hbQ, hag], fun p hp => by`. Take `⟨y, hy, hyp⟩` from `hL p hp`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hyp]`. Conclude with `hs s hS y hy⟩`. Take `⟨-, -, hL1, hbl⟩` from `hTop a b ha.1 hab hsp`. Establish `hsep : b.Sep b.q`. Use `hSep a b.q ha.1 hApart hsp` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Unfold `Lbl.Sep at this ⊢`. Rewrite using `[hbl]` and apply the resulting hypothesis. Take `⟨c, d, k, hd, ω, hlist, hω, hT⟩` from `hType _ (Θ.comp e'.toMonoidHom) n _ τ'.ρ b hb hL1`. Establish `hbl2` using `(hPol b 1 hb2 hL1 (one_pow _)).1`. Establish `hinj : Function.Injective fun x : Fin c => ((k x : ℕ) : ZMod (b.q - 1))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Unfold `Lbl.Sep at hsep`. Rewrite `hsep` using `[hbl2, hlist.symm]`. Rewrite `hsep` using `[Multiset.map_coe, Multiset.coe_nodup]`. Simplify using `only [List.map_ofFn] at hsep`. Conclude with `List.nodup_ofFn.1 hsep`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: Finite 𝓀[w.adicCompletion Y.K]` using `Nat.finite_of_card_ne_zero (by rw [← hb.2.1]; omega)`. Use `⟨c, d, hd, ω, ?_, ?_, hT⟩` and prove the remaining obligations. Introduce `x`. Establish `hmem : (d x, k x) ∈ b.D ++ b.L`. Rewrite using `[← hlist]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `(List.mem_ofFn' _ _).2 ⟨x, rfl⟩`. Break down `List.mem_append.1 hmem with hm | hm` into its components or cases. Conclude with `hb.1.2.1 _ hm`. Conclude with `(hb.1.2.2 _ hm).1`. Introduce `x x' hxx`.
-
-Apply `hinj` to reduce the goal to its premises. Use `cast_eq_of_pow (Θ.comp e'.toMonoidHom) (inj_comp Θ hΘ e') (k x) (k x') (fun u => by` as an intermediate fact. Rewrite using `[← hω x u, ← hω x' u, hxx])`. Rewrite `this` using `[← hb.2.1]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.InertialTypesAlt.mixType :
     (LblOn fun _ => True) → LblMixed → SepOf → LeTop → PolTop → TypeOfLbl → ResEmbEx → BaseQ → CardRes → MixType := by

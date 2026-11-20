@@ -17,7 +17,7 @@ variable {G : Type} [Group G]
 private def Mg (N : Subgroup G) (g : G) : Subgroup G := N ⊓ N.comap (MulAut.conj g⁻¹).toMonoidHom
 
 /- English proof (translation)
-Simplify using `[Mg, Subgroup.mem_comap, MulAut.conj_apply]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem mem_Mg (N : Subgroup G) (g m : G) : m ∈ Mg N g ↔ m ∈ N ∧ g⁻¹ * m * g ∈ N := by
   simp [Mg, Subgroup.mem_comap, MulAut.conj_apply]
@@ -25,9 +25,9 @@ private theorem mem_Mg (N : Subgroup G) (g m : G) : m ∈ Mg N g ↔ m ∈ N ∧
 private def dc (N : Subgroup G) (g : G) : Set G := {y | ∃ a ∈ N, ∃ b ∈ N, y = a * g * b}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, b, hb, e⟩`. Use `⟨k⁻¹ * a, N.mul_mem (N.inv_mem hk) ha, b, hb, ?_⟩` and prove the remaining obligations. Simplify using `only [mul_assoc] at e ⊢`. Rewrite using `[eq_inv_mul_iff_mul_eq]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `e`. Introduce and unpack `⟨a, ha, b, hb, rfl⟩`. Conclude with `⟨k * a, N.mul_mem hk ha, b, hb, by simp only [mul_assoc]⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem dc_left (N : Subgroup G) (g : G) {k : G} (hk : k ∈ N) (x : G) : k * x ∈ dc N g ↔ x ∈ dc N g := by
   constructor
@@ -40,9 +40,9 @@ private theorem dc_left (N : Subgroup G) (g : G) {k : G} (hk : k ∈ N) (x : G) 
     exact ⟨k * a, N.mul_mem hk ha, b, hb, by simp only [mul_assoc]⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, b, hb, e⟩`. Use `⟨a, ha, b * k⁻¹, N.mul_mem hb (N.inv_mem hk), ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← e]`. Simplify using the standard rewrite rules.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce and unpack `⟨a, ha, b, hb, rfl⟩`. Conclude with `⟨a, ha, b * k, N.mul_mem hb hk, by simp only [mul_assoc]⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 private theorem dc_right (N : Subgroup G) (g : G) {k : G} (hk : k ∈ N) (x : G) : x * k ∈ dc N g ↔ x ∈ dc N g := by
   constructor
@@ -56,7 +56,7 @@ private theorem dc_right (N : Subgroup G) (g : G) {k : G} (hk : k ∈ N) (x : G)
 variable [TopologicalSpace G] [IsTopologicalGroup G]
 
 /- English proof (translation)
-Establish `e : (Mg N g : Set G) = (N : Set G) ∩ (fun m => g⁻¹ * m * g) ⁻¹' (N : Set G)`. Use extensionality with `m`. Simplify using `[mem_Mg]`. Rewrite using `[e]`. Conclude with `hNo.inter (hNo.preimage (by fun_prop))`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isOpen_Mg (N : Subgroup G) (hNo : IsOpen (N : Set G)) (g : G) : IsOpen (Mg N g : Set G) := by
   have e : (Mg N g : Set G) = (N : Set G) ∩ (fun m => g⁻¹ * m * g) ⁻¹' (N : Set G) := by
@@ -66,15 +66,15 @@ private theorem isOpen_Mg (N : Subgroup G) (hNo : IsOpen (N : Set G)) (g : G) : 
   exact hNo.inter (hNo.preimage (by fun_prop))
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hc : IsCompact (dc N g)`. Establish `e : dc N g = (fun p : G × G => p.1 * g * p.2) '' ((N : Set G) ×ˢ (N : Set G))`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨a, ha, b, hb, rfl⟩`. Conclude with `⟨(a, b), ⟨ha, hb⟩, rfl⟩`. Introduce and unpack `⟨⟨a, b⟩, ⟨ha, hb⟩, rfl⟩`. Conclude with `⟨a, ha, b, hb, rfl⟩`. Rewrite using `[e]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hNc.prod hNc).image (by fun_prop)`. Conclude with `hc.closure_of_subset Set.support_indicator_subset`. Introduce `k hk x`. Prove the components needed by the constructor for the conclusion. Distinguish the cases in `h : x ∈ dc N g`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Set.indicator_of_mem h, Set.indicator_of_mem ((dc_left N g hk x).2 h)]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem h, Set.indicator_of_notMem fun h' => h ((dc_left N g hk x).1 h')]`. Distinguish the cases in `h : x ∈ dc N g`. Rewrite using `[Set.indicator_of_mem h, Set.indicator_of_mem ((dc_right N g hk x).2 h)]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem h, Set.indicator_of_notMem fun h' => h ((dc_right N g hk x).1 h')]`.
+A detailed English derivation is pending.
 -/
 private theorem hecke_dc (N : Subgroup G) (hNc : IsCompact (N : Set G)) (g : G) :
     IsHecke N ((dc N g).indicator 1) := by
@@ -104,7 +104,7 @@ private theorem hecke_dc (N : Subgroup G) (hNc : IsCompact (N : Set G)) (g : G) 
 variable {V : Type} [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[mem_fixed_iff]`. Introduce `m hm`. Establish `h` using `hx _ ((mem_Mg N g m).1 hm).2`. Establish `e : m * g = g * (g⁻¹ * m * g)` using `by group`. Rewrite using `[← Module.End.mul_apply, ← map_mul, e, map_mul, Module.End.mul_apply, h]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem fixed_Mg (ρ : Representation ℂ G V) (N : Subgroup G) (g : G) (x : V) (hx : x ∈ fixed ρ N) :
     ρ g x ∈ fixed ρ (Mg N g) := by
@@ -115,25 +115,23 @@ private theorem fixed_Mg (ρ : Representation ℂ G V) (N : Subgroup G) (g : G) 
   rw [← Module.End.mul_apply, ← map_mul, e, map_mul, Module.End.mul_apply, h]
 
 /- English proof (translation)
-Establish `hH` using `hecke_dc N hNc g`. Establish `hs` using `finite_supp N hNo _ hH.1`. Establish `hx'` using `(mem_fixed_iff ρ N x).1 hx`. Rewrite using `[levOp_apply ρ N N _ _ x hs, Subgroup.relIndex_self]`. Simplify using `only [Nat.cast_one, inv_one, one_smul, LinearMap.id_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `set f : G → ℂ := (dc N g).indicator 1 with hf`. Use `set F : G → V := fun y => f y • ρ y x with hF`. Establish `hFr : ∀ y, ∀ h ∈ N, F (y * h) = F y`. Introduce `y h hh`. Simplify using `only [hF, (hH.2 h hh y).2, map_mul, Module.End.mul_apply, hx' h hh]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `Φ : N ⧸ (Mg N g).subgroupOf N → G ⧸ N` to `fun j => QuotientGroup.mk ((j.out : G) * g)`. Establish `hinj : Function.Injective Φ`. Introduce `a b hab`. Establish `h1 : ((a.out : G) * g)⁻¹ * ((b.out : G) * g) ∈ N` using `QuotientGroup.eq.1 hab`. Rewrite using `[← QuotientGroup.out_eq' a, ← QuotientGroup.out_eq' b]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `QuotientGroup.eq.2 (Subgroup.mem_subgroupOf.2 ((mem_Mg N g _).2 ⟨?_, ?_⟩))` and prove the remaining obligations. Conclude with `N.mul_mem (N.inv_mem (a.out).2) (b.out).2`. Establish `e : g⁻¹ * (((a.out⁻¹ * b.out : N)) : G) * g = ((a.out : G) * g)⁻¹ * ((b.out : G) * g)`. Simplify using `[mul_assoc]`. Rewrite using `[e]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `h1`. Establish `hsup : Function.support (fun q : G ⧸ N => F q.out) ⊆ Set.range Φ`. Introduce `q hq`. Establish `hne : f q.out ≠ 0`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hq (by simp [hF, h0])`. Establish `hmem : q.out ∈ dc N g`. Assume the negation of the conclusion as `hn`. Conclude with `hne (Set.indicator_of_notMem hn _)`. Take `⟨a, ha, b, hb, e⟩` from `hmem`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨m, hm⟩` from `QuotientGroup.mk_out_eq_mul ((Mg N g).subgroupOf N) (⟨a, ha⟩ : N)`. Use `⟨QuotientGroup.mk ⟨a, ha⟩, ?_⟩` and prove the remaining obligations. Establish `hm'` using `(mem_Mg N g _).1 (Subgroup.mem_subgroupOf.1 m.2)`. Use `show QuotientGroup.mk (((QuotientGroup.mk (⟨a, ha⟩ : N) : N ⧸ (Mg N g).subgroupOf N).out : G) * g) = q`. Rewrite using `[hm, ← QuotientGroup.out_eq' q, e]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `QuotientGroup.eq.2 ?_` and prove the remaining obligations. Establish `e2 : ((((⟨a, ha⟩ : N) * (m : N) : N) : G) * g)⁻¹ * (a * g * b) = (g⁻¹ * ((m : N) : G) * g)⁻¹ * b`. Simplify using `[mul_assoc]`. Rewrite using `[e2]`. Conclude with `N.mul_mem (N.inv_mem hm'.2) hb`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `∑ᶠ q : G ⧸ N, F q.out = _`. Establish `hR : ∑ᶠ q ∈ Set.range Φ, F (Quotient.out q) = ∑ᶠ q : G ⧸ N, F (Quotient.out q)`. Rewrite using `[← finsum_mem_inter_support (fun q : G ⧸ N => F (Quotient.out q)) (Set.range Φ), Set.inter_eq_right.2 hsup, finsum_mem_support]`. Rewrite using `[← hR, finsum_mem_range hinj]`. Use `finsum_congr fun j => ?_` and prove the remaining obligations.
-
-Establish `h1 : F (Φ j).out = F ((j.out : G) * g)` using `out_eq_of_inv N F (fun y h hh => hFr y h hh) _`. Rewrite using `[h1]`. Establish `hmem : (j.out : G) * g ∈ dc N g` using `⟨j.out, (j.out).2, 1, N.one_mem, by simp⟩`. Simplify using `[hF, hf, Set.indicator_of_mem hmem, map_mul, Module.End.mul_apply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem lv_dc (ρ : Representation ℂ G V) (N : Subgroup G) (hNo : IsOpen (N : Set G))
     (hNc : IsCompact (N : Set G)) (g : G) (x : V) (hx : x ∈ fixed ρ N) :
@@ -192,7 +190,7 @@ private theorem lv_dc (ρ : Representation ℂ G V) (N : Subgroup G) (hNo : IsOp
   simp [hF, hf, Set.indicator_of_mem hmem, map_mul, Module.End.mul_apply]
 
 /- English proof (translation)
-Rewrite using `[avgOp_apply, lv_dc ρ N hNo hNc g x hx]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem avg_dc (ρ : Representation ℂ G V) (N : Subgroup G) (hNo : IsOpen (N : Set G))
     (hNc : IsCompact (N : Set G)) (g : G) (x : V) (hx : x ∈ fixed ρ N) [Finite (N ⧸ (Mg N g).subgroupOf N)] :
@@ -201,13 +199,11 @@ private theorem avg_dc (ρ : Representation ℂ G V) (N : Subgroup G) (hNo : IsO
   rw [avgOp_apply, lv_dc ρ N hNo hNc g x hx]
 
 /- English proof (translation)
-Use `haveI h1 := finite_quot N N M' hNc hNo hM'o le_rfl`. Use `haveI h2 := finite_quot N N M hNc hNo hMo le_rfl`. Use `haveI h3 := finite_quot N M M' hNc hMo hM'o hMN`. Use `haveI h4 := finite_quot N N (Mg N 1) hNc hNo (isOpen_Mg N hNo 1) le_rfl`. Establish `hH` using `hecke_dc N hNc 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Establish `hHM : IsHecke M ((dc N 1).indicator 1)` using `⟨hH.1, fun k hk y => hH.2 k (hMN hk) y⟩`. Establish `hvM' : v ∈ fixed ρ M'`. Rewrite `hv`, the goal using `[mem_fixed_iff]`. Conclude with `fun h hh => hv h (hle hh)`. Establish `e1` using `levOp_le ρ N N M' (hle.trans hMN) le_rfl hNo hM'o _ hH v hvM'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `levOp_le ρ N M M' hle hMN hMo hM'o _ hHM v hvM'`. Rewrite `e2` using `[avgOp_fix ρ M M' v hv]`. Establish `e3` using `levOp_le ρ N N M hMN le_rfl hNo hMo _ hH v hv`. Establish `back : ∀ y ∈ fixed ρ N, y = (((Mg N 1).relIndex N : ℕ) : ℂ)⁻¹ • levOp ρ N N ((dc N 1).indicator 1) LinearMap.id y`. Introduce `y hy`.
-
-Rewrite using `[← avg_dc ρ N hNo hNc 1 y hy, map_one, Module.End.one_apply, avgOp_fix ρ N _ y hy]`. Rewrite using `[back _ (avgOp_mem ρ N M' v hvM'), back _ (avgOp_mem ρ N M v hv), ← e1, e2, e3]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem avg_level (ρ : Representation ℂ G V) (N M M' : Subgroup G) (hNo : IsOpen (N : Set G))
     (hNc : IsCompact (N : Set G)) (hMo : IsOpen (M : Set G)) (hM'o : IsOpen (M' : Set G)) (hMN : M ≤ N)
@@ -232,25 +228,23 @@ private theorem avg_level (ρ : Representation ℂ G V) (N M M' : Subgroup G) (h
   rw [back _ (avgOp_mem ρ N M' v hvM'), back _ (avgOp_mem ρ N M v hv), ← e1, e2, e3]
 
 /- English proof (translation)
-Distinguish the cases in `hb : W = ⊥`. Conclude with `Or.inl hb`. Use `Or.inr (le_antisymm hW ?_)` and prove the remaining obligations. Take `⟨x, hxW, hx0⟩` from `(Submodule.ne_bot_iff W).1 hb`. Establish `hxN` using `hW hxW`.
+Consider separately whether the proposition holds or fails. Prove the first alternative. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `O : Submodule ℂ V` to `Submodule.span ℂ (Set.range fun g : G => ρ g x)`. Establish `hxO : x ∈ O` using `Submodule.subset_span ⟨1, by simp⟩`. Establish `hO : O = ⊤`. Establish `hinv : ∀ g y, y ∈ O → ρ g y ∈ O`. Introduce `g y hy`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Submodule.span_induction (p := fun y _ => ρ g y ∈ O) ?_ ?_ ?_ ?_ hy` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Use `Submodule.subset_span ⟨g * a, ?_⟩` and prove the remaining obligations. Simplify using `[map_mul, Module.End.mul_apply]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `a b _ _ ha hb`. Rewrite using `[map_add]`. Conclude with `O.add_mem ha hb`. Introduce `c a _ ha`. Rewrite using `[map_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `O.smul_mem c ha`. Break down `hirr O hinv with h | h` into its components or cases. Conclude with `absurd (by simpa [h] using hxO) hx0`. Conclude with `h`. Establish `hp : ∀ v ∈ O, ∃ M : Subgroup G, IsOpen (M : Set G) ∧ M ≤ N ∧ v ∈ fixed ρ M ∧ avgOp ρ N M v ∈ W`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `v hv`. Use `Submodule.span_induction (p := fun v _ => ∃ M : Subgroup G, IsOpen (M : Set G) ∧ M ≤ N ∧ v ∈ fixed ρ M ∧ avgOp ρ N M v ∈ W) ?_ ?_ ?_ ?_ hv` and prove the remaining obligations. Introduce and unpack `_ ⟨g, rfl⟩ haveI := finite_quot N N (Mg N g) hNc hNo (isOpen_Mg N hNo g) le_rfl`. Use `⟨Mg N g, isOpen_Mg N hNo g, inf_le_left, fixed_Mg ρ N g x hxN, ?_⟩` and prove the remaining obligations. Use `show avgOp ρ N (Mg N g) (ρ g x) ∈ W`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[avg_dc ρ N hNo hNc g x hxN]`. Conclude with `W.smul_mem _ (hst _ (hecke_dc N hNc g) x hxW)`. Conclude with `⟨N, hNo, le_rfl, (fixed ρ N).zero_mem, by simp⟩`. Introduce and unpack `a b _ _ ⟨M₁, ho₁, hl₁, hf₁, hw₁⟩ ⟨M₂, ho₂, hl₂, hf₂, hw₂⟩`. Establish `ho : IsOpen ((M₁ ⊓ M₂ : Subgroup G) : Set G)` using `ho₁.inter ho₂`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hm : ∀ (M : Subgroup G) (y : V), M₁ ⊓ M₂ ≤ M → y ∈ fixed ρ M → y ∈ fixed ρ (M₁ ⊓ M₂)`. Introduce `M y hle hy`. Rewrite `hy`, the goal using `[mem_fixed_iff]`. Conclude with `fun h hh => hy h (hle hh)`. Use `⟨M₁ ⊓ M₂, ho, inf_le_left.trans hl₁, (fixed ρ _).add_mem (hm _ _ inf_le_left hf₁) (hm _ _ inf_le_right hf₂), ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_add, avg_level ρ N M₁ _ hNo hNc ho₁ ho hl₁ inf_le_left a hf₁, avg_level ρ N M₂ _ hNo hNc ho₂ ho hl₂ inf_le_right b hf₂]`. Conclude with `W.add_mem hw₁ hw₂`. Introduce and unpack `c a _ ⟨M, ho, hl, hf, hw⟩`. Use `⟨M, ho, hl, (fixed ρ M).smul_mem c hf, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul]`.
-
-Conclude with `W.smul_mem c hw`. Introduce `z hz`. Take `⟨M, ho, hl, -, hw⟩` from `hp z (hO ▸ Submodule.mem_top)`. Use `haveI := finite_quot N N M hNc hNo ho le_rfl`. Rewrite `hw` using `[avgOp_fix ρ N M z hz]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem core (ρ : Representation ℂ G V) (N : Subgroup G) (hNo : IsOpen (N : Set G))
     (hNc : IsCompact (N : Set G))
@@ -317,9 +311,9 @@ end
 end UpperTheory.V.Z.Tf.GlobalTraceComparison.Pi.SimpleFixedVectors
 
 /- English proof (translation)
-Introduce `_ E _ _ _ n w τ N hNo hNle`. Establish `hKc` using `(UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.unitHecke E n 0 0 w).2.2.2.1`. Establish `hNc : IsCompact (N : Set (GlobalTheory.BCT.GLw n w))` using `hKc.of_isClosed_subset (Subgroup.isClosed_of_isOpen N hNo) hNle`. Take `⟨-, hirr⟩` from `(GlobalTheory.CuspRep.isIrreducible_iff τ.ρ).1 τ.irred`. Use `⟨fun f hf x hx => GlobalTheory.TraceLevel.levOp_mem_fixed τ.ρ N N N f hf hNo le_rfl x hx, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `fun W hW hst => UpperTheory.V.Z.Tf.GlobalTraceComparison.Pi.SimpleFixedVectors.core τ.ρ N hNo hNc hirr W hW hst`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Tf.GlobalTraceComparison.Pi.simpleFix_pf :
     UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.CvOp → SimpleFix := by

@@ -16,11 +16,11 @@ open scoped ContDiff ComplexOrder ENNReal Classical
 namespace GlobalTheory.ArchLim
 
 /- English proof (translation)
-Establish `h1 : MeasurePreserving (fun z : V n => z.ofLp) volume volume` using `GlobalTheory.volume_preserving_ofLp_complex (Fin n)`. Establish `h2` using `h1.prod (MeasurePreserving.id (volume : Measure (Low r → ℂ)))`. Establish `h3` using `(volume_measurePreserving_sumPiEquivProdPi_symm (fun _ : Fin n ⊕ Low r => ℂ)).comp h2`. Establish `h4` using `(volume_preserving_arrowCongr' ε.symm (MeasurableEquiv.refl ℂ) (MeasurePreserving.id volume)).comp h3`. Establish `h5 : MeasurePreserving (MeasurableEquiv.toLp 2 (Fin D → ℂ)) volume volume` using `MeasurePreserving.symm (MeasurableEquiv.toLp 2 (Fin D → ℂ)).symm (GlobalTheory.volume_preserving_ofLp_complex (Fin D))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h6` using `h5.comp h4`. Establish `e : (fun x : V n × (Low r → ℂ) => pt ε x.1 x.2) = (⇑(MeasurableEquiv.toLp 2 (Fin D → ℂ)) ∘ ⇑(MeasurableEquiv.arrowCongr' ε.symm (MeasurableEquiv.refl ℂ)) ∘ ⇑(MeasurableEquiv.sumPiEquivProdPi fun _ : Fin n ⊕ Low r => ℂ).symm ∘ Prod.map (fun z : V n => z.ofLp) id)`. Use function extensionality and compare the values at `x`. Use extensionality with `i`. Express the relevant statement in the definitionally equal form `Sum.elim (fun a => x.1.ofLp a) x.2 (ε i) = (Equiv.sumPiEquivProdPi fun _ : Fin n ⊕ Low r => ℂ).symm (x.1.ofLp, x.2) (ε i)`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition.
 
-Apply the tactic sequence `cases ε i <;> rfl`. Rewrite using `[e]`. Conclude with `h6`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measurePreserving_pt_sum {n r D : ℕ} (ε : Fin D ≃ Fin n ⊕ Low r) :
     MeasurePreserving (fun x : V n × (Low r → ℂ) => pt ε x.1 x.2) volume volume := by
@@ -45,11 +45,11 @@ theorem measurePreserving_pt_sum {n r D : ℕ} (ε : Fin D ≃ Fin n ⊕ Low r) 
   exact h6
 
 /- English proof (translation)
-Introduce `n r D ε K H hK hH`. Establish `hb : Measurable (base ε)`. Establish `: Continuous (base ε)`. Unfold `base`. Use `fun_prop`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Conclude with `this.measurable`. Establish `hm` using `(measurePreserving_pt_sum ε).restrict_preimage (hb hK)`. Establish `hs : (fun x : V n × (Low r → ℂ) => pt ε x.1 x.2) ⁻¹' (base ε ⁻¹' K) = K ×ˢ Set.univ`. Use extensionality with `x`. Simplify using `[base_pt]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hm` using `[hs, Measure.volume_eq_prod, ← Measure.prod_restrict, Measure.restrict_univ]`. Establish `hi : AEMeasurable (fun x : V n × (Low r → ℂ) => H (pt ε x.1 x.2)) ((volume.restrict K).prod volume)` using `hH.comp_quasiMeasurePreserving hm.quasiMeasurePreserving`. Use `⟨?_, hi.lintegral_prod_right'⟩` and prove the remaining obligations. Rewrite using `[← hm.map_eq, lintegral_map' (by rw [hm.map_eq]; exact hH) hm.measurable.aemeasurable, lintegral_prod _ hi]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem setLIntegral_base_eq : ∀ (n r D : ℕ) (ε : Fin D ≃ Fin n ⊕ Low r) (K : Set (V n)) (H : V D → ℝ≥0∞), MeasurableSet K → AEMeasurable H (volume.restrict (base ε ⁻¹' K)) → (∫⁻ v in base ε ⁻¹' K, H v = ∫⁻ u in K, ∫⁻ x : Low r → ℂ, H (pt ε u x)) ∧ AEMeasurable (fun u => ∫⁻ x : Low r → ℂ, H (pt ε u x)) (volume.restrict K) := by
   intro n r D ε K H hK hH

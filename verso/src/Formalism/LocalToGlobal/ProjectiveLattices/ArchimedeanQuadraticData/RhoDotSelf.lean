@@ -14,7 +14,7 @@ def rho (w : ι → Fin r → ℂ) : Fin N → ℝ := fun k =>
   if (eqv k).2.2 = 0 then (w (eqv k).1 (eqv k).2.1).re else (w (eqv k).1 (eqv k).2.1).im
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `only [rho, Pi.add_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rho_add (w w' : ι → Fin r → ℂ) : rho eqv (w + w') = rho eqv w + rho eqv w' := by
   funext k
@@ -22,7 +22,7 @@ theorem rho_add (w w' : ι → Fin r → ℂ) : rho eqv (w + w') = rho eqv w + r
   split_ifs <;> simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `only [rho, Pi.sub_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rho_sub (w w' : ι → Fin r → ℂ) : rho eqv (w - w') = rho eqv w - rho eqv w' := by
   funext k
@@ -30,7 +30,7 @@ theorem rho_sub (w w' : ι → Fin r → ℂ) : rho eqv (w - w') = rho eqv w - r
   split_ifs <;> simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `only [rho, Pi.smul_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rho_smul (c : ℝ) (w : ι → Fin r → ℂ) : rho eqv ((c : ℂ) • w) = c • rho eqv w := by
   funext k
@@ -38,14 +38,14 @@ theorem rho_smul (c : ℝ) (w : ι → Fin r → ℂ) : rho eqv ((c : ℂ) • w
   split_ifs <;> simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `[rho]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem rho_zero : rho eqv (0 : ι → Fin r → ℂ) = 0 := by
   funext k
   simp [rho]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [rho_zero]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, rho_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem rho_sum {κ : Type} (s : Finset κ) (w : κ → ι → Fin r → ℂ) :
     rho eqv (∑ j ∈ s, w j) = ∑ j ∈ s, rho eqv (w j) := by
@@ -55,7 +55,7 @@ theorem rho_sum {κ : Type} (s : Finset κ) (w : κ → ι → Fin r → ℂ) :
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, rho_add, ih]
 
 /- English proof (translation)
-Unfold `dotProduct`. Rewrite using `[← eqv.symm.sum_comp]`. Simplify using `only [rho, Equiv.apply_symm_apply, Fintype.sum_prod_type, Fin.sum_univ_two]`. Simplify using `[Complex.mul_re]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem rho_dot (w w' : ι → Fin r → ℂ) :
     rho eqv w ⬝ᵥ rho eqv w' = ∑ i, ∑ a, (conj (w i a) * w' i a).re := by
@@ -65,7 +65,7 @@ theorem rho_dot (w w' : ι → Fin r → ℂ) :
   simp [Complex.mul_re]
 
 /- English proof (translation)
-Rewrite using `[rho_dot]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.mul_re, Complex.conj_re, Complex.conj_im, Complex.sq_norm, Complex.normSq_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rho_dot_self (w : ι → Fin r → ℂ) : rho eqv w ⬝ᵥ rho eqv w = ∑ i, ∑ a, ‖w i a‖ ^ 2 := by
   rw [rho_dot]

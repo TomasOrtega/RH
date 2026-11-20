@@ -31,14 +31,14 @@ def Jf (W' : GL (Fin 2) F → ℂ) (c : Fˣ →* ℂˣ) (s : ℂ) (k : GL (Fin 2
 def dk (k : GL (Fin 2) F) : ℝ := (modulus ((GeneralLinearGroup.det k : Fˣ) : F) : ℝ)
 
 /- English proof (translation)
-Unfold `dk`. Conclude with `modulus_pos (Units.ne_zero _)` after adjusting the coercions.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem dk_pos (k : GL (Fin 2) F) : 0 < dk k := by
   unfold dk
   exact_mod_cast modulus_pos (Units.ne_zero _)
 
 /- English proof (translation)
-Establish `hval : Continuous fun k : GL (Fin 2) F => (k : Matrix (Fin 2) (Fin 2) F)` using `Units.continuous_val`. Establish `hmod : Continuous fun x : F => (modulus x : ℝ)` using `NNReal.continuous_coe.comp continuous_modulus`. Establish `: Continuous fun k : GL (Fin 2) F => ((GeneralLinearGroup.det k : Fˣ) : F)`. Simplify using `using hval.matrix_det`. Conclude with `hmod.comp this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem continuous_dk : Continuous (dk : GL (Fin 2) F → ℝ) := by
   have hval : Continuous fun k : GL (Fin 2) F => (k : Matrix (Fin 2) (Fin 2) F) := Units.continuous_val
@@ -48,28 +48,28 @@ theorem continuous_dk : Continuous (dk : GL (Fin 2) F → ℝ) := by
   exact hmod.comp this
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.RankinSelbergMellinContinuation.norm_mp _ z`.
+A detailed English derivation is pending.
 -/
 theorem norm_mp_det (k : GL (Fin 2) F) (z : ℂ) : ‖mp (GeneralLinearGroup.det k) z‖ = dk k ^ z.re :=
   GlobalTheory.CompanionTheory.RankinSelbergMellinContinuation.norm_mp _ z
 
 /- English proof (translation)
-Establish `h : Continuous fun k : GL (Fin 2) F => ((dk k : ℝ) : ℂ)` using `Complex.continuous_ofReal.comp continuous_dk`. Conclude with `h.cpow continuous_const fun k => Complex.ofReal_mem_slitPlane.2 (dk_pos k)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_mp_det (z : ℂ) : Continuous fun k : GL (Fin 2) F => mp (GeneralLinearGroup.det k) z := by
   have h : Continuous fun k : GL (Fin 2) F => ((dk k : ℝ) : ℂ) := Complex.continuous_ofReal.comp continuous_dk
   exact h.cpow continuous_const fun k => Complex.ofReal_mem_slitPlane.2 (dk_pos k)
 
 /- English proof (translation)
-Take `⟨C, R, h⟩` from `GlobalTheory.CompanionTheory.LFFour.gFour F ψ hψ Φ hΦ`. Establish `e1 : dg (1 : Fˣ) 1 1 = (1 : GL (Fin 3) F)`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [dg]`. Establish `e2 : dg2 (1 : Fˣ) 1 = (1 : GL (Fin 2) F)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [dg2]`. Establish `key : ∀ k : GL (Fin 2) F, inn ψ Φ k 1 = mp (GeneralLinearGroup.det k) (-1) * pft ψ Φ (k : Matrix (Fin 2) (Fin 2) F) (fun j => ((k⁻¹ : GL (Fin 2) F) : Matrix (Fin 2) (Fin 2) F) 1 j)`. Introduce `k`. Use `GlobalTheory.CompanionTheory.LFGTorus.inn_dg ψ Φ k 1 1` as an intermediate fact.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `this` using `[e1, e2]`. Use `⟨C, R, fun k => ⟨?_, fun hne => ?_⟩⟩` and prove the remaining obligations. Establish `hd` using `dk_pos k`. Rewrite using `[key, norm_mul, norm_mp_det]`. Establish `: dk k ^ (-1 : ℂ).re * dk k = 1`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Complex.neg_re, Complex.one_re, Real.rpow_neg_one]`. Conclude with `inv_mul_cancel₀ hd.ne'`. Combine the equalities or inequalities in the displayed calculation. Establish `hp : pft ψ Φ (k : Matrix (Fin 2) (Fin 2) F) (fun j => ((k⁻¹ : GL (Fin 2) F) : Matrix (Fin 2) (Fin 2) F) 1 j) ≠ 0`. Introduce `h0`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `hne (by rw [key, h0, mul_zero])`. Take `⟨h1, h2⟩` from `(h _ _).2 hp`. Conclude with `⟨h1, fun j => by simpa using h2 j⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem inn_bound {ψ : AddChar F Circle} (hψ : IsStd ψ) {Φ : Matrix (Fin 2) (Fin 3) F → ℂ} (hΦ : Φ ∈ SB F) :
     ∃ C R : ℝ, ∀ k : GL (Fin 2) F, ‖inn ψ Φ k 1‖ * dk k ≤ C ∧ (inn ψ Φ k 1 ≠ 0 → k ∈ om R (1 : Fˣ)) := by
@@ -100,9 +100,9 @@ theorem inn_bound {ψ : AddChar F Circle} (hψ : IsStd ψ) {Φ : Matrix (Fin 2) 
     exact ⟨h1, fun j => by simpa using h2 j⟩
 
 /- English proof (translation)
-Take `⟨U, hU⟩` from `hU`. Establish `hl : IsLocallyConstant fun g : GL (Fin 2) F => Jf W' c s g⁻¹`. Use `GlobalTheory.CompanionTheory.RankinSelbergMellinContinuation.isLocallyConstant_of_invariant _ U.toSubgroup U.isOpen fun g u hu => ?_` and prove the remaining obligations. Simplify using `only [Jf, inv_inv, ← mul_assoc, hU _ u hu]`. Use `hl.continuous.comp (continuous_inv (G := GL (Fin 2) F))` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify `this` using `[Function.comp_def]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem continuous_Jf {W' : GL (Fin 2) F → ℂ}
     (hU : ∃ U : OpenSubgroup (GL (Fin 2) F), ∀ g, ∀ u ∈ U, W' (g * u) = W' g) (c : Fˣ →* ℂˣ) (s : ℂ) :
@@ -115,15 +115,13 @@ theorem continuous_Jf {W' : GL (Fin 2) F → ℂ}
   simpa [Function.comp_def] using this
 
 /- English proof (translation)
-Unfold `dk`. Establish `hκ1 : modulus ((Matrix.GeneralLinearGroup.det κ : Fˣ) : F) = 1`. Take `⟨h1, h2⟩` from `(GLnLocal.mem_integralGL_iff F 2).1 hκ`. Establish `key : ∀ g : GL (Fin 2) F, (∀ i j, g i j ∈ 𝒪[F]) → modulus ((Matrix.GeneralLinearGroup.det g : Fˣ) : F) ≤ 1`. Introduce `g hg`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[modulus_le_one_iff, Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_fin_two]`. Conclude with `sub_mem (mul_mem (hg 0 0) (hg 1 1)) (mul_mem (hg 0 1) (hg 1 0))`. Establish `a'` using `key κ h1`. Establish `b'` using `key κ⁻¹ h2`. Rewrite `b'` using `[map_inv, Units.val_inv_eq_inv_val, modulus_inv]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hpos` using `modulus_pos (Matrix.GeneralLinearGroup.det κ : Fˣ).ne_zero`. Conclude with `le_antisymm a' ((inv_le_one₀ hpos).1 b')`. Establish `hd1 : Matrix.GeneralLinearGroup.det (Ad3.uni2 x) = 1`. Use `ext`. Simplify using `[Matrix.GeneralLinearGroup.val_det_apply, Ad3.uni2, Matrix.det_fin_two]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hd2 : Matrix.GeneralLinearGroup.det (Ad3.dg2 a b) = a * b`. Use `ext`. Simplify using `[Matrix.GeneralLinearGroup.val_det_apply, Ad3.dg2, Matrix.det_fin_two]`. Rewrite using `[map_inv, map_mul, map_mul, hd1, hd2, one_mul, Units.val_inv_eq_inv_val, modulus_inv, Units.val_mul, modulus_mul, hκ1, mul_one, Units.val_mul, modulus_mul]`. Use `push_cast`.
-
-Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem dk_iwasawa_inv (x : F) (a b : Fˣ) (κ : GL (Fin 2) F) (hκ : κ ∈ GLnLocal.integralGL F 2) :
     dk (Ad3.uni2 x * Ad3.dg2 a b * κ)⁻¹ = ((modulus (a : F) : ℝ) * (modulus (b : F) : ℝ))⁻¹ := by
@@ -152,15 +150,13 @@ theorem dk_iwasawa_inv (x : F) (a b : Fˣ) (κ : GL (Fin 2) F) (hκ : κ ∈ GLn
   rfl
 
 /- English proof (translation)
-Establish `hcont : Continuous fun p : Matrix (Fin 2) (Fin 3) F × GL (Fin 2) F => (p.2 : Matrix (Fin 2) (Fin 2) F) * p.1` using `(Units.continuous_val.comp continuous_snd).matrix_mul continuous_fst`. Establish `hlc : IsLocallyConstant fun p : Matrix (Fin 2) (Fin 3) F × GL (Fin 2) F => Φ ((p.2 : Matrix (Fin 2) (Fin 2) F) * p.1) - Φ p.1` using `(hl.comp_continuous hcont).sub (hl.comp_continuous continuous_fst)`. Establish `hopen` using `hlc.isOpen_fiber 0`. Establish `hsub : tsupport Φ ×ˢ ({1} : Set (GL (Fin 2) F)) ⊆ (fun p : Matrix (Fin 2) (Fin 3) F × GL (Fin 2) F => Φ ((p.2 : Matrix (Fin 2) (Fin 2) F) * p.1) - Φ p.1) ⁻¹' {0}`. Introduce and unpack `⟨X, u⟩ ⟨-, hu⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Take `rfl : u = 1` from `hu`. Simplify using the standard rewrite rules. Take `⟨A, B, -, hB, hA, h1, hAB⟩` from `generalized_tube_lemma hc isCompact_singleton hopen hsub`. Take `⟨m, -, hm⟩` from `(GLnLocal.hasBasis_nhds_one F 2).mem_iff.1 (hB.mem_nhds (h1 rfl))`. Establish `hfix : ∀ u ∈ GLnLocal.congruenceSubgroup F 2 m, ∀ X, Φ X ≠ 0 → Φ ((u : Matrix (Fin 2) (Fin 2) F) * X) = Φ X`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `u hu X hX`. Establish `: (X, u) ∈ A ×ˢ B` using `⟨hA (subset_tsupport _ hX), hm hu⟩`. Conclude with `sub_eq_zero.1 (hAB this)`. Use `⟨⟨GLnLocal.congruenceSubgroup F 2 m, GLnLocal.isOpen_congruenceSubgroup F 2 m⟩, fun u hu X => ?_⟩` and prove the remaining obligations. Establish `hu' : u ∈ GLnLocal.congruenceSubgroup F 2 m` using `hu`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hX : Φ X = 0`. Distinguish the cases in `hY : Φ ((u : Matrix (Fin 2) (Fin 2) F) * X) = 0`. Rewrite using `[hX, hY]`. Establish `h` using `hfix u⁻¹ (inv_mem hu') _ hY`. Rewrite `h` using `[← Matrix.mul_assoc, Units.inv_mul_of_eq rfl, Matrix.one_mul]`.
-
-Conclude with `h.symm`. Conclude with `hfix u hu' X hX`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_left_invariant {Φ : Matrix (Fin 2) (Fin 3) F → ℂ}
     (hl : IsLocallyConstant Φ) (hc : HasCompactSupport Φ) :
@@ -200,9 +196,9 @@ theorem exists_left_invariant {Φ : Matrix (Fin 2) (Fin 3) F → ℂ}
   · exact hfix u hu' X hX
 
 /- English proof (translation)
-Take `⟨U, hU⟩` from `exists_left_invariant hΦ.1 hΦ.2`. Establish `hl : IsLocallyConstant fun g : GL (Fin 2) F => inn ψ Φ g⁻¹ 1`. Use `GlobalTheory.CompanionTheory.RankinSelbergMellinContinuation.isLocallyConstant_of_invariant _ U.toSubgroup U.isOpen fun g u hu => ?_` and prove the remaining obligations. Establish `hu' : u⁻¹ ∈ U` using `inv_mem hu`. Simplify using `only [inn, _root_.mul_inv_rev, Units.val_mul, Matrix.mul_assoc, hU _ hu']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `hl.continuous.comp (continuous_inv (G := GL (Fin 2) F))` as an intermediate fact. Simplify `this` using `[Function.comp_def]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem cont_inn (ψ : AddChar F Circle) (Φ : Matrix (Fin 2) (Fin 3) F → ℂ) (hΦ : Φ ∈ SB F) :
     Continuous fun k : GL (Fin 2) F => inn ψ Φ k 1 := by
@@ -215,23 +211,19 @@ theorem cont_inn (ψ : AddChar F Circle) (Φ : Matrix (Fin 2) (Fin 3) F → ℂ)
   simpa [Function.comp_def] using this
 
 /- English proof (translation)
-Establish `hq0 : 0 < q` using `by linarith`. Use `set w : ℤ × ℤ → ℝ≥0∞ := fun p => if p.1 ≤ L ∧ -L ≤ p.2 ∧ p.2 ≤ L then ENNReal.ofReal (A * q ^ (α * (p.1 : ℝ)) * q ^ (β * (p.2 : ℝ))) else 0 with hw`. Use `set a : ℤ → ℝ≥0∞ := fun m => if q ^ m ≤ q ^ L then ENNReal.ofReal (q ^ (α * (m : ℝ))) else 0 with ha`. Use `set b : ℤ → ℝ≥0∞ := fun n => if n ∈ Finset.Icc (-L) L then ENNReal.ofReal (A * q ^ (β * (n : ℝ))) * ENNReal.ofReal (q ^ (L - n)) else 0 with hb`. Establish `hpt : ∀ y, Φ y ≤ ∑' p : ℤ × ℤ, (S p.1 p.2).indicator (fun _ => w p) y`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Introduce `y`. Distinguish the cases in `h0 : Φ y = 0`. Rewrite using `[h0]`. Conclude with `zero_le`. Take `⟨m, n, h1, h2, h3, h4, h5⟩` from `hcov y h0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `le_trans ?_ (ENNReal.le_tsum (m, n))` and prove the remaining obligations. Simplify using `only [Set.indicator_of_mem h4, hw, h1, h2, h3, and_self, if_true]`. Conclude with `h5`. Establish `hterm : ∀ p : ℤ × ℤ, w p * μ (S p.1 p.2) ≤ a p.1 * b p.2 * c`. Introduce and unpack `⟨m, n⟩`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h : m ≤ L ∧ -L ≤ n ∧ n ≤ L`. Take `⟨h1, h2, h3⟩` from `h`. Establish `h1' : q ^ m ≤ q ^ L` using `zpow_le_zpow_right₀ hq.le h1`. Establish `hmem : n ∈ Finset.Icc (-L) L` using `Finset.mem_Icc.2 ⟨h2, h3⟩`. Simplify using `only [hw, ha, hb, h1, h1', h2, h3, hmem, and_self, if_true]`.
+Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show A * q ^ (α * (m : ℝ)) * q ^ (β * (n : ℝ)) = q ^ (α * (m : ℝ)) * (A * q ^ (β * (n : ℝ))) by ring, ENNReal.ofReal_mul (by positivity)]`. Expand and normalize the polynomial expressions, which then agree. Establish `: w (m, n) = 0` using `by simp only [hw]; rw [if_neg h]`. Rewrite using `[this, zero_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `zero_le`. Establish `hTa : ∑' m, a m < ∞` using `(GlobalTheory.CompanionTheory.GeomSum.tsum_zpow_le_rpow_div q α (q ^ L) hq hα (zpow_pos hq0 L)).trans_lt ENNReal.ofReal_lt_top`. Establish `hTb : ∑' n, b n < ∞`. Rewrite using `[tsum_eq_sum (s := Finset.Icc (-L) L) (fun n hn => by simp only [hb]; rw [if_neg hn])]`. Use `ENNReal.sum_lt_top.2 fun n hn => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [hb]`. Rewrite using `[if_pos hn]`. Conclude with `ENNReal.mul_lt_top ENNReal.ofReal_lt_top ENNReal.ofReal_lt_top`. Combine the equalities or inequalities in the displayed calculation. Use `tsum_congr fun p => ?_` and prove the remaining obligations.
-
-Conclude with `lintegral_indicator_const (hS _ _) _`. Use `_ ≤ ∑' p : ℤ × ℤ, a p.1 * b p.2 * c := ENNReal.tsum_le_tsum hterm`. Use `_ = (∑' m, a m) * (∑' n, b n) * c := by`. Rewrite using `[ENNReal.tsum_mul_right, ENNReal.tsum_prod']`. Use `congr 1`.
-
-Simplify using `only [ENNReal.tsum_mul_left, ENNReal.tsum_mul_right]`. Use `_ < ∞ := ENNReal.mul_lt_top (ENNReal.mul_lt_top hTa hTb) hc.lt_top`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem shell_fin {X : Type} [MeasurableSpace X] (μ : Measure X) (q A α β : ℝ) (L : ℤ) (c : ℝ≥0∞)
     (S : ℤ → ℤ → Set X) (Φ : X → ℝ≥0∞) (hq : 1 < q) (hA : 0 ≤ A) (hα : 0 < α) (hc : c ≠ ∞)
@@ -292,7 +284,7 @@ theorem shell_fin {X : Type} [MeasurableSpace X] (μ : Measure X) (q A α β : �
     _ < ∞ := ENNReal.mul_lt_top (ENNReal.mul_lt_top hTa hTb) hc.lt_top
 
 /- English proof (translation)
-Establish `hinv : Continuous fun a : Fˣ => ((a⁻¹ : Fˣ) : F)` using `Units.continuous_val.comp continuous_inv`. Rewrite using `[Units.continuous_iff]`. Prove the components needed by the constructor for the conclusion. Apply the tactic sequence `refine continuous_matrix fun i j => ?_ fin_cases i <;> fin_cases j <;> first | exact Units.continuous_val | exact continuous_const`. Apply the tactic sequence `refine continuous_matrix fun i j => ?_ fin_cases i <;> fin_cases j <;> first | exact hinv | exact continuous_const`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem continuous_diag_unit_one : Continuous fun a : Fˣ => (dg2 a 1 : GL (Fin 2) F) := by
   have hinv : Continuous fun a : Fˣ => ((a⁻¹ : Fˣ) : F) := Units.continuous_val.comp continuous_inv
@@ -304,35 +296,31 @@ theorem continuous_diag_unit_one : Continuous fun a : Fˣ => (dg2 a 1 : GL (Fin 
     fin_cases i <;> fin_cases j <;> first | exact hinv | exact continuous_const
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ ψ ν V' H W' hW' σ hσ`. Take `⟨C, B, hCB⟩` from `H.bound W' hW' (σ / 2) (by positivity)`. Establish `hq : (1 : ℝ) < residueCard F` using `by exact_mod_cast one_lt_residueCard (K := F)`. Establish `hq0 : (0 : ℝ) < residueCard F` using `by linarith`. Use `set p : ℝ := (residueCard F : ℝ) ^ (-(1 : ℝ)) with hp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set r : ℝ := (residueCard F : ℝ) ^ (-(σ / 2)) with hr`. Establish `hp0 : 0 < p` using `Real.rpow_pos_of_pos hq0 _`. Establish `hr0 : 0 < r` using `Real.rpow_pos_of_pos hq0 _`. Establish `hp1 : p < 1` using `Real.rpow_lt_one_of_one_lt_of_neg hq (by norm_num)`. Establish `hr1 : r < 1` using `Real.rpow_lt_one_of_one_lt_of_neg hq (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set g : ℤ → ℂ := fun k => (((if p ^ k ≤ B then C * r ^ k else 0 : ℝ) : ℂ)) with hg`. Establish `hI` using `(GlobalTheory.CompanionTheory.LU.sShell F g (GlobalTheory.CompanionTheory.LFGInt.summable_cut hp0 hp1 hr0 hr1)).1`. Use `set M : Fˣ → ℝ := fun a => ‖g (ord (a : F))‖ with hM`. Establish `hMi : Integrable M (multHaar F)` using `hI.norm`. Establish `hmaj : ∀ κ ∈ GLnLocal.integralGL F 2, ∀ a : Fˣ, ‖W' (dg2 a 1 * κ)‖ * (modulus (a : F) : ℝ) ^ (σ - 1 / 2) ≤ M a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Introduce `κ hκ a`. Establish `hm` using `GlobalTheory.CompanionTheory.RankinSelbergMellinContinuation.modulus_pos' a`. Distinguish the cases in `h0 : W' (dg2 a 1 * κ) = 0`. Simplify using `only [h0, norm_zero, zero_mul, hM]`. Conclude with `norm_nonneg _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Establish `hB` using `(hCB a κ hκ).2 h0`. Establish `h1 : p ^ ord (a : F) ≤ B`. Use `GlobalTheory.CompanionTheory.RankinSelbergMellinContinuation.modulus_rpow a 1` as an intermediate fact. Rewrite `this` using `[Real.rpow_one]`. Rewrite using `[← this]` and apply the resulting hypothesis.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hgv : g (ord (a : F)) = ((C * r ^ ord (a : F) : ℝ) : ℂ)` using `by simp [hg, h1]`. Simplify using `only [hM]`. Rewrite using `[hgv, Complex.norm_real, Real.norm_eq_abs]`. Use `le_trans ?_ (le_abs_self _)` and prove the remaining obligations. Rewrite using `[← GlobalTheory.CompanionTheory.RankinSelbergMellinContinuation.modulus_rpow a (σ / 2)]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, ← Real.rpow_add hm]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Take `⟨U, hU⟩` from `H.smooth W' hW'`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hWc : Continuous W'` using `(GlobalTheory.CompanionTheory.RankinSelbergMellinContinuation.isLocallyConstant_of_invariant W' U.toSubgroup U.isOpen hU).continuous`. Establish `hmodc : Continuous fun a : Fˣ => (modulus (a : F) : ℝ)` using `NNReal.continuous_coe.comp (continuous_modulus.comp Units.continuous_val)`. Use `⟨∫ a, M a ∂multHaar F, integral_nonneg fun _ => norm_nonneg _, fun x b₁ b₂ κ hκ => ?_⟩` and prove the remaining obligations. Use `set G : Fˣ → ℝ := fun a => ‖W' (dg2 a 1 * κ)‖ * (modulus (a : F) : ℝ) ^ (σ - 1 / 2) with hG'`. Establish `hGc : Continuous G` using `(hWc.comp (continuous_diag_unit_one.mul continuous_const)).norm.mul (hmodc.rpow_const fun a => Or.inl (GlobalTheory.CompanionTheory.RankinSelbergMellinContinuation.modulus_pos' a).ne')`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGi : Integrable G (multHaar F)` using `hMi.mono' hGc.aestronglyMeasurable (Eventually.of_forall (fun a => by`. Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (mul_nonneg (norm_nonneg _) (Real.rpow_nonneg (GlobalTheory.CompanionTheory.RankinSelbergMellinContinuation.modulus_pos' a).le _))]`. Conclude with `hmaj κ hκ a))`. Establish `hGle : ∫ a, G a ∂multHaar F ≤ ∫ a, M a ∂multHaar F` using `integral_mono hGi hMi (hmaj κ hκ)`. Use `set u : Fˣ := b₁ * b₂⁻¹ with hu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set T : ℝ := ((modulus (b₁ : F) : ℝ) / (modulus (b₂ : F) : ℝ)) ^ (1 / 2 - σ) with hT`. Establish `hb₁` using `GlobalTheory.CompanionTheory.RankinSelbergMellinContinuation.modulus_pos' b₁`. Establish `hb₂` using `GlobalTheory.CompanionTheory.RankinSelbergMellinContinuation.modulus_pos' b₂`. Establish `hT0 : 0 ≤ T` using `by positivity`. Establish `hmu : (modulus (u : F) : ℝ) = (modulus (b₁ : F) : ℝ) / (modulus (b₂ : F) : ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hu, Units.val_mul, modulus_mul, Units.val_inv_eq_inv_val, modulus_inv]`. Simplify using `[div_eq_mul_inv]`. Establish `hpt : ∀ a : Fˣ, ‖W' (dg2 a 1 * (uni2 x * dg2 b₁ b₂ * κ))‖ * (modulus (a : F) : ℝ) ^ (σ - 1 / 2) = T * G (a * u)`. Introduce `a`. Establish `hm` using `GlobalTheory.CompanionTheory.RankinSelbergMellinContinuation.modulus_pos' a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e : dg2 a 1 * (uni2 x * dg2 b₁ b₂ * κ) = uni2 ((a : F) * x * (((1 : Fˣ)⁻¹ : Fˣ) : F)) * (dg2 (1 * b₂) (1 * b₂) * (dg2 (a * b₁ * (1 * b₂)⁻¹) 1 * κ))`. Rewrite using `[← mul_assoc (dg2 (1 * b₂) (1 * b₂)), ← GlobalTheory.CompanionTheory.WhittakerIwasawa.diagonal_mul_diagonal_alt, ← mul_assoc, ← mul_assoc, ← mul_assoc, GlobalTheory.CompanionTheory.WhittakerIwasawa.diagonal_mul_unipotent]`. Simplify using `only [mul_assoc]`. Establish `e2 : a * b₁ * (1 * b₂)⁻¹ = a * u` using `by rw [hu, one_mul, mul_assoc]`. Establish `hcen : ∀ (a : Fˣ) g, W' (dg2 a a * g) = W' g`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `a g`. Rewrite using `[H.cen W' hW']`. Simplify using the standard rewrite rules. Rewrite using `[e, H.psi W' hW', hcen, norm_mul, Circle.norm_coe, one_mul, e2]`. Simplify using `only [hG']`.
-
-Rewrite using `[Units.val_mul, modulus_mul, NNReal.coe_mul, hmu, Real.mul_rpow hm.le (by positivity), hT]`. Establish `hc : ((modulus (b₁ : F) : ℝ) / (modulus (b₂ : F) : ℝ)) ^ (1 / 2 - σ) * ((modulus (b₁ : F) : ℝ) / (modulus (b₂ : F) : ℝ)) ^ (σ - 1 / 2) = 1`. Rewrite using `[← Real.rpow_add (by positivity)]`. Simplify using the standard rewrite rules. Take the linear combination `(-(‖W' (dg2 (a * u) 1 * κ)‖ * (modulus (a : F) : ℝ) ^ (σ - 1 / 2))) * hc`.
-
-Simplify using `only [hpt]`. Use `⟨(hGi.comp_mul_right u).const_mul T, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_const_mul, integral_mul_right_eq_self G u, mul_comm]`. Conclude with `mul_le_mul_of_nonneg_right hGle hT0`.
+Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem whit_int : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (ψ : AddChar F Circle) (ν : Fˣ →* ℂˣ) (V' : Submodule ℂ (GL (Fin 2) F → ℂ)), Ad3.WhittakerModelGL2 ψ ν ν⁻¹ V' → ∀ W' ∈ V', ∀ σ : ℝ, 0 < σ → ∃ C : ℝ, 0 ≤ C ∧ ∀ (x : F) (b₁ b₂ : Fˣ), ∀ κ ∈ GLnLocal.integralGL F 2, Integrable (fun a : Fˣ => ‖W' (Ad3.dg2 a 1 * (Ad3.uni2 x * Ad3.dg2 b₁ b₂ * κ))‖ * (modulus (a : F) : ℝ) ^ (σ - 1 / 2)) (multHaar F) ∧ ∫ a : Fˣ, ‖W' (Ad3.dg2 a 1 * (Ad3.uni2 x * Ad3.dg2 b₁ b₂ * κ))‖ * (modulus (a : F) : ℝ) ^ (σ - 1 / 2) ∂multHaar F ≤ C * ((modulus (b₁ : F) : ℝ) / (modulus (b₂ : F) : ℝ)) ^ (1 / 2 - σ) := by
   intro F _ _ _ _ _ _ ψ ν V' H W' hW' σ hσ
@@ -425,35 +413,31 @@ theorem whit_int : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F
   exact mul_le_mul_of_nonneg_right hGle hT0
 
 /- English proof (translation)
-Take `⟨hψ, hν, ⟨V', hV, hW'⟩, hΦ⟩` from `hyp`. Take `⟨C₁, R, hCR⟩` from `inn_bound hψ hΦ`. Take `⟨C₂, hC₂0, hC₂⟩` from `whit_int F ψ ν V' hV W' hW' s.re (by linarith)`. Use `set q : ℝ := (residueCard F : ℝ) with hqdef`. Establish `hq : 1 < q` using `by rw [hqdef]; exact_mod_cast (one_lt_residueCard (K := F))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq0 : 0 < q` using `by linarith`. Take `⟨L₀, hL₀⟩` from `pow_unbounded_of_one_lt R hq`. Use `set L : ℤ := (L₀ : ℤ) with hLdef`. Establish `hRL : R ≤ q ^ L` using `by rw [hLdef, zpow_natCast]; exact hL₀.le`. Use `haveI hμ : (hG ψ).IsHaarMeasure := by unfold hG; infer_instance`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI hinv : (hG ψ).IsInvInvariant := ⟨Measures.inv_eq_self_GL F 2 (hG ψ)⟩`. Use `set Kμ : ℝ≥0∞ := hG ψ (GLnLocal.integralGL F 2 : Set (GL (Fin 2) F)) with hKμ`. Establish `hKfin : Kμ ≠ ∞` using `(GLnLocal.isCompact_integralGL F 2).measure_lt_top.ne`. Use `set f : GL (Fin 2) F → ℝ := fun k => ‖inn ψ Φ k 1‖ * dk k ^ (3 / 2 + r) * ‖Jf W' c s k‖ with hf`. Establish `hf0 : ∀ k, 0 ≤ f k` using `fun k => mul_nonneg (mul_nonneg (norm_nonneg _) (Real.rpow_nonneg (dk_pos k).le _)) (norm_nonneg _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hfc : Continuous f` using `((cont_inn ψ Φ hΦ).norm.mul (continuous_dk.rpow_const fun k => Or.inl (dk_pos k).ne')).mul (continuous_Jf (hV.smooth W' hW') c s).norm`. Use `set C₁' : ℝ := max C₁ 0 with hC₁'`. Establish `hC₁0 : 0 ≤ C₁'` using `le_max_right _ _`. Use `set A : ℝ := C₁' * C₂ with hA`. Establish `hA0 : 0 ≤ A` using `mul_nonneg hC₁0 hC₂0`.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `set S : ℤ → ℤ → Set (GL (Fin 2) F) := fun m n => {g : GL (Fin 2) F | ∃ x : F, (modulus x : ℝ) ≤ q ^ (L - m) ∧ ∃ κ ∈ GLnLocal.integralGL F 2, g = uni2 x * dg2 (unifUnit F ^ m) (unifUnit F ^ n) * κ} with hS`. Use `set Ψ : GL (Fin 2) F → ℝ≥0∞ := fun g => ENNReal.ofReal (f g⁻¹) with hΨ`. Establish `hu : ∀ k : ℤ, (modulus (((unifUnit F ^ k : Fˣ)) : F) : ℝ) = q ^ (-(k : ℝ))`. Introduce `k`. Rewrite using `[modulus_of_ne_zero (Units.ne_zero _), ord_unifUnit_zpow, NNReal.coe_zpow, NNReal.coe_natCast, ← Real.rpow_intCast]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `push_cast`. Both sides reduce to the same expression. Establish `hcov : ∀ y, Ψ y ≠ 0 → ∃ m n : ℤ, m ≤ L ∧ -L ≤ n ∧ n ≤ L ∧ y ∈ S m n ∧ Ψ y ≤ ENNReal.ofReal (A * q ^ ((r + s.re) * (m : ℝ)) * q ^ ((1 + r - s.re) * (n : ℝ)))`. Introduce `g hg`. Establish `hinn : inn ψ Φ g⁻¹ 1 ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `h`. Conclude with `hg (by simp [hΨ, hf, h])`. Establish `hom` using `(hCR g⁻¹).2 hinn`. Take `⟨x, m, n, κ, hκ, rfl⟩` from `GlobalTheory.CompanionTheory.GIntIw.iwasawa_decomposition_gl_two F g`. Take `⟨h1, h2, h3, h4⟩` from `GlobalTheory.CompanionTheory.LFCoords.coords F x m n L κ R 1 hκ hRL hom`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : -L ≤ n`. Establish `h5 : q ^ (-n) ≤ q ^ L` using `by simpa using h4`. Use `(zpow_le_zpow_iff_right₀ hq).1 h5` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `⟨m, n, h1, hn, h2, ⟨x, h3, κ, hκ, rfl⟩, ENNReal.ofReal_le_ofReal ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `set g : GL (Fin 2) F := uni2 x * dg2 (unifUnit F ^ m) (unifUnit F ^ n) * κ with hgdef`. Establish `hd : dk g⁻¹ = q ^ ((m : ℝ) + n)`. Rewrite using `[hgdef, dk_iwasawa_inv x _ _ κ hκ, hu, hu, ← Real.rpow_add hq0, ← Real.rpow_neg hq0.le]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdpos` using `dk_pos g⁻¹`. Establish `hJ : ‖Jf W' c s g⁻¹‖ ≤ C₂ * q ^ (((n : ℝ) - m) * (1 / 2 - s.re))`. Establish `hb` using `(hC₂ x (unifUnit F ^ m) (unifUnit F ^ n) κ hκ).2`. Rewrite `hb` using `[hu, hu, ← Real.rpow_sub hq0, ← Real.rpow_mul hq0.le, show (-(m : ℝ) - -(n : ℝ)) = (n : ℝ) - m by ring]`. Use `le_trans (norm_integral_le_integral_norm _) (le_trans (le_of_eq ?_) hb)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use `integral_congr_ae (Eventually.of_forall fun a => ?_)` and prove the remaining obligations. Establish `hca : ‖((c a : ℂˣ) : ℂ)‖ = 1` using `hc.2 a`. Simplify using `only [norm_mul, inv_inv, hca, mul_one, GlobalTheory.CompanionTheory.RankinSelbergMellinContinuation.norm_mp]`. Use `congr 2`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hi : ‖inn ψ Φ g⁻¹ 1‖ * dk g⁻¹ ≤ C₁'` using `((hCR g⁻¹).1).trans (le_max_left _ _)`. Establish `hsplit : f g⁻¹ = (‖inn ψ Φ g⁻¹ 1‖ * dk g⁻¹) * dk g⁻¹ ^ (1 / 2 + r) * ‖Jf W' c s g⁻¹‖`. Simplify using `only [hf]`. Rewrite using `[show (3 / 2 + r : ℝ) = 1 + (1 / 2 + r) by ring, Real.rpow_add hdpos, Real.rpow_one]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsplit]`. Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul (mul_le_mul_of_nonneg_right hi (Real.rpow_nonneg hdpos.le _)) hJ (norm_nonneg _) ?_` and prove the remaining obligations. Conclude with `mul_nonneg hC₁0 (Real.rpow_nonneg hdpos.le _)`. Use `_ = A * q ^ ((r + s.re) * (m : ℝ)) * q ^ ((1 + r - s.re) * (n : ℝ)) := by`.
-
-Rewrite using `[hd, ← Real.rpow_mul hq0.le, hA]`. Establish `e : ((r + s.re) * (m : ℝ)) + ((1 + r - s.re) * (n : ℝ)) = ((m : ℝ) + n) * (1 / 2 + r) + ((n : ℝ) - m) * (1 / 2 - s.re)` using `by ring`. Rewrite using `[mul_assoc (C₁' * C₂), ← Real.rpow_add hq0, e, Real.rpow_add hq0]`. Expand and normalize the polynomial expressions, which then agree. Establish `hmain` using `shell_fin (hG ψ) q A (r + s.re) (1 + r - s.re) L Kμ S Ψ hq hA0 (by linarith) hKfin (fun m n => (GlobalTheory.CompanionTheory.IwasawaShell.shell_open_volume F (hG ψ) m n L).1.measurableSet) (fun m n hn => (GlobalTheory.CompanionTheory.IwasawaShell.shell_open_volume F (hG ψ) m n L) …`.
-
-Establish `hfm : Measurable f` using `hfc.measurable`. Establish `hinvl : ∫⁻ k, ENNReal.ofReal (f k) ∂hG ψ = ∫⁻ g, Ψ g ∂hG ψ` using `((Measure.measurePreserving_inv (hG ψ)).lintegral_comp hfm.ennreal_ofReal).symm`. Use `⟨hfc.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Rewrite using `[hasFiniteIntegral_iff_ofReal (Eventually.of_forall hf0), hinvl]`. Conclude with `hmain`.
+A detailed English derivation is pending.
 -/
 theorem integrable_major {ψ : AddChar F Circle} {ν : Fˣ →* ℂˣ} {W' : GL (Fin 2) F → ℂ}
     {Φ : Matrix (Fin 2) (Fin 3) F → ℂ} (hyp : Hyp ψ ν W' Φ) {c : Fˣ →* ℂˣ} (hc : IsUnit1 c) {s : ℂ}
@@ -549,27 +533,25 @@ theorem integrable_major {ψ : AddChar F Circle} {ν : Fˣ →* ℂˣ} {W' : GL 
   exact hmain
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ ψ ν W' Φ hyp c hc s hs`. Establish `hU : IsOpen {lam : ℂ | -(1 / 16) < lam.re}` using `isOpen_lt continuous_const Complex.continuous_re`. Establish `hV` using `hyp.2.2.1`. Take `⟨V', hV, hW'⟩` from `hV`. Establish `hci : Continuous fun k : GL (Fin 2) F => inn ψ Φ k 1` using `cont_inn ψ Φ hyp.2.2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcJ : Continuous (Jf W' c s)` using `continuous_Jf (hV.smooth W' hW') c s`. Establish `key` using `GroundTheory.Automorphic.PseudoEisenstein.differentiableOn_integral_of_bound (μ := hG ψ) (F := fun lam k => inn ψ Φ k 1 * mp (GeneralLinearGroup.det k) (3 / 2 + lam) * Jf W' c s k) hU ?_ ?_ ?_`. Conclude with `key`. Introduce `k lam _`. Use `DifferentiableAt.differentiableWithinAt ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hb : ((modulus ((GeneralLinearGroup.det k : Fˣ) : F) : ℝ) : ℂ) ≠ 0`. Use `dk_pos k` as an intermediate fact. Unfold `dk at this`. Conclude with `this.ne'` after adjusting the coercions. Establish `h1 : DifferentiableAt ℂ (fun lam : ℂ => mp (GeneralLinearGroup.det k) (3 / 2 + lam)) lam`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `mp`. Conclude with `((differentiableAt_const _).add differentiableAt_id).const_cpow (Or.inl hb)`. Conclude with `((differentiableAt_const _).mul h1).mul (differentiableAt_const _)`. Introduce `lam _`. Conclude with `((hci.mul (continuous_mp_det _)).mul hcJ).aestronglyMeasurable`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s₀ hs₀`. Establish `hs₀' : -(1 / 16) < s₀.re` using `hs₀`. Use `set ε : ℝ := (s₀.re + 1 / 16) / 2 with hε`. Establish `hε0 : 0 < ε` using `by rw [hε]; linarith`. Establish `hre : ∀ lam ∈ Metric.closedBall s₀ ε, s₀.re - ε ≤ lam.re ∧ lam.re ≤ s₀.re + ε`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Introduce `lam hl`. Establish `h1 : |(lam - s₀).re| ≤ ‖lam - s₀‖` using `Complex.abs_re_le_norm _`. Establish `h2 : ‖lam - s₀‖ ≤ ε` using `by simpa [dist_eq_norm] using hl`. Establish `h3` using `abs_le.1 (h1.trans h2)`. Simplify using `only [Complex.sub_re] at h3`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Apply the tactic sequence `constructor <;> linarith [h3.1, h3.2]`. Use `⟨ε, hε0, fun lam hl => ?_, ?_⟩` and prove the remaining obligations. Use `(hre lam hl).1 show -(1 / 16) < lam.re` as an intermediate fact. Rewrite `this` using `[hε]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `i1` using `integrable_major hyp hc hs (r := s₀.re - ε) (by rw [hε]; linarith)`. Establish `i2` using `integrable_major hyp hc hs (r := s₀.re + ε) (by rw [hε]; linarith)`. Use `⟨_, i1.add i2, fun lam hl k => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `hre lam hl`. Establish `hd` using `dk_pos k`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hle : dk k ^ (3 / 2 + lam.re) ≤ dk k ^ (3 / 2 + (s₀.re - ε)) + dk k ^ (3 / 2 + (s₀.re + ε))`. Break down `le_total 1 (dk k) with h | h` into its components or cases. Use `Real.rpow_le_rpow_of_exponent_le h (show 3 / 2 + lam.re ≤ 3 / 2 + (s₀.re + ε) by linarith)` as an intermediate fact. Combine the linear relations using `[Real.rpow_nonneg hd.le (3 / 2 + (s₀.re - ε))]`. Use `Real.rpow_le_rpow_of_exponent_ge hd h (show 3 / 2 + (s₀.re - ε) ≤ 3 / 2 + lam.re by linarith)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Combine the linear relations using `[Real.rpow_nonneg hd.le (3 / 2 + (s₀.re + ε))]`. Establish `hn : ‖mp (GeneralLinearGroup.det k) (3 / 2 + lam)‖ = dk k ^ (3 / 2 + lam.re)`. Rewrite using `[norm_mp_det]`. Use `congr 1`. Simplify using the standard rewrite rules.
-
-Simplify using `only [norm_mul, hn, Pi.add_apply]`. Establish `: ‖inn ψ Φ k 1‖ * dk k ^ (3 / 2 + lam.re) * ‖Jf W' c s k‖ ≤ ‖inn ψ Φ k 1‖ * (dk k ^ (3 / 2 + (s₀.re - ε)) + dk k ^ (3 / 2 + (s₀.re + ε))) * ‖Jf W' c s k‖` using `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hle (norm_nonneg _)) (norm_nonneg _)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem fHolP : Ad3.LFS.FHolP := by
   intro F _ _ _ _ _ _ ψ ν W' Φ hyp c hc s hs

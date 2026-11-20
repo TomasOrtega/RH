@@ -16,22 +16,20 @@ variable {p : ℕ} [Fact p.Prime] {D : GlobalTheory.UPel.HT.Datum p} {R : Type} 
   {N : ℕ} {k : Type} [Field k] {t : Sp k ⟶ Sp R}
 
 /- English proof (translation)
-Rewrite using `[← D.tr_eq, ← D.nm_eq]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem omega_quad (D : GlobalTheory.UPel.HT.Datum p) :
     D.ω * D.ω - (D.tr : 𝓞 D.F) * D.ω + (D.nm : 𝓞 D.F) = 0 := by
   rw [← D.tr_eq, ← D.nm_eq]; ring
 
 /- English proof (translation)
-Establish `hcop : (Int.natAbs (D.tr ^ 2 - 4 * D.nm)).Coprime p`. Use `Nat.Coprime.symm ((Nat.Prime.coprime_iff_not_dvd (Fact.out)).2 fun h => D.disc_p ?_)` and prove the remaining obligations. Conclude with `Int.natCast_dvd.2 h`. Establish `hu : IsUnit ((D.tr ^ 2 - 4 * D.nm : ℤ) : R)`. Use `b.unit _ hcop` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Int.natAbs_eq (D.tr ^ 2 - 4 * D.nm) with e | e` into its components or cases. Rewrite using `[e]`. Simplify using `using this`. Rewrite using `[e]`. Simplify using `using this.neg`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hk : ((D.tr ^ 2 - 4 * D.nm : ℤ) : k) ≠ 0`. Use `hu.map β` as an intermediate fact. Rewrite `this` using `[map_intCast]`. Conclude with `this.ne_zero`. Establish `hr` using `congrArg β b.ρ_root`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [map_add, map_sub, map_pow, map_mul, map_intCast, map_zero] at hr`. Introduce `h0`. Apply `hk` to reduce the goal to its premises. Establish `: (β b.ρ - ((D.tr : k) - β b.ρ)) ^ 2 = ((D.tr ^ 2 - 4 * D.nm : ℤ) : k)` using `by push_cast; linear_combination 4 * hr`. Rewrite using `[← this, h0]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem two_rho_sub_ne_zero (b : GlobalTheory.UPel.HT.Base D R) (β : R →+* k) :
     β b.ρ - ((D.tr : k) - β b.ρ) ≠ 0 := by
@@ -56,7 +54,7 @@ theorem two_rho_sub_ne_zero (b : GlobalTheory.UPel.HT.Base D R) (β : R →+* k)
   rw [← this, h0]; ring
 
 /- English proof (translation)
-Establish `hr` using `congrArg β b.ρ_root`. Simplify using `only [map_add, map_sub, map_pow, map_mul, map_intCast, map_zero] at hr`. Take the linear combination `hr`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem nm_eq_mul (b : GlobalTheory.UPel.HT.Base D R) (β : R →+* k) :
     (D.nm : k) = β b.ρ * ((D.tr : k) - β b.ρ) := by
@@ -65,9 +63,9 @@ theorem nm_eq_mul (b : GlobalTheory.UPel.HT.Base D R) (β : R →+* k) :
   linear_combination hr
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `hle : Ideal.span (Set.range fun x => b.t i x - b.t j x) ≤ RingHom.ker β`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨x, rfl⟩`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Simplify using `[RingHom.mem_ker, map_sub, h x]`. Rewrite `hle` using `[b.comax i j hij, top_le_iff]`. Establish `h1 : (1 : R) ∈ RingHom.ker β` using `by rw [hle]; trivial`. Rewrite `h1` using `[RingHom.mem_ker, map_one]`. Conclude with `one_ne_zero h1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sep (b : GlobalTheory.UPel.HT.Base D R) (β : R →+* k) {i j : Fin D.a} (hij : i ≠ j) :
     ∃ c : 𝓞 D.F, β (b.t i c) ≠ β (b.t j c) := by
@@ -95,13 +93,13 @@ def eigOm (o₀ : GlobalTheory.UPel.HT.Obj b N t) (l : k) : Submodule k (Lie (o�
     rw [smul_comm D.ω r v, hv, smul_comm r l v]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_eigOm (o₀ : GlobalTheory.UPel.HT.Obj b N t) (l : k) (v : Lie (o₀.act.toF D)) :
     v ∈ eigOm o₀ l ↔ D.ω • v = l • v := Iff.rfl
 
 /- English proof (translation)
-The claim follows from `HL.toLie_act _ c h`.
+A detailed English derivation is pending.
 -/
 theorem toLie_crys (o₀ : GlobalTheory.UPel.HT.Obj b N t) (HL : LieExact o₀.A) (c : 𝓞 D.F) (h : HdR o₀.A) :
     HL.toLie (o₀.act.toF D) (GlobalTheory.HTCount.crysAct o₀ (algebraMap (𝓞 D.F) D.O c) h) =
@@ -109,7 +107,7 @@ theorem toLie_crys (o₀ : GlobalTheory.UPel.HT.Obj b N t) (HL : LieExact o₀.A
   HL.toLie_act _ c h
 
 /- English proof (translation)
-The claim follows from `HL.toLie_act _ c h`.
+A detailed English derivation is pending.
 -/
 theorem toLie_crys' (o₀ : GlobalTheory.UPel.HT.Obj b N t) (HL : LieExact o₀.A) (c : 𝓞 D.F) (h : HdR o₀.A) :
     HL.toLie (o₀.act.toF D) (GlobalTheory.HTSummand.crysAct (dp0 k) (𝟙 _) o₀.act (algebraMap (𝓞 D.F) D.O c) h) =
@@ -117,7 +115,7 @@ theorem toLie_crys' (o₀ : GlobalTheory.UPel.HT.Obj b N t) (HL : LieExact o₀.
   HL.toLie_act _ c h
 
 /- English proof (translation)
-Use `congrArg (· • v) (omega_quad D)` as an intermediate fact. Simplify using `only [zero_smul, add_smul, sub_smul, mul_smul] at this`. Simplify using `only [Int.cast_smul_eq_zsmul] at this ⊢`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem quad_lie (o₀ : GlobalTheory.UPel.HT.Obj b N t) (v : Lie (o₀.act.toF D)) :
     D.ω • D.ω • v - (D.tr : k) • D.ω • v + (D.nm : k) • v = 0 := by
@@ -134,11 +132,11 @@ variable {p : ℕ} [Fact p.Prime] {D : GlobalTheory.UPel.HT.Datum p} {R : Type} 
   {N : ℕ} {k : Type} [Field k] {t : Sp k ⟶ Sp R}
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `HL.toLie_surjective (o₀.act.toF D) v`. Establish `hy : GlobalTheory.HTSummand.crysAct (dp0 k) (𝟙 _) o₀.act (algebraMap (𝓞 D.F) D.O D.ω) y - β b.ρ • y ∈ Fil o₀.A`. Rewrite using `[← HL.ker_toLie (o₀.act.toF D), LinearMap.mem_ker, map_sub, map_smul, toLie_crys', hv, sub_self]`. Take `⟨w, hw, hs⟩` from `GlobalTheory.HTSummand.lie_mod_fil p D R b N k β t ht o₀ y hy`. Use `⟨fun j => HL.toLie (o₀.act.toF D) (w j), fun j => ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Lie.mem_eig_iff]`. Introduce `c`. Use `hw j c` as an intermediate fact. Rewrite `this` using `[← HL.ker_toLie (o₀.act.toF D), LinearMap.mem_ker, map_sub, map_smul, toLie_crys', sub_eq_zero]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hs` using `[← HL.ker_toLie (o₀.act.toF D), LinearMap.mem_ker, map_sub, map_sum, sub_eq_zero]`. Conclude with `hs`.
+A detailed English derivation is pending.
 -/
 theorem lie_rho_decomp (o₀ : GlobalTheory.UPel.HT.Obj b N t) (β : R →+* k) (ht : t = spMap β) (HL : LieExact o₀.A)
     (v : Lie (o₀.act.toF D)) (hv : D.ω • v = β b.ρ • v) :
@@ -158,15 +156,13 @@ theorem lie_rho_decomp (o₀ : GlobalTheory.UPel.HT.Obj b N t) (β : R →+* k) 
     exact hs
 
 /- English proof (translation)
-Establish `hd` using `two_rho_sub_ne_zero (D := D) b β`. Use `set ρ := β b.ρ with hρ`. Use `set ρ' := (D.tr : k) - ρ with hρ'`. Use `set e := (ρ - ρ')⁻¹ with he'`. Establish `he : e * (ρ - ρ') = 1` using `inv_mul_cancel₀ hd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `q` using `quad_lie o₀ v`. Rewrite `q` using `[nm_eq_mul b β]`. Establish `hsplit : v = -(e • (D.ω • v - ρ • v)) + e • (D.ω • v - ρ' • v)`. Rewrite using `[← sub_eq_neg_add, ← smul_sub, sub_sub_sub_cancel_left, ← sub_smul, smul_smul, he, one_smul]`. Establish `hvr : D.ω • (e • (D.ω • v - ρ' • v)) = ρ • (e • (D.ω • v - ρ' • v))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Rewrite using `[smul_comm D.ω e, smul_sub, smul_comm D.ω ρ']`. Generalize the expression as in `D.ω • D.ω • v = Y at q ⊢`. Generalize the expression as in `D.ω • v = X at q ⊢`. Take the linear combination `(norm := module) e • q`. Take `⟨w, hw, hs⟩` from `lie_rho_decomp o₀ β ht HL _ hvr`.
+Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Use `⟨-(e • (D.ω • v - ρ • v)), ?_, w, hw, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_neg, smul_comm D.ω e, smul_sub, smul_comm D.ω ρ]`. Generalize the expression as in `D.ω • D.ω • v = Y at q ⊢`. Generalize the expression as in `D.ω • v = X at q ⊢`. Take the linear combination `(norm := module) (-e) • q`.
-
-Rewrite using `[← hs]`. Conclude with `hsplit`.
+Replace the chosen expression with an arbitrary variable. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lie_decomp (o₀ : GlobalTheory.UPel.HT.Obj b N t) (β : R →+* k) (ht : t = spMap β) (HL : LieExact o₀.A)
     (v : Lie (o₀.act.toF D)) :
@@ -195,9 +191,9 @@ theorem lie_decomp (o₀ : GlobalTheory.UPel.HT.Obj b N t) (β : R →+* k) (ht 
   · rw [← hs]; exact hsplit
 
 /- English proof (translation)
-Establish `hd` using `two_rho_sub_ne_zero (D := D) b β`. Establish `hne : (D.tr : k) - β b.ρ - β b.ρ ≠ 0` using `fun h => hd (by linear_combination -h)`. Take `⟨h, hh⟩` from `HL.toLie_surjective (o₀.act.toF D) (((D.tr : k) - β b.ρ - β b.ρ)⁻¹ • u)`. Use `⟨h, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, map_sub, map_smul, toLie_crys, hh, smul_comm D.ω, hu, smul_smul, smul_smul, ← sub_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show ((D.tr : k) - β b.ρ - β b.ρ)⁻¹ * ((D.tr : k) - β b.ρ) - β b.ρ * ((D.tr : k) - β b.ρ - β b.ρ)⁻¹ = 1 by`. Rewrite using `[mul_comm (β b.ρ), ← mul_sub, inv_mul_cancel₀ hne], one_smul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem lift_rhobar (o₀ : GlobalTheory.UPel.HT.Obj b N t) (β : R →+* k) (HL : LieExact o₀.A)
     (u : Lie (o₀.act.toF D)) (hu : D.ω • u = ((D.tr : k) - β b.ρ) • u) :
@@ -212,7 +208,7 @@ theorem lift_rhobar (o₀ : GlobalTheory.UPel.HT.Obj b N t) (β : R →+* k) (HL
     rw [mul_comm (β b.ρ), ← mul_sub, inv_mul_cancel₀ hne], one_smul]
 
 /- English proof (translation)
-Establish `h1 : z - (GlobalTheory.HTCount.crysAct o₀ (algebraMap (𝓞 D.F) D.O D.ω) - β b.ρ • 1) h ∈ Fil o₀.A`. Rewrite using `[← HL.ker_toLie (o₀.act.toF D), LinearMap.mem_ker, map_sub, e, sub_self]`. Use `Submodule.add_mem_sup h1 (LinearMap.mem_range_self (GlobalTheory.HTCount.crysAct o₀ (algebraMap (𝓞 D.F) D.O D.ω) - β b.ρ • 1) h)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mem_G_of (o₀ : GlobalTheory.UPel.HT.Obj b N t) (β : R →+* k) (HL : LieExact o₀.A) {z h : HdR o₀.A}
     (e : HL.toLie (o₀.act.toF D) z =
@@ -231,7 +227,7 @@ variable {p : ℕ} [Fact p.Prime] {D : GlobalTheory.UPel.HT.Datum p} {R : Type} 
   {N : ℕ} {k : Type} [Field k] {t : Sp k ⟶ Sp R}
 
 /- English proof (translation)
-Take `⟨h, hh⟩` from `lift_rhobar o₀ β HL _ hz`. Conclude with `mem_G_of o₀ β HL hh.symm`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_G_of_rhobar (o₀ : GlobalTheory.UPel.HT.Obj b N t) (β : R →+* k) (HL : LieExact o₀.A) {z : HdR o₀.A}
     (hz : D.ω • HL.toLie (o₀.act.toF D) z = ((D.tr : k) - β b.ρ) • HL.toLie (o₀.act.toF D) z) :
@@ -240,15 +236,15 @@ theorem mem_G_of_rhobar (o₀ : GlobalTheory.UPel.HT.Obj b N t) (β : R →+* k)
   exact mem_G_of o₀ β HL hh.symm
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.HTRho.jSub, Submodule.span_le]`. Introduce and unpack `_ ⟨r, lam, c, x, -, hc, rfl⟩`. Establish `hc' : ∀ j, ∑ l, lam l * β (b.t j (c l)) = 0` using `fun j => by simpa using hc j`. Take `⟨u, hu, w, hw, hs⟩` from `lie_decomp o₀ β ht HL (HL.toLie (o₀.act.toF D) x)`. Establish `hT : HL.toLie (o₀.act.toF D) (∑ l, lam l • GlobalTheory.HTCount.crysAct o₀ (algebraMap (𝓞 D.F) D.O (c l)) x) = ∑ l, lam l • c l • u`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2 : ∑ l, lam l • ∑ j, β (b.t j (c l)) • w j = 0`. Repeatedly rewrite using `[Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[← Finset.sum_smul, hc', zero_smul, Finset.sum_const_zero]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [map_sum, map_smul, toLie_crys]`. Use `_ = ∑ l, lam l • c l • u + ∑ l, lam l • ∑ j, β (b.t j (c l)) • w j := by`. Rewrite using `[hs, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[smul_add, smul_add, Finset.smul_sum]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Conclude with `Lie.mem_eig_iff.1 (hw j) (c l)`. Use `_ = ∑ l, lam l • c l • u := by rw [h2, add_zero]`. Use `mem_G_of_rhobar o₀ β HL ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hT, Finset.smul_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[smul_comm D.ω (lam l), smul_comm D.ω (c l), hu, smul_comm (c l) ((D.tr : k) - β b.ρ), smul_comm (lam l) ((D.tr : k) - β b.ρ)]`.
+A detailed English derivation is pending.
 -/
 theorem jSub_le (o₀ : GlobalTheory.UPel.HT.Obj b N t) (β : R →+* k) (ht : t = spMap β) (HL : LieExact o₀.A) :
     GlobalTheory.HTRho.jSub (GlobalTheory.HTCount.crysAct o₀) (fun i => β.comp (b.t i)) ⊤ ≤
@@ -288,41 +284,35 @@ variable {p : ℕ} [Fact p.Prime] {D : GlobalTheory.UPel.HT.Datum p} {R : Type} 
   {N : ℕ} {k : Type} [Field k] {t : Sp k ⟶ Sp R}
 
 /- English proof (translation)
-Use `set X := (Fil o₀.A ⊔ LinearMap.range (GlobalTheory.HTCount.crysAct o₀ (algebraMap (𝓞 D.F) D.O D.ω) - β b.ρ • 1)) ⊔ GlobalTheory.HTRho.mSub (GlobalTheory.HTCount.crysAct o₀) (β.comp (b.t i)) ⊤ with hXdef`. Use `set T := HL.toLie (o₀.act.toF D) with hTdef`. Use `set K := X.map T with hKdef`. Use `set E := Lie.eig (o₀.act.toF D) (β.comp (b.t i)) with hEdef`. Establish `hd` using `two_rho_sub_ne_zero (D := D) b β`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hX : X = K.comap T`. Rewrite using `[hKdef, Submodule.comap_map_eq, hTdef, HL.ker_toLie]`. Conclude with `(sup_eq_left.2 (le_sup_left.trans le_sup_left)).symm`. Establish `hmE : Module.finrank k E = D.m`. Establish `h` using `o₀.lieRank k (𝟙 _) β (by rw [Category.id_comp, ht]) i`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨B⟩` from `(Lie.lieMult_id_iff _ _ _).1 h`. Rewrite using `[Module.finrank_eq_card_basis B, Fintype.card_fin]`. Establish `hχ : Function.Injective (fun j : Fin D.a => β.comp (b.t j))`. Introduce `j j' h`. Assume the negation of the conclusion as `hne`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, hc⟩` from `exists_sep b β hne`. Conclude with `hc (RingHom.congr_fun h c)`. Establish `hEρ : ∀ j, Lie.eig (o₀.act.toF D) (β.comp (b.t j)) ≤ eigOm o₀ (β b.ρ)` using `fun j v hv => by`. Rewrite using `[mem_eigOm, Lie.mem_eig_iff.1 hv D.ω, RingHom.comp_apply, b.t_ω]`. Establish `hK : K ≤ eigOm o₀ ((D.tr : k) - β b.ρ) ⊔ ⨆ j, ⨆ (_ : j ≠ i), Lie.eig (o₀.act.toF D) (β.comp (b.t j))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hKdef, Submodule.map_le_iff_le_comap]`. Use `sup_le (sup_le ?_ ?_) ?_` and prove the remaining obligations. Rewrite using `[← HL.ker_toLie (o₀.act.toF D)]`. Conclude with `LinearMap.ker_le_comap _`. Introduce and unpack `_ ⟨h, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.mem_comap]`. Apply `Submodule.mem_sup_left` to reduce the goal to its premises. Rewrite using `[mem_eigOm]`. Simplify using `only [hTdef, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, map_sub, map_smul, toLie_crys]`. Establish `q` using `quad_lie o₀ (HL.toLie (o₀.act.toF D) h)`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite `q` using `[nm_eq_mul b β]`. Rewrite using `[smul_sub, smul_comm D.ω (β b.ρ)]`. Generalize the expression as in `D.ω • D.ω • HL.toLie (o₀.act.toF D) h = Y at q ⊢`. Generalize the expression as in `D.ω • HL.toLie (o₀.act.toF D) h = Z at q ⊢`. Take the linear combination `(norm := module) q`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[GlobalTheory.HTRho.mSub, Submodule.span_le]`. Introduce and unpack `_ ⟨c, x, -, rfl⟩`. Rewrite using `[SetLike.mem_coe, Submodule.mem_comap]`. Simplify using `only [hTdef, map_sub, map_smul, toLie_crys]`. Take `⟨u, hu, w, hw, hs⟩` from `lie_decomp o₀ β ht HL (HL.toLie (o₀.act.toF D) x)`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hs, smul_add, smul_add, Finset.smul_sum, Finset.smul_sum, add_sub_add_comm, ← Finset.sum_sub_distrib]`. Use `add_mem (Submodule.mem_sup_left ?_) (Submodule.mem_sup_right (Submodule.sum_mem _ fun j _ => ?_))` and prove the remaining obligations. Rewrite using `[mem_eigOm, smul_sub, smul_sub, smul_comm D.ω ((β.comp (b.t i)) c), show D.ω • c • u = c • D.ω • u by rw [smul_smul, mul_comm, ← smul_smul], hu, smul_comm c ((D.tr : k) - β b.ρ), smul_comm ((β.comp (b.t i)) c) ((D.tr : k) - β b.ρ)]`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Lie.mem_eig_iff.1 (hw j) c, sub_self]`. Conclude with `zero_mem _`. Use `Submodule.mem_iSup_of_mem j (Submodule.mem_iSup_of_mem hj (sub_mem ?_ (Submodule.smul_mem _ _ (hw j))))` and prove the remaining obligations. Rewrite using `[Lie.mem_eig_iff.1 (hw j) c]`. Conclude with `Submodule.smul_mem _ _ (hw j)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hcompl : IsCompl K E`. Prove the components needed by the constructor for the conclusion. Rewrite using `[Submodule.disjoint_def]`. Introduce `v hvK hvE`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 (hK hvK)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hzρ : z ∈ eigOm o₀ (β b.ρ)` using `(iSup_le fun j => iSup_le fun _ => hEρ j) hz`. Establish `hvρ` using `hEρ i hvE`. Rewrite `hzρ`, `hvρ`, `hy` using `[mem_eigOm]`. Establish `hyρ : D.ω • y = β b.ρ • y`. Rewrite `hvρ` using `[smul_add, smul_add, hzρ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `add_right_cancel hvρ`. Establish `h0 : (β b.ρ - ((D.tr : k) - β b.ρ)) • y = 0`. Rewrite using `[sub_smul, ← hyρ, hy, sub_self]`. Take `rfl` from `(smul_eq_zero.1 h0).resolve_left hd`. Rewrite `hvE`, the goal using `[zero_add]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hind` using `(Lie.iSupIndep_eig (o₀.act.toF D)).comp hχ`. Conclude with `Submodule.disjoint_def.1 (hind i) z hvE hz`. Rewrite using `[codisjoint_iff_le_sup]`. Introduce `v _`. Take `⟨u, hu, w, hw, rfl⟩` from `lie_decomp o₀ β ht HL v`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `add_mem (Submodule.mem_sup_left ?_) (Submodule.sum_mem _ fun j _ => ?_)` and prove the remaining obligations. Take `⟨h, hh⟩` from `lift_rhobar o₀ β HL u hu`. Rewrite using `[← hh]`. Conclude with `Submodule.mem_map_of_mem (Submodule.mem_sup_left (Submodule.mem_sup_right (LinearMap.mem_range_self (GlobalTheory.HTCount.crysAct o₀ (algebraMap (𝓞 D.F) D.O D.ω) - β b.ρ • 1) h)))`. Distinguish the cases in `hj : j = i`.
-
-Substitute `hj` using the available equality. Conclude with `Submodule.mem_sup_right (hw j)`. Apply `Submodule.mem_sup_left` to reduce the goal to its premises. Take `⟨c, hc⟩` from `exists_sep b β hj`. Take `⟨h, hh⟩` from `HL.toLie_surjective (o₀.act.toF D) ((β (b.t j c) - β (b.t i c))⁻¹ • w j)`.
-
-Establish `key : T (GlobalTheory.HTCount.crysAct o₀ (algebraMap (𝓞 D.F) D.O c) h - (β.comp (b.t i)) c • h) = w j`. Rewrite using `[hTdef, map_sub, map_smul, toLie_crys, hh, smul_comm c, Lie.mem_eig_iff.1 (hw j) c, RingHom.comp_apply, RingHom.comp_apply, smul_smul, smul_smul, ← sub_smul, mul_comm (β (b.t i c)), ← mul_sub, inv_mul_cancel₀ (sub_ne_zero.2 hc), one_smul]`. Rewrite using `[← key]`. Conclude with `Submodule.mem_map_of_mem (Submodule.mem_sup_right (Submodule.subset_span ⟨c, h, trivial, rfl⟩))`. Establish `e1 : (HdR o₀.A ⧸ X) ≃ₗ[k] (Lie (o₀.act.toF D) ⧸ K)` using `(Submodule.quotEquivOfEq _ _ (by rw [LinearMap.ker_comp, Submodule.ker_mkQ]; exact hX)).trans ((K.mkQ ∘ₗ T).quotKerEquivOfSurjective (K.mkQ_surjective.comp (HL.toLie_surjective _)))`.
-
-Rewrite using `[e1.finrank_eq, (Submodule.quotientEquivOfIsCompl K E hcompl).finrank_eq, hmE]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_quot [IsAlgClosed k] (o₀ : GlobalTheory.UPel.HT.Obj b N t) (β : R →+* k) (ht : t = spMap β)
     (HL : LieExact o₀.A) (i : Fin D.a) :
@@ -431,7 +421,7 @@ end GlobalTheory.HTLieRho
 namespace GlobalTheory.HTLieRho
 
 /- English proof (translation)
-Introduce `p _ D R _ b N _ _ k _ _ t o₀ β ht`. Take `⟨g, hg⟩` from `GlobalTheory.AbelianDim.exists_relDim k o₀.A o₀.ab`. Establish `HL : LieExact o₀.A` using `(GlobalTheory.abelianDeRham.2.1 k o₀.A g o₀.ab hg).1`. Conclude with `⟨jSub_le o₀ β ht HL, fun i => finrank_quot o₀ β ht HL i⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem lie_rho_quot : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (R : Type) [CommRing R] (b : GlobalTheory.UPel.HT.Base D R) (N : ℕ), 3 ≤ N → N.Coprime p → ∀ (k : Type) [Field k] [IsAlgClosed k] (t : Sp k ⟶ Sp R) (o₀ : GlobalTheory.UPel.HT.Obj b N t) (β : R →+* k), t = spMap β → GlobalTheory.HTRho.jSub (GlobalTheory.HTCount.crysAct o₀) (fun i => β.comp (b.t i)) ⊤ ≤ (Fil o₀.A ⊔ LinearMap.range (GlobalTheory.HTCount.crysAct o₀ (algebraMap (𝓞 D.F) D.O D.ω) - β b.ρ • 1)) ∧ ∀ i, Module.finrank k (HdR o₀.A ⧸ ((Fil o₀.A ⊔ LinearMap.range (GlobalTheory.HTCount.crysAct o₀ (algebraMap (𝓞 D.F) D.O D.ω) - β b.ρ • 1)) ⊔ GlobalTheory.HTRho.mSub (GlobalTheory.HTCount.crysAct o₀) (β.comp (b.t i)) ⊤)) = D.m := by
   intro p _ D R _ b N _ _ k _ _ t o₀ β ht

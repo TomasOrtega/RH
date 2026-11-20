@@ -23,7 +23,7 @@ theorem cFin_tmul (a : Af D.host.F) (e : D.host.E) :
     cFin D (a ⊗ₜ e) = a ⊗ₜ IsCMField.complexConj D.host.E e := rfl
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rw [RingHom.map_zero, RingHom.map_zero, RingHom.map_zero]`. Consider the case `add x y hx hy => rw [RingHom.map_add, RingHom.map_add, RingHom.map_add, RingHom.map_add, hx, hy]`. Consider the case `tmul a e => rfl`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem finPart_cA (z : AE D) : finPart D (cA D z) = cFin D (finPart D z) := by
   induction z using TensorProduct.induction_on with
@@ -32,9 +32,9 @@ theorem finPart_cA (z : AE D) : finPart D (cA D z) = cFin D (finPart D z) := by
   | tmul a e => rfl
 
 /- English proof (translation)
-Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨a, ha, x, rfl⟩` from `hw`. Conclude with `AddSubgroup.subset_closure ⟨a, ha, H.bar x, by rw [cFin_tmul, H.bar_eq]⟩`. Consider the case `zero => rw [RingHom.map_zero]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [RingHom.map_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [RingHom.map_neg]`. Conclude with `neg_mem hx`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem cFin_mem_intAE (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) {z : Af D.host.F ⊗[D.host.F] D.host.E}
     (hz : z ∈ intAE D) : cFin D z ∈ intAE D := by
@@ -47,11 +47,11 @@ theorem cFin_mem_intAE (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.
   | neg x _ hx => rw [RingHom.map_neg]; exact neg_mem hx
 
 /- English proof (translation)
-Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨a, ha, x, rfl⟩` from `hw`. Establish `h1 : (1 : D.host.E) ⊗ₜ[D.host.F] a ∈ LatticeBasisLifts.OAf D` using `Subring.subset_closure (Or.inr ⟨⟨a, ha⟩, rfl⟩)`. Establish `h2 : (x : D.host.E) ⊗ₜ[D.host.F] (1 : Af D.host.F) ∈ LatticeBasisLifts.OAf D` using `Subring.subset_closure (Or.inl ⟨⟨x, x, rfl⟩, rfl⟩)`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `mul_mem h2 h1` as an intermediate fact. Rewrite `this` using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Conclude with `this`. Consider the case `zero => rw [RingHom.map_zero]`. Conclude with `zero_mem _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [RingHom.map_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [RingHom.map_neg]`. Conclude with `neg_mem hx`.
+A detailed English derivation is pending.
 -/
 theorem swapAE_mem {z : Af D.host.F ⊗[D.host.F] D.host.E} (hz : z ∈ intAE D) : swapAE D z ∈ LatticeBasisLifts.OAf D := by
   induction hz using AddSubgroup.closure_induction with
@@ -69,11 +69,11 @@ theorem swapAE_mem {z : Af D.host.F ⊗[D.host.F] D.host.E} (hz : z ∈ intAE D)
   | neg x _ hx => rw [RingHom.map_neg]; exact neg_mem hx
 
 /- English proof (translation)
-Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨b, hb, y, hy, rfl⟩` from `hw`. Use `⟨Formalism.L2.DIV.oToS D.host.F D.host.E b * ⟨_, swapAE_mem hy⟩, Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ hb), ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.map_mul]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Consider the case `zero => exact ⟨0, zero_mem _, by rw [RingHom.map_zero]; rfl⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨s, hs, e⟩` from `hx`. Take `⟨t, ht, e'⟩` from `hy`.
+Both sides reduce to the same expression. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨s + t, add_mem hs ht, by rw [RingHom.map_add, ← e, ← e']; rfl⟩`. Consider the case `neg x _ hx`. Take `⟨s, hs, e⟩` from `hx`. Conclude with `⟨-s, neg_mem hs, by rw [RingHom.map_neg, ← e]; rfl⟩`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem swapAE_idealHat {I : Ideal (𝓞 D.host.E)} {z : Af D.host.F ⊗[D.host.F] D.host.E}
     (hz : z ∈ LevelLiftConditions.idealHat D I) :
@@ -95,7 +95,7 @@ theorem swapAE_idealHat {I : Ideal (𝓞 D.host.E)} {z : Af D.host.F ⊗[D.host.
     exact ⟨-s, neg_mem hs, by rw [RingHom.map_neg, ← e]; rfl⟩
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (by have h := H.bar_eq (H.bar a) rw [H.bar_eq a, IsCMField.complexConj_apply_apply] at h exact h)`.
+A detailed English derivation is pending.
 -/
 theorem bar_bar (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (a : 𝓞 D.host.E) : H.bar (H.bar a) = a :=
   Subtype.ext (by
@@ -104,11 +104,9 @@ theorem bar_bar (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E)
     exact h)
 
 /- English proof (translation)
-Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨b, hb, y, hy, rfl⟩` from `hw`. Take `⟨c, hc, rfl⟩` from `(Ideal.mem_map_iff_of_surjective (H.bar : 𝓞 D.host.E →+* 𝓞 D.host.E) H.bar.surjective).1 hb`. Use `AddSubgroup.subset_closure ⟨c, hc, _, cFin_mem_intAE H hy, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[RingHom.map_mul, cFin_tmul, ← H.bar_eq]`. Conclude with `congrArg (fun t : 𝓞 D.host.E => ((1 : Af D.host.F) ⊗ₜ[D.host.F] (t : D.host.E)) * cFin D y) (bar_bar H c)`. Consider the case `zero => rw [RingHom.map_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [RingHom.map_add]`.
-
-Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [RingHom.map_neg]`. Conclude with `neg_mem hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem cFin_idealHat (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) {I : Ideal (𝓞 D.host.E)}
     {z : Af D.host.F ⊗[D.host.F] D.host.E}
@@ -127,16 +125,16 @@ theorem cFin_idealHat (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.h
   | neg x _ hx => rw [RingHom.map_neg]; exact neg_mem hx
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨⟨_, h⟩, ⟨_, h'⟩, Subtype.ext (by simp [← map_mul]), Subtype.ext (by simp [← map_mul])⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_unit_subring {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (S : Subring B) (x : Aˣ)
     (h : f (x : A) ∈ S) (h' : f ((x⁻¹ : Aˣ) : A) ∈ S) : ∃ u : Sˣ, ((u : S) : B) = f (x : A) :=
   ⟨⟨⟨_, h⟩, ⟨_, h'⟩, Subtype.ext (by simp [← map_mul]), Subtype.ext (by simp [← map_mul])⟩, rfl⟩
 
 /- English proof (translation)
-Take `⟨t, ht, e⟩` from `swapAE_idealHat hz`. Rewrite using `[resS_eq_resI, resI_eq_mk_iff]`. Establish `: s - Formalism.L2.DIV.oToS D.host.F D.host.E a = t`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[e, RingHom.map_sub, ← hs]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `Ideal.map_mono hw ht`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resS_eq_of_cong {I : Ideal (𝓞 D.host.E)} (w : Formalism.L2.DIV.Pl D.host.E) (hw : I ≤ w.asIdeal)
     (s : LatticeBasisLifts.OAf D) (z : Af D.host.F ⊗[D.host.F] D.host.E) (hs : (s : EAf D) = swapAE D z) (a : 𝓞 D.host.E)
@@ -152,13 +150,13 @@ theorem resS_eq_of_cong {I : Ideal (𝓞 D.host.E)} (w : Formalism.L2.DIV.Pl D.h
   exact Ideal.map_mono hw ht
 
 /- English proof (translation)
-Introduce `D H l Pg hle K _ σ μ χ h x hx u ub hub h1 h2`. Take `⟨hinf, hi, hi'⟩` from `hx`. Take `⟨U, hU⟩` from `exists_unit_subring ((swapAE D).comp (finPart D)) (LatticeBasisLifts.OAf D) x (swapAE_mem hi) (swapAE_mem hi')`. Take `⟨Ub, hUb⟩` from `exists_unit_subring ((swapAE D).comp ((cFin D).comp (finPart D))) (LatticeBasisLifts.OAf D) x (swapAE_mem (cFin_mem_intAE H hi)) (swapAE_mem (cFin_mem_intAE H hi'))`. Establish `key` using `h x U Ub hinf hU (by rw [finPart_cA]; exact hUb)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e1 : ∀ w : ↥Pg, Units.map (Formalism.L2.DIV.resS D.host.F w.1).toMonoidHom U = Units.map (Ideal.Quotient.factor (hle w)).toMonoidHom ub` using `fun w => Units.ext (by`. Use `resS_eq_of_cong w.1 (hle w) U _ hU u h1` as an intermediate fact. Use `this.trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = Ideal.Quotient.factor (hle w) (ub : 𝓞 D.host.E ⧸ l.Mb)`. Rewrite using `[hub]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `rfl)`. Establish `e2 : ∀ w : ↥Pg, Units.map (Formalism.L2.DIV.resS D.host.F w.1).toMonoidHom Ub = 1` using `fun w => Units.ext (by`. Establish `h3` using `cFin_idealHat H h2`. Rewrite `h3` using `[RingHom.map_sub, cFin_tmul, ← H.bar_eq, map_one]`. Conclude with `resS_eq_of_cong w.1 (hle w) Ub _ hUb 1 h3)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[key, chiProd_apply, Units.coe_prod, map_prod, ← Finset.prod_mul_distrib]`. Use `Finset.prod_eq_one fun w _ => ?_` and prove the remaining obligations. Rewrite using `[e1, e2, map_one, Units.val_one, map_one, mul_one]`. Conclude with `mul_inv_cancel₀ ((map_ne_zero σ).2 (Units.ne_zero _))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isInvTame_chiProd : ∀ (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (l : Level H) (Pg : Finset (Formalism.L2.DIV.Pl D.host.E)) (hle : ∀ w : ↥Pg, l.Mb ≤ w.1.asIdeal) (K : Type) [Field K] (σ : K →+* ℂ) (μ : (AE D)ˣ →* Circle) (χ : ∀ w : ↥Pg, (Formalism.L2.DIV.kP w.1)ˣ →* Kˣ), LatticeBasisLifts.IsInvTame σ Pg μ χ → LevelLiftConditions.IsInvTame σ l.Mb (l.Mb.map (H.bar : 𝓞 D.host.E →+* 𝓞 D.host.E)) μ (chiProd hle χ) := by
   intro D H l Pg hle K _ σ μ χ h x hx u ub hub h1 h2

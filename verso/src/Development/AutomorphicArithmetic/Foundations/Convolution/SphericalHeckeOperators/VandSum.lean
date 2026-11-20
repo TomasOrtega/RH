@@ -3,23 +3,23 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.SphericalHeckeO
 open MeasureTheory GroundTheory.Automorphic GroundTheory.Automorphic.Spherical GroundTheory.Automorphic.GLnLocal GroundTheory.Automorphic.Iwasawa UpperTheory.ConvolutionTheory.H
 
 /- English proof (translation)
-Apply the tactic sequence `rw [monomialChar_apply, Finset.prod_eq_single i] <;> simp +contextual [Pi.single_apply]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem vs_single {n : ℕ} (i : Fin n) (w : Fin n → ℂˣ) : monomialChar (Pi.single i 1 : Fin n → ℤ) w = w i := by
   rw [monomialChar_apply, Finset.prod_eq_single i] <;> simp +contextual [Pi.single_apply]
 
 /- English proof (translation)
-Introduce `n z σ τ`. Establish `hL : ∀ (s : Finset (Fin n × Fin n)) (f : Fin n × Fin n → Fin n) (w : Fin n → ℂˣ), monomialChar (∑ p ∈ s, (Pi.single (f p) 1 : Fin n → ℤ)) w = ∏ p ∈ s, (w (f p) : ℂ)`. Introduce `s f w`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [monomialChar_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.prod_insert ha, monomialChar_add, ih, vs_single]`. Establish `h1 : ∑ S ∈ (pairs n).powerset, sgS S * (monomialChar (eL S) (z ∘ σ) * monomialChar (eR S) (z ∘ τ)) = ∏ p ∈ pairs n, ((z (σ p.1) : ℂ) - z (τ p.2))`. Simplify using `only [sub_eq_add_neg]`. Rewrite using `[Finset.prod_add]`. Use `Finset.sum_congr rfl fun S _ => ?_` and prove the remaining obligations.
+Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[eL, eR, hL S Prod.fst, hL _ Prod.snd, sgS, Finset.prod_neg]`. Simplify using `only [Function.comp]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1]`. Use `split_ifs with h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Substitute `h` using the available equality. Rewrite using `[dPol, map_prod]`. Use `Finset.prod_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[map_sub, one_smul, evalAt_single, evalAt_single, vs_single, vs_single]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Apply `h` to reduce the goal to its premises. Establish `hge : ∀ j, j ≤ (σ⁻¹ * τ) j` using `fun j => by`. Assume the negation of the conclusion as `hlt`. Use `hne (Finset.prod_eq_zero (i := ((σ⁻¹ * τ) j, j)) (by simpa [pairs] using hlt) ?_)` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hs : ∑ j : Fin n, (j : ℕ) = ∑ j : Fin n, (((σ⁻¹ * τ) j : Fin n) : ℕ)` using `(Equiv.sum_comp (σ⁻¹ * τ) fun j : Fin n => (j : ℕ)).symm`. Establish `he` using `(Finset.sum_eq_sum_iff_of_le (s := Finset.univ) fun (j : Fin n) _ => Fin.le_def.1 (hge j)).1 hs`. Establish `: σ⁻¹ * τ = 1` using `Equiv.ext fun j => (Fin.ext (he j (Finset.mem_univ _))).symm`. Conclude with `inv_mul_eq_one.1 this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.H.vandSum :
     ∀ (n : ℕ) (z : Fin n → ℂˣ) (σ τ : Equiv.Perm (Fin n)),

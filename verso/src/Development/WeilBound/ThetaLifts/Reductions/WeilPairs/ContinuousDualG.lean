@@ -17,9 +17,9 @@ variable {R E : Type} [CommRing R] [CommRing E] [Algebra R E] (c : E →ₐ[R] E
 variable {α β : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β]
 
 /- English proof (translation)
-Unfold `GlobalTheory.WeilM.symp GlobalTheory.WeilM.hTens`. Use `congr 1`. Simplify using `only [Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Establish `h1 : ξ * J i k = ξ' * J' i k` using `congrFun (congrFun h i) k`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take the linear combination `(x i j * K j l * c (y k l)) * h1`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem symp_congr {ξ ξ' : E} {J J' : Matrix α α E} (h : ξ • J = ξ' • J') (K : Matrix β β E) (x y : Matrix α β E) :
     GlobalTheory.WeilM.symp c ξ J K x y = GlobalTheory.WeilM.symp c ξ' J' K x y := by
@@ -32,11 +32,9 @@ theorem symp_congr {ξ ξ' : E} {J J' : Matrix α α E} (h : ξ • J = ξ' • 
   linear_combination (x i j * K j l * c (y k l)) * h1
 
 /- English proof (translation)
-Introduce `g hg`. Establish `hg' : (g : Matrix α α E)ᵀ * J' * (g : Matrix α α E).map c = J'` using `hg`. Use `show (g : Matrix α α E)ᵀ * J * (g : Matrix α α E).map c = J`. Break down `isEmpty_or_nonempty α with hα | hα` into its components or cases. Conclude with `Subsingleton.elim _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : IsUnit ξ`. Establish `h1` using `congrArg Matrix.det h`. Rewrite `h1` using `[Matrix.det_smul, Matrix.det_smul]`. Establish `h2 : IsUnit (ξ ^ Fintype.card α * J.det)` using `h1 ▸ (hξ.pow _).mul hJ`. Conclude with `(isUnit_pow_iff Fintype.card_ne_zero).1 (isUnit_of_mul_isUnit_left h2)`.
-
-Use `hu.smul_left_cancel.1 ?_` and prove the remaining obligations. Rewrite using `[← Matrix.smul_mul, ← Matrix.mul_smul, h, Matrix.mul_smul, Matrix.smul_mul, hg']`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ug_le {ξ ξ' : E} {J J' : Matrix α α E} (h : ξ • J = ξ' • J') (hξ : IsUnit ξ') (hJ : IsUnit J'.det) :
     GlobalTheory.WeilM.UG c J' ≤ GlobalTheory.WeilM.UG c J := by
@@ -54,7 +52,7 @@ theorem ug_le {ξ ξ' : E} {J J' : Matrix α α E} (h : ξ • J = ξ' • J') (
   rw [← Matrix.smul_mul, ← Matrix.mul_smul, h, Matrix.mul_smul, Matrix.smul_mul, hg']
 
 /- English proof (translation)
-Establish `h1 : u = GlobalTheory.DualSwap.invT b.1` using `Units.ext h`. Rewrite using `[h1, GlobalTheory.DualSwap.invT_invT]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem invT_of_inv {H : Subgroup (GL α E)} (u : GL α E) (b : H) (h : u.1 = (b⁻¹).1.1ᵀ) :
     (GlobalTheory.DualSwap.invT u).1 = b.1.1 := by
@@ -62,7 +60,7 @@ theorem invT_of_inv {H : Subgroup (GL α E)} (u : GL α E) (b : H) (h : u.1 = (b
   rw [h1, GlobalTheory.DualSwap.invT_invT]
 
 /- English proof (translation)
-Establish `h1 : u = a.1` using `Units.ext h`. Rewrite using `[h1]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem invT_incl {H K : Subgroup (GL α E)} (hle : H ≤ K) (u : GL α E) (a : H) (h : u.1 = a.1.1) :
     (GlobalTheory.DualSwap.invT u).1 = ((Subgroup.inclusion hle a)⁻¹).1.1ᵀ := by
@@ -102,9 +100,9 @@ theorem castD_transD_rho {ξ ξ' : E} {J J' : Matrix α α E} (h : ξ • J = ξ
 
 omit [Invertible (2 : R)] in
 /- English proof (translation)
-Unfold `GlobalTheory.WeilM.symp GlobalTheory.WeilM.hTens`. Use `congr 1`. Simplify using `only [Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Establish `h1 : ξ * J j l = ξ' * J' j l` using `congrFun (congrFun h j) l`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take the linear combination `(x i j * K i k * c (y k l)) * h1`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem symp_congr₂ {ξ ξ' : E} {J J' : Matrix β β E} (h : ξ • J = ξ' • J') (K : Matrix α α E) (x y : Matrix α β E) :
     GlobalTheory.WeilM.symp c ξ K J x y = GlobalTheory.WeilM.symp c ξ' K J' x y := by
@@ -118,7 +116,7 @@ theorem symp_congr₂ {ξ ξ' : E} {J J' : Matrix β β E} (h : ξ • J = ξ' �
 
 omit [Invertible (2 : R)] in
 /- English proof (translation)
-Introduce `g hg`. Establish `hg' : (g : Matrix α α E)ᵀ * J * (g : Matrix α α E).map c = J` using `hg`. Use `show (g : Matrix α α E)ᵀ * J' * (g : Matrix α α E).map c = J'`. Use `hξ.smul_left_cancel.1 ?_` and prove the remaining obligations. Rewrite using `[← Matrix.smul_mul, ← Matrix.mul_smul, ← h, Matrix.mul_smul, Matrix.smul_mul, hg']`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ug_ge {ξ ξ' : E} {J J' : Matrix α α E} (h : ξ • J = ξ' • J') (hξ : IsUnit ξ') :
     GlobalTheory.WeilM.UG c J ≤ GlobalTheory.WeilM.UG c J' := by
@@ -130,7 +128,7 @@ theorem ug_ge {ξ ξ' : E} {J J' : Matrix α α E} (h : ξ • J = ξ' • J') (
 
 omit [Invertible (2 : R)] [Fintype α] [DecidableEq α] in
 /- English proof (translation)
-Simplify using `only [GlobalTheory.WeilM.dbl, Matrix.fromBlocks_smul, smul_zero, smul_neg, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem smul_dbl {ξ ξ' : E} {J J' : Matrix α α E} (h : ξ • J = ξ' • J') :
     ξ • GlobalTheory.WeilM.dbl J = ξ' • GlobalTheory.WeilM.dbl J' := by
@@ -142,7 +140,7 @@ def castD₂ {ξ ξ' : E} {J J' : Matrix β β E} (h : ξ • J = ξ' • J') {K
   form w w' := by rw [symp_congr₂ c h, d.form]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hL, ⟨⟨fun g => H.2.1.pres (Subgroup.inclusion hle g), fun g => H.2.1.impl (Subgroup.inclusion hle g), fun g => H.2.1.adm (Subgroup.inclusion hle g)⟩, H.2.1.unit.comp _, H.2.1.cont.comp (continuous_subtype_val.subtype_mk _)⟩, fun l hl hinv p t hp => H.2.2 l hl hinv (Subgroup.incl …`.
+Supply the required witnesses or components.
 -/
 theorem isUWeilSplit_cast₂ [TopologicalSpace R] [TopologicalSpace E] [IsModuleTopology R E] {C : GlobalTheory.WeilM.TestClass R}
     {ψ : AddChar R ℂ} {ξ ξ' : E} {J J' : Matrix β β E} (h : ξ • J = ξ' • J') {K : Matrix α α E} {κ : Type} [Fintype κ]
@@ -183,7 +181,7 @@ def trAW {m n : ℕ} : WOF F E m n →+ WOF F E n m where
   map_add' _ _ := rfl
 
 /- English proof (translation)
-The claim follows from `continuous_id.matrix_transpose`.
+A detailed English derivation is pending.
 -/
 theorem continuous_trW {m n : ℕ} : Continuous (fun x : WOF F E m n => (xᵀ : WOF F E n m)) :=
   continuous_id.matrix_transpose
@@ -214,13 +212,13 @@ theorem mt_dualG_inv {n : ℕ} {J J' : Matrix (Fin n) (Fin n) E} (h : J'ᵀ * J 
     mtF σ J (dualG σ h g)⁻¹ = (mtF σ J' g)ᵀ := rfl
 
 /- English proof (translation)
-The claim follows from `(continuous_invT.comp continuous_subtype_val).subtype_mk _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_dualG {n : ℕ} {J J' : Matrix (Fin n) (Fin n) E} (h : J'ᵀ * J = 1) : Continuous (dualG σ h) :=
   (continuous_invT.comp continuous_subtype_val).subtype_mk _
 
 /- English proof (translation)
-Establish `hγ' : matHomF σ J' γ ∈ HFin (AF F) σ J'` using `hγ`. Take `⟨g, hg, hgγ⟩` from `hγ'`. Establish `h2 : invT (matHomF σ J' γ) ∈ HFin (AF F) σ J` using `⟨invT g, invT_mem _ h hg, by rw [bc_invT, hgγ]⟩`. Conclude with `h2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dualG_mem_GQ {n : ℕ} {J J' : Matrix (Fin n) (Fin n) E} (h : J'ᵀ * J = 1) {γ : GAF σ J'} (hγ : γ ∈ GQF σ J') :
     dualG σ h γ ∈ GQF σ J := by
@@ -234,7 +232,7 @@ variable {nS nT : ℕ} {JS JS' : Matrix (Fin nS) (Fin nS) E} {JT JT' : Matrix (F
 
 omit [NumberField E] in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Matrix.inv_eq_left_inv h, Matrix.inv_eq_left_inv (by have := congrArg Matrix.transpose h rwa [Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.transpose_one] at this)⟩`.
+Supply the required witnesses or components.
 -/
 theorem dual_inv {n : ℕ} {J J' : Matrix (Fin n) (Fin n) E} (h : J'ᵀ * J = 1) : J⁻¹ = J'ᵀ ∧ J'⁻¹ = Jᵀ :=
   ⟨Matrix.inv_eq_left_inv h, Matrix.inv_eq_left_inv (by
@@ -244,7 +242,7 @@ theorem dual_inv {n : ℕ} {J J' : Matrix (Fin n) (Fin n) E} (h : J'ᵀ * J = 1)
 include hS hT
 
 /- English proof (translation)
-Unfold `hOF`. Rewrite using `[(dual_inv hT).2, (dual_inv hS).1, sum_sum_sum_sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.transpose_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hO_tr (x y : WOF F E nS nT) : hOF σ JT' JS' xᵀ yᵀ = hOF σ JS JT x y := by
   unfold hOF
@@ -255,14 +253,14 @@ theorem hO_tr (x y : WOF F E nS nT) : hOF σ JT' JS' xᵀ yᵀ = hOF σ JS JT x 
   ring
 
 /- English proof (translation)
-Unfold `symplOHF symplOF`. Rewrite using `[hO_tr σ hS hT]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem symplOH_tr (x y : WOF F E nS nT) : symplOHF σ JT' JS' ξ₀ xᵀ yᵀ = symplOHF σ JS JT ξ₀ x y := by
   unfold symplOHF symplOF
   rw [hO_tr σ hS hT]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Express the relevant statement in the definitionally equal form `ψ (symplOHF σ JT' JS' ξ₀ xᵀ wᵀᵀ) * f (xᵀ + w) = ψ (symplOHF σ JS JT ξ₀ x wᵀ) * f (xᵀ + w)`. Rewrite using `[symplOH_tr σ hS hT]`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem trW_heis (w : WOF F E nT nS) (f : WOF F E nT nS → ℂ) :
     trW (heisOF σ JT' JS' ξ₀ ψ w f) = heisOF σ JS JT ξ₀ ψ wᵀ (trW f) := by
@@ -271,7 +269,7 @@ theorem trW_heis (w : WOF F E nT nS) (f : WOF F E nT nS → ℂ) :
   rw [symplOH_tr σ hS hT]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Express the relevant statement in the definitionally equal form `ψ (symplOHF σ JS JT ξ₀ xᵀ w) * f (xᵀ + w) = ψ (symplOHF σ JT' JS' ξ₀ xᵀᵀ wᵀ) * f (xᵀ + w)`. Rewrite using `[symplOH_tr σ hS hT]`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem trW_heis' (w : WOF F E nS nT) (f : WOF F E nS nT → ℂ) :
     trW (heisOF σ JS JT ξ₀ ψ w f) = heisOF σ JT' JS' ξ₀ ψ wᵀ (trW f) := by
@@ -280,9 +278,9 @@ theorem trW_heis' (w : WOF F E nS nT) (f : WOF F E nS nT → ℂ) :
   rw [symplOH_tr σ hS hT]
 
 /- English proof (translation)
-Use `h.quasi γᵀ wᵀ` as an intermediate fact. Rewrite using `[← symplOH_tr σ hS hT]`. Conclude with `this`. Use `level := by`. Take `⟨U, hU, hU'⟩` from `h.level`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨U.comap trAW, hU.preimage continuous_trW, fun u hu hu' => ?_⟩` and prove the remaining obligations. Use `congrArg trW (hU' uᵀ hu (congrArg Matrix.transpose hu'))` as an intermediate fact. Rewrite `this` using `[trW_heis σ hS hT]`. Then use the resulting hypothesis. Use `cont := h.cont.comp continuous_trW`. Use `smooth k L hL hL' w := h.smooth k (trAW.comp L) (continuous_trW.comp hL) (fun t => congrArg Matrix.transpose (hL' t)) wᵀ`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem theta_trW {f : WOF F E nT nS → ℂ} (h : IsThetaFunOF σ JT' JS' ξ₀ ψ f) : IsThetaFunOF σ JS JT ξ₀ ψ (trW f) where
   quasi γ w := by
@@ -299,9 +297,9 @@ theorem theta_trW {f : WOF F E nT nS → ℂ} (h : IsThetaFunOF σ JT' JS' ξ₀
     h.smooth k (trAW.comp L) (continuous_trW.comp hL) (fun t => congrArg Matrix.transpose (hL' t)) wᵀ
 
 /- English proof (translation)
-Use `h.quasi γᵀ wᵀ` as an intermediate fact. Rewrite `this` using `[← symplOH_tr σ hS hT]`. Conclude with `this`. Use `level := by`. Take `⟨U, hU, hU'⟩` from `h.level`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨U.comap trAW, hU.preimage continuous_trW, fun u hu hu' => ?_⟩` and prove the remaining obligations. Use `congrArg trW (hU' uᵀ hu (congrArg Matrix.transpose hu'))` as an intermediate fact. Rewrite `this` using `[trW_heis' σ hS hT]`. Then use the resulting hypothesis. Use `cont := h.cont.comp continuous_trW`. Use `smooth k L hL hL' w := h.smooth k (trAW.comp L) (continuous_trW.comp hL) (fun t => congrArg Matrix.transpose (hL' t)) wᵀ`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem theta_trW' {f : WOF F E nS nT → ℂ} (h : IsThetaFunOF σ JS JT ξ₀ ψ f) : IsThetaFunOF σ JT' JS' ξ₀ ψ (trW f) where
   quasi γ w := by
@@ -318,7 +316,7 @@ theorem theta_trW' {f : WOF F E nS nT → ℂ} (h : IsThetaFunOF σ JS JT ξ₀ 
     h.smooth k (trAW.comp L) (continuous_trW.comp hL) (fun t => congrArg Matrix.transpose (hL' t)) wᵀ
 
 /- English proof (translation)
-Unfold `actOF`. Rewrite using `[mt_dualG, mt_dualG_inv, Matrix.transpose_mul, Matrix.transpose_mul, Matrix.mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem actO_tr (g : GAF σ JT') (h : GAF σ JS') (x : WOF F E nT nS) :
     actOF σ JS JT (dualG σ hS h) (dualG σ hT g) xᵀ = (actOF σ JT' JS' g h x)ᵀ := by
@@ -350,19 +348,17 @@ theorem swapOm_apply (om : GAF σ JS × GAF σ JT →* Module.End ℂ (WOF F E n
     swapOm σ hS hT om (g, h) f = trW (om (dualG σ hS h, dualG σ hT g) (trW f)) := rfl
 
 /- English proof (translation)
-Use `⟨h.std, h.hecT, h.hecS, h.resT, h.resS, fun p f hf => theta_trW' σ hS hT ξ₀ ψ (h.om_pres _ _ (theta_trW σ hS hT ξ₀ ψ hf)), fun g k w f hf => ?_, fun g hg k hk f hf => ?_, fun f hf w => (h.om_cont _ (theta_trW σ hS hT ξ₀ ψ hf) wᵀ).comp (((continuous_dualG σ hS).comp continuous_snd …` and prove the remaining obligations. Rewrite using `[swapOm_apply, swapOm_apply, trW_heis σ hS hT, h.om_heis _ _ _ _ (theta_trW σ hS hT ξ₀ ψ hf), trW_heis' σ hS hT, actO_tr, Matrix.transpose_transpose]`. Conclude with `h.om_aut _ (dualG_mem_GQ σ hS hk) _ (dualG_mem_GQ σ hT hg) _ (theta_trW σ hS hT ξ₀ ψ hf)`. Establish `: IsTopologicalRing (AEF F E)` using `IsModuleTopology.isTopologicalRing (AF F) (AEF F E)`. Establish `: IsTopologicalAddGroup (AEF F E)` using `IsTopologicalRing.to_topologicalAddGroup`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsTopologicalAddGroup (WOF F E nS nT)` using `Pi.topologicalAddGroup`. Establish `: IsTopologicalAddGroup (WOF F E nT nS)` using `Pi.topologicalAddGroup`. Establish `: BorelSpace (WOF F E nS nT)` using `⟨rfl⟩`. Establish `: BorelSpace (WOF F E nT nS)` using `⟨rfl⟩`. Set `e : WOF F E nT nS ≃ₜ+ WOF F E nS nT` to `{ toFun := fun x => xᵀ, invFun := fun x => xᵀ, left_inv := fun _ => rfl, right_inv := fun _ => rfl, map_add' := fun _ _ => rfl, continuous_toFun := continuous_trW, continuous_invFun := continuous_trW }`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `m : WOF F E nT nS ≃ᵐ WOF F E nS nT` to `e.toHomeomorph.toMeasurableEquiv`. Establish `hH : (μ.map m).IsAddHaarMeasure` using `e.isAddHaarMeasure_map μ`. Establish `hp : MeasurePreserving m.symm (μ.map m) μ` using `(m.measurable.measurePreserving μ).symm m`. Establish `hF : IsAddFundamentalDomain (ratLF F E nS nT) (m.symm ⁻¹' 𝓕) (μ.map m)`. Use `h𝓕.preimage_of_equiv hp.quasiMeasurePreserving (e := fun γ => (⟨γ.1ᵀ, by obtain ⟨γ, δ, rfl⟩ := γ; exact ⟨δᵀ, rfl⟩⟩ : ratLF F E nS nT)) ?_ fun γ x => rfl` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `a b hab`. Conclude with `Subtype.ext (congrArg Matrix.transpose (congrArg Subtype.val hab))`. Introduce and unpack `⟨_, δ, rfl⟩`. Conclude with `⟨⟨_, δᵀ, rfl⟩, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `h.om_unit (μ.map m) _ hH hF (dualG σ hS p.2, dualG σ hT p.1) _ (theta_trW σ hS hT ξ₀ ψ hf)`. Establish `e1` using `hp.setLIntegral_comp_preimage_emb m.symm.measurableEmbedding (fun w => ‖swapOm σ hS hT om p f w‖ₑ ^ 2) 𝓕`. Establish `e2` using `hp.setLIntegral_comp_preimage_emb m.symm.measurableEmbedding (fun w => ‖f w‖ₑ ^ 2) 𝓕`. Conclude with `e1.symm.trans (key.trans e2)`. Take `⟨r, hr, H⟩` from `h.om_split e he (dualG σ hS k) (dualG σ hT g) (supp_inv _ (matHomF σ JS' k) hk) (supp_inv _ (matHomF σ JT' g) hg) y⁻¹ x⁻¹ (det_inv_at he.1 (matHomF σ JS' k) y hy) (det_inv_at he.1 (matHomF σ JT' g) x hx)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use `⟨r, hr, fun ℓ hℓ f hf => ?_⟩` and prove the remaining obligations. Use `H (ℓ ∘ₗ (trW : (WOF F E nS nT → ℂ) ≃ₗ[ℂ] _).toLinearMap) (fun u hu f hf => by` as an intermediate fact. Express the relevant statement in the definitionally equal form `ℓ (trW (heisOF σ JS JT ξ₀ ψ u f)) = ℓ (trW f)`. Rewrite using `[trW_heis' σ hS hT]`. Conclude with `hℓ _ (fun i j => hu j i) _ (theta_trW' σ hS hT ξ₀ ψ hf)) _ (theta_trW σ hS hT ξ₀ ψ hf)`.
-
-Establish `e1 : splitFacOF χS χT y⁻¹ x⁻¹ = splitFacOF χT χS x y`. Rewrite using `[splitFacOF, splitFacOF, map_inv, map_inv, inv_inv, mul_comm]`. Rewrite `this` using `[e1]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem swap_datum {Tau : Type} [Fintype Tau] {tauE : Tau → (E →+* ℂ)} {χS χT : (AEF F E)ˣ →* Circle}
     {om : GAF σ JS × GAF σ JT →* Module.End ℂ (WOF F E nS nT → ℂ)}
@@ -417,9 +413,9 @@ theorem swap_datum {Tau : Type} [Fintype Tau] {tauE : Tau → (E →+* ℂ)} {χ
 
 set_option maxHeartbeats 400000 in
 /- English proof (translation)
-Introduce `a b g h hh hg Φ hΦ`. Establish `e1 : mtF σ JT (dualG σ hT g) = b.1.1` using `(congrArg Units.val (matHom_dualG σ hT g)).trans (invT_of_inv (matHomF σ JT' g) b hg)`. Establish `e2 : mtF σ JS (dualG σ hS h) = ((Subgroup.inclusion hle a)⁻¹).1.1ᵀ` using `(congrArg Units.val (matHom_dualG σ hS h)).trans (invT_incl hle (matHomF σ JS' h) a hh)`. Establish `H` using `hom b (Subgroup.inclusion hle a) (dualG σ hS h) (dualG σ hT g) e1 e2 Φ hΦ`. Establish `th : ∀ (Φ : (κ → AF F) → ℂ), GlobalTheory.WeilSchrodinger.thetaTr F co' ψ Φ = trW (m` using `nS) (n := nT) (GlobalTheory.WeilSchrodinger.thetaTr F co ψ Φ) := fun Φ => funext fun w => congrArg (GlobalTheory.WeilM.thetaSum F) (congrFun (hco w) Φ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : om' (a, b) Φ = om (b, Subgroup.inclusion hle a) Φ` using `LinearMap.congr_fun (hom' a b) Φ`. Use `⟨e3 ▸ H.1, ?_⟩` and prove the remaining obligations. Rewrite using `[th, th, e3, H.2, swapOm_apply, trW_trW]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem swap_transport {ξ ξ' : AF F ⊗[F] E} {JA : Matrix (Fin nT) (Fin nT) E} {JB JB' : Matrix (Fin nS) (Fin nS) E}
     (hle : GlobalTheory.WeilM.UG (cA σ) (incM F JB') ≤ GlobalTheory.WeilM.UG (cA σ) (incM F JB)) {κ : Type} [Fintype κ]
@@ -447,7 +443,7 @@ theorem swap_transport {ξ ξ' : AF F ⊗[F] E} {JA : Matrix (Fin nT) (Fin nT) E
 
 omit [NumberField E] in
 /- English proof (translation)
-Unfold `hRatF`. Rewrite using `[(dual_inv hT).2, (dual_inv hS).1, sum_sum_sum_sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.transpose_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hRat_tr (x y : Matrix (Fin nT) (Fin nS) E) : hRatF σ JT' JS' xᵀ yᵀ = hRatF σ JS JT x y := by
   unfold hRatF
@@ -458,11 +454,11 @@ theorem hRat_tr (x y : Matrix (Fin nT) (Fin nS) E) : hRatF σ JT' JS' xᵀ yᵀ 
   ring
 
 /- English proof (translation)
-Take `⟨Λ, h1, h2⟩` from `h`. Set `t : Matrix (Fin nT) (Fin nS) E ≃ₗ[𝓞 E] Matrix (Fin nS) (Fin nT) E` to `Matrix.transposeLinearEquiv _ _ _ _`. Establish `hm : ∀ M, M ∈ Λ.map t.toLinearMap ↔ Mᵀ ∈ Λ` using `fun M => ⟨by rintro ⟨x, hx, rfl⟩; exact hx, fun hx => ⟨Mᵀ, hx, rfl⟩⟩`. Use `⟨Λ.map t.toLinearMap, ⟨h1.fg.map _, fun M => ?_⟩, fun M => ?_⟩` and prove the remaining obligations. Take `⟨N, hN, hM⟩` from `h1.den Mᵀ`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨N, hN, (hm _).2 hM⟩`. Rewrite using `[hm, h2]`. Prove the components needed by the constructor for the conclusion. Introduce `H M' hM'`. Use `H M'ᵀ ((hm _).1 hM')` as an intermediate fact.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[← hRat_tr σ hS hT]`. Then use the resulting hypothesis. Introduce `H M' hM'`. Use `H M'ᵀ ((hm _).2 hM')` as an intermediate fact. Rewrite `this` using `[← Matrix.transpose_transpose M, hRat_tr σ hS hT]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem latH_swap (h : LatH σ JS JT ξ₀) : LatH σ JT' JS' ξ₀ := by
   obtain ⟨Λ, h1, h2⟩ := h

@@ -15,7 +15,7 @@ section LapFormsSec
 variable {H : Type} {N0 N1 : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert i s hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, Derivation.add_apply, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 lemma der_sum_apply {ι : Type} (s : Finset ι)
     (D : ι → Derivation ℤ (PolyXZ H N0 N1) (PolyXZ H N0 N1)) (x : PolyXZ H N0 N1) :
@@ -26,13 +26,13 @@ lemma der_sum_apply {ι : Type} (s : Finset ι)
   | insert i s hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, Derivation.add_apply, ih]
 
 /- English proof (translation)
-Establish `h : ⁅(pderiv (R` using `ℤ) i : Derivation ℤ (PolyXZ H N0 N1) (PolyXZ H N0 N1)), pderiv (R := ℤ) j⁆ = 0 := by`. Apply `MvPolynomial.derivation_ext` to reduce the goal to its premises. Introduce `k`. Rewrite using `[Derivation.commutator_apply, Derivation.zero_apply]`. Distinguish the cases in `hj : k = j`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hj` using the available equality. Distinguish the cases in `hi : k = i`. Substitute `hi` using the available equality. Simplify using the standard rewrite rules. Simplify using `[pderiv_X_of_ne hi]`.
+Substitute using the available equality. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hi : k = i`. Substitute `hi` using the available equality. Simplify using `[pderiv_X_of_ne hj]`. Simplify using `[pderiv_X_of_ne hi, pderiv_X_of_ne hj]`. Establish `h2` using `congrArg (fun D : Derivation ℤ (PolyXZ H N0 N1) (PolyXZ H N0 N1) => D P) h`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Derivation.commutator_apply, Derivation.zero_apply] at h2`. Conclude with `sub_eq_zero.mp h2`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma pderiv_comm' (i j : XZ (Bool × H) N0 N1) (P : PolyXZ H N0 N1) :
     pderiv i (pderiv j P) = pderiv j (pderiv i P) := by
@@ -53,7 +53,7 @@ lemma pderiv_comm' (i j : XZ (Bool × H) N0 N1) (P : PolyXZ H N0 N1) :
   exact sub_eq_zero.mp h2
 
 /- English proof (translation)
-The claim follows from `pderiv_X_of_ne Sum.inl_ne_inr`.
+A detailed English derivation is pending.
 -/
 lemma pd_inr_X_inl (v : (Bool × H) × Fin N0 × Fin N1) (u : (Bool × H) × ℕ × Fin N0) :
     pderiv (Sum.inr v : XZ (Bool × H) N0 N1) (X (Sum.inl u) : PolyXZ H N0 N1) = 0 :=
@@ -70,21 +70,21 @@ def nzc (L : List (ℕ × Fin N1)) : ℕ := (L.map fun c => if c.1 = 0 then 0 el
 def z0c (L : List (ℕ × Fin N1)) : ℕ := (L.map fun c => if c.1 = 0 then 1 else 0).sum
 
 /- English proof (translation)
-Simplify using `[nzc]`.
+Simplify using the standard rewrite rules.
 -/
 lemma nzc_cons (c : ℕ × Fin N1) (L : List (ℕ × Fin N1)) :
     nzc (c :: L) = (if c.1 = 0 then 0 else 1) + nzc L := by
   simp [nzc]
 
 /- English proof (translation)
-Simplify using `[z0c]`.
+Simplify using the standard rewrite rules.
 -/
 lemma zeroCount_cons (c : ℕ × Fin N1) (L : List (ℕ × Fin N1)) :
     z0c (c :: L) = (if c.1 = 0 then 1 else 0) + z0c L := by
   simp [z0c]
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp [nzc, z0c]`. Consider the case `cons c L ih`. Rewrite using `[nzc_cons, zeroCount_cons, List.length_cons]`. Apply the tactic sequence `split_ifs <;> omega`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma nonzeroCount_add_zeroCount (L : List (ℕ × Fin N1)) : nzc L + z0c L = L.length := by
   induction L with
@@ -94,7 +94,7 @@ lemma nonzeroCount_add_zeroCount (L : List (ℕ × Fin N1)) : nzc L + z0c L = L.
     split_ifs <;> omega
 
 /- English proof (translation)
-Unfold `dRow`. Rewrite using `[der_sum_apply]`. Simplify using `only [Derivation.smul_apply, smul_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma dRow_apply (t : H) (r : ℕ) (b : Fin N1) (P : PolyXZ H N0 N1) :
     dRow (N0 := N0) t r b P =
@@ -104,7 +104,7 @@ lemma dRow_apply (t : H) (r : ℕ) (b : Fin N1) (P : PolyXZ H N0 N1) :
   simp only [Derivation.smul_apply, smul_eq_mul]
 
 /- English proof (translation)
-Simplify using `only [lapT, LinearMap.sum_apply, Module.End.mul_apply]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 lemma lap_apply (t : H) (P : PolyXZ H N0 N1) :
     lapT N0 N1 t P = ∑ a : Fin N0, ∑ b : Fin N1,
@@ -113,7 +113,7 @@ lemma lap_apply (t : H) (P : PolyXZ H N0 N1) :
   rfl
 
 /- English proof (translation)
-Unfold `lfo`. Rewrite using `[map_sum]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `a' _`. Rewrite using `[Derivation.leibniz, pd_inr_X_inl, pderiv_X_of_ne (by simp), smul_zero, smul_zero, add_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 lemma pw_lfo (t : H) (c : ℕ × Fin N1) (a : Fin N0) (b : Fin N1) :
     pderiv (Sum.inr ((true, t), a, b)) (lfo (N0 := N0) t c) = 0 := by
@@ -124,13 +124,13 @@ lemma pw_lfo (t : H) (c : ℕ × Fin N1) (a : Fin N0) (b : Fin N1) :
   rw [Derivation.leibniz, pd_inr_X_inl, pderiv_X_of_ne (by simp), smul_zero, smul_zero, add_zero]
 
 /- English proof (translation)
-Establish `key : ∀ a' : Fin N0, pderiv (Sum.inr ((false, t), a, b)) (X (Sum.inl ((false, t), c.1, a')) * X (Sum.inr ((false, t), a', c.2)) : PolyXZ H N0 N1) = if a' = a ∧ c.2 = b then X (Sum.inl ((false, t), c.1, a')) else 0`. Introduce `a'`. Rewrite using `[Derivation.leibniz, pd_inr_X_inl, smul_zero, add_zero, smul_eq_mul]`. Use `split_ifs with h`. Take `⟨rfl, hb⟩` from `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hb, pderiv_X_self, mul_one]`. Rewrite using `[pderiv_X_of_ne, mul_zero]`. Introduce `e`. Simplify using `only [Sum.inr.injEq, Prod.mk.injEq] at e`. Conclude with `h ⟨e.2.1, e.2.2⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `lfo`. Rewrite using `[map_sum, Finset.sum_congr rfl (fun a' _ => key a')]`. Distinguish the cases in `hb : b = c.2`. Substitute `hb` using the available equality. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hb' : c.2 ≠ b` using `fun h => hb h.symm`. Simplify using `[hb, hb']`.
+A detailed English derivation is pending.
 -/
 lemma pz_lfo (t : H) (c : ℕ × Fin N1) (a : Fin N0) (b : Fin N1) :
     pderiv (Sum.inr ((false, t), a, b)) (lfo (N0 := N0) t c) =
@@ -156,7 +156,7 @@ lemma pz_lfo (t : H) (c : ℕ × Fin N1) (a : Fin N0) (b : Fin N1) :
     simp [hb, hb']
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp`. Consider the case `cons c L ih`. Rewrite using `[List.map_cons, List.prod_cons, Derivation.leibniz, ih, pw_lfo, smul_zero, smul_zero, add_zero]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 lemma pw_prod (t : H) (L : List (ℕ × Fin N1)) (a : Fin N0) (b : Fin N1) :
     pderiv (Sum.inr ((true, t), a, b)) ((L.map (lfo (N0 := N0) t)).prod) = 0 := by
@@ -166,9 +166,9 @@ lemma pw_prod (t : H) (L : List (ℕ × Fin N1)) (a : Fin N0) (b : Fin N1) :
     rw [List.map_cons, List.prod_cons, Derivation.leibniz, ih, pw_lfo, smul_zero, smul_zero, add_zero]
 
 /- English proof (translation)
-Rewrite using `[lap_apply]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `a _`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `b _`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e1 : pderiv (Sum.inr ((true, t), a, b)) (f * h) = f * pderiv (Sum.inr ((true, t), a, b)) h`. Rewrite using `[Derivation.leibniz, hf, smul_zero, add_zero, smul_eq_mul]`. Rewrite using `[e1, Derivation.leibniz, pderiv_comm' (Sum.inr ((false, t), a, b)), hh, map_zero, smul_zero, zero_add, smul_eq_mul, mul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 lemma lap_mul (t : H) (f h : PolyXZ H N0 N1)
     (hf : ∀ a b, pderiv (Sum.inr ((true, t), a, b)) f = 0)
@@ -190,11 +190,11 @@ def Gf (t : H) (f h : PolyXZ H N0 N1) : PolyXZ H N0 N1 :=
     pderiv (Sum.inr ((false, t), a, b)) f * pderiv (Sum.inr ((true, t), a, b)) h
 
 /- English proof (translation)
-Establish `h1 : ∀ a : Fin N0, ∑ b : Fin N1, P * (if b = c.2 then X (Sum.inl ((false, t), c.1, a)) else 0) * pderiv (Sum.inr ((true, t), a, b)) h = P * (X (Sum.inl ((false, t), c.1, a)) * pderiv (Sum.inr ((true, t), a, c.2)) h)`. Introduce `a`. Rewrite using `[Finset.sum_eq_single c.2]`. Simplify using `[mul_assoc]`. Introduce `b _ hb`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[hb]`. Simplify using the standard rewrite rules. Simplify using `only [Gf, Derivation.leibniz, smul_eq_mul, pz_lfo, add_mul, Finset.sum_add_distrib]`. Rewrite using `[Finset.sum_congr rfl (fun a _ => h1 a), dRow_apply]`. Simplify using `only [Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[add_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma Gf_cons (t : H) (c : ℕ × Fin N1) (P h : PolyXZ H N0 N1) :
     Gf t (lfo t c * P) h = P * dRow (N0 := N0) t c.1 c.2 h + lfo t c * Gf t P h := by
@@ -213,7 +213,7 @@ lemma Gf_cons (t : H) (c : ℕ × Fin N1) (P h : PolyXZ H N0 N1) :
   rw [add_comm]
 
 /- English proof (translation)
-Introduce `a b'`. Rewrite using `[dRow_apply, map_sum]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `a' _`. Rewrite using `[Derivation.leibniz, pderiv_comm' (Sum.inr ((false, t), a, b')), hh, map_zero, smul_zero, zero_add, pd_inr_X_inl, smul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 lemma zf_dRow (t : H) (r : ℕ) (b : Fin N1) (h : PolyXZ H N0 N1)
     (hh : ∀ a b, pderiv (Sum.inr ((false, t), a, b)) h = 0) :
@@ -226,9 +226,9 @@ lemma zf_dRow (t : H) (r : ℕ) (b : Fin N1) (h : PolyXZ H N0 N1)
     pd_inr_X_inl, smul_zero]
 
 /- English proof (translation)
-Simplify using `only [dRow_apply, map_sum, Derivation.leibniz, pd_inr_X_inl, smul_eq_mul, mul_zero, Finset.sum_const_zero, add_zero, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `a _`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `a' _`. Rewrite using `[pderiv_comm' (Sum.inr ((true, t), a, b))]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma dRow_comm (t : H) (r : ℕ) (b : Fin N1) (r' : ℕ) (b' : Fin N1) (P : PolyXZ H N0 N1) :
     dRow (N0 := N0) t r b (dRow t r' b' P) = dRow t r' b' (dRow t r b P) := by
@@ -243,11 +243,11 @@ lemma dRow_comm (t : H) (r : ℕ) (b : Fin N1) (r' : ℕ) (b' : Fin N1) (P : Pol
   ring
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `h hk`. Simplify using `only [SDegD] at hk ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `j`. Rewrite using `[hE, hk j, hE0]`. Consider the case `succ k ih`. Introduce `h hk`. Simplify using `only [SDegD] at hk ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `j`. Rewrite using `[hE]`. Conclude with `ih _ (hk j)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma sdeg_comm {A : Type} [CommRing A] {ι : Type} (d : ι → Derivation ℤ A A) (E : A → A)
     (hE : ∀ j x, d j (E x) = E (d j x)) (hE0 : E 0 = 0) :
@@ -271,7 +271,7 @@ def RelL (L' : List (ℕ × Fin N1)) (k' : ℕ) (L : List (ℕ × Fin N1)) (k : 
     (nzc L' ≤ nzc L ∧ z0c L' + 1 ≤ z0c L ∧ k' + 1 ≤ k)
 
 /- English proof (translation)
-Unfold `RelL at h`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 lemma relL_lt {L' : List (ℕ × Fin N1)} {k' : ℕ} {L : List (ℕ × Fin N1)} {k : ℕ} (h : RelL L' k' L k) :
     nzc L' + min (z0c L') k' < nzc L + min (z0c L) k := by
@@ -284,25 +284,23 @@ def GS (t : H) (L : List (ℕ × Fin N1)) (k : ℕ) : Set (PolyXZ H N0 N1) :=
     SDegD (fun b : Fin N1 => dRow (N0 := N0) t 0 b) k' h' ∧ RelL L' k' L k}
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil`. Introduce `h k _ _`. Simplify using `[Gf]`. Consider the case `cons c L ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `h k hh hk`. Rewrite using `[List.map_cons, List.prod_cons, Gf_cons]`. Apply `add_mem` to reduce the goal to its premises. Distinguish the cases in `hc : c.1 = 0`. Consider the cases of `k with`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Consider separately whether the proposition holds or fails. Split into cases according to the possible forms of the given data.
 
-Consider the case `zero`. Establish `e : dRow (N0` using `N0) t c.1 c.2 h = 0 := by`. Rewrite using `[hc]`. Simplify using `only [SDegD] at hk`. Conclude with `hk c.2`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, mul_zero]`. Conclude with `zero_mem _`. Consider the case `succ k`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨L, dRow (N0 := N0) t c.1 c.2 h, k, rfl, zf_dRow t _ _ h hh, ?_, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hc]`. Simplify using `only [SDegD] at hk`. Conclude with `hk c.2`. Unfold `RelL`. Rewrite using `[nzc_cons, zeroCount_cons, if_pos hc, if_pos hc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use linear arithmetic over natural numbers and integers. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨L, dRow (N0 := N0) t c.1 c.2 h, k, rfl, zf_dRow t _ _ h hh, sdeg_comm _ (dRow (N0 := N0) t c.1 c.2) (fun j x => dRow_comm t 0 j c.1 c.2 x) (map_zero _) k h hk, ?_⟩` and prove the remaining obligations. Unfold `RelL`. Rewrite using `[nzc_cons, zeroCount_cons, if_neg hc, if_neg hc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use linear arithmetic over natural numbers and integers. Establish `key : ∀ x ∈ Submodule.span ℤ (GS (N0` using `N0) t L k), lfo t c * x ∈ Submodule.span ℤ (GS (N0 := N0) t (c :: L) k) := by`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨L', h', k', rfl, h1, h2, h3⟩` from `hx`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨c :: L', h', k', ?_, h1, h2, ?_⟩` and prove the remaining obligations. Simplify using `only [tmL, List.map_cons, List.prod_cons, mul_assoc]`. Unfold `RelL at h3 ⊢`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately.
 
-Rewrite using `[nzc_cons, nzc_cons, zeroCount_cons, zeroCount_cons]`. Apply the tactic sequence `split_ifs <;> omega`. Consider the case `zero => rw [mul_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [mul_add]`.
-
-Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx => rw [mul_smul_comm]`. Conclude with `Submodule.smul_mem _ a hx`. Conclude with `key _ (ih h k hh hk)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma gf_mem (t : H) (L : List (ℕ × Fin N1)) :
     ∀ (h : PolyXZ H N0 N1) (k : ℕ), (∀ a b, pderiv (Sum.inr ((false, t), a, b)) h = 0) →
@@ -358,13 +356,13 @@ lemma gf_mem (t : H) (L : List (ℕ × Fin N1)) :
       exact key _ (ih h k hh hk)
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => intro L h k _ _ hb`. Use linear arithmetic over natural numbers and integers. Consider the case `succ n ih`. Introduce `L h k hh hk hb`.
+Proceed by induction. Treat this case separately. Use linear arithmetic over natural numbers and integers. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[pow_succ, Module.End.mul_apply]`. Establish `e : lapT N0 N1 t (tmL t L h) = Gf t (L.map (lfo (N0` using `N0) t)).prod h := lap_mul t _ h (pw_prod t L) hh`. Rewrite using `[e]`. Establish `key : ∀ x ∈ Submodule.span ℤ (GS (N0` using `N0) t L k), (lapT N0 N1 t ^ n) x = 0 := by`. Introduce `x hx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨L', h', k', rfl, h1, h2, h3⟩` from `hx`. Conclude with `ih L' h' k' h1 h2 (by have := relL_lt h3; omega)`. Consider the case `zero => exact map_zero _`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [map_add, hx, hy, add_zero]`. Consider the case `smul a x _ hx => rw [map_smul, hx, smul_zero]`. Conclude with `key _ (gf_mem t L h k hh hk)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 lemma lap_tm_zero (t : H) (n : ℕ) :
     ∀ (L : List (ℕ × Fin N1)) (h : PolyXZ H N0 N1) (k : ℕ),
@@ -394,16 +392,16 @@ def MS (t : H) (a b : ℕ) : Submodule ℤ (PolyXZ H N0 N1) :=
   Submodule.span ℤ {Q | ∃ L : List (ℕ × Fin N1), Q = tmL t L 1 ∧ nzc L = a ∧ z0c L = b}
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact UpperTheory.Reformulated.B.Qj21.ms_mul .. | (apply UpperTheory.Reformulated.B.Qj21.ms_mul <;> assumption) | (intros; apply UpperTheory.Reformulated.B.Qj21.ms_mul <;> assumption) | (apply @UpperTheory.Reformulated.B.Qj21.ms_mul <;> assumption) | (intros; apply @Upper …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma ms_mul (t : H) {a b a' b' : ℕ} {P Q : PolyXZ H N0 N1} (hP : P ∈ MS t a b) (hQ : Q ∈ MS t a' b') :
     P * Q ∈ MS t (a + a') (b + b') := by
   first | exact UpperTheory.Reformulated.B.Qj21.ms_mul .. | (apply UpperTheory.Reformulated.B.Qj21.ms_mul <;> assumption) | (intros; apply UpperTheory.Reformulated.B.Qj21.ms_mul <;> assumption) | (apply @UpperTheory.Reformulated.B.Qj21.ms_mul <;> assumption) | (intros; apply @UpperTheory.Reformulated.B.Qj21.ms_mul <;> assumption) | (apply @UpperTheory.Reformulated.B.Qj21.ms_mul <;> first | assumption | infer_instance) | exact @UpperTheory.Reformulated.B.Qj21.ms_mul H N0 N1 t a b a' b' P Q hP hQ | exact @UpperTheory.Reformulated.B.Qj21.ms_mul H N0 N1 t a b a' b' P Q hP | exact @UpperTheory.Reformulated.B.Qj21.ms_mul H N0 N1 t a b a' b' P Q | exact @UpperTheory.Reformulated.B.Qj21.ms_mul H N0 N1 t a b a' b' P | exact @UpperTheory.Reformulated.B.Qj21.ms_mul H N0 N1 t a b a' b' | exact @UpperTheory.Reformulated.B.Qj21.ms_mul H N0 N1 t a b a' | exact @UpperTheory.Reformulated.B.Qj21.ms_mul H N0 N1 t a b | exact @UpperTheory.Reformulated.B.Qj21.ms_mul H N0 N1 t a | exact @UpperTheory.Reformulated.B.Qj21.ms_mul H N0 N1 t | exact @UpperTheory.Reformulated.B.Qj21.ms_mul H N0 N1 | exact @UpperTheory.Reformulated.B.Qj21.ms_mul H N0 | exact @UpperTheory.Reformulated.B.Qj21.ms_mul H
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.prod_empty, Finset.sum_empty]`. Apply `Submodule.subset_span` to reduce the goal to its premises. Conclude with `⟨[], by simp [tmL], by simp [nzc], by simp [z0c]⟩`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components.
 
-Consider the case `insert i s hi ih`. Rewrite using `[Finset.prod_insert hi, Finset.sum_insert hi, Finset.sum_insert hi]`. Conclude with `ms_mul t (h i (Finset.mem_insert_self i s)) (ih (fun j hj => h j (Finset.mem_insert_of_mem hj)))`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma ms_prod (t : H) {ι : Type} (s : Finset ι) (f : ι → PolyXZ H N0 N1) (a b : ι → ℕ)
     (h : ∀ i ∈ s, f i ∈ MS t (a i) (b i)) :
@@ -419,22 +417,22 @@ lemma ms_prod (t : H) {ι : Type} (s : Finset ι) (f : ι → PolyXZ H N0 N1) (a
     exact ms_mul t (h i (Finset.mem_insert_self i s)) (ih (fun j hj => h j (Finset.mem_insert_of_mem hj)))
 
 /- English proof (translation)
-Simplify using `[z0c, List.map_ofFn, List.sum_ofFn]`.
+Simplify using the standard rewrite rules.
 -/
 lemma zeroCount_ofFn {p : ℕ} (g : Fin p → ℕ × Fin N1) :
     z0c (List.ofFn g) = ∑ i : Fin p, (if (g i).1 = 0 then 1 else 0) := by
   simp [z0c, List.map_ofFn, List.sum_ofFn]
 
 /- English proof (translation)
-Unfold `minorXZ`. Rewrite using `[Matrix.det_apply]`. Apply `Submodule.sum_mem` to reduce the goal to its premises. Introduce `σ _`. Rewrite using `[Units.smul_def]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply `Submodule.smul_mem` to reduce the goal to its premises. Apply `Submodule.subset_span` to reduce the goal to its premises. Establish `hz : z0c (List.ofFn fun i : Fin p => (((σ i : Fin p) : ℕ), I i)) = 1`. Rewrite using `[zeroCount_ofFn]`. Rewrite using `[Equiv.sum_comp σ (fun j : Fin p => if (j : ℕ) = 0 then 1 else 0)]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single ⟨0, hp⟩]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Establish `: (j : ℕ) ≠ 0` using `fun h => hj (Fin.ext h)`. Simplify using `[this]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use `⟨List.ofFn fun i : Fin p => (((σ i : Fin p) : ℕ), I i), ?_, ?_, hz⟩` and prove the remaining obligations. Simplify using `only [tmL, List.map_ofFn, List.prod_ofFn, mul_one, Matrix.of_apply]`. Both sides reduce to the same expression. Use `nonzeroCount_add_zeroCount (List.ofFn fun i : Fin p => (((σ i : Fin p) : ℕ), I i))` as an intermediate fact.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite `this` using `[List.length_ofFn, hz]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 lemma minor_mem (t : H) (p : ℕ) (hp : 0 < p) (I : Fin p ↪o Fin N1) :
     minorXZ (Lt := Bool × H) N0 N1 (false, t) p I ∈ MS t (p - 1) 1 := by
@@ -462,18 +460,18 @@ lemma minor_mem (t : H) (p : ℕ) (hp : 0 < p) (I : Fin p ↪o Fin N1) :
     omega
 
 /- English proof (translation)
-Rewrite using `[← YoungDiagram.mem_iff_lt_colLen]`. Conclude with `YoungDiagram.mem_iff_lt_rowLen.mpr c.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma colLen_pos (α : YoungDiagram) (c : Fin (α.rowLen 0)) : 0 < α.colLen c := by
   rw [← YoungDiagram.mem_iff_lt_colLen]
   exact YoungDiagram.mem_iff_lt_rowLen.mpr c.2
 
 /- English proof (translation)
-Establish `e : ∑ c : Fin (α.rowLen 0), α.colLen c = (Finset.univ.sigma fun c : Fin (α.rowLen 0) => Finset.range (α.colLen c)).card`. Rewrite using `[Finset.card_sigma]`. Simplify using the standard rewrite rules. Rewrite using `[e]`. Apply `Finset.card_le_card_of_injOn (fun x => (x.2, (x.1 : ℕ)))` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `x hx`. Simplify using `only [Finset.coe_sigma, Set.mem_sigma_iff, Finset.coe_univ, Set.mem_univ, Finset.coe_range, Set.mem_Iio, true_and, Finset.mem_coe] at hx ⊢`. Rewrite using `[YoungDiagram.mem_cells, YoungDiagram.mem_iff_lt_colLen]`. Conclude with `hx`. Introduce and unpack `⟨c, i⟩ _ ⟨c', i'⟩ _ hxy`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Prod.mk.injEq] at hxy`. Take `⟨rfl, h2⟩` from `hxy`. Establish `: c = c'` using `Fin.ext h2`. Substitute `this` using the available equality. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma sum_colLen_le (α : YoungDiagram) : ∑ c : Fin (α.rowLen 0), α.colLen c ≤ α.cells.card := by
   have e : ∑ c : Fin (α.rowLen 0), α.colLen c =
@@ -495,15 +493,15 @@ lemma sum_colLen_le (α : YoungDiagram) : ∑ c : Fin (α.rowLen 0), α.colLen c
     rfl
 
 /- English proof (translation)
-Introduce `H _ _ N0 N1 α I t g d n hg hd hn`. Establish `hF` using `ms_prod (N0 := N0) t (Finset.univ : Finset (Fin (α.rowLen 0))) (fun c => minorXZ (Lt := Bool × H) N0 N1 (false, t) (α.colLen c) (I c)) (fun c => α.colLen c - 1) (fun _ => 1) (fun c _ => minor_mem t _ (colLen_pos α c) (I c))`. Establish `hsum : ∑ c : Fin (α.rowLen 0), (α.colLen c - 1) + α.rowLen 0 ≤ α.cells.card`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `c _`. Use `colLen_pos α c` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `_ ≤ α.cells.card := sum_colLen_le α`. Establish `h1 : ∑ _c : Fin (α.rowLen 0), 1 = α.rowLen 0` using `by simp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hF` using `[h1]`. Establish `key : ∀ x ∈ MS (N0` using `N0) t (∑ c : Fin (α.rowLen 0), (α.colLen c - 1)) (α.rowLen 0), (lapT N0 N1 t ^ n) (x * g) = 0 := by`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨L, rfl, e1, e2⟩` from `hx`. Establish `e : tmL t L 1 * g = tmL t L g` using `by simp [tmL]`. Rewrite using `[e]`. Conclude with `lap_tm_zero t n L g d (fun a b => hg a b) hd (by rw [e1, e2]; omega)`. Consider the case `zero => rw [zero_mul, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [add_mul, map_add, hx, hy, add_zero]`. Consider the case `smul r x _ hx => rw [smul_mul_assoc, map_smul, hx, smul_zero]`. Conclude with `key _ hF`.
+A detailed English derivation is pending.
 -/
 theorem pLapForms : PLapForms := by
   intro H _ _ N0 N1 α I t g d n hg hd hn

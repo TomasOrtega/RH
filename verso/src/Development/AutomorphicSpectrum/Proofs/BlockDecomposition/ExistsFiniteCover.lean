@@ -13,7 +13,7 @@ namespace GlobalTheory.CompanionTheory.Descent
 variable {R : Type} [CommRing R] {X : Scheme.{0}} (s : X ⟶ Sp R)
 
 /- English proof (translation)
-The claim follows from `congrArg (fun q ↦ q.hom b) (X.presheaf.map_id (op U))`.
+A detailed English derivation is pending.
 -/
 theorem res_self {U : X.Opens} (h : U ≤ U) (b : Sec s U) : Sec.res s h b = b :=
   congrArg (fun q ↦ q.hom b) (X.presheaf.map_id (op U))
@@ -39,7 +39,7 @@ theorem rm_pull (f : C ⥤ AffOp X) (g : D ⥤ AffOp X) (σ : D ⥤ C) (h) (i : 
     pulln (rm s f g σ h) i z c = Sec.res s (h (c.obj (Fin.last i))) (z (c ⋙ σ)) := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Conclude with `(Sec.res_res s (h _) (h' _) _).symm`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem pull_rm_rm (f : C ⥤ AffOp X) (g : D ⥤ AffOp X) (k : E ⥤ AffOp X) (σ : D ⥤ C) (τ : E ⥤ D) (h h')
     (h'' : ∀ T, (k.obj T).unop.1 ≤ (f.obj ((τ ⋙ σ).obj T)).unop.1) (i : ℕ) (z : Cn (f ⋙ OAff s) i) :
@@ -48,7 +48,7 @@ theorem pull_rm_rm (f : C ⥤ AffOp X) (g : D ⥤ AffOp X) (k : E ⥤ AffOp X) (
   exact (Sec.res_res s (h _) (h' _) _).symm
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Conclude with `res_self s _ _`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem pull_rm_id (f : C ⥤ AffOp X) (h) (i : ℕ) (z : Cn (f ⋙ OAff s) i) :
     pulln (rm s f f (𝟭 C) h) i z = z := by
@@ -64,7 +64,7 @@ def Acyc (f : E ⥤ AffOp X) (W : X.Opens) (hle : ∀ T, (f.obj T).unop.1 ≤ W)
     ∀ n, Function.Exact (dn (f ⋙ OAff s) n) (dn (f ⋙ OAff s) (n + 1))
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `h`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem Acyc.congr {f f' : E ⥤ AffOp X} (e : f = f') {W : X.Opens} {hle} {hle'}
     (h : Acyc s f W hle) : Acyc s f' W hle' := by
@@ -75,20 +75,20 @@ section Calculus
 variable {F : C ⥤ CommAlgCat.{0} R} {G : D ⥤ CommAlgCat.{0} R}
 
 /- English proof (translation)
-The claim follows from `LinearMap.congr_fun ((hCx R C F).2 D G m n) z`.
+A detailed English derivation is pending.
 -/
 theorem pull_d (hCx : CxSt) (m : CoefMap (RingHom.id R) F G) (n : ℕ) (z : Cn F n) :
     pulln m (n + 1) (dn F n z) = dn G n (pulln m n z) :=
   LinearMap.congr_fun ((hCx R C F).2 D G m n) z
 
 /- English proof (translation)
-The claim follows from `LinearMap.congr_fun ((hCx R C F).1 n) z`.
+A detailed English derivation is pending.
 -/
 theorem d_d (hCx : CxSt) (n : ℕ) (z : Cn F n) : dn F (n + 1) (dn F n z) = 0 :=
   LinearMap.congr_fun ((hCx R C F).1 n) z
 
 /- English proof (translation)
-Establish `e : ∀ i, pulln m i = pulln m' i` using `fun i ↦ LinearMap.ext (h i)`. Unfold `AllQIso at q ⊢`. Simplify `q` using `only [e]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem allQIso_congr {m m' : CoefMap (RingHom.id R) F G} (h : ∀ i z, pulln m i z = pulln m' i z)
     (q : AllQIso m) : AllQIso m' := by
@@ -97,9 +97,9 @@ theorem allQIso_congr {m m' : CoefMap (RingHom.id R) F G} (h : ∀ i z, pulln m 
   simpa only [e] using q
 
 /- English proof (translation)
-Use `⟨⟨fun x _ ⟨y, hy⟩ ↦ ⟨0, ?_⟩, fun z hz ↦ ⟨pulln m' 0 z, 0, ?_, ?_⟩⟩, fun n ↦ ⟨fun x _ ⟨y, hy⟩ ↦ ⟨pulln m' n y, ?_⟩, fun z hz ↦ ⟨pulln m' (n + 1) z, 0, ?_, ?_⟩⟩⟩` and prove the remaining obligations. Establish `: pulln m 0 x = 0` using `by simpa using hy.symm`. Establish `k` using `h 0 x`. Rewrite `k` using `[this, map_zero]`. Simplify using `using k`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[← pull_d hCx, hz, map_zero]`. Simplify using `[h']`. Rewrite using `[← pull_d hCx, hy, h]`. Rewrite using `[← pull_d hCx, hz, map_zero]`. Simplify using `[h']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem allQIso_of_inv (hCx : CxSt) (m : CoefMap (RingHom.id R) F G) (m' : CoefMap (RingHom.id R) G F)
     (h : ∀ i z, pulln m' i (pulln m i z) = z) (h' : ∀ i z, pulln m i (pulln m' i z) = z) : AllQIso m := by
@@ -124,7 +124,7 @@ def v₀ (W : X.affineOpens) : Fin 1 →o X.affineOpens := ⟨fun _ ↦ W, monot
 def pt (W : X.affineOpens) : (Fin 1)ᵒᵖ ⥤ AffOp X := (v₀ W).monotone.functor.op
 
 /- English proof (translation)
-Establish `k` using `hA R X s W Q v hle hinf hcov`. Conclude with `k`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem acyc_fin (hA : AffAcycSt) {Q : Type} [SemilatticeInf Q] [Finite Q] (v : Q →o X.affineOpens)
     (W : X.affineOpens) (hle : ∀ a, (v a).1 ≤ W.1) (hinf : ∀ a b, (v (a ⊓ b)).1 = (v a).1 ⊓ (v b).1)
@@ -133,7 +133,7 @@ theorem acyc_fin (hA : AffAcycSt) {Q : Type} [SemilatticeInf Q] [Finite Q] (v : 
   exact k
 
 /- English proof (translation)
-The claim follows from `acyc_fin s hA (v₀ W) W (fun _ ↦ le_rfl) (fun _ _ ↦ (inf_idem _).symm) (le_antisymm (iSup_le fun _ ↦ le_rfl) (le_iSup (fun a ↦ (v₀ W a).1) 0))`.
+A detailed English derivation is pending.
 -/
 theorem acyc_pt (hA : AffAcycSt) (W : X.affineOpens) :
     Acyc s (pt W) W.1 (fun _ ↦ le_rfl) :=
@@ -141,7 +141,7 @@ theorem acyc_pt (hA : AffAcycSt) (W : X.affineOpens) :
     (le_antisymm (iSup_le fun _ ↦ le_rfl) (le_iSup (fun a ↦ (v₀ W a).1) 0))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Conclude with `(Sec.res_res s (hle _) (h _) w).symm`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem pull_aug (f : D ⥤ AffOp X) (f' : E ⥤ AffOp X) (σ : E ⥤ D) (h) (W : X.Opens) (hle hle')
     (w : Sec s W) :
@@ -150,7 +150,7 @@ theorem pull_aug (f : D ⥤ AffOp X) (f' : E ⥤ AffOp X) (σ : E ⥤ D) (h) (W 
   exact (Sec.res_res s (hle _) (h _) w).symm
 
 /- English proof (translation)
-Establish `k` using `pull_aug s (pt W) f ((Functor.const E).obj (op (0 : Fin 1))) hle W.1 (fun _ ↦ le_rfl) hle w`. Establish `z` using `((acyc_pt s hA W).2.1 (aug s (pt W) W.1 (fun _ ↦ le_rfl) w)).2 ⟨w, rfl⟩`. Rewrite using `[← k, ← pull_d hCx, z, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem d_aug (hCx : CxSt) (hA : AffAcycSt) (f : E ⥤ AffOp X) (W : X.affineOpens) (hle) (w : Sec s W.1) :
     dn (f ⋙ OAff s) 0 (aug s f W.1 hle w) = 0 := by
@@ -159,11 +159,11 @@ theorem d_aug (hCx : CxSt) (hA : AffAcycSt) (f : E ⥤ AffOp X) (W : X.affineOpe
   rw [← k, ← pull_d hCx, z, map_zero]
 
 /- English proof (translation)
-Use `⟨fun a b hab ↦ A.1 ?_, fun x ↦ ⟨fun hx ↦ ?_, ?_⟩, fun n x ↦ ⟨fun hx ↦ ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← pull_aug s f f' σ h W.1 hle hle', ← pull_aug s f f' σ h W.1 hle hle', hab]`. Establish `k : dn (f' ⋙ OAff s) 0 (pulln (rm s f f' σ h) 0 x) = 0`. Rewrite using `[← pull_d hCx, hx, map_zero]`. Take `⟨w, hw⟩` from `(A.2.1 _).1 k`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨w, sub_eq_zero.1 (Q1 _ ?_ ?_)⟩` and prove the remaining obligations. Rewrite using `[map_sub, d_aug s hCx hA, hx, sub_zero]`. Rewrite using `[map_sub, pull_aug s f f' σ h W.1 hle hle', hw, sub_self]`. Introduce and unpack `⟨w, rfl⟩`. Conclude with `d_aug s hCx hA f W hle w`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `k : dn (f' ⋙ OAff s) (n + 1) (pulln (rm s f f' σ h) (n + 1) x) = 0`. Rewrite using `[← pull_d hCx, hx, map_zero]`. Conclude with `Q2 n x hx ((A.2.2 n _).1 k)`. Introduce and unpack `⟨y, rfl⟩`. Conclude with `d_d hCx n y`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem acyc_of_map (hCx : CxSt) (hA : AffAcycSt) (f : D ⥤ AffOp X) (f' : E ⥤ AffOp X) (σ : E ⥤ D) (h)
     (W : X.affineOpens) (hle hle')
@@ -188,15 +188,15 @@ theorem acyc_of_map (hCx : CxSt) (hA : AffAcycSt) (f : D ⥤ AffOp X) (f' : E �
     exact d_d hCx n y
 
 /- English proof (translation)
-Set `c₁` to `(Functor.const ((Fin 1)ᵒᵖ)).obj t`. Set `c₂` to `(Functor.const E).obj (op (0 : Fin 1))`. Establish `hc₁ : ∀ T, ((pt W).obj T).unop.1 ≤ (f.obj (c₁.obj T)).unop.1` using `fun _ ↦ ht`. Establish `hc₂ : ∀ T, (f.obj T).unop.1 ≤ ((pt W).obj (c₂.obj T)).unop.1` using `hle`. Establish `hcc : ∀ T, (f.obj T).unop.1 ≤ (f.obj ((c₂ ⋙ c₁).obj T)).unop.1` using `fun T ↦ (hle T).trans ht`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `m₀` to `rm s f f (𝟭 E) (fun _ ↦ le_rfl)`. Set `mₑ` to `rm s f f e he`. Set `mc` to `rm s f f (c₂ ⋙ c₁) hcc`. Establish `H₁` using `hHt R E (f ⋙ OAff s) E (f ⋙ OAff s) m₀ mₑ { app := a₁, naturality := fun _ _ _ ↦ Subsingleton.elim _ _ } (fun T b ↦ (Sec.res_res s _ _ b).symm.trans rfl)`. Establish `H₂` using `hHt R E (f ⋙ OAff s) E (f ⋙ OAff s) mc mₑ { app := a₂, naturality := fun _ _ _ ↦ Subsingleton.elim _ _ } (fun T b ↦ (Sec.res_res s _ _ b).symm.trans rfl)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : ∀ i z, pulln (rm s (pt W) f c₂ hc₂) i (pulln (rm s f (pt W) c₁ hc₁) i z) = pulln mc i z` using `fun i z ↦ pull_rm_rm s f (pt W) f c₁ c₂ hc₁ hc₂ hcc i z`. Establish `h₀ : ∀ i z, pulln m₀ i z = z` using `fun i z ↦ pull_rm_id s f _ i z`. Use `acyc_of_map s hCx hA f (pt W) c₁ hc₁ W hle (fun _ ↦ le_rfl) (fun x hx hx' ↦ ?_) (fun n x hx ⟨y, hy⟩ ↦ ?_) (acyc_pt s hA W)` and prove the remaining obligations. Establish `k₁` using `(H₁.1 x hx).trans (H₂.1 x hx).symm`. Rewrite `k₁` using `[h₀, ← hp, hx', map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `k₁`. Take `⟨y₁, e₁⟩` from `H₁.2 n x hx`. Take `⟨y₂, e₂⟩` from `H₂.2 n x hx`. Use `⟨pulln (rm s (pt W) f c₂ hc₂) n y + y₁ - y₂, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_add, ← e₁, ← e₂, ← pull_d hCx, hy, hp, h₀]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem acyc_of_cone (hCx : CxSt) (hHt : HtpySt) (hA : AffAcycSt) [Quiver.IsThin E] (f : E ⥤ AffOp X)
     (W : X.affineOpens) (hle) (t : E) (ht : W.1 ≤ (f.obj t).unop.1) (e : E ⥤ E)
@@ -231,7 +231,7 @@ theorem acyc_of_cone (hCx : CxSt) (hHt : HtpySt) (hA : AffAcycSt) [Quiver.IsThin
     abel
 
 /- English proof (translation)
-The claim follows from `acyc_of_cone s hCx hHt hA f W hle (op t) ht (Monotone.functor (f := fun a : L ↦ a ⊓ t) fun _ _ h ↦ inf_le_inf_right t h).op (fun T ↦ (homOfLE inf_le_left).op) (fun T ↦ (homOfLE inf_le_right).op) (fun T ↦ he T.unop)`.
+A detailed English derivation is pending.
 -/
 theorem acyc_member (hCx : CxSt) (hHt : HtpySt) (hA : AffAcycSt) {L : Type} [SemilatticeInf L]
     (f : Lᵒᵖ ⥤ AffOp X) (W : X.affineOpens) (hle) (t : L) (ht : W.1 ≤ (f.obj (op t)).unop.1)
@@ -249,7 +249,7 @@ def pj (f : C ⥤ AffOp X) (w : C × D ⥤ AffOp X) (h : ∀ T, (w.obj T).unop.1
     exact h1.symm.trans h2
 
 /- English proof (translation)
-The claim follows from `hFub R C (f ⋙ OAff s) D (w ⋙ OAff s) (pj s f w h) (fun T ↦ A T)`.
+A detailed English derivation is pending.
 -/
 theorem fub (hFub : FubiniSt) [Quiver.IsThin C] [Quiver.IsThin D] (f : C ⥤ AffOp X) (w : C × D ⥤ AffOp X)
     (h : ∀ T, (w.obj T).unop.1 ≤ (f.obj T.1).unop.1)
@@ -258,11 +258,11 @@ theorem fub (hFub : FubiniSt) [Quiver.IsThin C] [Quiver.IsThin D] (f : C ⥤ Aff
   hFub R C (f ⋙ OAff s) D (w ⋙ OAff s) (pj s f w h) (fun T ↦ A T)
 
 /- English proof (translation)
-Establish `Q₁` using `fub s hFub f w h₁ A₁`. Set `w' : D × C ⥤ AffOp X` to `CategoryTheory.Prod.swap D C ⋙ w`. Establish `h₂' : ∀ T : D × C, (w'.obj T).unop.1 ≤ (g.obj T.1).unop.1` using `fun T ↦ h₂ (T.2, T.1)`. Establish `Q₂` using `fub s hFub g w' h₂' A₂`. Set `sc : D ⥤ D × C` to `(𝟭 D).prod' σ`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `ht : ∀ d, (g.obj d).unop.1 ≤ (w'.obj (sc.obj d)).unop.1` using `h₃`. Establish `Qid : AllQIso (rm s g g (𝟭 D) (fun _ ↦ le_rfl))` using `allQIso_of_inv hCx _ (rm s g g (𝟭 D) (fun _ ↦ le_rfl)) (fun i z ↦ by rw [pull_rm_id, pull_rm_id]) (fun i z ↦ by rw [pull_rm_id, pull_rm_id])`. Establish `Qt : AllQIso (rm s w' g sc ht)` using `((hQ R D (g ⋙ OAff s) (D × C) D (w' ⋙ OAff s) (g ⋙ OAff s) (rm s g w' (CategoryTheory.Prod.fst D C) h₂') (rm s w' g sc ht) (rm s g g (𝟭 D) (fun _ ↦ le_rfl)) (fun i z ↦ (pull_rm_rm s g w' g (CategoryTheory.Prod.fst D C) sc h₂' ht (fun _ ↦ le_rfl) i z).symm)).2.1 Q₂ Qid)`. Establish `hsw : ∀ T, (w'.obj T).unop.1 ≤ (w.obj ((CategoryTheory.Prod.swap D C).obj T)).unop.1` using `fun _ ↦ le_rfl`. Establish `hsw' : ∀ T, (w.obj T).unop.1 ≤ (w'.obj ((CategoryTheory.Prod.swap C D).obj T)).unop.1` using `fun _ ↦ le_rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `Qsw : AllQIso (rm s w w' (CategoryTheory.Prod.swap D C) hsw)` using `allQIso_of_inv hCx _ (rm s w' w (CategoryTheory.Prod.swap C D) hsw') (fun i z ↦ (pull_rm_rm s w w' w _ _ hsw hsw' (fun _ ↦ le_rfl) i z).trans (pull_rm_id s w _ i z)) (fun i z ↦ (pull_rm_rm s w' w w' _ _ hsw' hsw (fun _ ↦ le_rfl) i z).trans (pull_rm_id s w' _ i z))`. Establish `hk₁ : ∀ T, (w'.obj T).unop.1 ≤ (f.obj ((CategoryTheory.Prod.swap D C ⋙ CategoryTheory.Prod.fst C D).obj T)).unop.1` using `fun T ↦ h₁ _`. Establish `Qk₁ : AllQIso (rm s f w' (CategoryTheory.Prod.swap D C ⋙ CategoryTheory.Prod.fst C D) hk₁)` using `((hQ R C (f ⋙ OAff s) (C × D) (D × C) (w ⋙ OAff s) (w' ⋙ OAff s) (rm s f w (CategoryTheory.Prod.fst C D) h₁) (rm s w w' (CategoryTheory.Prod.swap D C) hsw) (rm s f w' (CategoryTheory.Prod.swap D C ⋙ CategoryTheory.Prod.fst C D) hk₁) (fun i z ↦ (pull_rm_rm s f w w' _ _ h₁ hsw hk₁ …`. Establish `hk₂ : ∀ T, (g.obj T).unop.1 ≤ (f.obj ((sc ⋙ CategoryTheory.Prod.swap D C ⋙ CategoryTheory.Prod.fst C D).obj T)).unop.1` using `fun d ↦ (h₃ d).trans (h₁ (σ.obj d, d))`. Conclude with `((hQ R C (f ⋙ OAff s) (D × C) D (w' ⋙ OAff s) (g ⋙ OAff s) (rm s f w' (CategoryTheory.Prod.swap D C ⋙ CategoryTheory.Prod.fst C D) hk₁) (rm s w' g sc ht) (rm s f g (sc ⋙ CategoryTheory.Prod.swap D C ⋙ CategoryTheory.Prod.fst C D) hk₂) (fun i z ↦ (pull_rm_rm s f w' g _ _ hk₁ ht hk …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem compare (hCx : CxSt) (hQ : QCalcSt) (hFub : FubiniSt) [Quiver.IsThin C] [Quiver.IsThin D]
     (f : C ⥤ AffOp X) (g : D ⥤ AffOp X) (w : C × D ⥤ AffOp X) (σ : D ⥤ C)
@@ -312,7 +312,7 @@ variable (hi : ∀ U V : X.affineOpens, IsAffineOpen (U.1 ⊓ V.1))
 def meet (U V : X.affineOpens) : X.affineOpens := ⟨U.1 ⊓ V.1, hi U V⟩
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `U.1 ⊓ V.1 ≤ U'.1 ⊓ V'.1`. Conclude with `inf_le_inf h h'`.
+Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem meet_le {U U' V V' : X.affineOpens} (h : U.1 ≤ U'.1) (h' : V.1 ≤ V'.1) :
     meet hi U V ≤ meet hi U' V' := by
@@ -320,14 +320,14 @@ theorem meet_le {U U' V V' : X.affineOpens} (h : U.1 ≤ U'.1) (h' : V.1 ≤ V'.
   exact inf_le_inf h h'
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `U.1 ⊓ V.1 ≤ U.1`. Conclude with `inf_le_left`.
+Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem meet_le_left (U V : X.affineOpens) : meet hi U V ≤ U := by
   change U.1 ⊓ V.1 ≤ U.1
   exact inf_le_left
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `U.1 ⊓ V.1 ≤ V.1`. Conclude with `inf_le_right`.
+Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem meet_le_right (U V : X.affineOpens) : meet hi U V ≤ V := by
   change U.1 ⊓ V.1 ≤ V.1
@@ -343,9 +343,9 @@ def wFun (f : C ⥤ AffOp X) (g : D ⥤ AffOp X) : C × D ⥤ AffOp X where
   map_comp _ _ := Subsingleton.elim _ _
 
 /- English proof (translation)
-Take `⟨T, hT⟩` from `W.2.isCompact.elim_finite_subcover (fun a ↦ ((v a).1 : Set X)) (fun a ↦ (v a).1.isOpen) (by`. Introduce `x hx`. Establish `: x ∈ ((⨆ a, (v a).1 : X.Opens) : Set X)` using `by rw [hcov]; exact hx`. Simplify `this)` using `[TopologicalSpace.Opens.coe_iSup]`. Use `⟨T, fun x hx ↦ ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `hT hx` as an intermediate fact. Simplify `this` using `[TopologicalSpace.Opens.coe_iSup]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_finite_cover {P : Type} (v : P → X.affineOpens) (W : X.affineOpens)
     (hcov : ⨆ a, (v a).1 = W.1) : ∃ T : Finset P, W.1 ≤ ⨆ a : T, (v a.1).1 := by
@@ -360,21 +360,19 @@ theorem exists_finite_cover {P : Type} (v : P → X.affineOpens) (W : X.affineOp
 
 include hi in
 /- English proof (translation)
-Take `⟨T, hT⟩` from `exists_finite_cover v W hcov`. Set `Q : Set P` to `infClosure (T : Set P)`. Use `letI : SemilatticeInf Q := Subtype.semilatticeInf (fun x y hx hy ↦ infClosed_infClosure hx hy)`. Use `haveI : Finite Q := (T.finite_toSet.infClosure).to_subtype`. Set `vQ : Q →o X.affineOpens` to `⟨fun q ↦ v q.1, fun a b h ↦ v.monotone h⟩`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hleQ : ∀ a, (vQ a).1 ≤ W.1` using `fun a ↦ hle a.1`. Establish `hinfQ : ∀ a b, (vQ (a ⊓ b)).1 = (vQ a).1 ⊓ (vQ b).1` using `fun a b ↦ hinf a.1 b.1`. Establish `hcovQ' : W.1 ≤ ⨆ a, (vQ a).1` using `hT.trans (iSup_le fun a ↦ le_iSup (fun q : Q ↦ (vQ q).1) ⟨a.1, subset_infClosure a.2⟩)`. Establish `hcovQ : ⨆ a, (vQ a).1 = W.1` using `le_antisymm (iSup_le hleQ) hcovQ'`. Set `fP : Pᵒᵖ ⥤ AffOp X` to `v.monotone.functor.op`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `fQ : Qᵒᵖ ⥤ AffOp X` to `vQ.monotone.functor.op`. Set `σ : Qᵒᵖ ⥤ Pᵒᵖ` to `(Subtype.mono_coe _ : Monotone (Subtype.val : Q → P)).functor.op`. Set `w` to `wFun hi fP fQ`. Establish `h₁ : ∀ T, (w.obj T).unop.1 ≤ (fP.obj T.1).unop.1` using `fun _ ↦ inf_le_left`. Establish `h₂ : ∀ T, (w.obj T).unop.1 ≤ (fQ.obj T.2).unop.1` using `fun _ ↦ inf_le_right`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₃ : ∀ d, (fQ.obj d).unop.1 ≤ (w.obj (σ.obj d, d)).unop.1` using `fun _ ↦ le_inf le_rfl le_rfl`. Establish `hr` using `compare s hCx hQ hFub fP fQ w σ h₁ h₂ h₃ (fun c ↦ ?_) (fun d ↦ ?_)`. Conclude with `acyc_of_map s hCx hA fP fQ σ _ W _ (fun T ↦ hleQ T.unop) (fun x hx hx' ↦ by`. Take `⟨y, hy⟩` from `hr.1.1 x hx ⟨0, by rw [hx', map_zero]⟩`. Simplify using `using hy.symm)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use the proof step `(fun n x hx hy ↦ (hr.2 n).1 x hx hy)`. Use the proof step `(acyc_fin s hA vQ W hleQ hinfQ hcovQ)`. Set `v' : Q →o X.affineOpens` to `⟨fun q ↦ meet hi (v c.unop) (vQ q), fun a b h ↦ meet_le hi le_rfl (vQ.monotone h)⟩`. Establish `hle' : ∀ q, (v' q).1 ≤ (v c.unop).1` using `fun _ ↦ inf_le_left`. Establish `hinf' : ∀ a b, (v' (a ⊓ b)).1 = (v' a).1 ⊓ (v' b).1` using `fun a b ↦ by`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `(v c.unop).1 ⊓ (vQ (a ⊓ b)).1 = ((v c.unop).1 ⊓ (vQ a).1) ⊓ ((v c.unop).1 ⊓ (vQ b).1)`. Rewrite using `[hinfQ, inf_inf_distrib_left]`. Establish `hcov' : ⨆ a, (v' a).1 = (v c.unop).1`. Use `le_antisymm (iSup_le hle') ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ ≤ ⨆ a, (v c.unop).1 ⊓ (vQ a).1`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← inf_iSup_eq]`. Conclude with `le_inf le_rfl ((hle _).trans hcovQ')`. Conclude with `(acyc_fin s hA v' (v c.unop) hle' hinf' hcov').congr s (CategoryTheory.Functor.ext (fun _ ↦ rfl) (fun _ _ _ ↦ Subsingleton.elim _ _))`. Use `acyc_member s hCx hHt hA _ (vQ d.unop) _ d.unop.1 (le_inf le_rfl le_rfl) (fun a ↦ ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(v a).1 ⊓ (vQ d.unop).1 ≤ (v (a ⊓ d.unop.1)).1 ⊓ (vQ d.unop).1`.
-
-Rewrite using `[hinf]`. Conclude with `le_inf (le_inf inf_le_left inf_le_right) inf_le_right`.
+A detailed English derivation is pending.
 -/
 theorem acyc_of_cover (hCx : CxSt) (hHt : HtpySt) (hQ : QCalcSt) (hFub : FubiniSt) (hA : AffAcycSt)
     {P : Type} [SemilatticeInf P] (v : P →o X.affineOpens)
@@ -425,13 +423,13 @@ theorem acyc_of_cover (hCx : CxSt) (hHt : HtpySt) (hQ : QCalcSt) (hFub : FubiniS
 
 include hi in
 /- English proof (translation)
-Set `f : AffOp X ⥤ AffOp X` to `𝟭 _`. Set `w` to `wFun hi f S.fn`. Establish `h₁ : ∀ T, (w.obj T).unop.1 ≤ (f.obj T.1).unop.1` using `fun _ ↦ inf_le_left`. Establish `h₂ : ∀ T, (w.obj T).unop.1 ≤ (S.fn.obj T.2).unop.1` using `fun _ ↦ inf_le_right`. Establish `h₃ : ∀ d, (S.fn.obj d).unop.1 ≤ (w.obj (S.fn.obj d, d)).unop.1` using `fun _ ↦ le_inf le_rfl le_rfl`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr` using `compare s hCx hQ hFub f S.fn w S.fn h₁ h₂ h₃ (fun U ↦ ?_) (fun a ↦ ?_)`. Conclude with `allQIso_congr (fun i z ↦ funext fun c ↦ res_self s _ _) hr`. Set `v' : P →o X.affineOpens` to `⟨fun a ↦ meet hi U.unop (S.u a), fun a b h ↦ meet_le hi le_rfl (S.mono h)⟩`. Establish `hle' : ∀ a, (v' a).1 ≤ U.unop.1` using `fun _ ↦ inf_le_left`. Establish `hinf' : ∀ a b, (v' (a ⊓ b)).1 = (v' a).1 ⊓ (v' b).1` using `fun a b ↦ by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `U.unop.1 ⊓ (S.u (a ⊓ b)).1 = (U.unop.1 ⊓ (S.u a).1) ⊓ (U.unop.1 ⊓ (S.u b).1)`. Rewrite using `[S.map_inf, inf_inf_distrib_left]`. Establish `hcov' : ⨆ a, (v' a).1 = U.unop.1`. Use `le_antisymm (iSup_le hle') ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ ≤ ⨆ a, U.unop.1 ⊓ (S.u a).1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← inf_iSup_eq, S.cover, inf_top_eq]`. Conclude with `(acyc_of_cover s hi hCx hHt hQ hFub hA v' hinf' U.unop hle' hcov').congr s (CategoryTheory.Functor.ext (fun _ ↦ rfl) (fun _ _ _ ↦ Subsingleton.elim _ _))`. Use `acyc_of_cone s hCx hHt hA _ (S.fn.obj a).unop _ (S.fn.obj a) (le_inf le_rfl le_rfl) (CategoryTheory.Prod.sectR (S.fn.obj a) (AffOp X) ⋙ CategoryTheory.Prod.swap _ _ ⋙ wFun hi (𝟭 _) (𝟭 _)) (fun T ↦ (homOfLE (meet_le_left hi T.unop _)).op) (fun T ↦ (homOfLE (meet_le_right hi T.unop …` and prove the remaining obligations. Conclude with `le_inf (le_inf inf_le_left inf_le_right) inf_le_right`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem resSys_qiso (hCx : CxSt) (hHt : HtpySt) (hQ : QCalcSt) (hFub : FubiniSt) (hA : AffAcycSt)
     {P : Type} [SemilatticeInf P] (S : Sys X P) : AllQIso (resSys s S) := by
@@ -463,7 +461,7 @@ theorem resSys_qiso (hCx : CxSt) (hHt : HtpySt) (hQ : QCalcSt) (hFub : FubiniSt)
 end Meet
 
 /- English proof (translation)
-Use `haveI : X.IsSeparated := ⟨by`. Rewrite using `[← Limits.terminal.comp_from s]`. Use the proof step `infer_instance⟩`. Conclude with `U.2.inf V.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAffineOpen_inf (hs : IsSeparated s) (U V : X.affineOpens) : IsAffineOpen (U.1 ⊓ V.1) := by
   haveI : X.IsSeparated := ⟨by
@@ -472,7 +470,7 @@ theorem isAffineOpen_inf (hs : IsSeparated s) (U V : X.affineOpens) : IsAffineOp
   exact U.2.inf V.2
 
 /- English proof (translation)
-The claim follows from `fun hCx hHt hQ hFub hA R _ X s hs P _ S ↦ resSys_qiso s (isAffineOpen_inf s hs) hCx hHt hQ hFub hA S`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem descentSt : CxSt → HtpySt → QCalcSt → FubiniSt → AffAcycSt → DescentSt :=
   fun hCx hHt hQ hFub hA R _ X s hs P _ S ↦

@@ -12,9 +12,9 @@ namespace Formalism.InvariantFactorPaths.GelfandTsetlinBases
 namespace Count
 
 /- English proof (translation)
-Introduce `⟨a, ha⟩ ⟨b, hb⟩ hab`. Express the relevant statement in the definitionally equal form `a ≤ b at hab`. Use `revert hb`. Proceed by induction on `b, hab using Nat.le_induction with`. Consider the case `base => intro _`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Conclude with `le_rfl`. Consider the case `succ k hak ih => intro hb; exact (h ⟨k, by omega⟩ ⟨k + 1, hb⟩ rfl).trans (ih (by omega))`.
+A detailed English derivation is pending.
 -/
 theorem antitone_of_step {n : ℕ} {f : Fin n → ℤ}
     (h : ∀ m m' : Fin n, m.val + 1 = m'.val → f m' ≤ f m) : Antitone f := by
@@ -26,13 +26,13 @@ theorem antitone_of_step {n : ℕ} {f : Fin n → ℤ}
   | succ k hak ih => intro hb; exact (h ⟨k, by omega⟩ ⟨k + 1, hb⟩ rfl).trans (ih (by omega))
 
 /- English proof (translation)
-The claim follows from `antitone_of_step fun m m' hm => (h.2.1 m m' hm).trans (h.1 m)`.
+A detailed English derivation is pending.
 -/
 theorem antitone_upper {n : ℕ} {ν μ : Fin n → ℤ} {b : ℕ} (h : HStrip ν μ b) : Antitone ν :=
   antitone_of_step fun m m' hm => (h.2.1 m m' hm).trans (h.1 m)
 
 /- English proof (translation)
-The claim follows from `antitone_of_step fun m m' hm => (h.1 m').trans (h.2.1 m m' hm)`.
+A detailed English derivation is pending.
 -/
 theorem antitone_lower {n : ℕ} {ν μ : Fin n → ℤ} {b : ℕ} (h : HStrip ν μ b) : Antitone μ :=
   antitone_of_step fun m m' hm => (h.1 m').trans (h.2.1 m m' hm)
@@ -44,9 +44,7 @@ def succs {n : ℕ} (v : Bool) (b : ℕ) (μ : Fin n → ℤ) : Finset (Fin n �
   if v then stripsUp μ b else stripsDown μ b
 
 /- English proof (translation)
-Unfold `succs Step`. Consider the cases of `v`. Simplify using `only [Bool.false_eq_true, ↓reduceIte]`. Conclude with `(hS n μ ν b).2`. Simplify using `only [↓reduceIte]`.
-
-Conclude with `(hS n μ ν b).1`.
+Replace the relevant objects with their definitions. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_succs (hS : StripsMem) {n : ℕ} (v : Bool) (b : ℕ) (μ ν : Fin n → ℤ) :
     ν ∈ succs v b μ ↔ Step v b μ ν := by
@@ -56,9 +54,7 @@ theorem mem_succs (hS : StripsMem) {n : ℕ} (v : Bool) (b : ℕ) (μ ν : Fin n
   · simp only [↓reduceIte]; exact (hS n μ ν b).1
 
 /- English proof (translation)
-Unfold `Step at h`. Consider the cases of `v`. Simplify using `only [Bool.false_eq_true, ↓reduceIte] at h`. Conclude with `antitone_lower h`. Simplify using `only [↓reduceIte] at h`.
-
-Conclude with `antitone_upper h`.
+Replace the relevant objects with their definitions. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Step.antitone {n : ℕ} {v : Bool} {b : ℕ} {μ ν : Fin n → ℤ} (h : Step v b μ ν) : Antitone ν := by
   unfold Step at h
@@ -67,9 +63,7 @@ theorem Step.antitone {n : ℕ} {v : Bool} {b : ℕ} {μ ν : Fin n → ℤ} (h 
   · simp only [↓reduceIte] at h; exact antitone_upper h
 
 /- English proof (translation)
-Unfold `succs`. Consider the cases of `v`. Simplify using `only [Bool.false_eq_true, ↓reduceIte]`. Conclude with `(hP n μ b hμ).2`. Simplify using `only [↓reduceIte]`.
-
-Conclude with `(hP n μ b hμ).1`.
+Replace the relevant objects with their definitions. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_succs (hP : GTPieri) {n : ℕ} (v : Bool) (b : ℕ) (μ : Fin n → ℤ) (hμ : Antitone μ) :
     ∑ ν ∈ succs v b μ, dGT n ν = dGT n μ * (n + b - 1).choose b := by
@@ -167,15 +161,15 @@ def fibreEquiv (hS : StripsMem) {n i N : ℕ} (hi : i < N) (isVec : ℕ → Bool
     · rfl
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `i hi μ₀ hμ`. Simplify using `only [add_zero] at hi`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Substitute `hi` using the available equality. Take `⟨hfin, hcard⟩` from `hC n μ₀ hμ`. Establish `e` using `baseEquiv n i isVec B μ₀`. Use `⟨Finite.of_equiv _ e.symm, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.card_congr e, hcard, Finset.Ico_self, Finset.prod_empty, mul_one]`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Consider the case `succ k ih`. Introduce `i hi μ₀ hμ`. Establish `hiN : i < N` using `by omega`. Establish `e : ContIdx n i N isVec B μ₀ ≃ Σ ν : {ν // ν ∈ succs (isVec i) (B i) μ₀}, ContIdx n (i + 1) N isVec B ν.1` using `(Equiv.sigmaFiberEquiv (nextW hS hiN isVec B μ₀)).symm.trans (Equiv.sigmaCongrRight fun ν => fibreEquiv hS hiN isVec B μ₀ ν)`. Establish `hν : ∀ ν : {ν // ν ∈ succs (isVec i) (B i) μ₀}, Antitone ν.1` using `fun ν => Step.antitone ((mem_succs hS _ _ _ _).1 ν.2)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ihν` using `fun ν : {ν // ν ∈ succs (isVec i) (B i) μ₀} => ih (i + 1) (by omega) ν.1 (hν ν)`. Use `haveI : ∀ ν : {ν // ν ∈ succs (isVec i) (B i) μ₀}, Finite (ContIdx n (i + 1) N isVec B ν.1) := fun ν => (ihν ν).1`. Use `⟨Finite.of_equiv _ e.symm, ?_⟩` and prove the remaining obligations. Establish `hsum : ∑ ν : {ν // ν ∈ succs (isVec i) (B i) μ₀}, Nat.card (ContIdx n (i + 1) N isVec B ν.1) = (∑ ν ∈ succs (isVec i) (B i) μ₀, dGT n ν) * ∏ l ∈ Finset.Ico (i + 1) N, (n + B l - 1).choose (B l)`. Rewrite using `[Finset.sum_mul, ← Finset.sum_coe_sort (succs (isVec i) (B i) μ₀)]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun ν _ => (ihν ν).2`. Rewrite using `[Nat.card_congr e, Nat.card_sigma, hsum, sum_succs hP _ _ _ hμ, Finset.prod_eq_prod_Ico_succ_bot hiN]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem norm_index_count_bound (hS : StripsMem) (hP : GTPieri) (hC : StdCountGT) (n N : ℕ) (isVec : ℕ → Bool) (B : ℕ → ℕ) :
     ∀ (k i : ℕ), i + k = N → ∀ μ₀ : Fin n → ℤ, Antitone μ₀ →
@@ -214,9 +208,9 @@ theorem norm_index_count_bound (hS : StripsMem) (hP : GTPieri) (hC : StdCountGT)
     ring
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rfl`. Consider the case `succ n ih`. Establish `h : gtBox (0 : Fin (n + 1) → ℤ) = {0}`. Use extensionality with `κ`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[gtBox, Fintype.mem_piFinset, funext_iff]`. Use `show ∑ κ ∈ gtBox (0 : Fin (n + 1) → ℤ), dGT n κ = 1`. Rewrite using `[h, Finset.sum_singleton, ih]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dGT_zero (n : ℕ) : dGT n 0 = 1 := by
   induction n with
@@ -229,9 +223,9 @@ theorem dGT_zero (n : ℕ) : dGT n 0 = 1 := by
     rw [h, Finset.sum_singleton, ih]
 
 /- English proof (translation)
-Introduce `i hi`. Consider the cases of `i with`. Consider the case `zero => exact h0`. Consider the case `succ j`. Establish `hj` using `h j (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Use `split_ifs at hj`. Conclude with `antitone_upper hj`. Conclude with `antitone_lower hj`.
+A detailed English derivation is pending.
 -/
 theorem antitone_of_rules {n N : ℕ} {isVec : ℕ → Bool} {B : ℕ → ℕ} {μ : ℕ → Fin n → ℤ} (h0 : Antitone (μ 0))
     (h : ∀ j < N, if isVec j then HStrip (μ (j + 1)) (μ j) (B j) else HStrip (μ j) (μ (j + 1)) (B j)) :
@@ -259,14 +253,14 @@ def pathEquiv (n N : ℕ) (isVec : ℕ → Bool) (B : ℕ → ℕ) : PathIdx n N
 end Count
 
 /- English proof (translation)
-Introduce `hS hP hC n i N isVec B μ₀ hiN hμ`. Conclude with `Count.norm_index_count_bound hS hP hC n N isVec B (N - i) i (by omega) μ₀ hμ`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem countCont_of : StripsMem → GTPieri → StdCountGT → CountCont := by
   intro hS hP hC n i N isVec B μ₀ hiN hμ
   exact Count.norm_index_count_bound hS hP hC n N isVec B (N - i) i (by omega) μ₀ hμ
 
 /- English proof (translation)
-Introduce `hCC n N isVec B`. Unfold `CountP`. Take `⟨-, hcard⟩` from `hCC n 0 N isVec B 0 (Nat.zero_le N) (fun _ _ _ => le_rfl)`. Rewrite using `[Nat.card_congr (Count.pathEquiv n N isVec B), hcard, Count.dGT_zero, one_mul, Finset.range_eq_Ico]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem countPAll_of : CountCont → CountPAll := by
   intro hCC n N isVec B

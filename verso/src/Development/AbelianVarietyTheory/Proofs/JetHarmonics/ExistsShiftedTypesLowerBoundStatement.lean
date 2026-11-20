@@ -8,7 +8,7 @@ open Matrix Formalism.QuantumDeterminants Formalism.FourierDecayAlt.Q Formalism.
 open Formalism.REAL (qdet GlRel IsHW)
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.WigSh.exists_shifted_types_lower_bound` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FJetHarmonics%2FExistsShiftedTypesLowerBound.lean&line=19#L19)
 -/

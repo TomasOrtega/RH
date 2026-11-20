@@ -13,9 +13,9 @@ namespace GlobalTheory.ThetaNullNormSquares
 open GlobalTheory.IndefiniteRowSideFullHecke.JacobiThetaHalfCharacteristic (thetaChar IsEvenChar IsPeriodLattice NormTheta0 jacobiTheta₂_half)
 
 /- English proof (translation)
-Unfold `GlobalTheory.Glob.IntegralWittCoefficients.normSq1 nrm1Sq`. Establish `: ∀ z : ℂ, -Real.pi * (GlobalTheory.Glob.IntegralWittCoefficients.hf1 Λ z z).re = -Real.pi * ‖z‖ ^ 2 / area Λ` using `fun z => by`. Unfold `GlobalTheory.Glob.IntegralWittCoefficients.hf1`. Rewrite using `[Complex.mul_conj, ← Complex.ofReal_div, Complex.ofReal_re, Complex.normSq_eq_norm_sq]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [this]`.
+Simplify using the standard rewrite rules.
 -/
 theorem normSq1_eq_nrm1Sq (Λ : AddSubgroup ℂ) (G : ℂ → ℂ) :
     GlobalTheory.Glob.IntegralWittCoefficients.normSq1 Λ G = nrm1Sq Λ G := by
@@ -27,20 +27,20 @@ theorem normSq1_eq_nrm1Sq (Λ : AddSubgroup ℂ) (G : ℂ → ℂ) :
   simp only [this]
 
 /- English proof (translation)
-The claim follows from `JacobiDeriv.thetaChar_half_half τ w`.
+A detailed English derivation is pending.
 -/
 theorem oddTheta_eq (τ : ℍ) (w : ℂ) : oddTheta τ w =
     Complex.exp (π * Complex.I * (τ / 4 + w + 1 / 2)) * jacobiTheta₂ (w + ((τ : ℂ) + 1) / 2) τ :=
   JacobiDeriv.thetaChar_half_half τ w
 
 /- English proof (translation)
-Establish `hy` using `τ.im_ne_zero`. Establish `him : u.im = ((A : ℕ) : ℝ) * τ.im / 2 + M * τ.im - τ.im / 2`. Use `congrArg Complex.im hu` as an intermediate fact. Simplify using `at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[oddTheta_eq, hu, jacobiTheta₂_add_lattice, jacobiTheta₂_half, norm_mul, norm_mul, norm_mul, Complex.norm_exp, Complex.norm_exp, Complex.norm_exp]`. Use `set T := ‖thetaChar A B 0 τ‖`. Establish `e : ∀ x y z w : ℝ, 2 * (x + y + z) + w = 0 → (Real.exp x * (Real.exp y * (Real.exp z * T))) ^ 2 * Real.exp w = T ^ 2` using `fun x y z w h => by`. Establish `: (Real.exp x * (Real.exp y * (Real.exp z * T))) ^ 2 * Real.exp w = Real.exp (2 * (x + y + z) + w) * T ^ 2`. Rewrite using `[Real.exp_add, show 2 * (x + y + z) = (x + y + z) + (x + y + z) by ring, Real.exp_add, Real.exp_add, Real.exp_add]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, h, Real.exp_zero, one_mul]`. Use `e _ _ _ _ ?_` and prove the remaining obligations. Simplify using `[Complex.mul_re, Complex.mul_im, sq, him]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem norm_sq_oddTheta (τ : ℍ) (A B : Fin 2) (M K : ℤ) (u : ℂ)
     (hu : u + ((τ : ℂ) + 1) / 2 = (((A : ℕ) : ℂ) * τ + ((B : ℕ) : ℂ)) / 2 + (M * τ + K)) :
@@ -73,13 +73,13 @@ variable {Λ : AddSubgroup ℂ} {a : ℂ} {τ : ℍ} (ha : a ≠ 0)
 include ha h
 
 /- English proof (translation)
-Use `⟨a, a * τ, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t hst`. Simplify using `only [Complex.real_smul] at hst`. Establish `e : (s : ℂ) + t * τ = 0` using `mul_left_cancel₀ ha (by linear_combination hst)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1` using `congrArg Complex.im e`. Simplify using `[τ.im_ne_zero] at h1`. Simplify using `[h1] at e`. Conclude with `⟨e, h1⟩`. Use extensionality with `x`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Supply the required witnesses or components. By extensionality, compare the relevant components.
 
-Rewrite using `[h, AddSubgroup.mem_closure_pair]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, n, rfl⟩`. Conclude with `⟨n, m, by simp; ring⟩`. Introduce and unpack `⟨n, m, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨m, n, by simp; ring⟩`.
+Supply the required witnesses or components.
 -/
 theorem lat_gen : ∃ w₁ w₂ : ℂ, LinearIndependent ℝ ![w₁, w₂] ∧ Λ = AddSubgroup.closure {w₁, w₂} := by
   refine ⟨a, a * τ, ?_, ?_⟩
@@ -100,9 +100,9 @@ theorem lat_gen : ∃ w₁ w₂ : ℂ, LinearIndependent ℝ ![w₁, w₂] ∧ �
       exact ⟨m, n, by simp; ring⟩
 
 /- English proof (translation)
-Take `⟨-, -, huniq, -⟩` from `GlobalTheory.OddTheta.sgStar_laws Λ (lat_gen ha h)`. Establish `hu` using `huniq _ (differentiable_canTheta a τ) (thetaTranslation_canonicalOddTheta_lattice ha h)`. Use `⟨_, fun h0 => ?_, hu⟩` and prove the remaining obligations. Establish `k` using `odd_theta_norm_canonical ha h`. Rewrite `k` using `[show canTheta a τ = fun z => (0 : ℂ) * sgStar Λ z from funext fun z => by rw [hu z, h0], odd_theta_norm_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hy` using `τ.im_pos`. Establish `: 0 < (Real.sqrt (2 * τ.im))⁻¹` using `by positivity`. Rewrite `this` using `[← k]`. Simplify using `at this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem canTheta_eq : ∃ c : ℂ, c ≠ 0 ∧ ∀ z, canTheta a τ z = c * sgStar Λ z := by
   obtain ⟨-, -, huniq, -⟩ := GlobalTheory.OddTheta.sgStar_laws Λ (lat_gen ha h)
@@ -117,11 +117,11 @@ theorem canTheta_eq : ∃ c : ℂ, c ≠ 0 ∧ ∀ z, canTheta a τ z = c * sgSt
   simp at this
 
 /- English proof (translation)
-Take `⟨-, hz, -⟩` from `GlobalTheory.OddTheta.sgStar_laws Λ (lat_gen ha h)`. Take `⟨c, hc, hC⟩` from `canTheta_eq ha h`. Rewrite using `[← hz]`. Use `hC (a * w)` as an intermediate fact. Rewrite `this` using `[canTheta, mul_div_cancel_left₀ _ ha, oddTheta_eq]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h0`. Rewrite `this` using `[h0, mul_zero, mul_zero]`. Conclude with `(mul_eq_zero.1 this.symm).resolve_left hc`. Introduce `h0`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[h0, mul_zero]`. Simplify `this` using `[Complex.exp_ne_zero]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem jacobiTheta₂_eq_zero_iff (w : ℂ) :
     jacobiTheta₂ (w + ((τ : ℂ) + 1) / 2) τ = 0 ↔ a * w ∈ Λ := by
@@ -139,25 +139,23 @@ theorem jacobiTheta₂_eq_zero_iff (w : ℂ) :
     simpa [Complex.exp_ne_zero] using this
 
 /- English proof (translation)
-Take `⟨⟨-, -, -, hU⟩, hz, -⟩` from `GlobalTheory.OddTheta.sgStar_laws Λ (lat_gen ha h)`. Take `⟨c, hc, hC⟩` from `canTheta_eq ha h`. Establish `hy` using `τ.im_pos`. Establish `hn` using `norm_pos_iff.2 ha`. Establish `k` using `odd_theta_norm_canonical ha h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `k` using `[show canTheta a τ = fun z => c * sgStar Λ z from funext hC, odd_theta_norm_smul]`. Establish `th : GlobalTheory.Glob.IntegralWittCoefficients.th0 Λ t = fun z => (U1 Λ t (sgStar Λ) 0)⁻¹ * U1 Λ t (sgStar Λ) z`. Use function extensionality and compare the values at `fun z => div_eq_inv_mul _ _`. Rewrite using `[th, odd_theta_norm_smul, odd_theta_norm_translate ha h hU, norm_inv, inv_pow]`. Establish `hS : sgStar Λ t ≠ 0` using `fun h0 => ht ((hz t).1 h0)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hU0 : U1 Λ t (sgStar Λ) 0 ≠ 0`. Simplify using `[U1, hS, Complex.exp_ne_zero]`. Establish `hval` using `thetaTranslation_weighted_normSq_mul Λ t (sgStar Λ) 0`. Simplify using `only [norm_zero, ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, mul_zero, zero_div, Real.exp_zero, mul_one, zero_add] at hval`. Establish `hct` using `hC t`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `hct` using `[canTheta]`. Establish `hnorm : ‖c‖ ^ 2 * ‖U1 Λ t (sgStar Λ) 0‖ ^ 2 = ‖oddTheta τ (t / a)‖ ^ 2 * Real.exp (-2 * π * (t / a).im ^ 2 / τ.im)`. Establish `e1` using `congrArg (fun x => ‖x‖ ^ 2) hct`. Simplify using `only [norm_mul, mul_pow, Complex.norm_exp] at e1`. Establish `ht' : t = a * (t / a)` using `by field_simp`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hre : (π * (t / a) ^ 2 / (2 * τ.im) : ℂ).re = π * ((t / a).re ^ 2 - (t / a).im ^ 2) / (2 * τ.im)`. Rewrite using `[show (2 * (τ.im : ℂ)) = ((2 * τ.im : ℝ) : ℂ) by push_cast; rfl, Complex.div_ofReal_re]`. Simplify using `[sq]`. Establish `hnt : ‖t‖ ^ 2 = ‖a‖ ^ 2 * ((t / a).re ^ 2 + (t / a).im ^ 2)` using `by conv_lhs => rw [ht']`. Rewrite using `[norm_mul, mul_pow, Complex.sq_norm (t / a), Complex.normSq_apply]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `eX : Real.exp (π * (t / a) ^ 2 / (2 * τ.im) : ℂ).re ^ 2 * Real.exp (-π * ‖t‖ ^ 2 / area Λ) = Real.exp (-2 * π * (t / a).im ^ 2 / τ.im)`. Rewrite using `[sq, ← Real.exp_add, ← Real.exp_add, hre, hnt, LatticeAreaBound.area_eq ha h]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hval, ← mul_assoc, ← e1, ← eX]`. Expand and normalize the polynomial expressions, which then agree. Establish `hNpos : 0 < nrm1Sq Λ (sgStar Λ)`. Establish `h1 : 0 < ‖c‖ ^ 2 * nrm1Sq Λ (sgStar Λ)` using `by rw [k]; positivity`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(pos_iff_pos_of_mul_pos h1).1 (by positivity)`. Establish `hP : 0 < ‖U1 Λ t (sgStar Λ) 0‖ ^ 2` using `by positivity`. Use `⟨by positivity, ?_⟩` and prove the remaining obligations. Rewrite using `[← hnorm]`. Establish `hs : 0 < Real.sqrt (2 * τ.im)` using `by positivity`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc2 : 0 < ‖c‖ ^ 2` using `by positivity`. Use `set N := nrm1Sq Λ (sgStar Λ)`. Use `set P := ‖U1 Λ t (sgStar Λ) 0‖ ^ 2`. Use `set s := Real.sqrt (2 * τ.im)`. Use `set C := ‖c‖ ^ 2`.
-
-Rewrite using `[mul_inv, inv_inv, show N⁻¹ = C * s by`. Rewrite using `[inv_eq_iff_eq_inv, eq_comm, inv_eq_iff_eq_inv]`. Clear denominators, using `at k ⊢` for the nonvanishing conditions. Use the proof step `linarith]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem meanSquare_normalizedThetaTwoTorsion {t : ℂ} (ht : t ∉ Λ) :
     0 < nrm1Sq Λ (GlobalTheory.Glob.IntegralWittCoefficients.th0 Λ t) ∧
@@ -220,9 +218,9 @@ theorem meanSquare_normalizedThetaTwoTorsion {t : ℂ} (ht : t ∉ Λ) :
   ring
 
 /- English proof (translation)
-Establish `e : thetaChar A B ((m * (τ : ℂ) + n) / 2) τ = 0 ↔ jacobiTheta₂ ((m * (τ : ℂ) + n) / 2 + (((A : ℕ) : ℂ) * τ + ((B : ℕ) : ℂ)) / 2) τ = 0`. Simplify using `[thetaChar, Complex.exp_ne_zero]`. Establish `e2 : (m * (τ : ℂ) + n) / 2 + (((A : ℕ) : ℂ) * τ + ((B : ℕ) : ℂ)) / 2 = (((m + ((A : ℕ) : ℤ) - 1 : ℤ) : ℂ) * τ + ((n + ((B : ℕ) : ℤ) - 1 : ℤ) : ℂ)) / 2 + ((τ : ℂ) + 1) / 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e, e2, jacobiTheta₂_eq_zero_iff ha h, ← mul_div_assoc, half_mem_iff ha h]`. Generalize the expression as in `m + ((A : ℕ) : ℤ) - 1 = p`. Generalize the expression as in `n + ((B : ℕ) : ℤ) - 1 = q`. Simplify using `only [parity_simps]`. The claim follows by propositional logic.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Simplify using the standard rewrite rules. The claim follows by propositional logic.
 -/
 theorem thetaChar_eq_zero_iff (A B : Fin 2) (m n : ℤ) :
     thetaChar A B ((m * (τ : ℂ) + n) / 2) τ = 0 ↔
@@ -244,13 +242,13 @@ theorem thetaChar_eq_zero_iff (A B : Fin 2) (m n : ℤ) :
 end
 
 /- English proof (translation)
-Establish `huniq : ∀ A B A' B' : Fin 2, Even (m + ((A : ℕ) : ℤ) - 1) → Even (n + ((B : ℕ) : ℤ) - 1) → Even (m + ((A' : ℕ) : ℤ) - 1) → Even (n + ((B' : ℕ) : ℤ) - 1) → (A', B') = (A, B)`. Introduce `A B A' B' h1 h2 h3 h4`. Rewrite `h1`, `h2`, `h3`, `h4` using `[Int.even_iff]`. Use `A.isLt` as an intermediate fact. Use `B.isLt` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `A'.isLt` as an intermediate fact. Use `B'.isLt` as an intermediate fact. Rewrite using `[Prod.mk.injEq, Fin.ext_iff, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers. Establish `hex : ∃ A B : Fin 2, IsEvenChar A B ∧ Even (m + ((A : ℕ) : ℤ) - 1) ∧ Even (n + ((B : ℕ) : ℤ) - 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Apply the tactic sequence `rcases Int.even_or_odd m with hm | hm <;> rcases Int.even_or_odd n with hn | hn`. Conclude with `absurd ⟨hm, hn⟩ hnot`. Conclude with `⟨1, 0, by simp [IsEvenChar], by simpa using hm, by simpa [parity_simps] using hn⟩`. Conclude with `⟨0, 1, by simp [IsEvenChar], by simpa [parity_simps] using hm, by simpa using hn⟩`. Conclude with `⟨0, 0, by simp [IsEvenChar], by simpa [parity_simps] using hm, by simpa [parity_simps] using hn⟩`.
+Apply the first step, then apply the next step to every resulting obligation. Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨A, B, h0, h1, h2⟩` from `hex`. Conclude with `⟨(A, B), ⟨h0, h1, h2⟩, fun c hc => huniq A B c.1 c.2 h1 h2 hc.2.1 hc.2.2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem existsUnique_char (m n : ℤ) (hnot : ¬ (Even m ∧ Even n)) :
     ∃! c : Fin 2 × Fin 2, IsEvenChar c.1 c.2 ∧
@@ -277,23 +275,23 @@ theorem existsUnique_char (m n : ℤ) (hnot : ¬ (Even m ∧ Even n)) :
   exact ⟨(A, B), ⟨h0, h1, h2⟩, fun c hc => huniq A B c.1 c.2 h1 h2 hc.2.1 hc.2.2⟩
 
 /- English proof (translation)
-Introduce `Λ ω₁ τ t₀ hω hτ hP h2 ht`. Set `τ' : ℍ` to `⟨τ, hτ⟩`. Establish `hτ' : (τ' : ℂ) = τ` using `rfl`. Establish `h : ∀ x, x ∈ Λ ↔ ∃ m n : ℤ, ω₁ * (m * (τ' : ℂ) + n) = x` using `fun x => by`. Rewrite using `[hP x]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, n, rfl⟩`. Conclude with `⟨n, m, by rw [hτ']; ring⟩`. Introduce and unpack `⟨m, n, rfl⟩`. Conclude with `⟨n, m, by rw [hτ']; ring⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Take `⟨m, n, hmn⟩` from `(h _).1 h2`. Establish `hu : t₀ / ω₁ = (m * (τ' : ℂ) + n) / 2`. Rewrite using `[div_eq_iff hω]`. Take the linear combination `(-1 / 2 : ℂ) * hmn`. Establish `hnot : ¬ (Even m ∧ Even n)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Introduce `hp`. Apply `ht` to reduce the goal to its premises. Establish `hm` using `(half_mem_iff hω h m n).2 (by`. Take `⟨hm, hn⟩` from `hp`. Simplify using `[parity_simps, hm, hn])`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Rewrite `hm` using `[hmn, mul_div_cancel_left₀ _ (two_ne_zero)]`. Then use the resulting hypothesis. Rewrite using `[normSq1_eq_nrm1Sq]`. Take `⟨hpos, hinv⟩` from `meanSquare_normalizedThetaTwoTorsion hω h ht`. Use `⟨?_, hpos, ?_⟩` and prove the remaining obligations. Rewrite using `[hu]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [show τ = (τ' : ℂ) from rfl, thetaChar_eq_zero_iff hω h]`. Conclude with `existsUnique_char m n hnot`. Introduce `A B _ hz`. Rewrite `hz` using `[hu, show τ = (τ' : ℂ) from rfl, thetaChar_eq_zero_iff hω h]`. Take `⟨⟨r, hr⟩, ⟨s, hs⟩⟩` from `hz`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hinv]`. Use `congrArg (fun x => Real.sqrt (2 * τ.im) * x) (norm_sq_oddTheta τ' A B (r + 1 - ((A : ℕ) : ℤ)) (s + 1 - ((B : ℕ) : ℤ)) _ ?_)` and prove the remaining obligations. Establish `hm : (m : ℂ) = 2 * r + 1 - ((A : ℕ) : ℂ)`. Establish `: m = 2 * r + 1 - ((A : ℕ) : ℤ)` using `by omega`. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hn : (n : ℂ) = 2 * s + 1 - ((B : ℕ) : ℂ)`. Establish `: n = 2 * s + 1 - ((B : ℕ) : ℤ)` using `by omega`. Rewrite using `[this]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hu, hm, hn]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem normTheta0 : NormTheta0 := by
   intro Λ ω₁ τ t₀ hω hτ hP h2 ht

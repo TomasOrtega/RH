@@ -18,7 +18,7 @@ noncomputable def extPrime {K : Type} [Field K] [NumberField K] (σ : Type)
   la.asIdeal.map MvPolynomial.C
 
 /- English proof (translation)
-The claim follows from `MvPolynomial.mem_map_C_iff`.
+A detailed English derivation is pending.
 -/
 theorem mem_extPrime {K : Type} [Field K] [NumberField K] {σ : Type}
     (la : HeightOneSpectrum (𝓞 K)) (p : MvPolynomial σ (𝓞 K)) :
@@ -33,19 +33,19 @@ instance extPrime_isPrime {K : Type} [Field K] [NumberField K] (σ : Type)
   exact (MvPolynomial.quotientEquivQuotientMvPolynomial (σ := σ) la.asIdeal).symm.toMulEquiv.isDomain
 
 /- English proof (translation)
-Use `set P := extPrime σ la`. Use `set Ol := Localization.AtPrime la.asIdeal`. Establish `: IsDiscreteValuationRing Ol` using `IsLocalization.AtPrime.isDiscreteValuationRing_of_dedekind_domain (𝓞 K) la.ne_bot Ol`. Establish `hC : ∀ y : la.asIdeal.primeCompl, IsUnit ((algebraMap (MvPolynomial σ (𝓞 K)) (Localization.AtPrime P)).comp (MvPolynomial.C) (y : 𝓞 K))`. Introduce `y`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `IsLocalization.map_units (M := P.primeCompl) (Localization.AtPrime P) ⟨MvPolynomial.C (y : 𝓞 K), _⟩` to reduce the goal to its premises. Introduce `hy`. Apply `y.2` to reduce the goal to its premises. Use `(MvPolynomial.mem_map_C_iff (I := la.asIdeal) (f := MvPolynomial.C (y : 𝓞 K))).mp hy 0` as an intermediate fact. Simplify using `using this`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `φ : Ol →+* Localization.AtPrime P` to `IsLocalization.lift (M := la.asIdeal.primeCompl) hC`. Establish `hφ : φ.comp (algebraMap (𝓞 K) Ol) = (algebraMap (MvPolynomial σ (𝓞 K)) (Localization.AtPrime P)).comp MvPolynomial.C` using `IsLocalization.lift_comp hC`. Establish `hmax : maximalIdeal (Localization.AtPrime P) = (maximalIdeal Ol).map φ`. Rewrite using `[← Localization.AtPrime.map_eq_maximalIdeal, ← Localization.AtPrime.map_eq_maximalIdeal, Ideal.map_map, hφ, ← Ideal.map_map]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsNoetherianRing (Localization.AtPrime P)` using `IsLocalization.isNoetherianRing P.primeCompl _ inferInstance`. Establish `hnf : ¬ IsField (Localization.AtPrime P)`. Rewrite using `[isField_iff_maximalIdeal_eq, ← Localization.AtPrime.map_eq_maximalIdeal]`. Introduce `h`. Take `⟨a, ha, ha0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot la.ne_bot`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hm : (algebraMap (MvPolynomial σ (𝓞 K)) (Localization.AtPrime P)) (MvPolynomial.C a) ∈ P.map (algebraMap (MvPolynomial σ (𝓞 K)) (Localization.AtPrime P))` using `Ideal.mem_map_of_mem _ (Ideal.mem_map_of_mem _ ha)`. Rewrite `hm` using `[h, Ideal.mem_bot]`. Establish `hinj` using `IsLocalization.injective (Localization.AtPrime P) (M := P.primeCompl) P.primeCompl_le_nonZeroDivisors`. Apply `ha0` to reduce the goal to its premises. Use `hinj (hm.trans (map_zero _).symm)` as an intermediate fact.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using this`. Use `((IsDiscreteValuationRing.TFAE (Localization.AtPrime P) hnf).out 0 4).mpr ?_` and prove the remaining obligations. Rewrite using `[hmax]`. Take `⟨g, hg⟩` from `(IsPrincipalIdealRing.principal (maximalIdeal Ol))`. Rewrite using `[hg]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `⟨⟨φ g, ?_⟩⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Ideal.map φ (Ideal.span {g}) = Ideal.span {φ g}`. Rewrite using `[Ideal.map_span, Set.image_singleton]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isDVR {K : Type} [Field K] [NumberField K] (σ : Type) [Finite σ]
     (la : HeightOneSpectrum (𝓞 K)) :
@@ -97,13 +97,13 @@ theorem isDVR {K : Type} [Field K] [NumberField K] (σ : Type) [Finite σ]
   rw [Ideal.map_span, Set.image_singleton]
 
 /- English proof (translation)
-Establish `hu : ∀ y : P.primeCompl, IsUnit (φ y)` using `fun y => isUnit_iff_ne_zero.2 fun h => y.2 (hker _ h)`. Set `ψ : Localization.AtPrime P →+* Ω` to `IsLocalization.lift (M := P.primeCompl) hu`. Establish `hψ : ∀ r, ψ (algebraMap R _ r) = φ r` using `fun r => IsLocalization.lift_eq hu r`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible (Localization.AtPrime P)`. Establish `hϖ0 : ψ ϖ ≠ 0`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `h`. Establish `hm : algebraMap R (Localization.AtPrime P) a ∈ maximalIdeal (Localization.AtPrime P)` using `(IsLocalization.AtPrime.to_map_mem_maximal_iff _ P a).2 ha`. Rewrite `hm` using `[hϖ.maximalIdeal_eq, Ideal.mem_span_singleton]`. Take `⟨c, hc⟩` from `hm`. Apply `ha0` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← hψ, hc, map_mul, h, zero_mul]`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `r hr`. Assume the negation of the conclusion as `hr0`. Establish `hinj` using `IsLocalization.injective (Localization.AtPrime P) (M := P.primeCompl) P.primeCompl_le_nonZeroDivisors`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hr1 : algebraMap R (Localization.AtPrime P) r ≠ 0` using `(map_ne_zero_iff _ hinj).2 hr0`. Take `⟨n, u, hn⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hr1 hϖ`. Rewrite `hr` using `[← hψ, hn, map_mul, map_pow]`. Conclude with `mul_ne_zero (u.isUnit.map ψ).ne_zero (pow_ne_zero _ hϖ0) hr`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem injective_of_dvr {R Ω : Type} [CommRing R] [IsDomain R] [Field Ω] (φ : R →+* Ω)
     (P : Ideal R) [P.IsPrime] [IsDiscreteValuationRing (Localization.AtPrime P)]
@@ -133,9 +133,7 @@ theorem injective_of_dvr {R Ω : Type} [CommRing R] [IsDomain R] [Field Ω] (φ 
   exact mul_ne_zero (u.isUnit.map ψ).ne_zero (pow_ne_zero _ hϖ0) hr
 
 /- English proof (translation)
-Use `letI : Algebra R (vRing w) := ((algebraMap R Ω).codRestrict (vRing w) h).toAlgebra`. Use `haveI : IsScalarTower R (vRing w) Ω := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Establish `hb' : IsIntegral (vRing w) b` using `hb.tower_top`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hb'`. Rewrite using `[← hy]`.
-
-Conclude with `y.2`.
+Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonneg_of_isIntegral {R Ω : Type} [CommRing R] [Field Ω] [Algebra R Ω]
     (w : AddValuation Ω (WithTop ℤ)) (h : ∀ r, 0 ≤ w (algebraMap R Ω r)) {b : Ω}
@@ -148,13 +146,11 @@ theorem nonneg_of_isIntegral {R Ω : Type} [CommRing R] [Field Ω] [Algebra R Ω
   exact y.2
 
 /- English proof (translation)
-Use `set O := Localization.AtPrime P`. Use `set F := FractionRing R`. Use `letI : Algebra O Ω := ((algebraMap F Ω).comp (algebraMap O F)).toAlgebra`. Use `haveI : IsScalarTower O F Ω := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Use `haveI : IsScalarTower R O Ω := IsScalarTower.of_algebraMap_eq (fun r => by`.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[IsScalarTower.algebraMap_apply O F Ω, ← IsScalarTower.algebraMap_apply R O F, ← IsScalarTower.algebraMap_apply R F Ω])`. Use `haveI : CharZero F := RingHom.charZero (algebraMap F Ω)`. Take `⟨hD, _, _, _, hmax, _⟩` from `ReciprocityTheory.MultiplicativeHeights.Closed.dedekindRank O F Ω`. Use `haveI : IsFractionRing (integralClosure O Ω) Ω := integralClosure.isFractionRing_of_finite_extension F Ω`. Use `haveI := hmax.to_subtype`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Use `haveI : Finite (HeightOneSpectrum (integralClosure O Ω)) := by`. Use `Finite.of_injective (fun v => (⟨v.asIdeal, v.isMaximal⟩ : {I : Ideal (integralClosure O Ω) | I.IsMaximal})) ?_` and prove the remaining obligations. Introduce `v v' h`. Conclude with `HeightOneSpectrum.ext (congrArg Subtype.val h)`. Take `⟨e, -⟩` from `ValPl.placesOver_bij O F Ω`.
-
-Establish `hfin : (ValPl.PlacesOver O Ω).Finite` using `Set.finite_coe_iff.1 (Finite.of_equiv _ e)`. Use `hfin.subset ?_` and prove the remaining obligations. Introduce and unpack `v ⟨h1, h2⟩`. Conclude with `⟨h1, (ValPl.placesOver_iff_loc P v).1 h2⟩`.
+A detailed English derivation is pending.
 -/
 theorem finite_places {R Ω : Type} [CommRing R] [IsDomain R] [Field Ω] [CharZero Ω] [Algebra R Ω]
     [Algebra (FractionRing R) Ω] [IsScalarTower R (FractionRing R) Ω]
@@ -190,37 +186,31 @@ end VerticalGauss
 open VerticalGauss IsDedekindDomain in
 
 /- English proof (translation)
-Introduce `K Ω _ _ _ _ D x hFG htr g hg`. Assume the negation of the conclusion as `hinf`. Take `⟨v₀, -, -, la₀, h₀⟩` from `Set.Infinite.nonempty hinf`. Apply `hinf` to reduce the goal to its premises. Use `clear hinf`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Introduce a local definition for the expression.
 
-Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap K Ω).injective`. Set `ι : 𝓞 K →+* Ω` to `(algebraMap K Ω).comp (algebraMap (𝓞 K) K)`. Establish `hι : Function.Injective ι` using `(algebraMap K Ω).injective.comp (IsFractionRing.injective (𝓞 K) K)`. Set `φ : MvPolynomial (Fin D) (𝓞 K) →+* Ω` to `MvPolynomial.eval₂Hom ι x`. Establish `hinj : Function.Injective φ` using `by haveI := isDVR (Fin D) la₀`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, ha, ha0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot la₀.ne_bot`. Use `injective_of_dvr φ (extPrime (Fin D) la₀) (fun r hr => ?_) (MvPolynomial.C a) (Ideal.mem_map_of_mem _ ha) ?_` and prove the remaining obligations. Rewrite using `[mem_extPrime, ← (h₀ r).2]`. Express the relevant statement in the definitionally equal form `0 < v₀ (φ r)`. Rewrite using `[hr]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `only [φ, MvPolynomial.eval₂Hom_C]`. Conclude with `(map_ne_zero_iff _ hι).2 ha0`. Use `letI : Algebra (𝓞 K) Ω := ι.toAlgebra`. Use `haveI : IsScalarTower (𝓞 K) K Ω := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Use `haveI : FaithfulSMul (𝓞 K) Ω := (faithfulSMul_iff_algebraMap_injective _ _).2 hι`. Establish `hind : AlgebraicIndependent (𝓞 K) x` using `hinj`. Use `haveI : Algebra.IsAlgebraic (𝓞 K) K := IsLocalization.isAlgebraic K (nonZeroDivisors (𝓞 K))`. Establish `hB : IsTranscendenceBasis K x` using `(hind.extendScalars K).isTranscendenceBasis_of_trdeg_le_of_finite (by simp [htr])`. Establish `hB' : IsTranscendenceBasis (𝓞 K) x` using `(Algebra.IsAlgebraic.isTranscendenceBasis_iff (𝓞 K) K).2 hB`.
+Establish an intermediate fact. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set R := MvPolynomial (Fin D) (𝓞 K)`. Use `letI : Algebra R Ω := φ.toAlgebra`. Use `haveI : FaithfulSMul R Ω := (faithfulSMul_iff_algebraMap_injective _ _).2 hinj`. Use `haveI halg : Algebra.IsAlgebraic R Ω := by`. Use `hB'.isAlgebraic` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Algebra.IsAlgebraic.of_ringHom_of_comp_eq hind.aevalEquiv.toRingEquiv.toRingHom (RingHom.id Ω) hind.aevalEquiv.surjective Function.injective_id (RingHom.ext fun p => hind.algebraMap_aevalEquiv p)`. Use `letI : Algebra (FractionRing R) Ω := FractionRing.liftAlgebra R Ω`. Use `haveI : IsScalarTower R (FractionRing R) Ω := FractionRing.isScalarTower_liftAlgebra R Ω`. Use `haveI : Algebra.IsAlgebraic (FractionRing R) Ω := Algebra.IsAlgebraic.extendScalars (IsFractionRing.injective R (FractionRing R))`. Use `haveI : FiniteDimensional (FractionRing R) Ω := by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Take `⟨S, hS⟩` from `hFG`. Establish `htop : IntermediateField.adjoin (FractionRing R) (S : Set Ω) = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `y _`. Establish `hy : y ∈ IntermediateField.adjoin K (S : Set Ω)` using `hS ▸ IntermediateField.mem_top`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `hO : ∀ a : 𝓞 K, ι a ∈ IntermediateField.adjoin (FractionRing R) (S : Set Ω)`. Introduce `a`. Establish `: ι a = algebraMap (FractionRing R) Ω (algebraMap R _ (MvPolynomial.C a))`. Rewrite using `[← IsScalarTower.algebraMap_apply]`. Conclude with `(MvPolynomial.eval₂Hom_C ι x a).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[this]`. Conclude with `IntermediateField.algebraMap_mem _ _`. Proceed by induction on `hy using IntermediateField.adjoin_induction with`. Consider the case `mem y hy => exact IntermediateField.subset_adjoin _ _ hy`. Consider the case `algebraMap k`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, b, -, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 K) k`. Rewrite using `[map_div₀]`. Conclude with `div_mem (hO a) (hO b)`. Consider the case `add a b _ _ ha hb => exact add_mem (ha trivial) (hb trivial)`. Consider the case `inv a _ ha => exact inv_mem (ha trivial)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Consider the case `mul a b _ _ ha hb => exact mul_mem (ha trivial) (hb trivial)`. Establish `: FiniteDimensional (FractionRing R) (IntermediateField.adjoin (FractionRing R) (S : Set Ω))` using `IntermediateField.finiteDimensional_adjoin fun y _ => (Algebra.IsAlgebraic.isAlgebraic y).isIntegral`. Rewrite `this` using `[htop]`. Conclude with `IntermediateField.topEquiv.toLinearEquiv.finiteDimensional`. Take `⟨r, hr0, hr⟩` from `(halg.isAlgebraic g).exists_integral_multiple`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨s, hs0, hs⟩` from `(halg.isAlgebraic g⁻¹).exists_integral_multiple`. Take `⟨m, hm⟩` from `MvPolynomial.ne_zero_iff.1 (mul_ne_zero hr0 hs0)`. Establish `hfin : {la : HeightOneSpectrum (𝓞 K) | la.asIdeal ∣ Ideal.span {MvPolynomial.coeff m (r * s)}}.Finite` using `Ideal.finite_factors (by simpa using hm)`. Use `(hfin.biUnion (t := fun la => {v : AddValuation Ω (WithTop ℤ) | IsNormDiscrete v ∧ ∀ y : R, 0 ≤ v (algebraMap R Ω y) ∧ (0 < v (algebraMap R Ω y) ↔ y ∈ extPrime (Fin D) la)}) (fun la _ => haveI := isDVR (Fin D) la; finite_places _)).subset ?_` and prove the remaining obligations. Introduce and unpack `v ⟨hv, hvg, la, hla⟩`.
-
-Establish `hla' : ∀ y : R, 0 ≤ v (algebraMap R Ω y) ∧ (0 < v (algebraMap R Ω y) ↔ y ∈ extPrime (Fin D) la)` using `fun y => by`. Rewrite using `[mem_extPrime]`. Conclude with `hla y`. Use `Set.mem_biUnion (x := la) ?_ ⟨hv, hla'⟩` and prove the remaining obligations. Rewrite using `[Set.mem_setOf_eq, Ideal.dvd_span_singleton]`.
-
-Use `(mem_extPrime la _).1 ?_ m` and prove the remaining obligations. Assume the negation of the conclusion as `hrs`. Establish `hz : ∀ y : R, y ∉ extPrime (Fin D) la → v (algebraMap R Ω y) = 0` using `fun y hy => le_antisymm (not_lt.1 fun h => hy ((hla' y).2.1 h)) (hla' y).1`. Establish `h1` using `nonneg_of_isIntegral v (fun y => (hla' y).1) hr`. Establish `h2` using `nonneg_of_isIntegral v (fun y => (hla' y).1) hs`.
-
-Rewrite `h1` using `[Algebra.smul_def, AddValuation.map_mul, hz _ (fun h => hrs (Ideal.mul_mem_right _ _ h)), zero_add]`. Rewrite `h2` using `[Algebra.smul_def, AddValuation.map_mul, hz _ (fun h => hrs (Ideal.mul_mem_left _ _ h)), zero_add]`. Use `hvg (ValPl.wt_add_eq_zero h1 h2 ?_)` and prove the remaining obligations. Rewrite using `[← AddValuation.map_mul, mul_inv_cancel₀ hg, AddValuation.map_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_vertical_gauss_valuations : ∀ (K Ω : Type) [Field K] [NumberField K] [Field Ω] [Algebra K Ω] (D : ℕ) (x : Fin D → Ω), (⊤ : IntermediateField K Ω).FG → Algebra.trdeg K Ω = D → ∀ g : Ω, g ≠ 0 → {v : AddValuation Ω (WithTop ℤ) | IsNormDiscrete v ∧ v g ≠ 0 ∧ ∃ la : IsDedekindDomain.HeightOneSpectrum (𝓞 K), ∀ p : MvPolynomial (Fin D) (𝓞 K), 0 ≤ v (MvPolynomial.eval₂ ((algebraMap K Ω).comp (algebraMap (𝓞 K) K)) x p) ∧ (0 < v (MvPolynomial.eval₂ ((algebraMap K Ω).comp (algebraMap (𝓞 K) K)) x p) ↔ ∀ m, p.coeff m ∈ la.asIdeal)}.Finite := by
   intro K Ω _ _ _ _ D x hFG htr g hg

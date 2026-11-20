@@ -13,7 +13,7 @@ def BC {R R' X X' : Type*} [CommRing R] [CommRing R'] [AddCommGroup X] [Module R
   A' = Submodule.span R' (μ '' (A : Set X))
 
 /- English proof (translation)
-Rewrite using `[h]`. Conclude with `Submodule.subset_span ⟨x, hx, rfl⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem BC.mem {R R' X X' : Type*} [CommRing R] [CommRing R'] [AddCommGroup X] [Module R X] [AddCommGroup X']
     [Module R' X'] {μ : X → X'} {A : Submodule R X} {A' : Submodule R' X'} (h : BC μ A A') {x : X} (hx : x ∈ A) :
@@ -21,9 +21,9 @@ theorem BC.mem {R R' X X' : Type*} [CommRing R] [CommRing R'] [AddCommGroup X] [
   rw [h]; exact Submodule.subset_span ⟨x, hx, rfl⟩
 
 /- English proof (translation)
-Unfold `BC`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `Submodule.span_mono (Set.image_mono Submodule.subset_span)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h : Submodule.span R S ≤ (Submodule.span R' (μ '' S)).comap μ`. Rewrite using `[Submodule.span_le]`. Introduce `y hy`. Conclude with `Submodule.subset_span ⟨y, hy, rfl⟩`. Conclude with `h hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem bc_span {R R' X X' : Type*} [CommRing R] [CommRing R'] [AddCommGroup X] [Module R X] [AddCommGroup X']
     [Module R' X'] {φ : R →+* R'} (μ : X →ₛₗ[φ] X') (S : Set X) :
@@ -64,7 +64,7 @@ def vecS (k : ℕ) : (Fin k → K) →ₛₗ[φ] (Fin k → K') where
     simp only [Pi.smul_apply, Algebra.smul_def, map_mul, hφ]
 
 /- English proof (translation)
-Rewrite using `[smul_eq_C_mul, smul_eq_C_mul, map_mul, map_C]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_smulK {τ : Type} (c : K) (P : MvPolynomial τ K) :
     MvPolynomial.map φK (c • P) = φK c • MvPolynomial.map φK P := by
@@ -73,11 +73,11 @@ theorem map_smulK {τ : Type} (c : K) (P : MvPolynomial τ K) :
 end Maps
 
 /- English proof (translation)
-Unfold `BC`. Apply `le_antisymm` to reduce the goal to its premises. Take `⟨b', hb', h2⟩` from `sSBasis R' k n ν`. Rewrite using `[← hb'.2.1, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Take `⟨-, -, K, sz, hsz, I, hshape, -, hbm⟩` from `h2 i`. Rewrite using `[hbm]`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨bideterminant R sz hsz I, ?_, ldlat_map_bidet φ sz hsz I⟩` and prove the remaining obligations. Use `bidetMem R k n K sz hsz I` as an intermediate fact.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[hshape]`. Conclude with `this`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Conclude with `dualWeylMap R R' φ k n ν f hf`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem bc_dualWeyl {R R' : Type} [CommRing R] [CommRing R'] [IsDomain R'] (φ : R →+* R') (k n : ℕ)
     (ν : Fin n → ℕ) : BC (MvPolynomial.map φ) (dualWeyl R k n ν) (dualWeyl R' k n ν) := by
@@ -105,7 +105,7 @@ variable {R K R' K' : Type} [CommRing R] [Field K] [Algebra R K] [CommRing R'] [
 
 include hφ in
 /- English proof (translation)
-Establish `h : (algebraMap R' K').comp φ = φK.comp (algebraMap R K)` using `RingHom.ext fun x => (hφ x).symm`. Rewrite using `[MvPolynomial.map_map, MvPolynomial.map_map, h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_map_alg {τ : Type} (f : MvPolynomial τ R) :
     MvPolynomial.map (algebraMap R' K') (MvPolynomial.map φ f) =
@@ -114,13 +114,13 @@ theorem map_map_alg {τ : Type} (f : MvPolynomial τ R) :
   rw [MvPolynomial.map_map, MvPolynomial.map_map, h]
 
 /- English proof (translation)
-The claim follows from `(RingHom.map_det φK g).symm`.
+A detailed English derivation is pending.
 -/
 theorem det_map {k : ℕ} (g : Matrix (Fin k) (Fin k) K) : (g.map φK).det = φK g.det :=
   (RingHom.map_det φK g).symm
 
 /- English proof (translation)
-Apply `Matrix.inv_eq_right_inv` to reduce the goal to its premises. Establish `h1 : g.map φK * (g⁻¹).map φK = (g * g⁻¹).map φK` using `(Matrix.map_mul).symm`. Rewrite using `[h1, Matrix.mul_nonsing_inv g hg]`. Conclude with `Matrix.map_one φK (map_zero _) (map_one _)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_map {k : ℕ} (g : Matrix (Fin k) (Fin k) K) (hg : IsUnit g.det) : (g.map φK)⁻¹ = (g⁻¹).map φK := by
   apply Matrix.inv_eq_right_inv
@@ -149,11 +149,11 @@ theorem psiL_apply (R K : Type) [CommRing R] [Field K] [Algebra R K] (m : ℕ) (
       g.det ^ (-(lam (Fin.last m))) • rowAct K g⁻¹ (MvPolynomial.map (algebraMap R K) f) := rfl
 
 /- English proof (translation)
-Use extensionality with `F`. Rewrite using `[nablaLTwMem R K m lam g hg, Submodule.mem_map, Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨f, hf, hfe⟩`. Use `⟨f, hf, ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : (mapAlgHom (Algebra.ofId R K)).toLinearMap f = MvPolynomial.map (algebraMap R K) f` using `rfl`. Rewrite using `[psiL_apply, ← h2, hfe, map_smul, ldlat_rowAct_inv_right rowActMul _ hg, smul_smul, ← zpow_add₀ hg.ne_zero, neg_add_cancel, zpow_zero, one_smul]`. Introduce and unpack `⟨f, hf, rfl⟩`. Use `⟨f, hf, ?_⟩` and prove the remaining obligations. Establish `h2 : (mapAlgHom (Algebra.ofId R K)).toLinearMap f = MvPolynomial.map (algebraMap R K) f` using `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[psiL_apply, map_smul, ldlat_rowAct_inv_left rowActMul _ hg, smul_smul, ← zpow_add₀ hg.ne_zero, add_neg_cancel, zpow_zero, one_smul, h2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem nablaLTw_eq_map (R K : Type) [CommRing R] [Field K] [Algebra R K] (m : ℕ) (lam : Fin (m + 1) → ℤ)
     (g : Matrix (Fin (m + 1)) (Fin (m + 1)) K) (hg : IsUnit g.det) :
@@ -174,7 +174,7 @@ theorem nablaLTw_eq_map (R K : Type) [CommRing R] [Field K] [Algebra R K] (m : �
       ← zpow_add₀ hg.ne_zero, add_neg_cancel, zpow_zero, one_smul, h2]
 
 /- English proof (translation)
-Unfold `BC at h ⊢`. Rewrite using `[h, Submodule.map_span, Submodule.map_coe, ← Set.image_comp, ← Set.image_comp]`. Use `congr 1`. Conclude with `Set.image_congr fun a _ => (hT a).symm`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem bc_map {R R' X X' Y Y' : Type*} [CommRing R] [CommRing R'] [AddCommGroup X] [Module R X] [AddCommGroup X']
     [Module R' X'] [AddCommGroup Y] [Module R Y] [AddCommGroup Y'] [Module R' Y'] {μ₁ : X → X'} {μ₂ : Y → Y'}
@@ -188,7 +188,7 @@ theorem bc_map {R R' X X' Y Y' : Type*} [CommRing R] [CommRing R'] [AddCommGroup
 include hφ in
 
 /- English proof (translation)
-Establish `hg' : IsUnit (g.map φK).det` using `by rw [det_map]; exact hg.map φK`. Rewrite using `[nablaLTw_eq_map R K m lam g hg, nablaLTw_eq_map R' K' m lam _ hg']`. Use `bc_map (bc_dualWeyl φ (m + 1) (m + 1) _) _ _ fun f => ?_` and prove the remaining obligations. Rewrite using `[psiL_apply, psiL_apply, map_map_alg φ φK hφ, map_smulK, ldtwist_map_rowAct, map_zpow₀, det_map, inv_map φK g hg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem bc_nablaLTw (m : ℕ) (lam : Fin (m + 1) → ℤ) (g : Matrix (Fin (m + 1)) (Fin (m + 1)) K)
     (hg : IsUnit g.det) :
@@ -200,7 +200,7 @@ theorem bc_nablaLTw (m : ℕ) (lam : Fin (m + 1) → ℤ) (g : Matrix (Fin (m + 
     inv_map φK g hg]
 
 /- English proof (translation)
-Unfold `blockEmb`. Conclude with `(MvPolynomial.map_rename φK _ F)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem map_blockEmb {S : Type} {k n : ℕ} (s : S) (F : MvPolynomial (Fin k × Fin n) K) :
     MvPolynomial.map φK (blockEmb K s F) = blockEmb K' s (MvPolynomial.map φK F) := by
@@ -210,21 +210,19 @@ theorem map_blockEmb {S : Type} {k n : ℕ} (s : S) (F : MvPolynomial (Fin k × 
 include hφ in
 
 /- English proof (translation)
-Establish `h0` using `bc_span (muS φ φK hφ (S × (Fin k × Fin n))) {P | ∃ F : S → MvPolynomial (Fin k × Fin n) K, (∀ s, F s ∈ M s) ∧ P = ∏ s, blockEmb K s (F s)}`. Rewrite `h0` using `[muS_coe]`. Unfold `BC at h0 ⊢`. Unfold `tensorLat`. Rewrite using `[← h0]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨F', hF', rfl⟩`. Use `set T : S → Set (MvPolynomial (S × (Fin k × Fin n)) K') := fun s => (fun F => blockEmb K' s (MvPolynomial.map φK F)) '' (M s : Set _) with hT`. Establish `h1 : ∀ s, blockEmb K' s (F' s) ∈ Submodule.span R' (T s)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s`. Establish `h2 : M' s ≤ (Submodule.span R' (T s)).comap ((blockEmb K' (k` using `k) (n := n) s).toLinearMap.restrictScalars R') := by`. Rewrite using `[h s, Submodule.span_le]`. Introduce and unpack `_ ⟨F, hF, rfl⟩`. Conclude with `Submodule.subset_span ⟨F, hF, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h2 (hF' s)`. Establish `h3` using `fn_prod_mem (R := R') Finset.univ (fun s => Submodule.span R' (T s)) (fun s => blockEmb K' s (F' s)) (fun s _ => h1 s)`. Rewrite `h3` using `[Submodule.prod_span]`. Use `Submodule.span_mono ?_ h3` and prove the remaining obligations. Introduce `P hP`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hP` using `[Set.mem_finsetProd]`. Take `⟨gf, hgf, rfl⟩` from `hP`. Establish `h4 : ∀ s, ∃ F, F ∈ M s ∧ blockEmb K' s (MvPolynomial.map φK F) = gf s`. Introduce `s`. Take `⟨F, hF, hFe⟩` from `hgf (Finset.mem_univ s)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨F, hF, hFe⟩`. Use `choose F hF hFe using h4`. Use `⟨∏ s, blockEmb K s (F s), ⟨F, hF, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[map_prod]`. Conclude with `Finset.prod_congr rfl fun s _ => by rw [map_blockEmb, hFe]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨_, ⟨F, hF, rfl⟩, rfl⟩`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨fun s => MvPolynomial.map φK (F s), fun s => (h s).mem (hF s), ?_⟩` and prove the remaining obligations. Rewrite using `[map_prod]`.
-
-Conclude with `Finset.prod_congr rfl fun s _ => map_blockEmb φK s (F s)`.
+A detailed English derivation is pending.
 -/
 theorem bc_tensorLat {S : Type} [Fintype S] {k n : ℕ} (M : S → Submodule R (MvPolynomial (Fin k × Fin n) K))
     (M' : S → Submodule R' (MvPolynomial (Fin k × Fin n) K'))
@@ -274,9 +272,9 @@ theorem bc_tensorLat {S : Type} [Fintype S] {k n : ℕ} (M : S → Submodule R (
 include hφ in
 
 /- English proof (translation)
-Establish `h0` using `bc_span (vecS φ φK hφ k) (Set.range fun c : Fin k => fun i => g i c)`. Establish `h1 : (vecS φ φK hφ k) '' (Set.range fun c : Fin k => fun i => g i c) = Set.range fun c : Fin k => fun i => (g.map φK) i c`. Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression. Rewrite `h0` using `[h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h0`.
+A detailed English derivation is pending.
 -/
 theorem bc_colSpan {k : ℕ} (g : Matrix (Fin k) (Fin k) K) :
     BC (vecS φ φK hφ k) (colSpan R g) (colSpan R' (g.map φK)) := by
@@ -290,7 +288,7 @@ theorem bc_colSpan {k : ℕ} (g : Matrix (Fin k) (Fin k) K) :
 include hφ in
 
 /- English proof (translation)
-Take `⟨g, hg, rfl⟩` from `hΛ`. Establish `h1 : Λ' = colSpan R' (g.map φK)` using `hb.trans (bc_colSpan φ φK hφ g).symm`. Establish `hg' : IsUnit (g.map φK).det` using `by rw [det_map]; exact hg.map φK`. Rewrite using `[h1, H0_eq_twisted_nabla (la_indep hinj) m lam hlam g hg, H0_eq_twisted_nabla (la_indep hinj') m lam hlam _ hg']`. Conclude with `bc_nablaLTw φ φK hφ m lam g hg`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem base_change_H0 (hinj : Function.Injective (algebraMap R K)) (hinj' : Function.Injective (algebraMap R' K'))
     (m : ℕ) (lam : Fin (m + 1) → ℤ) (hlam : Antitone lam)

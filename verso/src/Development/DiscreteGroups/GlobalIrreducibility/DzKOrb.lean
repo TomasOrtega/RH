@@ -15,9 +15,9 @@ section
 variable {K : Type} [Field K] [Fintype K] [DecidableEq K]
 
 /- English proof (translation)
-Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Establish `hne : (Units.coeHom ℂ).comp χ ≠ 1`. Introduce `hc`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `h` to reduce the goal to its premises. Use extensionality with `z`. Use `congrArg (fun f : Kˣ →* ℂ => f z) hc` as an intermediate fact. Simplify using `using this`. Conclude with `sum_hom_units_eq_zero _ hne`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem charSum (χ : Kˣ →* ℂˣ) :
     ∑ z : Kˣ, ((χ z : ℂˣ) : ℂ) = if χ = 1 then (Fintype.card Kˣ : ℂ) else 0 := by
@@ -32,7 +32,7 @@ theorem charSum (χ : Kˣ →* ℂˣ) :
     exact sum_hom_units_eq_zero _ hne
 
 /- English proof (translation)
-Establish `h : (θ z) ^ Fintype.card Kˣ = 1` using `by rw [← map_pow, pow_card_eq_one, map_one]`. Use `Complex.norm_eq_one_of_pow_eq_one (n := Fintype.card Kˣ) ?_ Fintype.card_ne_zero` and prove the remaining obligations. Rewrite using `[← Units.val_pow_eq_pow_val, h, Units.val_one]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_val (θ : Kˣ →* ℂˣ) (z : Kˣ) : ‖((θ z : ℂˣ) : ℂ)‖ = 1 := by
   have h : (θ z) ^ Fintype.card Kˣ = 1 := by rw [← map_pow, pow_card_eq_one, map_one]
@@ -40,7 +40,7 @@ theorem norm_val (θ : Kˣ →* ℂˣ) (z : Kˣ) : ‖((θ z : ℂˣ) : ℂ)‖ 
   rw [← Units.val_pow_eq_pow_val, h, Units.val_one]
 
 /- English proof (translation)
-Unfold `fo`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Simplify using `[norm_val]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem norm_fo_le (g n : ℕ) (θ : Kˣ →* ℂˣ) (z : Kˣ) : ‖fo g n θ z‖ ≤ n := by
   unfold fo
@@ -48,11 +48,11 @@ theorem norm_fo_le (g n : ℕ) (θ : Kˣ →* ℂˣ) (z : Kˣ) : ‖fo g n θ z�
   simp [norm_val]
 
 /- English proof (translation)
-Unfold `fo`. Repeatedly rewrite using `[Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `e : ∀ z : Kˣ, ((θ (z ^ g ^ i) : ℂˣ) : ℂ) * ((θ' (z⁻¹ ^ g ^ j) : ℂˣ) : ℂ) = (((θ ^ g ^ i * (θ' ^ g ^ j)⁻¹) z : ℂˣ) : ℂ)`. Introduce `z`. Simplify using `only [MonoidHom.mul_apply, MonoidHom.pow_apply, MonoidHom.inv_apply, map_pow, inv_pow, map_inv, Units.val_mul]`. Rewrite using `[Finset.sum_congr rfl fun z _ => e z, charSum]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mul_inv_eq_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sum_fo_mul (g n : ℕ) (θ θ' : Kˣ →* ℂˣ) :
     ∑ z : Kˣ, fo g n θ z * fo g n θ' z⁻¹ = ∑ i ∈ Finset.range n, ∑ j ∈ Finset.range n,
@@ -74,13 +74,13 @@ theorem sum_fo_mul (g n : ℕ) (θ θ' : Kˣ →* ℂˣ) :
 end
 
 /- English proof (translation)
-Establish `hN : ∀ z : Kˣ, z ^ (g ^ n - 1) = 1` using `fun z => by`. Rewrite using `[← hK, ← Fintype.card_units]`. Conclude with `pow_card_eq_one`. Establish `hper : θ ^ g ^ n = θ`. Use extensionality with `z`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MonoidHom.pow_apply, ← map_pow]`. Establish `: z ^ g ^ n = z`. Establish `h1 : 1 ≤ g ^ n` using `Nat.one_le_pow _ _ hg`. Use `conv_lhs => rw [← Nat.sub_add_cancel h1, pow_succ, hN, one_mul]`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ha : g ^ a = (g ^ n) ^ (a / n) * g ^ (a % n)` using `by conv_lhs => rw [← Nat.mod_add_div a n]`. Rewrite using `[pow_add, pow_mul, mul_comm]`. Establish `: ∀ m : ℕ, θ ^ (g ^ n) ^ m = θ`. Introduce `m`. Proceed by induction on `m with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `succ m ih => rw [pow_succ, pow_mul, ih, hper]`. Rewrite using `[ha, pow_mul, this]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem char_pow_period {g n : ℕ} {K : Type} [Field K] [Fintype K] [DecidableEq K] (hK : Fintype.card K = g ^ n)
     (θ : Kˣ →* ℂˣ) (hg : 0 < g) (a : ℕ) : θ ^ g ^ a = θ ^ g ^ (a % n) := by

@@ -27,13 +27,13 @@ section Basis
 variable {R : Type} [CommRing R] {φ : c.F →+* R} {x : Sp R ⟶ Z.X}
 
 /- English proof (translation)
-Establish `heig : ∀ (τ : E →+* ℂ) (a : Fin (Dw.mult τ) → R) (b : 𝓞 E), actR Z.t.act b (∑ i, a i • g.vec τ i) = φ (embK c τ b) • ∑ i, a i • g.vec τ i` using `fun τ a b => by`. Simplify using `only [map_sum, map_smul, g.act_vec, Finset.smul_sum, smul_comm (a _)]`. Establish `hli : LinearIndependent R (fun p : (Σ τ : E →+* ℂ, Fin (Dw.mult τ)) => g.vec p.1 p.2)`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `a ha p`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hw` using `(GlobalTheory.T.existsUnique_embedding_eigenspace_sum c φ (actR Z.t.act) 0).unique (y₁ := fun τ => ∑ i, a ⟨τ, i⟩ • g.vec τ i) (y₂ := fun _ => 0) ⟨fun τ b => heig τ _ b, by rw [← ha, Fintype.sum_sigma]⟩ ⟨fun τ b => by simp, by simp⟩`. Establish `h0` using `congrFun hw p.1`. Conclude with `Fintype.linearIndependent_iff.1 (g.linearIndependent_vec p.1) (fun i => a ⟨p.1, i⟩) h0 p.2`. Establish `hsp : ⊤ ≤ Submodule.span R (Set.range fun p : (Σ τ : E →+* ℂ, Fin (Dw.mult τ)) => g.vec p.1 p.2)`. Introduce `v _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨w, ⟨hw, hs⟩, -⟩` from `GlobalTheory.T.existsUnique_embedding_eigenspace_sum c φ (actR Z.t.act) v`. Rewrite using `[← hs]`. Use `Submodule.sum_mem _ fun τ _ => ?_` and prove the remaining obligations. Take `⟨a, ha, -⟩` from `g.existsUnique_sum τ (w τ) (hw τ)`. Rewrite using `[ha]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨⟨τ, i⟩, rfl⟩)`. Conclude with `⟨Module.Basis.mk hli hsp, fun p => by rw [Module.Basis.mk_apply]⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_eigBasis (g : EigFrame Z φ x) : ∃ b : Module.Basis (Σ τ : E →+* ℂ, Fin (Dw.mult τ)) R (TanM x Z.t.G),
     ∀ p, b p = g.vec p.1 p.2 := by
@@ -62,7 +62,7 @@ def eigBasis (g : EigFrame Z φ x) : Module.Basis (Σ τ : E →+* ℂ, Fin (Dw.
   (exists_eigBasis g).choose
 
 /- English proof (translation)
-The claim follows from `(exists_eigBasis g).choose_spec p`.
+A detailed English derivation is pending.
 -/
 theorem eigBasis_apply (g : EigFrame Z φ x) (p : Σ τ : E →+* ℂ, Fin (Dw.mult τ)) : eigBasis g p = g.vec p.1 p.2 :=
   (exists_eigBasis g).choose_spec p
@@ -74,13 +74,13 @@ def frameDet (M : GlobalTheory.Reg.MChart Z) (h : ⊤ ≤ x ⁻¹ᵁ M.U) (g : E
   rdet ((lieBasis M x h).toMatrix (eigBasisFin g))
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.FlagMod.isUnit_rdet_toMatrix _ _`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_frameDet (M : GlobalTheory.Reg.MChart Z) (h : ⊤ ≤ x ⁻¹ᵁ M.U) (g : EigFrame Z φ x) : IsUnit (frameDet M h g) :=
   GlobalTheory.FlagMod.isUnit_rdet_toMatrix _ _
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.FlagMod.ev_detChg M M' x h h' hh, frameDet, frameDet, GlobalTheory.FlagMod.rdet_toMatrix_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ev_detChg_mul_frameDet (M M' : GlobalTheory.Reg.MChart Z) (h : ⊤ ≤ x ⁻¹ᵁ M.U) (h' : ⊤ ≤ x ⁻¹ᵁ M'.U)
     (hh : ⊤ ≤ x ⁻¹ᵁ (M.U ⊓ M'.U)) (g : EigFrame Z φ x) :
@@ -90,9 +90,9 @@ theorem ev_detChg_mul_frameDet (M M' : GlobalTheory.Reg.MChart Z) (h : ⊤ ≤ x
 open Classical in
 
 /- English proof (translation)
-Use extensionality with `⟨σ, b⟩ ⟨τ, i⟩`. Establish `hv : ∀ a, g.vec τ a = eigBasis g ⟨τ, a⟩` using `fun a => (eigBasis_apply g ⟨τ, a⟩).symm`. Rewrite using `[Module.Basis.toMatrix_apply, eigBasis_apply, g.vec_eq g' τ i]`. Simplify using `only [hv, map_sum, map_smul, Module.Basis.repr_self, Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.smul_apply, Finsupp.single_apply, smul_eq_mul]`. Distinguish the cases in `h : σ = τ`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using `[Matrix.blockDiagonal'_apply_eq]`. Rewrite using `[Matrix.blockDiagonal'_apply_ne _ _ _ h]`. Conclude with `Finset.sum_eq_zero fun a _ => by rw [if_neg fun e => h (congrArg Sigma.fst e).symm, MulZeroClass.mul_zero]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eigBasis_toMatrix (g g' : EigFrame Z φ x) :
     (eigBasis g).toMatrix (eigBasis g') = Matrix.blockDiagonal' fun τ => g.co g' τ := by
@@ -110,9 +110,9 @@ theorem eigBasis_toMatrix (g g' : EigFrame Z φ x) :
 
 open Classical in
 /- English proof (translation)
-Rewrite using `[frameDet, frameDet, ← GlobalTheory.FlagMod.rdet_toMatrix_mul _ (eigBasisFin g), GlobalTheory.FlagMod.rdet_self]`. Use `congr 1`. Establish `e : (eigBasisFin g).toMatrix (eigBasisFin g') = ((eigBasis g).toMatrix (eigBasis g')).submatrix (Fintype.equivFin _).symm (Fintype.equivFin _).symm`. Use extensionality with `i j`. Simplify using `[eigBasisFin, Module.Basis.toMatrix_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, Matrix.det_submatrix_equiv_self, eigBasis_toMatrix, ReciprocityTheory.ChartRestriction.G.T0.HDiscLat.det_blockDiagonal']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem frameDet_change (M : GlobalTheory.Reg.MChart Z) (h : ⊤ ≤ x ⁻¹ᵁ M.U) (g g' : EigFrame Z φ x) :
     frameDet M h g' = frameDet M h g * ∏ τ, (g.co g' τ).det := by
@@ -125,9 +125,9 @@ theorem frameDet_change (M : GlobalTheory.Reg.MChart Z) (h : ⊤ ≤ x ⁻¹ᵁ 
   rw [e, Matrix.det_submatrix_equiv_self, eigBasis_toMatrix, ReciprocityTheory.ChartRestriction.G.T0.HDiscLat.det_blockDiagonal']
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `e : v' j = ∑ k, ψ (b.repr (v j) k) • b' k`. Rewrite using `[← hv, ← b.sum_repr (v j), map_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [map_smulₛₗ, hb, b.sum_repr]`. Rewrite using `[Module.Basis.toMatrix_apply, e, Module.Basis.repr_sum_self]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem toMatrix_map_of_semilinear {R' : Type} [CommRing R'] {N N' : Type} [AddCommGroup N] [Module R N]
     [AddCommGroup N'] [Module R' N'] {ψ : R →+* R'} (f : N →ₛₗ[ψ] N') {n m : ℕ} (b : Module.Basis (Fin n) R N)
@@ -141,9 +141,9 @@ theorem toMatrix_map_of_semilinear {R' : Type} [CommRing R'] {N N' : Type} [AddC
   rfl
 
 /- English proof (translation)
-Rewrite using `[frameDet, frameDet, GlobalTheory.FlagMod.map_rdet]`. Use `congr 1`. Use `toMatrix_map_of_semilinear (GlobalTheory.FlagMod.tanPull ψ e) _ _ _ _ (fun j => GlobalTheory.FlagMod.tanPull_lieBasis M ψ e h h' j) fun j => ?_` and prove the remaining obligations. Simplify using `only [eigBasisFin, Module.Basis.reindex_apply, eigBasis_apply]`. Apply `GlobalTheory.FlagMod.tan_ext_left` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[GlobalTheory.FlagMod.tanPull_left]`. Simplify using `only [EigFrame.vec, GlobalTheory.LieMet.left_tanOf]`. Conclude with `(hg _ _).symm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem frameDet_isMap {R' : Type} [CommRing R'] {φ' : c.F →+* R'} {x' : Sp R' ⟶ Z.X} (ψ : R →+* R')
     (e : spMap ψ ≫ x = x') (M : GlobalTheory.Reg.MChart Z) (h : ⊤ ≤ x ⁻¹ᵁ M.U) (h' : ⊤ ≤ x' ⁻¹ᵁ M.U)
@@ -166,9 +166,9 @@ section Flag
 variable {F : Type} [Field F] {e : F ≃+* c.F} (C : FlagCpt Z e)
 
 /- English proof (translation)
-Establish `: (Y.fromSpecStalk x).appLE V ⊤ h ≫ (Scheme.ΓSpecIso (Y.presheaf.stalk x)).hom = Y.presheaf.germ V x hx`. Rewrite using `[Scheme.Hom.appLE, Scheme.fromSpecStalk_app hx]`. Simplify using `only [Category.assoc, ← Functor.map_comp]`. Rewrite using `[show ∀ q : (Opposite.op (⊤ : (Spec (Y.presheaf.stalk x)).Opens) ⟶ Opposite.op ⊤), (Spec (Y.presheaf.stalk x)).presheaf.map q = 𝟙 _ from fun q => by`. Rewrite using `[Subsingleton.elim q (𝟙 _)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `CategoryTheory.Functor.map_id _ _]`. Simplify using the standard rewrite rules. Conclude with `congrArg (fun q => CommRingCat.Hom.hom q u) this`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ev_fromSpecStalk_eq {Y : Scheme.{0}} (x : Y) {V : Y.Opens} (hx : x ∈ V) (h : ⊤ ≤ Y.fromSpecStalk x ⁻¹ᵁ V)
     (u : Γ(Y, V)) : ev (Y.fromSpecStalk x) V h u = (Y.presheaf.germ V x hx).hom u := by
@@ -183,7 +183,7 @@ theorem ev_fromSpecStalk_eq {Y : Scheme.{0}} (x : Y) {V : Y.Opens} (hx : x ∈ V
   exact congrArg (fun q => CommRingCat.Hom.hom q u) this
 
 /- English proof (translation)
-Introduce `z _`. Establish `hz : X.fromSpecStalk y z ⤳ y`. Establish `: X.fromSpecStalk y z ∈ Set.range (X.fromSpecStalk y)` using `⟨z, rfl⟩`. Rewrite `this` using `[Scheme.range_fromSpecStalk]`. Then use the resulting hypothesis. Conclude with `(hz.map f.continuous).mem_open V.isOpen hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem top_le_stalk_preimage {X Y : Scheme.{0}} (y : X) (f : X ⟶ Y) {V : Y.Opens} (hy : f y ∈ V) :
     ⊤ ≤ (X.fromSpecStalk y ≫ f) ⁻¹ᵁ V := by
@@ -194,7 +194,7 @@ theorem top_le_stalk_preimage {X Y : Scheme.{0}} (y : X) (f : X ⟶ Y) {V : Y.Op
   exact (hz.map f.continuous).mem_open V.isOpen hy
 
 /- English proof (translation)
-Establish `h1 : ⊤ ≤ X.fromSpecStalk (genericPoint X) ⁻¹ᵁ (f ⁻¹ᵁ V)` using `top_le_stalk_preimage (genericPoint X) (𝟙 X) hg`. Use `(ev_fromSpecStalk_eq (genericPoint X) hg h1 _).symm.trans (Eq.trans ?_ (GlobalTheory.FlagMod.ev_appLE (X.fromSpecStalk (genericPoint X)) f le_rfl h1 hh a))` and prove the remaining obligations. Rewrite using `[Scheme.Hom.app_eq_appLE]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem fnOf_app_eq_ev {X Y : Scheme.{0}} [IsIntegral X] (f : X ⟶ Y) {V : Y.Opens} (hg : genericPoint X ∈ f ⁻¹ᵁ V)
     (hh : ⊤ ≤ (X.fromSpecStalk (genericPoint X) ≫ f) ⁻¹ᵁ V) (a : Γ(Y, V)) :
@@ -207,14 +207,14 @@ theorem fnOf_app_eq_ev {X Y : Scheme.{0}} [IsIntegral X] (f : X ⟶ Y) {V : Y.Op
 variable {C}
 
 /- English proof (translation)
-The claim follows from `top_le_stalk_preimage y _ (mem_pull.1 hy)`.
+A detailed English derivation is pending.
 -/
 theorem top_le_of_mem_pull {y : C.Y.X} {J : ((FlagMod.detOm Z).pull (C.π ≫ genι Z)).ι}
     (hy : y ∈ ((FlagMod.detOm Z).pull (C.π ≫ genι Z)).U J) : ⊤ ≤ (stalkPt C.Y y ≫ C.π ≫ genι Z) ⁻¹ᵁ (J PUnit.unit).U :=
   top_le_stalk_preimage y _ (mem_pull.1 hy)
 
 /- English proof (translation)
-The claim follows from `top_le_stalk_preimage _ _ (mem_pull.1 hy)`.
+A detailed English derivation is pending.
 -/
 theorem top_le_gen_of_mem_pull {J : ((FlagMod.detOm Z).pull (C.π ≫ genι Z)).ι}
     (hy : genericPoint C.Y.X ∈ ((FlagMod.detOm Z).pull (C.π ≫ genι Z)).U J) :
@@ -230,7 +230,7 @@ def FlagCpt.detRat (J : ((FlagMod.detOm Z).pull (C.π ≫ genι Z)).ι) : C.Y.X.
     ((isUnit_frameDet (J PUnit.unit) (top_le_gen_of_mem_pull h) C.f0).unit)⁻¹ else 1
 
 /- English proof (translation)
-Rewrite using `[FlagCpt.detRat, dif_pos h, Units.val_inv_eq_inv_val, IsUnit.unit_spec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem FlagCpt.detRat_val {J : ((FlagMod.detOm Z).pull (C.π ≫ genι Z)).ι}
     (h : genericPoint C.Y.X ∈ ((FlagMod.detOm Z).pull (C.π ≫ genι Z)).U J) :
@@ -244,9 +244,7 @@ section Presents
 variable {F : Type} [Field F] {e : F ≃+* c.F} (C : FlagCpt Z e)
 
 /- English proof (translation)
-Use `show fnOf _ hg (Units.val (∏ _k : PUnit.{1}, _ ^ (1 : ℤ))) = _`. Rewrite using `[Fintype.prod_unique]`. Use `erw [zpow_one, LB.val_res, fnOf_resG]`. Establish `hg' : genericPoint C.Y.X ∈ (C.π ≫ genι Z) ⁻¹ᵁ ((J PUnit.unit).U ⊓ (J' PUnit.unit).U)` using `⟨mem_pull.1 hg.1, mem_pull.1 hg.2⟩`. Use `(fnOf_app_eq_ev (C.π ≫ genι Z) hg' hh _).trans ?_` and prove the remaining obligations.
-
-Conclude with `map_units_inv (ev (genericPt C.Y ≫ C.π ≫ genι Z) _ hh).toMonoidHom _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem fnOf_pull_detOm_g (J J' : ((FlagMod.detOm Z).pull (C.π ≫ genι Z)).ι)
     (hg : genericPoint C.Y.X ∈ ((FlagMod.detOm Z).pull (C.π ≫ genι Z)).U J ⊓ ((FlagMod.detOm Z).pull (C.π ≫ genι Z)).U J')
@@ -268,7 +266,7 @@ section Presents2
 variable {F : Type} [Field F] {e : F ≃+* c.F} (C : FlagCpt Z e)
 
 /- English proof (translation)
-Introduce `J J' hg`. Establish `hJ` using `top_le_gen_of_mem_pull (C := C) hg.1`. Establish `hJ'` using `top_le_gen_of_mem_pull (C := C) hg.2`. Establish `hh` using `GlobalTheory.FlagMod.le_preimage_inf hJ hJ'`. Rewrite using `[C.detRat_val hg.1, C.detRat_val hg.2, fnOf_pull_detOm_g C J J' hg hh, ← ev_detChg_mul_frameDet (J PUnit.unit) (J' PUnit.unit) hJ hJ' hh C.f0, mul_inv]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem FlagCpt.isRatSec_detRat : IsRatSec ((FlagMod.detOm Z).pull (C.π ≫ genι Z)) C.detRat := by
   intro J J' hg
@@ -279,7 +277,7 @@ theorem FlagCpt.isRatSec_detRat : IsRatSec ((FlagMod.detOm Z).pull (C.π ≫ gen
     ← ev_detChg_mul_frameDet (J PUnit.unit) (J' PUnit.unit) hJ hJ' hh C.f0, mul_inv]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact CartierDiv.isEqn_zero y`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.prod_insert ha]`. Conclude with `(ht a).add ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isEqn_finset_sum {X : Scheme.{0}} [IsIntegral X] {T : Type} (s : Finset T) (D : T → CartierDiv X) (y : X)
     (t : T → X.functionFieldˣ) (ht : ∀ i, (D i).IsEqn y (t i)) : (∑ i ∈ s, D i).IsEqn y (∏ i ∈ s, t i) := by
@@ -291,13 +289,13 @@ theorem isEqn_finset_sum {X : Scheme.{0}} [IsIntegral X] {T : Type} (s : Finset 
     exact (ht a).add ih
 
 /- English proof (translation)
-Establish `hgen : genericPoint C.Y.X ∈ ((FlagMod.detOm Z).pull (C.π ≫ genι Z)).U J` using `gen_mem hy`. Establish `hJ` using `top_le_gen_of_mem_pull (C := C) hgen`. Establish `hy'` using `top_le_of_mem_pull (C := C) hy`. Take `⟨φy, fy, t, htri, heq⟩` from `C.gr_spec y`. Take `⟨fy', hmap⟩` from `fy.exists_isMap (algebraMap (C.Y.X.presheaf.stalk y) C.Y.X.functionField) htri.2.1 htri.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e1` using `frameDet_isMap _ htri.1.symm (J PUnit.unit) hy' hJ fy fy' hmap`. Establish `e2` using `frameDet_change (J PUnit.unit) hJ fy' C.f0`. Establish `e3 : ∀ τ, (fy'.co C.f0 τ).det = ∏ i, (t τ i : C.Y.Fn)` using `fun τ => by`. Take `⟨h1, h2⟩` from `EigFrame.Tri.co τ htri hmap`. Rewrite using `[Matrix.det_of_upperTriangular (fun i j hij => h1 i j hij)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.prod_congr rfl fun i _ => h2 i`. Establish `h0` using `(isEqn_finset_sum Finset.univ (fun x : (Σ τ : E →+* ℂ, Fin (Dw.mult τ)) => C.gr x.1 x.2) y (fun x => t x.1 x.2) fun x => heq x.1 x.2).neg`. Rewrite using `[h0.iff_unitAt, C.detRat_val hgen, e2, e1]`. Establish `hu` using `isUnit_frameDet (J PUnit.unit) hy' fy`. Establish `hP : ((∏ x : (Σ τ : E →+* ℂ, Fin (Dw.mult τ)), t x.1 x.2 : C.Y.Fnˣ) : C.Y.Fn) = ∏ τ, (fy'.co C.f0 τ).det`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.coe_prod, Fintype.prod_sigma]`. Conclude with `Finset.prod_congr rfl fun τ _ => (e3 τ).symm`. Establish `hP0 : (∏ τ, (fy'.co C.f0 τ).det) ≠ 0` using `hP ▸ Units.ne_zero _`. Rewrite using `[Units.val_inv_eq_inv_val, hP, mul_inv, mul_div_assoc, div_self (inv_ne_zero hP0), _root_.mul_one]`. Conclude with `UnitAt.inv ⟨_, hu, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FlagCpt.isEqn_detRat (J : ((FlagMod.detOm Z).pull (C.π ≫ genι Z)).ι) (y : C.Y.X)
     (hy : y ∈ ((FlagMod.detOm Z).pull (C.π ≫ genι Z)).U J) :
@@ -325,7 +323,7 @@ theorem FlagCpt.isEqn_detRat (J : ((FlagMod.detOm Z).pull (C.π ≫ genι Z)).ι
   exact UnitAt.inv ⟨_, hu, rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨pull_isLB hL _, C.isRatSec_detRat, fun J y hy => C.isEqn_detRat J y hy⟩`.
+Supply the required witnesses or components.
 -/
 theorem FlagCpt.presents_detRat (hL : (FlagMod.detOm Z).IsLB) :
     Presents (-∑ x : (Σ τ : E →+* ℂ, Fin (Dw.mult τ)), C.gr x.1 x.2) ((FlagMod.detOm Z).pull (C.π ≫ genι Z))
@@ -333,7 +331,7 @@ theorem FlagCpt.presents_detRat (hL : (FlagMod.detOm Z).IsLB) :
   ⟨pull_isLB hL _, C.isRatSec_detRat, fun J y hy => C.isEqn_detRat J y hy⟩
 
 /- English proof (translation)
-The claim follows from `(presents_toLB _).lbIso (C.presents_detRat hL)`.
+A detailed English derivation is pending.
 -/
 theorem FlagCpt.lbIso_detOm_pull (hL : (FlagMod.detOm Z).IsLB) :
     LBIso (C.Y.lb (-∑ x : (Σ τ : E →+* ℂ, Fin (Dw.mult τ)), C.gr x.1 x.2))
@@ -343,7 +341,7 @@ theorem FlagCpt.lbIso_detOm_pull (hL : (FlagMod.detOm Z).IsLB) :
 end Presents2
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ s Φ k` and use `(Φ.C k).lbIso_detOm_pull s.isRec.isLB_detOm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem lbIso_detOm_flag : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (Φ : s.Flag)
     (k : s.Comp), LBIso ((Φ.C k).Y.lb (-∑ x : Letter S.Dw, (Φ.C k).gr x.1 x.2))

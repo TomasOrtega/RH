@@ -16,7 +16,7 @@ namespace GlobalTheory.QProd
 
 open GlobalTheory.FinPl in
 /- English proof (translation)
-Rewrite using `[(GlobalTheory.FinPl.SetCut.grp_split D V ∅).2.2.2.2.2.2.2.1]`. Simplify using `only [not_not]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem at_eq' {D : D7} (V : HSp D) (P : Pl D → Prop) : grpAt V P = GfC V ⊓ grpOff V (fun p => ¬ P p) := by
   rw [(GlobalTheory.FinPl.SetCut.grp_split D V ∅).2.2.2.2.2.2.2.1]
@@ -24,7 +24,7 @@ theorem at_eq' {D : D7} (V : HSp D) (P : Pl D → Prop) : grpAt V P = GfC V ⊓ 
 
 open GlobalTheory.FinPl in
 /- English proof (translation)
-The claim follows from `(GlobalTheory.FinPl.SetCut.grp_split D V ∅).2.2.2.2.2.2.1 P P' h`.
+A detailed English derivation is pending.
 -/
 theorem at_le_off' {D : D7} (V : HSp D) {P P' : Pl D → Prop} (h : ∀ p, P p → ¬ P' p) : grpAt V P ≤ grpOff V P' :=
   (GlobalTheory.FinPl.SetCut.grp_split D V ∅).2.2.2.2.2.2.1 P P' h
@@ -32,9 +32,9 @@ theorem at_le_off' {D : D7} (V : HSp D) {P P' : Pl D → Prop} (h : ∀ p, P p �
 open GlobalTheory.FinPl in
 
 /- English proof (translation)
-Unfold `grpOff at h ⊢`. Rewrite `h`, the goal using `[GlobalTheory.FinPlLoc.mem_congGrp]`. Introduce `a b`. Use `h a b` as an intermediate fact. Unfold `idOff at this ⊢`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite `this`, the goal using `[Submodule.mem_iInf]`. Introduce `u`. Conclude with `this ⟨u.1, hR u.1 u.2⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem off_mono {D : D7} {V : HSp D} {R R' : Pl D → Prop} (hR : ∀ p, R' p → R p) {g : GA D V} (h : g ∈ grpOff V R) :
     g ∈ grpOff V R' := by
@@ -50,11 +50,11 @@ theorem off_mono {D : D7} {V : HSp D} {R R' : Pl D → Prop} (hR : ∀ p, R' p �
 open GlobalTheory.FinPl in
 
 /- English proof (translation)
-Unfold `grpOff`. Rewrite using `[GlobalTheory.FinPlLoc.mem_congGrp]`. Introduce `a b`. Unfold `idOff`. Rewrite using `[Submodule.mem_iInf]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Introduce `u`. Establish `hu` using `h u.1 u.2`. Unfold `grpOff at hu`. Rewrite `hu` using `[GlobalTheory.FinPlLoc.mem_congGrp]`. Use `hu a b` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Unfold `idOff at this`. Rewrite `this` using `[Submodule.mem_iInf]`. Conclude with `this ⟨u.1, rfl⟩`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem off_of_each {D : D7} {V : HSp D} {R : Pl D → Prop} {g : GA D V} (h : ∀ p, R p → g ∈ grpOff V (· = p)) :
     g ∈ grpOff V R := by
@@ -73,29 +73,27 @@ theorem off_of_each {D : D7} {V : HSp D} {R : Pl D → Prop} {g : GA D V} (h : �
   exact this ⟨u.1, rfl⟩
 
 /- English proof (translation)
-Introduce `D c v t w F hF j σ h`. Establish `hd : ∀ i, j + 1 + (2 * σ + 2) = (F.Q i).s + 1` using `fun i => by have := (F.Q i).hs; omega`. Establish `key` using `fun i => GlobalTheory.T.splitPlace_local_group_closedEmbedding_integral D (F.Q i).k (F.Q i).q (c.V (j + 1)) ((F.Q i).X (j + 1) ⊕ Fin (2 * σ + 2)) ((F.Q i).FY (j + 1) (2 * σ + 2) (hd i)) ((F.Q i).gl (j + 1) (2 * σ + 2) (hd i)) ((F.Q i).gl_loc (j + 1) (2 * σ + 2) (hd i))`. Set `gl` to `fun i => (F.Q i).gl (j + 1) (2 * σ + 2) (hd i)`. Establish `hoff : ∀ i i', i ≠ i' → ∀ g, gl i' g ∈ GlobalTheory.FinPl.grpOff (c.V (j + 1)) (· = (F.Q i).q.v)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `i i' hne g`. Establish `hr : gl i' g ∈ (gl i').range` using `⟨g, rfl⟩`. Rewrite `hr` using `[(key i').2.1]`. Conclude with `at_le_off' _ (fun p hp hq => hne (hF.inj (hq.symm.trans hp))) hr`. Establish `hcomm : Pairwise fun i i' => ∀ x y, Commute (gl i x) (gl i' y)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i i' hne x y`. Conclude with `(key i).2.2.2.1 x _ (hoff i i' hne y)`. Establish `hmem : ∀ (H : Subgroup (GA D (c.V (j + 1)))) y, (∀ i, gl i (y i) ∈ H) → MonoidHom.noncommPiCoprod gl hcomm y ∈ H`. Introduce `H y hy`. Conclude with `Submonoid.noncommProd_mem H.toSubmonoid Finset.univ _ (fun _ _ _ _ h => hcomm h _ _) (fun i _ => hy i)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hat : ∀ i g, gl i g ∈ GlobalTheory.FinPl.grpAt (c.V (j + 1)) (· ∈ w.Q)`. Introduce `i g`. Establish `hr : gl i g ∈ (gl i).range` using `⟨g, rfl⟩`. Rewrite `hr` using `[(key i).2.1]`. Rewrite `hr`, the goal using `[at_eq']`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨hr.1, off_mono (fun p hp hq => hp ((hF.places p).2 ⟨i, hq.symm⟩)) hr.2⟩` and prove the remaining obligations. Use `⟨MonoidHom.noncommPiCoprod gl hcomm, hmem, fun y => hmem _ y fun i => hat i (y i), ?_⟩` and prove the remaining obligations. Introduce `x hx`. Use `choose y hy _ using fun i => (key i).2.2.1 x`. Use `set P := MonoidHom.noncommPiCoprod gl hcomm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Establish `hsplit : ∀ i, P y = P (Function.update y i 1) * gl i (y i)`. Introduce `i`. Establish `hy' : y = Function.update y i 1 * Pi.mulSingle i (y i)`. Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k = i`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Substitute `hk` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hk]`. Use `conv_lhs => rw [hy']`. Rewrite using `[map_mul, MonoidHom.noncommPiCoprod_mulSingle]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `hrest : ∀ i, P (Function.update y i 1) ∈ GlobalTheory.FinPl.grpOff (c.V (j + 1)) (· = (F.Q i).q.v)`. Introduce `i`. Use `hmem _ _ fun k => ?_` and prove the remaining obligations. Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Rewrite using `[Function.update_of_ne hk]`. Conclude with `hoff i k (Ne.symm hk) _`. Establish `hz_i : ∀ i, x * (P y)⁻¹ ∈ GlobalTheory.FinPl.grpOff (c.V (j + 1)) (· = (F.Q i).q.v)`. Introduce `i`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hsplit i, _root_.mul_inv_rev, ← mul_assoc]`. Conclude with `Subgroup.mul_mem _ (hy i) (Subgroup.inv_mem _ (hrest i))`. Establish `hzQ : x * (P y)⁻¹ ∈ GlobalTheory.FinPl.grpAt (c.V (j + 1)) (· ∈ w.Q)` using `Subgroup.mul_mem _ hx (Subgroup.inv_mem _ (hmem _ y fun i => hat i (y i)))`. Rewrite `hzQ` using `[at_eq']`. Establish `hall : x * (P y)⁻¹ ∈ GlobalTheory.FinPl.grpOff (c.V (j + 1)) (fun _ => ¬ False)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Supply the required witnesses or components.
 
-Use `off_of_each fun p _ => ?_` and prove the remaining obligations. Distinguish the cases in `hp : p ∈ w.Q`. Take `⟨i, rfl⟩` from `(hF.places p).1 hp`. Conclude with `hz_i i`. Conclude with `off_mono (fun p' hp' => hp'.symm ▸ hp) hzQ.2`.
-
-Establish `hz1 : x * (P y)⁻¹ ∈ GlobalTheory.FinPl.grpAt (c.V (j + 1)) (fun _ => False)`. Rewrite using `[at_eq']`. Conclude with `⟨hzQ.1, hall⟩`. Use `GlobalTheory.VacFixP.eq_one_of_grpAt (fun _ h => h) hz1` as an intermediate fact. Conclude with `⟨y, mul_inv_eq_one.1 this, hy⟩`.
+A detailed English derivation is pending.
 -/
 theorem prod_local : ∀ (D : D7) (c : Comm D) (v : VCom c) (t : Tup c) (w : VTup t) (F : QFam v t), F.Pins w → ∀ j σ (h : j + 2 * (σ + 1) + 2 = D.R.m), ∃ P : (∀ i, GL ((F.Q i).X (j + 1) ⊕ Fin (2 * σ + 2)) (F.Q i).k) →* GA D (c.V (j + 1)), (∀ (H : Subgroup (GA D (c.V (j + 1)))) y, (∀ i, (F.Q i).gl (j + 1) (2 * σ + 2) (by have := (F.Q i).hs; omega) (y i) ∈ H) → P y ∈ H) ∧ (∀ y, P y ∈ GlobalTheory.FinPl.grpAt _ (· ∈ w.Q)) ∧ ∀ x ∈ GlobalTheory.FinPl.grpAt _ (· ∈ w.Q), ∃ y, x = P y ∧ ∀ i, x * ((F.Q i).gl (j + 1) (2 * σ + 2) (by have := (F.Q i).hs; omega) (y i))⁻¹ ∈ GlobalTheory.FinPl.grpOff (c.V (j + 1)) (· = (F.Q i).q.v) := by
   intro D c v t w F hF j σ h

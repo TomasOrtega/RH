@@ -9,15 +9,13 @@ private noncomputable def UpperTheory.prodComplLinearPoly (n : ℕ) (S : Finset 
   ∏ k ∈ Sᶜ, (Polynomial.X - Polynomial.C (k : ℂ))
 
 /- English proof (translation)
-Introduce `k hk`. Use `set V : Matrix (Fin m) (Fin m) ℂ := Matrix.vandermonde (fun i : Fin m => ((i : ℕ) : ℂ)) with hV`. Establish `hdet : IsUnit V.det`. Rewrite using `[isUnit_iff_ne_zero, hV, Matrix.det_vandermonde_ne_zero_iff]`. Introduce `i j hij`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Fin.ext (by simpa using hij)`. Establish `hWV : V⁻¹ * V = 1` using `Matrix.nonsing_inv_mul V hdet`. Establish `h1 : ∀ i : Fin m, f ((i : ℕ) : ℂ) = ∑ j : Fin m, V i j • q j`. Introduce `i`. Rewrite using `[hf, ← Fin.sum_univ_eq_sum_range (fun j => ((i : ℕ) : ℂ) ^ j • q j) m]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[hV, Matrix.vandermonde_apply]`. Establish `key : ∑ i : Fin m, V⁻¹ ⟨k, hk⟩ i • f ((i : ℕ) : ℂ) = q k`. Repeatedly rewrite using `[h1, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[← Finset.sum_smul]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2 : ∀ j : Fin m, ∑ i : Fin m, V⁻¹ ⟨k, hk⟩ i * V i j = (V⁻¹ * V) ⟨k, hk⟩ j`. Introduce `j`. Rewrite using `[Matrix.mul_apply]`. Repeatedly rewrite using `[h2, hWV, Matrix.one_apply]`. Simplify using the standard rewrite rules.
-
-Rewrite using `[← key]`. Conclude with `Submodule.sum_mem _ (fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.coeff_mem_span_range_of_polynomial_eq {A : Type} [Ring A] [Algebra ℂ A] (f : ℂ → A) (q : ℕ → A)
     (m : ℕ) (hf : ∀ u : ℂ, f u = ∑ k ∈ Finset.range m, u ^ k • q k) :
@@ -46,11 +44,11 @@ private theorem UpperTheory.coeff_mem_span_range_of_polynomial_eq {A : Type} [Ri
   exact Submodule.sum_mem _ (fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩))
 
 /- English proof (translation)
-Rewrite using `[Polynomial.coeff_mul]`. Use `Finset.sum_eq_single (m, k) ?_ ?_` and prove the remaining obligations. Introduce and unpack `⟨i, j⟩ h₁ h₂`. Establish `h₃ : i + j = m + k` using `Finset.HasAntidiagonal.mem_antidiagonal.mp h₁`. Distinguish the cases in `H : m < i`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[Polynomial.coeff_eq_zero_of_natDegree_lt (lt_of_le_of_lt hp H), zero_mul]`. Establish `hj : k < j`. Assume the negation of the conclusion as `H'`. Apply `h₂` to reduce the goal to its premises. Simplify using `only [Prod.mk.injEq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[Polynomial.coeff_eq_zero_of_natDegree_lt (lt_of_le_of_lt hq hj), mul_zero]`. Introduce `h`. Conclude with `(h (by simp)).elim`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.coeff_mul_add_natDegree_le {A : Type} [Ring A] {p q : Polynomial A} {m k : ℕ}
     (hp : p.natDegree ≤ m) (hq : q.natDegree ≤ k) :
@@ -71,9 +69,9 @@ private theorem UpperTheory.coeff_mul_add_natDegree_le {A : Type} [Ring A] {p q 
     exact (h (by simp)).elim
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons p l ih`. Establish `hp : p.natDegree ≤ 1` using `hl p (by simp)`. Take `⟨h1, h2⟩` from `ih (fun q hq => hl q (by simp [hq]))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[List.prod_cons, List.length_cons]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[List.prod_cons, List.length_cons, List.map_cons, List.prod_cons, ← h2, Nat.add_comm l.length 1, UpperTheory.coeff_mul_add_natDegree_le hp h1]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 -/
 private theorem UpperTheory.natDegree_list_prod_le_and_leading_coeff {A : Type} [Ring A] (l : List (Polynomial A))
     (hl : ∀ p ∈ l, p.natDegree ≤ 1) :
@@ -92,35 +90,31 @@ private theorem UpperTheory.natDegree_list_prod_le_and_leading_coeff {A : Type} 
         Nat.add_comm l.length 1, UpperTheory.coeff_mul_add_natDegree_le hp h1]
 
 /- English proof (translation)
-Introduce `A _ _ n X`. Set `F : Fin n → Fin n → Polynomial A` to `fun a b => (if a = b then Polynomial.X - Polynomial.C (algebraMap ℂ A ((b : ℕ) : ℂ)) else 0) + Polynomial.C (X a b)`. Set `Q : Equiv.Perm (Fin n) → Polynomial A` to `fun σ => (List.ofFn fun k => F (σ k) k).prod`. Set `P : Polynomial A` to `∑ σ : Equiv.Perm (Fin n), Polynomial.C (((Equiv.Perm.sign σ : ℤ) : A)) * Q σ`. Establish `hF : ∀ a b, (F a b).natDegree ≤ 1`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `a b`. Simplify using `only [F]`. Use `split_ifs`. Use `(Polynomial.natDegree_add_le _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Conclude with `Polynomial.natDegree_X_sub_C_le _`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish `hF1 : ∀ a b, (F a b).coeff 1 = if a = b then 1 else 0`. Introduce `a b`. Simplify using `only [F]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `split_ifs <;> simp [Polynomial.coeff_X, Polynomial.coeff_C]`. Establish `hQ : ∀ σ, (Q σ).natDegree ≤ n ∧ (Q σ).coeff n = if σ = 1 then 1 else 0`. Introduce `σ`. Establish `h` using `UpperTheory.natDegree_list_prod_le_and_leading_coeff (List.ofFn fun k => F (σ k) k) (by`. Introduce `p hp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨k, rfl⟩` from `List.mem_ofFn.mp hp`. Conclude with `hF _ _)`. Rewrite `h` using `[List.length_ofFn]`. Use `⟨h.1, ?_⟩` and prove the remaining obligations. Rewrite using `[h.2, List.map_ofFn]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `split_ifs with hs`. Substitute `hs` using the available equality. Apply `List.prod_eq_one` to reduce the goal to its premises. Introduce `x hx`. Take `⟨k, rfl⟩` from `List.mem_ofFn.mp hx`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `[hF1]`. Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k, σ k ≠ k := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hs (Equiv.Perm.ext fun k => by simpa using hc k)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Apply `List.prod_eq_zero` to reduce the goal to its premises. Conclude with `List.mem_ofFn.mpr ⟨k, by simp [hF1, hk]⟩`. Establish `hPdeg : P.natDegree ≤ n`. Use `Polynomial.natDegree_sum_le_of_forall_le _ _ (fun σ _ => ?_)` and prove the remaining obligations. Use `(Polynomial.natDegree_mul_le).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using (hQ σ).1`. Establish `hQ2 : ∀ σ, (Q σ).coeff n = if σ = 1 then 1 else 0` using `fun σ => (hQ σ).2`. Establish `hPn : P.coeff n = 1`. Simplify using `only [P, Polynomial.finset_sum_coeff, Polynomial.coeff_C_mul, hQ2]`. Simplify using the standard rewrite rules.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Establish `heval : ∀ u : ℂ, Formalism.REAL.qdet X u = P.eval₂ (RingHom.id A) (algebraMap ℂ A u)`. Introduce `u`. Set `ψ` to `Polynomial.eval₂RingHom' (RingHom.id A) (algebraMap ℂ A u) (fun a => Algebra.commute_algebraMap_right u a)`. Use `show _ = ψ P`. Simplify using `only [P, Q, map_sum, map_mul, map_list_prod, List.map_ofFn]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [Formalism.REAL.qdet, Formalism.REAL.qminor]`. Use `Finset.sum_congr rfl (fun σ _ => ?_)` and prove the remaining obligations. Use `congr 1`. Simplify using `[ψ]`. Use `congr 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrArg List.ofFn (funext fun k => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply, F, Formalism.REAL.Tm, ψ, id]`. Apply the tactic sequence `split_ifs <;> simp [map_sub]`. Establish `hterm : ∀ (u : ℂ) (i : ℕ), (RingHom.id A) (P.coeff i) * algebraMap ℂ A u ^ i = u ^ i • P.coeff i`. Introduce `u i`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[RingHom.id_apply, ← map_pow, Algebra.smul_def, Algebra.commutes]`. Use `⟨P.coeff, ?_, ?_⟩` and prove the remaining obligations. Introduce `k`. Distinguish the cases in `hk : k < n + 1`. Use `UpperTheory.coeff_mem_span_range_of_polynomial_eq (Formalism.REAL.qdet X) P.coeff (n + 1) (fun u => ?_) k hk` and prove the remaining obligations.
-
-Rewrite using `[heval, Polynomial.eval₂_eq_sum_range' _ (Nat.lt_succ_of_le hPdeg)]`. Conclude with `Finset.sum_congr rfl (fun i _ => hterm u i)`. Rewrite using `[Polynomial.coeff_eq_zero_of_natDegree_lt (by omega)]`. Conclude with `Submodule.zero_mem _`. Introduce `u`.
-
-Rewrite using `[heval, Polynomial.eval₂_eq_sum_range' _ (Nat.lt_succ_of_le hPdeg), Finset.sum_range_succ, hPn, add_comm (∑ i ∈ Finset.range n, _)]`. Use `congr 1`. Simplify using the standard rewrite rules. Conclude with `Finset.sum_congr rfl (fun i _ => hterm u i)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_qdet_eq_pow_add_sum_coeff_mem_span :
     ∀ (A : Type) [Ring A] [Algebra ℂ A] (n : ℕ) (X : Fin n → Fin n → A), ∃ c : ℕ → A, (∀ k, c k ∈ Submodule.span ℂ (Set.range (Formalism.REAL.qdet X))) ∧ ∀ u : ℂ, Formalism.REAL.qdet X u = algebraMap ℂ A (u ^ n) + ∑ k ∈ Finset.range n, u ^ k • c k := by

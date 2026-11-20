@@ -10,23 +10,23 @@ namespace Formalism.FourierDecayAlt.P.CutSH.SFG
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Formalism.FourierDecayAlt.P.PBH
 
 /- English proof (translation)
-Conclude with `PBE.castM_GV e (PBE.castM_GV _ (Ux6.Rn_mem x))`.
+A detailed English derivation is pending.
 -/
 theorem radial_embedding_mem_unitary_group {k ρ m : ℕ} (e : ρ + 1 = m) (x : U.RC k 1 ρ) : rn1 e x ∈ B.GV k m := by
   exact PBE.castM_GV e (PBE.castM_GV _ (Ux6.Rn_mem x))
 
 /- English proof (translation)
-Establish `hr : ∀ a b : Fin j, a = b.rev ↔ b = a.rev` using `fun a b => ⟨fun h => by rw [h, Fin.rev_rev], fun h => by rw [h, Fin.rev_rev]⟩`. Establish `hw : G.wMat j * G.wMat j = 1`. Use extensionality with `a b`. Simplify using `only [G.wMat, Matrix.mul_apply, Matrix.one_apply, Matrix.of_apply]`. Rewrite using `[Finset.sum_eq_single b.rev]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Fin.rev_rev, Fin.rev_inj, eq_comm]`. Introduce `c _ hc`. Rewrite using `[if_neg (fun h => hc ((hr c b).2 h))]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hwh : (G.wMat j).conjTranspose = G.wMat j`. Use extensionality with `a b`. Simplify using `only [G.wMat, Matrix.conjTranspose_apply, Matrix.of_apply]`. Apply the tactic sequence `split_ifs with h1 h2 h2 <;> simp_all [hr]`. Establish `hZ' : IsUnit Z.conjTranspose.det`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[Matrix.det_conjTranspose]`. Conclude with `hZ.star`. Establish `hγ' : Matrix.conjTranspose γ * Hpk k ρ * γ = Hpk k ρ` using `hγ`. Establish `h1 : Z.conjTranspose * (G.wMat j).conjTranspose * G.wMat j * (Z.conjTranspose⁻¹ * G.wMat j) = G.wMat j`. Rewrite using `[hwh, Matrix.mul_assoc Z.conjTranspose, hw, Matrix.mul_one, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hZ', Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : (G.wMat j).conjTranspose * Z.conjTranspose⁻¹.conjTranspose * G.wMat j * (G.wMat j * Z) = G.wMat j`. Rewrite using `[hwh, Matrix.conjTranspose_nonsing_inv, Matrix.conjTranspose_conjTranspose, Matrix.mul_assoc, ← Matrix.mul_assoc (G.wMat j) (G.wMat j) Z, hw, Matrix.one_mul, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hZ, Matrix.mul_one]`. Use `show Matrix.conjTranspose (U.mMap k j ρ Z γ) * Hpk k (j + ρ) * U.mMap k j ρ Z γ = Hpk k (j + ρ)`. Rewrite using `[Ux6.hpkBlocks k j ρ]`. Unfold `U.mMap`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Ux6.block3_conjTranspose, Ux6.block3_mul, Ux6.block3_mul]`. Simplify using `only [Matrix.zero_mul, Matrix.mul_zero, add_zero, zero_add, Matrix.conjTranspose_zero, Matrix.conjTranspose_mul]`. Rewrite using `[h1, hγ', h3]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mMap_mem_GV_of_isUnit_det_of_mem_GV {k j ρ : ℕ} (Z : Matrix (Fin j) (Fin j) ℂ) (hZ : IsUnit Z.det)
     (γ : B.Mat k ρ) (hγ : γ ∈ B.GV k ρ) : U.mMap k j ρ Z γ ∈ B.GV k (j + ρ) := by
@@ -67,7 +67,7 @@ private theorem mMap_mem_GV_of_isUnit_det_of_mem_GV {k j ρ : ℕ} (Z : Matrix (
   rw [h1, hγ', h3]
 
 /- English proof (translation)
-Unfold `mc`. Use `PBE.castM_GV e (PBE.castM_GV _ (mMap_mem_GV_of_isUnit_det_of_mem_GV _ ?_ γ hγ))` and prove the remaining obligations. Simplify using `[Matrix.det_unique, ht]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem mc_GV {k ρ m : ℕ} (e : ρ + 1 = m) {t : ℂ} (ht : t ≠ 0) {γ : B.Mat k ρ} (hγ : γ ∈ B.GV k ρ) :
     mc e t γ ∈ B.GV k m := by
@@ -76,7 +76,7 @@ theorem mc_GV {k ρ m : ℕ} (e : ρ + 1 = m) {t : ℂ} (ht : t ≠ 0) {γ : B.M
   simp [Matrix.det_unique, ht]
 
 /- English proof (translation)
-Introduce `k ρ m e t ht γ hγ xx`. Unfold `pt`. Conclude with `HermitianFormFactor.UH_mul (HermitianFormFactor.UH_mul (HermitianFormFactor.UH_inv (B2x5.isUnit_det_Hpk k m) (radial_embedding_mem_unitary_group e xx.1)) (mc_GV e ht hγ)) (radial_embedding_mem_unitary_group e xx.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem point_mem_unitary_group : PtGV := by
   intro k ρ m e t ht γ hγ xx

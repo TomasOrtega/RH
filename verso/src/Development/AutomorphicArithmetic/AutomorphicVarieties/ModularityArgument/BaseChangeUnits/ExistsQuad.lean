@@ -3,21 +3,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.I
 open NumberField Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af
 
 /- English proof (translation)
-Use `haveI : Normal ℚ Ω := IsAlgClosure.normal ℚ Ω`. Set `p : (Ω ≃ₐ[ℚ] Ω) →* (L ≃ₐ[ℚ] L)` to `AlgEquiv.restrictNormalHom L`. Establish `hp : Function.Surjective p` using `AlgEquiv.restrictNormalHom_surjective Ω`. Establish `hpx : ∀ (s : Ω ≃ₐ[ℚ] Ω) (x : L), algebraMap L Ω (p s x) = s (algebraMap L Ω x)` using `fun s x => AlgEquiv.restrictNormal_commutes s L x`. Establish `hk : p.ker ≤ η.ker` using `fun s hs => hL (AlgEquiv.ofRingEquiv (f := s.toRingEquiv) fun x => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hpx s x` as an intermediate fact. Rewrite `this` using `[show p s = 1 from hs]`. Conclude with `this.symm)`. Set `θ : (L ≃ₐ[ℚ] L) →* ℤˣ` to `p.liftOfSurjective hp ⟨η, hk⟩`. Establish `hθ : ∀ s, θ (p s) = η s` using `fun s => MonoidHom.liftOfRightInverse_comp_apply _ _ _ _ s`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hidx : θ.ker.index = 2`. Rewrite using `[Subgroup.index_ker, show θ.range = ⊤ from eq_top_iff.2 fun u _ => by`. Break down `Int.units_eq_one_or u with rfl | rfl` into its components or cases. Conclude with `one_mem _`. Conclude with `⟨p c, (hθ c).trans hη⟩]`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `h2 : Module.finrank ℚ (IntermediateField.fixedField θ.ker) = 2`. Establish `h` using `Module.finrank_mul_finrank ℚ (IntermediateField.fixedField θ.ker) L`. Rewrite `h` using `[IntermediateField.finrank_fixedField_eq_card, ← IsGalois.card_aut_eq_finrank ℚ L, ← θ.ker.index_mul_card, hidx]`. Conclude with `Nat.eq_of_mul_eq_mul_right Nat.card_pos h`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨_, h2, ?_⟩` and prove the remaining obligations. Use `set K := IntermediateField.fixedField θ.ker`. Use `haveI : Algebra.IsQuadraticExtension ℚ K := ⟨h2⟩`. Take `⟨j, hj⟩` from `hc`. Set `φ : K →+* ℂ` to `j.comp ((algebraMap L Ω).comp (algebraMap K L))`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hφ : ¬ ComplexEmbedding.IsReal φ` using `fun h => by`. Establish `: p c ∈ K.fixingSubgroup` using `(IntermediateField.mem_fixingSubgroup_iff _ _).2 fun x hx => by`. Apply `(algebraMap L Ω).injective` to reduce the goal to its premises. Apply `j.injective` to reduce the goal to its premises. Rewrite using `[hpx, hj]`.
-
-Conclude with `RingHom.congr_fun (ComplexEmbedding.isReal_iff.1 h) ⟨x, hx⟩`. Rewrite `this` using `[IntermediateField.fixingSubgroup_fixedField, MonoidHom.mem_ker, hθ, hη]`. Conclude with `absurd this (by decide)`. Use `haveI : IsTotallyComplex K := by classical`. Establish `h1` using `InfinitePlace.card_add_two_mul_card_eq_rank K`.
-
-Establish `h3 : 0 < InfinitePlace.nrComplexPlaces K` using `Fintype.card_pos_iff.2 ⟨⟨InfinitePlace.mk φ, by`. Rewrite using `[← InfinitePlace.not_isReal_iff_isComplex, InfinitePlace.isReal_mk_iff]`. Conclude with `hφ⟩⟩`. Conclude with `NumberField.nrRealPlaces_eq_zero_iff.1 (by omega)`. Conclude with `IsCMField.ofCMExtension ℚ K`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Bc.exists_quad (L Ω : Type) [Field L] [NumberField L] [IsGalois ℚ L] [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] [Algebra L Ω]
     (η : G ℚ Ω →* ℤˣ) (c : G ℚ Ω) (hc : IsConjEl c) (hη : η c = -1) (hL : ∀ s : G L Ω, η (resG ℚ L Ω s) = 1) :

@@ -15,20 +15,20 @@ open GlobalTheory GlobalTheory.CM GlobalTheory.LamF
 namespace GlobalTheory.LamF.EigLine
 
 /- English proof (translation)
-The claim follows from `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) (RingHom.ext h)`.
+A detailed English derivation is pending.
 -/
 theorem ringHom_ext_ringOfIntegers {E K : Type} [Field E] [NumberField E] [Field K] {f g : E →+* K}
     (h : ∀ a : 𝓞 E, f (a : E) = g (a : E)) : f = g :=
   IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) (RingHom.ext h)
 
 /- English proof (translation)
-Establish `hd : ∀ a (d : Fin n → K) j, r a d j = χ j a * d j` using `fun a d j => by conv_lhs => rw [pi_eq_sum_univ' d, map_sum]`. Simplify using `only [map_smul, hr, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[Finset.sum_eq_single j (fun k _ hk => by simp [Pi.single_eq_of_ne hk.symm]) (by simp), Pi.single_eq_same, mul_comm]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨c i, funext fun j => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hj : j = i`. Rewrite using `[hj, Pi.single_eq_same]`. Rewrite using `[Pi.single_eq_of_ne hj]`. Assume the negation of the conclusion as `hc`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Use `hj (hχ (funext fun a => mul_right_cancel₀ hc ?_))` and prove the remaining obligations. Rewrite using `[← hd, h a, Pi.smul_apply, smul_eq_mul]`. Introduce and unpack `⟨s, rfl⟩ a`. Use function extensionality and compare the values at `j`. Rewrite using `[hd, Pi.smul_apply, smul_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hj : j = i`. Rewrite using `[hj]`. Rewrite using `[Pi.single_eq_of_ne hj, mul_zero, mul_zero]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem forall_apply_eq_smul_iff {K O : Type} [Field K] {n : ℕ} (r : O → Module.End K (Fin n → K)) (χ : Fin n → O → K)
     (hχ : Function.Injective χ) (hr : ∀ a j, r a (Pi.single j 1) = Pi.single j (χ j a)) (i : Fin n) (c : Fin n → K) :
@@ -55,13 +55,13 @@ theorem forall_apply_eq_smul_iff {K O : Type} [Field K] {n : ℕ} (r : O → Mod
     · rw [Pi.single_eq_of_ne hj, mul_zero, mul_zero]
 
 /- English proof (translation)
-Introduce `E _ _ _ K _ _ A x φ hf oa act S τ lab hact hlab hty i t ht c`. Take `⟨r, hr, he⟩` from `GlobalTheory.T.exists_lieRepresentation_eigenLattices K A (GenFib.mk x.P φ hf x.v x.basis) (𝓞 E) act`. Use `x.P.isAb.comm` as an intermediate fact. Establish `halg` using `LieComb.lieComb_algebra K x.P.A x.P.g x.v x.basis.1`. Establish `hdiag : ∀ (a : 𝓞 E) (j : Fin x.P.g), r a (Pi.single j 1) = Pi.single j (lab (τ j) (a : E))` using `fun a j => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨-, f₀, -, e, h⟩` from `GlobalTheory.T.existsUnique_differential_monHom_lieBasis K A (GenFib.mk x.P φ hf x.v x.basis) A (GenFib.mk x.P φ hf x.v x.basis) (act.act a) (act.hom a)`. Take `⟨w, hw, hw'⟩` from `hty a j`. Establish `h₁ : IsLieComb (r a (Pi.single j 1)) x.v (x.v j ≫ f₀)` using `h _ (hr a) _ _ (halg.2.2.2.1 j)`. Establish `e' : f₀.left ≫ φ = φ ≫ (oa.act a).left` using `by rw [← hact]; exact e`. Take `rfl : x.v j ≫ f₀ = w` from `Over.OverMorphism.ext (hf.2.1.1.hom_ext (by rw [Over.comp_left, Category.assoc, e', hw']) ((Over.w _).trans (Over.w _).symm))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `(x.basis.2 _ (halg.2.1 _ _ hw)).unique h₁ hw`. Establish `hχ : Function.Injective fun (j : Fin x.P.g) (a : 𝓞 E) => lab (τ j) (a : E)` using `fun j k h => τ.injective (Subtype.ext (hlab (ringHom_ext_ringOfIntegers fun a => congrFun h a)))`. Use `(he t c).1.trans (and_congr_right fun _ => ?_)` and prove the remaining obligations. Rewrite using `[← forall_apply_eq_smul_iff (fun a => r a) _ hχ hdiag i c]`. Use `forall_congr' fun a => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ht a, ← algebraMap_smul K (t a) c]`.
+A detailed English derivation is pending.
 -/
 theorem mem_eigLat_iff : ∀ (E : Type) [Field E] [NumberField E] [StarRing (𝓞 E)] (K : Type) [Field K] [NumberField K] (A : Out.PolAV (Sp (𝓞 K))) (x : KeyIn K) (φ : x.P.A.left ⟶ A.A.left) (hf : IsPolFibre (algebraMap (𝓞 K) K) A x.P φ) (oa : A.OAct (𝓞 E)) (act : OAct (𝓞 E) A.A) (S : Set (E →+* ℂ)) (τ : Fin x.P.g ≃ S) (lab : (E →+* ℂ) → (E →+* K)), act.act = oa.act → Function.Injective lab → IsLieType A oa x φ τ lab → ∀ (i : Fin x.P.g) (t : 𝓞 E →+* 𝓞 K), (∀ a : 𝓞 E, (t a : K) = lab (τ i) (a : E)) → ∀ c, c ∈ (GenFib.mk x.P φ hf x.v x.basis : GenFib A).eigLat act t ↔ c ∈ (GenFib.mk x.P φ hf x.v x.basis : GenFib A).lieLat ∧ ∃ r : K, c = Pi.single i r := by
   intro E _ _ _ K _ _ A x φ hf oa act S τ lab hact hlab hty i t ht c

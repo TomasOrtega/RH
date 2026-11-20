@@ -19,9 +19,9 @@ open scoped InnerProductSpace ENNReal
 namespace GlobalTheory.SupMeas
 
 /- English proof (translation)
-Take `⟨P, hP, -, -, ⟨-, -, hc⟩, -⟩` from `h.2`. Establish `hdet : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).mp hP.1.1`. Establish `hPP : P⁻¹ * P = 1` using `Matrix.nonsing_inv_mul P hdet`. Establish `hmaps` using `Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.cayley_maps hP`. Establish `e : ∀ g : Mx k r, P⁻¹ * (P * g * P⁻¹) * P = g` using `fun g => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hPP, Matrix.one_mul, Matrix.mul_assoc, hPP, Matrix.mul_one]`. Establish `h3 : Continuous fun g : Mx k r => P * g * P⁻¹` using `(continuous_const.matrix_mul continuous_id).matrix_mul continuous_const`. Use `(hc v).comp h3.continuousOn hmaps` as an intermediate fact. Simplify `this` using `only [Function.comp_def, e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isDS_continuousOn {k r : ℕ} {R : Rep k r} {ε : Fin (2 * r + k + 1) → Bool} {μ : Fin (2 * r + k + 1) → ℝ}
     (h : R.IsDG ε μ) (v : R.H) : ContinuousOn (fun g => R.σ g v) (GG k r) := by
@@ -37,7 +37,7 @@ theorem isDS_continuousOn {k r : ℕ} {R : Rep k r} {ε : Fin (2 * r + k + 1) �
   simpa only [Function.comp_def, e] using this
 
 /- English proof (translation)
-Take `⟨m, x, y, X, -, hF, -⟩` from `hF`. Use `ContinuousOn.congr ?_ hF` and prove the remaining obligations. Conclude with `continuousOn_finsetSum _ fun i _ => (ContinuousOn.inner (𝕜 := ℂ) continuousOn_const (isDS_continuousOn h (y i))).smul continuousOn_const`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isCoef_continuousOn {k r : ℕ} {R : Rep k r} {ε : Fin (2 * r + k + 1) → Bool} {μ : Fin (2 * r + k + 1) → ℝ}
     {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq]
@@ -49,9 +49,7 @@ theorem isCoef_continuousOn {k r : ℕ} {R : Rep k r} {ε : Fin (2 * r + k + 1) 
     (ContinuousOn.inner (𝕜 := ℂ) continuousOn_const (isDS_continuousOn h (y i))).smul continuousOn_const
 
 /- English proof (translation)
-Introduce `_ P Wp Wq _ _ _ _ _ _ p lam b bv ga h q0 R l l' dg s J tau _ hS ν`. Apply `GlobalTheory.T.aemeasurable_besselNormIntegrand_bigCell` to reduce the goal to its premises. Distinguish the cases in `hν : n1 ν ≤ q0 ∧ NzOn (R ν) (l ν) ∧ NzOn (R ν) (l' ν)`. Conclude with `isCoef_continuousOn (hS.fam ν hν.1) (hS.coef ν hν.1 hν.2.1 hν.2.2).1`. Rewrite using `[hS.zero ν hν]`.
-
-Conclude with `continuousOn_const`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sup_meas : HypsG → ∀ (P : M.Par) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (p : KB.Pl P Wp Wq) (lam : Fin (2 * P.r + P.k + 1) → ℝ) (b bv ga h : ℝ) (q0 : ℕ) (R : (Fin (2 * P.r + P.k + 1) → ℤ) → Rep P.k P.r) (l : ∀ ν, (R ν).H → Wp) (l' : ∀ ν, (R ν).H → Wq) (dg : (Fin (2 * P.r + P.k + 1) → ℤ) → ℝ) (s : (Fin (2 * P.r + P.k + 1) → ℤ) → ℂ) (J : (Fin (2 * P.r + P.k + 1) → ℤ) → B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (tau : (Fin (2 * P.r + P.k + 1) → ℤ) → Finset (Fin (2 * P.r + P.k + 1)) → ℂ), Num P.k P.r lam P.u b bv ga h q0 → SupG p lam q0 R l l' dg s J tau → ∀ ν, AEMeasurable fun c : Fin (P.r + 1) → ℂ => ENNReal.ofReal (TBB.Ew p (fun _ => 1) (J ν) (P.r + 1) [] (TBB.bigPt P.r c)) := by
   intro _ P Wp Wq _ _ _ _ _ _ p lam b bv ga h q0 R l l' dg s J tau _ hS ν

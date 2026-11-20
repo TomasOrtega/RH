@@ -7,7 +7,7 @@ namespace ReciprocityTheory.ChartRestriction.DS.Mult1
 open Formalism.FourierDecayAlt.B Formalism.FourierDecayAlt.B2
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, -, -, -, -, hRB, hRA, -, hAe, hDJ⟩` from `h`. Apply the tactic sequence `have hDJ' : DilJacAll := by first | exact hDJ | exact hDJ.1`. Introduce `k r Wp Wq _ _ _ _ _ _ D A hXi hA F F' hF hF' hP`. Take `⟨Ξ, hCB, hXI⟩` from `hXi k r Wp Wq D A hA`. Conclude with `BetaInfA.betaInf_eq_of D A hAe (hRB k r Wp Wq D Ξ A hA hCB hXI) (hRA k r Wp Wq D Ξ A hA hCB hXI (hDJ' k r Wp Wq D)) (BetaInfA.inCC_five_four hF) (BetaInfA.inCC_five_four hF') hP`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem stBetaInf (h : UnitaryGroupStructuralFacts) : StBetaInf := by
   obtain ⟨-, -, -, -, -, -, -, -, -, hRB, hRA, -, hAe, hDJ⟩ := h

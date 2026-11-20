@@ -22,11 +22,11 @@ noncomputable section
 namespace GlobalTheory.FlagGenPt
 
 /- English proof (translation)
-Introduce `P2 PH RA _ D O hO B _ R hR c Bs _ q arq nBs E h H Bg jB πB u Gm hL Y₀ _ π₀ fl₀ hfb ar₀ n₀ _`. Establish `hs : GlobalTheory.FlagGenFib.jGf q π₀ jB _ hL.1 ≫ πB ≫ genStr O.s.T.Z ≫ spMap O.κ.e.toRingHom = GlobalTheory.FlagGenFib.sf q π₀` using `hL.1.lift_snd _ _ _`. Establish `hj` using `GlobalTheory.FlagGenFib.jGf_jB q π₀ jB _ hL.1`. Take `⟨πG, φ, hsq, -, -, hgen, hA⟩` from `GlobalTheory.T.arithmetic_bundle_normal_base_setup P2 PH RA D O hO (FlagAr.setB O.Y B) R hR c Bs q arq nBs E h H Bg jB πB u ⟨hL.1, hL.2.1, hL.2.2.1, hL.2.2.2.1⟩ hL.2.2.2.2.1 ⟨Gm, hL.2.2.2.2.2.1, hL.2.2.2.2.2.2⟩ Y₀ π₀ fl₀ hfb ar₀ n₀ (GlobalTheory.FlagGenFib.Gf q π₀) (GlobalTheory. …`. Take `⟨r, hr⟩` from `GlobalTheory.FlagSec.exists_isFrameSec D O c Bs E (fun a => (h a).isVB) Bg jB πB u hL.2.2.2.1 Y₀ π₀ fl₀ (GlobalTheory.FlagGenFib.Gf q π₀) (GlobalTheory.FlagGenFib.jf q π₀) πG φ hgen _ hj hsq hA`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h2 : (GlobalTheory.FlagGenFib.Gf q π₀).fromSpecStalk (genericPoint _) ≫ GlobalTheory.FlagGenFib.jGf q π₀ jB _ hL.1 ≫ πB = spMap φ ≫ (O.var c).X.fromSpecStalk (genericPoint (O.var c).X) ≫ (O.Φ.C c).π`. Rewrite using `[hsq, ← Category.assoc, hgen, Category.assoc]`. Use `⟨φ, ?_, h2, fun a i hr' => ⟨r a i, hr a i hr'⟩⟩` and prove the remaining obligations. Establish `h3` using `congrArg (· ≫ genStr O.s.T.Z ≫ spMap O.κ.e.toRingHom) h2`. Simplify using `only [Category.assoc] at h3`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h3` using `[hs, (O.Φ.C c).π_str]`. Conclude with `h3`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_fieldMap : ∀ (P2 : Hypotheses2) (PH : HypothesesH) (RA : RegularAlteration) (SW : ScholzeWeinsteinB)
     (D : D7) (O : Setup D) (hO : O.Core) (B : ℝ) (hB : 2 ≤ B) (R : ℝ) (hR : 2 ≤ R) (c : O.s.Comp)

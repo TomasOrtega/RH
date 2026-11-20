@@ -16,19 +16,19 @@ variable {D : D7} (X : HidaSetting D) (p : TypX X) (θ : TpX X p ≃ₐ[FpX X p]
   (Q : GL (IdxD D) (FpX X p))
 
 /- English proof (translation)
-Unfold `crd1`. Rewrite using `[map_zero, Pi.zero_comp, Matrix.mulVec_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem firstCoords_zero : crd1 X p θ Q 0 = 0 := by
   unfold crd1; rw [map_zero, Pi.zero_comp, Matrix.mulVec_zero]
 
 /- English proof (translation)
-Unfold `crd2`. Rewrite using `[map_zero, Pi.zero_comp, Matrix.mulVec_zero, Matrix.mulVec_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem secondCoords_zero : crd2 X p θ Q 0 = 0 := by
   unfold crd2; rw [map_zero, Pi.zero_comp, Matrix.mulVec_zero, Matrix.mulVec_zero]
 
 /- English proof (translation)
-Rewrite using `[smulO_eq]`. Use `show crd1 X p θ Q ((c : FpX X p) • v) = (c : FpX X p) • crd1 X p θ Q v`. Unfold `crd1`. Rewrite using `[LinearMap.map_smul, show ((c : FpX X p) • pr1 θ v) ∘ (idxEquiv X).symm = (c : FpX X p) • (pr1 θ v ∘ (idxEquiv X).symm) from rfl, Matrix.mulVec_smul]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem firstCoords_smul_integer (c : OvA X p) (v : Fin X.B.I.n → TpX X p) :
     crd1 X p θ Q (c • v) = c • crd1 X p θ Q v := by
@@ -39,7 +39,7 @@ theorem firstCoords_smul_integer (c : OvA X p) (v : Fin X.B.I.n → TpX X p) :
     (c : FpX X p) • (pr1 θ v ∘ (idxEquiv X).symm) from rfl, Matrix.mulVec_smul]
 
 /- English proof (translation)
-Rewrite using `[smulO_eq]`. Use `show crd2 X p θ Q ((c : FpX X p) • v) = (c : FpX X p) • crd2 X p θ Q v`. Unfold `crd2`. Rewrite using `[LinearMap.map_smul, show ((c : FpX X p) • pr2 θ v) ∘ (idxEquiv X).symm = (c : FpX X p) • (pr2 θ v ∘ (idxEquiv X).symm) from rfl, Matrix.mulVec_smul, Matrix.mulVec_smul]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem secondCoords_smul_integer (c : OvA X p) (v : Fin X.B.I.n → TpX X p) :
     crd2 X p θ Q (c • v) = c • crd2 X p θ Q v := by
@@ -50,35 +50,33 @@ theorem secondCoords_smul_integer (c : OvA X p) (v : Fin X.B.I.n → TpX X p) :
     (c : FpX X p) • (pr2 θ v ∘ (idxEquiv X).symm) from rfl, Matrix.mulVec_smul, Matrix.mulVec_smul]
 
 /- English proof (translation)
-Introduce `S y`. Unfold `InModP`. Rewrite using `[Submodule.ideal_span_singleton_smul, Submodule.mem_sup]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, l', hl', rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Take `⟨l, hl, rfl⟩` from `(Submodule.mem_smul_pointwise_iff_exists _ _ _).mp hl'`. Establish `key : ∀ w ∈ Submodule.span (OvA X p) {w | ∃ t ∈ OEp X p, ∃ s ∈ S, w = t • s}, crd1 X p θ Q w ∈ Submodule.span (OvA X p) (crd1 X p θ Q '' S) ∧ crd2 X p θ Q w ∈ Submodule.span (OvA X p) (crd2 X p θ Q '' S)`. Introduce `w hw`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Take `⟨t, ht, s, hs, rfl⟩` from `hx`. Rewrite using `[firstCoords_tensor_smul, secondCoords_tensor_smul]`. Conclude with `⟨Submodule.smul_mem _ (⟨_, (hO1 t ht).1⟩ : OvA X p) (Submodule.subset_span ⟨s, hs, rfl⟩), Submodule.smul_mem _ (⟨_, (hO1 t ht).2⟩ : OvA X p) (Submodule.subset_span ⟨s, hs, rfl⟩)⟩`. Consider the case `zero => rw [firstCoords_zero, secondCoords_zero]`. Conclude with `⟨zero_mem _, zero_mem _⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Treat this case separately. Supply the required witnesses or components.
 
-Consider the case `add x y _ _ hx hy`. Rewrite using `[firstCoords_add, secondCoords_add]`. Conclude with `⟨add_mem hx.1 hy.1, add_mem hx.2 hy.2⟩`. Consider the case `smul c x _ hx`. Rewrite using `[firstCoords_smul_integer, secondCoords_smul_integer]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨Submodule.smul_mem _ c hx.1, Submodule.smul_mem _ c hx.2⟩`. Establish `hl2` using `(hLat l).1 hl`. Use `⟨⟨crd1 X p θ Q w, (key w hw).1, crd1 X p θ Q l, hl2.1, ?_⟩, ⟨crd2 X p θ Q w, (key w hw).2, crd2 X p θ Q l, hl2.2, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[firstCoords_add, firstCoords_smul_integer]`. Both sides reduce to the same expression.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[secondCoords_add, secondCoords_smul_integer]`. Both sides reduce to the same expression. Introduce and unpack `⟨⟨w1, hw1, z1, hz1, e1⟩, ⟨w2, hw2, z2, hz2, e2⟩⟩`. Establish `lift1 : ∀ w1 ∈ Submodule.span (OvA X p) (crd1 X p θ Q '' S), ∃ w ∈ Submodule.span (OvA X p) {w | ∃ t ∈ OEp X p, ∃ s ∈ S, w = t • s}, crd1 X p θ Q w = w1 ∧ crd2 X p θ Q w = 0`. Introduce `w1 hw1`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `hw1 using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨s, hs, rfl⟩` from `hx`. Use `⟨θ.symm (1, 0) • s, Submodule.subset_span ⟨_, hO2, s, hs, rfl⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[firstCoords_tensor_smul, AlgEquiv.apply_symm_apply, one_smul]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[secondCoords_tensor_smul, AlgEquiv.apply_symm_apply, zero_smul]`. Consider the case `zero => exact ⟨0, zero_mem _, firstCoords_zero X p θ Q, secondCoords_zero X p θ Q⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨a, ha, ha1, ha2⟩` from `hx`. Take `⟨b, hb, hb1, hb2⟩` from `hy`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a + b, add_mem ha hb, by rw [firstCoords_add, ha1, hb1], by rw [secondCoords_add, ha2, hb2, add_zero]⟩`. Consider the case `smul c x _ hx`. Take `⟨a, ha, ha1, ha2⟩` from `hx`. Conclude with `⟨c • a, Submodule.smul_mem _ c ha, by rw [firstCoords_smul_integer, ha1], by rw [secondCoords_smul_integer, ha2, smul_zero]⟩`. Establish `lift2 : ∀ w2 ∈ Submodule.span (OvA X p) (crd2 X p θ Q '' S), ∃ w ∈ Submodule.span (OvA X p) {w | ∃ t ∈ OEp X p, ∃ s ∈ S, w = t • s}, crd1 X p θ Q w = 0 ∧ crd2 X p θ Q w = w2`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `w2 hw2`. Proceed by induction on `hw2 using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨s, hs, rfl⟩` from `hx`. Use `⟨θ.symm (0, 1) • s, Submodule.subset_span ⟨_, hO3, s, hs, rfl⟩, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[firstCoords_tensor_smul, AlgEquiv.apply_symm_apply, zero_smul]`. Rewrite using `[secondCoords_tensor_smul, AlgEquiv.apply_symm_apply, one_smul]`. Consider the case `zero => exact ⟨0, zero_mem _, firstCoords_zero X p θ Q, secondCoords_zero X p θ Q⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨a, ha, ha1, ha2⟩` from `hx`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb, hb1, hb2⟩` from `hy`. Conclude with `⟨a + b, add_mem ha hb, by rw [firstCoords_add, ha1, hb1, add_zero], by rw [secondCoords_add, ha2, hb2]⟩`. Consider the case `smul c x _ hx`. Take `⟨a, ha, ha1, ha2⟩` from `hx`. Conclude with `⟨c • a, Submodule.smul_mem _ c ha, by rw [firstCoords_smul_integer, ha1, smul_zero], by rw [secondCoords_smul_integer, ha2]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨wa, hwa, ha1, ha2⟩` from `lift1 w1 hw1`. Take `⟨wb, hwb, hb1, hb2⟩` from `lift2 w2 hw2`. Take `⟨l, hl1, hl2⟩` from `hSurj z1 z2`. Establish `hl : l ∈ latLoc (E` using `X.B.I.E) p.1 (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E)) := (hLat l).2 ⟨hl1 ▸ hz1, hl2 ▸ hz2⟩`. Establish `hy : y = (wa + wb) + ((gOf p : ℕ) : OvA X p) • l`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0` using `hInj (y - ((wa + wb) + ((gOf p : ℕ) : OvA X p) • l)) ?_ ?_`. Conclude with `sub_eq_zero.mp h0`. Rewrite using `[firstCoords_sub, firstCoords_add, firstCoords_add, firstCoords_smul_integer, e1, ha1, hb1, hl1, add_zero] show w1 + ((gA X p : OvA X p) : FpX X p) • z1 - (w1 + ((gA X p : OvA X p) : FpX X p) • z1) = 0`. Conclude with `sub_self _`. Rewrite using `[secondCoords_sub, secondCoords_add, secondCoords_add, secondCoords_smul_integer, e2, ha2, hb2, hl2, zero_add] show w2 + ((gA X p : OvA X p) : FpX X p) • z2 - (w2 + ((gA X p : OvA X p) : FpX X p) • z2) = 0`.
-
-Conclude with `sub_self _`. Conclude with `⟨wa + wb, add_mem hwa hwb, _, Submodule.smul_mem_pointwise_smul _ _ _ hl, hy.symm⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem splitA_of (hO1 : ∀ t ∈ OEp X p, (θ t).1 ∈ OvA X p ∧ (θ t).2 ∈ OvA X p)
     (hO2 : θ.symm (1, 0) ∈ OEp X p) (hO3 : θ.symm (0, 1) ∈ OEp X p)

@@ -18,13 +18,13 @@ open scoped Kronecker
 variable {O : Type} [CommRing O] [IsDomain O]
 
 /- English proof (translation)
-Introduce `I g`. Take `⟨a, rfl⟩` from `(IsPrincipalIdealRing.principal I)`. Distinguish the cases in `ha : a = 0`. Use `⟨0, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hx0 : x = 0` using `by simpa [ha] using hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Substitute `hx0` using the available equality. Conclude with `(map_zero g).symm`. Establish `hmem : a ∈ Submodule.span O ({a} : Set O)` using `Submodule.mem_span_singleton_self a`. Take `⟨v, hv⟩` from `Submodule.Quotient.mk_surjective _ (g ⟨a, hmem⟩)`. Establish `ha' : algebraMap O (FractionRing O) a ≠ 0` using `by simpa using ha`.
+Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `m : KOG O k` to `Submodule.Quotient.mk ((algebraMap O (FractionRing O) a)⁻¹ • v)`. Establish `hm : a • m = g ⟨a, hmem⟩`. Rewrite using `[← hv, ← Submodule.Quotient.mk_smul, ← algebraMap_smul (FractionRing O) a, smul_smul, mul_inv_cancel₀ ha', one_smul]`. Use `⟨LinearMap.toSpanSingleton O _ m, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.toSpanSingleton_apply, smul_assoc, hm, ← map_smul]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem baer_KOG [IsPrincipalIdealRing O] (k : ℕ) : Module.Baer O (KOG O k) := by
   intro I g
@@ -47,7 +47,7 @@ theorem baer_KOG [IsPrincipalIdealRing O] (k : ℕ) : Module.Baer O (KOG O k) :=
     rfl
 
 /- English proof (translation)
-Take `⟨φ, hφ⟩` from `hQ.extension_property ((LinearMap.ker F).liftQ F le_rfl) (LinearMap.ker_eq_bot.1 (Submodule.ker_liftQ_eq_bot _ _ _ le_rfl)) ((LinearMap.ker F).liftQ G h)`. Conclude with `⟨φ, fun p => LinearMap.congr_fun hφ (Submodule.Quotient.mk p)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_ext {P M Q : Type} [AddCommGroup P] [Module O P] [AddCommGroup M] [Module O M]
     [AddCommGroup Q] [Module O Q] (hQ : Module.Baer O Q) (F : P →ₗ[O] M) (G : P →ₗ[O] Q)
@@ -93,25 +93,23 @@ Both sides reduce to the same expression.
 theorem matHom_apply {k : ℕ} (A : Matrix (Fin k) (Fin k) O) : matHom k A = matKO A := rfl
 
 /- English proof (translation)
-Use `set C := Submodule.span O {c : Γ → KOG O d | ∃ φ : M →ₗ[O] KOG O d, (∀ a, a ∈ A → ∀ m, Y m → φ (a * m) = matKO (ψ' a) (φ m)) ∧ (∀ m, Y m → Z m → φ m = 0) ∧ c = fun s => φ (y s)} with hC`. Establish `hle : (⨅ θ ∈ Rel, LinearMap.ker (∑ q : Fin g, (matKO (ψ (θ q))).comp (LinearMap.proj q : (Fin g → KOG O d) →ₗ[O] KOG O d))) ≤ C.map (LinearMap.funLeft O (KOG O d) γ)`. Introduce `w hw`. Establish `hw' : ∀ θ ∈ Rel, ∑ q, matKO (ψ (θ q)) (w q) = 0`. Introduce `θ hθ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `(Submodule.mem_iInf _).1 ((Submodule.mem_iInf _).1 hw θ) hθ` as an intermediate fact. Simplify `this` using `[LinearMap.sum_apply]`. Set `F : (Fin g → A) →ₗ[O] M` to `∑ q, (LinearMap.mulRight O (y (γ q))).comp (A.val.toLinearMap.comp (LinearMap.proj q))`. Set `G : (Fin g → A) →ₗ[O] KOG O d` to `∑ q, (LinearMap.applyₗ (w q)).comp ((matHom d).toLinearMap.comp (ψ.toLinearMap.comp (LinearMap.proj q)))`. Establish `hF : ∀ θ, F θ = ∑ q, (θ q : M) * y (γ q)` using `fun θ => by`.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[F, LinearMap.sum_apply]`. Establish `hG : ∀ θ, G θ = ∑ q, matKO (ψ (θ q)) (w q)` using `fun θ => by`. Simplify using `[G, LinearMap.sum_apply, matHom_apply]`. Take `⟨φ, hφ⟩` from `exists_ext (baer_KOG d) F G (by`. Introduce `θ hθ`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hθ`, the goal using `[LinearMap.mem_ker]`. Rewrite using `[hG]`. Use `hw' θ (hRel θ ?_)` and prove the remaining obligations. Rewrite using `[← hF, hθ]`. Conclude with `hZ)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨fun s => φ (y s), Submodule.subset_span ⟨φ, ?_, ?_, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce `a ha m hm`. Take `⟨θ, rfl⟩` from `hY m hm`. Establish `h1 : a * ∑ q, (θ q : M) * y (γ q) = F (fun q => ⟨a, ha⟩ * θ q)`. Rewrite using `[hF, Finset.mul_sum]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[mul_assoc]`. Rewrite using `[h1, ← hF, hφ, hφ, hG, hG, map_sum, ← hψ ⟨a, ha⟩]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, ← matHom_apply, map_mul]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `m hm hz`. Take `⟨θ, rfl⟩` from `hY m hm`. Rewrite using `[← hF, hφ, hG]`. Conclude with `hw' θ (hRel θ hz)`. Use function extensionality and compare the values at `q`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h1 : y (γ q) = F (Pi.single q 1)`. Apply the tactic sequence `rw [hF, Finset.sum_eq_single q] <;> simp +contextual`. Express the relevant statement in the definitionally equal form `φ (y (γ q)) = w q`. Rewrite using `[h1, hφ, hG, Finset.sum_eq_single q]`. Rewrite using `[Pi.single_eq_same, map_one, ← matHom_apply, map_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Introduce `b _ hb`. Rewrite using `[Pi.single_eq_of_ne hb, map_zero, ← matHom_apply, map_zero]`. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
-
-Use `(Module.length_le_of_injective (Submodule.inclusion hle) (Submodule.inclusion_injective _)).trans ?_` and prove the remaining obligations. Conclude with `Module.length_le_of_surjective ((LinearMap.funLeft O (KOG O d) γ).submoduleMap C) (LinearMap.submoduleMap_surjective _ _)`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem length_sol_le [IsPrincipalIdealRing O] {M Γ : Type} [Ring M] [Algebra O M] (A : Subalgebra O M)
     {d g : ℕ} (ψ : A →ₐ[O] Matrix (Fin d) (Fin d) O) (ψ' : M → Matrix (Fin d) (Fin d) O)
@@ -181,11 +179,11 @@ theorem length_sol_le [IsPrincipalIdealRing O] {M Γ : Type} [Ring M] [Algebra O
     (LinearMap.submoduleMap_surjective _ _)
 
 /- English proof (translation)
-Establish `h1 : ((1 : Matrix G G L) ⊗ₖ P) * ((1 : Matrix G G L) ⊗ₖ Q) = 1`. Rewrite using `[← Matrix.mul_kronecker_mul, hPQ, one_mul, Matrix.one_kronecker_one]`. Establish `h2 : ((1 : Matrix G G L) ⊗ₖ Q) * ((1 : Matrix G G L) ⊗ₖ P) = 1`. Rewrite using `[← Matrix.mul_kronecker_mul, hQP, one_mul, Matrix.one_kronecker_one]`. Rewrite using `[← Matrix.det_conj_of_mul_eq_one h1 h2, ← Matrix.det_blockDiagonal, ← Matrix.det_fromBlocks_zero₂₁ _ 0, ← Matrix.det_submatrix_equiv_self (Equiv.prodSumDistrib G ρ τ)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `⟨p, i⟩ ⟨q, j⟩`. Establish `h3 : (((1 : Matrix G G L) ⊗ₖ P) * (Matrix.of fun pa qb : G × ι => a pa.1 qb.1 pa.2 qb.2) * ((1 : Matrix G G L) ⊗ₖ Q)) (p, i) (q, j) = (P * a p q * Q) i j`. Simplify using `[Matrix.mul_apply, Fintype.sum_prod_type, Matrix.one_apply, Finset.sum_ite_eq]`. Rewrite using `[h3, h]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;>`. Simplify using `[Matrix.blockDiagonal_apply, Matrix.diagonal_apply]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem det_blocks {L ι ρ τ G : Type} [CommRing L] [Fintype ι] [DecidableEq ι] [Fintype ρ] [DecidableEq ρ]
     [Fintype τ] [DecidableEq τ] [Fintype G] [DecidableEq G]
@@ -211,13 +209,13 @@ theorem det_blocks {L ι ρ τ G : Type} [CommRing L] [Fintype ι] [DecidableEq 
     simp [Matrix.blockDiagonal_apply, Matrix.diagonal_apply]
 
 /- English proof (translation)
-Set `e'` to `e.trans (LinearEquiv.sumArrowLequivProdArrow ρ τ K K).symm`. Use `⟨LinearMap.toMatrix' e'.toLinearMap, LinearMap.toMatrix' e'.symm.toLinearMap, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.toMatrix'_comp]`. Simplify using the standard rewrite rules. Rewrite using `[← LinearMap.toMatrix'_comp]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `a b c h`. Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Rewrite using `[Matrix.toLin'_mul, Matrix.toLin'_mul, Matrix.toLin'_toMatrix', Matrix.toLin'_toMatrix']`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `(LinearEquiv.sumArrowLequivProdArrow ρ τ K K).symm (e (a.mulVec (e.symm (LinearEquiv.sumArrowLequivProdArrow ρ τ K K v)))) = _`. Rewrite using `[h, e.apply_symm_apply, Matrix.toLin'_apply, Matrix.fromBlocks_mulVec]`. Use function extensionality and compare the values at `j`. Break down `j with j | j` into its components or cases. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Simplify using `[Matrix.mulVec_diagonal]`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 -/
 theorem exists_conj {K ι ρ τ : Type} [Field K] [Fintype ι] [DecidableEq ι] [Fintype ρ] [DecidableEq ρ]
     [Fintype τ] [DecidableEq τ] (e : (ι → K) ≃ₗ[K] ((ρ → K) × (τ → K))) :
@@ -249,17 +247,17 @@ section Abs2
 variable {O K : Type} [CommRing O] [Field K] [Algebra O K]
 
 /- English proof (translation)
-Establish `uniq : ∀ (b b' : Matrix ρ ρ O) (c c' : τ → O), Matrix.fromBlocks (b.map (algebraMap O K)) 0 0 (Matrix.diagonal fun j => algebraMap O K (c j)) = Matrix.fromBlocks (b'.map (algebraMap O K)) 0 0 (Matrix.diagonal fun j => algebraMap O K (c' j)) → b = b' ∧ ∀ j, c j = c' j`. Introduce `b b' c c' hh`. Take `⟨h1, -, -, h2⟩` from `Matrix.fromBlocks_inj.1 hh`. Conclude with `⟨Matrix.map_injective hinj h1, fun j => hinj (congrFun (Matrix.diagonal_injective h2) j)⟩`. Establish `hmul : ∀ a b : A, ψρ (a * b) = ψρ a * ψρ b ∧ ∀ j, ψχ j (a * b) = ψχ j a * ψχ j b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `a b`. Use `uniq _ _ (fun j => ψχ j (a * b)) (fun j => ψχ j a * ψχ j b) ?_` and prove the remaining obligations. Establish `h1 : P * ((a * b : X → Matrix ι ι O) π).map (algebraMap O K) * Q = (P * (a.1 π).map (algebraMap O K) * Q) * (P * (b.1 π).map (algebraMap O K) * Q)`. Rewrite using `[Pi.mul_apply, Matrix.map_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Matrix.mul_assoc Q P, hQP, Matrix.one_mul]`. Rewrite using `[← h _ (A.mul_mem a.2 b.2), h1, h _ a.2, h _ b.2, Matrix.fromBlocks_multiply]`. Simplify using `[Matrix.map_mul]`. Establish `hadd : ∀ a b : A, ψρ (a + b) = ψρ a + ψρ b ∧ ∀ j, ψχ j (a + b) = ψχ j a + ψχ j b`. Introduce `a b`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `uniq _ _ (fun j => ψχ j (a + b)) (fun j => ψχ j a + ψχ j b) ?_` and prove the remaining obligations. Rewrite using `[← h _ (A.add_mem a.2 b.2), Pi.add_apply, Matrix.map_add _ (map_add _), Matrix.mul_add, Matrix.add_mul, h _ a.2, h _ b.2, Matrix.fromBlocks_add]`. Simplify using `[Matrix.map_add]`. Establish `halg : ∀ c : O, ψρ (algebraMap O _ c) = algebraMap O _ c ∧ ∀ j, ψχ j (algebraMap O _ c) = c`. Introduce `c`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `uniq _ _ (fun j => ψχ j (algebraMap O _ c)) (fun _ => c) ?_` and prove the remaining obligations. Establish `h1 : ∀ {κ : Type} [Fintype κ] [DecidableEq κ], (algebraMap O (Matrix κ κ O) c).map (algebraMap O K) = algebraMap O K c • (1 : Matrix κ κ K)`. Introduce `κ _ _`. Use extensionality with `i j`. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.algebraMap_matrix_apply, Matrix.one_apply, hij]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[← h _ (A.algebraMap_mem c), Pi.algebraMap_apply, h1, h1, Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul, hPQ, ← Matrix.fromBlocks_one, Matrix.fromBlocks_smul, Matrix.smul_one_eq_diagonal, Matrix.smul_one_eq_diagonal]`. Simplify using the standard rewrite rules. Use `⟨⟨{ toFun := fun a => ψρ a map_one' := by simpa using (halg 1).1 map_mul' := fun a b => (hmul a b).1 map_zero' := by simpa using (halg 0).1 map_add' := fun a b => (hadd a b).1 commutes' := fun c => (halg c).1 }, fun _ => rfl⟩, fun j => ⟨{ toFun := fun a => ψχ j a map_one' := by s …` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem exists_homs (hinj : Function.Injective (algebraMap O K)) {X ι ρ τ : Type}
     [Fintype ι] [DecidableEq ι] [Fintype ρ] [DecidableEq ρ] [Fintype τ] [DecidableEq τ]
@@ -320,15 +318,13 @@ theorem exists_homs (hinj : Function.Injective (algebraMap O K)) {X ι ρ τ : T
 open MvPolynomial in
 
 /- English proof (translation)
-Apply `MvPolynomial.map_injective _ hinj` to reduce the goal to its premises. Establish `key` using `det_blocks (L := MvPolynomial N K) (P.map C) (Q.map C) (by rw [← Matrix.map_mul, hPQ, Matrix.map_one _ (map_zero _) (map_one _)]) (by rw [← Matrix.map_mul, hQP, Matrix.map_one _ (map_zero _) (map_one _)]) (fun p q => ∑ k, (X k : MvPolynomial N K) • ((a k p q).map (algebraMap O K) …`. Introduce `p q`. Rewrite using `[Matrix.mul_sum, Matrix.sum_mul]`. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, ← Matrix.map_mul, h]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `ext1 i j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;>`. Simplify using `[Matrix.sum_apply, Matrix.diagonal_apply]`. Apply the tactic sequence `split_ifs <;> simp)`. Rewrite using `[map_mul, map_prod, RingHom.map_det, RingHom.map_det]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [RingHom.map_det]`. Use `key using 2` and compare the differences between its conclusion and the goal. Use `ext1 i j`. Simplify using `[Matrix.sum_apply]`. Use `congr 1 ext1 i j`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `[Matrix.sum_apply]`. Use `congr 1`. Use function extensionality and compare the values at `l`. Use `congr 1`. Use `ext1 i j`.
-
-Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem det_generic_blocks (hinj : Function.Injective (algebraMap O K)) {ι ρ τ G N : Type}
     [Fintype ι] [DecidableEq ι] [Fintype ρ] [DecidableEq ρ] [Fintype τ] [DecidableEq τ]
@@ -372,11 +368,11 @@ theorem det_generic_blocks (hinj : Function.Injective (algebraMap O K)) {ι ρ �
 open MvPolynomial in
 
 /- English proof (translation)
-Apply `MvPolynomial.map_injective _ hinj` to reduce the goal to its premises. Rewrite using `[RingHom.map_det, map_zero, ← Matrix.exists_mulVec_eq_zero_iff]`. Use `⟨fun qb => C (v qb.1 qb.2), fun h0 => hv ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `q j`. Simplify using `using congrFun h0 (q, j)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts.
 
-Use function extensionality and compare the values at `⟨p, i⟩`. Establish `h1 : ∀ k, ∑ q, ∑ j, algebraMap O K (a k p q i j) * v q j = 0` using `fun k => by`. Simplify `congrFun (h k p) i` using `[Finset.sum_apply, Matrix.mulVec, dotProduct]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mulVec, dotProduct, RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, map_sum, map_mul, map_X, map_C, Finset.sum_mul, Finset.mul_sum, mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Simplify using `only [Fintype.sum_prod_type]`. Use `_ = 0 := by simp [h1]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem det_generic_eq_zero (hinj : Function.Injective (algebraMap O K)) {ι G N : Type}
     [Fintype ι] [DecidableEq ι] [Fintype G] [DecidableEq G] [Fintype N]
@@ -430,11 +426,11 @@ def spanAlg (T : Subalgebra O (X → O)) (rep : X → (Γ →* M)) : Subalgebra 
     simp [Algebra.algebraMap_eq_smul_one]⟩
 
 /- English proof (translation)
-Use `haveI : IsNoetherian A B := isNoetherian_of_tower O inferInstance`. Take `⟨t, ht, hsp⟩` from `(Submodule.fg_span_iff_fg_span_finset_subset (R := A) (Set.range y)).1 (IsNoetherian.noetherian _)`. Use `choose σ hσ using fun b : t => ht b.2`. Set `e` to `t.equivFin.symm`. Use `⟨t.card, fun q => σ (e q), fun m a s ha => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : ∑ k, a k * y (s k) ∈ Submodule.span A (Set.range fun q => y (σ (e q)))`. Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Use `Submodule.smul_mem _ (⟨a k, ha k⟩ : A) (Submodule.span_mono ?_ (hsp ▸ Submodule.subset_span ⟨s k, rfl⟩ : y (s k) ∈ Submodule.span A (t : Set B)))` and prove the remaining obligations. Introduce `b hb`. Conclude with `⟨e.symm ⟨b, hb⟩, by simp [hσ]⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨θ, hθ⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 h1`. Conclude with `⟨θ, hθ.symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_gens {B : Type} [Ring B] [Algebra O B] [IsNoetherian O B] (A : Subalgebra O B) (y : Γ → B) :
     ∃ (g : ℕ) (γ : Fin g → Γ), ∀ (m : ℕ) (a : Fin m → B) (s : Fin m → Γ), (∀ k, a k ∈ A) →
@@ -467,33 +463,31 @@ def blockHom {A τ : Type} [Ring A] [Algebra O A] {r : ℕ} (f : A →ₐ[O] Mat
 end Span
 
 /- English proof (translation)
-Introduce `D i r ρ π Xs S hr hS hπ _ hchi`. Establish `h52` using `GlobalTheory.T.cutValue_mem_heckeValueIdealOffSupport D i r ρ π Xs S hr hS hπ`. Establish `h54` using `GlobalTheory.Cut.ResidualSelmer.main D i r ρ π Xs S hr hS hπ hchi`. Take `⟨-, -, hcomp, hsurj, -, -, -, -, -, -, -, h51, -⟩` from `hS`. Establish `hinj : Function.Injective (algebraMap (D.nd.O i) (KK D.nd i))` using `IsFractionRing.injective _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `A : Subalgebra (D.nd.O i) (S.X' → MatN D.nd i)` to `spanAlg S.T' (fun x' => rO D.nd i r (S.p x'))`. Take `⟨g, γ, hγ⟩` from `exists_gens A (yg D.nd r S)`. Establish `hY : ∀ m, InY D.nd r S m → ∃ θ : Fin g → A, m = ∑ q, (θ q : S.X' → MatN D.nd i) * yg D.nd r S (γ q)`. Introduce and unpack `_ ⟨m, a, s, ha, rfl⟩`. Conclude with `hγ m a s ha`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨P, Q, hPQ, hQP, hconj⟩` from `exists_conj S.e`. Establish `hbl` using `fun a (ha : a ∈ A) => hconj _ _ _ (hcomp a ha)`. Take `⟨⟨fρ, hfρ⟩, hχ⟩` from `exists_homs hinj A S.π' P Q hPQ hQP S.ψρ S.ψχ hbl`. Use `choose fχ hfχ using hχ`. Set `Rel : Submodule A (Fin g → A)` to `{ carrier := {θ | ∀ x', S.p x' ∈ Xs → (∑ q, (θ q : S.X' → MatN D.nd i) * yg D.nd r S (γ q)) x' = 0} add_mem' := fun {a b} ha hb x' hx => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrArg₂ (· + ·) (ha x' hx) (hb x' hx)` as an intermediate fact. Simplify `this` using `[add_mul, Finset.sum_add_distrib]`. Use the proof step `zero_mem' := fun x' _ => by simp`. Use the proof step `smul_mem' := fun c θ hθ x' hx => by`. Use `congrArg (fun z => (c : S.X' → MatN D.nd i) x' * z) (hθ x' hx)` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify `this }` using `[Finset.sum_apply, Finset.mul_sum, mul_assoc]`. Set `d : Option (Fin D.R.t) → ℕ` to `blockDim D.R.r`. Set `ψ` to `blockHom fρ fχ`. Establish `hψχ : ∀ c (a : A), ψ (some c) a = S.ψχ c a • (1 : Matrix (Fin 1) (Fin 1) (D.nd.O i))`. Introduce `c a`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← hfχ, ← Algebra.algebraMap_eq_smul_one]`. Both sides reduce to the same expression. Establish `key` using `GlobalTheory.T.determinantLemma_discreteValuationRing_quotientLength_bound (D.nd.O i) A (Option (Fin D.R.t)) d ψ (by`. Introduce and unpack `(_ | c) B`. Take `⟨a, ha, rfl⟩` from `hsurj B`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `⟨⟨a, ha⟩, hfρ _⟩`. Express the relevant statement in the definitionally equal form `Matrix (Fin 1) (Fin 1) (D.nd.O i) at B`. Use `⟨algebraMap _ _ (B 0 0), ((ψ (some c)).commutes _).trans ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap _ (Matrix (Fin 1) (Fin 1) (D.nd.O i)) _ = B`. Use extensionality with `a b`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Subsingleton.elim a 0, Subsingleton.elim b 0]`. Simplify using `[Matrix.algebraMap_matrix_apply]) g Rel (ccOff i Xs π) (by`. Introduce `n θ hθ m`. Establish `hT` using `GlobalTheory.BlockDetPoly.main S.T' D.R.nV A h51 n g (fun k p q => θ k p q) (fun k p q => (θ k p q).2) m`. Establish `h2` using `h52 _ hT (by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x' hx hz`. Take `⟨η, s, hs⟩` from `h54 x' hx hz`. Rewrite using `[det_generic_eq_zero hinj (fun k p q => (θ k p q : S.X' → MatN D.nd i) x') (fun q => ((yg D.nd r S (γ q) x').map (toK D.nd i)).mulVec η) ?_ ?_, MvPolynomial.coeff_zero]`. Introduce `h0`. Apply `hs` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨t, ht⟩` from `hγ 1 (fun _ => 1) (fun _ => s) (fun _ => A.one_mem)`. Rewrite `ht` using `[Fin.sum_univ_one, one_mul]`. Rewrite using `[ht, Finset.sum_apply, ← RingHom.mapMatrix_apply, map_sum, Matrix.sum_mulVec]`. Use `Finset.sum_eq_zero fun q _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.mul_apply, map_mul, ← Matrix.mulVec_mulVec, RingHom.mapMatrix_apply _ (yg D.nd r S (γ q) x'), show ((yg D.nd r S (γ q) x').map (toK D.nd i)).mulVec η = 0 from congrFun h0 q, Matrix.mulVec_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `k p`. Establish `h3` using `congrArg (fun z => ((toK D.nd i).mapMatrix z).mulVec η) (hθ k p x' hx)`. Simplify using `only [Finset.sum_apply, map_sum, Matrix.sum_mulVec, Pi.mul_apply, map_mul, map_zero, Matrix.zero_mulVec, ← Matrix.mulVec_mulVec] at h3`. Conclude with `h3)`. Rewrite `h2` using `[det_generic_blocks hinj P Q hPQ hQP (fun k p q => (θ k p q : S.X' → MatN D.nd i) S.π') (fun k p q => S.ψρ (θ k p q)) (fun c k p q => S.ψχ c (θ k p q)) (fun k p q => hbl _ (θ k p q).2)]`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Rewrite using `[Fintype.prod_option]`. Use `h2 using 3` and compare the differences between its conclusion and the goal. Use `congr 1 ext1 pa qb`. Simplify using `only [Matrix.of_apply, ← hfρ]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations. Use `(Matrix.det_submatrix_equiv_self (Equiv.prodUnique (Fin g) (Fin 1)).symm _).symm.trans ?_` and prove the remaining obligations. Use `congr 1`. Use `ext1 p q`. Simplify using `[hψχ])`.
-
-Use `key.trans ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_option]`. Use `add_le_add ?_ (Finset.sum_le_sum fun c _ => ?_)` and prove the remaining obligations. Conclude with `length_sol_le A fρ S.ψρ hfρ (yg D.nd r S) γ (InY D.nd r S) (fun y => ∀ x', S.p x' ∈ Xs → y x' = 0) hY Rel (fun _ h => h) (fun _ _ => rfl)`. Conclude with `length_sol_le A (ψ (some c)) _ (hψχ c) (yg D.nd r S) γ (InY D.nd r S) (fun y => ∀ x', S.p x' ∈ Xs → y x' = 0) hY Rel (fun _ h => h) (fun _ _ => rfl)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem main : ∀ (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (π : D.nd.X i) (Xs : Set (D.nd.X i)) (S : IdempotentChoiceData D.nd i), GoodR D.nd i r → GoodCongruenceObjects D.nd r ρ π S → π ∈ Xs → π ∈ D.nd.Z i → NoChiOff i r Xs → Module.length (D.nd.O i) (D.nd.O i ⧸ ccOff i Xs π) ≤ Module.length (D.nd.O i) ↥(cocRho i r S Xs) + ∑ c : Fin D.R.t, Module.length (D.nd.O i) ↥(cocChi i r S Xs c) := by
   intro D i r ρ π Xs S hr hS hπ _ hchi

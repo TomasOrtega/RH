@@ -19,7 +19,7 @@ section Basic
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Use `RingHom.ext fun x => TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations. Simplify using `[Chart.scaleS_fst, epsScaleR]`. Simplify using `[Chart.scaleS_snd, epsScaleR]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem scaleS_toRingHom (c : R) : (Chart.scaleS (S := R) c).toRingHom = epsScaleR c := by
   refine RingHom.ext fun x => TrivSqZeroExt.ext ?_ ?_
@@ -29,21 +29,21 @@ theorem scaleS_toRingHom (c : R) : (Chart.scaleS (S := R) c).toRingHom = epsScal
 variable {G : Over (Sp R)} [GrpObj G]
 
 /- English proof (translation)
-The claim follows from `(Chart.isTan_iff v).mpr h`.
+A detailed English derivation is pending.
 -/
 theorem tanS_of_isTangent {v : epsR R ⟶ G} (h : IsTangent v) : Chart.TanS (S := R) (A := R) v :=
   (Chart.isTan_iff v).mpr h
 
 /- English proof (translation)
-The claim follows from `(Chart.isTan_iff v).mp h`.
+A detailed English derivation is pending.
 -/
 theorem isTangent_of_tanS {v : epsR R ⟶ G} (h : Chart.TanS (S := R) (A := R) v) : IsTangent v :=
   (Chart.isTan_iff v).mp h
 
 /- English proof (translation)
-Rewrite using `[← Chart.isTan_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `congrArg (Chart.pushR G) h` as an intermediate fact. Rewrite `this` using `[Chart.pushR_spMap, Chart.pushR_one]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Introduce `h`. Apply `Chart.pushR_inj G` to reduce the goal to its premises. Rewrite using `[Chart.pushR_spMap, Chart.pushR_one]`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTangent_iff_tanS (r : R) (y : epsR (Localization.Away r) ⟶ Chart.Gs G r) :
     IsTangent y ↔ Chart.TanS (Chart.pushR G y) := by
@@ -59,7 +59,7 @@ theorem isTangent_iff_tanS (r : R) (y : epsR (Localization.Away r) ⟶ Chart.Gs 
     exact h
 
 /- English proof (translation)
-Rewrite using `[Over.comp_left, Chart.spMap_left, ← scaleS_toRingHom]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem scale_left (c : R) (v : epsR R ⟶ G) :
     Geo.Tor.spMap (epsScaleR c) ≫ v.left = (Chart.spMap (Chart.scaleS (S := R) c) ≫ v).left := by
@@ -79,7 +79,7 @@ def resA (v : epsR R ⟶ G) : epsR (Localization.Away r) ⟶ Chart.Gs G r :=
   Chart.pullR G (Chart.spMap (Chart.dualMapS (Algebra.ofId R (Localization.Away r))) ≫ v)
 
 /- English proof (translation)
-The claim follows from `Chart.pushR_pullR G _`.
+A detailed English derivation is pending.
 -/
 theorem pushR_resA (v : epsR R ⟶ G) :
     Chart.pushR G (resA r v) = Chart.spMap (Chart.dualMapS (Algebra.ofId R (Localization.Away r))) ≫ v :=
@@ -94,14 +94,14 @@ def resL (v : GlobalTheory.Serre.Lie a) : GlobalTheory.Serre.Lie a' :=
     exact Chart.tanS_restrict _ (tanS_of_isTangent v.isTangent))
 
 /- English proof (translation)
-The claim follows from `pushR_resA r v.hom`.
+A detailed English derivation is pending.
 -/
 theorem pushR_resL (v : GlobalTheory.Serre.Lie a) :
     Chart.pushR G (resL r a a' v).hom = Chart.spMap (Chart.dualMapS (Algebra.ofId R (Localization.Away r))) ≫ v.hom :=
   pushR_resA r v.hom
 
 /- English proof (translation)
-Establish `e : (c • y).hom = Chart.spMap (Chart.scaleS (S` using `Localization.Away r) c) ≫ y.hom := Over.OverMorphism.ext ((GlobalTheory.Serre.Lie.hom_smul_left c y).trans (scale_left c y.hom))`. Rewrite using `[e, Chart.pushR_spMap]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pushR_smul (c : Localization.Away r) (y : GlobalTheory.Serre.Lie a') :
     Chart.pushR G (c • y).hom = Chart.spMap (Chart.scaleS (S := R) c) ≫ Chart.pushR G y.hom := by
@@ -111,21 +111,21 @@ theorem pushR_smul (c : Localization.Away r) (y : GlobalTheory.Serre.Lie a') :
   rfl
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext ((GlobalTheory.Serre.Lie.hom_smul_left c v).trans (scale_left c v.hom))`.
+A detailed English derivation is pending.
 -/
 theorem hom_smul_eq (c : R) (v : GlobalTheory.Serre.Lie a) :
     (c • v).hom = Chart.spMap (Chart.scaleS (S := R) c) ≫ v.hom :=
   Over.OverMorphism.ext ((GlobalTheory.Serre.Lie.hom_smul_left c v).trans (scale_left c v.hom))
 
 /- English proof (translation)
-The claim follows from `map_mul (Chart.pushforwardHom G) y.hom z.hom`.
+A detailed English derivation is pending.
 -/
 theorem pushR_add (y z : GlobalTheory.Serre.Lie a') :
     Chart.pushR G (y + z).hom = Chart.pushR G y.hom * Chart.pushR G z.hom :=
   map_mul (Chart.pushforwardHom G) y.hom z.hom
 
 /- English proof (translation)
-Use `ext1`. Apply `Chart.pushR_inj G` to reduce the goal to its premises. Rewrite using `[pushR_add, pushR_resL, pushR_resL, pushR_resL, GlobalTheory.Serre.Lie.hom_add, MonObj.comp_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resL_add (v w : GlobalTheory.Serre.Lie a) : resL r a a' (v + w) = resL r a a' v + resL r a a' w := by
   ext1
@@ -133,7 +133,7 @@ theorem resL_add (v w : GlobalTheory.Serre.Lie a) : resL r a a' (v + w) = resL r
   rw [pushR_add, pushR_resL, pushR_resL, pushR_resL, GlobalTheory.Serre.Lie.hom_add, MonObj.comp_mul]
 
 /- English proof (translation)
-Use `ext1`. Apply `Chart.pushR_inj G` to reduce the goal to its premises. Rewrite using `[pushR_smul, pushR_resL, pushR_resL, hom_smul_eq, Chart.res_scale]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem resL_smul (c : R) (v : GlobalTheory.Serre.Lie a) :
     resL r a a' (c • v) = algebraMap R (Localization.Away r) c • resL r a a' v := by
@@ -153,11 +153,11 @@ section Cover
 variable {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] [∀ s : R, Smooth (Chart.Gs G s).hom]
 
 /- English proof (translation)
-Take `⟨n, s, hs, hC⟩` from `Chart.exists_cover G`. Establish `C : ∀ k, Chart.Chart (Chart.Gs G (s k))` using `fun k => (hC k).some`. Establish `hwk : ∀ k, Chart.TanS (Chart.spMap (Chart.dualMapS (Algebra.ofId R (Localization.Away (s k)))) ≫ w)` using `fun k => Chart.tanS_restrict _ hw`. Establish `hone : ∀ (A : Type) [CommRing A] [Algebra R A], Chart.TanS (1 : Chart.sp (R₀` using `R) (DualNumber A) ⟶ G) := fun A _ _ => Chart.comp_one' _`. Establish `h2 : ∀ k, ∃ N : ℕ, Chart.spMap (Chart.scaleS (S` using `R) (algebraMap R (Localization.Away (s k)) r ^ N)) ≫ Chart.spMap (Chart.dualMapS (Algebra.ofId R (Localization.Away (s k)))) ≫ w = Chart.spMap (Chart.scaleS (S := R) (algebraMap R (Localization.Away (s k)) r ^ N)) ≫ 1 := by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `k`. Apply `Chart.tanS_away_uniq (C k) (A := Localization.Away (s k)) r (hwk k) (hone _)` to reduce the goal to its premises. Establish `hu : IsUnit (algebraMap R (Localization.Away (algebraMap R (Localization.Away (s k)) r)) r)` using `Chart.isUnit_qv (s k) r`. Rewrite using `[Chart.comp_one', Chart.res_res, show (IsScalarTower.toAlgHom R (Localization.Away (s k)) (Localization.Away (algebraMap R (Localization.Away (s k)) r))).comp (Algebra.ofId R (Localization.Away (s k))) = (Chart.awayHom r _ hu).comp (Algebra.ofId R (Localization.Away r)) from Char …`. Use `choose N hN using h2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Finset.univ.sup N, Chart.tan_ext_cover s hs fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[Chart.comp_one', Chart.res_scale, Algebra.ofId_apply, map_pow, Chart.scale_pow_mono _ (Finset.le_sup (f := N) (Finset.mem_univ k)) (hN k), Chart.comp_one']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tan_away_uniq (r : R) {w : Chart.sp (R₀ := R) (DualNumber R) ⟶ G} (hw : Chart.TanS w)
     (h1 : Chart.spMap (Chart.dualMapS (Algebra.ofId R (Localization.Away r))) ≫ w = 1) :
@@ -188,9 +188,9 @@ theorem tan_away_uniq (r : R) {w : Chart.sp (R₀ := R) (DualNumber R) ⟶ G} (h
     Chart.scale_pow_mono _ (Finset.le_sup (f := N) (Finset.mem_univ k)) (hN k), Chart.comp_one']
 
 /- English proof (translation)
-Take `⟨n, s, hs, hC⟩` from `Chart.exists_cover G`. Set `s' : Fin (n + 1) → R` to `Fin.cons r s`. Establish `hs' : Ideal.span (Set.range s') = ⊤`. Rewrite using `[eq_top_iff, ← hs]`. Apply `Ideal.span_mono` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `⟨k.succ, Fin.cons_succ _ _ _⟩`. Establish `C : ∀ k, Chart.Chart (Chart.Gs G (s' k))` using `Fin.cases hr.some (fun k => (hC k).some)`. Conclude with `Chart.tan_extend s' hs' C 0 hy`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tan_away_lift (r : R) (hr : Nonempty (Chart.Chart (Chart.Gs G r)))
     {y : Chart.sp (R₀ := R) (DualNumber (Localization.Away r)) ⟶ G} (hy : Chart.TanS y) :
@@ -214,21 +214,19 @@ end GlobalTheory.LieAway
 namespace GlobalTheory.LieAway
 
 /- English proof (translation)
-Introduce `hr`. Establish `: ∀ s : R, Smooth (Chart.Gs G s).hom` using `fun s => show Smooth (pullback.snd G.hom _) from inferInstance`. Use `letI : Module R (GlobalTheory.Serre.Lie a') := Module.compHom _ (algebraMap R (Localization.Away r))`. Use `haveI : IsScalarTower R (Localization.Away r) (GlobalTheory.Serre.Lie a') := ⟨fun x y z => by rw [Algebra.smul_def]; exact mul_smul _ y z⟩`. Set `ρ : GlobalTheory.Serre.Lie a →ₗ[R] GlobalTheory.Serre.Lie a'` to `{ toFun := resL r a a' map_add' := resL_add r a a' map_smul' := resL_smul r a a' }`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hρ : ∀ v, Chart.pushR G (ρ v).hom = Chart.spMap (Chart.dualMapS (Algebra.ofId R (Localization.Away r))) ≫ v.hom` using `pushR_resL r a a'`. Use `haveI : IsLocalizedModule (Submonoid.powers r) ρ := by`. Use `⟨fun x => ?_, fun y => ?_, fun {x₁ x₂} h => ?_⟩` and prove the remaining obligations. Rewrite using `[Module.End.isUnit_iff]`. Take `⟨u, hu⟩` from `IsLocalization.map_units (Localization.Away r) x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hx : ∀ m : GlobalTheory.Serre.Lie a', (algebraMap R (Module.End R (GlobalTheory.Serre.Lie a')) x) m = (u : Localization.Away r) • m` using `fun m => by`. Rewrite using `[Module.algebraMap_end_apply, hu]`. Both sides reduce to the same expression. Use `⟨fun m₁ m₂ e => ?_, fun m => ⟨(↑u⁻¹ : Localization.Away r) • m, ?_⟩⟩` and prove the remaining obligations. Rewrite `e` using `[hx, hx]`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congrArg (fun z => (↑u⁻¹ : Localization.Away r) • z) e` as an intermediate fact. Simplify using `only [smul_smul, Units.inv_mul, one_smul] at this`. Conclude with `this`. Rewrite using `[hx, smul_smul, Units.mul_inv, one_smul]`. Establish `hy : Chart.TanS (Chart.pushR G y.hom)` using `(isTangent_iff_tanS r y.hom).mp y.isTangent`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨N, w, hw, he⟩` from `tan_away_lift r hr hy`. Use `⟨(GlobalTheory.Serre.Lie.mk a w (isTangent_of_tanS hw), ⟨r ^ N, N, rfl⟩), ?_⟩` and prove the remaining obligations. Use `ext1`. Apply `Chart.pushR_inj G` to reduce the goal to its premises. Rewrite using `[hρ, GlobalTheory.Serre.Lie.hom_mk, he]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `Chart.pushR G ((algebraMap R (Localization.Away r) (r ^ N)) • y).hom = _`. Rewrite using `[pushR_smul, map_pow]`. Establish `h0 : ρ (x₁ - x₂) = 0` using `by rw [map_sub, h, sub_self]`. Establish `h1 : Chart.spMap (Chart.dualMapS (Algebra.ofId R (Localization.Away r))) ≫ (x₁ - x₂).hom = 1`. Rewrite using `[← hρ, h0, GlobalTheory.Serre.Lie.hom_zero, Chart.pushR_one]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨N, hN⟩` from `tan_away_uniq r (tanS_of_isTangent (x₁ - x₂).isTangent) h1`. Use `⟨⟨r ^ N, N, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_zero, ← smul_sub]`. Use `ext1`. Rewrite using `[Submonoid.smul_def, hom_smul_eq, hN, GlobalTheory.Serre.Lie.hom_zero]`.
-
-Conclude with `⟨(IsLocalizedModule.iso (Submonoid.powers r) ρ).extendScalarsOfIsLocalization (Submonoid.powers r) (Localization.Away r)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lie_away {R O O' : Type} [CommRing R] [CommRing O] [CommRing O'] (G : Over (Sp R)) [GrpObj G]
     [IsCommMonObj G] [Smooth G.hom] (a : OAct O G) (r : R) (a' : OAct O' (ReciprocityTheory.ChartRestriction.G.Chart.Gs G r)) :

@@ -7,11 +7,11 @@ namespace GlobalTheory.IntegerUnitBound
 open scoped Classical in
 
 /- English proof (translation)
-Set `B` to `(basisUnitLattice E).ofZLatticeBasis ℝ (unitLattice E)`. Use `⟨∑ i, ‖B i‖, Finset.sum_nonneg fun i _ => norm_nonneg _, fun v => ?_⟩` and prove the remaining obligations. Establish `hmem : -((ZSpan.floor B v : logSpace E)) ∈ unitLattice E`. Rewrite using `[← Module.Basis.ofZLatticeBasis_span ℝ (unitLattice E) (basisUnitLattice E)]`. Conclude with `neg_mem (ZSpan.floor B v).2`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨x, -, hx⟩` from `Submodule.mem_map.1 hmem`. Use `⟨Additive.toMul x, fun w => ?_⟩` and prove the remaining obligations. Establish `hsum : v + logEmbedding E (Additive.ofMul (Additive.toMul x)) = ZSpan.fract B v`. Establish `hx' : logEmbedding E x = -((ZSpan.floor B v : logSpace E))` using `hx`. Rewrite using `[ofMul_toMul, hx', ZSpan.fract_apply, sub_eq_add_neg]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.norm_eq_abs, Pi.add_apply]`. Use `_ ≤ ‖v + logEmbedding E (Additive.ofMul (Additive.toMul x))‖ := norm_le_pi_norm _ w`. Use `_ = ‖ZSpan.fract B v‖ := by rw [hsum]`. Use `_ ≤ ∑ i, ‖B i‖ := ZSpan.norm_fract_le B v`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unit_norm_add_le (E : Type) [Field E] [NumberField E] :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ v : logSpace E, ∃ u : (𝓞 E)ˣ,
@@ -37,19 +37,15 @@ theorem exists_unit_norm_add_le (E : Type) [Field E] [NumberField E] :
 open scoped Classical in
 
 /- English proof (translation)
-Take `⟨C₁, hC₁, hC⟩` from `exists_unit_norm_add_le E`. Use `⟨Fintype.card (InfinitePlace E) * C₁, fun t ht => ?_⟩` and prove the remaining obligations. Take `⟨u, hu⟩` from `hC (fun w => (mult w.1 : ℝ) * t w.1)`. Use `⟨u, ?_⟩` and prove the remaining obligations. Establish `hoff : ∀ w : {w : InfinitePlace E // w ≠ w₀}, |(mult w.1 : ℝ) * (t w.1 + Real.log (w.1 (u : E)))| ≤ C₁`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `w`. Establish `h` using `hu w`. Rewrite `h` using `[logEmbedding_component]`. Rewrite using `[mul_add]` and apply the resulting hypothesis. Establish `hone : ∀ w : InfinitePlace E, |t w + Real.log (w (u : E))| ≤ |(mult w : ℝ) * (t w + Real.log (w (u : E)))|`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Introduce `w`. Rewrite using `[abs_mul, abs_of_pos (Nat.cast_pos.2 mult_pos : (0 : ℝ) < mult w)]`. Conclude with `le_mul_of_one_le_left (abs_nonneg _) one_le_mult`. Establish `hcard : C₁ ≤ Fintype.card (InfinitePlace E) * C₁`. Establish `h : (1 : ℝ) ≤ Fintype.card (InfinitePlace E)` using `by exact_mod_cast Fintype.card_pos`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Introduce `w`. Distinguish the cases in `hw : w = w₀`. Substitute `hw` using the available equality. Establish `htot : ∑ w : InfinitePlace E, (mult w : ℝ) * (t w + Real.log (w (u : E))) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [mul_add, Finset.sum_add_distrib, ht, sum_mult_mul_log, add_zero]`. Rewrite `htot` using `[Fintype.sum_eq_add_sum_subtype_ne _ w₀]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[eq_neg_of_add_eq_zero_left htot, abs_neg]`. Use `_ ≤ ∑ w : {w : InfinitePlace E // w ≠ w₀}, |(mult w.1 : ℝ) * (t w.1 + Real.log (w.1 (u : E)))| := Finset.abs_sum_le_sum_abs _ _`.
-
-Use `_ ≤ ∑ _w : {w : InfinitePlace E // w ≠ w₀}, C₁ := Finset.sum_le_sum fun w _ => hoff w`. Use `_ = Fintype.card {w : InfinitePlace E // w ≠ w₀} * C₁ := by`. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Use `_ ≤ Fintype.card (InfinitePlace E) * C₁ := by gcongr`. Conclude with `Fintype.card_subtype_le _` after adjusting the coercions.
-
-Conclude with `(hone w).trans ((hoff ⟨w, hw⟩).trans hcard)`.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unit_of_sum_eq_zero (E : Type) [Field E] [NumberField E] :
     ∃ C : ℝ, ∀ t : InfinitePlace E → ℝ, ∑ w, (mult w : ℝ) * t w = 0 → ∃ u : (𝓞 E)ˣ,
@@ -96,7 +92,7 @@ theorem exists_unit_of_sum_eq_zero (E : Type) [Field E] [NumberField E] :
   · exact (hone w).trans ((hoff ⟨w, hw⟩).trans hcard)
 
 /- English proof (translation)
-The claim follows from `|t w + Real.log (w (algebraMap (𝓞 E) E (u : 𝓞 E))) + (n : ℝ)| ≤ R := by classical obtain ⟨C, hC⟩ := exists_unit_of_sum_eq_zero E refine ⟨C + 1, fun t => ?_⟩ have hmpos : 0 < ∑ w : InfinitePlace E, (mult w : ℝ) := Finset.sum_pos (fun w _ => Nat.cast_pos.2 mult_pos) Finset.univ_non …`.
+A detailed English derivation is pending.
 -/
 theorem exists_unit_int_abs_le (E : Type) [Field E] [NumberField E] :
     ∃ R : ℝ, ∀ t : InfinitePlace E → ℝ, ∃ (u : (𝓞 E)ˣ) (n : ℤ), ∀ w : InfinitePlace E,

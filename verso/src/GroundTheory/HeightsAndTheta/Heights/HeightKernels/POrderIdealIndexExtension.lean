@@ -11,9 +11,9 @@ noncomputable section
 namespace OrderIdealIndexExtensionAlt
 
 /- English proof (translation)
-Establish `htor : Module.IsTorsion ℤ (M ⧸ H.toIntSubmodule)`. Introduce `x`. Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `H x`. Use `⟨⟨N, mem_nonZeroDivisors_of_ne_zero hN⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Submonoid.smul_def, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Conclude with `h x`. Establish `: Finite (M ⧸ H.toIntSubmodule)` using `Module.finite_of_fg_torsion _ htor`. Establish `: Finite (M ⧸ H)` using `this`. Conclude with `AddSubgroup.index_ne_zero_of_finite`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem index_ne_zero_of_zsmul_mem {M : Type*} [AddCommGroup M] [Module.Finite ℤ M] (H : AddSubgroup M)
     {N : ℤ} (hN : N ≠ 0) (h : ∀ x : M, N • x ∈ H) : H.index ≠ 0 := by
@@ -31,13 +31,13 @@ theorem index_ne_zero_of_zsmul_mem {M : Type*} [AddCommGroup M] [Module.Finite �
 variable {L : Type} [Field L]
 
 /- English proof (translation)
-Establish `hi : IsIntegral ℤ a` using `IsIntegral.of_finite ℤ a`. Establish `h0 : (minpoly ℤ a).coeff 0 ≠ 0`. Introduce `h0`. Take `⟨q, hq⟩` from `Polynomial.X_dvd_iff.mpr h0`. Establish `hm` using `minpoly.monic hi`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hqm : q.Monic` using `Polynomial.Monic.of_mul_monic_left Polynomial.monic_X (hq ▸ hm)`. Establish `hqa : Polynomial.aeval a q = 0`. Establish `h1` using `minpoly.aeval ℤ a`. Rewrite `h1` using `[hq, map_mul, Polynomial.aeval_X]`. Conclude with `(mul_eq_zero.mp h1).resolve_left ha`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `minpoly.min ℤ a hqm hqa`. Rewrite `h2` using `[hq, Polynomial.degree_mul, Polynomial.degree_X, Polynomial.degree_eq_natDegree hqm.ne_zero]`. Normalize the coercions in `at h2`. Use linear arithmetic over natural numbers and integers. Use `⟨(minpoly ℤ a).coeff 0, h0, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Put the expressions in a common number system so they can be compared. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨q, hq⟩` from `Polynomial.X_dvd_sub_C (p := minpoly ℤ a)`. Use `⟨-(Polynomial.aeval a q), ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg (Polynomial.aeval a) hq`. Simplify using `only [map_sub, minpoly.aeval, map_mul, Polynomial.aeval_X, eq_intCast, map_intCast] at h`. Take the linear combination `-h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_int_eq_mul [CharZero L] {B : Subring L} [Module.Finite ℤ B] {a : B} (ha : a ≠ 0) :
     ∃ c : ℤ, c ≠ 0 ∧ ∃ q : B, (c : B) = a * q := by
@@ -65,25 +65,23 @@ theorem exists_int_eq_mul [CharZero L] {B : Subring L} [Module.Finite ℤ B] {a 
 variable [NumberField L] {B : Subring L} [Module.Finite ℤ B]
 
 /- English proof (translation)
-Take `⟨S, hS, hmax⟩` from `exists_maximal_linearIndepOn B (fun x : 𝓞 L => (x : L))`. Use `set F := Submodule.span B ((fun x : 𝓞 L => (x : L)) '' S) with hF`. Establish `hfin : S.Finite`. Establish `h1 : LinearIndependent ℤ (fun x : S => ((x : 𝓞 L) : L))` using `hS.restrict_scalars' ℤ`. Establish `h2 : LinearIndependent ℤ (fun x : S => (x : 𝓞 L))` using `LinearIndependent.of_comp (algebraMap (𝓞 L) L).toIntAlgHom.toLinearMap h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Set.finite_coe_iff.mp h2.finite`. Use `⟨S, hfin, hS, ?_⟩` and prove the remaining obligations. Establish `hone : ∀ x : 𝓞 L, ∃ c : ℤ, c ≠ 0 ∧ (c : L) * (x : L) ∈ F`. Introduce `x`. Distinguish the cases in `hx : x ∈ S`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨1, one_ne_zero, by simpa using Submodule.subset_span (Set.mem_image_of_mem _ hx)⟩`. Take `⟨a, ha, hax⟩` from `hmax x hx`. Take `⟨c, hc, q, hcq⟩` from `exists_int_eq_mul ha`. Use `⟨c, hc, ?_⟩` and prove the remaining obligations. Establish `h1 : (c : L) * (x : L) = q • (a • (x : L))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : (c : L) = ((c : B) : L)` using `by push_cast; rfl`. Rewrite using `[Subring.smul_def, Subring.smul_def, smul_eq_mul, smul_eq_mul, h2, hcq]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `F.smul_mem q hax`. Take `⟨T, hT⟩` from `Module.Finite.fg_top (R := ℤ) (M := 𝓞 L)`. Use `choose c hc0 hcF using hone`. Use `set N := ∏ g ∈ T, c g with hN`. Use `⟨N, Finset.prod_ne_zero_iff.mpr fun g _ => hc0 g, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `hgen : ∀ g ∈ T, (N : L) * (g : L) ∈ F`. Introduce `g hg`. Establish `h1 : (N : L) * (g : L) = (∏ h ∈ T.erase g, c h) • ((c g : L) * (g : L))`. Rewrite using `[hN, ← Finset.mul_prod_erase T c hg, zsmul_eq_mul]`. Use `push_cast`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1]`. Conclude with `F.toAddSubgroup.zsmul_mem (hcF g) _`. Introduce `x`. Establish `hx : x ∈ Submodule.span ℤ (T : Set (𝓞 L))` using `hT ▸ Submodule.mem_top`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact hgen y hy`. Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz`. Establish `h1 : (N : L) * ((y + z : 𝓞 L) : L) = (N : L) * (y : L) + (N : L) * (z : L)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1]`. Conclude with `F.add_mem hy hz`. Consider the case `smul n y _ hy`.
-
-Establish `h1 : (N : L) * ((n • y : 𝓞 L) : L) = n • ((N : L) * (y : L))`. Establish `h2 : ((n • y : 𝓞 L) : L) = n • (y : L)` using `map_zsmul (algebraMap (𝓞 L) L) n y`. Rewrite using `[h2, mul_smul_comm]`. Rewrite using `[h1]`. Conclude with `F.toAddSubgroup.zsmul_mem hy _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_family : ∃ S : Set (𝓞 L), S.Finite ∧ LinearIndepOn B (fun x : 𝓞 L => (x : L)) S ∧
     ∃ N : ℤ, N ≠ 0 ∧ ∀ x : 𝓞 L,
@@ -146,89 +144,77 @@ end OrderIdealIndexExtensionAlt
 open OrderIdealIndexExtensionAlt InvertibleIdealIndexAlt in
 
 /- English proof (translation)
-Introduce `L _ _ B hB`. Use `hB` as an intermediate fact. Take `⟨S, hSfin, hS, N, hN, hNF⟩` from `exists_family (L := L) (B := B)`. Establish `: Fintype S` using `hSfin.fintype`. Use `set v : S → L := fun x => ((x : 𝓞 L) : L) with hv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set φ : (S → B) →ₗ[B] L := Fintype.linearCombination B v with hφ`. Establish `hφinj : Function.Injective φ` using `(linearIndependent_iff_injective_fintypeLinearCombination).mp hS`. Use `set Fs := Submodule.span B ((fun x : 𝓞 L => (x : L)) '' S) with hFs`. Establish `hrange : ∀ y, y ∈ Fs ↔ ∃ β, φ β = y`. Introduce `y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← LinearMap.mem_range, hφ, Fintype.range_linearCombination, hFs, Set.image_eq_range]`. Use `set O := (1 : Submodule (𝓞 L) L).toAddSubgroup with hO`. Use `set F := Fs.toAddSubgroup with hF`. Establish `hmemO : ∀ x : 𝓞 L, (x : L) ∈ O` using `fun x => Submodule.mem_one.mpr ⟨x, rfl⟩`. Establish `hOmem : ∀ y ∈ O, ∃ x : 𝓞 L, (x : L) = y` using `fun y hy => Submodule.mem_one.mp hy`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hBF : ∀ b : B, ∀ y ∈ F, (b : L) * y ∈ F` using `fun b y hy => by`. Establish `h1` using `Fs.smul_mem b hy`. Rewrite `h1` using `[Subring.smul_def, smul_eq_mul]`. Then use the resulting hypothesis. Establish `hFO : F ≤ O`. Introduce `y hy`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨β, rfl⟩` from `(hrange y).1 hy`. Rewrite using `[hφ, Fintype.linearCombination_apply]`. Use `O.sum_mem fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Subring.smul_def, smul_eq_mul]`. Conclude with `mul_mem_of_mem (β j).2 (hmemO _)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hNO : ∀ y ∈ O, (N : L) * y ∈ F`. Introduce `y hy`. Take `⟨x, rfl⟩` from `hOmem y hy`. Conclude with `hNF x`. Set `toO : 𝓞 L →+ O` to `{ toFun := fun x => ⟨(x : L), hmemO x⟩ map_zero' := by ext; simp map_add' := fun x y => by ext; simp }`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `htoO : Function.Surjective toO`. Introduce `y`. Take `⟨x, hx⟩` from `hOmem y y.2`. Conclude with `⟨x, Subtype.ext hx⟩`. Establish `: Module.Finite ℤ O` using `Module.Finite.of_surjective toO.toIntLinearMap htoO`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hFOidx : F.relIndex O ≠ 0`. Use `index_ne_zero_of_zsmul_mem (F.addSubgroupOf O) hN fun x => ?_` and prove the remaining obligations. Rewrite using `[AddSubgroup.mem_addSubgroupOf, AddSubgroup.coe_zsmul, zsmul_eq_mul]`. Conclude with `hNO x x.2`. Establish `hint : ∀ β, IsIntegral ℤ (φ β)` using `fun β => by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨x, hx⟩` from `hOmem _ (hFO ((hrange _).2 ⟨β, rfl⟩))`. Rewrite using `[← hx]`. Conclude with `x.isIntegral_coe`. Set `g1 : (S → B) →+ 𝓞 L` to `{ toFun := fun β => ⟨φ β, hint β⟩ map_zero' := RingOfIntegers.ext (by show φ 0 = algebraMap (𝓞 L) L 0`. Rewrite using `[map_zero, map_zero])`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `map_add' := fun x y => RingOfIntegers.ext (by show φ (x + y) = algebraMap (𝓞 L) L (_ + _)`. Rewrite using `[map_add]`. Conclude with `(map_add (algebraMap (𝓞 L) L) (⟨φ x, hint x⟩ : 𝓞 L) ⟨φ y, hint y⟩).symm) }`. Establish `hg1 : Function.Injective g1` using `fun a b h => hφinj (congrArg (fun x : 𝓞 L => (x : L)) h)`. Establish `hsurj : ∀ x : 𝓞 L, ∃ β, φ β = (N : L) * (x : L)` using `fun x => (hrange _).1 (hNF x)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `choose g2 hg2 using hsurj`. Establish `hg2add : ∀ x y, g2 (x + y) = g2 x + g2 y` using `fun x y => hφinj (by`. Rewrite using `[map_add, hg2, hg2, hg2]`. Use `push_cast`. Use the proof step `ring)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Set `g2' : 𝓞 L →+ (S → B)` to `AddMonoidHom.mk' g2 hg2add`. Establish `hg2inj : Function.Injective g2'` using `fun x y h => by`. Establish `h1` using `congrArg φ h`. Simplify using `only [g2', AddMonoidHom.mk'_apply, hg2] at h1`. Conclude with `RingOfIntegers.ext (mul_left_cancel₀ (Int.cast_ne_zero.mpr hN) h1)`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hr1` using `LinearMap.finrank_le_finrank_of_injective (f := g1.toIntLinearMap) hg1`. Establish `hr2` using `LinearMap.finrank_le_finrank_of_injective (f := g2'.toIntLinearMap) hg2inj`. Establish `hrank : Module.finrank ℚ L = Fintype.card S * Module.finrank ℤ B`. Rewrite using `[← RingOfIntegers.rank, le_antisymm hr2 hr1, Module.finrank_pi_fintype]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `⟨Fintype.card S, (N : B), ?_, hrank, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Apply `hN` to reduce the goal to its premises. Establish `h1` using `congrArg (fun b : B => (b : L)) h`. Simplify using `using h1`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `I hI`. Take `⟨t, htI, ht0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hI`. Take `⟨c, hc, q, hcq⟩` from `exists_int_eq_mul ht0`. Use `index_ne_zero_of_zsmul_mem I.toAddSubgroup hc fun x => ?_` and prove the remaining obligations. Rewrite using `[Submodule.mem_toAddSubgroup, zsmul_eq_mul, hcq, mul_assoc]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `I.mul_mem_right _ htI`. Introduce `I hI hcase`. Use `set J := (Submodule.span (𝓞 L) ((fun y : B => (y : L)) '' (I : Set B))).toAddSubgroup with hJ`. Use `set IF := (AddSubgroup.pi Set.univ (fun _ : S => I.toAddSubgroup)).map φ.toAddMonoidHom with hIF`. Establish `hmemIF : ∀ y, y ∈ IF ↔ ∃ β : S → B, (∀ j, β j ∈ I) ∧ φ β = y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `y`. Simplify using `[hIF, AddSubgroup.mem_pi]`. Establish `hFtop : (⊤ : AddSubgroup (S → B)).map φ.toAddMonoidHom = F`. Use extensionality with `y`. Simplify using `[hF, hrange]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hIFidx : IF.relIndex F = I.toAddSubgroup.index ^ Fintype.card S`. Rewrite using `[← hFtop, hIF, AddSubgroup.relIndex_map_map_of_injective _ _ hφinj, AddSubgroup.relIndex_top_right, AddSubgroup.index_pi]`. Simplify using the standard rewrite rules. Establish `hJO : J ≤ O`. Introduce `y hy`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `(Submodule.span_le.mpr ?_) hy` and prove the remaining obligations. Introduce and unpack `_ ⟨b, -, rfl⟩`. Conclude with `mem_one_of_mem b.2`. Establish `hIF_I : ∀ i ∈ I, ∀ y ∈ F, (i : L) * y ∈ IF`. Introduce `i hi y hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨β, rfl⟩` from `(hrange y).1 hy`. Use `(hmemIF _).2 ⟨i • β, fun j => ?_, ?_⟩` and prove the remaining obligations. Simplify using `using I.mul_mem_right (β j) hi`. Rewrite using `[map_smul, Subring.smul_def, smul_eq_mul]`. Establish `hB_IF : ∀ b : B, ∀ y ∈ IF, (b : L) * y ∈ IF`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Introduce `b y hy`. Take `⟨β, hβ, rfl⟩` from `(hmemIF y).1 hy`. Use `(hmemIF _).2 ⟨b • β, fun j => ?_, ?_⟩` and prove the remaining obligations. Simplify using `using I.mul_mem_left b (hβ j)`. Rewrite using `[map_smul, Subring.smul_def, smul_eq_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hIF_F : IF ≤ F`. Introduce `y hy`. Take `⟨β, -, rfl⟩` from `(hmemIF y).1 hy`. Conclude with `(hrange _).2 ⟨β, rfl⟩`. Establish `hIF_J : IF ≤ J`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `y hy`. Take `⟨β, hβ, rfl⟩` from `(hmemIF y).1 hy`. Rewrite using `[hφ, Fintype.linearCombination_apply]`. Use `J.sum_mem fun j _ => ?_` and prove the remaining obligations. Establish `h1 : β j • v j = (j : 𝓞 L) • ((β j : B) : L)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Subring.smul_def, smul_eq_mul, Algebra.smul_def, mul_comm]`. Rewrite using `[h1]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨β j, hβ j, rfl⟩)`. Break down `hcase with hP | hcop` into its components or cases. Take `⟨t, hIt⟩ : ∃ t : B, I = Ideal.span {t}` from `⟨_, (Submodule.IsPrincipal.span_singleton_generator I).symm⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ht0 : (t : L) ≠ 0`. Introduce `h`. Apply `hI` to reduce the goal to its premises. Rewrite using `[hIt, Ideal.span_singleton_eq_bot]`. Conclude with `Subtype.ext h`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hJt : J = O.map (mulBy (t : L))`. Rewrite using `[hJ, hIt, ← map_mul_eq_span t]`. Establish `hIFt : IF = F.map (mulBy (t : L))`. Use extensionality with `y`. Rewrite using `[hmemIF]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨β, hβ, rfl⟩`. Establish `h1 : ∀ j, ∃ a : B, a * t = β j` using `fun j => by`. Use `hβ j` as an intermediate fact. Rewrite `this` using `[hIt]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `Ideal.mem_span_singleton'.mp this`. Use `choose a ha using h1`. Use `⟨φ a, (hrange _).2 ⟨a, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `h2 : β = t • a` using `funext fun j => by simp [← ha j, mul_comm]`. Rewrite using `[h2, mulBy_apply, map_smul, Subring.smul_def, smul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `⟨z, hz, rfl⟩`. Take `⟨a, rfl⟩` from `(hrange z).1 hz`. Use `⟨t • a, fun j => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hIt]`. Simplify using `using Ideal.mul_mem_right (a j) _ (Ideal.mem_span_singleton_self t)`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[mulBy_apply, map_smul, Subring.smul_def, smul_eq_mul]`. Establish `hFt : F.map (mulBy (t : L)) ≤ F`. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Conclude with `hBF t z hz`. Establish `hOt : O.map (mulBy (t : L)) ≤ O`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `_ ⟨z, hz, rfl⟩`. Conclude with `mul_mem_of_mem t.2 hz`. Establish `e1 : (F.map (mulBy (t : L))).relIndex (O.map (mulBy (t : L))) = F.relIndex O` using `AddSubgroup.relIndex_map_map_of_injective _ _ (mulBy_injective ht0)`. Establish `h1` using `(AddSubgroup.relIndex_mul_relIndex _ _ _ (AddSubgroup.map_mono hFO) hOt).trans (AddSubgroup.relIndex_mul_relIndex _ _ _ hFt hFO).symm`. Rewrite `h1` using `[e1, mul_comm (AddSubgroup.relIndex _ F)]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `Nat.eq_of_mul_eq_mul_left (Nat.pos_of_ne_zero hFOidx) h1`. Rewrite using `[hJt, h2, ← hIFt, hIFidx]`. Establish `h1 : (1 : B) ∈ I ⊔ Ideal.span {(N : B)}` using `hcop ▸ Submodule.mem_top`. Take `⟨i, hi, z, hz, hiz⟩` from `Submodule.mem_sup.mp h1`. Take `⟨b, rfl⟩` from `Ideal.mem_span_singleton'.mp hz`.
+Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hib : (i : L) + (b : L) * (N : L) = 1`. Use `congrArg (fun x : B => (x : L)) hiz` as an intermediate fact. Simplify using `using this`. Establish `key : ∀ y ∈ Submodule.span (𝓞 L) ((fun y : B => (y : L)) '' (I : Set B)), ∀ o : 𝓞 L, (N : L) * ((o : L) * y) ∈ IF`. Introduce `y hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨j, hj, rfl⟩` from `hy`. Introduce `o`. Rewrite using `[show (N : L) * ((o : L) * (j : L)) = (j : L) * ((N : L) * (o : L)) by ring]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hIF_I j hj _ (hNO _ (hmemO o))`. Consider the case `zero`. Introduce `o`. Rewrite using `[mul_zero, mul_zero]`. Conclude with `IF.zero_mem`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `add y w _ _ hy hw`. Introduce `o`. Rewrite using `[mul_add, mul_add]`. Conclude with `IF.add_mem (hy o) (hw o)`. Consider the case `smul a y _ hy`.
-
-Introduce `o`. Establish `h2 : (N : L) * ((o : L) * (a • y)) = (N : L) * (((o * a : 𝓞 L) : L) * y)`. Rewrite using `[Algebra.smul_def]`. Use `push_cast`. Put the polynomial expressions in normal form.
-
-Rewrite using `[h2]`. Conclude with `hy (o * a)`. Establish `hsup : J ⊔ F = O`. Use `le_antisymm (sup_le hJO hFO) fun x hx => ?_` and prove the remaining obligations. Take `⟨o, rfl⟩` from `hOmem x hx`.
-
-Establish `h2 : (o : L) = (i : L) * (o : L) + (b : L) * ((N : L) * (o : L))`. Take the linear combination `(-(o : L)) * hib`. Rewrite using `[h2]`. Use `AddSubgroup.add_mem_sup ?_ (hBF b _ (hNO _ hx))` and prove the remaining obligations. Establish `h3 : (i : L) * (o : L) = o • (i : L)`.
-
-Rewrite using `[Algebra.smul_def, mul_comm]`. Rewrite using `[h3]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, hi, rfl⟩)`. Establish `hinf : J ⊓ F = IF`. Use `le_antisymm (fun y hy => ?_) (le_inf hIF_J hIF_F)` and prove the remaining obligations.
-
-Establish `h2 : y = (i : L) * y + (b : L) * ((N : L) * y)`. Take the linear combination `(-y) * hib`. Rewrite using `[h2]`. Use `IF.add_mem (hIF_I i hi y hy.2) (hB_IF b _ ?_)` and prove the remaining obligations. Simplify using `using key y hy.1 1`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem OrderIdealIndexExtension.proof : OrderIdealIndexExtension.Statement := by
   intro L _ _ B hB

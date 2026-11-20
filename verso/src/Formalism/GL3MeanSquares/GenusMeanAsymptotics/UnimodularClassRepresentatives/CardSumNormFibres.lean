@@ -7,15 +7,15 @@ noncomputable section
 namespace Formalism.HermitianLattices.Ext.L3.FiniteNormFibres
 
 /- English proof (translation)
-Proceed by induction on `M with`. Consider the case `zero`. Introduce `c _`. Distinguish the cases in `h0 : c = 0`. Substitute `h0` using the available equality.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[h0, Ne.symm h0]`. Consider the case `succ M ih`. Introduce `c hc`. Establish `hsplit : ((univ.filter (fun x : Fin (M + 1) → X => ∑ i, N (x i) = c)).card : ℤ) = ∑ y : X, ((univ.filter (fun x : Fin M → X => ∑ i, N (x i) = c - N y)).card : ℤ)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← Nat.cast_sum]`. Use `congr 1`. Simplify using `only [Finset.card_filter]`. Rewrite using `[← (Fin.consEquiv (fun _ : Fin (M + 1) => X)).sum_comp, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun y _ => Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Fin.consEquiv, Equiv.coe_fn_mk, Fin.sum_univ_succ, Fin.cons_zero, Fin.cons_succ, eq_sub_iff_add_eq']`. Establish `hcount : ∑ y : X, (if c - N y = 0 then (1 : ℤ) else 0) = ((univ.filter fun y => N y = c).card : ℤ)`. Rewrite using `[Finset.card_filter]`. Use `push_cast`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[sub_eq_zero, eq_comm]`. Rewrite using `[hsplit, Finset.mul_sum, Finset.sum_congr rfl fun y _ => ih (c - N y) (hS c y hc)]`. Simplify using `only [Finset.sum_add_distrib, Finset.sum_sub_distrib, ← Finset.mul_sum, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Rewrite using `[hcount, hN c hc, hX]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem card_sum_norm_fibres {k X : Type*} [AddCommGroup k] [DecidableEq k] [Fintype X]
     (N : X → k) (S : k → Prop) (hS : ∀ c y, S c → S (c - N y)) (q ε : ℤ)
@@ -55,29 +55,27 @@ theorem card_sum_norm_fibres {k X : Type*} [AddCommGroup k] [DecidableEq k] [Fin
     ring
 
 /- English proof (translation)
-Take `⟨p, hchar⟩` from `CharP.exists k`. Take `⟨n, hp, hcard⟩` from `FiniteField.card k p`. Use `haveI := Fact.mk hp`. Use `haveI : NeZero p := ⟨hp.ne_zero⟩`. Use `letI : Algebra (ZMod p) k := ZMod.algebra k p`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hpow : ∀ i : ℕ, ∀ x : k, ((FiniteField.frobeniusAlgEquivOfAlgebraic (ZMod p) k) ^ i) x = x ^ (p ^ i)`. Introduce `i`. Proceed by induction on `i with`. Consider the case `zero => intro x`. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `succ i ih`. Introduce `x`. Rewrite using `[pow_succ, AlgEquiv.mul_apply, ih]`. Simplify using `only [FiniteField.coe_frobeniusAlgEquivOfAlgebraic, ZMod.card]`. Rewrite using `[← pow_mul, ← pow_succ']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `σ' : k ≃ₐ[ZMod p] k` to `AlgEquiv.ofRingEquiv (f := σ) (fun c => DFunLike.congr_fun (RingHom.ext_zmod (σ.toRingHom.comp (algebraMap (ZMod p) k)) (algebraMap (ZMod p) k)) c)`. Take `⟨j, hj⟩` from `(FiniteField.bijective_frobeniusAlgEquivOfAlgebraic_pow (ZMod p) k).2 σ'`. Establish `hj' : (FiniteField.frobeniusAlgEquivOfAlgebraic (ZMod p) k) ^ (j : ℕ) = σ'` using `hj`. Establish `hσj : ∀ x, σ x = x ^ (p ^ (j : ℕ))` using `fun x => by rw [← hpow, hj']; rfl`. Establish `hN : Fintype.card k = p ^ Module.finrank (ZMod p) k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Module.card_eq_pow_finrank (K := ZMod p) (V := k), ZMod.card]`. Establish `hfrN : (FiniteField.frobeniusAlgEquivOfAlgebraic (ZMod p) k) ^ Module.finrank (ZMod p) k = 1` using `AlgEquiv.ext fun x => by rw [hpow, AlgEquiv.one_apply, ← hN, FiniteField.pow_card]`. Establish `hσ2 : σ' ^ 2 = 1` using `AlgEquiv.ext fun x => by`. Rewrite using `[pow_two, AlgEquiv.mul_apply]`. Conclude with `hσ x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hσ2` using `[← hj', ← pow_mul]`. Establish `hN0 : 0 < Module.finrank (ZMod p) k` using `Fin.pos j`. Establish `hr : (FiniteField.frobeniusAlgEquivOfAlgebraic (ZMod p) k) ^ ((j : ℕ) * 2 % Module.finrank (ZMod p) k) = 1`. Establish `h1` using `Nat.mod_add_div ((j : ℕ) * 2) (Module.finrank (ZMod p) k)`. Rewrite `hσ2` using `[← h1, pow_add, pow_mul, hfrN, one_pow, mul_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hσ2`. Establish `hr0 : (j : ℕ) * 2 % Module.finrank (ZMod p) k = 0`. Establish `h1` using `(FiniteField.bijective_frobeniusAlgEquivOfAlgebraic_pow (ZMod p) k).1 (a₁ := ⟨(j : ℕ) * 2 % Module.finrank (ZMod p) k, Nat.mod_lt _ hN0⟩) (a₂ := ⟨0, hN0⟩) (by simp only [pow_zero]; exact hr)`. Conclude with `congrArg Fin.val h1`. Establish `hj0 : (j : ℕ) ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `h0`. Take `⟨x, hx⟩` from `hne`. Apply `hx` to reduce the goal to its premises. Rewrite using `[hσj, h0, pow_zero, pow_one]`. Establish `hjlt` using `j.isLt`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `ht` using `Nat.mod_add_div ((j : ℕ) * 2) (Module.finrank (ZMod p) k)`. Rewrite `ht` using `[hr0, zero_add]`. Take `⟨t, ht2⟩ : ∃ t, Module.finrank (ZMod p) k * t = (j : ℕ) * 2` from `⟨_, ht⟩`. Establish `h2j : (j : ℕ) * 2 = Module.finrank (ZMod p) k`. Break down `t with _ | _ | t` into its components or cases.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. It suffices to derive a contradiction.
 
-Simplify using `at ht2`. Use linear arithmetic over natural numbers and integers. Simplify using `at ht2`. Use linear arithmetic over natural numbers and integers. It suffices to derive a contradiction.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hqj : q = p ^ (j : ℕ)`. Establish `h1 : q ^ 2 = (p ^ (j : ℕ)) ^ 2` using `by rw [← hq, hN, ← pow_mul, h2j]`. Conclude with `Nat.pow_left_injective two_ne_zero h1`. Introduce `x`.
-
-Rewrite using `[hσj, hqj]`.
+A detailed English derivation is pending.
 -/
 theorem sigma_eq_pow {k : Type*} [Field k] [Fintype k] (σ : k ≃+* k)
     (hσ : ∀ x, σ (σ x) = x) (hne : ∃ x, σ x ≠ x) (q : ℕ) (hq : Fintype.card k = q ^ 2) :
@@ -147,41 +145,37 @@ theorem sigma_eq_pow {k : Type*} [Field k] [Fintype k] (σ : k ≃+* k)
   rw [hσj, hqj]
 
 /- English proof (translation)
-Establish `hpow` using `sigma_eq_pow σ hσ hne q hq`. Establish `hne0 : ∀ y : k, y ≠ 0 → σ y ≠ 0` using `fun y hy h => hy (σ.injective (by rw [h, map_zero]))`. Establish `hq2 : 2 ≤ q`. Establish `h1 : 1 < Fintype.card k` using `Fintype.one_lt_card`. Rewrite `h1` using `[hq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Assume the negation of the conclusion as `h2`. Establish `: q ≤ 1` using `by omega`. Establish `: q ^ 2 ≤ 1` using `by nlinarith`. Use linear arithmetic over natural numbers and integers. Distinguish the cases in `hc0 : c = 0`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Consider separately whether the proposition holds or fails.
 
-Substitute `hc0` using the available equality. Establish `: univ.filter (fun y : k => σ y * y = 0) = {0}`. Use extensionality with `y`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_singleton]`. Prove the components needed by the constructor for the conclusion.
+Substitute using the available equality. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Assume the negation of the conclusion as `hy`. Conclude with `mul_ne_zero (hne0 y hy) hy h`. Introduce `h`. Rewrite using `[h, map_zero, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, Finset.card_singleton, if_pos rfl]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg hc0]`. Use `set Fs := univ.filter (fun b : k => σ b = b ∧ b ≠ 0) with hFs`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set G : k → Finset k := fun b => univ.filter (fun y : k => σ y * y = b) with hG`. Establish `hGle : ∀ b, (G b).card ≤ q + 1`. Introduce `b`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.card_le_card` to reduce the goal to its premises.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `y hy`. Simplify using `only [hG, Finset.mem_filter, Finset.mem_univ, true_and] at hy`. Rewrite using `[Multiset.mem_toFinset, Polynomial.mem_nthRoots (by omega), pow_succ, ← hpow y, hy]`. Use `_ ≤ (Polynomial.nthRoots (q + 1) b).card := Multiset.toFinset_card_le _`. Use `_ ≤ q + 1 := Polynomial.card_nthRoots _ _`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hFle : Fs.card ≤ q - 1`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.card_le_card` to reduce the goal to its premises. Introduce `b hb`. Simplify using `only [hFs, Finset.mem_filter, Finset.mem_univ, true_and] at hb`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Multiset.mem_toFinset, Polynomial.mem_nthRoots (by omega)]`. Establish `h1 : b ^ (q - 1) * b = b`. Rewrite using `[← pow_succ, show q - 1 + 1 = q by omega, ← hpow b, hb.1]`. Establish `h2 : b ^ (q - 1) * b = 1 * b` using `by rw [h1, one_mul]`. Conclude with `mul_right_cancel₀ hb.2 h2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `_ ≤ (Polynomial.nthRoots (q - 1) (1 : k)).card := Multiset.toFinset_card_le _`. Use `_ ≤ q - 1 := Polynomial.card_nthRoots _ _`. Establish `hsum : ∑ b ∈ Fs, (G b).card = q ^ 2 - 1`. Establish `hmaps : ∀ y ∈ univ.filter (fun y : k => y ≠ 0), σ y * y ∈ Fs`. Introduce `y hy`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hy`. Simplify using `only [hFs, Finset.mem_filter, Finset.mem_univ, true_and]`. Use `⟨by rw [map_mul, hσ, mul_comm], mul_ne_zero (hne0 y hy) hy⟩` and prove the remaining obligations. Establish `h1` using `Finset.card_eq_sum_card_fiberwise hmaps`. Establish `h2 : (univ.filter (fun y : k => y ≠ 0)).card = q ^ 2 - 1`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[Finset.filter_ne', Finset.card_erase_of_mem (Finset.mem_univ _), Finset.card_univ, hq]`. Rewrite using `[← h2, h1]`. Use `Finset.sum_congr rfl fun b hb => ?_` and prove the remaining obligations. Simplify using `only [hFs, Finset.mem_filter, Finset.mem_univ, true_and] at hb`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Use extensionality with `y`. Simplify using `only [hG, Finset.mem_filter, Finset.mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun hy => hb.2 ?_, h⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite using `[← h, hy, mul_zero]`. Conclude with `fun h => h.2`. Establish `hcF : c ∈ Fs`. Simplify using `only [hFs, Finset.mem_filter, Finset.mem_univ, true_and]`. Conclude with `⟨hc, hc0⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hGc : (G c).card = q + 1`. Assume the negation of the conclusion as `hlt`. Establish `hlt' : (G c).card < q + 1` using `lt_of_le_of_ne (hGle c) hlt`. Establish `h1 : ∑ b ∈ Fs, (G b).card < ∑ b ∈ Fs, (q + 1)` using `Finset.sum_lt_sum (fun b _ => hGle b) ⟨c, hcF, hlt'⟩`. Rewrite `h1` using `[Finset.sum_const, smul_eq_mul, hsum]`.
+Simplify using the standard rewrite rules. Put the polynomial expressions in normal form. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `h2 : Fs.card * (q + 1) ≤ (q - 1) * (q + 1)` using `Nat.mul_le_mul_right _ hFle`. Establish `h3 : (q - 1) * (q + 1) = q ^ 2 - 1`. Take `⟨r, rfl⟩ : ∃ r, q = r + 1` from `⟨q - 1, by omega⟩`. Simplify using `only [Nat.add_sub_cancel]`. Put the polynomial expressions in normal form.
-
-Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Establish `: (univ.filter (fun y : k => σ y * y = c)).card = q + 1` using `hGc`. Rewrite using `[this]`. Use `push_cast`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem card_norm_fibre {k : Type*} [Field k] [Fintype k] [DecidableEq k] (σ : k ≃+* k)
     (hσ : ∀ x, σ (σ x) = x) (hne : ∃ x, σ x ≠ x) (q : ℕ) (hq : Fintype.card k = q ^ 2)
@@ -278,15 +272,15 @@ theorem card_norm_fibre {k : Type*} [Field k] [Fintype k] [DecidableEq k] (σ : 
   ring
 
 /- English proof (translation)
-Establish `h1 : (univ.filter (fun y : k × k => y.1 * y.2 = c)).card = ∑ a : k, (univ.filter (fun b : k => a * b = c)).card`. Simplify using `only [Finset.card_filter]`. Rewrite using `[← Finset.univ_product_univ, Finset.sum_product]`. Establish `h2 : ∀ a : k, a ≠ 0 → (univ.filter (fun b : k => a * b = c)).card = 1`. Introduce `a ha`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.card_eq_one]`. Use `⟨a⁻¹ * c, ?_⟩` and prove the remaining obligations. Use extensionality with `b`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_singleton]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Rewrite using `[← h, ← mul_assoc, inv_mul_cancel₀ ha, one_mul]`. Introduce `h`. Rewrite using `[h, ← mul_assoc, mul_inv_cancel₀ ha, one_mul]`. Establish `hk : 1 ≤ Fintype.card k` using `Fintype.card_pos`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : (univ.filter (fun b : k => (0 : k) * b = c)).card = if c = 0 then Fintype.card k else 0` using `by split_ifs with hc`. Substitute `hc` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Finset.card_eq_zero, Finset.filter_eq_empty_iff]`. Introduce `x _ h`.
+Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hc (by rw [← h, zero_mul])`. Rewrite using `[h1, ← Finset.add_sum_erase _ _ (Finset.mem_univ (0 : k)), Finset.sum_congr rfl fun a ha => h2 a (Finset.ne_of_mem_erase ha), h0]`. Simplify using `only [Finset.sum_const, smul_eq_mul, mul_one, Finset.card_erase_of_mem (Finset.mem_univ _), Finset.card_univ]`. Apply the tactic sequence `split_ifs <;> push_cast [Nat.cast_sub hk] <;> ring`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem card_mul_fibre {k : Type*} [Field k] [Fintype k] [DecidableEq k] (c : k) :
     ((univ.filter (fun y : k × k => y.1 * y.2 = c)).card : ℤ) =
@@ -325,13 +319,13 @@ end Formalism.HermitianLattices.Ext.L3.FiniteNormFibres
 namespace Formalism.HermitianLattices.Ext.L3
 
 /- English proof (translation)
-Establish `h` using `FiniteNormFibres.card_sum_norm_fibres (fun y : k => σ y * y) (fun c => σ c = c) (fun c y hc => by simp only [map_sub, map_mul, hσ, hc]; ring) (q : ℤ) (-1) (by rw [hq]; push_cast; ring) (fun c hc => by convert FiniteNormFibres.card_norm_fibre σ hσ hne q hq c hc) M c hc`. Rewrite `h` using `[if_neg hc0, mul_pow]`. Establish `hq0 : (q : ℤ) ≠ 0`. Introduce `h0`. Establish `h1 : q = 0` using `by exact_mod_cast h0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `Fintype.card_pos (α := k)` as an intermediate fact. Rewrite `this` using `[hq, h1]`. Simplify using `at this`. Establish `key : (q : ℤ) * ((q : ℤ) ^ (M - 1) * ((q : ℤ) ^ M - (-1) ^ M)) = (q : ℤ) ^ (2 * M) + (-1) ^ M * (q : ℤ) ^ M * ((q : ℤ) * 0 - 1)`. Take `⟨M', rfl⟩ : ∃ M', M = M' + 1` from `⟨M - 1, by omega⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[show M' + 1 - 1 = M' by omega]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Nat.card_eq_fintype_card, Fintype.card_subtype]`. Apply `mul_left_cancel₀ hq0` to reduce the goal to its premises. Rewrite using `[key]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `h using 3` and compare the differences between its conclusion and the goal.
+Apply an available result and prove the equalities needed to match it to the conclusion.
 -/
 theorem card_herm_norm_eq {k : Type*} [Field k] [Fintype k] (σ : k ≃+* k)
     (hσ : ∀ x, σ (σ x) = x) (hne : ∃ x, σ x ≠ x) (q : ℕ) (hq : Fintype.card k = q ^ 2)
@@ -360,13 +354,13 @@ theorem card_herm_norm_eq {k : Type*} [Field k] [Fintype k] (σ : k ≃+* k)
   convert h using 3
 
 /- English proof (translation)
-Establish `h` using `FiniteNormFibres.card_sum_norm_fibres (fun y : k × k => y.1 * y.2) (fun _ => True) (fun _ _ _ => trivial) (q : ℤ) 1 (by rw [Fintype.card_prod, hq]; push_cast; ring) (fun c _ => by rw [← hq]; convert FiniteNormFibres.card_mul_fibre c) M c trivial`. Rewrite `h` using `[if_neg hc, one_mul]`. Establish `hq0 : (q : ℤ) ≠ 0`. Introduce `h0`. Establish `h1 : q = 0` using `by exact_mod_cast h0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `Fintype.card_pos (α := k)` as an intermediate fact. Rewrite `this` using `[hq, h1]`. Conclude with `lt_irrefl 0 this`. Establish `e : {x : (Fin M → k) × (Fin M → k) // ∑ i, x.1 i * x.2 i = c} ≃ {x : Fin M → k × k // ∑ i, (x i).1 * (x i).2 = c}` using `(Equiv.arrowProdEquivProdArrow _ _ _).symm.subtypeEquiv (fun x => Iff.rfl)`. Establish `key : (q : ℤ) * ((q : ℤ) ^ (2 * M - 1) - (q : ℤ) ^ (M - 1)) = (q : ℤ) ^ (2 * M) + (q : ℤ) ^ M * ((q : ℤ) * 0 - 1)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨M', rfl⟩ : ∃ M', M = M' + 1` from `⟨M - 1, by omega⟩`. Rewrite using `[show 2 * (M' + 1) - 1 = 2 * M' + 1 by omega, show M' + 1 - 1 = M' by omega]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Nat.card_congr e, Nat.card_eq_fintype_card, Fintype.card_subtype]`. Apply `mul_left_cancel₀ hq0` to reduce the goal to its premises.
+Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key]`. Use `h using 3` and compare the differences between its conclusion and the goal.
+Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem card_dot_eq {k : Type*} [Field k] [Fintype k] (q : ℕ) (hq : Fintype.card k = q)
     (M : ℕ) (hM : 1 ≤ M) (c : k) (hc : c ≠ 0) :

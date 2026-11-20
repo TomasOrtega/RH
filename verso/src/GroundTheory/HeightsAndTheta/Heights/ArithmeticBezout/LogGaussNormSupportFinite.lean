@@ -24,14 +24,12 @@ theorem gaussNormOf_def (f : MvPolynomial ι R) :
   rfl
 
 /- English proof (translation)
-The claim follows from `NNReal.coe_nonneg _`.
+A detailed English derivation is pending.
 -/
 theorem gaussNormOf_nonneg (f : MvPolynomial ι R) : 0 ≤ gaussNormOf w f := NNReal.coe_nonneg _
 
 /- English proof (translation)
-Distinguish the cases in `hm : m ∈ f.support`. Establish `h : (⟨w (f.coeff m), w.nonneg _⟩ : NNReal) ≤ f.support.sup fun m => (⟨w (f.coeff m), w.nonneg _⟩ : NNReal)` using `Finset.le_sup (f := fun m => (⟨w (f.coeff m), w.nonneg _⟩ : NNReal)) hm`. Rewrite using `[gaussNormOf_def]`. Conclude with `NNReal.coe_le_coe.mpr h`. Rewrite using `[notMem_support_iff.mp hm, map_zero]`.
-
-Conclude with `gaussNormOf_nonneg w f`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_gaussNormOf (f : MvPolynomial ι R) (m : ι →₀ ℕ) : w (f.coeff m) ≤ gaussNormOf w f := by
   by_cases hm : m ∈ f.support
@@ -44,7 +42,7 @@ theorem le_gaussNormOf (f : MvPolynomial ι R) (m : ι →₀ ℕ) : w (f.coeff 
     exact gaussNormOf_nonneg w f
 
 /- English proof (translation)
-Establish `h' : (f.support.sup fun m => (⟨w (f.coeff m), w.nonneg _⟩ : NNReal)) ≤ ⟨r, hr⟩` using `Finset.sup_le fun m _ => h m`. Rewrite using `[gaussNormOf_def]`. Conclude with `NNReal.coe_le_coe.mpr h'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gaussNormOf_le {f : MvPolynomial ι R} {r : ℝ} (hr : 0 ≤ r)
     (h : ∀ m, w (f.coeff m) ≤ r) : gaussNormOf w f ≤ r := by
@@ -54,7 +52,7 @@ theorem gaussNormOf_le {f : MvPolynomial ι R} {r : ℝ} (hr : 0 ≤ r)
   exact NNReal.coe_le_coe.mpr h'
 
 /- English proof (translation)
-Take `⟨m, hm, h⟩` from `Finset.exists_mem_eq_sup f.support (support_nonempty.mpr hf) (fun m => (⟨w (f.coeff m), w.nonneg _⟩ : NNReal))`. Use `⟨m, hm, ?_⟩` and prove the remaining obligations. Rewrite using `[gaussNormOf_def]`. Conclude with `congrArg Subtype.val h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_gaussNormOf_eq {f : MvPolynomial ι R} (hf : f ≠ 0) :
     ∃ m ∈ f.support, gaussNormOf w f = w (f.coeff m) := by
@@ -65,7 +63,7 @@ theorem exists_gaussNormOf_eq {f : MvPolynomial ι R} (hf : f ≠ 0) :
   exact congrArg Subtype.val h
 
 /- English proof (translation)
-Take `⟨m, hm, h⟩` from `exists_gaussNormOf_eq w hf`. Rewrite using `[h]`. Conclude with `w.pos (mem_support_iff.mp hm)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gaussNormOf_pos {f : MvPolynomial ι R} (hf : f ≠ 0) : 0 < gaussNormOf w f := by
   obtain ⟨m, hm, h⟩ := exists_gaussNormOf_eq w hf
@@ -73,15 +71,15 @@ theorem gaussNormOf_pos {f : MvPolynomial ι R} (hf : f ≠ 0) : 0 < gaussNormOf
   exact w.pos (mem_support_iff.mp hm)
 
 /- English proof (translation)
-The claim follows from `le_antisymm (gaussNormOf_le w le_rfl fun m => by simp) (gaussNormOf_nonneg w 0)`.
+A detailed English derivation is pending.
 -/
 theorem gaussNormOf_zero : gaussNormOf w (0 : MvPolynomial ι R) = 0 :=
   le_antisymm (gaussNormOf_le w le_rfl fun m => by simp) (gaussNormOf_nonneg w 0)
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `gaussNormOf_le w (w.nonneg c) fun m => ?_` and prove the remaining obligations. Rewrite using `[coeff_C]`. Use `split_ifs`. Conclude with `le_rfl`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[map_zero]`. Conclude with `w.nonneg c`. Simplify using `using le_gaussNormOf w (C c : MvPolynomial ι R) 0`.
+A detailed English derivation is pending.
 -/
 theorem gaussNormOf_C (c : R) : gaussNormOf w (C c : MvPolynomial ι R) = w c := by
   classical
@@ -97,9 +95,9 @@ theorem gaussNormOf_C (c : R) : gaussNormOf w (C c : MvPolynomial ι R) = w c :=
 variable {w}
 
 /- English proof (translation)
-Use `gaussNormOf_le w (mul_nonneg (gaussNormOf_nonneg w f) (gaussNormOf_nonneg w g)) fun m => ?_` and prove the remaining obligations. Rewrite using `[coeff_mul]`. Use `(hna.apply_sum_le_sup (s := Finset.HasAntidiagonal.antidiagonal m) ⟨(0, m), by simp⟩).trans ?_` and prove the remaining obligations. Use `Finset.sup'_le _ _ fun p _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul (le_gaussNormOf w f _) (le_gaussNormOf w g _) (w.nonneg _) (gaussNormOf_nonneg w f)`.
+A detailed English derivation is pending.
 -/
 theorem gaussNormOf_mul_le (hna : IsNonarchimedean w) (f g : MvPolynomial ι R) :
     gaussNormOf w (f * g) ≤ gaussNormOf w f * gaussNormOf w g := by
@@ -113,27 +111,23 @@ theorem gaussNormOf_mul_le (hna : IsNonarchimedean w) (f g : MvPolynomial ι R) 
     (gaussNormOf_nonneg w f)
 
 /- English proof (translation)
-Set `_ : LinearOrder ι` to `linearOrderOfSTO WellOrderingRel`. Establish `hNf` using `gaussNormOf_pos w hf`. Establish `hNg` using `gaussNormOf_pos w hg`. Take `⟨i, hi, hmin_i⟩` from `(f.support.filter fun a => w (f.coeff a) = gaussNormOf w f).exists_min_image toLex (by`. Take `⟨m, hm, h⟩` from `exists_gaussNormOf_eq w hf`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨m, Finset.mem_filter.mpr ⟨hm, h.symm⟩⟩)`. Take `⟨j, hj, hmin_j⟩` from `(g.support.filter fun a => w (g.coeff a) = gaussNormOf w g).exists_min_image toLex (by`. Take `⟨m, hm, h⟩` from `exists_gaussNormOf_eq w hg`. Conclude with `⟨m, Finset.mem_filter.mpr ⟨hm, h.symm⟩⟩)`. Establish `hi' : w (f.coeff i) = gaussNormOf w f` using `(Finset.mem_filter.mp hi).2`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hj' : w (g.coeff j) = gaussNormOf w g` using `(Finset.mem_filter.mp hj).2`. Establish `ltf : ∀ a, toLex a < toLex i → w (f.coeff a) < gaussNormOf w f`. Introduce `a ha`. Use `lt_of_le_of_ne (le_gaussNormOf w f a) fun h => ?_` and prove the remaining obligations. Establish `ha' : a ∈ f.support.filter fun a => w (f.coeff a) = gaussNormOf w f`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Finset.mem_filter.mpr ⟨mem_support_iff.mpr fun h0 => ?_, h⟩` and prove the remaining obligations. Rewrite `h` using `[h0, map_zero]`. Conclude with `hNf.ne h`. Conclude with `absurd (hmin_i a ha') (not_le.mpr ha)`. Establish `ltg : ∀ a, toLex a < toLex j → w (g.coeff a) < gaussNormOf w g`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a ha`. Use `lt_of_le_of_ne (le_gaussNormOf w g a) fun h => ?_` and prove the remaining obligations. Establish `ha' : a ∈ g.support.filter fun a => w (g.coeff a) = gaussNormOf w g`. Use `Finset.mem_filter.mpr ⟨mem_support_iff.mpr fun h0 => ?_, h⟩` and prove the remaining obligations. Rewrite `h` using `[h0, map_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hNg.ne h`. Conclude with `absurd (hmin_j a ha') (not_le.mpr ha)`. Establish `key : w ((f * g).coeff (i + j)) = gaussNormOf w f * gaussNormOf w g`. Rewrite using `[coeff_mul]`. Establish `hk : (i, j) ∈ Finset.HasAntidiagonal.antidiagonal (i + j)` using `Finset.HasAntidiagonal.mem_antidiagonal.mpr rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hna.apply_sum_eq_of_lt (fun a => (w.map_neg a).symm) hk ?_, map_mul, hi', hj']`. Introduce `p hp hne`. Rewrite `hp` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Rewrite using `[map_mul, map_mul, hi', hj']`. Break down `lt_trichotomy (toLex p.1) (toLex i) with h | h | h` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h1 : p.1 = i` using `toLex.injective h`. Establish `h2 : p.2 = j`. Rewrite `hp` using `[h1]`. Conclude with `add_left_cancel hp`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `absurd (Prod.ext h1 h2) hne`. Establish `h2 : toLex p.2 < toLex j`. Assume the negation of the conclusion as `hc`. Rewrite `hc` using `[not_lt]`. Establish `hlt : toLex i + toLex j < toLex p.1 + toLex p.2` using `add_lt_add_of_lt_of_le h hc`.
-
-Establish `e : toLex p.1 + toLex p.2 = toLex i + toLex j`. Rewrite using `[← toLex_add, ← toLex_add, hp]`. Rewrite `hlt` using `[e]`. Conclude with `lt_irrefl _ hlt`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[← key]`. Conclude with `le_gaussNormOf w _ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_gaussNormOf_mul (hna : IsNonarchimedean w) {f g : MvPolynomial ι R} (hf : f ≠ 0)
     (hg : g ≠ 0) : gaussNormOf w f * gaussNormOf w g ≤ gaussNormOf w (f * g) := by
@@ -199,7 +193,7 @@ theorem le_gaussNormOf_mul (hna : IsNonarchimedean w) {f g : MvPolynomial ι R} 
   exact le_gaussNormOf w _ _
 
 /- English proof (translation)
-Distinguish the cases in `hf : f = 0`. Simplify using `[hf, gaussNormOf_zero]`. Distinguish the cases in `hg : g = 0`. Simplify using `[hg, gaussNormOf_zero]`. Conclude with `le_antisymm (gaussNormOf_mul_le hna f g) (le_gaussNormOf_mul hna hf hg)`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gaussNormOf_mul (hna : IsNonarchimedean w) (f g : MvPolynomial ι R) :
     gaussNormOf w (f * g) = gaussNormOf w f * gaussNormOf w g := by
@@ -223,21 +217,21 @@ theorem gaussNorm_eq_gaussNormOf (v : IsDedekindDomain.HeightOneSpectrum (𝓞 K
     gaussNorm v f = gaussNormOf (NumberField.HeightOneSpectrum.adicAbv K v) f := rfl
 
 /- English proof (translation)
-The claim follows from `gaussNormOf_mul (NumberField.HeightOneSpectrum.isNonarchimedean_adicAbv K v) f g`.
+A detailed English derivation is pending.
 -/
 theorem gaussNorm_mul (v : IsDedekindDomain.HeightOneSpectrum (𝓞 K)) {ι : Type*}
     (f g : MvPolynomial ι K) : gaussNorm v (f * g) = gaussNorm v f * gaussNorm v g :=
   gaussNormOf_mul (NumberField.HeightOneSpectrum.isNonarchimedean_adicAbv K v) f g
 
 /- English proof (translation)
-The claim follows from `gaussNormOf_C _ c`.
+A detailed English derivation is pending.
 -/
 theorem gaussNorm_C (v : IsDedekindDomain.HeightOneSpectrum (𝓞 K)) {ι : Type*} (c : K) :
     gaussNorm v (C c : MvPolynomial ι K) = NumberField.HeightOneSpectrum.adicAbv K v c :=
   gaussNormOf_C _ c
 
 /- English proof (translation)
-Rewrite using `[gaussNorm_mul, gaussNorm_C]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gaussNorm_C_mul (v : IsDedekindDomain.HeightOneSpectrum (𝓞 K)) {ι : Type*} (c : K)
     (f : MvPolynomial ι K) :
@@ -245,21 +239,21 @@ theorem gaussNorm_C_mul (v : IsDedekindDomain.HeightOneSpectrum (𝓞 K)) {ι : 
   rw [gaussNorm_mul, gaussNorm_C]
 
 /- English proof (translation)
-The claim follows from `gaussNormOf_nonneg _ f`.
+A detailed English derivation is pending.
 -/
 theorem gaussNorm_nonneg (v : IsDedekindDomain.HeightOneSpectrum (𝓞 K)) {ι : Type*}
     (f : MvPolynomial ι K) : 0 ≤ gaussNorm v f := gaussNormOf_nonneg _ f
 
 /- English proof (translation)
-The claim follows from `gaussNormOf_pos _ hf`.
+A detailed English derivation is pending.
 -/
 theorem gaussNorm_pos (v : IsDedekindDomain.HeightOneSpectrum (𝓞 K)) {ι : Type*}
     {f : MvPolynomial ι K} (hf : f ≠ 0) : 0 < gaussNorm v f := gaussNormOf_pos _ hf
 
 /- English proof (translation)
-Establish `h` using `FinitePlace.hasFiniteMulSupport hx`. Establish `e : (Function.mulSupport fun v : IsDedekindDomain.HeightOneSpectrum (𝓞 K) => NumberField.HeightOneSpectrum.adicAbv K v x) = FinitePlace.equivHeightOneSpectrum.symm ⁻¹' (Function.mulSupport fun w : FinitePlace K => w x)`. Use extensionality with `v`. Simplify using `only [Function.mem_mulSupport, Set.mem_preimage, FinitePlace.equivHeightOneSpectrum_symm_apply, FinitePlace.norm_embedding]`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Set.Finite.preimage (FinitePlace.equivHeightOneSpectrum.symm.injective.injOn) h`.
+A detailed English derivation is pending.
 -/
 theorem adicAbv_mulSupport_finite {x : K} (hx : x ≠ 0) :
     (Function.mulSupport fun v : IsDedekindDomain.HeightOneSpectrum (𝓞 K) =>
@@ -276,13 +270,11 @@ theorem adicAbv_mulSupport_finite {x : K} (hx : x ≠ 0) :
   exact Set.Finite.preimage (FinitePlace.equivHeightOneSpectrum.symm.injective.injOn) h
 
 /- English proof (translation)
-Use `(Set.Finite.biUnion (s := (f.support : Set (ι →₀ ℕ))) f.support.finite_toSet fun m hm => adicAbv_mulSupport_finite (K := K) (mem_support_iff.mp hm)).subset ?_` and prove the remaining obligations. Introduce `v hv`. Rewrite `hv` using `[Function.mem_support]`. Assume the negation of the conclusion as `hc`. Simplify using `only [Set.mem_iUnion, Function.mem_mulSupport, not_exists, not_not] at hc`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules.
 
-Apply `hv` to reduce the goal to its premises. Establish `h1 : gaussNorm v f = 1`. Apply `le_antisymm` to reduce the goal to its premises. Use `gaussNormOf_le _ zero_le_one fun m => ?_` and prove the remaining obligations. Distinguish the cases in `hm : m ∈ f.support`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Conclude with `(hc m hm).le`. Rewrite using `[notMem_support_iff.mp hm, map_zero]`. Conclude with `zero_le_one`. Take `⟨m, hm, h⟩` from `exists_gaussNormOf_eq (NumberField.HeightOneSpectrum.adicAbv K v) hf`. Rewrite using `[gaussNorm_eq_gaussNormOf, h, hc m hm]`.
-
-Rewrite using `[h1, Real.log_one]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem log_gaussNorm_support_finite {ι : Type*} {f : MvPolynomial ι K} (hf : f ≠ 0) :
     (Function.support fun v : IsDedekindDomain.HeightOneSpectrum (𝓞 K) =>
@@ -309,7 +301,7 @@ theorem log_gaussNorm_support_finite {ι : Type*} {f : MvPolynomial ι K} (hf : 
 end NumberField
 
 /- English proof (translation)
-Introduce `_K _ _ v _ι f g` and use `gaussNorm_mul v f g`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem gaussLemma : GaussLemma.Statement := fun _K _ _ v _ι f g => gaussNorm_mul v f g
 

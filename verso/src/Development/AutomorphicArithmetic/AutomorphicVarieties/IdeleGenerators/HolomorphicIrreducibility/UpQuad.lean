@@ -4,7 +4,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Crys
 
 open UpperTheory.V.Af UpperTheory.V.Af.Bc in
 /- English proof (translation)
-Introduce `hP F E Ω _ _ _ _ _ _ _ _ _ _ _ _ l _ ι hE n _ hn r hr ⟨π, hreg, hatt⟩ hirr`. Take `⟨P, hBC⟩` from `(UpperTheory.V.Br.quadBCw hP F E hE n hn π hreg).resolve_left fun ⟨η, hη, ht⟩ => Bc.noTwist hP F E Ω l ι hE n r π hr hatt hirr η hη ht`. Establish `h` using `UpperTheory.V.Br.bcAtt0 F E Ω l ι n r π P hBC.toIsBC0`. Conclude with `⟨P, h.1 hreg, h.2 hatt ((Bc.irrBasic.1 _ Unit _ n _).2.1 hirr)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem UpperTheory.V.Sd.upQuad :
     UpperTheory.V.Af.Hypotheses₂ → UpperTheory.V.Sd.UpQuad := by

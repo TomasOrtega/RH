@@ -9,9 +9,9 @@ open TensorProduct Coalgebra Bialgebra CategoryTheory WithConv GlobalTheory Glob
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨F', rfl⟩` from `(Module.Flat.lTensor_exact N h F).1 h₂`. Establish `h₃ : g.rTensor M F' = 0`. Apply `Module.Flat.lTensor_preserves_injective_linearMap (M := P) f hf` to reduce the goal to its premises. Rewrite using `[map_zero, ← h₁, ← LinearMap.comp_apply, ← LinearMap.comp_apply, LinearMap.lTensor_comp_rTensor, LinearMap.rTensor_comp_lTensor]`. Take `⟨c, rfl⟩` from `(Module.Flat.rTensor_exact M h F').1 h₃`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨c, by rw [← LinearMap.comp_apply, LinearMap.lTensor_comp_rTensor]⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_tensor_map_eq_of_exact {R M N P : Type} [CommRing R] [AddCommGroup M] [Module R M]
     [AddCommGroup N] [Module R N] [AddCommGroup P] [Module R P] [Module.Flat R M]
@@ -28,7 +28,7 @@ theorem exists_tensor_map_eq_of_exact {R M N P : Type} [CommRing R] [AddCommGrou
   exact ⟨c, by rw [← LinearMap.comp_apply, LinearMap.lTensor_comp_rTensor]⟩
 
 /- English proof (translation)
-Use `exists_tensor_map_eq_of_exact (G.mulP n : G.A n →ₗ[R] G.A (n + 1)) _ (Test.mulP_injective G n) (fun a => ⟨fun ha => ?_, ?_⟩) F h₁ h₂` and prove the remaining obligations. Conclude with `GlobalTheory.T.exists_mulP_eq_of_transl_invariant G n a (sub_eq_zero.1 ha)`. Introduce and unpack `⟨e, rfl⟩`. Conclude with `sub_eq_zero.2 (G.transl_mulP n e)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem PDivGroup.exists_tensorSquare_mulP_eq {p : ℕ} {R : Type} [CommRing R] (G : PDivGroup p R)
     (n : ℕ) (F : G.A (n + 1) ⊗[R] G.A (n + 1))

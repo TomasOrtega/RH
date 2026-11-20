@@ -7,35 +7,33 @@ open scoped Matrix
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `K V G C _ _ _ _ _ _ _ e ρ χ hfree hidem horth hsum1 hequi`. Set `O : Finset C` to `Finset.univ.image (fun Z : C => (Quotient.mk (MulAction.orbitRel G C) Z).out)`. Establish `hq : ∀ (g : G) (x : C), Quotient.mk (MulAction.orbitRel G C) (g • x) = Quotient.mk (MulAction.orbitRel G C) x` using `fun g x => Quotient.sound (MulAction.mem_orbit x g)`. Establish `hinj : ∀ (g : G) (o : C) (g' : G) (o' : C), o ∈ O → o' ∈ O → g • o = g' • o' → g = g' ∧ o = o'`. Introduce `g o g' o' ho ho' h`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨Z1, -, rfl⟩` from `Finset.mem_image.1 ho`. Take `⟨Z2, -, rfl⟩` from `Finset.mem_image.1 ho'`. Establish `hZ : Quotient.mk (MulAction.orbitRel G C) Z1 = Quotient.mk (MulAction.orbitRel G C) Z2`. Combine the equalities or inequalities in the displayed calculation. Rewrite `h`, the goal using `[hZ]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `⟨?_, rfl⟩` and prove the remaining obligations. Establish `h2 : (g'⁻¹ * g) • (Quotient.mk (MulAction.orbitRel G C) Z2).out = (Quotient.mk (MulAction.orbitRel G C) Z2).out`. Rewrite using `[mul_smul, h, inv_smul_smul]`. Use `hfree _ _ h2` as an intermediate fact. Rewrite `this` using `[inv_mul_eq_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.symm`. Establish `hsurj : ∀ Z, ∃ g : G, ∃ o ∈ O, Z = g • o`. Introduce `Z`. Establish `hm : (Quotient.mk (MulAction.orbitRel G C) Z).out ∈ MulAction.orbit G Z` using `@Quotient.mk_out _ (MulAction.orbitRel G C) Z`. Take `⟨g, hg⟩` from `MulAction.mem_orbit_iff.1 hm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨g⁻¹, _, Finset.mem_image_of_mem _ (Finset.mem_univ Z), by rw [← hg, inv_smul_smul]⟩`. Establish `hsum : ∀ φ : C → V, ∑ Z, φ Z = ∑ o ∈ O, ∑ g : G, φ (g • o)`. Introduce `φ`. Rewrite using `[← Finset.sum_product (s := O) (t := Finset.univ) (f := fun x : C × G => φ (x.2 • x.1))]`. Use `symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_bij (fun x _ => x.2 • x.1) (fun _ _ => Finset.mem_univ _) ?_ ?_ (fun _ _ => rfl)` and prove the remaining obligations. Introduce and unpack `⟨o, g⟩ h ⟨o', g'⟩ h' he`. Simplify using `only [Finset.mem_product] at h h'`. Take `⟨h1, h2⟩` from `hinj g o g' o' h.1 h'.1 he`. Simplify using `[h1, h2]`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `Z _`. Take `⟨g, o, ho, rfl⟩` from `hsurj Z`. Conclude with `⟨(o, g), Finset.mem_product.2 ⟨ho, Finset.mem_univ _⟩, rfl⟩`. Use `⟨O, hsurj, ?_, ?_⟩` and prove the remaining obligations. Introduce `F hF conv_lhs => rw [← hsum1 F, hsum (fun Z => e Z F)]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl (fun o _ => Finset.sum_congr rfl (fun g _ => ?_))` and prove the remaining obligations. Rewrite using `[hequi, hF, LinearMap.map_smul, ← Units.smul_def, inv_smul_smul]`. Introduce `f hf`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl (fun o _ => ?_)` and prove the remaining obligations. Use `Fintype.sum_equiv (Equiv.mulLeft h) _ _ (fun g => ?_)` and prove the remaining obligations. Simplify using `only [Equiv.coe_mulLeft]`. Rewrite using `[Units.smul_def, Units.smul_def, LinearMap.map_smul, map_mul, map_mul, Module.End.mul_apply, smul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Rewrite using `[← Units.val_mul]`. Use `congr 1`. Rewrite using `[mul_inv_rev, mul_comm, mul_assoc, inv_mul_cancel, mul_one]`. Introduce `g o ho`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `key : ∀ o' ∈ O, ∀ g', e (g • o) (((χ g')⁻¹ : Kˣ) • ρ g' (f o')) = if g' = g ∧ o' = o then ((χ g)⁻¹ : Kˣ) • ρ g (f o) else 0`. Introduce `o' ho' g'`. Establish `hw : ρ g' (f o') = e (g' • o') (ρ g' (f o'))` using `by rw [← hequi g' o' (f o'), hf o']`. Use `split_ifs with hc`. Take `⟨rfl, rfl⟩` from `hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Units.smul_def, LinearMap.map_smul]`. Use `congr 1`. Rewrite using `[hw, hidem]`. Rewrite using `[Units.smul_def, LinearMap.map_smul, hw, horth, smul_zero]`. Introduce `hZ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨h1, h2⟩` from `hinj g o g' o' ho ho' hZ`. Conclude with `hc ⟨h1.symm, h2.symm⟩`. Rewrite using `[map_sum, Finset.sum_eq_single_of_mem o ho]`. Rewrite using `[map_sum, Fintype.sum_eq_single g]`. Rewrite using `[key o ho g, if_pos ⟨rfl, rfl⟩]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g' hg'`. Rewrite using `[key o ho g', if_neg (fun h => hg' h.1)]`. Introduce `o' ho' hne`. Rewrite using `[map_sum]`. Use `Finset.sum_eq_zero (fun g' _ => ?_)` and prove the remaining obligations.
-
-Rewrite using `[key o' ho' g', if_neg (fun h => hne h.2)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem freeOrbit_projector_eigen : ∀ (K V G C : Type) [Field K] [AddCommGroup V] [Module K V] [Group G] [Fintype G] [Fintype C] [MulAction G C] (e : C → V →ₗ[K] V) (ρ : Representation K G V) (χ : G →* Kˣ), (∀ (g : G) (Z : C), g • Z = Z → g = 1) → (∀ Z v, e Z (e Z v) = e Z v) → (∀ Z Z' v, Z ≠ Z' → e Z (e Z' v) = 0) → (∀ v, ∑ Z, e Z v = v) → (∀ g Z v, ρ g (e Z v) = e (g • Z) (ρ g v)) → ∃ O : Finset C, (∀ Z, ∃ g : G, ∃ o ∈ O, Z = g • o) ∧ (∀ F, (∀ g, ρ g F = (χ g : K) • F) → F = ∑ o ∈ O, ∑ g, ((χ g)⁻¹ : Kˣ) • ρ g (e o F)) ∧ ∀ f : C → V, (∀ o, e o (f o) = f o) → (∀ h, ρ h (∑ o ∈ O, ∑ g, ((χ g)⁻¹ : Kˣ) • ρ g (f o)) = (χ h : K) • ∑ o ∈ O, ∑ g, ((χ g)⁻¹ : Kˣ) • ρ g (f o)) ∧ ∀ g, ∀ o ∈ O, e (g • o) (∑ o' ∈ O, ∑ g', ((χ g')⁻¹ : Kˣ) • ρ g' (f o')) = ((χ g)⁻¹ : Kˣ) • ρ g (f o) := by
   intro K V G C _ _ _ _ _ _ _ e ρ χ hfree hidem horth hsum1 hequi

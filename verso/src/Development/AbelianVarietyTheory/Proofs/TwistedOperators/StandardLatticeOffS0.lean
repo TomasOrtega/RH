@@ -19,9 +19,9 @@ noncomputable section
 namespace GlobalTheory.AscFin.StdOff
 
 /- English proof (translation)
-Unfold `latO`. Rewrite using `[AddSubgroup.closure_le]`. Introduce and unpack `w ⟨α, hα, hP, a, ha, s, hs, t, ht, rfl⟩`. Rewrite using `[← neg_neg (Matrix.of _)]`. Use `neg_mem (AddSubgroup.subset_closure ⟨α, hα, hP, a, ha, s, hs, t, ht, ?_⟩)` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `i j`. Simplify using `[negSp_gram, Finset.sum_neg_distrib, TensorProduct.tmul_neg]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem latO_le_negSp {D : D7} (S T : HSp D) (LS : Set (Fin S.rank → D.host.E)) (LT : Set (Fin T.rank → D.host.E))
     (P : HeightOneSpectrum (𝓞 D.host.F) → Prop) : latO S T LS LT P ≤ latO (negSp S) T LS LT P := by
@@ -34,9 +34,9 @@ theorem latO_le_negSp {D : D7} (S T : HSp D) (LS : Set (Fin S.rank → D.host.E)
   simp [negSp_gram, Finset.sum_neg_distrib, TensorProduct.tmul_neg]
 
 /- English proof (translation)
-Unfold `latO`. Rewrite using `[AddSubgroup.closure_le]`. Introduce and unpack `w ⟨α, hα, hP, a, ha, s, hs, t, ht, rfl⟩`. Rewrite using `[← neg_neg (Matrix.of _)]`. Use `neg_mem (AddSubgroup.subset_closure ⟨α, hα, hP, a, ha, s, hs, t, ht, ?_⟩)` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `i j`. Simplify using `[negSp_gram, Finset.sum_neg_distrib, TensorProduct.tmul_neg]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem latO_negSp_le' {D : D7} (S T : HSp D) (LS : Set (Fin S.rank → D.host.E)) (LT : Set (Fin T.rank → D.host.E))
     (P : HeightOneSpectrum (𝓞 D.host.F) → Prop) : latO (negSp S) T LS LT P ≤ latO S T LS LT P := by
@@ -49,9 +49,9 @@ theorem latO_negSp_le' {D : D7} (S T : HSp D) (LS : Set (Fin S.rank → D.host.E
   simp [negSp_gram, Finset.sum_neg_distrib, TensorProduct.tmul_neg]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, -⟩`. Conclude with `latO_negSp_le' S T _ _ _ ((mem_latO_at (S := negSp S) hu).1 h1)`. Introduce `h1`. Use `⟨(mem_latO_at (S := negSp S) hu).2 (latO_le_negSp S T _ _ _ h1), fun e he => ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: e • u = 0` using `Matrix.ext fun i j => (GlobalTheory.FinZeta.VacOff.idemSum_mul_off he hoff h1 i j).1`. Rewrite using `[this]`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem depLat_iff_at {D : D7} {S T : HSp D} {LS : GlobalTheory.FinPl.Lat S} {LT : GlobalTheory.FinPl.Lat T}
     {v : GlobalTheory.FinPl.Pl D} {W0 : Finset (Formalism.L2.DIV.Pl D.host.E)} (hoff : ∀ PP ∈ W0, PP.under (𝓞 D.host.F) ≠ v)
@@ -68,9 +68,9 @@ theorem depLat_iff_at {D : D7} {S T : HSp D} {LS : GlobalTheory.FinPl.Lat S} {LT
     exact zero_mem _
 
 /- English proof (translation)
-Establish `e : (d : D.host.E) * X = d • X` using `rfl`. Establish `e2 : pairA D.host.F 0 (α' * algebraMap D.host.F (Af D.host.F) d) = d • pairA D.host.F 0 α'`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show (0 : Ainf D.host.F) = d • (0 : Ainf D.host.F)`. Rewrite using `[smul_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show α' * algebraMap D.host.F (Af D.host.F) d = d • α'`. Rewrite using `[Algebra.smul_def, mul_comm]`. Rewrite using `[e, e2, ← TensorProduct.smul_tmul']`. Conclude with `((TensorProduct.mk D.host.F (AF D.host.F) D.host.E (pairA D.host.F 0 α')).map_smul d X).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pair_tmul_scale {D : D7} (α' : Af D.host.F) (d : D.host.F) (X : D.host.E) :
     pairA D.host.F 0 (α' * algebraMap D.host.F (Af D.host.F) d) ⊗ₜ[D.host.F] X =
@@ -90,7 +90,7 @@ def gen {D : D7} (S U : HSp D) (α : Af D.host.F) (a : D.host.E) (s : Fin S.rank
   Matrix.of fun i j => pairA D.host.F 0 α ⊗ₜ[D.host.F] (a * t i * ∑ k, star (s k) * S.gram k j)
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[gen, Matrix.of_apply, Matrix.zero_apply, Pi.zero_apply, mul_zero, zero_mul, TensorProduct.tmul_zero]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem gen_zero {D : D7} (S U : HSp D) (α : Af D.host.F) (a : D.host.E) (s : Fin S.rank → D.host.E) :
     gen S U α a s 0 = 0 := by
@@ -98,7 +98,7 @@ theorem gen_zero {D : D7} (S U : HSp D) (α : Af D.host.F) (a : D.host.E) (s : F
   rw [gen, Matrix.of_apply, Matrix.zero_apply, Pi.zero_apply, mul_zero, zero_mul, TensorProduct.tmul_zero]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.add_apply, gen, gen, gen, Matrix.of_apply, Matrix.of_apply, Matrix.of_apply, Pi.add_apply, mul_add, add_mul, TensorProduct.tmul_add]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem gen_add {D : D7} (S U : HSp D) (α : Af D.host.F) (a : D.host.E) (s : Fin S.rank → D.host.E)
     (t t' : Fin U.rank → D.host.E) : gen S U α a s (t + t') = gen S U α a s t + gen S U α a s t' := by
@@ -107,7 +107,7 @@ theorem gen_add {D : D7} (S U : HSp D) (α : Af D.host.F) (a : D.host.E) (s : Fi
     TensorProduct.tmul_add]
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `hc : c • t i = (c : D.host.E) * t i` using `Algebra.smul_def c (t i)`. Rewrite using `[gen, gen, Matrix.of_apply, Matrix.of_apply, Pi.smul_apply, hc, ← mul_assoc]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem gen_smul {D : D7} (S U : HSp D) (α : Af D.host.F) (a : D.host.E) (s : Fin S.rank → D.host.E)
     (c : 𝓞 D.host.E) (t : Fin U.rank → D.host.E) : gen S U α a s (c • t) = gen S U α (a * (c : D.host.E)) s t := by
@@ -116,7 +116,7 @@ theorem gen_smul {D : D7} (S U : HSp D) (α : Af D.host.F) (a : D.host.E) (s : F
   rw [gen, gen, Matrix.of_apply, Matrix.of_apply, Pi.smul_apply, hc, ← mul_assoc]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[gen, gen, Matrix.of_apply, Matrix.of_apply, Pi.smul_apply, smul_eq_mul, ← mul_assoc]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem gen_smulE {D : D7} (S U : HSp D) (α : Af D.host.F) (a b : D.host.E) (s : Fin S.rank → D.host.E)
     (t : Fin U.rank → D.host.E) : gen S U α a s (b • t) = gen S U α (a * b) s t := by
@@ -124,7 +124,7 @@ theorem gen_smulE {D : D7} (S U : HSp D) (α : Af D.host.F) (a b : D.host.E) (s 
   rw [gen, gen, Matrix.of_apply, Matrix.of_apply, Pi.smul_apply, smul_eq_mul, ← mul_assoc]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[gen, gen, Matrix.of_apply, Matrix.of_apply, pair_tmul_scale, Pi.smul_apply, smul_eq_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gen_scale {D : D7} (S U : HSp D) (α : Af D.host.F) (d : D.host.F) (a b : D.host.E) (s : Fin S.rank → D.host.E)
     (t : Fin U.rank → D.host.E) :
@@ -135,19 +135,15 @@ theorem gen_scale {D : D7} (S U : HSp D) (α : Af D.host.F) (d : D.host.F) (a b 
   ring
 
 /- English proof (translation)
-Establish `hAA : ∀ a ∈ D.host.AA, ∀ c : 𝓞 D.host.E, a * (c : D.host.E) ∈ D.host.AA` using `fun a ha c => by`. Use `Submodule.smul_mem (D.host.AA : Submodule (𝓞 D.host.E) D.host.E) c ha` as an intermediate fact. Rewrite `this` using `[Algebra.smul_def, mul_comm]`. Then use the resulting hypothesis. Establish `hgen : ∀ α ∈ intAf D.host.F, (∀ w, ¬ w = v → evalV D.host.F w α = 0) → ∀ a ∈ D.host.AA, ∀ s ∈ LS, ∀ t ∈ LU, gen S U α a s t ∈ latO S U LS (LU : Set _) (· = v)` using `fun α hα hP a ha s hs t ht => AddSubgroup.subset_closure ⟨α, hα, hP, a, ha, s, hs, t, ht, rfl⟩`. Use `le_antisymm ((AddSubgroup.closure_le _).2 ?_) ((AddSubgroup.closure_le _).2 ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `w ⟨α, hα, hP, a, ha, s, hs, t, ht, rfl⟩`. Take `⟨α', hα', hP', rfl⟩` from `hsc α hα hP`. Use `show gen S U (α' * algebraMap D.host.F (Af D.host.F) d) a s t ∈ (latO S U LS (LU : Set _) (· = v) : Set (WO S U))`. Rewrite using `[SetLike.mem_coe]`. Proceed by induction on `ht using Submodule.span_induction generalizing a with`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Consider the case `mem z hz`. Take `⟨s', hs', y, hy, rfl⟩` from `hz`. Take `⟨yy, hyy⟩` from `hdI' s' hs'`. Rewrite using `[gen_scale, ← hyy]`. Conclude with `hgen α' hα' hP' _ (hAA a ha yy) s hs y hy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero`. Rewrite using `[gen_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy`. Rewrite using `[gen_add]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `add_mem (hx a ha) (hy a ha)`. Consider the case `smul c x _ hx`. Rewrite using `[gen_smul]`. Conclude with `hx _ (hAA a ha c)`. Introduce and unpack `w ⟨α, hα, hP, a, ha, s, hs, t, ht, rfl⟩`.
-
-Take `⟨α', hα', hP', rfl⟩` from `hsc α hα hP`. Use `show gen S U (α' * algebraMap D.host.F (Af D.host.F) d) a s t ∈ (latO S U LS (idLat I LU : Set _) (· = v) : Set (WO S U))`. Establish `e` using `gen_scale S U α' d a 1 s t`. Rewrite `e` using `[one_smul, mul_one, mul_comm a]`. Rewrite using `[SetLike.mem_coe, e, mul_comm (d : D.host.E) a, ← gen_smulE]`.
-
-Conclude with `AddSubgroup.subset_closure ⟨α', hα', hP', a, ha, s, hs, _, Submodule.subset_span ⟨_, hdI, t, ht, rfl⟩, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latO_idLat_at {D : D7} (S U : HSp D) (LS : Set (Fin S.rank → D.host.E)) (LU : GlobalTheory.FinPl.Lat U)
     (I : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) (v : GlobalTheory.FinPl.Pl D) (d : D.host.F) (hdI : (d : D.host.E) ∈ I)
@@ -190,7 +186,7 @@ theorem latO_idLat_at {D : D7} (S U : HSp D) (LS : Set (Fin S.rank → D.host.E)
     exact AddSubgroup.subset_closure ⟨α', hα', hP', a, ha, s, hs, _, Submodule.subset_span ⟨_, hdI, t, ht, rfl⟩, rfl⟩
 
 /- English proof (translation)
-Take `⟨d, hdv, hdI, hdI'⟩` from `GlobalTheory.T.exists_unit_mem_modulusDivConjugateIdeal G v hv`. Conclude with `latO_idLat_at S U LS LU _ v (d : D.host.F) hdI hdI' (GlobalTheory.T.integralFiniteAdele_supported_div_prime_to_place D v d hdv)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem latO_shiftId {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) (v : GlobalTheory.FinPl.Pl D)
     (hv : v ∉ G.pl.S0) (S U : HSp D) (LS : Set (Fin S.rank → D.host.E)) (LU : GlobalTheory.FinPl.Lat U) :
@@ -203,11 +199,9 @@ end GlobalTheory.AscFin.StdOff
 open GlobalTheory.AscFin.StdOff GlobalTheory.FinZeta.VacOff
 
 /- English proof (translation)
-Introduce `D _ T L _ _ sc G W _ _ F _ ρ h v hv`. Establish `hoff : ∀ PP ∈ G.pl.W0, PP.under (𝓞 D.host.F) ≠ v` using `fun PP hPP e => by`. Take `⟨u, hu, rfl⟩` from `Finset.mem_image.1 hPP`. Conclude with `hv (by rw [← e, G.pl.under_w hu]; exact hu)`. Use `⟨fun a ha => ?_, fun a ha => ?_, fun ξ hξ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hu` using `mxAt_mul' ha (F.dB ρ h).pX`. Conclude with `depLat_iff_at hoff _ hu`. Use `⟨idem D (· = v) • a, fun i j => (mem_idOff_iff _ _).2 (by` and prove the remaining obligations. Rewrite using `[Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul, mul_sub, ← mul_assoc, idem_mul_self, sub_self]), ?_⟩`. Rewrite using `[HypDec.extX_apply, Matrix.smul_mul]`.
-
-Conclude with `idem_mem_latO (latO_negSp_le' _ _ _ _ _ ha.1)`. Establish `hu` using `mxAt_mul' (mxAt_mul (F.dJ ρ h).jX hξ) (F.dB ρ h).p0 show (F.dB ρ h).ext0 _ ((F.dJ ρ h).incX _ ξ) ∈ latBig G (2 * ρ + 1) ↔ _`. Conclude with `(mem_latO_at hu).trans (by rw [latO_shiftId G v hv]; exact Iff.rfl)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.AscFin.stdAt_pcBF : OnStd fun {D} _ _ {sc} {G} W F => ∀ ρ (h : 2 * ρ + 2 ≤ D.R.m), ∀ v ∉ G.pl.S0,
     StdAt (F.dB ρ h) (F.dJ ρ h) (pcBF W F ρ h) (G.Λ (.grid (2 * ρ + 2) 0)) (G.Λ (.grid (2 * ρ + 1) 0)) v := by

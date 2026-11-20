@@ -10,11 +10,11 @@ open GlobalTheory.HTW Formalism.BasicNotions Formalism.FrobeniusOrbits
 namespace GlobalTheory.HTW
 
 /- English proof (translation)
-Introduce `eps C A he hC`. Establish `hC0 : (0 : ℝ) ≤ C` using `by linarith`. Take `⟨x1, h1⟩` from `GlobalTheory.T.thinSize_dominates_at_large_scale eps he`. Take `⟨x2, h2⟩` from `GlobalTheory.T.scale_log_mul_le_size_ratio eps C (max A 0) he hC0 (le_max_right _ _)`. Use `⟨max (max x1 x2) 4, fun D L P hL hA hx => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hx1 : x1 ≤ L.sc.x` using `le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hx`. Establish `hx2 : x2 ≤ L.sc.x` using `le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hx`. Establish `hx4 : (4 : ℝ) ≤ L.sc.x` using `le_trans (le_max_right _ _) hx`. Take `⟨a1, a2, a3⟩` from `h1 D L P hL hx1`. Use `⟨hC, a1, a2, a3, GlobalTheory.T.topSize_add_le_three_halves_scale D L P hx4, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hb : (0 : ℝ) ≤ L.sc.b'` using `by linarith`. Establish `hlog : 0 ≤ Real.log L.sc.x` using `Real.log_nonneg (by linarith)`. Establish `hw : (D.host.Lw : ℝ) ≤ max A 0 * Real.log L.sc.x` using `P.Lw_le.trans (mul_le_mul_of_nonneg_right (hA.trans (le_max_left _ _)) hlog)`. Use `le_trans ?_ (h2 L.sc hL hx2)` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left (by linarith) hC0) hb`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem roomy_of_large : ∀ eps C A : ℝ, 0 < eps → 100 ≤ C → ∃ x0 : ℝ, ∀ (D : D7) (L : SizeData₂ D) (P : ParameterChoice' D L), L.sc.eps = eps → P.CLw ≤ A → x0 ≤ L.sc.x → Roomy L C := by
   intro eps C A he hC

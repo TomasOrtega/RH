@@ -17,16 +17,16 @@ def reflStep (g : W) (p : W × ZMod 2) : W × ZMod 2 :=
   (g * p.1 * g, p.2 + if p.1 = g then 1 else 0)
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases a <;> decide`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma zmod_two_add_self (a : ZMod 2) : a + a = 0 := by fin_cases a <;> decide
 
 /- English proof (translation)
-Introduce and unpack `⟨w, e⟩`. Establish `h1 : g * (g * w * g) * g = w`. Combine the equalities or inequalities in the displayed calculation. Use `_ = w := by simp [hg]`. Establish `h2 : (g * w * g = g) ↔ (w = g)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Combine the equalities or inequalities in the displayed calculation. Use `_ = g := by rw [h, hg, one_mul]`. Introduce and unpack `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hg, one_mul]`. Simplify using `only [reflStep, h1, h2, Prod.mk.injEq, true_and]`. Rewrite using `[add_assoc, zmod_two_add_self, add_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma reflStep_involutive {g : W} (hg : g * g = 1) : Function.Involutive (reflStep g) := by
   rintro ⟨w, e⟩
@@ -46,13 +46,13 @@ def reflPerm (i : B) : Equiv.Perm (W × ZMod 2) :=
   Function.Involutive.toPerm _ (reflStep_involutive (cs.simple_mul_simple_self i))
 
 /- English proof (translation)
-Proceed by induction on `ω with`. Consider the case `nil => simp [rightInvSeq]`. Consider the case `cons i ω ih`. Rewrite using `[List.map_cons, List.prod_cons, Equiv.Perm.mul_apply, ih]`. Simplify using `only [reflPerm, Function.Involutive.coe_toPerm, reflStep, rightInvSeq, List.count_cons, wordProd_cons, mul_inv_rev, inv_simple]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `key : (cs.wordProd ω)⁻¹ * cs.simple i * cs.wordProd ω = w ↔ cs.wordProd ω * w * (cs.wordProd ω)⁻¹ = cs.simple i`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Use `group`. Introduce `h`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h]`. Use `group`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Simplify using `only`. Use `group`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h : cs.wordProd ω * w * (cs.wordProd ω)⁻¹ = cs.simple i`. Establish `h'` using `key.mpr h`. Simplify using `[h, h', add_assoc]`. Establish `h' : ¬ (cs.wordProd ω)⁻¹ * cs.simple i * cs.wordProd ω = w` using `fun hh => h (key.mp hh)`. Simplify using `[h, h']`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma prod_map_reflPerm (ω : List B) (w : W) (e : ZMod 2) :
     (ω.map (reflPerm cs)).prod (w, e) =
@@ -77,9 +77,9 @@ lemma prod_map_reflPerm (ω : List B) (w : W) (e : ZMod 2) :
         simp [h, h']
 
 /- English proof (translation)
-Proceed by induction on `p with`. Consider the case `zero => simp [alternatingWord]`. Consider the case `succ p ih`. Establish `h : alternatingWord i i' (2 * (p + 1)) = i :: i' :: alternatingWord i i' (2 * p)`. Rewrite using `[show 2 * (p + 1) = 2 * p + 1 + 1 by ring, alternatingWord_succ', alternatingWord_succ']`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[h]`. Simplify using `[ih, pow_succ', mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma prod_map_alternatingWord {G : Type*} [Monoid G] (f : B → G) (i i' : B) (p : ℕ) :
     ((alternatingWord i i' (2 * p)).map f).prod = (f i * f i') ^ p := by
@@ -93,9 +93,9 @@ lemma prod_map_alternatingWord {G : Type*} [Monoid G] (f : B → G) (i i' : B) (
     simp [ih, pow_succ', mul_assoc]
 
 /- English proof (translation)
-Proceed by induction on `p with`. Consider the case `zero => simp [alternatingWord]`. Consider the case `succ p ih`. Establish `h : alternatingWord i i' (2 * (p + 1)) = i :: i' :: alternatingWord i i' (2 * p)`. Rewrite using `[show 2 * (p + 1) = 2 * p + 1 + 1 by ring, alternatingWord_succ', alternatingWord_succ']`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[h, show 2 * (p + 1) = 2 * p + 1 + 1 by ring, alternatingWord_succ, alternatingWord_succ]`. Simplify using `[ih]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma reverse_alternatingWord (i i' : B) (p : ℕ) :
     (alternatingWord i i' (2 * p)).reverse = alternatingWord i' i (2 * p) := by
@@ -109,15 +109,13 @@ lemma reverse_alternatingWord (i i' : B) (p : ℕ) :
     simp [ih]
 
 /- English proof (translation)
-Use `set m := M i i' with hm`. Use `set L := cs.leftInvSeq (alternatingWord i' i (2 * m)) with hL`. Establish `hlen : L.length = 2 * m` using `by simp [L]`. Establish `hper : ∀ k (hk : k < m), L[m + k]'(by omega) = L[k]'(by omega)`. Introduce `k hk`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [L]`. Rewrite using `[cs.getElem_leftInvSeq_alternatingWord i' i m (m + k) (by omega), cs.getElem_leftInvSeq_alternatingWord i' i m k (by omega), cs.prod_alternatingWord_eq_mul_pow, cs.prod_alternatingWord_eq_mul_pow]`. Establish `e1 : ¬ Even (2 * (m + k) + 1)` using `by simp`. Establish `e2 : ¬ Even (2 * k + 1)` using `by simp`. Simplify using `only [e1, e2, if_false]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[show (2 * (m + k) + 1) / 2 = m + k by omega, show (2 * k + 1) / 2 = k by omega, pow_add, hm, cs.simple_mul_simple_pow, one_mul]`. Establish `hsplit : L = L.take m ++ L.take m` using `by conv_lhs => rw [← List.take_append_drop m L]`. Use `congr 1`. Apply `List.ext_getElem` to reduce the goal to its premises. Simplify using `[hlen]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Use linear arithmetic over natural numbers and integers. Introduce `k h1 h2`. Simplify using `only [List.getElem_drop, List.getElem_take]`. Conclude with `hper k (by simp [hlen] at h2; omega)`. Rewrite using `[hsplit, List.count_append]`.
-
-Conclude with `⟨_, rfl⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma count_leftInvSeq_alternatingWord_even (i i' : B) (w : W) :
     Even ((cs.leftInvSeq (alternatingWord i' i (2 * M i i'))).count w) := by
@@ -147,11 +145,11 @@ lemma count_leftInvSeq_alternatingWord_even (i i' : B) (w : W) :
   exact ⟨_, rfl⟩
 
 /- English proof (translation)
-Introduce `i i'`. Rewrite using `[← prod_map_alternatingWord]`. Use `Equiv.ext fun p => ?_` and prove the remaining obligations. Take `⟨w, e⟩` from `p`. Rewrite using `[prod_map_reflPerm]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : cs.wordProd (alternatingWord i i' (2 * M i i')) = 1`. Rewrite using `[wordProd, prod_map_alternatingWord, cs.simple_mul_simple_pow]`. Establish `h2 : ((cs.rightInvSeq (alternatingWord i i' (2 * M i i'))).count w : ZMod 2) = 0`. Rewrite using `[← List.count_reverse, ← leftInvSeq_reverse, reverse_alternatingWord]`. Take `⟨r, hr⟩` from `count_leftInvSeq_alternatingWord_even cs i i' w`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hr]`. Use `push_cast`. Conclude with `zmod_two_add_self _`. Simplify using `[h1, h2]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma isLiftable_reflPerm : M.IsLiftable (reflPerm cs) := by
   intro i i'

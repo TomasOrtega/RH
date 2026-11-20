@@ -25,11 +25,9 @@ section General
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {n : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨b, hb, x, hx, rfl⟩` from `hz`. Use `AddSubgroup.subset_closure ⟨a * b, fun v => ?_, x, hx, ?_⟩` and prove the remaining obligations. Conclude with `mul_mem (ha v) (hb v)`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, TensorProduct.smul_tmul', smul_eq_mul]`. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [smul_add]`.
-
-Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [smul_neg]`. Conclude with `neg_mem hx`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem smul_mem_hat (L : Set (Fin n → E)) (a : FiniteAdeleRing (𝓞 F) F)
     (ha : ∀ v, a v ∈ v.adicCompletionIntegers F) {z : Fin n → GlobalTheory.AdLat.RA F E}
@@ -59,17 +57,17 @@ def congSub {R : Type} [CommRing R] (M : Matrix (Fin n) (Fin n) R) (H : AddSubgr
     rw [Matrix.mulVec_neg, smul_neg, ← ha]; abel
 
 /- English proof (translation)
-Establish `h1 : ∀ x ∈ AddSubgroup.closure S, GlobalTheory.AdLat.fv F x ∈ congSub M (GlobalTheory.AdLat.hat F L) N`. Introduce `x hx`. Proceed by induction on `hx using AddSubgroup.closure_induction with`. Consider the case `mem z hz => exact h z hz`. Consider the case `zero`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `: GlobalTheory.AdLat.fv F (0 : Fin n → E) = 0` using `by funext i; simp [GlobalTheory.AdLat.fv]`. Rewrite using `[this]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy`. Establish `: GlobalTheory.AdLat.fv F (x + y) = GlobalTheory.AdLat.fv F x + GlobalTheory.AdLat.fv F y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Simplify using `[GlobalTheory.AdLat.fv, TensorProduct.tmul_add]`. Rewrite using `[this]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `: GlobalTheory.AdLat.fv F (-x) = -GlobalTheory.AdLat.fv F x`. Use function extensionality and compare the values at `i`. Simplify using `[GlobalTheory.AdLat.fv, TensorProduct.tmul_neg]`. Rewrite using `[this]`. Conclude with `neg_mem hx`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `h2 : GlobalTheory.AdLat.hat F L ≤ congSub M (GlobalTheory.AdLat.hat F L) N`. Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `z ⟨a, ha, x, hx, rfl⟩`. Take `⟨y, hy, e⟩` from `h1 x (hS hx)`. Establish `hz : (fun i => a ⊗ₜ[F] x i : Fin n → GlobalTheory.AdLat.RA F E) = a • GlobalTheory.AdLat.fv F x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `i`. Simplify using `only [GlobalTheory.AdLat.fv, Pi.smul_apply, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Use `⟨a • y, smul_mem_hat L a ha hy, ?_⟩` and prove the remaining obligations. Rewrite using `[hz, Matrix.mulVec_smul, ← smul_sub, e, smul_comm]`. Conclude with `fun z hz => h2 hz`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem cong_of_gen (L : Set (Fin n → E)) (S : Set (Fin n → E)) (hS : L ⊆ AddSubgroup.closure S)
     (M : Matrix (Fin n) (Fin n) (GlobalTheory.AdLat.RA F E)) (N : ℕ)
@@ -102,7 +100,7 @@ theorem cong_of_gen (L : Set (Fin n → E)) (S : Set (Fin n → E)) (hS : L ⊆ 
   exact fun z hz => h2 hz
 
 /- English proof (translation)
-The claim follows from `(hf.matrix_mulVec continuous_const).sub continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem continuous_mulVec_sub {X R : Type} [TopologicalSpace X] [CommRing R] [TopologicalSpace R]
     [IsTopologicalRing R] {f : X → Matrix (Fin n) (Fin n) R} (hf : Continuous f) (v : Fin n → R) :
@@ -114,7 +112,7 @@ end General
 variable {D : D7}
 
 /- English proof (translation)
-Introduce `z hz`. Take `⟨y, hy, e⟩` from `hk z hz`. Rewrite `e` using `[sub_eq_iff_eq_add]`. Rewrite using `[e]`. Conclude with `add_mem (nsmul_mem hy N) hz`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finCong_map {V : HSp D} {N : ℕ} {k : GA D V} (hk : FinCong V N k) :
     ∀ z ∈ latHat V, (finHom V k).1 *ᵥ z ∈ latHat V := by
@@ -125,14 +123,14 @@ theorem finCong_map {V : HSp D} {N : ℕ} {k : GA D V} (hk : FinCong V N k) :
   exact add_mem (nsmul_mem hy N) hz
 
 /- English proof (translation)
-Introduce `z _`. Conclude with `⟨0, zero_mem _, by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem finCong_one (V : HSp D) (N : ℕ) : FinCong V N 1 := by
   intro z _
   exact ⟨0, zero_mem _, by simp⟩
 
 /- English proof (translation)
-Introduce `z hz`. Take `⟨y, hy, e⟩` from `hb z hz`. Take `⟨x, hx, e'⟩` from `ha _ (finCong_map hb z hz)`. Use `⟨x + y, add_mem hx hy, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, Units.val_mul, ← Matrix.mulVec_mulVec, nsmul_add, ← e, ← e']`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -146,11 +144,11 @@ theorem finCong_mul {V : HSp D} {N : ℕ} {a b : GA D V} (ha : FinCong V N a) (h
   abel
 
 /- English proof (translation)
-Take `⟨h1, -, h3, h4, -⟩` from `GlobalTheory.Member.latHat_eq_hat_and_gram D V`. Establish `hinv : ∀ z ∈ latHat V, (finHom V a⁻¹).1 *ᵥ z ∈ latHat V`. Establish `hm` using `finCong_map ha`. Rewrite `hm`, the goal using `[h1]`. Rewrite using `[map_inv]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.AdLat.inv_mulVec_mem_hat D.host.F D.host.E V.rank (latC V) (finHom V a) (cF D) h3 h4 hm (GlobalTheory.Member.finHom_herm_det D V a).2.1`. Introduce `z hz`. Take `⟨y, hy, e⟩` from `ha _ (hinv z hz)`. Use `⟨-y, neg_mem hy, ?_⟩` and prove the remaining obligations. Rewrite `e` using `[Matrix.mulVec_mulVec, ← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one, Matrix.one_mulVec]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[neg_nsmul, ← e, neg_sub]`.
+A detailed English derivation is pending.
 -/
 theorem finCong_inv {V : HSp D} {N : ℕ} {a : GA D V} (ha : FinCong V N a) : FinCong V N a⁻¹ := by
   obtain ⟨h1, -, h3, h4, -⟩ := GlobalTheory.Member.latHat_eq_hat_and_gram D V
@@ -174,13 +172,13 @@ def levelGroup (V : HSp D) (N : ℕ) : Subgroup (GA D V) where
   inv_mem' := fun ha => ⟨inv_mem ha.1, finCong_inv ha.2⟩
 
 /- English proof (translation)
-Take `⟨h1, -, h3, -⟩` from `GlobalTheory.Member.latHat_eq_hat_and_gram D V`. Take `⟨hop, hc, -⟩` from `GlobalTheory.Member.latHat_open_and_continuous D V`. Establish `: IsTopologicalRing (Af D.host.F ⊗[D.host.F] D.host.E)` using `IsModuleTopology.isTopologicalRing (Af D.host.F) _`. Take `⟨S, hS⟩` from `h3.restrictScalars (R := ℤ)`. Establish `hLS : (latC V : Set (Fin V.rank → D.host.E)) ⊆ (AddSubgroup.closure (S : Set (Fin V.rank → D.host.E)) : AddSubgroup (Fin V.rank → D.host.E))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `x hx`. Establish `hx' : x ∈ Submodule.span ℤ (S : Set (Fin V.rank → D.host.E))` using `by rw [hS]; exact hx`. Rewrite using `[← Submodule.span_int_eq_addSubgroupClosure]`. Conclude with `hx'`. Establish `hU : (⋂ x ∈ S, {k : GA D V | ∃ y ∈ latHat V, (finHom V k).1 *ᵥ GlobalTheory.AdLat.fv D.host.F x - GlobalTheory.AdLat.fv D.host.F x = N • y}) ∈ 𝓝 (1 : GA D V)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Filter.biInter_finset_mem S).2 fun x _ => ?_` and prove the remaining obligations. Establish `hcx : Continuous fun k : GA D V => (finHom V k).1 *ᵥ GlobalTheory.AdLat.fv D.host.F x - GlobalTheory.AdLat.fv D.host.F x` using `continuous_mulVec_sub hc _`. Use `((hop N hN).preimage hcx).mem_nhds ⟨0, zero_mem _, by simp⟩` and prove the remaining obligations. Use `Filter.mem_of_superset hU fun k hk => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_iInter, Set.mem_ofPred_eq] at hk`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Unfold `FinCong`. Rewrite using `[Set.mem_ofPred_eq]`. Rewrite `hk`, the goal using `[h1]`. Conclude with `cong_of_gen _ _ hLS _ N fun x hx => hk x hx`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finCong_mem_nhds (V : HSp D) {N : ℕ} (hN : 0 < N) :
     {k : GA D V | FinCong V N k} ∈ 𝓝 (1 : GA D V) := by
@@ -210,7 +208,7 @@ theorem finCong_mem_nhds (V : HSp D) {N : ℕ} (hN : 0 < N) :
   exact cong_of_gen _ _ hLS _ N fun x hx => hk x hx
 
 /- English proof (translation)
-Introduce `_ V N` and use `⟨⟨levelGroup V N, fun _ => Iff.rfl⟩, fun hN => finCong_mem_nhds V hN⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem exists_levelK_and_nhds : ∀ (D : D7) (V : HSp D), ∀ N : ℕ,
     (∃ Kf : Subgroup (GA D V), IsLevelK V N Kf) ∧

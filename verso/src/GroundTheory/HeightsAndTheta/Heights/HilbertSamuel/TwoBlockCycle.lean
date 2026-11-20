@@ -47,7 +47,7 @@ def twoBlockDegList (D i : ℕ) : Fin D → Fin 2 → ℤ :=
   fun j => if (j : ℕ) < i then Pi.single 0 1 else Pi.single 1 1
 
 /- English proof (translation)
-Unfold `twoBlockDegList twoBlockList`. Apply the tactic sequence `split_ifs with h1 h2 h2 <;> simp_all [blockLine]`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Use linear arithmetic over natural numbers and integers.
 -/
 theorem twoBlockDegList_eq (m m' : ConeMetric ℂ (Ix κ)) (D i : ℕ) (j : Fin D) :
     twoBlockDegList D i j = (twoBlockList m m' D i (if (j : ℕ) < i then j.castSucc else j.succ)).a := by

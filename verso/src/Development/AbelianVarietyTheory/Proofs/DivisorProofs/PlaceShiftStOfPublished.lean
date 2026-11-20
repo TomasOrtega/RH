@@ -15,7 +15,7 @@ open GlobalTheory GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.
 namespace GlobalTheory
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.place_shift_of_dieudonne hSW hP.q4 (GlobalTheory.T.hodge_tate_kernel_at_point hP)`.
+A detailed English derivation is pending.
 -/
 theorem placeShiftSt_of_scholzeWeinstein (hP : GlobalTheory.CovTop.Hypotheses2) (hSW : GlobalTheory.Published.ScholzeWeinsteinB) :
     GlobalTheory.FlatCM.PlaceShiftSt :=

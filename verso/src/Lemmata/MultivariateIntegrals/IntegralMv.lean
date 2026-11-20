@@ -21,9 +21,9 @@ noncomputable def Bl.ProductIntegralBounds.Bd :
 namespace Bl.ProductIntegralBounds
 
 /- English proof (translation)
-Introduce `d`. Rewrite using `[MvPowerSeries.coeff_mul]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (mul_nonneg ha hb) ?_` and prove the remaining obligations. Introduce `p _`. Rewrite using `[norm_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul (hF _) (hG _) (norm_nonneg _) ha`.
+A detailed English derivation is pending.
 -/
 private theorem mulBd {K : Type u} [NormedField K] [IsUltrametricDist K] {τ : Type w}
     {a b : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b) (F G : MvPowerSeries τ K)
@@ -38,11 +38,11 @@ private theorem mulBd {K : Type u} [NormedField K] [IsUltrametricDist K] {τ : T
   exact mul_le_mul (hF _) (hG _) (norm_nonneg _) ha
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `d`. Rewrite using `[Finset.prod_empty, MvPowerSeries.coeff_one]`. Use `split_ifs`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_one]`. Rewrite using `[norm_zero]`. Conclude with `zero_le_one`. Consider the case `insert a t hat ih`. Rewrite using `[Finset.prod_insert hat]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `mulBd zero_le_one zero_le_one (X a) (∏ i ∈ t, X i) (hX a (Finset.mem_insert_self a t)) (ih (fun i hi => hX i (Finset.mem_insert_of_mem hi)))`. Introduce `d`. Use `h d` as an intermediate fact. Rewrite `this` using `[one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem prodInt {K : Type u} [NormedField K] [IsUltrametricDist K] {τ : Type w} {ι : Type v}
     (X : ι → MvPowerSeries τ K) (s : Finset ι)
@@ -66,13 +66,13 @@ private theorem prodInt {K : Type u} [NormedField K] [IsUltrametricDist K] {τ :
     rwa [one_mul] at this
 
 /- English proof (translation)
-Introduce `K _ _ τ ι C hC X Y s hX hY hXY`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `d`. Rewrite using `[Finset.prod_empty, Finset.prod_empty, sub_self, map_zero, norm_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hC`. Consider the case `insert a t hat ih`. Establish `ih'` using `ih (fun i hi => hX i (Finset.mem_insert_of_mem hi)) (fun i hi => hY i (Finset.mem_insert_of_mem hi)) (fun i hi => hXY i (Finset.mem_insert_of_mem hi))`. Rewrite using `[Finset.prod_insert hat, Finset.prod_insert hat]`. Establish `e : X a * ∏ i ∈ t, X i - Y a * ∏ i ∈ t, Y i = X a * (∏ i ∈ t, X i - ∏ i ∈ t, Y i) + (X a - Y a) * ∏ i ∈ t, Y i` using `by ring`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Establish `h1` using `mulBd zero_le_one hC (X a) _ (hX a (Finset.mem_insert_self a t)) ih'`. Establish `h2` using `mulBd hC zero_le_one (X a - Y a) _ (hXY a (Finset.mem_insert_self a t)) (prodInt Y t (fun i hi => hY i (Finset.mem_insert_of_mem hi)))`. Introduce `d`. Rewrite using `[map_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Use `h1 d` as an intermediate fact. Rewrite `this` using `[one_mul]`. Then use the resulting hypothesis. Use `h2 d` as an intermediate fact. Rewrite `this` using `[mul_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem goal1 :
   ∀ {K : Type u} [inst : NormedField.{u} K] [IsUltrametricDist.{u} K] {τ : Type w} {ι : Type v} {C : Real},

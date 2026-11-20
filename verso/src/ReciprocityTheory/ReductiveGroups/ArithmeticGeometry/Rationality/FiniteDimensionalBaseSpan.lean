@@ -12,7 +12,7 @@ noncomputable def incU (F : Type*) [Field F] [Algebra K F] (U : Submodule K V) :
   AlgebraTensorModule.map (LinearMap.id : F →ₗ[F] F) U.subtype
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a u => simp [incU]`. Consider the case `add y z hy hz => simp only [map_add, hy, hz]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem incU_apply_eq_lTensor (F : Type*) [Field F] [Algebra K F] (U : Submodule K V)
     (y : F ⊗[K] U) : incU F U y = LinearMap.lTensor F U.subtype y := by
@@ -22,11 +22,11 @@ theorem incU_apply_eq_lTensor (F : Type*) [Field F] [Algebra K F] (U : Submodule
   | add y z hy hz => simp only [map_add, hy, hz]
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨u, hu, rfl⟩`. Conclude with `⟨(1 : F) ⊗ₜ[K] (⟨u, hu⟩ : U), by simp [incU]⟩`. Introduce and unpack `_ ⟨y, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a u`. Establish `: incU F U (a ⊗ₜ[K] u) = a • ((1 : F) ⊗ₜ[K] (u : V))`. Simplify using `[incU, TensorProduct.smul_tmul']`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨u, u.2, rfl⟩)`. Consider the case `add y z hy hz => rw [map_add]`. Conclude with `Submodule.add_mem _ hy hz`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem baseSpan_eq_range (F : Type*) [Field F] [Algebra K F] (U : Submodule K V) :
     baseSpan F U = LinearMap.range (incU F U) := by
@@ -45,9 +45,9 @@ theorem baseSpan_eq_range (F : Type*) [Field F] [Algebra K F] (U : Submodule K V
     | add y z hy hz => rw [map_add]; exact Submodule.add_mem _ hy hz
 
 /- English proof (translation)
-Establish `hex` using `lTensor_exact F (LinearMap.exact_subtype_mkQ U) (Submodule.mkQ_surjective U)`. Rewrite using `[hex x, baseSpan_eq_range, LinearMap.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨y, (incU_apply_eq_lTensor F U y).symm⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨y, incU_apply_eq_lTensor F U y⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_baseSpan_iff (F : Type*) [Field F] [Algebra K F] (U : Submodule K V)
     (x : F ⊗[K] V) : x ∈ baseSpan F U ↔ LinearMap.lTensor F U.mkQ x = 0 := by
@@ -63,7 +63,7 @@ noncomputable def fldIncl (K₁ : IntermediateField K Ω) : K₁ →ₗ[K] Ω :=
   (IsScalarTower.toAlgHom K K₁ Ω).toLinearMap
 
 /- English proof (translation)
-The claim follows from `(algebraMap K₁ Ω).injective`.
+A detailed English derivation is pending.
 -/
 theorem fldIncl_injective (K₁ : IntermediateField K Ω) : Function.Injective (fldIncl K₁) :=
   (algebraMap K₁ Ω).injective
@@ -75,7 +75,7 @@ theorem inclT_tmul' (K₁ : IntermediateField K Ω) (a : K₁) (v : V) :
     inclT K₁ V (a ⊗ₜ[K] v) = (a : Ω) ⊗ₜ[K] v := rfl
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a v => simp [inclT_tmul', fldIncl]`. Consider the case `add y z hy hz => simp only [map_add, hy, hz]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem lTensor_mkQ_inclT (K₁ : IntermediateField K Ω) (U : Submodule K V) (x : K₁ ⊗[K] V) :
     LinearMap.lTensor Ω U.mkQ (inclT K₁ V x) =
@@ -86,7 +86,7 @@ theorem lTensor_mkQ_inclT (K₁ : IntermediateField K Ω) (U : Submodule K V) (x
   | add y z hy hz => simp only [map_add, hy, hz]
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[mem_baseSpan_iff]`. Rewrite `h` using `[lTensor_mkQ_inclT]`. Apply `Module.Flat.rTensor_preserves_injective_linearMap (M := V ⧸ U) _ (fldIncl_injective K₁)` to reduce the goal to its premises. Rewrite using `[h, map_zero]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_baseSpan_of_inclT (K₁ : IntermediateField K Ω) (U : Submodule K V) (x : K₁ ⊗[K] V)
     (h : inclT K₁ V x ∈ baseSpan Ω U) : x ∈ baseSpan K₁ U := by
@@ -96,7 +96,7 @@ theorem mem_baseSpan_of_inclT (K₁ : IntermediateField K Ω) (U : Submodule K V
   rw [h, map_zero]
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[mem_baseSpan_iff]`. Rewrite using `[lTensor_mkQ_inclT, h, map_zero]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem inclT_mem_baseSpan (K₁ : IntermediateField K Ω) (U : Submodule K V) (x : K₁ ⊗[K] V)
     (h : x ∈ baseSpan K₁ U) : inclT K₁ V x ∈ baseSpan Ω U := by
@@ -104,20 +104,20 @@ theorem inclT_mem_baseSpan (K₁ : IntermediateField K Ω) (U : Submodule K V) (
   rw [lTensor_mkQ_inclT, h, map_zero]
 
 /- English proof (translation)
-Rewrite using `[inclT_tmul', TensorProduct.smul_tmul', smul_eq_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inclT_tmul (K₁ : IntermediateField K Ω) (a : K₁) (v : V) :
     inclT K₁ V (a ⊗ₜ[K] v) = (a : Ω) • ((1 : Ω) ⊗ₜ[K] v) := by
   rw [inclT_tmul', TensorProduct.smul_tmul', smul_eq_mul, mul_one]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h v`. Take `⟨y, hy⟩` from `h ((1 : K') ⊗ₜ[K] v)`. Rewrite `hy` using `[inclT_tmul]`. Simplify using `only [OneMemClass.coe_one, one_smul] at hy`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hy]`. Conclude with `y.2`. Introduce `h x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, by simp⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul a v`. Use `⟨a * ⟨_, h v⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[inclT_tmul, map_smul, smul_eq_mul]`. Simplify using the standard rewrite rules. Consider the case `add y z hy hz`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `hy`. Take `⟨b, hb⟩` from `hz`. Conclude with `⟨a + b, by rw [map_add, map_add, map_add, ha, hb]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem definedOver_iff (c : Module.Dual Ω (Ω ⊗[K] V)) (K' : IntermediateField K Ω) :
     DefinedOver c K' ↔ ∀ v : V, c ((1 : Ω) ⊗ₜ[K] v) ∈ K' := by
@@ -140,7 +140,7 @@ theorem definedOver_iff (c : Module.Dual Ω (Ω ⊗[K] V)) (K' : IntermediateFie
       exact ⟨a + b, by rw [map_add, map_add, map_add, ha, hb]⟩
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[definedOver_iff]`. Conclude with `fun v => hle (h v)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem DefinedOver.mono {c : Module.Dual Ω (Ω ⊗[K] V)} {K' K₁ : IntermediateField K Ω}
     (h : DefinedOver c K') (hle : K' ≤ K₁) : DefinedOver c K₁ := by
@@ -148,7 +148,7 @@ theorem DefinedOver.mono {c : Module.Dual Ω (Ω ⊗[K] V)} {K' K₁ : Intermedi
   exact fun v => hle (h v)
 
 /- English proof (translation)
-Introduce `x y h`. Rewrite `h` using `[incU_apply_eq_lTensor, incU_apply_eq_lTensor]`. Conclude with `Module.Flat.lTensor_preserves_injective_linearMap (M := F) U.subtype U.injective_subtype h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem incU_injective (F : Type*) [Field F] [Algebra K F] (U : Submodule K V) :
     Function.Injective (incU F U) := by
@@ -157,7 +157,7 @@ theorem incU_injective (F : Type*) [Field F] [Algebra K F] (U : Submodule K V) :
   exact Module.Flat.lTensor_preserves_injective_linearMap (M := F) U.subtype U.injective_subtype h
 
 /- English proof (translation)
-Rewrite using `[baseSpan_eq_range, LinearMap.finrank_range_of_inj (incU_injective F U), Module.finrank_baseChange]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_baseSpan (F : Type*) [Field F] [Algebra K F] (U : Submodule K V)
     [FiniteDimensional K U] : Module.finrank F (baseSpan F U) = Module.finrank K U := by
@@ -165,16 +165,16 @@ theorem finrank_baseSpan (F : Type*) [Field F] [Algebra K F] (U : Submodule K V)
     Module.finrank_baseChange]
 
 /- English proof (translation)
-Rewrite using `[baseSpan_eq_range]`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_baseSpan (F : Type*) [Field F] [Algebra K F] (U : Submodule K V)
     [FiniteDimensional K U] : FiniteDimensional F (baseSpan F U) := by
   rw [baseSpan_eq_range]; infer_instance
 
 /- English proof (translation)
-Set `ψ : K₁ ⊗[K] V →ₗ[K₁] Ω` to `(c.restrictScalars K₁).comp (inclT K₁ V)`. Establish `hr : ∀ x, ψ x ∈ LinearMap.range (Algebra.linearMap K₁ Ω)` using `fun x => by`. Take `⟨y, hy⟩` from `h x`. Conclude with `⟨y, hy⟩`. Set `e` to `LinearEquiv.ofInjective (Algebra.linearMap K₁ Ω) (algebraMap K₁ Ω).injective`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Use `⟨e.symm.toLinearMap ∘ₗ ψ.codRestrict _ hr, fun x => ?_⟩` and prove the remaining obligations. Establish `h1 : ((e (e.symm ⟨ψ x, hr x⟩) : LinearMap.range (Algebra.linearMap K₁ Ω)) : Ω) = ψ x`. Rewrite using `[e.apply_symm_apply]`. Conclude with `h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ratFun {c : Module.Dual Ω (Ω ⊗[K] V)} {K₁ : IntermediateField K Ω}
     (h : DefinedOver c K₁) :

@@ -8,7 +8,7 @@ open MvPolynomial GlobalTheory.CompanionTheory.Ar.PB GroundTheory.Heights₂.Hei
 namespace GlobalTheory.CompanionTheory.Ar.PB
 
 /- English proof (translation)
-The claim follows from `@PositivityTheory.Xgp.t_poly_delta`.
+A detailed English derivation is pending.
 -/
 theorem toWt_eq_C_mul_antisymDelta :
     ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) (Q : MvPolynomial (Ψ × Fin N) ℝ) (v : ℝ),

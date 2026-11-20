@@ -5,29 +5,27 @@ open Finset
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hγ' : ∀ j, ∃ (k' : ℕ) (b : Fin m → ℕ), 0 < k' ∧ (0 < a j → k' • γ j = ∑ l, b l • δ l)`. Introduce `j`. Distinguish the cases in `hj : 0 < a j`. Take `⟨k', b, hk', h⟩` from `hγ j hj`. Conclude with `⟨k', b, hk', fun _ => h⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨1, 0, one_pos, fun h => absurd h hj⟩`. Use `choose kk b hkk hb using hγ'`. Set `c : Fin m' → ℕ` to `fun j => ∏ j' ∈ univ.erase j, kk j'`. Set `K : ℕ` to `∏ j, kk j`. Establish `hcK : ∀ j, c j * kk j = K` using `fun j => by`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_comm]`. Conclude with `Finset.mul_prod_erase _ _ (mem_univ j)`. Establish `hcpos : ∀ j, 0 < c j` using `fun j => Finset.prod_pos (fun j' _ => hkk j')`. Establish `hKpos : 0 < K` using `Finset.prod_pos (fun j _ => hkk j)`. Establish `hterm : ∀ j, (K * a j) • γ j = (a j * c j) • ∑ l, b j l • δ l`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `j`. Distinguish the cases in `hj : 0 < a j`. Rewrite using `[← hb j hj, smul_smul, ← hcK j]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `: a j = 0` using `Nat.eq_zero_of_not_pos hj`. Simplify using `[this]`. Establish `key : (K * k) • δ i = ∑ l, (∑ j, a j * c j * b j l) • δ l`. Combine the equalities or inequalities in the displayed calculation. Repeatedly rewrite using `[Finset.smul_sum, smul_smul, Finset.sum_smul]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[Finset.sum_comm]`. Set `N : Fin m → ℕ` to `fun l => ∑ j, a j * c j * b j l`. Set `g : Fin m → ℤ` to `fun l => (N l : ℤ) - (if l = i then ((K * k : ℕ) : ℤ) else 0)`. Establish `hg : ∑ l, g l • δ l = 0`. Simplify using `only [g, sub_smul, Finset.sum_sub_distrib, ite_smul, zero_smul, Finset.sum_ite_eq', mem_univ, if_true, natCast_zsmul]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[key]`. Conclude with `sub_self _`. Establish `hg0` using `Fintype.linearIndependent_iff.mp hδ g hg`. Establish `hN : ∀ l, N l = if l = i then K * k else 0`. Introduce `l`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `hg0 l` as an intermediate fact. Simplify using `only [g] at this`. Apply the tactic sequence `split_ifs at this ⊢ <;> omega`. Establish `hNi : N i ≠ 0` using `by rw [hN i, if_pos rfl]; exact (Nat.mul_pos hKpos hk).ne'`. Take `⟨j, -, hj⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hNi`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `haj : 0 < a j` using `Nat.pos_of_ne_zero (fun h => hj (by simp [h]))`. Establish `hbji : 0 < b j i` using `Nat.pos_of_ne_zero (fun h => hj (by simp [h]))`. Establish `hbjl : ∀ l, l ≠ i → b j l = 0`. Introduce `l hl`. Establish `h0 : N l = 0` using `by rw [hN l, if_neg hl]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis.
 
-Use `(Finset.sum_eq_zero_iff.mp h0) j (mem_univ j)` as an intermediate fact. Break down `Nat.mul_eq_zero.mp this with h | h` into its components or cases. Break down `Nat.mul_eq_zero.mp h with h | h` into its components or cases. Use linear arithmetic over natural numbers and integers. Conclude with `absurd h (hcpos j).ne'`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Establish `hγj : kk j • γ j = b j i • δ i`. Rewrite using `[hb j haj, Finset.sum_eq_single i]`. Introduce `l _ hl`. Rewrite using `[hbjl l hl, zero_smul]`.
-
-Introduce `h`. Conclude with `absurd (mem_univ i) h`. Conclude with `⟨j, b j i, kk j, hbji, hkk j, hγj.symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_pos_smul_eq_of_linearIndependent_cone {L : Type} [AddCommGroup L] {m m' : ℕ}
     (δ : Fin m → L) (γ : Fin m' → L) (i : Fin m) (k : ℕ)

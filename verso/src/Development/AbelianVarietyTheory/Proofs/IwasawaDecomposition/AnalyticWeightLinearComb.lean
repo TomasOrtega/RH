@@ -21,7 +21,7 @@ abbrev pullW (φ : Weight p σ B) : Weight q σ' (LB.LinComb B (K := PUnit) (fun
   φ.linComb (κ := PUnit) (fun _ => j) (fun _ => 1) (fun _ => Φ) (fun _ => hΦ)
 
 /- English proof (translation)
-The claim follows from `(Fintype.sum_unique fun a : PUnit.{1} => ((1 : ℤ) : ℝ) * φ.φ (i a) (Φ z)).trans (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem pullW_φ (i : PUnit → B.ι) (z : CxPts q σ') :
     (pullW hΦ φ).φ i z = φ.φ (i PUnit.unit) (Φ z) :=
@@ -30,7 +30,7 @@ theorem pullW_φ (i : PUnit → B.ι) (z : CxPts q σ') :
 include hΦ in
 
 /- English proof (translation)
-Rewrite using `[ev, ev, hΦ]`. Conclude with `(valR_comp z.1 j W g).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ev_app' (W : X.Opens) (g : Γ(X, W)) (z : CxPts q σ') :
     ev q σ' (j ⁻¹ᵁ W) (j.app W g) z = ev p σ W g (Φ z) := by
@@ -40,7 +40,7 @@ theorem ev_app' (W : X.Opens) (g : Γ(X, W)) (z : CxPts q σ') :
 include hΦ in
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `_ ↔ ⊤ ≤ (Φ z).1 ⁻¹ᵁ W`. Rewrite using `[hΦ]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_preimage_iff (W : X.Opens) (z : CxPts q σ') :
     z ∈ ptsIn q σ' (j ⁻¹ᵁ W) ↔ Φ z ∈ ptsIn p σ W := by
@@ -49,7 +49,7 @@ theorem mem_preimage_iff (W : X.Opens) (z : CxPts q σ') :
   rfl
 
 /- English proof (translation)
-Introduce `i z hz` and use `by obtain ⟨W, ι, _, g, F, O, h₁, h₂, h₃, h₄, h₅⟩ := h _ _ (mem_of_mem_linComb (m := fun _ => Φ z) (fun _ => hΦ z) hz PUnit.unit) refine ⟨j ⁻¹ᵁ W, ι, inferInstance, fun a => j.app W (g a), F, O, (mem_preimage_iff hΦ W z).2 h₁, h₂, ?_, h₄, ?_⟩ · simpa only [ev_app' hΦ] using h₃ · s …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isCInf_pullW (h : φ.IsCInf) : (pullW hΦ φ).IsCInf := fun i z hz => by
   obtain ⟨W, ι, _, g, F, O, h₁, h₂, h₃, h₄, h₅⟩ := h _ _
@@ -64,7 +64,7 @@ theorem isCInf_pullW (h : φ.IsCInf) : (pullW hΦ φ).IsCInf := fun i z hz => by
 include hΦ in
 
 /- English proof (translation)
-The claim follows from `differentiableOn_euclidean.2 fun a => ((c'.holo _ (j.app c.U (c.x a))).mono fun _ hv => ⟨hv.1, (mem_preimage_iff hΦ _ _).2 (c.source_subset hv.2)⟩).congr fun _ hv => (c.apply_eq _ hv.2 a).trans (ev_app' hΦ _ _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem holo_trans (c : AlgChart p σ D) (c' : AlgChart q σ' D) :
     DifferentiableOn ℂ (Φ.transOpenPartialHomeomorph c.e ∘ c'.e.symm)
@@ -74,11 +74,11 @@ theorem holo_trans (c : AlgChart p σ D) (c' : AlgChart q σ' D) :
       (c.apply_eq _ hv.2 a).trans (ev_app' hΦ _ _ _).symm
 
 /- English proof (translation)
-Use `set e := Φ.transOpenPartialHomeomorph c.e with he`. Establish `ho` using `isOpen_over c'.e e.open_source`. Establish `hm` using `mem_over c'.e hz (S := e.source) hz'`. Establish `hi : z ∈ ptsIn q σ' ((LB.LinComb B (K` using `PUnit) (fun _ => j) fun _ => 1).U fun _ => pick φ.isLB (Φ z)) := ptsIn_mono (fun _ hx => mem_iInter.2 fun _ => hx) ((mem_preimage_iff hΦ _ z).2 (mem_pick φ.isLB (Φ z)))`. Establish `e₁ : (fun v => ((pullW hΦ φ).φ (fun _ => pick φ.isLB (Φ z)) (c'.e.symm v) : ℂ)) =ᶠ[𝓝 (c'.e z)] (fun v => (φ.φ (pick φ.isLB (Φ z)) (c.e.symm v) : ℂ)) ∘ e ∘ c'.e.symm` using `eventually_of_mem (ho.mem_nhds hm) fun v hv => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: c.e.symm (e (c'.e.symm v)) = Φ (c'.e.symm v)` using `c.e.left_inv hv.2`. Simplify using `only [Function.comp_apply, this, pullW_φ]`. Establish `e₂ : (e ∘ c'.e.symm) (c'.e z) = c.e (Φ z)` using `congrArg e (c'.e.left_inv hz)`. Rewrite using `[c'.chernDens_eq (isCInf_pullW hΦ h) hz hi, AlgChart.chernDens]`. Establish `e₃ : c'.hess (pullW hΦ φ) (fun _ => pick φ.isLB (Φ z)) z = _` using `ReciprocityTheory.L2DbarEstimates.Y.cmpb_cHess_congr e₁`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e₃, AlgChart.hess, ReciprocityTheory.L2DbarEstimates.Y.cmpa_det_comp ho hm (holo_trans hΦ c c') (e₂ ▸ Complex.ofRealCLM.contDiff.contDiffAt.comp _ (h.contDiffAt c hz' (mem_pick _ _))), e₂, Complex.re_ofReal_mul, transDet]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem chernDens_pullW (h : φ.IsCInf) (c : AlgChart p σ D) (c' : AlgChart q σ' D)
     {z : CxPts q σ'} (hz : z ∈ c'.e.source) (hz' : Φ z ∈ c.e.source) :
@@ -109,15 +109,13 @@ theorem chernDens_pullW (h : φ.IsCInf) (c : AlgChart p σ D) (c' : AlgChart q �
 variable [SecondCountableTopology (CxPts p σ)] [SecondCountableTopology (CxPts q σ')]
 
 /- English proof (translation)
-Use `ext_of_cover (fun a : R.ι × R'.ι => (R'.chart a.2).e.source ∩ (Φ.transOpenPartialHomeomorph (R.chart a.1).e).source) (fun a => (R'.chart a.2).e.open_source.inter (OpenPartialHomeomorph.open_source _)) (fun z => ?_) fun a A hA hs => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `R.cover (Φ z)`. Take `⟨b, hb⟩` from `R'.cover z`. Conclude with `⟨(a, b), hb, ha⟩`. Use `set c := R.chart a.1`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `set c' := R'.chart a.2`. Establish `h₁ : A ⊆ c'.e.source` using `hs.trans inter_subset_left`. Establish `h₂ : A ⊆ (Φ.transOpenPartialHomeomorph c.e).source` using `hs.trans inter_subset_right`. Establish `hA' : MeasurableSet (Φ.symm.toMeasurableEquiv ⁻¹' A)` using `Φ.symm.toMeasurableEquiv.measurable hA`. Establish `h₃ : Φ.symm.toMeasurableEquiv ⁻¹' A ⊆ c.e.source` using `fun y hy => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `: Φ (Φ.symm y) ∈ c.e.source` using `h₂ hy`. Rewrite `this` using `[Φ.apply_symm_apply]`. Then use the resulting hypothesis. Rewrite using `[MeasurableEquiv.map_apply, Weight.chernPart_apply (isCInf_pullW hΦ h) ε c' hA h₁, Weight.chernPart_apply h ε c hA' h₃, ← chartMeas_apply_of_subset c'.e (fun y => ENNReal.ofReal ((ε : ℤ) * c'.chernDens (pullW hΦ φ) y)) hA h₁, chartMeas_eq c'.e (Φ.transOpenPartialHomeomorph c.e) ( …`. Rewrite using `[chernDens_pullW hΦ h c c' (h₁ hy) (h₂ hy), mul_left_comm, ENNReal.ofReal_mul (sq_nonneg _)]),`. Use `chartMeas_apply_of_subset _ _ hA h₂]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `him : Φ.transOpenPartialHomeomorph c.e '' A = c.e '' (Φ.symm.toMeasurableEquiv ⁻¹' A)`. Rewrite using `[show Φ.symm.toMeasurableEquiv ⁻¹' A = Φ '' A from (Φ.image_eq_preimage_symm A).symm, image_image]`. Both sides reduce to the same expression. Rewrite using `[him]`. Use `lintegral_congr fun v => ?_` and prove the remaining obligations.
-
-Rewrite using `[show Φ ((Φ.transOpenPartialHomeomorph c.e).symm v) = c.e.symm v from Φ.apply_symm_apply _]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chernPart_pullW (R : AnRead p σ D) (R' : AnRead q σ' D) (h : φ.IsCInf) (ε : ℤˣ) :
     (pullW hΦ φ).chernPart D ε = (φ.chernPart D ε).map Φ.symm.toMeasurableEquiv := by
@@ -159,7 +157,7 @@ end GlobalTheory.ChernTransfer
 open GlobalTheory GlobalTheory.ChernTransfer in
 
 /- English proof (translation)
-Take `⟨R⟩` from `hR`. Take `⟨R'⟩` from `hR'`. Use `⟨isCInf_pullW hΦ h, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(pullW hΦ φ).chernInt D _ _ = _`. Simplify using `only [Weight.chernInt, Measure.restrict_univ, chernPart_pullW hΦ R R' h, integral_map_equiv]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem GlobalTheory.chernInt_transfer (k k' : Type) [CommRing k] [CommRing k'] (X Y : Scheme.{0})
     (p : X ⟶ Sp k) (q : Y ⟶ Sp k') (σ : k →+* ℂ) (σ' : k' →+* ℂ) (D : ℕ) (j : Y ⟶ X)

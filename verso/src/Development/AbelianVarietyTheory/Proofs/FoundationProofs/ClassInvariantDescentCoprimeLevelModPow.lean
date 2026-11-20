@@ -11,35 +11,33 @@ open Matrix GlobalTheory.KZ GlobalTheory.KZ.ES
 namespace GlobalTheory.KZ.ES.CoprimeDescent
 
 /- English proof (translation)
-Set `E : Subgroup (A ⋊[φ] Q)` to `{ carrier := {x | φ x.right f = f * x.left ^ m} one_mem' := by simp mul_mem' := by`. Introduce `x y hx hy`. Simplify using `only [Set.mem_setOf_eq] at hx hy ⊢`. Simplify using `only [SemidirectProduct.mul_right, SemidirectProduct.mul_left, map_mul, MulAut.mul_apply, hy, hx, map_pow, mul_pow, mul_assoc]`. Use the proof step `inv_mem' := by`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Simplify using `only [Set.mem_setOf_eq] at hx ⊢`. Simplify using `only [SemidirectProduct.inv_right, SemidirectProduct.inv_left]`. Establish `h` using `congrArg (φ x.right⁻¹) hx`. Rewrite `h` using `[← MulAut.mul_apply, ← map_mul, inv_mul_cancel, map_one, MulAut.one_apply, map_mul, map_pow]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_inv (φ x.right⁻¹), inv_pow, eq_mul_inv_iff_mul_eq]`. Conclude with `h.symm }`. Establish `hE : ∀ x, x ∈ E ↔ φ x.right f = f * x.left ^ m` using `fun x => Iff.rfl`. Set `π : E →* Q` to `SemidirectProduct.rightHom.comp E.subtype`. Establish `hπ : ∀ x : E, π x = x.1.right` using `fun x => rfl`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hker : ∀ x : E, x ∈ π.ker → x.1.right = 1 ∧ x.1.left ^ m = 1`. Introduce `x hx`. Establish `h1 : x.1.right = 1` using `hx`. Establish `h2` using `(hE x.1).1 x.2`. Rewrite `h2` using `[h1, map_one, MulAut.one_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨h1, by simpa using h2.symm⟩`. Establish `hpow : ∀ x : E, x ∈ π.ker → ∀ k : ℕ, (x ^ k).1.left = x.1.left ^ k`. Introduce `x hx k`. Establish `: x.1 = SemidirectProduct.inl x.1.left`. Use `ext`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `[(hker x hx).1]`. Rewrite using `[SubgroupClass.coe_pow, this, ← map_pow, SemidirectProduct.left_inl, SemidirectProduct.left_inl]`. Use `choose g hg using hf`. Set `s : Q → E` to `fun q => ⟨⟨g q, q⟩, hg q⟩`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Take `⟨ψ, hψ1, hψ2⟩` from `hQ E π (fun q => ⟨s q, rfl⟩) (by`. Introduce `x hx`. Rewrite using `[Subgroup.mem_center_iff]`. Introduce `y`. Take `⟨h1, h2⟩` from `hker x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `ext`. Simplify using `[h1, htor _ h2, mul_comm]`. Simplify using `[h1])`. Use the proof step `(by`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Apply `Subtype.ext` to reduce the goal to its premises. Use `ext`. Rewrite using `[hpow x hx, (hker x hx).2]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `(hker _ (π.ker.pow_mem hx m)).1)`. Set `χ : E → A` to `fun x => (ψ x).1.left`. Establish `hχ : ∀ x y, χ (x * y) = χ x * χ y`. Introduce `x y`. Simplify using `[χ, (hker _ (hψ1 x)).1]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hχm : ∀ x, χ x ^ m = 1` using `fun x => (hker _ (hψ1 x)).2`. Set `C : E → A` to `fun x => x.1.left ^ 2 * (χ x)⁻¹`. Establish `hC : ∀ x y, C (x * y) = C x * φ x.1.right (C y)`. Introduce `x y`. Simplify using `only [C, hχ, Subgroup.coe_mul, SemidirectProduct.mul_left, map_mul, map_pow, map_inv, htor _ (hχm y), mul_pow, _root_.mul_inv_rev]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[mul_comm (χ y)⁻¹, mul_mul_mul_comm]`. Establish `hC1 : ∀ x ∈ π.ker, C x = 1`. Introduce `x hx`. Simplify using `only [C, χ, hψ2 x hx, hpow x hx, mul_inv_cancel]`. Establish `hCs : ∀ x : E, C x = C (s x.1.right)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `x`. Establish `hk : x * (s x.1.right)⁻¹ ∈ π.ker`. Rewrite using `[MonoidHom.mem_ker, map_mul, map_inv]`. Conclude with `mul_inv_cancel _`. Use `hC (x * (s x.1.right)⁻¹) (s x.1.right)` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[hC1 _ hk, (hker _ hk).1, inv_mul_cancel_right]`. Simplify using `using this`. Use `⟨fun q => C (s q), fun q q' => ?_, fun q => ?_⟩` and prove the remaining obligations. Use `hC (s q) (s q')` as an intermediate fact. Rewrite `this` using `[hCs]`.
-
-Conclude with `this`. Establish `h : (s q).1.left = g q` using `rfl`. Simplify using `only [C, mul_pow, inv_pow, hχm, h, map_pow, hg q, inv_one, mul_one]`. Rewrite using `[← pow_mul, ← pow_mul, mul_comm m 2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_cocycle {Q A : Type} [Group Q] [CommGroup A] (φ : Q →* MulAut A) (m : ℕ) (f : A)
     (hf : ∀ q, ∃ g, φ q f = f * g ^ m) (htor : ∀ a : A, a ^ m = 1 → ∀ q, φ q a = a)
@@ -127,23 +125,21 @@ theorem exists_cocycle {Q A : Type} [Group Q] [CommGroup A] (φ : Q →* MulAut 
     rw [← pow_mul, ← pow_mul, mul_comm m 2]
 
 /- English proof (translation)
-Establish `h1 : ∀ a, τ 1 a = a`. Introduce `a`. Establish `e` using `hτ 1 1 a`. Rewrite `e` using `[mul_one]`. Conclude with `(τ 1).injective e.symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Set `φ0 : Q → MulAut Fˣ` to `fun q => { toFun := Units.map (τ q⁻¹ : F →* F) invFun := Units.map (τ q : F →* F) left_inv := fun a => Units.ext (by simp [← hτ, h1]) right_inv := fun a => Units.ext (by simp [← hτ, h1]) map_mul' := map_mul _ }`. Establish `hφ0 : ∀ q a, (φ0 q a : F) = τ q⁻¹ a` using `fun q a => rfl`. Set `φ : Q →* MulAut Fˣ` to `MonoidHom.mk' φ0 (by`. Introduce `q q'`. Use extensionality with `a`.
+Establish an intermediate fact. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [MulAut.mul_apply, hφ0, _root_.mul_inv_rev, hτ])`. Establish `hφ : ∀ q a, (φ q a : F) = τ q⁻¹ a` using `fun q a => rfl`. Take `⟨c, hc1, hc2⟩` from `exists_cocycle φ m f (fun q => by`. Take `⟨g, hg⟩` from `hf q⁻¹`. Conclude with `⟨g, Units.ext (by rw [hφ, hg]; simp)⟩)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(fun a ha q => Units.ext (by`. Rewrite using `[hφ]`. Conclude with `htor _ (by rw [← Units.val_pow_eq_pow_val, ha, Units.val_one]) _)) hQ`. Establish `hc0 : c 1 = 1`. Use `hc1 1 1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using this`. Take `⟨h, hh⟩` from `GlobalTheory.exists_unit_of_cocycle_rightAction_charZero F Q τ hτ (fun q => c q⁻¹ ^ 2) (fun q q' => by`. Rewrite using `[_root_.mul_inv_rev, hc1]`. Simplify using `only [Units.val_pow_eq_pow_val, Units.val_mul, hφ, inv_inv, map_pow]`. Use the proof step `ring)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use the proof step `(fun q hq => by`. Establish `e` using `hc1 q⁻¹ q⁻¹`. Rewrite `e` using `[← _root_.mul_inv_rev, hsq q hq, inv_one, hc0]`. Establish `e2 : φ q⁻¹ (c q⁻¹) = c q⁻¹` using `Units.ext (by rw [hφ, inv_inv, hq])`. Rewrite `e` using `[e2]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[sq, ← e])`. Use `⟨h⁻¹, fun q => ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg Units.val (hc2 q⁻¹)`. Rewrite `e` using `[hφ, inv_inv]`. Simplify using `only [Units.val_pow_eq_pow_val, Units.val_mul] at e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e4 : (f : F) ^ 4 = ((f : F) ^ 2) ^ 2` using `by ring`. Establish `hc` using `(c q⁻¹).ne_zero`. Establish `hh0` using `h.ne_zero`. Rewrite using `[map_mul, map_pow (τ q) _ m, Units.val_inv_eq_inv_val, map_inv₀, hh q, e4, map_pow, e]`. Simplify using `only [Units.val_pow_eq_pow_val, mul_inv, mul_pow, inv_pow]`.
-
-Establish `: ((c q⁻¹ : F) ^ 2) ^ m = ((c q⁻¹ : F) ^ m) ^ 2` using `by rw [← pow_mul, ← pow_mul, mul_comm]`. Rewrite using `[this]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem exists_invariant {Q F : Type} [Group Q] [Finite Q] [Field F] [CharZero F] (τ : Q → F →+* F)
     (hτ : ∀ q q' a, τ (q * q') a = τ q' (τ q a)) (m : ℕ) (f : Fˣ)
@@ -204,7 +200,7 @@ theorem exists_invariant {Q F : Type} [Group Q] [Finite Q] [Field F] [CharZero F
   field_simp
 
 /- English proof (translation)
-Rewrite using `[CongruenceSubgroup.Gamma_mem]`. Simplify using `only [← ZMod.intCast_zmod_eq_zero_iff_dvd, Fin.forall_fin_two]`. Simplify using `[sub_eq_zero, and_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem mem_gamma_iff {M : ℕ} {γ : SL(2, ℤ)} :
     γ ∈ CongruenceSubgroup.Gamma M ↔ ∀ i j, (M : ℤ) ∣ γ i j - (1 : Matrix (Fin 2) (Fin 2) ℤ) i j := by
@@ -213,7 +209,7 @@ theorem mem_gamma_iff {M : ℕ} {γ : SL(2, ℤ)} :
   simp [sub_eq_zero, and_assoc]
 
 /- English proof (translation)
-Introduce `γ hγ`. Rewrite `hγ`, the goal using `[mem_gamma_iff]`. Conclude with `fun i j => (Int.natCast_dvd_natCast.2 h).trans (hγ i j)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem gamma_mono {M N : ℕ} (h : M ∣ N) : CongruenceSubgroup.Gamma N ≤ CongruenceSubgroup.Gamma M := by
   intro γ hγ
@@ -221,7 +217,7 @@ theorem gamma_mono {M N : ℕ} (h : M ∣ N) : CongruenceSubgroup.Gamma N ≤ Co
   exact fun i j => (Int.natCast_dvd_natCast.2 h).trans (hγ i j)
 
 /- English proof (translation)
-Rewrite `h1`, `h2`, the goal using `[mem_gamma_iff]`. Introduce `i j`. Use `push_cast`. Conclude with `(Nat.isCoprime_iff_coprime.2 h).mul_dvd (h1 i j) (h2 i j)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem gamma_inf {M N : ℕ} (h : Nat.Coprime M N) {γ : SL(2, ℤ)} (h1 : γ ∈ CongruenceSubgroup.Gamma M)
     (h2 : γ ∈ CongruenceSubgroup.Gamma N) : γ ∈ CongruenceSubgroup.Gamma (M * N) := by
@@ -231,15 +227,15 @@ theorem gamma_inf {M N : ℕ} (h : Nat.Coprime M N) {γ : SL(2, ℤ)} (h1 : γ �
   exact (Nat.isCoprime_iff_coprime.2 h).mul_dvd (h1 i j) (h2 i j)
 
 /- English proof (translation)
-Set `e` to `ZMod.chineseRemainder h`. Set `B : Matrix (Fin 2) (Fin 2) (ZMod M × ZMod N)` to `Matrix.of fun i j => ((1 : Matrix (Fin 2) (Fin 2) (ZMod M)) i j, q i j)`. Establish `hB : B.det = 1`. Use `q.det_coe` as an intermediate fact. Rewrite `this`, the goal using `[Matrix.det_fin_two]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `ext`. Simplify using `[B]`. Simplify `this` using `[B]`. Take `⟨γ, hγ⟩` from `GlobalTheory.specialLinearGroup_map_intCast_zmod_surjective (M * N) (SpecialLinearGroup.map (e.symm : ZMod M × ZMod N →+* ZMod (M * N)) ⟨B, hB⟩)`. Establish `key : ∀ i j, ((γ i j : ℤ) : ZMod M × ZMod N) = B i j`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `i j`. Establish `h1 : ((γ i j : ℤ) : ZMod (M * N)) = e.symm (B i j)` using `congrArg (fun x : SL(2, ZMod (M * N)) => x i j) hγ`. Establish `h2` using `congrArg e h1`. Rewrite `h2` using `[map_intCast, RingEquiv.apply_symm_apply]`. Then use the resulting hypothesis. Use `⟨γ, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[CongruenceSubgroup.Gamma_mem]`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify `congrArg Prod.fst (key 0 0)` using `[B]`. Simplify `congrArg Prod.fst (key 0 1)` using `[B]`. Simplify `congrArg Prod.fst (key 1 0)` using `[B]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `congrArg Prod.fst (key 1 1)` using `[B]`. Use extensionality with `i j`. Simplify `congrArg Prod.snd (key i j)` using `[B]`.
+Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_lift {M N : ℕ} (h : Nat.Coprime M N) (q : SL(2, ZMod N)) :
     ∃ γ ∈ CongruenceSubgroup.Gamma M, SpecialLinearGroup.map (Int.castRingHom (ZMod N)) γ = q := by
@@ -281,7 +277,7 @@ def levSub (X : Tower Ω ε) (M : ℕ) : Subfield X.K where
   inv_mem' := fun a ha γ hγ => by rw [map_inv₀, ha γ hγ]
 
 /- English proof (translation)
-Introduce `δ hδ`. Establish `h` using `hf _ ((CongruenceSubgroup.Gamma_normal M).conj_mem δ hδ γ)`. Rewrite using `[← X.sl_mul, ← map_mul]`. Use `conv_rhs => rw [← h]`. Rewrite using `[← X.sl_mul, ← map_mul, inv_mul_cancel_right]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lev_sl (X : Tower Ω ε) {M : ℕ} {f : X.K} (hf : Lev X M f) (γ : SL(2, ℤ)) :
     Lev X M (X.sl (ofSL γ) f) := by
@@ -302,7 +298,7 @@ theorem coe_levAct (X : Tower Ω ε) (M : ℕ) (γ : SL(2, ℤ)) (a : levSub X M
     (levAct X M γ a : X.K) = X.sl (ofSL γ) a := rfl
 
 /- English proof (translation)
-Establish `hi : IsIntegral Ω a` using `IsIntegral.of_pow hm (ha ▸ isIntegral_one)`. Take `⟨b, rfl⟩` from `minpoly.mem_range_of_degree_eq_one Ω a (IsAlgClosed.degree_eq_one_of_irreducible Ω (minpoly.irreducible hi))`. Conclude with `AlgEquiv.commutes _ b`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sl_root [IsAlgClosed Ω] (X : Tower Ω ε) {m : ℕ} (hm : 0 < m) {a : X.K} (ha : a ^ m = 1) (g : GQ) :
     X.sl g a = a := by
@@ -312,23 +308,17 @@ theorem sl_root [IsAlgClosed Ω] (X : Tower Ω ε) {m : ℕ} (hm : 0 < m) {a : X
   exact AlgEquiv.commutes _ b
 
 /- English proof (translation)
-Introduce `Ω _ _ _ ε X l n Ma Mb hl hMa hMb h6 hco f hf hinv`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : CharZero Ω := algebraRat.charZero Ω`. Use `haveI : CharZero X.K := charZero_of_injective_algebraMap (algebraMap Ω X.K).injective`. Use `haveI : NeZero Mb := ⟨hMb.ne'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `ρ : SL(2, ℤ) →* SL(2, ZMod Mb)` to `SpecialLinearGroup.map (Int.castRingHom (ZMod Mb))`. Use `choose s hs1 hs2 using exists_lift hco`. Establish `hs2' : ∀ q, ρ (s q) = q` using `hs2`. Establish `hact : ∀ γ ∈ CongruenceSubgroup.Gamma Ma, ∀ a : X.K, Lev X (Ma * Mb) a → X.sl (ofSL (s (ρ γ))) a = X.sl (ofSL γ) a`. Introduce `γ hγ a ha`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hm : s (ρ γ) * γ⁻¹ ∈ CongruenceSubgroup.Gamma (Ma * Mb)`. Use `gamma_inf hco (Subgroup.mul_mem _ (hs1 _) (Subgroup.inv_mem _ hγ)) ?_` and prove the remaining obligations. Use `show ρ (s (ρ γ) * γ⁻¹) = 1`. Rewrite using `[map_mul, map_inv, hs2', mul_inv_cancel]`. Use `conv_rhs => rw [← ha _ hm]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← X.sl_mul, ← map_mul, inv_mul_cancel_right]`. Set `u : ∀ g : X.Kˣ, Lev X (Ma * Mb) g → (levSub X (Ma * Mb))ˣ` to `fun g hg => Units.mk0 ⟨g, hg⟩ (fun h => g.ne_zero (congrArg Subtype.val h))`. Take `⟨h, hh⟩` from `exists_invariant (Q := SL(2, ZMod Mb)) (fun q => levAct X (Ma * Mb) (s q)) (fun q q' a => Subtype.ext (by`. Rewrite using `[coe_levAct, coe_levAct, coe_levAct, ← X.sl_mul, ← map_mul, ← hact _ (Subgroup.mul_mem _ (hs1 q) (hs1 q')) _ a.2, map_mul, hs2', hs2']))`. Use the proof step `(l ^ n) (u f hf)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use the proof step `(fun q => by`. Take `⟨g, hg1, hg2⟩` from `hinv _ (hs1 q)`. Conclude with `⟨u g hg1, Subtype.ext hg2⟩)`. Use the proof step `(fun a ha q => Subtype.ext (sl_root X (pow_pos hl.pos n) (congrArg Subtype.val ha) _))`. Use the proof step `(fun q hq => by`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨h1, h2⟩` from `GlobalTheory.T.jTranslates_level_and_scalar_mod ε X Mb hMb`. Take `⟨e1, e2, e3⟩` from `h2 (s q) (fun g hg => congrArg Subtype.val (hq ⟨_, fun γ hγ => h1 g hg γ (gamma_mono (dvd_mul_left Mb Ma) hγ)⟩))`. Establish `key : ∀ i j, (en (s q) i j : ZMod Mb) = q i j` using `fun i j => congrArg (fun x : SL(2, ZMod Mb) => x i j) (hs2 q)`. Simplify using `only [key] at e1 e2 e3`. Establish `hd` using `q.det_coe`.
-
-Rewrite `hd` using `[Matrix.det_fin_two, e1, e2]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Apply the tactic sequence `simp [Matrix.mul_apply, Fin.sum_univ_two, e1, e2] <;>`. Apply the tactic sequence `first | (simpa [e3] using hd))`.
-
-Use the proof step `(GlobalTheory.T.exists_hom_to_kernel_sq_centralExtension_slTwoZMod l n Mb hl hMb (Nat.Coprime.coprime_dvd_right h6 hco.symm))`. Use `⟨Units.map (levSub X (Ma * Mb)).subtype.toMonoidHom h, fun γ hγ => ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg Subtype.val (hh (ρ γ))`. Establish `hw : ∀ w : levSub X (Ma * Mb), Lev X (Ma * Mb) (w : X.K)` using `fun w => w.2`. Rewrite `e` using `[coe_levAct, hact γ hγ _ (hw _)]`.
-
-Conclude with `e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem descent : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε), ∀ (l n Ma Mb : ℕ), l.Prime → 0 < Ma → 0 < Mb → 6 * l ∣ Ma → Nat.Coprime Ma Mb → ∀ f : X.Kˣ, Lev X (Ma * Mb) f → (∀ γ ∈ CongruenceSubgroup.Gamma Ma, ∃ g : X.Kˣ, Lev X (Ma * Mb) g ∧ X.sl (ofSL γ) (f : X.K) = f * (g : X.K) ^ (l ^ n)) → ∃ h : X.Kˣ, Lev X Ma ((f : X.K) ^ 4 * (h : X.K) ^ (l ^ n)) := by
   intro Ω _ _ _ ε X l n Ma Mb hl hMa hMb h6 hco f hf hinv

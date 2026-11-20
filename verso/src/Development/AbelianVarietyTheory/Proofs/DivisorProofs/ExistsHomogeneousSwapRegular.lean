@@ -25,31 +25,29 @@ open scoped Classical
 namespace GlobalTheory.CovTest.SwapLine
 
 /- English proof (translation)
-Introduce `hC`. Take `⟨G, hG, hcore⟩` from `GlobalTheory.T.regular_base_rank_two_metric_family hC`. Use `⟨G, hG, ?_⟩` and prove the remaining obligations. Introduce `k _ B Y _ _ q p d hq hp hreg π w E h H hflB fl hfl A Φ Ψ hΦ hΨ a b`. Take `⟨flB⟩` from `hflB`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `set L5 := fam5 π w H flB fl A with hL5`. Take `⟨Φ5, hΦ5⟩` from `((hC.arExists k Y p (d + 1) hp).2 (Fin 5) L5).1`. Apply the tactic sequence `have e3 := GlobalTheory.VertForm.FormEx.arFun_eq_rename hC hp hΦ hΦ5 ![0, 1, 2] (fun i => by fin_cases i <;> rfl)`. Establish `iso : ((L5 0).tens (L5 1)).Isometric ((L5 3).tens (L5 4))`. Establish `e₁` using `GlobalTheory.T.rank_two_graded_determinant_isometric k Y p _ _ (H.pull π w) fl`.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₂` using `VMetric.isometric_det_pull H π w`. Establish `e₃` using `((GlobalTheory.T.rank_two_graded_determinant_isometric k B q E h H flB).symm.pull π w).trans (HermLB.isometric_pull_tens _ _ π w)`. Conclude with `e₁.trans (e₂.trans e₃)`. Establish `icl : (L5 1).icls = (L5 3).icls + (L5 4).icls - (L5 0).icls`. Use `HermLB.icls_eq_iff.2 iso` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[HermLB.icls_tens, HermLB.icls_tens]`. Rewrite using `[← this]`. Normalize the expressions using the abelian group laws. Set `T : Fin 5 → Fin 5 → ℤ` to `fun j => if j = 1 then ![-1, 0, 0, 1, 1] else Pi.single j 1`. Establish `hT : ∀ j, (comb L5 (T j)).Isometric (L5 j)`.
+Normalize the expressions using the abelian group laws. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `j`. Distinguish the cases in `hj : j = 1`. Substitute `hj` using the available equality. Use `HermLB.icls_eq_iff.1 ?_` and prove the remaining obligations. Rewrite using `[icls_comb, icl]`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Simplify using `[T, Fin.sum_univ_five]`. Normalize the expressions using the abelian group laws. Simplify using `only [T, hj, if_false]`. Conclude with `isometric_comb_single L5 j`. Establish `hsub` using `((hC.arIso k Y p (d + 1) hp).2 (Fin 5) L5 Φ5 hΦ5).2.2 (Fin 5) L5 T hT`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e5` using `GlobalTheory.ArInt.Model.isArFun_unique hp hΦ5 hsub`. Establish `eline : Φ (lin ![(a : ℝ), b, 1] ^ (d + 2)) + Φ (lin ![(b : ℝ), a, 1] ^ (d + 2)) = Φ5 (onLine d a b)`. Rewrite using `[← map_add, e3, LinearMap.comp_apply, AlgHom.toLinearMap_apply, e5, LinearMap.comp_apply, AlgHom.toLinearMap_apply]`. Express the relevant statement in the definitionally equal form `Φ5 (aeval _ (rename _ (swapSum d a b))) = _`. Rewrite using `[onLine, aeval_rename]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 2`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp [T, lin, Fin.sum_univ_five, Pi.single_apply] <;> ring`. Establish `hdim : topologicalKrullDim (closure ({π (genericPoint Y)} : Set B)) < ((d + 1 + 1 : ℕ) : WithBot ℕ∞)`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `(topologicalKrullDim_subspace_le B _).trans_lt ?_` and prove the remaining obligations. Rewrite using `[hq.dim_eq]`. Conclude with `Nat.lt_succ_self (d + 1)` after adjusting the coercions. Set `LB3 : Fin 3 → HermLB q` to `![VMetric.grLB flB 1 H, VMetric.grLB flB 0 H, A]`. Set `L3 : Fin 3 → HermLB p` to `fun i => (LB3 i).pull π w`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨Φ3, hΦ3⟩` from `((hC.arExists k Y p (d + 1) hp).2 (Fin 3) L3).1`. Establish `z3 : IsArFun L3 (d + 1) 0`. Use `⟨fun n => ?_, fun _ _ _ _ => rfl⟩` and prove the remaining obligations. Rewrite using `[LinearMap.zero_apply]`. Conclude with `(isometric_comb_pull LB3 n π w).symm.isSelfInter hp (GlobalTheory.ProjDrop.isSelfInter_zero_of_dim_lt hC k B Y q p d (d + 1) hq hp π w hdim (comb LB3 n))`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `have e3' := GlobalTheory.VertForm.FormEx.arFun_eq_rename hC hp hΦ3 hΦ5 ![4, 3, 2] (fun i => by fin_cases i <;> rfl)`. Establish `ebase : Φ5 (onBase d a b) = 0`. Establish `h0` using `GlobalTheory.ArInt.Model.isArFun_unique hp hΦ3 z3`. Establish `: onBase d a b = rename ![(4 : Fin 5), 3, 2] (swapSum d a b)`. Rewrite using `[onBase, ← aeval_X_left_apply (rename _ _), aeval_rename]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> rfl`. Rewrite using `[this, ← AlgHom.toLinearMap_apply, ← LinearMap.comp_apply, ← e3', h0, LinearMap.zero_apply]`. Rewrite using `[eline, show onLine d a b = onBase d a b + (onLine d a b - onBase d a b) by ring, map_add, ebase, zero_add]`.
-
-Conclude with `hcore k B Y q p d hq hp hreg π w E h H flB fl hfl A Φ5 Ψ hΦ5 hΨ a b`.
+A detailed English derivation is pending.
 -/
 theorem swapReg_exists : ArCalc → ∃ G, Homog G ∧ SwapReg G := by
   intro hC

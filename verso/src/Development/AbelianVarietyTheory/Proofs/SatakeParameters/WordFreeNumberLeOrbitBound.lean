@@ -17,7 +17,7 @@ namespace GlobalTheory.KerStd.WordFree
 variable {D : D7} {L : SizeData₂ D}
 
 /- English proof (translation)
-Introduce `h`. Establish `h2` using `hc.symm.trans h`. Consider the cases of `h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Split into cases according to the possible forms of the given data.
 -/
 theorem not_signal {p : ℕ} (hc : IsResidueClassZero D p) : ¬ IsSg D p := by
   intro h
@@ -25,7 +25,7 @@ theorem not_signal {p : ℕ} (hc : IsResidueClassZero D p) : ¬ IsSg D p := by
   cases h2
 
 /- English proof (translation)
-Unfold `partner`. Use `congr 1`. Conclude with `decide_eq_false (fun h => not_signal hc h.1)`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem partner_eq {p : ℕ} (hc : IsResidueClassZero D p) (t : HH D) (n : ℕ) :
     partner D p t n = (false, t + n • hP D p) := by
@@ -34,26 +34,26 @@ theorem partner_eq {p : ℕ} (hc : IsResidueClassZero D p) (t : HH D) (n : ℕ) 
   exact decide_eq_false (fun h => not_signal hc h.1)
 
 /- English proof (translation)
-Rewrite using `[positionPlace_conjugate_partner, partner_eq hc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem posPl_eq {p : ℕ} (hc : IsResidueClassZero D p) (t : HH D) (n : ℕ) :
     posPl D p (false, t) n = (false, t + n • hP D p) := by
   rw [positionPlace_conjugate_partner, partner_eq hc]
 
 /- English proof (translation)
-Establish `hst : stepP D p = hP D p` using `if_neg (not_signal hc)`. Establish `hb0 : X.bs (hP D p) t0 = t0`. Unfold `reps at ht0`. Rewrite `ht0` using `[hst]`. Take `⟨t', _, rfl⟩` from `Finset.mem_image.1 ht0`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `base_shift_idempotent X _ t'`. Use `symm`. Use `Finset.sum_nbij (fun s => (orbMap D p (false, t0) s).2) ?_ ?_ ?_ (fun _ _ => rfl)` and prove the remaining obligations. Introduce `s hs`. Establish `hT` using `(hTT s).1 hs`.
+Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : orbMap D p (false, t0) s = (false, t0 + s.val • hP D p)` using `posPl_eq hc t0 s.val`. Rewrite `hT`, the goal using `[e1]`. Simplify using `only [topsOn, Finset.mem_filter]`. Use `⟨hT.2, ?_⟩` and prove the remaining obligations. Rewrite using `[hst, base_shift_add_nsmul, hb0]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s1 hs1 s2 hs2 heq`. Establish `hT1` using `(hTT s1).1 hs1`. Establish `hT2` using `(hTT s2).1 hs2`. Establish `: orbMap D p (false, t0) s1 = orbMap D p (false, t0) s2` using `Prod.ext (hT1.1.trans hT2.1.symm) heq`. Conclude with `ZMod.val_injective _ (posPl_inj D p (false, t0) _ _ (ZMod.val_lt s1) (ZMod.val_lt s2) this)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `t ht`. Establish `ht'` using `Finset.mem_coe.1 ht`. Simplify using `only [topsOn, Finset.mem_filter] at ht'`. Take `⟨hTT', hbt⟩` from `ht'`. Take `⟨m, hm⟩` from `X.bs_orb (stepP D p) t`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hm` using `[hbt, hst]`. Establish `ho : orbMap D p (false, t0) ((m : ℕ) : ZMod (nP D p)) = (false, t)`. Unfold `orbMap`. Rewrite using `[ZMod.val_natCast, posPl_mod, posPl_eq hc, hm]`. Use `⟨((m : ℕ) : ZMod (nP D p)), ?_, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[Finset.mem_coe, hTT, ho]`. Conclude with `⟨rfl, hTT'⟩`. Use `show (orbMap D p (false, t0) _).2 = t`. Rewrite using `[ho]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_topsOn (X : Inst D L) {p : ℕ} (hc : IsResidueClassZero D p) {t0 : HH D} (ht0 : t0 ∈ reps X p)
     (TT : Finset (ZMod (nP D p))) (hTT : ∀ s, s ∈ TT ↔ IsTopPl D (orbMap D p (false, t0) s))
@@ -96,11 +96,11 @@ theorem sum_topsOn (X : Inst D L) {p : ℕ} (hc : IsResidueClassZero D p) {t0 : 
       rw [ho]
 
 /- English proof (translation)
-Establish `hpos : 0 < e` using `he.pos`. Establish `hp : partner D p t e = (false, (partner D p t e).2)` using `Prod.ext hT.1 rfl`. Use `⟨he, (partner D p t e).2, hT.2, ?_, hpos, hp, ?_⟩` and prove the remaining obligations. Introduce `h`. Establish `h1 : posPl D p (false, t) e = posPl D p (false, t) 0`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[posPl_zero, positionPlace_conjugate_partner, hp, h]`. Use `posPl_inj D p (false, t) _ _ hlt (by omega) h1` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Introduce `e' _ h2 h`. Establish `h1 : posPl D p (false, t) e' = posPl D p (false, t) e`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[positionPlace_conjugate_partner, positionPlace_conjugate_partner, h, ← hp]`. Use `posPl_inj D p (false, t) _ _ (by omega) hlt h1` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem excl_of_top {p : ℕ} (t : HH D) {e : ℕ} (he : Odd e) (hlt : e < nP D p)
     (hT : IsTopPl D (partner D p t e)) : Excl D p t e := by
@@ -119,11 +119,11 @@ theorem excl_of_top {p : ℕ} (t : HH D) {e : ℕ} (he : Odd e) (hlt : e < nP D 
     omega
 
 /- English proof (translation)
-Establish `hp1 : (1 : ℝ) < p` using `by exact_mod_cast hp`. Unfold `lgN`. Use `split_ifs with h0`. Use `Real.logb_nonneg hp1 hy` as an intermediate fact. Use `push_cast`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `push_cast`. Establish `h1 : (p : ℝ) ^ (Nat.log p x) ≤ y`. Use `le_trans ?_ hx` and prove the remaining obligations. Conclude with `Nat.pow_log_le_self p h0` after adjusting the coercions.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ((Nat.log p x : ℕ) : ℝ) ≤ Real.logb p y`. Rewrite using `[Real.le_logb_iff_rpow_le hp1 (by linarith), Real.rpow_natCast]`. Conclude with `h1`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem lgN_le {p x : ℕ} (hp : 1 < p) {y : ℝ} (hy : 1 ≤ y) (hx : (x : ℝ) ≤ y) :
     (lgN p x : ℝ) ≤ Real.logb p y + 1 := by
@@ -143,28 +143,26 @@ theorem lgN_le {p x : ℕ} (hp : 1 < p) {y : ℝ} (hy : 1 ≤ y) (hx : (x : ℝ)
     linarith
 
 /- English proof (translation)
-The claim follows from `Nat.cast_sub (ν.rowLen_anti 0 1 (by norm_num))`.
+A detailed English derivation is pending.
 -/
 theorem natSub_cast (ν : YoungDiagram) :
     ((ν.rowLen 0 - ν.rowLen 1 : ℕ) : ℝ) = (ν.rowLen 0 : ℝ) - (ν.rowLen 1 : ℝ) :=
   Nat.cast_sub (ν.rowLen_anti 0 1 (by norm_num))
 
 /- English proof (translation)
-Establish `hp1 : (1 : ℝ) < Lc.l` using `by exact_mod_cast hl`. Use `set Λ := Real.logb Lc.l (2 * a) with hΛ`. Establish `hΛ1 : 1 ≤ Λ`. Rewrite using `[hΛ, Real.le_logb_iff_rpow_le hp1 (by linarith), Real.rpow_one]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hA : ∀ s, (lgN Lc.l (alLoc Lc s) : ℝ) ≤ 2 * Λ` using `fun s => by`. Use `lgN_le hl (y := 2 * a) (by linarith) (hal s)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hB : ∀ s, (lgN Lc.l (Lc.size s - alLoc Lc s) : ℝ) ≤ 3 * Λ` using `fun s => by`. Establish `h3 : ((Lc.size s - alLoc Lc s : ℕ) : ℝ) ≤ (2 * a) ^ 2`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ((Lc.size s - alLoc Lc s : ℕ) : ℝ) ≤ (Lc.size s : ℝ)`. Conclude with `Nat.sub_le _ _` after adjusting the coercions. Use polynomial arithmetic with `[hsz s]`. Use `lgN_le hl (y := (2 * a) ^ 2) (by nlinarith) h3` as an intermediate fact. Rewrite `this` using `[Real.logb_pow]`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Move the coercions through the operations in `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Use `add_le_add ?_ ?_` and prove the remaining obligations. Establish `: ∀ s ∈ (Finset.univ : Finset (ZMod Lc.d)), ((Lc.N1 : ℝ) * lgN Lc.l (alLoc Lc s) + (Lc.N0 : ℝ) * Lc.N1 * lgN Lc.l (Lc.size s - alLoc Lc s)) ≤ c1 * M ^ 2 * Λ`. Introduce `s _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : (Lc.N1 : ℝ) * lgN Lc.l (alLoc Lc s) ≤ M * (2 * Λ)` using `mul_le_mul hM1 (hA s) (Nat.cast_nonneg _) (by linarith)`. Establish `e2 : (Lc.N0 : ℝ) * Lc.N1 * lgN Lc.l (Lc.size s - alLoc Lc s) ≤ M * M * (3 * Λ)` using `mul_le_mul (mul_le_mul hM0 hM1 (Nat.cast_nonneg _) (by linarith)) (hB s) (Nat.cast_nonneg _) (by positivity)`. Establish `e3 : M * Λ ≤ M ^ 2 * Λ` using `mul_le_mul_of_nonneg_right (by nlinarith) (by linarith)`. Establish `e4 : 5 * (M ^ 2 * Λ) ≤ c1 * (M ^ 2 * Λ)` using `mul_le_mul_of_nonneg_right h1 (by positivity)`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(Finset.sum_le_card_nsmul _ _ _ this).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[Finset.card_univ, ZMod.card, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `: ∀ s ∈ Lc.TT, ((lgN Lc.l (alLoc Lc s) : ℝ)) ^ 2 ≤ c2 * Λ ^ 2`. Introduce `s _`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : ((lgN Lc.l (alLoc Lc s) : ℝ)) ^ 2 ≤ (2 * Λ) ^ 2` using `pow_le_pow_left₀ (Nat.cast_nonneg _) (hA s) 2`. Establish `e4 : 4 * Λ ^ 2 ≤ c2 * Λ ^ 2` using `mul_le_mul_of_nonneg_right h2 (by positivity)`. Use the polynomial consequences of the given equalities and inequalities. Use `(Finset.sum_le_card_nsmul _ _ _ this).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[nsmul_eq_mul]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem loss_le (Lc : product_zeroth_first_parts.Loc) {a M c1 c2 : ℝ} (ha : 1 < a) (hla : (Lc.l : ℝ) ≤ a)
     (hM0 : (Lc.N0 : ℝ) ≤ M) (hM1 : (Lc.N1 : ℝ) ≤ M) (hM : 1 ≤ M) (h1 : 5 ≤ c1) (h2 : 4 ≤ c2)
@@ -219,7 +217,7 @@ theorem loss_le (Lc : product_zeroth_first_parts.Loc) {a M c1 c2 : ℝ} (ha : 1 
     ring
 
 /- English proof (translation)
-Proceed by induction on `h with`. Consider the case `refl => exact le_rfl`. Consider the case `step _ ih => exact ih.trans (product_zeroth_first_parts.N_pred_lt D.R _ (Nat.le_add_left 1 _)).le`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem N_mono (D : D7) {i j : ℕ} (h : i ≤ j) : D.R.N i ≤ D.R.N j := by
   induction h with
@@ -227,33 +225,29 @@ theorem N_mono (D : D7) {i j : ℕ} (h : i ≤ j) : D.R.N i ≤ D.R.N j := by
   | step _ ih => exact ih.trans (product_zeroth_first_parts.N_pred_lt D.R _ (Nat.le_add_left 1 _)).le
 
 /- English proof (translation)
-Introduce `D L X K E hS hα hK1 hK2 p _ h hc _ hpX u i hi t0 ht0 Th`. Establish `hp1n : 1 < p` using `lt_of_lt_of_le (by norm_num) h.five`. Establish `hp1 : (1 : ℝ) < (p : ℝ)` using `by exact_mod_cast hp1n`. Establish `ha : 1 < L.sc.a` using `hS.xa.2`. Establish `hTT` using `mem_top_orbit_set_iff E p h u i (false, t0) Th`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `halTop : ∀ s ∈ (orbLoc E p h u i (false, t0) Th).TT, (alLoc (orbLoc E p h u i (false, t0) Th) s : ℝ) = E.row u i (false, (orbMap D p (false, t0) s).2) 0 - E.row u i (false, (orbMap D p (false, t0) s).2) 1`. Introduce `s hs`. Establish `hom : orbMap D p (false, t0) s = (false, (orbMap D p (false, t0) s).2)` using `Prod.ext ((hTT s).1 hs).1 rfl`. Unfold `alLoc`. Rewrite using `[if_pos hs, natSub_cast, ← hom]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hcard : (Nv X p t0 : ℝ) = ((orbLoc E p h u i (false, t0) Th).TT.card : ℝ)`. Use `sum_topsOn X hc ht0 _ hTT (fun _ => 1)` as an intermediate fact. Unfold `Nv`. Rewrite using `[Finset.card_eq_sum_ones, Finset.card_eq_sum_ones]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Conclude with `this`. Establish `hN1 : D.R.N (i + 1) ≤ D.R.N D.R.m` using `N_mono D hi`. Establish `hN01 : D.R.N i < D.R.N (i + 1)` using `product_zeroth_first_parts.N_pred_lt D.R (i + 1) (Nat.le_add_left 1 i)`. Establish `hloss` using `loss_le (orbLoc E p h u i (false, t0) Th) (a := L.sc.a) (M := Nm D) ha (hpX.trans hS.xa.1) (show ((D.R.N i : ℕ) : ℝ) ≤ ((D.R.N D.R.m : ℕ) : ℝ) by exact_mod_cast hN01.le.trans hN1) (show ((D.R.N (i + 1) : ℕ) : ℝ) ≤ ((D.R.N D.R.m : ℕ) : ℝ) by exact_mod_cast hN1) (show (1 : ℝ) ≤ ((D …`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hs : s ∈ (orbLoc E p h u i (false, t0) Th).TT`. Rewrite using `[halTop s hs]`. Conclude with `hα u i hi _ ((hTT s).1 hs).2`. Unfold `alLoc`. Rewrite using `[if_neg hs]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Replace the relevant objects with their definitions.
 
-Use `push_cast`. Use the proof step `linarith)`. Use the proof step `(fun s => hS.sizeA u i hi (orbMap D p (false, t0) s))`. Unfold `g0 gainA`. Use `sub_le_sub ?_ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `swap`. Unfold `dl`. Rewrite using `[hcard]`. Conclude with `hloss`. Rewrite using `[sum_topsOn X hc ht0 _ hTT]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Finset.sum_le_sum fun s hs => ?_` and prove the remaining obligations. Establish `hs' : IsTopPl D (orbMap D p (false, t0) s)` using `(hTT s).1 hs`. Establish `hrow` using `halTop s hs`. Use `set t := (orbMap D p (false, t0) s).2 with ht`. Establish `hom : orbMap D p (false, t0) s = (false, t)` using `Prod.ext hs'.1 rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `htT : t ∈ D.host.TT` using `hs'.2`. Establish `hpart : ∀ e : ℕ, orbMap D p (false, t0) (s + (e : ZMod (nP D p))) = partner D p t e`. Introduce `e`. Rewrite using `[orbit_map_add_natCast, hom, positionPlace_conjugate_partner]`. Establish `hl : ((orbLoc E p h u i (false, t0) Th).l : ℝ) = (p : ℝ)` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Apply `tsum_le_tsum_of_nonneg_le` to reduce the goal to its premises. Introduce `e split_ifs`. Conclude with `le_max_left _ _`. Conclude with `le_refl 0`. Introduce `e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `he : Odd e ∧ ¬ Excl D p t e`. Establish `hne : ¬ (e < (orbLoc E p h u i (false, t0) Th).d ∧ s + (e : ZMod (nP D p)) ∈ (orbLoc E p h u i (false, t0) Th).TT)`. Introduce and unpack `⟨h1, h2⟩`. Establish `hT0` using `(hTT _).1 h2`. Establish `hT : IsTopPl D (partner D p t e)` using `by rw [← hpart e]; exact hT0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `he.2 (excl_of_top t he.1 h1 hT)`. Rewrite using `[if_pos he, if_pos ⟨he.1, hne⟩, max_comm]`. Use `max_le_max ?_ le_rfl` and prove the remaining obligations. Establish `hal` using `hS.alG u i hi t htT`. Establish `hcap` using `hS.capG u i hi (orbMap D p (false, t0) (s + (e : ZMod (nP D p))))`.
-
-Rewrite `hcap` using `[← orbit_local_capacity_eq E p h u i (false, t0) Th, hpart]`. Establish `hpe : (0 : ℝ) < (p : ℝ) ^ e` using `pow_pos (by linarith) e`. Rewrite using `[hl, hrow]`. Unfold `capU`. Conclude with `sub_le_sub (div_le_div_of_nonneg_right hal hpe.le) hcap`.
-
-Rewrite using `[if_neg he] split_ifs`. Conclude with `le_max_right _ _`. Conclude with `le_refl 0`. Conclude with `summable_truncated_geometric _ _ (by rw [hl]; exact hp1) _ (fun e => Nat.cast_nonneg _) _`.
+A detailed English derivation is pending.
 -/
 theorem wordFreeNumber_le_orbitBound : ∀ (D : D7) (L : SizeData₂ D) (X : Inst D L) (K : Consts) (E : OrbitPlaces.Ent D), OrbitPlaces.Shape D L X E → (∀ u, ∀ i < D.R.m, ∀ t ∈ D.host.TT, E.row u i (false, t) 0 - E.row u i (false, t) 1 ≤ 2 * L.sc.a) → 5 ≤ K.dl1 → 4 ≤ K.dl2 → ∀ (p : ℕ) [Fact p.Prime] (h : OrbitPlaces.OrbOK D p), IsResidueClassZero D p → hP D p ≠ 0 → (p : ℝ) ≤ L.sc.X'' D.R.n → ∀ u, ∀ i < D.R.m, ∀ t0 ∈ reps X p, ∀ Th, g0 X K (aL L) (bL L) p (i + 1) t0 ≤ gainA (OrbitPlaces.orbLoc E p h u i (false, t0) Th) := by
   intro D L X K E hS hα hK1 hK2 p _ h hc _ hpX u i hi t0 ht0 Th

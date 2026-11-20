@@ -5,17 +5,17 @@ noncomputable section
 open Polynomial
 
 /- English proof (translation)
-Proceed by induction on `N generalizing A with`. Consider the case `zero`. Use `⟨A, inferInstance, Algebra.id A, Function.injective_id, Fin.elim0, ?_⟩` and prove the remaining obligations. Establish `h1 : g = 1` using `Polynomial.eq_one_of_monic_natDegree_zero hg hN`. Simplify using `[h1]`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Consider the case `succ N ih`. Establish `hinj : Function.Injective (AdjoinRoot.of g)`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Assume the negation of the conclusion as `h`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `AdjoinRoot.mk_ne_zero_of_natDegree_lt hg (C_ne_zero.mpr h) (by rw [natDegree_C]; omega) (by rwa [AdjoinRoot.mk_C])`. Use `haveI : Nontrivial (AdjoinRoot g) := hinj.nontrivial`. Establish `hroot : (g.map (AdjoinRoot.of g)).IsRoot (AdjoinRoot.root g)` using `AdjoinRoot.isRoot_root g`. Establish `hfac : (X - C (AdjoinRoot.root g)) * ((g.map (AdjoinRoot.of g)) /ₘ (X - C (AdjoinRoot.root g))) = g.map (AdjoinRoot.of g)` using `mul_divByMonic_eq_iff_isRoot.mpr hroot`. Establish `hqm : ((g.map (AdjoinRoot.of g)) /ₘ (X - C (AdjoinRoot.root g))).Monic` using `Monic.of_mul_monic_left (monic_X_sub_C _) (hfac ▸ hg.map _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hqd : ((g.map (AdjoinRoot.of g)) /ₘ (X - C (AdjoinRoot.root g))).natDegree = N`. Establish `e1` using `congrArg Polynomial.natDegree hfac`. Rewrite `e1` using `[(monic_X_sub_C _).natDegree_mul hqm, natDegree_X_sub_C, natDegree_map_eq_of_injective hinj, hN]`. Use linear arithmetic over natural numbers and integers. Take `⟨S, iS, aS, hSinj, x, hx⟩` from `ih hqm hqd`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations.
 
-Use `letI : Algebra A S := ((algebraMap (AdjoinRoot g) S).comp (AdjoinRoot.of g)).toAlgebra`. Use `⟨S, iS, this, hSinj.comp hinj, Fin.cons (algebraMap (AdjoinRoot g) S (AdjoinRoot.root g)) x, ?_⟩` and prove the remaining obligations. Establish `e2 : g.map (algebraMap A S) = (g.map (AdjoinRoot.of g)).map (algebraMap (AdjoinRoot g) S)`. Rewrite using `[Polynomial.map_map]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e2, ← hfac, Polynomial.map_mul, hx, Fin.prod_univ_succ]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 private lemma exists_roots {A : Type} [CommRing A] [Nontrivial A] {g : A[X]} (hg : g.Monic) {N : ℕ}
     (hN : g.natDegree = N) :
@@ -54,15 +54,13 @@ private lemma exists_roots {A : Type} [CommRing A] [Nontrivial A] {g : A[X]} (hg
     simp
 
 /- English proof (translation)
-Establish `hsq : ∀ J ∈ Λ, ε J * ε J = ε J`. Introduce `J hJ`. Establish `e` using `congrArg (ε J * ·) h1`. Simplify using `only [mul_one, Finset.mul_sum] at e`. Rewrite `e` using `[Finset.sum_eq_single J (fun J' hJ' hne => h0 J hJ J' hJ' (Ne.symm hne)) (fun h => absurd hJ h)]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[Finset.sum_mul_sum]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun J hJ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single J]`. Rewrite using `[← hab J hJ]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[C_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = C (ε J) * (a J * b J) := by rw [hsq J hJ]`. Introduce `J' hJ' hne`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : C (ε J) * C (ε J') = 0`. Rewrite using `[← C_mul, h0 J hJ J' hJ' (Ne.symm hne), C_0]`. Combine the equalities or inequalities in the displayed calculation. Introduce `h`. Conclude with `absurd hJ h`.
-
-Use `_ = G := by rw [← Finset.sum_mul, ← map_sum, h1, C_1, one_mul]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private lemma idem_mul {S ι : Type} [CommRing S] (Λ : Finset ι) (ε : ι → S) (a b : ι → S[X])
     (G : S[X]) (h1 : ∑ J ∈ Λ, ε J = 1) (h0 : ∀ J ∈ Λ, ∀ J' ∈ Λ, J ≠ J' → ε J * ε J' = 0)
@@ -94,9 +92,9 @@ private lemma idem_mul {S ι : Type} [CommRing S] (Λ : Finset ι) (ε : ι → 
     _ = G := by rw [← Finset.sum_mul, ← map_sum, h1, C_1, one_mul]
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.mul_sum, h1, hc]`. Introduce `J hJ J' hJ' hne`. Establish `hmem : J' ∈ Λ.erase J` using `Finset.mem_erase.mpr ⟨Ne.symm hne, hJ'⟩`. Rewrite using `[← Finset.mul_prod_erase (Λ.erase J) t hmem]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : t J' * ∏ K ∈ Λ.erase J', t K = 0` using `by rw [Finset.mul_prod_erase Λ t hJ', h0]`. Combine the equalities or inequalities in the displayed calculation. Introduce `J hJ`. Rewrite using `[mul_assoc, Finset.prod_erase_mul Λ t hJ, h0, mul_zero]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 private lemma weights {S ι : Type} [CommRing S] [DecidableEq ι] (Λ : Finset ι) (t : ι → S)
     (c c' : S) (hc : c' * c = 1) (h0 : ∏ J ∈ Λ, t J = 0)
@@ -128,9 +126,9 @@ private def Ph {A : Type} [CommRing A] (N m : ℕ) (α c' : A)
     C (Wt N m α c' J) * ∏ i ∈ f J, (X - C (MvPolynomial.X i))
 
 /- English proof (translation)
-Unfold `Wt`. Rewrite using `[map_mul, MvPolynomial.rename_C, map_prod]`. Use `congr 1`. Use `Finset.prod_equiv (Equiv.finsetCongr σ) ?_ ?_` and prove the remaining obligations. Introduce `K`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Finset.mem_erase, Finset.mem_powersetCard]`. Introduce `K _`. Simplify using `[map_sub, map_prod, MvPolynomial.rename_X, Finset.prod_map]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 private lemma Wt_rename {A : Type} [CommRing A] (N m : ℕ) (α c' : A) (σ : Equiv.Perm (Fin N))
     (J : Finset (Fin N)) :
@@ -145,11 +143,11 @@ private lemma Wt_rename {A : Type} [CommRing A] (N m : ℕ) (α c' : A) (σ : Eq
     simp [map_sub, map_prod, MvPolynomial.rename_X, Finset.prod_map]
 
 /- English proof (translation)
-Unfold `Ph`. Simplify using `only [Polynomial.map_sum, Polynomial.map_mul, Polynomial.map_C, Polynomial.map_prod, Polynomial.map_sub, Polynomial.map_X, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Wt_rename, MvPolynomial.rename_X]`. Use `Finset.sum_nbij' (fun J => J.map σ.toEmbedding) (fun J => J.map σ.symm.toEmbedding) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `J hJ`. Simplify using `using hJ`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `J hJ`. Simplify using `using hJ`. Introduce `J _`. Use extensionality with `i`. Simplify using `[Finset.mem_map_equiv]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Introduce `J _`. Use extensionality with `i`. Simplify using `[Finset.mem_map_equiv]`. Introduce `J _`. Rewrite using `[hf σ J, Finset.prod_map]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -180,9 +178,9 @@ private lemma Ph_sym {A : Type} [CommRing A] (N m : ℕ) (α c' : A)
     rfl
 
 /- English proof (translation)
-Unfold `Ph`. Apply `Polynomial.natDegree_sum_le_of_forall_le` to reduce the goal to its premises. Introduce `J hJ`. Establish `e1 : ∑ i ∈ f J, (X - C (MvPolynomial.X i : MvPolynomial (Fin N) A)).natDegree ≤ (f J).card`. Establish `e2` using `Finset.sum_le_sum (s := f J) (f := fun i => (X - C (MvPolynomial.X i : MvPolynomial (Fin N) A)).natDegree) (g := fun _ => (1 : ℕ)) (fun i _ => natDegree_X_sub_C_le _)`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using e2`. Rewrite using `[← hd J hJ]`. Conclude with `(natDegree_C_mul_le _ _).trans ((natDegree_prod_le _ _).trans e1)`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma Ph_deg {A : Type} [CommRing A] (N m : ℕ) (α c' : A)
     (f : Finset (Fin N) → Finset (Fin N)) (d : ℕ)
@@ -200,7 +198,7 @@ private lemma Ph_deg {A : Type} [CommRing A] (N m : ℕ) (α c' : A)
   exact (natDegree_C_mul_le _ _).trans ((natDegree_prod_le _ _).trans e1)
 
 /- English proof (translation)
-Unfold `Ph Wt`. Simplify using `[Polynomial.map_sum, Polynomial.map_prod, map_prod, map_sub, MvPolynomial.aeval_X, MvPolynomial.aeval_C]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 private lemma Ph_map {A S : Type} [CommRing A] [CommRing S] [Algebra A S] (N m : ℕ) (α c' : A)
     (f : Finset (Fin N) → Finset (Fin N)) (x : Fin N → S) :
@@ -213,9 +211,9 @@ private lemma Ph_map {A S : Type} [CommRing A] [CommRing S] [Algebra A S] (N m :
     MvPolynomial.aeval_C]
 
 /- English proof (translation)
-Rewrite using `[finset_sum_coeff]`. Use `Finset.sum_congr rfl fun J hJ => ?_` and prove the remaining obligations. Rewrite using `[coeff_C_mul]`. Establish `hm : (∏ i ∈ s J, (X - C (x i))).Monic` using `monic_prod_of_monic _ _ fun i _ => monic_X_sub_C (x i)`. Establish `hdeg : (∏ i ∈ s J, (X - C (x i))).natDegree = d`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[natDegree_prod_of_monic _ _ fun i _ => monic_X_sub_C (x i)]`. Simplify using `[hd J hJ]`. Rewrite using `[← hdeg, hm.coeff_natDegree, mul_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private lemma coeff_sum {S ι : Type} [CommRing S] [Nontrivial S] {N : ℕ} (Λ : Finset ι)
     (ε : ι → S) (s : ι → Finset (Fin N)) (x : Fin N → S) (d : ℕ)
@@ -232,9 +230,9 @@ private lemma coeff_sum {S ι : Type} [CommRing S] [Nontrivial S] {N : ℕ} (Λ 
   rw [← hdeg, hm.coeff_natDegree, mul_one]
 
 /- English proof (translation)
-Rewrite using `[eval_finset_sum]`. Establish `key : ∀ J ∈ Λ, (C (ε J) * ∏ i ∈ s J, (X - C (x i))).eval 0 = (-1) ^ d * (ε J * a)`. Introduce `J hJ`. Establish `h` using `h3 J hJ`. Rewrite using `[eval_mul, eval_C, eval_prod]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [eval_sub, eval_X, eval_C, zero_sub]`. Rewrite using `[Finset.prod_neg, hd J hJ]`. Establish `e : ε J * ∏ i ∈ s J, x i = ε J * a` using `by linear_combination -h`. Take the linear combination `(-1) ^ d * e`. Rewrite using `[Finset.sum_congr rfl key, ← Finset.mul_sum, ← Finset.sum_mul, h1, one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 -/
 private lemma eval_sum {S ι : Type} [CommRing S] {N : ℕ} (Λ : Finset ι) (ε : ι → S)
     (s : ι → Finset (Fin N)) (x : Fin N → S) (a : S) (d : ℕ) (h1 : ∑ J ∈ Λ, ε J = 1)
@@ -252,19 +250,19 @@ private lemma eval_sum {S ι : Type} [CommRing S] {N : ℕ} (Λ : Finset ι) (ε
   rw [Finset.sum_congr rfl key, ← Finset.mul_sum, ← Finset.sum_mul, h1, one_mul]
 
 /- English proof (translation)
-Introduce `A _ g n m N hnm hg hN α c hyp`. Break down `subsingleton_or_nontrivial A with hA | hA` into its components or cases. Conclude with `⟨1, 1, monic_one, monic_one, Subsingleton.elim _ _, by simp, Subsingleton.elim _ _, Subsingleton.elim _ _⟩`. Take `⟨q, hqdeg, hq⟩` from `UpperTheory.exists_polynomial_eq_map_eval_roots_of_perm_invariant A N g (Ph N m α (↑c⁻¹ : A) (fun J => J)) (Ph_sym N m α _ _ (fun σ J => rfl))`. Take `⟨p, -, hp⟩` from `UpperTheory.exists_polynomial_eq_map_eval_roots_of_perm_invariant A N g (Ph N m α (↑c⁻¹ : A) (fun J => Jᶜ)) (Ph_sym N m α _ _ (fun σ J => by ext i; simp [Finset.mem_map_equiv]))`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨S, iS, aS, hinj, x, hx⟩` from `exists_roots hg hN`. Use `haveI : Nontrivial S := hinj.nontrivial`. Establish `hinjX : Function.Injective (Polynomial.map (algebraMap A S))` using `Polynomial.map_injective _ hinj`. Take `⟨h0, h1⟩` from `hyp S x hx`. Establish `hc : algebraMap A S (↑c⁻¹ : A) * algebraMap A S (↑c : A) = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_mul]`. Simplify using the standard rewrite rules. Take `⟨w1, w2, w3⟩` from `weights (Finset.powersetCard m (Finset.univ : Finset (Fin N))) (fun J => algebraMap A S α - ∏ i ∈ J, x i) _ _ hc h0 h1`. Establish `hqS` using `hq S x hx`. Rewrite `hqS` using `[Ph_map]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hpS` using `hp S x hx`. Rewrite `hpS` using `[Ph_map]`. Establish `hQd : q.natDegree ≤ m` using `hqdeg.trans (Ph_deg N m α _ _ m (fun J hJ => (Finset.mem_powersetCard.mp hJ).2))`. Establish `hQc : q.coeff m = 1`. Apply `hinj` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Polynomial.coeff_map, hqS, coeff_sum _ _ (fun J => J) x m (fun J hJ => (Finset.mem_powersetCard.mp hJ).2), w1, map_one]`. Establish `hQm : q.Monic`. Establish `e : q.natDegree = m` using `natDegree_eq_of_le_of_coeff_ne_zero hQd (by rw [hQc]; exact one_ne_zero)`. Rewrite using `[Monic, leadingCoeff, e, hQc]`. Establish `hg' : g = p * q`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hinjX` to reduce the goal to its premises. Rewrite using `[Polynomial.map_mul, hpS, hqS, hx]`. Conclude with `(idem_mul _ _ (fun J => ∏ i ∈ Jᶜ, (X - C (x i))) (fun J => ∏ i ∈ J, (X - C (x i))) _ w1 w2 (fun J _ => Finset.prod_compl_mul_prod J _)).symm`. Use `⟨p, q, Monic.of_mul_monic_right hQm (hg' ▸ hg), hQm, hg', hQd, hQc, ?_⟩` and prove the remaining obligations. Apply `hinj` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Polynomial.eval_zero_map, hqS, eval_sum _ _ (fun J => J) x _ m w1 (fun J hJ => (Finset.mem_powersetCard.mp hJ).2) w3]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_monic_factor_of_root_subset_product_equation :
     ∀ (A : Type) [CommRing A] (g : A[X]) (n m N : ℕ), n + m = N → g.Monic → g.natDegree = N → ∀ (α : A) (c : Aˣ),

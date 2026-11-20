@@ -13,13 +13,11 @@ section Dict
 variable {p : ℕ} [Fact p.Prime] (X : Sys p) (Kc : Type) [Field Kc] [Algebra X.G.Kf Kc] (j : ℕ)
 
 /- English proof (translation)
-Unfold `trDY`. Rewrite using `[MvPolynomial.coeff_sum]`. Distinguish the cases in `hα : α ∈ R.support`. Rewrite using `[Finset.sum_eq_single α]`. Rewrite using `[MvPolynomial.coeff_monomial, if_pos rfl]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `β _ hβ`. Rewrite using `[MvPolynomial.coeff_monomial, if_neg]`. Introduce `h`. Conclude with `hβ (Finsupp.mapDomain_injective he h)`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd hα h`. Rewrite using `[Finset.sum_eq_zero]`. Rewrite using `[MvPolynomial.notMem_support_iff.1 hα, map_zero]`. Introduce `β hβ`. Rewrite using `[MvPolynomial.coeff_monomial, if_neg]`.
-
-Introduce `h`. Conclude with `hα (by rwa [← Finsupp.mapDomain_injective he h])`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem coeff_trDY (D : D7) {N N' : ℕ} {ι : ℂ →+* Kc} (e : GL3Theta.Idx D N N' → X.ZA j) (he : Function.Injective e)
     (Φ₀ : MvPolynomial (GL3Theta.FrV D N') ℂ →ₛₗ[ι] XspC (X.Pj (j + 1)) Kc)
@@ -45,9 +43,9 @@ theorem coeff_trDY (D : D7) {N N' : ℕ} {ι : ℂ →+* Kc} (e : GL3Theta.Idx D
       exact hα (by rwa [← Finsupp.mapDomain_injective he h])
 
 /- English proof (translation)
-Introduce `n hn`. Assume the negation of the conclusion as `hni`. Apply `MvPolynomial.mem_support_iff.1 hn` to reduce the goal to its premises. Unfold `trDY`. Rewrite using `[MvPolynomial.coeff_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_eq_zero fun α hα => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_monomial, if_neg]`. Introduce `h`. Conclude with `hni (Finset.mem_image.2 ⟨α, hα, h⟩)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem support_trDY (D : D7) {N N' : ℕ} {ι : ℂ →+* Kc} (e : GL3Theta.Idx D N N' → X.ZA j)
     (Φ₀ : MvPolynomial (GL3Theta.FrV D N') ℂ →ₛₗ[ι] XspC (X.Pj (j + 1)) Kc)
@@ -66,7 +64,7 @@ theorem support_trDY (D : D7) {N N' : ℕ} {ι : ℂ →+* Kc} (e : GL3Theta.Idx
 end Dict
 
 /- English proof (translation)
-Use `show (α.mapDomain e).prod (fun _ n => (n.factorial : Kc)) = _`. Conclude with `Finsupp.prod_mapDomain_index_inj he`.
+A detailed English derivation is pending.
 -/
 theorem prod_fact_mapDomain (Kc : Type) [CommSemiring Kc] {A B : Type} (e : A → B) (he : Function.Injective e)
     (α : A →₀ ℕ) :
@@ -75,11 +73,11 @@ theorem prod_fact_mapDomain (Kc : Type) [CommSemiring Kc] {A B : Type} (e : A �
   exact Finsupp.prod_mapDomain_index_inj he
 
 /- English proof (translation)
-Introduce `p _ X Kc _ _ j D N N' ι e he Φ₀ R Θ f w hdeg hser`. Rewrite using `[Formalism.L2.G.Pend.pairD_eq X Kc j _ f _ (support_trDY X Kc j D e Φ₀ R), Finset.sum_image (fun a _ b _ h => Finsupp.mapDomain_injective he h)]`. Unfold `pairR`. Rewrite using `[map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun α hα => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[coeff_trDY X Kc j D e he Φ₀ R α]`. Establish `hC : MvPolynomial.coeff α R * MvPolynomial.C ((α.prod fun _ n => (n.factorial : ℂ)) * TaylorLogMetric.taylor D Θ α) = ((α.prod fun _ n => (n.factorial : ℂ)) * TaylorLogMetric.taylor D Θ α) • MvPolynomial.coeff α R`. Rewrite using `[MvPolynomial.smul_eq_C_mul]`. Conclude with `mul_comm _ _`. Rewrite using `[hC, LinearMap.map_smulₛₗ, smul_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `Formalism.L2.G.Pend.derAt`. Rewrite using `[if_pos (hdeg α hα), hser α hα, prod_fact_mapDomain Kc e he α]`. Use `congr 1`. Simplify using `only [map_mul, Finsupp.prod, map_prod, map_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem pairing_dictionary : PairDict := by
   intro p _ X Kc _ _ j D N N' ι e he Φ₀ R Θ f w hdeg hser
@@ -102,7 +100,7 @@ theorem pairing_dictionary : PairDict := by
   ring
 
 /- English proof (translation)
-Use `Function.LeftInverse.injective (g := fun z : X.ZA j => ((pos ⟨z.1, z.2.1⟩, Fin.cast hN.2.symm z.2.2.2, Fin.cast hN.1.symm z.2.2.1) : GL3Theta.Idx D (D.R.N j) (D.R.N (j + 1)))) ?_` and prove the remaining obligations. Introduce and unpack `⟨τ, b, a⟩`. Simplify using `[eIdx]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 -/
 theorem eIdx_injective {p : ℕ} [Fact p.Prime] (X : Sys p) (D : D7) (pos : (Σ v : X.Pl, Fin (X.G.P.n' v)) ≃ D.what₂.Tau)
     (j : ℕ) (hN : RankTie X D j) : Function.Injective (eIdx X D pos j hN) := by

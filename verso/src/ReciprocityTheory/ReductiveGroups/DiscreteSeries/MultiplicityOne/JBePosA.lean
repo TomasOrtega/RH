@@ -29,21 +29,21 @@ def Tm (p : Mt k r × (Mt k r × Mt k r)) : Mt k r × (Mt k r × Mt k r) :=
   (mulM (p.1, mulM (p.2.2, p.2.1)), p.2)
 
 /- English proof (translation)
-Establish `: IsFiniteMeasureOnCompacts μ` using `⟨h.finite_compact⟩`. Use `infer_instance`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem bp_sf {U : Set (Mat k r)} {μ : Measure (Mt k r)} (h : IsHaarOn U μ) : SigmaFinite μ := by
   have : IsFiniteMeasureOnCompacts μ := ⟨h.finite_compact⟩
   infer_instance
 
 /- English proof (translation)
-Rewrite using `[ae_iff]`. Conclude with `h.conc`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bp_ae_mem {U : Set (Mat k r)} {μ : Measure (Mt k r)} (h : IsHaarOn U μ) :
     ∀ᵐ x ∂μ, (Matrix.of x : Mat k r) ∈ U := by
   rw [ae_iff]; exact h.conc
 
 /- English proof (translation)
-The claim follows from `(Measure.quasiMeasurePreserving_fst.ae hP).and (Measure.quasiMeasurePreserving_snd.ae hQ)`.
+A detailed English derivation is pending.
 -/
 theorem bp_ae_prod_and {α β : Type*} [MeasurableSpace α] [MeasurableSpace β] {μ : Measure α}
     {ν : Measure β} [SFinite μ] [SFinite ν] {P : α → Prop} {Q : β → Prop} (hP : ∀ᵐ x ∂μ, P x)
@@ -51,9 +51,9 @@ theorem bp_ae_prod_and {α β : Type*} [MeasurableSpace α] [MeasurableSpace β]
   (Measure.quasiMeasurePreserving_fst.ae hP).and (Measure.quasiMeasurePreserving_snd.ae hQ)
 
 /- English proof (translation)
-Establish `hc : Continuous (fun g : Mt k r => (Matrix.of g : Mat k r))` using `continuous_id`. Establish `h1 : Measurable (fun g : Mt k r => ((Matrix.of g : Mat k r).det)⁻¹)` using `(hc.matrix_det).measurable.inv`. Establish `h2 : Continuous (fun g : Mt k r => Matrix.of.symm (Matrix.of g : Mat k r).adjugate)` using `hc.matrix_adjugate`. Establish `h3 : Measurable (fun g : Mt k r => ((Matrix.of g : Mat k r).det)⁻¹ • Matrix.of.symm (Matrix.of g : Mat k r).adjugate)` using `h1.smul h2.measurable`. Use `h3 using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use function extensionality and compare the values at `g`. Simplify using `only [invM]`. Rewrite using `[Matrix.inv_def, Ring.inverse_eq_inv']`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem bp_meas_inv : Measurable (invM (k := k) (r := r)) := by
   have hc : Continuous (fun g : Mt k r => (Matrix.of g : Mat k r)) := continuous_id
@@ -71,43 +71,43 @@ theorem bp_meas_inv : Measurable (invM (k := k) (r := r)) := by
   rfl
 
 /- English proof (translation)
-Unfold `mulM`. Conclude with `(continuous_fst (X := Mt k r) (Y := Mt k r)).matrix_mul continuous_snd`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem bp_cont_mul : Continuous (mulM (k := k) (r := r)) := by
   unfold mulM
   exact (continuous_fst (X := Mt k r) (Y := Mt k r)).matrix_mul continuous_snd
 
 /- English proof (translation)
-Unfold `gN`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem bp_cont_gN : Continuous (fun g : Mat k r => gN g) := by
   unfold gN; fun_prop
 
 /- English proof (translation)
-The claim follows from `Matrix.isUnit_det_of_left_inverse (ConjugateNormInequalities.UH_left_inv k r hg)`.
+A detailed English derivation is pending.
 -/
 theorem det_unit_G {g : Mat k r} (hg : g ∈ GV k r) : IsUnit g.det :=
   Matrix.isUnit_det_of_left_inverse (ConjugateNormInequalities.UH_left_inv k r hg)
 
 /- English proof (translation)
-The claim follows from `Matrix.nonsing_inv_mul g (det_unit_G hg)`.
+A detailed English derivation is pending.
 -/
 theorem inv_mul_G {g : Mat k r} (hg : g ∈ GV k r) : g⁻¹ * g = 1 := Matrix.nonsing_inv_mul g (det_unit_G hg)
 
 /- English proof (translation)
-The claim follows from `Matrix.mul_nonsing_inv g (det_unit_G hg)`.
+A detailed English derivation is pending.
 -/
 theorem mul_inv_G {g : Mat k r} (hg : g ∈ GV k r) : g * g⁻¹ = 1 := Matrix.mul_nonsing_inv g (det_unit_G hg)
 
 /- English proof (translation)
-The claim follows from `(hCG k r).mul_mem _ hp.2.1 _ hp.1.1`.
+A detailed English derivation is pending.
 -/
 theorem sP_mem {z : Fin (2 * r + k + 1) → ℂ} (hCG : ClosedG) {p : Mt k r × Mt k r} (hp : p ∈ SS z) :
     sP p ∈ GV k r :=
   (hCG k r).mul_mem _ hp.2.1 _ hp.1.1
 
 /- English proof (translation)
-Establish `h1` using `inv_mul_G hq.1.1`. Use `show (Matrix.of q.2 : Mat k r) * ((Matrix.of q.1 : Mat k r) * Matrix.of p.2 * (Matrix.of q.1 : Mat k r)⁻¹) * ((Matrix.of q.1 : Mat k r) * Matrix.of p.1) = Matrix.of q.2 * Matrix.of q.1 * (Matrix.of p.2 * Matrix.of p.1)`. Simplify using `only [mul_assoc]`. Rewrite using `[← mul_assoc ((Matrix.of q.1 : Mat k r)⁻¹), h1, one_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sP_Lq {z : Fin (2 * r + k + 1) → ℂ} {q : Mt k r × Mt k r} (hq : q ∈ SS z) (p : Mt k r × Mt k r) :
     sP (Lq q p) = sP q * sP p := by
@@ -118,14 +118,14 @@ theorem sP_Lq {z : Fin (2 * r + k + 1) → ℂ} {q : Mt k r × Mt k r} (hq : q �
   rw [← mul_assoc ((Matrix.of q.1 : Mat k r)⁻¹), h1, one_mul]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(hCW k r z).mul_mem _ hq.1 _ hp.1, (hCN k r).mul_mem _ hq.2 _ (hUN k r z hz _ hq.1 _ hp.2).1⟩`.
+Supply the required witnesses or components.
 -/
 theorem Lq_mem {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hCW : ClosedW) (hCN : ClosedN) (hUN : UWNormal)
     {q p : Mt k r × Mt k r} (hq : q ∈ SS z) (hp : p ∈ SS z) : Lq q p ∈ SS z :=
   ⟨(hCW k r z).mul_mem _ hq.1 _ hp.1, (hCN k r).mul_mem _ hq.2 _ (hUN k r z hz _ hq.1 _ hp.2).1⟩
 
 /- English proof (translation)
-Establish `hu` using `det_unit_G hp.1.1`. Establish `h1` using `mul_inv_G hp.1.1`. Use `show (Matrix.of p.1 : Mat k r)⁻¹ * (Matrix.of p.2 : Mat k r)⁻¹ * ((Matrix.of p.1 : Mat k r)⁻¹)⁻¹ * (Matrix.of p.1 : Mat k r)⁻¹ = ((Matrix.of p.2 : Mat k r) * Matrix.of p.1)⁻¹`. Rewrite using `[Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv _ hu, mul_assoc, h1, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sP_Iv {z : Fin (2 * r + k + 1) → ℂ} {p : Mt k r × Mt k r} (hp : p ∈ SS z) : sP (Iv p) = (sP p)⁻¹ := by
   have hu := det_unit_G hp.1.1
@@ -135,9 +135,7 @@ theorem sP_Iv {z : Fin (2 * r + k + 1) → ℂ} {p : Mt k r × Mt k r} (hp : p �
   rw [Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv _ hu, mul_assoc, h1, mul_one]
 
 /- English proof (translation)
-Establish `hi : (Matrix.of p.1 : Mat k r)⁻¹ ∈ UWset k r z` using `(hCW k r z).inv_mem _ hp.1`. Use `⟨hi, ?_⟩` and prove the remaining obligations. Establish `h2` using `(hUN k r z hz _ hi _ ((hCN k r).inv_mem _ hp.2)).1`. Establish `e : ((Matrix.of p.1 : Mat k r)⁻¹)⁻¹ = Matrix.of p.1` using `Matrix.nonsing_inv_nonsing_inv _ (det_unit_G hp.1.1)`. Use `show (Matrix.of p.1 : Mat k r)⁻¹ * (Matrix.of p.2 : Mat k r)⁻¹ * ((Matrix.of p.1 : Mat k r)⁻¹)⁻¹ ∈ Nset k r`.
-
-Conclude with `h2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Iv_mem {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hCW : ClosedW) (hCN : ClosedN) (hUN : UWNormal)
     {p : Mt k r × Mt k r} (hp : p ∈ SS z) : Iv p ∈ SS z := by
@@ -149,7 +147,7 @@ theorem Iv_mem {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hCW : Closed
   exact h2
 
 /- English proof (translation)
-Apply `Continuous.measurable` to reduce the goal to its premises. Use `show Continuous fun x : Mat k r => a * x`. Conclude with `continuous_const.matrix_mul continuous_id`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem meas_lmul (a : Mat k r) : Measurable (lmulM (k := k) (r := r) a) := by
   apply Continuous.measurable
@@ -157,7 +155,7 @@ theorem meas_lmul (a : Mat k r) : Measurable (lmulM (k := k) (r := r) a) := by
   exact continuous_const.matrix_mul continuous_id
 
 /- English proof (translation)
-Apply `Continuous.measurable` to reduce the goal to its premises. Use `show Continuous fun x : Mat k r => a * x * a⁻¹`. Conclude with `(continuous_const.matrix_mul continuous_id).matrix_mul continuous_const`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem meas_conj (a : Mat k r) : Measurable (conjM (k := k) (r := r) a) := by
   apply Continuous.measurable
@@ -165,7 +163,7 @@ theorem meas_conj (a : Mat k r) : Measurable (conjM (k := k) (r := r) a) := by
   exact (continuous_const.matrix_mul continuous_id).matrix_mul continuous_const
 
 /- English proof (translation)
-Apply `Continuous.measurable` to reduce the goal to its premises. Use `show Continuous fun x : Mat k r => x * a`. Conclude with `continuous_id.matrix_mul continuous_const`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem meas_rmul (a : Mat k r) : Measurable (rmulF a : Mt k r → Mt k r) := by
   apply Continuous.measurable
@@ -173,19 +171,19 @@ theorem meas_rmul (a : Mat k r) : Measurable (rmulF a : Mt k r → Mt k r) := by
   exact continuous_id.matrix_mul continuous_const
 
 /- English proof (translation)
-The claim follows from `bp_cont_mul.measurable.comp (measurable_snd.prodMk measurable_fst)`.
+A detailed English derivation is pending.
 -/
 theorem meas_sP : Measurable (fun p : Mt k r × Mt k r => mulM (p.2, p.1)) :=
   bp_cont_mul.measurable.comp (measurable_snd.prodMk measurable_fst)
 
 /- English proof (translation)
-Unfold `sP`. Conclude with `(continuous_snd (X := Mt k r) (Y := Mt k r)).matrix_mul continuous_fst`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem cont_sP : Continuous (fun p : Mt k r × Mt k r => (sP p : Mat k r)) := by
   unfold sP; exact (continuous_snd (X := Mt k r) (Y := Mt k r)).matrix_mul continuous_fst
 
 /- English proof (translation)
-Use `measurable_fst.prodMk ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Measurable fun p : Mt k r × Mt k r => mulM (mulM (invM p.1, invM p.2), invM (invM p.1))`. Conclude with `bp_cont_mul.measurable.comp ((bp_cont_mul.measurable.comp ((bp_meas_inv.comp measurable_fst).prodMk (bp_meas_inv.comp measurable_snd))).prodMk (bp_meas_inv.comp (bp_meas_inv.comp measurable_fst)))`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem meas_Sh : Measurable (Sh (k := k) (r := r)) := by
   refine measurable_fst.prodMk ?_
@@ -195,20 +193,20 @@ theorem meas_Sh : Measurable (Sh (k := k) (r := r)) := by
     (bp_meas_inv.comp (bp_meas_inv.comp measurable_fst)))
 
 /- English proof (translation)
-The claim follows from `(bp_cont_mul.measurable.comp (measurable_fst.prodMk (meas_sP.comp measurable_snd))).prodMk measurable_snd`.
+A detailed English derivation is pending.
 -/
 theorem meas_Tm : Measurable (Tm (k := k) (r := r)) :=
   (bp_cont_mul.measurable.comp (measurable_fst.prodMk (meas_sP.comp measurable_snd))).prodMk measurable_snd
 
 /- English proof (translation)
-The claim follows from `((hCW k r z).closed.preimage continuous_fst).inter ((hCN k r).closed.preimage continuous_snd)`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_SS (hCW : ClosedW) (hCN : ClosedN) (z : Fin (2 * r + k + 1) → ℂ) :
     IsClosed (SS (k := k) (r := r) z) :=
   ((hCW k r z).closed.preimage continuous_fst).inter ((hCN k r).closed.preimage continuous_snd)
 
 /- English proof (translation)
-Use `hf.aestronglyMeasurable (μ := μ) hs.measurableSet` as an intermediate fact. Rewrite `this` using `[Measure.restrict_eq_self_of_ae_mem h]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem aesm_of_contOn {α E : Type*} [TopologicalSpace α] [SecondCountableTopology α] [MeasurableSpace α]
     [OpensMeasurableSpace α] [TopologicalSpace E] [TopologicalSpace.PseudoMetrizableSpace E] {μ : Measure α}
@@ -222,7 +220,7 @@ section meas
 variable {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] (D : RealPlaceData k r Wp Wp)
 
 /- English proof (translation)
-Use `bp_sf D.haarW` as an intermediate fact. Use `bp_sf D.haarN` as an intermediate fact. Conclude with `bp_ae_prod_and (bp_ae_mem D.haarW) (bp_ae_mem D.haarN)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ae_SS : ∀ᵐ p ∂(D.μW.prod D.μN), p ∈ SS D.z := by
   have := bp_sf D.haarW
@@ -230,9 +228,9 @@ theorem ae_SS : ∀ᵐ p ∂(D.μW.prod D.μN), p ∈ SS D.z := by
   exact bp_ae_prod_and (bp_ae_mem D.haarW) (bp_ae_mem D.haarN)
 
 /- English proof (translation)
-Use `bp_sf D.haarW` as an intermediate fact. Use `bp_sf D.haarN` as an intermediate fact. Establish `h1 : MeasurePreserving (lmulM (k` using `k) (r := r) (Matrix.of q.1)) D.μW D.μW := ⟨meas_lmul _, D.haarW.left _ hq.1⟩`. Establish `h2 : MeasurePreserving (conjM (k` using `k) (r := r) (Matrix.of q.1)) D.μN D.μN := ⟨meas_conj _, hCI _ (Or.inl hq.1)⟩`. Establish `h3 : MeasurePreserving (lmulM (k` using `k) (r := r) (Matrix.of q.2)) D.μN D.μN := ⟨meas_lmul _, D.haarN.left _ hq.2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h1.prod (h3.comp h2)`.
+A detailed English derivation is pending.
 -/
 theorem mp_Lq (hCI : ConjInv D) {q : Mt k r × Mt k r} (hq : q ∈ SS D.z) :
     MeasurePreserving (Lq q) (D.μW.prod D.μN) (D.μW.prod D.μN) := by
@@ -247,11 +245,11 @@ theorem mp_Lq (hCI : ConjInv D) {q : Mt k r × Mt k r} (hq : q ∈ SS D.z) :
   exact h1.prod (h3.comp h2)
 
 /- English proof (translation)
-Use `bp_sf D.haarW` as an intermediate fact. Use `bp_sf D.haarN` as an intermediate fact. Use `⟨meas_Sh, ?_⟩` and prove the remaining obligations. Use extensionality with `s hs`. Rewrite using `[Measure.map_apply meas_Sh hs, Measure.prod_apply (meas_Sh hs), Measure.prod_apply hs]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [bp_ae_mem D.haarW] with h hh`. Establish `hi : (Matrix.of h : Mat k r)⁻¹ ∈ UWset k r D.z` using `(hCW k r D.z).inv_mem _ hh`. Establish `hm : Measurable fun n : Mt k r => conjM (Matrix.of h : Mat k r)⁻¹ (invM n)` using `(meas_conj _).comp bp_meas_inv`. Establish `e : Prod.mk h ⁻¹' (Sh ⁻¹' s) = (fun n : Mt k r => conjM (Matrix.of h : Mat k r)⁻¹ (invM n)) ⁻¹' (Prod.mk h ⁻¹' s)` using `rfl`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmap : D.μN.map (fun n : Mt k r => conjM (Matrix.of h : Mat k r)⁻¹ (invM n)) = D.μN`. Establish `e2 : (fun n : Mt k r => conjM (Matrix.of h : Mat k r)⁻¹ (invM n)) = conjM (Matrix.of h : Mat k r)⁻¹ ∘ invM` using `rfl`. Rewrite using `[e2, ← Measure.map_map (meas_conj _) bp_meas_inv, hInv k r _ _ (hCN k r) D.haarN]`. Conclude with `hCI _ (Or.inl hi)`. Rewrite using `[e, ← Measure.map_apply hm (measurable_prodMk_left hs), hmap]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mp_Sh (hCI : ConjInv D) (hInv : HaarInv) (hCW : ClosedW) (hCN : ClosedN) :
     MeasurePreserving (Sh (k := k) (r := r)) (D.μW.prod D.μN) (D.μW.prod D.μN) := by
@@ -275,7 +273,7 @@ theorem mp_Sh (hCI : ConjInv D) (hInv : HaarInv) (hCW : ClosedW) (hCN : ClosedN)
   rw [e, ← Measure.map_apply hm (measurable_prodMk_left hs), hmap]
 
 /- English proof (translation)
-Use `bp_sf D.haarW` as an intermediate fact. Use `bp_sf D.haarN` as an intermediate fact. Establish `h1 : MeasurePreserving (invM (k` using `k) (r := r)) D.μW D.μW := ⟨bp_meas_inv, hInv k r _ _ (hCW k r D.z) D.haarW⟩`. Conclude with `(h1.prod (MeasurePreserving.id D.μN)).comp (mp_Sh D hCI hInv hCW hCN)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mp_Iv (hCI : ConjInv D) (hInv : HaarInv) (hCW : ClosedW) (hCN : ClosedN) :
     MeasurePreserving (Iv (k := k) (r := r)) (D.μW.prod D.μN) (D.μW.prod D.μN) := by
@@ -286,9 +284,9 @@ theorem mp_Iv (hCI : ConjInv D) (hInv : HaarInv) (hCW : ClosedW) (hCN : ClosedN)
   exact (h1.prod (MeasurePreserving.id D.μN)).comp (mp_Sh D hCI hInv hCW hCN)
 
 /- English proof (translation)
-Use `bp_sf D.haarW` as an intermediate fact. Use `bp_sf D.haarN` as an intermediate fact. Use `bp_sf D.haarG` as an intermediate fact. Use `⟨meas_Tm, ?_⟩` and prove the remaining obligations. Use extensionality with `s hs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Rewrite using `[Measure.map_apply meas_Tm hs, Measure.prod_apply_symm (meas_Tm hs), Measure.prod_apply_symm hs]`. Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [ae_SS D] with q hq`. Establish `e : (fun x : Mt k r => (x, q)) ⁻¹' (Tm ⁻¹' s) = rmulF (sP q) ⁻¹' ((fun x : Mt k r => (x, q)) ⁻¹' s)` using `rfl`. Rewrite using `[e, ← Measure.map_apply (meas_rmul _) (measurable_prodMk_right hs), D.haarG.right _ (sP_mem hCG hq)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mp_Tm (hCG : ClosedG) :
     MeasurePreserving (Tm (k := k) (r := r)) (D.μG.prod (D.μW.prod D.μN)) (D.μG.prod (D.μW.prod D.μN)) := by
@@ -312,13 +310,13 @@ variable {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] (D : Rea
 def PiO (p : Mt k r × Mt k r) : Wp →L[ℂ] Wp := psiD D (Matrix.of p.2) • D.π (Matrix.of p.1)
 
 /- English proof (translation)
-Unfold `psiD psi`. Conclude with `Complex.norm_exp_I_mul_ofReal _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem norm_psiD (m : Mat k r) : ‖psiD D m‖ = 1 := by
   unfold psiD psi; exact Complex.norm_exp_I_mul_ofReal _
 
 /- English proof (translation)
-Unfold `psiD psi`. Rewrite using `[hEA k r D.z D.z_mem m hm m' hm', mul_add, Complex.add_re, Complex.ofReal_add, mul_add, Complex.exp_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem psiD_mul (hEA : EllAdd) {m m' : Mat k r} (hm : m ∈ Nset k r) (hm' : m' ∈ Nset k r) :
     psiD D (m * m') = psiD D m * psiD D m' := by
@@ -326,20 +324,20 @@ theorem psiD_mul (hEA : EllAdd) {m m' : Mat k r} (hm : m ∈ Nset k r) (hm' : m'
   rw [hEA k r D.z D.z_mem m hm m' hm', mul_add, Complex.add_re, Complex.ofReal_add, mul_add, Complex.exp_add]
 
 /- English proof (translation)
-Unfold `psiD psi`. Rewrite using `[(hUN k r D.z D.z_mem h hh m hm).2]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem psiD_conj (hUN : UWNormal) {h m : Mat k r} (hh : h ∈ UWset k r D.z) (hm : m ∈ Nset k r) :
     psiD D (h * m * h⁻¹) = psiD D m := by
   unfold psiD psi; rw [(hUN k r D.z D.z_mem h hh m hm).2]
 
 /- English proof (translation)
-The claim follows from `LinearIsometry.inner_map_map ⟨(D.π h).toLinearMap, fun v => D.π_unitary h hh v⟩ a b`.
+A detailed English derivation is pending.
 -/
 theorem inner_pi {h : Mat k r} (hh : h ∈ UWset k r D.z) (a b : Wp) : ⟪D.π h a, D.π h b⟫_ℂ = ⟪a, b⟫_ℂ :=
   LinearIsometry.inner_map_map ⟨(D.π h).toLinearMap, fun v => D.π_unitary h hh v⟩ a b
 
 /- English proof (translation)
-Simplify using `only [PiO, ContinuousLinearMap.smul_apply, inner_smul_left, inner_smul_right, inner_pi D hq.1]`. Establish `h2 : psiD D (Matrix.of q.2) * starRingEnd ℂ (psiD D (Matrix.of q.2)) = 1`. Rewrite using `[RCLike.mul_conj, norm_psiD]`. Simplify using the standard rewrite rules. Rewrite using `[← mul_assoc, h2, one_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem inner_PiO {q : Mt k r × Mt k r} (hq : q ∈ SS D.z) (a b : Wp) : ⟪PiO D q a, PiO D q b⟫_ℂ = ⟪a, b⟫_ℂ := by
   simp only [PiO, ContinuousLinearMap.smul_apply, inner_smul_left, inner_smul_right, inner_pi D hq.1]
@@ -348,15 +346,15 @@ theorem inner_PiO {q : Mt k r × Mt k r} (hq : q ∈ SS D.z) (a b : Wp) : ⟪PiO
   rw [← mul_assoc, h2, one_mul]
 
 /- English proof (translation)
-Simplify using `only [PiO, ContinuousLinearMap.smul_apply, norm_smul, norm_psiD, D.π_unitary _ hq.1, one_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem norm_PiO {q : Mt k r × Mt k r} (hq : q ∈ SS D.z) (a : Wp) : ‖PiO D q a‖ = ‖a‖ := by
   simp only [PiO, ContinuousLinearMap.smul_apply, norm_smul, norm_psiD, D.π_unitary _ hq.1, one_mul]
 
 /- English proof (translation)
-Establish `h1 : (Matrix.of q.1 : Mat k r) * Matrix.of p.2 * (Matrix.of q.1 : Mat k r)⁻¹ ∈ Nset k r` using `(hUN k r D.z D.z_mem _ hq.1 _ hp.2).1`. Establish `e1 : psiD D (Matrix.of (Lq q p).2) = psiD D (Matrix.of q.2) * psiD D (Matrix.of p.2)` using `by show psiD D ((Matrix.of q.2 : Mat k r) * ((Matrix.of q.1 : Mat k r) * Matrix.of p.2 * (Matrix.of q.1 : Mat k r)⁻¹)) = _`. Rewrite using `[psiD_mul D hEA hq.2 h1, psiD_conj D hUN hq.1 hp.2]`. Establish `e2 : D.π (Matrix.of (Lq q p).1) = (D.π (Matrix.of q.1)).comp (D.π (Matrix.of p.1))` using `D.π_rep.2 _ hq.1 _ hp.1`. Simplify using `only [PiO, ContinuousLinearMap.smul_apply, e1, e2, ContinuousLinearMap.comp_apply, map_smul, smul_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem PiO_Lq (hEA : EllAdd) (hUN : UWNormal) {q p : Mt k r × Mt k r} (hq : q ∈ SS D.z) (hp : p ∈ SS D.z)
     (a : Wp) : PiO D (Lq q p) a = PiO D q (PiO D p a) := by
@@ -371,7 +369,7 @@ theorem PiO_Lq (hEA : EllAdd) (hUN : UWNormal) {q p : Mt k r × Mt k r} (hq : q 
   rw [mul_comm]
 
 /- English proof (translation)
-Unfold `ell`. Use `continuous_finsetSum _ fun a _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : a.val + 1 < r`. Simplify using `only [h, dif_pos] fun_prop`. Simplify using `only [h, dif_neg, not_false_eq_true, mulVec, dotProduct] fun_prop`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem cont_ell (z : Fin (2 * r + k + 1) → ℂ) : Continuous (ell k r z) := by
   unfold ell
@@ -383,7 +381,7 @@ theorem cont_ell (z : Fin (2 * r + k + 1) → ℂ) : Continuous (ell k r z) := b
     fun_prop
 
 /- English proof (translation)
-Unfold `psiD psi`. Conclude with `Complex.continuous_exp.comp (continuous_const.mul (Complex.continuous_ofReal.comp (Complex.continuous_re.comp (continuous_const.mul (cont_ell _)))))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem cont_psiD : Continuous (psiD D) := by
   unfold psiD psi
@@ -391,7 +389,7 @@ theorem cont_psiD : Continuous (psiD D) := by
     (Complex.continuous_re.comp (continuous_const.mul (cont_ell _)))))
 
 /- English proof (translation)
-Establish `h1 : ContinuousOn (fun p : Mt k r × Mt k r => D.π (Matrix.of p.1) a) (SS D.z)`. Establish `h0 : ContinuousOn (fun m : Mat k r => D.π m a) (UWset k r D.z)` using `D.π_cont.clm_apply continuousOn_const`. Conclude with `h0.comp continuous_fst.continuousOn fun p hp => hp.1`. Establish `h2 : Continuous fun p : Mt k r × Mt k r => psiD D (Matrix.of p.2)` using `(cont_psiD D).comp continuous_snd`. Conclude with `h2.continuousOn.smul h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem contOn_PiO (a : Wp) : ContinuousOn (fun p : Mt k r × Mt k r => PiO D p a) (SS D.z) := by
   have h1 : ContinuousOn (fun p : Mt k r × Mt k r => D.π (Matrix.of p.1) a) (SS D.z) := by

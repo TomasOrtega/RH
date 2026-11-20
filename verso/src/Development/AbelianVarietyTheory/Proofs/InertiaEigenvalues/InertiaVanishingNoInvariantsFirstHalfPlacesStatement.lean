@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.VecPairApply
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.MainNotions.BlochKatoReduction Formalism.MainNotions.BlochKatoReduction.Gen GlobalTheory.TwSys GlobalTheory.SelFun GlobalTheory.Published GlobalTheory.ResSel GlobalTheory.StepTwo GlobalTheory.TwistDet GlobalTheory.NewPrime GlobalTheory.Published.PoitouTate
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.StageFirst.firstHalf` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FInertiaVanishingNoInvariantsFirstHalfPlaces.lean&line=76#L76)
 -/

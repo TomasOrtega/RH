@@ -14,7 +14,7 @@ noncomputable instance fintypeDoubleCosetQuotient [Finite G] :
   @Fintype.ofFinite _ (Quotient.finite (DoubleCoset.setoid (T : Set G) S))
 
 /- English proof (translation)
-Rewrite using `[Subgroup.mem_inf, Subgroup.mem_pointwise_smul_iff_inv_smul_mem, ← map_inv, MulAut.smul_def, MulAut.conj_apply, inv_inv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma mem_inf_conj_smul_iff (g x : G) :
     x ∈ T ⊓ (MulAut.conj g • S : Subgroup G) ↔ x ∈ T ∧ g⁻¹ * x * g ∈ S := by

@@ -18,9 +18,9 @@ namespace GlobalTheory.SeeSawStep
 variable {D : D7}
 
 /- English proof (translation)
-Simplify using `only [BesLev.per, besPer, besFun, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[← integral_const_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `n`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem per_smul_right {ρ : ℕ} (B : BesLev D ρ) (ψ : AddChar (AF D.host.F) ℂ) (φ : GA D B.A → ℂ) (b : ℂ) (f : GA D B.V → ℂ) :
     B.per ψ φ (b • f) = b * B.per ψ φ f := by
@@ -31,9 +31,9 @@ theorem per_smul_right {ρ : ℕ} (B : BesLev D ρ) (ψ : AddChar (AF D.host.F) 
   congr 1; funext n; ring
 
 /- English proof (translation)
-Simplify using `only [BesLev.per, besPer, besFun, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[← integral_const_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `n`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem per_smul_left {ρ : ℕ} (B : BesLev D ρ) (ψ : AddChar (AF D.host.F) ℂ) (a : ℂ) (φ : GA D B.A → ℂ) (f : GA D B.V → ℂ) :
     B.per ψ (a • φ) f = a * B.per ψ φ f := by
@@ -44,7 +44,7 @@ theorem per_smul_left {ρ : ℕ} (B : BesLev D ρ) (ψ : AddChar (AF D.host.F) �
   congr 1; funext n; ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `only [trc, rTrans, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun x _ => by ring` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem trc_smul {V : HSp D} (e : GA D V →₀ ℂ) (b : ℂ) (f : GA D V → ℂ) : trc e (b • f) = b • trc e f := by
   funext g
@@ -52,7 +52,7 @@ theorem trc_smul {V : HSp D} (e : GA D V →₀ ℂ) (b : ℂ) (f : GA D V → �
   refine Finset.sum_congr rfl fun x _ => by ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `only [liftS_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -64,9 +64,9 @@ theorem liftS_smul {S T : HSp D} (om : Om S T) (ν : Measure (GA D T)) (𝓕 : S
   congr 1; funext x; ring
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `hF`. Use `⟨fun γ hγ g => by simp only [Pi.smul_apply, h1 γ hγ g], h2.const_smul b, fun N => ?_⟩` and prove the remaining obligations. Take `⟨C, hC⟩` from `h3 N`. Use `⟨‖b‖ * C, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, norm_smul, mul_assoc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul_of_nonneg_left (hC g) (norm_nonneg b)`.
+A detailed English derivation is pending.
 -/
 theorem rapidDec_smul {V : HSp D} (b : ℂ) (F : GA D V → ℂ) (hF : RapidDec V F) : RapidDec V (b • F) := by
   obtain ⟨h1, h2, h3⟩ := hF
@@ -77,12 +77,12 @@ theorem rapidDec_smul {V : HSp D} (b : ℂ) (F : GA D V → ℂ) (hF : RapidDec 
   exact mul_le_mul_of_nonneg_left (hC g) (norm_nonneg b)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ _ => rfl, continuous_const⟩`.
+Supply the required witnesses or components.
 -/
 theorem contAut_zero (V : HSp D) : IsContAut V (fun _ => (0 : ℂ)) := ⟨fun _ _ _ => rfl, continuous_const⟩
 
 /- English proof (translation)
-Simplify using `only [Tup.perF, trc_smul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun x _ => per_smul_right _ _ _ _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem perF_smul {c : Comm D} (tt : Tup c) (n ρ : ℕ) (h : n + 2 * ρ + 2 = D.R.m) (φ : tt.Ch n → GA D (c.X n) → ℂ) (b : ℂ)
     (f : GA D (c.V n) → ℂ) : tt.perF n ρ h φ (b • f) = b * tt.perF n ρ h φ f := by
@@ -90,9 +90,9 @@ theorem perF_smul {c : Comm D} (tt : Tup c) (n ρ : ℕ) (h : n + 2 * ρ + 2 = D
   exact Finset.sum_congr rfl fun x _ => per_smul_right _ _ _ _ _
 
 /- English proof (translation)
-Establish `e : ∀ β, (c.B n ρ h).per c.ψ (k • ∑ y' ∈ co.support, co y' • φ β y') (trc (tt.e n β) f) = k * ∑ y' ∈ co.support, co y' * (c.B n ρ h).per c.ψ (φ β y') (trc (tt.e n β) f)`. Introduce `β`. Establish `hT : IsContAut _ (trc (tt.e n β) f)` using `(((GlobalTheory.T.besselPeriod_linear_and_translationCombination D c.ψ hc.std ρ (c.B n ρ h) (fun _ => 0) (contAut_zero _)).2 (tt.e n β) f hf).1)`. Rewrite using `[per_smul_left]`. Use `congr 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `hPS c.ψ hc.std ρ (c.B n ρ h) (trc (tt.e n β) f) hT (c.Fr n) co.support co (fun y' => φ β y') (fun y' _ => hφ β y')`. Simplify using `only [Tup.perF, e]`. Rewrite using `[← Finset.mul_sum, Finset.sum_comm]`. Simplify using `only [Finset.mul_sum]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem perF_comb (hPS : PerSum D) {c : Comm D} (hc : c.Is) (tt : Tup c) (n ρ : ℕ) (h : n + 2 * ρ + 2 = D.R.m) (k : ℂ)
     (co : c.Fr n →₀ ℂ) (φ : tt.Ch n → c.Fr n → GA D (c.X n) → ℂ) (hφ : ∀ β y, IsContAut (c.X n) (φ β y))
@@ -114,23 +114,23 @@ theorem perF_comb (hPS : PerSum D) {c : Comm D} (hc : c.Is) (tt : Tup c) (n ρ :
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `hHC D c 𝒯 t hDS hRV hVM hPS hc ht hloc hVal hTwo hRd`. Introduce `j σ h I _ s α ψ G hψ hvan y v`. Take `⟨χ0, hχ0⟩` from `hRd j (by omega)`. Establish `hφ : ∀ i a, IsContAut (c.X j) ((t (s i)).rd j a (ψ i) y)` using `fun i a => (hχ0 (s i) (ψ i) (hψ i) a y).1`. Establish `hspan : GlobalTheory.Core.Mi.ItSpans (c.M (j + 1)) (c.M (j + 1 + 1)) (c.It (j + 1))` using `hc.span (j + 1) (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Tup.per]`. Use `GlobalTheory.T.period_linear_relation_density_of_unfolding_steps hHC D c 𝒯 t hc j (σ + 1) h I s (fun i => α i * ((t (s i)).cI j * (t (s i)).cI (j + 1))) (fun i a => (t (s i)).rd j a (ψ i) y) (fun i => (t (s i)).io j ((t (s i)).io (j + 1) (G i))) ht hφ (c.V (j + 1 + 1)) (c.V (j + …` and prove the remaining obligations. Introduce `P₁ P₂ v''`. Establish `key : ∀ i, ((t (s i)).cI j * (t (s i)).cI (j + 1)) • ((t (s i)).io j ((t (s i)).io (j + 1) (G i))).1 (c.It j P₁ (c.It (j + 1) P₂ v'')) = liftS ((t (s i)).om j) (c.vol (j + 1)).μ (c.vol (j + 1)).𝓕 (liftS ((t (s i)).om (j + 1)) (c.vol (j + 1 + 1)).μ (c.vol (j + 1 + 1)).𝓕 ((G i).1 v …`. Introduce `i`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[(ht (s i)).io (j + 1) (by omega) (G i) P₂ v'', liftS_smul, (ht (s i)).io j (by omega) _ P₁ _, smul_smul, mul_comm]`. Establish `e : ∀ i, α i * ((t (s i)).cI j * (t (s i)).cI (j + 1)) * (t (s i)).perF j (σ + 1) h (fun a => (t (s i)).rd j a (ψ i) y) (((t (s i)).io j ((t (s i)).io (j + 1) (G i))).1 (c.It j P₁ (c.It (j + 1) P₂ v''))) = α i * (t (s i)).perF j (σ + 1) h (fun a => (t (s i)).rd j a (ψ i) y) (lift …`. Introduce `i`. Rewrite using `[← key i, perF_smul, mul_assoc]`. Rewrite using `[Finset.sum_congr rfl fun i _ => e i]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hR0 : ∀ i, RapidDec _ ((G i).1 v'')`. Introduce `i`. Take `⟨J, χ, hJ⟩` from `(ht (s i)).CC (j + 1 + 1) (by omega)`. Conclude with `hRV c.θ hc.inf _ _ (c.M (j + 1 + 1)) J χ (G i).1 (hJ (G i).2) v''`. Establish `hR1 : ∀ i, RapidDec _ (liftS ((t (s i)).om (j + 1)) (c.vol (j + 1 + 1)).μ (c.vol (j + 1 + 1)).𝓕 ((G i).1 v'') ((t (s i)).pt (j + 1) P₂))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Rewrite using `[(ht (s i)).io (j + 1) (by omega) (G i) P₂ v'']`. Take `⟨J, χ, hJ⟩` from `(ht (s i)).CC (j + 1) (by omega)`. Conclude with `rapidDec_smul _ _ (hRV c.θ hc.inf _ _ (c.M (j + 1)) J χ _ (hJ ((t (s i)).io (j + 1) (G i)).2) _)`. Use `GlobalTheory.T.seeSaw_periods_linearRelations_doubleStep D c 𝒯 t hDS hc ht hloc j σ h P₁ P₂ I s α (fun i a => (t (s i)).rd j a (ψ i) y) (fun i => (G i).1 v'') hφ hR0 hR1 ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `a ha a' ha'`. Take `⟨C, hC, hCe⟩` from `hVal j σ h P₁ P₂ a ha a' ha'`. Take `⟨co, hco⟩` from `hTwo j (by omega) C hC y`. Take `⟨sm, hsm⟩` from `GlobalTheory.RealTransSm.rTrans_eq_map D c.θ (c.V (j + 1 + 1)) (c.par (j + 1 + 1)) (c.M (j + 1 + 1)) hc.inf a' ha'`. Use `⟨fun i => (t (s i)).cV j * (t (s i)).perF (j + 1 + 1) σ (idx_step h) ((t (s i)).two j (fun a => (t (s i)).rd j a ((t (s i)).S j (ψ i)) y) C) (rTrans a' ((G i).1 v'')), fun i => hCe (s i) (ψ i) (hψ i) y (G i) v'', ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨χ2, hχ2⟩` from `hRd (j + 1 + 1) (by omega)`. Establish `hψ'' : ∀ i, (t (s i)).K (j + 1) ((t (s i)).K j ((t (s i)).S j (ψ i))) ∈ (t (s i)).Ram (j + 1 + 1)` using `fun i => (ht (s i)).stabK (j + 1) (by omega) _ ((ht (s i)).stabK j (by omega) _ ((ht (s i)).stabS j (by omega) _ (hψ i)))`. Establish `term : ∀ i, α i * ((t (s i)).cV j * (t (s i)).perF (j + 1 + 1) σ (idx_step h) ((t (s i)).two j (fun a => (t (s i)).rd j a ((t (s i)).S j (ψ i)) y) C) (rTrans a' ((G i).1 v''))) = ∑ y' ∈ co.support, co y' * (α i * ((t (s i)).cV j * (t (s i)).cK j * (t (s i)).cK (j + 1)) * (t (s i) …`. Introduce `i`. Take `⟨J, χ, hJ⟩` from `(ht (s i)).CC (j + 1 + 1) (by omega)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw : rTrans a' ((G i).1 v'') = (G i).1 (sm v'')` using `(hsm J χ (G i).1 (hJ (G i).2) v'').symm`. Establish `htwo : (t (s i)).two j (fun a => (t (s i)).rd j a ((t (s i)).S j (ψ i)) y) C = fun β => ((t (s i)).cK j * (t (s i)).cK (j + 1)) • ∑ y' ∈ co.support, co y' • (t (s i)).rd (j + 1 + 1) β ((t (s i)).K (j + 1) ((t (s i)).K j ((t (s i)).S j (ψ i)))) y'`. Use function extensionality and compare the values at `(hco (s i) _ ((ht (s i)).stabS j (by omega) _ (hψ i)))`. Establish `hGw : RapidDec _ ((G i).1 (sm v''))` using `hRV c.θ hc.inf _ _ (c.M (j + 1 + 1)) J χ (G i).1 (hJ (G i).2) _`. Rewrite using `[hw, htwo, perF_comb hPS hc _ _ _ _ _ co _ (fun β y' => (hχ2 (s i) _ (hψ'' i) β y').1) _ ⟨hGw.1, hGw.2.1⟩]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Tup.per, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun y' _ => by ring` and prove the remaining obligations. Rewrite using `[Finset.sum_congr rfl fun i _ => term i, Finset.sum_comm]`. Use `Finset.sum_eq_zero fun y' _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.mul_sum, hvan y' (sm v''), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stepX_of_laws : GlobalTheory.Published.HarishChandraModules → ∀ (D : D7) (c : Comm D) (𝒯 : Type) (t : 𝒯 → Tup c), DoubleStep D →
     RapidVal D → ValMove D → PerSum D → c.Is → (∀ s, (t s).Is) → (∀ s, (t s).LocFin) → ValX t → TwoX t → RdX t → StepX t := by

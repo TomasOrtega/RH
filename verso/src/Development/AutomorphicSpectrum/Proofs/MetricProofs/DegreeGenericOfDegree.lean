@@ -16,7 +16,7 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 namespace GlobalTheory.CompanionTheory.Ar.Giv
 
 /- English proof (translation)
-Introduce `hDeg K _ _ ι _ P e L hP hL`. Rewrite using `[hDeg K ι P e L 2 hP hL Nat.prime_two, GroundTheory.Heights₂.Heights.Targets.FibreDegreeSum.proof K ι P e (fun j => (L j).a) 2 hP Nat.prime_two, finsum_mem_eq_finite_toFinset_sum _ (divSupp_finite P _), finsum_mem_eq_finite_toFinset_sum _ (divSupp_finite P _)]`. Use `push_cast`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem degreeGeneric_of_degree :
     ReciprocityTheory.ChartRestriction.G.Geo.DegreeStatement → GroundTheory.Heights₂.Heights.Inter.DegreeGeneric.Statement := by

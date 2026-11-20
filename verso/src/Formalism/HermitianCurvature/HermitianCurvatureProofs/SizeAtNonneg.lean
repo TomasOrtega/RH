@@ -10,9 +10,9 @@ open Formalism.FourierDecayAlt
 noncomputable section
 
 /- English proof (translation)
-Use `⟨fun x => mul_nonneg (ha.1 _) (hb.1 _), fun x hx => ?_, ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[Finset.mem_product, not_and_or]`. Break down `hx with h | h` into its components or cases. Simplify using `[ha.2.1 _ h]`. Simplify using `[hb.2.1 _ h]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_product]`. Repeatedly rewrite using `[← Finset.mul_sum, hb.2.2, mul_one]`. Conclude with `ha.2.2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pair_prob {W : Type} {s t : Finset W} {a b : W → ℝ} (ha : TB.IsProb s a) (hb : TB.IsProb t b) :
     TB.IsProb (s ×ˢ t) (fun x => a x.1 * b x.2) := by
@@ -26,9 +26,9 @@ theorem pair_prob {W : Type} {s t : Finset W} {a b : W → ℝ} (ha : TB.IsProb 
     exact ha.2.2
 
 /- English proof (translation)
-Establish `key : ∀ x, ∑ y ∈ t, a x * b y * ((f x + g y) / 2) = (a x * f x + a x * ∑ y ∈ t, b y * g y) / 2`. Introduce `x`. Establish `split : ∀ y, a x * b y * ((f x + g y) / 2) = (a x * f x / 2) * b y + (a x / 2) * (b y * g y)`. Introduce `y`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Expand and normalize the polynomial expressions, which then agree.
 
-Repeatedly rewrite using `[split, Finset.sum_add_distrib, ← Finset.mul_sum, hb]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_product]`. Repeatedly rewrite using `[key]`. Rewrite using `[← Finset.sum_div, Finset.sum_add_distrib, ← Finset.sum_mul, ha]`.
+Rewrite the conclusion repeatedly using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -50,9 +50,9 @@ theorem sum_pair {W : Type} (s t : Finset W) (a b f g : W → ℝ) (hb : ∑ y �
   ring
 
 /- English proof (translation)
-Repeatedly rewrite using `[Finset.mul_sum]`. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun h _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun w _ => Finset.sum_congr rfl fun h' _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem mix_sum {X W : Type} (Y : Finset X) (Ws : Finset W) (κ : X → X → ℂ) (c : ℂ) (p : W → ℂ)
     (G : W → X → X → ℂ) :
@@ -70,7 +70,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Wp Wq : InfinitePla
   [∀ x, InnerProductSpace ℂ (Wq x)] (S : C.HidaSetting E Wp Wq)
 
 /- English proof (translation)
-Use `show (S.pl v) x = ‖S.emb v x‖`. Rewrite using `[← S.hemb v]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem av_eq (v : Fin S.f) (x : E) : S.base.av v x = ‖S.σ v x‖ := by
   show (S.pl v) x = ‖S.emb v x‖
@@ -78,21 +78,21 @@ theorem av_eq (v : Fin S.f) (x : E) : S.base.av v x = ‖S.σ v x‖ := by
   rfl
 
 /- English proof (translation)
-Simplify using `only [C.loc, TB.join, List.map_append, List.map_cons, List.map_nil]`.
+Simplify using the standard rewrite rules.
 -/
 theorem loc_join (σ : E →+* ℂ) (h : TB.Pt E) (s : ℕ) (t : E) :
     C.loc σ (TB.join h s t) = C.loc σ h ++ [(s, σ t)] := by
   simp only [C.loc, TB.join, List.map_append, List.map_cons, List.map_nil]
 
 /- English proof (translation)
-Simplify using `only [D.ptSize, C.loc, TB.level, List.map_map]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem ptSize_loc (σ : E →+* ℂ) (h : TB.Pt E) : D.ptSize (C.loc σ h) = TB.level h := by
   simp only [D.ptSize, C.loc, TB.level, List.map_map]
   rfl
 
 /- English proof (translation)
-Unfold `C.HidaSetting.sizeAt`. Apply `List.prod_nonneg` to reduce the goal to its premises. Introduce `x hx`. Take `⟨y, _, rfl⟩` from `List.mem_map.mp hx`. Conclude with `abs_nonneg _`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sizeAt_nonneg (v : Fin S.f) (a : List C.Letter) : 0 ≤ S.sizeAt v a := by
   unfold C.HidaSetting.sizeAt
@@ -102,9 +102,9 @@ theorem sizeAt_nonneg (v : Fin S.f) (a : List C.Letter) : 0 ≤ S.sizeAt v a := 
   exact abs_nonneg _
 
 /- English proof (translation)
-Establish `h` using `hpos v ε hε i hi w0 Y`. Unfold `TB.PSDOn at h ⊢`. Establish `heq : (Matrix.of fun x y : Y => KB.gN S v ε i (w0.1 v) x y) = (((S.sizeAt v (w0.1 v))⁻¹ : ℝ) : ℂ) • Matrix.of fun x y : Y => S.gramLoc v ε i (w0.1 v) x y`. Use extensionality with `x y`. Simplify using `only [Matrix.smul_apply, Matrix.of_apply, smul_eq_mul, KB.gN, div_eq_inv_mul, Complex.ofReal_inv]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[heq]`. Conclude with `h.smul (Complex.zero_le_real.mpr (inv_nonneg.mpr (sizeAt_nonneg S v _)))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gN_psd (hpos : C.ThmPPos S) (v : Fin S.f) {ε : ℝ} (hε : 0 < ε) {i : ℕ} (hi : i ≤ S.G.r + 1) (w0 : S.W)
     (Y : Finset C.LPt) : TB.PSDOn Y (KB.gN S v ε i (w0.1 v)) := by
@@ -119,7 +119,7 @@ theorem gN_psd (hpos : C.ThmPPos S) (v : Fin S.f) {ε : ℝ} (hε : 0 < ε) {i :
   exact h.smul (Complex.zero_le_real.mpr (inv_nonneg.mpr (sizeAt_nonneg S v _)))
 
 /- English proof (translation)
-Establish `hsz : ((C.Word.size S.P w.1 : ℝ) : ℂ) = ∏ v, ((S.sizeAt v (w.1 v) : ℝ) : ℂ)`. Rewrite using `[← Complex.ofReal_prod]`. Both sides reduce to the same expression. Use `show (∑ h ∈ Y, ∑ h' ∈ Y, κ h h' * S.gram ε i w.1 (TB.join h s t) (TB.join h' s t')) / ((C.Word.size S.P w.1 : ℝ) : ℂ) = _`. Simplify using `only [C.HidaSetting.gram, if_pos hi, loc_join, KB.gN, Finset.prod_div_distrib, hsz, Finset.sum_div, mul_div_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Nst_eq {ε : ℝ} {i : ℕ} (hi : i ≤ S.G.r + 1) (s : ℕ) (w : S.W) (Y : Finset (TB.Pt E))
     (κ : TB.Pt E → TB.Pt E → ℂ) (t t' : E) :

@@ -11,7 +11,7 @@ section
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual UpperTheory.V UpperTheory.V.Base
 
 /- English proof (translation)
-Rewrite using `[← MulEquiv.prime_iff Rat.ringOfIntegersEquiv, map_natCast]`. Conclude with `Nat.prime_iff_prime_int.mp hl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem prime_l {l : ℕ} (hl : l.Prime) : Prime ((l : ℕ) : 𝓞 ℚ) := by
   rw [← MulEquiv.prime_iff Rat.ringOfIntegersEquiv, map_natCast]
@@ -23,9 +23,9 @@ private noncomputable def vQ {l : ℕ} (hl : l.Prime) : Pl where
   ne_bot := by rw [Ne, Ideal.span_singleton_eq_bot]; exact (prime_l hl).ne_zero
 
 /- English proof (translation)
-Establish `hI : (Ideal.span {((n : ℕ) : 𝓞 ℚ)} : Ideal (𝓞 ℚ)) ≠ 0`. Rewrite using `[ne_eq, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hn` after adjusting the coercions. Use `(Ideal.finite_factors hI).subset ?_` and prove the remaining obligations. Introduce `v hv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_setOf_eq] at hv ⊢`. Rewrite using `[Ideal.dvd_iff_le, Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `hv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem fin_above {n : ℕ} (hn : n ≠ 0) : {v : Pl | ((n : ℕ) : 𝓞 ℚ) ∈ v.asIdeal}.Finite := by
   have hI : (Ideal.span {((n : ℕ) : 𝓞 ℚ)} : Ideal (𝓞 ℚ)) ≠ 0 := by
@@ -38,11 +38,11 @@ private theorem fin_above {n : ℕ} (hn : n ≠ 0) : {v : Pl | ((n : ℕ) : 𝓞
   exact hv
 
 /- English proof (translation)
-Take `⟨hopen, -, -, -, hine⟩` from `Chr.clsFacts ℚ Ω M`. Take `⟨-, -, -, hpl⟩` from `Kum.placeDict ℚ Ω`. Establish `hle : NS Ω S ≤ (Chr.cls ℚ Ω M).ker`. Apply `Subgroup.topologicalClosure_minimal _ _ (Subgroup.isClosed_of_isOpen _ hopen)` to reduce the goal to its premises. Apply `Subgroup.normalClosure_le_normal` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `σ hσ`. Simplify using `only [Set.mem_iUnion, Set.mem_setOf_eq, Set.mem_compl_iff] at hσ`. Take `⟨v, hv, A, hA, hσA⟩` from `hσ`. Establish `hn : ¬ A.valuation ((M : ℕ) : Ω) < 1`. Rewrite using `[hpl A v M hA]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hS v hv`. Conclude with `hine A hn hσA`. Conclude with `⟨QuotientGroup.lift (NS Ω S) (Chr.cls ℚ Ω M) hle, QuotientGroup.lift_comp_mk' _ _ _⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem cls_exists (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (M : ℕ) [NeZero M] (S : Set Pl)
     (hS : ∀ v ∉ S, ((M : ℕ) : 𝓞 ℚ) ∉ v.asIdeal) :
@@ -62,7 +62,7 @@ private theorem cls_exists (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure �
   exact ⟨QuotientGroup.lift (NS Ω S) (Chr.cls ℚ Ω M) hle, QuotientGroup.lift_comp_mk' _ _ _⟩
 
 /- English proof (translation)
-Take `⟨σ, j, hj⟩` from `exists_isConjOm (E := ℚ) (Ω := Ω)`. Conclude with `⟨AlgEquiv.ofRingEquiv (f := σ) (fun q => by simp), j, fun x => hj x⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem cc_exists (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] : ∃ σ : G ℚ Ω, IsCC σ := by
   obtain ⟨σ, j, hj⟩ := exists_isConjOm (E := ℚ) (Ω := Ω)
@@ -71,23 +71,21 @@ private theorem cc_exists (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ
 end
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ c N _ e ψ o₁ hd`. Establish `hl : l.Prime` using `Fact.out`. Establish `hlN : l * N ≠ 0` using `Nat.mul_ne_zero hl.ne_zero (NeZero.ne N)`. Use `set S : Finset Pl := (fin_above hlN).toFinset with hSdef`. Establish `hmem : ∀ v : Pl, v ∈ S ↔ (((l * N : ℕ)) : NumberField.RingOfIntegers ℚ) ∈ v.asIdeal` using `fun v => Set.Finite.mem_toFinset _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hout : ∀ m : ℕ, m ∣ l * N → ∀ v ∉ (S : Set Pl), ((m : ℕ) : NumberField.RingOfIntegers ℚ) ∉ v.asIdeal`. Introduce `m hm v hv hmv`. Apply `hv` to reduce the goal to its premises. Rewrite using `[Finset.mem_coe, hmem]`. Take `⟨k, hk⟩` from `hm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hk, Nat.cast_mul]`. Conclude with `v.asIdeal.mul_mem_right _ hmv`. Establish `h4 : ∀ v ∉ (S : Set Pl), ((4 : ℕ) : NumberField.RingOfIntegers ℚ) ∉ v.asIdeal`. Introduce `v hv h4v`. Establish `h2 : ((2 : ℕ) : NumberField.RingOfIntegers ℚ) ∈ v.asIdeal`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h22 : ((4 : ℕ) : NumberField.RingOfIntegers ℚ) = ((2 : ℕ) : NumberField.RingOfIntegers ℚ) * ((2 : ℕ) : NumberField.RingOfIntegers ℚ)`. Rewrite using `[← Nat.cast_mul]`. Rewrite `h4v` using `[h22]`. Apply the tactic sequence `rcases v.isPrime.mem_or_mem h4v with h | h <;> exact h`. Conclude with `hout 2 (dvd_mul_of_dvd_right (even_iff_two_dvd.mp hd.N_even) l) v hv h2`.
+Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨μN, hμN⟩` from `cls_exists Ω N (S : Set Pl) (hout N (dvd_mul_left N l))`. Take `⟨μ4, hμ4⟩` from `cls_exists Ω 4 (S : Set Pl) h4`. Take `⟨χl, hχl⟩` from `Formalism.GaloisCohomology.chi_exists (F := ℚ) (Ω := Ω) l (S : Set Pl) (hout l (dvd_mul_right l N))`. Take `⟨σ, hσ⟩` from `cc_exists Ω`. Set `A : S → ValuationSubring Ω` to `fun v => Classical.choose (exists_isPlaceOver Ω (v : Pl))`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hA` using `fun v : S => Classical.choose_spec (exists_isPlaceOver Ω (v : Pl))`. Establish `hvl : vQ hl ∈ S`. Rewrite using `[hmem]`. Conclude with `Ideal.mem_span_singleton.mpr ⟨(N : NumberField.RingOfIntegers ℚ), by push_cast; ring⟩`. Set `F : Frame c.O (Formalism.ConjugateSelfDual.G ℚ Ω) (Gam Ω S) S` to `{ π := toGS Ω (S : Set Pl) η := (MulChar.toUnitHom ZMod.χ₄).comp μ4 Ψ := ((Units.map (algebraMap ℤ_[l] c.O : ℤ_[l] →* c.O)).comp χl) ^ e * (MulChar.toUnitHom ψ).comp μN c := toGS Ω (S : Set Pl) σ D := fun v => Dec (A v) I := fun v => Ine (A v) vl := ⟨vQ hl, hvl⟩ Sb := {v | ∃ p ∈ …`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `⟨S, A, F, ?_⟩` and prove the remaining obligations. Use `⟨hmem, hA, rfl, ?_, ?_, ⟨σ, hσ, rfl⟩, fun _ => rfl, fun _ => rfl, ?_, fun _ => Iff.rfl⟩` and prove the remaining obligations. Use `show ((MulChar.toUnitHom ZMod.χ₄).comp μ4).comp (toGS Ω (S : Set Pl)) = eta4 Ω`. Rewrite using `[MonoidHom.comp_assoc, hμ4]`. Unfold `eta4 UpperTheory.V.Chr.dirG`.
+Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Use `show (((Units.map (algebraMap ℤ_[l] c.O : ℤ_[l] →* c.O)).comp χl) ^ e * (MulChar.toUnitHom ψ).comp μN).comp (toGS Ω (S : Set Pl)) = _`. Unfold `UpperTheory.V.Chr.Psi UpperTheory.V.Chr.dirG UpperTheory.V.Base.chiO`. Rewrite using `[← hχl, ← hμN]`. Use extensionality with `τ`.
-
-Simplify using the standard rewrite rules. Conclude with `Ideal.mem_span_singleton_self _`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.UnitaryThreeInertia.exists_hostFrame :
     ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] (c : Coef l) {N : ℕ} [NeZero N] (e : ℕ) (ψ : DirichletCharacter c.O N) (o₁ : ℕ), HostData l e ψ o₁ →

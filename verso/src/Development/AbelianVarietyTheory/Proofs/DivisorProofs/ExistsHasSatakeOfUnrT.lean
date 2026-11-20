@@ -16,7 +16,7 @@ namespace GlobalTheory.CuspRep.ParLawsT
 open GlobalTheory.CuspRep.ParLaws in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hirr, fixed_ne_bot_of_equiv φ h.2.1, (IsSubquotient.of_surjective φ.toIntertwiningMap φ.toLinearEquiv.surjective).trans h.2.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem hasSatake_of_repEquiv {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {n : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
@@ -35,7 +35,7 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {a : ℕ}
 
 /- English proof (translation)
-Establish `h1 : (CG.mk π).IsLoc w (Quotient.mk _ σ)` using `hσ`. Rewrite using `[locParT, CG.IsLoc.unique E a _ w _ _ h1.loc h1]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem locParT_eq_locComp [IsTotallyComplex E] (hT : UpperTheory.Zero.LLC.RecTExists) {π : CuspSub E a}
     {σ : SmIrr (GL (Fin a) (w.adicCompletion E))} (hσ : π.IsLocComp w σ) (h : IsPlaceOver A w) :
@@ -45,7 +45,7 @@ theorem locParT_eq_locComp [IsTotallyComplex E] (hT : UpperTheory.Zero.LLC.RecTE
   rfl
 
 /- English proof (translation)
-Take `⟨b, hb, H⟩` from `isRecT_locRecT hT h`. Conclude with `GlobalTheory.RecT.SphLaw.sat ((GlobalTheory.RecT.lawsT_iff b hb _).2 H) (cls σ) α (hasSatake_of_repEquiv (equivRep σ) (IrrRep.irr _) hα)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem locRecT_sat (hT : UpperTheory.Zero.LLC.RecTExists) (h : IsPlaceOver A w) (σ : IrrRep (GL (Fin a) (w.adicCompletion E)))
     {α : Fin a → ℂˣ} (hα : HasSatake σ.ρ α) : locRecT hT h (cls σ) = WD.mk (WDRep.diag h fun i => (α i)⁻¹) := by
@@ -54,7 +54,7 @@ theorem locRecT_sat (hT : UpperTheory.Zero.LLC.RecTExists) (h : IsPlaceOver A w)
     (hasSatake_of_repEquiv (equivRep σ) (IrrRep.irr _) hα)
 
 /- English proof (translation)
-Take `⟨b, hb, H⟩` from `isRecT_locRecT hT h`. Establish `hs` using `(GlobalTheory.RecT.isSpherical_iff_unr_of_lawsT E Ω A w h b hb _ ((GlobalTheory.RecT.lawsT_iff b hb _).2 H) (cls σ)).2 hu`. Take `⟨α, hα⟩` from `GlobalTheory.SatakeExists.main GlobalTheory.bernsteinZelevinskyFiniteness_holds (w.adicCompletion E) a ⟨(cls σ).2.rep.V, (cls σ).2.rep.ρ, (cls σ).2.rep.smooth, (cls σ).2.rep.irr⟩ hs`. Conclude with `⟨α, hasSatake_of_repEquiv (equivRep σ).symm σ.irr hα⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_hasSatake_of_unrT (hT : UpperTheory.Zero.LLC.RecTExists) (h : IsPlaceOver A w)
     {σ : IrrRep (GL (Fin a) (w.adicCompletion E))} (hu : (locRecT hT h (cls σ)).unr) : ∃ α, HasSatake σ.ρ α := by
@@ -71,11 +71,11 @@ namespace GlobalTheory.CuspRep.ParLawsT
 open GlobalTheory.CuspRep.ParLaws
 
 /- English proof (translation)
-Introduce `hT hF L Ω _ _ _ _ _ _ a π hπ w w' hc A A' h h' hu`. Take `rfl : w' = conjSrc (IsCMField.complexConj L).toRingEquiv w` from `eq_conjSrc fun x => by`. Simplify using `using (hc (IsCMField.complexConj L x)).symm`. Proceed by induction on `π using Quotient.inductionOn with | _ π =>`. Take `⟨σ, hσ, -⟩` from `LocEx.exists_isLocComp hF L a π w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Proceed by induction. Extract witnesses or component facts from the available result.
 
-Establish `e : locParT hT (Quotient.mk _ π) h = _` using `locParT_eq_locComp hT hσ h`. Establish `e' : locParT hT (Quotient.mk _ π) h' = _` using `locParT_eq_locComp hT (isLocComp_flip hπ hσ) h'`. Rewrite `hu` using `[e]`. Take `⟨α, hα⟩` from `exists_hasSatake_of_unrT hT h hu`. Rewrite using `[e, e', locRecT_sat hT h _ hα, locRecT_sat hT h' _ (hasSatake_flip_conjLoc _ w hα), WD.frobEig_diag, WD.frobEig_diag, Multiset.map_map]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(WD.unr_mk _).2 (WDRep.unr_diag _), ?_⟩` and prove the remaining obligations. Use `conv_rhs => rw [← Finset.map_univ_equiv Fin.revPerm, Finset.map_val, Multiset.map_map]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem csd_unrT : ∀ (hT : UpperTheory.Zero.LLC.RecTExists) (hF : GlobalTheory.Published.AutomorphicFormsFiniteGL) (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (a : ℕ) (π : CG L a), π.IsCsd → ∀ (w w' : HeightOneSpectrum (𝓞 L)), ConjPl (IsCMField.complexConj L).toRingEquiv w w' → ∀ (A A' : ValuationSubring Ω) (h : IsPlaceOver A w) (h' : IsPlaceOver A' w'), (locParT hT π h).unr → (locParT hT π h').unr ∧ (locParT hT π h').frobEig = (locParT hT π h).frobEig.map (·⁻¹) := by
   intro hT hF L Ω _ _ _ _ _ _ a π hπ w w' hc A A' h h' hu

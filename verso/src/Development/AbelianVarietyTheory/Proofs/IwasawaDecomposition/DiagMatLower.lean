@@ -31,7 +31,7 @@ def LocIdx.ent {j : ℕ} (u : LocIdx k V j → k) (i : ι) (c a : Fin (finrank k
   if h : a < c ∧ ¬ Cut j _ c a then u ⟨i, (c, a), h⟩ else 0
 
 /- English proof (translation)
-The claim follows from `dif_neg h`.
+A detailed English derivation is pending.
 -/
 theorem LocIdx.ent_eq_zero {j : ℕ} (u : LocIdx k V j → k) {i : ι} {c a : Fin (finrank k (V i))}
     (h : ¬ (a < c ∧ ¬ Cut j _ c a)) : LocIdx.ent u i c a = 0 := dif_neg h
@@ -43,9 +43,7 @@ def diagMat {j : ℕ} (u : LocIdx k V j → k) (i : ι) : Matrix (Fin (finrank k
   fun c a => if c = a then 1 else if ((a : ℕ) < j ↔ (c : ℕ) < j) then LocIdx.ent u i c a else 0
 
 /- English proof (translation)
-Introduce `c a h`. Establish `h' : c < a` using `h`. Simplify using `only [offMat, if_neg (ne_of_lt h')]`. Use `split_ifs`. Conclude with `LocIdx.ent_eq_zero u fun h2 => absurd h2.1 (not_lt.2 h'.le)`.
-
-Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem offMat_lower {j : ℕ} (u : LocIdx k V j → k) (i : ι) :
     (offMat u i).BlockTriangular OrderDual.toDual := by
@@ -57,9 +55,7 @@ theorem offMat_lower {j : ℕ} (u : LocIdx k V j → k) (i : ι) :
   · rfl
 
 /- English proof (translation)
-Introduce `c a h`. Establish `h' : c < a` using `h`. Simplify using `only [diagMat, if_neg (ne_of_lt h')]`. Use `split_ifs`. Conclude with `LocIdx.ent_eq_zero u fun h2 => absurd h2.1 (not_lt.2 h'.le)`.
-
-Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem diagMat_lower {j : ℕ} (u : LocIdx k V j → k) (i : ι) :
     (diagMat u i).BlockTriangular OrderDual.toDual := by
@@ -71,7 +67,7 @@ theorem diagMat_lower {j : ℕ} (u : LocIdx k V j → k) (i : ι) :
   · rfl
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_mul, Matrix.det_of_lowerTriangular _ (offMat_lower u i), Matrix.det_of_lowerTriangular _ (diagMat_lower u i)]`. Simplify using `[offMat, diagMat]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_chartMat {j : ℕ} (u : LocIdx k V j → k) (i : ι) : (offMat u i * diagMat u i).det = 1 := by
   rw [Matrix.det_mul, Matrix.det_of_lowerTriangular _ (offMat_lower u i),
@@ -91,9 +87,9 @@ def Adapted (A B : ∀ i, Submodule k (V i)) (b : Frames k V) : Prop :=
   ∀ i (a : Fin (finrank k (V i))), ((a : ℕ) = 0 → b i a ∈ A i) ∧ ((a : ℕ) + 1 < finrank k (V i) → b i a ∈ B i)
 
 /- English proof (translation)
-Establish `h0 (i : ι) (c a : Fin (finrank k (V i))) : LocIdx.ent (0 : LocIdx k V j → k) i c a = 0`. Apply the tactic sequence `unfold LocIdx.ent; split_ifs <;> rfl`. Establish `h1 (i : ι) : offMat (0 : LocIdx k V j → k) i = 1`. Apply the tactic sequence `ext c a; simp only [offMat, h0, Matrix.one_apply]; split_ifs <;> rfl`. Establish `h2 (i : ι) : diagMat (0 : LocIdx k V j → k) i = 1`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `ext c a; simp only [diagMat, h0, Matrix.one_apply]; split_ifs <;> rfl`. Establish `h (i : ι) : chartGL (0 : LocIdx k V j → k) i = 1` using `Units.ext (by simp [chartGL, Matrix.GeneralLinearGroup.mkOfDetNeZero, h1, h2])`. Unfold `locChart`. Simplify using `only [h, GlobalTheory.basisMulGL_one]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 example (j : ℕ) (b : Frames k V) : locChart j b 0 = b.flags := by
   have h0 (i : ι) (c a : Fin (finrank k (V i))) : LocIdx.ent (0 : LocIdx k V j → k) i c a = 0 := by

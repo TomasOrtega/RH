@@ -15,7 +15,7 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G Recip
 namespace GlobalTheory.RegCoverExt
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Spec.map (X.presheaf.stalkSpecializes h ≫ j.stalkMap _) ≫ _ = _`. Rewrite using `[Spec.map_comp, Category.assoc, Scheme.SpecMap_stalkSpecializes_fromSpecStalk, Scheme.SpecMap_stalkMap_fromSpecStalk]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem SpecMap_fnMap_fromSpecStalk {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y] (j : Y ⟶ X)
     (h : j (genericPoint Y) ⤳ genericPoint X) :
@@ -26,21 +26,19 @@ theorem SpecMap_fnMap_fromSpecStalk {X Y : Scheme.{0}} [IsIntegral X] [IsIntegra
     Scheme.SpecMap_stalkMap_fromSpecStalk]
 
 /- English proof (translation)
-Use `h.isLocallyNoetherian` as an intermediate fact. Establish `: IsProper s` using `CommonModel.isProper_of_isProjOver h.isProjOver`. Use `h.charZero` as an intermediate fact. Establish `: CharZero X.functionField` using `charZero_of_injective_ringHom (f := (X.presheaf.germ ⊤ (genericPoint X) trivial).hom) (germ_injective_of_isIntegral X (U := ⊤) (genericPoint X) trivial)`. Establish `: CharZero F` using `charZero_of_injective_algebraMap (algebraMap X.functionField F).injective`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `η` to `genericPoint X`. Set `α : X.presheaf.stalk η ⟶ CommRingCat.of F` to `CommRingCat.ofHom (algebraMap X.functionField F)`. Set `g : Spec (.of F) ⟶ X` to `Spec.map α ≫ X.fromSpecStalk η`. Establish `hfin : IsFinite g.fromNormalization`. Use `GlobalTheory.isFinite_fromNormalization_SpecMap_fromSpecStalk s η α ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : (algebraMap X.functionField F).FiniteType` using `(RingHom.finite_algebraMap.2 inferInstance).finiteType`. Conclude with `h2.essFiniteType`. Set `pt : Spec (.of F)` to `IsLocalRing.closedPoint (CommRingCat.of F)`. Establish `hgη : g pt = η`. Express the relevant statement in the definitionally equal form `X.fromSpecStalk η (Spec.map α pt) = η`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show Spec.map α pt = IsLocalRing.closedPoint (X.presheaf.stalk η) from Subsingleton.elim (α := PrimeSpectrum (X.presheaf.stalk η)) _ _]`. Conclude with `Scheme.fromSpecStalk_closedPoint`. Establish `hg0 : η ∈ Set.range g` using `⟨pt, hgη⟩`. Establish `: IsDominant g` using `⟨(dense_iff_closure_eq.2 (genericPoint_spec X)).mono (Set.singleton_subset_iff.2 hg0)⟩`. Establish `: IsDominant g.fromNormalization`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: IsDominant (g.toNormalization ≫ g.fromNormalization)`. Rewrite using `[Scheme.Hom.toNormalization_fromNormalization]`. Use `infer_instance`. Conclude with `IsDominant.of_comp g.toNormalization g.fromNormalization`. Establish `hρs : Surjective g.fromNormalization` using `surjective_of_isDominant_of_isClosed_range _ g.fromNormalization.isClosedMap.isClosed_range`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdeg : 0 < g.fromNormalization.residueDegree (genericPoint g.normalization)`. Set `` to `(g.fromNormalization.residueFieldMap (genericPoint g.normalization)).hom.toAlgebra`. Establish `: Module.Finite (X.residueField (g.fromNormalization (genericPoint g.normalization))) (g.normalization.residueField (genericPoint g.normalization))` using `residueFieldMap_finite_of_locallyQuasiFinite g.fromNormalization _`. Conclude with `Module.finrank_pos`. Establish `hgen` using `apply_genericPoint_of_isDominant g.fromNormalization`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hdim : topologicalKrullDim g.normalization = (D + 1 : ℕ)`. Rewrite using `[← h.dim_eq]`. Conclude with `le_antisymm (ProperCover.dim_le_of_residueDegree_pos g.fromNormalization hgen hdeg) (PosBaseChange.dim_le_of_isClosedMap g.fromNormalization.isClosedMap hρs.surj)`. Establish `hfl : Flat (g.fromNormalization ≫ s)` using `GlobalTheory.flat_fromNormalization_comp g ℚ s (spMap (algebraMap ℚ F)) (specZIsTerminal.hom_ext _ _)`. Take `⟨hη, ψ, hψ⟩` from `NormFnField.normalization_functionField X F g rfl`.
-
-Use `⟨g.normalization, inferInstance, g.fromNormalization, hη, ψ, ⟨h.isDomain, h.finite, inferInstance, GlobalTheory.isProjOver_comp_of_finite _ _ _ _ _ hfin h.isProjOver, ?_, hdim⟩, hgen, hdeg.ne', hψ⟩` and prove the remaining obligations. Use `hfl using 1` and compare the differences between its conclusion and the goal. Conclude with `specZIsTerminal.hom_ext _ _`.
+Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_isArithVar_extension (X : Scheme.{0}) (s : X ⟶ Sp ℤ) [IsIntegral X] (D : ℕ) (h : IsArithVar s D)
     (F : Type) [Field F] [Algebra X.functionField F] [FiniteDimensional X.functionField F] :
@@ -98,11 +96,11 @@ theorem exists_isArithVar_extension (X : Scheme.{0}) (s : X ⟶ Sp ℤ) [IsInteg
   exact specZIsTerminal.hom_ext _ _
 
 /- English proof (translation)
-Introduce `H k _ X p _ h F _ _ _`. Take `⟨Z, _, ν, hη, ψ, hZ, hν, hνd, hψ⟩` from `exists_isArithVar_extension X _ 1 (ShFam.Pad.isArithVar_toSpZ h) F`. Take `⟨Y, _, ρ, hY, hr, hg, hd⟩` from `H Z _ 1 hZ`. Establish `hρ : ρ (genericPoint Y) ⤳ genericPoint Z` using `hg ▸ specializes_rfl`. Establish `key : Spec.map (CommRingCat.ofHom ((TrueGeo.SmallSec.fnMap ρ hρ).comp ψ)) ≫ Spec.map (CommRingCat.ofHom (algebraMap X.functionField F)) ≫ X.fromSpecStalk (genericPoint X) = Y.fromSpecStalk (genericPoint Y) ≫ ρ ≫ ν`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Category.assoc (Y.fromSpecStalk _), ← SpecMap_fnMap_fromSpecStalk ρ hρ, Category.assoc, ← SpecMap_fnMap_fromSpecStalk ν hη, ← hψ, ← Category.assoc, ← Spec.map_comp, ← Category.assoc, ← Spec.map_comp]`. Both sides reduce to the same expression. Use `⟨⟨Y, ρ ≫ ν, ⟨RegCoverExists.isArithVar_of_toSpZ h.isDomain h.finite ((ρ ≫ ν) ≫ p) hY, hr⟩, ?_, ?_⟩, Spec.map (CommRingCat.ofHom ((TrueGeo.SmallSec.fnMap ρ hρ).comp ψ)), ?_⟩` and prove the remaining obligations. Rewrite using `[Scheme.Hom.comp_apply, hg, hν]`. Rewrite using `[CurveDegreesCompare.residueDegree_comp, hg]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_ne_zero hνd hd`. Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem exists_regCover_extension : GlobalTheory.Published.RegularAlteration → ∀ (k : Type) [CommRing k] (X : Scheme.{0})
     (p : X ⟶ Sp k) [IsIntegral X], IsArithVar p 1 → ∀ (F : Type) [Field F] [Algebra X.functionField F],

@@ -26,7 +26,7 @@ def schrSch {P : V → V → ℝ} (hP : GlobalTheory.ArchUniq.IsPairing P) (w : 
     (SchwartzMap.compSubConstCLM ℂ (-w.1))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Rewrite using `[schrSch, ContinuousLinearMap.comp_apply, SchwartzMap.smulLeftCLM_apply_apply (GlobalTheory.PhaseLipschitz.hasTemperateGrowth_phase _ _), SchwartzMap.compSubConstCLM_apply, smul_eq_mul, GlobalTheory.ArchUniq.schrF, GlobalTheory.Published.Metaplectic.eChar_apply, sub_neg_eq_add, C …`. Use `congr 1`. Use `congr 1`. Use `push_cast`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

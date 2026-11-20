@@ -15,7 +15,7 @@ section Ring
 variable {A : Type*} [Ring A] [Algebra ℂ A]
 
 /- English proof (translation)
-Substitute `h1 h2` using the available equality. Simplify using `only [sub_mul, mul_sub, smul_mul_assoc, mul_smul_comm, smul_sub, smul_smul]`. Take the linear combination `(norm := skip) (-(Complex.I / 4)) • h3 + (-(1 / 4) : ℂ) • h4`. Apply the tactic sequence `match_scalars <;> (ring_nf; try simp [Complex.I_sq]; try ring)`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem brk_ee (p q r s P Q : A) (h1 : p * r - r * p = P) (h2 : q * r - r * q = Q) (h3 : p * s - s * p = Q)
     (h4 : q * s - s * q = -P) :
@@ -28,7 +28,7 @@ theorem brk_ee (p q r s P Q : A) (h1 : p * r - r * p = P) (h2 : q * r - r * q = 
   match_scalars <;> (ring_nf; try simp [Complex.I_sq]; try ring)
 
 /- English proof (translation)
-Substitute `h1 h2` using the available equality. Simplify using `only [add_mul, mul_add, smul_mul_assoc, mul_smul_comm, smul_add, smul_smul]`. Take the linear combination `(norm := skip) (Complex.I / 4) • h3 + (-(1 / 4) : ℂ) • h4`. Apply the tactic sequence `match_scalars <;> (ring_nf; try simp [Complex.I_sq]; try ring)`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem brk_ff (p q r s P Q : A) (h1 : p * r - r * p = P) (h2 : q * r - r * q = Q) (h3 : p * s - s * p = Q)
     (h4 : q * s - s * q = -P) :
@@ -41,7 +41,7 @@ theorem brk_ff (p q r s P Q : A) (h1 : p * r - r * p = P) (h2 : q * r - r * q = 
   match_scalars <;> (ring_nf; try simp [Complex.I_sq]; try ring)
 
 /- English proof (translation)
-Substitute `h1 h2` using the available equality. Simplify using `only [sub_mul, mul_sub, add_mul, mul_add, smul_mul_assoc, mul_smul_comm, smul_sub, smul_add, smul_smul]`. Take the linear combination `(norm := skip) (Complex.I / 4) • h3 + (1 / 4 : ℂ) • h4`. Apply the tactic sequence `match_scalars <;> (ring_nf; try simp [Complex.I_sq]; try ring)`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem brk_ef (p q r s P Q : A) (h1 : p * r - r * p = P) (h2 : q * r - r * q = Q) (h3 : p * s - s * p = Q)
     (h4 : q * s - s * q = -P) :
@@ -65,13 +65,13 @@ def fP (D : Mat n → Module.End ℂ V) (Z : Mat n) : Module.End ℂ V :=
   (1 / 2 : ℂ) • (D Z + Complex.I • D (Complex.I • Z))
 
 /- English proof (translation)
-Simplify using `[e1, eP, Matrix.smul_single]`.
+Simplify using the standard rewrite rules.
 -/
 theorem first_generator_eq_single (D : Mat n → Module.End ℂ V) (a b : Fin n) : e1 D a b = eP D (Matrix.single a b 1) := by
   simp [e1, eP, Matrix.smul_single]
 
 /- English proof (translation)
-Simplify using `[f1, fP, Matrix.smul_single]`.
+Simplify using the standard rewrite rules.
 -/
 theorem second_generator_eq_single (D : Mat n → Module.End ℂ V) (a b : Fin n) : f1 D a b = fP D (Matrix.single a b 1) := by
   simp [f1, fP, Matrix.smul_single]
@@ -79,38 +79,38 @@ theorem second_generator_eq_single (D : Mat n → Module.End ℂ V) (a b : Fin n
 variable {D : Mat n → Module.End ℂ V}
 
 /- English proof (translation)
-Simplify using `using hs (-1) X`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem D_neg (hs : ∀ (r : ℝ) X, D ((r : ℂ) • X) = (r : ℂ) • D X) (X : Mat n) : D (-X) = -D X := by
   simpa using hs (-1) X
 
 /- English proof (translation)
-Simplify using `using hs 0 0`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem D_zero (hs : ∀ (r : ℝ) X, D ((r : ℂ) • X) = (r : ℂ) • D X) : D (0 : Mat n) = 0 := by
   simpa using hs 0 0
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg, ha, D_neg hs, sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem D_sub (ha : ∀ X Y, D (X + Y) = D X + D Y) (hs : ∀ (r : ℝ) X, D ((r : ℂ) • X) = (r : ℂ) • D X)
     (X Y : Mat n) : D (X - Y) = D X - D Y := by
   rw [sub_eq_add_neg, ha, D_neg hs, sub_eq_add_neg]
 
 /- English proof (translation)
-Simplify using `[eP, D_zero hs]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eP_zero (hs : ∀ (r : ℝ) X, D ((r : ℂ) • X) = (r : ℂ) • D X) : eP D (0 : Mat n) = 0 := by
   simp [eP, D_zero hs]
 
 /- English proof (translation)
-Simplify using `[fP, D_zero hs]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fP_zero (hs : ∀ (r : ℝ) X, D ((r : ℂ) • X) = (r : ℂ) • D X) : fP D (0 : Mat n) = 0 := by
   simp [fP, D_zero hs]
 
 /- English proof (translation)
-Simplify using `only [eP, smul_sub, D_sub ha hs]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem eP_sub (ha : ∀ X Y, D (X + Y) = D X + D Y) (hs : ∀ (r : ℝ) X, D ((r : ℂ) • X) = (r : ℂ) • D X)
     (X Y : Mat n) : eP D (X - Y) = eP D X - eP D Y := by
@@ -118,7 +118,7 @@ theorem eP_sub (ha : ∀ X Y, D (X + Y) = D X + D Y) (hs : ∀ (r : ℝ) X, D ((
   abel
 
 /- English proof (translation)
-Simplify using `only [fP, smul_sub, smul_add, D_sub ha hs]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem fP_sub (ha : ∀ X Y, D (X + Y) = D X + D Y) (hs : ∀ (r : ℝ) X, D ((r : ℂ) • X) = (r : ℂ) • D X)
     (X Y : Mat n) : fP D (X - Y) = fP D X - fP D Y := by
@@ -126,9 +126,9 @@ theorem fP_sub (ha : ∀ X Y, D (X + Y) = D X + D Y) (hs : ∀ (r : ℝ) X, D ((
   abel
 
 /- English proof (translation)
-Use `⟨(hb Z W).symm, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hb]`. Use `congr 1`. Simplify using `[smul_sub]`. Rewrite using `[← hb]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `[smul_sub]`. Rewrite using `[← hb, ← D_neg hs]`. Use `congr 1`. Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, smul_smul, Complex.I_mul_I, neg_smul, one_smul]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -151,7 +151,7 @@ theorem brk_four (hs : ∀ (r : ℝ) X, D ((r : ℂ) • X) = (r : ℂ) • D X)
     abel
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4⟩` from `brk_four hs hb Z W`. Conclude with `brk_ee _ _ _ _ _ _ h1 h2 h3 h4`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eP_brk (hs : ∀ (r : ℝ) X, D ((r : ℂ) • X) = (r : ℂ) • D X)
     (hb : ∀ X Y, D (X * Y - Y * X) = D X * D Y - D Y * D X) (Z W : Mat n) :
@@ -160,7 +160,7 @@ theorem eP_brk (hs : ∀ (r : ℝ) X, D ((r : ℂ) • X) = (r : ℂ) • D X)
   exact brk_ee _ _ _ _ _ _ h1 h2 h3 h4
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4⟩` from `brk_four hs hb Z W`. Conclude with `brk_ff _ _ _ _ _ _ h1 h2 h3 h4`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem fP_brk (hs : ∀ (r : ℝ) X, D ((r : ℂ) • X) = (r : ℂ) • D X)
     (hb : ∀ X Y, D (X * Y - Y * X) = D X * D Y - D Y * D X) (Z W : Mat n) :
@@ -169,7 +169,7 @@ theorem fP_brk (hs : ∀ (r : ℝ) X, D ((r : ℂ) • X) = (r : ℂ) • D X)
   exact brk_ff _ _ _ _ _ _ h1 h2 h3 h4
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4⟩` from `brk_four hs hb Z W`. Conclude with `brk_ef _ _ _ _ _ _ h1 h2 h3 h4`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eP_fP_comm (hs : ∀ (r : ℝ) X, D ((r : ℂ) • X) = (r : ℂ) • D X)
     (hb : ∀ X Y, D (X * Y - Y * X) = D X * D Y - D Y * D X) (Z W : Mat n) :
@@ -178,9 +178,9 @@ theorem eP_fP_comm (hs : ∀ (r : ℝ) X, D ((r : ℂ) • X) = (r : ℂ) • D 
   exact brk_ef _ _ _ _ _ _ h1 h2 h3 h4
 
 /- English proof (translation)
-Establish `h : ∀ a b c d : Fin n, (Matrix.single a b (1 : ℂ)) * Matrix.single c d 1 = if b = c then Matrix.single a d 1 else 0`. Introduce `a b c d`. Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Matrix.single_mul_single_of_ne a b c h 1 (c := (1 : ℂ))`. Rewrite using `[h, h]`.
+A detailed English derivation is pending.
 -/
 theorem single_brk (a b c d : Fin n) :
     (Matrix.single a b (1 : ℂ)) * Matrix.single c d 1 - Matrix.single c d (1 : ℂ) * Matrix.single a b 1 =
@@ -194,7 +194,7 @@ theorem single_brk (a b c d : Fin n) :
   rw [h, h]
 
 /- English proof (translation)
-Simplify using `only [first_generator_eq_single]`. Rewrite using `[eP_brk hs hb, single_brk, eP_sub ha hs]`. Apply the tactic sequence `split_ifs <;> simp [eP_zero hs]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eP_units (ha : ∀ X Y, D (X + Y) = D X + D Y) (hs : ∀ (r : ℝ) X, D ((r : ℂ) • X) = (r : ℂ) • D X)
     (hb : ∀ X Y, D (X * Y - Y * X) = D X * D Y - D Y * D X) (a b c d : Fin n) :
@@ -205,7 +205,7 @@ theorem eP_units (ha : ∀ X Y, D (X + Y) = D X + D Y) (hs : ∀ (r : ℝ) X, D 
   split_ifs <;> simp [eP_zero hs]
 
 /- English proof (translation)
-Simplify using `only [second_generator_eq_single]`. Rewrite using `[fP_brk hs hb, single_brk, fP_sub ha hs]`. Apply the tactic sequence `split_ifs <;> simp [fP_zero hs]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem fP_units (ha : ∀ X Y, D (X + Y) = D X + D Y) (hs : ∀ (r : ℝ) X, D ((r : ℂ) • X) = (r : ℂ) • D X)
     (hb : ∀ X Y, D (X * Y - Y * X) = D X * D Y - D Y * D X) (a b c d : Fin n) :
@@ -218,9 +218,9 @@ theorem fP_units (ha : ∀ X Y, D (X + Y) = D X + D Y) (hs : ∀ (r : ℝ) X, D 
 end Main
 
 /- English proof (translation)
-Introduce `n V _ _ D ha hs hb`. Use `⟨fun a b c d => eP_units ha hs hb a b c d, fun a b c d => ?_, fun a b c d => ?_⟩` and prove the remaining obligations. Establish `h` using `fP_units ha hs hb b a d c`. Simplify using `only [e2, neg_mul_neg]`. Rewrite using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [eq_comm (a := b) (b := c), eq_comm (a := d) (b := a)]`. Apply the tactic sequence `split_ifs <;> simp <;> abel`. Simplify using `only [e2, mul_neg, neg_mul, first_generator_eq_single, second_generator_eq_single]`. Rewrite using `[eP_fP_comm hs hb]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem gl_pair : ∀ (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (D : Mat n → Module.End ℂ V),
     (∀ X Y, D (X + Y) = D X + D Y) → (∀ (r : ℝ) X, D ((r : ℂ) • X) = (r : ℂ) • D X) →

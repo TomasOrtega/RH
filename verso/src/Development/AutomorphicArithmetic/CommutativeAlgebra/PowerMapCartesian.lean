@@ -5,9 +5,9 @@ open UpperTheory.Gal.Int.Geo
 open CategoryTheory
 
 /- English proof (translation)
-Introduce `X Y Z A B C f g φ χ u v k`. Use `⟨fun H => GlobalTheory.KS.PowPB.powMap_isPullback _ _ _ _ f φ u H k, GlobalTheory.KS.PowPB.powMap_w f φ u k, fun w => ?_⟩` and prove the remaining obligations. Apply `GlobalTheory.KS.PowPB.pow_left_hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, GlobalTheory.KS.PowPB.powMap_w, ← Category.assoc, GlobalTheory.KS.PowPB.powMap_w, Category.assoc, GlobalTheory.KS.PowPB.powMap_w]`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Category.assoc, GlobalTheory.KS.PowPB.powMap_pr, ← Category.assoc, GlobalTheory.KS.PowPB.powMap_pr, Category.assoc, GlobalTheory.KS.PowPB.powMap_pr]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.power_map_cartesian :
     PowCart := by

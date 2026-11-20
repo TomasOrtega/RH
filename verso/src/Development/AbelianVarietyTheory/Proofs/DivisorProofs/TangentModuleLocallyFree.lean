@@ -32,7 +32,7 @@ def vecT {v : Sp (DualNumber S) ⟶ t.G.left} (hv : IsTanAtG t x0 v) : TanM x0 t
   mkT (ovT hv) (smT_zero_ovT hv)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.ChartCompare.comb_iff_sum t x0 (Equiv.refl _) (fun j => vecT (hv j)) a w`.
+A detailed English derivation is pending.
 -/
 theorem comb_iff {n : ℕ} {v : Fin n → (Sp (DualNumber S) ⟶ t.G.left)} (hv : ∀ j, IsTanAtG t x0 (v j))
     (a : Fin n → S) (w : Sp (DualNumber S) ⟶ t.G.left) :
@@ -40,7 +40,7 @@ theorem comb_iff {n : ℕ} {v : Fin n → (Sp (DualNumber S) ⟶ t.G.left)} (hv 
   GlobalTheory.ChartCompare.comb_iff_sum t x0 (Equiv.refl _) (fun j => vecT (hv j)) a w
 
 /- English proof (translation)
-Rewrite using `[Function.bijective_iff_existsUnique]`. Establish `key : ∀ (W : TanM x0 t.G) (a : Fin n → S), IsCombAtG t x0 v a (tv W).left ↔ Fintype.linearCombination S (fun j => vecT (hv j)) a = W` using `fun W a => by`. Rewrite using `[comb_iff t x0 hv, Fintype.linearCombination_apply]`. Conclude with `⟨fun h => tanM_ext (Over.OverMorphism.ext h), fun h => by rw [h]⟩`. Conclude with `fun W => (existsUnique_congr (key W)).1 (hb _ (isTanAtG_of _ (tv_mem W)))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem bijective_of_unique {n : ℕ} {v : Fin n → (Sp (DualNumber S) ⟶ t.G.left)} (hv : ∀ j, IsTanAtG t x0 (v j))
     (hb : ∀ w, IsTanAtG t x0 w → ∃! a : Fin n → S, IsCombAtG t x0 v a w) :
@@ -57,21 +57,21 @@ end Tangent
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor in
 
 /- English proof (translation)
-Introduce `E _ _ _ H X t R _ x p`. Use `haveI : Smooth t.G.hom := t.semi.smooth`. Take `⟨U, hU, hxU, -, n, v₀, hv⟩` from `GlobalTheory.exists_affine_lieBasis_baseChange X t.G (x p) ⊤ trivial`. Take `⟨_, ⟨r, rfl⟩, hpr, hsub⟩` from `PrimeSpectrum.isTopologicalBasis_basic_opens.exists_subset_of_mem_open (a := p) (u := (x ⁻¹ᵁ U).1) hxU (x ⁻¹ᵁ U).2`. Use `⟨r, hpr, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Set `R'` to `Localization.Away r`. Set `y : Sp R' ⟶ X` to `spMap (algebraMap R R') ≫ x`. Establish `hrange : Set.range y ⊆ Set.range U.ι`. Introduce and unpack `_ ⟨q, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: PrimeSpectrum.comap (algebraMap R R') q ∈ (PrimeSpectrum.basicOpen r : Set (PrimeSpectrum R))`. Rewrite using `[← PrimeSpectrum.localization_away_comap_range R' r]`. Conclude with `⟨q, rfl⟩`. Conclude with `hsub this`. Set `g : Sp R' ⟶ U.toScheme` to `IsOpenImmersion.lift U.ι y hrange`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `f : Γ(X, U) ⟶ CommRingCat.of R'` to `Spec.preimage (g ≫ hU.isoSpec.hom)`. Establish `heq : spMap f.hom ≫ hU.fromSpec = y`. Establish `e1 : spMap f.hom = g ≫ hU.isoSpec.hom` using `Spec.map_preimage _`. Rewrite using `[e1, Category.assoc, ← IsAffineOpen.isoSpec_inv_ι, Iso.hom_inv_id_assoc]`. Conclude with `IsOpenImmersion.lift_fac _ _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hφ : IsGrpPullback ((Over.pullback y).obj t.G) t.G (spMap f.hom ≫ hU.fromSpec) (Limits.pullback.fst t.G.hom y)`. Rewrite using `[heq]`. Conclude with `isGrpPullback_pullback t.G y`. Take `⟨v', -, hv'⟩` from `hv R' f.hom _ _ hφ`. Take `⟨tg, htg⟩` from `GlobalTheory.ChartDataChecks.tanBasis_of_lieBasis t y v' hv'`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `e` to `Fintype.equivFin (Fin n)`. Set `tg' : Fin (Fintype.card (Fin n)) → (Sp (DualNumber R') ⟶ t.G.left)` to `fun i => tg (e.symm i)`. Establish `hv1 : ∀ i, IsTanAtG t y (tg' i)` using `fun i => htg.1 _`. Establish `hb : ∀ w, IsTanAtG t y w → ∃! b : Fin (Fintype.card (Fin n)) → R', IsCombAtG t y tg' b w`. Introduce `w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Take `⟨a, ha, hu⟩` from `htg.2 w hw`. Use `⟨fun i => a (e.symm i), ha, fun b hb' => ?_⟩` and prove the remaining obligations. Use `hu (fun l => b (e l)) (by simpa only [e, Equiv.apply_symm_apply] using hb')` as an intermediate fact. Use function extensionality and compare the values at `i`. Rewrite using `[← this]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `bij` using `bijective_of_unique t y hv1 hb`. Use `⟨Fintype.card (Fin n), fun j => vecT (hv1 j), linearIndependent_iff_injective_fintypeLinearCombination.mpr bij.1, ?_⟩` and prove the remaining obligations. Rewrite using `[← Fintype.range_linearCombination]`. Conclude with `LinearMap.range_eq_top.2 bij.2`.
+A detailed English derivation is pending.
 -/
 theorem tan_free_away : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {X : Scheme.{0}} (t : SAB H X) {R : Type} [CommRing R] (x : Sp R ⟶ X) (p : PrimeSpectrum R), ∃ r ∉ p.asIdeal, ∃ (d : ℕ) (D : Fin d → TanM (spMap (algebraMap R (Localization.Away r)) ≫ x) t.G), LinearIndependent (Localization.Away r) D ∧ Submodule.span (Localization.Away r) (Set.range D) = ⊤ := by
   intro E _ _ _ H X t R _ x p

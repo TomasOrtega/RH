@@ -15,7 +15,7 @@ def NIntAt (k r : ℕ) : Prop :=
     ∫⁻ x, ENNReal.ofReal (gN (Matrix.of x) ^ (-b)) ∂μN < ∞
 
 /- English proof (translation)
-Unfold `dimN`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem dimN_succ (k r' : ℕ) :
     (dimN k (1 + r') : ℝ) = (dimN k r' : ℝ) + (2 * ((2 * r' + k + 1 : ℕ) : ℝ) + 1) := by
@@ -26,29 +26,27 @@ theorem dimN_succ (k r' : ℕ) :
 section NIntStepAux
 
 /- English proof (translation)
-Unfold `gN`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem ns_gN_cont_mt {k r : ℕ} : Continuous (fun g : Mt k r => gN (Matrix.of g : Mat k r)) := by
   unfold gN; fun_prop
 
 /- English proof (translation)
-The claim follows from `((ns_gN_cont_mt.measurable).pow_const _).ennreal_ofReal`.
+A detailed English derivation is pending.
 -/
 theorem ns_meas_F {k r : ℕ} (b : ℝ) :
     Measurable (fun x : Mt k r => ENNReal.ofReal (gN (Matrix.of x : Mat k r) ^ (-b))) :=
   ((ns_gN_cont_mt.measurable).pow_const _).ennreal_ofReal
 
 /- English proof (translation)
-Unfold `mulM`. Conclude with `(continuous_fst (X := Mt k r) (Y := Mt k r)).matrix_mul continuous_snd`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem ns_cont_mulM {k r : ℕ} : Continuous (mulM (k := k) (r := r)) := by
   unfold mulM
   exact (continuous_fst (X := Mt k r) (Y := Mt k r)).matrix_mul continuous_snd
 
 /- English proof (translation)
-Use `continuous_pi fun p => continuous_pi fun q => ?_` and prove the remaining obligations. Use `show Continuous fun x : Mt k r' => ιLev k 1 r' (Matrix.of x) p q`. Unfold `ιLev`. Use `split_ifs`. Conclude with `(continuous_apply _).comp (continuous_apply _)`.
-
-Conclude with `continuous_const`. Conclude with `continuous_const`. Conclude with `continuous_const`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem ns_cont_levM (k r' : ℕ) : Continuous (levM k r') := by
   refine continuous_pi fun p => continuous_pi fun q => ?_
@@ -61,7 +59,7 @@ theorem ns_cont_levM (k r' : ℕ) : Continuous (levM k r') := by
   · exact continuous_const
 
 /- English proof (translation)
-Establish `h : @Continuous (HPar k r') (Mt k (1 + r')) _ _ (fun x => heis0 k r' x)` using `continuous_heis0 k r'`. Conclude with `h.measurable`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ns_meas_heis0 (k r' : ℕ) :
     @Measurable (HPar k r') (Mt k (1 + r')) _ _ (fun x => heis0 k r' x) := by
@@ -69,7 +67,7 @@ theorem ns_meas_heis0 (k r' : ℕ) :
   exact h.measurable
 
 /- English proof (translation)
-Establish `h : Continuous (fun x : HPar k r' => 1 + ∑ i, Complex.normSq (x.1 i) + x.2 ^ 2)` using `(continuous_const.add (continuous_finsetSum _ fun i _ => Complex.continuous_normSq.comp ((continuous_apply i).comp continuous_fst))).add (continuous_snd.pow 2)`. Conclude with `(h.measurable.pow_const _).ennreal_ofReal`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ns_meas_G (k r' : ℕ) (d : ℝ) :
     Measurable (fun x : HPar k r' => ENNReal.ofReal ((1 + ∑ i, Complex.normSq (x.1 i) + x.2 ^ 2) ^ (-(d / 2)))) := by
@@ -79,7 +77,7 @@ theorem ns_meas_G (k r' : ℕ) (d : ℝ) :
   exact (h.measurable.pow_const _).ennreal_ofReal
 
 /- English proof (translation)
-Establish `: IsFiniteMeasureOnCompacts μ` using `⟨h.finite_compact⟩`. Use `infer_instance`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ns_sigmaFinite {k r : ℕ} {U : Set (Mat k r)} {μ : Measure (Mt k r)} (h : IsHaarOn U μ) :
     SigmaFinite μ := by
@@ -87,20 +85,20 @@ theorem ns_sigmaFinite {k r : ℕ} {U : Set (Mat k r)} {μ : Measure (Mt k r)} (
   infer_instance
 
 /- English proof (translation)
-Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul ht]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem ns_sq_rpow {t : ℝ} (ht : 0 ≤ t) (z : ℝ) : (t ^ 2) ^ z = t ^ (2 * z) := by
   rw [← Real.rpow_natCast, ← Real.rpow_mul ht]
   norm_num
 
 /- English proof (translation)
-Establish `ha0 : 0 ≤ a` using `by linarith`. Establish `h1 : 1 + S + t ≤ g ^ 2` using `by nlinarith`. Establish `h2 : a ^ 2 ≤ g ^ 2` using `by linarith`. Establish `hp : 0 < 1 + S + t` using `by linarith`. Establish `hp2 : 0 < a ^ 2` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg2 : 0 < g ^ 2` using `lt_of_lt_of_le hp h1`. Establish `e1 : g ^ (-b) = (g ^ 2) ^ (-(d / 2)) * (g ^ 2) ^ (-((b - d) / 2))`. Rewrite using `[← Real.rpow_add hg2, ns_sq_rpow hg]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e2 : a ^ (-(b - d)) = (a ^ 2) ^ (-((b - d) / 2))`. Rewrite using `[ns_sq_rpow ha0]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, e2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `i1 : (g ^ 2) ^ (-(d / 2)) ≤ (1 + S + t) ^ (-(d / 2))` using `Real.rpow_le_rpow_of_nonpos hp h1 (by linarith)`. Establish `i2 : (g ^ 2) ^ (-((b - d) / 2)) ≤ (a ^ 2) ^ (-((b - d) / 2))` using `Real.rpow_le_rpow_of_nonpos hp2 h2 (by linarith)`. Conclude with `mul_le_mul i1 i2 (by positivity) (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ns_split {a g S t b d : ℝ} (ha : 1 ≤ a) (hg : 0 ≤ g) (hS : 0 ≤ S) (ht : 0 ≤ t)
     (hle : a ^ 2 + S + t ≤ g ^ 2) (hd : 0 ≤ d) (hdb : d ≤ b) :
@@ -124,9 +122,9 @@ theorem ns_split {a g S t b d : ℝ} (ha : 1 ≤ a) (hg : 0 ≤ g) (hS : 0 ≤ S
   exact mul_le_mul i1 i2 (by positivity) (by positivity)
 
 /- English proof (translation)
-Establish `hS : 0 ≤ ∑ i, Complex.normSq (x.1 i)` using `Finset.sum_nonneg fun i _ => Complex.normSq_nonneg _`. Rewrite using `[← ENNReal.ofReal_mul (by positivity)]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Establish `hm : (Matrix.of (mulM ((heis0 k r' x : Mt k (1 + r')), levM k r' n')) : Mat k (1 + r')) = heis0 k r' x * ιLev k 1 r' (Matrix.of n')` using `rfl`. Rewrite using `[hm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key` using `gN_heis_lev k r' x (Matrix.of n')`. Establish `ha` using `hGL k r' _ hn.1`. Conclude with `ns_split ha (Real.sqrt_nonneg _) hS (sq_nonneg _) (by linarith) hd hdb`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ns_point (hGL : GNLower) (k r' : ℕ) {b d : ℝ} (hd : 0 ≤ d) (hdb : d ≤ b) (x : HPar k r')
     (n' : Mt k r') (hn : (Matrix.of n' : Mat k r') ∈ Nset k r') :
@@ -146,17 +144,15 @@ theorem ns_point (hGL : GNLower) (k r' : ℕ) {b d : ℝ} (hd : 0 ≤ d) (hdb : 
 end NIntStepAux
 
 /- English proof (translation)
-Introduce `μN hμN b hb`. Take `⟨μ', hμ'⟩` from `hHN k r'`. Establish `hν` using `hNR k r' μ' hμ'`. Take `⟨c, hc⟩` from `hHU k (1 + r') (Nset k (1 + r')) _ μN (hCN k (1 + r')) hν hμN.conc hμN.left hμN.finite_compact`. Establish `hσ : SigmaFinite μ'` using `ns_sigmaFinite hμ'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hdim` using `dimN_succ k r'`. Use `set m : ℝ := ((2 * r' + k + 1 : ℕ) : ℝ) with hm`. Establish `hm0 : 0 ≤ m` using `Nat.cast_nonneg _`. Use `set d : ℝ := ((2 * m + 1) + (b - dimN k r')) / 2 with hd`. Establish `hd1 : 2 * m + 1 < d` using `by rw [hd]; linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd2 : (dimN k r' : ℝ) < b - d` using `by rw [hd]; linarith`. Establish `hd0 : 0 ≤ d` using `by linarith`. Establish `hdb : d ≤ b`. Establish `: (0 : ℝ) ≤ dimN k r'` using `Nat.cast_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hae : ∀ᵐ z ∂((volume : Measure (HPar k r')).prod μ'), (Matrix.of z.2 : Mat k r') ∈ Nset k r'`. Establish `h0 : ∀ᵐ y ∂μ', (Matrix.of y : Mat k r') ∈ Nset k r'` using `by rw [ae_iff]; exact hμ'.conc`. Conclude with `Measure.quasiMeasurePreserving_snd.ae h0`. Establish `hfin : ∫⁻ x : Mt k (1 + r'), ENNReal.ofReal (gN (Matrix.of x : Mat k (1 + r')) ^ (-b)) ∂(((μHeis k r').prod (μ'.map (levM k r'))).map mulM) < ∞`. Rewrite using `[lintegral_map (ns_meas_F b) ns_cont_mulM.measurable, μHeis, Measure.map_prod_map (volume : Measure (HPar k r')) μ' (ns_meas_heis0 k r') (ns_cont_levM k r').measurable, lintegral_map (f := fun a : Mt k (1 + r') × Mt k (1 + r') => ENNReal.ofReal (gN (Matrix.of (mulM a) : Mat k (1 …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono_ae ?_` and prove the remaining obligations. Use `filter_upwards [hae] with z hz`. Conclude with `ns_point hGL k r' hd0 hdb z.1 z.2 hz`. Use `_ = (∫⁻ x : HPar k r', ENNReal.ofReal ((1 + ∑ i, Complex.normSq (x.1 i) + x.2 ^ 2) ^ (-(d / 2)))) * ∫⁻ y, ENNReal.ofReal (gN (Matrix.of y : Mat k r') ^ (-(b - d))) ∂μ' := lintegral_prod_mul (ns_meas_G k r' d).aemeasurable (ns_meas_F (b - d)).aemeasurable`.
-
-Use `_ < ∞ := ENNReal.mul_lt_top (heis_lint_fin (2 * r' + k + 1) (by rw [hm] at hd1; exact_mod_cast hd1)) (ih μ' hμ' (b - d) hd2)`. Rewrite using `[hc, lintegral_smul_measure, ENNReal.smul_def, smul_eq_mul]`. Conclude with `ENNReal.mul_lt_top ENNReal.coe_lt_top hfin`.
+A detailed English derivation is pending.
 -/
 theorem nIntAt_step (hNR : NRecHaar) (hHU : HaarUnique) (hCN : ClosedN) (hHN : HaarNExists) (hGL : GNLower)
     (k r' : ℕ) (ih : NIntAt k r') : NIntAt k (1 + r') := by

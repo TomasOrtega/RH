@@ -12,15 +12,13 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry in
 
 /- English proof (translation)
-Use `IsPushout.of_isColimit' (CommSq.mk ?_) ?_` and prove the remaining obligations. Use extensionality with `a`. Simplify using `[Ideal.quotientMap_mk]`. Establish `key : ∀ s : PushoutCocone σ (CommRingCat.ofHom (Ideal.Quotient.mk J)), J.map σ.hom ≤ RingHom.ker s.inl.hom`. Introduce `s`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `j hj`. Establish `h` using `congrArg (fun φ => φ.hom j) s.condition`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at h`. Simplify using `[RingHom.mem_ker, h, Ideal.Quotient.eq_zero_iff_mem.mpr hj]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `PushoutCocone.IsColimit.mk _ (fun s => CommRingCat.ofHom (Ideal.Quotient.lift _ s.inl.hom (fun a ha => key s ha))) (fun s => ?_) (fun s => ?_) (fun s m h₁ _ => ?_)` and prove the remaining obligations. Use extensionality with `b`. Conclude with `Ideal.Quotient.lift_mk (J.map σ.hom) s.inl.hom (fun a ha => key s ha)`. Use extensionality with `a`. Establish `h` using `congrArg (fun φ => φ.hom a) s.condition`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at h`. Conclude with `(Ideal.Quotient.lift_mk (J.map σ.hom) s.inl.hom (fun a ha => key s ha)).trans h`. Use extensionality with `b`. Establish `h` using `congrArg (fun φ => φ.hom b) h₁`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at h`.
-
-Conclude with `h.trans (Ideal.Quotient.lift_mk (J.map σ.hom) s.inl.hom (fun a ha => key s ha)).symm`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.NilpotentLift.isPushout_quotient_map {A : Type} [CommRing A] (J : Ideal A) {B : CommRingCat.{0}}
     (σ : CommRingCat.of A ⟶ B) :
@@ -55,19 +53,19 @@ theorem _root_.GlobalTheory.NilpotentLift.isPushout_quotient_map {A : Type} [Com
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry in
 
 /- English proof (translation)
-Introduce `A _ J hJ G Y _ _ f₀ hf₀ hW`. Take `⟨W, hWaff, hWtop⟩` from `hW`. Use `set e := Y.left.isoSpec with he`. Take `⟨σ, hσdef⟩ : ∃ σ : CommRingCat.of A ⟶ Γ(Y.left, ⊤), σ = (Scheme.ΓSpecIso (CommRingCat.of A)).inv ≫ Y.hom.appTop` from `⟨_, rfl⟩`. Establish `hσ : e.hom ≫ Spec.map σ = Y.hom`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `Scheme.isoSpec_hom_naturality Y.hom`. Rewrite `h1` using `[Scheme.isoSpec_Spec_hom]`. Rewrite using `[hσdef, Spec.map_comp, ← Category.assoc, he, h1, Category.assoc, ← Spec.map_comp, Iso.inv_hom_id, Spec.map_id, Category.comp_id]`. Establish `hσ' : e.inv ≫ Y.hom = Spec.map σ`. Rewrite using `[← hσ, Iso.inv_hom_id_assoc]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hPB` using `isPullback_SpecMap_of_isPushout _ _ _ _ (_root_.GlobalTheory.NilpotentLift.isPushout_quotient_map J σ)`. Establish `hPB' : IsPullback (Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk (J.map σ.hom))) ≫ e.inv) (Spec.map (CommRingCat.ofHom (Ideal.quotientMap (J.map σ.hom) σ.hom Ideal.le_comap_map))) Y.hom (Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk J)))` using `IsPullback.of_iso hPB (Iso.refl _) e.symm (Iso.refl _) (Iso.refl _) (by rw [Iso.refl_hom, Category.id_comp, Iso.symm_hom]) (by rw [Iso.refl_hom, Iso.refl_hom, Category.id_comp, Category.comp_id]) (by rw [Iso.refl_hom, Category.comp_id, Iso.symm_hom, hσ']) (by rw [Iso.refl_hom, Is …`. Establish `hx₀ : (hPB'.isoPullback.hom ≫ f₀) ≫ G.hom = Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk (J.map σ.hom))) ≫ Spec.map σ`. Rewrite using `[Category.assoc, hf₀, IsPullback.isoPullback_hom_fst_assoc, Category.assoc, hσ']`. Take `⟨x, hx, hxs⟩` from `_root_.GlobalTheory.exists_lift_of_smooth_of_isAffineOpen G.hom (isAffineOpen_top (Spec (CommRingCat.of A))) hWaff le_top (CommRingCat.ofHom (Ideal.Quotient.mk (J.map σ.hom))) (Spec.map σ) (hPB'.isoPullback.hom ≫ f₀) hx₀ (by simp) (by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨y, rfl⟩`. Establish `: hPB'.isoPullback.hom y ∈ f₀ ⁻¹ᵁ W` using `by rw [hWtop]; trivial`. Simplify using `using this)`. Use the proof step `(by`. Introduce `R' A' _ _ _ _ _ _ π' hπ' φ`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsurj : Function.Surjective π'`. Introduce `c`. Take `⟨b, hb⟩` from `Ideal.Quotient.mk_surjective c`. Conclude with `⟨b, (hπ' b).trans hb⟩`. Establish `hnil : IsNilpotent (RingHom.ker π'.toRingHom)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨n, hn⟩` from `hJ`. Use `⟨n, eq_bot_iff.mpr ?_⟩` and prove the remaining obligations. Establish `hle : RingHom.ker π'.toRingHom ≤ J.map σ.hom` using `fun b hb => Ideal.Quotient.eq_zero_iff_mem.mp ((hπ' b).symm.trans hb)`. Combine the equalities or inequalities in the displayed calculation. Conclude with `⟨_, Algebra.FormallySmooth.comp_liftOfSurjective φ π' hsurj hnil⟩)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Over.homMk (e.hom ≫ x) (by rw [Category.assoc, hxs, hσ]), ?_⟩` and prove the remaining obligations. Rewrite using `[← cancel_epi hPB'.isoPullback.hom]`. Use `show hPB'.isoPullback.hom ≫ pullback.fst _ _ ≫ e.hom ≫ x = hPB'.isoPullback.hom ≫ f₀`. Rewrite using `[IsPullback.isoPullback_hom_fst_assoc, Category.assoc, Iso.inv_hom_id_assoc, hx]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.NilpotentLift.main : ∀ (A : Type) [CommRing A] (J : Ideal A), IsNilpotent J →
     ∀ (G Y : Over (Spec (CommRingCat.of A))) [Smooth G.hom] [IsAffine Y.left]

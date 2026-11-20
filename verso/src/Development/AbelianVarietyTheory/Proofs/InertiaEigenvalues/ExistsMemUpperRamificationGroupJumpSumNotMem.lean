@@ -10,17 +10,15 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc ValuativeRel GroundTheory
 namespace GlobalTheory.PMon.Ram
 
 /- English proof (translation)
-Introduce `F L _ _ _ _ _ _ _ _ _ _ _ _ B h0 hB`. Take `⟨hanti, hbot⟩` from `GlobalTheory.T.wildLowerRamificationGroup_antitone_eventually_bot F L`. Take `⟨n, hn⟩` from `GlobalTheory.T.exists_initialSegment_not_inf_le_filtration _ (wild F L) ⊤ B hanti hbot`. Establish `hjs` using `GlobalTheory.T.ramificationJumpSum_eq_sum_range _ (wild F L) ⊤ B n hanti hn`. Establish `hphi` using `GlobalTheory.T.card_mul_herbrandPhi_natCast_totallyRamified F L h0 n`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [top_inf_eq] at hjs hn`. Establish `hcard : (0 : ℝ) < (Nat.card (L ≃ₐ[F] L) : ℝ)`. Conclude with `Nat.card_pos` after adjusting the coercions. Establish `hidx : (jumpSum (wild F L) ⊤ B : ℝ) / (Nat.card (L ≃ₐ[F] L) : ℝ) = herbrandPhi F L n`. Rewrite using `[hjs, ← hphi]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[hidx, upperRamificationGroup_herbrandPhi, lowerRamificationGroupReal_natCast]`. Consider the cases of `n with`. Consider the case `zero`. Choose the witnesses or unpack the hypotheses as in `⟨σ, hσ⟩ : ∃ σ, σ ∉ B := by`.
+Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hB (eq_top_iff.mpr fun σ _ => h σ)`. Use `⟨σ, ?_, hσ⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_zero, h0]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `Subgroup.mem_top σ`. Consider the case `succ k`. Establish `hk : ¬ wild F L k ≤ B` using `(hn k).mp (Nat.lt_succ_self k)`. Take `⟨σ, hσ, hσB⟩` from `SetLike.not_le_iff_exists.mp hk`. Use `⟨σ, ?_, hσB⟩` and prove the remaining obligations.
-
-Establish `: ((k + 1 : ℕ) : ℤ) = (k : ℤ) + 1` using `by push_cast; rfl`. Rewrite using `[this]`. Conclude with `hσ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mem_upperRamificationGroup_jumpSum_not_mem :
     ∀ (F L : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [Field L]

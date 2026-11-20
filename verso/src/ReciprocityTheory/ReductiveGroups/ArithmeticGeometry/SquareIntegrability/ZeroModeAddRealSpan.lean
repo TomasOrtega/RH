@@ -14,7 +14,7 @@ namespace ZM
 variable [IsCMField E] {X : PT E} {DF : ℕ} {P : Par X DF} {I : Submodule ℤ (Vsp X.dim)}
 
 /- English proof (translation)
-Unfold `z e Hf`. Rewrite using `[innerSL_apply_apply, PiLp.inner_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[RCLike.inner_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem z_eq_inner {ι : Type} [Fintype ι] (K : Submodule ℝ (EuclideanSpace ℂ ι)) (k : Fin (dK K))
     (v : EuclideanSpace ℂ ι) : z K k v = innerSL ℂ (e K k) v := by
@@ -24,11 +24,11 @@ theorem z_eq_inner {ι : Type} [Fintype ι] (K : Submodule ℝ (EuclideanSpace �
   rw [RCLike.inner_apply]
 
 /- English proof (translation)
-Unfold `zmG`. Establish `hs' : Differentiable ℂ s` using `(show Differentiable ℂ s ∧ _ from hs).1`. Establish `h1 : Differentiable ℂ fun v : Vsp X.dim => s fun _ => v` using `hs'.comp (differentiable_pi.2 fun _ => differentiable_id)`. Use `h1.mul (Differentiable.cexp (Differentiable.const_mul ?_ _))` and prove the remaining obligations. Unfold `S`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Establish `hz : ∀ k, Differentiable ℂ fun v : Vsp X.dim => z (IR I) k v ^ 2`. Introduce `k`. Use `Differentiable.pow ?_ 2` and prove the remaining obligations. Establish `hk : z (IR I) k = ⇑(innerSL ℂ (e (IR I) k))`. Use function extensionality and compare the values at `fun v => z_eq_inner _ _ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hk]`. Conclude with `(innerSL ℂ (e (IR I) k)).differentiable`. Use `first`. Consider the case `exact Differentiable.fun_sum fun k _ => hz k`. Consider the case `exact Differentiable.sum fun k _ => hz k`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem zmG_differentiable {s : (Fin 1 → Vsp X.dim) → ℂ} (hs : s ∈ X.Sec 1 1) :
     Differentiable ℂ (zmG I s) := by
@@ -50,7 +50,7 @@ theorem zmG_differentiable {s : (Fin 1 → Vsp X.dim) → ℂ} (hs : s ∈ X.Sec
     | exact Differentiable.sum fun k _ => hz k
 
 /- English proof (translation)
-The claim follows from `(zmG_differentiable hs).continuous`.
+A detailed English derivation is pending.
 -/
 theorem zmG_continuous {s : (Fin 1 → Vsp X.dim) → ℂ} (hs : s ∈ X.Sec 1 1) :
     Continuous (zmG I s) := (zmG_differentiable hs).continuous
@@ -59,22 +59,22 @@ def tb (hI : IsSplit P I) (t : Fin (Module.finrank ℝ (IR I)) → ℝ) : Vsp X.
   ∑ i, t i • ((Ib hI i : IR I) : Vsp X.dim)
 
 /- English proof (translation)
-The claim follows from `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Ib hI i).2`.
+A detailed English derivation is pending.
 -/
 theorem tb_mem (hI : IsSplit P I) (t : Fin (Module.finrank ℝ (IR I)) → ℝ) : tb hI t ∈ IR I :=
   Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Ib hI i).2
 
 /- English proof (translation)
-Simplify using `only [tb, Pi.add_apply, add_smul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tb_add (hI : IsSplit P I) (t t' : Fin (Module.finrank ℝ (IR I)) → ℝ) :
     tb hI (t + t') = tb hI t + tb hI t' := by
   simp only [tb, Pi.add_apply, add_smul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Unfold `tb`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Establish `hK : (Ib hI i : IR I) ∈ IK I`. Simplify using `only [Ib, Module.Basis.reindex_apply, Module.Basis.ofZLatticeBasis_apply]`. Conclude with `SetLike.coe_mem _`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hmem : ((Ib hI i : IR I) : Vsp X.dim) ∈ I` using `hK`. Rewrite using `[Int.cast_smul_eq_zsmul]`. Conclude with `Submodule.smul_mem _ _ hmem`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tb_int (hI : IsSplit P I) (n : Fin (Module.finrank ℝ (IR I)) → ℤ) :
     tb hI (fun i => (n i : ℝ)) ∈ I := by
@@ -95,7 +95,7 @@ theorem zmC_eq (hI : IsSplit P I) (s : (Fin 1 → Vsp X.dim) → ℂ) (n) (v : V
       Complex.exp (-(2 * Real.pi * Complex.I * ∑ i, (n i : ℂ) * (t i : ℂ))) * zmG I s (v + tb hI t) := rfl
 
 /- English proof (translation)
-Use `(zmG_continuous hs).comp (continuous_const.add ?_)` and prove the remaining obligations. Unfold `tb`. Conclude with `continuous_finset_sum _ fun i _ => (continuous_apply i).smul continuous_const`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem fib_continuous (hI : IsSplit P I) {s : (Fin 1 → Vsp X.dim) → ℂ} (hs : s ∈ X.Sec 1 1)
     (v : Vsp X.dim) : Continuous fun t : Fin (Module.finrank ℝ (IR I)) → ℝ => zmG I s (v + tb hI t) := by
@@ -104,13 +104,13 @@ theorem fib_continuous (hI : IsSplit P I) {s : (Fin 1 → Vsp X.dim) → ℂ} (h
   exact continuous_finset_sum _ fun i _ => (continuous_apply i).smul continuous_const
 
 /- English proof (translation)
-Establish `key : ∀ x : Vsp X.dim, (∀ y ∈ S₀, (inner ℂ x y).im = 0) → ∀ y ∈ Submodule.span ℝ S₀, (inner ℂ x y).im = 0`. Introduce `x hx y hy`. Set `f : Vsp X.dim →ₗ[ℝ] ℝ` to `Complex.imLm.comp ((innerSL ℂ x).toLinearMap.restrictScalars ℝ)`. Establish `hf : ∀ u, f u = (inner ℂ x u).im` using `fun u => rfl`. Establish `hle : Submodule.span ℝ S₀ ≤ LinearMap.ker f`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Submodule.span_le]`. Introduce `u hu`. Rewrite using `[SetLike.mem_coe, LinearMap.mem_ker, hf]`. Conclude with `hx u hu`. Establish `h` using `hle hy`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h` using `[LinearMap.mem_ker, hf]`. Then use the resulting hypothesis. Introduce `x hx y hy`. Establish `h1 : ∀ u ∈ S₀, (inner ℂ y u).im = 0`. Introduce `u hu`. Establish `h` using `key u (hS u hu) y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← inner_conj_symm, Complex.conj_im, h, neg_zero]`. Establish `h` using `key y h1 x hx`. Rewrite using `[← inner_conj_symm, Complex.conj_im, h, neg_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma im_inner_eq_zero_on_real_span (S₀ : Set (Vsp X.dim))
     (hS : ∀ x ∈ S₀, ∀ y ∈ S₀, (inner ℂ x y).im = 0) :
@@ -136,7 +136,7 @@ private lemma im_inner_eq_zero_on_real_span (S₀ : Set (Vsp X.dim))
   rw [← inner_conj_symm, Complex.conj_im, h, neg_zero]
 
 /- English proof (translation)
-Unfold `Hf`. Rewrite using `[PiLp.inner_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[RCLike.inner_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private lemma Hf_eq_inner_swap {ι : Type} [Fintype ι] (x y : EuclideanSpace ℂ ι) : Hf y x = inner ℂ x y := by
   unfold Hf
@@ -145,31 +145,31 @@ private lemma Hf_eq_inner_swap {ι : Type} [Fintype ι] (x y : EuclideanSpace �
   rw [RCLike.inner_apply]
 
 /- English proof (translation)
-Establish `hγR : γ ∈ IR I` using `Submodule.subset_span hγI`. Establish `hreal : ∀ x ∈ IR I, ∀ y ∈ IR I, (inner ℂ x y).im = 0`. Use `im_inner_eq_zero_on_real_span (I : Set (Vsp X.dim)) ?_` and prove the remaining obligations. Introduce `x hx y hy`. Establish `h` using `hI.iso y hy x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h` using `[Hf_eq_inner_swap]`. Then use the resulting hypothesis. Establish `hz : ∀ k u, z (IR I) k u = inner ℂ (e (IR I) k) u`. Introduce `k u`. Rewrite using `[z_eq_inner, innerSL_apply_apply]`. Establish `hzadd : ∀ k (u u' : Vsp X.dim), z (IR I) k (u + u') = z (IR I) k u + z (IR I) k u'`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `k u u'`. Rewrite using `[hz, hz, hz, inner_add_right]`. Set `b` to `stdOrthonormalBasis ℝ (IR I)`. Establish `heb : ∀ k : Fin (dK (IR I)), e (IR I) k = ((b k : IR I) : Vsp X.dim)` using `fun k => rfl`. Establish `he_mem : ∀ k : Fin (dK (IR I)), e (IR I) k ∈ IR I` using `fun k => (b k).2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨γ', hγ'⟩ : ∃ γ' : IR I, (γ' : Vsp X.dim) = γ` from `⟨⟨γ, hγR⟩, rfl⟩`. Establish `hexp : γ = ∑ k : Fin (dK (IR I)), (b.repr γ' k) • ((b k : IR I) : Vsp X.dim)`. Establish `h` using `congrArg (fun x : IR I => (x : Vsp X.dim)) (b.sum_repr γ')`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at h`. Rewrite using `[← hγ', ← h]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hzγ : ∀ k : Fin (dK (IR I)), z (IR I) k γ = ((b.repr γ' k : ℝ) : ℂ)`. Introduce `k`. Rewrite using `[hz]`. Apply `Complex.ext` to reduce the goal to its premises. Rewrite using `[Complex.ofReal_re, OrthonormalBasis.repr_apply_apply, ← hγ', Submodule.coe_inner, heb] first`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Consider the case `exact (real_inner_eq_re_inner (𝕜 := ℂ) _ _).symm`. Consider the case `(rw [PiLp.inner_apply, PiLp.inner_apply, Complex.re_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `first`. Consider the case `(rw [RCLike.inner_apply, Complex.inner, mul_comm])`.
+Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately.
 
-Consider the case `(rw [RCLike.inner_apply, Complex.inner])`. Consider the case `exact (real_inner_eq_re_inner (𝕜 := ℂ) _ _).symm`. Consider the case `simp [Complex.inner, RCLike.inner_apply, mul_comm])`. Rewrite using `[Complex.ofReal_im]`. Conclude with `hreal _ (he_mem k) _ hγR`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hstar : ∀ u : Vsp X.dim, ∑ k : Fin (dK (IR I)), z (IR I) k u * z (IR I) k γ = Hf u γ`. Introduce `u`. Rewrite using `[Hf_eq_inner_swap]`. Use `conv_rhs => rw [hexp]`. Rewrite using `[sum_inner]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `first`. Consider the case `(rw [hzγ, hz, heb, ← Complex.coe_smul, inner_smul_left, Complex.conj_ofReal, mul_comm])`. Consider the case `(rw [hzγ, hz, heb, ← Complex.coe_smul, inner_smul_left, Complex.conj_ofReal, mul_comm]; rfl)`. Consider the case `(rw [hzγ, hz, heb, RCLike.real_smul_eq_coe_smul (K := ℂ), inner_smul_left, RCLike.conj_ofReal, mul_comm]; congr 1)`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hS : ∀ u : Vsp X.dim, S (IR I) (u + γ) = S (IR I) u + 2 * Hf u γ + Hf γ γ`. Introduce `u`. Unfold `S`. Rewrite using `[← hstar u, ← hstar γ, Finset.mul_sum, ← Finset.sum_add_distrib, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hzadd]`. Expand and normalize the polynomial expressions, which then agree. Establish `hHC : ∀ a c : Vsp X.dim, HC (fun _ : Fin 1 => a) (fun _ => c) = Hf a c`. Introduce `a c`. Unfold `HC Hf`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using the standard rewrite rules. Establish `hsec : s (fun _ => w + γ) = Complex.exp (↑Real.pi * Hf w γ + ↑Real.pi * Hf γ γ / 2) * s (fun _ => w)`. Establish `h` using `(show Differentiable ℂ s ∧ _ from hs).2 (fun _ => γ) (fun _ => hI.le hγI) (fun _ => w)`. Simplify `h` using `[hHC, hI.eps γ hγI, Pi.add_def]`. Unfold `zmG`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hsec, hS w]`. Rewrite using `[show ∀ (a c d : ℂ), Complex.exp a * c * Complex.exp d = c * Complex.exp (a + d) from fun a c d => by rw [Complex.exp_add]; ring]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 private lemma zmG_add_mem_of_isSplit (hI : IsSplit P I) {s : (Fin 1 → Vsp X.dim) → ℂ} (hs : s ∈ X.Sec 1 1)
     (w γ : Vsp X.dim) (hγI : γ ∈ I) : zmG I s (w + γ) = zmG I s w := by
@@ -243,7 +243,7 @@ private lemma zmG_add_mem_of_isSplit (hI : IsSplit P I) {s : (Fin 1 → Vsp X.di
   ring
 
 /- English proof (translation)
-Rewrite using `[tb_add, ← add_assoc]`. Conclude with `zmG_add_mem_of_isSplit hI hs _ _ (tb_int hI n)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fib_periodic (hI : IsSplit P I) {s : (Fin 1 → Vsp X.dim) → ℂ} (hs : s ∈ X.Sec 1 1)
     (v : Vsp X.dim) (t : Fin (Module.finrank ℝ (IR I)) → ℝ) (n : Fin (Module.finrank ℝ (IR I)) → ℤ) :
@@ -252,11 +252,11 @@ theorem fib_periodic (hI : IsSplit P I) {s : (Fin 1 → Vsp X.dim) → ℂ} (hs 
   exact zmG_add_mem_of_isSplit hI hs _ _ (tb_int hI n)
 
 /- English proof (translation)
-Use `set c := (Ib hI).repr ⟨a, ha⟩ with hc`. Establish `hac : a = tb hI (fun i => c i)`. Establish `h` using `congrArg Subtype.val ((Ib hI).sum_repr ⟨a, ha⟩)`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at h`. Rewrite using `[tb]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `h.symm`. Simplify using `only [zmC_eq, Pi.zero_apply, Int.cast_zero, zero_mul, Finset.sum_const_zero, mul_zero, neg_zero, Complex.exp_zero, one_mul]`. Establish `hsh` using `tof_box_shift (fun t => zmG I s (v + tb hI t)) (fib_continuous hI hs v) (fun t n => fib_periodic hI hs v t n) (fun i => c i)`. Rewrite using `[zmBox]`. Rewrite using `[← hsh]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Use function extensionality and compare the values at `t`. Rewrite using `[hac, add_assoc, ← tb_add, add_comm t]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zeroMode_add_realSpan (hI : IsSplit P I) {s : (Fin 1 → Vsp X.dim) → ℂ} (hs : s ∈ X.Sec 1 1)
     (v : Vsp X.dim) {a : Vsp X.dim} (ha : a ∈ IR I) : zmC hI s 0 (v + a) = zmC hI s 0 v := by

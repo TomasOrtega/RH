@@ -9,7 +9,7 @@ noncomputable section
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
 /- English proof (translation)
-Take `⟨C₄, c₃, Cc, Cc', h⟩` from `thmBpAt_main2 hA Cb C₃ CΛ C₀ hC₃ hCΛ hC₀`. Take `⟨Cn, hn⟩` from `limEvT_fpm_of_NF hA h1 h2 h3 h4 Cb`. Use `⟨C₄, c₃, Cc, Cc', Cn, ?_⟩` and prove the remaining obligations. Introduce `Wp Wq _ _ _ _ _ _ P p f b Λ A₀ p₀ χ nn Y K N hb hΛ hΛb hT hp₀ hK hKN hχ hnn hCb hf hfA hth1 hth2 hth3 hth4 hN2 hexp hWG hLG hI5 hBd`. Conclude with `h Wp Wq P p f b Λ A₀ p₀ χ nn Y K N hb hΛ hΛb hT hp₀ hK hKN hχ hnn hCb hf hfA hth1 hth2 hth3 hexp hWG hLG hI5 (hn Wp Wq P p f A₀ p₀ χ Y N ⟨hχ, hCb, hf, hfA, hth4, hN2⟩) hBd`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem thmBpAt_main4 (hA : P5.ThmPActual) (h1 : NFTopFormAll) (h2 : NFTopPtwAll) (h3 : NFTopDomAll)
     (h4 : NFTopIdAll) (Cb C₃ CΛ C₀ : ℝ) (hC₃ : 0 ≤ C₃) (hCΛ : 0 ≤ CΛ) (hC₀ : 1 / 2 ≤ C₀) :

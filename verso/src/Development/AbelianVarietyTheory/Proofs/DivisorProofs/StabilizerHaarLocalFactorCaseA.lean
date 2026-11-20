@@ -18,15 +18,15 @@ namespace GlobalTheory.ConeSlice
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem Φ h`. Take `⟨f, g, -, rfl⟩` from `h`. Set `a : κ → mixedEmbedding.mixedSpace F` to `fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (x i).1`. Use `⟨g (fun i => (x i).2) • SchwartzMap.compSubConstCLM ℂ (-a) f, fun t => ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [SchwartzMap.smul_apply, SchwartzMap.compSubConstCLM_apply, smul_eq_mul, pureA]`. Establish `h1 : (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F ((x + GlobalTheory.ThetaTransform.embR t) i).1) = t - -a`. Use function extensionality and compare the values at `i`. Use `show InfiniteAdeleRing.ringEquiv_mixedSpace F ((x i).1 + (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (t i)) = t i - -a i`. Rewrite using `[map_add, RingEquiv.apply_symm_apply, sub_neg_eq_add, add_comm]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (fun i => ((x + GlobalTheory.ThetaTransform.embR t) i).2) = fun i => (x i).2`. Use function extensionality and compare the values at `i`. Use `show (x i).2 + 0 = (x i).2`. Conclude with `add_zero _`. Rewrite using `[h1, h2, mul_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `zero => exact ⟨0, fun t => by simp⟩`. Consider the case `add Φ Ψ _ _ hΦ hΨ`. Take `⟨f, hf⟩` from `hΦ`. Take `⟨g, hg⟩` from `hΨ`. Conclude with `⟨f + g, fun t => by simp [hf, hg]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `smul c Φ _ hΦ`. Take `⟨f, hf⟩` from `hΦ`. Conclude with `⟨c • f, fun t => by simp [hf]⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_schwartz_slice {κ : Type} [Fintype κ] {Φ : (κ → AF F) → ℂ} (hΦ : Φ ∈ schA F κ) (x : κ → AF F) :
     ∃ f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ, ∀ t, f t = Φ (x + GlobalTheory.ThetaTransform.embR t) := by
@@ -60,9 +60,9 @@ end GlobalTheory.ConeSlice
 namespace GlobalTheory.ConeSlice
 
 /- English proof (translation)
-Introduce `_ F E _ _ _ _ _ σ B b a' G G₁ H H' _ e hE K μK μ _ _ _ X om om' om₁ om₁' hT _ Ψ hΨ x k l`. Establish `h1 : om (k.1, 1) Ψ ∈ schA F _` using `(IsUWeilPair.isUSplitting hT.weil).pres (k.1, 1) Ψ hΨ`. Establish `h2 : G.M.co.rho B.ψ (shiftA H H' l) (om (k.1, 1) Ψ) ∈ schA F _` using `GlobalTheory.ConeMeasV.schr_mem_schA hT.base.std _ h1`. Take `⟨g, hg⟩` from `exists_schwartz_slice (hE.maps _ h2) x`. Use `⟨((X.ν l : ℂ) * ((absE F E l : ℝ) : ℂ) ^ ((b + 2 - a') / 2)) • g, fun t => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[SchwartzMap.smul_apply, smul_eq_mul, hg, mul_comm, mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem integrand_slice_schwartz : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')
     (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' →

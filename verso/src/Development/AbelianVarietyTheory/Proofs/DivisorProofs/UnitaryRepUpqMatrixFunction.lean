@@ -13,7 +13,7 @@ abbrev mat (g : Formalism.REAL.UJ ε) : Matrix (Fin n) (Fin n) ℂ :=
   ((g : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ)
 
 /- English proof (translation)
-Introduce `_ _ h` and use `Subtype.ext (Units.ext h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mat_injective : Function.Injective (mat ε) := fun _ _ h => Subtype.ext (Units.ext h)
 
@@ -21,30 +21,30 @@ def rep (π : Formalism.REAL.UJ ε →* (X →L[ℂ] X)) (x : Matrix (Fin n) (Fi
   classical exact if h : ∃ g, mat ε g = x then π h.choose else 1
 
 /- English proof (translation)
-Establish `h : ∃ g', mat ε g' = mat ε g` using `⟨g, rfl⟩`. Rewrite using `[rep, dif_pos h, mat_injective ε h.choose_spec]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem rep_mat (π : Formalism.REAL.UJ ε →* (X →L[ℂ] X)) (g : Formalism.REAL.UJ ε) : rep ε π (mat ε g) = π g := by
   have h : ∃ g', mat ε g' = mat ε g := ⟨g, rfl⟩
   rw [rep, dif_pos h, mat_injective ε h.choose_spec]
 
 /- English proof (translation)
-The claim follows from `(Formalism.REAL.isClosedEmbeddingMatrix n ε).2`.
+A detailed English derivation is pending.
 -/
 theorem range_mat : Set.range (mat ε) = Formalism.MainNotions.S.UJset ε := (Formalism.REAL.isClosedEmbeddingMatrix n ε).2
 
 /- English proof (translation)
-The claim follows from `range_mat ε ▸ ⟨g, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem mat_mem (g : Formalism.REAL.UJ ε) : mat ε g ∈ Formalism.MainNotions.S.UJset ε := range_mat ε ▸ ⟨g, rfl⟩
 
 /- English proof (translation)
-Rewrite `hx` using `[← range_mat ε]`. Conclude with `hx`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mat {x : Matrix (Fin n) (Fin n) ℂ} (hx : x ∈ Formalism.MainNotions.S.UJset ε) : ∃ g, mat ε g = x := by
   rw [← range_mat ε] at hx; exact hx
 
 /- English proof (translation)
-The claim follows from `(Formalism.REAL.isClosedEmbeddingMatrix n ε).1.isEmbedding`.
+A detailed English derivation is pending.
 -/
 theorem isEmbedding_mat : Topology.IsEmbedding (mat ε) := (Formalism.REAL.isClosedEmbeddingMatrix n ε).1.isEmbedding
 
@@ -55,15 +55,13 @@ namespace GlobalTheory.PsCo.PcEF
 open GlobalTheory.PsCo.PcEF.MatrixRepresentation
 
 /- English proof (translation)
-Introduce `n ε U _ _ π hπ hi`. Use `⟨rep ε π, ⟨⟨?_, fun a ha b hb => ?_⟩, fun a ha v => ?_, fun v => ?_⟩, fun S hS hinv => ?_, fun g => rep_mat ε π g⟩` and prove the remaining obligations. Establish `h1 : mat ε 1 = 1` using `rfl`. Rewrite using `[← h1, rep_mat, map_one]`. Take `⟨g, rfl⟩` from `exists_mat ε ha`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨h, rfl⟩` from `exists_mat ε hb`. Establish `hm : mat ε g * mat ε h = mat ε (g * h)` using `rfl`. Rewrite using `[hm, rep_mat, rep_mat, rep_mat, map_mul]`. Both sides reduce to the same expression. Take `⟨g, rfl⟩` from `exists_mat ε ha`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Rewrite using `[rep_mat]`. Conclude with `hπ.norm_apply g v`. Establish `hr : Formalism.MainNotions.S.UJset ε = Set.range (mat ε)` using `(range_mat ε).symm show ContinuousOn (fun g => rep ε π g v) (Formalism.MainNotions.S.UJset ε)`. Rewrite using `[hr, continuousOn_iff_continuous_domRestrict]`. Set `E` to `(isEmbedding_mat ε).toHomeomorph`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hE : ∀ y, (fun g => π g v) (E.symm y) = rep ε π (y : Matrix (Fin n) (Fin n) ℂ) v`. Introduce `y`. Take `⟨g, rfl⟩` from `E.surjective y`. Use `show π (E.symm (E g)) v = rep ε π (mat ε g) v`. Rewrite using `[E.symm_apply_apply, rep_mat]`.
-
-Conclude with `((hπ.continuous_apply v).comp E.symm.continuous).congr hE`. Conclude with `hi.2 S ⟨hS, fun g v hv => by simpa [rep_mat] using hinv _ (mat_mem ε g) v hv⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitaryRep_upq_matrixFunction : MatRep := by
   intro n ε U _ _ π hπ hi

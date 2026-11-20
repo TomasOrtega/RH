@@ -11,13 +11,13 @@ noncomputable section
 namespace GlobalTheory.CurvInterp
 
 /- English proof (translation)
-Establish `hr : 0 < ‖ζ‖` using `norm_pos_iff.2 h0`. Establish `hlog : Real.log ‖ζ‖ < 0` using `Real.log_neg hr h1`. Establish `hpi : 0 < 2 * Real.pi` using `by positivity`. Establish `ht : 0 < GlobalTheory.IndefiniteRowSideFullHecke.ModelDdcForms.tOf ζ`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.ModelDdcForms.tOf; exact div_pos (by linarith) hpi`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `⟨by positivity, ?_⟩` and prove the remaining obligations. Establish `hl : -Real.log ‖ζ‖ ≤ 1 / ‖ζ‖ - 1`. Use `Real.log_le_sub_one_of_pos (one_div_pos.2 hr)` as an intermediate fact. Rewrite `this` using `[one_div, Real.log_inv]`. Rewrite using `[one_div]` and apply the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Establish `hrt : ‖ζ‖ * GlobalTheory.IndefiniteRowSideFullHecke.ModelDdcForms.tOf ζ ≤ 1`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.ModelDdcForms.tOf`. Rewrite using `[mul_div_assoc', div_le_one hpi]`. Establish `: ‖ζ‖ * -Real.log ‖ζ‖ ≤ ‖ζ‖ * (1 / ‖ζ‖ - 1)` using `mul_le_mul_of_nonneg_left hl hr.le`. Rewrite `this` using `[mul_sub, mul_one_div_cancel hr.ne', mul_one]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use polynomial arithmetic with `[Real.pi_gt_three]`. Establish `hpos : 0 ≤ ‖ζ‖ * GlobalTheory.IndefiniteRowSideFullHecke.ModelDdcForms.tOf ζ` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem modelWeight_bounds {ζ : ℂ} (h0 : ζ ≠ 0) (h1 : ‖ζ‖ < 1) :
     0 < ‖ζ‖ ^ 2 * GlobalTheory.IndefiniteRowSideFullHecke.ModelDdcForms.tOf ζ ^ 2 ∧ ‖ζ‖ ^ 2 * GlobalTheory.IndefiniteRowSideFullHecke.ModelDdcForms.tOf ζ ^ 2 ≤ 1 := by
@@ -42,13 +42,11 @@ theorem modelWeight_bounds {ζ : ℂ} (h0 : ζ ≠ 0) (h1 : ‖ζ‖ < 1) :
     _ ≤ 1 := pow_le_one₀ hpos hrt
 
 /- English proof (translation)
-Introduce `e m σ z hz ξ`. Establish `hsq` using `GlobalTheory.HermFrame.gnorm_sq (modelGram_posSemidef σ z) ξ`. Rewrite `hsq` using `[form_modelGram, GlobalTheory.IndefiniteRowSideFullHecke.ModelDdcForms.modelAt]`. Establish `hterm : ∀ k, ‖ξ k‖ ^ 2 ≤ (if ∃ i, σ i = some k then ‖ξ k‖ ^ 2 / (‖z k‖ ^ 2 * GlobalTheory.IndefiniteRowSideFullHecke.ModelDdcForms.tOf (z k) ^ 2) else ‖ξ k‖ ^ 2)`. Introduce `k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `split_ifs with hk`. Take `⟨i, hi⟩` from `hk`. Establish `hzk : ‖z k‖ < 1` using `(norm_le_pi_norm z k).trans_lt ((mem_ball_zero_iff.1 hz.1).trans (by norm_num))`. Take `⟨ha, hb⟩` from `modelWeight_bounds (hz.2 i k hi) hzk`. Conclude with `le_div_self (sq_nonneg _) ha hb`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `le_rfl`. Establish `hnn : ∀ k, 0 ≤ (if ∃ i, σ i = some k then ‖ξ k‖ ^ 2 / (‖z k‖ ^ 2 * GlobalTheory.IndefiniteRowSideFullHecke.ModelDdcForms.tOf (z k) ^ 2) else ‖ξ k‖ ^ 2)` using `fun k => (sq_nonneg _).trans (hterm k)`. Use `(pi_norm_le_iff_of_nonneg (GlobalTheory.HermFrame.gnorm_nonneg _ _)).2 fun k => ?_` and prove the remaining obligations. Establish `hk2 : ‖ξ k‖ ^ 2 ≤ GlobalTheory.HermFrame.gnorm (modelGram σ z) ξ ^ 2`. Rewrite using `[hsq]`.
-
-Conclude with `(hterm k).trans (Finset.single_le_sum (fun j _ => hnn j) (Finset.mem_univ k))`. Conclude with `(pow_le_pow_iff_left₀ (norm_nonneg _) (GlobalTheory.HermFrame.gnorm_nonneg _ _) two_ne_zero).1 hk2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_le_gnorm_modelGram : ∀ (e m : ℕ) (σ : Fin m → Option (Fin e)) (z : Fin e → ℂ),
     z ∈ punct σ (1 / 2) → ∀ ξ : Fin e → ℂ, ‖ξ‖ ≤ GlobalTheory.HermFrame.gnorm (modelGram σ z) ξ := by

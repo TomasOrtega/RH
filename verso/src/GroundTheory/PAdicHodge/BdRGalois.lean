@@ -14,9 +14,9 @@ section AdicCompletion
 variable {A : Type*} [CommRing A] (I : Ideal A)
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `AdicCompletion.mk_surjective I A x`. Rewrite using `[AdicCompletion.evalₐ_mk, AdicCompletion.evalₐ_mk]`. Simplify using `only [Ideal.Quotient.factorPow, Ideal.Quotient.factor_mk]`. Rewrite using `[Ideal.Quotient.eq]`. Establish `h` using `AdicCompletion.AdicCauchySequence.mk_eq_mk hle c`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[Submodule.Quotient.eq, smul_eq_mul, Ideal.mul_top]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem factorPow_evalₐ {m n : ℕ} (hle : m ≤ n) (x : AdicCompletion I A) :
     Ideal.Quotient.factorPow I hle (AdicCompletion.evalₐ I n x) = AdicCompletion.evalₐ I m x := by
@@ -47,7 +47,7 @@ def evalB (n : ℕ) : 𝔹 →+* 𝔸 ⧸ J ^ n := (AdicCompletion.evalₐ J n).
 
 omit [CharZero K] in
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `AdicCompletion.evalₐ J n (algebraMap 𝔸 (AdicCompletion J 𝔸) a) = _`. Rewrite using `[AdicCompletion.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply, AdicCompletion.evalₐ_of]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem evalB_toBDeRhamPlus (n : ℕ) (a : 𝔸) :
     evalB K p n (toBDeRhamPlus 𝒪 p a) = Ideal.Quotient.mk (J ^ n) a := by
@@ -57,14 +57,14 @@ theorem evalB_toBDeRhamPlus (n : ℕ) (a : 𝔸) :
 
 omit [CharZero K] in
 /- English proof (translation)
-The claim follows from `AdicCompletion.ext_evalₐ h`.
+A detailed English derivation is pending.
 -/
 theorem evalB_ext {x y : 𝔹} (h : ∀ n, evalB K p n x = evalB K p n y) : x = y :=
   AdicCompletion.ext_evalₐ h
 
 omit [CharZero K] in
 /- English proof (translation)
-The claim follows from `AdicCompletion.surjective_evalₐ J n`.
+A detailed English derivation is pending.
 -/
 theorem surjective_evalB (n : ℕ) : Function.Surjective (evalB K p n) :=
   AdicCompletion.surjective_evalₐ J n
@@ -72,7 +72,7 @@ theorem surjective_evalB (n : ℕ) : Function.Surjective (evalB K p n) :=
 variable (K p) in
 
 /- English proof (translation)
-Rewrite using `[ker_fontaineThetaInvertP (ker_fontaineTheta_eq_span_kerThetaGenerator K p), Ideal.map_span, Set.image_singleton, maximalIdeal_bDeRhamPlus_eq_span (ker_fontaineTheta_eq_span_kerThetaGenerator K p)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem map_ker_fontaineThetaInvertP :
     Ideal.map (toBDeRhamPlus 𝒪 p) J = maximalIdeal 𝔹 := by
@@ -81,7 +81,7 @@ theorem map_ker_fontaineThetaInvertP :
   rfl
 
 /- English proof (translation)
-Establish `h` using `ker_adicCompletion_evalₐ (fg_ker_fontaineThetaInvertP (ker_fontaineTheta_eq_span_kerThetaGenerator K p)) n`. Rewrite `h` using `[Ideal.map_pow]`. Rewrite using `[← map_ker_fontaineThetaInvertP K p]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_evalB (n : ℕ) : RingHom.ker (evalB K p n) = maximalIdeal 𝔹 ^ n := by
   have h := ker_adicCompletion_evalₐ (fg_ker_fontaineThetaInvertP
@@ -91,7 +91,7 @@ theorem ker_evalB (n : ℕ) : RingHom.ker (evalB K p n) = maximalIdeal 𝔹 ^ n 
   exact h
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `Ideal.Quotient.mk_surjective (evalB K p n x)`. Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[← ker_evalB, RingHom.mem_ker, map_sub, evalB_toBDeRhamPlus, ha, sub_self]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_toBDeRhamPlus_sub_mem (x : 𝔹) (n : ℕ) :
     ∃ a : 𝔸, x - toBDeRhamPlus 𝒪 p a ∈ maximalIdeal 𝔹 ^ n := by
@@ -100,7 +100,7 @@ theorem exists_toBDeRhamPlus_sub_mem (x : 𝔹) (n : ℕ) :
   rw [← ker_evalB, RingHom.mem_ker, map_sub, evalB_toBDeRhamPlus, ha, sub_self]
 
 /- English proof (translation)
-Establish `h1 : (maximalIdeal 𝔹).map F ≤ maximalIdeal 𝔹` using `Ideal.map_le_iff_le_comap.2 hF`. Establish `h2 : (maximalIdeal 𝔹 ^ n).map F ≤ maximalIdeal 𝔹 ^ n`. Rewrite using `[Ideal.map_pow]`. Conclude with `Ideal.pow_right_mono h1 n`. Conclude with `h2 (Ideal.mem_map_of_mem F hx)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_mem_maximalIdeal_pow {F : 𝔹 →+* 𝔹} (hF : ∀ x ∈ maximalIdeal 𝔹, F x ∈ maximalIdeal 𝔹)
     {x : 𝔹} {n : ℕ} (hx : x ∈ maximalIdeal 𝔹 ^ n) : F x ∈ maximalIdeal 𝔹 ^ n := by
@@ -111,7 +111,7 @@ theorem map_mem_maximalIdeal_pow {F : 𝔹 →+* 𝔹} (hF : ∀ x ∈ maximalId
   exact h2 (Ideal.mem_map_of_mem F hx)
 
 /- English proof (translation)
-Establish `hc` using `isAdicComplete_maximalIdeal_bDeRhamPlus (K := K) (p := p)`. Use `hc.toIsHausdorff.haus x fun n => ?_` and prove the remaining obligations. Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top]`. Conclude with `h n`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_forall_mem_maximalIdeal_pow {x : 𝔹} (h : ∀ n : ℕ, x ∈ maximalIdeal 𝔹 ^ n) :
     x = 0 := by
@@ -121,11 +121,11 @@ theorem eq_zero_of_forall_mem_maximalIdeal_pow {x : 𝔹} (h : ∀ n : ℕ, x �
   exact h n
 
 /- English proof (translation)
-Establish `hA : F.comp (toBDeRhamPlus 𝒪 p) = G.comp (toBDeRhamPlus 𝒪 p)` using `IsLocalization.ringHom_ext (Submonoid.powers (p : 𝕎𝒪♭)) (RingHom.ext fun w => h w)`. Use extensionality with `x`. Rewrite using `[← sub_eq_zero]`. Use `eq_zero_of_forall_mem_maximalIdeal_pow fun n => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `exists_toBDeRhamPlus_sub_mem x n`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hFG : F (toBDeRhamPlus 𝒪 p a) = G (toBDeRhamPlus 𝒪 p a)` using `RingHom.congr_fun hA a`. Establish `e : F x - G x = F (x - toBDeRhamPlus 𝒪 p a) - G (x - toBDeRhamPlus 𝒪 p a)`. Rewrite using `[map_sub, map_sub, hFG]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.sub_mem _ (map_mem_maximalIdeal_pow hF ha) (map_mem_maximalIdeal_pow hG ha)`.
+A detailed English derivation is pending.
 -/
 theorem ringHom_ext_bDeRhamPlus {F G : 𝔹 →+* 𝔹}
     (h : ∀ w : 𝕎𝒪♭, F (wittToBDeRhamPlus 𝒪 p w) = G (wittToBDeRhamPlus 𝒪 p w))
@@ -159,14 +159,14 @@ local notation "θ" => WittVector.fontaineTheta (normInteger ℂ_[p]) p
 
 omit hp in
 /- English proof (translation)
-The claim follows from `IsLocalization.Away.algebraMap_isUnit (S := 𝔸) (p : 𝕎𝒪♭)`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_algebraMap_p_away [Fact p.Prime] :
     IsUnit ((algebraMap 𝕎𝒪♭ 𝔸) (p : 𝕎𝒪♭)) :=
   IsLocalization.Away.algebraMap_isUnit (S := 𝔸) (p : 𝕎𝒪♭)
 
 /- English proof (translation)
-Rewrite `hw`, the goal using `[RingHom.mem_ker]`. Establish `h` using `AInf.fontaineTheta_gal_smul σ w`. Rewrite `h` using `[hw, ZeroMemClass.coe_zero, smul_zero]`. Conclude with `Subtype.ext h`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gal_smul_mem_ker_fontaineTheta (σ : Gal(PadicAlgCl p/K)) {w : 𝕎𝒪♭}
     (hw : w ∈ RingHom.ker θ) : σ • w ∈ RingHom.ker θ := by
@@ -181,7 +181,7 @@ def galAway (σ : Gal(PadicAlgCl p/K)) : 𝔸 →+* 𝔸 :=
 
 @[simp]
 /- English proof (translation)
-The claim follows from `IsLocalization.Away.lift_eq (S := 𝔸) (p : 𝕎𝒪♭) (by simpa using isUnit_algebraMap_p_away (p := p)) w`.
+A detailed English derivation is pending.
 -/
 theorem galAway_algebraMap (σ : Gal(PadicAlgCl p/K)) (w : 𝕎𝒪♭) :
     galAway σ (algebraMap 𝕎𝒪♭ 𝔸 w) = algebraMap 𝕎𝒪♭ 𝔸 (σ • w) :=
@@ -189,14 +189,14 @@ theorem galAway_algebraMap (σ : Gal(PadicAlgCl p/K)) (w : 𝕎𝒪♭) :
     (by simpa using isUnit_algebraMap_p_away (p := p)) w
 
 /- English proof (translation)
-The claim follows from `IsLocalization.ringHom_ext (Submonoid.powers (p : 𝕎𝒪♭)) (RingHom.ext fun w => by simp only [RingHom.comp_apply, galAway_algebraMap, one_smul, RingHom.id_apply])`.
+A detailed English derivation is pending.
 -/
 theorem galAway_one : galAway (1 : Gal(PadicAlgCl p/K)) = RingHom.id 𝔸 :=
   IsLocalization.ringHom_ext (Submonoid.powers (p : 𝕎𝒪♭)) (RingHom.ext fun w => by
     simp only [RingHom.comp_apply, galAway_algebraMap, one_smul, RingHom.id_apply])
 
 /- English proof (translation)
-The claim follows from `IsLocalization.ringHom_ext (Submonoid.powers (p : 𝕎𝒪♭)) (RingHom.ext fun w => by simp only [RingHom.comp_apply, galAway_algebraMap, mul_smul])`.
+A detailed English derivation is pending.
 -/
 theorem galAway_mul (σ τ : Gal(PadicAlgCl p/K)) :
     galAway (σ * τ) = (galAway σ).comp (galAway τ) :=
@@ -204,9 +204,9 @@ theorem galAway_mul (σ τ : Gal(PadicAlgCl p/K)) :
     simp only [RingHom.comp_apply, galAway_algebraMap, mul_smul])
 
 /- English proof (translation)
-Establish `hξ` using `IsPerfectoidField.ker_fontaineTheta_eq_span_kerThetaGenerator ℂ_[p] p`. Rewrite using `[ker_fontaineThetaInvertP hξ, Ideal.map_span, Set.image_singleton, Ideal.span_le, Set.singleton_subset_iff, galAway_algebraMap, SetLike.mem_coe]`. Establish `h : σ • IsPerfectoidField.kerThetaGenerator ℂ_[p] p ∈ RingHom.ker θ` using `gal_smul_mem_ker_fontaineTheta σ (hξ ▸ Ideal.mem_span_singleton_self _)`. Rewrite `h` using `[hξ, Ideal.mem_span_singleton]`. Take `⟨c, hc⟩` from `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hc, map_mul, Ideal.mem_span_singleton]`. Conclude with `dvd_mul_right _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_galAway_le (σ : Gal(PadicAlgCl p/K)) : Ideal.map (galAway σ) J ≤ J := by
   have hξ := IsPerfectoidField.ker_fontaineTheta_eq_span_kerThetaGenerator ℂ_[p] p
@@ -220,7 +220,7 @@ theorem map_galAway_le (σ : Gal(PadicAlgCl p/K)) : Ideal.map (galAway σ) J ≤
   exact dvd_mul_right _ _
 
 /- English proof (translation)
-Rewrite using `[← Ideal.map_le_iff_le_comap, Ideal.map_pow]`. Conclude with `Ideal.pow_right_mono (map_galAway_le σ) n`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_le_comap_galAway (σ : Gal(PadicAlgCl p/K)) (n : ℕ) :
     J ^ n ≤ (J ^ n).comap (galAway σ) := by
@@ -232,21 +232,21 @@ def galQuot (σ : Gal(PadicAlgCl p/K)) (n : ℕ) : 𝔸 ⧸ J ^ n →+* 𝔸 ⧸
 
 @[simp]
 /- English proof (translation)
-The claim follows from `Ideal.quotientMap_mk`.
+A detailed English derivation is pending.
 -/
 theorem galQuot_mk (σ : Gal(PadicAlgCl p/K)) (n : ℕ) (a : 𝔸) :
     galQuot σ n (Ideal.Quotient.mk (J ^ n) a) = Ideal.Quotient.mk (J ^ n) (galAway σ a) :=
   Ideal.quotientMap_mk
 
 /- English proof (translation)
-The claim follows from `Ideal.Quotient.ringHom_ext (RingHom.ext fun a => by simp only [RingHom.comp_apply, galQuot_mk, galAway_one, RingHom.id_apply])`.
+A detailed English derivation is pending.
 -/
 theorem galQuot_one (n : ℕ) : galQuot (1 : Gal(PadicAlgCl p/K)) n = RingHom.id _ :=
   Ideal.Quotient.ringHom_ext (RingHom.ext fun a => by
     simp only [RingHom.comp_apply, galQuot_mk, galAway_one, RingHom.id_apply])
 
 /- English proof (translation)
-The claim follows from `Ideal.Quotient.ringHom_ext (RingHom.ext fun a => by simp only [RingHom.comp_apply, galQuot_mk, galAway_mul])`.
+A detailed English derivation is pending.
 -/
 theorem galQuot_mul (σ τ : Gal(PadicAlgCl p/K)) (n : ℕ) :
     galQuot (σ * τ) n = (galQuot σ n).comp (galQuot τ n) :=
@@ -254,7 +254,7 @@ theorem galQuot_mul (σ τ : Gal(PadicAlgCl p/K)) (n : ℕ) :
     simp only [RingHom.comp_apply, galQuot_mk, galAway_mul])
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Simplify using `only [galQuot_mk, Ideal.Quotient.factorPow, Ideal.Quotient.factor_mk]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem factorPow_galQuot (σ : Gal(PadicAlgCl p/K)) {m n : ℕ} (hle : m ≤ n) (y : 𝔸 ⧸ J ^ n) :
     Ideal.Quotient.factorPow J hle (galQuot σ n y) = galQuot σ m (Ideal.Quotient.factorPow J hle y) := by
@@ -262,7 +262,7 @@ theorem factorPow_galQuot (σ : Gal(PadicAlgCl p/K)) {m n : ℕ} (hle : m ≤ n)
   simp only [galQuot_mk, Ideal.Quotient.factorPow, Ideal.Quotient.factor_mk]
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun x => by simp only [RingHom.comp_apply] rw [factorPow_galQuot] exact congrArg (galQuot σ m) (factorPow_evalₐ J hle x)`.
+A detailed English derivation is pending.
 -/
 theorem galQuot_evalB_compat (σ : Gal(PadicAlgCl p/K)) {m n : ℕ} (hle : m ≤ n) :
     (Ideal.Quotient.factorPow J hle).comp ((galQuot σ n).comp (IsPerfectoidField.evalB ℂ_[p] p n)) =
@@ -277,7 +277,7 @@ def galBdRHom (σ : Gal(PadicAlgCl p/K)) : 𝔹 →+* 𝔹 :=
     (galQuot_evalB_compat σ)
 
 /- English proof (translation)
-The claim follows from `AdicCompletion.evalₐ_liftRingHom J _ (galQuot_evalB_compat σ) n x`.
+A detailed English derivation is pending.
 -/
 theorem evalB_galBdRHom (σ : Gal(PadicAlgCl p/K)) (n : ℕ) (x : 𝔹) :
     IsPerfectoidField.evalB ℂ_[p] p n (galBdRHom σ x) =
@@ -285,7 +285,7 @@ theorem evalB_galBdRHom (σ : Gal(PadicAlgCl p/K)) (n : ℕ) (x : 𝔹) :
   AdicCompletion.evalₐ_liftRingHom J _ (galQuot_evalB_compat σ) n x
 
 /- English proof (translation)
-Use `IsPerfectoidField.evalB_ext fun n => ?_` and prove the remaining obligations. Rewrite using `[evalB_galBdRHom, IsPerfectoidField.evalB_toBDeRhamPlus, IsPerfectoidField.evalB_toBDeRhamPlus, galQuot_mk]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem galBdRHom_toBDeRhamPlus (σ : Gal(PadicAlgCl p/K)) (a : 𝔸) :
     galBdRHom σ (toBDeRhamPlus 𝒪 p a) = toBDeRhamPlus 𝒪 p (galAway σ a) := by
@@ -294,14 +294,14 @@ theorem galBdRHom_toBDeRhamPlus (σ : Gal(PadicAlgCl p/K)) (a : 𝔸) :
     IsPerfectoidField.evalB_toBDeRhamPlus, galQuot_mk]
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun x => IsPerfectoidField.evalB_ext fun n => by rw [evalB_galBdRHom, galQuot_one, RingHom.id_apply, RingHom.id_apply]`.
+A detailed English derivation is pending.
 -/
 theorem galBdRHom_one : galBdRHom (1 : Gal(PadicAlgCl p/K)) = RingHom.id 𝔹 :=
   RingHom.ext fun x => IsPerfectoidField.evalB_ext fun n => by
     rw [evalB_galBdRHom, galQuot_one, RingHom.id_apply, RingHom.id_apply]
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun x => IsPerfectoidField.evalB_ext fun n => by rw [RingHom.comp_apply, evalB_galBdRHom, evalB_galBdRHom, evalB_galBdRHom, galQuot_mul, RingHom.comp_apply]`.
+A detailed English derivation is pending.
 -/
 theorem galBdRHom_mul (σ τ : Gal(PadicAlgCl p/K)) :
     galBdRHom (σ * τ) = (galBdRHom σ).comp (galBdRHom τ) :=
@@ -328,14 +328,14 @@ Both sides reduce to the same expression.
 theorem gal_smul_bdR_def (σ : Gal(PadicAlgCl p/K)) (x : 𝔹) : σ • x = galBdRHom σ x := rfl
 
 /- English proof (translation)
-The claim follows from `galBdRHom_toBDeRhamPlus σ a`.
+A detailed English derivation is pending.
 -/
 theorem gal_smul_toBDeRhamPlus (σ : Gal(PadicAlgCl p/K)) (a : 𝔸) :
     σ • toBDeRhamPlus 𝒪 p a = toBDeRhamPlus 𝒪 p (galAway σ a) :=
   galBdRHom_toBDeRhamPlus σ a
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `σ • toBDeRhamPlus 𝒪 p (algebraMap 𝕎𝒪♭ 𝔸 w) = toBDeRhamPlus 𝒪 p (algebraMap 𝕎𝒪♭ 𝔸 (σ • w))`. Rewrite using `[gal_smul_toBDeRhamPlus, galAway_algebraMap]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem gal_smul_wittToBDeRhamPlus (σ : Gal(PadicAlgCl p/K)) (w : 𝕎𝒪♭) :
     σ • wittToBDeRhamPlus 𝒪 p w = wittToBDeRhamPlus 𝒪 p (σ • w) := by
@@ -351,9 +351,9 @@ Both sides reduce to the same expression.
 theorem galBdR_apply (σ : Gal(PadicAlgCl p/K)) (x : 𝔹) : galBdR σ x = σ • x := rfl
 
 /- English proof (translation)
-Establish `hmem : y ∈ maximalIdeal 𝔹`. Establish `h : y ∈ maximalIdeal 𝔹 ^ 1`. Rewrite using `[← IsPerfectoidField.ker_evalB (K := ℂ_[p]) (p := p) 1, RingHom.mem_ker]`. Conclude with `hy`. Rewrite `h` using `[pow_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hmem` using `[IsPerfectoidField.maximalIdeal_bDeRhamPlus, RingHom.mem_ker, IsPerfectoidField.thetaBDeRhamPlusField]`. Simplify using `only [RingHom.comp_apply] at hmem`. Conclude with `(map_eq_zero_iff _ (IsPerfectoidField.awayEquiv (K := ℂ_[p]) p).injective).1 hmem`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem thetaBDeRhamPlus_eq_zero_of_evalB_one_eq_zero {y : 𝔹}
     (hy : IsPerfectoidField.evalB ℂ_[p] p 1 y = 0) : thetaBDeRhamPlus 𝒪 p y = 0 := by
@@ -368,9 +368,9 @@ theorem thetaBDeRhamPlus_eq_zero_of_evalB_one_eq_zero {y : 𝔹}
   exact (map_eq_zero_iff _ (IsPerfectoidField.awayEquiv (K := ℂ_[p]) p).injective).1 hmem
 
 /- English proof (translation)
-Establish `h : ((IsPerfectoidField.thetaBDeRhamPlusField p).comp ((toBDeRhamPlus 𝒪 p).comp (galAway σ))) = ((galCp σ : ℂ_[p] →+* ℂ_[p]).comp ((IsPerfectoidField.thetaBDeRhamPlusField p).comp (toBDeRhamPlus 𝒪 p)))`. Use `IsLocalization.ringHom_ext (Submonoid.powers (p : 𝕎𝒪♭)) (RingHom.ext fun w => ?_)` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, galAway_algebraMap, RingHom.coe_coe, galCp_apply]`. Express the relevant statement in the definitionally equal form `IsPerfectoidField.thetaBDeRhamPlusField p (wittToBDeRhamPlus 𝒪 p (σ • w)) = σ • IsPerfectoidField.thetaBDeRhamPlusField p (wittToBDeRhamPlus 𝒪 p w)`. Rewrite using `[IsPerfectoidField.thetaBDeRhamPlusField_wittToBDeRhamPlus, IsPerfectoidField.thetaBDeRhamPlusField_wittToBDeRhamPlus, AInf.fontaineTheta_gal_smul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `h'` using `RingHom.congr_fun h a`. Simplify using `only [RingHom.comp_apply, RingHom.coe_coe, galCp_apply] at h'`. Conclude with `h'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem thetaBDeRhamPlusField_toBDeRhamPlus_galAway (σ : Gal(PadicAlgCl p/K)) (a : 𝔸) :
     IsPerfectoidField.thetaBDeRhamPlusField p (toBDeRhamPlus 𝒪 p (galAway σ a)) =
@@ -389,11 +389,11 @@ theorem thetaBDeRhamPlusField_toBDeRhamPlus_galAway (σ : Gal(PadicAlgCl p/K)) (
   exact h'
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `Ideal.Quotient.mk_surjective (IsPerfectoidField.evalB ℂ_[p] p 1 x)`. Establish `hx : IsPerfectoidField.evalB ℂ_[p] p 1 (x - toBDeRhamPlus 𝒪 p a) = 0`. Rewrite using `[map_sub, IsPerfectoidField.evalB_toBDeRhamPlus, ha, sub_self]`. Establish `hσx : IsPerfectoidField.evalB ℂ_[p] p 1 (σ • (x - toBDeRhamPlus 𝒪 p a)) = 0`. Rewrite using `[gal_smul_bdR_def, evalB_galBdRHom, hx, map_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1` using `thetaBDeRhamPlus_eq_zero_of_evalB_one_eq_zero hx`. Establish `e2` using `thetaBDeRhamPlus_eq_zero_of_evalB_one_eq_zero hσx`. Establish `f1 : IsPerfectoidField.thetaBDeRhamPlusField p x = IsPerfectoidField.thetaBDeRhamPlusField p (toBDeRhamPlus 𝒪 p a)`. Rewrite using `[← sub_eq_zero, ← map_sub, IsPerfectoidField.thetaBDeRhamPlusField, RingHom.comp_apply, e1, map_zero]`. Establish `f2 : IsPerfectoidField.thetaBDeRhamPlusField p (σ • x) = IsPerfectoidField.thetaBDeRhamPlusField p (σ • toBDeRhamPlus 𝒪 p a)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← sub_eq_zero, ← map_sub, ← smul_sub, IsPerfectoidField.thetaBDeRhamPlusField, RingHom.comp_apply, e2, map_zero]`. Rewrite using `[f2, f1, gal_smul_toBDeRhamPlus, thetaBDeRhamPlusField_toBDeRhamPlus_galAway]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem thetaBDeRhamPlusField_gal_smul (σ : Gal(PadicAlgCl p/K)) (x : 𝔹) :
     IsPerfectoidField.thetaBDeRhamPlusField p (σ • x) =
@@ -416,7 +416,7 @@ theorem thetaBDeRhamPlusField_gal_smul (σ : Gal(PadicAlgCl p/K)) (x : 𝔹) :
   rw [f2, f1, gal_smul_toBDeRhamPlus, thetaBDeRhamPlusField_toBDeRhamPlus_galAway]
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[IsPerfectoidField.maximalIdeal_bDeRhamPlus, RingHom.mem_ker]`. Rewrite using `[thetaBDeRhamPlusField_gal_smul, hx, smul_zero]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem gal_smul_mem_maximalIdeal (σ : Gal(PadicAlgCl p/K)) {x : 𝔹} (hx : x ∈ maximalIdeal 𝔹) :
     σ • x ∈ maximalIdeal 𝔹 := by
@@ -424,7 +424,7 @@ theorem gal_smul_mem_maximalIdeal (σ : Gal(PadicAlgCl p/K)) {x : 𝔹} (hx : x 
   rw [thetaBDeRhamPlusField_gal_smul, hx, smul_zero]
 
 /- English proof (translation)
-Establish `key : ∀ (τ : Gal(PadicAlgCl p/K)) (y : 𝔹), y ∈ maximalIdeal 𝔹 ^ n → τ • y ∈ maximalIdeal 𝔹 ^ n` using `fun τ y hy => IsPerfectoidField.map_mem_maximalIdeal_pow (F := galBdRHom τ) (fun z hz => gal_smul_mem_maximalIdeal τ hz) hy`. Use `⟨fun h => ?_, key σ x⟩` and prove the remaining obligations. Use `key σ⁻¹ _ h` as an intermediate fact. Rewrite `this` using `[inv_smul_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem gal_smul_mem_maximalIdeal_pow_iff (σ : Gal(PadicAlgCl p/K)) (x : 𝔹) (n : ℕ) :
     σ • x ∈ maximalIdeal 𝔹 ^ n ↔ x ∈ maximalIdeal 𝔹 ^ n := by
@@ -437,9 +437,9 @@ theorem gal_smul_mem_maximalIdeal_pow_iff (σ : Gal(PadicAlgCl p/K)) (x : 𝔹) 
   rwa [inv_smul_smul] at this
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[Ideal.mem_map_of_equiv]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `(gal_smul_mem_maximalIdeal_pow_iff σ y n).2 hy`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hx`. Use `⟨σ⁻¹ • x, (gal_smul_mem_maximalIdeal_pow_iff σ⁻¹ x n).2 hx, ?_⟩` and prove the remaining obligations. Rewrite using `[galBdR_apply, smul_inv_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_galBdR_maximalIdeal_pow (σ : Gal(PadicAlgCl p/K)) (n : ℕ) :
     (maximalIdeal 𝔹 ^ n).map (galBdR σ) = maximalIdeal 𝔹 ^ n := by

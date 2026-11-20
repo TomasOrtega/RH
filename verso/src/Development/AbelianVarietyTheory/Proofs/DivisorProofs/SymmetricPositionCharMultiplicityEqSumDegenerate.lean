@@ -9,36 +9,36 @@ namespace GlobalTheory.FinGL.PosOne
 open GlobalTheory.FinGL Formalism.L2.DIV Module Matrix
 
 /- English proof (translation)
-Simplify using `[eig, Submodule.mem_iInf, sub_eq_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_eig {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] (τ : Representation ℂ G V) (S : Set G) (χ : G → ℂ)
     (v : V) : v ∈ eig τ S χ ↔ ∀ g ∈ S, τ g v = χ g • v := by
   simp [eig, Submodule.mem_iInf, sub_eq_zero]
 
 /- English proof (translation)
-Set `σ : Representation ℂ Q V` to `{ toFun := fun g => (((χ g)⁻¹ : ℂˣ) : ℂ) • τ g map_one' := by simp map_mul' := fun x y => by`. Simplify using `only [map_mul, Subgroup.coe_mul, mul_inv, Units.val_mul, smul_mul_smul_comm] }`. Establish `hσ : ∀ (g : Q) (v : V), σ g v = (((χ g)⁻¹ : ℂˣ) : ℂ) • τ g v` using `fun g v => rfl`. Set `M : Submodule ℂ V` to `eig σ (ρ.ker : Set Q) fun _ => 1`. Establish `hM : ∀ v, v ∈ M ↔ ∀ g : Q, ρ g = 1 → σ g v = v` using `fun v => by`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `[M, mem_eig]`. Establish `hst : ∀ g : Q, ∀ v ∈ M, σ g v ∈ M`. Introduce `g v hv`. Rewrite `hv`, the goal using `[hM]`. Introduce `n hn`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `hv (g⁻¹ * n * g) (by simp [hn])`. Establish `h2 : n * g = g * (g⁻¹ * n * g)` using `by group`. Combine the equalities or inequalities in the displayed calculation. Set `σM : Q →* Module.End ℂ M` to `{ toFun := fun g => (σ g).restrict (hst g) map_one' := by ext v; simp map_mul' := fun x y => by ext v; simp }`. Establish `hσM : ∀ (g : Q) (v : M), (σM g v : V) = σ g v` using `fun g v => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hker : ∀ x y : Q, ρ x = ρ y → σM x = σM y`. Introduce `x y h`. Use extensionality with `v`. Establish `h1` using `(hM v.1).1 v.2 (y⁻¹ * x) (by simp [h])`. Establish `h2 : x = y * (y⁻¹ * x)` using `by group`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hσM, hσM]`. Use `conv_lhs => rw [h2, map_mul]`. Use `show σ y (σ (y⁻¹ * x) v) = _`. Rewrite using `[h1]`. Take `⟨s, hs⟩` from `hρ.hasRightInverse`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Set `π : Representation ℂ P M` to `{ toFun := fun p => σM (s p) map_one' := by rw [hker (s 1) 1 (by rw [hs 1, map_one]), map_one] map_mul' := fun x y => by`. Rewrite using `[← map_mul]; exact hker _ _ (by rw [map_mul, hs x, hs y, hs (x * y)]) }`. Establish `hπ : ∀ (g : Q) (v : M), (π (ρ g) v : V) = σ g v` using `fun g v => by show (σM (s (ρ g)) v : V) = _`. Rewrite using `[hker (s (ρ g)) g (hs _), hσM]`. Use `⟨M, π, fun S c T d h1 hc hT hd => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ (g : Q) (v : V), ρ g ∈ S → (σ g v = c (ρ g) • v ↔ τ g v = d g • v)`. Introduce `g v hg`. Rewrite using `[hσ, hd g hg, mul_smul]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h, smul_smul]`. Simplify using the standard rewrite rules. Introduce `h`. Rewrite using `[h, smul_smul]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `e : (eig π S c).map M.subtype = eig τ T d`. Use extensionality with `v`. Simplify using `only [Submodule.mem_map, mem_eig]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, rfl⟩ g hg`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨h, hh⟩` from `(hT g).1 hg`. Use `(key ⟨g, h⟩ _ hh).1 ?_` and prove the remaining obligations. Use `congrArg Subtype.val (hw _ hh)` as an intermediate fact. Rewrite `this` using `[hπ]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `hv`. Establish `hv' : ∀ g : Q, ρ g ∈ S → σ g v = c (ρ g) • v` using `fun g hg => (key g v hg).2 (hv g ((hT g).2 ⟨g.2, hg⟩))`. Use `⟨⟨v, (hM v).2 fun g hg => ?_⟩, fun p hp => ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[hv' g (by rw [hg]; exact h1), hg, hc, one_smul]`. Take `⟨g, rfl⟩` from `hρ p`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hπ]`. Conclude with `hv' g hp`. Rewrite using `[← e]`. Conclude with `(Submodule.finrank_map_subtype_eq M _).symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_descent {G P V : Type} [Group G] [Group P] [AddCommGroup V] [Module ℂ V] (τ : Representation ℂ G V)
     (Q : Subgroup G) (ρ : Q →* P) (hρ : Function.Surjective ρ) (χ : Q →* ℂˣ) :
@@ -149,11 +149,11 @@ def tailUnip (F : Type) [Field F] (r k : ℕ) : Subgroup (GL (Fin r) F) where
     · intro h; exact absurd (Finset.mem_univ i) h
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩ i j hi hj`. Break down `hj.lt_or_eq with h | h` into its components or cases. Apply the tactic sequence `rw [h1 (show tailOnesBlockSizes k j < tailOnesBlockSizes k i by unfold tailOnesBlockSizes; split_ifs <;> omega), one_apply_ne (fun e => by rw [e] at h; omega)]`. Take `rfl : j = i` from `Fin.ext h`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h2 j hi, one_apply_eq]`. Introduce `h`. Use `⟨fun i j hij => ?_, fun i hi => by rw [h i i hi le_rfl, one_apply_eq]⟩` and prove the remaining obligations. Establish `: k ≤ i.val ∧ j.val < i.val`. Apply the tactic sequence `unfold tailOnesBlockSizes at hij; split_ifs at hij <;> omega`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[h i j this.1 this.2.le, one_apply_ne (fun e => by rw [e] at this; omega)]`.
+Rewrite the indicated hypotheses using the stated equalities.
 -/
 theorem mem_tailUnip {k : ℕ} {g : GL (Fin r) F} : g ∈ tailUnip F r k ↔
     ∀ i j : Fin r, k ≤ i.val → j.val ≤ i.val →
@@ -172,9 +172,9 @@ theorem mem_tailUnip {k : ℕ} {g : GL (Fin r) F} : g ∈ tailUnip F r k ↔
     rw [h i j this.1 this.2.le, one_apply_ne (fun e => by rw [e] at this; omega)]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hg i j hj`. Break down `hj.lt_or_eq with h | h` into its components or cases. Rewrite using `[unip_lower hg (show j < i from h), one_apply_ne (fun e => by rw [e] at h; omega)]`. Take `rfl : j = i` from `Fin.ext h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[unip_diag hg, one_apply_eq]`. Introduce `h`. Use `⟨fun i j hij => ?_, fun i => by rw [h i i le_rfl, one_apply_eq]⟩` and prove the remaining obligations. Establish `hij' : j.val < i.val` using `hij`. Rewrite using `[h i j hij'.le, one_apply_ne (fun e => by rw [e] at hij'; omega)]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 -/
 theorem mem_unip {g : GL (Fin r) F} : g ∈ unip F r ↔
     ∀ i j : Fin r, j.val ≤ i.val → (g : Matrix (Fin r) (Fin r) F) i j = (1 : Matrix (Fin r) (Fin r) F) i j := by
@@ -190,9 +190,9 @@ theorem mem_unip {g : GL (Fin r) F} : g ∈ unip F r ↔
     rw [h i j hij'.le, one_apply_ne (fun e => by rw [e] at hij'; omega)]
 
 /- English proof (translation)
-Rewrite using `[mem_tailUnip]`. Prove the components needed by the constructor for the conclusion. Introduce `h j`. Conclude with `h _ j (by simp) (by have := j.2; simp only [Fin.val_last]; omega)`. Introduce `h i j hi _`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `rfl : i = Fin.last k` from `Fin.ext (by have := i.2; simp only [Fin.val_last]; omega)`. Conclude with `h j`.
+A detailed English derivation is pending.
 -/
 theorem mem_tailUnip_last {k : ℕ} (g : GL (Fin (k + 1)) F) : g ∈ tailUnip F (k + 1) k ↔
     ∀ j, (g : Matrix (Fin (k + 1)) (Fin (k + 1)) F) (Fin.last k) j =
@@ -206,7 +206,7 @@ theorem mem_tailUnip_last {k : ℕ} (g : GL (Fin (k + 1)) F) : g ∈ tailUnip F 
     exact h j
 
 /- English proof (translation)
-Introduce `g hg i j hij`. Establish `: k + 1 ≤ i.val ∧ j.val < k + 1`. Apply the tactic sequence `unfold blk2 at hij; split_ifs at hij <;> omega`. Rewrite using `[mem_tailUnip.1 hg i j (by omega) (by omega), one_apply_ne (fun e => by rw [e] at this; omega)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities.
 -/
 theorem tailUnip_le (k : ℕ) : tailUnip F r k ≤ blockTri (blk2 (k + 1)) := by
   intro g hg i j hij
@@ -215,7 +215,7 @@ theorem tailUnip_le (k : ℕ) : tailUnip F r k ≤ blockTri (blk2 (k + 1)) := by
   rw [mem_tailUnip.1 hg i j (by omega) (by omega), one_apply_ne (fun e => by rw [e] at this; omega)]
 
 /- English proof (translation)
-Simplify using `[one_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem one_castLE {n : ℕ} (h : n ≤ r) (i j : Fin n) :
     (1 : Matrix (Fin r) (Fin r) F) (Fin.castLE h i) (Fin.castLE h j) = (1 : Matrix (Fin n) (Fin n) F) i j := by
@@ -235,15 +235,13 @@ theorem corner_apply {k : ℕ} (h : k + 1 ≤ r) (g : tailUnip F r k) (i j : Fin
       ((g : GL (Fin r) F) : Matrix (Fin r) (Fin r) F) (Fin.castLE h i) (Fin.castLE h j) := rfl
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `Nat.exists_eq_add_of_le h`. Introduce `p`. Set `e : Fin (k + 1) ⊕ Fin c ≃ Fin (k + 1 + c)` to `finSumFinEquiv`. Set `f : GL (Fin (k + 1)) F → Matrix (Fin (k + 1 + c)) (Fin (k + 1 + c)) F` to `fun x => (fromBlocks (x : Matrix (Fin (k + 1)) (Fin (k + 1)) F) 0 0 (1 : Matrix (Fin c) (Fin c) F)).submatrix e.symm e.symm`. Establish `hf : ∀ x y, x * y = 1 → f x * f y = 1` using `fun x y hxy => by`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `only [f, submatrix_mul_equiv, fromBlocks_multiply, ← Units.val_mul, hxy]`. Simplify using the standard rewrite rules. Set `g : GL (Fin (k + 1 + c)) F` to `⟨f p, f p⁻¹, hf _ _ (by simp), hf _ _ (by simp)⟩`. Establish `hg : ∀ a b, (g : Matrix _ _ F) (e a) (e b) = fromBlocks ((p : GL (Fin (k + 1)) F) : Matrix (Fin (k + 1)) (Fin (k + 1)) F) 0 0 (1 : Matrix (Fin c) (Fin c) F) a b` using `fun a b => by simp [g, f]`. Establish `h1 : ∀ a b, (1 : Matrix _ _ F) (e a) (e b) = fromBlocks (1 : Matrix (Fin (k + 1)) (Fin (k + 1)) F) 0 0 (1 : Matrix (Fin c) (Fin c) F) a b` using `fun a b => by rw [fromBlocks_one]; simp [one_apply]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨⟨g, mem_tailUnip.2 fun i j hi hj => ?_⟩, ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `e.surjective i`. Take `⟨b, rfl⟩` from `e.surjective j`. Rewrite using `[hg, h1]`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `mem_tailUnip.1 p.2 a b hi hj`. Apply the tactic sequence `all_goals rfl`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`.
-
-Rewrite using `[corner_apply]`. Conclude with `hg (Sum.inl i) (Sum.inl j)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem corner_surj {k : ℕ} (h : k + 1 ≤ r) : Function.Surjective (corner (F := F) h) := by
   obtain ⟨c, rfl⟩ := Nat.exists_eq_add_of_le h
@@ -295,15 +293,15 @@ def tailHom (F : Type) [Field F] (r k : ℕ) : tailUnip F r k →* Multiplicativ
       · intro h; exact absurd (Finset.mem_univ j) h)
 
 /- English proof (translation)
-Establish `e : edgeSum E' (corner h g : GL (Fin (k + 1)) F) = edgeSum (fun a b => E a b ∧ a.val < k) (g : GL (Fin r) F)`. Unfold `edgeSum`. Use `Fintype.sum_of_injective (Fin.castLE h) (Fin.castLE_injective h) _ _ (fun a ha => ?_) (fun a => ?_)` and prove the remaining obligations. Use `Finset.sum_eq_zero fun b _ => if_neg fun hb => ha ⟨⟨a.val, by omega⟩, rfl⟩` and prove the remaining obligations. Use `Fintype.sum_of_injective (Fin.castLE h) (Fin.castLE_injective h) _ _ (fun b hb => ?_) (fun b => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `if_neg fun hE => hb ⟨⟨b.val, by have := h2 _ _ hE.1; have := hE.2; omega⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[corner_apply]`. Use `if_congr ⟨fun hE => ⟨(h1 _ _).1 hE, ?_⟩, fun hE => (h1 _ _).2 hE.1⟩ rfl rfl` and prove the remaining obligations. Use `h2 _ _ ((h1 _ _).1 hE)` as an intermediate fact. Establish `hb` using `b.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Fin.val_castLE] at this ⊢`. Use linear arithmetic over natural numbers and integers. Rewrite using `[e]`. Unfold `edgeSum`. Rewrite using `[← Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `hE : E a b`. Distinguish the cases in `ha : a.val < k`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos hE, if_neg (fun t : tailEdge k a b => absurd t.2 (by omega)), if_pos ⟨hE, ha⟩, zero_add]`. Rewrite using `[if_pos hE, if_pos (show tailEdge k a b from ⟨h2 _ _ hE, by omega⟩), if_neg (fun t => ha t.2), add_zero]`. Rewrite using `[if_neg hE, if_neg (fun t => hE (h3 _ _ t)), if_neg (fun t => hE t.1), add_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem edgeSum_split {k : ℕ} (h : k + 1 ≤ r) (g : tailUnip F r k) (E : Fin r → Fin r → Prop) [DecidableRel E]
     (E' : Fin (k + 1) → Fin (k + 1) → Prop) [DecidableRel E']
@@ -337,11 +335,9 @@ theorem edgeSum_split {k : ℕ} (h : k + 1 ≤ r) (g : tailUnip F r k) (E : Fin 
   · rw [if_neg hE, if_neg (fun t => hE (h3 _ _ t)), if_neg (fun t => hE t.1), add_zero]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hg`. Use `⟨mem_tailUnip.2 fun i j _ hj => mem_unip.1 hg i j hj, mem_unip.2 fun i j hj => ?_⟩` and prove the remaining obligations. Rewrite using `[corner_apply, ← one_castLE h]`. Conclude with `mem_unip.1 hg _ _ hj`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨hg, hc⟩`. Use `mem_unip.2 fun i j hj => ?_` and prove the remaining obligations. Distinguish the cases in `hi : k ≤ i.val`. Conclude with `mem_tailUnip.1 hg i j hi hj`. Use `mem_unip.1 hc ⟨i.val, by omega⟩ ⟨j.val, by omega⟩ hj` as an intermediate fact.
-
-Rewrite `this` using `[corner_apply, ← one_castLE h]`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_unip_iff {k : ℕ} (h : k + 1 ≤ r) (g : GL (Fin r) F) : g ∈ unip F r ↔
     ∃ hg : g ∈ tailUnip F r k, (corner h ⟨g, hg⟩ : GL (Fin (k + 1)) F) ∈ unip F (k + 1) := by
@@ -359,9 +355,9 @@ theorem mem_unip_iff {k : ℕ} (h : k + 1 ≤ r) (g : GL (Fin r) F) : g ∈ unip
       exact this
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hg, h0⟩`. Take `⟨hg', hc⟩` from `(mem_unip_iff h g).1 hg`. Conclude with `⟨hg', hc, fun i j a b c => h0 (Fin.castLE h i) (Fin.castLE h j) a b c⟩`. Introduce and unpack `⟨hg, hc, h0⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨(mem_unip_iff h g).2 ⟨hg, hc⟩, fun i j a b c => h0 ⟨i.val, by omega⟩ ⟨j.val, by omega⟩ a b c⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_unipSym_iff {k : ℕ} (h : k + 1 ≤ r) (g : GL (Fin r) F) : g ∈ unipSym F r 0 k ↔
     ∃ hg : g ∈ tailUnip F r k, (corner h ⟨g, hg⟩ : GL (Fin (k + 1)) F) ∈ unipSym F (k + 1) 0 k := by
@@ -374,7 +370,7 @@ theorem mem_unipSym_iff {k : ℕ} (h : k + 1 ≤ r) (g : GL (Fin r) F) : g ∈ u
       h0 ⟨i.val, by omega⟩ ⟨j.val, by omega⟩ a b c⟩
 
 /- English proof (translation)
-Use `Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Use `split_ifs with hE`. Use `h _ _ hE` as an intermediate fact. Rewrite using `[Units.val_one, one_apply_ne (fun e => by rw [e] at this; omega)]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem edgeSum_one {n : ℕ} (E : Fin n → Fin n → Prop) [DecidableRel E] (h : ∀ a b, E a b → b.val = a.val + 1) :
     edgeSum E (1 : GL (Fin n) F) = 0 := by
@@ -385,11 +381,11 @@ theorem edgeSum_one {n : ℕ} (E : Fin n → Fin n → Prop) [DecidableRel E] (h
   · rfl
 
 /- English proof (translation)
-Introduce `F _ _ ψ hψ r V _ _ _ τ k h`. Take `⟨M, π, hπ⟩` from `exists_descent τ (tailUnip F r k) (corner h) (corner_surj h) (addCharHom ψ (tailHom F r k))`. Establish `hχ : ∀ g : tailUnip F r k, ((addCharHom ψ (tailHom F r k) g : ℂˣ) : ℂ) = ψ (edgeSum (tailEdge k) (g : GL (Fin r) F))` using `fun g => rfl`. Establish `main` using `GlobalTheory.T.finrank_mirabolic_whittaker_eigenspace F ψ hψ k (tailUnip F (k + 1) k) mem_tailUnip_last M π`. Establish `hs : ∀ {n : ℕ} (a b : Fin n), symEdge 0 k a b → b.val = a.val + 1` using `fun a b t => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `symEdge at t`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hπ _ _ (unipSym F r 0 k : Set (GL (Fin r) F)) (fun g => ψ (edgeSum (symEdge 0 k) g)) (Subgroup.one_mem (unipSym F (k + 1) 0 k)) (by simp only [OneMemClass.coe_one]; rw [edgeSum_one _ hs, AddChar.map_zero_eq_one]) (mem_unipSym_iff h) (fun g _ => by`. Rewrite `main` using `[hχ, ← AddChar.map_add_eq_mul, ← edgeSum_split h g (symEdge 0 k) (symEdge 0 k) (fun _ _ => Iff.rfl) hs (fun a b t => by unfold tailEdge at t; unfold symEdge; omega)])]`. Unfold `nPos`.
+Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[main]`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Establish `hj'` using `Finset.mem_range.1 hj`. Rewrite using `[hπ _ _ (unip F r : Set (GL (Fin r) F)) (fun g => ψ (edgeSum (cutEdge j) g)) (Subgroup.one_mem (unip F (k + 1))) (by simp only [OneMemClass.coe_one]; rw [edgeSum_one _ (fun _ _ t => t.1), AddChar.map_zero_eq_one]) (mem_unip_iff h) (fun g _ => by`. Rewrite using `[hχ, ← AddChar.map_add_eq_mul, ← edgeSum_split h g (cutEdge j) (cutEdge j) (fun _ _ => Iff.rfl) (fun _ _ t => t.1) (fun a b t => by unfold tailEdge at t; unfold cutEdge; omega)])]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
 Both sides reduce to the same expression.
 -/

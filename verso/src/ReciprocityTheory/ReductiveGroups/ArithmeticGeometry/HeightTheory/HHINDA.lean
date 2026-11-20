@@ -8,7 +8,7 @@ namespace ReciprocityTheory.ChartRestriction.G.T0.HeightMultiplicativity
 open MvPolynomial ReciprocityTheory.MultiplicativeHeights ReciprocityTheory.MultiplicativeHeights.Closed
 
 /- English proof (translation)
-Introduce `s hs b`. Take `⟨s1, hs1, s2, hs2, rfl⟩` from `Finset.mem_add.1 (MvPolynomial.support_mul f g hs)`. Simplify using `only [Finsupp.add_apply, Finset.sum_add_distrib, hf s1 hs1 b, hg s2 hs2 b, Pi.add_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem multi_mul {R : Type*} [CommSemiring R] {B n : ℕ} {a a' : Fin B → ℕ}
     {f g : MvPolynomial (Fin B × Fin n) R} (hf : IsMultiHomogeneous a f)
@@ -19,9 +19,7 @@ theorem multi_mul {R : Type*} [CommSemiring R] {B n : ℕ} {a a' : Fin B → ℕ
   simp only [Finsupp.add_apply, Finset.sum_add_distrib, hf s1 hs1 b, hg s2 hs2 b, Pi.add_apply]
 
 /- English proof (translation)
-Introduce `s hs b`. Rewrite `hs` using `[MvPolynomial.mem_support_iff, MvPolynomial.coeff_one]`. Use `split_ifs at hs with h`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
-
-Conclude with `absurd rfl hs`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem multi_one {R : Type*} [CommSemiring R] {B n : ℕ} :
     IsMultiHomogeneous (0 : Fin B → ℕ) (1 : MvPolynomial (Fin B × Fin n) R) := by
@@ -34,9 +32,7 @@ theorem multi_one {R : Type*} [CommSemiring R] {B n : ℕ} :
   · exact absurd rfl hs
 
 /- English proof (translation)
-Introduce `s hs b`. Rewrite `hs` using `[MvPolynomial.mem_support_iff, MvPolynomial.coeff_C]`. Use `split_ifs at hs with h`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
-
-Conclude with `absurd rfl hs`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem multi_C {R : Type*} [CommSemiring R] {B n : ℕ} (c : R) :
     IsMultiHomogeneous (0 : Fin B → ℕ) (C c : MvPolynomial (Fin B × Fin n) R) := by
@@ -49,7 +45,7 @@ theorem multi_C {R : Type*} [CommSemiring R] {B n : ℕ} (c : R) :
   · exact absurd rfl hs
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simpa using (multi_one : IsMultiHomogeneous (0 : Fin B → ℕ) (1 : MvPolynomial (Fin B × Fin n) R))`. Consider the case `succ k ih`. Rewrite using `[pow_succ, succ_nsmul]`. Conclude with `multi_mul ih hf`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem multi_pow {R : Type*} [CommSemiring R] {B n : ℕ} {a : Fin B → ℕ}
     {f : MvPolynomial (Fin B × Fin n) R} (hf : IsMultiHomogeneous a f) (k : ℕ) :
@@ -61,7 +57,7 @@ theorem multi_pow {R : Type*} [CommSemiring R] {B n : ℕ} {a : Fin B → ℕ}
     exact multi_mul ih hf
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using (multi_one : IsMultiHomogeneous (0 : Fin B → ℕ) (1 : MvPolynomial (Fin B × Fin n) R))`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.sum_insert hi, Finset.prod_insert hi]`. Conclude with `multi_mul (hf i (Finset.mem_insert_self i s)) (ih fun j hj => hf j (Finset.mem_insert_of_mem hj))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem multi_prod {R : Type*} [CommSemiring R] {B n : ℕ} {α : Type*} (s : Finset α)
     (e : α → Fin B → ℕ) (f : α → MvPolynomial (Fin B × Fin n) R)
@@ -78,9 +74,9 @@ theorem multi_prod {R : Type*} [CommSemiring R] {B n : ℕ} {α : Type*} (s : Fi
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-Establish `h1 : h0 (1 : MvPolynomial (Fin B × Fin n) K) = 0`. Establish `e` using `(gauss_height_additivity K B n 0 0 1 1 hn one_ne_zero one_ne_zero multi_one multi_one).1`. Rewrite `e` using `[one_mul]`. Combine the linear equalities and inequalities to obtain the conclusion. Proceed by induction on `k with`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Proceed by induction.
 
-Consider the case `zero => simp [h1]`. Consider the case `succ k ih`. Rewrite using `[pow_succ, (gauss_height_additivity K B n _ a (f ^ k) f hn (pow_ne_zero _ hf0) hf0 (multi_pow hf k) hf).1, ih]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem h0_pow_of_isMultiHomogeneous {B n : ℕ} (hn : 0 < n) {a : Fin B → ℕ} {f : MvPolynomial (Fin B × Fin n) K}
     (hf0 : f ≠ 0) (hf : IsMultiHomogeneous a f) (k : ℕ) : h0 (f ^ k) = k * h0 f := by
@@ -96,11 +92,11 @@ theorem h0_pow_of_isMultiHomogeneous {B n : ℕ} (hn : 0 < n) {a : Fin B → ℕ
     ring
 
 /- English proof (translation)
-Establish `h1 : h0 (1 : MvPolynomial (Fin B × Fin n) K) = 0`. Establish `e` using `(gauss_height_additivity K B n 0 0 1 1 hn one_ne_zero one_ne_zero multi_one multi_one).1`. Rewrite `e` using `[one_mul]`. Combine the linear equalities and inequalities to obtain the conclusion. Proceed by induction on `s using Finset.induction_on with`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Proceed by induction.
 
-Consider the case `empty => simp [h1]`. Consider the case `insert i s hi ih`. Establish `hf0' : ∀ j ∈ s, f j ≠ 0` using `fun j hj => hf0 j (Finset.mem_insert_of_mem hj)`. Establish `hf' : ∀ j ∈ s, IsMultiHomogeneous (e j) (f j)` using `fun j hj => hf j (Finset.mem_insert_of_mem hj)`. Establish `hP0 : ∏ j ∈ s, f j ^ k j ≠ 0` using `Finset.prod_ne_zero_iff.2 fun j hj => pow_ne_zero _ (hf0' j hj)`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPm : IsMultiHomogeneous (∑ j ∈ s, k j • e j) (∏ j ∈ s, f j ^ k j)` using `multi_prod s (fun j => k j • e j) (fun j => f j ^ k j) fun j hj => multi_pow (hf' j hj) (k j)`. Establish `hi0` using `hf0 i (Finset.mem_insert_self i s)`. Establish `him` using `hf i (Finset.mem_insert_self i s)`. Rewrite using `[Finset.prod_insert hi, Finset.sum_insert hi, (gauss_height_additivity K B n _ _ _ _ hn (pow_ne_zero _ hi0) hP0 (multi_pow him (k i)) hPm).1, h0_pow_of_isMultiHomogeneous hn hi0 him, ih hf0' hf']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem logHeight_prod_pow {B n : ℕ} (hn : 0 < n) {α : Type*} (s : Finset α) (e : α → Fin B → ℕ)
     (f : α → MvPolynomial (Fin B × Fin n) K) (k : α → ℕ)
@@ -127,9 +123,9 @@ theorem logHeight_prod_pow {B n : ℕ} (hn : 0 < n) {α : Type*} (s : Finset α)
       h0_pow_of_isMultiHomogeneous hn hi0 him, ih hf0' hf']
 
 /- English proof (translation)
-Unfold `gaussAbs`. Distinguish the cases in `hc : c = 0`. Substitute `hc` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[MvPolynomial.support_C, if_neg hc]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.sup_singleton, MvPolynomial.coeff_C, if_true]`. Conclude with `Real.coe_toNNReal _ (by positivity)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gaussAbs_C (w : NumberField.FinitePlace K) {σ : Type*} (c : K) :
     gaussAbs w (C c : MvPolynomial σ K) = w c := by
@@ -151,11 +147,11 @@ open MvPolynomial ReciprocityTheory.MultiplicativeHeights NumberField IsDedekind
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `la.intValuation_exists_uniformizer`. Use `⟨π, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `(la.intValuation_le_pow_iff_mem π 1).1 (by rw [hπ]; simp)`. Simplify using `using h1`. Introduce `h2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h3` using `(la.intValuation_le_pow_iff_mem π 2).2 h2`. Rewrite `h3` using `[hπ, WithZero.exp_le_exp]`. Evaluate the numerical expressions using `at h3`. Rewrite using `[FinitePlace.mk_apply, show (π : K) = algebraMap (𝓞 K) K π from rfl, FinitePlace.norm_def_int K la π, hπ, WithZeroMulInt.toNNReal_neg_apply _ (WithZero.exp_ne_zero)]`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Conclude with `zpow_neg_one _`.
+A detailed English derivation is pending.
 -/
 theorem exists_unif (la : HeightOneSpectrum (𝓞 K)) :
     ∃ ϖ : 𝓞 K, ϖ ∈ la.asIdeal ∧ ϖ ∉ la.asIdeal ^ 2 ∧
@@ -174,17 +170,13 @@ theorem exists_unif (la : HeightOneSpectrum (𝓞 K)) :
     exact zpow_neg_one _
 
 /- English proof (translation)
-Rewrite `hx` using `[MvPolynomial.mem_map_C_iff]`. Use `push_neg at hx`. Take `⟨s0, hs0⟩` from `hx`. Establish `hw : ∀ a : 𝓞 K, FinitePlace.mk la (algebraMap (𝓞 K) K a) ≤ 1` using `fun a => by`. Rewrite using `[FinitePlace.mk_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `FinitePlace.norm_le_one K la a`. Establish `hw1 : FinitePlace.mk la (algebraMap (𝓞 K) K (x.coeff s0)) = 1`. Rewrite using `[FinitePlace.mk_apply]`. Conclude with `(FinitePlace.norm_eq_one_iff_notMem K la _).2 hs0`. Establish `hmem : s0 ∈ (MvPolynomial.map (algebraMap (𝓞 K) K) x).support`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[MvPolynomial.mem_support_iff, MvPolynomial.coeff_map]`. Introduce `h0`. Rewrite `hw1` using `[h0, map_zero]`. Conclude with `zero_ne_one hw1`. Unfold `gaussAbs`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `le_antisymm` to reduce the goal to its premises. Establish `h1 : ((MvPolynomial.map (algebraMap (𝓞 K) K) x).support.sup fun s => (FinitePlace.mk la ((MvPolynomial.map (algebraMap (𝓞 K) K) x).coeff s)).toNNReal) ≤ 1`. Apply `Finset.sup_le` to reduce the goal to its premises. Introduce `s _`. Rewrite using `[MvPolynomial.coeff_map]`.
-
-Conclude with `Real.toNNReal_le_one.2 (hw _)`. Conclude with `h1` after adjusting the coercions. Establish `h1 : (1 : NNReal) ≤ ((MvPolynomial.map (algebraMap (𝓞 K) K) x).support.sup fun s => (FinitePlace.mk la ((MvPolynomial.map (algebraMap (𝓞 K) K) x).coeff s)).toNNReal)`. Use `Finset.le_sup_of_le hmem ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_map, hw1, Real.toNNReal_one]`.
-
-Conclude with `h1` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gaussAbs_prim {σ : Type*} (la : HeightOneSpectrum (𝓞 K)) (x : MvPolynomial σ (𝓞 K))
     (hx : x ∉ Ideal.map (C : 𝓞 K →+* MvPolynomial σ (𝓞 K)) la.asIdeal) :
@@ -220,17 +212,15 @@ theorem gaussAbs_prim {σ : Type*} (la : HeightOneSpectrum (𝓞 K)) (x : MvPoly
     exact_mod_cast h1
 
 /- English proof (translation)
-Use `set w := FinitePlace.mk la`. Establish `hS0 : MvPolynomial.map (algebraMap (𝓞 K) K) S ≠ 0`. Introduce `h0`. Use `gaussAbs_prim la S hS` as an intermediate fact. Rewrite `this` using `[h0]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[gaussAbs] at this`. Establish `hX0 : MvPolynomial.map (algebraMap (𝓞 K) K) X ≠ 0`. Introduce `h0`. Use `gaussAbs_prim la X hX` as an intermediate fact. Rewrite `this` using `[h0]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[gaussAbs] at this`. Establish `hN : (0 : ℝ) < ((Ideal.absNorm la.asIdeal : ℕ) : ℝ)`. Use `NumberField.HeightOneSpectrum.one_lt_absNorm la` as an intermediate fact. Conclude with `(zero_lt_one.trans this)` after adjusting the coercions. Establish `hϖ0 : (ϖ : K) ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h0`. Rewrite `hϖ` using `[h0, map_zero]`. Conclude with `(inv_pos.2 hN).ne' hϖ.symm`. Establish `hC0 : (C ((ϖ : K) ^ m) : MvPolynomial σ K) ≠ 0`. Rewrite using `[Ne, C_eq_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `pow_ne_zero _ hϖ0`. Establish `key` using `congrArg (gaussAbs w) h`. Rewrite `key` using `[gauss_abs_mul w _ _ hA hS0, gauss_abs_mul w _ _ (mul_ne_zero hC0 hX0) hB, gauss_abs_mul w _ _ hC0 hX0, gaussAbs_prim la S hS, gaussAbs_prim la X hX, gaussAbs_C, map_pow, hϖ, mul_one, mul_one]`. Establish `hA'` using `gauss_abs_pos_of_ne_zero w A hA`. Establish `hB'` using `gauss_abs_pos_of_ne_zero w B hB`.
-
-Rewrite using `[key, Real.log_mul (pow_ne_zero _ (inv_pos.2 hN).ne') hB'.ne', Real.log_pow, Real.log_inv]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem log_gauss_ratio {σ : Type*} [Fintype σ] (la : HeightOneSpectrum (𝓞 K)) (ϖ : 𝓞 K)
     (hϖ : FinitePlace.mk la (ϖ : K) = ((Ideal.absNorm la.asIdeal : ℕ) : ℝ)⁻¹)
@@ -284,7 +274,7 @@ noncomputable def nLa (h : d.S1) (c : ι) (la : HeightOneSpectrum (𝓞 K)) (y :
     (d.fze h c w : ℤ) * WithTop.untopD 0 (w y)
 
 /- English proof (translation)
-Use `first`. Consider the case `rfl`. Consider the case `exact IsScalarTower.algebraMap_apply K (KTp K d.D d.N) (KTf K d.D d.N) k`. Consider the case `simp [IsScalarTower.algebraMap_apply K (KTp K d.D d.N) (KTf K d.D d.N) k]`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem algK_eq (k : K) : algebraMap K (KTf K d.D d.N) k =
     algebraMap (KTp K d.D d.N) (KTf K d.D d.N) (C k) := by
@@ -294,27 +284,25 @@ theorem algK_eq (k : K) : algebraMap K (KTf K d.D d.N) k =
   | simp [IsScalarTower.algebraMap_apply K (KTp K d.D d.N) (KTf K d.D d.N) k]
 
 /- English proof (translation)
-Use `letI : Algebra (KTf K d.D d.N) (OmS (Ω c) d.D d.N) := (d.KTtoS h c).toAlgebra`. Take `⟨ϖ, hϖ1, hϖ2, hϖ⟩` from `exists_unif la`. Take `⟨u, hu, hN⟩` from `d.norm_at_la hd h c la ϖ hϖ1 hϖ2 y hy`. Take `⟨⟨x, s⟩, rfl⟩` from `IsLocalization.mk'_surjective (laT d.D d.N la).primeCompl u`. Simplify using `only at hu hN`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions.
 
-Establish `hx : x ∈ (laT d.D d.N la).primeCompl` using `(IsLocalization.AtPrime.isUnit_mk'_iff (Op d.D d.N la) (laT d.D d.N la) x s).1 hu`. Use `set g := (algebraMap (KTp K d.D d.N) (KTf K d.D d.N)).comp (OTtoKT K d.D d.N)`. Establish `hspec : g x = g s * OpToKT d.D d.N la (IsLocalization.mk' (Op d.D d.N la) x s)` using `(IsLocalization.lift_mk'_spec _ _ _ _).1 rfl`. Use `set n : ℤ := ∑ᶠ (w : AddValuation (OmS (Ω c) d.D d.N) (WithTop ℤ)) (_ : w ∈ d.PlOver la c), (d.fze h c w : ℤ) * WithTop.untopD 0 (w y) with hn`. Establish `hn' : d.nLa h c la y = n` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set X' : KTp K d.D d.N := OTtoKT K d.D d.N x`. Use `set S' : KTp K d.D d.N := OTtoKT K d.D d.N (s : OT K d.D d.N)`. Establish `hinj` using `IsFractionRing.injective (KTp K d.D d.N) (KTf K d.D d.N)`. Establish `hmain : algebraMap _ (KTf K d.D d.N) PA * algebraMap _ (KTf K d.D d.N) S' = (algebraMap K (KTf K d.D d.N) (ϖ : K)) ^ n * algebraMap _ (KTf K d.D d.N) X' * algebraMap _ (KTf K d.D d.N) PB`. Rewrite using `[← hAB, hN]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `: algebraMap _ (KTf K d.D d.N) X' = g x` using `rfl`. Establish `h2 : algebraMap _ (KTf K d.D d.N) S' = g s` using `rfl`. Rewrite using `[this, h2, hspec]`. Expand and normalize the polynomial expressions, which then agree. Establish `hlogN : logNorm la = Real.log ((Ideal.absNorm la.asIdeal : ℕ) : ℝ)` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hxm : x ∉ Ideal.map (C : 𝓞 K →+* OT K d.D d.N) la.asIdeal` using `hx`. Establish `hsm : (s : OT K d.D d.N) ∉ Ideal.map (C : 𝓞 K →+* OT K d.D d.N) la.asIdeal` using `s.2`. Rewrite using `[hn', hlogN]`. Establish `hϖ0 : algebraMap K (KTf K d.D d.N) (ϖ : K) ≠ 0`. Rewrite using `[map_ne_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h0'`. Rewrite `hϖ` using `[h0', map_zero]`. Use `NumberField.HeightOneSpectrum.one_lt_absNorm la` as an intermediate fact. Establish `hN0 : (0 : ℝ) < ((Ideal.absNorm la.asIdeal : ℕ) : ℝ)`. Conclude with `(zero_lt_one.trans this)` after adjusting the coercions.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `(inv_pos.2 hN0).ne' hϖ.symm`. Break down `le_or_gt 0 n with h0 | h0` into its components or cases. Take `⟨m, hm⟩` from `Int.eq_ofNat_of_zero_le h0`. Rewrite `hmain`, the goal using `[hm]`. Establish `hp : PA * S' = C ((ϖ : K) ^ m) * X' * PB`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, map_mul, ← d.algK_eq, map_pow, hmain, zpow_natCast]`. Use `log_gauss_ratio la ϖ hϖ PA PB hA hB x s hxm hsm m hp` as an intermediate fact. Rewrite using `[this]`. Use `push_cast`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨m, hm⟩` from `Int.exists_eq_neg_ofNat h0.le`. Establish `hp : PB * X' = C ((ϖ : K) ^ m) * S' * PA`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, map_mul, ← d.algK_eq, map_pow]`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite `hmain` using `[hm, zpow_neg, zpow_natCast]`. Establish `hpow : (algebraMap K (KTf K d.D d.N) (ϖ : K)) ^ m ≠ 0` using `pow_ne_zero _ hϖ0`. Clear denominators, using `at hmain` for the nonvanishing conditions. Use `first`. Consider the case `linear_combination hmain`.
-
-Consider the case `linear_combination -hmain`. Use `log_gauss_ratio la ϖ hϖ PB PA hB hA s x hsm hxm m hp` as an intermediate fact. Rewrite using `[hm]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem pf_fin (hd : d.AxH 𝒜) (h : d.S1) (c : ι) (y : OmS (Ω c) d.D d.N) (hy : y ≠ 0)
     (PA PB : KTp K d.D d.N) (hA : PA ≠ 0) (hB : PB ≠ 0)

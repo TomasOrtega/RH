@@ -4,11 +4,11 @@ open GlobalTheory GlobalTheory.LogDR
 namespace GlobalTheory.LogDR.WedgeMul
 
 /- English proof (translation)
-Proceed by induction on `h with`. Consider the case `nil => exact ⟨1, Or.inl rfl, by simp⟩`. Consider the case `cons x _ ih`. Take `⟨ε, hε, e⟩` from `ih`. Conclude with `⟨ε, hε, by simp only [List.map_cons, List.prod_cons, e, mul_smul_comm]⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `swap x y l`. Use `⟨-1, Or.inr rfl, ?_⟩` and prove the remaining obligations. Simplify using `only [List.map_cons, List.prod_cons, ← mul_assoc, hf y x, neg_mul, neg_smul, one_smul]`. Consider the case `trans _ _ ih₁ ih₂`. Take `⟨ε₁, h₁, e₁⟩` from `ih₁`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨ε₂, h₂, e₂⟩` from `ih₂`. Use `⟨ε₁ * ε₂, ?_, by rw [e₁, e₂, smul_smul]⟩` and prove the remaining obligations. Apply the tactic sequence `rcases h₁ with rfl | rfl <;> rcases h₂ with rfl | rfl <;> simp`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem prod_perm_sign {A : Type} [Ring A] {α : Type} (f : α → A)
     (hf : ∀ a b, f a * f b = -(f b * f a)) {l₁ l₂ : List α} (h : l₁.Perm l₂) :
@@ -32,17 +32,15 @@ end GlobalTheory.LogDR.WedgeMul
 open GlobalTheory.LogDR.WedgeMul in
 
 /- English proof (translation)
-Introduce `K _ n x i I`. Use `set f : Fin n → abelian₂ K := fun j => ExteriorAlgebra.ι K (dlog (x j)) with hfdef`. Establish `hf : ∀ a b, f a * f b = -(f b * f a)` using `fun a b => eq_neg_of_add_eq_zero_left (ExteriorAlgebra.ι_add_mul_swap _ _)`. Prove the components needed by the constructor for the conclusion. Introduce `hi`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hp : (I.sort (· ≤ ·)).Perm (i :: (I.erase i).sort (· ≤ ·))`. Use `(List.perm_ext_iff_of_nodup (Finset.sort_nodup _ _) ?_).2 fun a => ?_` and prove the remaining obligations. Use `List.nodup_cons.2 ⟨?_, Finset.sort_nodup _ _⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Distinguish the cases in `ha : a = i`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `ha` using the available equality. Simplify using `[hi]`. Simplify using `[ha]`. Take `⟨ε, -, e⟩` from `prod_perm_sign f hf hp`. Use `show f i * ((I.sort (· ≤ ·)).map f).prod = 0`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, mul_smul_comm, List.map_cons, List.prod_cons, ← mul_assoc]`. Simplify using `[hfdef, ExteriorAlgebra.ι_sq_zero]`. Introduce `hi`. Establish `hp : ((insert i I).sort (· ≤ ·)).Perm (i :: I.sort (· ≤ ·))`. Use `(List.perm_ext_iff_of_nodup (Finset.sort_nodup _ _) ?_).2 fun a => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `List.nodup_cons.2 ⟨by simpa using hi, Finset.sort_nodup _ _⟩`. Simplify using the standard rewrite rules. Take `⟨ε, hε, e⟩` from `prod_perm_sign f hf hp`. Use `⟨ε, hε, ?_⟩` and prove the remaining obligations. Use `show f i * ((I.sort (· ≤ ·)).map f).prod = ε • (((insert i I).sort (· ≤ ·)).map f).prod`.
-
-Rewrite using `[e, List.map_cons, List.prod_cons, smul_smul]`. Apply the tactic sequence `rcases hε with rfl | rfl <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LogDR.dlog_mul_logWedge : ∀ (K : Type) [Field K] (n : ℕ) (x : Fin n → Kˣ) (i : Fin n) (I : Finset (Fin n)), (i ∈ I → ExteriorAlgebra.ι K (dlog (x i)) * logWedge x I = 0) ∧ (i ∉ I → ∃ ε : ℤ, (ε = 1 ∨ ε = -1) ∧ ExteriorAlgebra.ι K (dlog (x i)) * logWedge x I = ε • logWedge x (insert i I)) := by
   intro K _ n x i I

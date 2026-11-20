@@ -5,15 +5,15 @@ open Filter UpperTheory.V.AlgebraTools
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `R ι _ F I M _ _`. Establish `hs : ∀ (r : ι → R) (p : ∀ i, M i), ULim.scal F I M r (ULim.mk F I M p) = ULim.mk F I M (fun i => r i • p i)`. Introduce `r p`. Simplify using `only [ULim.scal, ULim.map_mk, LinearMap.smul_apply, LinearMap.id_apply]`. Establish `hc : ∀ (s : R) (p : ∀ i, M i), s • ULim.mk F I M p = ULim.mk F I M (fun i => s • p i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `s p`. Rewrite using `[← map_smul]`. Both sides reduce to the same expression. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `r s h x`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨p, rfl⟩` from `ULim.mk_surjective F I M x`. Rewrite using `[← sub_eq_zero, hs, hc, ← map_sub, ULim.mk_eq_zero]`. Introduce `j`. Use `filter_upwards [h j] with N hN`. Simplify `hN (p N)` using `[sub_smul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s h x`. Take `⟨p, rfl⟩` from `ULim.mk_surjective F I M x`. Rewrite using `[hc, ULim.mk_eq_zero]`. Introduce `j`. Use `filter_upwards [h j] with N hN`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `hN (p N)`. Introduce `M' _ _ f g r hfg x`. Take `⟨p, rfl⟩` from `ULim.mk_surjective F I M x`. Rewrite using `[ULim.map_mk, ULim.map_mk, hs]`. Simplify using `only [hfg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.ULim.scal_eq :
     ∀ (R ι : Type) [CommRing R] (F : Filter ι) (I : ℕ → Ideal R) (M : ι → Type) [∀ i, AddCommGroup (M i)] [∀ i, Module R (M i)],

@@ -10,9 +10,9 @@ noncomputable section
 namespace GlobalTheory.LevCover
 
 /- English proof (translation)
-Take `⟨-, hfin, het⟩` from `GlobalTheory.GrpTangent.finiteEtale_mulN_torsion B (hG := hB) hn`. Take `⟨u, hu, -⟩` from `GlobalTheory.LatticeTorsion.existsUnique_torsion B n g hg`. Take `⟨u', hu', -⟩` from `GlobalTheory.LatticeTorsion.existsUnique_torsion B n (1 : Zt ⟶ B) (one_pow n)`. Use `(clopenCond_eq u u').congr fun T z => ⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Establish `hz : (z ≫ g) ^ n = 1` using `by rw [← MonObj.comp_pow, hg, MonObj.comp_one]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(GlobalTheory.LatticeTorsion.existsUnique_torsion B n (z ≫ g) hz).unique ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, hu]`. Rewrite using `[Category.assoc, hu', MonObj.comp_one, h]`. Rewrite using `[← hu, ← Category.assoc, h, Category.assoc, hu', MonObj.comp_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem clopenCond_comp_eq_one {Y : Scheme.{0}} (Zt B : Over Y) [GrpObj B] (hB : IsAbelianScheme B) (n : ℕ)
     (hn : IsUnit (n : Γ(Y, ⊤))) (g : Zt ⟶ B) (hg : g ^ n = 1) :
@@ -28,13 +28,13 @@ theorem clopenCond_comp_eq_one {Y : Scheme.{0}} (Zt B : Over Y) [GrpObj B] (hB :
   · rw [← hu, ← Category.assoc, h, Category.assoc, hu', MonObj.comp_one]
 
 /- English proof (translation)
-Introduce `Y A _ _ n J _ B _ f B' _ f' hA hB hB' hf hf' hn`. Take `⟨-, hfin, het⟩` from `GlobalTheory.GrpTangent.finiteEtale_mulN_torsion A (hG := hA) hn`. Establish `hι : torsion.ι A n ^ n = 1` using `GlobalTheory.LatticeTorsion.torsionι_pow_eq_one A n`. Establish `hpow : ∀ (C : Over Y) [GrpObj C] (g : A ⟶ C) [IsMonHom g], (torsion.ι A n ≫ g) ^ n = 1`. Introduce `C _ g _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← MonObj.pow_comp, hι, MonObj.one_comp]`. Take `⟨W, hWo, hWc, H1, H2⟩` from `implocus_open_closed Y (torsion A n) (fun _ z => ∀ i, z ≫ (torsion.ι A n ≫ f i) = 1) (fun _ z => z ≫ (torsion.ι A n ≫ f') = 1) hfin het (ClopenCond.forall_finite fun i => clopenCond_comp_eq_one _ (B i) (hB i) n hn _ (hpow (B i) (f i))) (clopenCond_comp_eq_one _ B' hB' n hn _ (hpo …`. Establish `key : ∀ T : Over Y, (∀ z : T ⟶ torsion A n, (∀ i, z ≫ (torsion.ι A n ≫ f i) = 1) → z ≫ (torsion.ι A n ≫ f') = 1) ↔ ∀ a : T ⟶ A, a ^ n = 1 → (∀ i, a ≫ f i = 1) → a ≫ f' = 1`. Introduce `T`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Introduce `H a ha hfa`. Take `⟨z, hz, -⟩` from `GlobalTheory.LatticeTorsion.existsUnique_torsion A n a ha`. Establish `h` using `H z (fun i => by rw [← Category.assoc, hz, hfa i])`. Rewrite `h` using `[← Category.assoc, hz]`. Then use the resulting hypothesis. Introduce `H z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `H (z ≫ torsion.ι A n) (by rw [← MonObj.comp_pow, hι, MonObj.comp_one]) (fun i => by rw [Category.assoc]; exact hz i)`. Rewrite `h` using `[Category.assoc]`. Then use the resulting hypothesis. Use `⟨W, hWo, hWc, fun Tb t => (H1 Tb t).trans ?_, fun k _ _ x => (H2 k x).trans (key _)⟩` and prove the remaining obligations. Conclude with `forall_congr' fun T => forall_congr' fun σ => forall_congr' fun _ => key T`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem kerlocus_open_closed : ∀ (Y : Scheme.{0}) (A : Over Y) [GrpObj A] [IsCommMonObj A] (n : ℕ) (J : Type) [Finite J] (B : J → Over Y) [∀ i, GrpObj (B i)] (f : ∀ i, A ⟶ B i) (B' : Over Y) [GrpObj B'] (f' : A ⟶ B'), IsAbelianScheme A → (∀ i, IsAbelianScheme (B i)) → IsAbelianScheme B' → (∀ i, IsMonHom (f i)) → IsMonHom f' → IsUnit (n : Γ(Y, ⊤)) → ∃ W : Set Y, IsOpen W ∧ IsClosed W ∧ (∀ (Tb : Scheme.{0}) (t : Tb ⟶ Y), Set.range t.base ⊆ W ↔ ∀ (T : Over Y) (σ : T.left ⟶ Tb), σ ≫ t = T.hom → ∀ a : T ⟶ A, a ^ n = 1 → (∀ i, a ≫ f i = 1) → a ≫ f' = 1) ∧ ∀ (k : Type) [Field k] [IsAlgClosed k] (x : Sp k ⟶ Y), Set.range x.base ⊆ W ↔ ∀ a : Over.mk x ⟶ A, a ^ n = 1 → (∀ i, a ≫ f i = 1) → a ≫ f' = 1 := by
   intro Y A _ _ n J _ B _ f B' _ f' hA hB hB' hf hf' hn

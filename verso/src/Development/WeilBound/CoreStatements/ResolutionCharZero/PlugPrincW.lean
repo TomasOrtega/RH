@@ -5,7 +5,7 @@ import Development.WeilBound.CoreStatements.ResolutionCharZero.FromRes
 namespace PositivityTheory.ResPlug.FromRes
 
 /- English proof (translation)
-The claim follows from `princW_of_functorialPrincipalization FunctorialResolution.functorialPrincipalizationCharZero.{0}`.
+A detailed English derivation is pending.
 -/
 theorem princW : PositivityTheory.ResPlug.PrincW :=
   princW_of_functorialPrincipalization FunctorialResolution.functorialPrincipalizationCharZero.{0}

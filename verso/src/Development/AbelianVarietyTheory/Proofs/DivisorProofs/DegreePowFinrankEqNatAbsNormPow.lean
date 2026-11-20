@@ -20,21 +20,21 @@ namespace GlobalTheory.AV.AbVar.DegNorm
 open Polynomial IntermediateField
 
 /- English proof (translation)
-Introduce `K _ B F _ _ ψ c hc`. Establish `hN : Algebra.norm ℤ c ≠ 0`. Introduce `h`. Establish `h1` using `Algebra.coe_norm_int c`. Rewrite `h1` using `[h, Int.cast_zero, eq_comm, Algebra.norm_eq_zero_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hc (by exact_mod_cast h1)`. Distinguish the cases in `hB : B.dim = 0`. Take `⟨y, hy⟩` from `dvd_algebraMap_norm c`. Establish `hcomp : ψ y ≫ ψ c = Algebra.norm ℤ c • 𝟙 B`. Express the relevant statement in the definitionally equal form `ψ c * ψ y = _`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_mul, ← hy, algebraMap_int_eq, Int.coe_castRingHom, map_intCast, ← zsmul_one]`. Both sides reduce to the same expression. Establish `h` using `isIsogeny_comp_iff_and_deg_comp K B B B (ψ y) (ψ c) rfl rfl`. Take `⟨-, hd⟩` from `GlobalTheory.MulIsogeny.mul_isogeny K B _ hN`. Rewrite `h` using `[hcomp]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hd` using `[h.2, hB, mul_zero, pow_zero]`. Establish `h1 : deg (A` using `B) (B := B) (ψ c) = 1 := Nat.eq_one_of_mul_eq_one_left hd`. Rewrite using `[h1, hB, mul_zero, pow_zero, one_pow]`. Take `⟨k, hk, hPQ⟩` from `charpoly_eq_minpoly_pow B hB ψ c`. Take `⟨⟨-, hd, -⟩, -⟩` from `isCharpoly_charpoly_unique K B (ψ c)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hxint : IsIntegral ℚ (c : F)` using `Algebra.IsIntegral.isIntegral _`. Establish `hdeg : k * Module.finrank ℚ ℚ⟮(c : F)⟯ = 2 * B.dim`. Establish `e` using `congrArg Polynomial.natDegree hPQ`. Rewrite `e` using `[Polynomial.natDegree_map_eq_of_injective (RingHom.injective_int _), hd, Polynomial.natDegree_pow, ← IntermediateField.adjoin.finrank hxint]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hD` using `deg_aeval_eq_prod_aroots K B (ψ c) (AlgebraicClosure ℚ) Polynomial.X`. Simplify using `only [aeval_X, Multiset.map_id'] at hD`. Rewrite `hD` using `[hPQ, Polynomial.aroots_pow, Multiset.prod_nsmul]`. Establish `hNr` using `Algebra.norm_eq_prod_roots (K := ℚ) (L := F) (AlgebraicClosure ℚ) (x := (c : F)) (IsAlgClosed.splits _)`. Establish `e : algebraMap ℚ (AlgebraicClosure ℚ) (((deg (A` using `B) (B := B) (ψ c) : ℕ) : ℚ) ^ Module.finrank ℚ⟮(c : F)⟯ F) = algebraMap ℚ (AlgebraicClosure ℚ) (Algebra.norm ℚ (c : F) ^ k) := by`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_pow, map_pow, hD, hNr, ← pow_mul, ← pow_mul, mul_comm]`. Establish `e2` using `(algebraMap ℚ (AlgebraicClosure ℚ)).injective e`. Rewrite `e2` using `[← Algebra.coe_norm_int]`. Establish `e3 : ((deg (A` using `B) (B := B) (ψ c) : ℕ) : ℤ) ^ Module.finrank ℚ⟮(c : F)⟯ F = Algebra.norm ℤ c ^ k := by`. Conclude with `e2` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e4` using `congrArg (fun t : ℤ => t ^ Module.finrank ℚ ℚ⟮(c : F)⟯) e3`. Simplify using `only [← pow_mul] at e4`. Rewrite `e4` using `[hdeg, mul_comm, Module.finrank_mul_finrank]`. Establish `e5` using `congrArg Int.natAbs e4`. Simplify `e5` using `[Int.natAbs_pow]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem deg_pow_finrank_eq_natAbs_norm_pow : ∀ (K : Type) [Field K] (B : AbVar K) (F : Type) [Field F] [NumberField F] (ψ : 𝓞 F →+* End B) (c : 𝓞 F), c ≠ 0 → deg (A := B) (B := B) (ψ c) ^ Module.finrank ℚ F = (Algebra.norm ℤ c).natAbs ^ (2 * B.dim) := by
   intro K _ B F _ _ ψ c hc

@@ -24,7 +24,7 @@ namespace GlobalTheory.PlaceSum
 open GlobalTheory.OrientedHeis GlobalTheory.FockCompare
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Rewrite using `[Finset.sum_apply]`. Simplify using `only [hD_eq_fderiv ι π om f hf, map_sum, ContinuousLinearMap.sum_apply]`. Use `push_cast`. Rewrite using `[Finset.mul_sum, Finset.sum_mul, ← Finset.sum_add_distrib]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 -/
 theorem hD_finset_sum {G R : Type} [AddCommGroup G] [NormedAddCommGroup R] [NormedSpace ℝ R]
     (ι : R →+ G) (π : G →+ R) (om : R →ₗ[ℝ] R →ₗ[ℝ] ℝ) (f : G → ℂ) (hf : Sm ι f) {α : Type} (s : Finset α)
@@ -36,15 +36,15 @@ theorem hD_finset_sum {G R : Type} [AddCommGroup G] [NormedAddCommGroup R] [Norm
   rw [Finset.mul_sum, Finset.sum_mul, ← Finset.sum_add_distrib]
 
 /- English proof (translation)
-Introduce `D ψ hψ θ hθ S T f hf L hLc hLf`. Take `⟨σ, h⟩` from `GlobalTheory.RealLineAt.exists_inverse_chart hθ`. Establish `e1 : (fun w => deriv (fun t : ℝ => heisO ψ S T (L t) f w) 0) = hD (iotaW σ T S) (piW θ T S) (omO S T) (piW θ T S (L 1)) f` using `dLine_eq_hD h hψ (L := L) ⟨hLc, hLf⟩ f`. Establish `e2 : ∀ τ, dRho (heisO ψ S T) θ τ (compAt θ τ (L 1)) f = hD (iotaW σ T S) (piW θ T S) (omO S T) (piW θ T S (lineAt θ τ (compAt θ τ (L 1)) 1)) f`. Introduce `τ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hl` using `GlobalTheory.WeilVacMove.isLineAt_lineAt hθ τ (compAt θ τ (L 1))`. Rewrite using `[dRho_eq_dLine]`. Conclude with `dLine_eq_hD h hψ ⟨hl.1, hl.2.1⟩ f`. Establish `e3 : piW θ T S (L 1) = ∑ τ, piW θ T S (lineAt θ τ (compAt θ τ (L 1)) 1)`. Use function extensionality and compare the values at `τ' i j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.sum_apply]`. Establish `hc : ∀ τ, piW θ T S (lineAt θ τ (compAt θ τ (L 1)) 1) τ' i j = compAt θ τ' (lineAt θ τ (compAt θ τ (L 1)) 1) i j` using `fun τ => rfl`. Simplify using `only [hc]`. Rewrite using `[Finset.sum_eq_single τ']`. Rewrite using `[(GlobalTheory.WeilVacMove.isLineAt_lineAt hθ τ' (compAt θ τ' (L 1))).2.2 1 τ', if_pos rfl, Complex.ofReal_one, one_smul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Introduce `b _ hb`. Rewrite using `[(GlobalTheory.WeilVacMove.isLineAt_lineAt hθ b (compAt θ b (L 1))).2.2 1 τ', if_neg (Ne.symm hb)]`. Both sides reduce to the same expression. Introduce `hn`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd (Finset.mem_univ τ') hn`. Rewrite using `[e1, e3, hD_finset_sum _ _ _ f (theta_sm h hf)]`. Conclude with `Finset.sum_congr rfl fun τ _ => (e2 τ).symm`.
+A detailed English derivation is pending.
 -/
 theorem deriv_heisO_eq_sum_dRho : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (θ : InfFam D), IsInfFam θ →
     ∀ (S T : HSp D) (f : WO S T → ℂ), IsThetaFunO ψ S T f → ∀ L : ℝ →+ WO S T, Continuous L →

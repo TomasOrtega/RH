@@ -15,9 +15,9 @@ variable {D : Formalism.BasicNotions.D7} {L : Formalism.BasicNotions.SizeData₂
   {ex : Formalism.BasicNotions.Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ}
 
 /- English proof (translation)
-Distinguish the cases in `hk : ActKeeps (κ := p.κ) p.O i`. Take `⟨c, hc⟩` from `(p.fw.e i).surjective ⟨f, hf⟩`. Take `⟨_, h2⟩` from `(p.rhoGeo i).1 hk g c`. Rewrite `h2` using `[hc]`. Rewrite using `[← h2]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subtype.property _`. Rewrite using `[(p.rhoGeo i).2 hk g]`. Conclude with `hf`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rho_mem_WK (p : PtAt ex Csz) (i : Fin D.R.m) (g) (f) (hf : f ∈ (p.R.toRealDat.FW i).WK) :
     (p.R.toRealDat.FW i).ρ g f ∈ (p.R.toRealDat.FW i).WK := by
@@ -31,13 +31,13 @@ theorem rho_mem_WK (p : PtAt ex Csz) (i : Fin D.R.m) (g) (f) (hf : f ∈ (p.R.to
     exact hf
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.integralForms_eq_span_integralRationalForms _ _ _ _ _ _ _ _ (p.fw.ks i) (fun u f hf => rho_mem_WK p i u f hf) (GlobalTheory.T.row_character_times_inverse_unitary p i hp ht)`.
+A detailed English derivation is pending.
 -/
 theorem ratAt_of_rows (p : PtAt ex Csz) (i : Fin D.R.m) (hp : p.Rows) (ht : RecTied D L) : RatAt p i :=
   GlobalTheory.T.integralForms_eq_span_integralRationalForms _ _ _ _ _ _ _ _ (p.fw.ks i) (fun u f hf => rho_mem_WK p i u f hf) (GlobalTheory.T.row_character_times_inverse_unitary p i hp ht)
 
 /- English proof (translation)
-Introduce `_`. Use `⟨1, one_pos, fun eps _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm CH _ _ => ⟨0, le_rfl, ⟨0, fun x hx _ ι p hp i => ratAt_of_rows p i hp.1 hp.2⟩⟩⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem rat_of_hypotheses : Hypotheses2 → Rat := by
   intro _

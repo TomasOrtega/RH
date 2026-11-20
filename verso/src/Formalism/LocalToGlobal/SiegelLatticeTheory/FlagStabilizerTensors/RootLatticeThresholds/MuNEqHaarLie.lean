@@ -13,17 +13,17 @@ namespace Formalism.L2.SG.Pf.Carrier.CarPinTor
 variable {k r : ℕ}
 
 /- English proof (translation)
-Unfold `Formalism.L2.SG.LocWSOf.torS tT dM`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_smul]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hI0 : Complex.I ≠ 0` using `Complex.I_ne_zero`. Distinguish the cases in `h1 : i.val < r`. Simplify using `only [dT, Formalism.MainNotions.FrameBoundFromBesselTorus.tV, Formalism.MainNotions.FrameBoundFromBesselTorus.tF, h1, if_true, one_mul]`. Take `⟨n, hn⟩ : ∃ n, r = i.val + n` from `⟨r - i.val, by omega⟩`. Establish `hn' : r - i.val = n` using `by omega`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hIr : Complex.I ^ r = Complex.I ^ i.val * Complex.I ^ n` using `by rw [← pow_add, ← hn]`. Rewrite using `[hn', hIr, ← Complex.inv_I]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[div_pow, div_mul_cancel₀ _ (pow_ne_zero _ hI0)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h2 : r + k < i.val`. Establish `h2' : ¬ (i.val ≤ r + k)` using `by omega`. Simplify using `only [dT, Formalism.MainNotions.FrameBoundFromBesselTorus.tV, Formalism.MainNotions.FrameBoundFromBesselTorus.tF, h1, h2, h2', if_true, if_false, one_mul]`. Take `⟨n, hn⟩ : ∃ n, r = (2 * r + k - i.val) + n` from `⟨r - (2 * r + k - i.val), by omega⟩`. Establish `hn' : r - (2 * r + k - i.val) = n` using `by omega`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hIr : Complex.I ^ r = Complex.I ^ (2 * r + k - i.val) * Complex.I ^ n` using `by rw [← pow_add, ← hn]`. Rewrite using `[hn', hIr]`. Simplify using `only [star_pow, star_mul', star_neg, Complex.star_def, Complex.conj_I, Complex.conj_ofReal, neg_neg]`. Use `push_cast`. Rewrite using `[mul_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Establish `h2' : i.val ≤ r + k` using `by omega`. Simplify using `only [dT, Formalism.MainNotions.FrameBoundFromBesselTorus.tV, h1, h2, h2', if_true, if_false]`. Use `push_cast`. Rewrite using `[mul_one, inv_mul_cancel₀ (pow_ne_zero _ hI0)]`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 -/
 theorem torS_eq (δ : ℝ) :
     Formalism.L2.SG.LocWSOf.torS (-Complex.I * (δ : ℂ)) k r = (Complex.I ^ r)⁻¹ • (tT k r * dM k r δ 1) := by
@@ -59,21 +59,21 @@ theorem torS_eq (δ : ℝ) :
       rw [mul_one, inv_mul_cancel₀ (pow_ne_zero _ hI0)]
 
 /- English proof (translation)
-Establish `hδc : (δ : ℂ) ≠ 0` using `by exact_mod_cast hδ.ne'`. Establish `hI0 : Complex.I ≠ 0` using `Complex.I_ne_zero`. Unfold `Formalism.L2.SG.LocWSOf.torS tTi dMi`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_smul]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Distinguish the cases in `h1 : i.val < r`. Simplify using `only [dT, Formalism.MainNotions.FrameBoundFromBesselTorus.tV, Formalism.MainNotions.FrameBoundFromBesselTorus.tF, h1, if_true, one_mul]`. Take `⟨n, hn⟩ : ∃ n, r = i.val + n` from `⟨r - i.val, by omega⟩`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hn' : r - i.val = n` using `by omega`. Establish `hIr : Complex.I ^ r = Complex.I ^ i.val * Complex.I ^ n` using `by rw [← pow_add, ← hn]`. Rewrite using `[hn', hIr, star_pow, Complex.star_def, Complex.conj_I, ← Complex.inv_I]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[div_pow, div_pow, one_pow]`. Clear the denominators using the available nonvanishing facts. Distinguish the cases in `h2 : r + k < i.val`. Establish `h2' : ¬ (i.val ≤ r + k)` using `by omega`. Simplify using `only [dT, Formalism.MainNotions.FrameBoundFromBesselTorus.tV, Formalism.MainNotions.FrameBoundFromBesselTorus.tF, h1, h2, h2', if_true, if_false, one_mul]`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨n, hn⟩ : ∃ n, r = (2 * r + k - i.val) + n` from `⟨r - (2 * r + k - i.val), by omega⟩`. Establish `hn' : r - (2 * r + k - i.val) = n` using `by omega`. Establish `hIr : Complex.I ^ r = Complex.I ^ (2 * r + k - i.val) * Complex.I ^ n` using `by rw [← pow_add, ← hn]`. Rewrite using `[hn', hIr]`. Simplify using `only [star_pow, star_inv₀, star_mul', star_neg, Complex.star_def, Complex.conj_I, Complex.conj_ofReal, neg_neg, inv_inv]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Complex.inv_I]`. Use `push_cast`. Rewrite using `[inv_pow]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[div_pow, one_pow, mul_pow]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Establish `h2' : i.val ≤ r + k` using `by omega`. Simplify using `only [dT, Formalism.MainNotions.FrameBoundFromBesselTorus.tV, h1, h2, h2', if_true, if_false]`. Use `push_cast`. Rewrite using `[star_pow, Complex.star_def, Complex.conj_I, ← Complex.inv_I]`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[div_pow, one_pow]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem torS_inv_eq (δ : ℝ) (hδ : 0 < δ) :
     Formalism.L2.SG.LocWSOf.torS (-Complex.I * (δ : ℂ))⁻¹ k r = (Complex.I ^ r) • (dMi k r δ 1 * tTi k r) := by
@@ -118,15 +118,15 @@ theorem torS_inv_eq (δ : ℝ) (hδ : 0 < δ) :
       field_simp
 
 /- English proof (translation)
-Introduce `k r κ h0 h1 a ha` and use `(Formalism.MainNotions.BridgeCSB.haarLieN k r κ h0 h1).2.2.2 a ha`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem nLeft_holds : Formalism.MainNotions.MeasFS.NLeft := fun k r κ h0 h1 a ha =>
   (Formalism.MainNotions.BridgeCSB.haarLieN k r κ h0 h1).2.2.2 a ha
 
 /- English proof (translation)
-Establish `hH` using `Formalism.MainNotions.MeasFS.haar_lie_measure_on_nilpotent (k := k) (r := r) nLeft_holds 1 one_ne_zero ENNReal.one_ne_top`. Establish `hM` using `Formalism.FourierDecayAlt.Final.d_muNHaar k r`. Take `⟨c, hc⟩` from `Formalism.FourierDecayAlt.P.haar_measure_unique_up_to_scalar k r (Nset k r) _ _ (Formalism.FourierDecayAlt.P.unipotent_radical_closed k r) hH hM.conc hM.left hM.finite_compact`. Use `⟨(c : ENNReal), fun h => hM.ne_zero ?_, ENNReal.coe_ne_top, ?_⟩` and prove the remaining obligations. Rewrite using `[hc, ENNReal.coe_eq_zero.mp h, zero_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc, show ((c : ENNReal)) = (c : ENNReal) * 1 from (mul_one _).symm, haarLie_smul, ENNReal.smul_def]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem muN_eq_haarLie (k r : ℕ) :
     ∃ κ₀ : ENNReal, κ₀ ≠ 0 ∧ κ₀ ≠ ⊤ ∧ Formalism.FourierDecayAlt.D.muN k r = haarLie (Nset k r) κ₀ := by
@@ -141,9 +141,9 @@ theorem muN_eq_haarLie (k r : ℕ) :
 def kaB (D : Formalism.BasicNotions.D7) : ℝ := D.host.ka / ((D.host.g 0 : ℝ) * (D.host.g 1 : ℝ))
 
 /- English proof (translation)
-Establish `hka : 0 < D.host.ka`. Establish `hrd : 0 < D.host.rdE`. Unfold `Formalism.BasicNotions.Host.rdE`. Conclude with `Real.rpow_pos_of_pos (abs_pos.mpr (by exact_mod_cast NumberField.discr_ne_zero D.host.E)) _`. Unfold `Formalism.BasicNotions.Host.ka Formalism.BasicNotions.Host.v`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Conclude with `div_pos Real.pi_pos (by linarith)`. Establish `hg0 : (0 : ℝ) < D.host.g 0` using `by exact_mod_cast (D.host.g_prime 0).pos`. Establish `hg1 : (0 : ℝ) < D.host.g 1` using `by exact_mod_cast (D.host.g_prime 1).pos`. Conclude with `div_pos hka (mul_pos hg0 hg1)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem kaB_pos (D : Formalism.BasicNotions.D7) : 0 < kaB D := by
   have hka : 0 < D.host.ka := by
@@ -157,11 +157,9 @@ theorem kaB_pos (D : Formalism.BasicNotions.D7) : 0 < kaB D := by
   exact div_pos hka (mul_pos hg0 hg1)
 
 /- English proof (translation)
-Establish `hka : 0 < D.host.ka`. Establish `hrd : 0 < D.host.rdE`. Unfold `Formalism.BasicNotions.Host.rdE`. Conclude with `Real.rpow_pos_of_pos (abs_pos.mpr (by exact_mod_cast NumberField.discr_ne_zero D.host.E)) _`. Unfold `Formalism.BasicNotions.Host.ka Formalism.BasicNotions.Host.v`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Conclude with `div_pos Real.pi_pos (by linarith)`. Establish `hkac : (D.host.ka : ℂ) ≠ 0` using `by exact_mod_cast hka.ne'`. Establish `hpi : (Real.pi : ℂ) ≠ 0` using `by exact_mod_cast Real.pi_pos.ne'`. Unfold `Formalism.L2.SG.LocWSOf.muT Formalism.L2.SG.LocWSOf.cfS Formalism.L2.SG.LocWSOf.frS kaB`. Use `push_cast`.
-
-Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem muT_eq (D : Formalism.BasicNotions.D7) : Formalism.L2.SG.LocWSOf.muT D = -Complex.I * (((kaB D)⁻¹ : ℝ) : ℂ) := by
   have hka : 0 < D.host.ka := by
@@ -177,21 +175,21 @@ theorem muT_eq (D : Formalism.BasicNotions.D7) : Formalism.L2.SG.LocWSOf.muT D =
   field_simp
 
 /- English proof (translation)
-Rewrite using `[muT_eq, torS_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem torS_muT (D : Formalism.BasicNotions.D7) (k r : ℕ) :
     Formalism.L2.SG.LocWSOf.torS (Formalism.L2.SG.LocWSOf.muT D) k r = (Complex.I ^ r)⁻¹ • (tT k r * dM k r (kaB D)⁻¹ 1) := by
   rw [muT_eq, torS_eq]
 
 /- English proof (translation)
-Rewrite using `[muT_eq, torS_inv_eq _ (inv_pos.mpr (kaB_pos D))]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem torS_muT_inv (D : Formalism.BasicNotions.D7) (k r : ℕ) :
     Formalism.L2.SG.LocWSOf.torS (Formalism.L2.SG.LocWSOf.muT D)⁻¹ k r = (Complex.I ^ r) • (dMi k r (kaB D)⁻¹ 1 * tTi k r) := by
   rw [muT_eq, torS_inv_eq _ (inv_pos.mpr (kaB_pos D))]
 
 /- English proof (translation)
-Rewrite using `[torS_muT, torS_muT_inv, gStd]`. Establish `hI : (Complex.I ^ r) ≠ 0` using `pow_ne_zero _ Complex.I_ne_zero`. Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, smul_smul, inv_mul_cancel₀ hI, mul_inv_cancel₀ hI, one_smul]`. Simplify using `only [cj, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem torS_conj (D : Formalism.BasicNotions.D7) (k r : ℕ) (M : Mx k r) :
     Formalism.L2.SG.LocWSOf.torS (Formalism.L2.SG.LocWSOf.muT D)⁻¹ k r * M * Formalism.L2.SG.LocWSOf.torS (Formalism.L2.SG.LocWSOf.muT D) k r =
@@ -202,7 +200,7 @@ theorem torS_conj (D : Formalism.BasicNotions.D7) (k r : ℕ) (M : Mx k r) :
   simp only [cj, Matrix.mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[torS_muT, torS_muT_inv]`. Establish `hI : (Complex.I ^ r) ≠ 0` using `pow_ne_zero _ Complex.I_ne_zero`. Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, smul_smul, inv_mul_cancel₀ hI, mul_inv_cancel₀ hI, one_smul]`. Simplify using `only [cjI, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem torS_conjI (D : Formalism.BasicNotions.D7) (k r : ℕ) (M : Mx k r) :
     Formalism.L2.SG.LocWSOf.torS (Formalism.L2.SG.LocWSOf.muT D) k r * M * Formalism.L2.SG.LocWSOf.torS (Formalism.L2.SG.LocWSOf.muT D)⁻¹ k r =

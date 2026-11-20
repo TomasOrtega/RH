@@ -13,19 +13,17 @@ open scoped ENNReal NNReal
 noncomputable section
 
 /- English proof (translation)
-Introduce `n e h W f u hW hf hu`. Establish `hWp : W.IsPrime` using `hW.isPrime`. Establish `hdim` using `ChowFormDimLe.proof ℂ n (e + 1) W f hW hf`. Set `E` to `WithLp.linearEquiv 2 ℂ (Fin n → ℂ)`. Set `F : EuclideanSpace ℂ (Fin n) →L[ℂ] EuclideanSpace ℂ (Fin n)` to `LinearMap.toContinuousLinearMap (E.symm.toLinearMap ∘ₗ h.matᵀ.mulVecLin ∘ₗ E.toLinearMap)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `L : EuclideanSpace ℂ (Fin n) →L[ℂ] EuclideanSpace ℂ (Fin n)` to `LinearMap.toContinuousLinearMap (E.symm.toLinearMap ∘ₗ (h.matᵀ)⁻¹.mulVecLin ∘ₗ E.toLinearMap)`. Establish `hF : ∀ y i, F y i = h.pointOf y i` using `fun _ _ => rfl`. Establish `hdet : IsUnit (h.matᵀ).det` using `by rw [Matrix.det_transpose]; exact h.isUnit_det`. Establish `hLF : ∀ y, L (F y) = y`. Introduce `y`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `i`. Express the relevant statement in the definitionally equal form `((h.matᵀ)⁻¹ *ᵥ (h.matᵀ *ᵥ fun j => y j)) i = y i`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hdet, Matrix.one_mulVec]`. Take `⟨C, α, hC, hα, hb⟩` from `hV n (e + 1) W u hWp hdim hu ‖F‖`. Use `set s : ℝ := ((2 * (e + 1) : ℕ) : ℝ) with hs`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hs0 : 0 ≤ s` using `Nat.cast_nonneg _`. Set `K : ℝ≥0` to `‖L‖₊`. Use `⟨(K : ℝ) ^ s * C, α, hα, fun ε hε hε1 => ?_⟩` and prove the remaining obligations. Establish `hsub : coneBall h W ∩ {y | ‖∑ j, u j * h.pointOf y j‖ ≤ ε * ‖y‖} ⊆ L '' {z | z ∈ zeroSetEuc W ∧ ‖z‖ ≤ ‖F‖ ∧ ‖∑ j, u j * z j‖ ≤ ε}`. Introduce and unpack `y ⟨⟨hy1, hyW⟩, hyu⟩`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨F y, ⟨fun q hq => ?_, ?_, ?_⟩, hLF y⟩` and prove the remaining obligations. Establish `: (fun i => F y i) = h.pointOf y` using `funext (hF y)`. Rewrite using `[this]`. Conclude with `hyW q hq`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [hF]`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Conclude with `hb ε hε hε1`. Use `_ = ENNReal.ofReal ((K : ℝ) ^ s * C * ε ^ α) := by`.
-
-Rewrite using `[mul_assoc, ENNReal.ofReal_mul (Real.rpow_nonneg K.coe_nonneg _), ← ENNReal.ofReal_rpow_of_nonneg K.coe_nonneg hs0, ENNReal.ofReal_coe_nnreal]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ConeSlabBound.proof (hV : VarietySlabMeasure.Statement) : ConeSlabBound.Statement := by
   intro n e h W f u hW hf hu

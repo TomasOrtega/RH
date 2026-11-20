@@ -18,31 +18,29 @@ open GlobalTheory.TrueGeo.SmallSec (fnMap fnMap_fnOf)
 namespace GlobalTheory.CorankOneNormal
 
 /- English proof (translation)
-Establish `: Nonempty U` using `⟨⟨_, hU⟩⟩`. Establish `hP : IsProjOver (PSpace.str O N)` using `⟨N, 𝟙 _, inferInstance, Category.id_comp _⟩`. Establish `w : ProjSpace.ofCoords B.str U i₀ r ≫ PSpace.str O N = U.ι ≫ B.str ≫ spMap (RingHom.id O)`. Rewrite using `[ProjSpace.ofCoords_str]`. Simplify using `[spMap]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨X', f₁, q, c, hproj, hnorm, hflat, hpb, hdense, hc₂, -⟩` from `GlobalTheory.GraphClosure.exists_normalised_graph_closure O O (RingHom.id O) B.X (PSpace O N) B.str (PSpace.str O N) U (ProjSpace.ofCoords B.str U i₀ r) B.isProjOver hP (GlobalTheory.IsNormalScheme.pred B.X) inferInstance w`. Establish `hN : GlobalTheory.IsNormalScheme X'` using `GlobalTheory.IsNormalScheme.of_pred hnorm`. Establish `: IsOpenImmersion c` using `MorphismProperty.of_isPullback hpb.flip (inferInstance : IsOpenImmersion U.ι)`. Establish `hc₁ : c ≫ f₁ = U.ι` using `by simpa using hpb.w`. Establish `: IsReduced X'` using `isReduced_of_isReduced_stalk X'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IrreducibleSpace X'`. Establish `h1 : IsIrreducible (Set.range c)`. Rewrite using `[← Set.image_univ]`. Conclude with `(IrreducibleSpace.isIrreducible_univ _).image c c.continuous.continuousOn`. Establish `h2` using `h1.closure`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[hdense.closure_eq]`. Conclude with `(irreducibleSpace_def _).2 h2`. Establish `: IsIntegral X'` using `isIntegral_of_irreducibleSpace_of_isReduced X'`. Set `B' : GlobalTheory.Vert.Model O` to `{ X := X', str := f₁ ≫ B.str, isProjOver := hproj }`. Establish `: IsProper f₁` using `GlobalTheory.Vert.Model.isProper_of_comp_str (Z := B) (Z₁ := B') (f := f₁) rfl`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcη : c (genericPoint U) = genericPoint X'` using `genericPoint_eq_of_isOpenImmersion c`. Establish `hη : f₁ (genericPoint X') = genericPoint B.X`. Rewrite using `[← hcη, ← Scheme.Hom.comp_apply, hc₁]`. Conclude with `genericPoint_eq_of_isOpenImmersion U.ι`. Establish `: IsDominant f₁` using `⟨(dense_iff_closure_eq.2 (genericPoint_spec B.X)).mono (Set.singleton_subset_iff.2 ⟨_, hη⟩)⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: Surjective f₁` using `surjective_of_isDominant_of_isClosed_range f₁ f₁.isClosedMap.isClosed_range`. Set `f : GlobalTheory.Vert.Model.Hom B' B` to `⟨f₁, rfl⟩`. Establish `hdeg : f₁.residueDegree (genericPoint X') ≠ 0`. Establish `e` using `CurveDegreesCompare.residueDegree_comp c f₁ (genericPoint U)`. Rewrite `e` using `[hc₁, CurveDegreesCompare.residueDegree_of_isOpenImmersion, hcη]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `left_ne_zero_of_mul_eq_one e.symm`. Establish `hdim : B'.relDim ≤ B.relDim`. Establish `h` using `GlobalTheory.ProperCover.dim_le_of_residueDegree_pos (Z' := B'.X) (Z := B.X) f₁ hη (Nat.pos_of_ne_zero hdeg)`. Rewrite `h` using `[B'.dim_eq, B.dim_eq]`. Establish `h' : B'.relDim + 1 ≤ B.relDim + 1` using `by exact_mod_cast h`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Use `⟨B', f, hη, hN, Nat.sub_eq_zero_of_le hdim, fun y => ?_⟩` and prove the remaining obligations. Use `show ∃ i, fnOf U hU (r i) ≠ 0 ∧ ∀ j, ∃ g, RegAt y g ∧ g * fnMap f₁ (specializes_of_eq hη) (fnOf U hU (r i)) = fnMap f₁ (specializes_of_eq hη) (fnOf U hU (r j))`. Establish `h₁ : ⊤ ≤ (c ≫ q) ⁻¹ᵁ ProjSpace.chart O N i₀` using `hc₂ ▸ ProjSpace.ofCoords_preimage_top B.str U i₀ r`. Establish `hV : genericPoint X' ∈ q ⁻¹ᵁ ProjSpace.chart O N i₀` using `hcη ▸ h₁ (Set.mem_univ (genericPoint U))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key (j) : fnOf _ hV (ProjSpace.pullRatio q _ i₀ le_rfl j) = fnMap f₁ (specializes_of_eq hη) (fnOf U hU (r j))`. Establish `h₂ : ⊤ ≤ c ⁻¹ᵁ f₁ ⁻¹ᵁ U`. Rewrite using `[← Scheme.Hom.comp_preimage, hc₁]`. Conclude with `U.ι_preimage_self.ge`. Establish `h₃ : ⊤ ≤ c ⁻¹ᵁ q ⁻¹ᵁ ProjSpace.chart O N i₀` using `h₁`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU' : genericPoint X' ∈ f₁ ⁻¹ᵁ U` using `show f₁ _ ∈ U from hη ▸ hU`. Apply `(fnMap c (specializes_of_eq hcη)).injective` to reduce the goal to its premises. Rewrite using `[GlobalTheory.CorankOne.fnMap_fnOf_appLE f₁ _ le_rfl hU hU', GlobalTheory.CorankOne.fnMap_fnOf_appLE c _ (V := ⊤) h₃ hV trivial, GlobalTheory.CorankOne.fnMap_fnOf_appLE c _ (V := ⊤) h₂ hU' trivial, ProjSpace.appLE_pullRatio, ProjSpace.appLE_appLE]`. Use `congr 1`. Establish `e₁ : c ≫ q = 𝟙 _ ≫ ProjSpace.ofCoords B.str U i₀ r` using `by rw [hc₂, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₂ : c ≫ f₁ = 𝟙 _ ≫ U.ι` using `by rw [hc₁, Category.id_comp]`. Rewrite using `[ProjSpace.pullRatio_of_eq e₁ _ (e₁ ▸ h₁), ProjSpace.appLE_of_eq e₂ _ _ _ (e₂ ▸ h₂)]`. Conclude with `ProjSpace.pullRatio_comp_ofCoords B.str U i₀ hr _ _ _ _ j`. Take `⟨a, ha⟩` from `ProjSpace.exists_mem_chart O N (q y)`. Establish `hy : y ∈ q ⁻¹ᵁ ProjSpace.chart O N a` using `ha`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hW` using `memInf hV (gen_mem hy)`. Establish `mul (i j l : Fin (N + 1)) (hi : _ ≤ q ⁻¹ᵁ ProjSpace.chart O N i) (hj : _ ≤ q ⁻¹ᵁ ProjSpace.chart O N j)` using `congrArg (fnOf _ hW) (ProjSpace.pullRatio_mul_pullRatio (φ := q) (hi := hi) (hj := hj) (k := l))`. Use `⟨a, fun h0 => ?_, fun j => ⟨_, regAt_fnOf hy (gen_mem hy) (ProjSpace.pullRatio q _ a le_rfl j), ?_⟩⟩` and prove the remaining obligations. Establish `e` using `mul i₀ a i₀ inf_le_left inf_le_right`. Rewrite `e` using `[ProjSpace.pullRatio_self, map_one, map_mul, ← ProjSpace.resG_pullRatio (hi := le_rfl) inf_le_left, fnOf_resG, key, h0, map_zero, zero_mul]`.
-
-Conclude with `zero_ne_one e`. Establish `e` using `mul i₀ a j inf_le_left inf_le_right`. Rewrite `e` using `[map_mul, ← ProjSpace.resG_pullRatio (hi := le_rfl) inf_le_left, ← ProjSpace.resG_pullRatio (hi := le_rfl) inf_le_right, ← ProjSpace.resG_pullRatio (hi := le_rfl) inf_le_left, fnOf_resG, fnOf_resG, fnOf_resG, key, key]`. Rewrite using `[mul_comm, e]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_modification_sections {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O]
     (B : GlobalTheory.Vert.Model O) [hn : GlobalTheory.IsNormalScheme B.X] {U : B.X.Opens} (hU : genericPoint B.X ∈ U) {N : ℕ}
@@ -126,17 +124,15 @@ theorem exists_modification_sections {O : Type} [CommRing O] [IsDomain O] [IsDis
     rw [mul_comm, e]
 
 /- English proof (translation)
-Introduce `O _ _ _ _ B hn A ι _ _ w hw`. Use `Fintype.ofFinite A` as an intermediate fact. Use `choose σ₀ hσ₀ using hw`. Establish `: Nonempty (A → ι)` using `⟨σ₀⟩`. Choose the witnesses or unpack the hypotheses as in `⟨N, ⟨ε⟩⟩ : ∃ N, Nonempty (Fin (N + 1) ≃ (A → ι)) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨N, hN⟩` from `Nat.exists_eq_succ_of_ne_zero (Nat.card_pos (α := A → ι)).ne'`. Conclude with `⟨N, ⟨(Finite.equivFinOfCardEq hN).symm⟩⟩`. Set `P : (A → ι) → B.X.functionField` to `fun σ => ∏ α, w α (σ α)`. Establish `hP₀ : P σ₀ ≠ 0` using `Finset.prod_ne_zero_iff.2 fun α _ => hσ₀ α`. Take `⟨U, hU, hr⟩` from `InvertIdeal.exists_common_open (x := genericPoint B.X) fun i => regAt_genericPoint (P (ε i) / P σ₀)`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `choose r hr using hr`. Take `⟨B', f, hη, hN', h₀, h₃⟩` from `exists_modification_sections B hU r (ε.symm σ₀) (fnOf_injective U hU (by rw [map_one]; refine (hr _).trans ?_; rw [ε.apply_symm_apply, div_self hP₀]))`. Use `⟨B', f, hη, hN', h₀, fun y α => ?_⟩` and prove the remaining obligations. Take `⟨a, ha, hb⟩` from `h₃ y`. Establish `hr' (i) : fnOf U hU (r i) = P (ε i) / P σ₀` using `hr i`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `ha` using `[hr']`. Establish `hPa : P (ε a) ≠ 0` using `left_ne_zero_of_mul (div_eq_mul_inv (P (ε a)) _ ▸ ha)`. Use `⟨ε a α, Finset.prod_ne_zero_iff.1 hPa α (Finset.mem_univ _), fun j => ?_⟩` and prove the remaining obligations. Take `⟨g, hg, e⟩` from `hb (ε.symm (Function.update (ε a) α j))`. Use `⟨g, hg, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₁ : P (ε a) = w α (ε a α) * ∏ β ∈ Finset.univ.erase α, w β (ε a β)` using `(Finset.mul_prod_erase _ (fun β => w β (ε a β)) (Finset.mem_univ α)).symm`. Establish `e₂ : P (Function.update (ε a) α j) = w α j * ∏ β ∈ Finset.univ.erase α, w β (ε a β)`. Use `(Finset.mul_prod_erase _ (fun β => w β (Function.update (ε a) α j β)) (Finset.mem_univ α)).symm.trans ?_` and prove the remaining obligations. Rewrite using `[Function.update_self]`. Conclude with `congrArg _ (Finset.prod_congr rfl fun β hβ => by rw [Function.update_of_ne (Finset.ne_of_mem_erase hβ)])`.
-
-Rewrite `ha` using `[e₁, mul_div_assoc]`. Rewrite `e` using `[hr', hr', ε.apply_symm_apply, e₁, e₂, mul_div_assoc, mul_div_assoc, map_mul, map_mul, ← mul_assoc]`. Conclude with `mul_right_cancel₀ ((map_ne_zero _).2 (right_ne_zero_of_mul ha)) e`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_modification : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O]
     (B : GlobalTheory.Vert.Model O), GlobalTheory.IsNormalScheme B.X → ∀ (A ι : Type) [Finite A] [Finite ι]

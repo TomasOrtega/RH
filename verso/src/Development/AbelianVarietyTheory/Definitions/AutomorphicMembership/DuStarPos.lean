@@ -72,7 +72,7 @@ structure LevCh (P : PreCh) where
         exact Nat.dvd_one.1 h2 }
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `L.piT_norm u`. Rewrite `h1` using `[h, zero_mul]`. Conclude with `(L.T_prime u).ne_zero (by exact_mod_cast h1.symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LevCh.piT_ne {P : PreCh} (L : LevCh P) (u : P.Word) : (L.piT u : P.H.E) ≠ 0 := by
   intro h

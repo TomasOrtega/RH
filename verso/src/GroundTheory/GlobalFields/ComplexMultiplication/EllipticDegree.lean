@@ -22,7 +22,7 @@ def torusOrder (f : ℂ → ℂ) (x : Torus L) : ℤ :=
   (meromorphicOrderAt f x.out).untopD 0
 
 /- English proof (translation)
-Establish `h` using `(Torus.mk_eq_mk_iff L).1 (QuotientAddGroup.out_eq' (Torus.mk L z))`. Use `hf.2.meromorphicOrderAt_add h z` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Rewrite using `[torusOrder, this]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 lemma torusOrder_mk {f : ℂ → ℂ} (hf : IsEllipticFunction L f) (z : ℂ) :
     torusOrder L f (Torus.mk L z) = (meromorphicOrderAt f z).untopD 0 := by
@@ -32,9 +32,9 @@ lemma torusOrder_mk {f : ℂ → ℂ} (hf : IsEllipticFunction L f) (z : ℂ) :
   rw [torusOrder, this]
 
 /- English proof (translation)
-Use `⟨fun z ↦ ?_, fun z l hl ↦ ?_⟩` and prove the remaining obligations. Establish `: logDeriv f = fun w ↦ deriv f w / f w` using `rfl`. Rewrite using `[this]`. Conclude with `(hf.1 z).deriv.div (hf.1 z)`. Simplify using `only [logDeriv_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hf.2 z l hl]`. Use `congr 1`. Rewrite using `[← deriv_comp_add_const, hf.2.comp_add hl]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma isEllipticFunction_logDeriv {f : ℂ → ℂ} (hf : IsEllipticFunction L f) :
     IsEllipticFunction L (logDeriv f) := by
@@ -48,11 +48,11 @@ lemma isEllipticFunction_logDeriv {f : ℂ → ℂ} (hf : IsEllipticFunction L f
     rw [← deriv_comp_add_const, hf.2.comp_add hl]
 
 /- English proof (translation)
-Distinguish the cases in `htop : meromorphicOrderAt f z = ⊤`. Rewrite using `[htop, WithTop.untopD_top, Int.cast_zero]`. Rewrite `htop` using `[meromorphicOrderAt_eq_top_iff]`. Establish `hmer : MeromorphicAt (logDeriv f) z`. Establish `: logDeriv f = fun w ↦ deriv f w / f w` using `rfl`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `hf.deriv.div hf`. Establish `h0 : logDeriv f =ᶠ[𝓝[≠] z] fun _ ↦ (0 : ℂ)` using `by filter_upwards [htop] with w hw`. Simplify using `[logDeriv_apply, hw]`. Rewrite using `[residue_congr hmer h0]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `residue_eq_zero_of_analyticAt analyticAt_const`. Take `⟨n, hn⟩` from `WithTop.ne_top_iff_exists.1 htop`. Rewrite using `[← hn, WithTop.untopD_coe]`. Conclude with `residue_logDeriv hf hn.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma residue_logDeriv_eq_untopD {f : ℂ → ℂ} {z : ℂ} (hf : MeromorphicAt f z) :
     residue (logDeriv f) z = (((meromorphicOrderAt f z).untopD 0 : ℤ) : ℂ) := by
@@ -73,14 +73,14 @@ lemma residue_logDeriv_eq_untopD {f : ℂ → ℂ} {z : ℂ} (hf : MeromorphicAt
     exact residue_logDeriv hf hn.symm
 
 /- English proof (translation)
-The claim follows from `residue_logDeriv_eq_untopD (hf.1 _)`.
+A detailed English derivation is pending.
 -/
 lemma torusResidue_logDeriv {f : ℂ → ℂ} (hf : IsEllipticFunction L f) (x : Torus L) :
     torusResidue L (logDeriv f) x = (torusOrder L f x : ℂ) :=
   residue_logDeriv_eq_untopD (hf.1 _)
 
 /- English proof (translation)
-Use `(finite_image_singularSet L hf.1 hf.2).subset ?_` and prove the remaining obligations. Introduce `x hx`. Use `⟨x.out, fun ha ↦ hx (residue_eq_zero_of_analyticAt ha), QuotientAddGroup.out_eq' x⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 -/
 lemma finite_support_torusResidue {f : ℂ → ℂ} (hf : IsEllipticFunction L f) :
     (Function.support (torusResidue L f)).Finite := by
@@ -89,7 +89,7 @@ lemma finite_support_torusResidue {f : ℂ → ℂ} (hf : IsEllipticFunction L f
   refine ⟨x.out, fun ha ↦ hx (residue_eq_zero_of_analyticAt ha), QuotientAddGroup.out_eq' x⟩
 
 /- English proof (translation)
-Use `(finite_support_torusResidue (isEllipticFunction_logDeriv hf)).subset ?_` and prove the remaining obligations. Introduce `x hx`. Simplify using `only [Function.mem_support, torusResidue_logDeriv hf] at hx ⊢`. Conclude with `hx` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma finite_support_torusOrder {f : ℂ → ℂ} (hf : IsEllipticFunction L f) :
     (Function.support (torusOrder L f)).Finite := by
@@ -99,9 +99,9 @@ lemma finite_support_torusOrder {f : ℂ → ℂ} (hf : IsEllipticFunction L f) 
   exact_mod_cast hx
 
 /- English proof (translation)
-Establish `h` using `finsum_torusResidue_eq_zero (isEllipticFunction_logDeriv hf)`. Rewrite `h` using `[torusResidue_logDeriv hf]`. Establish `hc` using `(Int.castAddHom ℂ).map_finsum (finite_support_torusOrder hf)`. Simplify using `only [Int.coe_castAddHom] at hc`. Rewrite `h` using `[← hc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses repeatedly using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem finsum_torusOrder_eq_zero {f : ℂ → ℂ} (hf : IsEllipticFunction L f) :
     ∑ᶠ x : Torus L, torusOrder L f x = 0 := by
@@ -118,13 +118,13 @@ def degree (f : ℂ → ℂ) : ℕ :=
   ∑ᶠ x : Torus L, (-torusOrder L f x).toNat
 
 /- English proof (translation)
-Establish `hc : MeromorphicAt (fun _ : ℂ ↦ -c) z` using `analyticAt_const.meromorphicAt`. Establish `e : (fun w ↦ f w - c) = f + fun _ ↦ -c`. Use function extensionality and compare the values at `w`. Simplify using `[sub_eq_add_neg]`. Establish `hc0 : 0 ≤ meromorphicOrderAt (fun _ : ℂ ↦ -c) z` using `analyticAt_const.meromorphicOrderAt_nonneg`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[e]`. Distinguish the cases in `hneg : meromorphicOrderAt f z < 0`. Rewrite using `[meromorphicOrderAt_add_eq_left_of_lt hc (hneg.trans_le hc0)]`. Use `push Not at hneg`. Establish `h1 : 0 ≤ meromorphicOrderAt (f + fun _ ↦ -c) z` using `le_trans (le_min hneg hc0) (meromorphicOrderAt_add hf hc)`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ o : WithTop ℤ, 0 ≤ o → (-(o.untopD 0)).toNat = 0`. Introduce `o ho`. Proceed by induction on `o with`. Consider the case `top => simp`. Consider the case `coe n`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [WithTop.untopD_coe]`. Establish `: (0 : ℤ) ≤ n` using `by exact_mod_cast ho`. Use linear arithmetic over natural numbers and integers. Rewrite using `[key _ h1, key _ hneg]`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma toNat_neg_untopD_sub_const {f : ℂ → ℂ} {z : ℂ} (hf : MeromorphicAt f z) (c : ℂ) :
     (-(meromorphicOrderAt (fun w ↦ f w - c) z).untopD 0).toNat =
@@ -150,7 +150,7 @@ lemma toNat_neg_untopD_sub_const {f : ℂ → ℂ} {z : ℂ} (hf : MeromorphicAt
     rw [key _ h1, key _ hneg]
 
 /- English proof (translation)
-Proceed by induction on `o with`. Consider the case `top => exact le_top`. Consider the case `coe n`. Simplify using `only [WithTop.untopD_coe] at h`. Conclude with `(by omega : (0 : ℤ) ≤ n)` after adjusting the coercions.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma nonneg_of_toNat_neg_untopD_eq_zero {o : WithTop ℤ} (h : (-(o.untopD 0)).toNat = 0) :
     0 ≤ o := by
@@ -161,7 +161,7 @@ lemma nonneg_of_toNat_neg_untopD_eq_zero {o : WithTop ℤ} (h : (-(o.untopD 0)).
     exact_mod_cast (by omega : (0 : ℤ) ≤ n)
 
 /- English proof (translation)
-Proceed by induction on `o with`. Consider the case `top => simp`. Consider the case `coe n`. Simplify using `only [WithTop.untopD_coe]`. Establish `: (0 : ℤ) ≤ n` using `by exact_mod_cast h`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -175,9 +175,9 @@ lemma toNat_neg_untopD_eq_zero_of_nonneg {o : WithTop ℤ} (h : 0 ≤ o) :
     omega
 
 /- English proof (translation)
-Proceed by induction on `o with`. Consider the case `top => simp at h`. Consider the case `coe n`. Simplify using `only [WithTop.untopD_coe] at h`. Establish `: n = -1` using `by omega`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma eq_neg_one_of_toNat_neg_untopD_eq_one {o : WithTop ℤ} (h : (-(o.untopD 0)).toNat = 1) :
     o = ((-1 : ℤ) : WithTop ℤ) := by
@@ -189,7 +189,7 @@ lemma eq_neg_one_of_toNat_neg_untopD_eq_one {o : WithTop ℤ} (h : (-(o.untopD 0
     rw [this]
 
 /- English proof (translation)
-Rewrite `h` using `[Filter.Eventually, codiscrete, mem_codiscreteWithin]`. Use `disjoint_principal_right.1 (h x (mem_univ x))` as an intermediate fact. Use `filter_upwards [this] with z hz`. Assume the negation of the conclusion as `hpz`. Conclude with `hz ⟨mem_univ z, hpz⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 lemma eventually_nhdsNE_of_eventually_codiscrete {p : ℂ → Prop} (h : ∀ᶠ z in codiscrete ℂ, p z)
     (x : ℂ) : ∀ᶠ z in 𝓝[≠] x, p z := by
@@ -200,7 +200,7 @@ lemma eventually_nhdsNE_of_eventually_codiscrete {p : ℂ → Prop} (h : ∀ᶠ 
   exact hz ⟨mem_univ z, hpz⟩
 
 /- English proof (translation)
-The claim follows from `(finite_support_torusOrder hf).subset fun x hx ↦ by simp only [Function.mem_support] at hx ⊢ omega`.
+A detailed English derivation is pending.
 -/
 lemma finite_support_toNat_neg_torusOrder {f : ℂ → ℂ} (hf : IsEllipticFunction L f) :
     (Function.support fun x ↦ (-torusOrder L f x).toNat).Finite :=
@@ -209,17 +209,15 @@ lemma finite_support_toNat_neg_torusOrder {f : ℂ → ℂ} (hf : IsEllipticFunc
     omega
 
 /- English proof (translation)
-Establish `hg : IsEllipticFunction L (fun z ↦ f z - c)`. Use `⟨fun z ↦ ?_, fun z l hl ↦ by simp only [hf.2 z l hl]⟩` and prove the remaining obligations. Use `hf.1 z` as an intermediate fact. Use `fun_prop`. Use `set g : ℂ → ℂ := fun z ↦ f z - c with hgdef`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin` using `finite_support_torusOrder hg`. Use `set s := hfin.toFinset with hs`. Establish `hsupp : Function.support (torusOrder L g) ⊆ ↑s` using `by simp [hs]`. Establish `hsum` using `finsum_torusOrder_eq_zero hg`. Rewrite `hsum` using `[finsum_eq_sum_of_support_subset _ hsupp]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : ∑ᶠ x, (torusOrder L g x).toNat = ∑ x ∈ s, (torusOrder L g x).toNat` using `finsum_eq_sum_of_support_subset _ fun x hx ↦ hsupp (by`. Simplify using `only [Function.mem_support] at hx ⊢`. Use the proof step `omega)`. Establish `hpt : ∀ x, (-torusOrder L f x).toNat = (-torusOrder L g x).toNat` using `fun x ↦ (toNat_neg_untopD_sub_const (hf.1 _) c).symm`. Establish `h2 : degree L f = ∑ x ∈ s, (-torusOrder L g x).toNat`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[degree]`. Repeatedly rewrite using `[hpt]`. Conclude with `finsum_eq_sum_of_support_subset _ fun x hx ↦ hsupp (by`. Simplify using `only [Function.mem_support] at hx ⊢`. Use the proof step `omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1, h2]`. Establish `key : ∀ x, ((torusOrder L g x).toNat : ℤ) - ((-torusOrder L g x).toNat : ℤ) = torusOrder L g x` using `fun x ↦ Int.toNat_sub_toNat_neg _`. Establish `: ((∑ x ∈ s, (torusOrder L g x).toNat : ℕ) : ℤ) = ((∑ x ∈ s, (-torusOrder L g x).toNat : ℕ) : ℤ)`. Use `push_cast`. Rewrite using `[← sub_eq_zero, ← Finset.sum_sub_distrib]`.
-
-Simplify using `only [key]`. Conclude with `hsum`. Conclude with `this` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem finsum_toNat_torusOrder_sub_const {f : ℂ → ℂ} (hf : IsEllipticFunction L f) (c : ℂ) :
     ∑ᶠ x : Torus L, (torusOrder L (fun z ↦ f z - c) x).toNat = degree L f := by
@@ -258,14 +256,14 @@ theorem finsum_toNat_torusOrder_sub_const {f : ℂ → ℂ} (hf : IsEllipticFunc
   exact_mod_cast this
 
 /- English proof (translation)
-Simplify using `using finsum_toNat_torusOrder_sub_const hf 0`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem finsum_toNat_torusOrder_eq_degree {f : ℂ → ℂ} (hf : IsEllipticFunction L f) :
     ∑ᶠ x : Torus L, (torusOrder L f x).toNat = degree L f := by
   simpa using finsum_toNat_torusOrder_sub_const hf 0
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hx`. Rewrite `h` using `[finsum_eq_sum_of_support_subset u (s := hu.toFinset) (by simp)]`. Conclude with `hx ((Finset.sum_eq_zero_iff.1 h) x (by simpa using hx))`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma eq_zero_of_finsum_eq_zero_nat {α : Type*} {u : α → ℕ} (hu : (Function.support u).Finite)
     (h : ∑ᶠ x, u x = 0) (x : α) : u x = 0 := by
@@ -275,13 +273,11 @@ lemma eq_zero_of_finsum_eq_zero_nat {α : Type*} {u : α → ℕ} (hu : (Functio
   exact hx ((Finset.sum_eq_zero_iff.1 h) x (by simpa using hx))
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h0`. Establish `hall` using `eq_zero_of_finsum_eq_zero_nat (finite_support_toNat_neg_torusOrder hf) h0`. Apply `exists_eventuallyEq_const_of_meromorphicOrderAt_nonneg L hf.1 hf.2` to reduce the goal to its premises. Introduce `z`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hall (Torus.mk L z)` as an intermediate fact. Rewrite `this` using `[torusOrder_mk hf]`. Conclude with `nonneg_of_toNat_neg_untopD_eq_zero this`. Introduce and unpack `⟨c, hc⟩`. Rewrite using `[degree]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: ∀ x : Torus L, (-torusOrder L f x).toNat = 0`. Introduce `x`. Apply `toNat_neg_untopD_eq_zero_of_nonneg` to reduce the goal to its premises. Rewrite using `[meromorphicOrderAt_congr (eventually_nhdsNE_of_eventually_codiscrete hc x.out)]`. Conclude with `analyticAt_const.meromorphicOrderAt_nonneg`.
-
-Simplify using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem degree_eq_zero_iff {f : ℂ → ℂ} (hf : IsEllipticFunction L f) :
     degree L f = 0 ↔ ∃ c : ℂ, f =ᶠ[codiscrete ℂ] fun _ ↦ c := by
@@ -303,17 +299,13 @@ theorem degree_eq_zero_iff {f : ℂ → ℂ} (hf : IsEllipticFunction L f) :
     simp [this]
 
 /- English proof (translation)
-Introduce `h1`. Use `set u : Torus L → ℕ := fun x ↦ (-torusOrder L f x).toNat with hu`. Establish `hfin : (Function.support u).Finite` using `finite_support_toNat_neg_torusOrder hf`. Use `set s := hfin.toFinset with hs`. Establish `hsum : ∑ x ∈ s, u x = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← finsum_eq_sum_of_support_subset u (by simp [hs])]`. Conclude with `h1`. Choose the witnesses or unpack the hypotheses as in `⟨x₀, hx₀s, hx₀⟩ : ∃ x₀ ∈ s, u x₀ ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hsum` using `[Finset.sum_eq_zero hcon]`. Conclude with `zero_ne_one hsum`. Establish `hsplit` using `Finset.add_sum_erase s u hx₀s`. Rewrite `hsplit` using `[hsum]`. Establish `hux₀ : u x₀ = 1` using `by omega`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hrest : ∀ x, x ≠ x₀ → u x = 0`. Introduce `x hx`. Distinguish the cases in `hxs : x ∈ s`. Establish `h0 : ∑ y ∈ s.erase x₀, u y = 0` using `by omega`. Conclude with `Finset.sum_eq_zero_iff.1 h0 x (Finset.mem_erase.2 ⟨hx, hxs⟩)`.
-
-Simplify `hxs` using `[hs]`. Establish `hres` using `finsum_torusResidue_eq_zero hf`. Rewrite `hres` using `[finsum_eq_single _ x₀ (fun x hx ↦ ?_)]`. Establish `hord` using `eq_neg_one_of_toNat_neg_untopD_eq_one hux₀`. Conclude with `residue_ne_zero_of_meromorphicOrderAt_eq_neg_one (hf.1 _) hord hres`.
-
-Conclude with `residue_eq_zero_of_meromorphicOrderAt_nonneg (hf.1 _) (nonneg_of_toNat_neg_untopD_eq_zero (hrest x hx))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem degree_ne_one {f : ℂ → ℂ} (hf : IsEllipticFunction L f) : degree L f ≠ 1 := by
   classical
@@ -346,13 +338,11 @@ theorem degree_ne_one {f : ℂ → ℂ} (hf : IsEllipticFunction L f) : degree L
       (nonneg_of_toNat_neg_untopD_eq_zero (hrest x hx))
 
 /- English proof (translation)
-Establish `hP : IsEllipticFunction L ℘[L]` using `isEllipticFunction_weierstrassP`. Establish `h0 : (0 : Torus L) = Torus.mk L 0` using `(QuotientAddGroup.mk_zero _).symm`. Rewrite using `[degree, finsum_eq_single _ (0 : Torus L) ?_]`. Rewrite using `[h0, torusOrder_mk hP]`. Establish `h2 : meromorphicOrderAt ℘[L] 0 = ((-2 : ℤ) : WithTop ℤ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[L.order_weierstrassP 0 (zero_mem _)]`. Evaluate the numerical expressions. Rewrite using `[h2, WithTop.untopD_coe]`. Both sides reduce to the same expression. Introduce `x hx`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨z, rfl⟩` from `Torus.mk_surjective L x`. Establish `hz : z ∉ L.lattice` using `fun h ↦ hx (by`. Rewrite using `[h0]`. Conclude with `(Torus.mk_eq_mk_iff L).2 (by simpa using h))`. Rewrite using `[torusOrder_mk hP]`.
-
-Conclude with `toNat_neg_untopD_eq_zero_of_nonneg (L.analyticOnNhd_weierstrassP z hz).meromorphicOrderAt_nonneg`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem degree_weierstrassP : degree L ℘[L] = 2 := by
   have hP : IsEllipticFunction L ℘[L] := isEllipticFunction_weierstrassP

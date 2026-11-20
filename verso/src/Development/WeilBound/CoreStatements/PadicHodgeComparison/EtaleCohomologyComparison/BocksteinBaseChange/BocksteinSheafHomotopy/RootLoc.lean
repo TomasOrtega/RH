@@ -12,7 +12,7 @@ namespace CrystallineSemistableComparison.KummerTwistLemmas
 open GlobalTheory.EtC
 
 /- English proof (translation)
-The claim follows from `| 0 => by simp | a + 1 => by rw [pow_succ', expand_mul, cyc_pow p b hp hb a, cyclotomic_expand_eq_cyclotomic hp (dvd_pow_self p (by omega : a + b ≠ 0))] congr 1 rw [← pow_succ] congr 1 omega`.
+A detailed English derivation is pending.
 -/
 theorem cyc_pow (p b : ℕ) (hp : p.Prime) (hb : 0 < b) :
     ∀ a : ℕ, expand ℤ (p ^ a) (cyclotomic (p ^ b) ℤ) = cyclotomic (p ^ (a + b)) ℤ
@@ -26,15 +26,13 @@ theorem cyc_pow (p b : ℕ) (hp : p.Prime) (hb : 0 < b) :
     omega
 
 /- English proof (translation)
-Establish `hp : p.Prime` using `Fact.out`. Establish `hpU : IsUnit (p : Γ(U, ⊤))`. Establish `h` using `ξ.2.1`. Rewrite `h` using `[Nat.cast_pow]`. Conclude with `(isUnit_pow_iff hb.ne').1 h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hξ1 : ξ.1 ^ (p ^ b) = 1`. Take `⟨h, hh⟩` from `cyclotomic.dvd_X_pow_sub_one (p ^ b) ℤ`. Use `congrArg (aeval ξ.1) hh` as an intermediate fact. Rewrite `this` using `[map_mul, ξ.2.2, zero_mul, map_sub, map_pow, aeval_X, map_one, sub_eq_zero]`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hξu : IsUnit ξ.1`. Use `isUnit_iff_exists_inv.2 ⟨ξ.1 ^ (p ^ b - 1), ?_⟩` and prove the remaining obligations. Rewrite using `[← pow_succ', Nat.sub_add_cancel (Nat.one_le_iff_ne_zero.2 (pow_ne_zero _ hp.ne_zero)), hξ1]`. Take `⟨S, hS, hP⟩` from `kumLoc U (p ^ a) hξu.unit (by rw [Nat.cast_pow]; exact hpU.pow _)`. Use `⟨S, hS, fun V g hg => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨v, hv⟩` from `hP V g hg`. Rewrite `hv` using `[IsUnit.unit_spec]`. Establish `hpV : IsUnit (p : Γ(V, ⊤))` using `by simpa using hpU.map g.appTop.hom`. Use `⟨⟨v, by rw [Nat.cast_pow]; exact hpV.pow _, ?_⟩, hv⟩` and prove the remaining obligations. Rewrite using `[← cyc_pow p b hp hb a, expand_aeval, hv]`.
-
-Conclude with `(Prim.map g.appTop.hom ξ).2.2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rootLoc (p a b : ℕ) [Fact p.Prime] (hb : 0 < b) (U : Scheme.{0}) (ξ : Prim (p ^ b) Γ(U, ⊤)) :
     Loc U fun V g => ∃ ζ : Prim (p ^ (a + b)) Γ(V, ⊤), ζ.1 ^ (p ^ a) = g.appTop.hom ξ.1 := by

@@ -7,7 +7,7 @@ open NumberField IsDedekindDomain ReciprocityTheory.Aut Formalism.AUTREP Formali
 attribute [local instance] GlobalTheory.TypeRec.factG Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `g _ n` and use `GlobalTheory.GLp.red_surjective g n`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.GLp.reduction_GL_surjective : ∀ (g : ℕ) [Fact g.Prime] (n : ℕ), Function.Surjective (GlobalTheory.GLp.red g n) :=
   fun g _ n => GlobalTheory.GLp.red_surjective g n

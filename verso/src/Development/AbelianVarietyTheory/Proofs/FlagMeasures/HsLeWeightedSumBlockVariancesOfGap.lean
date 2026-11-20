@@ -5,9 +5,9 @@ open Matrix Finset Formalism.MainNotions.S Formalism.REAL Formalism.QuantumDeter
 namespace GlobalTheory.GapSum
 
 /- English proof (translation)
-Establish `h` using `congrFun (congrFun hY.2 a) b`. Simplify using `only [Jm, Matrix.mul_diagonal, Matrix.neg_apply, Matrix.diagonal_mul, hab] at h`. Distinguish the cases in `hb : ε b = true`. Simplify using `only [hb, if_true] at h`. Take the linear combination `h / 2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Simplify using `only [hb] at h`. Simplify using `only [Bool.false_eq_true, if_false] at h`. Take the linear combination `-h / 2`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem inP_apply_eq_zero {n : ℕ} {ε : Fin n → Bool} {Y : Matrix (Fin n) (Fin n) ℂ}
     (hY : inP ε Y) {a b : Fin n} (hab : ε a = ε b) : Y a b = 0 := by
@@ -21,9 +21,9 @@ theorem inP_apply_eq_zero {n : ℕ} {ε : Fin n → Bool} {Y : Matrix (Fin n) (F
     linear_combination -h / 2
 
 /- English proof (translation)
-Establish `h` using `congrFun (congrFun hY.1 a) b`. Simplify using `only [Jm, Matrix.mul_diagonal, Matrix.add_apply, Matrix.diagonal_mul, Matrix.conjTranspose_apply, Matrix.zero_apply] at h`. Establish `h2` using `congrArg norm (eq_neg_of_add_eq_zero_left h)`. Rewrite `h2` using `[norm_neg, norm_mul, norm_mul, norm_star]`. Establish `e : ∀ c : Fin n, ‖(if ε c = true then (1 : ℂ) else -1)‖ = 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Apply the tactic sequence `intro c; split_ifs <;> simp`. Rewrite `h2` using `[e, e]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem inP_norm_symm {n : ℕ} {ε : Fin n → Bool} {Y : Matrix (Fin n) (Fin n) ℂ}
     (hY : inP ε Y) (a b : Fin n) : ‖Y a b‖ = ‖Y b a‖ := by
@@ -38,11 +38,11 @@ theorem inP_norm_symm {n : ℕ} {ε : Fin n → Bool} {Y : Matrix (Fin n) (Fin n
   linarith
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_filter]`. Establish `hf : (range m).filter (fun i => i + 1 ≤ a ∧ b < i + 1) = Finset.Ico b a`. Use extensionality with `i`. Simplify using `only [mem_filter, mem_range, mem_Ico]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[hf]`. Use `split_ifs with hba`. Establish `hle : b ≤ a` using `hba.le clear hf ha hba`. Proceed by induction on `a, hle using Nat.le_induction with`. Consider the case `base => simp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `succ k hk ih => rw [Finset.sum_Ico_succ_top hk, ih]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.Ico_eq_empty hba, Finset.sum_empty]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem telescope (L : ℕ → ℝ) (m a b : ℕ) (ha : a ≤ m) :
     ∑ i ∈ range m, (if i + 1 ≤ a ∧ b < i + 1 then L i - L (i + 1) + 1 else 0) =
@@ -60,11 +60,11 @@ theorem telescope (L : ℕ → ℝ) (m a b : ℕ) (ha : a ≤ m) :
   · rw [Finset.Ico_eq_empty hba, Finset.sum_empty]
 
 /- English proof (translation)
-Establish `h1 : ∑ a, ∑ b, (if b < a then N a b else 0) = ∑ a, ∑ b, if a < b then N a b else 0`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by rw [hs]`. Rewrite using `[two_mul]`. Use `nth_rewrite 2 [h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Break down `lt_trichotomy a b with h | h | h` into its components or cases.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Simplify using `[h, h.not_gt]`. Substitute `h` using the available equality. Simplify using `[h0]`. Simplify using `[h, h.not_gt]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_symm_half {n : ℕ} (N : Fin n → Fin n → ℝ) (hs : ∀ a b, N a b = N b a)
     (h0 : ∀ a, N a a = 0) :
@@ -84,17 +84,17 @@ theorem sum_symm_half {n : ℕ} (N : Fin n → Fin n → ℝ) (hs : ∀ a b, N a
   · simp [h, h.not_gt]
 
 /- English proof (translation)
-Introduce `n ε lam h Y hanti hgap hY`. Set `L : ℕ → ℝ` to `fun k => if hk : k < n then lam ⟨k, hk⟩ else 0`. Establish `hL : ∀ a : Fin n, L a.val = lam a` using `fun a => by simp [L]`. Establish `hR : (∑ i : Fin (n - 1), (lam ⟨i.val, by omega⟩ - lam ⟨i.val + 1, by omega⟩ + 1) * ∑ a : Fin n, ∑ b : Fin n, if i.val + 1 ≤ a.val ∧ b.val < i.val + 1 then ‖Y a b‖ ^ 2 else 0) = ∑ a : Fin n, ∑ b : Fin n, (if b.val < a.val then lam b - lam a + ((a.val : ℝ) - b.val) else 0) * ‖Y a b …`. Simplify using `only [Finset.mul_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← hL a, ← hL b, ← telescope L (n - 1) a b (by omega), Finset.sum_mul, ← Fin.sum_univ_eq_sum_range (fun i => (if i + 1 ≤ a.val ∧ b.val < i + 1 then L i - L (i + 1) + 1 else 0) * ‖Y a b‖ ^ 2) (n - 1)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← hL ⟨i.val, by omega⟩, ← hL ⟨i.val + 1, by omega⟩]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[hR, hs, sum_symm_half (fun a b => ‖Y a b‖ ^ 2) (fun a b => by simp only [inP_norm_symm hY a b]) (fun a => by simp [inP_apply_eq_zero hY (rfl : ε a = ε a)])]`. Rewrite using `[show ∀ S : ℝ, h * (2 * S) / 2 = h * S from fun S => by ring, Finset.mul_sum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `Finset.sum_le_sum fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_le_sum fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `hba : b < a`. Establish `hba' : b.val < a.val` using `hba`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[if_pos hba, if_pos hba']`. Distinguish the cases in `he : ε a = ε b`. Simplify using `[inP_apply_eq_zero hY he]`. Establish `h1` using `hgap a b he`. Establish `h2` using `hanti hba`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (b.val : ℝ) < a.val` using `by exact_mod_cast hba'`. Rewrite `h1` using `[abs_of_neg (by linarith)]`. Conclude with `mul_le_mul_of_nonneg_right (by linarith) (by positivity)`. Establish `hba' : ¬ b.val < a.val` using `hba`. Simplify using `[hba, hba']`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gap_mul_hs_le : ∀ (n : ℕ) (ε : Fin n → Bool) (lam : Fin n → ℝ) (h : ℝ) (Y : Matrix (Fin n) (Fin n) ℂ), StrictAnti lam → GapAtLeast ε lam h → inP ε Y → h * hs Y / 2 ≤ ∑ i : Fin (n - 1), (lam ⟨i.val, by omega⟩ - lam ⟨i.val + 1, by omega⟩ + 1) * ∑ a : Fin n, ∑ b : Fin n, if i.val + 1 ≤ a.val ∧ b.val < i.val + 1 then ‖Y a b‖ ^ 2 else 0 := by
   intro n ε lam h Y hanti hgap hY

@@ -15,11 +15,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.LiftRows
 
 /- English proof (translation)
-Introduce `hGV eps heps`. Take `⟨x₀, hx₀⟩` from `hGV.2 eps heps`. Use `⟨x₀, ?_⟩` and prove the remaining obligations. Introduce `D L hP heps' hxL hSz G _ _ Pl0 T A Ks _ _ _ R F hGiv b`. Establish `hTie : GlobalTheory.GLq.ESerTie D`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `k`. Take `⟨LD, hT, hE, _⟩` from `hGiv.types k`. Conclude with `⟨LD, hT, hE⟩`. Take `⟨kap, lam, hScal⟩` from `Formalism.IndefR.Links.scal_exists (F := F) R`. Establish `hSet : GlobalTheory.IndefiniteRowSideFullHecke.DegreeClassification.HidaSetting (R.upd6 kap lam) F` using `{ lev := hGiv.core.lev grp := { hGiv.core.grp with } fam := { hGiv.core.fam with } models := { hGiv.core.models with } chain := Formalism.IndefR.Links.RealDat.chain_of_scalar_update hGiv.core.chain kap lam thP := Formalism.IndefR.Links.RealDat.theta_props_of_scalar_update hGiv.co …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨i, hi⟩` from `GlobalTheory.IndefiniteRowSideFullHecke.DegreeClassification.exists_last D`. Establish `hShare` using `hx₀ D L hP heps' hxL hSz hTie G Pl0 T A Ks (R.upd6 kap lam) F hSet i hi b`. Conclude with `⟨i, GlobalTheory.IndefiniteRowSideFullHecke.DegreeClassification.GoodShare.ne_bot (R.upd6 kap lam) F hShare⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem goodForms_definite_exist : GlobalTheory.IndefiniteRowSideFullHecke.DegreeClassification.GoodVectorsDefinite → ∀ eps : ℝ, 0 < eps → ∃ x₀ : ℝ, ∀ (D : D7) (L : SizeData₂ D) (_ : ParameterChoice' D L), L.sc.eps = eps → x₀ ≤ L.sc.x → Formalism.MainNotions.SizesAt L → ∀ {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), Given R F → ∀ b, ∃ i, R.Wat i (sg0 D A) (R.levL F b (sg0 D A)) ≠ ⊥ := by
   intro hGV eps heps

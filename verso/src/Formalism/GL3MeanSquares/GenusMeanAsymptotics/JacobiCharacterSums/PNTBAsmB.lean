@@ -25,7 +25,7 @@ theorem mainPsi_eq {M : ℕ} (e : Option (DirichletCharacter ℂ M × ℝ)) (χ 
     mainPsi e χ y = (if χ = 1 then (y : ℂ) else 0) - excT e χ y := rfl
 
 /- English proof (translation)
-Break down `e with _ | ⟨χ₁, β₁⟩` into its components or cases. Conclude with `le_rfl`. Apply the tactic sequence `simp only [excI]; split_ifs <;> norm_num`.
+Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem excI_nonneg {M : ℕ} (e : Option (DirichletCharacter ℂ M × ℝ)) (χ : DirichletCharacter ℂ M) :
     0 ≤ excI e χ := by
@@ -34,7 +34,7 @@ theorem excI_nonneg {M : ℕ} (e : Option (DirichletCharacter ℂ M × ℝ)) (χ
   · simp only [excI]; split_ifs <;> norm_num
 
 /- English proof (translation)
-Break down `e with _ | ⟨χ₁, β₁⟩` into its components or cases. Simplify using `[excI]`. Establish `h : (∑ χ : DirichletCharacter ℂ M, excI (some (χ₁, β₁)) χ) = excI (some (χ₁, β₁)) χ₁` using `Finset.sum_eq_single χ₁ (fun b _ hb => if_neg hb) (fun h => absurd (Finset.mem_univ _) h)`. Rewrite using `[h]`. Conclude with `(if_pos rfl).le`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_excI_le {M : ℕ} [NeZero M] (e : Option (DirichletCharacter ℂ M × ℝ)) :
     ∑ χ : DirichletCharacter ℂ M, excI e χ ≤ 1 := by
@@ -46,7 +46,7 @@ theorem sum_excI_le {M : ℕ} [NeZero M] (e : Option (DirichletCharacter ℂ M �
     exact (if_pos rfl).le
 
 /- English proof (translation)
-Break down `e with _ | ⟨χ₁, β₁⟩` into its components or cases. Simplify using `[excW]`. Apply the tactic sequence `simp only [excW]; split_ifs <;> norm_num`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem excW_le_one {M : ℕ} (e : Option (DirichletCharacter ℂ M × ℝ)) (χ : DirichletCharacter ℂ M) (ρ : ℂ) :
     excW e χ ρ ≤ 1 := by
@@ -55,7 +55,7 @@ theorem excW_le_one {M : ℕ} (e : Option (DirichletCharacter ℂ M × ℝ)) (χ
   · simp only [excW]; split_ifs <;> norm_num
 
 /- English proof (translation)
-Rewrite using `[Finset.card_univ, ← Nat.card_eq_fintype_card, DirichletCharacter.card_eq_totient_of_hasEnoughRootsOfUnity ℂ M]`. Conclude with `Nat.totient_le M` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_char_le (M : ℕ) [NeZero M] :
     ((Finset.univ : Finset (DirichletCharacter ℂ M)).card : ℝ) ≤ M := by
@@ -64,11 +64,11 @@ theorem card_char_le (M : ℕ) [NeZero M] :
   exact_mod_cast Nat.totient_le M
 
 /- English proof (translation)
-Break down `e with _ | ⟨χ₁, β₁⟩` into its components or cases. Simplify using `[excW, excI]`. Simplify using `only [excW, excI]`. Distinguish the cases in `h : χ = χ₁`. Simplify using `only [h, true_and, if_true]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Establish `: ∀ ρ ∈ Z, (((if ρ = (β₁ : ℂ) then 1 else 0 : ℕ) : ℝ)) * y ^ (ρ.re - 1) = if ρ = (β₁ : ℂ) then y ^ (ρ.re - 1) else 0`. Apply the tactic sequence `intro ρ _; split_ifs <;> simp`. Rewrite using `[Finset.sum_congr rfl this, Finset.sum_ite_eq']`. Use `split_ifs with hm`. Conclude with `Real.rpow_le_one_of_one_le_of_nonpos hy (by linarith [hZ _ hm])`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Simplify using the standard rewrite rules.
 
-Evaluate the numerical expressions. Simplify using `[h]`.
+A detailed English derivation is pending.
 -/
 theorem sum_excW_le {M : ℕ} (e : Option (DirichletCharacter ℂ M × ℝ)) (χ : DirichletCharacter ℂ M)
     (Z : Finset ℂ) (y : ℝ) (hy : 1 ≤ y) (hZ : ∀ ρ ∈ Z, ρ.re < 1) :
@@ -88,19 +88,19 @@ theorem sum_excW_le {M : ℕ} (e : Option (DirichletCharacter ℂ M × ℝ)) (χ
     · simp [h]
 
 /- English proof (translation)
-Break down `e with _ | ⟨χ₁, β₁⟩` into its components or cases. Simplify using `[excW, excI, excT]`. Take `⟨-, hne, hz, hlo, hhi⟩` from `he _ rfl`. Simplify using `only at hne hz hlo hhi`. Simplify using `only [excW, excI, excT]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h : χ = χ₁`. Substitute `h` using the available equality. Simplify using `only [true_and, if_true]`. Establish `: ∀ ρ ∈ Z, (((if ρ = (β₁ : ℂ) then 1 else 0 : ℕ) : ℂ)) * (y : ℂ) ^ ρ / ρ = if ρ = (β₁ : ℂ) then (y : ℂ) ^ ρ / ρ else 0`. Apply the tactic sequence `intro ρ _; split_ifs <;> simp`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[Finset.sum_congr rfl this, Finset.sum_ite_eq']`. Establish `hy0 : 0 < y` using `by linarith`. Use `split_ifs with hm`. Simplify using `only [sub_self, norm_zero, one_mul]`. Check the signs of the components of the expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Establish `hb : β₁ < 1 - κ / 2`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Conclude with `hm (hZ _ ⟨Or.inl hne, hz⟩ (by simpa using hcon) (by simpa using hT))`. Establish `hl : 1 ≤ Real.log M`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[Real.le_log_iff_exp_le (by positivity)]`. Establish `: (3 : ℝ) ≤ M` using `by exact_mod_cast hM`. Combine the linear relations using `[Real.exp_one_lt_d9]`. Establish `hb2 : 1 / 2 ≤ β₁`. Establish `: 1 / (8 * Real.log M) ≤ 1 / 8`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Apply `one_div_le_one_div_of_le (by norm_num); linarith` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[sub_zero, one_mul, norm_div, Complex.norm_cpow_eq_rpow_re_of_pos hy0, Complex.ofReal_re, Complex.norm_real, Real.norm_of_nonneg (by linarith)]`. Establish `h1 : y ^ β₁ ≤ y ^ (1 - κ / 2)` using `Real.rpow_le_rpow_of_exponent_le hy hb.le`. Establish `h2 : y ^ (1 - κ / 2) = y * y ^ (-(κ / 2))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[sub_eq_add_neg, Real.rpow_add hy0, Real.rpow_one]`. Rewrite using `[div_le_iff₀ (by linarith)]`. Establish `h3 : 0 ≤ y * y ^ (-(κ / 2))` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Simplify using `[h]`.
+Use the polynomial consequences of the given equalities and inequalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem excT_sub_le {M : ℕ} [NeZero M] (hM : 3 ≤ M) (e : Option (DirichletCharacter ℂ M × ℝ))
     (he : ∀ p, e = some p → IsExcPair p.1 p.2) (χ : DirichletCharacter ℂ M)
@@ -145,19 +145,19 @@ theorem excT_sub_le {M : ℕ} [NeZero M] (hM : 3 ≤ M) (e : Option (DirichletCh
     · simp [h]
 
 /- English proof (translation)
-Establish `hy0 : 0 < y` using `by linarith`. Establish `e1 : psiChi χ y - mainPsi e χ y = (psiChi χ y - (if χ = 1 then (y : ℂ) else 0) + ∑ ρ ∈ Z, (m ρ : ℂ) * (y : ℂ) ^ ρ / ρ) - ∑ ρ ∈ Z, ((m ρ : ℂ) - (excW e χ ρ : ℂ)) * (y : ℂ) ^ ρ / ρ + (excT e χ y - ∑ ρ ∈ Z, (excW e χ ρ : ℂ) * (y : ℂ) ^ ρ / ρ)`. Rewrite using `[mainPsi_eq]`. Establish `: ∑ ρ ∈ Z, ((m ρ : ℂ) - (excW e χ ρ : ℂ)) * (y : ℂ) ^ ρ / ρ = ∑ ρ ∈ Z, (m ρ : ℂ) * (y : ℂ) ^ ρ / ρ - ∑ ρ ∈ Z, (excW e χ ρ : ℂ) * (y : ℂ) ^ ρ / ρ`. Rewrite using `[← Finset.sum_sub_distrib]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl (fun ρ _ => by ring)`. Rewrite using `[this]`. Distinguish the cases in `hχ : χ = 1`. Simplify using `only [if_pos hχ]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Simplify using `only [if_neg hχ]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : ‖∑ ρ ∈ Z, ((m ρ : ℂ) - (excW e χ ρ : ℂ)) * (y : ℂ) ^ ρ / ρ‖ ≤ 2 * y * ∑ ρ ∈ Z, ((m ρ : ℝ) - (excW e χ ρ : ℝ)) * y ^ (ρ.re - 1)`. Rewrite using `[Finset.mul_sum]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum ?_)` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ρ hρ`. Establish `hw : (0 : ℝ) ≤ (m ρ : ℝ) - (excW e χ ρ : ℝ)`. Establish `: ((excW e χ ρ : ℕ) : ℝ) ≤ (m ρ : ℝ)` using `by exact_mod_cast (excW_le_one e χ ρ).trans (hm ρ hρ)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hn : ‖(m ρ : ℂ) - (excW e χ ρ : ℂ)‖ = (m ρ : ℝ) - (excW e χ ρ : ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (m ρ : ℂ) - (excW e χ ρ : ℂ) = (((m ρ : ℝ) - (excW e χ ρ : ℝ) : ℝ) : ℂ)` using `by push_cast; rfl`. Rewrite using `[this, Complex.norm_real, Real.norm_of_nonneg hw]`. Establish `hρn : 1 / 2 ≤ ‖ρ‖` using `(hre ρ hρ).trans ((le_abs_self _).trans (Complex.abs_re_le_norm ρ))`. Rewrite using `[norm_div, norm_mul, hn, Complex.norm_cpow_eq_rpow_re_of_pos hy0]`. Establish `h3 : y ^ ρ.re = y * y ^ (ρ.re - 1)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Real.rpow_sub hy0, Real.rpow_one]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[div_le_iff₀ (by linarith), h3]`. Establish `h4 : 0 ≤ ((m ρ : ℝ) - (excW e χ ρ : ℝ)) * (y * y ^ (ρ.re - 1))` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1]`. Use `(norm_add_le _ _).trans (add_le_add ((norm_sub_le _ _).trans (add_le_add hR h2)) ?_)` and prove the remaining obligations. Conclude with `excT_sub_le hM e he χ Z y κ T hy hT hZ`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem one_char {M : ℕ} [NeZero M] (hM : 3 ≤ M) (e : Option (DirichletCharacter ℂ M × ℝ))
     (he : ∀ p, e = some p → IsExcPair p.1 p.2) (χ : DirichletCharacter ℂ M)

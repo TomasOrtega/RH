@@ -3,11 +3,11 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨n, π, hπ⟩` from `Module.Finite.exists_fin' ℤ_[l] N`. Establish `hq` using `IsModuleTopology.isQuotientMap_of_surjective (R := ℤ_[l]) hπ`. Rewrite using `[← hq.isClosed_preimage]`. Take `⟨m, φ, hφ⟩` from `Module.Finite.exists_fin' ℤ_[l] (M.comap π)`. Establish `hc : Continuous (fun x => ((φ x : M.comap π) : Fin n → ℤ_[l]))` using `IsModuleTopology.continuous_of_linearMap ((M.comap π).subtype ∘ₗ φ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hrange : Set.range (fun x => ((φ x : M.comap π) : Fin n → ℤ_[l])) = π ⁻¹' (M : Set N)`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`. Conclude with `(φ x).2`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hy`. Take `⟨x, hx⟩` from `hφ ⟨y, hy⟩`. Conclude with `⟨x, by simp [hx]⟩`. Rewrite using `[← hrange]`. Conclude with `(isCompact_range hc).isClosed`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isClosed_submodule_padicInt_finite (l : ℕ) [Fact l.Prime] {N : Type} [AddCommGroup N]
     [Module ℤ_[l] N] [Module.Finite ℤ_[l] N] [TopologicalSpace N] [IsModuleTopology ℤ_[l] N]
@@ -30,15 +30,13 @@ private theorem isClosed_submodule_padicInt_finite (l : ℕ) [Fact l.Prime] {N :
   exact (isCompact_range hc).isClosed
 
 /- English proof (translation)
-Use `letI : TopologicalSpace R := moduleTopology ℤ_[l] R`. Use `haveI : IsModuleTopology ℤ_[l] R := ⟨rfl⟩`. Use `haveI : IsTopologicalRing R := IsModuleTopology.isTopologicalRing ℤ_[l] R`. Establish `hcl : ∀ M : Submodule ℤ_[l] R, IsClosed (M : Set R)` using `fun M => isClosed_submodule_padicInt_finite l M`. Use `haveI : T2Space R := by`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Rewrite using `[IsTopologicalAddGroup.t2Space_iff_zero_closed]`. Simplify using `using hcl ⊥`. Use `haveI : CompactSpace R := by`. Take `⟨n, π, hπ⟩` from `Module.Finite.exists_fin' ℤ_[l] R`. Establish `hc : Continuous π` using `IsModuleTopology.continuous_of_linearMap π`.
+Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨by simpa [hπ.range_eq] using isCompact_range hc⟩`. Take `⟨E, hES, hE⟩` from `exists_idempotent_in_compact_subsemigroup (fun r => continuous_mul_right r) (closure (Set.range fun n : ℕ => b ^ (n + 1))) ⟨b ^ (0 + 1), subset_closure ⟨0, rfl⟩⟩ isClosed_closure.isCompact (by`. Introduce `x hx y hy`. Use `map_mem_closure₂ (f := fun x y : R => x * y) continuous_mul hx hy ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩ _ ⟨j, rfl⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨i + j + 1, ?_⟩` and prove the remaining obligations. Use `show b ^ (i + j + 1 + 1) = b ^ (i + 1) * b ^ (j + 1)`. Rewrite using `[← pow_add]`. Use `congr 1`. Use the proof step `omega)`.
-
-Use `⟨E, hE, fun M c h => ?_⟩` and prove the remaining obligations. Establish `hC : IsClosed {x : R | x - c ∈ M}` using `(hcl M).preimage (continuous_id.sub continuous_const)`. Conclude with `closure_minimal (by rintro _ ⟨n, rfl⟩; exact h n) hC hES`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_idempotent_sub_mem_of_pow_sub_mem (l : ℕ) [Fact l.Prime] {R : Type} [Ring R]
     [Algebra ℤ_[l] R] [Module.Finite ℤ_[l] R] (b : R) :

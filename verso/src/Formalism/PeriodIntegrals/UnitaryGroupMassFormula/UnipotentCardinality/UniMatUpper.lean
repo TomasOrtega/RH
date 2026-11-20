@@ -13,7 +13,7 @@ def uniMat (f : Pairs k → F) : Matrix (Fin k) (Fin k) F :=
   fun i j => if i = j then 1 else if h : i < j then f ⟨(i, j), h⟩ else 0
 
 /- English proof (translation)
-Introduce `i j hji`. Express the relevant statement in the definitionally equal form `j < i at hji`. Simplify using `[uniMat, ne_of_gt hji, not_lt.mpr hji.le]`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem uniMat_upper (f : Pairs k → F) : (uniMat f).IsUpperTriangular := by
   intro i j hji
@@ -21,7 +21,7 @@ theorem uniMat_upper (f : Pairs k → F) : (uniMat f).IsUpperTriangular := by
   simp [uniMat, ne_of_gt hji, not_lt.mpr hji.le]
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_of_upperTriangular (uniMat_upper f)]`. Simplify using `[uniMat]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem uniMat_det (f : Pairs k → F) : (uniMat f).det = 1 := by
   rw [Matrix.det_of_upperTriangular (uniMat_upper f)]
@@ -36,7 +36,7 @@ Both sides reduce to the same expression.
 theorem uniGL_coe (f : Pairs k → F) : ((uniGL f : GL (Fin k) F) : Matrix (Fin k) (Fin k) F) = uniMat f := rfl
 
 /- English proof (translation)
-Unfold `IsUni`. Use `⟨fun i => ?_, fun i j h => ?_⟩` and prove the remaining obligations. Simplify using `[uniGL_coe, uniMat]`. Simplify using `[uniGL_coe, uniMat, ne_of_gt h, not_lt.mpr h.le]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem isUni_uniGL (f : Pairs k → F) : IsUni k (uniGL f) := by
   unfold IsUni
@@ -66,9 +66,9 @@ noncomputable def uniEquiv : {x : GL (Fin k) F // IsUni k x} ≃ (Pairs k → F)
     simp [uniGL_coe, uniMat, h1, h]
 
 /- English proof (translation)
-Establish `hI : ∀ j : Fin k, (∑ i : Fin k, if i < j then 1 else 0) = (j : ℕ)` using `fun j => by`. Rewrite using `[← Finset.card_filter]`. Rewrite using `[show (Finset.univ.filter fun i : Fin k => i < j) = Finset.Iio j by ext i; simp]`. Conclude with `Fin.card_Iio j`. Rewrite using `[Fintype.card_subtype, Finset.card_filter, Fintype.sum_prod_type_right]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hI]`. Establish `h3 : ∑ j : Fin k, (j : ℕ) = ∑ j ∈ Finset.range k, j` using `Fin.sum_univ_eq_sum_range (fun i => i) k`. Rewrite using `[h3, Finset.sum_range_id]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_pairs (k : ℕ) : Fintype.card (Pairs k) = k * (k - 1) / 2 := by
   have hI : ∀ j : Fin k, (∑ i : Fin k, if i < j then 1 else 0) = (j : ℕ) := fun j => by
@@ -81,7 +81,7 @@ theorem card_pairs (k : ℕ) : Fintype.card (Pairs k) = k * (k - 1) / 2 := by
   rw [h3, Finset.sum_range_id]
 
 /- English proof (translation)
-Introduce `F _ _ k`. Unfold `cardU`. Rewrite using `[Nat.card_congr (uniEquiv (F := F) (k := k)), Nat.card_eq_fintype_card, Fintype.card_fun, card_pairs]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem cardUni : CardUni := by
   intro F _ _ k

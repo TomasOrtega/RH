@@ -15,13 +15,13 @@ section Jet
 variable {k r : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
 /- English proof (translation)
-Conclude with `(le_top : (j : ℕ∞) ≤ ⊤)` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem jetT_le (j : ℕ) : ((j : ℕ) : WithTop ℕ∞) ≤ ((⊤ : ℕ∞) : WithTop ℕ∞) := by
   exact_mod_cast (le_top : (j : ℕ∞) ≤ ⊤)
 
 /- English proof (translation)
-Take `⟨U, F, hU, hgU, hF, hfF, hv⟩` from `h`. Conclude with `⟨U, F, hU, hgU, hF, hfF, fun j hj => hv j (hj.trans hMN)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem jetT_mono {N M : ℕ} (hMN : M ≤ N) {f : Q.Mx k r → E} {g₀ : Q.Mx k r} (h : ZJ k r N f g₀) :
     ZJ k r M f g₀ := by
@@ -29,7 +29,7 @@ theorem jetT_mono {N M : ℕ} (hMN : M ≤ N) {f : Q.Mx k r → E} {g₀ : Q.Mx 
   exact ⟨U, F, hU, hgU, hF, hfF, fun j hj => hv j (hj.trans hMN)⟩
 
 /- English proof (translation)
-Take `⟨U, F, hU, hgU, hF, hfF, hv⟩` from `h`. Rewrite using `[hfF g₀ hgU hg₀]`. Establish `h0` using `hv 0 (Nat.zero_le _)`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem jetT_val {N : ℕ} {f : Q.Mx k r → E} {g₀ : Q.Mx k r} (hg₀ : g₀ ∈ Q.Glev k r (Fin.last r))
     (h : ZJ k r N f g₀) : f g₀ = 0 := by
@@ -40,18 +40,18 @@ theorem jetT_val {N : ℕ} {f : Q.Mx k r → E} {g₀ : Q.Mx k r} (hg₀ : g₀ 
     _ = 0 := by rw [h0]; rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Set.univ, fun _ => (0 : E), isOpen_univ, Set.mem_univ _, contDiffOn_const, fun _ _ _ => rfl, fun j _ => by rw [iteratedFDeriv_zero_fun]; rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem jetT_zero {N : ℕ} {g₀ : Q.Mx k r} : ZJ k r N (fun _ => (0 : E)) g₀ :=
   ⟨Set.univ, fun _ => (0 : E), isOpen_univ, Set.mem_univ _, contDiffOn_const, fun _ _ _ => rfl,
     fun j _ => by rw [iteratedFDeriv_zero_fun]; rfl⟩
 
 /- English proof (translation)
-Take `⟨U, F, hU, hgU, hF, hfF, hv⟩` from `h`. Take `⟨U₂, F₂, hU₂, hgU₂, hF₂, hfF₂, hv₂⟩` from `h₂`. Establish `hO : IsOpen (U ∩ U₂)` using `hU.inter hU₂`. Establish `hx : g₀ ∈ U ∩ U₂` using `⟨hgU, hgU₂⟩`. Establish `hF1 : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) F (U ∩ U₂)` using `hF.mono Set.inter_subset_left`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF2 : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) F₂ (U ∩ U₂)` using `hF₂.mono Set.inter_subset_right`. Use `⟨U ∩ U₂, fun x => F x + F₂ x, hO, hx, hF1.add hF2, ?_, ?_⟩` and prove the remaining obligations. Introduce `g hg hgl`. Simplify using `only [hfF g hg.1 hgl, hfF₂ g hg.2 hgl]`. Introduce `j hj show iteratedFDeriv ℝ j (F + F₂) g₀ = 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← iteratedFDerivWithin_of_isOpen j hO hx, iteratedFDerivWithin_add_apply ((hF1 g₀ hx).of_le (jetT_le j)) ((hF2 g₀ hx).of_le (jetT_le j)) hO.uniqueDiffOn hx, iteratedFDerivWithin_of_isOpen j hO hx, iteratedFDerivWithin_of_isOpen j hO hx, hv j hj, hv₂ j hj, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem jetT_add {N : ℕ} {f f₂ : Q.Mx k r → E} {g₀ : Q.Mx k r} (h : ZJ k r N f g₀) (h₂ : ZJ k r N f₂ g₀) :
     ZJ k r N (fun x => f x + f₂ x) g₀ := by
@@ -73,9 +73,9 @@ theorem jetT_add {N : ℕ} {f f₂ : Q.Mx k r → E} {g₀ : Q.Mx k r} (h : ZJ k
       add_zero]
 
 /- English proof (translation)
-Take `⟨U, F, hU, hgU, hF, hfF, hv⟩` from `h`. Use `⟨U, fun x => c • F x, hU, hgU, hF.const_smul c, ?_, ?_⟩` and prove the remaining obligations. Introduce `g hg hgl`. Simplify using `only [hfF g hg hgl]`. Introduce `j hj show iteratedFDeriv ℝ j (c • F) g₀ = 0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← iteratedFDerivWithin_of_isOpen j hU hgU, iteratedFDerivWithin_const_smul_apply ((hF g₀ hgU).of_le (jetT_le j)) hU.uniqueDiffOn hgU, iteratedFDerivWithin_of_isOpen j hU hgU, hv j hj, smul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem jetT_smul {N : ℕ} (c : ℂ) {f : Q.Mx k r → E} {g₀ : Q.Mx k r} (h : ZJ k r N f g₀) :
     ZJ k r N (fun x => c • f x) g₀ := by
@@ -90,7 +90,7 @@ theorem jetT_smul {N : ℕ} (c : ℂ) {f : Q.Mx k r → E} {g₀ : Q.Mx k r} (h 
       iteratedFDerivWithin_of_isOpen j hU hgU, hv j hj, smul_zero]
 
 /- English proof (translation)
-Rewrite `h` using `[iteratedFDeriv_succ_eq_comp_right, Function.comp_apply]`. Conclude with `(LinearIsometryEquiv.map_eq_zero_iff _).1 h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jetT_fderiv {D G : Type*} [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup G] [NormedSpace ℝ G]
     {F : D → G} {g₀ : D} {i : ℕ} (h : iteratedFDeriv ℝ (i + 1) F g₀ = 0) :
@@ -99,13 +99,13 @@ theorem jetT_fderiv {D G : Type*} [NormedAddCommGroup D] [NormedSpace ℝ D] [No
   exact (LinearIsometryEquiv.map_eq_zero_iff _).1 h
 
 /- English proof (translation)
-Establish `hmn : ((⊤ : ℕ∞) : WithTop ℕ∞) + 1 ≤ ((⊤ : ℕ∞) : WithTop ℕ∞)`. Rewrite using `[← WithTop.coe_one, ← WithTop.coe_add, top_add]`. Establish `hF' : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun y => fderiv ℝ F y) U` using `hF.fderiv_of_isOpen hU hmn`. Use `⟨hF'.clm_apply L.contDiff.contDiffOn, ?_⟩` and prove the remaining obligations. Introduce `j hj`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `Bl : (D →L[ℝ] G) →L[ℝ] D →L[ℝ] G` to `(ContinuousLinearMap.apply ℝ G : D →L[ℝ] (D →L[ℝ] G) →L[ℝ] G).flip`. Establish `hfun : (fun x => fderiv ℝ F x (L x)) = fun x => Bl (fderiv ℝ F x) (L x)` using `rfl`. Establish `hbd` using `Bl.norm_iteratedFDerivWithin_le_of_bilinear hF' L.contDiff.contDiffOn hU.uniqueDiffOn hgU (n := j) (jetT_le j)`. Establish `hzero : ∀ i ∈ Finset.range (j + 1), iteratedFDerivWithin ℝ i (fun y => fderiv ℝ F y) U g₀ = 0`. Introduce `i hi`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[iteratedFDerivWithin_of_isOpen i hU hgU]`. Conclude with `jetT_fderiv (hv (i + 1) (by simp at hi; omega))`. Rewrite `hbd` using `[Finset.sum_eq_zero (fun i hi => by rw [hzero i hi, norm_zero, mul_zero, zero_mul]), mul_zero]`. Establish `h0` using `norm_le_zero_iff.1 hbd`. Rewrite `h0` using `[iteratedFDerivWithin_of_isOpen j hU hgU]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hfun]`. Conclude with `h0`.
+A detailed English derivation is pending.
 -/
 theorem jetT_gen {D G : Type*} [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup G] [NormedSpace ℝ G]
     {F : D → G} {U : Set D} (hU : IsOpen U) {g₀ : D} (hgU : g₀ ∈ U)
@@ -133,9 +133,9 @@ theorem jetT_gen {D G : Type*} [NormedAddCommGroup D] [NormedSpace ℝ D] [Norme
   exact h0
 
 /- English proof (translation)
-Take `⟨U, F, hU, hgU, hF, hfF, hv⟩` from `h`. Set `L : Q.Mx k r →L[ℝ] Q.Mx k r` to `(LinearMap.mulRight ℝ X).toContinuousLinearMap`. Establish `hL : ∀ x, L x = x * X` using `fun x => rfl`. Establish `hG` using `jetT_gen hU hgU hF L N hv`. Use `⟨U, fun x => fderiv ℝ F x (L x), hU, hgU, hG.1, ?_, hG.2⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `g hg hgl`. Establish `hd : DifferentiableAt ℝ F g` using `(hF.contDiffAt (hU.mem_nhds hg)).differentiableAt (by simpa using jetT_le 1)`. Use `show RdV X f g = fderiv ℝ F g (L g)`. Rewrite using `[hL]`. Conclude with `(Formalism.FourierDecayAlt.P.Qx2.hasDeriv_ext hU hg hgl hX hd hfF).deriv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jetT_rd {N : ℕ} {f : Q.Mx k r → E} {g₀ X : Q.Mx k r}
     (hX : Q.inLieLev k r (Fin.last r) X) (h : ZJ k r (N + 1) f g₀) : ZJ k r N (RdV X f) g₀ := by
@@ -152,7 +152,7 @@ theorem jetT_rd {N : ℕ} {f : Q.Mx k r → E} {g₀ X : Q.Mx k r}
   exact (Formalism.FourierDecayAlt.P.Qx2.hasDeriv_ext hU hg hgl hX hd hfF).deriv
 
 /- English proof (translation)
-Establish `hl` using `Formalism.FourierDecayAlt.P.Qx2.hpart_lev (k := k) (r := r) (Fin.last r) a b`. Conclude with `jetT_add (jetT_rd hl.1 h) (jetT_smul Complex.I (jetT_rd hl.2 h))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem jetT_EH {N : ℕ} {f : Q.Mx k r → E} {g₀ : Q.Mx k r} (a b : Fin (Q.mdim k r (Fin.last r)))
     (h : ZJ k r (N + 1) f g₀) :
@@ -161,11 +161,9 @@ theorem jetT_EH {N : ℕ} {f : Q.Mx k r → E} {g₀ : Q.Mx k r} (a b : Fin (Q.m
   exact jetT_add (jetT_rd hl.1 h) (jetT_smul Complex.I (jetT_rd hl.2 h))
 
 /- English proof (translation)
-Distinguish the cases in `hab : Q.posL k r (Fin.last r) a = Q.posL k r (Fin.last r) b`. Establish `he : Top (Q.EH k r) u (Q.posL k r (Fin.last r) a) (Q.posL k r (Fin.last r) b) f = fun g => u • f g + Q.EH k r (Q.posL k r (Fin.last r) a) (Q.posL k r (Fin.last r) b) f g`. Use function extensionality and compare the values at `g`. Simplify using `only [Formalism.QuantumDeterminants.Top, hab, if_true]`. Rewrite using `[he]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `jetT_add (jetT_smul u (jetT_mono (Nat.le_succ N) h)) (jetT_EH a b h)`. Establish `he : Top (Q.EH k r) u (Q.posL k r (Fin.last r) a) (Q.posL k r (Fin.last r) b) f = Q.EH k r (Q.posL k r (Fin.last r) a) (Q.posL k r (Fin.last r) b) f`. Use function extensionality and compare the values at `g`. Simplify using `only [Formalism.QuantumDeterminants.Top, hab, if_false, zero_add]`. Rewrite using `[he]`.
-
-Conclude with `jetT_EH a b h`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jetT_Top {N : ℕ} {f : Q.Mx k r → E} {g₀ : Q.Mx k r} (u : ℂ) (a b : Fin (Q.mdim k r (Fin.last r)))
     (h : ZJ k r (N + 1) f g₀) :
@@ -185,11 +183,11 @@ theorem jetT_Top {N : ℕ} {f : Q.Mx k r → E} {g₀ : Q.Mx k r} (u : ℂ) (a b
     exact jetT_EH a b h
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil`. Introduce `N f h`. Simplify using `using h`. Consider the case `cons T L ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Introduce `N f h`. Simplify using `only [List.foldr_cons]`. Apply `hL T List.mem_cons_self N` to reduce the goal to its premises. Apply `ih (fun T' hT' => hL T' (List.mem_cons_of_mem _ hT')) (N + 1) f` to reduce the goal to its premises. Simplify using `only [List.length_cons] at h`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Rewrite using `[show N + 1 + L.length = N + (L.length + 1) by omega]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem jetT_foldr {g₀ : Q.Mx k r} (L : List ((Q.Mx k r → E) → (Q.Mx k r → E)))
     (hL : ∀ T ∈ L, ∀ (N : ℕ) (h : Q.Mx k r → E), ZJ k r (N + 1) h g₀ → ZJ k r N (T h) g₀) :
@@ -208,13 +206,11 @@ theorem jetT_foldr {g₀ : Q.Mx k r} (L : List ((Q.Mx k r → E) → (Q.Mx k r �
     rwa [show N + 1 + L.length = N + (L.length + 1) by omega]
 
 /- English proof (translation)
-Establish `hG : ∀ σ : Equiv.Perm (Fin t), ZJ k r N ((((Equiv.Perm.sign σ : ℤ) : ℂ) • (List.ofFn fun i : Fin t => Top (Q.EH k r) (u - ((i : ℕ) : ℂ)) ((Q.posL k r (Fin.last r) ∘ c) (σ i)) ((Q.posL k r (Fin.last r) ∘ d) i)).foldr (fun T h => T h) f)) g₀`. Introduce `σ`. Apply `jetT_smul` to reduce the goal to its premises. Apply `jetT_foldr` to reduce the goal to its premises. Introduce `T hT N' h'' h'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hT` using `[List.mem_ofFn]`. Take `⟨i, rfl⟩` from `hT`. Conclude with `jetT_Top _ (c (σ i)) (d i) h'`. Rewrite using `[List.length_ofFn]` and apply the resulting hypothesis. Establish `hsum : ∀ s : Finset (Equiv.Perm (Fin t)), ZJ k r N (∑ σ ∈ s, ((((Equiv.Perm.sign σ : ℤ) : ℂ) • (List.ofFn fun i : Fin t => Top (Q.EH k r) (u - ((i : ℕ) : ℂ)) ((Q.posL k r (Fin.last r) ∘ c) (σ i)) ((Q.posL k r (Fin.last r) ∘ d) i)).foldr (fun T h => T h) f))) g₀`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_empty]`. Conclude with `jetT_zero`. Introduce `σ s hσ ih`.
-
-Rewrite using `[Finset.sum_insert hσ]`. Conclude with `jetT_add (hG σ) ih`. Conclude with `hsum Finset.univ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jetT_qminor {N t : ℕ} {f : Q.Mx k r → E} {g₀ : Q.Mx k r} (c d : Fin t → Fin (Q.mdim k r (Fin.last r)))
     (u : ℂ) (h : ZJ k r (N + t) f g₀) :
@@ -246,7 +242,7 @@ theorem jetT_qminor {N t : ℕ} {f : Q.Mx k r → E} {g₀ : Q.Mx k r} (c d : Fi
   exact hsum Finset.univ
 
 /- English proof (translation)
-The claim follows from `jetT_val hg₀ (jetT_qminor c d u (jetT_mono (by omega) hZ : ZJ k r (0 + t) f g₀))`.
+A detailed English derivation is pending.
 -/
 theorem jetT_qminor_val {t : ℕ} {f : Q.Mx k r → E} {g₀ : Q.Mx k r} (hg₀ : g₀ ∈ Q.Glev k r (Fin.last r))
     (hZ : ZJ k r (Q.mdim k r (Fin.last r)) f g₀) (c d : Fin t → Fin (Q.mdim k r (Fin.last r))) (u : ℂ)
@@ -257,13 +253,13 @@ theorem jetT_qminor_val {t : ℕ} {f : Q.Mx k r → E} {g₀ : Q.Mx k r} (hg₀ 
 end Jet
 
 /- English proof (translation)
-Introduce `E _ _ k r z z' Y a b`. Use `⟨Q.mdim k r (Fin.last r), ?_⟩` and prove the remaining obligations. Introduce `f g₀ hg₀ hZ`. Establish `hq : ∀ {t : ℕ} (c d : Fin t → Fin (Q.mdim k r (Fin.last r))) (u : ℂ), t ≤ Q.mdim k r (Fin.last r) → qminorOp (Q.EH k r) (Q.posL k r (Fin.last r) ∘ c) (Q.posL k r (Fin.last r) ∘ d) u f g₀ = 0` using `fun c d u ht => jetT_qminor_val hg₀ hZ c d u ht`. Use `match a, b with`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `0, 0 => exact hq id id _ le_rfl`. Consider the case `0, 1`. Simplify using `only [Q.tL, Pi.neg_apply, Q.chatL, neg_eq_zero]`. Use `Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hq _ _ _ (Nat.sub_le _ _), smul_zero]`.
+Treat this case separately. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `1, 0`. Simplify using `only [Q.tL, Pi.neg_apply, Q.chatL, neg_eq_zero]`. Use `Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hq _ _ _ (Nat.sub_le _ _), smul_zero]`. Consider the case `1, 1`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [Q.tL, Pi.neg_apply, Q.chat2L, neg_eq_zero]`. Use `Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun i' _ => Finset.sum_eq_zero fun j _ => Finset.sum_eq_zero fun j' _ => ?_` and prove the remaining obligations. Use `split_ifs`. Rewrite using `[hq _ _ _ (Nat.sub_le _ _), smul_zero]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem jet_finite_order_along_level : GTCLRJetT := by
   intro E _ _ k r z z' Y a b

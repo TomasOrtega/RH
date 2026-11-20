@@ -105,7 +105,7 @@ def UnitEquivJ (ε : Fin n → Bool) (σ : Matrix (Fin n) (Fin n) ℂ → (H →
 end Diagonal
 
 /- English proof (translation)
-Unfold `Tz Formalism.QuantumDeterminants.herm negVec bvec`. Rewrite using `[Matrix.mulVec_single_one, ← Pi.single_star, star_one, single_one_dotProduct]`. Simplify using `[Formalism.QuantumDeterminants.Hpk, wI]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma Tz_negVec (k r : ℕ) : Tz k r (negVec k r) = 1 := by
   unfold Tz Formalism.QuantumDeterminants.herm negVec bvec
@@ -113,11 +113,11 @@ lemma Tz_negVec (k r : ℕ) : Tz k r (negVec k r) = 1 := by
   simp [Formalism.QuantumDeterminants.Hpk, wI]
 
 /- English proof (translation)
-Use `⟨?_, by rw [Tz_negVec]; exact one_pos, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i hi`. Unfold `negVec bvec`. Apply `Pi.single_eq_of_ne` to reduce the goal to its premises. Introduce `h`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrArg Fin.val h` as an intermediate fact. Simplify using `[wI] at this`. Use linear arithmetic over natural numbers and integers. Simplify using `[Formalism.QuantumDeterminants.UH]`. Introduce `a`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Simplify using `[Tz_negVec]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma isFrameFor_negVec (k r : ℕ) :
     inWb k r (negVec k r) ∧ 0 < Tz k r (negVec k r) ∧ IsFrameFor k r (negVec k r) 1 := by
@@ -134,19 +134,19 @@ lemma isFrameFor_negVec (k r : ℕ) :
   · simp [Tz_negVec]
 
 /- English proof (translation)
-Establish `hlow : PI.UpqRep.lowK (PI.UpqRep.allPos k) (PI.UpqRep.rhoC (PI.UpqRep.allPos k)) = 0`. Use function extensionality and compare the values at `a`. Simplify using `[PI.UpqRep.lowK, PI.UpqRep.rhoN, PI.UpqRep.allPos]`. Use `⟨inferInstance, inferInstance, ⟨⟨rfl, fun _ _ _ _ => rfl⟩, fun _ _ _ => rfl, fun _ => continuousOn_const⟩, inferInstance, fun _ _ _ _ => trivial, fun S _ _ => eq_bot_or_eq_top S, ⟨1, trivial, one_ne_zero, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `θ _`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[hlow]`. Introduce `μ v _ hv hw`. Use `⟨0, by simp, ?_⟩` and prove the remaining obligations. Establish `hμ : μ = 0`. Use function extensionality and compare the values at `a`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Assume the negation of the conclusion as `ha`. Establish `ha' : μ a ≠ 0` using `ha`. Establish `hmem : Matrix.diagonal (fun b => Complex.exp ((((Pi.single a (Real.pi / μ a) : Fin k → ℝ) b : ℝ) : ℂ) * Complex.I)) ∈ PI.UpqRep.Kset (PI.UpqRep.allPos k)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose, Matrix.diagonal_conjTranspose, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `b`. Rewrite using `[Pi.star_apply, Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq, Complex.norm_exp_ofReal_mul_I]`. Evaluate the numerical expressions. Simplify using `[PI.UpqRep.Jm, PI.UpqRep.allPos]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Simplify using the standard rewrite rules.
 
-Establish `h` using `hw _ hmem`. Establish `hs : ∑ b, μ b * (Pi.single a (Real.pi / μ a) : Fin k → ℝ) b = Real.pi`. Rewrite using `[Finset.sum_eq_single a]`. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Introduce `b _ hb`. Simplify using `[Pi.single_eq_of_ne hb]`. Simplify using the standard rewrite rules. Rewrite `h` using `[hs, Complex.exp_pi_mul_I]`. Apply `hv` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h2 : v = -v` using `by simpa using h`. Take the linear combination `h2 / 2`. Simplify using `[hlow, hμ]`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules.
 -/
 lemma isHCTypeU_trivial (k : ℕ) :
     IsHCTypeU k (PI.UpqRep.rhoC (PI.UpqRep.allPos k))
@@ -190,7 +190,7 @@ lemma isHCTypeU_trivial (k : ℕ) :
     simp [hlow, hμ]
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `isFrameFor_negVec 1 r`. Use `⟨h1, h2, ⟨Subsingleton.strictAnti _, fun a => ⟨0, ?_⟩⟩, 1, h3, isHCTypeU_trivial 1⟩` and prove the remaining obligations. Take `rfl : a = 0` from `Subsingleton.elim _ _`. Simplify using `[PI.UpqRep.rhoC]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 example (r : ℕ) : IsHCTypeW 1 r (negVec 1 r) (PI.UpqRep.rhoC (PI.UpqRep.allPos 1))
     (fun _ => (1 : ℂ →L[ℂ] ℂ)) := by

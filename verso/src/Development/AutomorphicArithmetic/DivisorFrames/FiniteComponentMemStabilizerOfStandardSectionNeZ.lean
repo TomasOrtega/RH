@@ -7,9 +7,9 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions Form
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `i j`. Set `A' : Matrix (Fin n) (Fin n) O` to `fun i j => ⟨A i j, hA i j⟩`. Establish `eA : A.adjugate = O.subtype.mapMatrix A'.adjugate`. Rewrite using `[show A = O.subtype.mapMatrix A' from rfl]`. Conclude with `(RingHom.map_adjugate O.subtype A').symm`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eA]`. Conclude with `(A'.adjugate i j).2`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.adjugate_mem_subring_of_mem {R : Type} [CommRing R] (O : Subring R) {n : ℕ} (A : Matrix (Fin n) (Fin n) R)
     (hA : ∀ i j, A i j ∈ O) : ∀ i j, A.adjugate i j ∈ O := by
@@ -22,9 +22,9 @@ private theorem UpperTheory.adjugate_mem_subring_of_mem {R : Type} [CommRing R] 
   exact (A'.adjugate i j).2
 
 /- English proof (translation)
-Introduce `i j`. Establish `h0 : yi * ε * A.det = ε`. Substitute `hy` using the available equality. Take the linear combination `ε * hyy + (yi - yi * A.det) * hε`. Establish `h1 : ε • M = (yi * ε) • (A.adjugate * (A * M))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.mul_assoc, Matrix.adjugate_mul, Matrix.smul_mul, Matrix.one_mul, smul_smul, h0]`. Rewrite using `[h1, Matrix.smul_apply, smul_eq_mul, Matrix.mul_apply]`. Conclude with `mul_mem (mul_mem hyi hεO) (Subring.sum_mem _ fun l _ => mul_mem (UpperTheory.adjugate_mem_subring_of_mem O A hA i l) (hB l j))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.idempotent_smul_integral {R : Type} [CommRing R] (O : Subring R) {n : ℕ} (A M : Matrix (Fin n) (Fin n) R)
     (hA : ∀ i j, A i j ∈ O) (hB : ∀ i j, (A * M) i j ∈ O) (ε y yi : R) (hε : ε * ε = ε) (hεO : ε ∈ O) (hyi : yi ∈ O)
@@ -40,7 +40,7 @@ private theorem UpperTheory.idempotent_smul_integral {R : Type} [CommRing R] (O 
     (Subring.sum_mem _ fun l _ => mul_mem (UpperTheory.adjugate_mem_subring_of_mem O A hA i l) (hB l j))
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [topL, Matrix.mul_apply]`. Distinguish the cases in `hi : i.1 < b`. Simplify using `[hi]`. Simplify using `[hi]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem UpperTheory.upperRows_mul_right {D : D7} {b a : ℕ} (N : Matrix (Fin b) (Fin a) (Lev.EAf D))
     (κ : Matrix (Fin a) (Fin a) (Lev.EAf D)) : topL a (N * κ) = topL a N * κ := by
@@ -51,7 +51,7 @@ private theorem UpperTheory.upperRows_mul_right {D : D7} {b a : ℕ} (N : Matrix
   · simp [hi]
 
 /- English proof (translation)
-Introduce `i j`. Simplify using `only [topL]`. Use `split_ifs`. Conclude with `hN _ _`. Conclude with `zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.topL_integral {D : D7} {b a : ℕ} (N : Matrix (Fin b) (Fin a) (Lev.EAf D))
     (hN : IsIntM N) : IsIntM (topL a N) := by
@@ -62,7 +62,7 @@ private theorem UpperTheory.topL_integral {D : D7} {b a : ℕ} (N : Matrix (Fin 
   · exact zero_mem _
 
 /- English proof (translation)
-Establish `hε : toEAf D e * toEAf D e = toEAf D e` using `by rw [← map_mul, GlobalTheory.PlaceDatum.idemSum_mul_self he]`. Establish `hE` using `StandardFirstTheta.GlobalTheory.CompanionTheory.StdFstTheta.toEAf_mem he`. Establish `hyy : toEAf D (y : AE D) * toEAf D ((y⁻¹ : (AE D)ˣ) : AE D) = 1`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Conclude with `UpperTheory.idempotent_smul_integral _ A M hA hB _ _ _ hε hE hy.2.2 hy.2.1 hyy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.idempotent_unit_det_integral {D : D7} {e : AE D} {Z : Finset (Formalism.L2.DIV.Pl D.host.E)} (he : IsIdemSum e Z) {n : ℕ}
     (A M : Matrix (Fin n) (Fin n) (Lev.EAf D)) (hA : IsIntM A) (hB : IsIntM (A * M)) (y : (AE D)ˣ)
@@ -74,9 +74,7 @@ private theorem UpperTheory.idempotent_unit_det_integral {D : D7} {e : AE D} {Z 
   exact UpperTheory.idempotent_smul_integral _ A M hA hB _ _ _ hε hE hy.2.2 hy.2.1 hyy
 
 /- English proof (translation)
-Unfold `GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.stdFst at hx`. Use `split_ifs at hx with hc`. Use `⟨hc.2.1, ?_⟩` and prove the remaining obligations. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.unitChar at hx`. Use `split_ifs at hx with hG`.
-
-Conclude with `hG`. Conclude with `absurd rfl hx`. Conclude with `absurd rfl hx`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.standard_section_integral_unit {D : D7} (S T : HSp D) (βS : GL (Fin S.rank) (Lev.EAf D)) (βT : GL (Fin T.rank) (Lev.EAf D))
     (ν : (AE D)ˣ →* Circle) (e : AE D) (I : Ideal (𝓞 D.host.E)) (x : WO S T)
@@ -94,9 +92,9 @@ private theorem UpperTheory.standard_section_integral_unit {D : D7} (S T : HSp D
 set_option synthInstance.maxHeartbeats 200000 in
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Establish `hA` using `UpperTheory.topL_integral N hI`. Establish `hB` using `UpperTheory.topL_integral _ hI'`. Prove the components needed by the constructor for the conclusion. Use `UpperTheory.idempotent_unit_det_integral he _ _ hB ?_ y' hy'` and prove the remaining obligations. Rewrite using `[UpperTheory.upperRows_mul_right, Matrix.mul_assoc, Units.inv_mul, Matrix.mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hA`. Use `UpperTheory.idempotent_unit_det_integral he _ _ hA ?_ y hy` and prove the remaining obligations. Rewrite using `[← UpperTheory.upperRows_mul_right]`. Conclude with `hB`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.integral_unit_det_both {D : D7} {e : AE D} {Z : Finset (Formalism.L2.DIV.Pl D.host.E)} (he : IsIdemSum e Z) {m n : ℕ}
     (N : Matrix (Fin m) (Fin n) (Lev.EAf D)) (γ : GL (Fin n) (Lev.EAf D)) (hI : IsIntM N)
@@ -116,15 +114,15 @@ private theorem UpperTheory.integral_unit_det_both {D : D7} {e : AE D} {Z : Fins
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `D S T ΛS βS βT ν e Z I hsd hfr hrk hZe g hg x hx hx'`. Take `⟨hI, y, hy⟩` from `UpperTheory.standard_section_integral_unit S T βS βT ν e I x hx`. Take `⟨hI', y', hy'⟩` from `UpperTheory.standard_section_integral_unit S T βS βT ν e I _ hx'`. Establish `hu'` using `GlobalTheory.T.frameMatrix_weilPairAction_left_inv D S T βS βT g x`. Rewrite `hI'`, `hy'` using `[hu']`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨h1, h2⟩` from `UpperTheory.integral_unit_det_both hZe _ (βS⁻¹ * Lev.finE S g * βS) hI hI' y y' hy hy'`. Establish `hUA` using `GlobalTheory.LevSplit.finE_mem_UA S g`. Take `⟨h3, h4⟩` from `GlobalTheory.T.selfDualFrame_conj_integral_smul_of_integral S ΛS βS hsd hfr _ hUA _ rfl e h1 h2`. Take `⟨hεε, hεc⟩` from `GlobalTheory.T.idempotentSum_add_conj_idempotent_conj_fixed Z e hZe`. Take `⟨k, hk, hmt⟩` from `GlobalTheory.T.exists_idempotent_component_of_group_element S (GlobalTheory.LevelNbhd.finPartG S g) (e + cA D e) (GlobalTheory.LevelNbhd.finPartG_mem_GfC S g) hεε hεc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hfk` using `GlobalTheory.T.finiteEmbedding_idempotent_patch_in_frame S βS _ k (e + cA D e) hmt`. Rewrite `hfk` using `[GlobalTheory.SuppLevO.finE_finPartG]`. Take `⟨hSt, -⟩` from `GlobalTheory.T.frameIdempotentCutMatrix_mem_stabiliser_reduction S.rank βS _ _ Z e hZe h1 h2 h3 h4 hfk`. Establish `hcomp : ∀ PP ∈ Z, GlobalTheory.AdelicU.proj D.sp.cm.sig S.gram (PP.under (𝓞 D.host.F)) k = GlobalTheory.AdelicU.proj D.sp.cm.sig S.gram (PP.under (𝓞 D.host.F)) g` using `fun PP hP => by`. Rewrite using `[← GlobalTheory.SuppLevO.proj_finPartG S g]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.T.localProjection_eq_of_idempotent_patch S _ _ k _ (GlobalTheory.T.adeleTensorComponent_idempotentSum_add_conj_eq_one Z e hZe PP hP) hmt`. Establish `hkloc` using `(GlobalTheory.T.finitePart_mem_frameStabilizer_iff_local_stabilizer D S βS ΛS hfr k).1 hSt`. Use `(GlobalTheory.T.finitePart_mem_frameStabilizer_iff_local_stabilizer D S βS ΛS hfr g).2 fun v => ?_` and prove the remaining obligations. Distinguish the cases in `hv : ∃ PP ∈ Z, PP.under (𝓞 D.host.F) = v`. Take `⟨PP, hP, rfl⟩` from `hv`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hcomp PP hP]`. Conclude with `hkloc _`. Use `push_neg at hv`. Conclude with `hg v hv`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.finiteComponent_mem_stabilizer_of_standardSection_ne_zero :
     ∀ (D : D7) (S T : HSp D) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (βS : GL (Fin S.rank) (Lev.EAf D)) (βT : GL (Fin T.rank) (Lev.EAf D)) (ν : (AE D)ˣ →* Circle) (e : AE D) (Z : Finset (Formalism.L2.DIV.Pl D.host.E)) (I : Ideal (𝓞 D.host.E)),

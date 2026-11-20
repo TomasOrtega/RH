@@ -11,7 +11,7 @@ open scoped Formalism.Per
 namespace GlobalTheory.PSer
 
 /- English proof (translation)
-Unfold `lam`. Establish `h0 : ∀ n : ℤ, (l : ℂ_[l]) ^ (-n) * sh (pw (n * h + j) (0 : Fl l)) = 0`. Introduce `n`. Rewrite using `[(GlobalTheory.T.tiltFrobeniusIntegerPower_laws l).2.2.1, (GlobalTheory.T.tiltUntiltToComplexPAdic_basic_laws l).2.1, mul_zero]`. Simplify using `only [h0, tsum_zero]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem untiltFrobeniusLaurentSeries_zero (l : ℕ) [Fact l.Prime] (h j : ℕ) : lam h j (0 : Fl l) = 0 := by
   unfold lam
@@ -21,7 +21,7 @@ theorem untiltFrobeniusLaurentSeries_zero (l : ℕ) [Fact l.Prime] (h j : ℕ) :
   simp only [h0, tsum_zero]
 
 /- English proof (translation)
-Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ hc)` and prove the remaining obligations. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ha hb)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem norm_add_three_le {l : ℕ} [Fact l.Prime] (a b c : ℂ_[l]) (C : ℝ)
     (ha : ‖a‖ ≤ C) (hb : ‖b‖ ≤ C) (hc : ‖c‖ ≤ C) : ‖a + b + c‖ ≤ C := by
@@ -29,11 +29,11 @@ theorem norm_add_three_le {l : ℕ} [Fact l.Prime] (a b c : ℂ_[l]) (C : ℝ)
   exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le ha hb)
 
 /- English proof (translation)
-Establish `hC : 0 ≤ ‖(l : ℂ_[l])‖ * gam l h j r` using `mul_nonneg (norm_nonneg _) (GlobalTheory.T.untiltFrobeniusSeriesRadiusSize_laws l h j r hh hr0 hr1).2.2.1`. Proceed by induction on `m with`. Consider the case `zero`. Simplify using `only [zero_smul, Nat.cast_zero, zero_mul, sub_zero, untiltFrobeniusLaurentSeries_zero, norm_zero, (GlobalTheory.T.tiltUntiltToComplexPAdic_basic_laws l).2.1]`. Conclude with `⟨hr0, hC⟩`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Consider the case `succ m ih`. Take `⟨ih1, ih2⟩` from `ih`. Rewrite using `[succ_nsmul]`. Take `⟨hadd, hsh⟩` from `GlobalTheory.T.tiltUntilt_add_estimate_le l r (m • x) x ih1 hx`. Use `⟨hsh, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hl` using `GlobalTheory.T.untiltFrobeniusLaurentSeries_add_sub_le l h j r (m • x) x hh hr1 ih1 hx`. Establish `heq : lam h j (m • x + x) - ((m + 1 : ℕ) : ℂ_[l]) * lam h j x = (lam h j (m • x + x) - lam h j (m • x) - lam h j x) + (lam h j (m • x) - (m : ℂ_[l]) * lam h j x) + 0` using `by push_cast; ring`. Rewrite using `[heq]`. Conclude with `norm_add_three_le _ _ _ _ hl ih2 (by simpa using hC)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem untiltFrobeniusLaurentSeries_nsmul_approx (l : ℕ) [Fact l.Prime] (h j : ℕ) (r : ℝ) (x : Fl l)
     (hh : 1 ≤ h) (hr0 : 0 ≤ r) (hr1 : r < 1) (hx : ‖sh x‖ ≤ r) (m : ℕ) :
@@ -57,11 +57,11 @@ theorem untiltFrobeniusLaurentSeries_nsmul_approx (l : ℕ) [Fact l.Prime] (h j 
     exact norm_add_three_le _ _ _ _ hl ih2 (by simpa using hC)
 
 /- English proof (translation)
-Establish `hC : 0 ≤ ‖(l : ℂ_[l])‖ * gam l h j r` using `mul_nonneg (norm_nonneg _) (GlobalTheory.T.untiltFrobeniusSeriesRadiusSize_laws l h j r hh hr0 hr1).2.2.1`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.sum_empty, untiltFrobeniusLaurentSeries_zero, sub_zero, norm_zero, (GlobalTheory.T.tiltUntiltToComplexPAdic_basic_laws l).2.1]`. Conclude with `⟨hr0, hC⟩`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Consider the case `insert a s ha ih`. Take `⟨ih1, ih2⟩` from `ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha]`. Take `⟨hu1, hu2⟩` from `untiltFrobeniusLaurentSeries_nsmul_approx l h j r (x a) hh hr0 hr1 (hx a) (n a)`. Take `⟨hadd, hsh⟩` from `GlobalTheory.T.tiltUntilt_add_estimate_le l r (n a • x a) (∑ b ∈ s, n b • x b) hu1 ih1`.
+Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨hsh, ?_⟩` and prove the remaining obligations. Establish `hl` using `GlobalTheory.T.untiltFrobeniusLaurentSeries_add_sub_le l h j r (n a • x a) (∑ b ∈ s, n b • x b) hh hr1 hu1 ih1`. Establish `heq : lam h j (n a • x a + ∑ b ∈ s, n b • x b) - ((n a : ℂ_[l]) * lam h j (x a) + ∑ b ∈ s, (n b : ℂ_[l]) * lam h j (x b)) = (lam h j (n a • x a + ∑ b ∈ s, n b • x b) - lam h j (n a • x a) - lam h j (∑ b ∈ s, n b • x b)) + (lam h j (n a • x a) - (n a : ℂ_[l]) * lam h j (x a)) + (l …` using `by ring`. Rewrite using `[heq]`. Conclude with `norm_add_three_le _ _ _ _ hl hu2 ih2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem untiltFrobeniusLaurentSeries_finset_sum_approx (l : ℕ) [Fact l.Prime] (h j : ℕ) (r : ℝ) {ι : Type*} [DecidableEq ι]
     (x : ι → Fl l) (n : ι → ℕ)
@@ -90,7 +90,7 @@ theorem untiltFrobeniusLaurentSeries_finset_sum_approx (l : ℕ) [Fact l.Prime] 
     exact norm_add_three_le _ _ _ _ hl hu2 ih2
 
 /- English proof (translation)
-Introduce `l _ h j d r x n hh hr0 hr1 hx`. Conclude with `untiltFrobeniusLaurentSeries_finset_sum_approx l h j r x n hh hr0 hr1 hx Finset.univ`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lamsum : ∀ (l : ℕ) [Fact l.Prime] (h j d : ℕ) (r : ℝ) (x : Fin d → Fl l) (n : Fin d → ℕ), 1 ≤ h → 0 ≤ r → r < 1 → (∀ a, ‖sh (x a)‖ ≤ r) → ‖sh (∑ a, n a • x a)‖ ≤ r ∧ ‖lam h j (∑ a, n a • x a) - ∑ a, (n a : ℂ_[l]) * lam h j (x a)‖ ≤ ‖(l : ℂ_[l])‖ * gam l h j r := by
   intro l _ h j d r x n hh hr0 hr1 hx

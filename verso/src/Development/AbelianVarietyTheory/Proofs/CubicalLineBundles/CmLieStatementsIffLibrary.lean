@@ -13,7 +13,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.LamF
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rfl`. Consider the case `succ n ih => simp only [pnsmulPt, Formalism.L2.Pj.abelian₂.pnsmulPt, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem pnsmulPt_eq_frozen {S : Scheme.{0}} {G : Over S} [GrpObj G] {T : Over S} (n : ℕ) (x : T ⟶ G) :
     pnsmulPt n x = Formalism.L2.Pj.abelian₂.pnsmulPt n x := by
@@ -85,27 +85,27 @@ Both sides reduce to the same expression.
 theorem LamObj.toFrozen_ofFrozen (o : Formalism.L2.Pj.abelian₂.LamObj c nΨ n') : (LamObj.ofFrozen o).toFrozen = o := rfl
 
 /- English proof (translation)
-Simplify using `only [RosatiConj, Formalism.L2.Pj.abelian₂.RosatiConj, pnsmulPt_eq_frozen]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rosatiConj_iff_frozen {K : Type} [Field K] [NumberField K] (A : PolAV (Sp (𝓞 K))) (oa : A.OAct (𝓞 E)) :
     RosatiConj A oa ↔ Formalism.L2.Pj.abelian₂.RosatiConj A oa := by
   simp only [RosatiConj, Formalism.L2.Pj.abelian₂.RosatiConj, pnsmulPt_eq_frozen]
 
 /- English proof (translation)
-Simplify using `only [IsIsogSum, Formalism.L2.Pj.abelian₂.IsIsogSum, pnsmulPt_eq_frozen]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem isIsogSum_toFrozen (o : LamObj c nΨ n') : Formalism.L2.Pj.abelian₂.IsIsogSum o.toFrozen ↔ IsIsogSum o := by
   simp only [IsIsogSum, Formalism.L2.Pj.abelian₂.IsIsogSum, pnsmulPt_eq_frozen]
   rfl
 
 /- English proof (translation)
-Simplify using `only [PolClause, Formalism.L2.Pj.abelian₂.PolClause, pnsmulPt_eq_frozen]`.
+Simplify using the standard rewrite rules.
 -/
 theorem polClause_toFrozen (o : LamObj c nΨ n') : Formalism.L2.Pj.abelian₂.PolClause o.toFrozen ↔ PolClause o := by
   simp only [PolClause, Formalism.L2.Pj.abelian₂.PolClause, pnsmulPt_eq_frozen]
 
 /- English proof (translation)
-Unfold `LamObjGood Formalism.L2.Pj.abelian₂.LamObjGood`. Rewrite using `[isIsogSum_toFrozen, polClause_toFrozen, rosatiConj_iff_frozen, rosatiConj_iff_frozen, rosatiConj_iff_frozen]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem fixed_of_lambdaBundle_objectCondition (o : LamObj c nΨ n') (f : ℕ) (La : ℝ) :
     Formalism.L2.Pj.abelian₂.LamObjGood o.toFrozen f La ↔ LamObjGood o f La := by
@@ -114,7 +114,7 @@ theorem fixed_of_lambdaBundle_objectCondition (o : LamObj c nΨ n') (f : ℕ) (L
   rfl
 
 /- English proof (translation)
-The claim follows from `(fixed_of_lambdaBundle_objectCondition (LamObj.ofFrozen o) f La).symm`.
+A detailed English derivation is pending.
 -/
 theorem lambdaBundle_objectCondition_of_fixed (o : Formalism.L2.Pj.abelian₂.LamObj c nΨ n') (f : ℕ) (La : ℝ) :
     LamObjGood (LamObj.ofFrozen o) f La ↔ Formalism.L2.Pj.abelian₂.LamObjGood o f La :=
@@ -136,7 +136,7 @@ theorem lambdaBundle_objectCondition_of_fixed (o : Formalism.L2.Pj.abelian₂.La
   ℓ := L.ℓ
 
 /- English proof (translation)
-Unfold `LamLetters.IsLetter Formalism.L2.Pj.abelian₂.LamLetters.IsLetter`. Simplify using `only`. Apply the tactic sequence `cases L.src k <;> rfl`.
+Replace the relevant objects with their definitions. Simplify by unfolding definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem LamLetters.isLetter_toFrozen {o : LamObj c nΨ n'} (L : LamLetters o) (k : Fin o.xB.P.g)
     (w : epsR o.K₁ ⟶ o.xB.P.A) : L.toFrozen.IsLetter k w ↔ L.IsLetter k w := by
@@ -145,16 +145,16 @@ theorem LamLetters.isLetter_toFrozen {o : LamObj c nΨ n'} (L : LamLetters o) (k
   cases L.src k <;> rfl
 
 /- English proof (translation)
-The claim follows from `(LamLetters.isLetter_toFrozen (LamLetters.ofFrozen L) k w).symm`.
+A detailed English derivation is pending.
 -/
 theorem LamLetters.isLetter_ofFrozen {o : Formalism.L2.Pj.abelian₂.LamObj c nΨ n'} (L : Formalism.L2.Pj.abelian₂.LamLetters o)
     (k : Fin o.xB.P.g) (w : epsR o.K₁ ⟶ o.xB.P.A) : (LamLetters.ofFrozen L).IsLetter k w ↔ L.IsLetter k w :=
   (LamLetters.isLetter_toFrozen (LamLetters.ofFrozen L) k w).symm
 
 /- English proof (translation)
-Unfold `LamLetters.IsGood Formalism.L2.Pj.abelian₂.LamLetters.IsGood`. Use `and_congr Iff.rfl (and_congr (forall_congr' fun b => forall_congr' fun i => ?_) (and_congr (forall_congr' fun k => exists_congr fun w => and_congr (L.isLetter_toFrozen k w) Iff.rfl) (forall_congr' fun k => ?_)))` and prove the remaining obligations. Simplify using `only`. Apply the tactic sequence `cases L.src (L.e ⟨b, i⟩) <;> rfl`. Simplify using `only`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Apply the first step, then apply the next step to every resulting obligation. Simplify by unfolding definitions.
 
-Apply the tactic sequence `cases L.src k <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem LamLetters.isGood_toFrozen {o : LamObj c nΨ n'} (L : LamLetters o) : L.toFrozen.IsGood ↔ L.IsGood := by
   unfold LamLetters.IsGood Formalism.L2.Pj.abelian₂.LamLetters.IsGood
@@ -167,7 +167,7 @@ theorem LamLetters.isGood_toFrozen {o : LamObj c nΨ n'} (L : LamLetters o) : L.
     cases L.src k <;> rfl
 
 /- English proof (translation)
-The claim follows from `(LamLetters.isGood_toFrozen (LamLetters.ofFrozen L)).symm`.
+A detailed English derivation is pending.
 -/
 theorem LamLetters.isGood_ofFrozen {o : Formalism.L2.Pj.abelian₂.LamObj c nΨ n'} (L : Formalism.L2.Pj.abelian₂.LamLetters o) :
     (LamLetters.ofFrozen L).IsGood ↔ L.IsGood :=
@@ -175,14 +175,14 @@ theorem LamLetters.isGood_ofFrozen {o : Formalism.L2.Pj.abelian₂.LamObj c nΨ 
 
 omit [StarRing (𝓞 E)] in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h _ l c hs nΨ n' f o La ho => h l c hs nΨ n' f (LamObj.ofFrozen o) La ((lambdaBundle_objectCondition_of_fixed o f La).2 ho), fun h _ l c hs nΨ n' f o La ho => h l c hs nΨ n' f o.toFrozen La ((fixed_of_lambdaBundle_objectCondition o f La).2 ho)⟩`.
+Supply the required witnesses or components.
 -/
 theorem lambdaBundle_degree_iff (H : Host E) (x : ℝ) : LamDegSt H x ↔ Formalism.L2.Pj.abelian₂.LamDegSt H x :=
   ⟨fun h _ l c hs nΨ n' f o La ho => h l c hs nΨ n' f (LamObj.ofFrozen o) La ((lambdaBundle_objectCondition_of_fixed o f La).2 ho),
    fun h _ l c hs nΨ n' f o La ho => h l c hs nΨ n' f o.toFrozen La ((fixed_of_lambdaBundle_objectCondition o f La).2 ho)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h E _ _ _ _ H l c hs nΨ n' f o La ho L hL => h E H l c hs nΨ n' f (LamObj.ofFrozen o) La ((lambdaBundle_objectCondition_of_fixed o f La).2 ho) (LamLetters.ofFrozen L) ((LamLetters.isGood_ofFrozen L).2 hL), fun h E _ _ _ _ H l c hs nΨ n' f o La ho L hL => h E H l c hs nΨ n' f …`.
+Supply the required witnesses or components.
 -/
 theorem lambdaBundle_index_iff : LamIndSt ↔ Formalism.L2.Pj.abelian₂.LamIndSt :=
   ⟨fun h E _ _ _ _ H l c hs nΨ n' f o La ho L hL =>
@@ -192,7 +192,7 @@ theorem lambdaBundle_index_iff : LamIndSt ↔ Formalism.L2.Pj.abelian₂.LamIndS
       h E H l c hs nΨ n' f o.toFrozen La ((fixed_of_lambdaBundle_objectCondition o f La).2 ho) L.toFrozen (L.isGood_toFrozen.2 hL)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h E _ _ _ _ H l c hs nΨ n' f o La ho L hL => h E H l c hs nΨ n' f (LamObj.ofFrozen o) La ((lambdaBundle_objectCondition_of_fixed o f La).2 ho) (LamLetters.ofFrozen L) ((LamLetters.isGood_ofFrozen L).2 hL), fun h E _ _ _ _ H l c hs nΨ n' f o La ho L hL => h E H l c hs nΨ n' f …`.
+Supply the required witnesses or components.
 -/
 theorem lambdaBundle_length_iff : LamLenSt ↔ Formalism.L2.Pj.abelian₂.LamLenSt :=
   ⟨fun h E _ _ _ _ H l c hs nΨ n' f o La ho L hL =>
@@ -202,7 +202,7 @@ theorem lambdaBundle_length_iff : LamLenSt ↔ Formalism.L2.Pj.abelian₂.LamLen
       h E H l c hs nΨ n' f o.toFrozen La ((fixed_of_lambdaBundle_objectCondition o f La).2 ho) L.toFrozen (L.isGood_toFrozen.2 hL)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ _ _ H x => lambdaBundle_degree_iff H x, lambdaBundle_index_iff, lambdaBundle_length_iff⟩`.
+Supply the required witnesses or components.
 -/
 theorem lambdaBundle_conditions_iff :
     (∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (x : ℝ),

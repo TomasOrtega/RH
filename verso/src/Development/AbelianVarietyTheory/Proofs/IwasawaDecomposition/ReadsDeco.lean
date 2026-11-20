@@ -15,7 +15,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable (X : Stages)
 
 /- English proof (translation)
-Rewrite using `[X.toD7.sp.X'_rank, Formalism.L2.Col.rank_X'_eq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rank_X' : X.toD7.sp.X'.rank = X.B.R.N X.B.R.m - 1 := by
   rw [X.toD7.sp.X'_rank, Formalism.L2.Col.rank_X'_eq]

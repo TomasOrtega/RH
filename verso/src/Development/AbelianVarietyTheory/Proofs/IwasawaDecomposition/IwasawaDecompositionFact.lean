@@ -8,9 +8,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.ValuationOfMemIff.valuation_apply_eq`. Consider the case `exact _root_.GlobalTheory.ValuationOfMemIff.valuation_apply_eq`. Consider the case `(apply _root_.GlobalTheory.ValuationOfMemIff.valuation_apply_eq <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.ValuationOfMemIff.valuation_apply_eq <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.ValuationOfMemIff.valuation_apply_eq <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.ValuationOfMemIff.valuation_apply_eq ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem Dec_valuation_apply_eq :
     ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω) (σ : G E Ω), σ ∈ Dec (F := E) A → ∀ t : Ω, A.valuation (σ t) = A.valuation t := by

@@ -11,7 +11,7 @@ open NumberField IsDedekindDomain Module Formalism.BasicNotions Formalism.L2.Pj 
 namespace GlobalTheory.LawsCore
 
 /- English proof (translation)
-Introduce `D T hT j hj hF`. Establish `hg : ∀ p : ℕ, p.Prime → T.Q.l.GoodAt p` using `goodAt_of_two_primes hT.pins.2.1.1 (D.host.g_prime 0) (D.host.g_prime 1) D.host.g_ne`. Conclude with `(GlobalTheory.LevLaws.laws_of_level D j _ _ _ (T.Q.Xo j) T.Q.c (T.U j) _ (GlobalTheory.LevGeo.laws_of_coreJ D T j hT hj).1 hF hg).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem laws_core : ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j, InR D j → FnAlgClosed (T.Q.Xo j) T.Q.c →
     Laws (T.U j) (xiR D) := by

@@ -28,7 +28,7 @@ namespace FrobeniusLift
 
 omit [TotallyDisconnectedSpace G] in
 /- English proof (translation)
-The claim follows from `mul_ne_zero s.deg_pos.ne' (D.inertiaDegree_ne_zero K)`.
+A detailed English derivation is pending.
 -/
 theorem degree_ne_zero (s : D.FrobeniusLift K) : s.deg * inertiaDegree D.deg K ≠ 0 :=
   mul_ne_zero s.deg_pos.ne' (D.inertiaDegree_ne_zero K)
@@ -36,13 +36,13 @@ theorem degree_ne_zero (s : D.FrobeniusLift K) : s.deg * inertiaDegree D.deg K �
 omit [TotallyDisconnectedSpace G] in
 
 /- English proof (translation)
-Rewrite using `[Subgroup.mem_normalizer_iff]`. Introduce `h`. Establish `hconj : ∀ g ∈ (K : Subgroup G), ∀ x ∈ (L : Subgroup G), g * x * g⁻¹ ∈ (L : Subgroup G)`. Introduce `g hg x hx`. Use `hN.conj_mem ⟨x, hLK hx⟩ (by simpa [Subgroup.mem_subgroupOf] using hx) ⟨g, hg⟩` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `this` using `[Subgroup.mem_subgroupOf]`. Simplify using `only [Subgroup.mem_inf, MonoidHom.mem_ker, map_mul, map_inv]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hL, hk⟩`. Use `⟨hconj σ hσ h hL, ?_⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hk, mul_one, mul_inv_cancel]`. Introduce and unpack `⟨hL, hk⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `hconj σ⁻¹ (K.inv_mem hσ) _ hL` as an intermediate fact. Simplify `this` using `[mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `hk` as an intermediate fact. Rewrite `this` using `[mul_comm (D.deg σ), mul_assoc, mul_inv_cancel, mul_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mem_normalizer (hLK : L ≤ K) [hN : ((L : Subgroup G).subgroupOf K).Normal] {σ : G}
     (hσ : σ ∈ (K : Subgroup G)) :
@@ -83,20 +83,20 @@ theorem coe_field : ((s.field L hLK : OpenSubgroup G) : Subgroup G) =
   rfl
 
 /- English proof (translation)
-Introduce `x hx`. Conclude with `frobeniusClosure_le K.isClosed s.mem (inf_le_left.trans hLK) hx`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem field_le : s.field L hLK ≤ K := by
   intro x hx
   exact frobeniusClosure_le K.isClosed s.mem (inf_le_left.trans hLK) hx
 
 /- English proof (translation)
-The claim follows from `mem_frobeniusClosure_self`.
+A detailed English derivation is pending.
 -/
 theorem elt_mem_field : s.elt ∈ ((s.field L hLK : OpenSubgroup G) : Subgroup G) :=
   mem_frobeniusClosure_self
 
 /- English proof (translation)
-The claim follows from `frobeniusClosure_inf_ker D.continuous_deg L.isOpen (mem_normalizer hLK s.mem) s.degree_ne_zero s.deg_eq`.
+A detailed English derivation is pending.
 -/
 theorem field_inf_ker :
     ((s.field L hLK : OpenSubgroup G) : Subgroup G) ⊓ D.deg.ker = (L : Subgroup G) ⊓ D.deg.ker :=
@@ -104,7 +104,7 @@ theorem field_inf_ker :
     s.deg_eq
 
 /- English proof (translation)
-The claim follows from `inertiaDegree_frobeniusClosure D.continuous_deg (mem_normalizer hLK s.mem) s.degree_ne_zero s.deg_eq`.
+A detailed English derivation is pending.
 -/
 theorem inertiaDegree_field :
     inertiaDegree D.deg ((s.field L hLK : OpenSubgroup G) : Subgroup G) =
@@ -113,7 +113,7 @@ theorem inertiaDegree_field :
     s.deg_eq
 
 /- English proof (translation)
-Use `(ProfiniteInteger.pow_left_inj (D.inertiaDegree_ne_zero (s.field L hLK))).1 ?_` and prove the remaining obligations. Rewrite using `[D.relDeg_pow, inertiaDegree_field, ← ofAdd_nsmul, nsmul_one]`. Conclude with `s.deg_eq`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relDeg_field :
     D.relDeg (s.field L hLK) ⟨s.elt, s.elt_mem_field hLK⟩ = Multiplicative.ofAdd 1 := by
@@ -122,7 +122,7 @@ theorem relDeg_field :
   exact s.deg_eq
 
 /- English proof (translation)
-Introduce `x hx`. Establish `hx'` using `hx`. Rewrite `hx'` using `[field_inf_ker]`. Conclude with `⟨hx'.1, hx.1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem inf_ker_le_inf :
     ((s.field L hLK : OpenSubgroup G) : Subgroup G) ⊓ D.deg.ker ≤
@@ -137,7 +137,7 @@ end FrobeniusLift
 omit [TotallyDisconnectedSpace G] in
 
 /- English proof (translation)
-Establish `h` using `D.intCast_mem_range_val 1`. Rewrite `h` using `[← D.range_valuation K, Int.cast_one]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_prime (K : OpenSubgroup G) :
     ∃ π : fixedModule A (K : Subgroup G), D.valuation K π = Multiplicative.ofAdd 1 := by
@@ -155,9 +155,9 @@ noncomputable def primeNorm (S : OpenSubgroup G) : tateZero A (K : Subgroup G) (
 omit [TotallyDisconnectedSpace G] in
 
 /- English proof (translation)
-Use `set M : OpenSubgroup G := L ⊓ S with hMdef`. Establish `hMS : M ≤ S` using `inf_le_right`. Establish `hML : M ≤ L` using `inf_le_left`. Establish `hMu : (S : Subgroup G) ⊓ D.deg.ker ≤ M` using `fun x hx => ⟨hu hx, hx.1⟩`. Rewrite `hu'` using `[D.units_eq_map_norm hax hMS hMu]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨w, -, rfl⟩` from `hu'`. Rewrite using `[norm_norm (fun x hx => hMS hx) (fun x hx => hSK hx) w]`. Conclude with `⟨norm A (L : Subgroup G) (M : Subgroup G) w, norm_norm (fun x hx => hML hx) (fun x hx => hLK hx) w⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem norm_mem_range_of_mem_units (hax : ClassFieldAxiom G A) {S : OpenSubgroup G} (hSK : S ≤ K)
     (hLK : L ≤ K) (hu : (S : Subgroup G) ⊓ D.deg.ker ≤ L) {u : fixedModule A (S : Subgroup G)}
@@ -176,9 +176,9 @@ theorem norm_mem_range_of_mem_units (hax : ClassFieldAxiom G A) {S : OpenSubgrou
 omit [TotallyDisconnectedSpace G] in
 
 /- English proof (translation)
-Use `set π0 := (D.exists_prime S).choose with hπ0`. Establish `h0 : D.valuation S π0 = Multiplicative.ofAdd 1` using `(D.exists_prime S).choose_spec`. Establish `hu' : π * π0⁻¹ ∈ D.units S`. Rewrite using `[D.mem_units, map_mul, map_inv, hπ, h0, mul_inv_cancel]`. Take `⟨b, hb⟩` from `D.norm_mem_range_of_mem_units hax hSK hLK hu hu'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[primeNorm, ← hπ0, QuotientGroup.eq]`. Establish `: (norm A (K : Subgroup G) (S : Subgroup G) π)⁻¹ * norm A (K : Subgroup G) (S : Subgroup G) π0 = (norm A (K : Subgroup G) (S : Subgroup G) (π * π0⁻¹))⁻¹`. Rewrite using `[map_mul, map_inv, mul_inv_rev, inv_inv, mul_comm]`. Rewrite using `[this]`. Conclude with `Subgroup.inv_mem _ ⟨b, hb⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mk_norm_eq_primeNorm (hax : ClassFieldAxiom G A) {S : OpenSubgroup G} (hSK : S ≤ K)
     (hLK : L ≤ K) (hu : (S : Subgroup G) ⊓ D.deg.ker ≤ L) {π : fixedModule A (S : Subgroup G)}
@@ -209,7 +209,7 @@ noncomputable def recFrob (s : D.FrobeniusLift K) : tateZero A (K : Subgroup G) 
   D.primeNorm K L (s.field L hLK)
 
 /- English proof (translation)
-The claim follows from `D.mk_norm_eq_primeNorm hax (s.field_le hLK) hLK (fun x hx => by have := (s.field_inf_ker hLK).le hx exact this.1) hπ`.
+A detailed English derivation is pending.
 -/
 theorem mk_norm_eq_recFrob (hax : ClassFieldAxiom G A) (s : D.FrobeniusLift K)
     {π : fixedModule A ((s.field L hLK : OpenSubgroup G) : Subgroup G)}

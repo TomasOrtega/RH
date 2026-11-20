@@ -13,9 +13,9 @@ noncomputable section
 variable {D : ℕ} {X : Type} [TopologicalSpace X]
 
 /- English proof (translation)
-Establish `hs : ContDiffAt ℝ 2 (P.φ x ∘ (A.chart k).symm) y` using `((hP.1 x k).of_le two_le_smooth_kb).contDiffAt (((A.chart k).continuousOn_symm.isOpen_inter_preimage (A.chart k).open_target (P.isOpen_U x)).mem_nhds hy)`. Establish `h` using `levi_add_smul a (contDiffAt_const (c := (0 : ℝ))) hs w`. Establish `he : (P.rsmul a).φ x ∘ (A.chart k).symm = fun z => (0 : ℝ) + a * (P.φ x ∘ (A.chart k).symm) z`. Use function extensionality and compare the values at `z`. Simplify using `[LocPot.rsmul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[he, h, levi_const, zero_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem levi_rsmul_chart (A : FinHolAtlas D X) (P : LocPot X) (hP : IsPotential A P) (a : ℝ)
     (x : X) (k : Fin A.n) (y : Fin D → ℂ)
@@ -33,19 +33,17 @@ theorem levi_rsmul_chart (A : FinHolAtlas D X) (P : LocPot X) (hP : IsPotential 
   rw [he, h, levi_const, zero_add]
 
 /- English proof (translation)
-Introduce `X _ _ _ D A om m th hth`. Establish `hX : IsCompact (Set.univ : Set X)` using `isCompact_univ`. Use `choose M hM0 hM using fun i => levi_abs_le_global A hX (th i) om.pot (hth i) om.isPot om.pos`. Use `set K : ℝ := 1 + ∑ i, M i with hKdef`. Establish `hsum : 0 ≤ ∑ i, M i` using `Finset.sum_nonneg fun i _ => hM0 i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK : 0 < K` using `by linarith`. Establish `hMK : ∀ i, M i ≤ K` using `fun i => by`. Use `Finset.single_le_sum (fun j (_ : j ∈ Finset.univ) => hM0 j) (Finset.mem_univ i)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hnn : ∀ x k, ∀ y ∈ (A.chart k).target ∩ (A.chart k).symm ⁻¹' om.pot.U x, ∀ w : Fin D → ℂ, 0 ≤ levi (om.pot.φ x ∘ (A.chart k).symm) y w`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `x k y hy w`. Break down `eq_or_ne w 0 with h0 | h0` into its components or cases. Rewrite using `[h0, levi_zero]`. Conclude with `(om.pos x k y hy w h0).le`. Use `⟨⟨om.pot.rsmul K, ReciprocityTheory.AnForm.M.isPotentialRsmul A K om.pot om.isPot, fun x k y hy w hw => ?_⟩, fun i => ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[levi_rsmul_chart A om.pot om.isPot K x k y hy w]`. Conclude with `mul_pos hK (om.pos x k y hy w hw)`. Introduce `x k y hy w`. Establish `hyo : y ∈ (A.chart k).target ∩ (A.chart k).symm ⁻¹' om.pot.U x` using `⟨hy.1, hy.2.2⟩`. Establish `hyb : y ∈ (A.chart k).target ∩ (A.chart k).symm ⁻¹' ((th i).U x ∩ om.pot.U x)` using `⟨hy.1, hy.2.1.2, hy.2.2⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[levi_rsmul_chart A om.pot om.isPot K x k y hyo w]`. Establish `h1` using `abs_le.mp (hM i x k y hyb w)`. Establish `h2` using `hnn x k y hyo w`. Establish `h3` using `hMK i`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `x k y hy w`. Establish `hyo : y ∈ (A.chart k).target ∩ (A.chart k).symm ⁻¹' om.pot.U x` using `⟨hy.1, hy.2.1.2⟩`. Establish `hyb : y ∈ (A.chart k).target ∩ (A.chart k).symm ⁻¹' ((th i).U x ∩ om.pot.U x)` using `⟨hy.1, hy.2.2, hy.2.1.2⟩`. Rewrite using `[levi_rsmul_chart A om.pot om.isPot K x k y hyo w]`. Establish `h1` using `abs_le.mp (hM i x k y hyb w)`.
-
-Establish `h2` using `hnn x k y hyo w`. Establish `h3` using `hMK i`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem BoundingKaehler.proof : BoundingKaehler.Statement := by
   intro X _ _ _ D A om m th hth

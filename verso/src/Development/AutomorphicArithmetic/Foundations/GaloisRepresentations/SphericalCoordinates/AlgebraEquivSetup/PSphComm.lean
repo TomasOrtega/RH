@@ -7,7 +7,7 @@ open UpperTheory.Gal.CertificateRingHomMap (GUf Gam0 AfQ Plc sim mat comp rat le
 open scoped TensorProduct Classical
 
 /- English proof (translation)
-Introduce `E _ _ n w t t'`. Establish `hb : ∀ s : GL (Fin n) (w.adicCompletion E), IsBiInv (GlobalTheory.LFun.KGL w n) (dosetInd ℂ (GlobalTheory.LFun.KGL w n) s)` using `fun s => (Formalism.UG.Final.DosetIndMem _ _ ℂ s).1`. Conclude with `Formalism.UG.P.heckecomm_gelfand (GlobalTheory.LFun.KGL w n) Formalism.UG.P.heckecomm_tr Formalism.UG.P.heckecomm_tr_mul Formalism.UG.P.heckecomm_tr_tr (fun x hx => Formalism.UG.P.heckecomm_tr_mem _ x hx) (Formalism.UG.P.heckecomm_tr_dc Formalism.UG.P.cartan_decomposition_holds E …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.Seed.pSphComm :
     SphComm := by

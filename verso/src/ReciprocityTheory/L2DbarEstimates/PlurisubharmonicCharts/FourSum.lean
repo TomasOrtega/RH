@@ -12,17 +12,17 @@ universe u
 def fsProj (f : ℕ) : (Fin f → ℝ) → UnitAddTorus (Fin f) := fun t i => (t i : UnitAddCircle)
 
 /- English proof (translation)
-The claim follows from `IsOpenQuotientMap.piMap (fun _ => QuotientAddGroup.isOpenQuotientMap_mk)`.
+A detailed English derivation is pending.
 -/
 theorem fsProj_isOpenQuotientMap (f : ℕ) : IsOpenQuotientMap (fsProj f) :=
   IsOpenQuotientMap.piMap (fun _ => QuotientAddGroup.isOpenQuotientMap_mk)
 
 /- English proof (translation)
-Establish `hi : ∀ i, ∃ k : ℤ, t i = s i + k`. Introduce `i`. Establish `h1 : ((s i : ℝ) : UnitAddCircle) = (t i : UnitAddCircle)` using `congrFun h i`. Establish `h2 : (((t i - s i : ℝ)) : UnitAddCircle) = 0`. Rewrite using `[AddCircle.coe_sub, h1, sub_self]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨k, hk⟩` from `(AddCircle.coe_eq_zero_iff (p := (1 : ℝ))).1 h2`. Use `⟨k, ?_⟩` and prove the remaining obligations. Simplify using `only [zsmul_eq_mul, mul_one] at hk`. Combine the linear equalities and inequalities to obtain the conclusion. Use `choose n hn using hi`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Supply the required witnesses or components.
 
-Conclude with `⟨n, funext fun i => by simp [hn i]⟩`.
+A detailed English derivation is pending.
 -/
 theorem fsProj_eq {f : ℕ} (s t : Fin f → ℝ) (h : fsProj f s = fsProj f t) :
     ∃ n : Fin f → ℤ, t = s + fun i => (n i : ℝ) := by
@@ -42,7 +42,7 @@ def fsFun {f : ℕ} (g : (Fin f → ℝ) → ℂ) : UnitAddTorus (Fin f) → ℂ
   fun θ => g (Function.surjInv (fsProj_isOpenQuotientMap f).surjective θ)
 
 /- English proof (translation)
-Unfold `fsFun`. Use `set s := Function.surjInv (fsProj_isOpenQuotientMap f).surjective (fsProj f t)`. Establish `hs : fsProj f s = fsProj f t` using `Function.surjInv_eq _ _`. Take `⟨n, hn⟩` from `fsProj_eq s t hs`. Rewrite using `[hn, hper]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fsFun_proj {f : ℕ} (g : (Fin f → ℝ) → ℂ)
     (hper : ∀ x (n : Fin f → ℤ), g (x + fun i => (n i : ℝ)) = g x) (t : Fin f → ℝ) :
@@ -54,7 +54,7 @@ theorem fsFun_proj {f : ℕ} (g : (Fin f → ℝ) → ℂ)
   rw [hn, hper]
 
 /- English proof (translation)
-Rewrite using `[(fsProj_isOpenQuotientMap f).isQuotientMap.continuous_iff]`. Establish `: fsFun g ∘ fsProj f = g` using `funext fun t => fsFun_proj g hper t`. Rewrite using `[this]`. Conclude with `hg`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fsFun_continuous {f : ℕ} (g : (Fin f → ℝ) → ℂ) (hg : Continuous g)
     (hper : ∀ x (n : Fin f → ℤ), g (x + fun i => (n i : ℝ)) = g x) :
@@ -64,9 +64,9 @@ theorem fsFun_continuous {f : ℕ} (g : (Fin f → ℝ) → ℂ) (hg : Continuou
   rw [this]; exact hg
 
 /- English proof (translation)
-Simplify using `only [UnitAddTorus.mFourier, ContinuousMap.coe_mk, fsProj, fourier_coe_apply]`. Rewrite using `[← Complex.exp_sum]`. Use `congr 1`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fs_mFourier_proj {f : ℕ} (m : Fin f → ℤ) (t : Fin f → ℝ) :
     UnitAddTorus.mFourier m (fsProj f t) =
@@ -80,23 +80,21 @@ theorem fs_mFourier_proj {f : ℕ} (m : Fin f → ℤ) (t : Fin f → ℝ) :
   ring
 
 /- English proof (translation)
-Introduce `Ω h hΩ hh hper h0 hsum x`. Use `set g : (Fin f → ℝ) → ℂ := fun x => h (fun k => (x k : ℂ)) with hgdef`. Establish `hreal : ∀ y : Fin f → ℝ, (fun k => ((y k : ℝ) : ℂ)) ∈ tube f Ω`. Introduce `y`. Use `show (fun k => ((y k : ℝ) : ℂ).im) ∈ Ω`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (fun k => (((y k : ℝ) : ℂ)).im) = 0` using `by funext k; simp`. Rewrite using `[e]`. Conclude with `h0`. Establish `hg : Continuous g`. Establish `hc : Continuous (fun y : Fin f → ℝ => (fun k => ((y k : ℝ) : ℂ)))` using `by fun_prop`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `continuous_iff_continuousAt.2 fun y => ?_` and prove the remaining obligations. Establish `hopen : IsOpen (tube f Ω)` using `hΩ.preimage (by fun_prop)`. Conclude with `((hh _ (hreal y)).differentiableAt (hopen.mem_nhds (hreal y))).continuousAt.comp hc.continuousAt`. Establish `hgper : ∀ x (n : Fin f → ℤ), g (x + fun i => (n i : ℝ)) = g x`. Introduce `y n`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `hper _ (hreal y) n` as an intermediate fact. Simplify using `only [hgdef]`. Use `this using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Set `F : C(UnitAddTorus (Fin f), ℂ)` to `⟨fsFun g, fsFun_continuous g hg hgper⟩`. Establish `hcoef : ∀ ν, UnitAddTorus.mFourierCoeff F ν = fourCoeff h 0 ν`. Introduce `ν`. Rewrite using `[UnitAddTorus.mFourierCoeff_eq_integral _ ν 0, fourCoeff]`. Establish `hset : ({x : Fin f → ℝ | ∀ i, x i ∈ Set.Ioc ((0 : Fin f → ℝ) i) ((0 : Fin f → ℝ) i + 1)} : Set (Fin f → ℝ)) = Set.univ.pi (fun _ : Fin f => Set.Ioc (0 : ℝ) 1)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[hset]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Establish `h1 : (fun i => ((t i : ℝ) : UnitAddCircle)) = fsProj f t` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : F (fsProj f t) = g t` using `fsFun_proj g hgper t`. Use `beta_reduce`. Rewrite using `[h1, h2, smul_eq_mul, fs_mFourier_proj]`. Simplify using `only [hgdef, Pi.zero_apply, Complex.ofReal_zero, zero_mul, add_zero, Pi.neg_apply, Int.cast_neg]`. Rewrite using `[mul_comm]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congr 2`. Simplify using `[Finset.sum_neg_distrib]`. Establish `hs : Summable (UnitAddTorus.mFourierCoeff F)`. Use `Summable.of_norm ?_` and prove the remaining obligations. Simplify `hsum` using `[hcoef]`.
-
-Use `UnitAddTorus.hasSum_mFourier_series_apply_of_summable hs (fsProj f x)` as an intermediate fact. Simplify using `only [hcoef, smul_eq_mul, fs_mFourier_proj] at this`. Rewrite `this` using `[show F (fsProj f x) = g x from fsFun_proj g hgper x]`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem four_sum (f : ℕ) : FOURSumStatement f := by
   intro Ω h hΩ hh hper h0 hsum x

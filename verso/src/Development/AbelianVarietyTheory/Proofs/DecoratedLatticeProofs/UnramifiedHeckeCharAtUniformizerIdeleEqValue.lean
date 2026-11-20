@@ -30,15 +30,15 @@ noncomputable section
 namespace GlobalTheory.LocUnifVal
 
 /- English proof (translation)
-Use `haveI : (Valued.v : Valuation (Fv D.host.F v) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _`. Establish `key : ∀ a b : Fv D.host.F v, ValuativeRel.valuation (Fv D.host.F v) a ≤ ValuativeRel.valuation (Fv D.host.F v) b ↔ Valued.v a ≤ Valued.v b` using `fun a b => (Valuation.Compatible.vle_iff_le (v := ValuativeRel.valuation (Fv D.host.F v)) a b).symm.trans (Valuation.Compatible.vle_iff_le (v := (Valued.v : Valuation (Fv D.host.F v) (WithZero (Multiplicative ℤ)))) a b)`. Establish `hlt : Valued.v (ϖ : Fv D.host.F v) < 1`. Establish `h1 : ValuativeRel.valuation (Fv D.host.F v) (ϖ : Fv D.host.F v) < ValuativeRel.valuation (Fv D.host.F v) 1`. Rewrite using `[map_one, hϖ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ValuativeRel.uniformizer_lt_one`. Rewrite using `[← map_one (Valued.v : Valuation (Fv D.host.F v) _)]`. Conclude with `lt_of_not_ge fun h => (not_le.2 h1) ((key _ _).2 h)`. Take `⟨π, hπ⟩` from `v.valuation_exists_uniformizer D.host.F`. Establish `hx : Valued.v (algebraMap D.host.F (Fv D.host.F v) π) = WithZero.exp (-1 : ℤ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ReciprocityTheory.Aut.adic_valued_algebraMap, hπ]`. Establish `hle : WithZero.exp (-1 : ℤ) ≤ Valued.v (ϖ : Fv D.host.F v)`. Rewrite using `[← hx]`. Use `(key _ _).1 ?_` and prove the remaining obligations. Rewrite using `[hϖ, ValuativeRel.le_uniformizer_iff, ← map_one (ValuativeRel.valuation (Fv D.host.F v))]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `lt_of_not_ge fun h => ?_` and prove the remaining obligations. Use `(key _ _).1 h` as an intermediate fact. Rewrite `this` using `[map_one, hx]`. Conclude with `absurd this (by rw [← WithZero.exp_zero, WithZero.exp_le_exp]; norm_num)`. Establish `h0 : Valued.v (ϖ : Fv D.host.F v) ≠ 0` using `(map_ne_zero _).2 ϖ.ne_zero`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite `hlt`, `hle`, the goal using `[← WithZero.exp_log h0]`. Rewrite `hlt` using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Rewrite `hle` using `[WithZero.exp_le_exp]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem valued_eq_of_unif {D : D7} {v : HeightOneSpectrum (𝓞 D.host.F)} (ϖ : (Fv D.host.F v)ˣ)
     (hϖ : ValuativeRel.valuation (Fv D.host.F v) (ϖ : Fv D.host.F v) = ValuativeRel.uniformizer (Fv D.host.F v)) :
@@ -73,15 +73,15 @@ theorem valued_eq_of_unif {D : D7} {v : HeightOneSpectrum (𝓞 D.host.F)} (ϖ :
   omega
 
 /- English proof (translation)
-Introduce `D v φ PP hφ x ϖ hloc χ hχ`. Take `⟨e, he, hx1, hx2, hx3⟩` from `hloc`. Establish `h : PP.under (𝓞 D.host.F) = v` using `(GlobalTheory.PlaceProjAt.under_resCard D v φ PP hφ).1.symm`. Establish `hAt : Formalism.L2.NTheta.IsIdemAt e PP` using `(((GlobalTheory.SplitIdemDict.idem_dictionary D).2 v φ PP hφ).2.2 e he).1`. Establish `hP : IsPrimeIdem PP e (e + cA D e)` using `Or.inl ⟨hAt, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxe : e * ((x : AE D) - 1) = (x : AE D) - 1` using `by linear_combination -hx1`. Take `⟨y, hy, hxy⟩` from `GlobalTheory.WeilAtPlace.exists_eq_locIdele (GlobalTheory.WeilAtPlace.isPrimeIdem_infPart hP) (GlobalTheory.LFun.finPart_of_isPrimeIdem hP) x hxe`. Establish `hτ : GlobalTheory.AdelicU.splitPrime (GlobalTheory.SplitProjChart.emb φ) = PP` using `(GlobalTheory.ResLift.eq_splitPrime hφ).symm`. Establish `hc : (y : PP.adicCompletion D.host.E) = GlobalTheory.LFun.complMap h (ϖ : Fv D.host.F v)`. Establish `e1 : Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV D.host.F v) (AlgHom.id D.host.F D.host.E) (finPart D (x : AE D)) = GlobalTheory.AdelicU.compFin D.host.F D.host.E v (x : AE D)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.FinPl.LatMem.compFin_eq_compAt]`. Both sides reduce to the same expression. Rewrite using `[hy, GlobalTheory.LFun.compAt_apply, GlobalTheory.LFun.finAdEquiv_apply h, e1, GlobalTheory.LFun.ConjPlace.toCompl_eq (GlobalTheory.AdelicU.isCMExt_host D) h hτ, GlobalTheory.SplitProjChart.splitProj_emb, ← hx2]`. Both sides reduce to the same expression. Establish `hu : Formalism.L2.Host.IsUnifAt PP y`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Unfold `Formalism.L2.Host.IsUnifAt`. Rewrite using `[hc, GlobalTheory.LFun.ConjPlace.valued_complMap (GlobalTheory.AdelicU.isCMExt_host D) h hτ]`. Conclude with `GlobalTheory.LocUnifVal.valued_eq_of_unif ϖ hx3`. Use `hχ.locChar_eq_val hu` as an intermediate fact. Rewrite using `[← this, hxy]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem value_eq_val : ∀ (D : D7) (v : HeightOneSpectrum (𝓞 D.host.F)) (φ : SplitProj D v) (PP : Pl D.host.E), IsProjAt φ PP → ∀ (x : (AE D)ˣ) (ϖ : (Fv D.host.F v)ˣ), IsLocUnif φ x ϖ → ∀ χ : (AE D)ˣ →* Circle, GlobalTheory.LFun.UnrAt (F := D.host.F) χ PP → Circle.toUnits (χ x) = GlobalTheory.LFun.val (F := D.host.F) χ PP := by
   intro D v φ PP hφ x ϖ hloc χ hχ

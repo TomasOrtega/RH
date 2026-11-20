@@ -12,13 +12,13 @@ open NumberField Matrix in
 open scoped nonZeroDivisors in
 
 /- English proof (translation)
-Establish `hle : Module.rank R M ≤ Module.rank K V`. Rewrite using `[Module.rank_def]`. Use `ciSup_le' fun s => ?_` and prove the remaining obligations. Establish `hs : LinearIndependent R (f ∘ ((↑) : s.1 → M))` using `s.2.map' f (LinearMap.ker_eq_bot.mpr hf)`. Conclude with `((LinearIndependent.iff_fractionRing R K).mp hs).cardinal_le_rank`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hge : Module.rank K V ≤ Module.rank R M`. Take `⟨s, hs_sub, hs_span, hs_li⟩` from `exists_linearIndependent K (Set.range f)`. Establish `hrank : Module.rank K V = Cardinal.mk s`. Rewrite using `[← rank_top, ← hspan, ← hs_span, rank_span_set hs_li]`. Establish `hpre : ∀ x : s, ∃ m, f m = x.1` using `fun x => hs_sub x.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose g hg using hpre`. Establish `hli : LinearIndependent R (f ∘ g)`. Establish `: f ∘ g = ((↑) : s → V)` using `funext hg`. Rewrite using `[this]`. Conclude with `(LinearIndependent.iff_fractionRing R K).mpr hs_li`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hrank]`. Conclude with `(LinearIndependent.of_comp f hli).cardinal_le_rank`. Unfold `Module.finrank`. Rewrite using `[le_antisymm hle hge]`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.HermModel.finrank_eq_of_injective_of_span {R K M V : Type} [CommRing R] [IsDomain R]
     [Field K] [Algebra R K] [IsFractionRing R K] [AddCommGroup M] [Module R M] [AddCommGroup V]
@@ -55,7 +55,7 @@ open scoped nonZeroDivisors in
 variable {E : Type} [Field E] [NumberField E] in
 
 /- English proof (translation)
-Establish `h0 : Algebra.traceForm ℚ E t = 0` using `(NumberField.integralBasis E).ext fun i => by`. Rewrite using `[NumberField.integralBasis_apply, Algebra.traceForm_apply, LinearMap.zero_apply]`. Conclude with `ht _`. Conclude with `(traceForm_nondegenerate ℚ E).1 t fun y => by rw [h0]; rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.HermModel.eq_zero_of_trace_mul_integer {t : E}
     (ht : ∀ a : 𝓞 E, Algebra.trace ℚ E (t * a) = 0) : t = 0 := by
@@ -73,7 +73,7 @@ open NumberField Matrix in
 open scoped nonZeroDivisors in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
 /- English proof (translation)
-Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.herm`. Simplify using `only [Pi.sub_apply, sub_mul, Finset.sum_sub_distrib]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.HermModel.herm_sub_left (G : Matrix (Fin r) (Fin r) E) (x x' y : Fin r → E) :
     _root_.ReciprocityTheory.ChartRestriction.G.FD.herm G (x - x') y = _root_.ReciprocityTheory.ChartRestriction.G.FD.herm G x y - _root_.ReciprocityTheory.ChartRestriction.G.FD.herm G x' y := by
@@ -84,7 +84,7 @@ open NumberField Matrix in
 open scoped nonZeroDivisors in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
 /- English proof (translation)
-Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.herm`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.HermModel.herm_smul_left (G : Matrix (Fin r) (Fin r) E) (c : E) (x y : Fin r → E) :
     _root_.ReciprocityTheory.ChartRestriction.G.FD.herm G (c • x) y = c * _root_.ReciprocityTheory.ChartRestriction.G.FD.herm G x y := by
@@ -96,7 +96,7 @@ open NumberField Matrix in
 open scoped nonZeroDivisors in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
 /- English proof (translation)
-Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.herm _root_.ReciprocityTheory.ChartRestriction.G.FD.cc`. Simplify using `only [Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.HermModel.herm_add_right (G : Matrix (Fin r) (Fin r) E) (x y y' : Fin r → E) :
     _root_.ReciprocityTheory.ChartRestriction.G.FD.herm G x (y + y') = _root_.ReciprocityTheory.ChartRestriction.G.FD.herm G x y + _root_.ReciprocityTheory.ChartRestriction.G.FD.herm G x y' := by
@@ -107,7 +107,7 @@ open NumberField Matrix in
 open scoped nonZeroDivisors in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
 /- English proof (translation)
-Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.herm _root_.ReciprocityTheory.ChartRestriction.G.FD.cc`. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.HermModel.herm_smul_right (G : Matrix (Fin r) (Fin r) E) (c : E) (x y : Fin r → E) :
     _root_.ReciprocityTheory.ChartRestriction.G.FD.herm G x (c • y) = _root_.ReciprocityTheory.ChartRestriction.G.FD.herm G x y * _root_.ReciprocityTheory.ChartRestriction.G.FD.cc c := by
@@ -119,7 +119,7 @@ open NumberField Matrix in
 open scoped nonZeroDivisors in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
 /- English proof (translation)
-Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.herm _root_.ReciprocityTheory.ChartRestriction.G.FD.cc`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.HermModel.herm_zero_right (G : Matrix (Fin r) (Fin r) E) (x : Fin r → E) :
     _root_.ReciprocityTheory.ChartRestriction.G.FD.herm G x 0 = 0 := by
@@ -131,7 +131,7 @@ open scoped nonZeroDivisors in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
 
 /- English proof (translation)
-Use `Matrix.eq_zero_of_vecMul_eq_zero hG (funext fun b => ?_)` and prove the remaining obligations. Establish `h` using `hw (Pi.single b 1)`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.herm _root_.ReciprocityTheory.ChartRestriction.G.FD.cc at h`. Simplify using `only [Pi.single_apply, apply_ite, map_one, map_zero, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at h`. Simplify `h` using `[Matrix.vecMul, dotProduct]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem _root_.GlobalTheory.HermModel.eq_zero_of_herm_eq_zero {G : Matrix (Fin r) (Fin r) E}
     (hG : G.det ≠ 0) {w : Fin r → E} (hw : ∀ u, _root_.ReciprocityTheory.ChartRestriction.G.FD.herm G w u = 0) : w = 0 := by
@@ -146,39 +146,37 @@ open NumberField Matrix in
 open scoped nonZeroDivisors in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
 /- English proof (translation)
-Take `⟨hinj, hspan, -, hdet, hEF⟩` from `h`. Establish `hsmul : ∀ (c : 𝓞 E) (x : D.La), φ (c • x) = (c : E) • φ x` using `fun c x => by`. Rewrite using `[map_smul]`. Both sides reduce to the same expression. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hr` using `_root_.GlobalTheory.HermModel.finrank_eq_of_injective_of_span (R := 𝓞 E) (K := E) φ hinj hspan`. Rewrite `hr` using `[Module.finrank_fin_fun]`. Rewrite using `[← hr, D.rank]`. Use `haveI := D.fin`. Rewrite using `[LinearMap.range_eq_map]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Module.Finite.fg_top.map φ`. Introduce `x y`. Establish `hmem : ξ * _root_.ReciprocityTheory.ChartRestriction.G.FD.herm Gm (φ x) (φ y) ∈ Submodule.traceDual ℤ ℚ (1 : Submodule (𝓞 E) E)`. Rewrite using `[Submodule.mem_traceDual]`. Introduce `a ha`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c, rfl⟩` from `Submodule.mem_one.mp ha`. Use `⟨D.EF (c • x) y, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_intCast, hEF, hsmul, _root_.GlobalTheory.HermModel.herm_smul_left, Algebra.traceForm_apply]`. Express the relevant statement in the definitionally equal form `_ = Algebra.trace ℚ E (ξ * _root_.ReciprocityTheory.ChartRestriction.G.FD.herm Gm (φ x) (φ y) * (c : E))`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hb : ∀ i, IsIntegral ℤ (NumberField.integralBasis E i)` using `fun i => by`. Rewrite using `[NumberField.integralBasis_apply]`. Conclude with `RingOfIntegers.isIntegral_coe _`. Establish `hint` using `isIntegral_discr_mul_of_mem_traceDual (A := ℤ) (K := ℚ) (L := E) (B := 𝓞 E) 1 hb (Submodule.one_le.mp le_rfl) hmem`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hint` using `[← NumberField.coe_discr]`. Use `hint using 1` and compare the differences between its conclusion and the goal. Rewrite using `[Algebra.smul_def, mul_one]`. Simplify using the standard rewrite rules. Introduce `v`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hv`. Distinguish the cases in `hξ0 : ξ = 0`. Establish `hsub : ∀ x : D.La, x = 0` using `fun x => D.unimod.1 <| by`. Use `LinearMap.ext fun y => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `hEF x y` as an intermediate fact. Rewrite `this` using `[hξ0, zero_mul, map_zero]`. Simplify using `[map_zero, Int.cast_eq_zero.mp this]`. Establish `hbot : Submodule.span E (Set.range φ) ≤ ⊥`. Rewrite using `[Submodule.span_le]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[hsub x, map_zero]`. Conclude with `Submodule.zero_mem _`. Establish `hv0 : v = 0`. Establish `: v ∈ Submodule.span E (Set.range φ)` using `by rw [hspan]; trivial`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `using hbot this`. Rewrite using `[hv0]`. Conclude with `Submodule.zero_mem _`. Use `choose n hn using hv`. Set `ℓ : D.La →+ ℤ` to `AddMonoidHom.mk' n fun y y' => by`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply `Int.cast_injective (α := ℚ)` to reduce the goal to its premises. Rewrite using `[Int.cast_add, ← hn, ← hn, ← hn, map_add, _root_.GlobalTheory.HermModel.herm_add_right, mul_add, map_add]`. Take `⟨x, hx⟩` from `D.unimod.2 ℓ.toIntLinearMap`. Establish `htr : ∀ y, Algebra.trace ℚ E (ξ * _root_.ReciprocityTheory.ChartRestriction.G.FD.herm Gm (v - φ x) (φ y)) = 0`. Introduce `y`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : (D.EF x y : ℚ) = n y`. Rewrite using `[hx]`. Both sides reduce to the same expression. Rewrite using `[_root_.GlobalTheory.HermModel.herm_sub_left, mul_sub, map_sub, hn, ← hEF, h1, sub_self]`. Establish `hzero : ∀ y, _root_.ReciprocityTheory.ChartRestriction.G.FD.herm Gm (v - φ x) (φ y) = 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Introduce `y`. Establish `: ξ * _root_.ReciprocityTheory.ChartRestriction.G.FD.herm Gm (v - φ x) (φ y) = 0`. Use `_root_.GlobalTheory.HermModel.eq_zero_of_trace_mul_integer fun a => ?_` and prove the remaining obligations. Establish `hc : _root_.ReciprocityTheory.ChartRestriction.G.FD.cc ((H.bar.symm a : 𝓞 E) : E) = (a : E)`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.cc`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← H.bar_eq, RingEquiv.apply_symm_apply]`. Use `htr (H.bar.symm a • y)` as an intermediate fact. Rewrite `this` using `[hsmul, _root_.GlobalTheory.HermModel.herm_smul_right, hc, ← mul_assoc]`. Conclude with `this`. Conclude with `(mul_eq_zero.mp this).resolve_left hξ0`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Establish `hall : ∀ u, _root_.ReciprocityTheory.ChartRestriction.G.FD.herm Gm (v - φ x) u = 0`. Introduce `u`. Establish `hu : u ∈ Submodule.span E (Set.range φ)` using `by rw [hspan]; trivial`. Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem w hw`.
+Treat this case separately. Establish an intermediate fact. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Take `⟨y, rfl⟩` from `hw`. Conclude with `hzero y`. Consider the case `zero => exact _root_.GlobalTheory.HermModel.herm_zero_right _ _`. Consider the case `add w w' _ _ hw hw' => rw [_root_.GlobalTheory.HermModel.herm_add_right, hw, hw', add_zero]`. Consider the case `smul c w _ hw => rw [_root_.GlobalTheory.HermModel.herm_smul_right, hw, zero_mul]`.
-
-Establish `hw` using `_root_.GlobalTheory.HermModel.eq_zero_of_herm_eq_zero hdet hall`. Conclude with `⟨x, (sub_eq_zero.mp hw).symm⟩`. Introduce and unpack `⟨x, rfl⟩ y`. Conclude with `⟨D.EF x y, (hEF x y).symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.HermModel.rank_integral_selfDual (E : Type) [Field E] [NumberField E] [IsCMField E]
     (H : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (D : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H) (r : ℕ) (ξ : E) (Gm : Matrix (Fin r) (Fin r) E)

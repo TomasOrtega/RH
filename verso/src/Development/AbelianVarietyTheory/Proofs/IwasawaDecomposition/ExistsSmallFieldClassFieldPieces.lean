@@ -29,13 +29,13 @@ section Copy
 variable (ι : Qb →+* ℂ)
 
 /- English proof (translation)
-Rewrite using `[← h, qb, IntermediateField.comap_map]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem qb_eq_of_map {L : Fld} {M : IntermediateField ℚ ℂ} (h : L.map ι.toRatAlgHom = M) : qb ι M = L := by
   rw [← h, qb, IntermediateField.comap_map]
 
 /- English proof (translation)
-Use `IntermediateField.map_comap_eq_self fun z hz => ?_` and prove the remaining obligations. Conclude with `exists_eq_of_isAlgebraic ι (IntermediateField.isAlgebraic_iff.1 (Algebra.IsAlgebraic.isAlgebraic (R := ℚ) (⟨z, hz⟩ : M)))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem map_qb (M : IntermediateField ℚ ℂ) [Algebra.IsAlgebraic ℚ M] : (qb ι M).map ι.toRatAlgHom = M := by
   refine IntermediateField.map_comap_eq_self fun z hz => ?_
@@ -43,27 +43,27 @@ theorem map_qb (M : IntermediateField ℚ ℂ) [Algebra.IsAlgebraic ℚ M] : (qb
     (IntermediateField.isAlgebraic_iff.1 (Algebra.IsAlgebraic.isAlgebraic (R := ℚ) (⟨z, hz⟩ : M)))
 
 /- English proof (translation)
-Introduce `_ hx` and use `h hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem qb_mono {M N : IntermediateField ℚ ℂ} (h : M ≤ N) : qb ι M ≤ qb ι N := fun _ hx => h hx
 
 /- English proof (translation)
-The claim follows from `(AlgEquiv.ofRingEquiv (R := ℚ) (f := qbEquiv ι M) fun q => by simp).toLinearEquiv.finrank_eq`.
+A detailed English derivation is pending.
 -/
 theorem finrank_qb (M : IntermediateField ℚ ℂ) [Algebra.IsAlgebraic ℚ M] :
     Module.finrank ℚ (qb ι M) = Module.finrank ℚ M :=
   (AlgEquiv.ofRingEquiv (R := ℚ) (f := qbEquiv ι M) fun q => by simp).toLinearEquiv.finrank_eq
 
 /- English proof (translation)
-The claim follows from `discr_eq_discr_of_ringEquiv _ (qbEquiv ι M)`.
+A detailed English derivation is pending.
 -/
 theorem discr_qb (M : IntermediateField ℚ ℂ) [NumberField M] [NumberField (qb ι M)] : discr (qb ι M) = discr M :=
   discr_eq_discr_of_ringEquiv _ (qbEquiv ι M)
 
 /- English proof (translation)
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy⟩`. Conclude with `⟨y, ι.injective ((h y).trans hy)⟩`. Introduce and unpack `⟨y, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨y, (h y).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem qb_imField {E : Type} [Field E] [NumberField E] (j : E →ₐ[ℚ] Qb) (φ : E →+* ℂ) (h : ∀ x, ι (j x) = φ x) :
     qb ι (imField φ) = j.fieldRange := by
@@ -75,9 +75,9 @@ theorem qb_imField {E : Type} [Field E] [NumberField E] (j : E →ₐ[ℚ] Qb) (
     exact ⟨y, (h y).symm⟩
 
 /- English proof (translation)
-Use `qb_eq_of_map ι ?_` and prove the remaining obligations. Rewrite using `[muFld, IntermediateField.adjoin_map]`. Use `le_antisymm (IntermediateField.adjoin_le_iff.2 ?_) (cycField_le_iff.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `mem_cycField hn (by rw [← map_pow, show x ^ n = 1 from hx, map_one])`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h1 : rootOne n ^ n = 1` using `(Complex.isPrimitiveRoot_exp n hn).pow_eq_one`. Take `⟨x, hx⟩` from `exists_eq_of_isAlgebraic ι (z := rootOne n) (IsAlgebraic.of_pow (Nat.pos_of_ne_zero hn) (h1 ▸ isAlgebraic_one))`. Conclude with `IntermediateField.subset_adjoin ℚ _ ⟨x, ι.injective (by rw [map_pow, hx, h1, map_one]), hx⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem qb_cycField {n : ℕ} (hn : n ≠ 0) : qb ι (cycField n) = muFld n := by
   refine qb_eq_of_map ι ?_
@@ -91,11 +91,11 @@ theorem qb_cycField {n : ℕ} (hn : n ≠ 0) : qb ι (cycField n) = muFld n := b
     exact IntermediateField.subset_adjoin ℚ _ ⟨x, ι.injective (by rw [map_pow, hx, h1, map_one]), hx⟩
 
 /- English proof (translation)
-Use `qb_eq_of_map ι ?_` and prove the remaining obligations. Rewrite using `[KQ, sqQ, IntermediateField.adjoin_map]`. Use `le_antisymm (IntermediateField.adjoin_le_iff.2 ?_) (IntermediateField.adjoin_simple_le_iff.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Establish `h1 : ι x ^ 2 = sqrtNegNat d ^ 2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[← map_pow, show x ^ 2 = _ from hx, sqrtNegNat_sq]`. Simplify using the standard rewrite rules. Establish `h2` using `IntermediateField.mem_adjoin_simple_self ℚ (sqrtNegNat d)`. Break down `sq_eq_sq_iff_eq_or_eq_neg.1 h1 with h | h` into its components or cases. Conclude with `(show ι x ∈ KC d from h ▸ h2)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Conclude with `(show ι x ∈ KC d from h ▸ neg_mem h2)`. Take `⟨x, hx⟩` from `exists_eq_of_isAlgebraic ι (z := sqrtNegNat d) (IsAlgebraic.of_pow two_pos (by rw [sqrtNegNat_sq]; exact (isAlgebraic_nat d).neg))`. Use `IntermediateField.subset_adjoin ℚ _ ⟨x, ι.injective ?_, hx⟩` and prove the remaining obligations. Rewrite using `[map_pow, hx, sqrtNegNat_sq]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem qb_KC (d : ℕ) : qb ι (KC d) = KQ d := by
   refine qb_eq_of_map ι ?_
@@ -118,7 +118,7 @@ theorem qb_KC (d : ℕ) : qb ι (KC d) = KQ d := by
 end Copy
 
 /- English proof (translation)
-Establish `hm : ∀ σ : Qb ≃ₐ[ℚ] Qb, (∀ x ∈ j.fieldRange, σ x = x) → σ ∈ GalOf j.fieldRange` using `fun σ => (IntermediateField.mem_fixingSubgroup_iff _ _).2`. Use `⟨h, fun σ hσ => map_mem_of_normal j L h ?_ σ (hm σ hσ), fun σ τ hσ hτ => (isAbelianGalois_iff j L h).1 hab σ (hm σ hσ) τ (hm τ hτ)⟩` and prove the remaining obligations. Set `` to `algThrough j L h`. Use `infer_instance`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem abelOver_of_isAbelianGalois {E : Type} [Field E] [NumberField E] (j : E →ₐ[ℚ] Qb) (L : Fld)
     (h : j.fieldRange ≤ L) (hab : letI := algThrough j L h; IsAbelianGalois E L) : AbelOver j.fieldRange L := by
@@ -130,13 +130,11 @@ theorem abelOver_of_isAbelianGalois {E : Type} [Field E] [NumberField E] (j : E 
   infer_instance
 
 /- English proof (translation)
-Take `⟨hN, hdisc, h2, hR⟩` from `isRayFieldIn_hilbertField hW d F A hd h4 h3 hF`. Establish `hx : (IntermediateField.AdjoinSimple.gen ℚ (sqrtNegNat d)) ^ 2 = -(d : ℚ⟮sqrtNegNat d⟯)` using `Subtype.ext (by simpa using sqrtNegNat_sq d)`. Establish `hTC` using `isTotallyComplex_of_sq_eq_neg hd.pos hx`. Set `j : ℚ⟮sqrtNegNat d⟯ →ₐ[ℚ] Qb` to `((qb ι ℚ⟮sqrtNegNat d⟯).val.toRingHom.comp (qbEquiv ι ℚ⟮sqrtNegNat d⟯).symm.toRingHom).toRatAlgHom`. Establish `hj : ∀ x, ι (j x) = x` using `fun x => congrArg Subtype.val ((qbEquiv ι ℚ⟮sqrtNegNat d⟯).apply_symm_apply x)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hr : j.fieldRange = KQ d`. Rewrite using `[← qb_KC ι d, ← qb_imField ι j (ℚ⟮sqrtNegNat d⟯.val : ℚ⟮sqrtNegNat d⟯ →+* ℂ) hj]`. Conclude with `congrArg _ (le_antisymm (fun _ ⟨x, hx⟩ => hx ▸ x.2) fun z hz => ⟨⟨z, hz⟩, rfl⟩)`. Establish `he : (ℚ⟮sqrtNegNat d⟯.val : ℚ⟮sqrtNegNat d⟯ →+* ℂ) = ι.comp j.toRingHom` using `RingHom.ext fun x => (hj x).symm`. Take `⟨hN', h, hab, hd', hmax⟩` from `hilbert_qb hA _ j ι _ (he ▸ hR)`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hd'`, `hmax` using `[hdisc, h2, Int.natAbs_neg, Int.natAbs_natCast]`. Use `⟨hR.numberField, inferInstance, hr ▸ abelOver_of_isAbelianGalois j _ h hab, hd', fun L _ hL hU => ?_⟩` and prove the remaining obligations. Establish `: NumberField L` using `{}`. Rewrite `hL` using `[← hr]`. Use `hmax L hL.1 ((isAbelianGalois_iff j L hL.1).2 fun σ hσ τ hτ => hL.2.2 σ τ ?_ ?_) hU` and prove the remaining obligations.
-
-Use `exacts [(IntermediateField.mem_fixingSubgroup_iff _ _).1 hσ, (IntermediateField.mem_fixingSubgroup_iff _ _).1 hτ]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isHilbertCF_qb (hA : GlobalArtinReciprocity) (hW : WeberRayFieldSt) (ι : Qb →+* ℂ) {d : ℕ}
     {F : IntermediateField ℚ ℂ} {A : WeierstrassCurve F} (hd : d.Prime) (h4 : d % 4 = 3) (h3 : 3 < d)
@@ -164,9 +162,9 @@ theorem isHilbertCF_qb (hA : GlobalArtinReciprocity) (hW : WeberRayFieldSt) (ι 
   exacts [(IntermediateField.mem_fixingSubgroup_iff _ _).1 hσ, (IntermediateField.mem_fixingSubgroup_iff _ _).1 hτ]
 
 /- English proof (translation)
-Establish `g0` using `P.host.g_prime 0`. Establish `g1` using `P.host.g_prime 1`. Establish `p0` using `P.host.pde_prime`. Establish `p1` using `P.host.pde'_prime`. Simplify using `only [modulus, Nat.squarefree_mul_iff, Nat.coprime_mul_iff_left, Nat.coprime_primes, g0, g1, p0, p1, g0.squarefree, g1.squarefree, p0.squarefree, p1.squarefree, and_true]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `⟨⟨⟨(P.host.pde_ne_g 0).2.symm, (P.host.pde_ne_g 1).2.symm⟩, P.host.pde_ne⟩, ⟨(P.host.pde_ne_g 0).1.symm, (P.host.pde_ne_g 1).1.symm⟩, P.host.g_ne⟩`.
+Supply the required witnesses or components.
 -/
 theorem squarefree_modulus (P : Pre) : Squarefree (modulus P) := by
   have g0 := P.host.g_prime 0
@@ -179,7 +177,7 @@ theorem squarefree_modulus (P : Pre) : Squarefree (modulus P) := by
     ⟨(P.host.pde_ne_g 0).1.symm, (P.host.pde_ne_g 1).1.symm⟩, P.host.g_ne⟩
 
 /- English proof (translation)
-Establish `hc : Nat.Coprime p (H.QS * H.q * H.d)`. Rewrite using `[Nat.Coprime, Nat.gcd_comm, Nat.gcd_rec, hp, Nat.gcd_one_left]`. Use `Nat.Coprime.symm (Nat.coprime_of_dvd fun k hk h1 h2 => ?_)` and prove the remaining obligations. Conclude with `hk.one_lt.ne' (Nat.eq_one_of_dvd_coprimes hc h2 (H.der.discr_primes.1 k hk (Int.natCast_dvd.2 h1)))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem coprime_discr {R : Ranks} (H : Host R) {p : ℕ} (hp : p % (H.QS * H.q * H.d) = 1) :
     Nat.Coprime p (discr H.E).natAbs := by
@@ -189,9 +187,9 @@ theorem coprime_discr {R : Ranks} (H : Host R) {p : ℕ} (hp : p % (H.QS * H.q *
   exact hk.one_lt.ne' (Nat.eq_one_of_dvd_coprimes hc h2 (H.der.discr_primes.1 k hk (Int.natCast_dvd.2 h1)))
 
 /- English proof (translation)
-Establish `he : P.host.φ₀ = T.ι.comp T.j.toRingHom` using `RingHom.ext fun x => (T.phi0 x).symm`. Take `⟨hN, h, hR⟩` from `isRayField_qb T.j T.ι (he ▸ δ.isRay)`. Use `⟨hN, abelOver_of_isAbelianGalois _ _ h hR.1, ?_⟩` and prove the remaining obligations. Set `` to `algThrough T.j _ h`. Rewrite using `[finrank_div]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Use `RayDiscr.natAbs_discr_dvd hA.rayClassFieldSt _ _ _ (squarefree_modulus P) ?_ hR` and prove the remaining obligations. Conclude with `(((coprime_discr _ (P.g_cond 0)).mul_left (coprime_discr _ (P.g_cond 1))).mul_left (coprime_discr _ P.pde_cond.1)).mul_left (coprime_discr _ P.pde_cond.2)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ray_qb (hA : GlobalArtinReciprocity) {P : Pre} (δ : FieldDat P) (T : Frame P.host) :
     ∃ _ : NumberField (qb T.ι δ.ray), AbelOver T.j.fieldRange (qb T.ι δ.ray) ∧
@@ -208,17 +206,13 @@ theorem ray_qb (hA : GlobalArtinReciprocity) {P : Pre} (δ : FieldDat P) (T : Fr
     (coprime_discr _ P.pde_cond.1)).mul_left (coprime_discr _ P.pde_cond.2)
 
 /- English proof (translation)
-Use `choose S hc hy hK using fun j : ℕ => exists_kPsiField_generators P.R P.host δ.basis (P.R.sigW j).1 (P.R.sigW j).2`. Establish `hE` using `qb_imField T.ι T.j P.host.φ₀ T.phi0`. Establish `hal : ∀ j, ∀ y ∈ S j, IsAlgebraic ℚ y` using `fun j y h => by`. Take `⟨n, hn, -, x, hx⟩` from `hy j y h`. Conclude with `IsAlgebraic.of_pow hn (hx ▸ (Algebra.IsAlgebraic.isAlgebraic x).algHom P.host.φ₀.toRatAlgHom)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨fun j => (S (j + 1)).preimage T.ι T.ι.injective.injOn, fun j => le_trans ?_ (hc (j + 1)), fun j y h => ?_, ?_⟩` and prove the remaining obligations. Conclude with `Finset.card_le_card_of_injOn T.ι (fun y h => Finset.mem_preimage.1 h) T.ι.injective.injOn`. Take `⟨n, hn, hd, h⟩` from `hy _ _ (Finset.mem_preimage.1 h)`. Conclude with `⟨n, hn, hd, hE ▸ mem_qb.2 (by rwa [map_pow])⟩`. Establish `hm` using `P.R.two_le_m`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Algebra.IsAlgebraic ℚ (imField P.host.φ₀)` using `(AlgEquiv.ofInjectiveField P.host.φ₀.toRatAlgHom).isAlgebraic`. Establish `h0` using `classNumber_ne_zero P.host.E`. Establish `: Algebra.IsAlgebraic ℚ (cycField (classNumber P.host.E))` using `IntermediateField.isAlgebraic_adjoin_simple (IsIntegral.of_pow (Nat.pos_of_ne_zero h0) (by`. Rewrite using `[(Complex.isPrimitiveRoot_exp _ h0).pow_eq_one]`. Conclude with `isIntegral_one))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `qb_eq_of_map _ ?_` and prove the remaining obligations. Rewrite using `[← hE, ← qb_cycField T.ι h0, IntermediateField.map_sup, IntermediateField.map_sup, map_qb, map_qb, IntermediateField.adjoin_map, Set.image_iUnion]`. Establish `hi : ∀ j, T.ι.toRatAlgHom '' ((S j).preimage T.ι T.ι.injective.injOn : Set Qb) = S j` using `fun j => by`. Rewrite using `[Finset.coe_preimage]`. Conclude with `Set.image_preimage_eq_of_subset fun z hz => exists_eq_of_isAlgebraic _ (hal j z hz)`.
-
-Simplify using `only [hi, FieldDat.KPsi, hK]`. Use `le_antisymm (sup_le ?_ (IntermediateField.adjoin_le_iff.2 (Set.iUnion_subset fun j => ?_))) (iSup₂_le fun j hj => sup_le_sup_left (IntermediateField.adjoin.mono _ _ _ ?_) _)` and prove the remaining obligations. Conclude with `le_iSup₂_of_le 1 ⟨le_rfl, by omega⟩ le_sup_left`. Conclude with `IntermediateField.adjoin_le_iff.1 (le_iSup₂_of_le (j + 1) ⟨by omega, j.2⟩ le_sup_right)`. Use `Set.subset_iUnion_of_subset ⟨j - 1, by have := hj.1; have := hj.2; omega⟩ ?_` and prove the remaining obligations.
-
-Rewrite using `[Nat.sub_add_cancel hj.1]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kPsi_qb {P : Pre} (δ : FieldDat P) (T : Frame P.host) :
     ∃ S : Fin P.R.m → Finset Qb, (∀ j, (S j).card ≤ Nat.log 2 (classNumber P.host.E)) ∧
@@ -257,7 +251,7 @@ theorem kPsi_qb {P : Pre} (δ : FieldDat P) (T : Frame P.host) :
       rw [Nat.sub_add_cancel hj.1]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨pow_mem hy 12, ⟨FractionalIdeal.spanSingleton _ ⟨y, hy⟩, by rw [FractionalIdeal.spanSingleton_pow]; rfl⟩, (sup_eq_left.2 (IntermediateField.adjoin_simple_le_iff.2 hy)).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_twelfth_root (M : Fld) [NumberField M] {y : Qb} (hy : y ∈ M) :
     ∃ h : y ^ 12 ∈ M, (∃ I : FractionalIdeal (𝓞 M)⁰ M,
@@ -266,17 +260,17 @@ theorem exists_twelfth_root (M : Fld) [NumberField M] {y : Qb} (hy : y ∈ M) :
     (sup_eq_left.2 (IntermediateField.adjoin_simple_le_iff.2 hy)).symm⟩
 
 /- English proof (translation)
-Introduce `hA hW X _ δ T`. Establish `h16 : X.B.host.d % 16 = 7` using `X.B.host.hyp.2.2.2.1`. Take `⟨hH, hH', hilb⟩` from `isHilbertCF_qb hA hW T.fr.ι X.B.host.hyp.2.1 (by omega) (by omega) δ.good`. Take `⟨hR, hab, hcond⟩` from `ray_qb hA δ T.fr`. Take `⟨hF, hEll, -, -, -, -, hred⟩` from `δ.good`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hMf, hdeg⟩` from `TorsionDegree.finrank_torsionField_le X.B.host.d δ.jField δ.curve`. Establish `hM : NumberField δ.M` using `@NumberField.of_module_finite ℚ _ _ _ _ _ hMf`. Establish `hMq` using `numberField_qb T.fr.ι δ.M`. Establish `hMM : δ.M' = δ.M` using `DiscRoot.discField_eq_torsionField _ _ _`. Take `⟨hK, hKram⟩` from `KPsiRam.prime_dvd_discr_iSup_kPsi _ δ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hKq` using `numberField_qb T.fr.ι (⨆ j ∈ Set.Icc 1 X.B.R.m, δ.KPsi j :)`. Establish `hHq` using `numberField_qb T.fr.ι (hilbertField X.B.host.d δ.jField)`. Establish `hram : ∀ p : ℕ, p.Prime → p ∣ (discr (qb T.fr.ι δ.M)).natAbs → p ∣ 6 * X.B.host.d` using `fun p hp h => by`. Rewrite `h` using `[discr_qb]`. Establish `: NumberField (torsionField X.B.host.d δ.curve)` using `hM`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `(TorsionRam.dvd_discr_torsionField _ _ δ.curve hred p hp h).elim id fun h => ?_` and prove the remaining obligations. Rewrite `h` using `[← discr_qb T.fr.ι, show (discr (qb T.fr.ι (hilbertField X.B.host.d δ.jField))).natAbs = _ from hilb.2.1]`. Conclude with `(hp.dvd_of_dvd_pow h).mul_left 6`. Take `⟨z, hz⟩` from `IsAlgClosed.exists_pow_nat_eq (δ.curve.Δ : ℂ) (show 0 < 12 by norm_num)`. Establish `hzM : z ∈ δ.M` using `hMM ▸ ((discField_le_iff _ δ.curve).1 le_rfl).2.2.2 z hz`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz0 : z ≠ 0` using `fun h => δ.curve.isUnit_Δ.ne_zero (Subtype.ext (by rw [← hz, h]; norm_num))`. Set `y` to `(qbEquiv T.fr.ι δ.M).symm ⟨z, hzM⟩`. Establish `hy0 : (y : Qb) ≠ 0` using `fun h => hz0 (congrArg Subtype.val ((map_eq_zero (qbEquiv T.fr.ι δ.M).symm).1 (Subtype.ext h)))`. Take `⟨hy, hI, hgen⟩` from `exists_twelfth_root _ y.2`. Take `⟨S, hS1, hS2, hS3⟩` from `kPsi_qb δ T.fr`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨{ HK := qb T.fr.ι (hilbertField X.B.host.d δ.jField) rcf := qb T.fr.ι δ.ray M := qb T.fr.ι δ.M MDel := qb T.fr.ι δ.M KPs := qb T.fr.ι (⨆ j ∈ Set.Icc 1 X.B.R.m, δ.KPsi j) HK_hilb := hilb E_le_rcf := hab.1 rcf_abel := hab rcf_cond := hcond HK_le_M := qb_mono _ (hilbertField_le_tor …`.
+A detailed English derivation is pending.
 -/
 theorem exists_pieces : GlobalArtinReciprocity → WeberRayFieldSt → ∀ (X : Stages) (f : Fr X.B.toPre)
     (δ : FieldDat X.B.toPre) (T : HostTied X.toD7), ∃ P : KsPieces X.toD7 T,

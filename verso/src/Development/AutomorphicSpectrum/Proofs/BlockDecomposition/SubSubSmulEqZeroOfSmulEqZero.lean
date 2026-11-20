@@ -7,11 +7,11 @@ open CategoryTheory AlgebraicGeometry Polynomial DividedPowers GlobalTheory.LogC
 namespace GlobalTheory.CompanionTheory.TwistedUnit
 
 /- English proof (translation)
-Take `⟨k, a, y, hx, hf⟩` from `Module.Flat.isTrivialRelation_of_sum_smul_eq_zero (R := Λ) (M := N) (f := fun _ : Fin 1 => μ) (x := fun _ : Fin 1 => z) (by simpa using hz)`. Use `choose d hd using h`. Establish `hz' : z = ∑ j, a 0 j • y j` using `hx 0`. Establish `h0 : ∀ j, μ * a 0 j = 0` using `fun j => by simpa using hf j`. Establish `hlin : ∀ j, a 0 j • (γ (y j) - y j - c • y j) = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Rewrite using `[hd, smul_smul, mul_comm, h0, zero_smul]`. Establish `hsum : γ z - z - c • z = ∑ j, a 0 j • (γ (y j) - y j - c • y j)` using `by conv_lhs => rw [hz']`. Simplify using `only [map_sum, map_smul, Finset.smul_sum, smul_sub, Finset.sum_sub_distrib]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl (fun j _ => smul_comm _ _ _)`. Rewrite using `[hsum]`. Conclude with `Finset.sum_eq_zero (fun j _ => hlin j)`.
+A detailed English derivation is pending.
 -/
 theorem sub_sub_smul_eq_zero_of_smul_eq_zero {Λ N : Type} [CommRing Λ] [AddCommGroup N]
     [Module Λ N] [Module.Flat Λ N] (γ : N →ₗ[Λ] N) (c μ : Λ)
@@ -34,17 +34,17 @@ theorem sub_sub_smul_eq_zero_of_smul_eq_zero {Λ N : Type} [CommRing Λ] [AddCom
   exact Finset.sum_eq_zero (fun j _ => hlin j)
 
 /- English proof (translation)
-Establish `hE` using `sub_sub_smul_eq_zero_of_smul_eq_zero γ c μ h`. Establish `R : ∀ n : ℕ, ∀ x, (w * ξ) • (γ x - x) = 0 → ∃ u, μ • (x - ξ ^ n • u) = 0`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => exact fun x _ => ⟨x, by simp⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ n ih`. Introduce `x hx`. Take `⟨x', hx'⟩` from `h x`. Establish `h1 : μ • (x + (w * ξ) • x') = 0`. Establish `: μ • (x + (w * ξ) • x') = (w * ξ) • (γ x - x)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Substitute `hμ` using the available equality. Take the linear combination `(norm := module) -(w * ξ) • hx'`. Rewrite using `[this, hx]`. Establish `h2` using `hE _ h1`. Simplify using `only [map_add, map_smul] at h2`.
+Substitute using the available equality. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hM : (w * ξ) • (γ x' - x') = 0`. Substitute `hμ` using the available equality. Take the linear combination `(norm := module) h2 - hx'`. Take `⟨u, hu⟩` from `ih x' hM`. Use `⟨-w • u, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Substitute using the available equality. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: μ • (x - ξ ^ (n + 1) • (-w • u)) = μ • (x + (w * ξ) • x') - (w * ξ) • (μ • (x' - ξ ^ n • u))` using `by module`. Rewrite using `[this, h1, hu]`. Simplify using the standard rewrite rules. Take `⟨n, hn⟩` from `hξ`. Take `⟨u, hu⟩` from `R n x (by simp [hx])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify `hu` using `[hn]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem smul_eq_zero_of_fixed {Λ N : Type} [CommRing Λ] [AddCommGroup N] [Module Λ N]
     [Module.Flat Λ N] (γ : N →ₗ[Λ] N) (c w ξ μ : Λ) (hμ : μ = c * w * ξ) (hξ : IsNilpotent ξ)
@@ -79,11 +79,11 @@ theorem smul_eq_zero_of_fixed {Λ N : Type} [CommRing Λ] [AddCommGroup N] [Modu
   simpa [hn] using hu
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.smul_induction_on' with`. Consider the case `smul a ha n hn`. Take `⟨n', hn'⟩` from `h n`. Use `⟨a • n', Submodule.smul_mem_smul ha trivial, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(norm := module) a • hn'`. Consider the case `add x hx y hy ihx ihy`. Take `⟨x₁, hx₁, e₁⟩` from `ihx`. Take `⟨y₁, hy₁, e₂⟩` from `ihy`. Use `⟨x₁ + y₁, Submodule.add_mem _ hx₁ hy₁, ?_⟩` and prove the remaining obligations.
+Take a linear combination of the given relations to obtain the conclusion. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_add]`. Take the linear combination `(norm := module) e₁ + e₂`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem exists_mem_smul_top {Λ N : Type} [CommRing Λ] [AddCommGroup N] [Module Λ N]
     (γ : N →ₗ[Λ] N) (c μ : Λ) (h : ∀ x, ∃ x', γ x - x - c • x = μ • x') (𝔞 : Ideal Λ) (x : N)
@@ -103,15 +103,15 @@ theorem exists_mem_smul_top {Λ N : Type} [CommRing Λ] [AddCommGroup N] [Module
     linear_combination (norm := module) e₁ + e₂
 
 /- English proof (translation)
-Take `⟨n, hn⟩` from `hξ`. Establish `P : ∀ m k : ℕ, m + k = n → ∀ x ∈ 𝔞 • (⊤ : Submodule Λ N), ∃ y ∈ (Ideal.span {ξ} * 𝔞) • (⊤ : Submodule Λ N), γ y - y = (μ * ξ ^ k) • x`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `k hk x _`. Establish `: ξ ^ k = 0`. Rewrite using `[show k = n by omega, hn]`. Conclude with `⟨0, Submodule.zero_mem _, by simp [this]⟩`. Consider the case `succ m ih`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Treat this case separately.
 
-Introduce `k hk x hx`. Take `⟨x₁, hx₁, e⟩` from `exists_mem_smul_top γ c μ h 𝔞 x hx`. Take `⟨y', hy', e'⟩` from `ih (k + 1) (by omega) (w • x₁) (Submodule.smul_of_tower_mem _ w hx₁)`. Establish `hξx : ξ • x ∈ (Ideal.span {ξ} * 𝔞) • (⊤ : Submodule Λ N)`. Rewrite using `[Submodule.mul_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem_smul (Ideal.mem_span_singleton_self ξ) hx`. Use `⟨(w * ξ ^ k) • (ξ • x) - y', Submodule.sub_mem _ (Submodule.smul_of_tower_mem _ _ hξx) hy', ?_⟩` and prove the remaining obligations. Simplify using `only [map_sub, map_smul]`. Substitute `hμ` using the available equality. Take the linear combination `(norm := module) (w * ξ ^ (k + 1)) • e - e'`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Substitute using the available equality. Take a linear combination of the given relations to obtain the conclusion. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using P n 0 rfl x hx`.
+A detailed English derivation is pending.
 -/
 theorem exists_sub_eq_smul {Λ N : Type} [CommRing Λ] [AddCommGroup N] [Module Λ N]
     (γ : N →ₗ[Λ] N) (c w ξ μ : Λ) (hμ : μ = c * w * ξ) (hξ : IsNilpotent ξ)
@@ -144,7 +144,7 @@ theorem exists_sub_eq_smul {Λ N : Type} [CommRing Λ] [AddCommGroup N] [Module 
   simpa using P n 0 rfl x hx
 
 /- English proof (translation)
-Introduce `Λ N _ _ _ _ γ c w ξ μ hμ hξ h`. Conclude with `⟨smul_eq_zero_of_fixed γ c w ξ μ hμ hξ h, fun 𝔞 x hx => exists_sub_eq_smul γ c w ξ μ hμ hξ h 𝔞 x hx⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem twisted_bijective_up_to :
     ∀ {Λ N : Type} [CommRing Λ] [AddCommGroup N] [Module Λ N] [Module.Flat Λ N]

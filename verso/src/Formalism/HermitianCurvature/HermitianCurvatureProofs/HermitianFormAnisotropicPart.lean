@@ -12,7 +12,7 @@ section lev
 variable {k : ℕ}
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite using `[Formalism.FourierDecayAlt.P.Dx2.MN.castM_rfl, Formalism.FourierDecayAlt.P.Dx2.Tower.castV_rfl, Formalism.FourierDecayAlt.P.Dx2.Tower.castV_rfl]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem castV_mulVec' {a b : ℕ} (h : a = b) (M : B.Mat k a) (v : Fin (2 * a + k + 1) → ℂ) :
     D.castV h (M *ᵥ v) = D.castM h M *ᵥ D.castV h v := by
@@ -20,7 +20,7 @@ theorem castV_mulVec' {a b : ℕ} (h : a = b) (M : B.Mat k a) (v : Fin (2 * a + 
   rw [Formalism.FourierDecayAlt.P.Dx2.MN.castM_rfl, Formalism.FourierDecayAlt.P.Dx2.Tower.castV_rfl, Formalism.FourierDecayAlt.P.Dx2.Tower.castV_rfl]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite using `[Formalism.FourierDecayAlt.P.Dx2.Tower.castV_rfl]`. Use function extensionality and compare the values at `i`. Use `Formalism.FourierDecayAlt.P.Dx2.Tower.liftVec_levPos_gen (k := k) o ρ v i` as an intermediate fact. Simplify `this` using `[Formalism.FourierDecayAlt.P.Dx2.Tower.zL, levPos]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem zL_lift {o ρ r : ℕ} (h : o + ρ = r) (v : Fin (2 * ρ + k + 1) → ℂ) :
     Formalism.FourierDecayAlt.P.Dx2.Tower.zL o ρ h (D.castV h (liftVec k o ρ v)) = v := by
@@ -31,14 +31,14 @@ theorem zL_lift {o ρ r : ℕ} (h : o + ρ = r) (v : Fin (2 * ρ + k + 1) → �
   simpa [Formalism.FourierDecayAlt.P.Dx2.Tower.zL, levPos] using this
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[Formalism.FourierDecayAlt.P.Dx2.Tower.zL]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem zL_smul {o ρ r : ℕ} (h : o + ρ = r) (c : ℂ) (v : Fin (2 * r + k + 1) → ℂ) :
     Formalism.FourierDecayAlt.P.Dx2.Tower.zL o ρ h (c • v) = c • Formalism.FourierDecayAlt.P.Dx2.Tower.zL o ρ h v := by
   funext i; simp [Formalism.FourierDecayAlt.P.Dx2.Tower.zL]
 
 /- English proof (translation)
-Use `Formalism.FourierDecayAlt.P.TwoByOneBlock.herm_jV (k := k) (r := m) (wbPart k m v) (wbPart k m w)` as an intermediate fact. Rewrite `this` using `[Formalism.FourierDecayAlt.P.TwoByOneBlock.jV_wbPart hv, Formalism.FourierDecayAlt.P.TwoByOneBlock.jV_wbPart hw]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem hermitian_form_anisotropic_part {m : ℕ} (v w : Fin (2 * m + k + 1) → ℂ) (hv : inWb k m v) (hw : inWb k m w) :
     herm (Hpk k m) v w = herm (Hb k) (wbPart k m v) (wbPart k m w) := by
@@ -46,7 +46,7 @@ theorem hermitian_form_anisotropic_part {m : ℕ} (v w : Fin (2 * m + k + 1) →
   rwa [Formalism.FourierDecayAlt.P.TwoByOneBlock.jV_wbPart hv, Formalism.FourierDecayAlt.P.TwoByOneBlock.jV_wbPart hw] at this
 
 /- English proof (translation)
-Rewrite using `[hermitian_form_anisotropic_part _ _ (Formalism.FourierDecayAlt.P.Dx2.Tower.zL_wb o ρ h v hv) (Formalism.FourierDecayAlt.P.Dx2.Tower.zL_wb o ρ h w hw), Formalism.FourierDecayAlt.P.Dx2.Tower.zL_wbPart, Formalism.FourierDecayAlt.P.Dx2.Tower.zL_wbPart, hermitian_form_anisotropic_par …`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_zL {o ρ r : ℕ} (h : o + ρ = r) (v w : Fin (2 * r + k + 1) → ℂ) (hv : inWb k r v) (hw : inWb k r w) :
     herm (Hpk k ρ) (Formalism.FourierDecayAlt.P.Dx2.Tower.zL o ρ h v) (Formalism.FourierDecayAlt.P.Dx2.Tower.zL o ρ h w) = herm (Hpk k r) v w := by
@@ -54,13 +54,13 @@ theorem herm_zL {o ρ r : ℕ} (h : o + ρ = r) (v w : Fin (2 * r + k + 1) → �
     Formalism.FourierDecayAlt.P.Dx2.Tower.zL_wbPart, Formalism.FourierDecayAlt.P.Dx2.Tower.zL_wbPart, hermitian_form_anisotropic_part v w hv hw]
 
 /- English proof (translation)
-Introduce `i hi`. It suffices to derive a contradiction. Use `i.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. It suffices to derive a contradiction. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem inWb_last {r : ℕ} (v : Fin (2 * (r - r) + k + 1) → ℂ) : inWb k (r - r) v := by
   intro i hi; exfalso; have := i.isLt; omega
 
 /- English proof (translation)
-Introduce `i hi`. Simplify using `only [D.castV]`. Apply `Formalism.FourierDecayAlt.P.Dx2.Tower.liftVec_out_gen` to reduce the goal to its premises. Simplify using `only [Fin.val_cast]`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem inWb_liftLast {r : ℕ} (h : r + (r - r) = r) (v : Fin (2 * (r - r) + k + 1) → ℂ) :
     inWb k r (D.castV h (liftVec k r (r - r) v)) := by
@@ -84,37 +84,37 @@ def m0R (p : KB.Pl P Wp Wq) : B.Mat P.k (P.r - P.r) :=
   fun i j => p.m₀ ⟨i.val + P.r, by have := i.isLt; omega⟩ ⟨j.val + P.r, by have := j.isLt; omega⟩
 
 /- English proof (translation)
-Take `⟨-, -, -, ⟨hmU, hmfix⟩, -⟩` from `p.hF`. Establish `hme : ∀ a : Fin P.r, p.m₀ *ᵥ ee P.k P.r a = ee P.k P.r a` using `fun a => (hmfix a a.isLt).1`. Establish `hms : ∀ a : Fin P.r, p.m₀ *ᵥ es P.k P.r a = es P.k P.r a` using `fun a => (hmfix a a.isLt).2`. Establish `hcol : ∀ (i j : Fin (2 * P.r + P.k + 1)), (j.val < P.r ∨ P.r + P.k < j.val) → p.m₀ i j = if i = j then 1 else 0`. Introduce `i j hj`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `hj with hj | hj` into its components or cases. Establish `e : bvec j = ee P.k P.r ⟨j.val, hj⟩` using `by simp [ee, eI]`. Use `congrFun (hme ⟨j.val, hj⟩) i` as an intermediate fact. Rewrite `this` using `[← e]`. Simplify using `only [mulVec, dotProduct, bvec, Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at this`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, eq_comm]`. Establish `hj2` using `j.isLt`. Establish `e : bvec j = es P.k P.r ⟨2 * P.r + P.k - j.val, by omega⟩`. Simplify using `only [es, esI]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `ext`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Use `congrFun (hms ⟨2 * P.r + P.k - j.val, by omega⟩) i` as an intermediate fact. Rewrite `this` using `[← e]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [mulVec, dotProduct, bvec, Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at this`. Rewrite using `[this, eq_comm]`. Establish `hrow : ∀ (i j : Fin (2 * P.r + P.k + 1)), (i.val < P.r ∨ P.r + P.k < i.val) → (P.r ≤ j.val ∧ j.val ≤ P.r + P.k) → p.m₀ i j = 0`. Introduce `i j hi hj`. Establish `hmj : (p.m₀ *ᵥ bvec j) i = p.m₀ i j`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[mulVec, dotProduct, bvec, Pi.single_apply]`. Break down `hi with hi | hi` into its components or cases. Establish `h1` using `herm_es (k := P.k) (r := P.r) (p.m₀ *ᵥ bvec j) ⟨i.val, hi⟩`. Rewrite `h1` using `[← hms ⟨i.val, hi⟩, Formalism.FourierDecayAlt.P.Dx2.DF.herm_m0_mulVec_invariant p.m₀ hmU, herm_es]`. Establish `hi' : eI P.k P.r ⟨i.val, hi⟩ = i` using `by ext; simp [eI]`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[hi', hmj]`. Rewrite using `[← h1]`. Simplify using `only [bvec, Pi.single_apply]`. Rewrite using `[if_neg]`. Introduce `h`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrArg Fin.val h` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hi2` using `i.isLt`. Establish `h1` using `herm_ee (k := P.k) (r := P.r) (p.m₀ *ᵥ bvec j) ⟨2 * P.r + P.k - i.val, by omega⟩`. Rewrite `h1` using `[← hme ⟨2 * P.r + P.k - i.val, by omega⟩, Formalism.FourierDecayAlt.P.Dx2.DF.herm_m0_mulVec_invariant p.m₀ hmU, herm_ee]`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hi' : esI P.k P.r ⟨2 * P.r + P.k - i.val, by omega⟩ = i` using `by ext; simp [esI]; omega`. Rewrite `h1` using `[hi', hmj]`. Rewrite using `[← h1]`. Simplify using `only [bvec, Pi.single_apply]`. Rewrite using `[if_neg]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use extensionality with `i j`. Simplify using `only [D.castM, Matrix.reindex_apply, Matrix.submatrix_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Unfold `ιLev`. Apply the tactic sequence `by_cases hi : P.r ≤ i.val ∧ i.val ≤ P.r + P.k <;> by_cases hj : P.r ≤ j.val ∧ j.val ≤ P.r + P.k`. Rewrite using `[dif_pos (by simp; omega), dif_pos (by simp; omega)]`. Simplify using `only [m0R]`. Apply the tactic sequence `congr 1 <;> ext <;> simp <;> omega`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[dif_pos (by simp; omega), dif_neg (by simp; omega), hcol i j (by omega)]`. Rewrite using `[if_neg]`. Introduce `h`. Rewrite `hi` using `[h]`. Conclude with `hj hi`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_neg (by simp; omega)]`. Rewrite using `[hrow i j (by omega) hj, if_neg]`. Introduce `h`. Apply `hi` to reduce the goal to its premises. Use `congrArg Fin.val h` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Rewrite using `[dif_neg (by simp; omega), hcol i j (by omega)]`. Use `congr 1`. Apply `propext` to reduce the goal to its premises.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `ext`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem base_point_block_eq (p : KB.Pl P Wp Wq) :
     D.castM (by omega : P.r + (P.r - P.r) = P.r) (ιLev P.k P.r (P.r - P.r) (m0R p)) = p.m₀ := by
@@ -179,19 +179,19 @@ theorem base_point_block_eq (p : KB.Pl P Wp Wq) :
     · intro h; subst h; rfl
 
 /- English proof (translation)
-Take `⟨hν, hνz, hνν, ⟨hmU, hmfix⟩, hmz⟩` from `p.hF`. Establish `h : P.r + (P.r - P.r) = P.r` using `by omega`. Establish `hZ : (p.T.bs P.r).z = Formalism.FourierDecayAlt.P.Dx2.Tower.zL P.r (P.r - P.r) h p.T.base.z` using `by show (p.T.bs P.r).z = Formalism.FourierDecayAlt.P.Dx2.Tower.zL P.r (P.r - P.r) h (p.T.bs 0).z`. Rewrite using `[← p.T.z_lev P.r le_rfl, zL_lift]`. Establish `hZ' : (p.T.bs P.r).z' = Formalism.FourierDecayAlt.P.Dx2.Tower.zL P.r (P.r - P.r) h p.T.base.z'` using `by show (p.T.bs P.r).z' = Formalism.FourierDecayAlt.P.Dx2.Tower.zL P.r (P.r - P.r) h (p.T.bs 0).z'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← p.T.z'_lev P.r le_rfl, zL_lift]`. Establish `hz` using `p.T.base.z_mem`. Establish `hz'` using `p.T.base.z'_mem`. Establish `hblk` using `base_point_block_eq p`. Use `set Lf : (Fin (2 * (P.r - P.r) + P.k + 1) → ℂ) → (Fin (2 * P.r + P.k + 1) → ℂ) := fun v => D.castV h (liftVec P.k P.r (P.r - P.r) v) with hLf`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLm : ∀ v, Lf (m0R p *ᵥ v) = p.m₀ *ᵥ Lf v`. Introduce `v`. Simplify using `only [hLf]`. Rewrite using `[← Formalism.FourierDecayAlt.P.Dx2.Tower.lev_mulVec_lift, castV_mulVec', hblk]`. Establish `hLh : ∀ v w, herm (Hpk P.k (P.r - P.r)) v w = herm (Hpk P.k P.r) (Lf v) (Lf w)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v w`. Rewrite using `[← herm_zL h (Lf v) (Lf w) (inWb_liftLast h v) (inWb_liftLast h w), zL_lift, zL_lift]`. Use `⟨Formalism.FourierDecayAlt.P.Dx2.Tower.lift_zL P.r (P.r - P.r) h p.ν' hν, hblk, ?_, ?_, ?_, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `inWb_last _`. Rewrite using `[hZ', nuR, herm_zL h _ _ hν hz', hνz]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[nuR, herm_zL h _ _ hν hν, hνν]`. Apply `B2x4.mem_UH_of_herm` to reduce the goal to its premises. Introduce `x y`. Rewrite using `[hLh, hLh x y, hLm, hLm, Formalism.FourierDecayAlt.P.Dx2.DF.herm_m0_mulVec_invariant p.m₀ hmU]`. Introduce `a _; exact absurd a.isLt (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : m0R p *ᵥ (p.T.bs P.r).z' = Formalism.FourierDecayAlt.P.Dx2.Tower.zL P.r (P.r - P.r) h (p.m₀ *ᵥ p.T.base.z')`. Use `congrArg (Formalism.FourierDecayAlt.P.Dx2.Tower.zL P.r (P.r - P.r) h) (hLm (p.T.bs P.r).z')` as an intermediate fact. Rewrite `this` using `[zL_lift]`. Rewrite using `[this, hZ']`. Simplify using `only [hLf]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Formalism.FourierDecayAlt.P.Dx2.Tower.lift_zL P.r (P.r - P.r) h _ hz']`. Rewrite using `[e1, hmz, zL_smul, ← hZ, hZ', hZ, Formalism.FourierDecayAlt.P.Dx2.Tower.zL_Tz _ _ h _ hz, Formalism.FourierDecayAlt.P.Dx2.Tower.zL_Tz _ _ h _ hz']`.
+A detailed English derivation is pending.
 -/
 theorem levFrame_nuR (p : KB.Pl P Wp Wq) : LevFrame p (nuR p) (m0R p) := by
   obtain ⟨hν, hνz, hνν, ⟨hmU, hmfix⟩, hmz⟩ := p.hF
@@ -241,7 +241,7 @@ end Formalism.FourierDecayAlt.P.PBI
 namespace Formalism.FourierDecayAlt.P
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P p`. Conclude with `⟨PBI.nuR p, PBI.m0R p, PBI.levFrame_nuR p⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem levFrameExists_statement : PBI.LevFrameExists := by
   intro Wp Wq _ _ _ _ _ _ P p

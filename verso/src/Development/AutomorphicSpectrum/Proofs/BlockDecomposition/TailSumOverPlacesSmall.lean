@@ -8,21 +8,19 @@ open scoped ENNReal NNReal Classical
 namespace GlobalTheory.CompanionTheory.Mass.MeanV
 
 /- English proof (translation)
-Introduce `F _ _ C hC η hη`. Use `set a : HeightOneSpectrum (𝓞 F) → ℝ := fun v => 2 * C / (Ideal.absNorm v.asIdeal : ℝ) ^ 2 with ha_def`. Establish `ha0 : ∀ v, 0 ≤ a v` using `fun v => by`. Simplify using `only [ha_def]`. Check the signs of the components of the expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Establish `hsum : Summable a`. Use `((GlobalTheory.CompanionTheory.SW.Primes.summable_one_div_absNorm_sq F).mul_left (2 * C)).congr fun v => ?_` and prove the remaining obligations. Simplify using `only [ha_def, mul_one_div]`. Use `set S := ∑' v, a v with hS`. Establish `hexpS : 0 < Real.exp S` using `Real.exp_pos S`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : 0 < η / Real.exp S` using `div_pos hη hexpS`. Use `set ε := Real.log (1 + η / Real.exp S) with hε_def`. Establish `hε : 0 < ε` using `Real.log_pos (by linarith)`. Establish `hexpε : Real.exp ε = 1 + η / Real.exp S` using `Real.exp_log (by linarith)`. Take `⟨T₀, hT₀⟩` from `hsum.vanishing (Iio_mem_nhds hε)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨T₀, fun T hT U => ?_⟩` and prove the remaining obligations. Establish `hsplit` using `Finset.sum_filter_add_sum_filter_not U.powerset (fun D => D ⊆ T) (fun D => ∏ v ∈ D, a v)`. Establish `hin : U.powerset.filter (fun D => D ⊆ T) = (U ∩ T).powerset`. Use extensionality with `D`. Simplify using `only [Finset.mem_filter, Finset.mem_powerset, Finset.subset_inter_iff]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hsplit` using `[hin, ← Finset.prod_one_add, ← Finset.prod_one_add]`. Establish `hUT` using `Finset.prod_inter_mul_prod_sdiff U T (fun v => 1 + a v)`. Establish `key : ∑ D ∈ U.powerset with ¬ D ⊆ T, ∏ v ∈ D, a v = (∏ v ∈ U ∩ T, (1 + a v)) * ((∏ v ∈ U \ T, (1 + a v)) - 1)`. Rewrite using `[mul_sub, mul_one, hUT]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[key]`. Establish `hA : ∏ v ∈ U ∩ T, (1 + a v) ≤ Real.exp S` using `(Real.prod_one_add_le_exp_sum _ ha0).trans (Real.exp_le_exp.mpr (hsum.sum_le_tsum _ (fun v _ => ha0 v)))`. Establish `hB1 : 1 ≤ ∏ v ∈ U \ T, (1 + a v)`. Use `Finset.prod_le_prod (s := U \ T) (f := fun _ => (1 : ℝ)) (g := fun v => 1 + a v) (fun _ _ => zero_le_one) (fun v _ => by linarith [ha0 v])` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdisj : Disjoint (U \ T) T₀` using `Finset.disjoint_left.mpr fun v hv hv0 => (Finset.mem_sdiff.mp hv).2 (hT hv0)`. Establish `htail : ∑ v ∈ U \ T, a v < ε` using `hT₀ _ hdisj`. Establish `hB : ∏ v ∈ U \ T, (1 + a v) ≤ 1 + η / Real.exp S`. Rewrite using `[← hexpε]`. Conclude with `(Real.prod_one_add_le_exp_sum _ ha0).trans (Real.exp_le_exp.mpr htail.le)`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem tail_sum_finset_prod_two_mul_div_sq :
     ∀ (F : Type) [Field F] [NumberField F] (C : ℝ), 0 ≤ C → ∀ η : ℝ, 0 < η →

@@ -328,13 +328,13 @@ def MinorProduct : Prop :=
             ∑ I, (ep I : ℂ) * ⟪p I (omTens dual P z hl v), (R (μ + wtI dual I)).σ g (p I (omTens dual P z' hl v'))⟫_ℂ
 
 /- English proof (translation)
-Apply the tactic sequence `cases dual <;> simp [Dsgn, Dmin]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 example (dual : Bool) (z z' : Fin (2 * r + k + 1) → ℂ) (g : Mat k r) : Dsgn dual z z' (Nat.zero_le _) g = 1 := by
   cases dual <;> simp [Dsgn, Dmin]
 
 /- English proof (translation)
-Simplify using `[Dsgn, Dmin, Zhat, fvec, herm, Inh.z0, bvec, wI, Hpk, Matrix.mulVec, dotProduct, Fin.sum_univ_two, Pi.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 example : Dsgn (k := 1) (r := 0) false (Inh.z0 1) (Inh.z0 1) (l := 1) le_rfl 1 = -1 := by
   simp [Dsgn, Dmin, Zhat, fvec, herm, Inh.z0, bvec, wI, Hpk, Matrix.mulVec, dotProduct, Fin.sum_univ_two,

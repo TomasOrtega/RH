@@ -13,11 +13,9 @@ section DedekindLFunctions
 variable {R : Type*} [CommRing R] [IsDedekindDomain R] {P : Ideal R}
 
 /- English proof (translation)
-Establish `hpr : Prime P` using `Ideal.prime_of_isPrime hP0 hP`. Establish `hdvd : Ideal.span {g} ⊔ P ^ N ∣ P ^ N` using `Ideal.dvd_iff_le.mpr le_sup_right`. Take `⟨m, -, hm⟩` from `(dvd_prime_pow hpr N).mp hdvd`. Rewrite `hm` using `[associated_iff_eq]`. Establish `hgm : g ∈ P ^ m`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hm]`. Conclude with `Ideal.mem_sup_left (Ideal.mem_span_singleton_self g)`. Establish `hmc : m ≤ c`. Assume the negation of the conclusion as `h`. Conclude with `hg (Ideal.pow_le_pow_right (by omega) hgm)`.
-
-Rewrite using `[hm]`. Conclude with `Ideal.pow_le_pow_right hmc`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_le_span_sup (hP : P.IsPrime) (hP0 : P ≠ ⊥) {g : R} {c : ℕ} (hg : g ∉ P ^ (c + 1)) (N : ℕ) :
     P ^ c ≤ Ideal.span {g} ⊔ P ^ N := by
@@ -35,17 +33,15 @@ theorem pow_le_span_sup (hP : P.IsPrime) (hP0 : P ≠ ⊥) {g : R} {c : ℕ} (hg
   exact Ideal.pow_le_pow_right hmc
 
 /- English proof (translation)
-Proceed by induction on `i with`. Consider the case `zero`. Introduce `j A B hA hB h`. Apply `hB` to reduce the goal to its premises. Establish `hA' : ¬ P ∣ A` using `by simpa using hA`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h' : P ^ (j + 1) ∣ A * B` using `by simpa using h`. Conclude with `hpr.pow_dvd_of_dvd_mul_left (j + 1) hA' h'`. Consider the case `succ i ih`. Introduce `j A B hA hB h`. Distinguish the cases in `hPA : P ∣ A`.
+Establish an intermediate fact. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨A1, rfl⟩` from `hPA`. Apply `ih j A1 B` to reduce the goal to its premises. Introduce `h1`. Apply `hA` to reduce the goal to its premises. Rewrite using `[pow_succ']`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_dvd_mul_left P h1`. Conclude with `hB`. Establish `h2 : P * P ^ (i + j + 1) ∣ P * (A1 * B)`. Rewrite using `[← pow_succ', ← mul_assoc]`. Establish `e : i + j + 1 + 1 = i + 1 + j + 1` using `by omega`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `h`. Conclude with `(mul_dvd_mul_iff_left hpr.ne_zero).mp h2`. Apply `hB` to reduce the goal to its premises. Establish `h3` using `hpr.pow_dvd_of_dvd_mul_left (i + 1 + j + 1) hPA h`.
-
-Conclude with `dvd_trans (pow_dvd_pow P (by omega)) h3`.
+A detailed English derivation is pending.
 -/
 private theorem not_pow_dvd_mul_of_not_pow_dvd_of_not_pow_dvd (hpr : Prime P) (i : ℕ) :
     ∀ (j : ℕ) (A B : Ideal R), ¬ P ^ (i + 1) ∣ A → ¬ P ^ (j + 1) ∣ B →
@@ -78,9 +74,9 @@ private theorem not_pow_dvd_mul_of_not_pow_dvd_of_not_pow_dvd (hpr : Prime P) (i
       exact dvd_trans (pow_dvd_pow P (by omega)) h3
 
 /- English proof (translation)
-Introduce `hab`. Establish `hpr : Prime P` using `Ideal.prime_of_isPrime hP0 hP`. Use `not_pow_dvd_mul_of_not_pow_dvd_of_not_pow_dvd hpr i j (Ideal.span {a}) (Ideal.span {b}) ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[Ideal.dvd_span_singleton]` and apply the resulting hypothesis. Rewrite using `[Ideal.dvd_span_singleton]` and apply the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[Ideal.span_singleton_mul_span_singleton, Ideal.dvd_span_singleton]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem mul_notMem (hP : P.IsPrime) (hP0 : P ≠ ⊥) {a b : R} {i j : ℕ} (ha : a ∉ P ^ (i + 1))
     (hb : b ∉ P ^ (j + 1)) : a * b ∉ P ^ (i + j + 1) := by
@@ -92,13 +88,11 @@ theorem mul_notMem (hP : P.IsPrime) (hP0 : P ≠ ⊥) {a b : R} {i j : ℕ} (ha 
   · rwa [Ideal.span_singleton_mul_span_singleton, Ideal.dvd_span_singleton]
 
 /- English proof (translation)
-Establish `hpr : Prime P` using `Ideal.prime_of_isPrime hP0 hP`. Take `⟨x, hx, hx'⟩` from `SetLike.exists_of_lt (Ideal.pow_right_strictAnti P hP0 hP.ne_top (by omega : k - c < k - c + 1))`. Establish `hdvd : Ideal.span {g} * P ^ (k - c) ⊔ P ^ (k + 1) ∣ P ^ (k + 1)` using `Ideal.dvd_iff_le.mpr le_sup_right`. Take `⟨m, -, hm⟩` from `(dvd_prime_pow hpr (k + 1)).mp hdvd`. Rewrite `hm` using `[associated_iff_eq]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hgx : g * x ∈ P ^ m`. Rewrite using `[← hm]`. Conclude with `Ideal.mem_sup_left (Ideal.mul_mem_mul (Ideal.mem_span_singleton_self g) hx)`. Establish `hmk : m ≤ k`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h1` using `mul_notMem hP hP0 hg hx'`. Establish `e : c + (k - c) + 1 = k + 1` using `by omega`. Rewrite `h1` using `[e]`. Conclude with `h1 (Ideal.pow_le_pow_right (by omega) hgx)`. Rewrite using `[hm]`.
-
-Conclude with `Ideal.pow_le_pow_right hmk`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_le_span_mul_sup (hP : P.IsPrime) (hP0 : P ≠ ⊥) {g : R} {c k : ℕ} (hg : g ∉ P ^ (c + 1))
     (hck : c ≤ k) : P ^ k ≤ Ideal.span {g} * P ^ (k - c) ⊔ P ^ (k + 1) := by
@@ -122,9 +116,9 @@ theorem pow_le_span_mul_sup (hP : P.IsPrime) (hP0 : P ≠ ⊥) {g : R} {c k : �
   exact Ideal.pow_le_pow_right hmk
 
 /- English proof (translation)
-Establish `h` using `pow_le_span_mul_sup hP hP0 hg hck hs`. Take `⟨y, hy, z, hz, hyz⟩` from `Submodule.mem_sup.mp h`. Take `⟨r, hr, rfl⟩` from `Ideal.mem_span_singleton_mul.mp hy`. Use `⟨r, hr, ?_⟩` and prove the remaining obligations. Rewrite using `[← hyz, add_sub_cancel_left]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hz`.
+A detailed English derivation is pending.
 -/
 theorem exists_fill (hP : P.IsPrime) (hP0 : P ≠ ⊥) {g : R} {c k : ℕ} (hg : g ∉ P ^ (c + 1))
     (hck : c ≤ k) {s : R} (hs : s ∈ P ^ k) : ∃ r ∈ P ^ (k - c), s - g * r ∈ P ^ (k + 1) := by
@@ -142,14 +136,14 @@ variable {K F : Type} [Field K] [NumberField K] [StarRing K] [Field F] [NumberFi
 local notation "ι" => algebraMap (𝓞 F) (𝓞 K)
 
 /- English proof (translation)
-The claim follows from `Ring.ne_bot_of_isMaximal_of_not_isField h𝔭 (NumberField.RingOfIntegers.not_isField F)`.
+A detailed English derivation is pending.
 -/
 theorem ne_bot {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) : 𝔭 ≠ ⊥ := Ring.ne_bot_of_isMaximal_of_not_isField h𝔭 (NumberField.RingOfIntegers.not_isField F)
 
 /- English proof (translation)
-Introduce `h`. Apply `ne_bot h𝔭` to reduce the goal to its premises. Establish `h1 : Ideal.comap ι (Ideal.map ι 𝔭) = 𝔭` using `Ideal.comap_map_eq_self_of_faithfullyFlat _`. Establish `h3 : Ideal.comap ι (Ideal.map ι (⊥ : Ideal (𝓞 F))) = ⊥` using `Ideal.comap_map_eq_self_of_faithfullyFlat _`. Rewrite `h3` using `[Ideal.map_bot]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `Ideal.map ι 𝔭 = ⊥ at h`. Rewrite using `[← h1, h, h3]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_ne_bot_of_isMaximal {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) : extP K 𝔭 ≠ ⊥ := by
   intro h
@@ -162,9 +156,9 @@ theorem map_ne_bot_of_isMaximal {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal)
   rw [← h1, h, h3]
 
 /- English proof (translation)
-Establish `h : Ideal.comap ι (Ideal.map ι (𝔭 ^ k)) = 𝔭 ^ k` using `Ideal.comap_map_eq_self_of_faithfullyFlat _`. Express the relevant statement in the definitionally equal form `ι a ∈ (Ideal.map ι 𝔭) ^ k ↔ a ∈ 𝔭 ^ k`. Rewrite using `[← Ideal.map_pow]`. Prove the components needed by the constructor for the conclusion. Introduce `ha`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← h]`. Conclude with `Ideal.mem_comap.mpr ha`. Introduce `ha`. Conclude with `Ideal.mem_map_of_mem _ ha`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_pow_iff (𝔭 : Ideal (𝓞 F)) (k : ℕ) (a : 𝓞 F) : ι a ∈ extP K 𝔭 ^ k ↔ a ∈ 𝔭 ^ k := by
   have h : Ideal.comap ι (Ideal.map ι (𝔭 ^ k)) = 𝔭 ^ k :=
@@ -179,7 +173,7 @@ theorem mem_pow_iff (𝔭 : Ideal (𝓞 F)) (k : ℕ) (a : 𝓞 F) : ι a ∈ ex
     exact Ideal.mem_map_of_mem _ ha
 
 /- English proof (translation)
-Use `first`. Consider the case `rfl`. Consider the case `exact (IsScalarTower.algebraMap_apply (𝓞 F) (𝓞 K) K a).symm.trans (IsScalarTower.algebraMap_apply (𝓞 F) F K a)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem coe_iota_eq_algebraMap_coe (a : 𝓞 F) : ((ι a : 𝓞 K) : K) = algebraMap F K (a : F) := by
   first
@@ -188,7 +182,7 @@ private theorem coe_iota_eq_algebraMap_coe (a : 𝓞 F) : ((ι a : 𝓞 K) : K) 
       (IsScalarTower.algebraMap_apply (𝓞 F) F K a)
 
 /- English proof (translation)
-Use `first`. Consider the case `rfl`. Consider the case `(unfold conjO; rfl)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem coe_conjO_eq_star_coe (z : 𝓞 K) : ((conjO K z : 𝓞 K) : K) = star (z : K) := by
   first
@@ -196,7 +190,7 @@ private theorem coe_conjO_eq_star_coe (z : 𝓞 K) : ((conjO K z : 𝓞 K) : K) 
   | (unfold conjO; rfl)
 
 /- English proof (translation)
-Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[coe_conjO_eq_star_coe, coe_iota_eq_algebraMap_coe]`. Conclude with `(hF _).mpr ⟨_, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjO_map (hF : IsFixF K F) (a : 𝓞 F) : conjO K (ι a) = ι a := by
   apply RingOfIntegers.ext
@@ -204,9 +198,9 @@ theorem conjO_map (hF : IsFixF K F) (a : 𝓞 F) : conjO K (ι a) = ι a := by
   exact (hF _).mpr ⟨_, rfl⟩
 
 /- English proof (translation)
-Introduce `z hz`. Establish `hcomp : (conjO K).comp ι = ι` using `RingHom.ext (fun a => conjO_map hF a)`. Establish `hJ : extP K 𝔭 ^ k = Ideal.map ι (𝔭 ^ k)`. Rewrite using `[Ideal.map_pow]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite `hz`, the goal using `[hJ]`. Establish `h1` using `Ideal.mem_map_of_mem (conjO K) hz`. Rewrite `h1` using `[Ideal.map_map, hcomp]`. Then use the resulting hypothesis.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem conjO_mem_pow (hF : IsFixF K F) (𝔭 : Ideal (𝓞 F)) (k : ℕ) :
     ∀ z ∈ extP K 𝔭 ^ k, conjO K z ∈ extP K 𝔭 ^ k := by
@@ -220,7 +214,7 @@ theorem conjO_mem_pow (hF : IsFixF K F) (𝔭 : Ideal (𝓞 F)) (k : ℕ) :
   rwa [Ideal.map_map, hcomp] at h1
 
 /- English proof (translation)
-Establish `h` using `pow_le_span_sup h𝔭.isPrime (ne_bot h𝔭) hd N`. Establish `h2` using `Ideal.map_mono (f := ι) h`. Simplify using `only [Ideal.map_sup, Ideal.map_span, Set.image_singleton, Ideal.map_pow] at h2`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem map_pow_le_span_sup {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {d : 𝓞 F} {c : ℕ}
     (hd : d ∉ 𝔭 ^ (c + 1)) (N : ℕ) : extP K 𝔭 ^ c ≤ Ideal.span {ι d} ⊔ extP K 𝔭 ^ N := by
@@ -230,9 +224,9 @@ theorem map_pow_le_span_sup {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {d 
   exact h2
 
 /- English proof (translation)
-Establish `h` using `pow_le_span_mul_sup h𝔭.isPrime (ne_bot h𝔭) hd hck`. Establish `h2` using `Ideal.map_mono (f := ι) h`. Simplify using `only [Ideal.map_sup, Ideal.map_mul, Ideal.map_span, Set.image_singleton, Ideal.map_pow] at h2`. Take `⟨y, hy, z, hz, hyz⟩` from `Submodule.mem_sup.mp (h2 hs)`. Take `⟨r, hr, rfl⟩` from `Ideal.mem_span_singleton_mul.mp hy`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨r, hr, ?_⟩` and prove the remaining obligations. Rewrite using `[← hyz, add_sub_cancel_left]`. Conclude with `hz`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_fillO {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {d : 𝓞 F} {c k : ℕ}
     (hd : d ∉ 𝔭 ^ (c + 1)) (hck : c ≤ k) {s : 𝓞 K} (hs : s ∈ extP K 𝔭 ^ k) :
@@ -248,15 +242,13 @@ theorem exists_fillO {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {d : 𝓞 
   exact hz
 
 /- English proof (translation)
-Establish `hpr : Prime 𝔭` using `Ideal.prime_of_isPrime (ne_bot h𝔭) h𝔭.isPrime`. Establish `hdvd : Ideal.span {d} ⊔ 𝔭 ^ (v + j) ∣ 𝔭 ^ (v + j)` using `Ideal.dvd_iff_le.mpr le_sup_right`. Take `⟨m, -, hm⟩` from `(dvd_prime_pow hpr (v + j)).mp hdvd`. Rewrite `hm` using `[associated_iff_eq]`. Establish `hdm : d ∈ 𝔭 ^ m`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hm]`. Conclude with `Ideal.mem_sup_left (Ideal.mem_span_singleton_self d)`. Establish `hmv : m ≤ v`. Assume the negation of the conclusion as `h`. Conclude with `hd (Ideal.pow_le_pow_right (by omega) hdm)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS : Ideal.span {ι d} ⊔ extP K 𝔭 ^ (v + j) = extP K 𝔭 ^ m`. Establish `h1` using `congrArg (Ideal.map ι) hm`. Simplify using `only [Ideal.map_sup, Ideal.map_span, Set.image_singleton, Ideal.map_pow] at h1`. Conclude with `h1`. Establish `hle : extP K 𝔭 ^ m * Ideal.span {z} ≤ extP K 𝔭 ^ (v + j)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hS, Ideal.sup_mul]`. Apply the tactic sequence `refine sup_le ?_ (by first | exact Ideal.mul_le_left | exact Ideal.mul_le_right)`. Rewrite using `[Ideal.span_singleton_mul_span_singleton, Ideal.span_singleton_le_iff_mem]`. Conclude with `hz`. Establish `hdiv : extP K 𝔭 ^ m * extP K 𝔭 ^ (v + j - m) ∣ extP K 𝔭 ^ m * Ideal.span {z}`.
-
-Rewrite using `[← pow_add, show m + (v + j - m) = v + j by omega]`. Conclude with `Ideal.dvd_iff_le.mpr hle`. Establish `h0 : extP K 𝔭 ^ m ≠ 0` using `pow_ne_zero _ (by rw [Ne, Ideal.zero_eq_bot]; exact map_ne_bot_of_isMaximal h𝔭)`. Establish `h2` using `(mul_dvd_mul_iff_left h0).mp hdiv`. Conclude with `Ideal.dvd_span_singleton.mp (dvd_trans (pow_dvd_pow _ (by omega)) h2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_of_mul_mem {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {d : 𝓞 F} {v j : ℕ}
     (hd : d ∉ 𝔭 ^ (v + 1)) {z : 𝓞 K} (hz : ι d * z ∈ extP K 𝔭 ^ (v + j)) : z ∈ extP K 𝔭 ^ j := by
@@ -288,11 +280,11 @@ theorem mem_of_mul_mem {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {d : �
   exact Ideal.dvd_span_singleton.mp (dvd_trans (pow_dvd_pow _ (by omega)) h2)
 
 /- English proof (translation)
-Take `⟨f, hf⟩` from `(hF _).mp hw`. Establish `hfi : IsIntegral ℤ f`. Establish `h1 : IsIntegral ℤ (algebraMap F K f)`. Rewrite using `[hf]`. Conclude with `RingOfIntegers.isIntegral_coe w`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(isIntegral_algHom_iff ((algebraMap F K).toIntAlgHom) (algebraMap F K).injective).mp h1`. Use `⟨⟨f, by first` and prove the remaining obligations. Consider the case `exact hfi`. Consider the case `exact (mem_integralClosure_iff ℤ F).mpr hfi`. Consider the case `exact (NumberField.mem_ringOfIntegers F f).mpr hfi`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Reduce the claim to the hypotheses of an applicable result.
 
-Consider the case `simpa [integralClosure] using hfi⟩, ?_⟩`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Conclude with `(coe_iota_eq_algebraMap_coe _).trans hf`.
+A detailed English derivation is pending.
 -/
 private theorem exists_iota_eq_of_star_coe_eq (hF : IsFixF K F) (w : 𝓞 K) (hw : star (w : K) = (w : K)) :
     ∃ a : 𝓞 F, ι a = w := by
@@ -312,7 +304,7 @@ private theorem exists_iota_eq_of_star_coe_eq (hF : IsFixF K F) (w : 𝓞 K) (hw
   exact (coe_iota_eq_algebraMap_coe _).trans hf
 
 /- English proof (translation)
-Apply `exists_iota_eq_of_star_coe_eq hF` to reduce the goal to its premises. Establish `e : ((z + conjO K z : 𝓞 K) : K) = (z : K) + star (z : K)`. Rewrite using `[← coe_conjO_eq_star_coe]`. Both sides reduce to the same expression. Rewrite using `[e, star_add, star_star, add_comm]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_tr (hF : IsFixF K F) (z : 𝓞 K) : ∃ a : 𝓞 F, ι a = z + conjO K z := by
   apply exists_iota_eq_of_star_coe_eq hF
@@ -322,9 +314,9 @@ theorem exists_tr (hF : IsFixF K F) (z : 𝓞 K) : ∃ a : 𝓞 F, ι a = z + co
   rw [e, star_add, star_star, add_comm]
 
 /- English proof (translation)
-Introduce `a b hab`. Establish `h : Ideal.comap ι (Ideal.map ι (⊥ : Ideal (𝓞 F))) = ⊥` using `Ideal.comap_map_eq_self_of_faithfullyFlat _`. Rewrite `h` using `[Ideal.map_bot]`. Establish `h1 : a - b ∈ Ideal.comap ι (⊥ : Ideal (𝓞 K))`. Rewrite using `[Ideal.mem_comap, map_sub, hab, sub_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.zero_mem _`. Rewrite `h1` using `[h, Ideal.mem_bot, sub_eq_zero]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ι_inj : Function.Injective (ι) := by
   intro a b hab
@@ -340,7 +332,7 @@ theorem ι_inj : Function.Injective (ι) := by
 def trf (hF : IsFixF K F) (z : 𝓞 K) : 𝓞 F := Classical.choose (exists_tr hF z)
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (exists_tr hF z)`.
+A detailed English derivation is pending.
 -/
 theorem trf_spec (hF : IsFixF K F) (z : 𝓞 K) : ι (trf hF z) = z + conjO K z := Classical.choose_spec (exists_tr hF z)
 
@@ -357,12 +349,12 @@ def trF (hF : IsFixF K F) : 𝓞 K →ₗ[𝓞 F] 𝓞 F where
     ring
 
 /- English proof (translation)
-The claim follows from `trf_spec hF z`.
+A detailed English derivation is pending.
 -/
 theorem trF_spec (hF : IsFixF K F) (z : 𝓞 K) : ι (trF hF z) = z + conjO K z := trf_spec hF z
 
 /- English proof (translation)
-The claim follows from `(mem_pow_iff (K := K) 𝔭 k _).mp (by rw [trF_spec] exact Ideal.add_mem _ hz (conjO_mem_pow hF 𝔭 k z hz))`.
+A detailed English derivation is pending.
 -/
 theorem trF_mem_pow (hF : IsFixF K F) (𝔭 : Ideal (𝓞 F)) (k : ℕ) {z : 𝓞 K} (hz : z ∈ extP K 𝔭 ^ k) :
     trF hF z ∈ 𝔭 ^ k := (mem_pow_iff (K := K) 𝔭 k _).mp (by
@@ -370,21 +362,19 @@ theorem trF_mem_pow (hF : IsFixF K F) (𝔭 : Ideal (𝓞 F)) (k : ℕ) {z : �
     exact Ideal.add_mem _ hz (conjO_mem_pow hF 𝔭 k z hz))
 
 /- English proof (translation)
-Establish `hne : extP K 𝔭 ≠ ⊤`. Introduce `h`. Establish `h1 : ι 1 ∈ extP K 𝔭 ^ 1`. Rewrite using `[pow_one, h]`. Conclude with `Submodule.mem_top`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[mem_pow_iff, pow_one]`. Conclude with `h𝔭.ne_top ((Ideal.eq_top_iff_one _).mpr h1)`. Take `⟨P, hPmax, hPle⟩` from `Ideal.exists_le_maximal _ hne`. Take `⟨θ, t, ht, hθt⟩` from `hK.2.2 P hPmax`. Establish `htc : t = conjO K θ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[coe_conjO_eq_star_coe]`. Conclude with `ht`. Substitute `htc` using the available equality. Use `⟨θ, ?_⟩` and prove the remaining obligations.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hδc : ((θ - conjO K θ : 𝓞 K) : K) = (θ : K) - star (θ : K)`. Rewrite using `[← coe_conjO_eq_star_coe]`. Both sides reduce to the same expression. Establish `hfix : star (((θ - conjO K θ) * (θ - conjO K θ) : 𝓞 K) : K) = (((θ - conjO K θ) * (θ - conjO K θ) : 𝓞 K) : K)`. Establish `e : (((θ - conjO K θ) * (θ - conjO K θ) : 𝓞 K) : K) = ((θ - conjO K θ : 𝓞 K) : K) * ((θ - conjO K θ : 𝓞 K) : K)` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e, hδc, star_mul, star_sub, star_star]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨r, hr⟩` from `exists_iota_eq_of_star_coe_eq hF _ hfix`. Establish `hr𝔭 : r ∉ 𝔭`. Introduce `hr'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : ι r ∈ P` using `hPle (Ideal.mem_map_of_mem _ hr')`. Rewrite `h1` using `[hr]`. Conclude with `hθt ((hPmax.isPrime.mem_or_mem h1).elim id id)`. Establish `h1 : Ideal.span {r} ⊔ 𝔭 = ⊤`. Use `h𝔭.1.2 _ (lt_of_le_of_ne le_sup_right (fun h => hr𝔭 ?_))` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h]`. Conclude with `Ideal.mem_sup_left (Ideal.mem_span_singleton_self r)`. Establish `h2` using `congrArg (Ideal.map ι) h1`. Simplify using `only [Ideal.map_sup, Ideal.map_span, Set.image_singleton, Ideal.map_top] at h2`. Rewrite `h2` using `[hr]`.
-
-Use `eq_top_iff.mpr ?_` and prove the remaining obligations. Rewrite using `[← h2]`. Conclude with `sup_le_sup_right (Ideal.span_singleton_le_span_singleton.mpr (dvd_mul_right _ _)) _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_theta (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) {𝔭 : Ideal (𝓞 F)}
     (h𝔭 : 𝔭.IsMaximal) : ∃ θ : 𝓞 K, Ideal.span {θ - conjO K θ} ⊔ extP K 𝔭 = ⊤ := by
@@ -431,11 +421,11 @@ theorem exists_theta (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : 
     (Ideal.span_singleton_le_span_singleton.mpr (dvd_mul_right _ _)) _
 
 /- English proof (translation)
-Establish `h : Ideal.span {δ} ⊔ extP K 𝔭 ^ N = ⊤` using `by first`. Consider the case `exact Ideal.sup_pow_eq_top hδ`. Consider the case `exact Ideal.isCoprime_iff_sup_eq.mp ((Ideal.isCoprime_iff_sup_eq.mpr hδ).pow_right)`. Establish `h1 : (1 : 𝓞 K) ∈ Ideal.span {δ} ⊔ extP K 𝔭 ^ N`. Rewrite using `[h]`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.mem_top`. Take `⟨y, hy, w, hw, hyw⟩` from `Submodule.mem_sup.mp h1`. Take `⟨e, rfl⟩` from `Ideal.mem_span_singleton'.mp hy`. Use `⟨e, ?_⟩` and prove the remaining obligations. Establish `e2 : δ * e - 1 = -w`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hyw]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2]`. Conclude with `neg_mem hw`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_inv_theta {𝔭 : Ideal (𝓞 F)} {δ : 𝓞 K} (hδ : Ideal.span {δ} ⊔ extP K 𝔭 = ⊤) (N : ℕ) :
     ∃ e : 𝓞 K, δ * e - 1 ∈ extP K 𝔭 ^ N := by
@@ -456,7 +446,7 @@ theorem exists_inv_theta {𝔭 : Ideal (𝓞 F)} {δ : 𝓞 K} (hδ : Ideal.span
   exact neg_mem hw
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `exists_inv_theta hδ N`. Establish `e2 : z = e * (δ * z) - (δ * e - 1) * z` using `by ring`. Rewrite using `[e2]`. Conclude with `Ideal.sub_mem _ (Ideal.mul_mem_left _ e hz) (Ideal.mul_mem_right z _ he)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_unit_mul_mem {𝔭 : Ideal (𝓞 F)} {δ : 𝓞 K} (hδ : Ideal.span {δ} ⊔ extP K 𝔭 = ⊤) {N : ℕ}
     {z : 𝓞 K} (hz : δ * z ∈ extP K 𝔭 ^ N) : z ∈ extP K 𝔭 ^ N := by

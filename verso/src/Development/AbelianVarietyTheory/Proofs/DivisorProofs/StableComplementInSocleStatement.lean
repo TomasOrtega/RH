@@ -9,7 +9,7 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThKLocSS.exists_opStable_compl_of_socleOver_eq | exact GlobalTheory.ThKLocSS.exists_opStable_compl_of_socleOver_eq | (intros; apply GlobalTheory.ThKLocSS.exists_opStable_compl_of_socleOver_eq <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.stable_complement_in_socle : ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (T : Set (Module.End ℂ V)) (N D P : Submodule ℂ V), N ≤ D → GlobalTheory.ThKLocSS.OpStable T N → GlobalTheory.ThKLocSS.socleOver T N D = D → N ≤ P → P ≤ D → GlobalTheory.ThKLocSS.OpStable T P → ∃ C : Submodule ℂ V, C ≤ D ∧ GlobalTheory.ThKLocSS.OpStable T C ∧ P ⊔ C = D ∧ P ⊓ C = N := by
   first | exact @GlobalTheory.ThKLocSS.exists_opStable_compl_of_socleOver_eq | exact GlobalTheory.ThKLocSS.exists_opStable_compl_of_socleOver_eq | (intros; apply GlobalTheory.ThKLocSS.exists_opStable_compl_of_socleOver_eq <;> assumption)

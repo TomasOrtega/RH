@@ -9,7 +9,7 @@ namespace PI.StabPairs.Conv
 open Formalism.QuantumDeterminants Formalism.FourierDecayAlt Formalism.FourierDecayAlt.C2 PI.StabPairsW
 
 /- English proof (translation)
-Use `⟨?_, fun a => ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show (1 : B.Mat k r)ᴴ * Hpk k r * 1 = Hpk k r`. Simplify using the standard rewrite rules. Apply the tactic sequence `all_goals simp`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem one_mem_UW (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) : (1 : B.Mat k r) ∈ UWset k r z := by
   refine ⟨?_, fun a => ⟨?_, ?_⟩, ?_⟩
@@ -18,29 +18,27 @@ theorem one_mem_UW (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) : (1 : B.Mat k 
   all_goals simp
 
 /- English proof (translation)
-Introduce `k r z z' γ hS hP p hp`. Take `⟨u, u'⟩` from `p`. Take `⟨hu, hu', hZp⟩` from `hp`. Simplify using `only at hu hu' hZp`. Establish `hGi` using `hG k r z z' γ hS hP`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hγ : γ ∈ B.GV k r` using `hP.1`. Establish `hγu : IsUnit γ.det` using `isUnit_det_of_mem_GV hγ`. Establish `hZ : IsUnit (Zhat k r z z' γ).det` using `isUnit_iff_ne_zero.mpr (det_Zhat_ne z z' hS γ hP)`. Establish `hZh : IsUnit (Zhat k r z z' γ)ᴴ.det`. Rewrite using `[Matrix.det_conjTranspose]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hZ.star`. Establish `hZp' : u'ᴴ * (Zhat k r z z' γ)ᴴ * u = (Zhat k r z z' γ)ᴴ`. Use `congrArg Matrix.conjTranspose hZp` as an intermediate fact. Simplify `this` using `only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Matrix.mul_assoc]`. Establish `hGi' : IsUnit ((Fm k r z z' γ)ᴴ * Hpk k r * Fm k r z z' γ).det` using `by rwa [← gramM_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ρ, hρ⟩ : ∃ ρ, ρ = PI.StabPairsW.rhoOf k r z z' γ u u'` from `⟨_, rfl⟩`. Rewrite using `[← hρ]`. Establish `hρF : ρ * Fm k r z z' γ = Fm k r z z' γ * Wm u u'`. Rewrite using `[hρ, rho_eq]`. Conclude with `PI.StabPairs.ConvAlg.rhoOf_mul _ _ _ hGi'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hcols` using `hρF`. Rewrite `hcols` using `[Fm_eq, Matrix.mul_fromCols, Wm, Matrix.fromCols_mul_fromBlocks]`. Simplify using `only [Matrix.mul_zero, add_zero, zero_add] at hcols`. Take `⟨hA, hB⟩` from `(Matrix.fromCols_ext_iff _ _ _ _).mp hcols`. Establish `hs' : γ⁻¹ * ρ * γ * Ff k r z' = Ff k r z' * u'`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hγu, Matrix.one_mul]`. Establish `hWG : (Wm u u')ᴴ * ((Fm k r z z' γ)ᴴ * Hpk k r * Fm k r z z' γ) * Wm u u' = (Fm k r z z' γ)ᴴ * Hpk k r * Fm k r z z' γ`. Rewrite using `[← gramM_eq, gramM_blocks z z' hS.2.1.1 hS.2.2.1 γ hγ, Wm, Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`. Simplify using `only [Matrix.conjTranspose_zero, Matrix.zero_mul, Matrix.mul_zero, add_zero, zero_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[ut_adiag k r z hu, ut_adiag k r z' hu', hZp, hZp']`. Establish `hUH : ρ ∈ B.GV k r`. Rewrite using `[mem_GV_iff, hρ, rho_eq]`. Conclude with `PI.StabPairs.ConvAlg.rhoOf_unitary _ _ _ hpk_conjTranspose hGi' hWG`. Establish `hexp : ∀ v, ρ *ᵥ v = v + Ff k r z *ᵥ ((u - 1) *ᵥ ((Km k r z z' γ *ᵥ v) ∘ Sum.inl)) + (γ * Ff k r z') *ᵥ ((u' - 1) *ᵥ ((Km k r z z' γ *ᵥ v) ∘ Sum.inr))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `v`. Rewrite using `[hρ]`. Conclude with `rho_mulVec k r z z' γ u u' v`. Establish `hN : ρ ∈ Nset k r`. Use `⟨hUH, fun a i hi => N2gen k r z ρ hu hA a i hi, fun i j hj1 hj2 hi => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `N3gen k r z ρ i j hi ((u - 1) *ᵥ ((Km k r z z' γ *ᵥ bvec j) ∘ Sum.inl)) (ut_sub_one_last hu _) ?_` and prove the remaining obligations. Establish `hc` using `cancel_of_pair hu hZ hZp _ (Z_cR k r z z' γ hS hP hGi (bvec j) (fun a ha => herm_bvec_fvec k r z j hj1 hj2 a ha))`. Rewrite using `[hexp, hc, Matrix.mulVec_zero, add_zero]`. Establish `hN' : γ⁻¹ * ρ * γ ∈ Nset k r`. Use `⟨mul_mem_GV (mul_mem_GV (inv_mem_GV hγ) hUH) hγ, fun a i hi => N2gen k r z' _ hu' hs' a i hi, fun i j hj1 hj2 hi => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `N3gen k r z' _ i j hi ((u' - 1) *ᵥ ((Km k r z z' γ *ᵥ (γ *ᵥ bvec j)) ∘ Sum.inr)) (ut_sub_one_last hu' _) ?_` and prove the remaining obligations. Establish `hc` using `cancel_of_pair hu' hZh hZp' _ (Z_cL k r z z' γ hS hP hGi (γ *ᵥ bvec j) (fun b hb => by`. Rewrite using `[herm_GV hγ]`. Conclude with `herm_bvec_fvec k r z' j hj1 hj2 b hb))`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hexp, hc, Matrix.mulVec_zero, add_zero, Matrix.mulVec_add, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hγu, Matrix.one_mulVec, Matrix.one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨⟨⟨⟨1, one_mem_UW k r z, ρ, hN, (Matrix.one_mul ρ).symm⟩, γ⁻¹ * ρ * γ, ⟨1, one_mem_UW k r z', _, hN', (Matrix.one_mul _).symm⟩, ?_⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_nonsing_inv _ hγu, Matrix.one_mul, Matrix.mul_one]`. Use `_ = γ * (γ⁻¹ * ρ * γ) * γ⁻¹ := by simp only [Matrix.mul_assoc]`. Introduce `v hv`.
-
-Rewrite `hv` using `[mem_Uperp_iff]`. Rewrite using `[hρ, rho_eq]`. Conclude with `PI.StabPairs.ConvAlg.rhoOf_mulVec_of_ker _ _ _ v hv`. Use `show (uMap k r z ρ, uMap k r z' (γ⁻¹ * ρ * γ)) = (u, u')`. Rewrite using `[uMap_eq z hS.2.1 ρ u hA, uMap_eq z' hS.2.2 _ u' hs']`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem converseStep_of (hG : GramInv) : ConverseStep := by
   intro k r z z' γ hS hP p hp

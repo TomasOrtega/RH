@@ -11,9 +11,7 @@ open MvPolynomial
 universe u
 
 /- English proof (translation)
-Unfold `divCycle at h`. Use `split_ifs at h with hW`. Take `⟨hmin, hrel⟩` from `hW`. Use `⟨hmin.1.1, hrel, le_trans le_sup_left hmin.1.2, ?_⟩` and prove the remaining obligations. Conclude with `MinimalPrimeMultiHomog.proof O K ι _ W (SupSpanMultiHomog.proof O K ι P f e hP hf) hmin`.
-
-Conclude with `absurd rfl h`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem divCycle_ne_zero_facts {O : Type u} [CommRing O] {K : Type} [Fintype K] [DecidableEq K]
     {ι : K → Type} {P : Ideal (MRing ι O)} (hP : IsMultiHomogIdeal P) {f : MRing ι O} {e : K → ℕ}
@@ -27,13 +25,11 @@ theorem divCycle_ne_zero_facts {O : Type u} [CommRing O] {K : Type} [Fintype K] 
   · exact absurd rfl h
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ K _ _ ι _ P hP b f g hD c s hs G U hU`. Assume the negation of the conclusion as `hne`. Apply `hU` to reduce the goal to its premises. Establish `hG : ratDiv P f g G ≠ 0` using `left_ne_zero_of_mul hne`. Establish `hU' : divCycle G s U ≠ 0` using `right_ne_zero_of_mul hne`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hϖG : (C ϖ : MRing ι O) ∈ G` using `hD.vertical G hG`. Take `⟨bf, bg, hf, hg, -⟩` from `hD.degrees`. Establish `hGfacts : P ≤ G ∧ IsMultiHomogIdeal G`. Establish `: divCycle P f G ≠ 0 ∨ divCycle P g G ≠ 0`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite `h` using `[not_or, not_not, not_not]`. Conclude with `hG (by unfold ratDiv; rw [h.1, h.2, sub_zero])`. Break down `this with h | h` into its components or cases. Conclude with `(divCycle_ne_zero_facts hP hf h).2.2`. Conclude with `(divCycle_ne_zero_facts hP hg h).2.2`.
-
-Take `⟨hUp, hUr, hGU, hUm⟩` from `divCycle_ne_zero_facts hGfacts.2 hs hU'`. Conclude with `⟨hUp, hUm, hUr, hGU hϖG, le_trans hGfacts.1 hGU⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem LeftTermSupport.proof : LeftTermSupport.Statement.{u} := by
   intro O _ _ _ ϖ K _ _ ι _ P hP b f g hD c s hs G U hU

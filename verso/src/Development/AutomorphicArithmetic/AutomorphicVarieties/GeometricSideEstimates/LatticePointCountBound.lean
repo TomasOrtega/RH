@@ -7,11 +7,11 @@ open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.Af
 open GroundTheory.Automorphic GroundTheory.Automorphic.CuspidalSpectrum
 
 /- English proof (translation)
-Establish `hT : Th L g' = Th L g` using `hR`. Establish `hm : ∀ P, mean L P g' = mean L P g` using `fun P => by`. Unfold `mean`. Rewrite using `[hT, hC]`. Establish `hmom : mom L g' = mom L g`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `i j w`. Conclude with `hm _`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Unfold `fn`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hT]`. Unfold `dev`. Rewrite using `[hmom]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem gauss_sum_determines_value_and_deviation {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
     (L : AddSubgroup (Fin a → Af E)) (g g' : GA E a)
@@ -33,11 +33,11 @@ private theorem gauss_sum_determines_value_and_deviation {E : Type} [Field E] [N
     rw [hmom]
 
 /- English proof (translation)
-Introduce `E _ _ _ a ha L`. Use `⟨fun γ t g => gauss_sum_determines_value_and_deviation L _ _ ((UpperTheory.point_evaluation_multiplicative_tsum E a ha L ℝ gauss).1 γ t g) (fun F => (UpperTheory.point_evaluation_multiplicative_tsum E a ha L ℂ F).1 γ t g), fun U hU hL u hu g => gauss_sum_determines_value_and_devi …` and prove the remaining obligations. Establish `h1` using `(UpperTheory.point_evaluation_multiplicative_tsum E a ha L ℝ gauss).2.1 g (Unitary.toUnits k)`. Establish `hk : (Unitary.toUnits k : GL (Fin a) (Cinf E)).val = k.1` using `rfl`. Establish `hs : sc k.1 = 1` using `(UpperTheory.deriv_similitudeChar_at_one_eq_trace E a).2.2.2.2 k`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq` using `UpperTheory.geometric_side_quadraticForm_identity E a`. Unfold `Th`. Rewrite using `[h1]`. Unfold `gsum`. Use `tsum_congr fun v => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hk, hs, one_smul]`. Unfold `gauss`. Rewrite using `[hq.2.2.1, (Unitary.mem_iff.1 k.2).2, hq.1]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.lattice_point_count_bound :
     FnInv := by

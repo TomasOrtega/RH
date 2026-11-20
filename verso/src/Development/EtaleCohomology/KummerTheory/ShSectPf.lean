@@ -5,7 +5,7 @@ open Polynomial IsLocalRing CategoryTheory AlgebraicGeometry GlobalTheory.EtC
 namespace LateralTheory.KummerTheory.ShSectPf
 
 /- English proof (translation)
-Assume the negation of the conclusion as `ha`. Use `hφ a ((mem_maximalIdeal a).2 ha)` as an intermediate fact. Rewrite `h` using `[this]`. Conclude with `not_isUnit_zero h`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_of_map {A K : Type} [CommRing A] [IsLocalRing A] [Field K] (φ : A →+* K)
     (hφ : ∀ a ∈ maximalIdeal A, φ a = 0) {a : A} (h : IsUnit (φ a)) : IsUnit a := by
@@ -14,33 +14,31 @@ theorem isUnit_of_map {A K : Type} [CommRing A] [IsLocalRing A] [Field K] (φ : 
   rw [this] at h; exact not_isUnit_zero h
 
 /- English proof (translation)
-Take `⟨s, hsQ, hst⟩` from `Algebra.IsEtaleAt.exists_isStandardEtale (R := A) Q`. Set `S` to `Localization.Away s`. Set `P : StandardEtalePresentation A S` to `hst.nonempty_standardEtalePresentation.some`. Set `K` to `Q.ResidueField`. Establish `hsu : IsUnit ((IsScalarTower.toAlgHom A B K) s)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[isUnit_iff_ne_zero]`. Use `show algebraMap B Q.ResidueField s ≠ 0`. Rewrite using `[Ne, Ideal.algebraMap_residueField_eq_zero]`. Conclude with `hsQ`. Set `ψ : S →ₐ[A] K` to `IsLocalization.Away.liftAlgHom s hsu`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `xb : K` to `ψ P.x`. Establish `hmap` using `P.hasMap.map ψ`. Establish `hder` using `hmap.isUnit_derivative_f`. Establish `hkill : ∀ a ∈ maximalIdeal A, algebraMap A K a = 0`. Introduce `a ha`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[IsScalarTower.algebraMap_apply A B K, Ideal.algebraMap_residueField_eq_zero]`. Rewrite `ha` using `[← hQ]`. Conclude with `ha`. Establish `hloc : IsLocalHom (algebraMap A K)` using `⟨fun a h => isUnit_of_map _ hkill h⟩`. Set `i : ResidueField A →+* K` to `ResidueField.lift (algebraMap A K)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hi : ∀ a, i (residue A a) = algebraMap A K a` using `fun a => ResidueField.lift_residue_apply _ a`. Set `_ : Algebra (ResidueField A) K` to `i.toAlgebra`. Establish `hev : ∀ q : A[X], aeval xb (q.map (residue A)) = aeval xb q`. Introduce `q`. Rewrite using `[aeval_def, aeval_def, eval₂_map]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `congr 1`. Set `fb` to `P.f.map (residue A)`. Establish `hint : IsIntegral (ResidueField A) xb` using `⟨fb, P.monic_f.map _, by rw [← aeval_def, hev]; exact hmap.1⟩`. Establish `hirr` using `minpoly.irreducible hint`. Establish `hsep : (minpoly (ResidueField A) xb).Separable`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Polynomial.separable_iff_derivative_ne_zero hirr]`. Introduce `h0`. Take `⟨h, hh⟩` from `minpoly.dvd (ResidueField A) xb (p := fb) (by rw [hev]; exact hmap.1)`. Establish `: aeval xb (derivative fb) = 0`. Rewrite using `[hh, derivative_mul, h0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite `this` using `[show derivative fb = (derivative P.f).map (residue A) from derivative_map _ _, hev]`. Rewrite `hder` using `[this]`. Conclude with `not_isUnit_zero hder`. Take `⟨a0, ha0⟩` from `IsSepClosed.exists_root _ (minpoly.degree_pos hint).ne' hsep`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hd0 : X - C a0 ∣ minpoly (ResidueField A) xb` using `dvd_iff_isRoot.2 ha0`. Establish `hdvd : minpoly (ResidueField A) xb ∣ X - C a0` using `Irreducible.dvd_symm (irreducible_X_sub_C a0) hirr hd0`. Take `⟨a00, ha00⟩` from `residue_surjective a0`. Establish `hxb : xb = algebraMap A K a00`. Establish `h1 : aeval xb (X - C a0) = 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, hc⟩` from `hdvd`. Rewrite using `[hc, map_mul, minpoly.aeval, zero_mul]`. Rewrite `h1` using `[map_sub, aeval_X, aeval_C, sub_eq_zero]`. Rewrite using `[h1, ← ha00]`. Conclude with `hi a00`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hzero : ∀ a : A, algebraMap A K a = 0 → a ∈ maximalIdeal A`. Introduce `a ha`. Assume the negation of the conclusion as `hn`. Use `((mem_maximalIdeal a).not.1 hn |> not_not.1).map (algebraMap A K)` as an intermediate fact. Rewrite `this` using `[ha]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `not_isUnit_zero this`. Establish `hev' : ∀ q : A[X], algebraMap A K (q.eval a00) = aeval xb q`. Introduce `q`. Rewrite using `[hxb, aeval_algebraMap_apply, coe_aeval_eq_eval]`. Take `⟨r, hr, hra⟩` from `HenselianLocalRing.is_henselian P.f P.monic_f a00 (hzero _ (by rw [hev']; exact hmap.1)) (isUnit_of_map _ hkill (by rw [hev']; exact hder))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `hrK : algebraMap A K r = xb`. Rewrite using `[hxb, ← sub_eq_zero, ← map_sub]`. Conclude with `hkill _ hra`. Establish `hr' : P.HasMap r`. Use `⟨by rw [coe_aeval_eq_eval]; exact hr, isUnit_of_map _ hkill ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← aeval_algebraMap_apply, hrK]`. Conclude with `hmap.2`. Conclude with `⟨((P.lift r hr').comp P.equivRing.toAlgHom).comp (IsScalarTower.toAlgHom A B S)⟩`.
+A detailed English derivation is pending.
 -/
 theorem alg_sect (A B : Type) [CommRing A] [HenselianLocalRing A] [IsSepClosed (ResidueField A)]
     [CommRing B] [Algebra A B] [Algebra.Etale A B] (Q : Ideal B) [Q.IsPrime]
@@ -109,17 +107,15 @@ theorem alg_sect (A B : Type) [CommRing A] [HenselianLocalRing A] [IsSepClosed (
   exact ⟨((P.lift r hr').comp P.equivRing.toAlgHom).comp (IsScalarTower.toAlgHom A B S)⟩
 
 /- English proof (translation)
-Introduce `A _ hA Y f hf hsurj`. Take `⟨hH, hsc⟩` from `hA`. Take `⟨y, hy⟩` from `hsurj.surj (IsLocalRing.closedPoint A : Spec (CommRingCat.of A))`. Set `𝒰` to `Y.affineOpenCover`. Set `j` to `𝒰.idx y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Take `⟨y', hy'⟩` from `𝒰.covers y`. Set `g` to `𝒰.f j`. Set `φ : CommRingCat.of A ⟶ 𝒰.X j` to `Spec.preimage (g ≫ f)`. Establish `hφ : Spec.map φ = g ≫ f` using `Spec.map_preimage _`. Establish `het : φ.hom.Etale`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← HasRingHomProperty.Spec_iff (P := @Etale), hφ]`. Use `infer_instance`. Use `algebraize [φ.hom]`. Establish `hpt : (Spec.map φ) y' = IsLocalRing.closedPoint A`. Rewrite using `[hφ, Scheme.Hom.comp_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [g, j] at hy' ⊢`. Rewrite using `[hy', hy]`. Establish `hQ : y'.asIdeal.comap (algebraMap A (𝒰.X j)) = IsLocalRing.maximalIdeal A`. Use `congrArg PrimeSpectrum.asIdeal hpt` as an intermediate fact. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: y'.asIdeal.IsPrime` using `PrimeSpectrum.isPrime y'`. Take `⟨ψ⟩` from `alg_sect A (𝒰.X j) y'.asIdeal hQ`. Use `⟨Spec.map (CommRingCat.ofHom ψ.toRingHom) ≫ g, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, ← hφ, ← Spec.map_comp]`. Use `Spec.map_id (CommRingCat.of A)` and compare the differences between its conclusion and the goal.
-
-Use extensionality with `a`. Conclude with `ψ.commutes a`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem ShSect_of : LateralTheory.KummerTheory.SecSHPf.ShSect := by
   intro A _ hA Y f hf hsurj

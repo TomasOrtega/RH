@@ -9,7 +9,7 @@ noncomputable section
 namespace GlobalTheory.EtC.OpComp
 
 /- English proof (translation)
-Simplify using `only [ev, Cochain.comp_zero_cochain_v, Cochain.ofHom_v]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem ev_comp_ofHom' {R : Type} [CommRing R] {E : Spc} {I K : Cx R} {n : ℤ} (α : Cochain ((chains R).obj E) I n)
     (u : I ⟶ K) (p : ℕ) (s : ℤ) (h : -(p : ℤ) + n = s) (U : Scheme.{0}) (x : Sx E p U) :
@@ -40,7 +40,7 @@ def invSemi {S R : Type} [CommRing S] [CommRing R] {I : Cx S} {J : Cx R} (ρ : S
     rw [e1, e2]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(AddEquiv.ofBijective (ρ.app U s) (hb U s)).symm (AddEquiv.ofBijective (ρ.app U s) (hb U s) a) = a`. Conclude with `(AddEquiv.ofBijective (ρ.app U s) (hb U s)).symm_apply_apply a`.
+Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem invSemi_app {S R : Type} [CommRing S] [CommRing R] {I : Cx S} {J : Cx R} (ρ : SemiMap I J)
     (hb : ∀ (U : Scheme.{0}) (s : ℤ), Function.Bijective (ρ.app U s)) (U : Scheme.{0}) (s : ℤ) (a : Sec (I.X s) U) :
@@ -49,7 +49,7 @@ theorem invSemi_app {S R : Type} [CommRing S] [CommRing R] {I : Cx S} {J : Cx R}
   exact (AddEquiv.ofBijective (ρ.app U s) (hb U s)).symm_apply_apply a
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `AddEquiv.ofBijective (ρ.app U s) (hb U s) ((AddEquiv.ofBijective (ρ.app U s) (hb U s)).symm b) = b`. Conclude with `(AddEquiv.ofBijective (ρ.app U s) (hb U s)).apply_symm_apply b`.
+Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem app_invSemi {S R : Type} [CommRing S] [CommRing R] {I : Cx S} {J : Cx R} (ρ : SemiMap I J)
     (hb : ∀ (U : Scheme.{0}) (s : ℤ), Function.Bijective (ρ.app U s)) (U : Scheme.{0}) (s : ℤ) (b : Sec (J.X s) U) :
@@ -58,15 +58,15 @@ theorem app_invSemi {S R : Type} [CommRing S] [CommRing R] {I : Cx S} {J : Cx R}
   exact (AddEquiv.ofBijective (ρ.app U s) (hb U s)).apply_symm_apply b
 
 /- English proof (translation)
-Introduce `S R _ _ I J J' ρ ρ' u hu`. Use `⟨fun E n x => ?_, fun hb E n => ?_⟩` and prove the remaining obligations. Take `⟨α, rfl⟩` from `x.mk_surjective`. Take `⟨β, hβ⟩` from `ρ.image_exists E n α`. Rewrite using `[ρ.op_spec E n α β hβ]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `_ = CohomologyClass.mk (zcomp β (Cocycle.ofHom u) (add_zero n))`. Use `ρ'.op_spec E n α _ (fun p s h U y => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ev (β.1.comp (Cochain.ofHom u) (add_zero n)) p s h U y = _`. Rewrite using `[ev_comp_ofHom', hβ, hu]`. Use `set σ := invSemi ρ hb`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : ∀ x, σ.op.app E n (ρ.op.app E n x) = x`. Introduce `x`. Take `⟨α, rfl⟩` from `x.mk_surjective`. Take `⟨β, hβ⟩` from `ρ.image_exists E n α`. Rewrite using `[ρ.op_spec E n α β hβ]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `σ.op_spec E n β α (fun p s h U y => ?_)` and prove the remaining obligations. Rewrite using `[hβ, invSemi_app]`. Establish `h2 : ∀ y, ρ.op.app E n (σ.op.app E n y) = y`. Introduce `y`. Take `⟨β, rfl⟩` from `y.mk_surjective`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨α, hα⟩` from `σ.image_exists E n β`. Rewrite using `[σ.op_spec E n β α hα]`. Use `ρ.op_spec E n α β (fun p s h U y => ?_)` and prove the remaining obligations. Rewrite using `[hα, app_invSemi]`. Conclude with `⟨Function.LeftInverse.injective h1, Function.RightInverse.surjective h2⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem op_comp_bij : ∀ (S R : Type) [CommRing S] [CommRing R] {I : Cx S} {J J' : Cx R} (ρ : SemiMap I J) (ρ' : SemiMap I J') (u : J ⟶ J'), (∀ (U : Scheme.{0}) (s : ℤ) (a : Sec (I.X s) U), ρ'.app U s a = Sec.map (u.f s) (ρ.app U s a)) → (∀ (E : Spc) (n : ℤ) x, ρ'.op.app E n x = cpush _ u n (ρ.op.app E n x)) ∧ ((∀ (U : Scheme.{0}) (s : ℤ), Function.Bijective (ρ.app U s)) → ∀ (E : Spc) (n : ℤ), Function.Bijective (ρ.op.app E n)) := by
   intro S R _ _ I J J' ρ ρ' u hu

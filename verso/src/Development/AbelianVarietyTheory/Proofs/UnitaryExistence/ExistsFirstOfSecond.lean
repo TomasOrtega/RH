@@ -52,9 +52,9 @@ def SquareLaw (n bad r : ℕ) : Prop :=
 variable {H} {Dw : Datum H} {l : Level H} {c : Coeff l}
 
 /- English proof (translation)
-Establish `e : idlE (a * barI H b) = idlE (b * barI H a)`. Establish `m : ∀ I J : Ideal (𝓞 D.host.E), idlE (I * J) = idlE I * idlE J` using `fun I J => Submodule.map_mul I J (Algebra.ofId (𝓞 D.host.E) D.host.E)`. Rewrite using `[m, m, ← ha.2]`. Use `conv_rhs => rw [← hb.2]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `e' : a * barI H b = b * barI H a` using `Submodule.map_injective_of_injective (f := Algebra.linearMap (𝓞 D.host.E) D.host.E) (FaithfulSMul.algebraMap_injective (𝓞 D.host.E) D.host.E) e`. Conclude with `le_antisymm (Ideal.le_of_dvd ((Ideal.isCoprime_iff_sup_eq.2 hb.1).dvd_of_dvd_mul_right ⟨_, e'⟩)) (Ideal.le_of_dvd ((Ideal.isCoprime_iff_sup_eq.2 ha.1).dvd_of_dvd_mul_right ⟨_, e'.symm⟩))`.
+A detailed English derivation is pending.
 -/
 theorem isDetOf_unique {L : Submodule (𝓞 D.host.E) (Fin n → D.host.E)} {a b : Ideal (𝓞 D.host.E)} (ha : IsDetOf H L a)
     (hb : IsDetOf H L b) : a = b := by
@@ -72,13 +72,13 @@ theorem isDetOf_unique {L : Submodule (𝓞 D.host.E) (Fin n → D.host.E)} {a b
     (Ideal.le_of_dvd ((Ideal.isCoprime_iff_sup_eq.2 ha.1).dvd_of_dvd_mul_right ⟨_, e'.symm⟩))
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨epF, h⟩ L 𝔠 g h1`. Take `⟨q, q0, q1, -⟩` from `h L 𝔠 g.1 g.2.1 g.2.2 h1.1 h1.2`. Conclude with `⟨q, q0, q1⟩`. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ L : Submodule (𝓞 D.host.E) (Fin n → D.host.E), ∃ v : c.F, ∀ 𝔠, GlobalTheory.ClassScalarCompare.Guard H bad L → IsDetOf H L 𝔠 → ∃ q : ℚ, 0 < q ∧ q ^ 2 * (((L ⊓ stdLat D.host.E n).toAddSubgroup.addSubgroupOf L.toAddSubgroup).index : ℚ) ^ (Dw.p + Dw.q) = (Ideal.absNorm 𝔠 : ℚ …`. Introduce `L`. Distinguish the cases in `hL : ∃ 𝔠, GlobalTheory.ClassScalarCompare.Guard H bad L ∧ IsDetOf H L 𝔠`. Take `⟨𝔠, g, h1⟩` from `hL`. Take `⟨q, q0, q1⟩` from `h L 𝔠 g h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨(B 𝔠)⁻¹ * (q : c.F), fun 𝔠' _ h2 => ?_⟩` and prove the remaining obligations. Take `rfl` from `isDetOf_unique h1 h2`. Conclude with `⟨q, q0, q1, rfl⟩`. Conclude with `⟨0, fun 𝔠 g h1 => absurd ⟨𝔠, g, h1⟩ hL⟩`. Use `choose epF hepF using key`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨epF, fun L 𝔠 g1 g2 g3 h1 h2 => hepF L 𝔠 ⟨g1, g2, g3⟩ ⟨h1, h2⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_epIs_iff (bad : ℕ) (B : Ideal (𝓞 D.host.E) → c.F) :
     (∃ epF : Submodule (𝓞 D.host.E) (Fin n → D.host.E) → c.F, EpIs (Dw := Dw) c bad B epF) ↔
@@ -105,7 +105,7 @@ theorem exists_epIs_iff (bad : ℕ) (B : Ideal (𝓞 D.host.E) → c.F) :
     exact ⟨epF, fun L 𝔠 g1 g2 g3 h1 h2 => hepF L 𝔠 ⟨g1, g2, g3⟩ ⟨h1, h2⟩⟩
 
 /- English proof (translation)
-Introduce `x hx h1`. Use `h x hx (AddSubgroup.closure_mono ?_ h1)` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, o, ho, rfl⟩`. Conclude with `⟨a, ha, o, Ideal.span_singleton_le_span_singleton.2 (Nat.cast_dvd_cast hd) ho, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem DefinedMod.of_dvd {χ : (AE D)ˣ →* Circle} {m m' : ℕ} (h : DefinedMod χ m) (hd : m ∣ m') : DefinedMod χ m' := by
   intro x hx h1
@@ -187,7 +187,7 @@ variable {V hr} {c : Coeff l} {σ : c.F →+* ℂ} {U : Unf Xo c σ r} {dict : G
 end Compare
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem cXiVal_iff {c : Coeff l} (σ0 : c.F →+* ℂ) {Tup : Type} (d : Tup → DeltaDat Xo c n)
     (U₂ : ∀ t, Unf (d t).Xo₂ (d t).c₂ (σ0.comp ((d t).eF.symm : (d t).c₂.F →+* c.F)) r)
@@ -263,7 +263,7 @@ def SecondOnly : Prop :=
 variable {Tt j h ka lam PQ β Cl Lh gam vol thAd Pl ph ξ bad d φ w La Nc ep io hr B epF cond hw U₂ dict₂ xi}
 
 /- English proof (translation)
-Take `⟨_, _, _, _, _, _, _, k, -⟩` from `h2.adPin j h1 _ T.toCore.good_σ₀`. Conclude with `⟨(h2.unf j h1 _ T.toCore.good_σ₀).1, k, (h2.muVal j h1 _ T.toCore.good_σ₀).1⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem laws_give (h1 : InR D j) (h2 : LawsJ T) : D.R.r = (T.Q.Dw j).p + (T.Q.Dw j).q ∧
     LatEmb (T.V j (sig0 T.Q.c)) (iotaV _ hr (T.iota j)) ∧ ∀ g, ∃ x, IsDetRoot (T.V j (sig0 T.Q.c)) g x := by
@@ -271,7 +271,7 @@ theorem laws_give (h1 : InR D j) (h2 : LawsJ T) : D.R.r = (T.Q.Dw j).p + (T.Q.Dw
   exact ⟨(h2.unf j h1 _ T.toCore.good_σ₀).1, k, (h2.muVal j h1 _ T.toCore.good_σ₀).1⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨D.what₂.mu0⟩, fun t => ((hB.2.2.2.2.2.2.2.2.1 t).1.1 (stdLat _ _) GlobalTheory.Survey.UnimodularStandardLattice.unimod_std (GlobalTheory.Survey.UnimodularStandardLattice.trivAt_std _) (GlobalTheory.Survey.UnimodularStandardLattice.trivAt_std _)).exists.elim fun k _ => ⟨k⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem Bound.nonempty (hB : Bound Tt j h ka lam PQ β Cl Lh gam vol ξ bad d φ) :
     Nonempty D.what₂.Tup ∧ ∀ t, Nonempty (Cl t) :=

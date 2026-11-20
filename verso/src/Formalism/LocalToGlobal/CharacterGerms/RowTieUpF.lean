@@ -26,7 +26,7 @@ def UPCharSt (Y : FBChart C V O dd) (p : PairData Y d I) (Hc : ∀ g, (Y.raw p).
             ((upB V.l (p.n + p.j) p.j' 0 : ℝ) : WithTop ℝ))
 
 /- English proof (translation)
-Take `⟨hh, χ, hχ, hUP⟩` from `h`. Conclude with `CH_of_UP (fun g => RawChart.cart (Hc g)) p.n p.j p.j' p.big hr.big_compl hh (fun g i x => p.yOf g (χ g i) x) (fun g i x => p.yOf_int g (hχ g i) x) hUP (fun g i S t ht => charGerm_holds C V O dd Y d I p Hc (χ g i) (hχ g i) g S t ht)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem chSt_of_upChar (Y : FBChart C V O dd) (p : PairData Y d I) (hr : (Y.raw p).RankHyp)
     (Hc : ∀ g, (Y.raw p).CartHyp V g) (h : UPCharSt Y p Hc) : RawChart.CHSt Hc := by

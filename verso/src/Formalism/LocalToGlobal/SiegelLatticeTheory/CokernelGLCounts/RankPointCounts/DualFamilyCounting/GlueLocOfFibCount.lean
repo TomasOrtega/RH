@@ -9,7 +9,7 @@ namespace Formalism.L2.SG.Pf.Cnt
 open Formalism.L2.SG.Pf.G6
 
 /- English proof (translation)
-The claim follows from `glueLoc_of projection_into_holds (projOnto_of summand_localization riesz_hermitian_holds) hn`.
+A detailed English derivation is pending.
 -/
 theorem glueLoc_of_fibCount (hn : FibCount) : GlueLoc :=
   glueLoc_of projection_into_holds (projOnto_of summand_localization riesz_hermitian_holds) hn

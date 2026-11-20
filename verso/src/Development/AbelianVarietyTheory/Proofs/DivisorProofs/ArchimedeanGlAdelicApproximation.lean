@@ -38,7 +38,7 @@ def splitEquiv : AF F ⊗[F] E ≃ₐ[F] (∀ w : InfinitePlace F, w.Completion 
         (Algebra.TensorProduct.comm F E (Af F))
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, Prod.fst_add, Pi.add_apply, hx, hy, map_add]`. Consider the case `tmul a e`. Simplify using `only [splitEquiv, AlgEquiv.trans_apply, Algebra.TensorProduct.comm_tmul, Algebra.TensorProduct.congr_apply, Algebra.TensorProduct.map_tmul, AlgEquiv.refl_toAlgHom, Algebra.TensorProduct.prodRight_tmul, AlgEquiv.prodCongr_apply, Prod.map_fst, Algebra.TensorProduct.piRight_tmul, Al …`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/
@@ -58,7 +58,7 @@ def pairMat {R S : Type} {m : ℕ} (A : Matrix (Fin m) (Fin m) R) (B : Matrix (F
     Matrix (Fin m) (Fin m) (R × S) := Matrix.of fun i j => (A i j, B i j)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[pairMat, Matrix.mul_apply, Prod.fst_sum]`. Simplify using `[pairMat, Matrix.mul_apply, Prod.snd_sum]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem pairMat_mul {R S : Type} [Semiring R] [Semiring S] {m : ℕ} (A A' : Matrix (Fin m) (Fin m) R)
     (B B' : Matrix (Fin m) (Fin m) S) : pairMat A B * pairMat A' B' = pairMat (A * A') (B * B') := by
@@ -67,7 +67,7 @@ theorem pairMat_mul {R S : Type} [Semiring R] [Semiring S] {m : ℕ} (A A' : Mat
   · simp [pairMat, Matrix.mul_apply, Prod.snd_sum]
 
 /- English proof (translation)
-Apply the tactic sequence `ext i j <;> by_cases h : i = j <;> simp [pairMat, Matrix.one_apply, h]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pairMat_one {R S : Type} [Semiring R] [Semiring S] {m : ℕ} :
     pairMat (1 : Matrix (Fin m) (Fin m) R) (1 : Matrix (Fin m) (Fin m) S) = 1 := by
@@ -77,7 +77,7 @@ def piMat {ι : Type} {R : ι → Type} {m : ℕ} (A : ∀ w, Matrix (Fin m) (Fi
     Matrix (Fin m) (Fin m) (∀ w, R w) := Matrix.of fun i j w => A w i j
 
 /- English proof (translation)
-Use extensionality with `i j w`. Simplify using `[piMat, Matrix.mul_apply, Finset.sum_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem piMat_mul {ι : Type} {R : ι → Type} [∀ w, Semiring (R w)] {m : ℕ}
     (A A' : ∀ w, Matrix (Fin m) (Fin m) (R w)) : piMat A * piMat A' = piMat fun w => A w * A' w := by
@@ -85,7 +85,7 @@ theorem piMat_mul {ι : Type} {R : ι → Type} [∀ w, Semiring (R w)] {m : ℕ
   simp [piMat, Matrix.mul_apply, Finset.sum_apply]
 
 /- English proof (translation)
-Use extensionality with `i j w`. Apply the tactic sequence `by_cases h : i = j <;> simp [piMat, Matrix.one_apply, h]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem piMat_one {ι : Type} {R : ι → Type} [∀ w, Semiring (R w)] {m : ℕ} :
     piMat (fun w => (1 : Matrix (Fin m) (Fin m) (R w))) = 1 := by
@@ -106,7 +106,7 @@ def glueGL {ι : Type} {R : ι → Type} [∀ w, CommRing (R w)] {S : Type} [Com
     rw [piMat_one, pairMat_one]
 
 /- English proof (translation)
-Use `⟨Formalism.UG.bc (splitEquiv F E).symm.toRingEquiv.toRingHom (glueGL (S := Af F ⊗[F] E) g), fun w => ?_⟩` and prove the remaining obligations. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `compInf F E w ((splitEquiv F E).symm _) = _`. Rewrite using `[← splitEquiv_fst, AlgEquiv.apply_symm_apply]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_gl_inf_components (m : ℕ) (g : ∀ w : InfinitePlace F, GL (Fin m) (w.Completion ⊗[F] E)) :
     ∃ a₀ : GL (Fin m) (AF F ⊗[F] E), ∀ w, Formalism.UG.bc (compInf F E w) a₀ = g w := by
@@ -119,7 +119,7 @@ theorem exists_gl_inf_components (m : ℕ) (g : ∀ w : InfinitePlace F, GL (Fin
 end GlobalTheory.AdelicInfGlue
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ m g` and use `GlobalTheory.AdelicInfGlue.exists_gl_inf_components F E m g`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.adelic_gl_prescribed_infinite : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (m : ℕ)
     (g : ∀ w : InfinitePlace F, GL (Fin m) (w.Completion ⊗[F] E)),

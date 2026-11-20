@@ -41,7 +41,7 @@ open Formalism.GaloisCohomology UpperTheory.Top GlobalTheory.Mem.LiteralAutomorp
 namespace UpperTheory.V.Z.J
 open UpperTheory.V.HV UpperTheory.V.Lit UpperTheory.V.W UpperTheory.V.J
 /- English proof (translation)
-The claim follows from `have hN := hH.litN have hA := hH.toClassicalTheorems _root_.UpperTheory.Gal.projectedFormsSystemPart.linkedUnlE_alt hN.aut.art (_root_.UpperTheory.V.W.local_class_field_theory_all_of_literal_automorphy hN) (_root_.UpperTheory.V.HV.Core.modU_of_printsH hH) (_root_.UpperTheory.V.Z. …`.
+A detailed English derivation is pending.
 -/
 theorem linkedUnlE_alt (hH : _root_.UpperTheory.V.Af.HypothesesH') : LinkedUnlE :=
   have hN := hH.litN
@@ -50,7 +50,7 @@ theorem linkedUnlE_alt (hH : _root_.UpperTheory.V.Af.HypothesesH') : LinkedUnlE 
     (lamEx (_root_.UpperTheory.V.W.local_class_field_theory_all_of_literal_automorphy hN)) (b0Ex (phiAll (_root_.UpperTheory.V.W.cohP_alt hN))) (_root_.UpperTheory.V.Z.Sym.W.unitary_three_automorphy_dense_of_prints hH) (_root_.UpperTheory.V.Z.Win.Birth.seed2_alt hH) (_root_.UpperTheory.V.Sd.twist_of_printed_results hA) (_root_.UpperTheory.V.Sd.alg_cyclotomic_of_printed_results hA) (_root_.UpperTheory.V.Sd.alg_restriction_of_printed_results hA)
     (tanA (_root_.UpperTheory.V.W.global_compat_printed_of_literal_automorphy_n hN) (_root_.UpperTheory.V.W.locPrints_of_litN hN)) (_root_.UpperTheory.V.Th.core_alt_bis hH (_root_.UpperTheory.V.W.cohP_alt hN))
 /- English proof (translation)
-The claim follows from `have hC := _root_.UpperTheory.V.HV.Core0.cohInp_alt hH.litN hK have hE := unlEnd3E (_root_.UpperTheory.V.Z.J.linkedUnlE_alt hH) U3.countI (U3.corGK (_root_.UpperTheory.V.Z.J.propGK_of_numberU3U_of_oneCharU (_root_.UpperTheory.GalN.V.Win.N.numberU3U_of_prints hH.toClassicalTheorem …`.
+A detailed English derivation is pending.
 -/
 theorem count_i_of_printed_bound_k_kato_automorphy (hH : _root_.UpperTheory.V.Af.HypothesesH') (hK : ∃ CK : ℝ, LemmaK CK) (hKa : _root_.UpperTheory.V.Z.Kato.WeilSphericalRecords.KatoTwoW) (h3 : _root_.UpperTheory.V.Aut.AutomorphyUnramifiedCoefficientsAlt) : CountI :=
   have hC := _root_.UpperTheory.V.HV.Core0.cohInp_alt hH.litN hK
@@ -59,7 +59,7 @@ theorem count_i_of_printed_bound_k_kato_automorphy (hH : _root_.UpperTheory.V.Af
     (_root_.UpperTheory.V.Z.J.oneCharU_of_katoTwoW_rig_admI_automorphy hC Alg.M.main_holds Alg.M.mprime_holds Alg.lemmaP hKa (_root_.UpperTheory.V.Z.J.rigIUE_alt hC hH (_root_.UpperTheory.V.HV.DescentVanishingReductions.adjoint_lifting_of_cohomology hH) hE)
       (_root_.UpperTheory.V.Z.Win.RR.rigII_a_alt hC hH (_root_.UpperTheory.V.HV.DescentVanishingReductions.adjoint_lifting_of_cohomology hH)) (_root_.UpperTheory.V.Z.J.admissible_typeI_even_level_alt hC hH hE) h3)))
 /- English proof (translation)
-Establish `hN` using `hH.litN`. Establish `hE` using `unlEnd3E (_root_.UpperTheory.V.Z.J.linkedUnlE_alt hH)`. Take `⟨CK, hL⟩` from `hK`. Conclude with `_root_.UpperTheory.V.UnitaryThreeInertia.countV_of_finiteness_duality_euler_host (_root_.UpperTheory.V.UnitaryThreeInertia.unitary_lift_of_reduced_core hS) Alg.M.main_holds Alg.M.mprime_holds hN.coh.lf hN.coh.lt hN.coh.le hN.coh.gf hN.coh.ge hN.coh.pt (X.So.hostVanE CK hL (_root_ …`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem count_v_of_printed_bound_k_reduced_unitary_lift (hH : _root_.UpperTheory.V.Af.HypothesesH') (hK : ∃ CK : ℝ, LemmaK CK) (hS : _root_.UpperTheory.V.Aut.ThmS6Core_s) : CountV := by
   have hN := hH.litN

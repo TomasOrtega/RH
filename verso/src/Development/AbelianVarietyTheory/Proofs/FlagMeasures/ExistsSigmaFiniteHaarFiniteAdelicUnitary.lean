@@ -8,7 +8,7 @@ open scoped InnerProductSpace
 namespace GlobalTheory.CongTop
 
 /- English proof (translation)
-Introduce `I`. Take `⟨_, _, _, -⟩` from `GlobalTheory.CongTop.adelic_topology I`. Conclude with `⟨Measure.haar, inferInstance, inferInstance⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_haar_sigmaFinite :
     ∀ (I : AutInst), ∃ μf : Measure I.Gf, μf.IsHaarMeasure ∧ SigmaFinite μf := by

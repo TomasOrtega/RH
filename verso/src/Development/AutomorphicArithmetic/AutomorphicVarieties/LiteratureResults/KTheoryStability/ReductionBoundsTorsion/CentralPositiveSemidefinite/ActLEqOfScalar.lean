@@ -8,9 +8,9 @@ open NumberField NumberField.InfinitePlace Matrix MeasureTheory UpperTheory.V.KT
 namespace PositivityTheory.KB.CentralizerFixed
 
 /- English proof (translation)
-Establish `hinv : (Matrix.scalar (Fin N) c)⁻¹ = (c⁻¹) • (1 : Matrix (Fin N) (Fin N) ℂ)`. Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Rewrite using `[Matrix.scalar_apply, smul_mul_assoc, one_mul, ← Matrix.diagonal_smul]`. Use extensionality with `i j`. Simplify using `[Matrix.diagonal_apply, Matrix.one_apply, hc]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[hinv, Matrix.conjTranspose_smul, Matrix.conjTranspose_one, smul_mul_assoc, one_mul, mul_smul_comm, mul_one, smul_smul]`. Use `congr 1`. Rewrite using `[star_inv₀, ← mul_inv, Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `push_cast`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem scalar_conj {N : ℕ} (c : ℂ) (hc : c ≠ 0) (M : Matrix (Fin N) (Fin N) ℂ) :
     ((Matrix.scalar (Fin N) c)⁻¹)ᴴ * M * (Matrix.scalar (Fin N) c)⁻¹ =
@@ -30,7 +30,7 @@ theorem scalar_conj {N : ℕ} (c : ℂ) (hc : c ≠ 0) (M : Matrix (Fin N) (Fin 
 variable {L : Type} [Field L] [NumberField L] {N : ℕ}
 
 /- English proof (translation)
-Unfold `actL actM`. Simplify using `only [LinearMap.coe_toContinuousLinearMap', coe_units_inv, LinearMap.coe_mk, AddHom.coe_mk, mat_mkHS]`. Rewrite using `[hg w]`. Conclude with `scalar_conj (c w) (hc w) _`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mat_actL_scalar (g : Gp L N) (c : InfinitePlace L → ℂ) (hc : ∀ w, c w ≠ 0)
     (hg : ∀ w, ((g w : GL (Fin N) ℂ) : Matrix (Fin N) (Fin N) ℂ) = Matrix.scalar (Fin N) (c w))
@@ -43,7 +43,7 @@ theorem mat_actL_scalar (g : Gp L N) (c : InfinitePlace L → ℂ) (hc : ∀ w, 
   exact scalar_conj (c w) (hc w) _
 
 /- English proof (translation)
-Use `ext1 h`. Conclude with `HS_ext fun w => by rw [mat_actL_scalar g c hc hg, mat_actL_scalar g' c' hc' hg', hn]`.
+A detailed English derivation is pending.
 -/
 theorem actL_eq_of_scalar (g g' : Gp L N) (c c' : InfinitePlace L → ℂ) (hc : ∀ w, c w ≠ 0)
     (hc' : ∀ w, c' w ≠ 0)
@@ -55,7 +55,7 @@ theorem actL_eq_of_scalar (g g' : Gp L N) (c c' : InfinitePlace L → ℂ) (hc :
 
 omit [NumberField L] in
 /- English proof (translation)
-Simplify using `[scal]`.
+Simplify using the standard rewrite rules.
 -/
 theorem scal_coe (s : InfinitePlace L → ℂˣ) (w : InfinitePlace L) :
     ((scal L N s w : GL (Fin N) ℂ) : Matrix (Fin N) (Fin N) ℂ) = Matrix.scalar (Fin N) (s w : ℂ) := by
@@ -63,7 +63,7 @@ theorem scal_coe (s : InfinitePlace L → ℂˣ) (w : InfinitePlace L) :
 
 omit [NumberField L] in
 /- English proof (translation)
-Simplify using `[sc, scal]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sc_coe (t : InfinitePlace L → ℝ) (w : InfinitePlace L) :
     (((sc t : Gp L N) w : GL (Fin N) ℂ) : Matrix (Fin N) (Fin N) ℂ) =
@@ -72,7 +72,7 @@ theorem sc_coe (t : InfinitePlace L → ℝ) (w : InfinitePlace L) :
 
 omit [NumberField L] in
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[emb, toP, toK, Matrix.scalar_apply, Matrix.diagonal_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem emb_scalar_coe (u : (𝓞 L)ˣ) (w : InfinitePlace L) :
     ((emb L N (GeneralLinearGroup.scalar (Fin N) u) w : GL (Fin N) ℂ) : Matrix (Fin N) (Fin N) ℂ) =
@@ -82,22 +82,22 @@ theorem emb_scalar_coe (u : (𝓞 L)ˣ) (w : InfinitePlace L) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Conclude with `(Real.exp_pos x).ne'` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem exp_ne (x : ℝ) : ((Real.exp x : ℝ) : ℂ) ≠ 0 := by exact_mod_cast (Real.exp_pos x).ne'
 
 /- English proof (translation)
-Unfold `TScal`. Introduce `L _ _ N`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `t t'`. Use function extensionality and compare the values at `w`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Pi.mul_apply, Units.val_mul, sc_coe, Pi.add_apply, Real.exp_add, Complex.ofReal_mul, map_mul]`. Introduce `t x`. Use function extensionality and compare the values at `w`. Apply `Units.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [Pi.mul_apply, Units.val_mul, sc_coe]`. Conclude with `(Matrix.scalar_commute _ (fun _ => Commute.all _ _) _).eq`. Introduce `u`. Establish `hx : ((u : 𝓞 L) : L) ≠ 0` using `by simp`. Use `actL_eq_of_scalar _ _ (fun w => w.embedding ((u : 𝓞 L) : L)) (fun w => ((Real.exp (lg u w) : ℝ) : ℂ)) (fun w => (map_ne_zero _).2 hx) (fun w => exp_ne _) (emb_scalar_coe u) (fun w => sc_coe _ w) (fun w => ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[InfinitePlace.norm_embedding_eq, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (Real.exp_pos _), lg, Real.exp_log (w.pos_iff.2 hx)]`. Introduce `s`. Use `actL_eq_of_scalar _ _ (fun w => (s w : ℂ)) (fun w => ((Real.exp (Real.log ‖(s w : ℂ)‖) : ℝ) : ℂ)) (fun w => (s w).ne_zero) (fun w => exp_ne _) (scal_coe s) (fun w => sc_coe _ w) (fun w => ?_)` and prove the remaining obligations. Rewrite using `[Complex.norm_real, Real.norm_eq_abs, abs_of_pos (Real.exp_pos _), Real.exp_log (norm_pos_iff.2 (s w).ne_zero)]`. Establish `key : ∀ (t : InfinitePlace L → ℝ) (h : HS L N) w i j, ((actL (sc t) h : HS L N) : InfinitePlace L → Fin N → Fin N → ℂ) w i j = (((‖((Real.exp (t w) : ℝ) : ℂ)‖ ^ 2)⁻¹ : ℝ) : ℂ) * (h : InfinitePlace L → Fin N → Fin N → ℂ) w i j`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t h w i j`. Conclude with `congrFun (congrFun (mat_actL_scalar (sc t) (fun w => ((Real.exp (t w) : ℝ) : ℂ)) (fun w => exp_ne _) (fun w => sc_coe t w) h w) i) j`. Rewrite using `[continuous_clm_apply]`. Introduce `h`. Apply `continuous_induced_rng.2` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `continuous_pi fun w => continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, key]`. Use `(Complex.continuous_ofReal.comp ?_).mul continuous_const` and prove the remaining obligations. Use `Continuous.inv₀ (by fun_prop) fun t => pow_ne_zero _ (norm_ne_zero_iff.2 (exp_ne _))` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tScal : TScal := by
   unfold TScal

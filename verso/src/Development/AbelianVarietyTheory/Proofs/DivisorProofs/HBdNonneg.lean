@@ -10,7 +10,7 @@ namespace GlobalTheory.ClassCount
 def hBd (D : D7) (n : ℕ) : ℝ := (12 * (D.R.f : ℝ) ^ 2 * (n : ℝ) ^ 4 * D.host.rdE ^ 2) ^ (6 * D.R.f * n ^ 2)
 
 /- English proof (translation)
-Unfold `hBd`. Establish `hb : 12 * (D.R.f : ℝ) ^ 2 * (n : ℝ) ^ 4 * D.host.rdE ^ 2 ≤ 12 * (D.R.f : ℝ) ^ 2 * (N : ℝ) ^ 4 * D.host.rdE ^ 2`. Establish `: (n : ℝ) ^ 4 ≤ (N : ℝ) ^ 4` using `pow_le_pow_left₀ (Nat.cast_nonneg _) (by exact_mod_cast hn) 4`. Use `gcongr`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem hBd_mono {D : D7} {n N : ℕ} (hn : n ≤ N) (h1 : 1 ≤ 12 * (D.R.f : ℝ) ^ 2 * (N : ℝ) ^ 4 * D.host.rdE ^ 2)
     (hrd : 0 ≤ D.host.rdE) : hBd D n ≤ hBd D N := by
@@ -23,7 +23,7 @@ theorem hBd_mono {D : D7} {n N : ℕ} (hn : n ≤ N) (h1 : 1 ≤ 12 * (D.R.f : �
     _ ≤ _ := pow_le_pow_right₀ h1 (by gcongr)
 
 /- English proof (translation)
-Simplify using `[hBd]`.
+Simplify using the standard rewrite rules.
 -/
 example (D : D7) : hBd D 0 = 1 := by simp [hBd]
 

@@ -13,9 +13,7 @@ open NumberField Topology ReciprocityTheory.ChartRestriction.G.Geo.Tor Reciproci
 namespace GlobalTheory.GenericReading
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `h`. Establish `h1` using `IntermediateField.cardinalMk_adjoin_le K (s : Set L)`. Rewrite `h1` using `[hs, Cardinal.mk_congr (IntermediateField.topEquiv (F := K) (E := L)).toEquiv]`. Use `Cardinal.mk_le_aleph0_iff.1 (h1.trans (max_le (max_le ?_ ?_) le_rfl))` and prove the remaining obligations. Conclude with `Cardinal.mk_le_aleph0`.
-
-Conclude with `Cardinal.mk_le_aleph0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem countable_of_fg_top {K L : Type} [Field K] [Countable K] [Field L] [Algebra K L]
     (h : (⊤ : IntermediateField K L).FG) : Countable L := by
@@ -27,9 +25,7 @@ theorem countable_of_fg_top {K L : Type} [Field K] [Countable K] [Field L] [Alge
   · exact Cardinal.mk_le_aleph0
 
 /- English proof (translation)
-Establish `h : Countable (MvPolynomial ι L)`. Use `Cardinal.mk_le_aleph0_iff.1 (MvPolynomial.cardinalMk_le_max.trans (max_le (max_le ?_ ?_) le_rfl))` and prove the remaining obligations. Conclude with `Cardinal.mk_le_aleph0`. Conclude with `Cardinal.mk_le_aleph0`. Use `Cardinal.mk_le_aleph0_iff.1 ?_` and prove the remaining obligations.
-
-Rewrite using `[FractionRing.cardinalMk]`. Conclude with `Cardinal.mk_le_aleph0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem countable_fractionRing_mvPolynomial (ι L : Type) [Countable ι] [Field L] [Countable L] :
     Countable (FractionRing (MvPolynomial ι L)) := by
@@ -42,11 +38,11 @@ theorem countable_fractionRing_mvPolynomial (ι L : Type) [Countable ι] [Field 
   exact Cardinal.mk_le_aleph0
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c σ r U _ hU h Z`. Use `⟨?_, fun φ => ?_⟩` and prove the remaining obligations. Establish `hfin : FiniteDimensional ℚ c.F` using `c.fin`. Establish `hcF : Countable c.F` using `Cardinal.mk_le_aleph0_iff.1 (by`. Simplify `Algebra.IsAlgebraic.cardinalMk_le_max ℚ c.F)` using `[Cardinal.mkRat]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hk : Countable (kap Z)` using `countable_of_fg_top ((GlobalTheory.Reg.kap_fg_trdeg E H Dw l Xo c).1 Z)`. Establish `hO : Countable (Om Z)` using `countable_fractionRing_mvPolynomial _ _`. Set `_ : Algebra c.F ℂ` to `σ.toAlgebra`. Conclude with `GlobalTheory.nonempty_algHom_complex_of_countable c.F (Om Z)`. Take `⟨y', hy⟩` from `GlobalTheory.Frames.FramedBaseChange.exists_frMap GlobalTheory.firstFiveLaws.1.secBaseChange E H Dw l Xo c (Om Z) (CAt σ) φ (genFr h Z)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k, x, t, ht⟩` from `hU.2.2.1 y'`. Conclude with `⟨k, x, y', t, hy, ht⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem embedding_read_at_frame : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (r : ℕ) (U : Unf Xo c σ r), GoodEmb c σ → IsUnf U → ∀ (h : GenFrEx Xo c) (Z : Comp Xo c), Nonempty (Om Z →ₐ[c.F] CAt σ) ∧ ∀ φ : Om Z →ₐ[c.F] CAt σ, ∃ (k : U.Comp) (x : (U.X k).dom) (y' : FrPt Xo c (CAt σ)) (t : Ix Dw → (CAt σ)ˣ), FrMap φ (genFr h Z) y' ∧ FrBor t (U.un k x) y' := by
   intro E _ _ _ H Dw l Xo c σ r U _ hU h Z

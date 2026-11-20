@@ -3,15 +3,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
 /- English proof (translation)
-Use `set Y := adj u * X * u with hYdef`. Establish `hY : u * Y = X * u`. Rewrite using `[hYdef, ← mul_assoc, ← mul_assoc, sp_mul_adj hu, one_mul]`. Establish `e1 : (X * u) 2 0 = u 2 0 * Y 0 0`. Rewrite using `[← hY, Matrix.mul_apply, Fin.sum_univ_four, hUp 1 0 (by decide), hUp 2 0 (by decide), hUp 3 0 (by decide)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `e2 : (X * u) 2 0 - d 2 * u 2 0 ∈ I`. Establish `h : (X * u) 2 0 - d 2 * u 2 0 = ∑ k, (X 2 k - Matrix.diagonal d 2 k) * u k 0`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_four, Matrix.diagonal_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Conclude with `Ideal.sum_mem _ fun k _ => Ideal.mul_mem_right _ _ (hX 2 k)`. Establish `e3 : u 2 0 * (d 2 - t) ∈ I`. Establish `h : u 2 0 * (d 2 - t) = -((X * u) 2 0 - d 2 * u 2 0) + u 2 0 * (Y 0 0 - t)`. Rewrite using `[e1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h]`. Conclude with `I.add_mem (I.neg_mem_iff.mpr e2) (I.mul_mem_left _ ht)`. Establish `h4 : d 2 - t = (h2.unit⁻¹ : Rˣ) * (u 2 0 * (d 2 - t))`. Rewrite using `[← mul_assoc, IsUnit.val_inv_mul, one_mul]`.
-
-Rewrite using `[h4]`. Conclude with `I.mul_mem_left _ e3`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem choice_col {R : Type} [CommRing R] (I : Ideal R) (X u : M4 R) (d : Fin 4 → R) (t : R)
     (hX : Cg I X (Matrix.diagonal d)) (hu : IsGSp 1 u) (hUp : IsUp (adj u * X * u))
@@ -41,19 +39,19 @@ private theorem choice_col {R : Type} [CommRing R] (I : Ideal R) (X u : M4 R) (d
   exact I.mul_mem_left _ e3
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ c D hD 𝔞 r u hK`. Take `⟨hs, hsep⟩` from `sg_sep hD 𝔞 false`. Take `⟨-, -, -, -, -, hrev, -⟩` from `UpperTheory.V.GradeZeroInterpolatingElement.facts D hD`. Establish `hredg : ∀ g, Cg (maximalIdeal 𝔞.V) (r g) (Matrix.diagonal fun i => 𝔞.a c ((D.ps i g : (c.O)ˣ) : c.O))`. Introduce `g i j`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `hK.red g i j`. Use `h using 3` and compare the differences between its conclusion and the goal. Simplify using `only [Raw.r0, UpperTheory.V.GradeZeroInterpolatingElement.diagRep, MonoidHom.coe_mk, OneHom.coe_mk, Matrix.diagonal_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hsep' : ∀ i j, lamW i ≠ lamW j → IsUnit (𝔞.a c ((D.ps i (D.sg l) : (c.O)ˣ) : c.O) - 𝔞.a c ((D.ps j (D.sg l) : (c.O)ˣ) : c.O))`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Introduce `i j h`. Simplify `hsep i j h` using `[chi, UpperTheory.V.Ws.lab]`. Take `⟨-, -, hor, -⟩` from `Lab.resFlag 𝔞.V (r (D.sg l)) u _ _ (hredg _) hK.sp (hK.flag _ hs) (hK.char _ hs) hsep'`. Break down `hor with h0 | h2` into its components or cases. Use `⟨false, fun h => absurd h (by decide), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[wM_false_mul]`. Conclude with `h0`. Use `⟨true, fun _ s hs' => ?_, ?_⟩` and prove the remaining obligations. Establish `hc` using `choice_col (maximalIdeal 𝔞.V) (r s) u (fun i => 𝔞.a c ((D.ps i s : (c.O)ˣ) : c.O)) (𝔞.a c ((D.ps 0 s : (c.O)ˣ) : c.O)) (hredg s) hK.sp (hK.flag s hs') (hK.char s hs' 0) h2`. Establish `hres : residue c.O ((D.ps 2 s : (c.O)ˣ) : c.O) = residue c.O ((D.ps 0 s : (c.O)ˣ) : c.O)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Conclude with `(mem_maximalIdeal _).mp hc (𝔞.unit_sub hne)`. Establish `hth : D.th s = D.Psi s * D.al s`. Establish `h` using `congrArg (fun χ => χ s) (hrev 1)`. Simplify `h.symm` using `[Raw.ps]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hx : residue c.O ((D.al s : (c.O)ˣ) : c.O) ≠ 0` using `((D.al s).isUnit.map (residue c.O)).ne_zero`. Simplify using `only [Raw.ps] at hres`. Express the relevant statement in the definitionally equal form `residue c.O ((D.Psi s : (c.O)ˣ) : c.O) = 1`. Apply `mul_right_cancel₀ hx` to reduce the goal to its premises. Rewrite using `[one_mul, ← map_mul, ← Units.val_mul, ← hth]`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using hres.symm`. Rewrite using `[wM_true_mul]`. Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Lab.choice :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → ∀ (𝔞 : Amb l) r u, KPair D 𝔞 r u →

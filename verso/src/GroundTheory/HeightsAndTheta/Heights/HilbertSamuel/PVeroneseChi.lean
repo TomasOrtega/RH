@@ -12,21 +12,21 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 noncomputable section
 
 /- English proof (translation)
-Introduce `D _ n`. Take `⟨bM, hM, hMv⟩` from `hB D n`. Establish `h : ∃ p : (Σ r : ℕ, Fin r → MvPolynomial (Ix (Veronese.Idx D)) ℚ), IsSecBasis (Veronese.x D) n p.2` using `⟨⟨_, bM⟩, hM⟩`. Unfold `Veronese.chi`. Rewrite using `[dif_pos h]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hp` using `h.choose_spec`. Generalize the expression as in `h.choose = p at hp ⊢`. Take `⟨r', b'⟩` from `p`. Establish `hp' : IsSecBasis (Veronese.x D) n b'` using `hp`. Establish `hr : r' = (Finset.Nat.antidiagonalTuple (D + 1) (2 * n)).card` using `hp'.card_eq.trans hM.card_eq.symm`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Substitute `hr` using the available equality. Establish `hA : ∀ k, ∃ c : Fin (Finset.Nat.antidiagonalTuple (D + 1) (2 * n)).card → ℤ, ∑ l, c l • aeval (Veronese.x D) (bM l) = aeval (Veronese.x D) (b' k)` using `fun k => (Submodule.mem_span_range_iff_exists_fun ℤ).mp (by rw [hM.2.2, ← hp'.2.2]; exact Submodule.subset_span ⟨k, rfl⟩)`. Establish `hB' : ∀ l, ∃ c : Fin (Finset.Nat.antidiagonalTuple (D + 1) (2 * n)).card → ℤ, ∑ m, c m • aeval (Veronese.x D) (b' m) = aeval (Veronese.x D) (bM l)` using `fun l => (Submodule.mem_span_range_iff_exists_fun ℤ).mp (by rw [hp'.2.2, ← hM.2.2]; exact Submodule.subset_span ⟨l, rfl⟩)`. Use `choose A hA using hA`. Use `choose B hB' using hB'`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hAB : Matrix.of A * Matrix.of B = 1`. Use extensionality with `k m`. Establish `h1 : ∑ m, (Matrix.of A * Matrix.of B) k m • aeval (Veronese.x D) (b' m) = aeval (Veronese.x D) (b' k)`. Simplify using `only [Matrix.mul_apply, Matrix.of_apply, Finset.sum_smul, mul_smul]`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [← Finset.smul_sum, hB']`. Conclude with `hA k`. Establish `h2 : ∑ m, (1 : Matrix (Fin (Finset.Nat.antidiagonalTuple (D + 1) (2 * n)).card) (Fin (Finset.Nat.antidiagonalTuple (D + 1) (2 * n)).card) ℤ) k m • aeval (Veronese.x D) (b' m) = aeval (Veronese.x D) (b' k)`. Simplify using `[Matrix.one_apply]`. Establish `hli` using `Fintype.linearIndependent_iff.mp hp'.2.1 (fun m => (Matrix.of A * Matrix.of B) k m - (1 : Matrix _ _ ℤ) k m) (by simp only [sub_smul, Finset.sum_sub_distrib, h1, h2, sub_self]) m`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `sub_eq_zero.mp hli`. Establish `hdet : (Matrix.of A).det ^ 2 = 1`. Establish `hd` using `congrArg Matrix.det hAB`. Rewrite `hd` using `[Matrix.det_mul, Matrix.det_one]`. Conclude with `Int.isUnit_sq (isUnit_iff_exists_inv.mpr ⟨_, hd⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hGb` using `hG D n _ b' (Matrix.of A) fun k => by`. Rewrite using `[← hA k]`. Simplify using `only [hMv, zsmul_eq_mul, Matrix.of_apply]`. Rewrite using `[hGb]`. Establish `hdA : ((Matrix.of A).map (Int.cast : ℤ → ℝ)).det = ((Matrix.of A).det : ℝ)` using `((Int.castRingHom ℝ).map_det (Matrix.of A)).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hdet' : ((Matrix.of A).det : ℝ) ^ 2 = 1` using `by exact_mod_cast hdet`. Rewrite using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, Matrix.det_diagonal, hdA]`. Establish `hprod : ((Matrix.of A).det : ℝ) * (∏ k, monoNormSq (adtEnum D (2 * n) k)) * ((Matrix.of A).det : ℝ) = ∏ k, monoNormSq (adtEnum D (2 * n) k)`. Take the linear combination `(∏ k, monoNormSq (adtEnum D (2 * n) k)) * hdet'`. Rewrite using `[hprod, Real.log_prod (fun k _ => (monoNormSq_pos (adtEnum D (2 * n) k)).ne'), chiP, sum_adtEnum D (2 * n) (fun a => Real.log (monoNormSq a))]`.
+A detailed English derivation is pending.
 -/
 theorem VeroneseChi.proof (hB : VeroneseMonoBasis.Statement) (hG : VeroneseGramMono.Statement) :
     VeroneseChi.Statement := by

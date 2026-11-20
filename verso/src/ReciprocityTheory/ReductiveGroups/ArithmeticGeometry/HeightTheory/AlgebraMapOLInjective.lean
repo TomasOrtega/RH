@@ -7,11 +7,11 @@ namespace ValPl
 open IsDedekindDomain WithZero IsLocalRing
 
 /- English proof (translation)
-Proceed by induction on `a using WithTop.recTopCoe with`. Consider the case `top => simp at h`. Consider the case `coe a`. Proceed by induction on `b using WithTop.recTopCoe with`. Consider the case `top => simp at h`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `coe b`. Establish `ha' : (0 : ℤ) ≤ a` using `by exact_mod_cast ha`. Establish `hb' : (0 : ℤ) ≤ b` using `by exact_mod_cast hb`. Establish `h' : a + b = 0` using `by exact_mod_cast h`. Establish `ha0 : a = 0` using `by omega`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[ha0]`. Apply the tactic sequence `first | rfl | exact WithTop.coe_zero | simp`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wt_add_eq_zero {a b : WithTop ℤ} (ha : 0 ≤ a) (hb : 0 ≤ b) (h : a + b = 0) : a = 0 := by
   induction a using WithTop.recTopCoe with
@@ -68,7 +68,7 @@ noncomputable def addv : AddValuation L (WithTop ℤ) :=
       rw [← WithTop.coe_add]; congr 1; ring)
 
 /- English proof (translation)
-Use `first`. Consider the case `(unfold addv; rw [AddValuation.of_apply, if_neg hx])`. Consider the case `simp [addv, AddValuation.of_apply, hx]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem addv_apply {x : L} (hx : x ≠ 0) :
     addv L v x = (((-log (v.valuation L x) : ℤ)) : WithTop ℤ) := by
@@ -77,11 +77,11 @@ theorem addv_apply {x : L} (hx : x ≠ 0) :
   | simp [addv, AddValuation.of_apply, hx]
 
 /- English proof (translation)
-Distinguish the cases in `hs : s = 0`. Substitute `hs` using the available equality. Simplify using the standard rewrite rules. Establish `hx : algebraMap S L s ≠ 0`. Introduce `h`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hs` to reduce the goal to its premises. Apply `IsFractionRing.injective S L` to reduce the goal to its premises. Rewrite using `[h, map_zero]`. Establish `hv : v.valuation L (algebraMap S L s) ≠ 0` using `by simpa using hx`. Rewrite using `[addv_apply v hx]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `(log_le_log hv one_ne_zero).mpr (v.valuation_le_one s)`. Rewrite `h1` using `[log_one]`. Establish `h2 : (0 : ℤ) ≤ -log (v.valuation L (algebraMap S L s))` using `by omega`. Conclude with `h2` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem addv_nonneg (s : S) : 0 ≤ addv L v (algebraMap S L s) := by
   by_cases hs : s = 0
@@ -100,11 +100,11 @@ theorem addv_nonneg (s : S) : 0 ≤ addv L v (algebraMap S L s) := by
   exact_mod_cast h2
 
 /- English proof (translation)
-Distinguish the cases in `hs : s = 0`. Substitute `hs` using the available equality. Rewrite using `[map_zero, AddValuation.map_zero]`. Conclude with `iff_of_true (WithTop.coe_lt_top 0) (Submodule.zero_mem _)`. Establish `hx : algebraMap S L s ≠ 0`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Apply `hs` to reduce the goal to its premises. Apply `IsFractionRing.injective S L` to reduce the goal to its premises. Rewrite using `[h, map_zero]`. Establish `hv : v.valuation L (algebraMap S L s) ≠ 0` using `by simpa using hx`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[addv_apply v hx, ← v.valuation_lt_one_iff_mem (K := L) s]`. Establish `h1 : v.valuation L (algebraMap S L s) < 1 ↔ ¬ (log (1 : WithZero (Multiplicative ℤ)) ≤ log (v.valuation L (algebraMap S L s)))`. Rewrite using `[log_le_log one_ne_zero hv, not_le]`. Rewrite using `[h1, log_one, ← WithTop.coe_zero, WithTop.coe_lt_coe]`. Apply the tactic sequence `constructor <;> intro h <;> omega`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem addv_pos_iff (s : S) : 0 < addv L v (algebraMap S L s) ↔ s ∈ v.asIdeal := by
   by_cases hs : s = 0
@@ -125,39 +125,37 @@ theorem addv_pos_iff (s : S) : 0 < addv L v (algebraMap S L s) ↔ s ∈ v.asIde
   constructor <;> intro h <;> omega
 
 /- English proof (translation)
-Establish `hunit : ∀ d : S, d ∉ v.asIdeal → w (algebraMap S L d) = 0` using `fun d hd => le_antisymm (not_lt.1 (mt (hQ d).1 hd)) (h0 d)`. Establish `hint : ∀ x : L, v.valuation L x ≤ 1 → 0 ≤ w x`. Introduce `x hx`. Take `⟨n, d, hnd⟩` from `HeightOneSpectrum.exists_primeCompl_mul_eq_of_integer (v := v) x hx`. Establish `h` using `congrArg w hnd`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h` using `[AddValuation.map_mul, hunit d d.2, add_zero]`. Rewrite using `[h]`. Conclude with `h0 n`. Establish `heq1 : ∀ x : L, x ≠ 0 → v.valuation L x = 1 → w x = 0`. Introduce `x hx h1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : v.valuation L x⁻¹ = 1` using `by rw [map_inv₀, h1, inv_one]`. Establish `hs : w x + w x⁻¹ = 0`. Rewrite using `[← AddValuation.map_mul, mul_inv_cancel₀ hx, AddValuation.map_one]`. Conclude with `wt_add_eq_zero (hint x h1.le) (hint _ h2.le) hs`. Take `⟨π, hπ⟩` from `v.intValuation_exists_uniformizer`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set p := algebraMap S L π with hp_def`. Establish `hp : v.valuation L p = exp (-1 : ℤ)` using `by rw [hp_def, HeightOneSpectrum.valuation_of_algebraMap, hπ]`. Establish `hp0 : p ≠ 0`. Introduce `h`. Rewrite `hp` using `[h, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Conclude with `exp_ne_zero hp.symm`. Establish `hπQ : π ∈ v.asIdeal`. Rewrite using `[← v.intValuation_lt_one_iff_mem, hπ, ← exp_zero, exp_lt_exp]`. Use linear arithmetic over natural numbers and integers. Take `⟨a0, ha0⟩ : ∃ a0 : ℤ, w p = a0` from `WithTop.ne_top_iff_exists.mp (hw.1 p hp0) |>.imp fun _ h => h.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpinv : w p⁻¹ = ((-a0 : ℤ) : WithTop ℤ)`. Establish `hs : w p + w p⁻¹ = 0`. Rewrite using `[← AddValuation.map_mul, mul_inv_cancel₀ hp0, AddValuation.map_one]`. Establish `hne : w p⁻¹ ≠ ⊤` using `hw.1 _ (inv_ne_zero hp0)`. Take `⟨b, hb⟩` from `WithTop.ne_top_iff_exists.mp hne`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite `hs`, the goal using `[← hb]`. Rewrite `hs` using `[ha0]`. Establish `: a0 + b = 0` using `by exact_mod_cast hs`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Establish `hzpow : ∀ n : ℤ, w (p ^ n) = ((n * a0 : ℤ) : WithTop ℤ)`. Introduce `n`. Proceed by induction on `n using Int.induction_on with`. Consider the case `zero => simp`. Consider the case `succ n ih`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Rewrite using `[zpow_add_one₀ hp0, AddValuation.map_mul, ih, ha0, ← WithTop.coe_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Consider the case `pred n ih`. Rewrite using `[zpow_sub_one₀ hp0, AddValuation.map_mul, ih, hpinv, ← WithTop.coe_add]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hform : ∀ x : L, x ≠ 0 → w x = (((-log (v.valuation L x)) * a0 : ℤ) : WithTop ℤ)`. Introduce `x hx`. Establish `hvx : v.valuation L x ≠ 0` using `by simpa using hx`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `set k := log (v.valuation L x)`. Establish `hy : v.valuation L (x * p ^ k) = 1`. Rewrite using `[map_mul, map_zpow₀, hp, ← exp_log hvx, ← exp_zsmul, ← exp_add]`. Simplify using `[k]`. Establish `hy0 : x * p ^ k ≠ 0` using `mul_ne_zero hx (zpow_ne_zero _ hp0)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `h` using `heq1 _ hy0 hy`. Rewrite `h` using `[AddValuation.map_mul, hzpow]`. Establish `hne : w x ≠ ⊤` using `hw.1 x hx`. Take `⟨b, hb⟩` from `WithTop.ne_top_iff_exists.mp hne`. Rewrite `h`, the goal using `[← hb]`.
+Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: b + k * a0 = 0` using `by exact_mod_cast h`. Use `congr 1`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `ha1 : a0 = 1`. Take `⟨z, hz⟩` from `hw.2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hz0 : z ≠ 0`. Introduce `h`. Rewrite `hz` using `[h, AddValuation.map_zero]`. Conclude with `WithTop.top_ne_coe hz`. Rewrite `hz` using `[hform z hz0]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h1 : (-log (v.valuation L z)) * a0 = 1` using `by exact_mod_cast hz`. Establish `hpos : 0 < a0`. Use `(hQ π).mpr hπQ` as an intermediate fact. Rewrite `this` using `[← hp_def, ha0]`. Conclude with `this` after adjusting the coercions.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `rcases Int.eq_one_or_neg_one_of_mul_eq_one' h1 with ⟨_, h⟩ | ⟨_, h⟩ <;> omega`. Apply `AddValuation.ext` to reduce the goal to its premises. Introduce `x`. Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality.
-
-Simplify using the standard rewrite rules. Rewrite using `[hform x hx, addv_apply v hx, ha1, mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem eq_addv (w : AddValuation L (WithTop ℤ)) (hw : IsNormDiscrete w)
     (h0 : ∀ s : S, 0 ≤ w (algebraMap S L s))
@@ -241,15 +239,13 @@ def PlacesOver (O L : Type*) [CommRing O] [IsLocalRing O] [Field L] [Algebra O L
     (0 < w (algebraMap O L x) ↔ x ∈ maximalIdeal O)}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h x`. Take `⟨⟨r, s⟩, rfl⟩` from `IsLocalization.mk'_surjective P.primeCompl x`. Establish `hsP : (s : R) ∉ P` using `s.2`. Establish `hs0 : w (algebraMap R L s) = 0`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨h1, h2⟩` from `h s`. Conclude with `le_antisymm (not_lt.mp fun hp => hsP (h2.mp hp)) h1`. Establish `hspec : algebraMap O L (IsLocalization.mk' O r s) * algebraMap R L s = algebraMap R L r`. Rewrite using `[IsScalarTower.algebraMap_apply R O L (s : R), IsScalarTower.algebraMap_apply R O L r, ← map_mul, IsLocalization.mk'_spec]`. Establish `hw : w (algebraMap O L (IsLocalization.mk' O r s)) = w (algebraMap R L r)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hspec, AddValuation.map_mul, hs0, add_zero]`. Rewrite using `[hw]`. Use `first`. Consider the case `(rw [IsLocalization.AtPrime.mk'_mem_maximal_iff O P]; exact h r)`. Consider the case `(rw [IsLocalization.AtPrime.mk'_mem_maximal_iff (S := O) (I := P)]; exact h r)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `(rw [IsLocalization.AtPrime.mk'_mem_maximal_iff O]; exact h r)`. Introduce `h x`. Establish `hx` using `h (algebraMap R O x)`. Rewrite `hx` using `[← IsScalarTower.algebraMap_apply R O L x]`. Use `first`.
-
-Consider the case `rwa [IsLocalization.AtPrime.to_map_mem_maximal_iff (S := O) (I := P)] at hx`. Consider the case `(rw [IsLocalization.AtPrime.to_map_mem_maximal_iff O P] at hx; exact hx)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem placesOver_iff_loc {R O L : Type*} [CommRing R] [CommRing O] [IsLocalRing O] [Field L]
     [Algebra R O] [Algebra R L] [Algebra O L] [IsScalarTower R O L] (P : Ideal R) [P.IsPrime]
@@ -290,7 +286,7 @@ variable {O F L : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [F
 
 include F in
 /- English proof (translation)
-Rewrite using `[IsScalarTower.algebraMap_eq O F L]`. Use `first`. Consider the case `exact (algebraMap F L).injective.comp (IsFractionRing.injective O F)`. Consider the case `(rw [RingHom.coe_comp]; exact (algebraMap F L).injective.comp (IsFractionRing.injective O F))`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem algebraMap_OL_injective : Function.Injective (algebraMap O L) := by
   rw [IsScalarTower.algebraMap_eq O F L]
@@ -302,11 +298,11 @@ variable (O F L) in
 include F in
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (algebraMap O (integralClosure O L))`. Introduce `a b hab`. Use `first`. Consider the case `exact algebraMap_OL_injective (F := F) (congrArg Subtype.val hab)`. Consider the case `(apply algebraMap_OL_injective (F := F)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IsScalarTower.algebraMap_apply O (integralClosure O L) L a, IsScalarTower.algebraMap_apply O (integralClosure O L) L b, hab])`. Establish `hne : Q ≠ ⊥`. Introduce and unpack `rfl`. Establish `hB : IsField (integralClosure O L)` using `Ring.isField_iff_maximal_bot.mpr hQ`. Establish `hO : IsField O` using `isField_of_isIntegral_of_isField hinj hB`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmax : (⊥ : Ideal O).IsMaximal` using `Ring.isField_iff_maximal_bot.mp hO`. Conclude with `absurd (IsLocalRing.eq_maximalIdeal hmax).symm IsDiscreteValuationRing.not_a_field'`. Conclude with `⟨⟨Q, hQ.isPrime, hne⟩, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_heightOne (Q : Ideal (integralClosure O L)) (hQ : Q.IsMaximal) :
     ∃ v : HeightOneSpectrum (integralClosure O L), v.asIdeal = Q := by
@@ -326,15 +322,13 @@ theorem exists_heightOne (Q : Ideal (integralClosure O L)) (hQ : Q.IsMaximal) :
   exact ⟨⟨Q, hQ.isPrime, hne⟩, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[PlacesOver, Set.mem_setOf_eq, IsNormDiscrete]`. Use `⟨⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `a ha`. Rewrite using `[addv_apply v ha]`. Conclude with `WithTop.coe_ne_top`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨π, hπ⟩` from `v.valuation_exists_uniformizer L`. Establish `hπ0 : π ≠ 0`. Introduce and unpack `rfl`. Rewrite `hπ` using `[map_zero]`. Conclude with `absurd hπ.symm (by simp)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨π, ?_⟩` and prove the remaining obligations. Rewrite using `[addv_apply v hπ0, hπ, log_exp]`. Simplify using the standard rewrite rules. Introduce `x haveI := v.isMaximal`. Establish `hcomap : v.asIdeal.comap (algebraMap O (integralClosure O L)) = maximalIdeal O`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Treat this case separately.
 
-Apply `IsLocalRing.eq_maximalIdeal` to reduce the goal to its premises. Use `first`. Consider the case `exact Ideal.isMaximal_comap_of_isIntegral_of_isMaximal v.asIdeal`. Consider the case `exact Ideal.IsMaximal.under O v.asIdeal`. Consider the case `infer_instance`.
-
-Rewrite using `[IsScalarTower.algebraMap_apply O (integralClosure O L) L x, ← hcomap, Ideal.mem_comap]`. Conclude with `⟨addv_nonneg v _, addv_pos_iff v _⟩`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem addv_mem_placesOver (v : HeightOneSpectrum (integralClosure O L)) :
     addv L v ∈ PlacesOver O L := by
@@ -366,25 +360,21 @@ variable (O F L) in
 include F in
 
 /- English proof (translation)
-Set `f : HeightOneSpectrum (integralClosure O L) → PlacesOver O L` to `fun v => ⟨addv L v, addv_mem_placesOver v⟩`. Establish `hinj : Function.Injective f`. Introduce `v v' hvv`. Establish `h : addv L v = addv L v'` using `congrArg Subtype.val hvv`. Use extensionality with `b`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[← addv_pos_iff (L := L) v, ← addv_pos_iff (L := L) v', h]`. Establish `hsurj : Function.Surjective f`. Introduce and unpack `⟨w, hw⟩`. Establish `h0 : ∀ b : integralClosure O L, 0 ≤ w (algebraMap (integralClosure O L) L b)`. Introduce `b`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hb : IsIntegral O (algebraMap (integralClosure O L) L b)` using `b.2`. Use `letI : Algebra O (vRing w) := ((algebraMap O L).codRestrict (vRing w) (fun x => (hw.2 x).1)).toAlgebra`. Use `haveI : IsScalarTower O (vRing w) L := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Establish `hb' : IsIntegral (vRing w) (algebraMap (integralClosure O L) L b)` using `hb.tower_top`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hb'`.
+Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hy]`. Conclude with `y.2`. Set `Qw : Ideal (integralClosure O L)` to `{ carrier := {b | 0 < w (algebraMap (integralClosure O L) L b)} add_mem' := fun {a b} ha hb => by`. Simplify using `only [Set.mem_setOf_eq, map_add] at ha hb ⊢`. Conclude with `lt_of_lt_of_le (lt_min ha hb) (w.map_add _ _)`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `zero_mem' := by simp`. Use the proof step `smul_mem' := fun c b hb => by`. Simplify using `only [Set.mem_setOf_eq, smul_eq_mul, map_mul, AddValuation.map_mul] at hb ⊢`. Conclude with `lt_of_lt_of_le hb (le_add_of_nonneg_left (h0 c)) }`. Establish `hprime : Qw.IsPrime`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Use `⟨fun htop => ?_, fun {a b} hab => ?_⟩` and prove the remaining obligations. Establish `h1 : (1 : integralClosure O L) ∈ Qw` using `htop ▸ Submodule.mem_top`. Simplify using `[Qw] at h1`. Express the relevant statement in the definitionally equal form `0 < w (algebraMap _ L (a * b)) at hab`. Rewrite `hab` using `[map_mul, AddValuation.map_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hno`. Rewrite `hno` using `[not_or]`. Establish `ha : w (algebraMap _ L a) = 0` using `le_antisymm (not_lt.1 (hno.1 : ¬ 0 < w (algebraMap _ L a))) (h0 a)`. Establish `hb : w (algebraMap _ L b) = 0` using `le_antisymm (not_lt.1 (hno.2 : ¬ 0 < w (algebraMap _ L b))) (h0 b)`. Rewrite `hab` using `[ha, hb, add_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `lt_irrefl _ hab`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Establish `hne : Qw ≠ ⊥`. Introduce `hbot`. Establish `hmem : algebraMap O (integralClosure O L) ϖ ∈ Qw` using `by show 0 < w (algebraMap (integralClosure O L) L (algebraMap O _ ϖ))`.
-
-Rewrite using `[← IsScalarTower.algebraMap_apply]`. Conclude with `((hw.2 ϖ).2).2 hϖ.not_isUnit`. Rewrite `hmem` using `[hbot, Ideal.mem_bot]`. Establish `: (algebraMap O L) ϖ = 0`. Rewrite using `[IsScalarTower.algebraMap_apply O (integralClosure O L) L, hmem, map_zero]`.
-
-Conclude with `hϖ.ne_zero (algebraMap_OL_injective (F := F) (by rw [this, map_zero]))`. Use `⟨⟨Qw, hprime, hne⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Conclude with `(eq_addv _ w hw.1 h0 (fun s => Iff.rfl)).symm`. Conclude with `⟨Equiv.ofBijective f ⟨hinj, hsurj⟩, fun v => rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem placesOver_bij : ∃ e : HeightOneSpectrum (integralClosure O L) ≃ PlacesOver O L,
     ∀ v, (e v : AddValuation L (WithTop ℤ)) = addv L v := by
@@ -447,13 +437,13 @@ theorem placesOver_bij : ∃ e : HeightOneSpectrum (integralClosure O L) ≃ Pla
   exact ⟨Equiv.ofBijective f ⟨hinj, hsurj⟩, fun v => rfl⟩
 
 /- English proof (translation)
-Establish `hx : algebraMap (integralClosure O L) L b ≠ 0`. Introduce `h`. Apply `hb` to reduce the goal to its premises. Apply `IsFractionRing.injective (integralClosure O L) L` to reduce the goal to its premises. Rewrite using `[h, map_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hI : Ideal.span {b} ≠ 0` using `by first`. Consider the case `(rw [Ne, Submodule.zero_eq_bot, Ideal.span_singleton_eq_bot]; exact hb)`. Consider the case `simpa using hb`. Establish `hc` using `Ideal.count_associates_factors_eq hI v.isPrime v.ne_bot`. Establish `hval : v.valuation L (algebraMap (integralClosure O L) L b) = v.intValuation b` using `by first`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `exact v.valuation_of_algebraMap b`. Consider the case `exact HeightOneSpectrum.valuation_of_algebraMap v b`. Consider the case `simp`. Rewrite using `[addv_apply v hx, hval, v.intValuation_if_neg hb, log_exp, neg_neg, hc]`. Use `first`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `(norm_cast; done)`. Consider the case `(norm_cast; convert rfl; done)`. Consider the case `(push_cast; convert rfl; done)`. Consider the case `(congr 1; convert rfl)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem addv_count (v : HeightOneSpectrum (integralClosure O L)) (b : integralClosure O L)
     (hb : b ≠ 0) :
@@ -485,29 +475,27 @@ theorem addv_count (v : HeightOneSpectrum (integralClosure O L)) (b : integralCl
 include F in
 
 /- English proof (translation)
-Establish `hϖ0 : ϖ ≠ 0` using `hϖ.ne_zero`. Establish `hinj : Function.Injective (algebraMap O (integralClosure O L))`. Introduce `a b hab`. Use `first`. Consider the case `exact algebraMap_OL_injective (F := F) (congrArg Subtype.val hab)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately.
 
-Consider the case `(apply algebraMap_OL_injective (F := F)`. Rewrite using `[IsScalarTower.algebraMap_apply O (integralClosure O L) L a, IsScalarTower.algebraMap_apply O (integralClosure O L) L b, hab])`. Establish `hb : algebraMap O (integralClosure O L) ϖ ≠ 0`. Introduce `h`. Apply `hϖ0` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hinj` to reduce the goal to its premises. Rewrite using `[h, map_zero]`. Rewrite using `[IsScalarTower.algebraMap_apply O (integralClosure O L) L ϖ, addv_count v _ hb]`. Establish `hmax : maximalIdeal O = Ideal.span {ϖ}` using `by first`. Consider the case `exact hϖ.maximalIdeal_eq`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `exact IsDiscreteValuationRing.Irreducible.maximalIdeal_eq hϖ`. Consider the case `exact (IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).mp hϖ`. Establish `hspan : Ideal.span {algebraMap O (integralClosure O L) ϖ} = (maximalIdeal O).map (algebraMap O (integralClosure O L))`. Rewrite using `[hmax, Ideal.map_span, Set.image_singleton]`. Establish `hund : v.asIdeal.under O = maximalIdeal O` using `by haveI := v.isMaximal`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `IsLocalRing.eq_maximalIdeal` to reduce the goal to its premises. Use `first`. Consider the case `exact Ideal.isMaximal_comap_of_isIntegral_of_isMaximal v.asIdeal`. Consider the case `exact Ideal.IsMaximal.under O v.asIdeal`. Consider the case `infer_instance`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmap : Ideal.map (algebraMap O (integralClosure O L)) (v.asIdeal.under O) ≠ ⊥`. Rewrite using `[hund, ← hspan, Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hb`. Rewrite using `[hspan]`. Use `norm_cast`.
+Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Rewrite using `[← hund]`. Use `first`. Consider the case `(rw [Ideal.IsDedekindDomain.ramificationIdx_eq_normalizedFactors_count] <;> first | exact hmap | exact v.isPrime | exact v.ne_bot | exact v.isMaximal | infer_instance | rfl) <;> done`. Consider the case `(rw [← Ideal.IsDedekindDomain.ramificationIdx_eq_normalizedFactors_count] <;> first | exact hmap | exact v.isPrime | exact v.ne_bot | exact v.isMaximal | infer_instance | rfl) <;> done`. Consider the case `(simp [Ideal.IsDedekindDomain.ramificationIdx_eq_normalizedFactors_count, hmap, v.ne_bot]; done)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(rw [Ideal.ramificationIdx_eq_normalizedFactors_count] <;> first | exact hmap | exact v.isPrime | exact v.ne_bot | exact v.isMaximal | infer_instance | rfl) <;> done`. Consider the case `(rw [← Ideal.ramificationIdx_eq_normalizedFactors_count] <;> first | exact hmap | exact v.isPrime | exact v.ne_bot | exact v.isMaximal | infer_instance | rfl) <;> done`. Consider the case `(simp [Ideal.ramificationIdx_eq_normalizedFactors_count, hmap, v.ne_bot]; done)`. Consider the case `(rw [Ideal.ramificationIdx_eq_count_normalizedFactors] <;> first | exact hmap | exact v.isPrime | exact v.ne_bot | exact v.isMaximal | infer_instance | rfl) <;> done`. Consider the case `(rw [← Ideal.ramificationIdx_eq_count_normalizedFactors] <;> first | exact hmap | exact v.isPrime | exact v.ne_bot | exact v.isMaximal | infer_instance | rfl) <;> done`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(simp [Ideal.ramificationIdx_eq_count_normalizedFactors, hmap, v.ne_bot]; done)`. Consider the case `(rw [Ideal.IsDedekindDomain.ramificationIdx_eq_count_normalizedFactors] <;> first | exact hmap | exact v.isPrime | exact v.ne_bot | exact v.isMaximal | infer_instance | rfl) <;> done`. Consider the case `(rw [← Ideal.IsDedekindDomain.ramificationIdx_eq_count_normalizedFactors] <;> first | exact hmap | exact v.isPrime | exact v.ne_bot | exact v.isMaximal | infer_instance | rfl) <;> done`. Consider the case `(simp [Ideal.IsDedekindDomain.ramificationIdx_eq_count_normalizedFactors, hmap, v.ne_bot]; done)`. Consider the case `(rw [Ideal.count_normalizedFactors_eq_ramificationIdx] <;> first | exact hmap | exact v.isPrime | exact v.ne_bot | exact v.isMaximal | infer_instance | rfl) <;> done`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(rw [← Ideal.count_normalizedFactors_eq_ramificationIdx] <;> first | exact hmap | exact v.isPrime | exact v.ne_bot | exact v.isMaximal | infer_instance | rfl) <;> done`. Consider the case `(simp [Ideal.count_normalizedFactors_eq_ramificationIdx, hmap, v.ne_bot]; done)`. Consider the case `(rw [Ideal.IsDedekindDomain.count_normalizedFactors_eq_ramificationIdx] <;> first | exact hmap | exact v.isPrime | exact v.ne_bot | exact v.isMaximal | infer_instance | rfl) <;> done`. Consider the case `(rw [← Ideal.IsDedekindDomain.count_normalizedFactors_eq_ramificationIdx] <;> first | exact hmap | exact v.isPrime | exact v.ne_bot | exact v.isMaximal | infer_instance | rfl) <;> done`. Consider the case `(simp [Ideal.IsDedekindDomain.count_normalizedFactors_eq_ramificationIdx, hmap, v.ne_bot]; done)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(rw [Ideal.ramificationIdx_eq_factors_count] <;> first | exact hmap | exact v.isPrime | exact v.ne_bot | exact v.isMaximal | infer_instance | rfl) <;> done`. Consider the case `(rw [← Ideal.ramificationIdx_eq_factors_count] <;> first | exact hmap | exact v.isPrime | exact v.ne_bot | exact v.isMaximal | infer_instance | rfl) <;> done`. Consider the case `(simp [Ideal.ramificationIdx_eq_factors_count, hmap, v.ne_bot]; done)`. Consider the case `(rw [Ideal.IsDedekindDomain.ramificationIdx_eq_factors_count] <;> first | exact hmap | exact v.isPrime | exact v.ne_bot | exact v.isMaximal | infer_instance | rfl) <;> done`. Consider the case `(rw [← Ideal.IsDedekindDomain.ramificationIdx_eq_factors_count] <;> first | exact hmap | exact v.isPrime | exact v.ne_bot | exact v.isMaximal | infer_instance | rfl) <;> done`.
-
-Consider the case `(simp [Ideal.IsDedekindDomain.ramificationIdx_eq_factors_count, hmap, v.ne_bot]; done)`. Consider the case `skip`. Use `done`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem addv_uniformizer (v : HeightOneSpectrum (integralClosure O L)) {ϖ : O}
     (hϖ : Irreducible ϖ) :

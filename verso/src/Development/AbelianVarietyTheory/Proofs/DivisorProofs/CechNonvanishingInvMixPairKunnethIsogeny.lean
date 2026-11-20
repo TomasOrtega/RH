@@ -26,7 +26,7 @@ namespace GlobalTheory.AmpleGen
 open GlobalTheory.CechPic in
 
 /- English proof (translation)
-Use `(cls_div (A := M) (B := GlobalTheory.AbLaw.pw H (-1)) hM (GlobalTheory.AbLaw.isLB_pw hH _) (GlobalTheory.AbLaw.isLB_tw hM hH 1)).trans ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.AmpleStabFinite.cls_pw hH]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cls_tw_one {X : Scheme.{0}} {M H : LB X} (hM : M.IsLB) (hH : H.IsLB) :
     cls (GlobalTheory.AbLaw.tw M H 1) (GlobalTheory.AbLaw.isLB_tw hM hH 1) = cls M hM + cls H hH := by
@@ -37,7 +37,7 @@ theorem cls_tw_one {X : Scheme.{0}} {M H : LB X} (hM : M.IsLB) (hH : H.IsLB) :
 open GlobalTheory.CechPic in
 
 /- English proof (translation)
-Use `(cls_pull (L := LB.LinComb L ![𝟙 A.left, (GrpObj.inv : A ⟶ A).left] ![a, b]) (LB.isLB_linComb hL _ _) _ _).trans ?_` and prove the remaining obligations. Rewrite using `[cls_linComb hL, Fin.sum_univ_two]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, map_add, map_zsmul, pull_id, ← pull_comp, ← Over.comp_left, Hom.inv_def]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cls_mix_pull {K : Type} [Field K] (A : Over (Sp K)) [GrpObj A] {L : LB A.left} (hL : L.IsLB)
     {T : Over (Sp K)} (z : T ⟶ A) (a b : ℤ) :
@@ -60,13 +60,11 @@ namespace GlobalTheory.AmpleGen
 open GlobalTheory.CechPic in
 
 /- English proof (translation)
-Use `haveI := hA.comm`. Establish `hP' : ∀ a b : ℤ, (mix A L a b).IsLB` using `fun _ _ => LB.isLB_linComb hL _ _`. Establish `h₁` using `GlobalTheory.AbLaw.isLB_tw (LB.isLB_pull (hP' a b) (fst A A).left) (LB.isLB_pull (hP' a b) (snd A A).left) 1`. Use `(cls_eq_iff (LB.isLB_pull h₁ _) (GlobalTheory.AbLaw.isLB_tw (LB.isLB_pull (hP' _ _) _) (LB.isLB_pull (hP' _ _) _) 1)).1 ?_` and prove the remaining obligations. Rewrite using `[cls_pull h₁, cls_tw_one, cls_tw_one, cls_mix_pull A hL, cls_mix_pull A hL, cls_mix_pull A hL, cls_mix_pull A hL]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_add, map_zsmul, ← pull_comp, ← Over.comp_left, GrpObj.comp_inv, psiMap, lift_fst, lift_snd]`. Use `set c := cls L hL`. Use `set x := fst A A`. Use `set y := snd A A`. Establish `e₁` using `GlobalTheory.T.cechPicardPullback_zpow_mul_mixed_split K A hA L hL _ x y a₁ b₁ a b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e₂` using `GlobalTheory.T.cechPicardPullback_zpow_mul_mixed_split K A hA L hL _ x y a₂ b₂ a b`. Establish `f (z : A ⊗ A ⟶ A) (n : ℤ)` using `GlobalTheory.T.cechPicardPullback_zpow_eq_mumford_formula K A hA L hL _ z n`. Establish `g (z : A ⊗ A ⟶ A) (n : ℤ) : pull ((z ^ n)⁻¹).left c = tri (-n) • pull z.left c + tri n • pull (z⁻¹).left c`. Rewrite using `[← zpow_neg, f, neg_neg]`. Rewrite using `[e₁, e₂, f x a₁, g x a₁, f x a₂, g x a₂, f y b₁, g y b₁, f y b₂, g y b₂]`.
-
-Establish `hl : ((a + b) * (a₁ * b₁)) • lam c x y + ((a + b) * (a₂ * b₂)) • lam c x y = 0`. Rewrite using `[← add_smul, ← mul_add, hs, mul_zero, zero_smul]`. Take the linear combination `(norm := module) hl`. Apply the tactic sequence `all_goals exact LB.isLB_pull (hP' _ _) _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem lbIso_pull_psiMap {K : Type} [Field K] (A : Over (Sp K)) [GrpObj A] (hA : IsAbelianScheme A)
     (a₁ b₁ a₂ b₂ : ℤ) (hs : a₁ * b₁ + a₂ * b₂ = 0) {L : LB A.left} (hL : L.IsLB) (a b : ℤ) :
@@ -107,7 +105,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AmpleGen
 
 /- English proof (translation)
-Establish `: Nontrivial ((cechLB f M D).homology n)`. Assume the negation of the conclusion as `hn`. Rewrite `hn` using `[not_nontrivial_iff_subsingleton]`. Conclude with `h ((HomologicalComplex.exactAt_iff_isZero_homology _ _).2 (ModuleCat.isZero_of_subsingleton _))`. Conclude with `Module.finrank_pos`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_pos_of_not_exactAt {K : Type} [Field K] {X : Scheme.{0}} {f : X ⟶ Spec (CommRingCat.of K)}
     {M : LB X} {κ : Type} [LinearOrder κ] {D : κ → X.Opens} {n : ℕ}
@@ -120,31 +118,25 @@ theorem finrank_pos_of_not_exactAt {K : Type} [Field K] {X : Scheme.{0}} {f : X 
   exact Module.finrank_pos
 
 /- English proof (translation)
-Use `haveI := hA.comm`. Use `haveI := hA.proper`. Take `⟨κ, _, _, W, hW, hWc, hne⟩` from `hN`. Establish `hP' : ∀ a b : ℤ, (mix A L a b).IsLB` using `fun _ _ => LB.isLB_linComb hL _ _`. Establish `hsep : IsSeparated A.hom` using `inferInstance`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hproj` using `GlobalTheory.AbelianProjective.isProjBy_of_isAbelianScheme K A hA`. Establish `fin : ∀ M : LB A.left, M.IsLB → ∀ n, Module.Finite K ((cechLB A.hom M W).homology n)` using `fun M hM => cechLB_homology_finite_of_affine_cover K _ A.hom M κ W hM hsep hproj hW hWc`. Establish `h₀ : IsPullback (fst A A).left (snd A A).left A.hom A.hom` using `IsPullback.of_hasPullback A.hom A.hom`. Establish `hAA` using `ReciprocityTheory.ChartRestriction.G.Geo.Tor.AbelianSchemeGerms.isAbelianScheme_tensor A A hA hA`. Use `haveI := hAA.comm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI := hAA.proper`. Establish `hsepAA : IsSeparated (A ⊗ A).hom` using `inferInstance`. Establish `hprojAA` using `GlobalTheory.AbelianProjective.isProjBy_of_isAbelianScheme K (A ⊗ A) hAA`. Use `haveI : CompactSpace (A ⊗ A).left := QuasiCompact.compactSpace_of_compactSpace (A ⊗ A).hom`. Take `⟨k, E, hE, hEc⟩` from `GlobalTheory.PicZeroVan.exists_fin_affine_cover (A ⊗ A).left`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hfin, hflat, hlfp, r, hr, hr0⟩` from `GlobalTheory.T.abelianVarietySquareLinearEndomorphism_finiteLocallyFree K A hA a₁ b₁ a₂ b₂ hd`. Use `set ψ := psiMap A a₁ b₁ a₂ b₂ with hψ`. Use `set P := mix A L a b with hPdef`. Establish `hP` using `hP' a b`. Establish `hf₁ : (fst A A).left ≫ A.hom = (A ⊗ A).hom` using `Over.w (fst A A)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfψ : ψ.left ≫ (A ⊗ A).hom = (A ⊗ A).hom` using `Over.w ψ`. Establish `k₀` using `finrank_cechLB_homology_extProd K _ _ _ A.hom A.hom (fst A A).left (snd A A).left P P h₀ hP hP hsep hsep κ W κ W (Fin k) E hW hWc hW hWc hE hEc (fin P hP) (fin P hP) (2 * j)`. Establish `hpos : 0 < Module.finrank K ((cechLB A.hom P W).homology j)` using `by haveI := fin P hP j`. Conclude with `finrank_pos_of_not_exactAt hne`. Establish `hM : ¬ (cechLB ((fst A A).left ≫ A.hom) (tw (P.pull (fst A A).left) (P.pull (snd A A).left) 1) E).ExactAt (2 * j)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `hex`. Establish `hz : Module.finrank K ((cechLB ((fst A A).left ≫ A.hom) (tw (P.pull (fst A A).left) (P.pull (snd A A).left) 1) E).homology (2 * j)) = 0`. Establish `: Subsingleton ((cechLB ((fst A A).left ≫ A.hom) (tw (P.pull (fst A A).left) (P.pull (snd A A).left) 1) E).homology (2 * j))` using `ModuleCat.subsingleton_of_isZero ((HomologicalComplex.exactAt_iff_isZero_homology _ _).1 hex)`. Conclude with `Module.finrank_zero_of_subsingleton`. Rewrite `hz` using `[k₀]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `(Finset.sum_eq_zero_iff.1 hz) (j, j) (by simp [two_mul])` as an intermediate fact. Conclude with `(Nat.mul_pos hpos hpos).ne' this`. Establish `hu : IsUnit ((r : ℕ) : Γ((A ⊗ A).left, ⊤))`. Use `(GlobalTheory.AbelianMulFin.isUnit_natCast_Sp (K := K) hr0).map (A ⊗ A).hom.appTop.hom` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hM` using `[hf₁]`. Establish `hM' : ¬ (cechLB (ψ.left ≫ (A ⊗ A).hom) ((tw (P.pull (fst A A).left) (P.pull (snd A A).left) 1).pull ψ.left) (fun i => ψ.left ⁻¹ᵁ E i)).ExactAt (2 * j)` using `fun h => hM ((GlobalTheory.FinTrace.cechLB_retract_and_exactAt ψ.left (A ⊗ A).hom r hr hu _ E).2 _ h)`. Rewrite `hM'` using `[hfψ]`. Use `set P₁ := mix A L (a * tri a₁ + b * tri (-a₁) + a * tri a₂ + b * tri (-a₂)) (a * tri (-a₁) + b * tri a₁ + a * tri (-a₂) + b * tri a₂) with hP₁def`. Use `set P₂ := mix A L (a * tri b₁ + b * tri (-b₁) + a * tri b₂ + b * tri (-b₂)) (a * tri (-b₁) + b * tri b₁ + a * tri (-b₂) + b * tri b₂) with hP₂def`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hP₁ : P₁.IsLB` using `hP' _ _`. Take `⟨w, hw⟩` from `lbIso_pull_psiMap A hA a₁ b₁ a₂ b₂ hs hL a b`. Establish `hP₂ : P₂.IsLB` using `hP' _ _`. Establish `hTw : (tw (P₁.pull (fst A A).left) (P₂.pull (snd A A).left) 1).IsLB` using `isLB_tw (LB.isLB_pull hP₁ _) (LB.isLB_pull hP₂ _) 1`. Establish `hN₂ : ¬ (cechLB (A ⊗ A).hom (tw (P₁.pull (fst A A).left) (P₂.pull (snd A A).left) 1) (fun i => ψ.left ⁻¹ᵁ E i)).ExactAt (2 * j)` using `fun h => hM' (h.of_iso (cechLBCongr _ _ (LB.isLB_pull (isLB_tw (LB.isLB_pull hP _) (LB.isLB_pull hP _) 1) _) hTw w hw).symm)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hD : ∀ i, IsAffineOpen (ψ.left ⁻¹ᵁ E i)` using `fun i => (hE i).preimage ψ.left`. Establish `hDc : ⨆ i, ψ.left ⁻¹ᵁ E i = ⊤`. Rewrite using `[← Scheme.Hom.preimage_iSup, hEc]`. Both sides reduce to the same expression. Establish `k₁` using `finrank_cechLB_homology_extProd K _ _ _ A.hom A.hom (fst A A).left (snd A A).left P₁ P₂ h₀ hP₁ hP₂ hsep hsep κ W κ W (Fin k) (fun i => ψ.left ⁻¹ᵁ E i) hW hWc hW hWc hD hDc (fin P₁ hP₁) (fin P₂ hP₂) (2 * j)`.
-
-Rewrite `k₁` using `[hf₁]`. Use `haveI := cechLB_homology_finite_of_affine_cover K _ (A ⊗ A).hom _ (Fin k) (fun i => ψ.left ⁻¹ᵁ E i) hTw hsepAA hprojAA hD hDc (2 * j)`. Establish `hpos₂` using `finrank_pos_of_not_exactAt hN₂`. Rewrite `hpos₂` using `[k₁]`. Take `⟨x, hx, hx0⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hpos₂.ne'`.
-
-Establish `hx' : x.1 + x.2 = 2 * j` using `by simpa using hx`. Use `⟨x.1, x.2, hx', ⟨κ, inferInstance, inferInstance, W, hW, hWc, fun h => hx0 ?_⟩, ⟨κ, inferInstance, inferInstance, W, hW, hWc, fun h => hx0 ?_⟩⟩` and prove the remaining obligations. Use `haveI := fin P₁ hP₁ x.1`. Establish `: Subsingleton ((cechLB A.hom P₁ W).homology x.1)` using `ModuleCat.subsingleton_of_isZero ((HomologicalComplex.exactAt_iff_isZero_homology _ _).1 h)`. Rewrite using `[Module.finrank_zero_of_subsingleton, zero_mul]`.
-
-Use `haveI := fin P₂ hP₂ x.2`. Establish `: Subsingleton ((cechLB A.hom P₂ W).homology x.2)` using `ModuleCat.subsingleton_of_isZero ((HomologicalComplex.exactAt_iff_isZero_homology _ _).1 h)`. Rewrite using `[Module.finrank_zero_of_subsingleton (R := K) (M := (cechLB A.hom P₂ W).homology x.2), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_nonvanishing_invMix_pair_isogeny (K : Type) [Field K] [IsAlgClosed K] (A : Over (Sp K)) [GrpObj A] (hA : IsAbelianScheme A)
     (a₁ b₁ a₂ b₂ : ℤ) (hs : a₁ * b₁ + a₂ * b₂ = 0) (hd : ((a₁ * b₂ - b₁ * a₂ : ℤ) : K) ≠ 0)
@@ -248,7 +240,7 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G Recip
 open scoped CategoryTheory.Obj
 
 /- English proof (translation)
-Introduce `K _ _ A _ hA α β γ δ hs hd L hL a b j h`. Conclude with `exists_nonvanishing_invMix_pair_isogeny K A hA α β γ δ hs hd L hL a b j h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.AmpleGen.nv_mix_pair_of_nv : ∀ (K : Type) [Field K] [IsAlgClosed K] (A : Over (Sp K)) [GrpObj A], IsAbelianScheme A → ∀ α β γ δ : ℤ, α * β + γ * δ = 0 → ((α * δ - β * γ : ℤ) : K) ≠ 0 → ∀ L : LB A.left, L.IsLB → ∀ a b j : ℕ, NV A (mix A L a b) j → ∃ j₁ j₂ : ℕ, j₁ + j₂ = 2 * j ∧ NV A (mix A L (a * tri α + b * tri (-α) + a * tri γ + b * tri (-γ)) (a * tri (-α) + b * tri α + a * tri (-γ) + b * tri γ)) j₁ ∧ NV A (mix A L (a * tri β + b * tri (-β) + a * tri δ + b * tri (-δ)) (a * tri (-β) + b * tri β + a * tri (-δ) + b * tri δ)) j₂ := by
   intro K _ _ A _ hA α β γ δ hs hd L hL a b j h

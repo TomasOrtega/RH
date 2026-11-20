@@ -6,9 +6,9 @@ open scoped WithZeroTopology WithZero
 namespace GlobalTheory.CompletionHomContinuous
 
 /- English proof (translation)
-Use `continuous_of_continuousAt_zero g ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, map_zero, (Valued.hasBasis_nhds_zero B Γ).tendsto_right_iff]`. Introduce `γ _`. Establish `hc : Continuous fun x : A => hA.v x ^ e` using `(Valued.continuous_valuation_of_surjective hs).pow e`. Establish `h0 : Tendsto (fun x : A => hA.v x ^ e) (𝓝 0) (𝓝 0)` using `hc.tendsto' 0 0 (by simp [he.ne'])`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h0` using `[WithZeroTopology.tendsto_zero]`. Establish `hγ : MonoidWithZeroHom.ValueGroup₀.embedding γ.1 ≠ 0` using `by simp`. Use `filter_upwards [h0 _ hγ] with x hx`. Simplify using `only [Set.mem_ofPred_eq, Valuation.restrict_lt_iff_lt_embedding, hg]`. Conclude with `hx`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_of_valuation_eq_pow {A B Γ : Type*} [Field A] [Field B]
     [LinearOrderedCommGroupWithZero Γ] [hA : Valued A Γ] [hB : Valued B Γ]
@@ -28,13 +28,13 @@ theorem continuous_of_valuation_eq_pow {A B Γ : Type*} [Field A] [Field B]
   exact hx
 
 /- English proof (translation)
-Set `g : WithVal (v.valuation K) →+* adicCompletion L v'` to `(algebraMap L (adicCompletion L v')).comp ((algebraMap K L).comp (WithVal.equiv (v.valuation K)).toRingHom)`. Establish `hL : ∀ x : L, (Valued.v (algebraMap L (adicCompletion L v') x) : WithZero (Multiplicative ℤ)) = v'.valuation L x` using `fun x => valuedAdicCompletion_eq_valuation' v' x`. Establish `hK : ∀ x : K, (Valued.v (algebraMap K (adicCompletion K v) x) : WithZero (Multiplicative ℤ)) = v.valuation K x` using `fun x => valuedAdicCompletion_eq_valuation' v x`. Establish `hg : Continuous g`. Use `continuous_of_valuation_eq_pow (Γ := WithZero (Multiplicative ℤ)) ?_ g he ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `c`. Take `⟨x, hx⟩` from `v.valuation_surjective K c`. Conclude with `⟨(WithVal.equiv (v.valuation K)).symm x, hx⟩`. Introduce `x`. Conclude with `(hL _).trans (h _)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Set `f : adicCompletion K v →+* adicCompletion L v'` to `(UniformSpace.Completion.extensionHom g hg).comp (adicCompletion.equiv K v).toRingHom`. Establish `hf : Continuous f` using `(UniformSpace.Completion.continuous_extension (f := g)).comp (adicCompletion.continuous_toCompletion K v)`. Establish `hfx : ∀ x : K, f (algebraMap K (adicCompletion K v) x) = algebraMap L (adicCompletion L v') (algebraMap K L x)` using `fun x => UniformSpace.Completion.extensionHom_coe g hg ((WithVal.equiv (v.valuation K)).symm x)`. Use `⟨f, hf, hfx, fun y => ?_⟩` and prove the remaining obligations. Use `(denseRange_algebraMap K v).induction_on y ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `isClosed_eq ((Valued.continuous_valuation_of_surjective (valuedAdicCompletion_surjective L v')).comp hf) ((Valued.continuous_valuation_of_surjective (valuedAdicCompletion_surjective K v)).pow e)`. Introduce `x`. Rewrite using `[hfx, hL, hK, h]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_completion_hom (K L : Type) [Field K] [NumberField K] [Field L] [NumberField L]
     [Algebra K L] (v : HeightOneSpectrum (RingOfIntegers K))

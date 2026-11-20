@@ -27,13 +27,13 @@ def EnergyFin : Prop :=
   ∀ (D : D7), ConcreteSettingExists.GapHyp D → ∀ (X : HidaSetting D) (u u' : D.what₂.Word), intCe X u u' 1 ≠ ⊤
 
 /- English proof (translation)
-Establish `hV` using `AmpWinJF.levelVolume_pos (X := X)`. Establish `hA : (∏ τ, AmpWin.kap u u' C hB τ) * (c * c') = LoopTerm.covN (Y` using `Y) C u * LoopTerm.covN (Y := Y) C u' := by`. Establish `h` using `AmpWinGlob.ampWin_of_loc C u Y u' hLF hB`. Unfold `AmpWin.AmpWinP PoincareInHH.PoincareSetting.c0X at h`. Use `mul_left_cancel₀ (pow_pos hV 2).ne' ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← h, hc, hc']`. Expand and normalize the polynomial expressions, which then agree. Establish `hK : 0 < Kpl D ^ D.R.f` using `pow_pos (kpl_pos D) _`. Establish `hI : IntC X u u' 1 = c * c' * (Kpl D ^ D.R.f * Ire)`. Rewrite using `[kpl_pow, mul_assoc (2 ^ _), ← h2, ← h1, ← mul_assoc, mul_inv_cancel₀ hcc, one_mul]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hE` using `energy_prod C hB u u' hsec`. Establish `hk0 : 0 ≤ ∏ τ, AmpWin.kap u u' C hB τ` using `Finset.prod_nonneg fun τ _ => Complex.normSq_nonneg _`. Rewrite `hE` using `[← ENNReal.ofReal_toReal hfin, ← ENNReal.ofReal_mul hk0, ← ENNReal.ofReal_pow (kpl_pos D).le]`. Establish `e : (∏ τ, AmpWin.kap u u' C hB τ) * (intCe X u u' 1).toReal = Kpl D ^ D.R.f * (LoopTerm.covN (Y` using `Y) C u * LoopTerm.covN (Y := Y) C u' * Ire) := by`. Rewrite using `[← hA]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show _ * IntC X u u' 1 = _`. Rewrite using `[hI]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hE` using `[e, ENNReal.ofReal_mul hK.le]`. Conclude with `((ENNReal.mul_right_inj (ENNReal.ofReal_pos.2 hK).ne' ENNReal.ofReal_ne_top).1 hE).symm`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_eq {D : D7} {X : HidaSetting D} {θ : ℝ} (Y : Full X) (C : Choice X θ) (hB : WuBessel C) (hLF : LocFactor C)
     (u u' : D.what₂.Word) (hfin : intCe X u u' 1 ≠ ⊤) {c c' Irat Ire : ℝ}
@@ -68,27 +68,25 @@ theorem norm_eq {D : D7} {X : HidaSetting D} {θ : ℝ} (Y : Full X) (C : Choice
   exact ((ENNReal.mul_right_inj (ENNReal.ofReal_pos.2 hK).ne' ENNReal.ofReal_ne_top).1 hE).symm
 
 /- English proof (translation)
-Introduce `Cg cb Cw cT CT C0`. Take `⟨Cgs, CTs, -, -, a, b, hS⟩` from `sizes_of_hypotheses Cg cb Cw cT CT C0`. Use `⟨1, 1, max a 29, max b 16, fun C' Cl h1 h3 D large₂ X Y u u' hc hb X0 ψ _ sd C Th F0 what₂ vR Q i0 i0' νq Irat Ire hO ν hp => ?_⟩` and prove the remaining obligations. Establish `hG : ConcreteSettingExists.GapHyp D` using `ThmSOwn.gap_hypothesis_of_hypotheses hc.1.1 (le_trans (le_max_right _ _) h3) (le_trans (le_max_right _ _) h1)`. Take `⟨-, hb16, hrd0, hrdb, -⟩` from `hS C' Cl (le_trans (le_max_left _ _) h1) (le_trans (le_max_left _ _) h3) D large₂ X Y u u' hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hv : 2 * D.host.v = D.host.rdE` using `by unfold Formalism.BasicNotions.Host.v; ring`. Take `⟨-, -, hNI, -, -, -, hF1, hF2⟩` from `hO`. Establish `hP` using `hNI.1`. Use `set B := bkU X hb Y u u' X0 ψ sd C Th vR Q i0 i0' νq with hBdef`. Establish `hc0 : 0 < B.c0 * B.c0'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, p1, p2, p3, p4, -, -, p5, p6, -⟩` from `hP`. Conclude with `mul_pos (div_pos (mul_pos p3 p1) p5) (div_pos (mul_pos p4 p2) p6)`. Establish `hκ : 0 < MassDataConc.kapN D`. Establish `hg : (0 : ℝ) < (Formalism.MainNotions.S.Lat.gS D : ℝ)`. Establish `h0` using `(D.host.g_prime 0).pos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `h1` using `(D.host.g_prime 1).pos`. Unfold `Formalism.MainNotions.S.Lat.gS`. Check the signs of the components of the expression. Use `rd_pos D` as an intermediate fact. Unfold `MassDataConc.kapN`.
+Check the signs of the components of the expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Check the signs of the components of the expression. Establish `hIC : B.IntC = IntC X u u' 1` using `by show IntC X u u' 1 / MassDataConc.kapN D * kapU D = _`. Unfold `kapU`. Rewrite using `[if_pos hκ, div_mul_cancel₀ _ hκ.ne']`. Rewrite `hF1` using `[hIC]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hF2`, `hrdb` using `[hv]`. Establish `hrd` using `rd_pos D`. Establish `hIre : 0 ≤ Ire`. Establish `h0 : 0 ≤ (B.c0 * B.c0')⁻¹ * IntC X u u' 1` using `mul_nonneg (inv_nonneg.2 hc0.le) ENNReal.toReal_nonneg`. Rewrite `h0` using `[hF1, hF2, ← mul_assoc, ← kpl_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `nonneg_of_mul_nonneg_right h0 (pow_pos (kpl_pos D) _) |> fun h => h`. Establish `hb1 : (1 : ℝ) ≤ large₂.sc.b` using `by linarith`. Establish `hrd1 : 1 ≤ D.host.rdE` using `hv ▸ LoopBCovN.rdE_ge_one D`. Establish `he0 : 0 ≤ LoopBCovN.eN D` using `by unfold LoopBCovN.eN; positivity`. Establish `hel` using `LoopBCovN.eN_le D`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨hIre, 1, one_pos, LoopBTheta.normWin_one large₂ zero_le_one, fun Cc hB => ?_⟩` and prove the remaining obligations. Establish `hLF` using `LocF.locFactor_holds hG Cc`. Take `⟨νl, hpin, hQ⟩` from `Formalism.L2.S.L6.UnitaryStandardVectors.ooQuot_of_nuQPin X u u' ν hp.2`. Establish `hW : LoopTerm.CovWinN (Y` using `Y) Cc large₂ 1 u u' := by`. Use `LoopBCovN.covWinN_of hF Cc large₂ zero_le_one ?_ u u'` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hv]`. Use `mul_le_mul (by nlinarith [sq_nonneg (D.R.m : ℝ)]) (Real.log_le_log hrd hrdb) (Real.log_nonneg hrd1) (by positivity)` and prove the remaining obligations. Take `⟨hK0, hK1⟩` from `AmpWinGlob.K0_mem_covWin_of_locFactor_wuBessel Cc u Y u' hLF hB (AmpWinJF.levelVolume_pos (X := X)) (LoopBCovN.covN_pos hF one_pos Cc u u') hW`. Use `⟨⟨νl, hQ, hU D hG X 1 Cc hB u u' νl hpin⟩, hK0, hK1, fun sec hsec => ?_⟩` and prove the remaining obligations. Rewrite using `[norm_eq Y Cc hB hLF u u' (hE D hG X u u') (c := B.c0) (c' := B.c0') rfl rfl hc0.ne' hF1 hF2 hsec]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `ENNReal.ofReal_le_ofReal (mul_le_mul_of_nonneg_right ?_ hIre)` and prove the remaining obligations. Rewrite using `[hF D X Y 1 Cc u one_pos, hF D X Y 1 Cc u' one_pos, one_mul, hv, D.what₂.card_Tau, ← pow_add, ← Real.rpow_natCast, ← Real.rpow_mul hrd.le]`. Establish `hf0 : (0 : ℝ) ≤ D.R.f` using `Nat.cast_nonneg _`. Use `(Real.rpow_le_rpow hrd.le hrdb (by positivity)).trans (Real.rpow_le_rpow_of_exponent_le hb1 ?_)` and prove the remaining obligations. Use `push_cast`.
-
-Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hel hf0]`.
+Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem uniform_restriction_of_energy (hF : LoopBCovN.CovNFormula) (hU : UniqOfPin) (hE : EnergyFin) : AmplitudeBoundsAllChoicesUniform := by
   intro Cg cb Cw cT CT C0

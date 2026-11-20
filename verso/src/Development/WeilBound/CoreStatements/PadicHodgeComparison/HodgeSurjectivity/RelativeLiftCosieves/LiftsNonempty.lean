@@ -24,7 +24,7 @@ def phi {V V' : Z.Opens} (h : V' ≤ V) : Sec q V →ₐ[K] Sec q V' :=
       exact congrArg (fun f => ((Scheme.ΓSpecIso (CommRingCat.of K)).inv ≫ f).hom r) e }
 
 /- English proof (translation)
-Unfold `ev GlobalTheory.Cris.evalAt rs`. Establish `e : (pt (γ` using `dividedPowersBot K) (p := 0) (q := q) (κ := Ideal.Quotient.mk ⊥) T).appLE V ⊤ hT' = Z.presheaf.map (homOfLE h).op ≫ (pt (γ := dividedPowersBot K) (p := 0) (q := q) (κ := Ideal.Quotient.mk ⊥) T).appLE V' ⊤ hT := by`. Rewrite using `[Scheme.Hom.map_appLE]`. Rewrite using `[e]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ev_res {V V' : Z.Opens} (h : V' ≤ V) (T : Thick (smFun Z q)) (hT : inU q V' T) (hT' : inU q V T)
     (g : Γ(Z, V)) :
@@ -43,7 +43,7 @@ def anyLift {V : Z.Opens} (T : (inU q V).FullSubcategory) (g : Sec q V) : T.obj.
     (ev (γ := dividedPowersBot K) (p := 0) (q := q) (κ := Ideal.Quotient.mk ⊥) T.obj T.property g)).choose
 
 /- English proof (translation)
-The claim follows from `(Ideal.Quotient.mk_surjective _).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem anyLift_spec {V : Z.Opens} (T : (inU q V).FullSubcategory) (g : Sec q V) :
     Ideal.Quotient.mk T.obj.J (anyLift q T g) =
@@ -51,7 +51,7 @@ theorem anyLift_spec {V : Z.Opens} (T : (inU q V).FullSubcategory) (g : Sec q V)
   (Ideal.Quotient.mk_surjective _).choose_spec
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨{ v := fun T g => anyLift q T g hv := fun T g => anyLift_spec q T g }⟩`.
+Supply the required witnesses or components.
 -/
 theorem lifts_nonempty (V : Z.Opens) : Nonempty (Lifts q V) :=
   ⟨{ v := fun T g => anyLift q T g
@@ -69,7 +69,7 @@ def ext {V V' : Z.Opens} (h : V' ≤ V) (Λ' : Lifts q V') : Lifts q V where
       exact anyLift_spec q T g
 
 /- English proof (translation)
-The claim follows from `dif_pos T.property`.
+A detailed English derivation is pending.
 -/
 theorem ext_v {V V' : Z.Opens} (h : V' ≤ V) (k : inU q V' ≤ inU q V) (Λ' : Lifts q V')
     (T : (inU q V').FullSubcategory) (g : Sec q V) :
@@ -77,7 +77,7 @@ theorem ext_v {V V' : Z.Opens} (h : V' ≤ V) (k : inU q V' ≤ inU q V) (Λ' : 
   dif_pos T.property
 
 /- English proof (translation)
-Establish `hv : ∀ (j : Fin (a + 1)) (x : Sec q V), (ext q h Λ').v ((s ⋙ ObjectProperty.ιOfLE k).obj j) x = Λ'.v (s.obj j) (rs h x)` using `fun j x => ext_v q h k Λ' (s.obj j) x`. Simplify using `only [Lifts.form, hv]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem ext_form {V V' : Z.Opens} (h : V' ≤ V) (k : inU q V' ≤ inU q V) (Λ' : Lifts q V') {a : ℕ}
     (g₀ : Sec q V) (g : Fin a → Sec q V) (s : ComposableArrows (inU q V').FullSubcategory a) :
@@ -89,7 +89,7 @@ theorem ext_form {V V' : Z.Opens} (h : V' ≤ V) (k : inU q V' ≤ inU q V) (Λ'
   rfl
 
 /- English proof (translation)
-Take `⟨Λ⟩` from `lifts_nonempty q V`. Take `⟨f, hf, rfl, hfs⟩` from `hc Λ`. Take `⟨f', hf', rfl, hfs'⟩` from `hc' Λ`. Establish `e : f = f'` using `funext fun s => Subtype.ext ((hfs s).trans (hfs' s).symm)`. Substitute `e` using the available equality.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
 Both sides reduce to the same expression.
 -/
@@ -103,7 +103,7 @@ theorem form_uniq {V : Z.Opens} {a : ℕ} {g₀ : Sec q V} {g : Fin a → Sec q 
   rfl
 
 /- English proof (translation)
-Introduce `Λ'`. Take `⟨f, hf, rfl, hfs⟩` from `hc (ext q h Λ')`. Use `⟨(resU (G q a) k).pullC a f, ?_, rfl, fun s => ?_⟩` and prove the remaining obligations. Conclude with `(CH.Mor.d_pullC _ a f).trans ((congrArg _ hf).trans (map_zero _))`. Conclude with `(hfs (s ⋙ ObjectProperty.ιOfLE k)).trans (congrArg _ (ext_form q h k Λ' g₀ g s))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isForm_res {V V' : Z.Opens} (h : V' ≤ V) (k : inU q V' ≤ inU q V) {a : ℕ} (g₀ : Sec q V)
     (g : Fin a → Sec q V) (c : HV q V a a) (hc : IsForm q V g₀ g c) :
@@ -115,9 +115,9 @@ theorem isForm_res {V V' : Z.Opens} (h : V' ≤ V) (k : inU q V' ≤ inU q V) {a
   · exact (hfs (s ⋙ ObjectProperty.ιOfLE k)).trans (congrArg _ (ext_form q h k Λ' g₀ g s))
 
 /- English proof (translation)
-Establish `key : ((resU (G q a) k).pull a).comp e = e'.comp (omMap (phi q h) a)`. Use `LinearMap.ext_on (hFL K (Sec q V) (Sec q V') a).1 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g₀, g, rfl⟩`. Express the relevant statement in the definitionally equal form `(resU (G q a) k).pull a (e (form K g₀ g)) = e' (omMap (phi q h) a (form K g₀ g))`. Rewrite using `[((hFL K (Sec q V) (Sec q V') a).2 (phi q h)).1]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `form_uniq q (isForm_res q h k g₀ g _ (he g₀ g)) (he' _ _)`. Conclude with `LinearMap.congr_fun key ω`.
+A detailed English derivation is pending.
 -/
 theorem isOm_res {V V' : Z.Opens} (h : V' ≤ V) (k : inU q V' ≤ inU q V) (hFL : FormLaws) (a : ℕ)
     (e : Om K (Sec q V) a →ₗ[K] HV q V a a) (e' : Om K (Sec q V') a →ₗ[K] HV q V' a a)
@@ -134,7 +134,7 @@ theorem isOm_res {V V' : Z.Opens} (h : V' ≤ V) (k : inU q V' ≤ inU q V) (hFL
 end OmegaRestriction
 
 /- English proof (translation)
-Introduce `K _ Z q V V' h k`. Conclude with `⟨OmegaRestriction.phi q h, fun g => rfl, fun a g₀ g c hc => OmegaRestriction.isForm_res q h k g₀ g c hc, fun a e e' he he' ω => OmegaRestriction.isOm_res q h k GlobalTheory.T.onto_form_laws a e e' he he' ω⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem omRes_pf : OmRes := by
   intro K _ Z q V V' h k

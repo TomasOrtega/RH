@@ -12,9 +12,9 @@ open scoped InnerProductSpace ENNReal
 namespace ReciprocityTheory.ChartRestriction.DS.Lap
 
 /- English proof (translation)
-Use `hW.1` as an intermediate fact. Use `hN.1` as an intermediate fact. Establish `h1 : ∀ᵐ p ∂(μW.prod μN), Matrix.of p.1 ∈ Formalism.QuantumDeterminants.UWset k r z` using `Measure.quasiMeasurePreserving_fst.ae (ae_iff.2 hW.2.2.1)`. Establish `h2 : ∀ᵐ p ∂(μW.prod μN), Matrix.of p.2 ∈ Formalism.QuantumDeterminants.Nset k r` using `Measure.quasiMeasurePreserving_snd.ae (ae_iff.2 hN.2.2.1)`. Unfold `sInt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[← integral_smul]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [h1, h2] with p hp1 hp2`. Rewrite using `[hfg _ (mul_mem_UH' (inv_mem_UH' hx₀) (mul_mem_UH' (mul_mem_UH' hp1.1 hp2.1) hx)), mul_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sInt_shift_eq_smul {k r : ℕ} {Vp : Type*} [NormedAddCommGroup Vp] [InnerProductSpace ℂ Vp]
     [CompleteSpace Vp] (z : Fin (2 * r + k + 1) → ℂ) (μW μN : Measure (Formalism.QuantumDeterminants.Mt k r))
@@ -36,15 +36,15 @@ theorem sInt_shift_eq_smul {k r : ℕ} {Vp : Type*} [NormedAddCommGroup Vp] [Inn
   rw [hfg _ (mul_mem_UH' (inv_mem_UH' hx₀) (mul_mem_UH' (mul_mem_UH' hp1.1 hp2.1) hx)), mul_smul]
 
 /- English proof (translation)
-Introduce `hB k r z c u v b h hset`. Take `⟨H, i1, i2, i3, σ₀, hDS, hU, hw⟩` from `hE k r z c u v b h hset`. Use `⟨H, i1, i2, i3, σ₀, hDS, ?_⟩` and prove the remaining obligations. Introduce `w₀ hw₀ Vp _ _ _ π hπW μG μS ν hG hSm hQ`. Establish `: CompleteSpace Vp` using `FiniteDimensional.complete ℂ Vp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨hF, ⟨a, C, ha, hdec⟩, T, μ, P, v₁, c₁, hv₁, hc₁, hμ, hP, hcoef⟩` from `hw w₀ hw₀`. Take `⟨d, hd⟩` from `hF μG hG`. Establish `hz` using `hset.2.2.1`. Establish `hT` using `hset.2.2.2.1`. Establish `hc` using `hset.2.2.2.2.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨⟨μW, hμW⟩, ⟨μN, hμN⟩⟩` from `hHWN k r z hz hT`. Establish `hπU` using `hπ k r z u Vp π hz hT hπW`. Establish `hBD : IsBData z c u π μW μN` using `⟨hz, hT, hc, hπW, hμW, hμN⟩`. Take `⟨ξ, x₀, x, hx₀, hx, hne⟩` from `hB k r z c u v b h hset T μ P z c Vp π μW μN hμ hP hBD v₁ hv₁`. Establish `hw1 : ‖w₀‖ = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨P', _, hl⟩` from `hw₀`. Conclude with `hl.1`. Take `⟨hcont, hequiv, hmG, hmν, hL2⟩` from `hS k r H σ₀ w₀ a C Vp π z c u μG μS ν μW μN hU hdec ha hBD hG hSm hQ x₀ hx₀ ξ`. Use `⟨_, hmG, hmν, hequiv, hL2, ?_, ?_⟩` and prove the remaining obligations. Use `S0.Fwd.nonzero k r z c Vp π μG μS ν _ (fun h' hh' v' => hπU.2.1 h' hh' v') hG hSm hQ (hO k r μG hG) hcont hequiv ⟨x, hx, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sInt_shift_eq_smul z μW μN hμW hμN _ π (fun y => ⟪w₀, σ₀ y w₀⟫_ℂ) (psiCoef T μ P v₁ v₁) c₁ hcoef ξ x₀ x hx₀ hx]`. Conclude with `smul_ne_zero hc₁ hne`. Introduce `y hy`. Conclude with `S0.Dec.repro_of_int hIG hIS k r H σ₀ w₀ d a C Vp π z c μG μW μN hU hw1 hd hdec ha hz hT hπU hG hμW hμN x₀ hx₀ ξ y hy`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem nvh_of_b_of (hE : SigZeroStatement) (hS : BesselIntegralSquareIntegrable) (hπ : HCTypeWURepStatement)
     (hO : HaarOpenPosStatement) (hIG : S0.IntGStatement) (hIS : S0.IntSStatement)
@@ -79,17 +79,17 @@ theorem nvh_of_b_of (hE : SigZeroStatement) (hS : BesselIntegralSquareIntegrable
       hμW hμN x₀ hx₀ ξ y hy
 
 /- English proof (translation)
-Introduce `k r μG hG U hU hy`. Take `⟨y, hyU, hyG⟩` from `hy`. Rewrite using `[pos_iff_ne_zero]`. Introduce `h0`. Establish `hinv : ∀ s ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r), μG (Formalism.QuantumDeterminants.lmulM (k` using `k) (r := r) s ⁻¹' U) = 0 := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `s hs`. Rewrite using `[← Measure.map_apply (continuous_lmulM' s).measurable hU.measurableSet, hG.2.2.2 s hs, h0]`. Set `f : {s : Mat k r // s ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)} → Set (Formalism.QuantumDeterminants.Mt k r)` to `fun s => Formalism.QuantumDeterminants.lmulM (k := k) (r := r) s.1 ⁻¹' U`. Take `⟨T, hTc, hTeq⟩` from `TopologicalSpace.isOpen_iUnion_countable f (fun s => hU.preimage (continuous_lmulM' s.1))`. Establish `hcov : {x : Formalism.QuantumDeterminants.Mt k r | Matrix.of x ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)} ⊆ ⋃ i ∈ T, f i`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `x hx`. Rewrite using `[hTeq, Set.mem_iUnion]`. Establish `hx' : Matrix.of x ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)` using `hx`. Use `⟨⟨Matrix.of y * (Matrix.of x)⁻¹, mul_mem_UH' hyG (inv_mem_UH' hx')⟩, ?_⟩` and prove the remaining obligations. Establish `e : Formalism.QuantumDeterminants.lmulM (k` using `k) (r := r) (Matrix.of y * (Matrix.of x)⁻¹) x = y := by`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(Matrix.of y * (Matrix.of x)⁻¹ * Matrix.of x : Mat k r) = Matrix.of y`. Rewrite using `[Matrix.mul_assoc, ReciprocityTheory.ChartRestriction.DS.Xi.StepA.UH_inv_mul k r hx', Matrix.mul_one]`. Use `show Formalism.QuantumDeterminants.lmulM (k := k) (r := r) (Matrix.of y * (Matrix.of x)⁻¹) x ∈ U`. Rewrite using `[e]`. Conclude with `hyU`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : μG {x : Formalism.QuantumDeterminants.Mt k r | Matrix.of x ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)} = 0` using `measure_mono_null hcov ((measure_biUnion_null_iff hTc).2 fun i _ => hinv i.1 i.2)`. Establish `hAc : μG {x : Formalism.QuantumDeterminants.Mt k r | Matrix.of x ∉ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)} = 0` using `hG.2.2.1`. Apply `hG.2.1` to reduce the goal to its premises. Rewrite using `[← Measure.measure_univ_eq_zero]`. Establish `hu : (Set.univ : Set (Formalism.QuantumDeterminants.Mt k r)) = {x | Matrix.of x ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)} ∪ {x | Matrix.of x ∉ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)}`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `x`. Simplify using `only [Set.mem_univ, Set.mem_union, Set.mem_ofPred_eq, true_iff]`. Conclude with `em _`. Rewrite using `[hu]`. Conclude with `measure_union_null hA hAc`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem haarOpenPos : HaarOpenPosStatement := by
   intro k r μG hG U hU hy

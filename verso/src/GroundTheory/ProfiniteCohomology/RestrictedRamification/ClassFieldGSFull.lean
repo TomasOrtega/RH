@@ -15,7 +15,7 @@ section Units
 variable {K : Type*} [Field K] [NumberField K] {S : Set (HeightOneSpectrum (𝓞 K))}
 
 /- English proof (translation)
-Use `mem_unitsOutsidePos.2 ⟨pow_mem hu 2, fun w ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[map_pow, Units.val_pow_eq_pow_val, map_pow]`. Establish `h0 : InfinitePlace.Completion.extensionEmbeddingOfIsReal w.2 ((infiniteProj w.1 u : (w.1.Completion)ˣ) : w.1.Completion) ≠ 0` using `(map_ne_zero _).2 (Units.ne_zero _)`. Conclude with `lt_of_le_of_ne (sq_nonneg _) (Ne.symm (pow_ne_zero 2 h0))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sq_mem_unitsOutsidePos {u : IdeleGroup K} (hu : u ∈ unitsOutside S) :
     u ^ 2 ∈ unitsOutsidePos S := by
@@ -27,7 +27,7 @@ theorem sq_mem_unitsOutsidePos {u : IdeleGroup K} (hu : u ∈ unitsOutside S) :
   exact lt_of_le_of_ne (sq_nonneg _) (Ne.symm (pow_ne_zero 2 h0))
 
 /- English proof (translation)
-The claim follows from `mem_unitsOutsidePos.2 ⟨hu, fun w ↦ absurd w.2 (InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex w.1))⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_unitsOutsidePos_of_isTotallyComplex [IsTotallyComplex K] {u : IdeleGroup K}
     (hu : u ∈ unitsOutside S) : u ∈ unitsOutsidePos S :=
@@ -37,7 +37,7 @@ theorem mem_unitsOutsidePos_of_isTotallyComplex [IsTotallyComplex K] {u : IdeleG
 end Units
 
 /- English proof (translation)
-Take `⟨k, rfl⟩` from `hn`. Rewrite `hz` using `[pow_succ, pow_mul, h2, one_pow, one_mul]`. Conclude with `hz`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_one_of_sq_eq_one_of_odd {G : Type*} [Group G] {n : ℕ} (hn : Odd n) {z : G}
     (h2 : z ^ 2 = 1) (hz : z ^ n = 1) : z = 1 := by
@@ -61,17 +61,17 @@ theorem precompPos_apply (f : SIdeleClassGroup S →* Multiplicative (ZMod n)) (
   rfl
 
 /- English proof (translation)
-The claim follows from `fun _ _ h ↦ (MonoidHom.cancel_right (SIdeleClassGroupPos.toSIdeleClassGroup_surjective S)).1 h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem precompPos_injective : Injective (precompPos S n) := fun _ _ h ↦
   (MonoidHom.cancel_right (SIdeleClassGroupPos.toSIdeleClassGroup_surjective S)).1 h
 
 /- English proof (translation)
-Introduce `ψ`. Establish `hle : sIdeleSubgroup S ≤ (ψ.comp (SIdeleClassGroupPos.mk S)).ker`. Use `sup_le ?_ fun u hu ↦ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Rewrite using `[MonoidHom.mem_ker, MonoidHom.comp_apply, SIdeleClassGroupPos.mk_diagonal, map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MonoidHom.mem_ker, MonoidHom.comp_apply]`. Break down `h with hn | hK` into its components or cases. Use `eq_one_of_sq_eq_one_of_odd hn ?_ (zmod_pow_eq_one _)` and prove the remaining obligations. Rewrite using `[← map_pow, ← map_pow, SIdeleClassGroupPos.mk_eq_one_of_mem S (sq_mem_unitsOutsidePos hu), map_one]`. Rewrite using `[SIdeleClassGroupPos.mk_eq_one_of_mem S (mem_unitsOutsidePos_of_isTotallyComplex hu), map_one]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨QuotientGroup.lift _ _ hle, QuotientGroup.monoidHom_ext _ (MonoidHom.ext fun _ ↦ rfl)⟩`.
+Supply the required witnesses or components.
 -/
 theorem precompPos_surjective (h : Odd n ∨ IsTotallyComplex K) : Surjective (precompPos S n) := by
   intro ψ
@@ -104,7 +104,7 @@ def charEquiv [IsAlgClosure K Ω] (hS : S.Finite) [NeZero n] (h : Odd n ∨ IsTo
 variable {S n}
 
 /- English proof (translation)
-The claim follows from `(precompPosEquiv S n h).apply_symm_apply _`.
+A detailed English derivation is pending.
 -/
 theorem precompPos_charEquiv [IsAlgClosure K Ω] (hS : S.Finite) [NeZero n]
     (h : Odd n ∨ IsTotallyComplex K)
@@ -113,7 +113,7 @@ theorem precompPos_charEquiv [IsAlgClosure K Ω] (hS : S.Finite) [NeZero n]
   (precompPosEquiv S n h).apply_symm_apply _
 
 /- English proof (translation)
-Rewrite using `[← precompPos_apply, precompPos_charEquiv, charToSIdelePos_mk_eq χ x g hg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem charEquiv_mk_eq [IsAlgClosure K Ω] (hS : S.Finite) [NeZero n] (h : Odd n ∨ IsTotallyComplex K)
     (χ : ContinuousMonoidHom (galUnramifiedOutside K Ω S) (Multiplicative (ZMod n))) (x : IdeleGroup K)

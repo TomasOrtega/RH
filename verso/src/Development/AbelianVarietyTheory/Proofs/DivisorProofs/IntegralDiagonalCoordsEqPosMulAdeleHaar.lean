@@ -17,14 +17,14 @@ attribute [local instance] GlobalTheory.AdelicUnitaryTop.locallyCompact_finiteAd
   GlobalTheory.AdelicUnitaryTop.secondCountable_finiteAdele GlobalTheory.AdelicUnitaryTop.t2Space_finiteAdeleRing_of_numberField
 
 /- English proof (translation)
-Use `Prod.ext ?_ rfl` and prove the remaining obligations. Simplify using `[shiftOf, glue]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem shiftOf_glue (p : Vi F κ × Vf F κ) : shiftOf (glue p) = p := by
   refine Prod.ext ?_ rfl
   simp [shiftOf, glue]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `Prod.ext ?_ rfl` and prove the remaining obligations. Use `show (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (eI F κ ((eI F κ).symm _) i) = (x i).1`. Rewrite using `[ContinuousLinearEquiv.apply_symm_apply]`. Conclude with `RingEquiv.symm_apply_apply _ _`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glue_shiftOf (x : κ → AdeleRing (𝓞 F) F) : glue (shiftOf x) = x := by
   funext i
@@ -34,14 +34,14 @@ theorem glue_shiftOf (x : κ → AdeleRing (𝓞 F) F) : glue (shiftOf x) = x :=
   exact RingEquiv.symm_apply_apply _ _
 
 /- English proof (translation)
-Use `conv_lhs => rw [← shiftOf_glue q]`. Conclude with `glue_add_shiftOf p (glue q)`.
+A detailed English derivation is pending.
 -/
 theorem glue_add (p q : Vi F κ × Vf F κ) : glue (p + q) = glue p + glue q := by
   conv_lhs => rw [← shiftOf_glue q]
   exact glue_add_shiftOf p (glue q)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Apply `(GroundTheory.Global.homeomorphMixedSpace F).injective` to reduce the goal to its premises. Rewrite using `[Homeomorph.apply_symm_apply, GroundTheory.Global.homeomorphMixedSpace_apply, RingEquiv.apply_symm_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem ringEquiv_symm_eq :
     ⇑(InfiniteAdeleRing.ringEquiv_mixedSpace F).symm = ⇑(GroundTheory.Global.homeomorphMixedSpace F).symm := by
@@ -50,7 +50,7 @@ theorem ringEquiv_symm_eq :
   rw [Homeomorph.apply_symm_apply, GroundTheory.Global.homeomorphMixedSpace_apply, RingEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Use `continuous_pi fun i => ?_` and prove the remaining obligations. Use `show Continuous fun p : Vi F κ × Vf F κ => (((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (eI F κ p.1 i), p.2 i) : InfiniteAdeleRing F × FiniteAdeleRing (𝓞 F) F)`. Rewrite using `[ringEquiv_symm_eq]`. Conclude with `((GroundTheory.Global.homeomorphMixedSpace F).symm.continuous.comp ((continuous_apply i).comp ((eI F κ).continuous.comp continuous_fst))).prodMk ((continuous_apply i).comp continuous_snd)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_glue : Continuous (glue : Vi F κ × Vf F κ → κ → AdeleRing (𝓞 F) F) := by
   refine continuous_pi fun i => ?_
@@ -63,7 +63,7 @@ theorem continuous_glue : Continuous (glue : Vi F κ × Vf F κ → κ → Adele
     ((continuous_apply i).comp continuous_snd)
 
 /- English proof (translation)
-Use `Continuous.prodMk ((eI F κ).symm.continuous.comp (continuous_pi fun i => ?_)) (continuous_pi fun i => continuous_snd.comp (continuous_apply i))` and prove the remaining obligations. Use `show Continuous fun x : κ → AdeleRing (𝓞 F) F => GroundTheory.Global.homeomorphMixedSpace F (x i).1`. Conclude with `(GroundTheory.Global.homeomorphMixedSpace F).continuous.comp (continuous_fst.comp (continuous_apply i))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_shiftOf : Continuous (shiftOf : (κ → AdeleRing (𝓞 F) F) → Vi F κ × Vf F κ) := by
   refine Continuous.prodMk ((eI F κ).symm.continuous.comp (continuous_pi fun i => ?_))
@@ -81,11 +81,9 @@ def glueEquiv : (Vi F κ × Vf F κ) ≃+ (κ → AdeleRing (𝓞 F) F) where
   map_add' := glue_add
 
 /- English proof (translation)
-Use `letI : MeasurableSpace (AdeleRing (𝓞 F) F) := GroundTheory.Global.measurableSpace_adeleRing F`. Use `haveI : BorelSpace (AdeleRing (𝓞 F) F) := GroundTheory.Global.borelSpace_adeleRing F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.locallyCompact_adele F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`. Use `haveI : (mu F κ).IsAddHaarMeasure := by unfold mu; infer_instance`.
+Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `haveI : ((mu F κ).map (glueEquiv F κ)).IsAddHaarMeasure := AddEquiv.isAddHaarMeasure_map _ (glueEquiv F κ) continuous_glue continuous_shiftOf`. Establish `h` using `Measure.isAddLeftInvariant_eq_smul ((mu F κ).map (glueEquiv F κ)) (adeleMeasurePi F (ι := κ))`. Use `⟨_, ?_, h⟩` and prove the remaining obligations. Use `pos_iff_ne_zero.2 fun h0 => ?_` and prove the remaining obligations. Rewrite `h` using `[h0, zero_smul]`.
-
-Conclude with `(Measure.IsAddHaarMeasure.toIsOpenPosMeasure (μ := (mu F κ).map (glueEquiv F κ))).open_pos Set.univ isOpen_univ Set.univ_nonempty (by rw [h]; rfl)`.
+A detailed English derivation is pending.
 -/
 theorem exists_glue_measure :
     letI : MeasurableSpace (AdeleRing (𝓞 F) F) := GroundTheory.Global.measurableSpace_adeleRing F
@@ -119,11 +117,11 @@ end GlobalTheory.DiagFormGlue
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `F _ _ κ _`. Use `letI : MeasurableSpace (AdeleRing (𝓞 F) F) := GroundTheory.Global.measurableSpace_adeleRing F`. Take `⟨c, hc, hmap⟩` from `DiagFormGlue.exists_glue_measure (F := F) (κ := κ)`. Establish `hmap' : (GlobalTheory.DiagForm.mu F κ).map (DiagFormGlue.glueMEquiv F κ) = c • adeleMeasurePi F (ι` using `κ) := hmap`. Use `⟨c, hc, fun H => ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← (integrable_smul_measure (f := H) (μ := adeleMeasurePi F (ι := κ)) (c := (c : ENNReal)) (by exact_mod_cast hc.ne') ENNReal.coe_ne_top)]`. Establish `e2 : (c : ENNReal) • adeleMeasurePi F (ι` using `κ) = c • adeleMeasurePi F (ι := κ) := rfl`. Rewrite using `[e2, ← hmap', integrable_map_equiv]`. Both sides reduce to the same expression. Establish `h1` using `integral_map_equiv (μ := GlobalTheory.DiagForm.mu F κ) (DiagFormGlue.glueMEquiv F κ) H`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite `h1` using `[hmap', integral_smul_nnreal_measure, NNReal.smul_def, Complex.real_smul]`. Conclude with `h1.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diagForm_glue_integral : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ], ∃ c₀ : ℝ, 0 < c₀ ∧
     ∀ H : (κ → AF F) → ℂ, (Integrable (fun p => H (GlobalTheory.DiagForm.glue p)) (GlobalTheory.DiagForm.mu F κ) ↔

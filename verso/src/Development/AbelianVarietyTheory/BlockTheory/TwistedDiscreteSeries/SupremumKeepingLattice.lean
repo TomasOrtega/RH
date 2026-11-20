@@ -69,11 +69,9 @@ structure KeepsSup (h : WL →ₗ[LL] WL) (hK : ∀ x ∈ X.WK, h x ∈ X.WK) (l
   latL : KeepsLatL X h la
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite `hx`, the goal using `[Submodule.baseChange_eq_span]`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨m, hm, rfl⟩` from `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `Submodule.subset_span ⟨h m, hU m hm, by simp⟩`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx => rw [map_smul]`.
-
-Conclude with `Submodule.smul_mem _ a hx`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem baseChange_mem {k K' M : Type} [Field k] [Field K'] [Algebra k K'] [AddCommGroup M] [Module k M] (h : M →ₗ[k] M)
     (U : Submodule k M) (hU : ∀ x ∈ U, h x ∈ U) : ∀ x ∈ U.baseChange K', h.baseChange K' x ∈ U.baseChange K' := by
@@ -88,9 +86,9 @@ theorem baseChange_mem {k K' M : Type} [Field k] [Field K'] [Algebra k K'] [AddC
   | smul a x _ hx => rw [map_smul]; exact Submodule.smul_mem _ a hx
 
 /- English proof (translation)
-Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact Submodule.subset_span (hS x hx)`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx`. Establish `e : h (a • x) = a • h x` using `h.map_smul (a : K') x`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ a hx`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_mem {K' N : Type} [Field K'] [AddCommGroup N] [Module K' N] (O : ValuationSubring K') (h : N →ₗ[K'] N) (S : Set N)
     (hS : ∀ x ∈ S, h x ∈ S) : ∀ x ∈ Submodule.span O S, h x ∈ Submodule.span O S := by
@@ -105,7 +103,7 @@ theorem span_mem {K' N : Type} [Field K'] [AddCommGroup N] [Module K' N] (O : Va
 
 omit [Fintype G] in
 /- English proof (translation)
-The claim follows from `baseChange_mem (onK X h hK) ((U.restrictScalars Ks).comap X.WK.subtype) fun y hy => hU (y : WL) hy`.
+A detailed English derivation is pending.
 -/
 theorem partK_mem (h : WL →ₗ[LL] WL) (hK : ∀ x ∈ X.WK, h x ∈ X.WK) (U : Submodule LL WL) (hU : ∀ x ∈ U, h x ∈ U)
     (K' : Type) [Field K'] [Algebra Ks K'] : ∀ x ∈ partK X U K', (onK X h hK).baseChange K' x ∈ partK X U K' :=
@@ -114,15 +112,13 @@ theorem partK_mem (h : WL →ₗ[LL] WL) (hK : ∀ x ∈ X.WK, h x ∈ X.WK) (U 
 variable {X} in
 
 /- English proof (translation)
-Use `⟨fun H => ⟨H.unitBall, H.types.1⟩, fun ⟨hb, hc⟩ => ?_⟩` and prove the remaining obligations. Establish `hc' : ∀ g x, h (X.ρ g x) = X.ρ g (h x)` using `fun g x => LinearMap.congr_fun (hc g) x`. Establish `he : ∀ (eC : G → LL) x, h (X.eOp eC x) = X.eOp eC (h x)` using `fun eC x => by`. Simplify using `only [FormsL.eOp, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul, hc']`. Establish `ht : ∀ (J : Subgroup G) (lam : J →* LLˣ), ∀ x ∈ X.typeP J lam, h x ∈ X.typeP J lam` using `fun J lam x hx p => by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← hc', hx p, map_smul]`. Establish `hg : ∀ eC : G → LL, ∀ x ∈ X.good eC, h x ∈ X.good eC`. Introduce and unpack `eC _ ⟨y, rfl⟩`. Conclude with `⟨h y, (he eC y).symm⟩`. Establish `hw : ∀ (J : Subgroup G) (lam : J →* LLˣ) (eC : G → LL), ∀ x ∈ X.Wgood J lam eC, h x ∈ X.Wgood J lam eC` using `fun J lam eC x hx => ⟨ht J lam x hx.1, hg eC x hx.2⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `⟨hb, ⟨hc, fun eC => LinearMap.ext (he eC), ht, hg⟩, fun K' _ _ O _ x hx => ⟨?_, fun J lam => ⟨?_, fun eC => ?_⟩⟩, fun K' _ _ _ _ O _ x hx => ⟨?_, fun J lam => ⟨?_, fun eC => ?_⟩⟩⟩` and prove the remaining obligations. Use `span_mem O _ _ ?_ x hx` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Conclude with `⟨_, hb f hf, by simp⟩`. Conclude with `partK_mem X h hK _ (ht J lam) K' x`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `partK_mem X h hK _ (hw J lam eC) K' x`. Use `span_mem O _ _ ?_ x hx` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Conclude with `⟨_, hb f hf, (LinearMap.baseChange_tmul h 1 (f : WL)).symm⟩`. Conclude with `baseChange_mem _ _ (ht J lam) x`.
-
-Conclude with `baseChange_mem _ _ (hw J lam eC) x`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem keepsSup_iff {h : WL →ₗ[LL] WL} {hK : ∀ x ∈ X.WK, h x ∈ X.WK} {la : HeightOneSpectrum (𝓞 Ks)} :
     KeepsSup X h hK la ↔ (∀ f ∈ ball X la 1, onK X h hK f ∈ ball X la 1) ∧ ∀ g, h ∘ₗ X.ρ g = X.ρ g ∘ₗ h := by
@@ -151,13 +147,13 @@ theorem keepsSup_iff {h : WL →ₗ[LL] WL} {hK : ∀ x ∈ X.WK, h x ∈ X.WK} 
   · exact baseChange_mem _ _ (hw J lam eC) x
 
 /- English proof (translation)
-The claim follows from `keepsSup_iff.2 ⟨fun _ hf => hf, fun _ => rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem keepsSup_id (la : HeightOneSpectrum (𝓞 Ks)) : KeepsSup X LinearMap.id (fun _ hx => hx) la :=
   keepsSup_iff.2 ⟨fun _ hf => hf, fun _ => rfl⟩
 
 /- English proof (translation)
-Introduce `_` and use `Iff.rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem liesOver_self (la : HeightOneSpectrum (𝓞 Ks)) : LiesOver la (la.valuation Ks).valuationSubring := fun _ => Iff.rfl
 
@@ -198,7 +194,7 @@ def HkSup : Prop :=
 variable {T R κ v₀ i}
 
 /- English proof (translation)
-Establish `hg` using `Formalism.IndefR.FWT.base_embedding_good T R fw.alg_eq fw.laws.pins.2.2.1`. Use `⟨?_, hg, fw.laws.spaceW _ (inR i) _ hg⟩` and prove the remaining obligations. Rewrite using `[show sg0 D A = D.what₂.embLL from sgAt_mk _ R.hv0]`. Conclude with `res_embLL T fw.alg_eq fw.laws.pins.2.2.1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem base_of_tie (fw : FWTie T R κ v₀) : res T (sg0 D A) = T.σ₀ ∧ GoodEmb T.Q.c (res T (sg0 D A)) ∧
     T.V ((i : ℕ) + 1) (res T (sg0 D A)) = Wc D i := by
@@ -208,7 +204,7 @@ theorem base_of_tie (fw : FWTie T R κ v₀) : res T (sg0 D A) = T.σ₀ ∧ Goo
   exact res_embLL T fw.alg_eq fw.laws.pins.2.2.1
 
 /- English proof (translation)
-Take `⟨_, -, jK, hjK⟩` from `H.frame`. Take `⟨j', hj'⟩` from `exists_ext_of_isKsForm (R.FW i) (fw.ks i) (fw.e i) (sg0 D A) jK`. Conclude with `fw.ev i _ (base_of_tie (i := i) fw).2.1 hV ⟨j', fun f => (congrArg (evAt R i _ (v₀ i _)) (hj' f)).trans (hjK f)⟩ f`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ReadPinned.eval (fw : FWTie T R κ v₀) (H : ReadPinned T R κ v₀ i)
     (hV : T.V ((i : ℕ) + 1) (res T (sg0 D A)) = Wc D i) (f : Cu T κ i) :
@@ -218,7 +214,7 @@ theorem ReadPinned.eval (fw : FWTie T R κ v₀) (H : ReadPinned T R κ v₀ i)
   exact fw.ev i _ (base_of_tie (i := i) fw).2.1 hV ⟨j', fun f => (congrArg (evAt R i _ (v₀ i _)) (hj' f)).trans (hjK f)⟩ f
 
 /- English proof (translation)
-Use `⟨⟨hV, hf, hj⟩, (injective_iff_map_eq_zero _).2 fun x hx => ?_, (hu i _).2.2⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Establish `h1` using `(hu i (sg0 D A)).1 1 (fun _ => x) (linearIndependent_unique_iff.2 h0)`. Conclude with `h1.ne_zero 0 hx`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem readPinned_of_unif (hu : R.LUnif) (hV : T.V ((i : ℕ) + 1) (res T (sg0 D A)) = Wc D i)
     (hf : FramePin T R i (res T (sg0 D A)) hV) (hj : JEvAt T R κ v₀ i (sg0 D A) hV) : ReadPinned T R κ v₀ i := by

@@ -30,7 +30,7 @@ def labelPerm (H : Host E) (g : E ≃ₐ[ℚ] E) : Equiv.Perm (CMType H ⊕ CMTy
   (labelEquiv H).trans ((embPrecomp g).trans (labelEquiv H).symm)
 
 /- English proof (translation)
-Establish `h : labelEquiv H (labelPerm H g s) = embPrecomp g (labelEquiv H s)`. Simplify using `[labelPerm]`. Conclude with `RingHom.congr_fun h x`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem labelCx_labelPerm (H : Host E) (g : E ≃ₐ[ℚ] E) (s : CMType H ⊕ CMType H) (x : E) :
     LabelCount.labelCx H (labelPerm H g s) x = LabelCount.labelCx H s (g x) := by
@@ -39,7 +39,7 @@ theorem labelCx_labelPerm (H : Host E) (g : E ≃ₐ[ℚ] E) (s : CMType H ⊕ C
   exact RingHom.congr_fun h x
 
 /- English proof (translation)
-Break down `s with τ | τ` into its components or cases. Simplify using `[LabelCount.labelCx, τ.2]`. Simplify using `[LabelCount.labelCx, τ.2, HodgeCptTest.imaginary_root_conj]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem labelCx_rt (H : Host E) (s : CMType H ⊕ CMType H) :
     LabelCount.labelCx H s (H.rt : E) = if s.isLeft then H.rt0 else -H.rt0 := by
@@ -48,15 +48,13 @@ theorem labelCx_rt (H : Host E) (s : CMType H ⊕ CMType H) :
   · simp [LabelCount.labelCx, τ.2, HodgeCptTest.imaginary_root_conj]
 
 /- English proof (translation)
-Establish `hsq : ((H.rt : 𝓞 E) : E) ^ 2 = -(H.d : E)`. Use `congrArg (fun x : 𝓞 E => (x : E)) H.rt_sq` as an intermediate fact. Simplify using `using this`. Establish `hg : g (H.rt : E) ^ 2 = (H.rt : E) ^ 2`. Rewrite using `[← map_pow, hsq]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hne` using `LabelCount.rt0_ne_neg H`. Break down `sq_eq_sq_iff_eq_or_eq_neg.mp hg with h | h` into its components or cases. Use `left`. Introduce `σ`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `labelCx_labelPerm H g σ (H.rt : E)`. Rewrite `h1` using `[h, labelCx_rt, labelCx_rt]`. Apply the tactic sequence `cases h2 : (labelPerm H g σ).isLeft <;> cases h3 : σ.isLeft <;> simp [h2, h3] at h1 ⊢`. Conclude with `hne h1.symm`. Conclude with `hne h1`.
+Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `right`. Introduce `σ`. Establish `h1` using `labelCx_labelPerm H g σ (H.rt : E)`. Rewrite `h1` using `[h, map_neg, labelCx_rt, labelCx_rt]`. Apply the tactic sequence `have hr : σ.isRight = !σ.isLeft := by cases σ <;> rfl`.
-
-Rewrite using `[hr]`. Apply the tactic sequence `cases h2 : (labelPerm H g σ).isLeft <;> cases h3 : σ.isLeft <;> simp [h2, h3] at h1 ⊢`. Conclude with `hne h1.symm`. Conclude with `hne h1`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem labelPerm_side (H : Host E) (g : E ≃ₐ[ℚ] E) :
     (∀ σ, (labelPerm H g σ).isLeft = σ.isLeft) ∨ ∀ σ, (labelPerm H g σ).isLeft = σ.isRight := by
@@ -88,7 +86,7 @@ theorem labelPerm_side (H : Host E) (g : E ≃ₐ[ℚ] E) :
 variable {H : Host E} {l : Level H}
 
 /- English proof (translation)
-Break down `s with τ | τ` into its components or cases. Both sides reduce to the same expression. Use `show τ.1 ((H.bar a : 𝓞 E) : E) = (starRingEnd ℂ) (τ.1 (a : E))`. Rewrite using `[H.bar_eq, IsCMField.complexEmbedding_complexConj]`.
+Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coe_labelEmb_eq (c : Coeff l) (s : CMType H ⊕ CMType H) (a : 𝓞 E) :
     ((labelEmb c s a : c.F) : ℂ) = LabelCount.labelCx H s (a : E) := by
@@ -108,11 +106,11 @@ theorem coe_labelInt (c : Coeff l) (s : CMType H ⊕ CMType H) (a : 𝓞 E) :
     ((labelInt c s a : 𝓞 c.F) : c.F) = labelEmb c s a := rfl
 
 /- English proof (translation)
-Introduce `n hn hp s a u v hu hv`. Establish `key` using `hg (𝓞 c.F) n hn hp (labelInt c s) a`. Establish `h1 : u = labelInt c s (RingOfIntegers.mapRingEquiv g.toRingEquiv a)`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[hu, coe_labelInt]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show ((labelEmb c (labelPerm H g s) a : c.F) : ℂ) = ((labelEmb c s (RingOfIntegers.mapRingEquiv g.toRingEquiv a) : c.F) : ℂ)`. Rewrite using `[coe_labelEmb_eq, coe_labelEmb_eq, labelCx_labelPerm]`. Both sides reduce to the same expression. Establish `h2 : v = labelInt c s a`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[hv, coe_labelInt]`. Rewrite using `[h1, h2]`. Conclude with `key`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem labelPerm_isFrobLabels (c : Coeff l) (p : ℕ) (g : E ≃ₐ[ℚ] E)
     (hg : ∀ (O : Type) [CommRing O] (n : Ideal O), n.IsPrime → (p : O) ∈ n → ∀ (τ : 𝓞 E →+* O) (x : 𝓞 E),
@@ -137,11 +135,9 @@ theorem labelPerm_isFrobLabels (c : Coeff l) (p : ℕ) (g : E ≃ₐ[ℚ] E)
 end Labels
 
 /- English proof (translation)
-Introduce `E _ _ _ _ hab H l c _ _`. Establish `h` using `GlobalTheory.T.abelian_frobenius_lift E hab`. Set `φ : ℕ → Equiv.Perm (CMType H ⊕ CMType H)` to `fun p => if hp : p.Prime then labelPerm H (h p hp).choose else 1`. Use `⟨φ, fun p hp => ?_, GlobalTheory.T.frobenius_shape_of_side_preserving _ φ fun p => ?_⟩` and prove the remaining obligations. Simplify using `only [φ, dif_pos hp]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `labelPerm_isFrobLabels c p _ (h p hp).choose_spec`. Distinguish the cases in `hp : p.Prime`. Simplify using `only [φ, dif_pos hp]`. Conclude with `labelPerm_side H _`. Use `left`.
-
-Introduce `σ`. Simplify using `[φ, dif_neg hp]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_frob_labels : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [IsGalois ℚ E], (∀ a b : E ≃ₐ[ℚ] E, a * b = b * a) → ∀ (H : Host E) (l : Level H) (c : Coeff l) [Fintype (CMType H)] [DecidableEq (CMType H)], ∃ φ : ℕ → Equiv.Perm (CMType H ⊕ CMType H), (∀ p : ℕ, p.Prime → IsFrobLabels c p (φ p)) ∧ FrobShape fun p τ n => (φ p ^ (n + 1)) (Sum.inl τ) := by
   intro E _ _ _ _ hab H l c _ _

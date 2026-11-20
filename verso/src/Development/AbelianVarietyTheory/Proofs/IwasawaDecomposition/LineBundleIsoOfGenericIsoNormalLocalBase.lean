@@ -9,11 +9,9 @@ open GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.ZM
 open scoped CategoryTheory.Obj
 
 /- English proof (translation)
-Introduce `R _ _ _ hN hI H p e hs _ hg he L M hL hM h`. Use `haveI : IsNoetherianRing R := hN`. Use `haveI : IsIntegrallyClosed R := hI`. Establish `hD` using `LB.isLB_div hM hL`. Establish `h₁ : IsPreimmersion (jK R)` using `IsPreimmersion.of_isLocalization (nonZeroDivisors R)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h₂ : Flat (jK R)`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @Flat)]`. Conclude with `RingHom.flat_algebraMap_iff.2 (IsLocalization.flat _ (nonZeroDivisors R))`. Take `⟨t, ht⟩` from `GenericExtend.exists_isGen_of_densePart (Sp R) _ (jK R) (ZJ.isNormalScheme_sp R) h₁ h₂ DVR.isDominant_jK inferInstance (Over.mk p) e (LB.div M L) he hs hg hD (DVR.exists_gen_of_isLB_local _ (pull_isLB hD _)) ((IsoExtend.lbIso_pull_iff_gen L M _).1 h)`. Establish `h0` using `(CechPic.cls_eq_zero_iff hD).2 ⟨t, ht⟩`.
-
-Rewrite `h0` using `[CechPic.cls_div hM hL, sub_eq_zero]`. Conclude with `(CechPic.cls_eq_iff hL hM).1 h0.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.lbIso_of_generic_normal_local : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], IsNoetherianRing R → IsIntegrallyClosed R → ∀ (H : Scheme.{0}) (p : H ⟶ Sp R) (e : Sp R ⟶ H), Smooth p → QuasiCompact p → GeometricallyIntegral p → e ≫ p = 𝟙 _ → ∀ L M : LB H, L.IsLB → M.IsLB → LBIso (L.pull (pullback.fst p (jK R))) (M.pull (pullback.fst p (jK R))) → LBIso L M := by
   intro R _ _ _ hN hI H p e hs _ hg he L M hL hM h

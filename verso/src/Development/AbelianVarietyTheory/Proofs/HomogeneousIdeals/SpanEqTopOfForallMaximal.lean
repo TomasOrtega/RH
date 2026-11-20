@@ -27,9 +27,9 @@ abbrev awayHom (R : Type) [CommRing R] {S : Type} [CommRing S] [Algebra R S] (g 
     S →ₐ[R] Localization.Away g := IsScalarTower.toAlgHom R S _
 
 /- English proof (translation)
-Use `letI := (ρ : S →+* S').toAlgebra`. Prove the components needed by the constructor for the conclusion. Introduce `h haveI : IsLocalization.Away g S' := h`. Use `⟨IsLocalization.Away.algebraMap_isUnit g, fun z => IsLocalization.Away.surj g z, fun a ha => ?_⟩` and prove the remaining obligations. Take `⟨N, hN⟩` from `IsLocalization.Away.exists_of_eq (S := S') g (a := a) (b := 0) (by rw [map_zero]; exact ha)`.
+Equip the data with the indicated structure. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨N, by simpa using hN⟩`. Introduce and unpack `⟨h1, h2, h3⟩`. Use `IsLocalization.Away.mk g h1 h2 fun a b hab => ?_` and prove the remaining obligations. Take `⟨N, hN⟩` from `h3 (a - b) (by rw [map_sub, sub_eq_zero]; exact hab)`. Conclude with `⟨N, by rwa [mul_sub, sub_eq_zero] at hN⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isAway_iff (ρ : S →ₐ[R] S') (g : S) : IsAway ρ g ↔
     IsUnit (ρ g) ∧ (∀ z, ∃ (N : ℕ) (a : S), z * ρ g ^ N = ρ a) ∧
@@ -49,7 +49,7 @@ theorem isAway_iff (ρ : S →ₐ[R] S') (g : S) : IsAway ρ g ↔
     exact ⟨N, by rwa [mul_sub, sub_eq_zero] at hN⟩
 
 /- English proof (translation)
-The claim follows from `(isAway_iff _ _).2 ⟨IsLocalization.Away.algebraMap_isUnit g, fun z => IsLocalization.Away.surj g z, fun a ha => by obtain ⟨N, hN⟩ := IsLocalization.Away.exists_of_eq (S := Localization.Away g) g (a := a) (b := 0) (by rw [map_zero]; exact ha) exact ⟨N, by simpa using hN⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem isAway_awayHom (g : S) : IsAway (awayHom R g) g :=
   (isAway_iff _ _).2 ⟨IsLocalization.Away.algebraMap_isUnit g,
@@ -63,24 +63,24 @@ namespace IsAway
 variable {ρ : S →ₐ[R] S'} {g : S}
 
 /- English proof (translation)
-The claim follows from `((isAway_iff _ _).1 h).1`.
+A detailed English derivation is pending.
 -/
 theorem unit (h : IsAway ρ g) : IsUnit (ρ g) := ((isAway_iff _ _).1 h).1
 
 /- English proof (translation)
-The claim follows from `((isAway_iff _ _).1 h).2.1 z`.
+A detailed English derivation is pending.
 -/
 theorem surj (h : IsAway ρ g) (z : S') : ∃ (N : ℕ) (a : S), z * ρ g ^ N = ρ a :=
   ((isAway_iff _ _).1 h).2.1 z
 
 /- English proof (translation)
-The claim follows from `((isAway_iff _ _).1 h).2.2 a ha`.
+A detailed English derivation is pending.
 -/
 theorem ker (h : IsAway ρ g) {a : S} (ha : ρ a = 0) : ∃ N : ℕ, g ^ N * a = 0 :=
   ((isAway_iff _ _).1 h).2.2 a ha
 
 /- English proof (translation)
-Use `choose N a hNa using fun i => h.surj (z i)`. Take `⟨M, hM⟩` from `(Set.finite_range N).bddAbove`. Use `⟨M, fun i => a i * g ^ (M - N i), fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, ← hNa, map_pow, mul_assoc, ← pow_add, Nat.add_sub_cancel' (hM ⟨i, rfl⟩)]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem surj_fin (h : IsAway ρ g) {κ : Type} [Finite κ] (z : κ → S') :
     ∃ (N : ℕ) (a : κ → S), ∀ i, z i * ρ g ^ N = ρ (a i) := by
@@ -90,7 +90,7 @@ theorem surj_fin (h : IsAway ρ g) {κ : Type} [Finite κ] (z : κ → S') :
   rw [map_mul, ← hNa, map_pow, mul_assoc, ← pow_add, Nat.add_sub_cancel' (hM ⟨i, rfl⟩)]
 
 /- English proof (translation)
-Use `choose N hN using fun i => h.ker (ha i)`. Take `⟨M, hM⟩` from `(Set.finite_range N).bddAbove`. Use `⟨M, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[← Nat.sub_add_cancel (hM ⟨i, rfl⟩), pow_add, mul_assoc, hN, mul_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_fin (h : IsAway ρ g) {κ : Type} [Finite κ] {a : κ → S} (ha : ∀ i, ρ (a i) = 0) :
     ∃ N : ℕ, ∀ i, g ^ N * a i = 0 := by
@@ -100,7 +100,7 @@ theorem ker_fin (h : IsAway ρ g) {κ : Type} [Finite κ] {a : κ → S} (ha : �
   rw [← Nat.sub_add_cancel (hM ⟨i, rfl⟩), pow_add, mul_assoc, hN, mul_zero]
 
 /- English proof (translation)
-Use `letI := (ρ : S →+* S').toAlgebra`. Use `haveI : IsLocalization.Away g S' := h`. Use `haveI : IsScalarTower R S S' := IsScalarTower.of_algebraMap_eq fun r => (ρ.commutes r).symm`. Conclude with `⟨IsLocalization.Away.liftAlgHom g hφ, AlgHom.ext fun a => IsLocalization.Away.lift_eq g hφ a⟩`.
+Equip the data with the indicated structure. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lift (h : IsAway ρ g) (φ : S →ₐ[R] T) (hφ : IsUnit (φ g)) :
     ∃ ψ : S' →ₐ[R] T, ψ.comp ρ = φ := by
@@ -111,9 +111,9 @@ theorem lift (h : IsAway ρ g) (φ : S →ₐ[R] T) (hφ : IsUnit (φ g)) :
     AlgHom.ext fun a => IsLocalization.Away.lift_eq g hφ a⟩
 
 /- English proof (translation)
-Use extensionality with `z`. Take `⟨N, a, hz⟩` from `h.surj z`. Establish `e' : ∀ a, ψ (ρ a) = ψ' (ρ a)` using `fun a => AlgHom.congr_fun e a`. Establish `hu : IsUnit (ψ (ρ g) ^ N)` using `(h.unit.map ψ).pow N`. Apply `hu.mul_right_cancel` to reduce the goal to its premises.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← map_pow, ← map_mul, hz, map_pow, e', e', ← map_pow, ← map_mul, hz]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ext (h : IsAway ρ g) {ψ ψ' : S' →ₐ[R] T} (e : ψ.comp ρ = ψ'.comp ρ) : ψ = ψ' := by
   ext z
@@ -124,11 +124,11 @@ theorem ext (h : IsAway ρ g) {ψ ψ' : S' →ₐ[R] T} (e : ψ.comp ρ = ψ'.co
   rw [← map_pow, ← map_mul, hz, map_pow, e', e', ← map_pow, ← map_mul, hz]
 
 /- English proof (translation)
-Use `(isAway_iff _ _).2 ⟨?_, fun z => ?_, fun a ha => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `(h.unit.map ρ').mul h'.unit`. Take `⟨N, b, hb⟩` from `h'.surj z`. Take `⟨M, a, ha⟩` from `h.surj b`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨N + M, a * g ^ N * g' ^ M, ?_⟩` and prove the remaining obligations. Simplify using `only [AlgHom.comp_apply, map_mul, map_pow, ← ha, ← hb]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨N, hN⟩` from `h'.ker (a := ρ a) ha`. Rewrite `hN` using `[← map_pow, ← map_mul]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨M, hM⟩` from `h.ker hN`. Use `⟨N + M, ?_⟩` and prove the remaining obligations. Take the linear combination `g ^ N * g' ^ M * hM`.
+Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem comp (h : IsAway ρ g) {ρ' : S' →ₐ[R] S''} {g' : S} (h' : IsAway ρ' (ρ g')) :
     IsAway (ρ'.comp ρ) (g * g') := by
@@ -146,13 +146,13 @@ theorem comp (h : IsAway ρ g) {ρ' : S' →ₐ[R] S''} {g' : S} (h' : IsAway ρ
     linear_combination g ^ N * g' ^ M * hM
 
 /- English proof (translation)
-Establish `hu` using `h'.unit`. Rewrite `hu` using `[map_mul]`. Take `⟨w, hw⟩` from `h.unit.exists_right_inv`. Use `(isAway_iff _ _).2 ⟨isUnit_of_mul_isUnit_right hu, fun z => ?_, fun b hb => ?_⟩` and prove the remaining obligations. Take `⟨N, a, ha⟩` from `h'.surj z`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨N, ρ a * w ^ N, ?_⟩` and prove the remaining obligations. Simplify using `only [AlgHom.comp_apply, map_mul, map_pow] at ha ⊢`. Establish `hw' : (ρ' (ρ g) * ρ' w) ^ N = 1` using `by rw [← map_mul, hw, map_one, one_pow]`. Rewrite using `[← ha]`. Take the linear combination `(-(z * ρ' (ρ g') ^ N)) * hw'`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take `⟨N, a, ha⟩` from `h.surj b`. Take `⟨M, hM⟩` from `h'.ker (a := a) (by rw [AlgHom.comp_apply, ← ha, map_mul, hb, zero_mul])`. Use `⟨M, ?_⟩` and prove the remaining obligations. Use `congrArg ρ hM` as an intermediate fact. Simplify using `only [map_mul, map_pow, map_zero, ← ha] at this`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hw' : (ρ g * w) ^ (M + N) = 1` using `by rw [hw, one_pow]`. Take the linear combination `w ^ (M + N) * this - (ρ g' ^ M * b) * hw'`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem cancel (h : IsAway ρ g) {ρ' : S' →ₐ[R] S''} {g' : S}
     (h' : IsAway (ρ'.comp ρ) (g * g')) : IsAway ρ' (ρ g') := by
@@ -175,7 +175,7 @@ theorem cancel (h : IsAway ρ g) {ρ' : S' →ₐ[R] S''} {g' : S}
     linear_combination w ^ (M + N) * this - (ρ g' ^ M * b) * hw'
 
 /- English proof (translation)
-Use `h.cancel ?_` and prove the remaining obligations. Rewrite using `[e, mul_comm]`. Conclude with `h₂.comp hξ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem swap (h : IsAway ρ g) {ρ₂ : S →ₐ[R] S''} {g' : S} (h₂ : IsAway ρ₂ g')
     {ν : S' →ₐ[R] T} {ξ : S'' →ₐ[R] T} (e : ν.comp ρ = ξ.comp ρ₂) (hξ : IsAway ξ (ρ₂ g)) :
@@ -185,7 +185,7 @@ theorem swap (h : IsAway ρ g) {ρ₂ : S →ₐ[R] S''} {g' : S} (h₂ : IsAway
   exact h₂.comp hξ
 
 /- English proof (translation)
-Use `letI := (ρ : S →+* S').toAlgebra`. Use `haveI : IsLocalization.Away g S' := h`. Take `⟨⟨a, ⟨_, N, rfl⟩⟩, e⟩` from `(IsLocalization.mem_map_algebraMap_iff (Submonoid.powers g) S').1 hz`. Conclude with `⟨N, a, a.2, by rw [← map_pow]; exact e⟩`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_map (h : IsAway ρ g) {J : Ideal S} {z : S'} (hz : z ∈ J.map ρ) :
     ∃ (N : ℕ) (a : S), a ∈ J ∧ z * ρ g ^ N = ρ a := by
@@ -196,9 +196,9 @@ theorem mem_map (h : IsAway ρ g) {J : Ideal S} {z : S'} (hz : z ∈ J.map ρ) :
   exact ⟨N, a, a.2, by rw [← map_pow]; exact e⟩
 
 /- English proof (translation)
-Take `⟨N, a, ha, e⟩` from `h.mem_map hc`. Take `⟨M, hM⟩` from `h.ker (a := c * g ^ N - a) (by rw [map_sub, map_mul, map_pow, e, sub_self])`. Use `⟨M + N, ?_⟩` and prove the remaining obligations. Establish `: g ^ (M + N) * c = g ^ M * a` using `by linear_combination hM`. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `J.mul_mem_left _ ha`.
+A detailed English derivation is pending.
 -/
 theorem pow_mul_mem (h : IsAway ρ g) {J : Ideal S} {c : S} (hc : ρ c ∈ J.map ρ) :
     ∃ N : ℕ, g ^ N * c ∈ J := by
@@ -210,7 +210,7 @@ theorem pow_mul_mem (h : IsAway ρ g) {J : Ideal S} {c : S} (hc : ρ c ∈ J.map
   exact J.mul_mem_left _ ha
 
 /- English proof (translation)
-Use `letI := (ρ : S →+* S').toAlgebra`. Use `haveI : IsLocalization.Away g S' := h`. Conclude with `IsOpenImmersion.of_isLocalization (S := S') g`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem isOpenImmersion (h : IsAway ρ g) : IsOpenImmersion (spMap ρ).left := by
   letI := (ρ : S →+* S').toAlgebra
@@ -218,9 +218,7 @@ theorem isOpenImmersion (h : IsAway ρ g) : IsOpenImmersion (spMap ρ).left := b
   exact IsOpenImmersion.of_isLocalization (S := S') g
 
 /- English proof (translation)
-Use `letI := (ρ : S →+* S').toAlgebra`. Use `haveI : IsLocalization.Away g S' := h`. Use `PrimeSpectrum.localization_away_comap_range S' g` as an intermediate fact. Establish `hp' : p ∈ (PrimeSpectrum.basicOpen g : Set (PrimeSpectrum S))` using `hp`. Rewrite `hp'` using `[← this]`.
-
-Conclude with `hp'`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_range (h : IsAway ρ g) (p : PrimeSpectrum S) (hp : g ∉ p.asIdeal) :
     p ∈ Set.range (spMap ρ).left := by
@@ -234,7 +232,7 @@ theorem mem_range (h : IsAway ρ g) (p : PrimeSpectrum S) (hp : g ∉ p.asIdeal)
 end IsAway
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal _ hne`. Take `⟨f, hf, hfm⟩` from `h m hm`. Conclude with `hfm (hle (Ideal.subset_span hf))`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem span_eq_top_of_forall_maximal {s : Set S}
     (h : ∀ m : Ideal S, m.IsMaximal → ∃ f ∈ s, f ∉ m) : Ideal.span s = ⊤ := by
@@ -244,7 +242,7 @@ theorem span_eq_top_of_forall_maximal {s : Set S}
   exact hfm (hle (Ideal.subset_span hf))
 
 /- English proof (translation)
-Use `congrArg (Ideal.map φ) hs` as an intermediate fact. Rewrite `this` using `[Ideal.map_span, Ideal.map_top, ← Set.range_comp]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem span_range_map {κ : Type} {s : κ → S} (hs : Ideal.span (Set.range s) = ⊤)
     (φ : S →ₐ[R] T) : Ideal.span (Set.range fun i => φ (s i)) = ⊤ := by
@@ -272,7 +270,7 @@ def awayCover (hs : Ideal.span (Set.range s) = ⊤) (q : ∀ i, A →ₐ[R] B i)
     (fun i => (hq i).isOpenImmersion)
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext <| (awayCover hs q hq).hom_ext _ _ fun i => congrArg CommaMorphism.left (h i)`.
+A detailed English derivation is pending.
 -/
 theorem away_ext (hs : Ideal.span (Set.range s) = ⊤) (q : ∀ i, A →ₐ[R] B i)
     (hq : ∀ i, IsAway (q i) (s i)) {y y' : sp A ⟶ X}
@@ -281,13 +279,11 @@ theorem away_ext (hs : Ideal.span (Set.range s) = ⊤) (q : ∀ i, A →ₐ[R] B
     congrArg CommaMorphism.left (h i)
 
 /- English proof (translation)
-Establish `hc : ∀ i j : κ, pullback.fst ((awayCover hs q hq).f i) ((awayCover hs q hq).f j) ≫ (y i).left = pullback.snd _ _ ≫ (y j).left`. Introduce `i j`. Use `letI := (q i : A →+* B i).toAlgebra`. Use `letI := (q j : A →+* B j).toAlgebra`. Use `haveI : IsScalarTower R A (B i) := IsScalarTower.of_algebraMap_eq fun r => ((q i).commutes r).symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `haveI : IsScalarTower R A (B j) := IsScalarTower.of_algebraMap_eq fun r => ((q j).commutes r).symm`. Use `congrArg CommaMorphism.left (h i j (TensorProduct A (B i) (B j)) Algebra.TensorProduct.includeLeft (Algebra.TensorProduct.includeRight.restrictScalars R) (AlgHom.ext fun a => by` as an intermediate fact. Express the relevant statement in the definitionally equal form `(algebraMap A (B i) a) ⊗ₜ[A] (1 : B j) = (1 : B i) ⊗ₜ[A] algebraMap A (B j) a`. Rewrite using `[Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]))`. Express the relevant statement in the definitionally equal form `pullback.fst (Spec.map (CommRingCat.ofHom (algebraMap A (B i)))) (Spec.map (CommRingCat.ofHom (algebraMap A (B j)))) ≫ _ = pullback.snd _ _ ≫ _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← pullbackSpecIso_hom_fst, ← pullbackSpecIso_hom_snd, Category.assoc, Category.assoc]`. Conclude with `congrArg _ this`. Establish `hk : ∀ i : κ, (spMap (q i)).left ≫ (awayCover hs q hq).glueMorphisms (fun i => (y i).left) hc = (y i).left` using `fun i => (awayCover hs q hq).ι_glueMorphisms _ hc i`. Use `⟨Over.homMk ((awayCover hs q hq).glueMorphisms (fun i => (y i).left) hc) ?_, fun i => Over.OverMorphism.ext (hk i)⟩` and prove the remaining obligations. Use `(awayCover hs q hq).hom_ext _ _ fun (i : κ) => ?_` and prove the remaining obligations.
-
-Express the relevant statement in the definitionally equal form `(spMap (q i)).left ≫ _ = (spMap (q i)).left ≫ (sp A).hom`. Rewrite using `[← Category.assoc, hk, Over.w, Over.w]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem away_glue (hs : Ideal.span (Set.range s) = ⊤) (q : ∀ i, A →ₐ[R] B i)
     (hq : ∀ i, IsAway (q i) (s i)) (y : ∀ i, sp (B i) ⟶ X)
@@ -321,9 +317,9 @@ theorem away_glue (hs : Ideal.span (Set.range s) = ⊤) (q : ∀ i, A →ₐ[R] 
   rw [← Category.assoc, hk, Over.w, Over.w]
 
 /- English proof (translation)
-Take `⟨ψ, hψ⟩` from `h₁₂.lift (a.comp q₁) (by`. Rewrite using `[map_mul]`. Use `(h₁.unit.map a).mul ?_` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `h₂.unit.map b)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ha : ψ.comp a₀ = a` using `h₁.ext hψ`. Establish `hb : ψ.comp b₀ = b` using `h₂.ext (by rw [AlgHom.comp_assoc, ← e₀, hψ, e])`. Rewrite using `[← ha, ← hb, ← spMap_comp, ← spMap_comp, Category.assoc, Category.assoc, hy]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem agree_of_isAway {B₁ B₂ B₁₂ : Type} [CommRing B₁] [Algebra R B₁] [CommRing B₂] [Algebra R B₂]
     [CommRing B₁₂] [Algebra R B₁₂] {f g : A} {q₁ : A →ₐ[R] B₁} {q₂ : A →ₐ[R] B₂}
@@ -349,9 +345,7 @@ variable {X : Over (Spec (CommRingCat.of R))} {A A₀ B : Type} [CommRing A] [Al
   [CommRing A₀] [Algebra R A₀] [CommRing B] [Algebra R B]
 
 /- English proof (translation)
-Establish `e : Spec.map (CommRingCat.ofHom (algebraMap R B) ≫ Spec.preimage f.left) = Spec.map (CommRingCat.ofHom (algebraMap R A))`. Rewrite using `[Spec.map_comp, Spec.map_preimage]`. Conclude with `Over.w f`. Establish `e'` using `congrArg CommRingCat.Hom.hom (Spec.map_injective e)`. Use `⟨⟨(Spec.preimage f.left).hom, fun r => RingHom.congr_fun e' r⟩, Over.OverMorphism.ext ?_⟩` and prove the remaining obligations.
-
-Conclude with `(Spec.map_preimage f.left).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_spMap (f : sp (R₀ := R) A ⟶ sp B) : ∃ φ : B →ₐ[R] A, f = spMap φ := by
   have e : Spec.map (CommRingCat.ofHom (algebraMap R B) ≫ Spec.preimage f.left) =
@@ -363,7 +357,7 @@ theorem exists_spMap (f : sp (R₀ := R) A ⟶ sp B) : ∃ φ : B →ₐ[R] A, f
   exact (Spec.map_preimage f.left).symm
 
 /- English proof (translation)
-Establish `h1` using `congrArg CommaMorphism.left h`. Simplify using `only [Over.comp_left, cancel_mono, spMap_left] at h1`. Conclude with `AlgHom.coe_ringHom_injective (congrArg CommRingCat.Hom.hom (Spec.map_injective h1))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem chart_inj (j : sp B ⟶ X) [IsOpenImmersion j.left] {φ φ' : B →ₐ[R] A}
     (h : spMap φ ≫ j = spMap φ' ≫ j) : φ = φ' := by
@@ -372,7 +366,7 @@ theorem chart_inj (j : sp B ⟶ X) [IsOpenImmersion j.left] {φ φ' : B →ₐ[R
   exact AlgHom.coe_ringHom_injective (congrArg CommRingCat.Hom.hom (Spec.map_injective h1))
 
 /- English proof (translation)
-Take `⟨φ, hφ⟩` from `exists_spMap (R := R) (A := A) (B := B) (Over.homMk (IsOpenImmersion.lift j.left y.left h) (by`. Rewrite using `[← Over.w j, ← Category.assoc, IsOpenImmersion.lift_fac, Over.w]))`. Use `⟨φ, ?_⟩` and prove the remaining obligations. Rewrite using `[← hφ]`. Conclude with `Over.OverMorphism.ext (IsOpenImmersion.lift_fac j.left y.left h).symm`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_chart_pt (j : sp B ⟶ X) [IsOpenImmersion j.left] (y : sp A ⟶ X)
     (h : Set.range y.left ⊆ Set.range j.left) : ∃ φ : B →ₐ[R] A, y = spMap φ ≫ j := by
@@ -384,9 +378,9 @@ theorem exists_chart_pt (j : sp B ⟶ X) [IsOpenImmersion j.left] (y : sp A ⟶ 
   exact Over.OverMorphism.ext (IsOpenImmersion.lift_fac j.left y.left h).symm
 
 /- English proof (translation)
-Introduce `p`. Use `range_comap_of_surjective A₀ (q : A →+* A₀) hq` as an intermediate fact. Establish `hp : (p : PrimeSpectrum A) ∈ PrimeSpectrum.zeroLocus (RingHom.ker (q : A →+* A₀) : Set A)` using `fun a ha => by`. Take `⟨n, hn⟩` from `hn a ha`. Conclude with `(p : PrimeSpectrum A).isPrime.mem_of_pow_mem n (by rw [hn]; exact zero_mem _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hp` using `[← this]`. Conclude with `hp`.
+A detailed English derivation is pending.
 -/
 theorem spMap_surjective (q : A →ₐ[R] A₀) (hq : Function.Surjective q)
     (hn : ∀ a, q a = 0 → IsNilpotent a) : Function.Surjective (spMap q).left := by
@@ -400,9 +394,9 @@ theorem spMap_surjective (q : A →ₐ[R] A₀) (hq : Function.Surjective q)
   exact hp
 
 /- English proof (translation)
-Take `⟨φ, rfl⟩` from `exists_chart_pt j y (by`. Introduce and unpack `_ ⟨p, rfl⟩`. Take `⟨p₀, rfl⟩` from `spMap_surjective q hq hn p`. Use `⟨(spMap φ₀).left p₀, ?_⟩` and prove the remaining obligations. Use `congrArg (fun z : sp A₀ ⟶ X => z.left p₀) h` as an intermediate fact.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `using this.symm)`. Rewrite `h` using `[← Category.assoc, spMap_comp]`. Conclude with `⟨φ, rfl, chart_inj j h⟩`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_chart_pt_of_nil (j : sp B ⟶ X) [IsOpenImmersion j.left] (q : A →ₐ[R] A₀)
     (hq : Function.Surjective q) (hn : ∀ a, q a = 0 → IsNilpotent a) (y : sp A ⟶ X)
@@ -418,7 +412,7 @@ theorem exists_chart_pt_of_nil (j : sp B ⟶ X) [IsOpenImmersion j.left] (q : A 
   exact ⟨φ, rfl, chart_inj j h⟩
 
 /- English proof (translation)
-Establish `: Smooth (Spec.map (CommRingCat.ofHom (algebraMap R B)))`. Establish `e : j.left ≫ X.hom = Spec.map (CommRingCat.ofHom (algebraMap R B))` using `Over.w j`. Rewrite using `[← e]`. Use `infer_instance`. Conclude with `RingHom.smooth_algebraMap.1 ((HasRingHomProperty.Spec_iff (P := @Smooth)).1 this)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smooth_of_chart [Smooth X.hom] (j : sp B ⟶ X) [IsOpenImmersion j.left] :
     Algebra.Smooth R B := by
@@ -429,11 +423,11 @@ theorem smooth_of_chart [Smooth X.hom] (j : sp B ⟶ X) [IsOpenImmersion j.left]
   exact RingHom.smooth_algebraMap.1 ((HasRingHomProperty.Spec_iff (P := @Smooth)).1 this)
 
 /- English proof (translation)
-Set `p : (sp (R₀` to `R) A).left := (⟨m, hm⟩ : PrimeSpectrum A)`. Take `⟨B, j₀, hj₀, hmem, -⟩` from `Scheme.exists_affine_mem_range_and_range_subset (X := X.left) (x := y.left p) (U := ⊤) trivial`. Use `letI : Algebra R B := (Spec.preimage (j₀ ≫ X.hom)).hom.toAlgebra`. Set `j : sp (R₀` to `R) B ⟶ X := Over.homMk j₀ (Spec.map_preimage (j₀ ≫ X.hom)).symm`. Take `⟨_, ⟨f, rfl⟩, hf, hsub⟩` from `PrimeSpectrum.isTopologicalBasis_basic_opens.exists_subset_of_mem_open (a := (⟨m, hm⟩ : PrimeSpectrum A)) (u := (y.left ⁻¹ᵁ j₀.opensRange).1) hmem (y.left ⁻¹ᵁ j₀.opensRange).2`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Use `⟨f, hf, B, inferInstance, inferInstance, j, hj₀, fun T _ _ φ hφ => ?_⟩` and prove the remaining obligations. Use `haveI : IsOpenImmersion j.left := hj₀`. Use `exists_chart_pt j _ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨t, rfl⟩`. Establish `: (spMap φ).left t ∈ (PrimeSpectrum.basicOpen f : Set (PrimeSpectrum A))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `(h : φ f ∈ (t : PrimeSpectrum T).asIdeal)`. Conclude with `(t : PrimeSpectrum T).isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ h hφ)`. Conclude with `hsub this`.
+A detailed English derivation is pending.
 -/
 theorem exists_local_chart (y : sp A ⟶ X) (m : Ideal A) (hm : m.IsPrime) :
     ∃ f ∉ m, ∃ (B : Type) (_ : CommRing B) (_ : Algebra R B) (j : sp B ⟶ X),

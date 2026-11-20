@@ -30,7 +30,7 @@ def Law (e : Fin a ⊕ Fin a' ≃ Fin N) (α β : kˣ →* ℂˣ) (f : GL (Fin N
     ∀ᶠ u in 𝓝 (1 : GL (Fin N) k), ∀ h, f (h * u) = f h
 
 /- English proof (translation)
-Substitute `hb` using the available equality. Conclude with `SetLike.ext_iff.1 (GlobalTheory.IndEq.range_funOf b χ) f`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem exists_iff_law (b : Fin 2 → ℕ) (hb : b 0 + b 1 = N) (χ : Fin 2 → kˣ →* ℂˣ) (f : GL (Fin N) k → ℂ) :
     (∃ F : IndSp (pairPlace b hb) (ofChar (pairChar k b χ)), F.1.1 = f) ↔
@@ -39,9 +39,9 @@ theorem exists_iff_law (b : Fin 2 → ℕ) (hb : b 0 + b 1 = N) (χ : Fin 2 → 
   exact SetLike.ext_iff.1 (GlobalTheory.IndEq.range_funOf b χ) f
 
 /- English proof (translation)
-Use `⟨fun b A D Y hb h => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [mul_assoc b, hf.1 b A D Y hb]`. Establish `hc : Tendsto (fun u : GL (Fin N) k => c⁻¹ * u * c) (𝓝 1) (𝓝 1)`. Establish `: Continuous (fun u : GL (Fin N) k => c⁻¹ * u * c)` using `by fun_prop`. Simplify using `using this.tendsto 1`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `(hc.eventually hf.2).mono fun u hu h => ?_` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[← hu (h * c)]`. Use `congr 1`. Use `group`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem Law.translate {e : Fin a ⊕ Fin a' ≃ Fin N} {α β : kˣ →* ℂˣ} {f : GL (Fin N) k → ℂ} (hf : Law e α β f)
     (c : GL (Fin N) k) : Law e α β (fun x => f (x * c)) := by
@@ -59,7 +59,7 @@ theorem Law.translate {e : Fin a ⊕ Fin a' ≃ Fin N} {α β : kˣ →* ℂˣ} 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
 /- English proof (translation)
-Use `left_inv_eq_right_inv (a := b.val.submatrix e e) ?_ ?_` and prove the remaining obligations. Rewrite using `[submatrix_mul_equiv, Units.inv_mul, submatrix_one_equiv]`. Rewrite using `[hb, fromBlocks_multiply]`. Simplify using `only [Matrix.mul_neg, ← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul, Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, neg_add_cancel, neg_zero, fromBlocks_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem inv_blocks (e : Fin a ⊕ Fin a' ≃ Fin N) (b : GL (Fin N) k) (A : GL (Fin a) k) (D : GL (Fin a') k)
     (Y : Matrix (Fin a) (Fin a') k) (hb : b.val.submatrix e e = fromBlocks A.val Y 0 D.val) :
@@ -71,13 +71,13 @@ theorem inv_blocks (e : Fin a ⊕ Fin a' ≃ Fin N) (b : GL (Fin N) k) (A : GL (
       add_zero, zero_add, neg_add_cancel, neg_zero, fromBlocks_one]
 
 /- English proof (translation)
-Use `⟨fun b A D Y hb h => ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : (w * invT b * w⁻¹).val.submatrix e e = fromBlocks (invT D).val (-((A⁻¹).val * Y * (D⁻¹).val))ᵀ 0 (invT A).val`. Rewrite using `[Units.val_mul, Units.val_mul, hw, invT_val, ← transpose_submatrix, inv_blocks e' b A D Y hb, fromBlocks_transpose, fromBlocks_submatrix_sum_swap_sum_swap, transpose_zero]`. Both sides reduce to the same expression. Establish `h2` using `hf.1 _ _ _ _ h1 (w * invT h * c)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `h3 : w * invT (b * h) * c = w * invT b * w⁻¹ * (w * invT h * c)` using `by rw [map_mul]; group`. Simplify using `only [h3, h2, gdet_invT, apow_inv, map_inv, MonoidHom.inv_apply, neg_div, neg_neg]`. Expand and normalize the polynomial expressions, which then agree. Establish `hc : Tendsto (fun u : GL (Fin N) k => c⁻¹ * invT u * c) (𝓝 1) (𝓝 1)`. Establish `h0 : Continuous (invT : GL (Fin N) k → GL (Fin N) k)` using `Units.continuous_iff.2 ⟨Units.continuous_coe_inv.matrix_transpose, Units.continuous_val.matrix_transpose⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Continuous (fun u : GL (Fin N) k => c⁻¹ * invT u * c)` using `by fun_prop`. Simplify using `using this.tendsto 1`. Use `(hc.eventually hf.2).mono fun u hu h => ?_` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[← hu (w * invT h * c), map_mul]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `group`.
+A detailed English derivation is pending.
 -/
 theorem Law.swap {e : Fin a ⊕ Fin a' ≃ Fin N} {e' : Fin a' ⊕ Fin a ≃ Fin N} {α β : kˣ →* ℂˣ} {f : GL (Fin N) k → ℂ}
     (hf : Law e α β f) (w c : GL (Fin N) k)
@@ -108,13 +108,11 @@ theorem Law.swap {e : Fin a ⊕ Fin a' ≃ Fin N} {e' : Fin a' ⊕ Fin a ≃ Fin
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
 /- English proof (translation)
-Use `⟨⟨σ.toPEquiv.toMatrix, σ.symm.toPEquiv.toMatrix, ?_, ?_⟩, Units.ext ?_, fun X => ?_, fun X => ?_⟩` and prove the remaining obligations. Rewrite using `[PEquiv.toMatrix_toPEquiv_mul]`. Use extensionality with `i j`. Simplify using `[one_apply, eq_comm]`. Rewrite using `[PEquiv.toMatrix_toPEquiv_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Simplify using `[one_apply, eq_comm]`. Use `show (σ.symm.toPEquiv.toMatrix)ᵀ = σ.toPEquiv.toMatrix`. Use extensionality with `i j`. Simplify using `[Equiv.eq_symm_apply, eq_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `show σ.toPEquiv.toMatrix * X * σ.symm.toPEquiv.toMatrix = _`. Rewrite using `[PEquiv.toMatrix_toPEquiv_mul, PEquiv.mul_toMatrix_toPEquiv]`. Both sides reduce to the same expression. Use `show σ.symm.toPEquiv.toMatrix * X * σ.toPEquiv.toMatrix = _`. Rewrite using `[PEquiv.toMatrix_toPEquiv_mul, PEquiv.mul_toMatrix_toPEquiv]`.
-
-Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_perm (σ : Fin N ≃ Fin N) : ∃ w : GL (Fin N) k, invT w = w ∧
     (∀ X : Matrix (Fin N) (Fin N) k, w.val * X * (w⁻¹).val = X.submatrix σ σ) ∧
@@ -132,19 +130,19 @@ theorem exists_perm (σ : Fin N ≃ Fin N) : ∃ w : GL (Fin N) k, invT w = w �
 def tw (χ : kˣ →* ℂˣ) (z : ℂ) (x : GL (Fin N) k) : ℂ := (χ (gdet x) : ℂ) * apow (gdet x) z
 
 /- English proof (translation)
-Simplify using `only [tw, map_mul, apow_mul, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem tw_mul (χ : kˣ →* ℂˣ) (z : ℂ) (x y : GL (Fin N) k) : tw χ z (x * y) = tw χ z x * tw χ z y := by
   simp only [tw, map_mul, apow_mul, Units.val_mul]; ring
 
 /- English proof (translation)
-The claim follows from `mul_ne_zero (Units.ne_zero _) (apow_ne_zero _ _)`.
+A detailed English derivation is pending.
 -/
 theorem tw_ne_zero (χ : kˣ →* ℂˣ) (z : ℂ) (x : GL (Fin N) k) : tw χ z x ≠ 0 :=
   mul_ne_zero (Units.ne_zero _) (apow_ne_zero _ _)
 
 /- English proof (translation)
-Establish `h` using `(hχ.mul (isSmoothChar_of_isUnram (isUnram_absPow (k := k) z))).detChar (n := Fin N)`. Use `Filter.mem_of_superset (IsOpen.mem_nhds h (one_mem _)) fun u hu => ?_` and prove the remaining obligations. Conclude with `congrArg Units.val (MonoidHom.mem_ker.1 hu)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tw_eventually {χ : kˣ →* ℂˣ} (hχ : IsSmoothChar χ) (z : ℂ) :
     ∀ᶠ u in 𝓝 (1 : GL (Fin N) k), tw χ z u = 1 := by
@@ -154,7 +152,7 @@ theorem tw_eventually {χ : kˣ →* ℂˣ} (hχ : IsSmoothChar χ) (z : ℂ) :
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[GlobalTheory.FullRankCoinv.Y0, Y0, Fin.ext_iff, eq_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem Y0_eq (m n : ℕ) : GlobalTheory.FullRankCoinv.Y0 k n (m + n) = Y0 k (finSumFinEquiv : Fin m ⊕ Fin n ≃ Fin (m + n)) := by
   ext i j
@@ -163,11 +161,11 @@ theorem Y0_eq (m n : ℕ) : GlobalTheory.FullRankCoinv.Y0 k n (m + n) = Y0 k (fi
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[← frameMatrixSecondColumnBlock_mul_apply e b, h]`. Simplify using `[Y0, mul_apply]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← frameMatrixSecondColumnBlock_mul_apply e b, h]`. Simplify using `[Y0, mul_apply]`. Introduce and unpack `⟨h1, h2⟩`. Use extensionality with `i j`. Rewrite using `[frameMatrixSecondColumnBlock_mul_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `obtain ⟨j | j, rfl⟩ := e.surjective j <;> simp [Y0, mul_apply, h1, h2]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Y0_mul_iff (e : Fin a ⊕ Fin a' ≃ Fin N) (b : Matrix (Fin N) (Fin N) k) (D : Matrix (Fin a') (Fin a') k) :
     Y0 k e * b = D * Y0 k e ↔ (∀ i j, b (e (.inr i)) (e (.inl j)) = 0) ∧ ∀ i j, b (e (.inr i)) (e (.inr j)) = D i j := by
@@ -183,7 +181,7 @@ theorem Y0_mul_iff (e : Fin a ⊕ Fin a' ≃ Fin N) (b : Matrix (Fin N) (Fin N) 
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Use `Units.ext ?_` and prove the remaining obligations. Use `show b.val.det = A.val.det * D.val.det`. Rewrite using `[← det_submatrix_equiv_self e, hb, det_fromBlocks_zero₂₁]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gdet_blocks (e : Fin a ⊕ Fin a' ≃ Fin N) (b : GL (Fin N) k) (A : GL (Fin a) k) (D : GL (Fin a') k)
     (Y : Matrix (Fin a) (Fin a') k) (hb : b.val.submatrix e e = fromBlocks A.val Y 0 D.val) :
@@ -193,7 +191,7 @@ theorem gdet_blocks (e : Fin a ⊕ Fin a' ≃ Fin N) (b : GL (Fin N) k) (A : GL 
   rw [← det_submatrix_equiv_self e, hb, det_fromBlocks_zero₂₁]
 
 /- English proof (translation)
-Rewrite using `[show -(m : ℂ) / 2 = (n : ℂ) / 2 + -((m + n : ℕ) : ℂ) / 2 by push_cast; ring, apow_add]`. Simplify using `only [map_mul, apow_mul, Units.val_mul, MonoidHom.mul_apply, MonoidHom.inv_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem tw_factor (m n : ℕ) (ν χ : kˣ →* ℂˣ) (x y : kˣ) :
     (χ (x * y) : ℂ) * apow (x * y) ((n : ℂ) / 2) * ((((ν y)⁻¹ : ℂˣ) : ℂ) * apow y (-((m + n : ℕ) : ℂ) / 2)) =
@@ -203,19 +201,17 @@ theorem tw_factor (m n : ℕ) (ν χ : kˣ →* ℂˣ) (x y : kˣ) :
   ring
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨U, hU, h1⟩, h2⟩`. Use `⟨fun b A D Y hb h => ?_, ((tw_eventually hχ ((n : ℂ) / 2)).and hU).mono fun u hu h => ?_⟩` and prove the remaining obligations. Establish `h3` using `h2 b h D (by`. Rewrite using `[Y0_eq, Y0_mul_iff]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨fun i j => congrFun (congrFun hb (.inr i)) (.inl j), fun i j => congrFun (congrFun hb (.inr i)) (.inr j)⟩)`. Simplify using `only [tw_mul, h3]`. Rewrite using `[← tw_factor, tw, gdet_blocks _ b A D Y hb]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [tw_mul, hu.1, h1 h u hu.2, mul_one]`.
+Supply the required witnesses or components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Introduce and unpack `⟨h1, h2⟩`. Use `⟨⟨_, (tw_eventually hχ ((n : ℂ) / 2)).and h2, fun h u hu => ?_⟩, fun b h D hD => ?_⟩` and prove the remaining obligations. Use `hu.2 h` as an intermediate fact. Simplify using `only [tw_mul, hu.1, mul_one] at this`. Conclude with `mul_left_cancel₀ (tw_ne_zero _ _ _) this`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Y0_eq, Y0_mul_iff] at hD set e := (finSumFinEquiv : Fin m ⊕ Fin n ≃ Fin (m + n))`. Establish `hb : b.val.submatrix e e = fromBlocks (Matrix.of fun i j => b.val (e (.inl i)) (e (.inl j))) (Matrix.of fun i j => b.val (e (.inl i)) (e (.inr j))) 0 D.val`. Use extensionality with `(i | i) (j | j)`. Both sides reduce to the same expression. Both sides reduce to the same expression.
+Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Conclude with `hD.1 i j`. Conclude with `hD.2 i j`. Establish `hd : (Matrix.of fun i j => b.val (e (.inl i)) (e (.inl j))).det ≠ 0`. Use `b.det_ne_zero` as an intermediate fact. Rewrite `this` using `[← det_submatrix_equiv_self e, hb, det_fromBlocks_zero₂₁]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `left_ne_zero_of_mul this`. Establish `h3` using `h1 b (Matrix.GeneralLinearGroup.mkOfDetNeZero _ hd) D _ hb h`. Simplify using `only [tw_mul] at h3`. Rewrite `h3` using `[← tw_factor, ← gdet_blocks e b (Matrix.GeneralLinearGroup.mkOfDetNeZero _ hd) D _ hb]`. Use `mul_left_cancel₀ (mul_ne_zero (tw_ne_zero χ ((n : ℂ) / 2) b) (tw_ne_zero χ ((n : ℂ) / 2) h)) ?_` and prove the remaining obligations.
-
-Rewrite using `[h3]`. Simplify using `only [tw]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem mem_iff_law (m n : ℕ) (ν : kˣ →* ℂˣ) {χ : kˣ →* ℂˣ} (hχ : IsSmoothChar χ) (f : GL (Fin (m + n)) k → ℂ) :
     f ∈ GlobalTheory.FullRankCoinv.indSp k n (m + n) ν ↔
@@ -257,15 +253,13 @@ theorem mem_iff_law (m n : ℕ) (ν : kˣ →* ℂˣ) {χ : kˣ →* ℂˣ} (hχ
       ring
 
 /- English proof (translation)
-Use `choose T hT using fun f : S => (exists_iff_law b hb χ _).2 ((h f.1).1 f.2)`. Use `⟨⟨⟨T, fun f g => ?_⟩, fun c f => ?_⟩, ⟨fun f g hfg => ?_, fun F => ?_⟩, fun f x => congrFun (hT f) x⟩` and prove the remaining obligations. Use `Subtype.ext (Subtype.ext ?_) show (T (f + g)).1.1 = (T f).1.1 + (T g).1.1` and prove the remaining obligations. Rewrite using `[hT, hT, hT]`. Use function extensionality and compare the values at `x`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[mul_add]`. Use `Subtype.ext (Subtype.ext ?_) show (T (c • f)).1.1 = c • (T f).1.1` and prove the remaining obligations. Rewrite using `[hT, hT]`. Use function extensionality and compare the values at `x`. Simplify using `[mul_left_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Subtype.ext (funext fun y => ?_)` and prove the remaining obligations. Take `⟨x, rfl⟩` from `α.surjective y`. Establish `h1 : (T f).1.1 = (T g).1.1` using `congrArg (fun F => F.1.1) hfg`. Rewrite `h1` using `[hT, hT]`. Conclude with `mul_left_cancel₀ (hτ _) (congrFun h1 x)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h1 : (fun x => τ (α x) * (fun y => (τ y)⁻¹ * F.1.1 (α.symm y)) (α x)) = F.1.1`. Use function extensionality and compare the values at `x`. Simplify using `[hτ]`. Use `⟨⟨fun y => (τ y)⁻¹ * F.1.1 (α.symm y), (h _).2 ?_⟩, Subtype.ext (Subtype.ext ((hT _).trans h1))⟩` and prove the remaining obligations. Rewrite using `[h1]`.
-
-Conclude with `(exists_iff_law b hb χ _).1 ⟨F, rfl⟩`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_bij (S : Submodule ℂ (GL (Fin N) k → ℂ)) (b : Fin 2 → ℕ) (hb : b 0 + b 1 = N) (χ : Fin 2 → kˣ →* ℂˣ)
     (τ : GL (Fin N) k → ℂ) (hτ : ∀ x, τ x ≠ 0) (α : GL (Fin N) k ≃ GL (Fin N) k)
@@ -300,23 +294,19 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 open scoped Matrix
 
 /- English proof (translation)
-Introduce `k _ _ _ _ m n ν χ hχ ε C`. Consider the cases of `ε`. Take `⟨T, hT, hT'⟩` from `exists_bij (GlobalTheory.FullRankCoinv.indSp k n (m + n) ν) ![m, n] rfl ![χ, χ * ν⁻¹] (tw χ ((n : ℂ) / 2)) (tw_ne_zero _ _) (Equiv.mulRight C⁻¹) (fun f => by`. Rewrite using `[mem_iff_law m n ν hχ]`. Use `⟨fun h => h.translate C⁻¹, fun h => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `h.translate C` as an intermediate fact. Simplify using `only [Equiv.coe_mulRight, mul_inv_cancel_right] at this`. Conclude with `this)`. Use `⟨![m, n], rfl, ![χ, χ * ν⁻¹], T, .inl ⟨rfl, rfl, rfl, rfl⟩, hT, fun f hf g M hM hf' => ?_⟩` and prove the remaining obligations. Take `rfl : M = C * g * C⁻¹` from `Units.ext hM`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Subtype.ext (Subtype.ext (funext fun x => ?_))` and prove the remaining obligations. Use `show (T _).1.1 x = (T _).1.1 (x * g)`. Rewrite using `[hT', hT']`. Simplify using `only [Equiv.coe_mulRight]`. Rewrite using `[show x * g * C⁻¹ = x * C⁻¹ * (C * g * C⁻¹) by group, tw_mul _ _ (x * C⁻¹)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `(mul_assoc _ _ _).symm`. Set `e : Fin m ⊕ Fin n ≃ Fin (m + n)` to `finSumFinEquiv`. Set `e' : Fin n ⊕ Fin m ≃ Fin (m + n)` to `finSumFinEquiv.trans (finCongr (Nat.add_comm n m))`. Take `⟨w, hw0, hw1, hw2⟩` from `exists_perm (k := k) (e.symm.trans ((Equiv.sumComm _ _).trans e'))`. Set `α : GL (Fin (m + n)) k ≃ GL (Fin (m + n)) k` to `{ toFun := fun x => w * GlobalTheory.SplitFlip.invT x * C⁻¹ invFun := fun y => w⁻¹ * GlobalTheory.SplitFlip.invT y * GlobalTheory.SplitFlip.invT C left_inv := fun x => by simp only [map_mul, map_inv, hw0, GlobalTheory.SplitFlip.invT_invT]; group right_inv := fun x => by simp only …`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨T, hT, hT'⟩` from `exists_bij (GlobalTheory.FullRankCoinv.indSp k n (m + n) ν) ![n, m] (Nat.add_comm n m) ![(χ * ν⁻¹)⁻¹, χ⁻¹] (tw χ ((n : ℂ) / 2)) (tw_ne_zero _ _) α (fun f => by`. Rewrite using `[mem_iff_law m n ν hχ]`. Use `⟨fun h => h.swap (e' := e') w C⁻¹ fun X => ?_, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[hw1]`. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[e]`. Use `Law.swap (e := e') (e' := e) h w⁻¹ (GlobalTheory.SplitFlip.invT C) fun X => by` as an intermediate fact. Rewrite using `[hw2]`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : ∀ y, α (w⁻¹ * GlobalTheory.SplitFlip.invT y * GlobalTheory.SplitFlip.invT C) = y` using `α.apply_symm_apply`. Simplify using `only [h1, Matrix.cons_val_zero, Matrix.cons_val_one, inv_inv] at this`. Conclude with `this)`. Use `⟨![n, m], Nat.add_comm n m, ![(χ * ν⁻¹)⁻¹, χ⁻¹], T, .inr ⟨rfl, rfl, rfl, rfl⟩, hT, fun f hf g M hM hf' => ?_⟩` and prove the remaining obligations. Take `rfl : M = C * GlobalTheory.SplitFlip.invT g * C⁻¹` from `Units.ext hM`.
-
-Use `Subtype.ext (Subtype.ext (funext fun x => ?_))` and prove the remaining obligations. Use `show (T _).1.1 x = (T _).1.1 (x * g)`. Rewrite using `[hT', hT', show α (x * g) = α x * (C * GlobalTheory.SplitFlip.invT g * C⁻¹) by show w * GlobalTheory.SplitFlip.invT (x * g) * C⁻¹ = w * GlobalTheory.SplitFlip.invT x * C⁻¹ * _`. Rewrite using `[map_mul]`. Use the proof step `group, tw_mul _ _ (α x)]`.
-
-Conclude with `(mul_assoc _ _ _).symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ident : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (m n : ℕ) (ν χ : kˣ →* ℂˣ), IsSmoothChar χ → ∀ (ε : Bool) (C : GL (Fin (m + n)) k),

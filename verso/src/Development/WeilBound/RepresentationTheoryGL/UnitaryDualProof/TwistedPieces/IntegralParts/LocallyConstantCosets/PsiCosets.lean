@@ -13,25 +13,25 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)}
 
 /- English proof (translation)
-Establish `hfi : (M.addSubgroupOf L).FiniteIndex` using `⟨lat_index_pos hL hM hML⟩`. Use `haveI : Fintype (L ⧸ M.addSubgroupOf L) := Fintype.ofFinite _`. Set `f : (L ⧸ M.addSubgroupOf L) → Matrix (Fin n) (Fin n) k` to `fun q => ((Quotient.out q : L) : Matrix (Fin n) (Fin n) k)`. Establish `hf : Function.Injective f` using `fun a b hab => Quotient.out_inj.1 (Subtype.ext hab)`. Establish `hmem : ∀ z q, z ∈ (fun a => a + f q) '' (M : Set (Matrix (Fin n) (Fin n) k)) ↔ z - f q ∈ M`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z q`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, hm, rfl⟩`. Simplify using `using hm`. Introduce `hz`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨z - f q, hz, by simp⟩`. Establish `key : ∀ z, (L : Set (Matrix (Fin n) (Fin n) k)).indicator (1 : Matrix (Fin n) (Fin n) k → ℂ) z = ∑ d ∈ Finset.univ.image f, ((fun a => a + d) '' (M : Set (Matrix (Fin n) (Fin n) k))).indicator 1 z`. Introduce `z`. Rewrite using `[Finset.sum_image (fun a _ b _ hab => hf hab)]`. Distinguish the cases in `hz : z ∈ L`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_mem (show z ∈ (L : Set (Matrix (Fin n) (Fin n) k)) from hz)]`. Establish `hq : ∀ q, ((fun a => a + f q) '' (M : Set (Matrix (Fin n) (Fin n) k))).indicator (1 : Matrix (Fin n) (Fin n) k → ℂ) z = if (QuotientAddGroup.mk ⟨z, hz⟩ : L ⧸ M.addSubgroupOf L) = q then 1 else 0`. Introduce `q`. Establish `e : z - f q ∈ M ↔ (QuotientAddGroup.mk ⟨z, hz⟩ : L ⧸ M.addSubgroupOf L) = QuotientAddGroup.mk (Quotient.out q)`. Rewrite using `[QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show z - f q ∈ M ↔ -z + f q ∈ M`. Rewrite using `[show -z + f q = -(z - f q) by abel, neg_mem_iff]`. Rewrite `e` using `[QuotientAddGroup.out_eq']`. Distinguish the cases in `h : (QuotientAddGroup.mk ⟨z, hz⟩ : L ⧸ M.addSubgroupOf L) = q`. Rewrite using `[if_pos h, Set.indicator_of_mem ((hmem z q).2 (e.2 h))]`.
+Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[if_neg h, Set.indicator_of_notMem (fun h' => h (e.1 ((hmem z q).1 h')))]`. Simplify using `only [hq, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem (show z ∉ (L : Set (Matrix (Fin n) (Fin n) k)) from hz)]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result.
 
-Use `symm`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `q _`. Apply `Set.indicator_of_notMem` to reduce the goal to its premises. Introduce `h'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `hz` to reduce the goal to its premises. Establish `h2 : z = (z - f q) + f q` using `by abel`. Rewrite using `[h2]`. Conclude with `L.add_mem (hML ((hmem z q).1 h')) (Quotient.out q).2`. Use `⟨Finset.univ.image f, ?_, ?_, fun h => funext fun p => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.card_image_of_injective _ hf, Finset.card_univ, ← Nat.card_eq_fintype_card]`. Both sides reduce to the same expression. Introduce `d hd`. Take `⟨q, _, rfl⟩` from `Finset.mem_image.1 hd`. Conclude with `(Quotient.out q).2`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_apply]`. Distinguish the cases in `hp : p.1 ∈ CC Z`. Simplify using `only [psi, Set.indicator_of_mem (show p ∈ {q : Sp k n | q.1 ∈ CC Z} from hp)]`. Rewrite using `[key, Finset.sum_mul]`. Simplify using `only [psi, Set.indicator_of_notMem (show p ∉ {q : Sp k n | q.1 ∈ CC Z} from hp), Finset.sum_const_zero]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem psi_cosets {L M : AddSubgroup (Matrix (Fin n) (Fin n) k)} (hL : IsLat Z L) (hM : IsLat Z M) (hML : M ≤ L) :
     ∃ D : Finset (Matrix (Fin n) (Fin n) k), D.card = M.relIndex L ∧ (∀ d ∈ D, d ∈ L) ∧

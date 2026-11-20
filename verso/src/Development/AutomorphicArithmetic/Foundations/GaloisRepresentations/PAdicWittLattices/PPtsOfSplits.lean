@@ -5,15 +5,15 @@ open UpperTheory.Gal.Int.Geo (FEt Cover gen piece IsHEig)
 universe u v
 
 /- English proof (translation)
-The claim follows from `inferInstanceAs (Subsingleton (PrimeSpectrum Ω))`.
+A detailed English derivation is pending.
 -/
 private theorem sp_subsingleton (Ω : Type) [Field Ω] : Subsingleton ↑(UpperTheory.Gal.G3.sp Ω) :=
   inferInstanceAs (Subsingleton (PrimeSpectrum Ω))
 
 /- English proof (translation)
-Use `haveI := sp_subsingleton Ω`. Establish `p : ↑(UpperTheory.Gal.G3.sp Ω)` using `show PrimeSpectrum Ω from ⟨⊥, Ideal.bot_prime⟩`. Take `⟨⟨j, y⟩, hq⟩ : ∃ q, (sigmaMk (fun _ : J => W)).symm (u p) = q` from `⟨_, rfl⟩`. Establish `hy : Sigma.ι (fun _ : J => W) j y = u p`. Rewrite using `[← sigmaMk_mk, ← hq, Homeomorph.apply_symm_apply]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨j, IsOpenImmersion.lift (Sigma.ι (fun _ : J => W) j) u ?_, IsOpenImmersion.lift_fac _ _ _⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨z, rfl⟩`. Take `rfl : z = p` from `Subsingleton.elim _ _`. Conclude with `⟨y, hy⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem exists_factor_ι {J : Type} {W : Scheme.{0}} (Ω : Type) [Field Ω]
     (u : UpperTheory.Gal.G3.sp Ω ⟶ ∐ (fun _ : J => W)) :
@@ -30,7 +30,7 @@ private theorem exists_factor_ι {J : Type} {W : Scheme.{0}} (Ω : Type) [Field 
   exact ⟨y, hy⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `he` using `isEmpty_of_commSq_sigmaι_of_ne (g := fun _ : J => W) ⟨h⟩ hne`. Conclude with `he.false (show PrimeSpectrum Ω from ⟨⊥, Ideal.bot_prime⟩)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem index_eq_of_ι {J : Type} {W : Scheme.{0}} (Ω : Type) [Field Ω] {j j' : J}
     {x x' : UpperTheory.Gal.G3.sp Ω ⟶ W}
@@ -40,15 +40,15 @@ private theorem index_eq_of_ι {J : Type} {W : Scheme.{0}} (Ω : Type) [Field Ω
   exact he.false (show PrimeSpectrum Ω from ⟨⊥, Ideal.bot_prime⟩)
 
 /- English proof (translation)
-Introduce `Z Y W s c J σ hs Ω _ x y hxy`. Take `⟨hσ, hiso⟩` from `hs`. Use `haveI := hiso`. Set `e` to `Limits.Sigma.desc (fun j : J => pullback.lift (σ j) (𝟙 W) (by rw [Category.id_comp]; exact hσ j))`. Establish `hι : ∀ j, Sigma.ι (fun _ : J => W) j ≫ e = pullback.lift (σ j) (𝟙 W) (by rw [Category.id_comp]; exact hσ j)` using `fun j => Sigma.ι_desc _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨j, x', hx'⟩` from `exists_factor_ι Ω (pullback.lift y x hxy ≫ inv e)`. Establish `h1 : x' ≫ Sigma.ι (fun _ : J => W) j ≫ e = pullback.lift y x hxy`. Rewrite using `[← Category.assoc, hx', Category.assoc, IsIso.inv_hom_id, Category.comp_id]`. Rewrite `h1` using `[hι]`. Establish `hsnd` using `congrArg (· ≫ pullback.snd s c) h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfst` using `congrArg (· ≫ pullback.fst s c) h1`. Simplify using `only [Category.assoc, pullback.lift_fst, pullback.lift_snd, Category.comp_id] at hsnd hfst`. Rewrite `hfst` using `[hsnd]`. Use `⟨j, hfst, fun j' hj' => ?_⟩` and prove the remaining obligations. Establish `hj'' : x ≫ σ j' = y` using `hj'`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `index_eq_of_ι Ω (x := x) (x' := x')` to reduce the goal to its premises. Rewrite using `[hx']`. Apply `(cancel_mono e).mp` to reduce the goal to its premises. Rewrite using `[Category.assoc, hι, Category.assoc, IsIso.inv_hom_id, Category.comp_id]`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, pullback.lift_fst, pullback.lift_fst, hj'']`. Rewrite using `[Category.assoc, pullback.lift_snd, pullback.lift_snd, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.G3.pPtsOfSplits :
     PtsOfSplits := by

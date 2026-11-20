@@ -8,7 +8,7 @@ open scoped ComplexOrder
 namespace GlobalTheory.CompanionTheory.Ar.Fl.Sylvester
 
 /- English proof (translation)
-The claim follows from `@PositivityTheory.Xgf.negDef_block_of_posDef`.
+A detailed English derivation is pending.
 -/
 theorem neg_posDef_of_compl_posDef : ∀ (p q : ℕ) (A : Matrix (Fin p) (Fin p) ℂ) (B : Matrix (Fin q) (Fin q) ℂ) (C : Matrix (Fin q) (Fin p ⊕ Fin q) ℂ), A.PosDef → B.IsHermitian → (-(C * Matrix.fromBlocks A 0 0 B * Cᴴ)).PosDef → (-B).PosDef :=
   @PositivityTheory.Xgf.negDef_block_of_posDef

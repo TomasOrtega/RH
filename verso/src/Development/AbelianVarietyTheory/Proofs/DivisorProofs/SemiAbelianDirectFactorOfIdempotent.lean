@@ -8,7 +8,7 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.SiegMin
 
 /- English proof (translation)
-Introduce `S G _ _ hG e he hee`. Take `⟨H, hgrp, _, i, r, hH, hi, hr, hir, hri⟩` from `GlobalTheory.Mum.IdemImage.isSemiAbelian_image S G hG e he hee`. Conclude with `⟨H, hgrp, i, r, hi, hr, hir, hri, hH⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_semiAbelian_idempotent_image : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ e : G ⟶ G, IsMonHom e → e ≫ e = e → ∃ (H : Over S) (_ : GrpObj H) (i : H ⟶ G) (r : G ⟶ H), IsMonHom i ∧ IsMonHom r ∧ i ≫ r = 𝟙 H ∧ r ≫ i = e ∧ IsSemiAbelian H := by
   intro S G _ _ hG e he hee

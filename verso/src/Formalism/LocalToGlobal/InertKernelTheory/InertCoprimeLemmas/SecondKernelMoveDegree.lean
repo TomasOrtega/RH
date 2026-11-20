@@ -111,7 +111,7 @@ open Classical in
 def wI {N N' : ℕ} (τ : D.what₂.Tau) : GL3Theta.Idx D N N' → ℕ := fun k => if k.1 = τ then 1 else 0
 
 /- English proof (translation)
-Rewrite using `[aeval_monomial, monomial_eq, Finsupp.prod, Finsupp.prod, Finsupp.prod, algebraMap_eq]`. Simplify using `only [mul_pow, Finset.prod_mul_distrib, map_mul, map_prod, map_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem aeval_CX_monomial {σ R : Type} [CommRing R] (c : σ → R) (s : σ →₀ ℕ) (a : R) :
     aeval (fun i => C (c i) * X i) (monomial s a) = monomial s (a * s.prod fun i k => c i ^ k) := by
@@ -120,9 +120,9 @@ theorem aeval_CX_monomial {σ R : Type} [CommRing R] (c : σ → R) (s : σ →�
   ring
 
 /- English proof (translation)
-Proceed by induction on `Q using MvPolynomial.induction_on' with`. Consider the case `monomial s a`. Rewrite using `[aeval_CX_monomial, coeff_monomial, coeff_monomial]`. Use `split_ifs with h`. Substitute `h` using the available equality.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[mul_zero]`. Consider the case `add P Q hP hQ => rw [map_add, coeff_add, coeff_add, hP, hQ, mul_add]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem coeff_aeval_CX {σ R : Type} [CommRing R] (c : σ → R) (Q : MvPolynomial σ R) (n : σ →₀ ℕ) :
     coeff n (aeval (fun i => C (c i) * X i) Q) = (n.prod fun i k => c i ^ k) * coeff n Q := by
@@ -136,9 +136,9 @@ theorem coeff_aeval_CX {σ R : Type} [CommRing R] (c : σ → R) (Q : MvPolynomi
   | add P Q hP hQ => rw [map_add, coeff_add, coeff_add, hP, hQ, mul_add]
 
 /- English proof (translation)
-Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `k`. Rewrite using `[colSub, aeval_X, aeval_X, Finset.sum_eq_single k.2.2]`. Rewrite using `[Matrix.diagonal_apply_eq]`. Introduce `r _ hr`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Matrix.diagonal_apply_ne _ hr, map_zero, zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem colSub_diag {N : ℕ} (d : D.what₂.Tau → ℂ) :
     colSub (fun τ' => Matrix.diagonal fun _ : Fin N => d τ') =
@@ -152,26 +152,24 @@ theorem colSub_diag {N : ℕ} (d : D.what₂.Tau → ℂ) :
   · intro h; exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem two_pow_ite (b : Prop) [Decidable b] (k : ℕ) :
     ((if b then (2 : ℂ) else 1) ^ k) = (2 : ℂ) ^ (if b then k else 0) := by
   split_ifs <;> simp
 
 /- English proof (translation)
-Use `set d : D.what₂.Tau → ℂ := fun τ' => if τ' = τ then 2 else 1 with hd`. Establish `hB : IsBor (fun τ' => Matrix.diagonal fun _ : Fin N => d τ')`. Introduce `τ'`. Use `⟨fun r s hsr => Matrix.diagonal_apply_ne _ (ne_of_gt hsr), fun r => ?_⟩` and prove the remaining obligations. Use `show Matrix.diagonal (fun _ : Fin N => d τ') r r ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[Matrix.diagonal_apply_eq, hd]`. Use `show (if τ' = τ then (2 : ℂ) else 1) ≠ 0`. Apply the tactic sequence `split_ifs <;> norm_num`. Establish `h1` using `hQ (fun τ' => Matrix.diagonal fun _ : Fin N => d τ') hB`. Rewrite `h1` using `[colSub_diag]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (coeff m) h1`. Rewrite `h2` using `[coeff_aeval_CX, coeff_smul, smul_eq_mul]`. Establish `h3` using `mul_right_cancel₀ hm h2`. Establish `hl : (m.prod fun k e => d k.1 ^ e) = (2 : ℂ) ^ Finsupp.weight (wF τ) m`. Rewrite using `[Finsupp.weight_apply, Finsupp.prod, Finsupp.sum, hd]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [two_pow_ite]`. Rewrite using `[Finset.prod_pow_eq_pow_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Unfold `wF`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> simp`. Establish `hr : (∏ τ', ∏ r, (Matrix.diagonal fun _ : Fin N => d τ') r r ^ ν τ' r) = (2 : ℂ) ^ ∑ r, ν τ r`. Simplify using `only [Matrix.diagonal_apply_eq, hd, two_pow_ite]`. Simplify using `only [Finset.prod_pow_eq_pow_sum]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.sum_eq_single τ]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[hb]`. Introduce `h`.
-
-Conclude with `absurd (Finset.mem_univ _) h`. Rewrite `h3` using `[hl, hr]`. Establish `h4 : ((2 ^ Finsupp.weight (wF τ) m : ℕ) : ℂ) = ((2 ^ ∑ r, ν τ r : ℕ) : ℂ)` using `by push_cast; exact h3`. Conclude with `Nat.pow_right_injective (le_refl 2) (Nat.cast_injective h4)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem wt_deg {N : ℕ} (ν : D.what₂.Tau → Fin N → ℕ) (Q : MvPolynomial (GL3Theta.FrV D N) ℂ) (hQ : Q ∈ WtPol ℂ ν)
     (τ : D.what₂.Tau) (m : GL3Theta.FrV D N →₀ ℕ) (hm : coeff m Q ≠ 0) :
@@ -211,11 +209,11 @@ theorem wt_deg {N : ℕ} (ν : D.what₂.Tau → Fin N → ℕ) (Q : MvPolynomia
   exact Nat.pow_right_injective (le_refl 2) (Nat.cast_injective h4)
 
 /- English proof (translation)
-Establish `hf : ∀ k : GL3Theta.FrV D N, IsWeightedHomogeneous (wI (N` using `N) (N' := N') τ) (∑ b : Fin N', C (C (s k.1) * (if h : (k.2.2 : ℕ) < N' then (X (k.1, b, ⟨k.2.2, h⟩) : MvPolynomial (GL3Theta.FrV D N') ℂ) else 0)) * X ((k.1, b, k.2.1) : GL3Theta.Idx D N N')) (wF τ k) := by`. Introduce `k`. Use `IsWeightedHomogeneous.sum _ _ _ fun b _ => ?_` and prove the remaining obligations. Conclude with `(isWeightedHomogeneous_X _ _ _).C_mul _`. Unfold `polDY`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `conv => enter [2]`. Rewrite using `[Q.as_sum]`. Rewrite using `[map_sum]`. Use `IsWeightedHomogeneous.sum _ _ _ fun m hm => ?_` and prove the remaining obligations. Rewrite using `[aeval_monomial, MvPolynomial.algebraMap_apply, ← wt_deg ν Q hQ τ m (mem_support_iff.1 hm), Finsupp.weight_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(isWeightedHomogeneous_C (wI (N := N) (N' := N') τ) (algebraMap ℂ (MvPolynomial (GL3Theta.FrV D N') ℂ) (coeff m Q))).mul (IsWeightedHomogeneous.prod _ _ _ fun x _ => (hf x).pow (m x) : IsWeightedHomogeneous (wI (N := N) (N' := N') τ) (m.prod fun x e => (∑ b : Fin N', C (C (s x.1) …` as an intermediate fact. Rewrite `this` using `[zero_add]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem polDY_wh {N N' : ℕ} (s : D.what₂.Tau → ℂ) (ν : D.what₂.Tau → Fin N → ℕ) (Q : MvPolynomial (GL3Theta.FrV D N) ℂ)
     (hQ : Q ∈ WtPol ℂ ν) (τ : D.what₂.Tau) :
@@ -245,9 +243,9 @@ section Deg2
 open MvPolynomial
 
 /- English proof (translation)
-Rewrite using `[Finsupp.weight_apply, Finsupp.sum_fintype _ _ (fun _ => by simp), Fintype.sum_prod_type, Finset.sum_eq_single τ]`. Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `[wI]`. Introduce `b _ hb`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.sum_eq_zero fun x _ => ?_` and prove the remaining obligations. Simplify using `[wI, hb]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem weight_wI {D : D7} {N N' : ℕ} (τ : D.what₂.Tau) (α : GL3Theta.Idx D N N' →₀ ℕ) :
     Finsupp.weight (wI (N := N) (N' := N') τ) α = ∑ b : Fin N', ∑ a : Fin N, α (τ, b, a) := by
@@ -262,7 +260,7 @@ theorem weight_wI {D : D7} {N N' : ℕ} (τ : D.what₂.Tau) (α : GL3Theta.Idx 
   · intro h; exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Introduce `D N N' s ν Q hQ α hα τ`. Rewrite using `[← weight_wI τ α]`. Conclude with `polDY_wh (N' := N') s ν Q hQ τ (mem_support_iff.1 hα)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem difference_polynomial_degree : PolDYDeg := by
   intro D N N' s ν Q hQ α hα τ
@@ -272,7 +270,7 @@ theorem difference_polynomial_degree : PolDYDeg := by
 end Deg2
 
 /- English proof (translation)
-Establish `h` using `pos.symm_apply_apply ⟨v, s⟩`. Simplify using `only [eIdx]`. Generalize the expression as in `pos.symm (pos ⟨v, s⟩) = q at h ⊢`. Substitute `h` using the available equality. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify by unfolding definitions. Replace the chosen expression with an arbitrary variable. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem eIdx_pos {p : ℕ} [Fact p.Prime] (X : Sys p) (D : D7) (pos : (Σ v : X.Pl, Fin (X.G.P.n' v)) ≃ D.what₂.Tau) (j : ℕ)
     (hN : RankTie X D j) (v : X.Pl) (s : Fin (X.G.P.n' v)) (b : Fin (D.R.N (j + 1))) (a : Fin (D.R.N j)) :
@@ -284,7 +282,7 @@ theorem eIdx_pos {p : ℕ} [Fact p.Prime] (X : Sys p) (D : D7) (pos : (Σ v : X.
   rfl
 
 /- English proof (translation)
-Use `Fintype.sum_equiv (finCongr hN.1).symm _ _ fun a => ?_` and prove the remaining obligations. Use `Fintype.sum_equiv (finCongr hN.2).symm _ _ fun b => ?_` and prove the remaining obligations. Establish `h` using `eIdx_pos X D pos j hN v s ((finCongr hN.2).symm b) ((finCongr hN.1).symm a)`. Simplify using `only [finCongr_symm, finCongr_apply, Fin.cast_cast, Fin.cast_eq_self] at h`. Rewrite using `[← h, Finsupp.mapDomain_apply (eIdx_injective X D pos j hN)]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/

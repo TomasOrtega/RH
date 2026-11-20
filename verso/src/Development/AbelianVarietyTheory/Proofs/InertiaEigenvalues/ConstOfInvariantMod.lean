@@ -15,11 +15,11 @@ open GlobalTheory.DRFil
 variable {l : ℕ} [Fact l.Prime] {P : LocPrime l} {AI : LocAinf l P}
 
 /- English proof (translation)
-Take `⟨Θ⟩` from `GlobalTheory.MemLoc.TiedTheta.nonempty_thetaL l P AI TT`. Distinguish the cases in `hn : n = 0`. Substitute `hn` using the available equality. Rewrite `hg`, the goal using `[zero_add]`. Take `⟨y, hy, ey⟩` from `GlobalTheory.MemLoc.invariants_finExt l K (Θ.θ e) (fun g hg' => by`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h` using `(theta_sub_iff Θ K ((P.PD K).Fil_G _ _ _ he) he).1 (hg ⟨g, hg'⟩)`. Rewrite using `[P.PD_actdR, Θ.θ_act _ _ ((fil_iff _ _ _ _).1 he), GlobalTheory.MemLoc.locAinf_actC] at h)` and apply the resulting hypothesis. Use `⟨⟨y, hy⟩, alg_mem_fil_zero K _, ?_⟩` and prove the remaining obligations. Rewrite using `[theta_sub_iff Θ K he (alg_mem_fil_zero K _), ← ey]`. Conclude with `(Θ.θ_Om y).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨κ, -, -, h0, h⟩` from `graded_invariants TT Θ K n e he hg`. Rewrite `h` using `[h0 hn]`. Conclude with `⟨0, by rw [map_zero]; exact Submodule.zero_mem _, by rwa [map_zero]⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem graded_const (TT : LocTied l P AI) (K : FinExt l) (n : ℤ)
     (e : P.R.BdR) (he : e ∈ (P.PD K).Fil n)
@@ -41,13 +41,13 @@ theorem graded_const (TT : LocTied l P AI) (K : FinExt l) (n : ℤ)
     exact ⟨0, by rw [map_zero]; exact Submodule.zero_mem _, by rwa [map_zero]⟩
 
 /- English proof (translation)
-Introduce `l _ P AI TT K a b x hx hg`. Establish `hFa : Antitone fun a => (P.PD K).Fil a` using `antitone_int_of_succ_le fun a => (P.PD K).Fil_anti a`. Establish `h0 : ∀ m, m ≤ a → ∃ c : ↥K.1, algebraMap ↥K.1 P.R.BdR c ∈ (P.PD K).Fil a ∧ x - algebraMap ↥K.1 P.R.BdR c ∈ (P.PD K).Fil m` using `fun m hm => ⟨0, by rw [map_zero]; exact Submodule.zero_mem _, by rw [map_zero, sub_zero]; exact hFa hm hx⟩`. Break down `le_total b a with hba | hab` into its components or cases. Conclude with `h0 b hba`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `key : ∀ m, a ≤ m → m ≤ b → ∃ c : ↥K.1, algebraMap ↥K.1 P.R.BdR c ∈ (P.PD K).Fil a ∧ x - algebraMap ↥K.1 P.R.BdR c ∈ (P.PD K).Fil m`. Introduce `m hm`. Proceed by induction on `m, hm using Int.le_induction with`. Consider the case `base => exact fun _ => h0 a le_rfl`. Consider the case `succ m hm ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hmb`. Take `⟨c, hc, hxc⟩` from `ih (by omega)`. Take `⟨d, hd, hxd⟩` from `graded_const TT K m _ hxc (fun g => by`. Rewrite using `[map_sub, AlgEquiv.commutes, sub_sub_sub_cancel_right]`. Conclude with `hFa hmb (hg g))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨c + d, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ hc (hFa hm hd)`. Rewrite using `[map_add, ← sub_sub]` and apply the resulting hypothesis. Conclude with `key b hab le_rfl`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem const_of_invariant_mod : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI → ∀ (K : FinExt l) (a b : ℤ) (x : P.R.BdR), x ∈ (P.PD K).Fil a → (∀ g, (P.PD K).actdR g x - x ∈ (P.PD K).Fil b) → ∃ c : ↥K.1, algebraMap ↥K.1 P.R.BdR c ∈ (P.PD K).Fil a ∧ x - algebraMap ↥K.1 P.R.BdR c ∈ (P.PD K).Fil b := by
   intro l _ P AI TT K a b x hx hg

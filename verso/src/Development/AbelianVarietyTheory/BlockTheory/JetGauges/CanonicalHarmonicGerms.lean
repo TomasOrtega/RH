@@ -38,7 +38,7 @@ def chartVal (C : ChartAt Xo c y) (k : ℕ) {n : ℕ} (P : MvPolynomial (LtN Dw 
   ∑ m ∈ P.support, algebraMap c.F S (P.coeff m) * ∏ b : Fin n, colVal C k (f b) (column m b)
 
 /- English proof (translation)
-Simplify using `[chartVal]`.
+Simplify using the standard rewrite rules.
 -/
 example (C : ChartAt Xo c y) (k n : ℕ) (f : Fin n → Germ.PS S 1 C.d) :
     chartVal C k (0 : MvPolynomial (LtN Dw n) c.F) f = 0 := by

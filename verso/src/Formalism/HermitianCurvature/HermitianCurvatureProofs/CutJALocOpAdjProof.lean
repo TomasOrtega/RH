@@ -8,13 +8,13 @@ noncomputable section
 namespace Formalism.FourierDecayAlt.P.CutMP.JA
 
 /- English proof (translation)
-The claim follows from `jALocOp_of_tools LT.operator_in_class_holds LT.agreement_on_domain_holds LT.theta_transfer_apply_holds`.
+A detailed English derivation is pending.
 -/
 theorem local_operator_transfer_holds : JALocOp :=
   jALocOp_of_tools LT.operator_in_class_holds LT.agreement_on_domain_holds LT.theta_transfer_apply_holds
 
 /- English proof (translation)
-The claim follows from `jALocAdj_of_tools LT.operator_in_class_holds LT.agreement_on_domain_holds (LT.thetaJ_of_adjComm h)`.
+A detailed English derivation is pending.
 -/
 theorem jALocAdj_of_adjComm (h : FFS.AdjComm) : JALocAdj :=
   jALocAdj_of_tools LT.operator_in_class_holds LT.agreement_on_domain_holds (LT.thetaJ_of_adjComm h)

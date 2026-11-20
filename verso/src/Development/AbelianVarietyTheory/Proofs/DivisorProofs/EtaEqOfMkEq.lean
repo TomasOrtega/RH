@@ -29,7 +29,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Establish `h1` using `TF.Y.m.cart.1.w`. Establish `h2` using `Over.w (TF.Y.oF.eta b)`. Simplify using `only [Category.assoc] at h1 ⊢`. Rewrite using `[h1, ← Category.assoc ((TF.Y.oF.eta b).left), h2, reassoc_of% hℓ, j₀_ι]`. Conclude with `congrArg (i₀ TF.Y Z ≫ ·) (Category.id_comp _)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem etaSec_w (TF : TorFlag Xo c) (Z : Comp Xo c) {X' : Scheme.{0}} (φ : X' ⟶ X₀ TF.Y Z) (ℓ : V₀ TF.Y Z ⟶ X')
     (hℓ : ℓ ≫ φ = j₀ TF.Y Z) (b : Dw.La) :
@@ -45,7 +45,7 @@ def etaSec (TF : TorFlag Xo c) (Z : Comp Xo c) {X' : Scheme.{0}} (φ : X' ⟶ X�
   pullback.lift _ _ (etaSec_w TF Z φ ℓ hℓ b)
 
 /- English proof (translation)
-Rewrite `h` using `[Submodule.Quotient.eq]`. Use `TF.Y.oF.eta_add b' (b - b')` as an intermediate fact. Rewrite `this` using `[add_sub_cancel, TF.Y.oF.eta_ker _ h, mul_one]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem eta_eq_of_mk_eq (TF : TorFlag Xo c) {b b' : Dw.La}
     (h : (Submodule.Quotient.mk b : LevelMod Dw l) = Submodule.Quotient.mk b') :
@@ -63,7 +63,7 @@ def etaSecL (TF : TorFlag Xo c) (Z : Comp Xo c) {X' : Scheme.{0}} (φ : X' ⟶ X
     rw [e]
 
 /- English proof (translation)
-Take `⟨b, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Conclude with `pullback.lift_snd _ _ _`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem etaSecL_w (TF : TorFlag Xo c) (Z : Comp Xo c) {X' : Scheme.{0}} (φ : X' ⟶ X₀ TF.Y Z) (ℓ : V₀ TF.Y Z ⟶ X')
     (hℓ : ℓ ≫ φ = j₀ TF.Y Z) (x : LevelMod Dw l) :
@@ -72,7 +72,7 @@ theorem etaSecL_w (TF : TorFlag Xo c) (Z : Comp Xo c) {X' : Scheme.{0}} (φ : X'
   exact pullback.lift_snd _ _ _
 
 /- English proof (translation)
-The claim follows from `pullback.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem etaSecL_ψ (TF : TorFlag Xo c) (Z : Comp Xo c) {X' : Scheme.{0}} (φ : X' ⟶ X₀ TF.Y Z) (ℓ : V₀ TF.Y Z ⟶ X')
     (hℓ : ℓ ≫ φ = j₀ TF.Y Z) (b : Dw.La) :

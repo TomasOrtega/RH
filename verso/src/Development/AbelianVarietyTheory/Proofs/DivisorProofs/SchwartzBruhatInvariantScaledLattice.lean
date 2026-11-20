@@ -17,17 +17,15 @@ noncomputable section
 namespace GlobalTheory.EvAdm
 
 /- English proof (translation)
-Introduce `F _ _ κ _ g hg`. Take `⟨hlc, hcs⟩` from `hg`. Establish `hW : ∀ y, {z | g (y + z) = g y} ∈ 𝓝 (0 : κ → FiniteAdeleRing (𝓞 F) F)` using `fun y => ((hlc.isOpen_fiber (g y)).preimage (continuous_const.add continuous_id)).mem_nhds (by simp)`. Use `choose b hb hbW using fun y => exists_scaledInt_subset_of_mem_nhds F κ _ (hW y)`. Establish `hN : ∀ y ∈ tsupport g, {x | x - y ∈ scaledInt F κ (b y)} ∈ 𝓝 y` using `fun y _ => ((isOpen_scaledInt (b y)).preimage (continuous_id.sub continuous_const)).mem_nhds (by simp)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨t, -, ht⟩` from `IsCompact.elim_nhds_subcover hcs _ hN`. Establish `hW0 : (⋂ y ∈ t, (scaledInt F κ (b y) : Set (κ → FiniteAdeleRing (𝓞 F) F))) ∈ 𝓝 (0 : κ → FiniteAdeleRing (𝓞 F) F)` using `(Filter.biInter_finset_mem t).2 fun y _ => (isOpen_scaledInt (b y)).mem_nhds (zero_mem _)`. Take `⟨a, ha, haW⟩` from `exists_scaledInt_subset_of_mem_nhds F κ _ hW0`. Use `⟨a, ha, fun x z hz => ?_⟩` and prove the remaining obligations. Establish `key : ∀ y ∈ t, x - y ∈ scaledInt F κ (b y) → g (x + z) = g x` using `fun y hy hxy => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz' : z ∈ scaledInt F κ (b y)` using `Set.mem_iInter₂.1 (haW hz) y hy`. Establish `h1 : g (y + (x - y)) = g y` using `hbW y hxy`. Establish `h2 : g (y + (x - y + z)) = g y` using `hbW y (add_mem hxy hz')`. Rewrite `h1` using `[add_sub_cancel]`. Rewrite `h2` using `[show y + (x - y + z) = x + z by abel]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, h2]`. Distinguish the cases in `hx : x ∈ tsupport g`. Take `⟨y, hy, hxy⟩` from `Set.mem_iUnion₂.1 (ht hx)`. Conclude with `key y hy hxy`. Distinguish the cases in `hxz : x + z ∈ tsupport g`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨y, hy, hxy⟩` from `Set.mem_iUnion₂.1 (ht hxz)`. Establish `hz' : z ∈ scaledInt F κ (b y)` using `Set.mem_iInter₂.1 (haW hz) y hy`. Use `key y hy ?_` and prove the remaining obligations. Use `sub_mem hxy hz'` as an intermediate fact. Rewrite `this` using `[show x + z - y - z = x - y by abel]`. Then use the resulting hypothesis.
-
-Rewrite using `[image_eq_zero_of_notMem_tsupport hx, image_eq_zero_of_notMem_tsupport hxz]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_scaledInt_invariant_of_SB : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ]
     (g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ), g ∈ SB (κ → FiniteAdeleRing (𝓞 F) F) →

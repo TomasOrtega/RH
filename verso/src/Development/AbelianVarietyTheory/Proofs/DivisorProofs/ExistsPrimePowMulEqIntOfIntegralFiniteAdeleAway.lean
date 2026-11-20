@@ -8,7 +8,7 @@ open IsDedekindDomain IsDedekindDomain.HeightOneSpectrum
 namespace GlobalTheory.RatDenAwayP
 
 /- English proof (translation)
-Establish `h1 : (algebraMap ℚ (FiniteAdeleRing ℤ ℚ) q) v.1 ∈ v.1.adicCompletionIntegers ℚ` using `h v`. Rewrite `h1` using `[FiniteAdeleRing.algebraMap_apply, HeightOneSpectrum.mem_adicCompletionIntegers, HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_le_one (p : ℕ) (q : ℚ) (h : algebraMap ℚ (AfP p) q ∈ LevelExists.intAfP p) (v : AwayP p) :
     v.1.valuation ℚ q ≤ 1 := by
@@ -24,15 +24,15 @@ def primeHOS (l : ℕ) (hl : l.Prime) : HeightOneSpectrum ℤ where
     rw [Ne, Ideal.span_singleton_eq_bot]; exact_mod_cast hl.ne_zero
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hv : (primeHOS l hl).asIdeal ≠ Ideal.span {(p : ℤ)}`. Introduce `e`. Establish `e' : Ideal.span {(l : ℤ)} = Ideal.span {(p : ℤ)}` using `e`. Rewrite `e'` using `[Ideal.span_singleton_eq_span_singleton]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : l ∣ p` using `Int.natCast_dvd_natCast.1 e'.dvd`. Establish `h2 : p ∣ l` using `Int.natCast_dvd_natCast.1 e'.symm.dvd`. Conclude with `hne (Nat.dvd_antisymm h1 h2)`. Set `v : AwayP p` to `⟨primeHOS l hl, hv⟩`. Establish `hq` using `val_le_one p q h v`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hden : (primeHOS l hl).valuation ℚ (algebraMap ℤ ℚ (q.den : ℤ)) < 1`. Rewrite using `[valuation_lt_one_iff_mem]`. Use `show ((q.den : ℤ)) ∈ Ideal.span {(l : ℤ)}`. Rewrite using `[Ideal.mem_span_singleton]`. Conclude with `hd` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hnum : (primeHOS l hl).valuation ℚ (algebraMap ℤ ℚ q.num) < 1`. Establish `e : algebraMap ℤ ℚ q.num = q * algebraMap ℤ ℚ (q.den : ℤ)`. Rewrite using `[algebraMap_int_eq, eq_intCast, eq_intCast, Int.cast_natCast, Rat.mul_den_eq_num]`. Rewrite using `[e, map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hnum` using `[valuation_lt_one_iff_mem]`. Express the relevant statement in the definitionally equal form `q.num ∈ Ideal.span {(l : ℤ)} at hnum`. Rewrite `hnum` using `[Ideal.mem_span_singleton, Int.natCast_dvd]`. Establish `hc : Nat.Coprime l q.den` using `Nat.Coprime.coprime_dvd_left hnum q.reduced`. Conclude with `(Nat.Prime.coprime_iff_not_dvd hl).1 hc hd`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem prime_dvd_den (p : ℕ) (q : ℚ) (h : algebraMap ℚ (AfP p) q ∈ LevelExists.intAfP p) {l : ℕ} (hl : l.Prime)
     (hd : l ∣ q.den) : l = p := by
@@ -68,7 +68,7 @@ end GlobalTheory.RatDenAwayP
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `p _ q h`. Establish `hden : q.den = p ^ q.den.primeFactorsList.length` using `Nat.eq_prime_pow_of_unique_prime_dvd q.den_nz (fun hl hd => RatDenAwayP.prime_dvd_den p q h hl hd)`. Use `⟨q.den.primeFactorsList.length, q.num, ?_⟩` and prove the remaining obligations. Rewrite using `[← hden]`. Conclude with `Rat.den_mul_eq_num q`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratDen_pow_of_intAfP : ∀ (p : ℕ) [Fact p.Prime] (q : ℚ), algebraMap ℚ (AfP p) q ∈ LevelExists.intAfP p →
     ∃ k : ℕ, ∃ a : ℤ, ((p ^ k : ℕ) : ℚ) * q = a := by

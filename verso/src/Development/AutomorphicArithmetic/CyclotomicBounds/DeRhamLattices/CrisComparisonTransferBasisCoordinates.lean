@@ -7,11 +7,11 @@ set_option maxHeartbeats 2000000
 set_option synthInstance.maxHeartbeats 400000
 
 /- English proof (translation)
-Establish `e1 : (fun i => f (c i)) = ∑ j, f (c j) • (Pi.single j 1 : ι → B)`. Use function extensionality and compare the values at `i`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Establish `e2 : TensorProduct.map f.toLinearMap LinearMap.id (∑ k, r k ⊗ₜ[O] x k) = ∑ k, f (r k) • ((1 : B) ⊗ₜ[O] x k)`. Rewrite using `[map_sum]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `[TensorProduct.smul_tmul']`. Rewrite `h` using `[e1, e2, map_sum]`. Establish `h2` using `congrArg X h`. Simplify using `only [map_sum, map_smul, hF] at h2`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 private theorem sum_through_tensor_basis {O A B M V ι κ : Type} [CommRing O] [CommRing A] [CommRing B] [Algebra O A] [Algebra O B]
     [AddCommGroup M] [Module O M] [AddCommGroup V] [Fintype ι] [DecidableEq ι] [Fintype κ]
@@ -34,9 +34,9 @@ private theorem sum_through_tensor_basis {O A B M V ι κ : Type} [CommRing O] [
   exact h2
 
 /- English proof (translation)
-Introduce `l _ a e _ _ ϖ LL _ _ ι _ _ P T I jB Pl AI Td hcmp X hX act hact κ _ c r x h`. Establish `hF` using `UpperTheory.KN.crisComparison_toB_smul_eq_deRham_act l LL T Pl AI Td X hX act hact`. Establish `h1` using `hcmp c _ h`. Establish `h2` using `sum_through_tensor_basis (toB l ↥(OL LL)) jB X (fun c v => act (toOD l ↥(OL LL) c) v) hF c r x h1`. Use `h2.trans (Finset.sum_congr rfl fun k _ => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h3 : X ((1 : OB l ↥(OL LL)) ⊗ₜ[↥(OL LL)] x k) = ((x k : ↥T.L.T) : T.V) ⊗ₜ[ℚ_[l]] (1 : Pl.R.BdR)`. Use `(hX 1 1 (x k)).trans ?_` and prove the remaining obligations. Rewrite using `[map_one, OneMemClass.coe_one, one_smul]`. Conclude with `congrArg (fun v => act (toOD l ↥(OL LL) (r k)) v) h3`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.UpperTheory.KN.crisComparison_transfer_basis_coordinates :
     ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (ϖ : PiSys l e) (LL : FinExt l) [HasUnr a LL] [TameDescentExponentData ↥LL.1 l e a] (ι : Type) [Fintype ι] [DecidableEq ι] (P : PhiMod ↥(OL LL) ↥LL.1 l e a ι) (T : QLat LL) (I : Ident (thetaW a LL) ϖ P T) (jB : (ι → OB l ↥(OL LL)) ≃ₗ[OB l ↥(OL LL)] TW (OB l ↥(OL LL)) T) (Pl : LocPrime l) (AI : LocAinf l Pl) (Td : LocTied l Pl AI), IsCrisCmp I jB → ∀ (X : TW (OB l ↥(OL LL)) T →+ T.V ⊗[ℚ_[l]] Pl.R.BdR), (∀ (o : ↥(OL LL)) (b : Per.Bcris l) (x : ↥T.L.T), X ((o ⊗ₜ[ℤ_[l]] b) ⊗ₜ[↥(OL LL)] x) = ((o : ↥LL.1) • (x : T.V)) ⊗ₜ[ℚ_[l]] GlobalTheory.BKGal.JumpDR.cB Td b) → ∀ (act : OD l ↥(OL LL) →+ (T.V ⊗[ℚ_[l]] Pl.R.BdR →+ T.V ⊗[ℚ_[l]] Pl.R.BdR)), (∀ (o : ↥(OL LL)) (b : Per.BdRp l) (v : T.V) (c : Pl.R.BdR), act (o ⊗ₜ[ℤ_[l]] b) (v ⊗ₜ[ℚ_[l]] c) = ((o : ↥LL.1) • v) ⊗ₜ[ℚ_[l]] (GlobalTheory.BKGal.JumpDR.cD Td b * c)) → ∀ (κ : Type) [Fintype κ] (c : ι → OA l ↥(OL LL)) (r : κ → OA l ↥(OL LL)) (x : κ → ↥T.L.T), I.j (inclL (thetaW a LL) ϖ P c) = TWincl (inclO l ↥(OL LL)) T (∑ k, r k ⊗ₜ[↥(OL LL)] x k) → ∑ j, act (toOD l ↥(OL LL) (c j)) (X (jB (Pi.single j 1))) = ∑ k, act (toOD l ↥(OL LL) (r k)) (((x k : ↥T.L.T) : T.V) ⊗ₜ[ℚ_[l]] (1 : Pl.R.BdR)) := by

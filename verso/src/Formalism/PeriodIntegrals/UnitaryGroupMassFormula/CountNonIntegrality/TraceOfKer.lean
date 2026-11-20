@@ -7,11 +7,11 @@ namespace PI.CntNotIntW
 open scoped TensorProduct
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `LinearMap.exists_rightInverse_of_surjective π.toLinearMap (LinearMap.range_eq_top.mpr hπ)`. Establish `hsy : ∀ y, π (s y) = y` using `fun y => LinearMap.congr_fun hs y`. Establish `hL : Algebra.lmul Q A a = (Algebra.lmul Q A a ∘ₗ s) ∘ₗ π.toLinearMap`. Use extensionality with `x`. Establish `hk : π (x - s (π x)) = 0` using `by rw [map_sub, hsy, sub_self]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `h` using `ha _ hk`. Rewrite `h` using `[mul_sub, sub_eq_zero]`. Simplify using `using h`. Rewrite using `[Algebra.trace_apply, Algebra.trace_apply, hL, LinearMap.trace_comp_comm']`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `y`. Simplify using `[hsy]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem trace_of_ker {Q A B : Type*} [Field Q] [CommRing A] [Algebra Q A] [FiniteDimensional Q A]
     [Field B] [Algebra Q B] [FiniteDimensional Q B] (π : A →ₐ[Q] B) (hπ : Function.Surjective π)
@@ -33,7 +33,7 @@ theorem trace_of_ker {Q A B : Type*} [Field Q] [CommRing A] [Algebra Q A] [Finit
   simp [hsy]
 
 /- English proof (translation)
-Rewrite using `[Algebra.trace_apply, Algebra.trace_apply]`. Establish `h : Algebra.lmul Q (Q ⊗[ℚ] K) (1 ⊗ₜ y) = (Algebra.lmul ℚ K y).baseChange Q`. Use extensionality with `k`. Simplify using the standard rewrite rules. Rewrite using `[h, LinearMap.trace_baseChange]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_one_tmul {Q K : Type*} [Field Q] [Algebra ℚ Q] [Field K] [Algebra ℚ K] [FiniteDimensional ℚ K]
     (y : K) : Algebra.trace Q (Q ⊗[ℚ] K) (1 ⊗ₜ y) = algebraMap ℚ Q (Algebra.trace ℚ K y) := by

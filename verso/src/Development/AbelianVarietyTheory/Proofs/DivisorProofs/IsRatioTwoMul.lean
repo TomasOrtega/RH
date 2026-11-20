@@ -20,7 +20,7 @@ namespace GlobalTheory.HeatRatio.Square
 variable {R : Type} [CommRing R] [IsDomain R]
 
 /- English proof (translation)
-Use `show (padd Q.P.A (𝟙 Q.P.A) (toUnit _ ≫ Q.c 0)).left = 𝟙 _`. Rewrite using `[GlobalTheory.Mum.degPre_c_zero, padd, comp_one, ← Hom.mul_def, _root_.mul_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem famφB_zero_one (Q : DegPre R) : Q.famφB 0 1 = 𝟙 _ := by
   show (padd Q.P.A (𝟙 Q.P.A) (toUnit _ ≫ Q.c 0)).left = 𝟙 _
@@ -28,18 +28,18 @@ theorem famφB_zero_one (Q : DegPre R) : Q.famφB 0 1 = 𝟙 _ := by
   rfl
 
 /- English proof (translation)
-Use `show (toUnit Q.P.A ≫ Q.c 0).left = (toUnit Q.P.A ≫ η[Q.P.A]).left`. Rewrite using `[GlobalTheory.Mum.degPre_c_zero, comp_one, Hom.one_def]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem famφB_zero_two (Q : DegPre R) : Q.famφB 0 2 = Q.famφB 0 3 := by
   show (toUnit Q.P.A ≫ Q.c 0).left = (toUnit Q.P.A ≫ η[Q.P.A]).left
   rw [GlobalTheory.Mum.degPre_c_zero, comp_one, Hom.one_def]
 
 /- English proof (translation)
-Introduce `U _ h`. Rewrite using `[Fintype.prod_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, Fin.prod_univ_four]`. Establish `e1` using `famφB_zero_one Q`. Establish `e2` using `famφB_zero_two Q`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e0 : Q.famφB 0 0 = 𝟙 _` using `rfl`. Rewrite using `[e1, e2, e0]`. Simplify using `only [DegPre.famε, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Matrix.cons_val_two, Matrix.tail_cons, Matrix.cons_val_three]`. Generalize the expression as in `h (𝟙 _) = a`. Generalize the expression as in `h (Q.famφB 0 3) = b`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Use `push_cast`. Establish `hs : ∀ k : ℤ, a ^ (k - 1) * a ^ (1 : ℤ) = a ^ k` using `fun k => by rw [← zpow_add, sub_add_cancel]`. Rewrite using `[hs, hs, zpow_neg_one, zpow_one, inv_mul_cancel_right, inv_mul_cancel_right, ← zpow_add, two_mul]`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem formEq (Q : DegPre R) (N : ℕ) :
     FormEq (Sum.elim (Q.famφB 0) (Q.famφB 0)) (Sum.elim (DegPre.famε N) (DegPre.famε N))
@@ -60,9 +60,9 @@ theorem formEq (Q : DegPre R) (N : ℕ) :
   rw [hs, hs, zpow_neg_one, zpow_one, inv_mul_cancel_right, inv_mul_cancel_right, ← zpow_add, two_mul]
 
 /- English proof (translation)
-Take `⟨ρ, hρ⟩` from `exists_sec Q.P.isLB (formEq Q N) (H1.SectionArithmetic.mulSec σ σ')`. Take `⟨ρ', hρ'⟩` from `exists_sec Q.P.isLB (formEq Q N) (H1.SectionArithmetic.mulSec σ' σ')`. Use `⟨ρ, ρ', fun z hz J hJ => ?_⟩` and prove the remaining obligations. Take `⟨hu, he⟩` from `h z hz J hJ`. Rewrite using `[hρ _ _ z J hJ, hρ' _ _ z J hJ, H1.SectionArithmetic.sval_mulSec _ _ _ z hJ, H1.SectionArithmetic.sval_mulSec _ _ _ z hJ, he]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨hu.mul hu, by ring⟩`.
+Supply the required witnesses or components.
 -/
 theorem isRatio_two_mul (Q : DegPre R) (N : ℕ) (σ σ' : Q.SecB N 0) (U : Q.P.A.left.Opens)
     (f : Γ(Q.P.A.left, U)) (_hN : 1 ≤ N) (h : GlobalTheory.HeatRatio.IsRatio Q σ σ' U f) :
@@ -77,7 +77,7 @@ theorem isRatio_two_mul (Q : DegPre R) (N : ℕ) (σ σ' : Q.SecB N 0) (U : Q.P.
 end GlobalTheory.HeatRatio.Square
 
 /- English proof (translation)
-Introduce `_ _ _ Q N σ σ' U f hN h` and use `GlobalTheory.HeatRatio.Square.isRatio_two_mul Q N σ σ' U f hN h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HeatRatio.isRatio_square : ∀ (R : Type) [CommRing R] [IsDomain R] (Q : DegPre R) (N : ℕ) (σ σ' : Q.SecB N 0) (U : Q.P.A.left.Opens) (f : Γ(Q.P.A.left, U)), 1 ≤ N → GlobalTheory.HeatRatio.IsRatio Q σ σ' U f → ∃ ρ ρ' : Q.SecB (2 * N) 0, GlobalTheory.HeatRatio.IsRatio Q ρ ρ' U f :=
   fun _ _ _ Q N σ σ' U f hN h => GlobalTheory.HeatRatio.Square.isRatio_two_mul Q N σ σ' U f hN h

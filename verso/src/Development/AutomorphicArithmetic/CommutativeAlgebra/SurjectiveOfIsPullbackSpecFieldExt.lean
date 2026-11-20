@@ -6,9 +6,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC GroundThe
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `k L _ _ _ C X c u x hpb`. Establish `hs : Surjective (Spec.map (CommRingCat.ofHom (algebraMap k L)))`. Rewrite using `[surjective_iff]`. Introduce `p`. Take `⟨q⟩ : Nonempty (Spec (CommRingCat.of L))` from `inferInstanceAs (Nonempty (PrimeSpectrum L))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨q, ?_⟩` and prove the remaining obligations. Conclude with `Subsingleton.elim (α := PrimeSpectrum k) _ _`. Conclude with `MorphismProperty.of_isPullback (P := @Surjective) hpb.flip hs`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.surjective_of_isPullback_spec_field_ext :
     ∀ (k L : Type) [Field k] [Field L] [Algebra k L] {C X : Scheme.{0}} (c : C ⟶ Sp k) (u : X ⟶ C) (x : X ⟶ Sp L), IsPullback u x c (Spec.map (CommRingCat.ofHom (algebraMap k L))) → Surjective u := by

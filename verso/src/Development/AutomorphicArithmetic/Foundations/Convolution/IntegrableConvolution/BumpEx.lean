@@ -12,7 +12,7 @@ open scoped InnerProductSpace ComplexConjugate ContDiff Matrix
 namespace UpperTheory.ConvolutionTheory.L1
 
 /- English proof (translation)
-Apply `RCLike.ofReal_injective (K := 𝕜)` to reduce the goal to its premises. Establish `h1 : star U * U = 1` using `Matrix.mem_unitaryGroup_iff'.1 hU`. Rewrite `h1` using `[Matrix.star_eq_conjTranspose]`. Rewrite using `[frobSq_eq_trace, frobSq_eq_trace, Matrix.conjTranspose_mul, Matrix.mul_assoc, ← Matrix.mul_assoc Uᴴ, h1, Matrix.one_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem frob_left {𝕜 : Type*} [RCLike 𝕜] {n : ℕ} {U : Matrix (Fin n) (Fin n) 𝕜}
     (hU : U ∈ Matrix.unitaryGroup (Fin n) 𝕜) (M : Matrix (Fin n) (Fin n) 𝕜) :
@@ -24,7 +24,7 @@ private theorem frob_left {𝕜 : Type*} [RCLike 𝕜] {n : ℕ} {U : Matrix (Fi
     ← Matrix.mul_assoc Uᴴ, h1, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `h1 : U * star U = 1` using `Matrix.mem_unitaryGroup_iff.1 hU`. Establish `h2` using `frobSq_conj hU (M * U)`. Rewrite `h2` using `[Matrix.mul_assoc U, Matrix.mul_assoc M, h1, Matrix.mul_one]`. Rewrite using `[← h2, frob_left hU]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem frob_right {𝕜 : Type*} [RCLike 𝕜] {n : ℕ} {U : Matrix (Fin n) (Fin n) 𝕜}
     (hU : U ∈ Matrix.unitaryGroup (Fin n) 𝕜) (M : Matrix (Fin n) (Fin n) 𝕜) :
@@ -38,7 +38,7 @@ section
 variable {K : Type} [Field K] [NumberField K] {n : ℕ}
 
 /- English proof (translation)
-Simplify using `only [archQuad, map_mul, frob_left (realCompM_mem_unitaryGroup hk _), frob_left (complexCompM_mem_unitaryGroup hk _)]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem quad_left {k : archGroup K n} (hk : k ∈ archCompact K n) (X : ArchMatrix K n) :
     archQuad (archVal k * X) = archQuad X := by
@@ -46,7 +46,7 @@ private theorem quad_left {k : archGroup K n} (hk : k ∈ archCompact K n) (X : 
     frob_left (complexCompM_mem_unitaryGroup hk _)]
 
 /- English proof (translation)
-Simplify using `only [archQuad, map_mul, frob_right (realCompM_mem_unitaryGroup hk _), frob_right (complexCompM_mem_unitaryGroup hk _)]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem quad_right {k : archGroup K n} (hk : k ∈ archCompact K n) (X : ArchMatrix K n) :
     archQuad (X * archVal k) = archQuad X := by
@@ -54,13 +54,13 @@ private theorem quad_right {k : archGroup K n} (hk : k ∈ archCompact K n) (X :
     frob_right (complexCompM_mem_unitaryGroup hk _)]
 
 /- English proof (translation)
-Take `⟨m, hm, hmδ⟩` from `exists_archQuad_lt (K := K) (n := n) one_pos`. Use `set R' := max R 1`. Establish `hR' : 0 < R'` using `lt_of_lt_of_le one_pos (le_max_right _ _)`. Use `set t : ℝ := Real.sqrt (m / (2 * R'))`. Establish `ht : 0 < t` using `Real.sqrt_pos.2 (by positivity)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ht2 : t ^ 2 = m / (2 * R')` using `Real.sq_sqrt (by positivity)`. Use `⟨1 / t, fun X hX => ?_⟩` and prove the remaining obligations. Establish `h1 : archQuad (t • X) < m`. Rewrite using `[archQuad_smul, ht2]`. Establish `h2 : archQuad X < R'` using `lt_of_lt_of_le hX (le_max_left _ _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : m / (2 * R') * archQuad X ≤ m / (2 * R') * R'` using `mul_le_mul_of_nonneg_left h2.le (by positivity)`. Establish `h4 : m / (2 * R') * R' = m / 2` using `by field_simp`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2` using `hmδ _ h1`. Rewrite `h2` using `[_root_.norm_smul, Real.norm_eq_abs, abs_of_pos ht]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[le_div_iff₀ ht]`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 private theorem quad_bound (R : ℝ) : ∃ D : ℝ, ∀ X : ArchMatrix K n, archQuad X < R → ‖X‖ ≤ D := by
   obtain ⟨m, hm, hmδ⟩ := exists_archQuad_lt (K := K) (n := n) one_pos
@@ -83,25 +83,21 @@ private theorem quad_bound (R : ℝ) : ∃ D : ℝ, ∀ X : ArchMatrix K n, arch
   linarith
 
 /- English proof (translation)
-Use `set R : ℝ := |archQuad (1 : ArchMatrix K n)| + 1 with hR`. Establish `hR0 : 0 < R` using `by positivity`. Use `set β : ContDiffBump (0 : ℝ) := ⟨R, R + 1, hR0, by linarith⟩`. Establish `hβ0 : ∀ x : ℝ, β x ≠ 0 → x < R + 1`. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: x ∈ Function.support β` using `hx`. Rewrite `this` using `[β.support_eq, Metric.mem_ball, dist_zero_right, Real.norm_eq_abs]`. Conclude with `lt_of_le_of_lt (le_abs_self x) this`. Use `set c : archGroup K n → ℝ := fun a => β (archQuad (archVal a)) * β (archQuad (archVal a⁻¹)) with hc`. Establish `hsm : ∀ g, ContDiff ℝ ∞ (fun Y : archLie K n => c (g * (isExpLieAlgebra K n).expG Y))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Introduce `g`. Establish `e : (fun Y : archLie K n => c (g * (isExpLieAlgebra K n).expG Y)) = fun Y : archLie K n => β (archQuad (archVal g * NormedSpace.exp (Y : ArchMatrix K n))) * β (archQuad (NormedSpace.exp (-(Y : ArchMatrix K n)) * archVal g⁻¹))`. Use function extensionality and compare the values at `Y`. Simplify using `only [hc, archVal, _root_.mul_inv_rev, Subgroup.coe_mul, Units.val_mul, ← IsExpLieAlgebra.expG_neg, IsExpLieAlgebra.coe_expG]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e]`. Establish `hY : ContDiff ℝ ∞ (fun Y : archLie K n => (Y : ArchMatrix K n))` using `(Submodule.subtypeL (archLie K n)).contDiff`. Establish `hexp : ContDiff ℝ ∞ (NormedSpace.exp : ArchMatrix K n → ArchMatrix K n)` using `contDiff_exp ℝ _`. Establish `hq : ContDiff ℝ ∞ (archQuad : ArchMatrix K n → ℝ)` using `contDiff_archQuad.of_le le_top`. Use `ContDiff.mul ?_ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `β.contDiff.comp (hq.comp (contDiff_const.mul (hexp.comp hY)))`. Conclude with `β.contDiff.comp (hq.comp ((hexp.comp hY.neg).mul contDiff_const))`. Establish `hqc : Continuous (archQuad : ArchMatrix K n → ℝ)` using `(contDiff_archQuad (K := K) (n := n)).continuous`. Establish `hcont : Continuous c` using `(β.continuous.comp (hqc.comp continuous_archVal)).mul (β.continuous.comp (hqc.comp continuous_archVal_inv))`. Use `⟨c, fun a => mul_nonneg β.nonneg β.nonneg, ?_, hcont, ?_, ?_, hsm⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h0 : β (archQuad (1 : ArchMatrix K n)) = 1` using `β.one_of_mem_closedBall (by`. Rewrite using `[Metric.mem_closedBall, dist_zero_right, Real.norm_eq_abs]`. Use `show _ ≤ R`. Use the proof step `linarith)`. Simplify using `only [hc, inv_one, archVal, OneMemClass.coe_one, Units.val_one, h0, mul_one]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `one_ne_zero`. Take `⟨D, hD⟩` from `quad_bound (K := K) (n := n) (R + 1) set C : Set (ArchMatrix K n × (ArchMatrix K n)ᵐᵒᵖ) := Metric.closedBall 0 D ×ˢ (MulOpposite.op '' Metric.closedBall 0 D)`. Establish `hC : IsCompact C` using `(isCompact_closedBall _ _).prod ((isCompact_closedBall _ _).image MulOpposite.continuous_op)`. Use `HasCompactSupport.intro (isClosedEmbedding_archPair.isCompact_preimage hC) fun a ha => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : β (archQuad (archVal a)) ≠ 0` using `left_ne_zero_of_mul h0`. Establish `h2 : β (archQuad (archVal a⁻¹)) ≠ 0` using `right_ne_zero_of_mul h0`. Use `ha ⟨Metric.mem_closedBall.2 ?_, ⟨archVal a⁻¹, Metric.mem_closedBall.2 ?_, rfl⟩⟩` and prove the remaining obligations. Rewrite using `[dist_zero_right]`. Conclude with `hD _ (hβ0 _ h1)`.
-
-Rewrite using `[dist_zero_right]`. Conclude with `hD _ (hβ0 _ h2)`. Introduce `k hk a`. Establish `e1 : archVal (k * a) = archVal k * archVal a` using `rfl`. Establish `e2 : archVal (k * a)⁻¹ = archVal a⁻¹ * archVal k⁻¹`.
-
-Rewrite using `[_root_.mul_inv_rev]`. Both sides reduce to the same expression. Simplify using `only [hc, e1, e2, quad_left hk, quad_right (inv_mem hk)]`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem exists_cut : ∃ c : archGroup K n → ℝ, (∀ a, 0 ≤ c a) ∧ c 1 ≠ 0 ∧ Continuous c ∧ HasCompactSupport c ∧
     (∀ k ∈ archCompact K n, ∀ a, c (k * a) = c a) ∧
@@ -168,14 +164,14 @@ private def Good (P : archGroup K n → ℂ) : Prop :=
     ∀ k : archCompact K n, (fun g => P ((k : archGroup K n) * g)) ∈ W
 
 /- English proof (translation)
-Use `letI := (isExpLieAlgebra K n).chartedSpace`. Conclude with `ContMDiff.continuous h.1`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 private theorem Good.cont {P : archGroup K n → ℂ} (h : Good P) : Continuous P := by
   letI := (isExpLieAlgebra K n).chartedSpace
   exact ContMDiff.continuous h.1
 
 /- English proof (translation)
-Take `⟨h1, W₁, f1, k1⟩` from `hP`. Take `⟨h2, W₂, f2, k2⟩` from `hQ`. Use `⟨?_, W₁ ⊔ W₂, f1.sup f2, fun k => Submodule.add_mem_sup (k1 k) (k2 k)⟩` and prove the remaining obligations. Rewrite `h1`, `h2`, the goal using `[IsExpLieAlgebra.isSmoothFun_iff]`. Conclude with `fun g => (h1 g).add (h2 g)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem Good.add {P Q : archGroup K n → ℂ} (hP : Good P) (hQ : Good Q) :
     Good (fun g => P g + Q g) := by
@@ -186,7 +182,7 @@ private theorem Good.add {P Q : archGroup K n → ℂ} (hP : Good P) (hQ : Good 
   exact fun g => (h1 g).add (h2 g)
 
 /- English proof (translation)
-Take `⟨h1, W₁, f1, k1⟩` from `hP`. Take `⟨h2, W₂, f2, k2⟩` from `hQ`. Use `⟨?_, W₁ * W₂, f1.mul f2, fun k => Submodule.mul_mem_mul (k1 k) (k2 k)⟩` and prove the remaining obligations. Rewrite `h1`, `h2`, the goal using `[IsExpLieAlgebra.isSmoothFun_iff]`. Conclude with `fun g => (h1 g).mul (h2 g)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem Good.mul {P Q : archGroup K n → ℂ} (hP : Good P) (hQ : Good Q) :
     Good (fun g => P g * Q g) := by
@@ -197,7 +193,7 @@ private theorem Good.mul {P Q : archGroup K n → ℂ} (hP : Good P) (hQ : Good 
   exact fun g => (h1 g).mul (h2 g)
 
 /- English proof (translation)
-Use `⟨?_, Submodule.span ℂ {fun _ => (1 : ℂ)}, Submodule.fg_span_singleton _, fun k => Submodule.mem_span_singleton.2 ⟨z, by ext; simp⟩⟩` and prove the remaining obligations. Rewrite using `[IsExpLieAlgebra.isSmoothFun_iff]`. Conclude with `fun g => contDiff_const`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem Good.const (z : ℂ) : Good (fun _ : archGroup K n => z) := by
   refine ⟨?_, Submodule.span ℂ {fun _ => (1 : ℂ)}, Submodule.fg_span_singleton _, fun k =>
@@ -206,7 +202,7 @@ private theorem Good.const (z : ℂ) : Good (fun _ : archGroup K n => z) := by
   exact fun g => contDiff_const
 
 /- English proof (translation)
-Take `⟨h1, W, f1, k1⟩` from `hP`. Use `⟨?_, W.map (starLinearEquiv ℂ (A := archGroup K n → ℂ)).toLinearMap, f1.map _, fun k => Submodule.mem_map_of_mem (k1 k)⟩` and prove the remaining obligations. Rewrite `h1`, the goal using `[IsExpLieAlgebra.isSmoothFun_iff]`. Conclude with `fun g => Complex.conjCLE.contDiff.comp (h1 g)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem Good.conj {P : archGroup K n → ℂ} (hP : Good P) : Good (fun g => conj (P g)) := by
   obtain ⟨h1, W, f1, k1⟩ := hP
@@ -216,7 +212,7 @@ private theorem Good.conj {P : archGroup K n → ℂ} (hP : Good P) : Good (fun 
   exact fun g => Complex.conjCLE.contDiff.comp (h1 g)
 
 /- English proof (translation)
-Set `L : ArchMatrix K n →ₗ[ℝ] ℝ` to `(b.coord i).comp (LinearMap.mulLeft ℝ a)`. Establish `h : L x = ∑ j, b.repr x j • L (b j)` using `by conv_lhs => rw [← b.sum_repr x]`. Rewrite using `[map_sum]`. Simplify using `only [map_smul]`. Conclude with `h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem coord_mul {ι : Type*} [Fintype ι] (b : Module.Basis ι ℝ (ArchMatrix K n)) (i : ι)
     (a x : ArchMatrix K n) : b.coord i (a * x) = ∑ j, b.coord j x * b.coord i (a * b j) := by
@@ -228,13 +224,13 @@ private theorem coord_mul {ι : Type*} [Fintype ι] (b : Module.Basis ι ℝ (Ar
   exact h
 
 /- English proof (translation)
-Use `⟨?_, Submodule.span ℂ (Set.range fun (j : ι) (g : archGroup K n) => ((b.coord j (archVal g) : ℝ) : ℂ)), Submodule.fg_span (Set.finite_range _), fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[IsExpLieAlgebra.isSmoothFun_iff]`. Introduce `g`. Establish `e : (fun Y : archLie K n => ((b.coord i (archVal (g * (isExpLieAlgebra K n).expG Y)) : ℝ) : ℂ)) = fun Y : archLie K n => ((b.coord i (archVal g * NormedSpace.exp (Y : ArchMatrix K n)) : ℝ) : ℂ)`. Use function extensionality and compare the values at `Y`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [archVal, Subgroup.coe_mul, Units.val_mul, IsExpLieAlgebra.coe_expG]`. Rewrite using `[e]`. Establish `hY : ContDiff ℝ ∞ (fun Y : archLie K n => (Y : ArchMatrix K n))` using `(Submodule.subtypeL (archLie K n)).contDiff`. Establish `hexp : ContDiff ℝ ∞ (NormedSpace.exp : ArchMatrix K n → ArchMatrix K n)` using `contDiff_exp ℝ _`. Conclude with `Complex.ofRealCLM.contDiff.comp ((LinearMap.toContinuousLinearMap (b.coord i)).contDiff.comp (contDiff_const.mul (hexp.comp hY)))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (fun g : archGroup K n => ((b.coord i (archVal ((k : archGroup K n) * g)) : ℝ) : ℂ)) = ∑ j, ((b.coord i (archVal (k : archGroup K n) * b j) : ℝ) : ℂ) • fun g : archGroup K n => ((b.coord j (archVal g) : ℝ) : ℂ)`. Use function extensionality and compare the values at `g`. Establish `e1 : archVal ((k : archGroup K n) * g) = archVal (k : archGroup K n) * archVal g` using `rfl`. Rewrite using `[e1, coord_mul b i]`. Simplify using `[Finset.sum_apply, mul_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 private theorem good_coord {ι : Type*} [Fintype ι] (b : Module.Basis ι ℝ (ArchMatrix K n)) (i : ι) :
     Good (fun g : archGroup K n => ((b.coord i (archVal g) : ℝ) : ℂ)) := by
@@ -277,15 +273,13 @@ private def polS (C : Set (archGroup K n)) : StarSubalgebra ℂ C(C, ℂ) where
     exact ⟨_, hP.conj, fun x => by simp [hf]⟩
 
 /- English proof (translation)
-Use `haveI : CompactSpace C := isCompact_iff_compactSpace.1 hC`. Use `set b := Module.finBasis ℝ (ArchMatrix K n)`. Establish `hsep : (polS C).SeparatesPoints`. Introduce `x y hxy`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, b.coord i (archVal (x : archGroup K n)) ≠ b.coord i (archVal (y : archGroup K n)) := by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `hall`. Use `push_neg at hall`. Use `hxy (Subtype.ext (Subtype.ext (Units.ext (b.ext_elem fun i => ?_))))` and prove the remaining obligations. Conclude with `hall i`. Establish `hG` using `good_coord b i`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨_, ⟨⟨fun x : C => ((b.coord i (archVal (x : archGroup K n)) : ℝ) : ℂ), hG.cont.comp continuous_subtype_val⟩, ⟨_, hG, fun x => rfl⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using `using hi`. Establish `htop` using `ContinuousMap.starSubalgebra_topologicalClosure_eq_top_of_separatesPoints (polS C) hsep`. Use `set f' : C(C, ℂ) := ⟨fun x => f x, hf.comp continuous_subtype_val⟩`. Establish `hmem : f' ∈ ((polS C).topologicalClosure : Set C(C, ℂ))` using `by rw [htop]; trivial`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hmem` using `[StarSubalgebra.topologicalClosure_coe, Metric.mem_closure_iff]`. Take `⟨s, ⟨P, hP, hs⟩, hd⟩` from `hmem ε hε`. Use `⟨P, hP, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h1` using `ContinuousMap.dist_apply_le_dist (f := f') (g := s) (⟨x, hx⟩ : C)`. Establish `h2 : dist (f' ⟨x, hx⟩) (s ⟨x, hx⟩) = ‖P x - f x‖`.
-
-Rewrite using `[dist_comm, dist_eq_norm, hs]`. Both sides reduce to the same expression. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem exists_good_near {C : Set (archGroup K n)} (hC : IsCompact C) (f : archGroup K n → ℂ)
     (hf : Continuous f) {ε : ℝ} (hε : 0 < ε) :
@@ -321,41 +315,37 @@ end UpperTheory.ConvolutionTheory.L1
 open UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.L1
 
 /- English proof (translation)
-Introduce `K _ _ n ν _ H _ _ _ π v hv`. Take `⟨c, hc0, hc1, hcc, hcs, hcK, hcsm⟩` from `exists_cut (K := K) (n := n)`. Use `set F : archGroup K n → ℂ := fun g => ⟪v, π g v⟫_ℂ with hFdef`. Establish `hF : Continuous F` using `continuous_const.inner (π.continuous_orbit v)`. Establish `hF1 : F 1 ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[hFdef, hv]`. Establish `hcG : Good (fun g : archGroup K n => ((c g : ℝ) : ℂ))`. Use `⟨?_, Submodule.span ℂ {fun g => ((c g : ℝ) : ℂ)}, Submodule.fg_span_singleton _, fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[IsExpLieAlgebra.isSmoothFun_iff]`. Conclude with `fun g => Complex.ofRealCLM.contDiff.comp (hcsm g)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Establish `e : (fun g => ((c ((k : archGroup K n) * g) : ℝ) : ℂ)) = fun g => ((c g : ℝ) : ℂ)`. Use function extensionality and compare the values at `g`. Rewrite using `[hcK _ k.2]`. Rewrite using `[e]`. Conclude with `Submodule.mem_span_singleton_self _`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set w : archGroup K n → ℝ := fun g => c g * ‖F g‖ ^ 2 with hwdef`. Establish `hwc : Continuous w` using `hcc.mul (hF.norm.pow 2)`. Establish `hws : HasCompactSupport w` using `hcs.mul_right`. Establish `hJ : 0 < ∫ g, w g ∂ν` using `hwc.integral_pos_of_hasCompactSupport_nonneg_nonzero hws (fun g => mul_nonneg (hc0 g) (by positivity)) (x := 1) (mul_ne_zero hc1 (pow_ne_zero 2 (norm_ne_zero_iff.2 hF1)))`. Use `set J := ∫ g, w g ∂ν`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set m : archGroup K n → ℝ := fun g => c g * ‖F g‖ with hmdef`. Establish `hmc : Continuous m` using `hcc.mul hF.norm`. Establish `hms : HasCompactSupport m` using `hcs.mul_right`. Establish `hmi : Integrable m ν` using `hmc.integrable_of_hasCompactSupport hms`. Use `set M := ∫ g, m g ∂ν`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result.
 
-Establish `hM : 0 ≤ M` using `integral_nonneg fun g => mul_nonneg (hc0 g) (norm_nonneg _)`. Use `set ε : ℝ := J / (2 * (M + 1)) with hεdef`. Establish `hε : 0 < ε` using `by positivity`. Establish `hεM : ε * M < J`. Establish `h1 : ε * (M + 1) = J / 2` using `by rw [hεdef]; field_simp`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Take `⟨P, hP, hPε⟩` from `exists_good_near (K := K) (n := n) hcs.isCompact (fun g => conj (F g)) (Complex.continuous_conj.comp hF) hε`. Establish `hPc` using `hP.cont`. Use `set I : ℂ := ∫ g, P g * (c g : ℂ) * F g ∂ν with hIdef`. Establish `hI : I ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `h0`. Establish `hi1 : Integrable (fun g => P g * (c g : ℂ) * F g) ν` using `((hPc.mul (Complex.continuous_ofReal.comp hcc)).mul hF).integrable_of_hasCompactSupport ((hcs.comp_left Complex.ofReal_zero).mul_left.mul_right)`. Establish `hi2 : Integrable (fun g => ((w g : ℝ) : ℂ)) ν` using `(hwc.integrable_of_hasCompactSupport hws).ofReal`. Establish `h1 : ‖I - (J : ℂ)‖ ≤ ε * M`. Establish `e : I - (J : ℂ) = ∫ g, (P g * (c g : ℂ) * F g - ((w g : ℝ) : ℂ)) ∂ν`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Rewrite using `[integral_sub hi1 hi2, integral_complex_ofReal]`. Rewrite using `[e, ← integral_const_mul]`. Use `norm_integral_le_of_norm_le (hmi.const_mul ε) (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Establish `e2 : P g * (c g : ℂ) * F g - ((w g : ℝ) : ℂ) = (P g - conj (F g)) * (c g : ℂ) * F g`. Establish `e3 : conj (F g) * F g = ((‖F g‖ ^ 2 : ℝ) : ℂ)`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[Complex.conj_mul']`. Use `push_cast`. Both sides reduce to the same expression. Simplify using `only [hwdef]`. Move the coercions through the operations in `at e3 ⊢`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Take the linear combination `(c g : ℂ) * e3`. Rewrite using `[e2, norm_mul, norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (hc0 g)]`. Distinguish the cases in `hg : g ∈ tsupport c`. Use `(hPε g hg).le` as an intermediate fact. Simplify using `only [hmdef]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : 0 ≤ c g * ‖F g‖` using `mul_nonneg (hc0 g) (norm_nonneg _)`. Use the polynomial consequences of the given equalities and inequalities. Establish `: c g = 0` using `image_eq_zero_of_notMem_tsupport hg`. Simplify using `[hmdef, this]`. Rewrite `h1` using `[h0, zero_sub, norm_neg, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hJ]`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `set B : ℝ := ∫ g, ‖P g * (c g : ℂ)‖ ∂ν with hBdef`. Establish `hB : 0 ≤ B` using `integral_nonneg fun g => norm_nonneg _`. Use `set t : ℝ := (1 + B)⁻¹ with htdef`. Establish `ht : 0 < t` using `by positivity`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hQ : Good (fun g => (t : ℂ) * (P g * (c g : ℂ)))` using `(Good.const (t : ℂ)).mul (hP.mul hcG)`. Establish `hQs : HasCompactSupport (fun g => (t : ℂ) * (P g * (c g : ℂ)))` using `((hcs.comp_left Complex.ofReal_zero).mul_left).mul_left`. Set `b : TI K n` to `⟨⟨fun g => (t : ℂ) * (P g * (c g : ℂ)), hQ.cont⟩, hQs⟩`. Establish `hb : ∀ g, b g = (t : ℂ) * (P g * (c g : ℂ))` using `fun g => rfl`. Use `⟨b, hQ.1, ?_, ?_, fun h0 => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨W, hW, hk⟩` from `hQ.2 haveI : FiniteDimensional ℂ W := Module.Finite.iff_fg.2 hW`. Use `Submodule.finiteDimensional_of_le (S₂ := W) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `hk k`. Establish `e : (fun g => ‖b g‖) = fun g => t * ‖P g * (c g : ℂ)‖`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use function extensionality and compare the values at `g`. Rewrite using `[hb, norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos ht]`. Rewrite using `[e, integral_const_mul, htdef, inv_mul_le_iff₀ (by positivity)]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hin` using `CuspidalProjection.inner_integrated_ccToL1 ν π b v v`.
-
-Establish `hz : ⟪v, π.integrated ν (UnitaryRep.ccToL1 ν b) v⟫_ℂ = 0`. Rewrite using `[← ContinuousLinearMap.adjoint_inner_left, ← ContinuousLinearMap.star_eq_adjoint, h0, inner_zero_left]`. Establish `e : (fun g => b g * ⟪v, π g v⟫_ℂ) = fun g => (t : ℂ) * (P g * (c g : ℂ) * F g)`. Use function extensionality and compare the values at `g`. Rewrite using `[hb, mul_assoc]`.
-
-Rewrite `hin` using `[hz, e, integral_const_mul]`. Conclude with `(mul_ne_zero (Complex.ofReal_ne_zero.2 ht.ne') hI) hin.symm`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.L1.bumpEx :
     UpperTheory.ConvolutionTheory.L1.BumpEx := by

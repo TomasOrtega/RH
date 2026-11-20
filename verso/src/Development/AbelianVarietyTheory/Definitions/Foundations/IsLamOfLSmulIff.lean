@@ -42,14 +42,14 @@ def lamOfL (X : Tower Ω ε) (A : ValuationSubring Ω) (N w : ℕ) (j : Ω →+*
   if h : ∃ lam, IsLamOfL X A N w j pr lam then h.choose else 0
 
 /- English proof (translation)
-Establish `: ((l : ℕ) : Qbar l) = algebraMap ℚ_[l] (Qbar l) (l : ℚ_[l])` using `by simp`. Rewrite using `[norm_pow, this, norm_algebraMap', Padic.norm_p]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_l_pow (n : ℕ) : ‖((l : ℕ) : Qbar l) ^ n‖ = ((l : ℝ)⁻¹) ^ n := by
   have : ((l : ℕ) : Qbar l) = algebraMap ℚ_[l] (Qbar l) (l : ℚ_[l]) := by simp
   rw [norm_pow, this, norm_algebraMap', Padic.norm_p]
 
 /- English proof (translation)
-Unfold `Cg at *`. Use `hxy.trans ?_` and prove the remaining obligations. Rewrite using `[norm_l_pow, norm_l_pow]`. Establish `h1 : (1 : ℝ) ≤ l` using `by exact_mod_cast (Fact.out : l.Prime).one_le`. Conclude with `pow_le_pow_of_le_one (by positivity) (inv_le_one_of_one_le₀ h1) h`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cg_mono {m n : ℕ} (h : m ≤ n) {x y : Qbar l} (hxy : Cg n x y) : Cg m x y := by
   unfold Cg at *
@@ -59,7 +59,7 @@ theorem cg_mono {m n : ℕ} (h : m ≤ n) {x y : Qbar l} (hxy : Cg n x y) : Cg m
   exact pow_le_pow_of_le_one (by positivity) (inv_le_one_of_one_le₀ h1) h
 
 /- English proof (translation)
-Establish `h1 : (1 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt`. Take `⟨k, hk⟩` from `pow_unbounded_of_one_lt t h1`. Conclude with `⟨k, hk.le⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_le_l_pow (l : ℕ) [Fact l.Prime] (t : ℝ) : ∃ k : ℕ, t ≤ (l : ℝ) ^ k := by
   have h1 : (1 : ℝ) < l := by exact_mod_cast (Fact.out : l.Prime).one_lt
@@ -67,7 +67,7 @@ theorem exists_le_l_pow (l : ℕ) [Fact l.Prime] (t : ℝ) : ∃ k : ℕ, t ≤ 
   exact ⟨k, hk.le⟩
 
 /- English proof (translation)
-Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le h`. Establish `h0 : (l : ℝ) ≠ 0` using `by exact_mod_cast (Fact.out : l.Prime).ne_zero`. Rewrite using `[norm_l_pow, norm_l_pow, Nat.add_sub_cancel_left, pow_add, ← mul_assoc, ← mul_pow, mul_inv_cancel₀ h0, one_pow, one_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem l_pow_mul_norm {k m : ℕ} (h : k ≤ m) :
     (l : ℝ) ^ k * ‖((l : ℕ) : Qbar l) ^ m‖ = ‖((l : ℕ) : Qbar l) ^ (m - k)‖ := by
@@ -76,14 +76,14 @@ theorem l_pow_mul_norm {k m : ℕ} (h : k ≤ m) :
   rw [norm_l_pow, norm_l_pow, Nat.add_sub_cancel_left, pow_add, ← mul_assoc, ← mul_pow, mul_inv_cancel₀ h0, one_pow, one_mul]
 
 /- English proof (translation)
-Rewrite using `[l_pow_mul_norm h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cg_sub_iff {c n : ℕ} (h : c ≤ n) (x y : Qbar l) :
     Cg (n - c) x y ↔ ‖x - y‖ ≤ (l : ℝ) ^ c * ‖((l : ℕ) : Qbar l) ^ n‖ := by
   rw [l_pow_mul_norm h]; rfl
 
 /- English proof (translation)
-Rewrite using `[cg_sub_iff h, ← mul_sub, norm_mul]`. Conclude with `mul_le_mul ha hxy (norm_nonneg _) (by positivity)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cg_mul_left {k m : ℕ} (h : k ≤ m) {a x y : Qbar l} (ha : ‖a‖ ≤ (l : ℝ) ^ k) (hxy : Cg m x y) :
     Cg (m - k) (a * x) (a * y) := by
@@ -91,9 +91,9 @@ theorem cg_mul_left {k m : ℕ} (h : k ≤ m) {a x y : Qbar l} (ha : ‖a‖ ≤
   exact mul_le_mul ha hxy (norm_nonneg _) (by positivity)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Establish `hN' : (N : ℚ) ≠ 0` using `by exact_mod_cast hN`. Distinguish the cases in `h : t = s`. Substitute `h` using the available equality. Simplify using `[seqN]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `: (t : ℚ) / N ≠ (s : ℚ) / N` using `fun e => h (by exact_mod_cast (div_left_inj' hN').1 e)`. Simplify using `[seqN, HahnSeries.coeff_single_of_ne this, h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem seqN_single {N : ℕ} (hN : N ≠ 0) (j : Ω →+* Qbar l) (s : ℕ) (a : Ω) :
     seqN N j (HahnSeries.single ((s : ℚ) / N) a) = Pi.single s (j a) := by
@@ -105,20 +105,20 @@ theorem seqN_single {N : ℕ} (hN : N ≠ 0) (j : Ω →+* Qbar l) (s : ℕ) (a 
     simp [seqN, HahnSeries.coeff_single_of_ne this, h]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨{s}, fun f hf => hf s (Finset.mem_singleton_self s)⟩`.
+Supply the required witnesses or components.
 -/
 theorem finSupp_proj (s : ℕ) : FinSupp (LinearMap.proj (R := Qbar l) (φ := fun _ : ℕ => Qbar l) s) :=
   ⟨{s}, fun f hf => hf s (Finset.mem_singleton_self s)⟩
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `h`. Conclude with `⟨S, fun f hf => by simp [hS f hf]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem FinSupp.smul {lam : (ℕ → Qbar l) →ₗ[Qbar l] Qbar l} (h : FinSupp lam) (a : Qbar l) : FinSupp (a • lam) := by
   obtain ⟨S, hS⟩ := h
   exact ⟨S, fun f hf => by simp [hS f hf]⟩
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `h`. Take `⟨T, hT⟩` from `h'`. Conclude with `⟨S ∪ T, fun f hf => by`. Simplify using `[hS f fun s hs => hf s (Finset.mem_union_left _ hs), hT f fun s hs => hf s (Finset.mem_union_right _ hs)]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Simplify using the standard rewrite rules.
 -/
 theorem FinSupp.add {lam lam' : (ℕ → Qbar l) →ₗ[Qbar l] Qbar l} (h : FinSupp lam) (h' : FinSupp lam') :
     FinSupp (lam + lam') := by
@@ -128,9 +128,9 @@ theorem FinSupp.add {lam lam' : (ℕ → Qbar l) →ₗ[Qbar l] Qbar l} (h : Fin
     simp [hS f fun s hs => hf s (Finset.mem_union_left _ hs), hT f fun s hs => hf s (Finset.mem_union_right _ hs)]⟩
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `h`. Use `⟨S, fun f => ?_⟩` and prove the remaining obligations. Establish `h0` using `hS (f - ∑ s ∈ S, f s • (Pi.single s 1 : ℕ → Qbar l)) (fun t ht => by`. Simplify using `[Finset.sum_apply, Pi.single_apply, ht])`. Rewrite `h0` using `[map_sub, map_sum, sub_eq_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h0]`. Conclude with `Finset.sum_congr rfl fun s _ => by rw [map_smul, smul_eq_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FinSupp.exists_sum {lam : (ℕ → Qbar l) →ₗ[Qbar l] Qbar l} (h : FinSupp lam) :
     ∃ S : Finset ℕ, ∀ f : ℕ → Qbar l, lam f = ∑ s ∈ S, lam (Pi.single s 1) * f s := by
@@ -143,9 +143,9 @@ theorem FinSupp.exists_sum {lam : (ℕ → Qbar l) →ₗ[Qbar l] Qbar l} (h : F
   exact Finset.sum_congr rfl fun s _ => by rw [map_smul, smul_eq_mul, mul_comm]
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `h.exists_sum`. Take `⟨c, hc⟩` from `exists_le_l_pow l (∑ s ∈ S, ‖lam (Pi.single s 1)‖)`. Use `⟨c, fun n hn f g hfg => ?_⟩` and prove the remaining obligations. Rewrite using `[cg_sub_iff hn, hS f, hS g, ← Finset.sum_sub_distrib]`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_trans ?_ (mul_le_mul_of_nonneg_right hc (norm_nonneg _))` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_le_sum fun s _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_sub, norm_mul]`. Conclude with `mul_le_mul_of_nonneg_left (hfg s) (norm_nonneg _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FinSupp.exists_loss {lam : (ℕ → Qbar l) →ₗ[Qbar l] Qbar l} (h : FinSupp lam) :
     ∃ c : ℕ, ∀ n, c ≤ n → ∀ f g : ℕ → Qbar l, (∀ s, Cg n (f s) (g s)) → Cg (n - c) (lam f) (lam g) := by
@@ -166,9 +166,9 @@ variable {X : Tower Ω ε} {A : ValuationSubring Ω} {N w : ℕ} {j : Ω →+* Q
   {lam : (ℕ → Qbar l) →ₗ[Qbar l] Qbar l}
 
 /- English proof (translation)
-Take `⟨hf, c, per, hper, hc⟩` from `h`. Take `⟨k, hk⟩` from `exists_le_l_pow l ‖a‖`. Use `⟨hf.smul a, c + k, per, hper, fun n hn b hb φ hφ => ?_⟩` and prove the remaining obligations. Establish `h1` using `cg_mul_left (k := k) (m := n - c) (by omega) hk (hc n (by omega) b hb φ hφ)`. Rewrite `h1` using `[Nat.sub_sub]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify `h1` using `[mul_left_comm]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem IsLamOfL.smul (h : IsLamOfL X A N w j pr lam) (a : Qbar l) : IsLamOfL X A N w j (a • pr) (a • lam) := by
   obtain ⟨hf, c, per, hper, hc⟩ := h
@@ -179,7 +179,7 @@ theorem IsLamOfL.smul (h : IsLamOfL X A N w j pr lam) (a : Qbar l) : IsLamOfL X 
   simpa [mul_left_comm] using h1
 
 /- English proof (translation)
-Take `⟨hf, c, per, hper, hc⟩` from `h`. Conclude with `⟨hf, c, per, hper, fun n hn b hb φ hφ => by rw [hp b hb]; exact hc n hn b hb φ hφ⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsLamOfL.congr (h : IsLamOfL X A N w j pr lam) {pr' : X.Fn l → Fin 2 → Qbar l}
     (hp : ∀ b ∈ X.B N l w, pr' b 1 = pr b 1) : IsLamOfL X A N w j pr' lam := by
@@ -189,20 +189,20 @@ theorem IsLamOfL.congr (h : IsLamOfL X A N w j pr lam) {pr' : X.Fn l → Fin 2 �
 end Induced
 
 /- English proof (translation)
-Rewrite using `[seqN_single two_ne_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 example (j : Ω →+* Qbar l) : seqN 2 j (HahnSeries.single (((3 : ℕ) : ℚ) / (2 : ℕ)) (1 : Ω)) 3 = 1 := by
   rw [seqN_single two_ne_zero]; simp
 
 /- English proof (translation)
-The claim follows from `((finSupp_proj 1).smul _).add (finSupp_proj 5)`.
+A detailed English derivation is pending.
 -/
 example : FinSupp (((l : ℕ) : Qbar l)⁻¹ • LinearMap.proj (R := Qbar l) (φ := fun _ : ℕ => Qbar l) 1 +
     LinearMap.proj (R := Qbar l) (φ := fun _ : ℕ => Qbar l) 5) :=
   ((finSupp_proj 1).smul _).add (finSupp_proj 5)
 
 /- English proof (translation)
-The claim follows from `h.smul _`.
+A detailed English derivation is pending.
 -/
 example (X : Tower Ω ε) (A : ValuationSubring Ω) (N w : ℕ) (j : Ω →+* Qbar l) (pr : X.Fn l → Fin 2 → Qbar l)
     (lam : (ℕ → Qbar l) →ₗ[Qbar l] Qbar l) (h : IsLamOfL X A N w j pr lam) :

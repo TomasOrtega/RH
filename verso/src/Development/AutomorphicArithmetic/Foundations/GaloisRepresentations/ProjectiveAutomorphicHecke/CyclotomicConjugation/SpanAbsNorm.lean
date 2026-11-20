@@ -13,11 +13,11 @@ open GroundTheory.Global GroundTheory.Global.AdeleBaseChange GroundTheory.Global
 namespace UpperTheory.Gal.CertificateRingHomMap.ZetaNonvanishing₂.CentralCharacterExamples
 
 /- English proof (translation)
-Establish `h` using `GroundTheory.Global.ideleNorm_finiteEmbedding (K := K) w y`. Establish `hm` using `GroundTheory.Automorphic.EllipticTorus.ideleModule_ideleNorm (K := K) (GroundTheory.Global.IdeleGroup.finiteEmbedding w y)`. Rewrite `hm` using `[h]`. Establish `hm'` using `congrArg Subtype.val hm`. Rewrite `hm'` using `[GroundTheory.Global.IdeleGroup.ideleModule_finiteEmbedding, GroundTheory.Global.IdeleGroup.ideleModule_finiteEmbedding]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨_, ?_, fun f hf => GlobalTheory.LiftPolar.val_of_norm _ w _ y hm' f hf⟩` and prove the remaining obligations. Establish `h0 : Units.map (MonoidHom.inr (InfiniteAdeleRing L) (FiniteAdeleRing (𝓞 L) L)) (sgl w y) = finiteEmbedding w y`. Apply `Units.ext` to reduce the goal to its premises. Both sides reduce to the same expression. Use `show (Units.val (GroundTheory.Global.ideleNorm K L (Units.map (MonoidHom.inr (InfiniteAdeleRing L) (FiniteAdeleRing (𝓞 L) L)) (sgl w y)))).2 = _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0, h]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem fN_sgl (K L : Type) [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
     (w : Plc L) (y : (w.adicCompletion L)ˣ) : ∃ n : ((below K w).adicCompletion K)ˣ,
@@ -39,7 +39,7 @@ private theorem fN_sgl (K L : Type) [Field K] [NumberField K] [Field L] [NumberF
   rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite using `[finiteAdeleSingle_apply_self]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 private theorem v_single {K : Type} [Field K] [NumberField K] {v p : Plc K} (h : p = v) (n : v.adicCompletion K) :
     Valued.v (finiteAdeleSingle v n p) = Valued.v n := by
@@ -47,7 +47,7 @@ private theorem v_single {K : Type} [Field K] [NumberField K] {v p : Plc K} (h :
   rw [finiteAdeleSingle_apply_self]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem v_nat {K : Type} [Field K] [NumberField K] {v p : Plc K} (h : p = v) (m : ℕ) :
     Valued.v ((m : ℕ) : p.adicCompletion K) = Valued.v ((m : ℕ) : v.adicCompletion K) := by
@@ -55,11 +55,11 @@ private theorem v_nat {K : Type} [Field K] [NumberField K] {v p : Plc K} (h : p 
   rfl
 
 /- English proof (translation)
-Set `e : 𝓞 ℚ ≃+* ℤ` to `Rat.ringOfIntegersEquiv`. Establish `h1 : Ideal.absNorm (b.asIdeal.map (e : 𝓞 ℚ →+* ℤ)) = Ideal.absNorm b.asIdeal`. Rewrite using `[Ideal.absNorm_apply, Ideal.absNorm_apply, Submodule.cardQuot_apply, Submodule.cardQuot_apply]`. Conclude with `Nat.card_congr (Ideal.quotientEquiv b.asIdeal _ e rfl).symm.toEquiv`. Establish `h2` using `Int.ideal_span_absNorm_eq_self (b.asIdeal.map (e : 𝓞 ℚ →+* ℤ))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[h1]`. Establish `h3` using `Ideal.map_of_equiv (I := b.asIdeal) e`. Rewrite `h3` using `[← h2, Ideal.map_span, Set.image_singleton]`. Use `h3.symm.trans ?_` and prove the remaining obligations. Use `congr 2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 private theorem span_absNorm (b : Plc ℚ) :
     b.asIdeal = Ideal.span {((Ideal.absNorm b.asIdeal : ℕ) : 𝓞 ℚ)} := by
@@ -76,7 +76,7 @@ private theorem span_absNorm (b : Plc ℚ) :
   simp
 
 /- English proof (translation)
-Establish `h` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation (K := ℚ) v (m : 𝓞 ℚ)`. Establish `h2 : HeightOneSpectrum.valuation ℚ v (algebraMap (𝓞 ℚ) ℚ (m : 𝓞 ℚ)) = v.intValuation (m : 𝓞 ℚ)` using `HeightOneSpectrum.valuation_of_algebraMap (K := ℚ) v _`. Use `Eq.trans ?_ (h.trans h2)` and prove the remaining obligations. Use `congr 1`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 private theorem v_nat_int (v : Plc ℚ) (m : ℕ) :
     Valued.v ((m : ℕ) : v.adicCompletion ℚ) = v.intValuation (m : 𝓞 ℚ) := by
@@ -88,9 +88,9 @@ private theorem v_nat_int (v : Plc ℚ) (m : ℕ) :
   simp
 
 /- English proof (translation)
-Rewrite using `[v_nat_int]`. Use `HeightOneSpectrum.intValuation_singleton b ?_ (span_absNorm b)` and prove the remaining obligations. Introduce `h`. Use `span_absNorm b` as an intermediate fact. Rewrite `this` using `[h]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `b.ne_bot (by simpa using this)`.
+A detailed English derivation is pending.
 -/
 private theorem v_nat_self (b : Plc ℚ) :
     Valued.v ((Ideal.absNorm b.asIdeal : ℕ) : b.adicCompletion ℚ) = WithZero.exp (-1 : ℤ) := by
@@ -102,9 +102,7 @@ private theorem v_nat_self (b : Plc ℚ) :
   exact b.ne_bot (by simpa using this)
 
 /- English proof (translation)
-Rewrite using `[v_nat_int, HeightOneSpectrum.intValuation_eq_one_iff]`. Introduce `hm`. Establish `hle : b.asIdeal ≤ v.asIdeal`. Rewrite using `[span_absNorm b]`. Conclude with `(Ideal.span_singleton_le_iff_mem _).2 (by simpa using hm)`.
-
-Conclude with `h (HeightOneSpectrum.ext (b.isMaximal.eq_of_le v.isPrime.ne_top hle).symm)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem v_nat_ne {b v : Plc ℚ} (h : v ≠ b) :
     Valued.v ((Ideal.absNorm b.asIdeal : ℕ) : v.adicCompletion ℚ) = 1 := by
@@ -120,11 +118,11 @@ end UpperTheory.Gal.CertificateRingHomMap.ZetaNonvanishing₂.CentralCharacterEx
 namespace UpperTheory.Gal.CertificateRingHomMap.ZetaNonvanishing₂.CentralCharacterExamples
 
 /- English proof (translation)
-Take `⟨m, hm, hv⟩` from `fN_sgl ℚ K P y`. Establish `hN : Ideal.absNorm P.asIdeal = Ideal.absNorm (below ℚ P).asIdeal ^ P.asIdeal.inertiaDeg (𝓞 ℚ)` using `GlobalTheory.LiftPolar.normV_under (K := ℚ) P`. Establish `e1 : Valued.v ((Ideal.absNorm (below ℚ P).asIdeal : ℕ) : P.adicCompletion K) = WithZero.exp (-1 : ℤ) ^ P.asIdeal.ramificationIdx (𝓞 ℚ)`. Rewrite using `[← map_natCast (completionMap (below ℚ P) P), valued_completionMap, v_nat_self]`. Establish `e2` using `hP`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e2` using `[hN, Nat.cast_pow, map_pow, e1, ← pow_mul, ← WithZero.exp_nsmul, WithZero.exp_inj]`. Establish `e3 : P.asIdeal.ramificationIdx (𝓞 ℚ) * P.asIdeal.inertiaDeg (𝓞 ℚ) = 1`. Simplify using `only [smul_eq_mul, nsmul_eq_mul, mul_neg, mul_one] at e2`. Use linear arithmetic over natural numbers and integers. Establish `e4` using `Nat.eq_one_of_mul_eq_one_right e3`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `e5` using `Nat.eq_one_of_mul_eq_one_left e3`. Rewrite using `[hm]`. Distinguish the cases in `h : v = below ℚ P`. Rewrite using `[v_single h, hv _ hN, hy, v_nat h, hN, e5, pow_one, pow_one, Nat.cast_pow, Nat.cast_pow, map_pow, map_pow, e1, v_nat_self, e4, pow_one]`. Rewrite using `[finiteAdeleSingle_apply_of_ne h, map_one, hN, ← pow_mul, Nat.cast_pow, map_pow, v_nat_ne h, one_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem sim_val {K : Type} [Field K] [NumberField K] [Algebra ℚ K] (P : Plc K)
     (hP : Valued.v ((Ideal.absNorm P.asIdeal : ℕ) : P.adicCompletion K) = WithZero.exp (-1 : ℤ))
@@ -151,7 +149,7 @@ private theorem sim_val {K : Type} [Field K] [NumberField K] [Algebra ℚ K] (P 
   · rw [finiteAdeleSingle_apply_of_ne h, map_one, hN, ← pow_mul, Nat.cast_pow, map_pow, v_nat_ne h, one_pow]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite using `[← hy]`. Conclude with `finiteAdeleSingle_apply_self p _`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sgl_eq {K : Type} [Field K] [NumberField K] {P p : Plc K} (h : p = P) (y : (P.adicCompletion K)ˣ) (c : ℕ)
     (hy : (y : P.adicCompletion K) = (c : P.adicCompletion K)) :
@@ -161,14 +159,14 @@ private theorem sgl_eq {K : Type} [Field K] [NumberField K] {P p : Plc K} (h : p
   exact finiteAdeleSingle_apply_self p _
 
 /- English proof (translation)
-The claim follows from `finiteAdeleSingle_apply_of_ne h _`.
+A detailed English derivation is pending.
 -/
 private theorem sgl_ne {K : Type} [Field K] [NumberField K] {P p : Plc K} (h : p ≠ P) (y : (P.adicCompletion K)ˣ) :
     ((sgl P y : (Af K)ˣ) : Af K) p = 1 :=
   finiteAdeleSingle_apply_of_ne h _
 
 /- English proof (translation)
-Establish `h : (c : P.adicCompletion K) ≠ 0`. Rewrite using `[← map_natCast (algebraMap K (P.adicCompletion K))]`. Conclude with `(map_ne_zero _).2 (Nat.cast_ne_zero.2 hc)`. Conclude with `⟨Units.mk0 _ h, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem unit_nat {K : Type} [Field K] [NumberField K] (P : Plc K) (c : ℕ) (hc : c ≠ 0) :
     ∃ y : (P.adicCompletion K)ˣ, (y : P.adicCompletion K) = (c : P.adicCompletion K) := by
@@ -178,7 +176,7 @@ private theorem unit_nat {K : Type} [Field K] [NumberField K] (P : Plc K) (c : �
   exact ⟨Units.mk0 _ h, rfl⟩
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `by_cases h : i = j <;> simp [GeneralLinearGroup.scalar, h, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem scalar_val {A : Type} [CommRing A] (n : ℕ) (t : Aˣ) :
     (GeneralLinearGroup.scalar (Fin n) t).val = (t : A) • (1 : Matrix (Fin n) (Fin n) A) := by
@@ -186,7 +184,7 @@ private theorem scalar_val {A : Type} [CommRing A] (n : ℕ) (t : Aˣ) :
   by_cases h : i = j <;> simp [GeneralLinearGroup.scalar, h, Matrix.one_apply]
 
 /- English proof (translation)
-Use `mem_Sim.2 ?_` and prove the remaining obligations. Rewrite using `[scalar_val, ← h]`. Use extensionality with `a b`. Apply the tactic sequence `by_cases e : a = b <;> simp [e, Matrix.one_apply, Matrix.mul_apply, apply_ite σ, eq_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem sim_scalar {A B : Type} [CommRing A] [CommRing B] (σ : A →+* A) (i : B →+* A) (n : ℕ) (t : Aˣ) (s : Bˣ)
     (h : σ t * t = i s) : (GeneralLinearGroup.scalar (Fin n) t, s) ∈ Sim σ i n := by
@@ -196,9 +194,9 @@ private theorem sim_scalar {A B : Type} [CommRing A] [CommRing B] (σ : A →+* 
   by_cases e : a = b <;> simp [e, Matrix.one_apply, Matrix.mul_apply, apply_ite σ, eq_comm]
 
 /- English proof (translation)
-Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[scalar_val]`. Use extensionality with `i j : 1`. Express the relevant statement in the definitionally equal form `pLoc E u ((GeneralLinearGroup.scalar (Fin n) t).val i j) = _`. Rewrite using `[scalar_val]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `by_cases h : i = j <;> simp [h, Matrix.one_apply]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem comp_mk {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} (t : (Af E)ˣ) (s : AfQˣ)
     (h : (GeneralLinearGroup.scalar (Fin n) t, s) ∈ GUf E n) (u : Plc E) :
@@ -214,17 +212,17 @@ end UpperTheory.Gal.CertificateRingHomMap.ZetaNonvanishing₂.CentralCharacterEx
 
 open UpperTheory.Gal.CertificateRingHomMap.ZetaNonvanishing₂.CentralCharacterExamples in
 /- English proof (translation)
-Introduce `E _ _ _ n d x hd hx w`. Take `⟨k1, k2⟩` from `kPlace E d x hd hx`. Establish `hc : Ideal.absNorm w.asIdeal ≠ 0` using `fun h => w.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)`. Take `⟨y, hy⟩` from `unit_nat (w.under (𝓞 (Kx x))) _ hc`. Set `a : (Af (Kx x))ˣ` to `sgl (w.under (𝓞 (Kx x))) y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `t : (Af E)ˣ` to `Units.map ((conjFin (conjE E)).comp (finiteAdeleMap (Kx x) E)).toMonoidHom a`. Establish `hm : (GeneralLinearGroup.scalar (Fin n) t, fN ℚ (Kx x) a) ∈ GUf E n` using `sim_scalar _ _ n _ _ (by`. Express the relevant statement in the definitionally equal form `conjFin (conjE E) (conjFin (conjE E) (finiteAdeleMap (Kx x) E (a : Af (Kx x)))) * conjFin (conjE E) (finiteAdeleMap (Kx x) E (a : Af (Kx x))) = _`. Rewrite using `[(conjLoc E _ w).2.2.2.1]`. Conclude with `quadConj E d x hd hx a)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨_, hm⟩, fun u => ⟨fun h => ?_, fun h => ?_⟩, fun g => ?_, fun h v => ?_⟩` and prove the remaining obligations. Rewrite using `[comp_mk, scalar_val]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `pLoc E u (conjFin (conjE E) (finiteAdeleMap (Kx x) E (a : Af (Kx x)))) = _`. Rewrite using `[pLoc_conjFin]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `GlobalTheory.CuspRep.conjLoc (conjE E) u (finiteAdeleMap (Kx x) E (a : Af (Kx x)) (cj u)) = _`. Establish `ha : (a : Af (Kx x)) (below (Kx x) (cj u)) = ((Ideal.absNorm w.asIdeal : ℕ) : (below (Kx x) (cj u)).adicCompletion (Kx x))` using `sgl_eq ((k1 _ _).1 h) y _ hy`. Rewrite using `[finiteAdeleMap_apply, ha, map_natCast, map_natCast]`. Establish `ha : (a : Af (Kx x)) (below (Kx x) (cj u)) = 1` using `sgl_ne (fun e => h ((k1 _ _).2 e)) y`. Establish `h1 : Units.map (pLoc E u).toMonoidHom t = 1` using `Units.ext ((conjLoc E _ u).1 (by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[finiteAdeleMap_apply, ha, map_one]))`. Rewrite using `[comp_mk, h1, map_one]`. Use `Subtype.ext (Prod.ext (Units.ext ?_) (mul_comm _ _))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(GeneralLinearGroup.scalar (Fin n) t).val * _ = _ * (GeneralLinearGroup.scalar (Fin n) t).val`. Rewrite using `[scalar_val, smul_mul_assoc, mul_smul_comm, Matrix.one_mul, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hN : Ideal.absNorm w.asIdeal = Ideal.absNorm (w.under (𝓞 (Kx x))).asIdeal ^ w.asIdeal.inertiaDeg (𝓞 (Kx x))` using `GlobalTheory.LiftPolar.normV_under (K := Kx x) w`. Use `sim_val (w.under (𝓞 (Kx x))) (k2 w h) y _ (by rw [← hN, hy]) v` as an intermediate fact. Rewrite `this` using `[← hN]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.CertificateRingHomMap.ZetaNonvanishing₂.cenEx :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n d : ℕ) (x : E), 0 < d → x ^ 2 = -(d : E) → ∀ w : Plc E,

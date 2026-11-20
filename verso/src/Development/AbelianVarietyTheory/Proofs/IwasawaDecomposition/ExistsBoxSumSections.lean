@@ -27,11 +27,11 @@ namespace GlobalTheory.BoxFibre
 variable {X : Scheme.{0}} {G : Over X} (L : LB G.left) {S : Type} [CommRing S] (x0 : Sp S ⟶ X) (k : ℕ)
 
 /- English proof (translation)
-Establish `hf : IsIso (fst (Over.mk x0) (powObj G 0))` using `by show IsIso (fst (Over.mk x0) (𝟙_ (Over X)))`. Rewrite using `[← CartesianMonoidalCategory.rightUnitor_hom]`. Use `infer_instance`. Establish `hf' : IsIso (fst (Over.mk x0) (powObj G 0)).left` using `inferInstanceAs (IsIso ((Over.forget X).map (fst (Over.mk x0) (powObj G 0))))`. Use `set f := (fst (Over.mk x0) (powObj G 0)).left with hfdef`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `j0 : Fin 0 → L.ι` to `Fin.elim0`. Establish `hle : f ⁻¹ᵁ ⊤ ≤ LB.wchart L (pr G x0 (n` using `0)) j0 := fun y _ => Set.mem_iInter.2 fun b => b.elim0`. Take `⟨t, ht⟩` from `(ConcreteCategory.bijective_of_isIso (f.app ⊤)).2 (((Pw G x0 0).left.presheaf.map (homOfLE hle).op).hom (s.f j0))`. Take `⟨c, hc⟩` from `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of S)).inv).2 t`. Use `⟨fun _ => c, fun _ => Fin.elim0, fun T r z J hJ => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(sval_of s r z J j0 (fun b => b.elim0)).trans ((gs_res r z hle trivial (s.f j0)).symm.trans ?_)` and prove the remaining obligations. Rewrite using `[← ht, gs_pull r f z ⊤ trivial]`. Simplify using `only [Finset.univ_eq_empty, Finset.prod_empty, _root_.mul_one, Finset.univ_unique, Finset.sum_singleton]`. Rewrite using `[← hc]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem base (s : SecPw x0 L 0 k) : ∃ (c : Fin 1 → S) (σ : Fin 1 → Fin 0 → H0 L k), BoxAt L x0 k s c σ := by
   have hf : IsIso (fst (Over.mk x0) (powObj G 0)) := by

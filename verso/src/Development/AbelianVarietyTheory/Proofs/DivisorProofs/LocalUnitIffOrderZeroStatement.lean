@@ -14,7 +14,7 @@ open GlobalTheory.TateUnr
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TateUnits.mem_unitsAt_iff_ordV_eq_zero | exact GlobalTheory.TateUnits.mem_unitsAt_iff_ordV_eq_zero | (intros; apply GlobalTheory.TateUnits.mem_unitsAt_iff_ordV_eq_zero <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.local_unit_iff_order_zero : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (v : Pl F)
     (l : idelesAt E (evFin F v)), (l.1 ∈ unitsAt E v ↔ ordV v l = 0) := by

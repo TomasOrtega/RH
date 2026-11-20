@@ -5,9 +5,7 @@ open IsLocalRing MvPowerSeries UpperTheory.V.Alg
 
 open Matrix in
 /- English proof (translation)
-Establish `e2 : A'ᵀ * Aᵀ = 1` using `by rw [← transpose_mul, e1, transpose_one]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [transpose_mul, Matrix.mul_assoc]`. Use `_ = A'ᵀ * (Aᵀ * J * A) * A' := by`. Rewrite using `[hA, mul_smul_comm, smul_mul_assoc, hh]`.
-
-Use `_ = (A'ᵀ * Aᵀ) * J * (A * A') := by simp only [Matrix.mul_assoc]`. Use `_ = J := by rw [e1, e2, one_mul, mul_one]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem conj_form {R ι : Type} [CommRing R] [Fintype ι] [DecidableEq ι] {J A A' h : Matrix ι ι R} {ν : R}
     (e1 : A * A' = 1) (hA : Aᵀ * J * A = ν • J) (hh : hᵀ * J * h = J) :
@@ -21,18 +19,18 @@ private theorem conj_form {R ι : Type} [CommRing R] [Fintype ι] [DecidableEq �
     _ = J := by rw [e1, e2, one_mul, mul_one]
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Qk1.triple_ne hab`.
+A detailed English derivation is pending.
 -/
 private theorem triple_ne {R ι : Type} [CommRing R] [Fintype ι] {A Y B : Matrix ι ι R} {a b : ι}
     (hab : (A * Y * B) a b ≠ 0) : ∃ c d, A a c ≠ 0 ∧ Y c d ≠ 0 ∧ B d b ≠ 0 :=
   _root_.UpperTheory.Reformulated.B.Qk1.triple_ne hab
 
 /- English proof (translation)
-Introduce `a b hab`. Use `set E : Matrix ι ι R := Matrix.diagonal fun x => if blk x = blk a then 1 else 0 with hE`. Establish `h1 : E * h = h * E`. Use extensionality with `x y`. Rewrite using `[hE, Matrix.diagonal_mul, Matrix.mul_diagonal]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hxy : blk x = blk y`. Rewrite using `[hxy, mul_comm]`. Rewrite using `[hb x y hxy, mul_zero, zero_mul]`. Establish `h2 : h' * E = E * h'`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `h3` using `congrFun (congrFun h2 a) b`. Rewrite `h3` using `[hE, Matrix.diagonal_mul, Matrix.mul_diagonal, if_neg (Ne.symm hab), if_pos rfl, mul_zero, one_mul]`. Conclude with `h3.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem blk_inv {R ι κ : Type} [CommRing R] [Fintype ι] [DecidableEq ι] (blk : ι → κ) {h h' : Matrix ι ι R}
     (e1 : h * h' = 1) (e2 : h' * h = 1) (hb : ∀ a b, blk a ≠ blk b → h a b = 0) :
@@ -54,46 +52,46 @@ private theorem blk_inv {R ι κ : Type} [CommRing R] [Fintype ι] [DecidableEq 
   exact h3.symm
 
 /- English proof (translation)
-The claim follows from `Matrix.map_mul (f := (f : R →+* S))`.
+A detailed English derivation is pending.
 -/
 private theorem map_mul_alg {O R S ι : Type} [CommRing O] [CommRing R] [CommRing S] [Algebra O R] [Algebra O S]
     [Fintype ι] [DecidableEq ι] (f : R →ₐ[O] S) (A B : Matrix ι ι R) : (A * B).map f = A.map f * B.map f :=
   Matrix.map_mul (f := (f : R →+* S))
 
 /- English proof (translation)
-Introduce `O _ _ ι X _ _ _ w Φ R _ _ _`. Use `⟨⟨by simp, fun a b hab => Matrix.one_apply_ne fun e => hab (by rw [e]), by simp⟩, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `h h' ⟨a1, a2, a3⟩ ⟨b1, b2, b3⟩`. Use `⟨?_, fun a b hab => ?_, by rw [map_mul_alg, a3, b3, one_mul]⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [Matrix.transpose_mul, Matrix.mul_assoc]`. Use `_ = Φ.JR R := by rw [a1, b1]`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Distinguish the cases in `hc : Φ.blk a = Φ.blk c`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[b2 c b (hc ▸ hab), mul_zero]`. Rewrite using `[a2 a c hc, zero_mul]`. Introduce and unpack `h ⟨a1, a2, a3⟩`. Establish `hJ : IsUnit (Φ.JR R)` using `Φ.unit.map (algebraMap O R).mapMatrix`. Take `⟨K, hK⟩` from `hJ.exists_left_inv`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e2 : (K * h.transpose * Φ.JR R) * h = 1`. Rewrite using `[mul_assoc K, mul_assoc K, a1, hK]`. Generalize the expression as in `K * h.transpose * Φ.JR R = h' at e2`. Establish `e1 : h * h' = 1` using `mul_eq_one_comm.1 e2`. Use `⟨h', ⟨?_, blk_inv Φ.blk e1 e2 a2, ?_⟩, e1, e2⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `conj_form (h := h) (ν := (1 : R)) e1 (by rw [a1, one_smul]) a1` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Use `congrArg (fun A : Matrix ι ι R => A.map (res O R)) e1` as an intermediate fact. Simplify using `only [map_mul_alg, a3, one_mul] at this`. Rewrite using `[this]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce and unpack `R' _ _ _ f h ⟨a1, a2, a3⟩`. Establish `hJ : Φ.JR R' = (Φ.JR R).map f`. Use extensionality with `a b`. Simplify using `[FormData.JR]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, fun a b hab => by simp [a2 a b hab], ?_⟩` and prove the remaining obligations. Rewrite using `[hJ, ← Matrix.transpose_map, ← map_mul_alg, ← map_mul_alg, a1]`. Rewrite using `[← a3]`. Use extensionality with `a b`. Simplify using `only [Matrix.map_apply, res_map]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `Γ _ r0 ⟨h1, ⟨π, h2⟩, -⟩ s h ⟨a1, a2, a3⟩`. Establish `e1 : (r0 s).map (algebraMap O R) * (r0 s⁻¹).map (algebraMap O R) = 1`. Rewrite using `[← Matrix.map_mul, ← map_mul, mul_inv_cancel, map_one]`. Simplify using the standard rewrite rules. Use `⟨?_, fun a b hab => ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨ν, hν⟩` from `h1 s`. Use `conj_form (ν := algebraMap O R ν) e1 ?_ a1` and prove the remaining obligations. Establish `hO : Φ.JR O = Φ.J` using `by ext a b; simp [FormData.JR]`. Rewrite `hν` using `[hO]`. Rewrite using `[FormData.JR, ← Matrix.transpose_map, ← Matrix.map_mul, ← Matrix.map_mul, hν]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `a b`. Simplify using the standard rewrite rules. Assume the negation of the conclusion as `hne`. Take `⟨c, d, k1, k2, k3⟩` from `triple_ne hne`. Establish `k1' : r0 s a c ≠ 0` using `fun e => k1 (by simp [e])`.
+Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k3' : r0 s⁻¹ d b ≠ 0` using `fun e => k3 (by simp [e])`. Establish `k4 : Φ.blk c = Φ.blk d` using `by_contra fun n => k2 (a2 c d n)`. Apply `hab` to reduce the goal to its premises. Rewrite using `[h2 s a c k1', k4, h2 s⁻¹ d b k3', map_inv]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul_alg, map_mul_alg, a3, mul_one, ← map_mul_alg, e1]`. Simplify using the standard rewrite rules. Introduce and unpack `t h ⟨a1, a2, a3⟩`. Use `⟨?_, fun a b hab => by simp [a2 a b hab], ?_⟩` and prove the remaining obligations. Establish `e : (Matrix.of fun a b => (t (Multiplicative.ofAdd (w a - w b)) : R) * h a b) = Matrix.diagonal (fun a => (t (Multiplicative.ofAdd (w a)) : R)) * h * Matrix.diagonal (fun a => (t (Multiplicative.ofAdd (-w a)) : R))`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `a b`. Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.of_apply, sub_eq_add_neg, ofAdd_add, map_mul, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `conj_form (ν := (t (Multiplicative.ofAdd Φ.c) : R)) ?_ ?_ a1` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Rewrite using `[← Units.val_mul, ← map_mul, ← ofAdd_add, add_neg_cancel, ofAdd_zero, map_one, Units.val_one]`. Use extensionality with `a b`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.diagonal_transpose, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.smul_apply, smul_eq_mul]`. Distinguish the cases in `hJ : Φ.J a b = 0`. Simplify using `[FormData.JR, hJ]`. Rewrite using `[← Φ.hw a b hJ, ofAdd_add, map_mul, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. By extensionality, compare the relevant components.
 
-Use extensionality with `a b`. Establish `k` using `congrFun (congrFun a3 a) b`. Rewrite `k` using `[Matrix.map_apply]`. Rewrite using `[Matrix.map_apply, Matrix.of_apply, map_mul, k]`. Distinguish the cases in `hab : a = b`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hab` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne hab]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Alg.hh_group :
     ∀ (O : Type) [CommRing O] [IsLocalRing O] (ι X : Type) [Fintype ι] [DecidableEq ι] [AddCommGroup X] (w : ι → X) (Φ : FormData O w) (R : Type) [CommRing R] [Algebra O R] [IsCO O R],

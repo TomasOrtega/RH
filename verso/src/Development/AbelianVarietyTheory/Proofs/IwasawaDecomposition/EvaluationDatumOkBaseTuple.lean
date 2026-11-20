@@ -28,9 +28,9 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Ho
 namespace GlobalTheory.Mem.Col2.TC.RcHyp
 
 /- English proof (translation)
-Use `(Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.CU.normOne_ideal_iff_mul_conj (D := D) _).2 ?_` and prove the remaining obligations. Rewrite using `[Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.CU.cS_span (D := D), Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.CU.span_singleton_mul_span_singleton_host (D := D)]`. Establish `hz : (z : D.host.E) * D.host.conj (z : D.host.E) = 1`. Rewrite using `[← Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.CU.star_conj (D := D)]`. Conclude with `Unitary.mul_star_self_of_mem z.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz, ← Submodule.one_eq_span]`.
+A detailed English derivation is pending.
 -/
 theorem n1_span_unitary {D : D7} (z : unitary D.host.E) : TaylorLogMetric.N1 D (Submodule.span (𝓞 D.host.E) {(z : D.host.E)}) := by
   refine (Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.CU.normOne_ideal_iff_mul_conj (D := D) _).2 ?_
@@ -48,7 +48,7 @@ namespace GlobalTheory.Mem.Col2.TC.RcHyp
 variable {B : Base} {X : PreX B.toPre}
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.CharValCompare.normOne_detIdeal_transportedLattice (seamOf_ok B (I.cols l) Z.W Z.V Z.S Z.N Z.G) hN`. Rewrite `h` using `[seamOf_lat]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem n1_detStd (I : TC B X) (l : I.Laws) (Z : TC.Later B (I.cols l)) {n : ℕ}
     {N : Submodule (𝓞 B.fields.E) (Sp B.fields.E n)} (hN : IsSdLat N) :
@@ -59,13 +59,13 @@ theorem n1_detStd (I : TC B X) (l : I.Laws) (Z : TC.Later B (I.cols l)) {n : ℕ
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `N N' c x hx m hm`. Establish `hf : Th.chiFac B.host χ (B.R.N i) (B.R.N (i + 1)) N N' = Th.chiFac B.host I.chi (B.R.N i) (B.R.N (i + 1)) N N'`. Unfold `Th.chiFac`. Rewrite using `[hχ (Th.detId B.host (Th.stdL B.host _) N) (n1_detStd I l Z hx.1), hχ (Th.detId B.host (Th.stdL B.host _) N') (n1_detStd I l Z hx.2.1)]`. Establish `e3 : (I.J.amb B χ).e (B.R.N i) (B.R.N (i + 1)) N N' = I.A.e (B.R.N i) (B.R.N (i + 1)) N N'` using `by show I.J.V.eNat χ _ _ N N' = I.J.V.eNat I.chi _ _ N N'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `Th.VacIn.eNat`. Rewrite using `[hf]`. Establish `e4 : (I.J.amb B χ).thInd (Sall (Pr` using `B.primes X) I.sel (I.tup a) u) N N' c x = I.A.thInd (Sall (Pr := B.primes X) I.sel (I.tup a) u) N N' c x := by`. Use function extensionality and compare the values at `z`. Unfold `Amb.thInd`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions.
 
-Rewrite using `[e3]`. Both sides reduce to the same expression. Take `⟨y, hy⟩` from `hJ a u i hi N N' c x hx m fun τ => by show ((degAt m τ : ℕ) : ℤ) = _`. Rewrite using `[hm τ]`. Conclude with `chain_degree_eq B.fields (B.primes X) B.R B.wts u i hi τ`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨y, ?_⟩` and prove the remaining obligations. Rewrite using `[e4]`. Conclude with `hy.trans (by rw [show I.A.chiF (B.R.N i) (B.R.N (i + 1)) N N' = (I.J.amb B χ).chiF (B.R.N i) (B.R.N (i + 1)) N N' from hf.symm]; rfl)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jetsRat_chi (I : TC B X) (l : I.Laws) (Z : TC.Later B (I.cols l)) (hJ : ColIn.JetsIn I)
     (χ : Submodule (𝓞 B.host.E) B.host.E → ℂ) (hχ : ∀ 𝔞, TaylorLogMetric.N1 (I.rec7 l Z) 𝔞 → χ 𝔞 = I.chi 𝔞) (a : I.ι) (u : B.Word)
@@ -103,9 +103,9 @@ namespace GlobalTheory.Mem.Col2.TC.RcHyp
 variable {B : Base} {X : PreX B.toPre}
 
 /- English proof (translation)
-Take `⟨hX, hPr, -⟩` from `base_fields_primes_ok B X`. Establish `hm : B.R.m = (B.R.m - 2) + 2` using `h.hm`. Establish `hD` using `ht.deep`. Establish `hK : TwCstQ (Pr` using `B.primes X) I.sel (I.tup a) I.glob := twCstQ_of (fun P _ => degOne_of_ok h a P) (root_of_ok h hD a) (fun P _ => sqrt_of_ok h a P) (fun P _ => (h.idx_ok a).xiUnitAtPrime P)`. Establish `hN` using `twNormAt_all (twNormDC_of (unfoldingNonvanishingDoubleCoset_holds (Ch := I.Ch) I.glob hm hK)) (fun P _ => degOne_of_ok h a P)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[ht.idx_eq a]`. Introduce `j b v hv hj1 hj2`. Take `⟨i, rfl⟩ : ∃ i, j = i + 1` from `⟨j - 1, by omega⟩`. Establish `H` using `twSt_cand (Ch := I.Ch) (sel := I.sel) (mu := I.tup a) (by omega) (hN i (by omega)) b v hv`. Conclude with `GlobalTheory.Proof.TwistedNormalForms.twNF_imp_matNF _ _ _ _ _ hv _ H.2.1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem idxMatNF_of_isTw (I : TC B X) (h : I.Ok) (ht : I.IsTw) (a : I.ι) : GlobalTheory.QNF.IdxMatNF (I.idx a) := by
   obtain ⟨hX, hPr, -⟩ := base_fields_primes_ok B X
@@ -121,7 +121,7 @@ theorem idxMatNF_of_isTw (I : TC B X) (h : I.Ok) (ht : I.IsTw) (a : I.ι) : Glob
   exact GlobalTheory.Proof.TwistedNormalForms.twNF_imp_matNF _ _ _ _ _ hv _ H.2.1
 
 /- English proof (translation)
-Take `⟨hX, hPr, -⟩` from `base_fields_primes_ok B X`. Use `hX.cplxK` as an intermediate fact. Conclude with `GlobalTheory.CoreHt.evGSD_ok_of_eq_one B.fields hX (B.primes X) B.R B.wts I.Ch I.sel I.S (I.tup I.mu0) I.Ps u hPr I.trueColumn_tuple_trivial_eq_one`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem evaluationDatum_ok_baseTuple (I : TC B X) (u : B.Word) :
     (evGSD (Pr := B.primes X) B.wts I.Ch I.sel (I.tup I.mu0) I.Ps u).Ok := by
@@ -138,21 +138,19 @@ variable {B : Base} {X : PreX B.toPre}
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨hX, hPr, hW, -⟩` from `base_fields_primes_ok B X`. Establish `hX1 : B.fields.AbelianUnramifiedExtensionConditions` using `(GlobalTheory.Mem.FieldsLaws.fields_satisfy_definite_laws B).1`. Establish `hm : B.R.m = (B.R.m - 2) + 2` using `h.hm`. Establish `hL` using `h.idx_ok a`. Establish `hs` using `seamOf_ok B (I.cols l) Z.W Z.V Z.S Z.N Z.G`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hδ` using `((I.J.ok_iff B (I.cols l) Z.W Z.V Z.S Z.N Z.G).1 h.amb_ok).1`. Establish `hcc : TaylorLogMetric.IsCurveIdeal (I.rec7 l Z) ⊤` using `⟨top_ne_bot, by simp⟩`. Establish `hχ0 : TaylorLogMetric.IsChi (I.rec7 l Z) I.chi` using `GlobalTheory.Mem.ChiIdeal.isChi_chiId _ _ I.C.isChi`. Establish `hχ1 : TaylorLogMetric.IsChi (I.rec7 l Z) χ`. Use `⟨fun 𝔞 𝔟 h𝔞 h𝔟 => ?_, fun z => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hχ _ h𝔞, hχ _ h𝔟, hχ _ (Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.CU.normOne_ideal_mul (D := I.rec7 l Z) h𝔞 h𝔟)]`. Conclude with `hχ0.1 𝔞 𝔟 h𝔞 h𝔟`. Rewrite using `[hχ _ (n1_span_unitary (D := I.rec7 l Z) z)]`. Conclude with `hχ0.2 z`. Establish `he : ∀ k, Even (B.R.N k)` using `fun k => Formalism.L2.Ker.even_rankN B.R k`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg : XiOffG (B.primes X) (I.tup a : Chr B.fields.F B.fields.E B.fields.K)` using `xiOffG_of_mem hPr h.g_mem`. Establish `hTies : LawTies B.wts I.Ch I.sel (I.tup a) (I.cst a) I.glob` using `lawTies_of_ok B.wts I.Ch I.sel (I.tup a) (I.cst a) (I.idx a) I.glob (B.R.m - 2) hL hW ⟨I.C.eta, h.ch_tied⟩`. Establish `hLa : ∀ i, (I.J.amb B χ).LaHyp (B.R.N i) (B.R.N (i + 1)) (ColIn.Sb I a u)` using `fun i => by`. Establish `bad` using `GlobalTheory.ThetaMove.BadPrimes.bad_primes B.fields (B.primes X) I.sel I.S (I.tup a) u hX hPr h.sel_ok (h.T_mem u) h.g_mem`. Establish `hL0` using `Formalism.L2.Ker.laHyp_ambOf_top (seamOf B (I.cols l) Z.W Z.V Z.S Z.N Z.G) χ I.J.cD (I.J.toRec B (I.cols l) Z.W Z.V Z.S Z.N Z.G) hs hδ (he i) (he (i + 1)) ∅ (fun P hP => absurd hP (Finset.notMem_empty P)) (fun P hP => absurd hP (Finset.notMem_empty P))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[AmbIn.amb_eq_ambOf B (I.cols l) Z.W Z.V Z.S Z.N Z.G]`. Conclude with `⟨hL0.1, hL0.2.1, fun P hP => (bad P hP).1, fun P hP => GlobalTheory.PeriodIdealUnit.locP_AA_eq_one _ _ _ _ _ _ _ _ P (bad P hP).2.1 (bad P hP).2.2.1 (by simp), hL0.2.2.2.2⟩`. Establish `hSm : ∀ i, (I.J.amb B χ).ESmooth (B.R.N i) (B.R.N (i + 1))` using `fun i => by`. Rewrite using `[AmbIn.amb_eq_ambOf B (I.cols l) Z.W Z.V Z.S Z.N Z.G]`. Conclude with `Formalism.L2.Ker.Cd.ambOf_eSmooth (seamOf B (I.cols l) Z.W Z.V Z.S Z.N Z.G).toCar (I.J.toRec B (I.cols l) Z.W Z.V Z.S Z.N Z.G).toCar χ I.J.cD hs hcc hδ I.J.δ_ne_zero (he i) (he (i + 1))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hRat` using `jetsRat_chi I l Z hJ χ hχ a u`. Establish `hst : ∀ i, i < B.R.m → ThEquivP (stepT (Pr` using `B.primes X) B.wts I.Ch I.sel (I.tup a) (I.cst a) (I.J.amb B χ) u i (B.wts.lamTrue u (i + 1))) (Sall (Pr := B.primes X) I.sel (I.tup a) u) (cAof (Pr := B.primes X) I.sel (I.tup a) (I.cst a) * cBof (Pr := B.primes X) I.sel (I.tup a) (I.cst a) u) (colValF (Pr := B.primes X) B.wts I. …`. Establish `hLa'` using `hLa i`. Establish `hRat'` using `hRat i hi`. Rewrite `hLa'`, `hRat'`, the goal using `[AmbIn.amb_eq_ambOf B (I.cols l) Z.W Z.V Z.S Z.N Z.G]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Cd.CarC.thEquivP_ambOf_tiesD (X := B.fields) (Pr := B.primes X) (R := B.R) (W := B.wts) (Ch := I.Ch) (sel := I.sel) (mu := I.tup a) (cst := I.cst a) (G := I.glob) u (seamOf B (I.cols l) Z.W Z.V Z.S Z.N Z.G).toCar (I.J.toRec B (I.cols l) Z.W Z.V Z.S Z.N Z.G).toCar χ I.J.cD hs hcc …`. Establish `hlaws` using `chThT_laws_of (Pr := B.primes X) (W := B.wts) (Ch := I.Ch) (sel := I.sel) (mu := I.tup a) (cst := I.cst a) (A := I.J.amb B χ) (u := u) hm hst`. Establish `hTh : ThHypD (Pr` using `B.primes X) B.wts I.Ch I.sel (I.tup a) (I.cst a) (I.J.amb B χ) u (B.R.m - 2) := by`. Use `⟨fun i hi => ⟨hLa i, hSm i, hRat i (by omega)⟩, ?_, hlaws.1, hlaws.2⟩` and prove the remaining obligations. Establish `e' : B.R.N B.R.m = B.R.N (B.R.m - 2 + 1 + 1)` using `by rw [← hm]`.
-
-Rewrite using `[e']`. Conclude with `⟨hLa _, hSm _, hRat _ (by omega)⟩`. Conclude with `chTh_ok_ambD (Pr := B.primes X) B.wts I.Ch I.sel (I.tup a) (I.cst a) (I.J.amb B χ) u (B.R.m - 2) (by omega) (hPr.T_prime u).pos (muqTie_of_ok I.Ch I.sel (I.tup a) (I.cst a) (I.idx a) hL) hTh`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem chTh_ok_chi (I : TC B X) (h : I.Ok) (l : I.Laws) (Z : TC.Later B (I.cols l))
     (hJ : ColIn.JetsIn I) (χ : Submodule (𝓞 B.host.E) B.host.E → ℂ) (hχ : ∀ 𝔞, TaylorLogMetric.N1 (I.rec7 l Z) 𝔞 → χ 𝔞 = I.chi 𝔞)
@@ -212,7 +210,7 @@ end GlobalTheory.Mem.Col2.TC.RcHyp
 namespace GlobalTheory.Mem.Col2.TC.RcHyp
 
 /- English proof (translation)
-Introduce `B X I h _ l Z ht hJ χ hχ a u`. Take `⟨hX, hPr, -⟩` from `base_fields_primes_ok B X`. Conclude with `⟨ht.chF_ok h B.wts a u, evaluationDatum_ok_baseTuple I u, idxMatNF_of_isTw I h ht a, fun b hY => KerRat.kerEquivC (Pr := B.primes X) B.wts (I.J.amb B χ) u hX hPr h.sel_ok ⟨h.T_mem u, h.g_mem⟩ (h.idx_ok a) (h.sharp a) (chTh_ok_chi I h l Z hJ χ hχ a u) b hY⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem hyps_of_isTw : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), I.IsTw → ColIn.JetsIn I → ∀ (χ : Submodule (𝓞 B.host.E) B.host.E → ℂ), (∀ 𝔞, TaylorLogMetric.N1 (I.rec7 l Z) 𝔞 → χ 𝔞 = I.chi 𝔞) → ∀ (a : I.ι) (u : B.Word), (∀ j, (chF (Pr := B.primes X) B.wts I.sel (I.tup a) (I.idx a) u j).Ok) ∧ (evGSD (Pr := B.primes X) B.wts I.Ch I.sel (I.tup I.mu0) I.Ps u).Ok ∧ GlobalTheory.QNF.IdxMatNF (I.idx a) ∧ ∀ b hY, KerEquivC (Pr := B.primes X) B.wts I.Ch I.sel (I.tup a) (I.cst a) (I.idx a) (I.J.amb B χ) u (B.R.m - 2) b hY I.Ps := by
   intro B X I h _ l Z ht hJ χ hχ a u

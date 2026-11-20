@@ -4,11 +4,11 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsDiscreteValuat
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hI : IsLocalRing.maximalIdeal ℤ_[l] = Ideal.span {(l : ℤ_[l])}` using `PadicInt.maximalIdeal_eq_span_p`. Establish `: IsHausdorff (IsLocalRing.maximalIdeal ℤ_[l]) X`. Use `⟨fun x hx => hsep x fun r => ?_⟩` and prove the remaining obligations. Establish `h` using `hx r`. Rewrite `h` using `[SModEq.zero, hI, Ideal.span_singleton_pow, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨y, -, hy⟩` from `h`. Conclude with `⟨y, hy⟩`. Establish `hE : (IsLocalRing.maximalIdeal ℤ_[l] • ⊤ : Submodule ℤ_[l] X) = LinearMap.range (LinearMap.lsmul ℤ_[l] X ((l : ℤ_[l]) ^ 1))`. Use extensionality with `x`. Rewrite using `[hI, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[LinearMap.mem_range]`. Establish `: Module.Finite ℤ_[l] (X ⧸ (IsLocalRing.maximalIdeal ℤ_[l] • ⊤ : Submodule ℤ_[l] X))`. Rewrite using `[hE]`. Conclude with `Module.Finite.of_finite`. Conclude with `finite_of_isHausdorff_of_finite_quotient (IsLocalRing.maximalIdeal ℤ_[l]) X`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem padicInt_module_finite_of_separated_of_finite_quotient (l : ℕ) [Fact l.Prime] (X : Type)
     [AddCommGroup X] [Module ℤ_[l] X]

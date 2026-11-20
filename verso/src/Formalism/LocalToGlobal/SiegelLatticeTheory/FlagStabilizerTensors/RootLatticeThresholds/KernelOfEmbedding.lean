@@ -23,7 +23,7 @@ Both sides reduce to the same expression.
 theorem cl_apply (U : Wq ≃ₗᵢ[ℂ] Wq) (x : Wq) : cl U x = U x := rfl
 
 /- English proof (translation)
-Rewrite using `[LinearMap.trace_eq_sum_inner _ f]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[ContinuousLinearMap.adjoint_inner_right]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem sum_inner_eq_trace {ι : Type*} [Fintype ι] (f : OrthonormalBasis ι ℂ Wq) (A B : Wq →L[ℂ] Wp) :
     ∑ i, inner ℂ (B (f i)) (A (f i)) =
@@ -33,7 +33,7 @@ theorem sum_inner_eq_trace {ι : Type*} [Fintype ι] (f : OrthonormalBasis ι �
   simp [ContinuousLinearMap.adjoint_inner_right]
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.S.hsInner`. Combine the equalities or inequalities in the displayed calculation. Simplify using `[OrthonormalBasis.map_apply, cl_apply]`. Use `_ = _ := sum_inner_eq_trace _ A B`. Use `_ = ∑ i, inner ℂ (B (stdOrthonormalBasis ℂ Wq i)) (A (stdOrthonormalBasis ℂ Wq i)) := (sum_inner_eq_trace _ A B).symm`.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hsInner_comp_isom (A B : Wq →L[ℂ] Wp) (U : Wq ≃ₗᵢ[ℂ] Wq) :
     Formalism.MainNotions.S.hsInner (A.comp (cl U)) (B.comp (cl U)) = Formalism.MainNotions.S.hsInner A B := by
@@ -46,7 +46,7 @@ theorem hsInner_comp_isom (A B : Wq →L[ℂ] Wp) (U : Wq ≃ₗᵢ[ℂ] Wq) :
         (sum_inner_eq_trace _ A B).symm
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.S.hsInner`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem hsInner_smul_left (c : ℂ) (A B : Wq →L[ℂ] Wp) :
     Formalism.MainNotions.S.hsInner (c • A) B = c * Formalism.MainNotions.S.hsInner A B := by
@@ -56,7 +56,7 @@ theorem hsInner_smul_left (c : ℂ) (A B : Wq →L[ℂ] Wp) :
   simp
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.S.hsInner`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hsInner_smul_right (c : ℂ) (A B : Wq →L[ℂ] Wp) :
     Formalism.MainNotions.S.hsInner A (c • B) = (starRingEnd ℂ) c * Formalism.MainNotions.S.hsInner A B := by
@@ -67,7 +67,7 @@ theorem hsInner_smul_right (c : ℂ) (A B : Wq →L[ℂ] Wp) :
   ring
 
 /- English proof (translation)
-Establish `h : J₁.comp (cl U₁) = (J₁.comp (cl (U₂.symm.trans U₁))).comp (cl U₂)`. Use extensionality with `x`. Simplify using `[cl_apply]`. Rewrite using `[hsInner_smul_left, hsInner_smul_right, h, hsInner_comp_isom]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hsInner_form (J₁ J₂ : Wq →L[ℂ] Wp) (c₁ c₂ : ℂ) (U₁ U₂ : Wq ≃ₗᵢ[ℂ] Wq) :
     Formalism.MainNotions.S.hsInner (c₁ • J₁.comp (cl U₁)) (c₂ • J₂.comp (cl U₂)) =
@@ -79,7 +79,7 @@ theorem hsInner_form (J₁ J₂ : Wq →L[ℂ] Wp) (c₁ c₂ : ℂ) (U₁ U₂ 
   ring
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.S.hsInner`. Simplify using `[Formalism.L2.SG.PackageTie.hsEmb, PiLp.inner_apply]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem hsInner_eq_emb {Wq' Wp' : Type} [NormedAddCommGroup Wq'] [InnerProductSpace ℂ Wq'] [FiniteDimensional ℂ Wq']
     [NormedAddCommGroup Wp'] [InnerProductSpace ℂ Wp'] (A B : Wq' →L[ℂ] Wp') :
@@ -124,7 +124,7 @@ section Val
 variable {D : D7} {X : HidaSetting D} {Y : Formalism.L2.SG.Full.Full X}
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.S.wRow`. Conclude with `inv_nonneg.2 (Nat.cast_nonneg _)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem wRow_nonneg {T : D.host.E} (F0 : Formalism.MainNotions.S.FlagG (Formalism.MainNotions.S.VS D) D.R.rS T)
     (Λ : Submodule (𝓞 D.host.E) (Formalism.MainNotions.S.VS D).V) :
@@ -132,7 +132,7 @@ theorem wRow_nonneg {T : D.host.E} (F0 : Formalism.MainNotions.S.FlagG (Formalis
   unfold Formalism.MainNotions.S.wRow; exact inv_nonneg.2 (Nat.cast_nonneg _)
 
 /- English proof (translation)
-Unfold `row rowOf at h`. Simplify using `only [Prod.mk.injEq, Subtype.mk.injEq] at h`. Conclude with `⟨h.1, h.2.1⟩`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem lam_eq_of_row {u u' : D.what₂.Word} {s₁ s₂ : TT Y u u'} (h : row Y s₁ = row Y s₂) :
     s₁.lam = s₂.lam ∧ s₁.lam' = s₂.lam' := by
@@ -141,11 +141,11 @@ theorem lam_eq_of_row {u u' : D.what₂.Word} {s₁ s₂ : TT Y u u'} (h : row Y
   exact ⟨h.1, h.2.1⟩
 
 /- English proof (translation)
-Take `⟨hl, hl'⟩` from `lam_eq_of_row h`. Establish `hposition : ((⟨s₂.lam, s₂.mem⟩ : {Λ // Λ ∈ Y.what₂ u}), (⟨s₂.lam', s₂.mem'⟩ : {Λ' // Λ' ∈ Y.what₂ u'})) = (⟨s₁.lam, s₁.mem⟩, ⟨s₁.lam', s₁.mem'⟩)`. Simplify using `[hl, hl']`. Establish `hwt : wt s₂ = wt s₁` using `by unfold wt; rw [hl, hl']`. Establish `hw2 : wt s₁ * wt s₁ = Formalism.MainNotions.S.wRow D (X.Fu u) s₁.lam * Formalism.MainNotions.S.wRow D (X.Fu u') s₁.lam'` using `Real.mul_self_sqrt (mul_nonneg (wRow_nonneg _ _) (wRow_nonneg _ _))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `vT vec`. Rewrite using `[PiLp.inner_apply, Finset.sum_eq_single (⟨s₁.lam, s₁.mem⟩, ⟨s₁.lam', s₁.mem'⟩)]`. Simplify using `only [if_true, hposition, hwt]`. Rewrite using `[inner_smul_left, inner_smul_right, ← Formalism.L2.SG.Pf.KernelOfEmbedding.hsInner_eq_emb, ← hw2]`. Simplify using `only [Complex.conj_ofReal, Complex.ofReal_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `b _ hb`. Simplify using `[hb]`. Introduce `hb`. Conclude with `absurd (Finset.mem_univ _) hb`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem inner_vT {u u' : D.what₂.Word} (s₁ s₂ : TT Y u u') (h : row Y s₁ = row Y s₂) :
     inner ℂ (vT Y u u' s₂) (vT Y u u' s₁) =
@@ -169,11 +169,11 @@ theorem inner_vT {u u' : D.what₂.Word} (s₁ s₂ : TT Y u u') (h : row Y s₁
   · intro hb; exact absurd (Finset.mem_univ _) hb
 
 /- English proof (translation)
-Establish `key : ∀ r : fib Y q.1.1 × fib Y q.1.2, (if rowOf Y.TR (Y.cs u) (Y.cs u') r.1.1 = rowOf Y.TR (Y.cs u) (Y.cs u') r.2.1 then inner ℂ (vT Y u u' r.2.1) (vT Y u u' r.1.1) else 0) = (Formalism.MainNotions.S.wRow D (X.Fu u) q.1.1.lam : ℂ) * Formalism.MainNotions.S.hsInner (amp Y q.l1) ( …`. Introduce `r`. Distinguish the cases in `hr : row Y r.1.1 = row Y r.2.1`. Establish `hlam : r.1.1.lam = q.1.1.lam` using `congrArg TermDef.Term.lam r.1.2`. Establish `hc` using `hK u u' q.1.1 q.1.2 r (q.2.choose, q.2.choose_spec.choose) hr q.2.choose_spec.choose_spec`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[if_pos hr, if_pos hr, inner_vT _ _ hr, hc, hlam]`. Simplify using `only [RP.l1, RP.l2, Complex.ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg hr, if_neg hr]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Unfold `pvR`. Rewrite using `[Finset.sum_congr rfl fun r _ => key r, ← Finset.mul_sum, ← Complex.ofReal_sum]`. Establish `hn` using `hN u u' q`. Rewrite using `[hn]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pvR_eq (hF : FinX Y) (hK : PairAmpConst Y) (hN : FibreCountEq hF) {u u' : D.what₂.Word} (q : RP Y u u') :
     pvR hF u u' q = (Formalism.MainNotions.S.wRow D (X.Fu u) q.1.1.lam : ℂ) * Formalism.MainNotions.S.hsInner (amp Y q.l1) (amp Y q.l2) := by
@@ -198,9 +198,9 @@ theorem pvR_eq (hF : FinX Y) (hK : PairAmpConst Y) (hN : FibreCountEq hF) {u u' 
   simp
 
 /- English proof (translation)
-Take `⟨c₁, U₁, hc₁, h₁⟩` from `hC u u' q.1.1 g₁ q.2.choose`. Take `⟨c₂, U₂, hc₂, h₂⟩` from `hC u u' q.1.2 g₂ q.2.choose_spec.choose`. Use `⟨c₁ * (starRingEnd ℂ) c₂, U₂.symm.trans U₁, by simp [hc₁, hc₂], ?_⟩` and prove the remaining obligations. Rewrite using `[pvR_eq hF hK hN q]`. Use `show _ * Formalism.MainNotions.S.hsInner (amp Y q.2.choose.1) (amp Y q.2.choose_spec.choose.1) = _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h₁, h₂, hsInner_form]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem pvR_form (hF : FinX Y) (hC : AmpCov Y) (hK : PairAmpConst Y) (hN : FibreCountEq hF) {u u' : D.what₂.Word}
     (q : RP Y u u') (g₁ : fib Y q.1.1) (g₂ : fib Y q.1.2) :

@@ -65,7 +65,7 @@ private theorem ker_ideal_eq_ker_app {W Z : Scheme.{u}} (g : W ⟶ Z) [QuasiComp
   simp
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[Set.range_comp]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem range_comp_eq_image_range {A B C : Scheme.{u}} (f : A ⟶ B) (g : B ⟶ C) :
     Set.range ⇑(f ≫ g) = ⇑g '' Set.range ⇑f := by
@@ -73,14 +73,14 @@ private theorem range_comp_eq_image_range {A B C : Scheme.{u}} (f : A ⟶ B) (g 
   simp [Set.range_comp]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `Scheme.Hom.ker_comp_of_isIso e g`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem ker_eq_ker_of_isIso_comp {A B T : Scheme.{u}} (f : A ⟶ T) (g : B ⟶ T) (e : A ⟶ B)
     [IsIso e] (h : e ≫ g = f) : f.ker = g.ker := by
   subst h; exact Scheme.Hom.ker_comp_of_isIso e g
 
 /- English proof (translation)
-Use `le_antisymm ?_ ?_` and prove the remaining obligations. Introduce and unpack `x ⟨y, hy, rfl⟩`. Conclude with `hy`. Introduce `x hx`. Conclude with `⟨⟨x, h hx⟩, hx, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem image_preimage_ι_of_le {X : Scheme.{u}} (U O : X.Opens) (h : O ≤ U) :
     Scheme.Opens.ι U ''ᵁ (Scheme.Opens.ι U ⁻¹ᵁ O) = O := by
@@ -91,21 +91,19 @@ private theorem image_preimage_ι_of_le {X : Scheme.{u}} (U O : X.Opens) (h : O 
     exact ⟨⟨x, h hx⟩, hx, rfl⟩
 
 /- English proof (translation)
-Use `Scheme.IdealSheafData.ext ?_` and prove the remaining obligations. Use function extensionality and compare the values at `P`. Establish `hQaff : IsAffineOpen (Scheme.Opens.ι V ''ᵁ P.1)` using `P.2.image_of_isOpenImmersion (Scheme.Opens.ι V)`. Establish `hpre : Scheme.Opens.ι V ⁻¹ᵁ (Scheme.Opens.ι V ''ᵁ P.1) = P.1` using `(Scheme.Opens.ι V).preimage_image_eq P.1`. Establish `e : P.1 ≤ Scheme.Opens.ι V ⁻¹ᵁ (Scheme.Opens.ι V ''ᵁ P.1)` using `hpre.ge`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpre2 : ((m ∣_ V) ⁻¹ᵁ P.1) = Scheme.Opens.ι (m ⁻¹ᵁ V) ⁻¹ᵁ (m ⁻¹ᵁ (Scheme.Opens.ι V ''ᵁ P.1))`. Rewrite using `[← Scheme.Hom.comp_preimage, ← morphismRestrict_ι, Scheme.Hom.comp_preimage, hpre]`. Establish `hQV : (Scheme.Opens.ι V ''ᵁ P.1) ≤ V` using `Scheme.Opens.ι_image_le V P.1`. Establish `hle : m ⁻¹ᵁ (Scheme.Opens.ι V ''ᵁ P.1) ≤ m ⁻¹ᵁ V` using `fun x hx => hQV hx`. Establish `himg : Scheme.Opens.ι (m ⁻¹ᵁ V) ''ᵁ ((m ∣_ V) ⁻¹ᵁ P.1) = m ⁻¹ᵁ (Scheme.Opens.ι V ''ᵁ P.1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hpre2]`. Conclude with `image_preimage_ι_of_le (m ⁻¹ᵁ V) (m ⁻¹ᵁ (Scheme.Opens.ι V ''ᵁ P.1)) hle`. Establish `hbij` using `IsOpenImmersion.bijective_appLE_of_image_eq (Scheme.Opens.ι V) (Scheme.Opens.ι V ''ᵁ P.1) P.1 e rfl`. Establish `hinj` using `(IsOpenImmersion.bijective_appLE_of_image_eq (Scheme.Opens.ι (m ⁻¹ᵁ V)) (m ⁻¹ᵁ (Scheme.Opens.ι V ''ᵁ P.1)) ((m ∣_ V) ⁻¹ᵁ P.1) hpre2.le himg).1`. Establish `hsq : Scheme.Hom.appLE (Scheme.Opens.ι V) (Scheme.Opens.ι V ''ᵁ P.1) P.1 e ≫ (m ∣_ V).app P.1 = m.app (Scheme.Opens.ι V ''ᵁ P.1) ≫ Scheme.Hom.appLE (Scheme.Opens.ι (m ⁻¹ᵁ V)) (m ⁻¹ᵁ (Scheme.Opens.ι V ''ᵁ P.1)) ((m ∣_ V) ⁻¹ᵁ P.1) hpre2.le`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Scheme.Hom.app_eq_appLE (m ∣_ V), Scheme.Hom.app_eq_appLE m, Scheme.Hom.appLE_comp_appLE (m ∣_ V) (Scheme.Opens.ι V) (Scheme.Opens.ι V ''ᵁ P.1) P.1 ((m ∣_ V) ⁻¹ᵁ P.1) e le_rfl, Scheme.Hom.appLE_comp_appLE (Scheme.Opens.ι (m ⁻¹ᵁ V)) m (Scheme.Opens.ι V ''ᵁ P.1) (m ⁻¹ᵁ (Scheme.Ope …`. Conclude with `Scheme.Hom.appLE_congr_hom (morphismRestrict_ι m V) ..`. Establish `hsqr : ∀ x, (CommRingCat.Hom.hom ((m ∣_ V).app P.1)) ((CommRingCat.Hom.hom (Scheme.Hom.appLE (Scheme.Opens.ι V) (Scheme.Opens.ι V ''ᵁ P.1) P.1 e)) x) = (CommRingCat.Hom.hom (Scheme.Hom.appLE (Scheme.Opens.ι (m ⁻¹ᵁ V)) (m ⁻¹ᵁ (Scheme.Opens.ι V ''ᵁ P.1)) ((m ∣_ V) ⁻¹ᵁ P.1) hpre2.le …`. Introduce `x`. Establish `h'` using `congrArg (fun mm => (CommRingCat.Hom.hom mm) x) hsq`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Simplify `h'` using `only [CommRingCat.hom_comp, RingHom.comp_apply]`. Rewrite using `[Scheme.IdealSheafData.comap_ideal_eq_map_appLE _ (Scheme.Opens.ι V) ⟨Scheme.Opens.ι V ''ᵁ P.1, hQaff⟩ P e, ker_ideal_eq_ker_app m ⟨Scheme.Opens.ι V ''ᵁ P.1, hQaff⟩, ker_ideal_eq_ker_app (m ∣_ V) P]`. Simplify using `only`. Use `le_antisymm ?_ ?_` and prove the remaining obligations. Rewrite using `[Ideal.map_le_iff_le_comap]`.
+Simplify by unfolding definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker, hsqr x]`. Rewrite `hx` using `[RingHom.mem_ker]`. Rewrite using `[hx, map_zero]`. Introduce `y hy`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hy` using `[RingHom.mem_ker]`. Take `⟨x, rfl⟩` from `hbij.2 y`. Use `Ideal.mem_map_of_mem _ ?_` and prove the remaining obligations. Rewrite using `[RingHom.mem_ker]`. Apply `hinj` to reduce the goal to its premises.
-
-Rewrite using `[← hsqr x, hy, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_comap_ι_eq_ker_morphismRestrict {W T : Scheme.{u}} (m : W ⟶ T) [QuasiCompact m]
     (V : T.Opens) :
@@ -169,7 +167,7 @@ theorem ker_comap_ι_eq_ker_morphismRestrict {W T : Scheme.{u}} (m : W ⟶ T) [Q
     rw [← hsqr x, hy, map_zero]
 
 /- English proof (translation)
-Rewrite using `[ker_comap_ι_eq_ker_morphismRestrict m V, ker_eq_ker_of_isIso_comp n (m ∣_ V) e h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ker_comap_ι_eq_ker_of_isIso_comp {W T S : Scheme.{u}} (m : W ⟶ T) [QuasiCompact m]
     (V : T.Opens) (n : S ⟶ V.toScheme) (e : S ⟶ (m ⁻¹ᵁ V).toScheme) [IsIso e]
@@ -178,11 +176,11 @@ theorem ker_comap_ι_eq_ker_of_isIso_comp {W T S : Scheme.{u}} (m : W ⟶ T) [Qu
   rw [ker_comap_ι_eq_ker_morphismRestrict m V, ker_eq_ker_of_isIso_comp n (m ∣_ V) e h]
 
 /- English proof (translation)
-Establish `h1 : (((Z.comap π).support.compl : X₁.Opens) : Set X₁) = (⇑π.base ⁻¹' (Z.support : Set X))ᶜ`. Rewrite using `[Scheme.IdealSheafData.support_comap]`. Both sides reduce to the same expression. Establish `h2 : (((D.comap π).support : Closeds X₁) : Set X₁) = ⇑π.base ⁻¹' (D.support : Set X)`. Rewrite using `[Scheme.IdealSheafData.support_comap]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[strictTransform_eq_ker_strictTransformι, Scheme.Hom.support_ker]`. Use `congr 1`. Rewrite using `[strictTransformι_eq_ι_comp_subschemeι, range_comp_eq_image_range, Scheme.Opens.range_ι, coe_strictTransformOpens, Set.image_preimage_eq_inter_range, Scheme.IdealSheafData.range_subschemeι, h1, h2]`. Use extensionality with `x`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `only [Set.mem_inter_iff, Set.mem_compl_iff, Set.mem_preimage, Set.mem_sdiff]`. The claim follows by propositional logic.
+Simplify using the standard rewrite rules. The claim follows by propositional logic.
 -/
 theorem support_strictTransform_eq_closure_preimage {X X₁ : Scheme.{u}} (π : X₁ ⟶ X) (Z D : X.IdealSheafData)
     [QuasiCompact (strictTransformι π Z D)] :
@@ -204,9 +202,9 @@ theorem support_strictTransform_eq_closure_preimage {X X₁ : Scheme.{u}} (π : 
   tauto
 
 /- English proof (translation)
-Establish `h1 : (((Z.comap π).support : Closeds X₁) : Set X₁) = ⇑π.base ⁻¹' (Z.support : Set X)`. Rewrite using `[Scheme.IdealSheafData.support_comap]`. Both sides reduce to the same expression. Establish `h2 : (((D.comap π).support : Closeds X₁) : Set X₁) = ⇑π.base ⁻¹' (D.support : Set X)`. Rewrite using `[Scheme.IdealSheafData.support_comap]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[support_strictTransform_eq_closure_preimage π Z D, h1, h2, Set.preimage_sdiff]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem support_strictTransform_eq_closure_sdiff {X X₁ : Scheme.{u}} (π : X₁ ⟶ X) (Z D : X.IdealSheafData)
     [QuasiCompact (strictTransformι π Z D)] :
@@ -221,7 +219,7 @@ theorem support_strictTransform_eq_closure_sdiff {X X₁ : Scheme.{u}} (π : X�
   rw [support_strictTransform_eq_closure_preimage π Z D, h1, h2, Set.preimage_sdiff]
 
 /- English proof (translation)
-Rewrite using `[strictTransform_eq_ker_strictTransformι, strictTransformι_eq_ι_comp_subschemeι]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem comap_le_strictTransform {X X₁ : Scheme.{u}} (π : X₁ ⟶ X)
     (Z D : X.IdealSheafData) :
@@ -232,7 +230,7 @@ theorem comap_le_strictTransform {X X₁ : Scheme.{u}} (π : X₁ ⟶ X)
     _ ≤ _ := Scheme.Hom.le_ker_comp _ _
 
 /- English proof (translation)
-Establish `h` using `comap_le_strictTransform f Z ⊤`. Rewrite `h` using `[Scheme.IdealSheafData.comap_top]`. Conclude with `le_antisymm le_top h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem strictTransform_top {X' X : Scheme.{u}} (f : X' ⟶ X) (Z : X.IdealSheafData) :
     Blowup.strictTransform f Z (⊤ : X.IdealSheafData) = ⊤ := by
@@ -241,7 +239,7 @@ theorem strictTransform_top {X' X : Scheme.{u}} (f : X' ⟶ X) (Z : X.IdealSheaf
   exact le_antisymm le_top h
 
 /- English proof (translation)
-Rewrite using `[Blowup.comap_ker_comp_of_isOpenImmersion, Scheme.IdealSheafData.ker_subschemeι]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comap_ker_subschemeι_comp {A B : Scheme.{u}} (K : A.IdealSheafData) (f : A ⟶ B)
     [IsOpenImmersion f] [QuasiCompact K.subschemeι] [QuasiCompact (K.subschemeι ≫ f)] :
@@ -249,7 +247,7 @@ theorem comap_ker_subschemeι_comp {A B : Scheme.{u}} (K : A.IdealSheafData) (f 
   rw [Blowup.comap_ker_comp_of_isOpenImmersion, Scheme.IdealSheafData.ker_subschemeι]
 
 /- English proof (translation)
-Establish `h` using `isPullback_morphismRestrict K.subschemeι V`. Establish `hfac : h.isoPullback.hom ≫ Limits.pullback.fst (Scheme.Opens.ι V) K.subschemeι = K.subschemeι ∣_ V` using `h.isoPullback_hom_fst`. Use `show (K.subschemeι ∣_ V).ker = (Limits.pullback.fst (Scheme.Opens.ι V) K.subschemeι).ker`. Rewrite using `[← hfac, Scheme.Hom.ker_comp_of_isIso]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ker_morphismRestrict_subschemeι {T : Scheme.{u}} (K : T.IdealSheafData) (V : T.Opens) :
     (K.subschemeι ∣_ V).ker = K.comap (Scheme.Opens.ι V) := by
@@ -260,7 +258,7 @@ private theorem ker_morphismRestrict_subschemeι {T : Scheme.{u}} (K : T.IdealSh
   rw [← hfac, Scheme.Hom.ker_comp_of_isIso]
 
 /- English proof (translation)
-Establish `hk : (K.subschemeι ∣_ V).ker = (K.comap (Scheme.Opens.ι V)).subschemeι.ker`. Rewrite using `[ker_morphismRestrict_subschemeι, Scheme.IdealSheafData.ker_subschemeι]`. Use `⟨IsClosedImmersion.lift (K.comap (Scheme.Opens.ι V)).subschemeι (K.subschemeι ∣_ V) (le_of_eq hk.symm), ?_, IsClosedImmersion.lift_fac _ _ _⟩` and prove the remaining obligations. Conclude with `IsClosedImmersion.isIso_of_ker_eq (K.subschemeι ∣_ V) (K.comap (Scheme.Opens.ι V)).subschemeι _ (IsClosedImmersion.lift_fac _ _ _) hk`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem exists_isIso_subschemeι_preimage_comap {T : Scheme.{u}} (K : T.IdealSheafData) (V : T.Opens) :
     ∃ e : (K.subschemeι ⁻¹ᵁ V).toScheme ⟶ (K.comap (Scheme.Opens.ι V)).subscheme,
@@ -273,7 +271,7 @@ private theorem exists_isIso_subschemeι_preimage_comap {T : Scheme.{u}} (K : T.
     (K.comap (Scheme.Opens.ι V)).subschemeι _ (IsClosedImmersion.lift_fac _ _ _) hk
 
 /- English proof (translation)
-Take `⟨e, he, hfac⟩` from `exists_isIso_subschemeι_preimage_comap K V`. Use `he` as an intermediate fact. Rewrite using `[← morphismRestrict_ι K.subschemeι V, ← hfac, Category.assoc]`. Conclude with `Scheme.Hom.ker_comp_of_isIso e _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_ι_preimage_comp_subschemeι_eq_ker_comap {T : Scheme.{u}} (K : T.IdealSheafData) (V : T.Opens) :
     (Scheme.Opens.ι (K.subschemeι ⁻¹ᵁ V) ≫ K.subschemeι).ker =
@@ -284,17 +282,15 @@ theorem ker_ι_preimage_comp_subschemeι_eq_ker_comap {T : Scheme.{u}} (K : T.Id
   exact Scheme.Hom.ker_comp_of_isIso e _
 
 /- English proof (translation)
-Establish `h1` using `h.restrict Z.support.compl`. Rewrite `h1` using `[Blowup.comap_ι_support_compl_eq_top Z]`. Establish `: IsIso (π ∣_ Z.support.compl)` using `h1.isIso_of_top`. Establish `hsupp : (Z.comap π).support.compl = π ⁻¹ᵁ Z.support.compl`. Rewrite using `[Scheme.IdealSheafData.support_comap]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hcc : (D.comap π).comap (Scheme.Opens.ι (π ⁻¹ᵁ Z.support.compl)) = (D.comap (Scheme.Opens.ι Z.support.compl)).comap (π ∣_ Z.support.compl)`. Rewrite using `[← Scheme.IdealSheafData.comap_comp, ← Scheme.IdealSheafData.comap_comp, morphismRestrict_ι]`. Take `⟨e₁, he₁, -⟩` from `exists_isIso_subschemeι_preimage_comap (D.comap π) (π ⁻¹ᵁ Z.support.compl)`. Take `⟨e₂, he₂, -⟩` from `Scheme.IdealSheafData.exists_iso_subscheme_comap_of_isIso (π ∣_ Z.support.compl) (D.comap (Scheme.Opens.ι Z.support.compl))`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨e₃, he₃, -⟩` from `exists_isIso_subschemeι_preimage_comap D Z.support.compl`. Use `he₁` as an intermediate fact. Use `he₂` as an intermediate fact. Use `he₃` as an intermediate fact. Establish `: IsReduced (D.subschemeι ⁻¹ᵁ Z.support.compl).toScheme` using `isReduced_of_isOpenImmersion (Scheme.Opens.ι (D.subschemeι ⁻¹ᵁ Z.support.compl))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsReduced (D.comap (Scheme.Opens.ι Z.support.compl)).subscheme` using `isReduced_of_isOpenImmersion (inv e₃)`. Establish `: IsReduced ((D.comap (Scheme.Opens.ι Z.support.compl)).comap (π ∣_ Z.support.compl)).subscheme` using `isReduced_of_isOpenImmersion e₂`. Establish `: IsReduced ((D.comap π).comap (Scheme.Opens.ι (π ⁻¹ᵁ Z.support.compl))).subscheme`. Rewrite using `[hcc]`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: IsReduced (strictTransformOpens π Z D).toScheme`. Establish `hrw : strictTransformOpens π Z D = (D.comap π).subschemeι ⁻¹ᵁ (π ⁻¹ᵁ Z.support.compl)` using `by show (D.comap π).subschemeι ⁻¹ᵁ (Z.comap π).support.compl = (D.comap π).subschemeι ⁻¹ᵁ (π ⁻¹ᵁ Z.support.compl)`. Rewrite using `[hsupp]`. Rewrite using `[hrw]`. Conclude with `isReduced_of_isOpenImmersion e₁`.
-
-Rewrite using `[strictTransform_eq_ker_strictTransformι]`. Conclude with `isReduced_subscheme_ker _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isReduced_subscheme_strictTransform {X X₁ : Scheme.{u}} (π : X₁ ⟶ X)
     (Z D : X.IdealSheafData) (h : Blowup.IsBlowupAlongIdealSheaf π Z) [IsReduced D.subscheme]
@@ -338,9 +334,9 @@ theorem isReduced_subscheme_strictTransform {X X₁ : Scheme.{u}} (π : X₁ ⟶
   exact isReduced_subscheme_ker _
 
 /- English proof (translation)
-Establish `hUV : (W.comap f).support.compl = f ⁻¹ᵁ W.support.compl`. Rewrite using `[Scheme.IdealSheafData.support_comap]`. Both sides reduce to the same expression. Establish `hcomap : (D₁.comap f).comap (Scheme.Opens.ι (f ⁻¹ᵁ W.support.compl)) = (D₁.comap (Scheme.Opens.ι W.support.compl)).comap (f ∣_ W.support.compl)`. Rewrite using `[← Scheme.IdealSheafData.comap_comp, ← Scheme.IdealSheafData.comap_comp, morphismRestrict_ι]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[strictTransform_eq_ker_strictTransformι, strictTransformι_eq_ι_comp_subschemeι]`. Use `show (Scheme.Opens.ι ((D₁.comap f).subschemeι ⁻¹ᵁ (W.comap f).support.compl) ≫ (D₁.comap f).subschemeι).ker = _`. Rewrite using `[hUV, ker_ι_preimage_comp_subschemeι_eq_ker_comap, hcomap]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem strictTransform_eq_ker_restrict {X X₁ : Scheme.{u}} (f : X₁ ⟶ X)
     (W D₁ : X.IdealSheafData) :
@@ -360,7 +356,7 @@ theorem strictTransform_eq_ker_restrict {X X₁ : Scheme.{u}} (f : X₁ ⟶ X)
   rw [hUV, ker_ι_preimage_comp_subschemeι_eq_ker_comap, hcomap]
 
 /- English proof (translation)
-Rewrite using `[strictTransform_eq_ker_restrict f W D₁, strictTransform_eq_ker_restrict f W D₂, h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem strictTransform_congr_of_comap_ι_eq {X X₁ : Scheme.{u}} (f : X₁ ⟶ X)
     (W D₁ D₂ : X.IdealSheafData)
@@ -370,15 +366,13 @@ theorem strictTransform_congr_of_comap_ι_eq {X X₁ : Scheme.{u}} (f : X₁ ⟶
   rw [strictTransform_eq_ker_restrict f W D₁, strictTransform_eq_ker_restrict f W D₂, h]
 
 /- English proof (translation)
-Take `⟨hcart, huniv⟩` from `hg`. Establish `h1 : I.comap f = (I.comap g).comap e`. Rewrite using `[← Scheme.IdealSheafData.comap_comp, hfac]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hcart.comap_of_isOpenImmersion e`. Introduce `Y q hq`. Take `⟨t, ht, huniq⟩` from `huniv Y q hq`. Establish `ht' : t ≫ g = q` using `ht`. Use `⟨t ≫ inv e, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show (t ≫ inv e) ≫ f = q`. Rewrite using `[← hfac, Category.assoc, IsIso.inv_hom_id_assoc]`. Conclude with `ht'`. Introduce `y hy`. Establish `hy' : y ≫ f = q` using `hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hye : y ≫ e = t`. Use `huniq _ ?_` and prove the remaining obligations. Use `show (y ≫ e) ≫ g = q`. Rewrite using `[Category.assoc, hfac]`. Conclude with `hy'`.
-
-Rewrite using `[← hye, Category.assoc, IsIso.hom_inv_id, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isBlowupAlongIdealSheaf_of_isIso_comp {X A B : Scheme.{u}} (f : A ⟶ X) (g : B ⟶ X) (e : A ⟶ B)
     [IsIso e] (hfac : e ≫ g = f) (I : X.IdealSheafData) (hg : Blowup.IsBlowupAlongIdealSheaf g I) :
@@ -406,9 +400,9 @@ theorem isBlowupAlongIdealSheaf_of_isIso_comp {X A B : Scheme.{u}} (f : A ⟶ X)
       rw [← hye, Category.assoc, IsIso.hom_inv_id, Category.comp_id]
 
 /- English proof (translation)
-Establish `h1 : IsCompact ((Subtype.val : s → α) ⁻¹' t)` using `NoetherianSpace.isCompact _`. Establish `h2` using `h1.image continuous_subtype_val`. Establish `h3 : (Subtype.val : s → α) '' ((Subtype.val : s → α) ⁻¹' t) = t`. Apply `Set.Subset.antisymm` to reduce the goal to its premises. Introduce and unpack `x ⟨y, hy, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Conclude with `hy`. Introduce `x hx`. Conclude with `⟨⟨x, ht hx⟩, hx, rfl⟩`. Rewrite `h2` using `[h3]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem isCompact_of_subset_noetherianSpace {α : Type u} [TopologicalSpace α] (s : Set α)
     [NoetherianSpace s] (t : Set α) (ht : t ⊆ s) : IsCompact t := by
@@ -423,15 +417,13 @@ private theorem isCompact_of_subset_noetherianSpace {α : Type u} [TopologicalSp
   rwa [h3] at h2
 
 /- English proof (translation)
-Establish `hcov : U ⊆ ⋃ W : B.affineOpens, (W.1 : Set B)`. Introduce `x _`. Establish `hx : x ∈ (⊤ : B.Opens)` using `Set.mem_univ x`. Rewrite `hx` using `[← iSup_affineOpens_eq_top B]`. Take `⟨W, hW⟩` from `Opens.mem_iSup.mp hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `Set.mem_iUnion.mpr ⟨W, hW⟩`. Take `⟨s, hs⟩` from `hc.elim_finite_subcover (fun W : B.affineOpens => (W.1 : Set B)) (fun W => W.1.isOpen) hcov`. Establish `hTeq : T = ⋃ W ∈ (s : Set B.affineOpens), (T ∩ (W.1 : Set B))`. Apply `Set.Subset.antisymm` to reduce the goal to its premises. Introduce `x hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨W, hWs, hxW⟩` from `Set.mem_iUnion₂.mp (hs (hT hx))`. Conclude with `Set.mem_biUnion (show W ∈ (s : Set B.affineOpens) from hWs) ⟨hx, hxW⟩`. Introduce `x hx`. Take `⟨W, -, hx'⟩` from `Set.mem_iUnion₂.mp hx`. Conclude with `hx'.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hTeq]`. Use `(Finset.finite_toSet s).isCompact_biUnion ?_` and prove the remaining obligations. Introduce `W _`. Establish `: IsNoetherianRing (B.presheaf.obj (Opposite.op (W.1 : B.Opens)))` using `IsLocallyNoetherian.component_noetherian W`. Establish `: NoetherianSpace (W.1 : Set B)` using `noetherianSpace_of_isAffineOpen W.1 W.2`.
-
-Conclude with `isCompact_of_subset_noetherianSpace (W.1 : Set B) (T ∩ (W.1 : Set B)) Set.inter_subset_right`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem isCompact_of_subset_isCompact {B : Scheme.{u}} [IsLocallyNoetherian B]
     {U : Set B} (hc : IsCompact U) {T : Set B} (hT : T ⊆ U) : IsCompact T := by
@@ -460,7 +452,7 @@ private theorem isCompact_of_subset_isCompact {B : Scheme.{u}} [IsLocallyNoether
   exact isCompact_of_subset_noetherianSpace (W.1 : Set B) (T ∩ (W.1 : Set B)) Set.inter_subset_right
 
 /- English proof (translation)
-Use `⟨fun U _ hU' => ?_⟩` and prove the remaining obligations. Use `hf.isCompact_iff.mpr ?_` and prove the remaining obligations. Conclude with `isCompact_of_subset_isCompact hU' (Set.image_preimage_subset _ _)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem quasiCompact_of_isInducing {A B : Scheme.{u}} [IsLocallyNoetherian B]
     (f : A ⟶ B) (hf : Topology.IsInducing ⇑f.base) : QuasiCompact f := by
@@ -469,9 +461,9 @@ private theorem quasiCompact_of_isInducing {A B : Scheme.{u}} [IsLocallyNoetheri
   exact isCompact_of_subset_isCompact hU' (Set.image_preimage_subset _ _)
 
 /- English proof (translation)
-Use `quasiCompact_of_isInducing _ ?_` and prove the remaining obligations. Establish `h1 : Topology.IsInducing ⇑(Scheme.Opens.ι (strictTransformOpens π Z D)).base` using `(Scheme.Opens.ι (strictTransformOpens π Z D)).isEmbedding.toIsInducing`. Establish `h2 : Topology.IsInducing ⇑(D.comap π).subschemeι.base` using `(D.comap π).subschemeι.isEmbedding.toIsInducing`. Establish `heq : ⇑(strictTransformι π Z D).base = ⇑(D.comap π).subschemeι.base ∘ ⇑(Scheme.Opens.ι (strictTransformOpens π Z D)).base` using `rfl`. Rewrite using `[heq]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2.comp h1`.
+A detailed English derivation is pending.
 -/
 theorem quasiCompact_strictTransformι_of_isLocallyNoetherian {X X₁ : Scheme.{u}} (π : X₁ ⟶ X)
     (Z D : X.IdealSheafData) [IsLocallyNoetherian X₁] :

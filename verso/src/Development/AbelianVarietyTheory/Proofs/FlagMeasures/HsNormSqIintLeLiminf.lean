@@ -21,7 +21,7 @@ variable {H G : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [FiniteDi
 
 omit [FiniteDimensional ℂ G] in
 /- English proof (translation)
-Unfold `hsNormSq hsInner`. Rewrite using `[Complex.re_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[inner_self_eq_norm_sq_to_K]`. Use `norm_cast`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared.
 -/
 theorem hs_eq_sum (A : H →L[ℂ] G) : hsNormSq A = ∑ i, ‖A (stdOrthonormalBasis ℂ H i)‖ ^ 2 := by
   unfold hsNormSq hsInner
@@ -31,9 +31,9 @@ theorem hs_eq_sum (A : H →L[ℂ] G) : hsNormSq A = ∑ i, ‖A (stdOrthonormal
   norm_cast
 
 /- English proof (translation)
-Rewrite using `[hs_eq_sum, hs_eq_sum]`. Establish `h1 : ∀ j, ‖ContinuousLinearMap.adjoint A (stdOrthonormalBasis ℂ G j)‖ ^ 2 = ∑ i, ‖⟪stdOrthonormalBasis ℂ H i, ContinuousLinearMap.adjoint A (stdOrthonormalBasis ℂ G j)⟫_ℂ‖ ^ 2` using `fun j => ((stdOrthonormalBasis ℂ H).sum_sq_norm_inner_right _).symm`. Establish `h2 : ∀ i, ‖A (stdOrthonormalBasis ℂ H i)‖ ^ 2 = ∑ j, ‖⟪A (stdOrthonormalBasis ℂ H i), stdOrthonormalBasis ℂ G j⟫_ℂ‖ ^ 2` using `fun i => ((stdOrthonormalBasis ℂ G).sum_sq_norm_inner_left _).symm`. Repeatedly rewrite using `[h1, h2]`. Rewrite using `[Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.adjoint_inner_right]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem hs_adjoint [CompleteSpace H] [CompleteSpace G] (A : H →L[ℂ] G) :
     hsNormSq (ContinuousLinearMap.adjoint A) = hsNormSq A := by
@@ -51,7 +51,7 @@ theorem hs_adjoint [CompleteSpace H] [CompleteSpace G] (A : H →L[ℂ] G) :
 
 omit [FiniteDimensional ℂ G] in
 /- English proof (translation)
-Rewrite using `[hs_eq_sum, hs_eq_sum]`. Simplify using `[hU]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hs_isom_comp (U : G →L[ℂ] G) (hU : ∀ v, ‖U v‖ = ‖v‖) (A : H →L[ℂ] G) :
     hsNormSq (U.comp A) = hsNormSq A := by
@@ -59,7 +59,7 @@ theorem hs_isom_comp (U : G →L[ℂ] G) (hU : ∀ v, ‖U v‖ = ‖v‖) (A : 
   simp [hU]
 
 /- English proof (translation)
-Rewrite using `[hs_isom_comp U hU, ← hs_adjoint, ContinuousLinearMap.adjoint_comp, hs_isom_comp _ hV, hs_adjoint]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hs_unitary [CompleteSpace H] [CompleteSpace G] (U : G →L[ℂ] G) (hU : ∀ v, ‖U v‖ = ‖v‖)
     (V : H →L[ℂ] H) (hV : ∀ v, ‖ContinuousLinearMap.adjoint V v‖ = ‖v‖) (A : H →L[ℂ] G) :
@@ -68,7 +68,7 @@ theorem hs_unitary [CompleteSpace H] [CompleteSpace G] (U : G →L[ℂ] G) (hU :
 
 omit [FiniteDimensional ℂ G] in
 /- English proof (translation)
-Establish `: (hsNormSq : (H →L[ℂ] G) → ℝ) = fun A => ∑ i, ‖A (stdOrthonormalBasis ℂ H i)‖ ^ 2`. Use function extensionality and compare the values at `hs_eq_sum`. Rewrite using `[this]`. Use `fun_prop`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hs_continuous : Continuous (hsNormSq : (H →L[ℂ] G) → ℝ) := by
   have : (hsNormSq : (H →L[ℂ] G) → ℝ) = fun A => ∑ i, ‖A (stdOrthonormalBasis ℂ H i)‖ ^ 2 :=
@@ -79,15 +79,15 @@ theorem hs_continuous : Continuous (hsNormSq : (H →L[ℂ] G) → ℝ) := by
 end LinAlg
 
 /- English proof (translation)
-Take `⟨o⟩` from `‹Nonempty X›`. Set `K : ℕ → Set (X × X)` to `fun n => ((S ∩ Metric.closedBall o n) ×ˢ (S' ∩ Metric.closedBall o n))ᶜ`. Establish `hKm : ∀ n, MeasurableSet (K n)` using `fun n => ((hS.inter Metric.isClosed_closedBall).measurableSet.prod (hS'.inter Metric.isClosed_closedBall).measurableSet).compl`. Establish `hKa : Antitone K`. Introduce `m n hmn`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hb : Metric.closedBall o (m : ℝ) ⊆ Metric.closedBall o n` using `Metric.closedBall_subset_closedBall (by exact_mod_cast hmn)`. Conclude with `Set.compl_subset_compl.2 (Set.prod_mono (Set.inter_subset_inter_right _ hb) (Set.inter_subset_inter_right _ hb))`. Establish `hlim` using `tendsto_setIntegral_of_antitone (f := fun p => ‖F p‖) (μ := μ.prod μ') hKm hKa ⟨0, hF.norm.integrableOn⟩`. Establish `hnull : (μ.prod μ') (⋂ n, K n) = 0`. Establish `hsub : (⋂ n, K n) ⊆ (Sᶜ ×ˢ Set.univ) ∪ (Set.univ ×ˢ S'ᶜ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p hp`. Assume the negation of the conclusion as `hc`. Simplify using `only [Set.mem_union, Set.mem_prod, Set.mem_compl_iff, Set.mem_univ, and_true, true_and, not_or, not_not] at hc`. Take `⟨n, hn⟩` from `exists_nat_ge (max (dist p.1 o) (dist p.2 o))`. Conclude with `Set.mem_iInter.1 hp n ⟨⟨hc.1, (le_max_left _ _).trans hn⟩, hc.2, (le_max_right _ _).trans hn⟩`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `refine measure_mono_null hsub (measure_union_null ?_ ?_) <;> rw [Measure.prod_prod]`. Rewrite using `[h0, zero_mul]`. Rewrite using `[h0', mul_zero]`. Rewrite `hlim` using `[setIntegral_measure_zero _ hnull]`. Take `⟨n, hn⟩` from `(hlim.eventually (gt_mem_nhds hδ)).exists`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨S ∩ Metric.closedBall o n, S' ∩ Metric.closedBall o n, (isCompact_closedBall o n).inter_left hS, Set.inter_subset_left, (isCompact_closedBall o n).inter_left hS', Set.inter_subset_left, fun A A' hA hA' hCA hCA' => ?_⟩` and prove the remaining obligations. Rewrite using `[Measure.prod_restrict, ← integral_add_compl (hA.prod hA') hF, sub_add_cancel_left, norm_neg]`. Use `(norm_integral_le_integral_norm _).trans_lt (lt_of_le_of_lt ?_ hn)` and prove the remaining obligations. Use `setIntegral_mono_set hF.norm.integrableOn (Eventually.of_forall fun p => norm_nonneg _) (HasSubset.Subset.eventuallyLE ?_)` and prove the remaining obligations. Conclude with `Set.compl_subset_compl.2 (Set.prod_mono hCA hCA')`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_compact_approx {X E : Type} [PseudoMetricSpace X] [ProperSpace X] [Nonempty X]
     [MeasurableSpace X] [BorelSpace X] [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -134,9 +134,9 @@ theorem exists_compact_approx {X E : Type} [PseudoMetricSpace X] [ProperSpace X]
   exact Set.compl_subset_compl.2 (Set.prod_mono hCA hCA')
 
 /- English proof (translation)
-Establish `ht : Tendsto (fun j => b * (m j / n j * (m' j / n' j))) atTop (𝓝 (b * (1 * 1)))` using `ENNReal.Tendsto.const_mul (ENNReal.Tendsto.mul h (Or.inl one_ne_zero) h' (Or.inl one_ne_zero)) (Or.inr hb)`. Rewrite `ht` using `[mul_one, mul_one]`. Rewrite using `[← ht.liminf_eq]`. Use `liminf_le_liminf (Eventually.of_forall fun j => ?_)` and prove the remaining obligations. Establish `e : b * (m j / n j * (m' j / n' j)) = b * (m j * m' j) / (n j * n' j)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [div_eq_mul_inv]`. Rewrite using `[ENNReal.mul_inv (Or.inl (hn j).1.ne') (Or.inl (hn j).2.ne)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `ENNReal.div_le_div_right (hu j) _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_liminf_of_ratio (b : ENNReal) (hb : b ≠ ⊤) (u m m' n n' : ℕ → ENNReal)
     (hn : ∀ j, 0 < n j ∧ n j < ⊤) (hn' : ∀ j, 0 < n' j ∧ n' j < ⊤)
@@ -158,11 +158,9 @@ theorem le_liminf_of_ratio (b : ENNReal) (hb : b ≠ ⊤) (u m m' n n' : ℕ →
 variable {k r : ℕ}
 
 /- English proof (translation)
-Establish `: rmulM t '' A = rmulM t⁻¹ ⁻¹' A`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Establish `: rmulM t⁻¹ (rmulM t y) = y` using `Matrix.mul_nonsing_inv_cancel_right t (Matrix.of y) ht`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[Set.mem_preimage, this]`. Conclude with `hy`. Introduce `hx`. Conclude with `⟨_, hx, Matrix.nonsing_inv_mul_cancel_right t (Matrix.of x) ht⟩`. Rewrite using `[this]`.
-
-Conclude with `(continuous_rmulM _).measurable hA`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measurableSet_rmul_image {t : Mat k r} (ht : IsUnit t.det) {A : Set (Mt k r)}
     (hA : MeasurableSet A) : MeasurableSet (rmulM t '' A) := by
@@ -178,7 +176,7 @@ theorem measurableSet_rmul_image {t : Mat k r} (ht : IsUnit t.det) {A : Set (Mt 
   exact (continuous_rmulM _).measurable hA
 
 /- English proof (translation)
-Introduce `c hc` and use `⟨_, h c hc _ hO, Matrix.nonsing_inv_mul_cancel_right (Matrix.of t) (Matrix.of c) ht⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem subset_rmul_image {t : Mt k r} (ht : IsUnit (Matrix.of t : Mat k r).det) {C Oc Om : Set (Mt k r)}
     (h : ∀ c ∈ C, ∀ x ∈ Oc, lmulM (Matrix.of c) x ∈ Om) (hO : invM t ∈ Oc) :
@@ -186,23 +184,21 @@ theorem subset_rmul_image {t : Mt k r} (ht : IsUnit (Matrix.of t : Mat k r).det)
   ⟨_, h c hc _ hO, Matrix.nonsing_inv_mul_cancel_right (Matrix.of t) (Matrix.of c) ht⟩
 
 /- English proof (translation)
-Introduce `k r H _ _ _ Wp _ _ _ _ Wq _ _ _ _ σ w a μG d z c π μS z' c' π' μS' hStd hS hS' Om Om' hF hF' x hx y hy ξ ξ' γ hγ`. Establish `hint` using `(GlobalTheory.T.besselOrbitalIntegral_eq_inv_deg_smul k r σ w a μG d z c π μS z' c' π' μS' hStd hS hS' y hy x hx ξ ξ' γ hγ).1`. Establish `hcl` using `(GlobalTheory.T.bessel_subgroups_closed_unitaryW_compact k r z hS.1 hS.2.1).2.2.2.1`. Establish `hcl'` using `(GlobalTheory.T.bessel_subgroups_closed_unitaryW_compact k r z' hS'.1 hS'.2.1).2.2.2.1`. Establish `hP` using `GlobalTheory.T.besselSubgroupRepTwisted_isUnitaryRep k r z c π hS.1 hS.2.1 hS.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP'` using `GlobalTheory.T.besselSubgroupRepTwisted_isUnitaryRep k r z' c' π' hS'.1 hS'.2.1 hS'.2.2.1`. Establish `hinv` using `((GlobalTheory.T.unimodular_besselSubgroups_UW_N k r z hS.1 hS.2.1 μS).1 hS.2.2.2.1).2`. Establish `hinv'` using `((GlobalTheory.T.unimodular_besselSubgroups_UW_N k r z' hS'.1 hS'.2.1 μS').1 hS'.2.2.2.1).2`. Use `haveI := hS.2.2.2.1.1`. Use `haveI := hS'.2.2.2.1.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0` using `hS.2.2.2.1.2.2.1`. Establish `h0'` using `hS'.2.2.2.1.2.2.1`. Use `ENNReal.le_of_forall_nnreal_lt fun b hb => ?_` and prove the remaining obligations. Establish `hb' : (b : ℝ) < hsNormSq (Iint (psiGen k r z c) (psiGen k r z' c') π π' μS μS' σ x y ξ ξ' γ)`. Rewrite `hb` using `[← ENNReal.ofReal_coe_nnreal, ENNReal.ofReal_lt_ofReal_iff_of_nonneg b.coe_nonneg]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨δ, hδ, hball⟩` from `Metric.eventually_nhds_iff.1 ((hs_continuous (H := Wq) (G := Wp)).continuousAt.eventually (lt_mem_nhds hb'))`. Take `⟨C, C', hC, hCS, hC', hCS', happ⟩` from `exists_compact_approx μS μS' {x | Matrix.of x ∈ Sset k r z} {x | Matrix.of x ∈ Sset k r z'} hcl.2.1 hcl'.2.1 h0 h0' _ hint hδ`. Take `⟨Oc, hOc, hlim⟩` from `hF.2 C hC hCS`. Take `⟨Oc', hOc', hlim'⟩` from `hF'.2 C' hC' hCS'`. Use `le_liminf_of_ratio b ENNReal.coe_ne_top _ _ _ _ _ (fun j => (hF.1 j).2.2.2) (fun j => (hF'.1 j).2.2.2) hlim hlim' fun j => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : μS (Oc j) = μS (invM ⁻¹' Oc j)`. Rewrite using `[← Measure.map_apply measurable_invM (hOc j).1, hinv]`. Establish `e2 : μS' (Oc' j) = μS' (invM ⁻¹' Oc' j)`. Rewrite using `[← Measure.map_apply measurable_invM (hOc' j).1, hinv']`. Rewrite using `[e1, e2, ← Measure.prod_prod, ← lintegral_indicator_const ((measurable_invM (hOc j).1).prod (measurable_invM (hOc' j).1))]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hae : ∀ᵐ p ∂(μS.prod μS'), Matrix.of p.1 ∈ Sset k r z ∧ Matrix.of p.2 ∈ Sset k r z'` using `(Measure.quasiMeasurePreserving_fst.ae (p := fun x => Matrix.of x ∈ Sset k r z) h0).and (Measure.quasiMeasurePreserving_snd.ae (p := fun x => Matrix.of x ∈ Sset k r z') h0')`. Use `lintegral_mono_ae (hae.mono fun p hp => ?_)` and prove the remaining obligations. Distinguish the cases in `hm : p ∈ (invM ⁻¹' Oc j) ×ˢ (invM ⁻¹' Oc' j)`. Use `swap`. Rewrite using `[Set.indicator_of_notMem hm]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `zero_le`. Rewrite using `[Set.indicator_of_mem hm, ← ENNReal.ofReal_coe_nnreal]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Establish `hu : IsUnit (Matrix.of p.1 : Mat k r).det` using `WeylGroupFacts.isUnit_of_uh (hcl.1 hp.1)`. Establish `hu' : IsUnit (Matrix.of p.2 : Mat k r).det` using `WeylGroupFacts.isUnit_of_uh (hcl'.1 hp.2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `heq` using `GlobalTheory.T.Iint_equivariant_alt k r σ w a μG d z c π μS z' c' π' μS' hStd hS hS' x y ξ ξ' (Om j) (Om' j) (hF.1 j).1 (hF'.1 j).1 γ hγ.1 _ hp.1 _ hp.2`. Establish `ha : (Matrix.of (act2 γ p) : Mat k r) = Matrix.of p.1 * γ * (Matrix.of p.2)⁻¹` using `rfl`. Rewrite using `[ha, heq, hs_unitary _ (hP.2.1.2.1 _ hp.1)]`. Use `(hball ?_).le` and prove the remaining obligations. Rewrite using `[dist_eq_norm]`.
-
-Conclude with `happ _ _ (measurableSet_rmul_image hu (hF.1 j).1) (measurableSet_rmul_image hu' (hF'.1 j).1) (subset_rmul_image hu (hOc j).2.2 hm.1) (subset_rmul_image hu' (hOc' j).2.2 hm.2)`. Rewrite using `[← (hP'.2.2.1 _ hp.2).2, ContinuousLinearMap.adjoint_adjoint]`. Conclude with `hP'.2.1.2.1 _ hp.2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hsNormSq_Iint_le_liminf : ∀ (k r : ℕ) {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp] [CompleteSpace Wp] {Wq : Type} [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] [CompleteSpace Wq] (σ : Mat k r → (H →L[ℂ] H)) (w : H) (a : ℝ) (μG : Measure (Mt k r)) (d : ℝ) (z : Fin (2 * r + k + 1) → ℂ) (c : Fin r → ℂ) (π : Mat k r → (Wp →L[ℂ] Wp)) (μS : Measure (Mt k r)) (z' : Fin (2 * r + k + 1) → ℂ) (c' : Fin r → ℂ) (π' : Mat k r → (Wq →L[ℂ] Wq)) (μS' : Measure (Mt k r)) , Std σ w a μG d → Side z π μS → Side z' π' μS' → ∀ Om Om' : ℕ → Set (Mt k r), IsFolner (Sset k r z) μS Om → IsFolner (Sset k r z') μS' Om' → ∀ x ∈ DD σ w, ∀ y ∈ DD σ w, ∀ (ξ : Wp) (ξ' : Wq), ∀ γ ∈ Greg k r z z', ENNReal.ofReal (hsNormSq (Iint (psiGen k r z c) (psiGen k r z' c') π π' μS μS' σ x y ξ ξ' γ)) ≤ Filter.liminf (fun j => (∫⁻ p, ENNReal.ofReal (hsNormSq (Iint (psiGen k r z c) (psiGen k r z' c') π π' (μS.restrict (Om j)) (μS'.restrict (Om' j)) σ x y ξ ξ' (Matrix.of (act2 γ p)))) ∂(μS.prod μS')) / (μS (Om j) * μS' (Om' j))) Filter.atTop := by
   intro k r H _ _ _ Wp _ _ _ _ Wq _ _ _ _ σ w a μG d z c π μS z' c' π' μS' hStd hS hS' Om Om' hF hF'

@@ -15,7 +15,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.CtS
 
 /- English proof (translation)
-Establish `hN : M = (Ov E w).subtype.mapMatrix (Matrix.of fun i j => (⟨M i j, hM i j⟩ : Ov E w))`. Use extensionality with `i j`. Both sides reduce to the same expression. Rewrite using `[hN, ← RingHom.map_det]`. Conclude with `SetLike.coe_mem _`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_mem_Ov {E : Type} [Field E] [NumberField E] {w : HeightOneSpectrum (𝓞 E)} {n : ℕ}
     {M : Matrix (Fin n) (Fin n) (w.adicCompletion E)} (hM : IsInt w M) : M.det ∈ Ov E w := by
@@ -25,7 +25,7 @@ theorem det_mem_Ov {E : Type} [Field E] [NumberField E] {w : HeightOneSpectrum (
   exact SetLike.coe_mem _
 
 /- English proof (translation)
-Establish `h : Valued.v x ≠ 0` using `(Valuation.ne_zero_iff _).mpr hx`. Rewrite using `[ordL, dif_neg h, neg_neg, ofAdd_toAdd, WithZero.coe_unzero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem v_eq_ofAdd_lemma {E : Type} [Field E] [NumberField E] {w : HeightOneSpectrum (𝓞 E)}
     (x : w.adicCompletion E) (hx : x ≠ 0) :
@@ -34,11 +34,11 @@ private theorem v_eq_ofAdd_lemma {E : Type} [Field E] [NumberField E] {w : Heigh
   rw [ordL, dif_neg h, neg_neg, ofAdd_toAdd, WithZero.coe_unzero]
 
 /- English proof (translation)
-Introduce `E _ _ w n ϖ hϖ g hg hgi`. Establish `hd : g.val.det ∈ Ov E w` using `det_mem_Ov hg`. Establish `hdi : (ϖ • (g⁻¹).val).det ∈ Ov E w` using `det_mem_Ov hgi`. Establish `hmul : g.val.det * (g⁻¹).val.det = 1`. Rewrite using `[← Matrix.det_mul, Units.mul_inv, Matrix.det_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hd0 : g.val.det ≠ 0` using `left_ne_zero_of_mul_eq_one hmul`. Establish `hdi0 : (g⁻¹).val.det ≠ 0` using `right_ne_zero_of_mul_eq_one hmul`. Rewrite `hdi` using `[Matrix.det_smul, Fintype.card_fin]`. Simplify using `only [Ov, ValuationSubring.mem_toSubring, HeightOneSpectrum.mem_adicCompletionIntegers] at hd hdi`. Rewrite `hdi` using `[map_mul, map_pow, show Valued.v ϖ = ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) from hϖ, v_eq_ofAdd_lemma _ hdi0, ← WithZero.coe_pow, ← WithZero.coe_mul, ← ofAdd_nsmul, ← ofAdd_add, ← WithZero.coe_one, WithZero.coe_le_coe, ← ofAdd_zero, Mul …`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hd` using `[v_eq_ofAdd_lemma _ hd0, ← WithZero.coe_one, WithZero.coe_le_coe, ← ofAdd_zero, Multiplicative.ofAdd_le]`. Establish `hm` using `congrArg Valued.v hmul`. Rewrite `hm` using `[map_mul, map_one, v_eq_ofAdd_lemma _ hd0, v_eq_ofAdd_lemma _ hdi0, ← WithZero.coe_mul, ← ofAdd_add, ← WithZero.coe_one, WithZero.coe_inj, ofAdd_eq_one]`. Use `⟨(ordL g.val.det).toNat, ?_, ?_⟩` and prove the remaining obligations. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Use linear arithmetic over natural numbers and integers.
 
 Use linear arithmetic over natural numbers and integers.
 -/

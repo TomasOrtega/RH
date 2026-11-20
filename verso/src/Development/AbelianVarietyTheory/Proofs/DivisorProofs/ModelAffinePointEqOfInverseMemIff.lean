@@ -11,13 +11,13 @@ open GlobalTheory.Points RatModel
 namespace GlobalTheory.Points
 
 /- English proof (translation)
-Establish `key : ∀ (x : U) (f : Γ(X, U)), f ∉ (hU.primeIdealOf x).asIdeal ↔ x.1 ∈ X.basicOpen f`. Introduce `x f`. Establish `e1` using `hU.fromSpec_primeIdealOf x`. Establish `e2` using `hU.fromSpec_preimage_basicOpen f`. Establish `: hU.primeIdealOf x ∈ hU.fromSpec ⁻¹ᵁ X.basicOpen f ↔ x.1 ∈ X.basicOpen f`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← e1]`. Both sides reduce to the same expression. Rewrite using `[← this, e2]`. Both sides reduce to the same expression. Establish `e : hU.primeIdealOf ⟨z, hz⟩ = hU.primeIdealOf ⟨z', hz'⟩`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Use extensionality with `f`. Rewrite using `[← not_iff_not, key, key]`. Conclude with `h f`. Establish `e1` using `hU.fromSpec_primeIdealOf ⟨z, hz⟩`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `hU.fromSpec_primeIdealOf ⟨z', hz'⟩`. Rewrite `e1` using `[e]`. Conclude with `e1.symm.trans e2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_forall_mem_basicOpen_iff {X : Scheme.{0}} {U : X.Opens} (hU : IsAffineOpen U)
     {z z' : X} (hz : z ∈ U) (hz' : z' ∈ U)
@@ -41,9 +41,9 @@ theorem eq_of_forall_mem_basicOpen_iff {X : Scheme.{0}} {U : X.Opens} (hU : IsAf
   exact e1.symm.trans e2
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ M U hU z z' hz hz' h`. Use `eq_of_forall_mem_basicOpen_iff hU hz hz' fun f => ?_` and prove the remaining obligations. Establish `hne : (U : Set M.Z).Nonempty` using `⟨z, hz⟩`. Establish `ha : valF M.pt U f ∈ M.ringOn U` using `(mem_ringOn_iff_exists hne).2 ⟨f, rfl⟩`. Rewrite using `[← isUnit_valF_iff hz f, ← isUnit_valF_iff hz' f, isUnit_O_iff, isUnit_O_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `and_congr_right fun h0 => h _ ha h0`.
+A detailed English derivation is pending.
 -/
 theorem point_eq_of_inv_mem_iff :
     ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] (M : RatModel o Ω) (U : M.Z.Opens), IsAffineOpen U → ∀ z z' : M.Z, z ∈ U → z' ∈ U → (∀ a ∈ M.ringOn (U : Set M.Z), a ≠ 0 → (a⁻¹ ∈ M.O z ↔ a⁻¹ ∈ M.O z')) → z = z' := by

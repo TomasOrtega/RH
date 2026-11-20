@@ -9,16 +9,16 @@ namespace Formalism.MainNotions.DIV.Proofs
 open Formalism.BasicNotions
 
 /- English proof (translation)
-Rewrite using `[← Nat.mod_mod_of_dvd N ha, h]`. Conclude with `Nat.mod_eq_of_lt h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mod_eq_one_of_dvd {N M a : ℕ} (h : N % M = 1) (ha : a ∣ M) (h1 : 1 < a) : N % a = 1 := by
   rw [← Nat.mod_mod_of_dvd N ha, h]
   exact Nat.mod_eq_of_lt h1
 
 /- English proof (translation)
-Establish `hNodd : Odd N` using `Nat.odd_iff.2 (by omega)`. Establish `hdodd : Odd d` using `hd.odd_of_ne_two hd2`. Rewrite using `[jacobiSym.neg _ hNodd, ZMod.χ₄_nat_one_mod_four h4, one_mul, ← jacobiSym.quadratic_reciprocity_one_mod_four h4 hdodd]`. Establish `hm : (N : ℤ) % (d : ℤ) = 1`. Rewrite using `[← Int.natCast_mod, hdN]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[jacobiSym.mod_left, hm, jacobiSym.one_left]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem jacobi_neg_eq_one {d N : ℕ} (hd : d.Prime) (hd2 : d ≠ 2) (h4 : N % 4 = 1) (hdN : N % d = 1) :
     jacobiSym (-(d : ℤ)) N = 1 := by
@@ -32,25 +32,23 @@ theorem jacobi_neg_eq_one {d N : ℕ} (hd : d.Prime) (hd2 : d ≠ 2) (h4 : N % 4
   rw [jacobiSym.mod_left, hm, jacobiSym.one_left]
 
 /- English proof (translation)
-Introduce `u p hp hE`. Distinguish the cases in `hpd : p = D.host.d`. Conclude with `Or.inl hpd`. Use `right`. Establish `hq` using `D.q_prime`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Prove the first alternative. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd` using `D.d_prime`. Establish `hq8 : D.host.q % 8 = 3` using `D.host.hyp.2.2.1`. Establish `hd16 : D.host.d % 16 = 7` using `D.host.hyp.2.2.2.1`. Establish `hd2 : D.host.d ≠ 2` using `by omega`. Establish `hjac : ∀ N : ℕ, N % (D.host.QS * D.host.q * D.host.d) = 1 → jacobiSym (-(D.host.d : ℤ)) N = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `N hN`. Conclude with `jacobi_neg_eq_one hd hd2 (mod_eq_one_of_dvd hN ((((show 4 ∣ 2 ^ (D.R.e + 2) from ⟨2 ^ D.R.e, by ring⟩).trans D.host.tower_dvd).mul_right _).mul_right _) (by norm_num)) (mod_eq_one_of_dvd hN (Dvd.intro_left _ rfl) hd.one_lt)`. Establish `key : p ∈ D.host.small ∨ p = D.host.q ∨ jacobiSym (-(D.host.d : ℤ)) p = 1`. Unfold `Formalism.MainNotions.LocalQuadraticParts.Exc at hE`. Break down `(Nat.Prime.dvd_mul hp).1 hE with h | hT` into its components or cases.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `(Nat.Prime.dvd_mul hp).1 h with h | hG` into its components or cases. Break down `(Nat.Prime.dvd_mul hp).1 h with h | hd'` into its components or cases. Break down `(Nat.Prime.dvd_mul hp).1 h with h2 | hq'` into its components or cases. Conclude with `Or.inl (Nat.mem_primeFactors.2 ⟨hp, h2, D.host.QS_pos.ne'⟩)`. Conclude with `Or.inr (Or.inl ((Nat.prime_dvd_prime_iff_eq hp hq).1 hq'))`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `absurd ((Nat.prime_dvd_prime_iff_eq hp hd).1 hd') hpd`. Take `⟨g, hgm, hpg⟩` from `(Prime.dvd_finsetProd_iff hp.prime _).1 hG`. Establish `hgi : ∃ i, g = D.host.g i`. Simplify using `only [SizeData₂.gTypes, Finset.mem_insert, Finset.mem_singleton] at hgm`. Break down `hgm with h | h` into its components or cases.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨0, h⟩`. Conclude with `⟨1, h⟩`. Take `⟨i, rfl⟩` from `hgi`. Establish `hpe` using `(Nat.prime_dvd_prime_iff_eq hp (D.host.g_prime i)).1 hpg`. Substitute `hpe` using the available equality.
+Establish an intermediate fact. Substitute using the available equality. Prove the second alternative. Establish an intermediate fact. Substitute using the available equality.
 
-Conclude with `Or.inr (Or.inr (hjac _ (by have h := hg i; unfold LevelStarExponents.condE at h; exact h)))`. Establish `hpe` using `(Nat.prime_dvd_prime_iff_eq hp (D.mem u).A.T_prime).1 hT`. Substitute `hpe` using the available equality. Conclude with `Or.inr (Or.inr (hjac _ (D.T_mod_cond u)))`. Establish `hcls : D.host.cls p = PrimeClass.ram2 ∨ D.host.cls p = PrimeClass.ramQ ∨ D.host.cls p = PrimeClass.splitK`.
+Prove the second alternative. Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Unfold `Host.cls primeClass`. Distinguish the cases in `h1 : p ∈ D.host.small`. Rewrite using `[if_pos h1]`. Conclude with `Or.inl rfl`. Distinguish the cases in `h2 : p = D.host.q`.
+Prove the first alternative. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Prove the second alternative. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg h1, if_pos h2]`. Conclude with `Or.inr (Or.inl rfl)`. Rewrite using `[if_neg h1, if_neg h2, if_neg hpd, if_pos ((key.resolve_left h1).resolve_left h2)]`. Conclude with `Or.inr (Or.inr rfl)`. Introduce `hin`.
-
-Unfold `Formalism.MainNotions.InertK at hin`. Apply the tactic sequence `rcases hcls with h | h | h <;> rw [h] at hin <;> rcases hin with hin | hin <;> cases hin`.
+Prove the second alternative. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem excSplit_of_g_mod {D : D7} (L : SizeData₂ D) (hg : ∀ i, D.host.g i % LevelStarExponents.condE D = 1) :
     Formalism.MainNotions.J.ExcSplit L := by
@@ -105,7 +103,7 @@ theorem excSplit_of_g_mod {D : D7} (L : SizeData₂ D) (hg : ∀ i, D.host.g i %
   rcases hcls with h | h | h <;> rw [h] at hin <;> rcases hin with hin | hin <;> cases hin
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Fm.x1 + 1, fun x hx i => excSplit_of_g_mod (Fm.L x i) (Fm.params x (by linarith) i).g_mod⟩`.
+Supply the required witnesses or components.
 -/
 theorem excSplit_large {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) :
     ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, Formalism.MainNotions.J.ExcSplit (Fm.L x i) :=

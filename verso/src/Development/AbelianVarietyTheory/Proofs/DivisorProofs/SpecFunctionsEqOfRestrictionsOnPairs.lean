@@ -8,11 +8,11 @@ open CategoryTheory AlgebraicGeometry Opposite ReciprocityTheory.ChartRestrictio
 namespace GlobalTheory.CechDR.AffLoc
 
 /- English proof (translation)
-Establish `hex : ∀ y : Sp B', ∃ V' : (Sp B').affineOpens, y ∈ V'.1 ∧ ∃ p : Pair x, V'.1 ≤ ψ ⁻¹ᵁ p.1.1.1`. Introduce `y`. Take `⟨U, hU, hyU, -⟩` from `exists_isAffineOpen_mem_and_subset (X := X) (U := ⊤) (x := x (ψ y)) trivial`. Take `⟨V, hV, hyV, hVU⟩` from `exists_isAffineOpen_mem_and_subset (X := Sp B) (U := x ⁻¹ᵁ U) (x := ψ y) hyU`. Take `⟨W, hW, hyW, hWV⟩` from `exists_isAffineOpen_mem_and_subset (X := Sp B') (U := ψ ⁻¹ᵁ V) (x := y) hyV`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨⟨W, hW⟩, hyW, ⟨(⟨V, hV⟩, ⟨U, hU⟩), hVU⟩, hWV⟩`. Use `choose W hyW p hp using hex`. Establish `key : (Scheme.ΓSpecIso (CommRingCat.of B')).inv a = (Scheme.ΓSpecIso (CommRingCat.of B')).inv b`. Use `(Sp B').sheaf.eq_of_locally_eq' (fun y => (W y).1) ⊤ (fun _ => homOfLE le_top) (fun y _ => TopologicalSpace.Opens.mem_iSup.2 ⟨y, hyW y⟩) _ _ (fun y => ?_)` and prove the remaining obligations. Use `h (W y) (p y) (hp y)` as an intermediate fact.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [secMap, Scheme.Hom.appLE, Scheme.Hom.id_app, CommRingCat.hom_comp, RingHom.comp_apply] at this`. Conclude with `this`. Conclude with `(Scheme.ΓSpecIso (CommRingCat.of B')).symm.commRingCatIsoToRingEquiv.injective key`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_secMap_eq_on_pairs {X : Scheme.{0}} (B B' : Type) [CommRing B] [CommRing B']
     (x : Sp B ⟶ X) (ψ : Sp B' ⟶ Sp B) (a b : B')

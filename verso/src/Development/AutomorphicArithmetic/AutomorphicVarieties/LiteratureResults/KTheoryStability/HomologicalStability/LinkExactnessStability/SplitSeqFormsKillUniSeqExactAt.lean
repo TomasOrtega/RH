@@ -11,15 +11,15 @@ open GlobalTheory.SeqCx Matrix UpperTheory.V.KL
 namespace GlobalTheory.SeqCx
 
 /- English proof (translation)
-Introduce `R _ s hs n hind a w hw hw1 hlen`. Take `⟨hsubS, -, -, huni⟩` from `T.subClosed_splitSeq_and_uniSeq_with_mem_iff R n`. Take `⟨γ, hγ, hγw⟩` from `(huni w).mp hw`. Substitute `hγw` using the available equality. Rewrite `hw1`, `hlen` using `[List.length_map]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hF : {σ : List ((Fin n → R) × (Fin n → R)) | σ ∈ splitSeq R n ∧ ∀ y ∈ σ, ∀ u ∈ List.map Prod.fst γ, y.2 ⬝ᵥ u = 0} = {x | x ∈ splitSeq R n ∧ ∀ y ∈ x, ∀ z ∈ γ, y.2 ⬝ᵥ z.1 = 0}`. Use extensionality with `σ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨h1, fun y hy z hz => h2 y hy z.1 (List.mem_map.mpr ⟨z, hz, rfl⟩)⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨h1, h2⟩`. Use `⟨h1, fun y hy u hu => ?_⟩` and prove the remaining obligations. Take `⟨z, hz, rfl⟩` from `List.mem_map.mp hu`. Conclude with `h2 y hy z hz`. Rewrite using `[hF]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `T.seqComplex_exactAt_of_all_links_exactAt _ _ {y : (Fin n → R) × (Fin n → R) | ∀ z ∈ γ, z.2 ⬝ᵥ y.1 = 0} ?_ a ?_` and prove the remaining obligations. Introduce `l hl l' hl'`. Conclude with `⟨hsubS l hl.1 l' hl', fun y hy z hz => hl.2 y (hl'.subset hy) z hz⟩`. Introduce `σ hσ hσlen`. Take `⟨ρ, hρ, hρlen, hlink⟩` from `T.exists_splitSeq_linkIn_orthogonal_eq_linkIn R n γ σ hγ hσ.1 hσ.2`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hlink]`. Conclude with `T.exactAt_linkIn_splitSeq_of_exactAt_splitSeq R s hs n (n - ρ.length) (a - σ.length) ρ hρ (by omega) (by omega) (hind (n - ρ.length) (by omega) (a - σ.length) (by omega))`.
+A detailed English derivation is pending.
 -/
 theorem exactAt_split_kill_uni : ∀ (R : Type) [CommRing R] (s : ℕ), StableRangeLe R s → ∀ n : ℕ,
     (∀ n' < n, ∀ p' : ℕ, 2 * p' + s + 1 ≤ n' → ExactAt (splitSeq R n') p') →
@@ -57,7 +57,7 @@ end GlobalTheory.SeqCx
 section
 open GlobalTheory.SeqCx Matrix UpperTheory.V.KL
 /- English proof (translation)
-Use `first`. Consider the case `exact @GlobalTheory.SeqCx.exactAt_split_kill_uni`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.splitSeq_forms_kill_uniSeq_exactAt : ∀ (R : Type) [CommRing R] (s : ℕ), StableRangeLe R s → ∀ n : ℕ, (∀ n' < n, ∀ p' : ℕ, 2 * p' + s + 1 ≤ n' → ExactAt (splitSeq R n') p') → ∀ (a : ℕ) (w : List (Fin n → R)), w ∈ uniSeq R n → 1 ≤ w.length → 2 * a + w.length + s + 1 ≤ n → ExactAt {σ | σ ∈ splitSeq R n ∧ ∀ y ∈ σ, ∀ u ∈ w, y.2 ⬝ᵥ u = 0} a := by
   first

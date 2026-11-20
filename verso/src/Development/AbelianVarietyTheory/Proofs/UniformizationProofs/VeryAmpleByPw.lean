@@ -16,7 +16,7 @@ namespace GlobalTheory.AbLaw
 open TopologicalSpace GlobalTheory.AmpleLocal
 
 /- English proof (translation)
-Rewrite using `[← rs_cst f (le_top : D ≤ ⊤) c]`. Conclude with `gs_res (𝟙 X) z le_top hz _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gs_cst {R : Type} [CommRing R] {X : Scheme.{0}} (f : X ⟶ Spec (CommRingCat.of R)) (D : X.Opens) (c : R)
     (z : X) (hz : z ∈ D) : gs (𝟙 X) z D (AbLaw.cst f D c) = gs (𝟙 X) z ⊤ (AbLaw.cst f ⊤ c) := by
@@ -24,21 +24,19 @@ theorem gs_cst {R : Type} [CommRing R] {X : Scheme.{0}} (f : X ⟶ Spec (CommRin
   exact gs_res (𝟙 X) z le_top hz _
 
 /- English proof (translation)
-Introduce `R _ X f H n s hH ⟨cov, hs⟩ d hd`. Take `⟨e, rfl⟩ : ∃ e, d = e + 1` from `⟨d - 1, by omega⟩`. Use `choose aff r hr surj using hs`. Use `choose c hc using fun z : X => exists_chart hH z`. Set `G : H.ι → Fn X` to `fun i z => (gm (𝟙 X) z _ (H.g i (c z))).val`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `φ : R → Fn X` to `fun a z => gs (𝟙 X) z ⊤ (AbLaw.cst f ⊤ a)`. Establish `hU : ∀ z, ∃ i, z ∈ H.U i` using `fun z => ⟨c z, hc z⟩`. Establish `hG : ∀ i z, IsUnit (G i z)` using `fun _ _ => Units.isUnit _`. Set `σ : Fin (n + 1) → Fn X` to `fun i => sv c (s i)`. Establish `hσ : ∀ i, Sc H.U G ⊤ 1 (σ i)` using `fun i => sc_sv (P := H) (κ := id) (fun _ => le_rfl) hc (fun _ _ _ => (pow_one _).symm) (s i)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `gen : ∀ i, Gen (nonzeroLocus (s i)) (Set.range φ ∪ Set.range fun m => σ m * AmpleLocal.inv (σ i))` using `fun i => (gen_iff _ (r i) _ _ (fun a z hz => gs_cst f _ a z hz) (fun m => (ratio_iff hc (s i) (s m) (r i m)).1 (hr i m))).2 (surj i)`. Take `⟨M, hM⟩` from `Nat.exists_eq_succ_of_ne_zero (Fintype.card_pos (α := Fin (n + 1) × Fin (n + 1))).ne'`. Set `ε` to `Fintype.equivFinOfCardEq hM`. Set `τ : Fin (M + 1) → Fn X` to `fun m => σ (ε.symm m).2 * σ (ε.symm m).1 ^ e`. Establish `hτ : ∀ m, Sc H.U G ⊤ (1 * (e + 1)) (τ m)` using `fun m => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mul_add, _root_.mul_one, add_comm]`. Conclude with `(hσ _).mul ((hσ _).pow _)`. Establish `hγ : ∀ y, y ∈ (pw H ((e + 1 : ℕ) : ℤ)).U (c y)` using `hc`. Use `choose t ht using fun m => exists_sv (P := pw H ((e + 1 : ℕ) : ℤ)) (κ := id) (N := 1 * (e + 1)) (G := G) (fun _ => le_rfl) hc (fun i y _ => by show (gm (𝟙 X) y _ (H.g i (c y) ^ ((e + 1 : ℕ) : ℤ))).val = _`. Rewrite using `[zpow_natCast, map_pow, Units.val_pow_eq_pow_val, _root_.one_mul]) (isLB_pw hH _) (hτ m)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `loc : ∀ m, IsLoc (nonzeroLocus (t m)) ⊤ (τ m)` using `fun m => ht m ▸ loc_sv hγ (t m)`. Establish `main` using `fun m => extra_section hU hG hσ (fun i => loc_sv hc (s i)) (fun z _ => Opens.mem_iSup.1 (cov.ge trivial)) aff (S₀ := Set.range φ) (by rintro _ ⟨a, rfl⟩; exact mem_reg_iff.2 ⟨_, fun _ _ => rfl⟩) gen (hτ m) (loc m)`. Use `⟨M, t, top_le_iff.1 fun z _ => ?_, fun i => ⟨(main i).1, ?_⟩⟩` and prove the remaining obligations. Take `⟨j, hj⟩` from `Opens.mem_iSup.1 (cov.ge (Set.mem_univ z))`. Establish `hu : IsUnit (σ j z)` using `(loc_sv hc (s j)).unit hj`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Opens.mem_iSup.2 ⟨ε (j, j), (loc _ z).2 ⟨trivial, ?_⟩⟩` and prove the remaining obligations. Simplify using `only [τ, Equiv.symm_apply_apply]`. Conclude with `hu.mul (hu.pow e)`. Use `choose ρ hρ using fun m => mem_reg_iff.1 (Sc.ratio hU hG (hτ m) (hτ i) (loc i))`. Use `⟨ρ, fun m => (ratio_iff hγ (t i) (t m) (ρ m)).2 ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Establish `e₁ : sv (P` using `pw H ((e + 1 : ℕ) : ℤ)) c (t i) = τ i := ht i`. Establish `e₂ : sv (P` using `pw H ((e + 1 : ℕ) : ℤ)) c (t m) = τ m := ht m`. Rewrite using `[e₁, e₂]`. Conclude with `hρ m`. Use `(gen_iff _ ρ φ _ (fun a z hz => gs_cst f _ a z hz) hρ).1 ((main i).2.mono ?_)` and prove the remaining obligations.
-
-Introduce and unpack `x (hx | ⟨p, rfl⟩)`. Conclude with `⟨x, Subring.subset_closure (Or.inl hx), fun _ _ => rfl⟩`. Use `⟨_, Subring.subset_closure (Or.inr ⟨ε p, ?_⟩), fun _ _ => rfl⟩` and prove the remaining obligations. Simplify using `only [τ, Equiv.symm_apply_apply]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem veryAmpleBy_pw : ∀ (R : Type) [CommRing R] (X : Scheme.{0}) (f : X ⟶ Spec (CommRingCat.of R)) (H : LB X)
     (n : ℕ) (s : Fin (n + 1) → LB.Sec H), H.IsLB → VeryAmpleBy f H s → ∀ d : ℕ, 1 ≤ d →

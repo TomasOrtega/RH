@@ -4,15 +4,15 @@ open UpperTheory.Gal.LocalSmoothExtension
 open AlgebraicGeometry CategoryTheory Limits ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.UPel.HT GlobalTheory.UPel.HT.Gen GlobalTheory.UPel.HT.Gen.BaseChange
 
 /- English proof (translation)
-Introduce `hM G R₁ R₂ _ _ _ _ τ gb₁ gb₂ hρ ht N M`. Take `⟨o', ⟨mo⟩⟩` from `exists_gObjMap_pull (pullback.fst M.s (spMap τ)) M.univ`. Set `U : GObj gb₂ N (pullback.snd M.s (spMap τ))` to `up hρ ht pullback.condition.symm o'`. Establish `hrep : ∀ (S : Scheme.{0}) (s' : S ⟶ Sp R₂) (o : GObj gb₂ N s'), ∃! j : S ⟶ pullback M.s (spMap τ), j ≫ pullback.snd M.s (spMap τ) = s' ∧ Nonempty (GObjMap o U j)`. Introduce `S s' o`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `u : GObj gb₁ N (s' ≫ spMap τ)` to `down hρ ht rfl o`. Take `⟨a, ⟨ha, ⟨ma⟩⟩, hun⟩` from `M.rep S _ u`. Set `j : S ⟶ pullback M.s (spMap τ)` to `pullback.lift a s' ha`. Establish `j₁ : j ≫ pullback.fst M.s (spMap τ) = a` using `pullback.lift_fst _ _ _`. Establish `j₂ : j ≫ pullback.snd M.s (spMap τ) = s'` using `pullback.lift_snd _ _ _`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨mj, -⟩` from `(hM G R₁ gb₁ N S _ _ _ _ _ u o' M.univ j (pullback.fst M.s (spMap τ)) mo).2 (j₁.symm ▸ ma)`. Establish `mj' : GObjMap o U j` using `⟨mj.φ, mj.φ₂, mj.cart, mj.sq, mj.act, mj.pol, mj.eta⟩`. Use `⟨j, ⟨j₂, ⟨mj'⟩⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `j' ⟨h₂, ⟨m'⟩⟩`. Establish `m'' : GObjMap u o' j'` using `⟨m'.φ, m'.φ₂, m'.cart, m'.sq, m'.act, m'.pol, m'.eta⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Take `⟨n, -⟩` from `(hM G R₁ gb₁ N S _ _ _ _ _ u o' M.univ j' (pullback.fst M.s (spMap τ)) mo).1 m''`. Establish `e : j' ≫ pullback.fst M.s (spMap τ) = a` using `hun _ ⟨by rw [Category.assoc, pullback.condition, ← Category.assoc, h₂], ⟨n⟩⟩`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[e, j₁]`. Rewrite using `[h₂, j₂]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨pullback M.s (spMap τ), pullback.snd M.s (spMap τ), U, hrep⟩, pullback.fst M.s (spMap τ), IsPullback.of_hasPullback M.s (spMap τ), ⟨⟨mo.φ, mo.φ₂, mo.cart, mo.sq, mo.act, mo.pol, mo.eta⟩⟩⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem UpperTheory.Gal.LocalSmoothExtension.modelBc_of :
     MapEq → ModelBc := by

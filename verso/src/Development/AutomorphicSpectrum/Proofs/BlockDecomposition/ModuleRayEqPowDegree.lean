@@ -9,11 +9,11 @@ open scoped ENNReal NNReal Classical
 namespace GlobalTheory.CompanionTheory.BasePsi
 
 /- English proof (translation)
-Introduce `F _ _ hF θ r hr δ hδ`. Take `⟨h1, h2⟩` from `hr δ hδ`. Establish `hw : ∀ w : InfinitePlace F, ‖(θ δ) w‖ = δ`. Introduce `w`. Establish `hreal : w.IsReal` using `hF.isReal w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hu` using `congrArg (fun f : ℝ →+* ℝ => f δ) (Subsingleton.elim ((InfinitePlace.Completion.extensionEmbeddingOfIsReal hreal).comp ((Pi.evalRingHom (fun v : InfinitePlace F => v.Completion) w).comp θ)) (RingHom.id ℝ))`. Establish `hu' : InfinitePlace.Completion.extensionEmbeddingOfIsReal hreal ((θ δ) w) = δ` using `hu`. Establish `hn` using `(InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal hreal).norm_map_of_map_zero (map_zero _) ((θ δ) w)`. Rewrite `hn` using `[hu', Real.norm_eq_abs, abs_of_pos hδ]`. Conclude with `hn.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(∏ w, ‖((r δ : AF F)).1 w‖ ^ w.mult) * (∏ᶠ v, ‖((r δ : AF F)).2 v‖) = δ ^ Module.finrank ℚ F`. Rewrite using `[h1, h2]`. Simplify using `only [hw]`. Rewrite using `[Finset.prod_pow_eq_pow_sum, InfinitePlace.sum_mult_eq]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem md_ray : ∀ (F : Type) [Field F] [NumberField F], IsTotallyReal F → ∀ (θ : ℝ →+* Ainf F) (r : ℝ → (AF F)ˣ), IsRay θ r →
     ∀ δ : ℝ, 0 < δ → md (r δ) = δ ^ Module.finrank ℚ F := by

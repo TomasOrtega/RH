@@ -7,13 +7,13 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 namespace GlobalTheory.QuadTrace
 
 /- English proof (translation)
-Establish `hd : 0 < H.d` using `H.d_prime.pos`. Establish `h1 : H.bar H.rt ^ 2 = H.rt ^ 2` using `by rw [← map_pow, H.rt_sq]; simp`. Break down `sq_eq_sq_iff_eq_or_eq_neg.1 h1 with h | h` into its components or cases. It suffices to derive a contradiction. Take `⟨φ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Extract witnesses or component facts from the available result.
 
-Establish `e` using `H.bar_eq H.rt`. Rewrite `e` using `[h]`. Establish `e2 : starRingEnd ℂ (φ (H.rt : E)) = φ (H.rt : E)`. Rewrite using `[← IsCMField.complexEmbedding_complexConj, ← e]`. Establish `e3 : φ (H.rt : E) ^ 2 = -(H.d : ℂ)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congrArg (fun z : 𝓞 E => φ (z : E)) H.rt_sq` as an intermediate fact. Simplify using `using this`. Take `⟨r, hr⟩` from `Complex.conj_eq_iff_real.1 e2`. Rewrite `e3` using `[hr]`. Establish `e4 : r ^ 2 = -(H.d : ℝ)` using `by exact_mod_cast e3`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: (0 : ℝ) < H.d` using `by exact_mod_cast hd`. Use polynomial arithmetic with `[sq_nonneg r]`. Conclude with `h`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem bar_rt {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) : H.bar H.rt = -H.rt := by
   have hd : 0 < H.d := H.d_prime.pos
@@ -36,9 +36,9 @@ theorem bar_rt {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) :
   · exact h
 
 /- English proof (translation)
-Introduce `E _ _ _ H _ hstar`. Rewrite using `[hstar]`. Establish `hb` using `congrArg H.bar H.two_weight_eq_one_add_root`. Rewrite `hb` using `[map_mul, map_add, map_one, bar_rt, map_ofNat]`. Establish `h2 : (2 : 𝓞 E) * (H.w0 + H.bar H.w0) = 2 * 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take the linear combination `H.two_weight_eq_one_add_root + hb`. Conclude with `mul_left_cancel₀ two_ne_zero h2`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem cmHost_idempotent_trace_eq_one :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)], Formalism.L2.FormalSeriesBounds.HostTraceIdentity H := by

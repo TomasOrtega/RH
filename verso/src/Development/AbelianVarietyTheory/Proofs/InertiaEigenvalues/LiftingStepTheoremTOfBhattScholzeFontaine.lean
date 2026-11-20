@@ -26,7 +26,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {O : Type} [CommRing O] [Algebra O LL]
 
 /- English proof (translation)
-Introduce `c hc`. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le he`. Rewrite using `[pow_add, mul_comm, mul_smul]`. Conclude with `(F.ImF PD).smul_mem _ (hF c hc)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem liftF_of_le {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) {e e' : ℕ}
     (hF : F.LiftF PD e) (he : e ≤ e') : F.LiftF PD e' := by
@@ -38,21 +38,19 @@ theorem liftF_of_le {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) {e
 end Mono
 
 /- English proof (translation)
-Introduce `hBS hFB C hC D HW F _ l _ K' h hN hF hS LL`. Establish `hlp : l.Prime` using `Fact.out`. Establish `hl2 : 2 ≤ l` using `hlp.two_le`. Take `⟨a, ha⟩ : ∃ a, a = (l - 1).factorial` from `⟨_, rfl⟩`. Use `haveI : NeZero a := ⟨by rw [ha]; exact Nat.factorial_ne_zero _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hla : 1 < l ^ a` using `Nat.one_lt_pow (NeZero.ne a) (by omega)`. Take `⟨e, he⟩ : ∃ e, e + 1 = l ^ a` from `⟨l ^ a - 1, by omega⟩`. Use `haveI : NeZero e := ⟨by`. Introduce `h0`. Rewrite `he` using `[h0, zero_add]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `omega⟩`. Establish `hnd : ¬ l ∣ a`. Rewrite using `[ha, hlp.dvd_factorial]`. Use linear arithmetic over natural numbers and integers. Take `⟨⟨LL', hle, hUnr⟩, -⟩` from `GlobalTheory.T.exists_coeffField_containsUnramifiedWitt_tameDescent l a e he hnd LL`.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := hUnr`. Use `haveI : TameDescentExponentData ↥LL'.1 l e a := (GlobalTheory.T.exists_coeffField_containsUnramifiedWitt_tameDescent l a e he hnd LL').2 hUnr`. Use `GlobalTheory.T.theoremT_descend_smaller_coefficients l (D.loc l) K' h hN hF hS LL LL' hle C ?_` and prove the remaining obligations. Establish `ϖ : PiSys l e` using `Classical.arbitrary _`. Establish `hStd : IsStd (D.loc l) (D.locA l)` using `IsStd.of_tied (D.locT l)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `T₁ T₂ g N η H U Sig Fr hP1 hP2 hOnto hFr hFS h1 hcard h2N hIT1 hIT2 hUr hU0 hUc hη hηH hJ1 hJ2 hl`. Establish `hp : (pc (D.loc l) h hN hF hS).PD.p = l` using `(D.loc l).PD_p _`. Establish `hlarge : 40 * (H * N ^ 2 + N ^ 3) < l` using `lt_of_le_of_lt (Nat.mul_le_mul_right _ hC) hl`. Establish `hNl : N < l`. Establish `: N ≤ N ^ 3` using `Nat.le_self_pow (by norm_num) N`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Use linear arithmetic over natural numbers and integers. Establish `hcop : ∀ χ ∈ Sig, Nat.Coprime (orderOf χ) l` using `fun χ hχ => by`. Use `hIT1.2.1 χ hχ` as an intermediate fact. Rewrite `this` using `[hp]`. Then use the resulting hypothesis. Take `⟨Sig', hS1, hS2, hS3, hS4, hS5⟩` from `GlobalTheory.T.exists_tameField_goodLattice_potentiallyCrystalline hFB l a e ϖ LL' (D.loc l) (D.locA l) hStd ha K' h hN hF hS Sig Fr N hFr hFS h1 hcard hNl hIT1.1 hcop`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨c1, t1⟩` from `hS5 T₁ hP1 hIT1`. Take `⟨c2, t2⟩` from `hS5 T₂ hP2 hIT2`. Establish `hnum : GlobalTheory.IndefiniteRowSideFullHecke.ConductorExponents.Numerics l e N η H Sig' U` using `⟨hS1, hS2, hS3, h2N, hUr, hU0, hUc, hη, hηH, hlarge⟩`. Establish `hcore` using `GlobalTheory.T.lift_surjection_good_crystalline_lattices hBS hFB l a e ϖ LL' (D.loc l) (D.locA l) hStd N η H Sig' U hnum T₁ T₂ g hOnto ⟨c1, t1, hJ1⟩ ⟨c2, t2, hJ2⟩`. Establish `horb` using `GlobalTheory.T.maxFrobeniusOrbitLengthDiff_bounds_zmod l e a hlp (Nat.one_le_iff_ne_zero.2 (NeZero.ne a)) he Sig' N hS1 hS2 hS3 h2N`.
-
-Rewrite `hcore`, `horb` using `[hS4]`. Use `⟨horb.2.1, ?_⟩` and prove the remaining obligations. Conclude with `liftF_of_le _ g hcore (Nat.mul_le_mul_right _ (by omega))`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem main : GlobalTheory.Published.BhattScholzeCrystallineLattices → GlobalTheory.Published.FontaineBcris → ∀ C : ℕ, 40 ≤ C →
     ∀ (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW), Formalism.MainNotions.ElementDenominator.HodgeTateFromSandwich D HW F C := by

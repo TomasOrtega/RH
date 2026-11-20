@@ -18,9 +18,9 @@ variable {C : Type} [Field C] {T Orb : Type} [Fintype Orb] {r : T → ℕ} {tau 
   {gm : Orb → ZMod 2 → Matrix (Fin 2) (Fin 2) C} {N n : ℕ} (plc : Fin N × Fin 2 ↪ Fin n)
 
 /- English proof (translation)
-Unfold `subG at h`. Rewrite `h` using `[MvPolynomial.aeval_eq_bind₁]`. Take `⟨y, _, hy⟩` from `MvPolynomial.mem_vars_bind₁ _ _ h`. Establish `h1` using `MvPolynomial.vars_sum_subset _ _ hy`. Rewrite `h1` using `[Finset.mem_biUnion]`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨col, _, h2⟩` from `h1`. Establish `h3` using `MvPolynomial.vars_mul _ _ h2`. Rewrite `h3` using `[MvPolynomial.vars_C, Finset.empty_union, MvPolynomial.vars_X, Finset.mem_singleton]`. Conclude with `⟨((eW r tau N y).1, col), h3⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mem_vars_subG {Q : MvPolynomial (Fin N × WVO fun o (_ : Fin 2) => IIs r tau o) C} {ℓ : Letter T r n}
     (h : ℓ ∈ (subG r tau gm plc Q).vars) : ∃ z, ℓ = lam r tau plc z := by
@@ -35,9 +35,9 @@ theorem mem_vars_subG {Q : MvPolynomial (Fin N × WVO fun o (_ : Fin 2) => IIs r
   exact ⟨((eW r tau N y).1, col), h3⟩
 
 /- English proof (translation)
-Establish `e : y = (eW r tau N).symm ((eW r tau N y).1, (eW r tau N y).2)`. Rewrite using `[Prod.mk.eta, Equiv.symm_apply_apply]`. Rewrite using `[e, coS_lam plc inj, if_neg]`. Introduce `h2`. Apply `h` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[h2]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem coS_off (inj : Function.Injective fun x : Orb × ZMod 2 => tau x.1 x.2) (α : AA r tau N) (col : Fin 2)
     (y : Fin N × WVO fun o (_ : Fin 2) => IIs r tau o) (h : y.1 ≠ α.1) :
@@ -51,17 +51,15 @@ theorem coS_off (inj : Function.Injective fun x : Orb × ZMod 2 => tau x.1 x.2) 
   rfl
 
 /- English proof (translation)
-Use `⟨coS r tau gm plc, ?_, (back_subG plc inj gm_hyp Q).symm⟩` and prove the remaining obligations. Introduce `ℓ hℓ`. Take `⟨⟨α, col⟩, rfl⟩` from `mem_vars_subG plc hℓ`. Use `⟨α.1, col, rfl, fun ρ' w h => coS_off plc inj α col (ρ', w) h, ?_⟩` and prove the remaining obligations. Establish `h1 : (∑ w : (WVO fun o (_ : Fin 2) => IIs r tau o), coS r tau gm plc (lam r tau plc (α, col)) (α.1, w) • (X w.1).u w.2.1 w.2.2) = ∑ y : Fin N × (WVO fun o (_ : Fin 2) => IIs r tau o), coS r tau gm plc (lam r tau plc (α, col)) y • (X y.2.1).u y.2.2.1 y.2.2.2`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Fintype.sum_prod_type, Finset.sum_eq_single α.1]`. Introduce `ρ' _ hne`. Use `Finset.sum_eq_zero fun w _ => ?_` and prove the remaining obligations. Rewrite using `[coS_off plc inj α col (ρ', w) hne, zero_smul]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ _) h`. Rewrite using `[h1, sum_coS plc inj α col (fun c y => c • (X y.2.1).u y.2.2.1 y.2.2.2) (fun y => zero_smul _ _)]`. Use function extensionality and compare the values at `x`. Rewrite using `[Finset.sum_apply]`. Establish `h2 : ∀ g, (Mm r tau gm α col g • (X ((eW r tau N).symm (α, g)).2.1).u ((eW r tau N).symm (α, g)).2.2.1 ((eW r tau N).symm (α, g)).2.2.2) x = (Gm r tau gm α x.1 g * Mm r tau gm α col g) * e α.2.1 α.2.2 x.2`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g`. Rewrite using `[Pi.smul_apply, smul_eq_mul]`. Use `show Mm r tau gm α col g * (X α.2.1).u g α.2.2 x = _`. Rewrite using `[hu]`. Unfold `Gm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [h2]`. Rewrite using `[← Finset.sum_mul, gram_matrix_mul_left gm_hyp α col x.1]`. Establish `h3 : uv (lam r tau plc (α, col)) = e α.2.1 α.2.2` using `huv α.2.1 α.2.2 _`. Rewrite using `[h3]`.
-
-Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem isImgS_subG {dd : ℕ} (X : ∀ o, RawChart C 2 (fun _ => IIs r tau o) (Fin 2 × Fin dd))
     (uv : Letter T r n → Fin dd → C) (e : ∀ o, IIs r tau o → Fin dd → C)
@@ -104,7 +102,7 @@ theorem isImgS_subG {dd : ℕ} (X : ∀ o, RawChart C 2 (fun _ => IIs r tau o) (
 end Gen
 
 /- English proof (translation)
-Introduce `L h1 h2 pl hpl` and use `hs (h L h1 h2 pl hpl)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem BlockMembershipSelfConjugate.mono {C : Type} [Field C] {V : VF C} {Orb : Type} [Fintype Orb] {I J : Orb → Fin 2 → Type}
     [∀ o g, Fintype (I o g)] [∀ o g, Fintype (J o g)] {X : ∀ o, RowData C V 2 (I o) (J o)} {n : ℕ} {F : ∀ o, Flag (X o)}
@@ -122,7 +120,7 @@ variable {C : Type} [Field C] [CharZero C] {V : VF C}
 variable {T : CDVR} {io : c.F →+* T.Fr} {y : IntFr Xo c T io} {Orb : Type} [Fintype Orb]
 
 /- English proof (translation)
-Establish `h` using `ha.hd_ne`. Generalize the expression as in `lab.hd = x at h`. Use `revert x`. Evaluate the decidable proposition.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Evaluate the decidable proposition. A detailed English derivation is pending.
 -/
 theorem hd_eq_one {ι : T.Fr →+* C} {lab : LabS E C Orb 2} (ha : LabSArith V io ι lab) : lab.hd = 1 := by
   have h := ha.hd_ne
@@ -131,7 +129,7 @@ theorem hd_eq_one {ι : T.Fr →+* C} {lab : LabS E C Orb 2} (ha : LabSArith V i
   decide
 
 /- English proof (translation)
-Take `⟨M, hM⟩` from `ha.gm_lim o 0`. Establish `h1 : V.Ge 0 (lab.gm o t q s - emA3 io ι (lab.tau o t) (M q s))` using `by simpa using hM t q s`. Establish `h2` using `h1.add (hg.em_int o t (M q s))`. Rewrite `h2` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem gm_mem {C3 : IntChart T io y} {ι : T.Fr →+* C} {Y : FBChart C V (𝓞 E) (chD C3.ch)} {lab : LabS E C Orb 2}
     (ha : LabSArith V io ι lab) (hg : LabSGeo C3 ι Y lab) (o : Orb) (t : ZMod 2) (q s : Fin 2) :
@@ -142,7 +140,7 @@ theorem gm_mem {C3 : IntChart T io y} {ι : T.Fr →+* C} {Y : FBChart C V (𝓞
   rwa [sub_add_cancel] at h2
 
 /- English proof (translation)
-Introduce `Po hPo`. Use `⟨subG Dw.mult lab.tau lab.gm plc (∏ o, toAll o (Po o)), hPo, ?_⟩` and prove the remaining obligations. Conclude with `isImgS_subG plc (fun o => Y.rawSelf (selfOfLab ha hg o)) (fun (ℓ : LtN Dw n) i => ι (chartUnitVectors C3 ⟨ℓ.1, ℓ.2.1⟩ i)) (fun o => selfLieBasisVector C3 ι lab o) (fun _ _ _ _ => rfl) (fun _ _ _ => rfl) ha.inj (fun o t s s' => by have := ha.gm_hyp o t s s'; rwa [hd_eq_one ha] at …`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem first_family_subset_image {C3 : IntChart T io y} {ι : T.Fr →+* C} {Y : FBChart C V (𝓞 E) (chD C3.ch)} {lab : LabS E C Orb 2}
     (ha : LabSArith V io ι lab) (hg : LabSGeo C3 ι Y lab) (a : (E →+* ℂ) × ℕ → ℕ) {N n : ℕ}
@@ -156,7 +154,7 @@ theorem first_family_subset_image {C3 : IntChart T io y} {ι : T.Fr →+* C} {Y 
     (fun _ _ _ => rfl) ha.inj (fun o t s s' => by have := ha.gm_hyp o t s s'; rwa [hd_eq_one ha] at this) _
 
 /- English proof (translation)
-The claim follows from `(block_membership_self_conj_first Dw.mult ComplexEmbedding.conjugate (InPsi H) (fun τ i => a (τ, i)) lab.tau lab.gm V.RR plc h1 h2 h3 first_chern_integral (fun o => rdS Y (selfOfLab ha hg) Hy o) F gaC ha.inj (fun o t => by rw [ha.conj o t, hd_eq_one ha]) (fun o t s s' => by have …`.
+A detailed English derivation is pending.
 -/
 theorem block_membership_self_conj_charts (h1 : IsotropicToStdSubstHarmonic) (h2 : IsotropicToStdSubstLineInvariant) (h3 : IsotropicToStdSubstLineDegree)
     {C3 : IntChart T io y} {ι : T.Fr →+* C} {Y : FBChart C V (𝓞 E) (chD C3.ch)} {lab : LabS E C Orb 2}

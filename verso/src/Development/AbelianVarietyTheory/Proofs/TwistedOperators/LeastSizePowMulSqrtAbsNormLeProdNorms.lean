@@ -12,11 +12,11 @@ noncomputable section
 namespace GlobalTheory.LineBound
 
 /- English proof (translation)
-Establish `hle : Ideal.span {a} ≤ 𝔟` using `by rw [h, mul_comm]; exact Ideal.mul_le_left`. Establish `h1` using `AddSubgroup.relIndex_mul_index (show (Ideal.span {a}).toAddSubgroup ≤ 𝔟.toAddSubgroup from hle)`. Establish `h2 : (Ideal.span {a}).toAddSubgroup.index = Ideal.absNorm 𝔪 * Ideal.absNorm 𝔟`. Rewrite using `[← map_mul, ← h, Ideal.absNorm_apply]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h3 : 𝔟.toAddSubgroup.index = Ideal.absNorm 𝔟` using `by rw [Ideal.absNorm_apply]; rfl`. Establish `hb : 𝔟 ≠ ⊥`. Introduce and unpack `rfl`. Rewrite `h` using `[Ideal.mul_bot, Ideal.span_singleton_eq_bot]`. Conclude with `ha h`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hb0 : Ideal.absNorm 𝔟 ≠ 0` using `by rwa [Ne, Ideal.absNorm_eq_zero_iff]`. Rewrite `h1` using `[h2, h3]`. Conclude with `Nat.eq_of_mul_eq_mul_right (Nat.pos_of_ne_zero hb0) h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relIndex_span_singleton {K : Type} [Field K] [NumberField K] (𝔪 𝔟 : Ideal (𝓞 K)) (a : 𝓞 K)
     (ha : a ≠ 0) (h : Ideal.span {a} = 𝔪 * 𝔟) :
@@ -36,9 +36,7 @@ theorem relIndex_span_singleton {K : Type} [Field K] [NumberField K] (𝔪 𝔟 
   exact Nat.eq_of_mul_eq_mul_right (Nat.pos_of_ne_zero hb0) h1
 
 /- English proof (translation)
-Unfold `ht`. Establish `hc : 0 ≤ Formalism.F.covol (zl (Formalism.HermitianLatticesTheory.realize b X) L)`. Unfold `Formalism.F.covol`. Use `split_ifs`. Conclude with `Real.sqrt_nonneg _`.
-
-Conclude with `le_rfl`. Conclude with `mul_nonneg (mul_nonneg (by positivity) (Real.rpow_nonneg (abs_nonneg _) _)) hc`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem ht_nonneg {K V ι : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V]
     [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] [Fintype ι] [DecidableEq ι] (b : Module.Basis ι K V)
@@ -52,7 +50,7 @@ theorem ht_nonneg {K V ι : Type} [Field K] [NumberField K] [StarRing K] [AddCom
   exact mul_nonneg (mul_nonneg (by positivity) (Real.rpow_nonneg (abs_nonneg _) _)) hc
 
 /- English proof (translation)
-The claim follows from `Real.rpow_nonneg (ht_nonneg b X L) _`.
+A detailed English derivation is pending.
 -/
 theorem size_nonneg {K V ι : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V]
     [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] [Fintype ι] [DecidableEq ι] (b : Module.Basis ι K V)
@@ -64,51 +62,43 @@ end GlobalTheory.LineBound
 namespace GlobalTheory.LineBound
 
 /- English proof (translation)
-Introduce `I x 𝔪 h𝔪 w hw hw0`. Take `⟨hTC, hf, -, hbij, hX0⟩` from `GlobalTheory.Count.FrameMajorant.frames_give_majorants I x`. Use `haveI := hTC`. Establish `hX : ∀ v, IsUnit (frm I x v).det` using `fun v => (hX0 v).1`. Take `⟨a, ha𝔪, ha0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot h𝔪`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨𝔟, h𝔟⟩` from `(Ideal.dvd_span_singleton).2 ha𝔪`. Establish `haE : (a : I.E) ≠ 0` using `by exact_mod_cast ha0`. Use `set u : Fin I.n → I.E := (a : I.E)⁻¹ • w with hu`. Use `set ℓ : 𝓞 I.E →ₗ[𝓞 I.E] (Fin I.n → I.E) := LinearMap.toSpanSingleton (𝓞 I.E) _ u with hℓ`. Establish `hℓapp : ∀ c : 𝓞 I.E, ℓ c = (c : I.E) • u` using `fun c => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hℓ, LinearMap.toSpanSingleton_apply]`. Conclude with `(algebraMap_smul I.E c u).symm`. Establish `hℓa : ℓ a = w` using `by rw [hℓapp, hu, smul_smul, mul_inv_cancel₀ haE, one_smul]`. Establish `hu0 : u ≠ 0`. Rewrite using `[hu]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `smul_ne_zero (inv_ne_zero haE) hw0`. Establish `hinj : Function.Injective ℓ`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `c hc`. Rewrite `hc` using `[hℓapp]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (c : I.E) = 0` using `(smul_eq_zero.1 hc).resolve_right hu0`. Conclude with `this` after adjusting the coercions. Use `set R : Submodule (𝓞 I.E) (Fin I.n → I.E) := Submodule.map ℓ 𝔟 with hR`. Establish `hab : a ∈ 𝔟`. Establish `: Ideal.span {a} ≤ 𝔟` using `by rw [h𝔟, mul_comm]; exact Ideal.mul_le_left`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `this (Ideal.mem_span_singleton_self a)`. Establish `hwR : w ∈ R` using `⟨a, hab, hℓa⟩`. Establish `hRle : R ≤ lamX I x`. Establish `key : ∀ y ∈ 𝔪 • lamX I x, ∀ c ∈ 𝔟, ((c : I.E) * (a : I.E)⁻¹) • y ∈ lamX I x`. Introduce `y hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `Submodule.smul_induction_on hy ?_ ?_` and prove the remaining obligations. Introduce `m hm l hl c hc`. Establish `hmc : m * c ∈ Ideal.span {a}` using `by rw [h𝔟]; exact Ideal.mul_mem_mul hm hc`. Take `⟨d, hd⟩` from `Ideal.mem_span_singleton'.1 hmc`. Establish `hdE : (d : I.E) = (c : I.E) * (a : I.E)⁻¹ * (m : I.E)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: (d : I.E) * (a : I.E) = (m : I.E) * (c : I.E)` using `by exact_mod_cast hd`. Clear the denominators using the available nonvanishing facts. Take the linear combination `this`. Establish `: ((c : I.E) * (a : I.E)⁻¹) • (m • l) = d • l`. Rewrite using `[← algebraMap_smul I.E m l, smul_smul, ← algebraMap_smul I.E d l]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congr 1`. Conclude with `hdE.symm`. Rewrite using `[this]`. Conclude with `(lamX I x).smul_mem d hl`. Introduce `y z hy hz c hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[smul_add]`. Conclude with `add_mem (hy c hc) (hz c hc)`. Introduce and unpack `y ⟨c, hc, rfl⟩`. Rewrite using `[hℓapp, hu, smul_smul]`. Conclude with `key w hw c hc`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hRfg : R.FG` using `(IsNoetherian.noetherian 𝔟).map ℓ`. Establish `hR0 : R ≠ ⊥` using `fun h => hw0 ((Submodule.mem_bot _).1 (h ▸ hwR))`. Establish `hrange : Set.range (fun _ : Fin 1 => w) = {w}` using `Set.range_const`. Establish `hli : LinearIndependent I.E (fun _ : Fin 1 => w)` using `LinearIndependent.of_subsingleton 0 hw0`. Establish `hspanw : Submodule.span (𝓞 I.E) {w} = Submodule.map ℓ (Ideal.span {a})`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.span, Submodule.map_span, Set.image_singleton, hℓa]`. Establish `hwle : Submodule.span (𝓞 I.E) (Set.range fun _ : Fin 1 => w) ≤ R`. Rewrite using `[hrange, Submodule.span_le, Set.singleton_subset_iff]`. Conclude with `hwR`. Establish `hrk : rkK R = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Unfold `rkK`. Establish `: Submodule.span I.E (R : Set (Fin I.n → I.E)) = Submodule.span I.E {w}`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `y ⟨c, -, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hℓapp, hu, smul_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self w)`. Rewrite using `[Submodule.span_le, Set.singleton_subset_iff]`. Conclude with `Submodule.subset_span hwR`. Rewrite using `[this, finrank_span_singleton hw0]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hidx : (Submodule.span (𝓞 I.E) (Set.range fun _ : Fin 1 => w)).toAddSubgroup.relIndex R.toAddSubgroup = Ideal.absNorm 𝔪`. Rewrite using `[hrange, hspanw, hR, Submodule.map_toAddSubgroup, Submodule.map_toAddSubgroup, AddSubgroup.relIndex_map_map_of_injective _ _ hinj]`. Conclude with `relIndex_span_singleton 𝔪 𝔟 a ha0 h𝔟`. Take `⟨hG1, hG2⟩` from `htGram I.E (Fin I.n → I.E) (Fin I.n) (bas I) (frm I x) hX 1 (fun _ => w) hli`. Establish `hht` using `hG2 R hRfg hwle (by rw [hrk])`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `hht` using `[hidx, hG1]`. Use `set g : InfinitePlace I.F → ℝ := fun v => ∑ i, ‖(uMat (x.1 v)⁻¹ *ᵥ ((I.P v)⁻¹ *ᵥ fun j => I.φ v (w j))) i‖ ^ 2 with hg`. Establish `hg0 : ∀ v, 0 ≤ g v` using `fun v => Finset.sum_nonneg fun i _ => by positivity`. Establish `hdet : ∀ w' : InfinitePlace I.E, (gramPl (bas I) (frm I x) w' (fun _ : Fin 1 => w)).det.re = g (w'.comap (algebraMap I.F I.E))`. Introduce `w'`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.FlagMeas.SizeMove.norm_det_gram, Matrix.det_fin_one, Matrix.of_apply]`. Establish `hU : uMat (x.1 (w'.comap (algebraMap I.F I.E)))⁻¹ = (uMat (x.1 (w'.comap (algebraMap I.F I.E))))⁻¹`. Simplify using `[uMat]`. Rewrite using `[hg]`. Simplify using `only [hU, GlobalTheory.FlagMeas.SizeMove.crd]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Use `set z := (uMat (x.1 (w'.comap (algebraMap I.F I.E))))⁻¹ *ᵥ ((I.P (w'.comap (algebraMap I.F I.E)))⁻¹ *ᵥ fun l => I.φ (w'.comap (algebraMap I.F I.E)) (w l))`. Establish `: star z ⬝ᵥ z = ((∑ i, ‖z i‖ ^ 2 : ℝ) : ℂ)`. Simplify using `only [dotProduct, Pi.star_apply, Complex.ofReal_sum, Complex.ofReal_pow]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.star_def, Complex.conj_mul']`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (Finset.sum_nonneg fun i _ => by positivity)]`. Establish `hprod : ∏ w' : InfinitePlace I.E, (gramPl (bas I) (frm I x) w' (fun _ : Fin 1 => w)).det.re = ∏ v, g v`. Simplify using `only [hdet]`. Conclude with `Fintype.prod_bijective _ hbij _ _ (fun _ => rfl)`. Rewrite `hht` using `[hprod]`.
-
-Establish `hbdd : BddBelow {t | ∃ S : Submodule (𝓞 I.E) (Fin I.n → I.E), S ≤ lamX I x ∧ S ≠ ⊥ ∧ size (bas I) (frm I x) S = t}` using `⟨0, by rintro t ⟨S, -, -, rfl⟩; exact size_nonneg _ _ _⟩`. Establish `hle : least I x ≤ size (bas I) (frm I x) R` using `csInf_le hbdd ⟨R, hRle, hR0, rfl⟩`. Establish `h0 : 0 ≤ least I x` using `le_csInf ⟨_, ⟨R, hRle, hR0, rfl⟩⟩ (by rintro t ⟨S, -, -, rfl⟩; exact size_nonneg _ _ _)`. Establish `hfpos : 0 < nPl I.E` using `Fintype.card_pos`. Establish `hsz : size (bas I) (frm I x) R ^ (2 * I.f) = ht (bas I) (frm I x) R`.
-
-Unfold `size`. Rewrite using `[hrk, ← Real.rpow_natCast, ← Real.rpow_mul (ht_nonneg _ _ _), ← hf]`. Establish `: (1 : ℝ) / (2 * (nPl I.E : ℝ) * ((1 : ℕ) : ℝ)) * ((2 * nPl I.E : ℕ) : ℝ) = 1`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
-
-Rewrite using `[this, Real.rpow_one]`. Establish `hN0 : (0 : ℝ) ≤ Ideal.absNorm 𝔪` using `Nat.cast_nonneg _`. Establish `hsq : (least I x ^ I.f * Real.sqrt (Ideal.absNorm 𝔪)) ^ 2 ≤ (∏ v, Real.sqrt (g v)) ^ 2`. Rewrite using `[mul_pow, Real.sq_sqrt hN0, ← Finset.prod_pow]`. Simplify using `only [fun v => Real.sq_sqrt (hg0 v)]`.
-
-Rewrite using `[← hht, ← pow_mul, mul_comm I.f 2, ← hsz]`. Conclude with `mul_le_mul_of_nonneg_right (pow_le_pow_left₀ h0 hle _) hN0`. Conclude with `(pow_le_pow_iff_left₀ (by positivity) (Finset.prod_nonneg fun v _ => Real.sqrt_nonneg _) two_ne_zero).1 hsq`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem least_pow_mul_sqrt_absNorm_le_prod : ∀ (I : AutInst) (x : I.GA) (𝔪 : Ideal (𝓞 I.E)), 𝔪 ≠ ⊥ →
     ∀ w ∈ 𝔪 • lamX I x, w ≠ 0 → least I x ^ I.f * Real.sqrt (Ideal.absNorm 𝔪) ≤

@@ -34,7 +34,7 @@ structure STiesR (R : Formalism.L2.RecT ex) extends STies D where
   locTied : Formalism.L2.SG.Pf.LocCP.LocTied D
 
 /- English proof (translation)
-The claim follows from `T.toSTies.concTie hF hK hN hW hph T.locTied hTF`.
+A detailed English derivation is pending.
 -/
 theorem STiesR.concTie {R : Formalism.L2.RecT ex} (T : STiesR R) (hF : FinX T.Y) (hK : T.X.LevelSubgroupNormalized)
     (hN : ∀ u, Formalism.L2.SG.PoincareInHH.Cut.NeatKu T.X u T.Y.hK) (hW : Formalism.L2.SG.WuDecay.WuDecay T.X)

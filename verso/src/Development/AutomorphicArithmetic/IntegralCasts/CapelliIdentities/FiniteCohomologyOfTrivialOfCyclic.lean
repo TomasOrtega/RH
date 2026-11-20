@@ -9,7 +9,7 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.Homolog
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.CochainInjectiveExact
 
 /- English proof (translation)
-Use `haveI : A.ρ.IsTrivial := ⟨fun g => LinearMap.ext fun a => h g a⟩`. Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 private theorem isDiscreteRep_of_forall_eq {k G : Type} [CommRing k] [Group G]
     [TopologicalSpace G] (A : Rep.{0, 0, 0} k G) (h : ∀ (g : G) (a : A.V), A.ρ g a = a) :
@@ -18,11 +18,9 @@ private theorem isDiscreteRep_of_forall_eq {k G : Type} [CommRing k] [Group G]
   infer_instance
 
 /- English proof (translation)
-Introduce `H _ _ _ n r hC A inst hfin htriv hn`. Establish `hι : ∀ (B : Rep.{0, 0, 0} (ULift.{0, 0} ℤ) H) [GroundTheory.ProfCoh.IsDiscreteRep B], (∀ m : ℕ, Function.Injective ((GroundTheory.ProfCoh.cochainsComplexι B).f m).hom) ∧ ∀ (m : ℕ) (x : (Fin m → H) → B.V), (∃ y, ((GroundTheory.ProfCoh.cochainsComplexι B).f m).hom y = x) ↔ IsLocall …`. Introduce `B _`. Use `⟨fun m => Subtype.val_injective, fun m x => ⟨?_, fun hx => ⟨⟨x, hx⟩, rfl⟩⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨y, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `y.2`. Use `UpperTheory.cyclic_trivial_induction n (fun B => ∀ [GroundTheory.ProfCoh.IsDiscreteRep B], Finite (GroundTheory.ProfCoh.cohomology B r)) ?_ ?_ A hfin htriv hn` and prove the remaining obligations. Introduce `C _ _ h1 h2 _`. Conclude with `hC C h1 h2`. Introduce `A B C f g hA hC' hf hfg hg PA PC _ haveI := isDiscreteRep_of_forall_eq A hA haveI := isDiscreteRep_of_forall_eq C hC'`.
-
-Take `⟨φ, ψ, w, hS⟩` from `UpperTheory.cochain_injective_exact A B C f g _ _ _ (GroundTheory.ProfCoh.cochainsComplexι A) (GroundTheory.ProfCoh.cochainsComplexι B) (GroundTheory.ProfCoh.cochainsComplexι C) hf hfg hg (hι A).1 (hι B).1 (hι C).1 (hι A).2 (hι B).2 (hι C).2`. Conclude with `(UpperTheory.homology_finite_short_exact hS r).1 PA PC`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Gua5.finite_cohomology_of_trivial_of_cyclic :
     ∀ {H : Type} [inst : Group H] [inst_1 : TopologicalSpace H] [inst_2 : @IsTopologicalGroup H inst_1 inst] (n r : Nat),

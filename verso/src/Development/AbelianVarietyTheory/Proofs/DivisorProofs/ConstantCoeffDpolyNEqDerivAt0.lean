@@ -20,7 +20,7 @@ section Deriv
 variable {C : Type} [Field C] {σ : Type}
 
 /- English proof (translation)
-Use `first`. Consider the case `exact Finsupp.prod_fintype α _ (fun _ => by simp)`. Consider the case `(unfold mfact; rw [Finsupp.prod_fintype]; intro; simp)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mfact_eq_prod [Fintype σ] (α : σ →₀ ℕ) : (mfact α : C) = ∏ s, ((α s).factorial : C) := by
   first
@@ -28,11 +28,11 @@ theorem mfact_eq_prod [Fintype σ] (α : σ →₀ ℕ) : (mfact α : C) = ∏ s
   | (unfold mfact; rw [Finsupp.prod_fintype]; intro; simp)
 
 /- English proof (translation)
-Use `first`. Consider the case `(have h : ∀ s, (((α + Finsupp.single l 1 : σ →₀ ℕ) s).factorial : C) = ((α s).factorial : C) * (if s = l then ((α l : C) + 1) else 1) := by`. Introduce `s`. Distinguish the cases in `hs : s = l`. Rewrite using `[if_pos hs]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Substitute `hs` using the available equality. Rewrite using `[Finsupp.add_apply, Finsupp.single_eq_same, Nat.factorial_succ]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg hs, mul_one]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Finsupp.single_apply, Ne.symm hs]`. Rewrite using `[mfact_eq_prod, mfact_eq_prod, Finset.prod_congr rfl (fun s _ => h s), Finset.prod_mul_distrib]`. Simplify using the standard rewrite rules. Use the proof step `done)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mfact_add_single [Fintype σ] (α : σ →₀ ℕ) (l : σ) :
     (mfact (α + Finsupp.single l 1) : C) = mfact α * ((α l : C) + 1) := by
@@ -54,7 +54,7 @@ theorem mfact_add_single [Fintype σ] (α : σ →₀ ℕ) (l : σ) :
      done)
 
 /- English proof (translation)
-Use `first`. Consider the case `(rw [derivAt0_eq_sum_of_subset _ _ MvPolynomial.support_monomial_subset, Finset.sum_singleton, MvPolynomial.coeff_monomial, if_pos rfl]; done)`. Consider the case `(by_cases ha : a = 0 <;> simp [derivAt0, ha, MvPolynomial.support_monomial]; done)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem derivAt0_monomial (α : σ →₀ ℕ) (a : C) (S : MvPowerSeries σ C) :
     derivAt0 (MvPolynomial.monomial α a) S = a * mfact α * coeff α S := by
@@ -65,7 +65,7 @@ theorem derivAt0_monomial (α : σ →₀ ℕ) (a : C) (S : MvPowerSeries σ C) 
   | (by_cases ha : a = 0 <;> simp [derivAt0, ha, MvPolynomial.support_monomial]; done)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero' ha`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_zero ha`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_nilpotent (fun s => by rw [ha]; exact IsNilpotent.zero)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private lemma hasSubst_lemma {ι τ : Type} [Finite ι] {a : ι → MvPowerSeries τ C}
     (ha : ∀ i, constantCoeff (a i) = 0) : HasSubst a := by
@@ -75,7 +75,7 @@ private lemma hasSubst_lemma {ι τ : Type} [Finite ι] {a : ι → MvPowerSerie
   | exact MvPowerSeries.HasSubst.of_constantCoeff_nilpotent (fun s => by rw [ha]; exact IsNilpotent.zero)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact constantCoeff_subst_eq_zero (hasSubst_lemma ha) ha hf`. Consider the case `exact MvPowerSeries.constantCoeff_subst_eq_zero (hasSubst_lemma ha) ha hf`. Consider the case `exact MvPowerSeries.constantCoeff_subst_eq_zero (hasSubst_lemma ha) hf`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private lemma cc_subst_lemma_2 {σ τ : Type} [Finite σ] {a : σ → MvPowerSeries τ C}
     (ha : ∀ s, constantCoeff (a s) = 0) {f : MvPowerSeries σ C} (hf : constantCoeff f = 0) :
@@ -86,7 +86,7 @@ private lemma cc_subst_lemma_2 {σ τ : Type} [Finite σ] {a : σ → MvPowerSer
   | exact MvPowerSeries.constantCoeff_subst_eq_zero (hasSubst_lemma ha) hf
 
 /- English proof (translation)
-Use `first`. Consider the case `(rw [← MvPowerSeries.coe_substAlgHom ha]; exact map_zero _)`. Consider the case `simp`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private lemma subst_zero_lemma_3 {σ τ : Type} {a : σ → MvPowerSeries τ C} (ha : HasSubst a) :
     subst a (0 : MvPowerSeries σ C) = 0 := by
@@ -95,7 +95,7 @@ private lemma subst_zero_lemma_3 {σ τ : Type} {a : σ → MvPowerSeries τ C} 
   | simp
 
 /- English proof (translation)
-Use `first`. Consider the case `(rw [← MvPowerSeries.coe_substAlgHom ha, MvPowerSeries.c_eq_algebraMap, AlgHom.commutes, MvPowerSeries.c_eq_algebraMap])`. Consider the case `(rw [← MvPowerSeries.coe_substAlgHom ha]; exact AlgHom.commutes _ r)`. Consider the case `simp [ha]`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private lemma subst_C_eq_C' {σ τ : Type} {a : σ → MvPowerSeries τ C} (ha : HasSubst a) (r : C) :
     subst a (MvPowerSeries.C r : MvPowerSeries σ C) = MvPowerSeries.C r := by
@@ -106,7 +106,7 @@ private lemma subst_C_eq_C' {σ τ : Type} {a : σ → MvPowerSeries τ C} (ha :
   | simp [ha]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact MvPowerSeries.subst_comp_subst_apply ha hb f`. Consider the case `exact (MvPowerSeries.subst_comp_subst_apply ha hb f).symm`. Consider the case `exact congrFun (MvPowerSeries.subst_comp_subst ha hb) f`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private lemma subst_subst_eq_subst_comp {σ τ ρ : Type} {a : σ → MvPowerSeries τ C} {b : τ → MvPowerSeries ρ C}
     (ha : HasSubst a) (hb : HasSubst b) (f : MvPowerSeries σ C) :
@@ -117,9 +117,9 @@ private lemma subst_subst_eq_subst_comp {σ τ ρ : Type} {a : σ → MvPowerSer
   | exact congrFun (MvPowerSeries.subst_comp_subst ha hb) f
 
 /- English proof (translation)
-Rewrite using `[pderiv_subst GlobalTheory.LawLog.cc_twoVars, Finset.sum_eq_single ((1 : Fin 2), k)]`. Simplify using `[GlobalTheory.LawLog.twoVars, MvPowerSeries.pderiv_X, Pi.single_apply]`. Introduce and unpack `⟨a, i⟩ _ hs fin_cases a`. Simplify using `[GlobalTheory.LawLog.twoVars, MvPowerSeries.pderiv_X, Pi.single_apply]`. Establish `hik : i ≠ k` using `fun h => hs (by subst h; rfl)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[GlobalTheory.LawLog.twoVars, MvPowerSeries.pderiv_X, Pi.single_apply, hik]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private lemma pderiv_inr_subst_twoVars {d : ℕ} (f : MvPowerSeries (Fin 2 × Fin d) C) (k : Fin d) :
     pderiv C (Sum.inr k) (subst (GlobalTheory.LawLog.twoVars C d) f) =
@@ -138,9 +138,9 @@ variable [CharZero C] (v : AddValuation C (WithTop ℝ))
 include v
 
 /- English proof (translation)
-Use `first`. Consider the case `(unfold derivAt0`. Rewrite using `[MvPolynomial.support_mul_X, Finset.sum_map]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Simplify using `only [addRightEmbedding_apply, MvPolynomial.coeff_mul_X, mfact_add_single]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Treat this case separately.
 
-Use `first`. Consider the case `(rw [MvPowerSeries.coeff_pderiv]; ring)`. Consider the case `(simp [MvPowerSeries.coeff_pderiv]; ring)`. Consider the case `(simp [MvPowerSeries.coeff_pderiv])`. Use the proof step `done)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem derivAt0_pderiv [Fintype σ] (Q : MvPolynomial σ C) (l : σ) (S : MvPowerSeries σ C) :
     derivAt0 Q (pderiv C l S) = derivAt0 (Q * MvPolynomial.X l) S := by
@@ -163,13 +163,13 @@ section Chain
 variable {C : Type} [Field C] [CharZero C] {v : AddValuation C (WithTop ℝ)} {d : ℕ}
 
 /- English proof (translation)
-Establish `hA : HasSubst (GlobalTheory.LogJacobian.substSecondBlockZero (C` using `C) d) := hasSubst_lemma (GlobalTheory.LogJacobian.constantCoeff_substSecondBlockZero d)`. Establish `hT : HasSubst (GlobalTheory.LawLog.twoVars C d)` using `hasSubst_lemma GlobalTheory.LawLog.cc_twoVars`. Establish `hB : HasSubst (fun i => ψ (j, i))` using `hasSubst_lemma (fun i => hψ (j, i))`. Establish `hΨ : HasSubst ψ` using `hasSubst_lemma hψ`. Establish `hAT : HasSubst (fun s => subst (GlobalTheory.LogJacobian.substSecondBlockZero (C` using `C) d) (GlobalTheory.LawLog.twoVars C d s)) := hasSubst_lemma (fun s => cc_subst_lemma_2 (GlobalTheory.LogJacobian.constantCoeff_substSecondBlockZero d) (GlobalTheory.LawLog.cc_twoVars s))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP : HasSubst (fun p : Fin 2 × Fin d => (![fun i => X (j, i), 0] : Fin 2 → Fin d → MvPowerSeries (Fin n × Fin d) C) p.1 p.2)`. Use `hasSubst_lemma (fun p => ?_)` and prove the remaining obligations. Break down `p with ⟨a, i⟩` into its components or cases. Apply the tactic sequence `fin_cases a <;> simp`. Apply the tactic sequence `unfold GlobalTheory.LogJacobian.jacEntry ev pt`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions.
 
-Rewrite using `[hL e, pderiv_inr_subst_twoVars, subst_subst_eq_subst_comp hT hA, subst_subst_eq_subst_comp hAT hB, subst_subst_eq_subst_comp hP hΨ]`. Use `congr 1`. Use function extensionality and compare the values at `p`. Break down `p with ⟨a, i⟩` into its components or cases. Use `fin_cases a`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `simp [GlobalTheory.LawLog.twoVars, MvPowerSeries.subst_X hA, MvPowerSeries.subst_X hΨ] all_goals simp [GlobalTheory.LogJacobian.substSecondBlockZero, MvPowerSeries.subst_X hB]`. Apply the tactic sequence `simp [GlobalTheory.LawLog.twoVars, MvPowerSeries.subst_X hA, MvPowerSeries.subst_X hΨ, subst_zero_lemma_3 hΨ] all_goals simp [GlobalTheory.LogJacobian.substSecondBlockZero, subst_zero_lemma_3 hB]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem subst_jacEntry (G : FGLaw C d) (L : LogFGL v d)
     (hL : ∀ a, L.F a = subst (twoVars C d) (G.F a)) {n : ℕ} {Λ : Type} [Finite Λ]
@@ -207,9 +207,9 @@ def psi : Fin n × Fin d → MvPowerSeries Λ C :=
   fun q => subst (lin β w q.1) (expOf L q.2)
 
 /- English proof (translation)
-Use `first`. Consider the case `(simp [lin, MvPowerSeries.smul_eq_C_mul]; done)`. Consider the case `(unfold lin`. Rewrite using `[map_sum]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MvPowerSeries.smul_eq_C_mul, map_mul, MvPowerSeries.constantCoeff_X, mul_zero])`.
+A detailed English derivation is pending.
 -/
 theorem cc_lin (j : Fin n) (e : Fin d) : constantCoeff (lin β w j e) = 0 := by
   first
@@ -220,9 +220,9 @@ theorem cc_lin (j : Fin n) (e : Fin d) : constantCoeff (lin β w j e) = 0 := by
      rw [MvPowerSeries.smul_eq_C_mul, map_mul, MvPowerSeries.constantCoeff_X, mul_zero])
 
 /- English proof (translation)
-Establish `hs : MvPowerSeries.HasSubst (lin β w q.1)` using `by first`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero' (cc_lin β w q.1)`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_zero (cc_lin β w q.1)`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_nilpotent (fun s => by rw [cc_lin]; exact IsNilpotent.zero)`. Use `first`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact constantCoeff_subst_eq_zero hs (cc_lin β w q.1) ((isExp_expOf L).1 q.2)`. Consider the case `exact MvPowerSeries.constantCoeff_subst_eq_zero hs (cc_lin β w q.1) ((isExp_expOf L).1 q.2)`. Consider the case `exact MvPowerSeries.constantCoeff_subst_eq_zero hs ((isExp_expOf L).1 q.2)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem cc_psi (q : Fin n × Fin d) : constantCoeff (psi L β w q) = 0 := by
   have hs : MvPowerSeries.HasSubst (lin β w q.1) := by
@@ -236,7 +236,7 @@ theorem cc_psi (q : Fin n × Fin d) : constantCoeff (psi L β w q) = 0 := by
   | exact MvPowerSeries.constantCoeff_subst_eq_zero hs ((isExp_expOf L).1 q.2)
 
 /- English proof (translation)
-Use `first`. Consider the case `(simp only [lin, map_sum, Derivation.map_smul, MvPowerSeries.pderiv_X]`. Simplify using `[Pi.single_apply, MvPowerSeries.smul_eq_C_mul]`. Use the proof step `done)`. Consider the case `(simp [lin, MvPowerSeries.pderiv_X, Pi.single_apply, MvPowerSeries.smul_eq_C_mul]; done)`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem pderiv_lin (l : Λ) (j : Fin n) (e : Fin d) :
     pderiv C l (lin β w j e) = MvPowerSeries.C (β l j * w l e) := by
@@ -248,15 +248,15 @@ theorem pderiv_lin (l : Λ) (j : Fin n) (e : Fin d) :
   | (simp [lin, MvPowerSeries.pderiv_X, Pi.single_apply, MvPowerSeries.smul_eq_C_mul]; done)
 
 /- English proof (translation)
-Establish `hΨ : HasSubst (psi L β w)` using `hasSubst_lemma (cc_psi L β w)`. Establish `hpt : ∀ (j : Fin n) (i : Fin d), constantCoeff (pt C d j i) = 0` using `fun j i => by simp [pt]`. Establish `hcol : ∀ (j : Fin n) (c : Fin d), pderiv C l (psi L β w (j, c)) = ∑ e, subst (psi L β w) (ev ![pt C d j, 0] (pderiv C ((1 : Fin 2), e) (G.F c))) * MvPowerSeries.C (β l j * w l e)`. Introduce `j c`. Establish `hlin : HasSubst (lin β w j)` using `hasSubst_lemma (cc_lin β w j)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hE : HasSubst (expOf L)` using `hasSubst_lemma (isExp_expOf L).1`. Use `show pderiv C l (subst (lin β w j) (expOf L c)) = _`. Rewrite using `[pderiv_subst (cc_lin β w j)]`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Rewrite using `[pderiv_lin, GlobalTheory.LogJacobian.pderiv_expOf, subst_subst_eq_subst_comp hE hlin]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Apply the tactic sequence `exact subst_jacEntry G L hL (psi L β w) (cc_psi L β w) j e c`. Rewrite using `[pderiv_subst (cc_psi L β w), Fintype.sum_prod_type]`. Simplify using `only [hcol]`. Simplify using `only [GlobalTheory.MatChain.dofN_eq G, GlobalTheory.MatChain.jv]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← MvPowerSeries.coe_substAlgHom hΨ]`. Simplify using `only [map_sum, map_mul, MvPowerSeries.coe_substAlgHom, subst_C_eq_C' hΨ]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.mul_sum, Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.MatChain.ev_jac G (hpt j)]`. Apply the tactic sequence `try rw [map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem pderiv_subst_psi (G : FGLaw C d) (hL : ∀ a, L.F a = subst (twoVars C d) (G.F a)) (l : Λ) (g : PS C n d) :
     pderiv C l (subst (psi L β w) g) =
@@ -295,31 +295,27 @@ end Chain
 open Formalism.MainNotions.ModuliIntegralCharts.H1.FormalGroupCopies GlobalTheory.MatChain in
 
 /- English proof (translation)
-Introduce `C _ _ v d G L hL n ι Λ _ _ cp u β t w hcp hu P g`. Use `show constantCoeff (DpolyN G.F cp u (MvPolynomial.aeval (fun l => ∑ j, MvPolynomial.C (β l j) * (MvPolynomial.X (t l j) : MvPolynomial ι C)) P) g) = derivAt0 P (subst (psi L β w) g)`. Establish `hΨ : HasSubst (psi L β w)` using `hasSubst_lemma (cc_psi L β w)`. Establish `hmon0 : ∀ f : PS C n d, DmonN G.F cp u 0 f = f`. Introduce `f`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[DmonN]`. Establish `hsub : ∀ (Q : MvPolynomial ι C) (s : Finset (ι →₀ ℕ)) (f : PS C n d), Q.support ⊆ s → DpolyN G.F cp u Q f = ∑ m ∈ s, MvPowerSeries.C (MvPolynomial.coeff m Q) * DmonN G.F cp u m f`. Introduce `Q s f hs`. Unfold `DpolyN`. Use `Finset.sum_subset hs fun m _ hm => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [MvPolynomial.mem_support_iff, not_not] at hm`. Simplify using `[hm]`. Establish `hadd : ∀ (Q1 Q2 : MvPolynomial ι C) (f : PS C n d), DpolyN G.F cp u (Q1 + Q2) f = DpolyN G.F cp u Q1 f + DpolyN G.F cp u Q2 f`. Introduce `Q1 Q2 f`. Rewrite using `[hsub (Q1 + Q2) (Q1.support ∪ Q2.support) f MvPolynomial.support_add, hsub Q1 (Q1.support ∪ Q2.support) f Finset.subset_union_left, hsub Q2 (Q1.support ∪ Q2.support) f Finset.subset_union_right, ← Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_add, map_add, add_mul]`. Establish `hC : ∀ (a : C) (f : PS C n d), DpolyN G.F cp u (MvPolynomial.C a) f = MvPowerSeries.C a * f`. Introduce `a f`. Rewrite using `[hsub (MvPolynomial.C a) {0} f (by rw [MvPolynomial.C_apply]; exact MvPolynomial.support_monomial_subset), Finset.sum_singleton, MvPolynomial.coeff_C, if_pos rfl, hmon0]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfin : ∀ (Q : Fin n → MvPolynomial ι C) (f : PS C n d), DpolyN G.F cp u (∑ j, Q j) f = ∑ j, DpolyN G.F cp u (Q j) f` using `fun Q f => map_sum (AddMonoidHom.mk' (fun Q => DpolyN G.F cp u Q f) (fun Q1 Q2 => hadd Q1 Q2 f)) Q Finset.univ`. Establish `hcomm1 : ∀ (j : Fin n) (x : Fin d → C) (Q : MvPolynomial ι C) (f : PS C n d), DofN G.F j x (DpolyN G.F cp u Q f) = DpolyN G.F cp u Q (DofN G.F j x f)`. Introduce `j x Q`. Proceed by induction on `Q using MvPolynomial.induction_on`. Use `next a =>`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `f`. Rewrite using `[hC, hC, GlobalTheory.MatChain.dofN_C_mul]`. Use `next Q1 Q2 h1 h2 =>`. Introduce `f`. Rewrite using `[hadd, hadd, GlobalTheory.MatChain.dofN_add, h1, h2]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `next Q m h =>`. Introduce `f`. Rewrite using `[GlobalTheory.MatChain.dpoly_mul_X, GlobalTheory.MatChain.dpoly_mul_X, Formalism.MainNotions.ModuliIntegralCharts.H1.FoldPermutation.dofN_comm, h]`. Establish `hccs : ∀ f : PS C n d, constantCoeff (subst (psi L β w) f) = constantCoeff f`. Introduce `f`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h0 : constantCoeff (f - MvPowerSeries.C (constantCoeff f)) = 0` using `by simp`. Establish `h1` using `cc_subst_lemma_2 (cc_psi L β w) h0`. Rewrite `h1` using `[← MvPowerSeries.coe_substAlgHom hΨ, map_sub, MvPowerSeries.coe_substAlgHom, subst_C_eq_C' hΨ, map_sub]`. Simplify `h1` using `[sub_eq_zero]`. Establish `hlinD : ∀ (Q : MvPolynomial Λ C) (b : Fin n → C) (s : Fin n → MvPowerSeries Λ C), derivAt0 Q (∑ j, MvPowerSeries.C (b j) * s j) = ∑ j, b j * derivAt0 Q (s j)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Introduce `Q b s`. Simplify using `only [derivAt0, map_sum, MvPowerSeries.coeff_C_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun α _ => by ring`. Use `revert g`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Proceed by induction on `P using MvPolynomial.induction_on`. Use `next a =>`. Introduce `g`. Rewrite using `[MvPolynomial.aeval_C, MvPolynomial.algebraMap_eq, hC, MvPolynomial.C_apply, derivAt0_monomial]`. Simplify using `[mfact, hccs, MvPowerSeries.coeff_zero_eq_constantCoeff_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `next P1 P2 h1 h2 =>`. Introduce `g`. Rewrite using `[map_add, hadd, map_add, h1, h2, (derivAt0_linear C v Λ P1 P2 (subst (psi L β w) g) (subst (psi L β w) g) 0).2.2.1]`. Use `next Q l h =>`. Introduce `g`.
-
-Establish `hφ : MvPolynomial.aeval (fun l => ∑ j, MvPolynomial.C (β l j) * (MvPolynomial.X (t l j) : MvPolynomial ι C)) (Q * MvPolynomial.X l) = ∑ j, MvPolynomial.C (β l j) * (MvPolynomial.aeval (fun l => ∑ j, MvPolynomial.C (β l j) * (MvPolynomial.X (t l j) : MvPolynomial ι C)) Q * MvPolyn …`. Rewrite using `[map_mul, MvPolynomial.aeval_X, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Rewrite using `[hφ, hfin]`. Simplify using `only [GlobalTheory.MatChain.dpoly_C_mul, GlobalTheory.MatChain.dpoly_mul_X, hcp, hu, hcomm1]`.
-
-Rewrite using `[← derivAt0_pderiv v Q l, pderiv_subst_psi L β w G hL l g, ← MvPowerSeries.coe_substAlgHom hΨ]`. Simplify using `only [map_sum, map_mul, MvPowerSeries.coe_substAlgHom, subst_C_eq_C' hΨ, MvPowerSeries.constantCoeff_C, h]`. Rewrite using `[hlinD]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem constantCoeff_dpolyN_eq_derivAt0 : ∀ (C : Type) [Field C] [CharZero C] (v : AddValuation C (WithTop ℝ)) (d : ℕ) (G : FGLaw C d) (L : LogFGL v d), (∀ a, L.F a = MvPowerSeries.subst (twoVars C d) (G.F a)) → ∀ (n : ℕ) (ι Λ : Type) [Fintype ι] [Fintype Λ] (cp : ι → Fin n) (u : ι → Fin d → C) (β : Λ → Fin n → C) (t : Λ → Fin n → ι) (w : Λ → Fin d → C), (∀ l j, cp (t l j) = j) → (∀ l j, u (t l j) = w l) → ∀ (P : MvPolynomial Λ C) (g : PS C n d), MvPowerSeries.constantCoeff (DpolyN G.F cp u (MvPolynomial.aeval (fun l => ∑ j, MvPolynomial.C (β l j) * (MvPolynomial.X (t l j) : MvPolynomial ι C)) P) g) = derivAt0 P (MvPowerSeries.subst (fun q : Fin n × Fin d => (MvPowerSeries.subst (fun e : Fin d => ∑ l, (β l q.1 * w l e) • (MvPowerSeries.X l : MvPowerSeries Λ C)) (expOf L q.2) : MvPowerSeries Λ C)) g) := by
   intro C _ _ v d G L hL n ι Λ _ _ cp u β t w hcp hu P g

@@ -17,22 +17,22 @@ variable {E K ι : Type} [Field E] [Field K] [Fintype ι] (emb : ι → E →+* 
 def cev : Pol ℂ ι n →ₛₗ[starRingEnd ℂ] (Fr emb σ n → ℂ) := evFr (Gr emb σ n) (shiftOf lam) (starRingEnd ℂ)
 
 /- English proof (translation)
-The claim follows from `evFr_injective _ _ _ (fr0 emb σ n)`.
+A detailed English derivation is pending.
 -/
 theorem cev_injective : Function.Injective (cev emb σ lam) := evFr_injective _ _ _ (fr0 emb σ n)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, map_mem_CSpan (starRingEnd ℂ) lam P hP, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem cev_mem {P : Pol ℂ ι n} (hP : P ∈ VV ℂ lam) : cev emb σ lam P ∈ ValC (Gr emb σ n) lam :=
   ⟨_, map_mem_CSpan (starRingEnd ℂ) lam P hP, rfl⟩
 
 /- English proof (translation)
-Take `⟨p, hp, rfl⟩` from `hz`. Establish `h` using `CSpan_le_span (starRingEnd ℂ) lam hp`. Use `clear hp`. Proceed by induction on `h using Submodule.span_induction with`. Consider the case `mem x hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨P, hP, rfl⟩` from `hx`. Conclude with `⟨P, hP, rfl⟩`. Consider the case `zero => exact ⟨0, Submodule.zero_mem _, by rw [map_zero, map_zero]⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨P, hP, e⟩` from `hx`.
+Supply the required witnesses or components. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Q, hQ, e'⟩` from `hy`. Conclude with `⟨P + Q, Submodule.add_mem _ hP hQ, by rw [map_add, map_add, e, e']⟩`. Consider the case `smul r x _ hx`. Take `⟨P, hP, e⟩` from `hx`. Conclude with `⟨starRingEnd ℂ r • P, Submodule.smul_mem _ _ hP, by rw [map_smulₛₗ, map_smul, e, Complex.conj_conj]⟩`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_cev {z : Fr emb σ n → ℂ} (hz : z ∈ ValC (Gr emb σ n) lam) : ∃ P ∈ VV ℂ lam, cev emb σ lam P = z := by
   obtain ⟨p, hp, rfl⟩ := hz
@@ -52,9 +52,7 @@ theorem exists_cev {z : Fr emb σ n → ℂ} (hz : z ∈ ValC (Gr emb σ n) lam)
     exact ⟨starRingEnd ℂ r • P, Submodule.smul_mem _ _ hP, by rw [map_smulₛₗ, map_smul, e, Complex.conj_conj]⟩
 
 /- English proof (translation)
-Establish `h` using `polOf_fnOf (Gr emb σ n) (shiftOf lam) (fr0 emb σ n) (MvPolynomial.map (starRingEnd ℂ) P)`. Establish `e : (fun τ => ((fr0 emb σ n).1 τ)⁻¹) = (1 : ι → Matrix (Fin n) (Fin n) ℂ)`. Use function extensionality and compare the values at `τ`. Conclude with `inv_one`. Rewrite `h` using `[e]`.
-
-Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem polOf_cev (P : Pol ℂ ι n) :
     polOf (Gr emb σ n) (shiftOf lam) (fr0 emb σ n) (cev emb σ lam P) = MvPolynomial.map (starRingEnd ℂ) P := by
@@ -66,9 +64,9 @@ theorem polOf_cev (P : Pol ℂ ι n) :
   exact h
 
 /- English proof (translation)
-Establish `h1` using `map_extNorm (RingHom.id ℂ) lam`. Rewrite `h1` using `[RingHom.id_apply, pb_extNorm_eq]`. Rewrite using `[nfAll, ← h1, pairB_apply, div_eq_inv_mul]`. Use `congr 1`. Rewrite using `[fockF_eq_sum _ _ _ subset_rfl, fockB]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_map, starRingEnd_apply, star_star, mfact]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem nfAll_conj (p P : Pol ℂ ι n) : nfAll lam p (MvPolynomial.map (starRingEnd ℂ) P) = pairB lam p P := by
   have h1 := map_extNorm (RingHom.id ℂ) lam
@@ -80,16 +78,16 @@ theorem nfAll_conj (p P : Pol ℂ ι n) : nfAll lam p (MvPolynomial.map (starRin
   rw [MvPolynomial.coeff_map, starRingEnd_apply, star_star, mfact]
 
 /- English proof (translation)
-Rewrite using `[ipVal, ipFr_apply, polOf_cev, nfAll_conj]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ipVal_cev (P : Pol ℂ ι n) (w : Fr emb σ n → ℂ) :
     ipVal emb σ lam (cev emb σ lam P) w = pairB lam (polOf (Gr emb σ n) (shiftOf lam) (fr0 emb σ n) w) P := by
   rw [ipVal, ipFr_apply, polOf_cev, nfAll_conj]
 
 /- English proof (translation)
-Take `⟨P, -, rfl⟩` from `exists_cev emb σ lam hz`. Rewrite using `[ipVal, ipFr_apply, polOf_cev, nfAll]`. Establish `hP : MvPolynomial.map (starRingEnd ℂ) P ≠ 0`. Introduce `h`. Apply `h0` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `: P = 0` using `MvPolynomial.map_injective _ (starRingEnd ℂ).injective (by rw [h, map_zero])`. Rewrite using `[this, map_zero]`. Conclude with `div_pos (ps_fockF_pos _ hP) (Finset.prod_pos fun τ _ => ps_fockF_pos _ (Formalism.GradedWeylDivisibility.hwNe ℂ n n le_rfl _))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ipVal_pos {z : Fr emb σ n → ℂ} (hz : z ∈ ValC (Gr emb σ n) lam) (h0 : z ≠ 0) : 0 < ipVal emb σ lam z z := by
   obtain ⟨P, -, rfl⟩ := exists_cev emb σ lam hz
@@ -103,13 +101,13 @@ theorem ipVal_pos {z : Fr emb σ n → ℂ} (hz : z ∈ ValC (Gr emb σ n) lam) 
     (Finset.prod_pos fun τ _ => ps_fockF_pos _ (Formalism.GradedWeylDivisibility.hwNe ℂ n n le_rfl _))
 
 /- English proof (translation)
-Establish `h1 : starRingEnd ℂ (σ (c : K))⁻¹ = σ c`. Take `⟨m, hm, hc⟩` from `hc`. Establish `h2 : σ (c : K) ^ m = 1` using `by rw [← map_pow, ← Units.val_pow_eq_pow_val, hc, Units.val_one, map_one]`. Establish `h3 : ‖σ (c : K)‖ = 1` using `Complex.norm_eq_one_of_pow_eq_one h2 hm.ne'`. Rewrite using `[Complex.inv_eq_conj h3, Complex.conj_conj]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : ((γ⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) = (γ : Matrix (Fin n) (Fin n) E)ᴴ`. Rewrite using `[Matrix.coe_units_inv]`. Conclude with `Matrix.inv_eq_left_inv hγ`. Use function extensionality and compare the values at `y`. Rewrite using `[map_smulₛₗ, h1, trFr_apply, Pi.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `(congrFun (evFr_actP (Gr emb σ n) (starRingEnd ℂ) lam (embGL (embAt σ emb) γ) P) y).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (fnOf_tr (G := Gr emb σ n) (G' := Gr emb σ n) (shiftOf lam) 1 (fun τ => ((γ⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E).map (embAt σ emb τ)) (MvPolynomial.map (starRingEnd ℂ) P) (frMul emb σ γ⁻¹ y) y fun _ => rfl).symm` and prove the remaining obligations. Use `congrArg (fun M => fnOf (Gr emb σ n) (shiftOf lam) M (MvPolynomial.map (starRingEnd ℂ) P) y) ?_` and prove the remaining obligations. Use function extensionality and compare the values at `τ`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h4, Pi.one_apply, Matrix.one_mul]`. Use extensionality with `a b`. Conclude with `(hE τ _).symm`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem cev_act [StarRing E] (hE : ∀ τ x, embAt σ emb τ (star x) = starRingEnd ℂ (embAt σ emb τ x)) (γ : GL (Fin n) E)
     (hγ : (γ : Matrix (Fin n) (Fin n) E)ᴴ * (γ : Matrix (Fin n) (Fin n) E) = 1) (c : Kˣ) (hc : ∃ m : ℕ, 0 < m ∧ c ^ m = 1)
@@ -162,16 +160,16 @@ def jM : Q.Mt emb σ →ₛₗ[starRingEnd ℂ] (Q.S'.Cl → Fr emb σ (R.N R.m 
 variable {Q}
 
 /- English proof (translation)
-The claim follows from `(F.2 b d).2 g (by rw [hH]; trivial)`.
+A detailed English derivation is pending.
 -/
 theorem mt_law (hH : ∀ b, Q.H b = ⊤) (F : Q.Mt emb σ) (b : Q.S'.β) (g : Q.S'.G b) (d : Q.S'.D b) :
     F.1 b (g • d) = law Q emb σ b g (F.1 b d) :=
   (F.2 b d).2 g (by rw [hH]; trivial)
 
 /- English proof (translation)
-Introduce `F G h`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `b d`. Establish `h1` using `cev_injective emb σ Q.sgT (congrFun h (Q.S'.cl b d))`. Establish `h2` using `mt_law emb σ hH F b (Q.S'.mv b d) (Q.S'.rep (Q.S'.cl b d))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `mt_law emb σ hH G b (Q.S'.mv b d) (Q.S'.rep (Q.S'.cl b d))`. Rewrite `h2`, `h3` using `[Q.S'.mv_smul]`. Rewrite using `[h2, h3]`. Conclude with `congrArg _ h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jM_injective (hH : ∀ b, Q.H b = ⊤) : Function.Injective (jM Q emb σ) := by
   intro F G h
@@ -188,14 +186,14 @@ variable (hE : ∀ τ x, embAt σ emb τ (star x) = starRingEnd ℂ (embAt σ em
 include hE
 
 /- English proof (translation)
-The claim follows from `cev_act emb σ Q.sgT hE _ (h.step.unit b g) _ (h.step.root b g) P`.
+A detailed English derivation is pending.
 -/
 theorem cev_law (h : Q.Ok) (b : Q.S'.β) (g : Q.S'.G b) (P : Pol ℂ ι (R.N R.m - 1)) :
     cev emb σ Q.sgT (law Q emb σ b g P) = Q.S'.tr emb σ b g (cev emb σ Q.sgT P) :=
   cev_act emb σ Q.sgT hE _ (h.step.unit b g) _ (h.step.root b g) P
 
 /- English proof (translation)
-Introduce `c`. Use `⟨cev_mem emb σ Q.sgT (F.2 c.1 (Q.S'.rep c)).1, fun g => ?_⟩` and prove the remaining obligations. Establish `h2` using `mt_law emb σ hH F c.1 g.1 (Q.S'.rep c)`. Rewrite `h2` using `[g.2]`. Conclude with `(cev_law emb σ hE h c.1 g.1 _).symm.trans (congrArg _ h2.symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jM_mem (h : Q.Ok) (hH : ∀ b, Q.H b = ⊤) (F : Q.Mt emb σ) : jM Q emb σ F ∈ Q.S'.Fi emb σ Q.sgT := by
   intro c
@@ -205,17 +203,15 @@ theorem jM_mem (h : Q.Ok) (hH : ∀ b, Q.H b = ⊤) (F : Q.Mt emb σ) : jM Q emb
   exact (cev_law emb σ hE h c.1 g.1 _).symm.trans (congrArg _ h2.symm)
 
 /- English proof (translation)
-Use `choose P hP hPz using fun c => exists_cev emb σ Q.sgT (hz c).1`. Establish `hfix : ∀ b q (g : Q.S'.G b), g • Q.S'.rp b q = Q.S'.rp b q → law Q emb σ b g (P ⟨b, q⟩) = P ⟨b, q⟩`. Introduce `b q g hg`. Apply `cev_injective emb σ Q.sgT` to reduce the goal to its premises. Rewrite using `[cev_law emb σ hE h, hPz]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(hz ⟨b, q⟩).2 ⟨g, hg⟩`. Establish `key : ∀ b q (g : Q.S'.G b) (d : Q.S'.D b), g • Q.S'.rp b q = d → law Q emb σ b (Q.S'.mv b d) (P (Q.S'.cl b d)) = law Q emb σ b g (P ⟨b, q⟩)`. Introduce `b q g d hd`. Establish `hq : q = Quotient.mk (MulAction.orbitRel (Q.S'.G b) (Q.S'.D b)) d`. Rewrite using `[← Q.S'.rp_spec b q]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Establish an intermediate fact.
 
-Conclude with `(Quotient.sound (⟨g, hd⟩ : (MulAction.orbitRel (Q.S'.G b) (Q.S'.D b)).r d (Q.S'.rp b q))).symm`. Substitute `hq` using the available equality. Establish `h1 : Q.S'.mv b d • Q.S'.rp b (Quotient.mk _ d) = d` using `Q.S'.mv_smul b d`. Establish `h2` using `hfix b (Quotient.mk _ d) (g⁻¹ * Q.S'.mv b d) (by rw [mul_smul, h1, inv_smul_eq_iff, hd])`. Use `Eq.trans ?_ (congrArg (law Q emb σ b g) h2)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← Module.End.mul_apply ((law Q emb σ b) g), ← map_mul, mul_inv_cancel_left]`. Use `⟨⟨fun b d => law Q emb σ b (Q.S'.mv b d) (P (Q.S'.cl b d)), fun b d => ⟨?_, fun g _ => ?_⟩⟩, ?_⟩` and prove the remaining obligations. Conclude with `Submodule.smul_mem _ _ (polyAction_mem_VV _ _ (hP _))`. Establish `h1 : Q.S'.mv b d • Q.S'.rp b (Quotient.mk _ d) = d` using `Q.S'.mv_smul b d`. Use `(key b (Quotient.mk _ d) (g * Q.S'.mv b d) (g • d) (by rw [mul_smul, h1])).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite using `[map_mul]`. Both sides reduce to the same expression. Use function extensionality and compare the values at `c`. Establish `h1` using `key c.1 c.2 1 (Q.S'.rep c) (one_smul _ _)`. Rewrite `h1` using `[map_one]`.
-
-Conclude with `(congrArg (cev emb σ Q.sgT) h1).trans (hPz c)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jM_onto (h : Q.Ok) (z : Q.S'.Cl → Fr emb σ (R.N R.m - 1) → ℂ) (hz : z ∈ Q.S'.Fi emb σ Q.sgT) :
     ∃ F, jM Q emb σ F = z := by
@@ -249,7 +245,7 @@ theorem jM_onto (h : Q.Ok) (z : Q.S'.Cl → Fr emb σ (R.N R.m - 1) → ℂ) (hz
 
 omit hE in
 /- English proof (translation)
-Simplify using `only [PerIn.ipP, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem petersson_apply (h : Q.Ok) (z w : Q.S'.Cl → Fr emb σ (R.N R.m - 1) → ℂ) :
     Q.ipP emb σ h z w = letI := Q.clFin h; ∑ c, Q.wt c * ipVal emb σ Q.sgT (z c) (w c) := by
@@ -258,7 +254,7 @@ theorem petersson_apply (h : Q.Ok) (z w : Q.S'.Cl → Fr emb σ (R.N R.m - 1) �
 
 omit hE in
 /- English proof (translation)
-Rewrite using `[petersson_apply]`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Use `congr 1`. Conclude with `(ipVal_cev emb σ Q.sgT _ _).symm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem period_eq (hI : I.Ok) (h : Q.Ok) (hc : ι → HCParam R) (w : Q.S'.Cl → Fr emb σ (R.N R.m - 1) → ℂ) (F : Q.Mt emb σ) :
     (Q.per emb σ hI h hc).period w F = Q.ipP emb σ h (jM Q emb σ F) w := by
@@ -270,9 +266,9 @@ theorem period_eq (hI : I.Ok) (h : Q.Ok) (hc : ι → HCParam R) (w : Q.S'.Cl �
 
 omit hE in
 /- English proof (translation)
-Use `letI := Q.clFin h`. Use `(Complex.lt_def.mp ?_ : (0 : ℂ).re < _ ∧ _).1` and prove the remaining obligations. Rewrite using `[petersson_apply]`. Establish `hw : ∀ c, 0 < Q.wt c` using `fun c => by haveI := h.step.fin_stab c.1 (Q.S'.rep c)`. Conclude with `inv_pos.2 (Nat.cast_pos.2 Nat.card_pos)`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `Function.ne_iff.1 h0`. Use `Finset.sum_pos' (fun c _ => ?_) ⟨c, Finset.mem_univ _, mul_pos (hw c) (ipVal_pos emb σ _ (hz c).1 hc)⟩` and prove the remaining obligations. Distinguish the cases in `h1 : z c = 0`. Simplify using `[h1]`. Conclude with `(mul_pos (hw c) (ipVal_pos emb σ _ (hz c).1 h1)).le`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem re_petersson_self_pos (h : Q.Ok) (z : Q.S'.Cl → Fr emb σ (R.N R.m - 1) → ℂ) (hz : z ∈ Q.S'.Fi emb σ Q.sgT) (h0 : z ≠ 0) :
     0 < (Q.ipP emb σ h z z).re := by
@@ -295,7 +291,7 @@ open Formalism.MainNotions Formalism.L2.Ker Formalism.UG GlobalTheory.Mem Global
 attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `B X I _ _ l _ u a`. Establish `hE : ∀ τ x, embAt B.embLL B.fields.emb τ (letI` using `B.fields.starE; star x) = starRingEnd ℂ (embAt B.embLL B.fields.emb τ x) := fun τ x => (GlobalTheory.Mem.FieldsLaws.fields_ok B).conjE _ x`. Establish `hH : ∀ b, (I.perIn u a).H b = ⊤` using `fun _ => rfl`. Conclude with `⟨jM (I.perIn u a) B.fields.emb B.embLL, jM_injective _ _ hH, jM_onto _ _ hE (l.per u a), jM_mem _ _ hE (l.per u a) hH, period_eq _ _ (l.ch u a) (l.per u a) (B.hcW u), re_petersson_self_pos _ _ (l.per u a)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem period_conj : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (u : B.Word) (a : I.ι), ∃ jM : (I.per l u a).Mt →ₛₗ[starRingEnd ℂ] (I.per l u a).Wrow, Function.Injective jM ∧ (∀ z ∈ (I.fm l u a).ptC, ∃ F, jM F = z) ∧ (∀ F, jM F ∈ (I.fm l u a).ptC) ∧ (∀ w F, (I.per l u a).period w F = (I.fm l u a).ipP (jM F) w) ∧ ∀ z ∈ (I.fm l u a).ptC, z ≠ 0 → 0 < ((I.fm l u a).ipP z z).re := by
   intro B X I _ _ l _ u a

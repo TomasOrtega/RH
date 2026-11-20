@@ -15,7 +15,7 @@ open scoped Matrix
 namespace GlobalTheory.FlatChange
 
 /- English proof (translation)
-Use `⟨(Matrix.blockDiagonal' K).submatrix e e, fun z τ i => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec, dotProduct, ← e.symm.sum_comp, Fintype.sum_sigma, Finset.sum_eq_single τ]`. Simplify using `[Matrix.mulVec, dotProduct]`. Introduce `τ' _ h`. Simplify using `[Matrix.blockDiagonal'_apply_ne _ _ _ h.symm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -32,9 +32,9 @@ theorem exists_blockMat {J : Type} [Fintype J] {m : J → ℕ} {g : ℕ} (e : Fi
   · simp
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `: B * Cᵀ = 1`. Use extensionality with `a i`. Use `congrFun (hC i) a` as an intermediate fact. Rewrite `this` using `[Pi.single_apply]`.
+Substitute using the available equality. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Matrix.one_apply, ← this]`. Both sides reduce to the same expression. Rewrite using `[← Matrix.det_transpose C, ← Matrix.det_mul, this, Matrix.det_one]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_mul_eq_one {n r : ℕ} (h : n = r) (B : Matrix (Fin r) (Fin r) ℂ) (C : Matrix (Fin n) (Fin n) ℂ)
     (hC : ∀ i, B.submatrix (Fin.cast h) (Fin.cast h) *ᵥ C i = Pi.single i 1) : B.det * C.det = 1 := by
@@ -48,7 +48,7 @@ theorem det_mul_eq_one {n r : ℕ} (h : n = r) (B : Matrix (Fin r) (Fin r) ℂ) 
   rw [← Matrix.det_transpose C, ← Matrix.det_mul, this, Matrix.det_one]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem submatrix_mulVec {n r : ℕ} (h : n = r) (B : Matrix (Fin r) (Fin r) ℂ) (v : Fin r → ℂ) (i : Fin n) :
     (B.submatrix (Fin.cast h) (Fin.cast h) *ᵥ fun j => v (Fin.cast h j)) i = (B *ᵥ v) (Fin.cast h i) := by
@@ -56,9 +56,9 @@ theorem submatrix_mulVec {n r : ℕ} (h : n = r) (B : Matrix (Fin r) (Fin r) ℂ
   rfl
 
 /- English proof (translation)
-Establish `hi : X.p0 + (i : ℕ) < r` using `by have := i.2; omega`. Unfold `perFr`. Rewrite using `[dif_pos hρ, dif_pos hi]`. Use `congr 1`. Use `ext`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `[h0]`.
+Simplify using the standard rewrite rules.
 -/
 theorem perFr_of_zero {E : Type} [Field E] [NumberField E] [IsCMField E] {n r : ℕ} (h : n = r) (X : Data E r)
     (h0 : X.p0 = 0) (x : Frame X.Ψ r) (v : Fin r → E) {ρ : E →+* ℂ} (hρ : ρ ∈ X.Ψ) (i : Fin n) :
@@ -73,29 +73,29 @@ theorem perFr_of_zero {E : Type} [Field E] [NumberField E] [IsCMField E] {n r : 
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c σ r U hq hσ hU k x x' τ hτ cf a hchg`. Take `⟨hr, hty, -, -, -, g, e, F, ik, φ, -, hpt⟩` from `hU`. Take `⟨-, hrt, -, -⟩` from `GlobalTheory.Relab.relab_good E H l c σ hσ`. Take `⟨hp0, hΨ⟩` from `hty k`. Take `⟨P, hPe, p, hx, hd, -⟩` from `hpt k x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨P', hPe', p', -, hd', -⟩` from `hpt k x'`. Establish `hm : ∀ ρ, relab c σ ρ ∈ (U.X k).Ψ → Dw.mult ρ = r` using `fun ρ h => by`. Unfold `Datum.mult`. Rewrite using `[if_pos ((hrt ρ).1 ((hΨ _).1 h))]`. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `hm' : ∀ ρ, Fin (Dw.mult ρ) → relab c σ ρ ∈ (U.X k).Ψ` using `fun ρ i => by`. Assume the negation of the conclusion as `h`. Establish `h1 : Dw.mult ρ = 0`. Unfold `Datum.mult`. Rewrite using `[if_neg (fun h' => h ((hΨ _).2 ((hrt ρ).2 h'))), hq]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `i.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Set `B : (U.X k).Ψ → Matrix (Fin r) (Fin r) ℂ` to `fun ρ => (mat x'.1 ρ)⁻¹ * mat x.1 ρ`. Set `K : ∀ ρ, Matrix (Fin (Dw.mult ρ)) (Fin (Dw.mult ρ)) ℂ` to `fun ρ => if h : relab c σ ρ ∈ (U.X k).Ψ then (B ⟨_, h⟩).submatrix (Fin.cast (hm ρ h)) (Fin.cast (hm ρ h)) else 0`. Establish `hK : ∀ ρ (h : relab c σ ρ ∈ (U.X k).Ψ), K ρ = (B ⟨_, h⟩).submatrix (Fin.cast (hm ρ h)) (Fin.cast (hm ρ h))` using `fun ρ h => dif_pos h`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨V, hV⟩` from `exists_blockMat e K`. Establish `hPV : ∀ b, P' b = V *ᵥ P b`. Introduce `b`. Use function extensionality and compare the values at `j`. Take `⟨⟨ρ, i⟩, rfl⟩` from `e.symm.surjective j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Establish `h` using `hm' ρ i`. Establish `h1 : ∀ (y : Frame (U.X k).Ψ r) (i : Fin (Dw.mult ρ)), perFr (U.X k) y (φ k b : Fin r → E) (relab c σ (e (e.symm ⟨ρ, i⟩)).1) (e (e.symm ⟨ρ, i⟩)).2 = ((mat y ⟨_, h⟩)⁻¹ *ᵥ Data.emb (relab c σ ρ) (φ k b : Fin r → E)) (Fin.cast (hm ρ h) i)` using `fun y i => by`. Rewrite using `[Equiv.apply_symm_apply]`. Conclude with `perFr_of_zero (hm ρ h) _ (hp0.trans hq) y _ h i`. Rewrite using `[hV, hPe', h1, hK ρ h]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hPe, h1]`. Rewrite using `[submatrix_mulVec, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv_cancel_right _ _ (isUnit_iff_ne_zero.2 (x.2 _).1)]`. Take `⟨-, -, hex⟩` from `GlobalTheory.FamRigid.ex_eq_of_level_group GlobalTheory.latMinkowski E H Dw l Xo _ g _ F (ik k) P P' (LinearEquiv.refl _ _) V p p' (fun _ _ => rfl) (fun a _ => ⟨0, by simp⟩) (fun a => ⟨0, by simp⟩) hPV`. Establish `hcol : ∀ i, V *ᵥ (∑ j, (show ℂ from cf τ.1 i j) • (Pi.single (e.symm ⟨τ.1, j⟩) 1 : Fin g → ℂ)) = Pi.single (e.symm ⟨τ.1, i⟩) 1`. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hc : IsCombAt (F.u (ik k) P) ((U.un k x).u τ.1) (show Fin (Dw.mult τ.1) → ℂ from cf τ.1 i) ((U.un k x').u τ.1 i)`. Rewrite using `[← hx]`. Conclude with `hchg.2.1 τ.1 i`. Establish `d1` using `(GlobalTheory.DerLin.isCombAt_iff_isDerivAt0 E H Dw l Xo _ g _ F (ik k) P p _ ((U.un k x).u τ.1) _ (hd τ.1) (cf τ.1 i) _).1 hc`. Establish `d2` using `(GlobalTheory.ExpChain.isDerivAt0_ex_iff E H Dw l Xo _ g _ F (ik k) P p (ik k) P' (Matrix.mulVecLin V) p' hex _ _).1 d1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `tn` using `GlobalTheory.isDerivAt0_ex_isTanAt E H Dw l Xo _ g _ F (ik k) P' p'`. Conclude with `(tn.2.2 _ (tn.1 _ _ d2)).unique d2 (hd' τ.1 i)`. Establish `hs : ∀ (i j : Fin (Dw.mult τ.1)), (Pi.single (e.symm ⟨τ.1, i⟩) 1 : Fin g → ℂ) (e.symm ⟨τ.1, j⟩) = (Pi.single i 1 : _ → ℂ) j`. Introduce `i j`. Simplify using `[Pi.single_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `hdet` using `det_mul_eq_one (hm _ hτ) (B ⟨_, hτ⟩) (show Matrix _ _ ℂ from cf τ.1) fun i => by`. Use function extensionality and compare the values at `j`. Rewrite using `[← hs, ← hcol, hV, hK _ hτ]`. Use `congr 2`. Use function extensionality and compare the values at `j'`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `(?_ : ∀ w : Fin (Dw.mult τ.1) → ℂ, w j' = (∑ j, w j • (Pi.single (e.symm ⟨τ.1, j⟩) 1 : Fin g → ℂ)) (e.symm ⟨τ.1, j'⟩)) (cf τ.1 i)` and prove the remaining obligations. Introduce `w`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, hs, smul_eq_mul]`. Simplify using `[Pi.single_apply]`. Establish `hx'` using `(x'.2 ⟨_, hτ⟩).1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Clear the denominators using the available nonvanishing facts.
 
-Simplify using `only [B, Matrix.det_mul, Matrix.det_nonsing_inv, Ring.inverse_eq_inv'] at hdet`. Express the relevant statement in the definitionally equal form `_ = Matrix.det (show Matrix _ _ ℂ from cf τ.1) * _`. Clear denominators, using `at hdet` for the nonvanishing conditions. Take the linear combination `-hdet`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem det_frChg : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), ∀ (σ : c.F →+* ℂ) (r : ℕ) (U : Unf Xo c σ r), Dw.q = 0 → GoodEmb c σ → IsUnf U → ∀ (k : U.Comp) (x x' : (U.X k).dom) (τ : Psi H) (hτ : relab c σ τ.1 ∈ (U.X k).Ψ) (g : (∀ ρ : E →+* ℂ, Matrix (Fin (Dw.mult ρ)) (Fin (Dw.mult ρ)) (CAt σ))) (a : CAt σ), FrChg g a (U.un k x) (U.un k x') → (mat x'.1 ⟨_, hτ⟩).det = toC (g τ.1).det * (mat x.1 ⟨_, hτ⟩).det := by
   classical

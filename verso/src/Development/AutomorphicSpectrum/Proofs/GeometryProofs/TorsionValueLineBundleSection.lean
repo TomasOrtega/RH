@@ -10,15 +10,15 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Sl.Transl.TorsChart
 
 /- English proof (translation)
-Establish `hz : ∀ u : Rˣ, u ^ (-((N : ℤ) ^ 2)) = (u ^ (N ^ 2))⁻¹` using `fun u => by`. Rewrite using `[zpow_neg, ← zpow_natCast]`. Use `push_cast`. Both sides reduce to the same expression. Establish `e₁ : g ^ (1 : ℤ) * g ^ (-((N : ℤ) ^ 2)) * a * (g * r) ^ (N ^ 2) = g * (a * r ^ (N ^ 2))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[hz, zpow_one, mul_pow]`. Combine the equalities or inequalities in the displayed calculation. Establish `e₂ : ((g' ^ (n : ℤ)) ^ (N ^ 2)) * (g ^ (1 : ℤ) * g' ^ (-((N : ℤ) ^ 2)) * v) ^ n = g ^ n * v ^ n`. Rewrite using `[hz, zpow_one, zpow_natCast, mul_pow, mul_pow, inv_pow, ← pow_mul, ← pow_mul, mul_comm n]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `l : (g ^ (1 : ℤ) * g ^ (-((N : ℤ) ^ 2)) * a).val * (g * r).val ^ (N ^ 2) = g.val * (a.val * r.val ^ (N ^ 2))`. Use `congrArg Units.val e₁` as an intermediate fact. Simplify `this` using `only [Units.val_mul, Units.val_pow_eq_pow_val]`. Establish `m : (g' ^ (n : ℤ)).val ^ (N ^ 2) * (g ^ (1 : ℤ) * g' ^ (-((N : ℤ) ^ 2)) * v).val ^ n = g.val ^ n * v.val ^ n`. Use `congrArg Units.val e₂` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `only [Units.val_mul, Units.val_pow_eq_pow_val]`. Rewrite `h` using `[l]`. Apply `(g ^ n).isUnit.mul_right_inj.1` to reduce the goal to its premises. Simplify using `only [Units.val_pow_eq_pow_val]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[mul_pow (g' ^ (n : ℤ)).val]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = g.val ^ n * v.val ^ n * s ^ (N ^ 2) := by rw [m]`. Use `_ = _ := by ring`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem alg {R : Type*} [CommRing R] (t s : R) (g g' a r v : Rˣ) (N n : ℕ)
     (h : t * ((g ^ (1 : ℤ) * g ^ (-((N : ℤ) ^ 2)) * a).val * (g * r).val ^ (N ^ 2)) ^ n =
@@ -56,25 +56,21 @@ theorem alg {R : Type*} [CommRing R] (t s : R) (g g' a r v : Rˣ) (N n : ℕ)
 variable {F : Type} [Field F] {X S : Scheme.{0}}
 
 /- English proof (translation)
-Establish `m₀ : o z ∈ L.U i₀` using `(top_le_iff_mem _ _ z).1 h₀`. Establish `mi : y z ∈ L.U i` using `(top_le_iff_mem _ _ z).1 hi`. Establish `mo : o z ∈ L.U (J o)` using `hJ o`. Establish `my : y z ∈ L.U (J y)` using `hJ y`. Establish `wm : ∀ (r : Sp F ⟶ X), r ≫ q = o → ∀ a c : L.ι, o z ∈ L.U a → r z ∈ L.U c → r z ∈ LB.wchart L (K` using `Fin 2) ![q, 𝟙 X] ![a, c] := by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `r hr' a c ha hc`. Use `Set.mem_iInter.2 fun k => ?_` and prove the remaining obligations. Use `fin_cases k`. Use `show q (r z) ∈ L.U a`. Establish `: q (r z) = o z` using `by rw [← hr']; rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `ha`. Conclude with `hc`. Establish `rm : ∀ a : L.ι, o z ∈ L.U a → b z ∈ LB.wchart L (K` using `PUnit) (fun _ => e) (fun _ => a) := by`. Introduce `a ha`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Set.mem_iInter.2 fun _ => ?_` and prove the remaining obligations. Use `show e (b z) ∈ L.U a`. Establish `: e (b z) = o z` using `by rw [← hbe]; rfl`. Rewrite using `[this]`. Conclude with `ha`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `sm : ∀ a : L.ι, y z ∈ L.U a → y z ∈ LB.wchart L (K` using `Fin 1) (fun _ => 𝟙 X) (fun _ => a) := fun a ha => Set.mem_iInter.2 fun _ => ha`. Establish `a₁ : toStk z (valF o _ (w.s ![i₀, i₀]).val) = (trF (L` using `L) (K := Fin 2) ![q, 𝟙 X] ![1, -((N : ℤ) ^ 2)] o z ![i₀, i₀] ![J o, J o] * gm o z (LB.wchart L ![q, 𝟙 X] ![J o, J o]) (w.s ![J o, J o])).val := (toStk_valF o _ z (wm o hoq _ _ m₀ m₀) _).trans (congrArg Units.val (gen_trans hw o z (wm o hoq _ _ m₀ m₀) (wm o hoq (J o) (J o) mo mo)) …`. Establish `a₂ : toStk z (valF b _ (rig.s fun _ => i₀).val) = (trF (L` using `L) (K := PUnit) (fun _ => e) (fun _ => 1) b z (fun _ => i₀) (fun _ => J o) * gm b z (LB.wchart L (fun _ => e) (fun _ => J o)) (rig.s fun _ => J o)).val := (toStk_valF b _ z (rm _ m₀) _).trans (congrArg Units.val (gen_trans hr b z (rm _ m₀) (rm (J o) mo)))`. Establish `a₃ : toStk z (valF y _ (s.f fun _ => i)) = (trF (L` using `L) (K := Fin 1) (fun _ => 𝟙 X) (fun _ => (n : ℤ)) y z (fun _ => i) (fun _ => J y)).val * gs y z (LB.wchart L (fun _ => 𝟙 X) (fun _ => J y)) (s.f fun _ => J y) := (GlobalTheory.ThetaInValues.toStk_valF' y _ z (sm _ mi) _).trans (sec_trans s y z (sm _ mi) (sm (J y) my))`. Establish `a₄ : toStk z (valF y _ (w.s ![i₀, i]).val) = (trF (L` using `L) (K := Fin 2) ![q, 𝟙 X] ![1, -((N : ℤ) ^ 2)] y z ![i₀, i] ![J o, J y] * gm y z (LB.wchart L ![q, 𝟙 X] ![J o, J y]) (w.s ![J o, J y])).val := (toStk_valF y _ z (wm y hyq _ _ m₀ mi) _).trans (congrArg Units.val (gen_trans hw y z (wm y hyq _ _ m₀ mi) (wm y hyq (J o) (J y) mo my)))`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hE'` using `congrArg (toStk z) hE`. Simplify using `only [map_mul, map_pow] at hE'`. Rewrite `hE'` using `[a₁, a₂, a₃, a₄]`. Establish `f₁ : trF (L` using `L) (K := Fin 2) ![q, 𝟙 X] ![1, -((N : ℤ) ^ 2)] o z ![i₀, i₀] ![J o, J o] = gm o z _ (L.g i₀ (J o)) ^ (1 : ℤ) * gm o z _ (L.g i₀ (J o)) ^ (-((N : ℤ) ^ 2)) := by`. Rewrite using `[trF, Fin.prod_univ_two]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show gm (o ≫ q) z _ (L.g i₀ (J o)) ^ (1 : ℤ) * gm (o ≫ 𝟙 X) z _ (L.g i₀ (J o)) ^ (-((N : ℤ) ^ 2)) = _`. Rewrite using `[hoq, Category.comp_id]`. Establish `f₂ : trF (L` using `L) (K := PUnit) (fun _ => e) (fun _ => 1) b z (fun _ => i₀) (fun _ => J o) = gm o z _ (L.g i₀ (J o)) := by`. Rewrite using `[trF, Fintype.prod_unique]`. Use `show gm (b ≫ e) z _ (L.g i₀ (J o)) ^ (1 : ℤ) = _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hbe, zpow_one]`. Establish `f₃ : trF (L` using `L) (K := Fin 1) (fun _ => 𝟙 X) (fun _ => (n : ℤ)) y z (fun _ => i) (fun _ => J y) = gm y z _ (L.g i (J y)) ^ (n : ℤ) := by`. Rewrite using `[trF, Fintype.prod_unique]`. Use `show gm (y ≫ 𝟙 X) z _ (L.g i (J y)) ^ (n : ℤ) = _`. Rewrite using `[Category.comp_id]`.
-
-Establish `f₄ : trF (L` using `L) (K := Fin 2) ![q, 𝟙 X] ![1, -((N : ℤ) ^ 2)] y z ![i₀, i] ![J o, J y] = gm o z _ (L.g i₀ (J o)) ^ (1 : ℤ) * gm y z _ (L.g i (J y)) ^ (-((N : ℤ) ^ 2)) := by`. Rewrite using `[trF, Fin.prod_univ_two]`. Use `show gm (y ≫ q) z _ (L.g i₀ (J o)) ^ (1 : ℤ) * gm (y ≫ 𝟙 X) z _ (L.g i (J y)) ^ (-((N : ℤ) ^ 2)) = _`. Rewrite using `[hyq, Category.comp_id]`. Rewrite `hE'` using `[f₁, f₂, f₃, f₄]`.
-
-Rewrite using `[val_of w o z J ![J o, J o] (Fin.forall_fin_two.2 ⟨congrArg J hoq, congrArg J (Category.comp_id _)⟩), val_of rig b z J (fun _ => J o) (fun _ => congrArg J hbe), sval_of s y z J (fun _ => J y) (fun _ => congrArg J (Category.comp_id _)), val_of w y z J ![J o, J y] (Fin.forall_fin_t …`. Conclude with `alg _ _ _ _ _ _ _ N n hE'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem charts {L : LB X} {q : X ⟶ X} {e : S ⟶ X} {b : Sp F ⟶ S} {o y : Sp F ⟶ X}
     (hbe : b ≫ e = o) (hoq : o ≫ q = o) (hyq : y ≫ q = o) {n N : ℕ}
@@ -160,9 +156,9 @@ end GlobalTheory.CompanionTheory.Ar.Sl.Transl.TorsChart
 namespace GlobalTheory.CompanionTheory.Ar.Sl.Transl
 
 /- English proof (translation)
-Introduce `S G _ _ P n s F _ b y N T hT z J hJ`. Take `⟨-, hy, w, i₀, i, hw, h₀, hi, hE⟩` from `hT`. Establish `key : ∀ t : Over.mk b ⟶ G, t ^ N = 1 → t.left ≫ ((𝟙 G : G ⟶ G) ^ N).left = (1 : Over.mk b ⟶ G).left`. Introduce `t ht`. Rewrite using `[← Over.comp_left, MonObj.comp_pow, Category.comp_id, ht]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hbe : b ≫ eSec G = (1 : Over.mk b ⟶ G).left`. Rewrite using `[Hom.one_def, Over.comp_left, Over.toUnit_left]`. Both sides reduce to the same expression. Use `⟨w, hw, TorsChart.charts (e := eSec G) hbe (key 1 (one_pow N)) (key y hy) w hw P.rig P.rigGen s T i₀ i h₀ hi hE z J hJ⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem torsVal_charts : ∀ {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] (P : RigLB G) {n : ℕ} (s : Out.H0 P.L n) {F : Type} [Field F] {b : Sp F ⟶ S} (y : Over.mk b ⟶ G) (N : ℕ) (T : F), TorsVal P s y N T → ∀ (z : Sp F) (J : (Sp F ⟶ G.left) → P.L.ι), Good P.L z J → ∃ w : LB.Gen (LB.LinComb P.L (K := Fin 2) ![((𝟙 G : G ⟶ G) ^ N).left, 𝟙 G.left] ![1, -((N : ℤ) ^ 2)]), w.IsGen ∧ toStk z T * ((val (Z := Sp F) w (1 : Over.mk b ⟶ G).left z J).val * (val (Z := Sp F) P.rig b z J).val ^ (N ^ 2)) ^ n = sval (Z := Sp F) s y.left z J ^ (N ^ 2) * (val (Z := Sp F) w y.left z J).val ^ n := by
   intro S G _ _ P n s F _ b y N T hT z J hJ

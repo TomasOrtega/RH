@@ -21,21 +21,21 @@ namespace GlobalTheory.LatDecomp
 variable {K E : Type} [Field K] [NumberField K] [Field E] [NumberField E] [Algebra K E]
 
 /- English proof (translation)
-The claim follows from `FiniteAdeleRing.ext _ fun w => finiteCompletionMap_coe K E w a`.
+A detailed English derivation is pending.
 -/
 theorem finiteAdeleMap_algebraMap (a : K) :
     finiteAdeleMap K E (algebraMap K (Af K) a) = algebraMap E (Af E) (algebraMap K E a) :=
   FiniteAdeleRing.ext _ fun w => finiteCompletionMap_coe K E w a
 
 /- English proof (translation)
-The claim follows from `finiteCompletionMap_mapsTo K E w ((HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).2 (hz _))`.
+A detailed English derivation is pending.
 -/
 theorem finiteAdeleMap_integral {z : Af K} (hz : ∀ v, Valued.v (z v) ≤ 1) (w : HeightOneSpectrum (𝓞 E)) :
     (finiteAdeleMap K E z) w ∈ w.adicCompletionIntegers E :=
   finiteCompletionMap_mapsTo K E w ((HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).2 (hz _))
 
 /- English proof (translation)
-Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, FiniteAdeleRing.algebraMap_apply, HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`. Conclude with `w.valuation_le_one s`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem algebraMap_integral (s : 𝓞 E) (w : HeightOneSpectrum (𝓞 E)) :
     (algebraMap E (Af E) (s : E)) w ∈ w.adicCompletionIntegers E := by
@@ -44,11 +44,11 @@ theorem algebraMap_integral (s : 𝓞 E) (w : HeightOneSpectrum (𝓞 E)) :
   exact w.valuation_le_one s
 
 /- English proof (translation)
-Take `⟨β, hβ0, hβ⟩` from `GlobalTheory.Idele.exists_mul_integral (R := 𝓞 E) (K := E) a`. Establish `hmem : ((Ideal.absNorm (Ideal.span {β}) : ℕ) : 𝓞 E) ∈ Ideal.span {β}` using `Ideal.absNorm_mem _`. Take `⟨g0, hg0⟩` from `Ideal.mem_span_singleton'.1 hmem`. Use `⟨Ideal.absNorm (Ideal.span {β}), ?_, fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hβ0`. Establish `e : ((Ideal.absNorm (Ideal.span {β}) : ℕ) : Af E) = algebraMap E (Af E) ((g0 : 𝓞 E) : E) * algebraMap E (Af E) (algebraMap (𝓞 E) E β)`. Rewrite using `[← map_mul]`. Use `congrArg (fun r : 𝓞 E => algebraMap E (Af E) (r : E)) hg0` as an intermediate fact. Simplify using `only [map_natCast] at this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← this]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[e, _root_.mul_assoc]`. Conclude with `mul_mem (algebraMap_integral g0 w) ((HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).2 (hβ w))`.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_nat_mul_integral (a : Af E) :
     ∃ d : ℕ, d ≠ 0 ∧ ∀ w, ((d : Af E) * a) w ∈ w.adicCompletionIntegers E := by
@@ -73,9 +73,9 @@ namespace GlobalTheory.LatDecomp
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Take `⟨d, hd0, hd⟩` from `exists_nat_mul_integral (algebraMap E (Af E) e * ((y⁻¹ : (Af E)ˣ) : Af E))`. Establish `hN : Ideal.absNorm c ≠ 0` using `fun h => hc (Ideal.absNorm_eq_zero_iff.1 h)`. Use `⟨Ideal.absNorm c * d, Nat.mul_ne_zero hN hd0, fun z hz => ?_⟩` and prove the remaining obligations. Establish `h` using `GlobalTheory.CMVal.PicFin.mul_mem_hatO (Ideal.absNorm_mem c) (y := z * ((d : Af E) * (algebraMap E (Af E) e * ((y⁻¹ : (Af E)ˣ) : Af E)))) (fun w => mul_mem (hz w) (hd w))`. Establish `e1 : z * algebraMap E (Af E) (((Ideal.absNorm c * d : ℕ) : E) * e) * ((y⁻¹ : (Af E)ˣ) : Af E) = algebraMap E (Af E) (algebraMap (OF E) E ((Ideal.absNorm c : ℕ) : OF E)) * (z * ((d : Af E) * (algebraMap E (Af E) e * ((y⁻¹ : (Af E)ˣ) : Af E))))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [map_mul, map_natCast, Nat.cast_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`. Conclude with `h`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_nat_mul_good {c : Ideal (OF E)} (hc : c ≠ ⊥) (y : (Af E)ˣ) (e : E) :
     ∃ N : ℕ, N ≠ 0 ∧ ∀ z : Af E, (∀ w, z w ∈ w.adicCompletionIntegers E) →
@@ -97,19 +97,15 @@ end GlobalTheory.LatDecomp
 namespace GlobalTheory.LatDecomp
 
 /- English proof (translation)
-Introduce `K _ _ E _ _ _ _ t c y hc x x' hx`. Use `haveI : Module.Finite K E := Module.Finite.of_restrictScalars_finite ℚ K E`. Use `set B := Module.finBasis K E`. Use `set yi : Af E := ((y⁻¹ : (Af E)ˣ) : Af E)`. Use `choose N hN0 hN using fun k => exists_nat_mul_good hc y (B k)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `set b : Fin (Module.finrank K E) → E := fun k => (N k : E) * B k with hb`. Use `set a' : Fin (Module.finrank K E) → K := fun k => B.repr x' k / (N k : K) with ha'`. Establish `hNK : ∀ k, (N k : K) ≠ 0` using `fun k => Nat.cast_ne_zero.2 (hN0 k)`. Establish `happrox : ∀ z : Af K, ∃ a : K, ∀ v, Valued.v ((z - algebraMap K (Af K) a) v) ≤ 1` using `fun z => by`. Take `⟨a, u, hu, e⟩` from `(GlobalTheory.AdLat.strong_approximation_mod_nat K 1 one_pos).1 z`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨a, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[e, one_smul, add_sub_cancel_left]`. Conclude with `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 (hu v)`. Use `choose a ha using fun k => happrox ((t : Af K) * algebraMap K (Af K) (a' k))`. Establish `hx' : x' = ∑ k, algebraMap K E (a' k) * b k` using `by conv_lhs => rw [← B.sum_repr x']`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, hb, ha']`. Simplify using `only`. Rewrite using `[← _root_.mul_assoc, ← map_natCast (algebraMap K E), ← map_mul, div_mul_cancel₀ _ (hNK k)]`. Use `⟨Module.finrank K E, b, a, a', fun k r => ?_, hx', ?_, ha⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hr : IsIntegral ℤ (algebraMap K E (r : K))` using `(RingOfIntegers.isIntegral_coe r).algebraMap`. Establish `h` using `hN k (algebraMap E (Af E) ((⟨algebraMap K E (r : K), hr⟩ : 𝓞 E) : E)) (algebraMap_integral ⟨algebraMap K E (r : K), hr⟩)`. Rewrite using `[mem_lattice, map_mul]`. Conclude with `h`. Establish `hT : (upIdele K E t : Af E) = finiteAdeleMap K E (t : Af K)` using `rfl`.
-
-Establish `hkey : algebraMap E (Af E) (x - ∑ k, algebraMap K E (a k) * b k) * yi = -(((upIdele K E t : Af E) * algebraMap E (Af E) x' - algebraMap E (Af E) x) * yi) + ∑ k, finiteAdeleMap K E ((t : Af K) * algebraMap K (Af K) (a' k) - algebraMap K (Af K) (a k)) * algebraMap E (Af E) (b k) * …`. Establish `e2 : ∀ k, finiteAdeleMap K E ((t : Af K) * algebraMap K (Af K) (a' k) - algebraMap K (Af K) (a k)) * algebraMap E (Af E) (b k) * yi = finiteAdeleMap K E (t : Af K) * (algebraMap E (Af E) (algebraMap K E (a' k) * b k)) * yi - algebraMap E (Af E) (algebraMap K E (a k) * b k) * yi` using `fun k => by`. Simplify using `only [map_sub, map_mul, finiteAdeleMap_algebraMap]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl fun k _ => e2 k, Finset.sum_sub_distrib, ← Finset.sum_mul, ← Finset.sum_mul, ← Finset.mul_sum, ← map_sum, ← map_sum, ← hx', hT, map_sub]`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[mem_lattice, hkey]`. Use `add_mem (neg_mem hx) (Subring.sum_mem _ fun k _ => ?_)` and prove the remaining obligations. Conclude with `hN k _ (finiteAdeleMap_integral (ha k))`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_decomp : ∀ (K : Type) [Field K] [NumberField K] (E : Type) [Field E] [NumberField E] [IsCMField E] [Algebra K E]
     (t : (Af K)ˣ) (c : Ideal (OF E)) (y : (Af E)ˣ), c ≠ ⊥ → ∀ x x' : E,
@@ -168,6 +164,6 @@ theorem exists_decomp : ∀ (K : Type) [Field K] [NumberField K] (E : Type) [Fie
 end GlobalTheory.LatDecomp
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.LatDecomp.exists_decomp`.
+A detailed English derivation is pending.
 -/
 example : ∀ (K : Type) [Field K] [NumberField K] (E : Type) [Field E] [NumberField E] [IsCMField E] [Algebra K E] (t : (Af K)ˣ) (c : Ideal (OF E)) (y : (Af E)ˣ), c ≠ ⊥ → ∀ x x' : E, ((upIdele K E t : Af E) * algebraMap E (Af E) x' - algebraMap E (Af E) x) * ((y⁻¹ : (Af E)ˣ) : Af E) ∈ hatO c → ∃ (m : ℕ) (b : Fin m → E) (a a' : Fin m → K), (∀ k (r : 𝓞 K), algebraMap K E (r : K) * b k ∈ lattice c y) ∧ x' = ∑ k, algebraMap K E (a' k) * b k ∧ x - ∑ k, algebraMap K E (a k) * b k ∈ lattice c y ∧ ∀ k (v : HeightOneSpectrum (𝓞 K)), Valued.v (((t : Af K) * algebraMap K (Af K) (a' k) - algebraMap K (Af K) (a k)) v) ≤ 1 := GlobalTheory.LatDecomp.exists_decomp

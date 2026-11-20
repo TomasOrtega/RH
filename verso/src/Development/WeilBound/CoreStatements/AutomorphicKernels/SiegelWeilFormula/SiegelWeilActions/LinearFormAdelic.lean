@@ -22,7 +22,7 @@ Both sides reduce to the same expression.
 theorem inclR_eq' (x : E) : inclR (F := F) (AF F) x = (1 : AF F) ⊗ₜ[F] x := rfl
 
 /- English proof (translation)
-Take `⟨τ⟩` from `(inferInstance : Nonempty (E →+* ℂ))`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[hB.cm.2.2.2 τ, hB.cm.2.2.2 τ, star_star]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem sigma_invol' {B : Base F E} (hB : B.IsGood σ) (x : E) : σ (σ x) = x := by
   obtain ⟨τ⟩ := (inferInstance : Nonempty (E →+* ℂ))
@@ -30,11 +30,9 @@ theorem sigma_invol' {B : Base F E} (hB : B.IsGood σ) (x : E) : σ (σ x) = x :
   rw [hB.cm.2.2.2 τ, hB.cm.2.2.2 τ, star_star]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Take `⟨τ⟩` from `(inferInstance : Nonempty (E →+* ℂ))`. Establish `hc : (NumberField.InfinitePlace.mk τ).IsComplex` using `hB.cm.2.1.isComplex _`. Rewrite `hc` using `[NumberField.InfinitePlace.isComplex_mk_iff]`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hc` to reduce the goal to its premises. Use `show NumberField.ComplexEmbedding.conjugate τ = τ`. Use extensionality with `x`. Rewrite using `[NumberField.ComplexEmbedding.conjugate_coe_eq]`. Use `show star (τ x) = τ x`.
-
-Rewrite using `[← hB.cm.2.2.2 τ x, hne x]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ne_sigma {B : Base F E} (hB : B.IsGood σ) : ∃ x : E, σ x ≠ x := by
   by_contra hne
@@ -50,15 +48,15 @@ theorem exists_ne_sigma {B : Base F E} (hB : B.IsGood σ) : ∃ x : E, σ x ≠ 
   rw [← hB.cm.2.2.2 τ x, hne x]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Establish `hli : LinearIndependent F ![(1 : E), q]`. Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t hst`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `ht : t = 0`. Substitute `ht` using the available equality. Use `⟨?_, rfl⟩` and prove the remaining obligations. Simplify using `using hst`. It suffices to derive a contradiction.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hne (-(s / t))` to reduce the goal to its premises. Establish `h1 : t • q = -(s • (1 : E))` using `eq_neg_of_add_eq_zero_right hst`. Establish `h2 : q = t⁻¹ • -(s • (1 : E))` using `by rw [← h1, smul_smul, inv_mul_cancel₀ ht, one_smul]`. Rewrite using `[h2, Algebra.algebraMap_eq_smul_one, smul_neg, smul_smul, neg_smul, div_eq_inv_mul]`. Establish `hcard : Fintype.card (Fin 2) = Module.finrank F E` using `by rw [hB.cm.2.2.1]; rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hspan` using `hli.span_eq_top_of_card_eq_finrank hcard`. Establish `hσid : σ.toLinearMap = LinearMap.id`. Use `LinearMap.ext_on_range hspan fun i => ?_` and prove the remaining obligations. Use `fin_cases i`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Simplify using `using hq`. Take `⟨x, hx⟩` from `exists_ne_sigma hB`. Conclude with `hx (by simpa using LinearMap.congr_fun hσid x)`.
+A detailed English derivation is pending.
 -/
 theorem fixed_mem {B : Base F E} (hB : B.IsGood σ) {q : E} (hq : σ q = q) : ∃ f : F, algebraMap F E f = q := by
   by_contra hne
@@ -86,9 +84,9 @@ theorem fixed_mem {B : Base F E} (hB : B.IsGood σ) {q : E} (hq : σ q = q) : �
   exact hx (by simpa using LinearMap.congr_fun hσid x)
 
 /- English proof (translation)
-Establish `hk0 : (k : E) ≠ 0`. Introduce `h`. Establish `h1 : ((k * k : ℤ) : E) = 1` using `by rw [hk]; simp`. Rewrite `h1` using `[Int.cast_mul, h, zero_mul]`. Conclude with `zero_ne_one h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hfix : σ (y / δ) = y / δ`. Rewrite using `[map_div₀, hy, hδ, mul_div_mul_left _ _ hk0]`. Take `⟨f, hf⟩` from `fixed_mem hB hfix`. Use `⟨f, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, hf, div_mul_cancel₀ _ hδ0]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eig_line {B : Base F E} (hB : B.IsGood σ) {k : ℤ} (hk : k * k = 1) {δ y : E} (hδ0 : δ ≠ 0)
     (hδ : σ δ = (k : E) * δ) (hy : σ y = (k : E) * y) : ∃ f : F, y = f • δ := by
@@ -104,9 +102,7 @@ theorem eig_line {B : Base F E} (hB : B.IsGood σ) {k : ℤ} (hk : k * k = 1) {�
   rw [Algebra.smul_def, hf, div_mul_cancel₀ _ hδ0]
 
 /- English proof (translation)
-Establish `hex : ∃ ℓ : E →ₗ[F] F, δ ≠ 0 → ℓ δ = 1`. Establish `: ¬ ∀ φ : Module.Dual F E, φ δ = 0` using `fun h => hδ0 ((Module.forall_dual_apply_eq_zero_iff F δ).1 h)`. Use `push Not at this`. Take `⟨φ, hφ⟩` from `this`. Conclude with `⟨(φ δ)⁻¹ • φ, fun _ => by simp [hφ]⟩`.
-
-Conclude with `Classical.epsilon_spec hex hδ0`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ell_spec {δ : E} (hδ0 : δ ≠ 0) : (Classical.epsilon fun ℓ : E →ₗ[F] F => δ ≠ 0 → ℓ δ = 1) δ = 1 := by
   have hex : ∃ ℓ : E →ₗ[F] F, δ ≠ 0 → ℓ δ = 1 := by
@@ -117,14 +113,14 @@ theorem ell_spec {δ : E} (hδ0 : δ ≠ 0) : (Classical.epsilon fun ℓ : E →
   exact Classical.epsilon_spec hex hδ0
 
 /- English proof (translation)
-Rewrite using `[inclR_eq', TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Simplify using `[linearFormAdelic, LinearMap.baseChange_tmul, ell_spec hδ0]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ellA_smul_inclR {δ : E} (hδ0 : δ ≠ 0) (a : AF F) : linearFormAdelic (F := F) δ (a • inclR (F := F) (AF F) δ) = a := by
   rw [inclR_eq', TensorProduct.smul_tmul', smul_eq_mul, mul_one]
   simp [linearFormAdelic, LinearMap.baseChange_tmul, ell_spec hδ0]
 
 /- English proof (translation)
-Use `⟨(Classical.epsilon fun ℓ : E →ₗ[F] F => δ ≠ 0 → ℓ δ = 1) e, ?_⟩` and prove the remaining obligations. Rewrite using `[inclR_eq']`. Simplify using `[linearFormAdelic, LinearMap.baseChange_tmul, Algebra.algebraMap_eq_smul_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ellA_inclR (δ : E) (e : E) : ∃ f : F, linearFormAdelic (F := F) δ (inclR (F := F) (AF F) e) = algebraMap F (AF F) f := by
   refine ⟨(Classical.epsilon fun ℓ : E →ₗ[F] F => δ ≠ 0 → ℓ δ = 1) e, ?_⟩
@@ -132,23 +128,21 @@ theorem ellA_inclR (δ : E) (e : E) : ∃ f : F, linearFormAdelic (F := F) δ (i
   simp [linearFormAdelic, LinearMap.baseChange_tmul, Algebra.algebraMap_eq_smul_one]
 
 /- English proof (translation)
-Establish `hinv` using `sigma_invol' hB`. Use `set ℓ : E →ₗ[F] F := Classical.epsilon fun ℓ : E →ₗ[F] F => δ ≠ 0 → ℓ δ = 1 with hℓdef`. Establish `hℓ : ℓ δ = 1` using `ell_spec hδ0`. Establish `hsm : ∀ x : E, (k : F) • x = (k : E) * x` using `fun x => by rw [Algebra.smul_def, map_intCast]`. Establish `hkk : (k : F) * k = 1` using `by exact_mod_cast hk`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `g : E →ₗ[F] E` to `ℓ.smulRight δ`. Set `p : E →ₗ[F] E` to `LinearMap.id + (k : F) • σ.toLinearMap`. Establish `hzero : (LinearMap.id - g) ∘ₗ p = 0`. Use extensionality with `e`. Establish `hw : σ (e + (k : F) • σ e) = (k : E) * (e + (k : F) • σ e)`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsm (σ e), map_add, map_mul, map_intCast, hinv, mul_add, ← mul_assoc, ← Int.cast_mul, hk, Int.cast_one, one_mul, add_comm]`. Take `⟨f, hf⟩` from `eig_line hB hk hδ0 hδ hw`. Use `show (e + (k : F) • σ e) - ℓ (e + (k : F) • σ e) • δ = 0`. Rewrite using `[hf, map_smul, hℓ, smul_eq_mul, mul_one, sub_self]`. Establish `hbc : ∀ w : AE F E, (LinearMap.id - g).baseChange (AF F) w = w - linearFormAdelic (F` using `F) δ w • inclR (F := F) (AF F) δ := by`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `w`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e`. Rewrite using `[LinearMap.baseChange_tmul, inclR_eq', TensorProduct.smul_tmul', smul_eq_mul, mul_one]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using `[linearFormAdelic, g, LinearMap.baseChange_tmul, TensorProduct.tmul_sub, TensorProduct.smul_tmul]`. Both sides reduce to the same expression. Consider the case `add x y hx hy`. Rewrite using `[map_add, hx, hy, map_add, add_smul]`. Normalize the expressions using the abelian group laws.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hpc : ∀ w : AE F E, p.baseChange (AF F) w = w + (k : F) • cA σ w`. Introduce `w`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Simplify using `[p, cA, LinearMap.baseChange_tmul]`. Consider the case `add x y hx hy`. Rewrite using `[map_add, hx, hy, map_add, smul_add]`. Normalize the expressions using the abelian group laws. Establish `hkz : (k : F) • cA σ z = z`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hz, show ((k : ℤ) : AE F E) = algebraMap F (AE F E) (k : F) by rw [map_intCast], ← Algebra.smul_def, smul_smul, hkk, one_smul]`. Establish `h2 : p.baseChange (AF F) z = (2 : F) • z`. Rewrite using `[hpc, hkz, two_smul]`. Establish `h0 : (LinearMap.id - g).baseChange (AF F) (p.baseChange (AF F) z) = 0`. Rewrite using `[← LinearMap.comp_apply, ← LinearMap.baseChange_comp, hzero, LinearMap.baseChange_zero, LinearMap.zero_apply]`.
-
-Rewrite `h0` using `[h2, LinearMap.map_smul_of_tower, hbc]`. Conclude with `(sub_eq_zero.1 ((smul_eq_zero.1 h0).resolve_left two_ne_zero))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eig_AE {B : Base F E} (hB : B.IsGood σ) {k : ℤ} (hk : k * k = 1) {δ : E} (hδ0 : δ ≠ 0)
     (hδ : σ δ = (k : E) * δ) {z : AE F E} (hz : cA σ z = (k : AE F E) * z) :
@@ -199,7 +193,7 @@ theorem eig_AE {B : Base F E} (hB : B.IsGood σ) {k : ℤ} (hk : k * k = 1) {δ 
   exact (sub_eq_zero.1 ((smul_eq_zero.1 h0).resolve_left two_ne_zero))
 
 /- English proof (translation)
-The claim follows from `IsModuleTopology.continuous_of_linearMap (R := AF F) (linearFormAdelic (F := F) (E := E) δ)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_ellA (δ : E) : Continuous (linearFormAdelic (F := F) (E := E) δ) :=
   IsModuleTopology.continuous_of_linearMap (R := AF F) (linearFormAdelic (F := F) (E := E) δ)

@@ -14,27 +14,25 @@ attribute [local instance] Classical.propDecidable FM.haarF FM.haarIx
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Introduce `r X x0 hx0 C hC hCd`. Establish `hx0' : X.IsOrtho x0` using `hx0`. Establish `hCm : MeasurableSet C` using `hC.isClosed.measurableSet`. Take `⟨R1, hR1⟩` from `β0_bound (X := X) hC hCd`. Establish `hR0 : ∀ x ∈ C, ∀ τ a b, ‖β0 X x τ a b‖ ≤ max R1 0` using `fun x hx τ a b => (hR1 x hx τ a b).trans (le_max_left _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hKR : KR X (max R1 0) ≠ ⊤` using `(KR_lt_top (X := X) (le_max_right R1 0)).ne`. Establish `hdet : ∀ τ, (mat x0 τ).det ≠ 0`. Introduce `τ h`. Establish `h1` using `normSq_det_orthogonalFrame (X := X) hx0' τ`. Rewrite `h1` using `[h, map_zero, zero_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `zero_ne_one h1`. Establish `hU0 : ((Measure.addHaarScalarFactor (volume.map (ufC X)) volume : ℝ≥0) : ℝ≥0∞) ≠ 0` using `ENNReal.coe_ne_zero.mpr (Measure.addHaarScalarFactor_pos_of_isAddHaarMeasure _ _).ne'`. Establish `hΦ0 : ((Measure.addHaarScalarFactor (volume.map (ΦC X)) volume : ℝ≥0) : ℝ≥0∞) ≠ 0` using `ENNReal.coe_ne_zero.mpr (Measure.addHaarScalarFactor_pos_of_isAddHaarMeasure _ _).ne'`. Establish `hP : (∏ τ, (mat x0 τ).det ^ r) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun τ _ => pow_ne_zero _ (hdet τ)`. Establish `hA0 : ENNReal.ofReal (Complex.normSq (∏ τ, (mat x0 τ).det ^ r))⁻¹ ≠ 0` using `(ENNReal.ofReal_pos.mpr (inv_pos.mpr (Complex.normSq_pos.mpr hP))).ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨((Measure.addHaarScalarFactor (volume.map (ufC X)) volume : ℝ≥0) : ℝ≥0∞)⁻¹ * (ENNReal.ofReal (Complex.normSq (∏ τ, (mat x0 τ).det ^ r))⁻¹)⁻¹ * KR X (max R1 0) * ((Measure.addHaarScalarFactor (volume.map (ΦC X)) volume : ℝ≥0) : ℝ≥0∞)⁻¹, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(ENNReal.mul_ne_top (ENNReal.mul_ne_top (ENNReal.mul_ne_top (ENNReal.inv_ne_top.mpr hU0) (ENNReal.inv_ne_top.mpr hA0)) hKR) (ENNReal.inv_ne_top.mpr hΦ0)).lt_top`. Introduce `G hGm hGinv`. Establish `hFm : Measurable (C.indicator G)` using `hGm.indicator hCm`. Establish `hφm : Measurable ({p | Jp X C p ≠ 0}.indicator G)` using `hGm.indicator ((measurable_Jp (X := X) hCm) (measurableSet_singleton 0).compl)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hUf : ∫⁻ v, C.indicator G (ufC X v) = ((Measure.addHaarScalarFactor (volume.map (ufC X)) volume : ℝ≥0) : ℝ≥0∞) * ∫⁻ x, C.indicator G x` using `lintegral_ufC (X := X) (C.indicator G)`. Establish `hLA : ∫⁻ v, C.indicator G (ufC X (LA (fun τ => mat x0 τ) v)) = ENNReal.ofReal (Complex.normSq (∏ τ, (mat x0 τ).det ^ r))⁻¹ * ∫⁻ v, C.indicator G (ufC X v)` using `lintegral_comp_LA (fun τ => mat x0 τ) hdet (hFm.comp (ufC X).continuous.measurable)`. Establish `hgm : Measurable (fun v => C.indicator G (ufC X (LA (fun τ => mat x0 τ) v)))` using `hFm.comp ((ufC X).continuous.measurable.comp (LinearMap.continuous_of_finiteDimensional _).measurable)`. Establish `hin : ∫⁻ v, C.indicator G (ufC X (LA (fun τ => mat x0 τ) v)) ≤ KR X (max R1 0) * ∫⁻ x, GLo X x0 ({p | Jp X C p ≠ 0}.indicator G) x`. Use `le_trans (le_of_eq (lintegral_flat hgm)) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← lintegral_const_mul' _ _ hKR]`. Conclude with `lintegral_mono fun x => inner_le (X := X) hx0' hCm hCd hR0 hGinv x`. Establish `hmuX` using `lintegral_muX (X := X) (x0 := x0) hφm`. Establish `hlast : ∫⁻ z, ({p | Jp X C p ≠ 0}.indicator G) (cpt X x0 z) ∂muX X x0 ≤ ∫⁻ z in sat X x0 C, G (cpt X x0 z) ∂muF X x0`. Establish `hpt : ∀ z, ({p | Jp X C p ≠ 0}.indicator G) (cpt X x0 z) ≤ (sat X x0 C).indicator (fun z => G (cpt X x0 z)) z`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Introduce `z`. Distinguish the cases in `hJ : Jp X C (cpt X x0 z) = 0`. Establish `h0 : ({p | Jp X C p ≠ 0}.indicator G) (cpt X x0 z) = 0` using `Set.indicator_apply_eq_zero.mpr fun h => (h hJ).elim`. Rewrite using `[h0]`. Conclude with `zero_le`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hz : z ∈ sat X x0 C`. Assume the negation of the conclusion as `hz`. Apply `hJ` to reduce the goal to its premises. Apply `Jp_eq_zero (X := X)` to reduce the goal to its premises. Introduce `y hy hyC`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hz (mem_sat (X := X) hCd hy hyC)`. Rewrite using `[Set.indicator_of_mem (show cpt X x0 z ∈ {p | Jp X C p ≠ 0} from hJ), Set.indicator_of_mem hz]`. Conclude with `(lintegral_mono hpt).trans (lintegral_indicator_le _ _)`. Establish `e1 : ∫⁻ x, C.indicator G x = ((Measure.addHaarScalarFactor (volume.map (ufC X)) volume : ℝ≥0) : ℝ≥0∞)⁻¹ * ∫⁻ v, C.indicator G (ufC X v)`. Rewrite using `[hUf, ← mul_assoc, ENNReal.inv_mul_cancel hU0 ENNReal.coe_ne_top, one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e2 : ∫⁻ v, C.indicator G (ufC X v) = (ENNReal.ofReal (Complex.normSq (∏ τ, (mat x0 τ).det ^ r))⁻¹)⁻¹ * ∫⁻ v, C.indicator G (ufC X (LA (fun τ => mat x0 τ) v))`. Rewrite using `[hLA, ← mul_assoc, ENNReal.inv_mul_cancel hA0 ENNReal.ofReal_ne_top, one_mul]`. Establish `e4 : ∫⁻ x, GLo X x0 ({p | Jp X C p ≠ 0}.indicator G) x = ((Measure.addHaarScalarFactor (volume.map (ΦC X)) volume : ℝ≥0) : ℝ≥0∞)⁻¹ * ∫⁻ z, ({p | Jp X C p ≠ 0}.indicator G) (cpt X x0 z) ∂muX X x0`. Rewrite using `[hmuX, ← mul_assoc, ENNReal.inv_mul_cancel hΦ0 ENNReal.coe_ne_top, one_mul]`. Rewrite using `[← lintegral_indicator (f := G) hCm, e1, e2, mul_assoc, mul_assoc, mul_assoc]`.
-
-Use `gcongr`. Use `hin.trans ?_` and prove the remaining obligations. Rewrite using `[e4]`. Use `gcongr`. Apply the tactic sequence `all_goals exact hlast`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FrameMeasStatement_holds : FrameMeasStatement (E := E) := by
   intro r X x0 hx0 C hC hCd

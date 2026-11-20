@@ -12,19 +12,17 @@ namespace GlobalTheory.CM
 open GlobalTheory.CechPic in
 
 /- English proof (translation)
-Introduce `R K _ _ _ _ _ A _ hA X' φ p hφ N hN`. Use `hA.smooth` as an intermediate fact. Use `hA.proper` as an intermediate fact. Establish `hR : IsRegularRing R` using `inferInstance`. Establish `: GeometricallyIntegral A.hom` using `forall_geometricallyIntegral_of_smooth_of_geometricallyConnected _ _ _ hA.smooth hA.geomConnected`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsIntegral A.left` using `GeometricallyIntegral.isIntegral_of_isLocallyNoetherian A.hom`. Establish `: IsLocallyNoetherian A.left` using `LocallyOfFiniteType.isLocallyNoetherian A.hom`. Establish `: CompactSpace A.left` using `QuasiCompact.compactSpace_of_compactSpace A.hom`. Establish `: GeometricallyIntegral p` using `MorphismProperty.of_isPullback (P := @GeometricallyIntegral) hφ inferInstance`. Establish `: Smooth p` using `MorphismProperty.of_isPullback (P := @Smooth) hφ inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsIntegral X'` using `GeometricallyIntegral.isIntegral_of_isLocallyNoetherian p`. Establish `h1 : IsPreimmersion (spMap (algebraMap R K))` using `IsPreimmersion.of_isLocalization (nonZeroDivisors R)`. Establish `h2 : Flat (spMap (algebraMap R K))`. Rewrite using `[Flat.SpecMap_iff]`. Conclude with `RingHom.flat_algebraMap_iff.2 (IsLocalization.flat K (nonZeroDivisors R))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: IsPreimmersion φ` using `MorphismProperty.of_isPullback (P := @IsPreimmersion) hφ.flip h1`. Establish `: Flat φ` using `MorphismProperty.of_isPullback (P := @Flat) hφ.flip h2`. Establish `hst : ∀ x : A.left, UniqueFactorizationMonoid (A.left.presheaf.stalk x)` using `fun x =>`. Use `ExtendRig.isRegularRing_stalk isRegularRing_of_smooth R A.hom x` as an intermediate fact. Use `uniqueFactorizationMonoid_of_isRegularRing_of_isLocalRing exists_hasProjectiveDimensionLE_of_isRegularLocalRing isPrincipal_map_away_of_hasProjectiveDimensionLE _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨L, hL, hLN⟩` from `exists_lineBundle_extension_of_generalizing A.left X' φ (Flat.generalizingMap φ) hst N hN`. Set `e : Sp R ⟶ A.left` to `eSec A`. Establish `he : e ≫ A.hom = 𝟙 _` using `Over.w η[A]`. Establish `hL' : (L.pull (A.hom ≫ e)).IsLB` using `pull_isLB hL _`. Establish `hM : (LB.div L (L.pull (A.hom ≫ e))).IsLB` using `LB.isLB_div hL hL'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Choose the witnesses or unpack the hypotheses as in `⟨t, ht⟩ : ∃ t : LB.Gen ((LB.div L (L.pull (A.hom ≫ e))).pull e), t.IsGen := by`. Use `(cls_eq_zero_iff (pull_isLB hM e)).1 ?_` and prove the remaining obligations. Rewrite using `[cls_pull hM, cls_div hL hL', cls_pull hL, map_sub, ← pull_comp, ← Category.assoc, he, Category.id_comp, sub_self]`. Use `⟨⟨LB.div L (L.pull (A.hom ≫ e)), t, hM, ht⟩, (cls_eq_iff (pull_isLB hM φ) hN).1 ?_⟩` and prove the remaining obligations. Establish `h0 : pull (spMap (algebraMap R K) ≫ e) (cls L hL) = 0` using `(cls_eq_zero_iff (pull_isLB hL _)).2 (DVR.exists_gen_of_local L hL _ _)`.
-
-Rewrite using `[cls_pull hM, cls_div hL hL', cls_pull hL, map_sub, ← pull_comp, ← Category.assoc, hφ.w, Category.assoc, pull_comp, h0, map_zero, sub_zero]`. Conclude with `(cls_eq_iff (pull_isLB hL φ) hN).2 hLN`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_rigLB_extension_dedekind :
     ∀ (R K : Type) [CommRing R] [IsDedekindDomain R] [Field K] [Algebra R K] [IsFractionRing R K] (G : Over (Sp R)) [GrpObj G], IsAbelianScheme G → ∀ (X' : Scheme.{0}) (π : X' ⟶ G.left) (p : X' ⟶ Sp K), IsPullback π p G.hom (spMap (algebraMap R K)) → ∀ L : LB X', L.IsLB → ∃ L' : RigLB G, LBIso (L'.L.pull π) L := by

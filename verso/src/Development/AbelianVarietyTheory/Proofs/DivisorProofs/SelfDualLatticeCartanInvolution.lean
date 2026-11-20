@@ -22,33 +22,27 @@ namespace GlobalTheory.SkewDblIwasawa
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hcm hun B n W hJ hL hd hθ W₂ hJ₂ hL₂ hθ₂`. Use `haveI : Submodule.IsLattice E W.L := hL`. Establish `hQ : W₂.Jᵀ = dblGram finSumFinEquiv W.Jᵀ` using `by rw [hJ₂, GlobalTheory.DblIwasawa.transpose_dblGram]`. Establish `hdet : W.J.det ≠ 0` using `GlobalTheory.T.self_dual_lattice_det_ne_zero F E σ n W.J W.L hL hd`. Establish `hfin : ∀ v, HasIwasawa σ W₂.Jᵀ (KFin σ W₂.Jᵀ W.L v)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v`. Take `⟨δ, hδ0, hσδ, s, hs, h1, h2⟩` from `GlobalTheory.T.exists_inverse_different_local_unit F E σ hcm hun v`. Establish `hH : IsHermND σ (δ • W.Jᵀ)`. Use `⟨fun i j => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.smul_apply, Matrix.transpose_apply, smul_eq_mul, map_mul, hσδ, hJ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Matrix.det_smul, Matrix.det_transpose]`. Conclude with `mul_ne_zero (pow_ne_zero _ hδ0) hdet`. Establish `hSD : IsSelfDualAt σ (δ • W.Jᵀ) W.L v` using `GlobalTheory.T.dual_lattice_localised_by_different F E σ n W.J W.L hdet hL hd v δ s hδ0 hs h1 h2`. Establish `hQ' : δ • W₂.Jᵀ = dblGram finSumFinEquiv (δ • W.Jᵀ)` using `by rw [hQ, dblGram_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQH : IsHermND σ (δ • W₂.Jᵀ)` using `hQ' ▸ GlobalTheory.GraphIwSplit.isHermND_dblGram σ hH`. Use `haveI := hun`. Establish `hU : Formalism.MainNotions.SchurIrreducible.IsUnram (E` using `E) v := GlobalTheory.LFun.isUnram_iff.2 fun w _ => Ideal.ramificationIdx_eq_one w.asIdeal (𝓞 F)`. Establish `hI : HasIwasawa σ (δ • W₂.Jᵀ) (KFin σ (δ • W₂.Jᵀ) W.L v)`. Break down `GlobalTheory.LFun.InertChart.isSplit_or_isInertAt hU with hsp | ⟨w, hw⟩` into its components or cases.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨w, w', hne, e1, e2⟩` from `GlobalTheory.LFun.isSplit_iff.1 hsp`. Conclude with `GlobalTheory.Core.Rk.IwSplit.hasIwasawa_of_algHom hcm hQ' hH hQH (GlobalTheory.AdelicU.existsUnique_splitPrime_eq hcm hne e1 e2).exists.choose W.L hSD`. Conclude with `GlobalTheory.InertIwasawaGen.hasIwasawa_of_inertAt hcm hH hQ' hw hSD`. Conclude with `hasIwasawa_of_smul σ δ hδ0 W₂.Jᵀ _ hI`. Take `⟨a, harch⟩` from `GlobalTheory.T.exists_cartan_basis_doubled_gram F E σ hcm B n W.J W.θ hJ hθ hQ`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hI : HasIwasawa σ W₂.Jᵀ (KAd σ W₂.Jᵀ W.L a)` using `HasIwasawa.adelic hfin (fun w => (harch w).1)`. Establish `hL₂' : W₂.L.IsLattice E` using `by rw [hL₂]; infer_instance`. Set `K` to `GlobalTheory.StabHaar.stabK (σ := σ) B W₂`. Establish `key : ∀ g : GAd σ W₂.Jᵀ, GlobalTheory.IwLine.ofGAd σ W₂.J g ∈ K ↔ g ∈ KAd σ W₂.Jᵀ W.L a`. Introduce `g`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[mem_KAd]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨h1, h2⟩` from `GlobalTheory.T.stabilizer_commutes_majorant F E σ B (n + n) W₂ hL₂' g h`. Use `⟨fun v => ?_, fun w => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `h2 v` as an intermediate fact. Rewrite `this` using `[hL₂]`. Then use the resulting hypothesis. Rewrite using `[(harch w).2, ← hθ₂ w]`. Conclude with `h1 w`. Introduce and unpack `⟨h2, h1⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Use `GlobalTheory.KBridge.ofGAd_mem_stabK F E σ B (n + n) W₂ hL₂' g (fun w => ?_) (fun v => ?_)` and prove the remaining obligations. Rewrite using `[hθ₂ w, ← (harch w).2]`. Conclude with `h1 w`. Rewrite using `[hL₂]`. Conclude with `h2 v`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcont : Continuous (GlobalTheory.IwLine.ofGAd σ W₂.J)` using `Continuous.subtype_mk continuous_subtype_val _`. Establish `hKset : (K : Set (UA σ W₂.J)) = GlobalTheory.IwLine.ofGAd σ W₂.J '' (KAd σ W₂.Jᵀ W.L a : Set (GAd σ W₂.Jᵀ))`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce `hg`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(GlobalTheory.IwLine.ofGAd σ W₂.J).symm g, (key _).1 (by rwa [MulEquiv.apply_symm_apply]), MulEquiv.apply_symm_apply _ _⟩` and prove the remaining obligations. Introduce and unpack `⟨g', hg', rfl⟩`. Conclude with `(key g').2 hg'`. Establish `hKc : IsCompact (K : Set (UA σ W₂.J))`. Rewrite using `[hKset]`.
-
-Conclude with `(isCompact_KAd hcm).image hcont`. Use `⟨K, GlobalTheory.StabHaar.isStab_stabK B W₂, ?_⟩` and prove the remaining obligations. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsModuleTopology (AF F) (AE F E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`.
-
-Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`. Use `haveI : T2Space (AE F E) := t2Space_tensorProduct_finiteExtension (F := F) (E := E) (R := AF F)`. Use `iwasawaOf_of_isCompact continuous_subtype_val continuous_absE hKc fun g => ?_` and prove the remaining obligations. Take `⟨p, k, hk, e⟩` from `hI ((GlobalTheory.IwLine.ofGAd σ W₂.J).symm g)`. Establish `hp : (GlobalTheory.IwLine.ofGAd σ W₂.J p) ∈ siegelOf finSumFinEquiv (UG (cA σ) (incM F W₂.J)).subtype` using `p.2`.
-
-Use `⟨⟨_, hp⟩, GlobalTheory.IwLine.ofGAd σ W₂.J k, (key k).2 hk, ?_⟩` and prove the remaining obligations. Use `congrArg (GlobalTheory.IwLine.ofGAd σ W₂.J) e` as an intermediate fact. Rewrite `this` using `[MulEquiv.apply_symm_apply, map_mul]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isStab_iwasawaOf : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
     IsCMExt F E σ → Algebra.Unramified (𝓞 F) (𝓞 E) → ∀ (B : Base F E) (n : ℕ) (W : Spc F E n),

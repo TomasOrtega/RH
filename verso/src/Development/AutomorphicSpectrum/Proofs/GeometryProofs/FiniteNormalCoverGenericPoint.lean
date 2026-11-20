@@ -16,7 +16,7 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.CompanionTheory.Ggeo
 
 /- English proof (translation)
-The claim follows from `@PositivityTheory.Xgn.stratum_finite_normal_cover`.
+A detailed English derivation is pending.
 -/
 theorem normalisation_finite_cover :
     ∀ (Z : Scheme.{0}) [IsIntegral Z] (s : Z ⟶ Sp ℚ) [LocallyOfFiniteType s] [QuasiCompact s] (L : Type) [Field L] (z : Sp L ⟶ Z), GlobalTheory.IsGenericPointHom z → ∀ (L' : Type) [Field L'] [Algebra L L'] [FiniteDimensional L L'], ∃ (Z' : Scheme.{0}) (_ : IsIntegral Z') (π : Z' ⟶ Z) (j : Sp L' ⟶ Z'), IsFinite π ∧ Surjective π ∧ ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme Z' ∧ GlobalTheory.IsGenericPointHom j ∧ j ≫ π = spMap (algebraMap L L') ≫ z :=

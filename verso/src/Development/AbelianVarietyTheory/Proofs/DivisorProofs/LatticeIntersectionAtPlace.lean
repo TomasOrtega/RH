@@ -27,21 +27,19 @@ variable {E K₀ K ι : Type} [Field E] [NumberField E] [Field K₀] [NumberFiel
   {n : ℕ}
 
 /- English proof (translation)
-Unfold `nabAtr nabK at hx ⊢`. Rewrite `hx`, the goal using `[Submodule.mem_comap]`. Express the relevant statement in the definitionally equal form `MvPolynomial.map f x.1 ∈ nabP lam fun τ => dualFr (tauLat (fun τ => f.comp (emb τ)) τ M)`. Express the relevant statement in the definitionally equal form `x.1 ∈ nabP lam (fun τ => dualFr (tauLat emb τ M)) at hx`. Use `GlobalTheory.TransLattice.mem_of_forall_mem_locP _ fun w => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations.
 
-Choose the witnesses or unpack the hypotheses as in `⟨w₀, hw₀⟩ : ∃ Q : HeightOneSpectrum (𝓞 K₀), ∀ r : 𝓞 K₀, r ∈ Q.asIdeal ↔ RingOfIntegers.mapRingHom f r ∈ w.asIdeal := by`. Use `⟨⟨w.asIdeal.comap (RingOfIntegers.mapRingHom f), Ideal.comap_isPrime _ _, fun h => ?_⟩, fun _ => Iff.rfl⟩` and prove the remaining obligations. Establish `h1 : ((Ideal.absNorm w.asIdeal : ℕ) : 𝓞 K₀) ∈ w.asIdeal.comap (RingOfIntegers.mapRingHom f)`. Rewrite using `[Ideal.mem_comap, map_natCast]`. Conclude with `Ideal.absNorm_mem _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[h, Ideal.mem_bot]`. Conclude with `w.ne_bot (Ideal.absNorm_eq_zero_iff.1 (by exact_mod_cast h1))`. Establish `hw : ∀ t : 𝓞 K₀, t ∉ w₀.asIdeal → RingOfIntegers.mapRingHom f t ∉ w.asIdeal` using `fun t ht h => ht ((hw₀ t).2 h)`. Take `⟨hLoc, -, -⟩` from `GlobalTheory.TransLoc.nabDelLoc_free_leVV`. Establish `hT : ∀ τ, Submodule.IsLattice K₀ (tauLat emb τ M)` using `fun τ => tauLatLattice E K₀ ι n emb τ M hM`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `choose C hC using fun τ => basisAtEx K₀ n (tauLat emb τ M) (hT τ) w₀`. Set `B₀ : ι → GL (Fin n) K₀` to `fun τ => inside₂ K₀ n (C τ)`. Establish `hB₀ : ∀ τ, IsBasisAt w₀ (dualFr (tauLat emb τ M)) (B₀ τ)` using `fun τ => GlobalTheory.DualWeylDual.isBasisAt_dualFr w₀ (hT τ).fg (hC τ)`. Establish `hB : ∀ τ, IsBasisAt w (dualFr (tauLat (fun τ => f.comp (emb τ)) τ M)) (Formalism.UG.bc f (B₀ τ))` using `fun τ => GlobalTheory.NabBC.isBasisAt_dualFr_tauLat_comp f emb τ M hM w₀ w hw (C τ) (hC τ)`. Establish `L1` using `(hLoc K ι n lam _ (fun τ => dualFr_tauLat_isLattice (fun τ => f.comp (emb τ)) τ M hM) w _ hB).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `L0` using `(hLoc K₀ ι n lam _ (fun τ => dualFr_tauLat_isLattice emb τ M hM) w₀ B₀ hB₀).1`. Establish `hx0 : x.1 ∈ Formalism.HermitianLatticesTheory.localization₂ w₀.asIdeal (nabP lam fun τ => dualFr (tauLat emb τ M))` using `GlobalTheory.NabBC.mem_localization_of_mem' _ hx`. Rewrite `hx0` using `[L0]`. Take `⟨g, ⟨s, hs, hsg⟩, hg⟩` from `hx0`. Rewrite using `[L1]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨MvPolynomial.map f g, ⟨RingOfIntegers.mapRingHom f s, hw s hs, ?_⟩, ?_⟩` and prove the remaining obligations. Use `(congrArg (· ∈ nabStd K lam) (GlobalTheory.NabBC.map_smul_int f s g)).mpr ?_` and prove the remaining obligations. Establish `h1` using `(GlobalTheory.StdBaseChange.std_baseChange (𝓞 K) K K₀ ι f (RingOfIntegers.mapRingHom f) (fun r => rfl) n lam).1`. Establish `h2` using `(GlobalTheory.StdBaseChange.std_baseChange (𝓞 K) K K ι (RingHom.id K) (RingHom.id _) (fun r => rfl) n lam).1`. Establish `h3 : MvPolynomial.map f (s • g) ∈ Submodule.span (𝓞 K) (MvPolynomial.map f '' (nabStd K₀ lam : Set (Pol K₀ ι n)))` using `Submodule.subset_span ⟨_, hsg, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite `h3` using `[h1, ← h2]`. Establish `h4 : (MvPolynomial.map (RingHom.id K) '' (nabStd K lam : Set (Pol K ι n))) = (nabStd K lam : Set (Pol K ι n))`. Use extensionality with `y`. Simplify using `[MvPolynomial.map_id]`. Rewrite `h3` using `[h4, Submodule.span_eq]`.
-
-Conclude with `h3`. Express the relevant statement in the definitionally equal form `actP lam (fun τ => Formalism.UG.bc f (B₀ τ)) (MvPolynomial.map f g) = MvPolynomial.map f x.1`. Rewrite using `[← GlobalTheory.ValCmp.use₂]`. Conclude with `congrArg (MvPolynomial.map f) hg`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_mem_nabAtr_comp (f : K₀ →+* K) (emb : ι → E →+* K₀) (lam : ι → DomWeight n) (M : Submodule (𝓞 E) (Fin n → E))
     (hM : Submodule.IsLattice E M) {x : VV K₀ lam} (hx : x ∈ nabAtr emb lam M) :
@@ -101,29 +99,27 @@ end GlobalTheory.BigOn.Exp.SerBase
 namespace GlobalTheory.BigOn.Exp.SerBase
 
 /- English proof (translation)
-Use `AtTw.of_forall fun Fm x hx i p hR hM w hw j => ?_` and prove the remaining obligations. Introduce `ρ hρ hpin c hc hs`. Take `⟨gramR, c0R, c0L, hft, u, hu, hsc⟩` from `hs`. Use `⟨u, hu, fun h hh P hP => ?_⟩` and prove the remaining obligations. Establish `hL` using `GlobalTheory.T.second_link_of_weight_rows _ _ _ _ _ _ _ _ _ _ p hR hM.1`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hC : GlobalTheory.Hk3.Core (R2 p) (F2 p)` using `⟨hL.1.lev, hL.1.grp, hL.1.fam, hL.1.models, hL.1.chain, hL.1.thP⟩`. Establish `hio : IoExt (R2 p)` using `hR.ioExt`. Establish `hB` using `hρ.base ((Fm.ex x hx i).nch.twI w) j ((Fm.ex x hx i).nch.sd w)`. Establish `hBo : BaseOf (R2 p) j (ρ.B ((Fm.ex x hx i).nch.twI w) j ((Fm.ex x hx i).nch.sd w))`. Establish `h0` using `baseOf_of_realPin_at (cG := p.cG) hC.lev hρ hpin ((Fm.ex x hx i).nch.twI w) j ((Fm.ex x hx i).nch.sd w)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `{ h0 with }`. Establish `hlam` using `hBo.lam`. Establish `hMlat` using `GlobalTheory.LatFull.latAt_isLattice _ ρ hρ ((Fm.ex x hx i).nch.twI w) j ((Fm.ex x hx i).nch.sd w) h`. Take `⟨hPh, hPF⟩` from `(mem_harmLat _ _ _).1 hP`. Rewrite `hPF` using `[hlam]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `key : ∀ φ ∈ coefLatFn (embLL0 (Fm.D x i)) (labLL0 (Fm.D x i)) (smallInt (Fm.D x i)) (lamV (Fm.D x i) j) ((ρ.B ((Fm.ex x hx i).nch.twI w) j ((Fm.ex x hx i).nch.sd w)).latAt (finPt (Vc (Fm.D x i) j) h)), ∃ F : VV (Fm.D x i).what₂.LL (lamV (Fm.D x i) j), F ∈ nabAtr (labLL (Fm.D x i) …`. Introduce `φ hφ`. Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem φ hφ`. Take `⟨F₀, hF₀, rfl⟩` from `hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨MvPolynomial.map (Fm.D x i).LL0.val.toRingHom F₀.1, GlobalTheory.Proof.TensorMapDescent.map_mem_VV _ _ _ F₀.2⟩, map_mem_nabAtr_comp (Fm.D x i).LL0.val.toRingHom (labLL0 (Fm.D x i)) _ _ hMlat hF₀, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `y`. Rewrite using `[coefFn, coefFn, MvPolynomial.eval₂Hom_map_hom]`. Both sides reduce to the same expression. Consider the case `zero => exact ⟨0, zero_mem _, funext fun y => by simp [coefFn]⟩`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Treat this case separately.
 
-Consider the case `add φ ψ _ _ h1 h2`. Take `⟨F1, m1, rfl⟩` from `h1`. Take `⟨F2, m2, rfl⟩` from `h2`. Conclude with `⟨F1 + F2, add_mem m1 m2, funext fun y => by simp [coefFn, mul_add]⟩`. Consider the case `smul a φ _ h1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨F1, m1, rfl⟩` from `h1`. Take `⟨t, ht⟩` from `a.2`. Use `⟨RingOfIntegers.mapRingHom (Fm.D x i).LL0.val.toRingHom t • F1, Submodule.smul_mem _ _ m1, funext fun y => ?_⟩` and prove the remaining obligations. Establish `e1 : ((RingOfIntegers.mapRingHom (Fm.D x i).LL0.val.toRingHom t • F1 : VV (Fm.D x i).what₂.LL (lamV (Fm.D x i) j)) : Pol (Fm.D x i).what₂.LL (Fm.D x i).what₂.Tau (Vc (Fm.D x i) j).rank) = MvPolynomial.C (((RingOfIntegers.mapRingHom (Fm.D x i).LL0.val.toRingHom t : 𝓞 (Fm.D x i).wh …`. Rewrite using `[← MvPolynomial.smul_eq_C_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `e2 : (Fm.D x i).what₂.embLL (((RingOfIntegers.mapRingHom (Fm.D x i).LL0.val.toRingHom t : 𝓞 (Fm.D x i).what₂.LL)) : (Fm.D x i).what₂.LL) = (a : ℂ)`. Rewrite using `[← ht]`. Both sides reduce to the same expression. Use `show (a : ℂ) * coefFn _ _ (F1 : Pol (Fm.D x i).what₂.LL (Fm.D x i).what₂.Tau (Vc (Fm.D x i) j).rank) y = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e1, coefFn, coefFn, map_mul, MvPolynomial.eval₂Hom_C, e2]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨F, hF, hFe⟩` from `key _ hPF`. Establish `hM' : (ρ.B ((Fm.ex x hx i).nch.twI w) j ((Fm.ex x hx i).nch.sd w)).latAt (finPt (Vc (Fm.D x i) j) h) = Bridge.hLat (Vc (Fm.D x i) j) (fin (Vc (Fm.D x i) j) h)` using `GlobalTheory.LatAtHLat.latAt_eq_hLat _ _ _ _ (GlobalTheory.LatFull.baseFrame_one_eq _ _ _ (hρ.latS _ j _)) _`. Use `⟨c0L j F, ⟨gramR, c0R, c0L, hft, F, by rw [← hM']; exact hF, rfl⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨u', w₀, hu', -, hw₀⟩` from `IsChosenExtremalVector.io _ ((fw2 p).hv₀ j _) hio`. Establish `huu : u' = (u : ∀ τ, lowT ((R2 p).MW j (sg0 (Fm.D x i) p.P.A3.A)) τ)`. Use function extensionality and compare the values at `fun τ => Subtype.ext ((hu' τ).trans (hu τ).symm)`. Rewrite `hw₀` using `[huu]`. Establish `hm : ∀ τ, (ρ.B ((Fm.ex x hx i).nch.twI w) j ((Fm.ex x hx i).nch.sd w)).w.p τ + (ρ.B ((Fm.ex x hx i).nch.twI w) j ((Fm.ex x hx i).nch.sd w)).w.q τ ≤ (Wc (Fm.D x i) j).rank` using `fun τ => by`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hB.sig τ`. Establish `h2` using `Formalism.BasicNotions.sig_sum _ hB.sigOK (Formalism.BasicNotions.TH.tauE (Fm.D x i) τ)`. Rewrite `h2` using `[← h1]`. Conclude with `h2.le`. Establish `hinj` using `GlobalTheory.T.harmonic_polynomial_eq_zero_of_function _ _ _ _ (ρ.B ((Fm.ex x hx i).nch.twI w) j ((Fm.ex x hx i).nch.sd w)).F.BS hB.wt hm`.
-
-Conclude with `IsScaleAt.ioP_eq (Rl := p.R) hsc hinj hPh (GlobalTheory.SeriesTie.UnivRat.ioP_mem_harmonic hC.lev hC.thP (hC.models.cV j) hB (hpin.psi _ j _) (hpin.inf _ j _) (hpin.cartT _ j _) (hpin.onbS _ j _) (hpin.onbT _ j _) (hpin.mu0 _ j _) (hpin.eta _ j _) (hpin.ap _ j _) (hpin.am _ j _) …`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem latIoAt : LatIoAt := by
   refine AtTw.of_forall fun Fm x hx i p hR hM w hw j => ?_

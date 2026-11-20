@@ -6,31 +6,29 @@ open MeasureTheory
 namespace GlobalTheory.Cusp.Shear
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ Γ N N' hle hn V _ _ _ _ _ Λ s π hs hsc hπc hπmul hπs hker hsadd hsΓ hπΓ A B hAm hBm hA hB ν`. Use `set e := prodHomeo hle hs hsc hπc hπmul hπs hker with he`. Establish `himg : e '' (A ×ˢ B) = e.symm ⁻¹' (A ×ˢ B)`. Use extensionality with `n`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨z, hz, rfl⟩`. Simplify using `using hz`. Introduce `h; exact ⟨e.symm n, h, by simp⟩`. Establish `efst : ∀ n : N, (((e.symm n).1 : N') : G) = (n : G) * (s (π n))⁻¹` using `fun n => rfl`. Establish `esnd : ∀ n : N, (e.symm n).2 = π n` using `fun n => rfl`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `IsFundamentalDomain.mk' ?_ ?_` and prove the remaining obligations. Rewrite using `[himg]`. Conclude with `(e.symm.continuous.measurable (hAm.prod hBm)).nullMeasurableSet`. Introduce `x`. Establish `hmemS : ∀ n : N, n ∈ e '' (A ×ˢ B) ↔ (e.symm n).1 ∈ A ∧ (e.symm n).2 ∈ B`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `n`. Rewrite using `[himg]`. Both sides reduce to the same expression. Establish `hfst : ∀ g : N, (((e.symm (g * x)).1 : N') : G) = (g : G) * (s (π g))⁻¹ * (s (π g) * ((x : G) * (s (π x))⁻¹) * (s (π g))⁻¹)`. Introduce `g`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[efst, hπmul, hsadd]`. Simplify using `only [Subgroup.coe_mul]`. Use `group`. Establish `hsnd : ∀ g : N, (e.symm (g * x)).2 = π g + π x` using `fun g => by rw [esnd, hπmul]`. Set `c : V → N'` to `fun w => ⟨s w * ((x : G) * (s (π x))⁻¹) * (s w)⁻¹, hn (s w) (hs w) _ (mul_inv_mem hs hπmul hπs hker x)⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨w, hwB, hwu⟩` from `hB (π x)`. Take `⟨δ, hδA, hδu⟩` from `hA (c w)`. Establish `hδΓ : ((δ : N') : G) ∈ Γ` using `Subgroup.mem_subgroupOf.1 δ.2`. Set `γ0 : Γ.subgroupOf N` to `⟨⟨((δ : N') : G) * s w, N.mul_mem (hle (δ : N').2) (hs w)⟩, Subgroup.mem_subgroupOf.2 (Γ.mul_mem hδΓ (hsΓ w w.2))⟩`. Establish `hπγ0 : π (γ0 : N) = w`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h : (γ0 : N) = ⟨((δ : N') : G), hle (δ : N').2⟩ * ⟨s w, hs w⟩` using `rfl`. Rewrite using `[h, hπmul, hπs ⟨s w, hs w⟩ w rfl, (hker _).2 (δ : N').2, zero_add]`. Use `⟨γ0, ?_, ?_⟩` and prove the remaining obligations. Use `show (γ0 : N) * x ∈ _`. Rewrite using `[hmemS, hsnd, hπγ0]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, hwB⟩` and prove the remaining obligations. Establish `h : (e.symm ((γ0 : N) * x)).1 = (δ : N') * c w`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hfst, hπγ0]`. Use `show ((δ : N') : G) * s w * (s w)⁻¹ * _ = ((δ : N') : G) * (s w * ((x : G) * (s (π x))⁻¹) * (s w)⁻¹)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `group`. Rewrite using `[h]`. Conclude with `hδA`. Introduce `γ hγ`. Establish `hγ' : (γ : N) * x ∈ e '' (A ×ˢ B)` using `hγ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Rewrite `hγ'` using `[hmemS, hsnd]`. Take `⟨hγA, hγB⟩` from `hγ'`. Establish `hγΓ : ((γ : N) : G) ∈ Γ` using `Subgroup.mem_subgroupOf.1 γ.2`. Establish `hw : (⟨π (γ : N), hπΓ γ hγΓ⟩ : Λ) = w` using `hwu _ hγB`. Establish `hwv : π (γ : N) = w` using `congrArg Subtype.val hw`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hδN' : ((γ : N) : G) * (s w)⁻¹ ∈ N'` using `hwv ▸ mul_inv_mem hs hπmul hπs hker γ`. Set `δγ : Γ.subgroupOf N'` to `⟨⟨((γ : N) : G) * (s w)⁻¹, hδN'⟩, Subgroup.mem_subgroupOf.2 (Γ.mul_mem hγΓ (Γ.inv_mem (hsΓ w w.2)))⟩`. Establish `h : (δγ : N') * c w = (e.symm ((γ : N) * x)).1`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hfst, hwv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hδe : δγ = δ` using `hδu δγ (by show (δγ : N') * c w ∈ A; rw [h]; exact hγA)`. Establish `hv : ((γ : N) : G) * (s w)⁻¹ = ((δ : N') : G)`. Rewrite using `[← hδe]`. Apply `Subtype.ext` to reduce the goal to its premises.
-
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show ((γ : N) : G) = ((δ : N') : G) * s w`. Rewrite using `[← hv]`. Use `group`.
+A detailed English derivation is pending.
 -/
 theorem isFundamentalDomain_image_prod : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [SecondCountableTopology G]
     [MeasurableSpace G] [BorelSpace G] (Γ N N' : Subgroup G) (hle : N' ≤ N), (∀ p ∈ N, ∀ m ∈ N', p * m * p⁻¹ ∈ N') →

@@ -8,9 +8,9 @@ open CategoryTheory AlgebraicGeometry TensorProduct GlobalTheory.LogCris Divided
 namespace GlobalTheory.CompanionTheory.BasisBase
 
 /- English proof (translation)
-Introduce `O A _ _ _ I γ X q l s 𝒱 a t u r ht ha hb j x`. Take `⟨⟨f, hf⟩, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite using `[map_smul]`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk _ = a • Submodule.Quotient.mk _`. Rewrite using `[← Submodule.Quotient.mk_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg _ (Subtype.ext (funext fun c => ?_))` and prove the remaining obligations. Use `Subtype.ext ?_` and prove the remaining obligations. Conclude with `congrArg (Ideal.Quotient.mk _) (Algebra.smul_def _ _).symm`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sqC_zK : ∀ {O A : Type} [CommRing O] [CommRing A] [Algebra O A] {I : Ideal A} (γ : DividedPowers I) {X : Scheme.{0}}
     (q : X ⟶ Spec (CommRingCat.of O)) (l s : ℕ) (𝒱 : Set X.Opens) (a : A) (t u r : ℤ) (ht : t ≤ 0)

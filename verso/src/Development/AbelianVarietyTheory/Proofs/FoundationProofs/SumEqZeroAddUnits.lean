@@ -6,19 +6,17 @@ open scoped BigOperators
 namespace GlobalTheory.NormFormGauss
 
 /- English proof (translation)
-Set `T : k →+ k` to `s.toAddMonoidHom - AddMonoidHom.id k`. Establish `hT : ∀ x, T x = s x - x` using `fun x => rfl`. Establish `h1 : Nat.card k = Nat.card (k ⧸ T.ker) * Nat.card T.ker` using `AddSubgroup.card_eq_card_quotient_mul_card_addSubgroup _`. Establish `h2 : Nat.card (k ⧸ T.ker) = Nat.card T.range` using `Nat.card_congr (QuotientAddGroup.quotientKerEquivRange T).toEquiv`. Establish `h3 : Nat.card T.ker = (Finset.univ.filter (fun x : k => s x = x)).card`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Nat.card_eq_fintype_card, Fintype.card_subtype]`. Use `congr 1`. Use extensionality with `x`. Simplify using `[AddMonoidHom.mem_ker, hT, sub_eq_zero]`. Establish `hθ : s (s r - r) = -(s r - r)` using `by rw [map_sub, hs]; ring`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h4 : Nat.card T.range = Nat.card T.ker`. Use `symm`. Use `Nat.card_congr (Equiv.ofBijective (fun u : T.ker => (⟨(s r - r) * u, ⟨r * u, ?_⟩⟩ : T.range)) ⟨?_, ?_⟩)` and prove the remaining obligations. Establish `hu : s u = u`. Use `u.2` as an intermediate fact.
+Establish an intermediate fact. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[AddMonoidHom.mem_ker, hT, sub_eq_zero]`. Conclude with `this`. Rewrite using `[hT, map_mul, hu]`. Expand and normalize the polynomial expressions, which then agree. Introduce `u v huv`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congrArg Subtype.val huv` as an intermediate fact. Conclude with `Subtype.ext (mul_left_cancel₀ hr this)`. Introduce and unpack `⟨_, t, rfl⟩`. Use `⟨⟨(s t - t) / (s r - r), ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[AddMonoidHom.mem_ker, hT, sub_eq_zero, map_div₀, hθ, map_sub, hs]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [hT]`. Clear the denominators using the available nonvanishing facts.
-
-Rewrite using `[← Nat.card_eq_fintype_card, h1, h2, h4, h3, sq]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_eq_sq {k : Type} [Field k] [Fintype k] (s : k →+* k) (hs : ∀ x, s (s x) = x)
     (r : k) (hr : s r - r ≠ 0) :
@@ -58,31 +56,31 @@ theorem card_eq_sq {k : Type} [Field k] [Fintype k] (s : k →+* k) (hs : ∀ x,
   rw [← Nat.card_eq_fintype_card, h1, h2, h4, h3, sq]
 
 /- English proof (translation)
-Set `S : kˣ →* kˣ` to `Units.map s.toMonoidHom`. Establish `hS : ∀ x : kˣ, ((S x : kˣ) : k) = s x` using `fun x => rfl`. Set `N : kˣ →* kˣ` to `MonoidHom.id _ * S`. Set `D : kˣ →* kˣ` to `MonoidHom.id _ / S`. Establish `hN : ∀ x : kˣ, ((N x : kˣ) : k) = x * s x` using `fun x => rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hD : ∀ x : kˣ, ((D x : kˣ) : k) = x / s x` using `fun x => by`. Simplify using `[D, hS]`. Establish `hθ : s (s r - r) = -(s r - r)` using `by rw [map_sub, hs]; ring`. Establish `hne : ∀ x : kˣ, s x ≠ 0` using `fun x => by simp`. Establish `hDk : ∀ x : kˣ, x ∈ D.ker ↔ s x = x` using `fun x => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[MonoidHom.mem_ker, Units.ext_iff, hD, Units.val_one, div_eq_one_iff_eq (hne x), eq_comm]`. Establish `hker : N.ker = D.range`. Use extensionality with `x`. Rewrite using `[MonoidHom.mem_ker, Units.ext_iff, hN, Units.val_one]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hx`. Distinguish the cases in `h : (1 + x : k) = 0`. Use `⟨Units.mk0 _ hr, Units.ext ?_⟩` and prove the remaining obligations. Rewrite using `[hD, Units.val_mk0, hθ, div_neg, div_self hr]`. Take the linear combination `-h`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `⟨Units.mk0 _ h, Units.ext ?_⟩` and prove the remaining obligations. Establish `h'` using `hne (Units.mk0 _ h)`. Rewrite using `[hD, div_eq_iff h', Units.val_mk0, map_add, map_one]`. Take the linear combination `-hx`. Introduce and unpack `⟨y, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hD, map_div₀, hs]`. Use `hne y` as an intermediate fact. Use `y.ne_zero` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish `c1 : Nat.card kˣ = Nat.card N.range * Nat.card N.ker`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Rewrite using `[Subgroup.card_eq_card_quotient_mul_card_subgroup N.ker, Nat.card_congr (QuotientGroup.quotientKerEquivRange N).toEquiv]`. Establish `c2 : Nat.card kˣ = Nat.card D.range * Nat.card D.ker`. Rewrite using `[Subgroup.card_eq_card_quotient_mul_card_subgroup D.ker, Nat.card_congr (QuotientGroup.quotientKerEquivRange D).toEquiv]`. Establish `c3 : Nat.card N.range = Nat.card D.ker`. Rewrite `c2` using `[← hker, c1, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Nat.eq_of_mul_eq_mul_left Nat.card_pos c2`. Establish `hle : N.range ≤ D.ker`. Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[hDk, hN, map_mul, hs, mul_comm]`. Establish `hr' : N.range = D.ker` using `Subgroup.eq_of_le_of_card_ge hle c3.ge`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c4 : Nat.card D.ker = (Finset.univ.filter (fun x : kˣ => s x = x)).card`. Rewrite using `[Nat.card_eq_fintype_card, Fintype.card_subtype]`. Use `congr 1`. Use extensionality with `x`. Simplify using `only [Finset.mem_filter, hDk]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Nat.card N.ker, ?_, fun f => ?_⟩` and prove the remaining obligations. Rewrite using `[← Nat.card_eq_fintype_card, c1, c3, c4, mul_comm]`. Establish `himg : Finset.univ.image N = Finset.univ.filter (fun x : kˣ => s x = x)`. Use extensionality with `x`. Simplify using `only [Finset.mem_filter, ← hDk, ← hr', Finset.mem_image, Finset.mem_univ, true_and]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use `Finset.sum_comp (s := Finset.univ) (fun y : kˣ => f y) N` as an intermediate fact. Simplify using `only [hN] at this`. Rewrite using `[this, ← himg, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun y hy => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[nsmul_eq_mul]`. Use `congr 2`. Establish `hy' : y ∈ Set.range N` using `by simpa using hy`. Rewrite using `[MonoidHom.card_fiber_eq_of_mem_range N hy' (⟨1, map_one N⟩ : (1 : kˣ) ∈ Set.range N), Nat.card_eq_fintype_card, Fintype.card_subtype]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Simplify using `[MonoidHom.mem_ker]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_norm_units {k : Type} [Field k] [Fintype k] (s : k →+* k) (hs : ∀ x, s (s x) = x)
     (r : k) (hr : s r - r ≠ 0) :
@@ -156,11 +154,11 @@ theorem sum_norm_units {k : Type} [Field k] [Fintype k] (s : k →+* k) (hs : �
     simp [MonoidHom.mem_ker]
 
 /- English proof (translation)
-Rewrite using `[← Finset.add_sum_erase _ _ (Finset.mem_univ (0 : k))]`. Use `congr 1`. Use `symm`. Use `Finset.sum_bij (fun x _ => (x : k)) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `a _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Introduce `a _ b _ h`. Conclude with `Units.ext h`. Introduce `b hb`. Conclude with `⟨Units.mk0 b (by simpa using hb), by simp, rfl⟩`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a _`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sum_eq_zero_add_units {k : Type} [Field k] [Fintype k] {M : Type} [AddCommMonoid M]
     (g : k → M) : ∑ x : k, g x = g 0 + ∑ x : kˣ, g x := by
@@ -175,21 +173,19 @@ theorem sum_eq_zero_add_units {k : Type} [Field k] [Fintype k] {M : Type} [AddCo
   · intro a _; rfl
 
 /- English proof (translation)
-Take `⟨m, hm, hsum⟩` from `sum_norm_units s hs r hr`. Establish `hq` using `card_eq_sq s hs r hr`. Use `set q := (Finset.univ.filter (fun x : k => s x = x)).card with hqdef`. Use `set a := (Finset.univ.filter (fun x : kˣ => s x = x)).card with hadef`. Establish `hqa : q = 1 + a`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `sum_eq_zero_add_units (fun x : k => if s x = x then (1 : ℕ) else 0)` as an intermediate fact. Rewrite using `[hqdef, hadef, Finset.card_filter, Finset.card_filter, this, if_pos (map_zero s)]`. Establish `ha : 0 < a` using `Finset.card_pos.2 ⟨1, by simp⟩`. Establish `hcard : Fintype.card k = 1 + Fintype.card kˣ`. Use `sum_eq_zero_add_units (fun _ : k => (1 : ℕ))` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `hmq : m = q + 1`. Apply `Nat.eq_of_mul_eq_mul_right ha` to reduce the goal to its premises. Rewrite `hcard` using `[hm, hq, hqa]`. Rewrite using `[hqa]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hz : ∑ y ∈ Finset.univ.filter (fun x : k => s x = x), f y = 0`. Establish `h1 : ∑ y ∈ Finset.univ.filter (fun x : k => s x = x), f (u + y) = ∑ y ∈ Finset.univ.filter (fun x : k => s x = x), f y`. Use `Finset.sum_equiv (Equiv.addLeft u) ?_ ?_` and prove the remaining obligations. Introduce `i`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[hu]`. Introduce `i _`. Both sides reduce to the same expression. Simplify using `only [hadd, ← Finset.mul_sum] at h1`. Establish `h2 : (f u - 1) * ∑ y ∈ Finset.univ.filter (fun x : k => s x = x), f y = 0`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Take the linear combination `h1`. Conclude with `(mul_eq_zero.1 h2).resolve_left (sub_ne_zero.2 hfu)`. Establish `hu1 : ∑ y ∈ Finset.univ.filter (fun x : kˣ => s x = x), f y = -1`. Use `sum_eq_zero_add_units (fun x : k => if s x = x then f x else 0)` as an intermediate fact. Rewrite `this` using `[← Finset.sum_filter, hz, ← Finset.sum_filter]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_zero, if_true, h0] at this`. Take the linear combination `-this`. Rewrite using `[sum_eq_zero_add_units, hsum, hu1, hq, hmq]`. Use `push_cast`. Rewrite using `[Real.sqrt_sq (Nat.cast_nonneg q)]`.
-
-Simplify using `[h0]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gauss_field {k : Type} [Field k] [Fintype k] (s : k →+* k) (hs : ∀ x, s (s x) = x)
     (r : k) (hr : s r - r ≠ 0) (f : k → ℂ) (hadd : ∀ a b, f (a + b) = f a * f b) (h0 : f 0 = 1)
@@ -232,21 +228,17 @@ theorem gauss_field {k : Type} [Field k] [Fintype k] (s : k →+* k) (hs : ∀ x
   simp [h0]
 
 /- English proof (translation)
-Introduce `R _ σ w hσ hw P hP hfin hst ⟨r, hr⟩ χ hadd h0 hχP hχσ ⟨t, ht⟩`. Use `letI : Field (R ⧸ P) := Ideal.Quotient.field P`. Use `letI : Fintype (R ⧸ P) := Fintype.ofFinite _`. Set `s : R ⧸ P →+* R ⧸ P` to `Ideal.quotientMap P σ (fun r hr => hst r hr)`. Establish `hs : ∀ x, s (Ideal.Quotient.mk P x) = Ideal.Quotient.mk P (σ x)` using `fun x => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hout : ∀ q : R ⧸ P, Ideal.Quotient.mk P (Quotient.out q) = q` using `fun q => Quotient.out_eq q`. Establish `hcongr : ∀ a b : R, Ideal.Quotient.mk P a = Ideal.Quotient.mk P b → χ a = χ b`. Introduce `a b h`. Establish `h1` using `hχP _ (Ideal.Quotient.eq.1 h)`. Establish `h2` using `hadd (a - b) b`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[h1, one_mul, sub_add_cancel]`. Conclude with `h2`. Set `f : R ⧸ P → ℂ` to `fun q => χ (w * Quotient.out q)`. Establish `hf : ∀ a : R, f (Ideal.Quotient.mk P a) = χ (w * a)` using `fun a => hcongr _ _ (by rw [map_mul, map_mul, hout])`. Establish `key` using `gauss_field s (fun x => by`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Rewrite using `[hs, hs, hσ])`. Use the proof step `(Ideal.Quotient.mk P r)`. Use the proof step `(by`. Rewrite using `[hs, ← map_sub]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `fun h => hr (Ideal.Quotient.eq_zero_iff_mem.1 h))`. Use `f`. Use the proof step `(fun a b => by`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective b`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_add, hf, hf, hf, mul_add, hadd])`. Use the proof step `(by rw [← map_zero (Ideal.Quotient.mk P), hf, mul_zero, h0])`. Use the proof step `(Ideal.Quotient.mk P (t + σ t))`. Use the proof step `(by rw [hs, map_add σ, hσ, add_comm])`. Use the proof step `(by`.
-
-Rewrite using `[hf, mul_add, hadd, ← hχσ (w * σ t), map_mul, hσ, ← hadd, ← add_mul, hw, one_mul]`. Conclude with `ht)`. Rewrite using `[finsum_eq_sum_of_fintype, Nat.card_eq_fintype_card, ← key]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Use `conv_rhs => rw [← hout q]`.
-
-Rewrite using `[hs, ← map_mul, hf, mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem gauss_quotient : ∀ {R : Type} [CommRing R] (σ : R →+* R) (w : R), (∀ r, σ (σ r) = r) → w + σ w = 1 → ∀ P : Ideal R, P.IsMaximal → Finite (R ⧸ P) → (∀ r ∈ P, σ r ∈ P) → (∃ r, σ r - r ∉ P) → ∀ χ : R → ℂ, (∀ s t, χ (s + t) = χ s * χ t) → χ 0 = 1 → (∀ r ∈ P, χ r = 1) → (∀ t, χ (σ t) = χ t) → (∃ t, χ t ≠ 1) → (∑ᶠ q : R ⧸ P, χ (w * (Quotient.out q : R) * σ (Quotient.out q : R))) = -(Real.sqrt (Nat.card (R ⧸ P)) : ℂ) := by
   intro R _ σ w hσ hw P hP hfin hst ⟨r, hr⟩ χ hadd h0 hχP hχσ ⟨t, ht⟩

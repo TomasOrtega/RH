@@ -7,7 +7,7 @@ open GlobalTheory.PD GlobalTheory.CechDR KaehlerDifferential
 namespace GlobalTheory.PD
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `Module.projective_def'.1 (inferInstance : Module.Projective R V)`. Use `haveI : Module.Free R (⋀[R]^n (V →₀ R)) := exteriorPower.instFree R n`. Use `Module.Projective.of_split (exteriorPower.map n s) (exteriorPower.map n (Finsupp.linearCombination R id)) ?_` and prove the remaining obligations. Rewrite using `[← exteriorPower.map_comp, hs, exteriorPower.map_id]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem projective_exteriorPower_of_projective (R V : Type) [CommRing R] [AddCommGroup V] [Module R V]
     [Module.Projective R V] (n : ℕ) : Module.Projective R (⋀[R]^n V) := by
@@ -18,19 +18,17 @@ theorem projective_exteriorPower_of_projective (R V : Type) [CommRing R] [AddCom
   rw [← exteriorPower.map_comp, hs, exteriorPower.map_id]
 
 /- English proof (translation)
-Introduce `k K _ _ _ B _ _ p W _ _ _ _ e he hr`. Take `⟨e', he', hre', -⟩` from `GlobalTheory.T.kahlerFormsOverSubalgebra_eq_range_exteriorPower k K B p`. Establish `hom` using `fun a ha => ((GlobalTheory.T.kahlerFormsOverSubalgebra_closure_properties k K B p p).2.1 a ha)`. Set `S : Submodule k W` to `(omB k K B p).comap (e.restrictScalars k)`. Set `T : Submodule B W` to `{ carrier := (S : Set W) add_mem' := S.add_mem zero_mem' := S.zero_mem smul_mem' := fun c w hw => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Express the relevant statement in the definitionally equal form `e ((c : K) • w) ∈ omB k K B p`. Rewrite using `[map_smul]`. Conclude with `(hom _ hw).2.2.2 c c.2 }`. Establish `hST : Submodule.span B (S : Set W) = T` using `Submodule.span_eq T`. Express the relevant statement in the definitionally equal form `Module.Finite B (Submodule.span B (S : Set W)) ∧ Module.Projective B (Submodule.span B (S : Set W))`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hST]`. Set `g : T →ₗ[B] DR k K` to `{ toFun := fun w => e w map_add' := fun w w' => by simp map_smul' := fun c w => by`. Express the relevant statement in the definitionally equal form `e ((c : K) • (w : W)) = (c : K) • e w`. Conclude with `e.map_smul (c : K) w }`. Establish `hg : Function.Injective g` using `fun w w' h => Subtype.ext (he h)`.
+Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hrg : LinearMap.range g = LinearMap.range e'`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, rfl⟩`. Take `⟨z, hz⟩` from `(hre' _).1 w.2`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨z, hz⟩`. Introduce and unpack `⟨z, rfl⟩`. Establish `hy : e' z ∈ omB k K B p` using `(hre' _).2 ⟨z, rfl⟩`. Establish `hy' : e' z ∈ LinearMap.range e` using `by rw [hr]; exact (hom _ hy).2.2.1`. Take `⟨w, hw⟩` from `hy'`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hwT : w ∈ T`. Express the relevant statement in the definitionally equal form `e w ∈ omB k K B p`. Rewrite using `[hw]`. Conclude with `hy`. Conclude with `⟨⟨w, hwT⟩, hw⟩`.
-
-Set `E : T ≃ₗ[B] ⋀[B]^p Ω[B⁄k]` to `(LinearEquiv.ofInjective g hg).trans ((LinearEquiv.ofEq _ _ hrg).trans (LinearEquiv.ofInjective e' he').symm)`. Use `haveI : Module.Projective B (⋀[B]^p Ω[B⁄k]) := projective_exteriorPower_of_projective B _ p`. Conclude with `⟨Module.Finite.equiv E.symm, Module.Projective.of_equiv E.symm⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem span_omB_comap_finite_projective : ∀ (k K : Type) [Field k] [Field K] [Algebra k K] (B : Subalgebra k K) [IsFractionRing B K] [Algebra.Smooth k B] (p : ℕ) (W : Type) [AddCommGroup W] [Module K W] [Module k W] [IsScalarTower k K W] (e : W →ₗ[K] DR k K), Function.Injective e → LinearMap.range e = ⋀[K]^p Ω[K⁄k] → Module.Finite B (Submodule.span B ((omB k K B p).comap (e.restrictScalars k) : Set W)) ∧ Module.Projective B (Submodule.span B ((omB k K B p).comap (e.restrictScalars k) : Set W)) := by
   intro k K _ _ _ B _ _ p W _ _ _ _ e he hr

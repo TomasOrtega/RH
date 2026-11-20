@@ -204,7 +204,7 @@ def LocF.eVT {eps : ℝ} {Fm : Formalism.MainNotions.FamP eps} (Y : LocF Fm) : �
   fun x i => if h : Fm.x1 < x then (Y.lo x h i).eV else 0
 
 /- English proof (translation)
-The claim follows from `dif_pos hx`.
+A detailed English derivation is pending.
 -/
 theorem LocF.eVT_eq {eps : ℝ} {Fm : Formalism.MainNotions.FamP eps} (Y : LocF Fm) (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) :
     Y.eVT x i = (Y.lo x hx i).eV := dif_pos hx

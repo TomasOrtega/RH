@@ -22,7 +22,7 @@ def tanModel {S : Type} [CommRing S] (x : Sp S ⟶ X0) : GlobalTheory.CompanionT
   smul _ _ := rfl
 
 /- English proof (translation)
-Use `⟨fun k => isTanAtG_of _ (tv_zero' _), fun w hw => ?_⟩` and prove the remaining obligations. Establish `key : ∀ a : Fin n → S, IsCombAtG t x (m` using `Fintype.card (Fin n)) (fun i => (tv (b ((Fintype.equivFin (Fin n)).symm i))).left) (fun i => a ((Fintype.equivFin (Fin n)).symm i)) w ↔ b.equivFun.symm a = mkT (ovT hw) (smT_zero_ovT hw) := fun a => by`. Rewrite using `[comb_iff_sum t x (Fintype.equivFin (Fin n)).symm b a, b.equivFun_symm_apply]`. Conclude with `⟨fun h => tv_injective (Over.OverMorphism.ext h), fun h => by rw [h]; rfl⟩`. Conclude with `(existsUnique_congr key).2 (b.equivFun.symm.bijective.existsUnique _)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem tanBasis_of_basis {S : Type} [CommRing S] (x : Sp S ⟶ X0) {n : ℕ} (b : Module.Basis (Fin n) S (TanM x t.G)) :
     IsTanBasisG t x fun k => (tv (b k)).left := by
@@ -35,13 +35,13 @@ theorem tanBasis_of_basis {S : Type} [CommRing S] (x : Sp S ⟶ X0) {n : ℕ} (b
   exact (existsUnique_congr key).2 (b.equivFun.symm.bijective.existsUnique _)
 
 /- English proof (translation)
-Use `t.semi.smooth` as an intermediate fact. Take `⟨h1, h2, h3⟩` from `PositivityTheory.HtPt.Htat.lie_proj X0 t.G R x _ (tanModel t x)`. Establish `: Module.FinitePresentation R (TanM x t.G)` using `Module.finitePresentation_of_projective _ _`. Establish `: Module.Free (Localization.AtPrime p) (LocalizedModule p.primeCompl (TanM x t.G))` using `Module.free_of_flat_of_isLocalRing`. Take `⟨r, hr, hf, -⟩` from `Module.FinitePresentation.exists_free_localizedModule_powers p.primeCompl (LocalizedModule.mkLinearMap p.primeCompl (TanM x t.G)) (Localization.AtPrime p)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨r, hr, ?_⟩` and prove the remaining obligations. Set `R'` to `Localization.Away r`. Set `L'` to `TanM (spMap (algebraMap R R') ≫ x) t.G`. Take `⟨j, hj, hs, -⟩` from `PositivityTheory.HtPt.Htat.lie_bc X0 t.G R R' x _ L' (tanModel t x) (tanModel t _)`. Set `_ : Module R L'` to `Module.compHom L' (algebraMap R R')`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `: IsScalarTower R R' L'` using `⟨fun r a l => by rw [Algebra.smul_def, mul_smul]; rfl⟩`. Set `j₀ : TanM x t.G →ₗ[R] L'` to `{ toFun := j, map_add' := j.map_add, map_smul' := fun a v => hs a v }`. Establish `hbc` using `h3 R' L' (tanModel t _) j₀ hj`. Establish `hbc'` using `IsLocalizedModule.isBaseChange (Submonoid.powers r) R' (LocalizedModule.mkLinearMap (Submonoid.powers r) (TanM x t.G))`. Set `e` to `hbc'.equiv.symm.trans hbc.equiv`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hf' : Module.Free R' (LocalizedModule (Submonoid.powers r) (TanM x t.G))` using `hf`. Establish `: Module.Free R' L'` using `Module.Free.of_equiv e`. Establish `: Module.Finite R' L'` using `Module.Finite.equiv hbc.equiv`. Conclude with `⟨_, ⟨(Module.Free.chooseBasis R' L').reindex (Fintype.equivFin _)⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_basis_away {R : Type} [CommRing R] (x : Sp R ⟶ X0) (p : Ideal R) [p.IsPrime] :
     ∃ r ∉ p, ∃ n : ℕ, Nonempty (Module.Basis (Fin n) (Localization.Away r)
@@ -72,15 +72,15 @@ theorem exists_basis_away {R : Type} [CommRing R] (x : Sp R ⟶ X0) (p : Ideal R
 end Gen
 
 /- English proof (translation)
-Introduce `E _ _ _ H X0 t z`. Take `⟨c, hc⟩` from `exists_chart t.PP.isLB (eSec t.G z)`. Take `⟨V, hV, hzV, hVU⟩` from `exists_isAffineOpen_mem_and_subset (X := X0) (x := z) (U := eSec t.G ⁻¹ᵁ t.PP.L.U c) hc`. Set `R : Type` to `Γ(X0, V)`. Set `x : Sp R ⟶ X0` to `hV.fromSpec`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `p : PrimeSpectrum R` to `hV.primeIdealOf ⟨z, hzV⟩`. Take `⟨r, hr, n, ⟨b⟩⟩` from `exists_basis_away t x p.asIdeal`. Take `⟨G, A, tg, y, h1, h2, h3⟩` from `GermInh.chart_of_basis t _ _ (tanBasis_of_basis t _ b)`. Establish `hx : IsOpenImmersion x` using `hV.isOpenImmersion_fromSpec`. Establish `hj : IsOpenImmersion (spMap (algebraMap R (Localization.Away r)))` using `IsOpenImmersion.of_isLocalization r`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨Localization.Away r, inferInstance, spMap (algebraMap R (Localization.Away r)) ≫ x, _, G, A, tg, y, c, inferInstance, ?_, h1, h2, h3, ?_⟩` and prove the remaining obligations. Establish `: p ∈ Set.range (PrimeSpectrum.comap (algebraMap R (Localization.Away r)))`. Rewrite using `[PrimeSpectrum.localization_away_comap_range (Localization.Away r) r]`. Conclude with `hr`. Take `⟨q, hq⟩` from `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨q, ?_⟩` and prove the remaining obligations. Use `show x (PrimeSpectrum.comap (algebraMap R (Localization.Away r)) q) = z`. Rewrite using `[hq]`. Conclude with `hV.fromSpec_primeIdealOf ⟨z, hzV⟩`. Introduce and unpack `_ ⟨q, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `: x (spMap (algebraMap R (Localization.Away r)) q) ∈ (V : Set X0)`. Rewrite using `[← hV.range_fromSpec]`. Conclude with `⟨_, rfl⟩`. Conclude with `hVU this`.
+A detailed English derivation is pending.
 -/
 theorem chart_affine : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X0 : Scheme.{0}) (t : SAB H X0) (z : X0), ∃ (A : Type) (_ : CommRing A) (j : Sp A ⟶ X0) (d : ℕ) (G : Germ.FGLaw A d) (a : Germ.OAct (𝓞 E) G) (tg : Fin d → (Sp (DualNumber A) ⟶ t.G.left)) (x : ∀ m, jOG j d m 1 ⟶ t.G) (c : t.PP.L.ι), IsOpenImmersion j ∧ z ∈ Set.range j ∧ IsChartG t j d G.F a.act tg (fun l i => if l = i then 1 else 0) x ∧ (∀ l, IsTanAtG t j (tg l)) ∧ (∀ w, IsTanAtG t j w → ∃! b : Fin d → A, IsCombAtG t j tg b w) ∧ Set.range (j ≫ eSec t.G) ⊆ (t.PP.L.U c : Set t.G.left) := by
   intro E _ _ _ H X0 t z

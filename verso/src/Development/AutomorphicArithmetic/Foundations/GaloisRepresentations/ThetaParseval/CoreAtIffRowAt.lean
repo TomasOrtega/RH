@@ -14,7 +14,7 @@ namespace UpperTheory.Gal.TP
 open Sub
 
 /- English proof (translation)
-Simplify using `only [wtJumps, infOfWeight, Multiset.map_map]`. Use `Multiset.map_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem map_wtJumps {a : ℕ} (lam : DomWeight a) :
     (wtJumps lam).map (fun n : ℤ => (n : ℂ)) = (infOfWeight lam).map fun z => ((a : ℂ) - 1) / 2 - z := by
@@ -27,13 +27,13 @@ theorem map_wtJumps {a : ℕ} (lam : DomWeight a) :
 variable {E Ω : Type} [Field E] [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨h .unr, fun P AI hT A hA O _ _ _ Bw hj => ⟨h .crys P AI hT A hA O Bw hj, (h .dR P AI hT A hA O Bw hj).1, fun τ LL' τ' hi => (h .dR P AI hT A hA O Bw hj).2 τ LL' τ' hi _ (map_wtJumps _), fun g => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← hS E Ω A w hA a B g]`. Conclude with `h .phi P AI hT A hA O Bw hj g`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨h1, h2⟩ c`. Consider the cases of `c with`. Consider the case `unr => exact h1`. Consider the case `dR`. Introduce `P AI hT A hA O _ _ _ Bw hj`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(h2 P AI hT A hA O Bw hj).2.1, fun τ LL' τ' hi J hJ => ?_⟩` and prove the remaining obligations. Establish `e : J = wtJumps (lam (ι.toRingHom.comp τ))` using `Multiset.map_injective Int.cast_injective (hJ.trans (map_wtJumps _).symm)`. Rewrite using `[e]`. Conclude with `(h2 P AI hT A hA O Bw hj).2.2.1 τ LL' τ' hi`. Consider the case `crys => exact fun P AI hT A hA O _ _ _ Bw hj => (h2 P AI hT A hA O Bw hj).1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `phi`. Introduce `P AI hT A hA O _ _ _ Bw hj g`. Rewrite using `[hS E Ω A w hA a B g]`. Conclude with `(h2 P AI hT A hA O Bw hj).2.2.2 g`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sphG_iff_cl (hS : SatPol) {a : ℕ} (ι : Qbar l ≃+* ℂ) (r : G E Ω →* GL (Fin a) (Qbar l)) (w : HeightOneSpectrum (𝓞 E))
     (B : Multiset ℂˣ) (lam : (E →+* ℂ) → DomWeight a) :

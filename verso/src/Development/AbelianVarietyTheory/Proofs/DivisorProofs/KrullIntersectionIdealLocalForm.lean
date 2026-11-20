@@ -3,17 +3,15 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `set N : Submodule B (B ⧸ a') := Submodule.map (Submodule.mkQ a') a with hN`. Take `⟨k, hk⟩` from `Ideal.exists_pow_inf_eq_pow_smul I N`. Establish `hle : N ≤ I ^ (k + 1) • (⊤ : Submodule B (B ⧸ a'))`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 (h k hx)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : Submodule.mkQ a' (y + z) = z • Submodule.mkQ a' 1`. Establish `hy0 : Submodule.mkQ a' y = 0`. Rewrite using `[Submodule.mkQ_apply]`. Conclude with `(Submodule.Quotient.mk_eq_zero a').2 hy`. Rewrite using `[map_add, hy0, zero_add, ← map_smul, smul_eq_mul, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h1]`. Conclude with `Submodule.smul_mem_smul hz Submodule.mem_top`. Establish `hNI : N ≤ I • N`. Establish `e1 : N = I ^ (k + 1) • (⊤ : Submodule B (B ⧸ a')) ⊓ N` using `(inf_eq_right.2 hle).symm`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Nat.add_sub_cancel_left, pow_one]`. Conclude with `Submodule.smul_mono le_rfl inf_le_right`. Establish `hfg : N.FG` using `IsNoetherian.noetherian N`. Take `⟨r, hr, hrN⟩` from `Submodule.exists_mem_and_smul_eq_self_of_fg_of_le_smul I N hfg hNI`. Use `⟨r, hr, fun x hx => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hx'` using `hrN (Submodule.mkQ a' x) ⟨x, hx, rfl⟩`. Rewrite `hx'` using `[← map_smul, smul_eq_mul]`. Establish `: Submodule.mkQ a' ((1 - r) * x) = 0`. Rewrite using `[sub_mul, one_mul, map_sub, hx', sub_self]`. Rewrite `this` using `[Submodule.mkQ_apply]`.
-
-Conclude with `(Submodule.Quotient.mk_eq_zero a').1 this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem krull_inter_ideal_local (B : Type) [CommRing B] [IsNoetherianRing B] (I a a' : Ideal B)
     (h : ∀ e : ℕ, a ≤ a' ⊔ I ^ (e + 1)) : ∃ r ∈ I, ∀ x ∈ a, (1 - r) * x ∈ a' := by

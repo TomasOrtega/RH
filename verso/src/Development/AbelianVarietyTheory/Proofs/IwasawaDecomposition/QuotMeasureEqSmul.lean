@@ -22,9 +22,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.ReadingNorm
 
 /- English proof (translation)
-Unfold `weylDimU Formalism.L2.Geo.weylDim`. Use `push_cast`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_filter]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: ((lam i : ℝ) - lam j) = a i - a j` using `by exact_mod_cast h i j`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem weylDimU_eq {p : ℕ} (lam a : Fin p → ℤ) (h : ∀ i j, lam i - lam j = a i - a j) :
     ((weylDimU lam : ℚ) : ℝ) = Formalism.L2.Geo.weylDim a := by
@@ -37,7 +37,7 @@ theorem weylDimU_eq {p : ℕ} (lam a : Fin p → ℤ) (h : ∀ i j, lam i - lam 
   rw [this]
 
 /- English proof (translation)
-Rewrite using `[Complex.ofReal_pow, inner_self_eq_norm_sq_to_K]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sq_eq_inner {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (x : H) :
     ((‖x‖ ^ 2 : ℝ) : ℂ) = inner ℂ x x := by
@@ -47,15 +47,13 @@ theorem sq_eq_inner {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hE : ∀ τ, labE D.what₂.embLL τ = tauE D τ` using `fun τ => by`. Use extensionality with `x`. Conclude with `DFunLike.congr_fun D.embE_φ₀ (D.host.sigmaOf (D.eTau τ).1 x)`. Establish `h : ∃ τ, labE D.what₂.embLL τ = tauE D ρ ∨ labE D.what₂.embLL τ = (starRingEnd ℂ).comp (tauE D ρ)` using `⟨ρ, Or.inl (hE ρ)⟩`. Unfold `lab`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos h]`. Establish `hs` using `h.choose_spec`. Generalize the expression as in `h.choose = τ at hs`. Rewrite `hs` using `[hE]`. Break down `hs with hs | hs` into its components or cases.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `h1 : D.host.sigmaOf (D.eTau τ).1 = D.host.sigmaOf (D.eTau ρ).1`. Conclude with `AlgEquiv.ext fun x => D.host.φ₀.injective (DFunLike.congr_fun hs x)`. Apply `D.eTau.injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `(by unfold Host.sigmaOf at h1; exact (EquivLike.injective _) h1)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-It suffices to derive a contradiction. Establish `a` using `xi_zero_im_pos D τ`. Establish `b` using `xi_zero_im_pos D ρ`. Rewrite `a` using `[hs]`. Simplify using `at a`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem lab_emb (ρ : D.what₂.Tau) : lab D.what₂.embLL ρ = ρ := by
   have hE : ∀ τ, labE D.what₂.embLL τ = tauE D τ := fun τ => by
@@ -82,19 +80,19 @@ theorem lab_emb (ρ : D.what₂.Tau) : lab D.what₂.embLL ρ = ρ := by
     linarith
 
 /- English proof (translation)
-Substitute `hs` using the available equality. Establish `hi` using `i.2`. Establish `hk` using `D.R.m_add_three_le_k`. Establish `hp : (D.R.sigW ((i : ℕ) + 1)).1 = D.R.k + i`. Simplify using `only [Ranks.sigW]`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Establish `hq : i + 1 + (D.R.sigW ((i : ℕ) + 1)).2 = D.R.m`. Simplify using `only [Ranks.sigW]`. Use linear arithmetic over natural numbers and integers. Establish `hodd : Odd ((D.R.sigW ((i : ℕ) + 1)).1 + (D.R.sigW ((i : ℕ) + 1)).2)`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Take `⟨a, ha⟩` from `D.R.k_even`. Take `⟨b, hb⟩` from `D.R.m_even`. Conclude with `⟨a + b - 1, by omega⟩`. Take `⟨h1, h2⟩` from `hK _ (inR i).1 (inR i).2 τ`. Establish `hc` using `Formalism.L2.NTheta.kapW_cast (D.hc τ) _ _ hodd`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Unfold `dimK`. Rewrite using `[Rat.cast_mul, weylDimU_eq _ (D.what₂.kaBig ((i : ℕ) + 1) τ), weylDimU_eq _ (D.what₂.kaSmall ((i : ℕ) + 1) τ)]`. Introduce `a b`. Establish `e : ∀ c : Fin (D.R.sigW ((i : ℕ) + 1)).2, DV.aMinusQ D ((i : ℕ) + 1) τ c = -Formalism.L2.NTheta.lamAt (D.hc τ) ((D.R.sigW ((i : ℕ) + 1)).1 + c) - DV.eQ D ((i : ℕ) + 1) τ - ((D.R.t : ℚ) + 1 + 2 * (c : ℕ)) / 2` using `fun c => by`. Use `c.2` as an intermediate fact.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `DV.aMinusQ Formalism.L2.NTheta.lamAt`. Rewrite using `[dif_pos (by omega), dif_neg (by omega), dif_pos (by omega), neg_neg]`. Use `congr 4`. Use linear arithmetic over natural numbers and integers. Apply `Int.cast_injective (α := ℚ)` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Int.cast_sub, Int.cast_sub, hc, hc, h2, h2, e, e]`. Simplify using `only [Formalism.L2.NTheta.kapQ, Sum.elim_inr]`. Expand and normalize the polynomial expressions, which then agree. Introduce `a b`. Establish `e : ∀ n, DV.sigPar D τ n = Formalism.L2.NTheta.lamAt (D.hc τ) n` using `fun n => by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Unfold `DV.sigPar Formalism.L2.NTheta.lamAt`. Both sides reduce to the same expression. Apply `Int.cast_injective (α := ℚ)` to reduce the goal to its premises. Rewrite using `[Int.cast_sub, Int.cast_sub, hc, hc, h1, h1, DV.aPlusQ_eq, DV.aPlusQ_eq, e, e]`. Simplify using `only [Formalism.L2.NTheta.kapQ, Sum.elim_inl]`.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -139,7 +137,7 @@ theorem dimK_eq (hK : DV.KapDef D) (i : Fin D.R.m) (τ : D.what₂.Tau) (s : ℕ
     ring
 
 /- English proof (translation)
-Unfold `Formalism.L2.Geo.dimKap`. Rewrite using `[Complex.ofReal_prod]`. Use `Finset.prod_congr rfl fun ρ _ => ?_` and prove the remaining obligations. Rewrite using `[← dimK_eq hK i ρ _ (D.sp.W_sigval _ (inR i).1 (inR i).2 (tauE D ρ)), Complex.ofReal_ratCast, kapAt, lab_emb]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_dimK (hK : DV.KapDef D) (i : Fin D.R.m) :
     (∏ ρ, ((dimK _ _ (kapAt (Wc D i) D.what₂.embLL ρ) : ℚ) : ℂ)) = (Formalism.L2.Geo.dimKap D ((i : ℕ) + 1) : ℝ) := by
@@ -149,11 +147,11 @@ theorem prod_dimK (hK : DV.KapDef D) (i : Fin D.R.m) :
   rw [← dimK_eq hK i ρ _ (D.sp.W_sigval _ (inR i).1 (inR i).2 (tauE D ρ)), Complex.ofReal_ratCast, kapAt, lab_emb]
 
 /- English proof (translation)
-Take `⟨hP, hV⟩` from `GlobalTheory.FinalJoin2.volPairEx_and_finVol D V hs`. Establish `hp` using `GlobalTheory.AutomorphicL2Unitary.isVolPair_volPair hP`. Use `hp.1.1` as an intermediate fact. Take `⟨i1, i2, i3⟩` from `GlobalTheory.MemberAdelicTop.locallyCompact_secondCountable_t2 D V`. Establish `e` using `Measure.isMulLeftInvariant_eq_smul ν (volPair V).1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set c := Measure.haarScalarFactor ν (volPair V).1`. Establish `e1 : GlobalTheory.AutomorphicL2Unitary.autMeasure V ν = (c : ENNReal) • muQ V`. Rewrite using `[GlobalTheory.AutomorphicL2Unitary.muQ_eq hP, ← GlobalTheory.AutomorphicL2Unitary.quotMeasure_smul]`. Conclude with `congrArg _ e`. Establish `e2 : ν 𝓕 = c * muQ V Set.univ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← GlobalTheory.AutomorphicL2Unitary.quotMeasure_univ h𝓕]`. Conclude with `congrArg (fun m : Measure (AutQ V) => m Set.univ) e1`. Rewrite using `[e1, e2, muQ1, if_pos (show _ ∧ _ from hV), smul_smul, mul_assoc, ENNReal.mul_inv_cancel hV.1 hV.2, mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem quotMeasure_eq_smul (V : HSp D) (hs : V.SigOK) {ν : Measure (GA D V)} {𝓕 : Set (GA D V)} (hν : ν.IsHaarMeasure)
     (h𝓕 : IsFundamentalDomain (GQ V) 𝓕 ν) : GlobalTheory.AutomorphicL2Unitary.autMeasure V ν = ν 𝓕 • muQ1 V := by
@@ -172,11 +170,11 @@ theorem quotMeasure_eq_smul (V : HSp D) (hs : V.SigOK) {ν : Measure (GA D V)} {
   rw [e1, e2, muQ1, if_pos (show _ ∧ _ from hV), smul_smul, mul_assoc, ENNReal.mul_inv_cancel hV.1 hV.2, mul_one]
 
 /- English proof (translation)
-Take `⟨i1, i2, i3⟩` from `GlobalTheory.MemberAdelicTop.locallyCompact_secondCountable_t2 D V`. Establish `hL : GlobalTheory.AutomorphicL2Unitary.LeftInv (GQ V) φ` using `hφ`. Establish `e1` using `GlobalTheory.AutomorphicL2Unitary.integral_quotMeasure h𝓕 (fun q => star (GlobalTheory.AutomorphicL2Unitary.descend (GQ V) φ q) * GlobalTheory.AutomorphicL2Unitary.descend (GQ V) φ q)`. Simplify using `only [hL.descend_mk] at e1`. Establish `e2 : ((‖hψ.toLp ψ‖ ^ 2 : ℝ) : ℂ) = ∫ q, ((‖ψ q‖ ^ 2 : ℝ) : ℂ) ∂muQ1 V`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[sq_eq_inner, MeasureTheory.L2.inner_def]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hψ.coeFn_toLp] with q hq`. Rewrite using `[hq, sq_eq_inner]`. Rewrite using `[← e1, show GlobalTheory.AutomorphicL2Unitary.quotMeasure (GQ V) ν = _ from quotMeasure_eq_smul V hs hν h𝓕, integral_smul_measure, mul_pow, Complex.ofReal_mul, Complex.ofReal_mul, e2, ← integral_const_mul, Complex.real_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `integral_congr_ae (Filter.Eventually.of_forall fun q => ?_)` and prove the remaining obligations. Use `show star (φ q.out) * φ q.out = ((c ^ 2 : ℝ) : ℂ) * ((‖ψ q‖ ^ 2 : ℝ) : ℂ)`. Rewrite using `[← Complex.ofReal_mul, ← mul_pow, ← h, Complex.ofReal_pow]`. Conclude with `Complex.conj_mul' _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_star_mul (V : HSp D) (hs : V.SigOK) {ν : Measure (GA D V)} {𝓕 : Set (GA D V)} (hν : ν.IsHaarMeasure)
     (h𝓕 : IsFundamentalDomain (GQ V) 𝓕 ν) (φ : GA D V → ℂ) (hφ : ∀ γ ∈ GQ V, ∀ g, φ (γ * g) = φ g)
@@ -201,7 +199,7 @@ theorem integral_star_mul (V : HSp D) (hs : V.SigOK) {ν : Measure (GA D V)} {�
   exact Complex.conj_mul' _
 
 /- English proof (translation)
-Introduce `g`. Rewrite using `[CoreJ.phiJ_apply, norm_mul, hL.cUnit j hj σ hg, one_mul, Core.phiAd, Pi.smul_apply, norm_smul, Complex.norm_real, Real.norm_of_nonneg (lieFac_pos _ _ _).le]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_phiJ (T : CoreJ D) (hL : LawsJ T) {j : ℕ} (hj : InR D j) (w : WeightFamilies.Wt D j)
     {σ : T.Q.c.F →+* ℂ} (hg : GoodEmb T.Q.c σ) (f : T.cuspA j (wtA w) w.n) :
@@ -212,7 +210,7 @@ theorem norm_phiJ (T : CoreJ D) (hL : LawsJ T) {j : ℕ} (hj : InR D j) (w : Wei
     Complex.norm_real, Real.norm_of_nonneg (lieFac_pos _ _ _).le]
 
 /- English proof (translation)
-Introduce `q`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 -/
 theorem jFn_apply (T : CoreJ D) {j : ℕ} (w : WeightFamilies.Wt D j) (σ : T.Q.c.F →+* ℂ) (f : T.cuspA j (wtA w) w.n) :
     ∀ q : AutQ (T.V j σ), jFn (T.V j σ) σ (rdC (T.U j) σ (wtA w) w.n) (T.dict j σ) (T.mu j σ) f q =
@@ -221,11 +219,11 @@ theorem jFn_apply (T : CoreJ D) {j : ℕ} (w : WeightFamilies.Wt D j) (σ : T.Q.
   rfl
 
 /- English proof (translation)
-Establish `hg : GoodEmb T.Q.c σ` using `hσ ▸ goodEmb_goodOf _ σ'`. Establish `hm` using `h.cuspidalL2Subspace j hj σ hg _ _ (dom_wtA w)`. Establish `e : h.Nl j w σ' (f : T.R j) = lieFac (T.Q.Dw j) (xiR D) (wtA w) * ‖(hm f).toLp _‖`. Substitute `hσ` using the available equality. Rewrite using `[LawsCore.Nl, dif_pos hj, l2C, dif_pos f.2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[e]`. Use `clear e hσ`. Substitute `hV` using the available equality. Establish `e2 : phiC T rfl (wtA w) (f : T.R j) = T.phiJ j σ (wtA w) (f : T.R j)` using `rfl`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hφ`, the goal using `[e2]`. Conclude with `integral_star_mul (T.V j σ) hs hν h𝓕 _ hφ _ (hm f) _ fun q => (norm_phiJ T hL hj w hg f q.out).trans (congrArg (_ * ‖·‖) (jFn_apply T w σ f q).symm)`.
+A detailed English derivation is pending.
 -/
 theorem integral_phiC (T : CoreJ D) (hL : LawsJ T) (h : LawsCore T.toCore) {j : ℕ} (hj : InR D j) (w : WeightFamilies.Wt D j)
     {σ σ' : T.Q.c.F →+* ℂ} (hσ : σ = goodOf T.Q.c σ') {W : HSp D} (hV : T.V j σ = W) (hs : W.SigOK)
@@ -248,9 +246,9 @@ theorem integral_phiC (T : CoreJ D) (hL : LawsJ T) (h : LawsCore T.toCore) {j : 
     (norm_phiJ T hL hj w hg f q.out).trans (congrArg (_ * ‖·‖) (jFn_apply T w σ f q).symm)
 
 /- English proof (translation)
-Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Simplify using the standard rewrite rules. Establish `h1 : ∃ c, IsMultIP M μ 𝓕 (H.e x) (H.e x) c`. Assume the negation of the conclusion as `hc`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Apply `inner_self_ne_zero (𝕜 := ℂ).2 hx` to reduce the goal to its premises. Rewrite using `[h, ipM, dif_neg hc, mul_zero]`. Rewrite using `[(ipM_spec _ _ _ _ _ h1 v v).2, sq_eq_inner, h]`. Simplify using `[inner_self_eq_norm_sq_to_K, hv]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem normSq_eq {V : HSp D} {S : D.what₂.Tau → SPar} {M : DSModel V S} {μ : Measure (GA D V)} {𝓕 : Set (GA D V)}
     (H : HMod (MMap M)) {N : ℂ} (h : ∀ x y, inner ℂ x y = N * ipM M μ 𝓕 (H.e x) (H.e y)) (v : M.Vec)
@@ -267,13 +265,13 @@ theorem normSq_eq {V : HSp D} {S : D.what₂.Tau → SPar} {M : DSModel V S} {μ
   simp [inner_self_eq_norm_sq_to_K, hv]
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A T _ R κ v₀ h hK hR ht hj i f`. Establish `hpin : T.Q.PinField` using `ht.laws.pins.2.2.1`. Establish `e0 : sg0 D A = D.what₂.embLL` using `sgAt_mk _ R.hv0`. Establish `hg` using `base_embedding_good T R ht.alg hpin`. Establish `hV` using `ht.laws.spaceW _ (inR i) _ hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hσ : res T (sg0 D A) = goodOf T.Q.c T.σ₀`. Rewrite using `[goodOf, if_pos T.good_σ₀, e0, res_embLL T ht.alg hpin]`. Establish `hev` using `jTop_good T R κ v₀ hg hV (hj i _ hg hV) f`. Take `⟨-, hr, hip⟩` from `hR.models.HW i (sg0 D A)`. Establish `hm : (R.HW i (sg0 D A)).e (jTop T R κ v₀ i (sg0 D A) f) ∈ R.Wall i (sg0 D A)` using `hr ▸ ⟨_, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ha` using `((GlobalTheory.MultMem.mem_mult_iff _ _ _ _ _ _ _ _).1 hm).aut (v₀ i (sg0 D A))`. Establish `h1` using `normSq_eq (R.HW i (sg0 D A)) hip (v₀ i _) (ht.hv₀ i _).norm (jTop T R κ v₀ i (sg0 D A) f)`. Unfold `evAt at hev`. Rewrite `ha`, `h1` using `[hev]`. Rewrite `h1` using `[integral_phiC T ht.laws h (inR i) (κ i) hσ hV (D.sp.W_sig _) (hR.models.νW i).1.1 (hR.models.νW i).2 f ha.left, show (∏ ρ, ((dimK _ _ (kapAt (Wc D i) (sg0 D A) ρ) : ℚ) : ℂ)) = _ from e0 ▸ prod_dimK hK i, ← Complex.ofReal_mul, Complex.ofReal_inj]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hN` using `(h.hNl _ (inR i) (κ i) T.σ₀).nonneg _ f.2`. Rewrite using `[← Real.sqrt_sq hN, ← Real.sqrt_mul' _ (sq_nonneg _), ← Real.sqrt_sq (norm_nonneg (jTop T R κ v₀ i (sg0 D A) f)), h1]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem norm_jTop : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec) (h : LawsCore T.toCore), DV.KapDef D → PreChar R → TieIn T R κ v₀ → JEvExists T R κ v₀ → ∀ (i : Fin D.R.m) (f : Cu T κ i), ‖jTop T R κ v₀ i (sg0 D A) f‖ = Real.sqrt ((R.νW i (R.fdW i)).toReal * Formalism.L2.Geo.dimKap D ((i : ℕ) + 1)) * h.Nl ((i : ℕ) + 1) (κ i) T.σ₀ (f : T.R ((i : ℕ) + 1)) := by
   intro D G _ _ Pl0 T0 A T _ R κ v₀ h hK hR ht hj i f

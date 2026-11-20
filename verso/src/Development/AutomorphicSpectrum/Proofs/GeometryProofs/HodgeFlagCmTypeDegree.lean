@@ -15,7 +15,7 @@ section Forms
 variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω]
 
 /- English proof (translation)
-Rewrite using `[Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp)]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, GroundTheory.Heights₂.Heights.NumbersDVR.blockWeight, Pi.single_apply]`. Rewrite using `[Fintype.sum_sigma]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem weight_blockWeight_apply (d : (Σ k, ι k) →₀ ℕ) (k : K) :
     Finsupp.weight (GroundTheory.Heights₂.Heights.NumbersDVR.blockWeight ι) d k = ∑ i, d ⟨k, i⟩ := by
@@ -26,7 +26,7 @@ theorem weight_blockWeight_apply (d : (Σ k, ι k) →₀ ℕ) (k : K) :
   simp
 
 /- English proof (translation)
-Introduce `m hm k`. Rewrite using `[← weight_blockWeight_apply, h (mem_support_iff.mp hm)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem isMultiHomog_blocks {f : MvPolynomial (Σ k, ι k) ℤ} {b : K → ℕ}
     (h : GroundTheory.Heights₂.Heights.NumbersDVR.IsMultiHomog f b) : IsMultiHomog f b := by
@@ -34,9 +34,9 @@ theorem isMultiHomog_blocks {f : MvPolynomial (Σ k, ι k) ℤ} {b : K → ℕ}
   rw [← weight_blockWeight_apply, h (mem_support_iff.mp hm)]
 
 /- English proof (translation)
-Unfold `mConeMap`. Rewrite using `[aeval_def, aeval_def, eval₂_eq', eval₂_eq', map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `hX : ∏ p : Σ k, ι k, (X p.1 : MvPolynomial K Ω) ^ m p = ∏ k, X k ^ d k`. Rewrite using `[Fintype.prod_sigma]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `∏ i, (X k : MvPolynomial K Ω) ^ m ⟨k, i⟩ = _`. Rewrite using `[Finset.prod_pow_eq_pow_sum, hh m hm k]`. Simplify using `only [mul_pow, Finset.prod_mul_distrib, hX, map_mul, map_prod, map_pow, eq_intCast, map_intCast]`. Simplify using `[mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem mConeMap_form (y : (Σ k, ι k) → Ω) {h : MRing ι} {d : K → ℕ} (hh : IsMultiHomog h d) :
     mConeMap y h = MvPolynomial.C (aeval y h) * ∏ k, (X k : MvPolynomial K Ω) ^ d k := by
@@ -53,7 +53,7 @@ theorem mConeMap_form (y : (Σ k, ι k) → Ω) {h : MRing ι} {d : K → ℕ} (
   simp [mul_assoc]
 
 /- English proof (translation)
-Introduce `h0`. Apply `hP` to reduce the goal to its premises. Use `show f ∈ RingHom.ker (mConeMap y)`. Rewrite using `[RingHom.mem_ker, mConeMap_form y (isMultiHomog_blocks hf), h0]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem aeval_ne_zero_of_notMem (y : (Σ k, ι k) → Ω) {f : MvPolynomial (Σ k, ι k) ℤ} {b : K → ℕ}
     (hf : GroundTheory.Heights₂.Heights.NumbersDVR.IsMultiHomog f b) (hP : f ∉ mCoordIdeal y) : aeval y f ≠ 0 := by
@@ -71,9 +71,9 @@ variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) 
   {E : Type} [AddCommGroup E] [Module Ω E]
 
 /- English proof (translation)
-Establish `hb' : b ∈ Submodule.span R {a}` using `by rw [h]; exact Submodule.mem_span_singleton_self b`. Take `⟨u, hu⟩` from `Submodule.mem_span_singleton.mp hb'`. Use `Submodule.mem_span_singleton.mpr ⟨u, ?_⟩` and prove the remaining obligations. Rewrite `hu`, the goal using `[Subring.smul_def, smul_eq_mul]`. Establish `hu0 : (u : Ω) ≠ 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `h0`. Rewrite `hu` using `[h0, zero_mul]`. Conclude with `hb hu.symm`. Rewrite using `[← hu, mul_inv, ← mul_assoc, mul_inv_cancel₀ hu0, one_mul]`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_mem_span_inv {R : Subring Ω} {a b : Ω} (hb : b ≠ 0)
     (h : Submodule.span R {a} = Submodule.span R {b}) : a⁻¹ ∈ Submodule.span R {b⁻¹} := by
@@ -88,7 +88,7 @@ theorem inv_mem_span_inv {R : Subring Ω} {a b : Ω} (hb : b ≠ 0)
   rw [← hu, mul_inv, ← mul_assoc, mul_inv_cancel₀ hu0, one_mul]
 
 /- English proof (translation)
-The claim follows from `le_antisymm ((Submodule.span_singleton_le_iff_mem _ _).mpr (inv_mem_span_inv hb h)) ((Submodule.span_singleton_le_iff_mem _ _).mpr (inv_mem_span_inv ha h.symm))`.
+A detailed English derivation is pending.
 -/
 theorem span_inv_eq {R : Subring Ω} {a b : Ω} (ha : a ≠ 0) (hb : b ≠ 0)
     (h : Submodule.span R {a} = Submodule.span R {b}) :
@@ -97,7 +97,7 @@ theorem span_inv_eq {R : Subring Ω} {a b : Ω} (ha : a ≠ 0) (hb : b ≠ 0)
     ((Submodule.span_singleton_le_iff_mem _ _).mpr (inv_mem_span_inv ha h.symm))
 
 /- English proof (translation)
-Introduce `p hp`. Take `⟨U, hpU, b', hb', hfr⟩` from `hL p (hT hp)`. Use `⟨U, hpU, b', hb', fun q hq hqU => ?_⟩` and prove the remaining obligations. Take `⟨hli, hsp⟩` from `hfr q (hT hq) hqU`. Conclude with `⟨hli, (h q hq).symm.trans hsp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isFlagVBOn_congr {L L' : Lat ξ E} {T T' : Set (Cpt ξ)} (hT : T ⊆ T') (h : ∀ q ∈ T, L q = L' q)
     {r : ℕ} (b : Fin r → E) (hL : L.IsFlagVBOn T' b) : L'.IsFlagVBOn T b := by
@@ -108,7 +108,7 @@ theorem isFlagVBOn_congr {L L' : Lat ξ E} {T T' : Set (Cpt ξ)} (hT : T ⊆ T')
   exact ⟨hli, (h q hq).symm.trans hsp⟩
 
 /- English proof (translation)
-Unfold `Lat.gr`. Rewrite using `[h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem gr_congr {L L' : Lat ξ E} {q : Cpt ξ} (h : L q = L' q) {r : ℕ} (b : Fin r → E) (i : Fin r) :
     L.gr b i q = L'.gr b i q := by
@@ -116,9 +116,9 @@ theorem gr_congr {L L' : Lat ξ E} {q : Cpt ξ} (h : L q = L' q) {r : ℕ} (b : 
   rw [h]
 
 /- English proof (translation)
-Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `t ⟨s, hs, rfl⟩`. Establish `h1 : Λ q = Submodule.span (regAt ξ q) {s ()}` using `(hs ()).2`. Establish `hp : ∏ i : Unit, s i ^ (fun _ : Unit => (1 : ℤ)) i = s ()` using `by simp`. Rewrite using `[SetLike.mem_coe, hp]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1.symm.le (Submodule.mem_span_singleton_self _)`.
+A detailed English derivation is pending.
 -/
 theorem tens_one_le (Λ : Lat ξ Ω) (q : Cpt ξ) :
     Lat.tens (fun _ : Unit => Λ) (fun _ => (1 : ℤ)) q ≤ Λ q := by
@@ -130,13 +130,11 @@ theorem tens_one_le (Λ : Lat ξ Ω) (q : Cpt ξ) :
   exact h1.symm.le (Submodule.mem_span_singleton_self _)
 
 /- English proof (translation)
-Rewrite using `[← h]`. Use `le_antisymm ?_ (tens_one_le Λ q)` and prove the remaining obligations. Distinguish the cases in `hex : ∃ t, Λ.IsGenAt q t`. Take `⟨t, ht⟩` from `hex`. Rewrite using `[ht.2, Submodule.span_singleton_le_iff_mem]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.subset_span ?_` and prove the remaining obligations. Conclude with `⟨fun _ => t, fun _ => ht, by simp⟩`. It suffices to derive a contradiction. Establish `hle : Lat.tens (fun _ : Unit => Λ) (fun _ => (1 : ℤ)) q ≤ ⊥`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. It suffices to derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `t ⟨s, hs, rfl⟩`. Conclude with `absurd ⟨s (), hs ()⟩ hex`. Establish `hmem : g ∈ Lat.tens (fun _ : Unit => Λ) (fun _ => (1 : ℤ)) q`. Rewrite using `[h]`. Conclude with `Submodule.mem_span_singleton_self g`.
-
-Conclude with `hg ((Submodule.mem_bot _).mp (hle hmem))`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tens_one_eq (Λ : Lat ξ Ω) (q : Cpt ξ) {g : Ω} (hg : g ≠ 0)
     (h : Lat.tens (fun _ : Unit => Λ) (fun _ => (1 : ℤ)) q = Submodule.span (regAt ξ q) {g}) :
@@ -158,15 +156,13 @@ theorem tens_one_eq (Λ : Lat ξ Ω) (q : Cpt ξ) {g : Ω} (hg : g ≠ 0)
     exact hg ((Submodule.mem_bot _).mp (hle hmem))
 
 /- English proof (translation)
-Distinguish the cases in `hex : ∃ t, Λ.IsGenAt q t`. Take `⟨t, ht⟩` from `hex`. Establish `hT : Lat.tens (fun _ : Unit => Λ) (fun _ => (-1 : ℤ)) q = Submodule.span (regAt ξ q) {t⁻¹}`. Use `le_antisymm (Submodule.span_le.mpr ?_) ?_` and prove the remaining obligations. Introduce and unpack `u ⟨s, hs, rfl⟩`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hp : ∏ i : Unit, s i ^ (fun _ : Unit => (-1 : ℤ)) i = (s ())⁻¹` using `by simp`. Rewrite using `[SetLike.mem_coe, hp]`. Conclude with `inv_mem_span_inv ht.1 ((hs ()).2.symm.trans ht.2)`. Rewrite using `[Submodule.span_singleton_le_iff_mem]`. Use `Submodule.subset_span ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 
-Conclude with `⟨fun _ => t, fun _ => ht, by simp⟩`. Rewrite using `[ht.2]`. Rewrite `h` using `[hT]`. Simplify using `using span_inv_eq (inv_ne_zero ht.1) hg h`. It suffices to derive a contradiction.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Establish `hle : Lat.tens (fun _ : Unit => Λ) (fun _ => (-1 : ℤ)) q ≤ ⊥`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `t ⟨s, hs, rfl⟩`. Conclude with `absurd ⟨s (), hs ()⟩ hex`. Establish `hmem : g ∈ Lat.tens (fun _ : Unit => Λ) (fun _ => (-1 : ℤ)) q`.
-
-Rewrite using `[h]`. Conclude with `Submodule.mem_span_singleton_self g`. Conclude with `hg ((Submodule.mem_bot _).mp (hle hmem))`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tens_neg_one_eq (Λ : Lat ξ Ω) (q : Cpt ξ) {g : Ω} (hg : g ≠ 0)
     (h : Lat.tens (fun _ : Unit => Λ) (fun _ => (-1 : ℤ)) q = Submodule.span (regAt ξ q) {g}) :
@@ -197,7 +193,7 @@ theorem tens_neg_one_eq (Λ : Lat ξ Ω) (q : Cpt ξ) {g : Ω} (hg : g ≠ 0)
 variable {K : Type} [Fintype K] {J : K → Type}
 
 /- English proof (translation)
-Establish `h0 : ∏ k, y ⟨k, c k⟩ ≠ 0` using `hc.1`. Rewrite `h0`, the goal using `[Finset.prod_ne_zero_iff]`. Conclude with `fun k hk => zpow_ne_zero _ (h0 k hk)`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem chart_ne_zero {y : (Σ k, J k) → Ω} {c : ∀ k, J k} {q : Cpt ξ}
     (hc : InChart ξ (fun c' : (k : K) → J k => ∏ k, y ⟨k, c' k⟩) c q) (a : K → ℤ) :
@@ -207,7 +203,7 @@ theorem chart_ne_zero {y : (Σ k, J k) → Ω} {c : ∀ k, J k} {q : Cpt ξ}
   exact fun k hk => zpow_ne_zero _ (h0 k hk)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, fun q hq c hc => (hΛ q hq).trans (tens_one_eq Λ q (smul_ne_zero (chart_ne_zero hc a) h.1) (h.2 q trivial c hc))⟩`.
+Supply the required witnesses or components.
 -/
 theorem isDegOn_of_tens_one {Λ Λ' : Lat ξ Ω} {T : Set (Cpt ξ)} (hΛ : ∀ q ∈ T, Λ' q = Λ q)
     {y : (Σ k, J k) → Ω} {a : K → ℤ} {e : Ω}
@@ -216,7 +212,7 @@ theorem isDegOn_of_tens_one {Λ Λ' : Lat ξ Ω} {T : Set (Cpt ξ)} (hΛ : ∀ q
     (hΛ q hq).trans (tens_one_eq Λ q (smul_ne_zero (chart_ne_zero hc a) h.1) (h.2 q trivial c hc))⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨inv_ne_zero h.1, fun q hq c hc => by rw [hΛ q hq, tens_neg_one_eq Λ q (smul_ne_zero (chart_ne_zero hc a) h.1) (h.2 q trivial c hc)] have hx : ((∏ k, y ⟨k, c k⟩ ^ a k) • e)⁻¹ = (∏ k, y ⟨k, c k⟩ ^ (-a) k) • e⁻¹ := by simp only [smul_eq_mul, Pi.neg_apply, zpow_neg, mul_inv, Finset. …`.
+Supply the required witnesses or components.
 -/
 theorem isDegOn_of_tens_neg_one {Λ Λ' : Lat ξ Ω} {T : Set (Cpt ξ)} (hΛ : ∀ q ∈ T, Λ' q = Λ q)
     {y : (Σ k, J k) → Ω} {a : K → ℤ} {e : Ω}
@@ -237,31 +233,29 @@ end GlobalTheory.CompanionTheory.Ar.TwoLevelLat
 namespace GlobalTheory.CompanionTheory.Ar.TwoLevelLat
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c O₀ _ β Y S Ω _ K _ _ J _ y 𝔐 _ _ Fl S₀ T hTL p hpS hpS₀ hagree s`. Take `⟨h, hvb, hsub, e₀, e, hR₀, hR, hfg, hvo⟩` from `hTL`. Establish `hVAt : ∀ q ∈ overPrime 𝔐.ξ p, ∀ s, 𝔐.VAt S₀ s q = 𝔐.dR s q`. Introduce `q hq s`. Establish `hq' : ∀ p' : ℕ, p'.Prime → p' ≠ p → ¬ InFibre 𝔐.ξ p' q` using `hq`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Lat.patch_of_not S₀ _ _ fun p' hp' hf => hq' p' (𝔐.S_prime p' (h hp')) (fun he => hpS₀ (he ▸ hp')) hf`. Establish `hV : ∀ q ∈ overPrime 𝔐.ξ p, ∀ s, 𝔐.V s q = 𝔐.HT p s q`. Introduce `q hq s`. Establish `hq' : ∀ p' : ℕ, p'.Prime → p' ≠ p → ¬ InFibre 𝔐.ξ p' q` using `hq`. Distinguish the cases in `hf : InFibre 𝔐.ξ p q`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `Lat.patch_of_unique S _ _ hpS hf fun p' hp' h' => by`. Assume the negation of the conclusion as `hne`. Conclude with `hq' p' (𝔐.S_prime p' hp') hne h'`. Establish `hnone : ∀ p' : ℕ, p'.Prime → ¬ InFibre 𝔐.ξ p' q` using `fun p' hp' h' => by`. Distinguish the cases in `hpp : p' = p`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hf (hpp ▸ h')`. Conclude with `hq' p' hp' hpp h'`. Establish `h1 : 𝔐.V s q = 𝔐.dR s q` using `Lat.patch_of_not S _ _ fun p' hp' => hnone p' (𝔐.S_prime p' hp')`. Conclude with `h1.trans (hagree s q hnone).symm`. Establish `hR₀' : ∀ r, (Lat.tens (fun _ : Unit => (𝔐.VAt S₀ (HodgeCpt.rootIdx D r).1).gr (Fl.b (HodgeCpt.rootIdx D r).1) (HodgeCpt.rootIdx D r).2) fun _ => HodgeCpt.rootSgn D r).IsDegOn Set.univ y (T.x r) (e₀ r)` using `hR₀`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hR' : ∀ r, (Lat.tens (fun _ : Unit => (𝔐.V (HodgeCpt.rootIdx D r).1).gr (Fl.b (HodgeCpt.rootIdx D r).1) (HodgeCpt.rootIdx D r).2) fun _ => HodgeCpt.rootSgn D r).IsDegOn Set.univ y (T.x' r) (e r)` using `hR`. Break down `s with τ | τ` into its components or cases. Use `⟨isFlagVBOn_congr (Set.subset_univ _) (fun q hq => hVAt q hq _) _ (hsub _), isFlagVBOn_congr (Set.subset_univ _) (fun q hq => hV q hq _) _ (Fl.sub _), fun i => ?_⟩` and prove the remaining obligations. Establish `hlt : ((Fin.castAdd D.q i : Fin (D.p + D.q)) : ℕ) < D.p` using `i.isLt`. Establish `hidx : HodgeCpt.rootIdx D (τ, Fin.castAdd D.q i) = ⟨.inl τ, i⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `HodgeCpt.rootIdx`. Rewrite using `[dif_pos hlt]`. Conclude with `Sigma.ext rfl (heq_of_eq (Fin.ext rfl))`. Establish `hsgn : HodgeCpt.rootSgn D (τ, Fin.castAdd D.q i) = 1`. Unfold `HodgeCpt.rootSgn`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[if_pos hlt]`. Establish `h0` using `hR₀' (τ, Fin.castAdd D.q i)`. Establish `h1` using `hR' (τ, Fin.castAdd D.q i)`. Rewrite `h0`, `h1` using `[hidx, hsgn]`. Take `⟨⟨bf, bg, hbf, hbg, hd⟩, -, hgP, -⟩` from `hvo (τ, Fin.castAdd D.q i)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨e₀ (τ, Fin.castAdd D.q i), e (τ, Fin.castAdd D.q i), isDegOn_of_tens_one (fun q hq => gr_congr (hVAt q hq _).symm _ _) h0, isDegOn_of_tens_one (fun q hq => gr_congr (hV q hq _).symm _ _) h1, ⟨bf, bg, hbf, hbg, hd⟩, aeval_ne_zero_of_notMem y hbg hgP, hfg _⟩`. Use `⟨isFlagVBOn_congr (Set.subset_univ _) (fun q hq => hVAt q hq _) _ (hsub _), isFlagVBOn_congr (Set.subset_univ _) (fun q hq => hV q hq _) _ (Fl.sub _), fun j => ?_⟩` and prove the remaining obligations. Establish `hj : (j : ℕ) < D.q` using `j.isLt`. Establish `hidx : HodgeCpt.rootIdx D (τ, Fin.natAdd D.p j.rev) = ⟨.inr τ, j⟩`. Unfold `HodgeCpt.rootIdx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[dif_neg (by simp)]`. Use `Sigma.ext rfl (heq_of_eq (Fin.ext ?_))` and prove the remaining obligations. Establish `e1 : ((Fin.natAdd D.p j.rev : Fin (D.p + D.q)) : ℕ) = D.p + ((j.rev : Fin (labelRk D (.inr τ))) : ℕ)` using `rfl`. Establish `e2 : ((j.rev : Fin (labelRk D (.inr τ))) : ℕ) = labelRk D (.inr τ) - ((j : ℕ) + 1)` using `Fin.val_rev j`. Establish `e3 : labelRk D (.inr τ) = D.q` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `only at e1 e2 ⊢`. Use linear arithmetic over natural numbers and integers. Establish `hsgn : HodgeCpt.rootSgn D (τ, Fin.natAdd D.p j.rev) = -1` using `by simp [HodgeCpt.rootSgn]`. Establish `h0` using `hR₀' (τ, Fin.natAdd D.p j.rev)`. Establish `h1` using `hR' (τ, Fin.natAdd D.p j.rev)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite `h0`, `h1` using `[hidx, hsgn]`. Take `⟨⟨bf, bg, hbf, hbg, hd⟩, hfP, -, -⟩` from `hvo (τ, Fin.natAdd D.p j.rev)`. Establish `he₀ : e₀ (τ, Fin.natAdd D.p j.rev) ≠ 0` using `h0.1`. Establish `he : e (τ, Fin.natAdd D.p j.rev) ≠ 0` using `h1.1`. Use `⟨(e₀ (τ, Fin.natAdd D.p j.rev))⁻¹, (e (τ, Fin.natAdd D.p j.rev))⁻¹, isDegOn_of_tens_neg_one (fun q hq => gr_congr (hVAt q hq _).symm _ _) h0, isDegOn_of_tens_neg_one (fun q hq => gr_congr (hV q hq _).symm _ _) h1, ⟨bg, bf, hbg, hbf, ?_⟩, aeval_ne_zero_of_notMem y hbf hfP, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(fun k => ((bg k : ℕ) : ℤ) - bf k) = -(T.x (τ, Fin.natAdd D.p j.rev)) - -(T.x' (τ, Fin.natAdd D.p j.rev))`. Use function extensionality and compare the values at `k`. Establish `hk` using `congrFun hd k`. Simplify using `only [Pi.sub_apply, Pi.neg_apply] at hk ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Express the relevant statement in the definitionally equal form `aeval y (T.g (τ, Fin.natAdd D.p j.rev)) = (e (τ, Fin.natAdd D.p j.rev))⁻¹ / (e₀ (τ, Fin.natAdd D.p j.rev))⁻¹ * aeval y (T.f (τ, Fin.natAdd D.p j.rev))`. Rewrite using `[hfg]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem latFlagPair_of_twoLevels : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H)
     (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O₀ : Type) [CommRing O₀] (β : O₀ →+* c.F) (Y : Model Xo c β)

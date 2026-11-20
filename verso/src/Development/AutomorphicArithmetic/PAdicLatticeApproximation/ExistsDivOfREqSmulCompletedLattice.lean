@@ -5,11 +5,9 @@ open GlobalTheory GlobalTheory.PELU GlobalTheory.UPel.HT GlobalTheory.LKTrip Glo
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `p _ D X w n e hw hn hc he hr`. Establish `hn0 : (n : ℚ) ≠ 0` using `Nat.cast_ne_zero.2 hn.ne'`. Establish `hwu : w = n • ((n : ℚ)⁻¹ • w)`. Rewrite using `[← Nat.cast_smul_eq_nsmul ℚ n, smul_smul, mul_inv_cancel₀ hn0, one_smul]`. Establish `hru : X.r ((n : ℚ)⁻¹ • w) = e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_smul, hr, ← Nat.cast_smul_eq_nsmul ℚ n, smul_smul, inv_mul_cancel₀ hn0, one_smul]`. Use `⟨(n : ℚ)⁻¹ • w, ⟨(UpperTheory.p_lattice_saturated_and_cofinite p D X.M X.hM).1 n _ hc ?_, ?_⟩, hwu⟩` and prove the remaining obligations. Rewrite using `[← hwu]`. Conclude with `hw.1`. Rewrite using `[hru]`.
-
-Conclude with `he`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_div_of_r_eq_smul_completedLattice :
     ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (X : UpperTheory.Gal.W2.Wit.Sys D) (w : VQ D) (n : ℕ) (e : AfP p ⊗[ℚ] VQ D), w ∈ X.lat → 0 < n → n.Coprime p → e ∈ LaHat D → X.r w = n • e → ∃ u ∈ X.lat, w = n • u := by

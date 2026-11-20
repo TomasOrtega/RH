@@ -14,14 +14,14 @@ namespace PlueckerExpand
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, C n, 1, isMultiHomog_C_zero n, isMultiHomog_one, by simp, by simp, by simp, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem isValueAt_intCast (y : (Σ k, ι k) → Ω) (z : (Σ k, ι k) → ℂ) (n : ℤ) :
     IsValueAt y (n : Ω) z (n : ℂ) :=
   ⟨0, C n, 1, isMultiHomog_C_zero n, isMultiHomog_one, by simp, by simp, by simp, by simp⟩
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using LineFlag.isValueAt_zero' y z`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha]`. Conclude with `LineFlag.isValueAt_add (h a) ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isValueAt_finsetSum {α : Type} (y : (Σ k, ι k) → Ω) (z : (Σ k, ι k) → ℂ) (s : Finset α)
     (f : α → Ω) (v : α → ℂ) (h : ∀ i, IsValueAt y (f i) z (v i)) :
@@ -34,7 +34,7 @@ theorem isValueAt_finsetSum {α : Type} (y : (Σ k, ι k) → Ω) (z : (Σ k, ι
     exact LineFlag.isValueAt_add (h a) ih
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using isValueAt_one_self y z`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.prod_insert ha]`. Conclude with `LineFlag.isValueAt_mul (h a) ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isValueAt_finsetProd {α : Type} (y : (Σ k, ι k) → Ω) (z : (Σ k, ι k) → ℂ) (s : Finset α)
     (f : α → Ω) (v : α → ℂ) (h : ∀ i, IsValueAt y (f i) z (v i)) :
@@ -49,19 +49,17 @@ theorem isValueAt_finsetProd {α : Type} (y : (Σ k, ι k) → Ω) (z : (Σ k, �
 end PlueckerExpand
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ E _ _ y c b N r φ bfr z V A Az hz hV hA`. Use `choose v0 hv0 hVeq using fun q => (hV q).2`. Use `set P : ℂ := ∏ k, z ⟨k, c k⟩ ^ b k with hP`. Use `⟨fun q hq => ?_, fun q σ => ?_, ?_⟩` and prove the remaining obligations. Establish `h0 : φ (bfr ∘ q) = 0` using `φ.map_eq_zero_of_not_injective _ fun hinj => hq fun a a' h => hinj (by simp [h])`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hval : IsValueAt y (φ (bfr ∘ q) * twistFactor y c b) z 0`. Rewrite using `[h0, zero_mul]`. Conclude with `LineFlag.isValueAt_zero' y z`. Rewrite using `[hVeq q, LineFlag.isValueAt_unique hz (hv0 q) hval, zero_mul]`. Establish `hperm : φ (bfr ∘ (q ∘ σ)) * twistFactor y c b = ((Equiv.Perm.sign σ : ℤ) : Ω) * (φ (bfr ∘ q) * twistFactor y c b)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[show bfr ∘ (q ∘ σ) = (bfr ∘ q) ∘ σ from rfl, φ.map_perm, Units.smul_def, zsmul_eq_mul, mul_assoc]`. Establish `hval` using `LineFlag.isValueAt_mul (PlueckerExpand.isValueAt_intCast y z (Equiv.Perm.sign σ : ℤ)) (hv0 q)`. Rewrite `hval` using `[← hperm]`. Rewrite using `[hVeq (q ∘ σ), hVeq q, LineFlag.isValueAt_unique hz (hv0 (q ∘ σ)) hval, mul_assoc]`. Use `⟨∑ q, (∏ a, Az (q a) a) * v0 q, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hexp : φ (fun a => ∑ q, A q a • bfr q) = ∑ q : Fin r → Fin N, (∏ a, A (q a) a) * φ (bfr ∘ q)`. Use `φ.toMultilinearMap.map_sum (fun a q => A q a • bfr q)` as an intermediate fact. Simplify using `only [AlternatingMap.coe_multilinearMap] at this`. Rewrite using `[this]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `φ.toMultilinearMap.map_smul_univ (fun a => A (q a) a) (fun a => bfr (q a))`. Simplify using `only [AlternatingMap.coe_multilinearMap, smul_eq_mul] at h2`. Conclude with `h2`. Rewrite using `[hexp, Finset.sum_mul]`. Use `PlueckerExpand.isValueAt_finsetSum y z _ _ _ fun q => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_assoc]`. Conclude with `LineFlag.isValueAt_mul (PlueckerExpand.isValueAt_finsetProd y z _ _ _ fun a => hA (q a) a) (hv0 q)`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[hVeq q]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem PlueckerExpand.proof : PlueckerExpand.Statement := by
   intro K _ ι _ Ω _ E _ _ y c b N r φ bfr z V A Az hz hV hA

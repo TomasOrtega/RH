@@ -3,7 +3,7 @@ import Mathlib
 namespace Formalism.HermitianLattices.Ext.L3.NormLifting
 
 /- English proof (translation)
-Take `⟨g0, hg0⟩` from `hh`. Establish `e1 : {g : G // f g = h} ≃ f.ker` using `{ toFun := fun g => ⟨g.1 - g0, by rw [AddMonoidHom.mem_ker, map_sub, g.2, hg0, sub_self]⟩ invFun := fun k => ⟨k.1 + g0, by rw [map_add, (AddMonoidHom.mem_ker).mp k.2, hg0, zero_add]⟩ left_inv := fun g => by ext; simp right_inv := fun k => by ext; simp }`. Rewrite using `[Nat.card_congr e1, ← Nat.card_congr (QuotientAddGroup.quotientKerEquivRange f).toEquiv, mul_comm]`. Conclude with `(AddSubgroup.card_eq_card_quotient_mul_card_addSubgroup f.ker).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_fiber_mul_card_range {G H : Type*} [AddCommGroup G] [AddCommGroup H]
     (f : G →+ H) (h : H) (hh : h ∈ f.range) :
@@ -19,13 +19,11 @@ theorem card_fiber_mul_card_range {G H : Type*} [AddCommGroup G] [AddCommGroup H
   exact (AddSubgroup.card_eq_card_quotient_mul_card_addSubgroup f.ker).symm
 
 /- English proof (translation)
-Distinguish the cases in `hY : Finite Y`. Use `haveI := Fintype.ofFinite Y haveI := Fintype.ofFinite X`. Rewrite using `[← Nat.card_congr (Equiv.sigmaFiberEquiv f), Nat.card_sigma, Finset.sum_congr rfl (fun y _ => hc y), Finset.sum_const, Finset.card_univ, smul_eq_mul, Nat.card_eq_fintype_card (α := Y), mul_comm]`. Use `haveI : Infinite Y := not_finite_iff_infinite.mp hY`. Rewrite using `[Nat.card_eq_zero_of_infinite (α := Y), mul_zero]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨y, hy⟩` from `(Set.finite_range f).infinite_compl.nonempty`. Establish `hc0 : c = 0`. Rewrite using `[← hc y, Nat.card_eq_zero]`. Use `left`. Conclude with `⟨fun x => hy ⟨x.1, x.2⟩⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Nat.card_eq_zero]`. Use `left`. Use `⟨fun x => ?_⟩` and prove the remaining obligations. Establish `h1` using `hc (f x)`. Rewrite `h1` using `[hc0, Nat.card_eq_zero]`.
-
-Break down `h1 with h1 | h1` into its components or cases. Conclude with `h1.false ⟨x, rfl⟩`. Conclude with `absurd (inferInstance : Finite {x' : X // f x' = f x}) (not_finite_iff_infinite.mpr h1)`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem card_eq_mul_of_fibers {X Y : Type*} [Finite X] (f : X → Y) (c : ℕ)
     (hc : ∀ y, Nat.card {x : X // f x = y} = c) : Nat.card X = c * Nat.card Y := by
@@ -64,16 +62,16 @@ def fixSub : AddSubgroup A where
   neg_mem' := fun ha => ⟨I.neg_mem ha.1, by rw [map_neg, ha.2]⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_fixSub {w : A} : w ∈ fixSub σ I ↔ w ∈ I ∧ σ w = w := Iff.rfl
 
 variable {σ I}
 
 /- English proof (translation)
-Establish `h1 : (θ - σ θ) * (-σ e) = 1`. Establish `h0` using `congrArg σ he`. Rewrite `h0` using `[map_mul, map_sub, hσ, map_one]`. Take the linear combination `h0`. Establish `h2 : e = -σ e`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Take the linear combination `h2`.
+Chain the equalities or inequalities of the calculation. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem map_inv_eq_neg (hσ : ∀ a, σ (σ a) = a) {θ e : A} (he : (θ - σ θ) * e = 1) : σ e = -e := by
 
@@ -88,7 +86,7 @@ theorem map_inv_eq_neg (hσ : ∀ a, σ (σ a) = a) {θ e : A} (he : (θ - σ θ
   linear_combination h2
 
 /- English proof (translation)
-Establish `hw'` using `(mem_fixSub σ I).mp hw`. Use `⟨w * (θ * e), I.mul_mem_right _ hw'.1, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, hw'.2, map_inv_eq_neg hσ he]`. Take the linear combination `w * he`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem exists_trace (hσ : ∀ a, σ (σ a) = a) {θ e : A} (he : (θ - σ θ) * e = 1) {w : A}
     (hw : w ∈ fixSub σ I) : ∃ v ∈ I, v + σ v = w := by
@@ -103,9 +101,9 @@ def trI (σ : A →+* A) (I : Ideal A) : I →+ A :=
     simp only [Submodule.coe_add, map_add]; abel)
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[mem_fixSub, AddMonoidHom.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, rfl⟩ show ((w : A) + σ w) ∈ I ∧ σ ((w : A) + σ w) = (w : A) + σ w`. Use `⟨I.add_mem w.2 (hI _ w.2), ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_add, hσ, add_comm]`. Introduce `hx`. Take `⟨v, hv, hv2⟩` from `exists_trace hσ he ((mem_fixSub σ I).mpr hx)`. Conclude with `⟨⟨v, hv⟩, hv2⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem range_trI (hσ : ∀ a, σ (σ a) = a) (hI : ∀ a ∈ I, σ a ∈ I) {θ e : A}
     (he : (θ - σ θ) * e = 1) : (trI σ I).range = fixSub σ I := by
@@ -122,15 +120,13 @@ theorem range_trI (hσ : ∀ a, σ (σ a) = a) (hI : ∀ a ∈ I, σ a ∈ I) {�
     exact ⟨⟨v, hv⟩, hv2⟩
 
 /- English proof (translation)
-Establish `hδ : σ (θ - σ θ) = -(θ - σ θ)`. Rewrite using `[map_sub, hσ]`. Expand and normalize the polynomial expressions, which then agree. Establish `he'` using `map_inv_eq_neg hσ he`. Establish `h1` using `card_fiber_mul_card_range (trI σ I) 0 (zero_mem _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[range_trI hσ hI he]`. Establish `e1 : {w : I // trI σ I w = 0} ≃ fixSub σ I` using `{ toFun := fun w => ⟨e * (w.1 : A), (mem_fixSub σ I).mpr ⟨I.mul_mem_left _ w.1.2, by`. Establish `hw : (w.1 : A) + σ (w.1 : A) = 0` using `w.2`. Rewrite using `[map_mul, he']`. Take the linear combination `(-e) * hw⟩⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `invFun := fun x => ⟨⟨(θ - σ θ) * (x : A), I.mul_mem_left _ ((mem_fixSub σ I).mp x.2).1⟩, by show (θ - σ θ) * (x : A) + σ ((θ - σ θ) * (x : A)) = 0`. Rewrite using `[map_mul, hδ, ((mem_fixSub σ I).mp x.2).2]`. Use the proof step `ring⟩`. Use `left_inv := fun w => by`. Apply `Subtype.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show (θ - σ θ) * (e * (w.1 : A)) = w.1`. Rewrite using `[← mul_assoc, he, one_mul]`. Use `right_inv := fun x => by`. Apply `Subtype.ext` to reduce the goal to its premises.
-
-Use `show e * ((θ - σ θ) * (x : A)) = x`. Rewrite using `[← mul_assoc, mul_comm e, he, one_mul] }`. Rewrite `h1` using `[Nat.card_congr e1]`. Rewrite using `[sq]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_fixSub_sq (hσ : ∀ a, σ (σ a) = a) (hI : ∀ a ∈ I, σ a ∈ I) {θ e : A}
     (he : (θ - σ θ) * e = 1) : Nat.card (fixSub σ I) ^ 2 = Nat.card I := by
@@ -182,17 +178,17 @@ theorem linPart_apply (I : Ideal A) {M : ℕ} (y : Fin M → A) (δ : Fin M → 
     linPart σ I y δ = ∑ i, (σ (y i) * (δ i : A) + σ (δ i) * y i) := rfl
 
 /- English proof (translation)
-Use extensionality with `w`. Rewrite using `[mem_fixSub, AddMonoidHom.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨δ, rfl⟩`. Rewrite using `[linPart_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Conclude with `sum_mem (fun i _ => I.add_mem (I.mul_mem_left _ (δ i).2) (I.mul_mem_right _ (hI _ (δ i).2)))`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Simplify using `only [map_add, map_mul, hσ]`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `⟨hwI, hwσ⟩`. Take `⟨v, hv, hv2⟩` from `exists_trace hσ he ((mem_fixSub σ I).mpr ⟨hwI, hwσ⟩)`. Use `⟨fun i => ⟨y i * (m * v), I.mul_mem_left _ (I.mul_mem_left _ hv)⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[linPart_apply]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hs : ∑ i, σ (y i) * (y i * (m * v)) = v`. Establish `h1 : ∑ i, σ (y i) * (y i * (m * v)) = (∑ i, σ (y i) * y i) * (m * v)`. Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl (fun i _ => by ring)`. Rewrite using `[h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `h2` using `hsq _ hy _ hv`. Take the linear combination `(-m) * h2 + v * hnm`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_add_distrib, map_sum]`. Use `congr 1`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Simplify using `only [map_mul, hσ]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = w := by rw [hs, hv2]`.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem range_linPart (hσ : ∀ a, σ (σ a) = a) {I : Ideal A} (hI : ∀ a ∈ I, σ a ∈ I)
     (hsq : ∀ a ∈ I, ∀ b ∈ I, a * b = 0) {θ e : A} (he : (θ - σ θ) * e = 1) {n m : A}
@@ -232,47 +228,41 @@ theorem range_linPart (hσ : ∀ a, σ (σ a) = a) {I : Ideal A} (hI : ∀ a ∈
       _ = w := by rw [hs, hv2]
 
 /- English proof (translation)
-Set `I : Ideal A` to `RingHom.ker π`. Establish `hmemI : ∀ a, a ∈ I ↔ π a = 0` using `fun a => RingHom.mem_ker`. Establish `hI : ∀ a ∈ I, σ a ∈ I`. Introduce `a ha`. Rewrite `ha`, the goal using `[hmemI]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[hστ, ha, map_zero]`. Establish `hsqI : ∀ a ∈ I, ∀ b ∈ I, a * b = 0` using `fun a ha b hb => hsq a b ((hmemI a).mp ha) ((hmemI b).mp hb)`. Use `haveI : Finite B := Finite.of_surjective π hπ`. Establish `hAIB : Nat.card I * Nat.card B = Nat.card A`. Establish `h1` using `card_fiber_mul_card_range π.toAddMonoidHom 0 (zero_mem _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : {g : A // π.toAddMonoidHom g = 0} ≃ I` using `{ toFun := fun g => ⟨g.1, (hmemI _).mpr g.2⟩ invFun := fun g => ⟨g.1, (hmemI _).mp g.2⟩ left_inv := fun g => rfl right_inv := fun g => rfl }`. Establish `e2 : (π.toAddMonoidHom.range) ≃ B` using `{ toFun := fun b => b.1 invFun := fun b => ⟨b, (hπ b).elim fun a ha => ⟨a, ha⟩⟩ left_inv := fun b => rfl right_inv := fun b => rfl }`. Rewrite `h1` using `[Nat.card_congr e1, Nat.card_congr e2]`. Conclude with `h1`. Establish `hBpos : 0 < Nat.card B` using `Nat.card_pos`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hApos : 0 < Nat.card A` using `Nat.card_pos`. Establish `hq0 : 0 < q`. Break down `Nat.eq_zero_or_pos q with h | h` into its components or cases. Rewrite `hq` using `[h]`. Simplify using `at hq`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Conclude with `h`. Establish `hIcard : Nat.card I = q ^ 2`. Establish `h1` using `hAIB`. Rewrite `h1` using `[hq]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Nat.eq_of_mul_eq_mul_right hBpos h1`. Establish `hFix : Nat.card (fixSub σ I) = q`. Establish `h1` using `card_fixSub_sq hσ hI he`. Rewrite `h1` using `[hIcard]`. Conclude with `Nat.pow_left_injective (by norm_num) h1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Set `Φ : {x : Fin M → A // ∑ i, σ (x i) * x i = n} → {x : Fin M → B // ∑ i, τ (x i) * x i = π n}` to `fun x => ⟨fun i => π (x.1 i), by`. Establish `h1 : ∑ i, τ (π (x.1 i)) * π (x.1 i) = π (∑ i, σ (x.1 i) * x.1 i)`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl (fun i _ => by rw [map_mul, hστ])`. Rewrite using `[h1, x.2]⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `card_eq_mul_of_fibers Φ _ (fun yb => ?_)` and prove the remaining obligations. Use `choose lift hlift using hπ`. Set `y : Fin M → A` to `fun i => lift (yb.1 i)`. Establish `hyπ : ∀ i, π (y i) = yb.1 i` using `fun i => hlift _`. Establish `hwI : n - ∑ i, σ (y i) * y i ∈ I`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Rewrite using `[hmemI, map_sub, map_sum]`. Establish `h1 : ∑ i, π (σ (y i) * y i) = ∑ i, τ (yb.1 i) * yb.1 i` using `Finset.sum_congr rfl (fun i _ => by rw [map_mul, hστ, hyπ])`. Rewrite using `[h1, yb.2, sub_self]`. Establish `hwσ : σ (n - ∑ i, σ (y i) * y i) = n - ∑ i, σ (y i) * y i`. Rewrite using `[map_sub, hn, map_sum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Conclude with `Finset.sum_congr rfl (fun i _ => by rw [map_mul, hσ, mul_comm])`. Establish `hwR : n - ∑ i, σ (y i) * y i ∈ (linPart σ I y).range`. Rewrite using `[range_linPart hσ hI hsqI he hnm y hwI]`. Conclude with `(mem_fixSub σ I).mpr ⟨hwI, hwσ⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `card_fiber_mul_card_range (linPart σ I y) _ hwR`. Rewrite `h1` using `[range_linPart hσ hI hsqI he hnm y hwI, hFix]`. Establish `hcardI : Nat.card (Fin M → I) = q ^ (2 * M)`. Rewrite using `[Nat.card_pi, Finset.prod_const, Finset.card_univ, Fintype.card_fin, hIcard, ← pow_mul]`. Rewrite `h1` using `[hcardI]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ x : Fin M → A, ∀ hx : ∀ i, x i - y i ∈ I, ∑ i, σ (x i) * x i = ∑ i, σ (y i) * y i + linPart σ I y (fun i => ⟨x i - y i, hx i⟩)`. Introduce `x hx`. Rewrite using `[linPart_apply, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Establish `h0 : σ (x i - y i) * (x i - y i) = 0` using `hsqI _ (hI _ (hx i)) _ (hx i)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [map_sub] at h0 ⊢`. Take the linear combination `h0`. Establish `hmem : ∀ x : {x : {x : Fin M → A // ∑ i, σ (x i) * x i = n} // Φ x = yb}, ∀ i, x.1.1 i - y i ∈ I`. Introduce `x i`. Rewrite using `[hmemI, map_sub, hyπ]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `congrArg (fun z : {x : Fin M → B // ∑ i, τ (x i) * x i = π n} => z.1 i) x.2`. Simplify using `only [Φ] at h2`. Rewrite using `[h2, sub_self]`. Establish `e : {x : {x : Fin M → A // ∑ i, σ (x i) * x i = n} // Φ x = yb} ≃ {δ : Fin M → I // linPart σ I y δ = n - ∑ i, σ (y i) * y i}` using `{ toFun := fun x => ⟨fun i => ⟨x.1.1 i - y i, hmem x i⟩, by`. Establish `h2` using `key x.1.1 (hmem x)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h2` using `[x.1.2]`. Take the linear combination `-h2⟩`. Use `invFun := fun δ => ⟨⟨fun i => y i + δ.1 i, by`. Establish `h2` using `key (fun i => y i + δ.1 i) (fun i => by simp [(δ.1 i).2])`. Rewrite using `[h2]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h3 : (fun i => (⟨y i + (δ.1 i : A) - y i, by simp [(δ.1 i).2]⟩ : I)) = δ.1`. Use function extensionality and compare the values at `i`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules. Rewrite using `[h3, δ.2]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Use the proof step `ring⟩, by`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Simplify using `only [Φ]`. Rewrite using `[map_add, hyπ, (hmemI _).mp (δ.1 i).2, add_zero]⟩`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `left_inv := fun x => by`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
-
-Use `right_inv := fun δ => by`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `}`.
-
-Rewrite using `[Nat.card_congr e]`. Establish `h4 : q ^ (2 * M) = q ^ (2 * M - 1) * q`. Rewrite using `[← pow_succ]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
-
-Rewrite `h1` using `[h4]`. Conclude with `Nat.eq_of_mul_eq_mul_right hq0 h1`.
+Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_lift [Finite A] (hπ : Function.Surjective π) (hστ : ∀ a, π (σ a) = τ (π a))
     (hσ : ∀ a, σ (σ a) = a) (hsq : ∀ a b, π a = 0 → π b = 0 → a * b = 0) {θ e : A}

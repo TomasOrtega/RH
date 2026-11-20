@@ -8,37 +8,27 @@ open NumberField IsDedekindDomain GlobalTheory.CuspRep GlobalTheory.UnitaryBC Up
 namespace UpperTheory.V.Z.J.D.Dc
 
 /- English proof (translation)
-Establish `hra : ∀ (u : X.Ub) (G : Fin m → Ga × Gp → Fin d → ℂ) (i : Fin m), X.raF d τ u G i = ∑ j, (τ u).val i j • fun g => G j (g * ((u : Ga), 1))` using `fun u G i => by`. Use function extensionality and compare the values at `g t`. Rewrite using `[Finset.sum_apply, Finset.sum_apply]`. Both sides reduce to the same expression. Use `choose k1 hk1 using fun u : U₀ => hsurj (((u : X.Ub) : Ga), 1)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Use `choose k2 hk2 using fun p : I => hsurj (1, (p : Gp))`. Set `T : U₀ ⊕ I → (Ga × Gp → Fin d → ℂ) → (Ga × Gp → Fin d → ℂ)` to `Sum.elim (fun u G g => G (g * (((u : X.Ub) : Ga), 1))) (fun p G g => G (g * (1, (p : Gp))))`. Set `kk : U₀ ⊕ I → UA E n` to `Sum.elim (fun u => (k1 u : UA E n)) (fun p => (k2 p : UA E n))`. Set `a : U₀ ⊕ I → Fin m → Fin m → ℂ` to `Sum.elim (fun u => (τ u.1).val) (fun _ => (1 : Matrix (Fin m) (Fin m) ℂ))`. Establish `hone : ∀ (p : I) (G : Fin m → Ga × Gp → Fin d → ℂ) (i : Fin m), ∑ j, a (.inr p) i j • T (.inr p) (G j) = T (.inr p) (G i)` using `fun p G i => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Finset.sum_eq_single i (fun j _ hj => by`. Express the relevant statement in the definitionally equal form `(1 : Matrix (Fin m) (Fin m) ℂ) i j • _ = 0`. Rewrite using `[Matrix.one_apply_ne hj.symm, zero_smul]) (fun h => (h (Finset.mem_univ _)).elim)]`. Express the relevant statement in the definitionally equal form `(1 : Matrix (Fin m) (Fin m) ℂ) i i • _ = _`. Rewrite using `[Matrix.one_apply_eq, one_smul]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hfixG : ∀ G : Fin m → Ga × Gp → Fin d → ℂ, (∀ u i, ∑ j, a u i j • T u (G j) = G i) → ∀ k : finU E n, ((∃ u ∈ U₀, (u : Ga) = (J k).1 ∧ τ u = 1) ∧ (J k).2 ∈ I) → ∀ i g, G i (g * J k) = G i g`. Introduce and unpack `G hG k ⟨⟨u, hu, huk, h1⟩, hk⟩ i g`. Establish `h2 : ∑ j, (τ u).val i j • (fun g => G j (g * ((u : Ga), 1))) = G i` using `hG (.inl ⟨u, hu⟩) i`. Rewrite `h2` using `[h1]`. Establish `h3 : ∀ g, G i (g * ((u : Ga), 1)) = G i g` using `fun g => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4` using `congrFun h2 g`. Rewrite using `[Finset.sum_apply, Finset.sum_eq_single i (fun j _ hj => by`. Rewrite using `[Units.val_one, Matrix.one_apply_ne hj.symm, zero_smul]`. Use the proof step `rfl) (fun h => (h (Finset.mem_univ _)).elim),`. Use the proof step `Units.val_one, Matrix.one_apply_eq, one_smul] at h4`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h4`. Establish `h5 : ∀ g, G i (g * (1, (J k).2)) = G i g` using `fun g => by`. Establish `h6` using `(hone ⟨_, hk⟩ G i).symm.trans (hG (.inr ⟨_, hk⟩) i)`. Conclude with `congrFun h6 g`. Establish `h6 : J k = ((u : Ga), 1) * (1, (J k).2)` using `Prod.ext (huk.symm.trans (mul_one _).symm) (one_mul _).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components.
 
-Rewrite using `[h6, ← mul_assoc, h5, h3]`. Establish `hFA : ∀ i, F i ∈ X.AF ξ` using `fun i => hF.1 i trivial`. Establish `hinvF : ∀ u i, ∑ j, a u i j • T u (F j) = F i`. Introduce and unpack `(u | p) i`. Conclude with `(hra u.1 F i).symm.trans (congrFun (hF.2 u.1 u.2) i)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `(hone p F i).trans (congrFun (hb p.1 p.2) i)`. Take `⟨G, hGA, hGi, hGσ, hsum⟩` from `absMain (X.AF ξ) tf r hinj hsur T kk a (by`. Introduce and unpack `(u | p) G hG γ g`. Use `hG γ (g * (((u : X.Ub) : Ga), 1))` as an intermediate fact. Rewrite `this` using `[← mul_assoc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `this`. Use `hG γ (g * (1, (p : Gp)))` as an intermediate fact. Rewrite `this` using `[← mul_assoc]`. Conclude with `this)`. Use the proof step `(by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `(u | p) G ℓ`. Establish `h1` using `htr G ℓ (k1 u)`. Rewrite `h1` using `[hRfin _ (k1 u).2, show J (k1 u) = _ from hk1 u]`. Conclude with `h1.symm`. Establish `h1` using `htr G ℓ (k2 p)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hRfin _ (k2 p).2, show J (k2 p) = _ from hk2 p]`. Conclude with `h1.symm)`. Use the proof step `(GlobalTheory.PRep.fixed (GlobalTheory.BCT.RF E n) Kf) Pw`. Use the proof step `(fun G hGA hG i ℓ => haut (G i) (hGA i) (by`. Set `S : Subgroup (finU E n)` to `{ carrier := {k | ∀ g, G i (g * J k) = G i g} one_mem' := fun g => by rw [OneMemClass.coe_one, map_one, mul_one] mul_mem' := fun {x y} hx hy g => by rw [Subgroup.coe_mul, map_mul, ← mul_assoc, hy, hx] inv_mem' := fun {x} hx g => by rw [← hx, Subgroup.coe_inv, map_inv, inv_mul_can …`.
-
-Use `S.isOpen_of_mem_nhds (g := 1) ?_` and prove the remaining obligations. Use `filter_upwards [hev] with k hk g`. Conclude with `hfixG G hG k hk i g) ℓ)`. Use the proof step `(fun G _ ℓ x hx => by`. Establish `h1` using `htr G ℓ x`.
-
-Simplify using `only [hJinf x hx, mul_one] at h1`. Conclude with `h1)`. Use the proof step `(fun G _ hG i ℓ k => by`. Establish `h1` using `htr (G i) ℓ (k.1 : UA E n)`. Rewrite `h1` using `[hRfin _ k.1.2]`.
-
-Establish `h2 : (fun g => G i (g * J (k.1 : UA E n))) = G i` using `funext (hfixG G hG k.1 (hKf k.1 k.2) i)`. Rewrite `h1` using `[h2]`. Simplify using `only [MonoidHom.one_apply, Units.val_one, one_smul]`. Conclude with `h1)`. Use the proof step `(fun σ' hσ' G hGA hG h0 hm => hwt σ' hσ' fun hbot => h0 <| by`.
-
-Establish `hmem : G ∈ (Submodule.pi Set.univ (fun _ => X.AF ξ) ⊓ fixd (X.raF d τ) U₀) ⊓ Submodule.span ℂ {F : Fin m → X.Fn ℂ d | ∀ i ℓ, tf (F i) ℓ ∈ σ'}` using `⟨⟨fun i _ => hGA i, fun u hu => funext fun i => (hra u G i).trans (hG (.inl ⟨u, hu⟩) i)⟩, Submodule.subset_span hm⟩`. Rewrite `hmem` using `[hbot]`. Conclude with `(Submodule.mem_bot _).1 hmem)`. Use `σ hσ hind hcov F hFA hinvF`. Rewrite using `[← hsum]`.
-
-Use `Submodule.sum_mem _ fun j _ => Submodule.mem_iSup_of_mem j ⟨⟨⟨fun i _ => hGA j i, fun u hu =>` and prove the remaining obligations. Use function extensionality and compare the values at `fun i => (hra u (G j) i).trans (hGi j (.inl ⟨u, hu⟩) i)⟩, Submodule.subset_span (hGσ j)⟩,`. Use `fun p hp => funext fun i => ?_⟩`. Conclude with `(hone ⟨p, hp⟩ (G j) i).symm.trans (hGi j (.inr ⟨p, hp⟩) i)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem core3 {E : Type} [Field E] [NumberField E] [IsCMField E] {n m d : ℕ} {Γ Ga Gp D Jx : Type} [Group Γ] [Group Ga]
     [Group Gp] [AddCommGroup D] [Module ℂ D] [FiniteDimensional ℂ D] [Fintype Jx] (X : Frame Γ Ga Gp)

@@ -23,13 +23,13 @@ variable {R R₁ R₀ : Type} [CommRing R] [CommRing R₁] [CommRing R₀] {I J 
   {π₁ : R₁ →+* R₀}
 
 /- English proof (translation)
-Rewrite using `[← st.comp, Cris.spMap_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem IsStep.spMap_eq (st : IsStep κ π hJ ρ κ₁ π₁) : spMap π = spMap π₁ ≫ spMap ρ := by
   rw [← st.comp, Cris.spMap_comp]
 
 /- English proof (translation)
-The claim follows from `GrpMor.of_hom st.dp st.spMap_eq (𝟙 A₀)`.
+A detailed English derivation is pending.
 -/
 theorem IsStep.idMor (st : IsStep κ π hJ ρ κ₁ π₁) (A₀ : Over (Sp R₀)) [GrpObj A₀] :
     GrpMor κ (spMap π) A₀ κ₁ (spMap π₁) A₀ ρ (𝟙 _) (𝟙 _) :=
@@ -51,7 +51,7 @@ def redSub (hρ : Function.Surjective ρ) {A₁ : Over (Sp R₁)} [GrpObj A₁] 
       rw [LinearMap.smul_apply, LinearMap.smul_apply, smul_eq_mul, smul_eq_mul, e, map_mul]⟩
 
 /- English proof (translation)
-Establish `T` using `GlobalTheory.T.hodgeFiltration_middle_eq_reduction_of_top P R R₁ R₀ I J I₁ κ π hJ ρ κ₁ π₁ st g A₀ A₁ A i₁ i₂ i h₁ h₂ h ei hA hg (st.idMor A₀) (Fil A) (redSub st.surj h₂ (Fil A)) (fun _ ↦ Iff.rfl)`. Establish `e : Fil A₁ = redSub st.surj h₂ (Fil A)` using `Submodule.ext T.2`. Rewrite using `[liftFil, Submodule.mem_comap, e, T.1 d₁]`. Conclude with `Iff.rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_liftFil_iff (P : AbelianDeRham) (st : IsStep κ π hJ ρ κ₁ π₁) {g : ℕ} {A₀ : Over (Sp R₀)}
     [GrpObj A₀] {A₁ : Over (Sp R₁)} [GrpObj A₁] {A : Over (Sp R)} [GrpObj A] {i₁ : A₀.left ⟶ A₁.left}
@@ -66,7 +66,7 @@ theorem mem_liftFil_iff (P : AbelianDeRham) (st : IsStep κ π hJ ρ κ₁ π₁
   exact Iff.rfl
 
 /- English proof (translation)
-Use `LinearMap.ext fun c ↦ ?_` and prove the remaining obligations. Establish `m` using `(homMor (divided₂ hJ) (spMap ρ) f₁).comp NA`. Establish `e1 : (homMor κ (spMap π) f₀).pull (NB.pull c) = m.pull c` using `GrpMor.pull_pull NB (homMor κ (spMap π) f₀) m (fun _ ↦ rfl) e.symm c`. Establish `e2 : NA.pull ((homMor (divided₂ hJ) (spMap ρ) f₁).pull c) = m.pull c` using `GrpMor.pull_pull (homMor (divided₂ hJ) (spMap ρ) f₁) NA m (fun _ ↦ rfl) rfl c`. Conclude with `congrArg d (e1.trans e2.symm)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dualMap_push {A₀ B₀ : Over (Sp R₀)} [GrpObj A₀] [GrpObj B₀] {A₁ B₁ : Over (Sp R₁)} [GrpObj A₁]
     [GrpObj B₁] {i₁ : A₀.left ⟶ A₁.left} {j₁ : B₀.left ⟶ B₁.left}
@@ -88,21 +88,19 @@ theorem dualMap_push {A₀ B₀ : Over (Sp R₀)} [GrpObj A₀] [GrpObj B₀] {A
 end Step
 
 /- English proof (translation)
-Introduce `P R R₁ R₀ _ _ _ I J I₁ κ π hJ ρ κ₁ π₁ st H₂ H₁`. Introduce `g A₀ _ A _ i h hA hg g' B₀ _ B _ j k hB hg' f₀ _ hf`. Establish `hc : spMap (π₁.comp ρ) = spMap π` using `by rw [st.comp]`. Take `⟨A₁, _, i₁, i₂, h₁, h₂, ei, hA₁, hgA⟩` from `GlobalTheory.T.exists_intermediate_grpPullback_abelianScheme R R₁ R₀ ρ π₁ g A₀ A i (by rw [hc]; exact h) hA hg`. Take `⟨B₁, _, j₁, j₂, k₁, k₂, ej, hB₁, hgB⟩` from `GlobalTheory.T.exists_intermediate_grpPullback_abelianScheme R R₁ R₀ ρ π₁ g' B₀ B j (by rw [hc]; exact k) hB hg'`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hf₁ : ∀ d₁ ∈ liftFil κ₁ h₁, push κ₁ (spMap π₁) f₀ d₁ ∈ liftFil κ₁ k₁`. Introduce `d₁ hd₁`. Take `⟨d, hd, e⟩` from `(mem_liftFil_iff P st h₁ h₂ h ei hA hg d₁).1 hd₁`. Conclude with `(mem_liftFil_iff P st k₁ k₂ k ej hB hg' _).2 ⟨_, hf d hd, GrpMor.Corr.push (st.idMor B₀) f₀ f₀ (by simp) e⟩`. Take `⟨f₁, ⟨_, ef₁⟩, uf₁⟩` from `H₁ g A₀ A₁ i₁ h₁ hA₁ hgA g' B₀ B₁ j₁ k₁ hB₁ hgB f₀ hf₁`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨NA, bA, cA⟩` from `GlobalTheory.T.deRham_crystal_two_reductions_agree P R R₁ R₀ I J I₁ κ π hJ ρ κ₁ π₁ st g A₀ A₁ A i₁ i₂ i h₁ h₂ h ei hA hg`. Take `⟨NB, -, cB⟩` from `GlobalTheory.T.deRham_crystal_two_reductions_agree P R R₁ R₀ I J I₁ κ π hJ ρ κ₁ π₁ st g' B₀ B₁ B j₁ j₂ j k₁ k₂ k ej hB hg'`. Establish `sA : Function.Surjective (NA.pull : prim (divided₂ hJ) (spMap ρ) A₁ →ₗ[R] prim κ (spMap π) A₀).dualMap` using `(LinearEquiv.ofBijective _ bA).dualMap.surjective`. Establish `hf₂ : ∀ e ∈ liftFil (divided₂ hJ) h₂, push (divided₂ hJ) (spMap ρ) f₁ e ∈ liftFil (divided₂ hJ) k₂`. Introduce `e he`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨d, rfl⟩` from `sA e`. Establish `hd : d ∈ liftFil κ h`. Rewrite using `[liftFil, Submodule.mem_comap, cA]`. Conclude with `he`. Establish `hk` using `hf d hd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hk` using `[liftFil, Submodule.mem_comap, cB]`. Rewrite using `[liftFil, Submodule.mem_comap, ← dualMap_push NA NB f₀ f₁ ef₁ d]`. Conclude with `hk`. Take `⟨f, ⟨_, ef⟩, uf⟩` from `H₂ g A₁ A i₂ h₂ hA hg g' B₁ B j₂ k₂ hB hg' f₁ hf₂`. Use `⟨f, ⟨inferInstance, ?_⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Introduce a local definition for the expression.
 
-Rewrite using `[← ei, ← ej, Category.assoc, ef, ← Category.assoc, ef₁, Category.assoc]`. Introduce and unpack `f' ⟨_, ef'⟩`. Set `f₁' : A₁ ⟶ B₁` to `Over.homMk (k₂.1.lift (i₂ ≫ f'.left) A₁.hom (by rw [Category.assoc, Over.w f', h₂.1.w])) (k₂.1.lift_snd _ _ _)`. Establish `e₁ : f₁'.left ≫ j₂ = i₂ ≫ f'.left` using `k₂.1.lift_fst _ _ _`. Use `haveI := ReciprocityTheory.ChartRestriction.G.Out.PullGtPf.isMonHom_of_grpPullback h₂ k₂ f' f₁' e₁`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e₂ : i₁ ≫ f₁'.left = f₀.left ≫ j₁`. Use `k₂.1.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, e₁, ← Category.assoc, ei, ef', Category.assoc, ej]`. Rewrite using `[Category.assoc, Category.assoc, Over.w f₁', h₁.1.w, k₁.1.w, ← Category.assoc, Over.w f₀]`. Establish `e₃ : f₁' = f₁` using `uf₁ f₁' ⟨inferInstance, e₂⟩`.
-
-Conclude with `uf f' ⟨inferInstance, by rw [← e₁, e₃]⟩`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem liftHom_of_isStep : AbelianDeRham → ∀ (R R₁ R₀ : Type) [CommRing R] [CommRing R₁] [CommRing R₀] (I J : Ideal R) (I₁ : Ideal R₁) (κ : DividedPowers I) (π : R →+* R₀)
     (hJ : J ^ 2 = 0) (ρ : R →+* R₁) (κ₁ : DividedPowers I₁) (π₁ : R₁ →+* R₀), IsStep κ π hJ ρ κ₁ π₁ →

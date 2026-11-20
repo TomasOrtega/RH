@@ -9,27 +9,25 @@ namespace CompanionTheory.RgDs.Hilb
 open ReciprocityTheory.ChartRestriction.DS
 
 /- English proof (translation)
-Introduce `hSt hMo hWt n ε lam T Ψ _hHC hPsi hKey η S hSH hSK`. Establish `: FiniteDimensional ℂ S` using `hSK.1`. Establish `hcl : IsClosed ((Hlam ε Ψ T.w : Submodule ℂ (L2 ε)) : Set (L2 ε))`. Unfold `Hlam closGen`. Conclude with `Submodule.isClosed_topologicalClosure _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Take `⟨A, hAK, hAinj, hAsm, hAW⟩` from `hMo n ε (Hlam ε Ψ T.w) S hcl (hSt n ε lam T Ψ hPsi) inferInstance hSH hSK.2.1`. Use `set S₂ : Submodule ℂ (L2 ε) := S.map A with hS₂`. Establish `hfin : FiniteDimensional ℂ S₂` using `Module.Finite.map S A`. Establish `hK₂ : Formalism.MainNotions.S.IsKStableOn ε (rreg ε) S₂`. Introduce and unpack `g hg _ ⟨w, hw, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨rreg ε g w, hSK.2.1 g hg w hw, hAK g hg w⟩`. Establish `hne : S₂ ≠ ⊥`. Take `⟨v, hv, hv0, -⟩` from `hSK.2.2.2.1`. Introduce `h`. Establish `hmem : A v ∈ S₂` using `⟨v, hv, rfl⟩`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hmem` using `[h]`. Conclude with `hv0 (hAinj v hv ((Submodule.mem_bot ℂ).1 hmem))`. Take `⟨N, _i1, _i2, e, φ, h1, h2, -⟩` from `hKey S₂ hfin (hAW.trans le_rfl) hK₂`. Take `⟨x₀, -, hx₀⟩` from `h1 S₂ le_rfl hK₂ hne`. Establish `he : e ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Apply `hx₀` to reduce the goal to its premises. Rewrite using `[h, LinearMap.zero_apply]`. Take `⟨ν, x, hxw, hex⟩` from `hWt n ε S₂ hfin hAsm hK₂ N e he`. Establish `hνc : InCone (lowK ε lam) ν` using `h2 ν x hxw hex`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hx0 : (x : L2 ε) ≠ 0`. Introduce `h`. Apply `hex` to reduce the goal to its premises. Establish `: x = 0` using `Subtype.ext h`. Rewrite using `[this, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨y, hy, hyx⟩` from `x.2`. Establish `hy0 : y ≠ 0`. Introduce `h`. Apply `hx0` to reduce the goal to its premises. Rewrite using `[← hyx, h, map_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hyw : Formalism.MainNotions.S.IsWtOn (Formalism.REAL.Kset ε) (rreg ε) ν y`. Introduce `θ hθ`. Establish `h1' : A (rreg ε (Matrix.diagonal (fun a => Complex.exp ((θ a : ℂ) * Complex.I))) y - Complex.exp (((∑ a, ν a * θ a : ℝ) : ℂ) * Complex.I) • y) = 0`. Rewrite using `[map_sub, map_smul, hAK _ hθ, hyx, hxw θ hθ, sub_self]`. Establish `h2'` using `hAinj _ (Submodule.sub_mem _ (hSK.2.1 _ hθ y hy) (Submodule.smul_mem _ _ hy)) h1'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `sub_eq_zero.1 h2'`. Take `⟨c', hc', hd⟩` from `hSK.2.2.2.2 ν y hy hy0 hyw`. Take `⟨c, hc, hν⟩` from `hνc`. Use `⟨fun a b => c a b + c' a b, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b hab`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hab' : c a b + c' a b ≠ 0` using `hab`. Distinguish the cases in `h : c a b = 0`. Rewrite `hab'` using `[h, zero_add]`. Conclude with `(hc' a b hab').1`. Conclude with `hc a b h`.
-
-Establish `hη : η = ν + (η - ν)` using `by abel`. Rewrite using `[hη, hd, hν]`. Simplify using `only [Nat.cast_add, add_smul, Finset.sum_add_distrib]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem hilbert_cone_of_stable_mollifier : StepStable → StepMoll → StepWtSpan → StepCone := by
   intro hSt hMo hWt n ε lam T Ψ _hHC hPsi hKey η S hSH hSK

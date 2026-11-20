@@ -8,7 +8,7 @@ open Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N
 open UpperTheory.Gal UpperTheory.Gal.Int.Geo
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 private theorem comm_of_conj {R M : Type*} [Semiring R] [AddCommMonoid M] [Module R M] (A G G' : M →ₗ[R] M)
     (h : G ∘ₗ A ∘ₗ G' = A) (hid : G' ∘ₗ G = LinearMap.id) : A ∘ₗ G = G ∘ₗ A := by
@@ -17,7 +17,7 @@ private theorem comm_of_conj {R M : Type*} [Semiring R] [AddCommMonoid M] [Modul
     _ = G ∘ₗ A := by rw [hid, LinearMap.comp_id]
 
 /- English proof (translation)
-Introduce `hS hC hU l _ k _ hl H Ω _ _ g d hd σ`. Use `comm_of_conj _ _ (galTot l Ω H.q σ⁻¹) (hU l k hl H Ω g d hd _ (hC l k H Ω g _ σ (hS l hl H Ω g d hd).1)) ?_` and prove the remaining obligations. Rewrite using `[← GlobalTheory.GalV.galTot_mul, inv_mul_cancel, GlobalTheory.GalV.galTot_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Gal.Int.Geo.hopGal_of :
     G3.HopSpec → OpConj → OpUniq → HopGal := by

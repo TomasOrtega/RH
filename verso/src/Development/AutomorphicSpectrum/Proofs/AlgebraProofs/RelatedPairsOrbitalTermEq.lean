@@ -12,9 +12,9 @@ section
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Establish `h : ∀ l, Algebra.trace ℚ E (dualInt E k * integralBasis E l) = if l = k then 1 else 0`. Introduce `l`. Use `LinearMap.BilinForm.apply_dualBasis_left (B := Algebra.traceForm ℚ E) (traceForm_nondegenerate ℚ E) (integralBasis E) k l` as an intermediate fact. Rewrite `this` using `[Algebra.traceForm_apply]`. Unfold `dualInt`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `this` and compare the differences between its conclusion and the goal. Use `conv_lhs => rw [← (integralBasis E).sum_repr x]`. Simplify using `only [Finset.mul_sum, map_sum, mul_smul_comm, map_smul, h]`. Simplify using the standard rewrite rules.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem trace_dualInt_mul (k : Module.Free.ChooseBasisIndex ℤ (𝓞 E)) (x : E) :
     Algebra.trace ℚ E (dualInt E k * x) = (integralBasis E).repr x k := by
@@ -31,9 +31,9 @@ theorem trace_dualInt_mul (k : Module.Free.ChooseBasisIndex ℤ (𝓞 E)) (x : E
   simp
 
 /- English proof (translation)
-Establish `h` using `((Algebra.traceForm ℚ E).dualBasis (traceForm_nondegenerate ℚ E) (integralBasis E)).sum_repr ((a : E) * dualInt E l)`. Rewrite using `[← h]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.BilinForm.dualBasis_repr_apply, Algebra.traceForm_apply, mul_comm (a : E), mul_assoc, trace_dualInt_mul, integralBasis_apply]`. Establish `: (a : E) * algebraMap (𝓞 E) E (RingOfIntegers.basis E k) = algebraMap (𝓞 E) E (a * RingOfIntegers.basis E k)` using `by simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, integralBasis_repr_apply, Algebra.smul_def]`. Simplify using `[dualInt]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mul_dualInt_eq (a : 𝓞 E) (l : Module.Free.ChooseBasisIndex ℤ (𝓞 E)) :
     (a : E) * dualInt E l =
@@ -52,7 +52,7 @@ theorem mul_dualInt_eq (a : 𝓞 E) (l : Module.Free.ChooseBasisIndex ℤ (𝓞 
   simp [dualInt]
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero]`. Use `(traceForm_nondegenerate ℚ E).1 _ fun y => ?_` and prove the remaining obligations. Rewrite using `[Algebra.traceForm_apply, sub_mul, map_sub, one_mul, Finset.sum_mul, map_sum, Algebra.trace_eq_matrix_trace (integralBasis E) y, sub_eq_zero, Matrix.trace]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, trace_dualInt_mul, Matrix.diag_apply, Algebra.leftMulMatrix_eq_repr_mul, integralBasis_apply, mul_comm y]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_dualInt_mul :
     ∑ k, dualInt E k * ((RingOfIntegers.basis E k : 𝓞 E) : E) = 1 := by
@@ -68,18 +68,18 @@ theorem sum_dualInt_mul :
 variable {K : Type} [Field K] {V : Type} [AddCommGroup V] [Module K V]
 
 /- English proof (translation)
-Simplify using `[eigSp, Submodule.mem_iInf, sub_eq_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_eigSp_iff_apply (ρ : 𝓞 E →+* Module.End K V) (σ : E →+* K) (x : V) :
     x ∈ eigSp ρ σ ↔ ∀ a : 𝓞 E, ρ a x = σ (a : E) • x := by
   simp [eigSp, Submodule.mem_iInf, sub_eq_zero]
 
 /- English proof (translation)
-Unfold `eigProj`. Rewrite using `[Finset.mul_sum, Finset.smul_sum]`. Establish `h1 : ∀ k, ρ a * (σ (dualInt E k) • ρ (RingOfIntegers.basis E k)) = ∑ l, (σ (dualInt E k) * (((RingOfIntegers.basis E).repr (a * RingOfIntegers.basis E k) l : ℤ) : K)) • ρ (RingOfIntegers.basis E l)`. Introduce `k`. Rewrite using `[mul_smul_comm, ← map_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [← (RingOfIntegers.basis E).sum_repr (a * RingOfIntegers.basis E k)]`. Rewrite using `[map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, mul_smul, Int.cast_smul_eq_zsmul]`. Repeatedly rewrite using `[h1]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, ← map_mul, mul_dualInt_eq, map_sum, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul σ, map_intCast, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rho_mul_eigProj (ρ : 𝓞 E →+* Module.End K V) (σ : E →+* K) (a : 𝓞 E) :
     ρ a * eigProj ρ σ = σ (a : E) • eigProj ρ σ := by
@@ -104,7 +104,7 @@ theorem rho_mul_eigProj (ρ : 𝓞 E →+* Module.End K V) (σ : E →+* K) (a :
   rw [map_mul σ, map_intCast, mul_comm]
 
 /- English proof (translation)
-Unfold `eigProj`. Rewrite using `[Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul_comm, smul_mul_assoc, ← map_mul, ← map_mul, mul_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem eigProj_mul_rho_comm (ρ : 𝓞 E →+* Module.End K V) (σ : E →+* K) (a : 𝓞 E) :
     eigProj ρ σ * ρ a = ρ a * eigProj ρ σ := by
@@ -116,13 +116,13 @@ theorem eigProj_mul_rho_comm (ρ : 𝓞 E →+* Module.End K V) (σ : E →+* K)
 end
 
 /- English proof (translation)
-Introduce `K _ _ V _ _ E _ _ ρ σ`. Use `⟨fun x => ?_, fun x hx => ?_, fun σ' hσ x hx => ?_, eigProj_mul_rho_comm ρ σ⟩` and prove the remaining obligations. Rewrite using `[mem_eigSp_iff_apply]`. Introduce `a`. Rewrite using `[← Module.End.mul_apply, rho_mul_eigProj, LinearMap.smul_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hx` using `[mem_eigSp_iff_apply]`. Unfold `eigProj`. Rewrite using `[LinearMap.sum_apply]`. Repeatedly rewrite using `[LinearMap.smul_apply, hx, smul_smul, ← map_mul]`. Rewrite using `[← Finset.sum_smul, ← map_sum, sum_dualInt_mul, map_one, one_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hx` using `[mem_eigSp_iff_apply]`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a : 𝓞 E, σ' (a : E) ≠ σ (a : E) := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Conclude with `hσ (IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) (RingHom.ext hcon))`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : eigProj ρ σ (ρ a x) = ρ a (eigProj ρ σ x)`. Rewrite using `[← Module.End.mul_apply, eigProj_mul_rho_comm, Module.End.mul_apply]`. Rewrite `h1` using `[← Module.End.mul_apply (ρ a), rho_mul_eigProj, LinearMap.smul_apply, hx, map_smul, ← sub_eq_zero, ← sub_smul, smul_eq_zero]`. Conclude with `h1.resolve_left (sub_ne_zero.mpr ha)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eigProj_spec : ∀ (K : Type) [Field K] [CharZero K] (V : Type) [AddCommGroup V] [Module K V]
     (E : Type) [Field E] [NumberField E] (ρ : 𝓞 E →+* Module.End K V) (σ : E →+* K),

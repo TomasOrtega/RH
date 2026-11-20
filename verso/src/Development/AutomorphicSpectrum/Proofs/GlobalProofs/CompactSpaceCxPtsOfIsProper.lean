@@ -10,7 +10,7 @@ open GlobalTheory GlobalTheory.CxPts
 namespace GlobalTheory.CompanionTheory.Gaga
 
 /- English proof (translation)
-The claim follows from `DifferentiableLines.compactSpace_complex_points_of_proper`.
+A detailed English derivation is pending.
 -/
 theorem compactSpace_cxPts_of_isProper :
     ∀ (Y : Scheme.{0}) (p : Y ⟶ Sp ℂ), IsProper p → CompactSpace (CxPts p (RingHom.id ℂ)) :=

@@ -5,7 +5,7 @@ import Development.WeilBound.CoreStatements.TorusUniformisation.ChowMahlerFamili
 namespace GlobalTheory.CompanionTheory.Heights
 
 /- English proof (translation)
-The claim follows from `PositivityTheory.Xgn.t_s_joinvertdiv`.
+A detailed English derivation is pending.
 -/
 theorem join_vertical_divisor_statement : GroundTheory.Heights₂.Heights.NumbersDVR.JoinVerticalDivisor.Statement :=
   PositivityTheory.Xgn.t_s_joinvertdiv

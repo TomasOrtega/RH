@@ -20,15 +20,13 @@ variable {K V W C : Type} [Field K] [AddCommGroup V] [Module K V] [AddCommGroup 
   [AddCommGroup C] [Module K C]
 
 /- English proof (translation)
-Set `q` to `X.mkQ`. Establish `ie : Function.Injective (q ∘ₗ e)`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `w hw`. Conclude with `he w ((Submodule.Quotient.mk_eq_zero X).1 hw)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `ic : Function.Injective (q ∘ₗ c)`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `y hy`. Conclude with `hc y ((Submodule.Quotient.mk_eq_zero X).1 hy)`. Establish `hr : LinearMap.range (q ∘ₗ e) = LinearMap.range (q ∘ₗ c)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨w, rfl⟩`. Take `⟨y, hy⟩` from `h1 w`. Conclude with `⟨y, ((Submodule.Quotient.eq X).2 hy).symm⟩`. Introduce and unpack `_ ⟨y, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨w, hw⟩` from `h2 y`. Conclude with `⟨w, (Submodule.Quotient.eq X).2 hw⟩`. Use `⟨(LinearEquiv.ofInjective _ ie).trans ((LinearEquiv.ofEq _ _ hr).trans (LinearEquiv.ofInjective _ ic).symm), fun w => ?_⟩` and prove the remaining obligations. Establish `key` using `congrArg Subtype.val ((LinearEquiv.ofInjective _ ic).apply_symm_apply (LinearEquiv.ofEq _ _ hr (LinearEquiv.ofInjective _ ie w)))`. Simplify using `only [LinearEquiv.ofInjective_apply, LinearEquiv.coe_ofEq_apply] at key`.
-
-Conclude with `(Submodule.Quotient.eq X).1 key.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_equiv (X : Submodule K V) (e : W →ₗ[K] V) (c : C →ₗ[K] V) (he : ∀ w, e w ∈ X → w = 0)
     (hc : ∀ y, c y ∈ X → y = 0) (h1 : ∀ w, ∃ y, e w - c y ∈ X) (h2 : ∀ y, ∃ w, e w - c y ∈ X) :
@@ -68,9 +66,9 @@ abbrev pre (φ : W ≃ₗ[K] C) (M : Submodule (𝓞 K) C) : Submodule (𝓞 K) 
 
 omit [NumberField K] [StarRing K] in
 /- English proof (translation)
-Use extensionality with `y`. Simplify using `only [pre, Submodule.mem_comap, Submodule.mem_map, LinearMap.restrictScalars_apply, LinearEquiv.coe_coe]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨φ y, h, φ.symm_apply_apply y⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce and unpack `⟨m, hm, rfl⟩`. Simplify using `using hm`.
+Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem pre_eq_map (φ : W ≃ₗ[K] C) (M : Submodule (𝓞 K) C) :
     pre φ M = M.map ((φ.symm : C →ₗ[K] W).restrictScalars (𝓞 K)) := by
@@ -85,7 +83,7 @@ theorem pre_eq_map (φ : W ≃ₗ[K] C) (M : Submodule (𝓞 K) C) :
 
 omit [NumberField K] [StarRing K] in
 /- English proof (translation)
-Rewrite using `[pre_eq_map, pre_eq_map]`. Unfold `idxN`. Rewrite using `[Submodule.map_toAddSubgroup, Submodule.map_toAddSubgroup]`. Conclude with `AddSubgroup.relIndex_map_map_of_injective _ _ (fun a b h => φ.symm.injective h)`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idxN_pre (φ : W ≃ₗ[K] C) (A B : Submodule (𝓞 K) C) : idxN (pre φ A) (pre φ B) = idxN A B := by
   rw [pre_eq_map, pre_eq_map]
@@ -95,7 +93,7 @@ theorem idxN_pre (φ : W ≃ₗ[K] C) (A B : Submodule (𝓞 K) C) : idxN (pre �
 
 omit [NumberField K] [StarRing K] in
 /- English proof (translation)
-Rewrite using `[pre_eq_map]`. Use `⟨h.fg.map _, ?_⟩` and prove the remaining obligations. Establish `hs : ((M.map ((φ.symm : C →ₗ[K] W).restrictScalars (𝓞 K)) : Submodule (𝓞 K) W) : Set W) = (φ.symm : C →ₗ[K] W) '' (M : Set C)`. Simplify using `[Submodule.map_coe]`. Rewrite using `[hs, Submodule.span_image, h.span_eq_top, Submodule.map_top, LinearEquiv.range]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem isLattice_pre (φ : W ≃ₗ[K] C) {M : Submodule (𝓞 K) C} (h : Submodule.IsLattice K M) :
     Submodule.IsLattice K (pre φ M) := by
@@ -108,9 +106,9 @@ theorem isLattice_pre (φ : W ≃ₗ[K] C) {M : Submodule (𝓞 K) C} (h : Submo
 
 omit [NumberField K] in
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [pre, Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_comap, Submodule.mem_iInf, LinearMap.restrictScalars_apply, LinearEquiv.coe_coe, LinearMap.flip_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `hx m hm`. Establish `hm'` using `hx (φ.symm m) (by simpa using hm)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hm'` using `[← hφ, φ.apply_symm_apply]`. Then use the resulting hypothesis. Introduce `hx y hy`. Rewrite using `[← hφ]`. Conclude with `hx _ hy`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dual_pre (φ : W ≃ₗ[K] C) {HW : HermSpace K W} {H' : HermSpace K C}
     (hφ : ∀ x y, H'.B (φ x) (φ y) = HW.B x y) (M : Submodule (𝓞 K) C) :
@@ -128,9 +126,9 @@ theorem dual_pre (φ : W ≃ₗ[K] C) {HW : HermSpace K W} {H' : HermSpace K C}
 
 omit [NumberField K] [StarRing K] in
 /- English proof (translation)
-Establish `hs : ∀ z : W, φ (g • z) = g • φ z` using `fun z => (φ : W →ₗ[K] C).map_smul_of_tower g z`. Simplify using `only [smulLat, Submodule.mem_map, pre, Submodule.mem_comap, LinearMap.smul_apply, LinearMap.id_apply, LinearMap.restrictScalars_apply, LinearEquiv.coe_coe]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl⟩`. Conclude with `⟨φ z, hz, (hs z).symm⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨m, hm, hmy⟩`. Use `⟨φ.symm m, by simpa using hm, φ.injective ?_⟩` and prove the remaining obligations. Rewrite using `[hs, φ.apply_symm_apply, hmy]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_smulLat_pre (φ : W ≃ₗ[K] C) (g : 𝓞 K) (M : Submodule (𝓞 K) C) (y : W) :
     y ∈ smulLat g (pre φ M) ↔ φ y ∈ smulLat g M := by
@@ -145,7 +143,7 @@ theorem mem_smulLat_pre (φ : W ≃ₗ[K] C) (g : 𝓞 K) (M : Submodule (𝓞 K
     rw [hs, φ.apply_symm_apply, hmy]
 
 /- English proof (translation)
-Unfold `GlobalTheory.Mass.discN`. Rewrite using `[dual_pre φ hφ, idxN_pre]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem discN_pre_of_isometry (φ : W ≃ₗ[K] C) {HW : HermSpace K W} {H' : HermSpace K C}
     (hφ : ∀ x y, H'.B (φ x) (φ y) = HW.B x y) (M : Submodule (𝓞 K) C) :
@@ -154,23 +152,19 @@ private theorem discN_pre_of_isometry (φ : W ≃ₗ[K] C) {HW : HermSpace K W} 
   rw [dual_pre φ hφ, idxN_pre]
 
 /- English proof (translation)
-Take `⟨⟨hlat, hint⟩, hdisc, ⟨m1, m2, m3, m4, m5, m6, m7⟩, hidx, t, ht, hgen⟩` from `h`. Establish `hfix : fixLat (Γ.comap (((φ : W →ₗ[K] C).prodMap (φ : W →ₗ[K] C)).restrictScalars (𝓞 K))) = pre φ (fixLat Γ)`. Use extensionality with `y`. Simplify using `[fixLat, pre, Submodule.mem_comap]`. Use `⟨⟨isLattice_pre φ hlat, ?_⟩, ?_, ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a ha b hb`. Establish `hab` using `hint _ ha _ hb`. Simplify using `only [LinearMap.flip_apply, LinearMap.restrictScalars_apply, LinearEquiv.coe_coe] at hab ⊢`. Rewrite using `[← hφ]` and apply the resulting hypothesis. Apply the tactic sequence `rw [discN_pre_of_isometry φ hφ, discN_pre_of_isometry φ hφ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hdisc`. Introduce `p hp`. Conclude with `m1 hp`. Introduce `p hp`. Take `⟨h1, h2⟩` from `Submodule.mem_prod.1 hp`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `m2 (Submodule.mem_prod.2 ⟨(mem_smulLat_pre φ _ _ _).1 h1, (mem_smulLat_pre φ _ _ _).1 h2⟩)`. Introduce `y' hy'`. Take `⟨z, hz⟩` from `m3 _ hy'`. Use `⟨φ.symm z, ?_⟩` and prove the remaining obligations. Use `show (φ y', φ (φ.symm z)) ∈ Γ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[φ.apply_symm_apply]` and apply the resulting hypothesis. Introduce `y hy`. Take `⟨z, hz⟩` from `m4 _ hy`. Use `⟨φ.symm z, ?_⟩` and prove the remaining obligations. Use `show (φ (φ.symm z), φ y) ∈ Γ`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[φ.apply_symm_apply]` and apply the resulting hypothesis. Introduce `y hy`. Establish `hy' : ((0 : C), φ y) ∈ Γ` using `by simpa using hy`. Conclude with `(mem_smulLat_pre φ _ _ _).2 (m5 _ hy')`. Introduce `y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hy' : (φ y, (0 : C)) ∈ Γ` using `by simpa using hy`. Conclude with `(mem_smulLat_pre φ _ _ _).2 (m6 _ hy')`. Introduce `p hp q hq`. Take `⟨s, hs⟩` from `m7 (φ p.1, φ p.2) hp (φ q.1, φ q.2) hq`. Use `⟨s, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← hφ, ← hφ]`. Conclude with `hs`. Rewrite using `[hfix]`. Conclude with `(idxN_pre φ L (fixLat Γ)).trans hidx`. Use `⟨t.image φ.symm, Finset.card_image_le.trans (ht.trans hj), ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hfix, pre_eq_map, pre_eq_map, hgen, Submodule.map_sup, Submodule.map_span]`. Use `congr 2`. Simplify using `[Finset.coe_image]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isDat_pre (φ : W ≃ₗ[K] C) {HW : HermSpace K W} {H' : HermSpace K C}
     (hφ : ∀ x y, H'.B (φ x) (φ y) = HW.B x y) {g j r x : ℕ} (hj : j ≤ r) {L L' : Submodule (𝓞 K) C}
@@ -224,11 +218,11 @@ theorem isDat_pre (φ : W ≃ₗ[K] C) {HW : HermSpace K W} {H' : HermSpace K C}
 
 omit [NumberField K] [StarRing K] in
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hu`. Take `⟨m, hm, x, hx, rfl⟩` from `Submodule.mem_sup.1 hu`. Establish `hvm : v - m ∈ X ⊓ S`. Use `Submodule.mem_inf.2 ⟨?_, S.sub_mem hv (h1 hm)⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hvx : v - m = x - (m + x - v)` using `by abel`. Rewrite using `[hvx]`. Conclude with `X.sub_mem hx huv`. Simplify using `using M.add_mem (h2 hvm) hm`. Introduce `hv'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hu : u = v + (u - v)` using `by abel`. Rewrite using `[hu]`. Conclude with `Submodule.add_mem_sup hv' huv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_sup_iff {A : Type} [AddCommGroup A] [Module (𝓞 K) A] {M X S : Submodule (𝓞 K) A}
     (h1 : M ≤ S) (h2 : X ⊓ S ≤ M) {u v : A} (hv : v ∈ S) (huv : u - v ∈ X) : u ∈ M ⊔ X ↔ v ∈ M := by
@@ -252,9 +246,9 @@ namespace GlobalTheory.DegAsm
 open DatEmb GlobalTheory.Mass Formalism.HermitianLatticeCounting.P
 
 /- English proof (translation)
-Unfold `FlagD.Xa at hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨b, -, rfl⟩` from `hy`. Conclude with `hv _`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz => simp [hy, hz]`. Consider the case `smul c y _ hy => simp [hy]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem span_gs_Iio_le_orthogonal {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V]
     {H : HermSpace K V} {r : ℕ} (F : FlagD H r) (n : ℕ) {v : V}
@@ -269,7 +263,7 @@ private theorem span_gs_Iio_le_orthogonal {K V : Type} [Field K] [StarRing K] [A
   | smul c y _ hy => simp [hy]
 
 /- English proof (translation)
-Proceed by induction on `a using Fin.lastCases with`. Consider the case `last => exact Submodule.mem_sup_right (Submodule.subset_span (Set.mem_insert _ _))`. Consider the case `cast b => exact Submodule.mem_sup_left (Submodule.mem_sup_left (Submodule.subset_span ⟨b, b.2, rfl⟩))`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem flag_e_mem_V0 {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V]
     {H : HermSpace K V} {r : ℕ} (F F' : FlagD H r) (a : Fin (r + 1)) : F.e a ∈ V0 F F' := by
@@ -278,63 +272,55 @@ private theorem flag_e_mem_V0 {K V : Type} [Field K] [StarRing K] [AddCommGroup 
   | cast b => exact Submodule.mem_sup_left (Submodule.mem_sup_left (Submodule.subset_span ⟨b, b.2, rfl⟩))
 
 /- English proof (translation)
-Introduce `K V W _ _ _ _ _ _ _ _ _ _ _ _ _ H HW e hK r F G 𝔡 N g Λ hg hE hA hT`. Take `⟨-, hX, -, -, -, -, -, -, hlat⟩` from `adapt_invariants K V H hK r F G 𝔡 N hA`. Take `⟨-, -, -, -, hL0', hio⟩` from `hlat g Λ`. Establish `hSG : SameGr F N.F` using `hA.2.1`. Establish `hSG' : SameGr N.F F` using `AdaptInv.sameGr_symm hSG`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `obtain ⟨hfull, ⟨hW1, hW2, hW3⟩, -, hrank, hWn, huP, hwSp, hwSp', -, -, -, -⟩ := NF.geometry K V H hK r N`. Take `⟨-, -, -, -, -, hFX, -, hlF, -⟩` from `hfull`. Take `⟨H', hH', hH'PD, -, -, -, hDat⟩` from `GlobalTheory.T.definiteLift_embedded_datum_of_term K V H hK r N g Λ hg hT`. Take `⟨-, hgI, hiI, -, hle, -⟩` from `GlobalTheory.DegCnt.FixIdx.main K V H hK r N g Λ hg hT`. Establish `frame : ∀ v : V, (∀ a, H.B (F.e a) v = 0) ↔ (∀ a, H.B (N.F.e a) v = 0)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `v`. Prove the components needed by the constructor for the conclusion. Introduce `hv a`. Establish `hd` using `span_gs_Iio_le_orthogonal F a.val hv (hSG a)`. Rewrite `hd` using `[map_sub, LinearMap.sub_apply, sub_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hd]`. Conclude with `hv a`. Introduce `hv a`. Establish `hd` using `span_gs_Iio_le_orthogonal N.F a.val hv (hSG' a)`. Rewrite `hd` using `[map_sub, LinearMap.sub_apply, sub_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hd]`. Conclude with `hv a`. Establish `hEm : ∀ v : V, (∀ a, H.B (N.F.e a) v = 0) ↔ v ∈ LinearMap.range e ⊔ N.F.X`. Introduce `v`. Rewrite using `[← frame, hX]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hE.2 v`. Establish `hiso : ∀ x y, H.B (e x) (e y) = HW.B x y` using `hE.1`. Establish `hfr : ∀ y, ∀ a, H.B (N.F.e a) (e y) = 0` using `fun y => (hEm _).2 (Submodule.mem_sup_left (LinearMap.mem_range_self e y))`. Establish `hXV : N.F.X ≤ V0 N.F N.F'` using `le_sup_left.trans le_sup_left`. Establish `hXII : ∀ x, x ∈ N.F.X → x ∈ wSp N.F N.F' → x ∈ II N.F N.F'` using `fun x hx hw => (hFX x hx).1 ((NFGeom.mem_perp' _ x).1 hw)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hWw : ∀ y : N.Wt, (y : V) ∈ wSp N.F N.F'` using `fun y => by`. Rewrite using `[hwSp]`. Conclude with `Submodule.mem_sup_left y.2`. Establish `hWu : ∀ y : N.Wt, (y : V) ∈ uPerp N.F N.F'` using `fun y => by`. Rewrite using `[huP, hWn]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Submodule.mem_sup_left (Submodule.mem_sup_left y.2)`. Establish `huS : uPerp N.F' N.F = uPerp N.F N.F'`. Unfold `uPerp`. Rewrite using `[sup_comm]`. Establish `hIIL : ∀ x, x ∈ II N.F N.F' → x ∈ flagPairDefinitePartLattice N.F N.F' Λ ∧ x ∈ flagPairDefinitePartLattice N.F' N.F Λ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `x hx`. Use `⟨⟨⟨NFGeom.II_le_uPerp N hx, Submodule.mem_sup_right hx.1⟩, NFGeom.II_le_wSp N hx⟩, ⟨⟨?_, Submodule.mem_sup_right hx.2⟩, ?_⟩⟩` and prove the remaining obligations. Use `show x ∈ uPerp N.F' N.F`. Rewrite using `[huS]`. Conclude with `NFGeom.II_le_uPerp N hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show x ∈ wSp N.F' N.F`. Rewrite using `[hwSp']`. Conclude with `NFGeom.II_le_wSp N hx`. Establish `he : ∀ w, e w ∈ N.F.X → w = 0`. Introduce `w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `HW.nondeg` to reduce the goal to its premises. Introduce `y`. Rewrite using `[← hiso]`. Conclude with `span_gs_Iio_le_orthogonal N.F r (hfr y) hw`. Establish `hc : ∀ y : N.Wt, (y : V) ∈ N.F.X → y = 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Introduce `y hy`. Establish `h0 : (y : V) ∈ N.Wt ⊓ II N.F N.F'` using `Submodule.mem_inf.2 ⟨y.2, (hFX _ hy).1 (fun w hw => hW1 _ y.2 _ hw)⟩`. Rewrite `h0` using `[hW2]`. Conclude with `Subtype.ext ((Submodule.mem_bot K).1 h0)`. Establish `h1 : ∀ w, ∃ y : N.Wt, e w - N.Wt.subtype y ∈ N.F.X`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `w`. Take `⟨x, hx, hxo⟩` from `hlF (e w) (hfr w)`. Take `⟨y, hy, i, hi, hyi⟩` from `Submodule.mem_sup.1 (hW3 _ hxo)`. Use `⟨⟨y, hy⟩, ?_⟩` and prove the remaining obligations. Establish `hd : e w - y = x + i`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Submodule.subtype_apply]`. Rewrite using `[hd]`. Conclude with `add_mem hx (Submodule.mem_inf.1 hi).1`. Establish `h2 : ∀ y : N.Wt, ∃ w, e w - N.Wt.subtype y ∈ N.F.X`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Establish `hf : ∀ a, H.B (N.F.e a) y = 0` using `fun a => hW1 _ y.2 _ (flag_e_mem_V0 N.F N.F' a)`. Take `⟨v, hv, x, hx, hvx⟩` from `Submodule.mem_sup.1 ((hEm y).1 hf)`. Take `⟨w, rfl⟩` from `LinearMap.mem_range.1 hv`. Use `⟨w, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Submodule.subtype_apply]`. Rewrite using `[← hvx]`. Simplify using `using N.F.X.neg_mem hx`. Take `⟨φ, hφX⟩` from `DatEmb.exists_equiv N.F.X e N.Wt.subtype he hc h1 h2`. Simplify using `only [Submodule.subtype_apply] at hφX`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hφ : ∀ x y, H'.B (φ x) (φ y) = HW.B x y`. Introduce `x y`. Rewrite using `[hH', ← hiso]`. Establish `e1 : H.B (e x - φ x) (e y) = 0` using `span_gs_Iio_le_orthogonal N.F r (hfr y) (hφX x)`. Establish `e2 : H.B (φ x : V) (e y - φ y) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← H.herm, hW1 _ (φ x).2 _ (hXV (hφX y)), star_zero]`. Rewrite `e1` using `[map_sub, LinearMap.sub_apply, sub_eq_zero]`. Rewrite `e2` using `[map_sub, sub_eq_zero]`. Rewrite using `[e1, e2]`. Establish `hP` using `DatEmb.isDat_pre φ hφ N.j_le hDat`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Establish `hlat0 : lat0 F e Λ = lat0 N.F e Λ`. Unfold `lat0`. Rewrite using `[hX]`. Establish `hdat : datOf F G e g Λ = datOf N.F N.F' e g Λ`. Unfold `datOf`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[hX, hL0', hio]`. Establish `q1 : lat0 N.F e Λ = DatEmb.pre φ (GlobalTheory.Mass.latIn N.Wt (flagPairDefinitePartLattice N.F N.F' Λ))`. Use extensionality with `w`. Simplify using `only [lat0, DatEmb.pre, GlobalTheory.Mass.latIn, Submodule.mem_comap, LinearMap.restrictScalars_apply, LinearEquiv.coe_coe, Submodule.subtype_apply]`. Establish `hsub : e w - (φ w : V) ∈ Λ ⊔ rs (𝓞 K) N.F.X` using `Submodule.mem_sup_right (hφX w)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show _ ↔ (φ w : V) ∈ (rs (𝓞 K) (uPerp N.F N.F') ⊓ (Λ ⊔ rs (𝓞 K) N.F.X)) ⊓ rs (𝓞 K) (wSp N.F N.F')`. Simplify using `only [Submodule.mem_inf]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨⟨hWu (φ w), ?_⟩, hWw (φ w)⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Simplify using `using Submodule.sub_mem _ h hsub`. Introduce `h`. Simplify using `using Submodule.add_mem _ h.1.2 hsub`. Establish `hS1 : flagPairDefinitePartLattice N.F' N.F Λ ≤ rs (𝓞 K) (wSp N.F N.F')`. Rewrite using `[← hwSp']`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `inf_le_right`. Establish `hS2 : flagPairDefinitePartLattice N.F N.F' Λ ≤ rs (𝓞 K) (wSp N.F N.F')` using `inf_le_right`. Establish `q2 : datOf N.F N.F' e g Λ = (DatEmb.pre φ (GlobalTheory.Mass.latIn N.Wt (flagPairDefinitePartLattice N.F' N.F Λ)), ((iotaGraph N.F N.F' Λ (g : 𝓞 K)).comap ((N.Wt.subtype.prodMap N.Wt.subtype).restrictScalars (𝓞 K))).comap (((φ : W →ₗ[K] N.Wt).prodMap (φ : W →ₗ[K] N.Wt)).restrictS …`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use extensionality with `w`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [datOf, DatEmb.pre, GlobalTheory.Mass.latIn, Submodule.mem_comap, LinearMap.restrictScalars_apply, LinearEquiv.coe_coe, Submodule.subtype_apply]`. Use `DatEmb.mem_sup_iff hS1 ?_ (hWw (φ w)) (hφX w)` and prove the remaining obligations. Introduce `x hx`. Take `⟨hx1, hx2⟩` from `Submodule.mem_inf.1 hx`. Conclude with `(hIIL x (hXII x hx1 hx2)).2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use extensionality with `p`. Simplify using `only [datOf, Submodule.mem_comap, LinearMap.restrictScalars_apply, LinearMap.prodMap_apply, LinearEquiv.coe_coe, Submodule.subtype_apply]`. Use `DatEmb.mem_sup_iff (S := (rs (𝓞 K) (wSp N.F N.F')).prod (rs (𝓞 K) (wSp N.F N.F'))) (inf_le_left.trans (Submodule.prod_mono hS1 hS2)) ?_ (Submodule.mem_prod.2 ⟨hWw (φ p.1), hWw (φ p.2)⟩) (Submodule.mem_prod.2 ⟨by simpa using hφX p.1, by simpa using hφX p.2⟩)` and prove the remaining obligations. Introduce `q hq`. Take `⟨hq1, hq2⟩` from `Submodule.mem_inf.1 hq`.
-
-Take `⟨ha1, ha2⟩` from `Submodule.mem_prod.1 hq1`. Take `⟨hb1, hb2⟩` from `Submodule.mem_prod.1 hq2`. Establish `i1` using `hXII _ ha1 hb1`. Establish `i2` using `hXII _ ha2 hb2`. Use `Submodule.mem_inf.2 ⟨Submodule.mem_prod.2 ⟨(hIIL _ i1).2, (hIIL _ i2).1⟩, ?_⟩` and prove the remaining obligations.
-
-Conclude with `Submodule.mem_sup_right (Submodule.mem_prod.2 ⟨i1.2, i2.1⟩)`. Rewrite using `[hlat0, hdat, q1, q2]`. Use `⟨hP, hgI, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h1' : (1 : ℝ) ≤ N.iI g Λ` using `by exact_mod_cast hiI`. Establish `h0 : (0 : ℝ) ≤ N.gI g Λ` using `Nat.cast_nonneg _`.
-
-Use the polynomial consequences of the given equalities and inequalities. Introduce `τ x hx`. Establish `hpos` using `hH'PD τ (φ x) ((LinearEquiv.map_ne_zero_iff φ).2 hx)`. Simplify `hpos` using `[LinearMap.flip_apply, hφ]`. Rewrite using `[φ.finrank_eq]`.
-
-Conclude with `hrank`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isDat_datOf : ∀ (K V W : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] [AddCommGroup W] [Module K W] [FiniteDimensional K W] [Module (𝓞 K) W] [IsScalarTower (𝓞 K) K W] (H : HermSpace K V) (HW : HermSpace K W) (e : W →ₗ[K] V), Formalism.HermitianLatticesTheory.IsCMUnram K → ∀ (r : ℕ), ∀ (F G : FlagD H r) (𝔡 : Ideal (𝓞 K)) (N : NF H r) (g : ℕ) (Λ : Submodule (𝓞 K) V), 1 ≤ g → IsEmb F HW e → Adapt F G 𝔡 N → N.IsTerm g Λ → IsDat HW g (lat0 F e Λ) r (N.gI g Λ) (datOf F G e g Λ) ∧ 1 ≤ N.gI g Λ ∧ (N.gI g Λ : ℝ) ≤ N.Del ∧ GlobalTheory.Mass.PD HW.B.flip ∧ Module.finrank K W + 2 * r + 1 = Module.finrank K V := by
   intro K V W _ _ _ _ _ _ _ _ _ _ _ _ _ H HW e hK r F G 𝔡 N g Λ hg hE hA hT

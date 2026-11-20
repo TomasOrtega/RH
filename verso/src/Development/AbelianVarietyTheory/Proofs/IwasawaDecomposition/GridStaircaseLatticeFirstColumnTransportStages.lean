@@ -45,7 +45,7 @@ def chC {L : Formalism.IndefR.Links.LevCh a.D T} {P : Places L} {c : ℝ} (X : C
 def lsC (X : LSp a.D) : LSp b.D := ⟨(by with_unfolding_all exact (X.sp :)), (by with_unfolding_all exact (X.lat :))⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(by with_unfolding_all exact (h.rank :)), (by with_unfolding_all exact (h.sigOK :)), (by with_unfolding_all exact (h.sig :)), (by with_unfolding_all exact (h.sd :))⟩`.
+Supply the required witnesses or components.
 -/
 theorem isVC {X : LSp a.D} {ν q : ℕ} (h : X.IsV ν q) : (lsC b X).IsV ν q :=
   ⟨(by with_unfolding_all exact (h.rank :)), (by with_unfolding_all exact (h.sigOK :)), (by with_unfolding_all exact (h.sig :)), (by with_unfolding_all exact (h.sd :))⟩
@@ -69,7 +69,7 @@ def gridColumnVertexDecompTransport (P : ℕ → LSp a.D) : ∀ (i : ℕ) (_ : 1
   | _ + 1, _, d => (adC b d :)
 
 /- English proof (translation)
-The claim follows from `| 0, h, _, _, _ => absurd h (by omega) | _ + 1, _, _, _, e => (e)`.
+A detailed English derivation is pending.
 -/
 theorem gridStaircaseLattice_firstColumn_transportStages (P : ℕ → LSp a.D) : ∀ (i : ℕ) (h : 1 ≤ i) (d : HermitianOrthogonalExtensionData (P i).sp (vtxOf L Vs i 0).sp (i - 1) (-1))
     (𝔟 : Fin (i - 1) → FractionalIdeal (𝓞 a.D.host.E)⁰ a.D.host.E),
@@ -84,7 +84,7 @@ def gridInteriorVertexDecompTransport (j : ℕ) : ∀ (n : ℕ) (_ : j + 1 < n) 
   | _ + 1, _, d => (adC b d :)
 
 /- English proof (translation)
-The claim follows from `| 0, h, _, _, _ => absurd h (by omega) | _ + 1, _, _, _, e => (e)`.
+A detailed English derivation is pending.
 -/
 theorem gridLastRowVertexLattice_transportStages (j : ℕ) : ∀ (n : ℕ) (h : j + 1 < n) (d : HermitianOrthogonalExtensionData (Xs (j + 1)).sp (vtxOf L Vs n (j + 1)).sp (n - 1 - (j + 1)) (-1))
     (𝔟 : Fin (n - 1 - (j + 1)) → FractionalIdeal (𝓞 a.D.host.E)⁰ a.D.host.E),
@@ -99,7 +99,7 @@ def gridDiagonalVertexDecompTransport (X0 : LSp a.D) : ∀ (n : ℕ) (_ : 1 ≤ 
   | _ + 1, _, d => (adC b d :)
 
 /- English proof (translation)
-The claim follows from `| 0, h, _, _ => absurd h (by omega) | _ + 1, _, _, e => (e)`.
+A detailed English derivation is pending.
 -/
 theorem gridTopVertexLattice_transportStages (X0 : LSp a.D) : ∀ (n : ℕ) (h : 1 ≤ n) (d : HermitianOrthogonalExtensionData (vtxOf L Vs n n).sp (xOf X0 Xs n).sp 1 1),
     (xOf X0 Xs n).lat = d.lat (vtxOf L Vs n n).lat (fun _ => 1) →
@@ -141,7 +141,7 @@ section Y
 variable {L : Formalism.IndefR.Links.LevCh a.D T}
 
 /- English proof (translation)
-Take `⟨G, h1, h2⟩` from `h`. Conclude with `⟨gdC _ G, ⟨(by with_unfolding_all exact (h1.values :)), (by with_unfolding_all exact (h1.roots :))⟩, (by with_unfolding_all exact (h2 :))⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem listPin_upL (S' : SStage B C a.W) (Nn : ∀ u, Submodule (𝓞 B.LL) (a.V.div.Nu u).V) (hh : B.Word → ℝ) (c bb : ℝ)
     (h : ListPin a.D L c bb) : ListPin (upL a S' Nn hh).D (levCh (upL a S' Nn hh) L) c bb := by
@@ -152,15 +152,15 @@ end Y
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `cDep b K B f T w Z Wt S' N h p0 t p0' t' hs hp`. Consider the cases of `t' with | mk hX' r' => ?_`. Consider the cases of `r' with | mk z' => ?_`. Consider the cases of `z' with | @mk Xg' tr' core' alg' alg_eq' R' => ?_`. Establish `hXg` using `hs.Xg`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Establish an intermediate fact.
 
-Establish `htr` using `hs.tr`. Establish `hcore` using `hs.core`. Establish `hR` using `hs.R`. Use `clear hs`. Express the relevant statement in the definitionally equal form `Xg' = t.r.z.Xg at hXg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `tr' = t.r.z.tr at htr`. Substitute `hXg htr` using the available equality. Express the relevant statement in the definitionally equal form `HEq core' _ at hcore`. Establish `hc` using `eq_of_heq hcore`. Substitute `hc` using the available equality.
+Substitute using the available equality. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `ha : alg' = GlobalTheory.Mem.R3.Tr.alg (a` using `⟨Z.W, Z.V, Z.S, Z.N, Z.G⟩) ⟨(upL Z S' N h).W, (upL Z S' N h).V, (upL Z S' N h).S, (upL Z S' N h).N, (upL Z S' N h).G⟩ t.r.z.alg := by`. Apply `Algebra.algebra_ext` to reduce the goal to its premises. Introduce `r`. Apply `(w.st (upL Z S' N h)).B.embLL.injective` to reduce the goal to its premises. Conclude with `(by with_unfolding_all exact (((alg_eq' r).trans (t.r.z.alg_eq r).symm) :))`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Substitute using the available equality. Express the relevant assertion in an equivalent form by its definition.
 
-Substitute `ha` using the available equality. Express the relevant statement in the definitionally equal form `HEq R' _ at hR`. Establish `hR2` using `eq_of_heq hR`. Substitute `hR2` using the available equality. Conclude with `(by with_unfolding_all exact ((listPin_upL (a := ⟨Z.W, Z.V, Z.S, Z.N, Z.G⟩) S' N h cDep b hp) :))`.
+Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem listPin_rowsSame : ∀ (cDep b : ℝ) (K : Ctx) (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T) (Z : w.Lt) (Wt : Set B.places.Pl) (S' : SStage B w.C Z.W) (N : ∀ u, Submodule (𝓞 B.LL) (Z.V.div.Nu u).V) (h : B.Word → ℝ) (p0 : BaseLevelRowSide (w.D Z)) (t : RowsT K w Z Wt p0) (p0' : BaseLevelRowSide (w.D (upL Z S' N h))) (t' : RowsT K w (upL Z S' N h) Wt p0'), RowsSame t t' → ListPin (w.st Z).toD7 t.r.z.R.toRealDat.toLevCh cDep b → ListPin (w.st (upL Z S' N h)).toD7 t'.r.z.R.toRealDat.toLevCh cDep b := by
   intro cDep b K B f T w Z Wt S' N h p0 t p0' t' hs hp

@@ -28,15 +28,15 @@ def tr {F1 : Subfield E} (h : F1 = maximalRealSubfield E) : AL E →+* E ⊗[F1]
   (GlobalTheory.LevSplit.swp F1 E).comp (GlobalTheory.Mem.R3.swapCast h).symm.toRingHom
 
 /- English proof (translation)
-Conclude with `(Algebra.TensorProduct.comm _ _ _).apply_symm_apply z`.
+A detailed English derivation is pending.
 -/
 theorem tr_rfl (z : AL E) : tr (rfl : maximalRealSubfield E = maximalRealSubfield E) z = z := by
   exact (Algebra.TensorProduct.comm _ _ _).apply_symm_apply z
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite using `[tr_rfl]`. Establish `key : ReciprocityTheory.Aut.ALint E ≤ Formalism.L2.Herm.intAf (maximalRealSubfield E) E`. Unfold `ReciprocityTheory.Aut.ALint`. Rewrite using `[Subring.closure_le]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `x (⟨y, rfl⟩ | ⟨a, ha, rfl⟩)`. Conclude with `Subring.subset_closure (Or.inl ⟨⟨(y : E), y, rfl⟩, rfl⟩)`. Conclude with `Subring.subset_closure (Or.inr ⟨⟨a, ha⟩, rfl⟩)`. Conclude with `key hz`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem tr_int {F1 : Subfield E} (h : F1 = maximalRealSubfield E) {z : AL E} (hz : z ∈ ALint E) :
     tr h z ∈ Formalism.L2.Herm.intAf F1 E := by
@@ -51,11 +51,9 @@ theorem tr_int {F1 : Subfield E} (h : F1 = maximalRealSubfield E) {z : AL E} (hz
   exact key hz
 
 /- English proof (translation)
-Establish `key : Formalism.L2.Herm.intAf (maximalRealSubfield E) E ≤ (s.v.adicCompletionIntegers (maximalRealSubfield E)).toSubring.comap s.proj` using `by show Subring.closure _ ≤ _`. Rewrite using `[Subring.closure_le]`. Introduce and unpack `x (⟨⟨_, b, rfl⟩, rfl⟩ | ⟨⟨a, ha⟩, rfl⟩)`. Rewrite using `[SetLike.mem_coe, Subring.mem_comap, ValuationSubring.mem_toSubring, IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers]`. Simplify using `only [ReciprocityTheory.Aut.SplitPlace.proj, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.lift_tmul, map_one, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `s.split_le_one b`. Rewrite using `[SetLike.mem_coe, Subring.mem_comap, ValuationSubring.mem_toSubring]`. Simplify using `only [ReciprocityTheory.Aut.SplitPlace.proj, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.lift_tmul, map_one, one_mul]`. Conclude with `ha s.v`. Use `key hz` as an intermediate fact.
-
-Rewrite `this` using `[Subring.mem_comap, ValuationSubring.mem_toSubring, IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem proj_le_one (s : SplitPlace E) {z : AL E} (hz : z ∈ Formalism.L2.Herm.intAf (maximalRealSubfield E) E) :
     Valued.v (s.proj z) ≤ 1 := by
@@ -78,39 +76,35 @@ theorem proj_le_one (s : SplitPlace E) {z : AL E} (hz : z ∈ Formalism.L2.Herm.
     IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers] at this
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `key : ∀ (t : E ⊗[maximalRealSubfield E] Formalism.L2.Herm.Af (maximalRealSubfield E)) (ht : t ∈ Formalism.L2.Herm.intAf (maximalRealSubfield E) E), ∃ c : 𝓞 E, Valued.v (s.proj t - s.i (c : E)) < 1 ∧ resS (maximalRealSubfield E) s.w ⟨t, ht⟩ = Ideal.Quotient.mk _ c`. Introduce `t ht`. Use `Subring.closure_induction (p := fun t ht => ∃ c : 𝓞 E, Valued.v (s.proj t - s.i (c : E)) < 1 ∧ resS (maximalRealSubfield E) s.w ⟨t, ht⟩ = Ideal.Quotient.mk _ c) ?_ ?_ ?_ ?_ ?_ ?_ ht` and prove the remaining obligations. Introduce and unpack `x (⟨⟨_, b, rfl⟩, rfl⟩ | ⟨⟨a, ha⟩, rfl⟩)`.
+Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `⟨b, ?_, ?_⟩` and prove the remaining obligations. Simplify using `[ReciprocityTheory.Aut.SplitPlace.proj]`. Establish `e : (⟨_, Subring.subset_closure (Or.inl ⟨⟨_, b, rfl⟩, rfl⟩)⟩ : Formalism.L2.Herm.intAf (maximalRealSubfield E) E) = Formalism.L2.DIV.oToS (maximalRealSubfield E) E b` using `Subtype.ext (Formalism.L2.DIV.oToS_coe (F := maximalRealSubfield E) b).symm`. Rewrite using `[e, Formalism.L2.DIV.resS_oToS]`. Take `⟨D0, hD0, hD0ne⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot s.v.ne_bot`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr⟩` from `Formalism.UG.P.csApprox_local s.v D0 hD0ne (a s.v) (ha s.v)`. Establish `hlt : s.v.intValuation D0 < 1`. Conclude with `(s.v.intValuation_lt_one_iff_mem D0).mpr hD0`. Establish `hi : s.i (((algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E) r : 𝓞 E)) : E) = algebraMap (𝓞 (maximalRealSubfield E)) (s.v.adicCompletion (maximalRealSubfield E)) r`. Rewrite using `[ReciprocityTheory.Aut.split_coe_algebraMap, AlgHom.commutes, IsScalarTower.algebraMap_apply (𝓞 (maximalRealSubfield E)) (maximalRealSubfield E) (s.v.adicCompletion (maximalRealSubfield E)) r]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E) r, ?_, ?_⟩` and prove the remaining obligations. Establish `hp : s.proj ((1 : E) ⊗ₜ[maximalRealSubfield E] a) = a s.v`. Simplify using `only [ReciprocityTheory.Aut.SplitPlace.proj, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.lift_tmul, map_one, one_mul]`. Both sides reduce to the same expression. Rewrite using `[hp, hi]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hr.trans hlt`. Establish `hsplit : (⟨_, Subring.subset_closure (Or.inr ⟨⟨a, ha⟩, rfl⟩)⟩ : Formalism.L2.Herm.intAf (maximalRealSubfield E) E) = Formalism.L2.DIV.adS (maximalRealSubfield E) E (⟨a, ha⟩ - Formalism.L2.DIV.oToAd (maximalRealSubfield E) r) + Formalism.L2.DIV.oToS (maximalRealSubfield E) E (alge …`. Rewrite using `[← Formalism.L2.DIV.adS_oToAd, ← map_add, sub_add_cancel]`. Conclude with `Subtype.ext (Formalism.L2.DIV.adS_coe (E := E) ⟨a, ha⟩).symm`. Rewrite using `[hsplit, map_add, Formalism.L2.DIV.resS_oToS, Formalism.L2.DIV.resS_adS_eq_zero s.w s.v s.w_under.symm, zero_add]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Use `show Valued.v (a s.v - algebraMap (𝓞 (maximalRealSubfield E)) (s.v.adicCompletion (maximalRealSubfield E)) r) < 1`. Conclude with `hr.trans hlt`. Use `⟨0, by simp, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `resS (maximalRealSubfield E) s.w 0 = _`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨1, by simp, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `resS (maximalRealSubfield E) s.w 1 = _`. Simplify using the standard rewrite rules. Introduce and unpack `x y hx hy ⟨c1, h1, e1⟩ ⟨c2, h2, e2⟩`. Use `⟨c1 + c2, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `: s.proj (x + y) - s.i ((c1 + c2 : 𝓞 E) : E) = (s.proj x - s.i (c1 : E)) + (s.proj y - s.i (c2 : E))`. Use `push_cast`. Rewrite using `[map_add, map_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `Valuation.map_add_lt _ h1 h2`. Express the relevant statement in the definitionally equal form `resS (maximalRealSubfield E) s.w (⟨x, hx⟩ + ⟨y, hy⟩) = _`. Rewrite using `[map_add, e1, e2, map_add]`. Introduce and unpack `x hx ⟨c1, h1, e1⟩`. Use `⟨-c1, ?_, ?_⟩` and prove the remaining obligations.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `: s.proj (-x) - s.i ((-c1 : 𝓞 E) : E) = -(s.proj x - s.i (c1 : E))`. Use `push_cast`. Rewrite using `[map_neg, map_neg]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, Valuation.map_neg]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Conclude with `h1`. Express the relevant statement in the definitionally equal form `resS (maximalRealSubfield E) s.w (-⟨x, hx⟩) = _`. Rewrite using `[map_neg, e1, map_neg]`. Introduce and unpack `x y hx hy ⟨c1, h1, e1⟩ ⟨c2, h2, e2⟩`. Use `⟨c1 * c2, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: s.proj (x * y) - s.i ((c1 * c2 : 𝓞 E) : E) = s.proj x * (s.proj y - s.i (c2 : E)) + (s.proj x - s.i (c1 : E)) * s.i (c2 : E)`. Use `push_cast`. Rewrite using `[map_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hx1 : Valued.v (s.proj x) ≤ 1` using `proj_le_one s hx`. Establish `hc2 : Valued.v (s.i (c2 : E)) ≤ 1` using `s.split_le_one c2`. Use `Valuation.map_add_lt _ ?_ ?_` and prove the remaining obligations. Rewrite using `[Valuation.map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' hx1) h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Valuation.map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' hc2) h1`. Express the relevant statement in the definitionally equal form `resS (maximalRealSubfield E) s.w (⟨x, hx⟩ * ⟨y, hy⟩) = _`. Rewrite using `[map_mul, e1, e2, map_mul]`. Take `⟨c, hc1, hc2⟩` from `key y.1 y.2`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hyz : (y : E ⊗[maximalRealSubfield E] Formalism.L2.Herm.Af (maximalRealSubfield E)) = z` using `by rw [hy, tr_rfl]`. Rewrite `hc1` using `[hyz]`. Establish `hca : Valued.v (s.i ((c - a : 𝓞 E) : E)) < 1`. Establish `: s.i ((c - a : 𝓞 E) : E) = (s.proj z - s.i (a : E)) - (s.proj z - s.i (c : E))`. Use `push_cast`.
-
-Rewrite using `[map_sub]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `lt_of_le_of_lt (Valuation.map_sub _ _ _) (max_lt ha hc1)`. Establish `hmem : c - a ∈ s.w.asIdeal` using `(s.split_mem_ideal (c - a)).mpr hca`.
-
-Establish `hyy : (⟨y.1, y.2⟩ : Formalism.L2.Herm.intAf (maximalRealSubfield E) E) = y` using `rfl`. Rewrite `hc2` using `[hyy]`. Rewrite using `[hc2]`. Conclude with `Ideal.Quotient.eq.mpr hmem`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem res_eq {F1 : Subfield E} (h : F1 = maximalRealSubfield E) (s : SplitPlace E) (z : AL E)
     (y : Formalism.L2.Herm.intAf F1 E) (hy : (y : E ⊗[F1] Formalism.L2.Herm.Af F1) = tr h z) (a : 𝓞 E)

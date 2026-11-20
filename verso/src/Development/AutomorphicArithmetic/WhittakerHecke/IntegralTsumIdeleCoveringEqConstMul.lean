@@ -7,23 +7,21 @@ open scoped Classical ENNReal NNReal
 open UpperTheory.ConvolutionTheory.R2.G (FS2 Rw nE row)
 
 /- English proof (translation)
-Set `Ψ : T × U × P × Q → Y × P` to `fun x => (f x.1 x.2.1 x.2.2.1 x.2.2.2, x.2.2.1)`. Establish `hΨ : Measurable Ψ` using `hf.prodMk (measurable_fst.comp (measurable_snd.comp measurable_snd))`. Set `m : Measure (T × U × P × Q)` to `τ.prod (υ.prod (ν.prod Measure.count))`. Establish `hmap : m.map Ψ = c • μ.prod ν`. Use `Measure.ext_of_lintegral _ fun h hh => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hΨh : Measurable fun x => h (Ψ x)` using `hh.comp hΨ`. Establish `hG : Measurable fun x : T × U × P => ∑' α, h (f x.1 x.2.1 x.2.2 α, x.2.2)` using `Measurable.ennreal_tsum fun α => hΨh.comp (f := fun x : T × U × P => (x.1, x.2.1, x.2.2, α)) (by fun_prop)`. Rewrite using `[lintegral_map hh hΨ, lintegral_smul_measure, lintegral_prod _ hΨh.aemeasurable, lintegral_prod_symm _ hh.aemeasurable]`. Establish `e1 : ∀ t, ∫⁻ y, h (Ψ (t, y)) ∂(υ.prod (ν.prod Measure.count)) = ∫⁻ p, ∫⁻ u, ∑' α, h (f t u p α, p) ∂υ ∂ν`. Introduce `t`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `a1 : Measurable fun y : U × P × Q => h (Ψ (t, y))` using `hΨh.comp measurable_prodMk_left`. Establish `a2 : Measurable (Function.uncurry fun (u : U) (p : P) => ∑' α, h (f t u p α, p))` using `hG.comp (measurable_prodMk_left (x := t))`. Rewrite using `[lintegral_prod _ a1.aemeasurable, ← lintegral_lintegral_swap a2.aemeasurable]`. Use `lintegral_congr fun u => ?_` and prove the remaining obligations. Establish `a3 : Measurable fun y : P × Q => h (Ψ (t, u, y))` using `a1.comp measurable_prodMk_left`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[lintegral_prod _ a3.aemeasurable]`. Use `lintegral_congr fun p => ?_` and prove the remaining obligations. Rewrite using `[lintegral_count]`. Simplify using `only [e1]`. Establish `hG2 : Measurable fun x : T × P => ∫⁻ u, ∑' α, h (f x.1 u x.2 α, x.2) ∂υ` using `Measurable.lintegral_prod_right' (f := fun x : (T × P) × U => ∑' α, h (f x.1.1 x.2 x.1.2 α, x.1.2)) (hG.comp (f := fun x : (T × P) × U => (x.1.1, x.2, x.1.2)) (by fun_prop))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[lintegral_lintegral_swap hG2.aemeasurable]`. Establish `e2 : ∀ p, ∫⁻ t, ∫⁻ u, ∑' α, h (f t u p α, p) ∂υ ∂τ = c * ∫⁻ y, h (y, p) ∂μ` using `fun p => hc p (fun y => h (y, p)) (hh.comp measurable_prodMk_right)`. Simplify using `only [e2]`. Rewrite using `[lintegral_const_mul' _ _ ENNReal.coe_ne_top]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hI1 : Integrable H (m.map Ψ)`. Rewrite using `[hmap]`. Conclude with `hI.smul_measure ENNReal.coe_ne_top`. Establish `hI2 : Integrable (fun x => H (Ψ x)) m` using `(integrable_map_measure hH.aestronglyMeasurable hΨ.aemeasurable).1 hI1`. Establish `hval : ∫ x, H (Ψ x) ∂m = (c : ℂ) * ∫ q, H q ∂(μ.prod ν)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← integral_map hΨ.aemeasurable hH.aestronglyMeasurable, hmap, integral_smul_nnreal_measure, NNReal.smul_def, Complex.real_smul]`. Prove the components needed by the constructor for the conclusion. Use `filter_upwards [hI2.prod_right_ae] with t ht filter_upwards [ht.prod_right_ae] with u hu filter_upwards [hu.prod_right_ae] with p hp`. Conclude with `(integrable_count_iff.1 hp).of_norm`. Rewrite using `[← hval, integral_prod _ hI2]`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hI2.prod_right_ae] with t ht`. Rewrite using `[integral_prod _ ht]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [ht.prod_right_ae] with u hu`.
-
-Rewrite using `[integral_prod _ hu]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hu.prod_right_ae] with p hp`. Rewrite using `[integral_countable hp]`. Simplify using `[Ψ]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem gen {T U P Y Q : Type*} [MeasurableSpace T] [MeasurableSpace U] [MeasurableSpace P] [MeasurableSpace Y]
     [MeasurableSpace Q] [Countable Q] [MeasurableSingletonClass Q]
@@ -89,11 +87,9 @@ private theorem gen {T U P Y Q : Type*} [MeasurableSpace T] [MeasurableSpace U] 
     simp [Ψ]
 
 /- English proof (translation)
-Introduce `U c hc κ _ H hH hI`. Use `haveI := U.prob`. Use `letI : MeasurableSpace ℚˣ := ⊤`. Use `haveI : MeasurableSingletonClass ℚˣ := ⟨fun _ => trivial⟩`. Use `haveI : Countable ℚˣ := Units.val_injective.countable`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hiy : Measurable (fun t : ℝ => (iy (Real.exp t) : IdeleGroup ℚ))`. Establish `h : Continuous (fun t : ℝ => (iy (Real.exp t) : IdeleGroup ℚ))` using `UpperTheory.realIdele_mul_abs_continuous_and_unit_abs_eq_one.2.2.1`. Conclude with `h.measurable`. Establish `hd : Measurable (fun α : ℚˣ => (IdeleGroup.diagonal ℚ α : IdeleGroup ℚ))` using `measurable_from_top`. Use `gen volume U.υ ((ideleMeasure ℚ).prod κ) (ideleMeasure ℚ) (fun t u p α => Un.cov t u α * (p.1 * p.1)⁻¹) ?_ c ?_ H hH hI` and prove the remaining obligations.
-
-Establish `h1 : Measurable fun x : ℝ × IdeleGroup ℚ × (IdeleGroup ℚ × G1 ℚ) × ℚˣ => x.2.2.1.1` using `by fun_prop`. Conclude with `(((hd.comp (measurable_snd.comp (measurable_snd.comp measurable_snd))).mul ((hiy.comp measurable_fst).mul (hiy.comp measurable_fst))).mul (measurable_fst.comp measurable_snd)).mul (h1.mul h1).inv`. Introduce `p h hh`. Rewrite using `[hc (fun y => h (y * (p.1 * p.1)⁻¹)) (hh.comp (measurable_mul_const _)), lintegral_mul_right_eq_self]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.integral_tsum_ideleCovering_eq_const_mul :
     ∀ (U : UMeas) (c : ℝ≥0), (∀ h : IdeleGroup ℚ → ℝ≥0∞, Measurable h →

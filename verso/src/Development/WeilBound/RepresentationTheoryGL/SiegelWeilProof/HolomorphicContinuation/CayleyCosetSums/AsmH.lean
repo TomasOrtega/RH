@@ -6,7 +6,7 @@ import Development.WeilBound.RepresentationTheoryGL.SiegelWeilProof.HolomorphicC
 namespace PositivityTheory.Rg.Sw.HSt
 
 /- English proof (translation)
-The claim follows from `asmH_of farId Conv.smoothX topHol rcCongr (fun _ x Z t hx => expLie x Z t hx)`.
+A detailed English derivation is pending.
 -/
 theorem asmH : AsmH :=
   asmH_of farId Conv.smoothX topHol rcCongr (fun _ x Z t hx => expLie x Z t hx)

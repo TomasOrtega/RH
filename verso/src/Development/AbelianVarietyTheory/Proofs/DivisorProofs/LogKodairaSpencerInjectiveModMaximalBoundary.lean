@@ -43,7 +43,7 @@ theorem constEps_apply {σ k : Type} [Field k] (δ : Derivation ℤ (MvPowerSeri
       TrivSqZeroExt.inr (MvPowerSeries.constantCoeff (δ r)) := rfl
 
 /- English proof (translation)
-Rewrite using `[residue_eq_zero_iff, mem_maximalIdeal, mem_nonunits_iff, MvPowerSeries.isUnit_iff_constantCoeff, isUnit_iff_ne_zero, not_not]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem residue_eq_zero_iff_constantCoeff {σ k : Type} [Field k] (r : MvPowerSeries σ k) :
     residue _ r = 0 ↔ MvPowerSeries.constantCoeff r = 0 := by
@@ -51,27 +51,23 @@ theorem residue_eq_zero_iff_constantCoeff {σ k : Type} [Field k] (r : MvPowerSe
     not_not]
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c Y hpq hsm hsnc hrig U n v A hv hvb hA D Θ m hm hx hKS hΘ`. Take `⟨x, hxi, hxU, hxm⟩` from `hx`. Establish `h2` using `GlobalTheory.T.exists_closedBoundaryPoint_maximalIdeal E H Dw l Xo c Y hsm U m hm x hxi hxU hxm`. Take `⟨x', hx'x, hx'bd, hx'cl⟩` from `h2`. Establish `h3` using `hrig x' hx'bd hx'cl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨k, _, m', d, ξ, t, P, gam, hξ, hEt, hId, hBd, hSAB, hMon, hPart, hRig⟩` from `h3`. Establish `hxU' : ξ (closedPoint _) ∈ genι Y ⁻¹ᵁ U.1` using `by show genι Y (ξ (closedPoint _)) ∈ U.1`. Rewrite using `[hξ, hx'x]`. Conclude with `hxU`. Establish `hU : ⊤ ≤ (ξ ≫ genι Y) ⁻¹ᵁ U.1` using `top_le_preimage_of_closedPoint _ _ hxU'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `GlobalTheory.ChartDer.logDer_extend_chartRing E H Dw l Xo c Y U D k m' d ξ hxU' hEt hId`. Take `⟨DR, hDR0, hDRt⟩` from `h4`. Establish `hval : ∀ r, valR (ξ ≫ genι Y) U.1 r = ((Scheme.stalkClosedPointTo ξ).hom.comp (((gen Y).presheaf.germ (genι Y ⁻¹ᵁ U.1) (ξ (closedPoint _)) hxU').hom.comp ((genι Y).app U.1).hom)) r`. Introduce `r`. Establish `e` using `ReciprocityTheory.ChartRestriction.G.PullbackSections.germ_stalkClosedPointTo_eq ξ (genι Y ⁻¹ᵁ U.1) hxU'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `congrArg (fun φ => φ.hom (((genι Y).app U.1).hom r)) e`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at e2`. Rewrite using `[RingHom.comp_apply, RingHom.comp_apply, e2, valR, dif_pos hU, Scheme.Hom.comp_appLE]`. Both sides reduce to the same expression. Establish `hDR : ∀ r, DR (valR (ξ ≫ genι Y) U.1 r) = valR (ξ ≫ genι Y) U.1 (D.1 r)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `r`. Rewrite using `[hval, hval]`. Conclude with `hDR0 r`. Establish `ha' : ∀ i, ∃ a, DR (bdParam k m' d i) = a * bdParam k m' d i` using `fun i => by`. Take `⟨a, ha⟩` from `Ideal.mem_span_singleton'.1 (hDRt i)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨a, ha.symm⟩`. Use `choose a ha using ha'`. Establish `hc` using `GlobalTheory.T.degeneration_constant_of_logKodairaSpencer_mem E H Dw l Xo c Y hpq hsm hsnc U n v A hv hvb hA D Θ m hm x hxi hxU hxm hKS hΘ k m' d ξ x' hξ hx'x t P gam hEt hId hBd hSAB hMon hPart hU DR a hDR ha (constEps DR) (constEps_apply DR)`. Take `⟨c₀, hc₀, hcc⟩` from `hc`. Establish `ht0 : ∀ i, MvPowerSeries.constantCoeff (bdParam k m' d i) = 0` using `fun i => by simp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsnd : ∀ r, (constEps DR r).snd = 0`. Establish `h1 : ∀ r ∈ maximalIdeal (ChartRing k m' d), (constEps DR r).fst = 0` using `fun r hr => by`. Rewrite using `[constEps_apply]`. Simplify using `using (residue_eq_zero_iff_constantCoeff r).1 ((residue_eq_zero_iff r).2 hr)`. Establish `h2 : ∀ i, constEps DR (bdParam k m' d i) = 0` using `fun i => by`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[constEps_apply, ha i, map_mul, ht0 i, mul_zero]`. Simplify using the standard rewrite rules. Conclude with `hRig k (constEps DR) _ h1 h2 hcc`. Establish `hres : ∀ r, residue _ (DR r) = 0` using `fun r => by`. Rewrite using `[residue_eq_zero_iff_constantCoeff]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `hsnd r` using `[constEps_apply]`. Use `haveI : CharZero k := by`. Set `f : c.F →+* k` to `MvPowerSeries.constantCoeff.comp (Spec.preimage (ξ ≫ genι Y ≫ Y.s)).hom`. Conclude with `charZero_of_injective_ringHom f.injective`. Establish `hli : LinearIndependent ℤ (fun i => (gam i : LinearMap.BilinForm ℤ P.D.toPre.X))` using `hPart.linearIndependent.map' (levelForms H l.M' P.D.toPre.X).subtype (Submodule.ker_subtype _)`.
-
-Establish `hdir` using `GlobalTheory.ConstPointCone.dir_eq_zero_of_const (ChartRing k m' d) P.D.toPre m' (bdParam k m' d) (fun i => gam i) hMon hli (fun i => by simp [mem_maximalIdeal, mem_nonunits_iff, MvPowerSeries.isUnit_iff_constantCoeff]) (fun i y z => (gam i).2.1 y z) k (constEps DR) _ hsnd hcc`. Establish `ha0 : ∀ i, residue _ (a i) = 0` using `fun i => by`. Rewrite using `[residue_eq_zero_iff_constantCoeff]`. Use `congrFun hdir i` as an intermediate fact. Simplify using `only [Pi.zero_apply, mul_eq_zero, Rat.cast_eq_zero, hc₀, false_or] at this`.
-
-Conclude with `this`. Conclude with `GlobalTheory.T.logVectorField_mem_maxIdeal_smul_of_vanishing E H Dw l Xo c Y hsm hsnc U D m hm x hxi hxU hxm k m' d ξ x' hξ hx'x hEt hId hBd hU DR a hDR ha hres ha0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem logKS_inj_mod_boundary : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (Y : Model Xo c (RingHom.id c.F)), 1 ≤ Dw.p + Dw.q → SmoothOfRelativeDimension Dw.dim (genStr Y) → ReciprocityTheory.AnForm.R.FinalTheorems.Snc (genBdIdeal Y) → (∀ x ∈ genBd Y, IsClosed ({x} : Set (gen Y)) → HasRigidChart Y x) → ∀ (U : Y.X.affineOpens) (n : ℕ) (v : Fin n → (Sp (DualNumber Γ(Y.X, U.1)) ⟶ Y.t.G.left)) (A : 𝓞 E → Matrix (Fin n) (Fin n) Γ(Y.X, U.1)), (∀ i, IsTanAtG Y.t (chart U) (v i)) → (∀ w, IsTanAtG Y.t (chart U) w → ∃! cf : Fin n → Γ(Y.X, U.1), IsCombAtG Y.t (chart U) v cf w) → (∀ a i, IsCombAtG Y.t (chart U) v (A a i) (v i ≫ (Y.t.act.act a).left)) → ∀ (D : logDer Y.s (Scheme.IdealSheafData.vanishingIdeal (interior Y).compl) U) (Θ : Matrix (Fin n) (Fin n) Γ(Y.X, U.1)) (m : Ideal Γ(Y.X, U.1)), m.IsMaximal → (∃ x, x ∉ interior Y ∧ x ∈ U.1 ∧ ∀ f ∈ m, x ∉ Y.X.basicOpen f) → IsKS Y.t (interior Y) U v D.1 Θ → (∀ a b, Θ a b ∈ m) → D ∈ m • (⊤ : Submodule Γ(Y.X, U.1) (logDer Y.s (Scheme.IdealSheafData.vanishingIdeal (interior Y).compl) U)) := by
   intro E _ _ _ H Dw l Xo c Y hpq hsm hsnc hrig U n v A hv hvb hA D Θ m hm hx hKS hΘ

@@ -7,9 +7,9 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC Recip
 open scoped Pointwise
 
 /- English proof (translation)
-Establish `hmax : (Ideal.span {(l : ℤ)}).IsMaximal` using `PrincipalIdealRing.isMaximal_of_irreducible (Nat.prime_iff_prime_int.mp hl.out).irreducible`. Establish `hP : Ideal.span {(l : ℤ)} = Ideal.comap (Rat.ringOfIntegersEquiv.symm : ℤ →+* 𝓞 ℚ) u.asIdeal`. Use `hmax.eq_of_le (Ideal.comap_ne_top _ u.isPrime.ne_top) ?_` and prove the remaining obligations. Rewrite using `[Ideal.span_singleton_le_iff_mem, Ideal.mem_comap]`. Establish `: (Rat.ringOfIntegersEquiv.symm : ℤ →+* 𝓞 ℚ) (l : ℤ) = (l : 𝓞 ℚ)` using `map_natCast _ l`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `hu`. Rewrite using `[hP, Ideal.mem_comap]`. Establish `hx : (Rat.ringOfIntegersEquiv.symm : ℤ →+* 𝓞 ℚ) (Rat.ringOfIntegersEquiv x) = x` using `RingEquiv.symm_apply_apply _ x`. Rewrite using `[hx]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_asIdeal_iff_mem_span_of_above (l : ℕ) [hl : Fact l.Prime] (u : IsDedekindDomain.HeightOneSpectrum (𝓞 ℚ))
     (hu : u ∈ Formalism.GaloisCohomology.Above ℚ l) (x : 𝓞 ℚ) :
@@ -28,15 +28,15 @@ private theorem mem_asIdeal_iff_mem_span_of_above (l : ℕ) [hl : Fact l.Prime] 
   rw [hx]
 
 /- English proof (translation)
-Establish `hA0 : A ≠ ⊤` using `fun h => ((UpperTheory.V.Base.places ℚ Ω l A).2.1 h).2 hA`. Establish `hB0 : B ≠ ⊤` using `fun h => ((UpperTheory.V.Base.places ℚ Ω l B).2.1 h).2 hB`. Take `⟨v, hv⟩` from `(UpperTheory.V.Base.places ℚ Ω l A).1 hA0`. Take `⟨w, hw⟩` from `(UpperTheory.V.Base.places ℚ Ω l B).1 hB0`. Establish `hvl : v ∈ Formalism.GaloisCohomology.Above ℚ l` using `((UpperTheory.V.Base.places ℚ Ω l A).2.2.1 v hv).1 hA`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hwl : w ∈ Formalism.GaloisCohomology.Above ℚ l` using `((UpperTheory.V.Base.places ℚ Ω l B).2.2.1 w hw).1 hB`. Establish `hvw : v = w`. Apply `IsDedekindDomain.HeightOneSpectrum.ext` to reduce the goal to its premises. Use extensionality with `x`. Rewrite using `[mem_asIdeal_iff_mem_span_of_above l v hvl x, mem_asIdeal_iff_mem_span_of_above l w hwl x]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Substitute `hvw` using the available equality. Take `⟨σ, hσ⟩` from `exists_smul_eq_of_isPlaceOver hv hw`. Use `⟨σ.symm, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← hσ]`. Use `show _ ↔ x ∈ Subring.map (MulSemiringAction.toRingHom (G ℚ Ω) Ω σ) A.toSubring`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subring.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Conclude with `⟨σ.symm x, hx, by simp [MulSemiringAction.toRingHom_apply, AlgEquiv.smul_def]⟩`. Introduce and unpack `⟨a, ha, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `ha` using `[MulSemiringAction.toRingHom_apply, AlgEquiv.smul_def]`.
+A detailed English derivation is pending.
 -/
 private theorem mt_conj {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [hl : Fact l.Prime]
     (A B : ValuationSubring Ω) (hA : A.valuation (l : Ω) < 1) (hB : B.valuation (l : Ω) < 1) :
@@ -64,22 +64,18 @@ private theorem mt_conj {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ �
     simpa [MulSemiringAction.toRingHom_apply, AlgEquiv.smul_def] using ha
 
 /- English proof (translation)
-Take `w : NumberField.InfinitePlace L` from `Classical.choice inferInstance`. Conclude with `(NumberField.InfinitePlace.not_isReal_iff_isComplex.mpr (IsTotallyComplex.isComplex w)) (IsTotallyReal.isReal w)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem mt_not_both (L : Type) [Field L] [NumberField L] [IsTotallyReal L] [IsTotallyComplex L] : False := by
   obtain w : NumberField.InfinitePlace L := Classical.choice inferInstance
   exact (NumberField.InfinitePlace.not_isReal_iff_isComplex.mpr (IsTotallyComplex.isComplex w)) (IsTotallyReal.isReal w)
 
 /- English proof (translation)
-Use `letI : Algebra K ↥(F ⊔ K) := (IntermediateField.inclusion (le_sup_right : K ≤ F ⊔ K)).toRingHom.toAlgebra`. Use `haveI : IsTotallyComplex ↥(F ⊔ K) := NumberField.isTotallyComplex_of_algebra K _`. Use `letI : Algebra F ↥(F ⊔ K) := (IntermediateField.inclusion (le_sup_left : F ≤ F ⊔ K)).toRingHom.toAlgebra`. Use `haveI : IsScalarTower ℚ F ↥(F ⊔ K) := IsScalarTower.of_algebraMap_eq (fun x => rfl)`. Use `haveI : Module.Free F ↥(F ⊔ K) := Module.Free.of_divisionRing F _`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : Module.Finite F ↥(F ⊔ K) := Module.Finite.of_restrictScalars_finite ℚ F _`. Establish `hle` using `IntermediateField.finrank_sup_le F K`. Establish `hmul` using `Module.finrank_mul_finrank ℚ F ↥(F ⊔ K)`. Establish `hpos : 0 < Module.finrank ℚ F` using `Module.finrank_pos`. Establish `hne : Module.finrank F ↥(F ⊔ K) ≠ 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h1`. Establish `hb` using `Algebra.finrank_eq_one_iff_bijective_algebraMap.mp h1`. Use `haveI : IsTotallyReal ↥(F ⊔ K) := IsTotallyReal.ofRingEquiv (RingEquiv.ofBijective (algebraMap F ↥(F ⊔ K)) hb)`. Conclude with `mt_not_both ↥(F ⊔ K)`. Establish `hpos' : 0 < Module.finrank F ↥(F ⊔ K)` using `Module.finrank_pos`.
-
-Use `haveI : Algebra.IsQuadraticExtension F ↥(F ⊔ K) := ⟨by`. Rewrite `hle` using `[hK]`. Establish `: Module.finrank F ↥(F ⊔ K) ≤ 2`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
-
-Use `Nat.mul_lt_mul_of_pos_left hc hpos` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use the proof step `omega⟩`. Conclude with `NumberField.IsCMField.ofCMExtension F ↥(F ⊔ K)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem mt_cm {Ω : Type} [Field Ω] [CharZero Ω] (K F : IntermediateField ℚ Ω) [NumberField K] [NumberField F]
     [NumberField ↥(F ⊔ K)] [IsCMField K] [IsTotallyReal F] (hK : Module.finrank ℚ K = 2) : IsCMField ↥(F ⊔ K) := by
@@ -109,11 +105,9 @@ private theorem mt_cm {Ω : Type} [Field Ω] [CharZero Ω] (K F : IntermediateFi
   exact NumberField.IsCMField.ofCMExtension F ↥(F ⊔ K)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hle : F.fixingSubgroup ≤ K.fixingSubgroup` using `hcon`. Establish `hKF : K ≤ F`. Establish `h` using `IntermediateField.fixedField_le hle`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h` using `[InfiniteGalois.fixedField_fixingSubgroup, InfiniteGalois.fixedField_fixingSubgroup]`. Then use the resulting hypothesis. Use `letI : Algebra K F := (IntermediateField.inclusion hKF).toRingHom.toAlgebra`. Use `haveI : IsScalarTower ℚ K F := IsScalarTower.of_algebraMap_eq (fun x => rfl)`. Use `haveI : Algebra.IsAlgebraic K F := Algebra.IsAlgebraic.tower_top (K := ℚ) K`. Use `haveI : IsTotallyReal K := IsTotallyReal.of_algebra K F`.
-
-Conclude with `mt_not_both K`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 private theorem mt_out {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (K F : IntermediateField ℚ Ω) [NumberField K]
     [NumberField F] [IsCMField K] [IsTotallyReal F] : ∃ h ∈ F.fixingSubgroup, h ∉ K.fixingSubgroup := by
@@ -130,15 +124,13 @@ private theorem mt_out {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω
   exact mt_not_both K
 
 /- English proof (translation)
-Establish `hN : Normal ℚ K` using `by haveI : Algebra.IsQuadraticExtension ℚ K := ⟨hK⟩`. Conclude with `inferInstance`. Establish `hG : IsGalois ℚ K` using `by haveI : Algebra.IsQuadraticExtension ℚ K := ⟨hK⟩`. Conclude with `inferInstance`. Establish `hk` using `@IntermediateField.restrictNormalHom_ker ℚ Ω _ _ _ K hN`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hh`, the goal using `[← hk]`. Rewrite `hh` using `[MonoidHom.mem_ker]`. Rewrite using `[MonoidHom.mem_ker, MonoidHom.mem_ker, map_mul]`. Distinguish the cases in `ht : (@AlgEquiv.restrictNormalHom ℚ _ Ω _ _ K _ _ _ _ hN) τ = 1`. Conclude with `Or.inl ht`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Prove the first alternative. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `right`. Establish `hc0 : Nat.card (K ≃ₐ[ℚ] K) = 2` using `by haveI : Algebra.IsQuadraticExtension ℚ K := ⟨hK⟩`. Rewrite using `[IsGalois.card_aut_eq_finrank ℚ K, hK]`. Establish `hc : Nat.card (@AlgEquiv ℚ K K _ _ _ K.algebra' K.algebra') = 2`. Rewrite using `[← hc0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Use `congr 1`. Apply the tactic sequence `all_goals exact Subsingleton.elim _ _`. Take `⟨y, hy, hu⟩` from `(Nat.card_eq_two_iff' (1 : @AlgEquiv ℚ K K _ _ _ K.algebra' K.algebra')).mp hc`. Assume the negation of the conclusion as `hm`. Establish `e1` using `hu _ hh`.
-
-Establish `e2` using `hu _ ht`. Establish `e3` using `hu _ hm`. Conclude with `ht (mul_eq_left.mp (e3.trans e1.symm))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem mem_or_mul_mem_fixing_of_quadratic {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (K : IntermediateField ℚ Ω)
     [NumberField K] (hK : Module.finrank ℚ K = 2) (h τ : G ℚ Ω) (hh : h ∉ K.fixingSubgroup) :
@@ -171,7 +163,7 @@ private theorem mem_or_mul_mem_fixing_of_quadratic {Ω : Type} [Field Ω] [CharZ
     exact ht (mul_eq_left.mp (e3.trans e1.symm))
 
 /- English proof (translation)
-Use `⟨g * g'⁻¹, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[AlgEquiv.mul_apply, h1, ← h2, ← AlgEquiv.mul_apply, mul_inv_cancel, AlgEquiv.one_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem exists_conj_between_valuationSubrings_of_common {Ω : Type} [Field Ω] [CharZero Ω] (F : IntermediateField ℚ Ω) (A B C : ValuationSubring Ω)
     (g g' : G F Ω) (h1 : ∀ x, g x ∈ A ↔ x ∈ B) (h2 : ∀ x, g' x ∈ C ↔ x ∈ B) :
@@ -180,7 +172,7 @@ private theorem exists_conj_between_valuationSubrings_of_common {Ω : Type} [Fie
   rw [AlgEquiv.mul_apply, h1, ← h2, ← AlgEquiv.mul_apply, mul_inv_cancel, AlgEquiv.one_apply]
 
 /- English proof (translation)
-Introduce `x`. Rewrite using `[← h1, ← AlgEquiv.mul_apply, mul_inv_cancel, AlgEquiv.one_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 private theorem inv_apply_mem_iff_of_apply_mem_iff {Ω : Type} [Field Ω] [CharZero Ω] (F : IntermediateField ℚ Ω) (A B : ValuationSubring Ω)
     (g : G F Ω) (h1 : ∀ x, g x ∈ A ↔ x ∈ B) : ∀ x, g⁻¹ x ∈ B ↔ x ∈ A := by
@@ -188,7 +180,7 @@ private theorem inv_apply_mem_iff_of_apply_mem_iff {Ω : Type} [Field Ω] [CharZ
   rw [← h1, ← AlgEquiv.mul_apply, mul_inv_cancel, AlgEquiv.one_apply]
 
 /- English proof (translation)
-Use `⟨g * g', fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[AlgEquiv.mul_apply, h1, h2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem exists_conj_valuationSubrings_trans {Ω : Type} [Field Ω] [CharZero Ω] (F : IntermediateField ℚ Ω) (A B C : ValuationSubring Ω)
     (g g' : G F Ω) (h1 : ∀ x, g x ∈ A ↔ x ∈ B) (h2 : ∀ x, g' x ∈ B ↔ x ∈ C) :
@@ -197,15 +189,15 @@ private theorem exists_conj_valuationSubrings_trans {Ω : Type} [Field Ω] [Char
   rw [AlgEquiv.mul_apply, h1, h2]
 
 /- English proof (translation)
-Take `⟨σ, hσ⟩` from `mt_conj l A P hA hP`. Choose the witnesses or unpack the hypotheses as in `⟨m, hmF, hmK⟩ : ∃ m ∈ F.fixingSubgroup, ∀ x ∈ K, m x = σ x := by`. Establish `hh' : h⁻¹ ∉ K.fixingSubgroup` using `fun hc => hhK (by simpa using K.fixingSubgroup.inv_mem hc)`. Break down `mem_or_mul_mem_fixing_of_quadratic K hK h⁻¹ σ hh' with hs | hs` into its components or cases. Use `⟨1, F.fixingSubgroup.one_mem, fun x hx => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hs` using `[IntermediateField.mem_fixingSubgroup_iff]`. Rewrite using `[hs x hx]`. Both sides reduce to the same expression. Use `⟨h, hhF, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite `hs` using `[IntermediateField.mem_fixingSubgroup_iff]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e` using `hs x hx`. Rewrite `e` using `[AlgEquiv.mul_apply]`. Combine the equalities or inequalities in the displayed calculation. Set `gm : G F Ω` to `IntermediateField.fixingSubgroupEquiv F ⟨m, hmF⟩`. Use `⟨A.comap (gm : Ω →+* Ω), ?_, ?_, gm, fun x => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key` using `UpperTheory.V.val_lt_one (σ := gm.toRingEquiv) (A := A.comap (gm : Ω →+* Ω)) (A' := A) (fun x => by rw [ValuationSubring.mem_comap]; rfl) (l : Ω)`. Rewrite using `[← key, map_natCast]`. Conclude with `hA`. Introduce `x hx`. Rewrite using `[ValuationSubring.mem_comap, ← hσ, ← hmK x hx]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[ValuationSubring.mem_comap]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem exists_over_l_place_conj_agreeing_on_field {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime]
     (K F : IntermediateField ℚ Ω) [NumberField K] (hK : Module.finrank ℚ K = 2)
@@ -240,27 +232,23 @@ private theorem exists_over_l_place_conj_agreeing_on_field {Ω : Type} [Field Ω
     rfl
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ c D hD pr K F _ _ _ _ _ hK hdec g0`. Use `haveI : NumberField ↥(F ⊔ K) := NumberField.mk`. Use `haveI : IsCMField ↥(F ⊔ K) := mt_cm K F hK`. Take `⟨h, hhF, hhK⟩` from `mt_out K F`. Establish `hP : (D.pl l).valuation (l : Ω) < 1` using `hD.pl_over l Fact.out`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `s : Setoid {B : ValuationSubring Ω // B.valuation (l : Ω) < 1 ∧ ∀ x ∈ K, x ∈ B ↔ x ∈ D.pl l}` to `{ r := fun B B' => ∃ g : G F Ω, ∀ x, g x ∈ B.1 ↔ x ∈ B'.1 iseqv := ⟨fun _ => ⟨1, fun _ => Iff.rfl⟩, fun ⟨g, hg⟩ => ⟨g⁻¹, inv_apply_mem_iff_of_apply_mem_iff F _ _ g hg⟩, fun ⟨g, hg⟩ ⟨g', hg'⟩ => exists_conj_valuationSubrings_trans F _ _ _ g g' hg hg'⟩ }`. Establish `hex : ∀ A : ValuationSubring Ω, A.valuation (l : Ω) < 1 → ∃ q : Quotient s, ∃ g : G F Ω, ∀ x, g x ∈ A ↔ x ∈ q.out.1`. Introduce `A hA`. Take `⟨B, hBl, hBK, g, hg⟩` from `exists_over_l_place_conj_agreeing_on_field l K F hK h hhF hhK (D.pl l) A hP hA`. Take `⟨g', hg'⟩` from `Quotient.mk_out (s := s) ⟨B, hBl, hBK⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨⟦⟨B, hBl, hBK⟩⟧, exists_conj_between_valuationSubrings_of_common F A B _ g g' hg hg'⟩`. Establish `huniq : ∀ (A : ValuationSubring Ω) (q q' : Quotient s) (g g' : G F Ω), (∀ x, g x ∈ A ↔ x ∈ q.out.1) → (∀ x, g' x ∈ A ↔ x ∈ q'.out.1) → q = q'`. Introduce `A q q' g g' hg hg'`. Apply `Quotient.out_equiv_out.mp` to reduce the goal to its premises. Conclude with `exists_conj_between_valuationSubrings_of_common F q.out.1 A q'.out.1 g⁻¹ g'⁻¹ (inv_apply_mem_iff_of_apply_mem_iff F A _ g hg) (inv_apply_mem_iff_of_apply_mem_iff F A _ g' hg')`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : Finite (Quotient s) := by`. Establish `hsurj` using `AlgEquiv.restrictNormalHom_surjective (F := ℚ) (K₁ := ↥F) Ω`. Establish `hA : ∀ τ : G ℚ Ω, ((D.pl l).comap (τ : Ω →+* Ω)).valuation (l : Ω) < 1`. Introduce `τ`. Establish `key` using `UpperTheory.V.val_lt_one (σ := τ.toRingEquiv) (A := (D.pl l).comap (τ : Ω →+* Ω)) (A' := D.pl l) (fun x => by rw [ValuationSubring.mem_comap]; rfl) (l : Ω)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← key, map_natCast]`. Conclude with `hP`. Use `choose f hf using fun ρ : F ≃ₐ[ℚ] F => hex _ (hA (hsurj ρ).choose)`. Use `Finite.of_surjective f (fun q => ?_)` and prove the remaining obligations. Take `⟨τ, hτ⟩` from `mt_conj l (D.pl l) q.out.1 hP q.out.2.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨AlgEquiv.restrictNormalHom F τ, ?_⟩` and prove the remaining obligations. Take `⟨g, hg⟩` from `hf (AlgEquiv.restrictNormalHom F τ)`. Establish `hσ` using `(hsurj (AlgEquiv.restrictNormalHom F τ)).choose_spec`. Use `set σc := (hsurj (AlgEquiv.restrictNormalHom F τ)).choose with hσc`. Establish `hn : τ⁻¹ * σc ∈ F.fixingSubgroup`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IntermediateField.mem_fixingSubgroup_iff]`. Introduce `x hx`. Establish `e1` using `AlgEquiv.restrictNormal_commutes σc F ⟨x, hx⟩`. Establish `e2` using `AlgEquiv.restrictNormal_commutes τ F ⟨x, hx⟩`. Establish `e3 : σc.restrictNormal F = τ.restrictNormal F` using `hσ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `e1` using `[e3, e2]`. Rewrite using `[AlgEquiv.mul_apply]`. Establish `e4 : σc x = τ x` using `e1.symm`. Rewrite using `[e4, ← AlgEquiv.mul_apply, inv_mul_cancel, AlgEquiv.one_apply]`. Set `gn : G F Ω` to `IntermediateField.fixingSubgroupEquiv F ⟨_, hn⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : ∀ x, gn x ∈ q.out.1 ↔ x ∈ (D.pl l).comap (σc : Ω →+* Ω)`. Introduce `x`. Rewrite using `[ValuationSubring.mem_comap, ← hτ]`. Use `show τ ((τ⁻¹ * σc) x) ∈ D.pl l ↔ _`. Rewrite using `[← AlgEquiv.mul_apply, ← mul_assoc, mul_inv_cancel, one_mul]`.
-
-Both sides reduce to the same expression. Take `⟨k, hk⟩` from `exists_conj_valuationSubrings_trans F _ _ _ gn g h1 hg`. Establish `hr : q.out ≈ (f (AlgEquiv.restrictNormalHom F τ)).out` using `⟨k, hk⟩`. Conclude with `(Quotient.out_equiv_out.mp hr).symm`. Use `⟨⟨pr, K, F, F ⊔ K, hK, rfl, g0, Quotient s, fun q => q.out.1, fun q => q.out.2.1, ?_, fun q => q.out.2.2⟩, rfl, rfl, rfl, rfl⟩` and prove the remaining obligations.
-
-Introduce `A hA`. Take `⟨q, g, hg⟩` from `hex A hA`. Conclude with `⟨q, ⟨g, hg⟩, fun q' ⟨g', hg'⟩ => huniq A q' q g' g hg' hg⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.mkTower :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → ∀ (pr : Bool) (K F : IntermediateField ℚ Ω) [NumberField K] [NumberField F] [IsCMField K] [IsTotallyReal F] [IsAbelianGalois ℚ F],

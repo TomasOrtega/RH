@@ -13,33 +13,33 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 namespace GlobalTheory.CompanionTheory.Ar.Fan
 
 /- English proof (translation)
-Introduce `O _ _ _ _ bar X _ _ _ _ ι _ a m u hsym hpsd`. Use `choose F hF using fun i => isMin2_iff_finite X m u (a i) hpsd`. Set `A : Set (Fin m → ℤ)` to `⋃ i, (fun (x : X) (k : Fin m) => u k (a i) (a i) - u k (a i + (x + x)) (a i + (x + x))) '' (F i : Set X)`. Set `V : Set (Fin m → ℤ)` to `Set.range fun (p : O × X × X) (k : Fin m) => u k (p.1 • p.2.1) p.2.2 - u k p.2.1 (bar p.1 • p.2.2)`. Establish `hA : A.Finite` using `Set.finite_iUnion fun i => (F i).finite_toSet.image _`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨r, v, hv, -⟩` from `GlobalTheory.T.minkowskiWeyl_orthant_cone_integral_constraints m A V hA`. Establish `hval : ∀ (t : Fin m → ℝ) (y z : X), (∑ k, t k • toReal (u k)) y z = ∑ k, t k * (u k y z : ℝ)` using `fun t y z => by simp [LinearMap.sum_apply]`. Establish `hdiff : ∀ (t : Fin m → ℝ) (p p' q q' : X), ∑ k, (((u k p p' - u k q q' : ℤ)) : ℝ) * t k = (∑ k, t k • toReal (u k)) p p' - (∑ k, t k • toReal (u k)) q q'` using `fun t p p' q q' => by`. Rewrite using `[hval, hval, ← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl fun k _ => by push_cast; ring`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Establish `hAiff : ∀ t : Fin m → ℝ, (∀ k, 0 ≤ t k) → ((∀ i, IsMin2 (∑ k, t k • toReal (u k)) (a i)) ↔ ∀ b ∈ A, ∑ k, (b k : ℝ) * t k ≤ 0)` using `fun t ht => by`. Prove the components needed by the constructor for the conclusion. Introduce `h b hb`. Choose the witnesses or unpack the hypotheses as in `⟨i, x, -, rfl⟩ : ∃ i, ∃ x ∈ (F i : Set X), (fun k : Fin m => u k (a i) (a i) - u k (a i + (x + x)) (a i + (x + x))) = b := by`. Simplify `hb` using `[A]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[hdiff]`. Combine the linear relations using `[h i x]`. Introduce `h i`. Use `(hF i _ ⟨t, ht, rfl⟩).2 fun x hx => ?_` and prove the remaining obligations. Use `h _ (Set.mem_iUnion.2 ⟨i, x, hx, rfl⟩)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `this` using `[hdiff]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hViff : ∀ t : Fin m → ℝ, (∀ (c : O) (y z : X), (∑ k, t k • toReal (u k)) (c • y) z = (∑ k, t k • toReal (u k)) y (bar c • z)) ↔ ∀ b ∈ V, ∑ k, (b k : ℝ) * t k = 0` using `fun t => by`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `h _ ⟨⟨c, y, z⟩, rfl⟩`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only []`. Rewrite using `[hdiff, h, sub_self]`. Introduce `h c y z`. Use `h _ ⟨(c, y, z), rfl⟩` as an intermediate fact. Simplify using `only [] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `this` using `[hdiff]`. Combine the linear equalities and inequalities to obtain the conclusion. Set `γ : Fin r → LinearMap.BilinForm ℤ X` to `fun s => ∑ k, v s k • u k`. Establish `hγ : ∀ s y z, γ s y z = ∑ k, (v s k : ℤ) * u k y z` using `fun s y z => by`. Simplify using `[γ, LinearMap.sum_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hγr : ∀ s, toReal (γ s) = ∑ k, (v s k : ℝ) • toReal (u k)` using `fun s => LinearMap.ext₂ fun y z => by`. Rewrite using `[hval, toReal_apply, hγ]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hvs : ∀ s, (∀ k, (0 : ℝ) ≤ v s k) ∧ (∀ b ∈ A, ∑ k, (b k : ℝ) * (v s k : ℝ) ≤ 0) ∧ (∀ b ∈ V, ∑ k, (b k : ℝ) * (v s k : ℝ) = 0)` using `fun s => by`.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `(hv fun k => (v s k : ℝ)).2 ⟨Pi.single s 1, fun j => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : j = s`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne h]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_eq_single s (fun j _ h => by simp [Pi.single_eq_of_ne h]) (by simp)]`. Simplify using the standard rewrite rules. Establish `hbal : ∀ s, γ s ∈ balForms bar X` using `fun s => by`. Use `mem_balForms.2 ⟨fun y z => ?_, fun c y z => ?_⟩` and prove the remaining obligations. Simplify using `only [hγ, hsym _ y z]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(hViff _).2 (hvs s).2.2 c y z` as an intermediate fact. Rewrite `this` using `[← hγr]`. Simplify using `using this`. Establish `hnn : ∀ s y, 0 ≤ γ s y y` using `fun s y => by`. Rewrite using `[hγ]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `Finset.sum_nonneg fun k _ => mul_nonneg (Int.natCast_nonneg _) (hpsd k y)`. Use `⟨r, γ, hbal, hnn, fun s => ⟨?_, fun i => ?_⟩, ?_⟩` and prove the remaining obligations. Simplify `hbal s) (by simpa using hnn s) (by simp)` using `using GlobalTheory.T.nonneg_sum_smul_intBilinFormToReal_mem_psdCone O bar X 1 ![γ s] ![1] (by simpa`. Rewrite using `[hγr]`. Conclude with `(hAiff _ (hvs s).1).2 (hvs s).2.1 i`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ hB ⟨t, ht, rfl⟩`. Establish `hre` using `mem_realForms_of_mem_psdCone hB.1`. Take `⟨c, hc, rfl⟩` from `(hv t).1 ⟨ht, (hAiff t ht).1 hB.2, (hViff t).1 hre.2⟩`. Use `⟨c, hc, LinearMap.ext₂ fun y z => ?_⟩` and prove the remaining obligations. Rewrite using `[hval]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, toReal_apply, hγ, smul_eq_mul, Finset.sum_apply, Pi.smul_apply]`. Use `push_cast`. Simplify using `only [Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun s _ => Finset.sum_congr rfl fun k _ => by ring`.
+A detailed English derivation is pending.
 -/
 theorem contact_inter_rcone_spanned : ∀ (O : Type) [CommRing O] [IsDedekindDomain O] [CharZero O] [Module.Finite ℤ O]
     (bar : O → O) (X : Type) [AddCommGroup X] [Module O X] [Module.Finite O X] [Module.Projective O X] (ι : Type) [Finite ι]

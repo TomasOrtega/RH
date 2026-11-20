@@ -7,19 +7,17 @@ open MeasureTheory
 noncomputable section
 
 /- English proof (translation)
-Use `set b := Pi.basisFun ℝ (Fin d) with hb`. Use `haveI : VAddInvariantMeasure (Submodule.span ℤ (Set.range b)) (Fin d → ℝ) volume := ⟨fun c s _ => by show volume ((fun x => (c : Fin d → ℝ) + x) ⁻¹' s) = volume s`. Conclude with `measure_preimage_add _ _ _⟩`. Establish `hF` using `ZSpan.isAddFundamentalDomain b (volume : Measure (Fin d → ℝ))`. Establish `hdom : ZSpan.fundamentalDomain b = cubeIco (Fin d)`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `x`. Simplify using `[ZSpan.fundamentalDomain, cubeIco, b]`. Rewrite using `[hF.lintegral_eq_tsum'', hdom]`. Establish `hmem : ∀ n : Fin d → ℤ, (fun i => (n i : ℝ)) ∈ Submodule.span ℤ (Set.range b)`. Introduce `n`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[Module.Basis.mem_span_iff_repr_mem]`. Introduce `i`. Simplify using `[b]`. Set `e : (Fin d → ℤ) → Submodule.span ℤ (Set.range b)` to `fun n => ⟨_, hmem n⟩`. Establish `he : Function.Bijective e`.
+Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Prove the components needed by the constructor for the conclusion. Introduce `n m h`. Use function extensionality and compare the values at `i`. Use `congrFun (congrArg Subtype.val h) i` as an intermediate fact. Establish `h2 : (n i : ℝ) = m i` using `by simpa [e] using this`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h2` after adjusting the coercions. Introduce and unpack `⟨y, hy⟩`. Establish `hy'` using `hy`. Rewrite `hy'` using `[Module.Basis.mem_span_iff_repr_mem]`. Use `choose n hn using hy'`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `⟨n, Subtype.ext ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify `hn i` using `[b, e]`. Rewrite using `[← (Equiv.ofBijective e he).tsum_eq]`. Use `congr 1`.
-
-Use function extensionality and compare the values at `n`. Use `congr 1`. Use function extensionality and compare the values at `x`. Use `show g ((fun i => (n i : ℝ)) + x) = _`. Rewrite using `[add_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unfold_Zn {d : ℕ} (g : (Fin d → ℝ) → ENNReal) :
     ∫⁻ x, g x = ∑' n : Fin d → ℤ, ∫⁻ x in cubeIco (Fin d), g (x + fun i => (n i : ℝ)) := by
@@ -59,21 +57,19 @@ theorem unfold_Zn {d : ℕ} (g : (Fin d → ℝ) → ENNReal) :
   rw [add_comm]
 
 /- English proof (translation)
-Use `set M : Matrix (Fin d) (Fin d) ℝ := fun i j => ob.repr (u j) i with hM`. Use `set B : Matrix (Fin d) (Fin d) ℝ := ob.toBasis.toMatrix b with hB`. Establish `hMB : M.transpose * B = 1`. Use extensionality with `j k`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.one_apply, hM, hB, Module.Basis.toMatrix_apply, OrthonormalBasis.coe_toBasis_repr_apply, OrthonormalBasis.repr_apply_apply]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hub j k, ← ob.sum_inner_mul_inner (u j) (b k)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `show inner ℝ (ob i) (u j) * _ = _`. Rewrite using `[real_inner_comm (u j) (ob i)]`. Establish `hdet : M.det * B.det = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `congrArg Matrix.det hMB` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, Matrix.det_transpose, Matrix.det_one]`. Then use the resulting hypothesis. Establish `hdetB : ob.toBasis.det b = B.det` using `by rw [Module.Basis.det_apply]`. Establish `hM0 : M.det ≠ 0` using `left_ne_zero_of_mul_eq_one hdet`. Establish `hnorm : ∀ a : Fin d → ℝ, ‖∑ j, a j • u j‖ = ‖(WithLp.toLp 2 (M.mulVec a) : EuclideanSpace ℝ (Fin d))‖`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Introduce `a`. Rewrite using `[← ob.repr.norm_map]`. Use `congr 1`. Use extensionality with `i`. Simplify using `[hM, Matrix.mulVec, dotProduct, map_sum, mul_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `set G : (Fin d → ℝ) → ENNReal := fun y => ENNReal.ofReal (Real.exp (-(2 * Real.pi) * ‖(WithLp.toLp 2 y : EuclideanSpace ℝ (Fin d))‖ ^ 2)) with hG`. Establish `hGm : Measurable G`. Use `(Continuous.measurable ?_)` and prove the remaining obligations. Conclude with `ENNReal.continuous_ofReal.comp (Real.continuous_exp.comp (continuous_const.mul ((PiLp.continuous_toLp 2 _).norm.pow 2)))`. Establish `hL : (fun a : Fin d → ℝ => ENNReal.ofReal (Real.exp (-(2 * Real.pi) * ‖∑ j, a j • u j‖ ^ 2))) = fun a => G (Matrix.toLin' M a)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `a`. Simplify using `only [hG, hnorm, Matrix.toLin'_apply]`. Rewrite using `[hL, ← lintegral_map hGm (Matrix.toLin' M).continuous_of_finiteDimensional.measurable, Measure.map_linearMap_addHaar_eq_smul_addHaar _ (by rwa [LinearMap.det_toLin']), lintegral_smul_measure, LinearMap.det_toLin']`. Establish `hE : ∫⁻ y, G y = ∫⁻ v : EuclideanSpace ℝ (Fin d), ENNReal.ofReal (Real.exp (-(2 * Real.pi) * ‖v‖ ^ 2))`. Establish `hp` using `MeasurePreserving.symm _ (EuclideanSpace.volume_preserving_symm_measurableEquiv_toLp (Fin d))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hp.lintegral_comp_emb (MeasurableEquiv.measurableEmbedding _) (fun v : EuclideanSpace ℝ (Fin d) => ENNReal.ofReal (Real.exp (-(2 * Real.pi) * ‖v‖ ^ 2)))`. Establish `hI : ∫ v : EuclideanSpace ℝ (Fin d), Real.exp (-(2 * Real.pi) * ‖v‖ ^ 2) = (2 : ℝ) ^ (-(d : ℝ) / 2)`. Rewrite using `[GaussianFourier.integral_rexp_neg_mul_sq_norm (by positivity), finrank_euclideanSpace, Fintype.card_fin]`. Establish `h2 : Real.pi / (2 * Real.pi) = (2 : ℝ)⁻¹` using `by field_simp`. Rewrite using `[h2, Real.inv_rpow (by norm_num), ← Real.rpow_neg (by norm_num), neg_div]`.
-
-Establish `hint : Integrable (fun v : EuclideanSpace ℝ (Fin d) => Real.exp (-(2 * Real.pi) * ‖v‖ ^ 2))`. Use `Integrable.of_integral_ne_zero ?_` and prove the remaining obligations. Rewrite using `[hI]`. Check the signs of the components of the expression. Rewrite using `[hE, ← ofReal_integral_eq_lintegral_ofReal hint (Filter.Eventually.of_forall fun _ => (Real.exp_pos _).le), hI, smul_eq_mul, ← ENNReal.ofReal_mul (abs_nonneg _), hdetB, eq_inv_of_mul_eq_one_right hdet]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gauss_lin {d : ℕ} {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℝ W]
     [FiniteDimensional ℝ W] (ob : OrthonormalBasis (Fin d) ℝ W) (u b : Fin d → W)

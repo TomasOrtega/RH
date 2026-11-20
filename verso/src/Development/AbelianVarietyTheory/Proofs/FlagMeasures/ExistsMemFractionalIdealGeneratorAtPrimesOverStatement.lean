@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsMemFractionalI
 open NumberField IsDedekindDomain
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.exists_mem_fractionalIdeal_generator_at_primes_over` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FExistsMemFractionalIdealGeneratorAtPrimesOver.lean&line=63#L63)
 -/

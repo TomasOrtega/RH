@@ -21,17 +21,15 @@ open GlobalTheory.TypeSum.CoefClos
 namespace GlobalTheory.TypeSum.CoefClos
 
 /- English proof (translation)
-Set `f : R →ₗ[R] (Fin d → V)` to `LinearMap.toSpanSingleton R _ w`. Set `g : R →ₗ[R] M` to `LinearMap.toSpanSingleton R _ m₀`. Establish `hk : LinearMap.ker f ≤ LinearMap.ker g` using `fun α hα => h α hα`. Set `φ : LinearMap.range f →ₗ[R] M` to `(LinearMap.ker f).liftQ g hk ∘ₗ f.quotKerEquivRange.symm.toLinearMap`. Establish `hφ : ∀ α : R, φ ⟨f α, α, rfl⟩ = α • m₀`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `α`. Establish `: f.quotKerEquivRange.symm ⟨f α, α, rfl⟩ = Submodule.Quotient.mk α`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Use `show (LinearMap.ker f).liftQ g hk (f.quotKerEquivRange.symm ⟨f α, α, rfl⟩) = _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Both sides reduce to the same expression. Take `⟨P, hP⟩` from `IsSemisimpleModule.extension_property (LinearMap.range f).subtype (LinearMap.range f).injective_subtype LinearMap.id`. Use `⟨fun a => φ ∘ₗ P ∘ₗ LinearMap.single R (fun _ => V) a, ?_, fun a v => ?_⟩` and prove the remaining obligations. Establish `e : ∑ a, Pi.single a (w a) = (LinearMap.range f).subtype ⟨f 1, 1, rfl⟩`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.univ_sum_single]`. Conclude with `(one_smul R w).symm`. Establish `e2` using `LinearMap.congr_fun hP ⟨f 1, 1, rfl⟩`. Simplify using `only [LinearMap.comp_apply, LinearMap.coe_single]`. Rewrite using `[← map_sum, ← map_sum, e]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e2` using `[LinearMap.comp_apply]`. Rewrite using `[e2, LinearMap.id_apply, hφ, one_smul]`. Take `⟨α, hα⟩` from `(P (Pi.single a v)).2`. Use `⟨α, ?_⟩` and prove the remaining obligations. Rewrite using `[← hφ]`.
-
-Conclude with `congrArg φ (Subtype.ext hα.symm)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_hom_of_ann {R V M : Type} [Ring R] [AddCommGroup V] [Module R V] [AddCommGroup M] [Module R M]
     [IsSemisimpleModule R V] {d : ℕ} (w : Fin d → V) (m₀ : M) (h : ∀ α : R, α • w = 0 → α • m₀ = 0) :
@@ -64,13 +62,13 @@ theorem exists_hom_of_ann {R V M : Type} [Ring R] [AddCommGroup V] [Module R V] 
     exact congrArg φ (Subtype.ext hα.symm)
 
 /- English proof (translation)
-Establish `h1 : α ∈ (Algebra.adjoin ℂ (Set.range (FreeAlgebra.ι ℂ : L → _))).toSubmodule`. Rewrite using `[FreeAlgebra.adjoin_range_ι]`. Discharge the goal by the elementary cases of `trivial`. Rewrite `h1` using `[Algebra.adjoin_eq_span]`. Take `⟨m, c, g, e⟩` from `Submodule.mem_span_set'.1 h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `: ∀ x ∈ Submonoid.closure (Set.range (FreeAlgebra.ι ℂ : L → _)), ∃ u : List L, (u.map (FreeAlgebra.ι ℂ)).prod = x`. Introduce `x hx`. Proceed by induction on `hx using Submonoid.closure_induction with`. Consider the case `mem x hx => obtain ⟨y, rfl⟩ := hx; exact ⟨[y], by simp⟩`. Consider the case `one => exact ⟨[], by simp⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `mul x y _ _ hx hy`. Take `⟨u, rfl⟩` from `hx`. Take `⟨v, rfl⟩` from `hy`. Conclude with `⟨u ++ v, by simp⟩`. Use `choose u hu using fun i => this _ (g i).2`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨m, c, u, by rw [← e]; simp only [hu]⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_words {L : Type} (α : FreeAlgebra ℂ L) :
     ∃ (m : ℕ) (c : Fin m → ℂ) (u : Fin m → List L), α = ∑ i, c i • ((u i).map (FreeAlgebra.ι ℂ)).prod := by
@@ -92,9 +90,9 @@ theorem exists_words {L : Type} (α : FreeAlgebra ℂ L) :
   exact ⟨m, c, u, by rw [← e]; simp only [hu]⟩
 
 /- English proof (translation)
-Establish `: ∀ l : List L, FreeAlgebra.lift ℂ τ (l.map (FreeAlgebra.ι ℂ)).prod x = l.foldr (fun y => τ y) x`. Introduce `l`. Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons y l ih => rw [List.map_cons, List.prod_cons, map_mul, Module.End.mul_apply, ih]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Simplify using the standard rewrite rules. Rewrite using `[map_sum, LinearMap.sum_apply]`. Simplify using `only [map_smul, LinearMap.smul_apply, this]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lift_words {L M : Type} [AddCommGroup M] [Module ℂ M] (τ : L → Module.End ℂ M) {m : ℕ} (c : Fin m → ℂ)
     (u : Fin m → List L) (x : M) :
@@ -109,21 +107,21 @@ theorem lift_words {L M : Type} [AddCommGroup M] [Module ℂ M] (τ : L → Modu
   simp only [map_smul, LinearMap.smul_apply, this]
 
 /- English proof (translation)
-Use `letI : Module (FreeAlgebra ℂ L) V := Module.compHom V (FreeAlgebra.lift ℂ ρ).toRingHom`. Use `letI : Module (FreeAlgebra ℂ L) M := Module.compHom M (FreeAlgebra.lift ℂ τ).toRingHom`. Establish `eV : ∀ (α : FreeAlgebra ℂ L) (v : V), α • v = FreeAlgebra.lift ℂ ρ α v` using `fun _ _ => rfl`. Establish `eM : ∀ (α : FreeAlgebra ℂ L) (v : M), α • v = FreeAlgebra.lift ℂ τ α v` using `fun _ _ => rfl`. Establish `cV : ∀ (c : ℂ) (v : V), algebraMap ℂ (FreeAlgebra ℂ L) c • v = c • v` using `fun c v => by`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[eV, AlgHom.commutes]`. Both sides reduce to the same expression. Establish `cM : ∀ (c : ℂ) (v : M), algebraMap ℂ (FreeAlgebra ℂ L) c • v = c • v` using `fun c v => by`. Rewrite using `[eM, AlgHom.commutes]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hs : ∀ N : Submodule (FreeAlgebra ℂ L) V, N = ⊥ ∨ N = ⊤`. Introduce `N`. Set `W : Submodule ℂ V` to `{ carrier := N add_mem' := N.add_mem zero_mem' := N.zero_mem smul_mem' := fun c v hv => by rw [← cV]; exact N.smul_mem _ hv }`. Distinguish the cases in `h0 : W = ⊥`. Use `left`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `h0`, the goal using `[eq_bot_iff]`. Conclude with `fun v hv => h0 (show v ∈ W from hv)`. Use `right`. Use `hρ W (fun x v hv => by` as an intermediate fact. Use `N.smul_mem (FreeAlgebra.ι ℂ x) hv` as an intermediate fact.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[eV, FreeAlgebra.lift_ι_apply] at this) h0` and apply the resulting hypothesis. Rewrite `this`, the goal using `[eq_top_iff]`. Conclude with `fun v _ => (show v ∈ W from this trivial)`. Use `haveI : IsSemisimpleModule (FreeAlgebra ℂ L) V := by`. Use `(isSemisimpleModule_iff _ _).2 ⟨fun N => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `hs N with rfl | rfl` into its components or cases. Use `exacts [⟨⊤, isCompl_bot_top⟩, ⟨⊥, isCompl_top_bot⟩]`. Take `⟨T, h1, h2⟩` from `exists_hom_of_ann (R := FreeAlgebra ℂ L) w m₀ (by`. Introduce `α hα`. Take `⟨m, c, u, rfl⟩` from `exists_words α`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[eM, lift_words]`. Use `h m c u fun a => ?_` and prove the remaining obligations. Rewrite using `[← lift_words, ← eV]`. Conclude with `congrFun hα a)`. Use `⟨fun a => { toFun := T a map_add' := (T a).map_add map_smul' := fun c v => by rw [← cV, map_smul, cM]; rfl }, fun a v x => ?_, h1, fun a v => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `(T a).map_smul (FreeAlgebra.ι ℂ x) v` as an intermediate fact. Rewrite `this` using `[eV, eM, FreeAlgebra.lift_ι_apply, FreeAlgebra.lift_ι_apply]`. Then use the resulting hypothesis. Take `⟨α, hα⟩` from `h2 a v`. Take `⟨m, c, u, rfl⟩` from `exists_words α`. Conclude with `⟨m, c, u, hα.trans (by rw [eM, lift_words])⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_intertwiner {L V M : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup M] [Module ℂ M]
     (ρ : L → Module.End ℂ V) (hρ : ∀ W : Submodule ℂ V, (∀ x, ∀ v ∈ W, ρ x v ∈ W) → W ≠ ⊥ → W = ⊤)
@@ -179,25 +177,19 @@ theorem exists_intertwiner {L V M : Type} [AddCommGroup V] [Module ℂ V] [AddCo
     exact ⟨m, c, u, hα.trans (by rw [eM, lift_words])⟩
 
 /- English proof (translation)
-Introduce `hHC n ε H _ _ _ σ hσ d w hw M _ _ τ m₀ h`. Establish `hmem : ∀ (x : Ltr ε) v, IsKFin ε σ v → IsKFin ε σ (ltrV σ x v)`. Introduce and unpack `(X | k) v hv`. Use `exacts [isKFin_dRep n ε H σ hσ v hv X.1 X.2, isKFin_translate hv k.2]`. Set `ρ : Ltr ε → Module.End ℂ (kfin ε σ)` to `fun x => { toFun := fun v => ⟨ltrV σ x v.1, hmem x v.1 v.2⟩ map_add' := fun a b => Subtype.ext (by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `x with X | k` into its components or cases. Conclude with `Dw_add hσ.1 (l := [X.1]) (by simpa using X.2) (hσ.2.2.1 _ a.2) (hσ.2.2.1 _ b.2)`. Conclude with `map_add (σ k.1) _ _)`. Use the proof step `map_smul' := fun c a => Subtype.ext (by`. Break down `x with X | k` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Conclude with `Dw_smul hσ.1 (l := [X.1]) (by simpa using X.2) c (hσ.2.2.1 _ a.2)`. Conclude with `map_smul (σ k.1) _ _) }`. Establish `hword : ∀ (u : List (Ltr ε)) (v : kfin ε σ), (u.foldr (fun y => ρ y) v : kfin ε σ).1 = wordV σ u v.1`. Introduce `u v`. Proceed by induction on `u with`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Consider the case `nil => rfl`. Consider the case `cons x u ih => show ltrV σ x (u.foldr (fun y => ρ y) v : kfin ε σ).1 = ltrV σ x (wordV σ u v.1)`. Rewrite using `[ih]`. Establish `hρ : ∀ W : Submodule ℂ (kfin ε σ), (∀ x, ∀ v ∈ W, ρ x v ∈ W) → W ≠ ⊥ → W = ⊤`. Introduce `W hW h0`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `k1 : ∀ v ∈ W.map (kfin ε σ).subtype, IsKFin ε σ v`. Introduce and unpack `_ ⟨v, -, rfl⟩`. Conclude with `v.2`. Establish `k2 : ∀ (x : Ltr ε), ∀ v ∈ W.map (kfin ε σ).subtype, ltrV σ x v ∈ W.map (kfin ε σ).subtype`. Introduce and unpack `x _ ⟨v, hv, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨ρ x v, hW x v hv, rfl⟩`. Establish `k3 : ∀ k ∈ Kset ε, ∀ v ∈ W.map (kfin ε σ).subtype, σ k v ∈ W.map (kfin ε σ).subtype` using `fun k hk => k2 (Sum.inr ⟨k, hk⟩)`. Establish `hd` using `GlobalTheory.HCModIrred.dense_of_stable hHC hσ.1 hσ.2.1 k1 (fun X hX => k2 (Sum.inl ⟨X, hX⟩)) k3 (fun e => h0 (Submodule.map_injective_of_injective (kfin ε σ).injective_subtype (e.trans (Submodule.map_bot _).symm)))`. Rewrite using `[eq_top_iff]`. Introduce `v _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Take `⟨y, hy, e⟩` from `GlobalTheory.HCModIrred.mem_of_dense hσ hd k1 k3 v.2`. Conclude with `(Subtype.ext e : y = v) ▸ hy`. Take `⟨T, h1, h2, h3⟩` from `exists_intertwiner ρ hρ τ (fun a => (⟨w a, hw a⟩ : kfin ε σ)) m₀ (by`. Introduce `m c u hu`. Use `h m c u fun a => ?_` and prove the remaining obligations.
-
-Use `congrArg Subtype.val (hu a)` as an intermediate fact. Simplify `this)` using `only [AddSubmonoidClass.coe_finsetSum, Submodule.coe_smul, hword, Submodule.coe_zero]`. Use `choose T' hT' using fun a => LinearMap.exists_extend (T a)`. Establish `e : ∀ a v (hv : IsKFin ε σ v), T' a v = T a ⟨v, hv⟩` using `fun a v hv => LinearMap.congr_fun (hT' a) ⟨v, hv⟩`. Use `⟨T', fun a v hv x => ?_, ?_, fun a v hv => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[e a _ (hmem x v hv), e a v hv]`. Conclude with `h1 a ⟨v, hv⟩ x`. Rewrite using `[← h2]`. Conclude with `Finset.sum_congr rfl fun a _ => e a _ (hw a)`. Rewrite using `[e a v hv]`.
-
-Conclude with `h3 a _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_maps_of_relations : GlobalTheory.Published.HarishChandraModules → ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] [CompleteSpace H] (σ : Mx n → (H →L[ℂ] H)), Std ε σ →

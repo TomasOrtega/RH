@@ -34,7 +34,7 @@ def rightCoeff (f : (L ≃ₐ[K] L) × (L ≃ₐ[K] L) → Lˣ) (ρ τ : L ≃�
 omit [FiniteDimensional K L] [DecidableEq (L ≃ₐ[K] L)] in
 
 /- English proof (translation)
-The claim follows from `(mulCocycles₂ (L ≃ₐ[K] L) Lˣ).mul_mem hf hg`.
+A detailed English derivation is pending.
 -/
 theorem isMulCocycle₂_mul (hf : IsMulCocycle₂ f) (hg : IsMulCocycle₂ g) : IsMulCocycle₂ (f * g) :=
   (mulCocycles₂ (L ≃ₐ[K] L) Lˣ).mul_mem hf hg
@@ -42,11 +42,11 @@ theorem isMulCocycle₂_mul (hf : IsMulCocycle₂ f) (hg : IsMulCocycle₂ g) : 
 omit [FiniteDimensional K L] [DecidableEq (L ≃ₐ[K] L)] in
 
 /- English proof (translation)
-Take `⟨π, rfl⟩ : ∃ π, k = π * σ * τ` from `⟨k * τ⁻¹ * σ⁻¹, by group⟩`. Establish `e1 : π * σ * τ * τ⁻¹ * σ⁻¹ = π` using `by group`. Establish `e2 : π * σ * τ * τ⁻¹ = π * σ` using `by group`. Establish `e3 : π * σ * τ * (σ * τ)⁻¹ = π` using `by group`. Establish `e4 : σ * (π * σ)⁻¹ = π⁻¹` using `by group`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[rightCoeff, rightCoeff, rightCoeff, e1, e2, e3, ← AlgEquiv.mul_apply σ, e4]`. Establish `h` using `cocycle_apply hf π⁻¹ π σ τ`. Rewrite `h` using `[← AlgEquiv.mul_apply π⁻¹ π, inv_mul_cancel, AlgEquiv.one_apply]`. Simplify using `only [map_inv₀]`. Establish `n1 : π⁻¹ (f (π, σ) : L) ≠ 0` using `by simp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `n2 : π⁻¹ (f (π * σ, τ) : L) ≠ 0` using `by simp`. Establish `n3 : π⁻¹ (f (π, σ * τ) : L) ≠ 0` using `by simp`. Clear the denominators using the available nonvanishing facts. Take the linear combination `h`.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem rightCoeff_mul (hf : IsMulCocycle₂ f) (k σ τ : L ≃ₐ[K] L) :
     rightCoeff f (k * τ⁻¹) σ * σ (rightCoeff f k τ) * ((f (σ, τ) : L) * (g (σ, τ) : L)) =
@@ -69,7 +69,7 @@ theorem rightCoeff_mul (hf : IsMulCocycle₂ f) (k σ τ : L ≃ₐ[K] L) :
 omit [FiniteDimensional K L] [DecidableEq (L ≃ₐ[K] L)] in
 
 /- English proof (translation)
-Rewrite using `[rightCoeff, inv_one, mul_one, map_one_snd_of_isMulCocycle₂ hf, val_smul_units, map_inv₀, ← AlgEquiv.mul_apply, inv_mul_cancel, AlgEquiv.one_apply]`. Establish `n : (f (1, 1) : L) ≠ 0` using `by simp`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 -/
 theorem rightCoeff_one (hf : IsMulCocycle₂ f) (k : L ≃ₐ[K] L) :
     rightCoeff f k 1 * ((f (1, 1) : L) * (g (1, 1) : L)) = (g (1, 1) : L) := by
@@ -81,11 +81,11 @@ theorem rightCoeff_one (hf : IsMulCocycle₂ f) (k : L ≃ₐ[K] L) :
 omit [FiniteDimensional K L] [DecidableEq (L ≃ₐ[K] L)] in
 
 /- English proof (translation)
-Take `⟨μ, rfl⟩ : ∃ μ, k = μ * τ` from `⟨k * τ⁻¹, by group⟩`. Establish `e1 : σ * (μ * τ) * τ⁻¹ = σ * μ` using `by group`. Establish `e2 : μ * τ * τ⁻¹ = μ` using `by group`. Establish `e3 : τ * (σ * (μ * τ))⁻¹ = (σ * μ)⁻¹` using `by group`. Establish `e4 : μ⁻¹ = (σ * μ)⁻¹ * σ` using `by group`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[rightCoeff, rightCoeff, e1, e2, ← AlgEquiv.mul_apply τ, e3, e4, AlgEquiv.mul_apply]`. Establish `h` using `cocycle_apply hf (σ * μ)⁻¹ σ μ τ`. Simplify using `only [map_inv₀]`. Establish `n1 : (σ * μ)⁻¹ (σ (f (μ, τ) : L)) ≠ 0` using `by simp`. Establish `n2 : (σ * μ)⁻¹ (f (σ * μ, τ) : L) ≠ 0` using `by simp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Take the linear combination `-h`.
+Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem rightCoeff_comm (hf : IsMulCocycle₂ f) (k σ τ : L ≃ₐ[K] L) :
     (σ * (k * τ⁻¹))⁻¹ (f (σ, k * τ⁻¹) : L) * rightCoeff f k τ =
@@ -133,38 +133,36 @@ def toMatrixRight : CrossedProduct hg →ₐ[K] Matrix (L ≃ₐ[K] L) (L ≃ₐ
       rw [u_one, ← map_mul, Pi.mul_apply, Units.val_mul, rightCoeff_one hf])
 
 /- English proof (translation)
-The claim follows from `lift_incl _ _ _ _ _ b`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem toMatrixRight_incl (b : L) :
     toMatrixRight hf hg hfg (incl b) = diagHom (fun _ => incl) b :=
   lift_incl _ _ _ _ _ b
 
 /- English proof (translation)
-The claim follows from `lift_u _ _ _ _ _ τ`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem toMatrixRight_u (τ : L ≃ₐ[K] L) : toMatrixRight hf hg hfg (u τ) = rightU f hfg τ :=
   lift_u _ _ _ _ _ τ
 
 /- English proof (translation)
-Establish `dd : ∀ a b : L, Commute (diagHom (fun ρ => (incl : L →ₐ[K] CrossedProduct hfg).comp (ρ⁻¹ : L ≃ₐ[K] L).toAlgHom) a) (diagHom (fun _ => incl) b)` using `fun a b => by`. Rewrite using `[Commute, SemiconjBy, diagHom_apply, diagHom_apply, monomial_mul_monomial, monomial_mul_monomial]`. Use `monomial_congr rfl fun ρ => ?_` and prove the remaining obligations. Simplify using `only [AlgHom.comp_apply, AlgEquiv.coe_toAlgHom, Equiv.Perm.one_apply]`. Rewrite using `[← map_mul, ← map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `dr : ∀ (a : L) (τ : L ≃ₐ[K] L), Commute (diagHom (fun ρ => (incl : L →ₐ[K] CrossedProduct hfg).comp (ρ⁻¹ : L ≃ₐ[K] L).toAlgHom) a) (rightU f hfg τ)` using `fun a τ => by`. Rewrite using `[Commute, SemiconjBy, diagHom_apply, rightU, monomial_mul_monomial, monomial_mul_monomial]`. Use `monomial_congr (by rw [mul_one, one_mul]) fun ρ => ?_` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [AlgHom.comp_apply, AlgEquiv.coe_toAlgHom, Equiv.coe_mulRight, Equiv.Perm.one_apply]`. Rewrite using `[mul_assoc, u_mul_incl, ← mul_assoc, ← mul_assoc, ← map_mul, ← map_mul]`. Use `congr 2`. Rewrite using `[mul_inv_rev, inv_inv, AlgEquiv.mul_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `rd : ∀ (σ : L ≃ₐ[K] L) (b : L), Commute (regularU (incl : L →ₐ[K] CrossedProduct hfg) f σ) (diagHom (fun _ => incl) b)` using `fun σ b => by`. Rewrite using `[Commute, SemiconjBy, diagHom_apply, regularU, monomial_mul_monomial, monomial_mul_monomial]`. Use `monomial_congr (by rw [mul_one, one_mul]) fun ρ => ?_` and prove the remaining obligations. Simplify using `only [Equiv.Perm.one_apply]`. Rewrite using `[← map_mul, ← map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `rr : ∀ σ τ : L ≃ₐ[K] L, Commute (regularU (incl : L →ₐ[K] CrossedProduct hfg) f σ) (rightU f hfg τ)` using `fun σ τ => by`. Rewrite using `[Commute, SemiconjBy, regularU, rightU, monomial_mul_monomial, monomial_mul_monomial]`. Use `monomial_congr (by ext ρ; simp [mul_assoc]) fun ρ => ?_` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Equiv.coe_mulRight, Equiv.coe_mulLeft]`. Simplify using `only [mul_assoc, u_mul_incl]`. Simplify using `only [← mul_assoc, ← map_mul]`. Use `congr 2`. Establish `h` using `rightCoeff_comm hf ρ σ τ`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Simplify using `only [mul_assoc] at h ⊢`. Conclude with `h`. Proceed by induction on `x using induction_on with`. Consider the case `zero => rw [map_zero]`. Conclude with `Commute.zero_left _`.
+Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x x' hx hx' => rw [map_add]`. Conclude with `hx.add_left hx'`. Consider the case `single σ a`. Proceed by induction on `y using induction_on with`. Consider the case `zero => rw [map_zero]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Commute.zero_right _`. Consider the case `add y y' hy hy' => rw [map_add]`. Conclude with `hy.add_right hy'`. Consider the case `single τ b`. Rewrite using `[← incl_mul_u, ← incl_mul_u, map_mul, map_mul, toMatrix_incl, toMatrix_u, toMatrixRight_incl, toMatrixRight_u]`.
-
-Conclude with `((dd a b).mul_right (dr a τ)).mul_left ((rd σ b).mul_right (rr σ τ))`.
+A detailed English derivation is pending.
 -/
 theorem commute_toMatrix_toMatrixRight (x : CrossedProduct hf) (y : CrossedProduct hg) :
     Commute (toMatrix incl hf x) (toMatrixRight hf hg hfg y) := by
@@ -223,7 +221,7 @@ end Right
 omit [DecidableEq (L ≃ₐ[K] L)] in
 
 /- English proof (translation)
-Rewrite using `[← Nat.card_eq_fintype_card, IsGalois.card_aut_eq_finrank]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem card_aut [IsGalois K L] : Fintype.card (L ≃ₐ[K] L) = Module.finrank K L := by
   rw [← Nat.card_eq_fintype_card, IsGalois.card_aut_eq_finrank]
@@ -242,9 +240,9 @@ def tensorToMatrix :
 variable [IsGalois K L]
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (tensorToMatrix hf hg hfg)` using `RingHom.injective (tensorToMatrix hf hg hfg).toRingHom`. Use `⟨hinj, ?_⟩` and prove the remaining obligations. Establish `hdim : Module.finrank K (CrossedProduct hf ⊗[K] CrossedProduct hg) = Module.finrank K (Matrix (L ≃ₐ[K] L) (L ≃ₐ[K] L) (CrossedProduct hfg))`. Rewrite using `[Module.finrank_tensorProduct, finrank_eq_sq, finrank_eq_sq, Module.finrank_matrix, finrank_eq_sq, card_aut]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank hdim (f := (tensorToMatrix hf hg hfg).toLinearMap)).1 hinj`.
+A detailed English derivation is pending.
 -/
 theorem tensorToMatrix_bijective : Function.Bijective (tensorToMatrix hf hg hfg) := by
   have hinj : Function.Injective (tensorToMatrix hf hg hfg) :=
@@ -266,7 +264,7 @@ def tensorAlgEquivMatrix :
 omit [DecidableEq (L ≃ₐ[K] L)] in
 
 /- English proof (translation)
-Conclude with `isBrauerEquivalent_of_algEquiv_matrix (C := CrossedProduct hfg) (tensorAlgEquivMatrix hf hg hfg) (matrixFinOneAlgEquiv (CrossedProduct hfg)).symm`.
+A detailed English derivation is pending.
 -/
 theorem isBrauerEquivalent_tensor :
     IsBrauerEquivalent (tensorCSA (csaOf K (CrossedProduct hf)) (csaOf K (CrossedProduct hg)))
@@ -288,9 +286,9 @@ def baseChangeToMatrix : L ⊗[K] CrossedProduct hf →ₐ[L] Matrix (L ≃ₐ[K
 variable [IsGalois K L]
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (baseChangeToMatrix hf)` using `RingHom.injective (baseChangeToMatrix hf).toRingHom`. Use `⟨hinj, ?_⟩` and prove the remaining obligations. Establish `hdim : Module.finrank L (L ⊗[K] CrossedProduct hf) = Module.finrank L (Matrix (L ≃ₐ[K] L) (L ≃ₐ[K] L) L)`. Rewrite using `[finrank_baseChange_eq, finrank_eq_sq, Module.finrank_matrix, Module.finrank_self, card_aut]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank hdim (f := (baseChangeToMatrix hf).toLinearMap)).1 hinj`.
+A detailed English derivation is pending.
 -/
 theorem baseChangeToMatrix_bijective : Function.Bijective (baseChangeToMatrix hf) := by
   have hinj : Function.Injective (baseChangeToMatrix hf) :=
@@ -317,7 +315,7 @@ section Classes
 variable {K L : Type u} [Field K] [Field L] [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
 
 /- English proof (translation)
-Rewrite using `[BrauerGroup.mk_mem_relBrauer_iff]`. Conclude with `⟨_, ⟨(CrossedProduct.baseChangeAlgEquivMatrix hf).trans (Matrix.reindexAlgEquiv L L (Fintype.equivFin _))⟩⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem CrossedProduct.mk_mem_relBrauer {f : (L ≃ₐ[K] L) × (L ≃ₐ[K] L) → Lˣ}
     (hf : IsMulCocycle₂ f) :
@@ -330,9 +328,9 @@ theorem CrossedProduct.mk_mem_relBrauer {f : (L ≃ₐ[K] L) × (L ≃ₐ[K] L) 
 namespace H2mul
 
 /- English proof (translation)
-Proceed by induction on `x using H2mul.induction_on with`. Consider the case `h c`. Proceed by induction on `y using H2mul.induction_on with`. Consider the case `h c'`. Rewrite using `[← map_mul, toBrauer_mk, toBrauer_mk, toBrauer_mk, BrauerGroup.mk_mul_mk]`.
+Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Quotient.sound (CrossedProduct.isBrauerEquivalent_tensor (isMulCocycle₂_of_mem c) (isMulCocycle₂_of_mem c') (isMulCocycle₂_of_mem (c * c'))).symm`.
+A detailed English derivation is pending.
 -/
 theorem toBrauer_mul (x y : H2mul (L ≃ₐ[K] L) Lˣ) :
     toBrauer K L (x * y) = toBrauer K L x * toBrauer K L y := by
@@ -358,7 +356,7 @@ Both sides reduce to the same expression.
 theorem toBrauerHom_apply (x : H2mul (L ≃ₐ[K] L) Lˣ) : toBrauerHom K L x = toBrauer K L x := rfl
 
 /- English proof (translation)
-Proceed by induction on `x using H2mul.induction_on with`. Consider the case `h c`. Rewrite using `[toBrauer_mk]`. Conclude with `CrossedProduct.mk_mem_relBrauer _`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toBrauer_mem_relBrauer (x : H2mul (L ≃ₐ[K] L) Lˣ) : toBrauer K L x ∈ BrauerGroup.relBrauer K L := by
   induction x using H2mul.induction_on with

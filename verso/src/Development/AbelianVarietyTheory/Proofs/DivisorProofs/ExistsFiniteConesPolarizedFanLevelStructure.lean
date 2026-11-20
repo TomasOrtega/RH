@@ -10,7 +10,7 @@ noncomputable section
 namespace GlobalTheory.UPoinc.CellCones
 
 /- English proof (translation)
-Use `GlobalTheory.Poinc.Cells.cong_map (eb.toLinearMap ∘ₗ g.toIntLinearMap ∘ₗ eb.symm.toLinearMap) h i` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem cong_addHom {Y : Type} [AddCommGroup Y] {n N : ℕ} (eb : Y ≃ₗ[ℤ] (Fin n → ℤ)) (g : Y →+ Y) {x y : Y}
     (h : ∀ i, ((eb x i : ℤ) : ZMod N) = (eb y i : ZMod N)) (i : Fin n) :
@@ -19,9 +19,9 @@ theorem cong_addHom {Y : Type} [AddCommGroup Y] {n N : ℕ} (eb : Y ≃ₗ[ℤ] 
   simpa using this
 
 /- English proof (translation)
-Set `lift : (Fin n → ZMod N) → Y` to `fun cl => eb.symm fun i => ((cl i).val : ℤ)`. Establish `hlift : ∀ cl i, ((eb (lift cl) i : ℤ) : ZMod N) = cl i` using `fun cl i => by simp [lift]`. Set `d : (Fin n → ZMod N) → (Fin n → ZMod N)` to `fun cl i => ((eb (e (lift cl)) i : ℤ) : ZMod N)`. Use `⟨fun cl => e.symm (μ (d cl)), fun cl i => ?_, fun cl α hα => ?_, fun cl => ⟨d cl, by simp⟩⟩` and prove the remaining obligations. Establish `h1 : ∀ i, ((eb (μ (d cl)) i : ℤ) : ZMod N) = ((eb (e (lift cl)) i : ℤ) : ZMod N)` using `fun i => hμ _ _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2` using `cong_addHom eb e.symm.toLinearMap.toAddMonoidHom h1 i`. Simplify using `only [LinearMap.toAddMonoidHom_coe, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply] at h2`. Rewrite using `[h2, hlift]`. Simplify using `only [pull_apply, LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply]`. Conclude with `hb _ _ fun i => cong_addHom eb e.toLinearMap.toAddMonoidHom (fun i => by rw [hα, hlift]) i`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_transport {O : Type} [CommRing O] {Y : Type} [AddCommGroup Y] [Module O Y] {n N : ℕ} [NeZero N]
     (eb : Y ≃ₗ[ℤ] (Fin n → ℤ)) (μ : (Fin n → ZMod N) → Y) (hμ : ∀ cl i, ((eb (μ cl) i : ℤ) : ZMod N) = cl i)
@@ -43,27 +43,25 @@ theorem exists_transport {O : Type} [CommRing O] {Y : Type} [AddCommGroup Y] [Mo
     exact hb _ _ fun i => cong_addHom eb e.toLinearMap.toAddMonoidHom (fun i => by rw [hα, hlift]) i
 
 /- English proof (translation)
-Take `⟨t, bb, hbb⟩` from `hγ.basis`. Set `B' : balForms bar X` to `⟨b', hb'⟩`. Set `B₀ : balForms bar X` to `⟨b₀, hb₀⟩`. Establish `hc : ∀ n ∈ s, ∀ o, (∀ j, o ≠ Sum.inl j) → (n : ℤ) * bb.repr B' o + bb.repr B₀ o = 0`. Introduce `n hn o ho`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨k, cf, hk0, he⟩` from `hk n hn`. Establish `hE : k • (n • B' + B₀) = ∑ j, cf j • bb (Sum.inl j)` using `Subtype.ext (by simpa [hbb, B', B₀] using he)`. Use `congrArg (fun x => bb.repr x o) hE` as an intermediate fact. Simplify using `only [map_nsmul, map_add, map_sum, Module.Basis.repr_self, Finsupp.smul_apply, Finsupp.add_apply, Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.single_apply, nsmul_eq_mul] at this`. Rewrite `this` using `[Finset.sum_eq_zero fun j _ => by rw [if_neg (ho j).symm]; simp]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hk' : (k : ℤ) ≠ 0` using `by exact_mod_cast hk0.ne'`. Move the coercions through the operations in `at this`. Conclude with `(mul_eq_zero.1 this).resolve_left hk'`. Establish `hp : ∀ n ∈ s, ∀ j, 0 ≤ (n : ℤ) * bb.repr B' (Sum.inl j) + bb.repr B₀ (Sum.inl j)`. Introduce `n hn j`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨k, cf, hk0, he⟩` from `hk n hn`. Establish `hE : k • (n • B' + B₀) = ∑ j, cf j • bb (Sum.inl j)` using `Subtype.ext (by simpa [hbb, B', B₀] using he)`. Use `congrArg (fun x => bb.repr x (Sum.inl j)) hE` as an intermediate fact. Simplify using `only [map_nsmul, map_add, map_sum, Module.Basis.repr_self, Finsupp.smul_apply, Finsupp.add_apply, Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.single_apply, nsmul_eq_mul, Sum.inl.injEq] at this`. Simplify using `only [mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hk' : (0 : ℤ) < k` using `by exact_mod_cast hk0`. Establish `h2 : (0 : ℤ) ≤ k * ((n : ℤ) * bb.repr B' (Sum.inl j) + bb.repr B₀ (Sum.inl j))`. Move the coercions through the operations in `at this ⊢`. Rewrite using `[this]`. Check the signs of the components of the expression.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Introduce a local definition for the expression.
 
-Conclude with `nonneg_of_mul_nonneg_right (by linarith) hk'`. Set `M : ℕ` to `∑ o, (bb.repr B₀ o).natAbs`. Take `⟨n₁, hn₁, h₁⟩` from `hs.exists_gt M`. Take `⟨n₂, hn₂, h₂⟩` from `hs.exists_gt n₁`. Establish `hM : ∀ o, (bb.repr B₀ o).natAbs ≤ M` using `fun o => Finset.single_le_sum (f := fun o => (bb.repr B₀ o).natAbs) (fun _ _ => Nat.zero_le _) (Finset.mem_univ o)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR : ∀ o, (∀ j, o ≠ Sum.inl j) → bb.repr B' o = 0` using `fun o ho => by`. Establish `e1` using `hc n₁ hn₁ o ho`. Establish `e2` using `hc n₂ hn₂ o ho`. Establish `: ((n₂ : ℤ) - n₁) * bb.repr B' o = 0` using `by linarith`. Conclude with `(mul_eq_zero.1 this).resolve_left (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL : ∀ j, 0 ≤ bb.repr B' (Sum.inl j)` using `fun j => by`. Establish `e1` using `hp n₁ hn₁ j`. Establish `e2` using `hM (Sum.inl j)`. Assume the negation of the conclusion as `hneg`. Use `push_neg at hneg`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: (bb.repr B₀ (Sum.inl j)) ≤ M` using `by omega`. Establish `: (n₁ : ℤ) * bb.repr B' (Sum.inl j) ≤ - n₁` using `by nlinarith`. Use linear arithmetic over natural numbers and integers. Use `⟨fun j => (bb.repr B' (Sum.inl j)).toNat, ?_⟩` and prove the remaining obligations. Establish `hsum` using `bb.sum_repr B'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h0 : ∑ a₂ : Fin t, bb.repr B' (Sum.inr a₂) • bb (Sum.inr a₂) = 0` using `Finset.sum_eq_zero fun o _ => by rw [hR (Sum.inr o) fun j => Sum.inr_ne_inl, zero_smul]`. Rewrite `hsum` using `[Fintype.sum_sum_type, h0, add_zero]`. Use `congrArg Subtype.val hsum` as an intermediate fact. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, hbb] at this`. Rewrite using `[show b' = (B' : LinearMap.BilinForm ℤ X) from rfl, ← this]`.
-
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← natCast_zsmul, Int.toNat_of_nonneg (hL j)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_nat_comb_of_infinite {O : Type} [CommRing O] {bar : O → O} {φ : InvFun O} {X : Type} [AddCommGroup X]
     [Module O X] [Module.Finite O X] {m : ℕ} {γ : Fin m → LinearMap.BilinForm ℤ X} (hγ : IsCone bar φ γ)
@@ -128,43 +126,39 @@ theorem exists_nat_comb_of_infinite {O : Type} [CommRing O] {bar : O → O} {φ 
   rw [← natCast_zsmul, Int.toNat_of_nonneg (hL j)]
 
 /- English proof (translation)
-Introduce `O _ bar φ Y _ _ _ _ hF n N _ hN eb μ hμ b₀ hb₀ hb₀p hb₀m`. Use `haveI : Module.Free ℤ Y := Module.Free.of_equiv eb.symm`. Use `haveI : Module.Finite ℤ Y := Module.Finite.equiv eb.symm`. Set `Mn : ((Fin n → ZMod N) → Y) → LinearMap.BilinForm ℤ Y → Prop` to `fun μ b => ∀ cl (α : Y), (∀ i, ((eb α i : ℤ) : ZMod N) = cl i) → b (μ cl) (μ cl) ≤ b α α`. Set `T : Set (Σ m : ℕ, Fin m → LinearMap.BilinForm ℤ Y)` to `{x | IsCone bar φ x.2 ∧ (∀ y, y ≠ 0 → 0 < ∑ j, x.2 j y y) ∧ ∃ (b : LinearMap.BilinForm ℤ Y) (k : ℕ) (cf : Fin x.1 → ℕ), 0 < k ∧ (∀ j, 0 < cf j) ∧ k • b = ∑ j, cf j • x.2 j ∧ Mn μ b}`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hT : T.Finite`. Take `⟨S, hS, hSe⟩` from `hF.finite`. Set `TS : Set (Σ m : ℕ, Fin m → LinearMap.BilinForm ℤ Y)` to `{x | (∀ j, x.2 j ∈ S) ∧ Function.Injective x.2 ∧ IsCone bar φ x.2 ∧ (∀ y, y ≠ 0 → 0 < ∑ j, x.2 j y y)}`. Establish `hTS : TS.Finite` using `(GlobalTheory.Poinc.Cells.finite_families _ S hS).subset fun x hx => ⟨hx.1, hx.2.1⟩`. Establish `hfin` using `fun (x : Σ m : ℕ, Fin m → LinearMap.BilinForm ℤ Y) (h : IsCone bar φ x.2 ∧ (∀ y, y ≠ 0 → 0 < ∑ j, x.2 j y y)) => GlobalTheory.T.finite_minimiserSystems_posCombination_definiteSum Y n N eb x.1 x.2 (fun j => (h.1.mem j).1) h.1.nonneg h.2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `Fμ : (Σ m : ℕ, Fin m → LinearMap.BilinForm ℤ Y) → Set ((Fin n → ZMod N) → Y)` to `fun x => if h : IsCone bar φ x.2 ∧ (∀ y, y ≠ 0 → 0 < ∑ j, x.2 j y y) then ((hfin x h).choose : Set _) else ∅`. Set `M` to `(⋃ x ∈ TS, Fμ x) ∩ {μ' | ∀ cl i, ((eb (μ' cl) i : ℤ) : ZMod N) = cl i}`. Establish `hM : M.Finite` using `(hTS.biUnion fun x _ => by`. Simplify using `only [Fμ]`. Use `split_ifs`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `Finset.finite_toSet _`. Conclude with `Set.finite_empty).inter_of_left _`. Set `V : Set Y` to `Set.range μ`. Set `E` to `⋃ μ' ∈ M, {e : Y ≃ₗ[O] Y | ∀ cl, e (μ' cl) ∈ V}`. Establish `hl : ∀ (e : Y ≃ₗ[O] Y) x, (eb.toLinearMap ∘ₗ e.toLinearMap.toAddMonoidHom.toIntLinearMap ∘ₗ eb.symm.toLinearMap) x = eb (e (eb.symm x))` using `fun e x => rfl`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hE : E.Finite` using `hM.biUnion fun μ' hμ' => by`. Set `Φ : (Y ≃ₗ[O] Y) → (Fin n → ZMod N) → Y` to `fun e cl => e (μ' cl)`. Use `Set.Finite.of_finite_image (f := Φ) ((Set.Finite.pi (t := fun _ => V) fun _ => Set.finite_range _).subset ?_) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨e, he, rfl⟩ cl -`. Conclude with `he cl`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `e₁ _ e₂ _ h`. Establish `key` using `GlobalTheory.Poinc.Cells.linearMap_eq_of_eq_on_residues N (by omega) n (eb.toLinearMap ∘ₗ e₁.toLinearMap.toAddMonoidHom.toIntLinearMap ∘ₗ eb.symm.toLinearMap) (eb.toLinearMap ∘ₗ e₂.toLinearMap.toAddMonoidHom.toIntLinearMap ∘ₗ eb.symm.toLinearMap) (Set.range fun cl => eb (μ' cl)) …`. Introduce and unpack `_ ⟨cl, rfl⟩`. Rewrite using `[hl, hl]`. Simplify using `only [LinearEquiv.symm_apply_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `congrArg eb (congrFun h cl))`. Use `LinearEquiv.ext fun y => eb.injective ?_` and prove the remaining obligations. Use `LinearMap.congr_fun key (eb y)` as an intermediate fact. Rewrite `this` using `[hl, hl]`. Simplify using `using this`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `((hTS.prod hE).image fun q => (⟨q.1.1, fun j => pull q.2.symm.toLinearMap (q.1.2 j)⟩ : Σ m : ℕ, Fin m → LinearMap.BilinForm ℤ Y)).subset ?_` and prove the remaining obligations. Introduce and unpack `⟨m, γ⟩ ⟨hγ, hγd, b, k, cf, hk, hcf, hkb, hbm⟩`. Take `⟨e, he⟩` from `hSe m γ hγ`. Take `⟨μ', hμ'1, hμ'2, hμ'3⟩` from `exists_transport eb μ hμ b e hbm`. Establish `hc'` using `hγ.pull_equiv e`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hd' : ∀ y, y ≠ 0 → 0 < ∑ j, pull e.toLinearMap (γ j) y y` using `fun y hy => by`. Simplify `hy)` using `using hγd (e y) (by simpa`. Establish `hkb' : k • pull e.toLinearMap b = ∑ j, cf j • pull e.toLinearMap (γ j)` using `LinearMap.ext₂ fun x y => by`. Simplify `LinearMap.congr_fun₂ hkb (e x) (e y)` using `[LinearMap.sum_apply]`. Establish `hx' : (⟨m, fun j => pull e.toLinearMap (γ j)⟩ : Σ m : ℕ, Fin m → LinearMap.BilinForm ℤ Y) ∈ TS` using `⟨he, hc'.injective, hc', hd'⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Simplify using the standard rewrite rules.
 
-Use `⟨⟨⟨m, fun j => pull e.toLinearMap (γ j)⟩, e⟩, ⟨hx', ?_⟩, ?_⟩` and prove the remaining obligations. Use `Set.mem_biUnion (x := μ') ⟨Set.mem_biUnion hx' ?_, hμ'1⟩ fun cl => ?_` and prove the remaining obligations. Use `show μ' ∈ Fμ ⟨m, fun j => pull e.toLinearMap (γ j)⟩`. Simplify using `only [Fμ]`. Rewrite using `[dif_pos (show IsCone bar φ (fun j => pull e.toLinearMap (γ j)) ∧ _ from ⟨hc', hd'⟩)]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hfin ⟨m, fun j => pull e.toLinearMap (γ j)⟩ ⟨hc', hd'⟩).choose_spec (pull e.toLinearMap b) k cf hk hcf hkb' μ' hμ'1 hμ'2`. Take `⟨d, hd⟩` from `hμ'3 cl`. Conclude with `⟨d, hd.symm⟩`. Simplify using the standard rewrite rules. Take `⟨L, hL⟩ : ∃ L : List (Σ m : ℕ, Fin m → LinearMap.BilinForm ℤ Y), ∀ x, x ∈ L ↔ x ∈ T` from `⟨hT.toFinset.toList, fun x => by simp⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨L.length, fun i => (L.get i).1, fun i => (L.get i).2, fun i => ((hL _).1 (List.get_mem L i)).1, ?_⟩` and prove the remaining obligations. Introduce `b' hb' hb'p hb'm`. Establish `key : ∀ n' : ℕ, ∃ i : Fin L.length, ∃ (k : ℕ) (cf : Fin (L.get i).1 → ℕ), 0 < k ∧ k • (n' • b' + b₀) = ∑ j, cf j • (L.get i).2 j`. Introduce `n'`. Establish `hβs : n' • b' + b₀ ∈ balForms bar Y` using `add_mem (nsmul_mem hb' _) hb₀`.
+Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hβp : ∀ x, x ≠ 0 → 0 < (n' • b' + b₀) x x` using `fun x hx => by`. Establish `h1` using `hb'p x`. Establish `h2` using `hb₀p x hx`. Simplify using `only [LinearMap.add_apply, LinearMap.smul_apply, nsmul_eq_mul]`. Check the signs of the components of the expression.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hβm : Mn μ (n' • b' + b₀)` using `fun cl α hα => by`. Establish `h1` using `hb'm cl α hα`. Establish `h2` using `hb₀m cl α hα`. Establish `h3 : (n' : ℤ) * b' (μ cl) (μ cl) ≤ n' * b' α α` using `mul_le_mul_of_nonneg_left h1 (by positivity)`. Simplify using `only [LinearMap.add_apply, LinearMap.smul_apply, nsmul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨m, γ, k, cf, hγ, hk, hcf, hkβ⟩` from `GlobalTheory.Poinc.Cover.exists_cone O bar φ Y hF _ hβs hβp`. Establish `hγd : ∀ y, y ≠ 0 → 0 < ∑ j, γ j y y` using `fun y hy => by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h0 : ∀ j, γ j y y = 0` using `fun j => le_antisymm ((Finset.single_le_sum (fun j _ => hγ.nonneg j y) (Finset.mem_univ j)).trans hcon) (hγ.nonneg j y)`. Establish `h1` using `LinearMap.congr_fun₂ hkβ y y`. Establish `h2` using `hβp y hy`. Simplify using `only [LinearMap.smul_apply, LinearMap.sum_apply, h0, smul_zero, Finset.sum_const_zero, nsmul_eq_mul] at h1`. Establish `: (k : ℤ) * (n' • b' + b₀) y y > 0` using `mul_pos (by exact_mod_cast hk) h2`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.add_apply, LinearMap.smul_apply, nsmul_eq_mul] at this h1`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hmem : (⟨m, γ⟩ : Σ m : ℕ, Fin m → LinearMap.BilinForm ℤ Y) ∈ T` using `⟨hγ, hγd, _, k, cf, hk, hcf, hkβ, hβm⟩`. Take `⟨i, hi⟩` from `List.mem_iff_get.1 ((hL _).2 hmem)`. Use `⟨i, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hi]`. Conclude with `⟨k, cf, hk, hkβ⟩`. Use `choose f hf using key`. Take `⟨i, hi⟩` from `Finite.exists_infinite_fiber f`. Take `⟨cf, hcf⟩` from `exists_nat_comb_of_infinite ((hL _).1 (List.get_mem L i)).1 hb' hb₀ (s := f ⁻¹' {i}) (Set.infinite_coe_iff.1 hi) fun n' hn' => by`.
-
-Use `hf n'` as an intermediate fact. Rewrite `this` using `[show f n' = i from hn']`. Conclude with `this`. Conclude with `⟨i, 1, cf, one_pos, by rw [one_smul]; exact hcf⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_finite_cones : ∀ (O : Type) [CommRing O] (bar : O → O) (φ : InvFun O) (Y : Type) [AddCommGroup Y] [Module O Y] [Module.Finite O Y] [Module.Projective O Y], IsPolFanOn bar φ Y → ∀ (n N : ℕ) [NeZero N], 3 ≤ N → ∀ (eb : Y ≃ₗ[ℤ] (Fin n → ℤ)) (μ : (Fin n → ZMod N) → Y), (∀ cl i, ((eb (μ cl) i : ℤ) : ZMod N) = cl i) → ∀ b₀ ∈ balForms bar Y, (∀ x, x ≠ 0 → 0 < b₀ x x) → (∀ cl (α : Y), (∀ i, ((eb α i : ℤ) : ZMod N) = cl i) → b₀ (μ cl) (μ cl) ≤ b₀ α α) → ∃ (p : ℕ) (m : Fin p → ℕ) (γ : ∀ i, Fin (m i) → LinearMap.BilinForm ℤ Y), (∀ i, IsCone bar φ (γ i)) ∧ ∀ b' ∈ balForms bar Y, (∀ x, 0 ≤ b' x x) → (∀ cl (α : Y), (∀ i, ((eb α i : ℤ) : ZMod N) = cl i) → b' (μ cl) (μ cl) ≤ b' α α) → ∃ (i : Fin p) (k : ℕ) (cf : Fin (m i) → ℕ), 0 < k ∧ k • b' = ∑ j, cf j • γ i j := by
   intro O _ bar φ Y _ _ _ _ hF n N _ hN eb μ hμ b₀ hb₀ hb₀p hb₀m

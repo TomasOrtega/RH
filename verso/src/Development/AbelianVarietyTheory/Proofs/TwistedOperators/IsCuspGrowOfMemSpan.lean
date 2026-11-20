@@ -17,11 +17,11 @@ namespace GlobalTheory.Chain.CuspGrowSpace
 variable {D : D7} {θ : InfFam D} {V : HSp D} {φ ψ : GA D V → ℂ}
 
 /- English proof (translation)
-Take `⟨a, s, c, g⟩` from `h`. Take `⟨a', s', c', g'⟩` from `h'`. Use `⟨⟨fun γ hγ g => by rw [Pi.add_apply, Pi.add_apply, a.left γ hγ, a'.left γ hγ], ?_, a.cont.add a'.cont⟩, add_mem s s', GlobalTheory.MultMem.isCuspFun_add a a' c c', ?_⟩` and prove the remaining obligations. Take `⟨U, hU, e⟩` from `a.level`. Take `⟨U', hU', e'⟩` from `a'.level`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨U ⊓ U', hU.inter hU', fun k hk hf g => by`. Rewrite using `[Pi.add_apply, Pi.add_apply, e k hk.1 hf, e' k hk.2 hf]⟩`. Take `⟨N, hN⟩` from `GlobalTheory.Size.unifModGrowth_iff.1 g`. Take `⟨N', hN'⟩` from `GlobalTheory.Size.unifModGrowth_iff.1 g'`. Use `GlobalTheory.Size.unifModGrowth_iff.2 ⟨max N N', fun l hl => ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[(GlobalTheory.Size.linOnSm_rWord hl).add _ s _ s']`. Conclude with `ne_top_of_le_ne_top (ENNReal.add_ne_top.2 ⟨ne_top_of_le_ne_top (hN l hl) (GlobalTheory.Size.growthSize_anti (le_max_left _ _)), ne_top_of_le_ne_top (hN' l hl) (GlobalTheory.Size.growthSize_anti (le_max_right _ _))⟩) GlobalTheory.Size.growthSize_add_le`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCuspGrow_add (h : IsCuspGrow θ V φ) (h' : IsCuspGrow θ V ψ) : IsCuspGrow θ V (φ + ψ) := by
   obtain ⟨a, s, c, g⟩ := h
@@ -41,9 +41,9 @@ theorem isCuspGrow_add (h : IsCuspGrow θ V φ) (h' : IsCuspGrow θ V ψ) : IsCu
         ne_top_of_le_ne_top (hN' l hl) (GlobalTheory.Size.growthSize_anti (le_max_right _ _))⟩) GlobalTheory.Size.growthSize_add_le
 
 /- English proof (translation)
-Take `⟨a, s, c, g⟩` from `h`. Use `⟨⟨fun γ hγ g => by rw [Pi.smul_apply, Pi.smul_apply, a.left γ hγ], ?_, a.cont.const_smul z⟩, Submodule.smul_mem _ z s, GlobalTheory.MultMem.isCuspFun_smul z c, ?_⟩` and prove the remaining obligations. Take `⟨U, hU, e⟩` from `a.level`. Conclude with `⟨U, hU, fun k hk hf g => by rw [Pi.smul_apply, Pi.smul_apply, e k hk hf]⟩`. Take `⟨N, hN⟩` from `GlobalTheory.Size.unifModGrowth_iff.1 g`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `GlobalTheory.Size.unifModGrowth_iff.2 ⟨N, fun l hl => ?_⟩` and prove the remaining obligations. Rewrite using `[(GlobalTheory.Size.linOnSm_rWord hl).smul, GlobalTheory.Size.growthSize_smul]`. Conclude with `ENNReal.mul_ne_top enorm_ne_top (hN l hl)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCuspGrow_smul (z : ℂ) (h : IsCuspGrow θ V φ) : IsCuspGrow θ V (z • φ) := by
   obtain ⟨a, s, c, g⟩ := h
@@ -57,7 +57,7 @@ theorem isCuspGrow_smul (z : ℂ) (h : IsCuspGrow θ V φ) : IsCuspGrow θ V (z 
     exact ENNReal.mul_ne_top enorm_ne_top (hN l hl)
 
 /- English proof (translation)
-Use `⟨(isAutFunSm_const θ V 0).toIsAutFun, zero_mem _, fun _ _ _ _ _ _ _ _ => by simp, GlobalTheory.Size.unifModGrowth_iff.2 ⟨0, fun l hl => ?_⟩⟩` and prove the remaining obligations. Use `(GlobalTheory.Size.linOnSm_rWord (θ := θ) hl).smul 0 0` as an intermediate fact. Rewrite `this` using `[zero_smul, zero_smul]`. Rewrite using `[this]`. Conclude with `(GlobalTheory.Size.growthSize_const (0 : ℂ)).trans_ne enorm_ne_top`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCuspGrow_zero : IsCuspGrow θ V 0 := by
   refine ⟨(isAutFunSm_const θ V 0).toIsAutFun, zero_mem _, fun _ _ _ _ _ _ _ _ => by simp,
@@ -68,9 +68,9 @@ theorem isCuspGrow_zero : IsCuspGrow θ V 0 := by
   exact (GlobalTheory.Size.growthSize_const (0 : ℂ)).trans_ne enorm_ne_top
 
 /- English proof (translation)
-Introduce `D θ V φ h`. Proceed by induction on `h using Submodule.span_induction with`. Consider the case `mem x hx => exact hx`. Consider the case `zero => exact isCuspGrow_zero`. Consider the case `add x y _ _ hx hy => exact isCuspGrow_add hx hy`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul c x _ hx => exact isCuspGrow_smul c hx`.
+Treat this case separately.
 -/
 theorem isCuspGrow_of_mem_span : ∀ (D : D7) (θ : InfFam D) (V : HSp D),
     ∀ φ ∈ Submodule.span ℂ {φ | IsCuspGrow θ V φ}, IsCuspGrow θ V φ := by

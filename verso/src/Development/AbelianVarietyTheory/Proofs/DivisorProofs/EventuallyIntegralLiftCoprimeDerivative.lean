@@ -7,9 +7,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.IntCop
 
 /- English proof (translation)
-Establish `: Q.map (algebraMap E (w.adicCompletion E)) ∈ Polynomial.lifts (algebraMap (w.adicCompletionIntegers E) (w.adicCompletion E))`. Rewrite using `[Polynomial.lifts_iff_coeff_lifts]`. Introduce `n`. Rewrite using `[Polynomial.coeff_map]`. Use `⟨⟨algebraMap E (w.adicCompletion E) (Q.coeff n), (HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).2 ?_⟩, rfl⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w (Q.coeff n)).trans_le (h n)`. Take `⟨Q₀, hQ₀⟩` from `(Polynomial.mem_lifts _).1 this`. Conclude with `⟨Q₀, hQ₀⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lift_of_val_le {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E))
     (Q : E[X]) (h : ∀ n, w.valuation E (Q.coeff n) ≤ 1) :
@@ -28,9 +28,9 @@ theorem lift_of_val_le {E : Type} [Field E] [NumberField E] (w : HeightOneSpectr
   exact ⟨Q₀, hQ₀⟩
 
 /- English proof (translation)
-Use `((Finset.range (Q.natDegree + 1)).finite_toSet.biUnion fun n _ => HeightOneSpectrum.Support.finite (𝓞 E) (Q.coeff n)).subset ?_` and prove the remaining obligations. Introduce `w hw`. Simplify using `only [Set.mem_setOf_eq, not_forall, not_le] at hw`. Take `⟨n, hn⟩` from `hw`. Establish `hn' : n < Q.natDegree + 1`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hc`. Rewrite `hn` using `[Polynomial.coeff_eq_zero_of_natDegree_lt (by omega), map_zero]`. Conclude with `(not_lt.2 zero_le') hn`. Simplify using `only [Set.mem_iUnion]`. Conclude with `⟨n, by simpa using hn', hn⟩`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem finite_bad {E : Type} [Field E] [NumberField E] (Q : E[X]) :
     {w : HeightOneSpectrum (𝓞 E) | ¬ ∀ n, w.valuation E (Q.coeff n) ≤ 1}.Finite := by
@@ -51,13 +51,13 @@ end GlobalTheory.IntCop
 namespace GlobalTheory.IntCop
 
 /- English proof (translation)
-Introduce `E _ _ P hP`. Take `⟨a, b, hab⟩` from `hP`. Establish `hfin` using `((finite_bad P).union (finite_bad a)).union (finite_bad b)`. Use `Filter.eventually_cofinite.2 (hfin.subset ?_)` and prove the remaining obligations. Introduce `w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hc`. Simplify using `only [Set.mem_union, Set.mem_setOf_eq, not_or, not_not] at hc`. Take `⟨⟨hPw, haw⟩, hbw⟩` from `hc`. Apply `hw` to reduce the goal to its premises. Take `⟨P₀, hP₀⟩` from `lift_of_val_le w P hPw`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result.
 
-Take `⟨a₀, ha₀⟩` from `lift_of_val_le w a haw`. Take `⟨b₀, hb₀⟩` from `lift_of_val_le w b hbw`. Use `⟨P₀, hP₀, a₀, b₀, ?_⟩` and prove the remaining obligations. Establish `hinj : Function.Injective (algebraMap (w.adicCompletionIntegers E) (w.adicCompletion E))` using `Subtype.val_injective`. Apply `Polynomial.map_injective _ hinj` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Polynomial.map_add, Polynomial.map_mul, Polynomial.map_mul, ← Polynomial.derivative_map, ha₀, hb₀, hP₀, Polynomial.derivative_map, ← Polynomial.map_mul, ← Polynomial.map_mul, ← Polynomial.map_add, hab, Polynomial.map_one, Polynomial.map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eventually_integral_coprime : ∀ (E : Type) [Field E] [NumberField E] (P : E[X]), P.Separable →
     ∀ᶠ w : HeightOneSpectrum (𝓞 E) in cofinite, ∃ P₀ : (w.adicCompletionIntegers E)[X],

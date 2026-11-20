@@ -13,7 +13,7 @@ namespace GlobalTheory.UnipMass.Unitary
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [cA, hσ]`. Consider the case `add y z hy hz => simp only [map_add, hy, hz]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem cA_invol (σ : E →ₐ[F] E) (hσ : ∀ a, σ (σ a) = a) (z : AE F E) : cA σ (cA σ z) = z := by
   induction z using TensorProduct.induction_on with
@@ -22,7 +22,7 @@ theorem cA_invol (σ : E →ₐ[F] E) (hσ : ∀ a, σ (σ a) = a) (z : AE F E) 
   | add y z hy hz => simp only [map_add, hy, hz]
 
 /- English proof (translation)
-Simplify using `[cA, inclR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cA_inclR (σ : E →ₐ[F] E) (a : E) : cA σ (inclR (F := F) (AF F) a) = inclR (F := F) (AF F) (σ a) := by
   simp [cA, inclR]
@@ -30,66 +30,66 @@ theorem cA_inclR (σ : E →ₐ[F] E) (a : E) : cA σ (inclR (F := F) (AF F) a) 
 variable (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem bar_add (w w' : Fin n → AE F E) :
     (fun i => cA σ ((w + w') i)) = (fun i => cA σ (w i)) + fun i => cA σ (w' i) := by
   funext i; simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem bar_sub (w w' : Fin n → AE F E) :
     (fun i => cA σ ((w - w') i)) = (fun i => cA σ (w i)) - fun i => cA σ (w' i) := by
   funext i; simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem bar_smul (a : AE F E) (w : Fin n → AE F E) :
     (fun i => cA σ ((a • w) i)) = cA σ a • fun i => cA σ (w i) := by
   funext i; simp
 
 /- English proof (translation)
-Simplify using `[hA, add_dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hA_add_left (v v' w : Fin n → AE F E) : hA σ J (v + v') w = hA σ J v w + hA σ J v' w := by
   simp [hA, add_dotProduct]
 
 /- English proof (translation)
-Simplify using `[hA, sub_dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hA_sub_left (v v' w : Fin n → AE F E) : hA σ J (v - v') w = hA σ J v w - hA σ J v' w := by
   simp [hA, sub_dotProduct]
 
 /- English proof (translation)
-Simplify using `[hA, smul_dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hA_smul_left (a : AE F E) (v w : Fin n → AE F E) : hA σ J (a • v) w = a * hA σ J v w := by
   simp [hA, smul_dotProduct]
 
 /- English proof (translation)
-Simplify using `only [hA, bar_add, Matrix.mulVec_add, dotProduct_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hA_add_right (v w w' : Fin n → AE F E) : hA σ J v (w + w') = hA σ J v w + hA σ J v w' := by
   simp only [hA, bar_add, Matrix.mulVec_add, dotProduct_add]
 
 /- English proof (translation)
-Simplify using `only [hA, bar_sub, Matrix.mulVec_sub, dotProduct_sub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hA_sub_right (v w w' : Fin n → AE F E) : hA σ J v (w - w') = hA σ J v w - hA σ J v w' := by
   simp only [hA, bar_sub, Matrix.mulVec_sub, dotProduct_sub]
 
 /- English proof (translation)
-Simplify using `only [hA, bar_smul, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hA_smul_right (a : AE F E) (v w : Fin n → AE F E) : hA σ J v (a • w) = cA σ a * hA σ J v w := by
   simp only [hA, bar_smul, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]
 
 /- English proof (translation)
-Simplify using `only [hA, dotProduct, Matrix.mulVec, map_sum, map_mul, cA_invol σ hσ, incM, Matrix.map_apply, cA_inclR, hJ, map_neg, Finset.mul_sum, Finset.sum_neg_distrib]`. Rewrite using `[Finset.sum_comm (f := fun x x_1 => (cA σ) (v x) * (-(inclR (F := F) (AF F)) (J x_1 x) * w x_1))]`. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_neg_distrib]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hA_swap (hσ : ∀ a, σ (σ a) = a) (hJ : ∀ i j, σ (J j i) = -J i j) (v w : Fin n → AE F E) :
     hA σ J w v = -cA σ (hA σ J v w) := by
@@ -105,9 +105,9 @@ theorem hA_swap (hσ : ∀ a, σ (σ a) = a) (hJ : ∀ i j, σ (J j i) = -J i j)
 variable {σ J}
 
 /- English proof (translation)
-Establish `hxu : hA σ J x u = 0` using `by rw [hA_swap σ J hσ hJ u x, hux, map_zero, neg_zero]`. Establish `hxw : hA σ J x w = -cA σ (hA σ J w x)` using `hA_swap σ J hσ hJ w x`. Establish `huw : hA σ J u w = -cA σ (hA σ J w u)` using `hA_swap σ J hσ hJ w u`. Rewrite using `[nmat_mulVec, nmat_mulVec]`. Simplify using `only [hA_sub_left, hA_sub_right, hA_smul_left, hA_smul_right, hA_add_left, hA_add_right, hxx, hux, hxu, hxw, huw]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take the linear combination `(hA σ J v x * cA σ (hA σ J w x)) * hc`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem hA_nmat (hσ : ∀ a, σ (σ a) = a) (hJ : ∀ i j, σ (J j i) = -J i j) (x u : Fin n → AE F E) (c : AE F E)
     (hxx : hA σ J x x = 0) (hux : hA σ J u x = 0) (hc : c - cA σ c = -hA σ J u u) (v w : Fin n → AE F E) :
@@ -121,9 +121,9 @@ theorem hA_nmat (hσ : ∀ a, σ (σ a) = a) (hJ : ∀ i j, σ (J j i) = -J i j)
   linear_combination (hA σ J v x * cA σ (hA σ J w x)) * hc
 
 /- English proof (translation)
-Establish `hs : ∀ m : Fin n, T *ᵥ Pi.single m 1 = fun k => T k m` using `fun m => by`. Use function extensionality and compare the values at `k`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`. Rewrite using `[hs, hs]`. Simplify using `only [hA, dotProduct, Matrix.mulVec, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul, Finset.mul_sum]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem entry_eq (T : Matrix (Fin n) (Fin n) (AE F E)) (i j : Fin n) :
     (Tᵀ * incM F J * T.map (cA σ)) i j = hA σ J (T *ᵥ Pi.single i 1) (T *ᵥ Pi.single j 1) := by
@@ -137,9 +137,9 @@ theorem entry_eq (T : Matrix (Fin n) (Fin n) (AE F E)) (i j : Fin n) :
   ring
 
 /- English proof (translation)
-Establish `hb : (fun l => cA σ ((Pi.single j 1 : Fin n → AE F E) l)) = Pi.single j 1`. Use function extensionality and compare the values at `l`. Distinguish the cases in `h : l = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_apply, h]`. Rewrite using `[hA, hb, single_one_dotProduct, Matrix.mulVec_single_one]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem entry_J (hσ : ∀ a, σ (σ a) = a) (i j : Fin n) :
     incM F J i j = hA σ J (Pi.single i 1) (Pi.single j 1) := by
@@ -155,7 +155,7 @@ end GlobalTheory.UnipMass.Unitary
 namespace GlobalTheory.UnipMass
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ n J hJ x u c hxx hux hc`. Use extensionality with `i j`. Rewrite using `[Unitary.entry_eq, Unitary.hA_nmat hσ hJ x u c hxx hux hc, ← Unitary.entry_J hσ]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem nmat_unitary : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), (∀ a, σ (σ a) = a) → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), (∀ i j, σ (J j i) = -J i j) → ∀ (x u : Fin n → AE F E) (c : AE F E), hA σ J x x = 0 → hA σ J u x = 0 → c - cA σ c = -hA σ J u u → (nmat σ J x u c)ᵀ * incM F J * (nmat σ J x u c).map (cA σ) = incM F J := by
   intro F E _ _ _ _ _ σ hσ n J hJ x u c hxx hux hc

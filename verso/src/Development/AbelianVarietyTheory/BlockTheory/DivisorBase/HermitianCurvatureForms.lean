@@ -121,13 +121,11 @@ def SubQuotCurvature : Prop :=
       (Fintype.card m = 1 → Fintype.card l = 1 → ∀ z ∈ U, RankTwoAt H z))
 
 /- English proof (translation)
-Establish `hc : ContDiff ℝ ∞ fun z : ℂ => conj z` using `conjCLE.contDiff`. Use `⟨isOpen_univ, ?_, fun z _ => posDef_iff.2 ⟨?_, fun v hv => ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `(a | a) (b | b)`. Conclude with `(contDiff_const.add (contDiff_id.mul hc)).contDiffOn`. Conclude with `contDiff_id.contDiffOn`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Conclude with `hc.contDiffOn`. Conclude with `contDiff_const.contDiffOn`. Apply the tactic sequence `ext (a | a) (b | b) <;> simp [tautPairGram, mul_comm]`. Establish `e : form (tautPairGram z) v v = ((normSq (v (.inl ())) + normSq (v (.inl ()) * z + v (.inr ())) : ℝ) : ℂ)`. Simplify using `only [form_eq_sum, ofReal_add, ← mul_conj]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Simplify using `[tautPairGram]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, ← ofReal_zero, real_lt_real]`. Distinguish the cases in `h : v (.inl ()) = 0`. Apply the tactic sequence `have h' : v (.inr ()) ≠ 0 := fun h' => hv (by funext a; rcases a with a | a <;> assumption)`.
-
-Simplify `h'` using `[h]`. Conclude with `add_pos_of_pos_of_nonneg (normSq_pos.2 h) (normSq_nonneg _)`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isPosFrame_tautPairGram : IsPosFrame Set.univ tautPairGram := by
   have hc : ContDiff ℝ ∞ fun z : ℂ => conj z := conjCLE.contDiff
@@ -149,13 +147,13 @@ theorem isPosFrame_tautPairGram : IsPosFrame Set.univ tautPairGram := by
     · exact add_pos_of_pos_of_nonneg (normSq_pos.2 h) (normSq_nonneg _)
 
 /- English proof (translation)
-Establish `hf` using `isPosFrame_tautPairGram.isHermFrame`. Establish `h : tautPairGram 0 = 1`. Apply the tactic sequence `rw [← fromBlocks_one]; ext (a | a) (b | b) <;> simp [tautPairGram]`. Establish `hb : ∀ ξ : ℂ, secondForm tautPairGram 0 ξ () () = ξ` using `fun ξ => by`. Rewrite using `[secondForm_eq, conn, h, transpose_one, inv_one, Matrix.one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `del (fun x : ℂ => x) 0 ξ = ξ`. Rewrite using `[del_eq_fderiv differentiableAt_fun_id]`. Simplify using the standard rewrite rules. Establish `hs : subGram (tautPairGram 0) = 1` using `by rw [h]; ext; simp [subGram, toBlocks₁₁]`. Establish `hq : quotGram (tautPairGram 0) = 1`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h]`. Use `ext`. Simplify using `[quotGram, toBlocks₂₂, toBlocks₂₁, mul_apply]`. Establish `hu : IsUnit (subGram (tautPairGram 0)).det` using `by simp [hs]`. Rewrite using `[extTrace, extFormAdj_eq_neg_secondForm (hf.one trivial) (hf.eventually_herm trivial) (hf.isUnit 0 trivial) hu, extForm_eq_neg_secondFormAdj (hf.one trivial) (hf.eventually_herm trivial) (hf.isUnit 0 trivial) hu, secondFormAdj, adj, hs, hq]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[trace, mul_apply, hb]`.
+Simplify using the standard rewrite rules.
 -/
 example (ξ η : ℂ) : extTrace tautPairGram 0 ξ η = kappa * (ξ * conj η) := by
   have hf := isPosFrame_tautPairGram.isHermFrame

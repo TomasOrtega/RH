@@ -20,9 +20,7 @@ namespace GlobalTheory
 namespace FieldChange
 
 /- English proof (translation)
-Substitute `hφ` using the available equality. Establish `e` using `sec_ext_val hL (s := s) (s' := DVR.pullSec L φ ε f h) (fun y J hJ => by`. Rewrite using `[DVR.SectionScalarValuation.sval_pullSec φ ε f h _ y hJ, Category.id_comp]`. Conclude with `H y J hJ)`. Rewrite using `[← DVR.SectionScalarValuation.sval_pullSec φ ε f h r z hJ]`.
-
-Conclude with `congrArg (gs r z _) (e _)`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sval_extend {X Y Y' : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K : Type} [Fintype K] {φ : K → (Y ⟶ X)}
     {φ₁ : K → (Y' ⟶ X)} {ε : K → ℤ} (h : Y' ⟶ Y) (hφ : φ₁ = fun k => h ≫ φ k)
@@ -36,7 +34,7 @@ theorem sval_extend {X Y Y' : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K : Type} [F
   exact congrArg (gs r z _) (e _)
 
 /- English proof (translation)
-The claim follows from `(gs_pull r h z ⊤ (by trivial) _).symm`.
+A detailed English derivation is pending.
 -/
 theorem gs_scal_comp {R : Type} [CommRing R] {Y Y' Z : Scheme.{0}} (p : Y ⟶ Spec (CommRingCat.of R)) (h : Y' ⟶ Y)
     (r : Z ⟶ Y') (z : Z) (c : R) : gs (r ≫ h) z ⊤ (scal p c) = gs r z ⊤ (scal (h ≫ p) c) :=
@@ -46,9 +44,9 @@ variable {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) {T : Over (Spec (Co
   {F : Type} [Field F] [Algebra (FractionRing R) F]
 
 /- English proof (translation)
-Establish `e₀ : φ ▷ D.P.A ≫ snd T D.P.A = snd _ _` using `whiskerRight_snd _ _`. Establish `e₂ : φ ▷ D.P.A ≫ DVR.cP D _ α = DVR.cP D _ α` using `DVR.comp_cP D _ α`. Use function extensionality and compare the values at `i`. Use `fin_cases i`. Conclude with `(congrArg (fun q => q.left) e₀).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(congrArg (fun q : DegPre.BF D F ⟶ D.P.A => q.left) ((MonObj.comp_mul (φ ▷ D.P.A) (snd T D.P.A) (DVR.cP D _ α)).trans ?_)).symm` and prove the remaining obligations. Rewrite using `[e₀, e₂]`. Both sides reduce to the same expression. Conclude with `(congrArg (fun q => q.left) e₂).symm`. Conclude with `(congrArg (fun q : DegPre.BF D F ⟶ D.P.A => q.left) (MonObj.comp_one (M := D.P.A) (φ ▷ D.P.A))).symm`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem fam_comp (φ : TF (R := R) F ⟶ T) (α : D.X) :
     DegPre.famφ D F α = fun i => (φ ▷ D.P.A).left ≫ famφT D T α i := by
@@ -64,7 +62,7 @@ theorem fam_comp (φ : TF (R := R) F ⟶ T) (α : D.X) :
   · exact (congrArg (fun q : DegPre.BF D F ⟶ D.P.A => q.left) (MonObj.comp_one (M := D.P.A) (φ ▷ D.P.A))).symm
 
 /- English proof (translation)
-Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Simplify using `[trT, DegPre.trF]`. Rewrite using `[Category.assoc, Category.assoc, whiskerRight_snd, trT, DegPre.trF, lift_snd, lift_snd]`. Use `(MonObj.comp_mul (φ ▷ D.P.A) (snd T D.P.A) (fst _ _ ≫ DVR.cP D _ mu)).trans ?_` and prove the remaining obligations. Rewrite using `[whiskerRight_snd, DVR.comp_cP, DVR.comp_cP]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -77,7 +75,7 @@ theorem tr_comp (φ : TF (R := R) F ⟶ T) (mu : D.X) :
     rw [whiskerRight_snd, DVR.comp_cP, DVR.comp_cP]; rfl
 
 /- English proof (translation)
-The claim follows from `sval_extend D.P.isLB _ (fam_comp D φ α) (s α) (f α) (H α) r z J hJ`.
+A detailed English derivation is pending.
 -/
 theorem pullB_all {φ : TF (R := R) F ⟶ T} {k : ℕ} {f : ∀ α, SecBT D T k α} {s : Raw D F k} (H : PullB D F φ k f s)
     (α : D.X) {Z : Scheme.{0}} (r : Z ⟶ (DegPre.BF D F).left) (z : Z) (J) (hJ : Good D.P.L z J) :
@@ -85,9 +83,9 @@ theorem pullB_all {φ : TF (R := R) F ⟶ T} {k : ℕ} {f : ∀ α, SecBT D T k 
   sval_extend D.P.isLB _ (fam_comp D φ α) (s α) (f α) (H α) r z J hJ
 
 /- English proof (translation)
-Establish `e : (DegPre.BF D F).hom = ((fst (TF (R` using `R) F) D.P.A).left ≫ jFK (R := R) F) ≫ jK R := by`. Rewrite using `[Category.assoc]`. Conclude with `(Over.w (fst (TF (R := R) F) D.P.A)).symm`. Establish `hu : IsUnit (scal (jK R) c)`. Establish `n` using `congrArg (fun q => q.hom c) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (algebraMap R (FractionRing R))))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at n`. Establish `hc' : IsUnit (algebraMap R (FractionRing R) c)` using `IsUnit.mk0 _ ((map_ne_zero_iff _ (IsFractionRing.injective R (FractionRing R))).2 hc)`. Conclude with `(congrArg IsUnit n).mp (hc'.map _)`. Rewrite using `[e, gs_eq _ _ ⊤ (by trivial)]`. Conclude with `((hu.map ((fst (TF (R := R) F) D.P.A).left ≫ jFK (R := R) F).appTop.hom).map _).map _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_scal {c : R} (hc : c ≠ 0) {Z : Scheme.{0}} (r : Z ⟶ (DegPre.BF D F).left) (z : Z) :
     IsUnit (gs r z ⊤ (scal (DegPre.BF D F).hom c)) := by
@@ -108,15 +106,13 @@ end FieldChange
 open FieldChange in
 
 /- English proof (translation)
-Introduce `hG R _ _ _ D T _ k f F F' _ _ _ _ φ φ' s s' hinj hs hs' hfe mu α u' hu' hc'`. Take `⟨u₀, r₁, r₂, hu₀, -, h₂, hv⟩` from `GlobalTheory.UU.IntGen.main hG R D T k α mu`. Take `⟨⟨u, hu, hc⟩, -⟩` from `DVR.gen_fe (D := D) (F := F) hG k mu α`. Establish `: Smooth D.P.A.hom` using `D.P.isAb.smooth`. Establish `: IsAffine (TF (R` using `R) F).left := inferInstanceAs (IsAffine (Spec _))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `sc : ∀ {E : Type} [Field E] [Algebra (FractionRing R) E] (ψ : TF (R` using `R) E ⟶ T) (c : R) (y : (DegPre.BF D E).left), gs (ψ ▷ D.P.A).left y ⊤ (scal (T ⊗ D.P.A).hom c) = gs (𝟙 _) y ⊤ (scal (DegPre.BF D E).hom c) := fun ψ c y => by`. Rewrite using `[← Over.w (ψ ▷ D.P.A), ← gs_scal_comp, Category.id_comp]`. Establish `tr : ∀ {E : Type} [Field E] [Algebra (FractionRing R) E] (ψ : TF (R` using `R) E ⟶ T), (ψ ▷ D.P.A).left ≫ (trT D (toUnit T ≫ D.c mu)).left = (𝟙 _ ≫ (DegPre.trF D E mu).left) ≫ (ψ ▷ D.P.A).left := fun ψ => by rw [Category.id_comp]; exact congrArg (fun q => q.left) (tr_comp D ψ mu)`. Establish `key` using `sec_relation_descends _ D.P.A T (TF (R := R) F) φ hinj _ _ D.P.L D.P.isLB _ _ _ (famφT D T α) (DegPre.famε k) (famφT D T (α + k • mu)) (DegPre.famε k) (deltaφT D (α + k • mu) α (toUnit T ≫ D.c mu)) (DegPre.deltaε k) (trT D (toUnit T ≫ D.c mu)).left (f α) (f (α + k • mu)) u₀ (scal …`. Use `Eq.symm (Eq.trans (DVR.prod_sum₂ (K := Fin 4) (K' := Fin 4 ⊕ Fin 4) (U := U) _ (c := ∏ i, h ((trT D (toUnit T ≫ D.c mu)).left ≫ famφT D T α i) ^ DegPre.famε k i) rfl (DVR.prod_sum₂ (K := Fin 4) (K' := Fin 4) (U := U) _ (c := ∏ i, h (famφT D T (α + k • mu) i) ^ DegPre.famε k i) rf …` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(mul_comm _ _).trans (inv_mul_cancel_right _ _))`. Use the proof step `(fun y J hJ => by`. Establish `e₁` using `(secRel_iff D.P.isLB _ _ _ _ _ _ _ _ _ u).1 (hfe mu α u hu hc) _ (𝟙 _) y J hJ`. Establish `e₂` using `hv F φ u hu hc _ (𝟙 _) y J hJ`. Rewrite `e₂` using `[Category.id_comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[sc, sc, tr, ← pullB_all D hs α _ y J hJ, ← hs _ y J hJ, e₁, mul_left_comm, e₂, mul_left_comm])`. Use `(secRel_iff D.P.isLB _ _ _ _ _ _ _ _ _ u').2 fun y J hJ => ?_` and prove the remaining obligations. Establish `e₁` using `key _ (φ' ▷ D.P.A).left y J hJ`. Establish `e₂` using `hv F' φ' u' hu' hc' _ (𝟙 _) y J hJ`. Rewrite `e₂` using `[Category.id_comp]`.
-
-Rewrite `e₁` using `[sc, sc, tr, ← pullB_all D hs' α _ y J hJ, ← hs' _ y J hJ, mul_left_comm, ← e₂, mul_left_comm]`. Conclude with `(isUnit_scal D h₂ _ y).mul_left_cancel e₁`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem famFE_field_change : GlobalFnsSt → ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (D : DegPre R) (T : Over (Spec (CommRingCat.of R))) [IsAffine T.left] (k : ℕ) (f : ∀ α, SecBT D T k α) (F F' : Type) [Field F] [Algebra (FractionRing R) F] [Field F'] [Algebra (FractionRing R) F'] (φ : TF (R := R) F ⟶ T) (φ' : TF (R := R) F' ⟶ T) (s : Raw D F k) (s' : Raw D F' k), Function.Injective φ.left.appTop.hom → PullB D F φ k f s → PullB D F' φ' k f s' → DegPre.FamFE D F k s → DegPre.FamFE D F' k s' := by
   intro hG R _ _ _ D T _ k f F F' _ _ _ _ φ φ' s s' hinj hs hs' hfe mu α u' hu' hc'

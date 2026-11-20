@@ -7,15 +7,13 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets
 open Topology Filter Set
 
 /- English proof (translation)
-Introduce `u v hu hv hSuv ⟨a, haS, hau⟩ ⟨b, hbS, hbv⟩`. Assume the negation of the conclusion as `hne`. Establish `hne' : ∀ y ∈ S, y ∈ u → y ∈ v → False` using `fun y hy hyu hyv => hne ⟨y, hy, hyu, hyv⟩`. Set `P : Set α` to `{x | ∃ W, IsOpen W ∧ x ∈ W ∧ W ∩ S ⊆ u}`. Set `Q : Set α` to `{x | ∃ W, IsOpen W ∧ x ∈ W ∧ W ∩ S ⊆ v}`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hP : IsOpen P` using `isOpen_iff_forall_mem_open.mpr fun x ⟨W, hW, hxW, hWS⟩ => ⟨W, fun y hy => ⟨W, hW, hy, hWS⟩, hW, hxW⟩`. Establish `hQ : IsOpen Q` using `isOpen_iff_forall_mem_open.mpr fun x ⟨W, hW, hxW, hWS⟩ => ⟨W, fun y hy => ⟨W, hW, hy, hWS⟩, hW, hxW⟩`. Establish `hcov : X ⊆ P ∪ Q`. Introduce `x hx`. Take `⟨W, hW, hxW, hWc⟩` from `hloc x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `h1 : (W ∩ S ∩ u).Nonempty`. Distinguish the cases in `h2 : (W ∩ S ∩ v).Nonempty`. Take `⟨y, hyWS, hyu, hyv⟩` from `hWc u v hu hv (fun y hy => hSuv hy.2) h1 h2`. Conclude with `(hne' y hyWS.2 hyu hyv).elim`. Use `Or.inl ⟨W, hW, hxW, fun y hy => ?_⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hSuv hy.2 with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd ⟨y, hy, h⟩ h2`. Use `Or.inr ⟨W, hW, hxW, fun y hy => ?_⟩` and prove the remaining obligations. Break down `hSuv hy.2 with h | h` into its components or cases.
-
-Conclude with `absurd ⟨y, hy, h⟩ h1`. Conclude with `h`. Take `⟨x, hxX, ⟨W₁, hW₁, hxW₁, hW₁u⟩, ⟨W₂, hW₂, hxW₂, hW₂v⟩⟩` from `hX P Q hP hQ hcov ⟨a, hSX haS, u, hu, hau, inter_subset_left⟩ ⟨b, hSX hbS, v, hv, hbv, inter_subset_left⟩`. Take `⟨y, ⟨hy₁, hy₂⟩, hyS⟩` from `mem_closure_iff.mp (hdense x hxX) _ (hW₁.inter hW₂) ⟨hxW₁, hxW₂⟩`. Conclude with `hne' y hyS (hW₁u ⟨hy₁, hyS⟩) (hW₂v ⟨hy₂, hyS⟩)`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ManifoldZerosComplementConnected.isPreconnected_of_local {α : Type*} [TopologicalSpace α]
     {X S : Set α} (hX : IsPreconnected X) (hSX : S ⊆ X) (hdense : ∀ x ∈ X, x ∈ closure S)
@@ -51,11 +49,11 @@ theorem ManifoldZerosComplementConnected.isPreconnected_of_local {α : Type*} [T
   exact hne' y hyS (hW₁u ⟨hy₁, hyS⟩) (hW₂v ⟨hy₂, hyS⟩)
 
 /- English proof (translation)
-Set `e : OpenPartialHomeomorph E E` to `OpenPartialHomeomorph.univBall c r`. Establish `hsrc : e.source = univ` using `OpenPartialHomeomorph.univBall_source c r`. Establish `htgt : e.target = Metric.ball c r` using `OpenPartialHomeomorph.univBall_target c hr`. Establish `hc : (e ⁻¹' s).Countable` using `hs.preimage_of_injOn (e.injOn.mono (by rw [hsrc]; exact subset_univ _))`. Establish `hcont : ContinuousOn e univ` using `hsrc ▸ e.continuousOn`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heq : e '' (e ⁻¹' s)ᶜ = Metric.ball c r \ s`. Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, rfl⟩`. Conclude with `⟨htgt ▸ e.map_source (hsrc ▸ mem_univ v), hv⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨hw, hws⟩`. Rewrite `hw` using `[← htgt]`. Conclude with `⟨e.symm w, by simpa [mem_compl_iff, mem_preimage, e.right_inv hw] using hws, e.right_inv hw⟩`. Rewrite using `[← heq]`. Conclude with `(hc.isConnected_compl_of_one_lt_rank hE).isPreconnected.image e (hcont.mono (subset_univ _))`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ManifoldZerosComplementConnected.isPreconnected_ball_diff_countable {E : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] (hE : 1 < Module.rank ℝ E) (c : E) {r : ℝ} (hr : 0 < r)
@@ -77,17 +75,15 @@ theorem ManifoldZerosComplementConnected.isPreconnected_ball_diff_countable {E :
   exact (hc.isConnected_compl_of_one_lt_rank hE).isPreconnected.image e (hcont.mono (subset_univ _))
 
 /- English proof (translation)
-Establish `hev : ∀ z ∈ V, ∀ᶠ w in 𝓝[≠] z, φ w ≠ 0`. Introduce `z hz`. Break down `(hφ z hz).eventually_eq_zero_or_eventually_ne_zero with h | h` into its components or cases. Conclude with `absurd (hφ.eqOn_zero_of_preconnected_of_eventuallyEq_zero hV hz h hz₀) hφz₀`. Conclude with `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `ManifoldZerosComplementConnected.isPreconnected_of_local hV inter_subset_left ?_ ?_` and prove the remaining obligations. Introduce `z hz`. Establish `h1 : ∀ᶠ w in 𝓝[≠] z, w ∈ V ∩ {z | φ z ≠ 0}` using `((hev z hz).and (nhdsWithin_le_nhds (hVo.mem_nhds hz))).mono fun w hw => ⟨hw.2, hw.1⟩`. Conclude with `mem_closure_iff_frequently.mpr (h1.frequently.filter_mono nhdsWithin_le_nhds)`. Introduce `z hz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨r, hr, hrV⟩` from `Metric.isOpen_iff.mp hVo z hz`. Take `⟨r', hr', hr'φ⟩` from `Metric.eventually_nhds_iff_ball.mp (eventually_nhdsWithin_iff.mp (hev z hz))`. Establish `hρ : 0 < min r r'` using `lt_min hr hr'`. Use `⟨Metric.ball z (min r r'), Metric.isOpen_ball, Metric.mem_ball_self hρ, ?_⟩` and prove the remaining obligations. Establish `heq : Metric.ball z (min r r') ∩ (V ∩ {w | φ w ≠ 0}) = Metric.ball z (min r r') \ ({z} \ {w | φ w ≠ 0})`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Use extensionality with `w`. Simplify using `only [mem_inter_iff, Set.mem_sdiff, mem_singleton_iff, mem_ofPred_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hb, -, hne⟩`. Conclude with `⟨hb, fun h => h.2 hne⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Introduce and unpack `⟨hb, hw⟩`. Use `⟨hb, hrV (Metric.ball_subset_ball (min_le_left _ _) hb), ?_⟩` and prove the remaining obligations. Distinguish the cases in `hwz : w = z`. Introduce `h0`. Conclude with `hw ⟨hwz, fun h => h h0⟩`.
-
-Conclude with `hr'φ w (Metric.ball_subset_ball (min_le_right _ _) hb) hwz`. Rewrite using `[heq]`. Conclude with `ManifoldZerosComplementConnected.isPreconnected_ball_diff_countable (by rw [Complex.rank_real_complex]; exact_mod_cast (by norm_num : (1 : ℕ) < 2)) z hρ ((countable_singleton z).mono sdiff_subset)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ManifoldZerosComplementConnected.isPreconnected_inter_ne_zero_of_complex {V : Set ℂ}
     (hVo : IsOpen V) (hV : IsPreconnected V) {φ : ℂ → ℂ} (hφ : AnalyticOnNhd ℂ φ V) {z₀ : ℂ}
@@ -125,15 +121,13 @@ theorem ManifoldZerosComplementConnected.isPreconnected_inter_ne_zero_of_complex
       (by rw [Complex.rank_real_complex]; exact_mod_cast (by norm_num : (1 : ℕ) < 2)) z hρ ((countable_singleton z).mono sdiff_subset)
 
 /- English proof (translation)
-Use `isPreconnected_of_forall_pair ?_` and prove the remaining obligations. Introduce and unpack `p ⟨hpU, hp⟩ q ⟨hqU, hq⟩`. Set `ℓ : ℂ → E` to `fun t => p + t • (q - p)`. Establish `hℓc : Continuous ℓ` using `by fun_prop`. Establish `hℓa : ∀ t, AnalyticAt ℂ ℓ t` using `fun t => analyticAt_const.add (analyticAt_id.smul analyticAt_const)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hVo : IsOpen (ℓ ⁻¹' U)` using `hUo.preimage hℓc`. Establish `hVc : Convex ℝ (ℓ ⁻¹' U)`. Introduce `a ha b hb s t hs ht hst`. Establish `hmem` using `hUc ha hb hs ht hst`. Use `show ℓ (s • a + t • b) ∈ U`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `hmem using 1` and compare the differences between its conclusion and the goal. Take `rfl : t = 1 - s` from `by linarith`. Simplify using `only [ℓ, ← Complex.coe_smul]`. Use `push_cast`. Use `module`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : (0 : ℂ) ∈ ℓ ⁻¹' U` using `by simpa [ℓ] using hpU`. Establish `h1 : (1 : ℂ) ∈ ℓ ⁻¹' U` using `by simpa [ℓ] using hqU`. Use `⟨ℓ '' (ℓ ⁻¹' U ∩ {t | f (ℓ t) ≠ 0}), ?_, ⟨0, ⟨h0, by simpa [ℓ] using hp⟩, by simp [ℓ]⟩, ⟨1, ⟨h1, by simpa [ℓ] using hq⟩, by simp [ℓ]⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨t, ⟨htV, ht⟩, rfl⟩`. Conclude with `⟨htV, ht⟩`.
-
-Conclude with `(ManifoldZerosComplementConnected.isPreconnected_inter_ne_zero_of_complex hVo hVc.isPreconnected (φ := fun t => f (ℓ t)) (fun t ht => (hf (ℓ t) ht).comp (hℓa t)) h0 (by simpa [ℓ] using hp)).image ℓ hℓc.continuousOn`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ManifoldZerosComplementConnected.isPreconnected_convex_inter_ne_zero {E : Type*}
     [NormedAddCommGroup E] [NormedSpace ℂ E] {U : Set E} (hUo : IsOpen U) (hUc : Convex ℝ U)
@@ -165,37 +159,31 @@ theorem ManifoldZerosComplementConnected.isPreconnected_convex_inter_ne_zero {E 
       (by simpa [ℓ] using hp)).image ℓ hℓc.continuousOn
 
 /- English proof (translation)
-Introduce `σ _ R h hR hreg hh ⟨x₀, hx₀R, hx₀⟩`. Establish `chart : ∀ x ∈ R, ∃ (d : ℕ) (B : Set (Fin d → ℂ)) (W : Set (σ → ℂ)) (g : (Fin d → ℂ) → σ → ℂ), IsOpen B ∧ Convex ℝ B ∧ IsOpen W ∧ x ∈ W ∧ AnalyticOnNhd ℂ g B ∧ R ∩ W = g '' B`. Introduce `x hx`. Take `⟨-, d, A, O, V, g, hO, hV, hxV, hg, hAg, hRV⟩` from `hreg x hx`. Establish `hxO : A x ∈ O`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨y, hy, hgy⟩ : x ∈ g '' O` from `hRV ▸ ⟨hx, hxV⟩`. Rewrite using `[← hgy, hAg y hy]`. Conclude with `hy`. Take `⟨ε, hε, hεO⟩` from `Metric.isOpen_iff.mp hO (A x) hxO`. Use `⟨d, Metric.ball (A x) ε, V ∩ A ⁻¹' Metric.ball (A x) ε, g, Metric.isOpen_ball, convex_ball _ _, hV.inter (Metric.isOpen_ball.preimage A.continuous), ⟨hxV, Metric.mem_ball_self hε⟩, hg.mono hεO, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hzR, hzV, hzB⟩`. Take `⟨y, hy, rfl⟩ : z ∈ g '' O` from `hRV ▸ ⟨hzR, hzV⟩`. Establish `hAy : A (g y) ∈ Metric.ball (A x) ε` using `hzB`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hAy` using `[hAg y hy]`. Conclude with `⟨y, hAy, rfl⟩`. Introduce and unpack `⟨y, hy, rfl⟩`. Establish `hgy : g y ∈ R ∩ V` using `by rw [hRV]; exact ⟨y, hεO hy, rfl⟩`. Use `⟨hgy.1, hgy.2, ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show A (g y) ∈ Metric.ball (A x) ε`. Rewrite using `[hAg y (hεO hy)]`. Conclude with `hy`. Establish `chartR : ∀ {d : ℕ} {B : Set (Fin d → ℂ)} {W : Set (σ → ℂ)} {g : (Fin d → ℂ) → σ → ℂ}, R ∩ W = g '' B → ∀ y ∈ B, g y ∈ R`. Introduce `d B W g hRW y hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: g y ∈ R ∩ W` using `by rw [hRW]; exact ⟨y, hy, rfl⟩`. Conclude with `this.1`. Set `T : Set (σ → ℂ)` to `{x | ∀ᶠ z in 𝓝 x, z ∈ R → h z = 0}`. Establish `hTo : IsOpen T` using `isOpen_setOfPred_eventually_nhds`. Set `T₂ : Set (σ → ℂ)` to `{x | ∃ W, IsOpen W ∧ x ∈ W ∧ ∀ z ∈ W ∩ R, z ∉ T}`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hT₂o : IsOpen T₂` using `isOpen_iff_forall_mem_open.mpr fun x ⟨W, hW, hxW, hWT⟩ => ⟨W, fun y hy => ⟨W, hW, hy, hWT⟩, hW, hxW⟩`. Establish `hcov : R ⊆ T ∪ T₂`. Introduce `x hx`. Take `⟨d, B, W, g, hBo, hBc, hWo, hxW, hg, hRW⟩` from `chart x hx`. Establish `hhg : AnalyticOnNhd ℂ (fun y => h (g y)) B` using `fun y hy => (hh (g y) (chartR hRW y hy)).comp (hg y hy)`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hzero : ∃ y ∈ B, ∀ᶠ y' in 𝓝 y, h (g y') = 0`. Take `⟨y, hy, hev⟩` from `hzero`. Establish `hEq` using `hhg.eqOn_zero_of_preconnected_of_eventuallyEq_zero hBc.isPreconnected hy hev`. Use `left`. Use `show ∀ᶠ z in 𝓝 x, z ∈ R → h z = 0`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [hWo.mem_nhds hxW] with z hzW hzR`. Take `⟨y', hy', rfl⟩ : z ∈ g '' B` from `hRW ▸ ⟨hzR, hzW⟩`. Conclude with `hEq hy'`. Use `right`. Use `⟨W, hWo, hxW, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `z ⟨hzW, hzR⟩ hzT`. Take `⟨y, hy, rfl⟩ : z ∈ g '' B` from `hRW ▸ ⟨hzR, hzW⟩`. Establish `hzT' : ∀ᶠ w in 𝓝 (g y), w ∈ R → h w = 0` using `hzT`. Use `hzero ⟨y, hy, ?_⟩` and prove the remaining obligations. Use `filter_upwards [(hg y hy).continuousAt.tendsto.eventually hzT', hBo.mem_nhds hy] with y' h1 h2`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `h1 (chartR hRW y' h2)`. Establish `hTR : ∀ x ∈ R, ¬ ∀ᶠ z in 𝓝 x, z ∈ R → h z = 0`. Introduce `x hx hxT`. Establish `hx₀T₂ : x₀ ∈ T₂`. Break down `hcov hx₀R with h1 | h1` into its components or cases.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `absurd ((show ∀ᶠ z in 𝓝 x₀, z ∈ R → h z = 0 from h1).self_of_nhds hx₀R) hx₀`. Conclude with `h1`. Take `⟨y, hyR, hyT, W, -, hyW, hWT⟩` from `hR T T₂ hTo hT₂o hcov ⟨x, hx, hxT⟩ ⟨x₀, hx₀R, hx₀T₂⟩`. Conclude with `hWT y ⟨hyW, hyR⟩ hyT`. Use `ManifoldZerosComplementConnected.isPreconnected_of_local hR sdiff_subset ?_ ?_` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce `x hx`. Rewrite using `[mem_closure_iff_frequently]`. Conclude with `(Filter.not_eventually.mp (hTR x hx)).mono fun z hz => Classical.not_imp.mp hz`. Introduce `x hx`. Take `⟨d, B, W, g, hBo, hBc, hWo, hxW, hg, hRW⟩` from `chart x hx`.
-
-Establish `hhg : AnalyticOnNhd ℂ (fun y => h (g y)) B` using `fun y hy => (hh (g y) (chartR hRW y hy)).comp (hg y hy)`. Use `⟨W, hWo, hxW, ?_⟩` and prove the remaining obligations. Establish `heq : W ∩ (R \ {z | h z = 0}) = g '' (B ∩ {y | h (g y) ≠ 0})`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion.
-
-Introduce and unpack `⟨hzW, hzR, hz⟩`. Take `⟨y, hy, rfl⟩ : z ∈ g '' B` from `hRW ▸ ⟨hzR, hzW⟩`. Conclude with `⟨y, ⟨hy, hz⟩, rfl⟩`. Introduce and unpack `⟨y, ⟨hy, hy'⟩, rfl⟩`. Establish `hgy : g y ∈ R ∩ W` using `by rw [hRW]; exact ⟨y, hy, rfl⟩`.
-
-Conclude with `⟨hgy.2, hgy.1, hy'⟩`. Rewrite using `[heq]`. Conclude with `(ManifoldZerosComplementConnected.isPreconnected_convex_inter_ne_zero hBo hBc hhg).image g (hg.continuousOn.mono inter_subset_left)`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ManifoldZerosComplementConnected.proof : ManifoldZerosComplementConnected.Statement := by
   intro σ _ R h hR hreg hh ⟨x₀, hx₀R, hx₀⟩

@@ -22,9 +22,9 @@ open ReciprocityTheory.ChartRestriction.G.PullbackSections GlobalTheory.LieMet
 section Alg
 
 /- English proof (translation)
-Set `M : Matrix (Fin k) (Fin g) K` to `Matrix.of fun l i => a (Fin.castLE hk l) i`. Establish `hM : LinearIndependent K M.row` using `ha.comp _ (Fin.castLE_injective hk)`. Take `⟨κ, b, hb, hsp, hli⟩` from `exists_linearIndependent' K M.col`. Establish `: Finite κ` using `Finite.of_injective b hb`. Set `: Fintype κ` to `Fintype.ofFinite κ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hκ : Fintype.card κ = k`. Rewrite using `[← finrank_span_eq_card hli, hsp, ← Matrix.rank_eq_finrank_span_cols, hM.rank_matrix, Fintype.card_fin]`. Set `e : Fin k ≃ κ` to `(Fintype.equivFinOfCardEq hκ).symm`. Establish `h1 : LinearIndependent K (M.submatrix id (b ∘ e)).col` using `hli.comp e e.injective`. Conclude with `⟨b ∘ e, ((Matrix.isUnit_iff_isUnit_det _).1 (Matrix.linearIndependent_cols_iff_isUnit.1 h1)).ne_zero⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_minor_ne_zero {K : Type} [Field K] {m g k : ℕ} (a : Fin m → Fin g → K) (ha : LinearIndependent K a)
     (hk : k ≤ m) : ∃ s, minor a hk s ≠ 0 := by
@@ -41,18 +41,18 @@ theorem exists_minor_ne_zero {K : Type} [Field K] {m g k : ℕ} (a : Fin m → F
   exact ⟨b ∘ e, ((Matrix.isUnit_iff_isUnit_det _).1 (Matrix.linearIndependent_cols_iff_isUnit.1 h1)).ne_zero⟩
 
 /- English proof (translation)
-Rewrite using `[minor, RingHom.map_det]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem map_minor {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) {m g k : ℕ} (a : Fin m → Fin g → R)
     (hk : k ≤ m) (s : Fin k → Fin g) : φ (minor a hk s) = minor (fun l i => φ (a l i)) hk s := by
   rw [minor, RingHom.map_det]; rfl
 
 /- English proof (translation)
-Set `T' : Matrix (Fin k) (Fin k) R` to `Matrix.of fun i l => T (Fin.castLE hk i) (Fin.castLE hk l)`. Establish `h1 : T'.det = ∏ l : Fin k, T (Fin.castLE hk l) (Fin.castLE hk l)` using `Matrix.det_of_isLowerTriangular T' fun i l hl => hT _ _ hl`. Rewrite using `[← h1, minor, minor, ← Matrix.det_mul]`. Use `congr 1`. Use extensionality with `i j`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `only [Matrix.of_apply, Matrix.mul_apply, h, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, T']`. Use `symm`. Use `Finset.sum_of_injOn (Fin.castLE hk) (Fin.castLE_injective hk).injOn (by simp) (fun l _ hl => ?_) (fun _ _ => rfl)` and prove the remaining obligations. Rewrite using `[hT, zero_mul]`. Assume the negation of the conclusion as `hc`.
+Simplify using the standard rewrite rules. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hl ⟨⟨l, by have := i.2; simp only [Fin.lt_def, Fin.val_castLE] at hc; omega⟩, by simp, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem minor_tri {R : Type} [CommRing R] {m g k : ℕ} (a b : Fin m → Fin g → R) (T : Fin m → Fin m → R)
     (hT : ∀ i l, i < l → T i l = 0) (h : ∀ i, b i = ∑ l, T i l • a l) (hk : k ≤ m) (s : Fin k → Fin g) :
@@ -72,9 +72,9 @@ theorem minor_tri {R : Type} [CommRing R] {m g k : ℕ} (a b : Fin m → Fin g �
   exact hl ⟨⟨l, by have := i.2; simp only [Fin.lt_def, Fin.val_castLE] at hc; omega⟩, by simp, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.eval₂_eq, MvPolynomial.eval₂_eq, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun n hn => ?_` and prove the remaining obligations. Establish `h1 : ∑ i ∈ n.support, n i = d`. Use `hP (MvPolynomial.mem_support_iff.1 hn)` as an intermediate fact. Conclude with `(congrArg (fun q => q n) Finsupp.degree_eq_weight_one).trans this`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, h1]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem eval₂_homog {A R σ : Type} [CommRing A] [CommRing R] (φ : A →+* R) {P : MvPolynomial σ A} {d : ℕ}
     (hP : P.IsHomogeneous d) (c : R) (x : σ → R) :
@@ -88,11 +88,11 @@ theorem eval₂_homog {A R σ : Type} [CommRing A] [CommRing R] (φ : A →+* R)
   ring
 
 /- English proof (translation)
-Break down `isEmpty_or_nonempty (Fin n) with hn | hn` into its components or cases. Simplify using the standard rewrite rules. Take `⟨i, hi⟩` from `Finite.exists_max fun i => ‖io (b i)‖`. Establish `e1 : ⨆ j, ‖io (b j)‖ = ‖io (b i)‖` using `le_antisymm (ciSup_le hi) (le_ciSup (f := fun j => ‖io (b j)‖) (Finite.bddAbove_range _) i)`. Establish `e2 : ⨆ j, w (b j) = w (b i)`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `le_antisymm (ciSup_le fun j => ?_) (le_ciSup (f := fun j => w (b j)) (Finite.bddAbove_range _) i)` and prove the remaining obligations. Break down `eq_or_ne (b i) 0 with h0 | h0` into its components or cases. Use `hi j` as an intermediate fact. Rewrite `this` using `[h0, map_zero, norm_zero, norm_le_zero_iff, map_eq_zero]`. Rewrite using `[this, h0]`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `h1 (b j / b i) (by` as an intermediate fact. Rewrite using `[map_div₀, norm_div]`. Conclude with `div_le_one_of_le₀ (hi j) (norm_nonneg _))`. Rewrite `this` using `[map_div₀, div_le_one (w.pos h0)]`. Then use the resulting hypothesis. Rewrite using `[e1, e2, h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem log_iSup {K C : Type} [Field K] [NormedField C] (w : AbsoluteValue K ℝ) (io : K →+* C) (c : ℝ)
     (h1 : ∀ a, ‖io a‖ ≤ 1 → w a ≤ 1) (h2 : ∀ a, Real.log (w a) = c * Real.log ‖io a‖) {n : ℕ} (b : Fin n → K) :
@@ -122,7 +122,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {t : SAB H X}
 
 /- English proof (translation)
-Rewrite using `[← Category.assoc, spMap_comp']`. Use `congr 2`. Use `RingHom.ext fun z => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [dualMap]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dual_comp {R S T : Type} [CommRing R] [CommRing S] [CommRing T] (φ : R →+* S) (ψ : S →+* T) {Z : Scheme.{0}}
     (v : Sp (DualNumber R) ⟶ Z) :
@@ -135,7 +135,7 @@ theorem dual_comp {R S T : Type} [CommRing R] [CommRing S] [CommRing T] (φ : R 
 variable {R : Type} [CommRing R] {x : Sp R ⟶ X} {m g : ℕ}
 
 /- English proof (translation)
-Establish `h0 : IsCombAtG t x u a (tv (∑ l, a l • tanOf (hu l))).left` using `(isComb_iff (fun l => tanOf (hu l)) a _).2 rfl`. Use `⟨fun h => ?_, fun h => h ▸ h0⟩` and prove the remaining obligations. Conclude with `((isCombAtG_iff t x (fun j => ovT (hu j)) a _).1 h).symm.trans ((isCombAtG_iff t x (fun j => ovT (hu j)) a _).1 h0)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem comb_iff {u : Fin m → (Sp (DualNumber R) ⟶ t.G.left)} (hu : ∀ l, IsTanAtG t x (u l)) (a : Fin m → R)
     (w : Sp (DualNumber R) ⟶ t.G.left) :
@@ -146,14 +146,14 @@ theorem comb_iff {u : Fin m → (Sp (DualNumber R) ⟶ t.G.left)} (hu : ∀ l, I
     ((isCombAtG_iff t x (fun j => ovT (hu j)) a _).1 h0)
 
 /- English proof (translation)
-The claim follows from `(comb_iff hu a w).1 h ▸ isTan_tv _`.
+A detailed English derivation is pending.
 -/
 theorem comb_tan {u : Fin m → (Sp (DualNumber R) ⟶ t.G.left)} (hu : ∀ l, IsTanAtG t x (u l)) {a : Fin m → R}
     {w : Sp (DualNumber R) ⟶ t.G.left} (h : IsCombAtG t x u a w) : IsTanAtG t x w :=
   (comb_iff hu a w).1 h ▸ isTan_tv _
 
 /- English proof (translation)
-Establish `h : ∀ l, tanOf (hu l) = ∑ i, a l i • tanOf (he i)` using `fun l => tan_ext ((comb_iff he _ _).1 (ha l))`. Simplify using `only [h, Finset.smul_sum, Finset.sum_apply, Finset.sum_smul, Pi.smul_apply, smul_smul, smul_eq_mul]`. Conclude with `Finset.sum_comm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_comb {e : Fin g → (Sp (DualNumber R) ⟶ t.G.left)} (he : ∀ i, IsTanAtG t x (e i))
     {u : Fin m → (Sp (DualNumber R) ⟶ t.G.left)} (hu : ∀ l, IsTanAtG t x (u l)) {a : Fin m → Fin g → R}
@@ -164,7 +164,7 @@ theorem sum_comb {e : Fin g → (Sp (DualNumber R) ⟶ t.G.left)} (he : ∀ i, I
   exact Finset.sum_comm
 
 /- English proof (translation)
-Establish `hu` using `fun l => comb_tan he (ha l)`. Rewrite using `[comb_iff he, ← sum_comb he hu ha]`. Conclude with `(comb_iff hu _ _).1 hw`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comb_comb {e : Fin g → (Sp (DualNumber R) ⟶ t.G.left)} (he : ∀ i, IsTanAtG t x (e i))
     {u : Fin m → (Sp (DualNumber R) ⟶ t.G.left)} {a : Fin m → Fin g → R}
@@ -175,7 +175,7 @@ theorem comb_comb {e : Fin g → (Sp (DualNumber R) ⟶ t.G.left)} (he : ∀ i, 
   exact (comb_iff hu _ _).1 hw
 
 /- English proof (translation)
-Establish `hu` using `fun l => comb_tan he (ha l)`. Use `Fintype.linearIndependent_iff.2 fun c hc => congrFun (hi c 0 _ ((comb_iff hu _ _).2 rfl) ?_)` and prove the remaining obligations. Rewrite using `[comb_iff hu, sum_comb he hu ha, hc]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem linInd {e : Fin g → (Sp (DualNumber R) ⟶ t.G.left)} (he : ∀ i, IsTanAtG t x (e i))
     {u : Fin m → (Sp (DualNumber R) ⟶ t.G.left)} {a : Fin m → Fin g → R}
@@ -190,21 +190,21 @@ end Tan
 section Geo
 
 /- English proof (translation)
-The claim follows from `congrArg CommRingCat.Hom.hom (Spec.map_injective ((cancel_mono _).1 h))`.
+A detailed English derivation is pending.
 -/
 theorem ringHom_ext {S : Scheme.{0}} {V : S.Opens} (hV : IsAffineOpen V) {R : Type} [CommRing R]
     {φ φ' : Γ(S, V) →+* R} (h : spMap φ ≫ hV.fromSpec = spMap φ' ≫ hV.fromSpec) : φ = φ' :=
   congrArg CommRingCat.Hom.hom (Spec.map_injective ((cancel_mono _).1 h))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(GlobalTheory.Points.valMap x V h).hom, GlobalTheory.Points.specMap_valMap_fromSpec hV x h⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_ringHom {S : Scheme.{0}} {V : S.Opens} (hV : IsAffineOpen V) {R : Type} [CommRing R]
     (x : Sp R ⟶ S) (h : ⊤ ≤ x ⁻¹ᵁ V) : ∃ φ : Γ(S, V) →+* R, spMap φ ≫ hV.fromSpec = x :=
   ⟨(GlobalTheory.Points.valMap x V h).hom, GlobalTheory.Points.specMap_valMap_fromSpec hV x h⟩
 
 /- English proof (translation)
-Use `⟨(S.presheaf.germ V _ h ≫ j.stalkMap y).hom, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.SpecMap_stalkMap_fromSpecStalk, ← hV.fromSpecStalk_eq_fromSpecStalk h, IsAffineOpen.fromSpecStalk, ← Category.assoc, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_stalkHom {S Y : Scheme.{0}} {V : S.Opens} (hV : IsAffineOpen V) (j : Y ⟶ S) (y : Y) (h : j y ∈ V) :
     ∃ φ : Γ(S, V) →+* Y.presheaf.stalk y, spMap φ ≫ hV.fromSpec = Y.fromSpecStalk y ≫ j := by
@@ -214,9 +214,9 @@ theorem exists_stalkHom {S Y : Scheme.{0}} {V : S.Opens} (hV : IsAffineOpen V) (
   rfl
 
 /- English proof (translation)
-Use `IsIntegrallyClosed.of_localization_maximal fun p _ hp => ?_` and prove the remaining obligations. Set `y : PrimeSpectrum Γ(S, V)` to `⟨p, hp.isPrime⟩`. Establish `hy : hV.fromSpec y ∈ V`. Rewrite using `[← SetLike.mem_coe, ← hV.range_fromSpec]`. Conclude with `⟨y, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Set `_` to `(S.presheaf.germ V _ hy).hom.toAlgebra`. Establish `h1 : IsLocalization.AtPrime (S.presheaf.stalk (hV.fromSpec y)) p` using `hV.isLocalization_stalk' y hy`. Use `(hS (hV.fromSpec y)).2` as an intermediate fact. Conclude with `IsIntegrallyClosed.of_equiv (IsLocalization.algEquiv p.primeCompl (S.presheaf.stalk (hV.fromSpec y)) (Localization.AtPrime p)).toRingEquiv`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isIntegrallyClosed_sections {S : Scheme.{0}} (hS : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme S) {V : S.Opens} (hV : IsAffineOpen V)
     [IsDomain Γ(S, V)] : IsIntegrallyClosed Γ(S, V) := by
@@ -233,7 +233,7 @@ theorem isIntegrallyClosed_sections {S : Scheme.{0}} (hS : ReciprocityTheory.Cha
 variable {F : Type} [Field F] [NumberField F] {Y : Var F}
 
 /- English proof (translation)
-Use `(IsUnit.mk0 (c : F) (by exact_mod_cast hc)).map (Spec.preimage (Y.X.fromSpecStalk y ≫ Y.str)).hom` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isUnit_natCast (y : Y.X) {c : ℕ} (hc : c ≠ 0) : IsUnit (c : Y.X.presheaf.stalk y) := by
   have := (IsUnit.mk0 (c : F) (by exact_mod_cast hc)).map (Spec.preimage (Y.X.fromSpecStalk y ≫ Y.str)).hom
@@ -241,7 +241,7 @@ theorem isUnit_natCast (y : Y.X) {c : ℕ} (hc : c ≠ 0) : IsUnit (c : Y.X.pres
 
 omit [NumberField F] in
 /- English proof (translation)
-The claim follows from `Scheme.SpecMap_stalkSpecializes_fromSpecStalk (genericPoint_specializes y)`.
+A detailed English derivation is pending.
 -/
 theorem gen_eq (y : Y.X) :
     spMap (algebraMap (Y.X.presheaf.stalk y) Y.X.functionField) ≫ stalkPt Y y = genericPt Y :=
@@ -255,7 +255,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {t : SAB H X} {A : Type} [CommRing A] {x₀ : Sp A ⟶ X} {g m : ℕ} {e : Fin g → (Sp (DualNumber A) ⟶ t.G.left)}
 
 /- English proof (translation)
-Use `GlobalTheory.LatDRFree.comb_map t ψ h` as an intermediate fact. Simplify using `only [dual_comp] at this`. Rewrite `this` using `[← Category.assoc, spMap_comp']`. Then use the resulting hypothesis.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem coord_map {R S : Type} [CommRing R] [CommRing S] (α : A →+* R) (ψ : R →+* S) {a : Fin g → R}
     {w : Sp (DualNumber R) ⟶ t.G.left}
@@ -267,7 +267,7 @@ theorem coord_map {R S : Type} [CommRing R] [CommRing S] (α : A →+* R) (ψ : 
   rwa [← Category.assoc, spMap_comp'] at this
 
 /- English proof (translation)
-Rewrite `hi` using `[← Category.assoc, spMap_comp']`. Conclude with `linInd (fun i => isTan_map _ rfl (he.1 i)) (fun l => coord_map α ψ (h l)) hi`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coord_linInd (he : IsTanBasis t x₀ e) {R S : Type} [CommRing R] [CommRing S] (α : A →+* R) (ψ : R →+* S)
     {a : Fin m → Fin g → R} {u : Fin m → (Sp (DualNumber R) ⟶ t.G.left)}
@@ -278,7 +278,7 @@ theorem coord_linInd (he : IsTanBasis t x₀ e) {R S : Type} [CommRing R] [CommR
   exact linInd (fun i => isTan_map _ rfl (he.1 i)) (fun l => coord_map α ψ (h l)) hi
 
 /- English proof (translation)
-Take `rfl : hp = stepLog._proof_2 v hp'` from `rfl`. Substitute `hψ` using the available equality. Conclude with `dif_pos hp'`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem stepLog_eq {F : Type} [Field F] [NumberField F] {Y : Var F} (ρ : Y.X ⟶ X)
     (f : ∀ y : Y.X, Fin m → (Sp (DualNumber (Y.X.presheaf.stalk y)) ⟶ t.G.left)) (q : ℕ) (i : Fin m)
@@ -300,37 +300,33 @@ end GlobalTheory.LineNorm.Chart
 open GlobalTheory.LineNorm.Chart GlobalTheory.LieMet in
 
 /- English proof (translation)
-Introduce `hB E _ _ _ H X _ t hX F _ _ Y M ρ' ρ hM hρ m u₀ f d hf q k hk z`. Substitute `hρ` using the available equality. Take `⟨⟨V, hV⟩, g, e, hz, he⟩` from `GlobalTheory.T.exists_affine_tangent_basis_locally E H X t M.X ρ' z`. Use `replace hV : IsAffineOpen V := hV`. Simplify using `only at e hz he`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Establish an intermediate fact.
 
-Use `M.ar.isIntegral` as an intermediate fact. Use `M.ar.isLocallyNoetherian` as an intermediate fact. Establish `: Nonempty V` using `⟨⟨z, hz⟩⟩`. Establish `hgen : M.j (genericPoint Y.X) ∈ V` using `(SmallSec.j_gen_specializes M).mem_open V.isOpen (gen_mem hz)`. Use `choose α hα using fun (y : Y.X) (hy : M.j y ∈ V) => exists_stalkHom hV M.j y hy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hα' : ∀ y hy, spMap (α y hy) ≫ hV.fromSpec ≫ ρ' = stalkPt Y y ≫ M.j ≫ ρ'` using `fun y hy => by`. Rewrite using `[← Category.assoc, hα, Category.assoc]`. Both sides reduce to the same expression. Set `ι₀ : Γ(M.X, V) →+* Y.Fn` to `α _ hgen`. Establish `hι : spMap ι₀ ≫ hV.fromSpec ≫ ρ' = genericPt Y ≫ M.j ≫ ρ'` using `hα' _ hgen`.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hαι : ∀ y hy, (algebraMap (Y.X.presheaf.stalk y) Y.X.functionField).comp (α y hy) = ι₀` using `fun y hy => ringHom_ext hV (by`. Rewrite using `[← spMap_comp', Category.assoc, hα, ← Category.assoc]`. Conclude with `(congrArg (· ≫ M.j) (gen_eq y)).trans (hα _ hgen).symm)`. Establish `: IsIntegrallyClosed Γ(M.X, V)` using `isIntegrallyClosed_sections hM hV`. Establish `: IsNoetherianRing Γ(M.X, V)` using `IsLocallyNoetherian.component_noetherian ⟨V, hV⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `: CharZero Y.Fn` using `charZero_of_inj_zero fun n hn => by`. Assume the negation of the conclusion as `hc`. Conclude with `(isUnit_natCast (genericPoint Y.X) hc).ne_zero hn`. Establish `: CharZero Γ(M.X, V)` using `ι₀.charZero`. Take `⟨D, n, B, hB1, hB2, hB3⟩` from `GlobalTheory.T.exists_homogeneous_polys_tangent_basis hB E H X t hX Γ(M.X, V) _ g e he q k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `ha : ∀ y (hy : M.j y ∈ V) l, ∃ a, IsCombAtG t (spMap (α y hy) ≫ hV.fromSpec ≫ ρ') (fun i => spMap (dualMap (α y hy)) ≫ e i) a (f y l)` using `fun y hy l => (he.2 _ (α y hy) (f y l) (by rw [hα']; exact hf.tan y l)).exists`. Use `choose a ha using ha`. Establish `key : ∀ y (hy : M.j y ∈ V) i, ∃ cf : Fin m → Y.Fn, cf i = d y i ∧ (∀ k, i < k → cf k = 0) ∧ IsCombAtG t (spMap ι₀ ≫ hV.fromSpec ≫ ρ') (fun i => spMap (dualMap ι₀) ≫ e i) (∑ l, cf l • fun j => algebraMap (Y.X.presheaf.stalk y) Y.X.functionField (a y hy l j)) (u₀ i)`. Introduce `y hy i`. Take `⟨cf, h1, h2, h3⟩` from `hf.tri y i`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨cf, h1, h2, comb_comb (fun j => isTan_map _ rfl (he.1 j)) (fun l => ?_) (hι ▸ h3)⟩` and prove the remaining obligations. Use `coord_map _ (algebraMap (Y.X.presheaf.stalk y) Y.X.functionField) (ha y hy l)` as an intermediate fact. Rewrite `this` using `[hαι]`. Then use the resulting hypothesis. Use `choose T hT1 hT2 hT3 using key`. Establish `hA₀ : ∀ i, ∃ b, IsCombAtG t (spMap ι₀ ≫ hV.fromSpec ≫ ρ') (fun i => spMap (dualMap ι₀) ≫ e i) b (u₀ i)` using `fun i => ⟨_, hT3 _ hgen i⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `choose A₀ hA₀ using hA₀`. Establish `hA : ∀ y hy i, A₀ i = ∑ l, T y hy i l • fun j => algebraMap _ Y.X.functionField (a y hy l j)` using `fun y hy i => (he.2 _ ι₀ (u₀ i) (comb_tan (fun j => isTan_map _ rfl (he.1 j)) (hT3 y hy i))).unique (hA₀ i) (hT3 y hy i)`. Establish `hs : ∀ y hy i, MvPolynomial.eval₂ ι₀ (minor A₀ hk) (B i) * ((((∏ l : Fin k, d y (Fin.castLE hk l))⁻¹ ^ (D : ℕ) : Y.Fnˣ)) : Y.Fn) = algebraMap _ Y.X.functionField (MvPolynomial.eval₂ (α y hy) (minor (a y hy) hk) (B i))`. Introduce `y hy i`. Establish `e1 : minor A₀ hk = fun s => ((∏ l : Fin k, d y (Fin.castLE hk l) : Y.Fnˣ) : Y.Fn) * algebraMap _ Y.X.functionField (minor (a y hy) hk s)` using `funext fun s => by`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[minor_tri _ A₀ (T y hy) (hT2 y hy) (hA y hy), map_minor, Units.coe_prod]`. Simplify using `only [hT1]`. Rewrite using `[e1, eval₂_homog _ (hB1 i), MvPolynomial.eval₂_comp_left, hαι, mul_comm, ← _root_.mul_assoc, ← Units.val_pow_eq_pow_val, ← Units.val_mul, ← mul_pow, inv_mul_cancel, one_pow, Units.val_one, _root_.one_mul]`. Both sides reduce to the same expression. Establish `hli : ∀ y hy (K : Type) [Field K] (ψ : Y.X.presheaf.stalk y →+* K), LinearIndependent K fun l i => ψ (a y hy l i)` using `fun y hy K _ ψ => coord_linInd he _ ψ (ha y hy) (by rw [hα']; exact hf.indep y K ψ)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨V, D, n, fun i => MvPolynomial.eval₂ ι₀ (minor A₀ hk) (B i), hz, fun y hy => ⟨fun i => ⟨_, (hs y hy i).symm⟩, ?_⟩, fun v ε y yt hyt hin => ?_⟩` and prove the remaining obligations. Take `⟨s, hs0⟩` from `exists_minor_ne_zero _ (hli y hy _ (IsLocalRing.residue _)) hk`. Rewrite `hs0` using `[← map_minor, IsLocalRing.residue_ne_zero_iff_isUnit]`. Take `⟨i, c, hc, hi⟩` from `hB2 s`. Use `⟨i, _, ?_, (hs y hy i).symm⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[hi, MvPolynomial.eval₂_mul, MvPolynomial.eval₂_C, MvPolynomial.eval₂_pow, MvPolynomial.eval₂_X, map_natCast]`. Conclude with `(isUnit_natCast y hc).mul (hs0.pow _)`. Take `⟨hp, h1, h2⟩` from `ioOf_spec F v ε`. Use `Fact.mk hp` as an intermediate fact. Take `⟨β, hβ⟩` from `exists_ringHom hV yt hin`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hy : M.j (below y.1) ∈ V`. Establish `: (spMap ε.O.subtype ≫ yt) (IsLocalRing.closedPoint _) ∈ V` using `hin (Set.mem_univ _)`. Rewrite `this` using `[hyt]`. Then use the resulting hypothesis. Take `⟨σ, hσ₀⟩ : ∃ σ : Y.X.presheaf.stalk (below y.1) →+* AlgebraicClosure F, σ = (Scheme.stalkClosedPointTo y.1).hom` from `⟨_, rfl⟩`. Establish `hσ : σ.comp (α _ hy) = ε.O.subtype.comp β` using `ringHom_ext hV (by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← spMap_comp', ← spMap_comp', Category.assoc, Category.assoc, hα, hβ, hyt, ← Category.assoc, hσ₀]`. Conclude with `congrArg (· ≫ M.j) (Scheme.Spec_stalkClosedPointTo_fromSpecStalk y.1))`. Take `⟨ψ, hψ⟩ : ∃ ψ, ψ = (ioOf (resP v) ε).comp σ` from `⟨_, rfl⟩`. Establish `h3` using `hB3 (resP v) (ψ.comp (α _ hy)) (fun b => by`. Establish `: σ (α _ hy b) = β b` using `congrArg (fun q => q b) hσ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[hψ, RingHom.comp_apply, RingHom.comp_apply, h1, this]`. Conclude with `(β b).2) m hk _ _ (hli _ hy _ ψ)`. Use `fun l => coord_map _ ψ (ha _ hy l)`. Rewrite `h3` using `[← spMap_comp', Category.assoc, hα']`. Establish `hv : ∀ b, valAt y.1 (algebraMap (Y.X.presheaf.stalk (below y.1)) Y.X.functionField b) = σ b` using `fun b => by`.
-
-Rewrite using `[hσ₀]`. Conclude with `Base.valAt_stalk _ _`. Establish `h4 : ∀ i, MvPolynomial.eval₂ (ψ.comp (α _ hy)) (minor (fun l j => ψ (a _ hy l j)) hk) (B i) = ioOf (resP v) ε (σ (MvPolynomial.eval₂ (α _ hy) (minor (a _ hy) hk) (B i)))` using `fun i => by`. Rewrite using `[← RingHom.comp_apply, ← hψ, MvPolynomial.eval₂_comp_left]`. Use `congr 1`.
-
-Use function extensionality and compare the values at `s`. Conclude with `(map_minor ψ _ hk s).symm`. Simplify using `only [h4] at h3`. Simplify using `only [hs _ hy, hv]`. Rewrite using `[log_iSup ε.w (ioOf (resP v) ε) _ (fun b hb => (ε.mem_O b).1 ((h1 b).1 hb)) h2, ← h3, Finset.sum_congr rfl fun l _ => stepLog_eq _ f q _ v ε y hp ψ (by rw [hψ, hσ₀]), ← Finset.mul_sum, mul_left_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.LineNorm.Chart.locMax_flag : HTBoundSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X : Scheme.{0}) [IsLocallyNoetherian X] (t : SAB H X), X.IsSeparated → ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (M : GlobalTheory.TrueGeo.Model Y) (ρ' : M.X ⟶ X) (ρ : Y.X ⟶ X), IsNormalScheme M.X → M.j ≫ ρ' = ρ → ∀ (m : ℕ) (u₀ : Fin m → (Sp (DualNumber Y.Fn) ⟶ t.G.left)) (f : ∀ y : Y.X, Fin m → (Sp (DualNumber (Y.X.presheaf.stalk y)) ⟶ t.G.left)) (d : Y.X → Fin m → Y.Fnˣ), IsFlagFrame t ρ u₀ f d → ∀ (q k : ℕ) (hk : k ≤ m) (z : M.X), LocMax M (fun y => ∏ l : Fin k, d y (Fin.castLE hk l)) (fun v e y => ∑ l : Fin k, stepLog t ρ f q (Fin.castLE hk l) v e y) z := by
   intro hB E _ _ _ H X _ t hX F _ _ Y M ρ' ρ hM hρ m u₀ f d hf q k hk z

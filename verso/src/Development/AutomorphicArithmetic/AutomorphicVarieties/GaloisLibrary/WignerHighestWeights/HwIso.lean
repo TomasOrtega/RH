@@ -6,33 +6,31 @@ open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.Al
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `ι V _ _ _ n F V' _ _ F' hF hF' hS hS' ν v v' hv0 hv0' hv hv'`. Set `P : ι → Fin n → Fin n → Module.End ℂ (V × V')` to `fun t i j => (F t i j).prodMap (F' t i j)`. Establish `hPa : ∀ t i j (x : V) (y : V'), P t i j (x, y) = (F t i j x, F' t i j y)` using `fun _ _ _ _ _ => rfl`. Establish `hP : IsMultiGl P`. Use `⟨fun t i j k l => ?_, fun s t hst i j k l => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `LinearMap.ext fun z => ?_` and prove the remaining obligations. Establish `e` using `LinearMap.congr_fun (hF.1 t i j k l) z.1`. Establish `e'` using `LinearMap.congr_fun (hF'.1 t i j k l) z.2`. Use `Prod.ext (e.trans ?_) (e'.trans ?_)` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> rfl`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> rfl`. Use `LinearMap.ext fun z => ?_` and prove the remaining obligations. Conclude with `Prod.ext (LinearMap.congr_fun (hF.2 s t hst i j k l) z.1) (LinearMap.congr_fun (hF'.2 s t hst i j k l) z.2)`. Establish `hvv : ∀ t, Formalism.REAL.IsHW (P t) (ν t) (v, v')` using `fun t => ⟨fun i => Prod.ext ((hv t).1 i) ((hv' t).1 i), fun i j h => Prod.ext ((hv t).2 i j h) ((hv' t).2 i j h)⟩`. Take `⟨hm, hst⟩` from `lowStab ι (V × V') n P hP ν (v, v') hvv`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hl` using `lowLine ι (V × V') n P hP ν (v, v') hvv`. Generalize the expression as in `low P (v, v') = W at hm hst hl`. Establish `hA : ∀ y : V', ((0 : V), y) ∈ W → y = 0`. Break down `hS' (W.comap (LinearMap.inr ℂ V V')) (fun t i j w hw => by` into its components or cases. Use `hst t i j _ hw` as an intermediate fact.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[LinearMap.inr_apply, hPa, map_zero] at this) with h | h` and apply the resulting hypothesis. Conclude with `fun y hy => (Submodule.eq_bot_iff _).1 h y hy`. Establish `h1 : ((0 : V), v') ∈ W` using `(Submodule.eq_top_iff'.1 h v' :)`. Take `⟨c, hc⟩` from `hl _ h1 fun t k => by`. Rewrite using `[hPa, map_zero, (hv' t).1 k, Prod.smul_mk, smul_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : c = 0` using `(smul_eq_zero.1 (congrArg Prod.fst hc).symm).resolve_right hv0`. Rewrite `hc` using `[h2, zero_smul]`. Conclude with `absurd (congrArg Prod.snd hc) hv0'`. Establish `hB : ∀ x : V, (x, (0 : V')) ∈ W → x = 0`. Break down `hS (W.comap (LinearMap.inl ℂ V V')) (fun t i j w hw => by` into its components or cases.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `hst t i j _ hw` as an intermediate fact. Rewrite using `[LinearMap.inl_apply, hPa, map_zero] at this) with h | h` and apply the resulting hypothesis. Conclude with `fun y hy => (Submodule.eq_bot_iff _).1 h y hy`. Establish `h1 : (v, (0 : V')) ∈ W` using `(Submodule.eq_top_iff'.1 h v :)`. Take `⟨c, hc⟩` from `hl _ h1 fun t k => by`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hPa, map_zero, (hv t).1 k, Prod.smul_mk, smul_zero]`. Establish `h2 : c = 0` using `(smul_eq_zero.1 (congrArg Prod.snd hc).symm).resolve_right hv0'`. Rewrite `hc` using `[h2, zero_smul]`. Conclude with `absurd (congrArg Prod.fst hc) hv0`. Establish `hC : W.map (LinearMap.fst ℂ V V') = ⊤`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Use `(hS _ ?_).resolve_left fun h => hv0 ((Submodule.eq_bot_iff _).1 h v ⟨_, hm, rfl⟩)` and prove the remaining obligations. Introduce and unpack `t i j _ ⟨z, hz, rfl⟩`. Conclude with `⟨_, hst t i j z hz, rfl⟩`. Establish `hD : W.map (LinearMap.snd ℂ V V') = ⊤`. Use `(hS' _ ?_).resolve_left fun h => hv0' ((Submodule.eq_bot_iff _).1 h v' ⟨_, hm, rfl⟩)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce and unpack `t i j _ ⟨z, hz, rfl⟩`. Conclude with `⟨_, hst t i j z hz, rfl⟩`. Establish `b1 : Function.Bijective ((LinearMap.fst ℂ V V').comp W.subtype)`. Use `⟨(injective_iff_map_eq_zero _).2 ?_, fun x => ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨⟨x, y⟩, hz⟩ (rfl : x = 0)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `Subtype.ext (Prod.ext rfl (hA y hz))`. Take `⟨z, hz, rfl⟩` from `Submodule.eq_top_iff'.1 hC x`. Conclude with `⟨⟨z, hz⟩, rfl⟩`. Establish `b2 : Function.Bijective ((LinearMap.snd ℂ V V').comp W.subtype)`. Use `⟨(injective_iff_map_eq_zero _).2 ?_, fun x => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce and unpack `⟨⟨x, y⟩, hz⟩ (rfl : y = 0)`. Conclude with `Subtype.ext (Prod.ext (hB x hz) rfl)`. Take `⟨z, hz, rfl⟩` from `Submodule.eq_top_iff'.1 hD x`. Conclude with `⟨⟨z, hz⟩, rfl⟩`. Establish `key : ∀ z : W, ((LinearEquiv.ofBijective _ b1).symm.trans (LinearEquiv.ofBijective _ b2)) z.1.1 = z.1.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `z`. Establish `: (LinearEquiv.ofBijective _ b1).symm z.1.1 = z` using `(LinearEquiv.ofBijective _ b1).symm_apply_apply z`. Rewrite using `[LinearEquiv.trans_apply, this]`. Both sides reduce to the same expression. Use `⟨(LinearEquiv.ofBijective _ b1).symm.trans (LinearEquiv.ofBijective _ b2), fun t i j x => ?_⟩` and prove the remaining obligations.
-
-Take `⟨z, rfl⟩` from `b1.2 x`. Conclude with `(key ⟨_, hst t i j z.1 z.2⟩).trans (congrArg (F' t i j) (key z).symm)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgRepEndIrreducible.hwIso :
     ∀ (ι V : Type) [Fintype ι] [AddCommGroup V] [Module ℂ V] (n : ℕ) (F : ι → Fin n → Fin n → Module.End ℂ V) (V' : Type) [AddCommGroup V'] [Module ℂ V'] (F' : ι → Fin n → Fin n → Module.End ℂ V'),

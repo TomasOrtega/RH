@@ -10,9 +10,9 @@ namespace Formalism.HermitianLattices.Ext.PrimesInProgressions
 open Formalism.HermitianLattices.Ext.LogarithmicIntegralBounds Formalism.ZeroFreeDirichlet
 
 /- English proof (translation)
-Establish `hl0 : 0 < l` using `by linarith`. Establish `hpow : Real.exp (N * Real.log l) = l ^ N`. Rewrite using `[← Real.log_pow, Real.exp_log (pow_pos hl0 N)]`. Establish `key : (N : ℝ) * Real.log l ≤ c / 2 * large₂ / l`. Rewrite using `[le_div_iff₀ hl0]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hlog : Real.log l ≤ Real.log (l + 2)` using `Real.log_le_log hl0 (by linarith)`. Establish `hN : (0 : ℝ) ≤ N` using `Nat.cast_nonneg N`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 -/
 theorem pow_absorb (N : ℕ) (c l large₂ : ℝ) (hc : 0 < c) (hl : 2 ≤ l)
     (hL : 2 * N / c * l * Real.log (l + 2) ≤ large₂) :
@@ -33,63 +33,55 @@ theorem pow_absorb (N : ℕ) (c l large₂ : ℝ) (hc : 0 < c) (hl : 2 ≤ l)
     _ = 1 := Real.exp_zero
 
 /- English proof (translation)
-Introduce `hLD hDH`. Take `⟨a, B, C, ha, hB, hC, hdens⟩` from `density_norm hLD`. Take `⟨c₀, c₁, c₂, N, hc₀, hc₁, hc₂, hdh⟩` from `hDH`. Use `⟨min c₀ (1 / 20), lt_min hc₀ (by norm_num), min_le_right _ _, ?_⟩` and prove the remaining obligations. Introduce `C₁ A₁ hA₁`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hk : 0 < A₁ + 2` using `by linarith`. Establish `hcZ` using `cZ_pos`. Establish `hcZ'` using `cZ_le`. Use `set η0 : ℝ := min (cZ / 2) (c₁ / (A₁ + 2)) with hη0`. Establish `hη0pos : 0 < η0` using `lt_min (by linarith) (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hη0a : η0 ≤ cZ / 2` using `min_le_left _ _`. Establish `hη0b : η0 ≤ c₁ / (A₁ + 2)` using `min_le_right _ _`. Establish `hη0c : η0 ≤ c₁` using `hη0b.trans (div_le_self hc₁.le (by linarith))`. Establish `hη01 : η0 ≤ 1` using `by linarith`. Use `set A' : ℝ := 4 * |C₁| * C * Real.exp (a + a * cZ / 2) * (A₁ + 2) ^ (B + 1) with hA'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA'0 : 0 ≤ A'`. Establish `h1 : 0 ≤ (A₁ + 2) ^ (B + 1)` using `Real.rpow_nonneg hk.le _`. Establish `h2 : 0 ≤ C` using `by linarith`. Check the signs of the components of the expression. Use `set c : ℝ := cZ / (4 * (A₁ + 2)) with hc`.
+Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc0 : 0 < c` using `by positivity`. Use `set K0 : ℝ := (A₁ + 2) * (a + 1 + 2 / c₂) + (B + 1) / c with hK0`. Establish `hK00 : 0 ≤ K0`. Establish `h1 : 0 ≤ a + 1 + 2 / c₂` using `by positivity`. Establish `h2 : 0 ≤ (B + 1) / c` using `by positivity`.
+Establish an intermediate fact. Check the signs of the components of the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Check the signs of the components of the expression. Use `⟨c / 2, A' * (A₁ + 2) ^ N / η0, K0 + 2 * N / c, by positivity, ?_⟩` and prove the remaining obligations. Introduce `M _ Z m h8 hZ _ hms hwin y hy hL`. Establish `hM8 : 8 ≤ M` using `Nat.le_of_dvd (Nat.pos_of_ne_zero (NeZero.ne M)) h8`. Establish `hM8' : (8 : ℝ) ≤ M` using `by exact_mod_cast hM8`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hM0 : (0 : ℝ) < M` using `by linarith`. Establish `hpw : 0 < (M : ℝ) ^ A₁` using `Real.rpow_pos_of_pos hM0 _`. Take `⟨hl2, hlℓ, hℓk⟩` from `ell_bounds M hM8 A₁ hA₁`. Use `set ℓ : ℝ := Real.log ((M : ℝ) * ((M : ℝ) ^ A₁ + 3)) with hℓ`. Establish `hℓ0 : 0 < ℓ` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hℓ1 : 1 ≤ ℓ` using `by linarith`. Establish `hℓN : 1 ≤ ℓ ^ N` using `one_le_pow₀ hℓ1`. Establish `hll : 0 ≤ Real.log M * Real.log (Real.log M + 2)` using `mul_nonneg (by linarith) (Real.log_nonneg (by linarith))`. Establish `hL1 : K0 * Real.log M * Real.log (Real.log M + 2) ≤ Real.log y`. Establish `: 0 ≤ 2 * N / c * (Real.log M * Real.log (Real.log M + 2))` using `mul_nonneg (by positivity) hll`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hL2 : 2 * N / c * Real.log M * Real.log (Real.log M + 2) ≤ Real.log y`. Establish `: 0 ≤ K0 * (Real.log M * Real.log (Real.log M + 2))` using `mul_nonneg hK00 hll`. Use the polynomial consequences of the given equalities and inequalities. Establish `habs` using `pow_absorb N c (Real.log M) (Real.log y) hc0 hl2 hL2`.
+Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-It suffices to establish `h : ∃ θ : ℝ, 0 < θ ∧ θ ≤ 1 ∧ η0 * θ ≤ etaOf M * ℓ ^ N ∧ (∀ χ, ∀ ρ ∈ Z χ, ¬ InRegion cZ M ρ → c₂ * Real.log (1 / θ) ≤ ℓ * (1 - ρ.re)) by`. Take `⟨θ, h0, h1, hη, hθ⟩` from `h`. Establish `key` using `zeroSum_core a B C ha hB hC hdens (min c₀ (1 / 20)) c₂ C₁ A₁ (min_le_right _ _) hc₂ hA₁ M Z m h8 hZ hms hwin y hy hL1 θ h0 h1 hθ`. Use `key.trans ?_` and prove the remaining obligations. Establish `hηpos : 0 < etaOf M` using `etaOf_pos M (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Use `set E : ℝ := Real.exp (-(c / 2 * Real.log y / Real.log M)) with hE`. Establish `hE0 : 0 < E` using `Real.exp_pos _`. Establish `hEE : Real.exp (-(c * Real.log y / Real.log M)) = E * E`. Rewrite using `[hE, ← Real.exp_add]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hEE]`. Establish `hpow : ℓ ^ N ≤ (A₁ + 2) ^ N * Real.log M ^ N`. Rewrite using `[← mul_pow]`. Conclude with `pow_le_pow_left₀ hℓ0.le hℓk N`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hθle : θ ≤ etaOf M * ((A₁ + 2) ^ N * Real.log M ^ N) / η0`. Rewrite using `[le_div_iff₀ hη0pos]`. Combine the equalities or inequalities in the displayed calculation. Establish `hkN : 0 ≤ (A₁ + 2) ^ N` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+Check the signs of the components of the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `mul_le_mul_of_nonneg_right _ (by positivity)` to reduce the goal to its premises. Conclude with `mul_le_mul_of_nonneg_left hθle hA'0`. Use `_ = (A' * (A₁ + 2) ^ N / η0 * etaOf M * E) * (Real.log M ^ N * E) := by ring`. Use `_ ≤ (A' * (A₁ + 2) ^ N / η0 * etaOf M * E) * 1 := by`. Apply `mul_le_mul_of_nonneg_left habs` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Check the signs of the components of the expression. Use `_ = _ := by ring`. Establish `hone' : η0 ≤ etaOf M * ℓ ^ N → ∃ θ : ℝ, 0 < θ ∧ θ ≤ 1 ∧ η0 * θ ≤ etaOf M * ℓ ^ N ∧ (∀ χ, ∀ ρ ∈ Z χ, ¬ InRegion cZ M ρ → c₂ * Real.log (1 / θ) ≤ ℓ * (1 - ρ.re))`. Introduce `hη`. Use `⟨1, one_pos, le_refl _, by linarith, ?_⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 
-Introduce `χ ρ _ hr`. Unfold `InRegion at hr`. Use `replace hr := not_le.mp hr`. Establish `habs` using `abs_nonneg ρ.im`. Establish `h1 : (1 : ℝ) ≤ (M : ℝ) * (|ρ.im| + 2)` using `by nlinarith`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Establish `h2 : 0 ≤ cZ / Real.log ((M : ℝ) * (|ρ.im| + 2))` using `div_nonneg hcZ.le (Real.log_nonneg h1)`. Establish `h3 : 0 ≤ ℓ * (1 - ρ.re)` using `mul_nonneg hℓ0.le (by linarith)`. Simplify using `using h3`. Establish `hone : η0 ≤ etaOf M → ∃ θ : ℝ, 0 < θ ∧ θ ≤ 1 ∧ η0 * θ ≤ etaOf M * ℓ ^ N ∧ (∀ χ, ∀ ρ ∈ Z χ, ¬ InRegion cZ M ρ → c₂ * Real.log (1 / θ) ≤ ℓ * (1 - ρ.re))`. Introduce `hη`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Apply `hone'` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Break down `he : eOf M with _ | ⟨χ₁, β₁⟩` into its components or cases. Apply `hone` to reduce the goal to its premises. Rewrite using `[etaOf_none M he]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `hη01`. Take `⟨hsq, hne, hL0, _, hβ1⟩` from `eOf_exc M (χ₁, β₁) he`. Simplify using `only at hsq hne hL0 hβ1`. Establish `hβ : 0 < 1 - β₁` using `by linarith`. Establish `hlow : (1 - β₁) * ℓ / (A₁ + 2) ≤ (1 - β₁) * Real.log M`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[div_le_iff₀ hk]`. Combine the equalities or inequalities in the displayed calculation. Establish `hup : (1 - β₁) * ℓ ^ N ≤ (1 - β₁) * Real.log M * ℓ ^ N`. Establish `h0 : 0 ≤ (1 - β₁) * ℓ ^ N` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Distinguish the cases in `hr : InRegion cZ M (β₁ : ℂ)`. Distinguish the cases in `hcc : c₁ ≤ (1 - β₁) * ℓ`. Apply `hone` to reduce the goal to its premises. Rewrite using `[etaOf_some M χ₁ β₁ he]`. Apply `le_min hη01` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `: c₁ / (A₁ + 2) ≤ (1 - β₁) * ℓ / (A₁ + 2)` using `div_le_div_of_nonneg_right hcc hk.le`. Combine the linear equalities and inequalities to obtain the conclusion. Use `replace hcc := not_le.mp hcc`. Distinguish the cases in `hu : c₁ ≤ (1 - β₁) * ℓ ^ N`. Apply `hone'` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[etaOf_some M χ₁ β₁ he, min_mul_of_nonneg (1 : ℝ) ((1 - β₁) * Real.log M) (by positivity : (0 : ℝ) ≤ ℓ ^ N)]`. Apply `le_min` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Use `replace hu := not_le.mp hu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hθ0 : 0 < (1 - β₁) * ℓ ^ N / c₁` using `by positivity`. Establish `hθ1 : (1 - β₁) * ℓ ^ N / c₁ ≤ 1`. Rewrite using `[div_le_one hc₁]`. Conclude with `hu.le`. Use `⟨(1 - β₁) * ℓ ^ N / c₁, hθ0, hθ1, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[etaOf_some M χ₁ β₁ he, min_mul_of_nonneg (1 : ℝ) ((1 - β₁) * Real.log M) (by positivity : (0 : ℝ) ≤ ℓ ^ N)]`. Apply `le_min` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Introduce `χ ρ hρ hnr`.
-
-Take `⟨hz, hre, him⟩` from `hZ χ ρ hρ`. Establish `hd` using `hdh M χ₁ χ β₁ ((M : ℝ) ^ A₁ + 3) ρ (by omega) (by linarith) hsq hne hL0 (by`. Establish `: 1 - β₁ < c₁ / ℓ` using `by rw [lt_div_iff₀ hℓ0]; exact hcc`. Use the proof step `linarith)`. Use `hβ1 hz`.
-
-Use the proof step `(by`. Use `min_le_left c₀ (1 / 20 : ℝ)` as an intermediate fact. Use the proof step `linarith)`. Use the proof step `(by linarith)`. Use the proof step `(by`.
-
-Introduce `heq`. Establish `h2 : ρ = (β₁ : ℂ)` using `(Prod.mk.inj heq).2`. Rewrite `hnr` using `[h2]`. Conclude with `hnr hr)`. Rewrite using `[one_div_div]`.
-
-Rewrite `hd` using `[div_le_iff₀ hℓ0]`. Combine the linear equalities and inequalities to obtain the conclusion. Apply `hone` to reduce the goal to its premises. Use `etaOf_far M (by omega) χ₁ β₁ he hr` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem zero_sum_bound_lossy : ZeroSumOfB := by
   intro hLD hDH

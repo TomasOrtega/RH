@@ -22,7 +22,7 @@ namespace GlobalTheory.CompanionTheory.Ar.ModelFib
 section Topo
 
 /- English proof (translation)
-Take `⟨o, ho, hne, hle⟩` from `TopologicalSpace.NoetherianSpace.exists_isOpen_nonempty_subset_irreducibleComponent _ hg`. Take `⟨u, huo, huS⟩` from `hS.inter_open_nonempty o ho hne`. Conclude with `⟨u, huS, specializes_iff_mem_closure.mpr (hle huo)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_specializes_of_dense {T : Type*} [TopologicalSpace T] [TopologicalSpace.NoetherianSpace T] {S : Set T}
     (hS : Dense S) {g : T} (hg : closure {g} ∈ irreducibleComponents T) : ∃ u ∈ S, g ⤳ u := by
@@ -32,9 +32,9 @@ theorem exists_specializes_of_dense {T : Type*} [TopologicalSpace T] [Topologica
   exact ⟨u, huS, specializes_iff_mem_closure.mpr (hle huo)⟩
 
 /- English proof (translation)
-Use `⟨isIrreducible_singleton.closure, fun C hC hle => ?_⟩` and prove the remaining obligations. Establish `hg : closure {hC.genericPoint} = closure C` using `hC.isGenericPoint_genericPoint_closure`. Establish `ha : a ∈ C` using `hle (subset_closure rfl)`. Establish `h1 : hC.genericPoint ⤳ a` using `specializes_iff_mem_closure.mpr (by rw [hg]; exact subset_closure ha)`. Establish `h2 : a ⤳ hC.genericPoint` using `hmin _ (h1.trans hz)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `c hc`. Establish `h3 : hC.genericPoint ⤳ c` using `specializes_iff_mem_closure.mpr (by rw [hg]; exact subset_closure hc)`. Conclude with `specializes_iff_mem_closure.mp (h2.trans h3)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem closure_mem_irreducibleComponents {T : Type*} [TopologicalSpace T] [QuasiSober T] {a z : T} (hz : a ⤳ z)
     (hmin : ∀ g : T, g ⤳ z → a ⤳ g) : closure {a} ∈ irreducibleComponents T := by
@@ -53,16 +53,14 @@ def stalkGen (X : Scheme.{0}) (z : X) [IsDomain (X.presheaf.stalk z)] : X :=
   X.fromSpecStalk z ⟨⊥, Ideal.isPrime_bot⟩
 
 /- English proof (translation)
-Establish `h : stalkGen X z ∈ Set.range (X.fromSpecStalk z)` using `⟨_, rfl⟩`. Rewrite `h` using `[Scheme.range_fromSpecStalk]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem stalkGen_specializes (X : Scheme.{0}) (z : X) [IsDomain (X.presheaf.stalk z)] : stalkGen X z ⤳ z := by
   have h : stalkGen X z ∈ Set.range (X.fromSpecStalk z) := ⟨_, rfl⟩
   rwa [Scheme.range_fromSpecStalk] at h
 
 /- English proof (translation)
-Establish `h : g ∈ Set.range (X.fromSpecStalk z)`. Rewrite using `[Scheme.range_fromSpecStalk]`. Conclude with `hg`. Take `⟨q, rfl⟩` from `h`. Establish `hq : (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum (X.presheaf.stalk z)) ⤳ q` using `(PrimeSpectrum.le_iff_specializes _ _).mp bot_le`.
-
-Conclude with `hq.map (X.fromSpecStalk z).continuous`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem stalkGen_generises (X : Scheme.{0}) (z : X) [IsDomain (X.presheaf.stalk z)] (g : X) (hg : g ⤳ z) :
     stalkGen X z ⤳ g := by
@@ -79,23 +77,21 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {Xo : Moduli D l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}
 
 /- English proof (translation)
-Establish `hprop : IsProper Y.s`. Take `⟨N, i, hi, e⟩` from `Y.proj`. Use `isProper_str O N` as an intermediate fact. Rewrite using `[← e]`. Use `infer_instance`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: IsLocallyNoetherian Y.X` using `LocallyOfFiniteType.isLocallyNoetherian Y.s`. Establish `: CompactSpace Y.X` using `QuasiCompact.compactSpace_of_compactSpace Y.s`. Establish `: IsNoetherian Y.X` using `{}`. Establish `hq : IsProper (pullback.snd Y.s (spMap β))` using `inferInstance`. Establish `: IsLocallyNoetherian (pullback Y.s (spMap β))` using `LocallyOfFiniteType.isLocallyNoetherian (pullback.snd Y.s (spMap β))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: CompactSpace ↥(pullback Y.s (spMap β) : Scheme.{0})` using `QuasiCompact.compactSpace_of_compactSpace (pullback.snd Y.s (spMap β))`. Establish `: IsNoetherian (pullback Y.s (spMap β))` using `{}`. Establish `ha1` using `stalkGen_specializes Y.X z`. Establish `ha2` using `stalkGen_generises Y.X z`. Take `⟨u, ⟨w₀, rfl⟩, hau⟩` from `exists_specializes_of_dense hd (closure_mem_irreducibleComponents ha1 ha2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hjs : ∀ y : ↥(pullback Y.s (spMap β) : Scheme.{0}), Y.s (pullback.fst Y.s (spMap β) y) = (spMap β) (pullback.snd Y.s (spMap β) y)` using `fun y => by`. Rewrite using `[← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, pullback.condition]`. Set `pt : Sp c.F` to `pullback.snd Y.s (spMap β) (Y.jQ w₀)`. Establish `hpt : ∀ x : Sp c.F, x = pt` using `fun x => Subsingleton.elim (α := PrimeSpectrum c.F) x pt`. Establish `hP : ∀ w, Y.s (Y.j w) = (spMap β) pt` using `fun w => by`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Y.j w = pullback.fst Y.s (spMap β) (Y.jQ w)` using `by show (Y.jQ ≫ pullback.fst _ _) w = _`. Rewrite using `[Scheme.Hom.comp_apply]`. Rewrite using `[this, hjs, hpt (pullback.snd Y.s (spMap β) (Y.jQ w))]`. Establish `hs : ∀ x, (spMap β) pt ⤳ Y.s x` using `fun x => by`. Establish `h1 : Y.s x ∈ closure {(spMap β) pt}` using `map_mem_closure Y.s.continuous (hd x) (by rintro _ ⟨w, rfl⟩; exact hP w)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `specializes_iff_mem_closure.mpr h1`. Establish `hsa : Y.s (stalkGen Y.X z) = (spMap β) pt`. Establish `h1` using `hau.map Y.s.continuous`. Rewrite `h1` using `[hP]`. Conclude with `(h1.antisymm (hs _)).eq`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨y, hy1, -⟩` from `Scheme.Pullback.exists_preimage_pullback (f := Y.s) (g := spMap β) _ pt hsa`. Establish `hC : IsIrreducible (irreducibleComponent y)` using `isIrreducible_irreducibleComponent`. Establish `hgC : closure {hC.genericPoint} = irreducibleComponent y` using `hC.isGenericPoint_genericPoint_closure.trans isClosed_irreducibleComponent.closure_eq`. Establish `hgy : hC.genericPoint ⤳ y` using `specializes_iff_mem_closure.mpr (by rw [hgC]; exact mem_irreducibleComponent)`. Establish `hfg` using `hgy.map (pullback.fst Y.s (spMap β)).continuous`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `hfg` using `[hy1]`. Establish `hfe : pullback.fst Y.s (spMap β) hC.genericPoint = stalkGen Y.X z` using `(hfg.antisymm (ha2 _ (hfg.trans ha1))).eq`. Take `⟨_, ⟨w, rfl⟩, hgu⟩` from `exists_specializes_of_dense Y.jQ_dense (by rw [hgC]; exact irreducibleComponent_mem_irreducibleComponents y)`. Use `Y.jQ_open` as an intermediate fact. Take `⟨w', hw'⟩` from `hgu.mem_open Y.jQ.isOpenEmbedding.isOpen_range ⟨w, rfl⟩`.
-
-Use `⟨w', ?_⟩` and prove the remaining obligations. Use `show (Y.jQ ≫ pullback.fst _ _) w' = _`. Rewrite using `[Scheme.Hom.comp_apply, hw', hfe]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stalkGen_mem_range [IsNoetherianRing O] (Y : Model Xo c β) (hd : Dense (Set.range Y.j)) (z : Y.X)
     [IsDomain (Y.X.presheaf.stalk z)] : ∃ w, Y.j w = stalkGen Y.X z := by
@@ -148,7 +144,7 @@ theorem stalkGen_mem_range [IsNoetherianRing O] (Y : Model Xo c β) (hd : Dense 
   rw [Scheme.Hom.comp_apply, hw', hfe]
 
 /- English proof (translation)
-Set `f : CommRingCat.of c.F ⟶ (Xo.XF c).presheaf.stalk w` to `Spec.preimage ((Xo.XF c).fromSpecStalk w ≫ pullback.snd _ _)`. Establish `: CharZero ((Xo.XF c).presheaf.stalk w)` using `charZero_of_injective_ringHom f.hom.injective`. Conclude with `RingHom.charZero ((Y.j.stalkMap w).hom.comp (Y.X.presheaf.stalkSpecializes h).hom)`.
+Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem charZero_stalk (Y : Model Xo c β) (z : Y.X) (w : Xo.XF c) (h : Y.j w ⤳ z) :
     CharZero (Y.X.presheaf.stalk z) := by
@@ -162,15 +158,13 @@ end Model
 open IsLocalRing in
 
 /- English proof (translation)
-Take `⟨V, hV, hA1, hA2⟩` from `GroundTheory.Heights₂.Heights.Model.DominatingDVR.full A hA (FractionRing A)`. Use `haveI := hV`. Set `g₀ : A →+* V` to `(algebraMap A (FractionRing A)).codRestrict V hA1`. Establish `hg₀ : Function.Injective g₀` using `fun a b h => IsFractionRing.injective A (FractionRing A) (congrArg Subtype.val h)`. Use `haveI : IsLocalHom g₀ := ⟨fun a ha => by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression.
 
-Assume the negation of the conclusion as `hu`. Conclude with `(hA2 a).mpr hu ha⟩`. Set `_ : Algebra (ResidueField A) (ResidueField V)` to `(ResidueField.map g₀).toAlgebra`. Set `Ω` to `AlgebraicClosure (ResidueField V)`. Set `σ : k →ₐ[ResidueField A] Ω` to `IsAlgClosed.lift`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `bs` to `Module.finBasis (ResidueField A) k`. Set `k'` to `IntermediateField.adjoin (ResidueField V) (Set.range fun i => σ (bs i))`. Use `haveI : FiniteDimensional (ResidueField V) k' := IntermediateField.finiteDimensional_adjoin (fun x _ => Algebra.IsIntegral.isIntegral x)`. Establish `hmem : ∀ x : k, σ x ∈ k'` using `fun x => by`. Rewrite using `[← bs.sum_repr x, map_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `sum_mem fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Algebra.smul_def, IsScalarTower.algebraMap_apply (ResidueField A) (ResidueField V) Ω]`. Conclude with `mul_mem (k'.algebraMap_mem _) (IntermediateField.subset_adjoin _ _ ⟨i, rfl⟩)`. Take `⟨R, iR, iD, iV, f, iL, s, hc, hf, hs⟩` from `GlobalTheory.T.complete_dvr_dominating_valuation V k'`. Use `⟨R, iR, iD, iV, f.comp g₀, inferInstance, s.comp (σ.toRingHom.codRestrict k'.toSubring hmem), hc, hf.comp hg₀, ?_⟩` and prove the remaining obligations.
-
-Establish `e₁ : (σ.toRingHom.codRestrict k'.toSubring hmem).comp (algebraMap (ResidueField A) k) = (algebraMap (ResidueField V) k').comp (ResidueField.map g₀)`. Use extensionality with `x`. Conclude with `σ.commutes x`. Rewrite using `[RingHom.comp_assoc, e₁, ← RingHom.comp_assoc, hs, ResidueField.map_comp]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_complete_dvr (A : Type) [CommRing A] [IsDomain A] [IsNoetherianRing A] [IsLocalRing A] (hA : ¬ IsField A)
     (k : Type) [Field k] [Algebra (ResidueField A) k] [FiniteDimensional (ResidueField A) k] :
@@ -209,9 +203,9 @@ theorem exists_complete_dvr (A : Type) [CommRing A] [IsDomain A] [IsNoetherianRi
 open IsLocalRing in
 
 /- English proof (translation)
-Establish `e : (s.comp (algebraMap (X.residueField z) k)).comp (residue (X.presheaf.stalk z)) = (residue R).comp g`. Rewrite using `[hs]`. Both sides reduce to the same expression. Establish `a₁ : spMap s ≫ Spec.map (CommRingCat.ofHom (algebraMap (X.residueField z) k)) ≫ spMap (residue (X.presheaf.stalk z)) = spMap (residue R) ≫ spMap g`. Simplify using `only [← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `congrArg (fun φ => Spec.map (CommRingCat.ofHom φ)) e`. Use `show _ ≫ _ ≫ (spMap (residue (X.presheaf.stalk z)) ≫ X.fromSpecStalk z) = _`. Rewrite using `[← Category.assoc (spMap (residue R)), ← a₁]`. Simplify using `only [Category.assoc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem key_sq (X : Scheme.{0}) (z : X) (k R : Type) [Field k] [Algebra (X.residueField z) k] [CommRing R]
     [IsLocalRing R] (g : X.presheaf.stalk z →+* R) [IsLocalHom g] (s : k →+* ResidueField R)
@@ -231,14 +225,14 @@ theorem key_sq (X : Scheme.{0}) (z : X) (k R : Type) [Field k] [Algebra (X.resid
   rfl
 
 /- English proof (translation)
-The claim follows from `IsLocalRing.comap_closedPoint f`.
+A detailed English derivation is pending.
 -/
 theorem spMap_closedPoint {R S : Type} [CommRing R] [CommRing S] [IsLocalRing R] [IsLocalRing S] (f : R →+* S)
     [IsLocalHom f] : spMap f (IsLocalRing.closedPoint S) = IsLocalRing.closedPoint R :=
   IsLocalRing.comap_closedPoint f
 
 /- English proof (translation)
-Substitute `h₁ h₂` using the available equality. Conclude with `Scheme.Hom.comp_apply f g x`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem pt_comp {X Y Z : Scheme.{0}} (f : X ⟶ Y) (g : Y ⟶ Z) {x : X} {y : Y} {w : Z} (h₁ : f x = y)
     (h₂ : g y = w) : (f ≫ g) x = w := by
@@ -248,29 +242,23 @@ theorem pt_comp {X Y Z : Scheme.{0}} (f : X ⟶ Y) (g : Y ⟶ Z) {x : X} {y : Y}
 open IsLocalRing in
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c O _ _ β Y hd hS h3 p hp z hz`. Take `⟨hdom, hic⟩` from `Y.normal z`. Use `haveI := hdom`. Take `⟨w, hw⟩` from `stalkGen_mem_range Y hd z`. Establish `hwz : Y.j w ⤳ z` using `hw ▸ stalkGen_specializes Y.X z`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : CharZero (Y.X.presheaf.stalk z) := charZero_stalk Y z w hwz`. Establish `hprop : IsProper Y.s`. Take `⟨N, i, hi, e⟩` from `Y.proj`. Use `isProper_str O N` as an intermediate fact. Rewrite using `[← e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `infer_instance`. Use `haveI : IsLocallyNoetherian Y.X := LocallyOfFiniteType.isLocallyNoetherian Y.s`. Establish `hnf : ¬ IsField (Y.X.presheaf.stalk z)` using `fun hf => by`. Establish `hp0 : (p : Y.X.presheaf.stalk z) ≠ 0` using `Nat.cast_ne_zero.mpr hp.ne_zero`. Take `⟨b, hb⟩` from `hf.mul_inv_cancel hp0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hu : IsUnit (p : Y.X.presheaf.stalk z)` using `IsUnit.of_mul_eq_one _ hb`. Establish `hm : residue (Y.X.presheaf.stalk z) (p : Y.X.presheaf.stalk z) = 0`. Rewrite using `[map_natCast]`. Conclude with `hz`. Conclude with `((residue_eq_zero_iff _).mp hm) hu`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨k, ik, ia, hfin, -, S, hGt⟩` from `hS z`. Use `letI : Algebra (ResidueField (Y.X.presheaf.stalk z)) k := ia`. Use `haveI : FiniteDimensional (ResidueField (Y.X.presheaf.stalk z)) k := hfin`. Take `⟨R, iR, iD, iV, g, iL, s, hc, hg, hs⟩` from `exists_complete_dvr (Y.X.presheaf.stalk z) hnf k`. Set `ξ : Sp R ⟶ Y.X` to `spMap g ≫ Y.X.fromSpecStalk z`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `haveI : CharZero R := charZero_of_injective_ringHom hg`. Take `⟨PP', cub, sym, adj, prim, m, -⟩` from `sabPull Out.proved_CubePullSt ξ Y.t`. Set `t : SAB H (Sp R)` to `⟨(Over.pullback ξ).obj Y.t.G, IsSemiAbelian.pullback _ Y.t.G Y.t.semi, OAct.pullback _ Y.t.G Y.t.act, PP', cub, sym, adj, prim⟩`. Set `m' : SABMap t Y.t ξ` to `m`. Establish `habs : (ξ ⁻¹' abLocus Y.t.G).Nonempty`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `pt₀ : Sp R` to `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum R)`. Use `⟨pt₀, ?_⟩` and prove the remaining obligations. Establish `h1 : ξ pt₀ = stalkGen Y.X z` using `pt_comp (spMap g) (Y.X.fromSpecStalk z) (y := (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum (Y.X.presheaf.stalk z))) (PrimeSpectrum.ext (Ideal.comap_bot_of_injective g hg)) rfl`. Establish `h2 : Y.jQ w ∈ pullback.fst Y.s (spMap β) ⁻¹' abLocus Y.t.G`. Rewrite using `[Y.ab_gen]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨_, rfl⟩`. Establish `h4 : Y.j w = pullback.fst Y.s (spMap β) (Y.jQ w)` using `by show (Y.jQ ≫ pullback.fst _ _) w = _`. Rewrite using `[Scheme.Hom.comp_apply]`. Use `show ξ pt₀ ∈ abLocus Y.t.G`. Rewrite using `[h1, ← hw, h4]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `h2`. Establish `key : spMap s ≫ Spec.map (CommRingCat.ofHom (algebraMap (Y.X.residueField z) k)) ≫ Y.X.fromSpecResidueField z = spMap (residue R) ≫ ξ` using `key_sq Y.X z k R g s hs`. Take `⟨S', -, -, -, -, hGt'⟩` from `Out.GtBCPf.gtBaseChange _ _ (spMap s) S _ hGt`. Establish `hsplit : ∃ S : SplitExt (Sp (ResidueField R)), S.IsGt ((Over.pullback (spMap (residue R))).obj t.G)`. Use `⟨S', ?_⟩` and prove the remaining obligations.
-
-Establish `: IsMonHom (pullCompIso (spMap s) (Spec.map (CommRingCat.ofHom (algebraMap (Y.X.residueField z) k)) ≫ Y.X.fromSpecResidueField z) Y.t.G).symm.hom` using `by show IsMonHom (pullCompIso _ _ _).inv infer_instance`. Establish `h₀` using `isGt_of_iso (pullCompIso (spMap s) _ Y.t.G).symm hGt'`. Rewrite `h₀` using `[key]`. Conclude with `isGt_of_iso (pullCompIso (spMap (residue R)) ξ Y.t.G) h₀`. Take `⟨P, -, -⟩` from `h3 R inferInstance inferInstance hc ξ t m' habs hsplit`.
-
-Establish `g₁` using `GlobalTheory.T.pel_uniformised_geometric_free E H R t P`. Take `⟨hb₁, hb₂⟩` from `GlobalTheory.T.geometric_power_free_functorial E H Y.X Y.t`. Establish `g₂` using `(hb₂ (Sp R) t ξ m' (ResidueField R) (spMap (residue R))).mp g₁`. Establish `g₃` using `hb₁ _ (AlgebraicClosure (ResidueField R)) (algebraMap _ _) _ g₂`. Use `⟨AlgebraicClosure (ResidueField R), inferInstance, inferInstance, _, ?_, g₃⟩` and prove the remaining obligations.
-
-Conclude with `pt_comp _ _ (spMap_closedPoint _) (pt_comp _ _ (spMap_closedPoint _) (pt_comp _ _ (spMap_closedPoint g) Scheme.fromSpecStalk_closedPoint))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem model_fibPF : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] [IsNoetherianRing O] (β : O →+* c.F) (Y : Model Xo c β), Dense (Set.range Y.j) → Y.SplitFibres → Y.N3 → ∀ (p : ℕ), p.Prime → ∀ z : Y.X, (p : Y.X.residueField z) = 0 → FibPF Y.t z := by
   intro E _ _ _ H D l Xo c O _ _ β Y hd hS h3 p hp z hz

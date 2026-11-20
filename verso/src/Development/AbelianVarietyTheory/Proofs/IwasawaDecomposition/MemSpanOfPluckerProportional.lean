@@ -6,9 +6,9 @@ noncomputable section
 namespace GlobalTheory.FlagEmb
 
 /- English proof (translation)
-Establish `h1 : ((Matrix.of fun l l' => D l (r l')).adjugate * Matrix.of D) i s = ((Matrix.of fun l l' => D l (r l')).adjugate.mulVec fun j => D j s) i`. Simplify using `[Matrix.mul_apply, Matrix.mulVec, dotProduct]`. Rewrite using `[h1, ← Matrix.cramer_eq_adjugate_mulVec, Matrix.cramer_apply]`. Simplify using `only [plk, Equiv.apply_symm_apply, id]`. Use `congr 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `l l'`. Distinguish the cases in `h : l' = i`. Substitute `h` using the available equality. Simplify using `[Matrix.updateCol_apply]`. Simplify using `[Matrix.updateCol_apply, Function.update_of_ne h, h]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem adjugate_mul_eq_plk {K : Type} [Field K] {M k : ℕ} (D : Fin k → Fin (M + 1) → K) (r : Fin k → Fin (M + 1))
     (i : Fin k) (s : Fin (M + 1)) :
@@ -27,15 +27,13 @@ theorem adjugate_mul_eq_plk {K : Type} [Field K] {M k : ℕ} (D : Fin k → Fin 
   · simp [Matrix.updateCol_apply, Function.update_of_ne h, h]
 
 /- English proof (translation)
-Take `⟨q, hq⟩` from `Function.ne_iff.1 h0`. Use `set r := plE M k q with hr`. Use `set A : Matrix (Fin k) (Fin k) K := Matrix.of fun l l' => c l (r l') with hA`. Use `set A' : Matrix (Fin k) (Fin k) K := Matrix.of fun l l' => c' l (r l') with hA'`. Establish `hdet : A'.det ≠ 0` using `hq`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `hadj : A'.adjugate * Matrix.of c' = a • (A.adjugate * Matrix.of c)`. Use extensionality with `i s`. Rewrite using `[hA, hA', adjugate_mul_eq_plk, Matrix.smul_apply, adjugate_mul_eq_plk, h]`. Both sides reduce to the same expression. Establish `hC : A'.det • (Matrix.of c' : Matrix (Fin k) (Fin (M + 1)) K) = a • (A' * A.adjugate * Matrix.of c)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrArg (fun X => A' * X) hadj` as an intermediate fact. Simplify using `only [← Matrix.mul_assoc, Matrix.mul_adjugate, Matrix.mul_smul] at this`. Simplify `this` using `[Matrix.smul_mul]`. Establish `hrow : c' l = ∑ j, ((A'.det)⁻¹ * (a * (A' * A.adjugate) l j)) • c j`. Use function extensionality and compare the values at `s`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `h2` using `congrFun (congrFun hC l) s`. Simplify using `only [Matrix.smul_apply, Matrix.of_apply, smul_eq_mul, Matrix.mul_apply (M := A' * A.adjugate)] at h2`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[eq_inv_mul_iff_mul_eq₀ hdet |>.2 h2, Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hrow]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_span_of_plk_eq_smul (K : Type) [Field K] (M k : ℕ) (c c' : Fin k → Fin (M + 1) → K) (a : K)
     (h0 : plk c' id ≠ 0) (h : plk c' id = a • plk c id) (l : Fin k) :

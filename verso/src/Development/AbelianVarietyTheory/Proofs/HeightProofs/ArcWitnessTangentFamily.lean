@@ -11,11 +11,11 @@ namespace GlobalTheory.ConstEig
 open Matrix
 
 /- English proof (translation)
-Establish `key : ∀ cf : Fin m → PowerSeries A, (w = ∑ k, cf k • fun j => PowerSeries.C (R` using `A) (U k j)) ↔ ∀ n, (fun j => PowerSeries.coeff n (w j)) = ∑ k, PowerSeries.coeff n (cf k) • U k := fun cf => by`. Simplify using `only [funext_iff, PowerSeries.ext_iff, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, map_sum, PowerSeries.coeff_mul_C]`. Conclude with `forall_comm`. Use `choose c hc hu using fun n => h (fun j => PowerSeries.coeff n (w j)) fun i => by`. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrArg (PowerSeries.coeff n) (congrFun (hw i) j)` as an intermediate fact. Simplify `this` using `[Matrix.vecMul, dotProduct]`. Use `⟨fun k => PowerSeries.mk fun n => c n k, (key _).2 fun n => ?_, fun cf hcf => ?_⟩` and prove the remaining obligations. Simplify `hc n` using `only [PowerSeries.coeff_mk]`. Use function extensionality and compare the values at `k`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `n`. Rewrite using `[PowerSeries.coeff_mk, ← hu n _ ((key _).1 hcf n)]`.
+A detailed English derivation is pending.
 -/
 theorem eig_toPowerSeries {A : Type} [CommRing A] {I : Type} {g m : ℕ}
     (M : I → Matrix (Fin g) (Fin g) A) (ρ : I → A) (U : Fin m → Fin g → A)
@@ -46,25 +46,25 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open Matrix GlobalTheory.BasisUniv GlobalTheory.ConstLie in
 
 /- English proof (translation)
-Introduce `hG E _ _ _ H Dw l Xo c O _ β Y A _ _ _ _ b a χ W t m e v eig heig hev hv`. Establish `ex` using `GlobalTheory.T.exists_unique_constant_tangent_vectors_along_arc hG E H Dw l Xo c O β Y A b a χ W`. Establish `lin` using `GlobalTheory.T.lieImg_iff_isLieComb_of_gtComb hG E H Dw l Xo c O β Y A b a χ W`. Establish `back : ∀ {n : ℕ} {e₀ : Fin n → Out.GtPt a.D₀ (epsR A)} {v₀ : Fin n → (epsR (PowerSeries A) ⟶ W.t.G)}, (∀ k, LieImg W (e₀ k) (v₀ k)) → ∀ {ν w} {cf : Fin n → PowerSeries A}, LieImg W ν w → IsLieComb cf v₀ w → GtComb (fun i => PowerSeries.constantCoeff (cf i)) e₀ ν` using `fun {n e₀ v₀} h₀ ν w cf hw hc => by`. Take `⟨ν', hν'⟩` from `exists_gtComb (fun i => PowerSeries.constantCoeff (cf i)) e₀`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨t', ht', -⟩` from `(ex ν').1`. Take `rfl : ν = ν'` from `eq_of_red W hG hw ht' (red_eq_of_comb _ hc ((lin n _ e₀ ν' v₀ t' h₀ hν').1 ht') (fun i => by simp) fun _ => rfl)`. Conclude with `hν'`. Prove the components needed by the constructor for the conclusion. Introduce `h ν w hw ht he`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨cf, hc, hu⟩` from `h w ht he`. Use `⟨_, back hev hw hc, fun cf' h' => funext fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[← hu _ ((lin m _ e ν v w hev h').1 hw)]`. Simplify using the standard rewrite rules. Introduce `h w ht he`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨g, e₁, v₁, M, hev₁, hv₁, hcomb, hM⟩` from `exists_const_basis hG E H Dw l Xo c O β Y A b a χ W`. Establish `hsm : Smooth W.t.G.hom` using `W.t.semi.smooth`. Establish `hmon : ∀ x, IsMonHom (W.t.act.act x)` using `W.t.act.hom`. Take `⟨n, y, hy⟩` from `Chart.univChartLoc W.t.G`. Establish `hU : ∀ k, ∃ U : Fin g → A, IsLieComb (fun j => PowerSeries.C (R` using `A) (U j)) v₁ (v k) := fun k => by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨U, hU, -⟩` from `hcomb _ (((ex (e k)).2 _ (hev k)).2 (hv k).1)`. Conclude with `⟨U, (lin g U e₁ (e k) v₁ _ (fun i => (hev₁ i).2) hU).1 (hev k)⟩`. Use `choose U hU using hU`. Establish `hMR : ∀ x i, IsLieComb ((M x).map (PowerSeries.C (R` using `A)) i) v₁ (v₁ i ≫ W.t.act.act x) := hM`. Take `⟨z, hz, -⟩` from `hv₁.2 w ht`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [comb_iff hy hv₁ hU hz]`. Use `GlobalTheory.ConstEig.eig_toPowerSeries M (fun x => t x) U (fun s hs => ?_) z (fun x => (eig_iff hy hv₁ _ (hMR x) hz _).1 ((heig w).1 he x))` and prove the remaining obligations. Take `⟨ν, hν⟩` from `exists_gtComb s e₁`. Take `⟨w', hw', -⟩` from `(ex ν).1`. Establish `hc` using `(lin g s e₁ ν v₁ w' (fun i => (hev₁ i).2) hν).1 hw'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ cf : Fin m → A, GtComb cf e ν ↔ s = ∑ k, cf k • U k` using `fun cf => by`. Establish `e₂ : IsLieComb (fun k => PowerSeries.C (R` using `A) (cf k)) v w' ↔ s = ∑ k, cf k • U k := by`. Rewrite using `[comb_iff hy hv₁ hU hc]`. Prove the components needed by the constructor for the conclusion. Introduce `q`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `j`. Use `congrArg (PowerSeries.constantCoeff (R := A)) (congrFun q j)` as an intermediate fact. Simplify `this` using `[Finset.sum_apply]`. Introduce `q`. Use function extensionality and compare the values at `j`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrArg (PowerSeries.C (R := A)) (congrFun q j)` as an intermediate fact. Simplify `this` using `[Finset.sum_apply]`. Rewrite using `[← e₂]`. Conclude with `⟨fun q => (lin m cf e ν v w' hev q).1 hw', fun q => by simpa using back hev hw' q⟩`. Use `h ν w' hw' (isTangent_of_comb hy hv₁.1 hc) ((heig w').2 fun x => (eig_iff hy hv₁ _ (hMR x) hc _).2 (by` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `j`. Use `congrArg (PowerSeries.C (R := A)) (congrFun (hs x) j)` as an intermediate fact. Simplify `this))` using `[Matrix.vecMul, dotProduct]`. Simplify `this` using `only [key]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ConstEig.basis_iff_const : Out.GlobalFnsSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (A : Type) [CommRing A] [IsDomain A] [IsLocalRing A] [IsNoetherianRing A] (b : O →+* A) (a : ArcIn Dw l β A b) (χ : Sp (PowerSeries A) ⟶ Y.X) (W : Wit Y a χ) (t : 𝓞 E →+* A) (m : ℕ) (e : Fin m → Out.GtPt a.D₀ (epsR A)) (v : Fin m → (epsR (PowerSeries A) ⟶ W.t.G)) (eig : (epsR (PowerSeries A) ⟶ W.t.G) → Prop), (∀ w, eig w ↔ ∀ x : 𝓞 E, (w ≫ W.t.act.act x).left = spMap (epsScaleR (PowerSeries.C (R := A) (t x))) ≫ w.left) → (∀ k, LieImg W (e k) (v k)) → (∀ k, IsTangent (v k) ∧ eig (v k)) → ((∀ w, IsTangent w → eig w → ∃! cf : Fin m → PowerSeries A, IsLieComb cf v w) ↔ ∀ ν w, LieImg W ν w → IsTangent w → eig w → ∃! cf : Fin m → A, GtComb cf e ν) := by
   intro hG E _ _ _ H Dw l Xo c O _ β Y A _ _ _ _ b a χ W t m e v eig heig hev hv

@@ -31,12 +31,12 @@ instance Stalk.module (M : LieModel G ξ E) (p : Cpt ξ) : Module (X.presheaf.st
 def Stalk.val {M : LieModel G ξ E} {p : Cpt ξ} (e : Stalk M p) : E := Subtype.val (p := (· ∈ M.lat p)) e
 
 /- English proof (translation)
-The claim follows from `Subtype.property e`.
+A detailed English derivation is pending.
 -/
 theorem Stalk.mem {M : LieModel G ξ E} {p : Cpt ξ} (e : Stalk M p) : e.val ∈ M.lat p := Subtype.property e
 
 /- English proof (translation)
-The claim follows from `Subtype.ext h`.
+A detailed English derivation is pending.
 -/
 theorem Stalk.ext {M : LieModel G ξ E} {p : Cpt ξ} {e e' : Stalk M p} (h : e.val = e'.val) : e = e' :=
   Subtype.ext h
@@ -58,7 +58,7 @@ def Stalk.tan {M : LieModel G ξ E} {p : Cpt ξ} (e : Stalk M p) :
   ((M.mem_lat_iff p e.val).1 e.mem).choose
 
 /- English proof (translation)
-The claim follows from `((M.mem_lat_iff p e.val).1 e.mem).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem Stalk.tan_spec {M : LieModel G ξ E} {p : Cpt ξ} (e : Stalk M p) : M.Extends p e.val e.tan :=
   ((M.mem_lat_iff p e.val).1 e.mem).choose_spec
@@ -85,7 +85,7 @@ def castLie {R : Type} [CommRing R] {x y : Sp R ⟶ X} (h : x = y) {F : Type} [A
     (M : LieModel G x F) : LieModel G y F := h ▸ M
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem castLie_left {R : Type} [CommRing R] {x y : Sp R ⟶ X} (h : x = y) {F : Type} [AddCommGroup F]
     [Module R F] (M : LieModel G x F) (e : F) : ((castLie h M).pt e).left = (M.pt e).left := by
@@ -99,21 +99,19 @@ namespace GlobalTheory.CompanionTheory.Ar.RootHt
 open GlobalTheory.CompanionTheory.Ar.RootHt.LieFun GlobalTheory.CompanionTheory.Ar.LieTangent
 
 /- English proof (translation)
-Introduce `X G _ _ _ Ω _ ξ Li _ _ M R _ _ z h ER _ _ MR f hξ hf`. Take `⟨ev, hev, hlin, -⟩` from `GlobalTheory.T.lie_lattice_eval_at_local_ring X G Ω ξ Li M R z h ER MR hξ inferInstance`. Set `ψ : X.presheaf.stalk (centre z) →+* R` to `(Scheme.stalkClosedPointTo z).hom`. Use `letI : Algebra (X.presheaf.stalk (centre z)) R := ψ.toAlgebra`. Use `letI : Module (X.presheaf.stalk (centre z)) ER := Module.compHom ER ψ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `haveI : IsScalarTower (X.presheaf.stalk (centre z)) R ER := ⟨fun s r x => by`. Express the relevant statement in the definitionally equal form `(ψ s * r) • x = ψ s • r • x`. Rewrite using `[mul_smul]⟩`. Use `letI : Module (X.presheaf.stalk (centre z)) (Stalk M ⟨centre z, h⟩) := Stalk.module M ⟨centre z, h⟩`. Establish `hgi : Function.Injective (genMap ξ ⟨centre z, h⟩)` using `hξ.inj ⟨centre z, h⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `j : Stalk M ⟨centre z, h⟩ →ₗ[X.presheaf.stalk (centre z)] ER` to `{ toFun := fun e => ev ⟨e.val, e.mem⟩ map_add' := fun e e' => ev.map_add ⟨e.val, e.mem⟩ ⟨e'.val, e'.mem⟩ map_smul' := fun s e => hlin ⟨genMap ξ ⟨centre z, h⟩ s, s, rfl⟩ (ψ s) ⟨e.val, e.mem⟩ ⟨h, s, rfl, rfl⟩ }`. Establish `hbc : IsBaseChange R j`. Use `GlobalTheory.T.lie_model_isBaseChange X G (X.presheaf.stalk (centre z)) R (X.fromSpecStalk (centre z)) (Stalk M ⟨centre z, h⟩) ER (stalkLie hξ M ⟨centre z, h⟩) (castLie (spec_centre z).symm MR) j fun e => ?_` and prove the remaining obligations. Take `⟨h', v, hv, hw⟩` from `(hev e.val (ev ⟨e.val, e.mem⟩)).2 ⟨e.mem, rfl⟩`. Establish `hvv : v = e.tan` using `hv.unique (hξ.inj _) e.tan_spec`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `hvv` using the available equality. Use `show ((castLie (spec_centre z).symm MR).pt (j e)).left ≫ 𝟙 G.left = _`. Rewrite using `[Category.comp_id, castLie_left]`. Conclude with `hw`. Establish `hs : ∀ e : Stalk M ⟨centre z, h⟩, ∃ s, genMap ξ ⟨centre z, h⟩ s = f e.val` using `fun e => hf e.val e.mem`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `choose σ hσ using hs`. Set `f' : Stalk M ⟨centre z, h⟩ →ₗ[X.presheaf.stalk (centre z)] R` to `{ toFun := fun e => ψ (σ e) map_add' := fun e e' => by`. Establish `: σ (e + e') = σ e + σ e'` using `hgi (by simp [hσ])`. Rewrite using `[this, map_add]`. Use the proof step `map_smul' := fun s e => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `: σ (s • e) = s * σ e` using `hgi (by`. Rewrite using `[hσ, map_mul, hσ]`. Use `show f (genMap ξ ⟨centre z, h⟩ s • e.val) = _`. Rewrite using `[map_smul, smul_eq_mul])`. Rewrite using `[this, map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `rfl }`. Use `⟨hbc.lift f', fun e x u hV hU => ?_⟩` and prove the remaining obligations. Take `⟨he, rfl⟩` from `(hev e x).1 hV`. Take `⟨h2, s, hs1, hs2⟩` from `hU`. Set `e' : Stalk M ⟨centre z, h⟩` to `⟨e, he⟩`.
-
-Establish `h3 : hbc.lift f' (j e') = f' e'` using `hbc.lift_eq f' e'`. Establish `h4 : σ e' = s` using `hgi ((hσ e').trans hs1.symm)`. Establish `h5 : f' e' = ψ (σ e')` using `rfl`. Rewrite `h5` using `[h4]`. Conclude with `(h3.trans h5).trans hs2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lieFunctional : ∀ (X : Scheme.{0}) (G : Over X) [GrpObj G] [IsCommMonObj G] [Smooth G.hom] (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X)
     (Li : Type) [AddCommGroup Li] [Module Ω Li] (M : LieModel G ξ Li) (R : Type) [CommRing R] [IsLocalRing R]

@@ -6,7 +6,7 @@ import Formalism.LocalToGlobal.ProjectiveLattices.NonnegIffOfLiesTotal
 open NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.RuleIntegral.exists_smul_nonneg` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsConstantSmulIntegralOfFourthPower.lean&line=92#L92)
 -/

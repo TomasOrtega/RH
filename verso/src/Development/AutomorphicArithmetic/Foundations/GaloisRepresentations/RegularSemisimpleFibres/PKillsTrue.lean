@@ -9,7 +9,7 @@ open scoped Classical
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem JD_cons' {F : Type} [Field F] (θ : AlgebraicClosure F →* ℂ) (p : ℕ × ℕ) (D L : List (ℕ × ℕ))
     (b n : ℕ) (h : deg D + deg L = b) :
@@ -17,7 +17,7 @@ private theorem JD_cons' {F : Type} [Field F] (θ : AlgebraicClosure F →* ℂ)
   subst h; rfl
 
 /- English proof (translation)
-Introduce `x y`. Establish `hd : ((y⁻¹ * x * y : GL (Fin t) F) : Matrix (Fin t) (Fin t) F).det = (x : Matrix (Fin t) (Fin t) F).det`. Rewrite using `[Units.val_mul, Units.val_mul, Matrix.det_mul, Matrix.det_mul, mul_comm (Matrix.det ((y⁻¹ : GL (Fin t) F) : Matrix (Fin t) (Fin t) F)), mul_assoc, ← Matrix.det_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.det_one, mul_one]`. Simplify using `only [detc, hd]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem isCl_detc {F : Type} [Field F] (θ : AlgebraicClosure F →* ℂ) (t k : ℕ) : IsCl (detc θ t k) := by
   intro x y
@@ -29,9 +29,9 @@ private theorem isCl_detc {F : Type} [Field F] (θ : AlgebraicClosure F →* ℂ
   simp only [detc, hd]
 
 /- English proof (translation)
-Establish `: Finite F` using `Finite.of_injective _ (algebraMap F F').injective`. Establish `: Fintype F` using `Fintype.ofFinite F`. Establish `hs' : s = FiniteField.frobeniusAlgEquivOfAlgebraic F F'`. Use extensionality with `z`. Simplify using `[hs z, FiniteField.coe_frobeniusAlgEquivOfAlgebraic, Nat.card_eq_fintype_card]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Take `⟨n, hn⟩` from `(FiniteField.bijective_frobeniusAlgEquivOfAlgebraic_pow F F').2 t`. Rewrite using `[hs']`. Conclude with `⟨(n.1 : ℤ), by simpa using hn⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 private theorem gen_of_frob {F F' : Type} [Field F] [Field F'] [Algebra F F'] [Finite F'] (s : F' ≃ₐ[F] F')
     (hs : ∀ z, s z = z ^ Nat.card F) (t : F' ≃ₐ[F] F') : t ∈ Subgroup.zpowers s := by
@@ -45,7 +45,7 @@ private theorem gen_of_frob {F F' : Type} [Field F] [Field F'] [Algebra F F'] [F
   exact ⟨(n.1 : ℤ), by simpa using hn⟩
 
 /- English proof (translation)
-Establish `: Finite F` using `Finite.of_injective _ (algebraMap F F').injective`. Conclude with `Module.natCard_eq_pow_finrank.symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem card_lift {F F' : Type} [Field F] [Field F'] [Algebra F F'] [Finite F'] :
     Nat.card F ^ Module.finrank F F' = Nat.card F' := by
@@ -53,7 +53,7 @@ private theorem card_lift {F F' : Type} [Field F] [Field F'] [Algebra F F'] [Fin
   exact Module.natCard_eq_pow_finrank.symm
 
 /- English proof (translation)
-Establish `hg : ∀ t : F' ≃ₐ[F] F', t ∈ Subgroup.zpowers s` using `gen_of_frob s hs`. Rewrite using `[JD_cons' (pullθ ι θ) p D L b n h₁, JD_cons' θ _ D' L' b n h₂]`. Rewrite using `[hLH F F' s hg p.1 b n hn _ _ (isCl_detc _ _ _) ((hJE F (pullθ ι θ)).2.2 D L b)]`. Rewrite using `[hLD F F' s hs ι θ p.1 p.2 (hNE F F' s hs p.1)]`. Conclude with `hKH F' (s : F' →+* F') p.1 b n hn _ _ _ _ ((hJC F' θ hθ).1 _ _) hB (kills_self _ _ ((hJC F' θ hθ).1 _ _)) IH`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem step (hLH : LiftHc) (hKH : KillsHc) (hNE : NormEx) (hJE : JDEq) (hJC : JDChar) (hLD : LiftDet)
     {F F' : Type} [Field F] [Field F'] [Algebra F F'] [Finite F'] [Finite F] (s : F' ≃ₐ[F] F')
@@ -72,23 +72,21 @@ private theorem step (hLH : LiftHc) (hKH : KillsHc) (hNE : NormEx) (hJE : JDEq) 
     (kills_self _ _ ((hJC F' θ hθ).1 _ _)) IH
 
 /- English proof (translation)
-Introduce `h0 hLH hKH hNE hLO hJE hJC hLD F F' _ _ _ _ s hl hs ι θ hθ a _ hok hq`. Establish `: Finite F` using `Finite.of_injective _ (algebraMap F F').injective`. Establish `hlift` using `hLO a (Module.finrank F F') hl hok`. Take `⟨q, D0, L0⟩` from `a`. Express the relevant statement in the definitionally equal form `q = Nat.card F at hq`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Substitute `hq` using the available equality. Establish `hok'` using `hok`. Unfold `Lbl.Ok at hok'`. Take `⟨hq2, hDpos, hLok⟩` from `hok'`. Establish `hl1` using `hlift.1`.
+Substitute using the available equality. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Unfold `Lbl.Ok at hl1`. Take `⟨hq2', _, hLok'⟩` from `hl1`. Establish `hdegmap : ∀ D : List (ℕ × ℕ), deg (D.map fun p => (p.1, p.2 * ∑ i ∈ Finset.range (Module.finrank F F'), Nat.card F ^ i)) = deg D`. Introduce `D`. Simplify using `[GlobalTheory.Shin.deg, List.map_map, Function.comp_def]`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hdegL : deg (liftAll (Nat.card F) (Module.finrank F F') L0) = deg L0`. Establish `h` using `hlift.2`. Simplify using `only [Lbl.rk, Lbl.lift, hdegmap] at h`. Use linear arithmetic over natural numbers and integers. Establish `key : ∀ D : List (ℕ × ℕ), (∀ p ∈ D, 0 < p.1) → Kills (shLift s (JD (pullθ ι θ) D L0 (deg D + deg L0))) (JD θ (D.map fun p => (p.1, p.2 * ∑ i ∈ Finset.range (Module.finrank F F'), Nat.card F ^ i)) (liftAll (Nat.card F) (Module.finrank F F') L0) (deg D + deg L0))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Introduce `D`. Proceed by induction on `D with`. Consider the case `nil`. Introduce `_`. Conclude with `h0 F F' s hl hs ι θ hθ ⟨Nat.card F, [], L0⟩ rfl (by unfold Lbl.Ok; exact ⟨hq2, by simp, hLok⟩) rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Consider the case `cons p D ih`. Introduce `hD`. Establish `hD' : ∀ x ∈ D, 0 < x.1` using `fun x hx => hD x (List.mem_cons_of_mem _ hx)`. Establish `tr : ∀ (D' L' : List (ℕ × ℕ)) (n m : ℕ), n = m → GlobalTheory.BI.IsChar ℂ ℂ (JD θ D' L' n) → GlobalTheory.BI.IsChar ℂ ℂ (JD θ D' L' m)`. Introduce `D' L' n m h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Substitute `h` using the available equality. Conclude with `id`. Establish `hB : GlobalTheory.BI.IsChar ℂ ℂ (JD θ (D.map fun p => (p.1, p.2 * ∑ i ∈ Finset.range (Module.finrank F F'), Nat.card F ^ i)) (liftAll (Nat.card F) (Module.finrank F F') L0) (deg D + deg L0))`. Establish `hc` using `(hJC F' θ hθ).2 ⟨Nat.card F ^ Module.finrank F F', D.map fun p => (p.1, p.2 * ∑ i ∈ Finset.range (Module.finrank F F'), Nat.card F ^ i), liftAll (Nat.card F) (Module.finrank F F') L0⟩ (by`. Unfold `Lbl.Ok`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨hq2', ?_, hLok'⟩` and prove the remaining obligations. Introduce `x hx`. Take `⟨y, hy, rfl⟩` from `List.mem_map.1 hx`. Conclude with `hD' y hy) card_lift`. Use `tr _ _ _ _ ?_ hc` and prove the remaining obligations.
-
-Use `show deg _ + deg _ = _`. Rewrite using `[hdegmap, hdegL]`. Conclude with `step hLH hKH hNE hJE hJC hLD s hs ι θ hθ p D L0 _ _ (deg D + deg L0) _ (by simp only [GlobalTheory.Shin.deg, List.map_cons, List.sum_cons]; omega) rfl (by rw [hdegmap, hdegL]) hB (ih hD')`. Conclude with `key D0 hDpos`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.InertialTypesAlt.killsTrue :
     (KillsOn fun a => a.D = []) → LiftHc → KillsHc → NormEx → LiftOk → JDEq → JDChar → LiftDet → KillsOn fun _ => True := by

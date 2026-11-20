@@ -20,11 +20,11 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.CompanionTheory.ExpProd
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[le_uniformizer_iff]`. Conclude with `GlobalTheory.CompanionTheory.UnifPow.valuation_unifU_lt_one k`. Take `⟨y, hy⟩` from `valuation_surjective (uniformizer k)`. Establish `hy1 : valuation k y < 1` using `hy ▸ uniformizer_lt_one`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyO : y ∈ 𝒪[k]` using `hy1.le`. Establish `hm : (⟨y, hyO⟩ : 𝒪[k]) ∈ IsLocalRing.maximalIdeal 𝒪[k]`. Rewrite using `[IsLocalRing.mem_maximalIdeal]`. Introduce `hu`. Conclude with `hy1.ne (((Valuation.integer.integers (valuation k)).isUnit_iff_valuation_eq_one).1 hu)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hm` using `[(Zls.irreducible_unif (k := k)).maximalIdeal_eq, Ideal.mem_span_singleton]`. Rewrite using `[← hy]`. Conclude with `(Valuation.Integers.le_iff_dvd (Valuation.integer.integers (valuation k))).2 hm`.
+A detailed English derivation is pending.
 -/
 theorem val_unifU (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] :
     valuation k ((Zls.unifU k : kˣ) : k) = uniformizer k := by
@@ -43,26 +43,24 @@ theorem val_unifU (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [Is
     exact (Valuation.Integers.le_iff_dvd (Valuation.integer.integers (valuation k))).2 hm
 
 /- English proof (translation)
-The claim follows from `funext fun i => unrChar_uniformizer k (ξ i) (val_unifU k)`.
+A detailed English derivation is pending.
 -/
 theorem atUnif_unrChar (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {n : ℕ} (ξ : Fin n → ℂˣ) : PositivityTheory.SphericalProduct.atUnif k (fun i => unrChar k (ξ i)) = ξ :=
   funext fun i => unrChar_uniformizer k (ξ i) (val_unifU k)
 
 /- English proof (translation)
-Introduce `E _ _ w c n N h σ P ξ hsub hmono ⟨y, hy0, hy⟩`. Use `haveI : CharZero (w.adicCompletion E) := charZero_of_injective_algebraMap (algebraMap E _).injective`. Establish `hd : ∑ _a : Fin n, 1 = n` using `by simp`. Take `⟨v, hv0, hv⟩` from `GlobalTheory.CompanionTheory.StandardBlocks.stdBridge (w.adicCompletion E) n hd P.V P.ρ _ y hy0 hy`. Establish `hadm : IsAdmissible P.ρ` using `(GlobalTheory.CompanionTheory.Published.bernsteinZelevinskyFiniteness (w.adicCompletion E)).1 _ P.V P.ρ P.smooth P.irred`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hanti : PositivityTheory.SphericalProduct.AbsAnti (PositivityTheory.SphericalProduct.atUnif (w.adicCompletion E) (fun i => unrChar (w.adicCompletion E) (ξ i)))`. Rewrite using `[atUnif_unrChar]`. Conclude with `fun i j hij => hmono i j hij`. Establish `hsat` using `GlobalTheory.CompanionTheory.LocGL.expSat (w.adicCompletion E) n hd P.V P.ρ P.smooth hadm P.irred (fun i => unrChar (w.adicCompletion E) (ξ i)) (fun i => isUnram_unrChar _ _) hanti ⟨v, hv0, hv⟩`. Rewrite `hsat` using `[atUnif_unrChar]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hG` using `(GlobalTheory.CompanionTheory.SatakeBridge.satBridge E w n P.V P.ρ P.smooth P.irred ξ).1 hsat`. Take `⟨x, hx⟩` from `hG.exists_vec`. Take `⟨S, f, hf⟩` from `hsub`. Establish `hsm : IsSmooth (locProd h w σ)` using `GlobalTheory.SmGL.isSmooth_parInd _ _`. Establish `hSs : IsSmooth S.toRepresentation` using `GlobalTheory.CompanionTheory.JacExp.isSmooth_sub hsm S`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc` using `GlobalTheory.SatInd.isCompact_KGL (w := w) (n := n)`. Take `⟨s, rfl⟩` from `hf x`. Take `⟨u, hu, hfu⟩` from `GlobalTheory.LocGL.exists_mem_fixed_map_eq hSs hc f hx.2.1`. Establish `hu0 : u ≠ 0`. Introduce and unpack `rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `hx.1 (by rw [← hfu, map_zero])`. Establish `hfix : u.1 ∈ fixed (locProd h w σ) (GlobalTheory.LFun.KGL w n)` using `GlobalTheory.LGrp.mem_fixed.2 fun g hg => congrArg Subtype.val (GlobalTheory.LGrp.mem_fixed.1 hu g hg)`. Establish `hne : u.1 ≠ 0` using `fun e => hu0 (Subtype.ext e)`. Take `⟨B, hB, hBv⟩` from `GlobalTheory.SatInd.exists_sat_multiProd h (π := fun i => (σ i).ρ) (fun i => (σ i).smooth) (fun i => (σ i).irred) hfix hne`. Establish `h1 : GlobalTheory.LFun.IsSatVecGL w S.toRepresentation u (∑ a, B a)` using `GlobalTheory.LFun.IsSatVecGL.of_map S.toSubmodule.subtype (fun g y => rfl) Subtype.val_injective hBv`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h2` using `h1.map (ρ' := P.ρ) f.toLinearMap (fun g y => f.isIntertwining _ _ g y) (by`. Express the relevant statement in the definitionally equal form `f u ≠ 0`. Rewrite using `[hfu]`. Conclude with `hx.1)`. Express the relevant statement in the definitionally equal form `GlobalTheory.LFun.IsSatVecGL w P.ρ (f u) _ at h2`.
-
-Rewrite `h2` using `[hfu]`. Conclude with `⟨fun i => (hB i).1, B, hB, h2.unique hx⟩`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem expToSat : PositivityTheory.Rg.BcB.F.Tail.PExp.ExpToSat := by
   intro E _ _ w c n N h σ P ξ hsub hmono ⟨y, hy0, hy⟩

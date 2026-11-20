@@ -16,9 +16,9 @@ namespace UpperTheory.V.Z.Sym.Glob
 open Loc
 
 /- English proof (translation)
-Establish `hu : (g : Matrix (Fin 3) (Fin 3) (Lsq K Δ))ᴴ * (g : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) = 1`. Use `g.2` as an intermediate fact. Rewrite `this` using `[Matrix.mem_unitaryGroup_iff']`. Simplify `this` using `[Matrix.star_eq_conjTranspose]`. Establish `e1 : ∀ a b : Fin 3 → Lsq K Δ, ∑ i, a i * star (b i) = star b ⬝ᵥ a`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `a b`. Simplify using `[dotProduct, mul_comm]`. Rewrite using `[e1, e1, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, hu, Matrix.one_mulVec]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem unitary_form' {K : Type} [Field K] {Δ : K} (g : U3 Δ) (v w : Fin 3 → Lsq K Δ) :
     ∑ i, ((g : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) *ᵥ v) i * star (((g : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) *ᵥ w) i) =
@@ -35,7 +35,7 @@ private theorem unitary_form' {K : Type} [Field K] {Δ : K} (g : U3 Δ) (v w : F
 end UpperTheory.V.Z.Sym.Glob
 
 /- English proof (translation)
-Apply `Matrix.ext` to reduce the goal to its premises. Introduce `i j`. Simplify using `only [Matrix.map_apply, Matrix.mul_apply, star_sum, star_mul', star_star]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 private theorem map_star_mul_divisor {R : Type} [CommRing R] [StarRing R] (A : Matrix (Fin 3) (Fin 3) R) :
     (A * A.map star).map star = A.map star * A := by
@@ -45,21 +45,19 @@ private theorem map_star_mul_divisor {R : Type} [CommRing R] [StarRing R] (A : M
 
 open UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Loc in
 /- English proof (translation)
-Unfold `ClassG`. Introduce `K _ _ Δ τ d m hΔ hD δ hδ`. Establish `hreg` using `hD.reg`. Establish `hnorm` using `hD.d_norm`. Take `⟨B, hBB, hNB, hBw⟩` from `UpperTheory.exists_hermitian_conjugation_of_unitary_tau K Δ τ hreg d hnorm δ hδ _ rfl`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hchar` using `hδ`. Rewrite `hchar` using `[HasTau.eq_1]`. Take `⟨e, v, hBe, hBv, hNe, hNv, hdet⟩` from `UpperTheory.exists_star_fixed_rotation_basis_of_charpoly K Δ τ hΔ hreg B _ hBB hNB hchar`. Use `set N : Matrix (Fin 3) (Fin 3) (Lsq K Δ) := ((δ * theta Δ δ : U3 Δ) : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) with hN`. Establish `hδe : (δ : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) *ᵥ star e = e` using `(hBw e hBe).1 hNe`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hδv : (δ : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) *ᵥ star v = d.re • v + d.im • N *ᵥ v` using `(hBw v hBv).2 hNv`. Take `⟨c, m', hm'u, hm's, hform⟩` from `UpperTheory.exists_hermitian_form_of_unitary_rotation_basis K Δ τ hreg N (δ * theta Δ δ).property e v hNe hNv hdet`. Take `⟨P, hP⟩` from `UpperTheory.exists_linearEquiv_sp_of_isUnit_det_basis K Δ τ e v (N *ᵥ v) hdet`. Establish `hform' : ∀ x y : Sp Δ τ, herm (c : K) m' x y = ∑ i, P x i * star (P y i)`. Introduce `x y`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hform, hP, hP]`. Establish `h1 : N = (δ : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) * (δ : Matrix (Fin 3) (Fin 3) (Lsq K Δ)).map star`. Rewrite using `[hN]`. Both sides reduce to the same expression. Establish `hA : (δ : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) * N.map star = N * δ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, map_star_mul_divisor, Matrix.mul_assoc]`. Establish `hsemi : ∀ x, P (semi d x) = (δ : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) *ᵥ star (P x)`. Introduce `x`. Rewrite using `[hP, hP]`. Conclude with `UpperTheory.semilinear_coords_eq_mulVec_star K Δ τ d δ N e v hA hδe hδv hNv x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hinv : ∀ x y, herm (c : K) m' (semi d x) (semi d y) = star (herm (c : K) m' x y)`. Introduce `x y`. Rewrite using `[hform', hform', hsemi, hsemi, unitary_form']`. Simplify using `[star_sum, mul_comm]`. Establish `hsig` using `UpperTheory.sigL_eq_of_herm_semilinear_eq_star K Δ τ (c : K) d m' hreg hinv`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hD' : IsDat (c : K) d m'` using `⟨hreg, c.ne_zero, hnorm, hm'u, hm's, hsig⟩`. Take `⟨t, ht⟩` from `UpperTheory.hermitian_datum_unique_up_to_scalar K Δ τ 1 (c : K) d m m' hD hD'`. Take `⟨δ', ι, hM⟩` from `exG_models hD' P hform'`. Use `⟨c, t, ι, P, ?_⟩` and prove the remaining obligations. Rewrite using `[← ht]`.
-
-Conclude with `⟨hform', hsemi, hM.tor⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Glob.classG :
     UpperTheory.V.Z.Sym.Glob.ClassG := by

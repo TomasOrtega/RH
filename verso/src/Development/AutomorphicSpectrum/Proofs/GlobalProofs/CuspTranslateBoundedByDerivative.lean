@@ -13,17 +13,15 @@ namespace GlobalTheory.CompanionTheory.HCCusp.Transl
 open GlobalTheory.AutomorphicL2Unitary
 
 /- English proof (translation)
-Establish `e : c 1 - c 0 = ∫ t in (0 : ℝ)..1, f t` using `(intervalIntegral.integral_eq_sub_of_hasDerivAt (fun t _ => hd t) (hf.intervalIntegrable _ _)).symm`. Establish `n1 : ‖c 1 - c 0‖ ≤ ∫ t in (0 : ℝ)..1, ‖f t‖`. Rewrite using `[e]`. Conclude with `intervalIntegral.norm_integral_le_integral_norm zero_le_one`. Establish `hn : Continuous fun t => ‖f t‖` using `hf.norm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set A := ∫ t in (0 : ℝ)..1, ‖f t‖ with hA`. Use `set B := ∫ t in (0 : ℝ)..1, ‖f t‖ ^ 2 with hB`. Establish `hA0 : 0 ≤ A` using `intervalIntegral.integral_nonneg zero_le_one fun _ _ => norm_nonneg _`. Establish `hAB : A ^ 2 ≤ B`. Establish `h0 : 0 ≤ ∫ t in (0 : ℝ)..1, (‖f t‖ - A) ^ 2` using `intervalIntegral.integral_nonneg zero_le_one fun _ _ => sq_nonneg _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1 : (∫ t in (0 : ℝ)..1, (‖f t‖ - A) ^ 2) = B - 2 * A * A + A ^ 2`. Establish `: ∀ t, (‖f t‖ - A) ^ 2 = ‖f t‖ ^ 2 - 2 * A * ‖f t‖ + A ^ 2` using `fun t => by ring`. Simplify using `only [this]`. Establish `i1 : IntervalIntegrable (fun t => ‖f t‖ ^ 2) volume 0 1` using `(hn.pow 2).intervalIntegrable _ _`. Establish `i2 : IntervalIntegrable (fun t => 2 * A * ‖f t‖) volume 0 1` using `(continuous_const.mul hn).intervalIntegrable _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[intervalIntegral.integral_add (f := fun t => ‖f t‖ ^ 2 - 2 * A * ‖f t‖) (g := fun _ => A ^ 2) (i1.sub i2) (continuous_const.intervalIntegrable _ _), intervalIntegral.integral_sub i1 i2, intervalIntegral.integral_const_mul]`. Simplify using `[← hA, ← hB]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hle : ‖c 1 - c 0‖ ^ 2 ≤ B` using `(pow_le_pow_left₀ (norm_nonneg _) n1 2).trans hAB`. Establish `hBi : B = ∫ t in Set.Ioc (0 : ℝ) 1, ‖f t‖ ^ 2` using `intervalIntegral.integral_of_le zero_le_one`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hint : IntegrableOn (fun t => ‖f t‖ ^ 2) (Set.Ioc (0 : ℝ) 1)` using `((hn.pow 2).intervalIntegrable 0 1).1`. Establish `hL : ENNReal.ofReal B = ∫⁻ t in Set.Ioc (0 : ℝ) 1, ‖f t‖ₑ ^ (2 : ℝ)`. Rewrite using `[hBi, ofReal_integral_eq_lintegral_ofReal hint (.of_forall fun _ => sq_nonneg _)]`. Use `lintegral_congr fun t => ?_` and prove the remaining obligations. Rewrite using `[ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm, ENNReal.rpow_ofNat]`.
-
-Rewrite using `[← hL, ENNReal.rpow_ofNat, ← ofReal_norm, ← ENNReal.ofReal_pow (norm_nonneg _)]`. Conclude with `ENNReal.ofReal_le_ofReal hle`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem enorm_sub_sq_le {c f : ℝ → ℂ} (hf : Continuous f) (hd : ∀ t, HasDerivAt c (f t) t) :
     ‖c 1 - c 0‖ₑ ^ (2 : ℝ) ≤ ∫⁻ t in Set.Ioc (0 : ℝ) 1, ‖f t‖ₑ ^ (2 : ℝ) := by
@@ -68,9 +66,9 @@ variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Seco
   {φ ψ : G → ℂ}
 
 /- English proof (translation)
-Establish `hE : eLpNorm (descend Γ φ) 2 (AutomorphicL2Unitary.quotMeasure Γ μ) ≠ ⊤` using `h.2.2.ne`. Establish `h1 : ‖h.toL2‖ = (eLpNorm (descend Γ φ) 2 (AutomorphicL2Unitary.quotMeasure Γ μ)).toReal` using `Lp.norm_toLp _ _`. Establish `h2` using `eLpNorm_nnreal_pow_eq_lintegral (f := descend Γ φ) (μ := AutomorphicL2Unitary.quotMeasure Γ μ) (p := 2) (by norm_num)`. Establish `h3` using `lintegral_quotMeasure (isFundamentalDomain_stdDom Γ μ) (fun q => ‖descend Γ φ q‖ₑ ^ (2 : ℝ))`. Simplify using `only [h.1.descend_mk] at h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h3, h1, ENNReal.ofReal_pow ENNReal.toReal_nonneg, ENNReal.ofReal_toReal hE]`. Simplify using `using h2`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ofReal_norm_sq (h : MemL2Quotient Γ μ φ) :
     ENNReal.ofReal (‖h.toL2‖ ^ 2) = ∫⁻ g in stdDom Γ, ‖φ g‖ₑ ^ (2 : ℝ) ∂μ := by
@@ -83,14 +81,14 @@ theorem ofReal_norm_sq (h : MemL2Quotient Γ μ φ) :
   simpa using h2
 
 /- English proof (translation)
-Establish `hd` using `isFundamentalDomain_stdDom Γ μ`. Conclude with `(memL2_iff_fundamental_domain hd).2 ⟨fun γ hγ g => by simp only [h.1 γ hγ, h'.1 γ hγ], ((memL2_iff_fundamental_domain hd).1 h).2.sub ((memL2_iff_fundamental_domain hd).1 h').2⟩`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem memL2_sub (h : MemL2Quotient Γ μ φ) (h' : MemL2Quotient Γ μ ψ) : MemL2Quotient Γ μ fun x => φ x - ψ x := by
   have hd := isFundamentalDomain_stdDom Γ μ
   exact (memL2_iff_fundamental_domain hd).2 ⟨fun γ hγ g => by simp only [h.1 γ hγ, h'.1 γ hγ], ((memL2_iff_fundamental_domain hd).1 h).2.sub ((memL2_iff_fundamental_domain hd).1 h').2⟩
 
 /- English proof (translation)
-Use `l2DiscreteQuotient_ext_iff_lift_ae_eq.2 ?_` and prove the remaining obligations. Establish `e1` using `(memL2_sub h h').lift_toL2_ae_eq`. Establish `e2 : lift Γ (h.toL2 - h'.toL2) =ᵐ[μ] lift Γ h.toL2 - lift Γ h'.toL2` using `ae_quotMeasure_iff.1 (Lp.coeFn_sub h.toL2 h'.toL2)`. Conclude with `e1.trans ((h.lift_toL2_ae_eq.sub h'.lift_toL2_ae_eq).symm.trans e2.symm)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem toL2_sub (h : MemL2Quotient Γ μ φ) (h' : MemL2Quotient Γ μ ψ) : (memL2_sub h h').toL2 = h.toL2 - h'.toL2 := by
   refine l2DiscreteQuotient_ext_iff_lift_ae_eq.2 ?_
@@ -102,13 +100,11 @@ theorem toL2_sub (h : MemL2Quotient Γ μ φ) (h' : MemL2Quotient Γ μ ψ) : (m
 variable [μ.IsMulRightInvariant]
 
 /- English proof (translation)
-Substitute `h1` using the available equality. Establish `hm` using `hφ.mul_right (a 1)`. Establish `hs` using `memL2_sub hm hφ`. Rewrite using `[right_translate_toL2, ← toL2_sub hm hφ]`. Establish `key : ∫⁻ g in stdDom Γ, ‖φ (g * a 1) - φ g‖ₑ ^ (2 : ℝ) ∂μ ≤ ∫⁻ g in stdDom Γ, ‖ψ g‖ₑ ^ (2 : ℝ) ∂μ`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpt : ∀ g, ‖φ (g * a 1) - φ g‖ₑ ^ (2 : ℝ) ≤ ∫⁻ t in Set.Ioc (0 : ℝ) 1, ‖ψ (g * a t)‖ₑ ^ (2 : ℝ)` using `fun g => by`. Use `enorm_sub_sq_le (c := fun s => φ (g * a s)) (f := fun t => ψ (g * a t)) (by fun_prop) (hd g)` as an intermediate fact. Simplify `this` using `[h0]`. Establish `hmeas : Measurable fun p : G × ℝ => ‖ψ (p.1 * a p.2)‖ₑ ^ (2 : ℝ)` using `(Continuous.measurable (by fun_prop : Continuous fun p : G × ℝ => ψ (p.1 * a p.2))).enorm.pow_const _`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `lintegral_congr fun t => ?_` and prove the remaining obligations. Rewrite using `[← ofReal_norm_sq (hψ.mul_right (a t)), ← ofReal_norm_sq hψ, ← right_translate_toL2, norm_R]`. Use `_ = _ := by simp`. Establish `h1` using `(ofReal_norm_sq hs).le.trans (key.trans (ofReal_norm_sq hψ).ge)`. Establish `h2 : ‖hs.toL2‖ ^ 2 ≤ ‖hψ.toL2‖ ^ 2` using `(ENNReal.ofReal_le_ofReal_iff (by positivity)).1 h1`.
-
-Conclude with `(pow_le_pow_iff_left₀ (norm_nonneg _) (norm_nonneg _) two_ne_zero).1 h2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem norm_R_sub_le [SFinite μ] {a : ℝ → G} {u : G} (ha : Continuous a) (h0 : a 0 = 1) (h1 : a 1 = u) (hφ : MemL2Quotient Γ μ φ) (hψ : MemL2Quotient Γ μ ψ)
     (hψc : Continuous ψ) (hd : ∀ g t, HasDerivAt (fun s => φ (g * a s)) (ψ (g * a t)) t) :
@@ -145,11 +141,9 @@ open GlobalTheory.AutomorphicL2Unitary GlobalTheory.Cusp GlobalTheory.Mem.AutSpa
 variable {D : D7} {θ : GlobalTheory.Mem.Th.InfF D} {V : HSp D}
 
 /- English proof (translation)
-Establish `R` using `(RealPts.realPoints D).2 θ hθ V`. Establish `hs : Sm (expInf θ V) φ.1` using `(smooth_iff R φ.1).1 (mem_Mc_iff.1 φ.2).1.smooth`. Use function extensionality and compare the values at `g`. Establish `e1 : (derInf hθ X φ : GA D V → ℂ) g = ∑ τ, Rder θ V τ (X τ).1 φ.1 g`. Simplify using `only [derInf, LinearMap.sum_apply, Submodule.coe_sum, Finset.sum_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_congr rfl fun τ _ => rfl`. Rewrite using `[e1]`. Establish `e2 : ∀ τ, Rder θ V τ (X τ).1 φ.1 g = Der (expInf θ V) (GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.atPlace V τ (X τ)) φ.1 g` using `fun τ => congrFun (Rder_eq R τ (X τ) φ.1) g`. Establish `hX : ∑ τ, (GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.atPlace V τ (X τ) : LieN V) = X` using `sum_atPlace X`. Rewrite using `[Finset.sum_congr rfl fun τ _ => (e2 τ).trans (DerLinear.der_eq_fderiv hs _ g), DerLinear.der_eq_fderiv hs X g]`.
-
-Conclude with `(map_sum (fderiv ℝ (fun Z : LieN V => φ.1 (g * expInf θ V Z)) 0) (fun τ => (GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.atPlace V τ (X τ) : LieN V)) Finset.univ).symm.trans (congrArg _ hX)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coe_derInf (hθ : IsInfFam θ) (X : LieN V) (φ : Mc θ V) :
     (derInf hθ X φ : GA D V → ℂ) = Der (expInf θ V) X φ.1 := by
@@ -170,15 +164,13 @@ theorem coe_derInf (hθ : IsInfFam θ) (X : LieN V) (φ : Mc θ V) :
 end GlobalTheory.CompanionTheory.HCCusp.Transl
 
 /- English proof (translation)
-Introduce `D θ hθ V μ _ _ X φ`. Establish `R` using `(GlobalTheory.SmoothForms.RealPts.realPoints D).2 θ hθ V`. Set `a : ℝ → GA D V` to `fun t => GlobalTheory.SmoothForms.expInf θ V (t • X)`. Establish `ha : Continuous a` using `(GlobalTheory.CuspGeo.MeanValue.continuous_expInf hθ R).comp (continuous_id.smul continuous_const)`. Establish `h0 : a 0 = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `GlobalTheory.CuspGeo.MeanValue.expInf_zero R` using `[a]`. Establish `h1 : a 1 = GlobalTheory.SmoothForms.expInf θ V X` using `by simp [a]`. Establish `hP` using `GlobalTheory.Grow.cuspRapidDecay_of_bound GlobalTheory.CuspGeo.cuspDecayBound`. Establish `hφc` using `(GlobalTheory.Cusp.mem_cuspForms.1 φ.2).1`. Use `set ψ := GlobalTheory.CompanionTheory.HCCusp.derInf hθ X φ with hψdef`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hψf` using `(GlobalTheory.Cusp.mem_cuspForms.1 ψ.2).1`. Establish `hs : GlobalTheory.SmoothForms.Sm (GlobalTheory.SmoothForms.expInf θ V) φ.1` using `(GlobalTheory.SmoothForms.smooth_iff R φ.1).1 (GlobalTheory.CompanionTheory.HCCusp.mem_Mc_iff.1 φ.2).1.smooth`. Establish `d0 : ∀ h, HasDerivAt (fun t : ℝ => φ.1 (h * a t)) (ψ.1 h) 0` using `fun h => by`. Rewrite using `[hψdef, GlobalTheory.CompanionTheory.HCCusp.Transl.coe_derInf]`. Conclude with `DifferentiableAt.hasDerivAt ((((hs h).differentiable (by simp)).comp (differentiable_id.smul_const X)) 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : ∀ g t, HasDerivAt (fun s => φ.1 (g * a s)) (ψ.1 (g * a t)) t` using `fun g t => by`. Establish `h2` using `HasDerivAt.comp_sub_const t t (by rw [sub_self]; exact d0 (g * a t))`. Use `h2.congr_of_eventuallyEq (Filter.Eventually.of_forall fun s => ?_)` and prove the remaining obligations. Simplify using `only [a, mul_assoc, ← GlobalTheory.CuspGeo.MeanValue.expInf_add R, add_sub_cancel]`. Use `GlobalTheory.CompanionTheory.HCCusp.Transl.norm_R_sub_le ha h0 h1 (GlobalTheory.Cusp.memL2_of_cusp_form (μ := μ) hP hθ hφc) (GlobalTheory.Cusp.memL2_of_cusp_form (μ := μ) hP hθ hψf) hψf.1.cont hd` as an intermediate fact.
-
-Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.HCCusp.norm_Rcusp_expInf_sub_le : ∀ (D : D7) (θ : GlobalTheory.Mem.Th.InfF D) (hθ : IsInfFam θ) (V : HSp D) (μ : Measure (GA D V)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant] (X : GlobalTheory.SmoothForms.LieN V) (φ : GlobalTheory.CompanionTheory.HCCusp.Mc θ V), ‖GlobalTheory.Cusp.Rcusp V μ (GlobalTheory.SmoothForms.expInf θ V X) (GlobalTheory.CompanionTheory.HCCusp.io μ hθ φ) - GlobalTheory.CompanionTheory.HCCusp.io μ hθ φ‖ ≤ ‖GlobalTheory.CompanionTheory.HCCusp.io μ hθ (GlobalTheory.CompanionTheory.HCCusp.derInf hθ X φ)‖ := by
   intro D θ hθ V μ _ _ X φ

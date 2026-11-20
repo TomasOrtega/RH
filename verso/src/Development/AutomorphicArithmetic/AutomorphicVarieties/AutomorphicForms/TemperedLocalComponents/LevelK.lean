@@ -29,7 +29,7 @@ variable {K Ω : Type} [Field K] [NumberField K] [IsCMField K] [Field Ω] [Algeb
   {l : ℕ} [Fact l.Prime] {n : ℕ} {ι : Qbar l ≃+* ℂ} {r R : G K Ω →* GL (Fin n) (Qbar l)} {π : CuspSub K n}
 
 /- English proof (translation)
-Establish `h2` using `congrArg (Multiset.map fun z : ℂ => ((n : ℂ) - 1) / 2 - z) h`. Simplify using `only [Multiset.map_map, Function.comp_def, sub_sub_cancel, Multiset.map_id'] at h2`. Rewrite using `[← h2, infOf]`. Conclude with `Multiset.map_congr rfl fun i _ => by push_cast; ring`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem infOf_of_weights {m : Fin n → ℤ} {x : Multiset ℂ}
     (h : (Finset.univ.val.map fun i => -m i).map (fun k : ℤ => (k : ℂ)) = x.map fun z => ((n : ℂ) - 1) / 2 - z) :
@@ -43,7 +43,7 @@ end UpperTheory.V.Af
 
 open UpperTheory.V.Af in
 /- English proof (translation)
-Introduce `P K _ _ _ n hn m hm M hM l _ hl Ω _ _ _ ι r π hL` and use `UpperTheory.V.Lev.levelKO P P.ss (UpperTheory.V.Lev.monoOdd P) (UpperTheory.V.Lev.fixedAll P) K n hn m hm M hM l hl Ω ι r π hL.toLevel hL.odd`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.levelK :
     UpperTheory.V.Af.Hypotheses₂ → UpperTheory.V.Af.LevelK := fun P K _ _ _ n hn m hm M hM l _ hl Ω _ _ _ ι r π hL =>

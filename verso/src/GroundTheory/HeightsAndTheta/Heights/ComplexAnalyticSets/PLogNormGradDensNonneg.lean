@@ -16,7 +16,7 @@ noncomputable section
 namespace LogNormGradDensNonneg
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Simplify using `[ReciprocityTheory.ChartRestriction.G.Geo.fsMetric, HermNorm.dualNorm, HermNorm.std, EuclideanSpace.norm_eq]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem log_fs_eq_std (n : ℕ) :
     (fun z : Fin n → ℂ => Real.log ((ReciprocityTheory.ChartRestriction.G.Geo.fsMetric (Fin n)).ρ z)) =
@@ -25,15 +25,13 @@ theorem log_fs_eq_std (n : ℕ) :
   simp [ReciprocityTheory.ChartRestriction.G.Geo.fsMetric, HermNorm.dualNorm, HermNorm.std, EuclideanSpace.norm_eq]
 
 /- English proof (translation)
-Use `set T : (Fin n → ℂ) → Fin n → ℂ := fun x => (h.matᵀ)⁻¹ *ᵥ x with hT`. Use `set F : (Fin n → ℂ) → ℝ := fun z => Real.log ((ReciprocityTheory.ChartRestriction.G.Geo.fsMetric (Fin n)).ρ z) with hF`. Establish `hTx : T x ≠ 0`. Introduce `h0`. Establish `: h.matᵀ *ᵥ ((h.matᵀ)⁻¹ *ᵥ x) = x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (by rw [Matrix.det_transpose]; exact h.isUnit_det), Matrix.one_mulVec]`. Conclude with `hx (by rw [← this]; simp only [hT] at h0; rw [h0, Matrix.mulVec_zero])`. Establish `hcomp : (fun x => Real.log (h.dualNorm x)) = F ∘ T`. Use function extensionality and compare the values at `z`. Simplify using `[hF, hT, ReciprocityTheory.ChartRestriction.G.Geo.fsMetric, HermNorm.dualNorm, EuclideanSpace.norm_eq]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hTa : AnalyticAt ℂ T x`. Use `(LinearMap.toContinuousLinearMap (Matrix.mulVecLin (h.matᵀ)⁻¹)).analyticAt x` as an intermediate fact. Simplify using `only [LinearMap.coe_toContinuousLinearMap'] at this`. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `z`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mulVecLin_apply]`. Establish `hFc : ContDiffAt ℝ 2 F (T x)`. Rewrite using `[hF, log_fs_eq_std]`. Conclude with `(((contDiffOn_log_dualNorm (HermNorm.std n)).contDiffAt (isOpen_compl_singleton.mem_nhds hTx)).of_le (WithTop.coe_le_coe.mpr le_top))`. Rewrite using `[hcomp, levi_comp w hTa hFc]`.
-
-Conclude with `GroundTheory.Heights₂.Heights.HilbertSamuel.ProjLine.leviForm_log_fs_nonneg hTx _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levi_log_dualNorm_nonneg {n : ℕ} (h : HermNorm n) {x : Fin n → ℂ} (hx : x ≠ 0)
     (w : Fin n → ℂ) : 0 ≤ levi (fun x => Real.log (h.dualNorm x)) x w := by
@@ -64,11 +62,9 @@ theorem levi_log_dualNorm_nonneg {n : ℕ} (h : HermNorm n) {x : Fin n → ℂ} 
 end LogNormGradDensNonneg
 
 /- English proof (translation)
-Introduce `n e h s y v hs hsy`. Use `set t : (Fin n → ℂ) → ℝ := fun x => Real.log (h.dualNorm x) with ht`. Use `set V : Set (Fin (e + 1) → ℂ) := {z | AnalyticAt ℂ s z ∧ s z ≠ 0} with hVdef`. Establish `hV : IsOpen V`. Use `isOpen_iff_mem_nhds.mpr fun z hz => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `filter_upwards [hz.1.eventually_analyticAt, hz.1.continuousAt.eventually (isOpen_compl_singleton.mem_nhds hz.2)] with u hu hu'`. Conclude with `⟨hu, hu'⟩`. Establish `htc : ∀ x : Fin n → ℂ, x ≠ 0 → ContDiffAt ℝ 2 t x` using `fun x hx => ((contDiffOn_log_dualNorm h).contDiffAt (isOpen_compl_singleton.mem_nhds hx)).of_le (WithTop.coe_le_coe.mpr le_top)`. Establish `hC : ∀ z ∈ V, ContDiffAt ℝ 2 (t ∘ s) z` using `fun z hz => (htc (s z) hz.2).comp z (hz.1.restrictScalars (𝕜 := ℝ)).contDiffAt`. Use `gradDensNonneg_thm e (fun _ => t ∘ s) v V hV (fun _ => fun z hz => (hC z hz).contDiffWithinAt) ?_ y ⟨hs, hsy⟩` and prove the remaining obligations.
-
-Introduce `_ z hz ξ`. Rewrite using `[levi_comp ξ hz.1 (htc (s z) hz.2)]`. Conclude with `LogNormGradDensNonneg.levi_log_dualNorm_nonneg h hz.2 _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LogNormGradDensNonneg.proof : LogNormGradDensNonneg.Statement := by
   intro n e h s y v hs hsy

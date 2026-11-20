@@ -40,7 +40,7 @@ set_option autoImplicit false
 namespace GlobalTheory.CompanionTheory.Ar.GR
 
 /- English proof (translation)
-Introduce `b`. Take `⟨a, rfl⟩` from `Ainf.theta_surj p O hv b`. Conclude with `⟨Ideal.Quotient.mk _ a, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem thetaBar_surj (p : ℕ) [Fact p.Prime] {C : Type} [Field C] [IsAlgClosed C] [CharZero C]
     {v : Valuation C NNReal} (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)]
@@ -52,9 +52,9 @@ private theorem thetaBar_surj (p : ℕ) [Fact p.Prime] {C : Type} [Field C] [IsA
   exact ⟨Ideal.Quotient.mk _ a, rfl⟩
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Establish `ha : a ∈ RingHom.ker (WittVector.fontaineTheta O p)` using `hx`. Establish `hb : b ∈ RingHom.ker (WittVector.fontaineTheta O p)` using `hy`. Rewrite `ha`, `hb` using `[Ainf.ker_theta p O hv ε hε, Ideal.mem_span_singleton']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨a', rfl⟩` from `ha`. Take `⟨b', rfl⟩` from `hb`. Rewrite using `[← map_mul, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.mem_span_singleton'.2 ⟨a' * b', by ring⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem thetaBar_mul (p : ℕ) [Fact p.Prime] {C : Type} [Field C] [IsAlgClosed C] [CharZero C]
     {v : Valuation C NNReal} (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)]
@@ -73,13 +73,13 @@ private theorem thetaBar_mul (p : ℕ) [Fact p.Prime] {C : Type} [Field C] [IsAl
   exact Ideal.mem_span_singleton'.2 ⟨a' * b', by ring⟩
 
 /- English proof (translation)
-Establish `hsum : ∀ (s : Finset (Ix g)) (c : Ix g → ZMod p) (x : B.G O), p • x = 0 → (∑ j ∈ s, c j).val • x = ∑ j ∈ s, (c j).val • x`. Introduce `s c x hx`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert b s hb ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[Finset.sum_insert hb, Finset.sum_insert hb, GlobalTheory.TateMatrices.val_add_smul _ _ x hx, ih]`. Simplify using `only [ptOf, red, map_sum, map_nsmul, hf]`. Establish `hred : ∀ k, PadicInt.toZMod ((M *ᵥ t) k) = ∑ j, PadicInt.toZMod (M k j) * PadicInt.toZMod (t j)`. Introduce `k`. Simplify using `[Matrix.mulVec, dotProduct, map_sum, map_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [hred]`. Repeatedly rewrite using `[Finset.smul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hsum _ _ _ (h0 k)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm, GlobalTheory.TateMatrices.val_mul_smul _ _ _ (h0 k), GlobalTheory.TateMatrices.toZMod_val_smul _ _ (h0 k)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem ptOf_act {R₀ : Type} [CommRing R₀] (p : ℕ) [Fact p.Prime] (g : ℕ) (B : BX R₀) (O : LAlg R₀)
     (τ : Ix g → ℕ → B.G O) (h0 : ∀ i, p • τ i 0 = 0) (f : B.G O →+ B.G O)
@@ -107,9 +107,9 @@ private theorem ptOf_act {R₀ : Type} [CommRing R₀] (p : ℕ) [Fact p.Prime] 
   rw [mul_comm, GlobalTheory.TateMatrices.val_mul_smul _ _ _ (h0 k), GlobalTheory.TateMatrices.toZMod_val_smul _ _ (h0 k)]
 
 /- English proof (translation)
-Take `⟨S, hS, hT⟩` from `GlobalTheory.T.exists_tangentChartMatrix_of_basis R₀ B Tw.O g F Y hY D.ch.gb`. Use `⟨GlobalTheory.EvClose.htdOfDat D C v (Function.Injective.isDomain _ hv.hom_inj) hv.hom_inj, S, h₁, h₂, hS, fun a => ?_, fun i => ?_, rfl, rfl⟩` and prove the remaining obligations. Conclude with `GlobalTheory.T.jacobian_mul_tangentChartMatrix_intertwines R₀ B Tw.O g F Y hY D.ch.gb S hT (A a) (α a) _ (hα a) (hA a) (h₃ a)`. Take `⟨u, hu, hP⟩` from `GlobalTheory.T.exists_character_pairSer_alt R₀ B Tw.O g F Y hY p hp hc (D.L.τ i) (D.L.τ_tors i) (D.L.τ_compat i)`. Use `⟨u, hu, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.T.linear_part_pairing_series_eq_height R₀ B p Tw Dt g Y D.ch.gb S hT (D.L.τ i) u hu.1 hP (D.L.ht i) (D.L.ht_spec i)]`. Use function extensionality and compare the values at `l`. Conclude with `(D.L.Ht_eq l i).symm`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 private theorem htd_of_dat {R₀ : Type} [CommRing R₀] (p : ℕ) [Fact p.Prime] (C : Type) [Field C]
     (v : Valuation C NNReal) (Tw : ATowerL R₀ p) [Algebra (Tw.O : Type) C] (hv : v.Integers (Tw.O : Type))
@@ -141,21 +141,19 @@ private theorem htd_of_dat {R₀ : Type} [CommRing R₀] (p : ℕ) [Fact p.Prime
     exact (D.L.Ht_eq l i).symm
 
 /- English proof (translation)
-Establish `hsurj : Function.Surjective (algebraMap (Ainf.R0 p O ε) (Tw.O : Type))`. Substitute `hTw` using the available equality. Conclude with `thetaBar_surj p O hv ε hε`. Establish `hmul : ∀ x y : Ainf.R0 p O ε, x ∈ RingHom.ker (algebraMap (Ainf.R0 p O ε) (Tw.O : Type)) → y ∈ RingHom.ker (algebraMap (Ainf.R0 p O ε) (Tw.O : Type)) → x * y = 0`. Substitute `hTw` using the available equality.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Conclude with `thetaBar_mul p O hv ε hε`. Establish `hker : RingHom.ker (algebraMap (Ainf.R0 p O ε) (Tw.O : Type)) ^ 2 = ⊥`. Use `(pow_two _).trans (eq_bot_iff.2 ?_)` and prove the remaining obligations. Conclude with `Ideal.mul_le.2 fun x hx y hy => (Submodule.mem_bot _).2 (hmul x y hx hy)`. Use `haveI : IsLocalRing (Ainf.R0 p O ε) := Ainf.local_of_surj_sq _ hsurj (fun k hk => hmul k k hk hk)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨G, iG, cG, Q, ψ, ψ₂, hab, hQ, t₁, t₂, hsym, hamp, hnd, hpb, hsq, hΛ⟩` from `GlobalTheory.T.exists_lift_principally_polarised_abelian_square_zero p C v (Tw.O : Type) hv' T P₀ io P φ h₁ h₂ h₃ h₄ _ _ hsurj hker`. Use `letI : Algebra (Ainf.R0 p O ε) C := ((algebraMap (Tw.O : Type) C).comp (algebraMap (Ainf.R0 p O ε) (Tw.O : Type))).toAlgebra`. Use `haveI : IsScalarTower (Ainf.R0 p O ε) (Tw.O : Type) C := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Establish `hp0 : 1 ≤ p` using `(Fact.out : p.Prime).one_lt.le`. Establish `hsm` using `GlobalTheory.T.smoothOfRelativeDimension_of_grpPullback_localRing _ _ _ G P.A ψ P.g hab hpb P.smoothDim`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hθ, hn⟩` from `GlobalTheory.T.cube_trivial_and_finite_flat_surjective_mul_abelianScheme _ G _ Q hab (LB.isLB_pull hQ _) hamp hQ`. Take `⟨hf₁, hf₂, hf₃⟩` from `hn p hp0`. Establish `hcard` using `GlobalTheory.T.card_torsion_of_polarisedAbelianScheme_lift _ _ C G P ψ hpb p (Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero)`. Establish `hros` using `fun a : OE => GlobalTheory.T.exists_generator_of_rosatiAdjoint_lambdaBundle _ P _ Q ψ₂ hQ hΛ _ _ (o.hom a) (o.hom (star a)) (o.rosati a)`. Establish `key : ∃ (B : BX (Ainf.R0 p O ε)) (e : ∀ R : LAlg (Ainf.R0 p O ε), B.G R → (sp (R₀` using `(Ainf.R0 p O ε)) (R : Type) ⟶ G)) (Ad : OE → OAdj B Tw.O), (∀ R, Function.Bijective (e R)) ∧ (∀ R x y, e R (x + y) = e R x * e R y) ∧ (∀ {R S : LAlg (Ainf.R0 p O ε)} (f : LHom R S) (x : B.G R), e S (B.map f x) = spMap f.1 ≫ e R x) ∧ (∀ a, (∀ {R : LAlg (Ainf.R0 p O ε)} (s : LHom T …`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Substitute `hTw` using the available equality. Take `⟨B, e, Ad, k₁, k₂, k₃, k₄, Dt, D, k₅, k₆, k₇, k₈⟩` from `GlobalTheory.T.exists_periodTowerDatum_of_abelianScheme_symmetricBundle p O hv ε hε P.g G Q hab hsm hQ hθ t₁ t₂ hsym hf₁ hf₂ hf₃ hv' (hnd _) hcard P.A ψ ψ₂ P.isAb hpb hsq OE (cjZ OE) o.toRingAct (fun a => star_star a) hros`. Conclude with `⟨B, e, Ad, k₁, k₂, k₃, k₄, Dt, D, k₅, k₆, k₇, fun a j => k₈ a j 0⟩`. Take `⟨B, e, Ad, k₁, k₂, k₃, k₄, Dt, D, k₅, k₆, k₇, k₈⟩` from `key`. Take `⟨Y, hY, hR⟩` from `GlobalTheory.T.abelianFunctorNilChart_of_nilpotent_chart _ G B e k₁ k₂ k₃ Tw.O P.A ψ hpb P.g F.F X hX`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨H, S, e₁, e₂, e₃, e₄, e₅, e₆, e₇⟩` from `htd_of_dat p C v Tw hv' hp.out hc P.g OE B F Y hY α (fun a => (hα a).1) (fun a => (Ad a).a) (fun b => hR _ _ _ (hα b) (k₄ b)) Dt Tw.c D k₅ k₆ k₇`. Take `⟨pt, hpt, hT, hE⟩` from `GlobalTheory.T.dual_tower_hodge_tate_datum p C v P.g B Tw Dt hv' hvp _ (sigE p OE) Tw.c D G e k₁ k₂ k₃ P.A ψ hpb`. Use `⟨H, S, pt, e₁, e₂, e₃, e₄, e₅, hT, fun T => e₆.trans (hE T), fun a t => ?_⟩` and prove the remaining obligations. Establish `h0 : ∀ i, p • D.L.τ i 0 = 0` using `fun i => by`. Establish `h` using `D.L.τ_tors i 0`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[zero_add, pow_one]`. Then use the resulting hypothesis. Establish `hAct` using `ptOf_act p P.g B Tw.O D.L.τ h0 ((Ad a).a.f (LHom.id Tw.O)) (D.H.ρ (1 ⊗ₜ[ℤ] a)) (k₈ a) t`. Establish `hA` using `k₄ a (LHom.id Tw.O) (ptOf B D.L.τ (red p P.g t)) (pt (red p P.g t)) (hpt _)`. Rewrite `hA` using `[hAct]`. Rewrite using `[e₇]`.
-
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `hpb.1.hom_ext` to reduce the goal to its premises. Rewrite using `[hpt]`. Conclude with `hA.symm`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem htd_of_tower (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C]
     (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)]
@@ -228,11 +226,9 @@ private theorem htd_of_tower (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAl
   · simp
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ iA hv iF iC iZ P h₄ g hg OE _ _ o F X hX α hα`. Substitute `hg` using the available equality. Use `haveI : IsDomain O := Function.Injective.isDomain _ hv.hom_inj`. Use `haveI : IsLocalRing O := Ainf.O_local O hv`. Take `⟨R, P₀, φ, hft, hg₀, h₁, h₂⟩` from `GlobalTheory.KeyTf.exists_polAV_finiteType_subring O P`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : IsNoetherianRing R := Algebra.FiniteType.isNoetherianRing ℤ R`. Establish `hvp : v (p : C) < 1`. Establish `h` using `lt_of_le_of_ne (hv.map_le_one (p : O)) fun h => iF.out (hv.isUnit_iff_valuation_eq_one.2 h)`. Simplify using `using h`. Take `⟨ε, hε⟩` from `exists_eps (p := p) C v O hv`.
-
-Conclude with `⟨_, GlobalTheory.T.hodgeTate_datum_hypotheses_period_tower p O hv ε hε OE, @htd_of_tower p _ C _ _ _ v O _ _ _ _ hv ε hε _ rfl iA hv iF iC iZ hvp R _ _ P₀ R.subtype P φ h₁ h₂ hg₀.symm h₄ OE _ _ o F X hX α hα⟩`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_htd_act : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C], v.Integers O → ∀ [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [Algebra ℤ_[p] O] (P : Out.PolAV (Geo.Tor.Sp O)), 1 ≤ P.g → ∀ (g : ℕ), P.g = g → ∀ (OE : Type) [CommRing OE] [StarRing OE] (o : P.OAct OE) (F : FGLaw O g) (X : Fam P.A g), NilChart P.A F.F X → ∀ α : OE → Fin g → PS O 1 g, (∀ a, Reads X X (o.act a) (α a)) → ∃ (cp : O) (_ : HodgeTateSetting p v O (ℤ_[p] ⊗[ℤ] OE) (sigE p OE) cp) (H : HodgeTateDatum p g v O (ℤ_[p] ⊗[ℤ] OE) (sigE p OE) cp) (S : Matrix (Fin g) (Fin g) O) (pt : Nb p g → (sp (R₀ := O) O ⟶ P.A)), H.P = 0 ∧ H.PL = 0 ∧ IsUnit S ∧ (∀ a : OE, lin (α a) * S = S * H.ρL (1 ⊗ₜ[ℤ] a)) ∧ (∀ i, ∃ u : PS O 1 g, IsCh F.F u ∧ Sᵀ *ᵥ dl u = fun l => H.Ht l i) ∧ IsTorsPts P.A p pt ∧ (∀ T : TorsRep P.A p, H.AA.carrier = torsFun C T pt) ∧ ∀ (a : OE) (t : TT p g), pt (red p g (H.ρ (1 ⊗ₜ[ℤ] a) *ᵥ t)) = pt (red p g t) ≫ o.act a := by
   intro p _ C _ _ _ v O _ iA hv iF iC iZ P h₄ g hg OE _ _ o F X hX α hα

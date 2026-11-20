@@ -16,19 +16,17 @@ variable {Γ : Type} [Group Γ] {K : Type} [Field K]
 end Alg
 variable (D : D7) (i : D.nd.Loc)
 /- English proof (translation)
-Take `⟨P, hP⟩` from `D.naut.pt_surj i x`. Take `⟨Pa, hBC⟩` from `hA.1.1.2.2.1 i P`. Take `⟨R, hR, hcp⟩` from `h1 D hA i x P Pa hP hBC r hr`. Take `⟨Ak, hAk, hsum⟩` from `hrc D hA hRb i hg r hr x Pa R hR hcp`. Establish `hss : IsSSRep (mapRep (iotaOQ D.nd D.naut i) (r x))` using `(GlobalTheory.NRows.isHeckeGaloisQ_of_isHeckeGalois D i x (r x) (hr x)).2.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨p, hpL, u, hu0, hu⟩` from `h8 (Qbar (D.nd.l i)) (Formalism.ConjugateSelfDual.G D.host.E D.nd.Om) D.R.nV (mapRep (iotaOQ D.nd D.naut i) (r x)) (twList D i Pa R) (cU D i) hss (_root_.GlobalTheory.EigenPoint.isSSRep_of_mem_twList D i Pa R hR) (fun g => (hcp g).trans (twList_cp D i Pa R g).symm) (eig_map D i ( …`. Take `⟨k, a, ha, rfl⟩` from `mem_twList D i hpL`. Establish `hW : ∀ g, ((epsQ D i g)⁻¹ ^ a) • ((R k g : GL _ _) : Matrix (Fin (Pa.get k).a) (Fin (Pa.get k).a) (Qbar (D.nd.l i))).mulVec u = iotaOQ D.nd D.naut i (chi1 D.nd i g) • u` using `fun g => by`. Establish `e` using `hu g`. Rewrite `e` using `[twGL_val, Matrix.smul_mulVec, eU_pow]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `e`. Establish `hwt` using `h2 D hA i x P Pa hP hBC k (R k) (hR k) a ha ⟨u, hu0, hW⟩`. Establish `hmem : Pa.get k ∈ Pa` using `List.get_mem Pa k`. Establish `ha1 : 1 ≤ (Pa.get k).a` using `(hBC.1 _ hmem).1`. Establish `hr1 : 1 < D.R.r`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `D.R.two_le_m` as an intermediate fact. Use `D.R.m_add_three_le_k` as an intermediate fact. Use `show 1 < D.R.k + D.R.m - 1`. Use linear arithmetic over natural numbers and integers. Establish `ht2 : 2 ≤ D.R.t`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `D.R.two_le_m` as an intermediate fact. Use `D.R.m_add_three_le_k` as an intermediate fact. Use `D.R.rank_add_five_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hle : (Pa.get k).d • Ak k ≤ D.R.r ::ₘ Multiset.replicate D.R.t 1`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hsum, ← Finset.add_sum_erase _ _ (Finset.mem_univ k)]`. Conclude with `Multiset.le_add_right _ _`. Establish `hnum` using `h11 D.R.r D.R.t (Pa.get k).d (Pa.get k).a a (Ak k) hr1 ht2 ha hwt (hAk k).1 (hAk k).2 ha1 hle`. Establish `ha0 : a = 0` using `by rw [hnum.2] at hwt; omega`. Substitute `ha0` using the available equality.
-
-Establish `hpart` using `_root_.GlobalTheory.EigenPoint.eq_one_twist_t_of_mulVec_eigen D i h3 h4 hA hg (Pa.get k) (R k) (hR k) hnum.1 hnum.2 u hu0 (fun g => by simpa using hW g)`. Conclude with `⟨P, hP, Pa, hBC, hpart ▸ hmem⟩`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_ZN_alt (h1 : _root_.GlobalTheory.StringRepresentationDecomposition.CentredStringDecompositionAlt) (h2 : _root_.GlobalTheory.StringRepresentationDecomposition.PurityStringWeight') (h3 : _root_.GlobalTheory.StringRepresentationDecomposition.HeckeCharEqOfLAdicRealisation') (h4 : _root_.GlobalTheory.StringRepresentationDecomposition.MuCharacterCondition) (h8 : EigenCharTwist)
     (hrc : _root_.GlobalTheory.StringRepresentationDecomposition.ResidueCount) (h11 : Numerics) (hA : _root_.Formalism.MainNotions.SumRepresentations.AdmissibleDatum D) (hRb : RbEx D) (hg : HG D.nd D.naut i) (r : D.nd.X i → (Formalism.ConjugateSelfDual.G D.host.E D.nd.Om →* GL (Fin D.R.nV) (D.nd.O i)))
@@ -72,21 +70,19 @@ theorem mem_ZN_alt (h1 : _root_.GlobalTheory.StringRepresentationDecomposition.C
     (fun g => by simpa using hW g)
   exact ⟨P, hP, Pa, hBC, hpart ▸ hmem⟩
 /- English proof (translation)
-Take `⟨P, hP, hBC⟩` from `hSig`. Establish `hlen : (twistIso D.nd D.naut (Sig ++ [muPart D.nd D.naut i]) D.naut.etaTinv).length = Sig.length + 1`. Simplify using `[twistIso]`. Establish `hlast : (twistIso D.nd D.naut (Sig ++ [muPart D.nd D.naut i]) D.naut.etaTinv).get (Fin.cast hlen.symm (Fin.last _)) = ⟨1, D.naut.tw (D.naut.muC i) D.naut.etaTinv, D.R.t⟩`. Simplify using `only [List.get_eq_getElem, Fin.val_cast, Fin.val_last]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[twistIso, muPart, List.getElem_append_right]`. Generalize the expression as in `hPa : twistIso D.nd D.naut (Sig ++ [muPart D.nd D.naut i]) D.naut.etaTinv = Pa at hBC hlen hlast`. Take `⟨R, hR, hcp⟩` from `h1 D hA i x P Pa hP hBC r hr`. Take `⟨Ak, hAk, hsum⟩` from `hrc D hA hRb i hg r hr x Pa R hR hcp`. Rewrite `hsum` using `[sum_split hlen]`.
+Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hAl : Ak (Fin.cast hlen.symm (Fin.last _)) = {1}` using `ms_one ((hAk _).1.trans (by rw [hlast])) (hAk _).2`. Establish `hlt : (Pa.get (Fin.cast hlen.symm (Fin.last _))).d • Ak (Fin.cast hlen.symm (Fin.last _)) = Multiset.replicate D.R.t 1`. Rewrite using `[hAl, hlast]`. Conclude with `Multiset.nsmul_singleton _ _`. Rewrite `hsum` using `[hlt, ← Multiset.singleton_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hS` using `add_right_cancel hsum`. Establish `hmem : ∀ k : Fin Sig.length, Pa.get (Fin.cast hlen.symm k.castSucc) ∈ Pa` using `fun k => List.get_mem _ _`. Establish `hG` using `h12 (Fin Sig.length) (fun k => (Pa.get (Fin.cast hlen.symm k.castSucc)).d) (fun k => Ak (Fin.cast hlen.symm k.castSucc)) D.R.r (fun k => (hBC.1 _ (hmem k)).2.1) (fun k h => by`. Establish `e` using `(hAk (Fin.cast hlen.symm k.castSucc)).1`. Rewrite `e` using `[h, Multiset.sum_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `(hBC.1 _ (hmem k)).1` as an intermediate fact. Use the proof step `omega) hS`. Establish `hl1 : Sig.length = 1` using `by simpa using hG.1`. Take `⟨p, rfl⟩` from `List.length_eq_one_iff.1 hl1`. Establish `h0` using `hG.2 ⟨0, by simp⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `hget : Pa.get (Fin.cast hlen.symm (Fin.castSucc (⟨0, by simp⟩ : Fin [p].length))) = ⟨p.a, D.naut.tw p.π D.naut.etaTinv, p.d⟩`. Substitute `hPa` using the available equality. Simplify using `[twistIso]`. Establish `hd : p.d = 1` using `by have := h0.1; rw [hget] at this; exact this`. Establish `ha : p.a = D.R.r`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e` using `(hAk (Fin.cast hlen.symm (Fin.castSucc (⟨0, by simp⟩ : Fin [p].length)))).1`. Rewrite `e` using `[h0.2, hget, Multiset.sum_singleton]`. Conclude with `e.symm`. Break down `p with ⟨a, π, d⟩` into its components or cases. Simplify using `only at hd ha`.
-
-Substitute `hd ha` using the available equality. Conclude with `⟨π, rfl⟩`.
+Separate the alternatives or extract the components of the hypothesis. Simplify by unfolding definitions. Substitute using the available equality. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isCuspIso_of_hasParamX (h1 : _root_.GlobalTheory.StringRepresentationDecomposition.CentredStringDecompositionAlt) (hrc : _root_.GlobalTheory.StringRepresentationDecomposition.ResidueCount)
     (h12 : Rest) (hA : _root_.Formalism.MainNotions.SumRepresentations.AdmissibleDatum D) (hRb : RbEx D) (hg : HG D.nd D.naut i)
@@ -136,7 +132,7 @@ theorem isCuspIso_of_hasParamX (h1 : _root_.GlobalTheory.StringRepresentationDec
   subst hd ha
   exact ⟨π, rfl⟩
 /- English proof (translation)
-Introduce `h1 h2 h3 h4 h8 hrc h11 h12 D hA hRb i hg r hr x hx` and use `⟨hx.elim fun v hv => _root_.GlobalTheory.EigenPoint.mem_ZN_alt D i h1 h2 h3 h4 h8 hrc h11 hA hRb hg r hr x v hv.1 hv.2, fun Sig hSig => _root_.GlobalTheory.EigenPoint.isCuspIso_of_hasParamX D i h1 hrc h12 hA hRb hg r hr x Sig hSig⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem prvG6_of_realisation_mu_res_count_numerics : _root_.GlobalTheory.StringRepresentationDecomposition.CentredStringDecompositionAlt → _root_.GlobalTheory.StringRepresentationDecomposition.PurityStringWeight' → _root_.GlobalTheory.StringRepresentationDecomposition.HeckeCharEqOfLAdicRealisation' → _root_.GlobalTheory.StringRepresentationDecomposition.MuCharacterCondition → EigenCharTwist → _root_.GlobalTheory.StringRepresentationDecomposition.ResidueCount → Numerics → Rest →
     ∀ D : D7, _root_.Formalism.MainNotions.SumRepresentations.AdmissibleDatum D → RbEx D → SumRepresentations.ConclusionG6 D :=

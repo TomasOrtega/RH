@@ -24,7 +24,7 @@ variable {V : Type*} [AddCommGroup V] [Module ℂ V] {ρ : Representation ℂ G 
 omit [μ.IsHaarMeasure] in
 
 /- English proof (translation)
-Rewrite using `[coe_mul]`. Conclude with `heckeAct_groupConv a.mem b.mem hv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem heckeAct_mul [IsFiniteMeasureOnCompacts μ] [μ.IsMulLeftInvariant] (a b : HeckeAlgebra μ)
     {v : V} (hv : v ∈ smoothVectors ρ) :
@@ -33,14 +33,14 @@ theorem heckeAct_mul [IsFiniteMeasureOnCompacts μ] [μ.IsMulLeftInvariant] (a b
   exact heckeAct_groupConv a.mem b.mem hv
 
 /- English proof (translation)
-Rewrite using `[← heckeAct_leftReg, heckeAct_ltrans g a.mem (isSmooth_leftReg b), ← heckeAct_leftReg]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem leftReg_mul (g : G) (a b : HeckeAlgebra μ) : leftReg μ g (a * b) = leftReg μ g a * b := by
   rw [← heckeAct_leftReg, heckeAct_ltrans g a.mem (isSmooth_leftReg b), ← heckeAct_leftReg]
   rfl
 
 /- English proof (translation)
-The claim follows from `heckeAct_mem_of_forall (X := X.toSubmodule) (range_finite_of_mem_locallyConstantCompactSupport (smul_orbit_mem hf hx)) fun g => X.toSubmodule.smul_mem _ (X.apply_mem_toSubmodule g hX)`.
+A detailed English derivation is pending.
 -/
 theorem heckeAct_mem_subrep (X : Subrepresentation ρ) {f : G → ℂ}
     (hf : f ∈ locallyConstantCompactSupport G ℂ ℂ) {x : V} (hx : x ∈ smoothVectors ρ)
@@ -50,7 +50,7 @@ theorem heckeAct_mem_subrep (X : Subrepresentation ρ) {f : G → ℂ}
     fun g => X.toSubmodule.smul_mem _ (X.apply_mem_toSubmodule g hX)
 
 /- English proof (translation)
-Rewrite using `[HeckeAlgebraLevel.val_corner, heckeAct_mul _ _ (smooth_of_mem_fixedVectors hKo hv), heckeAct_idem_of_mem (μ := μ) hKc hKo hv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem heckeAct_corner {v : V} (hv : v ∈ fixedVectors ρ K) (f : HeckeAlgebra μ) :
     heckeAct μ ρ (HeckeAlgebraLevel.corner hKc hKo f : HeckeAlgebra μ) v =
@@ -59,7 +59,7 @@ theorem heckeAct_corner {v : V} (hv : v ∈ fixedVectors ρ K) (f : HeckeAlgebra
     heckeAct_idem_of_mem (μ := μ) hKc hKo hv]
 
 /- English proof (translation)
-Establish `hs` using `smooth_of_mem_fixedVectors hKo hv`. Rewrite using `[heckeAct_mul _ _ hs]`. Use `conv_lhs => rw [← heckeAct_idem_of_mem (μ := μ) hKc hKo hv]`. Rewrite using `[heckeAct_ltrans g (idem μ hKc hKo).mem hs]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem heckeAct_idem_apply (g : G) {v : V} (hv : v ∈ fixedVectors ρ K) :
     heckeAct μ ρ (idem μ hKc hKo) (ρ g v) =
@@ -74,13 +74,11 @@ omit [LocallyCompactSpace G] [T2Space G] [TotallyDisconnectedSpace G] [Measurabl
   [BorelSpace G] [IsTopologicalGroup G] in
 
 /- English proof (translation)
-Use `set S := Submodule.span ℂ (range fun g => ρ g v)`. Establish `hS : ∀ g, ∀ ⦃x⦄, x ∈ S → ρ g x ∈ S`. Introduce `g x hx`. Establish `: S ≤ S.comap (ρ g)` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨h, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `Submodule.subset_span ⟨g * h, by simp [Module.End.mul_apply]⟩)`. Conclude with `this hx`. Break down `IsSimpleOrder.eq_bot_or_eq_top (⟨S, hS⟩ : Subrepresentation ρ) with h | h` into its components or cases. It suffices to derive a contradiction. Apply `hv` to reduce the goal to its premises.
+It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: v ∈ (⟨S, hS⟩ : Subrepresentation ρ)` using `Submodule.subset_span ⟨1, by simp⟩`. Rewrite `this` using `[h]`. Conclude with `(Submodule.mem_bot ℂ).1 this`. Establish `: w ∈ (⊤ : Subrepresentation ρ)` using `Submodule.mem_top`. Rewrite `this` using `[← h]`.
-
-Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_span_orbit [ρ.IsIrreducible] {v : V} (hv : v ≠ 0) (w : V) :
     w ∈ Submodule.span ℂ (range fun g => ρ g v) := by
@@ -108,13 +106,13 @@ section Simple
 variable {V : Type*} [AddCommGroup V] [Module ℂ V] {ρ : Representation ℂ G V}
 
 /- English proof (translation)
-Rewrite using `[isSimpleModule_iff_toSpanSingleton_surjective]`. Use `⟨?_, fun x hx y => ?_⟩` and prove the remaining obligations. Take `⟨v, hv, hv0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hK`. Conclude with `⟨⟨⟨v, hv⟩, 0, fun h => hv0 (congrArg Subtype.val h)⟩⟩`. Establish `hx0 : (x : V) ≠ 0` using `fun h => hx (Subtype.ext h)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Set `M : HeckeAlgebra μ →ₗ[ℂ] V` to `{ toFun := fun f => heckeAct μ ρ (idem μ hKc hKo * f : HeckeAlgebra μ) x map_add' := fun a b => by`. Rewrite using `[mul_add, coe_add, heckeAct_add_left (mem _) (mem _) (hρ _)]`. Use the proof step `map_smul' := fun c a => by`. Simplify using `only [RingHom.id_apply]`. Rewrite using `[mul_smul_comm, coe_smul, heckeAct_smul_left c (mem _) (hρ _)] }`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `L : V →ₗ[ℂ] V` to `heckeRep (μ := μ) hρ (idem μ hKc hKo)`. Establish `hspan : Submodule.span ℂ (range fun g => ρ g x) ≤ (LinearMap.range M).comap L`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g, rfl⟩`. Conclude with `⟨leftReg μ g (idem μ hKc hKo), (heckeAct_idem_apply hKc hKo g x.2).symm⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨f, hf⟩` from `hspan (mem_span_orbit hx0 (y : V))`. Use `⟨HeckeAlgebraLevel.corner hKc hKo f, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.toSpanSingleton_apply, HeckeAlgebraLevel.coe_smul_fixedVectors, heckeAct_corner hKc hKo x.2]`. Use `hf.trans ?_` and prove the remaining obligations. Conclude with `heckeAct_idem_of_mem (μ := μ) hKc hKo y.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isSimpleModule_fixedVectors (hρ : IsSmooth ρ) [ρ.IsIrreducible]
     (hK : fixedVectors ρ K ≠ ⊥) :
@@ -172,7 +170,7 @@ section Construction
 namespace HeckeAlgebraLevel
 
 /- English proof (translation)
-Establish `: c • h = (c • (1 : HeckeAlgebraLevel μ K hKc hKo)) * h`. Apply `ext hKc hKo` to reduce the goal to its premises. Rewrite using `[val_smul, val_mul, val_smul, val_one, smul_mul_assoc, ((mem_biInvariant_iff_idem hKc hKo).1 (val_mem hKc hKo h)).1]`. Rewrite using `[this]`. Conclude with `I.smul_mem _ hh`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_mem_ideal (I : Submodule (HeckeAlgebraLevel μ K hKc hKo) (HeckeAlgebraLevel μ K hKc hKo))
     (c : ℂ) {h : HeckeAlgebraLevel μ K hKc hKo} (hh : h ∈ I) : c • h ∈ I := by
@@ -197,7 +195,7 @@ theorem val_cornerₗ (f : HeckeAlgebra μ) :
       idem μ hKc hKo * f * idem μ hKc hKo := rfl
 
 /- English proof (translation)
-Apply `ext hKc hKo` to reduce the goal to its premises. Take `⟨h1, h2⟩` from `(mem_biInvariant_iff_idem hKc hKo).1 (val_mem hKc hKo h)`. Rewrite using `[val_cornerₗ, h1, h2]`.
+Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem cornerₗ_val (h : HeckeAlgebraLevel μ K hKc hKo) : cornerₗ hKc hKo (h : HeckeAlgebra μ) = h := by
   apply ext hKc hKo
@@ -205,7 +203,7 @@ theorem cornerₗ_val (h : HeckeAlgebraLevel μ K hKc hKo) : cornerₗ hKc hKo (
   rw [val_cornerₗ, h1, h2]
 
 /- English proof (translation)
-Apply `ext hKc hKo` to reduce the goal to its premises. Simplify using `only [val_cornerₗ, mul_assoc, (isIdempotentElem_idem hKc hKo).eq]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem cornerₗ_mul_idem (f : HeckeAlgebra μ) :
     cornerₗ hKc hKo (f * idem μ hKc hKo) = cornerₗ hKc hKo f := by
@@ -213,7 +211,7 @@ theorem cornerₗ_mul_idem (f : HeckeAlgebra μ) :
   simp only [val_cornerₗ, mul_assoc, (isIdempotentElem_idem hKc hKo).eq]
 
 /- English proof (translation)
-Apply `ext hKc hKo` to reduce the goal to its premises. Establish `he : ∀ x : HeckeAlgebra μ, idem μ hKc hKo * (idem μ hKc hKo * x) = idem μ hKc hKo * x` using `fun x => by rw [← mul_assoc, (isIdempotentElem_idem hKc hKo).eq]`. Simplify using `only [val_cornerₗ, mul_assoc, he]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem cornerₗ_idem_mul (f : HeckeAlgebra μ) :
     cornerₗ hKc hKo (idem μ hKc hKo * f) = cornerₗ hKc hKo f := by
@@ -241,7 +239,7 @@ def heckeKernel : Submodule ℂ (HeckeAlgebra μ) where
     exact smul_mem_ideal hKc hKo I c (hφ g)
 
 /- English proof (translation)
-Introduce `φ hφ g'`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Conclude with `hφ (g' * g)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem heckeKernel_le_comap (g : G) :
     heckeKernel hKc hKo I ≤ (heckeKernel hKc hKo I).comap (leftReg μ g) := by
@@ -264,7 +262,7 @@ def quotMap : Representation.IntertwiningMap (leftReg μ) (quotRep hKc hKo I) wh
   isIntertwining' g := LinearMap.ext fun φ => (quotRep_mkQ hKc hKo I g φ).symm
 
 /- English proof (translation)
-Introduce `y`. Take `⟨φ, rfl⟩` from `(heckeKernel hKc hKo I).mkQ_surjective y`. Use `Subgroup.isOpen_mono (H₁ := stabilizerOf (leftReg μ) φ) (fun g hg => ?_) (isSmooth_leftReg φ)` and prove the remaining obligations. Rewrite using `[mem_stabilizerOf, quotRep_mkQ, mem_stabilizerOf.1 hg]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isSmooth_quotRep : IsSmooth (quotRep hKc hKo I) := by
   intro y
@@ -274,7 +272,7 @@ theorem isSmooth_quotRep : IsSmooth (quotRep hKc hKo I) := by
   rw [mem_stabilizerOf, quotRep_mkQ, mem_stabilizerOf.1 hg]
 
 /- English proof (translation)
-Use `map_heckeAct (μ := μ) (quotMap hKc hKo I) f.mem (isSmooth_leftReg φ)` as an intermediate fact. Rewrite `this` using `[heckeAct_leftReg]`. Conclude with `this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem heckeAct_quotRep (f φ : HeckeAlgebra μ) :
     heckeAct μ (quotRep hKc hKo I) f ((heckeKernel hKc hKo I).mkQ φ) =
@@ -284,7 +282,7 @@ theorem heckeAct_quotRep (f φ : HeckeAlgebra μ) :
   exact this.symm
 
 /- English proof (translation)
-Rewrite using `[Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq]`. Introduce `g`. Rewrite using `[map_sub, leftReg_mul, map_sub, cornerₗ_mul_idem, sub_self]`. Conclude with `I.zero_mem`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mkQ_mul_idem (φ : HeckeAlgebra μ) :
     (heckeKernel hKc hKo I).mkQ (φ * idem μ hKc hKo) = (heckeKernel hKc hKo I).mkQ φ := by
@@ -311,15 +309,15 @@ theorem toFixedQuot_apply (h : HeckeAlgebraLevel μ K hKc hKo) :
       HeckeAlgebra μ ⧸ heckeKernel hKc hKo I) = (heckeKernel hKc hKo I).mkQ (h : HeckeAlgebra μ) := rfl
 
 /- English proof (translation)
-Use extensionality with `h`. Rewrite using `[LinearMap.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `h0`. Establish `hmem : (h : HeckeAlgebra μ) ∈ heckeKernel hKc hKo I`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← Submodule.Quotient.mk_eq_zero, ← Submodule.mkQ_apply, ← toFixedQuot_apply, h0]`. Both sides reduce to the same expression. Use `hmem 1` as an intermediate fact. Rewrite `this` using `[map_one, Module.End.one_apply, cornerₗ_val]`. Then use the resulting hypothesis. Introduce `hI`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[toFixedQuot_apply, Submodule.mkQ_apply, ZeroMemClass.coe_zero, Submodule.Quotient.mk_eq_zero]`. Introduce `g`. Take `⟨h1, h2⟩` from `(mem_biInvariant_iff_idem hKc hKo).1 (val_mem hKc hKo h)`. Establish `e1 : leftReg μ g (h : HeckeAlgebra μ) = leftReg μ g (idem μ hKc hKo) * h`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← leftReg_mul, h1]`. Establish `: cornerₗ hKc hKo (leftReg μ g (h : HeckeAlgebra μ)) = cornerₗ hKc hKo (leftReg μ g (idem μ hKc hKo)) * h`. Apply `HeckeAlgebraLevel.ext hKc hKo` to reduce the goal to its premises. Rewrite using `[val_mul, val_cornerₗ, val_cornerₗ, e1]`. Simplify using `only [mul_assoc, h1, h2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Conclude with `I.smul_mem _ hI`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_toFixedQuot : LinearMap.ker (toFixedQuot hKc hKo I) = I := by
   ext h
@@ -348,7 +346,7 @@ theorem ker_toFixedQuot : LinearMap.ker (toFixedQuot hKc hKo I) = I := by
     exact I.smul_mem _ hI
 
 /- English proof (translation)
-Introduce `y`. Take `⟨φ, hφ⟩` from `(heckeKernel hKc hKo I).mkQ_surjective (y : HeckeAlgebra μ ⧸ _)`. Use `⟨cornerₗ hKc hKo φ, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[toFixedQuot_apply, val_cornerₗ, mkQ_mul_idem, ← heckeAct_quotRep, hφ]`. Conclude with `heckeAct_idem_of_mem (μ := μ) hKc hKo y.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toFixedQuot_surjective : Function.Surjective (toFixedQuot hKc hKo I) := by
   intro y
@@ -364,25 +362,21 @@ def fixedQuotEquiv :
     ((toFixedQuot hKc hKo I).quotKerEquivOfSurjective (toFixedQuot_surjective hKc hKo I))
 
 /- English proof (translation)
-Establish `hne : (toFixedQuot hKc hKo I 1 : HeckeAlgebra μ ⧸ heckeKernel hKc hKo I) ≠ 0`. Introduce `h0`. Apply `hI.1` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one, ← ker_toFixedQuot hKc hKo I, LinearMap.mem_ker]`. Conclude with `Subtype.ext h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `{ exists_pair_ne := ⟨⊥, ⊤, fun h => hne ?_⟩, eq_bot_or_eq_top := fun X => ?_ }` and prove the remaining obligations. Establish `: (toFixedQuot hKc hKo I 1 : HeckeAlgebra μ ⧸ heckeKernel hKc hKo I) ∈ (⊤ : Subrepresentation (quotRep hKc hKo I))` using `Submodule.mem_top`. Rewrite `this` using `[← h]`. Conclude with `(Submodule.mem_bot ℂ).1 this`. Distinguish the cases in `hX : ∃ y ∈ X, y ∈ fixedVectors (quotRep hKc hKo I) K ∧ y ≠ 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `right`. Take `⟨y, hyX, hyK, hy0⟩` from `hX`. Take `⟨h₀, hh₀⟩` from `toFixedQuot_surjective hKc hKo I ⟨y, hyK⟩`. Set `I' : Submodule (HeckeAlgebraLevel μ K hKc hKo) (HeckeAlgebraLevel μ K hKc hKo)` to `{ carrier := {h | (toFixedQuot hKc hKo I h : HeckeAlgebra μ ⧸ heckeKernel hKc hKo I) ∈ X} add_mem' := fun {a b} ha hb => by`. Simplify using `only [mem_setOf_eq, map_add, Submodule.coe_add]`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `X.toSubmodule.add_mem ha hb`. Use the proof step `zero_mem' := by`. Simplify using `only [mem_setOf_eq, map_zero, ZeroMemClass.coe_zero]`. Conclude with `X.toSubmodule.zero_mem`. Use the proof step `smul_mem' := fun a h hh => by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [mem_setOf_eq, map_smul, coe_smul_fixedVectors]`. Conclude with `heckeAct_mem_subrep X (a : HeckeAlgebra μ).mem (isSmooth_quotRep hKc hKo I _) hh }`. Establish `hII' : I < I'`. Use `lt_of_le_of_ne (fun h hh => ?_) fun heq => ?_` and prove the remaining obligations. Use `show _ ∈ X`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: toFixedQuot hKc hKo I h = 0` using `by rwa [← LinearMap.mem_ker, ker_toFixedQuot]`. Rewrite using `[this]`. Conclude with `X.toSubmodule.zero_mem`. Establish `: h₀ ∈ I'` using `show _ ∈ X by rw [hh₀]; exact hyX`. Rewrite `this` using `[← heq, ← ker_toFixedQuot hKc hKo I, LinearMap.mem_ker, hh₀]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `hy0 (congrArg Subtype.val this)`. Establish `h1 : (1 : HeckeAlgebraLevel μ K hKc hKo) ∈ I'`. Rewrite using `[hI.2 I' hII']`. Discharge the goal by the elementary cases of `trivial`. Rewrite using `[eq_top_iff]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `z _`. Take `⟨φ, rfl⟩` from `(heckeKernel hKc hKo I).mkQ_surjective z`. Rewrite using `[← mkQ_mul_idem hKc hKo I φ, ← heckeAct_quotRep]`. Conclude with `heckeAct_mem_subrep X φ.mem (isSmooth_quotRep hKc hKo I _) h1`. Use `left push_neg at hX`.
-
-Rewrite using `[eq_bot_iff]`. Introduce `z hz`. Take `⟨φ, rfl⟩` from `(heckeKernel hKc hKo I).mkQ_surjective z`. Use `show _ ∈ (⊥ : Submodule ℂ _)`. Rewrite using `[Submodule.mem_bot, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`.
-
-Introduce `g`. Establish `hmem : heckeAct μ (quotRep hKc hKo I) (idem μ hKc hKo) (quotRep hKc hKo I g ((heckeKernel hKc hKo I).mkQ φ)) = 0` using `hX _ (heckeAct_mem_subrep X (idem μ hKc hKo).mem (isSmooth_quotRep hKc hKo I _) (X.apply_mem_toSubmodule g hz)) (heckeAct_idem_mem hKc hKo (isSmooth_quotRep hKc hKo I _))`. Rewrite `hmem` using `[quotRep_mkQ, heckeAct_quotRep, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Use `hmem 1` as an intermediate fact. Rewrite `this` using `[map_one, Module.End.one_apply, cornerₗ_idem_mul]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem isIrreducible_quotRep (hI : IsCoatom I) : (quotRep hKc hKo I).IsIrreducible := by
   have hne : (toFixedQuot hKc hKo I 1 : HeckeAlgebra μ ⧸ heckeKernel hKc hKo I) ≠ 0 := by
@@ -462,23 +456,21 @@ def orbitMap (v : V) (hv : v ∈ smoothVectors ρ) : HeckeAlgebra μ →ₗ[ℂ]
     exact heckeAct_smul_left c a.mem hv
 
 /- English proof (translation)
-Set `Φ` to `orbitMap (μ := μ) v₀ (hρ v₀)`. Establish `hΦ : ∀ f, Φ f = heckeAct μ ρ f v₀` using `fun _ => rfl`. Establish `crit : ∀ x : V, (∀ g, heckeAct μ ρ (idem μ hKc hKo) (ρ g x) = 0) → x = 0`. Introduce `x hx`. Assume the negation of the conclusion as `hx0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hle : Submodule.span ℂ (range fun g => ρ g x) ≤ LinearMap.ker (heckeRep (μ` using `μ) hρ (idem μ hKc hKo)) := Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨g, rfl⟩`. Conclude with `hx g)`. Use `hle (mem_span_orbit hx0 v₀)` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker, heckeRep_apply, heckeAct_idem_of_mem (μ := μ) hKc hKo hv₀]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h0 this`. Establish `key : ∀ φ g, heckeAct μ ρ (idem μ hKc hKo) (ρ g (Φ φ)) = heckeAct μ ρ (cornerₗ hKc hKo (leftReg μ g φ) : HeckeAlgebra μ) v₀`. Introduce `φ g`. Rewrite using `[hΦ, heckeAct_ltrans g φ.mem (hρ v₀)]`. Express the relevant statement in the definitionally equal form `heckeAct μ ρ (idem μ hKc hKo) (heckeAct μ ρ (leftReg μ g φ : HeckeAlgebra μ) v₀) = _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← heckeAct_mul _ _ (hρ v₀)]`. Conclude with `(heckeAct_corner hKc hKo hv₀ _).symm`. Establish `hker : ∀ φ, Φ φ = 0 ↔ φ ∈ heckeKernel hKc hKo I`. Introduce `φ`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h g`. Rewrite using `[hI, ← key, h, map_zero]`. Conclude with `heckeAct_zero_right (idem μ hKc hKo).mem`. Introduce `h`. Use `crit _ fun g => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[key, ← hI]`. Conclude with `h g`. Establish `hint : ∀ g φ, Φ (leftReg μ g φ) = ρ g (Φ φ)` using `fun g φ => (heckeAct_ltrans g φ.mem (hρ v₀)).symm`. Establish `hsurj : Function.Surjective Φ`. Introduce `w`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hle : Submodule.span ℂ (range fun g => ρ g v₀) ≤ LinearMap.range Φ` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨g, rfl⟩`. Conclude with `⟨leftReg μ g (idem μ hKc hKo), by`. Rewrite using `[hint, hΦ, heckeAct_idem_of_mem (μ := μ) hKc hKo hv₀]⟩)`. Conclude with `hle (mem_span_orbit h0 w)`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Set `T : HeckeAlgebra μ ⧸ heckeKernel hKc hKo I →ₗ[ℂ] V` to `(heckeKernel hKc hKo I).liftQ Φ (fun φ hφ => (hker φ).2 hφ)`. Set `Tint : Representation.IntertwiningMap (quotRep hKc hKo I) ρ` to `{ toLinearMap := T isIntertwining' := fun g => (heckeKernel hKc hKo I).linearMap_qext (LinearMap.ext fun φ => hint g φ) }`. Use `⟨Tint.ofBijective ⟨fun y z hyz => ?_, fun w => ?_⟩⟩` and prove the remaining obligations. Take `⟨φ, rfl⟩` from `(heckeKernel hKc hKo I).mkQ_surjective y`. Take `⟨ψ, rfl⟩` from `(heckeKernel hKc hKo I).mkQ_surjective z`.
-
-Rewrite using `[Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq, ← hker, map_sub, sub_eq_zero]`. Conclude with `hyz`. Take `⟨φ, rfl⟩` from `hsurj w`. Conclude with `⟨(heckeKernel hKc hKo I).mkQ φ, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonempty_equiv_quotRep (I : Submodule (HeckeAlgebraLevel μ K hKc hKo)
     (HeckeAlgebraLevel μ K hKc hKo)) (hρ : IsSmooth ρ) [ρ.IsIrreducible] {v₀ : V}
@@ -541,9 +533,9 @@ theorem nonempty_equiv_quotRep (I : Submodule (HeckeAlgebraLevel μ K hKc hKo)
     exact ⟨(heckeKernel hKc hKo I).mkQ φ, rfl⟩
 
 /- English proof (translation)
-Establish `hs` using `(isSimpleModule_iff_toSpanSingleton_surjective (R := HeckeAlgebraLevel μ K hKc hKo) (M := M)).1 inferInstance`. Use `haveI := hs.1`. Take `⟨m, hm⟩` from `exists_ne (0 : M)`. Use `set I := LinearMap.ker (LinearMap.toSpanSingleton (HeckeAlgebraLevel μ K hKc hKo) M m)`. Set `eM : (HeckeAlgebraLevel μ K hKc hKo ⧸ I) ≃ₗ[HeckeAlgebraLevel μ K hKc hKo] M` to `LinearMap.quotKerEquivOfSurjective _ (hs.2 m hm)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `hI : IsCoatom I` using `isSimpleModule_iff_isCoatom.1 (IsSimpleModule.congr eM)`. Conclude with `⟨_, _, _, quotRep hKc hKo I, isSmooth_quotRep hKc hKo I, isIrreducible_quotRep hKc hKo I hI, ⟨(fixedQuotEquiv hKc hKo I).symm.trans eM⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_irreducible_fixedVectors_equiv (M : Type*) [AddCommGroup M]
     [Module (HeckeAlgebraLevel μ K hKc hKo) M] [IsSimpleModule (HeckeAlgebraLevel μ K hKc hKo) M] :
@@ -562,11 +554,11 @@ theorem exists_irreducible_fixedVectors_equiv (M : Type*) [AddCommGroup M]
     ⟨(fixedQuotEquiv hKc hKo I).symm.trans eM⟩⟩
 
 /- English proof (translation)
-Take `⟨v₀, hv₀, h0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hK`. Use `set I := LinearMap.ker (LinearMap.toSpanSingleton (HeckeAlgebraLevel μ K hKc hKo) (fixedVectors ρ K) ⟨v₀, hv₀⟩)`. Establish `hIρ : ∀ h : HeckeAlgebraLevel μ K hKc hKo, h ∈ I ↔ heckeAct μ ρ (h : HeckeAlgebra μ) v₀ = 0`. Introduce `h`. Rewrite using `[LinearMap.mem_ker, LinearMap.toSpanSingleton_apply, Subtype.ext_iff]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hIσ : ∀ h : HeckeAlgebraLevel μ K hKc hKo, h ∈ I ↔ heckeAct μ σ (h : HeckeAlgebra μ) (e ⟨v₀, hv₀⟩ : W) = 0`. Introduce `h`. Rewrite using `[LinearMap.mem_ker, LinearMap.toSpanSingleton_apply, ← e.map_eq_zero_iff, e.map_smul, Subtype.ext_iff]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hw0 : (e ⟨v₀, hv₀⟩ : W) ≠ 0` using `fun h => h0 (congrArg Subtype.val (e.map_eq_zero_iff.1 (Subtype.ext h)))`. Take `⟨A⟩` from `nonempty_equiv_quotRep hKc hKo I hρ hv₀ h0 hIρ`. Take `⟨B⟩` from `nonempty_equiv_quotRep hKc hKo I hσ (e ⟨v₀, hv₀⟩).2 hw0 hIσ`. Conclude with `⟨A.symm.trans B⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonempty_equiv_of_fixedVectors_equiv {W : Type*} [AddCommGroup W] [Module ℂ W]
     {σ : Representation ℂ G W} (hρ : IsSmooth ρ) (hσ : IsSmooth σ) [ρ.IsIrreducible]

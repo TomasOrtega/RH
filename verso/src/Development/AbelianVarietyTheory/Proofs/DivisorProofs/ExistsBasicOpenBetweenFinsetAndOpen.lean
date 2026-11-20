@@ -10,25 +10,23 @@ open GlobalTheory.Mum
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Introduce `X W hW V hVW s hs`. Break down `s.eq_empty_or_nonempty with rfl | ⟨x₀, hx₀⟩` into its components or cases. Use `⟨0, ?_, fun x hx => absurd hx (Finset.notMem_empty x)⟩` and prove the remaining obligations. Rewrite using `[Scheme.basicOpen_zero]`. Conclude with `bot_le`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set Z : Set (PrimeSpectrum Γ(X, W)) := {p | hW.fromSpec p ∉ V} with hZ`. Establish `hZc : IsClosed Z`. Establish `h` using `(hW.fromSpec ⁻¹ᵁ V).isOpen.isClosed_compl`. Conclude with `h`. Set `P : X → Ideal Γ(X, W)` to `fun x => if h : x ∈ W then (hW.primeIdealOf ⟨x, h⟩).asIdeal else ⊤`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hPx : ∀ x (h : x ∈ W), P x = (hW.primeIdealOf ⟨x, h⟩).asIdeal` using `fun x h => by`. Simplify using `only [P, dif_pos h]`. Establish `hP : ∀ i ∈ s, i ≠ x₀ → i ≠ x₀ → (P i).IsPrime`. Introduce `x hx _ _`. Rewrite using `[hPx x (hVW (hs x hx))]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `(hW.primeIdealOf _).isPrime`. Establish `key : ¬ ((PrimeSpectrum.vanishingIdeal Z : Set Γ(X, W)) ⊆ ⋃ i ∈ (↑s : Set X), (P i : Set Γ(X, W)))`. Rewrite using `[Ideal.subset_union_prime x₀ x₀ hP]`. Introduce and unpack `⟨x, hx, hle⟩`. Establish `hxW : x ∈ W` using `hVW (hs x hx)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `hle` using `[hPx x hxW]`. Establish `hmem : hW.primeIdealOf ⟨x, hxW⟩ ∈ PrimeSpectrum.zeroLocus (PrimeSpectrum.vanishingIdeal Z : Set Γ(X, W))` using `(PrimeSpectrum.mem_zeroLocus _ _).2 hle`. Rewrite `hmem` using `[PrimeSpectrum.zeroLocus_vanishingIdeal_eq_closure, hZc.closure_eq]`. Apply `hmem` to reduce the goal to its premises. Use `show hW.fromSpec (hW.primeIdealOf ⟨x, hxW⟩) ∈ V`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hW.fromSpec_primeIdealOf]`. Conclude with `hs x hx`. Take `⟨f, hfI, hfP⟩` from `Set.not_subset.mp key`. Use `⟨f, ?_, ?_⟩` and prove the remaining obligations. Introduce `y hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hyW : y ∈ W` using `X.basicOpen_le f hy`. Take `⟨p, rfl⟩ : y ∈ Set.range hW.fromSpec` from `by rw [hW.range_fromSpec]; exact hyW`. Establish `hp : p ∈ hW.fromSpec ⁻¹ᵁ X.basicOpen f` using `hy`. Rewrite `hp` using `[hW.fromSpec_preimage_basicOpen]`. Assume the negation of the conclusion as `hnot`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hpZ : p ∈ Z` using `hnot`. Conclude with `(PrimeSpectrum.mem_basicOpen _ _).1 hp ((PrimeSpectrum.mem_vanishingIdeal _ _).1 hfI p hpZ)`. Introduce `x hx`. Establish `hxW : x ∈ W` using `hVW (hs x hx)`. Establish `hf : f ∉ (hW.primeIdealOf ⟨x, hxW⟩).asIdeal`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `h`. Apply `hfP` to reduce the goal to its premises. Rewrite using `[Set.mem_iUnion₂]`. Conclude with `⟨x, hx, by rw [hPx x hxW]; exact h⟩`. Establish `hmem : hW.primeIdealOf ⟨x, hxW⟩ ∈ hW.fromSpec ⁻¹ᵁ X.basicOpen f`.
-
-Rewrite using `[hW.fromSpec_preimage_basicOpen]`. Conclude with `(PrimeSpectrum.mem_basicOpen _ _).2 hf`. Establish `h2 : hW.fromSpec (hW.primeIdealOf ⟨x, hxW⟩) ∈ X.basicOpen f` using `hmem`. Rewrite `h2` using `[hW.fromSpec_primeIdealOf]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_basicOpen_between_finset_and_open : ∀ (X : Scheme.{0}) (W : X.Opens), IsAffineOpen W → ∀ (V : X.Opens), V ≤ W → ∀ s : Finset X, (∀ x ∈ s, x ∈ V) → ∃ f : Γ(X, W), X.basicOpen f ≤ V ∧ ∀ x ∈ s, x ∈ X.basicOpen f := by
   classical

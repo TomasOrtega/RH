@@ -5,7 +5,7 @@ open GroundTheory.FunctionField UpperTheory.Et.Sel
 open scoped TensorProduct
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp [divisor_one]`. Consider the case `succ n ih => rw [pow_succ, divisor_mul (pow_ne_zero _ hx) hx, ih, succ_nsmul]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private lemma UpperTheory.exists_finite_span_kummerSelmer_representatives.divisor_pow' {k K : Type} [Field k] [Field K] [Algebra k K] [IsFunctionField k K]
     {x : K} (hx : x ≠ 0) (n : ℕ) : divisor (x ^ n) = n • (divisor x : Divisor k K) := by
@@ -14,29 +14,27 @@ private lemma UpperTheory.exists_finite_span_kummerSelmer_representatives.diviso
   | succ n ih => rw [pow_succ, divisor_mul (pow_ne_zero _ hx) hx, ih, succ_nsmul]
 
 /- English proof (translation)
-Introduce `k K _ _ _ _ _ q _`. Establish `hcl : algebraicClosure k K = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce `z hz`. Rewrite `hz` using `[mem_algebraicClosure_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[IntermediateField.mem_bot]`. Conclude with `minpoly.mem_range_of_degree_eq_one k z (IsAlgClosed.degree_eq_one_of_irreducible k (minpoly.irreducible hz.isIntegral))`. Take `⟨x, hxt, hfd⟩` from `IsFunctionField.exists_transcendental_finiteDimensional (k := k) (K := K)`. Establish `hd : 0 < Module.finrank (IntermediateField.adjoin k ({x} : Set K)) K` using `Module.finrank_pos`. Use `set E : Divisor k K := genus k K • poleDivisor x with hE`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdegE : (genus k K : ℤ) ≤ Divisor.deg E`. Rewrite using `[hE, map_nsmul, Divisor.deg_poleDivisor hxt, nsmul_eq_mul]`. Establish `h1 : (1 : ℤ) ≤ (Module.finrank (IntermediateField.adjoin k ({x} : Set K)) K : ℤ)`. Conclude with `hd` after adjusting the coercions. Establish `h2 : (0 : ℤ) ≤ (genus k K : ℤ)` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use the polynomial consequences of the given equalities and inequalities. Use `set V := (q • E).L with hV`. Set `b` to `Module.finBasis k V`. Use `⟨Module.finrank k V, fun i => (b i : K), ?_⟩` and prove the remaining obligations. Introduce `f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hf' : ∀ w : Place k K, (q : ℤ) ∣ w.ord (f : K)` using `hf`. Establish `hq : (q : ℤ) ≠ 0` using `by exact_mod_cast (NeZero.ne q)`. Set `D : Divisor k K` to `Finsupp.mapRange (fun z : ℤ => z / (q : ℤ)) (by simp) (divisor (f : K))`. Establish `hD : divisor (f : K) = q • D`. Use extensionality with `w`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [D, Finsupp.smul_apply, Finsupp.mapRange_apply, nsmul_eq_mul]`. Rewrite using `[Int.mul_ediv_cancel', divisor_apply]`. Rewrite using `[divisor_apply]`. Conclude with `hf' w`. Establish `hdegD : Divisor.deg D = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0` using `Divisor.deg_divisor (k := k) (f : K)`. Rewrite `h0` using `[hD, map_nsmul, nsmul_eq_mul]`. Break down `mul_eq_zero.mp h0 with h | h` into its components or cases. Conclude with `absurd h hq`. Conclude with `h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hri` using `Divisor.riemann_inequality hcl (D + E)`. Rewrite `hri` using `[map_add, hdegD, zero_add]`. Establish `hpos : 0 < Module.finrank k (D + E).L` using `by omega`. Take `⟨⟨h, hmem⟩, hne⟩` from `Module.finrank_pos_iff_exists_ne_zero.mp hpos`. Establish `hh : h ≠ 0` using `fun h0 => hne (Subtype.ext h0)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hle` using `(Divisor.mem_L_iff_le hh).mp hmem`. Set `u : Kˣ` to `Units.mk0 h hh`. Establish `hval : ((f * u ^ q : Kˣ) : K) = (f : K) * h ^ q` using `by simp [u]`. Establish `hgne : ((f * u ^ q : Kˣ) : K) ≠ 0` using `Units.ne_zero _`. Establish `hgdiv : divisor ((f * u ^ q : Kˣ) : K) = q • (D + divisor h)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hval, divisor_mul f.ne_zero (pow_ne_zero _ hh), UpperTheory.exists_finite_span_kummerSelmer_representatives.divisor_pow' hh, hD, smul_add]`. Establish `hgV : ((f * u ^ q : Kˣ) : K) ∈ V`. Rewrite using `[hV, Divisor.mem_L_iff_le hgne, hgdiv, ← smul_add]`. Establish `h3 : D + divisor h + E = divisor h + (D + E)` using `by abel`. Rewrite using `[h3]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `nsmul_nonneg hle q`. Use `⟨f * u ^ q, ?_, ?_, u⁻¹, by group⟩` and prove the remaining obligations. Introduce `w`. Rewrite using `[← divisor_apply, hgdiv, Finsupp.smul_apply, nsmul_eq_mul]`. Conclude with `Dvd.intro _ rfl`.
-
-Use `⟨fun i => b.repr ⟨_, hgV⟩ i, ?_⟩` and prove the remaining obligations. Establish `hs` using `b.sum_repr ⟨_, hgV⟩`. Establish `hs'` using `congrArg Subtype.val hs`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at hs'`. Conclude with `hs'.symm`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_finite_span_kummerSelmer_representatives :
     ∀ (k K : Type) [Field k] [IsAlgClosed k] [Field K] [Algebra k K] [IsFunctionField k K] (q : ℕ) [NeZero q], ∃ (n : ℕ) (v : Fin n → K), ∀ f ∈ SelAll k K q, ∃ g ∈ SelAll k K q, (∃ c : Fin n → k, (g : K) = ∑ i, c i • v i) ∧ ∃ u : Kˣ, f = g * u ^ q := by

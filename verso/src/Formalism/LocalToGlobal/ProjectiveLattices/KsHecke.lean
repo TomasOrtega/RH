@@ -36,7 +36,7 @@ def eqvTh (Th : XS →ₗ[L] WL) (hs : LinearMap.range Th = ⊤) : (XS ⧸ Linea
   Th.quotKerEquivOfSurjective (LinearMap.range_eq_top.mp hs)
 
 /- English proof (translation)
-Introduce `x hx`. Simplify using `only [Submodule.mem_comap, LinearMap.mem_ker] at hx ⊢`. Conclude with `hk x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem kerStab_le {Th : XS →ₗ[L] WL} (hk : KerStab Th TV) :
     LinearMap.ker Th ≤ (LinearMap.ker Th).comap TV := by

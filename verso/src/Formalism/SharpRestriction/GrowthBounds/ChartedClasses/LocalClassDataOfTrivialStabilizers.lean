@@ -44,7 +44,7 @@ def IsCG1 (S : StepLevel F E σ J T f bad) (A : LocAt F E n G) (y : cl → UPts 
 variable {S : StepLevel F E σ J T f bad} {A : LocAt F E n G} {y : cl → UPts σ J (FiniteAdeleRing (𝓞 F) F)}
 
 /- English proof (translation)
-Use `choose g hg using fun v => (isLattice_iff _ (L v)).1 (hL v)`. Conclude with `⟨g, fun v => by rw [hg v, colSpan_eq]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_bases1 (L : G.P.Tup) (hL : G.P.IsLatTup L) : ∃ g : ∀ v, GL (Fin (G.P.m + 1)) (G.P.Qq v),
     ∀ v, L v = colSpan (G.P.W v) (g v : Matrix (Fin (G.P.m + 1)) (Fin (G.P.m + 1)) (G.P.Qq v)) := by
@@ -52,14 +52,14 @@ theorem exists_bases1 (L : G.P.Tup) (hL : G.P.IsLatTup L) : ∃ g : ∀ v, GL (F
   exact ⟨g, fun v => by rw [hg v, colSpan_eq]⟩
 
 /- English proof (translation)
-Introduce `v` and use `(isLattice_iff _ (L v)).2 ⟨g v, by rw [hL v, colSpan_eq]⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isLatTup_of_bases1 (L : G.P.Tup) (g : ∀ v, GL (Fin (G.P.m + 1)) (G.P.Qq v))
     (hL : ∀ v, L v = colSpan (G.P.W v) (g v : Matrix (Fin (G.P.m + 1)) (Fin (G.P.m + 1)) (G.P.Qq v))) : G.P.IsLatTup L :=
   fun v => (isLattice_iff _ (L v)).2 ⟨g v, by rw [hL v, colSpan_eq]⟩
 
 /- English proof (translation)
-Take `⟨c, γ₀, κ₀, hγ₀, hpt⟩` from `ptEx_of H.good S y H.y_bij.2 i g`. Conclude with `⟨c, γ₀, g, κ₀, hL, hγ₀, hpt⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isCG1_bases (H : OneHyp S A y) (i : G.comp) (L : G.P.Tup) (g : ∀ v, GL (Fin (G.P.m + 1)) (G.P.Qq v))
     (hL : ∀ v, L v = colSpan (G.P.W v) (g v : Matrix (Fin (G.P.m + 1)) (Fin (G.P.m + 1)) (G.P.Qq v))) :
@@ -68,14 +68,14 @@ theorem exists_isCG1_bases (H : OneHyp S A y) (i : G.comp) (L : G.P.Tup) (g : �
   exact ⟨c, γ₀, g, κ₀, hL, hγ₀, hpt⟩
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `exists_bases1 L hL`. Conclude with `exists_isCG1_bases H i L g hg`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_isCG1 (H : OneHyp S A y) (i : G.comp) (L : G.P.Tup) (hL : G.P.IsLatTup L) : ∃ c γ₀, IsCG1 S A y i L c γ₀ := by
   obtain ⟨g, hg⟩ := exists_bases1 L hL
   exact exists_isCG1_bases H i L g hg
 
 /- English proof (translation)
-Take `⟨g, κ₀, hL, hγ, hpt⟩` from `h`. Take `⟨g', κ₁, hL', hγ', hpt'⟩` from `h'`. Conclude with `cls_unique H.good H.int H.hypP H.bad_p y H.y_bij.1 i L g g' hL hL' c c' γ₀ γ₁ hγ hγ' κ₀ κ₁ hpt hpt'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem IsCG1.cls_eq (H : OneHyp S A y) {i : G.comp} {L : G.P.Tup} {c c' : cl} {γ₀ γ₁ : GL (Fin n) E}
     (h : IsCG1 S A y i L c γ₀) (h' : IsCG1 S A y i L c' γ₁) : c = c' := by
@@ -84,7 +84,7 @@ theorem IsCG1.cls_eq (H : OneHyp S A y) {i : G.comp} {L : G.P.Tup} {c c' : cl} {
   exact cls_unique H.good H.int H.hypP H.bad_p y H.y_bij.1 i L g g' hL hL' c c' γ₀ γ₁ hγ hγ' κ₀ κ₁ hpt hpt'
 
 /- English proof (translation)
-Take `⟨g, κ₀, -, hγ, -⟩` from `h`. Conclude with `hγ`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem IsCG1.mem {i : G.comp} {L : G.P.Tup} {c : cl} {γ₀ : GL (Fin n) E} (h : IsCG1 S A y i L c γ₀) :
     γ₀ ∈ UJ (σ : E →+* E) J := by
@@ -92,7 +92,7 @@ theorem IsCG1.mem {i : G.comp} {L : G.P.Tup} {c : cl} {γ₀ : GL (Fin n) E} (h 
   exact hγ
 
 /- English proof (translation)
-Take `⟨g, κ₀, hL, hγ, hpt⟩` from `h`. Take `⟨κ₁, h1⟩` from `pt_smul H.good H.actB H.gam i g _ γ₀ κ₀ hpt γ`. Conclude with `⟨_, κ₁, fun v => smul_colSpan i γ L g hL v, Subgroup.mul_mem _ (H.gamU i γ) hγ, h1⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsCG1.smul (H : OneHyp S A y) {i : G.comp} {L : G.P.Tup} {c : cl} {γ₀ : GL (Fin n) E}
     (h : IsCG1 S A y i L c γ₀) (γ : (G.lev i).Γ) : IsCG1 S A y i ((G.lev i).smul γ L) c (A.gamI i γ * γ₀) := by
@@ -101,7 +101,7 @@ theorem IsCG1.smul (H : OneHyp S A y) {i : G.comp} {L : G.P.Tup} {c : cl} {γ₀
   exact ⟨_, κ₁, fun v => smul_colSpan i γ L g hL v, Subgroup.mul_mem _ (H.gamU i γ) hγ, h1⟩
 
 /- English proof (translation)
-Take `⟨g, κ₀, hL, hγ, hpt⟩` from `h`. Take `⟨g', κ₁, hL', hγ', hpt'⟩` from `h'`. Take `⟨rfl, γ, -, hγL⟩` from `orbit_of_pts H.good H.int H.hypC H.actB H.gam H.cinj H.onto i i' L L' g g' hL hL' _ γ₀ γ₁ hγ hγ' κ₀ κ₁ hpt hpt'`. Conclude with `⟨rfl, γ, hγL⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsCG1.orbit (H : OneHyp S A y) {i i' : G.comp} {L L' : G.P.Tup} {c : cl} {γ₀ γ₁ : GL (Fin n) E}
     (h : IsCG1 S A y i L c γ₀) (h' : IsCG1 S A y i' L' c γ₁) : i = i' ∧ ∃ γ : (G.lev i).Γ, L' = (G.lev i).smul γ L := by
@@ -112,9 +112,7 @@ theorem IsCG1.orbit (H : OneHyp S A y) {i i' : G.comp} {L L' : G.P.Tup} {c : cl}
   exact ⟨rfl, γ, hγL⟩
 
 /- English proof (translation)
-Take `⟨g', κ₀, hL', hγ, hpt⟩` from `h`. Take `⟨κ, e1, -⟩` from `ptOne_of S H.int H.hypP H.bad_p i L g' g ⟨_, Subgroup.mul_mem _ (Subgroup.mul_mem _ (bc_mem hγ) (y c).2) (U_le κ₀.2)⟩ x hL' hL hpt hx`. Use `⟨κ₀ * κ, ?_⟩` and prove the remaining obligations. Rewrite using `[e1]`. Use `show _ * _ * _ * _ = _ * _ * (κ₀.1 * κ.1)`.
-
-Use `group`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsCG1.pt (H : OneHyp S A y) {i : G.comp} {L : G.P.Tup} {c : cl} {γ₀ : GL (Fin n) E} (h : IsCG1 S A y i L c γ₀)
     (g : ∀ v, GL (Fin (G.P.m + 1)) (G.P.Qq v))
@@ -130,7 +128,7 @@ theorem IsCG1.pt (H : OneHyp S A y) {i : G.comp} {L : G.P.Tup} {c : cl} {γ₀ :
   group
 
 /- English proof (translation)
-Take `⟨i, g, γ, κ, hγ, hpt⟩` from `ptAll_of H.good S y H.comp c`. Conclude with `⟨i, fun v => colSpan (G.P.W v) (g v : Matrix (Fin (G.P.m + 1)) (Fin (G.P.m + 1)) (G.P.Qq v)), γ, isLatTup_of_bases1 _ g fun _ => rfl, g, κ, fun _ => rfl, hγ, hpt⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isCG1_of_oneHyp (H : OneHyp S A y) (c : cl) : ∃ i L γ₀, G.P.IsLatTup L ∧ IsCG1 S A y i L c γ₀ := by
   obtain ⟨i, g, γ, κ, hγ, hpt⟩ := ptAll_of H.good S y H.comp c
@@ -138,7 +136,7 @@ theorem exists_isCG1_of_oneHyp (H : OneHyp S A y) (c : cl) : ∃ i L γ₀, G.P.
     isLatTup_of_bases1 _ g fun _ => rfl, g, κ, fun _ => rfl, hγ, hpt⟩
 
 /- English proof (translation)
-Take `⟨g, κ₀, hL, hγ, hpt⟩` from `h`. Conclude with `card_eq H.good H.int H.hypP H.hypC H.bad_p H.actB H.gam H.gamU i (H.inj i) (H.onto i) L g hL y stabI hsinj hrange c γ₀ hγ κ₀ hpt`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem IsCG1.card (H : OneHyp S A y) {stab : cl → Type} [∀ c, Group (stab c)]
     (stabI : ∀ c, stab c →* UJ (σ : E →+* E) J) (hsinj : ∀ c, Function.Injective (stabI c))
@@ -150,7 +148,7 @@ theorem IsCG1.card (H : OneHyp S A y) {stab : cl → Type} [∀ c, Group (stab c
   exact card_eq H.good H.int H.hypP H.hypC H.bad_p H.actB H.gam H.gamU i (H.inj i) (H.onto i) L g hL y stabI hsinj hrange c γ₀ hγ κ₀ hpt
 
 /- English proof (translation)
-Take `⟨c, -, -⟩` from `exists_isCG1_bases H i (fun v => colSpan (G.P.W v) ((1 : GL (Fin (G.P.m + 1)) (G.P.Qq v)) : Matrix (Fin (G.P.m + 1)) (Fin (G.P.m + 1)) (G.P.Qq v))) (fun _ => 1) fun _ => rfl`. Conclude with `⟨c⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cl_nonempty (H : OneHyp S A y) (i : G.comp) : Nonempty cl := by
   obtain ⟨c, -, -⟩ := exists_isCG1_bases H i (fun v => colSpan (G.P.W v) ((1 : GL (Fin (G.P.m + 1)) (G.P.Qq v)) :
@@ -161,7 +159,7 @@ def cg1 (H : OneHyp S A y) (i : G.comp) (L : G.P.Tup) : cl × GL (Fin n) E :=
   @Classical.epsilon _ ((cl_nonempty H i).map fun c => (c, 1)) fun q => IsCG1 S A y i L q.1 q.2
 
 /- English proof (translation)
-Take `⟨c, γ₀, h⟩` from `exists_isCG1 H i L hL`. Conclude with `@Classical.epsilon_spec _ (fun q : cl × GL (Fin n) E => IsCG1 S A y i L q.1 q.2) ⟨(c, γ₀), h⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem class_map_spec (H : OneHyp S A y) (i : G.comp) (L : G.P.Tup) (hL : G.P.IsLatTup L) :
     IsCG1 S A y i L (cg1 H i L).1 (cg1 H i L).2 := by
@@ -169,7 +167,7 @@ theorem class_map_spec (H : OneHyp S A y) (i : G.comp) (L : G.P.Tup) (hL : G.P.I
   exact @Classical.epsilon_spec _ (fun q : cl × GL (Fin n) E => IsCG1 S A y i L q.1 q.2) ⟨(c, γ₀), h⟩
 
 /- English proof (translation)
-Take `⟨g, κ₀, hL, hγ, hpt⟩` from `id h`. Conclude with `(class_map_spec H i L (isLatTup_of_bases1 L g hL)).cls_eq H h`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem class_map_fst_eq (H : OneHyp S A y) {i : G.comp} {L : G.P.Tup} {c : cl} {γ₀ : GL (Fin n) E} (h : IsCG1 S A y i L c γ₀) :
     (cg1 H i L).1 = c := by
@@ -221,7 +219,7 @@ def clsAt0Of (H : OneHyp K0.lev A0 K0.y) (e : cl ≃ (D.chTw u μ).cls 0) (htriv
   (localClassDataOfTrivialStabilizers H e K0.stabI K0.stabI_inj K0.stabI_range htriv).toAt0 Lv
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(class_map_spec H a L (isLatTup_of_bases1 L g hL)).mem, (class_map_spec H a L (isLatTup_of_bases1 L g hL)).pt H g hL x hx⟩`.
+Supply the required witnesses or components.
 -/
 theorem pt00 (H : OneHyp K0.lev A0 K0.y) (a : (D.gat u w h).comp) (L : (D.gat u w h).P.Tup)
     (g : ∀ v, GL (Fin ((D.gat u w h).P.m + 1)) ((D.gat u w h).P.Qq v))

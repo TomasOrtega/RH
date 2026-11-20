@@ -26,17 +26,17 @@ namespace GlobalTheory.CellCentral
 open scoped TensorProduct
 
 /- English proof (translation)
-Use `eq_top_iff.2 fun y hy0 => ?_` and prove the remaining obligations. Use `clear hy0`. Proceed by induction on `y using PiTensorProduct.induction_on with`. Consider the case `add x y hx hy => exact add_mem hx hy`. Consider the case `smul_tprod r x`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.smul_mem _ r ?_` and prove the remaining obligations. Set `L` to `(PiTensorProduct.tprod ℂ : MultilinearMap ℂ X (⨂[ℂ] i, X i)).toLinearMap x a`. Establish `hL : ∀ w, L w = PiTensorProduct.tprod ℂ (Function.update x a w)` using `fun w => rfl`. Establish `hle : twKer (ρ a) Na 1 ≤ (twKer (piTensor ρ) N 1).comap L`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨u, v, rfl⟩`. Rewrite using `[SetLike.mem_coe, Submodule.mem_comap]`. Establish `hpi : piTensor ρ (Pi.mulSingle a (u : Γ a)) (PiTensorProduct.tprod ℂ (Function.update x a v)) = PiTensorProduct.tprod ℂ (Function.update x a (ρ a u v))`. Rewrite using `[piTensor_tprod]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `b`. Distinguish the cases in `hb : b = a`. Substitute `hb` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.mulSingle_eq_of_ne hb, Function.update_of_ne hb]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.subset_span ⟨⟨_, hN u u.2⟩, PiTensorProduct.tprod ℂ (Function.update x a v), ?_⟩` and prove the remaining obligations. Simplify using `only [MonoidHom.one_apply, Units.val_one, one_smul]`. Rewrite using `[map_sub, hL, hL, hpi]`. Establish `hx : x a ∈ twKer (ρ a) Na 1` using `h ▸ Submodule.mem_top`. Use `hle hx` as an intermediate fact.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[hL]`.
+A detailed English derivation is pending.
 -/
 theorem twKer_piTensor_eq_top {α : Type} [DecidableEq α] {Γ X : α → Type} [∀ a, Group (Γ a)]
     [∀ a, AddCommGroup (X a)] [∀ a, Module ℂ (X a)] (ρ : ∀ a, Representation ℂ (Γ a) (X a))
@@ -70,13 +70,13 @@ theorem twKer_piTensor_eq_top {α : Type} [DecidableEq α] {Γ X : α → Type} 
     simpa [hL] using this
 
 /- English proof (translation)
-Rewrite using `[deltaHalf_apply]`. Use `Finset.prod_eq_one fun a _ => ?_` and prove the remaining obligations. Distinguish the cases in `ha : IsEmpty (m a)`. Establish `: Matrix.GeneralLinearGroup.det (g a) = 1` using `Units.ext (by simp [Matrix.det_isEmpty])`. Rewrite using `[this, map_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : modExp m a = 0`. Unfold `modExp`. Rewrite using `[Finset.sum_eq_zero, Finset.sum_eq_zero, sub_zero]`. Introduce `b hb`. Establish `hne : b ≠ a` using `by rintro rfl; simp at hb`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: IsEmpty (m b)` using `(hm a b hne.symm).resolve_left ha`. Simplify using the standard rewrite rules. Introduce `b hb`. Establish `hne : b ≠ a` using `by rintro rfl; simp at hb`. Establish `: IsEmpty (m b)` using `(hm a b hne.symm).resolve_left ha`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Simplify using `[h0]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem deltaHalf_eq_one {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {α : Type} [Fintype α] [LinearOrder α] (m : α → Type) [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)]
@@ -100,9 +100,7 @@ theorem deltaHalf_eq_one {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace
     simp [h0]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Use `show F.1.1 (x * z) = c • F.1.1 x`. Rewrite using `[hcen x]`.
-
-Conclude with `(F.1.2 ⟨z, hz⟩ x).trans (hc _)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smInd_central {G W : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup W]
     [Module ℂ W] (H : Subgroup G) (σ : Representation ℂ H W) (z : G) (hz : z ∈ H)
@@ -116,39 +114,37 @@ theorem smInd_central {G W : Type} [Group G] [TopologicalSpace G] [IsTopological
   exact (F.1.2 ⟨z, hz⟩ x).trans (hc _)
 
 /- English proof (translation)
-Establish `hact : ∀ i (ψ : kˣ →* ℂˣ), (σ i).π.Equiv (detRep (Fin 1) ψ) → ∀ (g : GL (Fin 1) k) v, (σ i).π g v = (ψ (Matrix.GeneralLinearGroup.det g) : ℂ) • v`. Introduce `i ψ e g v`. Apply `EquivLike.injective e` to reduce the goal to its premises. Establish `h1 : e ((σ i).π g v) = detRep (Fin 1) ψ g (e v)` using `LinearMap.congr_fun (e.toIntertwiningMap.isIntertwining' g) v`. Rewrite using `[h1, map_smul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[detRep, detChar_apply, smul_eq_mul]`. Establish `h0` using `RankLeOne.exists_equiv_detRep k (Fin 1) (σ 0).V (σ 0).π (σ 0).smooth (σ 0).irr`. Establish `h1` using `RankLeOne.exists_equiv_detRep k (Fin 1) (σ 1).V (σ 1).π (σ 1).smooth (σ 1).irr`. Take `⟨ψ₀, -, ⟨e₀⟩⟩` from `h0`. Take `⟨ψ₁, -, ⟨e₁⟩⟩` from `h1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hψ : ∃ t, ψ₀ t ≠ ψ₁ t`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `hu : unrChar k 1 = 1` using `MonoidHom.ext fun x => by simp [unrChar_apply]`. Establish `hdet : detChar (Fin 1) (1 : kˣ →* ℂˣ) = (1 : GL (Fin 1) k →* ℂˣ)` using `MonoidHom.ext fun x => by simp`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hψe : ψ₀ = ψ₁` using `MonoidHom.ext hc`. Substitute `hψe` using the available equality. Rewrite `hnt` using `[hu, hdet, twist_one]`. Conclude with `hnt ⟨e₀.trans e₁.symm⟩`. Take `⟨t, ht⟩` from `hψ`.
+Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `z : Levi k fun _ : Fin 2 => Fin 1` to `Pi.mulSingle 0 (Matrix.GeneralLinearGroup.scalar (Fin 1) t)`. Establish `hcomm : ∀ (g h : GL (Fin 1) k), g * h = h * g`. Introduce `g h`. Use extensionality with `a b`. Use `fin_cases a`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `fin_cases b`. Simplify using `[Matrix.mul_apply, mul_comm]`. Establish `hcen : ∀ g, g * z = z * g` using `fun g => funext fun j => hcomm _ _`. Use `⟨z, ψ₁ t, ψ₀ t, hcen, fun h => ht (Units.ext h).symm, ?_, ?_⟩` and prove the remaining obligations. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `GlobalTheory.ProdSupport.piTensor_mulSingle _ 0 _ _ (fun v => ?_) x` and prove the remaining obligations. Establish `hs : Equiv.swap (0 : Fin 2) 1 0 = 1` using `by simp`. Rewrite using `[hact _ ψ₁ (hs ▸ e₁), GlobalTheory.ProdSupport.det_scalar_one rfl]`. Introduce `b hb f g y`. Establish `hr0` using `b.2.1 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hr1` using `b.2.1 1`. Establish `hc0` using `b.2.2 0`. Establish `hc1` using `b.2.2 1`. Simplify using `only [Fin.sum_univ_two, Fintype.card_fin] at hr0 hr1 hc0 hc1`. Establish `h01 : b.1 0 1 = 0` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hoff : ∀ i j : Fin 2, i ≠ j → b.1 i j = 0`. Introduce `i j hij`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp_all`. Establish `hemp : ∀ i j : Fin 2, i ≠ j → IsEmpty (Fin (b.1 i j))` using `fun i j hij => by`. Rewrite using `[hoff i j hij]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `infer_instance`. Establish `hz : z ∈ relParab k g`. Use `(Subgroup.mem_pi _).2 fun j _ => mem_parab.2 fun p q hpq => ?_` and prove the remaining obligations. Rewrite `hpq` using `[Subsingleton.elim p q]`. Conclude with `absurd hpq (lt_irrefl _)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Prove the second alternative.
 
-Establish `hA : relDeltaHalf k (fun j i => Fin (b.1 i j)) (relProj k g ⟨z, hz⟩) = 1`. Rewrite using `[relDeltaHalf_apply]`. Use `Finset.prod_eq_one fun j _ => deltaHalf_eq_one _ (fun a a' haa' => ?_) _` and prove the remaining obligations. Distinguish the cases in `h : a = j`. Substitute `h` using the available equality.
+Prove the first alternative. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Or.inr (hemp a' a (Ne.symm haa'))`. Conclude with `Or.inl (hemp a j h)`. Establish `hB : ∀ P, relDeltaHalf k (fun i j => Fin (b.1 i j)) P = 1`. Introduce `P`. Rewrite using `[relDeltaHalf_apply]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Prove the second alternative. Prove the first alternative. Establish an intermediate fact.
 
-Use `Finset.prod_eq_one fun i _ => deltaHalf_eq_one _ (fun a a' haa' => ?_) _` and prove the remaining obligations. Distinguish the cases in `h : a = i`. Substitute `h` using the available equality. Conclude with `Or.inr (hemp a a' haa')`. Conclude with `Or.inl (hemp i a (Ne.symm h))`.
+Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Substitute using the available equality.
 
-Establish `hC : relEmb k f (swapBlocks k (fun i j => Fin (b.1 i j)) (relProj k g ⟨z, hz⟩)) = (Pi.mulSingle (0 : Fin 2) (Matrix.GeneralLinearGroup.scalar (Fin 1) t) : Levi k fun _ : Fin 2 => Fin 1)`. Use function extensionality and compare the values at `i`. Use extensionality with `p q`. Take `rfl : p = q` from `Subsingleton.elim p q`. Take `⟨⟨j, r⟩, hr⟩` from `(f i).surjective p`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Substitute `hr` using the available equality. Rewrite using `[relEmb_apply, leviEmb_apply_same]`. Establish `hij : i = j`. Assume the negation of the conclusion as `hne`. Use `r.2` as an intermediate fact.
+Use linear arithmetic over natural numbers and integers. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `h0` using `hoff i j hne`. Use linear arithmetic over natural numbers and integers. Substitute `hij` using the available equality. Use `show ((z i : GL (Fin 1) k) : Matrix (Fin 1) (Fin 1) k) (g i ⟨i, r⟩) (g i ⟨i, r⟩) = _`. Rewrite using `[Subsingleton.elim (g i ⟨i, r⟩) (f i ⟨i, r⟩)]`.
-
-Use `smInd_central _ _ z hz hcen _ (fun w => ?_) y` and prove the remaining obligations. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ w`. Simplify using `only [MonoidHom.comp_apply, twist_apply, relJac_mk, hA, hB, hC, inv_one, Units.val_one, one_smul]`. Rewrite using `[GlobalTheory.ProdSupport.piTensor_mulSingle _ 0 _ _ (hact 0 ψ₀ e₀ _), GlobalTheory.ProdSupport.det_scalar_one rfl, Submodule.Quotient.mk_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_case (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (σ : Fin 2 → Irr k 1) (hσ : ∀ i, 0 < 1 ∧ IsCuspidal (σ i).π)
@@ -246,21 +242,17 @@ theorem one_case (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsN
       Submodule.Quotient.mk_smul]
 
 /- English proof (translation)
-Introduce `k _ _ _ _ d σ hσ hd1 hnt`. Distinguish the cases in `hd0 : d 0 = 1`. Establish `hd : d = fun _ => 1`. Use function extensionality and compare the values at `i`. Use `fin_cases i`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Substitute using the available equality.
 
-Conclude with `hd0`. Conclude with `hd1`. Substitute `hd` using the available equality. Conclude with `one_case k σ hσ (hnt rfl 1)`. Use `⟨1, 1, 2, fun g => by simp, by norm_num, fun x => by simp, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `b hb f g y`. Establish `hr0` using `b.2.1 0`. Establish `hr1` using `b.2.1 1`. Establish `hc0` using `b.2.2 0`. Establish `hc1` using `b.2.2 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Fin.sum_univ_two, Fintype.card_fin, Equiv.swap_apply_left, Equiv.swap_apply_right] at hr0 hr1 hc0 hc1`. Establish `hpos` using `(hσ 0).1`. Establish `h00 : b.1 0 0 = 1` using `by omega`. Establish `h01 : 0 < b.1 0 1` using `by omega`. Establish `hne : unipRad k (f 0) ≠ ⊥`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `CuspMax.unipRad_ne_bot_iff.2 ⟨f 0 ⟨0, ⟨0, by omega⟩⟩, f 0 ⟨1, ⟨0, h01⟩⟩, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `hJ : twKer (σ 0).π (unipRad k (f 0)) 1 = ⊤` using `Submodule.Quotient.subsingleton_iff.1 ((hσ 0).2.2 2 (b.1 0) (f 0) hne)`. Establish `hT : twKer (piTensor fun i => (σ i).π) (relUnip k f) 1 = ⊤`. Use `twKer_piTensor_eq_top _ _ 0 _ (fun u hu => ?_) hJ` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Use `(Subgroup.mem_pi _).2 fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hi : i = 0`. Substitute `hi` using the available equality. Simplify using `using hu`. Rewrite using `[Pi.mulSingle_eq_of_ne hi]`.
-
-Conclude with `one_mem _`. Use `haveI : Subsingleton (Jacquet (piTensor fun i => (σ i).π) (relUnip k f)) := Submodule.Quotient.subsingleton_iff.2 hT`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`.
-
-Conclude with `Subsingleton.elim (α := Jacquet (piTensor fun i => (σ i).π) (relUnip k f)) _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem exists_central_scalar_ne_cell : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (d : Fin 2 → ℕ) (σ : ∀ i, Irr k (d i)), (∀ i, 0 < d i ∧ IsCuspidal (σ i).π) → d 1 = 1 →

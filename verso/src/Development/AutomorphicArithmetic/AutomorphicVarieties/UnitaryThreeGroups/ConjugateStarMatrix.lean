@@ -3,9 +3,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.UnitaryThreeGroups
 open Matrix UpperTheory.V.U3
 
 /- English proof (translation)
-Establish `hc' : r c = SemidirectProduct.mk 1 (-1)`. Apply `SemidirectProduct.ext` to reduce the goal to its premises. Conclude with `Units.ext (by simpa [GG.mat] using hm)`. Conclude with `hc`. Establish `hg' : r g = SemidirectProduct.mk (r g).left 1` using `SemidirectProduct.ext rfl hg`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hs : r (gstar c g) = r c * (r g)⁻¹ * r c`. Simplify using `only [gstar, map_mul, map_inv]`. Rewrite using `[hs, hc', hg']`. Simplify using `only [GG.mat, SemidirectProduct.mul_left, SemidirectProduct.mul_right, SemidirectProduct.inv_left, SemidirectProduct.inv_right, inv_one, map_one, mul_one, one_mul, MulAut.one_apply, map_inv, sgnAct_neg_one, theta_inv_val]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem conjugate_star_matrix {G R : Type} [Group G] [CommRing R] (r : G →* GG 3 R) (c g : G)
     (hc : (r c).right = -1) (hg : (r g).right = 1) (hm : (r c).mat = 1) :
@@ -23,17 +23,17 @@ private theorem conjugate_star_matrix {G R : Type} [Group G] [CommRing R] (r : G
     sgnAct_neg_one, theta_inv_val]
 
 /- English proof (translation)
-Introduce `G R _ _ r c g₁ _ hc hg hN`. Establish `hJ : ∀ (M : Matrix (Fin 3) (Fin 3) R) (i j : Fin 3), (Jmat R 3 * Mᵀ * Jmat R 3) i j = M j.rev i.rev`. Introduce `M i j`. Simplify using `only [Matrix.mul_apply, Jmat, Matrix.transpose_apply, ite_mul, mul_ite, one_mul, zero_mul, mul_zero, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite using `[Finset.sum_eq_single j.rev]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `x _ hx`. Rewrite using `[if_neg]`. Introduce `h`. Conclude with `hx (by rw [h, Fin.rev_rev])`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hZ : ∀ i j : Fin 3, zmat c g₁ r i j = (r g₁).mat i j - (r g₁).mat j.rev i.rev`. Introduce `i j`. Simplify using `only [zmat, Matrix.sub_apply]`. Rewrite using `[conjugate_star_matrix r c g₁ hc hg hN.atc, hJ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h01` using `hN.z12`. Establish `h10` using `hN.z21`. Rewrite `h01`, `h10` using `[hZ]`. Establish `e0 : (0 : Fin 3).rev = 2` using `rfl`. Establish `e1 : (1 : Fin 3).rev = 1` using `rfl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : (2 : Fin 3).rev = 0` using `rfl`. Rewrite `h01`, `h10` using `[e0, e1]`. Use extensionality with `i j`. Simplify using `only [zeta]`. Rewrite using `[hZ, hZ 0 0, e0]`.
+Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [e0, e1, e2, Matrix.diagonal] <;> first`. Consider the case `linear_combination h01`. Consider the case `linear_combination -h01`. Consider the case `linear_combination h10`. Consider the case `linear_combination -h10`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.U3.zmat_diag :
     ∀ {G R : Type} [Group G] [CommRing R] (r : G →* GG 3 R) (c g₁ : G), IsUnit (2 : R) → (r c).right = -1 → (r g₁).right = 1 → Normalised c g₁ r →

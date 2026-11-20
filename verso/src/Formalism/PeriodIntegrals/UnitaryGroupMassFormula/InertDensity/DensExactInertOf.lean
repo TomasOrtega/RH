@@ -9,28 +9,28 @@ noncomputable section
 namespace DensInertW
 
 /- English proof (translation)
-Rewrite using `[Fr]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Fr_zero_zero (q d : ℕ) : Fr q d 0 0 = 1 := by
   rw [Fr]
 
 /- English proof (translation)
-Rewrite using `[Fr]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Fr_succ (q d r c : ℕ) : Fr q d (r + 1) c = valN q d * Fr q (d - 1) r c := by
   rw [Fr]
 
 /- English proof (translation)
-Rewrite using `[Fr]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Fr_zero_succ (q d c : ℕ) :
     Fr q d 0 (c + 1) = (valZ q d - 1) * (q : ℤ) ^ (2 * c) * Fr q (d - 2) 0 c := by
   rw [Fr]
 
 /- English proof (translation)
-Unfold `cntT`. Establish `h : {X : Fin 0 → Fin n → L | (∀ i, X i ∈ W) ∧ LinearIndependent L X ∧ ∀ i j, hf q M (X i) (X j) = B i j} = Set.univ`. Use extensionality with `X`. Simplify using `only [Set.mem_setOf_eq, Set.mem_univ, iff_true]`. Conclude with `⟨fun i => i.elim0, linearIndependent_empty_type, fun i => i.elim0⟩`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Rewrite using `[h, Set.ncard_univ]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem top_cnt_fin_zero {L : Type} [Field L] {n : ℕ} (q : ℕ) (M : Matrix (Fin n) (Fin n) L)
     (W : Submodule L (Fin n → L)) (B : Matrix (Fin 0) (Fin 0) L) : cntT q M W B = 1 := by
@@ -44,19 +44,19 @@ theorem top_cnt_fin_zero {L : Type} [Field L] {n : ℕ} (q : ℕ) (M : Matrix (F
   simp
 
 /- English proof (translation)
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `w r hr _ _ W _`. Take `rfl : r = 0` from `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[top_cnt_fin_zero, Fr_zero_zero]`. Both sides reduce to the same expression. Consider the case `succ c ih`. Introduce `w r hr hw hwq W hW`. Break down `Nat.eq_zero_or_pos r with h0 | hpos` into its components or cases.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Substitute `h0` using the available equality. Establish `hw0 : w = 0`. Use function extensionality and compare the values at `i`. Assume the negation of the conclusion as `h`. Use `(hw i).mp h` as an intermediate fact.
+Substitute using the available equality. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hdiag : Matrix.diagonal w = (0 : Matrix (Fin (c + 1)) (Fin (c + 1)) L)`. Rewrite using `[hw0]`. Conclude with `Matrix.diagonal_zero`. Rewrite using `[hdiag]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hk` using `hI K L h2 n M W hM hW c (Fr (Fintype.card K) (Module.finrank L W - 2) 0 c) (fun W' hW' hrk => by`. Establish `h1` using `ih (fun _ => 0) 0 (Nat.zero_le _) (fun i => by simp) (fun i => by simp [zero_pow Fintype.card_ne_zero]) W' hW'`. Rewrite `h1` using `[Matrix.diagonal_zero]`. Rewrite using `[h1, show Module.finrank L W' = Module.finrank L W - 2 by omega, Nat.sub_zero])`. Rewrite using `[hk, Nat.sub_zero, Fr_zero_succ]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨r', rfl⟩ : ∃ r', r = r' + 1` from `⟨r - 1, by omega⟩`. Establish `hw0 : w 0 ≠ 0` using `(hw 0).mpr (by simp)`. Establish `hcons : Matrix.diagonal w = Matrix.diagonal (Fin.cons (w 0) (Fin.tail w) : Fin (c + 1) → L)`. Rewrite using `[Fin.cons_self_tail]`. Rewrite using `[hcons]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hk` using `hA K L h2 n M W hM hW c (w 0) (Fin.tail w) (Fr (Fintype.card K) (Module.finrank L W - 1) r' (c - r')) (hwq 0) hw0 (fun W' hW' hrk => by`. Establish `h1` using `ih (Fin.tail w) r' (by omega) (fun i => by simp only [Fin.tail]; rw [hw i.succ]; simp [Fin.val_succ]) (fun i => hwq i.succ) W' hW'`. Rewrite using `[h1, show Module.finrank L W' = Module.finrank L W - 1 by omega])`. Rewrite using `[hk, show c + 1 - (r' + 1) = c - r' by omega, Fr_succ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem top_diag_count (hA : AnisoPeel) (hI : IsoPeel) (K L : Type) [Field K] [Fintype K]
     [Field L] [Fintype L] [Algebra K L] (h2 : Module.finrank K L = 2) (n : ℕ)
@@ -108,9 +108,9 @@ theorem top_diag_count (hA : AnisoPeel) (hI : IsoPeel) (K L : Type) [Field K] [F
       rw [hk, show c + 1 - (r' + 1) = c - r' by omega, Fr_succ]
 
 /- English proof (translation)
-Introduce `w _ hw`. Establish `h0 : Matrix.vecMul w M = 0`. Use function extensionality and compare the values at `l0`. Establish `h` using `hw (Pi.single l0 1) Submodule.mem_top`. Simplify using `only [hf, Pi.single_apply, ite_pow, one_pow, zero_pow hq.ne', mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify `h` using `[Matrix.vecMul, dotProduct]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation.
 -/
 theorem top_nondeg_top {L : Type} [Field L] {n : ℕ} (q : ℕ) (hq : 0 < q)
     (M : Matrix (Fin n) (Fin n) L) (hdet : IsUnit M.det) : NonDeg q M ⊤ := by
@@ -126,9 +126,9 @@ theorem top_nondeg_top {L : Type} [Field L] {n : ℕ} (q : ℕ) (hq : 0 < q)
     _ = 0 := by rw [h0, Matrix.zero_vecMul]
 
 /- English proof (translation)
-Establish `hF : P.map (fun y => y ^ Fintype.card K) = P.map ((FiniteField.frobeniusAlgHom K L : L →ₐ[K] L) : L →+* L)`. Use extensionality with `i j`. Simplify using `[FiniteField.frobeniusAlgHom_apply]`. Establish `hu : IsUnit (P.map (fun y => y ^ Fintype.card K)).transpose.det`. Rewrite using `[Matrix.det_transpose, hF, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hP.map _`. Rewrite using `[Matrix.rank_mul_eq_left_of_isUnit_det _ _ hu, Matrix.rank_mul_eq_right_of_isUnit_det _ _ hP]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem top_rank (K L : Type) [Field K] [Fintype K] [Field L] [Fintype L] [Algebra K L]
     (m : ℕ) (B P : Matrix (Fin m) (Fin m) L) (hP : IsUnit P.det) :
@@ -143,13 +143,13 @@ theorem top_rank (K L : Type) [Field K] [Fintype K] [Field L] [Fintype L] [Algeb
   rw [Matrix.rank_mul_eq_left_of_isUnit_det _ _ hu, Matrix.rank_mul_eq_right_of_isUnit_det _ _ hP]
 
 /- English proof (translation)
-Introduce `K L _ _ _ _ _ h2 n m Ph Gm hPh hPhH hGm`. Take `⟨P, hP, w, r, hrm, hdiag, hw, hwq⟩` from `hD K L h2 m Gm hGm`. Establish `hq : 1 < Fintype.card K` using `Fintype.one_lt_card`. Establish `hcnt : Formalism.L2.SG.DensExact.countInert K L n m Ph Gm = cntT (Fintype.card K) Ph ⊤ Gm`. Unfold `Formalism.L2.SG.DensExact.countInert cntT`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `congr 1`. Use extensionality with `X`. Simplify using `[hf]`. Establish `hcong` using `hC K L h2 n Ph ⊤ m Gm P hP`. Rewrite `hcong` using `[hdiag]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hrank : Gm.rank = r`. Rewrite using `[← top_rank K L m Gm P hP, hdiag, Matrix.rank_diagonal, Fintype.card_congr (Equiv.subtypeEquivRight hw)]`. Establish `e : {i : Fin m // i.val < r} ≃ Fin r` using `{ toFun := fun i => ⟨i.1.val, i.2⟩ invFun := fun j => ⟨⟨j.val, by omega⟩, j.2⟩ left_inv := fun i => rfl right_inv := fun j => rfl }`. Rewrite using `[Fintype.card_congr e, Fintype.card_fin]`. Establish `hcount` using `top_diag_count hA hI K L h2 n Ph hPhH m w r hrm hw hwq ⊤ (top_nondeg_top _ (by omega) Ph hPh)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hcount` using `[finrank_top, Module.finrank_fin_fun]`. Rewrite using `[hcnt, ← hcong, hrank, ← hR (Fintype.card K) n m r hq hrm, ← hcount]`. Use `norm_cast`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared.
 -/
 theorem densExactInert_of (hD : Diag) (hC : Congr) (hA : AnisoPeel) (hI : IsoPeel)
     (hR : Arith) : Formalism.L2.SG.DensExact.DensExactInert := by

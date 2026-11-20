@@ -5,29 +5,23 @@ universe u_1 u_2
 namespace Bl.general_b_fact_rest
 
 /- English proof (translation)
-Introduce `R _ _ _ M _ _ _ p hp x hx hreg`. Use `open Pointwise in`. Rewrite `hp` using `[AssociatedPrimes.mem_iff, isAssociatedPrime_iff]`. Take `⟨hpp, m0, rfl⟩` from `hp`. Establish `hm0 : m0 ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Apply `hpp.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one, Submodule.mem_colon_singleton, smul_zero]`. Conclude with `Submodule.zero_mem _`. Establish `hxp : x ∉ (⊥ : Submodule R M).colon {m0}`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h`. Rewrite `h` using `[Submodule.mem_colon_singleton, Submodule.mem_bot]`. Conclude with `hm0 (hreg (h.trans (smul_zero x).symm))`. Use `set N : Submodule R M := Submodule.torsionBySet R M ((⊥ : Submodule R M).colon {m0} : Set R) with hN`. Establish `hNmem : ∀ n, n ∈ N ↔ ∀ r ∈ (⊥ : Submodule R M).colon {m0}, r • n = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `n`. Rewrite using `[hN, Submodule.mem_torsionBySet_iff]`. Conclude with `⟨fun h r hr => h ⟨r, hr⟩, fun h a => h a.1 a.2⟩`. Establish `hm0N : m0 ∈ N`. Rewrite using `[hNmem]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce `r hr`. Rewrite `hr` using `[Submodule.mem_colon_singleton, Submodule.mem_bot]`. Conclude with `hr`. Establish `hex : ∃ n ∈ N, n ∉ x • (⊤ : Submodule R M)`. Assume the negation of the conclusion as `hcon`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `push Not at hcon`. Establish `hle : N ≤ Ideal.span {x} • N`. Introduce `n hn`. Take `⟨m', -, hm'⟩` from `(Submodule.mem_smul_pointwise_iff_exists n x ⊤).1 (hcon n hn)`. Establish `hm'N : m' ∈ N`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hn`, the goal using `[hNmem]`. Introduce `r hr`. Apply `hreg` to reduce the goal to its premises. Use `show x • (r • m') = x • 0`. Rewrite using `[smul_comm, hm', hn r hr, smul_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hm']`. Conclude with `Submodule.smul_mem_smul (Ideal.mem_span_singleton_self x) hm'N`. Establish `hbot` using `Submodule.eq_bot_of_le_smul_of_le_jacobson_bot (Ideal.span {x}) N (IsNoetherian.noetherian N) hle (((Ideal.span_singleton_le_iff_mem _).2 hx).trans (IsLocalRing.maximalIdeal_le_jacobson _))`. Apply `hm0` to reduce the goal to its premises. Rewrite `hm0N` using `[hbot]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(Submodule.mem_bot R).1 hm0N`. Take `⟨n, hnN, hnx⟩` from `hex`. Use `set z : QuotSMulTop x M := Submodule.Quotient.mk n with hz`. Establish `hz0 : z ≠ 0`. Rewrite using `[hz, Ne, Submodule.Quotient.mk_eq_zero]`.
-
-Conclude with `hnx`. Take `⟨q, hq, hqle⟩` from `exists_le_isAssociatedPrime_of_isNoetherianRing R z hz0`. Establish `hxq : x ∈ q`. Apply `hqle` to reduce the goal to its premises. Rewrite using `[Submodule.mem_colon_singleton, Submodule.mem_bot, hz, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`.
-
-Conclude with `Submodule.smul_mem_pointwise_smul n x ⊤ trivial`. Establish `hpq : (⊥ : Submodule R M).colon {m0} ≤ q`. Introduce `r hr`. Apply `hqle` to reduce the goal to its premises. Rewrite using `[Submodule.mem_colon_singleton, Submodule.mem_bot, hz, ← Submodule.Quotient.mk_smul, (hNmem n).1 hnN r hr, Submodule.Quotient.mk_zero]`.
-
-Conclude with `⟨q, hq, lt_of_le_of_ne hpq (fun h => hxp (h ▸ hxq)), hxq, hxp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem goal1 :
   ∀ {R : Type u_1} [inst : CommRing.{u_1} R] [inst_1 : IsLocalRing.{u_1} R] [IsNoetherianRing.{u_1} R] {M : Type u_2}

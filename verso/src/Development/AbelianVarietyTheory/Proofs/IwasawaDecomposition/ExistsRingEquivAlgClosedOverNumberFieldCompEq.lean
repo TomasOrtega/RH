@@ -12,11 +12,11 @@ namespace GlobalTheory.AlgClosedIsoOverNumberField
 open Cardinal
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `exists_isTranscendenceBasis R K`. Take `⟨t, ht⟩` from `exists_isTranscendenceBasis R L`. Establish `hL : ℵ₀ < #L` using `hKL ▸ hK`. Establish `hs' : #K = #s` using `IsAlgClosed.cardinal_eq_cardinal_transcendence_basis_of_aleph0_lt' _ hs hR hK`. Establish `ht' : #L = #t` using `IsAlgClosed.cardinal_eq_cardinal_transcendence_basis_of_aleph0_lt' _ ht hR hL`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨f⟩ : Nonempty (s ≃ t)` from `Cardinal.eq.1 (hs'.symm.trans (hKL.trans ht'))`. Set `` to `IsAlgClosed.isAlgClosure_of_transcendence_basis _ hs`. Set `` to `IsAlgClosed.isAlgClosure_of_transcendence_basis _ ht`. Set `e₀ : Algebra.adjoin R (Set.range ((↑) : s → K)) ≃ₐ[R] Algebra.adjoin R (Set.range ((↑) : t → L))` to `hs.1.aevalEquiv.symm.trans ((MvPolynomial.renameEquiv R f).trans ht.1.aevalEquiv)`. Use `⟨IsAlgClosure.equivOfEquiv K L e₀.toRingEquiv, fun x => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[IsScalarTower.algebraMap_apply R (Algebra.adjoin R (Set.range ((↑) : s → K))) K, IsAlgClosure.equivOfEquiv_algebraMap, AlgEquiv.coe_ringEquiv, AlgEquiv.commutes, ← IsScalarTower.algebraMap_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_ringEquiv_commutes (R K L : Type) [Field R] [Field K] [Field L] [IsAlgClosed K]
     [IsAlgClosed L] [Algebra R K] [Algebra R L] (hR : #R ≤ ℵ₀) (hK : ℵ₀ < #K) (hKL : #K = #L) :
@@ -44,9 +44,9 @@ theorem exists_ringEquiv_commutes (R K L : Type) [Field R] [Field K] [Field L] [
     AlgEquiv.commutes, ← IsScalarTower.algebraMap_apply]
 
 /- English proof (translation)
-Introduce `K Ω₁ Ω₂ _ _ _ _ _ _ _ _ a b hcard hbig`. Set `: Algebra K Ω₁` to `a.toAlgebra`. Set `: Algebra K Ω₂` to `b.toAlgebra`. Establish `hK : #K ≤ ℵ₀`. Use `Algebra.IsAlgebraic.cardinalMk_le_max ℚ K` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Cardinal.mkRat, max_self]`. Then use the resulting hypothesis. Take `⟨e, he⟩` from `exists_ringEquiv_commutes K Ω₁ Ω₂ hK hbig hcard`. Conclude with `⟨e, he⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_ringEquiv_comp_eq :
     ∀ (K Ω₁ Ω₂ : Type) [Field K] [NumberField K] [Field Ω₁] [Field Ω₂] [IsAlgClosed Ω₁]

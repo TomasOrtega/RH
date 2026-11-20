@@ -13,9 +13,7 @@ noncomputable section
 universe u
 
 /- English proof (translation)
-Introduce `F _ K _ _ ι _ q d hq hdim`. Establish `hlt : ringKrullDim (MRing ι F ⧸ q) < (((d + 1) + Fintype.card K : ℕ) : WithBot ℕ∞)`. Rewrite using `[hdim]`. Conclude with `(by omega : d + Fintype.card K < d + 1 + Fintype.card K)` after adjusting the coercions. Establish `hdeg : DegLT (hilbFn q) (d + 1)` using `HilbDegBound.full F K ι (d + 1) q hq.isPrime hq.multiHomog hlt`.
-
-Conclude with `h K d (hilbFn q) hdeg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem MultigradedHilbertPolynomial.proof (h : EventualPolynomial.Statement) :
     MultigradedHilbertPolynomial.Statement.{u} := by

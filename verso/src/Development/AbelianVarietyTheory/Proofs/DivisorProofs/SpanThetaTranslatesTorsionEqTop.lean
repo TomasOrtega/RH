@@ -30,23 +30,21 @@ noncomputable def actL {K : Type} [Field K] (P : PolAV (Sp K)) (k : ℕ)
     rw [map_smul]; rfl
 
 /- English proof (translation)
-Introduce `K _ _ _ x m hm hm3 I pt hpt th hth U t hUt`. Use `haveI : IsLocallyNoetherian (Sp K) := inferInstanceAs (IsLocallyNoetherian (Spec (CommRingCat.of K)))`. Use `haveI := x.P.isAb.comm`. Establish `hm0 : m ≠ 0` using `by omega`. Establish `hN : ((m ^ 2 : ℕ) : K) ≠ 0` using `Nat.cast_ne_zero.2 (pow_ne_zero 2 hm0)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hN1 : 1 ≤ m ^ 2` using `Nat.one_le_iff_ne_zero.2 (pow_ne_zero 2 hm0)`. Take `⟨-, hirr⟩` from `GlobalTheory.ThetaIrred.main GlobalTheory.allSixLaws.1 GlobalTheory.allSixLaws.2.1 (Sp K) x.P K (𝟙 _) (m ^ 2) hN`. Take `⟨ρ, hact, -, hrat, hmul⟩` from `GlobalTheory.thetaGrp_acts_linearly GlobalTheory.allSixLaws.1.globalFns (Sp K) x.P ((m ^ 2 : ℕ) : ℤ) (baseOver (Sp K))`. Set `f` to `actL x.P (m ^ 2) ρ`. Establish `hf : ∀ θ (a b : LB.Sec (LPow x.P.A x.P.L ((m ^ 2 : ℕ) : ℤ) (baseOver (Sp K)))), IsActOf x.P.A x.P.L _ θ a b → f θ (SecMod.mk _ a) = SecMod.mk _ b` using `fun θ a b h => by show SecMod.mk _ (SecM.toSec x.P.A (ρ θ (SecM.ofSec x.P.A a))) = _`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[(hact θ a b).1 h]`. Both sides reduce to the same expression. Establish `hf' : ∀ θ (a : LB.Sec (LPow x.P.A x.P.L ((m ^ 2 : ℕ) : ℤ) (baseOver (Sp K)))), IsActOf x.P.A x.P.L _ θ a (f θ (SecMod.mk _ a)).sec` using `fun θ a => (hact θ _ _).2 rfl`. Establish `hker : ∀ θ : ThetaGrp x.P.A x.P.L ((m ^ 2 : ℕ) : ℤ) (baseOver (Sp K)), θ.pt ^ (m ^ 2) = 1` using `fun θ => (GlobalTheory.allSixLaws.1.kerPow (Sp K) x.P (m ^ 2) hN1 _ θ.pt).1 fun _ => ⟨⊤, trivial, GlobalTheory.exists_isGen_pull _ θ.φ θ.isGen _⟩`. Set `Wsp` to `Submodule.span K (Set.range fun i => (SecMod.mk (fst (baseOver (Sp K)) x.P.A).left (t i) : EA x.P (𝟙 (Sp K)) (m ^ 2)))`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(hirr Wsp fun θ hθ v v' hvv' hv => ?_).resolve_left fun h => ?_` and prove the remaining obligations. Establish `e0 : f θ v = v'` using `hf θ v.sec v'.sec hvv'`. Rewrite using `[← e0]`. Use `(Submodule.span_le.2 ?_ : Wsp ≤ Wsp.comap (f θ)) hv` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, α, s₁, hα, -, htw, ha⟩` from `hUt i`. Take `⟨θ₂, hp₂, hv₂⟩` from `hmul θ (U i)`. Take `⟨k, hk⟩` from `hpt (θ.pt * pt i) (by rw [mul_pow, hθ, ← (hUt i).1.pt_eq, hker, _root_.mul_one])`. Take `⟨-, α', s₁', hα', -, htw', ha'⟩` from `hUt k`. Take `⟨c, hc⟩` from `GlobalTheory.T.exists_smul_of_twistedPullbacks_sameBundle K x.P m (by omega) th α' α s₁' s₁ hα' hα htw' htw`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨d, hd⟩` from `hrat (U k) θ₂ (by rw [hp₂, (hUt k).1.pt_eq, (hUt i).1.pt_eq, hk])`. Establish `e : f θ (SecMod.mk _ (t i)) = f θ₂ (SecMod.mk _ s₁)`. Rewrite using `[← hf _ _ _ ha]`. Use `show SecMod.mk _ (SecM.toSec x.P.A (ρ θ _)) = SecMod.mk _ (SecM.toSec x.P.A (ρ θ₂ _))`. Rewrite using `[hv₂]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `e₂ : f θ₂ (SecMod.mk _ s₁) = ((Scheme.ΓSpecIso (CommRingCat.of K)).hom.hom (d : Γ((baseOver (Sp K)).left, ⊤))) • f (U k) (SecMod.mk _ s₁)` using `by show SecMod.mk _ (SecM.toSec x.P.A (ρ θ₂ _)) = _`. Rewrite using `[hd]`. Establish `e3 : (d : Γ((baseOver (Sp K)).left, ⊤)) = (Scheme.ΓSpecIso (CommRingCat.of K)).symm.commRingCatIsoToRingEquiv ((Scheme.ΓSpecIso (CommRingCat.of K)).hom.hom (d : Γ((baseOver (Sp K)).left, ⊤)))`. Simplify using `[Iso.commRingCatIsoToRingEquiv]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `conv_lhs => rw [e3]`. Both sides reduce to the same expression. Use `show f θ (SecMod.mk _ (t i)) ∈ Wsp`. Rewrite using `[e, e₂, hc, map_smul, hf _ _ _ ha']`. Conclude with `Submodule.smul_mem _ _ (Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩))`.
-
-Take `⟨i, hi⟩` from `GlobalTheory.T.exists_translate_thetaPullback_ne_zero K x m hm hm3 I pt hpt th hth U t hUt`. Conclude with `hi ((Submodule.eq_bot_iff _).1 h _ (Submodule.subset_span ⟨i, rfl⟩))`.
+A detailed English derivation is pending.
 -/
 theorem span_eq_top : ∀ (K : Type) [Field K] [IsAlgClosed K] [CharZero K] (x : KeyIn K) (m : ℕ), Odd m → 3 ≤ m →
     ∀ (I : Type) (pt : I → (baseOver (Sp K) ⟶ x.P.A)), (∀ z : baseOver (Sp K) ⟶ x.P.A, z ^ (m ^ 2) = 1 → ∃ i, pt i = z) →

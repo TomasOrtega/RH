@@ -4,27 +4,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CurveDVRSpecializa
 open Polynomial Matrix
 
 /- English proof (translation)
-Use `letI : Algebra B K := j.toAlgebra`. Set `C` to `integralClosure B K`. Establish `hCj : ∀ b, (algebraMap B C b : K) = j b` using `fun b => rfl`. Establish `hinj : Function.Injective (algebraMap B C)`. Introduce `a c h`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hj` to reduce the goal to its premises. Rewrite using `[← hCj, ← hCj, h]`. Use `haveI : (RingHom.ker φ).IsPrime := RingHom.ker_isPrime φ`. Take `⟨Q, -, hQ, hQc⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral (R := B) (S := C) (RingHom.ker φ) ⊥ (by`. Introduce `b hb`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hb` using `[Ideal.mem_comap, Ideal.mem_bot, ← (algebraMap B C).map_zero]`. Rewrite using `[hinj hb, RingHom.mem_ker, φ.map_zero])`. Use `haveI := hQ`. Use `haveI hQ' : (Q.comap (algebraMap B C)).IsPrime := by`. Rewrite using `[hQc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `infer_instance`. Set `R` to `B ⧸ Q.comap (algebraMap B C)`. Set `S` to `C ⧸ Q`. Set `M` to `AlgebraicClosure k`. Use `haveI hRd : IsDomain R := Ideal.Quotient.isDomain _`.
+Introduce a local definition for the expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `haveI : Nontrivial R := hRd.toNontrivial`. Use `haveI : IsDomain S := Ideal.Quotient.isDomain _`. Set `f : R →+* k` to `Ideal.Quotient.lift _ φ (fun b hb => by`. Rewrite `hb` using `[hQc]`. Conclude with `hb)`.
+Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hf : Function.Injective f`. Use `(injective_iff_map_eq_zero f).2 (fun x hx => ?_)` and prove the remaining obligations. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, hQc]`. Conclude with `hx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `letI : Algebra R M := ((algebraMap k M).comp f).toAlgebra`. Establish `hRS : Function.Injective (algebraMap R S)`. Use `(injective_iff_map_eq_zero _).2 (fun x hx => ?_)` and prove the remaining obligations. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_comap, ← Ideal.Quotient.eq_zero_iff_mem]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hx`. Establish `hRM : Function.Injective (algebraMap R M)` using `(algebraMap k M).injective.comp hf`. Use `haveI : Module.IsTorsionFree R S := Module.isTorsionFree_iff_algebraMap_injective.2 hRS`. Use `haveI : Module.IsTorsionFree R M := Module.isTorsionFree_iff_algebraMap_injective.2 hRM`. Use `haveI hI : Algebra.IsIntegral R S := Algebra.IsIntegral.quotient`.
-
-Use `haveI : Algebra.IsAlgebraic R S := hI.isAlgebraic`. Set `L : S →ₐ[R] M` to `IsAlgClosed.lift`. Use `⟨C.toSubring, L.toRingHom.comp (Ideal.Quotient.mk Q), fun b => (algebraMap B C b).2, ?_, ?_⟩` and prove the remaining obligations. Introduce `b show L (Ideal.Quotient.mk Q (algebraMap B C b)) = _`. Establish `h2 : Ideal.Quotient.mk Q (algebraMap B C b) = algebraMap R S (Ideal.Quotient.mk (Q.comap (algebraMap B C)) b)` using `rfl`.
-
-Rewrite using `[h2, L.commutes]`. Both sides reduce to the same expression. Introduce `p hp z hz`. Use `⟨p, hp, ?_⟩` and prove the remaining obligations. Rewrite using `[← Polynomial.eval_map]`.
-
-Conclude with `hz`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_subring_hom_algebraicClosure_of_injective (B K k : Type) [CommRing B] [Field K] [Field k] (j : B →+* K)
     (hj : Function.Injective j) (φ : B →+* k) :
@@ -88,9 +82,9 @@ private theorem exists_subring_hom_algebraicClosure_of_injective (B K k : Type) 
     exact hz
 
 /- English proof (translation)
-Rewrite using `[← Matrix.charpoly_toLin', ← LinearMap.charpoly_toMatrix _ b]`. Establish `h : LinearMap.toMatrix b b (Matrix.toLin' (r y)) = Matrix.diagonal e`. Use extensionality with `i l`. Rewrite using `[LinearMap.toMatrix_apply, Matrix.toLin'_apply, he, map_smul, b.repr_self, Matrix.diagonal_apply]`. Distinguish the cases in `hil : i = l`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hil` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hil, Finsupp.single_apply, Ne.symm hil]`. Rewrite using `[h, Matrix.charpoly_diagonal]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem monomialRed_lemma_2 {K G : Type} [Field K] [Group G] {n : ℕ}
     (r : G →* Matrix (Fin n) (Fin n) K) (b : Module.Basis (Fin n) K (Fin n → K)) (y : G)
@@ -108,7 +102,7 @@ private theorem monomialRed_lemma_2 {K G : Type} [Field K] [Group G] {n : ℕ}
   rw [h, Matrix.charpoly_diagonal]
 
 /- English proof (translation)
-Rewrite using `[Finset.prod_eq_multiset_prod]`. Establish `h : (Finset.univ.val.map fun i => X - C (f i)) = (Finset.univ.val.map f).map (fun a => X - C a)`. Rewrite using `[Multiset.map_map]`. Both sides reduce to the same expression. Rewrite using `[h, Polynomial.roots_multiset_prod_X_sub_C]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 private theorem roots_prod_X_sub_C_fin_eq_map_univ {F : Type} [Field F] {n : ℕ} (f : Fin n → F) :
     (∏ i, (X - C (f i))).roots = Finset.univ.val.map f := by
@@ -121,45 +115,43 @@ private theorem roots_prod_X_sub_C_fin_eq_map_univ {F : Type} [Field F] {n : ℕ
 
 set_option maxHeartbeats 800000 in
 /- English proof (translation)
-Introduce `K k B G _ _ _ _ _ n r j φ χ hj hchar b π hmon htrans g hg s t`. Take `⟨C', ρ, hC, hρ, hroot⟩` from `exists_subring_hom_algebraicClosure_of_injective B K k j hj φ`. Establish `hcanc : ∀ (i : Fin n) (a a' : K), a • b i = a' • b i → a = a'` using `fun i a a' h => smul_left_injective K (b.ne_zero i) h`. Establish `hinv : ∀ (x : G) (v : Fin n → K), r x *ᵥ (r x⁻¹ *ᵥ v) = v`. Introduce `x v`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Matrix.mulVec_mulVec, ← map_mul, mul_inv_cancel, map_one, Matrix.one_mulVec]`. Establish `hdiag : ∀ y ∈ π.ker, ∀ i, ∃ a : K, r y *ᵥ b i = a • b i`. Introduce `y hy i`. Take `⟨a, ha⟩` from `hmon y i`. Rewrite `hy` using `[MonoidHom.mem_ker]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `ha` using `[hy, Equiv.Perm.one_apply]`. Conclude with `⟨a, ha⟩`. Use `choose! e he using hdiag`. Establish `hmemC : ∀ y ∈ π.ker, ∀ i, e y i ∈ C'`. Introduce `y hy i`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨p, hp1, -⟩` from `hchar y`. Use `hroot p (Polynomial.monic_of_injective hj (by rw [hp1]; exact Matrix.charpoly_monic _)) _ ?_` and prove the remaining obligations. Rewrite using `[hp1, monomialRed_lemma_2 r b y (e y) (he y hy), Polynomial.IsRoot, Polynomial.eval_prod]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) (by simp)`. Establish `hms : ∀ y (hy : y ∈ π.ker), (Finset.univ.val.map fun i => ρ ⟨e y i, hmemC y hy i⟩) = (Finset.univ.val.map fun s => algebraMap k (AlgebraicClosure k) ((χ s y : kˣ) : k))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `y hy`. Take `⟨p, hp1, hp2⟩` from `hchar y`. Set `j' : B →+* C'` to `j.codRestrict C' hC`. Establish `hq : p.map j' = ∏ i, (X - C (⟨e y i, hmemC y hy i⟩ : C'))`. Apply `Polynomial.map_injective C'.subtype Subtype.val_injective` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Polynomial.map_map]`. Establish `hcomp : C'.subtype.comp j' = j` using `RingHom.ext fun _ => rfl`. Rewrite using `[hcomp, hp1, monomialRed_lemma_2 r b y (e y) (he y hy), Polynomial.map_prod]`. Simplify using `only [Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hρj : ρ.comp j' = (algebraMap k (AlgebraicClosure k)).comp φ` using `RingHom.ext fun c => by exact hρ c`. Establish `h1 : (p.map j').map ρ = (p.map φ).map (algebraMap k (AlgebraicClosure k))`. Rewrite using `[Polynomial.map_map, Polynomial.map_map, hρj]`. Rewrite `h1` using `[hq, hp2, Polynomial.map_prod, Polynomial.map_prod]`. Simplify using `only [Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C] at h1`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← roots_prod_X_sub_C_fin_eq_map_univ, ← roots_prod_X_sub_C_fin_eq_map_univ, h1]`. Establish `hg' : g⁻¹ ∈ π.ker` using `π.ker.inv_mem hg`. Establish `hpair : ∀ l, e g l * e g⁻¹ l = 1`. Introduce `l`. Establish `h` using `hinv g (b l)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `h` using `[he g⁻¹ hg' l, Matrix.mulVec_smul, he g hg l, smul_smul]`. Apply `hcanc l` to reduce the goal to its premises. Rewrite using `[mul_comm, h, one_smul]`. Establish `hconst : ∀ i l, ρ ⟨e g i, hmemC g hg i⟩ = ρ ⟨e g l, hmemC g hg l⟩`. Introduce `i l`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨h, hlh⟩` from `htrans l i`. Establish `hy : g * h * g⁻¹ * h⁻¹ ∈ π.ker`. Rewrite `hg`, the goal using `[MonoidHom.mem_ker]`. Simplify using `[hg]`. Establish `hli : (π h⁻¹) i = l`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_inv, Equiv.Perm.inv_eq_iff_eq]`. Conclude with `hlh.symm`. Take `⟨c, hc⟩` from `hmon h⁻¹ i`. Take `⟨d, hd⟩` from `hmon h l`. Rewrite `hc` using `[hli]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hd` using `[hlh]`. Establish `hcd : c * d = 1`. Establish `h0` using `hinv h (b i)`. Rewrite `h0` using `[hc, Matrix.mulVec_smul, hd, smul_smul]`. Apply `hcanc i` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[h0, one_smul]`. Establish `hey : e (g * h * g⁻¹ * h⁻¹) i = e g i * e g⁻¹ l`. Apply `hcanc i` to reduce the goal to its premises. Rewrite using `[← he _ hy i, map_mul, map_mul, map_mul, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hc]`. Simplify using `only [Matrix.mulVec_smul, he g⁻¹ hg' l, hd, he g hg i, smul_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Use `congr 1`. Take the linear combination `(e g i * e g⁻¹ l) * hcd`. Establish `hy1 : ρ ⟨e _ i, hmemC _ hy i⟩ = 1`. Establish `hmem : ρ ⟨e _ i, hmemC _ hy i⟩ ∈ (Finset.univ.val.map fun s => algebraMap k (AlgebraicClosure k) ((χ s (g * h * g⁻¹ * h⁻¹) : kˣ) : k))`. Rewrite using `[← hms _ hy]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Multiset.mem_map_of_mem _ (Finset.mem_univ_val i)`. Take `⟨s', -, hs'⟩` from `Multiset.mem_map.1 hmem`. Rewrite using `[← hs']`. Establish `h1 : χ s' (g * h * g⁻¹ * h⁻¹) = 1`. Simplify using `only [map_mul, map_inv]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_comm (χ s' g) (χ s' h), mul_assoc, mul_assoc, mul_inv_cancel_left, mul_inv_cancel]`. Rewrite using `[h1, Units.val_one, map_one]`. Establish `hprod : ρ ⟨e _ i, hmemC _ hy i⟩ = ρ ⟨e g i, hmemC g hg i⟩ * ρ ⟨e g⁻¹ l, hmemC _ hg' l⟩`. Rewrite using `[← map_mul]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Conclude with `Subtype.ext hey`. Establish `hpl : ρ ⟨e g l, hmemC g hg l⟩ * ρ ⟨e g⁻¹ l, hmemC _ hg' l⟩ = 1`. Rewrite using `[← map_mul, ← map_one ρ]`. Use `congr 1`. Conclude with `Subtype.ext (hpair l)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hu : ρ ⟨e g⁻¹ l, hmemC _ hg' l⟩ ≠ 0` using `right_ne_zero_of_mul_eq_one hpl`. Conclude with `mul_right_cancel₀ hu (by rw [← hprod, hy1, hpl])`. Establish `hχ : ∀ s', ∃ i, algebraMap k (AlgebraicClosure k) ((χ s' g : kˣ) : k) = ρ ⟨e g i, hmemC g hg i⟩`. Introduce `s'`. Establish `hmem : algebraMap k (AlgebraicClosure k) ((χ s' g : kˣ) : k) ∈ (Finset.univ.val.map fun i => ρ ⟨e g i, hmemC g hg i⟩)`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hms g hg]`. Conclude with `Multiset.mem_map_of_mem _ (Finset.mem_univ_val s')`. Take `⟨i, -, hi⟩` from `Multiset.mem_map.1 hmem`. Conclude with `⟨i, hi.symm⟩`. Take `⟨i1, h1⟩` from `hχ s`.
-
-Take `⟨i2, h2⟩` from `hχ t`. Apply `Units.ext` to reduce the goal to its premises. Apply `(algebraMap k (AlgebraicClosure k)).injective` to reduce the goal to its premises. Rewrite using `[h1, h2, hconst]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.monomialRed :
     ∀ (K k B G : Type) [Field K] [IsAlgClosed K] [Field k] [CommRing B] [Group G] (n : ℕ) (r : G →* Matrix (Fin n) (Fin n) K)

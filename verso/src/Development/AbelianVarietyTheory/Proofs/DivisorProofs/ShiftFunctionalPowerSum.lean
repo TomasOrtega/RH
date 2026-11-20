@@ -10,11 +10,11 @@ namespace GlobalTheory.FlagPoly
 variable {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ}
 
 /- English proof (translation)
-Unfold `pSum`. Rewrite using `[map_sum]`. Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[Finset.sum_eq_single i]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Derivation.leibniz_pow, pderiv_X_self]`. Simplify using `[nsmul_eq_mul]`. Introduce `b _ hb`. Rewrite using `[Derivation.leibniz_pow, pderiv_X_of_ne (by simp [hb])]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `b _`. Rewrite using `[Derivation.leibniz_pow, pderiv_X_of_ne (by simp [Ne.symm h])]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pderiv_pSum_single (τ σ : ι) (i : Fin N) (k : ℕ) :
     pderiv (τ, i) (pSum σ k : Pol ι N) =
@@ -36,11 +36,11 @@ theorem pderiv_pSum_single (τ σ : ι) (i : Fin N) (k : ℕ) :
     simp
 
 /- English proof (translation)
-Establish `h1 : (∑ i ∈ s, pderiv (τ, i) (pSum σ k * Q)) = (∑ i ∈ s, pderiv (τ, i) (pSum σ k : Pol ι N)) * Q + pSum σ k * ∑ i ∈ s, pderiv (τ, i) Q`. Rewrite using `[Finset.sum_mul, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Derivation.leibniz]`. Simplify using `only [smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h2 : degFl ι N (pSum σ k * ∑ i ∈ s, pderiv (τ, i) Q) = 0` using `degreePowerSumMulEqZero ι N σ k _ hk`. Rewrite using `[h1, PPowSum.degFl_add, h2, add_zero]`. Simplify using `only [pderiv_pSum_single]`. Use `split_ifs with h`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.mul_sum, mul_assoc, PPowSum.degFl_C_mul]`. Simplify using `[PPowSum.degFl_zero]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem degFl_sum_pderiv_pSum_mul (s : Finset (Fin N)) (k : ℕ) (Q : Pol ι N) (τ σ : ι)
     (hk : 1 ≤ k) :
@@ -63,11 +63,11 @@ theorem degFl_sum_pderiv_pSum_mul (s : Finset (Fin N)) (k : ℕ) (Q : Pol ι N) 
   · simp [PPowSum.degFl_zero]
 
 /- English proof (translation)
-Introduce `ι _ _ N j k Q τ σ hk`. Use `⟨degFl_sum_pderiv_pSum_mul _ k Q τ σ hk, ?_⟩` and prove the remaining obligations. Unfold `totF`. Rewrite using `[degFl_sum_pderiv_pSum_mul _ k Q τ σ hk]`. Distinguish the cases in `h : τ = σ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h1 : k = 1`. Substitute `h1` using the available equality. Rewrite using `[if_pos h, if_pos ⟨h, rfl⟩]`. Establish `: (∑ i : Fin N, (X (τ, i) : Pol ι N) ^ (1 - 1)) = C (N : ℝ)` using `by simp`. Rewrite using `[this, PPowSum.degFl_C_mul]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[if_pos h, if_neg (fun hh => h1 hh.2), degreePowerSumMulEqZero ι N τ (k - 1) Q (by omega), mul_zero]`. Rewrite using `[if_neg h, if_neg (fun hh => h hh.1)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem shF_totF_pSum_mul : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (N : ℕ) (j k : ℕ) (Q : Pol ι N) (τ σ : ι), 1 ≤ k → shF j τ (pSum σ k * Q) = (if τ = σ then (k : ℝ) * degFl ι N (pLow j τ (k - 1) * Q) else 0) ∧ totF τ (pSum σ k * Q) = (if τ = σ ∧ k = 1 then (N : ℝ) * degFl ι N Q else 0) := by
   intro ι _ _ N j k Q τ σ hk

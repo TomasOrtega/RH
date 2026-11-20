@@ -15,7 +15,7 @@ open GlobalTheory.LN
 open GlobalTheory.PsiRing
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.forall_ne_zero_of_psiRel` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDegenerationProofs%2FForallTermNeZeroOfPsiRelation.lean&line=48#L48)
 -/

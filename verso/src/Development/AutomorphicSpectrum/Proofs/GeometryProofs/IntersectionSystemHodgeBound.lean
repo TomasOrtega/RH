@@ -22,19 +22,19 @@ def blockEquiv {j N : ℕ} (hj : j ≤ N) : Fin j ⊕ Fin (N - j) ≃ Fin N :=
   finSumFinEquiv.trans (finCongr (by omega))
 
 /- English proof (translation)
-Use `ext`. Simplify using `[blockEquiv, headIdx]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem blockEquiv_inl {j N : ℕ} (hj : j ≤ N) (a : Fin j) : blockEquiv hj (Sum.inl a) = headIdx hj a := by
   ext; simp [blockEquiv, headIdx]
 
 /- English proof (translation)
-Use `ext`. Simplify using `[blockEquiv, tailIdx]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem blockEquiv_inr {j N : ℕ} (hj : j ≤ N) (k : Fin (N - j)) : blockEquiv hj (Sum.inr k) = tailIdx hj k := by
   ext; simp [blockEquiv, tailIdx]
 
 /- English proof (translation)
-Rewrite using `[← (blockEquiv hj).sum_comp, Fintype.sum_sum_type]`. Simplify using `only [blockEquiv_inl, blockEquiv_inr]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_blocks {M : Type} [AddCommMonoid M] {j N : ℕ} (hj : j ≤ N) (f : Fin N → M) :
     ∑ p, f p = ∑ a, f (headIdx hj a) + ∑ k, f (tailIdx hj k) := by
@@ -42,7 +42,7 @@ theorem sum_blocks {M : Type} [AddCommMonoid M] {j N : ℕ} (hj : j ≤ N) (f : 
   simp only [blockEquiv_inl, blockEquiv_inr]
 
 /- English proof (translation)
-Introduce `a a' h`. Rewrite `h` using `[← blockEquiv_inl, ← blockEquiv_inl]`. Simplify using `using (blockEquiv hj).injective h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem headIdx_injective {j N : ℕ} (hj : j ≤ N) : Function.Injective (headIdx hj) := by
   intro a a' h
@@ -50,7 +50,7 @@ theorem headIdx_injective {j N : ℕ} (hj : j ≤ N) : Function.Injective (headI
   simpa using (blockEquiv hj).injective h
 
 /- English proof (translation)
-Introduce `a a' h`. Rewrite `h` using `[← blockEquiv_inr, ← blockEquiv_inr]`. Simplify using `using (blockEquiv hj).injective h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem tailIdx_injective {j N : ℕ} (hj : j ≤ N) : Function.Injective (tailIdx hj) := by
   intro a a' h
@@ -66,31 +66,31 @@ section GlobalTheory
 variable {R : Type} [CommRing R] {j N : ℕ} (hj : j ≤ N) (C : Matrix (Fin j) (Fin (N - j)) R)
 
 /- English proof (translation)
-Simplify using `[blk, ← blockEquiv_inl, Matrix.one_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blk_hh (a a' : Fin j) : blk hj C (headIdx hj a) (headIdx hj a') = if a = a' then 1 else 0 := by
   simp [blk, ← blockEquiv_inl, Matrix.one_apply]
 
 /- English proof (translation)
-Simplify using `[blk, ← blockEquiv_inl, ← blockEquiv_inr]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blk_ht (a : Fin j) (k : Fin (N - j)) : blk hj C (headIdx hj a) (tailIdx hj k) = C a k := by
   simp [blk, ← blockEquiv_inl, ← blockEquiv_inr]
 
 /- English proof (translation)
-Simplify using `[blk, ← blockEquiv_inl, ← blockEquiv_inr]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blk_th (a : Fin j) (k : Fin (N - j)) : blk hj C (tailIdx hj k) (headIdx hj a) = 0 := by
   simp [blk, ← blockEquiv_inl, ← blockEquiv_inr]
 
 /- English proof (translation)
-Simplify using `[blk, ← blockEquiv_inr, Matrix.one_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blk_tt (k k' : Fin (N - j)) : blk hj C (tailIdx hj k) (tailIdx hj k') = if k = k' then 1 else 0 := by
   simp [blk, ← blockEquiv_inr, Matrix.one_apply]
 
 /- English proof (translation)
-Simplify using `[blk, Matrix.det_reindex_self, Matrix.det_fromBlocks_zero₂₁]`.
+Simplify using the standard rewrite rules.
 -/
 theorem det_blk : (blk hj C).det = 1 := by
   simp [blk, Matrix.det_reindex_self, Matrix.det_fromBlocks_zero₂₁]
@@ -105,33 +105,31 @@ def replaceTail (b : Fin N → V) (x : Fin (N - j) → V) : Fin N → V :=
   fun p => Sum.elim (b ∘ headIdx hj) x ((blockEquiv hj).symm p)
 
 /- English proof (translation)
-Simplify using `[replaceTail, ← blockEquiv_inl]`.
+Simplify using the standard rewrite rules.
 -/
 theorem replaceTail_head (b : Fin N → V) (x : Fin (N - j) → V) (a : Fin j) :
     replaceTail hj b x (headIdx hj a) = b (headIdx hj a) := by
   simp [replaceTail, ← blockEquiv_inl]
 
 /- English proof (translation)
-Simplify using `[replaceTail, ← blockEquiv_inr]`.
+Simplify using the standard rewrite rules.
 -/
 theorem replaceTail_tail (b : Fin N → V) (x : Fin (N - j) → V) (k : Fin (N - j)) :
     replaceTail hj b x (tailIdx hj k) = x k := by
   simp [replaceTail, ← blockEquiv_inr]
 
 /- English proof (translation)
-Establish `key : ∀ k, ∃ c : Fin j → Ω, (∀ a, c a ∈ A) ∧ x k = b (tailIdx hj k) + ∑ a, c a • b (headIdx hj a)`. Introduce `k`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun A).1 (h1 k)`. Take `⟨c', hc'⟩` from `(Submodule.mem_span_range_iff_exists_fun Ω).1 (h2 k)`. Establish `hz : ∑ p, (((c p : A) : Ω) - Sum.elim c' (fun _ => 0) ((blockEquiv hj).symm p)) • b p = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [sub_smul, Finset.sum_sub_distrib]`. Rewrite using `[sum_blocks hj (fun p => Sum.elim c' (fun _ => (0 : Ω)) ((blockEquiv hj).symm p) • b p)]`. Establish `e1 : ∑ p, ((c p : A) : Ω) • b p = b (tailIdx hj k) - x k` using `hc`. Simplify using `only [← blockEquiv_inl, ← blockEquiv_inr, Equiv.symm_apply_apply, Sum.elim_inl, Sum.elim_inr, zero_smul, Finset.sum_const_zero, add_zero]`. Simplify using `only [blockEquiv_inl]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[e1, sub_eq_zero]`. Conclude with `hc'.symm`. Establish `h0` using `Fintype.linearIndependent_iff.1 hb _ hz`. Establish `hca : ∀ a, c' a = ((c (headIdx hj a) : A) : Ω)`. Introduce `a`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `h0 (headIdx hj a)` as an intermediate fact. Rewrite `this` using `[← blockEquiv_inl]`. Simplify using `only [Equiv.symm_apply_apply, Sum.elim_inl] at this`. Rewrite `this` using `[blockEquiv_inl]`. Conclude with `(sub_eq_zero.1 this).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun a => - c' a, fun a => ?_, ?_⟩` and prove the remaining obligations. Use `show - c' a ∈ A`. Rewrite using `[hca]`. Conclude with `A.neg_mem (c _).2`. Establish `: ∑ a, (- c' a) • b (headIdx hj a) = - (b (tailIdx hj k) - x k)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[← hc']`. Simplify using `[Finset.sum_neg_distrib]`. Rewrite using `[this]`. Normalize the expressions using the abelian group laws. Use `choose C hC hx using key`.
-
-Conclude with `⟨Matrix.of fun a k => C k a, fun a k => hC k a, fun k => hx k⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_coeff (A : Subring Ω) {b : Fin N → V} (hb : LinearIndependent Ω b) {x : Fin (N - j) → V}
     (h1 : ∀ k, b (tailIdx hj k) - x k ∈ Submodule.span A (Set.range b))
@@ -172,9 +170,9 @@ variable {b : Fin N → V} {x : Fin (N - j) → V} {C : Matrix (Fin j) (Fin (N -
 
 include hj in
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `(blockEquiv hj).surjective q`. Rewrite using `[sum_blocks hj]`. Break down `u with a' | k'` into its components or cases. Rewrite using `[blockEquiv_inl, replaceTail_head]`. Simplify using `[blk_hh, blk_th]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[blockEquiv_inr, replaceTail_tail, hx]`. Simplify using `only [blk_ht, blk_tt, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Conclude with `add_comm _ _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem replaceTail_eq (hx : ∀ k, x k = b (tailIdx hj k) + ∑ a, C a k • b (headIdx hj a)) (q : Fin N) :
     replaceTail hj b x q = ∑ p, blk hj C p q • b p := by
@@ -188,11 +186,11 @@ theorem replaceTail_eq (hx : ∀ k, x k = b (tailIdx hj k) + ∑ a, C a k • b 
     exact add_comm _ _
 
 /- English proof (translation)
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Establish `h1 : ∑ p, ((blk hj C).mulVec g) p • b p = 0`. Rewrite using `[← hg]`. Simplify using `only [Matrix.mulVec, dotProduct, Finset.sum_smul, replaceTail_eq hj hx, Finset.smul_sum, smul_smul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by rw [mul_comm]`. Establish `h0` using `Fintype.linearIndependent_iff.1 hb _ h1`. Establish `hdet : (blk hj C).det ≠ 0` using `by rw [det_blk]; exact one_ne_zero`. Use `Matrix.eq_zero_of_mulVec_eq_zero hdet (funext h0)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Conclude with `congrFun this i`.
+A detailed English derivation is pending.
 -/
 theorem replaceTail_linearIndependent (hb : LinearIndependent Ω b)
     (hx : ∀ k, x k = b (tailIdx hj k) + ∑ a, C a k • b (headIdx hj a)) :
@@ -211,15 +209,15 @@ theorem replaceTail_linearIndependent (hb : LinearIndependent Ω b)
   exact congrFun this i
 
 /- English proof (translation)
-Establish `hs : ∀ (S : Submodule A V) (k : Fin (N - j)), (∀ a, b (headIdx hj a) ∈ S) → ∑ a, C a k • b (headIdx hj a) ∈ S` using `fun S k h => S.sum_mem fun a _ => S.smul_mem (⟨C a k, hC a k⟩ : A) (h a)`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨q, rfl⟩`. Take `⟨u, rfl⟩` from `(blockEquiv hj).surjective q`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `hbm : ∀ p, b p ∈ Submodule.span A (Set.range b)` using `fun p => Submodule.subset_span ⟨p, rfl⟩`. Break down `u with a | k` into its components or cases. Rewrite using `[blockEquiv_inl, replaceTail_head]`. Conclude with `hbm _`. Rewrite using `[blockEquiv_inr, replaceTail_tail, hx]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_mem (hbm _) (hs _ k fun a => hbm _)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨p, rfl⟩`. Use `set S := Submodule.span A (Set.range (replaceTail hj b x)) with hS`. Establish `hm : ∀ q, replaceTail hj b x q ∈ S` using `fun q => Submodule.subset_span ⟨q, rfl⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hh : ∀ a, b (headIdx hj a) ∈ S` using `fun a => by simpa [replaceTail_head] using hm (headIdx hj a)`. Take `⟨u, rfl⟩` from `(blockEquiv hj).surjective p`. Break down `u with a | k` into its components or cases. Rewrite using `[blockEquiv_inl]`. Conclude with `hh a`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[blockEquiv_inr]`. Establish `e : b (tailIdx hj k) = x k - ∑ a, C a k • b (headIdx hj a)` using `by rw [hx]; abel`. Rewrite using `[e]`. Use `sub_mem ?_ (hs S k hh)` and prove the remaining obligations. Simplify `hm (tailIdx hj k)` using `[replaceTail_tail]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem span_replaceTail (A : Subring Ω) (hC : ∀ a k, C a k ∈ A)
     (hx : ∀ k, x k = b (tailIdx hj k) + ∑ a, C a k • b (headIdx hj a)) :
@@ -257,9 +255,9 @@ end GlobalTheory.CompanionTheory.Ar.SmallGram
 namespace GlobalTheory.CompanionTheory.Ar.SmallGram
 
 /- English proof (translation)
-Take `⟨U, hU, b, hb, hf⟩` from `(𝔐.vb s : (𝔐.V s).IsVB (labelRk D s) (𝔐.Vgen s)) p (Set.mem_univ p)`. Establish `h2 : 𝔐.V s p = Submodule.span (regAt 𝔐.ξ p) (Set.range b)` using `(hf p (Set.mem_univ p) hU).2`. Establish `hb' : Submodule.span Ω (Set.range b) = 𝔐.Vgen s` using `hb`. Rewrite `he` using `[h2]`. Rewrite using `[← hb']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hle : Submodule.span (regAt 𝔐.ξ p) (Set.range b) ≤ (Submodule.span Ω (Set.range b)).restrictScalars (regAt 𝔐.ξ p)` using `Submodule.span_le.2 Submodule.subset_span`. Conclude with `hle he`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_Vgen_of_mem_V {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H}
     {l : Tor.Level H} {Xo : Moduli D l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Y : Model Xo c β}
@@ -276,29 +274,23 @@ theorem mem_Vgen_of_mem_V {E : Type} [Field E] [NumberField E] [IsCMField E] {H 
   exact hle he
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c Y II K _ J _ Ω _ _ W _ _ Dc Hd S₀ Or z τ b s h G hI hb hF hs hd hsf hG hGp`. Use `haveI : CharZero Ω := algebraRat.charZero Ω`. Establish `hj` using `Dc.j_le_N`. Establish `hr : ∀ k, ∃ x, Or.i τ x = s k` using `fun k => by`. Establish `: s k ∈ LinearMap.range (Or.i τ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Or.i_range]`. Conclude with `Submodule.mem_sup_right (hs k)`. Conclude with `this`. Use `choose x hx using hr`. Establish `h1 : ∀ k, b (tailIdx hj k) - x k ∈ Submodule.span (regAt Or.𝔐.ξ ⟨centre z, h⟩) (Set.range b)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `k`. Rewrite using `[← hb.2]`. Use `show Or.i τ (b (tailIdx hj k) - x k) ∈ Or.𝔐.V (Or.bg τ) ⟨centre z, h⟩ ⊔ Or.𝔐.V (Or.sm τ) ⟨centre z, h⟩`. Rewrite using `[map_sub, hx]`. Conclude with `Submodule.mem_sup_left (hd k)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2 : ∀ k, b (tailIdx hj k) - x k ∈ Submodule.span Ω (Set.range (b ∘ headIdx hj))`. Introduce `k`. Rewrite using `[hF, Or.F_eq, Submodule.mem_comap, map_sub, hx]`. Conclude with `mem_Vgen_of_mem_V Or.𝔐 (Or.bg τ) ⟨centre z, h⟩ (hd k)`. Take `⟨C, hCA, hC⟩` from `exists_coeff hj _ hb.1 h1 h2`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hval : ∀ a k, ∃ r : ℂ, ValAt Or.𝔐.ξ z (C a k) r`. Introduce `a k`. Take `⟨st, hst⟩` from `hCA a k`. Conclude with `⟨_, h, st, hst, rfl⟩`. Use `choose Cz hCz using hval`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hT : ∀ p q, ValAt Or.𝔐.ξ z (blk hj C p q) (blk hj (Matrix.of Cz) p q)`. Establish `v0 : ValAt Or.𝔐.ξ z (0 : Ω) (0 : ℂ)` using `⟨h, 0, map_zero _, map_zero _⟩`. Establish `v1 : ValAt Or.𝔐.ξ z (1 : Ω) (1 : ℂ)` using `CxVal.one h`. Introduce `p q`. Take `⟨u, rfl⟩` from `(blockEquiv hj).surjective p`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨u', rfl⟩` from `(blockEquiv hj).surjective q`. Apply the tactic sequence `rcases u with a | k <;> rcases u' with a' | k'`. Apply the tactic sequence `simp only [blockEquiv_inl, blk_hh]; split_ifs <;> assumption`. Simplify using `only [blockEquiv_inl, blockEquiv_inr, blk_ht]`. Conclude with `hCz a k'`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [blockEquiv_inl, blockEquiv_inr, blk_th]`. Conclude with `v0`. Apply the tactic sequence `simp only [blockEquiv_inr, blk_tt]; split_ifs <;> assumption`. Use `set b' := replaceTail hj b x with hb'`. Establish `hframe : (Lat.comap (fun p => Or.𝔐.V (Or.bg τ) p ⊔ Or.𝔐.V (Or.sm τ) p) (Or.i τ)).IsFrameAt b' ⟨centre z, h⟩` using `⟨replaceTail_linearIndependent hj hb.1 hC, by rw [hb.2, hb', span_replaceTail hj _ hCA hC]⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨G', hG', hG'p⟩` from `GlobalTheory.T.component_data_hodge_third E H D l Xo c Y II K J Ω W Dc Hd S₀ Or z τ b' h hI hframe`. Establish `hpol` using `GlobalTheory.T.interior_point_polarised E H D l Xo c Y S₀ Ω K J Dc.y Or.𝔐 z hI`. Establish `hchange : G' = (blk hj (Matrix.of Cz)).conjTranspose * G * blk hj (Matrix.of Cz)` using `GlobalTheory.T.gram_matrix_two_frames E H D l Xo c Y S₀ Ω K J Dc.y Or.𝔐 z Dc.N (fun k => Or.i τ (b k)) (fun k => Or.i τ (b' k)) G G' (blk hj C) (blk hj (Matrix.of Cz)) hpol hG hG' (fun q => by rw [hb', replaceTail_eq hj hC, map_sum]; simp only [map_smul]) hT`. Take `⟨v, hv, hip⟩` from `id hG'`. Establish `hhead : ∀ a, Or.i τ (b' (headIdx hj a)) ∈ Or.𝔐.Vgen (Or.bg τ)`.
-
-Introduce `a`. Rewrite using `[hb', replaceTail_head]`. Establish `: b (headIdx hj a) ∈ Hd.F τ`. Rewrite using `[← hF]`. Conclude with `Submodule.subset_span ⟨a, rfl⟩`.
-
-Rewrite `this` using `[Or.F_eq]`. Conclude with `this`. Establish `htail : ∀ k, Or.i τ (b' (tailIdx hj k)) = s k` using `fun k => by`. Rewrite using `[hb', replaceTail_tail, hx]`. Establish `horth : ∀ a k, G' (headIdx hj a) (tailIdx hj k) = 0` using `fun a k => GlobalTheory.T.component_data_hodge_fourth E H D l Xo c Y II K J Ω W Dc Hd S₀ Or z τ _ _ _ _ _ hI (hhead a) (by show Or.i τ (b' (tailIdx hj k)) ∈ _; rw [htail]; exact hs k) (hv _) (hv _) (hip _ _)`.
-
-Use `⟨G'.submatrix (tailIdx hj) (tailIdx hj), ⟨fun k => v (tailIdx hj k), fun k => ?_, fun p q => hip _ _⟩, hG'p.submatrix (tailIdx_injective hj), ?_⟩` and prove the remaining obligations. Rewrite using `[← htail]`. Conclude with `hv _`. Conclude with `GlobalTheory.T.block_matrix_gram_normal Dc.N Dc.j hj G G' _ _ hGp hchange (blk_hh hj _) (fun k a => blk_th hj _ a k) (blk_tt hj _) horth (fun _ _ => rfl)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quotNormSq_eq_det : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Tor.Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (II : IntersectionSystem) (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (Ω : Type) [Field Ω] [Algebra ℚ Ω] (W : CMType H → Type) [∀ τ, AddCommGroup (W τ)] [∀ τ, Module Ω (W τ)] (Dc : ComponentData II (CMType H) K J Ω W) (Hd : HodgeData Dc) (S₀ : Finset ℕ) (Or : CptOrigin Y S₀ Dc Hd) (z : Spec (CommRingCat.of ℂ) ⟶ Or.𝔐.X) (τ : CMType H) (b : Fin Dc.N → W τ) (s : Fin (Dc.N - Dc.j) → Or.𝔐.Li) (h : genPt Or.𝔐.ξ ⤳ centre z) (G : Matrix (Fin Dc.N) (Fin Dc.N) ℂ), Or.𝔐.Interior z → (Lat.comap (fun p => Or.𝔐.V (Or.bg τ) p ⊔ Or.𝔐.V (Or.sm τ) p) (Or.i τ)).IsFrameAt b ⟨centre z, h⟩ → Submodule.span Ω (Set.range (b ∘ headIdx Dc.j_le_N)) = Hd.F τ → (∀ k, s k ∈ Or.𝔐.Vgen (Or.sm τ)) → (∀ k, Or.i τ (b (tailIdx Dc.j_le_N k)) - s k ∈ Or.𝔐.V (Or.bg τ) ⟨centre z, h⟩) → (Or.𝔐.V (Or.sm τ)).IsFrameAt s ⟨centre z, h⟩ → Or.𝔐.M.GramAt Or.𝔐.t.PP.L z (fun k => Or.i τ (b k)) G → G.PosDef → ∃ Γ : Matrix (Fin (Dc.N - Dc.j)) (Fin (Dc.N - Dc.j)) ℂ, Or.𝔐.M.GramAt Or.𝔐.t.PP.L z s Γ ∧ Γ.PosDef ∧ quotNormSq Dc.j_le_N G = Γ.det.re := by
   intro E _ _ _ H D l Xo c Y II K _ J _ Ω _ _ W _ _ Dc Hd S₀ Or z τ b s h G hI hb hF hs hd hsf hG hGp

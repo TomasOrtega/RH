@@ -13,7 +13,7 @@ def leftInvVal (P Q R : ℕ) : Ix P Q × Ix R 0 → Mdl P Q
   | (_, Sum.inr _) => 0
 
 /- English proof (translation)
-Rewrite using `[mR, map_sum, Finset.sum_eq_single (Fin.castLE h a)]`. Simplify using `[leftInvVal]`. Introduce `c _ hc`. Establish `: (c : ℕ) ≠ (a : ℕ)` using `fun e => hc (Fin.ext e)`. Simplify using `[leftInvVal, this]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -27,7 +27,7 @@ theorem leftInv_mR (P Q R : ℕ) (h : P ≤ R) (a : Fin P) (b : Fin Q) :
   · simp
 
 /- English proof (translation)
-Rewrite using `[detR, AlgHom.map_det, ← Matrix.det_one (n := Fin P)]`. Use `congr 1`. Use `ext1 a c`. Simplify using `[leftInvVal, Matrix.one_apply, Fin.val_inj, eq_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem leftInv_detR (P Q R : ℕ) (h : P ≤ R) :
     aeval (leftInvVal P Q R) (detR P Q R h) = (1 : Mdl P Q) := by
@@ -37,9 +37,9 @@ theorem leftInv_detR (P Q R : ℕ) (h : P ≤ R) :
   simp [leftInvVal, Matrix.one_apply, Fin.val_inj, eq_comm]
 
 /- English proof (translation)
-Establish `e : (aeval (leftInvVal P Q R) : Pol P Q R 0 →ₐ[ℂ] Mdl P Q).comp (aeval fun ab : Fin P × Fin Q => mR P Q R ab.1 ab.2) = AlgHom.id ℂ (Mdl P Q)`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce and unpack `⟨a, b⟩`. Rewrite using `[AlgHom.comp_apply, aeval_X, AlgHom.id_apply]`. Conclude with `leftInv_mR P Q R h a b`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2` using `AlgHom.congr_fun e G`. Simplify using `only [AlgHom.comp_apply, AlgHom.id_apply] at e2`. Simplify using `only [embR, LinearMap.comp_apply, LinearMap.mulRight_apply, AlgHom.toLinearMap_apply, map_mul, map_pow, leftInv_detR, one_pow, mul_one, e2]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem leftInv_embR (P Q R : ℕ) (h : P ≤ R) (k : ℕ) (G : Mdl P Q) :
     aeval (leftInvVal P Q R) (embR P Q R h k G) = G := by
@@ -55,7 +55,7 @@ theorem leftInv_embR (P Q R : ℕ) (h : P ≤ R) (k : ℕ) (G : Mdl P Q) :
     leftInv_detR, one_pow, mul_one, e2]
 
 /- English proof (translation)
-Introduce `P Q R h k` and use `Function.LeftInverse.injective (g := aeval (leftInvVal P Q R)) (leftInv_embR P Q R h k)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem embR_injective : ∀ (P Q R : ℕ) (h : P ≤ R) (k : ℕ), Function.Injective (embR P Q R h k) :=
   fun P Q R h k => Function.LeftInverse.injective (g := aeval (leftInvVal P Q R)) (leftInv_embR P Q R h k)

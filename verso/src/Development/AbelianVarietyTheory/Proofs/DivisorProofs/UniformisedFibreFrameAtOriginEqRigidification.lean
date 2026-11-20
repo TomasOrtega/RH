@@ -15,13 +15,11 @@ noncomputable section
 namespace GlobalTheory.RigAtOrigin
 
 /- English proof (translation)
-Introduce `R _ _ _ D x φ he w _ hM g u hrig k j hk hj`. Establish `hu0 : (u.ex 0).left = eSec x.P.A`. Rewrite using `[(u.ker 0).2 u.Λ.zero_mem]`. Express the relevant statement in the definitionally equal form `(toUnit _ ≫ η[x.P.A]).left = η[x.P.A].left`. Rewrite using `[toUnit_unit, Category.id_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hj' : ⊤ ≤ (𝟙 (Sp ℂ) ≫ eSec x.P.A ≫ φ) ⁻¹ᵁ D.P.L.U j`. Rewrite using `[Category.id_comp, he]`. Conclude with `hj`. Establish `hk' : ⊤ ≤ (𝟙 (Sp ℂ) ≫ eSec x.P.A) ⁻¹ᵁ x.P.L.U k`. Rewrite using `[Category.id_comp, ← hu0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hk`. Establish `e` using `GlobalTheory.ArcThetaFib.maps_val' φ _ he D.P.L D.rig x.P.L w x.rig hM (𝟙 (Sp ℂ)) j k hj' hk'`. Establish `hr` using `hrig (fun _ => k) (fun q hq => Set.mem_iInter.2 fun _ => hk' hq)`. Rewrite using `[hu0, hr]`. Simplify using `only [Category.id_comp] at e`.
-
-Conclude with `e.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem frame_at_origin : ∀ (R : Type) [CommRing R] [IsDomain R] [Algebra (FractionRing R) ℂ] (D : DegPre R) (x : KeyIn ℂ)
     (φ : x.P.A.left ⟶ D.P.A.left) (he : eSec x.P.A ≫ φ = spMap ((algebraMap (FractionRing R) ℂ).comp (algebraMap R (FractionRing R))) ≫ eSec D.P.A)

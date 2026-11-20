@@ -7,9 +7,9 @@ noncomputable section
 namespace Formalism.GradedWeylDivisibility
 
 /- English proof (translation)
-Proceed by induction on `d using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add f g hf hg`. Simplify using `only [map_add, Finsupp.add_apply, hf, hg]`. Apply the tactic sequence `split_ifs <;> omega`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Consider the case `single v k`. Take `⟨a, s⟩` from `v`. Simplify using `only [Finsupp.weight_apply, Finsupp.sum_single_index, zero_smul, Finsupp.smul_apply, pairW, smul_eq_mul]`. Apply the tactic sequence `by_cases hs : s = j <;> by_cases ht : t = l <;> by_cases htj : t = j <;> by_cases hab : a = b <;>`. Simplify using `[Finsupp.single_apply, Prod.ext_iff, eq_comm]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify the hypotheses and the goal together.
 -/
 theorem lcpeel_weight_apply {r n : ℕ} (l j : Fin n) (hlj : l ≠ j) (d : Fin r × Fin n →₀ ℕ)
     (b : Fin r) (t : Fin n) :

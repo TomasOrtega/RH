@@ -23,33 +23,27 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hH`. Establish `hcm` using `hT.base.cm`. Establish `hW` using `hT.geo.hW`. Establish `hcl` using `GlobalTheory.ThK.UnipClosed.isClosed_unip F E σ _ _ G.W H'`. Use `set Γ := (ratU σ G.W.J).subgroupOf (unip σ G.W H') with hΓ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Establish `hcA : Continuous (cA σ : AE F E → AE F E)` using `IsModuleTopology.continuous_of_linearMap (cA σ).toLinearMap`. Establish `halg : Continuous (algebraMap (AF F) (AE F E))` using `IsModuleTopology.continuous_of_linearMap (Algebra.linearMap (AF F) (AE F E))`. Take `⟨C, hC, hCa⟩` from `GlobalTheory.AdeleCocompactExt.exists_compact_adele_ext F E`. Take `⟨K0, hK0, hK0a⟩` from `GlobalTheory.AdeleCocompact.exists_compact_adele F`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Ψ, hΨ, hΨe⟩` from `GlobalTheory.T.unipotent_matrix_continuous_coordinates F E σ B _ _ G.W W₁ H' _ _ i₀ i₁ hcm hW hH`. Take `⟨g, hg, hge⟩` from `GlobalTheory.T.unipotent_central_coordinate_determined F E σ B _ _ G.W W₁ H' _ _ i₀ i₁ hcm hW hH`. Take `⟨htr2, htr⟩` from `GlobalTheory.CMTrace.adele_trace F E σ hcm`. Set `C₁ : Set (Fin d₁ → AE F E)` to `Set.univ.pi fun _ => C`. Establish `hC₁ : IsCompact C₁` using `isCompact_univ_pi fun _ => hC`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `C₃ : Set (AF F)` to `(fun t => (2 : AF F) * t) '' K0`. Establish `hC₃ : IsCompact C₃` using `hK0.image (continuous_const.mul continuous_id)`. Set `f₂ : AF F × (Fin d₁ → AE F E) → AE F E` to `fun p => ⅟(2 : AF F) • (algebraMap (AF F) (AE F E) p.1 + g p.2)`. Establish `hf₂ : Continuous f₂` using `Continuous.smul (continuous_const : Continuous fun _ : AF F × (Fin d₁ → AE F E) => ⅟(2 : AF F)) ((halg.comp continuous_fst).add (hg.comp continuous_snd))`. Set `C₂ : Set (AE F E)` to `f₂ '' (C₃ ×ˢ C₁)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hC₂ : IsCompact C₂` using `(hC₃.prod hC₁).image hf₂`. Set `Cm : Set (Matrix (Fin (a + a')) (Fin (a + a')) (AE F E))` to `Ψ '' (C₁ ×ˢ C₂) ∪ (fun p : (Fin d₁ → AE F E) × AE F E => Ψ (-p.1, -cA σ p.2)) '' (C₁ ×ˢ C₂)`. Establish `hCm : IsCompact Cm` using `((hC₁.prod hC₂).image hΨ).union ((hC₁.prod hC₂).image (hΨ.comp ((continuous_fst.neg).prodMk ((hcA.comp continuous_snd).neg))))`. Set `K : Set (unip σ G.W H')` to `Subtype.val ⁻¹' {x : UA σ G.W.J | mat x ∈ Cm ∧ mat x⁻¹ ∈ Cm}`. Establish `hK : IsCompact K` using `hcl.isClosedEmbedding_subtypeVal.isCompact_preimage (GlobalTheory.ThK.UnipDom.isCompact_setOf_mat_mem F E σ _ G.W.J Cm hCm)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcov : ∀ n : unip σ G.W H', ∃ γ ∈ Γ, ∃ k ∈ K, n = γ * k`. Introduce `n`. Use `choose α hα using fun j => hCa (coA σ G.W.J H' n.1 j)`. Take `⟨γ₁, hγ₁u, hγ₁r, hγ₁a⟩` from `GlobalTheory.T.rational_unipotent_coordinate_surjective F E σ B _ _ G.W W₁ H' _ _ i₀ i₁ hcm hW hH (-α)`. Establish `hn₁ : γ₁ * n.1 ∈ unip σ G.W H'` using `mul_mem hγ₁u n.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `ha₁ : coA σ G.W.J H' (γ₁ * n.1) ∈ C₁`. Introduce `j _`. Rewrite using `[GlobalTheory.ThK.UnipDom.coA_mul_of_mem_unip F E σ B _ _ G.W W₁ H' _ _ i₀ i₁ hcm hW hH γ₁ hγ₁u n.1 n.2, hγ₁a]`. Simplify using `only [Pi.add_apply, Pi.neg_apply, map_neg]`. Rewrite using `[neg_add_eq_sub]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hα j`. Use `set T := Algebra.trace (AF F) (AE F E) (coC σ G.W.J H' (γ₁ * n.1)) with hTdef`. Take `⟨x, hx⟩` from `hK0a (⅟(2 : AF F) * T)`. Take `⟨γ₂, hγ₂u, hγ₂r, hγ₂e⟩` from `GlobalTheory.ThK.UnipDom.RatCentral.exists_rat_translate_coC F E σ B _ _ G.W W₁ H' _ _ i₀ i₁ hcm hW hH (-x)`. Use `set m := γ₂ * (γ₁ * n.1) with hm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hn₂ : m ∈ unip σ G.W H'` using `mul_mem hγ₂u hn₁`. Take `⟨ha₂, hc₂⟩` from `hγ₂e _ hn₁`. Establish `hA₂ : coA σ G.W.J H' m ∈ C₁` using `ha₂ ▸ ha₁`. Establish `htr₂ : Algebra.trace (AF F) (AE F E) (coC σ G.W.J H' m) ∈ C₃`. Use `⟨_, hx, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc₂, map_add, htr2, ← hTdef]`. Use `show (2 : AF F) * (⅟(2 : AF F) * T - algebraMap F (AdeleRing (𝓞 F) F) x) = _`. Rewrite using `[mul_sub, ← mul_assoc, mul_invOf_self', one_mul, map_neg]`. Expand and normalize the polynomial expressions, which then agree. Establish `hC₂m : coC σ G.W.J H' m ∈ C₂`.
+Reduce the conclusion to the remaining proof obligations. Prove the first alternative. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(Algebra.trace (AF F) (AE F E) (coC σ G.W.J H' m), coA σ G.W.J H' m), ⟨htr₂, hA₂⟩, ?_⟩` and prove the remaining obligations. Use `show ⅟(2 : AF F) • (algebraMap (AF F) (AE F E) (Algebra.trace (AF F) (AE F E) (coC σ G.W.J H' m)) + g (coA σ G.W.J H' m)) = coC σ G.W.J H' m`. Rewrite using `[htr, ← hge _ hn₂, add_add_sub_cancel, ← two_smul (AF F), smul_smul, invOf_mul_self', one_smul]`. Use `⟨⟨(γ₂ * γ₁)⁻¹, inv_mem (mul_mem hγ₂u hγ₁u)⟩, (Subgroup.mem_subgroupOf).2 (inv_mem (mul_mem hγ₂r hγ₁r)), ⟨m, hn₂⟩, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show mat m ∈ Cm`.
-
-Conclude with `Or.inl ⟨(coA σ G.W.J H' m, coC σ G.W.J H' m), ⟨hA₂, hC₂m⟩, (hΨe _ hn₂).symm⟩`. Use `show mat m⁻¹ ∈ Cm`. Use `Or.inr ⟨(coA σ G.W.J H' m, coC σ G.W.J H' m), ⟨hA₂, hC₂m⟩, ?_⟩` and prove the remaining obligations. Take `⟨e1, e2⟩` from `GlobalTheory.T.unipotent_coordinates_inverse F E σ B _ _ G.W W₁ H' _ _ i₀ i₁ hcm hW hH _ hn₂`. Use `show Ψ (-coA σ G.W.J H' m, -cA σ (coC σ G.W.J H' m)) = mat m⁻¹`.
-
-Rewrite using `[hΨe _ (inv_mem hn₂), e1, e2]`. Conclude with `Subtype.ext (by simp [hm, mul_assoc])`. Use `⟨K, hK, fun n => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, k, hk, rfl⟩` from `hcov n`. Use `⟨γ⁻¹, Γ.inv_mem hγ, ?_⟩` and prove the remaining obligations.
-
-Simplify using `using hk`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_compact_rat_mul_mem : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ)
     (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →

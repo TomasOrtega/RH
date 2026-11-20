@@ -13,22 +13,22 @@ variable (p : ℕ) [hp : Fact p.Prime]
 abbrev Lambda : Type := PowerSeries ℤ_[p]
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem isDomain : IsDomain (Lambda p) := inferInstance
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem isLocalRing : IsLocalRing (Lambda p) := inferInstance
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem isNoetherianRing : IsNoetherianRing (Lambda p) := inferInstance
 
 /- English proof (translation)
-Establish `hmem : (p : ℤ_[p]) ∈ maximalIdeal ℤ_[p]`. Rewrite using `[PadicInt.maximalIdeal_eq_span_p]`. Conclude with `Ideal.subset_span rfl`. Conclude with `(mem_maximalIdeal _).1 hmem`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem padic_p_not_isUnit : ¬ IsUnit (p : ℤ_[p]) := by
   have hmem : (p : ℤ_[p]) ∈ maximalIdeal ℤ_[p] := by
@@ -36,25 +36,25 @@ theorem padic_p_not_isUnit : ¬ IsUnit (p : ℤ_[p]) := by
   exact (mem_maximalIdeal _).1 hmem
 
 /- English proof (translation)
-Rewrite using `[isUnit_iff_constantCoeff, constantCoeff_C]`. Conclude with `padic_p_not_isUnit p`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem p_not_isUnit : ¬ IsUnit (C (p : ℤ_[p]) : Lambda p) := by
   rw [isUnit_iff_constantCoeff, constantCoeff_C]
   exact padic_p_not_isUnit p
 
 /- English proof (translation)
-Rewrite using `[isUnit_iff_constantCoeff, constantCoeff_X]`. Conclude with `not_isUnit_zero`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem X_not_isUnit : ¬ IsUnit (X : Lambda p) := by
   rw [isUnit_iff_constantCoeff, constantCoeff_X]
   exact not_isUnit_zero
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `f hf`. Rewrite `hf` using `[mem_maximalIdeal, mem_nonunits_iff, isUnit_iff_constantCoeff]`. Establish `h0 : constantCoeff f ∈ maximalIdeal ℤ_[p]` using `hf`. Rewrite `h0` using `[PadicInt.maximalIdeal_eq_span_p, Ideal.mem_span_singleton]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨a, ha⟩` from `h0`. Rewrite using `[eq_X_mul_shift_add_const f, ha, map_mul]`. Use `Ideal.add_mem _ (Ideal.mul_mem_right _ _ (Ideal.subset_span (by simp))) (Ideal.mul_mem_right _ _ (Ideal.subset_span (by simp)))` and prove the remaining obligations. Rewrite using `[Ideal.span_le]`. Introduce and unpack `x (rfl | rfl)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `(mem_maximalIdeal _).2 (p_not_isUnit p)`. Conclude with `(mem_maximalIdeal _).2 (X_not_isUnit p)`.
+A detailed English derivation is pending.
 -/
 theorem maximalIdeal_eq_span :
     maximalIdeal (Lambda p) = Ideal.span {C (p : ℤ_[p]), X} := by
@@ -73,7 +73,7 @@ theorem maximalIdeal_eq_span :
     · exact (mem_maximalIdeal _).2 (X_not_isUnit p)
 
 /- English proof (translation)
-Rewrite using `[maximalIdeal_eq_span]`. Use `(Submodule.spanFinrank_span_le_ncard_of_finite (Set.toFinite _)).trans ?_` and prove the remaining obligations. Conclude with `(Set.ncard_insert_le _ _).trans (by simp)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem spanFinrank_maximalIdeal_le_two : (maximalIdeal (Lambda p)).spanFinrank ≤ 2 := by
   rw [maximalIdeal_eq_span]
@@ -81,9 +81,9 @@ theorem spanFinrank_maximalIdeal_le_two : (maximalIdeal (Lambda p)).spanFinrank 
   exact (Set.ncard_insert_le _ _).trans (by simp)
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `(ringKrullDim_le_spanFinrank_maximalIdeal (Lambda p)).trans ?_` and prove the remaining obligations. Conclude with `spanFinrank_maximalIdeal_le_two p` after adjusting the coercions. Establish `h1 : ringKrullDim ℤ_[p] = 1` using `IsDiscreteValuationRing.ringKrullDim_eq_one ℤ_[p]`. Establish `h2` using `ringKrullDim_succ_le_ringKrullDim_powerseries (R := ℤ_[p])`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[h1]`. Conclude with `le_of_eq_of_le (by rfl) h2`.
+A detailed English derivation is pending.
 -/
 theorem ringKrullDim_eq_two : ringKrullDim (Lambda p) = 2 := by
   apply le_antisymm
@@ -104,26 +104,26 @@ def IsDistinguished (P : ℤ_[p][X]) : Prop :=
 variable {p}
 
 /- English proof (translation)
-The claim follows from `Polynomial.IsDistinguishedAt.monic hP`.
+A detailed English derivation is pending.
 -/
 theorem IsDistinguished.monic {P : ℤ_[p][X]} (hP : IsDistinguished p P) : P.Monic :=
   Polynomial.IsDistinguishedAt.monic hP
 
 /- English proof (translation)
-The claim follows from `Polynomial.IsDistinguishedAt.mul hP hQ`.
+A detailed English derivation is pending.
 -/
 theorem IsDistinguished.mul {P Q : ℤ_[p][X]} (hP : IsDistinguished p P)
     (hQ : IsDistinguished p Q) : IsDistinguished p (P * Q) :=
   Polynomial.IsDistinguishedAt.mul hP hQ
 
 /- English proof (translation)
-The claim follows from `hP.monic.ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem IsDistinguished.ne_zero {P : ℤ_[p][X]} (hP : IsDistinguished p P) : P ≠ 0 :=
   hP.monic.ne_zero
 
 /- English proof (translation)
-Rewrite using `[← Polynomial.polynomial_map_coe, Polynomial.IsDistinguishedAt.map_eq_X_pow hP, Polynomial.coe_pow, Polynomial.coe_X]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem IsDistinguished.map_mk {P : ℤ_[p][X]} (hP : IsDistinguished p P) :
     (P : Lambda p).map (Ideal.Quotient.mk (maximalIdeal ℤ_[p])) = X ^ P.natDegree := by

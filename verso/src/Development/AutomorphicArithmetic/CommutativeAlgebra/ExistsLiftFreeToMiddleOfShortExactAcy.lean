@@ -5,9 +5,9 @@ import Development.AutomorphicArithmetic.CommutativeAlgebra.HypercohomologyPostC
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Bc
 
 /- English proof (translation)
-Introduce `Q S hS hA P hP f`. Take `⟨z, hz⟩` from `GlobalTheory.T.etaleCohomology_coefficient_longExactSequence ℤ S hS`. Establish `e` using `(hz (sgl ((free ℤ).obj P)) 0).2.1`. Establish `hsub` using `hA P hP (0 + 1) (by norm_num)`. Establish `h0 : HK.ext ℤ (sgl ((free ℤ).obj P)) z 0 (0 + 1) rfl (cl f) = 0` using `Subsingleton.elim _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨y, hy⟩` from `(e (cl f)).1 h0`. Take `⟨h, rfl⟩` from `(UpperTheory.bijective_cl_hypercohomology_singleton_zero _ _).2 y`. Use `⟨h, (UpperTheory.bijective_cl_hypercohomology_singleton_zero _ _).1 ?_⟩` and prove the remaining obligations. Rewrite using `[← UpperTheory.hypercohomology_post_cl_eq_cl_comp]`. Conclude with `hy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_lift_free_to_middle_of_shortExact_acy :
     ∀ (Q : Scheme.{0} → Prop) (S : ShortComplex (Shv ℤ)), S.ShortExact → Acy Q S.X₁ → ∀ P : PSh, Supp Q P → ∀ f : (free ℤ).obj P ⟶ S.X₃, ∃ h : (free ℤ).obj P ⟶ S.X₂, h ≫ S.g = f := by

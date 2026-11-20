@@ -10,14 +10,14 @@ noncomputable def emb (R : Type) [CommRing R] (m : ℕ) : (Fin m → R) →ₗ[R
   Finsupp.lmapDomain R R Fin.val ∘ₗ (Finsupp.linearEquivFunOnFinite R R (Fin m)).symm.toLinearMap
 
 /- English proof (translation)
-Simplify using `[emb, Finsupp.mapDomain_apply Fin.val_injective]`.
+Simplify using the standard rewrite rules.
 -/
 theorem emb_apply_val {R : Type} [CommRing R] {m : ℕ} (v : Fin m → R) (k : Fin m) :
     emb R m v (k : ℕ) = v k := by
   simp [emb, Finsupp.mapDomain_apply Fin.val_injective]
 
 /- English proof (translation)
-Simplify using `only [emb, LinearMap.comp_apply, Finsupp.lmapDomain_apply, LinearEquiv.coe_coe]`. Apply `Finsupp.mapDomain_notin_range` to reduce the goal to its premises. Introduce and unpack `⟨k, hk⟩`. Establish `hk2` using `k.isLt`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem emb_apply_of_le {R : Type} [CommRing R] {m : ℕ} (v : Fin m → R) (n : ℕ) (h : m ≤ n) :
     emb R m v n = 0 := by
@@ -28,7 +28,7 @@ theorem emb_apply_of_le {R : Type} [CommRing R] {m : ℕ} (v : Fin m → R) (n :
   omega
 
 /- English proof (translation)
-Introduce `v w hvw`. Use function extensionality and compare the values at `k`. Establish `e` using `congrArg (fun x => x (k : ℕ)) hvw`. Simplify `e` using `only [emb_apply_val]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem emb_injective (R : Type) [CommRing R] (m : ℕ) : Function.Injective (emb R m) := by
   intro v w hvw
@@ -37,15 +37,15 @@ theorem emb_injective (R : Type) [CommRing R] (m : ℕ) : Function.Injective (em
   simpa only [emb_apply_val] using e
 
 /- English proof (translation)
-Introduce `n h` and use `emb_apply_of_le v n h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem emb_mem_low {R : Type} [CommRing R] {m : ℕ} (v : Fin m → R) : emb R m v ∈ low R m :=
   fun n h => emb_apply_of_le v n h
 
 /- English proof (translation)
-Use extensionality with `n`. Distinguish the cases in `h : n < m`. Establish `e` using `emb_apply_val (fun k : Fin m => x k) ⟨n, h⟩`. Simplify using `using e`. Rewrite using `[emb_apply_of_le _ n (not_lt.mp h)]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hx n (not_lt.mp h)).symm`.
+A detailed English derivation is pending.
 -/
 theorem emb_restrict {R : Type} [CommRing R] {m : ℕ} (x : ℕ →₀ R) (hx : x ∈ low R m) :
     emb R m (fun k : Fin m => x k) = x := by
@@ -57,18 +57,18 @@ theorem emb_restrict {R : Type} [CommRing R] {m : ℕ} (x : ℕ →₀ R) (hx : 
     exact (hx n (not_lt.mp h)).symm
 
 /- English proof (translation)
-Simplify using `[dotProduct, emb_apply_val]`.
+Simplify using the standard rewrite rules.
 -/
 theorem form_emb {R : Type} [CommRing R] {m : ℕ} (g : Fin m → R) (v : Fin m → R) :
     (∑ k : Fin m, g k • Finsupp.lapply (R := R) (M := R) (k : ℕ)) (emb R m v) = g ⬝ᵥ v := by
   simp [dotProduct, emb_apply_val]
 
 /- English proof (translation)
-Establish `hs : ∀ k, (Pi.single k (v k) : Fin m → R) = v k • (Pi.single k 1 : Fin m → R)`. Introduce `k`. Use extensionality with `j`. Distinguish the cases in `hj : j = k`. Substitute `hj` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hj]`. Use `conv_rhs => rw [← Finset.univ_sum_single v]`. Simplify using `only [map_sum, hs, map_smul, smul_eq_mul, dotProduct]`. Use `Finset.sum_congr rfl ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k _`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem emb_form {R : Type} [CommRing R] {m : ℕ} (f : (ℕ →₀ R) →ₗ[R] R) (v : Fin m → R) :
     (fun k => f (emb R m (Pi.single k 1))) ⬝ᵥ v = f (emb R m v) := by
@@ -86,15 +86,15 @@ theorem emb_form {R : Type} [CommRing R] {m : ℕ} (f : (ℕ →₀ R) →ₗ[R]
   ring
 
 /- English proof (translation)
-Use extensionality with `w`. Simplify using `only [linkIn, Set.mem_setOf_eq, List.nil_append, Set.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hw, f, hf⟩`. Use `⟨w.map (fun x (k : Fin m) => x k), ⟨fun i k => f (Fin.cast (by simp) i) (emb R m (Pi.single k 1)), ?_⟩, ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i j`. Simplify using `only [List.get_eq_getElem, List.getElem_map]`. Rewrite using `[emb_form, emb_restrict _ (hw _ (List.getElem_mem _))]`. Establish `e` using `hf (Fin.cast (by simp) i) (Fin.cast (by simp) j)`. Simplify `e` using `[List.get_eq_getElem, Fin.ext_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[List.map_map]`. Use `(List.map_congr_left ?_).trans (List.map_id w)` and prove the remaining obligations. Introduce `x hx`. Conclude with `emb_restrict x (hw x hx)`. Introduce and unpack `⟨u, ⟨g, hg⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Take `⟨y, _, rfl⟩` from `List.mem_map.mp hx`. Conclude with `emb_mem_low y`. Use `⟨fun i => ∑ k : Fin m, g (Fin.cast (by simp) i) k • Finsupp.lapply (R := R) (M := R) (k : ℕ), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `i j`. Simplify using `only [List.get_eq_getElem, List.getElem_map]`. Rewrite using `[form_emb]`. Establish `e` using `hg (Fin.cast (by simp) i) (Fin.cast (by simp) j)`. Simplify `e` using `[List.get_eq_getElem, Fin.ext_iff]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem link_eq (R : Type) [CommRing R] (m : ℕ) :
     linkIn (uniM R (ℕ →₀ R)) (low R m) [] = List.map (emb R m) '' uniSeq R m := by
@@ -127,19 +127,19 @@ theorem link_eq (R : Type) [CommRing R] (m : ℕ) :
 end GlobalTheory.SeqCxLow
 
 /- English proof (translation)
-Establish `hM : Function.Injective (List.map e)` using `List.map_injective_iff.mpr he`. Establish `comm : ∀ c, bd U (Finsupp.mapDomain (List.map e) c) = Finsupp.mapDomain (List.map e) (bd V c)`. Introduce `c`. Establish `E : (bd U).comp (Finsupp.lmapDomain ℤ ℤ (List.map e)) = (Finsupp.lmapDomain ℤ ℤ (List.map e)).comp (bd V)`. Apply `Finsupp.lhom_ext'` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `l`. Apply `LinearMap.ext_ring` to reduce the goal to its premises. Simplify using `[bd, Finsupp.mapDomain_finset_sum, Finsupp.mapDomain_smul, Finsupp.mapDomain_single, List.eraseIdx_map]`. Conclude with `LinearMap.congr_fun E c`. Introduce `c hc hbc`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hc' : Finsupp.mapDomain (List.map e) c ∈ chains (List.map e '' F) q`. Rewrite `hc`, the goal using `[chains, Finsupp.mem_supported]`. Introduce `z hz`. Take `⟨l, hl, rfl⟩` from `Finset.mem_image.mp (Finsupp.mapDomain_support (Finset.mem_coe.mp hz))`. Establish `hl'` using `hc (Finset.mem_coe.mpr hl)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨⟨l, hl'.1, rfl⟩, by simp [hl'.2]⟩`. Take `⟨b', hb', hbb⟩` from `h _ hc' (by rw [comm, hbc, Finsupp.mapDomain_zero])`. Rewrite `hb'` using `[chains, Finsupp.mem_supported]`. Establish `hrange : ↑b'.support ⊆ Set.range (List.map e)`. Introduce `z hz`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨l, _, rfl⟩, _⟩` from `hb' hz`. Conclude with `⟨l, rfl⟩`. Use `⟨Finsupp.comapDomain (List.map e) b' hM.injOn, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[chains, Finsupp.mem_supported]`. Introduce `l hl`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hl` using `[Finset.mem_coe, Finsupp.comapDomain_support, Finset.mem_preimage]`. Take `⟨⟨l', hl'F, hl'e⟩, hlen⟩` from `hb' (Finset.mem_coe.mpr hl)`. Establish `hll` using `hM hl'e`. Substitute `hll` using the available equality. Conclude with `⟨hl'F, by simpa using hlen⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Finsupp.mapDomain_injective hM` to reduce the goal to its premises. Rewrite using `[← comm, Finsupp.mapDomain_comapDomain (List.map e) hM b' hrange, hbb]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exactAt_of_exactAt_image_injective {V U : Type} (e : V → U) (he : Function.Injective e)
     (F : Set (List V)) (q : ℕ) (h : ExactAt (List.map e '' F) q) : ExactAt F q := by
@@ -180,7 +180,7 @@ private theorem exactAt_of_exactAt_image_injective {V U : Type} (e : V → U) (h
 section
 open GlobalTheory.SeqCx Matrix
 /- English proof (translation)
-Introduce `R _ m q h`. Rewrite `h` using `[GlobalTheory.SeqCxLow.link_eq]`. Conclude with `exactAt_of_exactAt_image_injective _ (GlobalTheory.SeqCxLow.emb_injective R m) _ _ h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.exactAt_unimodularSeqs_of_link_nil_coordSubspace : ∀ (R : Type) [CommRing R] (m q : ℕ), ExactAt (linkIn (uniM R (ℕ →₀ R)) (low R m) []) q → ExactAt (uniSeq R m) q := by
   intro R _ m q h

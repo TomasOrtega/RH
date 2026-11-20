@@ -23,9 +23,9 @@ noncomputable section
 namespace GlobalTheory.CovTest.SwapLine
 
 /- English proof (translation)
-Establish `hZ : IsArithVar (i ≫ p) e` using `hY.of_isClosedImmersion i hc he`. Take `⟨Ψ, hΨ⟩` from `((hC.arExists k Z (i ≫ p) e hZ).2 ι (fun j => (L j).restr i)).1`. Use `⟨Ψ, fun n g hg => ?_⟩` and prove the remaining obligations. Establish `e₁ : ((comb L n).restr i).Isometric (comb (fun j => (L j).restr i) n)`. Use `HermLB.icls_eq_iff.1 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[HermLB.icls_pull, icls_comb, icls_comb, map_sum]`. Simplify using `only [map_zsmul, ← HermLB.icls_pull]`. Conclude with `(e₁.isSelfInter hZ (hg.isSelfInter_restrict hY i rfl)).unique hZ (hΨ.1 n)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem height_comb_horizontal (hC : ArCalc) {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y ⟶ Sp k} {D : ℕ}
     (hY : IsArithVar p D) {Z : Scheme.{0}} (i : Z ⟶ Y) [IsClosedImmersion i] [IsIntegral Z] {e : ℕ}
@@ -44,7 +44,7 @@ theorem height_comb_horizontal (hC : ArCalc) {k : Type} [CommRing k] {Y : Scheme
 def moveExp (n : Fin 5 → ℤ) : Fin 5 → ℤ := ![0, 0, n 2, n 3 + n 0, n 4 + n 1]
 
 /- English proof (translation)
-Simplify using `[lin, Fin.sum_univ_five, moveExp, MvPolynomial.algebraMap_eq]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem aeval_lin_moveExp (n : Fin 5 → ℤ) :
     aeval (![X 3, X 4, X 2, X 3, X 4] : Fin 5 → MvPolynomial (Fin 5) ℝ) (lin fun j => (n j : ℝ)) =
@@ -53,7 +53,7 @@ theorem aeval_lin_moveExp (n : Fin 5 → ℤ) :
   ring
 
 /- English proof (translation)
-Simplify using `[Fin.sum_univ_five, moveExp, add_smul, h₀, h₁]`. Apply the tactic sequence `try abel`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_moveExp {G : Type*} [AddCommGroup G] (x : Fin 5 → G) (h₀ : x 0 = x 3) (h₁ : x 1 = x 4) (n : Fin 5 → ℤ) :
     ∑ j, n j • x j = ∑ j, moveExp n j • x j := by
@@ -61,9 +61,9 @@ theorem sum_moveExp {G : Type*} [AddCommGroup G] (x : Fin 5 → G) (h₀ : x 0 =
   try abel
 
 /- English proof (translation)
-Establish `a1` using `GlobalTheory.T.rank_two_graded_determinant_isometric k Y p _ _ (H.pull π w) fl`. Establish `a2` using `VMetric.isometric_det_pull H π w`. Establish `a3` using `(GlobalTheory.T.rank_two_graded_determinant_isometric k B q E h H flB).pull π w`. Establish `a4` using `HermLB.isometric_pull_tens (VMetric.grLB flB 0 H) (VMetric.grLB flB 1 H) π w`. Rewrite using `[← HermLB.icls_tens, ← HermLB.icls_tens]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `HermLB.icls_eq_iff.2 (a1.trans (a2.trans (a3.symm.trans a4)))`.
+A detailed English derivation is pending.
 -/
 theorem fam5_icls_tens (k : Type) [CommRing k] (B Y : Scheme.{0}) (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (π : Y ⟶ B)
     (w : π ≫ q = p) (E : B.Modules) (h : VMetric q E 2) (H : h.IsCInf) (flB : Vert.Flag E 2)
@@ -78,33 +78,31 @@ theorem fam5_icls_tens (k : Type) [CommRing k] (B Y : Scheme.{0}) (q : B ⟶ Sp 
   exact HermLB.icls_eq_iff.2 (a1.trans (a2.trans (a3.symm.trans a4)))
 
 /- English proof (translation)
-Use `hp.isLocallyNoetherian` as an intermediate fact. Use `hp.isNoetherian` as an intermediate fact. Set `Aex : Option (Fin 5) → Fin 5 → ℤ` to `fun o => o.elim (Pi.single 4 1 - Pi.single 0 1) fun j => Pi.single j 1`. Establish `hΦ'` using `((hC.arIso k Y p (d + 1) hp).2 (Fin 5) L Φ hΦ).2.2 (Option (Fin 5)) (fun o => o.elim ((L 0).dual.tens (L 4)) L) Aex (fun o => by`. Consider the cases of `o with`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Split into cases according to the possible forms of the given data.
 
-Consider the case `none`. Use `HermLB.icls_eq_iff.1 ?_` and prove the remaining obligations. Simplify using `[Aex, icls_comb, HermLB.icls_tens, HermLB.icls_dual, Fin.sum_univ_five, Pi.single_apply]`. Use `done`. Consider the case `some j => exact isometric_comb_single L j)`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Treat this case separately. Introduce a local definition for the expression.
 
-Set `Φ'` to `Φ ∘ₗ (aeval fun j => lin fun i => (Aex j i : ℝ) : MvPolynomial (Option (Fin 5)) ℝ →ₐ[ℝ] MvPolynomial (Fin 5) ℝ).toLinearMap`. Establish `key (P : MvPolynomial (Fin 5) ℝ) : Φ' (X none * rename some P) = Φ ((X 4 - X 0) * P)`. Establish `h1 : (lin fun i => (Aex none i : ℝ)) = X 4 - X 0`. Simplify using `[Aex, lin, Fin.sum_univ_five, Pi.single_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `h2 : (fun j => lin fun i => (Aex (some j) i : ℝ)) = X`. Use function extensionality and compare the values at `j`. Simplify using `[Aex, lin, Pi.single_apply]`. Simplify using `only [Φ', LinearMap.comp_apply, AlgHom.toLinearMap_apply, map_mul, aeval_X, aeval_rename]`. Rewrite using `[h1]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Conclude with `(congrArg (fun f => aeval f P) h2).trans (aeval_X_left_apply P)`. Establish `hex (n : Fin 5 → ℤ) : ∃ g : Y → ℝ, (comb L n).IsArithHeight g` using `(hC.arExists k Y p (d + 1) hp).1 (comb L n)`. Use `choose ht hht using hex`. Establish `hmix (n : Fin 5 → ℤ)` using `(hC.arMix k Y p (d + 1) hp (Fin 5) _ L Φ' hΦ' n (ht n) (hht n) r hr).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hfin : (Function.support fun z => ((((L 0).dual.tens (L 4)).div hr).mult z : ℝ)).Finite` using `(((L 0).dual.tens (L 4)).div hr).finite_support_mult.subset fun z hz => by simpa using hz`. Establish `hloc (z : Y) : ((((L 0).dual.tens (L 4)).div hr).mult z : ℝ) * ∑ n ∈ s, c n * ht n z = 0`. Distinguish the cases in `hz0 : (((L 0).dual.tens (L 4)).div hr).mult z = 0`. Simplify using `[hz0]`. Establish `hz1 : Order.coheight z = 1` using `CartierDiv.coheight_eq_one_of_mult_ne_zero hz0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hzs : z ∈ (((L 0).dual.tens (L 4)).div hr).supp` using `CartierDiv.mem_supp_of_mult_ne_zero hz0`. Take `⟨Z, i, _, _, rfl⟩` from `exists_isClosedImmersion_genericPoint z`. Establish `e03 : ((L 0).restr i).Isometric ((L 3).restr i)` using `hiso _ hzs Z i rfl`. Establish `e14 : ((L 1).restr i).icls = ((L 4).restr i).icls`. Establish `h₁` using `congrArg (HermLB.IsomClass.pull i rfl) hdet`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `h₁` using `[map_add, map_add, ← HermLB.icls_pull, ← HermLB.icls_pull, ← HermLB.icls_pull, ← HermLB.icls_pull, HermLB.icls_eq_iff.2 e03]`. Conclude with `add_left_cancel h₁`. Establish `hdim : topologicalKrullDim Z = (d + 1 : ℕ)` using `GlobalTheory.T.arithmetic_variety_divisor_dimension k Y p (d + 1) hp Z i hz1`. Choose the witnesses or unpack the hypotheses as in `⟨T, hT⟩ : ∃ T : MvPolynomial (Fin 5) ℝ →ₗ[ℝ] ℝ, ∀ (n : Fin 5 → ℤ) (g : Y → ℝ), (comb L n).IsArithHeight g → g (i (genericPoint Z)) = T (lin (fun j => (n j : ℝ)) ^ (d + 1)) := by`. Break down `hp.vertical_or_horizontal i with ⟨ℓ, _, ⟨_⟩⟩ | ⟨hc, e, he⟩` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `GlobalTheory.T.arithmetic_height_polynomial_in_degrees k Y p (d + 1) hp Z i ℓ (d + 1) hdim (Fin 5) L`. Establish `he' : e + 1 = d + 1`. Use `he.symm.trans hdim` as an intermediate fact. Conclude with `this` after adjusting the coercions. Take `⟨T, hT⟩` from `height_comb_horizontal hC hp i hc he L`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `⟨T, fun n g hg => (hT n g hg).trans (by rw [he'])⟩`. Establish `hmove (n : Fin 5 → ℤ) : ((comb L n).restr i).Isometric ((comb L (moveExp n)).restr i)`. Use `HermLB.icls_eq_iff.1 ?_` and prove the remaining obligations. Rewrite using `[HermLB.icls_pull, HermLB.icls_pull, icls_comb, icls_comb, map_sum, map_sum]`. Simplify using `only [map_zsmul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `sum_moveExp (fun j => HermLB.IsomClass.pull i rfl (L j).icls) (HermLB.icls_eq_iff.2 e03) e14 n`. Establish `hsum : ∑ n ∈ s, c n * ht n (i (genericPoint Z)) = T (aeval (![X 3, X 4, X 2, X 3, X 4] : Fin 5 → MvPolynomial (Fin 5) ℝ) F)`. Rewrite using `[hFs, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, map_pow, aeval_lin_moveExp, map_smul, smul_eq_mul, GlobalTheory.AdjFlag.height_eq hp (hht n) (hht (moveExp n)) i (hmove n), hT _ _ (hht (moveExp n))]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hsum, hF, map_zero, mul_zero]`. Establish `e₁ : Φ ((X 4 - X 0) * F) = ∑ n ∈ s, c n * Φ' (X none * rename some (lin fun i => (n i : ℝ)) ^ (d + 1))`. Rewrite using `[hFs, Finset.mul_sum, map_sum]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul_comm, map_smul, smul_eq_mul, ← map_pow, key]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e₂ : ∑ n ∈ s, c n * ∑ᶠ z, ((((L 0).dual.tens (L 4)).div hr).mult z : ℝ) * ht n z = 0`. Establish `hf (n : Fin 5 → ℤ) : (Function.support fun z => ((((L 0).dual.tens (L 4)).div hr).mult z : ℝ) * ht n z).Finite` using `hfin.subset (Function.support_mul_subset_left _ _)`. Repeatedly rewrite using `[mul_finsum]`. Rewrite using `[← finsum_sum_comm s _ fun n _ => (hf n).subset (Function.support_mul_subset_right _ _)]`. Use `finsum_eq_zero_of_forall_eq_zero fun z => ?_` and prove the remaining obligations.
-
-Rewrite using `[← hloc z, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun n _ => by ring`. Rewrite using `[e₁]`. Repeatedly rewrite using `[hmix, mul_sub]`. Rewrite using `[Finset.sum_sub_distrib, e₂, zero_sub]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mix_general (hC : ArCalc) {k : Type} [CommRing k] {Y : Scheme.{0}} [IsIntegral Y] {p : Y ⟶ Sp k} {d : ℕ}
     (hp : IsArithVar p (d + 1)) (L : Fin 5 → HermLB p)
@@ -203,7 +201,7 @@ theorem mix_general (hC : ArCalc) {k : Type} [CommRing k] {Y : Scheme.{0}} [IsIn
   rw [Finset.sum_sub_distrib, e₂, zero_sub]
 
 /- English proof (translation)
-Introduce `hC k _ B Y _ _ q p d _ hp π w E h H flB fl A Φ hΦ r hr hiso F hF s c hFs`. Conclude with `mix_general hC hp (fam5 π w H flB fl A) (fam5_icls_tens k B Y q p π w E h H flB fl A) Φ hΦ r hr hiso F hF s c hFs`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mix_dualTaut_tens_quotBase : ArCalc → ∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) [IsIntegral B] [IsIntegral Y]
     (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (d : ℕ), IsArithVar q d → IsArithVar p (d + 1) → ∀ (π : Y ⟶ B) (w : π ≫ q = p)

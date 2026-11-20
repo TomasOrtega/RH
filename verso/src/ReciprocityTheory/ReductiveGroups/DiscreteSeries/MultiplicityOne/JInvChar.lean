@@ -5,11 +5,11 @@ namespace ReciprocityTheory.ChartRestriction.DS.Mult1
 open Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.FourierDecayAlt.B2
 
 /- English proof (translation)
-Introduce `k r Wp _ _ _ D X _ _ γ hγ m hm`. Establish `hE : IsUnit (embWb k r γ).det` using `InvChr.unit_embWb (InvChr.unit_of_frame hγ.1)`. Establish `hcc : InvChr.cc γ D.z = D.z` using `InvChr.frame_conjugation_fixes_vector hE D.z D.T_pos hγ.2`. Establish `hbar : ∀ n : Mat k r, ell k r D.z (gbar k r γ n) = starRingEnd ℂ (ell k r D.z n)` using `fun n => InvChr.ell_gbar hE D.z hcc n`. Establish `hdet : IsUnit m.det`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU : m.conjTranspose * Hpk k r * m = Hpk k r` using `hm.1`. Use `Matrix.isUnit_det_of_left_inverse (B := Hpk k r * m.conjTranspose * Hpk k r) ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [hU, InvChr.Hpk_sq k r]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hinv : ell k r D.z m⁻¹ = -ell k r D.z m` using `InvChr.ell_inv_N D.z D.z_mem m m⁻¹ hm (Matrix.nonsing_inv_mul m hdet)`. Establish `hth : th k r γ m = gbar k r γ m⁻¹` using `(InvChr.gbar_inv hE m hdet).symm`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only [lam, hbar, InvChr.cStd_conj_re]`. Simplify using `only [psiD, psi, hth, hbar, hinv, map_neg, mul_neg, Complex.neg_re, InvChr.cStd_conj_re, neg_neg]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem stInvChar : StInvChar := by
   intro k r Wp _ _ _ D X _ _ γ hγ m hm

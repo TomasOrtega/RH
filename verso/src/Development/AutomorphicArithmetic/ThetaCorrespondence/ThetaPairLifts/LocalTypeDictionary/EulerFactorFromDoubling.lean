@@ -15,7 +15,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Core.Rk.Exh GlobalTheory.RegSW
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.Core.Rk.Exh.Top.downNe_k_of_hypotheses' | exact _root_.GlobalTheory.Core.Rk.Exh.Top.downNe_k_of_hypotheses' | (intros; apply _root_.GlobalTheory.Core.Rk.Exh.Top.downNe_k_of_hypotheses' <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.downNe_of_eulerRight_doubling : _root_.GlobalTheory.Published.DoublingMethodLocalZetaIntegrals → GlobalTheory.IndefiniteRowSideFullHecke.SimplePoleTwistedLift.SimplePole → ∀ D : D7, EulerRight D → DownNe D := by
   first | exact @_root_.GlobalTheory.Core.Rk.Exh.Top.downNe_k_of_hypotheses' | exact _root_.GlobalTheory.Core.Rk.Exh.Top.downNe_k_of_hypotheses' | (intros; apply _root_.GlobalTheory.Core.Rk.Exh.Top.downNe_k_of_hypotheses' <;> assumption)

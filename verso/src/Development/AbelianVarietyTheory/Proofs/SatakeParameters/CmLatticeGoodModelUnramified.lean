@@ -8,23 +8,23 @@ open NumberField IsDedekindDomain Formalism.L2.Th1.CM Neutral.HilbertClassField 
 namespace GlobalTheory.ArtinClassCM
 
 /- English proof (translation)
-Take `⟨art, hop, hin, hfrob⟩` from `hW (KQ d) (Om d)`. Establish `hxi : IsIntegral ℤ x`. Take `⟨y, hy, hyi⟩` from `exists_Om d (cm1 d L hsf hd hL)`. Establish `: y = x` using `Subtype.ext (hy.trans hx.symm)`. Rewrite `hyi` using `[this]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨P, hP, hPx⟩` from `hxi`. Establish `hxs : x ∈ fixJRoots (Ω` using `Om d) P := by`. Rewrite using `[mem_fixJRoots hP]`. Rewrite `hPx` using `[show algebraMap ℤ (Om d) = Int.castRingHom (Om d) from RingHom.ext_int _ _]`. Then use the resulting hypothesis. Take `⟨n, hn0, hn⟩` from `sepInt (fixJRoots (Ω := Om d) P) (fun r hr => isIntegral_of_mem_fixJRoots hP hr)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Use `set S : Set (HeightOneSpectrum (𝓞 (KQ d))) := {v | (n : 𝓞 (KQ d)) ∈ v.asIdeal} with hS`. Establish `hSfin : S.Finite` using `finite_places (KQ d) hn0`. Establish `key : ∀ (A : ValuationSubring (Om d)) (v : HeightOneSpectrum (𝓞 (KQ d))), LiesAbove A v → v ∉ S → ∀ r ∈ fixJRoots (Ω` using `Om d) P, ∀ r' ∈ fixJRoots (Ω := Om d) P, r - r' ∈ A.nonunits → r = r' := by`. Introduce `A v hA hv r hr r' hr' h`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h1` using `hn r hr r' hr' hne A h`. Apply `hv` to reduce the goal to its premises. Rewrite using `[hS, Set.mem_ofPred_eq, ← hA]`. Simplify using `using h1`. Use `set H : Subgroup (Om d ≃ₐ[KQ d] Om d) := art.ker ⊓ fixJStab (KQ d) (Om d) P with hH`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `fixJStab_normal (E := KQ d) (Ω := Om d) hP` as an intermediate fact. Establish `hHn : H.Normal` using `inferInstance`. Establish `hHo : IsOpen (H : Set (Om d ≃ₐ[KQ d] Om d))`. Rewrite using `[hH, Subgroup.coe_inf]`. Conclude with `hop.inter fixJStab_isOpen`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨A, v, φ, hA, hv, hp, hφ, hσφ⟩` from `hC (KQ d) (Om d) S hSfin H hHn hHo (by`. Introduce `A v hA hv g hg`. Use `⟨hin A g hg, fun r hr => ?_⟩` and prove the remaining obligations. Conclude with `key A v hA hv _ (map_mem_fixJRoots hP g hr) _ hr (hg.2 r (mem_of_isIntegral A (isIntegral_of_mem_fixJRoots hP hr)))) σ`. Establish `hσ1 : art σ = 1` using `hin B σ hσ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hφ1 : art φ = 1`. Establish `: σ⁻¹ * φ ∈ art.ker` using `hσφ.1`. Rewrite `this` using `[MonoidHom.mem_ker, map_mul, map_inv, hσ1, inv_one, one_mul]`. Conclude with `this`. Establish `hcl` using `hfrob v A φ hA hφ`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hcl` using `[hφ1]`. Establish `h1` using `frobCong hsf hd hL x hx A v hA hp hcl.symm`. Establish `h2` using `hφ.2 x (mem_of_isIntegral A (isIntegral_of_mem_fixJRoots hP hxs))`. Establish `h3 : φ x - x ∈ A.nonunits`. Use `fixJ_nonunits_add A h2 h1` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Simplify using `using this`. Establish `h4 : φ x = x` using `key A v hA hv _ (map_mem_fixJRoots hP φ hxs) _ hxs h3`. Establish `h5` using `hσφ.2 x hxs`. Rewrite `h5` using `[AlgEquiv.mul_apply, h4]`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem inertia_fixes (hW : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω], ∃ art : (Ω ≃ₐ[E] Ω) →* ClassGroup (𝓞 E), IsOpen (art.ker : Set (Ω ≃ₐ[E] Ω)) ∧ (∀ (A : ValuationSubring Ω) (g : Ω ≃ₐ[E] Ω), ReciprocityTheory.ChartRestriction.L1.InertiaEl A g → art g = 1) ∧ ∀ (v : HeightOneSpectrum (𝓞 E)) (A : ValuationSubring Ω) (φ : Ω ≃ₐ[E] Ω), LiesAbove A v → IsArithFrobenius A v φ → art φ = ClassGroup.mk0 ⟨v.asIdeal, mem_nonZeroDivisors_of_ne_zero v.ne_bot⟩) (hC : ChebOmSt)
     {d : ℕ} {L : PeriodPair} (hsf : Squarefree d) (hd : d % 4 = 3) (hL : HasCMBy d L)
@@ -81,7 +81,7 @@ theorem inertia_fixes (hW : ∀ (E Ω : Type) [Field E] [NumberField E] [Field �
     _ = x := by rw [← AlgEquiv.mul_apply, mul_inv_cancel]; rfl
 
 /- English proof (translation)
-Use `goodReduction_of_integral_unramified jInt ?_` and prove the remaining obligations. Introduce `d L hsf hd hL l _ hl hld ι`. Take `⟨x, hx, -⟩` from `exists_Om d (cm1 d L hsf hd hL)`. Rewrite using `[← hx]`. Conclude with `inertKur (by omega) hld ι x fun σ hσ => inertia_fixes hW hC hsf hd hL x hx _ σ hσ`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_model (hW : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω], ∃ art : (Ω ≃ₐ[E] Ω) →* ClassGroup (𝓞 E), IsOpen (art.ker : Set (Ω ≃ₐ[E] Ω)) ∧ (∀ (A : ValuationSubring Ω) (g : Ω ≃ₐ[E] Ω), ReciprocityTheory.ChartRestriction.L1.InertiaEl A g → art g = 1) ∧ ∀ (v : HeightOneSpectrum (𝓞 E)) (A : ValuationSubring Ω) (φ : Ω ≃ₐ[E] Ω), LiesAbove A v → IsArithFrobenius A v φ → art φ = ClassGroup.mk0 ⟨v.asIdeal, mem_nonZeroDivisors_of_ne_zero v.ne_bot⟩) (hC : ChebOmSt) : CM2 := by
   refine goodReduction_of_integral_unramified jInt ?_

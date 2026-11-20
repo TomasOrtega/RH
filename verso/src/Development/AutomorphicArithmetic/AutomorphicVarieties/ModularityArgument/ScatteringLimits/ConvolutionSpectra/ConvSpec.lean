@@ -6,17 +6,15 @@ open MeasureTheory GroundTheory.Automorphic PositivityTheory.Rg.Tf.IntegralApply
 open scoped InnerProductSpace FourierTransform ComplexConjugate
 
 /- English proof (translation)
-Introduce `V _ _ _ _ W _ _ _ _ κ hk`. Set `c : (V →L[ℂ] W) →L[ℂ] (L V →L[ℂ] L W)` to `LinearMap.mkContinuous { toFun := fun A => A.compLpL 2 volume map_add' := fun A B => ContinuousLinearMap.add_compLpL A B map_smul' := fun a A => ContinuousLinearMap.smul_compLpL a A } 1 fun A => by`. Rewrite using `[one_mul]`. Conclude with `ContinuousLinearMap.norm_compLpL_le A`. Establish `hi : ∀ u : L V, Integrable (fun t => (κ t).compLpL 2 volume (sh V t u))` using `fun u => by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Continuous.integrable_of_hasCompactSupport ((c.continuous.comp hk.1).clm_apply ((shF V).cont u)) ?_` and prove the remaining obligations. Use `hk.2.mono fun t ht h0 => ht ?_` and prove the remaining obligations. Use `show c (κ t) (sh V t u) = 0`. Rewrite using `[h0, map_zero, ContinuousLinearMap.zero_apply]`. Establish `hk1 : Integrable κ` using `hk.1.integrable_of_hasCompactSupport hk.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `A : L V →ₗ[ℂ] L W` to `{ toFun := fun u => ∫ t, (κ t).compLpL 2 volume (sh V t u) map_add' := fun x y => by simp only [map_add]; exact integral_add (hi x) (hi y) map_smul' := fun a x => by simp only [map_smul, RingHom.id_apply]; exact integral_smul a _ }`. Establish `hb : ∀ u, ‖A u‖ ≤ (∫ t, ‖κ t‖) * ‖u‖` using `fun u => by`. Rewrite using `[← integral_mul_const]`. Use `norm_integral_le_of_norm_le (hk1.norm.mul_const _) (Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Use `(ContinuousLinearMap.le_opNorm _ _).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[show ‖sh V t u‖ = ‖u‖ from (shF V).norm t u]`. Use `gcongr`. Conclude with `ContinuousLinearMap.norm_compLpL_le _`. Establish `hae : ∀ u : L V, ∀ᵐ x : ℝ, (A u : L W) x = ∫ t : ℝ, κ t (u (x + t))` using `fun u => by`. Use `ae_integral volume _ (hi u) (fun p => κ p.1 (u (p.2 + p.1))) ?_ (Eventually.of_forall fun t => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : AEStronglyMeasurable (fun p : ℝ × ℝ => (u : ℝ → V) (p.2 + p.1)) (volume.prod volume)` using `((Lp.stronglyMeasurable u).comp_measurable (measurable_snd.add measurable_fst)).aestronglyMeasurable`. Conclude with `(ContinuousLinearMap.apply ℂ W).flip.aestronglyMeasurable_comp₂ (hk.1.comp continuous_fst).aestronglyMeasurable h1`. Use `filter_upwards [(κ t).coeFn_compLpL (sh V t u), sh_ae V t u] with x a b`. Rewrite using `[a, b]`. Establish `sp` using `Classical.epsilon_spec (p := fun C : L V →L[ℂ] L W => ∀ u, ∀ᵐ x : ℝ, C u x = ∫ t : ℝ, κ t (u (x + t))) ⟨A.mkContinuous _ hb, hae⟩`.
-
-Use `fun u => ⟨sp u, hi u, Lp.ext ?_⟩` and prove the remaining obligations. Use `filter_upwards [sp u, hae u] with x a b`. Conclude with `a.trans b.symm`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.IntegralApplyAeEq.convSpec :
     ∀ {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V] [CompleteSpace V] {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W] [FiniteDimensional ℂ W] [CompleteSpace W] (κ : ℝ → V →L[ℂ] W), Ker κ → ∀ u : L V, (∀ᵐ x : ℝ, conv κ u x = ∫ t : ℝ, κ t (u (x + t))) ∧

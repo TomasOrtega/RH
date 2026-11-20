@@ -12,37 +12,33 @@ open MeasureTheory ValuativeRel Matrix GlobalTheory.SplitWeil GlobalTheory.RootE
 namespace GlobalTheory.SymChain
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ ν hν s κ S t _ _ j c H p hp1 hpc h hE`. Use `haveI := hν.1`. Take `⟨D, hDdef⟩ : ∃ D : GL (XIx (Fin κ) t (j + 1) ⊕ Fin c) k, D = embA (XIx (Fin κ) t (j + 1)) (GlobalTheory.SplitFlip.diagGL fun i : Fin c => S.ϖ ^ (i.val + 1))` from `⟨_, rfl⟩`. Take `⟨D', hD'def⟩ : ∃ D' : GL (XIx (Fin κ) t j ⊕ Fin (c + 1)) k, D' = embA (XIx (Fin κ) t j) (GlobalTheory.SplitFlip.diagGL fun i : Fin (c + 1) => S.ϖ ^ (i.val + 1))` from `⟨_, rfl⟩`. Establish `hD : (S.T t).bas (j + 1) c (by omega) = D` using `by rw [hDdef]; rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlt : valuation k (S.ϖ : k) < 1` using `(S.unif (S.ϖ : k)).2 le_rfl`. Set `lv' : XIx (Fin κ) t (j + 1) ⊕ Fin c → ℕ` to `Sum.elim (fun _ => 2 * p - 1) (fun i : Fin c => 2 * (i.val + 1))`. Establish `hlv : ∀ r s, lev p s < lev p r → lv' s < lv' r`. Apply the tactic sequence `rintro (r | r) (s | s) h0 <;> simp only [lev, lv', Sum.elim_inl, Sum.elim_inr] at h0 ⊢ <;> omega`. Take `⟨b, hb, w, hw, hbw⟩` from `iwasawa_blockTriangular k _ lv' (h * D)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hb' : b.val.BlockTriangular (lev p)` using `fun r s hrs => hb (hlv r s hrs)`. Take `⟨u, hu, m, hm1, hm2, hum⟩` from `BlockLevi.exists_unip_mul_levi k _ c p b hb'`. Establish `hh : h = u * (m * w * D⁻¹)`. Establish `: h = h * D * D⁻¹` using `by group`. Rewrite using `[this, hbw, hum]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `group`. Take `⟨v, hv⟩ : ∃ v, v = m * w * D⁻¹` from `⟨_, rfl⟩`. Rewrite `hh` using `[← hv]`. Establish `key : om (S.μ (j + 1)) 1 (u * v) ((S.T t).Phi j c H) = om (S.μ (j + 1)) 1 u (om (S.μ (j + 1)) 1 v ((S.T t).Phi j c H))`. Simplify using `using Model.om_mul (S.μ (j + 1)) 1 1 u v ((S.T t).Phi j c H)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hE' : opE S.ψ ν p (om (S.μ (j + 1)) 1 v ((S.T t).Phi j c H)) ≠ 0`. Introduce `h0`. Apply `hE` to reduce the goal to its premises. Rewrite using `[hh, key, opE_om_target_unipotent k _ _ c p hp1 hpc S.ψ ν (S.μ (j + 1)) _ u hu, h0, smul_zero]`. Establish `eg : D⁻¹ * v⁻¹ = w⁻¹ * m⁻¹` using `by rw [hv]; group`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `ev : ∀ x : Matrix (XIx (Fin κ) t (j + 1) ⊕ Fin c) (XIx (Fin κ) t j ⊕ Fin (c + 1)) k, (D⁻¹).val * ((v⁻¹).val * x) * D'.val = (w⁻¹).val * ((m⁻¹).val * x * D'.val)`. Introduce `x`. Rewrite using `[← Matrix.mul_assoc (D⁻¹).val, ← Units.val_mul, eg, Units.val_mul]`. Simplify using `only [Matrix.mul_assoc]`. Establish `hinst` using `GlobalTheory.T.symmetricLevelChain_phi_support_periodic k s κ S t j c H`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hinst` using `[← hDdef, ← hD'def]`. Establish `hsup : ∀ x, om (S.μ (j + 1)) 1 v ((S.T t).Phi j c H) x ≠ 0 → IntM ((m⁻¹).val * x * D'.val)`. Introduce `x hx`. Establish `hΦ : (S.T t).Phi j c H ((v⁻¹).val * x) ≠ 0`. Use `right_ne_zero_of_mul hx` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `h1` using `(hinst ((v⁻¹).val * x) 0).1 hΦ`. Rewrite `h1` using `[ev]`. Establish `e2 : (m⁻¹).val * x * D'.val = w.val * ((w⁻¹).val * ((m⁻¹).val * x * D'.val))`. Rewrite using `[← Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e2]`. Conclude with `(intM_of_mem_KO hw).mul h1`. Establish `hper : ∀ x z, MaxM ((m⁻¹).val * z * D'.val) → om (S.μ (j + 1)) 1 v ((S.T t).Phi j c H) (x + z) = om (S.μ (j + 1)) 1 v ((S.T t).Phi j c H) x`. Introduce `x z hz`. Establish `h1 : MaxM ((D⁻¹).val * ((v⁻¹).val * z) * D'.val)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[ev]`. Conclude with `(mem_KO.1 hw).2.mul_maxM hz`. Simplify using `only [om, Units.val_one, Matrix.mul_one, Matrix.mul_add]`. Rewrite using `[(hinst ((v⁻¹).val * x) ((v⁻¹).val * z)).2 h1]`. Establish `sm1 : m.val.BlockTriangular lv'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `r s hrs`. Distinguish the cases in `e : lev p r = lev p s`. Rewrite using `[hm2 r s e]`. Conclude with `hb hrs`. Conclude with `hm1 r s e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities.
 
-Establish `sm2 : m.val.BlockTriangular (fun r => OrderDual.toDual (lev p r))`. Introduce `r s hrs`. Conclude with `hm1 r s (Nat.ne_of_lt (OrderDual.toDual_lt_toDual.mp hrs))`. Establish `si1 : (m⁻¹).val.BlockTriangular lv'` using `BlockLevi.blockTriangular_inv lv' m sm1`. Establish `si2 : (m⁻¹).val.BlockTriangular (fun r => OrderDual.toDual (lev p r))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `letI : Invertible m.val := m.invertible`. Rewrite using `[Matrix.coe_units_inv]`. Conclude with `Matrix.blockTriangular_inv_of_blockTriangular sm2`. Establish `sm1' : (m⁻¹⁻¹).val.BlockTriangular lv'` using `by rw [inv_inv]; exact sm1`. Establish `sm2' : (m⁻¹⁻¹).val.BlockTriangular (fun r => OrderDual.toDual (lev p r))` using `by rw [inv_inv]; exact sm2`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hsup`, `hper` using `[hD'def]`. Take `⟨E1, E2⟩` from `GlobalTheory.T.rootExchange_blockDiagonal_target_entry_conditions k S.ψ ν S.cond S.ϖ hlt _ _ c p hp1 hpc m⁻¹ si1 si2 sm1' sm2' _ hsup hper hE'`. Take `⟨γ, hK⟩` from `GlobalTheory.T.doubleBlockTriangular_mem_integral_mul_levi k S.ϖ _ c p hp1 hpc m⁻¹ si1 si2 sm1' sm2' E1 E2`. Rewrite `hK` using `[← hDdef]`. Use `⟨u * embX c γ, mul_mem (Subgroup.mem_sup_right hu) (Subgroup.mem_sup_left ⟨γ, rfl⟩), (u * embX c γ)⁻¹ * h, ?_, by group⟩` and prove the remaining obligations.
-
-Rewrite using `[hD, mem_stabLat]`. Establish `: D⁻¹ * ((u * embX c γ)⁻¹ * h) * D = (m⁻¹ * embX c γ * D)⁻¹ * w`. Rewrite using `[hh, hv]`. Use `group`. Rewrite using `[this]`.
-
-Conclude with `mul_mem (inv_mem hK) hw`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem classAt_all : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (ν : Measure k), IsUnitVol ν → ∀ (s κ : ℕ) (S : SymData k s κ) (t : Type) [Fintype t] [DecidableEq t], S.ClassAt t ν := by
   intro k _ _ _ _ _ _ ν hν s κ S t _ _ j c H p hp1 hpc h hE

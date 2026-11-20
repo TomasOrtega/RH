@@ -14,7 +14,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   [AddCommGroup V₅] [Module ℂ V₅]
 
 /- English proof (translation)
-The claim follows from `ind₂_congr h (eqv_refl ρ₀) φ`.
+A detailed English derivation is pending.
 -/
 theorem ind₂_congr_right_prod {a b c N M : ℕ} (h : a + M = N) (h' : b + c = M)
     (ρ₀ : Representation ℂ (GL (Fin a) k) V₀) (ρ₁ : Representation ℂ (GL (Fin b) k) V₁)
@@ -25,7 +25,7 @@ theorem ind₂_congr_right_prod {a b c N M : ℕ} (h : a + M = N) (h' : b + c = 
   ind₂_congr h (eqv_refl ρ₀) φ
 
 /- English proof (translation)
-The claim follows from `ind₂_congr h φ (eqv_refl ρ₃)`.
+A detailed English derivation is pending.
 -/
 theorem ind₂_congr_left_prod {a b c N M : ℕ} (h : M + c = N) (h' : a + b = M)
     (ρ₁ : Representation ℂ (GL (Fin a) k) V₁) (ρ₂ : Representation ℂ (GL (Fin b) k) V₂)
@@ -36,7 +36,7 @@ theorem ind₂_congr_left_prod {a b c N M : ℕ} (h : M + c = N) (h' : a + b = M
   ind₂_congr h φ (eqv_refl ρ₃)
 
 /- English proof (translation)
-The claim follows from `ind₂_congr h φ (eqv_refl ρ₅)`.
+A detailed English derivation is pending.
 -/
 theorem ind₂_congr_left_prod₂ {a b c d e N M : ℕ} (h : M + e = N) (h₁ : a + b = M) (h₂ : c + d = M)
     (ρ₁ : Representation ℂ (GL (Fin a) k) V₁) (ρ₂ : Representation ℂ (GL (Fin b) k) V₂)
@@ -48,7 +48,7 @@ theorem ind₂_congr_left_prod₂ {a b c d e N M : ℕ} (h : M + e = N) (h₁ : 
   ind₂_congr h φ (eqv_refl ρ₅)
 
 /- English proof (translation)
-The claim follows from `ind₂_congr h (eqv_refl ρ₅) φ`.
+A detailed English derivation is pending.
 -/
 theorem ind₂_congr_right_prod₂ {a b c d e N M : ℕ} (h : e + M = N) (h₁ : a + b = M) (h₂ : c + d = M)
     (ρ₁ : Representation ℂ (GL (Fin a) k) V₁) (ρ₂ : Representation ℂ (GL (Fin b) k) V₂)
@@ -60,7 +60,7 @@ theorem ind₂_congr_right_prod₂ {a b c d e N M : ℕ} (h : e + M = N) (h₁ :
   ind₂_congr h (eqv_refl ρ₅) φ
 
 /- English proof (translation)
-Substitute `h0` using the available equality. Establish `hk : (fun i => ι i.succ) = κ` using `funext hκ`. Substitute `hk` using the available equality. Conclude with `multiProd_head (fun i => (σ (ι i)).π) e h e'`.
+Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem multiProd_head_comp {s u : ℕ} {d : Fin s → ℕ} (σ : ∀ a, Irr k (d a)) (ι : Fin (u + 1) → Fin s)
     (a₀ : Fin s) (κ : Fin u → Fin s) (h0 : ι 0 = a₀) (hκ : ∀ i, ι i.succ = κ i) {T N : ℕ}

@@ -15,7 +15,7 @@ section Clauses
 variable (D : D7)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem inert_iff (l : ℕ) : CrystallineWindowLifts.InertInK D l ↔ UnramifiedCrystallineInputs.InertInK D.host l := Iff.rfl
 
@@ -34,13 +34,13 @@ variable (D : D7) (i : D.nd.Loc) (w : HeightOneSpectrum (𝓞 D.host.E))
   (hw : w ∈ placesOver D.host.E (D.nd.l i))
 
 /- English proof (translation)
-The claim follows from `continuous_subtype_val.comp (D.nbr i w hw).eO_cont`.
+A detailed English derivation is pending.
 -/
 theorem continuous_toLL : Continuous (D.nbr i w hw).toLL :=
   continuous_subtype_val.comp (D.nbr i w hw).eO_cont
 
 /- English proof (translation)
-The claim follows from `continuous_subtype_val.comp (Br.iota_cont D.nbr i w hw)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_toGlobal :
     Continuous fun g : Br.G D.nbr i w hw => decS D.nd w (Br.iota D.nbr i w hw g) :=
@@ -61,7 +61,7 @@ theorem locChi_apply (χ : GE D.nd →* (D.nd.O i)ˣ) (g : Br.G D.nbr i w hw) :
       (D.nbr i w hw).toLL ((χ (decS D.nd w (Br.iota D.nbr i w hw g)) : (D.nd.O i)ˣ) : D.nd.O i) := rfl
 
 /- English proof (translation)
-Use `continuous_matrix fun a b => ?_` and prove the remaining obligations. Simplify using `only [loc_apply]`. Conclude with `(continuous_toLL D i w hw).comp ((hM.comp (continuous_toGlobal D i w hw)).matrix_elem a b)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_loc {k : ℕ} (M : GE D.nd →* Matrix (Fin k) (Fin k) (D.nd.O i)) (hM : Continuous M) :
     Continuous (Br.loc D.nbr i w hw M) := by
@@ -71,7 +71,7 @@ theorem continuous_loc {k : ℕ} (M : GE D.nd →* Matrix (Fin k) (Fin k) (D.nd.
     ((hM.comp (continuous_toGlobal D i w hw)).matrix_elem a b)
 
 /- English proof (translation)
-The claim follows from `Br.toLLK_alg (D.nbr i w hw) c`.
+A detailed English derivation is pending.
 -/
 theorem toLLK_toK (c : D.nd.O i) :
     Br.toLLK (D.nbr i w hw) (toK D.nd i c) = (D.nbr i w hw).toLL c :=

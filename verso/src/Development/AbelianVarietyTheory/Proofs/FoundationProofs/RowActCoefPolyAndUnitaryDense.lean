@@ -10,11 +10,11 @@ open scoped DirectSum
 namespace GlobalTheory.Branching
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on generalizing l with`. Consider the case `C a => exact ⟨C (l (C a)), fun g => by simp [rowAct]⟩`. Consider the case `add p q hp hq`. Take `⟨P, hP⟩` from `hp l`. Take `⟨Q, hQ⟩` from `hq l`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨P + Q, fun g => by simp only [map_add, hP, hQ]⟩`. Consider the case `mul_X p v hp => choose P hP using fun b : Fin n => hp (l ∘ₗ LinearMap.mulRight ℂ (X (b, v.2)))`. Use `⟨∑ b, X (v.1, b) * P b, fun g => ?_⟩` and prove the remaining obligations. Establish `e : rowAct ℂ g (X v) = ∑ b, g v.1 b • X (b, v.2)`. Simplify using `[rowAct, smul_eq_C_mul]`.
+Supply the required witnesses or components. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_mul, e, Finset.mul_sum, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul_comm, map_smul, map_mul (eval _), eval_X, ← hP b g]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_poly_rowAct_coef (n k : ℕ) (f : MvPolynomial (Fin n × Fin k) ℂ)
     (l : Module.Dual ℂ (MvPolynomial (Fin n × Fin k) ℂ)) :
@@ -37,9 +37,9 @@ theorem exists_poly_rowAct_coef (n k : ℕ) (f : MvPolynomial (Fin n × Fin k) �
     rfl
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (fun x : Fin n × Fin n => ((), x) : Fin n × Fin n → Unit × Fin n × Fin n)` using `fun x y e => congrArg Prod.snd e`. Apply `rename_injective _ hinj` to reduce the goal to its premises. Rewrite using `[map_zero]`. Use `Formalism.L2.Col.eq_zero_of_forall_unitary (ι := Unit) (fun _ => 1) (fun _ => by simp) _ fun u hu => ?_` and prove the remaining obligations. Rewrite using `[eval_rename]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `h (u ()) (Matrix.mem_unitaryGroup_iff'.2 (hu ()))` as an intermediate fact. Simplify `this` using `[Function.comp_def]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eq_zero_of_vanish_unitaryGroup (n : ℕ) (P : MvPolynomial (Fin n × Fin n) ℂ)
     (h : ∀ u ∈ Matrix.unitaryGroup (Fin n) ℂ, eval (fun x => u x.1 x.2) P = 0) : P = 0 := by
@@ -53,7 +53,7 @@ theorem eq_zero_of_vanish_unitaryGroup (n : ℕ) (P : MvPolynomial (Fin n × Fin
   simpa [Function.comp_def] using this
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨exists_poly_rowAct_coef, eq_zero_of_vanish_unitaryGroup⟩`.
+Supply the required witnesses or components.
 -/
 theorem rowAct_coef_poly_and_unitary_dense :
     (∀ (n k : ℕ) (f : MvPolynomial (Fin n × Fin k) ℂ) (l : Module.Dual ℂ (MvPolynomial (Fin n × Fin k) ℂ)),

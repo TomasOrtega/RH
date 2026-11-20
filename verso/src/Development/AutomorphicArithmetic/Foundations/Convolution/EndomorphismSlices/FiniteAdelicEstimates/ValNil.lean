@@ -18,13 +18,13 @@ set_option synthInstance.maxHeartbeats 200000
 attribute [local instance] borelG borelF borelA borelH
 
 /- English proof (translation)
-Introduce `E _ _ _ n Z T S D B₁ B₂ e₁ e₂ hS hZ hT hd hB`. Take `⟨-, hc, -, hsec⟩` from `UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.places E`. Establish `hoff : ∀ w ∈ T, Off Z w ∧ Off Z (cPl w)`. Introduce `w hw`. Establish `h₁ : w ∉ Z` using `Finset.disjoint_left.mp hd hw`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h₂ : cPl w ∉ Z`. Introduce `h`. Take `⟨hs, hsp⟩` from `hZ _ h`. Establish `hne : cPl (cPl w) ≠ cPl w` using `((hc (cPl w)).2).mp hsp`. Rewrite `hne` using `[(hc w).1]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hne ((hsec S hS w).2 (hT w hw) hs).symm`. Conclude with `⟨⟨h₁, h₂⟩, h₂, by rwa [(hc w).1]⟩`. Establish `hz : ∀ w, Off Z w → B₂ w = 0` using `fun w hw => Multiset.card_eq_zero.mp (UpperTheory.Zero.ConvolutionTheory.EB.satCard E 0 D w _ (hB w hw))`. Unfold `UpperTheory.V.Z.Tf.GlobalTraceComparison.val`. Use `Finset.prod_congr rfl fun w hw => ?_` and prove the remaining obligations.
+Supply the required witnesses or components. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨h₁, h₂⟩` from `hoff w hw`. Rewrite using `[hz w h₁, hz _ h₂]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Zero.ConvolutionTheory.EB.valNil :
     UpperTheory.Zero.ConvolutionTheory.EB.ValNil := by

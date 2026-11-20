@@ -13,71 +13,65 @@ namespace Formalism.HermitianLattices.Ext.PrimesInProgressions
 open Formalism.ZeroFreeDirichlet
 
 /- English proof (translation)
-The claim follows from `abs_le.2 ⟨by linarith [neg_abs_le p, abs_nonneg q], by linarith [le_abs_self q, abs_nonneg p]⟩`.
+A detailed English derivation is pending.
 -/
 theorem exr_abs_le {a p q : ℝ} (h1 : p ≤ a) (h2 : a ≤ q) : |a| ≤ |p| + |q| :=
   abs_le.2 ⟨by linarith [neg_abs_le p, abs_nonneg q], by linarith [le_abs_self q, abs_nonneg p]⟩
 
 /- English proof (translation)
-Take `⟨R₁, hR₁def⟩ : ∃ R₁ : ℝ, R₁ = |x₀ - 1| + |x₁ - 1| + |y₀| + |y₁| + 1` from `⟨_, rfl⟩`. Establish `hR₁ : 0 < R₁` using `by rw [hR₁def]; positivity`. Take `⟨Zb, m, h, hZb, hm, hh, hh0, hfac⟩` from `Formalism.ZF.zeroFactorization f 1 (R₁ + 1) R₁ hR₁ (by linarith) hf.differentiableOn hf1`. Establish `hrect : ∀ w : ℂ, x₀ ≤ w.re → w.re ≤ x₁ → y₀ ≤ w.im → w.im ≤ y₁ → w ∈ Metric.ball (1 : ℂ) R₁`. Introduce `w a1 a2 a3 a4`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Metric.mem_ball, dist_eq_norm]`. Establish `e1` using `Complex.norm_le_abs_re_add_abs_im (w - 1)`. Establish `e2 : |(w - 1).re| ≤ |x₀ - 1| + |x₁ - 1|`. Rewrite using `[sub_re, one_re]; exact exr_abs_le (by linarith) (by linarith)`. Establish `e3 : |(w - 1).im| ≤ |y₀| + |y₁|`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[sub_im, one_im, sub_zero]`. Conclude with `exr_abs_le a3 a4`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hball : Metric.ball (1 : ℂ) R₁ ⊆ Metric.closedBall 1 R₁` using `Metric.ball_subset_closedBall`. Establish `hSsub : Metric.ball (1 : ℂ) (R₁ + 1) ⊆ Metric.closedBall 1 (R₁ + 1)` using `Metric.ball_subset_closedBall`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR1S : Metric.ball (1 : ℂ) R₁ ⊆ Metric.ball 1 (R₁ + 1)` using `Metric.ball_subset_ball (by linarith)`. Establish `hhS : DifferentiableOn ℂ h (Metric.ball 1 (R₁ + 1))` using `hh.mono hSsub`. Establish `hfacS : ∀ z ∈ Metric.ball (1 : ℂ) (R₁ + 1), f z = (∏ ρ ∈ Zb, (z - ρ) ^ m ρ) * h z` using `fun z hz => hfac z (hSsub hz)`. Establish `hZin : ∀ ρ ∈ Z, ρ ∈ Metric.ball (1 : ℂ) R₁`. Introduce `ρ hρ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨_, a1, a2, a3, a4⟩` from `(hZ ρ).1 hρ`. Conclude with `hrect ρ a1.le a2.le a3.le a4.le`. Establish `hZsub : Z ⊆ Zb`. Introduce `ρ hρ`. Conclude with `(hZb ρ).2 ⟨hball (hZin ρ hρ), ((hZ ρ).1 hρ).1⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hord : ∀ ρ ∈ Z, analyticOrderNatAt f ρ = m ρ` using `fun ρ hρ => exr_ord f h Zb m _ Metric.isOpen_ball hhS hfacS ρ (hZsub hρ) (hR1S (hZin ρ hρ)) (hh0 ρ (hball (hZin ρ hρ)))`. Establish `h1Z : (1 : ℂ) ∉ Z` using `fun h => hf1 ((hZ 1).1 h).1`. Establish `hZne0 : ∀ ρ ∈ Z, ρ ≠ 0`. Introduce `ρ hρ h0`. Use `((hZ ρ).1 hρ).2.1` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite `this` using `[h0, zero_re]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hZne1 : ∀ ρ ∈ Z, ρ ≠ 1` using `fun ρ hρ h1 => h1Z (h1 ▸ hρ)`. Take `⟨U, hUdef⟩ : ∃ U : Set ℂ, U = Metric.ball (1 : ℂ) R₁ \ (((Zb \ Z : Finset ℂ) : Set ℂ) ∪ {0})` from `⟨_, rfl⟩`. Establish `hU : IsOpen U`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hUdef]`. Conclude with `Metric.isOpen_ball.sdiff ((Finset.finite_toSet _).union (Set.finite_singleton 0)).isClosed`. Establish `hUrect : ∀ w : ℂ, x₀ ≤ w.re → w.re ≤ x₁ → y₀ ≤ w.im → w.im ≤ y₁ → w ∈ U`. Introduce `w a1 a2 a3 a4`. Rewrite using `[hUdef]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `⟨hrect w a1 a2 a3 a4, ?_⟩` and prove the remaining obligations. Introduce and unpack `(hw | hw)`. Rewrite `hw` using `[Finset.coe_sdiff, Set.mem_sdiff, Finset.mem_coe, Finset.mem_coe]`. Establish `hfw : f w = 0` using `((hZb w).1 hw.1).2`. Take `⟨b1, b2, b3, b4⟩` from `hedge w a1 a2 a3 a4 hfw`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Conclude with `hw.2 ((hZ w).2 ⟨hfw, b1, b2, b3, b4⟩)`. Rewrite `hw` using `[Set.mem_singleton_iff]`. Rewrite `a1` using `[hw, zero_re]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hUball : ∀ w ∈ U, w ∈ Metric.ball (1 : ℂ) R₁`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `w hw`. Rewrite `hw` using `[hUdef]`. Conclude with `hw.1`. Establish `hUne0 : ∀ w ∈ U, w ≠ 0`. Introduce `w hw h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hw` using `[hUdef]`. Conclude with `hw.2 (Or.inr h0)`. Establish `hUZb : ∀ w ∈ U, w ∉ Z → w ∉ Zb`. Introduce `w hw hwZ hwZb`. Rewrite `hw` using `[hUdef]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hw.2 (Or.inl (by rw [Finset.coe_sdiff]; exact ⟨hwZb, hwZ⟩))`. Establish `h1U : (1 : ℂ) ∈ U` using `hUrect 1 (by simp; linarith) (by simp; linarith) (by simp; linarith) (by simp; linarith)`. Establish `hZU : ∀ ρ ∈ Z, ρ ∈ U`. Introduce `ρ hρ`. Take `⟨_, a1, a2, a3, a4⟩` from `(hZ ρ).1 hρ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hUrect ρ a1.le a2.le a3.le a4.le`. Take `⟨φ, hφdef⟩ : ∃ φ : ℂ → ℂ, φ = fun w => (y : ℂ) ^ w / w` from `⟨_, rfl⟩`. Take `⟨Lf, hLdef⟩ : ∃ Lf : ℂ → ℂ, Lf = fun w => deriv h w / h w + ∑ ρ ∈ Zb \ Z, (m ρ : ℂ) / (w - ρ)` from `⟨_, rfl⟩`. Establish `hy0 : (y : ℂ) ≠ 0` using `by exact_mod_cast hy.ne'`. Establish `hφU : DifferentiableOn ℂ φ U`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `w hw`. Rewrite using `[hφdef]`. Conclude with `((differentiableAt_id.const_cpow (Or.inl hy0)).div differentiableAt_id (hUne0 w hw)).differentiableWithinAt`. Establish `hLU : DifferentiableOn ℂ Lf U`. Introduce `w hw`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hwb` using `hR1S (hUball w hw)`. Establish `hN : Metric.ball (1 : ℂ) (R₁ + 1) ∈ nhds w` using `Metric.isOpen_ball.mem_nhds hwb`. Establish `hd1 : DifferentiableAt ℂ (deriv h) w` using `((hhS.deriv Metric.isOpen_ball) w hwb).differentiableAt hN`. Establish `hd2 : DifferentiableAt ℂ h w` using `(hhS w hwb).differentiableAt hN`. Establish `hhw : h w ≠ 0` using `hh0 w (hball (hUball w hw))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hLdef]`. Use `(DifferentiableAt.add (hd1.div hd2 hhw) ?_).differentiableWithinAt` and prove the remaining obligations. Use `DifferentiableAt.fun_sum fun ρ hρ => ?_` and prove the remaining obligations. Use `(differentiableAt_const _).div (differentiableAt_id.sub (differentiableAt_const _)) ?_` and prove the remaining obligations. Rewrite `hρ` using `[Finset.mem_sdiff]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `h0`. Rewrite `h0` using `[sub_eq_zero]`. Rewrite `hw` using `[hUdef]`. Conclude with `hw.2 (Or.inl (by rw [Finset.coe_sdiff, h0]; exact ⟨hρ.1, hρ.2⟩))`. Establish `hLD : ∀ w ∈ U, w ∉ Z → deriv f w / f w = (∑ ρ ∈ Z, (m ρ : ℂ) / (w - ρ)) + Lf w`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `w hw hwZ`. Rewrite using `[exr_logDeriv f h Zb m _ Metric.isOpen_ball hhS hfacS w (hR1S (hUball w hw)) (hUZb w hw hwZ) (hh0 w (hball (hUball w hw))), hLdef, ← Finset.sum_sdiff hZsub]`. Expand and normalize the polynomial expressions, which then agree. Establish `hk : ∀ w, exKer y w = φ w / (w - 1)` using `fun w => by rw [hφdef, exKer, div_div]`. Establish `hb1 : ∃ b : ℂ → ℂ, b 1 = -(deriv f 1 / f 1) * y ∧ ∀ ρ ∈ Z, b ρ = -(m ρ : ℂ) * exKer y ρ` using `⟨fun p => if p = 1 then -(deriv f 1 / f 1) * y else -(m p : ℂ) * exKer y p, by simp, fun ρ hρ => by simp [hZne1 ρ hρ]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨b, hb1, hbρ⟩` from `hb1`. Take `⟨G₀, hG₀def⟩ : ∃ G₀ : ℂ → ℂ, G₀ = fun w => -dslope (fun z => Lf z * φ z) 1 w - ∑ ρ ∈ Z, (m ρ : ℂ) / (ρ - 1) * (dslope φ ρ w - dslope φ 1 w)` from `⟨_, rfl⟩`. Establish `hG₀U : DifferentiableOn ℂ G₀ U`. Rewrite using `[hG₀def]`. Use `DifferentiableOn.sub ((differentiableOn_dslope (hU.mem_nhds h1U)).2 (hLU.mul hφU)).neg ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `DifferentiableOn.fun_sum fun ρ hρ => ?_` and prove the remaining obligations. Conclude with `(differentiableOn_const _).mul (((differentiableOn_dslope (hU.mem_nhds (hZU ρ hρ))).2 hφU).sub ((differentiableOn_dslope (hU.mem_nhds h1U)).2 hφU))`. Establish `hφw : ∀ z, φ z = (y : ℂ) ^ z / z` using `fun z => by rw [hφdef]`. Establish `hφ1 : φ 1 = y` using `by rw [hφw]; simp`. Establish `hkey : ∀ w ∈ U, w ∉ insert 1 Z → -(deriv f w / f w) * exKer y w - ∑ p ∈ insert 1 Z, b p / (w - p) = G₀ w`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `w hw hwP`. Rewrite `hwP` using `[Finset.mem_insert, not_or]`. Establish `hw1 : w - 1 ≠ 0` using `sub_ne_zero.2 hwP.1`. Establish `hw0` using `hUne0 w hw`. Establish `hwρ : ∀ ρ ∈ Z, w - ρ ≠ 0` using `fun ρ hρ h0 => hwP.2 (sub_eq_zero.1 h0 ▸ hρ)`.
+Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hC : ∑ ρ ∈ Z, b ρ / (w - ρ) = ∑ ρ ∈ Z, -(m ρ : ℂ) * ((y : ℂ) ^ ρ / (ρ * (ρ - 1))) / (w - ρ)` using `Finset.sum_congr rfl fun ρ hρ => by rw [hbρ ρ hρ, exKer]`. Establish `hD : ∑ ρ ∈ Z, (m ρ : ℂ) / (ρ - 1) * (dslope φ ρ w - dslope φ 1 w) = ∑ ρ ∈ Z, (m ρ : ℂ) / (ρ - 1) * (((y : ℂ) ^ w / w - (y : ℂ) ^ ρ / ρ) / (w - ρ) - ((y : ℂ) ^ w / w - y) / (w - 1))` using `Finset.sum_congr rfl fun ρ hρ => by`. Rewrite using `[dslope_of_ne _ (sub_ne_zero.1 (hwρ ρ hρ)), dslope_of_ne _ hwP.1, slope_def_field, slope_def_field, hφ1, hφw, hφw]`. Establish `hrel : ∑ ρ ∈ Z, (-((m ρ : ℂ) / (w - ρ)) * ((y : ℂ) ^ w / w / (w - 1)) + (m ρ : ℂ) / (1 - ρ) * y / (w - 1) - (-(m ρ : ℂ) * ((y : ℂ) ^ ρ / (ρ * (ρ - 1)))) / (w - ρ) + (m ρ : ℂ) / (ρ - 1) * (((y : ℂ) ^ w / w - (y : ℂ) ^ ρ / ρ) / (w - ρ) - ((y : ℂ) ^ w / w - y) / (w - 1))) = 0` using `Finset.sum_eq_zero fun ρ hρ => exr_term _ _ _ _ _ _ hw0 hw1 (hwρ ρ hρ) (hZne0 ρ hρ) (sub_ne_zero.2 (hZne1 ρ hρ))`. Rewrite `hrel` using `[Finset.sum_add_distrib, Finset.sum_sub_distrib, Finset.sum_add_distrib, ← Finset.sum_mul, Finset.sum_neg_distrib, ← Finset.sum_div, ← Finset.sum_mul]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hG₀w : G₀ w = -dslope (fun z => Lf z * φ z) 1 w - ∑ ρ ∈ Z, (m ρ : ℂ) / (ρ - 1) * (dslope φ ρ w - dslope φ 1 w)` using `by rw [hG₀def]`. Rewrite using `[hG₀w, hD, Finset.sum_insert h1Z, hC, hb1, dslope_of_ne _ hwP.1, slope_def_field, hLD w hw hwP.2, hLD 1 h1U h1Z, hk w, hφ1, hφw w]`. Take the linear combination `hrel`. Take `⟨G, hGdef⟩ : ∃ G : ℂ → ℂ, G = fun w => if w ∈ insert 1 Z then G₀ w else -(deriv f w / f w) * exKer y w - ∑ p ∈ insert 1 Z, b p / (w - p)` from `⟨_, rfl⟩`. Establish `hGU : DifferentiableOn ℂ G U`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Use `hG₀U.congr fun w hw => ?_` and prove the remaining obligations. Rewrite using `[hGdef]`. Distinguish the cases in `hwP : w ∈ insert 1 Z`. Simplify using `only [if_pos hwP]`. Simplify using `only [if_neg hwP]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hkey w hw hwP`. Establish `hPin : ∀ p ∈ insert 1 Z, x₀ < p.re ∧ p.re < x₁ ∧ y₀ < p.im ∧ p.im < y₁`. Introduce `p hp`. Rewrite `hp` using `[Finset.mem_insert]`. Break down `hp with hp | hp` into its components or cases.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Substitute `hp` using the available equality. Simplify using the standard rewrite rules. Conclude with `⟨hx₀1, hx₁, hy₀, hy₁⟩`. Conclude with `((hZ p).1 hp).2`. Establish `hsub : (Set.uIcc x₀ x₁ ×ℂ Set.uIcc y₀ y₁) ⊆ U`.
-
-Introduce `w hw`. Rewrite `hw` using `[Complex.mem_reProdIm, Set.uIcc_of_le (by linarith), Set.uIcc_of_le (by linarith)]`. Conclude with `hUrect w hw.1.1 hw.1.2 hw.2.1 hw.2.2`. Establish `hres` using `Formalism.FX.rectangle_residue (fun w => -(deriv f w / f w) * exKer y w) G (insert 1 Z) b x₀ x₁ y₀ y₁ (by linarith) (by linarith) hPin ⟨U, hU, hsub, hGU⟩ (fun w hw => by`. Rewrite using `[hGdef]`.
-
-Simplify using `only [if_neg hw]`. Use the proof step `ring)`. Establish `hsum : ∑ ρ ∈ Z, b ρ = -∑ ρ ∈ Z, (analyticOrderNatAt f ρ : ℂ) * exKer y ρ`. Rewrite using `[← Finset.sum_neg_distrib]`. Conclude with `Finset.sum_congr rfl fun ρ hρ => by rw [hbρ ρ hρ, hord ρ hρ, neg_mul]`.
-
-Rewrite using `[show Formalism.ZF.rectInt (fun w => -(deriv f w / f w) * exKer y w) x₀ x₁ y₀ y₁ = Formalism.FX.rectInt (fun w => -(deriv f w / f w) * exKer y w) x₀ x₁ y₀ y₁ from rfl, hres, Finset.sum_insert h1Z, hb1, hsum]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem ex_rect_logDeriv (f : ℂ → ℂ) (hf : Differentiable ℂ f) (hf1 : f 1 ≠ 0) (y : ℝ) (hy : 0 < y)
     (x₀ x₁ y₀ y₁ : ℝ) (hx₀ : 0 < x₀) (hx₀1 : x₀ < 1) (hx₁ : 1 < x₁) (hy₀ : y₀ < 0) (hy₁ : 0 < y₁)

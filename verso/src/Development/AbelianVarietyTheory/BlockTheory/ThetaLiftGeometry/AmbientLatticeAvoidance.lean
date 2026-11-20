@@ -263,7 +263,7 @@ def KForms_at (D : D7) (Dx : DivX D) (Tw : TwForms D) (_E : KerEnt D Dx Tw)
     ∀ i < D.R.m, ∀ φ ∈ (Tw.fm u μ).Fi i, (D.chTw u μ).K i φ ∈ (Tw.fm u μ).Fi (i + 1)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `l`. Simplify using `[reix, atNL]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 example (E : Type) [Field E] (n : ℕ) (x : Sp E n) : reix E n n x = x := by
   funext l

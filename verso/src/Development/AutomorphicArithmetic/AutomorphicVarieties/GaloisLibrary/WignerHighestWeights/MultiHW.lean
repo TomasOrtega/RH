@@ -4,27 +4,27 @@ open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.Al
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `ι V _ _ _ n F _ _ hM`. Take `⟨hF, hcomm⟩` from `hM`. Establish `hc : ∀ t k i j, F t k k * F t i j - F t i j * F t k k = ((if k = i then (1 : ℂ) else 0) - (if j = k then 1 else 0)) • F t i j`. Introduce `t k i j`. Rewrite using `[hF t]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `by_cases h1 : k = i <;> by_cases h2 : j = k <;> simp_all`. Set `G : ι → Module.End ℂ V` to `fun s => ∑ k : Fin n, ((k : ℕ) : ℂ) • F s k k`. Establish `hG : ∀ t i j, G t * F t i j - F t i j * G t = (((i : ℕ) : ℂ) - (j : ℕ)) • F t i j`. Introduce `t i j`. Rewrite using `[Finset.sum_mul, Finset.mul_sum, ← Finset.sum_sub_distrib]`.
+Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [smul_mul_assoc, mul_smul_comm, ← smul_sub, hc, smul_smul, ← Finset.sum_smul]`. Simplify using `[mul_sub]`. Establish `hG' : ∀ s t, s ≠ t → ∀ i j, G s * F t i j - F t i j * G s = 0`. Introduce `s t hst i j`. Rewrite using `[Finset.sum_mul, Finset.mul_sum, ← Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[smul_mul_assoc, mul_smul_comm, hcomm s t hst, sub_self]`. Set `H : Module.End ℂ V` to `∑ s, G s`. Establish `hH : ∀ t i j, H * F t i j = F t i j * H + (((i : ℕ) : ℂ) - (j : ℕ)) • F t i j`. Introduce `t i j`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← sub_eq_iff_eq_add', Finset.sum_mul, Finset.mul_sum, ← Finset.sum_sub_distrib, Finset.sum_eq_single t (fun s _ hs => hG' s t hs i j) (by simp), hG]`. Take `⟨l, hl, hmin⟩` from `Set.exists_min_image {c | H.HasEigenvalue c} Complex.re (Module.End.finite_hasEigenvalue H) (Module.End.exists_eigenvalue H)`. Take `⟨v, hv, hv0, ν, hν⟩` from `GlobalTheory.AlgInfChar.exists_joint_eigenvector (fun p : ι × Fin n => F p.1 p.2 p.2) (fun p q => by`. Take `⟨s, i⟩` from `p`. Take `⟨t, j⟩` from `q`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hst : s = t`. Substitute `hst` using the available equality. Rewrite using `[← sub_eq_zero, hc]`. Apply the tactic sequence `by_cases h : i = j <;> simp [h, eq_comm]`. Conclude with `hcomm s t hst _ _ _ _) (H.eigenspace l) hl`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use the proof step `(fun k v hv => by`. Rewrite `hv`, the goal using `[Module.End.mem_eigenspace_iff]`. Rewrite using `[← Module.End.mul_apply, hH]`. Simplify using `[hv])`. Rewrite `hv` using `[Module.End.mem_eigenspace_iff]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hup : ∀ t i j, i < j → F t i j v = 0`. Introduce `t i j hij`. Assume the negation of the conclusion as `h0`. Establish `h1 : H (F t i j v) = (l + (((i : ℕ) : ℂ) - (j : ℕ))) • F t i j v`. Rewrite using `[← Module.End.mul_apply, hH]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[hv, add_smul]`. Establish `h2` using `hmin _ (Module.End.hasEigenvalue_of_hasEigenvector ⟨Module.End.mem_eigenspace_iff.2 h1, h0⟩)`. Simplify using `at h2`. Conclude with `absurd hij (not_lt.2 h2)`. Establish `hν' : ∀ t k, F t k k v = ν (t, k) • v` using `fun t k => hν (t, k)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨fun t k => ν (t, k), v, hv0, fun t => ⟨⟨hν' t, hup t⟩, fun i j hij => GlobalTheory.AlgInfChar.exists_nat_of_primitive (F t i j) (F t j i) (F t i i - F t j j) ?_ ?_ v _ hv0 (hup t i j hij) ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hF t]`. Simplify using the standard rewrite rules. Establish `h1` using `hc t i j i`. Establish `h2` using `hc t j j i`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Simplify using `only [hij.ne, if_false, if_true] at h1 h2`. Rewrite using `[sub_mul, mul_sub]`. Take the linear combination `(norm := module) h1 - h2`. Simplify using `[hν', sub_smul]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgRepEndIrreducible.multiHW :
     ∀ (ι V : Type) [Fintype ι] [AddCommGroup V] [Module ℂ V] (n : ℕ) (F : ι → Fin n → Fin n → Module.End ℂ V) [FiniteDimensional ℂ V] [Nontrivial V], IsMultiGl F →

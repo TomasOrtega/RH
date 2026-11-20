@@ -6,17 +6,17 @@ import ReciprocityTheory.DualLattices.CokernelLengthComparisonOf
 namespace ReciprocityTheory.PGsh.Up
 
 /- English proof (translation)
-The claim follows from `cokernelLowerBound_of hU6 hU7 lenEx killedGen idemGen`.
+A detailed English derivation is pending.
 -/
 theorem lengthDegree_of_wdet_frobenius (hU6 : CokernelLengthComparisonStatement) (hU7 : UnramifiedCokernelLengthStatement) : CokernelLowerBoundStatement :=
   cokernelLowerBound_of hU6 hU7 lenEx killedGen idemGen
 
 /- English proof (translation)
-Use `lengthDegree_of_wdet_frobenius ?_ hU7` and prove the remaining obligations. Introduce `p _ g C _ _ _ v R _ _ _ O _ _ σ cp hS H m e π he hσ h1 h2 h3 h4 w hw cw cwb hcw hcwb`. Take `⟨d, X, hd, hX, hXc⟩` from `hW1 p g C v R O σ cp hS H m e π he hσ h1 h2 h3 h4 w hw cw cwb hcw hcwb`. Establish `hle` using `hW2 p g C v R O σ cp hS H m e π he hσ h1 h2 h3 h4 w hw d X hd hX`. Establish `hcp : v (algebraMap R C cp) ≠ 0`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h0`. Establish `h5` using `hS.cp_val`. Rewrite `h5` using `[h0, zero_pow (by have := (Fact.out : Nat.Prime p).two_le; omega)]`. Conclude with `hS.p_ne h5.symm`. Establish `hpos : 0 < v (algebraMap R C cp) ^ d` using `pow_pos (pos_iff_ne_zero.mpr hcp) d`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h6 : v (algebraMap R C cp) ^ d * cwb ≤ v (algebraMap R C cp) ^ d * cw`. Rewrite using `[← hXc]`. Conclude with `mul_le_mul_of_nonneg_right hle zero_le`. Conclude with `le_of_mul_le_mul_left h6 hpos`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lengthDegree_of_wdet_parts (hW1 : WdetLenStatement) (hW2 : WdetDegStatement) (hU7 : UnramifiedCokernelLengthStatement) :
     CokernelLowerBoundStatement := by

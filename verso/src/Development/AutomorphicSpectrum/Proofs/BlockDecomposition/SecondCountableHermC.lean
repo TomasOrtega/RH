@@ -10,7 +10,7 @@ open scoped Matrix ComplexConjugate
 def hermC (n : ℕ) : AddSubgroup (Matrix (Fin n) (Fin n) ℂ) := selfAdjoint _
 
 /- English proof (translation)
-Unfold `hermC`. Rewrite using `[selfAdjoint.mem_iff, Matrix.star_eq_conjTranspose]`. Conclude with `Iff.rfl`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_hermC {n : ℕ} {b : Matrix (Fin n) (Fin n) ℂ} : b ∈ hermC n ↔ b.IsHermitian := by
   unfold hermC
@@ -18,7 +18,7 @@ theorem mem_hermC {n : ℕ} {b : Matrix (Fin n) (Fin n) ℂ} : b ∈ hermC n ↔
   exact Iff.rfl
 
 /- English proof (translation)
-Establish `hset : (hermC n : Set (Matrix (Fin n) (Fin n) ℂ)) = {b | star b = b}` using `rfl`. Rewrite using `[hset]`. Conclude with `isClosed_eq continuous_star continuous_id`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_hermC (n : ℕ) : IsClosed (hermC n : Set (Matrix (Fin n) (Fin n) ℂ)) := by
   have hset : (hermC n : Set (Matrix (Fin n) (Fin n) ℂ)) = {b | star b = b} := rfl

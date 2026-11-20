@@ -7,13 +7,13 @@ open Formalism.BasicNotions.TH GlobalTheory.FockAlg GlobalTheory.RealLift Global
 namespace GlobalTheory.HoweR.LiftMod
 
 /- English proof (translation)
-Introduce `X hX u hu`. Establish `hXs : X = ∑ a, ∑ b, X a b • Eab a b` using `by conv_lhs => rw [Matrix.matrix_eq_sum_single X]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Eab, Matrix.smul_single, smul_eq_mul, mul_one]`. Rewrite using `[hXs, map_sum, LinearMap.sum_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `U.sum_mem fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum, LinearMap.sum_apply]`. Use `U.sum_mem fun b _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, LinearMap.smul_apply]`. Distinguish the cases in `hab : sameBlock a b`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Use `U.smul_mem _ (h a b ?_ u hu)` and prove the remaining obligations. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b`. Both sides reduce to the same expression. Conclude with `(hab : False).elim`. Conclude with `(hab : False).elim`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Both sides reduce to the same expression. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[hX a b hab, zero_smul]`. Conclude with `U.zero_mem`.
+A detailed English derivation is pending.
 -/
 theorem kstable_of_units {p q : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] (act : Mat p q →ₗ[ℂ] Module.End ℂ V)
     (U : Submodule ℂ V) (h : ∀ a b : Ix p q, a.isLeft = b.isLeft → ∀ u ∈ U, units act a b u ∈ U) : KStable act U := by
@@ -37,11 +37,11 @@ theorem kstable_of_units {p q : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] 
   · rw [hX a b hab, zero_smul]; exact U.zero_mem
 
 /- English proof (translation)
-Introduce `p q V _ _ act hG N N' hN hN' μ v hv h1 h2`. Take `⟨hLie, hwt, hloc⟩` from `hG`. Take `⟨U, hvU, hUfd, hUst, -⟩` from `hloc {v}`. Establish `hU : KStable act U` using `kstable_of_units act U hUst`. Establish `hvU' : v ∈ U` using `hvU v (Finset.mem_singleton_self v)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : FiniteDimensional ℂ U := hUfd`. Set `W : Submodule ℂ V` to `N' ⊓ U`. Use `haveI : FiniteDimensional ℂ W := Submodule.finiteDimensional_of_le (inf_le_right : W ≤ U)`. Establish `sW : KStable act W` using `fun X hX w hw => ⟨hN' X hX w hw.1, hU X hX w hw.2⟩`. Establish `hKL : Formalism.MainNotions.SchurIrreducible.IsKLieAct act` using `fun Y Z _ _ => hLie Y Z`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨T', hT'W, hTN, hhw⟩` from `GlobalTheory.DegKeep.joint_lift (ι := Unit) (fun _ => act) (fun _ => hKL) (fun _ v => hwt v) (fun w w' hne => absurd (Subsingleton.elim w w') hne) W N (fun _ => sW) (fun _ => hN) (fun _ => μ) v ⟨hv, hvU'⟩ (fun _ c => h1 c) (fun _ c d hcd => h2 c d hcd)`. Conclude with `⟨T', hT'W.1, hhw (), hTN⟩`.
+A detailed English derivation is pending.
 -/
 theorem lift_mod : ∀ (p q : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (act : Mat p q →ₗ[ℂ] Module.End ℂ V), Good act → ∀ N N' : Submodule ℂ V, KStable act N → KStable act N' → ∀ (μ : Ix p q → ℚ), ∀ v ∈ N', (∀ c, act (Eab c c) v - ((μ c : ℚ) : ℂ) • v ∈ N) → (∀ c d, posC c d → act (Eab c d) v ∈ N) → ∃ v' ∈ N', v' ∈ hwSub act μ ∧ v - v' ∈ N := by
   intro p q V _ _ act hG N N' hN hN' μ v hv h1 h2

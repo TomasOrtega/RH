@@ -13,15 +13,15 @@ variable {O : Type} [CommRing O] {bar : O → O} {φ : InvFun O} {X : Type} [Add
   [Module.Finite O X] {m m' : ℕ}
 
 /- English proof (translation)
-Take `⟨N, ℓ, hN, h1, h2, h3⟩` from `hγ'.strict`. Establish `hsum : ∑ i, a i * (ℓ (β i) : ℝ) = ∑ j, b j * (ℓ (γ' j) : ℝ)`. Use `sum_mul_eq_zero_of_sum_toReal (X := X) (j := LinearMap.id) (fun _ _ h => h) ℓ (β := Sum.elim β γ') (c := Sum.elim a (-b)) (by` as an intermediate fact. Rewrite using `[Fintype.sum_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, LinearMap.id_apply, Pi.neg_apply, neg_smul, Finset.sum_neg_distrib, hrel, add_neg_cancel])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[Fintype.sum_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, LinearMap.id_apply, Pi.neg_apply, neg_mul, Finset.sum_neg_distrib] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hφ : ∑ i, a i * φ.evalZ (β i) = ∑ j, b j * φ.evalZ (γ' j)`. Rewrite using `[← hlin, hrel]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(linearOn_iff φ γ').1 hγ'.linear b hb`. Establish `hterm : ∑ i, a i * ((ℓ (β i) : ℝ) - N * φ.evalZ (β i)) = 0`. Simplify using `only [mul_sub, Finset.sum_sub_distrib]`. Rewrite using `[hsum, show ∑ i, a i * (N * φ.evalZ (β i)) = N * ∑ i, a i * φ.evalZ (β i) by`. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun _ _ => by ring, hφ, Finset.mul_sum, sub_eq_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Finset.sum_congr rfl fun j _ => by rw [h1]; ring`. Establish `hnn : ∀ i ∈ Finset.univ, 0 ≤ a i * ((ℓ (β i) : ℝ) - N * φ.evalZ (β i))` using `fun i _ => mul_nonneg (ha i) (sub_nonneg.2 (h2 _ (hβ i) (hβp i)))`. Introduce `i hi`. Establish `h0` using `(Finset.sum_eq_zero_iff_of_nonneg hnn).1 hterm i (Finset.mem_univ _)`. Establish `he : (N : ℝ) * φ.evalZ (β i) = ℓ (β i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Break down `mul_eq_zero.1 h0 with h | h` into its components or cases. Conclude with `absurd h hi`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `h3 _ (hβ i) (hβp i) he`.
+A detailed English derivation is pending.
 -/
 theorem inCone_cell {n : ℕ} {γ' : Fin m' → LinearMap.BilinForm ℤ X} (hγ' : IsCell bar φ γ')
     {β : Fin n → LinearMap.BilinForm ℤ X} (hβ : ∀ i, β i ∈ balForms bar X) (hβp : ∀ i y, 0 ≤ β i y y)
@@ -59,13 +59,13 @@ theorem inCone_cell {n : ℕ} {γ' : Fin m' → LinearMap.BilinForm ℤ X} (hγ'
 omit [Module O X] [Module.Finite O X] in
 
 /- English proof (translation)
-Establish `hi : ∀ i, ∃ g : Fin m → ℝ, (∀ j, 0 ≤ g j) ∧ x i • toReal (δ i) = ∑ j, g j • toReal (γ j)`. Introduce `i`. Distinguish the cases in `h0 : x i = 0`. Conclude with `⟨0, fun _ => le_rfl, by simp [h0]⟩`. Take `⟨k, d, hk, hkd⟩` from `h i h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `hxi` using `hx i`. Use `⟨fun j => x i / k * d j, fun j => by positivity, LinearMap.ext₂ fun a b => ?_⟩` and prove the remaining obligations. Establish `e` using `LinearMap.congr_fun₂ hkd a b`. Simplify using `only [LinearMap.smul_apply, LinearMap.sum_apply, nsmul_eq_mul, smul_eq_mul] at e`. Establish `e' : (k : ℝ) * (δ i a b : ℝ) = ∑ j, (d j : ℝ) * (γ j a b : ℝ)` using `by exact_mod_cast e`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.smul_apply, LinearMap.sum_apply, toReal_apply, smul_eq_mul]`. Establish `hk' : (k : ℝ) ≠ 0` using `by exact_mod_cast hk.ne'`. Combine the equalities or inequalities in the displayed calculation. Use `choose g hg hgs using hi`. Use `⟨fun j => ∑ i, g i j, fun j => Finset.sum_nonneg fun i _ => hg i j, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_congr rfl fun i _ => hgs i, Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [Finset.sum_smul]`.
+A detailed English derivation is pending.
 -/
 theorem sum_mem_rcone {p : ℕ} {δ : Fin p → LinearMap.BilinForm ℤ X} {γ : Fin m → LinearMap.BilinForm ℤ X}
     (x : Fin p → ℝ) (hx : ∀ i, 0 ≤ x i)
@@ -96,29 +96,27 @@ end StarUpper
 open StarUpper in
 
 /- English proof (translation)
-Introduce `O _ bar ψ w X _ _ _ m γ B s hγ hB hs H`. Take `⟨c, hc, hBc⟩` from `hB`. Take `⟨n, q, hq⟩` from `Module.Finite.exists_fin' O X`. Use `show (starDepth bar ψ w).eval X (fun a b => B a b) ≤ s`. Rewrite using `[InvFun.eval_eq _ hq]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Real.sSup_le (fun t ht => ?_) hs` and prove the remaining obligations. Take `⟨X₁, i1, i2, i3, ρ, B₁, hρ, hrad, hB₁, ht0, m₁, γ₁, v₁, hγ₁, hv₁, hv₁p, hwv₁, ⟨e, he, hev⟩, -, ⟨d, hd, hdv⟩⟩` from `ht`. Break down `ht0.eq_or_lt with rfl | htpos` into its components or cases. Conclude with `hs`. Establish `hker : LinearMap.ker q ≤ LinearMap.ker ρ`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce `x hx`. Rewrite `hx`, the goal using `[LinearMap.mem_ker]`. Use `hrad _ fun y => ?_` and prove the remaining obligations. Take `⟨y', rfl⟩` from `hρ y`. Establish `h1` using `hB₁ x y'`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Simplify using `only [hx, map_zero, LinearMap.zero_apply] at h1`. Conclude with `h1.symm`. Set `ρ' : X →ₗ[O] X₁` to `(LinearMap.ker q).liftQ ρ hker ∘ₗ (q.quotKerEquivOfSurjective hq).symm.toLinearMap`. Establish `hρ' : ∀ a, ρ' (q a) = ρ a` using `fun a => by`. Establish `: (q.quotKerEquivOfSurjective hq).symm (q a) = Submodule.Quotient.mk a`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Rewrite using `[LinearEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Simplify using `only [ρ', LinearMap.comp_apply, LinearEquiv.coe_coe, this, Submodule.liftQ_apply]`. Establish `hρs : Function.Surjective ρ'` using `fun x => by`. Take `⟨a, rfl⟩` from `hρ x`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨q a, hρ' a⟩`. Establish `hBB : ∀ x y, B x y = B₁ (ρ' x) (ρ' y)` using `fun x y => by`. Take `⟨a, rfl⟩` from `hq x`. Take `⟨b, rfl⟩` from `hq y`. Rewrite using `[hρ', hρ']`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `hB₁ a b`. Use `set δ : Fin m₁ → LinearMap.BilinForm ℤ X := fun i => pull ρ' (γ₁ i) with hδ`. Use `set v : LinearMap.BilinForm ℤ X := pull ρ' v₁ with hv`. Establish `hv_eq : toReal v = ∑ i, e i • toReal (δ i)` using `LinearMap.ext₂ fun a b => by`. Use `LinearMap.congr_fun₂ hev (ρ' a) (ρ' b)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify `this` using `[hδ, hv, LinearMap.sum_apply]`. Establish `hd_eq : B - t • toReal v = ∑ i, d i • toReal (δ i)` using `LinearMap.ext₂ fun a b => by`. Use `LinearMap.congr_fun₂ hdv (ρ' a) (ρ' b)` as an intermediate fact. Simplify `this` using `[hδ, hv, hBB, LinearMap.sum_apply]`. Establish `hrel : ∑ i, (d i + t * e i) • toReal (δ i) = ∑ j, c j • toReal (γ j)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hBc]`. Use `LinearMap.ext₂ fun a b => ?_` and prove the remaining obligations. Establish `h1` using `LinearMap.congr_fun₂ hd_eq a b`. Establish `h2` using `LinearMap.congr_fun₂ hv_eq a b`. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.sum_apply, smul_eq_mul] at h1 h2 ⊢`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [add_mul, Finset.sum_add_distrib, mul_assoc, ← Finset.mul_sum]`. Rewrite using `[← h1, ← h2]`. Expand and normalize the polynomial expressions, which then agree. Establish `hnn : ∀ i, 0 ≤ d i + t * e i` using `fun i => add_nonneg (hd i) (mul_nonneg ht0 (he i))`. Establish `hlin : evalR ψ (∑ i, (d i + t * e i) • toReal (δ i)) = ∑ i, (d i + t * e i) * ψ.evalZ (δ i)` using `(linearOn_iff ψ δ).1 ((linearOn_pull_iff hρs).2 hγ₁.linear) _ hnn`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcone` using `inCone_cell hγ (fun i => pull_mem ρ' (hγ₁.mem i)) (fun i y => hγ₁.nonneg i _) hnn hc hlin hrel`. Establish `hInR : InRCone γ v`. Take `⟨c', hc', h'⟩` from `sum_mem_rcone e he fun i hi => hcone i (add_pos_of_nonneg_of_pos (hd i) (mul_pos htpos (lt_of_le_of_ne (he i) (Ne.symm hi)))).ne'`. Conclude with `⟨c', hc', hv_eq.trans h'⟩`. Establish `hBt : B - t • toReal v ∈ rcone γ`.
-
-Rewrite using `[hd_eq]`. Conclude with `sum_mem_rcone d hd fun i hi => hcone i (add_pos_of_pos_of_nonneg (lt_of_le_of_ne (hd i) (Ne.symm hi)) (mul_nonneg ht0 (he i))).ne'`. Conclude with `H v (pull_mem ρ' hv₁) (fun y => hv₁p _) (by rw [hv, evalZ_pull w hρs]; exact hwv₁) hInR t htpos hBt`.
+A detailed English derivation is pending.
 -/
 theorem evalR_starDepth_le : ∀ (O : Type) [CommRing O] (bar : O → O) (ψ w : InvFun O) (X : Type) [AddCommGroup X]
     [Module O X] [Module.Finite O X] (m : ℕ) (γ : Fin m → LinearMap.BilinForm ℤ X) (B : X →ₗ[ℤ] X →ₗ[ℤ] ℝ) (s : ℝ),

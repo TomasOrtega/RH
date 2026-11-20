@@ -19,56 +19,56 @@ def liftU (N : Near π G) {Y : Scheme.{0}} (x : Y ⟶ N.U.left) (t : Y ⟶ pullb
   pullback.lift x t h
 
 /- English proof (translation)
-The claim follows from `pullback.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem liftU_prU (N : Near π G) {Y : Scheme.{0}} (x : Y ⟶ N.U.left) (t : Y ⟶ pullback π π)
     (h : x ≫ N.U.hom = t ≫ pullback.fst π π ≫ π) : liftU N x t h ≫ prU N = x :=
   pullback.lift_fst _ _ _
 
 /- English proof (translation)
-The claim follows from `pullback.lift_snd _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem liftU_hom (N : Near π G) {Y : Scheme.{0}} (x : Y ⟶ N.U.left) (t : Y ⟶ pullback π π)
     (h : x ≫ N.U.hom = t ≫ pullback.fst π π ≫ π) : liftU N x t h ≫ (Desc.UT N).hom = t :=
   pullback.lift_snd _ _ _
 
 /- English proof (translation)
-The claim follows from `pullback.hom_ext h1 h2`.
+A detailed English derivation is pending.
 -/
 theorem UT_ext (N : Near π G) {Y : Scheme.{0}} (f g : Y ⟶ (Desc.UT N).left) (h1 : f ≫ prU N = g ≫ prU N)
     (h2 : f ≫ (Desc.UT N).hom = g ≫ (Desc.UT N).hom) : f = g :=
   pullback.hom_ext h1 h2
 
 /- English proof (translation)
-The claim follows from `congrArg Over.Hom.left (lift_fst (fstU N) (sndU N))`.
+A detailed English derivation is pending.
 -/
 theorem pairU_fst (N : Near π G) :
     pairU N ≫ (fst N.U N.U).left = (fst (Desc.UT N) (Desc.UT N)).left ≫ prU N :=
   congrArg Over.Hom.left (lift_fst (fstU N) (sndU N))
 
 /- English proof (translation)
-The claim follows from `congrArg Over.Hom.left (lift_snd (fstU N) (sndU N))`.
+A detailed English derivation is pending.
 -/
 theorem pairU_snd (N : Near π G) :
     pairU N ≫ (snd N.U N.U).left = (snd (Desc.UT N) (Desc.UT N)).left ≫ prU N :=
   congrArg Over.Hom.left (lift_snd (fstU N) (sndU N))
 
 /- English proof (translation)
-Establish `hUU : (N.U ⊗ N.U).hom = (fst N.U N.U).left ≫ N.U.hom` using `rfl`. Establish `cUU : (fst N.U N.U).left ≫ N.U.hom = (snd N.U N.U).left ≫ N.U.hom` using `pullback.condition`. Establish `hTT : (Desc.UT N ⊗ Desc.UT N).hom = (fst (Desc.UT N) (Desc.UT N)).left ≫ (Desc.UT N).hom` using `rfl`. Establish `cTT : (fst (Desc.UT N) (Desc.UT N)).left ≫ (Desc.UT N).hom = (snd (Desc.UT N) (Desc.UT N)).left ≫ (Desc.UT N).hom` using `pullback.condition`. Establish `extUU : ∀ {Y : Scheme.{0}} (f g : Y ⟶ (N.U ⊗ N.U).left), f ≫ (fst N.U N.U).left = g ≫ (fst N.U N.U).left → f ≫ (snd N.U N.U).left = g ≫ (snd N.U N.U).left → f = g` using `fun f g h1 h2 => pullback.hom_ext h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `extTT : ∀ {Y : Scheme.{0}} (f g : Y ⟶ (Desc.UT N ⊗ Desc.UT N).left), f ≫ (fst (Desc.UT N) (Desc.UT N)).left = g ≫ (fst (Desc.UT N) (Desc.UT N)).left → f ≫ (snd (Desc.UT N) (Desc.UT N)).left = g ≫ (snd (Desc.UT N) (Desc.UT N)).left → f = g` using `fun f g h1 h2 => pullback.hom_ext h1 h2`. Establish `liftTT : ∀ {Y : Scheme.{0}} (a b : Y ⟶ (Desc.UT N).left), a ≫ (Desc.UT N).hom = b ≫ (Desc.UT N).hom → ∃ f : Y ⟶ (Desc.UT N ⊗ Desc.UT N).left, f ≫ (fst (Desc.UT N) (Desc.UT N)).left = a ∧ f ≫ (snd (Desc.UT N) (Desc.UT N)).left = b` using `fun a b h => ⟨pullback.lift a b h, pullback.lift_fst _ _ _, pullback.lift_snd _ _ _⟩`. Establish `ha : ∀ s : PullbackCone (N.U ⊗ N.U).hom (pullback.fst π π ≫ π), (s.fst ≫ (fst N.U N.U).left) ≫ N.U.hom = s.snd ≫ pullback.fst π π ≫ π` using `fun s => by`. Rewrite using `[Category.assoc, ← hUU]`. Conclude with `s.condition`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hb : ∀ s : PullbackCone (N.U ⊗ N.U).hom (pullback.fst π π ≫ π), (s.fst ≫ (snd N.U N.U).left) ≫ N.U.hom = s.snd ≫ pullback.fst π π ≫ π` using `fun s => by`. Rewrite using `[Category.assoc, ← cUU, ← hUU]`. Conclude with `s.condition`. Establish `hab : ∀ s : PullbackCone (N.U ⊗ N.U).hom (pullback.fst π π ≫ π), liftU N _ _ (ha s) ≫ (Desc.UT N).hom = liftU N _ _ (hb s) ≫ (Desc.UT N).hom` using `fun s => by`. Rewrite using `[liftU_hom, liftU_hom]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `IsPullback.of_isLimit (c := PullbackCone.mk _ _ (pairU_over N)) ?_` and prove the remaining obligations. Use `PullbackCone.IsLimit.mk (pairU_over N) (fun s => (liftTT _ _ (hab s)).choose) ?_ ?_ ?_` and prove the remaining obligations. Introduce `s`. Take `⟨h1, h2⟩` from `(liftTT _ _ (hab s)).choose_spec`. Apply `extUU` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, pairU_fst, ← Category.assoc, h1, liftU_prU]`. Rewrite using `[Category.assoc, pairU_snd, ← Category.assoc, h2, liftU_prU]`. Introduce `s`. Take `⟨h1, _⟩` from `(liftTT _ _ (hab s)).choose_spec`. Use `show _ ≫ (Desc.UT N ⊗ Desc.UT N).hom = _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hTT, ← Category.assoc, h1, liftU_hom]`. Introduce `s m m1 m2`. Take `⟨h1, h2⟩` from `(liftTT _ _ (hab s)).choose_spec`. Establish `m2' : m ≫ (Desc.UT N ⊗ Desc.UT N).hom = s.snd` using `m2`. Rewrite `m2'` using `[hTT]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `extTT` to reduce the goal to its premises. Rewrite using `[h1]`. Apply `UT_ext` to reduce the goal to its premises. Rewrite using `[liftU_prU, Category.assoc, ← pairU_fst, ← Category.assoc, m1]`. Rewrite using `[liftU_hom, Category.assoc, m2']`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2]`. Apply `UT_ext` to reduce the goal to its premises. Rewrite using `[liftU_prU, Category.assoc, ← pairU_snd, ← Category.assoc, m1]`. Rewrite using `[liftU_hom, Category.assoc, ← cTT, m2']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairU_isPullback (N : Near π G) :
     IsPullback (pairU N) (Desc.UT N ⊗ Desc.UT N).hom (N.U ⊗ N.U).hom (pullback.fst π π ≫ π) := by

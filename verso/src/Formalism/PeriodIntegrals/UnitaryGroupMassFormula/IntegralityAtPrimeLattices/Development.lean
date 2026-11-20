@@ -37,26 +37,26 @@ def DnValInt0 (T : Forms0 D u) : Prop :=
     ValuesIntegralAllBases T w ((D.fm u).emb 0 x) → ValuesIntegralNeighbourBases T w v (Dop D u 0 v ((D.fm u).emb 0 x))
 
 /- English proof (translation)
-The claim follows from `T.bw0 w hw hs v x`.
+A detailed English derivation is pending.
 -/
 theorem mem_Bw_iff (T : Forms0 D u) {w : D.what₂.places.Pl} (hw : OverT D u w) (hs : (D.fm u).seenP w = true)
     (v : (D.mem u).A.vT) (x : Vl D u 0) : x ∈ (D.fm u).Bw 0 w v ↔ ValuesIntegralNeighbourBases T w v ((D.fm u).emb 0 x) :=
   T.bw0 w hw hs v x
 
 /- English proof (translation)
-Use `show y ∈ locW D.what₂.places w ((D.fm u).lat 0).L`. Rewrite using `[D.mem_locW_iff]`. Take `⟨-, -, hsp⟩` from `(D.fm u).lat_good 0`. Take `⟨d, hd, hdy⟩` from `Formalism.L2.DIV.lc_exists_smul_mem ((D.fm u).lat 0).L (x := y) (by rw [hsp]; trivial)`. Take `⟨t, ht, htw⟩` from `Formalism.L2.DIV.lc_primeTo d hd (D.plEq w)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨t, ht, ?_⟩` and prove the remaining obligations. Use `(T.val0.lat _).2 fun w' c B hB => ?_` and prove the remaining obligations. Distinguish the cases in `hw' : w' = w`. Substitute `hw'` using the available equality. Establish `hB' : IsLocBasis (D.mem u).A.T (Ld D u 0 (Nat.zero_le _) c : Set _) B`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LocalLatticeBases.bwG_Ld_coe, ← hw]`. Conclude with `hB`. Take `⟨Q, hQ, hyQ⟩` from `hy c B hB'`. Use `⟨_, LocalLatticeBases.bwG_intSpan_smul D w' _ _ (LocalLatticeBases.bwG_int_mem D w' t) hQ, fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[← algebraMap_smul D.what₂.LL t y, LinearMap.map_smulₛₗ, Pi.smul_apply, Pi.smul_apply, hyQ z, LinearMap.map_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hne : D.plEq w' ≠ D.plEq w` using `fun h => hw' (D.plEq.injective h)`. Take `⟨r, hr, k, hk⟩` from `htw _ hne`. Take `⟨P, hP, hdP⟩` from `(T.val0.lat _).1 hdy w' c B hB`. Establish `hr0 : algebraMap (𝓞 D.what₂.LL) D.what₂.LL r ≠ 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `h`. Apply `hr` to reduce the goal to its premises. Establish `: r = 0` using `FaithfulSMul.algebraMap_injective (𝓞 D.what₂.LL) D.what₂.LL (by rw [h, map_zero])`. Rewrite using `[this]`. Conclude with `zero_mem _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `e : t • y = ((algebraMap (𝓞 D.what₂.LL) D.what₂.LL r)⁻¹ * algebraMap (𝓞 D.what₂.LL) D.what₂.LL k) • (d • y)`. Rewrite using `[← algebraMap_smul D.what₂.LL t y, ← algebraMap_smul D.what₂.LL d y, smul_smul]`. Use `congr 1`. Establish `hk'` using `congrArg (algebraMap (𝓞 D.what₂.LL) D.what₂.LL) hk`. Rewrite `hk'` using `[map_mul, map_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[mul_comm, hk', mul_comm]`. Use `⟨_, LocalLatticeBases.bwG_intSpan_smul D w' _ _ (mul_mem (LocalLatticeBases.bwG_inv_mem D w' hr) (LocalLatticeBases.bwG_int_mem D w' k)) hP, fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[e, LinearMap.map_smulₛₗ, Pi.smul_apply, Pi.smul_apply, hdP z, LinearMap.map_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mem_S_of_val (T : Forms0 D u) {w : D.what₂.places.Pl} (hw : OverT D u w) (y : Vl D u 0)
     (hy : ValuesIntegralAllBases T w ((D.fm u).emb 0 y)) : y ∈ (D.fm u).S 0 w := by
@@ -98,13 +98,11 @@ theorem mem_S_of_val (T : Forms0 D u) {w : D.what₂.places.Pl} (hw : OverT D u 
     rfl
 
 /- English proof (translation)
-Introduce `c B hB`. Take `⟨t, ht, htx⟩` from `(D.mem_locW_iff w _ x).1 hx`. Establish `hB2 : IsLocBasis (D.what₂.places.resChar w) (dualSet (sigD D : D.host.E →+* D.host.E) (gramN D 0 (Nat.zero_le _)) (clsCrd D u 0 (Nat.zero_le _) c)) B`. Rewrite using `[show D.what₂.places.resChar w = (D.mem u).A.T from hw, ← LocalLatticeBases.bwG_Ld_coe]`. Conclude with `hB`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨P, hP, hxP⟩` from `(T.val0.lat (t • x)).1 htx w c B hB2`. Establish `ht0 : algebraMap (𝓞 D.what₂.LL) D.what₂.LL t ≠ 0`. Introduce `h`. Apply `ht` to reduce the goal to its premises. Establish `: t = 0` using `FaithfulSMul.algebraMap_injective (𝓞 D.what₂.LL) D.what₂.LL (by rw [h, map_zero])`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `zero_mem _`. Use `⟨D.what₂.embLL (algebraMap (𝓞 D.what₂.LL) D.what₂.LL t)⁻¹ • P, LocalLatticeBases.bwG_intSpan_smul D w _ _ (LocalLatticeBases.bwG_inv_mem D w ht) hP, fun z => ?_⟩` and prove the remaining obligations. Establish `hz` using `hxP z`. Rewrite `hz` using `[← algebraMap_smul D.what₂.LL t x, LinearMap.map_smulₛₗ, Pi.smul_apply, Pi.smul_apply]`.
-
-Rewrite using `[LinearMap.map_smul, Pi.smul_apply, ← hz, smul_eq_mul, smul_eq_mul, ← mul_assoc, map_inv₀, inv_mul_cancel₀ ((map_ne_zero D.what₂.embLL).2 ht0), one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_of_mem_S (T : Forms0 D u) {w : D.what₂.places.Pl} (hw : OverT D u w) (x : Vl D u 0)
     (hx : x ∈ (D.fm u).S 0 w) : ValuesIntegralAllBases T w ((D.fm u).emb 0 x) := by
@@ -129,9 +127,9 @@ theorem val_of_mem_S (T : Forms0 D u) {w : D.what₂.places.Pl} (hw : OverT D u 
     inv_mul_cancel₀ ((map_ne_zero D.what₂.embLL).2 ht0), one_mul]
 
 /- English proof (translation)
-Introduce `w hw hs v`. Use `⟨fun x hx => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `(hR v x).1`. Use `⟨y, mem_S_of_val T hw y ?_, hy⟩` and prove the remaining obligations. Rewrite using `[hy]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hU w hw hs v x ((mem_Bw_iff T hw hs v x).1 hx)`. Take `⟨y, hy⟩` from `(hR v x).2`. Use `⟨y, (mem_Bw_iff T hw hs v y).2 ?_, hy⟩` and prove the remaining obligations. Rewrite using `[hy]`. Conclude with `hD w hw hs v x (val_of_mem_S T hw x hx)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrality_of_rationality_local (T : Forms0 D u) (hR : HeckeRationalLevelZero D u) (hU : UpValInt0 T) (hD : DnValInt0 T) : HeckeIntegralLevelZero D u := by
   intro w hw hs v
@@ -146,7 +144,7 @@ theorem integrality_of_rationality_local (T : Forms0 D u) (hR : HeckeRationalLev
     exact hD w hw hs v x (val_of_mem_S T hw x hx)
 
 /- English proof (translation)
-Take `⟨n, hn, h⟩` from `h`. Use `⟨n, hn, fun i hi h0 x => ?_⟩` and prove the remaining obligations. Substitute `h0` using the available equality. Conclude with `h x`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem chiFin0_sym {Ch : ℕ → Type} {chOf : ∀ i, (D.mem u).C.cls i → Ch i}
     (T : Formalism.L2.Forms.FormsTiedSym D u Ch chOf) (h : Formalism.MainNotions.RT.ChiFin0 T) : LocalLatticeBases.ChiFin0 T.to0 := by
@@ -156,7 +154,7 @@ theorem chiFin0_sym {Ch : ℕ → Type} {chOf : ∀ i, (D.mem u).C.cls i → Ch 
   exact h x
 
 /- English proof (translation)
-Introduce and unpack `⟨Ch, chOf, T, hC⟩ hA hS`. Establish `hC0` using `chiFin0_sym T hC`. Conclude with `integrality_of_rationality_local T.to0 (hR D u _ hC0 hA hS) (hU D u _ hC0 hA hS) (hD D u _ hC0 hA hS)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integrality_at_forms_of_values
     (hR : ∀ (D : D7) (u : D.what₂.Word) (T : Forms0 D u), LocalLatticeBases.ChiFin0 T → admS D u → HidaSetting D u → HeckeRationalLevelZero D u)

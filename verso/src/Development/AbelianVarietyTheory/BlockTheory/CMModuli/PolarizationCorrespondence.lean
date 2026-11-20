@@ -31,13 +31,13 @@ def epsHom (f : R →+* R') (c : R') : DualNumber R →+* DualNumber R' where
       ring
 
 /- English proof (translation)
-Simplify using `[epsHom]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] lemma epsHom_fst (f : R →+* R') (c : R') (x : DualNumber R) :
     (epsHom f c x).fst = f x.fst := by simp [epsHom]
 
 /- English proof (translation)
-Simplify using `[epsHom]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] lemma epsHom_snd (f : R →+* R') (c : R') (x : DualNumber R) :
     (epsHom f c x).snd = c * f x.snd := by simp [epsHom]
@@ -71,9 +71,9 @@ def epsScale (c : R) : SpEps R ⟶ SpEps R :=
     rw [this])
 
 /- English proof (translation)
-Use `ext1`. Express the relevant statement in the definitionally equal form `spMap (epsRed R) ≫ spMap (epsHom (RingHom.id R) c) = spMap (epsRed R)`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Establish `: (epsRed R).comp (epsHom (RingHom.id R) c) = epsRed R`. Use `RingHom.ext fun x => ?_` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[epsRed]`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma epsZero_scale (c : R) : epsZero R ≫ epsScale c = epsZero R := by
   ext1
@@ -129,13 +129,13 @@ def TanCorr {R' : Type} [CommRing R'] {G' : Over (Sp R')} [GrpObj G'] (f : R →
   v'.1.left ≫ φ = spMap (epsHom f 1) ≫ v.1.left
 
 /- English proof (translation)
-Simplify using `[TanCorr, Tan.smul, epsScale]`.
+Simplify using the standard rewrite rules.
 -/
 example (v : Tan G) : TanCorr (RingHom.id R) (𝟙 G.left) (Tan.smul 1 v) v := by
   simp [TanCorr, Tan.smul, epsScale]
 
 /- English proof (translation)
-Simplify using `[linComb]`.
+Simplify using the standard rewrite rules.
 -/
 example (c : R) (v : Tan G) : linComb ![c] ![v] = Tan.smul c v := by
   simp [linComb]

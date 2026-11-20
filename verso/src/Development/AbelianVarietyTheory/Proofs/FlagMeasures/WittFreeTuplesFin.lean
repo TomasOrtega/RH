@@ -9,7 +9,7 @@ open GlobalTheory.SgAlg Matrix
 namespace GlobalTheory
 
 /- English proof (translation)
-Break down `GlobalTheory.T.isField_or_exists_swapped_idempotent_of_quadraticEtale σ hσ with hF | hS` into its components or cases. Use `letI := hF.toField`. Conclude with `GlobalTheory.T.witt_extension_hermitian_frames σ hσ J hJ Y Y' hY hY' hP`. Conclude with `GlobalTheory.T.witt_free_tuples_split_quadratic_etale σ hσ hS J hJ Y Y' hY hY' hP`.
+Separate the alternatives or extract the components of the hypothesis. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem witt_free_tuples_fin {E : Type} [CommRing E] (σ : E →+* E) (hσ : IsQA σ) {n k : ℕ}
     (J : Matrix (Fin n) (Fin n) E) (hJ : IsHermU σ J) (Y Y' : Matrix (Fin n) (Fin k) E)
@@ -21,9 +21,9 @@ theorem witt_free_tuples_fin {E : Type} [CommRing E] (σ : E →+* E) (hσ : IsQ
   · exact GlobalTheory.T.witt_free_tuples_split_quadratic_etale σ hσ hS J hJ Y Y' hY hY' hP
 
 /- English proof (translation)
-Take `⟨L, hL⟩` from `hX`. Use `⟨L.submatrix e id, ?_⟩` and prove the remaining obligations. Establish `h : L.submatrix e id * X.submatrix id e = (L * X).submatrix e e`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[h, hL]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem free_reindex {E : Type} [CommRing E] {n : ℕ} {a b : Type} [Fintype a] [DecidableEq a]
     [Fintype b] [DecidableEq b] (e : b ≃ a) {X : Matrix (Fin n) a E} (hX : Free X) :
@@ -37,7 +37,7 @@ theorem free_reindex {E : Type} [CommRing E] {n : ℕ} {a b : Type} [Fintype a] 
   simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[pairM, cT, Matrix.mul_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem pairM_reindex {E : Type} [CommRing E] (σ : E →+* E) {n : ℕ} {a b : Type} [Fintype a]
     (e : b ≃ a) (J : Matrix (Fin n) (Fin n) E) (X X' : Matrix (Fin n) a E) :
@@ -46,9 +46,9 @@ theorem pairM_reindex {E : Type} [CommRing E] (σ : E →+* E) {n : ℕ} {a b : 
   simp [pairM, cT, Matrix.mul_apply]
 
 /- English proof (translation)
-Set `e : Fin (Fintype.card a) ≃ a` to `(Fintype.equivFin a).symm`. Take `⟨g, hg, hgX⟩` from `witt_free_tuples_fin σ hσ J hJ (X.submatrix id e) (X'.submatrix id e) (free_reindex e hX) (free_reindex e hX') (by rw [pairM_reindex, pairM_reindex, hP])`. Use `⟨g, hg, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Establish `h` using `congrFun (congrFun hgX i) (e.symm j)`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify `h` using `[Matrix.mul_apply]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem witt_free_tuples {E : Type} [CommRing E] (σ : E →+* E) (hσ : IsQA σ) {n : ℕ} {a : Type}
     [Fintype a] [DecidableEq a] (J : Matrix (Fin n) (Fin n) E) (hJ : IsHermU σ J)

@@ -13,11 +13,11 @@ noncomputable section
 namespace GlobalTheory.CoverDS
 
 /- English proof (translation)
-Introduce `hU p q hn T R R' lam hl hR hR'`. Establish `h0 : 0 < p + q` using `hn`. Take `⟨P, e, -, h, rfl | rfl⟩` from `GlobalTheory.RealPar.isParam_cases hl`. Take `⟨σ, hσ, hP⟩` from `(GlobalTheory.RealPar.hasParam_iff_factors R h0 P h).1 hR`. Take `⟨σ', hσ', hP'⟩` from `(GlobalTheory.RealPar.hasParam_iff_factors R' h0 P h).1 hR'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨V, hV⟩` from `hU (p + q) P.sgn P.lam R.U.H σ R'.U.H σ' P.hc hP hP'`. Use `⟨V, fun x v => ?_⟩` and prove the remaining obligations. Rewrite using `[hσ x, hσ' x]`. Conclude with `hV _ (h.cov_mem T x) v`. Take `⟨σ, hσ, hP⟩` from `(GlobalTheory.RealPar.hasParam_half_iff R h0 P h).1 hR`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨σ', hσ', hP'⟩` from `(GlobalTheory.RealPar.hasParam_half_iff R' h0 P h).1 hR'`. Take `⟨V, hV⟩` from `hU (p + q) P.sgn P.lam R.U.H σ R'.U.H σ' P.hc hP hP'`. Use `⟨V, fun x v => ?_⟩` and prove the remaining obligations. Rewrite using `[hσ x, hσ' x, ContinuousLinearMap.smul_apply, ContinuousLinearMap.smul_apply, map_smul]`. Rewrite using `[hV _ (h.cov_mem T x) v]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitEquiv_of_dsUnique : GlobalTheory.Dec.DSUnique → ∀ (p q : ℕ), 1 ≤ p + q → ∀ (T : GrpData p q) (R R' : DSRep T) (lam : Ix p q → ℚ), IsParam lam → HasParam R lam → HasParam R' lam → UnitEquiv R R' := by
   intro hU p q hn T R R' lam hl hR hR'

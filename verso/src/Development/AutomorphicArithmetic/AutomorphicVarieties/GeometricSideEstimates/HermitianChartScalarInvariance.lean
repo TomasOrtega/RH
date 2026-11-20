@@ -10,9 +10,7 @@ open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.Li
 open scoped ContDiff
 
 /- English proof (translation)
-Establish `hc : sc (Matrix.of y) ≠ 0` using `(Real.exp_pos _).ne'`. Establish `hy' : IsUnit (Matrix.of y)` using `hy`. Establish `h : IsUnit (sc (Matrix.of y) • Matrix.of y)`. Rewrite using `[Algebra.smul_def]`. Conclude with `((IsUnit.mk0 _ hc).map (algebraMap ℝ (Matrix (Fin a) (Fin a) (Cinf E)))).mul hy'`.
-
-Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem scal_mem {E : Type} [Field E] [NumberField E] {a : ℕ} {y : Lie E a} (hy : y ∈ invSet E a) :
     sc (Matrix.of y) • y ∈ invSet E a := by
@@ -24,7 +22,7 @@ private theorem scal_mem {E : Type} [Field E] [NumberField E] {a : ℕ} {y : Lie
   exact h
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `hy`. Take `rfl : y = toL u.val` from `hu.symm`. Rewrite using `[chart_val, (UpperTheory.point_evaluation_multiplicative_tsum E a ha L ℂ (pg P)).2.1 g u]`. Use `tsum_congr fun v => congrArg (pg P) ?_` and prove the remaining obligations. Conclude with `(Matrix.vecMul_smul _ _ _).symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem chart_eq {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ} (ha : 1 ≤ a)
     (L : AddSubgroup (Fin a → Af E)) (P : (Fin a → Cinf E) → ℂ) (g : GA E a) {y : Lie E a} (hy : y ∈ invSet E a) :
@@ -36,17 +34,17 @@ private theorem chart_eq {E : Type} [Field E] [NumberField E] [IsTotallyComplex 
   exact (Matrix.vecMul_smul _ _ _).symm
 
 /- English proof (translation)
-Introduce `E _ _ _ a ha L hL P hP`. Take `⟨N, hN⟩` from `UpperTheory.geometry_of_numbers_lattice_estimate E a ha L hL`. Take `⟨hs, h1, hd, -⟩` from `UpperTheory.deriv_similitudeChar_at_one_eq_trace E a`. Establish `hS : ContDiffOn ℝ ∞ (fun y : Lie E a => sc (Matrix.of y) • y) (invSet E a)` using `hs.smul contDiffOn_id`. Use `⟨⟨gsum L (pg P), fun g => ?_⟩, rfl, fun X => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `((UpperTheory.smooth_sum_left_right_mul_order E a _ _ N (hN g) P hP).comp hS fun y hy => scal_mem hy).congr fun y hy => chart_eq ha L P g hy`. Establish `ho : oneL E a ∈ invSet E a` using `isUnit_one`. Establish `hn : invSet E a ∈ nhds (oneL E a)` using `isOpen_invSet.mem_nhds ho`. Establish `h1' : sc (Matrix.of (oneL E a)) = 1` using `h1`. Establish `hsd : DifferentiableAt ℝ (fun y : Lie E a => sc (Matrix.of y)) (oneL E a)` using `(hs.contDiffAt hn).differentiableAt (by simp)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSd` using `hsd.hasFDerivAt.smul (hasFDerivAt_id (oneL E a))`. Set `Z : Lie E a` to `X + (-ell E a X) • oneL E a`. Set `T : (Fin a → Cinf E) →ₗ[ℝ] (Fin a → Cinf E)` to `(Matrix.vecMulLinear (Matrix.of Z)).restrictScalars ℝ`. Take `⟨Q, hQ, hT⟩` from `(UpperTheory.quadratic_form_gradient_formula E a P hP).2.2 T`. Use `⟨Q, hQ, funext fun g => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨-, hF, hF'⟩` from `UpperTheory.sum_der E a _ _ N (hN g) P hP _ ho`. Establish `e : chart (gsum L (pg P)) g =ᶠ[nhds (oneL E a)] msum (fun v : lat L g => pt (rt g) v.1) P ∘ fun y : Lie E a => sc (Matrix.of y) • y` using `Filter.eventually_of_mem hn fun y hy => chart_eq ha L P g hy`. Establish `hF1 : HasFDerivAt (msum (fun v : lat L g => pt (rt g) v.1) P) (fderiv ℝ (msum (fun v : lat L g => pt (rt g) v.1) P) (oneL E a)) (sc (Matrix.of (oneL E a)) • oneL E a)`. Rewrite using `[h1', one_smul]`. Conclude with `hF.hasFDerivAt`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hc` using `HasFDerivAt.comp (f := fun y : Lie E a => sc (Matrix.of y) • y) (oneL E a) hF1 hSd`. Express the relevant statement in the definitionally equal form `fderiv ℝ (chart (gsum L (pg P)) g) (oneL E a) X = _`. Rewrite using `[e.fderiv_eq, hc.fderiv]`. Simplify using `only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.id_apply, ContinuousLinearMap.smulRight_apply, h1', one_smul, hd, id]`. Rewrite using `[hF']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `tsum_congr fun v => ?_` and prove the remaining obligations. Rewrite using `[← hT]`. Establish `e1 : pt (rt g) v.1 ᵥ* Matrix.of (oneL E a) = pt (rt g) v.1` using `Matrix.vecMul_one _`. Rewrite using `[e1]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.hermitian_chart_scalar_invariance :
     ThSm := by

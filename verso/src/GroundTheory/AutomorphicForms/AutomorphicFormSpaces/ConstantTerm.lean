@@ -29,9 +29,9 @@ theorem blockEntry_apply (X : UPos n r → R) (i j : Fin n) :
     blockEntry X i j = if h : (i : ℕ) < r ∧ r ≤ (j : ℕ) then X ⟨(i, j), h⟩ else 0 := rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Matrix.zero_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[blockEntry_apply, blockEntry_apply]`. Use `split_ifs with h1 h2`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[mul_zero]`. Rewrite using `[zero_mul]`. Rewrite using `[zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blockEntry_mul_blockEntry (X Y : UPos n r → R) : blockEntry X * blockEntry Y = 0 := by
   ext i j
@@ -45,7 +45,7 @@ theorem blockEntry_mul_blockEntry (X Y : UPos n r → R) : blockEntry X * blockE
   · rw [zero_mul]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [blockEntry_apply, Matrix.add_apply, Pi.add_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem blockEntry_add (X Y : UPos n r → R) : blockEntry (X + Y) = blockEntry X + blockEntry Y := by
   ext i j
@@ -53,7 +53,7 @@ theorem blockEntry_add (X Y : UPos n r → R) : blockEntry (X + Y) = blockEntry 
   split_ifs <;> simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [blockEntry_apply, Matrix.zero_apply, Pi.zero_apply]`. Apply the tactic sequence `split_ifs <;> rfl`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem blockEntry_zero : blockEntry (0 : UPos n r → R) = 0 := by
   ext i j
@@ -63,7 +63,7 @@ theorem blockEntry_zero : blockEntry (0 : UPos n r → R) = 0 := by
 def unipMatrix (X : UPos n r → R) : Matrix (Fin n) (Fin n) R := 1 + blockEntry X
 
 /- English proof (translation)
-Simplify using `only [unipMatrix, mul_add, add_mul, one_mul, mul_one, blockEntry_mul_blockEntry, add_zero, blockEntry_add]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem unipMatrix_mul (X Y : UPos n r → R) : unipMatrix X * unipMatrix Y = unipMatrix (X + Y) := by
   simp only [unipMatrix, mul_add, add_mul, one_mul, mul_one, blockEntry_mul_blockEntry, add_zero,
@@ -71,7 +71,7 @@ theorem unipMatrix_mul (X Y : UPos n r → R) : unipMatrix X * unipMatrix Y = un
   abel
 
 /- English proof (translation)
-Simplify using `[unipMatrix, blockEntry_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem unipMatrix_zero : unipMatrix (0 : UPos n r → R) = 1 := by
   simp [unipMatrix, blockEntry_zero]
@@ -93,18 +93,18 @@ theorem coe_unipGL_inv (X : UPos n r → R) :
     (((unipGL X)⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) = unipMatrix (-X) := rfl
 
 /- English proof (translation)
-The claim follows from `Units.ext (unipMatrix_mul X Y).symm`.
+A detailed English derivation is pending.
 -/
 theorem unipGL_add (X Y : UPos n r → R) : unipGL (X + Y) = unipGL X * unipGL Y :=
   Units.ext (unipMatrix_mul X Y).symm
 
 /- English proof (translation)
-The claim follows from `Units.ext unipMatrix_zero`.
+A detailed English derivation is pending.
 -/
 theorem unipGL_zero : unipGL (0 : UPos n r → R) = 1 := Units.ext unipMatrix_zero
 
 /- English proof (translation)
-Introduce `X Y h`. Use function extensionality and compare the values at `p`. Use `congrArg (fun g : GL (Fin n) R => (g : Matrix (Fin n) (Fin n) R) p.1.1 p.1.2) h` as an intermediate fact. Simplify using `only [coe_unipGL, unipMatrix, Matrix.add_apply, blockEntry_apply, dif_pos p.2] at this`. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem unipGL_injective : Function.Injective (unipGL : (UPos n r → R) → GL (Fin n) R) := by
   intro X Y h
@@ -118,7 +118,7 @@ end Ring
 variable {K : Type*} [Field K] [NumberField K] {n r : ℕ}
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [AdelicGLn.diagonal_apply, coe_unipGL, unipMatrix, Matrix.add_apply, blockEntry_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem diagonal_unipGL (ξ : UPos n r → K) :
     AdelicGLn.diagonal K n (unipGL ξ) = unipGL (fun p => algebraMap K 𝔸[K] (ξ p)) := by
@@ -128,7 +128,7 @@ theorem diagonal_unipGL (ξ : UPos n r → K) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Use `continuous_const.add (continuous_pi fun i => continuous_pi fun j => ?_)` and prove the remaining obligations. Simplify using `only [blockEntry_apply]`. Use `split_ifs`. Conclude with `continuous_apply _`. Conclude with `continuous_const`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_unipMatrix :
     Continuous (unipMatrix : (UPos n r → 𝔸[K]) → Matrix (Fin n) (Fin n) 𝔸[K]) := by
@@ -139,7 +139,7 @@ theorem continuous_unipMatrix :
   · exact continuous_const
 
 /- English proof (translation)
-The claim follows from `Units.continuous_iff.2 ⟨continuous_unipMatrix, continuous_unipMatrix.comp continuous_neg⟩`.
+A detailed English derivation is pending.
 -/
 theorem continuous_unipGL :
     Continuous (unipGL : (UPos n r → 𝔸[K]) → AdelicGLn.AdelicGL K n) :=
@@ -166,17 +166,17 @@ instance countable_unipLattice : Countable (unipLattice K n r) := by
   exact hc.to_subtype
 
 /- English proof (translation)
-The claim follows from `MeasurableSet.univ_pi fun _ => GroundTheory.Global.measurableSet_fundamentalSet K`.
+A detailed English derivation is pending.
 -/
 theorem measurableSet_unipFundamentalDomain : MeasurableSet (unipFundamentalDomain K n r) :=
   MeasurableSet.univ_pi fun _ => GroundTheory.Global.measurableSet_fundamentalSet K
 
 /- English proof (translation)
-Use `IsAddFundamentalDomain.mk' measurableSet_unipFundamentalDomain.nullMeasurableSet fun X => ?_` and prove the remaining obligations. Use `choose k hk huniq using fun p => GroundTheory.Global.existsUnique_sub_mem_fundamentalSet K (X p)`. Use `⟨⟨fun p => algebraMap K 𝔸[K] (-k p), fun p => -k p, rfl⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `p _`. Express the relevant statement in the definitionally equal form `algebraMap K 𝔸[K] (-k p) + X p ∈ GroundTheory.Global.fundamentalSet K`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_neg, neg_add_eq_sub]`. Conclude with `hk p`. Introduce and unpack `⟨_, ξ, rfl⟩ h`. Use `Subtype.ext (funext fun p => ?_)` and prove the remaining obligations. Establish `hp : algebraMap K 𝔸[K] (ξ p) + X p ∈ GroundTheory.Global.fundamentalSet K` using `h p (mem_univ p)`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Establish `: -ξ p = k p` using `huniq p (-ξ p) (by show X p - algebraMap K 𝔸[K] (-ξ p) ∈ GroundTheory.Global.fundamentalSet K`. Rewrite using `[map_neg, sub_neg_eq_add, add_comm])` and apply the resulting hypothesis. Express the relevant statement in the definitionally equal form `algebraMap K 𝔸[K] (ξ p) = algebraMap K 𝔸[K] (-k p)`. Rewrite using `[← this, neg_neg]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAddFundamentalDomain_unipFundamentalDomain :
     IsAddFundamentalDomain (unipLattice K n r) (unipFundamentalDomain K n r)
@@ -200,7 +200,7 @@ theorem isAddFundamentalDomain_unipFundamentalDomain :
     rw [← this, neg_neg]
 
 /- English proof (translation)
-Use `⟨Set.univ.pi fun _ => closure (GroundTheory.Global.fundamentalSetInfinite K) ×ˢ (GroundTheory.Global.integralFiniteAdeles (𝓞 K) K : Set (FiniteAdeleRing (𝓞 K) K)), isCompact_univ_pi fun _ => (GroundTheory.Global.isCompact_closure_fundamentalSetInfinite K).prod (GroundTheory.Globa …` and prove the remaining obligations. Introduce `X hX p _`. Conclude with `⟨subset_closure (hX p (mem_univ p)).1, (hX p (mem_univ p)).2⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem exists_isCompact_superset_unipFundamentalDomain :
     ∃ C, IsCompact C ∧ unipFundamentalDomain K n r ⊆ C := by
@@ -217,7 +217,7 @@ def constantTerm (φ : AdelicGLn.AdelicGL K n → ℂ) (g : AdelicGLn.AdelicGL K
   ∫ X in unipFundamentalDomain K n r, φ (unipGL X * g) ∂unipMeasure K n r
 
 /- English proof (translation)
-Take `⟨_, ξ, rfl⟩` from `ξ`. Express the relevant statement in the definitionally equal form `φ (unipGL ((fun p => algebraMap K 𝔸[K] (ξ p)) + X) * g) = _`. Rewrite using `[unipGL_add, ← diagonal_unipGL, mul_assoc, hφ]`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsLeftInvariant.unipGL_vadd {φ : AdelicGLn.AdelicGL K n → ℂ} (hφ : IsLeftInvariant φ)
     (g : AdelicGLn.AdelicGL K n) (ξ : unipLattice K n r) (X : UPos n r → 𝔸[K]) :
@@ -227,7 +227,7 @@ theorem IsLeftInvariant.unipGL_vadd {φ : AdelicGLn.AdelicGL K n → ℂ} (hφ :
   rw [unipGL_add, ← diagonal_unipGL, mul_assoc, hφ]
 
 /- English proof (translation)
-The claim follows from `isAddFundamentalDomain_unipFundamentalDomain.setIntegral_eq hD fun ξ X => hφ.unipGL_vadd g ξ X`.
+A detailed English derivation is pending.
 -/
 theorem constantTerm_eq_setIntegral {φ : AdelicGLn.AdelicGL K n → ℂ} (hφ : IsLeftInvariant φ)
     {D : Set (UPos n r → 𝔸[K])}
@@ -237,7 +237,7 @@ theorem constantTerm_eq_setIntegral {φ : AdelicGLn.AdelicGL K n → ℂ} (hφ :
   isAddFundamentalDomain_unipFundamentalDomain.setIntegral_eq hD fun ξ X => hφ.unipGL_vadd g ξ X
 
 /- English proof (translation)
-Take `⟨C, hC, hDC⟩` from `exists_isCompact_superset_unipFundamentalDomain (K := K) (n := n) (r := r)`. Establish `hc : Continuous fun X : UPos n r → 𝔸[K] => φ (unipGL X * g)` using `hφ.comp (continuous_unipGL.mul continuous_const)`. Conclude with `(hc.continuousOn.integrableOn_compact hC).mono_set hDC`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integrableOn_constantTerm {φ : AdelicGLn.AdelicGL K n → ℂ} (hφ : Continuous φ)
     (g : AdelicGLn.AdelicGL K n) :
@@ -248,7 +248,7 @@ theorem integrableOn_constantTerm {φ : AdelicGLn.AdelicGL K n → ℂ} (hφ : C
   exact (hc.continuousOn.integrableOn_compact hC).mono_set hDC
 
 /- English proof (translation)
-The claim follows from `integral_add (integrableOn_constantTerm hφ g) (integrableOn_constantTerm hψ g)`.
+A detailed English derivation is pending.
 -/
 theorem constantTerm_add {φ ψ : AdelicGLn.AdelicGL K n → ℂ} (hφ : Continuous φ)
     (hψ : Continuous ψ) (g : AdelicGLn.AdelicGL K n) :
@@ -256,21 +256,21 @@ theorem constantTerm_add {φ ψ : AdelicGLn.AdelicGL K n → ℂ} (hφ : Continu
   integral_add (integrableOn_constantTerm hφ g) (integrableOn_constantTerm hψ g)
 
 /- English proof (translation)
-The claim follows from `integral_smul c _`.
+A detailed English derivation is pending.
 -/
 theorem constantTerm_smul (c : ℂ) (φ : AdelicGLn.AdelicGL K n → ℂ) (g : AdelicGLn.AdelicGL K n) :
     constantTerm r (c • φ) g = c • constantTerm r φ g :=
   integral_smul c _
 
 /- English proof (translation)
-Simplify using `[constantTerm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem constantTerm_zero (g : AdelicGLn.AdelicGL K n) :
     constantTerm r (0 : AdelicGLn.AdelicGL K n → ℂ) g = 0 := by
   simp [constantTerm]
 
 /- English proof (translation)
-Simplify using `only [constantTerm, rightTranslate, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem constantTerm_rightTranslate (φ : AdelicGLn.AdelicGL K n → ℂ) (h g : AdelicGLn.AdelicGL K n) :
     constantTerm r (rightTranslate h φ) g = constantTerm r φ (g * h) := by
@@ -291,14 +291,14 @@ def cuspForms : Submodule ℂ (AdelicGLn.AdelicGL K n → ℂ) where
     rw [constantTerm_smul, hφ.2 r hr hrn g, smul_zero]⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_cuspForms {φ : AdelicGLn.AdelicGL K n → ℂ} :
     φ ∈ cuspForms K n ↔ IsAutomorphicForm φ ∧ IsCuspidal φ :=
   Iff.rfl
 
 /- English proof (translation)
-Introduce `_ hφ` and use `hφ.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cuspForms_le_automorphicForms : cuspForms K n ≤ automorphicForms K n :=
   fun _ hφ => hφ.1

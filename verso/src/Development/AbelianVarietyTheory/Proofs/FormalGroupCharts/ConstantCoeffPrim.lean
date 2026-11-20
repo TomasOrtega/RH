@@ -23,35 +23,35 @@ theorem coeff_prim (ω : τ → MvPowerSeries τ k) (m : τ →₀ ℕ) :
       ∑ w, if m w = 0 then 0 else coeff (m - Finsupp.single w 1) (ω w) := rfl
 
 /- English proof (translation)
-Rewrite using `[← coeff_zero_eq_constantCoeff_apply, coeff_prim]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem constantCoeff_prim (ω : τ → MvPowerSeries τ k) : constantCoeff (prim ω) = 0 := by
   rw [← coeff_zero_eq_constantCoeff_apply, coeff_prim]
   simp
 
 /- English proof (translation)
-Rewrite using `[Finsupp.degree]`. Conclude with `Finset.sum_subset (Finset.subset_univ _) (fun w _ hw => by simpa using hw)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem degree_eq_sum (n : τ →₀ ℕ) : n.degree = ∑ w, n w := by
   rw [Finsupp.degree]
   exact Finset.sum_subset (Finset.subset_univ _) (fun w _ hw => by simpa using hw)
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[coeff_pderiv, coeff_prim]`. Establish `hterm : ∀ w, ((n v : k) + 1) * (if (n + Finsupp.single v 1 : τ →₀ ℕ) w = 0 then 0 else coeff (n + Finsupp.single v 1 - Finsupp.single w 1) (ω w)) = ((n w : k) + if w = v then 1 else 0) * coeff n (ω v)`. Introduce `w`. Distinguish the cases in `hwv : w = v`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Substitute `hwv` using the available equality. Rewrite using `[if_neg (by simp), add_tsub_cancel_right, if_pos rfl]`. Establish `hsw : (Finsupp.single v 1 : τ →₀ ℕ) w = 0` using `by rw [Finsupp.single_apply, if_neg (Ne.symm hwv)]`. Rewrite using `[Finsupp.add_apply, hsw, add_zero, if_neg hwv]`. Distinguish the cases in `hnw : n w = 0`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Simplify using `[hnw]`. Rewrite using `[if_neg hnw]`. Establish `hle : Finsupp.single w 1 ≤ n` using `Finsupp.single_le_iff.2 (Nat.one_le_iff_ne_zero.2 hnw)`. Use `set p := n - Finsupp.single w 1 with hp`. Establish `hpn : p + Finsupp.single w 1 = n` using `tsub_add_cancel_of_le hle`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpv : p v = n v`. Simplify using `[hp, Finsupp.tsub_apply, Finsupp.single_apply, hwv]`. Establish `hpw : p w + 1 = n w`. Simplify using `only [hp, Finsupp.tsub_apply, Finsupp.single_eq_same]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `h1 : n + Finsupp.single v 1 - Finsupp.single w 1 = p + Finsupp.single v 1`. Rewrite using `[← hpn, add_right_comm, add_tsub_cancel_right]`. Establish `hc` using `congrArg (coeff p) (hω v w)`. Rewrite `hc` using `[coeff_pderiv, coeff_pderiv, hpn, hpv]`. Rewrite using `[h1, mul_comm, ← hc, ← hpw]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hsum : ((n v : k) + 1) * ∑ w, (if (n + Finsupp.single v 1 : τ →₀ ℕ) w = 0 then 0 else coeff (n + Finsupp.single v 1 - Finsupp.single w 1) (ω w)) = ((n.degree : k) + 1) * coeff n (ω v)`. Rewrite using `[Finset.mul_sum, Finset.sum_congr rfl fun w _ => hterm w, ← Finset.sum_mul, Finset.sum_add_distrib, Finset.sum_ite_eq', if_pos (Finset.mem_univ _), degree_eq_sum]`. Use `push_cast`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hdeg : ((n + Finsupp.single v 1).degree : ℚ) = (n.degree : ℚ) + 1`. Rewrite using `[map_add, Finsupp.degree_single]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_comm, ← mul_assoc, mul_comm _ (algebraMap ℚ k _), mul_assoc, hsum, hdeg, ← mul_assoc]`. Establish `: algebraMap ℚ k (((n.degree : ℚ) + 1)⁻¹) * ((n.degree : k) + 1) = 1`. Rewrite using `[show ((n.degree : k) + 1) = algebraMap ℚ k ((n.degree : ℚ) + 1) by simp, ← map_mul, inv_mul_cancel₀ (by positivity), map_one]`. Rewrite using `[this, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pderiv_prim (ω : τ → MvPowerSeries τ k)
     (hω : ∀ a c, pderiv k c (ω a) = pderiv k a (ω c)) (v : τ) : pderiv k v (prim ω) = ω v := by

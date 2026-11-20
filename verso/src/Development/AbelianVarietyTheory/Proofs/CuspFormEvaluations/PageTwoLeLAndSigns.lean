@@ -10,25 +10,25 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `D B P j X large₂ H C2 A2 CR CT ka wL wF Tn nP nW h0 hp hc`. Establish `hm` using `D.R.two_le_m`. Establish `hk` using `D.R.m_add_three_le_k`. Establish `hf : 2 ≤ D.R.f`. Establish `: 0 < D.R.ord` using `D.R.ord_pos`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Ranks.f Ranks.n`. Use linear arithmetic over natural numbers and integers. Establish `hr : 6 ≤ D.R.r` using `by unfold Ranks.r; omega`. Use `⟨?_, hf, hr, ?_, ?_, Iff.rfl⟩` and prove the remaining obligations. Take `⟨-, hS, -⟩` from `hp`.
+Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hn : ka.n = D.R.nV` using `hS.1`. Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, hC, hZ, -⟩` from `hS`. Take `⟨-, -, -, -, hlf, -, -, -, hln⟩` from `hc`. Assume the negation of the conclusion as `hL`. Use `push_neg at hL`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hf0 : (0 : ℝ) < D.R.f` using `by exact_mod_cast (by omega : 0 < D.R.f)`. Establish `hr0 : (0 : ℝ) < D.R.r` using `by exact_mod_cast (by omega : 0 < D.R.r)`. Establish `hrn : (D.R.r : ℝ) ≤ ka.n`. Rewrite using `[hn]; exact_mod_cast (by unfold Ranks.nV; omega : D.R.r ≤ D.R.nV)`. Establish `he : Real.exp 1 ≤ 3` using `(Real.exp_one_lt_d9.trans (by norm_num)).le`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he4 : Real.exp 4 ≤ 81`. Establish `: Real.exp 4 = Real.exp 1 ^ 4` using `by rw [← Real.exp_nat_mul]; norm_num`. Rewrite using `[this]`. Combine the equalities or inequalities in the displayed calculation. Establish `hf1 : (D.R.f : ℝ) ≤ 81` using `((Real.log_le_iff_le_exp hf0).1 (by linarith : Real.log D.R.f ≤ 4)).trans he4`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr1 : (D.R.r : ℝ) ≤ 81` using `hrn.trans (((Real.log_le_iff_le_exp (hr0.trans_le hrn)).1 (by linarith : Real.log ka.n ≤ 4)).trans he4)`. Establish `hfr : (D.R.f : ℝ) * D.R.r ≤ 81 * 81` using `mul_le_mul hf1 hr1 hr0.le (by norm_num)`. Establish `hZ2 : Zb D large₂ ≤ 81 * 81 * 2`. Unfold `Zb`. Use `mul_pos hf0 hr0` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hC2 : (1000 : ℝ) ^ 20 ≤ H.C1 ^ 20` using `pow_le_pow_left₀ (by norm_num) hC 20`. Establish `: (81 * 81 * 2 : ℝ) < 1000 ^ 20` using `by norm_num`. Combine the linear equalities and inequalities to obtain the conclusion. Unfold `lamStar`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `h1` using `Real.log_natCast_nonneg (D.host.g 0 * D.host.g 1)`. Establish `h2` using `Real.log_natCast_nonneg (D.R.f ^ 2 * D.host.q * D.host.d)`. Move the coercions through the operations in `at h1 h2`. Establish `e : 4 * ((D.R.f : ℝ) / 2) ^ 2 = (D.R.f : ℝ) ^ 2` using `by ring`. Rewrite using `[e]`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `add_nonneg h1 h2`. Introduce `hj`. Unfold `WeightFamilies.dimY`. Establish `hp5 : 5 ≤ (D.R.sigW j).1` using `by show 5 ≤ D.R.k + j - 1`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : 1 ≤ (D.R.sigW j).1 * ((D.R.sigW j).1 - 1) / 2`. Establish `: 5 * 4 ≤ (D.R.sigW j).1 * ((D.R.sigW j).1 - 1)` using `Nat.mul_le_mul hp5 (by omega)`. Use linear arithmetic over natural numbers and integers. Conclude with `Nat.mul_pos (by omega) (by omega)`.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem page_two_le_L_and_signs : ∀ (D : D7) (B : WeightFamilies.Prov D) (P : ModuliIntegralCharts.Prov D) (j : ℕ) (X : PJ D B P j) (large₂ : SizeData₂ D) (H : KHyp) (C2 A2 CR CT : ℝ) (ka wL wF : WeightFamilies.Wt D j) (Tn nP nW : ℕ) (h0 : ℝ), FamilyHypotheses.HypPage large₂ X H C2 A2 CR CT ka wL wF Tn nP nW h0 → ReciprocityTheory.ChartRestriction.G.PullbackSections.SupBoundPageRows D large₂ ka → 2 ≤ large₂.sc.L ∧ 2 ≤ D.R.f ∧ 6 ≤ D.R.r ∧ 0 ≤ lamStar D ∧ (1 ≤ j → 1 ≤ WeightFamilies.dimY D j) ∧ (FamilyHypotheses.SupBoundPageRows D large₂ ka ↔ ReciprocityTheory.ChartRestriction.G.PullbackSections.SupBoundPageRows D large₂ ka) := by
   intro D B P j X large₂ H C2 A2 CR CT ka wL wF Tn nP nW h0 hp hc

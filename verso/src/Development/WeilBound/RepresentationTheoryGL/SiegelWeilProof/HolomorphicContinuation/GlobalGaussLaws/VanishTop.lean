@@ -20,7 +20,7 @@ import Development.WeilBound.RepresentationTheoryGL.SiegelWeilProof.HolomorphicC
 namespace PositivityTheory.Rg.Sw.Glob
 
 /- English proof (translation)
-Establish `hTM` using `tensMem`. Establish `hTL` using `thLin_of hW`. Conclude with `main hA sFrame sEmb sigOK splitFock hTM (locOpEx_of_locFact hLF) hLi (linSec_of hTL) (gSplit_of gIwasawa hAA hLF awayIn schFP hTM lNZ) (gIauto_of hTA hTM) gIk (gIinv_of hTM hTL hLC hDO) hId hE gLamBd (gLsing PositivityTheory.Rg.Sw.twoSided' denseTau) hC (convRight_of hE) hTL lNZ`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem top (hA : AbsThm) (hLF : LocFact) (hAA : AwayAct)
     (hLi : LocInst) (hTA : PositivityTheory.PfSWUS.ThetaAuto) (hLC : LieComm) (hDO : DerivOne) (hId : GIdil)

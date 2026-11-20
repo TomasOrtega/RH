@@ -22,7 +22,7 @@ abbrev exF : Type := FractionRing exO
 abbrev exΩ : Type := RatFunc exF
 
 /- English proof (translation)
-Introduce `pp _ _` and use `by rw [show (Kleiman.twistBundle exO (Kleiman.lineX exF) 0).toSubSystem = Kleiman.twistSys exO (Kleiman.lineX exF) 0 from rfl, Kleiman.interNum_twistSys_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem NefGenericDVR.hyps :
     Kleiman.NefAbove (Kleiman.twistBundle exO (Kleiman.lineX exF) 0).toSubSystem
@@ -32,7 +32,7 @@ theorem NefGenericDVR.hyps :
       Kleiman.twistSys exO (Kleiman.lineX exF) 0 from rfl, Kleiman.interNum_twistSys_zero]
 
 /- English proof (translation)
-The claim follows from `h exO exF exΩ 1 (Kleiman.lineX exF) (Kleiman.twistBundle exO (Kleiman.lineX exF) 0) NefGenericDVR.hyps`.
+A detailed English derivation is pending.
 -/
 example (h : NefGenericDVR.Statement) :=
   h exO exF exΩ 1 (Kleiman.lineX exF) (Kleiman.twistBundle exO (Kleiman.lineX exF) 0) NefGenericDVR.hyps

@@ -7,7 +7,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.QuotientMeasureUniquene
 namespace PI
 
 /- English proof (translation)
-The claim follows from `PI.QuotMeasUniqW.wqUnique_of PI.QuotMeasUniqW.qmuWeight PI.QuotMeasUniqW.qmuLift`.
+A detailed English derivation is pending.
 -/
 theorem wqUnique : PI.WeilQuotMeas.WqUnique :=
   PI.QuotMeasUniqW.wqUnique_of PI.QuotMeasUniqW.qmuWeight PI.QuotMeasUniqW.qmuLift

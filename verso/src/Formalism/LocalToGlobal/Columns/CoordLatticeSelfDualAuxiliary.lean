@@ -17,7 +17,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {d : ColDat} (a : ColArgs d) (hS : SpStd d.toColBase) (hH : HostHyp d) (hP : PtSurjP d)
 
 /- English proof (translation)
-Use `Matrix.ext fun x y => ?_` and prove the remaining obligations. Use `show d.sp.X'.hT (d.sp.X'.frame x) (d.sp.X'.frame y) = _`. Rewrite using `[hS.P_on, Matrix.one_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gram_eq_one_of_standard (hS : SpStd d.toColBase) : d.sp.X'.gram = 1 := by
   refine Matrix.ext fun x y => ?_
@@ -25,9 +25,9 @@ theorem gram_eq_one_of_standard (hS : SpStd d.toColBase) : d.sp.X'.gram = 1 := b
   rw [hS.P_on, Matrix.one_apply]
 
 /- English proof (translation)
-Unfold `Formalism.L2.Herm.crdLat`. Rewrite using `[hS.selfDual_span_frame_auxiliary]`. Use `th_map_span_std (Formalism.L2.Herm.crd d.sp.X') _ (Equiv.refl _) fun a => ?_` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Use `show d.sp.X'.frame.equivFun (d.sp.X'.frame a) j = _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Basis.equivFun_self, Pi.single_apply]`. Use `congr 1`. Conclude with `propext eq_comm`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem coordLattice_selfDual_auxiliary (hS : SpStd d.toColBase) : Formalism.L2.Herm.crdLat d.sp.X' d.sp.X'.L0 = stdLat d.X.E d.sp.X'.rank := by
   unfold Formalism.L2.Herm.crdLat
@@ -40,9 +40,9 @@ theorem coordLattice_selfDual_auxiliary (hS : SpStd d.toColBase) : Formalism.L2.
   exact propext eq_comm
 
 /- English proof (translation)
-Unfold `Formalism.L2.Herm.crdLat Formalism.L2.Forms.reL`. Rewrite using `[← Submodule.map_comp]`. Use `congr 1`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `j`. Use `show d.sp.X'.frame.equivFun ((CF.crdP (d.colRec a)).symm x) j = _`. Unfold `CF.crdP`. Rewrite using `[LinearEquiv.trans_symm, LinearEquiv.trans_apply, LinearEquiv.apply_symm_apply]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem hp_crdLat_map (L : Submodule (𝓞 d.host.E) (Fin (d.R.N d.R.m - 1) → d.host.E)) :
     Formalism.L2.Herm.crdLat d.sp.X' (L.map (((CF.crdP (d.colRec a)).symm :
@@ -80,7 +80,7 @@ def levelExponentAtT (u : d.what₂.Word) : AtTXp (atTTied a hH u) (fun i hi => 
     (LevPackP.toCls (S := d.sp.X') (lat := hqLatP (parabolicClassAgreement a hS hH hP u)) (hermPackP a hS hH hP u))
 
 /- English proof (translation)
-The claim follows from `levelPacking_sameCarrier d.sp.cm d.hPr d.σ₀ d.levP.inv d.reprP hP _ (hCrdP a hS hH hP u) (crdPr a hS hH)`.
+A detailed English derivation is pending.
 -/
 theorem th_carP (u : d.what₂.Word) :
     Formalism.L2.Forms.SameCar (CF.rankP (d.colRec a)) (Formalism.L2.Herm.crdLat d.sp.X' d.sp.X'.L0) (parabolicClassAgreement a hS hH hP u).lev.Lb
@@ -91,7 +91,7 @@ theorem th_carP (u : d.what₂.Word) :
   levelPacking_sameCarrier d.sp.cm d.hPr d.σ₀ d.levP.inv d.reprP hP _ (hCrdP a hS hH hP u) (crdPr a hS hH)
 
 /- English proof (translation)
-The claim follows from `hqLatP_crd (parabolicClassAgreement a hS hH hP u) c`.
+A detailed English derivation is pending.
 -/
 theorem th_latP (u : d.what₂.Word) (c : PCl d) :
     (parabolicClassAgreement a hS hH hP u).lat c = ((levelExponentAtT a hS hH hP u).lattice₂ c).map
@@ -99,14 +99,14 @@ theorem th_latP (u : d.what₂.Word) (c : PCl d) :
   hqLatP_crd (parabolicClassAgreement a hS hH hP u) c
 
 /- English proof (translation)
-The claim follows from `lastVector_coords (tildeLatticeAgreement a hS hH hP u)`.
+A detailed English derivation is pending.
 -/
 theorem joint_lastVector (u : d.what₂.Word) :
     (tildeLatticeAgreement a hS hH hP u).z0 = CF.crdN (d.colRec a) d.R.m le_rfl (levelExponentAtT a hS hH hP u).z0 :=
   lastVector_coords (tildeLatticeAgreement a hS hH hP u)
 
 /- English proof (translation)
-The claim follows from `(hqG_re d.R.m le_rfl ((tildeLatticeAgreement a hS hH hP u).ga c)).symm`.
+A detailed English derivation is pending.
 -/
 theorem th_ga (u : d.what₂.Word) (c : PCl d) :
     ((tildeLatticeAgreement a hS hH hP u).ga c).1 = Formalism.L2.Forms.reGL (CF.rankN (d.colRec a) d.R.m le_rfl) _

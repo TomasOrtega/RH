@@ -21,7 +21,7 @@ end Tensor
 variable {K E : Type*} [Field K] [CommRing E] [Algebra K E] [Algebra.IsQuadraticExtension K E]
 
 /- English proof (translation)
-The claim follows from `Module.finite_of_finrank_eq_succ (Algebra.IsQuadraticExtension.finrank_eq_two K E)`.
+A detailed English derivation is pending.
 -/
 theorem finite_of_isQuadraticExtension : Module.Finite K E :=
   Module.finite_of_finrank_eq_succ (Algebra.IsQuadraticExtension.finrank_eq_two K E)
@@ -43,7 +43,7 @@ abbrev baseMatrix : Matrix ι ι (R ⊗[K] E) :=
   H.map (Algebra.TensorProduct.includeRight : E →ₐ[K] R ⊗[K] E)
 
 /- English proof (translation)
-Use `RingHom.map_det (Algebra.TensorProduct.includeRight : E →ₐ[K] R ⊗[K] E).toRingHom H` as an intermediate fact. Rewrite `this` using `[RingHom.mapMatrix_apply]`. Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe] at this`. Simplify `hH.map (Algebra.TensorProduct.includeRight : E →ₐ[K] R ⊗[K] E)` using `[baseMatrix, ← this]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isUnit_det_baseMatrix (hH : IsUnit H.det) : IsUnit (baseMatrix K H R).det := by
   have := RingHom.map_det (Algebra.TensorProduct.includeRight : E →ₐ[K] R ⊗[K] E).toRingHom H
@@ -64,7 +64,7 @@ theorem unitaryCoords_apply (g : unitaryPoints K E H R) (i j : ι) (k : κ) :
       (Algebra.TensorProduct.basis R b).repr (unitaryMat g i j) k := rfl
 
 /- English proof (translation)
-Introduce `g h hgh`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Conclude with `(matrixCoords b R).injective hgh`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem unitaryCoords_injective : Function.Injective (unitaryCoords H R b) := by
   intro g h hgh
@@ -82,7 +82,7 @@ theorem unitaryMat_unitaryMap {S : Type*} [CommRing S] [Algebra K S] (f : R →�
     unitaryMat (unitaryMap K E H f g) = (unitaryMat g).map (tensorMap E f) := rfl
 
 /- English proof (translation)
-The claim follows from `matrixCoords_map b f _`.
+A detailed English derivation is pending.
 -/
 theorem unitaryCoords_unitaryMap {S : Type*} [CommRing S] [Algebra K S] (f : R →ₐ[K] S)
     (g : unitaryPoints K E H R) :
@@ -90,9 +90,9 @@ theorem unitaryCoords_unitaryMap {S : Type*} [CommRing S] [Algebra K S] (f : R �
   matrixCoords_map b f _
 
 /- English proof (translation)
-Set `b` to `Module.finBasis K E`. Apply `(Algebra.TensorProduct.basis R b).repr.injective` to reduce the goal to its premises. Use extensionality with `k`. Simplify using `only [map_zero, Finsupp.coe_zero, Pi.zero_apply]`. Apply `hπ` to reduce the goal to its premises.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `j`. Rewrite using `[← repr_tensorMap b (π j) z k, hz j]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem eq_zero_of_tensorMap {J : Type*} {T : J → Type*} [∀ j, CommRing (T j)]
     [∀ j, Algebra K (T j)] (π : ∀ j, R →ₐ[K] T j) (hπ : ∀ a, (∀ j, π j a = 0) → a = 0)
@@ -107,7 +107,7 @@ theorem eq_zero_of_tensorMap {J : Type*} {T : J → Type*} [∀ j, CommRing (T j
   simp
 
 /- English proof (translation)
-Establish `h1` using `map_unitaryExpr ((tensorMap E f : R ⊗[K] E →ₐ[K] S ⊗[K] E) : R ⊗[K] E →+* S ⊗[K] E) (tensorMap_conjBase f) (baseMatrix K H R) M`. Establish `h2` using `map_includeRight_tensorMap (H := H) f`. Establish `h3 : ((unitaryMat g).map (conjBase K E S))ᵀ * baseMatrix K H S * unitaryMat g = baseMatrix K H S` using `g.2`. Simplify using `only [RingHom.coe_coe] at h1 h2`. Rewrite using `[h1, h2, ← hg, h3]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_unitaryExpr_eq {S : Type*} [CommRing S] [Algebra K S] (f : R →ₐ[K] S)
     (M : Matrix ι ι (R ⊗[K] E)) (g : unitaryPoints K E H S)
@@ -123,9 +123,9 @@ theorem map_unitaryExpr_eq {S : Type*} [CommRing S] [Algebra K S] (f : R →ₐ[
   rw [h1, h2, ← hg, h3]
 
 /- English proof (translation)
-Take `⟨g, hg, hgM⟩` from `(exists_mem_unitaryGroupMatrix_iff (conjBase K E R) (isUnit_det_baseMatrix (K := K) H R hH) M).2 (by`. Use extensionality with `i l`. Rewrite using `[← sub_eq_zero]`. Use `eq_zero_of_tensorMap π hπ _ fun j => ?_` and prove the remaining obligations. Take `⟨g, hg⟩` from `hM j`.
+Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `congrFun (congrFun (map_unitaryExpr_eq (π j) M g hg) i) l` as an intermediate fact. Simplify using `only [Matrix.map_apply] at this`. Rewrite using `[map_sub, this]`. Conclude with `sub_self _)`. Conclude with `⟨⟨g, hg⟩, hgM⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_unitaryPoints_of_forall (hH : IsUnit H.det) {J : Type*} {T : J → Type*}
     [∀ j, CommRing (T j)] [∀ j, Algebra K (T j)] (π : ∀ j, R →ₐ[K] T j)
@@ -145,15 +145,15 @@ theorem exists_unitaryPoints_of_forall (hH : IsUnit H.det) {J : Type*} {T : J �
   exact ⟨⟨g, hg⟩, hgM⟩
 
 /- English proof (translation)
-Set `b` to `Module.finBasis K E`. Establish `hinj : ∀ z : (R × S) ⊗[K] E, tensorMap E (AlgHom.fst K R S) z = 0 → tensorMap E (AlgHom.snd K R S) z = 0 → z = 0`. Introduce `z hz₁ hz₂`. Apply `(Algebra.TensorProduct.basis (R × S) b).repr.injective` to reduce the goal to its premises. Use extensionality with `k : 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Simplify using `only [map_zero, Finsupp.coe_zero, Pi.zero_apply]`. Establish `e₁` using `repr_tensorMap b (AlgHom.fst K R S) z k`. Establish `e₂` using `repr_tensorMap b (AlgHom.snd K R S) z k`. Rewrite `e₁` using `[hz₁]`. Rewrite `e₂` using `[hz₂]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [map_zero, Finsupp.coe_zero, Pi.zero_apply, AlgHom.fst_apply, AlgHom.snd_apply] at e₁ e₂`. Conclude with `Prod.ext e₁.symm e₂.symm`. Take `⟨g, hg, hgM⟩` from `(exists_mem_unitaryGroupMatrix_iff (conjBase K E (R × S)) (isUnit_det_baseMatrix (K := K) H (R × S) hH) M).2 (by`. Use extensionality with `i l`. Rewrite using `[← sub_eq_zero]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨g₁, hg₁⟩` from `h₁`. Take `⟨g₂, hg₂⟩` from `h₂`. Establish `t₁` using `congrFun (congrFun (map_unitaryExpr_eq _ M g₁ hg₁) i) l`. Establish `t₂` using `congrFun (congrFun (map_unitaryExpr_eq _ M g₂ hg₂) i) l`. Simplify using `only [Matrix.map_apply] at t₁ t₂`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Conclude with `hinj _ (by rw [map_sub, t₁]; exact sub_self _) (by rw [map_sub, t₂]; exact sub_self _))`. Conclude with `⟨⟨g, hg⟩, hgM⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_unitaryPoints_prod (hH : IsUnit H.det) {S : Type*} [CommRing S] [Algebra K S]
     (M : Matrix ι ι ((R × S) ⊗[K] E))
@@ -200,14 +200,14 @@ variable (H : Matrix ι ι E)
 variable (R : Type*) [CommRing R] [Algebra K R] [TopologicalSpace R] [IsTopologicalRing R]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem isModuleTopology_tensor : IsModuleTopology R (R ⊗[K] E) := ⟨rfl⟩
 
 attribute [local instance] isModuleTopology_tensor
 
 /- English proof (translation)
-The claim follows from `IsModuleTopology.isTopologicalRing R (R ⊗[K] E)`.
+A detailed English derivation is pending.
 -/
 theorem isTopologicalRing_tensor : IsTopologicalRing (R ⊗[K] E) :=
   IsModuleTopology.isTopologicalRing R (R ⊗[K] E)
@@ -233,7 +233,7 @@ theorem tensorCoordsHomeomorph_apply (z : R ⊗[K] E) (k : κ) :
     tensorCoordsHomeomorph R b z k = (Algebra.TensorProduct.basis R b).repr z k := rfl
 
 /- English proof (translation)
-The claim follows from `(tensorCoordsHomeomorph R (Module.finBasis K E)).isEmbedding.t2Space`.
+A detailed English derivation is pending.
 -/
 theorem t2Space_tensor [T2Space R] : T2Space (R ⊗[K] E) :=
   (tensorCoordsHomeomorph R (Module.finBasis K E)).isEmbedding.t2Space
@@ -260,7 +260,7 @@ theorem matrixCoordsHomeomorph_apply (M : Matrix ι ι (R ⊗[K] E)) :
     matrixCoordsHomeomorph R b M = matrixCoords b R M := rfl
 
 /- English proof (translation)
-The claim follows from `IsModuleTopology.continuous_of_linearMap (show R ⊗[K] E →ₐ[R] R ⊗[K] E from Algebra.TensorProduct.map (AlgHom.id R R) (conj K E).toAlgHom).toLinearMap`.
+A detailed English derivation is pending.
 -/
 theorem continuous_conjBase : Continuous (conjBase K E R) :=
   IsModuleTopology.continuous_of_linearMap
@@ -270,9 +270,9 @@ theorem continuous_conjBase : Continuous (conjBase K E R) :=
 variable {H R}
 
 /- English proof (translation)
-Establish `hg : ((unitaryMat g).map (conjBase K E R))ᵀ * baseMatrix K H R * unitaryMat g = baseMatrix K H R` using `g.2`. Establish `hU` using `isUnit_det_baseMatrix (K := K) H R hH`. Establish `h1 : ((g : GL ι (R ⊗[K] E)) : Matrix ι ι (R ⊗[K] E)) * (unitaryMat (g⁻¹ : unitaryPoints K E H R)) = 1`. Rewrite using `[← Units.val_mul]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hg]`. Use `_ = (baseMatrix K H R)⁻¹ * ((unitaryMat g).map (conjBase K E R))ᵀ * baseMatrix K H R * (((g : GL ι (R ⊗[K] E)) : Matrix ι ι (R ⊗[K] E)) * (unitaryMat (g⁻¹ : unitaryPoints K E H R))) := by`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [h1, Matrix.mul_one]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coe_inv_unitaryPoints (hH : IsUnit H.det) (g : unitaryPoints K E H R) :
     (unitaryMat (g⁻¹ : unitaryPoints K E H R)) =
@@ -299,11 +299,11 @@ theorem coe_inv_unitaryPoints (hH : IsUnit H.det) (g : unitaryPoints K E H R) :
 variable (H R)
 
 /- English proof (translation)
-Set `G : Matrix ι ι (R ⊗[K] E) → Matrix ι ι (R ⊗[K] E) × (Matrix ι ι (R ⊗[K] E))ᵐᵒᵖ` to `fun M => (M, MulOpposite.op ((baseMatrix K H R)⁻¹ * (M.map (conjBase K E R))ᵀ * baseMatrix K H R))`. Establish `hG : Continuous G` using `continuous_id.prodMk (MulOpposite.continuous_op.comp ((continuous_const.matrix_mul (continuous_id.matrix_map (continuous_conjBase R)).matrix_transpose).matrix_mul continuous_const))`. Establish `hf : Continuous (fun g : unitaryPoints K E H R => (unitaryMat g))` using `Units.continuous_val.comp continuous_subtype_val`. Use `IsEmbedding.of_comp hf hG ?_` and prove the remaining obligations. Establish `hGf : G ∘ (fun g : unitaryPoints K E H R => (unitaryMat g)) = Units.embedProduct _ ∘ (Subtype.val : unitaryPoints K E H R → GL ι (R ⊗[K] E))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `g`. Simplify using `only [Function.comp_apply, G, Units.embedProduct_apply]`. Rewrite using `[← coe_inv_unitaryPoints hH g]`. Both sides reduce to the same expression. Rewrite using `[hGf]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Units.isEmbedding_embedProduct.comp IsEmbedding.subtypeVal`.
+A detailed English derivation is pending.
 -/
 theorem isEmbedding_coe_unitaryPoints (hH : IsUnit H.det) :
     IsEmbedding (fun g : unitaryPoints K E H R => (unitaryMat g)) := by
@@ -327,21 +327,21 @@ theorem isEmbedding_coe_unitaryPoints (hH : IsUnit H.det) :
   exact Units.isEmbedding_embedProduct.comp IsEmbedding.subtypeVal
 
 /- English proof (translation)
-The claim follows from `(matrixCoordsHomeomorph R b).continuous.comp (Units.continuous_val.comp continuous_subtype_val)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_unitaryCoords : Continuous (unitaryCoords H R b) :=
   (matrixCoordsHomeomorph R b).continuous.comp (Units.continuous_val.comp continuous_subtype_val)
 
 /- English proof (translation)
-The claim follows from `(matrixCoordsHomeomorph R b).isEmbedding.comp (isEmbedding_coe_unitaryPoints H R hH)`.
+A detailed English derivation is pending.
 -/
 theorem isEmbedding_unitaryCoords (hH : IsUnit H.det) : IsEmbedding (unitaryCoords H R b) :=
   (matrixCoordsHomeomorph R b).isEmbedding.comp (isEmbedding_coe_unitaryPoints H R hH)
 
 /- English proof (translation)
-Use extensionality with `M`. Use `exists_mem_unitaryGroupMatrix_iff (conjBase K E R) (isUnit_det_baseMatrix (K := K) H R hH) M` as an intermediate fact. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, rfl⟩`. Conclude with `this.1 ⟨g, g.2, rfl⟩`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hM`. Take `⟨g, hg, rfl⟩` from `this.2 hM`. Conclude with `⟨⟨g, hg⟩, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem range_coe_unitaryPoints (hH : IsUnit H.det) :
     Set.range (fun g : unitaryPoints K E H R => (unitaryMat g)) =
@@ -356,7 +356,7 @@ theorem range_coe_unitaryPoints (hH : IsUnit H.det) :
     exact ⟨⟨g, hg⟩, rfl⟩
 
 /- English proof (translation)
-Establish `: T2Space (R ⊗[K] E)` using `t2Space_tensor R`. Use `⟨isEmbedding_coe_unitaryPoints H R hH, ?_⟩` and prove the remaining obligations. Rewrite using `[range_coe_unitaryPoints H R hH]`. Conclude with `isClosed_eq (((continuous_id.matrix_map (continuous_conjBase R)).matrix_transpose.matrix_mul continuous_const).matrix_mul continuous_id) continuous_const`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosedEmbedding_coe_unitaryPoints (hH : IsUnit H.det) [T2Space R] :
     IsClosedEmbedding (fun g : unitaryPoints K E H R => (unitaryMat g)) := by
@@ -368,21 +368,21 @@ theorem isClosedEmbedding_coe_unitaryPoints (hH : IsUnit H.det) [T2Space R] :
       continuous_const).matrix_mul continuous_id) continuous_const
 
 /- English proof (translation)
-The claim follows from `(matrixCoordsHomeomorph R b).isClosedEmbedding.comp (isClosedEmbedding_coe_unitaryPoints H R hH)`.
+A detailed English derivation is pending.
 -/
 theorem isClosedEmbedding_unitaryCoords (hH : IsUnit H.det) [T2Space R] :
     IsClosedEmbedding (unitaryCoords H R b) :=
   (matrixCoordsHomeomorph R b).isClosedEmbedding.comp (isClosedEmbedding_coe_unitaryPoints H R hH)
 
 /- English proof (translation)
-The claim follows from `(isEmbedding_unitaryCoords H R (Module.finBasis K E) hH).t2Space`.
+A detailed English derivation is pending.
 -/
 theorem t2Space_unitaryPoints (hH : IsUnit H.det) [T2Space R] :
     T2Space (unitaryPoints K E H R) :=
   (isEmbedding_unitaryCoords H R (Module.finBasis K E) hH).t2Space
 
 /- English proof (translation)
-The claim follows from `(isClosedEmbedding_unitaryCoords H R (Module.finBasis K E) hH).locallyCompactSpace`.
+A detailed English derivation is pending.
 -/
 theorem locallyCompactSpace_unitaryPoints (hH : IsUnit H.det) [T2Space R]
     [LocallyCompactSpace R] : LocallyCompactSpace (unitaryPoints K E H R) :=
@@ -392,9 +392,9 @@ variable {H R}
 variable {S : Type*} [CommRing S] [Algebra K S] [TopologicalSpace S] [IsTopologicalRing S]
 
 /- English proof (translation)
-Set `b` to `Module.finBasis K E`. Establish `: (tensorMap E f : R ⊗[K] E → S ⊗[K] E) = (tensorCoordsHomeomorph S b).symm ∘ (fun x k => f (x k)) ∘ tensorCoordsHomeomorph R b`. Use function extensionality and compare the values at `z`. Apply `(tensorCoordsHomeomorph S b).injective` to reduce the goal to its premises. Simplify using `only [Function.comp_apply, Homeomorph.apply_symm_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `k`. Conclude with `repr_tensorMap b f z k`. Rewrite using `[this]`. Conclude with `(tensorCoordsHomeomorph S b).symm.continuous.comp ((continuous_pi fun k => hf.comp (continuous_apply k)).comp (tensorCoordsHomeomorph R b).continuous)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_tensorMap (f : R →ₐ[K] S) (hf : Continuous f) :
     Continuous (tensorMap E f) := by
@@ -412,11 +412,11 @@ theorem continuous_tensorMap (f : R →ₐ[K] S) (hf : Continuous f) :
       (tensorCoordsHomeomorph R b).continuous)
 
 /- English proof (translation)
-Establish `hm : Continuous fun M : Matrix ι ι (R ⊗[K] E) => M.map (tensorMap E f)` using `continuous_id.matrix_map (continuous_tensorMap f hf)`. Apply `continuous_induced_rng.2` to reduce the goal to its premises. Rewrite using `[Units.continuous_iff]`. Use `⟨hm.comp (Units.continuous_val.comp continuous_subtype_val), ?_⟩` and prove the remaining obligations. Establish `: (fun g : unitaryPoints K E H R => (((Subtype.val ∘ unitaryMap K E H f) g)⁻¹ : GL ι (S ⊗[K] E)).val) = (fun M : Matrix ι ι (R ⊗[K] E) => M.map (tensorMap E f)) ∘ fun g : unitaryPoints K E H R => unitaryMat g⁻¹`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `g`. Simplify using `only [Function.comp_apply]`. Rewrite using `[← Subgroup.coe_inv, ← map_inv]`. Both sides reduce to the same expression. Rewrite using `[this]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hm.comp (Units.continuous_val.comp (continuous_subtype_val.comp continuous_inv))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_unitaryMap (f : R →ₐ[K] S) (hf : Continuous f) :
     Continuous (unitaryMap K E H f) := by
@@ -453,17 +453,17 @@ theorem unitaryProdHom_apply (g : unitaryPoints K E H (R × S)) :
       (unitaryMap K E H (AlgHom.fst K R S) g, unitaryMap K E H (AlgHom.snd K R S) g) := rfl
 
 /- English proof (translation)
-Set `b` to `Module.finBasis K E`. Prove the components needed by the constructor for the conclusion. Introduce `g g' h`. Apply `unitaryCoords_injective H _ b` to reduce the goal to its premises. Use function extensionality and compare the values at `p`.
+Introduce a local definition for the expression. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h₁` using `congrArg (fun y => unitaryCoords H R b y.1) h`. Establish `h₂` using `congrArg (fun y => unitaryCoords H S b y.2) h`. Simplify using `only [unitaryProdHom_apply, unitaryCoords_unitaryMap] at h₁ h₂`. Conclude with `Prod.ext (congrFun h₁ p) (congrFun h₂ p)`. Introduce `y`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Set `M : Matrix ι ι ((R × S) ⊗[K] E)` to `(matrixCoords b (R × S)).symm fun p => (unitaryCoords H R b y.1 p, unitaryCoords H S b y.2 p)`. Establish `h₁ : M.map (tensorMap E (AlgHom.fst K R S)) = unitaryMat y.1`. Apply `(matrixCoords b R).injective` to reduce the goal to its premises. Rewrite using `[matrixCoords_map, Equiv.apply_symm_apply]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `h₂ : M.map (tensorMap E (AlgHom.snd K R S)) = unitaryMat y.2`. Apply `(matrixCoords b S).injective` to reduce the goal to its premises. Rewrite using `[matrixCoords_map, Equiv.apply_symm_apply]`. Both sides reduce to the same expression. Take `⟨g, hg⟩` from `exists_unitaryPoints_prod hH M ⟨y.1, h₁.symm⟩ ⟨y.2, h₂.symm⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨g, Prod.ext ?_ ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `unitaryMat (unitaryMap K E H _ g) = unitaryMat y.1`. Rewrite using `[unitaryMat_unitaryMap, hg, h₁]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `unitaryMat (unitaryMap K E H _ g) = unitaryMat y.2`. Rewrite using `[unitaryMat_unitaryMap, hg, h₂]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitaryProdHom_bijective (hH : IsUnit H.det) :
     Function.Bijective (unitaryProdHom K H R S) := by
@@ -540,15 +540,15 @@ theorem unitaryPiHom_apply (g : unitaryPoints K E H (∀ j, T j)) (j : J) :
     unitaryPiHom K H T g j = unitaryMap K E H (Pi.evalAlgHom K T j) g := rfl
 
 /- English proof (translation)
-Set `b` to `Module.finBasis K E`. Prove the components needed by the constructor for the conclusion. Introduce `g g' h`. Apply `unitaryCoords_injective H _ b` to reduce the goal to its premises. Use function extensionality and compare the values at `p j`.
+Introduce a local definition for the expression. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congrArg (fun y => unitaryCoords H (T j) b (y j)) h` as an intermediate fact. Simplify using `only [unitaryPiHom_apply, unitaryCoords_unitaryMap] at this`. Conclude with `congrFun this p`. Introduce `y`. Set `M : Matrix ι ι ((∀ j, T j) ⊗[K] E)` to `(matrixCoords b (∀ j, T j)).symm fun p j => unitaryCoords H (T j) b (y j) p`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hMj : ∀ j, M.map (tensorMap E (Pi.evalAlgHom K T j)) = unitaryMat (y j)`. Introduce `j`. Apply `(matrixCoords b (T j)).injective` to reduce the goal to its premises. Rewrite using `[matrixCoords_map, Equiv.apply_symm_apply]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg⟩` from `exists_unitaryPoints_of_forall hH (fun j => Pi.evalAlgHom K T j) (fun a ha => funext ha) M fun j => ⟨y j, (hMj j).symm⟩`. Use `⟨g, funext fun j => ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `unitaryMat (unitaryMap K E H _ g) = unitaryMat (y j)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[unitaryMat_unitaryMap, hg, hMj]`.
+A detailed English derivation is pending.
 -/
 theorem unitaryPiHom_bijective (hH : IsUnit H.det) : Function.Bijective (unitaryPiHom K H T) := by
   let b := Module.finBasis K E

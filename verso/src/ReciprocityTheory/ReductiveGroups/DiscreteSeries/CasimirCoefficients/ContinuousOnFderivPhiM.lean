@@ -22,11 +22,9 @@ variable {n : ℕ} {ε : Fin n → Bool} {Λ : Fin n → ℝ}
 namespace InfKA
 
 /- English proof (translation)
-Consider the cases of `m with`. Consider the case `ofNat k`. Establish `e : (fun y => f y ^ (Int.ofNat k)) = fun y => f y ^ k`. Use function extensionality and compare the values at `fun y => by rw [Int.ofNat_eq_coe, zpow_natCast]`. Rewrite using `[e]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hf.pow k`. Consider the case `negSucc k`. Establish `e : (fun y => f y ^ (Int.negSucc k)) = fun y => (f y ^ (k + 1))⁻¹`. Use function extensionality and compare the values at `fun y => zpow_negSucc _ _`. Rewrite using `[e]`.
-
-Conclude with `(hf.pow (k + 1)).inv (pow_ne_zero _ hx)`.
+Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma contDiffAt_zpow {f : Matrix (Fin n) (Fin n) ℂ → ℂ} {x : Matrix (Fin n) (Fin n) ℂ}
     (hf : ContDiffAt ℂ 1 f x) (hx : f x ≠ 0) (m : ℤ) : ContDiffAt ℂ 1 (fun y => f y ^ m) x := by
@@ -43,11 +41,11 @@ lemma contDiffAt_zpow {f : Matrix (Fin n) (Fin n) ℂ → ℂ} {x : Matrix (Fin 
     exact (hf.pow (k + 1)).inv (pow_ne_zero _ hx)
 
 /- English proof (translation)
-Establish `he : ∀ a b : Fin n, ContDiff ℂ 1 (fun z : Matrix (Fin n) (Fin n) ℂ => z a b)`. Introduce `a b`. Use `first`. Consider the case `exact contDiff_apply_apply ℂ ℂ a b`. Consider the case `exact contDiff_apply_apply a b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact ((ContinuousLinearMap.proj b).comp (ContinuousLinearMap.proj a)).contDiff`. Consider the case `fun_prop`. Unfold `lead`. Distinguish the cases in `h : i ≤ n`. Simplify using `only [dif_pos h, Matrix.det_apply, Matrix.submatrix_apply, Units.smul_def, zsmul_eq_mul]`.
+Treat this case separately. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `ContDiff.sum fun σ _ => contDiff_const.mul (contDiff_prod fun j _ => he _ _)`. Simplify using `only [dif_neg h]`. Conclude with `contDiff_const`.
+A detailed English derivation is pending.
 -/
 lemma contDiff_lead (i : ℕ) : ContDiff ℂ 1 (fun z : Matrix (Fin n) (Fin n) ℂ => lead i z) := by
   have he : ∀ a b : Fin n, ContDiff ℂ 1 (fun z : Matrix (Fin n) (Fin n) ℂ => z a b) := by
@@ -65,7 +63,7 @@ lemma contDiff_lead (i : ℕ) : ContDiff ℂ 1 (fun z : Matrix (Fin n) (Fin n) �
     exact contDiff_const
 
 /- English proof (translation)
-Use `show ContDiffAt ℂ 1 (fun z => ∏ i : Fin n, lead ((i : ℕ) + 1) z ^ (-(μ i - muNext μ i))) z`. Use `first`. Consider the case `exact contDiffAt_prod fun i _ => InfKA.contDiffAt_zpow (contDiff_lead _).contDiffAt (hz i) _`. Consider the case `exact contDiffAt_finset_prod fun i _ => InfKA.contDiffAt_zpow (contDiff_lead _).contDiffAt (hz i) _`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma contDiffAt_phiM (μ : Fin n → ℤ) {z : Matrix (Fin n) (Fin n) ℂ} (hz : z ∈ OmegaSet n) :
     ContDiffAt ℂ 1 (PhiM μ) z := by
@@ -75,9 +73,9 @@ lemma contDiffAt_phiM (μ : Fin n → ℤ) {z : Matrix (Fin n) (Fin n) ℂ} (hz 
   | exact contDiffAt_finset_prod fun i _ => InfKA.contDiffAt_zpow (contDiff_lead _).contDiffAt (hz i) _
 
 /- English proof (translation)
-Establish `e : OmegaSet n = ⋂ i : Fin n, {z | lead ((i : ℕ) + 1) z ≠ 0}`. Use extensionality with `z`. Simplify using `[OmegaSet]`. Rewrite using `[e]`. Use `first`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `exact isOpen_iInter_of_finite fun i => isOpen_ne_fun (contDiff_lead _).continuous continuous_const`. Consider the case `exact isOpen_iInter fun i => isOpen_ne_fun (contDiff_lead _).continuous continuous_const`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 lemma isOpen_omega' : IsOpen (OmegaSet n) := by
   have e : OmegaSet n = ⋂ i : Fin n, {z | lead ((i : ℕ) + 1) z ≠ 0} := by
@@ -89,22 +87,22 @@ lemma isOpen_omega' : IsOpen (OmegaSet n) := by
   | exact isOpen_iInter fun i => isOpen_ne_fun (contDiff_lead _).continuous continuous_const
 
 /- English proof (translation)
-Conclude with `ContDiffOn.continuousOn_fderiv_of_isOpen (fun z hz => (contDiffAt_phiM μ hz).contDiffWithinAt) isOpen_omega' le_rfl`.
+A detailed English derivation is pending.
 -/
 lemma continuousOn_fderiv_phiM (μ : Fin n → ℤ) : ContinuousOn (fderiv ℂ (PhiM μ)) (OmegaSet n) := by
   exact ContDiffOn.continuousOn_fderiv_of_isOpen
     (fun z hz => (contDiffAt_phiM μ hz).contDiffWithinAt) isOpen_omega' le_rfl
 
 /- English proof (translation)
-Conclude with `fun z hz => (contDiffAt_phiM μ hz).continuousAt.continuousWithinAt`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma continuousOn_phiM (μ : Fin n → ℤ) : ContinuousOn (PhiM μ) (OmegaSet n) := by
   exact fun z hz => (contDiffAt_phiM μ hz).continuousAt.continuousWithinAt
 
 /- English proof (translation)
-Use `first`. Consider the case `fun_prop`. Consider the case `exact continuous_subtype_val.comp continuous_subtype_val`. Consider the case `exact Units.continuous_val.comp (continuous_subtype_val.comp continuous_subtype_val)`. Consider the case `exact (continuous_subtype_val.comp continuous_subtype_val).comp continuous_subtype_val`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `continuity`.
+A detailed English derivation is pending.
 -/
 lemma continuous_toMK' : Continuous fun k : KG ε => toMK k := by
   first
@@ -115,22 +113,22 @@ lemma continuous_toMK' : Continuous fun k : KG ε => toMK k := by
     | continuity
 
 /- English proof (translation)
-Conclude with `continuous_toMK'.comp continuous_inv`.
+A detailed English derivation is pending.
 -/
 lemma continuous_toMK_inv : Continuous fun k : KG ε => toMK k⁻¹ := by
   exact continuous_toMK'.comp continuous_inv
 
 /- English proof (translation)
-Establish `hop : Continuous fun k : KG ε => T.op k` using `continuous_subtype_val.comp T.cont`. Conclude with `(hop.mul continuous_const).mul (hop.comp continuous_inv)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma continuous_P (T : KType ε Λ) : Continuous fun k : KG ε => T.op k * projW T * T.op k⁻¹ := by
   have hop : Continuous fun k : KG ε => T.op k := continuous_subtype_val.comp T.cont
   exact (hop.mul continuous_const).mul (hop.comp continuous_inv)
 
 /- English proof (translation)
-Establish `h : toM (k : UJ ε) ∈ Kset ε` using `k.2`. Take `⟨hU, -⟩` from `h`. Use `first`. Consider the case `exact Unitary.star_mul_self_of_mem hU`. Consider the case `exact (Matrix.mem_unitaryGroup_iff').1 hU`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact hU.1`.
+A detailed English derivation is pending.
 -/
 private lemma toMK_conjTranspose_mul_self (k : KG ε) : (toMK k)ᴴ * toMK k = 1 := by
   have h : toM (k : UJ ε) ∈ Kset ε := k.2
@@ -141,9 +139,9 @@ private lemma toMK_conjTranspose_mul_self (k : KG ε) : (toMK k)ᴴ * toMK k = 1
   | exact hU.1
 
 /- English proof (translation)
-Establish `hu : star (toMK k) * toMK k = 1` using `toMK_conjTranspose_mul_self k`. Establish `hv : toMK k * toMK k⁻¹ = 1` using `by first`. Consider the case `exact Units.mul_inv _`. Consider the case `(simp only [toMK, toM]; simp)`. Consider the case `(unfold toMK toM; simp)`.
+Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(unfold toMK; simp)`. Combine the equalities or inequalities in the displayed calculation.
+Treat this case separately. Chain the equalities or inequalities of the calculation.
 -/
 lemma toMK_inv_eq (k : KG ε) : toMK k⁻¹ = (toMK k)ᴴ := by
   have hu : star (toMK k) * toMK k = 1 := toMK_conjTranspose_mul_self k
@@ -158,11 +156,11 @@ lemma toMK_inv_eq (k : KG ε) : toMK k⁻¹ = (toMK k)ᴴ := by
     _ = (toMK k)ᴴ := by rw [hv, Matrix.mul_one]; rfl
 
 /- English proof (translation)
-Rewrite using `[toMK_inv_eq]`. Establish `hinj : Function.Injective (toMK k).mulVec` using `fun v w h => by`. Establish `h2` using `congrArg (toMK k)ᴴ.mulVec h`. Simplify `h2` using `[Matrix.mulVec_mulVec, toMK_conjTranspose_mul_self]`. Establish `hP : ((toMK k)ᴴ * x * toMK k).PosDef` using `hx.conjTranspose_mul_mul_same hinj`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `show ∀ i : Fin n, lead ((i : ℕ) + 1) ((toMK k)ᴴ * x * toMK k) ≠ 0`. Introduce `i`. Unfold `lead`. Rewrite using `[dif_pos (show (i : ℕ) + 1 ≤ n from i.isLt)]`. Use `first`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `exact (hP.submatrix (Fin.castLE_injective _)).det_pos.ne'`. Consider the case `exact (hP.submatrix (Fin.castLEEmb (show (i : ℕ) + 1 ≤ n from i.isLt))).det_pos.ne'`. Consider the case `exact (hP.submatrix _ (Fin.castLE_injective _)).det_pos.ne'`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 lemma conj_mem_omega {x : Matrix (Fin n) (Fin n) ℂ} (hx : x.PosDef) (k : KG ε) :
     toMK k⁻¹ * x * toMK k ∈ OmegaSet n := by
@@ -221,7 +219,7 @@ def Ek (T : KType ε Λ) (μ : Fin n → ℤ) (x : Matrix (Fin n) (Fin n) ℂ)
     φ (toMK k⁻¹ * A * toMK k * M - M * (toMK k⁻¹ * A * toMK k)) • Gint T μ x k
 
 /- English proof (translation)
-Use `first`. Consider the case `exact (continuous_toMK_inv.matrix_mul continuous_const).matrix_mul continuous_toMK'`. Consider the case `exact ((continuous_toMK_inv (ε := ε)).mul continuous_const).mul continuous_toMK'`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma continuous_B (A : Matrix (Fin n) (Fin n) ℂ) : Continuous fun k : KG ε => toMK k⁻¹ * A * toMK k := by
   first
@@ -229,7 +227,7 @@ lemma continuous_B (A : Matrix (Fin n) (Fin n) ℂ) : Continuous fun k : KG ε =
     | exact ((continuous_toMK_inv (ε := ε)).mul continuous_const).mul continuous_toMK'
 
 /- English proof (translation)
-Establish `hphi : Continuous fun k : KG ε => PhiM μ (toMK k⁻¹ * x * toMK k)` using `(continuousOn_phiM μ).comp_continuous (continuous_B x) (fun k => conj_mem_omega hx k)`. Use `show Continuous fun k => PhiM μ (toMK k⁻¹ * x * toMK k) • (T.op k * projW T * T.op k⁻¹)`. Conclude with `hphi.smul (continuous_P T)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma continuous_Gint (T : KType ε Λ) (μ : Fin n → ℤ) {x : Matrix (Fin n) (Fin n) ℂ}
     (hx : x.PosDef) : Continuous (Gint T μ x) := by
@@ -239,9 +237,9 @@ lemma continuous_Gint (T : KType ε Λ) (μ : Fin n → ℤ) {x : Matrix (Fin n)
   exact hphi.smul (continuous_P T)
 
 /- English proof (translation)
-Establish `hB : Continuous fun k : KG ε => toMK k⁻¹ * x * toMK k` using `continuous_B x`. Establish `hmem : ∀ k : KG ε, toMK k⁻¹ * x * toMK k ∈ OmegaSet n` using `fun k => conj_mem_omega hx k`. Establish `hop : Continuous fun k : KG ε => T.op k` using `continuous_subtype_val.comp T.cont`. Establish `hphi : Continuous fun k : KG ε => PhiM μ (toMK k⁻¹ * x * toMK k)` using `(continuousOn_phiM μ).comp_continuous hB hmem`. Establish `hd : Continuous fun k : KG ε => fderiv ℂ (PhiM μ) (toMK k⁻¹ * x * toMK k)` using `(continuousOn_fderiv_phiM μ).comp_continuous hB hmem`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `harg : Continuous fun k : KG ε => toMK k⁻¹ * x * toMK k * Y - Y * (toMK k⁻¹ * x * toMK k)` using `(hB.matrix_mul continuous_const).sub (continuous_const.matrix_mul hB)`. Simplify using `only [DkL_apply]`. Conclude with `((hd.clm_apply harg).smul (continuous_P T)).add (hphi.smul ((hop.mul continuous_const).mul (hop.comp continuous_inv)))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma continuous_DkL (T : KType ε Λ) (μ : Fin n → ℤ) {x : Matrix (Fin n) (Fin n) ℂ} (hx : x.PosDef)
     (Y : Matrix (Fin n) (Fin n) ℂ) : Continuous fun k => DkL T μ x k Y := by
@@ -259,7 +257,7 @@ lemma continuous_DkL (T : KType ε Λ) (μ : Fin n → ℤ) {x : Matrix (Fin n) 
     (hphi.smul ((hop.mul continuous_const).mul (hop.comp continuous_inv)))
 
 /- English proof (translation)
-Establish `hBA : Continuous fun k : KG ε => toMK k⁻¹ * A * toMK k` using `continuous_B A`. Use `show Continuous fun k => φ (toMK k⁻¹ * A * toMK k) • DkL T μ x k M + φ (toMK k⁻¹ * A * toMK k * M - M * (toMK k⁻¹ * A * toMK k)) • Gint T μ x k`. Conclude with `((φ.continuous.comp hBA).smul (continuous_DkL T μ hx M)).add ((φ.continuous.comp ((hBA.matrix_mul continuous_const).sub (continuous_const.matrix_mul hBA))).smul (continuous_Gint T μ hx))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma continuous_Ek (T : KType ε Λ) (μ : Fin n → ℤ) {x : Matrix (Fin n) (Fin n) ℂ} (hx : x.PosDef)
     (φ : Matrix (Fin n) (Fin n) ℂ →L[ℂ] ℂ) (A M : Matrix (Fin n) (Fin n) ℂ) : Continuous (Ek T μ x φ A M) := by
@@ -271,7 +269,7 @@ lemma continuous_Ek (T : KType ε Λ) (μ : Fin n → ℤ) {x : Matrix (Fin n) (
       (continuous_Gint T μ hx))
 
 /- English proof (translation)
-Use `first`. Consider the case `exact hf.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace f)`. Consider the case `(unfold muK; exact integrableOn_univ.1 (hf.continuousOn.integrableOn_compact isCompact_univ))`. Consider the case `(unfold muK; exact hf.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace f))`. Consider the case `exact integrableOn_univ.1 (hf.continuousOn.integrableOn_compact isCompact_univ)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma integrable_of_cont [CompactSpace (KG ε)] {E : Type*} [NormedAddCommGroup E] {f : KG ε → E}
     (hf : Continuous f) : Integrable f (muK ε) := by
@@ -282,13 +280,13 @@ lemma integrable_of_cont [CompactSpace (KG ε)] {E : Type*} [NormedAddCommGroup 
     | exact integrableOn_univ.1 (hf.continuousOn.integrableOn_compact isCompact_univ)
 
 /- English proof (translation)
-Take `⟨γ, -, hγ, hmul⟩` from `exists_oneParam ε hZ`. Establish `hγ0 : γ 0 = 1` using `gamma_zero hmul`. Establish `hmk : ∀ a b : KG ε, toMK (a * b) = toMK a * toMK b` using `fun _ _ => rfl`. Establish `hinv_t : ∀ t : ℝ, toMK (γ t)⁻¹ = NormedSpace.exp (-((t : ℂ) • Z))`. Introduce `t`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : toMK (γ t)⁻¹ * toMK (γ t) = 1` using `by rw [← hmk, inv_mul_cancel]; rfl`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hγ, kfa_exp_mul_neg, Matrix.mul_one]`. Use `_ = NormedSpace.exp (-((t : ℂ) • Z)) := by rw [← Matrix.mul_assoc, h1, Matrix.one_mul]`. Use `kByParts ε (fun k => φ (toMK k⁻¹ * A * toMK k) • Gint T μ x k) (Ek T μ x φ A Z) hZ γ hγ ((φ.continuous.comp (continuous_B A)).smul (continuous_Gint T μ hx)) (continuous_Ek T μ hx φ A Z) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k`. Use `set Bk := toMK k⁻¹ * A * toMK k with hBk`. Establish `hφ : HasDerivAt (fun t : ℝ => φ (NormedSpace.exp (-((t : ℂ) • Z)) * Bk * NormedSpace.exp ((t : ℂ) • Z))) (φ (Bk * Z - Z * Bk)) 0` using `(φ.restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) (dga_path Z Bk)`. Establish `h` using `hφ.smul (hasDerivAt_Gint T μ hx k hZ γ hγ)`. Use `h using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `t`. Use `congr 2`. Rewrite using `[_root_.mul_inv_rev, hmk, hmk, hinv_t, hγ, hBk]`. Simplify using `only [Matrix.mul_assoc]`. Simplify using `only [Ek, DkL_apply, hγ0, mul_one, Complex.ofReal_zero, zero_smul, neg_zero, NormedSpace.exp_zero, Matrix.one_mul, Matrix.mul_one, hBk]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma integral_Ek_inK [CompactSpace (KG ε)] (T : KType ε Λ) (μ : Fin n → ℤ) {x : Matrix (Fin n) (Fin n) ℂ}
     (hx : x.PosDef) (φ : Matrix (Fin n) (Fin n) ℂ →L[ℂ] ℂ) (A : Matrix (Fin n) (Fin n) ℂ)
@@ -320,9 +318,9 @@ lemma integral_Ek_inK [CompactSpace (KG ε)] (T : KType ε Λ) (μ : Fin n → �
       Matrix.one_mul, Matrix.mul_one, hBk]
 
 /- English proof (translation)
-Establish `h1 : toMK k⁻¹ * A * toMK k * (P + Complex.I • Q) - (P + Complex.I • Q) * (toMK k⁻¹ * A * toMK k) = (toMK k⁻¹ * A * toMK k * P - P * (toMK k⁻¹ * A * toMK k)) + Complex.I • (toMK k⁻¹ * A * toMK k * Q - Q * (toMK k⁻¹ * A * toMK k))`. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, Matrix.smul_mul, smul_sub]`. Normalize the expressions using the abelian group laws. Simplify using `only [Ek, h1, map_add, map_smul, smul_eq_mul]`. Use `first`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `module`. Consider the case `(simp only [smul_add, add_smul, smul_smul, mul_comm]; abel)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 lemma Ek_decomp (T : KType ε Λ) (μ : Fin n → ℤ) (x : Matrix (Fin n) (Fin n) ℂ)
     (φ : Matrix (Fin n) (Fin n) ℂ →L[ℂ] ℂ) (A P Q : Matrix (Fin n) (Fin n) ℂ) (k : KG ε) :
@@ -338,23 +336,23 @@ lemma Ek_decomp (T : KType ε Λ) (μ : Fin n → ℤ) (x : Matrix (Fin n) (Fin 
   | (simp only [smul_add, add_smul, smul_smul, mul_comm]; abel)
 
 /- English proof (translation)
-Establish `key : ∀ X : Matrix (Fin n) (Fin n) ℂ, IsBlock ε X → Xᴴ = -X → inK ε X`. Introduce `X hX hs`. Establish `hc : X * Jm ε = Jm ε * X`. Use extensionality with `a b`. Simplify using `only [Jm, Matrix.mul_diagonal, Matrix.diagonal_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h : ε a = ε b`. Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hX a b h]`. Expand and normalize the polynomial expressions, which then agree.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `show inG ε X ∧ X * Jm ε = Jm ε * X`. Use `⟨?_, hc⟩` and prove the remaining obligations. Use `show Xᴴ * Jm ε + Jm ε * X = 0`. Rewrite using `[hs, Matrix.neg_mul, hc]`. Normalize the expressions using the abelian group laws.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hMh : ∀ a b, ε a ≠ ε b → Mᴴ a b = 0` using `fun a b h => by`. Simplify using `[Matrix.conjTranspose_apply, hM b a (Ne.symm h)]`. Choose the witnesses or unpack the hypotheses as in `⟨P, Q, hP, hQ, rfl⟩ : ∃ P Q : Matrix (Fin n) (Fin n) ℂ, inK ε P ∧ inK ε Q ∧ M = P + Complex.I • Q := by`. Use `⟨(1 / 2 : ℂ) • (M - Mᴴ), (-Complex.I / 2) • (M + Mᴴ), key _ ?_ ?_, key _ ?_ ?_, ?_⟩` and prove the remaining obligations. Introduce `a b h first`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately.
 
-Consider the case `simp only [Matrix.smul_apply, Matrix.sub_apply, hM a b h, hMh a b h, sub_zero, smul_zero]`. Consider the case `simp [hM a b h, hMh a b h]`. Use extensionality with `a b first`. Consider the case `(simp [Matrix.conjTranspose_apply]; ring)`. Consider the case `(simp [Matrix.conjTranspose_apply, Complex.star_def]; ring)`.
+By extensionality, compare the relevant components. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `simp [Matrix.conjTranspose_apply]`. Consider the case `simp [Matrix.conjTranspose_apply, Complex.star_def]`. Introduce `a b h first`. Consider the case `simp only [Matrix.smul_apply, Matrix.add_apply, hM a b h, hMh a b h, add_zero, smul_zero]`. Consider the case `simp [hM a b h, hMh a b h]`.
+Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. By extensionality, compare the relevant components. Treat this case separately.
 
-Use extensionality with `a b first`. Consider the case `(simp [Matrix.conjTranspose_apply, Complex.star_def]; ring)`. Consider the case `(simp [Matrix.conjTranspose_apply]; ring)`. Consider the case `simp [Matrix.conjTranspose_apply, Complex.star_def]`. Consider the case `simp [Matrix.conjTranspose_apply]`.
+Treat this case separately. Treat this case separately. Treat this case separately. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `a b`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, Matrix.sub_apply, smul_eq_mul]`. Take the linear combination `(M a b + Mᴴ a b) / 2 * Complex.I_sq`. Establish `hIP : Integrable (Ek T μ x φ A P) (muK ε)` using `integrable_of_cont (continuous_Ek T μ hx φ A P)`. Establish `hIQ : Integrable (fun k => Complex.I • Ek T μ x φ A Q k) (muK ε)` using `(integrable_of_cont (continuous_Ek T μ hx φ A Q)).smul Complex.I`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[Ek_decomp]`. Rewrite using `[integral_add hIP hIQ, integral_smul, integral_Ek_inK T μ hx φ A hP, integral_Ek_inK T μ hx φ A hQ, smul_zero, add_zero]`.
+A detailed English derivation is pending.
 -/
 lemma integral_Ek_block [CompactSpace (KG ε)] (T : KType ε Λ) (μ : Fin n → ℤ) {x : Matrix (Fin n) (Fin n) ℂ}
     (hx : x.PosDef) (φ : Matrix (Fin n) (Fin n) ℂ →L[ℂ] ℂ) (A : Matrix (Fin n) (Fin n) ℂ)

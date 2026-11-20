@@ -24,29 +24,25 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.PolRestr
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c R _ ω C BD φ m x ω' _ _ hb hpol`. Use `set b := algebraMap R (Localization.Away x) with hbdef`. Establish `: IsOpenImmersion (spMap b)` using `IsOpenImmersion.of_isLocalization x`. Establish `hsp : spMap ω' ≫ spMap b = spMap ω`. Rewrite using `[← hb, spMap, spMap, spMap, ← Spec.map_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hp : IsPullback (pullback.fst (pullback.snd C.s (spMap b)) (spMap ω') ≫ pullback.fst C.s (spMap b)) (pullback.snd (pullback.snd C.s (spMap b)) (spMap ω')) C.s (spMap ω)`. Rewrite using `[← hsp]`. Conclude with `(IsPullback.of_hasPullback _ _).paste_horiz (IsPullback.of_hasPullback _ _)`. Establish `hj : ((C.jQ ≫ hp.isoPullback.inv) ≫ pullback.fst (pullback.snd C.s (spMap b)) (spMap ω')) ≫ pullback.fst C.s (spMap b) = C.jQ ≫ pullback.fst _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Category.assoc, hp.isoPullback_inv_fst]`. Choose the witnesses or unpack the hypotheses as in `⟨t', ⟨mu⟩⟩ : ∃ t' : SAB H (pullback C.s (spMap b)), Nonempty (SABMap t' C.t (pullback.fst C.s (spMap b))) := by`. Take `⟨_, _, _, _, _, m, -⟩` from `sabPull Out.CubePf.cubePull (pullback.fst C.s (spMap b)) C.t`. Conclude with `⟨_, ⟨m⟩⟩`. Choose the witnesses or unpack the hypotheses as in `⟨m', -⟩ : ∃ m' : SABMap C.oF.t t' ((C.jQ ≫ hp.isoPullback.inv) ≫ pullback.fst (pullback.snd C.s (spMap b)) (spMap ω')), C.m.φ = m'.φ ≫ mu.φ := by`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `aux : ∀ (g : Xo.XF c ⟶ pullback C.s (spMap b)) (e : Xo.XF c ⟶ C.X) (n : SABMap C.oF.t C.t e), g ≫ pullback.fst C.s (spMap b) = e → ∃ m' : SABMap C.oF.t t' g, n.φ = m'.φ ≫ mu.φ`. Introduce and unpack `g e n rfl`. Conclude with `ObjMaps.exists_sab_cancel mu n`. Conclude with `aux _ _ C.m hj`. Use `C.flat` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Use `C.jQ_open` as an intermediate fact. Establish `hr : Set.range (C.jQ ≫ hp.isoPullback.inv) = hp.isoPullback.hom ⁻¹' Set.range C.jQ`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Conclude with `⟨u, by simp⟩`. Introduce and unpack `⟨u, hu⟩`. Conclude with `⟨u, by simp [hu]⟩`. Set `C' : Model Xo c ω'` to `{ X := pullback C.s (spMap b) s := pullback.snd _ _ normal := isNormalScheme_of_flat_of_surjectiveOnStalks (pullback.fst C.s (spMap b)) C.normal proj := ProjSpace.isProjOver_pullback_snd b C.proj flat := inferInstance jQ := C.jQ ≫ hp.isoPullback.inv jQ_over := by rw [Category.ass …`. Rewrite using `[hr]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `C.jQ_dense.preimage hp.isoPullback.hom.isOpenEmbedding.isOpenMap`. Use `t := t'`. Use `oF := C.oF`. Use `m0 := C.m0`. Use `m := m'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `ab_gen := by`. Rewrite using `[hr, ← C.ab_gen]`. Use extensionality with `y`. Simplify using `only [Set.mem_preimage]`. Rewrite using `[← abLocus_pullback abLocusOne C.t.semi mu.cart.1, ← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, hp.isoPullback_hom_fst] }`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hv : IsOpenImmersion (pullback.fst C.s (spMap b))` using `inferInstance`. Establish `hjv : C'.j ≫ pullback.fst C.s (spMap b) = C.j` using `hj`. Establish `: IsAffineHom (pullback.fst C.s (spMap b))` using `MorphismProperty.of_isPullback (P := @IsAffineHom) (IsPullback.of_hasPullback C.s (spMap b)).flip inferInstance`. Establish `hreg : BD.KeepsRegular (pullback.fst C.s (spMap b))` using `BD.keepsRegular_of_flat _`. Establish `hI` using `BD.idealSheaf_pull (pullback.fst C.s (spMap b)) hreg`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨C', BD.pull _ hreg, pullback.fst C.s (spMap b), IsPullback.of_hasPullback _ _, hjv, ⟨?_, ?_⟩, hI⟩` and prove the remaining obligations. Introduce `W _ _ _ hW ϖ hϖ χ t n P hrng be hbe hmono`. Take `⟨n', -⟩` from `ObjMaps.exists_sab_comp mu n`. Establish `hrng' : Set.range (Out.jK W ≫ χ ≫ pullback.fst C.s (spMap b)) ⊆ Set.range C.j`. Introduce and unpack `_ ⟨a, rfl⟩`.
-
-Take `⟨y, hy⟩` from `hrng ⟨a, rfl⟩`. Use `⟨y, ?_⟩` and prove the remaining obligations. Rewrite using `[← hjv, Scheme.Hom.comp_apply, hy, ← Scheme.Hom.comp_apply, Category.assoc]`. Take `⟨k, hk, hid⟩` from `hpol.1 W hW ϖ hϖ (χ ≫ pullback.fst C.s (spMap b)) t n' P hrng' be hbe hmono`. Use `⟨k, hk, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hI, idlAlong_comap]`. Conclude with `hid`. Conclude with `(PolOpen.isAmpleLB_polOf_iff_pull C C' _ BD (BD.pull _ hreg) m hv ⟨mu⟩ hI.symm).2 (hpol.2.pull_of_isAffineHom _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isPol_away : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H} {Xo : Moduli D l}
     {c : Coeff l} {R : Type} [CommRing R] {ω : R →+* c.F} (C : Model Xo c ω) (BD : EffCartierData C.X) (φ : InvFun (𝓞 E))

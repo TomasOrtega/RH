@@ -7,15 +7,15 @@ open scoped TensorProduct
 universe u
 
 /- English proof (translation)
-Introduce `hS hU hC hF p _ D G L R _ _ gb X N' N hA π Φ hW`. Set `M : Lv p` to `⟨N.1 * N'.1, Nat.le_trans N.2.1 (Nat.le_mul_of_pos_right _ (by have := N'.2.1; omega)), Nat.Coprime.mul_left N.2.2 N'.2.2⟩`. Establish `hI : Integ L (1 : G.GAf)` using `fun v hv => by simpa using hv`. Establish `hMN : AdmK L M.1 N.1 1` using `fun u hu => by`. Simplify using `using UpperTheory.Gal.Int.Geo.KN_anti (Dvd.intro _ rfl : N.1 ∣ M.1) hu`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨c, Φc, Wc, cF, cE, cS⟩` from `hF p D G L R gb N' M (Dvd.intro_left _ rfl) (X N') (X M)`. Take `⟨e, Φe, We, eF, eE, eS⟩` from `hF p D G L R gb N M (Dvd.intro _ rfl) (X N) (X M)`. Establish `W1` using `(hC p D G L R gb M N' N (X M) (X N') (X N) 1 1).2 hI hA c Φc π Φ Wc hW`. Rewrite `W1` using `[_root_.mul_one]`. Establish `hce : c ≫ π = e` using `(hU p D G L R gb M N (X M) (X N) 1 hI hMN _ _ _ _ W1 We).1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨s1, s2, s3, -⟩` from `hS p D R gb N' (X N')`. Take `⟨t1, t2, t3, -⟩` from `hS p D R gb N (X N)`. Establish `hs : π ≫ (X N).s = (X N').s` using `hW.1`. Establish `sep : IsSeparated (π ≫ (X N).s)` using `by rw [hs]; exact s2`. Establish `lft : LocallyOfFiniteType (π ≫ (X N).s)` using `by rw [hs]; infer_instance`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `πS : IsSeparated π` using `IsSeparated.of_comp π (X N).s`. Establish `πL : LocallyOfFiniteType π` using `locallyOfFiniteType_of_comp π (X N).s`. Establish `hE : Etale (c ≫ π)` using `by rw [hce]; exact eE`. Establish `hFi : IsFinite (c ≫ π)` using `by rw [hce]; exact eF`. Take `⟨r1, r2⟩` from `GlobalTheory.etale_isFinite_of_comp_etale_surjective _ _ _ c π cE cS hE hFi πS πL`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hSu : Surjective (c ≫ π)` using `by rw [hce]; exact eS`. Conclude with `⟨r2, r1, Surjective.of_comp c π⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem UpperTheory.Gal.G3.pWitOne :
     GenSm → WitUniq → WitComp → WitForget → WitOne := by

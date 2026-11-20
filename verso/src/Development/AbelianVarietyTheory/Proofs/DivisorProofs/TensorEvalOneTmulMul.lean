@@ -32,7 +32,7 @@ def tmap (R₀ : Type) [CommRing R₀] {A B : Type} [CommRing A] [CommRing B] (�
   LinearMap.lTensor R₀ ρ.toAddMonoidHom.toIntLinearMap
 
 /- English proof (translation)
-Proceed by induction on `h using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r a => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem tensorEval_tmap {A B R : Type} [CommRing A] [CommRing B] [CommRing R] [Algebra R₀ R] (ρ : A →+* B)
     (ψ : B →+* R) (h : R₀ ⊗[ℤ] A) : tensorEval ψ (tmap R₀ ρ h) = tensorEval (ψ.comp ρ) h := by
@@ -42,7 +42,7 @@ theorem tensorEval_tmap {A B R : Type} [CommRing A] [CommRing B] [CommRing R] [A
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `h using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r a => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem tensorEval_comp {A R R' : Type} [CommRing A] [CommRing R] [CommRing R'] [Algebra R₀ R] [Algebra R₀ R']
     (ψ : A →+* R) (σ : R →ₐ[R₀] R') (h : R₀ ⊗[ℤ] A) :
@@ -53,7 +53,7 @@ theorem tensorEval_comp {A R R' : Type} [CommRing A] [CommRing R] [CommRing R'] 
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `h using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r b => rw [Algebra.TensorProduct.tmul_mul_tmul, tensorEval_tmul, tensorEval_tmul, _root_.one_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `add x y hx hy => simp only [mul_add, map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 -/
 theorem tensorEval_one_tmul_mul {A R : Type} [CommRing A] [CommRing R] [Algebra R₀ R] (ψ : A →+* R) (a : A)
     (h : R₀ ⊗[ℤ] A) : tensorEval ψ (((1 : R₀) ⊗ₜ[ℤ] a) * h) = ψ a * tensorEval ψ h := by
@@ -63,7 +63,7 @@ theorem tensorEval_one_tmul_mul {A R : Type} [CommRing A] [CommRing R] [Algebra 
   | add x y hx hy => simp only [mul_add, map_add, hx, hy]
 
 /- English proof (translation)
-The claim follows from `fun R _ _ ψ X φ hX ε hp he ↦ by rw [tensorEval_tmap] exact hh R _ X _ hX ε (isPullBy_comp hκ hp) (detCorr_comp hκ hp hd he)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isChartFun_pull {r₀ : Rule (rapObj 𝔠) R₀ k} {A B : Type} [CommRing A] [CommRing B] {ρ : A →+* B}
     {Y : Obj F 𝔠 (Sp A)} {Y' : Obj F 𝔠 (Sp B)} {κ : Y'.A.left ⟶ Y.A.left} (hκ : Y'.IsPullBy Y (spMap ρ) κ)
@@ -73,7 +73,7 @@ theorem isChartFun_pull {r₀ : Rule (rapObj 𝔠) R₀ k} {A B : Type} [CommRin
   exact hh R _ X _ hX ε (isPullBy_comp hκ hp) (detCorr_comp hκ hp hd he)
 
 /- English proof (translation)
-The claim follows from `fun v v' hv ↦ by change ψ u • ε v' = ψ (u • δ v) rw [hd v v' hv] simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem detCorr_smul {A R : Type} [CommRing A] [CommRing R] {ψ : A →+* R} {Y : Obj F 𝔠 (Sp A)}
     {X : Obj F 𝔠 (Sp R)} {φ : X.A.left ⟶ Y.A.left} {δ : Y.DetOmega} {ε : X.DetOmega}
@@ -83,14 +83,14 @@ theorem detCorr_smul {A R : Type} [CommRing A] [CommRing R] {ψ : A →+* R} {Y 
   simp
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `Submodule.mem_span_singleton.1 (δ.2.ge Submodule.mem_top : δ'.1 ∈ Submodule.span R {δ.1})`. Conclude with `⟨a, ha.symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_smul {R : Type} [CommRing R] {X : Obj F 𝔠 (Sp R)} (δ δ' : X.DetGen) : ∃ u : R, δ'.1 = u • δ.1 := by
   obtain ⟨a, ha⟩ := Submodule.mem_span_singleton.1 (δ.2.ge Submodule.mem_top : δ'.1 ∈ Submodule.span R {δ.1})
   exact ⟨a, ha.symm⟩
 
 /- English proof (translation)
-Use `haveI := X.invertible_detOmega`. Use `eq_of_smul_eq_smul (α := X.DetOmega) fun m ↦ ?_` and prove the remaining obligations. Take `⟨b, rfl⟩` from `Submodule.mem_span_singleton.1 (δ.2.ge Submodule.mem_top : m ∈ Submodule.span R {δ.1})`. Rewrite using `[smul_comm u, smul_comm u', h]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_smul_gen {R : Type} [CommRing R] {X : Obj F 𝔠 (Sp R)} (δ : X.DetGen) {u u' : R}
     (h : u • δ.1 = u' • δ.1) : u = u' := by
@@ -100,7 +100,7 @@ theorem eq_of_smul_gen {R : Type} [CommRing R] {X : Obj F 𝔠 (Sp R)} (δ : X.D
   rw [smul_comm u, smul_comm u', h]
 
 /- English proof (translation)
-The claim follows from `fun R _ _ ψ X φ hX ε hp he ↦ by have hu' : IsUnit (ψ u) := (isUnit_of_eq_smul δ δ' u hu).map ψ let ε' : X.DetGen := ⟨ψ u • ε.1, (Submodule.span_singleton_smul_eq hu' _).trans ε.2⟩ rw [tensorEval_one_tmul_mul, ← hh R ψ X φ hX ε' hp (hu ▸ detCorr_smul he u), map_pow] exact (r₀.homo …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isChartFun_smul {r₀ : Rule (rapObj 𝔠) R₀ k} {A : Type} [CommRing A] {Y : Obj F 𝔠 (Sp A)}
     {δ δ' : Y.DetGen} {u : A} (hu : δ'.1 = u • δ.1) {h : R₀ ⊗[ℤ] A} (hh : IsChartFun r₀ Y δ' h) :
@@ -111,9 +111,9 @@ theorem isChartFun_smul {r₀ : Rule (rapObj 𝔠) R₀ k} {A : Type} [CommRing 
   exact (r₀.homog R X hX ε ε' (ψ u) rfl).symm
 
 /- English proof (translation)
-Introduce `ε' u' he' hu'`. Take `⟨ε, he⟩` from `(hχ.existsUnique_detGen ψ δY).exists`. Take `⟨u, hu⟩` from `exists_smul δ ε`. Establish `hun : IsUnit (σ u)` using `(isUnit_of_eq_smul δ ε u hu).map σ`. Set `ε'' : X'.DetGen` to `⟨σ u • δ'.1, (Submodule.span_singleton_smul_eq hun _).trans δ'.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `h1 : Obj.DetCorr (σ : R →+* R') φ ε.1 ε''.1` using `hu ▸ detCorr_smul hd u`. Establish `h2 : ε' = ε''` using `((isPullBy_comp hχ hφ).existsUnique_detGen _ δY).unique he' (detCorr_comp hχ hφ he h1)`. Establish `h3 : u' • δ'.1 = σ u • δ'.1` using `hu'.symm.trans (congrArg Subtype.val h2)`. Establish `h4 : u' = σ u` using `eq_of_smul_gen δ' h3`. Rewrite using `[h4, tensorEval_comp, hv ε u he hu, map_mul, map_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem isPresVal_baseChange {A R R' : Type} [CommRing A] [CommRing R] [CommRing R'] [Algebra R₀ R] [Algebra R₀ R']
     (σ : R →ₐ[R₀] R') {Y : Obj F 𝔠 (Sp A)} {δY : Y.DetGen} {h : R₀ ⊗[ℤ] A} {X : Obj F 𝔠 (Sp R)} {δ : X.DetGen}
@@ -134,9 +134,9 @@ theorem isPresVal_baseChange {A R R' : Type} [CommRing A] [CommRing R] [CommRing
   rw [h4, tensorEval_comp, hv ε u he hu, map_mul, map_pow]
 
 /- English proof (translation)
-Establish `hr : Set.range c ⊆ Set.range hW.fromSpec`. Rewrite using `[hW.range_fromSpec]`. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `((IsLocalRing.specializes_closedPoint x).map c.continuous).mem_open W.isOpen h`. Use `⟨(Spec.preimage (IsOpenImmersion.lift hW.fromSpec c hr)).hom, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: spMap (Spec.preimage (IsOpenImmersion.lift hW.fromSpec c hr)).hom = IsOpenImmersion.lift hW.fromSpec c hr` using `Spec.map_preimage _`. Rewrite using `[this, IsOpenImmersion.lift_fac]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_factor {R : Type} [CommRing R] [IsLocalRing R] {M : Scheme.{0}} (c : Sp R ⟶ M) {W : M.Opens}
     (hW : IsAffineOpen W) (h : c (IsLocalRing.closedPoint R) ∈ W) :
@@ -151,27 +151,23 @@ theorem exists_factor {R : Type} [CommRing R] [IsLocalRing R] {M : Scheme.{0}} (
   rw [this, IsOpenImmersion.lift_fac]
 
 /- English proof (translation)
-The claim follows from `congrArg CommRingCat.Hom.hom (Spec.map_injective h)`.
+A detailed English derivation is pending.
 -/
 theorem spMap_injective {A R : Type} [CommRing A] [CommRing R] {ψ ψ' : A →+* R} (h : spMap ψ = spMap ψ') : ψ = ψ' :=
   congrArg CommRingCat.Hom.hom (Spec.map_injective h)
 
 /- English proof (translation)
-Introduce `F _ _ 𝔠 M U y`. Take `⟨W₀, hW₀, hyW₀, -⟩` from `(TopologicalSpace.Opens.isBasis_iff_nbhd.mp M.isBasis_affineOpens) (show y ∈ (⊤ : M.Opens) from trivial)`. Establish `hW₀ : IsAffineOpen W₀` using `hW₀`. Take `⟨Y₀, φ₀, h₀⟩` from `Obj.exists_isPullBy (S' := Sp Γ(M, W₀)) U hW₀.fromSpec`. Take `⟨hfin, hproj, hrk⟩` from `GlobalTheory.T.lie_algebra_finite_projective_rank Y₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `q` to `hW₀.primeIdealOf ⟨y, hyW₀⟩`. Set `p : Ideal Γ(M, W₀)` to `q.asIdeal`. Use `haveI : p.IsPrime := q.isPrime`. Use `haveI : Module.FinitePresentation Γ(M, W₀) Y₀.Lie := Module.finitePresentation_of_projective _ _`. Use `haveI : Module.Free (Localization.AtPrime p) (LocalizedModule p.primeCompl Y₀.Lie) := Module.free_of_flat_of_isLocalRing`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨g, hg, hfree, hfr⟩` from `Module.FinitePresentation.exists_free_localizedModule_powers p.primeCompl (LocalizedModule.mkLinearMap p.primeCompl Y₀.Lie) (Localization.AtPrime p)`. Establish `hyW : y ∈ M.basicOpen g`. Establish `h1 : q ∈ hW₀.fromSpec ⁻¹ᵁ M.basicOpen g`. Rewrite using `[hW₀.fromSpec_preimage_basicOpen]`. Conclude with `hg`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Establish `h2 : hW₀.fromSpec q ∈ M.basicOpen g` using `h1`. Rewrite `h2` using `[hW₀.fromSpec_primeIdealOf]`. Then use the resulting hypothesis. Establish `hW : IsAffineOpen (M.basicOpen g)` using `hW₀.basicOpen g`. Use `letI : Algebra Γ(M, W₀) Γ(M, M.basicOpen g) := (M.presheaf.map (homOfLE (M.basicOpen_le g)).op).hom.toAlgebra`. Use `haveI : IsLocalization.Away g Γ(M, M.basicOpen g) := hW₀.isLocalization_basicOpen g`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨Y, ψ, hψ⟩` from `Obj.exists_isPullBy (S' := Sp Γ(M, M.basicOpen g)) Y₀ (spMap (algebraMap Γ(M, W₀) Γ(M, M.basicOpen g)))`. Establish `hcomp : spMap (algebraMap Γ(M, W₀) Γ(M, M.basicOpen g)) ≫ hW₀.fromSpec = hW.fromSpec` using `hW₀.map_fromSpec hW (homOfLE (M.basicOpen_le g)).op`. Use `⟨M.basicOpen g, hW, hyW, Y, ψ ≫ φ₀, by rw [← hcomp]; exact hψ.comp h₀, ?_⟩` and prove the remaining obligations. Take `⟨e, -, -⟩` from `Obj.exists_lieEquiv (R' := Γ(M, M.basicOpen g)) hψ`. Use `haveI : Module.Finite (Localization.Away g) (LocalizedModule.Away g Y₀.Lie) := Module.Finite.of_isLocalizedModule (Submonoid.powers g) (LocalizedModule.mkLinearMap (Submonoid.powers g) Y₀.Lie)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hd : Module.finrank (Localization.Away g) (LocalizedModule.Away g Y₀.Lie) = Module.finrank ℚ F`. Rewrite using `[hfr]`. Conclude with `hrk q`. Use `haveI : Nontrivial (Localization.Away g) := (IsLocalization.Away.lift g (S := Localization.Away g) (g := algebraMap Γ(M, W₀) (Localization.AtPrime p)) (IsLocalization.map_units (Localization.AtPrime p) ⟨g, hg⟩)).domain_nontrivial`. Set `b₀` to `Module.finBasisOfFinrankEq (Localization.Away g) (LocalizedModule.Away g Y₀.Lie) hd`.
-
-Use `haveI : IsLocalizedModule (Submonoid.powers g) (TensorProduct.mk Γ(M, W₀) Γ(M, M.basicOpen g) Y₀.Lie 1) := (isLocalizedModule_iff_isBaseChange (Submonoid.powers g) Γ(M, M.basicOpen g) _).2 (TensorProduct.isBaseChange _ _ _)`. Set `l` to `IsLocalizedModule.linearEquiv (Submonoid.powers g) (LocalizedModule.mkLinearMap (Submonoid.powers g) Y₀.Lie) (TensorProduct.mk Γ(M, W₀) Γ(M, M.basicOpen g) Y₀.Lie 1)`. Set `τ` to `IsLocalization.algEquiv (Submonoid.powers g) (Localization.Away g) Γ(M, M.basicOpen g)`. Set `Ψ` to `l.symm ≪≫ₗ b₀.repr.restrictScalars Γ(M, W₀) ≪≫ₗ Finsupp.mapRange.linearEquiv τ.toLinearEquiv`. Set `Ψ'` to `Ψ.extendScalarsOfIsLocalization (Submonoid.powers g) Γ(M, M.basicOpen g)`.
-
-Conclude with `⟨Obj.DetGen.ofBasis Y ((Module.Basis.ofRepr Ψ').map e)⟩`.
+Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_chart_detGen : ∀ (F : Type) [Field F] [NumberField F] (𝔠 : FracId F) (M : Scheme.{0}) (U : Obj F 𝔠 M) (y : M),
     ∃ (W : M.Opens) (hW : IsAffineOpen W), y ∈ W ∧ ∃ (Y : Obj F 𝔠 (Sp Γ(M, W))) (φ : Y.A.left ⟶ U.A.left),
@@ -225,17 +221,17 @@ theorem exists_chart_detGen : ∀ (F : Type) [Field F] [NumberField F] (𝔠 : F
   exact ⟨Obj.DetGen.ofBasis Y ((Module.Basis.ofRepr Ψ').map e)⟩
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.ample_rigid_level_rigid (GlobalTheory.T.ample_rigid_serre_ample (GlobalTheory.T.ample_rigid_finite_order GlobalTheory.T.ample_rigid_constant GlobalTheory.T.ample_rigid_cube) (GlobalTheory.T.ample_rigid_separated GlobalTheory.T.ample_rigid_constant GlobalTheory.T.am …`.
+A detailed English derivation is pending.
 -/
 theorem level_rigid : GlobalTheory.AmpleRigid.LevelRigidSt :=
   GlobalTheory.T.ample_rigid_level_rigid (GlobalTheory.T.ample_rigid_serre_ample (GlobalTheory.T.ample_rigid_finite_order GlobalTheory.T.ample_rigid_constant GlobalTheory.T.ample_rigid_cube) (GlobalTheory.T.ample_rigid_separated GlobalTheory.T.ample_rigid_constant GlobalTheory.T.ample_rigid_cube))
 
 /- English proof (translation)
-Set `ρ : Γ(M, W) →+* Γ(M₃, W₃)` to `(f.appLE W W₃ hle).hom`. Establish `hρ : hW₃.fromSpec ≫ f = spMap ρ ≫ hW.fromSpec` using `(hW.SpecMap_appLE_fromSpec f hW₃ hle).symm`. Establish `h1` using `hY₃.comp hπ`. Rewrite `h1` using `[hρ]`. Take `⟨κ, hκ, hκφ⟩` from `h1.cancel hY`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `rfl : ψ = ψ₃.comp ρ` from `spMap_injective (by`. Rewrite using `[← cancel_mono hW.fromSpec, hb, RuleDescend.spMap_comp, Category.assoc, Category.assoc, hρ])`. Take `rfl : χ = χ₃ ≫ κ` from `hY.grp.1.hom_ext (by rw [hτ, Category.assoc, Category.assoc, hκφ]) (by rw [hχ.grp.1.w, (isPullBy_comp hκ hχ₃).grp.1.w])`. Take `⟨δ₃, hδ₃⟩` from `(hκ.existsUnique_detGen ρ δY).exists`. Use `⟨δ₃, tmap R₀ ρ h, isChartFun_pull hκ hδ₃ hh, fun ε u he hu ↦ ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[tensorEval_tmap]`. Conclude with `hv ε u (detCorr_comp hκ hχ₃ hδ₃ he) hu`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_refine {r₀ : Rule (rapObj 𝔠) R₀ k} {M M₃ : Scheme.{0}} {U : Obj F 𝔠 M} {U₃ : Obj F 𝔠 M₃}
     {f : M₃ ⟶ M} {π : U₃.A.left ⟶ U.A.left} (hπ : U₃.IsPullBy U f π)
@@ -264,9 +260,9 @@ theorem exists_refine {r₀ : Rule (rapObj 𝔠) R₀ k} {M M₃ : Scheme.{0}} {
   exact hv ε u (detCorr_comp hκ hχ₃ hδ₃ he) hu
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `exists_smul δ₁ δ₂`. Take `rfl` from `GlobalTheory.T.det_generator_pullback_rule hM r₀ hW hY hh₁ (isChartFun_smul hu hh₂)`. Take `⟨ε, he⟩` from `(hχ.existsUnique_detGen ψ δ₁).exists`. Take `⟨w, hw⟩` from `exists_smul δ ε`. Establish `hu' : IsUnit (ψ u)` using `(isUnit_of_eq_smul δ₁ δ₂ u hu).map ψ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `ε' : X.DetGen` to `⟨ψ u • ε.1, (Submodule.span_singleton_smul_eq hu' _).trans ε.2⟩`. Rewrite using `[hv₁ ε w he hw, hv₂ ε' (ψ u * w) (hu ▸ detCorr_smul he u) (by rw [mul_smul, ← hw]), tensorEval_one_tmul_mul, map_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Introduce a local definition for the expression. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem eq_of_same_chart {r₀ : Rule (rapObj 𝔠) R₀ k} {N : ℕ} {M : Scheme.{0}}
     {s : M ⟶ Sp (Localization.Away (N : ℤ))} {U : Obj F 𝔠 M} {α : U.Level N} {V : M.Opens}
@@ -287,7 +283,7 @@ theorem eq_of_same_chart {r₀ : Rule (rapObj 𝔠) R₀ k} {N : ℕ} {M : Schem
   ring
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `f (c x) ∈ (W : Set M)`. Rewrite using `[← Scheme.Hom.comp_apply, ← h, ← hW.range_fromSpec, Scheme.Hom.comp_apply]`. Conclude with `⟨_, rfl⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mem_preimage {S M M₃ : Scheme.{0}} {W : M.Opens} (hW : IsAffineOpen W) {a : S ⟶ Spec Γ(M, W)} {c : S ⟶ M₃}
     {f : M₃ ⟶ M} (h : a ≫ hW.fromSpec = c ≫ f) (x : S) : c x ∈ f ⁻¹ᵁ W := by
@@ -296,11 +292,9 @@ theorem mem_preimage {S M M₃ : Scheme.{0}} {W : M.Opens} (hW : IsAffineOpen W)
   exact ⟨_, rfl⟩
 
 /- English proof (translation)
-Establish `m₁` using `mem_preimage hW₁ hb₁ (IsLocalRing.closedPoint R)`. Establish `m₂` using `mem_preimage hW₂ hb₂ (IsLocalRing.closedPoint R)`. Take `⟨_, ⟨W₃, hW₃, rfl⟩, hm, hle⟩` from `M₃.isBasis_affineOpens.exists_subset_of_mem_open (show c (IsLocalRing.closedPoint R) ∈ ((f₁ ⁻¹ᵁ W₁ ⊓ f₂ ⁻¹ᵁ W₂ : M₃.Opens) : Set M₃) from ⟨m₁, m₂⟩) (f₁ ⁻¹ᵁ W₁ ⊓ f₂ ⁻¹ᵁ W₂).isOpen`. Establish `hle' : W₃ ≤ f₁ ⁻¹ᵁ W₁ ⊓ f₂ ⁻¹ᵁ W₂` using `hle`. Use `replace hW₃ : IsAffineOpen W₃ := hW₃`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ψ₃, rfl⟩` from `exists_factor c hW₃ hm`. Take `⟨Y₃, φ₃, hY₃⟩` from `U₃.exists_isPullBy hW₃.fromSpec`. Take `⟨χ₃, hχ₃, rfl⟩` from `hτ.cancel hY₃`. Take `⟨ε₁, g₁, hg₁, hw₁⟩` from `exists_refine hπ₁ hW₁ hY₁ hh₁ hW₃ (hle'.trans inf_le_left) hY₃ hχ₁ hχ₃ hb₁ hτ₁ hv₁`. Take `⟨ε₂, g₂, hg₂, hw₂⟩` from `exists_refine hπ₂ hW₂ hY₂ hh₂ hW₃ (hle'.trans inf_le_right) hY₃ hχ₂ hχ₃ hb₂ hτ₂ hv₂`.
-
-Conclude with `eq_of_same_chart hM hW₃ hY₃ hg₁ hg₂ hχ₃ hw₁ hw₂`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eq_of_model {r₀ : Rule (rapObj 𝔠) R₀ k} {N : ℕ} {M₃ : Scheme.{0}}
     {s : M₃ ⟶ Sp (Localization.Away (N : ℤ))} {U₃ : Obj F 𝔠 M₃} {α : U₃.Level N} {V : M₃.Opens}
@@ -333,21 +327,21 @@ theorem eq_of_model {r₀ : Rule (rapObj 𝔠) R₀ k} {N : ℕ} {M₃ : Scheme.
   exact eq_of_same_chart hM hW₃ hY₃ hg₁ hg₂ hχ₃ hw₁ hw₂
 
 /- English proof (translation)
-Rewrite using `[← cancel_mono (spMap (algebraMap ℤ (Localization.Away (N : ℤ))))]`. Conclude with `specZIsTerminal.hom_ext _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hom_away_ext {S : Scheme.{0}} {N : ℕ} (t t' : S ⟶ Sp (Localization.Away (N : ℤ))) : t = t' := by
   rw [← cancel_mono (spMap (algebraMap ℤ (Localization.Away (N : ℤ))))]
   exact specZIsTerminal.hom_ext _ _
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨spMap (IsLocalization.Away.lift (N : ℤ) (g := Int.castRingHom R) (by simpa using h))⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_hom_away {R : Type} [CommRing R] {N : ℕ} (h : IsUnit (N : R)) :
     Nonempty (Sp R ⟶ Sp (Localization.Away (N : ℤ))) :=
   ⟨spMap (IsLocalization.Away.lift (N : ℤ) (g := Int.castRingHom R) (by simpa using h))⟩
 
 /- English proof (translation)
-Use `(IsLocalization.Away.algebraMap_isUnit (S := Localization.Away (N : ℤ)) (N : ℤ)).map (Spec.preimage t).hom` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isUnit_of_hom_away {R : Type} [CommRing R] {N : ℕ} (t : Sp R ⟶ Sp (Localization.Away (N : ℤ))) :
     IsUnit (N : R) := by
@@ -355,9 +349,9 @@ theorem isUnit_of_hom_away {R : Type} [CommRing R] {N : ℕ} (t : Sp R ⟶ Sp (L
   simpa using this
 
 /- English proof (translation)
-Take `rfl : b = b'` from `(hM _ (b ≫ s) X β).unique ⟨rfl, τ, h, e⟩ ⟨hom_away_ext _ _, τ', h', e'⟩`. Use `⟨rfl, ?_⟩` and prove the remaining obligations. Establish `h₁ : X.IsPullBy U (𝟙 _ ≫ b) τ` using `by rwa [Category.id_comp]`. Take `⟨g, hg, rfl⟩` from `h₁.cancel h'`. Rewrite using `[level_rigid F 𝔠 N hN R (isUnit_of_hom_away (b ≫ s)) X β g hg fun i ↦ ?_, Category.id_comp]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `h'.grp.1.hom_ext (by rw [Category.assoc, e, e']) ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, hg.grp.1.w, Category.comp_id]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_of_level {N : ℕ} (hN : 3 ≤ N) {M : Scheme.{0}} {s : M ⟶ Sp (Localization.Away (N : ℤ))}
     {U : Obj F 𝔠 M} {α : U.Level N} (hM : IsFineModuli s α) {R : Type} [CommRing R] {X : Obj F 𝔠 (Sp R)}
@@ -373,9 +367,9 @@ theorem eq_of_level {N : ℕ} (hN : 3 ≤ N) {M : Scheme.{0}} {s : M ⟶ Sp (Loc
   rw [Category.assoc, hg.grp.1.w, Category.comp_id]
 
 /- English proof (translation)
-Establish `e₁ : pushPt h.grp.1.w x' = toUnit (Over.mk ((𝟙_ (Over S')).hom ≫ b)) ≫ x`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `x'.left ≫ φ = _`. Rewrite using `[e, Over.comp_left, LevelPull.toUnit_left]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e₂` using `congrArg (fun z ↦ z.left) (LevelPull.push_pow h.grp x' n)`. Rewrite `e₂` using `[e₁, ← MonObj.comp_pow]`. Use `Eq.trans e₂ ?_` and prove the remaining obligations. Rewrite using `[Over.comp_left, LevelPull.toUnit_left]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pow_left_comp {S S' : Scheme.{0}} {X : Obj F 𝔠 S} {X' : Obj F 𝔠 S'} {b : S' ⟶ S}
     {φ : X'.A.left ⟶ X.A.left} (h : X'.IsPullBy X b φ) {x : 𝟙_ (Over S) ⟶ X.A} {x' : 𝟙_ (Over S') ⟶ X'.A}
@@ -392,15 +386,15 @@ theorem pow_left_comp {S S' : Scheme.{0}} {X : Obj F 𝔠 S} {X' : Obj F 𝔠 S'
   simp
 
 /- English proof (translation)
-Establish `hτ₁` using `hχ₁.comp hY₁`. Establish `hτ₂` using `hχ₂.comp hY₂`. Take `⟨β₁, hβ₁⟩` from `LevelPull.exists_level_pull hτ₁ α₁`. Take `⟨β₂, hβ₂⟩` from `LevelPull.exists_level_pull hτ₂ α₂`. Take `⟨ξ, hξ₁, hξ₂⟩` from `GlobalTheory.T.level_structure_crt_combine hc β₁ β₂`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨M₃, s₃, U₃, α₃, V₃, hM₃⟩` from `exists_isDPModel hDP F 𝔠 (N * p) (by nlinarith)`. Establish `hu : IsUnit ((N * p : ℕ) : R)`. Rewrite using `[Nat.cast_mul]`. Conclude with `(isUnit_of_hom_away ((spMap ψ₁ ≫ hW₁.fromSpec) ≫ s₁)).mul (isUnit_of_hom_away ((spMap ψ₂ ≫ hW₂.fromSpec) ≫ s₂))`. Take `⟨t⟩` from `exists_hom_away hu`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, -, τ, hτ, hτξ⟩` from `(hM₃.1 _ t X ξ).exists`. Take `⟨⟨a₁, ha₁⟩, a₂, ha₂⟩` from `GlobalTheory.T.level_structure_power_split (by omega) (by omega) α₃`. Establish `hu₃ : IsUnit ((N : Localization.Away ((N * p : ℕ) : ℤ)) * (p : Localization.Away ((N * p : ℕ) : ℤ)))` using `(Nat.cast_mul (α := Localization.Away ((N * p : ℕ) : ℤ)) N p).symm ▸ isUnit_of_hom_away (𝟙 _)`. Take `⟨t₁⟩` from `exists_hom_away (isUnit_of_mul_isUnit_left hu₃)`. Take `⟨t₂⟩` from `exists_hom_away (isUnit_of_mul_isUnit_right hu₃)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨f₁, -, π₁, hπ₁, hf₁⟩` from `(hM₁ _ (s₃ ≫ t₁) U₃ a₁).exists`. Take `⟨f₂, -, π₂, hπ₂, hf₂⟩` from `(hM₂ _ (s₃ ≫ t₂) U₃ a₂).exists`. Take `⟨e₁, e₁'⟩` from `eq_of_level hN hM₁ β₁ hτ₁ (hτ.comp hπ₁) hβ₁ fun i ↦ by`. Rewrite using `[← hξ₁, ← Category.assoc, pow_left_comp hτ (hτξ i), ← ha₁, Category.assoc, hf₁, Category.assoc]`. Take `⟨e₂, e₂'⟩` from `eq_of_level hp hM₂ β₂ hτ₂ (hτ.comp hπ₂) hβ₂ fun i ↦ by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hξ₂, ← Category.assoc, pow_left_comp hτ (hτξ i), ← ha₂, Category.assoc, hf₂, Category.assoc]`. Conclude with `eq_of_model hM₃ hπ₁ hπ₂ hW₁ hY₁ hh₁ hW₂ hY₂ hh₂ hτ hχ₁ hχ₂ e₁ e₁' e₂ e₂' hv₁ hv₂`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_coprime [IsTotallyReal F] (hDP : GlobalTheory.Published.DelignePappasModel) {r₀ : Rule (rapObj 𝔠) R₀ k} {N p : ℕ}
     (hN : 3 ≤ N) (hp : 3 ≤ p) (hc : Nat.Coprime N p)
@@ -441,7 +435,7 @@ theorem eq_of_coprime [IsTotallyReal F] (hDP : GlobalTheory.Published.DelignePap
   exact eq_of_model hM₃ hπ₁ hπ₂ hW₁ hY₁ hh₁ hW₂ hY₂ hh₂ hτ hχ₁ hχ₂ e₁ e₁' e₂ e₂' hv₁ hv₂
 
 /- English proof (translation)
-Take `⟨ε, he, hu⟩` from `hχ.existsUnique_detGen ψ δY`. Take `⟨u, hεu⟩` from `exists_smul δ ε`. Use `⟨u ^ k * tensorEval ψ h, fun ε' u' he' hu' ↦ ?_⟩` and prove the remaining obligations. Take `rfl` from `hu ε' he'`. Rewrite using `[eq_of_smul_gen δ (hu'.symm.trans hεu)]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_isPresVal {A R : Type} [CommRing A] [CommRing R] [Algebra R₀ R] {Y : Obj F 𝔠 (Sp A)} (δY : Y.DetGen)
     (h : R₀ ⊗[ℤ] A) {X : Obj F 𝔠 (Sp R)} (δ : X.DetGen) {ψ : A →+* R} {χ : X.A.left ⟶ Y.A.left}
@@ -453,15 +447,15 @@ theorem exists_isPresVal {A R : Type} [CommRing A] [CommRing R] [Algebra R₀ R]
   rw [eq_of_smul_gen δ (hu'.symm.trans hεu)]
 
 /- English proof (translation)
-Establish `loc : ∀ {A : Type} [CommRing A] (y : A), y ≠ 0 → ∃ (B : Type) (_ : CommRing B) (_ : IsLocalRing B) (σ : A →+* B), σ y ≠ 0` using `fun {A} _ y hy ↦ by`. Assume the negation of the conclusion as `H`. Use `hy (eq_zero_of_localization y fun J hJ ↦ ?_)` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `H ⟨Localization.AtPrime J, inferInstance, inferInstance, algebraMap _ _, h⟩`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨R₁, _, _, σ₁, h₁⟩` from `loc x hx`. Choose the witnesses or unpack the hypotheses as in `⟨p, hp3, hc, hu⟩ : ∃ p : ℕ, 3 ≤ p ∧ Nat.Coprime N p ∧ IsUnit (p : R₁) := by`. Break down `IsLocalRing.isUnit_or_isUnit_of_isUnit_add (a := ((2 * N * (2 * N + 1) + 1 : ℕ) : R₁)) (b := -((2 * N * (2 * N + 1) : ℕ) : R₁)) (by simp) with h | h` into its components or cases. Use `⟨_, by nlinarith [Nat.pos_of_ne_zero hN], ?_, h⟩` and prove the remaining obligations. Rewrite using `[show 2 * N * (2 * N + 1) + 1 = 1 + N * (2 * (2 * N + 1)) by ring]`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite `h` using `[IsUnit.neg_iff, Nat.cast_mul]`. Use `⟨_, by omega, ?_, isUnit_of_mul_isUnit_right h⟩` and prove the remaining obligations. Rewrite using `[show 2 * N + 1 = 1 + N * 2 by ring]`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨X₁, φ₁, k₁⟩` from `X.exists_isPullBy (spMap σ₁)`. Take `⟨R₂, _, σ₂, X₂, φ₂, hσ₂, k₂, ⟨β⟩⟩` from `exists_faithfullyFlat_level F 𝔠 p (by omega) R₁ hu X₁`. Take `⟨R₃, _, _, σ₃, h₃⟩` from `loc (σ₂ (σ₁ x)) fun h ↦ h₁ (hσ₂.injective (h.trans (map_zero σ₂).symm))`. Take `⟨X₃, φ₃, k₃⟩` from `X₂.exists_isPullBy (spMap σ₃)`. Take `⟨β', -⟩` from `k₃.exists_level β`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨R₃, inferInstance, inferInstance, σ₃.comp (σ₂.comp σ₁), X₃, _, p, h₃, isPullBy_comp (isPullBy_comp k₁ k₂) k₃, hp3, hc, by simpa using hu.map (σ₃.comp σ₂), ⟨β'⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_local_level [IsTotallyReal F] {N : ℕ} (hN : N ≠ 0) {R : Type} [CommRing R] (X : Obj F 𝔠 (Sp R)) (x : R)
     (hx : x ≠ 0) :
@@ -494,13 +488,13 @@ theorem exists_local_level [IsTotallyReal F] {N : ℕ} (hN : N ≠ 0) {R : Type}
     hp3, hc, by simpa using hu.map (σ₃.comp σ₂), ⟨β'⟩⟩
 
 /- English proof (translation)
-Introduce `hDP F _ _ _ 𝔠 N hN M s U α V hM R₀ _ k r₀ H W₁ hW₁ Y₁ φ₁ hY₁ δ₁ h₁ hh₁ W₂ hW₂ Y₂ φ₂ hY₂ δ₂ h₂ hh₂ R _ _ X δ ψ₁ χ₁ ψ₂ χ₂ hχ₁ hχ₂ v₁ v₂ hv₁ hv₂`. Assume the negation of the conclusion as `hne`. Take `⟨R', _, _, σ, X', φ, p, hσ, hφ, hp, hc, hu, ⟨β⟩⟩` from `exists_local_level (N := N) (by omega) X _ (sub_ne_zero.2 hne)`. Use `letI : Algebra R₀ R' := (σ.comp (algebraMap R₀ R)).toAlgebra`. Set `σ' : R →ₐ[R₀] R'` to `{ σ with commutes' := fun _ ↦ rfl }`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Take `⟨δ', hδ'⟩` from `(hφ.existsUnique_detGen σ δ).exists`. Establish `w₁` using `isPresVal_baseChange σ' hχ₁ hv₁ hφ hδ'`. Establish `w₂` using `isPresVal_baseChange σ' hχ₂ hv₂ hφ hδ'`. Take `⟨M', s', U', α', V', hM'⟩` from `exists_isDPModel hDP F 𝔠 p hp`. Take `⟨t⟩` from `exists_hom_away hu`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, -, τ, hτ, -⟩` from `(hM'.1 _ t X' β).exists`. Take `⟨W', hW', hm, Y', φ', hY', ⟨δY⟩⟩` from `exists_chart_detGen F 𝔠 M' U' (c (IsLocalRing.closedPoint R'))`. Take `⟨h', hh'⟩` from `H p M' s' U' α' V' hp hM' W' hW' Y' φ' hY' δY`. Take `⟨ψ', rfl⟩` from `exists_factor c hW' hm`. Take `⟨χ', hχ', -⟩` from `hτ.cancel hY'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨v', hv'⟩` from `exists_isPresVal (k := k) δY h' δ' hχ'`. Establish `e₁` using `eq_of_coprime hDP hN hp hc hM.1 hM'.1 hW₁ hY₁ hh₁ hW' hY' hh' (isPullBy_comp hχ₁ hφ) hχ' w₁ hv'`. Establish `e₂` using `eq_of_coprime hDP hN hp hc hM.1 hM'.1 hW₂ hY₂ hh₂ hW' hY' hh' (isPullBy_comp hχ₂ hφ) hχ' w₂ hv'`. Conclude with `hσ (by rw [map_sub]; exact sub_eq_zero.2 (e₁.trans e₂.symm))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem presVal_indep : GlobalTheory.Published.DelignePappasModel → ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (𝔠 : FracId F)
   (N : ℕ), 3 ≤ N → ∀ (M : Scheme.{0}) (s : M ⟶ Sp (Localization.Away (N : ℤ))) (U : Obj F 𝔠 M) (α : U.Level N)

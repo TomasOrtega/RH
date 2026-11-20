@@ -14,7 +14,7 @@ noncomputable def cmp (M : Type) [AddCommGroup M] [Module O M] :
 variable {M N : Type} [AddCommGroup M] [Module O M] [AddCommGroup N] [Module O N]
 
 /- English proof (translation)
-Use extensionality with `g x`. Simplify using `[cmp]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cmp_natural (f : M →ₗ[O] N) :
     cmp A M ∘ₗ f.dualMap.baseChange A = (f.baseChange A).dualMap ∘ₗ cmp A N := by
@@ -22,16 +22,16 @@ theorem cmp_natural (f : M →ₗ[O] N) :
   simp [cmp]
 
 /- English proof (translation)
-The claim follows from `LinearMap.congr_fun (cmp_natural A f) x`.
+A detailed English derivation is pending.
 -/
 theorem cmp_natural_apply (f : M →ₗ[O] N) (x : A ⊗[O] Module.Dual O N) :
     cmp A M (f.dualMap.baseChange A x) = (f.baseChange A).dualMap (cmp A N x) :=
   LinearMap.congr_fun (cmp_natural A f) x
 
 /- English proof (translation)
-Establish `h` using `(TensorProduct.isBaseChange O M A)`. Establish `: cmp A M (O` using `O) = h.toDualBaseChange.toLinearMap := by`. Use extensionality with `g x`. Use `h.toDualBaseChange_tmul 1 g x` as an intermediate fact. Simplify using `only [TensorProduct.mk_apply] at this`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[cmp, this, Algebra.algebraMap_eq_smul_one]`. Rewrite using `[this]`. Conclude with `h.toDualBaseChange.bijective`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cmp_bijective_of_free [Module.Free O M] [Module.Finite O M] :
     Function.Bijective (cmp A M (O := O)) := by
@@ -45,13 +45,13 @@ theorem cmp_bijective_of_free [Module.Free O M] [Module.Finite O M] :
   exact h.toDualBaseChange.bijective
 
 /- English proof (translation)
-Take `⟨n, p, i, -, -, hpi⟩` from `Module.Finite.exists_comp_eq_id_of_projective O M`. Establish `hF` using `cmp_bijective_of_free A (O := O) (M := Fin n → O)`. Establish `h1 : ∀ x, i.dualMap.baseChange A (p.dualMap.baseChange A x) = x`. Introduce `x`. Rewrite using `[← LinearMap.comp_apply, ← LinearMap.baseChange_comp, LinearMap.dualMap_comp_dualMap, hpi]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[LinearMap.dualMap_id]`. Establish `h2 : ∀ y, (i.baseChange A).dualMap ((p.baseChange A).dualMap y) = y`. Introduce `y`. Rewrite using `[← LinearMap.comp_apply, LinearMap.dualMap_comp_dualMap, ← LinearMap.baseChange_comp, hpi]`. Simplify using `[LinearMap.dualMap_id]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce `x y hxy`. Rewrite using `[← h1 x, ← h1 y]`. Use `congr 1`. Apply `hF.1` to reduce the goal to its premises.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[cmp_natural_apply, cmp_natural_apply, hxy]`. Introduce `y`. Take `⟨z, hz⟩` from `hF.2 ((p.baseChange A).dualMap y)`. Conclude with `⟨i.dualMap.baseChange A z, by rw [cmp_natural_apply, hz, h2]⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cmp_bijective [Module.Projective O M] [Module.Finite O M] :
     Function.Bijective (cmp A M (O := O)) := by
@@ -78,9 +78,9 @@ theorem cmp_bijective [Module.Projective O M] [Module.Finite O M] :
 end
 
 /- English proof (translation)
-Introduce `O M N κ _ _ _ _ _ _ _ _ _ _ _ f`. Set `eM` to `LinearEquiv.ofBijective (cmp κ M (O := O)) (cmp_bijective κ)`. Use `⟨by rw [eM.finrank_eq, Subspace.dual_finrank_eq], ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.finrank_range_dualMap_eq_finrank_range (f.baseChange κ), ← LinearEquiv.finrank_map_eq eM]`. Establish `: (LinearMap.range (f.dualMap.baseChange κ)).map (eM : _ →ₗ[κ] _) = LinearMap.range (f.baseChange κ).dualMap`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← LinearMap.range_comp]`. Express the relevant statement in the definitionally equal form `LinearMap.range (cmp κ M ∘ₗ f.dualMap.baseChange κ) = _`. Rewrite using `[cmp_natural, LinearMap.range_comp_of_range_eq_top]`. Conclude with `LinearMap.range_eq_top.2 (cmp_bijective κ).2`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_dual_and_range_dualMap_baseChange :
     ∀ (O M N κ : Type) [CommRing O] [AddCommGroup M] [Module O M] [AddCommGroup N] [Module O N]

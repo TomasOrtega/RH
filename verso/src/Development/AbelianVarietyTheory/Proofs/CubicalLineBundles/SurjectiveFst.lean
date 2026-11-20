@@ -15,7 +15,7 @@ namespace GlobalTheory.WeierstrassLie
 variable {R : Type} [CommRing R] (W : WeierstrassCurve R)
 
 /- English proof (translation)
-Rewrite using `[equation_origin_iff]`. Simplify using `[pow_succ, TrivSqZeroExt.inr_mul_inr]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem equation_inr (c : R) : (W.map (algebraMap R (DualNumber R))).toProjective.Equation
     ![TrivSqZeroExt.inr c, -1, 0] := by
@@ -27,9 +27,9 @@ def vec (c : R) : Spec (.of (DualNumber R)) ⟶ scheme W :=
     (isUnimodularSol_origin (equation_inr W c))
 
 /- English proof (translation)
-Use `(SpecMap_ptHom W _ _ _ (epsScaleR c)).trans (ptHom_congr W _ _ _ ?_ ?_ _)` and prove the remaining obligations. Apply the tactic sequence `ext a <;> simp [epsScaleR, TrivSqZeroExt.algebraMap_eq_inl]`. Use `ext1 j fin_cases j`. Apply the tactic sequence `ext <;> simp [epsScaleR]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem scale_vec (c : R) : spMap (epsScaleR c) ≫ vec W 1 = vec W c := by
   refine (SpecMap_ptHom W _ _ _ (epsScaleR c)).trans (ptHom_congr W _ _ _ ?_ ?_ _)
@@ -41,7 +41,7 @@ theorem scale_vec (c : R) : spMap (epsScaleR c) ≫ vec W 1 = vec W c := by
     · simp
 
 /- English proof (translation)
-Rewrite `e` using `[vec, vec, ← SpecMap_originEval_chartY W _ _ _ (equation_inr W c), ← SpecMap_originEval_chartY W _ _ _ (equation_inr W d), cancel_mono]`. Establish `e' : originEval W _ _ _ (equation_inr W c) = originEval W _ _ _ (equation_inr W d)` using `congrArg (·.hom) (Spec.map_injective e)`. Use `RingHom.congr_fun e' (originZ W)` as an intermediate fact. Rewrite `this` using `[originEval_originZ, originEval_originZ]`. Simplify using `using congrArg TrivSqZeroExt.snd this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem vec_inj {c d : R} (e : vec W c = vec W d) : c = d := by
   rw [vec, vec, ← SpecMap_originEval_chartY W _ _ _ (equation_inr W c),
@@ -53,9 +53,9 @@ theorem vec_inj {c d : R} (e : vec W c = vec W d) : c = d := by
   simpa using congrArg TrivSqZeroExt.snd this
 
 /- English proof (translation)
-Use `(SpecMap_ptHom W _ _ _ (TrivSqZeroExt.fstHom R R R).toRingHom).trans ?_` and prove the remaining obligations. Rewrite using `[zero, ← pt_smul W (A := R) _ _ isUnit_one.neg]`. Use `ptHom_congr W _ _ _ ?_ ?_ _` and prove the remaining obligations. Use extensionality with `a`. Simplify using `[TrivSqZeroExt.algebraMap_eq_inl]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `ext1 j fin_cases j <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem fst_vec (c : R) :
     spMap (TrivSqZeroExt.fstHom R R R).toRingHom ≫ vec W c = zero W := by
@@ -67,9 +67,7 @@ theorem fst_vec (c : R) :
     fin_cases j <;> simp
 
 /- English proof (translation)
-Introduce `p`. Use `⟨PrimeSpectrum.comap (algebraMap R (DualNumber R)) p, PrimeSpectrum.ext (Ideal.ext fun a => ?_)⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap R (DualNumber R) a.fst ∈ p.asIdeal ↔ a ∈ p.asIdeal`. Establish `h : (TrivSqZeroExt.inr a.snd : DualNumber R) ∈ p.asIdeal` using `p.isPrime.mem_of_pow_mem 2 (by rw [pow_two, TrivSqZeroExt.inr_mul_inr]; exact zero_mem _)`. Use `conv_rhs => rw [← TrivSqZeroExt.inl_fst_add_inr_snd_eq a]`.
-
-Conclude with `(Ideal.add_mem_iff_left _ h).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem surjective_fst :
     Function.Surjective (PrimeSpectrum.comap (TrivSqZeroExt.fstHom R R R).toRingHom) := by
@@ -82,21 +80,17 @@ theorem surjective_fst :
   exact (Ideal.add_mem_iff_left _ h).symm
 
 /- English proof (translation)
-Establish `hr : Set.range g ⊆ Set.range (chartY W)`. Introduce and unpack `_ ⟨p, rfl⟩`. Take `⟨q, rfl⟩` from `surjective_fst p`. Rewrite using `[← Scheme.Hom.coe_opensRange, opensRange_chartY]`. Establish `: q ∈ zero W ⁻¹ᵁ coordOpen W 1`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[zero_preimage_coordOpen_one]`. Discharge the goal by the elementary cases of `trivial`. Rewrite `this` using `[← h0]`. Conclude with `this`. Take `⟨φ, hφ⟩` from `Spec.map_surjective (IsOpenImmersion.lift _ _ hr)`.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hl : Spec.map φ ≫ chartY W = g` using `hφ ▸ IsOpenImmersion.lift_fac _ _ hr`. Establish `hc : φ.hom.comp (algebraMap R (OriginRing W)) = algebraMap R (DualNumber R)`. Rewrite `hg` using `[← hl, Category.assoc, chartY_toSpec, ← Spec.map_comp]`. Conclude with `congrArg (·.hom) (Spec.map_injective hg)`. Establish `ha : (TrivSqZeroExt.fstHom R R R).toRingHom.comp φ.hom = (originAug W : OriginRing W →+* R)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h0` using `[← hl, ← SpecMap_originAug_chartY, ← Category.assoc, cancel_mono]`. Conclude with `congrArg (·.hom) (Spec.map_injective ((Spec.map_comp _ _).trans h0))`. Establish `hz : (φ.hom (originZ W)).fst = 0` using `(RingHom.congr_fun ha _).trans (originAug_originZ W)`. Establish `hw : (φ.hom (originW W)).fst = 0` using `(RingHom.congr_fun ha _).trans (originAug_originW W)`. Establish `hw0 : φ.hom (originW W) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Establish `e` using `congrArg φ.hom ((equation_origin_iff _ _ _).mp (equation_originZ_originW W))`. Simplify using `only [map_add, map_mul, map_pow] at e`. Use `ext`. Conclude with `hw`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[pow_succ, hz, hw]`. Establish `hz0 : φ.hom (originZ W) = TrivSqZeroExt.inr (φ.hom (originZ W)).snd`. Apply the tactic sequence `ext <;> simp [hz]`. Use `⟨(φ.hom (originZ W)).snd, ?_⟩` and prove the remaining obligations. Rewrite using `[← hl, vec, ← SpecMap_originEval_chartY W _ _ _ (equation_inr W _)]`.
-
-Use `congr 2`. Use `ext1`. Use `origin_hom_ext W (fun r => ?_) ?_ ?_` and prove the remaining obligations. Conclude with `(RingHom.congr_fun hc r).trans (originEval_algebraMap W _ _ _ (equation_inr W _) r).symm`. Conclude with `hz0.trans (originEval_originZ W _ _ _ (equation_inr W _)).symm`.
-
-Conclude with `hw0.trans (originEval_originW W _ _ _ (equation_inr W _)).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_eq_vec (g : Spec (.of (DualNumber R)) ⟶ scheme W)
     (hg : g ≫ toSpec W = spMap (algebraMap R (DualNumber R)))
@@ -139,15 +133,13 @@ theorem exists_eq_vec (g : Spec (.of (DualNumber R)) ⟶ scheme W)
   · exact hw0.trans (originEval_originW W _ _ _ (equation_inr W _)).symm
 
 /- English proof (translation)
-Introduce `R _ W _ hη`. Set `v : epsR R ⟶ schemeOver W` to `Over.homMk (vec W 1) (ptHom_toSpec ..)`. Establish `key : ∀ (c : Fin 1 → R) (w : epsR R ⟶ schemeOver W), IsLieComb c ![v] w ↔ w.left = vec W (c 0)`. Introduce `c w`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨u, hu, rfl⟩`. Establish `: (List.ofFn u).prod = u 0` using `by simp`. Rewrite using `[this]`. Conclude with `(hu 0).trans (scale_vec W _)`. Introduce `h`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun _ => w, fun i => ?_, by simp⟩` and prove the remaining obligations. Take `rfl : i = 0` from `Subsingleton.elim _ _`. Conclude with `h.trans (scale_vec W _).symm`. Use `⟨v, ⟨isUnimodularSol_origin (equation_inr W 1), rfl⟩, fun i => ?_, fun w hw => ?_⟩` and prove the remaining obligations. Take `rfl : i = 0` from `Subsingleton.elim _ _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(fst_vec W 1).trans hη.symm`. Take `⟨c, hc⟩` from `exists_eq_vec W w.left (Over.w w) (hw.trans hη)`. Use `⟨fun _ => c, (key _ _).mpr hc, fun d hd => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Take `rfl : i = 0` from `Subsingleton.elim _ _`.
-
-Conclude with `vec_inj W (((key _ _).mp hd).symm.trans hc)`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isLieBasis_eps : ∀ (R : Type) [CommRing R] (W : WeierstrassCurve R)
     [GrpObj (schemeOver W)], η[schemeOver W].left = zero W → ∃ v : epsR R ⟶ schemeOver W,

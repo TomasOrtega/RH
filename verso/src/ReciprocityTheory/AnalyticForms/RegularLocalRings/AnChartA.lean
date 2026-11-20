@@ -14,17 +14,17 @@ def dualEv (p v : Fin n → ℂ) : MvPolynomial (Fin n) ℂ →ₐ[ℂ] DualNumb
   aeval fun j => (TrivSqZeroExt.inl (p j) + v j • DualNumber.eps : DualNumber ℂ)
 
 /- English proof (translation)
-Proceed by induction on `h using MvPolynomial.induction_on`. Use `next a =>`. Simplify using `[dualEv, TrivSqZeroExt.algebraMap_eq_inl]`. Use `next q r hq hr =>`. Take `⟨h1, h2⟩` from `hq`.
+Proceed by induction. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨h3, h4⟩` from `hr`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, TrivSqZeroExt.fst_add, h1, h3, map_add]`. Rewrite using `[map_add, TrivSqZeroExt.snd_add, h2, h4, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_add, map_add, add_mul]`. Use `next q i hq =>`. Take `⟨h1, h2⟩` from `hq`. Establish `hX : dualEv p v (X i) = TrivSqZeroExt.inl (p i) + v i • DualNumber.eps`. Simplify using `[dualEv]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, TrivSqZeroExt.fst_mul, h1, hX]`. Simplify using the standard rewrite rules. Rewrite using `[map_mul, TrivSqZeroExt.snd_mul, h1, h2, hX]`. Simplify using `[Derivation.leibniz, pderiv_X, Pi.single_apply, Finset.sum_add_distrib, add_mul, Finset.mul_sum, DualNumber.snd_eps, DualNumber.fst_eps]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e1 : (∑ x, (eval p) (if i = x then q else 0) * v x) = eval p q * v i`. Rewrite using `[Finset.sum_eq_single i]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Ne.symm hb]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using the standard rewrite rules. Rewrite using `[e1, Finset.sum_mul]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun x _ => by ring`.
+A detailed English derivation is pending.
 -/
 theorem dualEv_fst_snd (p v : Fin n → ℂ) (h : MvPolynomial (Fin n) ℂ) :
     (dualEv p v h).fst = eval p h ∧
@@ -61,21 +61,21 @@ theorem dualEv_fst_snd (p v : Fin n → ℂ) (h : MvPolynomial (Fin n) ℂ) :
       exact Finset.sum_congr rfl fun x _ => by ring
 
 /- English proof (translation)
-The claim follows from `(dualEv_fst_snd p v h).1`.
+A detailed English derivation is pending.
 -/
 theorem dualEv_fst (p v : Fin n → ℂ) (h : MvPolynomial (Fin n) ℂ) :
     (dualEv p v h).fst = eval p h := (dualEv_fst_snd p v h).1
 
 /- English proof (translation)
-The claim follows from `(dualEv_fst_snd p v h).2`.
+A detailed English derivation is pending.
 -/
 theorem dualEv_snd (p v : Fin n → ℂ) (h : MvPolynomial (Fin n) ℂ) :
     (dualEv p v h).snd = ∑ j, eval p (pderiv j h) * v j := (dualEv_fst_snd p v h).2
 
 /- English proof (translation)
-Introduce `k hk`. Assume the negation of the conclusion as `hne`. Establish `hu : IsUnit (algebraMap (MvPolynomial (Fin n) ℂ) (locPt p) k)` using `(IsLocalization.AtPrime.isUnit_to_map_iff (locPt p) (ptIdeal p) k).2 (fun h => hne (RingHom.mem_ker.1 h))`. Establish `htop : Ideal.map (algebraMap (MvPolynomial (Fin n) ℂ) (locPt p)) K = ⊤` using `Ideal.eq_top_of_isUnit_mem _ (Ideal.mem_map_of_mem _ hk) hu`. Establish `hs : Subsingleton (locRing K p)` using `Ideal.Quotient.subsingleton_iff.2 htop`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `not_subsingleton (locRing K p) hs`.
+A detailed English derivation is pending.
 -/
 theorem eval_eq_zero_of_isLocalRing (K : Ideal (MvPolynomial (Fin n) ℂ)) (p : Fin n → ℂ)
     [IsLocalRing (locRing K p)] : ∀ k ∈ K, eval p k = 0 := by
@@ -89,13 +89,13 @@ theorem eval_eq_zero_of_isLocalRing (K : Ideal (MvPolynomial (Fin n) ℂ)) (p : 
   exact not_subsingleton (locRing K p) hs
 
 /- English proof (translation)
-Establish `hunit : ∀ y : (ptIdeal p).primeCompl, IsUnit ((dualEv p v).toRingHom (y : MvPolynomial (Fin n) ℂ))`. Introduce `y`. Use `TrivSqZeroExt.isUnit_iff_isUnit_fst.2 ?_` and prove the remaining obligations. Establish `hy : eval p (y : MvPolynomial (Fin n) ℂ) ≠ 0` using `fun h => y.2 (RingHom.mem_ker.2 h)`. Use `dualEv_fst p v (y : MvPolynomial (Fin n) ℂ)` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe]`. Rewrite using `[this]`. Conclude with `hy.isUnit`. Set `g : locPt p →+* DualNumber ℂ` to `IsLocalization.lift (M := (ptIdeal p).primeCompl) hunit`. Establish `hg : ∀ x, g (algebraMap (MvPolynomial (Fin n) ℂ) (locPt p) x) = dualEv p v x` using `fun x => IsLocalization.lift_eq hunit x`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK' : Ideal.map (algebraMap (MvPolynomial (Fin n) ℂ) (locPt p)) K ≤ RingHom.ker g`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `k hk`. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker, hg]`. Conclude with `hK k hk`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Ideal.Quotient.lift _ g (fun a ha => RingHom.mem_ker.1 (hK' ha)), fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[IsScalarTower.algebraMap_apply (MvPolynomial (Fin n) ℂ) (locPt p) (locRing K p), Ideal.Quotient.algebraMap_eq, Ideal.Quotient.lift_mk, hg]`.
+A detailed English derivation is pending.
 -/
 theorem exists_dualEv_lift (K : Ideal (MvPolynomial (Fin n) ℂ)) (p v : Fin n → ℂ)
     (hK : ∀ k ∈ K, dualEv p v k = 0) :
@@ -122,9 +122,9 @@ theorem exists_dualEv_lift (K : Ideal (MvPolynomial (Fin n) ℂ)) (p v : Fin n �
     Ideal.Quotient.algebraMap_eq, Ideal.Quotient.lift_mk, hg]
 
 /- English proof (translation)
-Introduce `x hx`. Establish `h1 : algebraMap (MvPolynomial (Fin n) ℂ) (locRing K p) x ∈ Ideal.span (Set.range fun i => algebraMap (MvPolynomial (Fin n) ℂ) (locRing K p) (r i))`. Rewrite using `[hr]`. Conclude with `Ideal.mem_map_of_mem _ hx`. Establish `h2 : Ideal.span (Set.range fun i => algebraMap (MvPolynomial (Fin n) ℂ) (locRing K p) (r i)) ≤ RingHom.ker χ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `hχ i`. Conclude with `h2 h1`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem map_ptIdeal_eq_zero (K : Ideal (MvPolynomial (Fin n) ℂ)) (p : Fin n → ℂ) {e : ℕ}
     (r : Fin e → MvPolynomial (Fin n) ℂ)
@@ -146,21 +146,19 @@ theorem map_ptIdeal_eq_zero (K : Ideal (MvPolynomial (Fin n) ℂ)) (p : Fin n �
   exact h2 h1
 
 /- English proof (translation)
-Establish `heval` using `eval_eq_zero_of_isLocalRing K p`. Establish `hF : ∀ k, dualEv p v (F k) = 0` using `fun k => TrivSqZeroExt.ext (by rw [dualEv_fst, TrivSqZeroExt.fst_zero]; exact heval _ (hFK k)) (by rw [dualEv_snd, TrivSqZeroExt.snd_zero]; exact hvF k)`. Establish `hspanF : Ideal.span (Set.range F) ≤ RingHom.ker (dualEv p v).toRingHom`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨k, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `hF k`. Establish `hK : ∀ g ∈ K, dualEv p v g = 0`. Introduce `g hg`. Establish `h1 : dualEv p v (hh * g) = 0` using `hspanF (hcut g hg)`. Rewrite `h1` using `[map_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hu : IsUnit (dualEv p v hh)` using `TrivSqZeroExt.isUnit_iff_isUnit_fst.2 (by rw [dualEv_fst]; exact hhp.isUnit)`. Conclude with `hu.mul_right_eq_zero.1 h1`. Take `⟨χ, hχ⟩` from `exists_dualEv_lift K p v hK`. Take `⟨χ0, hχ0⟩` from `exists_dualEv_lift K p 0 (fun k hk => TrivSqZeroExt.ext (by rw [dualEv_fst, TrivSqZeroExt.fst_zero]; exact heval k hk) (by rw [dualEv_snd, TrivSqZeroExt.snd_zero]; simp))`. Establish `hle : Ideal.map (algebraMap (MvPolynomial (Fin n) ℂ) (locRing K p)) (ptIdeal p) ≤ RingHom.ker χ0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `x hx`. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker, hχ0]`. Conclude with `TrivSqZeroExt.ext (by rw [dualEv_fst, TrivSqZeroExt.fst_zero]; exact RingHom.mem_ker.1 hx) (by rw [dualEv_snd, TrivSqZeroExt.snd_zero]; simp)`. Establish `hr0 : ∀ i, eval p (r i) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Establish `hmem : algebraMap (MvPolynomial (Fin n) ℂ) (locRing K p) (r i) ∈ Ideal.map (algebraMap (MvPolynomial (Fin n) ℂ) (locRing K p)) (ptIdeal p)`. Rewrite using `[← hr]`. Conclude with `Ideal.subset_span ⟨i, rfl⟩`. Establish `h1` using `RingHom.mem_ker.1 (hle hmem)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `h1` using `[hχ0]`. Establish `h2` using `congrArg TrivSqZeroExt.fst h1`. Rewrite `h2` using `[dualEv_fst, TrivSqZeroExt.fst_zero]`. Then use the resulting hypothesis. Establish `hall` using `map_ptIdeal_eq_zero K p r hr χ (fun i => by`. Rewrite using `[hχ]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `TrivSqZeroExt.ext (by rw [dualEv_fst, TrivSqZeroExt.fst_zero]; exact hr0 i) (by rw [dualEv_snd, TrivSqZeroExt.snd_zero]; exact hvr i))`. Use function extensionality and compare the values at `j`. Establish `hx : (X j - C (p j) : MvPolynomial (Fin n) ℂ) ∈ ptIdeal p` using `RingHom.mem_ker.2 (by simp)`. Establish `h1` using `hall _ hx`. Rewrite `h1` using `[hχ]`.
-
-Establish `h2` using `congrArg TrivSqZeroExt.snd h1`. Rewrite `h2` using `[dualEv_snd, TrivSqZeroExt.snd_zero]`. Simplify `h2` using `[pderiv_X, Pi.single_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_grad (K : Ideal (MvPolynomial (Fin n) ℂ)) (p : Fin n → ℂ) {e : ℕ}
     [IsLocalRing (locRing K p)] (r : Fin e → MvPolynomial (Fin n) ℂ)
@@ -219,7 +217,7 @@ theorem eq_zero_of_grad (K : Ideal (MvPolynomial (Fin n) ℂ)) (p : Fin n → �
   simpa [pderiv_X, Pi.single_apply] using h2
 
 /- English proof (translation)
-Conclude with `AnalyticOnNhd.eval_mvPolynomial q`.
+A detailed English derivation is pending.
 -/
 theorem analyticOnNhd_eval_univ (q : MvPolynomial (Fin n) ℂ) :
     AnalyticOnNhd ℂ (fun y : Fin n → ℂ => eval y q) Set.univ := by

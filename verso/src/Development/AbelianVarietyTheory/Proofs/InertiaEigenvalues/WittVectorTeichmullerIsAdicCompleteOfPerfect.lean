@@ -9,15 +9,15 @@ namespace GlobalTheory.WittTeichComplete
 open scoped NNReal in
 open Ideal Finset in
 /- English proof (translation)
-Establish `hsum` using `_root_.GlobalTheory.Per.AinfComplete.summ_of_precomplete y`. Unfold `_root_.GlobalTheory.Per.AinfComplete.Summ at hsum`. Unfold `_root_.GlobalTheory.Per.AinfComplete.Tails`. Introduce `b`. Use `choose L hL using fun n => hsum (fun k => b (n + k))`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨L, fun n => ?_⟩` and prove the remaining obligations. Establish `key : ∀ m, y ^ m ∣ L n - y * L (n + 1) - b n`. Introduce `m`. Establish `h₁` using `Ideal.mem_span_singleton.1 (hL n (m + 1))`. Establish `h₂` using `Ideal.mem_span_singleton.1 (hL (n + 1) m)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : ∑ i ∈ Finset.range (m + 1), y ^ i * b (n + i) = b n + y * ∑ i ∈ Finset.range m, y ^ i * b (n + 1 + i)`. Rewrite using `[Finset.sum_range_succ', Finset.mul_sum, add_comm]`. Simplify using `only [pow_zero, one_mul, add_zero]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_succ, show n + (i + 1) = n + 1 + i by omega]`. Expand and normalize the polynomial expressions, which then agree. Establish `hd : L n - y * L (n + 1) - b n = (L n - ∑ i ∈ Finset.range (m + 1), y ^ i * b (n + i)) - y * (L (n + 1) - ∑ i ∈ Finset.range m, y ^ i * b (n + 1 + i))`. Rewrite using `[hs]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hd]`. Conclude with `dvd_sub ((pow_dvd_pow y (Nat.le_succ m)).trans h₁) (dvd_mul_of_dvd_right h₂ y)`. Establish `h0` using `_root_.GlobalTheory.Per.AinfComplete.eq_zero_of_haus y _ fun m => Ideal.mem_span_singleton.2 (key m)`. Conclude with `(sub_eq_zero.1 h0).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private lemma tails_of_isAdicComplete_span {A : Type*} [CommRing A] (y : A)
     [IsAdicComplete (Ideal.span {y}) A] : _root_.GlobalTheory.Per.AinfComplete.Tails y := by
@@ -52,9 +52,9 @@ open scoped NNReal in
 open Ideal Finset in
 
 /- English proof (translation)
-Introduce `l _ O _ _ _ _ x _ hc`. Use `haveI := hc`. Establish `hcc : WittVector.constantCoeff (WittVector.teichmuller l x) = x`. Simplify using `[WittVector.constantCoeff]`. Take `⟨h₁, h₂⟩` from `_root_.GlobalTheory.Per.AinfComplete.witt_complete (WittVector.teichmuller l x) (hcc ▸ tails_of_isAdicComplete_span x) (fun r hr => _root_.GlobalTheory.Per.AinfComplete.eq_zero_of_haus x r fun n => Ideal.mem_span_singleton.2 (hcc ▸ hr n))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨h₂, ?_⟩` and prove the remaining obligations. Rewrite `h₁` using `[Ideal.span_insert]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.WittTeichComplete.main : ∀ (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [CharP O l]
     [PerfectRing O l] (x : O), x ≠ 0 → IsAdicComplete (Ideal.span {x}) O →

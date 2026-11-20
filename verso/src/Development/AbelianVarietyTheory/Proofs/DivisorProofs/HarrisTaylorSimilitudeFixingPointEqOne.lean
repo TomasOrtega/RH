@@ -12,11 +12,11 @@ noncomputable section
 namespace GlobalTheory.HTQuotRigid
 
 /- English proof (translation)
-Establish `sq : IsSquare (h₁.φ ≫ h₂.φ) (h₁.φ₂ ≫ h₂.φ₂)`. Prove the components needed by the constructor for the conclusion. Rewrite using `[Category.assoc, h₂.sq.1, ← Category.assoc, h₁.sq.1, Category.assoc]`. Rewrite using `[Category.assoc, h₂.sq.2, ← Category.assoc, h₁.sq.2, Category.assoc]`. Establish `act : ∀ c, (o₁.act.act c).left ≫ (h₁.φ ≫ h₂.φ) = (h₁.φ ≫ h₂.φ) ≫ (o₃.act.act c).left`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `c`. Rewrite using `[← Category.assoc, h₁.act, Category.assoc, h₂.act, Category.assoc]`. Establish `eta : ∀ y, (o₁.eta y).left ≫ (h₁.φ ≫ h₂.φ) = (f ≫ g) ≫ (o₃.eta y).left`. Introduce `y`. Rewrite using `[← Category.assoc, h₁.eta, Category.assoc, h₂.eta, Category.assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `H : LBIso (o₂.P.pull h₁.φ₂) ((o₃.P.pull h₂.φ₂).pull h₁.φ₂)` using `LBIso.chartPull (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull o₂.P h₁.φ₂ h₁.φ₂ rfl) (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull (o₃.P.pull h₂.φ₂) h₁.φ₂ h₁.φ₂ rfl) h₂.pol`. Establish `H' : LBIso (o₂.P.pull h₁.φ₂) (o₃.P.pull (h₁.φ₂ ≫ h₂.φ₂))` using `LBIso.chartPull (chartPullId _) (chartPullIn o₃.P (fun _ : PUnit => h₂.φ₂) (fun _ => 1) h₁.φ₂) H`. Establish `pol : LBIso o₁.P (o₃.P.pull (h₁.φ₂ ≫ h₂.φ₂))` using `LBIso.trans o₁.isLB (pull_isLB o₂.isLB _) (pull_isLB o₃.isLB _) h₁.pol H'`. Conclude with `⟨⟨h₁.φ ≫ h₂.φ, h₁.φ₂ ≫ h₂.φ₂, h₁.cart.comp h₂.cart, sq, act, pol, eta⟩, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem objMap_comp_φ {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing R] {b : Base D R} {N : ℕ}
     {S₁ S₂ S₃ : Scheme.{0}} {s₁ : S₁ ⟶ Sp R} {s₂ : S₂ ⟶ Sp R} {s₃ : S₃ ⟶ Sp R} {o₁ : Obj b N s₁} {o₂ : Obj b N s₂}
@@ -42,27 +42,25 @@ theorem objMap_comp_φ {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRi
   exact ⟨⟨h₁.φ ≫ h₂.φ, h₁.φ₂ ≫ h₂.φ₂, h₁.cart.comp h₂.cart, sq, act, pol, eta⟩, rfl⟩
 
 /- English proof (translation)
-Introduce `p _ D R _ b N h M hN hNp hM X s s₁ u lev hlev ρ hρ k _ _ y a hya`. Use `haveI : NeZero M := ⟨hM.ne'⟩`. Take `⟨-, -, m, hm⟩` from `hρ a`. Take `⟨o, ⟨n⟩⟩` from `GlobalTheory.HTPull.exists_objMap_pull p D R b N X (Sp k) s y u`. Take `⟨c, hc⟩` from `objMap_comp_φ n m`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key : ∀ (f : Sp k ⟶ X), f = y → ∀ mm : ObjMap o u f, mm.φ = n.φ`. Introduce `f hf mm`. Substitute `hf` using the available equality. Conclude with `GlobalTheory.UPel.HT.MapUniq.objMap_φ_unique p D R b N hN hNp _ _ _ _ _ _ _ mm n`. Establish `hφ : n.φ ≫ m.φ = n.φ` using `by rw [← hc]; exact key _ hya c`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hx : ∀ x, y ≫ (sympTwist a lev x).left = y ≫ (lev x).left`. Introduce `x`. Establish `ht : (y ≫ (sympTwist a lev x).left) ≫ u.A.hom = 𝟙 (Sp k) ≫ y`. Rewrite using `[Category.assoc, Over.w]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hσ` using `n.cart.1.lift_fst (y ≫ (sympTwist a lev x).left) (𝟙 _) ht`. Establish `e1 : (y ≫ (sympTwist a lev x).left) ≫ m.φ = y ≫ (lev x).left`. Rewrite using `[Category.assoc, hm x, ← Category.assoc, hya]`. Rewrite using `[← e1, ← hσ, Category.assoc, hφ]`. Set `β : cycAway M →+* k` to `(Spec.preimage (y ≫ s₁)).hom`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hβ : y ≫ s₁ = spMap β`. Express the relevant statement in the definitionally equal form `y ≫ s₁ = Spec.map (CommRingCat.ofHom (Spec.preimage (y ≫ s₁)).hom)`. Rewrite using `[CommRingCat.ofHom_hom, Spec.map_preimage]`. Establish `hpow : β (zetaAway M) ^ M = 1` using `by rw [← map_pow, zetaAway_pow_self hM.ne', map_one]`. Set `z : kˣ` to `Units.ofPowEqOne _ M hpow hM.ne'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcl` using `(hlev.2.2 k y β z hβ rfl).1`. Establish `hunit : ∀ x, (toUnit (Over.mk y) ≫ lev x).left = y ≫ (lev x).left`. Introduce `x`. Rewrite using `[Over.comp_left]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hfix : ∀ x, (a : (Fin h ⊕ Fin h → ZMod M) ≃ₗ[ZMod M] (Fin h ⊕ Fin h → ZMod M)) (reduceMod M x) = reduceMod M x`. Introduce `x`. Use `set c := liftMod ((a : (Fin h ⊕ Fin h → ZMod M) ≃ₗ[ZMod M] (Fin h ⊕ Fin h → ZMod M)) (reduceMod M x))`. Establish `hsame : toUnit (Over.mk y) ≫ lev c = toUnit (Over.mk y) ≫ lev x` using `by ext1`. Rewrite using `[hunit, hunit]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hx x`. Establish `hsplit : lev c = lev (c - x) * lev x` using `by rw [← hlev.1, sub_add_cancel]`. Establish `h1 : toUnit (Over.mk y) ≫ lev (c - x) = 1`. Rewrite `hsame` using `[hsplit, comp_mul]`. Conclude with `mul_eq_right.1 hsame`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Take `⟨d, hd⟩` from `(hcl (c - x)).1 h1`. Establish `hr : reduceMod M c = reduceMod M x`. Establish `: c = x + M • d` using `by rw [← hd]; abel`. Rewrite using `[this]`. Use function extensionality and compare the values at `i`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[reduceMod]`. Conclude with `(reduceMod_liftMod _).symm.trans hr`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `LinearEquiv.ext` to reduce the goal to its premises. Introduce `v`.
-
-Use `hfix (liftMod v)` as an intermediate fact. Rewrite `this` using `[reduceMod_liftMod]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_one_of_fixes_point : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R)
     (N h M : ℕ), 3 ≤ N → N.Coprime p → 0 < M →

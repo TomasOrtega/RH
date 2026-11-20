@@ -23,7 +23,7 @@ open scoped TensorProduct Classical ComplexConjugate in
 attribute [local instance] _root_.Formalism.BasicNotions.Host.cmStar in
 
 /- English proof (translation)
-Establish `hy : 0 < 2 * Real.pi * x` using `by positivity`. Rewrite using `[Real.sqrt_eq_rpow, ← Real.rpow_neg hy.le, ← Real.rpow_natCast, ← Real.rpow_mul hy.le, Real.rpow_def_of_pos hy]`. Unfold `_root_.Formalism.L2.Pj.lieFac _root_.GlobalTheory.PtId.degW`. Use `congr 1`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -42,15 +42,15 @@ theorem _root_.GlobalTheory.AdTh.SerAll.lieFac_eq_pow {E : Type} [Field E] [Numb
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `_ D G _ _ Pl0 T0 A T _ R F κ v₀ hR hT hI i Tp tup O hP cc hcc`. Establish `hs : O.s0 = T.toCore.σ₀` using `sOv_eq _ _ _`. Take `⟨h1, h2, -⟩` from `GlobalTheory.PtId.dict_cast T hT.laws _ (inR i) O.s0 (hs ▸ T.toCore.good_σ₀) (Wc D i) O.hV (rank_Wc i)`. Take `⟨δ, hδ⟩` from `GlobalTheory.T.lattice_isometry_sign_third D G Pl0 T0 A _ R F hR i hP.lift.std _ _ (iotaW T i) h1 h2`. Take `⟨ka, hka, hio⟩` from `GlobalTheory.T.oscillator_model_extension_first D G Pl0 T0 A T R F κ v₀ hR hT hI i Tp tup O hP`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c0, hc0, hcov⟩` from `GlobalTheory.T.oscillator_model_values_fifth D G Pl0 T0 A T R F κ v₀ hR hT i Tp tup O hP`. Establish `hd : ‖((δ : ℤ) : ℂ)‖ = 1`. Apply the tactic sequence `rcases Int.units_eq_one_or δ with rfl | rfl <;> simp`. Establish `hu : ‖ka * (-((δ : ℤ) : ℂ)) ^ GlobalTheory.PtId.degW (T.Q.Dw ((i : ℕ) + 1)) (wtA (κ i)) * c0⁻¹‖ = 1`. Rewrite using `[norm_mul, norm_mul, norm_pow, norm_neg, norm_inv, hka, hc0, hd]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Use `⟨_, hu, fun k => ?_, norm_one, fun t h J' hrep y x hpl f _ hf g => ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, smul_eq_mul, norm_mul, hu, hcc.1 k, one_mul]`. Establish `hne : c0 ≠ 0` using `norm_ne_zero_iff.1 (hc0 ▸ one_ne_zero)`. Establish `hx : 0 < xiR D` using `norm_pos_iff.2 ((_root_.map_ne_zero _).2 (GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D))`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `GlobalTheory.PtId.exact_identity hR hT O hP hio hδ hcov hcc t h J' hrep y x hpl f hf g`. Use `mul_left_cancel₀ hne ?_` and prove the remaining obligations. Rewrite using `[one_mul, key, lieFac_eq_pow _ hx, GlobalTheory.PtId.cmpConst, Pi.smul_apply, smul_eq_mul, neg_pow]`. Establish `hre : rdU (GlobalTheory.PtId.unfO O) f (O.dict g).1 (O.dict g).2 = rdU (unfBC O.hle (T.U ((i : ℕ) + 1)) (inC O.c')) f (O.dict g).1 (O.dict g).2` using `rfl`. Rewrite using `[hre]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Generalize the expression as in `rdU (unfBC O.hle (T.U ((i : ℕ) + 1)) (inC O.c')) f (O.dict g).1 (O.dict g).2 = z`. Rewrite using `[Complex.ofReal_pow, Complex.ofReal_inv]`. Generalize the expression as in `((Real.sqrt (2 * Real.pi * xiR D) : ℝ) : ℂ)⁻¹ ^ GlobalTheory.PtId.degW (T.Q.Dw ((i : ℕ) + 1)) (wtA (κ i)) = s`. Establish `e : c0 * c0⁻¹ = 1` using `mul_inv_cancel₀ hne`. Take the linear combination `(-(ka * ((-1) ^ GlobalTheory.PtId.degW (T.Q.Dw ((i : ℕ) + 1)) (wtA (κ i)) * ((δ : ℤ) : ℂ) ^ GlobalTheory.PtId.degW (T.Q.Dw ((i : ℕ) + 1)) (wtA (κ i))) * cc (O.dict g).1 * s * O.mu g * z)) * e`.
+Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem exists_serOf : Formalism.MainNotions.ModuliIntegralCharts.H1.ChartIndepSt2 → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : Formalism.L2.DIV.FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec), R.Char F → TieIn T R κ v₀ → IoExt R → ∀ (i : Fin D.R.m) (Tp : Type) (tup : Tp → T0) (O : OMDat T.toCore R i Tp tup), O.Pins (κ i) (v₀ i (sg0 D A)) (iotaW T i) (T.x₀ ((i : ℕ) + 1) O.s0) → ∀ cc, CcIs R.θ (Vc D i) (Wc D i) (rank_Wc i) (T.U ((i : ℕ) + 1) O.s0) O.dict O.mu (T.x₀ ((i : ℕ) + 1) O.s0) (R.ωP i A.μ0) (R.vacP i) cc → ∃ u : ℂ, ‖u‖ = 1 ∧ SerOf O (κ i) (v₀ i (sg0 D A)) (u • cc) 1 := by
   intro _ D G _ _ Pl0 T0 A T _ R F κ v₀ hR hT hI i Tp tup O hP cc hcc

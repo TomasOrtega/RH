@@ -20,9 +20,9 @@ namespace UpperTheory.Zero.ConvolutionTheory.EB
 attribute [local instance] borelG borelF borelA borelH
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => simp [wdVal]`. Consider the case `cons p w ih`. Simplify using `only [wdVal, List.map_cons, List.prod_cons, map_mul] at ih ⊢`. Rewrite using `[ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Apply the tactic sequence `split_ifs <;> simp [map_star]`.
+Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma wdVal_map {B C Γ : Type} [CommRing B] [StarRing B] [Algebra ℂ B] [Ring C] [StarRing C] [Algebra ℂ C]
     (f : B →⋆ₐ[ℂ] C) (gen : Γ → B) (w : List (Γ × Bool)) :
@@ -36,23 +36,21 @@ private lemma wdVal_map {B C Γ : Type} [CommRing B] [StarRing B] [Algebra ℂ B
     split_ifs <;> simp [map_star]
 
 /- English proof (translation)
-Introduce `H _ _ _ Q _ Γ op v 𝔄 arch a₀ x ρ ha hv hρ hs`. Set `gen : {γ // arch γ} → 𝔄.B` to `fun γ => 𝔄.ι γ`. Set `A : StarSubalgebra ℂ 𝔄.B` to `StarAlgebra.adjoin ℂ (Set.range gen)`. Establish `hmem : ∀ γ : {γ // arch γ}, 𝔄.ι γ ∈ A` using `fun γ => StarAlgebra.subset_adjoin ℂ (Set.range gen) (Set.mem_range_self γ)`. Set `p : A →⋆ₐ[ℂ] ℂ` to `𝔄.P.comp A.subtype`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `a₁ : A` to `⟨𝔄.ι a₀, hmem ⟨a₀, ha⟩⟩`. Take `⟨g, hg, hn⟩` from `UpperTheory.V.Z.Tf.GlobalTraceComparison.peak 𝔄.B Q 𝔄.R A p a₁ (𝔄.ι x) ρ (by`. Express the relevant statement in the definitionally equal form `𝔄.P (𝔄.ι a₀) = 1`. Rewrite using `[𝔄.hP, hv])`. Use `hρ`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use the proof step `(fun s hb hsa => hs s hb fun γ hγ => by`. Establish `h1` using `hsa ⟨𝔄.ι γ, hmem ⟨γ, hγ⟩⟩`. Establish `h2 : p ⟨𝔄.ι γ, hmem ⟨γ, hγ⟩⟩ = v γ`. Express the relevant statement in the definitionally equal form `𝔄.P (𝔄.ι γ) = v γ`. Conclude with `𝔄.hP γ`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← h2]`. Conclude with `h1)`. Take `⟨J, hJ, c, w, L, -, hgw, -⟩` from `PositivityTheory.Rg.BcB.F.adjWords _ _ gen (g : 𝔄.B) g.2`. Use `⟨J, hJ, c, w, ?_, ?_⟩` and prove the remaining obligations. Establish `hp : 𝔄.P (g : 𝔄.B) = 1` using `hg`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hp` using `[hgw, map_sum]`. Rewrite using `[← hp]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, wdVal_map, smul_eq_mul]`. Use `congr 2`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `γ`. Conclude with `(𝔄.hP γ).symm`. Establish `hF : op x * ((∑ j, c j • wdVal (fun γ : {γ // arch γ} => op γ) (w j)) * op a₀) = 𝔄.F (𝔄.ι x * ((g : 𝔄.B) * 𝔄.ι a₀))`. Rewrite using `[map_mul, map_mul, 𝔄.hF, 𝔄.hF, hgw, map_sum]`. Use `congr 2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, wdVal_map]`. Use `congr 2`. Use function extensionality and compare the values at `γ`. Conclude with `(𝔄.hF γ).symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hF]`. Establish `hnorm : ‖𝔄.F (𝔄.ι x * ((g : 𝔄.B) * 𝔄.ι a₀)) ∘L Q.subtypeL‖ = ‖𝔄.R (𝔄.ι x * ((g : 𝔄.B) * 𝔄.ι a₀))‖`. Use `ContinuousLinearMap.opNorm_ext _ _ fun q => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `‖𝔄.F _ (q : H)‖ = ‖(𝔄.R _ q)‖`. Rewrite using `[← 𝔄.hR]`.
-
-Both sides reduce to the same expression. Rewrite using `[hnorm]`. Conclude with `hn`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem peakAlg : PeakAlg := by
   intro H _ _ _ Q _ Γ op v 𝔄 arch a₀ x ρ ha hv hρ hs

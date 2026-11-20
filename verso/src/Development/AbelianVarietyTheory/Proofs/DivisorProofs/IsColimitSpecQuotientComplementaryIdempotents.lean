@@ -12,15 +12,15 @@ namespace GlobalTheory
 open Limits
 
 /- English proof (translation)
-Establish `he' : e' = 1 - e` using `by rw [← hs]; ring`. Establish `hee : e * e' = 0` using `by rw [he', mul_sub, _root_.mul_one, he.eq, sub_self]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [RingHom.prod_apply, Prod.mk_eq_zero, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton'] at hx`. Take `⟨⟨a, rfl⟩, ⟨b, hb⟩⟩` from `hx`. Establish `h1 : a * e * e' = 0` using `by rw [_root_.mul_assoc, hee, mul_zero]`. Establish `h2 : a * e * e = 0`. Rewrite using `[← hb, _root_.mul_assoc, mul_comm e' e, hee, mul_zero]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Introduce and unpack `⟨x, y⟩`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Use `⟨a * e' + b * e, ?_⟩` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [RingHom.prod_apply, Prod.mk.injEq]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[Ideal.Quotient.eq, Ideal.mem_span_singleton']`. Conclude with `⟨b - a, by rw [he']; ring⟩`. Rewrite using `[Ideal.Quotient.eq, Ideal.mem_span_singleton']`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨a - b, by rw [he']; ring⟩`.
+Supply the required witnesses or components.
 -/
 theorem specQuotIdemCoprod_bij (R : Type) [CommRing R] (e e' : R) (he : IsIdempotentElem e)
     (hs : e + e' = 1) :
@@ -51,15 +51,13 @@ theorem specQuotIdemCoprod_bij (R : Type) [CommRing R] (e e' : R) (he : IsIdempo
       exact ⟨a - b, by rw [he']; ring⟩
 
 /- English proof (translation)
-Introduce `R _ e e' he hs`. Set `A` to `R ⧸ Ideal.span {e}`. Set `B` to `R ⧸ Ideal.span {e'}`. Set `φ : R →+* A × B` to `(Ideal.Quotient.mk (Ideal.span {e})).prod (Ideal.Quotient.mk (Ideal.span {e'}))`. Establish `hφ : Function.Bijective φ` using `specQuotIdemCoprod_bij R e e' he hs`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ψ : R ≃+* A × B` to `RingEquiv.ofBijective φ hφ`. Set `g : Spec (CommRingCat.of A) ⨿ Spec (CommRingCat.of B) ⟶ Sp R` to `coprodSpec A B ≫ Spec.map (CommRingCat.ofHom φ)`. Use `haveI : IsIso (Spec.map (CommRingCat.ofHom φ)) := by`. Establish `: IsIso (CommRingCat.ofHom φ)`. Express the relevant statement in the definitionally equal form `IsIso (RingEquiv.toCommRingCatIso ψ).hom`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Introduce a local definition for the expression.
 
-Use `infer_instance`. Use `infer_instance`. Use `haveI : IsIso g := by dsimp only [g]; infer_instance`. Set `i` to `asIso g`. Use `⟨IsColimit.ofIsoColimit (coprodIsCoprod (Spec (CommRingCat.of A)) (Spec (CommRingCat.of B))) (Cocone.ext i ?_)⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce and unpack `⟨⟨⟩⟩`. Simplify using `only [i, asIso_hom, g] show coprod.inl ≫ coprodSpec A B ≫ _ = spMap _`. Rewrite using `[coprodSpec_inl_assoc, ← Spec.map_comp]`. Both sides reduce to the same expression. Simplify using `only [i, asIso_hom, g] show coprod.inr ≫ coprodSpec A B ≫ _ = spMap _`.
-
-Rewrite using `[coprodSpec_inr_assoc, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem specQuotIdemCoprod : ∀ (R : Type) [CommRing R] (e e' : R), IsIdempotentElem e → e + e' = 1 → Nonempty (Limits.IsColimit (Limits.BinaryCofan.mk (spMap (Ideal.Quotient.mk (Ideal.span {e}))) (spMap (Ideal.Quotient.mk (Ideal.span {e'}))))) := by
   intro R _ e e' he hs

@@ -18,9 +18,9 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 namespace GlobalTheory.EulerLevel
 
 /- English proof (translation)
-Establish `hT` using `GlobalTheory.CocycleCount.card_linear_le N M`. Establish `hTf : Finite (ReciprocityTheory.Gal.TDual (ZMod N) M)` using `hT.1`. Set `A : Type` to `ReciprocityTheory.Gal.H0 ((ReciprocityTheory.Gal.twDual χ rho).comp (MonoidHom.id G))`. Set `E : ReciprocityTheory.Gal.H2 rho ≃ (A →ₗ[ZMod N] ZMod N)` to `(Equiv.ofBijective _ hb).trans (LinearEquiv.congrRight e).toEquiv`. Establish `hA : Finite A` using `Subtype.finite`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[Nat.card_congr E]`. Conclude with `GlobalTheory.ZModDual.card_dual_eq N A`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_H2_eq (N : ℕ) [NeZero N] (G : Type) [Group G] [TopologicalSpace G]
     (M : Type) [AddCommGroup M] [Module (ZMod N) M] [Finite M] [TopologicalSpace M]
@@ -40,39 +40,33 @@ theorem card_H2_eq (N : ℕ) [NeZero N] (G : Type) [Group G] [TopologicalSpace G
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Establish `hK : FiniteDimensional ℚ_[l] ↥K.1` using `K.2`. Establish `hp : l.Prime` using `Fact.out`. Take `⟨-, -, hfinO, -⟩` from `GlobalTheory.GoodCoeff.good_coeff_integers l LL O hG`. Establish `hcO : Nat.card (O ⧸ Ideal.span {((l : ℕ) : O)}) ≠ 0`. Use `hfinO 1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[pow_one]`. Conclude with `Nat.card_pos.ne'`. Use `haveI : NeZero (l ^ r) := ⟨pow_ne_zero _ hp.ne_zero⟩`. Establish `hcM : Nat.card M = Nat.card (O ⧸ Ideal.span {((l : ℕ) : O)}) ^ (r * finrank LL A.V)`. Rewrite using `[← Nat.card_congr e.toEquiv]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.T.card_lattice_quot_prime_pow l _ LL O hG A LA r`. Establish `hcM' : Nat.card (↥LA'.T ⧸ (Ideal.span {((l : ℕ) : O) ^ r} • ⊤ : Submodule O ↥LA'.T)) = Nat.card (O ⧸ Ideal.span {((l : ℕ) : O)}) ^ (r * finrank LL A.V)`. Rewrite using `[GlobalTheory.T.card_lattice_quot_prime_pow l _ LL O hG A' LA' r, ← hm.1.2.2.2]`. Use `haveI : Finite M := Nat.finite_of_card_ne_zero (by rw [hcM]; exact pow_ne_zero _ hcO)`. Establish `htor : ∀ x : M, l ^ r • x = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Proceed by induction.
 
-Introduce `x`. Rewrite using `[← e.apply_symm_apply x, ← map_nsmul]`. Generalize the expression as in `e.symm x = y`. Proceed by induction on `y using Submodule.Quotient.induction_on with`. Consider the case `H t`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← Submodule.Quotient.mk_smul, (Submodule.Quotient.mk_eq_zero _).2, map_zero]`. Rewrite using `[← Nat.cast_smul_eq_nsmul O, Nat.cast_pow]`. Conclude with `Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) Submodule.mem_top`. Use `haveI instM : Module (ZMod (l ^ r)) M := AddCommGroup.zmodModule htor`. Set `φ : ↥(GK K) ≃* Formalism.GaloisCohomology.GK l K.1` to `IntermediateField.fixingSubgroupEquiv K.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `hφ : Continuous φ ∧ Continuous φ.symm` using `GlobalTheory.fixingSubgroupEquiv_bicontinuous ℚ_[l] (Om l) K.1`. Establish `hφ1 : φ.symm 1 = 1` using `map_one _`. Establish `hφm : ∀ g h, φ.symm (g * h) = φ.symm g * φ.symm h` using `map_mul _`. Establish `hact1 : ∀ x : (↥LA.T ⧸ (Ideal.span {((l : ℕ) : O) ^ r} • ⊤ : Submodule O ↥LA.T)), actQ LA _ hI 1 x = x`. Introduce `x`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `H t`. Conclude with `congrArg Submodule.Quotient.mk (Subtype.ext (by show A.ρ 1 (t : A.V) = t`. Rewrite using `[map_one]`. Use the proof step `rfl))`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hactm : ∀ (g h : ↥(GK K)) (x : (↥LA.T ⧸ (Ideal.span {((l : ℕ) : O) ^ r} • ⊤ : Submodule O ↥LA.T))), actQ LA _ hI (g * h) x = actQ LA _ hI g (actQ LA _ hI h x)`. Introduce `g h x`. Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `H t`. Conclude with `congrArg Submodule.Quotient.mk (Subtype.ext (by show A.ρ (g * h) (t : A.V) = A.ρ g (A.ρ h t)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[map_mul]`. Use the proof step `rfl))`. Establish `hex : ∃ rho : Representation (ZMod (l ^ r)) (Formalism.GaloisCohomology.GK l K.1) M, ∀ (g : Formalism.GaloisCohomology.GK l K.1) (x : (↥LA.T ⧸ (Ideal.span {((l : ℕ) : O) ^ r} • ⊤ : Submodule O ↥LA.T))), rho g (e x) = e (actQ LA _ hI (φ.symm g) x)` using `⟨GlobalTheory.CocycleCount.repOfAction _ (fun g => e.toAddMonoidHom.comp ((actQ LA _ hI (φ.symm g)).toAddMonoidHom.comp e.symm.toAddMonoidHom)) (fun x => by`. Simplify using `only [AddMonoidHom.coe_comp, Function.comp_apply, LinearMap.toAddMonoidHom_coe, AddEquiv.coe_toAddMonoidHom, hφ1, hact1, AddEquiv.apply_symm_apply])`. Use the proof step `(fun g h x => by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [AddMonoidHom.coe_comp, Function.comp_apply, LinearMap.toAddMonoidHom_coe, AddEquiv.coe_toAddMonoidHom, hφm, hactm, AddEquiv.symm_apply_apply]),`. Use `fun g x => congrArg (fun y => e (actQ LA _ hI (φ.symm g) y)) (e.symm_apply_apply x)⟩`. Take `⟨rho, hcomp⟩` from `hex`. Establish `hrho : ReciprocityTheory.Gal.ContAction rho`. Use `continuous_prod_of_discrete_right.2 fun x => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx : (fun g => rho g x) = fun g => e (actQ LA _ hI (φ.symm g) (e.symm x))`. Use function extensionality and compare the values at `g`. Rewrite using `[← hcomp, e.apply_symm_apply]`. Rewrite using `[hx]`. Conclude with `((GlobalTheory.T.lattice_modPow_action_isLocallyConstant l ↥(GK K) LL O hG A LA r hI (e.symm x)).comp e).continuous.comp hφ.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT1` using `hT l K.1 hK r M rho hr hrho`. Take `⟨⟨eH⟩, -, -, -, hb⟩` from `hT1`. Establish `hEu` using `hE l K.1 hK r M rho hr hrho`. Establish `hTr` using `GlobalTheory.T.card_H1_H0_transport_lattice l K LL O A LA _ hI (l ^ r) M e rho hcomp`. Take `⟨h1Q, h0Q⟩` from `hTr`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hTDfin : Finite (ReciprocityTheory.Gal.TDual (ZMod (l ^ r)) M)` using `(GlobalTheory.CocycleCount.card_linear_le (l ^ r) M).1`. Establish `hH2` using `card_H2_eq (l ^ r) _ M _ rho eH hb`. Establish `hD` using `GlobalTheory.T.exists_trace_form_integral_iff_goodCoeff l LL O hG`. Take `⟨lam, hlam⟩` from `hD`. Establish `hMp` using `GlobalTheory.T.tracePairing_injective_equivariant_levelMap l P K LL O A A' LA LA' m hm lam hlam r hI hI' (GlobalTheory.T.periodCyclotomicChar_reduces_mod_prime_pow l P K r) M e rho hcomp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨Ψ, hΨi, hΨe⟩` from `hMp`. Establish `hcD : Nat.card (ReciprocityTheory.Gal.TDual (ZMod (l ^ r)) M) = Nat.card M` using `GlobalTheory.ZModDual.card_dual_eq (l ^ r) M`. Establish `hΨb : Function.Bijective Ψ` using `hΨi.bijective_of_nat_card_le (by rw [hcD, hcM, hcM'])`. Establish `hfix' : Nat.card {y : (↥LA'.T ⧸ (Ideal.span {((l : ℕ) : O) ^ r} • ⊤ : Submodule O ↥LA'.T)) // ∀ g, actQ LA' _ hI' g y = y} = Nat.card (ReciprocityTheory.Gal.H0 (ReciprocityTheory.Gal.twDual (Formalism.GaloisCohomology.cycK l K.1 r) rho))`. Use `Nat.card_congr ((Equiv.ofBijective _ hΨb).subtypeEquiv fun y => ?_)` and prove the remaining obligations.
-
-Rewrite using `[Equiv.ofBijective_apply, ReciprocityTheory.Gal.mem_riemannRochSpace_iff_regularAt_everywhere]`. Prove the components needed by the constructor for the conclusion. Introduce `hy g`. Conclude with `(hΨe g y).symm.trans (congrArg Ψ (hy _))`. Introduce `hy g`.
-
-Establish `h` using `hΨe (φ g) y`. Establish `h2 : (IntermediateField.fixingSubgroupEquiv K.1).symm (φ g) = g` using `φ.symm_apply_apply g`. Rewrite `h` using `[h2, hy (φ g)]`. Conclude with `hΨb.1 h`. Rewrite using `[h1Q, hEu, ← h0Q, hH2, ← hfix', hcM, ← pow_mul]`.
-
-Rewrite using `[show r * finrank LL A.V * finrank ℚ_[l] ↥K.1 = r * (finrank ℚ_[l] ↥K.1 * finrank LL A.V) by ring]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem core_pos (hT : Formalism.GaloisCohomology.LocalTateDualityK) (hE : Formalism.GaloisCohomology.LocalEulerCharK) (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K : FinExt l) (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O] [Algebra O LL] (hG : GoodO (Qp := ℚ_[l]) LL O) (A A' : GRep ↥(GK K) ℚ_[l] LL O) (LA : Lattice (O := O) A.ρ) (LA' : Lattice (O := O) A'.ρ) (m : A.V →ₗ[LL] A'.V →ₗ[LL] LL) (hm : IsDualLat1 (P.PD K) LA LA' m) (r : ℕ) (hr : 0 < r) (hI : StableSub LA (Ideal.span {((l : ℕ) : O) ^ r} • ⊤ : Submodule O ↥LA.T)) (hI' : StableSub LA' (Ideal.span {((l : ℕ) : O) ^ r} • ⊤ : Submodule O ↥LA'.T))
     (M : Type) [AddCommGroup M] (tM : TopologicalSpace M) (dM : @DiscreteTopology M tM) (e : (↥LA.T ⧸ (Ideal.span {((l : ℕ) : O) ^ r} • ⊤ : Submodule O ↥LA.T)) ≃+ M) :
@@ -175,15 +169,13 @@ theorem core_pos (hT : Formalism.GaloisCohomology.LocalTateDualityK) (hE : Forma
   rw [show r * finrank LL A.V * finrank ℚ_[l] ↥K.1 = r * (finrank ℚ_[l] ↥K.1 * finrank LL A.V) by ring]
 
 /- English proof (translation)
-Introduce `hT hE l _ P K LL _ _ _ O _ _ hG A A' LA LA' m hm r hI hI'`. Establish `hK : FiniteDimensional ℚ_[l] ↥K.1` using `K.2`. Establish `hp : l.Prime` using `Fact.out`. Take `⟨-, -, hfinO, -⟩` from `GlobalTheory.GoodCoeff.good_coeff_integers l LL O hG`. Establish `hcO : Nat.card (O ⧸ Ideal.span {((l : ℕ) : O)}) ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hfinO 1` as an intermediate fact. Rewrite `this` using `[pow_one]`. Conclude with `Nat.card_pos.ne'`. Break down `Nat.eq_zero_or_pos r with rfl | hr` into its components or cases. Establish `hs : ∀ (X : Type) [AddCommGroup X] [Module O X], Subsingleton (X ⧸ (Ideal.span {((l : ℕ) : O) ^ 0} • ⊤ : Submodule O X))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `X _ _`. Rewrite using `[Submodule.Quotient.subsingleton_iff, pow_zero, Ideal.span_singleton_one, Submodule.top_smul]`. Use `haveI := hs ↥LA.T`. Use `haveI := hs ↥LA'.T`. Establish `e1 : Nat.card (QuotientCohomology LA _ hI) = 1` using `by haveI : Subsingleton (QuotientCohomology LA _ hI) := (Submodule.Quotient.mk_surjective _).subsingleton`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Nat.card_unique`. Establish `e2 : Nat.card {x : ↥LA.T ⧸ (Ideal.span {((l : ℕ) : O) ^ 0} • ⊤ : Submodule O ↥LA.T) // ∀ g, actQ LA _ hI g x = x} = 1` using `by haveI : Unique {x : ↥LA.T ⧸ (Ideal.span {((l : ℕ) : O) ^ 0} • ⊤ : Submodule O ↥LA.T) // ∀ g, actQ LA _ hI g x = x} := { default := ⟨0, fun g => map_zero _⟩, uniq := fun _ => Subsingleton.elim _ _ }`. Conclude with `Nat.card_unique`. Establish `e3 : Nat.card {x : ↥LA'.T ⧸ (Ideal.span {((l : ℕ) : O) ^ 0} • ⊤ : Submodule O ↥LA'.T) // ∀ g, actQ LA' _ hI' g x = x} = 1` using `by haveI : Unique {x : ↥LA'.T ⧸ (Ideal.span {((l : ℕ) : O) ^ 0} • ⊤ : Submodule O ↥LA'.T) // ∀ g, actQ LA' _ hI' g x = x} := { default := ⟨0, fun g => map_zero _⟩, uniq := fun _ => Subsingleton.elim _ _ }`. Conclude with `Nat.card_unique`.
-
-Simplify using `only [e1, e2, e3]`. Simplify using the standard rewrite rules. Conclude with `core_pos hT hE l P K LL O hG A A' LA LA' m hm r hr hI hI' _ ⊥ (@DiscreteTopology.mk _ ⊥ rfl) (AddEquiv.refl _)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem card_H1Q_eq : Formalism.GaloisCohomology.LocalTateDualityK → Formalism.GaloisCohomology.LocalEulerCharK → ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K : FinExt l) (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O] [Algebra O LL], GoodO (Qp := ℚ_[l]) LL O → ∀ (A A' : GRep ↥(GK K) ℚ_[l] LL O) (LA : Lattice (O := O) A.ρ) (LA' : Lattice (O := O) A'.ρ) (m : A.V →ₗ[LL] A'.V →ₗ[LL] LL), IsDualLat1 (P.PD K) LA LA' m → ∀ (r : ℕ) (hI : StableSub LA (Ideal.span {((l : ℕ) : O) ^ r} • ⊤ : Submodule O ↥LA.T)) (hI' : StableSub LA' (Ideal.span {((l : ℕ) : O) ^ r} • ⊤ : Submodule O ↥LA'.T)), Nat.card (QuotientCohomology LA _ hI) = Nat.card {x : ↥LA.T ⧸ (Ideal.span {((l : ℕ) : O) ^ r} • ⊤ : Submodule O ↥LA.T) // ∀ g, actQ LA _ hI g x = x} * Nat.card {x : ↥LA'.T ⧸ (Ideal.span {((l : ℕ) : O) ^ r} • ⊤ : Submodule O ↥LA'.T) // ∀ g, actQ LA' _ hI' g x = x} * Nat.card (O ⧸ Ideal.span {((l : ℕ) : O)}) ^ (r * (finrank ℚ_[l] ↥K.1 * finrank LL A.V)) := by
   intro hT hE l _ P K LL _ _ _ O _ _ hG A A' LA LA' m hm r hI hI'

@@ -12,7 +12,7 @@ open Function
 open scoped Pointwise
 
 /- English proof (translation)
-The claim follows from `map_finsum L h`.
+A detailed English derivation is pending.
 -/
 theorem linearMap_finsum {ι M N : Type*} [AddCommMonoid M] [AddCommMonoid N] [Module ℂ M]
     [Module ℂ N] (L : M →ₗ[ℂ] N) {φ : ι → M} (h : HasFiniteSupport φ) :
@@ -34,7 +34,7 @@ variable {ρ : Representation ℂ (GL (Fin n) F) U} {ω : GL (Fin n) F → ℂ}
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
 
 /- English proof (translation)
-Establish `h1` using `h _ (mul_mem hz hz') u`. Rewrite `h1` using `[map_mul, Module.End.mul_apply, h z' hz', map_smul, h z hz, smul_smul]`. Conclude with `(smul_left_injective ℂ hu h1).symm.trans (mul_comm _ _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem HasCentralChar.mul (h : HasCentralChar ρ ω) {u : U} (hu : u ≠ 0)
     {z z' : GL (Fin n) F} (hz : z ∈ Subgroup.center (GL (Fin n) F))
@@ -46,7 +46,7 @@ theorem HasCentralChar.mul (h : HasCentralChar ρ ω) {u : U} (hu : u ≠ 0)
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
 
 /- English proof (translation)
-Establish `h1 : ω 1 • u = (1 : ℂ) • u`. Rewrite using `[one_smul, ← h 1 (Subgroup.one_mem _) u, map_one, Module.End.one_apply]`. Conclude with `smul_left_injective ℂ hu h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem HasCentralChar.one (h : HasCentralChar ρ ω) {u : U} (hu : u ≠ 0) : ω 1 = 1 := by
   have h1 : ω 1 • u = (1 : ℂ) • u := by
@@ -56,7 +56,7 @@ theorem HasCentralChar.one (h : HasCentralChar ρ ω) {u : U} (hu : u ≠ 0) : �
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
 
 /- English proof (translation)
-Rewrite using `[← h.mul hu (inv_mem hz) hz, inv_mul_cancel, h.one hu]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem HasCentralChar.inv_mul (h : HasCentralChar ρ ω) {u : U} (hu : u ≠ 0)
     {z : GL (Fin n) F} (hz : z ∈ Subgroup.center (GL (Fin n) F)) : ω z⁻¹ * ω z = 1 := by
@@ -71,7 +71,7 @@ abbrev centerSup (K : Subgroup (GL (Fin n) F)) : Subgroup (GL (Fin n) F) :=
 
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
 /- English proof (translation)
-The claim follows from `Subgroup.mem_sup_of_normal_left`.
+A detailed English derivation is pending.
 -/
 theorem mem_centerSup {K : Subgroup (GL (Fin n) F)} {x : GL (Fin n) F} :
     x ∈ centerSup K ↔ ∃ z ∈ Subgroup.center (GL (Fin n) F), ∃ k ∈ K, z * k = x :=
@@ -80,7 +80,7 @@ theorem mem_centerSup {K : Subgroup (GL (Fin n) F)} {x : GL (Fin n) F} :
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
 
 /- English proof (translation)
-Introduce `g h hh`. Take `⟨z, hz, k, hk, rfl⟩` from `mem_centerSup.1 hh`. Rewrite using `[← mul_assoc, hK _ k hk, hZ g z hz]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem rightInv_centerSup {X : Type*} {K : Subgroup (GL (Fin n) F)} {Φ : GL (Fin n) F → X}
     (hZ : ∀ g, ∀ z ∈ Subgroup.center (GL (Fin n) F), Φ (g * z) = Φ g)
@@ -90,14 +90,14 @@ theorem rightInv_centerSup {X : Type*} {K : Subgroup (GL (Fin n) F)} {Φ : GL (F
   rw [← mul_assoc, hK _ k hk, hZ g z hz]
 
 /- English proof (translation)
-The claim follows from `Subgroup.isOpen_mono le_sup_right hKo`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_centerSup {K : Subgroup (GL (Fin n) F)} (hKo : IsOpen (K : Set (GL (Fin n) F))) :
     IsOpen (centerSup K : Set (GL (Fin n) F)) :=
   Subgroup.isOpen_mono le_sup_right hKo
 
 /- English proof (translation)
-Take `⟨C, hC, hsupp⟩` from `hφ`. Conclude with `finite_support_quotSum (isOpen_centerSup hKo) le_sup_left hC (fun g hg => hsupp (mt (h g) hg))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem finite_support_centerSup {M : Type*} [AddCommMonoid M] {K : Subgroup (GL (Fin n) F)}
     (hKo : IsOpen (K : Set (GL (Fin n) F))) {Φ : GL (Fin n) F → M} {φ : GL (Fin n) F → ℂ}
@@ -124,11 +124,11 @@ variable {π ρ} {K : Subgroup (GL (Fin n) F)} {f : Module.Dual ℂ V} {u : U}
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
 
 /- English proof (translation)
-Use `rightInv_centerSup (Φ := fun g => f (π g⁻¹ w) • ρ g u) (fun g z hz => ?_) (fun g k hk => ?_)` and prove the remaining obligations. Establish `e1 : π (g * z)⁻¹ w = ω z⁻¹ • π g⁻¹ w`. Rewrite using `[mul_inv_rev, map_mul, Module.End.mul_apply, hωπ _ (inv_mem hz)]`. Establish `e2 : ρ (g * z) u = ω z • ρ g u`. Rewrite using `[map_mul, Module.End.mul_apply, hωρ z hz, map_smul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, e2, map_smul, smul_eq_mul, smul_smul]`. Use `congr 1`. Take the linear combination `f (π g⁻¹ w) * hω z hz`. Establish `e1 : π (g * k)⁻¹ w = π k⁻¹ (π g⁻¹ w)`. Rewrite using `[mul_inv_rev, map_mul, Module.End.mul_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, hf _ (inv_mem hk), map_mul, Module.End.mul_apply, hu k hk]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coeffSum_summand_rightInv (hωπ : HasCentralChar π ω) (hωρ : HasCentralChar ρ ω)
     (hω : ∀ z ∈ Subgroup.center (GL (Fin n) F), ω z⁻¹ * ω z = 1)
@@ -148,14 +148,14 @@ theorem coeffSum_summand_rightInv (hωπ : HasCentralChar π ω) (hωρ : HasCen
     rw [e1, hf _ (inv_mem hk), map_mul, Module.End.mul_apply, hu k hk]
 
 /- English proof (translation)
-The claim follows from `mem_smoothVectors_of_mem_fixedVectors hKo (mem_fixedVectors_dual.2 hf)`.
+A detailed English derivation is pending.
 -/
 theorem mem_smoothVectors_dual_of_inv (hKo : IsOpen (K : Set (GL (Fin n) F)))
     (hf : ∀ k ∈ K, ∀ x, f (π k x) = f x) : f ∈ smoothVectors (Representation.dual π) :=
   mem_smoothVectors_of_mem_fixedVectors hKo (mem_fixedVectors_dual.2 hf)
 
 /- English proof (translation)
-The claim follows from `finite_support_centerSup (Φ := fun g => f (π g⁻¹ w) • ρ g u) hKo (isCompactModCenter_matrixCoeff hπ hsc w (mem_smoothVectors_dual_of_inv hKo hf)).comp_inv fun g h0 => by change f (π g⁻¹ w) = 0 at h0 simp only [h0, zero_smul]`.
+A detailed English derivation is pending.
 -/
 theorem finite_support_coeffSum (hπ : IsSmooth π) (hsc : IsSupercuspidal π)
     (hKo : IsOpen (K : Set (GL (Fin n) F))) (hf : ∀ k ∈ K, ∀ x, f (π k x) = f x) (w : V) :
@@ -173,7 +173,7 @@ variable (hπ : IsSmooth π) (hsc : IsSupercuspidal π) (hKo : IsOpen (K : Set (
 
 include hπ hsc hKo hf in
 /- English proof (translation)
-Unfold `coeffSum quotSum`. Rewrite using `[← finsum_add_distrib (finite_support_coeffSum hπ hsc hKo hf w₁) (finite_support_coeffSum hπ hsc hKo hf w₂)]`. Use `finsum_congr fun q => ?_` and prove the remaining obligations. Simplify using `only`. Rewrite using `[map_add, map_add, add_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem coeffSum_add (w₁ w₂ : V) :
     coeffSum π ρ K f u (w₁ + w₂) = coeffSum π ρ K f u w₁ + coeffSum π ρ K f u w₂ := by
@@ -186,7 +186,7 @@ theorem coeffSum_add (w₁ w₂ : V) :
 
 include hπ hsc hKo hf in
 /- English proof (translation)
-Unfold `coeffSum quotSum`. Rewrite using `[smul_finsum' c (finite_support_coeffSum hπ hsc hKo hf w)]`. Use `finsum_congr fun q => ?_` and prove the remaining obligations. Simplify using `only`. Rewrite using `[map_smul, map_smul, smul_eq_mul, mul_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem coeffSum_smul (c : ℂ) (w : V) :
     coeffSum π ρ K f u (c • w) = c • coeffSum π ρ K f u w := by
@@ -199,9 +199,9 @@ theorem coeffSum_smul (c : ℂ) (w : V) :
 include hπ hsc hKo hωπ hωρ hω hf hu in
 
 /- English proof (translation)
-Establish `hΨ` using `coeffSum_summand_rightInv hωπ hωρ hω hf hu w`. Establish `hΨ' : ∀ g, ∀ h ∈ centerSup K, ρ x (f (π (g * h)⁻¹ w) • ρ (g * h) u) = ρ x (f (π g⁻¹ w) • ρ g u)` using `fun g h hh => by rw [hΨ g h hh]`. Combine the equalities or inequalities in the displayed calculation. Use `quotSum_congr fun g => ?_` and prove the remaining obligations. Establish `h1 : (x⁻¹ * g)⁻¹ = g⁻¹ * x` using `by group`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[map_smul, h1, map_mul π g⁻¹ x, Module.End.mul_apply, ← Module.End.mul_apply (ρ x), ← map_mul ρ, mul_inv_cancel_left]`. Use `_ = quotSum (centerSup K) fun g => ρ x (f (π g⁻¹ w) • ρ g u) := quotSum_mul_left (Φ := fun g => ρ x (f (π g⁻¹ w) • ρ g u)) hΨ' x⁻¹`. Use `_ = ρ x (coeffSum π ρ K f u w) := (linearMap_finsum (ρ x) (finite_support_coeffSum hπ hsc hKo hf w)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeffSum_act (x : GL (Fin n) F) (w : V) :
     coeffSum π ρ K f u (π x w) = ρ x (coeffSum π ρ K f u w) := by
@@ -235,7 +235,7 @@ omit hωπ hωρ hω hu in
 include hπ hsc hKo hf in
 
 /- English proof (translation)
-Unfold `coeffSum quotSum`. Rewrite using `[← Representation.IntertwiningMap.toLinearMap_apply, linearMap_finsum _ (finite_support_coeffSum hπ hsc hKo hf w)]`. Use `finsum_congr fun q => ?_` and prove the remaining obligations. Rewrite using `[Representation.IntertwiningMap.toLinearMap_apply, map_smul, Representation.IntertwiningMap.isIntertwining]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_coeffSum {σ : Representation ℂ (GL (Fin n) F) W}
     (p : Representation.IntertwiningMap ρ σ) (w : V) :
@@ -255,7 +255,7 @@ variable {V : Type*} [AddCommGroup V] [Module ℂ V] {π : Representation ℂ (G
   {K : Subgroup (GL (Fin n) F)} {f : Module.Dual ℂ V} {v : V} {ω : GL (Fin n) F → ℂ}
 
 /- English proof (translation)
-Take `⟨u₀, hu₀⟩` from `exists_ne_zero_of_isIrreducible (ρ := π)`. Take `⟨c, hc⟩` from `(algebraMap_intertwiningMap_bijective_of_isSmooth hπ).2 (coeffMap hπ hsc hKo hωπ hωπ (fun z hz => hωπ.inv_mul hu₀ hz) hf hv)`. Use `⟨c, fun w => ?_⟩` and prove the remaining obligations. Use `congrArg (fun φ : Representation.IntertwiningMap π π => φ w) hc` as an intermediate fact. Simplify `this.symm` using `[coeffMap_apply]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_coeffSum_eq_smul [π.IsIrreducible] (hπ : IsSmooth π) (hsc : IsSupercuspidal π)
     (hKo : IsOpen (K : Set (GL (Fin n) F))) (hωπ : HasCentralChar π ω)

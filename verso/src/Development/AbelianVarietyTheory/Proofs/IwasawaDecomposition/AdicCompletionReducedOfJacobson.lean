@@ -13,7 +13,7 @@ open IsLocalRing
 namespace GlobalTheory.CompletionReduced
 
 /- English proof (translation)
-Rewrite using `[Ideal.jacobson, le_sInf_iff]`. Introduce and unpack `M ⟨-, hM⟩`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Conclude with `hI.trans (sInf_le ⟨bot_le, hf M hM⟩)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_le_jacobson_of_comap_isMaximal {A B : Type} [CommRing A] [CommRing B] (f : A →+* B)
     (hf : ∀ M : Ideal B, M.IsMaximal → (M.comap f).IsMaximal) (I : Ideal A)
@@ -24,11 +24,11 @@ theorem map_le_jacobson_of_comap_isMaximal {A B : Type} [CommRing A] [CommRing B
   exact hI.trans (sInf_le ⟨bot_le, hf M hM⟩)
 
 /- English proof (translation)
-Proceed by induction on `e using WithBot.recBotCoe with`. Consider the case `bot => exact absurd h0 (by simp)`. Consider the case `coe k`. Proceed by induction on `k using ENat.recTopCoe with`. Consider the case `top`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-It suffices to derive a contradiction. Establish `h' : ((⊤ + 1 : ℕ∞) : WithBot ℕ∞) ≤ ((n : ℕ∞) : WithBot ℕ∞)` using `h`. Rewrite `h'` using `[WithBot.coe_le_coe, top_add]`. Conclude with `absurd h' (by simp)`. Consider the case `coe k`.
+It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨k, ?_, le_rfl⟩` and prove the remaining obligations. Establish `: ((k + 1 : ℕ) : WithBot ℕ∞) ≤ (n : WithBot ℕ∞)` using `by exact_mod_cast h`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_lt_of_add_one_le (e : WithBot ℕ∞) (n : ℕ) (h0 : 0 ≤ e) (h : e + 1 ≤ (n : WithBot ℕ∞)) :
     ∃ m : ℕ, m < n ∧ e ≤ (m : WithBot ℕ∞) := by
@@ -47,21 +47,17 @@ theorem exists_lt_of_add_one_le (e : WithBot ℕ∞) (n : ℕ) (h0 : 0 ≤ e) (h
       exact_mod_cast this
 
 /- English proof (translation)
-Use `haveI : IsNoetherianRing N := Algebra.EssFiniteType.isNoetherianRing ℤ N`. Distinguish the cases in `hbot : I = ⊥`. Substitute `hbot` using the available equality. Conclude with `isReduced_of_injective (AdicCompletion.ofAlgEquiv (⊥ : Ideal N)).symm.toRingEquiv.toRingHom (AdicCompletion.ofAlgEquiv (⊥ : Ideal N)).symm.injective`. Take `⟨x, hxI, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hbot`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `R` to `AdicCompletion I N`. Use `haveI : IsNoetherianRing R := GlobalTheory.T.isNoetherianRing_adicCompletion_of_noetherian N I`. Use `haveI : Module.Flat N R := AdicCompletion.flat_of_isNoetherian I`. Establish `hxR : algebraMap N R x ∈ nonZeroDivisors R`. Establish `hxA : IsSMulRegular N x` using `IsSMulRegular.of_ne_zero hx0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h : IsSMulRegular R (algebraMap N R x)` using `hxA.of_flat`. Rewrite using `[mem_nonZeroDivisors_iff_right]`. Introduce `y hy`. Use `h ?_` and prove the remaining obligations. Simplify `hy` using `[smul_eq_mul, mul_comm]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxjac : algebraMap N R x ∈ Ideal.jacobson (⊥ : Ideal R)`. Establish `h1 : IsAdicComplete I R` using `AdicCompletion.isAdicComplete (IsNoetherian.noetherian I)`. Establish `h2 : IsAdicComplete (I.map (algebraMap N R)) R` using `(IsAdicComplete.map_algebraMap_iff _ _).2 h1`. Conclude with `IsAdicComplete.le_jacobson_bot (I.map (algebraMap N R)) (Ideal.mem_map_of_mem _ hxI)`. Establish `hredq : ∀ q : Ideal N, q.IsPrime → x ∈ q → IsReduced (R ⧸ q.map (algebraMap N R))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `q hq hxq`. Take `⟨e⟩` from `GlobalTheory.T.nonempty_adicCompletion_quotient_ringEquiv N I q`. Use `haveI : IsDomain (N ⧸ q) := Ideal.Quotient.isDomain q`. Use `haveI : Algebra.EssFiniteType N (N ⧸ q) := inferInstance`. Use `haveI hess : @Algebra.EssFiniteType ℤ (N ⧸ q) _ _ (Ring.toIntAlgebra _) := by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `letI := Ring.toIntAlgebra (N ⧸ q)`. Use `haveI : IsScalarTower ℤ N (N ⧸ q) := .of_algebraMap_eq fun z => by simp`. Conclude with `Algebra.EssFiniteType.comp ℤ N (N ⧸ q)`. Establish `hj : I.map (Ideal.Quotient.mk q) ≤ Ideal.jacobson (⊥ : Ideal (N ⧸ q))` using `map_le_jacobson_of_comap_isMaximal _ (fun M hM => Ideal.comap_isMaximal_of_surjective _ Ideal.Quotient.mk_surjective) I hIjac`. Establish `hd1 : ringKrullDim (N ⧸ q) + 1 ≤ (n : WithBot ℕ∞)`.
-
-Establish `h1` using `ringKrullDim_quotient_succ_le_of_nonZeroDivisor (mem_nonZeroDivisors_of_ne_zero hx0)`. Establish `h2 : ringKrullDim (N ⧸ q) ≤ ringKrullDim (N ⧸ Ideal.span {x})` using `ringKrullDim_le_of_surjective _ (Ideal.Quotient.factor_surjective (by rwa [Ideal.span_singleton_le_iff_mem]))`. Conclude with `((add_le_add h2 le_rfl).trans h1).trans hdimN`. Take `⟨m, hmn, hm⟩` from `exists_lt_of_add_one_le _ n ringKrullDim_nonneg_of_nontrivial hd1`. Use `haveI := ih m hmn (N ⧸ q) hm _ hj`.
-
-Conclude with `isReduced_of_injective e.toRingHom e.injective`. Use `GlobalTheory.T.isReduced_of_nonZeroDivisor_mem_jacobson_of_assocPrimes R (algebraMap N R x) hxR hxjac ?_` and prove the remaining obligations. Introduce `P _ hP`. Take `⟨h1, -⟩` from `GlobalTheory.T.associated_prime_localization_dvr N R x hx0 hredq P hP`. Conclude with `h1`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isReduced_of_normal (n : ℕ)
     (ih : ∀ m < n, ∀ (D : Type) [CommRing D] [IsDomain D] [Algebra.EssFiniteType ℤ D],
@@ -117,15 +113,11 @@ theorem isReduced_of_normal (n : ℕ)
   exact h1
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `D _ _ _ hdim J hJ`. Use `haveI : IsNoetherianRing D := Algebra.EssFiniteType.isNoetherianRing ℤ D`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Set `N` to `integralClosure D (FractionRing D)`. Use `haveI : Module.Finite D N := GlobalTheory.T.finite_integralClosure_of_essFiniteType_int_domain D`. Use `haveI : IsIntegrallyClosed N := integralClosure.isIntegrallyClosedOfFiniteExtension (FractionRing D)`. Establish `hinj : Function.Injective (algebraMap D N)`. Introduce `a b hab`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg (fun y : N => (y : FractionRing D)) hab` as an intermediate fact. Conclude with `IsFractionRing.injective D (FractionRing D) this`. Establish `hdimN : ringKrullDim N ≤ (n : WithBot ℕ∞)`. Rewrite using `[ReciprocityTheory.CA.ringKrullDim_eq_of_isIntegral_of_injective hinj]`. Conclude with `hdim`.
-
-Use `haveI : Algebra.EssFiniteType D N := inferInstance`. Use `haveI hessN : @Algebra.EssFiniteType ℤ N _ _ (Ring.toIntAlgebra _) := by`. Use `letI := Ring.toIntAlgebra N`. Use `haveI : IsScalarTower ℤ D N := .of_algebraMap_eq fun z => by simp`. Conclude with `Algebra.EssFiniteType.comp ℤ D N`.
-
-Establish `hIjac : J.map (algebraMap D N) ≤ Ideal.jacobson (⊥ : Ideal N)` using `map_le_jacobson_of_comap_isMaximal _ (fun M hM => Ideal.isMaximal_comap_of_isIntegral_of_isMaximal M) J hJ`. Take `⟨f, hf⟩` from `GlobalTheory.T.exists_injective_adicCompletion_map_of_finite D N hinj J`. Use `haveI := isReduced_of_normal n ih N hdimN _ hIjac`. Conclude with `isReduced_of_injective f hf`.
+Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isReduced_of_dim_le : ∀ (n : ℕ) (D : Type) [CommRing D] [IsDomain D] [Algebra.EssFiniteType ℤ D],
     ringKrullDim D ≤ (n : WithBot ℕ∞) → ∀ (J : Ideal D), J ≤ Ideal.jacobson (⊥ : Ideal D) →
@@ -158,11 +150,11 @@ theorem isReduced_of_dim_le : ∀ (n : ℕ) (D : Type) [CommRing D] [IsDomain D]
   exact isReduced_of_injective f hf
 
 /- English proof (translation)
-Introduce `D _ _ _ J hJ`. Establish `hlt` using `GlobalTheory.T.ringKrullDim_finite_of_essFiniteType_int D`. Choose the witnesses or unpack the hypotheses as in `⟨m, hm⟩ : ∃ m : ℕ, ringKrullDim D ≤ (m : WithBot ℕ∞) := by`. Generalize the expression as in `ringKrullDim D = e at hlt ⊢`. Proceed by induction on `e using WithBot.recBotCoe with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable. Proceed by induction.
 
-Consider the case `bot => exact ⟨0, bot_le⟩`. Consider the case `coe k`. Proceed by induction on `k using ENat.recTopCoe with`. Consider the case `top => exact absurd hlt (by simp)`. Consider the case `coe k => exact ⟨k, le_rfl⟩`.
+Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Conclude with `isReduced_of_dim_le m D hm J hJ`.
+A detailed English derivation is pending.
 -/
 theorem isReduced_adicCompletion : ∀ (D : Type) [CommRing D] [IsDomain D] [Algebra.EssFiniteType ℤ D]
     (J : Ideal D), J ≤ Ideal.jacobson (⊥ : Ideal D) → IsReduced (AdicCompletion J D) := by

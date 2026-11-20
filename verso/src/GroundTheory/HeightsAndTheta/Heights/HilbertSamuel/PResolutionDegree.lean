@@ -17,7 +17,7 @@ noncomputable section
 namespace ResolutionDegree
 
 /- English proof (translation)
-Unfold `ReciprocityTheory.AnForm.hessC`. Rewrite using `[(h.fderiv (𝕜 := ℝ)).fderiv_eq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem hessC_congr {n : ℕ} {φ ψ : (Fin n → ℂ) → ℝ} {z : Fin n → ℂ} (h : φ =ᶠ[𝓝 z] ψ) :
     ReciprocityTheory.AnForm.hessC φ z = ReciprocityTheory.AnForm.hessC ψ z := by
@@ -25,7 +25,7 @@ theorem hessC_congr {n : ℕ} {φ ψ : (Fin n → ℂ) → ℝ} {z : Fin n → �
   rw [(h.fderiv (𝕜 := ℝ)).fderiv_eq]
 
 /- English proof (translation)
-Establish `hH : (fun k => ReciprocityTheory.AnForm.hessC (φ k) z) = fun k => ReciprocityTheory.AnForm.hessC (ψ k) z`. Use function extensionality and compare the values at `fun k => hessC_congr (h k)`. Unfold `ReciprocityTheory.AnForm.maDens`. Rewrite using `[hH]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem maDens_congr {n : ℕ} {φ ψ : Fin n → (Fin n → ℂ) → ℝ} {z : Fin n → ℂ} (h : ∀ i, φ i =ᶠ[𝓝 z] ψ i) :
     ReciprocityTheory.AnForm.maDens φ z = ReciprocityTheory.AnForm.maDens ψ z := by
@@ -35,9 +35,9 @@ theorem maDens_congr {n : ℕ} {φ ψ : Fin n → (Fin n → ℂ) → ℝ} {z : 
   rw [hH]
 
 /- English proof (translation)
-Unfold `mInt`. Use `split_ifs with hP`. Unfold `integralWith`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `MeasureTheory.setIntegral_congr_fun (A.chart j).open_target.measurableSet fun y hy => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [h j y hy]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mInt_congr_of_locDens {e : ℕ} {X : Type*} [TopologicalSpace X] (A : FinHolAtlas e X)
     {Φ Ψ : Fin e → LocPot X} (h : ∀ j, ∀ y ∈ (A.chart j).target, locDens A Φ j y = locDens A Ψ j y)
@@ -53,7 +53,7 @@ theorem mInt_congr_of_locDens {e : ℕ} {X : Type*} [TopologicalSpace X] (A : Fi
 variable {D : ℕ} {Ω : Type} [Field Ω] [CharZero Ω] {κ : Type} [Fintype κ]
 
 /- English proof (translation)
-Introduce `j` and use `by refine contDiffOn_of_locally_contDiffOn fun y hy => ?_ refine ⟨(d.R.A.chart j).target ∩ (d.R.A.chart j).symm ⁻¹' d.R.U ((d.R.A.chart j).symm y), (d.R.A.chart j).isOpen_inter_preimage_symm (d.R.isOpen_U _), ⟨hy.1, d.R.mem_U _⟩, ?_⟩ have hsm : ContDiffOn ℝ ∞ (fun y' => logRatio …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem smooth_logRatio_resPt (d : HSMDatum D Ω κ) {m₀ m₁ : ConeMetric ℂ (Ix κ)}
     (h₀ : IsSmoothMetric m₀) (h₁ : IsSmoothMetric m₁) :
@@ -73,11 +73,11 @@ theorem smooth_logRatio_resPt (d : HSMDatum D Ω κ) {m₀ m₁ : ConeMetric ℂ
   rw [hcy, gbamix_logRatio_deg c _ hc]
 
 /- English proof (translation)
-Use `mInt_congr_of_locDens _ (fun j y hy => ?_) g` and prove the remaining obligations. Unfold `locDens`. Use `maDens_congr fun _ => ?_` and prove the remaining obligations. Establish `hmem : (d.R.A.chart j).target ∩ (d.R.A.chart j).symm ⁻¹' d.R.U ((d.R.A.chart j).symm y) ∈ 𝓝 y` using `((d.R.A.chart j).isOpen_inter_preimage_symm (d.R.isOpen_U _)).mem_nhds ⟨hy, d.R.mem_U _⟩`. Use `filter_upwards [hmem] with y' hy'`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc, hcy⟩` from `d.R.compat ((d.R.A.chart j).symm y') ((d.R.A.chart j).symm y) ((d.R.A.chart j).symm y') ⟨d.R.mem_U _, hy'.2⟩`. Establish `hz` using `gaamix_ne_zero_of_mcPts (d.R.mem ((d.R.A.chart j).symm y) _ hy'.2)`. Establish `h₀` using `m₀.pos _ hz`. Establish `h₁` using `m₁.pos _ hz`. Express the relevant statement in the definitionally equal form `Real.log (m₁.ρ (d.R.lift ((d.R.A.chart j).symm y) ((d.R.A.chart j).symm y'))) = Real.log (m₀.ρ (d.R.lift ((d.R.A.chart j).symm y) ((d.R.A.chart j).symm y'))) + logRatio m₀ m₁ (d.R.lift ((d.R.A.chart j).symm y') ((d.R.A.chart j).symm y'))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcy, gbamix_logRatio_deg c _ hc, logRatio, Real.log_div h₁.ne' h₀.ne']`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem mInt_resPot_eq (d : HSMDatum D Ω κ) {m₀ m₁ : ConeMetric ℂ (Ix κ)} (g : d.R.X → ℝ) :
     mInt d.R.A (fun _ => resPot d m₁) g =
@@ -100,7 +100,7 @@ theorem mInt_resPot_eq (d : HSMDatum D Ω κ) {m₀ m₁ : ConeMetric ℂ (Ix κ
   ring
 
 /- English proof (translation)
-Rewrite using `[mInt_resPot_eq d (m₀ := m₀)]`. Conclude with `massIndep d.R.A (fun _ => resPot d m₀) (fun _ y => logRatio m₀ m₁ (resPt d y)) (fun _ => isPotential_resPot d h₀) (fun _ => smooth_logRatio_resPt d h₀ h₁)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mass_eq (d : HSMDatum D Ω κ) {m₀ m₁ : ConeMetric ℂ (Ix κ)} (h₀ : IsSmoothMetric m₀)
     (h₁ : IsSmoothMetric m₁) :
@@ -110,13 +110,13 @@ theorem mass_eq (d : HSMDatum D Ω κ) {m₀ m₁ : ConeMetric ℂ (Ix κ)} (h�
     (fun _ => isPotential_resPot d h₀) (fun _ => smooth_logRatio_resPt d h₀ h₁)
 
 /- English proof (translation)
-Take `⟨Ψ, hΨ, hmass⟩` from `hPM D Ω κ d.x e m₀ hfr hFS`. Set `A : HermLine (GlobalTheory κ)` to `HermLine.ofWeight (fun _ => (1 : ℝ)) (fun _ _ _ => rfl)`. Establish `hA : IsSmoothHerm A` using `contDiffOn_const`. Establish `hlog : logNorm A 1 = fun _ => (1 : ℝ)`. Use function extensionality and compare the values at `z`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[A, logNorm, HermLine.ofWeight]`. Establish `hsec : IsSectionOn (coordIdeal ℤ d.x) A 1`. Use `⟨fun _ => 0, fun _ => rfl, ?_, ?_⟩` and prove the remaining obligations. Introduce `a ha k`. Rewrite `ha` using `[support_one]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Finset.mem_singleton] at ha`. Simplify using `[ha]`. Conclude with `(Ideal.ne_top_iff_one _).1 d.arith.2.1.1.ne_top`. Establish `key` using `AnResBridge.bridge d.R Ψ (fun _ => HermLine.ofCone m₀) A 1 d.arith hΨ (fun _ => gbamix_smoothHerm_ofCone h₀) hA hsec`. Rewrite `key` using `[hlog]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hmass]`. Conclude with `key.symm`.
+A detailed English derivation is pending.
 -/
 theorem mass_pullFS (hPM : ProjFSMass.Statement) (d : HSMDatum D Ω κ) {e : Fin (D + 1) → Ix κ}
     {m₀ : ConeMetric ℂ (Ix κ)} (hfr : IsProjFrame d.x e) (h₀ : IsSmoothMetric m₀) (hFS : IsPullFS d.x e m₀) :
@@ -143,7 +143,7 @@ theorem mass_pullFS (hPM : ProjFSMass.Statement) (d : HSMDatum D Ω κ) {e : Fin
 end ResolutionDegree
 
 /- English proof (translation)
-Introduce `D Ω _ _ κ _ d e m hfr hm`. Take `⟨m₀, h₀, -, -, hFS⟩` from `hPF D Ω κ d.x e hfr`. Rewrite using `[ResolutionDegree.mass_eq d h₀ hm]`. Conclude with `ResolutionDegree.mass_pullFS hPM d hfr h₀ hFS`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ResolutionDegree.proof (hPF : PullFSExtension.Statement) (hPM : ProjFSMass.Statement) :
     ResolutionDegree.Statement := by

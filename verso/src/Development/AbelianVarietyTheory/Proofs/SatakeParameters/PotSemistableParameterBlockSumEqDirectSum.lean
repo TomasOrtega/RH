@@ -25,13 +25,13 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   [AddCommGroup V'] [Module ℂ V'] [FiniteDimensional ℂ V']
 
 /- English proof (translation)
-Use `⟨by rw [WDRep.sum_N, ha.1, hb.1], fun g => ?_⟩` and prove the remaining obligations. Take `⟨c1, n1⟩` from `ha.2 g`. Take `⟨c2, n2⟩` from `hb.2 g`. Set `R` to `LinearMap.prodMapRingHom ℂ V V'`. Establish `e1 : (a.sum b).ρ g = R (a.ρ g, b.ρ g)` using `rfl`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e2 : (ρ₁ g).prodMap (ρ₂ g) = R (ρ₁ g, ρ₂ g)` using `rfl`. Use `show Commute ((a.sum b).ρ g) ((ρ₁ g).prodMap (ρ₂ g)) ∧ IsNilpotent ((ρ₁ g).prodMap (ρ₂ g) - (a.sum b).ρ g)`. Rewrite using `[e1, e2]`. Establish `hc : Commute ((a.ρ g, b.ρ g) : End ℂ V × End ℂ V') (ρ₁ g, ρ₂ g)` using `Prod.ext c1.eq c2.eq`. Use `⟨hc.map R, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_sub]`. Take `⟨m, hm⟩` from `n1`. Take `⟨n, hn⟩` from `n2`. Use `IsNilpotent.map ⟨m + n, Prod.ext ?_ ?_⟩ R` and prove the remaining obligations. Simplify using `[pow_add, hm]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[pow_add, hn]`.
+A detailed English derivation is pending.
 -/
 theorem isFrobSS_sum {ρ₁ : Weil h → End ℂ V} {N₁ : End ℂ V} {a : WDRep h V}
     {ρ₂ : Weil h → End ℂ V'} {N₂ : End ℂ V'} {b : WDRep h V'}
@@ -64,7 +64,7 @@ variable {l : ℕ} [Fact l.Prime] (P : LocPrime l) {LL : Type} [Field LL] [Algeb
   [AddCommGroup V''] [Module LL V''] [Module ℚ_[l] V''] [IsScalarTower ℚ_[l] LL V'']
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem tensV_comp (f : V →ₗ[LL] V') (g : V' →ₗ[LL] V'') (z : V ⊗[ℚ_[l]] Bst P) :
     tensV P g (tensV P f z) = tensV P (g ∘ₗ f) z := by
@@ -74,7 +74,7 @@ theorem tensV_comp (f : V →ₗ[LL] V') (g : V' →ₗ[LL] V'') (z : V ⊗[ℚ_
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem tensV_id (z : V ⊗[ℚ_[l]] Bst P) : tensV P (LinearMap.id : V →ₗ[LL] V) z = z := by
   induction z using TensorProduct.induction_on with
@@ -83,7 +83,7 @@ theorem tensV_id (z : V ⊗[ℚ_[l]] Bst P) : tensV P (LinearMap.id : V →ₗ[L
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, add_zero]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem tensV_zero (z : V ⊗[ℚ_[l]] Bst P) : tensV P (0 : V →ₗ[LL] V') z = 0 := by
   induction z using TensorProduct.induction_on with
@@ -92,7 +92,7 @@ theorem tensV_zero (z : V ⊗[ℚ_[l]] Bst P) : tensV P (0 : V →ₗ[LL] V') z 
   | add x y hx hy => simp only [map_add, hx, hy, add_zero]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [add_tmul]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Normalize the expressions using the abelian group laws.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Normalize the expressions using the abelian group laws.
 -/
 theorem tensV_add (f g : V →ₗ[LL] V') (z : V ⊗[ℚ_[l]] Bst P) :
     tensV P (f + g) z = tensV P f z + tensV P g z := by
@@ -120,23 +120,23 @@ def in₂ : (Fin b → k) →ₗ[k] (Fin (a + b) → k) :=
   (GlobalTheory.DirectSumLocal.splitEquiv k a b).symm.toLinearMap ∘ₗ LinearMap.inr k _ _
 
 /- English proof (translation)
-Apply the tactic sequence `ext v <;> simp [pr₁, in₁]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pr₁_in₁ : pr₁ k a b ∘ₗ in₁ k a b = LinearMap.id := by ext v <;> simp [pr₁, in₁]
 /- English proof (translation)
-Apply the tactic sequence `ext v <;> simp [pr₂, in₁]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pr₂_in₁ : pr₂ k a b ∘ₗ in₁ k a b = 0 := by ext v <;> simp [pr₂, in₁]
 /- English proof (translation)
-Apply the tactic sequence `ext v <;> simp [pr₁, in₂]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pr₁_in₂ : pr₁ k a b ∘ₗ in₂ k a b = 0 := by ext v <;> simp [pr₁, in₂]
 /- English proof (translation)
-Apply the tactic sequence `ext v <;> simp [pr₂, in₂]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pr₂_in₂ : pr₂ k a b ∘ₗ in₂ k a b = LinearMap.id := by ext v <;> simp [pr₂, in₂]
 /- English proof (translation)
-Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Simplify using `only [pr₁, pr₂, in₁, in₂, LinearMap.add_apply, LinearMap.comp_apply, LinearMap.id_apply, ← map_add]`. Apply `(GlobalTheory.DirectSumLocal.splitEquiv k a b).injective` to reduce the goal to its premises. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem in_pr : in₁ k a b ∘ₗ pr₁ k a b + in₂ k a b ∘ₗ pr₂ k a b = LinearMap.id := by
   refine LinearMap.ext fun v => ?_
@@ -162,7 +162,7 @@ variable {l : ℕ} [Fact l.Prime] (P : LocPrime l) (ι : Om l ≃+* ℂ) {K LL :
   {r₃ : Representation ↥LL.1 ↥(GK K) V₃}
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext_on_range (span_wdMk P ι r₁) fun x => congrArg (wdMk P ι r₁) (Subtype.ext ((tensV_comp P f g x.1).trans ((congrArg (fun k => tensV P k x.1) hgf).trans (tensV_id P x.1))))`.
+A detailed English derivation is pending.
 -/
 theorem wdLin_comp_eq_id {f : V₁ →ₗ[↥LL.1] V₂} {g : V₂ →ₗ[↥LL.1] V₁} (hf : ∀ x v, f (r₁ x v) = r₂ x (f v))
     (hg : ∀ x v, g (r₂ x v) = r₁ x (g v)) (hgf : g ∘ₗ f = LinearMap.id) :
@@ -171,7 +171,7 @@ theorem wdLin_comp_eq_id {f : V₁ →ₗ[↥LL.1] V₂} {g : V₂ →ₗ[↥LL.
     ((tensV_comp P f g x.1).trans ((congrArg (fun k => tensV P k x.1) hgf).trans (tensV_id P x.1))))
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext_on_range (span_wdMk P ι r₁) fun x => (congrArg (wdMk P ι r₃) (Subtype.ext ((tensV_comp P f g x.1).trans ((congrArg (fun k => tensV P k x.1) hgf).trans (tensV_zero P x.1))))).trans (wdMk_zero P ι r₃)`.
+A detailed English derivation is pending.
 -/
 theorem wdLin_comp_eq_zero {f : V₁ →ₗ[↥LL.1] V₂} {g : V₂ →ₗ[↥LL.1] V₃} (hf : ∀ x v, f (r₁ x v) = r₂ x (f v))
     (hg : ∀ x v, g (r₂ x v) = r₃ x (g v)) (hgf : g ∘ₗ f = 0) :
@@ -191,7 +191,7 @@ variable {l : ℕ} [Fact l.Prime] (P : LocPrime l) (ι : Om l ≃+* ℂ)
   (Bw : LocBridge l E Ω (Dec (F := E) A) O) (h : IsPlaceOver A w) (hj : Induces Bw)
 
 /- English proof (translation)
-Take `⟨u, hN, hu, -, hc, hr⟩` from `wdRep_spec P ι Bw h hj r`. Rewrite using `[← hN]`. Conclude with `isFrobSS_of_unipotent u hu hc hr`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFrobSS_wdRep {LL : FinExt l} {V : Type} [AddCommGroup V] [Module ↥LL.1 V] [Module ℚ_[l] V]
     [IsScalarTower ℚ_[l] ↥LL.1 V] (r : Representation ↥LL.1 ↥(GK Bw.Kw) V)
@@ -207,17 +207,17 @@ variable {LL : FinExt l} {a b : ℕ} (ρ : Representation ↥LL.1 ↥(GK Bw.Kw) 
   [FiniteDimensional ↥(MaximalUnramifiedExtension l) (DpstUr P ρ₂)]
 
 /- English proof (translation)
-Establish `hp₁ : ∀ g v, pr₁ (↥LL.1) a b (ρ g v) = ρ₁ g (pr₁ (↥LL.1) a b v)` using `fun g v => by`. Simplify using `only [pr₁, LinearMap.comp_apply, LinearEquiv.coe_coe, he, LinearMap.fst_apply]`. Establish `hp₂ : ∀ g v, pr₂ (↥LL.1) a b (ρ g v) = ρ₂ g (pr₂ (↥LL.1) a b v)` using `fun g v => by`. Simplify using `only [pr₂, LinearMap.comp_apply, LinearEquiv.coe_coe, he, LinearMap.snd_apply]`. Establish `hi₁ : ∀ g v, in₁ (↥LL.1) a b (ρ₁ g v) = ρ g (in₁ (↥LL.1) a b v)` using `fun g v => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply `(GlobalTheory.DirectSumLocal.splitEquiv (↥LL.1) a b).injective` to reduce the goal to its premises. Rewrite using `[he]`. Simplify using `[in₁]`. Establish `hi₂ : ∀ g v, in₂ (↥LL.1) a b (ρ₂ g v) = ρ g (in₂ (↥LL.1) a b v)` using `fun g v => by`. Apply `(GlobalTheory.DirectSumLocal.splitEquiv (↥LL.1) a b).injective` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[he]`. Simplify using `[in₂]`. Set `Φ : WDSpace P ι ρ →ₗ[ℂ] WDSpace P ι ρ₁ × WDSpace P ι ρ₂` to `(wdLin P ι hp₁).prod (wdLin P ι hp₂)`. Set `Ψ : WDSpace P ι ρ₁ × WDSpace P ι ρ₂ →ₗ[ℂ] WDSpace P ι ρ` to `(wdLin P ι hi₁).coprod (wdLin P ι hi₂)`. Establish `hΨΦ : Ψ ∘ₗ Φ = LinearMap.id` using `LinearMap.ext_on_range (span_wdMk P ι ρ) fun x => by show wdLin P ι hi₁ (wdLin P ι hp₁ (wdMk P ι ρ x)) + wdLin P ι hi₂ (wdLin P ι hp₂ (wdMk P ι ρ x)) = wdMk P ι ρ x`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `(wdMk_add P ι ρ _ _).symm.trans (congrArg (wdMk P ι ρ) (Subtype.ext ((Submodule.coe_add _ _).trans ((congrArg₂ (· + ·) (tensV_comp P (pr₁ (↥LL.1) a b) (in₁ (↥LL.1) a b) x.1) (tensV_comp P (pr₂ (↥LL.1) a b) (in₂ (↥LL.1) a b) x.1)).trans ((tensV_add P _ _ x.1).symm.trans ((congrArg …`. Establish `c11` using `wdLin_comp_eq_id P ι hi₁ hp₁ (pr₁_in₁ (↥LL.1) a b)`. Establish `c22` using `wdLin_comp_eq_id P ι hi₂ hp₂ (pr₂_in₂ (↥LL.1) a b)`. Establish `c21` using `wdLin_comp_eq_zero P ι hi₁ hp₂ (pr₂_in₁ (↥LL.1) a b)`. Establish `c12` using `wdLin_comp_eq_zero P ι hi₂ hp₁ (pr₁_in₂ (↥LL.1) a b)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΦΨ : Φ ∘ₗ Ψ = LinearMap.id` using `LinearMap.ext fun y => Prod.ext (show wdLin P ι hp₁ (wdLin P ι hi₁ y.1 + wdLin P ι hi₂ y.2) = y.1 from ((LinearMap.map_add (wdLin P ι hp₁) _ _).trans (congrArg₂ (· + ·) (LinearMap.congr_fun c11 y.1) (LinearMap.congr_fun c12 y.2))).trans (add_zero y.1)) (show wdLin P ι hp₂ (wdLin …`. Set `e : WDSpace P ι ρ ≃ₗ[ℂ] WDSpace P ι ρ₁ × WDSpace P ι ρ₂` to `LinearEquiv.ofLinear Φ Ψ hΦΨ hΨΦ`. Establish `hρe : ∀ σ y, e (wdRho P ι Bw h hj ρ σ y) = ((wdRho P ι Bw h hj ρ₁ σ).prodMap (wdRho P ι Bw h hj ρ₂ σ)) (e y)` using `fun σ y => Prod.ext (wdLin_wdRho P ι Bw h hj hp₁ σ y) (wdLin_wdRho P ι Bw h hj hp₂ σ y)`. Establish `hNe : ∀ y, e (wdN P ι ρ y) = ((wdN P ι ρ₁).prodMap (wdN P ι ρ₂)) (e y)` using `fun y => Prod.ext (wdLin_wdN P ι hp₁ y) (wdLin_wdN P ι hp₂ y)`. Establish `h0` using `isFrobSS_wdRep P ι Bw h hj ρ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h12` using `isFrobSS_sum (isFrobSS_wdRep P ι Bw h hj ρ₁) (isFrobSS_wdRep P ι Bw h hj ρ₂)`. Conclude with `IsFrobSS.iso h0 h12 e hρe hNe`.
+A detailed English derivation is pending.
 -/
 theorem wdRep_iso_sum
     (he : ∀ g v, GlobalTheory.DirectSumLocal.splitEquiv (↥LL.1) a b (ρ g v) =
@@ -265,9 +265,7 @@ theorem wdRep_iso_sum
 end Iso
 
 /- English proof (translation)
-Introduce `l _ P ι E Ω _ _ _ _ _ A w O _ _ _ Bw h hj L a b s s' hV₁ hV₂ hV`. Use `haveI := hV₁.finite`. Use `haveI := hV₂.finite`. Use `haveI := hV.finite`. Rewrite using `[wdPst_of_isPst ι Bw h hj hV, wdPst_of_isPst ι Bw h hj hV₁, wdPst_of_isPst ι Bw h hj hV₂, WD.lpSum_mk]`.
-
-Conclude with `WD.sound (wdRep_iso_sum P ι Bw h hj _ _ _ fun g v => GlobalTheory.DirectSumLocal.splitEquiv_sumRep s s' _ v)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wdPst_sumRep : ∀ {l : ℕ} [Fact l.Prime] (P : LocPrime l) (ι : Om l ≃+* ℂ) {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {O : Type} [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O] (Bw : LocBridge l E Ω (Dec (F := E) A) O) (h : IsPlaceOver A w) (hj : Induces Bw) {L : FinExt l} {a b : ℕ} (s : ↥(Dec (F := E) A) →* GL (Fin a) ↥L.1) (s' : ↥(Dec (F := E) A) →* GL (Fin b) ↥L.1), IsPst P (Bw.repE L s) → IsPst P (Bw.repE L s') → IsPst P (Bw.repE L (Formalism.MainNotions.SumRepresentations.At.sumRep s s')) → wdPst P ι Bw h hj (Bw.repE L (Formalism.MainNotions.SumRepresentations.At.sumRep s s')) = (wdPst P ι Bw h hj (Bw.repE L s)).lpSum (wdPst P ι Bw h hj (Bw.repE L s')) := by
   intro l _ P ι E Ω _ _ _ _ _ A w O _ _ _ Bw h hj L a b s s' hV₁ hV₂ hV

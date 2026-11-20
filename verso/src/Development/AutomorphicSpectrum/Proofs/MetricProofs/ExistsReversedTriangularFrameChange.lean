@@ -10,16 +10,16 @@ def revMatrix (Φ : Type) [Field Φ] (r : ℕ) : Matrix (Fin r) (Fin r) Φ :=
   Matrix.of fun a b => if a = Fin.rev b then 1 else 0
 
 /- English proof (translation)
-Simplify using `[Matrix.mul_apply, revMatrix]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mul_revMatrix_apply (A : Matrix (Fin r) (Fin r) Φ) (a b : Fin r) :
     (A * revMatrix Φ r) a b = A a (Fin.rev b) := by
   simp [Matrix.mul_apply, revMatrix]
 
 /- English proof (translation)
-Establish `: ∀ x : Fin r, (a = Fin.rev x) ↔ (x = Fin.rev a)` using `fun x => by`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Simplify using the standard rewrite rules. Introduce and unpack `rfl`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Simplify using the standard rewrite rules. Simplify using `[Matrix.mul_apply, revMatrix, this]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem revMatrix_mul_apply (A : Matrix (Fin r) (Fin r) Φ) (a b : Fin r) :
     (revMatrix Φ r * A) a b = A (Fin.rev a) b := by
@@ -30,7 +30,7 @@ theorem revMatrix_mul_apply (A : Matrix (Fin r) (Fin r) Φ) (a b : Fin r) :
   simp [Matrix.mul_apply, revMatrix, this]
 
 /- English proof (translation)
-Use extensionality with `a b`. Rewrite using `[mul_revMatrix_apply]`. Simplify using `[revMatrix, Matrix.one_apply, Fin.rev_rev]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem revMatrix_mul_self : revMatrix Φ r * revMatrix Φ r = 1 := by
   ext a b
@@ -38,9 +38,9 @@ theorem revMatrix_mul_self : revMatrix Φ r * revMatrix Φ r = 1 := by
   simp [revMatrix, Matrix.one_apply, Fin.rev_rev]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [revMatrix, Matrix.transpose_apply, Matrix.of_apply]`. Establish `: (b = Fin.rev a) ↔ (a = Fin.rev b)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Simplify using the standard rewrite rules. Introduce and unpack `rfl`. Simplify using the standard rewrite rules. Simplify using `[this]`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem revMatrix_transpose : (revMatrix Φ r)ᵀ = revMatrix Φ r := by
   ext a b
@@ -52,13 +52,11 @@ theorem revMatrix_transpose : (revMatrix Φ r)ᵀ = revMatrix Φ r := by
   simp [this]
 
 /- English proof (translation)
-Establish `hdet : IsUnit U.det`. Rewrite using `[Matrix.det_of_upperTriangular hU]`. Conclude with `isUnit_iff_ne_zero.2 (Finset.prod_ne_zero_iff.2 fun i _ => hd i)`. Establish `hinv : U⁻¹.BlockTriangular id` using `by haveI := Matrix.invertibleOfIsUnitDet U hdet`. Conclude with `Matrix.blockTriangular_inv_of_blockTriangular hU`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (U * U⁻¹) l l = 1`. Rewrite using `[Matrix.mul_nonsing_inv U hdet]`. Simplify using the standard rewrite rules. Rewrite `h1` using `[Matrix.mul_apply, Finset.sum_eq_single l]`. Conclude with `eq_inv_of_mul_eq_one_right h1`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Introduce `k _ hk`. Break down `lt_or_gt_of_ne hk with h | h` into its components or cases. Rewrite using `[hU (show id k < id l from h)]`. Simplify using the standard rewrite rules. Rewrite using `[hinv (show id l < id k from h)]`.
-
-Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inv_diag (U : Matrix (Fin r) (Fin r) Φ) (hU : U.BlockTriangular id)
     (hd : ∀ l, U l l ≠ 0) (l : Fin r) : U⁻¹ l l = (U l l)⁻¹ := by
@@ -79,25 +77,23 @@ theorem inv_diag (U : Matrix (Fin r) (Fin r) Φ) (hU : U.BlockTriangular id)
   · simp
 
 /- English proof (translation)
-Introduce `Φ _ R r u T U Rm Rm' hu hT hU hd hRm hRm' hmul h`. Establish `hUdet : IsUnit U.det`. Rewrite using `[Matrix.det_of_upperTriangular hU]`. Conclude with `isUnit_iff_ne_zero.2 (Finset.prod_ne_zero_iff.2 fun i _ => hd i)`. Establish `hUinv : U⁻¹.BlockTriangular id` using `by haveI := Matrix.invertibleOfIsUnitDet U hUdet`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Matrix.blockTriangular_inv_of_blockTriangular hU`. Establish `hutdet : IsUnit (uᵀ).det` using `by rwa [Matrix.det_transpose]`. Establish `hTtdet : IsUnit (Tᵀ).det` using `by rwa [Matrix.det_transpose]`. Establish `hUtdet : IsUnit (Uᵀ).det` using `by rwa [Matrix.det_transpose]`. Use `set P := revMatrix Φ r with hP`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPP : P * P = 1` using `revMatrix_mul_self`. Establish `hPt : Pᵀ = P` using `revMatrix_transpose`. Establish `hrev : (Matrix.of fun a b => uᵀ⁻¹ a (Fin.rev b)) = uᵀ⁻¹ * P`. Use extensionality with `a b`. Rewrite using `[mul_revMatrix_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Rewrite `h` using `[hrev]`. Establish `e1 : Tᵀ * (uᵀ⁻¹ * P * U * Rm') = 1`. Rewrite using `[h, Matrix.mul_assoc (Tᵀ⁻¹), hmul, Matrix.mul_one, Matrix.mul_nonsing_inv _ hTtdet]`. Establish `e2 : Rm'ᵀ * Uᵀ * P * u⁻¹ * T = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrArg Matrix.transpose e1` as an intermediate fact. Simplify using `only [Matrix.transpose_mul, Matrix.transpose_one, hPt, Matrix.transpose_transpose, Matrix.transpose_nonsing_inv] at this`. Simplify `this` using `[Matrix.mul_assoc]`. Establish `e3 : T * (Rm'ᵀ * Uᵀ * P * u⁻¹) = 1` using `mul_eq_one_comm.1 e2`. Establish `e4 : T * Rm'ᵀ = u * P * Uᵀ⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `hk : (Uᵀ * P * u⁻¹) * (u * P * Uᵀ⁻¹) = 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.nonsing_inv_mul _ hu]`. Simplify using `only [Matrix.mul_one, Matrix.mul_assoc]`. Use `_ = 1 := by rw [hPP, Matrix.mul_one, Matrix.mul_nonsing_inv _ hUtdet]`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hent : ∀ a b, (P * Uᵀ⁻¹ * P) a b = U⁻¹ (Fin.rev b) (Fin.rev a)`. Introduce `a b`. Rewrite using `[hP, mul_revMatrix_apply, revMatrix_mul_apply, ← Matrix.transpose_nonsing_inv, Matrix.transpose_apply]`. Use `⟨P * Uᵀ⁻¹ * P, Rm'ᵀ * P, P * Rmᵀ, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b hab`. Establish `hab' : b < a` using `hab`. Rewrite using `[hent]`. Conclude with `hUinv (show id (Fin.rev a) < id (Fin.rev b) from Fin.rev_lt_rev.2 hab')`. Introduce `l`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hent]`. Conclude with `inv_diag U hU hd _`. Introduce `a b`. Rewrite using `[mul_revMatrix_apply]`. Conclude with `hRm' _ _`.
-
-Introduce `a b`. Rewrite using `[revMatrix_mul_apply]`. Conclude with `hRm _ _`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem reversed_dual_frame :
     ∀ (Φ : Type) [Field Φ] (R : Subring Φ) (r : ℕ) (u T U Rm Rm' : Matrix (Fin r) (Fin r) Φ),

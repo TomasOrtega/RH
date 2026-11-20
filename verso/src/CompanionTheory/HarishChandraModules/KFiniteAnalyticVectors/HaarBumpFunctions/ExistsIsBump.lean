@@ -23,18 +23,16 @@ structure IsBump (G : Set (Mat n)) (φ : Mat n → ℝ) : Prop where
   supp : ∃ S : Set (Mat n), IsCompact S ∧ (∀ B ∈ S, B.det ≠ 0) ∧ ∀ y, φ y ≠ 0 → y ∈ S
 
 /- English proof (translation)
-Take `⟨S, hS, -, hφ⟩` from `h.supp`. Conclude with `HasCompactSupport.intro hS fun y hy => by by_contra h0; exact hy (hφ y h0)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem IsBump.cpt {φ : Mat n → ℝ} (h : IsBump G φ) : HasCompactSupport φ := by
   obtain ⟨S, hS, -, hφ⟩ := h.supp
   exact HasCompactSupport.intro hS fun y hy => by by_contra h0; exact hy (hφ y h0)
 
 /- English proof (translation)
-Rewrite `hV` using `[MG.isClosedEmbedding_mat.isInducing.nhds_eq_comap, mem_comap]`. Take `⟨W, hW, hWV⟩` from `hV`. Establish `hD : {y : Mat n | y.det ≠ 0} ∈ 𝓝 (1 : Mat n)` using `(isOpen_ne_fun continuous_id.matrix_det continuous_const).mem_nhds (by simp)`. Take `⟨f, S, hf, hf0, hf1, hS, hSW, hfS, -⟩` from `exists_bump (inter_mem hW hD)`. Use `⟨fun y => f y * f (θ y), ⟨hf.mul (hf.comp θ.contDiff), fun y => mul_nonneg (hf0 _) (hf0 _), ?_, fun x hx => ?_, S, hS, fun B hB => (hSW hB).2, fun y hy => hfS _ (left_ne_zero_of_mul hy)⟩, fun x hx => hWV (hSW (hfS _ (left_ne_zero_of_mul hx))).1⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `show f 1 * f (θ 1) ≠ 0`. Rewrite using `[hθ 1 hG.2.1, inv_one]`. Conclude with `mul_ne_zero hf1 hf1`. Use `show f x⁻¹ * f (θ x⁻¹) = f x * f (θ x)`. Establish `hu : IsUnit x.det` using `Matrix.isUnit_det_of_right_inverse (hG.2.2.2 x hx).2`.
-
-Rewrite using `[hθ _ (hG.2.2.2 x hx).1, hθ x hx, Matrix.nonsing_inv_nonsing_inv x hu, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isBump (hG : IsMatGroup G) (θ : Mat n →L[ℝ] Mat n) (hθ : ∀ x ∈ G, θ x = x⁻¹) {V : Set (MG G hG)}
     (hV : V ∈ 𝓝 (1 : MG G hG)) : ∃ φ, IsBump G φ ∧ ∀ x : MG G hG, φ x.mat ≠ 0 → x ∈ V := by
@@ -61,15 +59,15 @@ def avg (hG : IsMatGroup G) (φ : Mat n → ℝ) (σ : Mat n → (H →L[ℂ] H)
   ∫ g : MG G hG, φ g.mat • σ g.mat v ∂haar
 
 /- English proof (translation)
-Take `⟨S, hS, hd, hfS⟩` from `hφ.supp`. Establish `hρ : ∀ u, Continuous fun x : MG G hG => σ x.mat u` using `fun u => (hc u).comp_continuous MG.continuous_mat fun g => g.mem`. Establish `hq : Continuous fun x : MG G hG => ((x⁻¹).mat, σ x.mat u)` using `(MG.continuous_mat.comp continuous_inv).prodMk (hρ u)`. Establish `key` using `contDiff_integral_comp (haar : Measure (MG G hG)) _ (contDiff_Phi (H := H) hφ.smooth) _ hq fun g₀ => by`. Use `⟨Metric.closedBall g₀ 1, Metric.closedBall_mem_nhds _ one_pos, _, MG.isClosedEmbedding_mat.isCompact_preimage (isCompact_mul_inv (isCompact_closedBall g₀ 1) hS hd), fun g hg x hx => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: φ ((x⁻¹).mat * g) = 0`. Assume the negation of the conclusion as `h0`. Establish `hB` using `hfS _ h0`. Use `hx ⟨(g, (x⁻¹).mat * g), ⟨hg, hB⟩, ?_⟩` and prove the remaining obligations. Establish `hu : IsUnit ((x⁻¹).mat * g).det` using `isUnit_iff_ne_zero.2 (hd _ hB)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : g = x.mat * ((x⁻¹).mat * g)`. Rewrite using `[← Matrix.mul_assoc, ← MG.mat_mul, mul_inv_cancel]`. Conclude with `(Matrix.one_mul g).symm`. Use `show g * ((x⁻¹).mat * g)⁻¹ = x.mat`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [this, zero_smul]`. Use `(SmOn.of_contDiff key).congr fun g hg => ?_` and prove the remaining obligations. Establish `hw : Continuous fun x : MG G hG => φ x.mat` using `hφ.smooth.continuous.comp MG.continuous_mat`. Establish `hcs : HasCompactSupport fun x : MG G hG => φ x.mat` using `HasCompactSupport.intro (isCompact_supp hφ.cpt) fun x hx => image_eq_zero_of_notMem_tsupport hx`. Use `apply_alt (haar : Measure (MG G hG)) (fun x : MG G hG => σ x.mat) hρ (fun x y u => h.apply_mul x.mem y.mem u) hw hcs (MG.mk hG g hg) u` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `this.trans (integral_congr_ae (Eventually.of_forall fun x => ?_))` and prove the remaining obligations. Use `show φ ((MG.mk hG g hg)⁻¹ * x).mat • _ = φ ((x⁻¹).mat * (MG.mk hG g hg).mat) • _`. Rewrite using `[← hφ.symm _ (MG.mem _), ← MG.mat_inv, _root_.mul_inv_rev, inv_inv, MG.mat_mul]`.
+A detailed English derivation is pending.
 -/
 theorem isSm_avg (h : RepOn G σ) (hc : ∀ v, ContinuousOn (fun g => σ g v) G) {φ : Mat n → ℝ} (hφ : IsBump G φ)
     (u : H) : IsSm G σ (avg hG φ σ u) := by
@@ -105,7 +103,7 @@ theorem isSm_avg (h : RepOn G σ) (hc : ∀ v, ContinuousOn (fun g => σ g v) G)
   rw [← hφ.symm _ (MG.mem _), ← MG.mat_inv, _root_.mul_inv_rev, inv_inv, MG.mat_mul]
 
 /- English proof (translation)
-Establish `hρ : ∀ u, Continuous fun x : MG G hG => σ x.mat u` using `fun u => (hc u).comp_continuous MG.continuous_mat fun g => g.mem`. Take `⟨V, hV, hclose⟩` from `exists_nhds_close (fun x : MG G hG => σ x.mat) hρ (fun u => by show σ 1 u = u; rw [h.map_one]; rfl) (Submodule.span ℂ {u})`. Take `⟨φ, hφ, hφV⟩` from `exists_isBump hG θ hθ hV`. Use `⟨φ, hφ, fun h0 => hu ?_⟩` and prove the remaining obligations. Conclude with `eq_zero_of_alt_alt (haar : Measure (MG G hG)) (fun x : MG G hG => σ x.mat) hρ (hφ.smooth.continuous.comp MG.continuous_mat) (HasCompactSupport.intro (isCompact_supp hφ.cpt) fun x hx => image_eq_zero_of_notMem_tsupport (f := φ) hx) (fun x => hφ.nonneg _) hφ.one u (fun x hx => hclo …`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_avg_ne (hG : IsMatGroup G) (θ : Mat n →L[ℝ] Mat n) (hθ : ∀ x ∈ G, θ x = x⁻¹) (h : RepOn G σ)
     (hc : ∀ v, ContinuousOn (fun g => σ g v) G) {u : H} (hu : u ≠ 0) : ∃ φ, IsBump G φ ∧ avg hG φ σ u ≠ 0 := by
@@ -121,9 +119,9 @@ theorem exists_avg_ne (hG : IsMatGroup G) (θ : Mat n →L[ℝ] Mat n) (hθ : �
     (fun x => hφ.nonneg _) hφ.one u (fun x hx => hclose x (hφV x hx) u (Submodule.mem_span_singleton_self u)) h0
 
 /- English proof (translation)
-Proceed by induction on `W with`. Consider the case `nil => rfl`. Consider the case `cons X W ih`. Establish `hW' : LieW G W` using `fun Y hY => hW Y (List.mem_cons_of_mem _ hY)`. Rewrite using `[dsW_cons, ih hW']`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hasDerivAt_B h hv (hW X List.mem_cons_self) hW' hφ hc).deriv`.
+A detailed English derivation is pending.
 -/
 theorem dsW_avg (h : RepOn G σ) {v : H} (hv : IsSm G σ v) {φ : Mat n → ℝ} (hφ : Continuous φ)
     (hc : HasCompactSupport φ) {W : List (Mat n)} (hW : LieW G W) :
@@ -145,7 +143,7 @@ variable {ι : Type} [Fintype ι] {W : ι → List (Mat n)} {C : ℝ} {l : H →
 
 omit [CompleteSpace H] in
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg, ← neg_one_smul ℂ y, hl.add _ _ hx (hy.smul _), hl.smul _ _ hy]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem IsSmForm.sub (hl : IsSmForm G σ W C l) {x y : H} (hx : IsSm G σ x) (hy : IsSm G σ y) :
     l (x - y) = l x - l y := by
@@ -154,9 +152,9 @@ theorem IsSmForm.sub (hl : IsSmForm G σ W C l) {x y : H} (hx : IsSm G σ x) (hy
 
 omit [CompleteSpace H] in
 /- English proof (translation)
-Rewrite using `[continuous_iff_continuousAt]`. Introduce `g₀`. Rewrite using `[ContinuousAt, tendsto_iff_norm_sub_tendsto_zero]`. Establish `hc : Continuous fun g : MG G hG => C * ∑ i, ‖dsW σ (W i) (σ g.mat v) - dsW σ (W i) (σ g₀.mat v)‖` using `continuous_const.mul (continuous_finsetSum _ fun i _ => ((continuous_orbit h hv (hW i)).sub continuous_const).norm)`. Establish `ht` using `hc.tendsto g₀`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [sub_self, norm_zero, Finset.sum_const_zero, mul_zero] at ht`. Use `squeeze_zero (fun _ => norm_nonneg _) (fun g => ?_) ht` and prove the remaining obligations. Rewrite using `[← hl.sub (hv.apply h g.mem) (hv.apply h g₀.mem)]`. Use `(hl.bd _ ((hv.apply h g.mem).sub (hv.apply h g₀.mem))).trans (le_of_eq ?_)` and prove the remaining obligations. Simplify using `only [dsW_sub h (hv.apply h g.mem) (hv.apply h g₀.mem) (hW _)]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem IsSmForm.continuous (hl : IsSmForm G σ W C l) (h : RepOn G σ) (hW : ∀ i, LieW G (W i)) {v : H}
     (hv : IsSm G σ v) : Continuous fun g : MG G hG => l (σ g.mat v) := by
@@ -173,15 +171,13 @@ theorem IsSmForm.continuous (hl : IsSmForm G σ W C l) (h : RepOn G σ) (hW : �
   simp only [dsW_sub h (hv.apply h g.mem) (hv.apply h g₀.mem) (hW _)]
 
 /- English proof (translation)
-Set `S₀ : Submodule ℂ ((ι → H) × ℂ)` to `{ carrier := {p | ∃ y, IsSm G σ y ∧ p = (fun i => dsW σ (W i) y, l y)} add_mem' := by`. Introduce and unpack `_ _ ⟨a, ha, rfl⟩ ⟨b, hb, rfl⟩`. Conclude with `⟨a + b, ha.add hb, Prod.ext (funext fun i => (dsW_add h ha hb (hW i)).symm) (hl.add _ _ ha hb).symm⟩`. Use the proof step `zero_mem' := ⟨0, IsSm.zero, Prod.ext (funext fun i => by`. Simplify using `using (dsW_smul h (IsSm.zero (G := G) (σ := σ)) 0 (hW i)).symm)`.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components.
 
-Use the proof step `(by simpa using (hl.smul 0 0 IsSm.zero).symm)⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `c _ ⟨a, ha, rfl⟩`. Conclude with `⟨c • a, ha.smul c, Prod.ext (funext fun i => (dsW_smul h ha c (hW i)).symm) (hl.smul _ _ ha).symm⟩ }`. Establish `hcl : IsClosed {p : (ι → H) × ℂ | ‖p.2‖ ≤ C * ∑ i, ‖p.1 i‖}` using `isClosed_le continuous_snd.norm (continuous_const.mul (continuous_finsetSum _ fun i _ => ((continuous_apply i).comp continuous_fst).norm))`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hsub : (S₀.topologicalClosure : Set ((ι → H) × ℂ)) ⊆ {p | ‖p.2‖ ≤ C * ∑ i, ‖p.1 i‖}` using `closure_minimal (by rintro _ ⟨y, hy, rfl⟩; exact hl.bd y hy) hcl`. Set `F : MG G hG → (ι → H) × ℂ` to `fun g => (fun i => dsW σ (W i) (σ g.mat v), l (σ g.mat v))`. Establish `hF : Continuous F` using `(continuous_pi fun i => continuous_orbit h hv (hW i)).prodMk (hl.continuous h hW hv)`. Establish `hI` using `integrable_smul hφ hc hF`. Establish `h1 : ∫ g : MG G hG, φ g.mat • F g ∂haar ∈ S₀.topologicalClosure` using `integral_mem_of_isClosed _ S₀.isClosed_topologicalClosure fun g => Submodule.smul_of_tower_mem _ _ (S₀.le_topologicalClosure ⟨_, hv.apply h g.mem, rfl⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hsub (Submodule.sub_mem _ h1 (S₀.le_topologicalClosure ⟨x, hx, rfl⟩))`. Establish `e2` using `(ContinuousLinearMap.snd ℝ (ι → H) ℂ).integral_comp_comm hI`. Establish `e1` using `fun i => ((ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : ι => H) i) ∘L ContinuousLinearMap.fst ℝ (ι → H) ℂ).integral_comp_comm hI`. Use `le_of_eq_of_le (congrArg (fun t => ‖t - l x‖) e2) (h2.trans (le_of_eq ?_))` and prove the remaining obligations. Use `congr 1`.
-
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `(congrArg (fun t => ‖t - dsW σ (W i) x‖) (e1 i)).symm`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem IsSmForm.avg_bd (hl : IsSmForm G σ W C l) (h : RepOn G σ) (hW : ∀ i, LieW G (W i)) {v : H}
     (hv : IsSm G σ v) {φ : Mat n → ℝ} (hφ : Continuous φ) (hc : HasCompactSupport φ) {x : H} (hx : IsSm G σ x) :
@@ -219,7 +215,7 @@ theorem IsSmForm.avg_bd (hl : IsSmForm G σ W C l) (h : RepOn G σ) (hW : ∀ i,
   exact (congrArg (fun t => ‖t - dsW σ (W i) x‖) (e1 i)).symm
 
 /- English proof (translation)
-Use `hl.avg_bd (hG := hG) h hW hv hφ hc hs` as an intermediate fact. Simplify using `only [dsW_avg h hv hφ hc (hW _), sub_self, norm_zero, Finset.sum_const_zero, mul_zero, norm_le_zero_iff, sub_eq_zero] at this`. Conclude with `this.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem IsSmForm.map_avg (hl : IsSmForm G σ W C l) (h : RepOn G σ) (hW : ∀ i, LieW G (W i)) {v : H}
     (hv : IsSm G σ v) {φ : Mat n → ℝ} (hφ : Continuous φ) (hc : HasCompactSupport φ)
@@ -230,9 +226,9 @@ theorem IsSmForm.map_avg (hl : IsSmForm G σ W C l) (h : RepOn G σ) (hW : ∀ i
   exact this.symm
 
 /- English proof (translation)
-Use `⟨|C| * ∑ i, ∫ g : MG G hG, ‖LW (W i) φ g.mat‖ ∂haar, fun v hv => ?_⟩` and prove the remaining obligations. Establish `h1` using `hl.avg_bd (hG := hG) h hW hv hφ.continuous hc IsSm.zero`. Establish `h0 : l 0 = 0` using `by simpa using hl.smul 0 0 IsSm.zero`. Establish `h0' : ∀ i, dsW σ (W i) 0 = 0` using `fun i => by`. Simplify using `using dsW_smul h (IsSm.zero (G := G) (σ := σ)) 0 (hW i)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [h0, h0', sub_zero] at h1`. Use `h1.trans ((mul_le_mul_of_nonneg_right (le_abs_self C) (Finset.sum_nonneg fun _ _ => norm_nonneg _)).trans ?_)` and prove the remaining obligations. Rewrite using `[mul_assoc, Finset.sum_mul]`. Conclude with `mul_le_mul_of_nonneg_left (Finset.sum_le_sum fun i _ => norm_integral_dsW_le h hiso hv hφ hc (hW i)) (abs_nonneg _)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsSmForm.exists_bd (hl : IsSmForm G σ W C l) (h : RepOn G σ) (hiso : ∀ g ∈ G, ∀ v, ‖σ g v‖ = ‖v‖)
     (hW : ∀ i, LieW G (W i)) {φ : Mat n → ℝ} (hφ : ContDiff ℝ ∞ φ) (hc : HasCompactSupport φ) :
@@ -249,9 +245,9 @@ theorem IsSmForm.exists_bd (hl : IsSmForm G σ W C l) (h : RepOn G σ) (hiso : �
     (abs_nonneg _)
 
 /- English proof (translation)
-Set `S : Submodule ℂ H` to `{ carrier := {x | IsSm G σ x} add_mem' := fun ha hb => ha.add hb zero_mem' := IsSm.zero smul_mem' := fun c _ hx => hx.smul c }`. Set `L : S →ₗ[ℂ] ℂ` to `{ toFun := fun x => l x map_add' := fun x y => ha _ _ x.2 y.2 map_smul' := fun c x => hs c _ x.2 }`. Take `⟨g, hg, -⟩` from `exists_extension_norm_eq S (L.mkContinuous D fun x => hD _ x.2)`. Use `⟨(InnerProductSpace.toDual ℂ H).symm g, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[InnerProductSpace.toDual_symm_apply]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hg ⟨x, hx⟩).symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_riesz (ha : ∀ x y, IsSm G σ x → IsSm G σ y → l (x + y) = l x + l y)
     (hs : ∀ (c : ℂ) x, IsSm G σ x → l (c • x) = c * l x) {D : ℝ} (hD : ∀ x, IsSm G σ x → ‖l x‖ ≤ D * ‖x‖) :
@@ -292,7 +288,7 @@ variable {ι ι' : Type} [Fintype ι] [Fintype ι'] {W : ι → List (Mat n)} {W
 
 omit [CompleteSpace H] [CompleteSpace H'] in
 /- English proof (translation)
-Rewrite using `[hB.add_right x y y' hx hy hy', star_add] smul_left a y x hy hx := by rw [hB.smul_right a x y hx hy, star_mul', star_star] add_right y x x' hy hx hx' := by rw [hB.add_left x x' y hx hx' hy, star_add] smul_right a y x hy hx := by rw [hB.smul_left a x y hx hy, star_mul'] inv g hg y …`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem IsInv.swap (hB : IsInv G σ σ' W W' C B) : IsInv G σ' σ W' W C fun y x => star (B x y) where
   add_left y y' x hy hy' hx := by rw [hB.add_right x y y' hx hy hy', star_add]
@@ -304,7 +300,7 @@ theorem IsInv.swap (hB : IsInv G σ σ' W W' C B) : IsInv G σ' σ W' W C fun y 
 
 omit [CompleteSpace H] [CompleteSpace H'] in
 /- English proof (translation)
-The claim follows from `hB.add_left x x' y hx hx' hy smul a x hx := hB.smul_left a x y hx hy bd x hx := by rw [mul_right_comm]; exact hB.bd x y hx hy`.
+A detailed English derivation is pending.
 -/
 theorem IsInv.left (hB : IsInv G σ σ' W W' C B) {y : H'} (hy : IsSm G σ' y) :
     IsSmForm G σ W (C * ∑ j, ‖dsW σ' (W' j) y‖) fun x => B x y where
@@ -313,15 +309,15 @@ theorem IsInv.left (hB : IsInv G σ σ' W W' C B) {y : H'} (hy : IsSm G σ' y) :
   bd x hx := by rw [mul_right_comm]; exact hB.bd x y hx hy
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `exists_ne (0 : H')`. Take `⟨φ₁, hφ₁, hy₁⟩` from `exists_avg_ne hG θ hθ h' hc' hu`. Establish `hs₁` using `isSm_avg (hG := hG) h' hc' hφ₁ u`. Use `set y₁ := avg hG φ₁ σ' u`. Take `⟨φ, hφ, hy₀⟩` from `exists_avg_ne hG θ hθ h' hc' hy₁`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hs₀` using `isSm_avg (hG := hG) h' hc' hφ y₁`. Take `⟨D, hD⟩` from `(hB.left hs₁).exists_bd (hG := hG) h hiso hW hφ.smooth hφ.cpt`. Establish `key : ∀ x, IsSm G σ x → B x (avg hG φ σ' y₁) = ∫ g : MG G hG, φ g.mat • B (σ g.mat x) y₁ ∂haar`. Introduce `x hx`. Establish `h1` using `(hB.swap.left hx).map_avg h' hW' hs₁ hφ.smooth.continuous hφ.cpt hs₀`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `congrArg star h1`. Rewrite `h2` using `[star_star]`. Rewrite using `[h2, ← integral_inv_eq_self (fun g : MG G hG => φ g.mat • B (σ g.mat x) y₁), Complex.star_def, ← integral_conj]`. Use `integral_congr_ae (Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Establish `e : B x (σ' g.mat y₁) = B (σ (g⁻¹).mat x) y₁`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hB.inv _ g.mem _ _ (hx.apply h (g⁻¹).mem) hs₁, ← h.apply_mul g.mem (g⁻¹).mem, ← MG.mat_mul, mul_inv_cancel]`. Use `show _ = B (σ 1 x) _`. Rewrite using `[h.map_one]`. Both sides reduce to the same expression. Simplify using `only [e, MG.mat_inv, hφ.symm _ g.mem, Complex.real_smul, map_mul, Complex.conj_ofReal, Complex.conj_conj]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨z₀, hz₀⟩` from `exists_riesz (G := G) (σ := σ) (l := fun x => B x (avg hG φ σ' y₁)) (hB.left hs₀).add (hB.left hs₀).smul (D := D) fun x hx => by rw [key x hx]; exact hD x hx`. Conclude with `⟨_, z₀, hs₀, hy₀, hz₀⟩`.
+A detailed English derivation is pending.
 -/
 theorem IsInv.exists_rep [(haar : Measure (MG G hG)).IsInvInvariant] (θ : Mat n →L[ℝ] Mat n)
     (hθ : ∀ x ∈ G, θ x = x⁻¹) (hB : IsInv G σ σ' W W' C B) (h : RepOn G σ) (h' : RepOn G σ')
@@ -360,27 +356,27 @@ def homMG (hG : IsMatGroup G) (h : RepOn G σ) : MG G hG →* (H →L[ℂ] H) wh
   map_mul' a b := h.map_mul _ a.mem _ b.mem
 
 /- English proof (translation)
-Take `⟨y₀, z₀, hy₀s, hy₀, hz₀⟩` from `hB.exists_rep (hG := hG) θ hθ h h' hiso hc' hW hW'`. Take `⟨x₀, w₀, hx₀s, hx₀, hw₀⟩` from `hB.swap.exists_rep (hG := hG) θ hθ h' h hiso' hc hW' hW`. Take `⟨T, hT, hTB⟩` from `exists_op_of_form (σ := homMG hG h) (σ' := homMG hG h') (fun g => hiso _ g.mem) (fun g => hiso' _ g.mem) (FinOfPIAux.schur (homMG hG h') (fun g => hiso' _ g.mem) fun S hS hinv => hirr' S hS fun g hg => hinv (MG.mk hG g hg)) {x | IsSm G σ x} {y | IsSm G σ' y} (fun g x hx => IsSm.a …`. Establish `hT' : ∀ g ∈ G, ∀ y, T (σ' g y) = σ g (T y)` using `fun g hg y => hT (MG.mk hG g hg) y`. Use `⟨T, hT', fun x y hx hy => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h0 : ∀ y, IsSm G σ' y → B x₀ y = ⟪T y, x₀⟫_ℂ` using `hTB x₀ hx₀s w₀ fun y hy => by`. Use `congrArg star (hw₀ y hy)` as an intermediate fact. Rewrite `this` using `[star_star]`. Rewrite using `[this, Complex.star_def, inner_conj_symm]`. Establish `horb : ∀ a ∈ orbSpan G σ x₀, B a y = ⟪T y, a⟫_ℂ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `a ha`. Proceed by induction on `ha using Submodule.span_induction with`. Consider the case `mem a ha`. Take `⟨g, hg, rfl⟩` from `ha`. Establish `hg'` using `(hG.2.2.2 g hg).1`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : σ' g (σ' g⁻¹ y) = y`. Rewrite using `[← h'.apply_mul hg hg', (hG.2.2.2 g hg).2, h'.map_one]`. Both sides reduce to the same expression. Establish `hy'` using `hy.apply h' hg'`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Consider the case `zero => simpa using hB.smul_left 0 0 y IsSm.zero hy`. Consider the case `add a b ha hb iha ihb`. Rewrite using `[hB.add_left a b y (isSm_of_mem_orbSpan h hx₀s ha) (isSm_of_mem_orbSpan h hx₀s hb) hy, iha, ihb, inner_add_right]`. Consider the case `smul c a ha iha => rw [hB.smul_left c a y (isSm_of_mem_orbSpan h hx₀s ha) hy, iha, inner_smul_right]`. Establish `hd : Dense (orbSpan G σ x₀ : Set H)`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[Submodule.dense_iff_topologicalClosure_eq_top]`. Use `(hirr _ (Submodule.isClosed_topologicalClosure _) fun g hg v hv => ?_).resolve_left fun h0 => hx₀ ?_` and prove the remaining obligations. Conclude with `map_mem_closure (σ g).continuous hv fun y hy => apply_mem_orbSpan h hg hy`. Establish `hm : x₀ ∈ orbSpan G σ x₀` using `Submodule.subset_span ⟨1, h.one_mem, by simp [h.map_one]⟩`. Use `Submodule.le_topologicalClosure _ hm` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[h0, Submodule.mem_bot]`. Then use the resulting hypothesis. Use `set C' := |C * ∑ j, ‖dsW σ' (W' j) y‖| * Fintype.card ι + ‖T y‖ with hC'`. Establish `hC0 : 0 ≤ C'` using `by positivity`. Rewrite using `[← sub_eq_zero, ← norm_le_zero_iff]`. Use `le_of_forall_pos_le_add fun δ hδ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data.
 
-Take `⟨a, ha, hxa⟩` from `exists_approx hG h hiso hx₀s hd hx (ι := Option ι) (W := fun o => o.elim [] W) (fun o => by`. Consider the cases of `o with`. Consider the case `none => exact fun X hX => absurd hX List.not_mem_nil`. Consider the case `some i => exact hW i) (δ := δ / (C' + 1)) (by positivity)`. Establish `has` using `isSm_of_mem_orbSpan h hx₀s ha`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : B x y - ⟪T y, x⟫_ℂ = B (x - a) y - ⟪T y, x - a⟫_ℂ`. Rewrite using `[(hB.left hy).sub hx has, inner_sub_right, horb a ha]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : ‖B (x - a) y‖ ≤ |C * ∑ j, ‖dsW σ' (W' j) y‖| * (Fintype.card ι * (δ / (C' + 1)))`. Use `((hB.left hy).bd _ (hx.sub has)).trans (mul_le_mul (le_abs_self _) ?_ (Finset.sum_nonneg fun _ _ => norm_nonneg _) (abs_nonneg _))` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `(Finset.sum_le_sum fun i _ => (hxa (some i)).le).trans (le_of_eq ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `h2 : ‖⟪T y, x - a⟫_ℂ‖ ≤ ‖T y‖ * (δ / (C' + 1))` using `(norm_inner_le_norm _ _).trans (mul_le_mul_of_nonneg_left (hxa none).le (norm_nonneg _))`. Rewrite using `[e, zero_add]`. Use `(norm_sub_le _ _).trans ((add_le_add h1 h2).trans ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[← mul_assoc, ← add_mul, ← hC', ← mul_div_assoc, div_le_iff₀ (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities.
+A detailed English derivation is pending.
 -/
 theorem IsInv.exists_op [(haar : Measure (MG G hG)).IsInvInvariant] (θ : Mat n →L[ℝ] Mat n)
     (hθ : ∀ x ∈ G, θ x = x⁻¹) (hB : IsInv G σ σ' W W' C B) (h : RepOn G σ) (h' : RepOn G σ')

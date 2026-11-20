@@ -3,15 +3,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open Formalism.ConjugateSelfDual UpperTheory.V.HV GlobalTheory.Ord2 GlobalTheory.KZ
 
 /- English proof (translation)
-Establish `hξ0 : ξ ≠ 0` using `hξ.ne_zero hM.ne'`. Establish `hterm : ∀ k, ξ ^ (M - (k * x) % M) * (ξ ^ k) ^ y = (ξ ^ y / ξ ^ x) ^ k`. Introduce `k`. Establish `h1 : ξ ^ (M - (k * x) % M) * ξ ^ (k * x) = 1`. Establish `hlt : (k * x) % M ≤ M` using `(Nat.mod_lt _ hM).le`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : ξ ^ (k * x) = ξ ^ ((k * x) % M)` using `by conv_lhs => rw [← Nat.mod_add_div (k * x) M]`. Rewrite using `[pow_add, pow_mul, hξ.pow_eq_one, one_pow, mul_one]`. Rewrite using `[e1, ← pow_add, Nat.sub_add_cancel hlt, hξ.pow_eq_one]`. Rewrite using `[div_pow, eq_div_iff (pow_ne_zero _ (pow_ne_zero _ hξ0))]`. Simplify using `only [← pow_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[mul_right_comm, mul_comm x k, h1, one_mul, mul_comm y k]`. Repeatedly rewrite using `[hterm]`. Use `split_ifs with hxy`. Substitute `hxy` using the available equality. Simplify using `[div_self (pow_ne_zero _ hξ0)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hu1 : ξ ^ y / ξ ^ x ≠ 1`. Introduce `h`. Apply `hxy` to reduce the goal to its premises. Rewrite `h` using `[div_eq_one_iff_eq (pow_ne_zero _ hξ0)]`. Conclude with `hξ.pow_inj hy hx h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `huM : (ξ ^ y / ξ ^ x) ^ M = 1`. Rewrite using `[div_pow, ← pow_mul, ← pow_mul, mul_comm y, mul_comm x, pow_mul, pow_mul, hξ.pow_eq_one, one_pow, one_pow, div_one]`. Rewrite using `[geom_sum_eq hu1, huM, sub_self, zero_div]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem orth {K : Type*} [Field K] {M : ℕ} (hM : 0 < M) {ξ : K} (hξ : IsPrimitiveRoot ξ M) {x y : ℕ}
     (hx : x < M) (hy : y < M) :
@@ -43,15 +43,15 @@ private theorem orth {K : Type*} [Field K] {M : ℕ} (hM : 0 < M) {ξ : K} (hξ 
     rw [geom_sum_eq hu1, huM, sub_self, zero_div]
 
 /- English proof (translation)
-Use `haveI : NeZero M := ⟨hM.ne'⟩`. Establish `key : ∀ x ∈ (Finset.range M).filter (fun x => ¬ l ∣ x), ∑ k ∈ Finset.range M, ξ ^ (M - (k * x) % M) * N (fun y : ZMod M => (ξ ^ k) ^ y.val) = N (fun y : ZMod M => if y.val = x then (M : K) else 0)`. Introduce `x hx`. Establish `hxM : x < M` using `Finset.mem_range.1 (Finset.mem_filter.1 hx).1`. Establish `hfun : (fun y : ZMod M => if y.val = x then (M : K) else 0) = ∑ k ∈ Finset.range M, ξ ^ (M - (k * x) % M) • (fun y : ZMod M => (ξ ^ k) ^ y.val)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `y`. Rewrite using `[Finset.sum_apply, ← orth hM hξ hxM (ZMod.val_lt y)]`. Simplify using `[smul_eq_mul]`. Rewrite using `[hfun, map_sum]`. Simplify using `[map_smul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_congr rfl (fun x hx => by rw [key x hx])]`. Establish `hφ : (M : K) • (fun y : ZMod M => if l ∣ y.val then 0 else h y.val) = ∑ x ∈ (Finset.range M).filter (fun x => ¬ l ∣ x), h x • (fun y : ZMod M => if y.val = x then (M : K) else 0)`. Use function extensionality and compare the values at `y`. Simplify using `only [Pi.smul_apply, Finset.sum_apply, smul_eq_mul, mul_ite, mul_zero]`. Rewrite using `[Finset.sum_ite_eq]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hy` using `ZMod.val_lt y`. Distinguish the cases in `hly : l ∣ y.val`. Simplify using `[hly]`. Simplify using `[hly, hy, mul_comm]`. Rewrite using `[← smul_eq_mul (M : K), ← map_smul, hφ, map_sum]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[map_smul, smul_eq_mul]`.
+A detailed English derivation is pending.
 -/
 private theorem exact_sum {K : Type*} [Field K] {M : ℕ} (hM : 0 < M) {ξ : K} (hξ : IsPrimitiveRoot ξ M)
     (N : (ZMod M → K) →ₗ[K] K) (l : ℕ) (h : ℕ → K) :
@@ -86,11 +86,11 @@ private theorem exact_sum {K : Type*} [Field K] {M : ℕ} (hM : 0 < M) {ξ : K} 
   simp [map_smul, smul_eq_mul]
 
 /- English proof (translation)
-Introduce `l _ r N L hL ξ hξ h hh`. Establish `hM : 0 < l ^ r` using `pow_pos (Fact.out : l.Prime).pos r`. Establish `hξ1 : ‖ξ‖ = 1`. Establish `h1 : ‖ξ‖ ^ (l ^ r) = 1` using `by rw [← norm_pow, hξ.pow_eq_one, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hM.ne').1 h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `Cg`. Rewrite using `[← Nat.cast_pow, ← exact_sum hM hξ N l h, ← Finset.sum_sub_distrib]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (norm_nonneg _) (fun x _ => ?_)` and prove the remaining obligations. Rewrite using `[← mul_sub, GlobalTheory.KZ.mass, ← Finset.sum_sub_distrib, norm_mul]`. Use `(mul_le_of_le_one_left (norm_nonneg _) (hh x)).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (norm_nonneg _) (fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[← mul_sub, norm_mul, norm_pow, hξ1, one_pow, one_mul]`. Conclude with `hL (ξ ^ k) (by rw [← pow_mul, mul_comm, pow_mul, hξ.pow_eq_one, one_pow])`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.restriction_to_units_congr_of_measure :
     ∀ (l : ℕ) [Fact l.Prime] (r : ℕ) (N : (ZMod (l ^ r) → Qbar l) →ₗ[Qbar l] Qbar l) (L : PowerSeries (Qbar l)),

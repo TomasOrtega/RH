@@ -22,25 +22,25 @@ variable {r d c : ℕ} (A : Matrix (Fin r) (Fin r) F) (B : Matrix (Fin r) (Fin c
   (C : Matrix (Fin d) (Fin r) F) (D : Matrix (Fin d) (Fin c) F)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[bAA]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem bAA_reindex : bAA (Matrix.reindex finSumFinEquiv finSumFinEquiv (Matrix.fromBlocks A B C D)) = A := by
   ext i j; simp [bAA]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[bAD]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem bAD_reindex : bAD (Matrix.reindex finSumFinEquiv finSumFinEquiv (Matrix.fromBlocks A B C D)) = B := by
   ext i j; simp [bAD]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[bDA]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem bDA_reindex : bDA (Matrix.reindex finSumFinEquiv finSumFinEquiv (Matrix.fromBlocks A B C D)) = C := by
   ext i j; simp [bDA]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[bDD]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem bDD_reindex : bDD (Matrix.reindex finSumFinEquiv finSumFinEquiv (Matrix.fromBlocks A B C D)) = D := by
   ext i j; simp [bDD]
@@ -48,7 +48,7 @@ theorem bDD_reindex : bDD (Matrix.reindex finSumFinEquiv finSumFinEquiv (Matrix.
 end Blocks
 
 /- English proof (translation)
-Rewrite using `[pEl_coe, Matrix.det_reindex_self, Matrix.det_fromBlocks_zero₂₁]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pEl_det {r c : ℕ} (m₁ : GL (Fin r) F) (B : Matrix (Fin r) (Fin c) F) (m₂ : GL (Fin c) F) :
     (pEl m₁ B m₂ : Matrix (Fin (r + c)) (Fin (r + c)) F).det =

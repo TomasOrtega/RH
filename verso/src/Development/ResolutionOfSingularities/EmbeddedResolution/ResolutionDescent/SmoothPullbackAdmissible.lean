@@ -18,11 +18,9 @@ namespace FunctorialResolution.EmbeddedResolution
 namespace MarkedIdealWithBoundary
 
 /- English proof (translation)
-Use `hV.charZero` as an intermediate fact. Use `hV.smooth` as an intermediate fact. Use `hV.locallyOfFiniteType` as an intermediate fact. Establish `hqc : AlgebraicGeometry.QuasiCompact q` using `inferInstance`. Substitute `hq` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `: AlgebraicGeometry.Smooth (h ≫ T.structMap)` using `inferInstance`. Establish `: AlgebraicGeometry.Flat h` using `inferInstance`. Use `⟨hV.charZero, ?_, ?_, hV.one_le_mult, hqc, ?_, ?_⟩` and prove the remaining obligations. Use `show AlgebraicGeometry.LocallyOfFiniteType (h ≫ T.structMap) infer_instance`. Conclude with `hV.nonzeroOnComponents.comap_of_flat h`.
-
-Use `show AlgebraicGeometry.Smooth (h ≫ T.structMap) infer_instance`. Conclude with `inStrictNormalCrossingPosition_comap T.structMap h T.boundary hV.snc`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isAdmissible_pullbackAlong_of_smooth (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) (Y : Scheme.{u})
     (q : Y ⟶ Spec (CommRingCat.of T.base)) (h : Y ⟶ T.scheme)

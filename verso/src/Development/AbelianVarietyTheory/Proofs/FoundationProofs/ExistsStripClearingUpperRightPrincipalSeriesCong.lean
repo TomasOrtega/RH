@@ -14,13 +14,13 @@ namespace GlobalTheory.PsType.ClearBlock
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Unfold `Triv`. Rewrite using `[h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem triv_congr (χ : kˣ →* ℂˣ) {x y : k} (h : valuation k x = valuation k y) : Triv χ x ↔ Triv χ y := by
   unfold Triv; rw [h]
 
 /- English proof (translation)
-Introduce `u _ h`. Establish `h0 : valuation k ((u : k) - 1) = 0` using `le_antisymm (by simpa using h) zero_le'`. Rewrite `h0` using `[Valuation.zero_iff, sub_eq_zero]`. Establish `: u = 1` using `Units.ext h0`. Simplify using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem triv_zero (χ : kˣ →* ℂˣ) : Triv χ 0 := by
   intro u _ h
@@ -30,24 +30,24 @@ theorem triv_zero (χ : kˣ →* ℂˣ) : Triv χ 0 := by
   simp [this]
 
 /- English proof (translation)
-Rewrite using `[IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `Valuation.Integer.not_isUnit_iff_valuation_lt_one`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem res_zero_iff (x : 𝒪[k]) : IsLocalRing.residue 𝒪[k] x = 0 ↔ valuation k (x : k) < 1 := by
   rw [IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]
   exact Valuation.Integer.not_isUnit_iff_valuation_lt_one
 
 /- English proof (translation)
-Set `A : Matrix (Fin n) (Fin n) 𝒪[k]` to `fun i j => ⟨M i j, (Valuation.mem_integer_iff _ _).2 (hM i j)⟩`. Set `A' : Matrix (Fin n) (Fin n) 𝒪[k]` to `fun i j => ⟨M' i j, (Valuation.mem_integer_iff _ _).2 (hM' i j)⟩`. Establish `hA : (algebraMap 𝒪[k] k).mapMatrix A = M` using `rfl`. Establish `hA' : (algebraMap 𝒪[k] k).mapMatrix A' = M'` using `rfl`. Establish `hI` using `Valuation.integer.integers (valuation k)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ B : Matrix (Fin n) (Fin n) 𝒪[k], (∀ i j : Fin n, (i : ℕ) < r → r ≤ (j : ℕ) → valuation k (B i j : k) < 1) → ((IsLocalRing.residue 𝒪[k]).mapMatrix B).det = (toSquareBlockProp ((IsLocalRing.residue 𝒪[k]).mapMatrix B) (fun i => r ≤ (i : ℕ))).det * (toSquareBlockProp ((IsLoca …`. Introduce `B hB`. Use `twoBlockTriangular_det _ _ fun i hi j hj => ?_` and prove the remaining obligations. Conclude with `(res_zero_iff _).2 (hB i j (by omega) hj)`. Establish `e1 : ((IsLocalRing.residue 𝒪[k]).mapMatrix A).det = ((IsLocalRing.residue 𝒪[k]).mapMatrix A').det`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key A hur, key A' hur']`. Use `congr 2`. Use extensionality with `⟨i, hi⟩ ⟨j, hj⟩`. Simplify using `only [toSquareBlockProp_def, RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply]`. Use `congr 1; exact Subtype.ext (hsame i j (by omega))`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use extensionality with `⟨i, hi⟩ ⟨j, hj⟩`. Simplify using `only [toSquareBlockProp_def, RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply]`. Use `congr 1; exact Subtype.ext (hsame i j (by omega))`. Establish `u1 : IsUnit A.det` using `hI.isUnit_iff_valuation_eq_one.2 (by rw [RingHom.map_det, hA, hd])`. Establish `u2 : IsUnit A'.det`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hc`. Establish `h0 : IsLocalRing.residue 𝒪[k] A'.det = 0`. Rewrite using `[IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `hc`. Rewrite `h0` using `[RingHom.map_det, ← e1, ← RingHom.map_det, IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `h0 u1`. Use `hI.isUnit_iff_valuation_eq_one.1 u2` as an intermediate fact. Rewrite `this` using `[RingHom.map_det, hA']`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem val_det_eq_one {n r : ℕ} {M M' : Matrix (Fin n) (Fin n) k}
     (hM : ∀ i j, valuation k (M i j) ≤ 1) (hM' : ∀ i j, valuation k (M' i j) ≤ 1)
@@ -94,35 +94,31 @@ namespace GlobalTheory.PsType
 open ClearBlock in
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n ψ r ϖ hord hcut g hg`. Establish `hint : ∀ a b, valuation k (g.val a b) ≤ 1` using `GlobalTheory.BlockType.val_le_one_of_mem_KO hg.1`. Establish `hur : ∀ a b : Fin n, (a : ℕ) < r → r ≤ (b : ℕ) → valuation k (g.val a b) < 1`. Introduce `a b ha hb`. Use `lt_of_le_of_ne (hint a b) fun h1 => hcut a b ha hb ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(triv_congr _ (h1.trans (map_one _).symm)).1 (hg.2 a b (Fin.lt_iff_val_lt_val.2 (by omega)))`. Establish `hdet : valuation k g.val.det = 1` using `(GlobalTheory.LocStd.mem_KO_iff_det.1 hg.1).2`. Take `⟨Dm, hDm⟩ : ∃ Dm : Matrix (Fin n) (Fin n) k, ∀ a b, Dm a b = if ((a : ℕ) < r ↔ (b : ℕ) < r) then g.val a b else 0` from `⟨fun a b => _, fun _ _ => rfl⟩`. Take `⟨Um, hUm⟩ : ∃ Um : Matrix (Fin n) (Fin n) k, ∀ a b, Um a b = if r ≤ (a : ℕ) ∧ (b : ℕ) < r then 0 else g.val a b` from `⟨fun a b => _, fun _ _ => rfl⟩`. Establish `hDint : ∀ a b, valuation k (Dm a b) ≤ 1` using `fun a b => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hDm]`. Use `split_ifs`. Conclude with `hint a b`. Simplify using the standard rewrite rules. Establish `hUint : ∀ a b, valuation k (Um a b) ≤ 1` using `fun a b => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hUm]`. Use `split_ifs`. Simplify using the standard rewrite rules. Conclude with `hint a b`. Establish `hDdet : valuation k Dm.det = 1` using `val_det_eq_one hint hDint (fun a b h => by rw [hDm, if_pos h]) hur (fun a b ha hb => by rw [hDm, if_neg (by omega)]; simp) hdet`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hUdet : valuation k Um.det = 1` using `val_det_eq_one hint hUint (fun a b h => by rw [hUm, if_neg (by omega)]) hur (fun a b ha hb => by rw [hUm, if_neg (by omega)]; exact hur a b ha hb) hdet`. Take `⟨Dg, hDK, hDv⟩` from `GlobalTheory.LocStd.mem_image_KO.2 ⟨fun a b => (Valuation.mem_integer_iff _ _).2 (hDint a b), hDdet⟩`. Take `⟨Ug, hUK, hUv⟩` from `GlobalTheory.LocStd.mem_image_KO.2 ⟨fun a b => (Valuation.mem_integer_iff _ _).2 (hUint a b), hUdet⟩`. Establish `hD : Dg ∈ grp ψ` using `⟨hDK, fun a b hab => by`. Rewrite using `[hDv, hDm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `split_ifs`. Conclude with `hg.2 a b hab`. Conclude with `triv_zero _⟩`. Establish `hU : Ug ∈ grp ψ` using `⟨hUK, fun a b hab => by`. Rewrite using `[hUv, hUm]`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `split_ifs`. Conclude with `triv_zero _`. Conclude with `hg.2 a b hab⟩`. Establish `hy : Ug * Dg⁻¹ ∈ grp ψ` using `GlobalTheory.T.principalSeriesCongruenceSubgroup_mul_closed k n ψ hord Ug hU _ (GlobalTheory.T.principalSeriesCongruenceSubgroup_inv_mem k n ψ hord Dg hD)`. Use `set Di : Matrix (Fin n) (Fin n) k := ((Dg⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) with hDi`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hDi1 : Dm * Di = 1` using `by rw [← hDv]; exact Dg.mul_inv`. Establish `hDi2 : Di * Dm = 1` using `by rw [← hDv]; exact Dg.inv_mul`. Set `Q : Matrix (Fin n) (Fin n) k` to `diagonal fun a => if (a : ℕ) < r then (0 : k) else 1`. Establish `hDQ : Dm * Q = Q * Dm`. Use extensionality with `a b`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Q, mul_diagonal, diagonal_mul, hDm]`. Apply the tactic sequence `by_cases ha : (a : ℕ) < r <;> by_cases hb : (b : ℕ) < r <;> simp [ha, hb]`. Establish `hQDi : Di * Q = Q * Di` using `calc Di * Q = Di * Q * (Dm * Di) := by rw [hDi1, Matrix.mul_one] _ = Di * (Dm * Q) * Di := by rw [hDQ]; simp only [Matrix.mul_assoc] _ = (Di * Dm) * Q * Di := by simp only [Matrix.mul_assoc] _ = Q * Di := by rw [hDi2, Matrix.one_mul]`. Establish `hDioff : ∀ l b : Fin n, r ≤ (l : ℕ) → (b : ℕ) < r → Di l b = 0`. Introduce `l b hl hb`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrFun (congrFun hQDi l) b` as an intermediate fact. Simplify using `only [Q, mul_diagonal, diagonal_mul, if_pos hb, if_neg (Nat.not_lt.2 hl)] at this`. Simplify using `using this.symm`. Use `⟨Ug * Dg⁻¹, ?_, ?_⟩` and prove the remaining obligations. Establish `hyv : (Ug * Dg⁻¹).val = (Um - Dm) * Di + 1`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Rewrite using `[Units.val_mul, hUv, Matrix.sub_mul, hDi1, sub_add_cancel]`. Introduce `a b`. Use `split_ifs with hab`. Rewrite using `[pow_zero, one_mul]`. Conclude with `⟨GlobalTheory.BlockType.val_le_one_of_mem_KO hy.1 a b, hy.2 a b (Fin.lt_iff_val_lt_val.2 (by omega))⟩`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hyv, Matrix.add_apply, Matrix.mul_apply]`. Rewrite using `[Finset.sum_eq_zero, zero_add]`. Introduce `l _`. Rewrite using `[Matrix.sub_apply]`. Distinguish the cases in `ha : (a : ℕ) < r`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hb : (b : ℕ) < r` using `by omega`. Distinguish the cases in `hl : (l : ℕ) < r`. Simplify using `[hUm, hDm, ha, hl, Nat.not_le.2 ha]`. Rewrite using `[hDioff l b (by omega) hb, mul_zero]`. Apply the tactic sequence `by_cases hl : (l : ℕ) < r <;> simp [hUm, hDm, ha, hl]`.
-
-Introduce `a b ha hb set Ui : Matrix (Fin n) (Fin n) k := ((Ug⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) with hUi`. Establish `hUi1 : Ui * Um = 1` using `by rw [← hUv]; exact Ug.inv_mul`. Establish `e : ((Ug * Dg⁻¹)⁻¹ * g).val = Dm + Dm * Ui * (g.val - Um)`. Rewrite using `[_root_.mul_inv_rev, inv_inv, Units.val_mul, Units.val_mul, hDv, Matrix.mul_sub, Matrix.mul_assoc Dm Ui Um, hUi1, Matrix.mul_one, add_sub_cancel]`. Rewrite using `[e, Matrix.add_apply, Matrix.mul_apply, Finset.sum_eq_zero]`.
-
-Rewrite using `[hDm, if_neg (by omega), zero_add]`. Introduce `l _`. Rewrite using `[Matrix.sub_apply, hUm, if_neg (by omega), sub_self, mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem clear_upper_right : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ)
     (ψ : Fin n → kˣ →* ℂˣ) (r : ℕ) (ϖ : k), Ordered ψ → Cut ψ r → ∀ j ∈ grp ψ, ∃ y ∈ strip ψ r ϖ 0,

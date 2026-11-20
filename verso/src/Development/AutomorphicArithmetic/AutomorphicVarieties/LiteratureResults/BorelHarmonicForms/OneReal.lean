@@ -5,15 +5,15 @@ open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.Af
 open scoped TensorProduct ComplexOrder
 
 /- English proof (translation)
-Introduce `E _ _ _ a Ξ`. Take `⟨hL, hS⟩` from `xiSchur E a Ξ`. Take `⟨G, hG, hadj⟩` from `admEx E a Ξ`. Establish `h1 : oneL E a = toL (1 : Matrix (Fin a) (Fin a) (Cinf E))` using `rfl`. Take `⟨c, hc⟩` from `hS (Ξ.dmat (oneL E a)) fun X => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h` using `hL 1 (Matrix.of X)`. Rewrite `h` using `[one_mul, mul_one, sub_self]`. Establish `h0 : toL (0 : Matrix (Fin a) (Fin a) (Cinf E)) = 0` using `rfl`. Rewrite `h` using `[h0, map_zero, sub_eq_zero]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `hadj 1`. Rewrite `h` using `[star_one, ← h1, hc, conjTranspose_smul, conjTranspose_one, smul_mul_assoc, one_mul, mul_smul_comm, mul_one]`. Use `⟨c.re, ?_⟩` and prove the remaining obligations. Unfold `HasOne`. Rewrite using `[hc]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Establish `hi` using `congrFun (congrFun h i) i`. Establish `hp : G i i ≠ 0` using `(hG.diag_pos (i := i)).ne'`. Simplify using `only [Matrix.smul_apply, smul_eq_mul] at hi`. Establish `hs : star c = c` using `mul_right_cancel₀ hp hi`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Complex.conj_eq_iff_re.1 hs]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Lit.Bor.oneReal :
     UpperTheory.V.Lit.Bor.OneReal := by

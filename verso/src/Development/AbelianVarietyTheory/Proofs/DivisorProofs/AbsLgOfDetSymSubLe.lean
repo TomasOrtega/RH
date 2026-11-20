@@ -17,7 +17,7 @@ open Formalism.MainNotions.DIV.Cons (intO)
 namespace GlobalTheory.PlaceBd
 
 /- English proof (translation)
-The claim follows from `|A.ht x - ({ A with lg := g } : Adl C Y).ht x| ≤ K := GlobalTheory.T.height_comparison_local_green A g x S b K hK hS hb hsum`.
+A detailed English derivation is pending.
 -/
 theorem abs_ht_sub_le {F : Type} [Field F] [NumberField F] {C : CxSt F} {Y : Var F} (A : Adl C Y)
     (g : ∀ v : HeightOneSpectrum (𝓞 F), Ext v → AlgPt Y → ℝ) (x : Y.X) (S : Finset (HeightOneSpectrum (𝓞 F)))
@@ -28,7 +28,7 @@ theorem abs_ht_sub_le {F : Type} [Field F] [NumberField F] {C : CxSt F} {Y : Var
   GlobalTheory.T.height_comparison_local_green A g x S b K hK hS hb hsum
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_finite_set_residue_log_bound T hT g hg`.
+A detailed English derivation is pending.
 -/
 theorem places_over {F : Type} [Field F] [NumberField F] (T : Finset ℕ) (hT : ∀ p ∈ T, p.Prime) (g : ℕ → ℝ)
     (hg : ∀ p, 0 ≤ g p) :
@@ -39,14 +39,14 @@ theorem places_over {F : Type} [Field F] [NumberField F] (T : Finset ℕ) (hT : 
   GlobalTheory.T.exists_finite_set_residue_log_bound T hT g hg
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.sum_valuation_log_le_log_discriminant D T hT`.
+A detailed English derivation is pending.
 -/
 theorem sum_vDiff_le (D : D7) (T : Finset ℕ) (hT : ∀ p ∈ T, p.Prime) :
     ∑ p ∈ T, vDiff D.host.E p * Real.log p ≤ Real.log D.host.rdE :=
   GlobalTheory.T.sum_valuation_log_le_log_discriminant D T hT
 
 /- English proof (translation)
-The claim follows from `|lgOf (fl.C k) (detSym S.Dw (ArIn.ind T) none τ) v ε y - lgOf (fl.C k) (detSym S.Dw (fun _ => false) none τ) v ε y| ≤ if resP v ∈ T then |Real.log (ε.w (resP v)) / Real.log (resP v)| * (N * (Real.log (resP v) / ((resP v : ℝ) - 1) + vDiff D.host.E (resP v) * Real.log (resP v))) el …`.
+A detailed English derivation is pending.
 -/
 theorem abs_lgOf_detSym_sub_le (hB : HTBoundSt) {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A}
     {s : FinalTheorems S κ} (fl : s.Flag) (k : s.Comp) (τ : D.host.E →+* ℂ) (T : Finset ℕ)
@@ -66,9 +66,9 @@ section
 variable {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} {s : FinalTheorems S κ} (fl : s.Flag) (k : s.Comp)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Establish `h (b : ℕ → Bool) : expo S.Dw (detSym S.Dw b R τ) x = ∑ i ∈ Finset.range (S.Dw.p + S.Dw.q), expo S.Dw (rootSym S.Dw b R τ i) x`. Unfold `detSym expo`. Apply the tactic sequence `rw [Finsupp.sum_finset_sum_index (fun _ => by simp) (fun _ _ _ => by split_ifs <;> simp)]`. Rewrite using `[h, h]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [expo_rootSym]`.
+Simplify using the standard rewrite rules.
 -/
 theorem expo_detSym (a a' : ℕ → Bool) (R : Option ℝ) (τ : D.host.E →+* ℂ) :
     expo S.Dw (detSym S.Dw a R τ) = expo S.Dw (detSym S.Dw a' R τ) := by
@@ -81,11 +81,11 @@ theorem expo_detSym (a a' : ℕ → Bool) (R : Option ℝ) (τ : D.host.E →+* 
   simp only [expo_rootSym]
 
 /- English proof (translation)
-Unfold `parOf`. Use `split_ifs with h`. Establish `hm` using `h.choose_spec`. Establish `hs` using `Finsupp.support_finset_sum hm`. Simplify using `only [Finset.mem_biUnion, Finset.mem_range] at hs`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨i, -, hi⟩` from `hs`. Unfold `rootSym at hi`. Use `split_ifs at hi`. Use `Finsupp.support_single_subset hi` as an intermediate fact. Rewrite `this` using `[Finset.mem_singleton]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this]`. Use `Finsupp.support_single_subset hi` as an intermediate fact. Rewrite `this` using `[Finset.mem_singleton]`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem parOf_detSym (a : ℕ → Bool) (τ : D.host.E →+* ℂ) : parOf (detSym S.Dw a none τ) = none := by
   unfold parOf
@@ -105,7 +105,7 @@ theorem parOf_detSym (a : ℕ → Bool) (τ : D.host.E →+* ℂ) : parOf (detSy
   · rfl
 
 /- English proof (translation)
-Establish `e1` using `expo_detSym (S := S) a' a none τ`. Establish `e2` using `(parOf_detSym (S := S) a' τ).trans (parOf_detSym (S := S) a τ).symm`. Unfold `adlOf`. Rewrite using `[e1, e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem adlOf_detSym {C : CxSt D.what₂.LL} (hm : Mets (fl.C k) C) (a a' : ℕ → Bool) (τ : D.host.E →+* ℂ) :
     adlOf (fl.C k) hm (detSym S.Dw a' none τ) =
@@ -120,7 +120,7 @@ end
 open GlobalTheory.Mean4 GlobalTheory.Mean4O in
 
 /- English proof (translation)
-The claim follows from `|O.Y.htDetT B c τ - GlobalTheory.ShFam.Pad.degFrame O.s O.Φ O.met.hm c τ| ≤ C₂ * O.Y.N * (Real.log B + Real.log D.host.rdE) := by intro _ _ refine ⟨4, fun D O _ _ _ _ _ _ hF B hB c τ => ?_⟩ have e1 : O.Y.htDetT B c τ = (adlOf (O.Φ.C c) (O.met.hm c) (detSym O.S.Dw (ArIn.ind (Pad.s …`.
+A detailed English derivation is pending.
 -/
 theorem placeBd : Hypotheses2 → HypothesesH → ∃ C₂ : ℝ, OnObj fun D O _ _ _ _ => FewBad O.Y →
     ∀ B : ℝ, 48 ≤ B → ∀ (c : O.Y.Comp) (τ : D.what₂.Tau),

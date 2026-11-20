@@ -14,13 +14,13 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.PresSobA.IntForm
 
 /- English proof (translation)
-The claim follows from `((isUnit_iff_isUnit_det _).1 y.isUnit).ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem val_mem_GLs {n : ℕ} (y : G n) : y.val ∈ GLs n :=
   ((isUnit_iff_isUnit_det _).1 y.isUnit).ne_zero
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.CompanionTheory.SobGL.Smooth.contDiffOn_fderiv_apply' (GlobalTheory.CompanionTheory.SobGL.Smooth.isOpen_GLs' n) hf (GlobalTheory.CompanionTheory.SobGL.Smooth.mulRight' X).contDiff.contDiffOn).continuousOn`.
+A detailed English derivation is pending.
 -/
 theorem Rd_continuousOn {n : ℕ} {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
     {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) (X : Mat n) :
@@ -29,9 +29,9 @@ theorem Rd_continuousOn {n : ℕ} {V : Type} [NormedAddCommGroup V] [NormedSpace
     (GlobalTheory.CompanionTheory.SobGL.Smooth.mulRight' X).contDiff.contDiffOn).continuousOn
 
 /- English proof (translation)
-Establish `hγ` using `(GlobalTheory.T.matrix_exp_curve_derivative n X).2 s`. Set `L : CLof (Mat n) (Mat n)` to `LinearMap.toContinuousLinearMap (LinearMap.mulLeft ℝ z.val)`. Establish `h1 : HasDerivAt (fun r : ℝ => z.val * (expC X r).val) (z.val * ((expC X s).val * X)) s` using `L.hasFDerivAt.comp_hasDerivAt s hγ`. Establish `hw : (z.val * (expC X s).val) ∈ GLs n` using `val_mem_GLs (z * expC X s)`. Establish `h2 : HasFDerivAt f (fderiv ℝ f (z.val * (expC X s).val)) (z.val * (expC X s).val)` using `((hf.contDiffAt ((GlobalTheory.CompanionTheory.SobGL.Smooth.isOpen_GLs' n).mem_nhds hw)).differentiableAt (by simp)).hasFDerivAt`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `h2.comp_hasDerivAt s h1`. Establish `e : z.val * ((expC X s).val * X) = (z.val * (expC X s).val) * X` using `(Matrix.mul_assoc _ _ _).symm`. Rewrite `h3` using `[e]`. Conclude with `h3`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_curve {n : ℕ} {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
     {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) (X : Mat n) (z : G n) (s : ℝ) :
@@ -50,7 +50,7 @@ theorem hasDerivAt_curve {n : ℕ} {V : Type} [NormedAddCommGroup V] [NormedSpac
   exact h3
 
 /- English proof (translation)
-Establish `hc : Continuous (fun p : ℝ × G n => p.2 * expC X p.1)` using `continuous_snd.mul ((GlobalTheory.T.matrix_exp_curve_derivative n X).1.comp continuous_fst)`. Establish `hv : Continuous (fun p : ℝ × G n => (p.2 * expC X p.1).val)` using `Units.continuous_val.comp hc`. Conclude with `(Rd_continuousOn hf X).comp_continuous hv (fun p => val_mem_GLs (p.2 * expC X p.1))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_F {n : ℕ} {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
     {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) (X : Mat n) :
@@ -66,9 +66,7 @@ variable {n : ℕ} [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n
   {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [CompleteSpace V]
 
 /- English proof (translation)
-Use `haveI := (hU n μ).1`. Establish `hm : MeasurePreserving (fun y : G n => y * h) μ μ` using `measurePreserving_mul_right μ h`. Establish `h1` using `hm.quasiMeasurePreserving.ae_eq_comp (coe_cls μ hg)`. Use `filter_upwards [rR_coe μ hU h (cls μ g), h1] with z hz1 hz2`. Rewrite using `[hz1]`.
-
-Simplify using `using hz2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem rR_cls_ae (hU : Unimod) {g : Mat n → V} (hg : MemLp (fun y : G n => g y.val) 2 μ) (h : G n) :
     rR μ V h (cls μ g) =ᵐ[μ] fun z => g (z.val * h.val) := by
@@ -80,9 +78,7 @@ theorem rR_cls_ae (hU : Unimod) {g : Mat n → V} (hg : MemLp (fun y : G n => g 
   simpa using hz2
 
 /- English proof (translation)
-Establish `hc : Continuous (fun s : ℝ => rR μ V (expC X s) (cls μ (Rd X f)))` using `((GlobalTheory.T.regular_representation_continuous n μ V hU (cls μ (Rd X f))).1).comp (GlobalTheory.T.matrix_exp_curve_derivative n X).1`. Establish `hint : Integrable (fun s : ℝ => rR μ V (expC X s) (cls μ (Rd X f))) (volume.restrict (Set.Ioc a b))` using `hc.integrableOn_Ioc`. Use `GlobalTheory.T.lp_integral_ae_pointwise ℝ (G n) V (volume.restrict (Set.Ioc a b)) μ _ (fun s z => Rd X f (z.val * (expC X s).val)) hint ?_ ?_` and prove the remaining obligations. Establish `: Continuous (Function.uncurry fun (s : ℝ) (z : G n) => Rd X f (z.val * (expC X s).val))` using `continuous_F hf X`. Conclude with `this.aestronglyMeasurable`.
-
-Conclude with `ae_of_all _ fun s => rR_cls_ae μ hU hg (expC X s)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem setIntegral_ae (hU : Unimod) {f : Mat n → V} (X : Mat n) (hf : ContDiffOn ℝ ∞ f (GLs n))
     (hg : MemLp (fun y : G n => Rd X f y.val) 2 μ) (a b : ℝ) :
@@ -102,11 +98,11 @@ theorem setIntegral_ae (hU : Unimod) {f : Mat n → V} (X : Mat n) (hf : ContDif
 end L2
 
 /- English proof (translation)
-Introduce `n _ _ μ _ V _ _ _ hU f X hf hfm hg t`. Apply `Lp.ext` to reduce the goal to its premises. Rewrite using `[intervalIntegral]`. Establish `hsub1` using `Lp.coeFn_sub (rR μ V (expC X t) (cls μ f)) (cls μ f)`. Establish `hsub2` using `Lp.coeFn_sub (∫ s in Set.Ioc 0 t, rR μ V (expC X s) (cls μ (Rd X f))) (∫ s in Set.Ioc t 0, rR μ V (expC X s) (cls μ (Rd X f)))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `filter_upwards [hsub1, hsub2, rR_cls_ae μ hU hfm (expC X t), coe_cls μ hfm, setIntegral_ae μ hU X hf hg 0 t, setIntegral_ae μ hU X hf hg t 0] with z h1 h2 h3 h4 h5 h6`. Rewrite using `[h1, h2, Pi.sub_apply, Pi.sub_apply, h3, h4, h5, h6]`. Establish `hcont : Continuous (fun s : ℝ => Rd X f (z.val * (expC X s).val))` using `(continuous_F hf X).comp (Continuous.prodMk continuous_id continuous_const)`. Establish `key` using `intervalIntegral.integral_eq_sub_of_hasDerivAt (a := 0) (b := t) (f := fun r : ℝ => f (z.val * (expC X r).val)) (f' := fun s : ℝ => Rd X f (z.val * (expC X s).val)) (fun s _ => hasDerivAt_curve hf X z s) (hcont.intervalIntegrable _ _)`. Rewrite `key` using `[intervalIntegral]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key]`. Simplify using `[expC_zero]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rR_sub_cls_eq_integral : ∀ (n : ℕ) [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure] (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] [CompleteSpace V], Unimod → ∀ (f : Mat n → V) (X : Mat n), ContDiffOn ℝ ∞ f (GLs n) → MemLp (fun y : G n => f y.val) 2 μ → MemLp (fun y : G n => Rd X f y.val) 2 μ → ∀ t : ℝ, rR μ V (expC X t) (cls μ f) - cls μ f = ∫ s in (0 : ℝ)..t, rR μ V (expC X s) (cls μ (Rd X f)) := by
   intro n _ _ μ _ V _ _ _ hU f X hf hfm hg t

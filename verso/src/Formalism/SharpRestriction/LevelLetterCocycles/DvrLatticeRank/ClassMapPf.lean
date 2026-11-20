@@ -21,11 +21,11 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     (W : LocWach PD LL O v n) (T : LocLat G Qp LL O)
 
 /- English proof (translation)
-Establish `hy' : ∀ δ ∈ W.DelF, W.γD T δ y = y` using `by simpa [DelS, sub_eq_zero] using hy`. Establish `hz' : ∀ δ ∈ W.DelF, W.γD T δ z = z` using `by simpa [DelS, sub_eq_zero] using hz`. Use `show (y, z) ∈ herrZ1Δ (W.γD T W.gamK) (W.φD T) W.DelF (W.γD T)`. Rewrite using `[herrZ1Δ, Submodule.mem_inf]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[herrCocycles]`. Simplify using `only [LinearMap.mem_ker, LinearMap.coprod_apply, LinearMap.sub_apply, LinearMap.neg_apply, LinearMap.id_apply]`. Rewrite using `[h]`. Normalize the expressions using the abelian group laws. Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.prodMap_apply, LinearMap.id_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `δ hδ`. Rewrite using `[hy' δ hδ, hz' δ hδ, sub_self]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem classMapPf_mem_Z1DΔ (y z : W.DD T) (hy : y ∈ DelS W T) (hz : z ∈ DelS W T)
     (h : W.γD T W.gamK y - y = W.φD T z - z) : (y, z) ∈ W.wachCocyclesDelta T := by
@@ -45,9 +45,9 @@ theorem classMapPf_mem_Z1DΔ (y z : W.DD T) (hy : y ∈ DelS W T) (hz : z ∈ De
     rw [hy' δ hδ, hz' δ hδ, sub_self]
 
 /- English proof (translation)
-Establish `h0 : (y, z) ∈ herrZ1Δ (W.γD T W.gamK) (W.φD T) W.DelF (W.γD T)` using `h`. Rewrite `h0` using `[herrZ1Δ, Submodule.mem_inf]`. Establish `h1` using `h0.1`. Rewrite `h1` using `[herrCocycles]`. Simplify using `only [LinearMap.mem_ker, LinearMap.coprod_apply, LinearMap.sub_apply, LinearMap.neg_apply, LinearMap.id_apply] at h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h1` using `[← sub_eq_add_neg, sub_eq_zero]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem classMapPf_cocycle {y z : W.DD T} (h : (y, z) ∈ W.wachCocyclesDelta T) :
     W.γD T W.gamK y - y = W.φD T z - z := by
@@ -60,23 +60,21 @@ theorem classMapPf_cocycle {y z : W.DD T} (h : (y, z) ∈ W.wachCocyclesDelta T)
   rwa [← sub_eq_add_neg, sub_eq_zero] at h1
 
 /- English proof (translation)
-Establish `hPiDel : ∀ x ∈ PiNS W T π' M, x ∈ DelS W T` using `fun x hx => (Submodule.mem_inf.mp (show x ∈ (Formalism.MainNotions.DeltaInvariantLattices.aN W T (π' ^ M)).restrictScalars O ⊓ DelS W T from hx)).2`. Establish `hPiD : ∀ x ∈ PiNS W T π' M, ∀ δ ∈ W.DelF, W.γD T δ x = x`. Introduce `x hx`. Simplify `hPiDel x hx` using `[DelS, sub_eq_zero]`. Use `⟨fun w hw => ?_, fun pr pr' hy hz hy' hz' hdiff => ?_, fun pr hy hz => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [InvS, LamPS, Submodule.mem_inf, Submodule.mem_comap] at hw`. Take `⟨⟨⟨_, hwD⟩, _⟩, hwP⟩` from `hw`. Establish `hb : W.γD T W.gamK w - w ∈ PiNS W T π' M` using `by simpa using hwP`. Take `⟨x, ⟨hxP, hx⟩, _⟩` from `hF.2 _ hb`. Conclude with `⟨x, hxP, classMapPf_mem_Z1DΔ W T w x hwD (hPiDel x hxP) hx.symm⟩`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hc` using `classMapPf_cocycle W T pr.2`. Establish `hc'` using `classMapPf_cocycle W T pr'.2`. Take `⟨m, ⟨hmP, hm⟩, _⟩` from `hF.2 _ hdiff`. Establish `hm' : W.φD T m = (pr.1.1 - pr'.1.1) + m` using `by rw [← hm, sub_add_cancel]`. Establish `hvP : pr.1.2 - pr'.1.2 ∈ PiNS W T π' M` using `Submodule.sub_mem _ hz hz'`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hwP : W.γD T W.gamK m - m - (pr.1.2 - pr'.1.2) ∈ PiNS W T π' M` using `Submodule.sub_mem _ (Submodule.sub_mem _ (hγ m hmP) hmP) hvP`. Establish `hφw : W.φD T (W.γD T W.gamK m - m - (pr.1.2 - pr'.1.2)) - (W.γD T W.gamK m - m - (pr.1.2 - pr'.1.2)) = 0`. Establish `key : (W.γD T W.gamK pr.1.1 - pr.1.1 - (W.φD T pr.1.2 - pr.1.2)) - (W.γD T W.gamK pr'.1.1 - pr'.1.1 - (W.φD T pr'.1.2 - pr'.1.2)) = 0`. Rewrite using `[hc, hc']`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Simplify using `only [map_sub, map_add, W.φγ_comm, hm']`. Rewrite using `[← key]`. Normalize the expressions using the abelian group laws. Establish `hw0 : W.γD T W.gamK m - m - (pr.1.2 - pr'.1.2) = 0`. Take `⟨x0, _, hu0⟩` from `hF.2 0 (Submodule.zero_mem _)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `a1` using `hu0 _ ⟨hwP, hφw⟩`. Establish `a2` using `hu0 0 ⟨Submodule.zero_mem _, by simp⟩`. Conclude with `a1.trans a2.symm`. Establish `hk` using `hker (pr - pr') ⟨m, fun δ hδ => hPiD m hmP δ hδ, by`. Apply the tactic sequence `refine Prod.ext ?_ ?_ <;>`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Simplify using `only [Submodule.coe_sub, Prod.fst_sub, Prod.snd_sub, hm, sub_eq_zero.mp hw0]⟩`. Establish `hsub : W.clK T (pr - pr') = W.clK T pr - W.clK T pr'` using `by first`. Consider the case `exact map_sub (W.clK T) pr pr'`. Consider the case `exact (W.clK T).map_sub pr pr'`. Consider the case `exact LinearMap.map_sub _ _ _`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `simp`. Rewrite `hk` using `[hsub, sub_eq_zero]`. Conclude with `hk`. Establish `h1` using `hf pr hy hz`. Take `⟨κ0, hκ0, hκeq⟩` from `Submodule.mem_map.mp h1`.
-
-Conclude with `⟨κ0.1, Submodule.mem_comap.mp hκ0, κ0.2, hκeq⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem classMapPf_local (π' Eπ : LetA O n) (h' M : ℕ) (c : ZMod n)
     (hF : FrobPiN W T π' M)
@@ -133,15 +131,13 @@ theorem classMapPf_local (π' Eπ : LetA O n) (h' M : ℕ) (c : ZMod n)
     exact ⟨κ0.1, Submodule.mem_comap.mp hκ0, κ0.2, hκeq⟩
 
 /- English proof (translation)
-Establish `hφN : ∀ x ∈ W.N T, ∃ k : ℕ, W.Q ^ k • W.φD T x ∈ W.N T`. Conclude with `W.N_φ T`. Introduce `u hu`. Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, rfl⟩` from `hx`. Conclude with `hφN s (hS hs)`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨k1, h1⟩` from `hx`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨k2, h2⟩` from `hy`. Use `⟨k1 + k2, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Use `(W.N T).add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[pow_add, mul_comm, mul_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `(W.N T).smul_mem _ h1`. Rewrite using `[pow_add, mul_smul]`. Conclude with `(W.N T).smul_mem _ h2`. Consider the case `smul a x _ hx`. Take `⟨k, hk⟩` from `hx`.
-
-Conclude with `⟨k, by rw [smul_comm]; exact (W.N T).smul_mem a hk⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem classMapPf_φspan (S : Submodule (LetA O n) (W.DD T)) (hS : S ≤ W.N T) :
     ∀ u ∈ Formalism.MainNotions.DeltaInvariantLattices.φspan W T S, ∃ k : ℕ, W.Q ^ k • u ∈ W.N T := by
@@ -166,35 +162,31 @@ theorem classMapPf_φspan (S : Submodule (LetA O n) (W.DD T)) (hS : S ≤ W.N T)
     exact ⟨k, by rw [smul_comm]; exact (W.N T).smul_mem a hk⟩
 
 /- English proof (translation)
-Establish `hγK : W.gamK = W.gam` using `W.gamK_eq_one hs1 hp2`. Take `⟨_, _, ⟨wπ, hwπ⟩, _, ⟨wq, hwq⟩, _, ⟨wγ, hwγ⟩, _⟩` from `hp9`. Establish `hQ : W.Q = W.q` using `by show (W.φA ^ (W.s - 1)) W.q = W.q`. Rewrite using `[hs1]`. Apply the tactic sequence `first | rfl | simp`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hNγ : ∀ x ∈ W.N T, W.γD T W.gam x ∈ W.N T`. Conclude with `fun x hx => W.N_Γ T W.gam x hx`. Establish `hsm : ∀ (a : LetA O n) (y : W.DD T), W.γD T W.gam (a • y) = letγ (W.γ₀ W.gam) a • W.γD T W.gam y`. Introduce `a y`. Rewrite using `[← algebraMap_smul W.EE a y, W.γD_smul, W.γE_ext, algebraMap_smul]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hγπ : letγ (W.γ₀ W.gam) π' = π' * (1 + (wγ : LetA O n) * Formalism.MainNotions.DeltaInvariantLattices.Eat E π')`. Establish `h0` using `hwγ`. Rewrite `h0` using `[sub_eq_iff_eq_add]`. Rewrite using `[show letγ (W.γ₀ W.gam) π' = W.γA W.gam π' from rfl, h0]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hγ : ∀ x ∈ PiNS W T π' M, W.γD T W.gamK x ∈ PiNS W T π' M`. Introduce `x hx`. Rewrite using `[hγK]`. Take `⟨hxa, hxD⟩` from `Submodule.mem_inf.mp (show x ∈ (Formalism.MainNotions.DeltaInvariantLattices.aN W T (π' ^ M)).restrictScalars O ⊓ DelS W T from hx)`. Establish `hD : W.γD T W.gam x ∈ DelS W T`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [DelS, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero] at hxD ⊢`. Introduce `δ hδ`. Rewrite using `[← W.γD_mul, mul_comm, W.γD_mul, hxD δ hδ]`. Rewrite `hxa` using `[Submodule.restrictScalars_mem]`. Take `⟨y, hyN, rfl⟩` from `Submodule.mem_map.mp hxa`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `show _ ∈ (Formalism.MainNotions.DeltaInvariantLattices.aN W T (π' ^ M)).restrictScalars O ⊓ DelS W T`. Use `Submodule.mem_inf.mpr ⟨?_, hD⟩` and prove the remaining obligations. Rewrite using `[Submodule.restrictScalars_mem]`. Use `Submodule.mem_map.mpr ⟨((1 : LetA O n) + (wγ : LetA O n) * Formalism.MainNotions.DeltaInvariantLattices.Eat E π') ^ M • W.γD T W.gam y, (W.N T).smul_mem _ (hNγ y hyN), ?_⟩` and prove the remaining obligations. Use `show π' ^ M • ((1 + (wγ : LetA O n) * Formalism.MainNotions.DeltaInvariantLattices.Eat E π') ^ M • W.γD T W.gam y) = W.γD T W.gam (π' ^ M • y)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hsm, map_pow, hγπ, mul_pow, mul_smul]`. Establish `hker : ∀ w : ↥(W.wachCocyclesDelta T), (∃ m : W.DD T, Formalism.MainNotions.DeltaInvariantLattices.DInv W T m ∧ (w : W.DD T × W.DD T) = (W.φD T m - m, W.γD T W.gamK m - m)) → W.clK T w = 0` using `fun w hw => ((h2a hs1 hp2).2 w).mpr hw`. Establish `hE : Formalism.MainNotions.DeltaInvariantLattices.Eat E π' = ((wq⁻¹ : (LetA O n)ˣ) : LetA O n) * W.q`. Rewrite using `[hwq, ← mul_assoc, Units.inv_mul, one_mul]`. Establish `hf : ∀ pr : ↥(W.wachCocyclesDelta T), pr.1.1 ∈ InvS W T π' (Formalism.MainNotions.DeltaInvariantLattices.Eat E π') h' M c → pr.1.2 ∈ PiNS W T π' M → W.clK T pr ∈ latticeFiniteCohomology PD T.L`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `pr hy hz`. Use `(h2b (W.clK T pr)).mpr ?_` and prove the remaining obligations. Rewrite using `[hres hs1 hp2 T pr]`. Simplify using `only [InvS, LamPS, Submodule.mem_inf, Submodule.mem_comap, Submodule.restrictScalars_mem] at hy`. Take `⟨⟨⟨hyφ, _⟩, _⟩, _⟩` from `hy`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hNl : W.Nl T (c - 1) ≤ W.N T`. Introduce `u hu`. Take `⟨v, hv, rfl⟩` from `Submodule.mem_map.mp hu`. Conclude with `(W.N T).smul_mem (letE (c - 1) : LetA O n) hv`. Take `⟨k, hk⟩` from `classMapPf_φspan W T _ hNl _ hyφ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hk' : W.Q ^ k • (Formalism.MainNotions.DeltaInvariantLattices.Eat E π' ^ h' • pr.1.1) ∈ W.N T` using `hk`. Establish `hu1 : (wq : LetA O n) ^ h' * ((wq⁻¹ : (LetA O n)ˣ) : LetA O n) ^ h' = 1`. Rewrite using `[← mul_pow, Units.mul_inv, one_pow]`. Establish `hcoef : W.q ^ (h' + k) = (wq : LetA O n) ^ h' * W.Q ^ k * Formalism.MainNotions.DeltaInvariantLattices.Eat E π' ^ h'`. Rewrite using `[hQ, hE, mul_pow]`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take the linear combination `(-(W.q ^ (h' + k))) * hu1`. Establish `hmem` using `(W.N T).smul_mem ((wq : LetA O n) ^ h') hk'`. Rewrite `hmem` using `[smul_smul, smul_smul, ← hcoef]`. Establish `e0 : (W.φA ^ 0) W.Q = W.q` using `by rw [pow_zero]; exact hQ`. Establish `hJ : ((Multiset.replicate (h' + k) 0).map fun j => (W.φA ^ j) W.Q).prod • pr.1.1 ∈ W.N T`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Multiset.map_replicate, Multiset.prod_replicate, e0]`. Conclude with `hmem`. Establish `hz' : pr.1.2 ∈ Formalism.MainNotions.DeltaInvariantLattices.aN W T letπ`. Take `⟨hza, _⟩` from `Submodule.mem_inf.mp (show pr.1.2 ∈ (Formalism.MainNotions.DeltaInvariantLattices.aN W T (π' ^ M)).restrictScalars O ⊓ DelS W T from hz)`. Rewrite `hza` using `[Submodule.restrictScalars_mem]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Take `⟨u, hu, hzu⟩` from `Submodule.mem_map.mp hza`. Use `Submodule.mem_map.mpr ⟨((wπ : LetA O n) ^ M * letπ ^ (s' * M - 1)) • u, (W.N T).smul_mem _ hu, ?_⟩` and prove the remaining obligations. Rewrite using `[← hzu]`. Use `show (letπ : LetA O n) • (((wπ : LetA O n) ^ M * letπ ^ (s' * M - 1)) • u) = π' ^ M • u`. Rewrite using `[smul_smul, hwπ]`.
-
-Use `congr 1`. Establish `hsM : 1 ≤ s' * M` using `Nat.mul_pos hs' hM`. Take `⟨t, ht⟩ : ∃ t, s' * M = t + 1` from `⟨s' * M - 1, (Nat.sub_add_cancel hsM).symm⟩`. Rewrite using `[mul_pow, ← pow_mul, ht, Nat.add_sub_cancel]`. Expand and normalize the polynomial expressions, which then agree.
-
-Conclude with `h7 _ _ _ hJ hz' _`. Conclude with `classMapPf_local W T π' (Formalism.MainNotions.DeltaInvariantLattices.Eat E π') h' M c hF hγ hker hf`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem classMapPf_of (π' : LetA O n) (E : ZMod n → Polynomial O) (e s' h' M : ℕ) (c : ZMod n)
     (hs1 : W.s = 1) (hp2 : PD.p ≠ 2) (hs' : 1 ≤ s') (hM : 1 ≤ M)
@@ -288,9 +280,9 @@ theorem classMapPf_of (π' : LetA O n) (E : ZMod n → Polynomial O) (e s' h' M 
 end Local
 
 /- English proof (translation)
-Establish `h1 : (0 : ℝ) < 4 * (h' : ℝ)`. Establish `: (1 : ℝ) ≤ h'` using `by exact_mod_cast hh'`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : (0 : ℝ) < (sK l K : ℝ)`. Establish `: (1 : ℝ) ≤ (sK l K : ℝ)` using `by exact_mod_cast hs`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `Nat.ceil_pos.mpr (div_pos h1 h2)`.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem classMapPf_MK_pos {l : ℕ} [Fact l.Prime] (K : FinExt l) (h' : ℕ) (hh' : 1 ≤ h')
     (hs : 1 ≤ sK l K) : 1 ≤ MK l K h' := by
@@ -303,7 +295,7 @@ theorem classMapPf_MK_pos {l : ℕ} [Fact l.Prime] (K : FinExt l) (h' : ℕ) (hh
   exact Nat.ceil_pos.mpr (div_pos h1 h2)
 
 /- English proof (translation)
-Introduce `l _ hl K LL hG π' E hp9 T h' hh' hc hj c`. Establish `hp : ((D.loc l).PD K).p = l` using `(D.loc l).PD_p K`. Establish `hsK` using `hsK l hl K LL hG`. Conclude with `classMapPf_of _ T π' E (eK K) (sK l K) h' (MK l K h') c ((HW l).W_s K 1 LL hG) (by rw [hp]; exact hl) hsK (classMapPf_MK_pos K h' hh' hsK) hp9 (hF l hl K LL hG π' E hp9 T h' hh' hc hj) ((h2 l K 1 LL hG).1 T hc).2 ((h2 l K 1 LL hG).2.1 T hc) ((h1 l K 1 LL hG).2.2.2.2.2.2.1 T hc) ( …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem classMapR_of_frobPiN (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (Cm : CmpOf D.loc D.locA HW F) (h1 : adm1 D HW F Cm) (h2 : adm2 D HW F)
@@ -319,7 +311,7 @@ theorem classMapR_of_frobPiN (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA 
     (Formalism.MainNotions.CrystallineLiftingBounds.resK_holds D HW F l K 1 LL hG)
 
 /- English proof (translation)
-Unfold `ClassMapStep`. Introduce `D HW F Cm CA CB CK hA`. Establish `hA'` using `(show adm1 D HW F Cm ∧ adm2 D HW F ∧ _ from hA)`. Conclude with `classMapR_of_frobPiN D HW F Cm hA'.1 hA'.2.1 hsK (hF D HW F Cm CA CB CK hA)`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem classmap_of_frobpin
     (hsK : ∀ (l : ℕ) [Fact l.Prime], l ≠ 2 → ∀ K LL : FinExt l, Good K 1 LL → 1 ≤ sK l K)
@@ -330,7 +322,7 @@ theorem classmap_of_frobpin
   exact classMapR_of_frobPiN D HW F Cm hA'.1 hA'.2.1 hsK (hF D HW F Cm CA CB CK hA)
 
 /- English proof (translation)
-The claim follows from `classmap_of_frobpin (fun _l _ hl K LL hG => Formalism.MainNotions.N.Ln34.frobpin_sK_pos hl K LL hG) Formalism.MainNotions.N.Ln34.frobPiNCondition`.
+A detailed English derivation is pending.
 -/
 theorem classmap_pf : Formalism.MainNotions.N.Ln34.ClassMapStep :=
   classmap_of_frobpin (fun _l _ hl K LL hG => Formalism.MainNotions.N.Ln34.frobpin_sK_pos hl K LL hG)

@@ -9,11 +9,11 @@ section Gen
 variable {K : Type} [Field K] {D N : ℕ}
 
 /- English proof (translation)
-Establish `hmon : ∀ (t : σ →₀ ℕ) (a : K), scaleEquiv P u (monomial t a) = monomial t ((u : K) ^ (∑ v ∈ Finset.univ.filter P, t v) * a)`. Introduce `t a`. Establish `hg : ∀ v, (if P v then C (u : K) * X v else X v) ^ t v = C (if P v then (u : K) ^ t v else 1) * (X v : MvPolynomial σ K) ^ t v`. Introduce `v`. Apply the tactic sequence `split_ifs <;> simp [mul_pow]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[scaleEquiv, AlgEquiv.ofAlgHom_apply, aeval_monomial]`. Rewrite using `[monomial_eq]`. Simplify using `only [Finsupp.prod_pow, algebraMap_eq, hg, Finset.prod_mul_distrib, ← map_prod, ← Finset.prod_filter, Finset.prod_pow_eq_pow_sum, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `MvPolynomial.induction_on' F (fun t a => ?_) (fun p q hp hq => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hmon, coeff_monomial, coeff_monomial] split_ifs with h`. Substitute `h` using the available equality. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite using `[map_add, coeff_add, coeff_add, hp, hq, mul_add]`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_scaleEquiv {σ : Type*} [Fintype σ] (P : σ → Prop) [DecidablePred P] (u : Kˣ)
     (F : MvPolynomial σ K) (s : σ →₀ ℕ) :
@@ -41,7 +41,7 @@ theorem coeff_scaleEquiv {σ : Type*} [Fintype σ] (P : σ → Prop) [DecidableP
   · rw [map_add, coeff_add, coeff_add, hp, hq, mul_add]
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_filter, Fintype.sum_prod_type]`. Use `(Finset.sum_eq_single b (fun c _ hc => Finset.sum_eq_zero fun j _ => if_neg hc) (by simp)).trans (Finset.sum_congr rfl fun j _ => if_pos rfl)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem sum_filter_block (b : Fin (D + 1)) (s : TVar D N →₀ ℕ) :
     (∑ v ∈ Finset.univ.filter (fun v : TVar D N => v.1 = b), s v) = ∑ j, s (b, j) := by
@@ -50,11 +50,9 @@ theorem sum_filter_block (b : Fin (D + 1)) (s : TVar D N →₀ ℕ) :
     (by simp)).trans (Finset.sum_congr rfl fun j _ => if_pos rfl)
 
 /- English proof (translation)
-Introduce `s hs`. Establish `h2 : (2 : K) ≠ 0` using `two_ne_zero`. Establish `h` using `congrArg (coeff s) (hF (Units.mk0 2 h2))`. Rewrite `h` using `[coeff_scaleEquiv, coeff_C_mul, sum_filter_block]`. Establish `hc : coeff s F ≠ 0` using `mem_support_iff.1 hs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h'` using `mul_right_cancel₀ hc h`. Simplify using `only [Units.val_mk0] at h'`. Establish `h'' : ((2 ^ (∑ j, s (b, j)) : ℕ) : K) = ((2 ^ a : ℕ) : K)`. Use `push_cast`. Conclude with `h'`.
-
-Conclude with `Nat.pow_right_injective (le_refl 2) (Nat.cast_injective h'')`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem block_deg_of_scale [CharZero K] (b : Fin (D + 1)) (a : ℕ) (F : MvPolynomial (TVar D N) K)
     (hF : ∀ u : Kˣ, scaleEquiv (fun v : TVar D N => v.1 = b) u F = C ((u : K) ^ a) * F) :

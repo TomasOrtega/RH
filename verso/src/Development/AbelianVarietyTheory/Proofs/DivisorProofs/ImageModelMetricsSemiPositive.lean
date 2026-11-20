@@ -18,17 +18,15 @@ open GlobalTheory.CxPts GlobalTheory.TrueGeo.OfLattice ReciprocityTheory.ChartRe
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 
 /- English proof (translation)
-Introduce `K V Ω _ _ _ _ _ _ _ _ Nm W ev D X _ p L ψ s hM hev`. Take `⟨N, n, b, g, A, c, gw, hF, hg, hc, hφ⟩` from `hM.fs`. Introduce `τ`. Take `⟨σ, rfl⟩ : ∃ σ : K →+* ℂ, σ.comp (algebraMap (𝓞 K) K) = τ` from `⟨_, extEmb_comp τ⟩`. Set `M : Matrix (Fin n) (Fin N) ℂ` to `fun k a => ∑ m, σ (c k m) * A σ m a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hz : Weight.NoCommonZero fun a => ∑ j, M j a • secVal p (σ.comp (algebraMap (𝓞 K) K)) (s (gw j))`. Introduce `i y hy`. Use `by_contra! h0`. Establish `hS : ∑ a, ‖∑ k, M k a * valR y.1 (L.B.U i) ((s (gw k)).f i)‖ ^ 2 = 0`. Use `Finset.sum_eq_zero fun a _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `h0 a`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at h1`. Rewrite using `[show (∑ k, M k a * valR y.1 (L.B.U i) ((s (gw k)).f i)) = 0 from h1]`. Simplify using the standard rewrite rules. Take `⟨w, hw⟩` from `TopologicalSpace.Opens.mem_iSup.1 (hM.bpf.ge (TopologicalSpace.Opens.mem_top (y.1 (IsLocalRing.closedPoint ℂ))))`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hne` using `(secVal_ne_zero_iff (s w) hy).2 (mem_ptsIn.2 hw)`. Establish `hb` using `GlobalTheory.T.norm_sq_semilinear_le_latticeFrame_norm_sq K V Nm W N n b g A c gw σ (fun w => valR y.1 (L.B.U i) ((s w).f i)) hF hg hc (fun m β u x hx => GlobalTheory.T.valR_imageModelSection_semilinear K V Ω Nm W ev D X p L ψ s hM hev _ i y hy m β u x hx) w`. Rewrite `hb` using `[hS, mul_zero]`. Conclude with `hne (by`. Establish `: ‖valR y.1 (L.B.U i) ((s w).f i)‖ = 0` using `by nlinarith [norm_nonneg (valR y.1 (L.B.U i) ((s w).f i))]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `norm_eq_zero.1 this)`. Establish `key : (L.φ (σ.comp (algebraMap (𝓞 K) K))).φ = (combWeight L.isLB (fun k => s (gw k)) M hz).φ`. Use function extensionality and compare the values at `fun i => funext fun y => (hφ σ i y).trans (combWeight_φ L.isLB (fun k => s (gw k)) M hz i y).symm`. Introduce `i ch y hy ξ`. Use `semiPosReg_combWeight L.isLB (fun k => s (gw k)) M hz D i ch y hy ξ` as an intermediate fact.
-
-Rewrite using `[key]`. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem semiPos_of_isModelOf : ∀ (K V Ω : Type) [Field K] [NumberField K] [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] [Field Ω] [Algebra K Ω] (Nm : (K →+* ℂ) → V → ℝ) (W : Submodule (𝓞 K) V) (ev : V →ₗ[K] Ω) (D : ℕ) (X : AlgebraicGeometry.Scheme.{0}) [AlgebraicGeometry.IsIntegral X] (p : X ⟶ Sp (𝓞 K)) (L : GlobalTheory.HermLB p) (ψ : Ω →+* X.functionField) (s : W → L.B.Sec), GlobalTheory.ImageModel.IsModelOf Nm W ev D p L ψ s → ev ≠ 0 → L.SemiPos D := by
   intro K V Ω _ _ _ _ _ _ _ _ Nm W ev D X _ p L ψ s hM hev

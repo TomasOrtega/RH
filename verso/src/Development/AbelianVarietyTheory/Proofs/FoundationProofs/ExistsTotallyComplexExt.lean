@@ -13,15 +13,13 @@ open GlobalTheory.NormSum GlobalTheory.IndefiniteRowSideFullHecke.IntegralCoordi
 namespace GlobalTheory.NormSum.Compare
 
 /- English proof (translation)
-The claim follows from `(UpperTheory.KR.log_qd_le_rd D.host.toHostAx D.host.flPS).2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem sqrt_le_rd (D : D7) : Real.sqrt ((D.host.q : ℝ) * D.host.d) ≤ D.host.rdE :=
   (UpperTheory.KR.log_qd_le_rd D.host.toHostAx D.host.flPS).2.2.1
 
 /- English proof (translation)
-Take `⟨hq, hd, -, hq2, hd2⟩` from `D.host.hypOdd`. Use `hq.two_le` as an intermediate fact. Use `hd.two_le` as an intermediate fact. Prove the components needed by the constructor for the conclusion. Conclude with `(show 3 ≤ D.host.q by omega)` after adjusting the coercions.
-
-Conclude with `(show 3 ≤ D.host.d by omega)` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. A detailed English derivation is pending.
 -/
 theorem three_le (D : D7) : (3 : ℝ) ≤ D.host.q ∧ (3 : ℝ) ≤ D.host.d := by
   obtain ⟨hq, hd, -, hq2, hd2⟩ := D.host.hypOdd
@@ -32,9 +30,9 @@ theorem three_le (D : D7) : (3 : ℝ) ≤ D.host.q ∧ (3 : ℝ) ≤ D.host.d :=
   · exact_mod_cast (show 3 ≤ D.host.d by omega)
 
 /- English proof (translation)
-Take `⟨hq, hd⟩` from `three_le D`. Establish `h2` using `sqrt_le_rd D`. Establish `h3` using `Real.sq_sqrt (show (0 : ℝ) ≤ (D.host.q : ℝ) * D.host.d by positivity)`. Establish `h4` using `pow_le_pow_left₀ (Real.sqrt_nonneg _) h2 2`. Establish `h5 : (D.host.d : ℝ) ≤ D.host.rdE ^ 2` using `by nlinarith`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Real.log_le_log (by linarith) h5` as an intermediate fact. Rewrite `this` using `[Real.log_pow, Nat.cast_ofNat]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem log_d_le (D : D7) : Real.log D.host.d ≤ 2 * Real.log D.host.rdE := by
   obtain ⟨hq, hd⟩ := three_le D
@@ -63,7 +61,7 @@ def ArchAny (G : D7 → ℕ → Prop) : Prop :=
       ArchimedeanHeightBound zA zA' (bArch C (fF D) N B L Q)
 
 /- English proof (translation)
-Take `⟨C, hC, h⟩` from `h`. Conclude with `⟨C, hC, fun D cc δ t0 Q h1 h2 h3 => h D cc δ t0 Q h1 h2 (hG D Q h3)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ArchOne.mono {G G' : D7 → ℕ → Prop} (hG : ∀ D Q, G' D Q → G D Q) (h : ArchOne G) : ArchOne G' := by
   obtain ⟨C, hC, h⟩ := h
@@ -118,7 +116,7 @@ def CoordClauses {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ t0 : ℂ} {Q : ℕ} (
       ∀ lam : Qbar →+* ℂ_[l], ‖lam ⟨P.coord h T, hz⟩‖ ≤ (l : ℝ) ^ e_vp
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, fun g => ⟨(h.2.1 g).1, (h.2.1 g).2.trans he⟩, fun g hg T => (h.2.2 g hg T).imp fun _ hb lam => (hb lam).trans (Real.rpow_le_rpow_of_exponent_le (by exact_mod_cast hl.out.one_le) he)⟩`.
+Supply the required witnesses or components.
 -/
 theorem CoordClauses.mono {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ t0 : ℂ} {Q : ℕ} {P : Pair D cc δ t0 Q} {l : ℕ}
     [hl : Fact l.Prime] {e e' : ℝ} (h : CoordClauses P l e) (he : e ≤ e') : CoordClauses P l e' :=
@@ -142,7 +140,7 @@ def CoordOnly (G : D7 → ℕ → Prop) : Prop :=
     ∃ (S : Finset ℕ) (del_vp : ℕ → ℝ), Del S del_vp (bInt C (fF D) N B L Q) ∧ CoordsLev D (G D) N B Q del_vp
 
 /- English proof (translation)
-Take `⟨C, hC, h⟩` from `h`. Use `⟨C, hC, fun D N B L Q hs => ?_⟩` and prove the remaining obligations. Take `⟨S, del, h1, h2, h3⟩` from `h D N B L Q hs`. Conclude with `⟨S, del, h1, fun δ t0 l _ Q' hQ => h2 δ t0 l Q' (hG D Q' hQ), h3⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IntLev.mono {G G' : D7 → ℕ → Prop} (hG : ∀ D Q, G' D Q → G D Q) (h : IntLev G) : IntLev G' := by
   obtain ⟨C, hC, h⟩ := h

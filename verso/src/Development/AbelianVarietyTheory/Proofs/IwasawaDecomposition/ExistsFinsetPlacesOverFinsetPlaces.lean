@@ -6,7 +6,7 @@ open NumberField IsDedekindDomain Neutral.B1 ReciprocityTheory.Neutral.Bridge.HC
 namespace GlobalTheory.PlacesOver
 
 /- English proof (translation)
-Establish `hne : Ideal.map (algebraMap (𝓞 E) (𝓞 K)) v.asIdeal ≠ ⊥` using `Ideal.map_ne_bot_of_ne_bot v.ne_bot`. Use `(Ideal.finite_factors hne).subset ?_` and prove the remaining obligations. Introduce `w hw`. Simplify using `only [Set.mem_setOf_eq] at hw ⊢`. Rewrite using `[Ideal.dvd_iff_le, Ideal.map_le_iff_le_comap, hw]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem finite_fibre (E K : Type) [Field E] [NumberField E] [Field K] [NumberField K] [Algebra E K]
     (v : HeightOneSpectrum (𝓞 E)) :
@@ -19,7 +19,7 @@ theorem finite_fibre (E K : Type) [Field E] [NumberField E] [Field K] [NumberFie
   rw [Ideal.dvd_iff_le, Ideal.map_le_iff_le_comap, hw]
 
 /- English proof (translation)
-Establish `hfin : (⋃ v ∈ S, {w : HeightOneSpectrum (𝓞 K) | w.asIdeal.comap (algebraMap (𝓞 E) (𝓞 K)) = v.asIdeal}).Finite` using `S.finite_toSet.biUnion fun v _ => finite_fibre E K v`. Use `⟨hfin.toFinset, fun w => ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem places_over_finset (E K : Type) [Field E] [NumberField E] [Field K] [NumberField K] [Algebra E K]
     (S : Finset (HeightOneSpectrum (𝓞 E))) :

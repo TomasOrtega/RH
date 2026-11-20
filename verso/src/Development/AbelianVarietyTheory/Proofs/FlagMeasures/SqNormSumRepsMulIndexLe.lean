@@ -9,21 +9,17 @@ open scoped Pointwise ENNReal Classical ComplexConjugate
 namespace GlobalTheory.HL.GaussSum
 
 /- English proof (translation)
-Establish `hzero : ∀ h, h ∉ Q → ∑ u, f (u + h) * conj (f u) = 0`. Introduce `h hh`. Take `⟨v, c, hc, hrel⟩` from `hQ h hh`. Establish `h1 : ∑ u, f (u + h) * conj (f u) = c * ∑ u, f (u + h) * conj (f u)`. Rewrite using `[Finset.mul_sum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h2 : (1 - c) * ∑ u, f (u + h) * conj (f u) = 0`. Rewrite using `[sub_mul, one_mul, ← h1, sub_self]`. Break down `mul_eq_zero.mp h2 with h3 | h3` into its components or cases. Conclude with `absurd (sub_eq_zero.mp h3).symm hc`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `h3`. Establish `hexp : (∑ u, f u) * conj (∑ u, f u) = ∑ h, ∑ u, f (u + h) * conj (f u)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_sum, Finset.sum_mul_sum]`. Use `_ = ∑ u, ∑ w, f w * conj (f u) := Finset.sum_comm`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = ∑ u, ∑ h, f (u + h) * conj (f u) := Finset.sum_congr rfl fun u _ => (Fintype.sum_equiv (Equiv.addLeft u) (fun h => f (u + h) * conj (f u)) (fun w => f w * conj (f u)) (fun h => rfl)).symm`. Use `_ = ∑ h, ∑ u, f (u + h) * conj (f u) := Finset.sum_comm`. Establish `hnorm : ‖∑ u, f u‖ ^ 2 ≤ (Fintype.card G : ℝ) * (Nat.card Q : ℝ)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_mul, RCLike.norm_conj, sq]`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `_ = ‖∑ h, ∑ u, f (u + h) * conj (f u)‖ := by rw [hexp]`. Use `_ ≤ ∑ h, ‖∑ u, f (u + h) * conj (f u)‖ := norm_sum_le _ _`. Use `_ ≤ ∑ h, (if h ∈ Q then (Fintype.card G : ℝ) else 0) := by`. Use `Finset.sum_le_sum fun h _ => ?_` and prove the remaining obligations. Use `split_ifs with hh`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hzero h hh, norm_zero]`. Use `_ = (Fintype.card G : ℝ) * (Nat.card Q : ℝ) := by`. Rewrite using `[Finset.sum_ite, Finset.sum_const_zero, add_zero, Finset.sum_const, nsmul_eq_mul, mul_comm]`. Use `congr 1`.
-
-Rewrite using `[Nat.card_eq_fintype_card, Fintype.card_subtype]`. Establish `hci : (Nat.card Q : ℝ) * (Q.index : ℝ) = Fintype.card G`. Rewrite using `[← Nat.card_eq_fintype_card, ← AddSubgroup.card_mul_index (H := Q)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
-
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem sq_norm_sum_mul_index_le {G : Type*} [AddCommGroup G] [Fintype G] (Q : AddSubgroup G)
     (f : G → ℂ) (hf : ∀ u, ‖f u‖ = 1)
@@ -80,27 +76,25 @@ theorem sq_norm_sum_mul_index_le {G : Type*} [AddCommGroup G] [Fintype G] (Q : A
     _ = (Fintype.card G : ℝ) ^ 2 := by rw [mul_assoc, hci, sq]
 
 /- English proof (translation)
-Establish `hsurj : ∀ x : M ⧸ P, ∃ w ∈ R, (w : M ⧸ P) = x`. Introduce `x`. Take `⟨u, rfl⟩` from `QuotientAddGroup.mk_surjective x`. Take `⟨w, ⟨hwR, hw⟩, -⟩` from `hR u`. Use `⟨w, hwR, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[QuotientAddGroup.eq]`. Establish `e : -w + u = u - w` using `by abel`. Rewrite using `[e]`. Conclude with `hw`. Establish `hinj : ∀ w ∈ R, ∀ w' ∈ R, (w : M ⧸ P) = w' → w = w'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w hw w' hw' h`. Rewrite `h` using `[QuotientAddGroup.eq]`. Take `⟨z, -, hz⟩` from `hR w`. Establish `h1 : w = z` using `hz w ⟨hw, by simp⟩`. Establish `h2 : w' = z` using `hz w' ⟨hw', by`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show w - w' = -(-w + w') by abel]`. Conclude with `P.neg_mem h⟩`. Rewrite using `[h1, h2]`. Establish `: Finite (M ⧸ P)`. Apply `Finite.of_surjective (fun w : R => ((w : M) : M ⧸ P))` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `x`. Take `⟨w, hw, rfl⟩` from `hsurj x`. Conclude with `⟨⟨w, hw⟩, rfl⟩`. Set `: Fintype (M ⧸ P)` to `Fintype.ofFinite _`. Establish `hf' : ∀ u : M, f ((u : M ⧸ P)).out = f u`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `u`. Establish `h` using `QuotientAddGroup.eq.mp (QuotientAddGroup.out_eq' (u : M ⧸ P))`. Establish `e` using `hP ((u : M ⧸ P)).out _ h`. Rewrite `e` using `[add_neg_cancel_left]`. Conclude with `e.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `GlobalTheory.HL.GaussSum.sq_norm_sum_mul_index_le (Q.map (QuotientAddGroup.mk' P)) (fun x : M ⧸ P => f x.out) (fun x => hf _) (by`. Introduce `h' hh'`. Take `⟨h, rfl⟩` from `QuotientAddGroup.mk_surjective h'`. Establish `hhQ : h ∉ Q` using `fun hq => hh' (AddSubgroup.mem_map_of_mem _ hq)`. Take `⟨v, c, hc, hrel⟩` from `hQ h hhQ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Use `⟨(v : M ⧸ P), c, hc, fun x => ?_⟩` and prove the remaining obligations. Take `⟨u, rfl⟩` from `QuotientAddGroup.mk_surjective x`. Simplify using `only [← QuotientAddGroup.mk_add, hf']`. Conclude with `hrel u)`. Establish `hidx : (Q.map (QuotientAddGroup.mk' P)).index = Q.index` using `AddSubgroup.index_map_eq (H := Q) (QuotientAddGroup.mk'_surjective P) (by rw [QuotientAddGroup.ker_mk']; exact hPQ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hi1 : ∀ a ∈ R, ((a : M ⧸ P)) ∈ (Finset.univ : Finset (M ⧸ P))` using `fun _ _ => Finset.mem_univ _`. Establish `hi2 : Set.InjOn (fun a : M => (a : M ⧸ P)) R`. Introduce `w hw w' hw' h`. Conclude with `hinj w hw w' hw' h`. Establish `hi3 : Set.SurjOn (fun a : M => (a : M ⧸ P)) R (↑(Finset.univ : Finset (M ⧸ P)) : Set (M ⧸ P))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x _`. Take `⟨w, hw, rfl⟩` from `hsurj x`. Conclude with `⟨w, hw, rfl⟩`. Establish `hsum : ∑ u ∈ R, f u = ∑ x : M ⧸ P, f x.out` using `Finset.sum_nbij (fun a : M => (a : M ⧸ P)) hi1 hi2 hi3 (fun u _ => (hf' u).symm)`. Establish `hcard : R.card = Fintype.card (M ⧸ P)`.
-
-Rewrite using `[← Finset.card_univ]`. Conclude with `Finset.card_nbij (fun a : M => (a : M ⧸ P)) hi1 hi2 hi3`. Rewrite using `[hsum, hcard, ← hidx]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sq_norm_sum_reps_mul_index_le {M : Type*} [AddCommGroup M] (P Q : AddSubgroup M)
     (hPQ : P ≤ Q) (R : Finset M) (hR : ∀ u, ∃! w, w ∈ R ∧ u - w ∈ P)
@@ -170,7 +164,7 @@ theorem sq_norm_sum_reps_mul_index_le {M : Type*} [AddCommGroup M] (P Q : AddSub
   exact h1
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg, AddChar.map_add_eq_mul, AddChar.map_neg_eq_inv, Complex.inv_def, Complex.normSq_eq_norm_sq, h y]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mul_conj_eq {A : Type*} [AddCommGroup A] (ψ : AddChar A ℂ) (h : ∀ x, ‖ψ x‖ = 1) (x y : A) :
     ψ x * conj (ψ y) = ψ (x - y) := by
@@ -179,9 +173,9 @@ theorem mul_conj_eq {A : Type*} [AddCommGroup A] (ψ : AddChar A ℂ) (h : ∀ x
   simp
 
 /- English proof (translation)
-Establish `he : algebraMap F E ((ϖ : F) ^ j) ∈ L.O` using `(GlobalTheory.UnramOrder.algebraMap_mem_iff L _).2 (pow_mem ϖ.2 j)`. Establish `hs : {y : L.O | (y : E) = algebraMap F E ((ϖ : F) ^ j)} = {⟨_, he⟩}`. Use extensionality with `y`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_singleton_iff, Subtype.ext_iff]`. Rewrite using `[hs, Ideal.mem_span_singleton']`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Conclude with `⟨a, a.2, by simp [mul_comm]⟩`. Introduce and unpack `⟨c, hc, h⟩`. Conclude with `⟨⟨c, hc⟩, Subtype.ext (by simp [h, mul_comm])⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 private theorem mem_span_algebraMap_pow_iff_exists_mul {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E) (ϖ : 𝒪[F]) (j : ℕ)
@@ -201,9 +195,9 @@ private theorem mem_span_algebraMap_pow_iff_exists_mul {F : Type} [Field F] [Val
     exact ⟨⟨c, hc⟩, Subtype.ext (by simp [h, mul_comm])⟩
 
 /- English proof (translation)
-Use `⟨AddSubgroup.pi Set.univ (fun _ => (Ideal.span {y : L.O | (y : E) = algebraMap F E ((ϖ : F) ^ j)}).toAddSubgroup), ?_, ?_⟩` and prove the remaining obligations. Introduce `w`. Simplify using `only [AddSubgroup.mem_pi, Set.mem_univ, forall_const, Submodule.mem_toAddSubgroup]`. Conclude with `forall_congr' fun a => mem_span_algebraMap_pow_iff_exists_mul L ϖ j (w a)`. Establish `hI : (Ideal.span {y : L.O | (y : E) = algebraMap F E ((ϖ : F) ^ j)}).toAddSubgroup.index = resQ ϖ ^ (2 * j)` using `(GlobalTheory.UnramOrder.order_facts L ϖ hϖ).2.2.2.2.2.1 j`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AddSubgroup.index_pi, Finset.prod_congr rfl (fun _ _ => hI), Finset.prod_const, Finset.card_univ, Fintype.card_fin, ← pow_mul]`.
+A detailed English derivation is pending.
 -/
 private theorem exists_addSubgroup_pow_multiples_index_eq_resQ_pow {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E]
@@ -224,7 +218,7 @@ private theorem exists_addSubgroup_pow_multiples_index_eq_resQ_pow {F : Type} [F
       Finset.card_univ, Fintype.card_fin, ← pow_mul]
 
 /- English proof (translation)
-Rewrite using `[map_add, map_sub, map_sub, hnrm, hnrm, hnrm, hnrm, ← Finset.sum_sub_distrib, ← Finset.sum_sub_distrib, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.add_apply, map_add]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem algebraMap_nrm_second_difference_eq_sum {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E) {d : ℕ}
@@ -239,7 +233,7 @@ private theorem algebraMap_nrm_second_difference_eq_sum {F : Type} [Field F] [Va
   ring
 
 /- English proof (translation)
-Rewrite using `[map_sub, hnrm, hnrm, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.add_apply, map_add]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem algebraMap_nrm_add_sub_nrm_eq_sum {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E) {d : ℕ}
@@ -253,65 +247,61 @@ private theorem algebraMap_nrm_add_sub_nrm_eq_sum {F : Type} [Field F] [Valuativ
   ring
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ E _ _ _ L ϖ hϖ ψ hψ hψo d i N hi hiN t u₀ ht χ hχ hχN R nrm hnrm hRO hR`. Establish `hOF` using `GlobalTheory.UnramOrder.order_facts L ϖ hϖ`. Establish `hInt` using `hOF.2.1`. Establish `hDual` using `hOF.2.2.1`. Establish `hAlgMem` using `hOF.2.2.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq2 : 2 ≤ resQ ϖ` using `hOF.2.2.2.2.2.2.1`. Establish `hinjA : Function.Injective (algebraMap F E)` using `GlobalTheory.UnramOrder.algebraMap_inj L`. Establish `hcje : ∀ x : F, L.cj (algebraMap F E x) = algebraMap F E x` using `fun x => L.cj.commutes x`. Establish `he : ∀ x : F, x ∈ 𝒪[F] → algebraMap F E x ∈ L.O` using `fun x hx => (hAlgMem x).2 hx`. Establish `hψ1 : ∀ x : F, x ∈ 𝒪[F] → ψ x = 1` using `fun x hx => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using (hψo x).2 hx 1`. Take `⟨ι, hι⟩ : ∃ ι : (Fin d → L.O) → (Fin d → E), ∀ w a, ι w a = (w a : E)` from `⟨fun w a => (w a : E), fun _ _ => rfl⟩`. Establish `hιinj : Function.Injective ι` using `fun w w' h =>`. Use function extensionality and compare the values at `fun a => Subtype.ext (by rw [← hι, ← hι, h])`. Establish `hιadd : ∀ w w', ι (w + w') = ι w + ι w'` using `fun w w' =>`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `fun a => by simp [hι]`. Take `⟨P, hmemP, -⟩` from `exists_addSubgroup_pow_multiples_index_eq_resQ_pow L ϖ hϖ d N`. Take `⟨Q, hmemQ, hQidx⟩` from `exists_addSubgroup_pow_multiples_index_eq_resQ_pow L ϖ hϖ d i`. Establish `hpow : (ϖ : F) ^ N = (ϖ : F) ^ i * (ϖ : F) ^ (N - i)`. Rewrite using `[← pow_add, Nat.add_sub_cancel' hiN]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hPQ : P ≤ Q`. Introduce `w hw`. Rewrite using `[hmemQ]`. Rewrite `hw` using `[hmemP]`. Introduce `a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨c, hc, h⟩` from `hw a`. Use `⟨algebraMap F E ((ϖ : F) ^ (N - i)) * c, mul_mem (he _ (pow_mem ϖ.2 _)) hc, ?_⟩` and prove the remaining obligations. Rewrite using `[h, ← mul_assoc, ← map_mul, ← pow_add, Nat.add_sub_cancel' hiN]`. Take `⟨g, hg⟩ : ∃ g : (Fin d → L.O) → ℂ, ∀ w, g w = ψ (t * nrm (ι w)) * χ (ι w)` from `⟨fun w => ψ (t * nrm (ι w)) * χ (ι w), fun _ => rfl⟩`. Establish `hg1 : ∀ w, ‖g w‖ = 1` using `fun w => by rw [hg, norm_mul, hψ, hχ, one_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmc : ∀ (a1 a2 : F) (A1 A2 : Fin d → E), ψ a1 * χ A1 * conj (ψ a2 * χ A2) = ψ (a1 - a2) * χ (A1 - A2)`. Introduce `a1 a2 A1 A2`. Rewrite using `[map_mul, ← GlobalTheory.HL.GaussSum.mul_conj_eq ψ hψ, ← GlobalTheory.HL.GaussSum.mul_conj_eq χ hχ]`. Expand and normalize the polynomial expressions, which then agree. Establish `hgP : ∀ w, ∀ p ∈ P, g (w + p) = g w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Introduce `w p hp`. Rewrite `hp` using `[hmemP]`. Use `choose c hc hpc using hp`. Establish `hιp : ι p = algebraMap F E ((ϖ : F) ^ N) • c`. Use function extensionality and compare the values at `fun a => by rw [hι, hpc a, Pi.smul_apply, smul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hχp : χ (ι p) = 1` using `by rw [hιp]; exact hχN _ hc`. Use `choose τ hτ using fun a => (hInt (ι w a * L.cj (c a)) (mul_mem (by rw [hι]; exact (w a).2) (GlobalTheory.UnramOrder.cj_mem L (hc a)))).2.1`. Use `choose ν hν using fun a => (hInt (c a) (hc a)).2.2`. Choose the witnesses or unpack the hypotheses as in `⟨S, hSmem, hdiff⟩ : ∃ S ∈ 𝒪[F], nrm (ι w + ι p) - nrm (ι w) = (ϖ : F) ^ N * S := by`. Use `⟨∑ a, ((τ a : F) + (ϖ : F) ^ N * (ν a : F)), sum_mem fun a _ => add_mem (τ a).2 (mul_mem (pow_mem ϖ.2 _) (ν a).2), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply `hinjA` to reduce the goal to its premises. Rewrite using `[algebraMap_nrm_add_sub_nrm_eq_sum L nrm hnrm, map_mul (algebraMap F E), map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_add, map_mul (algebraMap F E), ← hτ a, ← hν a, hιp]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul, hcje, L.cj_cj]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `harg : t * nrm (ι w + ι p) = t * nrm (ι w) + ((u₀ : 𝒪[F]) : F) * ((ϖ : F) ^ (N - i) * S)`. Rewrite using `[← ht]`. Take the linear combination `t * hdiff + t * S * hpow`. Rewrite using `[hg, hg, hιadd, harg, AddChar.map_add_eq_mul, AddChar.map_add_eq_mul, hχp, hψ1 _ (mul_mem (u₀ : 𝒪[F]).2 (mul_mem (pow_mem ϖ.2 _) hSmem))]`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hgQ : ∀ h, h ∉ Q → ∃ (v : Fin d → L.O) (c : ℂ), c ≠ 1 ∧ ∀ w, g (w + v + h) * conj (g (w + v)) = c * (g (w + h) * conj (g w))`. Introduce `h hh`. Rewrite `hh` using `[hmemQ]`. Use `push Not at hh`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨a, ha⟩` from `hh`. Establish `hx : algebraMap F E t * (h a : E) ∉ L.O`. Introduce `hxO`. Establish `hu : ((u₀ : 𝒪[F]) : F) * (((u₀⁻¹ : (𝒪[F])ˣ) : 𝒪[F]) : F) = 1` using `congrArg Subtype.val (Units.mul_inv u₀)`. Use `ha (algebraMap F E (((u₀⁻¹ : (𝒪[F])ˣ) : 𝒪[F]) : F) * (algebraMap F E t * (h a : E))) (mul_mem (he _ ((u₀⁻¹ : (𝒪[F])ˣ) : 𝒪[F]).2) hxO) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `h1 : (ϖ : F) ^ i * (((u₀⁻¹ : (𝒪[F])ˣ) : 𝒪[F]) : F) * t = 1`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Establish `hnd` using `mt (hDual _) hx`. Use `push Not at hnd`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨b, hb, hbc⟩` from `hnd`. Take `⟨β, hβ⟩` from `(hInt ((h a : E) * L.cj b) (mul_mem (h a).2 (GlobalTheory.UnramOrder.cj_mem L hb))).2.1`. Establish `htβ : t * (β : F) ∉ 𝒪[F]`. Introduce `hmem`. Apply `hbc ⟨t * β, hmem⟩` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `e1 : algebraMap F E t * (h a : E) * L.cj b = algebraMap F E t * ((h a : E) * L.cj b)` using `by ring`. Use `show _ = algebraMap F E (t * (β : F))`. Rewrite using `[e1, map_mul L.cj (algebraMap F E t), hcje, map_mul (algebraMap F E) t, ← hβ]`. Expand and normalize the polynomial expressions, which then agree. Establish `hy` using `mt (hψo (t * β)).1 htβ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `push Not at hy`. Take `⟨y, hy⟩` from `hy`. Establish `hyO : algebraMap F E (y : F) * b ∈ L.O` using `mul_mem (he _ y.2) hb`. Choose the witnesses or unpack the hypotheses as in `⟨v, hιv⟩ : ∃ v : Fin d → L.O, ∀ a', ι v a' = if a' = a then algebraMap F E (y : F) * b else 0 := by`. Use `⟨Pi.single a ⟨_, hyO⟩, fun a' => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hι]`. Apply the tactic sequence `by_cases h' : a' = a <;> simp [h']`. Use `⟨v, ψ (t * β * y), hy, fun w => ?_⟩` and prove the remaining obligations. Establish `hid : nrm (ι w + ι v + ι h) - nrm (ι w + ι v) - nrm (ι w + ι h) + nrm (ι w) = (β : F) * y`. Apply `hinjA` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[algebraMap_nrm_second_difference_eq_sum L nrm hnrm, Finset.sum_eq_single a]`. Rewrite using `[hιv, if_pos rfl, hι h a, map_mul (algebraMap F E) (β : F) (y : F), ← hβ]`. Simplify using `only [map_mul, hcje, L.cj_cj]`. Expand and normalize the polynomial expressions, which then agree. Introduce `a' _ h'`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hιv, if_neg h']`. Simplify using the standard rewrite rules. Introduce `h'`. Conclude with `absurd (Finset.mem_univ a) h'`. Rewrite using `[hg, hg, hg, hg]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hιadd]`. Rewrite using `[hmc, hmc]`. Simplify using `only [add_sub_cancel_left]`. Rewrite using `[← mul_assoc, ← AddChar.map_add_eq_mul]`. Use `congr 2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take the linear combination `t * hid`. Establish `hsum : ∑ w ∈ R.preimage ι hιinj.injOn, g w = ∑ u ∈ R, ψ (t * nrm u) * χ u`. Simplify using `only [hg]`. Conclude with `Finset.sum_preimage ι R hιinj.injOn (fun u => ψ (t * nrm u) * χ u) (fun u hu hnot => absurd ⟨fun a => ⟨u a, hRO u hu a⟩, funext fun a => hι _ a⟩ hnot)`. Establish `hcard : (R.preimage ι hιinj.injOn).card = R.card`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_preimage ι R hιinj.injOn (fun _ => (1 : ℕ)) (fun u hu hnot => absurd ⟨fun a => ⟨u a, hRO u hu a⟩, funext fun a => hι _ a⟩ hnot)` as an intermediate fact. Simplify using `using this`. Establish `hR' : ∀ w, ∃! w', w' ∈ R.preimage ι hιinj.injOn ∧ w - w' ∈ P`. Introduce `w`. Take `⟨u0, ⟨hu0R, hu0⟩, huniq⟩` from `hR (ι w) (fun a => by rw [hι]; exact (w a).2)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Establish `hu0O` using `hRO u0 hu0R`. Establish `hw0 : ι (fun a => ⟨u0 a, hu0O a⟩) = u0` using `funext fun a => hι _ a`. Use `⟨fun a => ⟨u0 a, hu0O a⟩, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.mem_preimage, hw0]`. Conclude with `hu0R`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[hmemP]`. Introduce `a`. Take `⟨c, hc, h⟩` from `hu0 a`. Conclude with `⟨c, hc, by rw [← h, hι]; rfl⟩`. Introduce and unpack `w' ⟨hw'R, hw'P⟩`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hw'R` using `[Finset.mem_preimage]`. Rewrite `hw'P` using `[hmemP]`. Establish `hw' : ι w' = u0` using `huniq (ι w') ⟨hw'R, fun a => by`. Take `⟨c, hc, h⟩` from `hw'P a`. Conclude with `⟨c, hc, by rw [← h, hι, hι]; rfl⟩⟩`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Use function extensionality and compare the values at `a`. Conclude with `Subtype.ext ((hι w' a).symm.trans (congrFun hw' a))`. Establish `key` using `GlobalTheory.HL.GaussSum.sq_norm_sum_reps_mul_index_le P Q hPQ (R.preimage ι hιinj.injOn) hR' g hg1 hgP hgQ`. Rewrite `key` using `[hsum, hcard, hQidx]`. Establish `hq : (0 : ℝ) < resQ ϖ` using `by exact_mod_cast (by omega : 0 < resQ ϖ)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hXpos : (0 : ℝ) < (resQ ϖ : ℝ) ^ (i * d)` using `pow_pos hq _`. Establish `hzp : (resQ ϖ : ℝ) ^ (-(i * d : ℤ)) = ((resQ ϖ : ℝ) ^ (i * d))⁻¹`. Rewrite using `[zpow_neg, show ((i : ℤ) * d) = ((i * d : ℕ) : ℤ) by push_cast; ring, zpow_natCast]`. Rewrite using `[hzp, ← div_eq_mul_inv, le_div_iff₀ hXpos]`. Establish `hsq : ((resQ ϖ ^ (2 * i * d) : ℕ) : ℝ) = ((resQ ϖ : ℝ) ^ (i * d)) ^ 2`.
-
-Use `push_cast`. Rewrite using `[← pow_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite `key` using `[hsq]`.
-
-Establish `hk : (‖∑ u ∈ R, ψ (t * nrm u) * χ u‖ * (resQ ϖ : ℝ) ^ (i * d)) ^ 2 ≤ (R.card : ℝ) ^ 2`. Rewrite using `[mul_pow]`. Conclude with `key`. Use polynomial arithmetic with `[norm_nonneg (∑ u ∈ R, ψ (t * nrm u) * χ u), hXpos, (Nat.cast_nonneg R.card : (0 : ℝ) ≤ R.card), mul_nonneg (norm_nonneg (∑ u ∈ R, ψ (t * nrm u) * χ u)) hXpos.le]`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem norm_gauss_sum_le : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ ϖ : 𝒪[F], Irreducible ϖ → ∀ (ψ : AddChar F ℂ), (∀ x : F, ‖ψ x‖ = 1) → (∀ x : F, (∀ y : 𝒪[F], ψ (x * y) = 1) ↔ x ∈ 𝒪[F]) → ∀ (d i N : ℕ), 1 ≤ i → i ≤ N → ∀ (t : F) (u₀ : (𝒪[F])ˣ), t * (ϖ : F) ^ i = ((u₀ : 𝒪[F]) : F) → ∀ (χ : AddChar (Fin d → E) ℂ), (∀ u, ‖χ u‖ = 1) → (∀ u : Fin d → E, (∀ a, u a ∈ L.O) → χ (algebraMap F E ((ϖ : F) ^ N) • u) = 1) → ∀ (R : Finset (Fin d → E)) (nrm : (Fin d → E) → F), (∀ u, algebraMap F E (nrm u) = ∑ a, u a * L.cj (u a)) → (∀ u ∈ R, ∀ a, u a ∈ L.O) → (∀ u : Fin d → E, (∀ a, u a ∈ L.O) → ∃! w, w ∈ R ∧ ∀ a, ∃ c ∈ L.O, u a - w a = algebraMap F E ((ϖ : F) ^ N) * c) → ‖∑ u ∈ R, ψ (t * nrm u) * χ u‖ ≤ (R.card : ℝ) * (resQ ϖ : ℝ) ^ (-(i * d : ℤ)) := by
   intro F _ _ _ _ _ E _ _ _ L ϖ hϖ ψ hψ hψo d i N hi hiN t u₀ ht χ hχ hχN R nrm hnrm hRO hR

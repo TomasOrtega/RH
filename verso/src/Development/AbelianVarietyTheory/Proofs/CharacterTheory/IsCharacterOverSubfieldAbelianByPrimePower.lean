@@ -10,15 +10,13 @@ open GlobalTheory.BI
 namespace GlobalTheory.BI
 
 /- English proof (translation)
-Introduce `K L _ _ _ _ _ _ m ζ hm hζ`. Establish `key : ∀ n : ℕ, ∀ (G : Type) [Group G] [Finite G], Nat.card G = n → (∀ g : G, g ^ m = 1) → AbByP G → ∀ χ : G → L, IsChar L L χ → IsChar K L χ`. Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `G _ _ hn hG hA χ hχ`. Use `GlobalTheory.T.isCharacterOverSubfield_induction_irreducible L L G (fun a => IsChar K L a) (GlobalTheory.T.isCharacterOverSubfield_zero_and_add K L G).1 ?_ χ hχ` and prove the remaining obligations. Introduce `φ c hφ _ hc`. Use `(GlobalTheory.T.isCharacterOverSubfield_zero_and_add K L G).2 φ c ?_ hc` and prove the remaining obligations. Break down `GlobalTheory.T.irreducibleCharacter_linear_or_induced_abelianByPrimePower L G φ hA hφ with ⟨lam, hlam⟩ | ⟨T, hT, ψ, hψ, rfl⟩` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `: φ = fun g => (lam g : L)` using `funext hlam`. Rewrite using `[this]`. Conclude with `GlobalTheory.T.isCharacterOverSubfield_linear_of_primitiveRoot K L G m ζ lam hm hζ hG`. Establish `hlt : Nat.card T < n`. Rewrite using `[← hn]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `lt_of_le_of_ne (Subgroup.card_le_card_group T) (fun h => hT (Subgroup.eq_top_of_card_eq T h))`. Use `GlobalTheory.T.isCharacterOverSubfield_inducedClassFunction K L G T ψ (ih _ hlt T rfl ?_ (GlobalTheory.T.isAbelianByPrimePowerGroup_subgroup G T hA) ψ hψ)` and prove the remaining obligations. Introduce `g`. Conclude with `Subtype.ext (by simpa using hG g)`. Introduce `G _ _`.
-
-Conclude with `key _ G rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isChar_of_abByP : ∀ (K L : Type) [Field K] [Field L] [Algebra K L] [CharZero K] [CharZero L] [IsAlgClosed L] (m : ℕ) (ζ : K), m ≠ 0 → IsPrimitiveRoot ζ m → ∀ (G : Type) [Group G] [Finite G], (∀ g : G, g ^ m = 1) → AbByP G → ∀ χ : G → L, IsChar L L χ → IsChar K L χ := by
   intro K L _ _ _ _ _ _ m ζ hm hζ

@@ -8,7 +8,7 @@ open scoped Classical
 namespace UpperTheory.Gal.InertialTypesAlt.L
 
 /- English proof (translation)
-Establish `h1 : Nat.card (⊤ : Subgroup (K ≃ₐ[k] K)) ∣ Module.finrank k K`. Rewrite using `[← IntermediateField.finrank_fixedField_eq_card, ← Module.finrank_mul_finrank k (IntermediateField.fixedField (⊤ : Subgroup (K ≃ₐ[k] K))) K]`. Conclude with `dvd_mul_left _ _`. Rewrite `h1` using `[Subgroup.card_top]`. Conclude with `orderOf_dvd_iff_pow_eq_one.1 ((orderOf_dvd_natCard s).trans h1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pow_finrank_aut {k K : Type} [Field k] [Field K] [Algebra k K] [FiniteDimensional k K]
     (s : K ≃ₐ[k] K) : s ^ Module.finrank k K = 1 := by
@@ -21,9 +21,9 @@ private theorem pow_finrank_aut {k K : Type} [Field k] [Field K] [Algebra k K] [
   exact orderOf_dvd_iff_pow_eq_one.1 ((orderOf_dvd_natCard s).trans h1)
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp [GlobalTheory.LBC.galAct_one]`. Consider the case `succ m ih`. Rewrite using `[List.ofFn_succ', List.ofFn_succ', List.prod_concat, List.prod_concat]`. Simplify using `only [Fin.coe_castSucc, Fin.val_last]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[ih]`. Establish `e : GlobalTheory.LBC.galAct (s ^ m) n (GlobalTheory.LBC.galAct s n g) = GlobalTheory.LBC.galAct (s ^ (m + 1)) n g`. Rewrite using `[pow_succ, GlobalTheory.LBC.galAct_mul, MonoidHom.comp_apply]`. Rewrite using `[map_mul, map_mul, map_inv, e]`. Use `group`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem partial_twConj {k K : Type} [Field k] [Field K] [Algebra k K] (s : K ≃ₐ[k] K) (n : ℕ)
     (δ g : GL (Fin n) K) (m : ℕ) :
@@ -41,7 +41,7 @@ private theorem partial_twConj {k K : Type} [Field k] [Field K] [Algebra k K] (s
     group
 
 /- English proof (translation)
-Unfold `GlobalTheory.LBC.norm`. Rewrite using `[partial_twConj, pow_finrank_aut, GlobalTheory.LBC.galAct_one, MonoidHom.id_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem norm_tw {k K : Type} [Field k] [Field K] [Algebra k K] [FiniteDimensional k K] (s : K ≃ₐ[k] K)
     (n : ℕ) (δ g : GL (Fin n) K) :
@@ -50,7 +50,7 @@ private theorem norm_tw {k K : Type} [Field k] [Field K] [Algebra k K] [FiniteDi
   rw [partial_twConj, pow_finrank_aut, GlobalTheory.LBC.galAct_one, MonoidHom.id_apply]
 
 /- English proof (translation)
-Establish `hc : IsConj γ' γ` using `GlobalTheory.Shin.isConj_of_isConj_incl F₀ F₁ n γ' γ (h'.trans h.symm)`. Take `⟨c, hc⟩` from `isConj_iff.mp hc`. Use `hfb γ' c⁻¹` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Rewrite using `[← this, hc]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem fb_eq_of_isFinNorm {F₀ F₁ : Type} [Field F₀] [Field F₁] [Algebra F₀ F₁] [Finite F₁]
     (sb : F₁ ≃ₐ[F₀] F₁) {n : ℕ} (fb : GL (Fin n) F₀ → ℂ) (hfb : ∀ a b, fb (b⁻¹ * a * b) = fb a)
@@ -65,15 +65,13 @@ private theorem fb_eq_of_isFinNorm {F₀ F₁ : Type} [Field F₀] [Field F₁] 
 end UpperTheory.Gal.InertialTypesAlt.L
 
 /- English proof (translation)
-Introduce `F₀ F₁ _ _ _ _ _ sb _ n fb hfb`. Use `haveI : FiniteDimensional F₀ F₁ := Module.Finite.of_finite`. Use `⟨fun δ γ h => ?_, fun δ x => ?_⟩` and prove the remaining obligations. Establish `hex : ∃ γ, GlobalTheory.DZA.IsFinNorm sb δ γ` using `⟨γ, h⟩`. Rewrite using `[GlobalTheory.DZA.normLift, dif_pos hex]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `UpperTheory.Gal.InertialTypesAlt.L.fb_eq_of_isFinNorm sb fb hfb h hex.choose_spec`. Establish `hiff : ∀ γ, GlobalTheory.DZA.IsFinNorm sb (x⁻¹ * δ * GlobalTheory.LBC.galAct sb n x) γ ↔ GlobalTheory.DZA.IsFinNorm sb δ γ`. Introduce `γ`. Establish `hc : IsConj (GlobalTheory.LBC.norm F₀ sb δ) (GlobalTheory.LBC.norm F₀ sb (x⁻¹ * δ * GlobalTheory.LBC.galAct sb n x))`. Rewrite using `[UpperTheory.Gal.InertialTypesAlt.L.norm_tw]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `isConj_iff.mpr ⟨x⁻¹, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Conclude with `⟨fun h => IsConj.trans h hc.symm, fun h => IsConj.trans h hc⟩`. Establish `hfun : (fun γ => GlobalTheory.DZA.IsFinNorm sb (x⁻¹ * δ * GlobalTheory.LBC.galAct sb n x) γ) = fun γ => GlobalTheory.DZA.IsFinNorm sb δ γ` using `funext fun γ => propext (hiff γ)`. Distinguish the cases in `hex : ∃ γ, GlobalTheory.DZA.IsFinNorm sb δ γ`.
+Supply the required witnesses or components. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨γ, hγ⟩` from `hex`. Establish `h1 : ∃ γ, GlobalTheory.DZA.IsFinNorm sb δ γ` using `⟨γ, hγ⟩`. Establish `h2 : ∃ γ, GlobalTheory.DZA.IsFinNorm sb (x⁻¹ * δ * GlobalTheory.LBC.galAct sb n x) γ` using `⟨γ, (hiff γ).2 hγ⟩`. Rewrite using `[GlobalTheory.DZA.normLift, GlobalTheory.DZA.normLift, dif_pos h1, dif_pos h2]`. Conclude with `(UpperTheory.Gal.InertialTypesAlt.L.fb_eq_of_isFinNorm sb fb hfb ((hiff _).1 h2.choose_spec) h1.choose_spec).symm`.
-
-Establish `h2 : ¬ ∃ γ, GlobalTheory.DZA.IsFinNorm sb (x⁻¹ * δ * GlobalTheory.LBC.galAct sb n x) γ` using `fun ⟨γ, hγ⟩ => hex ⟨γ, (hiff γ).1 hγ⟩`. Rewrite using `[GlobalTheory.DZA.normLift, GlobalTheory.DZA.normLift, dif_neg hex, dif_neg h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.InertialTypesAlt.L.liftVal :
     UpperTheory.Gal.InertialTypesAlt.L.LiftVal := by

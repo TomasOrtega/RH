@@ -12,7 +12,7 @@ noncomputable section
 namespace GlobalTheory.HeckeBd
 
 /- English proof (translation)
-Rewrite using `[show (Subgroup.map (Matrix.SpecialLinearGroup.mapGL ℝ) (Gamma1 M)) = ((Gamma1 M : Subgroup (GL (Fin 2) ℝ))) from rfl, strictPeriods_Gamma1]`. Conclude with `AddSubgroup.mem_zmultiples 1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem one_mem_strictPeriods_map_gamma1 (M : ℕ) :
     (1 : ℝ) ∈ (Subgroup.map (Matrix.SpecialLinearGroup.mapGL ℝ) (Gamma1 M)).strictPeriods := by
@@ -21,11 +21,11 @@ private theorem one_mem_strictPeriods_map_gamma1 (M : ℕ) :
   exact AddSubgroup.mem_zmultiples 1
 
 /- English proof (translation)
-Use `haveI : NeZero g.M := ⟨g.pos.ne'⟩`. Set `F : ModularForm (Subgroup.map (Matrix.SpecialLinearGroup.mapGL ℝ) (Gamma1 g.M)) 0` to `{ toFun := g.f holo' := ModularFormClass.holo g.f bdd_at_cusps' := fun hc => ModularFormClass.bdd_at_cusps g.f hc slash_action_eq' := fun γ hγ => SlashInvariantFormClass.slash_action_eq g.f γ hγ }`. Take `⟨c, hc⟩` from `ModularForm.eq_const_of_weight_zero F`. Establish `hF : (F : ℍ → ℂ) = g.f` using `rfl`. Establish `hz` using `CuspFormClass.zero_at_infty g.f`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hz` using `[← hF, hc]`. Establish `hc0 : c = 0` using `tendsto_nhds_unique tendsto_const_nhds hz`. Establish `h0 : (g.f : ℍ → ℂ) = 0`. Rewrite using `[← hF, hc, hc0]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `h1` using `g.one`. Rewrite `h1` using `[h0, UpperTheory.V.Af.coef, UpperHalfPlane.qExpansion_zero]`. Simplify using `at h1`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem no_weight_zero (g : Newform 0) : False := by
   haveI : NeZero g.M := ⟨g.pos.ne'⟩
@@ -47,7 +47,7 @@ theorem no_weight_zero (g : Newform 0) : False := by
   simp at h1
 
 /- English proof (translation)
-Use `haveI : NeZero g.M := ⟨g.pos.ne'⟩`. Use `ModularForm.hasSum_qExpansion (f := g.f) one_pos (one_mem_strictPeriods_map_gamma1 g.M) τ` as an intermediate fact. Simplify `this` using `[Newform.a, UpperTheory.V.Af.coef, Nat.cast_one]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem expand (k : ℕ) (g : Newform k) (τ : ℍ) :
     HasSum (fun m : ℕ => g.a m * Function.Periodic.qParam 1 τ ^ m) (g.f τ) := by
@@ -56,14 +56,14 @@ theorem expand (k : ℕ) (g : Newform k) (τ : ℍ) :
   simpa [Newform.a, UpperTheory.V.Af.coef, Nat.cast_one] using this
 
 /- English proof (translation)
-Use `haveI : NeZero g.M := ⟨g.pos.ne'⟩`. Simplify `CuspFormClass.qExpansion_coeff_zero g.f one_pos (one_mem_strictPeriods_map_gamma1 g.M)` using `[Newform.a, UpperTheory.V.Af.coef]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem a_zero (k : ℕ) (g : Newform k) : g.a 0 = 0 := by
   haveI : NeZero g.M := ⟨g.pos.ne'⟩
   simpa [Newform.a, UpperTheory.V.Af.coef] using CuspFormClass.qExpansion_coeff_zero g.f one_pos (one_mem_strictPeriods_map_gamma1 g.M)
 
 /- English proof (translation)
-Simplify using `[Complex.div_natCast_im]`.
+Simplify using the standard rewrite rules.
 -/
 theorem im_shift (z : ℍ) (b p : ℕ) (hp : 0 < p) : (((z : ℂ) + b) / p).im = z.im / p := by
   simp [Complex.div_natCast_im]
@@ -79,9 +79,9 @@ end GlobalTheory.HeckeBd
 namespace GlobalTheory.HeckeBd
 
 /- English proof (translation)
-Establish `e : Function.Periodic.qParam 1 (((z : ℂ) + b) / p) = Complex.exp (2 * Real.pi * Complex.I * z / p) * Complex.exp (2 * Real.pi * Complex.I / p) ^ b`. Rewrite using `[Function.Periodic.qParam, ← Complex.exp_nat_mul, ← Complex.exp_add]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e, mul_pow, ← pow_mul, ← pow_mul, mul_comm m b]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem qParam_shift (z : ℍ) (b p : ℕ) (hp : 0 < p) (m : ℕ) :
     Function.Periodic.qParam 1 (((z : ℂ) + b) / p) ^ m =
@@ -96,9 +96,7 @@ theorem qParam_shift (z : ℍ) (b p : ℕ) (hp : 0 < p) (m : ℕ) :
   rw [e, mul_pow, ← pow_mul, ← pow_mul, mul_comm m b]
 
 /- English proof (translation)
-Establish `hζ` using `Complex.isPrimitiveRoot_exp p hp.ne_zero`. Use `split_ifs with h`. Establish `: Complex.exp (2 * Real.pi * Complex.I / p) ^ m = 1` using `(hζ.pow_eq_one_iff_dvd m).mpr h`. Simplify using `[this]`. Establish `hc : Nat.Coprime m p` using `Nat.Coprime.symm ((Nat.Prime.coprime_iff_not_dvd hp).mpr h)`.
-
-Conclude with `(hζ.pow_of_coprime m hc).geom_sum_eq_zero hp.one_lt`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem geom_root (p : ℕ) (hp : p.Prime) (m : ℕ) :
     ∑ b ∈ Finset.range p, (Complex.exp (2 * Real.pi * Complex.I / p) ^ m) ^ b =
@@ -111,21 +109,19 @@ theorem geom_root (p : ℕ) (hp : p.Prime) (m : ℕ) :
     exact (hζ.pow_of_coprime m hc).geom_sum_eq_zero hp.one_lt
 
 /- English proof (translation)
-Establish `hpos : (0 : ℝ) < p` using `by exact_mod_cast hp.pos`. Establish `hb : ∀ b ∈ Finset.range p, HasSum (fun m : ℕ => g.a m * Function.Periodic.qParam 1 (((z : ℂ) + b) / p) ^ m) (g.f (ofComplex (((z : ℂ) + b) / p)))`. Introduce `b _`. Establish `him : 0 < (((z : ℂ) + b) / p).im`. Rewrite using `[im_shift z b p hp.pos]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `div_pos z.im_pos hpos`. Establish `e : ((ofComplex (((z : ℂ) + b) / p) : ℍ) : ℂ) = ((z : ℂ) + b) / p`. Rewrite using `[UpperHalfPlane.ofComplex_apply_of_im_pos him]`. Use `expand k g (ofComplex (((z : ℂ) + b) / p))` as an intermediate fact. Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hs` using `hasSum_sum hb`. Establish `key : ∀ m : ℕ, (∑ b ∈ Finset.range p, g.a m * Function.Periodic.qParam 1 (((z : ℂ) + b) / p) ^ m) = if p ∣ m then (p : ℂ) * g.a m * Complex.exp (2 * Real.pi * Complex.I * z / p) ^ m else 0`. Introduce `m`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `_ = _ := by`. Rewrite using `[geom_root p hp m]`. Apply the tactic sequence `split_ifs <;> ring`. Establish `hs' : HasSum (fun m : ℕ => if p ∣ m then (p : ℂ) * g.a m * Complex.exp (2 * Real.pi * Complex.I * z / p) ^ m else 0) (∑ b ∈ Finset.range p, g.f (ofComplex (((z : ℂ) + b) / p)))`. Use `hs using 1` and compare the differences between its conclusion and the goal.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `m`. Conclude with `(key m).symm`. Establish `hinj : Function.Injective (fun n : ℕ => p * n)` using `fun x y h => Nat.eq_of_mul_eq_mul_left hp.pos h`. Establish `hz : ∀ x ∉ Set.range (fun n : ℕ => p * n), (if p ∣ x then (p : ℂ) * g.a x * Complex.exp (2 * Real.pi * Complex.I * z / p) ^ x else 0) = 0`. Introduce `x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[if_neg]`. Introduce and unpack `⟨n, rfl⟩`. Conclude with `hx ⟨n, rfl⟩`. Use `(hinj.hasSum_iff hz).mpr hs'` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `n`. Simplify using `only [Function.comp_apply, if_pos (dvd_mul_right p n)]`. Use `congr 1`. Rewrite using `[pow_mul, ← Complex.exp_nat_mul, Function.Periodic.qParam]`. Use `congr 2`.
-
-Establish `: (p : ℂ) ≠ 0` using `by exact_mod_cast hp.ne_zero`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem sum_shift (k : ℕ) (g : Newform k) (p : ℕ) (hp : p.Prime) (z : ℍ) :
     HasSum (fun n : ℕ => (p : ℂ) * g.a (p * n) * Function.Periodic.qParam 1 z ^ n)
@@ -186,15 +182,15 @@ end GlobalTheory.HeckeBd
 namespace GlobalTheory.HeckeBd
 
 /- English proof (translation)
-Establish `him : 0 < ((p : ℂ) * z).im`. Rewrite using `[im_scale z p]`. Conclude with `mul_pos (by exact_mod_cast hp.pos) z.im_pos`. Establish `e : ((ofComplex ((p : ℂ) * z) : ℍ) : ℂ) = (p : ℂ) * z`. Rewrite using `[UpperHalfPlane.ofComplex_apply_of_im_pos him]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0` using `expand k g (ofComplex ((p : ℂ) * z))`. Rewrite `h0` using `[e]`. Establish `hinj : Function.Injective (fun n : ℕ => p * n)` using `fun x y h => Nat.eq_of_mul_eq_mul_left hp.pos h`. Establish `hz : ∀ x ∉ Set.range (fun n : ℕ => p * n), (if p ∣ x then g.a (x / p) else 0) * Function.Periodic.qParam 1 z ^ x = 0`. Introduce `x hx`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg, zero_mul]`. Introduce and unpack `⟨n, rfl⟩`. Conclude with `hx ⟨n, rfl⟩`. Use `(hinj.hasSum_iff hz).mp ?_` and prove the remaining obligations. Use `h0 using 1` and compare the differences between its conclusion and the goal.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `m`. Simplify using `only [Function.comp_apply, if_pos (dvd_mul_right p m), Nat.mul_div_cancel_left m hp.pos]`. Use `congr 1`. Rewrite using `[pow_mul, Function.Periodic.qParam, Function.Periodic.qParam, ← Complex.exp_nat_mul]`. Use `congr 2`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem scale (k : ℕ) (g : Newform k) (p : ℕ) (hp : p.Prime) (z : ℍ) :
     HasSum (fun n : ℕ => (if p ∣ n then g.a (n / p) else 0) * Function.Periodic.qParam 1 z ^ n)
@@ -224,11 +220,11 @@ theorem scale (k : ℕ) (g : Newform k) (p : ℕ) (hp : p.Prime) (z : ℍ) :
   ring
 
 /- English proof (translation)
-Establish `e` using `g.eig p hp hpM`. Unfold `UpperTheory.V.Af.IsEigAt at e`. Establish `ea : ∀ m, g.a m = UpperTheory.V.Af.coef g.f m` using `fun m => rfl`. Establish `h1` using `(expand k g z).mul_left (g.a p)`. Establish `h2` using `((sum_shift k g p hp z).mul_left ((p : ℂ)⁻¹)).add ((scale k g p hp z).mul_left (g.χ (p : ZMod g.M) * (p : ℂ) ^ (k - 1)))`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h1.unique ?_` and prove the remaining obligations. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `n`. Establish `hp0 : (p : ℂ) ≠ 0` using `by exact_mod_cast hp.ne_zero`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `[a_zero]`. Establish `hn'` using `e n hn`. Simplify using `only [ea]`. Rewrite using `[← mul_assoc, ← hn']`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem hecke_identity (k : ℕ) (g : Newform k) (p : ℕ) (hp : p.Prime) (hpM : ¬ p ∣ g.M) (z : ℍ) :
     g.a p * g.f z = (p : ℂ)⁻¹ * ∑ b ∈ Finset.range p, g.f (ofComplex (((z : ℂ) + b) / p))
@@ -255,41 +251,35 @@ end GlobalTheory.HeckeBd
 namespace GlobalTheory.HeckeBd
 
 /- English proof (translation)
-Introduce `k g p hp hpM`. Use `haveI : NeZero g.M := ⟨g.pos.ne'⟩`. Establish `hk : 1 ≤ k`. Break down `Nat.eq_zero_or_pos k with rfl | h` into its components or cases. Conclude with `(no_weight_zero g).elim`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h`. Use `set r : ℝ := (k : ℝ) / 2 with hr`. Establish `hp1 : (1 : ℝ) < p` using `by exact_mod_cast hp.one_lt`. Establish `hp0 : (0 : ℝ) < p` using `by linarith`. Take `⟨C, hC⟩` from `CuspFormClass.exists_bound g.f`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Set `φ : ℍ → ℝ` to `fun τ => ‖g.f τ‖ * τ.im ^ r`. Establish `hφC : ∀ τ, φ τ ≤ C`. Introduce `τ`. Establish `h` using `hC τ`. Establish `hpos : 0 < τ.im ^ r` using `Real.rpow_pos_of_pos τ.im_pos r`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : ((((k : ℤ)) : ℝ) / 2) = r` using `by simp [hr]`. Rewrite `h` using `[hc, le_div_iff₀ hpos]`. Conclude with `h`. Establish `hbdd : BddAbove (Set.range φ)` using `⟨C, by rintro _ ⟨τ, rfl⟩; exact hφC τ⟩`. Use `set S := ⨆ τ, φ τ with hSdef`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hφS : ∀ τ, φ τ ≤ S` using `fun τ => le_ciSup hbdd τ`. Establish `hfS : ∀ τ : ℍ, ‖g.f τ‖ ≤ S / τ.im ^ r`. Introduce `τ`. Rewrite using `[le_div_iff₀ (Real.rpow_pos_of_pos τ.im_pos r)]`. Conclude with `hφS τ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key : ∀ z : ℍ, ‖g.a p‖ * φ z ≤ ((p : ℝ) ^ r + (p : ℝ) ^ (r - 1)) * S`. Introduce `z`. Establish `hy` using `z.im_pos`. Establish `hid` using `hecke_identity k g p hp hpM z`. Establish `hnorm : ‖g.a p‖ * ‖g.f z‖ ≤ (p : ℝ)⁻¹ * ∑ b ∈ Finset.range p, ‖g.f (ofComplex (((z : ℂ) + b) / p))‖ + (p : ℝ) ^ (k - 1) * ‖g.f (ofComplex ((p : ℂ) * z))‖`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite using `[← norm_mul, hid]`. Use `(norm_add_le _ _).trans (add_le_add ?_ ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, norm_inv, Complex.norm_natCast] gcongr`. Conclude with `norm_sum_le _ _`. Rewrite using `[norm_mul, norm_mul, norm_pow, Complex.norm_natCast]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hχ : ‖g.χ (p : ZMod g.M)‖ ≤ 1` using `DirichletCharacter.norm_le_one _ _`. Combine the equalities or inequalities in the displayed calculation. Establish `hb : ∀ b ∈ Finset.range p, ‖g.f (ofComplex (((z : ℂ) + b) / p))‖ ≤ S / (z.im / p) ^ r`. Introduce `b _`. Establish `him : 0 < (((z : ℂ) + b) / p).im`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[im_shift z b p hp.pos]`. Conclude with `div_pos hy hp0`. Apply the tactic sequence `have e : (ofComplex (((z : ℂ) + b) / p)).im = z.im / p := by (rw [UpperHalfPlane.ofComplex_apply_of_im_pos him, ← im_shift z b p hp.pos]) <;> rfl`. Use `hfS (ofComplex (((z : ℂ) + b) / p))` as an intermediate fact. Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hs : ‖g.f (ofComplex ((p : ℂ) * z))‖ ≤ S / (p * z.im) ^ r`. Establish `him : 0 < ((p : ℂ) * z).im`. Rewrite using `[im_scale z p]`. Conclude with `mul_pos hp0 hy`. Apply the tactic sequence `have e : (ofComplex ((p : ℂ) * z)).im = p * z.im := by (rw [UpperHalfPlane.ofComplex_apply_of_im_pos him, ← im_scale z p]) <;> rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `hfS (ofComplex ((p : ℂ) * z))` as an intermediate fact. Rewrite `this` using `[e]`. Then use the resulting hypothesis. Establish `hsum : ∑ b ∈ Finset.range p, ‖g.f (ofComplex (((z : ℂ) + b) / p))‖ ≤ p * (S / (z.im / p) ^ r)`. Combine the equalities or inequalities in the displayed calculation. Establish `hyr : 0 < z.im ^ r` using `Real.rpow_pos_of_pos hy r`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Establish `hpr : 0 < (p : ℝ) ^ r` using `Real.rpow_pos_of_pos hp0 r`. Establish `e1 : (p : ℝ) ^ (k - 1) = (p : ℝ) ^ (r - 1) * (p : ℝ) ^ r`. Rewrite using `[← Real.rpow_add hp0, ← Real.rpow_natCast, Nat.cast_sub hk]`. Use `congr 1`. Rewrite using `[hr]`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hbound : ‖g.a p‖ * ‖g.f z‖ ≤ (p : ℝ)⁻¹ * (p * (S / (z.im / p) ^ r)) + (p : ℝ) ^ (k - 1) * (S / (p * z.im) ^ r)`. Use `hnorm.trans (add_le_add ?_ ?_)` and prove the remaining obligations. Use `gcongr`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use `gcongr`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e1, Real.div_rpow hy.le hp0.le, Real.mul_rpow hp0.le hy.le]`. Clear the denominators using the available nonvanishing facts. Establish `hne : ∃ τ, 0 < φ τ`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `h0 : (g.f : ℍ → ℂ) = 0`. Use function extensionality and compare the values at `τ`. Establish `h1` using `hcon τ`.
-
-Establish `hpos : 0 < τ.im ^ r` using `Real.rpow_pos_of_pos τ.im_pos r`. Establish `h2 : ‖g.f τ‖ ≤ 0`. Assume the negation of the conclusion as `h'`. Use `push_neg at h'`. Conclude with `absurd (mul_pos h' hpos) (not_lt.mpr h1)`.
-
-Simplify using `using norm_le_zero_iff.mp h2`. Establish `h1` using `g.one`. Rewrite `h1` using `[h0, UpperTheory.V.Af.coef, UpperHalfPlane.qExpansion_zero]`. Simplify using `at h1`. Take `⟨τ0, hτ0⟩` from `hne`.
-
-Establish `hSpos : 0 < S` using `lt_of_lt_of_le hτ0 (hφS τ0)`. Establish `hmain : ‖g.a p‖ * S ≤ ((p : ℝ) ^ r + (p : ℝ) ^ (r - 1)) * S`. Rewrite using `[hSdef, Real.mul_iSup_of_nonneg (norm_nonneg _)]`. Conclude with `ciSup_le key`. Conclude with `le_of_mul_le_mul_right hmain hSpos`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_a_le : ∀ (k : ℕ) (g : Newform k) (p : ℕ), p.Prime → ¬ p ∣ g.M →
     ‖g.a p‖ ≤ (p : ℝ) ^ ((k : ℝ) / 2) + (p : ℝ) ^ ((k : ℝ) / 2 - 1) := by
@@ -406,7 +396,7 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HeckeBd.norm_a_le | exact GlobalTheory.HeckeBd.norm_a_le | (intros; apply GlobalTheory.HeckeBd.norm_a_le <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.newform_norm_coeff_prime_le_of_not_dvd_level : ∀ (k : ℕ) (g : Newform k) (p : ℕ), p.Prime → ¬ p ∣ g.M → ‖g.a p‖ ≤ (p : ℝ) ^ ((k : ℝ) / 2) + (p : ℝ) ^ ((k : ℝ) / 2 - 1) := by
   first | exact @GlobalTheory.HeckeBd.norm_a_le | exact GlobalTheory.HeckeBd.norm_a_le | (intros; apply GlobalTheory.HeckeBd.norm_a_le <;> assumption)

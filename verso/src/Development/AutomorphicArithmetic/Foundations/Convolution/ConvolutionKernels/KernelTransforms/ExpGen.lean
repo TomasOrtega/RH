@@ -17,7 +17,7 @@ open scoped TensorProduct InnerProductSpace ComplexConjugate Pointwise
 
 open Matrix GlobalTheory.CuspRep in
 /- English proof (translation)
-Use `letI : Algebra ℚ (ArchMatrix K n) := Algebra.compHom _ (algebraMap ℚ ℝ)`. Use `open scoped Matrix.Norms.Operator in`. Conclude with `NormedSpace.map_exp (𝔸 := Matrix (Fin n) (Fin n) (Cinf K)) (UpperTheory.V.Cm.matEq K n) (show Continuous (UpperTheory.V.Cm.matEq K n) from (UpperTheory.V.Cm.archEq K n).continuous) X`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 private theorem matEq_exp (K : Type) [Field K] [NumberField K] [IsTotallyComplex K] (n : ℕ)
     (X : Matrix (Fin n) (Fin n) (Cinf K)) :
@@ -28,9 +28,9 @@ private theorem matEq_exp (K : Type) [Field K] [NumberField K] [IsTotallyComplex
     (show Continuous (UpperTheory.V.Cm.matEq K n) from (UpperTheory.V.Cm.archEq K n).continuous) X
 
 /- English proof (translation)
-Introduce `K _ _ _ n`. Rewrite using `[eq_top_iff]`. Introduce `z _`. Establish `key` using `UpperTheory.V.AlgRepEndIrreducible.expGen K n ((Subgroup.closure (Set.range (isExpLieAlgebra K n).expG)).toSubmonoid.comap (UpperTheory.V.Cm.grpEq K n).toMonoidHom) ?_ ((UpperTheory.V.Cm.grpEq K n).symm z)`. Simplify using `using key`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `X y hy`. Use `Subgroup.subset_closure ⟨⟨UpperTheory.V.Cm.matEq K n X, Submodule.mem_top⟩, ?_⟩` and prove the remaining obligations. Use `Subtype.ext (Units.ext ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `NormedSpace.exp (UpperTheory.V.Cm.matEq K n X) = UpperTheory.V.Cm.matEq K n y.val`. Rewrite using `[hy, matEq_exp]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.ConvolutionTheory.Tf.expGen :
     ∀ (K : Type) [Field K] [NumberField K] [IsTotallyComplex K] (n : ℕ),

@@ -10,11 +10,11 @@ open NumberField IsDedekindDomain GlobalTheory.HTW GlobalTheory.HTW.Rec Formalis
 namespace GlobalTheory.HTW.Rec
 
 /- English proof (translation)
-Introduce `R H l _ K LL c κ τ`. Use `haveI : IsGalois ℚ H.E := H.hostE_isGalois`. Take `⟨σ, hσ⟩` from `GlobalTheory.HTW.exists_aut_comp_eq_of_normal κ ((τ : ↥K.1 →+* ↥LL.1).comp c)`. Take `⟨g, hg⟩` from `(H.gal).symm.surjective σ`. Establish `hg' : H.sigmaOf g = σ` using `hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨g, fun x => ?_, fun g' hg2 => ?_⟩` and prove the remaining obligations. Rewrite using `[hg']`. Conclude with `hσ x`. Establish `e : H.sigmaOf g' = H.sigmaOf g`. Use `AlgEquiv.ext fun x => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `κ.injective` to reduce the goal to its premises. Rewrite using `[← hg2 x, hg']`. Conclude with `hσ x`. Conclude with `(H.gal).symm.injective e`.
+A detailed English derivation is pending.
 -/
 theorem existsUnique_reads : ∀ {R : Ranks} (H : Host R) {l : ℕ} [Fact l.Prime] (K LL : FinExt l) (c : H.E →+* ↥K.1) (κ : H.E →+* ↥LL.1) (τ : ↥K.1 →ₐ[ℚ_[l]] ↥LL.1), ∃! g : R.GG, Reads H c κ τ g := by
   intro R H l _ K LL c κ τ

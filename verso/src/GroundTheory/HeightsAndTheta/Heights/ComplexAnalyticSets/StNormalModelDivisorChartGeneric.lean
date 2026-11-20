@@ -28,7 +28,7 @@ def NormalModelDivisorChartGeneric.Statement : Prop :=
           w ∉ IndefiniteRowSideFullHecke.ComplexSets.zeroSetIn B → NormalDivisorChartAtPoint M u d w
 
 /- English proof (translation)
-The claim follows from `lineNormalDivisorChartAt 0 (IndefiniteRowSideFullHecke.ComplexSets.const_mem_zeroSetIn_lineDiagonal 0) rfl`.
+A detailed English derivation is pending.
 -/
 theorem lineNormalDivisorChartAtPoint :
     NormalDivisorChartAtPoint IndefiniteRowSideFullHecke.ComplexSets.lineDiagonalModel (fun _ => (1 : ℂ)) 0 0 :=

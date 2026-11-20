@@ -7,11 +7,11 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor (Sp spMap PSpace resG IsProjOv
 namespace GlobalTheory.ProjSpace
 
 /- English proof (translation)
-Use `.of_continuous_injective_isClosedMap ?_ ?_ ?_` and prove the remaining obligations. Conclude with `continuous_sigma fun i => (hg i).continuous`. Introduce and unpack `⟨i, x⟩ ⟨j, y⟩ hxy`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Take `rfl` from `(hg i).injective hxy`. Both sides reduce to the same expression. Conclude with `absurd hxy ((h hij).ne_of_mem ⟨x, rfl⟩ ⟨y, rfl⟩)`. Introduce `C hC`. Establish `hC' : (fun p : Σ i, Z i => g p.1 p.2) '' C = ⋃ i, g i '' (_root_.Sigma.mk i ⁻¹' C)`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `w`. Simplify using the standard rewrite rules. Rewrite using `[hC']`. Conclude with `isClosed_iUnion_of_finite fun i => (hg i).isClosedMap _ (hC.preimage continuous_sigmaMk)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma isClosedEmbedding_sigma_desc_of_pairwise_disjoint_range {ι : Type} [Finite ι] {Z : ι → Type*}
     [∀ i, TopologicalSpace (Z i)] {W : Type*} [TopologicalSpace W] (g : ∀ i, Z i → W)
@@ -36,11 +36,11 @@ private lemma isClosedEmbedding_sigma_desc_of_pairwise_disjoint_range {ι : Type
 open AlgebraicGeometry CategoryTheory CategoryTheory.Limits TopologicalSpace MvPolynomial in
 
 /- English proof (translation)
-Establish `hsurj : SurjectiveOnStalks (Sigma.desc f)` using `IsZariskiLocalAtSource.sigmaDesc (P := @SurjectiveOnStalks) fun i => (hf i).toSurjectiveOnStalks`. Establish `key : ⇑(Sigma.desc f) ∘ AlgebraicGeometry.sigmaMk X = fun p => f p.1 p.2`. Use function extensionality and compare the values at `⟨i, x⟩`. Rewrite using `[Function.comp_apply, AlgebraicGeometry.sigmaMk_mk, ← Scheme.Hom.comp_apply, Sigma.ι_desc]`. Establish `hce : Topology.IsClosedEmbedding (Sigma.desc f)`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e` using `isClosedEmbedding_sigma_desc_of_pairwise_disjoint_range (fun i => ⇑(f i)) (fun i => (hf i).isClosedEmbedding) h`. Rewrite `e` using `[← key]`. Establish `hsplit : ⇑(Sigma.desc f) = (⇑(Sigma.desc f) ∘ AlgebraicGeometry.sigmaMk X) ∘ (AlgebraicGeometry.sigmaMk X).symm`. Use function extensionality and compare the values at `y`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[hsplit]`. Conclude with `e.comp (AlgebraicGeometry.sigmaMk X).symm.isClosedEmbedding`. Use `haveI : IsPreimmersion (Sigma.desc f) := (isPreimmersion_iff _).2 ⟨hsurj, hce.isEmbedding⟩`. Conclude with `.of_isPreimmersion _ hce.isClosed_range`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ProjSpace.isClosedImmersion_sigmaDesc {ι : Type} [Finite ι]
     {X : ι → Scheme.{0}} {Y : Scheme.{0}}

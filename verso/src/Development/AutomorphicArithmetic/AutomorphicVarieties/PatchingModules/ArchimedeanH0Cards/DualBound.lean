@@ -7,7 +7,7 @@ section SlopeTestRemainingChoices
 variable {A X : Type} [CommRing A] [CommRing X] [Algebra A X] {n a : ℕ}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h i j e => (Submodule.mem_bot A).1 ((h i j).1 e), fun h i j => ⟨fun e => (Submodule.mem_bot A).2 (h i j e), fun _ => Submodule.mem_top⟩⟩`.
+Supply the required witnesses or components.
 -/
 private theorem od_iff (Y : Matrix (Fin n) (Fin n) X) :
     Y ∈ Od A X n a ↔ ∀ i j : Fin n, (((i : ℕ) < a) ↔ ((j : ℕ) < a)) → Y i j = 0 :=
@@ -15,7 +15,7 @@ private theorem od_iff (Y : Matrix (Fin n) (Fin n) X) :
     fun h i j => ⟨fun e => (Submodule.mem_bot A).2 (h i j e), fun _ => Submodule.mem_top⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h i j e => (Submodule.mem_bot A).1 ((h i j).2 e), fun h i j => ⟨fun _ => Submodule.mem_top, fun e => (Submodule.mem_bot A).2 (h i j e)⟩⟩`.
+Supply the required witnesses or components.
 -/
 private theorem ev_iff (Y : Matrix (Fin n) (Fin n) X) :
     Y ∈ Ev A X n a ↔ ∀ i j : Fin n, ¬ (((i : ℕ) < a) ↔ ((j : ℕ) < a)) → Y i j = 0 :=
@@ -23,9 +23,9 @@ private theorem ev_iff (Y : Matrix (Fin n) (Fin n) X) :
     fun h i j => ⟨fun _ => Submodule.mem_top, fun e => (Submodule.mem_bot A).2 (h i j e)⟩⟩
 
 /- English proof (translation)
-Rewrite `hY`, the goal using `[od_iff]`. Rewrite `hE` using `[ev_iff]`. Introduce `i j e`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `h : ((i : ℕ) < a) ↔ ((k : ℕ) < a)`. Rewrite using `[hY k j (h.symm.trans e), mul_zero]`. Rewrite using `[hE i k h, zero_mul]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem ev_mul_od {E Y : Matrix (Fin n) (Fin n) X} (hE : E ∈ Ev A X n a) (hY : Y ∈ Od A X n a) :
     E * Y ∈ Od A X n a := by
@@ -39,9 +39,9 @@ private theorem ev_mul_od {E Y : Matrix (Fin n) (Fin n) X} (hE : E ∈ Ev A X n 
   · rw [hE i k h, zero_mul]
 
 /- English proof (translation)
-Rewrite `hY`, the goal using `[od_iff]`. Rewrite `hE` using `[ev_iff]`. Introduce `i j e`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `h : ((k : ℕ) < a) ↔ ((j : ℕ) < a)`. Rewrite using `[hY i k (e.trans h.symm), zero_mul]`. Rewrite using `[hE k j h, mul_zero]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem od_mul_ev {E Y : Matrix (Fin n) (Fin n) X} (hE : E ∈ Ev A X n a) (hY : Y ∈ Od A X n a) :
     Y * E ∈ Od A X n a := by
@@ -55,7 +55,7 @@ private theorem od_mul_ev {E Y : Matrix (Fin n) (Fin n) X} (hE : E ∈ Ev A X n 
   · rw [hE k j h, mul_zero]
 
 /- English proof (translation)
-Rewrite `hE`, the goal using `[ev_iff]`. Introduce `i j h`. Simplify using `[Matrix.map_apply, hE i j h]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 private theorem ev_map {E : Matrix (Fin n) (Fin n) A} (hE : E ∈ Ev A A n a) :
     E.map (algebraMap A X) ∈ Ev A X n a := by
@@ -64,19 +64,19 @@ private theorem ev_map {E : Matrix (Fin n) (Fin n) A} (hE : E ∈ Ev A A n a) :
   simp [Matrix.map_apply, hE i j h]
 
 /- English proof (translation)
-Proceed by induction on `hR using Submodule.span_induction with`. Consider the case `mem x hx => exact hS x hx`. Consider the case `zero`. Use `⟨Submodule.zero_mem _, fun Y Y₁ Y₂ h₁ h₂ => ?_⟩` and prove the remaining obligations. Establish `e₁ : Y₁ = 0` using `Subtype.ext (by rw [h₁]; simp)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e₂ : Y₂ = 0` using `Subtype.ext (by rw [h₂]; simp)`. Rewrite using `[e₁, e₂]`. Consider the case `add x y _ _ hx hy`. Use `⟨Submodule.add_mem _ hx.1 hy.1, fun Y Y₁ Y₂ h₁ h₂ => ?_⟩` and prove the remaining obligations. Set `P : Od A X n a` to `⟨x.map (algebraMap A X) * Y, ev_mul_od (ev_map hx.1) Y.2⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Set `Q : Od A X n a` to `⟨y.map (algebraMap A X) * Y, ev_mul_od (ev_map hy.1) Y.2⟩`. Set `P' : Od A X n a` to `⟨Y * x.map (algebraMap A X), od_mul_ev (ev_map hx.1) Y.2⟩`. Set `Q' : Od A X n a` to `⟨Y * y.map (algebraMap A X), od_mul_ev (ev_map hy.1) Y.2⟩`. Establish `hmap : (x + y).map (algebraMap A X) = x.map (algebraMap A X) + y.map (algebraMap A X)`. Use extensionality with `i j`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Establish `e₁ : Y₁ = P + Q` using `Subtype.ext (by rw [h₁, hmap, add_mul]; rfl)`. Establish `e₂ : Y₂ = P' + Q'` using `Subtype.ext (by rw [h₂, hmap, mul_add]; rfl)`. Rewrite using `[e₁, e₂, map_add, map_add, hx.2 Y P P' rfl rfl, hy.2 Y Q Q' rfl rfl]`. Consider the case `smul c x _ hx`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Use `⟨Submodule.smul_mem _ c hx.1, fun Y Y₁ Y₂ h₁ h₂ => ?_⟩` and prove the remaining obligations. Apply `hx.2 (c • Y) Y₁ Y₂` to reduce the goal to its premises. Rewrite using `[h₁]`. Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Matrix.map_apply, Matrix.smul_apply, Submodule.coe_smul, smul_eq_mul, map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Algebra.smul_def]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h₂]`. Use extensionality with `i j`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `only [Matrix.mul_apply, Matrix.map_apply, Matrix.smul_apply, Submodule.coe_smul, smul_eq_mul, map_mul]`. Simplify using `only [Algebra.smul_def]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem comm_span {M : Type} [AddCommGroup M] (φ : Od A X n a →+ M) (S : Set (Matrix (Fin n) (Fin n) A))
     (hS : ∀ E ∈ S, E ∈ Ev A A n a ∧ ∀ Y Y₁ Y₂ : Od A X n a,
@@ -127,9 +127,9 @@ private def e1 (R : Type) [CommRing R] (n a : ℕ) : Matrix (Fin n) (Fin n) R :=
   diagonal fun i => if (i : ℕ) < a then 1 else 0
 
 /- English proof (translation)
-Rewrite using `[ev_iff]`. Introduce `i j h`. Establish `hij : i ≠ j`. Introduce and unpack `rfl`. Conclude with `h Iff.rfl`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Simplify using `[e1, Matrix.diagonal_apply_ne _ hij]`.
+A detailed English derivation is pending.
 -/
 private theorem first_raising_mem_equivariant : e1 X n a ∈ Ev A X n a := by
   rw [ev_iff]
@@ -140,27 +140,27 @@ private theorem first_raising_mem_equivariant : e1 X n a ∈ Ev A X n a := by
   simp [e1, Matrix.diagonal_apply_ne _ hij]
 
 /- English proof (translation)
-Establish `hY` using `(od_iff (Y : Matrix (Fin n) (Fin n) X)).1 Y.2`. Set `U : Od A X n a` to `⟨e1 X n a * Y, ev_mul_od (first_raising_mem_equivariant (A := A)) Y.2⟩`. Set `W : Od A X n a` to `⟨Y * e1 X n a, od_mul_ev (first_raising_mem_equivariant (A := A)) Y.2⟩`. Set `dc : Matrix (Fin n) (Fin n) X` to `diagonal fun i : Fin n => if (i : ℕ) < a then algebraMap A X c else 0`. Establish `hm : (c • e1 A n a).map (algebraMap A X) = dc`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Apply the tactic sequence `by_cases hi : (i : ℕ) < a <;> simp [dc, e1, hi]`. Simplify using `[dc, e1, Matrix.diagonal_apply_ne _ hij]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Establish `hdec : Y = U + W`. Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `i j`. Use `show Y.1 i j = (e1 X n a * Y.1) i j + (Y.1 * e1 X n a) i j`. Rewrite using `[e1, Matrix.diagonal_mul, Matrix.mul_diagonal]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `by_cases hi : (i : ℕ) < a <;> by_cases hj : (j : ℕ) < a`. Simplify using `[hi, hj, hY i j (iff_of_true hi hj)]`. Simplify using `[hi, hj]`. Simplify using `[hi, hj]`. Simplify using `[hi, hj, hY i j (iff_of_false hi hj)]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hU : φ (c • U) = 0`. Use `h U (c • U) 0 ?_ ?_` as an intermediate fact. Rewrite using `[this, map_zero]`. Rewrite using `[hm]`. Use extensionality with `i j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `show c • (e1 X n a * Y.1) i j = (dc * (e1 X n a * Y.1)) i j`. Rewrite using `[Matrix.diagonal_mul, e1, Matrix.diagonal_mul]`. Apply the tactic sequence `by_cases hi : (i : ℕ) < a <;> simp [hi, Algebra.smul_def]`. Rewrite using `[hm]`. Use extensionality with `i j`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `show (0 : X) = (e1 X n a * Y.1 * dc) i j`. Rewrite using `[Matrix.mul_diagonal, e1, Matrix.diagonal_mul]`. Apply the tactic sequence `by_cases hi : (i : ℕ) < a <;> by_cases hj : (j : ℕ) < a`. Simplify using `[hi, hj, hY i j (iff_of_true hi hj)]`. Simplify using `[hi, hj]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[hi, hj]`. Simplify using `[hi, hj]`. Establish `hW : φ (c • W) = 0`. Use `h W 0 (c • W) ?_ ?_` as an intermediate fact. Rewrite using `[← this, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hm]`. Use extensionality with `i j`. Use `show (0 : X) = (dc * (Y.1 * e1 X n a)) i j`. Rewrite using `[Matrix.diagonal_mul, e1, Matrix.mul_diagonal]`. Apply the tactic sequence `by_cases hi : (i : ℕ) < a <;> by_cases hj : (j : ℕ) < a`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[hi, hj, hY i j (iff_of_true hi hj)]`. Simplify using `[hi, hj]`. Simplify using `[hi, hj]`. Simplify using `[hi, hj]`. Rewrite using `[hm]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Use `show c • (Y.1 * e1 X n a) i j = (Y.1 * e1 X n a * dc) i j`. Rewrite using `[Matrix.mul_diagonal, e1, Matrix.mul_diagonal]`. Apply the tactic sequence `by_cases hj : (j : ℕ) < a <;> simp [hj, Algebra.smul_def, mul_comm]`. Rewrite using `[hdec, smul_add, map_add, hU, hW, add_zero]`.
+A detailed English derivation is pending.
 -/
 private theorem kill {M : Type} [AddCommGroup M] (φ : Od A X n a →+ M) (c : A)
     (h : ∀ Y Y₁ Y₂ : Od A X n a,
@@ -227,9 +227,9 @@ private noncomputable def pol {K : Type} [Field K] {s : ℕ} (c : Fin s → K) :
   PowerSeries.mk fun k => if h : k < s then c ⟨k, h⟩ else 0
 
 /- English proof (translation)
-Use `⟨fun k => PowerSeries.coeff (k : ℕ) b, PowerSeries.mk fun k => PowerSeries.coeff (k + s) b, ?_⟩` and prove the remaining obligations. Use extensionality with `k`. Rewrite using `[map_add, PowerSeries.coeff_X_pow_mul', pol, PowerSeries.coeff_mk]`. Distinguish the cases in `hk : k < s`. Simplify using `[hk, Nat.not_le.mpr hk]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Establish `hle : s ≤ k` using `Nat.le_of_not_lt hk`. Simplify using `[hk, hle, PowerSeries.coeff_mk, Nat.sub_add_cancel hle]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 private theorem pol_spec {K : Type} [Field K] (s : ℕ) (b : PowerSeries K) :
     ∃ (c : Fin s → K) (d : PowerSeries K), b = pol c + PowerSeries.X ^ s * d := by
@@ -246,9 +246,9 @@ private def odOf (a : ℕ) (Z : Fin n → Fin n → A) : Od A X n a :=
     (od_iff _).2 fun i j e => by simp [e]⟩
 
 /- English proof (translation)
-Use `choose b hb using fun i j => hX ((Y : Matrix (Fin n) (Fin n) X) i j)`. Use `choose c d hcd using fun i j => pol_spec (K := K) s (b i j)`. Use `⟨c, odOf (A := PowerSeries K) (X := X) a d, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `i j`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [odOf, Submodule.coe_add, Submodule.coe_smul, Matrix.add_apply, Matrix.smul_apply, Matrix.of_apply]`. Distinguish the cases in `hij : ((i : ℕ) < a ↔ (j : ℕ) < a)`. Simplify using `[hij, (od_iff _).1 Y.2 i j hij]`. Simplify using `only [hij, if_false]`. Rewrite using `[← hb i j, hcd i j, map_add, Algebra.smul_def, map_mul]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem od_dec {K : Type} [Field K] {X : Type} [CommRing X] [Algebra (PowerSeries K) X]
     (hX : Function.Surjective (algebraMap (PowerSeries K) X)) (s : ℕ) (Y : Od (PowerSeries K) X n a) :
@@ -268,11 +268,9 @@ private theorem od_dec {K : Type} [Field K] {X : Type} [CommRing X] [Algebra (Po
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Distinguish the cases in `hd : (N : ZMod l) = 0`. Establish `hdvd : l ∣ N` using `(ZMod.natCast_eq_zero_iff N l).mp hd`. Combine the equalities or inequalities in the displayed calculation. Establish `hsub : Subsingleton {y : ZMod l // N • y = 0}`. Prove the components needed by the constructor for the conclusion.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨y, hy⟩ ⟨z, hz⟩`. Rewrite `hy`, `hz` using `[nsmul_eq_mul]`. Establish `hy0` using `(mul_eq_zero.mp hy).resolve_left hd`. Establish `hz0` using `(mul_eq_zero.mp hz).resolve_left hd`. Conclude with `Subtype.ext (hy0.trans hz0.symm)`.
-
-Conclude with `(Finite.card_le_one_iff_subsingleton.mpr hsub).trans hN`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem card_zmod_nsmul_eq_zero_le (l : ℕ) [Fact l.Prime] (N : ℕ) (hN : 0 < N) :
     Nat.card {y : ZMod l // N • y = 0} ≤ N := by
@@ -291,15 +289,15 @@ private theorem card_zmod_nsmul_eq_zero_le (l : ℕ) [Fact l.Prime] (N : ℕ) (h
     exact (Finite.card_le_one_iff_subsingleton.mpr hsub).trans hN
 
 /- English proof (translation)
-Take `⟨γ, hγ⟩` from `hom.surj (g' : G0.Γ)`. Establish `hγk : γ ∈ G.η.ker`. Rewrite using `[MonoidHom.mem_ker, ← hom.η, hγ]`. Conclude with `g'.2`. Set `g : G.G₀` to `⟨γ, hγk⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hpg : hom.p₀ g = g'` using `Subtype.ext hγ`. Establish `hε : G.ε γ = 1`. Rewrite using `[← hom.ε, hγ]`. Conclude with `hg'`. Establish `hinv : (mat x.ρ g').map (algebraMap x.A (x.Am e)) * x.ρX (x.Am e) g'⁻¹ = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [NP.ρX]`. Rewrite using `[← Matrix.map_mul, ← map_mul, mul_inv_cancel, map_one]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `hρ : x.ρX (x.Am e) g' = (mat x.ρ g').map (algebraMap x.A (x.Am e))` using `rfl`. Establish `hf'` using `hf γ (hD.e.symm Y₂)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `hf'` using `[hε]`. Simplify using `only [Units.val_one, map_one, one_mul] at hf'`. Establish `hY : hD.e.symm Y₁ = D.M.ρ γ (hD.e.symm Y₂)`. Apply `hD.e.injective` to reduce the goal to its premises. Rewrite using `[LinearEquiv.apply_symm_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `hD.act g (hD.e.symm Y₂)` as an intermediate fact. Rewrite using `[this, LinearEquiv.apply_symm_apply, map_inv, hpg, h₁, h₂, hρ, mul_assoc, mul_assoc, hinv, mul_one]`. Rewrite using `[hY, hf']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem f_symm_eq_of_left_right_mul_mat {l : ℕ} [Fact l.Prime] {L : Loc} {G G0 : Glob l L} (hom : G.Hom G0) {n : ℕ}
     (x : NP G0.frame n) (e : ℕ) (D : Dat x.A (plOf G)) (hD : IsOd hom x (x.Am e) D)
@@ -336,31 +334,27 @@ private theorem f_symm_eq_of_left_right_mul_mat {l : ℕ} [Fact l.Prime] {L : Lo
 
 set_option maxHeartbeats 800000 in
 /- English proof (translation)
-Introduce `l _ L G0 n x`. Take `⟨s, hs⟩` from `x.span (e1 x.A n x.a) first_raising_mem_equivariant`. Use `⟨Nat.card x.K * (n * n * s), ?_⟩` and prove the remaining obligations. Introduce `G hom e D hD`. Set `Ψ : (Fin n × Fin n × Fin s → x.K) →+ Od x.A (x.Am e) n x.a` to `{ toFun := fun c => odOf x.a (fun i j => pol (fun k => c (i, j, k))) map_zero' := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `i j`. Simplify using `only [odOf, Matrix.of_apply, Submodule.coe_zero, Matrix.zero_apply]`. Use `split_ifs`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `: pol (s` using `s) (fun _ => (0 : x.K)) = 0 := by`. Use extensionality with `k`. Simplify using `[pol, PowerSeries.coeff_mk]`. Conclude with `(congrArg (algebraMap x.A (x.Am e)) this).trans (map_zero _)`. Use the proof step `map_add' := fun c c' => by`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `i j`. Simplify using `only [odOf, Matrix.of_apply, Submodule.coe_add, Matrix.add_apply]`. Use `split_ifs`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `: pol (fun k => (c + c') (i, j, k)) = pol (fun k => c (i, j, k)) + pol (fun k => c' (i, j, k))`. Use extensionality with `k`. Simplify using `only [pol, PowerSeries.coeff_mk, map_add, Pi.add_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[this, map_add] }`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hkill : ∀ f : {f : D.M.X →+ ZMod l // ∀ g m, f (D.M.ρ g m) = PadicInt.toZMod ((G.ε g : ℤ_[l]ˣ) : ℤ_[l]) * f m}, ∀ Y : Od x.A (x.Am e) n x.a, f.1 (hD.e.symm ((PowerSeries.X : x.A) ^ s • Y)) = 0`. Introduce `f Y`. Set `φ : Od x.A (x.Am e) n x.a →+ ZMod l` to `f.1.comp hD.e.symm.toLinearMap.toAddMonoidHom`. Establish `hS : ∀ E ∈ mat x.ρ '' (G0.frame.G' : Set G0.frame.G₀), E ∈ Ev x.A x.A n x.a ∧ ∀ Y Y₁ Y₂ : Od x.A (x.Am e) n x.a, (Y₁ : Matrix (Fin n) (Fin n) (x.Am e)) = E.map (algebraMap x.A (x.Am e)) * Y → (Y₂ : Matrix (Fin n) (Fin n) (x.Am e)) = Y * E.map (algebraMap x.A (x.Am e)) → φ Y₁ = φ …`. Introduce and unpack `E ⟨g', hg', rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨x.blk g', fun Y Y₁ Y₂ h₁ h₂ => f_symm_eq_of_left_right_mul_mat hom x e D hD f.1 f.2 g' hg' Y Y₁ Y₂ h₁ h₂⟩`. Establish `hcs` using `comm_span (A := x.A) (X := x.Am e) φ _ hS _ hs`. Conclude with `kill φ (PowerSeries.X ^ s) hcs.2 Y`. Establish `hK : 0 < Nat.card x.K` using `Nat.card_pos`. Establish `hsmul0 : ∀ v : (Fin n × Fin n × Fin s → x.K), Nat.card x.K • v = 0`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Introduce `v`. Use extensionality with `t`. Simplify using `only [Pi.smul_apply, Pi.zero_apply]`. Conclude with `card_nsmul_eq_zero'`. Set `Φ : {f : D.M.X →+ ZMod l // ∀ g m, f (D.M.ρ g m) = PadicInt.toZMod ((G.ε g : ℤ_[l]ˣ) : ℤ_[l]) * f m} → (Fin n × Fin n × Fin s → x.K → {y : ZMod l // Nat.card x.K • y = 0})` to `fun f t v => ⟨f.1 (hD.e.symm (Ψ (Pi.single t v))), by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← map_nsmul, ← map_nsmul, ← map_nsmul, hsmul0, map_zero, map_zero, map_zero]⟩`. Establish `hinj : Function.Injective Φ`. Introduce `f f' hff`. Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `m`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨c, Y', hY⟩` from `od_dec (K := x.K) (X := x.Am e) (n := n) (a := x.a) (fun y => Ideal.Quotient.mk_surjective y) s (hD.e m)`. Establish `key : ∀ f : {f : D.M.X →+ ZMod l // ∀ g m, f (D.M.ρ g m) = PadicInt.toZMod ((G.ε g : ℤ_[l]ˣ) : ℤ_[l]) * f m}, f.1 m = ∑ t, (Φ f t (c t.1 t.2.1 t.2.2)).1`. Introduce `f`. Establish `hm : m = hD.e.symm (Ψ (fun t => c t.1 t.2.1 t.2.2)) + hD.e.symm ((PowerSeries.X : x.A) ^ s • Y')`. Rewrite using `[← map_add]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `hD.e.injective` to reduce the goal to its premises. Rewrite using `[LinearEquiv.apply_symm_apply, hY]`. Both sides reduce to the same expression. Use `conv_lhs => rw [hm]`. Establish `hsum : (fun t => c t.1 t.2.1 t.2.2 : Fin n × Fin n × Fin s → x.K) = ∑ t, Pi.single t (c t.1 t.2.1 t.2.2)` using `(Finset.univ_sum_single _).symm`.
-
-Rewrite using `[map_add, hkill f Y', add_zero, hsum, map_sum, map_sum, map_sum]`. Rewrite using `[key f, key f', hff]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Nat.card_fun, Nat.card_fun]`. Simplify using `[Nat.card_prod, mul_assoc]`.
-
-Use `_ ≤ (Nat.card x.K ^ Nat.card x.K) ^ (n * n * s) := Nat.pow_le_pow_left (Nat.pow_le_pow_left (card_zmod_nsmul_eq_zero_le l _ hK) _) _`. Use `_ = Nat.card x.K ^ (Nat.card x.K * (n * n * s)) := by rw [← pow_mul]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.B2.dualBound :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G0 : Glob l L) (n : ℕ) (x : NP G0.frame n), ∃ C : ℕ, ∀ (G : Glob l L) (h : G.Hom G0) (e : ℕ) (D : Dat x.A (plOf G)), IsOd h x (x.Am e) D → Nat.card {f : D.M.X →+ ZMod l // ∀ g m, f (D.M.ρ g m) = PadicInt.toZMod ((G.ε g : ℤ_[l]ˣ) : ℤ_[l]) * f m} ≤ Nat.card x.K ^ C := by

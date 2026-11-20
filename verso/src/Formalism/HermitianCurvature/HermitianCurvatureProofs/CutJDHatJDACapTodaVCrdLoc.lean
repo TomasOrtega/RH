@@ -17,7 +17,7 @@ variable {X : Type} [NormedAddCommGroup X] [NormedSpace ℂ X] {k r : ℕ}
 def gam (k r : ℕ) (a : Fin r) (x : Fin r → ℂ) : ℂ := ((‖x a‖ ^ (Mdim k r a - 1) : ℝ) : ℂ)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Unfold `gaugeF Formalism.FourierDecayAlt.Q.resG`. Simplify using `only [smul_eq_mul, mul_one, gam, Complex.ofReal_prod]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[if_pos (by simp)]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem gaugeF_eq (k r : ℕ) : gaugeF k r = fun x => ∏ a : Fin r, gam k r a x := by
   funext x
@@ -27,7 +27,7 @@ theorem gaugeF_eq (k r : ℕ) : gaugeF k r = fun x => ∏ a : Fin r, gam k r a x
   rw [if_pos (by simp)]
 
 /- English proof (translation)
-Introduce `x hx`. Establish `h1 : ContDiffAt ℝ ∞ (fun c : Fin r → ℂ => ‖c a‖) x` using `(contDiffAt_norm ℝ (hx a)).comp x (ContinuousLinearMap.proj a : (Fin r → ℂ) →L[ℝ] ℂ).contDiff.contDiffAt`. Establish `h2` using `Complex.ofRealCLM.contDiff.contDiffAt.comp x (h1.pow (Mdim k r a - 1))`. Conclude with `h2.contDiffWithinAt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gam_smooth (a : Fin r) : ContDiffOn ℝ ∞ (gam k r a) (OmX r) := by
   intro x hx
@@ -38,14 +38,14 @@ theorem gam_smooth (a : Fin r) : ContDiffOn ℝ ∞ (gam k r a) (OmX r) := by
   exact h2.contDiffWithinAt
 
 /- English proof (translation)
-Rewrite using `[gaugeF_eq]`. Conclude with `contDiffOn_prod fun a _ => gam_smooth a`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gaugeF_smooth : ContDiffOn ℝ ∞ (gaugeF k r) (OmX r) := by
   rw [gaugeF_eq]
   exact contDiffOn_prod fun a _ => gam_smooth a
 
 /- English proof (translation)
-Rewrite using `[gaugeF_eq]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun a _ => Complex.ofReal_ne_zero.mpr (pow_ne_zero _ (norm_ne_zero_iff.mpr (hc a)))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gaugeF_ne {c : Fin r → ℂ} (hc : c ∈ OmX r) : gaugeF k r c ≠ 0 := by
   rw [gaugeF_eq]
@@ -53,9 +53,9 @@ theorem gaugeF_ne {c : Fin r → ℂ} (hc : c ∈ OmX r) : gaugeF k r c ≠ 0 :=
     Complex.ofReal_ne_zero.mpr (pow_ne_zero _ (norm_ne_zero_iff.mpr (hc a)))
 
 /- English proof (translation)
-Establish `hf : HasDerivAt (fun t : ℝ => x + t • v) v 0`. Simplify using `using ((hasDerivAt_id (0 : ℝ)).smul_const v).const_add x`. Establish `h1 : HasDerivAt (fun t : ℝ => h (x + t • v)) (fderiv ℝ h x v) 0` using `hd.hasFDerivAt.comp_hasDerivAt_of_eq (0 : ℝ) hf (by simp)`. Establish `h2 : HasDerivAt (fun t : ℝ => h (x + t • v)) 0 0`. Repeatedly rewrite using `[hc]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities.
 
-Conclude with `hasDerivAt_const _ _`. Conclude with `h1.unique h2`.
+A detailed English derivation is pending.
 -/
 theorem fderiv_zero_of_const {F : Type} [NormedAddCommGroup F] [NormedSpace ℝ F] {h : (Fin r → ℂ) → F}
     {x v : Fin r → ℂ} (hd : DifferentiableAt ℝ h x) (hc : ∀ t : ℝ, h (x + t • v) = h x) :
@@ -72,14 +72,14 @@ theorem fderiv_zero_of_const {F : Type} [NormedAddCommGroup F] [NormedSpace ℝ 
 def gamO (k r : ℕ) (i : Fin r) (x : Fin r → ℂ) : ℂ := ∏ a ∈ Finset.univ.erase i, gam k r a x
 
 /- English proof (translation)
-Unfold `gamO`. Conclude with `contDiffOn_prod fun a _ => gam_smooth a`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem gamO_smooth (i : Fin r) : ContDiffOn ℝ ∞ (gamO k r i) (OmX r) := by
   unfold gamO
   exact contDiffOn_prod fun a _ => gam_smooth a
 
 /- English proof (translation)
-Unfold `gamO`. Use `Finset.prod_congr rfl fun a ha => ?_` and prove the remaining obligations. Establish `hai : a ≠ i` using `Finset.ne_of_mem_erase ha`. Simplify using `only [gam, Pi.add_apply, Pi.smul_apply, Pi.single_eq_of_ne hai, smul_zero, add_zero]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem gamO_line (i : Fin r) (x : Fin r → ℂ) (w : ℂ) (t : ℝ) :
     gamO k r i (x + t • (Pi.single i w : Fin r → ℂ)) = gamO k r i x := by
@@ -89,14 +89,14 @@ theorem gamO_line (i : Fin r) (x : Fin r → ℂ) (w : ℂ) (t : ℝ) :
   simp only [gam, Pi.add_apply, Pi.smul_apply, Pi.single_eq_of_ne hai, smul_zero, add_zero]
 
 /- English proof (translation)
-Rewrite using `[gaugeF_eq, gamO]`. Conclude with `(Finset.mul_prod_erase _ _ (Finset.mem_univ i)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gauge_split (i : Fin r) (x : Fin r → ℂ) : gaugeF k r x = gam k r i x * gamO k r i x := by
   rw [gaugeF_eq, gamO]
   exact (Finset.mul_prod_erase _ _ (Finset.mem_univ i)).symm
 
 /- English proof (translation)
-Unfold `Formalism.QuantumDeterminants.wirtBar`. Establish `e : (fun y => c y • φ y) = c • φ` using `rfl`. Rewrite using `[e, fderiv_smul hc hφ]`. Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.coe_smul', Pi.smul_apply, ContinuousLinearMap.smulRight_apply, smul_eq_mul]`. Use `module`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem wbar_smul_lemma {m : ℕ} (l : Fin m) (c : (Fin m → ℂ) → ℂ) (φ : (Fin m → ℂ) → X)
     (x : Fin m → ℂ) (hc : DifferentiableAt ℝ c x) (hφ : DifferentiableAt ℝ φ x) :
@@ -109,19 +109,19 @@ private theorem wbar_smul_lemma {m : ℕ} (l : Fin m) (c : (Fin m → ℂ) → �
   module
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Use `show pbOp i (fun x => gaugeF k r x • f x) x = gaugeF k r x • pbOp i f x + (((Mdim k r i - 1 : ℕ) : ℂ) / 2) • (gaugeF k r x • f x)`. Distinguish the cases in `hx : x ∈ OmX r`. Establish `hO : IsOpen (OmX r)`. Establish `e : OmX r = ⋂ l, {y : Fin r → ℂ | y l ≠ 0}`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `y`. Simplify using `[OmX]`. Rewrite using `[e]`. Conclude with `isOpen_iInter_of_finite fun l => isOpen_ne_fun (continuous_apply l) continuous_const`. Establish `hfd : DifferentiableAt ℝ f x` using `(hf.1.contDiffAt (hO.mem_nhds hx)).differentiableAt (by simp)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgi : DifferentiableAt ℝ (gam k r i) x` using `Formalism.FourierDecayAlt.P.Qx6.diff_gamma i _ hx`. Establish `hgO : DifferentiableAt ℝ (gamO k r i) x` using `((gamO_smooth i).contDiffAt (hO.mem_nhds hx)).differentiableAt (by simp)`. Establish `hsplit : (fun y => gaugeF k r y • f y) = fun y => gam k r i y • (gamO k r i y • f y)`. Use function extensionality and compare the values at `y`. Rewrite using `[gauge_split, mul_smul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hwO : wirtBar i (gamO k r i) x = 0`. Unfold `Formalism.QuantumDeterminants.wirtBar`. Rewrite using `[fderiv_zero_of_const hgO (gamO_line i x 1), fderiv_zero_of_const hgO (gamO_line i x Complex.I)]`. Simplify using the standard rewrite rules. Establish `hpg` using `Formalism.FourierDecayAlt.P.Qx6.pbOp_gamma i hx (Mdim k r i - 1)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Unfold `pbOp at hpg`. Rewrite `hpg` using `[if_pos hx]`. Establish `key : star (x i) * wirtBar i (gam k r i) x = ((Mdim k r i - 1 : ℕ) : ℂ) / 2 * gam k r i x`. Rewrite using `[← smul_eq_mul]`. Conclude with `hpg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Unfold `pbOp`. Rewrite using `[if_pos hx, if_pos hx, hsplit, wbar_smul_lemma i (gam k r i) (fun y => gamO k r i y • f y) x hgi (hgO.smul hfd), wbar_smul_lemma i _ _ x hgO hfd, hwO, gauge_split]`. Simplify using `only [smul_add, zero_smul, add_zero, smul_smul]`. Rewrite using `[← mul_assoc (star (x i)) (wirtBar i (gam k r i) x), key]`. Apply the tactic sequence `congr 1 <;> congr 1 <;> ring`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Unfold `pbOp`. Rewrite using `[if_neg hx, if_neg hx, hf.2 x hx]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem pbOp_gauge (i : Fin r) (f : (Fin r → ℂ) → X) (hf : f ∈ WSm r X) :
     pbOp i (fun x => gaugeF k r x • f x) =
@@ -167,21 +167,19 @@ theorem pbOp_gauge (i : Fin r) (f : (Fin r → ℂ) → X) (hf : f ∈ WSm r X) 
     simp
 
 /- English proof (translation)
-Establish `hO : IsOpen (OmX r)`. Establish `e : OmX r = ⋂ l, {y : Fin r → ℂ | y l ≠ 0}`. Use extensionality with `y`. Simplify using `[OmX]`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isOpen_iInter_of_finite fun l => isOpen_ne_fun (continuous_apply l) continuous_const`. Take `⟨ε, hε, hball⟩` from `Metric.isOpen_iff.mp hU c hc`. Set `χ : ContDiffBump c` to `⟨ε / 4, ε / 2, by positivity, by linarith⟩`. Establish `hcl : Metric.closedBall c (ε / 2) ⊆ U` using `(Metric.closedBall_subset_ball (by linarith)).trans hball`. Establish `hχ0 : ∀ z, z ∉ Metric.closedBall c (ε / 2) → χ z = 0`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z hz`. Establish `h1 : z ∉ Function.support χ`. Rewrite using `[χ.support_eq]`. Conclude with `fun h => hz (Metric.ball_subset_closedBall h)`. Simplify `h1` using `[Function.mem_support]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Set `φ : (Fin r → ℂ) → X` to `fun y => χ y • ((gaugeF k r y)⁻¹ • (gaugeF k r y • Φ y))`. Establish `hev : Φ =ᶠ[𝓝 c] φ`. Use `Filter.eventually_of_mem (Metric.ball_mem_nhds c (by positivity : (0 : ℝ) < ε / 4)) fun y hy => ?_` and prove the remaining obligations. Establish `hyU : y ∈ U` using `hball (Metric.ball_subset_ball (by linarith) hy)`. Establish `h1 : χ y = 1` using `χ.one_of_mem_closedBall (Metric.ball_subset_closedBall hy)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show Φ y = χ y • ((gaugeF k r y)⁻¹ • (gaugeF k r y • Φ y))`. Rewrite using `[h1, one_smul, inv_smul_smul₀ (gaugeF_ne (hUO hyU))]`. Establish `hsm : ∀ y ∈ OmX r, ContDiffAt ℝ ∞ φ y`. Introduce `y hyO`. Distinguish the cases in `hyU : y ∈ U`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg` using `(gaugeF_smooth (k := k)).contDiffAt (hO.mem_nhds hyO)`. Establish `hgi` using `hg.inv (gaugeF_ne hyO)`. Establish `hΨ'` using `hΨ.contDiffAt (hU.mem_nhds hyU)`. Conclude with `χ.contDiff.contDiffAt.smul (hgi.smul hΨ')`. Establish `hyc : y ∉ Metric.closedBall c (ε / 2)` using `fun h => hyU (hcl h)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(contDiffAt_const (c := (0 : X))).congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `Filter.eventually_of_mem (Metric.isClosed_closedBall.isOpen_compl.mem_nhds hyc) fun z hz => ?_` and prove the remaining obligations. Use `show χ z • ((gaugeF k r z)⁻¹ • (gaugeF k r z • Φ z)) = 0`. Rewrite using `[hχ0 z hz, zero_smul]`. Use `⟨φ, ?_, hev, hev.mono fun y hy => congrArg (gaugeF k r y • ·) hy⟩` and prove the remaining obligations.
-
-Use `show ContDiffOn ℝ ∞ φ (OmX r) ∧ ∀ x, x ∉ OmX r → φ x = 0`. Use `⟨fun y hy => (hsm y hy).contDiffWithinAt, fun y hy => ?_⟩` and prove the remaining obligations. Establish `hyc : y ∉ Metric.closedBall c (ε / 2)` using `fun h => hy (hUO (hcl h))`. Use `show χ y • ((gaugeF k r y)⁻¹ • (gaugeF k r y • Φ y)) = 0`. Rewrite using `[hχ0 y hyc, zero_smul]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem loc (Φ : (Fin r → ℂ) → X) (U : Set (Fin r → ℂ)) (c : Fin r → ℂ) (hU : IsOpen U) (hUO : U ⊆ OmX r)
     (hc : c ∈ U) (hΨ : ContDiffOn ℝ ∞ (fun c' => gaugeF k r c' • Φ c') U) :

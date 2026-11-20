@@ -18,15 +18,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.SiegOpen
 
 /- English proof (translation)
-Establish `hid : spMap (AlgHom.id o Ω).toRingHom ≫ M.pt = M.pt` using `(congrArg (· ≫ M.pt) (Spec.map_id _)).trans (Category.id_comp _)`. Establish `: IsDominant (M'.pt ≫ f)`. Rewrite using `[hf, hid]`. Use `infer_instance`. Establish `hd : IsDominant f` using `IsDominant.of_comp M'.pt f`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hd, ?_⟩` and prove the remaining obligations. Establish `hz : f (genericPoint M'.Z) = genericPoint M.Z` using `GlobalTheory.apply_genericPoint_of_isDominant f`. Establish `key : ∀ a, M'.stalkHom (genericPoint M'.Z) (f.stalkMap (genericPoint M'.Z) a) = M.stalkHom (f (genericPoint M'.Z)) a`. Introduce `a`. Take `⟨U, hzU, s, rfl⟩` from `M.Z.presheaf.germ_exist a`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Scheme.Hom.germ_stalkMap_apply]`. Conclude with `(M'.stalkHom_germ (U := f ⁻¹ᵁ U) hzU _).trans ((hf.valF_app ⟨_, hzU⟩ s).trans (M.stalkHom_germ hzU s).symm)`. Rewrite using `[ConcreteCategory.isIso_iff_bijective]`. Use `⟨fun a b h => M.stalkHom_injective _ ?_, fun b => ?_⟩` and prove the remaining obligations. Rewrite using `[← key, ← key, h]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hx : M'.stalkHom (genericPoint M'.Z) b ∈ M.O (f (genericPoint M'.Z))`. Rewrite using `[hz, M.O_genericPoint]`. Conclude with `Algebra.mem_top`. Take `⟨a, ha⟩` from `(M.stalkEquiv _).surjective ⟨_, hx⟩`. Use `⟨a, M'.stalkHom_injective _ ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[key]`. Conclude with `congrArg Subtype.val ha`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIso_stalkMap_of_isHom {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {M M' : RatModel o Ω}
     {f : M'.Z ⟶ M.Z} (hf : M.IsHom M' (AlgHom.id o Ω) f) :
@@ -59,23 +57,15 @@ end GlobalTheory.SiegOpen
 namespace GlobalTheory.SiegOpen
 
 /- English proof (translation)
-Introduce `g n hg hn hodd F W hW P rig m N f hTh o Ω _ _ _ _ β S ρ u hSys hQ Y X q hLev hNm hXn`. Establish `hYdiv : Y.HasDiv S.th` using `GlobalTheory.T.siegelThetaConstants_projectively_integral g n hg hn hodd F W hW P rig m N f hTh o Ω β S ρ u hSys Y (q ≫ f) hLev.1 (by rw [← Category.assoc, hLev.2.2.2.2, Category.assoc])`. Take `⟨d, hd⟩` from `hNm.exists_isHom (M' := Y) (φ := AlgHom.id o Ω) hYdiv (RatModel.isIntegrallyClosed_O hLev.1)`. Use `⟨d, hd, ?_⟩` and prove the remaining obligations. Establish `hid : spMap (AlgHom.id o Ω).toRingHom ≫ X.pt = X.pt` using `(congrArg (· ≫ X.pt) (Spec.map_id _)).trans (Category.id_comp _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hYd : Y.pt ≫ d = X.pt` using `hd.trans hid`. Take `⟨e, hSymE, hPe⟩` from `GlobalTheory.T.exists_symmetric_theta_constants_eq_thetaMap_coords g n hg hn hodd F W hW P rig m N f hTh o Ω β S ρ u hSys`. Establish `hSame` using `GlobalTheory.T.thetaConstant_pow_eq_unit_mul_symmetricFunction g n hg hn hodd F W hW P rig m N f hTh o Ω β S ρ u hSys X e hXn hNm.1 hSymE`. Establish `hXe : X.HasDiv e` using `fun z => by`. Take `⟨i, hi⟩` from `hNm.1 z`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨j, hj, -⟩` from `hSame z i hi`. Conclude with `⟨j, hj⟩`. Take `⟨hX, hXs, hXP⟩` from `GlobalTheory.T.exists_projSpace_map_of_tuple_hasDivisor o Ω (cycAway n) β X N e hXe`. Establish `hfs : f ≫ PSpace.str (cycAway n) N = F.s` using `hTh.2.2.2.2.2.2.2.1`. Establish `heq : d ≫ hX = q ≫ f`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `GlobalTheory.T.eq_of_same_generic_projective_coords (cycAway n) N Y.Z (Y.s ≫ spMap β) (d ≫ hX) (q ≫ f) Ω Y.pt e ?_ ?_ Y.gen ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, hXs, ← Category.assoc, hd.inducedModelMorphism_comp_structureMap]`. Rewrite using `[Category.assoc, hfs, hLev.2.2.2.1]`. Rewrite using `[← Category.assoc, hYd]`. Conclude with `hXP`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc, hLev.2.2.2.2]`. Conclude with `hPe _ rfl`. Establish `: LocallyOfFiniteType F.s` using `by haveI := F.smooth haveI : Smooth F.s := SmoothOfRelativeDimension.smooth (g * (g + 1) / 2) F.s infer_instance`. Establish `: LocallyOfFiniteType (f ≫ PSpace.str (cycAway n) N)` using `by rw [hfs]; assumption`. Use `haveI : LocallyOfFiniteType f := locallyOfFiniteType_of_comp f (PSpace.str (cycAway n) N)`.
-
-Use `haveI : LocallyQuasiFinite f := LocallyQuasiFinite.of_finite_preimage_singleton f (GlobalTheory.SiegMin.finite_preimage_singleton_of_qFin f hQ)`. Use `haveI : IsFinite q := hLev.2.1`. Use `haveI : LocallyQuasiFinite (d ≫ hX) := by rw [heq]; infer_instance`. Use `haveI : LocallyQuasiFinite d := LocallyQuasiFinite.of_comp d hX`. Use `haveI := Y.sep`.
-
-Use `haveI := Y.qc`. Use `haveI := Y.lft`. Use `haveI := X.sep`. Use `haveI : IsSeparated (d ≫ X.s) := by rw [hd.inducedModelMorphism_comp_structureMap]; infer_instance`. Use `haveI : QuasiCompact (d ≫ X.s) := by rw [hd.inducedModelMorphism_comp_structureMap]; infer_instance`.
-
-Use `haveI : LocallyOfFiniteType (d ≫ X.s) := by rw [hd.inducedModelMorphism_comp_structureMap]; infer_instance`. Use `haveI : IsSeparated d := IsSeparated.of_comp d X.s`. Use `haveI : QuasiCompact d := QuasiCompact.of_comp d X.s`. Use `haveI : LocallyOfFiniteType d := locallyOfFiniteType_of_comp d X.s`. Take `⟨h1, h2⟩` from `isIso_stalkMap_of_isHom hd`.
-
-Conclude with `GlobalTheory.isOpenImmersion_of_quasiFinite_of_isIso_stalkMap d fun z => (hXn z).2`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem level_openImmersion : ∀ (g n : ℕ), 1 ≤ g → 3 ≤ n → Odd n → ∀ (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ), IsE8 W → ∀ (P : PolAV F.X) (rig : LB.Gen (P.L.pull (eSec P.A))) (m N : ℕ) (f : F.X ⟶ PSpace (cycAway n) N), ThAt F W P rig m f → ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (β : cycAway n →+* o) (S : ThetaSys o Ω) (ρ : S.Real) (u : Sp S.R ⟶ F.X), SysAt F W β S ρ u → QFin f → ∀ (Y X : RatModel o Ω) (q : Y.Z ⟶ F.X), LevAt F β u Y q → X.IsNm S.th → Geo.Tor.IsNormalScheme X.Z → ∃ d : Y.Z ⟶ X.Z, X.IsHom Y (AlgHom.id o Ω) d ∧ IsOpenImmersion d := by
   intro g n hg hn hodd F W hW P rig m N f hTh o Ω _ _ _ _ β S ρ u hSys hQ Y X q hLev hNm hXn

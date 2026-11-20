@@ -7,9 +7,9 @@ open scoped ComplexOrder Matrix MatrixOrder
 namespace GlobalTheory.CompMetric
 
 /- English proof (translation)
-Establish `h' : A ≤ c • B`. Rewrite using `[Matrix.le_iff, RCLike.real_smul_eq_coe_smul (K := ℂ)]`. Conclude with `h`. Establish `h1` using `GlobalTheory.inv_le_inv_of_posDef_of_le hA h'`. Rewrite `h1` using `[GlobalTheory.inv_real_smul_of_posDef hB hc.ne']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `(Matrix.le_iff.mp h1).smul hc.le`. Rewrite `h2` using `[smul_sub, smul_smul, mul_inv_cancel₀ hc.ne', one_smul, RCLike.real_smul_eq_coe_smul (K := ℂ)]`. Conclude with `h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_sub_posSemidef {n : ℕ} {A B : Matrix (Fin n) (Fin n) ℂ} {c : ℝ} (hc : 0 < c)
     (hA : A.PosDef) (hB : B.PosDef) (h : (((c : ℂ) • B) - A).PosSemidef) :
@@ -24,9 +24,9 @@ theorem inv_sub_posSemidef {n : ℕ} {A B : Matrix (Fin n) (Fin n) ℂ} {c : ℝ
   exact h2
 
 /- English proof (translation)
-Establish `h' : A ≤ c • B`. Rewrite using `[Matrix.le_iff, RCLike.real_smul_eq_coe_smul (K := ℂ)]`. Conclude with `h`. Establish `h1` using `GlobalTheory.conjTranspose_mul_mul_le_of_le h' P`. Establish `h2` using `GlobalTheory.re_det_le_re_det_of_posSemidef_of_le (hA.posSemidef.conjTranspose_mul_mul_same P) h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[Matrix.mul_smul, Matrix.smul_mul, RCLike.real_smul_eq_coe_smul (K := ℂ), det_smul, Fintype.card_fin]`. Simplify `h2` using `[← Complex.ofReal_pow, Complex.re_ofReal_mul]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem det_re_le_of_sub {n k : ℕ} {A B : Matrix (Fin n) (Fin n) ℂ} {c : ℝ} (hc : 0 ≤ c)
     (hA : A.PosDef) (h : (((c : ℂ) • B) - A).PosSemidef) (P : Matrix (Fin n) (Fin k) ℂ) :
@@ -41,7 +41,7 @@ theorem det_re_le_of_sub {n k : ℕ} {A B : Matrix (Fin n) (Fin n) ℂ} {c : ℝ
   simpa [← Complex.ofReal_pow, Complex.re_ofReal_mul] using h2
 
 /- English proof (translation)
-Introduce `n G G₀ m hm hG hG₀ h1 h2`. Establish `hm0 : (0 : ℝ) < m` using `lt_of_lt_of_le one_pos hm`. Conclude with `⟨inv_sub_posSemidef hm0 hG₀ hG h2, inv_sub_posSemidef hm0 hG hG₀ h1, fun k P => ⟨det_re_le_of_sub hm0.le hG h1 P, det_re_le_of_sub hm0.le hG₀ h2 P⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem comparable_metrics : ∀ (n : ℕ) (G G₀ : Matrix (Fin n) (Fin n) ℂ) (m : ℝ), 1 ≤ m → G.PosDef → G₀.PosDef → (((m : ℂ) • G₀) - G).PosSemidef → (((m : ℂ) • G) - G₀).PosSemidef → (((m : ℂ) • G₀⁻¹) - G⁻¹).PosSemidef ∧ (((m : ℂ) • G⁻¹) - G₀⁻¹).PosSemidef ∧ ∀ (k : ℕ) (P : Matrix (Fin n) (Fin k) ℂ), (P.conjTranspose * G * P).det.re ≤ m ^ k * (P.conjTranspose * G₀ * P).det.re ∧ (P.conjTranspose * G₀ * P).det.re ≤ m ^ k * (P.conjTranspose * G * P).det.re := by
   intro n G G₀ m hm hG hG₀ h1 h2

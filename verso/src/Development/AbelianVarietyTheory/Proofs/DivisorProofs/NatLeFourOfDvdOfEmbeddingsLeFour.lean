@@ -8,17 +8,15 @@ open Formalism.IndefR.DatumF GlobalTheory.HeckeExtend
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `F _ _ y m r hy hyr hφ`. Use `set d := Module.finrank ℚ F with hd`. Establish `hr : (r : F) ≠ 0` using `by rintro h; apply hy; rw [hyr, h, mul_zero]`. Establish `hm : (m : F) ≠ 0` using `by rintro h; apply hy; rw [hyr, h, zero_mul]`. Establish `hN : Algebra.norm ℚ y = (m : ℚ) ^ d * (Algebra.norm ℤ r : ℚ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hyr, map_mul, Algebra.coe_norm_int]`. Use `congr 1`. Rewrite using `[show ((m : F)) = algebraMap ℚ F (m : ℚ) by simp, Algebra.norm_algebraMap]`. Establish `hr0 : (Algebra.norm ℤ r : ℚ) ≠ 0`. Rewrite using `[Algebra.coe_norm_int]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(Algebra.norm_ne_zero_iff).2 hr`. Establish `hr1 : (1 : ℝ) ≤ |((Algebra.norm ℤ r : ℤ) : ℝ)|`. Establish `: Algebra.norm ℤ r ≠ 0` using `by exact_mod_cast hr0`. Conclude with `Int.one_le_abs this` after adjusting the coercions. Establish `hlow : (m : ℝ) ^ d ≤ |((Algebra.norm ℚ y : ℚ) : ℝ)|`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hN]`. Use `push_cast`. Rewrite using `[abs_mul, abs_pow, Nat.abs_cast]`. Use polynomial arithmetic with `[pow_nonneg (Nat.cast_nonneg m : (0:ℝ) ≤ m) d]`. Establish `hprod` using `Algebra.norm_eq_prod_embeddings ℚ ℂ y`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hup : |((Algebra.norm ℚ y : ℚ) : ℝ)| ≤ 4 ^ d`. Establish `h1 : ‖algebraMap ℚ ℂ (Algebra.norm ℚ y)‖ = |((Algebra.norm ℚ y : ℚ) : ℝ)|`. Simplify using the standard rewrite rules. Rewrite using `[← h1, hprod, norm_prod]`. Combine the equalities or inequalities in the displayed calculation.
-
-Establish `hd0 : d ≠ 0` using `Module.finrank_pos.ne'`. Establish `: (m : ℝ) ≤ 4` using `(pow_le_pow_iff_left₀ (Nat.cast_nonneg m) (by norm_num) hd0).1 (hlow.trans hup)`. Conclude with `this` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nat_le_four_of_dvd_of_embeddings_le_four :
     ∀ (F : Type) [Field F] [NumberField F] (y : F) (m : ℕ) (r : 𝓞 F), y ≠ 0 → y = m * r →

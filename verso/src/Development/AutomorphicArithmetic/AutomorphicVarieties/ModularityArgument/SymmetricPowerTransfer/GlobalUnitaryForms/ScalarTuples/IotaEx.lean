@@ -12,11 +12,11 @@ section Int
 variable {O K : Type} [CommRing O] [Field K] [Algebra O K]
 
 /- English proof (translation)
-Take `⟨p0, rfl⟩` from `hp`. Take `⟨q0, rfl⟩` from `hq`. Take `⟨r0, hr⟩` from `h1`. Take `⟨i0, hi⟩` from `h2`. Establish `hw : IsIntegral O (QuadraticAlgebra.omega : QuadraticAlgebra K (algebraMap O K p0) (algebraMap O K q0))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨Polynomial.X ^ 2 - Polynomial.C q0 * Polynomial.X - Polynomial.C p0, ?_, ?_⟩` and prove the remaining obligations. Use `monicity!`. Rewrite using `[← Polynomial.aeval_def]`. Simplify using `only [map_sub, map_mul, map_pow, Polynomial.aeval_X, Polynomial.aeval_C]`. Rewrite using `[pow_two, QuadraticAlgebra.omega_mul_omega_eq_algebraMap, IsScalarTower.algebraMap_apply O K (QuadraticAlgebra K _ _) p0, IsScalarTower.algebraMap_apply O K (QuadraticAlgebra K _ _) q0]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hx : x = algebraMap O _ r0 + algebraMap O _ i0 * QuadraticAlgebra.omega`. Apply the tactic sequence `ext <;> simp [IsScalarTower.algebraMap_apply O K (QuadraticAlgebra K _ _), hr, hi]`. Rewrite using `[hx]`. Conclude with `(isIntegral_algebraMap).add ((isIntegral_algebraMap).mul hw)`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem int_qa {p q : K} (hp : p ∈ (algebraMap O K).range) (hq : q ∈ (algebraMap O K).range)
     {x : QuadraticAlgebra K p q} (h1 : x.re ∈ (algebraMap O K).range) (h2 : x.im ∈ (algebraMap O K).range) :
@@ -46,15 +46,13 @@ section Closure
 variable {R A : Type} [CommRing R] [CommRing A] [Algebra R A]
 
 /- English proof (translation)
-Set `f : integralClosure R A →+* A` to `(integralClosure R A).val`. Establish `hf : Function.Injective f` using `Subtype.val_injective`. Set `N : Matrix (Fin 2) (Fin 2) (integralClosure R A)` to `fun i j => ⟨_, h1 i j⟩`. Set `N' : Matrix (Fin 2) (Fin 2) (integralClosure R A)` to `fun i j => ⟨_, h2 i j⟩`. Establish `eN : N.map f = (M : Matrix (Fin 2) (Fin 2) A)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use extensionality with `i j`. Both sides reduce to the same expression. Establish `eN' : N'.map f = ((M⁻¹ : GL (Fin 2) A) : Matrix (Fin 2) (Fin 2) A)`. Use extensionality with `i j`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Establish `e1 : N * N' = 1`. Apply `Matrix.map_injective hf` to reduce the goal to its premises. Use `show (N * N').map f = (1 : Matrix (Fin 2) (Fin 2) _).map f`. Rewrite using `[Matrix.map_mul, eN, eN', Matrix.map_one f (map_zero f) (map_one f)]`. Conclude with `M.mul_inv`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `e2 : N' * N = 1`. Apply `Matrix.map_injective hf` to reduce the goal to its premises. Use `show (N' * N).map f = (1 : Matrix (Fin 2) (Fin 2) _).map f`. Rewrite using `[Matrix.map_mul, eN, eN', Matrix.map_one f (map_zero f) (map_one f)]`. Conclude with `M.inv_mul`.
-
-Use `⟨⟨N, N', e1, e2⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem gl_int (M : GL (Fin 2) A) (h1 : ∀ i j, IsIntegral R ((M : Matrix (Fin 2) (Fin 2) A) i j))
     (h2 : ∀ i j, IsIntegral R (((M⁻¹ : GL (Fin 2) A) : Matrix (Fin 2) (Fin 2) A) i j)) :
@@ -84,7 +82,7 @@ private theorem gl_int (M : GL (Fin 2) A) (h1 : ∀ i j, IsIntegral R ((M : Matr
   rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨⟨_, h1⟩, ⟨_, h2⟩, Subtype.ext (by simp), Subtype.ext (by simp)⟩, Units.ext rfl⟩`.
+Supply the required witnesses or components.
 -/
 private theorem unit_int (z : Aˣ) (h1 : IsIntegral R (z : A)) (h2 : IsIntegral R ((z⁻¹ : Aˣ) : A)) :
     z ∈ (Units.map ((integralClosure R A).val : integralClosure R A →* A)).range :=
@@ -97,7 +95,7 @@ section Maps
 variable {K K' : Type} [Field K] [Field K'] (f : K →+* K') (Δ : K)
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp [lmap]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem lmap_star (x : Lsq K Δ) : lmap f Δ (star x) = star (lmap f Δ x) := by
   ext <;> simp [lmap]
@@ -115,7 +113,7 @@ private def mapU : U3 Δ →* U3 (f Δ) where
   map_mul' a b := Subtype.ext (map_mul _ _ _)
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j : 1`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [wJ]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem map_wJ : GeneralLinearGroup.map (lmap f Δ) (wJ Δ) = wJ (f Δ) := by
   apply Units.ext
@@ -142,7 +140,7 @@ section Places
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Establish `h` using `(FiniteAdeleRing.algebraMap (𝓞 F) F x).2`. Use `filter_upwards [h] with v hv`. Conclude with `⟨⟨_, hv⟩, rfl⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem ae_int (x : F) : ∀ᶠ v : Pl F in Filter.cofinite, cv v x ∈ (algebraMap (Ov v) (Kv v)).range := by
   have h := (FiniteAdeleRing.algebraMap (𝓞 F) F x).2
@@ -150,16 +148,14 @@ private theorem ae_int (x : F) : ∀ᶠ v : Pl F in Filter.cofinite, cv v x ∈ 
   exact ⟨⟨_, hv⟩, rfl⟩
 
 /- English proof (translation)
-Use `filter_upwards [ae_int Δ, ae_int x.re, ae_int x.im] with v h0 h1 h2`. Conclude with `int_qa (x := lmap (cv v) Δ x) h0 (algebraMap (Ov v) (Kv v)).range.zero_mem h1 h2`.
+A detailed English derivation is pending.
 -/
 private theorem ae_lsq (Δ : F) (x : Lsq F Δ) : ∀ᶠ v : Pl F in Filter.cofinite, IsIntegral (Ov v) (lmap (cv v) Δ x) := by
   filter_upwards [ae_int Δ, ae_int x.re, ae_int x.im] with v h0 h1 h2
   exact int_qa (x := lmap (cv v) Δ x) h0 (algebraMap (Ov v) (Kv v)).range.zero_mem h1 h2
 
 /- English proof (translation)
-Use `filter_upwards [ae_int τ, ae_int x.re, ae_int x.im] with v h0 h1 h2`. Establish `hm : cv v (-1 : F) ∈ (algebraMap (Ov v) (Kv v)).range`. Rewrite using `[map_neg, map_one]`. Conclude with `(algebraMap (Ov v) (Kv v)).range.neg_mem (algebraMap (Ov v) (Kv v)).range.one_mem`. Establish `e : cv v (-1 : F) = -1` using `by simp`.
-
-Conclude with `int_qa (x := emap (cv v) τ x) (e ▸ hm) h0 h1 h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem ae_et (τ : F) (x : Etau F τ) : ∀ᶠ v : Pl F in Filter.cofinite, IsIntegral (Ov v) (emap (cv v) τ x) := by
   filter_upwards [ae_int τ, ae_int x.re, ae_int x.im] with v h0 h1 h2
@@ -170,9 +166,9 @@ private theorem ae_et (τ : F) (x : Etau F τ) : ∀ᶠ v : Pl F in Filter.cofin
   exact int_qa (x := emap (cv v) τ x) (e ▸ hm) h0 h1 h2
 
 /- English proof (translation)
-Establish `hall : ∀ᶠ v : Pl F in Filter.cofinite, ∀ i j : Fin 3, IsIntegral (Ov v) (lmap (cv v) Δ ((g : Matrix (Fin 3) (Fin 3) (Lsq F Δ)) i j)) ∧ IsIntegral (Ov v) (lmap (cv v) Δ (star ((g : Matrix (Fin 3) (Fin 3) (Lsq F Δ)) i j)))` using `Filter.eventually_all.2 fun i => Filter.eventually_all.2 fun j => (ae_lsq Δ _).and (ae_lsq Δ _)`. Use `filter_upwards [hall] with v hv`. Introduce `i j`. Use `⟨(hv i j).1, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `IsIntegral (Ov v) (star (lmap (cv v) Δ ((g : Matrix (Fin 3) (Fin 3) (Lsq F Δ)) i j)))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← lmap_star]`. Conclude with `(hv i j).2`.
+A detailed English derivation is pending.
 -/
 private theorem ae_U (Δ : F) (g : U3 Δ) : ∀ᶠ v : Pl F in Filter.cofinite, mapU (cv v) Δ g ∈ KU (Ov v) (cv v Δ) := by
   have hall : ∀ᶠ v : Pl F in Filter.cofinite, ∀ i j : Fin 3,
@@ -188,11 +184,9 @@ private theorem ae_U (Δ : F) (g : U3 Δ) : ∀ᶠ v : Pl F in Filter.cofinite, 
   exact (hv i j).2
 
 /- English proof (translation)
-Establish `hall : ∀ᶠ v : Pl F in Filter.cofinite, ∀ i j : Fin 2, IsIntegral (Ov v) (lmap (cv v) Δ (((g.1 : GL (Fin 2) (Lsq F Δ)) : Matrix (Fin 2) (Fin 2) (Lsq F Δ)) i j)) ∧ IsIntegral (Ov v) (lmap (cv v) Δ ((((g.1)⁻¹ : GL (Fin 2) (Lsq F Δ)) : Matrix (Fin 2) (Fin 2) (Lsq F Δ)) i j))` using `Filter.eventually_all.2 fun i => Filter.eventually_all.2 fun j => (ae_lsq Δ _).and (ae_lsq Δ _)`. Use `filter_upwards [hall] with v hv`. Rewrite using `[KD, Subgroup.mem_subgroupOf]`. Establish `e1 : ((mapD (cv v) Δ g : DX (cv v Δ)) : GL (Fin 2) (Lsq (Kv v) (cv v Δ))) = GeneralLinearGroup.map (lmap (cv v) Δ) g.1` using `rfl`. Rewrite using `[e1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `gl_int` to reduce the goal to its premises. Introduce `i j`. Conclude with `(hv i j).1`. Introduce `i j`. Rewrite using `[← map_inv]`.
-
-Conclude with `(hv i j).2`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ae_D (Δ : F) (g : DX Δ) : ∀ᶠ v : Pl F in Filter.cofinite, mapD (cv v) Δ g ∈ KD (cv v Δ) (Ov v) := by
   have hall : ∀ᶠ v : Pl F in Filter.cofinite, ∀ i j : Fin 2,
@@ -213,7 +207,7 @@ private theorem ae_D (Δ : F) (g : DX Δ) : ∀ᶠ v : Pl F in Filter.cofinite, 
     exact (hv i j).2
 
 /- English proof (translation)
-Use `filter_upwards [ae_et τ (z : Etau F τ), ae_et τ ((z⁻¹ : (Etau F τ)ˣ) : Etau F τ)] with v h1 h2`. Conclude with `unit_int _ h1 h2`.
+A detailed English derivation is pending.
 -/
 private theorem ae_E (τ : F) (z : (Etau F τ)ˣ) : ∀ᶠ v : Pl F in Filter.cofinite,
     Units.map (emap (cv v) τ : Etau F τ →* Etau (Kv v) (cv v τ)) z ∈ Cu (Ov v) (cv v τ) := by
@@ -229,7 +223,7 @@ private def toRP {I H : Type} [Group H] {Gv : I → Type} [∀ v, Group (Gv v)] 
 end UpperTheory.V.Z.Sym.Glob
 
 /- English proof (translation)
-Introduce `F _ _ Δ`. Conclude with `⟨⟨toRP (fun v => mapU (cv v) Δ) (ae_U Δ), fun _ _ => rfl⟩, ⟨toRP (fun v => mapD (cv v) Δ) (ae_D Δ), fun _ _ => rfl⟩, fun τ => ⟨toRP (fun v => Units.map (emap (cv v) τ : Etau F τ →* Etau (Kv v) (cv v τ))) (ae_E τ), fun _ _ => rfl⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem UpperTheory.V.Z.Sym.Glob.iotaEx :
     UpperTheory.V.Z.Sym.Glob.IotaEx := by

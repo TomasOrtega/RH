@@ -20,7 +20,7 @@ variable {K : Type*} [Fintype K] {ι : K → Type*} {e : ℕ} {P : Ideal (MRing 
   {Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)} {φ : Fin e → ((Σ k, ι k) → ℂ) → ℝ}
 
 /- English proof (translation)
-Unfold `sheetDensity`. Apply the tactic sequence `split_ifs <;> simp [neg_mul]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sheetDensity_neg (g : ((Σ k, ι k) → ℂ) → ℝ) (y : Fin e → ℂ) (w : ((k : K) → ι k) → ℂ) :
     sheetDensity P Ψ φ (fun z => -g z) y w = -sheetDensity P Ψ φ g y w := by
@@ -28,7 +28,7 @@ theorem sheetDensity_neg (g : ((Σ k, ι k) → ℂ) → ℝ) (y : Fin e → ℂ
   split_ifs <;> simp [neg_mul]
 
 /- English proof (translation)
-Unfold `sheetDensity`. Use `split_ifs with hγ`. Establish `hs : IsSheet P Ψ y w hγ.choose` using `hγ.choose_spec`. Rewrite using `[h _ hs.2.self_of_nhds.2.1]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sheetDensity_congr {g g' : ((Σ k, ι k) → ℂ) → ℝ} (h : ∀ z ∈ mcPts P, g z = g' z) (y : Fin e → ℂ)
     (w : ((k : K) → ι k) → ℂ) : sheetDensity P Ψ φ g y w = sheetDensity P Ψ φ g' y w := by
@@ -41,19 +41,19 @@ theorem sheetDensity_congr {g g' : ((Σ k, ι k) → ℂ) → ℝ} (h : ∀ z �
 end
 
 /- English proof (translation)
-Introduce `K _ ι _ P e Ψ Ψ' L g hP hΨ hΨ' hL hg`. Use `set S : Set ((Σ k, ι k) → ℂ) := {z | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0} with hSdef`. Use `set g₀ : ((Σ k, ι k) → ℂ) → ℝ := S.piecewise g 0 with hg₀def`. Establish `hg₀m : Measurable g₀` using `hg.1.continuousOn.measurable_piecewise continuousOn_const isOpen_blockNonzero.measurableSet`. Establish `hg₀inv : ∀ (c : K → ℂ) (z : (Σ k, ι k) → ℂ), (∀ k, c k ≠ 0) → g₀ (fun p => c p.1 * z p) = g₀ z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `c z hc`. Establish `hmem : (fun p : Σ k, ι k => c p.1 * z p) ∈ S ↔ z ∈ S`. Simplify using `only [hSdef, Set.mem_ofPred_eq, ne_eq, mul_eq_zero, hc, false_or]`. Distinguish the cases in `hz : z ∈ S`. Rewrite using `[hg₀def, Set.piecewise_eq_of_mem _ _ _ hz, Set.piecewise_eq_of_mem _ _ _ (hmem.2 hz), hg.2 c z hc]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hg₀def, Set.piecewise_eq_of_notMem _ _ _ hz, Set.piecewise_eq_of_notMem _ _ _ (mt hmem.1 hz)]`. Both sides reduce to the same expression. Establish `hag : ∀ z ∈ mcPts P, g z = g₀ z` using `fun z hz => (Set.piecewise_eq_of_mem S _ _ (show z ∈ S from hz.1)).symm`. Establish `hagn : ∀ z ∈ mcPts P, -g z = -g₀ z` using `fun z hz => by rw [hag z hz]`. Establish `hneg : IsDegZeroSmooth (fun z => -g z)` using `⟨hg.1.neg, fun c z hc => by simp only [hg.2 c z hc]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnn : ∀ (Ψ₀ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)) (u : ((Σ k, ι k) → ℂ) → ℝ) y, 0 ≤ ptsPosDens P Ψ₀ (pot L) u y` using `fun Ψ₀ u y => finsum_nonneg fun w => finsum_nonneg fun _ => le_max_right _ _`. Establish `key : ∀ Ψ₀ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ), IsGoodProj P Ψ₀ → ptsIntegralAt P Ψ₀ (pot L) g = (∫⁻ y, ENNReal.ofReal (ptsPosDens P Ψ₀ (pot L) g₀ y)).toReal - (∫⁻ y, ENNReal.ofReal (ptsPosDens P Ψ₀ (pot L) (fun z => -g₀ z) y)).toReal`. Introduce `Ψ₀ h₀`. Establish `hp` using `hInt K ι P e Ψ₀ L g hP h₀ hL hg`. Establish `hn` using `hInt K ι P e Ψ₀ L (fun z => -g z) hP h₀ hL hneg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e₁ : ptsPosDens P Ψ₀ (pot L) g₀ = ptsPosDens P Ψ₀ (pot L) g`. Use function extensionality and compare the values at `y`. Simplify using `only [ptsPosDens, sheetDensity_congr (Ψ := Ψ₀) (φ := pot L) hag]`. Establish `e₂ : ptsPosDens P Ψ₀ (pot L) (fun z => -g₀ z) = ptsPosDens P Ψ₀ (pot L) (fun z => -g z)`. Use function extensionality and compare the values at `y`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [ptsPosDens, sheetDensity_congr (Ψ := Ψ₀) (φ := pot L) hagn]`. Establish `hsplit : ∀ y, (∑ᶠ w ∈ fibre P Ψ₀ y, sheetDensity P Ψ₀ (pot L) g y w) = ptsPosDens P Ψ₀ (pot L) g y - ptsPosDens P Ψ₀ (pot L) (fun z => -g z) y`. Introduce `y`. Establish `hF` using `fibreFinite K ι P e Ψ₀ hP h₀ y`. Simplify using `only [ptsPosDens, finsum_mem_eq_finite_toFinset_sum _ hF, sheetDensity_neg, ← Finset.sum_sub_distrib, max_zero_sub_max_neg_zero_eq_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Unfold `ptsIntegralAt`. Simplify using `only [hsplit]`. Rewrite using `[integral_sub hp hn, integral_eq_lintegral_of_nonneg_ae (ae_of_all _ (hnn Ψ₀ g)) hp.1, integral_eq_lintegral_of_nonneg_ae (ae_of_all _ (hnn Ψ₀ _)) hn.1, e₁, e₂]`. Rewrite using `[key Ψ hΨ, key Ψ' hΨ', hPos K ι P e Ψ Ψ' L g₀ hP hΨ hΨ' hL hg₀m hg₀inv, hPos K ι P e Ψ Ψ' L (fun z => -g₀ z) hP hΨ hΨ' hL hg₀m.neg fun c z hc => by simp only [hg₀inv c z hc]]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PtsIntegralProjIndep.proof (hInt : PtsPosDensIntegrable.Statement)
     (hPos : PtsPosPartProjIndep.Statement) : PtsIntegralProjIndep.Statement := by

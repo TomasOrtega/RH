@@ -20,16 +20,14 @@ namespace GlobalTheory.AV.AbVar
 variable {K : Type} [Field K]
 
 /- English proof (translation)
-Simplify using `only [AbVar.lam, map_sub, ← pull_comp, ← Over.comp_left, MonObj.comp_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pull_lam_av {A : AbVar K} (c : Pic A.X.left) {Y Z : Over (Sp K)} (u : Z ⟶ Y) (x y : Y ⟶ A.X) :
     CechPic.pull u.left (AbVar.lam c x y) = AbVar.lam c (u ≫ x) (u ≫ y) := by
   simp only [AbVar.lam, map_sub, ← pull_comp, ← Over.comp_left, MonObj.comp_mul]
 
 /- English proof (translation)
-Rewrite using `[CategoryTheory.Hom.one_def, Over.comp_left, pull_comp]`. Take `⟨V, hV, hc⟩` from `AbDual.exists_pull_eq_zero (CechPic.pull (η[A.X]).left c) (IsLocalRing.closedPoint K)`. Conclude with `AbDual.pull_eq_zero_of_mem V _ (fun z => by`. Establish `: (toUnit Y).left z = IsLocalRing.closedPoint K` using `Subsingleton.elim (α := PrimeSpectrum K) _ _`. Rewrite using `[this]`.
-
-Conclude with `hV) hc`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pull_one_eq_zero {A : AbVar K} (c : Pic A.X.left) (Y : Over (Sp K)) :
     CechPic.pull (1 : Y ⟶ A.X).left c = 0 := by
@@ -40,15 +38,15 @@ theorem pull_one_eq_zero {A : AbVar K} (c : Pic A.X.left) (Y : Over (Sp K)) :
     rw [this]; exact hV) hc
 
 /- English proof (translation)
-Introduce `K _ A A' P hP hdim c`. Use `set β : Pic (A.X ⊗ A.X).left := AbVar.lam c (fst A.X A.X) (snd A.X A.X) with hβ`. Establish `hpull : ∀ {Y : Over (Sp K)} (x y : Y ⟶ A.X), CechPic.pull (lift x y).left β = AbVar.lam c x y` using `fun x y => by`. Rewrite using `[hβ, pull_lam_av, lift_fst, lift_snd]`. Establish `hadd : ∀ (Y : Over (Sp K)) (a a' : Y ⟶ A.X) (t : Y ⟶ A.X), CechPic.pull (lift (a * a') t).left β = CechPic.pull (lift a t).left β + CechPic.pull (lift a' t).left β`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `Y a a' t`. Rewrite using `[hpull, hpull, hpull]`. Conclude with `GlobalTheory.T.abelianVarietyMumfordClass_mul_left K A c Y a a' t`. Establish `hnorm : CechPic.pull (lift (𝟙 A.X) (1 : A.X ⟶ A.X)).left β = 0`. Rewrite using `[hpull, AbVar.lam, _root_.mul_one, pull_one_eq_zero, sub_self, sub_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨ψ, hψ, -⟩` from `GlobalTheory.T.biadditiveClass_eq_poincarePullback_unique_hom K A A' A P hP β hadd hnorm`. Use `⟨ψ, hψ, fun hc => ?_⟩` and prove the remaining obligations. Establish `hfin : IsFinite ψ.hom.left`. Use `(GlobalTheory.T.isFinite_iff_finite_ker' K A A' ψ).2 ?_` and prove the remaining obligations. Establish `hF` using `GlobalTheory.T.finite_mumfordClass_eq_zero_ample K A c hc`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Finite.of_injective (β := {x : A.Pt // AbVar.lam c (fst A.X (ptOver K (AlgebraicClosure K))) (snd A.X _ ≫ x) = 0}) (fun x => ⟨x.1, ?_⟩) ?_` and prove the remaining obligations. Establish `hx : x.1 ≫ ψ.hom = 1`. Use `x.2` as an intermediate fact. Rewrite `this` using `[MonoidHom.mem_ker, ptMap_apply]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Rewrite using `[← hpull, hψ, AbDual.pull_evc, lift_fst, lift_snd_assoc, Category.assoc, hx, MonObj.comp_one]`. Conclude with `AbDual.evc_one_right hP.isLB hP.zero _`. Introduce `x y h`. Conclude with `Subtype.ext (Subtype.mk.inj h)`. Conclude with `⟨hfin, GlobalTheory.T.surjective_of_isFinite_of_dim_eq_abelianVarietyHom K A A' ψ hdim.symm hfin⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_phi : ∀ (K : Type) [Field K] (A A' : AbVar K) (P : LB (A.X ⊗ A'.X).left)
     (hP : AbDual.IsDual A.X A'.X P), A'.dim = A.dim → ∀ c : Pic A.X.left, ∃ φ : A ⟶ A',

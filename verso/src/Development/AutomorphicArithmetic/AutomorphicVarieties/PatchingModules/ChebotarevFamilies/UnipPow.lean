@@ -3,11 +3,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.Ta
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing Filter UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `CharP.exists K`. Use `haveI := hp`. Establish `hpp : p.Prime` using `CharP.char_is_prime K p`. Assume the negation of the conclusion as `hne`. Establish `hpl : p ≠ l` using `fun h => hne (h ▸ hp)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : IsUnit (p : ℤ_[l])`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[PadicInt.not_isUnit_iff, ← Int.cast_natCast, PadicInt.norm_int_lt_one_iff_dvd, Int.natCast_dvd_natCast]`. Conclude with `hpl ((Nat.prime_dvd_prime_iff_eq (Fact.out) hpp).mp h).symm`. Use `hu.map (algebraMap ℤ_[l] K)` as an intermediate fact.
-
-Rewrite `this` using `[map_natCast, CharP.cast_eq_zero]`. Conclude with `not_isUnit_zero this`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem charK (l : ℕ) [Fact l.Prime] (K : Type) [Field K] [Finite K] [Algebra ℤ_[l] K] : CharP K l := by
   obtain ⟨p, hp⟩ := CharP.exists K
@@ -25,19 +23,17 @@ private theorem charK (l : ℕ) [Fact l.Prime] (K : Type) [Field K] [Finite K] [
   exact not_isUnit_zero this
 
 /- English proof (translation)
-Break down `isEmpty_or_nonempty (Fin n) with hn | hn` into its components or cases. Conclude with `(IsEmpty.false i).elim`. Use `haveI : CharP (PowerSeries K) l := charP_of_injective_algebraMap (algebraMap K (PowerSeries K)).injective l`. Use `set N := M - 1 with hN`. Establish `hMN : M = 1 + N` using `by rw [hN]; abel`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hfrob : M ^ l ^ (n * m) - 1 = N ^ l ^ (n * m)`. Rewrite using `[hMN, add_pow_char_pow_of_commute (p := l) (h := Commute.one_left N), one_pow, add_sub_cancel_left]`. Set `f` to `(PowerSeries.constantCoeff : PowerSeries K →+* K).mapMatrix (m := Fin n)`. Establish `hNn : f (N ^ n) = 0`. Rewrite using `[map_pow, hN, map_sub, map_one, RingHom.mapMatrix_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `Matrix.aeval_self_charpoly (M.map PowerSeries.constantCoeff)` as an intermediate fact. Rewrite `this` using `[hM]`. Simplify `this` using `[map_pow, map_sub]`. Establish `h1 : ∀ a b, (N ^ n) a b ∈ maximalIdeal (PowerSeries K)`. Introduce `a b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h0 : PowerSeries.constantCoeff ((N ^ n) a b) = 0`. Use `congrFun (congrFun hNn a) b` as an intermediate fact. Simplify `this` using `[f, RingHom.mapMatrix_apply]`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, PowerSeries.isUnit_iff_constantCoeff, h0]`. Conclude with `not_isUnit_zero`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Establish `hpow : ∀ (I : Ideal (PowerSeries K)) (P : Matrix (Fin n) (Fin n) (PowerSeries K)), (∀ a b, P a b ∈ I) → ∀ k : ℕ, ∀ a b, (P ^ k) a b ∈ I ^ k`. Introduce `I P hP k`. Proceed by induction on `k with`. Consider the case `zero => intro a b`. Simplify using `[Ideal.one_eq_top]`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Consider the case `succ k ih`. Introduce `a b`. Rewrite using `[pow_succ P, Matrix.mul_apply, pow_succ I]`. Conclude with `Ideal.sum_mem _ fun c _ => Ideal.mul_mem_mul (ih a c) (hP c b)`. Establish `hle : n * m ≤ l ^ (n * m)` using `(Nat.lt_pow_self (Fact.out : l.Prime).one_lt).le`.
-
-Rewrite using `[hfrob, show l ^ (n * m) = n * m + (l ^ (n * m) - n * m) by omega, pow_add, pow_mul, Matrix.mul_apply]`. Conclude with `Ideal.sum_mem _ fun c _ => Ideal.mul_mem_right _ _ (hpow _ _ h1 m i c)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem unip_pow (l : ℕ) [Fact l.Prime] (K : Type) [Field K] [CharP K l] (n m : ℕ)
     (M : Matrix (Fin n) (Fin n) (PowerSeries K))
@@ -79,27 +75,23 @@ private theorem unip_pow (l : ℕ) [Fact l.Prime] (K : Type) [Field K] [CharP K 
   exact Ideal.sum_mem _ fun c _ => Ideal.mul_mem_right _ _ (hpow _ _ h1 m i c)
 
 /- English proof (translation)
-Introduce `l _ F n x H hH g hg`. Use `haveI : CharP x.K l := charK l x.K`. Establish `key : ∀ m : ℕ, ∀ i j, (mat x.ρ g - 1) i j ∈ maximalIdeal (PowerSeries x.K) ^ m`. Introduce `m`. Set `φ : F.G₀ →* Matrix (Fin n) (Fin n) (PowerSeries x.K ⧸ maximalIdeal (PowerSeries x.K) ^ m)` to `(Ideal.Quotient.mk (maximalIdeal (PowerSeries x.K) ^ m)).mapMatrix.toMonoidHom.comp (mat x.ρ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hφ : ∀ y, φ y = 1 ↔ ∀ i j, (mat x.ρ y - 1) i j ∈ maximalIdeal (PowerSeries x.K) ^ m`. Introduce `y`. Rewrite using `[← Matrix.ext_iff]`. Use `forall_congr' fun i => forall_congr' fun j => ?_` and prove the remaining obligations. Rewrite using `[Matrix.sub_apply, ← Ideal.Quotient.eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show Ideal.Quotient.mk _ (mat x.ρ y i j) = (1 : Matrix (Fin n) (Fin n) (PowerSeries x.K ⧸ maximalIdeal (PowerSeries x.K) ^ m)) i j ↔ _`. Rewrite using `[Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Set `T : Subgroup F.Γ` to `φ.ker.map F.η.ker.subtype`. Establish `hTopen : IsOpen (T : Set F.Γ)`.
+Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK : IsOpen (φ.ker : Set F.G₀)`. Establish `e : (φ.ker : Set F.G₀) = ⋂ i, ⋂ j, {y : F.G₀ | φ y i j = (1 : Matrix (Fin n) (Fin n) (PowerSeries x.K ⧸ maximalIdeal (PowerSeries x.K) ^ m)) i j}`. Use extensionality with `y`. Simplify using `only [SetLike.mem_coe, MonoidHom.mem_ker, Set.mem_iInter, Set.mem_setOf_eq]`. Conclude with `Matrix.ext_iff.symm`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e]`. Conclude with `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => (x.cont i j m : IsLocallyConstant fun y : F.G₀ => φ y i j).isOpen_fiber _`. Rewrite using `[Subgroup.coe_map]`. Conclude with `F.η_open.isOpenMap_subtype_val _ hK`. Take `⟨V, hV⟩` from `ProfiniteGrp.exist_openNormalSubgroup_sub_open_nhds_of_one hTopen T.one_mem`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `W : OpenNormalSubgroup F.Γ` to `{ toSubgroup := T.normalCore isOpen' := Subgroup.isOpen_mono (H₁ := V.toSubgroup) (Subgroup.normal_le_normalCore.mpr fun a ha => hV ha) V.toOpenSubgroup.isOpen isNormal' := Subgroup.normalCore_normal T }`. Establish `hW : ∀ h ∈ H.toSubgroup, ∃ e, h ^ l ^ e ∈ W`. Introduce `h hh`. Use `⟨n * m, ?_⟩` and prove the remaining obligations. Use `show ∀ b : F.Γ, b * h ^ l ^ (n * m) * b⁻¹ ∈ T`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `b`. Rewrite using `[← conj_pow]`. Establish `hbh : b * h * b⁻¹ ∈ H.toSubgroup` using `H.isNormal'.conj_mem h hh b`. Take `⟨he, hchar⟩` from `hH _ hbh`. Use `Subgroup.mem_map.mpr ⟨⟨b * h * b⁻¹, he⟩ ^ l ^ (n * m), ?_, by simp⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[MonoidHom.mem_ker, hφ, map_pow]`. Conclude with `unip_pow l x.K n m _ hchar`. Establish `hgW : (g : F.Γ) ∈ T.normalCore`. Establish `h2` using `hg`. Simplify using `only [UpperTheory.V.Pa.PL, Subgroup.mem_iInf] at h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `h2 W hW`. Establish `h1` using `T.normalCore_le hgW`. Take `⟨y, hy, hyg⟩` from `Subgroup.mem_map.mp h1`. Establish `hyg' : y = g` using `Subtype.ext hyg`. Rewrite using `[← hyg']`.
-
-Conclude with `(hφ y).mp hy`. Apply `Units.ext` to reduce the goal to its premises. Use `show mat x.ρ g = 1`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Establish `h0 : (mat x.ρ g - 1) i j ∈ ⨅ m, maximalIdeal (PowerSeries x.K) ^ m` using `Submodule.mem_iInf _ |>.mpr fun m => key m i j`.
-
-Rewrite `h0` using `[Ideal.iInf_pow_eq_bot_of_isLocalRing _ (IsLocalRing.maximalIdeal.isMaximal _).ne_top, Ideal.mem_bot, Matrix.sub_apply, sub_eq_zero]`. Conclude with `h0`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.rhoPL :
     ∀ (l : ℕ) [Fact l.Prime] (F : GFrame l) (n : ℕ) (x : NP F n) (H : OpenNormalSubgroup F.Γ), (∀ g ∈ H, ∃ h : F.η g = 1, ((mat x.ρ ⟨g, h⟩).map (PowerSeries.constantCoeff : x.A →+* x.K)).charpoly = (Polynomial.X - 1) ^ n) → ∀ g : F.G₀, (g : F.Γ) ∈ PL l H.toSubgroup → x.ρ g = 1 := by

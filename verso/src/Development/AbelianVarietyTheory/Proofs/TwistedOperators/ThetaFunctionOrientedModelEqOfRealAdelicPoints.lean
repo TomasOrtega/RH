@@ -12,7 +12,7 @@ namespace GlobalTheory.ThetaUniqReal
 variable {D : D7}
 
 /- English proof (translation)
-The claim follows from `(InfiniteAdeleRing.denseRange_algebraMap (K := D.host.F)).prodMap (GroundTheory.Automorphic.AdelicGLn.denseRange_algebraMap_finiteAdeleRing D.host.F)`.
+A detailed English derivation is pending.
 -/
 theorem denseRange_hostField_infinite_finite_adelePair : DenseRange (fun z : D.host.F × D.host.F =>
     (pairA D.host.F (algebraMap D.host.F (Ainf D.host.F) z.1) (algebraMap D.host.F (Af D.host.F) z.2) : AF D.host.F)) :=
@@ -20,9 +20,9 @@ theorem denseRange_hostField_infinite_finite_adelePair : DenseRange (fun z : D.h
     (GroundTheory.Automorphic.AdelicGLn.denseRange_algebraMap_finiteAdeleRing D.host.F)
 
 /- English proof (translation)
-Establish `h1 : ∀ x, (algebraMap D.host.F (AF D.host.F) x).1 = algebraMap D.host.F (Ainf D.host.F) x` using `fun _ => rfl`. Establish `h2 : ∀ x, (algebraMap D.host.F (AF D.host.F) x).2 = algebraMap D.host.F (Af D.host.F) x` using `fun _ => rfl`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap D.host.F (Ainf D.host.F) u = (algebraMap D.host.F (AF D.host.F) v).1 + 1 * (algebraMap D.host.F (AF D.host.F) (u - v)).1`. Rewrite using `[h1, h1, one_mul, map_sub]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Express the relevant statement in the definitionally equal form `algebraMap D.host.F (Af D.host.F) v = (algebraMap D.host.F (AF D.host.F) v).2 + 0 * (algebraMap D.host.F (AF D.host.F) (u - v)).2`. Rewrite using `[h2, zero_mul, add_zero]`.
+Expand and normalize the polynomial expressions, which then agree. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem pairA_alg (u v : D.host.F) :
     (pairA D.host.F (algebraMap D.host.F (Ainf D.host.F) u) (algebraMap D.host.F (Af D.host.F) v) : AF D.host.F) =
@@ -39,14 +39,14 @@ theorem pairA_alg (u v : D.host.F) :
 
 set_option synthInstance.maxHeartbeats 400000 in
 /- English proof (translation)
-Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one, mul_comm, ← Algebra.smul_def, TensorProduct.smul_tmul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem alg_smul_tmul (p : AF D.host.F) (w : D.host.F) (e : D.host.E) :
     (p * algebraMap D.host.F (AF D.host.F) w) • ((1 : AF D.host.F) ⊗ₜ[D.host.F] e : AE D) = p ⊗ₜ[D.host.F] (w • e) := by
   rw [TensorProduct.smul_tmul', smul_eq_mul, mul_one, mul_comm, ← Algebra.smul_def, TensorProduct.smul_tmul]
 
 /- English proof (translation)
-Establish `h` using `alg_smul_tmul (D := D) 1 w e`. Rewrite `h` using `[one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem alg_smul_tmul_one (w : D.host.F) (e : D.host.E) :
     algebraMap D.host.F (AF D.host.F) w • ((1 : AF D.host.F) ⊗ₜ[D.host.F] e : AE D) = (1 : AF D.host.F) ⊗ₜ[D.host.F] (w • e) := by
@@ -54,11 +54,11 @@ theorem alg_smul_tmul_one (w : D.host.F) (e : D.host.E) :
   rwa [one_mul] at h
 
 /- English proof (translation)
-Use `haveI : IsModuleTopology (AF D.host.F) (AE D) := ⟨rfl⟩`. Use `set b := Module.finBasis D.host.F D.host.E`. Use `set Bt := Algebra.TensorProduct.basis (AF D.host.F) b`. Set `Φ : (Fin (Module.finrank D.host.F D.host.E) → AF D.host.F) → AE D` to `fun α => ∑ k, α k • Bt k`. Establish `hΦc : Continuous Φ` using `continuous_finset_sum _ fun k _ => (continuous_apply k).smul continuous_const`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hΦs : Function.Surjective Φ` using `fun x => ⟨Bt.repr x, Bt.sum_repr x⟩`. Establish `hd` using `hΦs.denseRange.comp (DenseRange.piMap fun _ => denseRange_hostField_infinite_finite_adelePair (D := D)) hΦc`. Use `hd.mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨z, rfl⟩`. Use `⟨((∑ k, (z k).2 • b k : D.host.E), (∑ k, ((z k).1 - (z k).2) • b k : D.host.E)), ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.comp_apply, Pi.map_apply, Φ, Bt, Algebra.TensorProduct.basis_apply, pairA_alg, add_smul, Finset.sum_add_distrib, alg_smul_tmul, alg_smul_tmul_one]`. Use `congr 1`. Simplify using `only [incA, inclR, map_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => rfl`. Rewrite using `[TensorProduct.tmul_sum]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem denseRange_rat_add_real : DenseRange (fun p : D.host.E × D.host.E =>
     (incA D p.1 + pairA D.host.F 1 0 ⊗ₜ[D.host.F] p.2 : AE D)) := by
@@ -87,9 +87,9 @@ namespace GlobalTheory.ThetaUniqReal
 open GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues
 
 /- English proof (translation)
-Establish `h` using `DenseRange.piMap fun (_ : Fin T.rank) => DenseRange.piMap fun (_ : Fin S.rank) => denseRange_rat_add_real (D := D)`. Establish `e : (fun p : Fin T.rank → Fin S.rank → D.host.E × D.host.E => (ratW T S (Matrix.of fun i j => (p i j).1) + realPt S T (Matrix.of fun i j => (p i j).2) : WO S T)) = fun p => Matrix.of fun i j => (incA D (p i j).1 + pairA D.host.F 1 0 ⊗ₜ[D.host.F] (p i j).2 : AE D)`. Use function extensionality and compare the values at `p`. Use extensionality with `i j`. Simplify using `[ratW, realPt]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem denseRange_ratW_add_realPt {D : D7} (S T : HSp D) :
     DenseRange (fun p : Fin T.rank → Fin S.rank → D.host.E × D.host.E =>
@@ -104,7 +104,7 @@ theorem denseRange_ratW_add_realPt {D : D7} (S T : HSp D) :
   exact h
 
 /- English proof (translation)
-Introduce `D ψ _ S T f₁ f₂ h₁ h₂ h`. Use `(denseRange_ratW_add_realPt S T).equalizer h₁.cont h₂.cont (funext fun p => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Rewrite using `[h₁.quasi, h₂.quasi, h]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_of_eq_realPt : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S T : HSp D) (f₁ f₂ : WO S T → ℂ),
     IsThetaFunO ψ S T f₁ → IsThetaFunO ψ S T f₂ →

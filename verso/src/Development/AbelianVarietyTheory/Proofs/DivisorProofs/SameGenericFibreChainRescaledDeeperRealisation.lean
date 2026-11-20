@@ -11,9 +11,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.Poinc.SameChain
 
 /- English proof (translation)
-Take `⟨ψ, rfl⟩` from `Spec.map_surjective g`. Establish `h2 : CommRingCat.ofHom R.val.toRingHom ≫ ψ = CommRingCat.ofHom R.val.toRingHom` using `Spec.map_injective (by rw [Spec.map_comp]; exact h)`. Establish `e : ∀ c ∈ R, ψ.hom c = c` using `fun c hc => congrArg (fun f => f.hom (⟨c, hc⟩ : R)) h2`. Establish `hψ : ψ = 𝟙 _`. Use extensionality with `x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Take `⟨a, ha, b, hb, rfl⟩` from `frac x`. Simplify using `[map_div₀, e a ha, e b hb]`. Rewrite using `[hψ, Spec.map_id]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem spec_endo_eq_id {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (R : Subalgebra o Ω)
     (frac : ∀ x : Ω, ∃ a ∈ R, ∃ b ∈ R, x = a / b) (g : Sp Ω ⟶ Sp Ω)
@@ -29,7 +29,7 @@ theorem spec_endo_eq_id {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (R 
   rw [hψ, Spec.map_id]
 
 /- English proof (translation)
-Use `spec_endo_eq_id S.R S.frac _ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, ← h.w, ← Category.assoc, hw, Category.assoc, Over.w (ρ.pt x)]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sec_of_pt {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {S : ThetaSys o Ω} (ρ : S.Real) {G : Over (Sp Ω)}
     (a : G.left ⟶ ρ.P.A.left) (h : IsPullback a G.hom ρ.P.A.hom (spMap S.R.val.toRingHom)) (w : Sp Ω ⟶ G.left)
@@ -43,29 +43,27 @@ end GlobalTheory.Poinc.SameChain
 open GlobalTheory.Poinc.SameChain in
 
 /- English proof (translation)
-Introduce `g n F W Z i X₁ ε₁ D c₀ hc R' fg frac hth hev ρ' ε' c₂ hc₂ R₂ fg₂ frac₂ hth₂ hev₂ ρ₂ ε₂ h1 h3`. Take `⟨P₁, a₁, a₁', e₁, pa₁, pa₁', L₁, L₁', E₁, T₁⟩` from `h1`. Take `⟨P₀, b, b', e₀, pb, pb', L₀, L₀', E₀, T₀⟩` from `D.same`. Take `⟨P₃, c, c', e₃, pc, pc', L₃, L₃', E₃, T₃⟩` from `h3`. Establish `pa₁c : IsGrpPullback P₁.A X₁.ρ.P.A (spMap X₁.S.R.val.toRingHom) a₁` using `pa₁.congr (by rw [RingHom.id_comp]) rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `pcc : IsGrpPullback P₃.A D.X.ρ.P.A (spMap D.X.S.R.val.toRingHom) c` using `pc.congr (by rw [RingHom.id_comp]) rfl`. Establish `hspc` using `Geo.Tor.spMap_comp X₁.S.R.val.toRingHom (algebraMap X₁.Ω₁ D.X.Ω₁)`. Establish `pbc : IsGrpPullback P₀.A X₁.ρ.P.A (spMap (algebraMap X₁.Ω₁ D.X.Ω₁) ≫ spMap X₁.S.R.val.toRingHom) b` using `pb.congr hspc rfl`. Establish `wm : b ≫ X₁.ρ.P.A.hom = (P₀.A.hom ≫ spMap (algebraMap X₁.Ω₁ D.X.Ω₁)) ≫ spMap X₁.S.R.val.toRingHom`. Rewrite using `[pbc.1.w, Category.assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set m := pa₁c.1.lift b (P₀.A.hom ≫ spMap (algebraMap X₁.Ω₁ D.X.Ω₁)) wm with hmdef`. Establish `hm1 : m ≫ a₁ = b` using `pa₁c.1.lift_fst _ _ wm`. Establish `hm2 : m ≫ P₁.A.hom = P₀.A.hom ≫ spMap (algebraMap X₁.Ω₁ D.X.Ω₁)` using `pa₁c.1.lift_snd _ _ wm`. Establish `pm : IsGrpPullback P₀.A P₁.A (spMap (algebraMap X₁.Ω₁ D.X.Ω₁)) m` using `pa₁c.cancel (pbc.congr rfl hm1.symm) hm2`. Take `⟨e, he_mon, he⟩` from `grpPullback_iso pb' pcc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI := he_mon`. Establish `pe` using `isGrpPullback_of_iso e`. Use `⟨P₀, m ≫ a₁', e.hom.left ≫ c', e₀, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(pm.comp pa₁').congr (Geo.Tor.spMap_comp R'.val.toRingHom (algebraMap X₁.Ω₁ D.X.Ω₁)).symm rfl`. Conclude with `(pe.comp pc').congr (Category.id_comp _) rfl`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `A : LBIso (X₁.ρ.P.L.pull b) (P₁.L.pull m)` using `LBIso.chartPull (chartPullSame X₁.ρ.P.L (K := PUnit) (fun _ => b) (fun _ => a₁) (fun _ => 1) m (fun _ => hm1.symm)) (chartPullPull P₁.L m) L₁.symm`. Establish `B : LBIso (P₁.L.pull m) (ρ'.P.L.pull (m ≫ a₁'))` using `LBIso.chartPull (chartPullPull P₁.L m) (chartPullSame ρ'.P.L (K := PUnit) (fun _ => m ≫ a₁') (fun _ => a₁') (fun _ => 1) m (fun _ => rfl)) L₁'`. Conclude with `LBIso.trans P₀.isLB (pull_isLB P₁.isLB m) (pull_isLB ρ'.P.isLB _) (LBIso.trans P₀.isLB (pull_isLB X₁.ρ.P.isLB b) (pull_isLB P₁.isLB m) L₀ A) B`. Establish `A : LBIso (D.X.ρ.P.L.pull b') (P₃.L.pull e.hom.left)` using `LBIso.chartPull (chartPullSame D.X.ρ.P.L (K := PUnit) (fun _ => b') (fun _ => c) (fun _ => 1) e.hom.left (fun _ => he.symm)) (chartPullPull P₃.L e.hom.left) L₃.symm`. Establish `B : LBIso (P₃.L.pull e.hom.left) (ρ₂.P.L.pull (e.hom.left ≫ c'))` using `LBIso.chartPull (chartPullPull P₃.L e.hom.left) (chartPullSame ρ₂.P.L (K := PUnit) (fun _ => e.hom.left ≫ c') (fun _ => c') (fun _ => 1) e.hom.left (fun _ => rfl)) L₃'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `LBIso.trans P₀.isLB (pull_isLB P₃.isLB _) (pull_isLB ρ₂.P.isLB _) (LBIso.trans P₀.isLB (pull_isLB D.X.ρ.P.isLB b') (pull_isLB P₃.isLB _) L₀' A) B`. Introduce `E`. Establish `k1 : (e₀ E).left ≫ m = m ≫ (e₁ E).left`. Apply `pa₁c.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hm1, (E₀ E).1, Category.assoc, (E₁ E).1, ← Category.assoc, hm1]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Category.assoc, hm2, ← Category.assoc, Over.w (e₀ E), Category.assoc, Over.w (e₁ E), hm2]`. Establish `k3 : (e₀ E).left ≫ e.hom.left = e.hom.left ≫ (e₃ E).left`. Apply `pcc.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, he, (E₀ E).2, Category.assoc, (E₃ E).1, ← Category.assoc, he]`. Rewrite using `[Category.assoc, Over.w e.hom, Over.w (e₀ E), Category.assoc, Over.w (e₃ E), Over.w e.hom]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, k1, Category.assoc, (E₁ E).2, Category.assoc]`. Rewrite using `[← Category.assoc, k3, Category.assoc, (E₃ E).2, Category.assoc]`. Introduce `x`. Take `⟨w, hw, hw'⟩` from `T₀ x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨w₁, hw₁, hw₁'⟩` from `T₁ x`. Take `⟨w₃, hw₃, hw₃'⟩` from `T₃ (D.lab x)`. Establish `s0 : w ≫ P₀.A.hom = 𝟙 _` using `sec_of_pt D.X.ρ b' pb'.1 w _ hw'`. Establish `s1 : w₁ ≫ P₁.A.hom = 𝟙 _` using `sec_of_pt ρ' a₁' pa₁'.1 w₁ _ hw₁'`. Establish `s3 : w₃ ≫ P₃.A.hom = 𝟙 _` using `sec_of_pt ρ₂ c' pc'.1 w₃ _ hw₃'`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hwm : w ≫ m = spMap (algebraMap X₁.Ω₁ D.X.Ω₁) ≫ w₁`. Apply `pa₁c.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hm1, hw, Category.assoc, hw₁, hspc, Category.assoc, RingHom.id_comp]`. Rewrite using `[Category.assoc, hm2, ← Category.assoc, s0, Category.id_comp, Category.assoc, s1, Category.comp_id]`. Establish `hwe : w ≫ e.hom.left = w₃`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `pcc.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, he, hw', hw₃, RingHom.id_comp]`. Rewrite using `[Category.assoc, Over.w e.hom, s0, s3]`. Use `⟨w, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, hwm, Category.assoc, hw₁', Geo.Tor.spMap_comp R'.val.toRingHom (algebraMap X₁.Ω₁ D.X.Ω₁), Category.assoc]`.
-
-Rewrite using `[← Category.assoc, hwe, hw₃']`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Poinc.same_chain_deep : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ) (Z : Scheme.{0}) (i : F.X ⟶ Z) (X₁ : Setup F W i) (ε₁ : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)) (D : Deep X₁ ε₁)
   (c₀ : X₁.Ω₁) (hc : c₀ ≠ 0) (R' : Subalgebra X₁.o₁ X₁.Ω₁) (fg : R'.FG) (frac : ∀ x : X₁.Ω₁, ∃ a ∈ R', ∃ b ∈ R', x = a / b) (hth : ∀ x, c₀ * X₁.S.th x ∈ R') (hev : ∀ x k, c₀ * X₁.S.ev x k ∈ R') (ρ' : (X₁.S.rechart c₀ hc R' fg frac hth hev).Real) (ε' : Matrix (Fin 8) (Fin 8) ℤ → (ρ'.P.A ⟶ ρ'.P.A))

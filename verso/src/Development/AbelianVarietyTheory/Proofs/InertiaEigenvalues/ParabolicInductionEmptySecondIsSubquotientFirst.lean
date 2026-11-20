@@ -20,7 +20,7 @@ def falseEquiv (f : (Σ j, Fin (c j)) ≃ Fin r) (hc : c true = 0) : Fin (c fals
     | true => exact absurd i.2 (by omega)⟩
 
 /- English proof (translation)
-Use `mem_parab_iff.2 fun a b i j hab => ?_` and prove the remaining obligations. Consider the cases of `a with`. Consider the case `false => exact absurd hab (by cases b <;> decide)`. Consider the case `true => exact absurd i.2 (by omega)`.
+Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem mem_parab_all {R : Type} [CommRing R] (f : (Σ j, Fin (c j)) ≃ Fin r) (hc : c true = 0)
     (g : GL (Fin r) R) : g ∈ parab R f := by
@@ -30,7 +30,7 @@ theorem mem_parab_all {R : Type} [CommRing R] (f : (Σ j, Fin (c j)) ≃ Fin r) 
   | true => exact absurd i.2 (by omega)
 
 /- English proof (translation)
-The claim follows from `Units.ext (Matrix.ext fun i _ => (Fin.cast hc i).elim0)`.
+A detailed English derivation is pending.
 -/
 theorem eq_one_true {R : Type} [CommRing R] (hc : c true = 0) (h : GL (Fin (c true)) R) : h = 1 :=
   Units.ext (Matrix.ext fun i _ => (Fin.cast hc i).elim0)
@@ -40,7 +40,7 @@ def levi {R : Type} [CommRing R] (f : (Σ j, Fin (c j)) ≃ Fin r) (hc : c true 
   (leviProj R f).comp ((MonoidHom.id _).codRestrict (parab R f) (mem_parab_all f hc))
 
 /- English proof (translation)
-The claim follows from `Units.ext (Matrix.ext fun _ _ => rfl)`.
+A detailed English derivation is pending.
 -/
 theorem levi_false {R : Type} [CommRing R] (f : (Σ j, Fin (c j)) ≃ Fin r) (hc : c true = 0)
     (g : GL (Fin r) R) : levi f hc g false = reix R (falseEquiv f hc).symm g :=
@@ -49,9 +49,9 @@ theorem levi_false {R : Type} [CommRing R] (f : (Σ j, Fin (c j)) ≃ Fin r) (hc
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
 /- English proof (translation)
-Rewrite using `[deltaHalf_apply, Fintype.prod_bool]`. Establish `h1 : modExp (fun j => Fin (c j)) false = 0`. Simplify using `only [modExp, Finset.sum_filter, Fintype.sum_bool]`. Simplify using `[hc]`. Establish `h2 : Matrix.GeneralLinearGroup.det (g true) = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[eq_one_true hc (g true), map_one]`. Rewrite using `[h1, h2]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem deltaHalf_eq_one (hc : c true = 0) (g : Levi F (fun j => Fin (c j))) :
     deltaHalf F (fun j => Fin (c j)) g = 1 := by
@@ -95,9 +95,9 @@ theorem evOne_apply (f : (Σ j, Fin (c j)) ≃ Fin r) (hc : c true = 0)
     evOne f hc ρ x = x.1.1 1 := rfl
 
 /- English proof (translation)
-Use `(injective_iff_map_eq_zero (evOne f hc ρ)).2 fun x hx => ?_` and prove the remaining obligations. Rewrite `hx` using `[evOne_apply]`. Use `Subtype.ext (Subtype.ext (funext fun g => ?_))` and prove the remaining obligations. Use `parInd_law f ρ x ⟨g, mem_parab_all f hc g⟩ 1` as an intermediate fact. Rewrite `this` using `[mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `show x.1.1 g = 0`. Rewrite using `[this, hx, map_zero, smul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evOne_injective (f : (Σ j, Fin (c j)) ≃ Fin r) (hc : c true = 0)
     (ρ : Representation ℂ (Levi F (fun j => Fin (c j))) W) : Function.Injective (evOne f hc ρ) := by
@@ -117,11 +117,9 @@ variable {c : Bool → ℕ} {r : ℕ}
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
 /- English proof (translation)
-Set `S : Subrepresentation σ.ρ` to `⟨ℂ ∙ z, fun g v hv => by`. Rewrite using `[eq_one_true hc g, map_one]`. Conclude with `hv⟩`. Use `haveI := σ.irr`. Break down `eq_bot_or_eq_top S with h | h` into its components or cases.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact.
 
-It suffices to derive a contradiction. Establish `: z ∈ S.toSubmodule` using `Submodule.mem_span_singleton_self z`. Rewrite `this` using `[h]`. Conclude with `hz this`. Establish `: y ∈ S.toSubmodule` using `by rw [h]; trivial`.
-
-Conclude with `Submodule.mem_span_singleton.1 this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_smul_eq (hc : c true = 0) (σ : IrrRep (GL (Fin (c true)) F)) {z : σ.V} (hz : z ≠ 0)
     (y : σ.V) : ∃ a : ℂ, a • z = y := by
@@ -154,11 +152,11 @@ def tensorMap (f : (Σ j, Fin (c j)) ≃ Fin r) (hc : c true = 0)
     | true => simp [eq_one_true hc (levi f hc g true)]
 
 /- English proof (translation)
-Use `show Function.Surjective (tensorMap f hc s x₀).toLinearMap`. Rewrite using `[← LinearMap.range_eq_top]`. Rewrite using `[eq_top_iff, ← PiTensorProduct.span_tprod_eq_top, Submodule.span_le]`. Introduce and unpack `_ ⟨y, rfl⟩`. Take `⟨a, ha⟩` from `exists_smul_eq hc (s true) hx (y true)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨a • y false, ?_⟩` and prove the remaining obligations. Establish `e1 : y = Function.update (Function.update x₀ false (y false)) true (a • x₀ true)`. Use function extensionality and compare the values at `j`. Apply the tactic sequence `cases j <;> simp [ha]`. Use `show (PiTensorProduct.tprod ℂ).toLinearMap x₀ false (a • y false) = PiTensorProduct.tprod ℂ y`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[map_smul, MultilinearMap.toLinearMap_apply]`. Use `conv_rhs => rw [e1, MultilinearMap.map_update_smul]`. Use `congr 2`. Use function extensionality and compare the values at `j`. Apply the tactic sequence `cases j <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem tensorMap_surjective (f : (Σ j, Fin (c j)) ≃ Fin r) (hc : c true = 0)
     (s : ∀ j, IrrRep (GL (Fin (c j)) F)) (x₀ : ∀ j, (s j).V) (hx : x₀ true ≠ 0) :
@@ -180,9 +178,7 @@ theorem tensorMap_surjective (f : (Σ j, Fin (c j)) ≃ Fin r) (hc : c true = 0)
   cases j <;> simp
 
 /- English proof (translation)
-Introduce `F _ _ _ _ r c f s hc`. Use `haveI := nontrivial_of_irreducible (s true).irr`. Take `⟨z, hz⟩` from `exists_ne (0 : (s true).V)`. Set `x₀ : ∀ j, (s j).V` to `fun j => Bool.rec (motive := fun j => (s j).V) 0 z j`. Use `⟨(falseEquiv f hc).symm, ?_⟩` and prove the remaining obligations.
-
-Conclude with `(IsSubquotient.of_injective (evOne f hc _) (evOne_injective f hc _)).trans (IsSubquotient.of_surjective (tensorMap f hc s x₀) (tensorMap_surjective f hc s x₀ hz))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isSubquotient_multiProd : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] (r : ℕ) (c : Bool → ℕ) (f : (Σ j, Fin (c j)) ≃ Fin r)

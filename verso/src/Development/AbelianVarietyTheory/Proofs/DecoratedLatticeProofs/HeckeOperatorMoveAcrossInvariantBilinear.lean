@@ -15,11 +15,9 @@ section Move
 variable {G : Type} [Group G] {K : Subgroup G}
 
 /- English proof (translation)
-Simplify using `only [DoubleCoset.mem_doubleCoset]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, hh, k, hk, e⟩`. Use `⟨k⁻¹, K.inv_mem hk, h⁻¹, K.inv_mem hh, ?_⟩` and prove the remaining obligations. Establish `hg : g = (h * a * k)⁻¹` using `by rw [← e, inv_inv]`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hg]`. Use `group`. Introduce and unpack `⟨h, hh, k, hk, e⟩`. Use `⟨k⁻¹, K.inv_mem hk, h⁻¹, K.inv_mem hh, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`.
-
-Use `group`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_doubleCoset_inv_iff {a g : G} :
     g⁻¹ ∈ DoubleCoset.doubleCoset a (K : Set G) K ↔ g ∈ DoubleCoset.doubleCoset a⁻¹ (K : Set G) K := by
@@ -36,9 +34,9 @@ theorem mem_doubleCoset_inv_iff {a g : G} :
     group
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `only [dosetInd]`. Distinguish the cases in `h : g ∈ DoubleCoset.doubleCoset a⁻¹ (K : Set G) K`. Rewrite using `[Set.indicator_of_mem h, Set.indicator_of_mem (mem_doubleCoset_inv_iff.mpr h)]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Set.indicator_of_notMem h, Set.indicator_of_notMem (fun h' => h (mem_doubleCoset_inv_iff.mp h'))]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dosetInd_comp_inv (a : G) : (fun g => dosetInd ℂ K a g⁻¹) = dosetInd ℂ K a⁻¹ := by
   funext g
@@ -49,11 +47,11 @@ theorem dosetInd_comp_inv (a : G) : (fun g => dosetInd ℂ K a g⁻¹) = dosetIn
   · rw [Set.indicator_of_notMem h, Set.indicator_of_notMem (fun h' => h (mem_doubleCoset_inv_iff.mp h'))]
 
 /- English proof (translation)
-Rewrite using `[DoubleCoset.mem_doubleCoset]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, hh, k, hk, e⟩`. Use `⟨h, hh, ?_⟩` and prove the remaining obligations. Establish `hc : ((c.out : G) : G ⧸ K) = c` using `QuotientGroup.out_eq' c`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← hc, e, QuotientGroup.eq]`. Establish `hx : (h * a * k)⁻¹ * (h * a) = k⁻¹` using `by group`. Rewrite using `[hx]`. Conclude with `K.inv_mem hk`. Introduce and unpack `⟨k, hk, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul K (k * a)`. Conclude with `⟨k, hk, h, h.2, hh⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem out_mem_doubleCoset_iff (a : G) (c : G ⧸ K) :
     c.out ∈ DoubleCoset.doubleCoset a (K : Set G) K ↔ ∃ k ∈ K, c = ((k * a : G) : G ⧸ K) := by
@@ -71,15 +69,13 @@ theorem out_mem_doubleCoset_iff (a : G) (c : G ⧸ K) :
     exact ⟨k, hk, h, h.2, hh⟩
 
 /- English proof (translation)
-Establish `h` using `hK a`. Use `set H := K.map (MulAut.conj a).toMonoidHom with hH`. Establish `hfin : Finite (K ⧸ H.subgroupOf K)`. Unfold `Subgroup.relIndex at h`. Conclude with `Subgroup.index_ne_zero_iff_finite.mp h`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Apply `(Set.finite_range (fun q : K ⧸ H.subgroupOf K => ((((q.out : K) : G) * a : G) : G ⧸ K))).subset` to reduce the goal to its premises. Introduce and unpack `c ⟨k, hk, rfl⟩`. Take `⟨h', hh'⟩` from `QuotientGroup.mk_out_eq_mul (H.subgroupOf K) (⟨k, hk⟩ : K)`. Use `⟨QuotientGroup.mk ⟨k, hk⟩, ?_⟩` and prove the remaining obligations. Simplify using `only`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hh', QuotientGroup.eq]`. Establish `hm : ((h' : K) : G) ∈ H` using `Subgroup.mem_subgroupOf.mp h'.2`. Take `⟨y, hy, hyeq⟩` from `Subgroup.mem_map.mp hm`. Establish `hy' : ((h' : K) : G) = a * y * a⁻¹`. Rewrite using `[← hyeq]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[MulAut.conj_apply]`. Establish `hx : ((((⟨k, hk⟩ : K) * (h' : K) : K) : G) * a)⁻¹ * (k * a) = y⁻¹`. Rewrite using `[Subgroup.coe_mul, hy']`. Simplify using `only [Subgroup.coe_mk]`. Use `group`.
-
-Rewrite using `[hx]`. Conclude with `K.inv_mem hy`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem finite_left_cosets_of_isCommensurated (hK : IsCommensurated K) (a : G) :
     {c : G ⧸ K | ∃ k ∈ K, c = ((k * a : G) : G ⧸ K)}.Finite := by
@@ -107,9 +103,9 @@ private theorem finite_left_cosets_of_isCommensurated (hK : IsCommensurated K) (
   exact K.inv_mem hy
 
 /- English proof (translation)
-Use `set S := {c : G ⧸ K | ∃ k ∈ K, c = ((k * a : G) : G ⧸ K)} with hSdef`. Establish `hS : S.Finite` using `finite_left_cosets_of_isCommensurated hK a`. Establish `hind : ∀ c : G ⧸ K, dosetInd ℂ K a c.out = S.indicator (fun _ => (1 : ℂ)) c`. Introduce `c`. Simplify using `only [dosetInd, Set.indicator_apply, out_mem_doubleCoset_iff, hSdef, Set.mem_setOf_eq, Pi.one_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[finsum_congr hind, ← finsum_mem_def, finsum_mem_eq_finite_toFinset_sum _ hS, Finset.sum_const, nsmul_eq_mul, mul_one]`. Establish `hcard : Nat.card S = hS.toFinset.card` using `Nat.card_eq_card_finite_toFinset hS`. Conclude with `hcard.symm` after adjusting the coercions.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finsum_dosetInd_out (hK : IsCommensurated K) (a : G) :
     ∑ᶠ c : G ⧸ K, dosetInd ℂ K a c.out = (Nat.card {c : G ⧸ K // ∃ k ∈ K, c = ((k * a : G) : G ⧸ K)} : ℂ) := by
@@ -125,7 +121,7 @@ theorem finsum_dosetInd_out (hK : IsCommensurated K) (a : G) :
   exact_mod_cast hcard.symm
 
 /- English proof (translation)
-Establish `h : ∀ h : K, ρ h v = ((1 : K →* ℂˣ) h : ℂ) • v` using `hv`. Simplify using `using h ⟨k, hk⟩`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem apply_eq_of_mem_fixed {G V : Type} [Group G] {K : Subgroup G} [AddCommGroup V] [Module ℂ V]
     (ρ : Representation ℂ G V) {v : V} (hv : v ∈ fixed ρ K) {k : G} (hk : k ∈ K) : ρ k v = v := by
@@ -133,7 +129,7 @@ private theorem apply_eq_of_mem_fixed {G V : Type} [Group G] {K : Subgroup G} [A
   simpa using h ⟨k, hk⟩
 
 /- English proof (translation)
-Take `⟨k, hk, k', hk', rfl⟩` from `DoubleCoset.mem_doubleCoset.mp hw`. Establish `hu' : π k' u = u` using `apply_eq_of_mem_fixed π hu hk'`. Establish `hy' : ρ k⁻¹ y = y` using `apply_eq_of_mem_fixed ρ hy (K.inv_mem hk)`. Rewrite using `[map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, hu']`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 private theorem invariant_pairing_doubleCoset_eq {G U X X' : Type} [Group G] {K : Subgroup G} [AddCommGroup U] [Module ℂ U]
     [AddCommGroup X] [Module ℂ X] [AddCommGroup X'] [Module ℂ X']
@@ -149,15 +145,15 @@ private theorem invariant_pairing_doubleCoset_eq {G U X X' : Type} [Group G] {K 
     _ = b (π a u) y := by rw [hy']
 
 /- English proof (translation)
-Establish `hS` using `finite_left_cosets_of_isCommensurated hK a`. Establish `hind : ∀ c : G ⧸ K, c ∉ {c : G ⧸ K | ∃ k ∈ K, c = ((k * a : G) : G ⧸ K)} → dosetInd ℂ K a c.out = 0`. Introduce `c hc`. Simplify using `only [dosetInd]`. Conclude with `Set.indicator_of_notMem (fun h => hc ((out_mem_doubleCoset_iff a c).mp h)) _`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← LinearMap.flip_apply b (heckeVec π K (r • dosetInd ℂ K a) u) y]`. Unfold `heckeVec`. Establish `hsupp : (Function.support fun c : G ⧸ K => (r • dosetInd ℂ K a) c.out • π c.out u).Finite`. Apply `hS.subset` to reduce the goal to its premises. Introduce `c hc`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hcS`. Apply `hc` to reduce the goal to its premises. Simplify using `[hind c hcS]`. Rewrite using `[map_finsum _ hsupp]`. Establish `hterm : ∀ c : G ⧸ K, (b.flip y) ((r • dosetInd ℂ K a) c.out • π c.out u) = (r * dosetInd ℂ K a c.out) • b (π a u) y`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c`. Rewrite using `[map_smul, LinearMap.flip_apply, Pi.smul_apply, smul_eq_mul]`. Distinguish the cases in `hc : c ∈ {c : G ⧸ K | ∃ k ∈ K, c = ((k * a : G) : G ⧸ K)}`. Rewrite using `[invariant_pairing_doubleCoset_eq π ρ b hb hu hy ((out_mem_doubleCoset_iff a c).mpr hc)]`. Simplify using `[hind c hc]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[finsum_congr hterm, ← finsum_smul, ← mul_finsum, finsum_dosetInd_out hK a]`.
+A detailed English derivation is pending.
 -/
 private theorem pairing_heckeVec_dosetInd_eq_card_smul {G U X X' : Type} [Group G] {K : Subgroup G} (hK : IsCommensurated K)
     [AddCommGroup U] [Module ℂ U] [AddCommGroup X] [Module ℂ X] [AddCommGroup X'] [Module ℂ X']
@@ -191,11 +187,11 @@ private theorem pairing_heckeVec_dosetInd_eq_card_smul {G U X X' : Type} [Group 
   rw [finsum_congr hterm, ← finsum_smul, ← mul_finsum, finsum_dosetInd_out hK a]
 
 /- English proof (translation)
-Establish `h : IsBiInv K ψ ∧ FinDosetSupp K ψ` using `hψ`. Take `⟨hbi, S, hS⟩` from `h`. Use `show IsBiInv K (fun g => ψ g⁻¹) ∧ FinDosetSupp K (fun g => ψ g⁻¹)`. Use `⟨fun a b g => ?_, S.image (fun s => s⁻¹), fun g hg => ?_⟩` and prove the remaining obligations. Establish `e` using `hbi b⁻¹ a⁻¹ g⁻¹`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Subgroup.coe_inv] at e`. Simplify using `only`. Rewrite using `[← e]`. Use `congr 1`. Use `group`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨s, hs, a, b, e⟩` from `hS g⁻¹ hg`. Use `⟨s⁻¹, Finset.mem_image_of_mem _ hs, b⁻¹, a⁻¹, ?_⟩` and prove the remaining obligations. Establish `hg' : g = (↑a * s * ↑b)⁻¹` using `by rw [← e, inv_inv]`. Rewrite using `[hg', Subgroup.coe_inv, Subgroup.coe_inv]`. Use `group`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem comp_inv_mem_hecke {G : Type} [Group G] {K : Subgroup G} {ψ : G → ℂ} (hψ : ψ ∈ Hecke ℂ K) :
     (fun g => ψ g⁻¹) ∈ Hecke ℂ K := by
@@ -219,13 +215,13 @@ private theorem comp_inv_mem_hecke {G : Type} [Group G] {K : Subgroup G} {ψ : G
 end Move
 
 /- English proof (translation)
-Introduce `G _ K hK hsym U X X' _ _ _ _ _ _ π ρ b hb f hf x hx φ hφ`. Use `⟨comp_inv_mem_hecke hφ, ?_⟩` and prove the remaining obligations. Use `hecke_induction (p := fun ψ => b (heckeVec π K ψ f) x = b f (heckeVec ρ K (fun g => ψ g⁻¹) x)) ?_ ?_ ?_ hφ` and prove the remaining obligations. Simplify using `[heckeVec]`. Introduce `ψ hψ ψ' hψ' e e'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsum : (fun g => (ψ + ψ') g⁻¹) = (fun g => ψ g⁻¹) + (fun g => ψ' g⁻¹)` using `rfl`. Rewrite using `[heckeVec_add hK π hψ hψ' f, hsum, heckeVec_add hK ρ (comp_inv_mem_hecke hψ) (comp_inv_mem_hecke hψ') x, map_add, LinearMap.add_apply, map_add, e, e']`. Introduce `r a`. Establish `hc : (fun g => (r • dosetInd ℂ K a) g⁻¹) = r • dosetInd ℂ K a⁻¹`. Use function extensionality and compare the values at `g`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Pi.smul_apply, Pi.smul_apply, ← dosetInd_comp_inv a]`. Establish `hb' : ∀ g y u, b.flip (ρ g y) (π g u) = b.flip y u` using `fun g y u => by`. Rewrite using `[LinearMap.flip_apply, LinearMap.flip_apply, hb]`. Rewrite using `[hc, pairing_heckeVec_dosetInd_eq_card_smul hK π ρ b hb hf hx r a, ← LinearMap.flip_apply b f (heckeVec ρ K (r • dosetInd ℂ K a⁻¹) x), pairing_heckeVec_dosetInd_eq_card_smul hK ρ π b.flip hb' hx hf r a⁻¹, LinearMap.flip_apply, hsym a]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← hb a f (ρ a⁻¹ x), Representation.self_inv_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem heckeVec_move : ∀ (G : Type) [Group G] (K : Subgroup G), IsCommensurated K → CosetSym K →
     ∀ (U X X' : Type) [AddCommGroup U] [Module ℂ U] [AddCommGroup X] [Module ℂ X] [AddCommGroup X'] [Module ℂ X']

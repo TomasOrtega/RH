@@ -14,9 +14,9 @@ open GlobalTheory.ZM
 namespace GlobalTheory.ZM.IsGaloisCover
 
 /- English proof (translation)
-Set `k` to `T.residueField p`. Set `K` to `AlgebraicClosure k`. Set `i : Spec (CommRingCat.of K) ⟶ Spec k` to `Spec.map (CommRingCat.ofHom (algebraMap k K))`. Use `⟨K, inferInstance, inferInstance, i ≫ T.fromSpecResidueField p, ?_⟩` and prove the remaining obligations. Take `⟨z⟩ : Nonempty (Spec (CommRingCat.of K))` from `inferInstance`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨z, ?_⟩` and prove the remaining obligations. Establish `hz : (T.fromSpecResidueField p) (i z) ∈ Set.range (T.fromSpecResidueField p)` using `⟨_, rfl⟩`. Rewrite `hz` using `[Scheme.range_fromSpecResidueField]`. Rewrite using `[Scheme.Hom.comp_apply]`. Conclude with `Set.mem_singleton_iff.mp hz`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_algClosed_point (T : Scheme.{0}) (p : T) :
     ∃ (K : Type) (_ : Field K) (_ : IsAlgClosed K) (j : Sp K ⟶ T), p ∈ Set.range j := by
@@ -34,19 +34,19 @@ theorem exists_algClosed_point (T : Scheme.{0}) (p : T) :
 variable {X Y : Scheme.{0}} {π : X ⟶ Y} {Ga : Type} [Group Ga] {ρ : Ga → (X ⟶ X)}
 
 /- English proof (translation)
-Use `h.etale` as an intermediate fact. Set `D` to `pullback.diagonal π`. Set `m : Ga → (T ⟶ pullback π π)` to `fun a => pullback.lift (x ≫ ρ a) x' (by rw [Category.assoc, h.inv a, hx])`. Take `⟨K, _, _, j, z, hz⟩` from `exists_algClosed_point T p`. Take `⟨a, ha, -⟩` from `h.fibre K (j ≫ x) (j ≫ x') (by simp only [Category.assoc, hx])`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hm1 : m a ≫ pullback.fst π π = x ≫ ρ a` using `pullback.lift_fst _ _ _`. Establish `hm2 : m a ≫ pullback.snd π π = x'` using `pullback.lift_snd _ _ _`. Establish `hjm : j ≫ m a = j ≫ x' ≫ D`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hm1, Category.assoc, Category.assoc, pullback.diagonal_fst, Category.comp_id]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify `ha` using `only [Category.assoc]`. Rewrite using `[Category.assoc, hm2, Category.assoc, Category.assoc, pullback.diagonal_snd, Category.comp_id]`. Set `V : T.Opens` to `(m a) ⁻¹ᵁ D.opensRange`. Establish `hpV : p ∈ V` using `by show (m a) p ∈ Set.range D`. Rewrite using `[← hz]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨x' (j z), ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, hjm]`. Establish `hsub : Set.range (V.ι ≫ m a) ⊆ Set.range D`. Introduce and unpack `_ ⟨w, rfl⟩`. Establish `hw : V.ι w ∈ (V : Set T)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[← Scheme.Opens.range_ι V]`. Conclude with `⟨w, rfl⟩`. Rewrite using `[Scheme.Hom.comp_apply]`. Conclude with `hw`. Set `l` to `IsOpenImmersion.lift D (V.ι ≫ m a) hsub`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hl : l ≫ D = V.ι ≫ m a` using `IsOpenImmersion.lift_fac _ _ _`. Use `⟨V, a, hpV, ?_⟩` and prove the remaining obligations. Establish `e1 : V.ι ≫ x ≫ ρ a = l`. Establish `h1 : l ≫ D ≫ pullback.fst π π = l` using `by rw [pullback.diagonal_fst, Category.comp_id]`. Rewrite using `[← h1, ← Category.assoc l, hl, Category.assoc, hm1]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : V.ι ≫ x' = l`. Establish `h2 : l ≫ D ≫ pullback.snd π π = l` using `by rw [pullback.diagonal_snd, Category.comp_id]`. Rewrite using `[← h2, ← Category.assoc l, hl, Category.assoc, hm2]`. Rewrite using `[e1, e2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_local_geom (h : IsGaloisCover Ga ρ π) {T : Scheme.{0}} (x x' : T ⟶ X) (hx : x ≫ π = x' ≫ π) (p : T) :
     ∃ (V : T.Opens) (a : Ga), p ∈ V ∧ V.ι ≫ x ≫ ρ a = V.ι ≫ x' := by
@@ -88,11 +88,11 @@ theorem exists_local_geom (h : IsGaloisCover Ga ρ π) {T : Scheme.{0}} (x x' : 
   rw [e1, e2]
 
 /- English proof (translation)
-Use `h.fin` as an intermediate fact. Use `h.etale` as an intermediate fact. Use `h.onto` as an intermediate fact. Establish `key : ∀ {W : Scheme.{0}} (g₁ g₂ : W ⟶ X), g₁ ≫ π = g₂ ≫ π → g₁ ≫ f = g₂ ≫ f`. Introduce `W g₁ g₂ hg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Scheme.hom_ext_of_forall` to reduce the goal to its premises. Introduce `p`. Take `⟨V, a, hp, hV⟩` from `h.exists_local_geom g₁ g₂ hg p`. Use `⟨V, hp, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Use `⟨EffectiveEpi.desc π f key, EffectiveEpi.fac π f key, ?_⟩` and prove the remaining obligations. Introduce `f' hf'`. Apply `(cancel_epi π).1` to reduce the goal to its premises. Rewrite using `[hf', EffectiveEpi.fac]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem existsUnique_desc (h : IsGaloisCover Ga ρ π) {Z : Scheme.{0}} (f : X ⟶ Z) (hf : ∀ a, ρ a ≫ f = f) :
     ∃! f' : Y ⟶ Z, π ≫ f' = f := by
@@ -116,9 +116,9 @@ theorem existsUnique_desc (h : IsGaloisCover Ga ρ π) {Z : Scheme.{0}} (f : X �
 variable {X' Y' : Scheme.{0}} {π' : X' ⟶ Y'} {ρ' : Ga → (X' ⟶ X')} {u : X' ⟶ X} {v : Y' ⟶ Y}
 
 /- English proof (translation)
-Establish `hyu : (y ≫ u) ≫ π = (y' ≫ u) ≫ π`. Simplify using `only [Category.assoc, hp.w, reassoc_of% hy]`. Take `⟨a, ha, hauniq⟩` from `h.fibre K (y ≫ u) (y' ≫ u) hyu`. Use `⟨a, ?_, ?_⟩` and prove the remaining obligations. Apply `hp.hom_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Category.assoc, hu, ← Category.assoc, ha]`. Rewrite using `[Category.assoc, hπ, hy]`. Introduce `b hb`. Apply `hauniq` to reduce the goal to its premises. Rewrite using `[Category.assoc, ← hu, ← Category.assoc, hb]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 private theorem existsUnique_act_of_isPullback_isGaloisCover (h : IsGaloisCover Ga ρ π) (hp : IsPullback u π' π v)
     (hu : ∀ a, ρ' a ≫ u = u ≫ ρ a) (hπ : ∀ a, ρ' a ≫ π' = π') (K : Type) [Field K] [IsAlgClosed K]
@@ -135,29 +135,27 @@ private theorem existsUnique_act_of_isPullback_isGaloisCover (h : IsGaloisCover 
     rw [Category.assoc, ← hu, ← Category.assoc, hb]
 
 /- English proof (translation)
-Use `h.fin` as an intermediate fact. Use `h.etale` as an intermediate fact. Use `h.onto` as an intermediate fact. Use `h'.fin` as an intermediate fact. Use `h'.etale` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `ρP : Ga → (pullback π v ⟶ pullback π v)` to `fun a => pullback.map π v π v (ρ a) (𝟙 Y') (𝟙 Y) (by rw [Category.comp_id, h.inv]) (by rw [Category.comp_id, Category.id_comp])`. Establish `huP : ∀ a, ρP a ≫ pullback.fst π v = pullback.fst π v ≫ ρ a` using `fun a => pullback.lift_fst _ _ _`. Establish `hπP : ∀ a, ρP a ≫ pullback.snd π v = pullback.snd π v` using `fun a => by`. Rewrite using `[← Category.comp_id (pullback.snd π v)]`. Conclude with `pullback.lift_snd _ _ _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `φ : X' ⟶ pullback π v` to `pullback.lift u π' w`. Establish `hφ1 : φ ≫ pullback.fst π v = u` using `pullback.lift_fst _ _ _`. Establish `hφ2 : φ ≫ pullback.snd π v = π'` using `pullback.lift_snd _ _ _`. Establish `hφeq : ∀ a, φ ≫ ρP a = ρ' a ≫ φ` using `fun a => by`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `only [Category.assoc, huP, hφ1, reassoc_of% hφ1, hu]`. Simplify using `only [Category.assoc, hπP, hφ2, h'.inv]`. Establish `hmono : Mono φ`. Prove the components needed by the constructor for the conclusion. Introduce `T g₁ g₂ hg`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hg1 : g₁ ≫ u = g₂ ≫ u` using `by rw [← hφ1, reassoc_of% hg]`. Establish `hg2 : g₁ ≫ π' = g₂ ≫ π'` using `by rw [← hφ2, reassoc_of% hg]`. Apply `Scheme.hom_ext_of_forall` to reduce the goal to its premises. Introduce `p`. Take `⟨V, a, hp, hV⟩` from `h'.exists_local_geom g₁ g₂ hg2 p`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨V, hp, ?_⟩` and prove the remaining obligations. Establish `e : V.ι ≫ g₁ ≫ u ≫ ρ a = V.ι ≫ g₁ ≫ u`. Rewrite using `[← hu, hg1]`. Simplify `congrArg (· ≫ u) hV` using `only [Category.assoc]`. Take `⟨K, _, _, j, -⟩` from `exists_algClosed_point V.toScheme ⟨p, hp⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ha : (j ≫ V.ι ≫ g₁ ≫ u) ≫ ρ a = j ≫ V.ι ≫ g₁ ≫ u`. Simplify using `only [Category.assoc] at e ⊢`. Rewrite using `[e]`. Establish `h1 : (j ≫ V.ι ≫ g₁ ≫ u) ≫ ρ 1 = j ≫ V.ι ≫ g₁ ≫ u`. Rewrite using `[h.one, Category.comp_id]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ha1 : a = 1` using `(h.fibre K _ _ rfl).unique ha h1`. Rewrite using `[← hV, ha1, h'.one, Category.comp_id]`. Establish `hsurj : Surjective φ`. Prove the components needed by the constructor for the conclusion. Introduce `q`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `h'.onto.surj (pullback.snd π v q)`. Take `⟨r, hr1, hr2⟩` from `Scheme.Pullback.exists_preimage_pullback (f := pullback.snd π v) (g := pullback.snd π v) (φ y) q (by rw [← Scheme.Hom.comp_apply, hφ2, hy])`. Take `⟨K, _, _, j, z, hz⟩` from `exists_algClosed_point _ r`. Take `⟨a, ha, -⟩` from `existsUnique_act_of_isPullback_isGaloisCover h (IsPullback.of_hasPullback π v) huP hπP K (j ≫ pullback.fst _ _) (j ≫ pullback.snd _ _) (by simp only [Category.assoc, pullback.condition])`. Use `⟨ρ' a y, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hz'` using `congrArg (fun m : Sp K ⟶ _ => m z) ha`. Simplify using `only [Scheme.Hom.comp_apply, hz, hr1, hr2] at hz'`. Rewrite using `[← Scheme.Hom.comp_apply, ← hφeq, Scheme.Hom.comp_apply]`. Conclude with `hz'`. Establish `: Etale φ`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Etale (φ ≫ pullback.snd π v)` using `by rw [hφ2]; exact h'.etale`. Conclude with `Etale.of_comp (f := φ) (pullback.snd π v)`. Establish `: QuasiCompact φ`. Establish `: QuasiCompact (φ ≫ pullback.snd π v)` using `by rw [hφ2]; infer_instance`. Conclude with `MorphismProperty.of_postcomp (W := @QuasiCompact) (W' := @QuasiSeparated) φ (pullback.snd π v) inferInstance this`.
-
-Establish `: IsIso φ` using `Flat.isIso_of_surjective_of_mono φ`. Conclude with `IsPullback.of_iso_pullback ⟨w⟩ (asIso φ) hφ1 hφ2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isPullback (h : IsGaloisCover Ga ρ π) (h' : IsGaloisCover Ga ρ' π') (hu : ∀ a, ρ' a ≫ u = u ≫ ρ a)
     (w : u ≫ π = π' ≫ v) : IsPullback u π' π v := by
@@ -225,7 +223,7 @@ theorem isPullback (h : IsGaloisCover Ga ρ π) (h' : IsGaloisCover Ga ρ' π') 
   exact IsPullback.of_iso_pullback ⟨w⟩ (asIso φ) hφ1 hφ2
 
 /- English proof (translation)
-The claim follows from `h.finite one := by apply hp.hom_ext · rw [hu 1, h.one, Category.id_comp, Category.comp_id] · rw [hπ 1, Category.id_comp] mul := by intro a c apply hp.hom_ext · rw [hu, h.mul, Category.assoc, hu c, reassoc_of% (hu a)] · rw [hπ, Category.assoc, hπ c, hπ a] inv := hπ fin := by have …`.
+A detailed English derivation is pending.
 -/
 theorem of_isPullback (h : IsGaloisCover Ga ρ π) (hp : IsPullback u π' π v) (hu : ∀ a, ρ' a ≫ u = u ≫ ρ a)
     (hπ : ∀ a, ρ' a ≫ π' = π') : IsGaloisCover Ga ρ' π' where
@@ -268,7 +266,7 @@ end GlobalTheory.ZM.IsGaloisCover
 namespace GlobalTheory.ZM
 
 /- English proof (translation)
-Introduce `X Y π Ga _ ρ h`. Use `⟨fun Z f hf => h.existsUnique_desc f hf, fun T x x' hx p => h.exists_local_geom x x' hx p, ?_⟩` and prove the remaining obligations. Introduce `X' Y' π' ρ' u v hu w`. Conclude with `⟨fun h' => h.isPullback h' hu w, fun hp hπ => h.of_isPullback hp hu hπ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem galoisCover_descent : ∀ (X Y : Scheme.{0}) (π : X ⟶ Y) (Ga : Type) [Group Ga] (ρ : Ga → (X ⟶ X)), IsGaloisCover Ga ρ π → (∀ (Z : Scheme.{0}) (f : X ⟶ Z), (∀ a, ρ a ≫ f = f) → ∃! f' : Y ⟶ Z, π ≫ f' = f) ∧ (∀ (T : Scheme.{0}) (x x' : T ⟶ X), x ≫ π = x' ≫ π → ∀ p : T, ∃ (V : T.Opens) (a : Ga), p ∈ V ∧ V.ι ≫ x ≫ ρ a = V.ι ≫ x') ∧ ∀ (X' Y' : Scheme.{0}) (π' : X' ⟶ Y') (ρ' : Ga → (X' ⟶ X')) (u : X' ⟶ X) (v : Y' ⟶ Y), (∀ a, ρ' a ≫ u = u ≫ ρ a) → u ≫ π = π' ≫ v → (IsGaloisCover Ga ρ' π' → IsPullback u π' π v) ∧ (IsPullback u π' π v → (∀ a, ρ' a ≫ π' = π') → IsGaloisCover Ga ρ' π') := by
   intro X Y π Ga _ ρ h

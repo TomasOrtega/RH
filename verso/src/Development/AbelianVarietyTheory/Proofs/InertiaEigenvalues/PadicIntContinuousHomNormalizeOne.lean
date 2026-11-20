@@ -3,19 +3,17 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `G _ _ p _ χ hχ hadd g₀ hg₀`. Establish `hex : ∃ n : ℕ, ∃ g, χ g ≠ 0 ∧ (χ g).valuation = n` using `⟨_, g₀, hg₀, rfl⟩`. Take `⟨g₁, hg₁, hv₁⟩` from `Nat.find_spec hex`. Establish `hmin : ∀ g, χ g ≠ 0 → (χ g₁).valuation ≤ (χ g).valuation`. Introduce `g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hv₁]`. Conclude with `Nat.find_min' hex ⟨g, hg, rfl⟩`. Establish `hp1 : (1 : ℝ) ≤ p` using `by exact_mod_cast (Fact.out : p.Prime).one_lt.le`. Establish `hle : ∀ g, ‖χ g‖ ≤ ‖χ g₁‖`. Introduce `g`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hg : χ g = 0`. Rewrite using `[hg, norm_zero]`. Conclude with `norm_nonneg _`. Rewrite using `[PadicInt.norm_eq_zpow_neg_valuation hg, PadicInt.norm_eq_zpow_neg_valuation hg₁]`. Apply `zpow_le_zpow_right₀ hp1` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `hmin g hg` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hn₁ : (χ g₁ : ℚ_[p]) ≠ 0` using `fun h => hg₁ (PadicInt.coe_eq_zero.1 h)`. Establish `hbd : ∀ g, ‖(χ g : ℚ_[p]) / (χ g₁ : ℚ_[p])‖ ≤ 1`. Introduce `g`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[norm_div, div_le_one (norm_pos_iff.2 hn₁)]`. Conclude with `hle g`. Use `⟨fun g => ⟨(χ g : ℚ_[p]) / (χ g₁ : ℚ_[p]), hbd g⟩, ?_, ?_, ?_, g₁, ?_⟩` and prove the remaining obligations. Apply `Continuous.subtype_mk` to reduce the goal to its premises. Conclude with `(continuous_subtype_val.comp hχ).div_const _`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g h`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show ((χ (g * h) : ℚ_[p])) / (χ g₁ : ℚ_[p]) = (χ g : ℚ_[p]) / (χ g₁ : ℚ_[p]) + (χ h : ℚ_[p]) / (χ g₁ : ℚ_[p])`. Rewrite using `[hadd, PadicInt.coe_add, add_div]`. Introduce `g hg`.
-
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[hg]`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[div_self hn₁]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem padicInt_hom_normalize : ∀ {G : Type} [Group G] [TopologicalSpace G] (p : ℕ) [Fact p.Prime] (χ : G → ℤ_[p]), Continuous χ → (∀ g h, χ (g * h) = χ g + χ h) → ∀ (g₀ : G), χ g₀ ≠ 0 → ∃ ψ : G → ℤ_[p], Continuous ψ ∧ (∀ g h, ψ (g * h) = ψ g + ψ h) ∧ (∀ g, χ g = 0 → ψ g = 0) ∧ ∃ g, ψ g = 1 := by
   intro G _ _ p _ χ hχ hadd g₀ hg₀

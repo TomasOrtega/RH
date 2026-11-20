@@ -19,7 +19,7 @@ namespace RD
 variable {d : SD σ} (R : RD d) (w : InfinitePlace F)
 
 /- English proof (translation)
-The claim follows from `R.stepW_pf w hT hA`.
+A detailed English derivation is pending.
 -/
 theorem stepW (hT : TAll) (hA : AuxiliaryPrimeFunction) : ∀ (ε : ℤˣ) (w₀ : d.G), d.IsW ε w₀ →
     ∃ (C s : ℂ) (B : d.MF → d.MF), s ≠ 0 ∧ R.StepOK w w₀ (fun f u => C * ∫ v : Fin d.m → Fin d.n → ℂ,

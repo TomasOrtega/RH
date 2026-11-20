@@ -10,13 +10,13 @@ namespace Formalism.FourierDecayAlt.P.CutMP.JA.SA
 open NumberField Formalism.FourierDecayAlt.P.CutMP Formalism.FourierDecayAlt.P.CutMP.JA
 
 /- English proof (translation)
-Use `⟨0, ?_⟩` and prove the remaining obligations. Introduce `E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hB v e he X hX y hy h0`. Establish `hplace : Q.IsPlace (D.parOf S v) (T v).base.z (T v).base.z' (T v).base.π (T v).base.π'` using `(hB.1.2.2.2.1.2 v).2.2.2.1`. Establish `hw : 0 < Real.sqrt (MA.wq S.G.k y (D.parOf S v).TT)`. Apply `Real.sqrt_pos.2` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Unfold `MA.wq`. Conclude with `mul_pos (Finset.prod_pos fun l _ => pow_pos (Complex.normSq_pos.2 (hy.1 l)) _) (pow_pos (sub_pos.2 hy.2) _)`. Establish `hin : ∀ π, inner ℂ (B.hsVec (e π y.2)) (B.hsVec (X (B.gq (T v).base y))) = 0`. Introduce `π`. Establish `hsm` using `En.trace_smoothness E Wp Wq S T v hplace e he X hX π`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `h0 π`. Unfold `trJ at h`. Rewrite `h` using `[En.toSm_val_of_mem _ hsm]`. Break down `mul_eq_zero.1 h with h | h` into its components or cases. Conclude with `absurd h (Complex.ofReal_ne_zero.2 hw.ne')`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Establish `hfib` using `En.fibre_membership_holds E Wp Wq S T v hplace X hX y hy`. Rewrite using `[(he.2 y.2 hy.2).2.2 _ hfib]`. Simplify using `[hin]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem self_adjoint_zero_holds : SAZero := by
   refine ⟨0, ?_⟩

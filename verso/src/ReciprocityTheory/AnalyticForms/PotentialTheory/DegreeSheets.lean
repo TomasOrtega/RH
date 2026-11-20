@@ -14,17 +14,15 @@ noncomputable section
 variable {e : ℕ} {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
 
 /- English proof (translation)
-Unfold `FinHolAtlas.IsAnalyticSubset at hS`. Rewrite using `[← isOpen_compl_iff, isOpen_iff_mem_nhds]`. Introduce `x hx`. Take `⟨W, hW, hxW, r, f, hf, hSW⟩` from `hS x`. Establish `hne : ∃ i, f i x ≠ 0`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Apply `hx` to reduce the goal to its premises. Establish `hxSW : x ∈ S ∩ W`. Rewrite using `[hSW]`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨hxW, hcon⟩`. Conclude with `hxSW.1`. Take `⟨i, hi⟩` from `hne`. Establish `hca : ContinuousAt (f i) x`. Take `⟨j, hxj⟩` from `A.cover x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h : ∀ k, AnalyticOnNhd ℂ ((f i) ∘ (A.chart k).symm) ((A.chart k).target ∩ (A.chart k).symm ⁻¹' W)` using `hf i`. Establish `hmem : (A.chart j) x ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' W`. Use `⟨(A.chart j).map_source hxj, ?_⟩` and prove the remaining obligations. Use `show (A.chart j).symm ((A.chart j) x) ∈ W`. Rewrite using `[(A.chart j).left_inv hxj]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `hxW`. Establish `h1 : ContinuousAt ((f i ∘ (A.chart j).symm) ∘ (A.chart j)) x` using `((h j _ hmem).continuousAt).comp ((A.chart j).continuousAt hxj)`. Use `h1.congr ?_` and prove the remaining obligations. Use `filter_upwards [(A.chart j).open_source.mem_nhds hxj] with y hy`. Simplify using `only [Function.comp_apply, (A.chart j).left_inv hy]`.
-
-Use `filter_upwards [hW.mem_nhds hxW, hca.eventually_ne hi] with y hyW hyi hyS`. Establish `hy : y ∈ S ∩ W` using `⟨hyS, hyW⟩`. Rewrite `hy` using `[hSW]`. Conclude with `hyi (hy.2 i)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_of_isAnalyticSubset' (A : FinHolAtlas e X) {S : Set X}
     (hS : A.IsAnalyticSubset S) : IsClosed S := by
@@ -61,19 +59,15 @@ theorem isClosed_of_isAnalyticSubset' (A : FinHolAtlas e X) {S : Set X}
   exact hyi (hy.2 i)
 
 /- English proof (translation)
-Take `⟨j, hyj⟩` from `B.cover y`. Take `⟨k, hk⟩` from `A.cover (h y)`. Establish `hb : (B.chart j) y ∈ (B.chart j).target ∩ (B.chart j).symm ⁻¹' (h ⁻¹' (A.chart k).source)`. Use `⟨(B.chart j).map_source hyj, ?_⟩` and prove the remaining obligations. Use `show h ((B.chart j).symm ((B.chart j) y)) ∈ (A.chart k).source`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(B.chart j).left_inv hyj]`. Conclude with `hk`. Establish `han` using `hh.2 j k ((B.chart j) y) hb`. Establish `hdet` using `hd.2.2.2.2.2 j k ((B.chart j) y) ((B.chart j).map_source hyj) (by rw [(B.chart j).left_inv hyj]; exact hy) (by rw [(B.chart j).left_inv hyj]; exact hk)`. Use `set L := (LinearMap.equivOfDetNeZero _ hdet).toContinuousLinearEquiv with hL`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hstrict : HasStrictFDerivAt ((A.chart k) ∘ h ∘ (B.chart j).symm) (L : (Fin e → ℂ) →L[ℂ] (Fin e → ℂ)) ((B.chart j) y)` using `han.hasStrictFDerivAt.congr_fderiv (by ext v; rfl)`. Use `set Φ := hstrict.toOpenPartialHomeomorph ((A.chart k) ∘ h ∘ (B.chart j).symm) with hΦ`. Establish `hcoe : (Φ : (Fin e → ℂ) → (Fin e → ℂ)) = (A.chart k) ∘ h ∘ (B.chart j).symm` using `hstrict.toOpenPartialHomeomorph_coe`. Establish `hsrc : (B.chart j) y ∈ Φ.source` using `hstrict.mem_toOpenPartialHomeomorph_source`. Establish `hU : IsOpen (h ⁻¹' (A.chart k).source)` using `(A.chart k).open_source.preimage hh.1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(((B.chart j).trans Φ).trans (A.chart k).symm).restrOpen _ hU, ?_, ?_, j, ?_⟩` and prove the remaining obligations. Rewrite using `[OpenPartialHomeomorph.restrOpen_source, OpenPartialHomeomorph.trans_source, OpenPartialHomeomorph.trans_source]`. Use `⟨⟨⟨hyj, hsrc⟩, ?_⟩, hk⟩` and prove the remaining obligations. Use `show Φ ((B.chart j) y) ∈ (A.chart k).target`. Rewrite using `[hcoe]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `show (A.chart k) (h ((B.chart j).symm ((B.chart j) y))) ∈ (A.chart k).target`. Rewrite using `[(B.chart j).left_inv hyj]`. Conclude with `(A.chart k).map_source hk`. Introduce `y' hy'`. Rewrite `hy'` using `[OpenPartialHomeomorph.restrOpen_source, OpenPartialHomeomorph.trans_source, OpenPartialHomeomorph.trans_source]`.
-
-Take `⟨⟨⟨hy1, -⟩, -⟩, hy4⟩` from `hy'`. Use `show h y' = (A.chart k).symm (Φ ((B.chart j) y'))`. Rewrite using `[hcoe]`. Use `show h y' = (A.chart k).symm ((A.chart k) (h ((B.chart j).symm ((B.chart j) y'))))`. Rewrite using `[(B.chart j).left_inv hy1, (A.chart k).left_inv hy4]`.
-
-Introduce `y' hy'`. Rewrite `hy'` using `[OpenPartialHomeomorph.restrOpen_source, OpenPartialHomeomorph.trans_source, OpenPartialHomeomorph.trans_source]`. Conclude with `hy'.1.1.1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_localHomeomorph_of_isDegreeOff {A : FinHolAtlas e X} {B : FinHolAtlas e Y}
     {h : Y → X} (hh : HoloMap B A h) {d : ℕ} {S : Set X} (hd : IsDegreeOff A B h d S) (y : Y)
@@ -122,33 +116,29 @@ theorem exists_localHomeomorph_of_isDegreeOff {A : FinHolAtlas e X} {B : FinHolA
     exact hy'.1.1.1
 
 /- English proof (translation)
-Establish `hSc : IsClosed S` using `isClosed_of_isAnalyticSubset' A hd.1`. Establish `hloc : ∀ y : (h ⁻¹' {x} : Set Y), ∃ E : OpenPartialHomeomorph Y X, y.1 ∈ E.source ∧ Set.EqOn h E E.source ∧ ∃ j : Fin B.n, E.source ⊆ (B.chart j).source` using `fun y => exists_localHomeomorph_of_isDegreeOff hh hd y.1 (by rw [show h y.1 = x from y.2]; exact hx)`. Use `choose E hEy hEeq jE hjE using hloc`. Establish `hFc : IsCompact (h ⁻¹' {x})` using `(isClosed_singleton.preimage hh.1).isCompact`. Establish `hFfin : (h ⁻¹' {x}).Finite`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `hFc.elim_finite_subcover (fun y => (E y).source) (fun y => (E y).open_source) (fun y hy => Set.mem_iUnion.2 ⟨⟨y, hy⟩, hEy ⟨y, hy⟩⟩)`. Use `(t.finite_toSet.image Subtype.val).subset ?_` and prove the remaining obligations. Introduce `z hz`. Take `⟨w, hwt, hzw⟩` from `Set.mem_iUnion₂.1 (ht hz)`. Establish `hzx : h z = x` using `hz`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hwx : h w.1 = x` using `w.2`. Establish `h1 : E w w.1 = E w z`. Rewrite using `[← hEeq w hzw, ← hEeq w (hEy w), hzx, hwx]`. Conclude with `⟨w, hwt, (E w).injOn (hEy w) hzw h1⟩`. Establish `: Finite (h ⁻¹' {x})` using `hFfin.to_subtype`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcard : Nat.card (h ⁻¹' {x}) = d`. Rewrite using `[Nat.card_coe_set_eq]`. Conclude with `hd.2.2.2.2.1 x hx`. Set `en : Fin d ≃ (h ⁻¹' {x} : Set Y)` to `((Finite.equivFin _).trans (finCongr hcard)).symm`. Take `⟨U0, hU0, hU0d⟩` from `hFfin.t2_separation`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `U : Fin d → Set Y` to `fun i => U0 (en i).1 ∩ (E (en i)).source`. Establish `hUo : ∀ i, IsOpen (U i)` using `fun i => (hU0 _).2.inter (E _).open_source`. Establish `hyU : ∀ i, (en i).1 ∈ U i` using `fun i => ⟨(hU0 _).1, hEy _⟩`. Establish `hUd : Pairwise (Function.onFun Disjoint U)`. Introduce `i i' hii'`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : (en i).1 ≠ (en i').1` using `fun h' => hii' (en.injective (Subtype.ext h'))`. Conclude with `(hU0d (en i).2 (en i').2 hne).mono Set.inter_subset_left Set.inter_subset_left`. Establish `hhU : ∀ i, h '' U i = E (en i) '' U i` using `fun i => ((hEeq (en i)).mono Set.inter_subset_right).image_eq`. Establish `hhUo : ∀ i, IsOpen (h '' U i)` using `fun i => by`. Rewrite using `[hhU]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(E _).isOpen_image_of_subset_source (hUo i) Set.inter_subset_right`. Establish `hKc : IsCompact (⋃ i, U i)ᶜ` using `(isOpen_iUnion hUo).isClosed_compl.isCompact`. Establish `hK : IsClosed (h '' (⋃ i, U i)ᶜ)` using `(hKc.image hh.1).isClosed`. Establish `hxK : x ∉ h '' (⋃ i, U i)ᶜ`. Introduce and unpack `⟨z, hzK, hzx⟩`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Apply `hzK` to reduce the goal to its premises. Establish `hz : z ∈ h ⁻¹' {x}` using `hzx`. Use `Set.mem_iUnion.2 ⟨en.symm ⟨z, hz⟩, ?_⟩` and prove the remaining obligations. Use `hyU (en.symm ⟨z, hz⟩)` as an intermediate fact. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨k, hk⟩` from `A.cover x`. Set `V : Set X` to `(⋂ i, h '' U i) ∩ (A.chart k).source ∩ (h '' (⋃ i, U i)ᶜ)ᶜ ∩ Sᶜ`. Establish `hVo : IsOpen V` using `(((isOpen_iInter_of_finite hhUo).inter (A.chart k).open_source).inter hK.isOpen_compl).inter hSc.isOpen_compl`. Establish `hVU : ∀ i, V ⊆ h '' U i` using `fun i z hz => Set.mem_iInter.1 hz.1.1.1 i`. Use `⟨V, hVo, ⟨⟨⟨Set.mem_iInter.2 fun i => ⟨(en i).1, hyU i, (en i).2⟩, hk⟩, hxK⟩, hx⟩, Set.disjoint_left.2 fun z hz hzS => hz.2 hzS, k, fun z hz => hz.1.1.2, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Use `⟨fun i => U i ∩ h ⁻¹' V, fun i => (hUo i).inter (hVo.preimage hh.1), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i i' hii'`. Conclude with `(hUd hii').mono Set.inter_subset_left Set.inter_subset_left`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hz`. Establish `hzU : z ∈ ⋃ i, U i`. Assume the negation of the conclusion as `hc`. Conclude with `hz.1.2 ⟨z, hc, rfl⟩`. Take `⟨i, hi⟩` from `Set.mem_iUnion.1 hzU`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `Set.mem_iUnion.2 ⟨i, hi, hz⟩`. Introduce `hz`. Take `⟨i, hi⟩` from `Set.mem_iUnion.1 hz`. Conclude with `hi.2`. Introduce `i`.
-
-Use `⟨⟨fun z hz => hz.2, ?_, ?_⟩, jE (en i), fun z hz => hjE _ hz.1.2⟩` and prove the remaining obligations. Introduce `a ha b hb hab`. Apply `(E (en i)).injOn ha.1.2 hb.1.2` to reduce the goal to its premises. Rewrite using `[← hEeq (en i) ha.1.2, ← hEeq (en i) hb.1.2]`. Conclude with `hab`.
-
-Introduce `v hv`. Take `⟨u, hu, rfl⟩` from `hVU i hv`. Conclude with `⟨u, ⟨hu, hv⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem degree_local_sheets' [CompactSpace Y] [T2Space Y] [T2Space X]
     {A : FinHolAtlas e X} {B : FinHolAtlas e Y} {h : Y → X} (hh : HoloMap B A h) {d : ℕ}

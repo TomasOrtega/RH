@@ -5,19 +5,17 @@ open scoped TensorProduct
 open GlobalTheory.TateLimit
 
 /- English proof (translation)
-Introduce `l _ H _ x hx`. Set `T` to `AddCommGroup.torsion H`. Set `g : H →ₗ[ℤ] (H ⧸ T)` to `(QuotientAddGroup.mk' T).toIntLinearMap`. Establish `hg : Function.Surjective g` using `QuotientAddGroup.mk'_surjective T`. Establish `hex : Function.Exact T.subtype.toIntLinearMap g`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h`. Prove the components needed by the constructor for the conclusion. Introduce `hh`. Conclude with `⟨⟨h, (QuotientAddGroup.eq_zero_iff h).1 hh⟩, rfl⟩`. Introduce and unpack `⟨t, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `(QuotientAddGroup.eq_zero_iff _).2 t.2`. Establish `hE` using `lTensor_exact ℤ_[l] hex hg`. Use `haveI : IsAddTorsionFree (H ⧸ T) := inferInstance`. Use `haveI : Module.Flat ℤ (H ⧸ T) := inferInstance`. Take `⟨n, hn, hnx⟩` from `isOfFinAddOrder_iff_nsmul_eq_zero.1 hx`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `m : ℤ_[l] →ₗ[ℤ] ℤ_[l]` to `n • LinearMap.id`. Establish `hm : Function.Injective m`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Establish `: (n : ℤ_[l]) * a = 0` using `by simpa [m] using ha`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `mul_eq_zero.1 this with h | h` into its components or cases. Conclude with `absurd (Nat.cast_eq_zero.1 h) hn.ne'`. Conclude with `h`. Establish `hinj` using `Module.Flat.rTensor_preserves_injective_linearMap (M := H ⧸ T) m hm`. Establish `h0 : LinearMap.lTensor ℤ_[l] g x = 0`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply `hinj` to reduce the goal to its premises. Establish `: LinearMap.rTensor (H ⧸ T) m = n • LinearMap.id`. Use extensionality with `a b`. Simplify using `[m, ← nsmul_eq_mul, TensorProduct.smul_tmul']`. Rewrite using `[map_zero, this, LinearMap.smul_apply, LinearMap.id_apply, ← map_nsmul, hnx, map_zero]`.
-
-Conclude with `(hE x).1 h0`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.K.tensTors :
     ∀ (l : ℕ) [Fact l.Prime] (H : Type) [AddCommGroup H] (x : ℤ_[l] ⊗[ℤ] H), IsOfFinAddOrder x → x ∈ LinearMap.range (LinearMap.lTensor ℤ_[l] (AddCommGroup.torsion H).subtype.toIntLinearMap) := by

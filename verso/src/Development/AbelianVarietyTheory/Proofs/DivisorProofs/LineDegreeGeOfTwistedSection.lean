@@ -11,9 +11,9 @@ set_option autoImplicit false
 namespace GlobalTheory.Nef.LineBound
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `Function.ne_iff.1 hx`. Establish `h0 : v.1 (x i) ≠ 0` using `(Valuation.ne_zero_iff _).2 hi`. Establish `h1 : v.1 (x i) ≤ nrm v x` using `Finset.le_sup (f := fun j => v.1 (x j)) (Finset.mem_univ i)`. Establish `h2 : nrm v x ≠ 0` using `fun h' => h0 (le_antisymm (h' ▸ h1) zero_le)`. Establish `h3 : nrm v x ≤ WithZero.exp (-m)` using `Finset.sup_le fun j _ => h j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `(WithZero.log_le_log h2 WithZero.exp_ne_zero).2 h3`. Rewrite `h4` using `[WithZero.log_exp]`. Unfold `ordVec`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem le_ordVec {k F : Type} [Field k] [Field F] [Algebra k F] {n : ℕ} (v : Place k F) (x : Fin n → F)
     (hx : x ≠ 0) (m : ℤ) (h : ∀ i, v.1 (x i) ≤ WithZero.exp (-m)) : m ≤ ordVec v x := by
@@ -30,21 +30,21 @@ theorem le_ordVec {k F : Type} [Field k] [Field F] [Algebra k F] {n : ℕ} (v : 
 end GlobalTheory.Nef.LineBound
 
 /- English proof (translation)
-Introduce `k F _ _ _ _ _ hF n h hA v₀ π hπ hord e p hp hle`. Take `⟨-, hw⟩` from `GlobalTheory.T.admissibleAdelicMatrixFamily_orders_finite k F hF n h hA`. Take `⟨hfin, hne⟩` from `hw p hp`. Use `set d : Place k F → ℤ := fun v => ordVec v ((h v).mulVec p) with hd`. Establish `hsupp : Function.support d ⊆ {v : Place k F | nrm v ((h v).mulVec p) ≠ 1}` using `fun v hv => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h1`. Apply `hv` to reduce the goal to its premises. Simplify using `only [hd, ordVec, h1, WithZero.log_one, neg_zero]`. Establish `hnn : ∀ v, v ≠ v₀ → 0 ≤ d v` using `fun v hv => by`. Use `GlobalTheory.Nef.LineBound.le_ordVec v _ (hne v) 0 fun i => ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hle v i` as an intermediate fact. Rewrite `this` using `[twistAt_of_ne _ _ _ _ hv]`. Simplify using `using this`. Establish `hv₀ : e ≤ d v₀`. Use `GlobalTheory.Nef.LineBound.le_ordVec v₀ _ (hne v₀) e fun i => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `hle v₀ i`. Rewrite `h1` using `[twistAt_self, Matrix.smul_mulVec, Pi.smul_apply, smul_eq_mul, map_mul, map_zpow₀]`. Establish `hπ0 : v₀.1 π ≠ 0` using `(Valuation.ne_zero_iff _).2 hπ`. Establish `hπv : v₀.1 π = WithZero.exp (-1)`. Rewrite using `[← WithZero.exp_log hπ0]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Unfold `ord at hord`. Use linear arithmetic over natural numbers and integers. Rewrite `h1` using `[hπv, ← WithZero.exp_zsmul, smul_eq_mul]`. Use `set y := v₀.1 ((h v₀).mulVec p i)`.
+Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: y = WithZero.exp (-e) * (WithZero.exp (-e * -1) * y)`. Rewrite using `[← mul_assoc, ← WithZero.exp_add]`. Put the polynomial expressions in normal form. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+Put the polynomial expressions in normal form. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hs : Function.support d ⊆ ↑(hfin.toFinset ∪ {v₀})` using `fun v hv => by`. Simplify using `only [Finset.coe_union, Set.Finite.coe_toFinset, Finset.coe_singleton]`. Conclude with `Or.inl (hsupp hv)`. Use `show e ≤ ∑ᶠ v, d v`.
+Simplify using the standard rewrite rules. Prove the first alternative. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[finsum_eq_sum_of_support_subset _ hs, ← Finset.add_sum_erase _ _ (show v₀ ∈ hfin.toFinset ∪ {v₀} by simp)]`. Establish `: 0 ≤ ∑ x ∈ (hfin.toFinset ∪ {v₀}).erase v₀, d x` using `Finset.sum_nonneg fun v hv => hnn v (Finset.ne_of_mem_erase hv)`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Nef.degLine_ge_of_twist : ∀ (k F : Type) [Field k] [IsAlgClosed k] [CharZero k] [Field F] [Algebra k F], IsFF k F → ∀ (n : ℕ) (h : Place k F → Matrix (Fin n) (Fin n) F), admitted h → ∀ (v₀ : Place k F) (π : F), π ≠ 0 → ord v₀ π = 1 → ∀ (e : ℤ) (p : Fin n → F), p ≠ 0 → (∀ (v : Place k F) (i : Fin n), v.1 ((twistAt v₀ (π ^ (-e)) h v).mulVec p i) ≤ 1) → e ≤ degLine h p := by
   intro k F _ _ _ _ _ hF n h hA v₀ π hπ hord e p hp hle

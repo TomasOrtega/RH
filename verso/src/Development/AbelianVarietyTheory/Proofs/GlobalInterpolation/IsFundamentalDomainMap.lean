@@ -13,11 +13,11 @@ open GlobalTheory.VolTransport GlobalTheory.IndefiniteRowSideFullHecke.Signature
 open scoped TensorProduct Matrix ENNReal
 
 /- English proof (translation)
-Set `ψ : G ≃ᵐ H` to `⟨φ.toEquiv, hc, hc'⟩`. Establish `hψ : MeasurePreserving ψ μ (μ.map φ)` using `⟨ψ.measurable, rfl⟩`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `e : φ '' 𝓕 = φ.symm ⁻¹' 𝓕` using `φ.toEquiv.image_eq_preimage_symm 𝓕`.
+Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `h.preimage_of_equiv (f := φ.symm) (MeasurePreserving.symm ψ hψ).quasiMeasurePreserving (e := fun γ => ⟨φ γ, (hQ γ).1 γ.2⟩) ⟨fun a b hab => Subtype.ext (φ.injective (congrArg Subtype.val hab)), fun b => ⟨⟨φ.symm b, (hQ _).2 (by simp)⟩, Subtype.ext (by simp)⟩⟩ fun γ y => by show φ. …`. Rewrite using `[map_mul, φ.symm_apply_apply]`. Introduce `h`. Establish `e : 𝓕 = φ ⁻¹' (φ '' 𝓕)` using `(φ.injective.preimage_image 𝓕).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `h.preimage_of_equiv (f := φ) hψ.quasiMeasurePreserving (e := fun γ => ⟨φ.symm γ, (hQ _).2 (by simp)⟩) ⟨fun a b hab => Subtype.ext (φ.symm.injective (congrArg Subtype.val hab)), fun b => ⟨⟨φ b, (hQ b).1 b.2⟩, Subtype.ext (by simp)⟩⟩ fun γ y => by show φ (φ.symm γ * y) = γ * φ y`. Rewrite using `[map_mul, φ.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFundamentalDomain_map {G H : Type} [Group G] [Group H] [MeasurableSpace G] [MeasurableSpace H]
     (φ : G ≃* H) (hc : Measurable φ) (hc' : Measurable φ.symm) (Γ : Subgroup G) (Γ' : Subgroup H)
@@ -52,9 +52,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7}
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.toMatrix_comp]`. Simplify using the standard rewrite rules. Rewrite using `[← LinearMap.toMatrix_comp]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.embMat_isom D.sp.cm V V' e.toLinearMap he`. Conclude with `GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.embMat_isom D.sp.cm V' V e.symm.toLinearMap (fun x y => by`. Use `he (e.symm x) (e.symm y)` as an intermediate fact. Rewrite `this` using `[e.apply_symm_apply, e.apply_symm_apply]`. Conclude with `this.symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isoPair_of_isometry (V V' : HSp D) (e : V.V ≃ₗ[D.host.E] V'.V)
     (he : ∀ x y, V'.hT (e x) (e y) = V.hT x y) :
@@ -71,15 +71,15 @@ theorem isoPair_of_isometry (V V' : HSp D) (e : V.V ≃ₗ[D.host.E] V'.V)
       exact this.symm)
 
 /- English proof (translation)
-Establish `c1` using `conjA_continuous h`. Establish `c2 : Continuous (conjA h).symm` using `conjA_continuous h.symm`. Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA D.sp.cm.sig V.gram` as an intermediate fact. Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA D.sp.cm.sig V'.gram` as an intermediate fact. Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.borelHA D.sp.cm.sig V.gram` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.borelHA D.sp.cm.sig V'.gram` as an intermediate fact. Use `hμ.1` as an intermediate fact. Establish `hτ : ∀ (ρ : D.what₂.Tau) a, embOf D ρ ((D.sp.cm.sig : D.host.E →+* D.host.E) a) = starRingEnd ℂ (embOf D ρ a)` using `fun ρ a => D.sp.cm.cmUnram.2.1 _ a`. Use `⟨MulEquiv.isHaarMeasure_map μ (conjA h) c1 c2, hμ.2.1, fun θ hθ => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Take `⟨A, hA⟩` from `(hμ.2.2 θ hθ).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨_, fun ρ => frame_transport h.symm (embOf D ρ) (hτ ρ) _ (A ρ) (hA ρ)⟩`. Introduce `A hA B hB`. Establish `key` using `(hμ.2.2 θ hθ).2 _ (fun ρ => frame_transport h (embOf D ρ) (hτ ρ) _ (A ρ) (hA ρ)) B hB`. Set `H : GA D V ≃ₜ GA D V'` to `⟨(conjA h).toEquiv, c1, c2⟩`. Use `Eq.trans (H.toMeasurableEquiv.map_apply _) ?_` and prove the remaining obligations.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans (congrArg μ ?_) key` and prove the remaining obligations. Use extensionality with `g`. Use `and_congr (stab_transport h hL hL' g) ?_` and prove the remaining obligations. Use `forall_congr' fun ρ => exists_congr fun b => and_congr Iff.rfl ?_` and prove the remaining obligations. Use `Iff.trans ?_ (frame_iff h (embOf D ρ) _ (A ρ) _)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← conjA_infMat h g (hθ ρ)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem isVolMeas_map (V V' : HSp D) {T : Matrix (Fin V'.rank) (Fin V.rank) D.host.E}
     {T' : Matrix (Fin V.rank) (Fin V'.rank) D.host.E}
@@ -112,7 +112,7 @@ theorem isVolMeas_map (V V' : HSp D) {T : Matrix (Fin V'.rank) (Fin V.rank) D.ho
     rfl
 
 /- English proof (translation)
-Introduce `W P Q _ L L' hL hU hL' hU' μ`. Conclude with `⟨fun h => GlobalTheory.VolumeRatioTypings.isVolMeas_reLat (withLattice W L hL hU) L' hL' hU' h (GlobalTheory.AdelicPointsUnimod.isMulRightInvariant_of_isHaarMeasure D W μ h.1), fun h => GlobalTheory.VolumeRatioTypings.isVolMeas_reLat (withLattice W L' hL' hU') L hL hU h (GlobalTh …`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem latticeIndependence (D : D7) : LatticeIndependence D := by
   intro W P Q _ L L' hL hU hL' hU' μ
@@ -122,15 +122,15 @@ theorem latticeIndependence (D : D7) : LatticeIndependence D := by
       (GlobalTheory.AdelicPointsUnimod.isMulRightInvariant_of_isHaarMeasure D W μ h.1)⟩
 
 /- English proof (translation)
-Introduce `V V' P Q _ _ e he hL`. Apply the tactic sequence `have h := isoPair_of_isometry V V' e he`. Establish `c1` using `conjA_continuous h`. Establish `c2 : Continuous (conjA h).symm` using `conjA_continuous h.symm`. Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.borelHA D.sp.cm.sig V.gram` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.borelHA D.sp.cm.sig V'.gram` as an intermediate fact. Establish `l1` using `mem_std_lattice_iff_integral_coords D V V' e.toLinearMap fun x => (hL x).1`. Establish `l2` using `mem_std_lattice_iff_integral_coords D V' V e.symm.toLinearMap fun x hx => (hL _).2 (by simpa using hx)`. Establish `hQ : ∀ g, g ∈ GQ V ↔ conjA h g ∈ GQ V'` using `fun g => ⟨conjA_rat h g, fun hg => by`. Use `conjA_rat h.symm _ hg` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← conjA_symm h, MulEquiv.symm_apply_apply] at this⟩` and apply the resulting hypothesis. Use `⟨⟨conjA h, c1, c2⟩, fun g => ?_, hQ, fun μ => ⟨isVolMeas_map V V' h l1 l2 P Q μ, fun hμ => ?_⟩, fun μ _ 𝓕 => isFundamentalDomain_map (conjA h) c1.measurable c2.measurable (GQ V) (GQ V') hQ μ 𝓕⟩` and prove the remaining obligations. Establish `e1` using `conjA_mat h g`. Establish `e2` using `h.adelic.2.1`. Unfold `Intertwines pointMatrix baseChange frameMatrix`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `(congrArg (· * _) e1).trans ?_` and prove the remaining obligations. Use `show _ * _ * _ * _ = _`. Rewrite using `[Matrix.mul_assoc, e2, Matrix.mul_one]`. Establish `k` using `isVolMeas_map V' V h.symm l2 l1 P Q _ hμ`. Establish `e3 : Measure.map (conjA h.symm) (Measure.map (conjA h) μ) = μ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Measure.map_map c2.measurable c1.measurable).trans ?_` and prove the remaining obligations. Rewrite using `[show ((conjA h).symm : _ → _) ∘ (conjA h) = id from funext (conjA h).symm_apply_apply, Measure.map_id]`. Conclude with `e3 ▸ k`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isometryTransport (D : D7) : IsometryTransport D := by
   intro V V' P Q _ _ e he hL
@@ -159,13 +159,13 @@ theorem isometryTransport (D : D7) : IsometryTransport D := by
     exact e3 ▸ k
 
 /- English proof (translation)
-Introduce `hT V V' P Q hV hV' ⟨e, he⟩`. Establish `pos : ∀ W : HSp D, HasSignatureEverywhere W P Q → 0 < D.vol W` using `fun W hW => by`. Take `⟨⟨μ, hμ⟩, hall⟩` from `hT W P Q hW.1 hW.2`. Take `⟨⟨𝓕, h𝓕⟩, hv⟩` from `hall μ hμ`. Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.measurableMulHA D.sp.cm.sig W.gram` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hμ.1` as an intermediate fact. Establish `: Countable (GQ W)` using `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.countableGamma _ _`. Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.measurableConstSMul_subgroup (GQ W)` as an intermediate fact. Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.smulInvariant_subgroup (GQ W) μ` as an intermediate fact. Establish `h𝓕' : IsFundamentalDomain (GQ W) 𝓕 μ` using `h𝓕`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h𝓕'.measure_ne_zero (NeZero.ne μ)` as an intermediate fact. Rewrite `this` using `[hv 𝓕 h𝓕]`. Conclude with `ENNReal.ofReal_pos.1 (pos_iff_ne_zero.2 this)`. Establish `h1 : GlobalTheory.IndefiniteRowSideFullHecke.VolumePerpendicular.IsVol D V P Q (D.vol V)` using `⟨pos V hV, hT V P Q hV.1 hV.2⟩`. Apply the tactic sequence `have h2 := GlobalTheory.VolumeRatioTypings.isVol_of_isometry V V' e he h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨μ, hμ⟩, hall⟩` from `hT V' P Q hV'.1 hV'.2`. Take `⟨⟨𝓕, h𝓕⟩, hv⟩` from `hall μ hμ`. Conclude with `(ENNReal.ofReal_eq_ofReal_iff (pos V hV).le (pos V' hV').le).1 (((h2.2.2 μ hμ).2 𝓕 h𝓕).symm.trans (hv 𝓕 h𝓕))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem volumeInvariance (D : D7) : VolumeInvariance D := by
   intro hT V V' P Q hV hV' ⟨e, he⟩
@@ -189,7 +189,7 @@ theorem volumeInvariance (D : D7) : VolumeInvariance D := by
     (((h2.2.2 μ hμ).2 𝓕 h𝓕).symm.trans (hv 𝓕 h𝓕))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨latticeIndependence D, isometryTransport D, volumeInvariance D⟩`.
+Supply the required witnesses or components.
 -/
 theorem volumeIndependence (D : D7) : VolumeIndependence D :=
   ⟨latticeIndependence D, isometryTransport D, volumeInvariance D⟩

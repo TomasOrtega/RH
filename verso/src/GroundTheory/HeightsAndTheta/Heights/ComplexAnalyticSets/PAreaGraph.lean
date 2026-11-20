@@ -10,15 +10,13 @@ open MeasureTheory Filter Topology
 open scoped ENNReal NNReal
 
 /- English proof (translation)
-Introduce `k m U F hU hF A hAU hA`. Express the relevant statement in the definitionally equal form `μH[(k : ℝ)] (realGraphPt F '' A) = ∫⁻ x in A, ENNReal.ofReal (graphJac (fderiv ℝ F x : EuclideanSpace ℝ (Fin k) →ₗ[ℝ] EuclideanSpace ℝ (Fin m))) ∂(μH[(k : ℝ)])`. Use `set S := μH[(k : ℝ)] (realGraphPt F '' A)`. Use `set I := ∫⁻ x in A, ENNReal.ofReal (graphJac (fderiv ℝ F x : EuclideanSpace ℝ (Fin k) →ₗ[ℝ] EuclideanSpace ℝ (Fin m))) ∂(μH[(k : ℝ)])`. Establish `hplus : ∀ j : ℕ, Tendsto (fun δ : ℝ≥0 => ((1 + δ : ℝ≥0) : ℝ≥0∞) ^ j) (𝓝[>] 0) (𝓝 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `j`. Establish `hcont : Continuous (fun δ : ℝ≥0 => ((1 + δ : ℝ≥0) : ℝ≥0∞) ^ j)` using `(ENNReal.continuous_pow j).comp (ENNReal.continuous_coe.comp (continuous_const.add continuous_id))`. Simplify using `using (hcont.tendsto 0).mono_left nhdsWithin_le_nhds`. Establish `hminus : ∀ j : ℕ, Tendsto (fun δ : ℝ≥0 => ((1 - δ : ℝ≥0) : ℝ≥0∞) ^ j) (𝓝[>] 0) (𝓝 1)`. Introduce `j`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hcont : Continuous (fun δ : ℝ≥0 => ((1 - δ : ℝ≥0) : ℝ≥0∞) ^ j)` using `(ENNReal.continuous_pow j).comp (ENNReal.continuous_coe.comp (continuous_const.sub continuous_id))`. Simplify using `using (hcont.tendsto 0).mono_left nhdsWithin_le_nhds`. Establish `hev : ∀ᶠ δ in 𝓝[>] (0 : ℝ≥0), 0 < δ ∧ δ < 1` using `by filter_upwards [Ioo_mem_nhdsGT (show (0 : ℝ≥0) < 1 from one_pos)] with δ hδ`. Conclude with `hδ`. Establish `hb : ∀ᶠ δ in 𝓝[>] (0 : ℝ≥0), S ≤ ((1 + δ : ℝ≥0) : ℝ≥0∞) ^ (k + 1) * I ∧ ((1 - δ : ℝ≥0) : ℝ≥0∞) ^ k * I ≤ ((1 + δ : ℝ≥0) : ℝ≥0∞) * S` using `by filter_upwards [hev] with δ hδ`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h k m U F hU hF A hAU hA δ hδ.1 hδ.2`. Apply `le_antisymm` to reduce the goal to its premises. Establish `hlim` using `ENNReal.Tendsto.mul_const (hplus (k + 1)) (b := I) (Or.inl one_ne_zero)`. Rewrite `hlim` using `[one_mul]`. Conclude with `le_of_tendsto_of_tendsto tendsto_const_nhds hlim (hb.mono fun δ hδ => hδ.1)`.
-
-Establish `hlim₁` using `ENNReal.Tendsto.mul_const (hminus k) (b := I) (Or.inl one_ne_zero)`. Establish `hlim₂` using `ENNReal.Tendsto.mul_const (by simpa using hplus 1) (b := S) (Or.inl one_ne_zero)`. Rewrite `hlim₁`, `hlim₂` using `[one_mul]`. Conclude with `le_of_tendsto_of_tendsto hlim₁ hlim₂ (hb.mono fun δ hδ => hδ.2)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem AreaGraph.proof (h : AreaGraphBound.Statement) : AreaGraph.Statement := by
   intro k m U F hU hF A hAU hA

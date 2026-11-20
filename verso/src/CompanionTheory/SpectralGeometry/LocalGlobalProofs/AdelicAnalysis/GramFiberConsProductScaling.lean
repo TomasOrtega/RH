@@ -13,15 +13,13 @@ open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.SW NumberF
 open scoped TensorProduct ENNReal NNReal Matrix
 
 /- English proof (translation)
-Take `⟨Bd, hBd⟩` from `hφ.bounded_above_of_compact_support hc`. Establish `hmeas : Measurable φ` using `hφ.measurable`. Establish `hg : Measurable (φ ∘ f)` using `hmeas.comp hf`. Establish `hPm : MeasurableSet (C₁ ×ˢ C₂)` using `h₁.measurableSet.prod h₂.measurableSet`. Establish `hPfin : (μ.prod ν) (C₁ ×ˢ C₂) < ⊤`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Measure.prod_prod]`. Conclude with `ENNReal.mul_lt_top h₁.measure_lt_top h₂.measure_lt_top`. Establish `hae : ∀ᵐ p ∂(μ.prod ν), ‖(φ ∘ f) p‖ ≤ (C₁ ×ˢ C₂).indicator (fun _ => |Bd|) p`. Establish `h` using `(Measure.quasiMeasurePreserving_fst (μ := μ) (ν := ν)).ae hs`. Use `filter_upwards [h] with p hp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h0 : φ (f p) = 0`. Simplify using `only [Function.comp, h0, norm_zero]`. Conclude with `Set.indicator_nonneg (fun _ _ => abs_nonneg _) _`. Establish `hmem : p ∈ C₁ ×ˢ C₂` using `hp p.2 h0`. Rewrite using `[Set.indicator_of_mem hmem]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(hBd _).trans (le_abs_self _)`. Establish `hbound : Integrable ((C₁ ×ˢ C₂).indicator (fun _ => |Bd|)) (μ.prod ν)` using `(integrable_indicator_iff hPm).2 (integrableOn_const hPfin.ne)`. Establish `hI : Integrable (φ ∘ f) (μ.prod ν)` using `hbound.mono' hg.aestronglyMeasurable hae`. Establish `hI2 : Integrable φ ((μ.prod ν).map f)` using `(integrable_map_measure hmeas.aestronglyMeasurable hf.aemeasurable).2 hI`. Use `⟨hI2.smul_measure_nnreal, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[integral_smul_nnreal_measure, integral_map hf.aemeasurable hmeas.aestronglyMeasurable, integral_prod (fun p => φ (f p)) hI]`. Simplify using `[NNReal.smul_def]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integrable_map_prod_of_compact {A B W : Type} [TopologicalSpace A] [MeasurableSpace A]
     [OpensMeasurableSpace A] [T2Space A] [TopologicalSpace B] [MeasurableSpace B]
@@ -60,7 +58,7 @@ theorem integrable_map_prod_of_compact {A B W : Type} [TopologicalSpace A] [Meas
   simp [NNReal.smul_def]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Apply the tactic sequence `refine Fin.cases ?_ (fun j => ?_) i <;> simp [vec]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem vec_zero {K : Type} [CommRing K] {M n : ℕ} (u : K) (c : Fin n → K) (X : Fin n → Fin M → K) :
     vec u c X 0 = u • (Fin.cons 1 (fun _ => 0) : Fin (M + 1) → K) := by
@@ -68,9 +66,9 @@ theorem vec_zero {K : Type} [CommRing K] {M n : ℕ} (u : K) (c : Fin n → K) (
   refine Fin.cases ?_ (fun j => ?_) i <;> simp [vec]
 
 /- English proof (translation)
-Use `continuous_pi fun a => continuous_pi fun i => ?_` and prove the remaining obligations. Use `Fin.cases ?_ (fun a' => ?_) a` and prove the remaining obligations. Simplify using `only [vec, Fin.cons_zero]`. Conclude with `continuous_const`. Use `Fin.cases ?_ (fun i' => ?_) i` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [vec, Fin.cons_succ, Fin.cons_zero]`. Conclude with `continuous_const`. Simplify using `only [vec, Fin.cons_succ]`. Conclude with `continuous_apply_apply a' i'`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_vec {K : Type} [TopologicalSpace K] [Zero K] {M n : ℕ} (u : K) (c : Fin n → K) :
     Continuous (fun X : Fin n → Fin M → K => vec u c X) := by
@@ -83,37 +81,33 @@ theorem continuous_vec {K : Type} [TopologicalSpace K] [Zero K] {M n : ℕ} (u :
       exact continuous_apply_apply a' i'
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ M J t n R _ _ _ _ _ d b lam m₁ m' s B₀ a κ₁ cm hD φ hφ hcs S hS`. Take `⟨hTR, hLC, hSC, hT2, -⟩` from `hD.hR`. Use `hTR` as an intermediate fact. Use `hLC` as an intermediate fact. Use `hSC` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hT2` as an intermediate fact. Take `⟨hKr, hKlc, hKsc, hKt2, -, -, -, hBor, -, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hD.hCM R`. Use `hKr` as an intermediate fact. Use `hKlc` as an intermediate fact. Use `hKsc` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hKt2` as an intermediate fact. Establish `hB1 : BorelSpace (Fin 1 → Fin (M + 1) → R ⊗[F] E)` using `hBor 1 (M + 1)`. Establish `hB2 : BorelSpace (Fin n → Fin M → R ⊗[F] E)` using `hBor n M`. Establish `hB3 : BorelSpace (Fin (n + 1) → Fin (M + 1) → R ⊗[F] E)` using `hBor (n + 1) (M + 1)`. Establish `hJ₁` using `GlobalTheory.T.block_one_scalar_preserves_nondegenerate F E σ M J hD.hJ t hD.ht`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hTG, -, hHsc, hHt2, hHB, hact⟩` from `GlobalTheory.T.adelic_unitary_group_locally_compact F E σ hD.hCM (M + 1) (blockOne (algebraMap F E t) J) hJ₁ R`. Use `hTG` as an intermediate fact. Use `hHsc` as an intermediate fact. Use `hHt2` as an intermediate fact. Use `hHB` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hcont, hone, hmul, -⟩` from `hact (n + 1)`. Establish `k1` using `GlobalTheory.T.gram_fiber_measure_locally_finite_measurable_supported F E σ hD.hCM (M + 1) 1 (blockOne (algebraMap F E t) J) hJ₁ R hD.hR d b lam hD.hlam m₁ hD.hm₁`. Establish `k2` using `GlobalTheory.T.gram_fiber_measure_locally_finite_measurable_supported F E σ hD.hCM M n J hD.hJ R hD.hR d b lam hD.hlam m' hD.hm'`. Take `⟨-, hlf₁, -, -, -, hgram⟩` from `k1`. Take `⟨-, hlf₂, -, -, -, -⟩` from `k2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `set α : Rˣ := a (s0 R (S : Matrix (Fin (n + 1)) (Fin (n + 1)) (R ⊗[F] E))) with hα`. Use `set c := cvec R t a (S : Matrix (Fin (n + 1)) (Fin (n + 1)) (R ⊗[F] E)) with hc`. Use `set S' := schur R σ t a S with hS'`. Use `set μ₁ := m₁ (hermScal R σ (algebraMap F R t)) with hμ₁`. Use `set u : R ⊗[F] E := (α : R) ⊗ₜ[F] (1 : E) with hu`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `set u' : R ⊗[F] E := ((α⁻¹ : Rˣ) : R) ⊗ₜ[F] (1 : E) with hu'`. Establish `huu : u * u' = 1`. Simplify using `[hu, hu', Algebra.TensorProduct.tmul_mul_tmul, Algebra.TensorProduct.one_def]`. Use `hlf₁ (hermScal R σ (algebraMap F R t))` as an intermediate fact. Use `hlf₂ S'` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `f : (Fin 1 → Fin (M + 1) → R ⊗[F] E) × (Fin n → Fin M → R ⊗[F] E) → Fin (n + 1) → Fin (M + 1) → R ⊗[F] E` to `fun p => actW R σ (blockOne (algebraMap F E t) J) (s p.1) (vec u c p.2)`. Establish `hfm : Measurable f` using `hcont.measurable.comp ((hD.hs.comp measurable_fst).prodMk ((continuous_vec u c).measurable.comp measurable_snd))`. Establish `hfib : fibS σ J t m₁ m' s B₀ a κ₁ cm S = (κ₁ α * cm α ^ n) • (μ₁.prod (m' S')).map f`. Unfold `fibS`. Rewrite using `[Set.indicator_of_mem hS]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `set C := tsupport φ with hC`. Establish `hCc : IsCompact C` using `hcs`. Set `e₁ : (Fin (n + 1) → Fin (M + 1) → R ⊗[F] E) → Fin 1 → Fin (M + 1) → R ⊗[F] E` to `fun Z _ i => Z 0 i * u'`. Establish `he₁ : Continuous e₁`. Use `continuous_pi fun _ => continuous_pi fun i => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(continuous_apply_apply (0 : Fin (n + 1)) i).mul continuous_const`. Establish `hC₁ : IsCompact (e₁ '' C)` using `hCc.image he₁`. Take `⟨C', hC'c, hC'⟩` from `hD.hcpt (e₁ '' C) hC₁`. Set `e₂ : HA R σ (blockOne (algebraMap F E t) J) × (Fin (n + 1) → Fin (M + 1) → R ⊗[F] E) → Fin (n + 1) → Fin (M + 1) → R ⊗[F] E` to `fun q => actW R σ (blockOne (algebraMap F E t) J) q.1⁻¹ q.2`. Establish `he₂ : Continuous e₂` using `hcont.comp ((continuous_fst.inv).prodMk continuous_snd)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `e₃ : (Fin (n + 1) → Fin (M + 1) → R ⊗[F] E) → Fin n → Fin M → R ⊗[F] E` to `fun Z j i => Z j.succ i.succ`. Establish `he₃ : Continuous e₃`. Use `continuous_pi fun j => continuous_pi fun i => ?_` and prove the remaining obligations. Conclude with `continuous_apply_apply j.succ i.succ`. Establish `hC₂ : IsCompact (e₃ '' (e₂ '' (C' ×ˢ C)))` using `((hC'c.prod hCc).image he₂).image he₃`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hsupp : ∀ᵐ y ∂μ₁, ∀ X, φ (f (y, X)) ≠ 0 → y ∈ e₁ '' C ∧ X ∈ e₃ '' (e₂ '' (C' ×ˢ C))` using `by filter_upwards [hgram (hermScal R σ (algebraMap F R t))] with y hy X hne`. Establish `hZ : f (y, X) ∈ C` using `subset_tsupport _ hne`. Establish `hy0 : e₁ (f (y, X)) = y`. Establish `h1` using `hD.hsec y hy`. Use function extensionality and compare the values at `i j`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi : i = 0` using `Subsingleton.elim _ _`. Substitute `hi` using the available equality. Establish `h2 : (f (y, X)) 0 = u • y 0` using `by conv_rhs => rw [← h1]`. Simplify using `only [f, actW, actTup, vec_zero, Matrix.mulVec_smul]`. Simplify using `only [e₁, h2, Pi.smul_apply, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[mul_comm u, mul_assoc, huu, mul_one]`. Establish `hy1 : y ∈ e₁ '' C` using `⟨_, hZ, hy0⟩`. Establish `hsy : s y ∈ C'` using `hC' y hy1 hy`. Establish `hv : e₂ (s y, f (y, X)) = vec u c X`. Simplify using `only [e₂, f]`.
-
-Rewrite using `[← hmul, inv_mul_cancel, hone]`. Use `⟨hy1, vec u c X, ⟨(s y, f (y, X)), ⟨hsy, hZ⟩, hv⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j i`. Simplify using `[e₃, vec]`. Rewrite using `[hfib]`.
-
-Conclude with `integrable_map_prod_of_compact μ₁ (m' S') f hfm φ hφ hcs _ _ hC₁ hC₂ hsupp _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrable_fibS_and_integral : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (M : ℕ) (J : Matrix (Fin M) (Fin M) E) (t : F) (n : ℕ) (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [MeasurableSpace R] [BorelSpace R] (d : ℕ) (b : Module.Basis (Fin d) F E) (lam : Measure R) (m₁ : HermR R σ 1 → Measure (Fin 1 → Fin (M + 1) → R ⊗[F] E)) (m' : HermR R σ n → Measure (Fin n → Fin M → R ⊗[F] E)) (s : (Fin 1 → Fin (M + 1) → R ⊗[F] E) → HA R σ (blockOne (algebraMap F E t) J)) (B₀ : Set R) (a : R → Rˣ) (κ₁ cm : Rˣ → ℝ≥0), StageData σ J t n b lam m₁ m' s B₀ a κ₁ cm → ∀ φ : (Fin (n + 1) → Fin (M + 1) → R ⊗[F] E) → ℝ, Continuous φ → HasCompactSupport φ → ∀ S ∈ (Bset R σ t a B₀ : Set (HermR R σ (n + 1))), Integrable φ (fibS σ J t m₁ m' s B₀ a κ₁ cm S) ∧ ∫ v, φ v ∂(fibS σ J t m₁ m' s B₀ a κ₁ cm S) = ((κ₁ (a (s0 R (S : Matrix (Fin (n + 1)) (Fin (n + 1)) (R ⊗[F] E)))) * cm (a (s0 R (S : Matrix (Fin (n + 1)) (Fin (n + 1)) (R ⊗[F] E)))) ^ n : ℝ≥0) : ℝ) * Preal σ J t m₁ m' s φ ((a (s0 R (S : Matrix (Fin (n + 1)) (Fin (n + 1)) (R ⊗[F] E)))) : R) (cvec R t a (S : Matrix (Fin (n + 1)) (Fin (n + 1)) (R ⊗[F] E))) (schur R σ t a S) := by
   intro F E _ _ _ _ _ σ M J t n R _ _ _ _ _ d b lam m₁ m' s B₀ a κ₁ cm hD φ hφ hcs S hS

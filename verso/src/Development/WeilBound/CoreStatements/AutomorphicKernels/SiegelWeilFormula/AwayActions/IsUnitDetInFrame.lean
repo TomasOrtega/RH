@@ -16,25 +16,25 @@ section
 variable (d : PositivityTheory.SiegelWeilFormula.SD σ)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.EisBL.DoubledParabolic.inFrame_mul d.b x y`.
+A detailed English derivation is pending.
 -/
 theorem inFrame_mul (x y : d.G) : inFrame d.b (x * y) = inFrame d.b x * inFrame d.b y :=
   GlobalTheory.EisBL.DoubledParabolic.inFrame_mul d.b x y
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.EisBL.DoubledParabolic.inFrame_one d.b`.
+A detailed English derivation is pending.
 -/
 theorem inFrame_one : inFrame d.b (1 : d.G) = 1 :=
   GlobalTheory.EisBL.DoubledParabolic.inFrame_one d.b
 
 /- English proof (translation)
-The claim follows from `PositivityTheory.SiegelWeilFormula.kunf.inFrame_injective d.b h`.
+A detailed English derivation is pending.
 -/
 theorem inFrame_inj {x y : d.G} (h : inFrame d.b x = inFrame d.b y) : x = y :=
   PositivityTheory.SiegelWeilFormula.kunf.inFrame_injective d.b h
 
 /- English proof (translation)
-The claim follows from `Matrix.isUnit_det_of_left_inverse (GlobalTheory.EisBL.DoubledParabolic.inFrame_inv_mul d.b x)`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_det_inFrame (x : d.G) : IsUnit (inFrame d.b x).det :=
   Matrix.isUnit_det_of_left_inverse (GlobalTheory.EisBL.DoubledParabolic.inFrame_inv_mul d.b x)
@@ -43,17 +43,15 @@ variable {d} {ε : ℤˣ} (hε : d.b.1ᵀ * dbl d.Y.J * d.b.1.map σ = fromBlock
 include hε
 
 /- English proof (translation)
-The claim follows from `PositivityTheory.SiegelWeilFormula.kunf.frame_eq hε x`.
+A detailed English derivation is pending.
 -/
 theorem inU_inFrame (x : d.G) : (inFrame d.b x)ᵀ * jF d.n ε * (inFrame d.b x).map (cA σ) = jF d.n ε :=
   PositivityTheory.SiegelWeilFormula.kunf.frame_eq hε x
 
 /- English proof (translation)
-Use `set J : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) (AE F E) := jF d.n ε with hJ`. Establish `hεε : ((ε : ℤ) : AE F E) * ((ε : ℤ) : AE F E) = 1`. Rewrite using `[← Int.cast_mul, ← Units.val_mul, Int.units_mul_self, Units.val_one, Int.cast_one]`. Establish `hJJ : J * (((ε : ℤ) : AE F E) • J) = 1`. Rewrite using `[Matrix.mul_smul, hJ, jF, Matrix.fromBlocks_multiply, ← Matrix.fromBlocks_one, Matrix.fromBlocks_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `congr 1 <;> simp [smul_smul, hεε]`. Establish `hT : Mᵀ * (J * M.map (cA σ) * (((ε : ℤ) : AE F E) • J)) = 1`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hM, hJJ]`. Establish `hu : IsUnit Mᵀ.det` using `Matrix.isUnit_det_of_right_inverse hT`. Rewrite `hu` using `[Matrix.det_transpose]`.
-
-Conclude with `PositivityTheory.SiegelWeilFormula.kunf.exists_of_frame hε M M⁻¹ (Matrix.mul_nonsing_inv M hu) hM`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_of_inU (M : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) (AE F E))
     (hM : Mᵀ * jF d.n ε * M.map (cA σ) = jF d.n ε) : ∃ x : d.G, inFrame d.b x = M := by

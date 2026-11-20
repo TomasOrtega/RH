@@ -7,17 +7,15 @@ set_option autoImplicit false
 namespace GlobalTheory.FlagChi
 
 /- English proof (translation)
-Introduce `Z _ N M l L r hr hL hepi`. Use `ShortComplex.ShortExact.mk' ?_ ?_ hepi` and prove the remaining obligations. Use `DualExact.exact_of_locally _ fun V x hx => ⟨V, le_rfl, hx, fun t ht => ?_⟩` and prove the remaining obligations. Establish `hmem : vec t ∈ vsec (stepC M l) V`. Introduce `h y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hq : genVec h (vec t) ∈ quotC M l L r y` using `vec_mem t h y hy`. Take `⟨c, hc⟩` from `Semi.LB.mem_of_cover hL (genericPoint Z)`. Establish `e` using `fnOf_coord_vproj L r (coordFn M l) hr (fun x w (hw : w ∈ quotC M l L r x) c hc => (show RegAt x (coordFn M l w * r c) from hw.2 c hc)) t c ⟨h, hc⟩`. Establish `ht' : (stepProj M l hr).app V t = 0` using `ht`. Rewrite `ht'` using `[stepProj]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[ht', LB.coord_zero, map_zero, coordFn_apply]`. Establish `hl : (M *ᵥ genVec h (vec t)) l = 0`. Break down `mul_eq_zero.1 e.symm with h0 | h0` into its components or cases. Conclude with `h0`. Conclude with `absurd h0 (Units.ne_zero _)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `k hk`. Break down `eq_or_lt_of_le hk with hk' | hk'` into its components or cases. Establish `: k = l` using `Fin.ext hk'.symm`. Rewrite using `[this]`. Conclude with `hl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `hq.1 k hk'`. Conclude with `⟨mk (vec t) hmem, sec_ext rfl⟩`. Use `QCoh.mono_of_locally_app_injective _ fun W x hx => ⟨W, hx, le_rfl, fun s u e => ?_⟩` and prove the remaining obligations. Apply `sec_ext` to reduce the goal to its premises. Use `congrArg vec e` as an intermediate fact.
-
-Conclude with `this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem stepSeq_shortExact : ∀ (Z : Scheme.{0}) [IsIntegral Z] (N : ℕ)
     (M : Matrix (Fin N) (Fin N) Z.functionField) (l : Fin N) (L : LB Z)

@@ -11,9 +11,9 @@ namespace ReciprocityTheory.ChartRestriction.DS.Mult1
 open Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.FourierDecayAlt.B2
 
 /- English proof (translation)
-Simplify using `[hμ.conc] left a ha := by rw [Measure.map_smul, hμ.left a ha] right a ha := by rw [Measure.map_smul, hμ.right a ha] finite_compact K hK := by`. Rewrite using `[Measure.smul_apply, smul_eq_mul]`. Conclude with `ENNReal.mul_lt_top (lt_top_iff_ne_top.2 hct) (hμ.finite_compact K hK)`. Use `ne_zero := by`. Introduce `h0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Apply `hμ.ne_zero` to reduce the goal to its premises. Use extensionality with `s _`. Establish `h1` using `congrArg (fun ν : Measure (Mt k r) => ν s) h0`. Simplify using `only [Measure.smul_apply, smul_eq_mul, Measure.coe_zero, Pi.zero_apply, mul_eq_zero] at h1`. Simplify `h1` using `[hc0]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isHaarOn_smul_of {k r : ℕ} {U : Set (Mat k r)} {μ : Measure (Mt k r)} (hμ : IsHaarOn U μ)
     {c : ℝ≥0∞} (hc0 : c ≠ 0) (hct : c ≠ ∞) : IsHaarOn U (c • μ) where
@@ -32,19 +32,17 @@ theorem isHaarOn_smul_of {k r : ℕ} {U : Set (Mat k r)} {μ : Measure (Mt k r)}
     simpa [hc0] using h1
 
 /- English proof (translation)
-Unfold `StDiagExists`. Introduce `k r Wp _ _ _ z π hk hz hT hrep hun hcont hirr`. Unfold `UnitaryGroupStructuralFacts at h`. Take `⟨hB2, hBS, -⟩` from `h`. Unfold `ReciprocityTheory.ChartRestriction.DS.Xi.InductiveHeisenbergInputs at hB2`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, -, hCW, -⟩` from `hB2`. Take `⟨D, hDz, hDz', hDπ, hDπ', -⟩` from `hBS k r Wp Wp z z π π hk hz hz hT hT hrep hrep hun hun hcont hcont`. Establish `hcomp : IsCompact (UWset k r z)` using `hCW k r z hz hT`. Establish `hW : IsHaarOn (UWset k r z) D.μW`. Establish `h0` using `D.haarW`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h0` using `[hDz]`. Conclude with `h0`. Establish `hm0 : D.μW Set.univ ≠ 0`. Introduce `h0`. Conclude with `hW.ne_zero (Measure.measure_univ_eq_zero.mp h0)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmt : D.μW Set.univ ≠ ∞`. Establish `h1 : D.μW Set.univ ≤ D.μW (UWset k r z) + D.μW (UWset k r z)ᶜ` using `measure_univ_le_add_compl _`. Rewrite `h1` using `[hW.conc, add_zero]`. Conclude with `ne_top_of_le_ne_top (hW.finite_compact _ hcomp).ne h1`. Establish `hc0 : (D.μW Set.univ)⁻¹ ≠ 0` using `ENNReal.inv_ne_zero.mpr hmt`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hct : (D.μW Set.univ)⁻¹ ≠ ∞` using `ENNReal.inv_ne_top.mpr hm0`. Establish `hH : IsHaarOn (UWset k r D.z) ((D.μW Set.univ)⁻¹ • D.μW)` using `isHaarOn_smul_of D.haarW hc0 hct`. Establish `hH' : IsHaarOn (UWset k r D.z') ((D.μW Set.univ)⁻¹ • D.μW)`. Rewrite using `[hDz', ← hDz]`. Conclude with `hH`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Set `D' : RealPlaceData k r Wp Wp` to `{ D with μW := (D.μW Set.univ)⁻¹ • D.μW μW' := (D.μW Set.univ)⁻¹ • D.μW haarW := hH haarW' := hH' }`. Use `⟨D', hDz, hDπ, ?_⟩` and prove the remaining obligations. Use `⟨hDz'.trans hDz.symm, hDπ'.trans hDπ.symm, rfl, ?_, ?_⟩` and prove the remaining obligations. Use `show ((D.μW Set.univ)⁻¹ • D.μW) Set.univ = 1`. Rewrite using `[Measure.smul_apply, smul_eq_mul, ENNReal.inv_mul_cancel hm0 hmt]`.
-
-Use `show Formalism.MainNotions.S.IsIrredOn (UWset k r D.z) D.π`. Rewrite using `[hDz, hDπ]`. Conclude with `hirr`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stDiagExists (h : UnitaryGroupStructuralFacts) : StDiagExists := by
   unfold StDiagExists

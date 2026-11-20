@@ -11,7 +11,7 @@ section SlopeTestRemainingChoices
 variable {V : Type*} [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Rewrite using `[hH x y, Complex.sub_conj, altE]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem herm_sub_swap (H : Sesq V) (hH : IsHerm H) (x y : V) :
     H x y - H y x = 2 * Complex.I * (altE H x y : ℂ) := by
@@ -20,13 +20,13 @@ theorem herm_sub_swap (H : Sesq V) (hH : IsHerm H) (x y : V) :
   ring
 
 /- English proof (translation)
-Simplify using `only [altE, hH x y, Complex.conj_im]`.
+Simplify using the standard rewrite rules.
 -/
 theorem altE_swap (H : Sesq V) (hH : IsHerm H) (x y : V) : altE H y x = -altE H x y := by
   simp only [altE, hH x y, Complex.conj_im]
 
 /- English proof (translation)
-Rewrite using `[hH x y, Complex.conj_re]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem re_swap (H : Sesq V) (hH : IsHerm H) (x y : V) : (H y x).re = (H x y).re := by
   rw [hH x y, Complex.conj_re]
@@ -34,9 +34,9 @@ theorem re_swap (H : Sesq V) (hH : IsHerm H) (x y : V) : (H y x).re = (H x y).re
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `V _ _ H hH x y F z`. Establish `hs` using `herm_sub_swap H hH x y`. Simplify using `only [opU]`. Rewrite using `[mul_assoc, ← Complex.exp_add, mul_left_comm, ← Complex.exp_add, add_assoc z x y]`. Use `congr 2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [map_add, LinearMap.add_apply]`. Take the linear combination `(-(Real.pi : ℂ) / 2) * hs`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem heisenbergMul : OpUMul := by
   intro V _ _ H hH x y F z
@@ -48,9 +48,9 @@ theorem heisenbergMul : OpUMul := by
   linear_combination (-(Real.pi : ℂ) / 2) * hs
 
 /- English proof (translation)
-Introduce `V _ _ H hH F z`. Use `⟨by simp [opU], fun x y => ?_⟩` and prove the remaining obligations. Establish `h1` using `heisenbergMul V H hH x y F z`. Establish `h2` using `heisenbergMul V H hH y x F z`. Rewrite `h2` using `[add_comm y x, altE_swap H hH]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h1, h2, ← mul_assoc, ← Complex.exp_add]`. Use `congr 1`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem heisenbergComm : OpUComm := by
   intro V _ _ H hH F z
@@ -65,11 +65,11 @@ theorem heisenbergComm : OpUComm := by
   ring
 
 /- English proof (translation)
-Introduce `V _ _ H hH x F z`. Establish `hre` using `re_swap H hH z x`. Establish `hE : (-(Real.pi : ℂ) * H z x - (Real.pi : ℂ) * H x x / 2).re = -Real.pi * (H z x).re - Real.pi * (H x x).re / 2`. Simplify using `[Complex.sub_re, Complex.mul_re]`. Establish `hzz : (H (z + x) (z + x)).re = (H z z).re + 2 * (H z x).re + (H x x).re`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [map_add, LinearMap.add_apply, Complex.add_re]`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [opU, norm_mul, Complex.norm_exp, hE]`. Rewrite using `[hzz, mul_pow, ← Real.exp_nat_mul, mul_assoc, ← Real.exp_add]`. Use `congr 2`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem heisenbergNorm : OpUNorm := by
   intro V _ _ H hH x F z
@@ -87,7 +87,7 @@ theorem heisenbergNorm : OpUNorm := by
   ring
 
 /- English proof (translation)
-Introduce `V W _ _ _ _ H H' g hg x G z`. Simplify using `only [opU, map_add]`. Rewrite using `[hg z x, hg x x]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem heisenbergIsometry : OpUIsom := by
   intro V W _ _ _ _ H H' g hg x G z
@@ -95,9 +95,9 @@ theorem heisenbergIsometry : OpUIsom := by
   rw [hg z x, hg x x]
 
 /- English proof (translation)
-Introduce `V _ _ H δ hδ x F z`. Establish `h1 : H z (δ x) = H (δ.symm z) x`. Establish `h` using `hδ (δ.symm z) x`. Simplify using `only [LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply] at h`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : H (δ x) (δ x) = H x x`. Establish `h` using `hδ x x`. Simplify `h` using `only [LinearEquiv.coe_coe]`. Simplify using `only [pullInv, opU, map_add, LinearEquiv.symm_apply_apply, h1, h2]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem precompHeisenberg : PullOpU := by
   intro V _ _ H δ hδ x F z
@@ -111,23 +111,21 @@ theorem precompHeisenberg : PullOpU := by
   simp only [pullInv, opU, map_add, LinearEquiv.symm_apply_apply, h1, h2]
 
 /- English proof (translation)
-Introduce `V _ _ H hH Λ α hα`. Take `⟨hpm, hmul⟩` from `hα`. Establish `hA0 : ∀ x, altE H x x = 0` using `fun x => Complex.conj_eq_iff_im.mp (hH x x).symm`. Establish `h0 : α 0 = 1`. Establish `h` using `hmul 0 Λ.zero_mem 0 Λ.zero_mem`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[add_zero, hA0, Complex.ofReal_zero, mul_zero, Complex.exp_zero, mul_one]`. Break down `hpm 0 Λ.zero_mem with h' | h'` into its components or cases. Conclude with `h'`. Rewrite `h` using `[h']`. Evaluate the numerical expressions using `at h`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Establish `hneg : ∀ x ∈ Λ, α (-x) = α x`. Introduce `x hx`. Establish `h` using `hmul x hx (-x) (Λ.neg_mem hx)`. Establish `hA : altE H x (-x) = 0`. Establish `h'` using `hA0 x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [altE] at h' ⊢`. Rewrite using `[map_neg, Complex.neg_im, h', neg_zero]`. Rewrite `h` using `[add_neg_cancel, h0, hA, Complex.ofReal_zero, mul_zero, Complex.exp_zero, mul_one]`. Apply the tactic sequence `rcases hpm x hx with h1 | h1 <;> rcases hpm (-x) (Λ.neg_mem hx) with h2 | h2 <;>`. Apply the tactic sequence `rw [h1, h2] at h ⊢ <;> try norm_num at h`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hdual : Λ ≤ dualLat H Λ`. Introduce `x hx`. Use `show ∀ y ∈ Λ, ∃ m : ℤ, altE H x y = (m : ℝ)`. Introduce `y hy`. Establish `e1` using `hmul x hx y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e2` using `hmul y hy x hx`. Rewrite `e2` using `[add_comm y x, altE_swap H hH]`. Apply the tactic sequence `have hxne : α x ≠ 0 := by rcases hpm x hx with h | h <;> rw [h] <;> norm_num`. Apply the tactic sequence `have hyne : α y ≠ 0 := by rcases hpm y hy with h | h <;> rw [h] <;> norm_num`. Establish `he : Complex.exp ((Real.pi : ℂ) * Complex.I * (altE H x y : ℂ)) = Complex.exp ((Real.pi : ℂ) * Complex.I * ((-altE H x y : ℝ) : ℂ))`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `e1.symm.trans e2`. Rewrite `h` using `[mul_comm (α y) (α x)]`. Conclude with `mul_left_cancel₀ (mul_ne_zero hxne hyne) h`. Rewrite `he` using `[Complex.exp_eq_exp_iff_exists_int]`. Take `⟨n, hn⟩` from `he`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `hpi : (Real.pi : ℂ) * Complex.I ≠ 0` using `mul_ne_zero (by exact_mod_cast Real.pi_ne_zero) Complex.I_ne_zero`. Move the coercions through the operations in `at hn`. Establish `h' : ((altE H x y : ℝ) : ℂ) = (n : ℂ)`. Apply `mul_left_cancel₀ (mul_ne_zero (two_ne_zero' ℂ) hpi)` to reduce the goal to its premises.
-
-Take the linear combination `hn`. Conclude with `h'` after adjusting the coercions. Conclude with `⟨h0, hneg, hdual⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem semicharacterBasic : SemiCharBasic := by
   intro V _ _ H hH Λ α hα
@@ -176,11 +174,11 @@ theorem semicharacterBasic : SemiCharBasic := by
   exact ⟨h0, hneg, hdual⟩
 
 /- English proof (translation)
-Introduce `V _ _ H hH Λ α hα x hx y hy F z`. Establish `hU : opU H x (fun v => α y * opU H y F v) z = α y * opU H x (opU H y F) z`. Simplify using `only [opU]`. Expand and normalize the polynomial expressions, which then agree. Establish `hd : x ∈ dualLat H Λ` using `(semicharacterBasic V H hH Λ α hα).2.2 hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Take `⟨m, hm⟩` from `(show ∀ y ∈ Λ, ∃ m : ℤ, altE H x y = (m : ℝ) from hd) y hy`. Establish `hexp : Complex.exp (-(Real.pi : ℂ) * Complex.I * (altE H x y : ℂ)) = Complex.exp ((Real.pi : ℂ) * Complex.I * (altE H x y : ℂ))`. Rewrite using `[Complex.exp_eq_exp_iff_exists_int]`. Use `⟨-m, ?_⟩` and prove the remaining obligations. Rewrite using `[hm]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hU, heisenbergMul V H hH x y F z, hα.2 x hx y hy, hexp]`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem semicharacterHom : SemiHom := by
   intro V _ _ H hH Λ α hα x hx y hy F z
@@ -199,9 +197,9 @@ theorem semicharacterHom : SemiHom := by
   ring
 
 /- English proof (translation)
-Introduce `V _ _ _ H x F hF z _`. Set `L : V →ₗ[ℂ] ℂ` to `{ toFun := fun v => H v x map_add' := fun a b => by simp only [map_add, LinearMap.add_apply] map_smul' := fun c a => by simp only [map_smul, LinearMap.smul_apply, RingHom.id_apply] }`. Establish `hlin : AnalyticAt ℂ (fun v => H v x) z` using `(LinearMap.toContinuousLinearMap L).analyticAt z`. Establish `hF' : AnalyticAt ℂ (fun v => F (v + x)) z` using `AnalyticAt.comp (x := z) (f := fun v => v + x) (hF (z + x) (Set.mem_univ _)) (analyticAt_id.add analyticAt_const)`. Establish `hE : AnalyticAt ℂ (fun v => Complex.exp (-(Real.pi : ℂ) * H v x - (Real.pi : ℂ) * H x x / 2)) z` using `((analyticAt_const.mul hlin).sub analyticAt_const).cexp`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hF'.mul hE`.
+A detailed English derivation is pending.
 -/
 theorem heisenbergAnalytic : OpUAnalytic := by
   intro V _ _ _ H x F hF z _
@@ -225,9 +223,9 @@ theorem matH_apply {n : Type*} [Fintype n] (h : Matrix n n ℂ) (z w : n → ℂ
     matH h z w = ∑ i, ∑ j, z i * h i j * conj (w j) := rfl
 
 /- English proof (translation)
-Introduce `n _ h`. Use `⟨fun z w => rfl, fun hh x y => ?_⟩` and prove the remaining obligations. Rewrite using `[matH_apply, matH_apply, map_sum]`. Repeatedly rewrite using `[map_sum, map_mul, Complex.conj_conj]`. Rewrite using `[Finset.sum_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `hc : conj (h i j) = h j i`. Establish `h'` using `congrFun (congrFun hh j) i`. Simplify `h'` using `[Matrix.conjTranspose_apply]`. Rewrite using `[hc]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -245,7 +243,7 @@ theorem matrixFormBasic : MatHBasic := by
   ring
 
 /- English proof (translation)
-Rewrite using `[stdH, matH_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single i (fun j _ hj => by simp [Matrix.one_apply, Ne.symm hj]) (by simp)]`. Simplify using `only [Matrix.smul_apply, Matrix.one_apply_eq, smul_eq_mul, mul_one, Formalism.L2.Th1.F.herm]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem stdH_apply (L : PeriodPair) (n : Type*) [Fintype n] [DecidableEq n] (z w : n → ℂ) :
     stdH L n z w = ∑ i, Formalism.L2.Th1.F.herm L (z i) (w i) := by
@@ -256,13 +254,13 @@ theorem stdH_apply (L : PeriodPair) (n : Type*) [Fintype n] [DecidableEq n] (z w
   ring
 
 /- English proof (translation)
-Introduce `L n _ _`. Establish `harea` using `Formalism.L2.Th1.F.PeriodAreaSignLemmas.area_pos L`. Use `⟨stdH_apply L n, fun x y => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[stdH_apply, stdH_apply, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Formalism.L2.Th1.F.herm, map_div₀, map_mul, Complex.conj_conj, Complex.conj_ofReal]`. Expand and normalize the polynomial expressions, which then agree. Establish `hi : ∀ i, Formalism.L2.Th1.F.herm L (x i) (x i) = ((Complex.normSq (x i) / Formalism.L2.Th1.F.area L : ℝ) : ℂ)`. Introduce `i`. Simplify using `only [Formalism.L2.Th1.F.herm, Complex.mul_conj]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[stdH_apply, Complex.re_sum]`. Simplify using `only [hi, Complex.ofReal_re]`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi0⟩ : ∃ i, x i ≠ 0 := by`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hx (funext h)`. Conclude with `Finset.sum_pos' (fun j _ => div_nonneg (Complex.normSq_nonneg _) harea.le) ⟨i, Finset.mem_univ _, div_pos (Complex.normSq_pos.mpr hi0) harea⟩`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem standardFormBasic : StdHBasic := by
   intro L n _ _
@@ -288,7 +286,7 @@ theorem standardFormBasic : StdHBasic := by
       ⟨i, Finset.mem_univ _, div_pos (Complex.normSq_pos.mpr hi0) harea⟩
 
 /- English proof (translation)
-Introduce `L n _ _ x f z`. Simplify using `only [opU, Formalism.L2.Th1.F.opU, prodFn, stdH_apply, Pi.add_apply]`. Rewrite using `[Finset.prod_mul_distrib, ← Complex.exp_sum, Finset.mul_sum, Finset.mul_sum, Finset.sum_div, ← Finset.sum_sub_distrib]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem heisenbergStandard : OpUStd := by
   intro L n _ _ x f z
@@ -297,7 +295,7 @@ theorem heisenbergStandard : OpUStd := by
     ← Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Simplify using `only [matH_apply, slice, blk4, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single a (fun b _ hb => by simp [Ne.symm hb]) (by simp)]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem matrixForm_fourfoldBlock {n : Type*} [Fintype n] (h : Matrix n n ℂ) (z w : Fin 4 × n → ℂ) :
     matH (blk4 h) z w = ∑ a, matH h (slice a z) (slice a w) := by
@@ -307,7 +305,7 @@ theorem matrixForm_fourfoldBlock {n : Type*} [Fintype n] (h : Matrix n n ℂ) (z
   simp
 
 /- English proof (translation)
-Introduce `n _ h`. Use `⟨matrixForm_fourfoldBlock h, fun x θ z => ?_⟩` and prove the remaining obligations. Simplify using `only [opU, matrixForm_fourfoldBlock]`. Rewrite using `[Finset.prod_mul_distrib, ← Complex.exp_sum, Finset.mul_sum, Finset.mul_sum, Finset.sum_div, ← Finset.sum_sub_distrib]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem heisenbergFourfold : OpUBlk4 := by
   intro n _ h

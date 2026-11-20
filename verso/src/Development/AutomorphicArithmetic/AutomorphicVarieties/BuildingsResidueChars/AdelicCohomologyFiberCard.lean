@@ -1,13 +1,13 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.HomologyRank.RankHomology
 
 /- English proof (translation)
-Introduce `G _ U U' h hne y`. Use `set e := Subgroup.quotientEquivProdOfLE h with he`. Establish `key : ∀ x : G ⧸ U, (e x).1 = Subgroup.quotientMapOfLE h x`. Introduce `x`. Proceed by induction on `x using QuotientGroup.induction_on with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `H g => rfl`. Establish `e1 : {x // Subgroup.quotientMapOfLE h x = y} ≃ (U' ⧸ U.subgroupOf U')` using `{ toFun := fun x => (e x.1).2 invFun := fun b => ⟨e.symm (y, b), by rw [← key, Equiv.apply_symm_apply]⟩ left_inv := by`. Introduce and unpack `⟨x, hx⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `e.symm (y, (e x).2) = x`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hx, ← key]`. Conclude with `e.symm_apply_apply x`. Use `right_inv := by`. Introduce `b`. Express the relevant statement in the definitionally equal form `(e (e.symm (y, b))).2 = b`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Equiv.apply_symm_apply] }`. Rewrite using `[Cardinal.mk_congr e1]`. Establish `: Finite (U' ⧸ U.subgroupOf U')` using `Subgroup.index_ne_zero_iff_finite.mp hne`. Rewrite using `[← Nat.cast_card]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.adelic_cohomology_fiber_card :
     UpperTheory.V.Af.CohB.FibCard := by

@@ -7,9 +7,9 @@ open scoped LaurentPolynomial
 namespace GlobalTheory.CompanionTheory.RootNear
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.prod_insert ha]`. Establish `h1 : u * x a = u * y a` using `h a (Finset.mem_insert_self a s)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : u * ∏ j ∈ s, x j = u * ∏ j ∈ s, y j` using `ih (fun j hj => h j (Finset.mem_insert_of_mem hj))`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem mul_prod_congr {B ι : Type} [CommRing B] (u : B) (x y : ι → B) (S : Finset ι)
     (h : ∀ j ∈ S, u * x j = u * y j) : u * ∏ j ∈ S, x j = u * ∏ j ∈ S, y j := by
@@ -28,11 +28,11 @@ theorem mul_prod_congr {B ι : Type} [CommRing B] (u : B) (x y : ι → B) (S : 
       _ = u * (y a * ∏ j ∈ s, y j) := by ring
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => exact ⟨0, I.zero_mem, by simp⟩`. Consider the case `insert a s ha ih`. Take `⟨t, htI, hdvd⟩` from `ih (fun j hj => hf j (Finset.mem_insert_of_mem hj)) (fun j hj => hc j (Finset.mem_insert_of_mem hj))`. Establish `hfa : f a * f a = f a` using `hf a (Finset.mem_insert_self a s)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hca : f a * c a ∈ I` using `hc a (Finset.mem_insert_self a s)`. Use `⟨(1 - f a) * t + f a * c a, I.add_mem (I.mul_mem_left _ htI) hca, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.prod_insert ha, Finset.prod_insert ha]`. Establish `hcong : (1 - f a) * ∏ j ∈ s, (c j - ((1 - f a) * t + f a * c a)) = (1 - f a) * ∏ j ∈ s, (c j - t)` using `mul_prod_congr (1 - f a) _ _ s (fun j _ => by linear_combination (c a - t) * hfa)`. Establish `hfirst : c a - ((1 - f a) * t + f a * c a) = (1 - f a) * (c a - t)` using `by ring`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hfirst, mul_comm (1 - f a) (c a - t), mul_assoc, hcong]`. Conclude with `Dvd.dvd.mul_left (mul_dvd_mul_left (1 - f a) hdvd) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_shift {B ι : Type} [CommRing B] (I : Ideal B) (c f : ι → B) (S : Finset ι)
     (hf : ∀ j ∈ S, IsIdempotentElem (f j)) (hc : ∀ j ∈ S, f j * c j ∈ I) :
@@ -55,31 +55,27 @@ theorem exists_shift {B ι : Type} [CommRing B] (I : Ideal B) (c f : ι → B) (
     exact Dvd.dvd.mul_left (mul_dvd_mul_left (1 - f a) hdvd) _
 
 /- English proof (translation)
-Establish `key : ∀ j : Fin d, ∃ e : B, IsIdempotentElem e ∧ e * (a - b j) ∈ Ideal.span {π ^ M} ∧ (1 - e) * π ^ M ∈ Ideal.span {a - b j}` using `fun j => hV (a - b j) (π ^ M) ⟨M, Ideal.subset_span (Set.mem_insert_of_mem _ (Set.mem_singleton _))⟩`. Use `choose e he1 he2 he3 using key`. Establish `hee : ∀ j, e j * e j = e j` using `fun j => he1 j`. Establish `hr : ∀ j, ∃ r : B, (1 - e j) * π ^ M = (a - b j) * r` using `fun j => Ideal.mem_span_singleton.mp (he3 j)`. Use `choose r hr using hr`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨q, hq⟩` from `Ideal.mem_span_singleton.mp hprod`. Take `⟨j0, -⟩ : ∃ j : Fin d, True` from `⟨⟨0, hd⟩, trivial⟩`. Take `⟨E, hEdef⟩ : ∃ E : B, E = ∏ j, (1 - e j)` from `⟨_, rfl⟩`. Establish `hEE : E * E = E`. Rewrite using `[hEdef, ← Finset.prod_mul_distrib]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Finset.prod_congr rfl (fun j _ => by linear_combination hee j)`. Establish `hEj : ∀ j, E * (1 - e j) = E`. Introduce `j`. Establish `hsplit : (1 - e j) * ∏ i ∈ Finset.univ.erase j, (1 - e i) = E`. Rewrite using `[hEdef]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Conclude with `Finset.mul_prod_erase _ (fun i => 1 - e i) (Finset.mem_univ j)`. Rewrite using `[← hsplit]`. Take the linear combination `(∏ i ∈ Finset.univ.erase j, (1 - e i)) * hee j`. Establish `hT : ∀ j, (a - b j) * (E * r j) = E * π ^ M`. Introduce `j`.
+Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hEpow : ∀ n : ℕ, E ^ (n + 1) = E`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `succ n ih => rw [pow_succ, ih, hEE]`. Establish `hEd : E ^ d = E`. Establish `hd' : d = (d - 1) + 1` using `by omega`. Rewrite using `[hd', hEpow]`. Establish `hmain : π ^ (d * M) * (q * ∏ j, (E * r j)) = π ^ (d * M) * E`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hq]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = ∏ j, ((a - b j) * (E * r j)) := Finset.prod_mul_distrib.symm`. Use `_ = ∏ _j : Fin d, (E * π ^ M) := Finset.prod_congr rfl (fun j _ => hT j)`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `_ = π ^ (d * M) * E := by`. Rewrite using `[Finset.prod_const, Finset.card_univ, Fintype.card_fin, mul_pow, hEd, ← pow_mul, mul_comm M d]`. Expand and normalize the polynomial expressions, which then agree. Establish `hpow : π ^ (d * M) ∈ nonZeroDivisors B` using `pow_mem hπ _`. Establish `hET : E = q * ∏ j, (E * r j)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : (q * ∏ j, (E * r j) - E) * π ^ (d * M) = 0` using `by linear_combination hmain`. Conclude with `(sub_eq_zero.mp ((mem_nonZeroDivisors_iff.mp hpow).2 _ h0)).symm`. Establish `hEa : E * (a - b j0) ∈ Ideal.span {π ^ M}`. Rewrite using `[Ideal.mem_span_singleton]`. Establish `hsplit : (E * r j0) * ∏ i ∈ Finset.univ.erase j0, (E * r i) = ∏ i, (E * r i)` using `Finset.mul_prod_erase _ (fun i => E * r i) (Finset.mem_univ j0)`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨q * (∏ i ∈ Finset.univ.erase j0, (E * r i)) * E, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hsplit]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = π ^ M * (q * (∏ i ∈ Finset.univ.erase j0, (E * r i)) * E) := by rw [hT j0]; ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨s, hs, w, hw⟩` from `exists_shift (Ideal.span {π ^ M}) (fun j => a - b j) e Finset.univ (fun j _ => he1 j) (fun j _ => he2 j)`. Establish `hw' : ∏ j, (a - b j - s) = E * w` using `by rw [hEdef]; exact hw`. Take `⟨a₁, ha₁⟩ : ∃ x : B, x = (1 - E) * (a - s) + E * b j0` from `⟨_, rfl⟩`. Use `⟨a₁, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : a₁ - a = (E - 1) * s - E * (a - b j0)` using `by rw [ha₁]; ring`.
-
-Rewrite using `[h1]`. Conclude with `Ideal.sub_mem _ (Ideal.mul_mem_left _ _ hs) hEa`. Establish `hsplit2 : (a₁ - b j0) * ∏ i ∈ Finset.univ.erase j0, (a₁ - b i) = ∏ i, (a₁ - b i)` using `Finset.mul_prod_erase _ (fun i => a₁ - b i) (Finset.mem_univ j0)`. Establish `hE0 : E * ∏ i, (a₁ - b i) = 0`. Rewrite using `[← hsplit2]`.
-
-Take the linear combination `E * (∏ i ∈ Finset.univ.erase j0, (a₁ - b i)) * ha₁ + (∏ i ∈ Finset.univ.erase j0, (a₁ - b i)) * (b j0 - (a - s)) * hEE`. Establish `hcong : (1 - E) * ∏ i, (a₁ - b i) = (1 - E) * ∏ i, (a - b i - s)` using `mul_prod_congr (1 - E) _ _ Finset.univ (fun j _ => by linear_combination (1 - E) * ha₁ + (a - s - b j0) * hEE)`. Combine the equalities or inequalities in the displayed calculation.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem root_near (B : Type) [CommRing B] (π : B) (hπ : π ∈ nonZeroDivisors B) (hV : VAL π)
     (d M : ℕ) (b : Fin d → B) (a : B) (hd : 0 < d)

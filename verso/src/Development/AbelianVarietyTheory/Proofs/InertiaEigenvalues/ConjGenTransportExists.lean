@@ -13,7 +13,7 @@ namespace GlobalTheory.ConjTransport
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω]
 
 /- English proof (translation)
-Rewrite using `[RingEquiv.symm_apply_eq, hτ, RingEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem symm_alg (c : Ω ≃+* Ω) (τ : E ≃+* E) (hτ : ∀ x, c (algebraMap E Ω x) = algebraMap E Ω (τ x)) (x : E) :
     c.symm (algebraMap E Ω x) = algebraMap E Ω (τ.symm x) := by
@@ -34,29 +34,29 @@ theorem conjG_apply (c : Ω ≃+* Ω) (τ : E ≃+* E) (hτ : ∀ x, c (algebraM
     (g : G E Ω) (y : Ω) : conjG c τ hτ g y = c (g (c.symm y)) := rfl
 
 /- English proof (translation)
-Rewrite using `[conjG_apply, RingEquiv.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conjG_apply_c (c : Ω ≃+* Ω) (τ : E ≃+* E) (hτ : ∀ x, c (algebraMap E Ω x) = algebraMap E Ω (τ x))
     (g : G E Ω) (y : Ω) : conjG c τ hτ g (c y) = c (g y) := by
   rw [conjG_apply, RingEquiv.symm_apply_apply]
 
 /- English proof (translation)
-Use extensionality with `y`. Simplify using `[conjG_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem conjG_conjG_symm (c : Ω ≃+* Ω) (τ : E ≃+* E) (hτ : ∀ x, c (algebraMap E Ω x) = algebraMap E Ω (τ x))
     (g : G E Ω) : conjG c τ hτ (conjG c.symm τ.symm (symm_alg c τ hτ) g) = g := by
   ext y; simp [conjG_apply]
 
 /- English proof (translation)
-Apply `continuous_of_continuousAt_one (conjG c τ hτ)` to reduce the goal to its premises. Rewrite using `[ContinuousAt, map_one]`. Introduce `U hU`. Rewrite `hU` using `[krullTopology_mem_nhds_one_iff]`. Take `⟨S, hS, hSU⟩` from `hU`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Set `b` to `Module.finBasis E S`. Set `s : Finset Ω` to `Finset.univ.image (fun i => c.symm (b i : Ω))`. Establish `hfin : FiniteDimensional E (IntermediateField.adjoin E (s : Set Ω))` using `IntermediateField.finiteDimensional_adjoin (fun x _ => (Algebra.IsAlgebraic.isAlgebraic (R := E) x).isIntegral)`. Use `show _ ∈ nhds (1 : G E Ω)`. Rewrite using `[krullTopology_mem_nhds_one_iff]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨_, hfin, fun g hg => hSU ?_⟩` and prove the remaining obligations. Rewrite `hg`, the goal using `[SetLike.mem_coe, IntermediateField.mem_fixingSubgroup_iff]`. Introduce `x hx`. Establish `hb : ∀ i, conjG c τ hτ g (b i : Ω) = b i`. Introduce `i`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[conjG_apply, hg _ (IntermediateField.subset_adjoin _ _ (by simp [s])), RingEquiv.apply_symm_apply]`. Establish `hx' : x = ∑ i, (b.repr ⟨x, hx⟩ i) • (b i : Ω)`. Use `congrArg (fun z : S => (z : Ω)) (b.sum_repr ⟨x, hx⟩)` as an intermediate fact. Simplify using `only [AddSubmonoidClass.coe_finset_sum, IntermediateField.coe_smul] at this`. Conclude with `this.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hx', map_sum]`. Simplify using `[map_smul, hb]`.
+A detailed English derivation is pending.
 -/
 theorem conjG_continuous [Algebra.IsAlgebraic E Ω] (c : Ω ≃+* Ω) (τ : E ≃+* E)
     (hτ : ∀ x, c (algebraMap E Ω x) = algebraMap E Ω (τ x)) : Continuous (conjG c τ hτ) := by
@@ -86,7 +86,7 @@ theorem conjG_continuous [Algebra.IsAlgebraic E Ω] (c : Ω ≃+* Ω) (τ : E �
   simp [map_smul, hb]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Conclude with `fun h y => apply_mem_iff_of_mem_Dec h y`. Introduce `h show σ • A = A`. Use extensionality with `y`. Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, AlgEquiv.smul_def, ← h, mul_inv_apply]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_Dec_iff' {A : ValuationSubring Ω} {σ : G E Ω} :
     σ ∈ Dec (F := E) A ↔ ∀ y, σ y ∈ A ↔ y ∈ A := by
@@ -98,18 +98,18 @@ theorem mem_Dec_iff' {A : ValuationSubring Ω} {σ : G E Ω} :
     rw [ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, AlgEquiv.smul_def, ← h, mul_inv_apply]
 
 /- English proof (translation)
-Rewrite using `[valuation_lt_one_iff', valuation_lt_one_iff', ← map_inv₀, ← hc, ← hc, map_eq_zero_iff _ c.injective]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lt_one_transport {A A' : ValuationSubring Ω} (c : Ω ≃+* Ω) (hc : ∀ y, y ∈ A ↔ c y ∈ A') (y : Ω) :
     A.valuation y < 1 ↔ A'.valuation (c y) < 1 := by
   rw [valuation_lt_one_iff', valuation_lt_one_iff', ← map_inv₀, ← hc, ← hc, map_eq_zero_iff _ c.injective]
 
 /- English proof (translation)
-Establish `hsurj : ∀ y', ∃ y, y' = c y` using `fun y' => ⟨c.symm y', (c.apply_symm_apply y').symm⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hD : g ∈ Dec (F` using `E) A := hg.1 show conjG c τ hτ g ∈ Dec (F := E) A'`. Rewrite `hD`, the goal using `[mem_Dec_iff']`. Introduce `y'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨y, rfl⟩` from `hsurj y'`. Rewrite using `[conjG_apply_c, ← hc, ← hc, hD]`. Introduce `y' hy'`. Take `⟨y, rfl⟩` from `hsurj y'`. Rewrite using `[conjG_apply_c, ← map_sub, ← lt_one_transport c hc]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hy'` using `[ValuationSubring.valuation_le_one_iff, ← hc, ← ValuationSubring.valuation_le_one_iff]`. Conclude with `hg.2 y hy'`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjG_mem_Ine {A A' : ValuationSubring Ω} (c : Ω ≃+* Ω) (τ : E ≃+* E)
     (hτ : ∀ x, c (algebraMap E Ω x) = algebraMap E Ω (τ x)) (hc : ∀ y, y ∈ A ↔ c y ∈ A') {g : G E Ω}
@@ -129,7 +129,7 @@ theorem conjG_mem_Ine {A A' : ValuationSubring Ω} (c : Ω ≃+* Ω) (τ : E ≃
     exact hg.2 y hy'
 
 /- English proof (translation)
-Introduce `y' hy'`. Take `⟨y, rfl⟩ : ∃ y, y' = c y` from `⟨c.symm y', (c.apply_symm_apply y').symm⟩`. Establish `hy : y ≠ 0` using `fun h => hy' (by rw [h, map_zero])`. Rewrite using `[conjG_apply_c, ← map_div₀, ← map_one c, ← map_sub, ← lt_one_transport c hc]`. Conclude with `hg y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjG_mem_wild {A A' : ValuationSubring Ω} (c : Ω ≃+* Ω) (τ : E ≃+* E)
     (hτ : ∀ x, c (algebraMap E Ω x) = algebraMap E Ω (τ x)) (hc : ∀ y, y ∈ A ↔ c y ∈ A') {g : G E Ω}
@@ -148,25 +148,21 @@ namespace GlobalTheory
 open GlobalTheory.ConjTransport
 
 /- English proof (translation)
-Introduce `D w w' γ hww hγ`. Set `τ : D.host.E ≃+* D.host.E` to `(D.host.conj : D.host.E ≃+* D.host.E)`. Set `c₀ : D.nd.Om ≃+* D.nd.Om` to `IsAlgClosure.equivOfEquiv D.nd.Om D.nd.Om τ`. Establish `hc₀ : ∀ x, c₀ (algebraMap D.host.E D.nd.Om x) = algebraMap D.host.E D.nd.Om (τ x)` using `IsAlgClosure.equivOfEquiv_algebraMap D.nd.Om D.nd.Om τ`. Use `set A := D.nd.plOm.1 w with hAdef`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set A' := D.nd.plOm.1 w' with hA'def`. Establish `hA : IsPlaceOver A w` using `D.nd.plOm.2 w`. Establish `hA' : IsPlaceOver A' w'` using `D.nd.plOm.2 w'`. Set `B : ValuationSubring D.nd.Om` to `A.comap (c₀.symm : D.nd.Om →+* D.nd.Om)`. Establish `hAB : ∀ y, y ∈ A ↔ c₀ y ∈ B` using `fun y => by show y ∈ A ↔ c₀.symm (c₀ y) ∈ A`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[RingEquiv.symm_apply_apply]`. Establish `hB : IsPlaceOver B w'`. Introduce `x`. Set `x'' : 𝓞 D.host.E` to `⟨τ.symm x, (x.isIntegral_coe).map (τ.symm : D.host.E →+* D.host.E).toIntAlgHom⟩`. Establish `h1 : algebraMap D.host.E D.nd.Om (x : D.host.E) = c₀ (algebraMap D.host.E D.nd.Om (x'' : D.host.E))`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hc₀]`. Use `congr 1`. Use `show (x : D.host.E) = τ (τ.symm (x : D.host.E))`. Conclude with `(τ.apply_symm_apply _).symm`. Rewrite using `[h1, ← lt_one_transport c₀ hAB, hA x'']`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hww x'' x (by show (x : D.host.E) = τ (τ.symm (x : D.host.E)); exact (τ.apply_symm_apply _).symm)`. Take `⟨σ, hσ⟩` from `exists_smul_eq_of_isPlaceOver hB hA'`. Set `c : D.nd.Om ≃+* D.nd.Om` to `c₀.trans σ.toRingEquiv`. Establish `hcE : ∀ x, c (algebraMap D.host.E D.nd.Om x) = algebraMap D.host.E D.nd.Om (τ x)`. Introduce `x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `show σ (c₀ _) = _`. Rewrite using `[hc₀, AlgEquiv.commutes]`. Establish `hcA : ∀ y, y ∈ A ↔ c y ∈ A'`. Introduce `y`. Rewrite using `[hAB, ← hσ, ← ValuationSubring.smul_mem_pointwise_smul_iff (g := σ), AlgEquiv.smul_def]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Establish `hcA' : ∀ y, y ∈ A' ↔ c.symm y ∈ A`. Introduce `y`. Rewrite using `[hcA, RingEquiv.apply_symm_apply]`. Use `⟨conjG c τ hcE γ, ⟨c, fun x => hcE x, hcA, fun y => conjG_apply_c c τ hcE γ y⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨conjG_mem_Ine c τ hcE hcA hγ.1, ?_⟩` and prove the remaining obligations. Introduce `h hh`. Establish `h1` using `hγ.2 (conjG_mem_Ine c.symm τ.symm (symm_alg c τ hcE) hcA' hh)`. Rewrite using `[← conjG_conjG_symm c τ hcE h]`. Use `closure_mono ?_ (image_closure_subset_closure_image (conjG_continuous c τ hcE) ⟨_, h1, rfl⟩)` and prove the remaining obligations.
-
-Rewrite using `[← Subgroup.coe_map, MonoidHom.map_closure]`. Use `SetLike.coe_subset_coe.mpr (Subgroup.closure_mono ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Break down `hg with rfl | hg` into its components or cases. Conclude with `Set.mem_insert _ _`.
-
-Conclude with `Set.mem_insert_of_mem _ (conjG_mem_wild c τ hcE hcA hg)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem conjGen_transport_exists : ∀ (D : D7) (w w' : PlE D.host) (γ : GE D.nd), IsConjPl D.host w w' →
     TameGenAt (D.nd.plOm.1 w) γ → ∃ γ' : GE D.nd, IsConjGen D w w' γ γ' ∧ TameGenAt (D.nd.plOm.1 w') γ' := by

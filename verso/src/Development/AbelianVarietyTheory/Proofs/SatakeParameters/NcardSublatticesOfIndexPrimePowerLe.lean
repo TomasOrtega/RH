@@ -14,7 +14,7 @@ noncomputable def hc (q : ℕ) : ℕ → ℕ → ℕ
   | r + 1, n => ∑ k ∈ Finset.range (n + 1), hc q r k * q ^ (r * (n - k))
 
 /- English proof (translation)
-Proceed by induction on `r with`. Consider the case `zero => simp [hc]`. Consider the case `succ r ih => simp [hc, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem hc_zero_right (q r : ℕ) : hc q r 0 = 1 := by
   induction r with
@@ -22,15 +22,13 @@ theorem hc_zero_right (q r : ℕ) : hc q r 0 = 1 := by
   | succ r ih => simp [hc, ih]
 
 /- English proof (translation)
-Proceed by induction on `r generalizing n with`. Consider the case `zero => simp only [hc]; split_ifs <;> simp`. Consider the case `succ r ih`. Simplify using `only [hc]`. Combine the equalities or inequalities in the displayed calculation.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `k hk`. Establish `hk' : k ≤ n` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hk)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← pow_mul, pow_add]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ (n + 1) ^ r * q ^ (r * n) := by`. Apply `Nat.mul_le_mul (Nat.pow_le_pow_left (by omega) _)` to reduce the goal to its premises. Apply `Nat.pow_le_pow_right hq` to reduce the goal to its premises. Establish `h1 : (r - 1) * k ≤ r * k` using `Nat.mul_le_mul_right _ (Nat.sub_le _ _)`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : r * k + r * (n - k) = r * n`. Rewrite using `[← Nat.mul_add, Nat.add_sub_cancel' hk']`. Use linear arithmetic over natural numbers and integers. Use `_ = (n + 1) ^ (r + 1) * (q ^ (r + 1 - 1)) ^ n := by`. Rewrite using `[Finset.sum_const, Finset.card_range, smul_eq_mul, Nat.add_sub_cancel, ← pow_mul, pow_succ]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hc_le (q : ℕ) (hq : 1 ≤ q) (r n : ℕ) : hc q r n ≤ (n + 1) ^ r * (q ^ (r - 1)) ^ n := by
   induction r generalizing n with
@@ -60,7 +58,7 @@ theorem hc_le (q : ℕ) (hq : 1 ≤ q) (r n : ℕ) : hc q r n ≤ (n + 1) ^ r * 
           ring
 
 /- English proof (translation)
-Use extensionality with `n`. Consider the cases of `n with`. Consider the case `zero => simp`. Consider the case `succ n`. Rewrite using `[sub_mul, one_mul, map_sub, mul_assoc, PowerSeries.coeff_C_mul, PowerSeries.coeff_succ_X_mul, PowerSeries.coeff_mk, PowerSeries.coeff_mk, PowerSeries.coeff_one, if_neg (Nat.succ_ne_zero n), pow_succ]`.
+By extensionality, compare the relevant components. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -79,11 +77,11 @@ def polP (q r : ℕ) : Polynomial ℂ :=
   ∏ i ∈ Finset.range r, (1 - Polynomial.C ((q : ℂ) ^ i) * Polynomial.X)
 
 /- English proof (translation)
-Proceed by induction on `r with`. Consider the case `zero`. Use extensionality with `n`. Simplify using `[polP, hc, PowerSeries.coeff_one]`. Consider the case `succ r ih`.
+Proceed by induction. Treat this case separately. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Treat this case separately.
 
-Establish `hmk : PowerSeries.mk (fun n => (hc q (r + 1) n : ℂ)) = PowerSeries.mk (fun n => (hc q r n : ℂ)) * PowerSeries.mk (fun n => ((q : ℂ) ^ r) ^ n)`. Use extensionality with `n`. Rewrite using `[PowerSeries.coeff_mul, Finset.Nat.sum_antidiagonal_eq_sum_range_succ (fun i j => PowerSeries.coeff i (PowerSeries.mk (fun n => (hc q r n : ℂ))) * PowerSeries.coeff j (PowerSeries.mk (fun n => ((q : ℂ) ^ r) ^ n)))]`. Simplify using `[hc, pow_mul]`. Rewrite using `[polP, Finset.prod_range_succ, Polynomial.coe_mul, ← polP, hmk]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ih, one_mul]`. Rewrite using `[Polynomial.coe_sub, Polynomial.coe_one, Polynomial.coe_mul, Polynomial.coe_C, Polynomial.coe_X]`. Conclude with `one_sub_mul_geom ((q : ℂ) ^ r)`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem polP_mul_hc (q r : ℕ) :
     (polP q r : PowerSeries ℂ) * PowerSeries.mk (fun n => (hc q r n : ℂ)) = 1 := by
@@ -112,7 +110,7 @@ theorem polP_mul_hc (q r : ℕ) :
         exact one_sub_mul_geom ((q : ℂ) ^ r)
 
 /- English proof (translation)
-Establish `h` using `congrArg (PowerSeries.coeff n) (polP_mul_hc q r)`. Rewrite `h` using `[PowerSeries.coeff_mul, Finset.Nat.sum_antidiagonal_eq_sum_range_succ (fun i j => PowerSeries.coeff i (polP q r : PowerSeries ℂ) * PowerSeries.coeff j (PowerSeries.mk (fun n => (hc q r n : ℂ))))]`. Simplify `h` using `[PowerSeries.coeff_one, show n ≠ 0 by omega, Polynomial.coeff_coe]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem coeff_relation (q r n : ℕ) (hn : 1 ≤ n) :
     ∑ k ∈ Finset.range (n + 1), (polP q r).coeff k * (hc q r (n - k) : ℂ) = 0 := by
@@ -130,11 +128,11 @@ variable {O K : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
   [Finite (IsLocalRing.ResidueField O)] [Field K] [Algebra O K] [IsFractionRing O K]
 
 /- English proof (translation)
-Take `⟨-, -, hemp, hX⟩` from `GlobalTheory.T.elementarySublatticesOfIndex_degrees_qBinomial O K r L`. Establish `hQP : (∑ j ∈ Finset.range (r + 1), Polynomial.C ((-1 : ℂ) ^ j * (qRes O : ℂ) ^ (j * (j - 1) / 2) * ((subElem j L).ncard : ℂ)) * Polynomial.X ^ j) = polP (qRes O) r`. Apply `Polynomial.funext` to reduce the goal to its premises. Introduce `x`. Rewrite using `[polP, Polynomial.eval_finsetSum, Polynomial.eval_prod]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using hX x`. Rewrite using `[← hQP, Polynomial.finsetSum_coeff]`. Simplify using `only [Polynomial.coeff_C_mul_X_pow]`. Rewrite using `[Finset.sum_ite_eq]`. Use `split_ifs with hk`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `: r < k` using `by simp at hk; omega`. Rewrite using `[hemp k this]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem elem_coeff (r : ℕ) (L : Lat O K r) (k : ℕ) :
     (-1 : ℂ) ^ k * (qRes O : ℂ) ^ (k * (k - 1) / 2) * ((subElem k L).ncard : ℂ) =
@@ -156,19 +154,19 @@ theorem elem_coeff (r : ℕ) (L : Lat O K r) (k : ℕ) :
     rw [hemp k this]; simp
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `L`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[subIdx_zero, Set.ncard_singleton, hc_zero_right]`. Establish `hid` using `GlobalTheory.T.heckeOperator_alternating_series_identity O K r ℂ (fun _ => (1 : ℂ)) n L hn`. Establish `hall : ∀ (m : ℕ) (M : Lat O K r), heckeAll m (fun _ => (1 : ℂ)) M = ((subIdx m M).ncard : ℂ)`. Introduce `m M`. Rewrite using `[heckeAll_eq_sum, Set.ncard_eq_toFinset_card _ (subIdx_finite m M)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hterm : ∀ k ∈ Finset.range n, ((-1 : ℂ) ^ (k + 1) * (qRes O : ℂ) ^ ((k + 1) * (k + 1 - 1) / 2)) • heckeElem (k + 1) (heckeAll (n - (k + 1)) (fun _ => (1 : ℂ))) L = (polP (qRes O) r).coeff (k + 1) * (hc (qRes O) r (n - (k + 1)) : ℂ)`. Introduce `k hk`. Establish `hk' : k < n` using `Finset.mem_range.mp hk`. Establish `hc' : heckeAll (n - (k + 1)) (fun (_ : Lat O K r) => (1 : ℂ)) = fun (_ : Lat O K r) => (hc (qRes O) r (n - (k + 1)) : ℂ)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `M; rw [hall, ih _ (by omega) M]`. Rewrite using `[hc', heckeElem_eq_sum, Finset.sum_const, ← Set.ncard_eq_toFinset_card _ (subElem_finite _ L), ← elem_coeff r L (k + 1), smul_eq_mul, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsum` using `Finset.sum_congr rfl hterm`. Rewrite `hid` using `[Finset.sum_range_succ']`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hid` using `[hsum]`. Establish `hrel` using `coeff_relation (qRes O) r n hn`. Rewrite `hrel` using `[Finset.sum_range_succ']`. Establish `h0` using `elem_coeff r L 0`. Rewrite `h0` using `[subElem_zero, Set.ncard_singleton]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hid` using `[heckeElem_zero, hall]`. Simplify using `only [pow_zero, zero_mul, Nat.zero_div, Nat.cast_one, mul_one, Nat.sub_zero, one_smul] at hid h0`. Rewrite `hrel` using `[← h0, one_mul]`. Establish `: ((subIdx n L).ncard : ℂ) = (hc (qRes O) r n : ℂ)`. Take the linear combination `hid - hrel`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Conclude with `this` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem ncard_subIdx_eq (r : ℕ) : ∀ (n : ℕ) (L : Lat O K r),
     (subIdx n L).ncard = hc (qRes O) r n := by
@@ -212,7 +210,7 @@ theorem ncard_subIdx_eq (r : ℕ) : ∀ (n : ℕ) (L : Lat O K r),
   exact_mod_cast this
 
 /- English proof (translation)
-Introduce `O K _ _ _ _ _ _ _ r n L`. Rewrite using `[ncard_subIdx_eq r n L]`. Establish `h` using `hc_le (qRes O) (one_lt_qRes (O := O)).le r n`. Conclude with `h` after adjusting the coercions.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ncard_subIdx_le : ∀ (O K : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [Finite (IsLocalRing.ResidueField O)] [Field K] [Algebra O K] [IsFractionRing O K] (r : ℕ)

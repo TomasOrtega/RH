@@ -9,9 +9,9 @@ namespace GlobalTheory.LatVecPair
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Rewrite using `[FractionalIdeal.mem_inv_iff (FractionalIdeal.coeIdeal_ne_zero.mpr h)]`. Prove the components needed by the constructor for the conclusion. Introduce `H t ht`. Take `⟨x, hx⟩` from `(FractionalIdeal.mem_one_iff (S := (𝓞 E)⁰)).mp (H _ (FractionalIdeal.mem_coeIdeal_of_mem (S := (𝓞 E)⁰) (P := E) ht))`. Conclude with `RingHom.mem_range.mpr ⟨x, by rw [hx, mul_comm]⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `H y hy`. Take `⟨t, ht, rfl⟩` from `(FractionalIdeal.mem_coeIdeal (S := (𝓞 E)⁰)).mp hy`. Take `⟨x, hx⟩` from `RingHom.mem_range.mp (H t ht)`. Conclude with `(FractionalIdeal.mem_one_iff (S := (𝓞 E)⁰)).mpr ⟨x, by rw [hx, mul_comm]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_inv_coe_iff {𝔞 : Ideal (𝓞 E)} (h : 𝔞 ≠ ⊥) (c : E) :
     c ∈ ((𝔞 : FractionalIdeal (𝓞 E)⁰ E))⁻¹ ↔ ∀ t ∈ 𝔞, (t : E) * c ∈ (algebraMap (𝓞 E) E).range := by
@@ -27,7 +27,7 @@ theorem mem_inv_coe_iff {𝔞 : Ideal (𝓞 E)} (h : 𝔞 ≠ ⊥) (c : E) :
     exact (FractionalIdeal.mem_one_iff (S := (𝓞 E)⁰)).mpr ⟨x, by rw [hx, mul_comm]⟩
 
 /- English proof (translation)
-Establish `h' : ((𝔞 : FractionalIdeal (𝓞 E)⁰ E))⁻¹ = ((𝔟 : FractionalIdeal (𝓞 E)⁰ E))⁻¹`. Use extensionality with `c`. Rewrite using `[mem_inv_coe_iff ha, mem_inv_coe_iff hb]`. Conclude with `(h c).symm`. Conclude with `FractionalIdeal.coeIdeal_injective (inv_inj.mp h')`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ideal_eq_of_inv {𝔞 𝔟 : Ideal (𝓞 E)} (ha : 𝔞 ≠ ⊥) (hb : 𝔟 ≠ ⊥)
     (h : ∀ c : E, (∀ t ∈ 𝔟, (t : E) * c ∈ (algebraMap (𝓞 E) E).range) ↔
@@ -39,17 +39,15 @@ theorem ideal_eq_of_inv {𝔞 𝔟 : Ideal (𝓞 E)} (ha : 𝔞 ≠ ⊥) (hb : �
   exact FractionalIdeal.coeIdeal_injective (inv_inj.mp h')
 
 /- English proof (translation)
-Set `C : FractionalIdeal (𝓞 E)⁰ E` to `⟨𝔠, FractionalIdeal.isFractional_of_fg hfg⟩`. Establish `hC1 : (1 : FractionalIdeal (𝓞 E)⁰ E) ≤ C`. Introduce `x hx`. Take `⟨y, rfl⟩` from `(FractionalIdeal.mem_one_iff (S := (𝓞 E)⁰)).mp hx`. Use `show algebraMap (𝓞 E) E y ∈ 𝔠`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.algebraMap_eq_smul_one]`. Conclude with `𝔠.smul_mem y h1`. Establish `h10 : (1 : FractionalIdeal (𝓞 E)⁰ E) ≠ 0`. Introduce `h0`. Establish `h1m : (1 : E) ∈ (1 : FractionalIdeal (𝓞 E)⁰ E)` using `(FractionalIdeal.mem_one_iff (S := (𝓞 E)⁰)).mpr ⟨1, map_one _⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1m` using `[h0]`. Conclude with `one_ne_zero ((FractionalIdeal.mem_zero_iff (S := (𝓞 E)⁰)).mp h1m)`. Establish `hC0 : C ≠ 0`. Introduce `h0`. Rewrite `hC1` using `[h0, FractionalIdeal.le_zero_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Conclude with `h10 hC1`. Establish `hle : C⁻¹ ≤ 1`. Simplify using `using FractionalIdeal.inv_anti_mono h10 hC0 hC1`. Take `⟨𝔞, h𝔞⟩` from `FractionalIdeal.le_one_iff_exists_coeIdeal.mp hle`. Establish `ha : 𝔞 ≠ ⊥`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `rfl`. Rewrite `h𝔞` using `[FractionalIdeal.coeIdeal_bot]`. Conclude with `hC0 (inv_eq_zero.mp h𝔞.symm)`. Use `⟨𝔞, ha, fun c => ?_⟩` and prove the remaining obligations. Rewrite using `[← mem_inv_coe_iff ha, h𝔞, inv_inv]`.
-
-Conclude with `Iff.rfl`.
+Unfold both sides to obtain the same proposition, which implies itself. A detailed English derivation is pending.
 -/
 theorem exists_ideal_inv (𝔠 : Submodule (𝓞 E) E) (hfg : 𝔠.FG) (h1 : (1 : E) ∈ 𝔠) :
     ∃ 𝔞 : Ideal (𝓞 E), 𝔞 ≠ ⊥ ∧ ∀ c : E, (∀ t ∈ 𝔞, (t : E) * c ∈ (algebraMap (𝓞 E) E).range) ↔ c ∈ 𝔠 := by
@@ -83,7 +81,7 @@ theorem exists_ideal_inv (𝔠 : Submodule (𝓞 E) E) (hfg : 𝔠.FG) (h1 : (1 
 
 omit [NumberField E] in
 /- English proof (translation)
-Use `⟨⟨LinearMap.toMatrix' (e : (Fin n → E) →ₗ[E] (Fin n → E)), LinearMap.toMatrix' (e.symm : (Fin n → E) →ₗ[E] (Fin n → E)), ?_, ?_⟩, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.toMatrix'_comp, LinearEquiv.comp_coe, LinearEquiv.symm_trans_self, LinearEquiv.refl_toLinearMap, LinearMap.toMatrix'_id]`. Rewrite using `[← LinearMap.toMatrix'_comp, LinearEquiv.comp_coe, LinearEquiv.self_trans_symm, LinearEquiv.refl_toLinearMap, LinearMap.toMatrix'_id]`. Conclude with `LinearMap.toMatrix'_mulVec _ y`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_GL_of_equiv {n : ℕ} (e : (Fin n → E) ≃ₗ[E] (Fin n → E)) :
     ∃ γ : GL (Fin n) E, ∀ y, (γ : Matrix (Fin n) (Fin n) E) *ᵥ y = e y := by
@@ -97,11 +95,11 @@ theorem exists_GL_of_equiv {n : ℕ} (e : (Fin n → E) ≃ₗ[E] (Fin n → E))
 
 omit [NumberField E] in
 /- English proof (translation)
-Establish `h0 : (Pi.single 0 1 : Fin (k + 1) → E) ≠ 0`. Introduce `h`. Use `congrFun h 0` as an intermediate fact. Simplify using `at this`. Set `f : (E ∙ x) ≃ₗ[E] (E ∙ (Pi.single 0 1 : Fin (k + 1) → E))` to `(LinearEquiv.toSpanNonzeroSingleton E _ x hx).symm.trans (LinearEquiv.toSpanNonzeroSingleton E _ _ h0)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Take `⟨g, hg⟩` from `Submodule.exists_linearEquiv_restrict_eq f`. Establish `h1 : (LinearEquiv.toSpanNonzeroSingleton E _ x hx).symm ⟨x, Submodule.mem_span_singleton_self x⟩ = 1`. Rewrite using `[LinearEquiv.symm_apply_eq, LinearEquiv.toSpanNonzeroSingleton_one]`. Use `⟨g, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[h1, LinearEquiv.toSpanNonzeroSingleton_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_equiv_single {k : ℕ} (x : Fin (k + 1) → E) (hx : x ≠ 0) :
     ∃ e : (Fin (k + 1) → E) ≃ₗ[E] (Fin (k + 1) → E), e x = Pi.single 0 1 := by
@@ -125,15 +123,13 @@ theorem exists_equiv_single {k : ℕ} (x : Fin (k + 1) → E) (hx : x ≠ 0) :
       rw [h1, LinearEquiv.toSpanNonzeroSingleton_one]
 
 /- English proof (translation)
-Take `⟨b, hbL, hbspan, hbli⟩` from `exists_linearIndependent E (L : Set (Fin k → E))`. Establish `hsp : ⊤ ≤ Submodule.span E (Set.range ((↑) : b → Fin k → E))`. Rewrite using `[Subtype.range_coe, hbspan, hL.span_eq_top]`. Use `set B := Module.Basis.mk hbli hsp with hB`. Establish `hBi : ∀ i, B i = (i : Fin k → E)` using `fun i => Module.Basis.mk_apply _ _ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Finite b` using `Module.Finite.finite_basis B`. Set `: Fintype b` to `Fintype.ofFinite _`. Use `⟨B.constr E (fun i => l ⟨i.1, hbL i.2⟩), fun z => ?_⟩` and prove the remaining obligations. Take `⟨⟨d, hd⟩, hdint⟩` from `IsLocalization.exist_integer_multiples (𝓞 E)⁰ Finset.univ (fun i => B.repr z i)`. Establish `hall : ∀ i, ∃ a : 𝓞 E, algebraMap (𝓞 E) E a = d • B.repr z i` using `fun i => RingHom.mem_rangeS.mp (hdint i (Finset.mem_univ i))`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose a ha using hall`. Establish `hdz : (d • z : L) = ∑ i, a i • (⟨i.1, hbL i.2⟩ : L)`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Submodule.coe_smul, ← B.sum_repr z, Finset.smul_sum, Submodule.coe_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Submodule.coe_smul, ← algebraMap_smul E (a i), ha, smul_assoc, hBi]`. Establish `key : d • (B.constr E (fun i => l ⟨i.1, hbL i.2⟩) z) = d • l z`. Rewrite using `[← l.map_smul, hdz, map_sum, Module.Basis.constr_apply_fintype, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[l.map_smul, Module.Basis.equivFun_apply, ← algebraMap_smul E (a i), ha, smul_assoc]`.
-
-Establish `hd0 : d ≠ 0` using `nonZeroDivisors.ne_zero hd`. Conclude with `smul_right_injective E hd0 key`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_extend {k : ℕ} (L : Submodule (𝓞 E) (Fin k → E)) (hL : Submodule.IsLattice E L)
     (l : L →ₗ[𝓞 E] E) : ∃ f : (Fin k → E) →ₗ[E] E, ∀ z : L, f z = l z := by
@@ -163,13 +159,13 @@ theorem exists_extend {k : ℕ} (L : Submodule (𝓞 E) (Fin k → E)) (hL : Sub
   exact smul_right_injective E hd0 key
 
 /- English proof (translation)
-Set `T : Λ →ₗ[𝓞 E] L` to `{ toFun := fun y => ⟨Fin.tail (y : Fin (k + 1) → E), (h _).mpr ⟨y, y.2, rfl⟩⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Establish `hT : Function.Surjective T`. Introduce and unpack `⟨z, hz⟩`. Take `⟨y, hy, rfl⟩` from `(h z).mp hz`. Conclude with `⟨⟨y, hy⟩, rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `: Module.Finite (𝓞 E) L` using `Module.Finite.iff_fg.mpr hL.fg`. Establish `: Module.FinitePresentation (𝓞 E) L` using `Module.finitePresentation_of_finite _ _`. Establish `: Module.Projective (𝓞 E) L` using `Module.Flat.projective_of_finitePresentation`. Take `⟨s, hs⟩` from `Module.projective_lifting_property T LinearMap.id hT`. Set `l : L →ₗ[𝓞 E] E` to `(LinearMap.proj (R := 𝓞 E) (φ := fun _ : Fin (k + 1) => E) 0).comp (Λ.subtype.comp s)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨f, hf⟩` from `exists_extend L hL l`. Use `⟨f, fun z hz => ?_⟩` and prove the remaining obligations. Establish `hsz : T (s ⟨z, hz⟩) = ⟨z, hz⟩` using `LinearMap.congr_fun hs ⟨z, hz⟩`. Establish `e1 : f z = ((s ⟨z, hz⟩ : Λ) : Fin (k + 1) → E) 0` using `hf ⟨z, hz⟩`. Establish `e2 : Fin.tail ((s ⟨z, hz⟩ : Λ) : Fin (k + 1) → E) = z` using `congrArg Subtype.val hsz`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Fin.cons_self_tail ((s ⟨z, hz⟩ : Λ) : Fin (k + 1) → E)` as an intermediate fact. Rewrite `this` using `[e2, ← e1]`. Rewrite using `[this]`. Conclude with `(s ⟨z, hz⟩).2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_section {k : ℕ} (Λ : Submodule (𝓞 E) (Fin (k + 1) → E)) (L : Submodule (𝓞 E) (Fin k → E))
     (hL : Submodule.IsLattice E L) (h : ∀ z, z ∈ L ↔ ∃ y ∈ Λ, Fin.tail y = z) :
@@ -199,7 +195,7 @@ theorem exists_section {k : ℕ} (Λ : Submodule (𝓞 E) (Fin (k + 1) → E)) (
   exact (s ⟨z, hz⟩).2
 
 /- English proof (translation)
-Use `⟨hΛ.fg.map _, ?_⟩` and prove the remaining obligations. Establish `hc : ((Λ.map (f.restrictScalars (𝓞 E)) : Submodule (𝓞 E) (Fin m → E)) : Set (Fin m → E)) = f '' (Λ : Set (Fin n → E))` using `Submodule.map_coe _ _`. Rewrite using `[hc, Submodule.span_image, hΛ.span_eq_top, Submodule.map_top, LinearMap.range_eq_top.mpr hf]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem isLattice_map {n m : ℕ} (Λ : Submodule (𝓞 E) (Fin n → E)) (hΛ : Submodule.IsLattice E Λ)
     (f : (Fin n → E) →ₗ[E] (Fin m → E)) (hf : Function.Surjective f) :
@@ -226,7 +222,7 @@ theorem consZero_apply {k : ℕ} (z : Fin k → E) : consZero k z = Fin.cons 0 z
 
 omit [NumberField E] in
 /- English proof (translation)
-Use extensionality with `i`. Apply the tactic sequence `refine Fin.cases ?_ (fun j => ?_) i <;> simp [consZero_apply]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cons_eq {k : ℕ} (c : E) (z : Fin k → E) :
     (Fin.cons c z : Fin (k + 1) → E) = Pi.single 0 c + consZero k z := by
@@ -234,23 +230,21 @@ theorem cons_eq {k : ℕ} (c : E) (z : Fin k → E) :
   refine Fin.cases ?_ (fun j => ?_) i <;> simp [consZero_apply]
 
 /- English proof (translation)
-Establish `hzero : ∀ z ∈ L, consZero k z ∈ Λ` using `fun z hz => (h _).mpr ⟨fun t _ => RingHom.mem_range.mpr ⟨0, by simp [consZero_apply]⟩, by simpa [consZero_apply] using hz⟩`. Establish `htail0 : ∀ c : E, Fin.tail (Pi.single (0 : Fin (k + 1)) c : Fin (k + 1) → E) = 0` using `fun c =>`. Use function extensionality and compare the values at `fun j => by show (Pi.single (0 : Fin (k + 1)) c : Fin (k + 1) → E) j.succ = 0`. Conclude with `Pi.single_eq_of_ne (Fin.succ_ne_zero j) c`. Establish `h1 : (Pi.single 0 1 : Fin (k + 1) → E) ∈ Λ` using `(h _).mpr ⟨fun t _ => RingHom.mem_range.mpr ⟨t, by rw [Pi.single_eq_same, mul_one]⟩, by rw [htail0]; exact L.zero_mem⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨?_, ?_⟩, h1⟩` and prove the remaining obligations. Set `C : Submodule (𝓞 E) E` to `(((𝔞 : FractionalIdeal (𝓞 E)⁰ E))⁻¹ : FractionalIdeal (𝓞 E)⁰ E)`. Establish `hCfg : C.FG` using `FractionalIdeal.fg_of_isUnit _ (isUnit_iff_ne_zero.mpr (inv_ne_zero (FractionalIdeal.coeIdeal_ne_zero.mpr ha)))`. Set `φ : (E × (Fin k → E)) →ₗ[𝓞 E] (Fin (k + 1) → E)` to `((LinearMap.single E (fun _ : Fin (k + 1) => E) 0).coprod (consZero k)).restrictScalars (𝓞 E)`. Establish `hΛeq : Λ = (C.prod L).map φ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Take `⟨hy0, hyt⟩` from `(h y).mp hy`. Use `⟨(y 0, Fin.tail y), ⟨(mem_inv_coe_iff ha _).mpr hy0, hyt⟩, ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show Pi.single 0 (y 0) + consZero k (Fin.tail y) = y`. Rewrite using `[← cons_eq, Fin.cons_self_tail]`. Introduce and unpack `⟨⟨c, z⟩, ⟨hc, hz⟩, rfl⟩ show Pi.single 0 c + consZero k z ∈ Λ`. Rewrite using `[← cons_eq]`. Conclude with `(h _).mpr ⟨by simpa using (mem_inv_coe_iff ha c).mp hc, by simpa using hz⟩`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hΛeq]`. Conclude with `(hCfg.prod hL.fg).map φ`. Rewrite using `[eq_top_iff]`. Introduce `y _`. Rewrite using `[← Fin.cons_self_tail y, cons_eq]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Use `Submodule.add_mem _ ?_ ?_` and prove the remaining obligations. Establish `hs : (Pi.single 0 (y 0) : Fin (k + 1) → E) = y 0 • Pi.single 0 1`. Use extensionality with `j`. Distinguish the cases in `hj : j = 0`. Substitute `hj` using the available equality.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne hj]`. Rewrite using `[hs]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span h1)`. Establish `hy : Fin.tail y ∈ Submodule.span E (L : Set (Fin k → E))`.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hL.span_eq_top]`. Discharge the goal by the elementary cases of `trivial`. Establish `hmap : (Submodule.span E (L : Set (Fin k → E))).map (consZero k) ≤ Submodule.span E (Λ : Set (Fin (k + 1) → E))`. Rewrite using `[Submodule.map_span_le]`. Introduce `z hz`.
-
-Conclude with `Submodule.subset_span (hzero z hz)`. Conclude with `hmap ⟨_, hy, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem isLattice_sum {k : ℕ} (𝔞 : Ideal (𝓞 E)) (L : Submodule (𝓞 E) (Fin k → E))
     (Λ : Submodule (𝓞 E) (Fin (k + 1) → E))
@@ -310,25 +304,23 @@ theorem isLattice_sum {k : ℕ} (𝔞 : Ideal (𝓞 E)) (L : Submodule (𝓞 E) 
       exact hmap ⟨_, hy, rfl⟩
 
 /- English proof (translation)
-Set `tl : (Fin (k + 1) → E) →ₗ[E] (Fin k → E)` to `LinearMap.funLeft E E Fin.succ`. Set `L : Submodule (𝓞 E) (Fin k → E)` to `Λ.map (tl.restrictScalars (𝓞 E))`. Establish `hL : Submodule.IsLattice E L` using `isLattice_map Λ hΛ tl (LinearMap.funLeft_surjective_of_injective _ _ _ (Fin.succ_injective k))`. Establish `hLmem : ∀ z, z ∈ L ↔ ∃ y ∈ Λ, Fin.tail y = z` using `fun z => by`. Rewrite using `[Submodule.mem_map]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Take `⟨f, hf⟩` from `exists_section Λ L hL hLmem`. Establish `htail0 : ∀ c : E, Fin.tail (Pi.single (0 : Fin (k + 1)) c : Fin (k + 1) → E) = 0` using `fun c =>`. Use function extensionality and compare the values at `fun j => by show (Pi.single (0 : Fin (k + 1)) c : Fin (k + 1) → E) j.succ = 0`. Conclude with `Pi.single_eq_of_ne (Fin.succ_ne_zero j) c`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression.
 
-Set `N : (Fin (k + 1) → E) →ₗ[E] (Fin (k + 1) → E)` to `(LinearMap.single E (fun _ : Fin (k + 1) => E) 0) ∘ₗ f ∘ₗ tl`. Establish `hNapp : ∀ y, N y = Pi.single 0 (f (Fin.tail y))` using `fun y => rfl`. Establish `hNN : ∀ y, N (N y) = 0`. Introduce `y`. Rewrite using `[hNapp, hNapp, htail0, map_zero, Pi.single_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `e : (Fin (k + 1) → E) ≃ₗ[E] (Fin (k + 1) → E)` to `LinearEquiv.ofLinearMap (LinearMap.id - N) (LinearMap.id + N) (LinearMap.ext fun y => by`. Simplify using `only [LinearMap.comp_apply, LinearMap.sub_apply, LinearMap.add_apply, LinearMap.id_apply, map_add, hNN]`. Use the proof step `abel)`. Use the proof step `(LinearMap.ext fun y => by`. Simplify using `only [LinearMap.comp_apply, LinearMap.sub_apply, LinearMap.add_apply, LinearMap.id_apply, map_sub, hNN]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use the proof step `abel)`. Establish `heapp : ∀ y, e y = y - N y` using `fun y => rfl`. Set `sg : E →ₗ[𝓞 E] (Fin (k + 1) → E)` to `(LinearMap.single E (fun _ : Fin (k + 1) => E) 0).restrictScalars (𝓞 E)`. Set `𝔠 : Submodule (𝓞 E) E` to `Λ.comap sg`. Establish `h𝔠fg : 𝔠.FG` using `Submodule.fg_of_fg_map_injective sg (fun a b hab => Pi.single_injective 0 hab) (Submodule.FG.of_le hΛ.fg (Submodule.map_comap_le sg Λ))`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h𝔠1 : (1 : E) ∈ 𝔠` using `h1`. Take `⟨𝔞, ha, h𝔞⟩` from `exists_ideal_inv 𝔠 h𝔠fg h𝔠1`. Use `⟨e, 𝔞, L, ha, hL, ?_, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[heapp, hNapp, htail0, map_zero, Pi.single_zero, sub_zero]`. Establish `he0 : e y 0 = y 0 - f (Fin.tail y)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[heapp, Pi.sub_apply, hNapp, Pi.single_eq_same]`. Establish `het : Fin.tail (e y) = Fin.tail y`. Rewrite using `[heapp, hNapp]`. Use function extensionality and compare the values at `j`. Use `show y j.succ - (Pi.single (0 : Fin (k + 1)) (f (Fin.tail y)) : Fin (k + 1) → E) j.succ = y j.succ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[Pi.single_eq_of_ne (Fin.succ_ne_zero j), sub_zero]`. Rewrite using `[he0, het, h𝔞]`. Establish `hsplit : y = Pi.single 0 (y 0 - f (Fin.tail y)) + Fin.cons (f (Fin.tail y)) (Fin.tail y)`. Rewrite using `[cons_eq, ← add_assoc, ← Pi.single_add, sub_add_cancel, ← cons_eq, Fin.cons_self_tail]`. Prove the components needed by the constructor for the conclusion.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨h0, ht⟩`. Rewrite using `[hsplit]`. Conclude with `Λ.add_mem h0 (hf _ ht)`. Introduce `hy`. Establish `ht : Fin.tail y ∈ L` using `(hLmem _).mpr ⟨y, hy, rfl⟩`.
-
-Use `⟨?_, ht⟩` and prove the remaining obligations. Use `show Pi.single 0 (y 0 - f (Fin.tail y)) ∈ Λ`. Rewrite using `[eq_sub_of_add_eq hsplit.symm]`. Conclude with `Λ.sub_mem hy (hf _ ht)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_normal {k : ℕ} (Λ : Submodule (𝓞 E) (Fin (k + 1) → E)) (hΛ : Submodule.IsLattice E Λ)
     (h1 : Pi.single 0 1 ∈ Λ) :
@@ -396,11 +388,11 @@ theorem exists_normal {k : ℕ} (Λ : Submodule (𝓞 E) (Fin (k + 1) → E)) (h
 
 omit [NumberField E] in
 /- English proof (translation)
-Establish `h00 : M 0 0 = 1`. Use `congrFun hM 0` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_single_one, Matrix.col_apply, Pi.single_eq_same]`. Then use the resulting hypothesis. Establish `hs0 : ∀ j : Fin k, M j.succ 0 = 0` using `fun j => by`. Use `congrFun hM j.succ` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Matrix.mulVec_single_one, Matrix.col_apply, Pi.single_eq_of_ne (Fin.succ_ne_zero j)]`. Then use the resulting hypothesis. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.mulVec, dotProduct, Fin.tail]`. Rewrite using `[Fin.sum_univ_succ, h00, one_mul]`. Use function extensionality and compare the values at `i`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Matrix.mulVec, dotProduct, Fin.tail, Matrix.submatrix_apply]`. Rewrite using `[Fin.sum_univ_succ, hs0, zero_mul, zero_add]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem mulVec_zero_tail {k : ℕ} (M : Matrix (Fin (k + 1)) (Fin (k + 1)) E)
     (hM : M *ᵥ Pi.single 0 1 = Pi.single 0 1) (y : Fin (k + 1) → E) :
@@ -421,37 +413,33 @@ theorem mulVec_zero_tail {k : ℕ} (M : Matrix (Fin (k + 1)) (Fin (k + 1)) E)
     rw [Fin.sum_univ_succ, hs0, zero_mul, zero_add]
 
 /- English proof (translation)
-Introduce `E _ _ k Lf hLf`. Use `⟨fun 𝔞 Λ' ha hΛ' => isLattice_sum 𝔞 Λ' (Lf 𝔞 Λ') (hLf 𝔞 Λ') ha hΛ', ?_, ?_⟩` and prove the remaining obligations. Introduce `Λ hΛ x hx hx0`. Take `⟨e₁, he₁⟩` from `exists_equiv_single x hx0`. Set `Λ₁` to `Λ.map ((e₁ : (Fin (k + 1) → E) →ₗ[E] (Fin (k + 1) → E)).restrictScalars (𝓞 E))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hΛ₁ : Submodule.IsLattice E Λ₁` using `isLattice_map Λ hΛ _ e₁.surjective`. Establish `hmem₁ : ∀ y, e₁ y ∈ Λ₁ ↔ y ∈ Λ` using `fun y => by`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y', hy', hyy⟩`. Rewrite `hy'` using `[e₁.injective hyy]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `hy`. Conclude with `⟨y, hy, rfl⟩`. Establish `h1 : Pi.single 0 1 ∈ Λ₁`. Rewrite using `[← he₁]`. Conclude with `(hmem₁ x).mpr hx`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨e₂, 𝔞, Λ', ha, hΛ', he₂, hmem₂⟩` from `exists_normal Λ₁ hΛ₁ h1`. Take `⟨γ, hγ⟩` from `exists_GL_of_equiv (e₁.trans e₂)`. Use `⟨γ, 𝔞, Λ', ha, hΛ', ?_, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[hγ, LinearEquiv.trans_apply, he₁, he₂]`. Rewrite using `[hγ, LinearEquiv.trans_apply, hLf, hmem₂, hmem₁]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `𝔞 𝔟 Λ₁ Λ₂ ha hb hΛ₁ hΛ₂ γ hγ`. Establish `hm` using `mulVec_zero_tail (γ : Matrix (Fin (k + 1)) (Fin (k + 1)) E) hγ`. Use `set r : Fin k → E := fun b => (γ : Matrix (Fin (k + 1)) (Fin (k + 1)) E) 0 b.succ with hr`. Use `set γ' := (γ : Matrix (Fin (k + 1)) (Fin (k + 1)) E).submatrix Fin.succ Fin.succ with hγ'`. Set `Cd : Ideal (𝓞 E) → E → Prop` to `fun 𝔡 c => ∀ t ∈ 𝔡, (t : E) * c ∈ (algebraMap (𝓞 E) E).range`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hadd : ∀ 𝔡 a b, Cd 𝔡 a → Cd 𝔡 b → Cd 𝔡 (a + b)` using `fun 𝔡 a b ha hb t ht => by`. Rewrite using `[mul_add]`. Conclude with `Subring.add_mem _ (ha t ht) (hb t ht)`. Establish `hneg : ∀ 𝔡 a, Cd 𝔡 a → Cd 𝔡 (-a)` using `fun 𝔡 a ha t ht => by`. Rewrite using `[mul_neg]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `Subring.neg_mem _ (ha t ht)`. Establish `hzero : ∀ 𝔡, Cd 𝔡 0` using `fun 𝔡 t _ => by`. Rewrite using `[mul_zero]`. Conclude with `Subring.zero_mem _`. Establish `hv : ∀ c z, (γ : Matrix (Fin (k + 1)) (Fin (k + 1)) E) *ᵥ Fin.cons c z = Fin.cons (c + r ⬝ᵥ z) (γ' *ᵥ z)` using `fun c z => by`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨h1, h2⟩` from `hm (Fin.cons c z)`. Rewrite `h1` using `[Fin.cons_zero, Fin.tail_cons]`. Rewrite `h2` using `[Fin.tail_cons]`. Rewrite using `[← Fin.cons_self_tail ((γ : Matrix (Fin (k + 1)) (Fin (k + 1)) E) *ᵥ Fin.cons c z), h1, h2]`. Establish `hL : ∀ 𝔡 (Λ : Submodule (𝓞 E) (Fin k → E)) c z, Fin.cons c z ∈ Lf 𝔡 Λ ↔ Cd 𝔡 c ∧ z ∈ Λ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `𝔡 Λ c z`. Rewrite using `[hLf, Fin.cons_zero, Fin.tail_cons]`. Establish `hLγ : ∀ c z, (γ : Matrix (Fin (k + 1)) (Fin (k + 1)) E) *ᵥ Fin.cons c z ∈ Lf 𝔟 Λ₂ ↔ Cd 𝔟 (c + r ⬝ᵥ z) ∧ γ' *ᵥ z ∈ Λ₂` using `fun c z => by`. Rewrite using `[hv, hL]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `H`. Establish `H' : ∀ c z, (Cd 𝔟 (c + r ⬝ᵥ z) ∧ γ' *ᵥ z ∈ Λ₂) ↔ (Cd 𝔞 c ∧ z ∈ Λ₁)` using `fun c z => by`. Rewrite using `[← hLγ, ← hL]`. Conclude with `H _`. Establish `hab : 𝔞 = 𝔟` using `ideal_eq_of_inv ha hb (fun c => by`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `H' c 0` as an intermediate fact. Simplify `this)` using `[Cd, Λ₁.zero_mem, Λ₂.zero_mem]`. Substitute `hab` using the available equality. Use `⟨rfl, fun z => ?_, fun z hz t ht => ?_⟩` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce `hz2`. Use `(H' (-(r ⬝ᵥ z)) z).mp ⟨by rw [neg_add_cancel]; exact hzero 𝔞, hz2⟩` as an intermediate fact. Conclude with `this.2`. Introduce `hz1`. Conclude with `((H' 0 z).mpr ⟨hzero 𝔞, hz1⟩).2`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `((H' 0 z).mpr ⟨hzero 𝔞, hz⟩).1` as an intermediate fact. Rewrite `this` using `[zero_add]`. Conclude with `this t ht`. Introduce and unpack `⟨rfl, hΛ, hrow⟩ y`. Rewrite using `[← Fin.cons_self_tail y, hLγ, hL]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Prove the components needed by the constructor for the conclusion.
 
-Distinguish the cases in `hy : Fin.tail y ∈ Λ₁`. Establish `hr' : Cd 𝔞 (r ⬝ᵥ Fin.tail y)` using `hrow _ hy`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, -⟩`. Use `⟨?_, hy⟩` and prove the remaining obligations.
-
-Use `hadd 𝔞 _ _ h1 (hneg 𝔞 _ hr')` as an intermediate fact. Rewrite `this` using `[add_neg_cancel_right]`. Then use the resulting hypothesis. Introduce and unpack `⟨h1, -⟩`. Conclude with `⟨hadd 𝔞 _ _ h1 hr', (hΛ _).mpr hy⟩`. Prove the components needed by the constructor for the conclusion.
-
-Introduce and unpack `⟨-, h2⟩`. Conclude with `absurd ((hΛ _).mp h2) hy`. Introduce and unpack `⟨-, h2⟩`. Conclude with `absurd h2 hy`.
+Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem classes : ∀ (E : Type) [Field E] [NumberField E] (k : ℕ), ∀ Lf : Ideal (𝓞 E) → Submodule (𝓞 E) (Fin k → E) → Submodule (𝓞 E) (Fin (k + 1) → E), (∀ 𝔞 Λ' y, y ∈ Lf 𝔞 Λ' ↔ (∀ t ∈ 𝔞, (t : E) * y 0 ∈ (algebraMap (𝓞 E) E).range) ∧ Fin.tail y ∈ Λ') → (∀ 𝔞 Λ', 𝔞 ≠ ⊥ → Submodule.IsLattice E Λ' → Submodule.IsLattice E (Lf 𝔞 Λ') ∧ Pi.single 0 1 ∈ Lf 𝔞 Λ') ∧ (∀ Λ : Submodule (𝓞 E) (Fin (k + 1) → E), Submodule.IsLattice E Λ → ∀ x ∈ Λ, x ≠ 0 → ∃ (γ : GL (Fin (k + 1)) E) (𝔞 : Ideal (𝓞 E)) (Λ' : Submodule (𝓞 E) (Fin k → E)), 𝔞 ≠ ⊥ ∧ Submodule.IsLattice E Λ' ∧ (γ : Matrix (Fin (k + 1)) (Fin (k + 1)) E) *ᵥ x = Pi.single 0 1 ∧ ∀ y, (γ : Matrix (Fin (k + 1)) (Fin (k + 1)) E) *ᵥ y ∈ Lf 𝔞 Λ' ↔ y ∈ Λ) ∧ ∀ 𝔞 𝔟 Λ₁ Λ₂, 𝔞 ≠ ⊥ → 𝔟 ≠ ⊥ → Submodule.IsLattice E Λ₁ → Submodule.IsLattice E Λ₂ → ∀ γ : GL (Fin (k + 1)) E, (γ : Matrix (Fin (k + 1)) (Fin (k + 1)) E) *ᵥ Pi.single 0 1 = Pi.single 0 1 → ((∀ y, (γ : Matrix (Fin (k + 1)) (Fin (k + 1)) E) *ᵥ y ∈ Lf 𝔟 Λ₂ ↔ y ∈ Lf 𝔞 Λ₁) ↔ 𝔞 = 𝔟 ∧ (∀ y, (γ : Matrix (Fin (k + 1)) (Fin (k + 1)) E).submatrix Fin.succ Fin.succ *ᵥ y ∈ Λ₂ ↔ y ∈ Λ₁) ∧ ∀ y ∈ Λ₁, ∀ t ∈ 𝔞, (t : E) * ((fun b => (γ : Matrix (Fin (k + 1)) (Fin (k + 1)) E) 0 b.succ) ⬝ᵥ y) ∈ (algebraMap (𝓞 E) E).range) := by
   intro E _ _ k Lf hLf

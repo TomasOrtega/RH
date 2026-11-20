@@ -3,7 +3,7 @@ import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.Parabol
 import CompanionTheory.RealGroups.DiscreteSeries.DiscreteSeriesClassification.DiscreteSeriesExhaustion.MatrixCoefficientDecay.LineFormulas.LineFacts
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.PSubFlag.psubEq | exact GlobalTheory.CompanionTheory.PSubFlag.psubEq | (intros; apply GlobalTheory.CompanionTheory.PSubFlag.psubEq <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.ParabolicSubgroupEquality : CompanionTheory.RgExh.Dec.N.S.PSubEq := by
   first | exact @GlobalTheory.CompanionTheory.PSubFlag.psubEq | exact GlobalTheory.CompanionTheory.PSubFlag.psubEq | (intros; apply GlobalTheory.CompanionTheory.PSubFlag.psubEq <;> assumption)

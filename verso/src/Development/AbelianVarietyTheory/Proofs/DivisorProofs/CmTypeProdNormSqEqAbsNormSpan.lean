@@ -9,13 +9,13 @@ open NumberField MeasureTheory
 namespace GlobalTheory.CMTypeNorm
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `i j hij`. Take `⟨k, -, hk⟩` from `h (φ j)`. Establish `hj : j = k` using `hk j (Or.inl rfl)`. Establish `hi : i = k`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `hk i` to reduce the goal to its premises. Break down `InfinitePlace.mk_eq_iff.mp hij with h1 | h1` into its components or cases. Conclude with `Or.inl h1.symm`. Conclude with `Or.inr h1.symm`. Rewrite using `[hi, hj]`.
+Reduce the claim to the hypotheses of an applicable result. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Rewrite the conclusion using the stated equalities.
 
-Introduce `w`. Take `⟨k, hk, -⟩` from `h w.embedding`. Use `⟨k, ?_⟩` and prove the remaining obligations. Use `show InfinitePlace.mk (φ k) = w`. Rewrite using `[← InfinitePlace.mk_embedding w, InfinitePlace.mk_eq_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hk with h1 | h1` into its components or cases. Conclude with `Or.inl h1.symm`. Conclude with `Or.inr h1.symm`.
+Prove the first alternative. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem place_bijective {K : Type} [Field K] [NumberField K] {I : Type} {φ : I → K →+* ℂ} (h : GlobalTheory.CMVal.IsCMType φ) :
     Function.Bijective fun i => InfinitePlace.mk (φ i) := by
@@ -39,9 +39,9 @@ theorem place_bijective {K : Type} [Field K] [NumberField K] {I : Type} {φ : I 
     · exact Or.inr h1.symm
 
 /- English proof (translation)
-Introduce `K _ _ _ I _ φ h α`. Establish `h1 : ∏ i, ‖φ i (α : K)‖ ^ 2 = ∏ w : InfinitePlace K, w (α : K) ^ w.mult`. Use `Fintype.prod_bijective _ (place_bijective h) _ _ fun i => ?_` and prove the remaining obligations. Rewrite using `[InfinitePlace.apply, IsTotallyComplex.mult_eq]`. Rewrite using `[h1, InfinitePlace.prod_eq_abs_norm, Ideal.absNorm_span_singleton, ← Algebra.coe_norm_int, Nat.cast_natAbs]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Both sides reduce to the same expression.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem prod_norm_sq_eq_absNorm :
     ∀ (K : Type) [Field K] [NumberField K] [NumberField.IsTotallyComplex K] (I : Type) [Fintype I] (φ : I → K →+* ℂ),

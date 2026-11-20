@@ -6,15 +6,15 @@ open Metric MeasureTheory Module Set Real
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hint : IntegrableOn (fun u : ℝ => exp (-u)) (Ici t)` using `(integrableOn_Ici_iff_integrableOn_Ioi).2 (integrableOn_exp_neg_Ioi t)`. Establish `h1 : ∀ i ∈ s, exp (-f i) = ∫ u in Ici t, (Ici (f i)).indicator (fun u : ℝ => exp (-u)) u`. Introduce `i hi`. Rewrite using `[setIntegral_indicator measurableSet_Ici, Ici_inter_Ici, sup_eq_right.2 (hf i hi), integral_Ici_eq_integral_Ioi, integral_exp_neg_Ioi]`. Establish `hint2 : IntegrableOn (fun u : ℝ => exp (-(1 / 2) * u)) (Ici t)` using `(integrableOn_Ici_iff_integrableOn_Ioi).2 (exp_neg_integrableOn_Ioi t (by norm_num))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_congr rfl h1, ← integral_finset_sum _ (fun i _ => hint.indicator measurableSet_Ici)]`. Combine the equalities or inequalities in the displayed calculation. Use `setIntegral_mono_on (integrable_finset_sum _ fun i _ => hint.indicator measurableSet_Ici) (hint2.const_mul _) measurableSet_Ici fun u hu => ?_` and prove the remaining obligations. Establish `e : ∑ i ∈ s, (Ici (f i)).indicator (fun u : ℝ => exp (-u)) u = ((s.filter fun i => f i ≤ u).card : ℝ) * exp (-u)`. Simplify using `only [indicator, mem_Ici]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Finset.sum_filter, Finset.sum_const, nsmul_eq_mul]`. Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, mul_assoc, ← exp_add, ← exp_add]`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Expand and normalize the polynomial expressions, which then agree. Use `_ = 2 * C * exp (-t) := by`. Rewrite using `[integral_const_mul, integral_Ici_eq_integral_Ioi, integral_exp_mul_Ioi (by norm_num)]`. Establish `: exp (-t) = exp (-t / 2) * exp (-(1 / 2) * t)`. Rewrite using `[← exp_add]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem finset_sum_exp_neg_le_of_card_le {ι : Type*} (s : Finset ι) (f : ι → ℝ) {t C : ℝ}
     (hf : ∀ i ∈ s, t ≤ f i)
@@ -53,7 +53,7 @@ theorem finset_sum_exp_neg_le_of_card_le {ι : Type*} (s : Finset ι) (f : ι �
         rw [this]; ring
 
 /- English proof (translation)
-Establish `key : ∀ s : Finset ι, ∑ i ∈ s, exp (-f i) ≤ 2 * C * exp (-t)` using `fun s => finset_sum_exp_neg_le_of_card_le s f (fun i _ => hf i) fun u hu => hc _ u hu fun i hi => (Finset.mem_filter.1 hi).2`. Establish `hs` using `summable_of_sum_le (fun i => (exp_pos (-f i)).le) key`. Conclude with `⟨hs, hs.tsum_le_of_sum_le key⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem summable_exp_neg_of_card_le {ι : Type*} (f : ι → ℝ) {t C : ℝ} (hf : ∀ i, t ≤ f i)
     (hc : ∀ (s : Finset ι) u, t ≤ u → (∀ i ∈ s, f i ≤ u) → (s.card : ℝ) ≤ C * exp ((u - t) / 2)) :
@@ -67,11 +67,11 @@ theorem summable_exp_neg_of_card_le {ι : Type*} (f : ι → ℝ) {t C : ℝ} (h
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
 
 /- English proof (translation)
-Establish `hinj : Function.Injective u` using `fun i j hij => by`. Assume the negation of the conclusion as `hne`. Use `hu hne` as an intermediate fact. Simplify using `only [hij, dist_self] at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[← Finset.card_image_of_injective s hinj]`. Use `finset_card_le_of_separated _ hr hR w ?_ ?_` and prove the remaining obligations. Introduce `a ha`. Take `⟨i, hi, rfl⟩` from `Finset.mem_image.1 ha`. Conclude with `hs i hi`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha b hb hab`. Take `⟨i, -, rfl⟩` from `Finset.mem_image.1 (Finset.mem_coe.1 ha)`. Take `⟨j, -, rfl⟩` from `Finset.mem_image.1 (Finset.mem_coe.1 hb)`. Conclude with `hu fun h => hab (h ▸ rfl)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem finset_card_le_of_separated_family {ι : Type*} (u : ι → E) {r R : ℝ} (hr : 0 < r)
     (hR : 0 ≤ R) (hu : Pairwise fun i j => r ≤ dist (u i) (u j)) (w : E) (s : Finset ι)
@@ -93,17 +93,15 @@ theorem finset_card_le_of_separated_family {ι : Type*} (u : ι → E) {r R : �
     exact hu fun h => hab (h ▸ rfl)
 
 /- English proof (translation)
-Use `summable_exp_neg_of_card_le (fun i => q * ‖u i - w‖ ^ 2) (fun i => ?_) ?_` and prove the remaining obligations. Use `hw i gcongr` as an intermediate fact. Introduce `s v hv hs`. Establish `ht : 0 < q * r ^ 2` using `by positivity`. Establish `hv0 : 0 < v` using `ht.trans_le hv`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set R := √(v / q) with hRdef`. Establish `hR0 : 0 ≤ R` using `sqrt_nonneg _`. Establish `hR2 : R ^ 2 = v / q` using `sq_sqrt (by positivity)`. Establish `hcard` using `finset_card_le_of_separated_family u hr hR0 hu w s fun i hi => by`. Rewrite using `[dist_eq_norm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_sqrt_of_sq_le ?_` and prove the remaining obligations. Rewrite using `[le_div_iff₀ hq, mul_comm]`. Conclude with `hs i hi`. Use `hcard.trans ?_` and prove the remaining obligations. Use `set x := R / r with hx`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx0 : 0 ≤ x` using `by positivity`. Establish `hx2 : x ^ 2 = v / (q * r ^ 2)` using `by rw [hx, div_pow, hR2]; field_simp`. Establish `hx1 : 1 ≤ x ^ 2` using `by rw [hx2]; exact (one_le_div ht).2 hv`. Establish `h1 : 1 + 2 * R / r ≤ 3 * exp ((x ^ 2 - 1) / 2)`. Use `add_one_le_exp ((x ^ 2 - 1) / 2)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[mul_div_assoc, ← hx]`. Use polynomial arithmetic with `[sq_nonneg (x - 1)]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow, exp_nat_mul]`. Use `_ ≤ 3 ^ finrank ℝ E * exp (q * r ^ 2 * ((x ^ 2 - 1) / 2)) := by gcongr`.
-
-Use `_ = _ := by rw [hx2]; congr 2; field_simp`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gaussian_tail_of_separated {ι : Type*} (u : ι → E) (w : E) {r q : ℝ} (hr : 0 < r)
     (hq : 0 < q) (hd : (finrank ℝ E : ℝ) ≤ q * r ^ 2)
@@ -142,11 +140,9 @@ theorem gaussian_tail_of_separated {ι : Type*} (u : ι → E) (w : E) {r q : �
       _ = _ := by rw [hx2]; congr 2; field_simp
 
 /- English proof (translation)
-Establish `hq : 0 < q`. Establish `: (0 : ℝ) ≤ finrank ℝ E` using `Nat.cast_nonneg _`. Conclude with `(mul_pos_iff_of_pos_right hb).1 (by linarith)`. Establish `hb2 : √b ^ 2 = b` using `sq_sqrt hb.le`. Establish `hu' : ∀ y, y ≠ 0 → √b ≤ ‖u y‖` using `fun y hy => sqrt_le_iff.2 ⟨norm_nonneg _, hu y hy⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `gaussian_tail_of_separated (fun y : {y : A // y ≠ 0} => u y) 0 (sqrt_pos.2 hb) hq (by rw [hb2]; linarith) (fun i j hij => by` as an intermediate fact. Express the relevant statement in the definitionally equal form `√b ≤ dist (u i) (u j)`. Rewrite using `[dist_eq_norm, ← map_sub]`. Conclude with `hu' _ (sub_ne_zero.2 fun h => hij (Subtype.ext h)))`. Use the proof step `(fun i => by rw [sub_zero]; exact hu' _ i.2)`.
-
-Simplify `this` using `only [sub_zero, hb2]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem gaussian_tail_addMonoidHom {A : Type*} [AddGroup A] (u : A →+ E) {b q : ℝ} (hb : 0 < b)
     (hd : (finrank ℝ E : ℝ) + 1 ≤ q * b) (hu : ∀ y, y ≠ 0 → b ≤ ‖u y‖ ^ 2) :
@@ -167,7 +163,7 @@ theorem gaussian_tail_addMonoidHom {A : Type*} [AddGroup A] (u : A →+ E) {b q 
   simpa only [sub_zero, hb2] using this
 
 /- English proof (translation)
-Establish `h` using `gaussian_tail_addMonoidHom u hb hd hu`. Use `⟨h.1, h.2.trans ?_⟩` and prove the remaining obligations. Use `gcongr`. Evaluate the numerical expressions.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem gaussian_tail_sum_le_of_min_norm_sq {A : Type*} [AddGroup A] (u : A →+ E) {b q : ℝ}
     (hb : 0 < b) (hd : (finrank ℝ E : ℝ) + 1 ≤ q * b) (hu : ∀ y, y ≠ 0 → b ≤ ‖u y‖ ^ 2) :
@@ -179,9 +175,9 @@ theorem gaussian_tail_sum_le_of_min_norm_sq {A : Type*} [AddGroup A] (u : A →+
   gcongr; norm_num
 
 /- English proof (translation)
-Establish `hg0 : (0 : ℝ) ≤ g` using `Nat.cast_nonneg _`. Establish `h` using `gaussian_tail_addMonoidHom u (b := R ^ 2) (q := 1 / 16) (by linarith) (by rw [hg]; push_cast; linarith) (fun y hy => by have := hu y hy; gcongr)`. Establish `e : ∀ x : ℝ, -(1 / 16 * x) = -x / 16` using `fun x => by ring`. Simplify using `only [e] at h`. Rewrite `h` using `[hg, pow_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Evaluate the numerical expressions using `at h ⊢`. Conclude with `h`.
+Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem gaussian_tail_addMonoidHom_sixteen {A : Type*} [AddGroup A] (u : A →+ E) {g : ℕ}
     (hg : finrank ℝ E = 2 * g) {R : ℝ} (hR0 : 0 ≤ R) (hR : 16 * (2 * (g : ℝ) + 1) ≤ R ^ 2)
@@ -198,17 +194,17 @@ theorem gaussian_tail_addMonoidHom_sixteen {A : Type*} [AddGroup A] (u : A →+ 
   exact h
 
 /- English proof (translation)
-Establish `h` using `summable_exp_neg_of_card_le (fun i => π / 2 * ‖w - u i‖ ^ 2) (t := 0) (C := (3 * (finrank ℝ E : ℝ)) ^ finrank ℝ E) (fun i => by positivity) ?_`. Simplify `h` using `only [neg_zero, exp_zero, mul_one]`. Introduce `s v hv hs`. Establish `hq : 0 < π / 2` using `by positivity`. Use `set R := √(v / (π / 2)) with hRdef`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR0 : 0 ≤ R` using `sqrt_nonneg _`. Establish `hR2 : R ^ 2 = v / (π / 2)` using `sq_sqrt (by positivity)`. Establish `hv2 : v = π / 2 * R ^ 2` using `by rw [hR2]; field_simp`. Establish `hcard` using `finset_card_le_of_separated_family u one_pos hR0 hu w s fun i hi => by`. Rewrite using `[dist_comm, dist_eq_norm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_sqrt_of_sq_le ?_` and prove the remaining obligations. Rewrite using `[le_div_iff₀ hq, mul_comm]`. Conclude with `hs i hi`. Use `hcard.trans ?_` and prove the remaining obligations. Use `set d := finrank ℝ E`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd' : (1 : ℝ) ≤ d` using `by exact_mod_cast hd`. Establish `h1 : 1 + 2 * R / 1 ≤ 3 * (d : ℝ) * exp (v / (2 * d))`. Establish `h2` using `add_one_le_exp (v / (2 * d))`. Establish `h3 : 3 * (d : ℝ) * (v / (2 * d) + 1) = 3 / 2 * v + 3 * d` using `by field_simp`. Establish `h4 : 3 * (d : ℝ) * (v / (2 * d) + 1) ≤ 3 * (d : ℝ) * exp (v / (2 * d))` using `by gcongr`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h5 : 3 / 2 * R ^ 2 ≤ v`. Rewrite using `[hv2]`. Use `pi_gt_three` as an intermediate fact. Use `gcongr`. Use polynomial arithmetic with `[sq_nonneg (R - 1)]`.
+Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow, ← exp_nat_mul]`. Use `congr 2`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem gaussian_sum_of_one_separated {ι : Type*} (u : ι → E) (w : E) (hd : 1 ≤ finrank ℝ E)
     (hu : Pairwise fun i j => 1 ≤ dist (u i) (u j)) :
@@ -244,9 +240,9 @@ theorem gaussian_sum_of_one_separated {ι : Type*} (u : ι → E) (w : E) (hd : 
         rw [mul_pow, ← exp_nat_mul]; congr 2; field_simp; ring
 
 /- English proof (translation)
-Take `⟨hs, hb⟩` from `gaussian_sum_of_one_separated u w hd hu`. Establish `hle : ∀ i, exp (-(π * ‖w - u i‖ ^ 2)) ≤ exp (-(π / 2 * ‖w - u i‖ ^ 2)) * exp (-(π / 2 * ρ ^ 2))` using `fun i => by`. Rewrite using `[← exp_add, exp_le_exp]`. Establish `h1 : π / 2 * ρ ^ 2 ≤ π / 2 * ‖w - u i‖ ^ 2` using `by have := hw i; gcongr`. Combine the linear equalities and inequalities to obtain the conclusion.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hs2` using `hs.mul_right (exp (-(π / 2 * ρ ^ 2)))`. Establish `hs1` using `Summable.of_nonneg_of_le (fun i => (exp_pos _).le) hle hs2`. Use `⟨hs1, (hs1.tsum_le_tsum hle hs2).trans ?_⟩` and prove the remaining obligations. Rewrite using `[tsum_mul_right]`. Use `gcongr`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gaussian_sum_of_one_separated_of_le {ι : Type*} (u : ι → E) (w : E)
     (hd : 1 ≤ finrank ℝ E) (hu : Pairwise fun i j => 1 ≤ dist (u i) (u j)) {ρ : ℝ} (hρ : 0 ≤ ρ)
@@ -267,7 +263,7 @@ theorem gaussian_sum_of_one_separated_of_le {ι : Type*} (u : ι → E) (w : E)
   gcongr
 
 /- English proof (translation)
-The claim follows from `gaussian_tail_addMonoidHom_sixteen G.subtype hg hR0 hR fun y hy => hG y y.2 fun h => hy (Subtype.ext h)`.
+A detailed English derivation is pending.
 -/
 theorem subgroup_gaussian_tail_sixteen (G : AddSubgroup E) {g : ℕ} (hg : finrank ℝ E = 2 * g)
     {R : ℝ} (hR0 : 0 ≤ R) (hR : 16 * (2 * (g : ℝ) + 1) ≤ R ^ 2)
@@ -278,7 +274,7 @@ theorem subgroup_gaussian_tail_sixteen (G : AddSubgroup E) {g : ℕ} (hg : finra
     hG y y.2 fun h => hy (Subtype.ext h)
 
 /- English proof (translation)
-The claim follows from `gaussian_tail_addMonoidHom G.subtype hb hd fun y hy => hG y y.2 fun h => hy (Subtype.ext h)`.
+A detailed English derivation is pending.
 -/
 theorem subgroup_gaussian_tail (G : AddSubgroup E) {b q : ℝ} (hb : 0 < b)
     (hd : (finrank ℝ E : ℝ) + 1 ≤ q * b) (hG : ∀ y ∈ G, y ≠ 0 → b ≤ ‖y‖ ^ 2) :
@@ -288,7 +284,7 @@ theorem subgroup_gaussian_tail (G : AddSubgroup E) {b q : ℝ} (hb : 0 < b)
   gaussian_tail_addMonoidHom G.subtype hb hd fun y hy => hG y y.2 fun h => hy (Subtype.ext h)
 
 /- English proof (translation)
-The claim follows from `gaussian_tail_sum_le_of_min_norm_sq G.subtype hb hd fun y hy => hG y y.2 fun h => hy (Subtype.ext h)`.
+A detailed English derivation is pending.
 -/
 theorem subgroup_gaussian_tail_dyadic (G : AddSubgroup E) {b q : ℝ} (hb : 0 < b)
     (hd : (finrank ℝ E : ℝ) + 1 ≤ q * b) (hG : ∀ y ∈ G, y ≠ 0 → b ≤ ‖y‖ ^ 2) :
@@ -299,7 +295,7 @@ theorem subgroup_gaussian_tail_dyadic (G : AddSubgroup E) {b q : ℝ} (hb : 0 < 
     hG y y.2 fun h => hy (Subtype.ext h)
 
 /- English proof (translation)
-Establish `hu : Pairwise fun i j : S => 1 ≤ dist (i : E) (j : E)` using `fun i j hij => hS i.2 j.2 fun h => hij (Subtype.ext h)`. Conclude with `⟨gaussian_sum_of_one_separated Subtype.val w hd hu, gaussian_sum_of_one_separated_of_le Subtype.val w hd hu infDist_nonneg fun i => by`. Rewrite using `[← dist_eq_norm]`. Conclude with `infDist_le_dist_of_mem i.2⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem set_gaussian_sum_of_one_separated {S : Set E} (w : E) (hd : 1 ≤ finrank ℝ E)
     (hS : S.Pairwise fun a b => 1 ≤ dist a b) :
@@ -315,7 +311,7 @@ theorem set_gaussian_sum_of_one_separated {S : Set E} (w : E) (hd : 1 ≤ finran
       rw [← dist_eq_norm]; exact infDist_le_dist_of_mem i.2⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun G _ _ hg hR0 hR hG => subgroup_gaussian_tail_sixteen G hg hR0 hR hG, fun _ w hd hS => set_gaussian_sum_of_one_separated w hd hS, fun G _ _ hb hd hG => subgroup_gaussian_tail_dyadic G hb hd hG⟩`.
+Supply the required witnesses or components.
 -/
 theorem gaussian_tail_sums :
     (∀ (G : AddSubgroup E) (g : ℕ) (R : ℝ), finrank ℝ E = 2 * g → 0 ≤ R →

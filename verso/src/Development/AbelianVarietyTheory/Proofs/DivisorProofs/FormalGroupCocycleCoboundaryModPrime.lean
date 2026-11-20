@@ -12,7 +12,7 @@ open CategoryTheory TensorProduct MvPowerSeries GlobalTheory GlobalTheory.PDiv G
 namespace GlobalTheory.CobModP
 
 /- English proof (translation)
-Establish `ha : HasSubst a` using `hasSubst_of_constantCoeff_zero ha0`. Establish `h` using `constantCoeff_subst_eq_zero ha ha0 (f := f - C (constantCoeff f)) (by simp)`. Rewrite `h` using `[subst_sub ha, subst_C, map_sub, constantCoeff_C, sub_eq_zero]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem constantCoeff_subst_of_zero' {σ τ R : Type} [CommRing R] [Finite σ]
     {a : σ → MvPowerSeries τ R} (ha0 : ∀ s, constantCoeff (a s) = 0) (f : MvPowerSeries σ R) :
@@ -23,7 +23,7 @@ theorem constantCoeff_subst_of_zero' {σ τ R : Type} [CommRing R] [Finite σ]
   exact h
 
 /- English proof (translation)
-Unfold `cob1 inL inR`. Rewrite using `[map_sub, map_sub, constantCoeff_subst_of_zero' h, constantCoeff_subst_of_zero' (fun _ => constantCoeff_X _), constantCoeff_subst_of_zero' (fun _ => constantCoeff_X _)]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem constantCoeff_formalGroupLawCoboundaryOne_eq_zero {R : Type} [CommRing R] {d : ℕ}
     {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R} (h : ∀ i, constantCoeff (μ i) = 0)
@@ -35,19 +35,17 @@ theorem constantCoeff_formalGroupLawCoboundaryOne_eq_zero {R : Type} [CommRing R
   ring
 
 /- English proof (translation)
-Introduce `p _ O _ G d c κ B y hκ0 hcoc hdiv hB`. Use `set I : Ideal O := Ideal.span {(p : O)} with hI`. Use `set r : O →+* O ⧸ I := Ideal.Quotient.mk I with hr`. Take `⟨c', hlaw, hev, -⟩` from `GlobalTheory.T.exists_formalChart_quotient_by_ideal_with_primePow p O G d c I 1 (by`. Rewrite using `[pow_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `Ideal.mem_span_singleton_self _)`. Establish `hconst` using `c.isLaw.const`. Take `⟨hm1, hm2, hm3, -, hm5⟩` from `GlobalTheory.T.map_coboundary_swap_pullback_commute O d c.μ hconst (O ⧸ I) r`. Take `⟨-, hn⟩` from `GlobalTheory.T.isCommFormalGroupLaw_map_natMultiple O d c.μ c.isLaw (O ⧸ I) r`. Establish `hnc : ∀ i, constantCoeff (nmul c.μ p i) = 0` using `fun i => (hn p i).1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcoc' : IsCoc (fun i => map r (c.μ i)) (map r κ)` using `⟨by rw [← hm2, hcoc.1, map_zero], by rw [← hm3, hcoc.2]⟩`. Establish `heq : cob1 (fun i => map r (c.μ i)) (map r B) = pull2 (nmul (fun i => map r (c.μ i)) p) (map r κ)`. Establish `h0 : map r (cob1 c.μ B - pull2 (nmul c.μ p) κ) = 0` using `((GlobalTheory.mvPowerSeries_lift_quotient O (Fin d ⊕ Fin d) I).2.1 _).2 (fun α => Ideal.mem_span_singleton.2 (hdiv α))`. Rewrite `h0` using `[map_sub, hm1, (hm5 _ hnc).1, sub_eq_zero]`. Rewrite using `[h0]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `(hn p i).2`. Establish `hp1 : (p : O) • (1 : O ⧸ I) = 0`. Rewrite using `[Algebra.smul_def, mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self _)`. Establish `hev0 : c'.ev 1 (map r B) = 0`. Rewrite using `[hev, hB, toBase_app, ← TensorProduct.smul_tmul, hp1, TensorProduct.zero_tmul]`. Take `⟨s, hs⟩` from `GlobalTheory.T.exists_coboundary_of_pullback_nmul_coboundary p (O ⧸ I) d (G.baseChange (O ⧸ I)) c' _ hlaw (map r κ) (map r B) hcoc' heq hev0`. Establish `hs0 : constantCoeff s = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : constantCoeff (map r κ) = 0`. Rewrite using `[← coeff_zero_eq_constantCoeff_apply, coeff_map, coeff_zero_eq_constantCoeff_apply, hκ0, map_zero]`. Establish `hc' : ∀ i, constantCoeff (map r (c.μ i)) = 0` using `fun i => by`. Rewrite using `[← coeff_zero_eq_constantCoeff_apply, coeff_map, coeff_zero_eq_constantCoeff_apply, hconst i, map_zero]`. Rewrite `h1` using `[hs, constantCoeff_formalGroupLawCoboundaryOne_eq_zero hc']`.
-
-Conclude with `neg_eq_zero.1 h1`. Take `⟨t, ht, ht0⟩` from `(GlobalTheory.mvPowerSeries_lift_quotient O (Fin d) I).1 s`. Use `⟨t, ht0 hs0, fun α => ?_⟩` and prove the remaining obligations. Establish `h2 : map r (κ - cob1 c.μ t) = 0` using `by rw [map_sub, hm1, ht, hs, sub_self]`. Conclude with `Ideal.mem_span_singleton.1 (((GlobalTheory.mvPowerSeries_lift_quotient O (Fin d ⊕ Fin d) I).2.1 _).1 h2 α)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem coboundary_mod_p : ∀ (p : ℕ) [Fact p.Prime] (O : Type) [CommRing O] (G : PDivGroup p O) (d : ℕ) (c : QLog.Chart G d), ∀ (κ : MvPowerSeries (Fin d ⊕ Fin d) O) (B : MvPowerSeries (Fin d) O) (y : G.A 1), constantCoeff κ = 0 → IsCoc c.μ κ → (∀ α, (p : O) ∣ coeff α (cob1 c.μ B - pull2 (nmul c.μ p) κ)) → c.ev 1 B = (p : O) • y → ∃ t : MvPowerSeries (Fin d) O, constantCoeff t = 0 ∧ ∀ α, (p : O) ∣ coeff α (κ - cob1 c.μ t) := by
   intro p _ O _ G d c κ B y hκ0 hcoc hdiv hB

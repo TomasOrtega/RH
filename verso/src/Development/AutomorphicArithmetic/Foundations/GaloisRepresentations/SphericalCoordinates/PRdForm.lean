@@ -9,7 +9,7 @@ open scoped Matrix TensorProduct Classical
 open UpperTheory.Gal.W2
 
 /- English proof (translation)
-Establish `hc : ∀ y : S, algebraMap A S t * y = y * algebraMap A S t` using `fun y => Algebra.commutes t y`. Establish `h1 : xs = bi * ((↑x⁻¹ : S) * algebraMap A S t)`. Rewrite using `[← hx, ← _root_.mul_assoc (↑x⁻¹ : S), ← _root_.mul_assoc (↑x⁻¹ : S), Units.inv_mul, _root_.one_mul, ← _root_.mul_assoc, hb, _root_.one_mul]`. Rewrite using `[h1, _root_.mul_assoc, _root_.mul_assoc, hc, ← _root_.mul_assoc (↑x⁻¹ : S), Units.inv_mul, _root_.one_mul]`. Conclude with `(hc bi).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mul_unit_eq_algebraMap_mul {S A : Type*} [Ring S] [CommRing A] [Algebra A S] (xs : S) (x : Sˣ) (b bi : S)
     (t : A) (hb : bi * b = 1) (hx : (x : S) * b * xs = algebraMap A S t) :
@@ -23,13 +23,13 @@ private theorem mul_unit_eq_algebraMap_mul {S A : Type*} [Ring S] [CommRing A] [
   exact (hc bi).symm
 
 /- English proof (translation)
-Introduce `p _ D G L B h₁`. Take `⟨t, ht⟩` from `B.trivAf.choose_spec`. Establish `hx : (↑(trivX B) : AfP p ⊗[ℚ] G.C) * inC G (AfP p) ↑B.β * MulOpposite.unop ((starT G.star (AfP p)) ↑(trivX B)) = algebraMap (AfP p) _ ↑t` using `ht`. Establish `key` using `mul_unit_eq_algebraMap_mul (A := AfP p) _ (trivX B) _ (inC G (AfP p) ↑B.β⁻¹) _ (by rw [← map_mul, Units.inv_mul, map_one]) hx`. Establish `hsh : sh G (↑B.β⁻¹ : G.C) = ↑B.β⁻¹`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h : sh G (↑B.β⁻¹ : G.C) * ↑B.β = 1`. Rewrite using `[← B.sym]`. Simplify using `only [sh]`. Rewrite using `[← MulOpposite.unop_mul, ← map_mul, Units.mul_inv, map_one, MulOpposite.unop_one]`. Conclude with `Units.mul_eq_one_iff_eq_inv.mp h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(h₁⁻¹).1.2 * t, fun u w => ?_⟩` and prove the remaining obligations. Unfold `rd`. Rewrite using `[actG_form_eq_sim, adj_actOn_afP, ← Module.End.mul_apply, ← map_mul, key, map_mul, AlgHom.commutes, Module.End.mul_apply, Module.algebraMap_end_apply]`. Simplify using `only [inC, AlgHom.coe_toRingHom, RingHom.coe_coe, Algebra.TensorProduct.includeRight_apply]`. Rewrite using `[actOn_tmul_tmul', TensorProduct.smul_tmul', LinearMap.BilinForm.baseChange_tmul, formB, L.adj, hsh, Units.val_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [smul_eq_mul]`. Rewrite using `[Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.rdForm_of :
     UpperTheory.Gal.W2.RdForm := by

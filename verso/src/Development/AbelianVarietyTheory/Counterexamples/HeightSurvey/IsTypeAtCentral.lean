@@ -14,11 +14,11 @@ section Rep
 variable {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
 /- English proof (translation)
-Establish `hexp : ∀ s : ℝ, NormedSpace.exp (s • (diagonal fun _ : Fin 1 => (θ : ℂ) * Complex.I)) 0 0 = Complex.exp ((s : ℂ) * ((θ : ℂ) * Complex.I))`. Introduce `s`. Rewrite using `[← Matrix.diagonal_smul, Matrix.exp_diagonal, Matrix.diagonal_apply_eq, Pi.exp_def, ← Complex.exp_eq_exp_ℂ]`. Simplify using `[Complex.real_smul]`. Establish `hd : HasDerivAt (fun s : ℝ => Complex.exp ((s : ℂ) * ((m : ℂ) * ((θ : ℂ) * Complex.I))) * w) (((m : ℂ) * θ * Complex.I) * w) 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : HasDerivAt (fun s : ℝ => (s : ℂ) * ((m : ℂ) * ((θ : ℂ) * Complex.I))) (((1 : ℝ) : ℂ) * ((m : ℂ) * ((θ : ℂ) * Complex.I))) 0` using `(hasDerivAt_id' (0 : ℝ)).ofReal_comp.mul_const _`. Use `(h1.cexp.mul_const w).congr_deriv ?_` and prove the remaining obligations. Simplify using `only [Complex.ofReal_zero, Complex.ofReal_one, zero_mul, Complex.exp_zero, one_mul]`. Expand and normalize the polynomial expressions, which then agree. Unfold `dRep`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions.
 
-Use `HasDerivAt.deriv (hd.congr_of_eventuallyEq (Filter.Eventually.of_forall fun s => ?_))` and prove the remaining obligations. Simplify using `only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.id_apply, smul_eq_mul, hexp]`. Rewrite using `[← Complex.exp_int_mul]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem dRep_char (m : ℤ) (θ : ℝ) (w : ℂ) :
     dRep (n := 1) (fun g => (g 0 0 ^ m) • ContinuousLinearMap.id ℂ ℂ) (diagonal fun _ => (θ : ℂ) * Complex.I) w =
@@ -49,9 +49,9 @@ end Rep
 variable {D : D7} (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (V : HSp D)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨H, i1, i2, σ, lam, ε, P, h1, h2, h3, h4, -⟩`. Conclude with `⟨H, i1, i2, σ, lam, ε, P, h1, h2, h3, h4⟩`. Introduce and unpack `⟨H, i1, i2, σ, lam, ε, P, h1, h2, h3, h4⟩`. Use `⟨H, i1, i2, σ, lam, ε, P, h1, h2, h3, h4, fun x => ⟨fun _ => 0, fun i => ?_, fun _ => 0, fun i => ?_, ⟨[], fun _ => 0, by simp, fun i w _ => by simp, fun S' _ => by simp, ⟨fun _ => 0, continuous_const, fun g _ w _ => by simp⟩⟩, fun g _ => by simpa using hasSum_zero⟩⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `k Xs _`. Simplify using `only [map_zero]`. Conclude with `contDiff_const`. Conclude with `⟨[], 0, by simp, fun w _ => by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isTypeAt_zero {τ : D.what₂.Tau} {S : SPar} : IsTypeAt θ V τ S 0 ↔
     ∃ (H : Type) (_ : NormedAddCommGroup H) (_ : InnerProductSpace ℂ H)

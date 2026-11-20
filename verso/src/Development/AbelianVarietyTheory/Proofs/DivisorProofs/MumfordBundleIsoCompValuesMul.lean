@@ -16,11 +16,11 @@ namespace GlobalTheory.LamComp
 open GlobalTheory.HalfBC GlobalTheory.PrimCocycle in
 
 /- English proof (translation)
-Introduce `SA SB SC A _ _ B _ _ C _ _ MA MB MC hA hB hC m₁ m₂ m hm w₂ h₂ w₁ h₁`. Substitute `hm` using the available equality. Establish `lA : (abelian₂ A MA).IsLB` using `DVR.linComb_isLB _ hA _ _`. Establish `lB : (abelian₂ B MB).IsLB` using `DVR.linComb_isLB _ hB _ _`. Establish `lC : (abelian₂ C MC).IsLB` using `DVR.linComb_isLB _ hC _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `p₂` using `(isGen_iff _).1 h₂`. Establish `p₁` using `(isGen_iff _).1 h₁`. Take `⟨w, T⟩` from `exists_comp lB w₂ w₁ p₂ p₁ lC lA`. Use `⟨w, (isGen_iff _).2 (T.pgen_comp lB p₂ p₁), fun Z p z JA JB JC gA gB gC => ?_⟩` and prove the remaining obligations. Establish `t` using `T Z p z (fun k => JC ((p ≫ m₁ ≫ m₂) ≫ lamφ C k)) (fun k => JB ((p ≫ m₁) ≫ lamφ B k)) (fun k => JA (p ≫ lamφ A k)) (Set.mem_iInter.2 fun k => gC ((p ≫ m₁ ≫ m₂) ≫ lamφ C k)) (Set.mem_iInter.2 fun k => gB ((p ≫ m₁) ≫ lamφ B k)) (Set.mem_iInter.2 fun k => gA (p ≫ lamφ A k))`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[mul_comm]`. Use `show Geo.Tor.gw w p z (fun k => JC (p ≫ (m₁ ≫ m₂) ≫ lamφ C k)) (fun k => JA (p ≫ lamφ A k)) = Geo.Tor.gw w₂ (p ≫ m₁) z (fun k => JC ((p ≫ m₁) ≫ m₂ ≫ lamφ C k)) (fun k => JB ((p ≫ m₁) ≫ lamφ B k)) * Geo.Tor.gw w₁ p z (fun k => JB (p ≫ m₁ ≫ lamφ B k)) (fun k => JA (p ≫ lamφ A k))`. Simplify using `only [Category.assoc] at t ⊢`. Conclude with `t`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lam_comp : ∀ (SA SB SC : Scheme.{0}) (A : Over SA) [GrpObj A] [IsCommMonObj A] (B : Over SB) [GrpObj B] [IsCommMonObj B] (C : Over SC) [GrpObj C] [IsCommMonObj C] (MA : LB A.left) (MB : LB B.left) (MC : LB C.left), MA.IsLB → MB.IsLB → MC.IsLB → ∀ (m₁ : (G2 A).left ⟶ (G2 B).left) (m₂ : (G2 B).left ⟶ (G2 C).left) (m : (G2 A).left ⟶ (G2 C).left), m₁ ≫ m₂ = m → ∀ (w₂ : LB.Iso (abelian₂ B MB) ((abelian₂ C MC).pull m₂)), w₂.IsGen → ∀ (w₁ : LB.Iso (abelian₂ A MA) ((abelian₂ B MB).pull m₁)), w₁.IsGen → ∃ w : LB.Iso (abelian₂ A MA) ((abelian₂ C MC).pull m), w.IsGen ∧ ∀ (Z : Scheme.{0}) (p : Z ⟶ (G2 A).left) (z : Z) JA JB JC, Good MA z JA → Good MB z JB → Good MC z JC → lamVal w p z JC JA = lamVal w₁ p z JB JA * lamVal w₂ (p ≫ m₁) z JC JB := by
   intro SA SB SC A _ _ B _ _ C _ _ MA MB MC hA hB hC m₁ m₂ m hm w₂ h₂ w₁ h₁

@@ -21,9 +21,9 @@ namespace Formalism.MainNotions.BridgeCS3dBOW
 open Formalism.FourierDecayAlt.ThreeDimData Formalism.FourierDecayAlt.P Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity
 
 /- English proof (translation)
-Introduce `k r z c u lam ε h H _ _ _ σ hlam hσ hgap hok hz hT hc Vp _ _ _ π hπ w hw μG μW μN ν hG hW hN hq W hWc hWeq hRe hne hfin`. Establish `: CompleteSpace Vp` using `FiniteDimensional.complete ℂ Vp`. Establish `hS : Side k r ε lam h σ w z c u π μW μN μG ν` using `⟨hlam, hσ, hgap, hok, hw, hz, hT, hc, hπ, hW, hN, hG, hq⟩`. Take `⟨l, hlB, hla, -⟩` from `CompanionTheory.Lime.BM.dDFormOne hJ CompanionTheory.Lime.BM.inputs k r ε lam h H σ w Vp z c u π μW μN μG ν hS`. Take `⟨κ, hκ⟩` from `bow_core hS l hla hWc hWeq hRe`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨fun v => κ • l v, (Formalism.MainNotions.BridgeCS3d.isBesselMapSm_iff _ _ _ _ _).mpr (DDSmoothness.bessel_smul hlB κ), hκ⟩`.
+Supply the required witnesses or components.
 -/
 theorem besselOfW_gap (hJ : CompanionTheory.Lime.BM.UniqGap) :
     Formalism.L2.SG.LocWSOf.BesselOfW := by

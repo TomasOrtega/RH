@@ -11,17 +11,17 @@ open DoubleCoset (doubleCoset)
 namespace GlobalTheory.CompanionTheory.Cell
 
 /- English proof (translation)
-Establish `hι : ∀ i, Function.Bijective (fun y : m i => (⟨e ⟨i, y⟩, by simp⟩ : {x : X // (e.symm x).1 = i}))`. Introduce `i`. Prove the components needed by the constructor for the conclusion. Introduce `a a' h`. Establish `h1 : e ⟨i, a⟩ = e ⟨i, a'⟩` using `congrArg Subtype.val h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `sigma_mk_injective (e.injective h1)`. Introduce and unpack `⟨x, hx⟩`. Take `⟨⟨k, y⟩, rfl⟩` from `e.surjective x`. Simplify using `only [Equiv.symm_apply_apply] at hx`. Substitute `hx` using the available equality.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality. Supply the required witnesses or components.
 
-Conclude with `⟨y, rfl⟩`. Establish `hF : ∀ i, Function.Bijective (fun p : Σ j, Fin (c i j) => (⟨((E i p.1).symm p.2).1, ((E i p.1).symm p.2).2.1⟩ : {x : X // (e.symm x).1 = i}))`. Introduce `i`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨j, t⟩ ⟨j', t'⟩ h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h1 : ((E i j).symm t).1 = ((E i j').symm t').1` using `congrArg Subtype.val h`. Establish `hj : j = j'`. Combine the equalities or inequalities in the displayed calculation. Substitute `hj` using the available equality. Establish `ht : t = t'` using `(E i j).symm.injective (Subtype.ext h1)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `ht` using the available equality. Both sides reduce to the same expression. Introduce and unpack `⟨x, hx⟩`. Use `⟨⟨b x, E i (b x) ⟨x, hx, rfl⟩⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use `⟨fun i => (Equiv.ofBijective _ (hF i)).trans (Equiv.ofBijective _ (hι i)).symm, ?_⟩` and prove the remaining obligations. Introduce `i j t`. Establish `key` using `(Equiv.ofBijective _ (hι i)).apply_symm_apply (Equiv.ofBijective _ (hF i) ⟨j, t⟩)`. Conclude with `congrArg Subtype.val key`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_block_equiv_of_cells {X α β : Type} {m : α → Type} (e : (Σ i, m i) ≃ X) (b : X → β)
     (c : α → β → ℕ) (E : ∀ i j, {x : X // (e.symm x).1 = i ∧ b x = j} ≃ Fin (c i j)) :
@@ -64,11 +64,11 @@ theorem exists_block_equiv_of_cells {X α β : Type} {m : α → Type} (e : (Σ 
   exact congrArg Subtype.val key
 
 /- English proof (translation)
-Introduce `α β' _ _ _ _ N m m' e e' w`. Set `E : ∀ i j, {x : Fin N // (e.symm x).1 = i ∧ blk e' (w.symm x) = j} ≃ Fin ((Finset.univ.filter fun x : Fin N => blk e x = i ∧ blk e' (w.symm x) = j).card)` to `fun i j => (Equiv.subtypeEquivRight (fun x => by`. Rewrite using `[Finset.mem_filter]`. Conclude with `⟨fun h => ⟨Finset.mem_univ _, h.1, h.2⟩, fun h => ⟨h.2.1, h.2.2⟩⟩)).trans`. Use the proof step `(Finset.equivFin _)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Set `E' : ∀ j i, {x : Fin N // ((e'.trans w).symm x).1 = j ∧ blk e x = i} ≃ Fin ((Finset.univ.filter fun x : Fin N => blk e x = i ∧ blk e' (w.symm x) = j).card)` to `fun j i => (Equiv.subtypeEquivRight (fun x => by`. Rewrite using `[Finset.mem_filter]`. Conclude with `⟨fun h => ⟨Finset.mem_univ _, h.2, h.1⟩, fun h => ⟨h.2.2, h.2.1⟩⟩)).trans`. Use the proof step `(Finset.equivFin _)`. Take `⟨f, hf⟩` from `exists_block_equiv_of_cells e (fun x => blk e' (w.symm x)) (fun i j => (Finset.univ.filter fun x : Fin N => blk e x = i ∧ blk e' (w.symm x) = j).card) E`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨g, hg⟩` from `exists_block_equiv_of_cells (e'.trans w) (fun x => blk e x) (fun j i => (Finset.univ.filter fun x : Fin N => blk e x = i ∧ blk e' (w.symm x) = j).card) E'`. Use `⟨f, g, ?_⟩` and prove the remaining obligations. Introduce `i j t`. Rewrite using `[hf i j t]`. Conclude with `hg j i t`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cell_row_column_partitions :
     ∀ {α β' : Type} [Fintype α] [LinearOrder α] [Fintype β'] [LinearOrder β'] {N : ℕ} {m : α → Type} {m' : β' → Type} (e : (Σ i, m i) ≃ Fin N) (e' : (Σ j, m' j) ≃ Fin N) (w : Equiv.Perm (Fin N)), ∃ (f : ∀ i, (Σ j, Fin ((Finset.univ.filter fun x : Fin N => blk e x = i ∧ blk e' (w.symm x) = j).card)) ≃ m i) (g : ∀ j, (Σ i, Fin ((Finset.univ.filter fun x : Fin N => blk e x = i ∧ blk e' (w.symm x) = j).card)) ≃ m' j), ∀ i j (t : Fin ((Finset.univ.filter fun x : Fin N => blk e x = i ∧ blk e' (w.symm x) = j).card)), w (e' ⟨j, g j ⟨i, t⟩⟩) = e ⟨i, f i ⟨j, t⟩⟩ := by

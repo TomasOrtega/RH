@@ -19,9 +19,9 @@ def tensorInvariants {A B : Rep.{u} k G} (x : A.ρ.invariants) (y : B.ρ.invaria
 omit [Fintype G] in
 
 /- English proof (translation)
-Rewrite using `[cupH_π]`. Use `congr 1`. Apply `cocycles_ext` to reduce the goal to its premises. Rewrite using `[iCocycles_cupCocycles, iCocycles_mk, iCocycles_mk, iCocycles_mk]`. Use function extensionality and compare the values at `v`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[cupCochain_apply, h]`. Establish `hv : ∀ w : Fin 0 → G, w = v` using `fun w => Subsingleton.elim _ _`. Rewrite using `[hv (fun i : Fin 0 => v ⟨i, by omega⟩), hv (fun j : Fin 0 => v ⟨0 + j, by omega⟩)]`. Simplify using `[Fin.partialProd]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cupH_zero_zero_π {A B : Rep.{u} k G} (f : (Fin 0 → G) → A) (g : (Fin 0 → G) → B)
     (hf : (inhomogeneousCochains.d A 0).hom f = 0) (hg : (inhomogeneousCochains.d B 0).hom g = 0)
@@ -42,19 +42,19 @@ set_option maxHeartbeats 1600000 in
 set_option backward.isDefEq.respectTransparency false in
 
 /- English proof (translation)
-Take `⟨zA, hzA⟩` from `exists_tateComplex_cycles_zero A x`. Take `⟨zB, hzB⟩` from `exists_tateComplex_cycles_zero B y`. Take `⟨zAB, hzAB⟩` from `exists_tateComplex_cycles_zero (A ⊗ B) (tensorInvariants x y)`. Rewrite using `[tateCohomologyZeroIso_inv_mk A zA x hzA.symm, tateCohomologyZeroIso_inv_mk B zB y hzB.symm, tateCohomologyZeroIso_inv_mk (A ⊗ B) zAB _ hzAB.symm]`. Rewrite using `[tateCup_of_nonpos 0 le_rfl]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `moduleIso_hom_injective (tateLeftIso A B 0)` to reduce the goal to its premises. Rewrite using `[tateLeftIso_cupL, tateCup_of_pos_of_nonpos (by norm_num) le_rfl]`. Apply `moduleIso_hom_injective (tateRightIso (augIdeal k G ⊗ A) B (0 + 1))` to reduce the goal to its premises. Rewrite using `[tateRightIso_cupR]`. Apply `moduleIso_hom_injective (tateIsoH ((augIdeal k G ⊗ A) ⊗ (augIdeal k G ⊗ B)) (0 + 1 + 1) 2 (by norm_num))` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hA1` using `tateIsoH_tδ_homologyπ (augSES_shortExact A) 0 zA`. Establish `hB1` using `tateIsoH_tδ_homologyπ (augSES_shortExact B) 0 zB`. Establish `hAB1` using `tateIsoH_tδ_homologyπ (augSES_tensorRight_shortExact A B) 0 zAB`. Establish `hxA : ∀ v, ((tateComplex A).iCycles 0).hom zA v = x.1` using `fun v => congrFun hzA v`. Establish `hyB : ∀ v, ((tateComplex B).iCycles 0).hom zB v = y.1` using `fun v => congrFun hzB v`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxyAB : ∀ v, ((tateComplex (A ⊗ B)).iCycles 0).hom zAB v = x.1 ⊗ₜ[k] y.1` using `fun v => congrFun hzAB v`. Establish `hcup0` using `cupH_zero_zero_π _ _ (tate_d_iCycles A 0 zA) (tate_d_iCycles B 0 zB) _ (tate_d_iCycles (A ⊗ B) 0 zAB) (fun v => (hxyAB v).trans (congrArg₂ (fun a b => a ⊗ₜ[k] b) (hxA v).symm (hyB v).symm))`. Establish `e_left` using `δ_cupH_left (augSES_shortExact A) B (augSES_tensorRight_shortExact A B) (p := 0) (q := 0) rfl rfl (π A 0 (cocyclesMk (((tateComplex A).iCycles 0).hom zA) (tate_d_iCycles A 0 zA))) (π B 0 (cocyclesMk (((tateComplex B).iCycles 0).hom zB) (tate_d_iCycles B 0 zB)))`. Establish `e_right` using `δ_cupH_right (augSES_shortExact B) (augIdeal k G ⊗ A) (augSES_tensorLeft_shortExact (augIdeal k G ⊗ A) B) (p := 0) (q := 1) rfl rfl (δ (augSES_shortExact A) 0 (0 + 1) rfl (π A 0 (cocyclesMk (((tateComplex A).iCycles 0).hom zA) (tate_d_iCycles A 0 zA)))) (π B 0 (cocyclesMk (((tate …`. Establish `e_br` using `congr(($(tδ_comp_tateIsoH (augSES_tensorLeft_shortExact (augIdeal k G ⊗ A) B) 1)).hom ((tateLeftIso A B 0).hom.hom (((tateComplex (A ⊗ B)).homologyπ 0).hom zAB)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e_base` using `tateIsoH_tateCup (n := 1) (m := 1) (l := 2) (p := 0 + 1) (q := 0 + 1) (r := 0 + 1 + 1) (by norm_num) (by norm_num) (by norm_num) (by norm_num) (by norm_num) (augIdeal k G ⊗ A) (augIdeal k G ⊗ B) ((augShiftδ A 0).hom (((tateComplex A).homologyπ 0).hom zA)) ((augShiftδ B 0).hom ((( …`. Use `Eq.trans (moduleHom_smul _ _ _) ?_` and prove the remaining obligations. Use `Eq.trans (congrArg (tsgn k (0 + 1) • ·) e_base) ?_` and prove the remaining obligations. Use `Eq.trans (congrArg₂ (fun s t => tsgn k (0 + 1) • cupH (show 1 + 1 = 2 by rfl) s t) hA1 hB1) ?_` and prove the remaining obligations. Use `Eq.trans ?_ e_br.symm` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ (congrArg (δ (augSES_tensorLeft_shortExact (augIdeal k G ⊗ A) B) 1 (1 + 1) rfl).hom hAB1).symm` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg (fun t => δ (augSES_tensorLeft_shortExact (augIdeal k G ⊗ A) B) 1 (1 + 1) rfl (δ (augSES_tensorRight_shortExact A B) 0 (0 + 1) rfl t)) hcup0)` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg (δ (augSES_tensorLeft_shortExact (augIdeal k G ⊗ A) B) 1 (1 + 1) rfl).hom e_left).symm` and prove the remaining obligations. Use `Eq.trans ?_ e_right.symm` and prove the remaining obligations. Establish `hs : tsgn k (0 + 1) = (-1 : k) ^ 1`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[tsgn_add_one]`. Simplify using `[tsgn]`. Rewrite using `[hs]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tateCup_zero_zero (A B : Rep.{u} k G) (x : A.ρ.invariants) (y : B.ρ.invariants) :
     tateCup 0 0 A B 0 (add_zero 0)
@@ -120,15 +120,15 @@ theorem tateCup_zero_zero (A B : Rep.{u} k G) (x : A.ρ.invariants) (y : B.ρ.in
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Proceed by induction on `m using Nat.strong_induction_on with`. Consider the case `_ m ih`. Introduce `p q hm A B r h a b`. Distinguish the cases in `hp : p ≤ 0`. Rewrite using `[tateCup_of_nonpos q hp]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Apply `moduleIso_hom_injective (tateLeftIso A B r)` to reduce the goal to its premises. Rewrite using `[tateLeftIso_cupL, tateLeftIso_hom]`. Use `(hleft p q A B r h a b).trans ?_` and prove the remaining obligations. Conclude with `ih _ (by omega) (p + 1) q rfl _ _ _ _ _ _`. Distinguish the cases in `hq : q ≤ 0`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[tateCup_of_pos_of_nonpos (by omega) hq]`. Apply `moduleIso_hom_injective (tateRightIso A B r)` to reduce the goal to its premises. Rewrite using `[tateRightIso_cupR, tateRightIso_hom]`. Use `(hright p q A B r h a b).trans ?_` and prove the remaining obligations. Conclude with `congrArg (tsgn k p • ·) (ih _ (by omega) p (q + 1) rfl _ _ _ _ _ _)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨n, rfl⟩ : ∃ n : ℕ, p = n` from `⟨p.toNat, by omega⟩`. Take `⟨m', rfl⟩ : ∃ m' : ℕ, q = m'` from `⟨q.toNat, by omega⟩`. Take `⟨l, rfl⟩ : ∃ l : ℕ, r = l` from `⟨r.toNat, by omega⟩`. Establish `: NeZero n` using `⟨by omega⟩`. Establish `: NeZero m'` using `⟨by omega⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: NeZero l` using `⟨by omega⟩`. Establish `hl : n + m' = l` using `by omega`. Apply `moduleIso_hom_injective (tateIsoH (A ⊗ B) l l rfl)` to reduce the goal to its premises. Rewrite using `[hpos n m' l hl, tateIsoH_tateCup rfl rfl rfl h hl]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tateCup_unique_of_agrees (μ : ∀ p q : ℤ, TateCupFam k G p q)
     (hpos : ∀ (n m l : ℕ) [NeZero n] [NeZero m] [NeZero l] (hl : n + m = l) (A B : Rep.{u} k G)
@@ -178,7 +178,7 @@ noncomputable def tateCupTensor (A B : Rep.{u} k G) (p q : ℤ) :
   TensorProduct.lift (tateCup p q A B (p + q) rfl)
 
 /- English proof (translation)
-The claim follows from `tateCup_connecting_left _ p q rfl hE B hEB r h a b`.
+A detailed English derivation is pending.
 -/
 theorem tateCup_δ_left {E : ShortComplex (Rep.{u} k G)} (hE : E.ShortExact) (B : Rep.{u} k G)
     (hEB : (E.map (tensorRight B)).ShortExact) (p q r : ℤ) (h : p + q = r)
@@ -188,7 +188,7 @@ theorem tateCup_δ_left {E : ShortComplex (Rep.{u} k G)} (hE : E.ShortExact) (B 
   tateCup_connecting_left _ p q rfl hE B hEB r h a b
 
 /- English proof (translation)
-Rewrite using `[Units.smul_def, ← Int.cast_smul_eq_zsmul k]`. Conclude with `tateCup_connecting_right _ p q rfl hE A hAE r h a b`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tateCup_δ_right {E : ShortComplex (Rep.{u} k G)} (hE : E.ShortExact) (A : Rep.{u} k G)
     (hAE : (E.map (tensorLeft A)).ShortExact) (p q r : ℤ) (h : p + q = r)

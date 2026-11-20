@@ -49,64 +49,64 @@ Both sides reduce to the same expression.
     mddbar A z ξ η a b = ddbar (fun x => A x a b) z ξ η := rfl
 
 /- English proof (translation)
-Use extensionality with `a b`. Conclude with `del_add_dbar _ _ _`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem mdel_add_mdbar (A : E → Matrix m n ℂ) (z ξ : E) :
     mdel A z ξ + mdbar A z ξ = of fun a b => fderiv ℝ (fun x => A x a b) z ξ := by
   ext a b; exact del_add_dbar _ _ _
 
 /- English proof (translation)
-Use extensionality with `a b`. Rewrite using `[mdel_apply, mdel_apply, del_congr (h.mono fun x hx => congrFun (congrFun hx a) b)]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem mdel_congr (h : A =ᶠ[𝓝 z] B) (ξ : E) : mdel A z ξ = mdel B z ξ := by
   ext a b
   rw [mdel_apply, mdel_apply, del_congr (h.mono fun x hx => congrFun (congrFun hx a) b)]
 
 /- English proof (translation)
-Use extensionality with `a b`. Rewrite using `[mdbar_apply, mdbar_apply, dbar_congr (h.mono fun x hx => congrFun (congrFun hx a) b)]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem mdbar_congr (h : A =ᶠ[𝓝 z] B) (ξ : E) : mdbar A z ξ = mdbar B z ξ := by
   ext a b
   rw [mdbar_apply, mdbar_apply, dbar_congr (h.mono fun x hx => congrFun (congrFun hx a) b)]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 @[simp] theorem mdel_const (C : Matrix m n ℂ) (z ξ : E) : mdel (fun _ => C) z ξ = 0 := by
   ext a b; simp
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 @[simp] theorem mdbar_const (C : Matrix m n ℂ) (z ξ : E) : mdbar (fun _ => C) z ξ = 0 := by
   ext a b; simp
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mdel_add_vec (A : E → Matrix m n ℂ) (z ξ ξ' : E) :
     mdel A z (ξ + ξ') = mdel A z ξ + mdel A z ξ' := by ext a b; simp
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mdel_smul_vec (A : E → Matrix m n ℂ) (z : E) (c : ℂ) (ξ : E) :
     mdel A z (c • ξ) = c • mdel A z ξ := by ext a b; simp
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mdbar_add_vec (A : E → Matrix m n ℂ) (z η η' : E) :
     mdbar A z (η + η') = mdbar A z η + mdbar A z η' := by ext a b; simp
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mdbar_smul_vec (A : E → Matrix m n ℂ) (z : E) (c : ℂ) (η : E) :
     mdbar A z (c • η) = conj c • mdbar A z η := by ext a b; simp
 
 /- English proof (translation)
-Apply the tactic sequence `constructor <;> intros <;> ext a b <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem isSesq_mddbar (A : E → Matrix m n ℂ) (z : E) : IsSesq (mddbar A z) := by
   constructor <;> intros <;> ext a b <;> simp
@@ -124,27 +124,27 @@ theorem mdbar_transpose (A : E → Matrix m n ℂ) (z ξ : E) :
     mdbar (fun x => (A x)ᵀ) z ξ = (mdbar A z ξ)ᵀ := rfl
 
 /- English proof (translation)
-Use extensionality with `a b`. Conclude with `del_conj (fun x => A x b a) z ξ`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem mdel_conjTranspose (A : E → Matrix m n ℂ) (z ξ : E) :
     mdel (fun x => (A x)ᴴ) z ξ = (mdbar A z ξ)ᴴ := by
   ext a b; exact del_conj (fun x => A x b a) z ξ
 
 /- English proof (translation)
-Use extensionality with `a b`. Conclude with `dbar_conj (fun x => A x b a) z ξ`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem mdbar_conjTranspose (A : E → Matrix m n ℂ) (z ξ : E) :
     mdbar (fun x => (A x)ᴴ) z ξ = (mdel A z ξ)ᴴ := by
   ext a b; exact dbar_conj (fun x => A x b a) z ξ
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[del_neg]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mdel_neg (A : E → Matrix m n ℂ) (z ξ : E) : mdel (fun x => -A x) z ξ = -mdel A z ξ := by
   ext a b; simp [del_neg]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[dbar_neg]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mdbar_neg (A : E → Matrix m n ℂ) (z ξ : E) : mdbar (fun x => -A x) z ξ = -mdbar A z ξ := by
   ext a b; simp [dbar_neg]
@@ -152,7 +152,7 @@ theorem mdbar_neg (A : E → Matrix m n ℂ) (z ξ : E) : mdbar (fun x => -A x) 
 omit [NormedSpace ℂ E] [IsScalarTower ℝ ℂ E] in
 
 /- English proof (translation)
-Introduce `a b` and use `(h a b).of_le hjk`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem MContDiffAt.of_le (h : MContDiffAt k A z) (hjk : j ≤ k) : MContDiffAt j A z :=
   fun a b => (h a b).of_le hjk
@@ -160,7 +160,7 @@ theorem MContDiffAt.of_le (h : MContDiffAt k A z) (hjk : j ≤ k) : MContDiffAt 
 omit [NormedSpace ℂ E] [IsScalarTower ℝ ℂ E] in
 
 /- English proof (translation)
-The claim follows from `(h a b).differentiableAt one_ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem MContDiffAt.diff (h : MContDiffAt 1 A z) (a : m) (b : n) :
     DifferentiableAt ℝ (fun x => A x a b) z := (h a b).differentiableAt one_ne_zero
@@ -168,7 +168,7 @@ theorem MContDiffAt.diff (h : MContDiffAt 1 A z) (a : m) (b : n) :
 omit [NormedSpace ℂ E] [IsScalarTower ℝ ℂ E] in
 
 /- English proof (translation)
-Introduce `_ _` and use `contDiffAt_const`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mContDiffAt_const (C : Matrix m n ℂ) : MContDiffAt k (fun _ : E => C) z :=
   fun _ _ => contDiffAt_const
@@ -176,7 +176,7 @@ theorem mContDiffAt_const (C : Matrix m n ℂ) : MContDiffAt k (fun _ : E => C) 
 omit [NormedSpace ℂ E] [IsScalarTower ℝ ℂ E] in
 
 /- English proof (translation)
-Introduce `a b` and use `(h a b).add (h' a b)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem MContDiffAt.add (h : MContDiffAt k A z) (h' : MContDiffAt k B z) :
     MContDiffAt k (fun x => A x + B x) z := fun a b => (h a b).add (h' a b)
@@ -184,7 +184,7 @@ theorem MContDiffAt.add (h : MContDiffAt k A z) (h' : MContDiffAt k B z) :
 omit [NormedSpace ℂ E] [IsScalarTower ℝ ℂ E] in
 
 /- English proof (translation)
-Introduce `a b` and use `(h a b).sub (h' a b)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem MContDiffAt.sub (h : MContDiffAt k A z) (h' : MContDiffAt k B z) :
     MContDiffAt k (fun x => A x - B x) z := fun a b => (h a b).sub (h' a b)
@@ -192,7 +192,7 @@ theorem MContDiffAt.sub (h : MContDiffAt k A z) (h' : MContDiffAt k B z) :
 omit [NormedSpace ℂ E] [IsScalarTower ℝ ℂ E] in
 
 /- English proof (translation)
-Introduce `a b` and use `(h a b).neg`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem MContDiffAt.neg (h : MContDiffAt k A z) : MContDiffAt k (fun x => -A x) z :=
   fun a b => (h a b).neg
@@ -200,7 +200,7 @@ theorem MContDiffAt.neg (h : MContDiffAt k A z) : MContDiffAt k (fun x => -A x) 
 omit [NormedSpace ℂ E] [IsScalarTower ℝ ℂ E] in
 
 /- English proof (translation)
-Introduce `a b` and use `hf.mul (h a b)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem MContDiffAt.smul {f : E → ℂ} (hf : ContDiffAt ℝ k f z) (h : MContDiffAt k A z) :
     MContDiffAt k (fun x => f x • A x) z := fun a b => hf.mul (h a b)
@@ -208,7 +208,7 @@ theorem MContDiffAt.smul {f : E → ℂ} (hf : ContDiffAt ℝ k f z) (h : MContD
 omit [NormedSpace ℂ E] [IsScalarTower ℝ ℂ E] in
 
 /- English proof (translation)
-Introduce `a b` and use `h b a`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem MContDiffAt.transpose (h : MContDiffAt k A z) : MContDiffAt k (fun x => (A x)ᵀ) z :=
   fun a b => h b a
@@ -216,7 +216,7 @@ theorem MContDiffAt.transpose (h : MContDiffAt k A z) : MContDiffAt k (fun x => 
 omit [NormedSpace ℂ E] [IsScalarTower ℝ ℂ E] in
 
 /- English proof (translation)
-Introduce `a b` and use `conjCLE.contDiff.contDiffAt.comp z (h b a)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem MContDiffAt.conjTranspose (h : MContDiffAt k A z) : MContDiffAt k (fun x => (A x)ᴴ) z :=
   fun a b => conjCLE.contDiff.contDiffAt.comp z (h b a)
@@ -224,7 +224,7 @@ theorem MContDiffAt.conjTranspose (h : MContDiffAt k A z) : MContDiffAt k (fun x
 omit [NormedSpace ℂ E] [IsScalarTower ℝ ℂ E] in
 
 /- English proof (translation)
-Introduce `a b` and use `h (f a) (g b)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem MContDiffAt.submatrix {m' n' : Type*} (h : MContDiffAt k A z) (f : m' → m) (g : n' → n) :
     MContDiffAt k (fun x => (A x).submatrix f g) z := fun a b => h (f a) (g b)
@@ -232,7 +232,7 @@ theorem MContDiffAt.submatrix {m' n' : Type*} (h : MContDiffAt k A z) (f : m' �
 omit [NormedSpace ℂ E] [IsScalarTower ℝ ℂ E] in
 
 /- English proof (translation)
-Introduce `a b` and use `by simp only [mul_apply] exact ContDiffAt.sum fun c _ => (h a c).mul (h' c b)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem MContDiffAt.mul [Fintype n] {B : E → Matrix n l ℂ} (h : MContDiffAt k A z)
     (h' : MContDiffAt k B z) : MContDiffAt k (fun x => A x * B x) z := fun a b => by
@@ -242,7 +242,7 @@ theorem MContDiffAt.mul [Fintype n] {B : E → Matrix n l ℂ} (h : MContDiffAt 
 omit [NormedSpace ℂ E] [IsScalarTower ℝ ℂ E] in
 
 /- English proof (translation)
-Simplify using `only [det_apply']`. Conclude with `ContDiffAt.sum fun σ _ => contDiffAt_const.mul (contDiffAt_prod fun c _ => h _ _)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem MContDiffAt.det [Fintype n] [DecidableEq n] {A : E → Matrix n n ℂ}
     (h : MContDiffAt k A z) : ContDiffAt ℝ k (fun x => (A x).det) z := by
@@ -252,9 +252,7 @@ theorem MContDiffAt.det [Fintype n] [DecidableEq n] {A : E → Matrix n n ℂ}
 omit [NormedSpace ℂ E] [IsScalarTower ℝ ℂ E] in
 
 /- English proof (translation)
-Introduce `a b`. Simplify using `only [Matrix.inv_def, Ring.inverse_eq_inv', Matrix.smul_apply, smul_eq_mul, adjugate_apply]`. Use `(h.det.inv hu.ne_zero).mul (MContDiffAt.det (A := fun x => (A x).updateRow b (Pi.single a 1)) fun c d => ?_)` and prove the remaining obligations. Simplify using `only [updateRow_apply]`. Use `split_ifs`.
-
-Use `exacts [contDiffAt_const, h c d]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem MContDiffAt.inv [Fintype n] [DecidableEq n] {A : E → Matrix n n ℂ}
     (h : MContDiffAt k A z) (hu : IsUnit (A z).det) : MContDiffAt k (fun x => (A x)⁻¹) z := by
@@ -269,7 +267,7 @@ theorem MContDiffAt.inv [Fintype n] [DecidableEq n] {A : E → Matrix n n ℂ}
 omit [NormedSpace ℂ E] [IsScalarTower ℝ ℂ E] in
 
 /- English proof (translation)
-The claim follows from `(h.det.continuousAt.eventually_ne hu.ne_zero).mono fun _ hx => hx.isUnit`.
+A detailed English derivation is pending.
 -/
 theorem MContDiffAt.eventually_isUnit [Fintype n] [DecidableEq n] {A : E → Matrix n n ℂ}
     (h : MContDiffAt k A z) (hu : IsUnit (A z).det) : ∀ᶠ x in 𝓝 z, IsUnit (A x).det :=
@@ -278,14 +276,14 @@ theorem MContDiffAt.eventually_isUnit [Fintype n] [DecidableEq n] {A : E → Mat
 omit [NormedSpace ℂ E] [IsScalarTower ℝ ℂ E] in
 
 /- English proof (translation)
-The claim follows from `eventually_all.2 fun a => eventually_all.2 fun b => (h a b).eventually (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem MContDiffAt.eventually_two [Finite m] [Finite n] (h : MContDiffAt 2 A z) :
     ∀ᶠ x in 𝓝 z, MContDiffAt 2 A x :=
   eventually_all.2 fun a => eventually_all.2 fun b => (h a b).eventually (by simp)
 
 /- English proof (translation)
-Introduce `a b` and use `by have h1 := (h a b).fderiv_right hjk simp only [mdel_apply, del_apply] exact ((h1.clm_apply contDiffAt_const).sub ((h1.clm_apply contDiffAt_const).const_smul I)).const_smul (1 / 2 : ℂ)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem MContDiffAt.mdel (h : MContDiffAt k A z) (hjk : j + 1 ≤ k) (ξ : E) :
     MContDiffAt j (fun x => mdel A x ξ) z := fun a b => by
@@ -295,7 +293,7 @@ theorem MContDiffAt.mdel (h : MContDiffAt k A z) (hjk : j + 1 ≤ k) (ξ : E) :
     ((h1.clm_apply contDiffAt_const).const_smul I)).const_smul (1 / 2 : ℂ)
 
 /- English proof (translation)
-Introduce `a b` and use `by have h1 := (h a b).fderiv_right hjk simp only [mdbar_apply, dbar_apply] exact ((h1.clm_apply contDiffAt_const).add ((h1.clm_apply contDiffAt_const).const_smul I)).const_smul (1 / 2 : ℂ)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem MContDiffAt.mdbar (h : MContDiffAt k A z) (hjk : j + 1 ≤ k) (η : E) :
     MContDiffAt j (fun x => mdbar A x η) z := fun a b => by
@@ -305,35 +303,35 @@ theorem MContDiffAt.mdbar (h : MContDiffAt k A z) (hjk : j + 1 ≤ k) (η : E) :
     ((h1.clm_apply contDiffAt_const).const_smul I)).const_smul (1 / 2 : ℂ)
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[del_add (h.diff a b) (h'.diff a b)]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mdel_add (h : MContDiffAt 1 A z) (h' : MContDiffAt 1 B z) (ξ : E) :
     mdel (fun x => A x + B x) z ξ = mdel A z ξ + mdel B z ξ := by
   ext a b; simp [del_add (h.diff a b) (h'.diff a b)]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[dbar_add (h.diff a b) (h'.diff a b)]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mdbar_add (h : MContDiffAt 1 A z) (h' : MContDiffAt 1 B z) (ξ : E) :
     mdbar (fun x => A x + B x) z ξ = mdbar A z ξ + mdbar B z ξ := by
   ext a b; simp [dbar_add (h.diff a b) (h'.diff a b)]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[del_mul hf (h.diff a b)]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mdel_smul {f : E → ℂ} (hf : DifferentiableAt ℝ f z) (h : MContDiffAt 1 A z) (ξ : E) :
     mdel (fun x => f x • A x) z ξ = f z • mdel A z ξ + del f z ξ • A z := by
   ext a b; simp [del_mul hf (h.diff a b)]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[dbar_mul hf (h.diff a b)]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mdbar_smul {f : E → ℂ} (hf : DifferentiableAt ℝ f z) (h : MContDiffAt 1 A z) (ξ : E) :
     mdbar (fun x => f x • A x) z ξ = f z • mdbar A z ξ + dbar f z ξ • A z := by
   ext a b; simp [dbar_mul hf (h.diff a b)]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [mdel_apply, mul_apply, Matrix.add_apply]`. Rewrite using `[del_sum fun c _ => (h.diff a c).fun_mul (h'.diff c b), ← Finset.sum_add_distrib, ContinuousLinearMap.sum_apply]`. Conclude with `Finset.sum_congr rfl fun c _ => del_mul (h.diff a c) (h'.diff c b) ξ`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mdel_mul [Fintype n] {B : E → Matrix n l ℂ} (h : MContDiffAt 1 A z)
     (h' : MContDiffAt 1 B z) (ξ : E) :
@@ -345,7 +343,7 @@ theorem mdel_mul [Fintype n] {B : E → Matrix n l ℂ} (h : MContDiffAt 1 A z)
   exact Finset.sum_congr rfl fun c _ => del_mul (h.diff a c) (h'.diff c b) ξ
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [mdbar_apply, mul_apply, Matrix.add_apply]`. Rewrite using `[dbar_sum fun c _ => (h.diff a c).fun_mul (h'.diff c b), ← Finset.sum_add_distrib, ContinuousLinearMap.sum_apply]`. Conclude with `Finset.sum_congr rfl fun c _ => dbar_mul (h.diff a c) (h'.diff c b) ξ`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mdbar_mul [Fintype n] {B : E → Matrix n l ℂ} (h : MContDiffAt 1 A z)
     (h' : MContDiffAt 1 B z) (ξ : E) :
@@ -357,7 +355,7 @@ theorem mdbar_mul [Fintype n] {B : E → Matrix n l ℂ} (h : MContDiffAt 1 A z)
   exact Finset.sum_congr rfl fun c _ => dbar_mul (h.diff a c) (h'.diff c b) ξ
 
 /- English proof (translation)
-Establish `h1` using `mdel_mul h (h.inv hu) ξ`. Rewrite `h1` using `[mdel_congr (B := fun _ => 1) ((h.eventually_isUnit hu).mono fun x hx => mul_nonsing_inv _ hx), mdel_const, eq_comm, add_eq_zero_iff_eq_neg]`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_neg, ← h1, nonsing_inv_mul_cancel_left _ _ hu]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem mdel_inv [Fintype n] [DecidableEq n] {A : E → Matrix n n ℂ} (h : MContDiffAt 1 A z)
     (hu : IsUnit (A z).det) (ξ : E) :
@@ -368,7 +366,7 @@ theorem mdel_inv [Fintype n] [DecidableEq n] {A : E → Matrix n n ℂ} (h : MCo
   rw [Matrix.mul_assoc, ← Matrix.mul_neg, ← h1, nonsing_inv_mul_cancel_left _ _ hu]
 
 /- English proof (translation)
-Establish `h1` using `mdbar_mul h (h.inv hu) ξ`. Rewrite `h1` using `[mdbar_congr (B := fun _ => 1) ((h.eventually_isUnit hu).mono fun x hx => mul_nonsing_inv _ hx), mdbar_const, eq_comm, add_eq_zero_iff_eq_neg]`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_neg, ← h1, nonsing_inv_mul_cancel_left _ _ hu]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem mdbar_inv [Fintype n] [DecidableEq n] {A : E → Matrix n n ℂ} (h : MContDiffAt 1 A z)
     (hu : IsUnit (A z).det) (ξ : E) :
@@ -380,28 +378,28 @@ theorem mdbar_inv [Fintype n] [DecidableEq n] {A : E → Matrix n n ℂ} (h : MC
   rw [Matrix.mul_assoc, ← Matrix.mul_neg, ← h1, nonsing_inv_mul_cancel_left _ _ hu]
 
 /- English proof (translation)
-Use extensionality with `a b`. Conclude with `(ddbar_eq_dbar_del (h a b) ξ η).symm`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem mdbar_mdel (h : MContDiffAt 2 A z) (ξ η : E) :
     mdbar (fun x => mdel A x ξ) z η = mddbar A z ξ η := by
   ext a b; exact (ddbar_eq_dbar_del (h a b) ξ η).symm
 
 /- English proof (translation)
-Use extensionality with `a b`. Conclude with `(ddbar_eq_del_dbar (h a b) ξ η).symm`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem mdel_mdbar (h : MContDiffAt 2 A z) (ξ η : E) :
     mdel (fun x => mdbar A x η) z ξ = mddbar A z ξ η := by
   ext a b; exact (ddbar_eq_del_dbar (h a b) ξ η).symm
 
 /- English proof (translation)
-Rewrite using `[← mdbar_conjTranspose]`. Conclude with `mdbar_congr (h.mono fun x hx => hx.eq) ξ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjTranspose_mdel {A : E → Matrix n n ℂ} (h : ∀ᶠ x in 𝓝 z, (A x).IsHermitian) (ξ : E) :
     (mdel A z ξ)ᴴ = mdbar A z ξ := by
   rw [← mdbar_conjTranspose]; exact mdbar_congr (h.mono fun x hx => hx.eq) ξ
 
 /- English proof (translation)
-Use extensionality with `a b`. Rewrite using `[conjTranspose_apply, mddbar_apply, mddbar_apply, star_def, ← ddbar_conj (h2 b a), ddbar_congr (u := fun x => conj (A x b a)) (u' := fun x => A x a b) (h.mono fun x hx => hx.apply a b)]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem conjTranspose_mddbar {A : E → Matrix n n ℂ} (h2 : MContDiffAt 2 A z)
     (h : ∀ᶠ x in 𝓝 z, (A x).IsHermitian) (ξ η : E) : (mddbar A z ξ η)ᴴ = mddbar A z η ξ := by
@@ -448,7 +446,7 @@ variable {U : Set E} {H H' : E → Matrix n n ℂ} {z : E} {j k : WithTop ℕ∞
 omit [NormedSpace ℂ E] [IsScalarTower ℝ ℂ E] in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.isOpen, h.smooth, fun z hz => (h.posDef z hz).isHermitian, fun z hz => (isUnit_iff_isUnit_det _).1 (h.posDef z hz).isUnit⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsPosFrame.isHermFrame (h : IsPosFrame U H) : IsHermFrame U H :=
   ⟨h.isOpen, h.smooth, fun z hz => (h.posDef z hz).isHermitian,
@@ -457,7 +455,7 @@ theorem IsPosFrame.isHermFrame (h : IsPosFrame U H) : IsHermFrame U H :=
 omit [NormedSpace ℂ E] [IsScalarTower ℝ ℂ E] in
 
 /- English proof (translation)
-Introduce `a b` and use `(h.smooth a b).contDiffAt (h.isOpen.mem_nhds hz)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsHermFrame.mContDiffAt (h : IsHermFrame U H) (hz : z ∈ U) : MContDiffAt ∞ H z :=
   fun a b => (h.smooth a b).contDiffAt (h.isOpen.mem_nhds hz)
@@ -465,7 +463,7 @@ theorem IsHermFrame.mContDiffAt (h : IsHermFrame U H) (hz : z ∈ U) : MContDiff
 omit [NormedSpace ℂ E] [IsScalarTower ℝ ℂ E] in
 
 /- English proof (translation)
-The claim follows from `(h.mContDiffAt hz).of_le (by norm_cast)`.
+A detailed English derivation is pending.
 -/
 theorem IsHermFrame.two (h : IsHermFrame U H) (hz : z ∈ U) : MContDiffAt 2 H z :=
   (h.mContDiffAt hz).of_le (by norm_cast)
@@ -473,7 +471,7 @@ theorem IsHermFrame.two (h : IsHermFrame U H) (hz : z ∈ U) : MContDiffAt 2 H z
 omit [NormedSpace ℂ E] [IsScalarTower ℝ ℂ E] in
 
 /- English proof (translation)
-The claim follows from `(h.mContDiffAt hz).of_le (by norm_cast)`.
+A detailed English derivation is pending.
 -/
 theorem IsHermFrame.one (h : IsHermFrame U H) (hz : z ∈ U) : MContDiffAt 1 H z :=
   (h.mContDiffAt hz).of_le (by norm_cast)
@@ -481,7 +479,7 @@ theorem IsHermFrame.one (h : IsHermFrame U H) (hz : z ∈ U) : MContDiffAt 1 H z
 omit [NormedSpace ℂ E] [IsScalarTower ℝ ℂ E] in
 
 /- English proof (translation)
-The claim follows from `mem_of_superset (h.isOpen.mem_nhds hz) h.herm`.
+A detailed English derivation is pending.
 -/
 theorem IsHermFrame.eventually_herm (h : IsHermFrame U H) (hz : z ∈ U) :
     ∀ᶠ x in 𝓝 z, (H x).IsHermitian := mem_of_superset (h.isOpen.mem_nhds hz) h.herm
@@ -489,7 +487,7 @@ theorem IsHermFrame.eventually_herm (h : IsHermFrame U H) (hz : z ∈ U) :
 omit [NormedSpace ℂ E] [IsScalarTower ℝ ℂ E] in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hU, fun a b z hz => (h z hz a b).contDiffWithinAt, h1, h2⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsHermFrame.of_mContDiffAt (hU : IsOpen U) (h : ∀ z ∈ U, MContDiffAt ∞ H z)
     (h1 : ∀ z ∈ U, (H z).IsHermitian) (h2 : ∀ z ∈ U, IsUnit (H z).det) : IsHermFrame U H :=
@@ -498,7 +496,7 @@ theorem IsHermFrame.of_mContDiffAt (hU : IsOpen U) (h : ∀ z ∈ U, MContDiffAt
 omit [NormedSpace ℂ E] [IsScalarTower ℝ ℂ E] in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.isOpen, h.smooth, h'⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsHermFrame.isPosFrame (h : IsHermFrame U H) (h' : ∀ z ∈ U, (H z).PosDef) :
     IsPosFrame U H := ⟨h.isOpen, h.smooth, h'⟩
@@ -506,7 +504,7 @@ theorem IsHermFrame.isPosFrame (h : IsHermFrame U H) (h' : ∀ z ∈ U, (H z).Po
 omit [NormedSpace ℂ E] [IsScalarTower ℝ ℂ E] in
 
 /- English proof (translation)
-The claim follows from `.of_mContDiffAt h.isOpen (fun z hz => ((h.mContDiffAt hz).inv (h.isUnit z hz)).transpose) (fun z hz => (h.herm z hz).inv.transpose) fun z hz => by rw [dualGram, det_transpose]; exact isUnit_nonsing_inv_det _ (h.isUnit z hz)`.
+A detailed English derivation is pending.
 -/
 theorem IsHermFrame.dual (h : IsHermFrame U H) : IsHermFrame U fun x => dualGram (H x) :=
   .of_mContDiffAt h.isOpen (fun z hz => ((h.mContDiffAt hz).inv (h.isUnit z hz)).transpose)
@@ -515,14 +513,14 @@ theorem IsHermFrame.dual (h : IsHermFrame U H) : IsHermFrame U fun x => dualGram
       rw [dualGram, det_transpose]; exact isUnit_nonsing_inv_det _ (h.isUnit z hz)
 
 /- English proof (translation)
-Rewrite using `[conn, h.self_of_nhds.eq, ← mdel_transpose, mdel_congr (h.mono fun x hx => hx.eq)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conn_eq_of_isSymm (h : ∀ᶠ x in 𝓝 z, (H x).IsSymm) (ξ : E) :
     conn H z ξ = (H z)⁻¹ * mdel H z ξ := by
   rw [conn, h.self_of_nhds.eq, ← mdel_transpose, mdel_congr (h.mono fun x hx => hx.eq)]
 
 /- English proof (translation)
-Rewrite using `[conn, transpose_mul, transpose_transpose, ← transpose_nonsing_inv, transpose_transpose, nonsing_inv_mul_cancel_right _ _ hu]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conn_transpose_mul (hu : IsUnit (H z).det) (ξ : E) :
     (conn H z ξ)ᵀ * H z = mdel H z ξ := by
@@ -530,14 +528,14 @@ theorem conn_transpose_mul (hu : IsUnit (H z).det) (ξ : E) :
     nonsing_inv_mul_cancel_right _ _ hu]
 
 /- English proof (translation)
-Rewrite using `[conn, mul_nonsing_inv_cancel_left _ _ (by rwa [det_transpose])]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem transpose_mul_conn (hu : IsUnit (H z).det) (ξ : E) :
     (H z)ᵀ * conn H z ξ = (mdel H z ξ)ᵀ := by
   rw [conn, mul_nonsing_inv_cancel_left _ _ (by rwa [det_transpose])]
 
 /- English proof (translation)
-Rewrite using `[conn, ← h, transpose_mul, transpose_transpose, nonsing_inv_mul_cancel_left _ _ (by rwa [det_transpose])]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_conn_of_compatible (hu : IsUnit (H z).det) {ξ : E} {T : Matrix n n ℂ}
     (h : Tᵀ * H z = mdel H z ξ) : T = conn H z ξ := by
@@ -545,13 +543,13 @@ theorem eq_conn_of_compatible (hu : IsUnit (H z).det) {ξ : E} {T : Matrix n n �
     nonsing_inv_mul_cancel_left _ _ (by rwa [det_transpose])]
 
 /- English proof (translation)
-Set `S : E → Matrix n Unit ℂ` to `fun x => replicateCol Unit (s x)`. Set `T : E → Matrix n Unit ℂ` to `fun x => replicateCol Unit (t x)`. Establish `hS : MContDiffAt 1 S z` using `fun a _ => hs a`. Establish `hT : MContDiffAt 1 T z` using `fun a _ => ht a`. Establish `e : ∀ (K : Matrix n n ℂ) (P Q : Matrix n Unit ℂ), (Pᵀ * K * Qᴴᵀ) () () = form K (fun a => P a ()) fun a => Q a ()` using `fun K P Q => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[form_eq_sum, Finset.sum_comm]`. Simplify using `[mul_apply, Finset.sum_mul]`. Establish `h` using `congrFun (congrFun (mdel_mul (hS.transpose.mul hH) hT.conjTranspose.transpose ξ) ()) ()`. Rewrite `h` using `[mdel_mul hS.transpose hH, mdel_transpose (fun x => (T x)ᴴ), mdel_conjTranspose, mdel_transpose, Matrix.add_mul, ← conn_transpose_mul hu, ← Matrix.mul_assoc, ← transpose_mul, mdel_apply]`. Simplify using `only [Matrix.add_apply, e] at h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `h.trans ?_` and prove the remaining obligations. Rewrite using `[covDel, form_add_left]`. Establish `: (fun a => (conn H z ξ * S z) a ()) = conn H z ξ *ᵥ s z` using `rfl`. Rewrite using `[this]`. Express the relevant statement in the definitionally equal form `_ + (_ + form (H z) (fun a => del (fun x => s x a) z ξ) (t z)) = _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `form (H z) (s z) (fun a => dbar (fun x => t x a) z ξ) + (form (H z) (conn H z ξ *ᵥ s z) (t z) + _) = _`. Expand and normalize the polynomial expressions, which then agree.
+Express the relevant assertion in an equivalent form by its definition. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem del_form (hH : MContDiffAt 1 H z) (hu : IsUnit (H z).det) {s t : E → n → ℂ}
     (hs : ∀ a, ContDiffAt ℝ 1 (fun x => s x a) z) (ht : ∀ a, ContDiffAt ℝ 1 (fun x => t x a) z)
@@ -580,33 +578,33 @@ theorem del_form (hH : MContDiffAt 1 H z) (hu : IsUnit (H z).det) {s t : E → n
   ring
 
 /- English proof (translation)
-Rewrite using `[conn, mdel_add_vec, transpose_add, Matrix.mul_add]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem conn_add_vec (H : E → Matrix n n ℂ) (z ξ ξ' : E) :
     conn H z (ξ + ξ') = conn H z ξ + conn H z ξ' := by
   rw [conn, mdel_add_vec, transpose_add, Matrix.mul_add]; rfl
 
 /- English proof (translation)
-Rewrite using `[conn, mdel_smul_vec, transpose_smul, Matrix.mul_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem conn_smul_vec (H : E → Matrix n n ℂ) (z : E) (c : ℂ) (ξ : E) :
     conn H z (c • ξ) = c • conn H z ξ := by
   rw [conn, mdel_smul_vec, transpose_smul, Matrix.mul_smul]; rfl
 
 /- English proof (translation)
-Rewrite using `[conn, conn, mdel_congr h, h.self_of_nhds]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conn_congr (h : H =ᶠ[𝓝 z] H') (ξ : E) : conn H z ξ = conn H' z ξ := by
   rw [conn, conn, mdel_congr h, h.self_of_nhds]
 
 /- English proof (translation)
-Rewrite using `[curv, curv, mdbar_congr (h.eventuallyEq_nhds.mono fun x hx => conn_congr hx ξ)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem curv_congr (h : H =ᶠ[𝓝 z] H') (ξ η : E) : curv H z ξ η = curv H' z ξ η := by
   rw [curv, curv, mdbar_congr (h.eventuallyEq_nhds.mono fun x hx => conn_congr hx ξ)]
 
 /- English proof (translation)
-The claim follows from `((h.of_le (le_self_add.trans hjk)).transpose.inv (by rwa [det_transpose])).mul (h.mdel hjk ξ).transpose`.
+A detailed English derivation is pending.
 -/
 theorem MContDiffAt.conn (h : MContDiffAt k H z) (hu : IsUnit (H z).det) (hjk : j + 1 ≤ k)
     (ξ : E) : MContDiffAt j (fun x => conn H x ξ) z :=
@@ -614,26 +612,26 @@ theorem MContDiffAt.conn (h : MContDiffAt k H z) (hu : IsUnit (H z).det) (hjk : 
     (h.mdel hjk ξ).transpose
 
 /- English proof (translation)
-The claim follows from `((h.conn hu (j := j + 1) (by rwa [add_assoc, one_add_one_eq_two]) ξ).mdbar le_rfl η).neg`.
+A detailed English derivation is pending.
 -/
 theorem MContDiffAt.curv (h : MContDiffAt k H z) (hu : IsUnit (H z).det) (hjk : j + 2 ≤ k)
     (ξ η : E) : MContDiffAt j (fun x => curv H x ξ η) z :=
   ((h.conn hu (j := j + 1) (by rwa [add_assoc, one_add_one_eq_two]) ξ).mdbar le_rfl η).neg
 
 /- English proof (translation)
-Simplify using `[conn]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem conn_const (C : Matrix n n ℂ) (z ξ : E) : conn (fun _ => C) z ξ = 0 := by
   simp [conn]
 
 /- English proof (translation)
-Simplify using `[curv]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem curv_const (C : Matrix n n ℂ) (z ξ η : E) : curv (fun _ => C) z ξ η = 0 := by
   simp [curv]
 
 /- English proof (translation)
-Establish `h1 : MContDiffAt 1 H z` using `h.of_le one_le_two`. Establish `hu' : IsUnit (H z)ᵀ.det` using `by rwa [det_transpose]`. Simplify using `only [curv, conn]`. Rewrite using `[mdbar_mul (h1.transpose.inv hu') (h.mdel (by norm_num) ξ).transpose, mdbar_inv h1.transpose hu', mdbar_transpose (fun x => mdel H x ξ), mdbar_mdel h, mdbar_transpose, Matrix.neg_mul]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem curv_eq (h : MContDiffAt 2 H z) (hu : IsUnit (H z).det) (ξ η : E) :
     curv H z ξ η = (H z)ᵀ⁻¹ * (mdbar H z η)ᵀ * (H z)ᵀ⁻¹ * (mdel H z ξ)ᵀ
@@ -647,7 +645,7 @@ theorem curv_eq (h : MContDiffAt 2 H z) (hu : IsUnit (H z).det) (ξ η : E) :
   abel
 
 /- English proof (translation)
-Establish `hs` using `isSesq_mddbar H z`. Apply the tactic sequence `constructor <;> intros <;>`. Apply the tactic sequence `simp only [curv_eq h hu, mdel_add_vec, mdbar_add_vec, mdel_smul_vec, mdbar_smul_vec, hs.add_left, hs.add_right, hs.smul_left, hs.smul_right, transpose_add, transpose_smul, Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, Matrix.smul_mul, smul_sub] <;> abel`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem isSesq_curv (h : MContDiffAt 2 H z) (hu : IsUnit (H z).det) : IsSesq (curv H z) := by
   have hs := isSesq_mddbar H z
@@ -657,9 +655,9 @@ theorem isSesq_curv (h : MContDiffAt 2 H z) (hu : IsUnit (H z).det) : IsSesq (cu
       Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, Matrix.smul_mul, smul_sub] <;> abel
 
 /- English proof (translation)
-Establish `hu' : IsUnit (H z)ᵀ.det` using `by rwa [det_transpose]`. Establish `e : ∀ M : Matrix n n ℂ, Mᵀᴴ = Mᴴᵀ` using `fun _ => rfl`. Establish `e1 : (mdbar H z η)ᴴ = mdel H z η`. Rewrite using `[← conjTranspose_mdel hh, conjTranspose_conjTranspose]`. Rewrite using `[adj, curv_eq h hu, curv_eq h hu]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [conjTranspose_sub, conjTranspose_mul, hh.self_of_nhds.transpose.inv.eq, e, e1, conjTranspose_mdel hh, conjTranspose_mddbar h hh, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_assoc, nonsing_inv_mul _ hu', Matrix.mul_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem adj_curv (h : MContDiffAt 2 H z) (hh : ∀ᶠ x in 𝓝 z, (H x).IsHermitian)
     (hu : IsUnit (H z).det) (ξ η : E) : adj (H z) (H z) (curv H z ξ η) = curv H z η ξ := by
@@ -673,7 +671,7 @@ theorem adj_curv (h : MContDiffAt 2 H z) (hh : ∀ᶠ x in 𝓝 z, (H x).IsHermi
     Matrix.mul_assoc, nonsing_inv_mul _ hu', Matrix.mul_one]
 
 /- English proof (translation)
-Rewrite using `[form_adj hh.self_of_nhds hu hh.self_of_nhds, adj_curv h hh hu]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem form_curv (h : MContDiffAt 2 H z) (hh : ∀ᶠ x in 𝓝 z, (H x).IsHermitian)
     (hu : IsUnit (H z).det) (ξ η : E) (v w : n → ℂ) :
@@ -681,9 +679,9 @@ theorem form_curv (h : MContDiffAt 2 H z) (hh : ∀ᶠ x in 𝓝 z, (H x).IsHerm
   rw [form_adj hh.self_of_nhds hu hh.self_of_nhds, adj_curv h hh hu]
 
 /- English proof (translation)
-Establish `hf0' : (f z : ℂ) ≠ 0` using `by exact_mod_cast hf0`. Use `(eq_conn_of_compatible ?_ ?_).symm` and prove the remaining obligations. Rewrite using `[det_smul]`. Conclude with `(pow_ne_zero _ hf0').isUnit.mul hu`. Rewrite using `[mdel_smul (f := fun x => (f x : ℂ)) (ofRealCLM.differentiableAt.comp z hf) h, del_ofReal_comp (Real.hasDerivAt_log hf0) hf, ← conn_transpose_mul hu]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [transpose_add, transpose_smul, transpose_one, Matrix.add_mul, Matrix.mul_smul, Matrix.smul_mul, Matrix.one_mul, smul_add, smul_smul]`. Use `congr 2`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem conn_smul {f : E → ℝ} (hf : DifferentiableAt ℝ f z) (hf0 : f z ≠ 0)
     (h : MContDiffAt 1 H z) (hu : IsUnit (H z).det) (ξ : E) :
@@ -700,9 +698,9 @@ theorem conn_smul {f : E → ℝ} (hf : DifferentiableAt ℝ f z) (hf0 : f z ≠
     push_cast; field_simp
 
 /- English proof (translation)
-Establish `hl : ContDiffAt ℝ 2 (fun x => (Real.log (f x) : ℂ)) z` using `contDiffAt_ofReal_comp (hf.log hf0)`. Establish `hl' : MContDiffAt 2 (fun x => (of fun _ _ => (Real.log (f x) : ℂ) : Matrix Unit Unit ℂ)) z` using `fun _ _ => hl`. Establish `hd : ContDiffAt ℝ 1 (fun x => del (fun x => (Real.log (f x) : ℂ)) x ξ) z` using `hl'.mdel (by norm_num) ξ () ()`. Establish `he : (fun x => conn (fun x => (f x : ℂ) • H x) x ξ) =ᶠ[𝓝 z] fun x => conn H x ξ + del (fun x => (Real.log (f x) : ℂ)) x ξ • (1 : Matrix n n ℂ)` using `by filter_upwards [hf.eventually (by simp), hf.continuousAt.eventually_ne hf0, h.eventually_two, h.eventually_isUnit hu] with x h1 h2 h3 h4`. Conclude with `conn_smul (h1.differentiableAt two_ne_zero) h2 (h3.of_le one_le_two) h4 ξ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[curv, mdbar_congr he, mdbar_add (h.conn hu (by norm_num) ξ) (MContDiffAt.smul hd (mContDiffAt_const _)), mdbar_smul (hd.differentiableAt one_ne_zero) (mContDiffAt_const _), mdbar_const, leviForm, ddbar_eq_dbar_del hl, curv]`. Simplify using `only [smul_zero, zero_add, neg_add, sub_eq_add_neg]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem curv_smul {f : E → ℝ} (hf : ContDiffAt ℝ 2 f z) (hf0 : f z ≠ 0)
     (h : MContDiffAt 2 H z) (hu : IsUnit (H z).det) (ξ η : E) :
@@ -725,7 +723,7 @@ theorem curv_smul {f : E → ℝ} (hf : ContDiffAt ℝ 2 f z) (hf0 : f z ≠ 0)
   simp only [smul_zero, zero_add, neg_add, sub_eq_add_neg]
 
 /- English proof (translation)
-Establish `he : H =ᶠ[𝓝 z] fun x => (f x : ℂ) • (1 : Matrix n n ℂ)` using `hH.mono fun x hx => by`. Use extensionality with `a b`. Rewrite using `[Subsingleton.elim a default, Subsingleton.elim b default, hx]`. Simplify using the standard rewrite rules. Rewrite using `[curv_congr he, curv_smul hf hf0 (mContDiffAt_const _) (by simp), Subsingleton.elim a b]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -738,7 +736,7 @@ theorem curv_line [Unique n] {f : E → ℝ} (hf : ContDiffAt ℝ 2 f z) (hf0 : 
   simp
 
 /- English proof (translation)
-Simplify using `only [dualGram]`. Rewrite using `[conn, mdel_transpose (fun x => (H x)⁻¹), transpose_transpose, transpose_transpose, mdel_inv h hu, nonsing_inv_nonsing_inv _ hu, ← conn_transpose_mul hu, Matrix.mul_neg, Matrix.mul_assoc, mul_nonsing_inv_cancel_left _ _ hu, mul_nonsing_inv_cancel_right _ _ hu]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem conn_dual (h : MContDiffAt 1 H z) (hu : IsUnit (H z).det) (ξ : E) :
     conn (fun x => dualGram (H x)) z ξ = -(conn H z ξ)ᵀ := by
@@ -748,7 +746,7 @@ theorem conn_dual (h : MContDiffAt 1 H z) (hu : IsUnit (H z).det) (ξ : E) :
     Matrix.mul_assoc, mul_nonsing_inv_cancel_left _ _ hu, mul_nonsing_inv_cancel_right _ _ hu]
 
 /- English proof (translation)
-Establish `he : (fun x => conn (fun x => dualGram (H x)) x ξ) =ᶠ[𝓝 z] fun x => -(conn H x ξ)ᵀ` using `by filter_upwards [h.eventually_two, h.eventually_isUnit hu] with x h3 h4`. Conclude with `conn_dual (h3.of_le one_le_two) h4 ξ`. Rewrite using `[curv, mdbar_congr he, mdbar_neg, curv, mdbar_transpose (fun x => conn H x ξ), transpose_neg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem curv_dual (h : MContDiffAt 2 H z) (hu : IsUnit (H z).det) (ξ η : E) :
     curv (fun x => dualGram (H x)) z ξ η = -(curv H z ξ η)ᵀ := by
@@ -758,7 +756,7 @@ theorem curv_dual (h : MContDiffAt 2 H z) (hu : IsUnit (H z).det) (ξ η : E) :
   rw [curv, mdbar_congr he, mdbar_neg, curv, mdbar_transpose (fun x => conn H x ξ), transpose_neg]
 
 /- English proof (translation)
-Use `(eq_conn_of_compatible ?_ ?_).symm` and prove the remaining obligations. Simplify using `only [det_mul, det_transpose, det_conjTranspose]`. Conclude with `(hAu.mul hu).mul hAu.star`. Rewrite using `[mdel_mul (hA.transpose.mul h) hA.conjTranspose.transpose, mdel_mul hA.transpose h, mdel_transpose (fun x => (A x)ᴴ), mdel_conjTranspose, hA0, ← conn_transpose_mul hu, mdel_transpose, transpose_mul, transpose_nonsing_inv]`. Simplify using `only [Matrix.mul_assoc, nonsing_inv_mul_cancel_left _ _ (by rwa [det_transpose] : IsUnit (A z)ᵀ.det), transpose_add, transpose_mul, Matrix.add_mul, conjTranspose_zero, transpose_zero, Matrix.mul_zero, zero_add]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conn_changeFrame {A : E → Matrix n n ℂ} (h : MContDiffAt 1 H z) (hu : IsUnit (H z).det)
     (hA : MContDiffAt 1 A z) (hAu : IsUnit (A z).det) (hA0 : ∀ η, mdbar A z η = 0) (ξ : E) :
@@ -775,9 +773,9 @@ theorem conn_changeFrame {A : E → Matrix n n ℂ} (h : MContDiffAt 1 H z) (hu 
       transpose_zero, Matrix.mul_zero, zero_add]
 
 /- English proof (translation)
-Establish `he : (fun x => conn (fun x => (A x)ᵀ * H x * (A x)ᴴᵀ) x ξ) =ᶠ[𝓝 z] fun x => (A x)⁻¹ * (conn H x ξ * A x + mdel A x ξ)` using `by filter_upwards [h.eventually_two, h.eventually_isUnit hu, hA.eventually_two, hA.eventually_isUnit hAu, hA0] with x h1 h2 h3 h4 h5`. Conclude with `conn_changeFrame (h1.of_le one_le_two) h2 (h3.of_le one_le_two) h4 h5 ξ`. Establish `hA1 : MContDiffAt 1 A z` using `hA.of_le one_le_two`. Establish `hc : MContDiffAt 1 (fun x => conn H x ξ) z` using `h.conn hu (by norm_num) ξ`. Establish `hd : MContDiffAt 1 (fun x => mdel A x ξ) z` using `hA.mdel (by norm_num) ξ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : mddbar A z ξ η = 0`. Rewrite using `[← mdel_mdbar hA, mdel_congr (B := fun _ => 0) (hA0.mono fun x hx => hx η), mdel_const]`. Rewrite using `[curv, mdbar_congr he, mdbar_mul (hA1.inv hAu) ((hc.mul hA1).add hd), mdbar_inv hA1 hAu, mdbar_add (hc.mul hA1) hd, mdbar_mul hc hA1, mdbar_mdel hA, h0, hA0.self_of_nhds, curv]`. Simplify using `[Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem curv_changeFrame {A : E → Matrix n n ℂ} (h : MContDiffAt 2 H z) (hu : IsUnit (H z).det)
     (hA : MContDiffAt 2 A z) (hAu : IsUnit (A z).det) (hA0 : ∀ᶠ x in 𝓝 z, ∀ η, mdbar A x η = 0)
@@ -802,7 +800,7 @@ variable {E' : Type*} [NormedAddCommGroup E'] [NormedSpace ℂ E'] [NormedSpace 
   [IsScalarTower ℝ ℂ E'] {φ : E' → E} {w : E'}
 
 /- English proof (translation)
-Rewrite using `[conn, conn]`. Use `congr 2`. Use extensionality with `a b`. Conclude with `del_comp_holo (u := fun y => H y a b) (h.diff a b) hφ ξ`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem conn_comp_holo (h : MContDiffAt 1 H (φ w)) (hφ : DifferentiableAt ℂ φ w) (ξ : E') :
     conn (fun x => H (φ x)) w ξ = conn H (φ w) (fderiv ℂ φ w ξ) := by
@@ -812,11 +810,11 @@ theorem conn_comp_holo (h : MContDiffAt 1 H (φ w)) (hφ : DifferentiableAt ℂ 
   exact del_comp_holo (u := fun y => H y a b) (h.diff a b) hφ ξ
 
 /- English proof (translation)
-Establish `hφ1` using `hφ.differentiableAt two_ne_zero`. Establish `h1 : MContDiffAt 1 H (φ w)` using `h.of_le one_le_two`. Establish `hc : MContDiffAt 2 (fun x => H (φ x)) w` using `fun a b => (h a b).comp w (hφ.restrict_scalars ℝ)`. Establish `e1 : mdel (fun x => H (φ x)) w ξ = mdel H (φ w) (fderiv ℂ φ w ξ)`. Use extensionality with `a b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `del_comp_holo (u := fun y => H y a b) (h1.diff a b) hφ1 ξ`. Establish `e2 : mdbar (fun x => H (φ x)) w η = mdbar H (φ w) (fderiv ℂ φ w η)`. Use extensionality with `a b`. Conclude with `dbar_comp_holo (u := fun y => H y a b) (h1.diff a b) hφ1 η`. Establish `e3 : mddbar (fun x => H (φ x)) w ξ η = mddbar H (φ w) (fderiv ℂ φ w ξ) (fderiv ℂ φ w η)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `a b`. Conclude with `ddbar_comp_holo (u := fun y => H y a b) (h a b) hφ ξ η`. Rewrite using `[curv_eq hc hu, curv_eq h hu, e1, e2, e3]`.
+A detailed English derivation is pending.
 -/
 theorem curv_comp_holo (h : MContDiffAt 2 H (φ w)) (hu : IsUnit (H (φ w)).det)
     (hφ : ContDiffAt ℂ 2 φ w) (ξ η : E') :
@@ -850,7 +848,7 @@ def FormAbsLe {V : Type*} (α : V → V → ℂ) (C : ℝ) (β : V → V → ℂ
   FormLe (fun ξ η => -C * β ξ η) α ∧ FormLe α fun ξ η => C * β ξ η
 
 /- English proof (translation)
-Establish `h : ∀ (c : ℝ) ξ, diagVal (fun ξ η => c * β ξ η) ξ = c * diagVal β ξ` using `fun c ξ => by`. Rewrite using `[diagVal, diagVal, mul_left_comm, re_ofReal_mul]`. Simplify using `only [FormAbsLe, FormLe, ← ofReal_neg, h, abs_le, forall_and, neg_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem formAbsLe_iff {V : Type*} {α β : V → V → ℂ} {C : ℝ} :
     FormAbsLe α C β ↔ ∀ ξ, |diagVal α ξ| ≤ C * diagVal β ξ := by
@@ -865,27 +863,27 @@ variable {ι : Type*} [Fintype ι]
 def formOf (G : Matrix ι ι ℂ) (ξ η : ι → ℂ) : ℂ := I * form G ξ η
 
 /- English proof (translation)
-Rewrite using `[diagVal, formOf, ← mul_assoc, neg_mul, I_mul_I, neg_neg, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem diagVal_formOf (G : Matrix ι ι ℂ) (ξ : ι → ℂ) :
     diagVal (formOf G) ξ = (form G ξ ξ).re := by
   rw [diagVal, formOf, ← mul_assoc, neg_mul, I_mul_I, neg_neg, one_mul]
 
 /- English proof (translation)
-Rewrite using `[diagVal_formOf, gnorm_sq hG]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem diagVal_formOf_eq_gnorm_sq {G : Matrix ι ι ℂ} (hG : G.PosSemidef) (ξ : ι → ℂ) :
     diagVal (formOf G) ξ = gnorm G ξ ^ 2 := by rw [diagVal_formOf, gnorm_sq hG]
 
 /- English proof (translation)
-Rewrite using `[leviForm_apply_self hu, ReciprocityTheory.AnForm.levi]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem leviForm_self_eq_levi {u : (ι → ℂ) → ℝ} {z : ι → ℂ} (hu : ContDiffAt ℝ 2 u z)
     (ξ : ι → ℂ) : leviForm u z ξ ξ = ReciprocityTheory.AnForm.levi u z ξ := by
   rw [leviForm_apply_self hu, ReciprocityTheory.AnForm.levi]; congr 1; ring
 
 /- English proof (translation)
-Establish `: -I * (kappa * (ReciprocityTheory.AnForm.levi u z ξ : ℂ)) = ((ReciprocityTheory.AnForm.levi u z ξ / (2 * Real.pi) : ℝ) : ℂ)`. Rewrite using `[kappa]`. Use `push_cast`. Take the linear combination `(-(ReciprocityTheory.AnForm.levi u z ξ : ℂ) / (2 * Real.pi)) * I_mul_I`. Rewrite using `[diagVal, ddc, leviForm_self_eq_levi hu, this, ofReal_re]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 -/
 theorem diagVal_ddc {u : (ι → ℂ) → ℝ} {z : ι → ℂ} (hu : ContDiffAt ℝ 2 u z) (ξ : ι → ℂ) :
     diagVal (ddc u z) ξ = ReciprocityTheory.AnForm.levi u z ξ / (2 * Real.pi) := by
@@ -896,11 +894,9 @@ theorem diagVal_ddc {u : (ι → ℂ) → ℝ} {z : ι → ℂ} (hu : ContDiffAt
   rw [diagVal, ddc, leviForm_self_eq_levi hu, this, ofReal_re]
 
 /- English proof (translation)
-Establish `h : ∀ i j, ReciprocityTheory.AnForm.hessC u z i j = leviForm u z (Pi.single i 1) (Pi.single j 1)` using `fun i j => by`. Rewrite using `[leviForm_apply hu, ReciprocityTheory.AnForm.hessC]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `e : ∀ v : Fin D → ℂ, v = ∑ i, v i • (Pi.single i 1 : Fin D → ℂ)` using `fun v => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use extensionality with `j`. Simplify using `[Pi.single_apply]`. Use `conv_lhs => rw [e ξ, e η]`. Simplify using `only [form_eq_sum, h, map_sum, map_smul, map_smulₛₗ, ContinuousLinearMap.sum_apply, ContinuousLinearMap.smul_apply, smul_eq_mul, RingHom.id_apply, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
-
-Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem leviForm_eq_form_hessC {D : ℕ} {u : (Fin D → ℂ) → ℝ} {z : Fin D → ℂ}
     (hu : ContDiffAt ℝ 2 u z) (ξ η : Fin D → ℂ) :
@@ -931,7 +927,7 @@ def TwoFormBound (U : Set (ι → ℂ)) (H : (ι → ℂ) → Matrix n n ℂ) (G
 variable {U : Set (ι → ℂ)} {H : (ι → ℂ) → Matrix n n ℂ} {G : (ι → ℂ) → Matrix ι ι ℂ} {C C' : ℝ}
 
 /- English proof (translation)
-Introduce `z hz` and use `⟨(h z hz).1, (h z hz).2.1, fun ξ => ((h z hz).2.2 ξ).trans (mul_le_mul_of_nonneg_right hC (gnorm_nonneg _ _))⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem OneFormBound.mono {A : (ι → ℂ) → (ι → ℂ) → Matrix n n ℂ} (h : OneFormBound U H G A C)
     (hC : C ≤ C') : OneFormBound U H G A C' := fun z hz =>
@@ -939,7 +935,7 @@ theorem OneFormBound.mono {A : (ι → ℂ) → (ι → ℂ) → Matrix n n ℂ}
     (mul_le_mul_of_nonneg_right hC (gnorm_nonneg _ _))⟩
 
 /- English proof (translation)
-Introduce `z hz` and use `⟨(h z hz).1, (h z hz).2.1, fun ξ η => ((h z hz).2.2 ξ η).trans (mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right hC (gnorm_nonneg _ _)) (gnorm_nonneg _ _))⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem TwoFormBound.mono {F : (ι → ℂ) → (ι → ℂ) → (ι → ℂ) → Matrix n n ℂ}
     (h : TwoFormBound U H G F C) (hC : C ≤ C') : TwoFormBound U H G F C' := fun z hz =>
@@ -948,7 +944,7 @@ theorem TwoFormBound.mono {F : (ι → ℂ) → (ι → ℂ) → (ι → ℂ) �
       (gnorm_nonneg _ _))⟩
 
 /- English proof (translation)
-The claim follows from `(norm_form_mulVec_le (h z hz).1 _ v).trans (mul_le_mul_of_nonneg_right (((h z hz).2.2 ξ ξ).trans_eq (by ring)) (sq_nonneg _))`.
+A detailed English derivation is pending.
 -/
 theorem TwoFormBound.norm_form_le {F : (ι → ℂ) → (ι → ℂ) → (ι → ℂ) → Matrix n n ℂ}
     (h : TwoFormBound U H G F C) {z : ι → ℂ} (hz : z ∈ U) (ξ : ι → ℂ) (v : n → ℂ) :
@@ -957,7 +953,7 @@ theorem TwoFormBound.norm_form_le {F : (ι → ℂ) → (ι → ℂ) → (ι →
     (((h z hz).2.2 ξ ξ).trans_eq (by ring)) (sq_nonneg _))
 
 /- English proof (translation)
-Introduce `z hz` and use `have h' := hH.isHermFrame ⟨hH.posDef z hz, hG z hz, opNorm_le_of_diagonal (hH.posDef z hz) (hG z hz) (isSesq_curv (h'.two hz) (h'.isUnit z hz)) (fun ξ => form_curv (h'.two hz) (h'.eventually_herm hz) (h'.isUnit z hz) ξ ξ) hC (h z hz)⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem twoFormBound_curv_two_mul [DecidableEq n] (hH : IsPosFrame U H)
     (hG : ∀ z ∈ U, (G z).PosSemidef) (hC : 0 ≤ C)
@@ -975,7 +971,7 @@ def wedge {V : Type*} (α β : V → V → ℂ) (ξ₁ η₁ ξ₂ η₂ : V) : 
   α ξ₁ η₁ * β ξ₂ η₂ + α ξ₂ η₂ * β ξ₁ η₁ - α ξ₁ η₂ * β ξ₂ η₁ - α ξ₂ η₁ * β ξ₁ η₂
 
 /- English proof (translation)
-Use `ext`. Simplify using `only [wedge]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem wedge_comm {V : Type*} (α β : V → V → ℂ) : wedge α β = wedge β α := by
   ext; simp only [wedge]; ring
@@ -1005,7 +1001,7 @@ def lineCurv (H : E → Matrix n n ℂ) (z : E) (w : n → ℂ) (ξ η : E) : �
   kappa * (form (H z) (curv H z ξ η *ᵥ w) w / form (H z) w w)
 
 /- English proof (translation)
-Use extensionality with `ξ η`. Establish `hc' : conj c ≠ 0` using `by simpa using hc`. Simplify using `only [lineCurv, mulVec_smul, form_smul_left, form_smul_right, mul_div_mul_left _ _ hc, mul_div_mul_left _ _ hc']`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem lineCurv_smul (H : E → Matrix n n ℂ) (z : E) (w : n → ℂ) {c : ℂ} (hc : c ≠ 0) :
     lineCurv H z (c • w) = lineCurv H z w := by
@@ -1015,20 +1011,20 @@ theorem lineCurv_smul (H : E → Matrix n n ℂ) (z : E) (w : n → ℂ) {c : �
     mul_div_mul_left _ _ hc']
 
 /- English proof (translation)
-Use `ext`. Simplify using `only [curvMinor, wedge]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem curvMinor_comm (H : E → Matrix n n ℂ) (z : E) (a b : n) :
     curvMinor H z a b = curvMinor H z b a := by
   ext; simp only [curvMinor, wedge]; ring
 
 /- English proof (translation)
-The claim follows from `sub_self _`.
+A detailed English derivation is pending.
 -/
 theorem curvMinor_self (H : E → Matrix n n ℂ) (z : E) (a : n) (ξ₁ η₁ ξ₂ η₂ : E) :
     curvMinor H z a a ξ₁ η₁ ξ₂ η₂ = 0 := sub_self _
 
 /- English proof (translation)
-Establish `h : wedge (chernOne H z) (chernOne H z) ξ₁ η₁ ξ₂ η₂ = kappa ^ 2 * ∑ a, ∑ b, wedge (fun ξ η => curv H z ξ η a a) (fun ξ η => curv H z ξ η b b) ξ₁ η₁ ξ₂ η₂`. Simplify using `only [wedge, chernOne, trace, diag_apply, Finset.sum_add_distrib, Finset.sum_sub_distrib, ← Finset.sum_mul_sum]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [h, chTwo, chernTwo, curvMinor, Finset.sum_sub_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem chTwo_eq (H : E → Matrix n n ℂ) (z ξ₁ η₁ ξ₂ η₂ : E) :
     chTwo H z ξ₁ η₁ ξ₂ η₂ =
@@ -1042,7 +1038,7 @@ theorem chTwo_eq (H : E → Matrix n n ℂ) (z ξ₁ η₁ ξ₂ η₂ : E) :
   ring
 
 /- English proof (translation)
-Rewrite using `[chernOne, trace, Fintype.sum_unique, diag_apply, curv_line hf hf0 hH, ddc, mul_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem chernOne_line [Unique n] {H : E → Matrix n n ℂ} {z : E} {f : E → ℝ}
     (hf : ContDiffAt ℝ 2 f z) (hf0 : f z ≠ 0) (hH : ∀ᶠ x in 𝓝 z, H x default default = f x)
@@ -1076,7 +1072,7 @@ omit [NormedSpace ℂ E] [IsScalarTower ℝ ℂ E] [Fintype m] [Fintype l] [Deci
   [DecidableEq l] in
 
 /- English proof (translation)
-The claim follows from `h.submatrix Sum.inl Sum.inl`.
+A detailed English derivation is pending.
 -/
 theorem MContDiffAt.subGram (h : MContDiffAt k H z) : MContDiffAt k (fun x => subGram (H x)) z :=
   h.submatrix Sum.inl Sum.inl
@@ -1084,7 +1080,7 @@ theorem MContDiffAt.subGram (h : MContDiffAt k H z) : MContDiffAt k (fun x => su
 omit [NormedSpace ℂ E] [IsScalarTower ℝ ℂ E] [Fintype l] [DecidableEq l] in
 
 /- English proof (translation)
-The claim follows from `(h.submatrix Sum.inr Sum.inr).sub (((h.submatrix Sum.inr Sum.inl).mul (h.subGram.inv hu)).mul (h.submatrix Sum.inl Sum.inr))`.
+A detailed English derivation is pending.
 -/
 theorem MContDiffAt.quotGram (h : MContDiffAt k H z) (hu : IsUnit (HermFrame.subGram (H z)).det) :
     MContDiffAt k (fun x => quotGram (H x)) z :=
@@ -1094,7 +1090,7 @@ theorem MContDiffAt.quotGram (h : MContDiffAt k H z) (hu : IsUnit (HermFrame.sub
 omit [NormedSpace ℂ E] [IsScalarTower ℝ ℂ E] in
 
 /- English proof (translation)
-The claim follows from `.of_mContDiffAt h.isOpen (fun _ hz => (h.mContDiffAt hz).subGram) (fun z hz => isHermitian_subGram (h.herm z hz)) hu`.
+A detailed English derivation is pending.
 -/
 theorem IsHermFrame.sub (h : IsHermFrame U H) (hu : ∀ z ∈ U, IsUnit (subGram (H z)).det) :
     IsHermFrame U fun x => subGram (H x) :=
@@ -1104,7 +1100,7 @@ theorem IsHermFrame.sub (h : IsHermFrame U H) (hu : ∀ z ∈ U, IsUnit (subGram
 omit [NormedSpace ℂ E] [IsScalarTower ℝ ℂ E] in
 
 /- English proof (translation)
-The claim follows from `.of_mContDiffAt h.isOpen (fun z hz => (h.mContDiffAt hz).quotGram (hu z hz)) (fun z hz => isHermitian_quotGram (h.herm z hz)) fun z hz => isUnit_det_quotGram (h.isUnit z hz) (hu z hz)`.
+A detailed English derivation is pending.
 -/
 theorem IsHermFrame.quot (h : IsHermFrame U H) (hu : ∀ z ∈ U, IsUnit (subGram (H z)).det) :
     IsHermFrame U fun x => quotGram (H x) :=
@@ -1115,7 +1111,7 @@ theorem IsHermFrame.quot (h : IsHermFrame U H) (hu : ∀ z ∈ U, IsUnit (subGra
 omit [NormedSpace ℂ E] [IsScalarTower ℝ ℂ E] in
 
 /- English proof (translation)
-The claim follows from `(h.isHermFrame.sub fun z hz => (isUnit_iff_isUnit_det _).1 (posDef_subGram (h.posDef z hz)).isUnit).isPosFrame fun z hz => posDef_subGram (h.posDef z hz)`.
+A detailed English derivation is pending.
 -/
 theorem IsPosFrame.sub (h : IsPosFrame U H) : IsPosFrame U fun x => subGram (H x) :=
   (h.isHermFrame.sub fun z hz =>
@@ -1125,7 +1121,7 @@ theorem IsPosFrame.sub (h : IsPosFrame U H) : IsPosFrame U fun x => subGram (H x
 omit [NormedSpace ℂ E] [IsScalarTower ℝ ℂ E] in
 
 /- English proof (translation)
-The claim follows from `(h.isHermFrame.quot fun z hz => (isUnit_iff_isUnit_det _).1 (posDef_subGram (h.posDef z hz)).isUnit).isPosFrame fun z hz => posDef_quotGram (h.posDef z hz)`.
+A detailed English derivation is pending.
 -/
 theorem IsPosFrame.quot (h : IsPosFrame U H) : IsPosFrame U fun x => quotGram (H x) :=
   (h.isHermFrame.quot fun z hz =>
@@ -1133,13 +1129,13 @@ theorem IsPosFrame.quot (h : IsPosFrame U H) : IsPosFrame U fun x => quotGram (H
     fun z hz => posDef_quotGram (h.posDef z hz)
 
 /- English proof (translation)
-The claim follows from `blockQS_eq _`.
+A detailed English derivation is pending.
 -/
 theorem secondForm_eq (H : E → Matrix (m ⊕ l) (m ⊕ l) ℂ) (z ξ : E) :
     secondForm H z ξ = (conn H z ξ).toBlocks₂₁ := blockQS_eq _
 
 /- English proof (translation)
-The claim follows from `form_adj (isHermitian_subGram hh) hu (isHermitian_quotGram hh) _ s q`.
+A detailed English derivation is pending.
 -/
 theorem form_secondForm (hh : (H z).IsHermitian) (hu : IsUnit (subGram (H z)).det) (ξ : E)
     (s : m → ℂ) (q : l → ℂ) : form (quotGram (H z)) (secondForm H z ξ *ᵥ s) q =
@@ -1147,7 +1143,7 @@ theorem form_secondForm (hh : (H z).IsHermitian) (hu : IsUnit (subGram (H z)).de
   form_adj (isHermitian_subGram hh) hu (isHermitian_quotGram hh) _ s q
 
 /- English proof (translation)
-Rewrite using `[← conj_form (isHermitian_quotGram hh), form_secondForm hh hu, conj_form (isHermitian_subGram hh), mulVec_mulVec, neg_mulVec, form, form, neg_dotProduct]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem form_secondFormAdj_mul (hh : (H z).IsHermitian) (hu : IsUnit (subGram (H z)).det) (ξ : E)
     (s : m → ℂ) : form (subGram (H z)) (-(secondFormAdj H z ξ * secondForm H z ξ) *ᵥ s) s =
@@ -1156,7 +1152,7 @@ theorem form_secondFormAdj_mul (hh : (H z).IsHermitian) (hu : IsUnit (subGram (H
     conj_form (isHermitian_subGram hh), mulVec_mulVec, neg_mulVec, form, form, neg_dotProduct]
 
 /- English proof (translation)
-Establish `h : mdbar (fun x => orthLift (H x)) z η = fromRows (-mdbar (fun x => orthCoeff (H x)) z η) 0`. Apply the tactic sequence `ext (a | a) b <;> simp [orthLift, dbar_neg]`. Rewrite using `[extForm, h, orthProj, fromCols_mul_fromRows]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem extForm_eq_neg_mdbar (H : E → Matrix (m ⊕ l) (m ⊕ l) ℂ) (z η : E) :
     extForm H z η = -mdbar (fun x => orthCoeff (H x)) z η := by
@@ -1166,13 +1162,13 @@ theorem extForm_eq_neg_mdbar (H : E → Matrix (m ⊕ l) (m ⊕ l) ℂ) (z η : 
   rw [extForm, h, orthProj, fromCols_mul_fromRows]; simp
 
 /- English proof (translation)
-Establish `hz` using `hh.self_of_nhds`. Establish `hs' : IsUnit (H z).toBlocks₁₁ᵀ.det` using `by rwa [det_transpose]`. Establish `h1 : (H z)ᵀ * orthLift (H z) = fromRows 0 (quotGram (H z))ᵀ`. Use `congrArg transpose (orthLift_transpose_mul hs)` as an intermediate fact. Rewrite `this` using `[transpose_mul, transpose_transpose, transpose_fromCols, transpose_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h2 : (conn H z η)ᴴ * (H z)ᵀ = (mdbar H z η)ᵀ`. Use `congrArg conjTranspose (transpose_mul_conn hu η)` as an intermediate fact. Rewrite `this` using `[conjTranspose_mul, hz.transpose.eq, show (mdel H z η)ᵀᴴ = (mdel H z η)ᴴᵀ from rfl, conjTranspose_mdel hh]`. Then use the resulting hypothesis. Establish `h3 : (conn H z η)ᴴ * fromRows (0 : Matrix m l ℂ) (quotGram (H z))ᵀ = (mdbar H z η)ᵀ * orthLift (H z)`. Rewrite using `[← h1, ← Matrix.mul_assoc, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h3` using `[← fromBlocks_toBlocks (conn H z η)ᴴ, ← fromBlocks_toBlocks (mdbar H z η)ᵀ, orthLift, fromBlocks_mul_fromRows, fromBlocks_mul_fromRows]`. Establish `h4` using `congrArg toRows₁ h3`. Simplify using `only [toRows₁_fromRows, Matrix.mul_zero, zero_add, Matrix.mul_one] at h4`. Establish `h11 : MContDiffAt 1 (fun x => (H x).toBlocks₁₁ᵀ) z` using `h.subGram.transpose`. Establish `h21 : MContDiffAt 1 (fun x => (H x).toBlocks₂₁ᵀ) z` using `(h.submatrix Sum.inr Sum.inl).transpose`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[extForm_eq_neg_mdbar, secondFormAdj, adj, secondForm_eq, Matrix.mul_assoc, show (conn H z η).toBlocks₂₁ᴴ = (conn H z η)ᴴ.toBlocks₁₂ from rfl, h4]`. Simplify using `only [orthCoeff]`. Rewrite using `[mdbar_mul (h11.inv hs') h21, mdbar_inv h11 hs', show mdbar (fun x => (H x).toBlocks₂₁ᵀ) z η = (mdbar H z η)ᵀ.toBlocks₁₂ from rfl, show mdbar (fun x => (H x).toBlocks₁₁ᵀ) z η = (mdbar H z η)ᵀ.toBlocks₁₁ from rfl, subGram]`. Simplify using `only [Matrix.mul_add, Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem extForm_eq_neg_secondFormAdj (h : MContDiffAt 1 H z)
     (hh : ∀ᶠ x in 𝓝 z, (H x).IsHermitian) (hu : IsUnit (H z).det)
@@ -1208,7 +1204,7 @@ theorem extForm_eq_neg_secondFormAdj (h : MContDiffAt 1 H z)
   abel
 
 /- English proof (translation)
-Establish `hA' : IsUnit Aᵀ.det` using `by rwa [det_transpose]`. Establish `hB' : IsUnit Bᵀ.det` using `by rwa [det_transpose]`. Simplify using `only [adj, conjTranspose_mul, conjTranspose_conjTranspose, hB.transpose.eq, hA.transpose.inv.eq, Matrix.mul_assoc, nonsing_inv_mul _ hA', Matrix.mul_one, nonsing_inv_mul_cancel_left _ _ hB']`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem adj_adj {A : Matrix m m ℂ} {B : Matrix l l ℂ} (hA : A.IsHermitian) (hAu : IsUnit A.det)
     (hB : B.IsHermitian) (hBu : IsUnit B.det) (T : Matrix l m ℂ) : adj B A (adj A B T) = T := by
@@ -1219,7 +1215,7 @@ theorem adj_adj {A : Matrix m m ℂ} {B : Matrix l l ℂ} (hA : A.IsHermitian) (
     nonsing_inv_mul_cancel_left _ _ hB']
 
 /- English proof (translation)
-Establish `hz` using `hh.self_of_nhds`. Rewrite using `[extFormAdj, extForm_eq_neg_secondFormAdj h hh hu hs, secondFormAdj, ← adj_adj (isHermitian_subGram hz) hs (isHermitian_quotGram hz) (isUnit_det_quotGram hu hs) (secondForm H z ξ), adj_adj (isHermitian_quotGram hz) (isUnit_det_quotGram hu hs) (isHermitian_subGram hz) hs]`. Simplify using `[adj]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem extFormAdj_eq_neg_secondForm (h : MContDiffAt 1 H z)
     (hh : ∀ᶠ x in 𝓝 z, (H x).IsHermitian) (hu : IsUnit (H z).det)
@@ -1232,7 +1228,7 @@ theorem extFormAdj_eq_neg_secondForm (h : MContDiffAt 1 H z)
   simp [adj]
 
 /- English proof (translation)
-Rewrite using `[conn, conn, ← submatrix_mul_equiv _ _ _ e, transpose_submatrix, inv_submatrix_equiv]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem conn_submatrix_equiv [Fintype n] [DecidableEq n] (K : E → Matrix n n ℂ) (e : m ≃ n)
     (z ξ : E) : conn (fun x => (K x).submatrix e e) z ξ = (conn K z ξ).submatrix e e := by
@@ -1240,7 +1236,7 @@ theorem conn_submatrix_equiv [Fintype n] [DecidableEq n] (K : E → Matrix n n �
   rfl
 
 /- English proof (translation)
-Simplify using `only [curv, conn_submatrix_equiv]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem curv_submatrix_equiv [Fintype n] [DecidableEq n] (K : E → Matrix n n ℂ) (e : m ≃ n)
     (z ξ η : E) : curv (fun x => (K x).submatrix e e) z ξ η = (curv K z ξ η).submatrix e e := by
@@ -1258,16 +1254,16 @@ def tautGram (e : ℕ) (z : Fin e → ℂ) : Matrix (Fin 1) (Fin 1) ℂ :=
   of fun _ _ => ((1 + ∑ k, ‖z k‖ ^ 2 : ℝ) : ℂ)
 
 /- English proof (translation)
-The claim follows from `contDiff_const.add (ContDiff.sum fun k _ => (contDiff_apply ℝ ℂ k).norm_sq ℂ)`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_one_add_normSq (e : ℕ) :
     ContDiff ℝ ∞ fun z : Fin e → ℂ => 1 + ∑ k, ‖z k‖ ^ 2 :=
   contDiff_const.add (ContDiff.sum fun k _ => (contDiff_apply ℝ ℂ k).norm_sq ℂ)
 
 /- English proof (translation)
-Use `⟨isOpen_univ, fun _ _ => (ofRealCLM.contDiff.comp (contDiff_one_add_normSq e)).contDiffOn, fun z _ => ?_⟩` and prove the remaining obligations. Establish `: tautGram e z = diagonal fun _ => ((1 + ∑ k, ‖z k‖ ^ 2 : ℝ) : ℂ)`. Use extensionality with `a b`. Rewrite using `[Subsingleton.elim a b]`. Simplify using `[tautGram]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, posDef_diagonal_iff]`. Introduce `_`. Conclude with `(by positivity : (0 : ℝ) < 1 + ∑ k, ‖z k‖ ^ 2)` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isPosFrame_tautGram (e : ℕ) : IsPosFrame Set.univ (tautGram e) := by
   refine ⟨isOpen_univ, fun _ _ =>
@@ -1279,9 +1275,9 @@ theorem isPosFrame_tautGram (e : ℕ) : IsPosFrame Set.univ (tautGram e) := by
   exact_mod_cast (by positivity : (0 : ℝ) < 1 + ∑ k, ‖z k‖ ^ 2)
 
 /- English proof (translation)
-Use extensionality with `a b`. Rewrite using `[curv_line (f := fun z : Fin e → ℂ => 1 + ∑ k, ‖z k‖ ^ 2) ((contDiff_one_add_normSq e).contDiffAt.of_le (by norm_cast)) (by simp) (Eventually.of_forall fun _ => rfl), Subsingleton.elim a b]`. Set `φ : (Fin e → ℂ) →L[ℂ] EuclideanSpace ℂ (Fin e)` to `(EuclideanSpace.equiv (Fin e) ℂ).symm`. Establish `h : (fun x : Fin e → ℂ => Real.log (1 + ∑ k, ‖x k‖ ^ 2)) = fun x => Real.log (‖φ x‖ ^ 2 + 1)`. Use function extensionality and compare the values at `x`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[EuclideanSpace.norm_sq_eq, add_comm]`. Both sides reduce to the same expression. Rewrite using `[h, leviForm_log_normSq_add_comp φ.contDiff.contDiffAt (by simp), φ.fderiv]`. Simplify using `[φ, PiLp.inner_apply]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem curv_tautGram_zero (e : ℕ) (ξ η : Fin e → ℂ) :
     curv (tautGram e) 0 ξ η = -(∑ k, ξ k * conj (η k)) • (1 : Matrix (Fin 1) (Fin 1) ℂ) := by
@@ -1297,7 +1293,7 @@ theorem curv_tautGram_zero (e : ℕ) (ξ η : Fin e → ℂ) :
   simp [φ, PiLp.inner_apply]
 
 /- English proof (translation)
-Establish `: -I * chernOne (tautGram 1) 0 ξ ξ = ((-‖ξ 0‖ ^ 2 / (2 * Real.pi) : ℝ) : ℂ)`. Simplify using `only [chernOne, curv_tautGram_zero, kappa, Fin.sum_univ_one, mul_conj', trace_smul, trace_one, Fintype.card_fin, smul_eq_mul]`. Use `push_cast`. Take the linear combination `((‖ξ 0‖ : ℂ) ^ 2 / (2 * Real.pi)) * I_mul_I`. Rewrite using `[diagVal, this, ofReal_re]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 -/
 example (ξ : Fin 1 → ℂ) :
     diagVal (chernOne (tautGram 1) 0) ξ = -‖ξ 0‖ ^ 2 / (2 * Real.pi) := by
@@ -1309,7 +1305,7 @@ example (ξ : Fin 1 → ℂ) :
   rw [diagVal, this, ofReal_re]
 
 /- English proof (translation)
-Introduce `h` and use `by have := h.norm_form_le rfl (fun _ => 1) fun _ => 1 simp [curv_tautGram_zero, form_eq_sum, tautGram, neg_mulVec] at this exact absurd this (by norm_num)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example : ¬ TwoFormBound {0} (tautGram 1) (fun _ => 1) (curv (tautGram 1)) 0 := fun h => by
   have := h.norm_form_le rfl (fun _ => 1) fun _ => 1
@@ -1317,9 +1313,9 @@ example : ¬ TwoFormBound {0} (tautGram 1) (fun _ => 1) (curv (tautGram 1)) 0 :=
   exact absurd this (by norm_num)
 
 /- English proof (translation)
-Establish `h` using `(isPosFrame_tautGram 1).isHermFrame`. Use `⟨⟨isOpen_univ, fun a b => (h.smooth a b).neg, fun z hz => (h.herm z hz).neg, fun z hz => ?_⟩, fun h' => ?_⟩` and prove the remaining obligations. Rewrite using `[det_neg]`. Conclude with `(isUnit_one.neg.pow _).mul (h.isUnit z hz)`. Use `(h'.posDef 0 trivial).diag_pos (i := 0)` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[tautGram] at this`. Conclude with `absurd this (by norm_num)`.
+A detailed English derivation is pending.
 -/
 example : IsHermFrame Set.univ (fun z => -tautGram 1 z) ∧
     ¬ IsPosFrame Set.univ (fun z => -tautGram 1 z) := by
@@ -1335,7 +1331,7 @@ def tautPairGram (z : ℂ) : Matrix (Unit ⊕ Unit) (Unit ⊕ Unit) ℂ :=
   fromBlocks (of fun _ _ => 1 + z * conj z) (of fun _ _ => z) (of fun _ _ => conj z) 1
 
 /- English proof (translation)
-Establish `h : tautPairGram 0 = 1`. Apply the tactic sequence `rw [← fromBlocks_one]; ext (a | a) (b | b) <;> simp [tautPairGram]`. Rewrite using `[secondForm_eq, conn, h, transpose_one, inv_one, Matrix.one_mul]`. Express the relevant statement in the definitionally equal form `del (fun x : ℂ => x) 0 ξ = ξ`. Rewrite using `[del_eq_fderiv differentiableAt_fun_id]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/

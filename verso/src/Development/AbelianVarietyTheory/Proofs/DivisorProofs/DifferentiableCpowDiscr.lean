@@ -16,9 +16,9 @@ namespace GlobalTheory.EtaEven
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Use `v.isPrime` as an intermediate fact. Use `v.isMaximal` as an intermediate fact. Establish `hfin : Fintype (v.asIdeal.primesOver (𝓞 E))` using `(IsDedekindDomain.primesOver_finite v.asIdeal (𝓞 E)).fintype`. Establish `h` using `Ideal.sum_ramification_inertia_eq_finrank v.asIdeal (𝓞 E)`. Rewrite `h` using `[← Algebra.IsAlgebraic.finrank_of_isFractionRing (𝓞 F) F (𝓞 E) E]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← h]`. Use `Finset.sum_bij (fun w hw => ⟨w.asIdeal, w.isPrime, ⟨by rw [← mem_aboveF.1 hw]; rfl⟩⟩) (fun _ _ => Finset.mem_univ _) (fun a _ b _ e => HeightOneSpectrum.ext (congrArg Subtype.val e)) ?_ (fun _ _ => rfl)` and prove the remaining obligations. Introduce and unpack `⟨q, hq, hq'⟩ -`. Use `⟨⟨q, hq, Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot q⟩, mem_aboveF.2 (HeightOneSpectrum.ext hq'.over.symm), rfl⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem sum_ef (v : HeightOneSpectrum (𝓞 F)) :
     ∑ w ∈ aboveF (L := E) F v, w.asIdeal.ramificationIdx (𝓞 F) * w.asIdeal.inertiaDeg (𝓞 F) =

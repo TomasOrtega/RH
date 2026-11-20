@@ -13,23 +13,23 @@ section Gen
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ} {T T' : E}
 
 /- English proof (translation)
-The claim follows from `Submodule.span_mono (by rintro _ ⟨i, hi, rfl⟩; exact ⟨i, lt_of_lt_of_le hi h, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem tie_Xa_mono (F : FlagG S r T) {a b : ℕ} (h : a ≤ b) : F.Xa a ≤ F.Xa b :=
   Submodule.span_mono (by rintro _ ⟨i, hi, rfl⟩; exact ⟨i, lt_of_lt_of_le hi h, rfl⟩)
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨a, Nat.lt_succ_self _, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem tie_e_mem_Xa (F : FlagG S r T) (a : Fin r) : F.e a ∈ F.Xa (a.val + 1) :=
   Submodule.subset_span ⟨a, Nat.lt_succ_self _, rfl⟩
 
 /- English proof (translation)
-Establish `h1 : ∀ j, F'.Xa j ≤ F.Xa j`. Introduce `j`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Establish `h2 : F'.e a = (F'.e a - F.e a) + F.e a` using `by abel`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[h2]`. Conclude with `Submodule.add_mem _ (tie_Xa_mono F (le_of_lt ha) (h a)) (tie_Xa_mono F ha (tie_e_mem_Xa F a))`. Use `le_antisymm (h1 j) ?_` and prove the remaining obligations. Proceed by induction on `j using Nat.strong_induction_on with`. Consider the case `_ j ih`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Establish `h2 : F.e a = F'.e a - (F'.e a - F.e a)` using `by abel`. Rewrite using `[h2]`. Conclude with `Submodule.sub_mem _ (tie_Xa_mono F' ha (tie_e_mem_Xa F' a)) (tie_Xa_mono F' (le_of_lt ha) (ih a.val ha (h a)))`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tie_Xa_eq (F : FlagG S r T) (F' : FlagG S r T') (h : ∀ a, F'.e a - F.e a ∈ F.Xa a.val) (j : ℕ) :
     F'.Xa j = F.Xa j := by
@@ -51,9 +51,9 @@ theorem tie_Xa_eq (F : FlagG S r T) (F' : FlagG S r T') (h : ∀ a, F'.e a - F.e
       (tie_Xa_mono F' (le_of_lt ha) (ih a.val ha (h a)))
 
 /- English proof (translation)
-Unfold `FlagG.X FlagG.Xa`. Use `congr 1`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨a, a.isLt, rfl⟩`. Introduce and unpack `⟨a, _, rfl⟩`. Conclude with `⟨a, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem tie_X_eq_Xa (F : FlagG S r T) : F.X = F.Xa r := by
   unfold FlagG.X FlagG.Xa
@@ -70,13 +70,11 @@ section Rec
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `(X.inS_iff t).1 h`. Establish `hXa` using `tie_Xa_eq (X.fl t).fl (X.fl' t).fl h1`. Use `⟨hXa, ?_⟩` and prove the remaining obligations. Establish `hX : (X.fl' t).fl.X = (X.fl t).fl.X` using `by rw [tie_X_eq_Xa, tie_X_eq_Xa, hXa]`. Use `show (X.fl' t).fl.X ⊔ Submodule.span D.host.E {(X.fl' t).fl.z} = (X.fl t).fl.X ⊔ Submodule.span D.host.E {(X.fl t).fl.z}`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hX]`. Apply `le_antisymm` to reduce the goal to its premises. Use `sup_le le_sup_left (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ rfl`. Establish `: (X.fl' t).fl.z = ((X.fl' t).fl.z - (X.fl t).fl.z) + (X.fl t).fl.z` using `by abel`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `Submodule.add_mem _ (Submodule.mem_sup_left h2) (Submodule.mem_sup_right (Submodule.mem_span_singleton_self _))`. Use `sup_le le_sup_left (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ rfl`. Establish `: (X.fl t).fl.z = (X.fl' t).fl.z - ((X.fl' t).fl.z - (X.fl t).fl.z)` using `by abel`.
-
-Rewrite using `[this]`. Conclude with `Submodule.sub_mem _ (Submodule.mem_sup_right (Submodule.mem_span_singleton_self _)) (Submodule.mem_sup_left h2)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tie_inS_sameFlag (X : TermTie D) {u u' : D.what₂.Word} (t : D.s.Term u u') (h : D.s.inS t) :
     FrobeniusProjectedBounds.SameFlag (X.fl t) (X.fl' t) := by
@@ -102,17 +100,17 @@ theorem tie_inS_sameFlag (X : TermTie D) {u u' : D.what₂.Word} (t : D.s.Term u
       (Submodule.mem_sup_left h2)
 
 /- English proof (translation)
-Introduce and unpack `⟨_, a8, a9⟩ hH u`. Establish `hirr` using `a8 hH u u`. Establish `hid` using `a9 hH u`. Establish `c4 : ∀ t : D.s.Term u u, FrobeniusProjectedBounds.SameFlag (X.fl t) (X.fl' t) → D.s.relevant t → D.s.isId t` using `fun t h => hI u t h`. Establish `c3 : ∀ t : D.s.Term u u, D.s.inS t → D.s.relevant t → D.s.isId t` using `fun t h => c4 t (tie_inS_sameFlag X t h)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨?_, fun t => tie_isId_inS X t, c3, c4, hirr, fun t => term_in_S_vanishes X t, ?_, S0ge1_of_tie X u u⟩` and prove the remaining obligations. Set `ι : {t : D.s.Term u u // D.s.isId t} → {t : D.s.Term u u // D.s.inS t}` to `fun t => ⟨t.1, tie_isId_inS X t.1 t.2⟩`. Establish `hinj : Function.Injective ι` using `fun a b h => Subtype.ext (congrArg (fun z => z.1) h)`. Use `(hinj.hasSum_iff (f := fun t : {t : D.s.Term u u // D.s.inS t} => D.s.aTerm u u t.1) ?_).1 hid` and prove the remaining obligations. Introduce `t ht`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hirr` to reduce the goal to its premises. Introduce `hr`. Conclude with `ht ⟨⟨t.1, c3 t.1 t.2 hr⟩, rfl⟩`. Unfold `FrobeniusProjectedBounds.Kpp KOf`. Rewrite using `[tsum_subtype, tsum_subtype]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `t`. Distinguish the cases in `hr : D.s.relevant t`. Establish `hiff : t ∈ {t : D.s.Term u u | D.s.relevant t ∧ D.s.Gterm t = 0 ∧ ¬ FrobeniusProjectedBounds.SameFlag (X.fl t) (X.fl' t)} ↔ t ∈ {t : D.s.Term u u | D.s.Gterm t = 0 ∧ ¬ D.s.isId t}`. Prove the components needed by the constructor for the conclusion.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨_, hG, hS⟩`. Conclude with `⟨hG, fun h => hS (tie_inS_sameFlag X t (tie_isId_inS X t h))⟩`. Introduce and unpack `⟨hG, hn⟩`. Conclude with `⟨hr, hG, fun h => hn (c4 t h hr)⟩`. Distinguish the cases in `hm : t ∈ {t : D.s.Term u u | D.s.Gterm t = 0 ∧ ¬ D.s.isId t}`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_mem hm, Set.indicator_of_mem (hiff.2 hm)]`. Rewrite using `[Set.indicator_of_notMem hm, Set.indicator_of_notMem (fun h => hm (hiff.1 h))]`. Establish `h0` using `hirr t hr`. Simplify using `only [Set.indicator_apply, h0, ite_self]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem clause_a_of_identity_flag (X : TermTie D) (large₂ : SizeData₂ D) (C' Cl Cg cb Cu cT CT C0 : ℝ) (hI : UnitaryVolumeMass.cIdFlag D X) :
     FrobeniusProjectedBounds.IntegralityFromMetric D large₂ X C' Cl Cg cb Cu cT CT C0 := by

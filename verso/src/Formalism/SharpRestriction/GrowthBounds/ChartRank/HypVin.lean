@@ -18,11 +18,9 @@ set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `x hx x' hx'`. Establish `hglob : ∀ z ∈ lat c, z ∈ Formalism.UG.CS.globLat (K.y c).1 K.lev.Lb`. Introduce `z hz`. Conclude with `(K.y_lat c _).1 (Submodule.subset_span ⟨z, hz, rfl⟩)`. Establish `hm : ∀ a ∈ K.lev.Lb, ∀ b ∈ K.lev.Lb, IsIntegral ℤ (((1 : ℤ) : D.host.E) * Formalism.UG.hform (sigD D : D.host.E →+* D.host.E) (gramN D i hi) a b)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha b hb`. Take `⟨r, hr⟩` from `K.lev.Lb_int b hb a ha`. Rewrite using `[Int.cast_one, one_mul, ← hr]`. Conclude with `RingOfIntegers.isIntegral_coe r`. Establish `h` using `Formalism.UG.P.csScale_glob (sigD D) (gramN D i hi) K.lev.Lb 1 hm (K.y c).1 (K.y c).2 (hglob x' hx') (hglob x hx)`.
-
-Rewrite `h` using `[Int.cast_one, one_mul]`. Conclude with `Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.bwL_descent _ _ _ h`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_dual_chart {T : ℕ} {bad : Set (HeightOneSpectrum (𝓞 D.host.F))} {i : ℕ} {hi : i ≤ D.R.m} {cl : Type}
     {stab : cl → Type} [∀ c, Group (stab c)] {lat : cl → Submodule (𝓞 D.host.E) (Fin (D.R.N i) → D.host.E)}
@@ -46,9 +44,9 @@ theorem le_dual_chart {T : ℕ} {bad : Set (HeightOneSpectrum (𝓞 D.host.F))} 
 open Formalism.L2.GlobalTheoryTheory.LocalLatticeBases Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.LocB in
 
 /- English proof (translation)
-Take `⟨d, hd, hle⟩` from `dual_le_bnd (sigD D : D.host.E →+* D.host.E) (gramN D i hi) (bwB_gramN_det D i hi) _ hL`. Establish `hsp` using `dual_span (sigD D : D.host.E →+* D.host.E) (gramN D i hi) _ hL`. Take `⟨B, hB⟩` from `exists_isLocBasis q _ _ (fg_of_le_bnd hd hle) hsp`. Use `⟨B, ?_⟩` and prove the remaining obligations. Establish `e : ((Submodule.span (𝓞 D.host.E) (dualSet (sigD D : D.host.E →+* D.host.E) (gramN D i hi) L) : Submodule (𝓞 D.host.E) (Fin (D.R.N i) → D.host.E)) : Set (Fin (D.R.N i) → D.host.E)) = dualSet (sigD D : D.host.E →+* D.host.E) (gramN D i hi) L` using `span_dualSet _ _ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hB` using `[e]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem exB_of_lat {i : ℕ} (hi : i ≤ D.R.m) (q : ℕ) [Fact q.Prime] (L : Submodule (𝓞 D.host.E) (Fin (D.R.N i) → D.host.E))
     (hL : Submodule.IsLattice D.host.E L) :
@@ -83,11 +81,9 @@ structure LatIn (S : StepIn M i hi G) (w : D.what₂.places.Pl) (β : S.Ch) : Pr
 set_option maxHeartbeats 8000000 in
 
 /- English proof (translation)
-Introduce `β`. Establish `hp` using `(L β).prime`. Establish `hpw` using `(L β).resChar`. Substitute `hpw` using the available equality. Establish `: Fact (D.what₂.places.resChar w).Prime` using `⟨D.what₂.places.resChar_prime w⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Conclude with `valIntAt_of (S := (S.K β).lev) (emb := embT D) (embLL := D.what₂.embLL) (G := S.charts.gat β) (e := e) (A := S.loc β) (pos := S.pos) (embV := S.embN β) (yc := (S.K β).y) weylLatticeDescent_holds hfrac (tEL D) (tEL_emb D) (intW D.what₂.places w) hR0 (M.lam i) (H β).wt ((H β).toHyp …`. Conclude with `latO_of (tEL D) (H β).pos_emb (fun x => by rw [Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.forms_involution_eq_host_conj, Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.forms_involution_eq_host_conj, Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.host_conj_involutive] …`. Rewrite using `[hg v]`. Conclude with `latW_gen (S.K β).lev (S.loc β) (H β).int hp (L β).siteGood_prime_torsion (L β).alg (L β).base (S.lat cl.1) ((S.K β).y cl) ((S.K β).y_lat cl) (le_dual_chart (S.K β) cl) B' hB' a g γ κ hpt v)`. Use the proof step `(fun v a b => gramW_gen (S.K β).lev (S.loc β) (H β).int hp (L β).siteGood_prime_torsion (L β).alg (Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.bwB_gramN_det D i hi) (S.lat cl.1) ((S.K β).y cl) ((S.K β).y_lat cl) (le_dual_chart (S.K β) cl) B' hB' v a b) v s)`.
-
-Use the proof step `(L β).chi`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valIntN_of (S : StepIn M i hi G) (e : D.what₂.LL →+* G.Kf) (w : D.what₂.places.Pl)
     (H : ∀ β, S.Core e β) (hS : BlockRationalityField) (hfrac : IsFractionRing G.O G.Kf)

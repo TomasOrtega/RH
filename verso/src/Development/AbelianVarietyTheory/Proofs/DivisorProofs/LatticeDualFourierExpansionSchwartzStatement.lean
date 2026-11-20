@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatticeDualFourierE
 import Mathlib
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.periodisation_hasSum_fourier_bilinForm` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLatticeDualFourierExpansionSchwartz.lean&line=34#L34)
 -/

@@ -17,7 +17,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {PD : PeriodData G Qp K₀ K B BdR}
 
 /- English proof (translation)
-The claim follows from `SetupA.arcBasic_core W F hB`.
+A detailed English derivation is pending.
 -/
 theorem arcBasic [NeZero n] [Fintype (K →ₐ[Qp] LL)] (W : LocWach PD LL O v n)
     {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) {b w S η m : ℕ} {up : ZMod n → Bool}

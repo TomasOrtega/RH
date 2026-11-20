@@ -5,15 +5,13 @@ open Matrix
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `set B : ℚ := (|b| + |a - c| + 1) / (-q) with hB`. Establish `hq' : 0 < -q` using `by linarith`. Establish `hBpos : 0 < B` using `div_pos (by positivity) hq'`. Take `⟨k, hk⟩` from `exists_nat_gt B`. Use `⟨k, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hk1 : (1 : ℚ) ≤ k`. Establish `: (0 : ℚ) < k` using `lt_trans hBpos hk`. Conclude with `Nat.one_le_iff_ne_zero.mpr (by rintro rfl; simp at this)` after adjusting the coercions. Establish `hN1 : (1 : ℚ) ≤ N` using `by exact_mod_cast hN`. Use `set m : ℚ := (N : ℚ) * k with hm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm1 : 1 ≤ m` using `by nlinarith`. Establish `hmk : (k : ℚ) ≤ m` using `by nlinarith`. Establish `hmB : B < m` using `lt_of_lt_of_le hk hmk`. Establish `h1 : |b| + |a - c| + 1 < m * (-q)`. Rewrite `hmB` using `[hB, div_lt_iff₀ hq']`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : m * (|b| + |a - c| + 1) < m * (m * (-q))` using `mul_lt_mul_of_pos_left h1 (by linarith)`. Establish `h3 : m * b ≤ m * |b|` using `mul_le_mul_of_nonneg_left (le_abs_self b) (by linarith)`. Establish `h4 : a - c ≤ |a - c|` using `le_abs_self _`. Establish `h5 : 0 ≤ (m - 1) * (|a - c| + 1)` using `mul_nonneg (by linarith) (by positivity)`.
-
-Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem exists_nat_mul_quadratic_lt (N : ℕ) (hN : 1 ≤ N) (a b q c : ℚ) (hq : q < 0) :
     ∃ k : ℕ, a + ((N : ℚ) * k) * b + ((N : ℚ) * k) ^ 2 * q < c := by
@@ -39,7 +37,7 @@ theorem exists_nat_mul_quadratic_lt (N : ℕ) (hN : 1 ≤ N) (a b q c : ℚ) (hq
   nlinarith
 
 /- English proof (translation)
-Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, vecMulVec_apply, dotProduct, mulVec, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem trace_mul_vecMulVec {n : Type*} [Fintype n] [DecidableEq n]
     (T : Matrix n n ℚ) (u w : n → ℚ) : (T * vecMulVec u w).trace = w ⬝ᵥ T.mulVec u := by
@@ -47,13 +45,13 @@ private theorem trace_mul_vecMulVec {n : Type*} [Fintype n] [DecidableEq n]
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Establish `hP : (1 + t • vecMulVec x y)ᵀ = 1 + t • vecMulVec y x`. Rewrite using `[transpose_add, transpose_one, transpose_smul, transpose_vecMulVec]`. Rewrite using `[hP]`. Establish `e : (1 + t • vecMulVec y x) * T * (1 + t • vecMulVec x y) = T + t • (T * vecMulVec x y) + t • (vecMulVec y x * T) + (t * t) • (vecMulVec y x * T * vecMulVec x y)`. Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.one_mul, Matrix.mul_one, Matrix.smul_mul, Matrix.mul_smul, smul_add, smul_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[e, trace_add, trace_add, trace_add, trace_smul, trace_smul, trace_smul, smul_eq_mul, smul_eq_mul, smul_eq_mul, Matrix.trace_mul_comm (vecMulVec y x) T]`. Simplify using `only [trace_mul_vecMulVec]`. Rewrite using `[← Matrix.mulVec_mulVec]`. Establish `hv : ∀ w : n → ℚ, vecMulVec y x *ᵥ w = (x ⬝ᵥ w) • y`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `w`. Use extensionality with `i`. Simplify using `only [mulVec, dotProduct, vecMulVec_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Rewrite using `[hv, dotProduct_smul, smul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem trace_transvection_conj {n : Type*} [Fintype n] [DecidableEq n]
     (T : Matrix n n ℚ) (x y : n → ℚ) (t : ℚ) :
@@ -81,27 +79,23 @@ theorem trace_transvection_conj {n : Type*} [Fintype n] [DecidableEq n]
   ring
 
 /- English proof (translation)
-Introduce `g N hg hN T _ hv c`. Take `⟨v, hv⟩` from `hv`. Use `set D : ℕ := ∏ i, (v i).den with hD`. Establish `hDpos : 0 < D` using `Finset.prod_pos fun i _ => (v i).den_pos`. Establish `hden : ∀ i, (v i).den ∣ D` using `fun i => Finset.dvd_prod_of_mem _ (Finset.mem_univ i)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set xz : Fin g → ℤ := fun i => ((D / (v i).den : ℕ) : ℤ) * (v i).num with hxz`. Establish `hx : ∀ i, ((xz i : ℤ) : ℚ) = (D : ℚ) * v i`. Introduce `i`. Establish `hne : ((v i).den : ℚ) ≠ 0` using `Nat.cast_ne_zero.mpr (v i).den_nz`. Simplify using `only [hxz]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[Int.cast_mul, Int.cast_natCast, Nat.cast_div (hden i) hne, ← Rat.mul_den_eq_num (v i)]`. Clear the denominators using the available nonvanishing facts. Use `set x : Fin g → ℚ := fun i => (xz i : ℚ) with hxdef`. Establish `hxv : x = (D : ℚ) • v` using `funext fun i => by simp [hxdef, hx]`. Establish `hxT : x ⬝ᵥ T *ᵥ x < 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hxv, mulVec_smul, dotProduct_smul, smul_dotProduct, smul_eq_mul, smul_eq_mul, ← mul_assoc]`. Establish `: (0 : ℚ) < D` using `by exact_mod_cast hDpos`. Conclude with `mul_neg_of_pos_of_neg (by positivity) hv`. Choose the witnesses or unpack the hypotheses as in `⟨i0, hi0⟩ : ∃ i0, xz i0 ≠ 0 := by`. Assume the negation of the conclusion as `h`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `push Not at h`. Establish `: x = 0` using `funext fun i => by simp [hxdef, h i]`. Rewrite `hxT` using `[this]`. Simplify using `at hxT`. Take `⟨i1, hi1⟩` from `Fintype.exists_ne_of_one_lt_card (by simp; omega) i0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `set yz : Fin g → ℤ := Pi.single i0 (xz i1) - Pi.single i1 (xz i0) with hyz`. Establish `hyx : yz ⬝ᵥ xz = 0`. Rewrite using `[hyz, sub_dotProduct, single_dotProduct, single_dotProduct]`. Expand and normalize the polynomial expressions, which then agree. Use `set y : Fin g → ℚ := fun j => (yz j : ℚ) with hydef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hy1 : y i1 = -(xz i0 : ℚ)`. Simplify using `[hydef, hyz, Pi.single_apply, hi1]`. Establish `hyy : 0 < y ⬝ᵥ y`. Establish `hle : y i1 * y i1 ≤ y ⬝ᵥ y` using `Finset.single_le_sum (f := fun j => y j * y j) (fun j _ => mul_self_nonneg _) (Finset.mem_univ i1)`. Establish `hpos : 0 < y i1 * y i1`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hy1]`. Establish `: (xz i0 : ℚ) ≠ 0` using `by exact_mod_cast hi0`. Conclude with `mul_self_pos.mpr (neg_ne_zero.mpr this)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hq : (y ⬝ᵥ y) * (x ⬝ᵥ T *ᵥ x) < 0` using `mul_neg_of_pos_of_neg hyy hxT`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Take `⟨k, hk⟩` from `exists_nat_mul_quadratic_lt N hN T.trace (x ⬝ᵥ T.mulVec y + y ⬝ᵥ T.mulVec x) ((y ⬝ᵥ y) * (x ⬝ᵥ T.mulVec x)) c hq`. Use `⟨1 + ((N : ℤ) * k) • vecMulVec xz yz, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← smul_vecMulVec, vecMulVec_eq Unit, det_one_add_replicateCol_mul_replicateRow, dotProduct_smul, hyx, smul_zero, add_zero]`. Introduce `i j`. Use `⟨k * (xz i * yz j), ?_⟩` and prove the remaining obligations.
-
-Simplify using `only [Matrix.add_apply, Matrix.smul_apply, vecMulVec_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hmap : (1 + ((N : ℤ) * k) • vecMulVec xz yz).map (Int.cast : ℤ → ℚ) = 1 + ((N : ℚ) * k) • vecMulVec x y`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.add_apply, Matrix.smul_apply, vecMulVec_apply, smul_eq_mul, Matrix.one_apply, hxdef, hydef]`.
-
-Apply the tactic sequence `split_ifs <;> push_cast <;> ring`. Rewrite using `[hmap, trace_transvection_conj]`. Conclude with `hk`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_congruence_trace_lt :
     ∀ (g N : ℕ), 2 ≤ g → 1 ≤ N → ∀ T : Matrix (Fin g) (Fin g) ℚ, T.IsSymm →

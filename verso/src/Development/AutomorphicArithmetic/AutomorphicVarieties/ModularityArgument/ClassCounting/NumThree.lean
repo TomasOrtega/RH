@@ -4,19 +4,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GeneratorCountTupl
 open NumberField IsDedekindDomain UpperTheory.V UpperTheory.V.KL UpperTheory.V.ZK
 
 /- English proof (translation)
-Establish `hu1 : (1:ℝ) ≤ u` using `by linarith`. Establish `hu0 : (0:ℝ) < u` using `by linarith`. Establish `hY0 : (0:ℝ) < Y` using `by linarith`. Establish `hA1 : u ^ C ≤ u ^ (max C 9)` using `Real.rpow_le_rpow_of_exponent_le hu1 (le_max_left _ _)`. Establish `hA2 : u ^ (9:ℕ) ≤ u ^ (max C 9)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Real.rpow_natCast]`. Conclude with `Real.rpow_le_rpow_of_exponent_le hu1 (by push_cast; exact le_max_right _ _)`. Establish `h2 : u ^ (max C 9 + 2) = u ^ (max C 9) * u ^ (2:ℕ)`. Rewrite using `[Real.rpow_add hu0, Real.rpow_two]`. Establish `hu9 : (256:ℝ) ≤ u ^ (9:ℕ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hAC : u ^ C * Y ≤ u ^ (max C 9) * Y` using `mul_le_mul_of_nonneg_right hA1 hY0.le`. Establish `hPA : P ≤ u ^ (max C 9) * Y` using `le_trans hP (mul_le_mul_of_nonneg_right hA2 hY0.le)`. Establish `hA9 : u ^ (9:ℕ) * Y ≤ u ^ (max C 9) * Y` using `mul_le_mul_of_nonneg_right hA2 hY0.le`. Establish `hApos : 1 ≤ u ^ (max C 9) * Y` using `by nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu2 : (4:ℝ) ≤ u ^ (2:ℕ)` using `by nlinarith`. Establish `h4A : 4 * (u ^ (max C 9) * Y) ≤ u ^ (max C 9 + 2) * Y`. Rewrite using `[h2]`. Establish `: u ^ (max C 9) * u ^ (2:ℕ) * Y = u ^ (2:ℕ) * (u ^ (max C 9) * Y)` using `by ring`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_le_mul_of_nonneg_right hu2 (by linarith)`. Establish `e1 : Real.exp (u ^ C * Y) ≤ Real.exp (u ^ (max C 9) * Y)` using `Real.exp_le_exp.mpr hAC`. Establish `e3 : 3 * (u ^ (max C 9) * Y) + 1 ≤ Real.exp (3 * (u ^ (max C 9) * Y))`. Use `Real.add_one_le_exp (3 * (u ^ (max C 9) * Y))` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e4 : Real.exp (4 * (u ^ (max C 9) * Y)) = Real.exp (u ^ (max C 9) * Y) * Real.exp (3 * (u ^ (max C 9) * Y))`. Rewrite using `[← Real.exp_add]`. Put the polynomial expressions in normal form. Establish `eA` using `Real.add_one_le_exp (u ^ (max C 9) * Y)`. Establish `ep` using `Real.exp_pos (u ^ (max C 9) * Y)`.
+Put the polynomial expressions in normal form. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `e5 : Real.exp (u ^ (max C 9) * Y) * (3 * (u ^ (max C 9) * Y) + 1) ≤ Real.exp (u ^ (max C 9) * Y) * Real.exp (3 * (u ^ (max C 9) * Y))` using `mul_le_mul_of_nonneg_left e3 ep.le`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 private theorem num_three (C u Y t : ℝ) (hu : 2 ≤ u) (hY : 1 / 2 ≤ Y) (P : ℝ) (hP : P ≤ u ^ 9 * Y)
     (ht : t ≤ 2 * Real.exp (u ^ C * Y) + P) : t ≤ Real.exp (u ^ (max C 9 + 2) * Y) := by
@@ -60,15 +60,15 @@ private theorem num_three (C u Y t : ℝ) (hu : 2 ≤ u) (hY : 1 / 2 ≤ Y) (P :
     _ ≤ Real.exp (u ^ (max C 9 + 2) * Y) := Real.exp_le_exp.mpr h4A
 
 /- English proof (translation)
-Establish `hu0 : (0:ℝ) ≤ u` using `by linarith`. Establish `hY0 : (0:ℝ) < Y` using `by linarith`. Establish `huY : 1 ≤ u * Y` using `by nlinarith`. Establish `hu2 : 2 * u ≤ u ^ 2` using `by nlinarith`. Establish `hbv : b + v ≤ 3 * u ^ 2` using `by nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg' : g ≤ 6 * (u * Y)` using `by nlinarith`. Establish `h1 : (b + v) * g ≤ 3 * u ^ 2 * (6 * (u * Y))` using `mul_le_mul hbv hg' hg0 (by positivity)`. Establish `h4 : (4:ℝ) ≤ u ^ 2` using `by nlinarith`. Establish `h4' : 4 * (u * Y) ≤ u ^ 2 * (u * Y)` using `mul_le_mul_of_nonneg_right h4 (by positivity)`. Establish `hcv : c + v ≤ 4 * (u * Y)` using `by nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS0 : 0 ≤ (b + v) * g + c + v` using `by positivity`. Establish `hsum : (b + v) * g + c + v ≤ 19 * (u ^ 3 * Y)` using `by nlinarith`. Establish `hst : ((b + v) * g + c + v) * t ≤ ((b + v) * g + c + v) * u` using `mul_le_mul_of_nonneg_left ht hS0`. Establish `hsu : ((b + v) * g + c + v) * u ≤ 19 * (u ^ 3 * Y) * u` using `mul_le_mul_of_nonneg_right hsum hu0`. Establish `h5 : (32:ℝ) ≤ u ^ 5`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h4Y : 0 ≤ u ^ 4 * Y` using `by positivity`. Establish `hfin : 19 * (u ^ 3 * Y) * u ≤ u ^ 9 * Y`. Establish `e : 19 * (u ^ 3 * Y) * u = 19 * (u ^ 4 * Y)` using `by ring`. Establish `e' : u ^ 9 * Y = u ^ 5 * (u ^ 4 * Y)` using `by ring`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e, e']`. Conclude with `mul_le_mul_of_nonneg_right (by linarith) h4Y`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem num_poly (u Y t b g c v : ℝ) (hu : 2 ≤ u) (hY : 1 / 2 ≤ Y) (ht : t ≤ u)
     (hb0 : 0 ≤ b) (hb : b ≤ u + 2 * u ^ 2) (hg0 : 0 ≤ g) (hg : g ≤ u + 2 * u * Y + 2) (hc0 : 0 ≤ c) (hc : c ≤ u)
@@ -103,43 +103,41 @@ private theorem num_poly (u Y t b g c v : ℝ) (hu : 2 ≤ u) (hY : 1 / 2 ≤ Y)
 
 set_option maxHeartbeats 800000 in
 /- English proof (translation)
-Establish `hw1 : 1 ≤ w`. Break down `Nat.eq_zero_or_pos w with h | h` into its components or cases. Substitute `h` using the available equality. Rewrite `h3` using `[zero_pow (by omega), mul_zero]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Conclude with `h`. Unfold `kBound`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Establish `hE' : (1:ℝ) ≤ E` using `by exact_mod_cast hE`. Establish `hn1 : (1:ℝ) ≤ n` using `by exact_mod_cast hn`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD1 : (1:ℝ) ≤ D` using `by exact_mod_cast hD`. Establish `hD'1 : (1:ℝ) ≤ D'` using `by exact_mod_cast hD'`. Establish `hn'1 : (1:ℝ) ≤ n'` using `by exact_mod_cast hn'`. Establish `hw1R : (1:ℝ) ≤ w` using `by exact_mod_cast hw1`. Establish `h1R : (n':ℝ) = d * n` using `by exact_mod_cast h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2R : (d:ℝ) ≤ (n + 1) * (4 * E + 4)` using `by exact_mod_cast h2`. Establish `hwR : (w:ℝ) ≤ 2 * n'` using `by exact_mod_cast hw`. Establish `h3R : (D':ℝ) ≤ D ^ d * w ^ n'` using `by exact_mod_cast h3`. Establish `hd0 : (0:ℝ) ≤ d` using `Nat.cast_nonneg d`. Establish `hd16 : (d:ℝ) ≤ 16 * E * n`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ((n:ℝ) + 1) * (4 * E + 4) ≤ (2 * n) * (8 * E)` using `mul_le_mul (by linarith) (by linarith) (by positivity) (by positivity)`. Use the polynomial consequences of the given equalities and inequalities. Establish `hn'16 : (n':ℝ) ≤ 16 * E * n ^ 2`. Rewrite using `[h1R]`. Use `mul_le_mul_of_nonneg_right hd16 (by linarith : (0:ℝ) ≤ n)` as an intermediate fact.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Use `set x : ℝ := 2 * E * n with hx`. Establish `hx2 : 2 ≤ x` using `by nlinarith`. Establish `hx0 : 0 < x` using `by linarith`. Establish `hEn : (E:ℝ) * n ^ 2 ≤ E ^ 2 * n ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (E:ℝ) ≤ E ^ 2` using `by nlinarith`. Conclude with `mul_le_mul_of_nonneg_right this (by positivity)`. Establish `hn'x : (n':ℝ) ≤ 4 * x ^ 2`. Establish `: x ^ 2 = 4 * E ^ 2 * n ^ 2` using `by rw [hx]; ring`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd8 : (d:ℝ) ≤ 8 * x` using `by rw [hx]; linarith`. Establish `hx3 : 8 ≤ x ^ 3` using `by nlinarith`. Establish `hbase : 2 * (E:ℝ) * n' ≤ x ^ 5`. Establish `a1 : 2 * (E:ℝ) * n' ≤ 2 * E * (16 * E * n ^ 2)` using `mul_le_mul_of_nonneg_left hn'16 (by positivity)`. Establish `a2 : 2 * (E:ℝ) * (16 * E * n ^ 2) = 8 * x ^ 2` using `by rw [hx]; ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `a3 : 8 * x ^ 2 ≤ x ^ 3 * x ^ 2` using `mul_le_mul_of_nonneg_right hx3 (by positivity)`. Establish `a4 : x ^ 3 * x ^ 2 = x ^ 5` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hbase0 : (0:ℝ) ≤ 2 * E * n'` using `by positivity`. Establish `hpowC : (2 * (E:ℝ) * n') ^ C ≤ (x ^ 5) ^ C` using `Real.rpow_le_rpow hbase0 hbase hC`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Establish `hx5C : (x ^ 5) ^ C = x ^ (5 * C)`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hx0.le]`. Evaluate the numerical expressions. Establish `hxadd : x ^ (5 * C + 11) = x ^ (5 * C) * x ^ (11:ℕ)`. Rewrite using `[Real.rpow_add hx0, ← Real.rpow_natCast]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact.
 
-Evaluate the numerical expressions. Establish `hL2 : (0.6931471803:ℝ) < Real.log 2` using `Real.log_two_gt_d9`. Establish `hLD : Real.log 2 ≤ Real.log (2 * (D:ℝ))` using `Real.log_le_log (by norm_num) (by linarith)`. Establish `hlogD : Real.log D ≤ Real.log (2 * (D:ℝ))` using `Real.log_le_log (by linarith) (by linarith)`. Establish `hlogD0 : 0 ≤ Real.log (D:ℝ)` using `Real.log_nonneg hD1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlogw0 : 0 ≤ Real.log (w:ℝ)` using `Real.log_nonneg hw1R`. Establish `hlogw : Real.log (w:ℝ) ≤ 8 * x ^ 2`. Use `Real.log_le_sub_one_of_pos (by linarith : (0:ℝ) < w)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlogD' : Real.log (2 * (D':ℝ)) ≤ Real.log 2 + d * Real.log D + n' * Real.log w`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hDd : (0:ℝ) < (D:ℝ) ^ d` using `pow_pos (by linarith) _`. Establish `hwn : (0:ℝ) < (w:ℝ) ^ n'` using `pow_pos (by linarith) _`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.log_mul (by norm_num) (by positivity), Real.log_mul hDd.ne' hwn.ne', Real.log_pow, Real.log_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlogD'0 : 0 ≤ Real.log (2 * (D':ℝ))` using `Real.log_nonneg (by linarith)`. Use `set LD := Real.log (2 * (D:ℝ)) with hLDdef`. Establish `t1 : (d:ℝ) * Real.log D ≤ 8 * x * LD` using `mul_le_mul hd8 hlogD hlogD0 (by positivity)`. Establish `t2 : (n':ℝ) * Real.log w ≤ 4 * x ^ 2 * (8 * x ^ 2)` using `mul_le_mul hn'x hlogw hlogw0 (by positivity)`. Establish `t2' : 4 * x ^ 2 * (8 * x ^ 2) = 32 * x ^ 4` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLD1 : 1 ≤ 2 * LD` using `by linarith`. Establish `hx40 : 0 ≤ 32 * x ^ 4` using `by positivity`. Establish `t3 : 32 * x ^ 4 * 1 ≤ 32 * x ^ 4 * (2 * LD)` using `mul_le_mul_of_nonneg_left hLD1 hx40`. Establish `hx4 : 1 ≤ x ^ 4` using `by nlinarith`. Establish `hxx4 : x ≤ x ^ 4` using `by nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx7 : 128 ≤ x ^ 7`. Combine the equalities or inequalities in the displayed calculation. Establish `hLD0 : 0 ≤ LD` using `by linarith`. Establish `s1 : 1 * LD ≤ x ^ 4 * LD` using `mul_le_mul_of_nonneg_right hx4 hLD0`. Establish `s2 : x * LD ≤ x ^ 4 * LD` using `mul_le_mul_of_nonneg_right hxx4 hLD0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `tsum : Real.log (2 * (D':ℝ)) ≤ 73 * (x ^ 4 * LD)`. Establish `e1 : 8 * x * LD = 8 * (x * LD)` using `by ring`. Establish `e2 : 32 * x ^ 4 * (2 * LD) = 64 * (x ^ 4 * LD)` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `tfin : Real.log (2 * (D':ℝ)) ≤ x ^ (11:ℕ) * LD`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : x ^ (11:ℕ) * LD = x ^ 7 * (x ^ 4 * LD)` using `by ring`. Establish `h0 : 0 ≤ x ^ 4 * LD` using `by positivity`. Establish `: 73 * (x ^ 4 * LD) ≤ x ^ 7 * (x ^ 4 * LD)` using `mul_le_mul_of_nonneg_right (by linarith) h0`. Rewrite using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Rewrite using `[hxadd, ← hx5C]`. Combine the equalities or inequalities in the displayed calculation.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem num_down (C : ℝ) (hC : 0 ≤ C) (E n D n' D' d w : ℕ) (hE : 1 ≤ E) (hn : 1 ≤ n) (hD : 1 ≤ D)
     (hD' : 1 ≤ D') (h1 : n' = d * n) (hn' : 1 ≤ n') (h2 : d ≤ (n + 1) * (4 * E + 4)) (hw : w ≤ 2 * n')
@@ -249,13 +247,13 @@ private theorem num_down (C : ℝ) (hC : 0 ≤ C) (E n D n' D' d w : ℕ) (hE : 
     _ = (x ^ 5) ^ C * x ^ (11:ℕ) * LD := by ring
 
 /- English proof (translation)
-Establish `key` using `K.numGens 2 L (classNumber L) (by apply Nat.le_mul_of_pos_right; positivity)`. Establish `key0` using `K.numGens 2 L 0 (Nat.zero_le _)`. Simplify using `only [Nat.cast_zero, Real.log_zero, Nat.cast_ofNat] at key key0`. Establish `hl2 : 0 < Real.log 2` using `Real.log_pos (by norm_num)`. Establish `hnD : 0 ≤ 4 * (Module.finrank ℚ L : ℝ) * Real.log (2 * ((discr L).natAbs : ℝ))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hk : (Nat.log 2 (classNumber L) : ℝ) ≤ 4 * (Module.finrank ℚ L : ℝ) * Real.log (2 * ((discr L).natAbs : ℝ))`. Break down `Nat.eq_zero_or_pos (classNumber L) with h0 | hpos` into its components or cases. Rewrite using `[h0, Nat.log_zero_right, Nat.cast_zero]`. Conclude with `hnD`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hp : 2 ^ Nat.log 2 (classNumber L) ≤ classNumber L` using `Nat.pow_log_le_self 2 hpos.ne'`. Establish `hpR : (2:ℝ) ^ Nat.log 2 (classNumber L) ≤ (classNumber L : ℝ)` using `by exact_mod_cast hp`. Establish `hlog : (Nat.log 2 (classNumber L) : ℝ) * Real.log 2 ≤ Real.log (classNumber L)`. Rewrite using `[← Real.log_pow]`. Conclude with `Real.log_le_log (by positivity) hpR`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Move the embeddings inside the algebraic operations.
 
-Use the polynomial consequences of the given equalities and inequalities. Use `show ((2 * Module.finrank ℚ L + Nat.log 2 (classNumber L) + 2 : ℕ) : ℝ) ≤ _`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem gens_le (L : Type) [Field L] [NumberField L] :
     (gens L : ℝ) ≤ 2 * (Module.finrank ℚ L : ℝ) +
@@ -283,67 +281,59 @@ private theorem gens_le (L : Type) [Field L] [NumberField L] :
 
 set_option maxHeartbeats 800000 in
 /- English proof (translation)
-Unfold `UpperTheory.V.ZK.SNum`. Introduce `hFew hCount hSha hLayer hTors`. Take `⟨C0, hC0⟩` from `hTors`. Use `⟨5 * (max C0 9 + 2) + 11, ?_⟩` and prove the remaining obligations. Unfold `UpperTheory.V.ZK.ShaK`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Introduce `l hl L i1 i2 hTC hMu E hE`. Take `⟨k, rfl⟩ : ∃ k, E = k + 1` from `⟨E - 1, by omega⟩`. Take `⟨L', i3, i4, c, d, hTC', hTop, hlc, hcp, hdeg, hd, hlc2, hdisc, hsha⟩` from `hLayer L l (k + 1) hMu hE`. Establish `hl1 : 1 < l` using `hl.out.one_lt`. Establish `hB : ∀ (F : Type) [Field F] [NumberField F] [Algebra L' F] (ν : ℕ) (ζ : (𝓞 F)ˣ) (γ : Gal(F/L')), Lay l c ν ζ γ → Finite ↑(EqHom γ ((1 + l ^ c) ^ (k + 1)) (l ^ ν)) ∧ Nat.card ↑(EqHom γ ((1 + l ^ c) ^ (k + 1)) (l ^ ν)) ≤ tc L' (4 * k + 10) (2 * k + 3) * tc L' (4 * k + 10) (2 * k + …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `F i5 i6 i7 ν ζ γ hLay`. Establish `hfew` using `hFew L' F hTC' l c ν k ζ γ hLay (by omega) (by omega)`. Establish `hcnt` using `hCount L' F hTC' l c ν (k + 1) _ _ ζ γ hLay (by omega) hfew`. Use `⟨hcnt.1, ?_⟩` and prove the remaining obligations. Establish `hP : 0 < (l ^ ν) ^ InfinitePlace.nrComplexPlaces L'` using `pow_pos (pow_pos (by omega) _) _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2` using `hcnt.2`. Apply `le_of_mul_le_mul_left _ hP` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Take `⟨s, hs, hlsB⟩` from `hSha L' hTC' l c (k + 1) _ hTop hE hB`. Establish `hne : LDataCardLeFinrank.shaInv L l ((k + 1 : ℕ) : ℤ) ≠ ⊤`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `htop`. Rewrite `hsha` using `[htop, hs]`. Conclude with `ENat.coe_ne_top s (top_le_iff.mp hsha)`. Use `⟨(LDataCardLeFinrank.shaInv L l ((k + 1 : ℕ) : ℤ)).toNat, (ENat.coe_toNat hne).symm, ?_⟩` and prove the remaining obligations. Establish `hs0 : (LDataCardLeFinrank.shaInv L l ((k + 1 : ℕ) : ℤ)).toNat ≤ s`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `hsha`. Rewrite `h` using `[← ENat.coe_toNat hne, hs]`. Conclude with `h` after adjusting the coercions. Use `set s0 := (LDataCardLeFinrank.shaInv L l ((k + 1 : ℕ) : ℤ)).toNat with hs0def`. Use `set T1 := tc L' (4 * k + 10) (2 * k + 3) with hT1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set T2 := tc L' (4 * k + 10) (2 * k + 2) with hT2`. Use `set bN := 2 * k + 2 + (2 * k + 3) * (c + (2 * k + 3)) with hbN`. Use `set fN := (k + 1).factorization l with hfN`. Use `set g := gens L' with hg`. Use `set X := (bN + fN) * g + c + fN with hX`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hlsB' : l ^ s ≤ T1 * T2 * l ^ X` using `hlsB`. Establish `hBpos : 1 ≤ T1 * T2 * l ^ X` using `le_trans (Nat.one_le_pow _ _ (by omega)) hlsB'`. Establish `hT1ne : T1 ≠ 0`. Introduce `h`. Rewrite `hBpos` using `[h]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `at hBpos`. Establish `hT2ne : T2 ≠ 0`. Introduce `h`. Rewrite `hBpos` using `[h]`. Simplify using `at hBpos`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hlR : (1:ℝ) < l` using `by exact_mod_cast hl1`. Establish `hl0R : (0:ℝ) < l` using `by linarith`. Establish `hlog0 : 0 < Real.log (l:ℝ)` using `Real.log_pos hlR`. Establish `hlogs : (s:ℝ) * Real.log l ≤ Real.log T1 + Real.log T2 + (X:ℝ) * Real.log l`. Establish `hT1R : (0:ℝ) < T1` using `by exact_mod_cast Nat.pos_of_ne_zero hT1ne`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hT2R : (0:ℝ) < T2` using `by exact_mod_cast Nat.pos_of_ne_zero hT2ne`. Combine the equalities or inequalities in the displayed calculation. Apply `Real.log_le_log (pow_pos hl0R _)` to reduce the goal to its premises. Conclude with `hlsB'` after adjusting the coercions. Use `_ = Real.log T1 + Real.log T2 + (X:ℝ) * Real.log l := by`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[Real.log_mul (by positivity) (pow_pos hl0R _).ne', Real.log_mul hT1R.ne' hT2R.ne', Real.log_pow]`. Establish `hT1b` using `hC0 L' hTC' (k + 1) hE (2 * k + 3) (by omega)`. Establish `hT2b` using `hC0 L' hTC' (k + 1) hE (2 * k + 2) (by omega)`. Rewrite `hT1b`, `hT2b` using `[show 4 * (k + 1) + 6 = 4 * k + 10 by ring]`. Unfold `kBound at hT1b hT2b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcard` using `InfinitePlace.card_add_two_mul_card_eq_rank L'`. Establish `hn'big : 2 * k + 4 ≤ Module.finrank ℚ L'` using `by omega`. Establish `hc0 : c ≠ 0`. Introduce `h`. Rewrite `hlc` using `[h, pow_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hcl : c < l ^ c` using `Nat.lt_pow_self hl1`. Establish `hll : l ≤ l ^ c` using `Nat.le_self_pow hc0 l`. Establish `hf : fN < k + 1` using `Nat.factorization_lt l (by omega)`. Establish `hDne` using `NumberField.discr_ne_zero L'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hD'1 : 1 ≤ (discr L').natAbs` using `Int.natAbs_pos.mpr hDne`. Establish `hD'1R : (1:ℝ) ≤ ((discr L').natAbs : ℝ)` using `by exact_mod_cast hD'1`. Establish `hgl` using `gens_le L'`. Use `set n' : ℝ := (Module.finrank ℚ L' : ℝ) with hn'`. Use `set Y := Real.log (2 * ((discr L').natAbs : ℝ)) with hY`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `set u : ℝ := 2 * ((k + 1 : ℕ) : ℝ) * n' with hu`. Establish `hkR : (0:ℝ) ≤ k` using `Nat.cast_nonneg k`. Establish `hn'bigR : 2 * (k:ℝ) + 4 ≤ n'` using `by rw [hn']; exact_mod_cast hn'big`. Establish `hk1 : ((k + 1 : ℕ) : ℝ) = k + 1` using `by push_cast; ring`. Establish `hu' : u = 2 * ((k:ℝ) + 1) * n'` using `by rw [hu, hk1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn'0 : (0:ℝ) ≤ n'` using `by linarith`. Establish `hn'u : 2 * n' ≤ u`. Rewrite using `[hu']`. Use `mul_le_mul_of_nonneg_right (show (2:ℝ) ≤ 2 * ((k:ℝ) + 1) by linarith) hn'0` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hku : 2 * ((k:ℝ) + 1) ≤ u`. Rewrite using `[hu']`. Use `mul_le_mul_of_nonneg_left (show (1:ℝ) ≤ n' by linarith) (show (0:ℝ) ≤ 2 * ((k:ℝ) + 1) by positivity)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hu2 : 2 ≤ u` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hL2 : (0.6931471803:ℝ) < Real.log 2` using `Real.log_two_gt_d9`. Establish `hY2 : Real.log 2 ≤ Y` using `Real.log_le_log (by norm_num) (by linarith)`. Establish `hYh : 1 / 2 ≤ Y` using `by linarith`. Establish `hcR : (c:ℝ) ≤ 2 * n'`. Establish `: c ≤ 2 * Module.finrank ℚ L'` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hn']`. Conclude with `this` after adjusting the coercions. Establish `hlR2 : (l:ℝ) ≤ 2 * n'`. Establish `: l ≤ 2 * Module.finrank ℚ L'` using `le_trans hll hlc2`. Rewrite using `[hn']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Establish `hfR : (fN:ℝ) ≤ k + 1`. Establish `: fN ≤ k + 1` using `hf.le`. Conclude with `this` after adjusting the coercions. Establish `htl : Real.log l ≤ u`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Real.log_le_sub_one_of_pos hl0R` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hbR : (bN:ℝ) = 2 * k + 2 + (2 * k + 3) * (c + (2 * k + 3))` using `by rw [hbN]; push_cast; ring`. Establish `hb0 : (0:ℝ) ≤ bN` using `Nat.cast_nonneg _`. Establish `hbb : (bN:ℝ) ≤ u + 2 * u ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[hbR]`. Establish `a1 : (2 * (k:ℝ) + 3) * (c + (2 * k + 3)) ≤ n' * (3 * n')` using `mul_le_mul (by linarith) (by linarith) (by positivity) (by linarith)`. Establish `a2 : 2 * (k:ℝ) + 2 ≤ u` using `by linarith`. Establish `a3 : n' * (3 * n') ≤ 2 * u ^ 2`. Establish `h4 : (2 * n') ^ 2 ≤ u ^ 2` using `pow_le_pow_left₀ (by positivity) hn'u 2`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : (2 * n') ^ 2 = 4 * n' ^ 2` using `by ring`. Establish `e2 : n' * (3 * n') = 3 * n' ^ 2` using `by ring`. Establish `h5 : 0 ≤ n' ^ 2` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg0 : (0:ℝ) ≤ g` using `Nat.cast_nonneg _`. Establish `hgg : (g:ℝ) ≤ u + 2 * u * Y + 2`. Establish `hY0 : 0 ≤ Y` using `by linarith`. Establish `: 2 * (2 * n') * Y ≤ 2 * u * Y`. Use `mul_le_mul_of_nonneg_right hn'u hY0` as an intermediate fact.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hgl' : (g:ℝ) ≤ 2 * n' + 2 * (2 * n') * Y + 2` using `hgl`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hc0R : (0:ℝ) ≤ c` using `Nat.cast_nonneg _`. Establish `hcu : (c:ℝ) ≤ u` using `by linarith`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf0 : (0:ℝ) ≤ fN` using `Nat.cast_nonneg _`. Establish `hfu : (fN:ℝ) ≤ u` using `by linarith`. Establish `hP` using `num_poly u Y (Real.log l) bN g c fN hu2 hYh htl hb0 hbb hg0 hgg hc0R hcu hf0 hfu`. Establish `hXR : (X:ℝ) = ((bN:ℝ) + fN) * g + c + fN` using `by rw [hX]; push_cast; ring`. Establish `hP' : (X:ℝ) * Real.log l ≤ u ^ 9 * Y` using `by rw [hXR]; exact hP`.
-
-Establish `ht : (s:ℝ) * Real.log l ≤ 2 * Real.exp (u ^ C0 * Y) + (X:ℝ) * Real.log l`. Establish `e1 : Real.log (T1:ℝ) ≤ Real.exp (u ^ C0 * Y)` using `hT1b`. Establish `e2 : Real.log (T2:ℝ) ≤ Real.exp (u ^ C0 * Y)` using `hT2b`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3` using `num_three C0 u Y ((s:ℝ) * Real.log l) hu2 hYh _ hP' ht`.
-
-Establish `hs0R : (s0:ℝ) * Real.log l ≤ (s:ℝ) * Real.log l` using `mul_le_mul_of_nonneg_right (by exact_mod_cast hs0) hlog0.le`. Establish `hC : 0 ≤ max C0 9 + 2`. Use `le_max_right C0 9` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hn1 : 1 ≤ Module.finrank ℚ L` using `Module.finrank_pos`.
-
-Establish `hD1 : 1 ≤ (discr L).natAbs` using `Int.natAbs_pos.mpr (NumberField.discr_ne_zero L)`. Establish `hdown` using `num_down (max C0 9 + 2) hC (k + 1) (Module.finrank ℚ L) (discr L).natAbs (Module.finrank ℚ L') (discr L').natAbs d (l ^ c) hE hn1 hD1 hD'1 hdeg (by omega) hd hlc2 hdisc`. Establish `hmid : Real.exp (u ^ (max C0 9 + 2) * Y) = kBound (max C0 9 + 2) (k + 1) (Module.finrank ℚ L') (discr L').natAbs`. Unfold `kBound`. Both sides reduce to the same expression.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Both sides reduce to the same expression. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.ZK.sNum :
     UpperTheory.V.ZK.SNum := by

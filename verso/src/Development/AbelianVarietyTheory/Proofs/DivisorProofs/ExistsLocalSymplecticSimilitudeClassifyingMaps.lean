@@ -18,9 +18,9 @@ namespace GlobalTheory.HTLocSim
 variable {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing R] {b : Base D R} {N : ℕ}
 
 /- English proof (translation)
-Use `⟨fun a => GlobalTheory.ObjPull.secPull m.cart (lev a), ⟨fun a c => by dsimp only; rw [hl.1, map_mul], fun a => by dsimp only; rw [← map_pow, hl.2.1, map_one], fun k _ _ x β z hx hz => ?_⟩, fun a => GlobalTheory.ObjPull.secPull_left m.cart _⟩` and prove the remaining obligations. Set `Φ` to `GlobalTheory.ObjPull.pushEquiv m.cart (Over.mk x)`. Establish `hΦ : ∀ a, Φ (toUnit _ ≫ GlobalTheory.ObjPull.secPull m.cart (lev a)) = toUnit (Over.mk (x ≫ f)) ≫ lev a` using `fun a => GlobalTheory.ObjPull.pushEquiv_secPull m.cart _ _`. Take `⟨hker, honto, hw⟩` from `hl.2.2 k (x ≫ f) β z ((Category.assoc _ _ _).trans hx) hz`. Use `⟨fun a => ?_, fun g hg => ?_, fun a b => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hker a, ← hΦ a]`. Conclude with `(map_eq_one_iff Φ Φ.injective).symm`. Take `⟨a, ha⟩` from `honto (Φ g) (by rw [← map_pow, hg, map_one])`. Conclude with `⟨a, Φ.injective ((hΦ a).trans ha)⟩`. Conclude with `(GlobalTheory.weilIs_grpPullback_of_comm S S' o.A o'.A f m.φ _ _ (pull_isLB o.isLB _) (pull_isLB o'.isLB _) m.cart (DiagComp.diag_lbIso m) (Over.mk x) _ _ _ (toUnit (Over.mk (x ≫ f)) ≫ lev a) (toUnit (Over.mk (x ≫ f)) ≫ lev b) _ (by rw [← hΦ a]; rfl) (by rw [← hΦ b]; rfl)).2 (hw …`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_sympLev_pull {S S' : Scheme.{0}} {s : S ⟶ Sp R} {s' : S' ⟶ Sp R} {o : Obj b N s} {o' : Obj b N s'}
     {f : S' ⟶ S} (m : ObjMap o' o f) {h M : ℕ} {B : Type} [CommRing B] {ζ : B} {t₁ : S ⟶ Sp B}
@@ -44,9 +44,9 @@ theorem exists_sympLev_pull {S S' : Scheme.{0}} {s : S ⟶ Sp R} {s' : S' ⟶ Sp
       (toUnit (Over.mk (x ≫ f)) ≫ lev b) _ (by rw [← hΦ a]; rfl) (by rw [← hΦ b]; rfl)).2 (hw a b)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `ha`. Establish `hd : ∀ i, (M : ℤ) ∣ a i` using `fun i => (ZMod.intCast_zmod_eq_zero_iff_dvd _ M).1 (congrFun ha i)`. Use `choose c hc using hd`. Conclude with `⟨c, funext fun i => by rw [Pi.smul_apply, hc i, nsmul_eq_mul]⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨c, rfl⟩`. Use function extensionality and compare the values at `i`. Simplify using `[reduceMod]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem reduceMod_eq_zero_iff {h M : ℕ} (a : Fin h ⊕ Fin h → ℤ) : reduceMod M a = 0 ↔ ∃ c, a = M • c := by
   constructor
@@ -59,16 +59,16 @@ theorem reduceMod_eq_zero_iff {h M : ℕ} (a : Fin h ⊕ Fin h → ℤ) : reduce
     simp [reduceMod]
 
 /- English proof (translation)
-Simplify using `[omegaMod, omegaStd, reduceMod]`.
+Simplify using the standard rewrite rules.
 -/
 theorem omegaMod_reduceMod {h : ℕ} (M : ℕ) (a c : Fin h ⊕ Fin h → ℤ) :
     omegaMod M (reduceMod M a) (reduceMod M c) = ((omegaStd a c : ℤ) : ZMod M) := by
   simp [omegaMod, omegaStd, reduceMod]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Rewrite using `[zero_nsmul, pow_zero]`. Establish `e` using `hadd 0 0`. Rewrite `e` using `[add_zero]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mul_left_cancel (e.symm.trans (_root_.mul_one _).symm)`. Consider the case `succ n ih => rw [succ_nsmul, hadd, ih, pow_succ]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem lev_nsmul {S : Scheme.{0}} {A : Over S} [GrpObj A] {h : ℕ} (l : (Fin h ⊕ Fin h → ℤ) → (𝟙_ (Over S) ⟶ A))
     (hadd : ∀ a c, l (a + c) = l a * l c) (n : ℕ) (a : Fin h ⊕ Fin h → ℤ) : l (n • a) = l a ^ n := by
@@ -90,7 +90,7 @@ section
 variable {S : Scheme.{0}} {A : Over S} [GrpObj A] {h : ℕ}
 
 /- English proof (translation)
-Rewrite using `[hl, MonObj.comp_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ev_add (l : (Fin h ⊕ Fin h → ℤ) → (𝟙_ (Over S) ⟶ A)) (hl : ∀ a c, l (a + c) = l a * l c) {k : Type} [Field k]
     (y : Sp k ⟶ S) (a c : Fin h ⊕ Fin h → ℤ) :
@@ -98,7 +98,7 @@ theorem ev_add (l : (Fin h ⊕ Fin h → ℤ) → (𝟙_ (Over S) ⟶ A)) (hl : 
   rw [hl, MonObj.comp_mul]
 
 /- English proof (translation)
-Rewrite using `[eq_mul_inv_iff_mul_eq, ← ev_add l hl y, sub_add_cancel]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ev_sub (l : (Fin h ⊕ Fin h → ℤ) → (𝟙_ (Over S) ⟶ A)) (hl : ∀ a c, l (a + c) = l a * l c) {k : Type} [Field k]
     (y : Sp k ⟶ S) (a c : Fin h ⊕ Fin h → ℤ) :
@@ -106,9 +106,9 @@ theorem ev_sub (l : (Fin h ⊕ Fin h → ℤ) → (𝟙_ (Over S) ⟶ A)) (hl : 
   rw [eq_mul_inv_iff_mul_eq, ← ev_add l hl y, sub_add_cancel]
 
 /- English proof (translation)
-Establish `hk` using `(hl.2.2 k y β z hy hz).1 (a - c)`. Rewrite `hk` using `[ev_sub l hl.1 y, mul_inv_eq_one]`. Rewrite using `[hk, ← sub_eq_zero, ← reduceMod_eq_zero_iff]`. Apply the tactic sequence `constructor <;> intro e`. Rewrite using `[← e]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Simplify using `[reduceMod]`. Rewrite using `[← e]`. Use function extensionality and compare the values at `i`. Simplify using `[reduceMod]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem ev_eq_iff {P : LB (G2 A).left} {M : ℕ} {B : Type} [CommRing B] {ζ : B} {t₁ : S ⟶ Sp B}
     {l : (Fin h ⊕ Fin h → ℤ) → (𝟙_ (Over S) ⟶ A)} (hl : IsSympLev P h M ζ t₁ l) (k : Type) [Field k] [IsAlgClosed k]
@@ -130,31 +130,27 @@ namespace GlobalTheory.HTLocSim
 variable {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing R] {b : Base D R} {N : ℕ}
 
 /- English proof (translation)
-Use `haveI : NeZero M := ⟨hM.ne'⟩`. Establish `hzk : IsPrimitiveRoot (β (zetaAway M)) M` using `isPrimitiveRoot_map hM.ne' β`. Establish `hzk' : IsPrimitiveRoot (β' (zetaAway M)) M` using `isPrimitiveRoot_map hM.ne' β'`. Set `z : kˣ` to `Units.mk0 _ (hzk.ne_zero hM.ne')`. Set `z' : kˣ` to `Units.mk0 _ (hzk'.ne_zero hM.ne')`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hz : IsPrimitiveRoot z M` using `IsPrimitiveRoot.coe_units_iff.1 hzk`. Take `⟨-, onto, hw⟩` from `hl.2.2 k y β z hβ rfl`. Take `⟨-, -, hw'⟩` from `hl'.2.2 k y β' z' hβ' rfl`. Establish `E` using `ev_eq_iff hl k y β z hβ rfl`. Establish `E'` using `ev_eq_iff hl' k y β' z' hβ' rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpre : ∀ c : Fin h ⊕ Fin h → ℤ, ∃ B, toUnit (Over.mk y) ≫ l B = toUnit (Over.mk y) ≫ l' c` using `fun c => onto _ (by rw [← MonObj.comp_pow, hl'.2.1, MonObj.comp_one])`. Use `choose B hB using hpre`. Set `γ0 : (Fin h ⊕ Fin h → ZMod M) → (Fin h ⊕ Fin h → ZMod M)` to `fun c => reduceMod M (B (liftMod c))`. Establish `hchar : ∀ c b, reduceMod M b = γ0 c ↔ toUnit (Over.mk y) ≫ l b = toUnit (Over.mk y) ≫ l' (liftMod c)` using `fun c b => by`. Rewrite using `[← hB, E]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hadd : ∀ c c', γ0 (c + c') = γ0 c + γ0 c'` using `fun c c' => by`. Establish `e1 : reduceMod M (B (liftMod c) + B (liftMod c')) = reduceMod M (B (liftMod c)) + reduceMod M (B (liftMod c'))`. Use function extensionality and compare the values at `i`. Simplify using `[reduceMod]`. Use `show γ0 (c + c') = reduceMod M (B (liftMod c)) + reduceMod M (B (liftMod c'))`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e1]`. Use `((hchar _ _).2 ?_).symm` and prove the remaining obligations. Rewrite using `[ev_add l hl.1 y, hB, hB, ← ev_add l' hl'.1 y, E']`. Use function extensionality and compare the values at `i`. Simplify using `[reduceMod, liftMod]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hinj : Function.Injective γ0` using `fun c c' e => by`. Establish `h1` using `(hchar c' (B (liftMod c))).1 e`. Rewrite `h1` using `[hB, E', reduceMod_liftMod, reduceMod_liftMod]`. Conclude with `h1`. Set `γl : (Fin h ⊕ Fin h → ZMod M) →ₗ[ZMod M] (Fin h ⊕ Fin h → ZMod M)` to `(AddMonoidHom.mk' γ0 hadd).toZModLinearMap M`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `hγl : ∀ c, γl c = γ0 c` using `fun _ => rfl`. Establish `hbij : Function.Bijective γl`. Establish `hi : Function.Injective γl` using `fun c c' e => hinj (by rwa [hγl, hγl] at e)`. Conclude with `⟨hi, Finite.surjective_of_injective hi⟩`. Set `γe` to `LinearEquiv.ofBijective γl hbij`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hγe : ∀ c, γe c = γ0 c` using `fun _ => rfl`. Take `⟨i, -, hi⟩` from `hzk.eq_pow_of_pow_eq_one hzk'.pow_eq_one`. Establish `hi' : z ^ i = z'` using `Units.ext (by rw [Units.val_pow_eq_pow_val]; exact hi)`. Establish `hcop : i.Coprime M` using `(hz.pow_iff_coprime hM i).1 (hi' ▸ IsPrimitiveRoot.coe_units_iff.1 hzk')`. Establish `h2 : IsUnit ((2 : ℕ) : ZMod M)` using `(ZMod.unitOfCoprime 2 (Nat.coprime_two_right.2 hodd).symm).isUnit`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hpair : ∀ a c, ((omegaStd (B a) (B c) : ℤ) : ZMod M) = (i : ZMod M) * ((omegaStd a c : ℤ) : ZMod M)`. Introduce `a c`. Establish `h1` using `hw (B a) (B c)`. Rewrite `h1` using `[hB, hB]`. Establish `e2` using `GlobalTheory.weilIs_unique_fieldPoint T o.A _ (pull_isLB o.isLB _) k y M _ _ _ _ h1 (hw' a c)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e2` using `[← hi', ← zpow_natCast, ← zpow_mul]`. Establish `h3 : z ^ (2 * omegaStd (B a) (B c) - (i : ℤ) * (2 * omegaStd a c)) = 1`. Rewrite using `[zpow_sub, e2, mul_inv_cancel]`. Rewrite `h3` using `[hz.zpow_eq_one_iff_dvd]`. Establish `h4` using `(ZMod.intCast_zmod_eq_zero_iff_dvd _ M).2 h3`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Move the coercions through the operations in `at h4`. Establish `h5 : ((2 : ℕ) : ZMod M) * (((omegaStd (B a) (B c) : ℤ) : ZMod M) - (i : ZMod M) * ((omegaStd a c : ℤ) : ZMod M)) = 0` using `by push_cast; linear_combination h4`. Conclude with `sub_eq_zero.1 (h2.mul_right_eq_zero.1 h5)`. Establish `hsim : ∀ u v, omegaMod M (γe u) (γe v) = (i : ZMod M) * omegaMod M u v`. Introduce `u v`.
-
-Use `conv_rhs => rw [← reduceMod_liftMod u, ← reduceMod_liftMod v]`. Rewrite using `[hγe, hγe, omegaMod_reduceMod, omegaMod_reduceMod, hpair]`. Set `m : (ZMod M)ˣ` to `ZMod.unitOfCoprime i hcop`. Use `⟨⟨γe, m, fun u v => by rw [hsim, ZMod.coe_unitOfCoprime]⟩, i, hsim, hi.symm, fun c => ?_⟩` and prove the remaining obligations. Use `show _ = toUnit (Over.mk y) ≫ l (liftMod (γe (reduceMod M c)))`.
-
-Rewrite using `[hγe, (hchar _ _).1 (reduceMod_liftMod _), E', reduceMod_liftMod]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sim_point {h M : ℕ} (hM : 0 < M) (hodd : Odd M) {T : Scheme.{0}} {t : T ⟶ Sp R} (o : Obj b N t)
     {t₁ t₁' : T ⟶ Sp (cycAway M)} {l l' : (Fin h ⊕ Fin h → ℤ) → (𝟙_ (Over T) ⟶ o.A)}
@@ -236,15 +232,15 @@ namespace GlobalTheory.HTLocSim
 variable {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing R] {b : Base D R} {N : ℕ}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(Spec.preimage f).hom, by simp [spMap]⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_spMap_eq {A B : Type} [CommRing A] [CommRing B] (f : Sp B ⟶ Sp A) : ∃ β : A →+* B, f = spMap β :=
   ⟨(Spec.preimage f).hom, by simp [spMap]⟩
 
 /- English proof (translation)
-Use `haveI : FormallyUnramified (spMap (algebraMap ℤ (cycAway M))) := by`. Rewrite using `[spMap, HasRingHomProperty.Spec_iff (P := @FormallyUnramified)]`. Conclude with `RingHom.formallyUnramified_algebraMap.2 (formallyUnramified_cycAway hM ℤ)`. Use `haveI : LocallyOfFiniteType (spMap (algebraMap ℤ (cycAway M))) := by`. Rewrite using `[spMap, HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `RingHom.finiteType_algebraMap.2 (finiteType_cycAway M)`. Establish `hab : f ≫ spMap (algebraMap ℤ (cycAway M)) = g ≫ spMap (algebraMap ℤ (cycAway M))` using `specZIsTerminal.hom_ext _ _`. Use `haveI := GlobalTheory.isOpenImmersion_equalizer_ι_of_unramified (spMap (algebraMap ℤ (cycAway M))) hab`. Use `⟨(equalizer.ι f g).opensRange, GlobalTheory.range_subset_range_equalizer_ι y hy, ?_⟩` and prove the remaining obligations. Rewrite using `[← cancel_epi (equalizer.ι f g).isoOpensRange.hom, ← Category.assoc, ← Category.assoc, Scheme.Hom.isoOpensRange_hom_ι, equalizer.condition]`.
+A detailed English derivation is pending.
 -/
 theorem exists_open_eq_cycAway {M : ℕ} (hM : M ≠ 0) {T : Scheme.{0}} (f g : T ⟶ Sp (cycAway M)) (k : Type) [Field k]
     (y : Sp k ⟶ T) (hy : y ≫ f = y ≫ g) : ∃ V : T.Opens, Set.range y ⊆ (V : Set T) ∧ V.ι ≫ f = V.ι ≫ g := by
@@ -262,17 +258,15 @@ theorem exists_open_eq_cycAway {M : ℕ} (hM : M ≠ 0) {T : Scheme.{0}} (f g : 
     Scheme.Hom.isoOpensRange_hom_ι, equalizer.condition]
 
 /- English proof (translation)
-Establish `hM0 : 0 < M` using `by omega`. Establish `hzk : IsPrimitiveRoot (β (zetaAway M)) M` using `isPrimitiveRoot_map hM0.ne' β`. Take `⟨-, onto, -⟩` from `hl.2.2 k y β (Units.mk0 _ (hzk.ne_zero hM0.ne')) hβ rfl`. Take `⟨I, -⟩` from `o.geom k y βR hR`. Use `haveI := D.freeLa`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `haveI := D.finLa`. Set `bs` to `Module.Free.chooseBasis ℤ D.La`. Establish `hpos : 0 < Module.finrank ℤ D.La` using `by have := Datum.two_le_finrank_La D; omega`. Choose the witnesses or unpack the hypotheses as in `⟨i₀⟩ : Nonempty (Module.Free.ChooseBasisIndex ℤ D.La) := by`. Rewrite using `[← Fintype.card_pos_iff, ← Module.finrank_eq_card_chooseBasisIndex]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `hpos`. Establish `hnd : ¬ ∃ c, bs i₀ = M • c`. Introduce and unpack `⟨c, hc⟩`. Establish `e` using `congrArg (fun v => bs.repr v i₀) hc`. Simplify using `only [Module.Basis.repr_self, Finsupp.single_eq_same, map_nsmul, Finsupp.smul_apply, nsmul_eq_mul] at e`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `: (M : ℤ) ∣ 1` using `⟨_, e⟩`. Use `Int.eq_one_of_dvd_one (by positivity) this` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hne : I.ev M (bs i₀) ≠ 1` using `fun e => hnd ((I.ker M hM0 hMp _).1 e)`. Establish `hpow : I.ev M (bs i₀) ^ M = 1` using `(I.onto M hM0 hMp _).2 ⟨_, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨a, ha⟩` from `onto _ hpow`. Establish `ha0 : a = 0` using `funext fun i => i.elim (fun j => j.elim0) (fun j => j.elim0)`. Establish `l0 : l 0 = 1`. Establish `e` using `hl.1 0 0`. Rewrite `e` using `[add_zero]`.
-
-Conclude with `(mul_left_cancel (e.symm.trans (_root_.mul_one _).symm))`. Rewrite `ha` using `[ha0, l0, MonObj.comp_one]`. Conclude with `hne ha.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem false_of_sympLev_zero {M : ℕ} (hM : 2 ≤ M) (hMp : M.Coprime p) {T : Scheme.{0}} {t : T ⟶ Sp R}
     (o : Obj b N t) {t₁ : T ⟶ Sp (cycAway M)} {l : (Fin 0 ⊕ Fin 0 → ℤ) → (𝟙_ (Over T) ⟶ o.A)}
@@ -311,35 +305,29 @@ end GlobalTheory.HTLocSim
 namespace GlobalTheory.HTLocSim
 
 /- English proof (translation)
-Introduce `p _ D R _ b N h M hN hNp hM hodd hMp X s s₁ u lev hlev hU ρ hρ T t o x x' hx hx' ⟨m⟩ ⟨m'⟩ q`. Take `⟨l, hl, hlp⟩` from `exists_sympLev_pull m hlev`. Take `⟨l', hl', hlp'⟩` from `exists_sympLev_pull m' hlev`. Set `k` to `AlgebraicClosure (T.residueField q)`. Set `y : Sp k ⟶ T` to `Spec.map (CommRingCat.ofHom (algebraMap (T.residueField q) k)) ≫ T.fromSpecResidueField q`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hyq : q ∈ Set.range y` using `⟨(⊥ : PrimeSpectrum k), (Scheme.Hom.comp_apply _ _ _).trans (Scheme.fromSpecResidueField_apply q _)⟩`. Establish `hM0 : 0 < M` using `by omega`. Use `haveI : NeZero M := ⟨hM0.ne'⟩`. Take `⟨β, hβ⟩` from `exists_spMap_eq (y ≫ x ≫ s₁)`. Take `⟨β', hβ'⟩` from `exists_spMap_eq (y ≫ x' ≫ s₁)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨βR, hβR⟩` from `exists_spMap_eq (y ≫ t)`. Take `⟨a, i, hmul, hzi, ha⟩` from `exists_sim_point hM0 hodd o hl hl' k y β β' hβ hβ'`. Take `⟨hρs, ⟨n, σ, hn, hσ, hρ1⟩, ma, hma⟩` from `hρ a`. Establish `hz` using `isPrimitiveRoot_map hM0.ne' β`. Establish `hni : β (zetaAway M) ^ n = β (zetaAway M) ^ i`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Nat.eq_zero_or_pos h with rfl | hh` into its components or cases. Conclude with `(false_of_sympLev_zero (by omega) hMp o hl k y βR hβR β hβ).elim`. Set `e₁ : Fin h ⊕ Fin h → ZMod M` to `Sum.elim (fun j => if j = ⟨0, hh⟩ then 1 else 0) (fun _ => 0)`. Set `e₂ : Fin h ⊕ Fin h → ZMod M` to `Sum.elim (fun _ => 0) (fun j => if j = ⟨0, hh⟩ then 1 else 0)`. Establish `hω : omegaMod M e₁ e₂ = 1` using `by simp [omegaMod, e₁, e₂]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `(hn e₁ e₂).symm.trans (hmul e₁ e₂)`. Rewrite `h1` using `[hω, _root_.mul_one, _root_.mul_one, ZMod.natCast_eq_natCast_iff']`. Establish `key : ∀ j, β (zetaAway M) ^ j = β (zetaAway M) ^ (j % M)` using `fun j => by conv_lhs => rw [← Nat.mod_add_div j M, pow_add, pow_mul, hz.pow_eq_one, one_pow, _root_.mul_one]`. Rewrite using `[key n, key i, h1]`. Establish `hσβ : β.comp σ = β'` using `cycAway_hom_ext hM0.ne' (by rw [RingHom.comp_apply, hσ, map_pow, hni, hzi])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hy1 : y ≫ (x ≫ ρ a ≫ s₁) = y ≫ (x' ≫ s₁)`. Combine the equalities or inequalities in the displayed calculation. Take `⟨V₁, hV₁y, hV₁⟩` from `exists_open_eq_cycAway hM0.ne' (x ≫ ρ a ≫ s₁) (x' ≫ s₁) k y hy1`. Establish `hunit : IsUnit ((M : ℕ) : Γ(T, ⊤))`. Establish `h2` using `((b.unit M hMp).map (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom).map t.appTop.hom`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `h2` using `only [map_natCast]`. Establish `hV : ∀ c : Fin h ⊕ Fin h → ZMod M, ∃ W : T.Opens, Set.range y ⊆ (W : Set T) ∧ W.ι ≫ (l' (liftMod c)).left = W.ι ≫ (sympTwist a l (liftMod c)).left` using `fun c => GlobalTheory.UPel.LocSim.exists_open_eq_of_torsion_point T o.A o.ab M hunit _ _ (hl'.2.1 _) (hl.2.1 _) k y (ha _)`. Use `choose W hWy hW using hV`. Set `V : T.Opens` to `V₁ ⊓ ⟨⋂ c, (W c : Set T), isOpen_iInter_of_finite fun c => (W c).isOpen⟩`. Establish `hqV : q ∈ V` using `⟨hV₁y hyq, Set.mem_iInter.2 fun c => hWy c hyq⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hVW : ∀ c, V ≤ W c` using `fun c => fun z hz => Set.mem_iInter.1 hz.2 c`. Establish `hV1 : V ≤ V₁` using `fun z hz => hz.1`. Establish `hagree : ∀ c, V.ι ≫ (l' c).left = V.ι ≫ (sympTwist a l c).left`. Introduce `c`. Establish `e1 : l' c = l' (liftMod (reduceMod M c))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Take `⟨e, he⟩` from `(reduceMod_eq_zero_iff (M := M) (c - liftMod (reduceMod M c))).1 (by`. Use function extensionality and compare the values at `j`. Simplify using `only [reduceMod, liftMod, Pi.zero_apply, Pi.sub_apply, Int.cast_sub, Int.cast_natCast, ZMod.natCast_zmod_val, sub_self])`. Establish `hc : c = M • e + liftMod (reduceMod M c)` using `by rw [← he, sub_add_cancel]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : sympTwist a l c = sympTwist a l (liftMod (reduceMod M c))`. Simplify using `only [sympTwist, reduceMod_liftMod]`. Rewrite using `[e1, e2, ← Scheme.homOfLE_ι T (hVW (reduceMod M c)), Category.assoc, Category.assoc, hW]`. Establish `hVs : V.ι ≫ (x ≫ ρ a ≫ s₁) = V.ι ≫ (x' ≫ s₁)`. Rewrite using `[← Scheme.homOfLE_ι T hV1, Category.assoc, Category.assoc, hV₁]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨oV, ⟨mV⟩⟩` from `GlobalTheory.HTPull.exists_objMap_pull p D R b N T V t V.ι o`. Take `⟨lV, hlV, hlVp⟩` from `exists_sympLev_pull mV hl'`. Take `⟨f, -, huniq⟩` from `hU V (V.ι ≫ t) (V.ι ≫ x' ≫ s₁) oV lV hlV`. Establish `P1 : (V.ι ≫ x ≫ ρ a) ≫ s = V.ι ≫ t ∧ (V.ι ≫ x ≫ ρ a) ≫ s₁ = V.ι ≫ x' ≫ s₁ ∧ ∃ m : ObjMap oV u (V.ι ≫ x ≫ ρ a), ∀ c, (lV c).left ≫ m.φ = (V.ι ≫ x ≫ ρ a) ≫ (lev c).left`. Use `⟨by simp only [Category.assoc, hρs, hx], by simpa only [Category.assoc] using hVs, mV.comp (m.comp ma), fun c => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `show (lV c).left ≫ (mV.φ ≫ (m.φ ≫ ma.φ)) = (V.ι ≫ x ≫ ρ a) ≫ (lev c).left`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Category.assoc]`. Use `_ = (V.ι ≫ (l' c).left) ≫ m.φ ≫ ma.φ := by rw [hlVp c]`. Use `_ = (V.ι ≫ (sympTwist a l c).left) ≫ m.φ ≫ ma.φ := by rw [hagree c]`.
-
-Use `_ = V.ι ≫ ((sympTwist a l c).left ≫ m.φ) ≫ ma.φ := by simp only [Category.assoc]`. Use `_ = V.ι ≫ (x ≫ (sympTwist a lev c).left) ≫ ma.φ := by`. Rewrite using `[show (sympTwist a l c).left ≫ m.φ = x ≫ (sympTwist a lev c).left from hlp _]`. Use `_ = V.ι ≫ x ≫ ((sympTwist a lev c).left ≫ ma.φ) := by simp only [Category.assoc]`. Use `_ = V.ι ≫ x ≫ ρ a ≫ (lev c).left := by rw [hma c]`.
-
-Use `_ = (V.ι ≫ x ≫ ρ a) ≫ (lev c).left := by simp only [Category.assoc]`. Establish `P2 : (V.ι ≫ x') ≫ s = V.ι ≫ t ∧ (V.ι ≫ x') ≫ s₁ = V.ι ≫ x' ≫ s₁ ∧ ∃ m : ObjMap oV u (V.ι ≫ x'), ∀ c, (lV c).left ≫ m.φ = (V.ι ≫ x') ≫ (lev c).left`. Use `⟨by simp only [Category.assoc, hx'], Category.assoc _ _ _, mV.comp m', fun c => ?_⟩` and prove the remaining obligations. Use `show (lV c).left ≫ (mV.φ ≫ m'.φ) = (V.ι ≫ x') ≫ (lev c).left`. Rewrite using `[← Category.assoc, hlVp c, Category.assoc, hlp' c, Category.assoc]`.
-
-Conclude with `⟨V, a, hqV, (huniq _ P1).trans (huniq _ P2).symm⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_local_similitude : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N h M : ℕ),
   3 ≤ N → N.Coprime p → 3 ≤ M → Odd M → M.Coprime p →

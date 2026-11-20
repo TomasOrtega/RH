@@ -8,7 +8,7 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RowHCParamet
 namespace GlobalTheory.CompanionTheory.Front
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.CompanionTheory.DS.dsUnique`. Unfold `GlobalTheory.CompanionTheory.DS.DSUnique at h`. Unfold `GlobalTheory.Published.DiscreteSeriesUpqUnique`. Use `intros`. Apply the tactic sequence `apply h <;> assumption`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Fix the arbitrary inputs and assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem discreteSeriesUpqUnique : GlobalTheory.Published.DiscreteSeriesUpqUnique := by
   have h := GlobalTheory.CompanionTheory.DS.dsUnique

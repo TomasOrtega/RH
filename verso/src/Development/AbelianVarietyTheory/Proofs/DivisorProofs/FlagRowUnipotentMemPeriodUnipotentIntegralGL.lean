@@ -6,21 +6,19 @@ open GlobalTheory.FunObj GlobalTheory.SplitWeil GlobalTheory.SplitFlip GlobalThe
 namespace GlobalTheory.DiagVol
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n _ _ c t y hy h0`. Use `set E : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k := Matrix.of (fun r s => if r = t then y s else 0) with hE`. Establish `yt : y t = 0` using `h0 t (lt_irrefl _)`. Establish `hEE : E * E = 0`. Use extensionality with `r s`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[hE, Matrix.mul_apply, yt]`. Establish `h1 : (1 + E) * (1 - E) = 1`. Simplify using `only [add_mul, mul_sub, one_mul, mul_one, hEE]`. Normalize the expressions using the abelian group laws. Establish `h2 : (1 - E) * (1 + E) = 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [sub_mul, mul_add, one_mul, mul_one, hEE]`. Normalize the expressions using the abelian group laws. Set `M : GL (n ⊕ Fin c) k` to `⟨1 + E, 1 - E, h1, h2⟩`. Use `⟨M, Subgroup.mem_inf.2 ⟨?_, ?_⟩, rfl⟩` and prove the remaining obligations. Establish `key : ∀ p, (∀ s, lev p s ≤ lev p t → y s = 0) → M ∈ N k n c p`.
+Normalize the expressions using the abelian group laws. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p hp`. Rewrite using `[Model.mem_N_iff]`. Introduce `r s hrs`. Use `show (1 + E) r s = (1 : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k) r s`. Rewrite using `[Matrix.add_apply, hE, Matrix.of_apply]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with hr`. Substitute `hr` using the available equality. Rewrite using `[hp s hrs, add_zero]`. Rewrite using `[add_zero]`. Unfold `symN`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Break down `t with x | i` into its components or cases. Use `Subgroup.mem_sup_left (key _ fun s hs => h0 s ?_)` and prove the remaining obligations. Apply the tactic sequence `rcases s with z | j <;> simp [ordL, lev] at hs ⊢ <;> omega`. Use `Subgroup.mem_sup_right (key _ fun s hs => h0 s ?_)` and prove the remaining obligations. Apply the tactic sequence `rcases s with z | j <;> simp [ordL, lev] at hs ⊢ <;> omega`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[mem_KO_iff]`. Use `⟨fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Use `show (1 + E) i j ∈ 𝒪[k]`. Simplify using `only [Matrix.add_apply, hE, Matrix.of_apply, Matrix.one_apply]`. Apply the tactic sequence `refine add_mem ?_ ?_ <;> split_ifs <;> first | exact one_mem _ | exact zero_mem _ | exact hy _`.
-
-Use `show (1 - E) i j ∈ 𝒪[k]`. Simplify using `only [Matrix.sub_apply, hE, Matrix.of_apply, Matrix.one_apply]`. Apply the tactic sequence `refine sub_mem ?_ ?_ <;> split_ifs <;> first | exact one_mem _ | exact zero_mem _ | exact hy _`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem rowElt_mem : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {n : Type} [Fintype n] [DecidableEq n] {c : ℕ} (t : n ⊕ Fin c) (y : n ⊕ Fin c → k),

@@ -16,9 +16,9 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} {W : Wts X Pr.Word R} {Λ : �
   {hQ : QE sel (mu : Chr X.F X.E X.K) = ∅} {m2 : ℕ} {al : ∀ j, j ≤ m2 + 1 → L.β j} {Am : Amb X} {u : Pr.Word}
 
 /- English proof (translation)
-Establish `hA : ∀ i, i < R.m → Am.AnaStep (R.N i) (R.N (i + 1)) (Sall sel mu u) (cAof sel mu cst * cBof sel mu cst u)`. Introduce `i hi`. Break down `Nat.lt_or_ge m2 i with h | h` into its components or cases. Establish `e : i = m2 + 1` using `by omega`. Substitute `e` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `h2` using `hTh.2.1`. Rewrite `h2` using `[hm]`. Conclude with `h2`. Conclude with `hTh.1 i h`. Conclude with `{ sig := hσ T_pos := (hPr.T_prime u).pos smooth := fun i hi => (hA i hi).2.1 rat := fun i hi => (hA i hi).2.2 chi_ne := hχ rho := hρ above := fun i hi p p' x => refXi1_above Ch sel mu cst L hQ m2 al u hm i hi p p' x }`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xiHyp_of_thHyp {σ₀ : X.K →+* ℂ} {G : ChainGlob W σ₀} (hm : R.m = m2 + 2) (hσ : Am.σ₀ = σ₀) (hPr : Pr.Ok)
     (hTh : ThHyp W Ch sel mu cst Am u m2)

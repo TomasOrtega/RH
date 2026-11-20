@@ -11,7 +11,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace GlobalTheory.EtC
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `GlobalTheory.T.bijective_HC_component_eval_of_maps R F n`. Conclude with `GlobalTheory.EtC.WExactProd.wexact_of_prod T U X a ℕ (fun k => Φ ⋙ ((evaluation _ PSh).obj (op (SimplexCategory.mk k))).op ⋙ (free R).op ⋙ preadditiveYoneda.obj ((res R F).X (n - k))) (term (Φ ⋙ HC R F) n) (fun k => Functor.whiskerLeft Φ (π k)) (fun V => hπ (Φ.obj V)) (fun k => w …`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem wExact_term_HC (R : Type) [CommRing R] (F : Shv R) (T : Type 1) [Category.{0} T]
     (Φ : T ⥤ Spcᵒᵖ) (U : T) (X : CosimplicialObject T) (a : (CosimplicialObject.const T).obj U ⟶ X)

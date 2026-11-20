@@ -6,11 +6,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 open NumberField Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V.HV UpperTheory.V.U3 UpperTheory.V.Base UpperTheory.V.Pr UpperTheory.V.Fr UpperTheory.V
 
 /- English proof (translation)
-Introduce `hP Ω _ _ _ K _ _ _ _ l _ c _ N _ e ψ D B hB`. Establish `hG` using `gen_gd Ω K l c N e ψ D B hB`. Take `⟨Q, hQ, hS⟩` from `seed_cl Ω l c _ _ _ B _ _ hG`. Take `⟨L, i1, i2, i3, i4, g₁, Φ, C₀, w, ⟨k, -⟩, hOk, hBig, hw, hwQ, hle⟩` from `frame_ex hP l _ _ _ B _ _ hG Q hQ`. Use `⟨L, i1, i2, i3, i4, g₁, Φ, C₀, ⟨k⟩, hOk, hBig, hS L w k.ab k.gal hw hwQ hle ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨h, hg⟩` from `k.g0`. Use `⟨g₁, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[k.gal]`. Use `⟨h, ?_⟩` and prove the remaining obligations. Establish `h1` using `k.del ⟨g₁, h⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h1` using `[hg]`. Conclude with `h1.symm.trans Φ.g0.2`. Establish `h1` using `k.psi ⟨g₁, h⟩`. Rewrite `h1` using `[hg]`. Conclude with `h1 ▸ hOk.baseSubgroup_spec`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Fr.gd_ex :
     GC.Hypotheses₂ → GdFrameEx := by

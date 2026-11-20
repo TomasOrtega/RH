@@ -6,7 +6,7 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace GlobalTheory GlobalTheory
 namespace GlobalTheory.DI
 
 /- English proof (translation)
-Take `⟨w, hw, hFv⟩` from `hF`. Use `⟨v' ^ p * w, At.mul_mem (At.pow_mem hv' p) hw, ?_⟩` and prove the remaining obligations. Establish `h1 : v ^ p * v' ^ p = 1` using `by rw [← mul_pow, hvv, one_pow]`. Rewrite using `[map_mul, hFv, ht, mul_pow]`. Take the linear combination `(-(t ^ p * p * w)) * h1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem unit_mul_logarithmic_lift (p : ℕ) {Kt : Type} [CommRing Kt] (At : Subring Kt)
     (F : Kt →+* Kt) (v v' t : Kt) (_hp : (p : Kt) * p = 0) (hv' : v' ∈ At) (hvv : v * v' = 1)

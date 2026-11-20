@@ -9,11 +9,11 @@ attribute [-instance] Formalism.DoubleCosetMeasures.instMeasGL
 namespace GlobalTheory.FullRankCoinv
 
 /- English proof (translation)
-Set `σ : Fin n ⊕ Fin (d - n) ≃ Fin d` to `(Equiv.sumComm _ _).trans (finSumFinEquiv.trans (finCongr (by omega)))`. Establish `hσ : ∀ i : Fin n, ((σ (Sum.inl i) : Fin d) : ℕ) = d - n + i` using `fun i => by`. Simplify using `[σ]`. Establish `hX : X0 k σ = GlobalTheory.FullRankCoinv.Y0 k n d`. Use extensionality with `i j`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [X0, GlobalTheory.FullRankCoinv.Y0, Matrix.of_apply]`. Use `congr 1`. Apply `propext` to reduce the goal to its premises. Rewrite using `[← hσ i, eq_comm]`. Conclude with `Fin.val_inj.symm`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : Y.rank = Fintype.card (Fin n)` using `by simpa using hY`. Take `⟨h, hh⟩` from `(rank_eq_card_iff_exists_frameMatrixFirstColumnBlock σ Y).1 hc`. Conclude with `⟨invT h, by rw [hh, hX]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_eq_normal_form_mul_of_rank_eq (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (n d : ℕ) (hnd : n ≤ d)

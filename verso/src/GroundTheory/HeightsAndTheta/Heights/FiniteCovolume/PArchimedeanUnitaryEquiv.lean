@@ -17,13 +17,13 @@ variable {F E : Type*} [Field F] [Field E] [NumberField F] [NumberField E] [Alge
   [Algebra.IsQuadraticExtension F E] [IsTotallyReal F] [IsTotallyComplex E]
 
 /- English proof (translation)
-Establish `hu : u.IsReal` using `IsTotallyReal.isReal u`. Rewrite using `[isNonsplitAt_iff hu]`. Assume the negation of the conclusion as `hnn`. Use `push Not at hnn`. Set `ρ` to `ringEquivRealOfIsReal hu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Equip the data with the indicated structure.
 
-Use `letI : Algebra u.Completion ℝ := (ρ : u.Completion →+* ℝ).toAlgebra`. Establish `hs : Real.sqrt (ρ (algebraMap F u.Completion (quadD F E u))) * Real.sqrt (ρ (algebraMap F u.Completion (quadD F E u))) = algebraMap F u.Completion (quadD F E u) • (1 : ℝ) + (0 : u.Completion) • Real.sqrt (ρ (algebraMap F u.Completion (quadD F E u)))`. Establish `hnn' : 0 ≤ ρ (algebraMap F u.Completion (quadD F E u))` using `hnn`. Rewrite using `[Real.mul_self_sqrt hnn', zero_smul, add_zero, Algebra.smul_def, mul_one]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Set `f` to `QuadraticAlgebra.lift ⟨_, hs⟩`. Set `σ : E →+* ℂ` to `Complex.ofRealHom.comp ((f : _ →+* ℝ).comp ((realPlaceTensorEquiv (E := E) (w := u)).toRingEquiv.toRingHom.comp (Algebra.TensorProduct.includeRight : E →ₐ[F] u.Completion ⊗[F] E).toRingHom))`. Apply `IsTotallyComplex.complexEmbedding_not_isReal σ` to reduce the goal to its premises. Rewrite using `[ComplexEmbedding.isReal_iff]`. Use extensionality with `x`.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[σ, ComplexEmbedding.conjugate_coe_eq, Complex.conj_ofReal]`.
+A detailed English derivation is pending.
 -/
 theorem isNonsplitAt_of_isTotallyComplex (u : InfinitePlace F) : IsNonsplitAt E u := by
   have hu : u.IsReal := IsTotallyReal.isReal u
@@ -54,7 +54,7 @@ def placeEmbedding (u : InfinitePlace F) : E →+* ℂ :=
     (Algebra.TensorProduct.includeRight : E →ₐ[F] u.Completion ⊗[F] E).toRingHom
 
 /- English proof (translation)
-Establish `hu` using `IsTotallyReal.isReal u`. Simplify using `only [placeEmbedding, RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, RingEquiv.toRingHom_eq_coe, AlgHom.commutes]`. Rewrite using `[IsScalarTower.algebraMap_apply F u.Completion (u.Completion ⊗[F] E), realPlaceEquiv_algebraMap, Complex.norm_real, ringEquivRealOfIsReal_apply]`. Use `erw [extensionEmbeddingOfIsReal_coe hu]`. Conclude with `norm_embedding_of_isReal hu x`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_placeEmbedding_algebraMap (u : InfinitePlace F) (x : F) :
     ‖placeEmbedding (E := E) u (algebraMap F E x)‖ = u x := by
@@ -71,7 +71,7 @@ def placeAbove (u : InfinitePlace F) : InfinitePlace E :=
   InfinitePlace.mk (placeEmbedding u)
 
 /- English proof (translation)
-Apply `InfinitePlace.ext` to reduce the goal to its premises. Introduce `x`. Rewrite using `[placeAbove, comap_mk, InfinitePlace.apply, RingHom.comp_apply]`. Conclude with `norm_placeEmbedding_algebraMap u x`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comap_placeAbove (u : InfinitePlace F) :
     (placeAbove (E := E) u).comap (algebraMap F E) = u := by
@@ -81,16 +81,16 @@ theorem comap_placeAbove (u : InfinitePlace F) :
   exact norm_placeEmbedding_algebraMap u x
 
 /- English proof (translation)
-Introduce `a b hab`. Rewrite using `[← comap_placeAbove (E := E) a, ← comap_placeAbove (E := E) b, hab]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem placeAbove_injective : Function.Injective (placeAbove (F := F) (E := E)) := by
   intro a b hab
   rw [← comap_placeAbove (E := E) a, ← comap_placeAbove (E := E) b, hab]
 
 /- English proof (translation)
-Establish `h1` using `card_add_two_mul_card_eq_rank F`. Establish `h2` using `card_add_two_mul_card_eq_rank E`. Establish `h3` using `Module.finrank_mul_finrank ℚ F E`. Rewrite `h3` using `[Algebra.IsQuadraticExtension.finrank_eq_two F E]`. Establish `h4 : nrComplexPlaces F = 0` using `IsTotallyReal.nrComplexPlaces_eq_zero F`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h5 : nrRealPlaces E = 0` using `IsTotallyComplex.nrRealPlaces_eq_zero E`. Rewrite using `[card_eq_nrRealPlaces_add_nrComplexPlaces, card_eq_nrRealPlaces_add_nrComplexPlaces]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem card_infinitePlace :
     Fintype.card (InfinitePlace F) = Fintype.card (InfinitePlace E) := by
@@ -114,11 +114,11 @@ theorem placeAboveEquiv_apply (u : InfinitePlace F) :
     placeAboveEquiv (E := E) u = placeAbove u := rfl
 
 /- English proof (translation)
-Establish `hu` using `IsTotallyReal.isReal u`. Establish `hE` using `isNonsplitAt_of_isTotallyComplex (E := E) u`. Break down `embedding_mk_eq (placeEmbedding (E := E) u) with h | h` into its components or cases. Use `⟨realPlaceEquiv hu hE, continuous_realPlaceEquiv hu hE, continuous_realPlaceEquiv_symm hu hE, realPlaceEquiv_conjBase hu hE, fun e => ?_⟩` and prove the remaining obligations. Rewrite using `[placeAbove, h]`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `⟨(realPlaceEquiv hu hE).trans (starRingAut : RingAut ℂ), ?_, ?_, fun z => ?_, fun e => ?_⟩` and prove the remaining obligations. Conclude with `Complex.continuous_conj.comp (continuous_realPlaceEquiv hu hE)`. Use `((continuous_realPlaceEquiv_symm hu hE).comp Complex.continuous_conj).congr fun z => ?_` and prove the remaining obligations. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Simplify using `[realPlaceEquiv_conjBase]`. Rewrite using `[placeAbove, h, ComplexEmbedding.conjugate_coe_eq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_completionTensorEquiv (u : InfinitePlace F) :
     ∃ Ψ : u.Completion ⊗[F] E ≃+* ℂ, Continuous Ψ ∧ Continuous Ψ.symm ∧
@@ -144,21 +144,21 @@ def completionTensorEquiv (u : InfinitePlace F) : u.Completion ⊗[F] E ≃+* �
   (exists_completionTensorEquiv u).choose
 
 /- English proof (translation)
-The claim follows from `(exists_completionTensorEquiv u).choose_spec.1`.
+A detailed English derivation is pending.
 -/
 theorem continuous_completionTensorEquiv (u : InfinitePlace F) :
     Continuous (completionTensorEquiv (E := E) u) :=
   (exists_completionTensorEquiv u).choose_spec.1
 
 /- English proof (translation)
-The claim follows from `(exists_completionTensorEquiv u).choose_spec.2.1`.
+A detailed English derivation is pending.
 -/
 theorem continuous_completionTensorEquiv_symm (u : InfinitePlace F) :
     Continuous (completionTensorEquiv (E := E) u).symm :=
   (exists_completionTensorEquiv u).choose_spec.2.1
 
 /- English proof (translation)
-The claim follows from `(exists_completionTensorEquiv u).choose_spec.2.2.1 z`.
+A detailed English derivation is pending.
 -/
 theorem completionTensorEquiv_conjBase (u : InfinitePlace F) (z : u.Completion ⊗[F] E) :
     completionTensorEquiv u (conjBase F E u.Completion z) =
@@ -166,7 +166,7 @@ theorem completionTensorEquiv_conjBase (u : InfinitePlace F) (z : u.Completion �
   (exists_completionTensorEquiv u).choose_spec.2.2.1 z
 
 /- English proof (translation)
-The claim follows from `(exists_completionTensorEquiv u).choose_spec.2.2.2 e`.
+A detailed English derivation is pending.
 -/
 theorem completionTensorEquiv_includeRight (u : InfinitePlace F) (e : E) :
     completionTensorEquiv u (Algebra.TensorProduct.includeRight e) = (placeAbove u).embedding e :=
@@ -208,7 +208,7 @@ def unitaryPointsComplexEquiv {R : Type*} [CommRing R] [Algebra F R] [Topologica
 variable {W : Type*} [AddCommGroup W] [Module E W]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, gramAt, placeAboveEquiv_apply]`. Conclude with `completionTensorEquiv_includeRight u _`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem map_completionTensorEquiv_gram (h : HermitianForm F E W) (v : Basis ι E W)
     (u : InfinitePlace F) :
@@ -279,7 +279,7 @@ section Compat
 variable {ι : Type*} [Fintype ι] [DecidableEq ι] {W : Type*} [AddCommGroup W] [Module E W]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `tensorMap E (AlgHom.fst F (InfiniteAdeleRing F) (IsDedekindDomain.FiniteAdeleRing (𝓞 F) F)) (tensorMap E (adeleRingEquivProd F : 𝔸[F] →ₐ[F] _) (tensorMap E (Algebra.ofId F 𝔸[F]) ((Algebra.TensorProduct.lid F E).symm (((unitaryGroupEquivMatrix h v γ : GL ι E) : Matrix ι ι E) i j)) …`. Rewrite using `[Algebra.TensorProduct.lid_symm_apply, tensorMap_tmul, tensorMap_tmul, tensorMap_tmul, map_one, map_one, map_one]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem adeleSplit_hermitianDiagonal_fst (h : HermitianForm F E W) (v : Basis ι E W)
     (γ : h.unitaryGroup) (i j : ι) :
@@ -296,9 +296,9 @@ theorem adeleSplit_hermitianDiagonal_fst (h : HermitianForm F E W) (v : Basis ι
     map_one, map_one]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `w`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Establish `hx` using `adeleSplit_hermitianDiagonal_fst h v γ i j`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `completionTensorEquiv ((placeAboveEquiv (F := F) (E := E)).symm w) (tensorMap E (Pi.evalAlgHom F (fun u : InfinitePlace F => u.Completion) ((placeAboveEquiv (F := F) (E := E)).symm w)) (tensorMap E (infiniteAdeleRingEquivPi F : InfiniteAdeleRing F →ₐ[F] _) ((((adeleSplit h v (her …`. Rewrite using `[hx, tensorMap_tmul, tensorMap_tmul, map_one, map_one, ← Algebra.TensorProduct.includeRight_apply, completionTensorEquiv_includeRight, ← placeAboveEquiv_apply, Equiv.apply_symm_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem infiniteUnitaryEquiv_hermitianDiagonal (h : HermitianForm F E W) (v : Basis ι E W)
     (γ : h.unitaryGroup) :
@@ -324,7 +324,7 @@ end Compat
 variable {ι : Type*} [Fintype ι] [DecidableEq ι] {W : Type*} [AddCommGroup W] [Module E W]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨infiniteUnitaryEquiv h v, infiniteUnitaryEquiv_hermitianDiagonal h v⟩`.
+Supply the required witnesses or components.
 -/
 theorem ArchimedeanUnitaryEquiv.proof (h : HermitianForm F E W) (v : Basis ι E W) :
     ArchimedeanUnitaryEquiv.Statement h v :=

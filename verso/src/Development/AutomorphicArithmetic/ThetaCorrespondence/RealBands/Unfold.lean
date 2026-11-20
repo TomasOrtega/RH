@@ -6,23 +6,19 @@ open MeasureTheory Filter UpperTheory.Lit.Cusp
 open scoped Topology
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ _ _ μ _ N a H ν _ hN hinv hray f ψ hf hfi hψ hψc x`. Use `haveI : IsLocallyFiniteMeasure ν := inferInstance`. Use `haveI : SigmaFinite ν := inferInstance`. Establish `hn` using `isBand_of_compact G N a H ν hN hinv hray (fun g => ((‖ψ g‖ : ℝ) : ℂ)) (Complex.continuous_ofReal.comp hψ.norm) (hψc.comp_left (g := fun z : ℂ => ((‖z‖ : ℝ) : ℂ)) (by simp))`. Establish `hb` using `isBand_of_compact G N a H ν hN hinv hray ψ hψ hψc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨⟨-, ⟨C, hC⟩, -, -⟩, -⟩` from `hn`. Establish `hC' : ∀ g, ∫ m, ‖ψ (g * m)‖ ∂ν ≤ C`. Introduce `g`. Establish `h` using `hC g`. Simplify using `only [integral_complex_ofReal, Complex.norm_real, Real.norm_eq_abs] at h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(le_abs_self _).trans h`. Establish `hc1 : Continuous (fun p : G × G => f p.1 * ψ (p.1⁻¹ * x * p.2))` using `by fun_prop`. Establish `h1 : Integrable (fun p : G × G => f p.1 * ψ (p.1⁻¹ * x * p.2)) (μ.prod ν)`. Rewrite using `[integrable_prod_iff hc1.aestronglyMeasurable]`. Use `⟨Eventually.of_forall fun g => (hb.2 (g⁻¹ * x)).const_mul (f g), ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Integrable.mono' (hfi.norm.mul_const C) (hc1.norm.stronglyMeasurable.integral_prod_right' (ν := ν)).aestronglyMeasurable (Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Rewrite using `[Real.norm_of_nonneg (integral_nonneg fun _ => norm_nonneg _)]`. Simplify using `only [norm_mul]`. Rewrite using `[integral_const_mul]`. Conclude with `mul_le_mul_of_nonneg_left (hC' _) (norm_nonneg _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `(integrable_prod_iff h1.swap.aestronglyMeasurable).1 h1.swap`. Establish `key : ∀ m y : G, (x * m * y)⁻¹ * x * m = y⁻¹`. Introduce `m y`. Use `group`. Establish `hc3 : Continuous (fun p : G × G => ψ p.2⁻¹ * f (x * p.1 * p.2))` using `by fun_prop`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h3 : Integrable (fun p : G × G => ψ p.2⁻¹ * f (x * p.1 * p.2)) (ν.prod μ)`. Rewrite using `[integrable_prod_iff hc3.aestronglyMeasurable]`. Use `⟨h2.1.mono fun m hm => ?_, h2.2.congr (Eventually.of_forall fun m => ?_)⟩` and prove the remaining obligations. Use `hm.comp_mul_left (x * m)` as an intermediate fact. Simplify `this` using `only [Function.comp, Prod.swap, key, mul_comm (f _)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use `integral_mul_left_eq_self (μ := μ) (fun g => ‖f g * ψ (g⁻¹ * x * m)‖) (x * m)` as an intermediate fact. Simplify using `only [key, mul_comm (f (x * m * _))] at this`. Simplify `this.symm` using `only [Function.comp, Prod.swap]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [conv, integral_const_mul]`.
-
-Use `_ = ∫ m, ∫ g, f g * ψ (g⁻¹ * x * m) ∂μ ∂ν := integral_integral_swap h1`. Use `_ = ∫ m, ∫ y, ψ y⁻¹ * f (x * m * y) ∂μ ∂ν := by`. Use `integral_congr_ae (Eventually.of_forall fun m => ?_)` and prove the remaining obligations. Use `integral_mul_left_eq_self (μ := μ) (fun g => f g * ψ (g⁻¹ * x * m)) (x * m)` as an intermediate fact. Simplify using `only [key, mul_comm (f (x * m * _))] at this`.
-
-Conclude with `this.symm`. Use `_ = ∫ y, ∫ m, ψ y⁻¹ * f (x * m * y) ∂ν ∂μ := integral_integral_swap h3`. Use `_ = ∫ y, ψ y⁻¹ * ∫ m, f (x * m * y) ∂ν ∂μ := by`. Simplify using `only [integral_const_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Lit.Cusp.conv_average :
     ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G] [T2Space G]

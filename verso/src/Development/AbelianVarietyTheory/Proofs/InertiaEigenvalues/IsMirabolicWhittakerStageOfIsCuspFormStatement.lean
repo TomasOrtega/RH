@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnipotentBlock
 open NumberField IsDedekindDomain MeasureTheory Matrix GlobalTheory.CuspRep GlobalTheory.CuspGeneric
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CuspGeneric.good_of_isCuspForm` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FIsMirabolicWhittakerStageOfIsCuspForm.lean&line=65#L65)
 -/

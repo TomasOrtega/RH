@@ -8,9 +8,9 @@ open Formalism.BasicNotions Formalism.BasicNotions.LevelStarExponents Formalism.
 namespace GlobalTheory.EX
 
 /- English proof (translation)
-Establish `hy0 : 0 ≤ y` using `by linarith`. Establish `h1 : 10000 * y ≤ y * y` using `mul_le_mul_of_nonneg_right hy hy0`. Establish `h2 : 10000 * (y * y) ≤ T`. Establish `: 10000 * (y * y) ≤ y * (y * y)` using `mul_le_mul_of_nonneg_right hy (mul_nonneg hy0 hy0)`. Establish `e : y * (y * y) = y ^ 3` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hdn : d * n ≤ y * y` using `mul_le_mul hd hn hn0 hy0`. Establish `hdd : d * d ≤ y * y` using `mul_le_mul hd hd hd0 hy0`. Establish `hrd : r * d ≤ y * y` using `mul_le_mul hr hd hd0 hy0`. Apply the tactic sequence `refine ⟨?_, ?_, ?_, ?_⟩ <;> nlinarith`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem four_polys_le_of_cube_le (d n r y T : ℝ) (hd0 : 0 ≤ d) (hn0 : 0 ≤ n) (_hr0 : 0 ≤ r)
     (hd : d ≤ y) (hn : n ≤ y) (hr : r ≤ y) (hy : 10000 ≤ y) (hT : y ^ 3 ≤ T) :
@@ -28,15 +28,13 @@ theorem four_polys_le_of_cube_le (d n r y T : ℝ) (hd0 : 0 ≤ d) (hn0 : 0 ≤ 
   refine ⟨?_, ?_, ?_, ?_⟩ <;> nlinarith
 
 /- English proof (translation)
-Introduce `eps he he' C _`. Take `⟨x0, hx0⟩` from `GlobalTheory.EX.rank_basic_bounds eps he he'`. Use `⟨0, fun cD _ => ⟨0, fun ch _ => ⟨max x0 10000, fun D L heps hx hV => ?_⟩⟩⟩` and prove the remaining obligations. Take `⟨-, -, hr, -, -, -, -, -, -, hD, -, hnW, -⟩` from `hx0 L.sc D.R heps (le_trans (le_max_left _ _) hx) hV.ranks`. Establish `hx1 : (10000 : ℝ) ≤ L.sc.x` using `le_trans (le_max_right _ _) hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hx2 : (1 : ℝ) ≤ L.sc.x` using `by linarith`. Establish `mono : ∀ a b : ℝ, a ≤ b → L.sc.x ^ a ≤ L.sc.x ^ b` using `fun a b h => Real.rpow_le_rpow_of_exponent_le hx2 h`. Establish `hy : (10000 : ℝ) ≤ L.sc.x ^ (23 : ℝ)`. Use `mono 1 23 (by norm_num)` as an intermediate fact. Rewrite `this` using `[Real.rpow_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hT : (L.sc.x ^ (23 : ℝ)) ^ 3 ≤ (TOv L.sc : ℝ)`. Establish `e : (L.sc.x ^ (23 : ℝ)) ^ 3 = L.sc.x ^ (69 : ℝ)`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul (by linarith)]`. Evaluate the numerical expressions.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Rewrite using `[e]`. Conclude with `le_trans (mono 69 377 (by norm_num)) (Nat.le_ceil _)`. Take `⟨h1, h2, h3, h4⟩` from `four_polys_le_of_cube_le ((D.R.f * D.R.r.choose 2 : ℕ) : ℝ) (nWv D.R L.sc : ℝ) (D.R.r : ℝ) (L.sc.x ^ (23 : ℝ)) (TOv L.sc : ℝ) (Nat.cast_nonneg _) (Nat.cast_nonneg _) (Nat.cast_nonneg _) (hD.trans (mono _ _ (by norm_num))) (hnW.trans (mono _ _ (by norm_num))) (hr.trans (mono _ _ ( …`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `h1` after adjusting the coercions.
-
-Conclude with `h2` after adjusting the coercions. Conclude with `h3` after adjusting the coercions. Conclude with `h4` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem szRow_rank_polys_le_TO :
     SzRow (fun C D L => (((D.R.f * D.R.r.choose 2 : ℕ) + 2) * (nWv D.R L.sc : ℕ) + 2 * D.R.r ≤ (TOv L.sc : ℕ)) ∧ (40 * ((D.R.f * D.R.r.choose 2 : ℕ) + 2) ≤ (TOv L.sc : ℕ)) ∧ (11 * (D.R.f * D.R.r.choose 2 : ℕ) ^ 2 ≤ (TOv L.sc : ℕ)) ∧ (D.R.r + 2 * (2 * 5 ^ 4 * D.R.r) * ((D.R.f * D.R.r.choose 2 : ℕ) + 1) ≤ (TOv L.sc : ℕ))) := by

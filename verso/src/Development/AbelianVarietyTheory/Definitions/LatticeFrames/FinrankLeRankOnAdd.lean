@@ -50,11 +50,11 @@ def HypInh : Prop :=
     TrueS D ∧ HD D L C' Cl Cg cb Cu cT CT ∧ ∀ u, GlobalTheory.Core.Rk.Small D u L C
 
 /- English proof (translation)
-Unfold `corankP GlobalTheory.Core.Rk.hsDev`. Use `set N := LinearMap.ker (D.s.Pu u : D.s.Cu u →ₗ[ℂ] D.s.HH)`. Set `b` to `stdOrthonormalBasis ℂ N`. Set `v : Fin (Module.finrank ℂ N) → D.s.Cu u` to `fun i => (b i : D.s.Cu u)`. Apply the tactic sequence `have hv : Orthonormal ℂ v := b.orthonormal.comp_linearIsometry N.subtypeₗᵢ`.
+Replace the relevant objects with their definitions. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `GlobalTheory.sum_norm_sq_le_hsNormSq (Kmat D.s u u - ContinuousLinearMap.id ℂ (D.s.Cu u)) v hv`. Establish `hterm : ∀ i, ‖(Kmat D.s u u - ContinuousLinearMap.id ℂ (D.s.Cu u)) (v i)‖ ^ 2 = 1`. Introduce `i`. Establish `hP : D.s.Pu u (v i) = 0` using `LinearMap.mem_ker.1 (b i).2`. Establish `hn : ‖v i‖ = 1` using `hv.1 i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[Kmat, hP, hn]`. Rewrite `h` using `[Finset.sum_congr rfl (fun i _ => hterm i)]`. Simplify using `using h`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem corankP_le_hsDev (D : D7) (u : D.what₂.Word) : (corankP D u : ℝ) ≤ GlobalTheory.Core.Rk.hsDev D u := by
   unfold corankP GlobalTheory.Core.Rk.hsDev
@@ -72,9 +72,9 @@ theorem corankP_le_hsDev (D : D7) (u : D.what₂.Word) : (corankP D u : ℝ) ≤
   simpa using h
 
 /- English proof (translation)
-Unfold `rankOn corankP`. Use `set P := (D.s.Pu u : D.s.Cu u →ₗ[ℂ] D.s.HH)`. Establish `h` using `LinearMap.finrank_range_add_finrank_ker (P.domRestrict M)`. Rewrite `h` using `[LinearMap.range_domRestrict]`. Establish `h2 : Module.finrank ℂ (LinearMap.ker (P.domRestrict M)) ≤ Module.finrank ℂ (LinearMap.ker P)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Submodule.finrank_map_subtype_eq M]`. Use `Submodule.finrank_mono ?_` and prove the remaining obligations. Introduce and unpack `x ⟨y, hy, rfl⟩`. Conclude with `hy`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem finrank_le_rankOn_add (D : D7) (u : D.what₂.Word) (M : Submodule ℂ (D.s.Cu u)) :
     Module.finrank ℂ M ≤ rankOn D u M + corankP D u := by
@@ -90,9 +90,9 @@ theorem finrank_le_rankOn_add (D : D7) (u : D.what₂.Word) (M : Submodule ℂ (
   omega
 
 /- English proof (translation)
-Unfold `ShareAt GlobalTheory.Core.Rk.DiagS`. Rewrite using `[GlobalTheory.Core.Rk.d0_eq]`. Use `⟨fun h => h.1, fun h => ⟨h, (corankP_le_hsDev D u).trans h, fun M => ?_⟩⟩` and prove the remaining obligations. Establish `h1 : (Module.finrank ℂ M : ℝ) ≤ (rankOn D u M : ℝ) + (corankP D u : ℝ)`. Conclude with `finrank_le_rankOn_add D u M` after adjusting the coercions.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `(corankP_le_hsDev D u).trans h`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem shareAt_iff {D : D7} {u : D.what₂.Word} {e : ℝ} : ShareAt D u e ↔ GlobalTheory.Core.Rk.DiagS D u e := by
   unfold ShareAt GlobalTheory.Core.Rk.DiagS
@@ -104,13 +104,13 @@ theorem shareAt_iff {D : D7} {u : D.what₂.Word} {e : ℝ} : ShareAt D u e ↔ 
   linarith
 
 /- English proof (translation)
-Use `⟨h, fun hf => shareAt_iff.2 ?_⟩` and prove the remaining obligations. Establish `hG : 1 ≤ gamL D L C` using `Real.one_le_exp (by positivity)`. Establish `e1 : 8 / gamL D L C = 8 * Real.exp (-(C * (D.R.m : ℝ) ^ 5 * D.R.f * L))`. Unfold `gamL`. Rewrite using `[Real.exp_neg, div_eq_mul_inv]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `GlobalTheory.Core.Rk.Small at hf`. Rewrite `hf` using `[GlobalTheory.Core.Rk.d0_eq]`. Establish `e2 : Real.exp (-(2 * C * GlobalTheory.Core.Rk.mfL D L)) * gamL D L C ^ 2 = 1`. Unfold `gamL GlobalTheory.Core.Rk.mfL`. Rewrite using `[← Real.exp_nat_mul, ← Real.exp_add, Real.exp_eq_one_iff]`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `GlobalTheory.Core.Rk.diagS_of_sDiagAt D u _ c hG hc h (by` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Rewrite `this` using `[e1]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem fullAt_of {D : D7} {u : D.what₂.Word} {L C c : ℝ} (hL : 0 ≤ L) (hC : 0 ≤ C) (hc : c ≤ 1)
     (h : SDiagAt D u (gamL D L C) c) : FullAt D u L C c := by
@@ -131,9 +131,9 @@ theorem fullAt_of {D : D7} {u : D.what₂.Word} {L C c : ℝ} (hL : 0 ≤ L) (hC
   exact this
 
 /- English proof (translation)
-Introduce `h0`. Establish `h1` using `h.2.2 ⊤`. Establish `h2 : rankOn D u ⊤ = 0` using `by unfold rankOn; rw [h0]; simp`. Establish `h3 : Module.finrank ℂ (⊤ : Submodule ℂ (D.s.Cu u)) = D.duS u`. Rewrite using `[finrank_top, ← GlobalTheory.Core.Rk.d0_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite `h1` using `[h2, h3]`. Establish `: (0 : ℝ) < D.duS u` using `by exact_mod_cast hd`. Move the coercions through the operations in `at h1`. Use the polynomial consequences of the given equalities and inequalities.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem ShareAt.pu_ne_zero {D : D7} {u : D.what₂.Word} {e : ℝ} (h : ShareAt D u e) (he : e < 1) (hd : 0 < D.duS u) :
     D.s.Pu u ≠ 0 := by
@@ -148,15 +148,15 @@ theorem ShareAt.pu_ne_zero {D : D7} {u : D.what₂.Word} {e : ℝ} (h : ShareAt 
   nlinarith
 
 /- English proof (translation)
-Take `⟨hL, hk, hmf, -⟩` from `h`. Establish `hm2 : 2 ≤ D.R.m` using `D.R.two_le_m`. Establish `hm : (2 : ℝ) ≤ D.R.m` using `by exact_mod_cast hm2`. Establish `hf : (1 : ℝ) ≤ D.R.f` using `by exact_mod_cast le_trans (Nat.one_le_pow _ _ (by omega)) hmf`. Establish `h5 : (32 : ℝ) ≤ (D.R.m : ℝ) ^ 5` using `le_trans (by norm_num) (pow_le_pow_left₀ (by norm_num) hm 5)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy : (32 : ℝ) ≤ (D.R.m : ℝ) ^ 5 * D.R.f * L`. Establish `: (32 : ℝ) * 1 * 1 ≤ (D.R.m : ℝ) ^ 5 * D.R.f * L` using `by gcongr`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hk' : (256 : ℝ) ≤ D.R.k` using `by nlinarith`. Establish `hlog : 1 ≤ Real.log (D.R.k : ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Real.le_log_iff_exp_le (by linarith)]; linarith [Real.exp_one_lt_d9]`. Establish `a1 : 32 ≤ C * (D.R.m : ℝ) ^ 5 * D.R.f * L` using `by nlinarith`. Establish `a2 : 32 ≤ c * D.R.k * D.R.f * Real.log D.R.k`. Establish `: (1 / 2 : ℝ) * 256 * 1 * 1 ≤ c * D.R.k * D.R.f * Real.log D.R.k` using `by gcongr`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `b : Real.exp (-32) ≤ 1 / 33`. Rewrite using `[Real.exp_neg, ← one_div]`. Conclude with `one_div_le_one_div_of_le (by norm_num) (by linarith [Real.add_one_le_exp (32 : ℝ)])`. Establish `b1` using `Real.exp_le_exp.2 (neg_le_neg a1)`. Establish `b2` using `Real.exp_le_exp.2 (neg_le_neg a2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `shareL`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem shareL_lt_one {D : D7} {L C' Cl Cg cb Cu cT CT C c : ℝ} (h : GlobalTheory.Core.Deg.HypL D L C' Cl Cg cb Cu cT CT)
     (h8 : 8 ≤ C') (hC : 1 ≤ C) (hc : 1 / 2 ≤ c) : shareL D L C c < 1 := by
@@ -184,16 +184,16 @@ theorem shareL_lt_one {D : D7} {L C' Cl Cg cb Cu cT CT C c : ℝ} (h : GlobalThe
   linarith
 
 /- English proof (translation)
-Introduce `H` and use `(H.2 hf).pu_ne_zero (shareL_lt_one h.1 h8 hC le_rfl) (h.2.1.2.2.2.2.2.2.2.2.2.1 u) h0`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example {D : D7} {u : D.what₂.Word} {L C' Cl Cg cb Cu cT CT C : ℝ} (h : HD D L C' Cl Cg cb Cu cT CT) (h8 : 8 ≤ C')
     (hC : 1 ≤ C) (hf : GlobalTheory.Core.Rk.Small D u L C) (h0 : D.s.Pu u = 0) : ¬ FullAt D u L C (1 / 2) := fun H =>
   (H.2 hf).pu_ne_zero (shareL_lt_one h.1 h8 hC le_rfl) (h.2.1.2.2.2.2.2.2.2.2.2.1 u) h0
 
 /- English proof (translation)
-Use `fullAt_of hL hC (by norm_num) ?_` and prove the remaining obligations. Establish `hD : 0 < D.what₂.Dstar` using `by rw [← D.Dstar_eq u]; exact (D.mem u).A.Dstar_pos`. Establish `hG : 0 < gamL D L C` using `Real.exp_pos _`. Unfold `SDiagAt GlobalTheory.Core.Rk.hsDev`. Rewrite using `[hK, sub_self, GlobalTheory.hsNormSq_eq_sum_stdBasis]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [zero_apply, norm_zero, ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, Finset.sum_const_zero]`. Check the signs of the components of the expression.
+Simplify using the standard rewrite rules. Check the signs of the components of the expression.
 -/
 example {D : D7} {u : D.what₂.Word} {L C : ℝ} (hL : 0 ≤ L) (hC : 0 ≤ C)
     (hK : Kmat D.s u u = ContinuousLinearMap.id ℂ (D.s.Cu u)) : FullAt D u L C (1 / 2) := by
@@ -207,12 +207,12 @@ example {D : D7} {u : D.what₂.Word} {L C : ℝ} (hL : 0 ≤ L) (hC : 0 ≤ C)
   positivity
 
 /- English proof (translation)
-Simplify using `[shareL]`. Evaluate the numerical expressions.
+Simplify using the standard rewrite rules. Evaluate the numerical expressions.
 -/
 example (D : D7) (L : ℝ) : shareL D L 0 0 = 14 := by simp [shareL]; norm_num
 
 /- English proof (translation)
-Simplify using `[rankOn]`.
+Simplify using the standard rewrite rules.
 -/
 example (D : D7) (u : D.what₂.Word) : rankOn D u ⊥ = 0 := by simp [rankOn]
 

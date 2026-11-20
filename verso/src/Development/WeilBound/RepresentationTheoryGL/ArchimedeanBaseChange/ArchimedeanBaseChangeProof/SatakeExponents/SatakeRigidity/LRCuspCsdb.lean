@@ -30,7 +30,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 abbrev nu (E : Type) [Field E] [NumberField E] (s : ℝ) : Formalism.L2.Host.HChar E := GlobalTheory.CuspRep.Model.absC E (s : ℂ)
 
 /- English proof (translation)
-Take `⟨μ, h1, h2⟩` from `GlobalTheory.CompanionTheory.AdelicHaar.exists_haar_rightInvariant E a`. Use `h1` as an intermediate fact. Use `h2` as an intermediate fact. Take `⟨B, hB⟩` from `GlobalTheory.CompanionTheory.ClozelHerm.exists_isHerm GlobalTheory.CompanionTheory.CuspFinGL.cuspFormsBoundedGL E a μ P hn`. Conclude with `GlobalTheory.CompanionTheory.Clozel.hasInfChar_conj_eq E a P B hB τ m m' hm hm'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem infChar_conj {a : ℕ} (P : CuspSub E a) (hn : IsNormalised P) (τ : E →+* ℂ) (m m' : Multiset ℂ)
     (hm : P.HasInfChar τ m) (hm' : P.HasInfChar (ComplexEmbedding.conjugate τ) m') :

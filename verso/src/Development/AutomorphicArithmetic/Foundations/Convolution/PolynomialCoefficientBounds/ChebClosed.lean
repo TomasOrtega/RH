@@ -3,11 +3,11 @@ import Mathlib
 open MvPolynomial Filter Topology
 
 /- English proof (translation)
-Proceed by induction on `m using Nat.twoStepInduction with`. Consider the case `zero => simp`. Consider the case `one => simp`. Consider the case `more n h0 h1`. Establish `e : ((n + 2 : ℕ) : ℤ) = (n : ℤ) + 2` using `by push_cast; ring`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `e1 : ((n + 1 : ℕ) : ℤ) = (n : ℤ) + 1` using `by push_cast; ring`. Rewrite `h1` using `[e1]`. Rewrite using `[e, Polynomial.Chebyshev.T_add_two]`. Simplify using `only [Polynomial.eval_sub, Polynomial.eval_mul, Polynomial.eval_X, Polynomial.eval_ofNat]`. Rewrite using `[h0, h1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(-((y + s) ^ n + (y - s) ^ n) / 2) * hs`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem UpperTheory.ConvolutionTheory.FX.cheb_closed (y s : ℝ) (hs : s ^ 2 = y ^ 2 - 1) (m : ℕ) :
     (Polynomial.Chebyshev.T ℝ (m : ℤ)).eval y = ((y + s) ^ m + (y - s) ^ m) / 2 := by
@@ -24,15 +24,15 @@ private theorem UpperTheory.ConvolutionTheory.FX.cheb_closed (y s : ℝ) (hs : s
     linear_combination (-((y + s) ^ n + (y - s) ^ n) / 2) * hs
 
 /- English proof (translation)
-Introduce `m y`. Use `⟨fun hy => ?_, fun hy => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `abs_le.mp hy`. Rewrite using `[← Real.cos_arccos h1 h2, Polynomial.Chebyshev.T_real_cos]`. Conclude with `Real.abs_cos_le_one _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : 0 ≤ y ^ 2 - 1` using `by nlinarith`. Establish `hs : Real.sqrt (y ^ 2 - 1) ^ 2 = y ^ 2 - 1` using `Real.sq_sqrt h0`. Establish `hs0 : 0 ≤ Real.sqrt (y ^ 2 - 1)` using `Real.sqrt_nonneg _`. Establish `hsy : Real.sqrt (y ^ 2 - 1) ≤ y`. Apply `Real.sqrt_le_iff.mpr` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `constructor <;> linarith`. Establish `hc` using `UpperTheory.ConvolutionTheory.FX.cheb_closed y _ hs m`. Use `⟨hc, ?_⟩` and prove the remaining obligations. Rewrite using `[hc]`. Generalize the expression as in `Real.sqrt (y ^ 2 - 1) = s at *`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Establish `ha : 0 ≤ y + s` using `by linarith`. Establish `hb : 0 ≤ y - s` using `by linarith`. Establish `pa : (y + s) ^ m ≤ (2 * y) ^ m` using `pow_le_pow_left₀ ha (by linarith) m`. Establish `pb : (y - s) ^ m ≤ (2 * y) ^ m` using `pow_le_pow_left₀ hb (by linarith) m`. Establish `qa` using `pow_nonneg ha m`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `qb` using `pow_nonneg hb m`. Rewrite using `[abs_of_nonneg (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.FX.cheb_facts :
     ∀ (m : ℕ) (y : ℝ), (|y| ≤ 1 → |(Polynomial.Chebyshev.T ℝ (m : ℤ)).eval y| ≤ 1) ∧ (1 ≤ y → (Polynomial.Chebyshev.T ℝ (m : ℤ)).eval y = ((y + Real.sqrt (y ^ 2 - 1)) ^ m + (y - Real.sqrt (y ^ 2 - 1)) ^ m) / 2 ∧ |(Polynomial.Chebyshev.T ℝ (m : ℤ)).eval y| ≤ (2 * y) ^ m) := by

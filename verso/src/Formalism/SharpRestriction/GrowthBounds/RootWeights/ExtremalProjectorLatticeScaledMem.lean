@@ -13,9 +13,9 @@ section Wt
 variable {n : ℕ} {K V : Type*} [Field K] [AddCommGroup V] [Module K V]
 
 /- English proof (translation)
-Unfold `OperatorsShiftWeightsByRoots at hs`. Proceed by induction on `k with`. Consider the case `zero => simpa using hx`. Consider the case `succ k ih`. Rewrite using `[pow_succ', Module.End.mul_apply]`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `hs a b _ _ ih`. Use `h1 using 2` and compare the differences between its conclusion and the goal. Rewrite using `[Nat.cast_succ, add_smul, one_smul, add_assoc]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 -/
 theorem operator_pow_shifts_weight {E : GLOps n K V} (hs : OperatorsShiftWeightsByRoots E) (a b : Fin n) (ν : Fin n → ℤ) (k : ℕ) (x : V)
     (hx : x ∈ weightSp E ν) : ((E a b) ^ k) x ∈ weightSp E (ν + (k : ℤ) • rootW a b) := by
@@ -29,7 +29,7 @@ theorem operator_pow_shifts_weight {E : GLOps n K V} (hs : OperatorsShiftWeights
     rw [Nat.cast_succ, add_smul, one_smul, add_assoc]
 
 /- English proof (translation)
-Unfold `divPowE`. Rewrite using `[LinearMap.smul_apply]`. Conclude with `Submodule.smul_mem _ _ (operator_pow_shifts_weight hs a b ν k x hx)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem divided_power_shifts_weight {E : GLOps n K V} (hs : OperatorsShiftWeightsByRoots E) (a b : Fin n) (ν : Fin n → ℤ) (k : ℕ) (x : V)
     (hx : x ∈ weightSp E ν) : divPowE E a b k x ∈ weightSp E (ν + (k : ℤ) • rootW a b) := by
@@ -38,7 +38,7 @@ theorem divided_power_shifts_weight {E : GLOps n K V} (hs : OperatorsShiftWeight
   exact Submodule.smul_mem _ _ (operator_pow_shifts_weight hs a b ν k x hx)
 
 /- English proof (translation)
-Unfold `rootW`. Rewrite using `[neg_sub]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem rootWeight_swap_neg (a b : Fin n) : rootW b a = - rootW a b := by
   unfold rootW
@@ -52,23 +52,21 @@ variable {p : ℕ} {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRin
 variable {n : ℕ} {V : Type*} [AddCommGroup V] [Module (KK O) V] [Module O V] [IsScalarTower O (KK O) V]
 
 /- English proof (translation)
-Establish `hcz` using `dvr_fraction_field_charZero_prime S hp`. Establish `hz : ∀ k, divPowE E b a k (divPowE E a b k y) ∈ weightSp E 0`. Introduce `k`. Establish `h1` using `divided_power_shifts_weight hs a b 0 k y hy0`. Establish `h2` using `divided_power_shifts_weight hs b a _ k _ h1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h2 using 2` and compare the differences between its conclusion and the goal. Rewrite using `[rootWeight_swap_neg a b]`. Simplify using the standard rewrite rules. Establish `hzM : ∀ k, divPowE E b a k (divPowE E a b k y) ∈ M` using `fun k => hM _ (Or.inl ⟨b, a, k, hab.ne', rfl⟩) _ (hM _ (Or.inl ⟨a, b, k, hab.ne, rfl⟩) _ hy)`. Take `⟨t, ht⟩ : ∃ t : ℕ, t = ((0 : Fin n → ℤ) a - (0 : Fin n → ℤ) b + ((b : ℤ) - (a : ℤ))).toNat` from `⟨_, rfl⟩`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `htn : t + 1 ≤ n`. Establish `h1 : (a : ℕ) < (b : ℕ)` using `hab`. Establish `h2` using `b.isLt`. Simplify using `only [Pi.zero_apply] at ht`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Establish `hexp : ppFac E 0 a b T y = ∑ k ∈ range (T + 1), ((-1 : KK O) ^ k / ((Nat.choose (t + k) k : ℕ) : KK O)) • divPowE E b a k (divPowE E a b k y)`. Rewrite using `[ht]`. Simplify using `[ppFac, LinearMap.sum_apply]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[hexp, Finset.smul_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `h0 : divPowE E a b k y = 0`. Rewrite using `[h0]`. Simplify using the standard rewrite rules. Establish `hy1 : y ≠ 0`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Conclude with `h0 (map_zero _)`. Establish `hk : k ≤ L`. Use `hL k a b hab.ne ((Submodule.ne_bot_iff _).2 ⟨y, hy0, hy1⟩) ((Submodule.ne_bot_iff _).2 ⟨_, ?_, h0⟩)` and prove the remaining obligations. Use `divided_power_shifts_weight hs a b 0 k y hy0` as an intermediate fact.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[zero_add]`. Then use the resulting hypothesis. Establish `hlog : (Nat.choose (t + k) k).factorization p ≤ deF p n L` using `(Nat.factorization_choose_le_log).trans (Nat.log_mono_right (by omega))`. Take `⟨o, ho⟩` from `exists_mul_natCast_eq_prime_pow S hp (Nat.choose_pos (Nat.le_add_left k t)).ne' hlog`. Establish `hC : ((Nat.choose (t + k) k : ℕ) : KK O) ≠ 0` using `Nat.cast_ne_zero.2 (Nat.choose_pos (Nat.le_add_left k t)).ne'`. Establish `hK : algebraMap O (KK O) ((p : O) ^ deF p n L) * ((-1 : KK O) ^ k / ((Nat.choose (t + k) k : ℕ) : KK O)) = algebraMap O (KK O) ((-1) ^ k * o)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ho]`. Simplify using `only [map_mul, map_pow, map_neg, map_one, map_natCast]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[← algebraMap_smul (KK O) ((p : O) ^ deF p n L), smul_smul, hK, algebraMap_smul]`. Conclude with `M.smul_mem _ (hzM k)`.
-
-Rewrite using `[hexp]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (hz k)`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem projector_factor_lattice_scaled_mem (S : UniformizedDVR p O) (hp : p.Prime) {E : GLOps n (KK O) V} (hs : OperatorsShiftWeightsByRoots E)
     {M : Submodule O V} (hM : UZStable (O := O) E M) (L : ℕ)
@@ -124,11 +122,11 @@ theorem projector_factor_lattice_scaled_mem (S : UniformizedDVR p O) (hp : p.Pri
     exact Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (hz k)
 
 /- English proof (translation)
-Proceed by induction on `ord with`. Consider the case `nil => simpa [pp] using ⟨hy, hy0⟩`. Consider the case `cons ab t ih`. Take `⟨h1, h2⟩` from `ih (fun x hx => hord x (List.mem_cons_of_mem _ hx))`. Establish `hpp : pp E 0 (ab :: t) T y = ppFac E 0 ab.1 ab.2 T (pp E 0 t T y)` using `by simp [pp]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h3` using `projector_factor_lattice_scaled_mem S hp hs hM L hL ab.1 ab.2 (hord ab List.mem_cons_self) T _ h1 ((weightSp E 0).smul_of_tower_mem _ h2)`. Establish `h4` using `projector_factor_lattice_scaled_mem S hp hs (M := ⊤) (fun _ _ _ _ => Submodule.mem_top) L hL ab.1 ab.2 (hord ab List.mem_cons_self) T _ Submodule.mem_top h2`. Use `⟨?_, by rw [hpp]; exact h4.2⟩` and prove the remaining obligations. Establish `h5` using `h3.1`. Rewrite `h5` using `[LinearMap.map_smul_of_tower, smul_smul, ← pow_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hpp, List.length_cons, show (t.length + 1) * deF p n L = deF p n L + t.length * deF p n L by ring]`. Conclude with `h5`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extremal_projector_lattice_scaled_mem (S : UniformizedDVR p O) (hp : p.Prime) {E : GLOps n (KK O) V} (hs : OperatorsShiftWeightsByRoots E)
     {M : Submodule O V} (hM : UZStable (O := O) E M) (L : ℕ)
@@ -152,13 +150,11 @@ theorem extremal_projector_lattice_scaled_mem (S : UniformizedDVR p O) (hp : p.P
     exact h5
 
 /- English proof (translation)
-Unfold `binomialDiagonalSubring at hu`. Unfold `UZStable at hM`. Proceed by induction on `hu using Subring.closure_induction with`. Consider the case `mem u hu => obtain ⟨a, k, rfl⟩ := hu`. Conclude with `hM _ (Or.inr ⟨a, k, rfl⟩)`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => intro x _`. Simplify using the standard rewrite rules. Consider the case `one => intro x hx`. Simplify using `using hx`. Consider the case `add u v _ _ hu hv => intro x hx`.
+Simplify using the standard rewrite rules. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.add_apply]`. Conclude with `M.add_mem (hu x hx) (hv x hx)`. Consider the case `neg u _ hu => intro x hx`. Rewrite using `[LinearMap.neg_apply]`. Conclude with `M.neg_mem (hu x hx)`.
-
-Consider the case `mul u v _ _ hu hv => intro x hx`. Rewrite using `[Module.End.mul_apply]`. Conclude with `hu _ (hv x hx)`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem binomial_subring_preserves_lattice {E : GLOps n (KK O) V} {M : Submodule O V} (hM : UZStable (O := O) E M)
     (u : Module.End (KK O) V) (hu : u ∈ binomialDiagonalSubring E) : ∀ x ∈ M, u x ∈ M := by

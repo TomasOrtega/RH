@@ -37,7 +37,7 @@ def IsCharacter (G : Over (Sp O)) [GrpObj G] (N : ℕ) {H : Over (Sp O)} (j : H 
 
 omit [Fact p.Prime] in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨n, by rw [← map_natCast (algebraMap R (DualNumber R)), ← map_pow, h, map_zero]⟩`.
+Supply the required witnesses or components.
 -/
 theorem isNilpotent_dual {R : Type} [CommRing R] {n : ℕ} (h : (p : R) ^ n = 0) :
     IsNilpotent (p : DualNumber R) :=
@@ -79,14 +79,14 @@ def KernelShape : Prop :=
     P.W = Submodule.span C (Set.range P.bLie)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `P.alC _ = 0`. Rewrite using `[P.isEquivariant_alC a x, show P.alC x = 0 from hx, map_zero]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 example (a : Λ) (x : P.V) (hx : x ∈ P.W) : P.actV a x ∈ P.W := by
   change P.alC _ = 0
   rw [P.isEquivariant_alC a x, show P.alC x = 0 from hx, map_zero]
 
 /- English proof (translation)
-Simplify using `[alLeft]`.
+Simplify using the standard rewrite rules.
 -/
 example (t : P.T) : alLeft P t = 0 ↔ P.al₀ t = 0 := by
   simp [alLeft]

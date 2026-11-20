@@ -3,11 +3,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open NumberField IsDedekindDomain UpperTheory.V UpperTheory.V.ZK UpperTheory.V.ZK.Ct
 
 /- English proof (translation)
-Introduce `L F _ _ _ _ _ γ hL hG hγ`. Use `haveI := hL`. Use `haveI : IsTotallyComplex F := isTotallyComplex_of_algebra L F`. Use `haveI : IsUnramifiedAtInfinitePlaces L F := ⟨fun w => InfinitePlace.isUnramified_iff.mpr (Or.inr (IsTotallyComplex.isComplex _))⟩`. Establish `htop : Subgroup.zpowers γ = ⊤` using `eq_top_iff.mpr fun σ _ => hγ σ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcard : Module.finrank L F = orderOf γ`. Rewrite using `[← IsGalois.card_aut_eq_finrank, ← Nat.card_zpowers, htop, Subgroup.card_top]`. Use `⟨inferInstance, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[IsUnramifiedAtInfinitePlaces.card_infinitePlace L F, hcard, InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces, IsTotallyComplex.nrRealPlaces_eq_zero, zero_add, mul_comm]`. Introduce `k w`.
-
-Establish `hst` using `(InfinitePlace.isUnramified L w).stabilizer_eq_bot`. Rewrite using `[orderOf_dvd_iff_pow_eq_one, ← MulAction.mem_stabilizer_iff, hst, Subgroup.mem_bot]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.ZK.Ct.places :
     ∀ (L F : Type) [Field L] [NumberField L] [Field F] [NumberField F] [Algebra L F] (γ : F ≃ₐ[L] F), IsTotallyComplex L → IsGalois L F → (∀ σ : F ≃ₐ[L] F, σ ∈ Subgroup.zpowers γ) → IsTotallyComplex F ∧ Fintype.card (InfinitePlace F) = orderOf γ * InfinitePlace.nrComplexPlaces L ∧ ∀ (k : ℕ) (w : InfinitePlace F), γ ^ k • w = w ↔ orderOf γ ∣ k := by

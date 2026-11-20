@@ -12,15 +12,15 @@ noncomputable section
 namespace GlobalTheory.Pinch
 
 /- English proof (translation)
-Introduce `g S S' Z B' C Y s' z b' e i q h₁ h₂ V' V hV`. Use `⟨(Y.isoOfEq hV).hom ≫ (q ∣_ V), ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hq : ((Y.isoOfEq hV).hom ≫ (q ∣_ V)) ≫ V.ι ≫ e = (i ⁻¹ᵁ V').ι ≫ q ≫ e`. Simplify using `[morphismRestrict_ι_assoc, Scheme.isoOfEq_hom_ι_assoc]`. Rewrite using `[hq, Category.assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(isPullback_morphismRestrict i V').paste_vert h₁`. Establish `P` using `(isPullback_morphismRestrict q V).paste_vert h₂`. Use `IsPullback.of_iso P (Y.isoOfEq hV).symm (Iso.refl _) (Iso.refl _) (Iso.refl _) ?_ ?_ ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using `[morphismRestrict_ι_assoc, Scheme.isoOfEq_inv_ι_assoc]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce `x hx`. Take `⟨U, U', W₀, u, p, j, n, k, hu, hp, hj, hx, hn, hl⟩` from `hx`. Use `⟨U, U', W₀, u, p, j ≫ V'.ι, n, k ≫ V.ι, hu, by simpa using hp, inferInstance, ?_, by simpa using hn, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨w, rfl⟩` from `hx`. Conclude with `⟨w, rfl⟩`. Introduce `T a a' haa`. Take `⟨y, hy₁, hy₂⟩` from `hl T a a' haa`. Use `⟨y ≫ (i ⁻¹ᵁ V').ι, ?_, ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, ← morphismRestrict_ι, ← Category.assoc, hy₁, Category.assoc]`. Establish `hq : (Y.isoOfEq hV).hom ≫ (q ∣_ V) ≫ V.ι = (i ⁻¹ᵁ V').ι ≫ q`. Simplify using `[morphismRestrict_ι, Scheme.isoOfEq_hom_ι_assoc]`. Rewrite using `[Category.assoc, ← hq, reassoc_of% hy₂]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restrict_pinched : ∀ (g : ℕ) (S S' Z B' C Y : Scheme.{0}) (s' : S' ⟶ S) (z : Z ⟶ S) (b' : B' ⟶ S') (e : C ⟶ Z) (i : Y ⟶ B') (q : Y ⟶ C), IsPullback i (q ≫ e) (b' ≫ s') z → IsPullback q (i ≫ b') (e ≫ z) s' → ∀ (V' : B'.Opens) (V : C.Opens), i ⁻¹ᵁ V' = q ⁻¹ᵁ V → ∃ (q₀ : (i ⁻¹ᵁ V').toScheme ⟶ V.toScheme), IsPullback (i ∣_ V') (q₀ ≫ V.ι ≫ e) ((V'.ι ≫ b') ≫ s') z ∧ IsPullback q₀ ((i ∣_ V') ≫ V'.ι ≫ b') ((V.ι ≫ e) ≫ z) s' ∧ ∀ x : V'.toScheme, GlobalTheory.Pinch.Pinched g s' z (V'.ι ≫ b') (V.ι ≫ e) (i ∣_ V') q₀ x → GlobalTheory.Pinch.Pinched g s' z b' e i q (V'.ι x) := by
   intro g S S' Z B' C Y s' z b' e i q h₁ h₂ V' V hV

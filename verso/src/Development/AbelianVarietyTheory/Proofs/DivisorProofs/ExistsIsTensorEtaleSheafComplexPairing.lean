@@ -15,7 +15,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 open scoped DirectSum TensorProduct in
 variable {R : Type} [CommRing R] in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.EtC.Tens.res`. Rewrite using `[DirectSum.lmap_lof, TensorProduct.map_tmul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.EtC.TensEx.res_lof {I J : _root_.GlobalTheory.EtC.Cx R} {V U : Scheme.{0}}
     (g : V ⟶ U) (w : ℤ) (p : {p : ℤ × ℤ // p.1 + p.2 = w})
@@ -34,7 +34,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 open scoped DirectSum TensorProduct in
 variable {R : Type} [CommRing R] in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.EtC.Sec.res`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.EtC.TensEx.sres_id {F : _root_.GlobalTheory.EtC.Shv R} {U : Scheme.{0}}
     (a : _root_.GlobalTheory.EtC.Sec F U) : _root_.GlobalTheory.EtC.Sec.res (𝟙 U) a = a := by
@@ -45,7 +45,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 open scoped DirectSum TensorProduct in
 variable {R : Type} [CommRing R] in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.EtC.Sec.res`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.EtC.TensEx.sres_comp {F : _root_.GlobalTheory.EtC.Shv R} {W V U : Scheme.{0}}
     (g : W ⟶ V) (f : V ⟶ U) (a : _root_.GlobalTheory.EtC.Sec F U) :
@@ -74,7 +74,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 open scoped DirectSum TensorProduct in
 variable {R : Type} [CommRing R] in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.EtC.Sec.res _root_.GlobalTheory.EtC.Sec.map`. Rewrite using `[← ModuleCat.comp_apply, ← ModuleCat.comp_apply, ← NatTrans.naturality]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.EtC.TensEx.smap_res {F G : _root_.GlobalTheory.EtC.Shv R} (φ : F ⟶ G)
     {V U : Scheme.{0}} (g : V ⟶ U) (a : _root_.GlobalTheory.EtC.Sec F U) :
@@ -96,7 +96,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 open scoped DirectSum TensorProduct in
 variable {R : Type} [CommRing R] in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.EtC.TensEx.dT`. Rewrite using `[DirectSum.toModule_lof]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem _root_.GlobalTheory.EtC.TensEx.dT_lof {I J : _root_.GlobalTheory.EtC.Cx R} (U : Scheme.{0})
     (s t w : ℤ) (h : s + t = w) (a : _root_.GlobalTheory.EtC.Sec (I.X s) U)
@@ -140,7 +140,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 open scoped DirectSum TensorProduct in
 variable {R : Type} [CommRing R] in
 /- English proof (translation)
-Establish `key` using `congrArg (fun f : K.X i ⟶ K.X k => (f.hom.app (op U)).hom a) (K.d_comp_d i j k)`. Conclude with `key`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem sec_map_d_map_d_eq_zero (K : _root_.GlobalTheory.EtC.Cx R) {U : Scheme.{0}}
     (i j k : ℤ) (a : _root_.GlobalTheory.EtC.Sec (K.X i) U) :
@@ -152,7 +152,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 open scoped DirectSum TensorProduct in
 variable {R : Type} [CommRing R] in
 /- English proof (translation)
-Use `NatTrans.ext (funext fun U => ModuleCat.hom_ext (DirectSum.linearMap_ext _ fun ⟨⟨s, t⟩, h⟩ => TensorProduct.ext' fun a b => ?_))` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearMap.zero_apply]`. Use `show _root_.GlobalTheory.EtC.TensEx.dT I J U.unop (w + 1) (_root_.GlobalTheory.EtC.TensEx.dT I J U.unop w (DirectSum.lof (ULift.{1} R) _ (fun p : {p : ℤ × ℤ // p.1 + p.2 = w} => _root_.GlobalTheory.EtC.Sec (I.X p.1.1) U.unop ⊗[ULift.{1} R] _root_.GlobalTheory.EtC.Sec (J.X p.1.2) …`. Rewrite using `[_root_.GlobalTheory.EtC.TensEx.dT_lof, map_add, map_zsmul, _root_.GlobalTheory.EtC.TensEx.dT_lof, _root_.GlobalTheory.EtC.TensEx.dT_lof, sec_map_d_map_d_eq_zero, sec_map_d_map_d_eq_zero, TensorProduct.zero_tmul, TensorProduct.tmul_zero, map_zero, map_zero]`. Simplify using `[Int.negOnePow_succ, smul_add]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.EtC.TensEx.D_comp (I J : _root_.GlobalTheory.EtC.Cx R) (w : ℤ) :
     _root_.GlobalTheory.EtC.TensEx.D I J w ≫
@@ -187,7 +187,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 open scoped DirectSum TensorProduct in
 variable {R : Type} [CommRing R] in
 /- English proof (translation)
-Establish `key` using `congrArg (fun f => ModuleCat.Hom.hom f x) ((toSheafify Scheme.etaleTopology (_root_.GlobalTheory.EtC.TensEx.pre I J w)).naturality g.op)`. Conclude with `key.symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.EtC.TensEx.toS_res (I J : _root_.GlobalTheory.EtC.Cx R) {V U : Scheme.{0}}
     (g : V ⟶ U) (w : ℤ) (x : _root_.GlobalTheory.EtC.Tens I J U w) :
@@ -201,9 +201,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 open scoped DirectSum TensorProduct in
 variable {R : Type} [CommRing R] in
 /- English proof (translation)
-Establish `hd : (_root_.GlobalTheory.EtC.TensEx.cx I J).d w (w + 1) = (presheafToSheaf Scheme.etaleTopology _).map (_root_.GlobalTheory.EtC.TensEx.D I J w)`. Unfold `_root_.GlobalTheory.EtC.TensEx.cx`. Simplify using the standard rewrite rules. Establish `key` using `congrArg (fun f => ModuleCat.Hom.hom (f.app (op U)) x) (toSheafify_naturality Scheme.etaleTopology (_root_.GlobalTheory.EtC.TensEx.D I J w))`. Rewrite using `[hd]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `key.symm`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.EtC.TensEx.d_toS (I J : _root_.GlobalTheory.EtC.Cx R)
     (U : Scheme.{0}) (w : ℤ) (x : _root_.GlobalTheory.EtC.Tens I J U w) :
@@ -242,11 +242,11 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 open scoped DirectSum TensorProduct in
 
 /- English proof (translation)
-Introduce `R _ I J`. Use `⟨_root_.GlobalTheory.EtC.TensEx.cx I J, _root_.GlobalTheory.EtC.TensEx.pair I J, ?_⟩` and prove the remaining obligations. Establish `hlift : ∀ (U : Scheme.{0}) (w : ℤ), (_root_.GlobalTheory.EtC.TensEx.pair I J).lift U w = _root_.GlobalTheory.EtC.TensEx.toS I J U w`. Introduce `U w`. Use `DirectSum.linearMap_ext _ fun ⟨⟨s, t⟩, h⟩ => TensorProduct.ext' fun a b => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `_root_.GlobalTheory.EtC.Pair.lift`. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, DirectSum.toModule_lof, TensorProduct.lift.tmul]`. Both sides reduce to the same expression. Unfold `_root_.GlobalTheory.EtC.Pair.IsTensor`. Simplify using `only [hlift]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Conclude with `⟨fun U w y => (_root_.GlobalTheory.EtC.toSheafify_loc_bij_lift R (_root_.GlobalTheory.EtC.TensEx.pre I J w)).1 U y, fun U w x hx => (_root_.GlobalTheory.EtC.toSheafify_loc_bij_lift R (_root_.GlobalTheory.EtC.TensEx.pre I J w)).2.1 U x hx⟩`.
+Supply the required witnesses or components.
 -/
 theorem _root_.GlobalTheory.EtC.tensor_exists :
     ∀ (R : Type) [CommRing R] (I J : _root_.GlobalTheory.EtC.Cx R),

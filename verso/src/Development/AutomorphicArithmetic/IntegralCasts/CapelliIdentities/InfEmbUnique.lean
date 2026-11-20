@@ -5,7 +5,7 @@ import Mathlib
     fun (F : Type) [Field F] ↦ NumberField.InfiniteAdeleRing F
 
 /- English proof (translation)
-Introduce `F _`. Use `infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qf27.aux2 :
     ∀ {F : Type} [inst : Field F], SMulCommClass F (UpperTheory.Reformulated.B.Qf27.Ainf F) (UpperTheory.Reformulated.B.Qf27.Ainf F) := by
@@ -13,7 +13,7 @@ theorem UpperTheory.Reformulated.B.Qf27.aux2 :
   infer_instance
 
 /- English proof (translation)
-Introduce `F _`. Use `infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qf27.aux3 :
     ∀ {F : Type} [inst : Field F], IsScalarTower F (UpperTheory.Reformulated.B.Qf27.Ainf F) (UpperTheory.Reformulated.B.Qf27.Ainf F) := by
@@ -21,7 +21,7 @@ theorem UpperTheory.Reformulated.B.Qf27.aux3 :
   infer_instance
 
 /- English proof (translation)
-Introduce `F E _ _ _`. Use `infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qf27.aux4 :
     ∀ {F E : Type} [inst : Field F] [inst_1 : Field E] [inst_2 : Algebra F E], SMulCommClass F E E := by
@@ -29,7 +29,7 @@ theorem UpperTheory.Reformulated.B.Qf27.aux4 :
   infer_instance
 
 /- English proof (translation)
-Introduce `F E _ _ _`. Use `infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qf27.aux5 :
     ∀ {F E : Type} [inst : Field F] [inst_1 : Field E] [inst_2 : Algebra F E], IsScalarTower F E E := by
@@ -48,13 +48,13 @@ noncomputable def UpperTheory.Reformulated.B.Qf27.IsInfEmb :
           (θ : TensorProduct F (UpperTheory.Reformulated.B.Qf27.Ainf F) E → ℂ) (a ⊗ₜ[F] (1 : E))
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ τ θ θ' h h'`. Take `⟨h1, h2⟩` from `h`. Take `⟨h1', h2'⟩` from `h'`. Establish `hd : DenseRange (algebraMap F (UpperTheory.Reformulated.B.Qf27.Ainf F))` using `NumberField.InfiniteAdeleRing.denseRange_algebraMap F`. Establish `key : ∀ c : F, (algebraMap F (UpperTheory.Reformulated.B.Qf27.Ainf F) c) ⊗ₜ[F] (1 : E) = (1 : UpperTheory.Reformulated.B.Qf27.Ainf F) ⊗ₜ[F] (algebraMap F E c)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `c`. Rewrite using `[Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`. Establish `hA : (fun a : UpperTheory.Reformulated.B.Qf27.Ainf F ↦ θ (a ⊗ₜ[F] (1 : E))) = fun a : UpperTheory.Reformulated.B.Qf27.Ainf F ↦ θ' (a ⊗ₜ[F] (1 : E))`. Use `hd.equalizer h2 h2' ?_` and prove the remaining obligations. Use function extensionality and compare the values at `c`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Function.comp_apply]`. Rewrite using `[key, h1, h1']`. Use `RingHom.ext fun z ↦ ?_` and prove the remaining obligations. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Consider the case `tmul a x`. Establish `e : a ⊗ₜ[F] x = (a ⊗ₜ[F] (1 : E)) * ((1 : UpperTheory.Reformulated.B.Qf27.Ainf F) ⊗ₜ[F] x)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Rewrite using `[e, map_mul, map_mul, h1, h1', congrFun hA a]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Reformulated.B.Qf27.infEmb_unique :
     ∀ {F E : Type} [inst : Field F] [NumberField F] [inst_2 : Field E] [inst_3 : Algebra F E] {τ : E →+* ℂ}

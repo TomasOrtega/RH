@@ -47,7 +47,7 @@ structure ValLL (D : D7) (C : CharFrame D) : Prop where
   del' : C.del'.ValuesIn 0 D.what₂.embLL
 
 /- English proof (translation)
-Introduce `v hv`. Take `⟨y, hy⟩` from `h v hv`. Conclude with `⟨D.LL0.val y, hy⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem HChar.ValuesIn.ofLL0 {D : D7} {χ : HChar D.host.E} {s : ℝ} (h : χ.ValuesIn s (embLL0 D)) :
     χ.ValuesIn s D.what₂.embLL := by
@@ -56,7 +56,7 @@ theorem HChar.ValuesIn.ofLL0 {D : D7} {χ : HChar D.host.E} {s : ℝ} (h : χ.Va
   exact ⟨D.LL0.val y, hy⟩
 
 /- English proof (translation)
-Conclude with `⟨fun j => HChar.ValuesIn.ofLL0 (h.mu0 j), HChar.ValuesIn.ofLL0 h.eta, HChar.ValuesIn.ofLL0 h.chiPsi, HChar.ValuesIn.ofLL0 h.del, HChar.ValuesIn.ofLL0 h.del'⟩`.
+Supply the required witnesses or components.
 -/
 theorem ValLL0.toLL {D : D7} {C : CharFrame D} (h : ValLL0 D C) : ValLL D C := by
   exact ⟨fun j => HChar.ValuesIn.ofLL0 (h.mu0 j), HChar.ValuesIn.ofLL0 h.eta,
@@ -86,7 +86,7 @@ structure TupTied (D : D7) (C : CharFrame D) (nch : NChoice D) where
   psi_un : ∀ w, D.what₂.muAt w = D.what₂.mu0 → psi w = 1
 
 /- English proof (translation)
-Distinguish the cases in `hw : D.what₂.muAt w = D.what₂.mu0`. Rewrite using `[Tp.psi_un w hw]`. Conclude with `⟨∅, isPsi_one _⟩`. Conclude with `⟨_, Tp.psi_is w hw⟩`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem TupTied.psi_gen {D : D7} {C : CharFrame D} {nch : NChoice D} (Tp : TupTied D C nch) (w : D.what₂.places.Pl) :
     ∃ Q, IsPsi (D.what₂.places.resChar w) Q (Tp.psi w) := by
@@ -155,7 +155,7 @@ structure ThetaChrTied (D : D7) (C : CharFrame D) (nch : NChoice D) (Tp : TupTie
   etaT : eChr X.etaT = C.eta
 
 /- English proof (translation)
-Unfold `ThetaX.carY`. Use `split_ifs with hi`. Rewrite using `[map_mul, map_inv, T.chrOf, T.etaT]`. Rewrite using `[T.chrOf]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ThetaChrTied.carY {D : D7} {C : CharFrame D} {nch : NChoice D} {Tp : TupTied D C nch} {X : ThetaX D}
     (T : ThetaChrTied D C nch Tp X) (μ : D.what₂.Tup) (j : Fin D.R.m) (i : ℕ) :

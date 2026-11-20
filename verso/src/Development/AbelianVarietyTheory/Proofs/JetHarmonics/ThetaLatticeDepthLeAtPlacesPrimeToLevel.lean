@@ -34,13 +34,13 @@ open GlobalTheory.PtTie
 namespace GlobalTheory.DepthPrimeToLevel
 
 /- English proof (translation)
-Establish `hN0 : N ≠ 0`. Introduce and unpack `rfl`. Conclude with `hN (by simp)`. Establish `h1` using `RPfVal.vLa_int_not_mem la hN`. Establish `h2 : (((N : ℕ) : 𝓞 K) : K) = (N : K)` using `map_natCast (algebraMap (𝓞 K) K) N`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[h2]`. Establish `h3` using `ho.2 (N : K)`. Rewrite `h3` using `[h1, mul_zero, map_natCast, ← map_natCast (algebraMap S.V S.Fr)]`. Establish `hx : algebraMap S.V S.Fr (N : S.V) ≠ 0`. Rewrite using `[Ne, IsFractionRing.to_map_eq_zero_iff]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hN0` after adjusting the coercions. Establish `hne` using `valV_ne_zero (V := S.V) hx`. Establish `h4 : valV S.V (algebraMap S.V S.Fr (N : S.V)) = 1`. Unfold `vV at h3`. Rewrite using `[← WithZero.exp_log hne, neg_eq_zero.1 h3, WithZero.exp_zero]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Unfold `valV at h4`. Rewrite `h4` using `[HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff_mem_primeCompl]`. Assume the negation of the conclusion as `hu`. Conclude with `h4 ((IsLocalRing.mem_maximalIdeal _).2 hu)`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem isUnit_natCast {K : Type} [Field K] [NumberField K] (la : HeightOneSpectrum (𝓞 K)) (S : CDVR)
     (io : K →+* S.Fr) (e : ℕ) (ho : OverLa la S.V io e) (N : ℕ) (hN : ((N : ℕ) : 𝓞 K) ∉ la.asIdeal) :
@@ -66,7 +66,7 @@ theorem isUnit_natCast {K : Type} [Field K] [NumberField K] (la : HeightOneSpect
   exact h4 ((IsLocalRing.mem_maximalIdeal _).2 hu)
 
 /- English proof (translation)
-Unfold `rr0`. Establish `h1 : (0 : ℝ) < |(NumberField.discr D.host.E : ℝ)|` using `abs_pos.2 (by exact_mod_cast NumberField.discr_ne_zero D.host.E)`. Establish `h2 : (0 : ℝ) < Module.finrank ℚ D.host.E` using `by exact_mod_cast Module.finrank_pos`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 -/
 theorem rootDiscriminantDegreeRatio_pos (D : D7) : 0 < rr0 D := by
   unfold rr0
@@ -76,9 +76,9 @@ theorem rootDiscriminantDegreeRatio_pos (D : D7) : 0 < rr0 D := by
   positivity
 
 /- English proof (translation)
-Establish `hφ : 0 ≤ φ`. Establish `h1 : 0 ≤ (e * (R * N ^ 3)) * φ` using `by nlinarith`. Conclude with `nonneg_of_mul_nonneg_right h1 (by positivity)`. Use `le_trans ?_ (mul_le_mul_of_nonneg_right hc hφ)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `h1 : 0 ≤ N ^ 4 * n` using `by positivity`. Establish `h2 : 0 ≤ N ^ 3` using `by positivity`. Use `gcongr`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem err_le (R N n Dg Φ φ c e g₀ g₁ : ℝ) (hR : 0 < R) (hN : 0 < N) (hn : 0 ≤ n) (he : 0 < e) (hg₀ : 0 < g₀)
     (hg₁ : 1 ≤ g₁) (hΦ0 : 0 ≤ Φ) (hΦ : Φ ≤ e * (R * N ^ 3 * φ))
@@ -96,37 +96,33 @@ theorem err_le (R N n Dg Φ φ c e g₀ g₁ : ℝ) (hR : 0 < R) (hN : 0 < N) (h
       linarith
 
 /- English proof (translation)
-Introduce `D T h j hj hinj EX w c _ hrun la hg y`. Use `letI := T.Q.H.starRing`. Take `⟨hlp, hn, h4, hc0, hc⟩` from `hrun`. Take `⟨S, io, e, ho, z, hz, hl, C, Pu, hC, hPu, hval⟩` from `GlobalTheory.T.exists_uniformisedModel_integralChart_at_point D T h j hj la y`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible S.V`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨Q, hQ⟩, -⟩` from `GlobalTheory.PowData.exists_powData _ T.Q.H (T.Q.Dw j) T.Q.l (T.Q.Xo j) T.Q.c S io z C Pu ϖ hϖ`. Take `⟨r, Φ, M0, ⟨hΦ0, b, hb1, hb2⟩, -, hM0, hjm, hΦ⟩` from `GlobalTheory.T.exists_short_basis_uniformization_lattice D T h j hj la S io e ho z hz (imgV y) hl C Pu ϖ hϖ Q hQ`. Establish `hΦ' : Φ ≤ e * (rr0 D * (2 * D.R.f * D.R.m : ℝ) ^ 3 * (recPJ h j hj).phiC la y)` using `hΦ`. Take `⟨⟨α, hα1, hα2⟩, -⟩` from `GlobalTheory.HalfGen.half_principal_and_split D T.toCore h.toLawsCore.toLawsM EX`. Establish `hM : T.Q.l.M = D.host.g 0 * D.host.g 1` using `level_M T.toCore h.toLawsCore.toLawsM`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hnab : IsNab (T.Q.Xo j) T.Q.c (T.nab j)`. Take `⟨st, hn⟩` from `h.nabPin j hj`. Use `GlobalTheory.PowGerm.starSt _ T.Q.H st hn.1` as an intermediate fact. Substitute `this` using the available equality. Conclude with `hn`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hMu : IsUnit ((T.Q.l.M : ℕ) : S.V)`. Use `isUnit_natCast la S _ e ho _ ?_` and prove the remaining obligations. Rewrite using `[hM, Nat.cast_mul]`. Introduce `hm`. Break down `la.isPrime.mem_or_mem hm with h1 | h1` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `hg 0 h1`. Conclude with `hg 1 h1`. Establish `hf1 : 1 ≤ D.R.f`. Establish `h1` using `GlobalTheory.DepthLink.finrank_host D`. Establish `h2 : 0 < Module.finrank ℚ D.host.E` using `Module.finrank_pos`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hm2` using `D.R.two_le_m`. Establish `hr1 : 1 ≤ D.R.r`. Establish `h2` using `D.R.m_add_three_le_k`. Unfold `Ranks.r`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hn1 : 1 ≤ w.n` using `le_trans (Nat.mul_pos (by omega) hr1) hn`. Establish `hg0 : 2 ≤ D.host.g 0` using `(D.host.g_prime 0).two_le`. Establish `hg1 : 2 ≤ D.host.g 1` using `(D.host.g_prime 1).two_le`. Establish `hle : D.host.g 0 ≤ D.host.g 0 * D.host.g 1` using `Nat.le_mul_of_pos_right _ (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg0' : (2 : ℝ) ≤ D.host.g 0` using `by exact_mod_cast hg0`. Establish `hg1' : (2 : ℝ) ≤ D.host.g 1` using `by exact_mod_cast hg1`. Establish `hle' : (D.host.g 0 : ℝ) ≤ (T.Q.l.M : ℕ)` using `by rw [hM]; exact_mod_cast hle`. Establish `he' : (0 : ℝ) < e` using `by exact_mod_cast ho.1`. Establish `hDM : (WeightAlgebra.DF w : ℝ) * M0 < (T.Q.l.M : ℕ)`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Break down `lt_or_ge j D.R.m with hjm' | hjm'` into its components or cases. Conclude with `((mul_le_mul_of_nonneg_left hM0 (Nat.cast_nonneg _)).trans_lt (hc hjm' 0).1).trans_le hle'`. Rewrite using `[(hjm hjm').1, mul_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hnum : (WeightAlgebra.DF w : ℝ) ^ 2 * Φ / (T.Q.l.M : ℕ) / e ≤ c * (recPJ h j hj).phiC la y`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `lt_or_ge j D.R.m with hjm' | hjm'` into its components or cases. Rewrite using `[hM, Nat.cast_mul]`. Establish `hf' : (1 : ℝ) ≤ D.R.f` using `by exact_mod_cast hf1`. Establish `hm' : (2 : ℝ) ≤ D.R.m` using `by exact_mod_cast hm2`. Conclude with `err_le (rr0 D) _ w.n _ Φ _ c e _ _ (rootDiscriminantDegreeRatio_pos D) (by positivity) (Nat.cast_nonneg _) he' (by linarith) (by linarith) hΦ0 hΦ' (hc hjm' 0).2`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `WeightAlgebra.PJ.phiC`. Rewrite using `[(hjm hjm').2, if_neg (not_lt.2 hjm')]`. Simplify using the standard rewrite rules. Establish `hA` using `GlobalTheory.T.iInf_theta_generators_le_local_depth_prime_to_level _ T.Q.H (T.Q.Dw j) T.Q.l (T.Q.Xo j) T.Q.c (T.nab j) hnab (h.thTot j hj) S io z C hC Pu hPu hz ϖ hϖ Q hQ Φ M0 r b hΦ0 hb1 hb2 α hα1 hα2 hMu (wtA w) w.n (WeightAlgebra.DF w) e hn1 ho.1 (ReciprocityTheory.ChartRestri …`. Establish `hB` using `(GlobalTheory.T.unscaledWeightDepth_finite_bounded_above_charts D T h j hj w hn la).2.2.2.2 S io e ho z hz C`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsW` using `RPfVal.vAdd_sW (recB h.toLawsCore) hinj EX w la hg`. Establish `hs0 : sWt (recB h.toLawsCore) hinj EX w ≠ 0`. Use `mul_ne_zero (fun h0 => RPfVal.nnW_not_mem (recB h.toLawsCore) hinj EX w la hg ?_) ?_` and prove the remaining obligations. Rewrite using `[h0]`. Conclude with `la.asIdeal.zero_mem`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hq : D.host.q.Prime` using `D.host.hyp.1`. Establish `hd : D.host.d.Prime` using `D.host.hyp.2.1`. Conclude with `Nat.cast_ne_zero.2 (Nat.mul_ne_zero (Nat.mul_ne_zero (pow_ne_zero _ D.host.QS_pos.ne') (pow_ne_zero _ hq.ne_zero)) (pow_ne_zero _ hd.ne_zero))`. Establish `hdep : (recPJ h j hj).depth (sWt (recB h.toLawsCore) hinj EX w) w la y ≤ (⨅ f ∈ T.th j w, nval S.V e (evI z f)) + (((ramOverZ la : ℝ) * clOf w la : ℝ) : EReal)`. Rewrite using `[← EReal.sub_le_iff_le_add (Or.inl (EReal.coe_ne_bot _)) (Or.inl (EReal.coe_ne_top _))]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `le_iInf₂ fun f hf => ?_` and prove the remaining obligations. Rewrite using `[EReal.sub_le_iff_le_add (Or.inl (EReal.coe_ne_bot _)) (Or.inl (EReal.coe_ne_top _)), ← hval w f hf, add_comm]`. Use `(GlobalTheory.T.thetaDepth_le_scaled_rule_value D T h j hj w hlp _ hs0 la y f hf).trans (le_of_eq ?_)` and prove the remaining obligations. Conclude with `congrArg (fun x : ℝ => (x : EReal) + vAtV y f) hsW`. Establish `hnu : nusOf (recB h.toLawsCore) w (nuWt T w) la = (ramOverZ la : ℝ) * nuWt T w la + (ramOverZ la : ℝ) * clOf w la`.
-
-Unfold `nusOf`. Rewrite using `[dif_neg (fun ⟨i, hi⟩ => hg i hi), ← mul_add, ← H1algLink.eWL_eq la]`. Both sides reduce to the same expression. Use `hdep.trans ?_` and prove the remaining obligations. Rewrite using `[hnu, add_right_comm, EReal.coe_add, EReal.coe_add]`.
-
-Conclude with `add_le_add (hA.trans (add_le_add hB (EReal.coe_le_coe_iff.2 hnum))) le_rfl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem depth_le : ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j) (hinj : Function.Injective D.what₂.OtoLL) (EX : ErrX D) (w : WeightFamilies.Wt D j) (c : ℝ), Oriented T EX → RunNum D w c → ∀ (la : HeightOneSpectrum (𝓞 T.Q.c.F)), (∀ i : Fin 2, ((D.host.g i : ℕ) : 𝓞 T.Q.c.F) ∉ la.asIdeal) → ∀ y : T.PtA j la, (recPJ h j hj).depth (sWt (recB h.toLawsCore) hinj EX w) w la y ≤ ((nusOf (recB h.toLawsCore) w (nuWt T w) la + c * (recPJ h j hj).phiC la y : ℝ) : EReal) := by
   intro D T h j hj hinj EX w c _ hrun la hg y

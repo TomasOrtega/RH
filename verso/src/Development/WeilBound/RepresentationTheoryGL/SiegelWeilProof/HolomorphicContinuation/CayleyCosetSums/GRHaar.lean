@@ -12,7 +12,7 @@ open PositivityTheory.Rg.Sw PositivityTheory.Rg.Sw.AbsSt
 variable {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `Units.continuous_val.comp continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem continuous_mR : Continuous (mR : GR n → M2 n) :=
   Units.continuous_val.comp continuous_subtype_val
@@ -24,7 +24,7 @@ instance secondCountableBlockMatrices (n : ℕ) : SecondCountableTopology (M2 n)
   inferInstanceAs (SecondCountableTopology (Fin n ⊕ Fin n → Fin n ⊕ Fin n → ℂ))
 
 /- English proof (translation)
-Rewrite using `[JJ, fromBlocks_multiply]`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, Matrix.one_mul, Matrix.mul_one, Matrix.mul_neg, Matrix.neg_mul, add_zero, zero_add, neg_zero]`. Rewrite using `[← fromBlocks_one, fromBlocks_neg, neg_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem JJ_mul_self : JJ n * JJ n = -1 := by
   rw [JJ, fromBlocks_multiply]
@@ -32,13 +32,13 @@ theorem JJ_mul_self : JJ n * JJ n = -1 := by
   rw [← fromBlocks_one, fromBlocks_neg, neg_zero]
 
 /- English proof (translation)
-The claim follows from `isClosed_eq ((continuous_id.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul continuous_id) continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_inG : IsClosed {x : M2 n | InG x} :=
   isClosed_eq ((continuous_id.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul continuous_id) continuous_const
 
 /- English proof (translation)
-Unfold `InG at hx`. Establish `h : JJ n * xᴴ * JJ n * x = JJ n * (xᴴ * JJ n * x)`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[Matrix.neg_mul, h, hx, JJ_mul_self, neg_neg]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_left {x : M2 n} (hx : InG x) : (-(JJ n * xᴴ * JJ n)) * x = 1 := by
   unfold InG at hx
@@ -61,13 +61,13 @@ def toSet : GR n ≃ₜ {x : M2 n | InG x} where
     exact ((continuous_const.matrix_mul (continuous_subtype_val.matrix_conjTranspose)).matrix_mul continuous_const).neg
 
 /- English proof (translation)
-The claim follows from `(isClosed_inG.isClosedEmbedding_subtypeVal).comp toSet.isClosedEmbedding`.
+A detailed English derivation is pending.
 -/
 theorem isClosedEmbedding_mR : Topology.IsClosedEmbedding (mR : GR n → M2 n) :=
   (isClosed_inG.isClosedEmbedding_subtypeVal).comp toSet.isClosedEmbedding
 
 /- English proof (translation)
-The claim follows from `isClosedEmbedding_mR.isCompact_preimage hC`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_preimage_mR {C : Set (M2 n)} (hC : IsCompact C) : IsCompact ((mR : GR n → M2 n) ⁻¹' C) :=
   isClosedEmbedding_mR.isCompact_preimage hC

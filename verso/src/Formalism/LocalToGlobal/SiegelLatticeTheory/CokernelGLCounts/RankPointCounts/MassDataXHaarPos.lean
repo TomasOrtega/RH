@@ -16,7 +16,7 @@ open Formalism.BasicNotions Formalism.MainNotions.GlobalTheoryTheory.GenusMassVo
 namespace Formalism.L2.SG.Pf.MassDataX
 
 /- English proof (translation)
-The claim follows from `ENNReal.toReal_pos ((lt_of_lt_of_le (hU.measure_pos μ hne) (measure_mono h1)).ne') (ne_top_of_le_ne_top (hK.measure_lt_top (μ := μ)).ne (measure_mono h2))`.
+A detailed English derivation is pending.
 -/
 theorem haar_toReal_pos {G : Type*} [Group G] [TopologicalSpace G] [MeasurableSpace G] (μ : Measure G)
     [μ.IsHaarMeasure] {U S K : Set G} (hU : IsOpen U) (hne : U.Nonempty) (h1 : U ⊆ S) (h2 : S ⊆ K)
@@ -25,7 +25,7 @@ theorem haar_toReal_pos {G : Type*} [Group G] [TopologicalSpace G] [MeasurableSp
     (ne_top_of_le_ne_top (hK.measure_lt_top (μ := μ)).ne (measure_mono h2))
 
 /- English proof (translation)
-Use `haveI := hμ`. Conclude with `haar_toReal_pos μ hU hne h1 h2 hK`.
+A detailed English derivation is pending.
 -/
 theorem haar_toReal_pos' {G : Type*} [Group G] [TopologicalSpace G] [MeasurableSpace G] (μ : Measure G)
     (hμ : μ.IsHaarMeasure) {U S K : Set G} (hU : IsOpen U) (hne : U.Nonempty) (h1 : U ⊆ S) (h2 : S ⊆ K)
@@ -38,7 +38,7 @@ section Typed
 variable {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (p : TypX X)
 
 /- English proof (translation)
-Introduce `x hx`. Simplify using `only [MassDataIdxSteps.KgX, MassDataIdxSteps.KvX] at hx ⊢`. Conclude with `hx.1`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem kg_sub_kv : MassDataIdxSteps.KgX X p ⊆ MassDataIdxSteps.KvX X p := by
   intro x hx
@@ -46,7 +46,7 @@ theorem kg_sub_kv : MassDataIdxSteps.KgX X p ⊆ MassDataIdxSteps.KvX X p := by
   exact hx.1
 
 /- English proof (translation)
-Take `⟨K, hK, ho, hc, hg⟩` from `stK_holds X p`. Take `⟨ρ, -, hρ⟩` from `stRed_holds X p K hK`. Use `⟨by rw [← hK]; exact ho, by rw [← hK]; exact hc, hg, ?_⟩` and prove the remaining obligations. Establish `h1` using `(hρ 1).mp (map_one ρ)`. Simplify using `using h1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem kv_facts : IsOpen (MassDataIdxSteps.KvX X p) ∧ IsCompact (MassDataIdxSteps.KvX X p) ∧
     IsOpen (MassDataIdxSteps.KgX X p) ∧ (1 : MassDataIdxSteps.HAp X p) ∈ MassDataIdxSteps.KgX X p := by
@@ -57,9 +57,9 @@ theorem kv_facts : IsOpen (MassDataIdxSteps.KvX X p) ∧ IsCompact (MassDataIdxS
   simpa using h1
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨K, hK, -⟩` from `stK_holds X p`. Take `⟨ρ, hs, hρ⟩` from `stRed_holds X p K hK`. Take `⟨A, hA, hker, -⟩` from `stImA_holds X hb p K hK ρ hs hρ`. Establish `hxK : x ∈ (K : Set (MassDataIdxSteps.HAp X p))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hK]`. Conclude with `kg_sub_kv X p hx`. Rewrite using `[← hA]`. Conclude with `⟨⟨x, hxK⟩, hker (MonoidHom.mem_ker.mpr ((hρ ⟨x, hxK⟩).mpr hx)), rfl⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem kg_sub_kpp : MassDataIdxSteps.KgX X p ⊆ MassDataIdxSteps.KppX X hb p := by
   intro x hx
@@ -73,9 +73,9 @@ theorem kg_sub_kpp : MassDataIdxSteps.KgX X p ⊆ MassDataIdxSteps.KppX X hb p :
   exact ⟨⟨x, hxK⟩, hker (MonoidHom.mem_ker.mpr ((hρ ⟨x, hxK⟩).mpr hx)), rfl⟩
 
 /- English proof (translation)
-Take `⟨K, hK, -⟩` from `stK_holds X p`. Take `⟨ρ, hs, hρ⟩` from `stRed_holds X p K hK`. Take `⟨A, hA, -⟩` from `stImA_holds X hb p K hK ρ hs hρ`. Introduce `x hx`. Rewrite `hx` using `[← hA]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨y, -, rfl⟩` from `hx`. Rewrite using `[← hK]`. Conclude with `y.2`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kpp_sub_kv : MassDataIdxSteps.KppX X hb p ⊆ MassDataIdxSteps.KvX X p := by
   obtain ⟨K, hK, -⟩ := stK_holds X p
@@ -88,7 +88,7 @@ theorem kpp_sub_kv : MassDataIdxSteps.KppX X hb p ⊆ MassDataIdxSteps.KvX X p :
   exact y.2
 
 /- English proof (translation)
-Introduce `y hy`. Establish `h1 : (1 : MassDataIdxSteps.HAp X p) ∈ MassDataIdxSteps.KvX X p` using `kg_sub_kv X p (kv_facts X p).2.2.2`. Conclude with `⟨hy.1, 1, y, (Ssub _ _ _ _).one_mem, h1, hy, (one_mul y).symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem kg_sub_knat (u : D.what₂.Word) : MassDataIdxSteps.KgX X p ⊆ MassDataIdxSteps.KnatX X u p := by
   intro y hy
@@ -96,7 +96,7 @@ theorem kg_sub_knat (u : D.what₂.Word) : MassDataIdxSteps.KgX X p ⊆ MassData
   exact ⟨hy.1, 1, y, (Ssub _ _ _ _).one_mem, h1, hy, (one_mul y).symm⟩
 
 /- English proof (translation)
-Introduce `_ h` and use `h.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem knat_sub_kv (u : D.what₂.Word) : MassDataIdxSteps.KnatX X u p ⊆ MassDataIdxSteps.KvX X p := fun _ h => h.1
 
@@ -109,17 +109,15 @@ variable {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (p : TypX X)
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.Sub Formalism.L2.SG.Measures in
 
 /- English proof (translation)
-Take `⟨K, hK, -, -, -⟩` from `MassDataIdxSteps.stK_holds X p`. Take `⟨ρ, -, hker⟩` from `stRed_holds X p K hK`. Establish `hKf` using `(PIW.MassDataColumns.finHA_mem_Kf_iff X hb (X.xu u)).2 (X.xu_K u)`. Rewrite `hKf` using `[Kf, Subgroup.mem_iInf]`. Establish `haK : haMap X.B.I.cm.sig X.B.I.J (evalV X.B.I.F p.1) (finHA X hb (X.xu u)) ∈ MassDataIdxSteps.KvX X p` using `hKf p.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hcs : compSet X.B.I.cm.sig X.B.I.J (K2u X hb u) p.1 = (fun z => haMap X.B.I.cm.sig X.B.I.J (evalV X.B.I.F p.1) (finHA X hb (X.xu u)) * z * (haMap X.B.I.cm.sig X.B.I.J (evalV X.B.I.F p.1) (finHA X hb (X.xu u)))⁻¹) '' MassDataIdxSteps.KppX X hb p`. Unfold `compSet K2u MassDataIdxSteps.KppX compSet`. Rewrite using `[Set.image_image, Set.image_image]`. Use `congr 1`. Use function extensionality and compare the values at `y`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[map_mul, map_mul, map_inv]`. Rewrite using `[hcs]`. Generalize the expression as in `haMap X.B.I.cm.sig X.B.I.J (evalV X.B.I.F p.1) (finHA X hb (X.xu u)) = a at haK ⊢`. Establish `haK' : a ∈ (K : Set (MassDataIdxSteps.HAp X p))` using `by rw [hK]; exact haK`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `k hk`. Establish `hkK : k ∈ (K : Set (MassDataIdxSteps.HAp X p))` using `hK ▸ kg_sub_kv X p hk`. Establish `h2` using `(hker ((⟨a, haK'⟩ : K)⁻¹ * ⟨k, hkK⟩ * ⟨a, haK'⟩)).1 (by rw [map_mul, map_mul, (hker ⟨k, hkK⟩).2 hk, mul_one, map_inv, inv_mul_cancel])`. Establish `h2' : a⁻¹ * k * a ∈ MassDataIdxSteps.KgX X p`. Simplify `h2` using `only [Subgroup.coe_mul, Subgroup.coe_inv]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨a⁻¹ * k * a, kg_sub_kpp X hb p h2', ?_⟩` and prove the remaining obligations. Use `group`. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Establish `hzK : z ∈ (K : Set (MassDataIdxSteps.HAp X p))` using `hK ▸ kpp_sub_kv X hb p hz`. Rewrite using `[← hK]`.
-
-Conclude with `K.mul_mem (K.mul_mem haK' hzK) (K.inv_mem haK')`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem level_compression_chain (u : D.what₂.Word) :
     MassDataIdxSteps.KgX X p ⊆ compSet X.B.I.cm.sig X.B.I.J (K2u X hb u) p.1 ∧
@@ -162,13 +160,11 @@ section Glob
 variable {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I)
 
 /- English proof (translation)
-Establish `: FiniteDimensional X.B.I.F X.B.I.E` using `Module.Finite.of_restrictScalars_finite ℚ _ _`. Use `PIW.MassDataColumns.isTopGroup_HA (F := X.B.I.F) (E := X.B.I.E) X.B.I.cm.sig X.B.I.J` as an intermediate fact. Use `set e := Formalism.L2.SG.Pf.Meas.eFin X.B.I hb`. Establish `h1 : IsOpen (levelUnitary X hb)`. Establish `hk : levelUnitary X hb = e '' X.K2` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hk]`. Conclude with `e.toHomeomorph.isOpenMap _ (Formalism.L2.SG.Pf.level_subgroup_compact_open X).1`. Use `set a := finHA X hb (X.xu u)`. Establish `hc : K2u X hb u = ((Homeomorph.mulLeft a).trans (Homeomorph.mulRight a⁻¹)) '' levelUnitary X hb` using `rfl`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc]`. Conclude with `((Homeomorph.mulLeft a).trans (Homeomorph.mulRight a⁻¹)).isOpenMap _ h1`. Use `⟨finHA X hb 1, ⟨1, hK.1, rfl⟩, ?_⟩ show a * finHA X hb 1 * a⁻¹ = 1` and prove the remaining obligations. Rewrite using `[finHA_eq_eFin, map_one, mul_one, mul_inv_cancel]`. Introduce and unpack `_ ⟨y, ⟨k, hk2, rfl⟩, rfl⟩`.
-
-Establish `hxu : a ∈ MassDataMassesW.KX X` using `(PIW.MassDataColumns.finHA_mem_Kf_iff X hb _).2 (X.xu_K u)`. Establish `hkK : finHA X hb k ∈ MassDataMassesW.KX X` using `(PIW.MassDataColumns.finHA_mem_Kf_iff X hb _).2 ((Formalism.L2.SG.Closed.level_subgroup_properties X).2.1 k hk2)`. Conclude with `(MassDataMassesW.KX X).mul_mem ((MassDataMassesW.KX X).mul_mem hxu hkK) ((MassDataMassesW.KX X).inv_mem hxu)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem conjugated_level_open_one_mem (hK : X.LevelSubgroupCharacter) (u : D.what₂.Word) : IsOpen (K2u X hb u) ∧ (1 : HA (Af X.B.I.F) X.B.I.cm.sig X.B.I.J) ∈ K2u X hb u ∧
     K2u X hb u ⊆ (MassDataMassesW.KX X : Set (HA (Af X.B.I.F) X.B.I.cm.sig X.B.I.J)) := by
@@ -194,7 +190,7 @@ theorem conjugated_level_open_one_mem (hK : X.LevelSubgroupCharacter) (u : D.wha
     exact (MassDataMassesW.KX X).mul_mem ((MassDataMassesW.KX X).mul_mem hxu hkK) ((MassDataMassesW.KX X).inv_mem hxu)
 
 /- English proof (translation)
-Establish `: FiniteDimensional X.B.I.F X.B.I.E` using `Module.Finite.of_restrictScalars_finite ℚ _ _`. Conclude with `PI.LevelKSplit.W.ExC.closed_SNH (MassDataVolumesW.stepHerm X) (fun x => star_star x) (frameOf X u) _ (MassDataLevelSSteps.FrameW.frameOf_isStd X u)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem closed_SNH_X (u : D.what₂.Word) :
     IsClosed (Ssub (Af X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u) : Set (HA (Af X.B.I.F) X.B.I.cm.sig X.B.I.J)) ∧
@@ -223,7 +219,7 @@ variable {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (hK : X.LevelSubg
   (i0 i0' : ∀ _ : NumberField.InfinitePlace X.B.I.F, Fin D.R.k) (νq : X.B.I.Ginf → Measure X.B.I.Ginf)
 
 /- English proof (translation)
-Use `haveI := (X.measW_norm w).2.2.2.2.2.2.2.1 p.1`. Take `⟨-, hc, hgo, h1g⟩` from `kv_facts X p`. Establish `hcl` using `MassDataLevelSSteps.LatTop.isClosed_Ssub (v := p.1) X.B.I.cm.sig X.B.I.J (frameOf X w)`. Conclude with `haar_toReal_pos _ (hgo.preimage continuous_subtype_val) ⟨1, show (1 : MassDataIdxSteps.HAp X p) ∈ MassDataIdxSteps.KgX X p from h1g⟩ (Set.preimage_mono h1) (Set.preimage_mono h2) (hcl.isClosedEmbedding_subtypeVal.isCompact_preimage hc)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sv_pos (w : D.what₂.Word) (p : TypX X) {S : Set (MassDataIdxSteps.HAp X p)}
     (h1 : MassDataIdxSteps.KgX X p ⊆ S) (h2 : S ⊆ MassDataIdxSteps.KvX X p) :
@@ -236,7 +232,7 @@ theorem sv_pos (w : D.what₂.Word) (p : TypX X) {S : Set (MassDataIdxSteps.HAp 
     (Set.preimage_mono h1) (Set.preimage_mono h2) (hcl.isClosedEmbedding_subtypeVal.isCompact_preimage hc)
 
 /- English proof (translation)
-Use `haveI := X.measG_norm.2.2.2.1 p.1`. Take `⟨-, hc, hgo, h1g⟩` from `kv_facts X p`. Conclude with `haar_toReal_pos _ hgo ⟨1, h1g⟩ h1 h2 hc`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem gv_pos (p : TypX X) {S : Set (MassDataIdxSteps.HAp X p)}
     (h1 : MassDataIdxSteps.KgX X p ⊆ S) (h2 : S ⊆ MassDataIdxSteps.KvX X p) :
@@ -246,17 +242,9 @@ theorem gv_pos (p : TypX X) {S : Set (MassDataIdxSteps.HAp X p)}
   exact haar_toReal_pos _ hgo ⟨1, h1g⟩ h1 h2 hc
 
 /- English proof (translation)
-Establish `: FiniteDimensional X.B.I.F X.B.I.E` using `Module.Finite.of_restrictScalars_finite ℚ _ _`. Establish `hKc` using `kCompactOpen_holds X`. Establish `hKcs : ∀ w : D.what₂.Word, IsCompact (Subtype.val ⁻¹' (MassDataMassesW.KX X : Set (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HA (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af X.B.I.F) X.B.I.cm.sig X.B.I.J)) : Set (Formalism.L2.SG.Sub.Ssub (Formalism …` using `fun w => (closed_SNH_X X w).1.isClosedEmbedding_subtypeVal.isCompact_preimage hKc.1`. Establish `hKcn : ∀ w : D.what₂.Word, IsCompact (Subtype.val ⁻¹' (MassDataMassesW.KX X : Set (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HA (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af X.B.I.F) X.B.I.cm.sig X.B.I.J)) : Set (Formalism.L2.SG.Sub.Nsub (Formalism …` using `fun w => (closed_SNH_X X w).2.1.isClosedEmbedding_subtypeVal.isCompact_preimage hKc.1`. Establish `hKch : ∀ w : D.what₂.Word, IsCompact (Subtype.val ⁻¹' (MassDataMassesW.KX X : Set (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HA (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af X.B.I.F) X.B.I.cm.sig X.B.I.J)) : Set (Formalism.L2.SG.Sub.Hsub (Formalism …` using `fun w => (closed_SNH_X X w).2.2.isClosedEmbedding_subtypeVal.isCompact_preimage hKc.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1K : (1 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HA (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af X.B.I.F) X.B.I.cm.sig X.B.I.J) ∈ (MassDataMassesW.KX X : Set (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HA (Formalism.MainNotions. …` using `(MassDataMassesW.KX X).one_mem`. Use `⟨fun p => ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_⟩, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `gv_pos X p (kg_sub_kv X p) subset_rfl`. Conclude with `gv_pos X p (kg_sub_knat X p u) (knat_sub_kv X p u)`. Conclude with `gv_pos X p (kg_sub_kpp X hb p) (kpp_sub_kv X hb p)`.
-
-Conclude with `sv_pos X u p (kg_sub_kv X p) subset_rfl`. Conclude with `sv_pos X u' p (kg_sub_kv X p) subset_rfl`. Conclude with `sv_pos X u p (level_compression_chain X hb p u).1 (level_compression_chain X hb p u).2`. Conclude with `sv_pos X u' p (level_compression_chain X hb p u').1 (level_compression_chain X hb p u').2`. Use `haveI := X.measG_norm.2.2.1`.
-
-Conclude with `haar_toReal_pos _ hKc.2 ⟨1, h1K⟩ subset_rfl subset_rfl hKc.1`. Use `haveI := (X.measW_norm u).2.2.2.2.2.2.1`. Conclude with `haar_toReal_pos _ (hKc.2.preimage continuous_subtype_val) ⟨1, h1K⟩ subset_rfl subset_rfl (hKcs u)`. Use `haveI := (X.measW_norm u').2.2.2.2.2.2.1`. Conclude with `haar_toReal_pos _ (hKc.2.preimage continuous_subtype_val) ⟨1, h1K⟩ subset_rfl subset_rfl (hKcs u')`.
-
-Conclude with `haar_toReal_pos' _ (X.measW_norm u).2.2.1 (hKc.2.preimage continuous_subtype_val) ⟨1, h1K⟩ subset_rfl subset_rfl (hKch u)`. Conclude with `haar_toReal_pos' _ (X.measW_norm u').2.2.1 (hKc.2.preimage continuous_subtype_val) ⟨1, h1K⟩ subset_rfl subset_rfl (hKch u')`. Take `⟨ho, h1, hs⟩` from `conjugated_level_open_one_mem X hb hK u`. Conclude with `haar_toReal_pos' _ (X.measW_norm u).2.2.1 (ho.preimage continuous_subtype_val) ⟨1, h1⟩ subset_rfl (Set.preimage_mono hs) (hKch u)`. Take `⟨ho, h1, hs⟩` from `conjugated_level_open_one_mem X hb hK u'`.
-
-Conclude with `haar_toReal_pos' _ (X.measW_norm u').2.2.1 (ho.preimage continuous_subtype_val) ⟨1, h1⟩ subset_rfl (Set.preimage_mono hs) (hKch u')`. Conclude with `haar_toReal_pos' _ (X.measW_norm u).2.2.2.2.2.1 (hKc.2.preimage continuous_subtype_val) ⟨1, h1K⟩ subset_rfl subset_rfl (hKcn u)`. Conclude with `haar_toReal_pos' _ (X.measW_norm u').2.2.2.2.2.1 (hKc.2.preimage continuous_subtype_val) ⟨1, h1K⟩ subset_rfl subset_rfl (hKcn u')`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem locHaarPosC_holds : LocHaarPosC X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq := by
   have : FiniteDimensional X.B.I.F X.B.I.E := Module.Finite.of_restrictScalars_finite ℚ _ _

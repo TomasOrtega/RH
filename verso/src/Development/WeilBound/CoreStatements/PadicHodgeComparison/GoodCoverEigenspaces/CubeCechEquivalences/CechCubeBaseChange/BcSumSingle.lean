@@ -20,7 +20,7 @@ def bcSum (ψ : M →ₛₗ[algebraMap k k'] N) : (J →₀ M) →+ N :=
   Finsupp.liftAddHom fun j ↦ (DistribSMul.toAddMonoidHom N (e j)).comp ψ.toAddMonoidHom
 
 /- English proof (translation)
-The claim follows from `Finsupp.liftAddHom_apply_single _ j m`.
+A detailed English derivation is pending.
 -/
 theorem bcSum_single (ψ : M →ₛₗ[algebraMap k k'] N) (j : J) (m : M) :
     bcSum e ψ (Finsupp.single j m) = e j • ψ m :=

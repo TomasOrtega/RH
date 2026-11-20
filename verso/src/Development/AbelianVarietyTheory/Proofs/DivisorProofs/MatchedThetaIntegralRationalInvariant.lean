@@ -13,11 +13,11 @@ noncomputable section
 namespace GlobalTheory.ThK.LiftConstLeft
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM Φ hΦ μ 𝓕 f γ hγ g`. Establish `hP` using `GlobalTheory.ThKContSmall.isPair_small hM.triple`. Establish `hS` using `hP.weil.isUSplitting`. Establish `hΦA : Φ ∈ schA F (Fin a' × Fin (a + a'))` using `GlobalTheory.ThKContSmall.so_le_schA hM.triple.geo.hM' B.τ₁ hΦ`. Establish `key : ∀ h, theta om' Φ (γ * g) h = theta om' Φ g h` using `fun h => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : om' (γ * g, h) Φ = om' (γ, 1) (om' (g, h) Φ)`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Simplify using the standard rewrite rules. Simplify using `only [theta]`. Rewrite using `[e, GlobalTheory.T.thetaSum_invariant_rational_unitary hKP.base F E σ B _ _ _ _ _ _ _ om' _ _ _ _ hP γ hγ 1 (one_mem _) _ (hS.pres _ _ hΦA)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [thLift_def, key]`.
+Simplify using the standard rewrite rules.
 -/
 theorem thLift_rat_left : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)
     (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (R : RealMaps F a a') (Rf : FinMaps F a a'), IsMatched B G X om om' R Rf →

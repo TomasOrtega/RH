@@ -9,16 +9,16 @@ namespace GlobalTheory.JetConj
 noncomputable def wr (f : ℂ → ℂ) (z : ℂ) : ℂ := f z * deriv (deriv f) z - deriv f z ^ 2
 
 /- English proof (translation)
-Unfold `wr`. Rewrite using `[h.eq_of_nhds, h.deriv.eq_of_nhds, h.deriv.deriv.eq_of_nhds]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma wr_congr {f g : ℂ → ℂ} {z : ℂ} (h : f =ᶠ[𝓝 z] g) : wr f z = wr g z := by
   unfold wr
   rw [h.eq_of_nhds, h.deriv.eq_of_nhds, h.deriv.deriv.eq_of_nhds]
 
 /- English proof (translation)
-Establish `e : deriv (fun w => f w * g w) =ᶠ[𝓝 z] fun w => deriv f w * g w + f w * deriv g w` using `by filter_upwards [hf.eventually_analyticAt, hg.eventually_analyticAt] with w a b`. Conclude with `(a.differentiableAt.hasDerivAt.fun_mul b.differentiableAt.hasDerivAt).deriv`. Establish `a` using `hf.differentiableAt.hasDerivAt`. Establish `b` using `hg.differentiableAt.hasDerivAt`. Establish `a'` using `hf.deriv.differentiableAt.hasDerivAt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b'` using `hg.deriv.differentiableAt.hasDerivAt`. Unfold `wr`. Rewrite using `[e.deriv.eq_of_nhds, e.eq_of_nhds, ((a'.fun_mul b).fun_add (a.fun_mul b')).deriv]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma wr_mul {f g : ℂ → ℂ} {z : ℂ} (hf : AnalyticAt ℂ f z) (hg : AnalyticAt ℂ g z) :
     wr (fun w => f w * g w) z = wr f z * g z ^ 2 + f z ^ 2 * wr g z := by
@@ -34,9 +34,9 @@ lemma wr_mul {f g : ℂ → ℂ} {z : ℂ} (hf : AnalyticAt ℂ f z) (hg : Analy
   ring
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp [wr]`. Consider the case `succ k ih`. Simplify using `only [pow_succ (n := k)]`. Rewrite using `[wr_mul (hf.fun_pow k) hf]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Take the linear combination `f z ^ 2 * ih`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 lemma wr_pow {f : ℂ → ℂ} {z : ℂ} (hf : AnalyticAt ℂ f z) (k : ℕ) :
     wr (fun w => f w ^ k) z * f z ^ 2 = k * (f z ^ k) ^ 2 * wr f z := by
@@ -49,9 +49,9 @@ lemma wr_pow {f : ℂ → ℂ} {z : ℂ} (hf : AnalyticAt ℂ f z) (k : ℕ) :
     linear_combination f z ^ 2 * ih
 
 /- English proof (translation)
-Establish `key : ∀ {g : ℂ → ℂ}, Differentiable ℂ g → deriv (fun w => g (c * w + d)) = fun w => c * deriv g (c * w + d)`. Introduce `g hg`. Use function extensionality and compare the values at `w`. Use `(hg (c * w + d)).hasDerivAt.comp w (((hasDerivAt_id w).const_mul c).add_const d)` as an intermediate fact. Rewrite using `[show (fun w => g (c * w + d)) = g ∘ fun w => c * id w + d from rfl, this.deriv]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Unfold `wr`. Rewrite using `[key hf, deriv_const_mul_field', key hf.deriv]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma wr_affine {f : ℂ → ℂ} (hf : Differentiable ℂ f) (c d z : ℂ) :
     wr (fun w => f (c * w + d)) z = c ^ 2 * wr f (c * z + d) := by
@@ -76,16 +76,16 @@ structure IsSigmaLike (L : PeriodPair) (σ : ℂ → ℂ) : Prop where
 variable {L : PeriodPair} {σ : ℂ → ℂ}
 
 /- English proof (translation)
-The claim follows from `Continuous.ext_on ((countable_periodLattice L).dense_compl ℂ) hf hg h`.
+A detailed English derivation is pending.
 -/
 lemma eq_of_eqOn_compl_lattice (L : PeriodPair) {f g : ℂ → ℂ} (hf : Continuous f) (hg : Continuous g)
     (h : ∀ z ∉ L.lattice, f z = g z) : f = g :=
   Continuous.ext_on ((countable_periodLattice L).dense_compl ℂ) hf hg h
 
 /- English proof (translation)
-Establish `p : ∀ {g : ℂ → ℂ}, Differentiable ℂ g → ∀ v, HasDerivAt (fun v => g (a + v)) (deriv g (a + v)) v` using `fun hg v => (hg _).hasDerivAt.comp_const_add a v`. Establish `m : ∀ {g : ℂ → ℂ}, Differentiable ℂ g → ∀ v, HasDerivAt (fun v => g (a - v)) (-deriv g (a - v)) v` using `fun hg v => (hg _).hasDerivAt.comp_const_sub a v`. Establish `e : (deriv fun v => σ (a + v) * σ (a - v) * k + l * σ v ^ 2) = fun v => (deriv σ (a + v) * σ (a - v) - σ (a + v) * deriv σ (a - v)) * k + l * (2 * (σ v * deriv σ v))`. Use function extensionality and compare the values at `v`. Rewrite using `[((((p hσ v).fun_mul (m hσ v)).mul_const k).fun_add (((hσ v).hasDerivAt.fun_pow 2).const_mul l)).deriv]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, (((((p hσ.deriv 0).fun_mul (m hσ 0)).fun_sub ((p hσ 0).fun_mul (m hσ.deriv 0))).mul_const k).fun_add ((((hσ 0).hasDerivAt.fun_mul (hσ.deriv 0).hasDerivAt).const_mul 2).const_mul l)).deriv]`. Simplify using `only [wr, add_zero, sub_zero]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma second_deriv_sigma_product_at_zero (hσ : Differentiable ℂ σ) (a k l : ℂ) :
     deriv (deriv fun v => σ (a + v) * σ (a - v) * k + l * σ v ^ 2) 0 =
@@ -107,11 +107,11 @@ lemma second_deriv_sigma_product_at_zero (hσ : Differentiable ℂ σ) (a k l : 
   ring
 
 /- English proof (translation)
-Establish `hσ` using `H.diff`. Establish `hc` using `hσ.continuous`. Establish `h1` using `hσ.deriv.continuous`. Establish `h2` using `hσ.deriv.deriv.continuous`. Use `congrFun (eq_of_eqOn_compl_lattice L (f := fun a => σ (a + b) * σ (a - b)) (g := fun a => wr σ a * σ b ^ 2 - wr σ b * σ a ^ 2) (by fun_prop) (by unfold wr; fun_prop) ?_) a` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a ha`. Establish `e : (fun v => σ (a + v) * σ (a - v) * σ b ^ 2 + (℘[L] a * (σ a ^ 2 * σ b ^ 2)) * σ v ^ 2) = fun v => σ (b + v) * σ (b - v) * σ a ^ 2 + (℘[L] b * (σ a ^ 2 * σ b ^ 2)) * σ v ^ 2`. Use `eq_of_eqOn_compl_lattice L (by fun_prop) (by fun_prop) fun v hv => ?_` and prove the remaining obligations. Take the linear combination `σ b ^ 2 * H.add a v ha hv - σ a ^ 2 * H.add b v hb hv`. Establish `e2` using `congrArg (fun f => deriv (deriv f) 0) e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Simplify using `only [second_deriv_sigma_product_at_zero hσ, H.deriv_zero, (H.zero_iff 0).2 (zero_mem _)] at e2`. Take the linear combination `H.add a b ha hb - e2 / 2`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 lemma IsSigmaLike.add_wr (H : IsSigmaLike L σ) (a : ℂ) {b : ℂ} (hb : b ∉ L.lattice) :
     σ (a + b) * σ (a - b) = wr σ a * σ b ^ 2 - wr σ b * σ a ^ 2 := by
@@ -131,9 +131,9 @@ lemma IsSigmaLike.add_wr (H : IsSigmaLike L σ) (a : ℂ) {b : ℂ} (hb : b ∉ 
   linear_combination H.add a b ha hb - e2 / 2
 
 /- English proof (translation)
-Establish `hσ` using `H.diff`. Establish `e : (fun v => (℘[L] u - ℘[L] v) * (σ u ^ 2 * σ v ^ 2)) =ᶠ[𝓝 u] fun v => -(σ (u + v) * σ (u - v))` using `by filter_upwards [eventually_notMem_periodLattice L hu] with v hv using H.add u v hu hv`. Establish `d1` using `((hasDerivAt_weierstrassP L hu).const_sub (℘[L] u)).fun_mul (((hσ u).hasDerivAt.fun_pow 2).const_mul (σ u ^ 2))`. Establish `d2` using `(((hσ _).hasDerivAt.comp_const_add u u).fun_mul ((hσ _).hasDerivAt.comp_const_sub u u)).fun_neg`. Use `d1.unique (d2.congr_of_eventuallyEq e)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [sub_self, H.deriv_zero, (H.zero_iff 0).2 (zero_mem _)] at this`. Take the linear combination `-this`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 lemma IsSigmaLike.double (H : IsSigmaLike L σ) {u : ℂ} (hu : u ∉ L.lattice) :
     σ (u + u) = -℘'[L] u * σ u ^ 4 := by
@@ -152,7 +152,7 @@ noncomputable def divQuot (σ : ℂ → ℂ) (u : ℂ) (n : ℕ) (z : ℂ) : ℂ
   σ (n * z + n * u) / σ (z + u) ^ (n ^ 2)
 
 /- English proof (translation)
-Establish `hσ` using `H.diff`. Establish `a : Differentiable ℂ fun z => σ (n * z + n * u)` using `by fun_prop`. Establish `b : Differentiable ℂ fun z => σ (z + u) ^ (n ^ 2)` using `by fun_prop`. Conclude with `(a.analyticAt z).fun_div (b.analyticAt z) (pow_ne_zero _ (mt (H.zero_iff _).1 hz))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma IsSigmaLike.analyticAt_divQuot (H : IsSigmaLike L σ) {u z : ℂ} (hz : z + u ∉ L.lattice) (n : ℕ) :
     AnalyticAt ℂ (divQuot σ u n) z := by
@@ -162,20 +162,20 @@ lemma IsSigmaLike.analyticAt_divQuot (H : IsSigmaLike L σ) {u z : ℂ} (hz : z 
   exact (a.analyticAt z).fun_div (b.analyticAt z) (pow_ne_zero _ (mt (H.zero_iff _).1 hz))
 
 /- English proof (translation)
-The claim follows from `(continuous_add_const u).continuousAt.eventually (eventually_notMem_periodLattice L hz)`.
+A detailed English derivation is pending.
 -/
 lemma eventually_add_notMem (L : PeriodPair) {u z : ℂ} (hz : z + u ∉ L.lattice) :
     ∀ᶠ w in 𝓝 z, w + u ∉ L.lattice :=
   (continuous_add_const u).continuousAt.eventually (eventually_notMem_periodLattice L hz)
 
 /- English proof (translation)
-Establish `hσ` using `H.diff`. Establish `h0 : σ (z + u) ≠ 0` using `mt (H.zero_iff _).1 hz`. Establish `b : Differentiable ℂ fun z => σ (z + u)` using `by fun_prop`. Establish `e : (fun w => σ ((n + 1 : ℕ) * w + (n + 1 : ℕ) * u)) =ᶠ[𝓝 z] fun w => divQuot σ u (n + 1) w * σ (w + u) ^ ((n + 1) ^ 2)` using `by filter_upwards [eventually_add_notMem L hz] with w hw`. Rewrite using `[divQuot, div_mul_cancel₀ _ (pow_ne_zero _ (mt (H.zero_iff _).1 hw))]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1` using `wr_congr e`. Rewrite `e1` using `[wr_affine hσ, wr_mul (H.analyticAt_divQuot hz _) ((b.analyticAt z).fun_pow _)]`. Establish `e2` using `wr_pow (b.analyticAt z) ((n + 1) ^ 2)`. Establish `e3` using `wr_affine hσ 1 u z`. Simplify using `only [one_mul, one_pow] at e3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `e2` using `[e3]`. Establish `e4` using `H.add_wr ((n + 1 : ℕ) * z + (n + 1 : ℕ) * u) hz`. Establish `e5` using `e.eq_of_nhds`. Rewrite `e4` using `[show ((n + 1 : ℕ) : ℂ) * z + (n + 1 : ℕ) * u + (z + u) = (n + 2 : ℕ) * z + (n + 2 : ℕ) * u by push_cast; ring, show ((n + 1 : ℕ) : ℂ) * z + (n + 1 : ℕ) * u - (z + u) = n * z + n * u by push_cast; ring, e5]`. Establish `e6 : σ (z + u) ^ ((n + 2) ^ 2) * σ (z + u) ^ (n ^ 2) = (σ (z + u) ^ ((n + 1) ^ 2)) ^ 2 * σ (z + u) ^ 2` using `by ring`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h7 : σ (z + u) ^ ((n + 1) ^ 2) ≠ 0` using `pow_ne_zero _ h0`. Rewrite using `[divQuot, divQuot, div_mul_eq_mul_div, ← mul_div_assoc, ← mul_div_assoc, div_div, mul_comm (σ (z + u) ^ (n ^ 2)), e6, div_eq_iff (mul_ne_zero (pow_ne_zero _ h7) (pow_ne_zero _ h0))]`. Move the coercions through the operations in `at *`. Take the linear combination `((n : ℂ) + 1) ^ 2 * e4 + σ (z + u) ^ 2 * e1 + divQuot σ u (n + 1) z ^ 2 * e2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 lemma IsSigmaLike.divQuot_rec (H : IsSigmaLike L σ) {u z : ℂ} (hz : z + u ∉ L.lattice) (n : ℕ) :
     divQuot σ u (n + 2) z * (((n + 1 : ℕ) : ℂ) ^ 2 * divQuot σ u n z) = wr (divQuot σ u (n + 1)) z := by
@@ -206,9 +206,9 @@ lemma IsSigmaLike.divQuot_rec (H : IsSigmaLike L σ) {u z : ℂ} (hz : z + u ∉
   linear_combination ((n : ℂ) + 1) ^ 2 * e4 + σ (z + u) ^ 2 * e1 + divQuot σ u (n + 1) z ^ 2 * e2
 
 /- English proof (translation)
-Introduce `h`. Establish `hσ` using `H.diff`. Establish `hn' : (n : ℂ) ≠ 0` using `by exact_mod_cast hn`. Establish `a : Differentiable ℂ fun z => σ (n * z + n * u)` using `by fun_prop`. Establish `e : (fun z => σ (n * z + n * u)) =ᶠ[𝓝 0] 0` using `by filter_upwards [h, eventually_add_notMem L (z := 0) (by simpa using hu)] with w hw hw'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `hw` using `[divQuot, mt (H.zero_iff _).1 hw']`. Establish `e2` using `(a.differentiableOn.analyticOnNhd isOpen_univ).eqOn_zero_of_preconnected_of_eventuallyEq_zero isPreconnected_univ (Set.mem_univ 0) e (Set.mem_univ (u / n - u))`. Simplify using `only [Pi.zero_apply] at e2`. Rewrite `e2` using `[show (n : ℂ) * (u / n - u) + n * u = u by field_simp; ring]`. Conclude with `hu ((H.zero_iff _).1 e2)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma IsSigmaLike.divQuot_ne (H : IsSigmaLike L σ) {u : ℂ} (hu : u ∉ L.lattice) {n : ℕ} (hn : n ≠ 0) :
     ¬ divQuot σ u n =ᶠ[𝓝 0] 0 := by
@@ -226,23 +226,23 @@ lemma IsSigmaLike.divQuot_ne (H : IsSigmaLike L σ) {u : ℂ} (hu : u ∉ L.latt
   exact hu ((H.zero_iff _).1 e2)
 
 /- English proof (translation)
-The claim follows from `(H.mul H.deriv.deriv).sub (H.deriv.pow 2)`.
+A detailed English derivation is pending.
 -/
 lemma JetRel.wr {S : Subring (ℂ × ℂ)} {f f' : ℂ → ℂ} (H : JetRel S f f') : JetRel S (wr f) (wr f') :=
   (H.mul H.deriv.deriv).sub (H.deriv.pow 2)
 
 /- English proof (translation)
-Establish `z0 : ∀ {L : PeriodPair} {u : ℂ}, u ∉ L.lattice → 0 + u ∉ L.lattice` using `fun h => by simpa using h`. Establish `c0 : ∀ {L : PeriodPair} {σ : ℂ → ℂ} {u : ℂ}, IsSigmaLike L σ → (fun _ => (0 : ℂ)) =ᶠ[𝓝 0] divQuot σ u 0` using `fun H => .of_forall fun z => by simp [divQuot, (H.zero_iff 0).2 (zero_mem _)]`. Establish `c1 : ∀ {L : PeriodPair} {σ : ℂ → ℂ} {u : ℂ}, IsSigmaLike L σ → u ∉ L.lattice → (fun _ => (1 : ℂ)) =ᶠ[𝓝 0] divQuot σ u 1` using `fun H hu => by filter_upwards [eventually_add_notMem _ (z0 hu)] with w hw`. Simplify using `[divQuot, mt (H.zero_iff _).1 hw]`. Establish `c2 : ∀ {L : PeriodPair} {σ : ℂ → ℂ} {u : ℂ}, IsSigmaLike L σ → u ∉ L.lattice → (fun z => 0 - ℘'[L] (z + u)) =ᶠ[𝓝 0] divQuot σ u 2` using `@fun L σ u H hu => by filter_upwards [eventually_add_notMem _ (z0 hu)] with w hw`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[divQuot, show ((2 : ℕ) : ℂ) * w + (2 : ℕ) * u = (w + u) + (w + u) by push_cast; ring, H.double hw]`. Use `mt (H.zero_iff _).1 hw` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `c3 : ∀ {L : PeriodPair} {u : ℂ}, u ∉ L.lattice → AnalyticAt ℂ (fun z => ℘'[L] (z + u)) 0 ∧ (deriv (fun z => ℘[L] (z + u)) =ᶠ[𝓝 0] fun z => ℘'[L] (z + u)) ∧ (deriv (fun z => ℘'[L] (z + u)) =ᶠ[𝓝 0] fun z => 6 * ℘[L] (z + u) * ℘[L] (z + u) - L.g₂ * (2 : ℂ)⁻¹)` using `@fun L u hu => by`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `⟨(L.analyticOnNhd_derivWeierstrassP _ (z0 hu)).comp (f := (· + u)) (by fun_prop), ?_, ?_⟩` and prove the remaining obligations. Use `filter_upwards [weierstrass_system_add_const L u (z0 hu)] with w hw using hw.1.deriv`. Use `filter_upwards [weierstrass_system_add_const L u (z0 hu)] with w hw`. Rewrite using `[hw.2.deriv]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Proceed by induction.
 
-Establish `hq2 : JetRel S (fun z => ℘'[L] (z + u)) (fun z => ℘'[L'] (z + u'))` using `jetRel_of_weierstrass_system (pair_mul hg (hS.2 _ _ (pair_natCast S 2))) (analyticAt_weierstrassP_add L u (z0 hu)) (analyticAt_weierstrassP_add L' u' (z0 hu')) (c3 hu).1 (c3 hu').1 (c3 hu).2.1 (c3 hu').2.1 (c3 hu).2.2 (c3 hu').2.2 (by simpa using hp) (by simpa using hq)`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Use `match n with`. Consider the case `0 => exact (JetRel.const S.zero_mem).congr (c0 H) (c0 H')`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `1 => exact (JetRel.const S.one_mem).congr (c1 H hu) (c1 H' hu')`. Consider the case `2 => exact ((JetRel.const S.zero_mem).sub hq2).congr (c2 H hu) (c2 H' hu')`. Consider the case `n + 3`. Establish `c4 : ∀ {L : PeriodPair} {σ : ℂ → ℂ} {u : ℂ}, IsSigmaLike L σ → u ∉ L.lattice → wr (divQuot σ u (n + 2)) =ᶠ[𝓝 0] fun z => divQuot σ u (n + 3) z * (((n + 2 : ℕ) : ℂ) ^ 2 * divQuot σ u (n + 1) z)` using `fun H hu => by filter_upwards [eventually_add_notMem _ (z0 hu)] with w hw using (H.divQuot_rec hw (n + 1)).symm`. Use `JetRel.of_mul hS (H.analyticAt_divQuot (z0 hu) _) (H'.analyticAt_divQuot (z0 hu') _) (((JetRel.const (pair_natCast S (n + 2))).pow 2).mul (ih (n + 1) (by omega))) ?_ ((ih (n + 2) (by omega)).wr.congr (c4 H hu) (c4 H' hu'))` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Introduce `e`. Apply `H.divQuot_ne hu (n := n + 1) (by omega)` to reduce the goal to its premises. Establish `hn : ((n + 2 : ℕ) : ℂ) ^ 2 ≠ 0` using `pow_ne_zero _ (by exact_mod_cast (by omega : n + 2 ≠ 0))`. Use `filter_upwards [e] with w hw using (mul_eq_zero.1 hw).resolve_left hn`.
+A detailed English derivation is pending.
 -/
 theorem jetRel_divQuot {S : Subring (ℂ × ℂ)} (hS : IsFieldGraph S) {L L' : PeriodPair} {σ σ' : ℂ → ℂ}
     (H : IsSigmaLike L σ) (H' : IsSigmaLike L' σ') {u u' : ℂ} (hu : u ∉ L.lattice) (hu' : u' ∉ L'.lattice)

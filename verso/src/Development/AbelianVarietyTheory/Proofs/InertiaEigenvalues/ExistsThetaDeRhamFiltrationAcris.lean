@@ -15,31 +15,29 @@ namespace GlobalTheory.PSer
 open GlobalTheory.MemLoc GlobalTheory.MemLoc.TiedTheta
 
 /- English proof (translation)
-Introduce `l _ P AI T`. Take `⟨C, hC⟩` from `GlobalTheory.MemLoc.FitsEx.exists_fits l P AI T`. Set `S : Subring P.R.BdR` to `(algebraMap (Formalism.Per.BdRp l) (Formalism.Per.BdR l)).range.comap T.eD.toRingHom`. Establish `hS : ∀ x, x ∈ S ↔ ∃ y : Formalism.Per.BdRp l, T.eD x = algebraMap (Formalism.Per.BdRp l) (Formalism.Per.BdR l) y`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `(∃ y, _ = T.eD x) ↔ _`. Conclude with `exists_congr fun y => eq_comm`. Establish `hF0 : ∀ x, x ∈ S ↔ x ∈ Fil P 0`. Introduce `x`. Rewrite using `[hS]`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `_ ↔ x ∈ (P.PD (botExt l)).Fil 0`. Rewrite using `[T.fil]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy⟩`. Rewrite using `[hy]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `TiedUnif.alg_mem_FilD_zero y`. Introduce `hx`. Take `⟨y, hy⟩` from `exists_of_mem_FilD_zero hx`. Conclude with `⟨y, hy⟩`. Set `θ : ↥S →+* ℂ_[l]` to `{ toFun := fun x => thetaExt (T.eD x) map_one' := by`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `thetaExt (T.eD 1) = 1`. Rewrite using `[map_one, ← map_one (algebraMap (Formalism.Per.BdRp l) (Formalism.Per.BdR l)), thetaExt_alg, map_one]`. Use the proof step `map_mul' := fun x y => by`. Take `⟨u, hu⟩` from `(hS x).1 x.2`. Take `⟨v, hv⟩` from `(hS y).1 y.2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `thetaExt (T.eD ((x : P.R.BdR) * y)) = thetaExt (T.eD x) * thetaExt (T.eD y)`. Rewrite using `[map_mul, hu, hv, ← map_mul, thetaExt_alg, thetaExt_alg, thetaExt_alg, map_mul]`. Use the proof step `map_zero' := by`. Express the relevant statement in the definitionally equal form `thetaExt (T.eD 0) = 0`. Rewrite using `[map_zero, ← map_zero (algebraMap (Formalism.Per.BdRp l) (Formalism.Per.BdR l)), thetaExt_alg, map_zero]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `map_add' := fun x y => by`. Take `⟨u, hu⟩` from `(hS x).1 x.2`. Take `⟨v, hv⟩` from `(hS y).1 y.2`. Express the relevant statement in the definitionally equal form `thetaExt (T.eD ((x : P.R.BdR) + y)) = thetaExt (T.eD x) + thetaExt (T.eD y)`. Rewrite using `[map_add, hu, hv, ← map_add, thetaExt_alg, thetaExt_alg, thetaExt_alg, map_add] }`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hθ : ∀ (x : ↥S) (y : Formalism.Per.BdRp l), T.eD x = algebraMap (Formalism.Per.BdRp l) (Formalism.Per.BdR l) y → θ x = Formalism.Per.θD l y`. Introduce `x y h`. Express the relevant statement in the definitionally equal form `thetaExt (T.eD x) = _`. Rewrite using `[h, thetaExt_alg]`. Set `Θ : Formalism.Per.Acris l →+* ℂ_[l]` to `(Formalism.Per.θD l).comp C.j`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨S, θ, Θ, hF0, fun x => ?_, fun c => ?_, fun a => FundOnto.norm_theta_j_le C a, fun z => ?_, fun a => ?_⟩` and prove the remaining obligations. Take `⟨u, hu⟩` from `(hS x).1 x.2`. Express the relevant statement in the definitionally equal form `θ x = 0 ↔ (x : P.R.BdR) ∈ (P.PD (botExt l)).Fil 1`. Rewrite using `[T.fil, hu, hθ x u hu, (thetaD_props l).2.1]`. Conclude with `((filD_laws l).2.2.2.2.2.2 1 u).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : algebraMap ℚ_[l] P.R.BdR c = algebraMap (Om l) P.R.BdR (algebraMap ℚ_[l] (Om l) c)` using `IsScalarTower.algebraMap_apply _ _ _ _`. Take `⟨y, hy, hy'⟩` from `T.om (algebraMap ℚ_[l] (Om l) c)`. Establish `hm : algebraMap ℚ_[l] P.R.BdR c ∈ S`. Rewrite using `[hS, e]`. Conclude with `⟨y, hy⟩`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `⟨hm, ?_⟩` and prove the remaining obligations. Rewrite using `[hθ ⟨_, hm⟩ y (by rw [← hy]; exact congrArg T.eD e), hy']`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `Formalism.Per.θD l (C.j _) = _`. Rewrite using `[FundOnto.theta_j_alg, FundOnto.theta_tm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Both sides reduce to the same expression. Establish `hm : P.ιB (T.eB.symm (algebraMap (Formalism.Per.Acris l) (Formalism.Per.Bcris l) a)) ∈ S`. Rewrite using `[hS, hC.ι, RingEquiv.apply_symm_apply, C.ι_j]`. Conclude with `⟨_, rfl⟩`. Use `⟨hm, hθ ⟨_, hm⟩ (C.j a) ?_⟩` and prove the remaining obligations.
-
-Express the relevant statement in the definitionally equal form `T.eD (P.ιB _) = _`. Rewrite using `[hC.ι, RingEquiv.apply_symm_apply, C.ι_j]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theta_fil_acris : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (T : LocTied l P AI),
     ∃ (S : Subring P.R.BdR) (θ : ↥S →+* ℂ_[l]) (Θ : Formalism.Per.Acris l →+* ℂ_[l]),

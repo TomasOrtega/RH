@@ -17,15 +17,13 @@ namespace GlobalTheory.HTFrame
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-Establish `hc0 : 0 < c` using `by linarith`. Break down `B.eq_empty_or_nonempty with rfl | hne` into its components or cases. Rewrite using `[Set.subset_empty_iff.1 hAB, sub_self, abs_zero]`. Conclude with `Real.log_nonneg hc`. Take `⟨r0, hr0⟩` from `hne`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `bB : BddBelow B` using `⟨0, hB⟩`. Establish `bA : BddBelow A` using `bB.mono hAB`. Establish `h1 : sInf B ≤ sInf A` using `csInf_le_csInf bB ⟨_, hBA r0 hr0⟩ hAB`. Establish `h2 : sInf A ≤ c * sInf B`. Rewrite using `[← div_le_iff₀' hc0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `le_csInf ⟨r0, hr0⟩ fun r hr => (div_le_iff₀' hc0).2 (csInf_le bA (hBA r hr))`. Establish `h0 : 0 ≤ sInf B` using `le_csInf ⟨r0, hr0⟩ hB`. Break down `h0.eq_or_lt with h | h` into its components or cases. Establish `: sInf A = sInf B` using `le_antisymm (by rw [← h] at h2 ⊢; simpa using h2) h1`. Rewrite using `[this, sub_self, abs_zero]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Real.log_nonneg hc`. Establish `h3` using `Real.log_le_log h h1`. Establish `h4` using `Real.log_le_log (h.trans_le h1) h2`. Rewrite `h4` using `[Real.log_mul hc0.ne' h.ne']`. Rewrite using `[abs_of_nonneg (by linarith)]`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem abs_log_sInf_sub_le {A B : Set ℝ} {c : ℝ} (hc : 1 ≤ c) (hB : ∀ r ∈ B, 0 ≤ r) (hAB : A ⊆ B)
     (hBA : ∀ r ∈ B, c * r ∈ A) : |Real.log (sInf A) - Real.log (sInf B)| ≤ Real.log c := by
@@ -59,13 +57,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
 open MonObj in
 
 /- English proof (translation)
-Take `⟨u, hu, rfl⟩` from `h`. Set `δ : tEpsG x ⟶ tEpsG x` to `Over.homMk (spMap (epsMul a)) (by show spMap (epsMul a) ≫ spMap (algebraMap S (DualNumber S)) ≫ x = spMap (algebraMap S (DualNumber S)) ≫ x`. Rewrite using `[← Category.assoc, spMap_comp']`. Use `congr 2`. Use `RingHom.ext fun r => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `ext <;> simp [epsMul, TrivSqZeroExt.algebraMap_eq_inl])`. Use `⟨fun i => δ ≫ u i, fun i => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Over.comp_left, δ, Over.homMk_left]`. Rewrite using `[hu i, ← Category.assoc, spMap_comp']`. Use `congr 2`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `RingHom.ext fun r => ?_` and prove the remaining obligations. Use `ext`. Simplify using `[epsMul]`. Simplify using `[epsMul]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[List.prod_ofFn, List.prod_ofFn, ← comp_prodT]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem comb_smul {S : Type} [CommRing S] (a : S) {x : Sp S ⟶ X} {m : ℕ}
     {v : Fin m → (Sp (DualNumber S) ⟶ t.G.left)} {cf : Fin m → S} {w : Sp (DualNumber S) ⟶ t.G.left}
@@ -92,7 +90,7 @@ theorem comb_smul {S : Type} [CommRing S] (a : S) {x : Sp S ⟶ X} {m : ℕ}
 variable {C : Type} [NontriviallyNormedField C] [IsUltrametricDist C]
 
 /- English proof (translation)
-The claim follows from `|Real.log (grNorm t x Λ u i) - Real.log (grNorm t x Λ' u i)| ≤ Real.log ‖a‖⁻¹ := by refine abs_log_sInf_sub_le ((one_le_inv₀ (norm_pos_iff.2 ha)).2 ha1) ?_ ?_ ?_ · rintro r ⟨cf, -, -, -, rfl⟩ positivity · rintro r ⟨cf, h3, h4, ⟨w, hw, hc⟩, rfl⟩ exact ⟨cf, h3, h4, ⟨w, h1 hw, hc⟩, …`.
+A detailed English derivation is pending.
 -/
 theorem abs_log_grNorm_sub_le (x : Sp C ⟶ X) {Λ Λ' : Set (Sp (DualNumber C) ⟶ t.G.left)} {a : C} (ha : a ≠ 0)
     (ha1 : ‖a‖ ≤ 1) (h1 : Λ ⊆ Λ') (h2 : ∀ v ∈ Λ', spMap (epsMul a) ≫ v ∈ Λ) {m : ℕ}
@@ -115,9 +113,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Take `⟨-, xO, hx, -⟩` from `GlobalTheory.ShFam.Pad.Test.latDR_nonempty Z x`. Use `⟨xO, hx, fun xO' hx' => ?_⟩` and prove the remaining obligations. Use `isProper_toroidalModel_structureMap Z` as an intermediate fact. Establish `hs : IsSeparated (terminal.from Z.X)`. Rewrite using `[← terminal.comp_from Z.s]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `infer_instance`. Set `S : ValuativeCommSq (terminal.from Z.X)` to `{ R := intO C, K := C, i₁ := x, i₂ := terminal.from _, commSq := ⟨terminal.hom_ext _ _⟩ }`. Establish `hu` using `IsSeparated.valuativeCriterion (terminal.from Z.X) S`. Conclude with `congrArg CommSq.LiftStruct.l (hu.elim ⟨xO', hx', terminal.hom_ext _ _⟩ ⟨xO, hx, terminal.hom_ext _ _⟩)`.
+Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem existsUnique_ext (Z : Model Xo c (algebraMap (𝓞 c.F) c.F)) {C : Type} [NontriviallyNormedField C]
     [IsUltrametricDist C] (x : Sp C ⟶ Z.X) : ∃! xO : Sp ↥(intO C) ⟶ Z.X, spMap (intO C).subtype ≫ xO = x := by

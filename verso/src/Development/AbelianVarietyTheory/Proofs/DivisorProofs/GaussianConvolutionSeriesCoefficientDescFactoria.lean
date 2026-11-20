@@ -5,13 +5,11 @@ open MeasureTheory Filter Topology
 namespace GlobalTheory.TermEst
 
 /- English proof (translation)
-Establish `hθ0 : 0 < θ` using `by linarith`. Establish `e1 : (2 * c * θ * s * t) ^ m / (m.factorial : ℝ) ≤ Real.exp (2 * c * θ * s * t)` using `Real.pow_div_factorial_le_exp _ (by positivity) m`. Establish `e2 : 2 * c * θ * s * t ≤ c * α * t ^ 2 + (b + c) * s ^ 2`. Establish `q1 : 0 ≤ c * (α * t - θ * s) ^ 2` using `by positivity`. Establish `q2 : c * θ ^ 2 * s ^ 2 ≤ α * (b + c) * s ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_le_mul_of_nonneg_right hk (by positivity)`. Establish `q3 : α * (2 * c * θ * s * t) ≤ α * (c * α * t ^ 2 + (b + c) * s ^ 2)` using `by nlinarith`. Conclude with `le_of_mul_le_mul_left q3 hα`. Establish `e3 : Real.exp (-((b + c) * s ^ 2)) * Real.exp (2 * c * θ * s * t) ≤ Real.exp (c * α * t ^ 2)`. Rewrite using `[← Real.exp_add]; exact Real.exp_le_exp.mpr (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hm : (0 : ℝ) < m.factorial` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[inv_pow]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
-
-Use `_ ≤ ((2 * c * s) ^ i * H * θ⁻¹ ^ m) * (Real.exp (-((b + c) * s ^ 2)) * Real.exp (2 * c * θ * s * t)) := by gcongr`. Use `_ ≤ ((2 * c * s) ^ i * H * θ⁻¹ ^ m) * Real.exp (c * α * t ^ 2) := by gcongr`. Use `_ = θ⁻¹ ^ m * Real.exp (c * α * t ^ 2) * ((2 * c * s) ^ i * H) := by ring`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma pointwise (b c θ α s t H : ℝ) (hc : 0 < c) (hθ : 1 ≤ θ) (hα : 0 < α)
     (hk : c * θ ^ 2 ≤ α * (b + c)) (hs : 0 ≤ s) (ht : 0 ≤ t) (hH : 0 ≤ H) (i m : ℕ) :
@@ -39,7 +37,7 @@ lemma pointwise (b c θ α s t H : ℝ) (hc : 0 < c) (hθ : 1 ≤ θ) (hα : 0 <
     _ = θ⁻¹ ^ m * Real.exp (c * α * t ^ 2) * ((2 * c * s) ^ i * H) := by ring
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.ConvSeries.wt, norm_mul, Complex.norm_exp]`. Simplify using `only [Complex.neg_re, Complex.ofReal_re]`. Rewrite using `[mul_comm (Real.exp _) ‖h a‖, mul_assoc, ← Real.exp_add]`. Put the polynomial expressions in normal form.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form.
 -/
 lemma norm_wt {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℝ E] (b c : ℝ) (h : E → ℂ) (a : E) :
     ‖GlobalTheory.ConvSeries.wt b c h a‖ = Real.exp (-((b + c) * ‖a‖ ^ 2)) * ‖h a‖ := by
@@ -49,19 +47,17 @@ lemma norm_wt {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℝ E] (b c :
   ring_nf
 
 /- English proof (translation)
-Introduce `E _ _ _ _ _ b c θ α hc hθ hα hk h j i y`. Break down `lt_or_ge j i with hji | hij` into its components or cases. Rewrite using `[Nat.descFactorial_eq_zero_iff_lt.mpr hji, Nat.cast_zero, mul_zero, zero_mul, zero_mul]`. Conclude with `mul_nonneg (by positivity) (integral_nonneg fun a => by positivity)`. Take `⟨m, rfl⟩` from `Nat.exists_eq_add_of_le hij`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.add_sub_cancel_left]`. Establish `hK : (2 * c) ^ (i + m) / ((i + m).factorial : ℝ) * ((i + m).descFactorial i : ℝ) = (2 * c) ^ (i + m) / (m.factorial : ℝ)`. Use `Nat.factorial_mul_descFactorial (Nat.le_add_right i m)` as an intermediate fact. Rewrite `this` using `[Nat.add_sub_cancel_left]`. Establish `h1 : ((i + m).factorial : ℝ) = (m.factorial : ℝ) * ((i + m).descFactorial i : ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this.symm` after adjusting the coercions. Establish `h2 : (0 : ℝ) < m.factorial` using `by positivity`. Establish `h3 : (0 : ℝ) < ((i + m).descFactorial i : ℝ)`. Establish `: (0:ℝ) < ((i + m).factorial : ℝ)` using `by positivity`. Rewrite `this` using `[h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Conclude with `pos_of_mul_pos_right this h2.le`. Rewrite using `[h1]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hK]`. Establish `hint : Integrable (fun a : E => (2 * c * ‖a‖) ^ i * ‖h a‖)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `(h.integrable_pow_mul volume i).const_mul ((2 * c) ^ i)` as an intermediate fact. Use `this.congr (Eventually.of_forall fun a => ?_)` and prove the remaining obligations. Simplify using `only [mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation.
+Expand and normalize the polynomial expressions, which then agree. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[integral_const_mul]`. Simplify using `only [norm_wt]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ ∫ a, θ⁻¹ ^ m * Real.exp (c * α * ‖y‖ ^ 2) * ((2 * c * ‖a‖) ^ i * ‖h a‖) := by`. Use `integral_mono_of_nonneg (Eventually.of_forall fun a => by positivity) (hint.const_mul _) (Eventually.of_forall fun a => ?_)` and prove the remaining obligations.
-
-Conclude with `pointwise b c θ α ‖a‖ ‖y‖ ‖h a‖ hc hθ hα hk (norm_nonneg _) (norm_nonneg _) (norm_nonneg _) i m`. Use `_ = _ := integral_const_mul _ _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem main : ∀ (E : Type) [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDimensional ℝ E]
     [MeasurableSpace E] [BorelSpace E] (b c θ α : ℝ), 0 < c → 1 ≤ θ → 0 < α → c * θ ^ 2 ≤ α * (b + c) →

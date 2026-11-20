@@ -23,7 +23,7 @@ def wJ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (n : ℕ)
   ⟨antiJ L n, antiJ L n, GlobalTheory.UnitarySwap.antiJ_mul_self, GlobalTheory.UnitarySwap.antiJ_mul_self⟩
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [cT, Matrix.transpose_apply, Matrix.map_apply, antiJ]`. Distinguish the cases in `h : i.val + j.val + 1 = n`. Rewrite using `[if_pos h, if_pos (by omega)]; simp`. Rewrite using `[if_neg h, if_neg (by omega)]; simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem cT_antiJ (σ : L →+* L) : cT σ (antiJ L n) = antiJ L n := by
   ext i j
@@ -33,16 +33,14 @@ theorem cT_antiJ (σ : L →+* L) : cT σ (antiJ L n) = antiJ L n := by
   · rw [if_neg h, if_neg (by omega)]; simp
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `cT σ (antiJ L n) * antiJ L n * antiJ L n = antiJ L n`. Rewrite using `[cT_antiJ, GlobalTheory.UnitarySwap.antiJ_mul_self, Matrix.one_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem wJ_mem_GU (σ : L →+* L) : wJ L n ∈ GU σ n := by
   change cT σ (antiJ L n) * antiJ L n * antiJ L n = antiJ L n
   rw [cT_antiJ, GlobalTheory.UnitarySwap.antiJ_mul_self, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `h : ∀ i j, antiJ L n i j ∈ O` using `fun i j => by`. Simplify using `only [antiJ]`. Use `split_ifs`. Conclude with `O.one_mem`. Conclude with `O.zero_mem`.
-
-Conclude with `GlobalTheory.AdelicU.mem_GLint_iff.2 ⟨h, h⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem wJ_mem_GLint (O : Subring L) : wJ L n ∈ GLint (Fin n) O := by
   have h : ∀ i j, antiJ L n i j ∈ O := fun i j => by
@@ -53,11 +51,11 @@ theorem wJ_mem_GLint (O : Subring L) : wJ L n ∈ GLint (Fin n) O := by
   exact GlobalTheory.AdelicU.mem_GLint_iff.2 ⟨h, h⟩
 
 /- English proof (translation)
-Establish `h0 : cT σ t.1.1 * antiJ L n * t.1.1 = antiJ L n` using `t.2`. Establish `hc : cT σ t.1.1 = t.1.1`. Rewrite using `[ht]`. Use extensionality with `i j`. Distinguish the cases in `h : i = j`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using `[cT, map_zpow₀, hϖ]`. Simplify using `[cT, Matrix.diagonal_apply_ne _ h, Matrix.diagonal_apply_ne _ (Ne.symm h)]`. Rewrite `h0` using `[hc]`. Use `eq_inv_of_mul_eq_one_left (Units.ext ?_)` and prove the remaining obligations.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `antiJ L n * t.1.1 * antiJ L n * t.1.1 = 1`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [h0, GlobalTheory.UnitarySwap.antiJ_mul_self]`.
+Express the relevant assertion in an equivalent form by its definition. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem wJ_conj_diag {σ : L →+* L} {ϖ : L} (hϖ : σ ϖ = ϖ) (d : Fin n → ℤ) (t : GU σ n)
     (ht : t.1.1 = Matrix.diagonal fun i => ϖ ^ d i) : wJ L n * t.1 * wJ L n = (t.1)⁻¹ := by
@@ -79,21 +77,17 @@ theorem wJ_conj_diag {σ : L →+* L} {ϖ : L} (hϖ : σ ϖ = ϖ) (d : Fin n →
 end Generic
 
 /- English proof (translation)
-Introduce `E _ _ _ hU w hw n g`. Take `⟨-, -, -, hns, -⟩` from `GlobalTheory.T.placeConjugation_properties_cmField E hU w`. Take `⟨-, ⟨ϖ, q, hUI, -⟩, -⟩` from `hns hw`. Take `⟨b, hbK, hb⟩` from `GlobalTheory.LFun.InertChart.exists_congr_antiJ (n := n) hUI (B := 1) (one_mem _) (cT_one _)`. Establish `hb' : cT (cj w) b.val * b.val = antiJ _ n` using `by simpa using hb`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hconj : ∀ x : GLw n w, b * x * b⁻¹ ∈ UL n w ↔ x ∈ UJ (cj w) (antiJ _ n)` using `fun x => by`. Rewrite using `[GlobalTheory.CompanionTheory.UnitaryWitt.UL_eq_of_not_split hw]`. Conclude with `GlobalTheory.CompanionTheory.UnitaryWitt.conj_mem_UJ_one_iff _ b x hb'`. Establish `hback : b⁻¹ * g.1 * b ∈ UJ (cj w) (antiJ _ n)` using `(hconj _).1 (by rw [show b * (b⁻¹ * g.1 * b) * b⁻¹ = g.1 by group]; exact g.2)`. Establish `hbi` using `(GlobalTheory.LFun.KGL w n).inv_mem hbK`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hO : Ov E w = intL (w.adicCompletion E)` using `Subring.ext fun _ => Iff.rfl`. Establish `hKU : ∀ k ∈ KU (cj w) n, (k.1 : GLw n w) ∈ GlobalTheory.LFun.KGL w n` using `fun k hk => by`. Establish `h : k.1 ∈ intPts (intL (w.adicCompletion E)).subtype (GU (cj w) n)` using `Subgroup.mem_subgroupOf.1 hk`. Use `show k.1 ∈ (bc (Ov E w).subtype).range`. Rewrite using `[hO]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(Subgroup.mem_inf.1 h).2`. Take `⟨d, t, ht, k₁, hk₁, k₂, hk₂, e⟩` from `GlobalTheory.ChainOnto.CayleyVac.exists_cartanU hUI ⟨_, hback⟩`. Establish `e' : b⁻¹ * g.1 * b = k₁.1 * t.1 * k₂.1` using `congrArg Subtype.val e`. Establish `hinv : (t.1)⁻¹ = wJ _ n * t.1 * wJ _ n` using `(wJ_conj_diag hUI.2.2.1 d t ht).symm`. Use `set c : GLw n w := (k₂.1 : GLw n w)⁻¹ * wJ _ n * (k₁.1 : GLw n w)⁻¹ with hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcU : c ∈ UJ (cj w) (antiJ _ n)` using `mul_mem (mul_mem (inv_mem k₂.2) (wJ_mem_GU _)) (inv_mem k₁.2)`. Establish `hcK : c ∈ GlobalTheory.LFun.KGL w n` using `mul_mem (mul_mem (inv_mem (hKU k₂ hk₂)) (wJ_mem_GLint _)) (inv_mem (hKU k₁ hk₁))`. Establish `hx : b * c * b⁻¹ ∈ UL n w` using `(hconj _).2 hcU`. Establish `hxK : (⟨b * c * b⁻¹, hx⟩ : UL n w) ∈ KL n w` using `Subgroup.mem_subgroupOf.2 (mul_mem (mul_mem hbK hcK) hbi)`. Use `⟨_, hxK, _, hxK, Subtype.ext ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show (g.1)⁻¹ = b * c * b⁻¹ * g.1 * (b * c * b⁻¹)`. Establish `hg : g.1 = b * (k₁.1 * t.1 * k₂.1) * b⁻¹`. Rewrite using `[← e']`. Use `group`. Establish `hti : (k₁.1 * t.1 * k₂.1 : GLw n w)⁻¹ = c * (k₁.1 * t.1 * k₂.1) * c`.
-
-Rewrite using `[_root_.mul_inv_rev, _root_.mul_inv_rev, hinv, hc]`. Use `group`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hg]`. Use `group`.
-
-Use `_ = b * c * b⁻¹ * g.1 * (b * c * b⁻¹) := by`. Rewrite using `[hti, hg]`. Use `group`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_mem_doubleCoset : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E →
     ∀ (w : Pl E), ¬ IsSplitAt w → ∀ (n : ℕ) (g : UL n w),

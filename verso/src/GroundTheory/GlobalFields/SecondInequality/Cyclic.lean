@@ -10,7 +10,7 @@ open NumberField GroundTheory.GroupCoh Module
 universe u
 
 /- English proof (translation)
-The claim follows from `(firstInequality.{u}.secondInequalityRoots).secondInequality`.
+A detailed English derivation is pending.
 -/
 theorem secondInequality : SecondInequality.{u} :=
   (firstInequality.{u}.secondInequalityRoots).secondInequality
@@ -21,7 +21,7 @@ variable {K L : Type u} [Field K] [NumberField K] [Field L] [NumberField L] [Alg
   [IsGalois K L]
 
 /- English proof (translation)
-Take `⟨hge, hne⟩` from `finrank_le_index_range_ideleClassNorm (K := K) (L := L)`. Establish `hle` using `((enatCard_quotient_le_iff _ _).1 (secondInequality.{u} K L)).2`. Conclude with `le_antisymm hle hge`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem index_range_ideleClassNorm_eq_finrank [IsCyclic Gal(L/K)] :
     (ideleClassNorm K L).range.index = finrank K L := by
@@ -30,9 +30,9 @@ theorem index_range_ideleClassNorm_eq_finrank [IsCyclic Gal(L/K)] :
   exact le_antisymm hle hge
 
 /- English proof (translation)
-Establish `: IsCyclic Gal(L/K)` using `⟨⟨σ, fun g ↦ Subgroup.mem_zpowers_iff.1 (hσ g)⟩⟩`. Take `⟨h, hpos⟩` from `index_range_ideleClassNorm σ hσ`. Rewrite `h` using `[index_range_ideleClassNorm_eq_finrank]`. Establish `hn : 0 < finrank K L` using `finrank_pos`. Establish `h' : finrank K L * 1 = finrank K L * _` using `(mul_one _).trans h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(Nat.eq_of_mul_eq_mul_left hn h').symm`.
+A detailed English derivation is pending.
 -/
 theorem natCard_cycTateNegOne_ideleClassGroup (σ : Gal(L/K)) (hσ : ∀ g, g ∈ Subgroup.zpowers σ) :
     Nat.card (CycTateNegOne (Representation.ofMulDistribMulAction Gal(L/K) (IdeleClassGroup L)) σ)
@@ -45,7 +45,7 @@ theorem natCard_cycTateNegOne_ideleClassGroup (σ : Gal(L/K)) (hσ : ∀ g, g �
   exact (Nat.eq_of_mul_eq_mul_left hn h').symm
 
 /- English proof (translation)
-Establish `: IsCyclic Gal(L/K)` using `⟨⟨σ, fun g ↦ Subgroup.mem_zpowers_iff.1 (hσ g)⟩⟩`. Rewrite using `[natCard_cycTateZero_ideleClassGroup σ hσ, index_range_ideleClassNorm_eq_finrank]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem natCard_cycTateZero_ideleClassGroup_eq_finrank (σ : Gal(L/K))
     (hσ : ∀ g, g ∈ Subgroup.zpowers σ) :
@@ -55,7 +55,7 @@ theorem natCard_cycTateZero_ideleClassGroup_eq_finrank (σ : Gal(L/K))
   rw [natCard_cycTateZero_ideleClassGroup σ hσ, index_range_ideleClassNorm_eq_finrank]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨natCard_cycTateZero_ideleClassGroup_eq_finrank σ hσ, natCard_cycTateNegOne_ideleClassGroup σ hσ⟩`.
+Supply the required witnesses or components.
 -/
 theorem classFieldAxiom_ideleClassGroup (σ : Gal(L/K)) (hσ : ∀ g, g ∈ Subgroup.zpowers σ) :
     Nat.card (CycTateZero (Representation.ofMulDistribMulAction Gal(L/K) (IdeleClassGroup L)) σ)

@@ -9,7 +9,7 @@ open Module
 namespace GlobalTheory.BadCount
 
 /- English proof (translation)
-Introduce `K L V W ι _ _ _ _ _ _ _ _ _ _ _ f hf a a' ha`. Use `⟨GlobalTheory.finrank_iInf_ker_of_isBaseChange K L V W ι f a a' hf ha, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.GaloisDescent.span_image_iInf hf]`. Conclude with `iInf_congr fun i => (GlobalTheory.GaloisDescent.span_image_ker hf hf (a i) (a' i) (fun v => ha i v)).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_iInf_ker_baseChange : ∀ (K L V W ι : Type) [Field K] [Field L] [Algebra K L]
     [Finite ι] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [AddCommGroup W] [Module K W]

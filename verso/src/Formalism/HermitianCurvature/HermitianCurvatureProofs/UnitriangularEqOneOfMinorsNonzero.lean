@@ -13,13 +13,11 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Form
 open Formalism.DoubleCosetMeasures (IsUpUni IsLowUni isUpUni_mul isLowUni_mul isLowUni_det)
 
 /- English proof (translation)
-Take `⟨L, U, d, hL, hU, e⟩` from `S3x7.ldu_exists m Z (fun l hl => isUnit_iff_ne_zero.mpr (hZ l hl.le))`. Establish `hUp : IsUpUni u'` using `S3x7.mk_up (fun i j hij => hu'.1 i j hij) hu'.2`. Establish `hLow : IsLowUni uᴴ` using `S3x7.mk_low (fun i j hij => by simp [Matrix.conjTranspose_apply, hu.1 j i hij]) (fun i => by simp [Matrix.conjTranspose_apply, hu.2 i])`. Establish `e2 : L * diagonal d * U = (uᴴ * L) * diagonal d * (U * u')`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hd : S3.lead (L * diagonal d * U) m le_rfl ∈ nonZeroDivisors ℂ`. Rewrite using `[← e]`. Conclude with `mem_nonZeroDivisors_of_ne_zero (hZ m le_rfl)`. Take `⟨hLL, -, -⟩` from `S3x7.ldu_unique hL hU (isLowUni_mul ℂ hLow hL) (isUpUni_mul ℂ hU hUp) hd e2`. Establish `hLu : IsUnit L.det` using `by rw [isLowUni_det ℂ hL]; exact isUnit_one`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu1 : uᴴ = 1`. Establish `h1` using `congrArg (· * L⁻¹) hLL`. Simplify using `only [Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hLu, Matrix.mul_one] at h1`. Conclude with `h1.symm`. Use `congrArg Matrix.conjTranspose hu1` as an intermediate fact.
-
-Simplify using `using this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem unitriangular_eq_one_of_minors_nonzero {m : ℕ} {Z u u' : Matrix (Fin m) (Fin m) ℂ} (hu : u ∈ C2.UTset m) (hu' : u' ∈ C2.UTset m)
     (h : uᴴ * Z * u' = Z)
@@ -44,17 +42,15 @@ theorem unitriangular_eq_one_of_minors_nonzero {m : ℕ} {Z u u' : Matrix (Fin m
   simpa using this
 
 /- English proof (translation)
-Introduce `h2 h3 k r Wp Wq _ _ _ _ _ D γ hγ hrel`. Establish `hStd : C2.Std k r D.z D.z'` using `⟨D.k_pos, ⟨D.z_mem, D.T_pos⟩, ⟨D.z'_mem, D.T'_pos⟩⟩`. Establish `hPos : C2.PosPt k r D.z D.z' γ` using `⟨hγ.1, hγ.2.1⟩`. Establish `hγu : IsUnit γ.det` using `Dx2.OrbJ.isUnit_of_G hγ.1`. Take `⟨_, hReq, _, _, _⟩` from `h2 k r D.z D.z' γ hStd hPos`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hbij, hinj, _⟩` from `h3 k r D.z D.z' γ hStd hPos`. Establish `hN1 : (1 : B.Mat k r) ∈ Nset k r` using `(unipotent_radical_closed k r).one_mem`. Establish `hconj : ∀ ρ : B.Mat k r, γ * (γ⁻¹ * ρ * γ) * γ⁻¹ = ρ`. Introduce `ρ`. Simplify using `[Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hγu, Matrix.mul_nonsing_inv_cancel_left _ _ hγu]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `mem : ∀ ρ ∈ Rset γ, ρ ∈ C2.Rst k r D.z D.z' γ`. Introduce `ρ hρ`. Rewrite using `[hReq]`. Conclude with `⟨hρ.1, γ⁻¹ * ρ * γ, hρ.2, (hconj ρ).symm⟩`. Establish `one_R : (1 : B.Mat k r) ∈ Rset γ` using `⟨hN1, by simpa [Matrix.nonsing_inv_mul _ hγu] using hN1⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hZ : ∀ (l : ℕ) (hl : l ≤ r + 1), ((Zhat k r D.z D.z' γ).submatrix (Fin.castLE hl) (Fin.castLE hl)).det ≠ 0` using `fun l hl => hγ.2.2 ⟨l, by omega⟩ (Finset.mem_univ _)`. Establish `huOne : ∀ x ∈ C2.Rst k r D.z D.z' γ, C2.uMap k r D.z x = 1`. Introduce `x hx`. Take `⟨h1, h2', h3'⟩` from `hbij.mapsTo hx`. Conclude with `unitriangular_eq_one_of_minors_nonzero h1 h2' h3' hZ`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components.
 
-Use extensionality with `ρ`. Prove the components needed by the constructor for the conclusion. Introduce `hρ`. Conclude with `hinj (mem ρ hρ) (mem 1 one_R) ((huOne ρ (mem ρ hρ)).trans (huOne 1 (mem 1 one_R)).symm)`. Introduce `hρ`.
-
-Rewrite using `[Set.mem_singleton_iff.mp hρ]`. Conclude with `one_R`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relevant_trivial_big_cell_of_parts : Formalism.FourierDecayAlt.DensityAveraging.RTrivBigOfParts := by
   intro h2 h3 k r Wp Wq _ _ _ _ _ D γ hγ hrel

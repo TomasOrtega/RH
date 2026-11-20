@@ -36,7 +36,7 @@ def img {M : FlagModel y Ψ N j} {M' : FlagModel y' Ψ N j} (Cv : FlagCover M' M
     | some k' => stepCoord Cv F' F z hp.choose k' q
 
 /- English proof (translation)
-Use function extensionality and compare the values at `q`. Take `⟨⟨k, hk⟩, m⟩` from `q`. Simplify using `only [basePart, img, Function.comp]`. Rewrite using `[dif_pos hk]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem img_base {M : FlagModel y Ψ N j} {M' : FlagModel y' Ψ N j} (Cv : FlagCover M' M)
     (F' : FrameData ι' Ψ N M'.Ω M'.blk) (F : FrameData ι Ψ N M.Ω M.blk) (z : (Σ k, ι' k) → ℂ) :
@@ -47,11 +47,9 @@ theorem img_base {M : FlagModel y Ψ N j} {M' : FlagModel y' Ψ N j} (Cv : FlagC
   rw [dif_pos hk]
 
 /- English proof (translation)
-Establish `hk : ¬ ∀ p', M.blk p' ≠ some k` using `fun h => h p hp`. Establish `hex : ∃ p', M.blk p' = some k` using `⟨p, hp⟩`. Establish `hch : hex.choose = p` using `M.blk_inj _ _ k hex.choose_spec hp`. Simplify using `only [img, dif_neg hk]`. Use `split`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `next h =>`. Rewrite `h` using `[hch, hp']`. Conclude with `absurd h (by simp)`. Use `next k'' h =>`. Rewrite `h` using `[hch, hp']`.
-
-Consider the cases of `h`. Rewrite using `[hch]`.
+Rewrite the indicated hypotheses using the stated equalities. Split into cases according to the possible forms of the given data. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem img_step {M : FlagModel y Ψ N j} {M' : FlagModel y' Ψ N j} (Cv : FlagCover M' M)
     (F' : FrameData ι' Ψ N M'.Ω M'.blk) (F : FrameData ι Ψ N M.Ω M.blk) (z : (Σ k, ι' k) → ℂ)
@@ -71,9 +69,9 @@ theorem img_step {M : FlagModel y Ψ N j} {M' : FlagModel y' Ψ N j} (Cv : FlagC
     rw [hch]
 
 /- English proof (translation)
-Establish `h1 : ¬ (M.blk p = none)`. Rewrite using `[hp]`. Simplify using the standard rewrite rules. Rewrite `h1` using `[M.blk_none]`. Establish `h2 : M'.blk p ≠ none`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Ne, M'.blk_none]`. Conclude with `h1`. Conclude with `Option.ne_none_iff_exists'.mp h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_blk_cover {M : FlagModel y Ψ N j} (M' : FlagModel y' Ψ N j) {p : Ψ × Fin N} {k : K}
     (hp : M.blk p = some k) : ∃ k', M'.blk p = some k' := by

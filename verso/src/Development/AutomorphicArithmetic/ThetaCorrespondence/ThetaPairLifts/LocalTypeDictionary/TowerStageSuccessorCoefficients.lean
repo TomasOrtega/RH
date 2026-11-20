@@ -30,9 +30,9 @@ end Transport
 section Cast
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 /- English proof (translation)
-Take `⟨oa, oa', ob, ob', R, Ra, Rb, da, db, m1, m2, k1, k2, hdb, k, hk⟩` from `_root_.GlobalTheory.SqStepBig.theta_tower_step_pair_real_part hP hK hM hB g xa xb H g₂`. Use `⟨R, db / lb, k, div_ne_zero hdb hlb, ⟨oa, oa', Ra, m1, ?_⟩, ⟨ob, ob', Rb, m2, ?_⟩⟩` and prove the remaining obligations. Use `k1 using 1` and compare the differences between its conclusion and the goal. Clear the denominators using the available nonvanishing facts. Take the linear combination `-hk`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `k2 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[div_self', Circle.coe_one, mul_one, div_mul_cancel₀ _ hlb]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 -/
 theorem const_pair_alt (hP : _root_.GlobalTheory.FunPr.ThetaLocalInputs) (hK : ThetaIntegralsAgree) (hM : LocalMatching) {B : Base F E} (hB : B.IsGood σ)
     {a a' : ℕ} {Γ : Geo σ a a'} (g : Γ.IsGood B) {Xa Xb : Chars F E} (xa : Xa.IsGood B a a') (xb : Xb.IsGood B a a') {la lb : ℂ}
@@ -54,15 +54,15 @@ theorem const_pair_alt (hP : _root_.GlobalTheory.FunPr.ThetaLocalInputs) (hK : T
 end Cast
 open GlobalTheory.SqStepBig in
 /- English proof (translation)
-Introduce `hP hK hM`. Use `gbig_of_three GlobalTheory.T.exists_realEmbeddings_sharedBase_towerStage (_root_.GlobalTheory.T.tower_stage_fit_factor_alt hP hK hM) GlobalTheory.T.exists_realEmbeddings_sharedBase_towerStage ?_` and prove the remaining obligations. Introduce and unpack `D T Lc sc G μ₀ C x b qb qd - W S hψ hN i j p q A A' WW B' WW₁ X Y lam c e hX hY ⟨hA, ⟨ι, x, y, hs⟩, ι', x', y', hs'⟩ hF hc he t`. Take `⟨emb, hemb⟩` from `qb W hψ i j _ _ A A' WW X hX`. Take `⟨Bs, -, f⟩` from `hemb t`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hn : A'.rank = B'.rank + 2` using `hs.1`. Establish `f₁ : Fit G W i j t μ₀ Bs A.rank B'.rank` using `Fit.down_right (hn ▸ f)`. Take `⟨Γ, o, pΓ, qΓ, g, HX⟩` from `qd W hψ i j _ _ A A' WW X lam t Bs hX hF f`. Take `⟨Γ₁, o₁, pΓ₁, qΓ₁, g₁, HY⟩` from `qd W hψ i j _ _ A B' WW₁ Y c t Bs hY hc f₁`. Take `⟨U, H, hU, hH⟩` from `plane_herm f.2.1 hs (neg_ne_zero.2 one_ne_zero) o.2.1 o₁.2.1 g.hV' g₁.hV' (i₀ := 0) (i₁ := B'.rank + 1) (by omega) (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Z, H', hZ, hH'⟩` from `plane_skew f.2.1 hs' o.2.2 o₁.2.2 g.hW g₁.hW (i₀ := A.rank) (i₁ := A.rank + B'.rank + 1) (by omega) (by omega)`. Establish `eV : reS Γ₁.V Γ.V = reS Γ.V Γ.V` using `reS_congr Γ.V (o.1.eq (hA ▸ o₁.1))`. Establish `hV : (reS Γ.V Γ.V).IsHerm D.sp.cm.sig Bs (A.rank - Γ.p) Γ.p` using `g.hV`. Establish `g₂ : (reG Γ Γ.V U Z).IsGood Bs` using `isGood_reG g hV hU hZ`. Establish `g₃ : (reG Γ₁ Γ.V Γ₁.V' Γ₁.W).IsGood Bs` using `isGood_reG g₁ (by rw [eV, pΓ₁, ← pΓ]; exact hV) g₁.hV' g₁.hW`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨R, d, k, hd, c1, c2⟩` from `_root_.GlobalTheory.HermitianSkewAdaptation.const_pair_alt hP hK hM f.2.1 g f.2.2.2.1 f.2.2.2.2.1 (hF.1 μ₀) HX g₂`. Take `⟨R₁, d₁, k₁, hd₁, c3, c4⟩` from `_root_.GlobalTheory.HermitianSkewAdaptation.const_pair_alt hP hK hM f.2.1 g₁ f₁.2.2.2.1 f₁.2.2.2.2.1 (hc.1 μ₀) HY g₃`. Take `⟨Γ', K, K', R', e1, e2, e3, e4, e5, e6⟩` from `cast_rank Bs hn (reG Γ Γ.V U Z) (reG Γ₁ Γ.V Γ₁.V' Γ₁.W) H H' R eV (pΓ₁.trans pΓ.symm) (by show Γ₁.q + 1 = Γ.q; rw [qΓ, qΓ₁]) hH hH'`. Use `⟨Bs, B'.rank, Γ', _, K, K', R', R₁, d, d₁, k, k₁, f.1, hn, e1, e2, e3, e4, e5, hd, hd₁, ?_⟩` and prove the remaining obligations. Introduce and unpack `t' (rfl | rfl)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨e6 _ _ c1, c3⟩`. Conclude with `⟨e6 _ _ c2, c4⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem tower_stage_successor_relation_alt : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
   GBig fun {D} T _ _ G μ₀ _ _ _ => ∀ (W : G.Weil) (S : GridChoice W Set.univ), IsStdChar D W.ψ (-1) →
@@ -121,7 +121,7 @@ open GlobalTheory.SqTop
 open GlobalTheory.ConstRatio (NegIdx Factor)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.HermitianSkewAdaptation.tower_stage_successor_relation_alt | exact _root_.GlobalTheory.HermitianSkewAdaptation.tower_stage_successor_relation_alt | (intros; apply _root_.GlobalTheory.HermitianSkewAdaptation.tower_stage_successor_relation_alt <;> …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.tower_stage_successor_coefficients_alt : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
   GBig fun {D} T _ _ G μ₀ _ _ _ => ∀ (W : G.Weil) (S : GridChoice W Set.univ), IsStdChar D W.ψ (-1) →

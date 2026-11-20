@@ -19,7 +19,7 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type}
   {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
 /- English proof (translation)
-Establish `hj : Function.Injective ((R.FW i).j (sg0 D A3.A))`. Use `(injective_iff_map_eq_zero _).2 fun v hv => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Conclude with `((hU i _).1 1 (fun _ => v) (linearIndependent_unique_iff.2 hne)).ne_zero 0 hv`. Conclude with `(hM.HW i _).1.comp hj`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem iotaR_injective_of (R : RealDat3 D A3 Ks) (hM : R.toRealDat.IsModels) (hU : R.toRealDat.LUnif) (i : Fin D.R.m) :
     Function.Injective (iotaR R i) := by
@@ -32,7 +32,7 @@ theorem iotaR_injective_of (R : RealDat3 D A3 Ks) (hM : R.toRealDat.IsModels) (h
 end Gen
 
 /- English proof (translation)
-Introduce `hL`. Use `GlobalTheory.Mem.Top.Bl.StepW.of_all fun K B f T w _ _ _ => ?_` and prove the remaining obligations. Introduce `P x _ i`. Conclude with `iotaR_injective_of x.m.z.R x.m.z.pins.char.base.models x.m.intersectionNumber_baseChange.prim.unif i`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem iotaR_injective_states : ∀ hL : GlobalTheory.Published.LocalLanglandsGL, StepW Start fun K B f T w => ∀ (P : Pre2 K w) (x : St P), LA hL x → ∀ i : Fin (Dof x).R.m, Function.Injective (GlobalTheory.EigSpanDesc.iotaR x.m.z.R i) := by
   intro hL

@@ -19,15 +19,13 @@ variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
   {V : Type*} [AddCommGroup V] [Module ℂ V] {ρ : Representation ℂ G V} {N M Nbar K : Subgroup G}
 
 /- English proof (translation)
-Establish `hterm : ∀ k ∈ K, Representation.Coinvariants.mk (ρ.comp N.subtype) (ρ k w) = Representation.Coinvariants.mk (ρ.comp N.subtype) w`. Introduce `k hk`. Take `⟨x, hx, y, hy, z, hz, rfl⟩` from `hfact k hk`. Rewrite using `[map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, hwNbar z hz, mk_apply_of_mem ρ N (Subgroup.mem_inf.1 hx).2, hwM y hy]`. Take `⟨N', -, -, hN'U, hnorm, hfin⟩` from `exists_normal_subgroup hKc hKo ((hρ w).mem_nhds (one_mem (stabilizerOf ρ w)))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `Fintype.ofFinite (K ⧸ N'.subgroupOf K)` as an intermediate fact. Establish `hw' : w ∈ fixedVectors ρ N'` using `fun k hk => hN'U hk`. Use `set c : ℂ := (Fintype.card (K ⧸ N'.subgroupOf K) : ℂ)`. Establish `hc : c ≠ 0` using `Nat.cast_ne_zero.2 Fintype.card_ne_zero`. Establish `hyK : c⁻¹ • cosetSum ρ K N' w ∈ fixedVectors ρ K` using `Submodule.smul_mem _ _ (cosetSum_mem_fixedVectors ρ hnorm hw')`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hey : fixedProj ρ hρ hKc hKo w = ⟨c⁻¹ • cosetSum ρ K N' w, hyK⟩`. Rewrite using `[fixedProj_eq_iff]`. Establish `heq : w - c⁻¹ • cosetSum ρ K N' w = c⁻¹ • ∑ q : K ⧸ N'.subgroupOf K, (w - ρ ((Quotient.out q : K) : G) w)`. Rewrite using `[Finset.sum_sub_distrib, Finset.sum_const, Finset.card_univ, ← cosetSum_apply, smul_sub, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ hc, one_smul]`. Use `show w - c⁻¹ • cosetSum ρ K N' w ∈ coinvariantsKer ρ K`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[heq]`. Use `Submodule.smul_mem _ _ (Submodule.sum_mem _ fun q _ => ?_)` and prove the remaining obligations. Rewrite using `[← neg_sub]`. Conclude with `Submodule.neg_mem _ (sub_mem_coinvariantsKer (Quotient.out q).2 w)`. Rewrite using `[hey]`.
-
-Use `show Representation.Coinvariants.mk (ρ.comp N.subtype) (c⁻¹ • cosetSum ρ K N' w) = _`. Rewrite using `[map_smul, cosetSum_apply, map_sum, Finset.sum_congr rfl fun q _ => hterm _ (Quotient.out q).2, Finset.sum_const, Finset.card_univ, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ hc, one_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mk_fixedProj_eq (hρ : IsSmooth ρ) (hKc : IsCompact (K : Set G)) (hKo : IsOpen (K : Set G))
     (hfact : ∀ k ∈ K, ∃ x ∈ K ⊓ N, ∃ y ∈ K ⊓ M, ∃ z ∈ K ⊓ Nbar, k = x * y * z)
@@ -89,13 +87,11 @@ section Compact
 variable {π : Representation ℂ (GL (Fin n) F) V}
 
 /- English proof (translation)
-Take `⟨i, j, hi, hj⟩` from `hS`. Establish `hsub` using `hsc (splitFun S) ⟨i, j, by simp [splitFun, hi, hj]⟩`. Establish `hw : w ∈ Representation.Coinvariants.ker (π.comp (unipotentRadical F n (splitFun S)).subtype)` using `(Representation.Coinvariants.mk_eq_zero _).1 (Subsingleton.elim _ _)`. Take `⟨T, hT, hwT⟩` from `Submodule.mem_span_finite_of_mem_span hw`. Establish `hpre : ∀ y ∈ T, ∃ gv : unipotentRadical F n (splitFun S) × V, π (gv.1 : GL (Fin n) F) gv.2 - gv.2 = y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `y hy`. Take `⟨gv, h⟩` from `hT hy`. Conclude with `⟨gv, h⟩`. Use `choose! pre hpre using hpre`. Use `⟨T.image fun y => ((pre y).1 : GL (Fin n) F), ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u hu`. Take `⟨y, -, rfl⟩` from `Finset.mem_image.1 hu`. Conclude with `(pre y).1.2`. Use `Submodule.span_mono ?_ hwT` and prove the remaining obligations. Introduce `y hy`.
-
-Conclude with `⟨((pre y).1 : GL (Fin n) F), Finset.mem_image_of_mem _ hy, (pre y).2, (hpre y hy).symm⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_finset_of_isSupercuspidal (hsc : IsSupercuspidal π) {S : Finset (Fin n)}
     (hS : ∃ i j, i ∈ S ∧ j ∉ S) (w : V) :
@@ -122,7 +118,7 @@ theorem exists_finset_of_isSupercuspidal (hsc : IsSupercuspidal π) {S : Finset 
     exact ⟨((pre y).1 : GL (Fin n) F), Finset.mem_image_of_mem _ hy, (pre y).2, (hpre y hy).symm⟩
 
 /- English proof (translation)
-The claim follows from `Matrix.GeneralLinearGroup.mem_center_iff_val_mem_range_scalar.2 ⟨(uniformizer F : F) ^ c, by rw [Matrix.scalar_apply, Cartan.coe_diagPow]⟩`.
+A detailed English derivation is pending.
 -/
 theorem diagPow_const_mem_center (c : ℤ) :
     Cartan.diagPow F n (fun _ => c) ∈ Subgroup.center (GL (Fin n) F) :=
@@ -130,43 +126,37 @@ theorem diagPow_const_mem_center (c : ℤ) :
     ⟨(uniformizer F : F) ^ c, by rw [Matrix.scalar_apply, Cartan.coe_diagPow]⟩
 
 /- English proof (translation)
-Take `⟨m₁, -, hm₁⟩` from `(hasBasis_nhds_one F n).mem_iff.1 ((hπ v).mem_nhds (one_mem _))`. Take `⟨m₂, -, hm₂⟩` from `(hasBasis_nhds_one F n).mem_iff.1 ((mem_smoothVectors.1 hf).mem_nhds (one_mem _))`. Use `set m := max m₁ m₂`. Use `set K := congruenceSubgroup F n m`. Establish `hvK : v ∈ fixedVectors π K` using `fun k hk => hm₁ (congruenceSubgroup_antitone F n (le_max_left _ _) hk)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfK : ∀ k ∈ K, ∀ x, f (π k x) = f x` using `mem_fixedVectors_dual.1 fun k hk => hm₂ (congruenceSubgroup_antitone F n (le_max_right _ _) hk)`. Use `set K₀ := integralGL F n`. Establish `: CompactSpace K₀` using `isCompact_iff_compactSpace.1 (isCompact_integralGL F n)`. Establish `hQ : Finite (K₀ ⧸ K.subgroupOf K₀)`. Use `Subgroup.quotient_finite_of_isOpen _ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Rewrite using `[Subgroup.coe_subgroupOf]`. Conclude with `(isOpen_congruenceSubgroup F n m).preimage continuous_subtype_val`. Use `Fintype.ofFinite (K₀ ⧸ K.subgroupOf K₀)` as an intermediate fact. Set `R : Finset (GL (Fin n) F)` to `Finset.univ.image fun q : K₀ ⧸ K.subgroupOf K₀ => ((Quotient.out q : K₀) : GL (Fin n) F)`. Establish `hR : ∀ k ∈ K₀, ∃ r ∈ R, π k v = π r v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `k hk`. Use `⟨_, Finset.mem_image_of_mem _ (Finset.mem_univ (QuotientGroup.mk (⟨k, hk⟩ : K₀))), ?_⟩` and prove the remaining obligations. Conclude with `act_eq_of_mk_eq π hvK (a := ⟨k, hk⟩) (b := Quotient.out (QuotientGroup.mk (⟨k, hk⟩ : K₀) : K₀ ⧸ K.subgroupOf K₀)) (QuotientGroup.out_eq' _).symm`. Set `V₂ : Finset V` to `R.image fun r => π r v`. Establish `hU : ∀ S : Finset (Fin n), (∃ i j, i ∈ S ∧ j ∉ S) → ∀ w : V, ∃ U : Finset (GL (Fin n) F), (∀ u ∈ U, u ∈ unipotentRadical F n (splitFun S)) ∧ w ∈ Submodule.span ℂ {y | ∃ u ∈ U, ∃ x, y = π u x - x}` using `fun S hS w => exists_finset_of_isSupercuspidal hsc hS w`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose! Uf hUf1 hUf2 using hU`. Set `Uall : Finset (GL (Fin n) F)` to `Finset.univ.biUnion fun S : Finset (Fin n) => V₂.biUnion (Uf S)`. Take `⟨t, ht⟩` from `exists_pow_mul_mem_of_isCompact F n ((Uall ∪ Uall.image fun u => u⁻¹ : Finset (GL (Fin n) F)) : Set (GL (Fin n) F)).toFinite.isCompact`. Establish `hbu : ∀ u ∈ Uall, ∀ i j, (uniformizer F : F) ^ t * u i j ∈ 𝒪[F]` using `fun u hu => ht _ (by simp [hu])`. Establish `hbu' : ∀ u ∈ Uall, ∀ i j, (uniformizer F : F) ^ t * (u⁻¹ : GL (Fin n) F) i j ∈ 𝒪[F]` using `fun u hu => ht _ (by simp only [Finset.coe_union, Finset.coe_image, Set.mem_union, Set.mem_image, Finset.mem_coe]; exact Or.inr ⟨u, hu, rfl⟩)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `set C : ℤ := ((t + m : ℕ) : ℤ) + 1 with hCdef`. Establish `hC : ((t + m : ℕ) : ℤ) < C` using `lt_add_one _`. Establish `hC0 : 0 < C` using `by positivity`. Set `Nset : Finset (Fin n → ℤ)` to `Fintype.piFinset fun _ => Finset.Icc 0 (n * C)`. Set `Cset : Set (GL (Fin n) F)` to `⋃ ν ∈ (Nset : Set (Fin n → ℤ)), (fun p : GL (Fin n) F × GL (Fin n) F => p.1 * Cartan.diagPow F n ν * p.2) '' ((K₀ : Set (GL (Fin n) F)) ×ˢ (K₀ : Set (GL (Fin n) F)))`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hCset : IsCompact Cset` using `Nset.finite_toSet.isCompact_biUnion fun ν _ => ((isCompact_integralGL F n).prod (isCompact_integralGL F n)).image (by fun_prop)`. Use `⟨Cset, hCset, fun g hg => ?_⟩` and prove the remaining obligations. Rewrite `hg` using `[Function.mem_support]`. Take `⟨μ, -, k₁, hk₁, k₂, hk₂, rfl⟩` from `Cartan.exists_eq_mul_diagPow_mul F n g`. Take `⟨r₂, hr₂, hr₂v⟩` from `hR k₂ hk₂`.
+It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hwV : π r₂ v ∈ V₂` using `Finset.mem_image_of_mem _ hr₂`. Break down `gap_or_bounded (β := fun _ : Fin n => (0 : ℕ)) μ hC0 with ⟨θ, b, ⟨i, hib, hiθ⟩, ⟨j, hjb, hjθ⟩, hgap⟩ | hbd` into its components or cases. It suffices to derive a contradiction. Apply `hg` to reduce the goal to its premises. Use `set S : Finset (Fin n) := Finset.univ.filter fun j => (fun _ : Fin n => (0 : ℕ)) j = b ∧ θ ≤ μ j with hSdef`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS : ∃ i j, i ∈ S ∧ j ∉ S` using `⟨i, j, by simp [S, hib, hiθ], by simp [S, hjb, not_le.2 hjθ]⟩`. Establish `hsp` using `hUf2 S hS (π r₂ v)`. Use `set a := Cartan.diagPow F n μ`. Establish `hker : Submodule.span ℂ {y | ∃ u ∈ Uf S (π r₂ v), ∃ x, y = π u x - x} ≤ LinearMap.ker (f ∘ₗ π k₁ ∘ₗ π a)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce and unpack `_ ⟨u, hu, x, rfl⟩`. Establish `huA : u ∈ Uall` using `Finset.mem_biUnion.2 ⟨S, Finset.mem_univ _, Finset.mem_biUnion.2 ⟨π r₂ v, hwV, hu⟩⟩`. Establish `huN` using `hUf1 S hS (π r₂ v) u hu`. Establish `hlev : ∀ w : GL (Fin n) F, w ∈ levi F n (fun _ : Fin n => (0 : ℕ))` using `fun w => mem_levi.2 fun i j h => absurd rfl h`. Establish `hconj : a * u * a⁻¹ ∈ K` using `diagPow_conj_mem_congruenceSubgroup hC (apply_eq_or_gap hgap (hlev u) huN) (apply_eq_or_gap hgap (hlev u⁻¹) ((unipotentRadical F n _).inv_mem huN)) (hbu u huA) (hbu' u huA)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hconj' : k₁ * (a * u * a⁻¹) * k₁⁻¹ ∈ K` using `conj_mem_congruenceSubgroup F n hk₁ hconj`. Simplify using `only [SetLike.mem_coe, LinearMap.mem_ker, LinearMap.coe_comp, Function.comp_apply, map_sub]`. Establish `h1 : π k₁ (π a (π u x)) = π (k₁ * (a * u * a⁻¹) * k₁⁻¹) (π k₁ (π a x))`. Simplify using `only [← Module.End.mul_apply, ← map_mul]`. Use `group`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h1, hfK _ hconj', sub_self]`. Use `hker hsp` as an intermediate fact. Simplify using `only [LinearMap.mem_ker, LinearMap.coe_comp, Function.comp_apply] at this`. Use `show f (π (k₁ * a * k₂) v) = 0`. Rewrite using `[map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, hr₂v]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `this`. Set `c₀ : ℤ` to `if h : ∃ k : Fin n, True then (Finset.univ.image μ).min' ⟨_, Finset.mem_image_of_mem μ (Finset.mem_univ h.choose)⟩ else 0`. Establish `hc₀le : ∀ k, c₀ ≤ μ k`. Introduce `k`. Simplify using `only [c₀, dif_pos (⟨k, trivial⟩ : ∃ k : Fin n, True)]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `Finset.min'_le _ _ (Finset.mem_image_of_mem _ (Finset.mem_univ k))`. Establish `hc₀mem : ∀ j : Fin n, ∃ k, c₀ = μ k`. Introduce `j`. Simplify using `only [c₀, dif_pos (⟨j, trivial⟩ : ∃ k : Fin n, True)]`. Take `⟨k, -, hk⟩` from `Finset.mem_image.1 (Finset.min'_mem (Finset.univ.image μ) _)`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Conclude with `⟨k, hk.symm⟩`. Set `ν : Fin n → ℤ` to `μ - fun _ => c₀`. Establish `hν : ν ∈ Nset`. Rewrite using `[Fintype.mem_piFinset]`. Introduce `j`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mem_Icc]`. Take `⟨k, hk⟩` from `hc₀mem j`. Establish `h1` using `hc₀le j`. Establish `h2` using `hbd j k rfl`. Prove the components needed by the constructor for the conclusion.
-
-Use `show 0 ≤ μ j - c₀`. Combine the linear equalities and inequalities to obtain the conclusion. Use `show μ j - c₀ ≤ n * C`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hμ : μ = (fun _ => c₀) + ν`.
-
-Use function extensionality and compare the values at `j`. Simplify using `[ν]`. Establish `hz` using `diagPow_const_mem_center (F := F) (n := n) c₀`. Use `Set.mem_mul.2 ⟨Cartan.diagPow F n (fun _ => c₀), hz, k₁ * Cartan.diagPow F n ν * k₂, Set.mem_biUnion hν ⟨(k₁, k₂), ⟨hk₁, hk₂⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hμ, diagPow_add, ← mul_assoc k₁, Subgroup.mem_center_iff.1 hz k₁]`.
-
-Use `group`.
+A detailed English derivation is pending.
 -/
 theorem isCompactModCenter_matrixCoeff (hπ : IsSmooth π) (hsc : IsSupercuspidal π) (v : V)
     {f : Module.Dual ℂ V} (hf : f ∈ smoothVectors (Representation.dual π)) :
@@ -301,7 +291,7 @@ section Converse
 variable {π : Representation ℂ (GL (Fin n) F) V}
 
 /- English proof (translation)
-Use `show ((rankTorus F n β e : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i i = _`. Rewrite using `[rankTorus, coe_torusPow, diagonal_apply_eq]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rankTorus_apply_self {α : Type*} [LinearOrder α] (β : Fin n → α) (e : ℕ) (i : Fin n) :
     (rankTorus F n β e : GL (Fin n) F) i i =
@@ -310,7 +300,7 @@ theorem rankTorus_apply_self {α : Type*} [LinearOrder α] (β : Fin n → α) (
   rw [rankTorus, coe_torusPow, diagonal_apply_eq]
 
 /- English proof (translation)
-Use `show (((rankTorus F n β e)⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i i = _`. Rewrite using `[rankTorus, ← torusPow_neg, coe_torusPow, diagonal_apply_eq, Pi.neg_apply, neg_neg]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rankTorus_inv_apply_self {α : Type*} [LinearOrder α] (β : Fin n → α) (e : ℕ)
     (i : Fin n) :
@@ -320,7 +310,7 @@ theorem rankTorus_inv_apply_self {α : Type*} [LinearOrder α] (β : Fin n → �
   rw [rankTorus, ← torusPow_neg, coe_torusPow, diagonal_apply_eq, Pi.neg_apply, neg_neg]
 
 /- English proof (translation)
-Establish `h1` using `(Valuation.mem_integer_iff _ _).1 h`. Rewrite `h1` using `[map_zpow₀]`. Conclude with `(zpow_le_one_iff_right_of_lt_one₀ (zero_lt_iff.2 (valuation_uniformizer_ne_zero F)) (valuation_uniformizer_lt_one F)).1 h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonneg_of_zpow_mem {z : ℤ} (h : (uniformizer F : F) ^ z ∈ 𝒪[F]) : 0 ≤ z := by
   have h1 := (Valuation.mem_integer_iff _ _).1 h
@@ -329,47 +319,39 @@ theorem nonneg_of_zpow_mem {z : ℤ} (h : (uniformizer F : F) ^ z ∈ 𝒪[F]) :
     (zero_lt_iff.2 (valuation_uniformizer_ne_zero F)) (valuation_uniformizer_lt_one F)).1 h1
 
 /- English proof (translation)
-Introduce `γ hγ`. Assume the negation of the conclusion as `hns`. Rewrite `hns` using `[not_subsingleton_iff_nontrivial]`. Take `⟨y₀, hy₀⟩` from `exists_ne (0 : JacquetModule F n γ π)`. Take `⟨x₀, rfl⟩` from `Representation.Coinvariants.mk_surjective _ y₀`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `set q := Representation.Coinvariants.mk (π.comp (unipotentRadical F n γ).subtype) with hqdef`. Take `⟨m₁, -, hm₁⟩` from `(hasBasis_nhds_one F n).mem_iff.1 ((hπ.1 x₀).mem_nhds (one_mem _))`. Use `set m := max m₁ 1`. Establish `hm : 1 ≤ m` using `le_max_right _ _`. Use `set K := congruenceSubgroup F n m`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hKc : IsCompact (K : Set (GL (Fin n) F))` using `isCompact_congruenceSubgroup F n m`. Establish `hKo : IsOpen (K : Set (GL (Fin n) F))` using `isOpen_congruenceSubgroup F n m`. Establish `hx₀K : x₀ ∈ fixedVectors π K` using `fun k hk => hm₁ (congruenceSubgroup_antitone F n (le_max_left _ _) hk)`. Use `set e := fixedProj π hπ.1 hKc hKo`. Use `set a := rankTorus F n γ 1 with hadef`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hapow : ∀ j : ℕ, a ^ j = rankTorus F n γ j` using `fun j => by`. Rewrite using `[hadef, rankTorus_pow, one_mul]`. Establish `haN : ∀ u ∈ unipotentRadical F n γ, a * u * a⁻¹ ∈ unipotentRadical F n γ` using `fun u hu => conj_mem_unipotentRadical (rankTorus_mem_blockUpper 1) hu`. Establish `haN' : ∀ u ∈ unipotentRadical F n γ, a⁻¹ * u * a ∈ unipotentRadical F n γ` using `fun u hu => by`. Simplify using `using conj_mem_unipotentRadical ((blockUpper F n γ).inv_mem (rankTorus_mem_blockUpper 1)) hu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `set A := coinvariantsTranslate π (unipotentRadical F n γ) a haN`. Establish `hAinj : Function.Injective A` using `coinvariantsTranslate_injective haN haN'`. Establish `hAiter : ∀ (j : ℕ) (x : V), A^[j] (q x) = q (π (a ^ j) x)` using `fun j x => iterate_coinvariantsTranslate_mk haN j x`. Establish `hkey : ∀ (j : ℕ), ∀ x ∈ fixedVectors π K, q (e (π (a ^ j) x) : V) = q (π (a ^ j) x)`. Introduce `j x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `mk_fixedProj_eq hπ.1 hKc hKo (congruenceSubgroup_iwahoriFactorization' γ hm) (fun z hz => ?_) (fun y hy => ?_)` and prove the remaining obligations. Establish `hz'` using `(Subgroup.mem_inf.1 (rankTorus_inv_conj_mem_congruenceSubgroup (e := j) hz)).1`. Establish `hz'' : (a ^ j)⁻¹ * z * a ^ j ∈ K`. Rewrite using `[hapow]`. Conclude with `congruenceSubgroup_antitone F n (by omega) hz'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzeq : z = a ^ j * ((a ^ j)⁻¹ * z * a ^ j) * (a ^ j)⁻¹` using `by group`. Rewrite using `[hzeq, map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, ← Module.End.mul_apply (π (a ^ j)⁻¹), ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply, hx _ hz'']`. Establish `hc : y * a ^ j = a ^ j * y`. Rewrite using `[hapow]`. Conclude with `(rankTorus_commute j (Subgroup.mem_inf.1 hy).2).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[← Module.End.mul_apply, ← map_mul, hc, map_mul, Module.End.mul_apply, hx y (Subgroup.mem_inf.1 hy).1]`. Use `set I : Submodule ℂ (JacquetModule F n γ π) := Submodule.map q (fixedVectors π K)`. Establish `: FiniteDimensional ℂ (fixedVectors π K)` using `hπ.2 K hKc hKo`. Establish `hIfin : FiniteDimensional ℂ I` using `inferInstance`. Establish `hAI : ∀ j : ℕ, A^[j] (q x₀) ∈ I` using `fun j => ⟨(e (π (a ^ j) x₀) : V), (e _).2, by rw [hkey j x₀ hx₀K, hAiter]⟩`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hne : ∀ j : ℕ, A^[j] (q x₀) ≠ 0`. Introduce `j hj`. Apply `hy₀` to reduce the goal to its premises. Establish `h0 : A^[j] (0 : JacquetModule F n γ π) = 0` using `Function.iterate_fixed (map_zero A) j`. Conclude with `(hAinj.iterate j) (hj.trans h0.symm)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Choose the witnesses or unpack the hypotheses as in `⟨lam, hlam⟩ : ∃ lam : Module.Dual ℂ I, ∀ J : ℕ, ∃ j ≥ J, lam ⟨A^[j] (q x₀), hAI j⟩ ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Set `b` to `Module.finBasis ℂ I`. Use `choose J hJ using fun i => hcon (b.coord i)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `set J₀ := Finset.univ.sup J`. Establish `h0 : (⟨A^[J₀] (q x₀), hAI J₀⟩ : I) = 0`. Use `b.ext_elem fun i => ?_` and prove the remaining obligations. Rewrite using `[map_zero, Finsupp.zero_apply, ← Module.Basis.coord_apply]`. Conclude with `hJ i J₀ (Finset.le_sup (Finset.mem_univ i))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hne J₀ (congrArg Subtype.val h0)`. Take `⟨Λ, hΛ⟩` from `LinearMap.exists_extend lam`. Use `set f : Module.Dual ℂ V := Λ ∘ₗ q ∘ₗ (fixedVectors π K).subtype ∘ₗ e with hfdef`. Establish `hf : f ∈ smoothVectors (Representation.dual π)`. Use `mem_smoothVectors_of_mem_fixedVectors hKo (mem_fixedVectors_dual.2 fun k hk y => ?_)` and prove the remaining obligations.
+Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [hfdef, LinearMap.coe_comp, Function.comp_apply, Submodule.coe_subtype]`. Rewrite using `[fixedProj_apply_act hπ.1 hKc hKo hk]`. Establish `hcoef : ∀ j : ℕ, matrixCoeff π x₀ f (a ^ j) = lam ⟨A^[j] (q x₀), hAI j⟩`. Introduce `j`. Simplify using `only [matrixCoeff, hfdef, LinearMap.coe_comp, Function.comp_apply, Submodule.coe_subtype]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hkey j x₀ hx₀K, ← hAiter]`. Conclude with `LinearMap.congr_fun hΛ ⟨A^[j] (q x₀), hAI j⟩`. Take `⟨C, hC, hsupp⟩` from `h x₀ f hf`. Take `⟨eb, heb⟩` from `exists_pow_mul_mem_of_isCompact F n (hC.union hC.inv)`. Choose the witnesses or unpack the hypotheses as in `⟨i, i', hlt⟩ : ∃ i i', γ i' < γ i := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨i, i', hii'⟩` from `hγ`. Break down `lt_or_gt_of_ne hii' with h' | h'` into its components or cases. Conclude with `⟨i', i, h'⟩`. Conclude with `⟨i, i', h'⟩`. Establish `hr` using `blockRank_lt hlt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨j, hj, hjne⟩` from `hlam (2 * eb + 1)`. Establish `hmem : a ^ j ∈ (Subgroup.center (GL (Fin n) F) : Set (GL (Fin n) F)) * C` using `hsupp (by rw [Function.mem_support, hcoef]; exact hjne)`. Take `⟨z, hz, g, hg, hzg⟩` from `Set.mem_mul.1 hmem`. Take `⟨s, hs⟩` from `Matrix.GeneralLinearGroup.mem_center_iff_val_mem_range_scalar.1 hz`. Establish `h1 : s * g i i = (a ^ j) i i`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[← hzg]`. Use `show s * g i i = ((z : Matrix (Fin n) (Fin n) F) * (g : Matrix (Fin n) (Fin n) F)) i i`. Rewrite using `[← hs, Matrix.scalar_apply, diagonal_mul]`. Establish `hginv : g⁻¹ = (a ^ j)⁻¹ * z`. Rewrite using `[← hzg]`.
-
-Use `group`. Establish `h2 : (g⁻¹ : GL (Fin n) F) i' i' = ((a ^ j)⁻¹ : GL (Fin n) F) i' i' * s`. Rewrite using `[hginv]`. Use `show ((((a ^ j)⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) * (z : Matrix (Fin n) (Fin n) F)) i' i' = _`. Rewrite using `[← hs, Matrix.scalar_apply, mul_diagonal]`.
-
-Establish `hb1` using `heb g (Or.inl hg) i i`. Establish `hb2` using `heb g⁻¹ (Or.inr (by simpa using hg)) i' i'`. Establish `hprod : ((uniformizer F : F) ^ eb * g i i) * ((uniformizer F : F) ^ eb * (g⁻¹ : GL (Fin n) F) i' i') = (uniformizer F : F) ^ ((2 * eb : ℕ) + (((j * blockRank γ i' : ℕ) : ℤ) - ((j * blockRank γ i : ℕ) : ℤ)))`. Rewrite using `[h2]`. Establish `h3 : ((uniformizer F : F) ^ eb * g i i) * ((uniformizer F : F) ^ eb * (((a ^ j)⁻¹ : GL (Fin n) F) i' i' * s)) = (uniformizer F : F) ^ eb * (uniformizer F : F) ^ eb * ((s * g i i) * ((a ^ j)⁻¹ : GL (Fin n) F) i' i')` using `by ring`.
-
-Rewrite using `[h3, h1, hapow, rankTorus_apply_self, rankTorus_inv_apply_self, ← pow_add, ← zpow_natCast, ← zpow_add₀ (Cartan.uniformizer_ne_zero F), ← zpow_add₀ (Cartan.uniformizer_ne_zero F)]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hnn` using `nonneg_of_zpow_mem (hprod ▸ mul_mem hb1 hb2)`.
-
-Establish `hj' : (j : ℤ) * ((blockRank γ i' : ℤ) + 1) ≤ (j : ℤ) * blockRank γ i` using `mul_le_mul_of_nonneg_left (by exact_mod_cast hr) (by positivity)`. Move the coercions through the operations in `at hnn`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem isSupercuspidal_of_isCompactModCenter (hπ : IsAdmissible π)
     (h : ∀ v : V, ∀ f ∈ smoothVectors (Representation.dual π),
@@ -509,7 +491,7 @@ theorem isSupercuspidal_of_isCompactModCenter (hπ : IsAdmissible π)
   nlinarith
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun hsc v _ hf => isCompactModCenter_matrixCoeff hπ hsc v hf, isSupercuspidal_of_isCompactModCenter (isAdmissible_of_isIrreducible hπ)⟩`.
+Supply the required witnesses or components.
 -/
 theorem isSupercuspidal_iff_isCompactModCenter [π.IsIrreducible] (hπ : IsSmooth π) :
     IsSupercuspidal π ↔ ∀ v : V, ∀ f ∈ smoothVectors (Representation.dual π),

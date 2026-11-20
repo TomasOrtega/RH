@@ -58,86 +58,86 @@ namespace UpperTheory.V.Z.Tf.GlobalTraceComparison.Pi
 open UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm UpperTheory.Zero.ConvolutionTheory.EB PositivityTheory.Rg.BcB.Desc
 
 /- English proof (translation)
-The claim follows from `slotFacts_pf places`.
+A detailed English derivation is pending.
 -/
 theorem slotFacts : SlotBasic := slotFacts_pf places
 /- English proof (translation)
-The claim follows from `levTop_pf slotFacts`.
+A detailed English derivation is pending.
 -/
 theorem levTop : LevTop := levTop_pf slotFacts
 /- English proof (translation)
-The claim follows from `levFix_pf places slotFacts (jointFix_pf slotFacts)`.
+A detailed English derivation is pending.
 -/
 theorem levFix : LevFix := levFix_pf places slotFacts (jointFix_pf slotFacts)
 /- English proof (translation)
-The claim follows from `toYd_pf slotFacts levTop translF_pf heckeSum_pf lvShift_pf`.
+A detailed English derivation is pending.
 -/
 theorem toYd : ToYd := toYd_pf slotFacts levTop translF_pf heckeSum_pf lvShift_pf
 /- English proof (translation)
-The claim follows from `pfHecke_pf slotFacts levTop`.
+A detailed English derivation is pending.
 -/
 theorem pfHecke : PfHecke := pfHecke_pf slotFacts levTop
 /- English proof (translation)
-The claim follows from `prodOp_pf slotFacts levTop absStep_pf pfHecke`.
+A detailed English derivation is pending.
 -/
 theorem prodOp : ProdOp := prodOp_pf slotFacts levTop absStep_pf pfHecke
 /- English proof (translation)
-The claim follows from `locComm_pf slotFacts levTop`.
+A detailed English derivation is pending.
 -/
 theorem locComm : LocComm := locComm_pf slotFacts levTop
 /- English proof (translation)
-The claim follows from `yLoc_pf pfHecke prodOp`.
+A detailed English derivation is pending.
 -/
 theorem yLoc : YLoc := yLoc_pf pfHecke prodOp
 /- English proof (translation)
-The claim follows from `zSimple_pf (genLoc_pf slotFacts levTop pfHecke prodOp) locComm (sphOp_pf cvOp) yLoc`.
+A detailed English derivation is pending.
 -/
 theorem zSimple : ZSimple := zSimple_pf (genLoc_pf slotFacts levTop pfHecke prodOp) locComm (sphOp_pf cvOp) yLoc
 /- English proof (translation)
-The claim follows from `zTr_pf adm pfHecke prodOp locComm yLoc zSimple (ySwap_pf slotFacts pfHecke prodOp) (isot_pf slotFacts) (simpleFix_pf cvOp) (absCore_pf traceForm_pf)`.
+A detailed English derivation is pending.
 -/
 theorem zTr : ZTr := zTr_pf adm pfHecke prodOp locComm yLoc zSimple (ySwap_pf slotFacts pfHecke prodOp) (isot_pf slotFacts)
   (simpleFix_pf cvOp) (absCore_pf traceForm_pf)
 /- English proof (translation)
-The claim follows from `tTr_pf places pfHecke prodOp locComm yLoc (ex2Act_pf exAct) satAll_pf`.
+A detailed English derivation is pending.
 -/
 theorem tTr : TTr := tTr_pf places pfHecke prodOp locComm yLoc (ex2Act_pf exAct) satAll_pf
 /- English proof (translation)
-The claim follows from `levelTr_pf adm zTr (seenTr_pf trLevel adm cvOp) tTr`.
+A detailed English derivation is pending.
 -/
 theorem levelTr : LevelTr := levelTr_pf adm zTr (seenTr_pf trLevel adm cvOp) tTr
 
 /- English proof (translation)
-The claim follows from `piTerm_of_weights_levels h wtEx_pf levTop levFix lcLevel_pf toYd levelTr twUniq_pf`.
+A detailed English derivation is pending.
 -/
 theorem piTerm_eq_traceSum_of_degreeFourTest (h : ThetaFixedGlobalWeights) : PiTerm := piTerm_of_weights_levels h wtEx_pf levTop levFix lcLevel_pf toYd levelTr twUniq_pf
 
 /- English proof (translation)
-The claim follows from `piTerm_eq_traceSum_of_degreeFourTest (aux_statement_11 UpperTheory.V.Z.GSp4Splitting.global_haarAverage_trace_identity h)`.
+A detailed English derivation is pending.
 -/
 theorem piTerm_of (h : ThetaFixOf) : PiTerm := piTerm_eq_traceSum_of_degreeFourTest (aux_statement_11 UpperTheory.V.Z.GSp4Splitting.global_haarAverage_trace_identity h)
 
 /- English proof (translation)
-The claim follows from `piTerm_of UpperTheory.V.Z.Tf.GOne.thetaFixOf`.
+A detailed English derivation is pending.
 -/
 theorem piTerm_holds : PiTerm := piTerm_of UpperTheory.V.Z.Tf.GOne.thetaFixOf
 
 /- English proof (translation)
-The claim follows from `cvIn_pf basic_pf (aeEq_pf basic_pf)`.
+A detailed English derivation is pending.
 -/
 theorem cvIn : CvIn := cvIn_pf basic_pf (aeEq_pf basic_pf)
 /- English proof (translation)
-The claim follows from `wtInd_pf basic_pf`.
+A detailed English derivation is pending.
 -/
 theorem wtInd : WtInd := wtInd_pf basic_pf
 /- English proof (translation)
-The claim follows from `typeIn_pf piAdm_pf detZero_pf evalBasis_pf cvIn (formEx_pf basic_pf (aeEq_pf basic_pf) wtInd) (orthZero_pf basic_pf (aeEq_pf basic_pf) wtInd) absType_pf`.
+A detailed English derivation is pending.
 -/
 theorem typeIn : TypeIn := typeIn_pf piAdm_pf detZero_pf evalBasis_pf cvIn (formEx_pf basic_pf (aeEq_pf basic_pf) wtInd)
   (orthZero_pf basic_pf (aeEq_pf basic_pf) wtInd) absType_pf
 
 /- English proof (translation)
-The claim follows from `piFinOf_pf piAdm_pf tensType_pf (cvType_pf detZero_pf evalBasis_pf) cvIn typeIn`.
+A detailed English derivation is pending.
 -/
 theorem piFin_holds : PiFin := piFinOf_pf piAdm_pf tensType_pf (cvType_pf detZero_pf evalBasis_pf) cvIn typeIn
 

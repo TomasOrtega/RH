@@ -9,7 +9,7 @@ open Formalism.MainNotions.DIV.Inh (aPlusQ_anti aMinusQ_mono)
 namespace GlobalTheory.BlockRows
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `h`. Establish `hz : (0 : ℤ) ≤ z`. Establish `: (1 : ℤ) ≤ z` using `by exact_mod_cast h1`. Use linear arithmetic over natural numbers and integers. Take `⟨n, rfl⟩` from `Int.eq_ofNat_of_zero_le hz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
 Simplify using the standard rewrite rules.
 -/
@@ -22,7 +22,7 @@ theorem floor_cast_of_int {x : ℚ} (h : ∃ z : ℤ, x = z) (h1 : 1 ≤ x) : ((
   simp
 
 /- English proof (translation)
-Establish `hk` using `D.R.m_add_three_le_k`. Establish `hi : i.1 < D.R.k + j - 1` using `i.2`. Conclude with `(DV.aPlusQ_last D j h1 h2 τ).trans (aPlusQ_anti D j τ (show i.1 ≤ D.R.k + j - 1 - 1 by omega) (by omega))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem one_le_aPlusQ (D : D7) (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (τ : D.what₂.Tau)
     (i : Fin (D.R.sigW j).1) : 1 ≤ DV.aPlusQ D j τ i := by
@@ -32,14 +32,14 @@ theorem one_le_aPlusQ (D : D7) (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (τ :
     (aPlusQ_anti D j τ (show i.1 ≤ D.R.k + j - 1 - 1 by omega) (by omega))
 
 /- English proof (translation)
-The claim follows from `(DV.aMinusQ_last D j h1 (by omega) τ).trans (aMinusQ_mono D j τ (Nat.zero_le c) hc)`.
+A detailed English derivation is pending.
 -/
 theorem one_le_aMinusQ (D : D7) (j : ℕ) (h1 : 1 ≤ j) (τ : D.what₂.Tau) (c : ℕ) (hc : j + c < D.R.m) :
     1 ≤ DV.aMinusQ D j τ c :=
   (DV.aMinusQ_last D j h1 (by omega) τ).trans (aMinusQ_mono D j τ (Nat.zero_le c) hc)
 
 /- English proof (translation)
-Unfold `Scale.b Scale.L`. Use `s.one_lt_alt` as an intermediate fact. Conclude with `Real.one_le_exp (Real.rpow_nonneg (by linarith) _)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem one_le_b (s : Scale) : 1 ≤ s.b := by
   unfold Scale.b Scale.L
@@ -47,15 +47,15 @@ theorem one_le_b (s : Scale) : 1 ≤ s.b := by
   exact Real.one_le_exp (Real.rpow_nonneg (by linarith) _)
 
 /- English proof (translation)
-Establish `hk` using `D.R.m_add_three_le_k`. Establish `hi : i.1 < D.R.k + j - 1` using `i.2`. Establish `h0 : 0 < D.R.k - 1` using `by omega`. Establish `a1` using `aPlusQ_anti D j τ (Nat.zero_le i.1) (by omega)`. Establish `hj : j - 1 < D.R.m` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a2 : DV.aPlusQ D j τ 0 ≤ (D.hc τ).v ⟨0, h0⟩ + (D.hc τ).e ⟨j - 1, hj⟩`. Rewrite using `[DV.aPlusQ_eq]`. Unfold `DV.sigPar DV.eQ`. Rewrite using `[dif_pos h0, dif_pos ⟨h1, h2⟩]`. Establish `ht : (0 : ℚ) ≤ D.R.t` using `Nat.cast_nonneg _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hk' : (2 : ℚ) ≤ D.R.k` using `by exact_mod_cast (show 2 ≤ D.R.k by omega)`. Establish `hj' : (0 : ℚ) ≤ j` using `Nat.cast_nonneg _`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `a3 : DV.aPlus D j τ i ≤ (((D.hc τ).v ⟨0, h0⟩ : ℚ) : ℝ) + (((D.hc τ).e ⟨j - 1, hj⟩ : ℚ) : ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Unfold `DV.aPlus`. Conclude with `a1.trans a2` after adjusting the coercions. Establish `b1` using `(L.cloud_v τ ⟨0, h0⟩).2`. Establish `b2` using `L.b_le τ ⟨j - 1, hj⟩`. Establish `b3` using `(abs_le.1 (L.be_close τ ⟨j - 1, hj⟩ ⟨j - 1, hj⟩)).1`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b4` using `one_le_b L.sc`. Move the coercions through the operations in `at b3`. Use `hL.1` as an intermediate fact. Use `hL.2` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem aPlus_le (D : D7) (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (τ : D.what₂.Tau) (L : SizeData₂ D)
     (hL : WindowsLe L) (i : Fin (D.R.sigW j).1) : DV.aPlus D j τ i ≤ 3 * L.sc.b ^ 2 := by
@@ -86,11 +86,11 @@ theorem aPlus_le (D : D7) (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (τ : D.wh
   nlinarith
 
 /- English proof (translation)
-Establish `hj : j - 1 < D.R.m` using `by omega`. Establish `a2 : DV.aMinusQ D j τ c ≤ (D.hc τ).b ⟨j + c, hc⟩ - (D.hc τ).e ⟨j - 1, hj⟩`. Unfold `DV.aMinusQ DV.eQ`. Rewrite using `[dif_pos hc, dif_pos ⟨h1, by omega⟩]`. Establish `ht : (0 : ℚ) ≤ D.R.t` using `Nat.cast_nonneg _`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc' : (0 : ℚ) ≤ c` using `Nat.cast_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `a3 : DV.aMinus D j τ c ≤ (((D.hc τ).b ⟨j + c, hc⟩ - (D.hc τ).e ⟨j - 1, hj⟩ : ℚ) : ℝ)`. Unfold `DV.aMinus`. Conclude with `a2` after adjusting the coercions.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `b3` using `(abs_le.1 (L.be_close τ ⟨j + c, hc⟩ ⟨j - 1, hj⟩)).2`. Establish `b4` using `one_le_b L.sc`. Use `hL.1` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem aMinus_le (D : D7) (j : ℕ) (h1 : 1 ≤ j) (τ : D.what₂.Tau) (L : SizeData₂ D)
     (hL : WindowsLe L) (c : ℕ) (hc : j + c < D.R.m) : DV.aMinus D j τ c ≤ 3 * L.sc.b ^ 2 := by
@@ -110,19 +110,17 @@ theorem aMinus_le (D : D7) (j : ℕ) (h1 : 1 ≤ j) (τ : D.what₂.Tau) (L : Si
   nlinarith
 
 /- English proof (translation)
-Introduce `D j h1 h2 τ`. Establish `hk` using `D.R.m_add_three_le_k`. Establish `hq : (D.R.sigW j).2 = D.R.m - j` using `rfl`. Establish `hM : ∀ i : Fin (D.R.sigW j).2, j + ((D.R.sigW j).2 - 1 - i) < D.R.m`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `i.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `eP : ∀ i, (rowsP D j τ i : ℝ) = DV.aPlus D j τ i`. Introduce `i`. Use `floor_cast_of_int (DV.aPlusQ_int D j τ i) (one_le_aPlusQ D j h1 h2 τ i)` as an intermediate fact.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Unfold `DV.aPlus rowsP`. Rewrite using `[← this]`. Simplify using the standard rewrite rules. Establish `eM : ∀ i, (rowsM D j τ i : ℝ) = DV.aMinus D j τ ((D.R.sigW j).2 - 1 - i)`. Introduce `i`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `floor_cast_of_int (DV.aMinusQ_int D j τ _) (one_le_aMinusQ D j h1 τ _ (hM i))` as an intermediate fact. Unfold `DV.aMinus rowsM`. Rewrite using `[← this]`. Simplify using the standard rewrite rules. Use `⟨⟨?_, ?_, eP⟩, ⟨?_, ?_, eM⟩, fun L hL => ⟨fun i => ?_, fun i => ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a b hab`. Establish `hb : b.1 < D.R.k + j - 1` using `b.2`. Conclude with `Nat.floor_le_floor (aPlusQ_anti D j τ (show a.1 ≤ b.1 from hab) (by omega))`. Introduce `i`. Conclude with `Nat.le_floor (by simpa using one_le_aPlusQ D j h1 h2 τ i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `a b hab`. Establish `hab' : a.1 ≤ b.1` using `hab`. Conclude with `Nat.floor_le_floor (aMinusQ_mono D j τ (by omega) (hM a))`. Introduce `i`. Conclude with `Nat.le_floor (by simpa using one_le_aMinusQ D j h1 τ _ (hM i))`.
-
-Rewrite using `[eP]`. Conclude with `aPlus_le D j h1 h2 τ L hL i`. Rewrite using `[eM]`. Conclude with `aMinus_le D j h1 τ L hL _ (hM i)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rows_sizes : ∀ (D : D7) (j : ℕ), 1 ≤ j → j ≤ D.R.m → ∀ τ : D.what₂.Tau, (Antitone (rowsP D j τ) ∧ (∀ i, 1 ≤ rowsP D j τ i) ∧ ∀ i, (rowsP D j τ i : ℝ) = DV.aPlus D j τ i) ∧ (Antitone (rowsM D j τ) ∧ (∀ i, 1 ≤ rowsM D j τ i) ∧ ∀ i, (rowsM D j τ i : ℝ) = DV.aMinus D j τ ((D.R.sigW j).2 - 1 - i)) ∧ ∀ L : SizeData₂ D, WindowsLe L → (∀ i, (rowsP D j τ i : ℝ) ≤ 3 * L.sc.b ^ 2) ∧ ∀ i, (rowsM D j τ i : ℝ) ≤ 3 * L.sc.b ^ 2 := by
   intro D j h1 h2 τ

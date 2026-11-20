@@ -11,26 +11,26 @@ section form
 variable {L : Type} [Field L] {n : ℕ} {q : ℕ} {M : Matrix (Fin n) (Fin n) L}
 
 /- English proof (translation)
-Simplify using `only [hf, Pi.add_apply, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem val_add_left (x x' y : Fin n → L) : hf q M (x + x') y = hf q M x y + hf q M x' y := by
   simp only [hf, Pi.add_apply, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [hf, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `sum_congr rfl fun _ _ => sum_congr rfl fun _ _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem val_smul_left (c : L) (x y : Fin n → L) : hf q M (c • x) y = c * hf q M x y := by
   simp only [hf, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
   exact sum_congr rfl fun _ _ => sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Simplify using `only [hf, Pi.sub_apply, sub_mul, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem val_sub_left (x x' y : Fin n → L) : hf q M (x - x') y = hf q M x y - hf q M x' y := by
   simp only [hf, Pi.sub_apply, sub_mul, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Simplify using `only [hf, Pi.smul_apply, smul_eq_mul, mul_pow, Finset.mul_sum]`. Conclude with `sum_congr rfl fun _ _ => sum_congr rfl fun _ _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem val_smul_right (x : Fin n → L) (c : L) (y : Fin n → L) :
     hf q M x (c • y) = c ^ q * hf q M x y := by
@@ -52,9 +52,9 @@ def valPerp (q : ℕ) (M : Matrix (Fin n) (Fin n) L) (W : Submodule L (Fin n →
   (LinearMap.ker ((valL q M e).domRestrict W)).map W.subtype
 
 /- English proof (translation)
-Simplify using `only [valPerp, Submodule.mem_map, LinearMap.mem_ker, LinearMap.domRestrict_apply, valL_apply, Submodule.subtype_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `⟨y.2, hy⟩`. Introduce and unpack `⟨hv, h⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨⟨v, hv⟩, h, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_valPerp {W : Submodule L (Fin n → L)} {e v : Fin n → L} :
     v ∈ valPerp q M W e ↔ v ∈ W ∧ hf q M v e = 0 := by
@@ -67,9 +67,9 @@ theorem mem_valPerp {W : Submodule L (Fin n → L)} {e v : Fin n → L} :
     exact ⟨⟨v, hv⟩, h, rfl⟩
 
 /- English proof (translation)
-Establish `hsurj : LinearMap.range ((valL q M e).domRestrict W) = ⊤`. Rewrite using `[LinearMap.range_eq_top]`. Introduce `t`. Use `⟨⟨(t / hf q M e e) • e, W.smul_mem _ he⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.domRestrict_apply, valL_apply, val_smul_left]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `div_mul_cancel₀ t hb`. Establish `h` using `LinearMap.finrank_range_add_finrank_ker ((valL q M e).domRestrict W)`. Rewrite `h` using `[hsurj, finrank_top, finrank_self]`. Rewrite using `[valPerp, Submodule.finrank_map_subtype_eq]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem finrank_valPerp {W : Submodule L (Fin n → L)} {e : Fin n → L} (he : e ∈ W)
     (hb : hf q M e e ≠ 0) : finrank L (valPerp q M W e) + 1 = finrank L W := by
@@ -91,7 +91,7 @@ variable {K L : Type} [Field K] [Fintype K] [Field L] [Algebra K L] {n : ℕ}
   {M : Matrix (Fin n) (Fin n) L}
 
 /- English proof (translation)
-Simplify using `only [hf, Pi.add_apply, frob_add, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem val_add_right (x y y' : Fin n → L) :
     hf (Fintype.card K) M x (y + y') =
@@ -99,9 +99,9 @@ theorem val_add_right (x y y' : Fin n → L) :
   simp only [hf, Pi.add_apply, frob_add, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Unfold `hf`. Rewrite using `[frob_sum]`. Repeatedly rewrite using `[frob_sum, mul_pow, frob_frob h2]`. Rewrite using `[Finset.sum_comm]`. Use `sum_congr rfl fun a _ => sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hM]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem val_symm [Fintype L] (h2 : finrank K L = 2) (hM : IsHerm (Fintype.card K) M)
     (x y : Fin n → L) : hf (Fintype.card K) M y x = (hf (Fintype.card K) M x y) ^ Fintype.card K := by
@@ -114,18 +114,18 @@ theorem val_symm [Fintype L] (h2 : finrank K L = 2) (hM : IsHerm (Fintype.card K
   ring
 
 /- English proof (translation)
-The claim follows from `(val_symm h2 hM x x).symm`.
+A detailed English derivation is pending.
 -/
 theorem val_fixed [Fintype L] (h2 : finrank K L = 2) (hM : IsHerm (Fintype.card K) M)
     (x : Fin n → L) : (hf (Fintype.card K) M x x) ^ Fintype.card K = hf (Fintype.card K) M x x :=
   (val_symm h2 hM x x).symm
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Take `⟨w, hw, hw0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Choose the witnesses or unpack the hypotheses as in `⟨v, hv, hwv⟩ : ∃ v ∈ W, hf (Fintype.card K) M w v ≠ 0 := by`. Assume the negation of the conclusion as `h`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Use `push Not at h`. Conclude with `hw0 (hW w hw h)`. Take `⟨c, hc⟩` from `exists_trace_ne_zero h2 _ (pow_ne_zero (Fintype.card K) hwv)`. Apply `hc` to reduce the goal to its premises. Establish `h` using `hcon (w + c • v) (W.add_mem hw (W.smul_mem c hv))`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [val_add_left, val_add_right, val_smul_left, val_smul_right] at h`. Rewrite `h` using `[hcon w hw, hcon v hv, val_symm h2 hM w v]`. Rewrite using `[mul_pow, frob_frob h2]`. Take the linear combination `h`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem val_aniso [Fintype L] (h2 : finrank K L = 2) (hM : IsHerm (Fintype.card K) M)
     {W : Submodule L (Fin n → L)} (hW : NonDeg (Fintype.card K) M W) (hne : W ≠ ⊥) :
@@ -146,7 +146,7 @@ theorem val_aniso [Fintype L] (h2 : finrank K L = 2) (hM : IsHerm (Fintype.card 
   linear_combination h
 
 /- English proof (translation)
-Establish `hq` using `one_lt_q (K := K)`. Establish `hew : hf (Fintype.card K) M e w = 0`. Rewrite using `[val_symm h2 hM w e, hwe, zero_pow (by omega)]`. Simplify using `only [val_add_left, val_add_right, val_smul_left, val_smul_right, hwe, hew]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem val_expand [Fintype L] (h2 : finrank K L = 2) (hM : IsHerm (Fintype.card K) M)
     (e w : Fin n → L) (hwe : hf (Fintype.card K) M w e = 0) (l : L) :
@@ -159,11 +159,11 @@ theorem val_expand [Fintype L] (h2 : finrank K L = 2) (hM : IsHerm (Fintype.card
   ring
 
 /- English proof (translation)
-Introduce `w hw hall`. Rewrite `hw` using `[mem_valPerp]`. Apply `hW w hw.1` to reduce the goal to its premises. Introduce `v hv`. Establish `hv' : v - (hf (Fintype.card K) M v e / hf (Fintype.card K) M e e) • e ∈ valPerp (Fintype.card K) M W e`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[mem_valPerp]`. Use `⟨W.sub_mem hv (W.smul_mem _ he), ?_⟩` and prove the remaining obligations. Rewrite using `[val_sub_left, val_smul_left, div_mul_cancel₀ _ hb, sub_self]`. Establish `h1` using `hall _ hv'`. Establish `hv2 : v = (hf (Fintype.card K) M v e / hf (Fintype.card K) M e e) • e + (v - (hf (Fintype.card K) M v e / hf (Fintype.card K) M e e) • e)` using `by abel`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hv2, val_add_right, val_smul_right, hw.2, h1]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem nondeg_valPerp [Fintype L] (h2 : finrank K L = 2) (hM : IsHerm (Fintype.card K) M)
     {W : Submodule L (Fin n → L)} (hW : NonDeg (Fintype.card K) M W) {e : Fin n → L}
@@ -185,9 +185,7 @@ theorem nondeg_valPerp [Fintype L] (h2 : finrank K L = 2) (hM : IsHerm (Fintype.
   ring
 
 /- English proof (translation)
-Establish `e : (univ.filter fun l : L => l ^ (Fintype.card K + 1) * b = t) = univ.filter fun l : L => l ^ (Fintype.card K + 1) = t / b` using `filter_congr (fun l _ => (eq_div_iff hb).symm)`. Rewrite using `[e]`. Use `split_ifs with h0`. Rewrite using `[h0, zero_div]`. Conclude with `card_norm_zero _`.
-
-Conclude with `card_norm_fibre h2 _ (div_ne_zero h0 hb) (by rw [div_pow, ht, hbq])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_fibre [Fintype L] [DecidableEq L] (h2 : finrank K L = 2) (b t : L) (hb : b ≠ 0)
     (hbq : b ^ Fintype.card K = b) (ht : t ^ Fintype.card K = t) :

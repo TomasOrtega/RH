@@ -107,7 +107,7 @@ def GenEx : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr 
       ∀ T : Finset (HeightOneSpectrum (𝓞 E)), ∃ G : GenIn π S T K W, G.Bound ∧ G.Read
 
 /- English proof (translation)
-Introduce `E _ _ _ hE n hn π hπ S hS`. Take `⟨K, W, hK, hW, hT⟩` from `h2 E hE n hn π hπ S hS`. Conclude with `⟨K, W, hK, hW, fun T => let ⟨G, hb, hr⟩ := hT T; h1 E n π S T K W G h0 hb hr⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem dataEx_of (h0 : GenIn.DiagComm) (h1 : GenToData) (h2 : GenEx) : DataEx := by
   intro E _ _ _ hE n hn π hπ S hS

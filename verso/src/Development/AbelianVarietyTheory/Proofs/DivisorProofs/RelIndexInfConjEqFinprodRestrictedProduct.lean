@@ -5,31 +5,27 @@ open scoped Classical
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hfin : {i | ¬ (p i g ∈ KH i ∧ CH i ≤ KH i)}.Finite` using `Filter.eventually_cofinite.1 ((hcof g).and hCK)`. Use `set S : Finset ι := hfin.toFinset with hS`. Establish `hSn : ∀ i, i ∉ S → p i g ∈ KH i ∧ CH i ≤ KH i`. Introduce `i hi`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `hi (hfin.mem_toFinset.2 h)`. Establish `hmem : ∀ i (y : H i), y ∈ (KH i).map (MulAut.conj (p i g)).toMonoidHom ↔ (p i g)⁻¹ * y * p i g ∈ KH i`. Introduce `i y`. Rewrite using `[Subgroup.mem_map_equiv]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmemG : ∀ x : G, x ∈ K.map (MulAut.conj g).toMonoidHom ↔ ∀ i, (p i g)⁻¹ * p i x * p i g ∈ KH i`. Introduce `x`. Rewrite using `[Subgroup.mem_map_equiv, hK]`. Simplify using the standard rewrite rules. Establish `hle : ∀ i, i ∉ S → CH i ≤ TH i ⊓ (KH i).map (MulAut.conj (p i g)).toMonoidHom`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `i hi y hy`. Take `⟨h1, h2⟩` from `hSn i hi`. Conclude with `⟨hCT i hy, (hmem i y).2 (mul_mem (mul_mem (inv_mem h1) (h2 hy)) h1)⟩`. Rewrite using `[finprod_eq_prod_of_mulSupport_subset _ (s := S)]`. Use `swap`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression.
 
-Introduce `i hi`. Assume the negation of the conclusion as `h`. Conclude with `hi (Subgroup.relIndex_eq_one.2 (hle i h))`. Set `φ : C →* (∀ i : S, CH i)` to `{ toFun := fun x i => ⟨p i x, ((hC x).1 x.2).2 i⟩ map_one' := by ext i; simp map_mul' := by intro x y; ext i; simp }`. Establish `hφ : Function.Surjective φ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Take `⟨x, hx⟩` from `hglue (fun i => if h : i ∈ S then (y ⟨i, h⟩ : H i) else 1) (by`. Use `Filter.eventually_cofinite.2 (S.finite_toSet.subset ?_)` and prove the remaining obligations. Introduce `i hi`. Assume the negation of the conclusion as `h`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply `hi` to reduce the goal to its premises. Establish `h' : i ∉ S` using `h`. Simplify using `[h'])`. Establish `hxC : ∀ i, p i x ∈ CH i`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hx]`. Use `split_ifs with h`. Conclude with `(y ⟨i, h⟩).2`. Conclude with `one_mem _`. Use `⟨⟨x, (hC x).2 ⟨(hT x).2 fun i => hCT i (hxC i), hxC⟩⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show p i x = _`. Rewrite using `[hx]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcomap : (T ⊓ K.map (MulAut.conj g).toMonoidHom).subgroupOf C = (Subgroup.pi Set.univ (fun i : S => (TH i ⊓ (KH i).map (MulAut.conj (p i g)).toMonoidHom).subgroupOf (CH i))).comap φ`. Use extensionality with `x`. Establish `hx` using `(hC x).1 x.2`. Rewrite using `[Subgroup.mem_subgroupOf, Subgroup.mem_comap, Subgroup.mem_pi, Subgroup.mem_inf, hmemG]`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion repeatedly using the stated equalities.
 
-Introduce and unpack `⟨h1, h2⟩ i _`. Conclude with `⟨(hT x).1 h1 i, (hmem i _).2 (h2 i)⟩`. Introduce `h`. Use `⟨hx.1, fun i => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hi : i ∈ S`.
-
-Conclude with `(hmem i _).1 (h ⟨i, hi⟩ trivial).2`. Conclude with `(hmem i _).1 (hle i hi (hx.2 i)).2`. Establish `hpi : ∀ L : ∀ i : S, Subgroup (CH i), (Subgroup.pi Set.univ L).index = ∏ i, (L i).index`. Introduce `L`. Repeatedly rewrite using `[Subgroup.index, ← Nat.card_pi]`.
-
-Use `Nat.card_congr ((Quotient.congrRight (fun x y ↦ ?_)).trans (Setoid.piQuotientEquiv _).symm)` and prove the remaining obligations. Rewrite using `[QuotientGroup.leftRel_pi]`. Rewrite using `[Subgroup.relIndex, hcomap, Subgroup.index_comap_of_surjective _ hφ, hpi, ← Finset.prod_coe_sort S]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem relIndex_inf_conj_eq_finprod_of_restricted_product
     (ι G : Type) [Group G] (H : ι → Type) [∀ i, Group (H i)] (p : ∀ i, G →* H i)

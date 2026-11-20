@@ -62,7 +62,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : _root_.Reciproc
   {l : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H} in
 variable (Xo : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l) (c : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l) in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryAdjointCongruence.pushLet _root_.Formalism.L2.Pj.letB`. Simplify using `only [map_sum, map_mul, aeval_C, aeval_X, Matrix.mulVec, dotProduct, Finset.mul_sum, Finset.sum_mul, MvPolynomial.algebraMap_eq]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryAdjointCongruence.pushLet_letB {n : ℕ} (γ : Matrix (Fin n) (Fin n) E)
     (σ : E →+* ℂ) (i : Fin (Dw.mult σ)) (b : Fin n → E) :

@@ -9,17 +9,17 @@ open NumberField IsDedekindDomain Representation Formalism.ConjugateSelfDual Rec
 namespace GlobalTheory.CompanionTheory.LocalInvariant
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ l _ r hr ζ hζ A v hA`. Take `⟨e⟩` from `GlobalTheory.T.local_brauer_roots_unity_equiv F Ω l r hr A v hA`. Distinguish the cases in `hN : IsNormalised ζ A v (e : H2 (muLoc F l r A) →ₗ[ZMod (l ^ r)] ZMod (l ^ r))`. Conclude with `⟨e, e.bijective, hN⟩`. Simplify using `only [IsNormalised, not_forall] at hN`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Simplify using the standard rewrite rules.
 
-Take `⟨ϖ, y, κ, χ, z, h1, h2, h3, h4, h5, h6, h7, h8, -⟩` from `hN`. Establish `hgen` using `GlobalTheory.T.local_invariant_cup_uniformizer F Ω l r hr ζ hζ A v hA ϖ y κ χ z h1 h2 h3 h4 h5 h6 h7 h8`. Use `set c : H2 (muLoc F l r A) := Submodule.Quotient.mk z with hc`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a : ZMod (l ^ r), a * e c = 1 := by`. Establish `hmem : e.symm 1 ∈ Submodule.span (ZMod (l ^ r)) {c}`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hgen]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨a, hac⟩` from `Submodule.mem_span_singleton.1 hmem`. Use `⟨a, ?_⟩` and prove the remaining obligations. Use `congrArg e hac` as an intermediate fact.
+Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Establish `ha' : e c * a = 1` using `by rw [mul_comm]; exact ha`. Use `⟨a • (e : H2 (muLoc F l r A) →ₗ[ZMod (l ^ r)] ZMod (l ^ r)), ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `x x' hxx`. Establish `hxx' : a * e x = a * e x'` using `by simpa using hxx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `e.injective` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Introduce `t`. Use `⟨e.symm (e c * t), ?_⟩` and prove the remaining obligations. Simplify using `[← mul_assoc, ha]`.
+Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ϖ' y' κ' χ' z' g1 g2 g3 g4 g5 g6 g7 g8`. Establish `hz` using `GlobalTheory.T.local_invariant_cup_kummer F Ω l r hr ζ hζ A v hA ϖ y κ χ z h1 h2 h3 h4 h5 h6 h7 h8 ϖ' y' κ' χ' z' g1 g2 g3 g4 g5 g6 g7 g8`. Rewrite using `[← hz]`. Simplify using `using ha`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_bijective_isNormalised :
     ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ)

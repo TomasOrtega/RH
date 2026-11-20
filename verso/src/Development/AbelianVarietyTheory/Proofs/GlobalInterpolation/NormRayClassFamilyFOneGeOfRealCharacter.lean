@@ -13,17 +13,17 @@ def kerW (y w : ℝ) : ℝ := Real.exp (-(y / w)) * Real.exp (-w) / w
 def besW (y : ℝ) : ℝ := ∫ w in Set.Ioi (0 : ℝ), kerW y w
 
 /- English proof (translation)
-Unfold `kerW`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 lemma kerW_pos (y : ℝ) {w : ℝ} (hw : 0 < w) : 0 < kerW y w := by
   unfold kerW; positivity
 
 /- English proof (translation)
-Establish `h` using `Real.pow_div_factorial_le_exp (y / w) (by positivity) 3`. Establish `h3 : w ^ ((3 : ℝ) - 1) = w ^ 2`. Rewrite using `[show (3 : ℝ) - 1 = ((2 : ℕ) : ℝ) by norm_num, Real.rpow_natCast]`. Establish `h1 : Real.exp (-(y / w)) ≤ 6 * w ^ 3 / y ^ 3`. Rewrite using `[Real.exp_neg, inv_le_comm₀ (Real.exp_pos _) (by positivity)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `le_trans (le_of_eq ?_) h` and prove the remaining obligations. Simplify using `only [Nat.factorial]`. Clear the denominators using the available nonvanishing facts. Evaluate the numerical expressions. Rewrite using `[h3]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities.
 
-Unfold `kerW`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 -/
 lemma kerW_le {y w : ℝ} (hy : 0 < y) (hw : 0 < w) :
     kerW y w ≤ 6 / y ^ 3 * (Real.exp (-w) * w ^ ((3 : ℝ) - 1)) := by
@@ -43,13 +43,13 @@ lemma kerW_le {y w : ℝ} (hy : 0 < y) (hw : 0 < w) :
     _ = _ := by field_simp
 
 /- English proof (translation)
-Unfold `kerW`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma measurable_kerW (y : ℝ) : Measurable (kerW y) := by
   unfold kerW; fun_prop
 
 /- English proof (translation)
-Use `Integrable.mono' ((Real.GammaIntegral_convergent (s := 3) (by norm_num)).const_mul (6 / y ^ 3)) (measurable_kerW y).aestronglyMeasurable ?_` and prove the remaining obligations. Use `(ae_restrict_iff' measurableSet_Ioi).2 (Eventually.of_forall fun w hw => ?_)` and prove the remaining obligations. Rewrite using `[Real.norm_of_nonneg (kerW_pos y hw).le]`. Conclude with `kerW_le hy hw`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma integrableOn_kerW {y : ℝ} (hy : 0 < y) : IntegrableOn (kerW y) (Set.Ioi 0) := by
   refine Integrable.mono' ((Real.GammaIntegral_convergent (s := 3) (by norm_num)).const_mul (6 / y ^ 3))
@@ -59,13 +59,13 @@ lemma integrableOn_kerW {y : ℝ} (hy : 0 < y) : IntegrableOn (kerW y) (Set.Ioi 
   exact kerW_le hy hw
 
 /- English proof (translation)
-The claim follows from `setIntegral_nonneg measurableSet_Ioi fun _ hw => (kerW_pos y hw).le`.
+A detailed English derivation is pending.
 -/
 lemma besW_nonneg (y : ℝ) : 0 ≤ besW y :=
   setIntegral_nonneg measurableSet_Ioi fun _ hw => (kerW_pos y hw).le
 
 /- English proof (translation)
-Use `⟨6 * ∫ w in Set.Ioi (0 : ℝ), Real.exp (-w) * w ^ ((3 : ℝ) - 1), ?_, fun y hy => ?_⟩` and prove the remaining obligations. Use `mul_nonneg (by norm_num) (setIntegral_nonneg measurableSet_Ioi fun w hw => ?_)` and prove the remaining obligations. Establish `: 0 < w` using `hw`. Check the signs of the components of the expression. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Check the signs of the components of the expression. Chain the equalities or inequalities of the calculation.
 -/
 lemma besW_le : ∃ G : ℝ, 0 ≤ G ∧ ∀ y : ℝ, 0 < y → besW y ≤ G / y ^ 3 := by
   refine ⟨6 * ∫ w in Set.Ioi (0 : ℝ), Real.exp (-w) * w ^ ((3 : ℝ) - 1), ?_, fun y hy => ?_⟩
@@ -79,7 +79,7 @@ lemma besW_le : ∃ G : ℝ, 0 ≤ G ∧ ∀ y : ℝ, 0 < y → besW y ≤ G / y
       _ = _ := by rw [integral_const_mul]; ring
 
 /- English proof (translation)
-Use `setIntegral_mono_on (integrableOn_kerW one_pos) (integrableOn_kerW hv) measurableSet_Ioi fun w hw => ?_` and prove the remaining obligations. Establish `: 0 < w` using `hw`. Unfold `kerW`. Use `gcongr`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma besW_one_le {v : ℝ} (hv : 0 < v) (hv1 : v ≤ 1) : besW 1 ≤ besW v := by
   refine setIntegral_mono_on (integrableOn_kerW one_pos) (integrableOn_kerW hv)
@@ -89,9 +89,9 @@ lemma besW_one_le {v : ℝ} (hv : 0 < v) (hv1 : v ≤ 1) : besW 1 ≤ besW v := 
   gcongr
 
 /- English proof (translation)
-Unfold `besW`. Rewrite using `[setIntegral_pos_iff_support_of_nonneg_ae ?_ (integrableOn_kerW one_pos)]`. Establish `: Function.support (kerW 1) ∩ Set.Ioi 0 = Set.Ioi 0` using `Set.inter_eq_right.2 fun w hw => (kerW_pos 1 hw).ne'`. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `(ae_restrict_iff' measurableSet_Ioi).2 (Eventually.of_forall fun w hw => (kerW_pos 1 hw).le)`.
+A detailed English derivation is pending.
 -/
 lemma besW_one_pos : 0 < besW 1 := by
   unfold besW
@@ -102,7 +102,7 @@ lemma besW_one_pos : 0 < besW 1 := by
   · exact (ae_restrict_iff' measurableSet_Ioi).2 (Eventually.of_forall fun w hw => (kerW_pos 1 hw).le)
 
 /- English proof (translation)
-Unfold `kerW`. Rewrite using `[mul_div_mul_right _ _ hn.ne']`. Clear the denominators using the available nonvanishing facts.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 lemma scale_eq (y : ℝ) {n w : ℝ} (hn : 0 < n) (hw : 0 < w) :
     Real.exp (-(y / w)) * Real.exp (-(w * n)) / w = n * kerW (y * n) (w * n) := by
@@ -111,7 +111,7 @@ lemma scale_eq (y : ℝ) {n w : ℝ} (hn : 0 < n) (hw : 0 < w) :
   field_simp
 
 /- English proof (translation)
-Establish `h : IntegrableOn (fun w => kerW (y * n) (w * n)) (Set.Ioi 0)`. Rewrite using `[integrableOn_Ioi_comp_mul_right_iff (kerW (y * n)) 0 hn, zero_mul]`. Conclude with `integrableOn_kerW (by positivity)`. Conclude with `IntegrableOn.congr_fun (h.const_mul n) (fun w hw => (scale_eq y hn hw).symm) measurableSet_Ioi`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma scale_integrable {y n : ℝ} (hy : 0 < y) (hn : 0 < n) :
     IntegrableOn (fun w => Real.exp (-(y / w)) * Real.exp (-(w * n)) / w) (Set.Ioi 0) := by
@@ -121,7 +121,7 @@ lemma scale_integrable {y n : ℝ} (hy : 0 < y) (hn : 0 < n) :
   exact IntegrableOn.congr_fun (h.const_mul n) (fun w hw => (scale_eq y hn hw).symm) measurableSet_Ioi
 
 /- English proof (translation)
-Rewrite using `[setIntegral_congr_fun measurableSet_Ioi (fun w hw => scale_eq y hn hw), integral_const_mul, integral_comp_mul_right_Ioi (kerW (y * n)) 0 hn, zero_mul, smul_eq_mul]`. Unfold `besW`. Clear the denominators using the available nonvanishing facts.
+Rewrite the hypotheses and the conclusion using the stated equalities. Replace the relevant objects with their definitions. Clear the denominators using the available nonvanishing facts.
 -/
 lemma scale_integral (y : ℝ) {n : ℝ} (hn : 0 < n) :
     ∫ w in Set.Ioi (0 : ℝ), Real.exp (-(y / w)) * Real.exp (-(w * n)) / w = besW (y * n) := by
@@ -133,14 +133,14 @@ lemma scale_integral (y : ℝ) {n : ℝ} (hn : 0 < n) :
 def th (a : ℕ → ℝ) (t : ℝ) : ℝ := ∑' n : ℕ, a n * Real.exp (-(t * n))
 
 /- English proof (translation)
-Unfold `th`. Conclude with `Measurable.tsum fun n => by fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma measurable_th (a : ℕ → ℝ) : Measurable (th a) := by
   unfold th
   exact Measurable.tsum fun n => by fun_prop
 
 /- English proof (translation)
-Use `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) (fun n => ?_) ((Real.summable_pow_mul_exp_neg_nat_mul 1 ht).mul_left D)` and prove the remaining obligations. Rewrite using `[norm_mul, Real.norm_eq_abs, Real.norm_of_nonneg (Real.exp_pos _).le, pow_one, ← mul_assoc, neg_mul]`. Use `gcongr`. Conclude with `ha n`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma summable_th {a : ℕ → ℝ} {D : ℝ} (ha : ∀ n, |a n| ≤ D * n) {t : ℝ} (ht : 0 < t) :
     Summable fun n : ℕ => ‖a n * Real.exp (-(t * n))‖ := by
@@ -151,29 +151,25 @@ lemma summable_th {a : ℕ → ℝ} {D : ℝ} (ha : ∀ n, |a n| ≤ D * n) {t :
   exact ha n
 
 /- English proof (translation)
-Establish `a0 : a 0 = 0` using `by simpa using ha 0`. Establish `b0 : b 0 = 0` using `by simpa using hb 0`. Establish `hD : 0 ≤ D` using `by simpa using (abs_nonneg _).trans (ha 1)`. Use `set f : ℕ × ℕ → ℝ → ℝ := fun p w => a p.1 * b p.2 * (Real.exp (-(v * p.1 / w)) * Real.exp (-(w * p.2)) / w) with hf`. Establish `hz : ∀ p : ℕ × ℕ, a p.1 * b p.2 = 0 ∨ (0 < p.1 ∧ 0 < p.2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨m, n⟩`. Break down `Nat.eq_zero_or_pos m with rfl | hm` into its components or cases. Use `left`. Simplify using `[a0]`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Prove the second alternative.
 
-Use `left`. Simplify using `[b0]`. Conclude with `Or.inr ⟨hm, hn⟩`. Establish `hint : ∀ p, Integrable (f p) (volume.restrict (Set.Ioi (0 : ℝ)))`. Introduce `p`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Break down `hz p with h | ⟨h1, h2⟩` into its components or cases. Simplify using `[hf, h]`. Conclude with `(scale_integrable (y := v * p.1) (n := p.2) (by positivity) (by positivity)).const_mul _`. Establish `hval : ∀ p, ∫ w in Set.Ioi (0 : ℝ), f p w = a p.1 * b p.2 * besW (v * p.1 * p.2)`. Introduce `p`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Break down `hz p with h | ⟨h1, h2⟩` into its components or cases. Simplify using `[hf, h]`. Simplify using `only [hf]`. Rewrite using `[integral_const_mul, scale_integral (v * p.1) (n := p.2) (by positivity)]`. Take `⟨G, hG0, hG⟩` from `besW_le`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hs2 : Summable fun n : ℕ => 1 / (n : ℝ) ^ 2` using `Real.summable_one_div_nat_pow.2 (by norm_num)`. Establish `hsum : Summable fun p => ∫ w in Set.Ioi (0 : ℝ), ‖f p w‖`. Use `Summable.of_nonneg_of_le (fun p => integral_nonneg fun w => norm_nonneg _) (fun p => ?_) ((hs2.mul_of_nonneg hs2 (fun n => by positivity) (fun n => by positivity)).mul_left (D * D * G / v ^ 3))` and prove the remaining obligations. Break down `hz p with h | ⟨h1, h2⟩` into its components or cases. Simplify using `only [hf, h, zero_mul, norm_zero, integral_zero]`.
+Simplify using the standard rewrite rules. Check the signs of the components of the expression. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Check the signs of the components of the expression. Establish `e : ∫ w in Set.Ioi (0 : ℝ), ‖f p w‖ = |a p.1| * |b p.2| * besW (v * p.1 * p.2)`. Rewrite using `[← scale_integral (v * p.1) (n := p.2) (by positivity), ← integral_const_mul]`. Use `setIntegral_congr_fun measurableSet_Ioi fun w hw => ?_` and prove the remaining obligations. Establish `: 0 < w` using `hw`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hf]`. Rewrite using `[norm_mul, norm_mul, Real.norm_of_nonneg (by positivity : 0 ≤ Real.exp (-(v * p.1 / w)) * Real.exp (-(w * p.2)) / w)]`. Both sides reduce to the same expression. Rewrite using `[e]`. Establish `h1' : (0 : ℝ) < p.1` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2' : (0 : ℝ) < p.2` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Conclude with `besW_nonneg _`. Conclude with `ha _`. Conclude with `hb _`.
+Reduce the argument to an intermediate assertion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hG _ (by positivity)`. Use `_ = _ := by field_simp`. Establish `H` using `hasSum_integral_of_summable_integral_norm hint hsum`. Simplify using `only [hval] at H`. It suffices to establish `e : ∫ w in Set.Ioi (0 : ℝ), th a (v / w) * th b w / w = ∫ w in Set.Ioi (0 : ℝ), ∑' p, f p w by rw [e]; exact H`.
-
-Use `setIntegral_congr_fun measurableSet_Ioi fun w hw => ?_` and prove the remaining obligations. Establish `hw' : 0 < w` using `hw`. Simplify using `only [th]`. Rewrite using `[tsum_mul_tsum_of_summable_norm (summable_th ha (by positivity)) (summable_th hb hw'), ← tsum_div_const]`. Use `tsum_congr fun p => ?_` and prove the remaining obligations.
-
-Simplify using `only [hf]`. Rewrite using `[show v / w * (p.1 : ℝ) = v * p.1 / w by ring]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma hasSum_pairs {a b : ℕ → ℝ} {D : ℝ} (ha : ∀ n, |a n| ≤ D * n) (hb : ∀ n, |b n| ≤ D * n)
     {v : ℝ} (hv : 0 < v) :
@@ -244,13 +240,13 @@ lemma hasSum_pairs {a b : ℕ → ℝ} {D : ℝ} (ha : ∀ n, |a n| ≤ D * n) (
   ring
 
 /- English proof (translation)
-Establish `a0 : a 0 = 0` using `by simpa using ha 0`. Establish `b0 : b 0 = 0` using `by simpa using hb 0`. Establish `H` using `(hasSum_pairs ha hb hv).tsum_fiberwise (fun p : ℕ × ℕ => p.1 * p.2)`. Establish `e : ∀ n : ℕ, ∑' p : (fun p : ℕ × ℕ => p.1 * p.2) ⁻¹' {n}, a p.val.1 * b p.val.2 * besW (v * p.val.1 * p.val.2) = (∑ p ∈ n.divisorsAntidiagonal, a p.1 * b p.2) * besW (v * n)`. Introduce `n`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `eq_or_ne n 0 with rfl | hn` into its components or cases. Establish `: ∀ p : (fun p : ℕ × ℕ => p.1 * p.2) ⁻¹' {0}, a p.val.1 * b p.val.2 * besW (v * p.val.1 * p.val.2) = 0`. Introduce and unpack `⟨⟨m, n⟩, hp⟩`. Establish `hp' : m * n = 0` using `hp`. Apply the tactic sequence `rcases Nat.mul_eq_zero.1 hp' with rfl | rfl <;> simp [a0, b0]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[this]`. Rewrite using `[show (fun p : ℕ × ℕ => p.1 * p.2) ⁻¹' {n} = n.divisorsAntidiagonal by ext; simp [hn], Finset.tsum_subtype' n.divisorsAntidiagonal fun p => a p.1 * b p.2 * besW (v * p.1 * p.2), Finset.sum_mul]`. Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Rewrite using `[← (Nat.mem_divisorsAntidiagonal.1 hp).1, Nat.cast_mul, mul_assoc v]`. Simplify using `only [e] at H`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `le_hasSum H 1 fun n _ => mul_nonneg (hr n) (besW_nonneg _)` as an intermediate fact. Simplify `this` using `[a1, b1]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma besW_le_integral {a b : ℕ → ℝ} {D : ℝ} (ha : ∀ n, |a n| ≤ D * n) (hb : ∀ n, |b n| ≤ D * n)
     (a1 : a 1 = 1) (b1 : b 1 = 1)
@@ -282,19 +278,19 @@ lemma besW_le_integral {a b : ℕ → ℝ} {D : ℝ} (ha : ∀ n, |a n| ≤ D * 
 def wt (w : ℝ) : ℝ := min w (1 / w) / (Real.sqrt w * w)
 
 /- English proof (translation)
-Unfold `wt`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 lemma wt_nonneg {w : ℝ} (hw : 0 < w) : 0 ≤ wt w := by
   unfold wt; positivity
 
 /- English proof (translation)
-Establish `hm : Measurable wt` using `by unfold wt; fun_prop`. Rewrite using `[← Set.Ioc_union_Ioi_eq_Ioi zero_le_one]`. Use `IntegrableOn.union ?_ ?_` and prove the remaining obligations. Use `Integrable.mono' (intervalIntegral.intervalIntegrable_rpow' (r := -(1 / 2)) (a := 0) (b := 1) (by norm_num)).1 hm.aestronglyMeasurable ?_` and prove the remaining obligations. Use `(ae_restrict_iff' measurableSet_Ioc).2 (Eventually.of_forall fun w hw => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h0 : 0 < w` using `hw.1`. Rewrite using `[Real.norm_of_nonneg (wt_nonneg h0), Real.rpow_neg h0.le, ← Real.sqrt_eq_rpow]`. Establish `hs : 0 < Real.sqrt w` using `Real.sqrt_pos.2 h0`. Unfold `wt`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 
-Use `Integrable.mono' (integrableOn_Ioi_rpow_of_lt (a := -2) (by norm_num) one_pos) hm.aestronglyMeasurable ?_` and prove the remaining obligations. Use `(ae_restrict_iff' measurableSet_Ioi).2 (Eventually.of_forall fun w hw => ?_)` and prove the remaining obligations. Establish `h1 : 1 < w` using `hw`. Establish `h0 : 0 < w` using `by linarith`. Rewrite using `[Real.norm_of_nonneg (wt_nonneg h0), Real.rpow_neg h0.le, Real.rpow_two]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : 1 ≤ Real.sqrt w` using `Real.one_le_sqrt.2 h1.le`. Unfold `wt`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 -/
 lemma integrableOn_wt : IntegrableOn wt (Set.Ioi 0) := by
   have hm : Measurable wt := by unfold wt; fun_prop
@@ -323,7 +319,7 @@ lemma integrableOn_wt : IntegrableOn wt (Set.Ioi 0) := by
       _ = _ := by field_simp
 
 /- English proof (translation)
-Break down `le_total u 1 with h | h` into its components or cases. Use `(min_le_left _ _).trans (Real.le_sqrt_of_sq_le ?_)` and prove the remaining obligations. Use the polynomial consequences of the given equalities and inequalities. Conclude with `(min_le_right _ _).trans (((div_le_one hu).2 h).trans (Real.one_le_sqrt.2 h))`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 lemma min_le_sqrt {u : ℝ} (hu : 0 < u) : min u (1 / u) ≤ Real.sqrt u := by
   rcases le_total u 1 with h | h
@@ -332,11 +328,11 @@ lemma min_le_sqrt {u : ℝ} (hu : 0 < u) : min u (1 / u) ≤ Real.sqrt u := by
   · exact (min_le_right _ _).trans (((div_le_one hu).2 h).trans (Real.one_le_sqrt.2 h))
 
 /- English proof (translation)
-Rewrite using `[← Set.Ioc_union_Ioi_eq_Ioi zero_le_one]`. Use `IntegrableOn.union ?_ ?_` and prove the remaining obligations. Use `Integrable.mono' (g := fun _ => E) (integrableOn_const (by simp)) hm.aestronglyMeasurable ?_` and prove the remaining obligations. Use `(ae_restrict_iff' measurableSet_Ioc).2 (Eventually.of_forall fun w hw => ?_)` and prove the remaining obligations. Use `(h1 w hw.1).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `mul_le_of_le_one_right hE ((min_le_left _ _).trans hw.2)`. Use `Integrable.mono' ((exp_neg_integrableOn_Ioi 1 (b := 1 / 2) (by norm_num)).const_mul E') hm.aestronglyMeasurable ?_` and prove the remaining obligations. Use `(ae_restrict_iff' measurableSet_Ioi).2 (Eventually.of_forall fun w hw => ?_)` and prove the remaining obligations. Use `(h2 w (le_of_lt hw)).trans (le_of_eq ?_)` and prove the remaining obligations. Use `congr 2`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 lemma integrableOn_of_bounds {Q : ℝ → ℝ} (hm : Measurable Q) {E E' : ℝ} (hE : 0 ≤ E)
     (h1 : ∀ t, 0 < t → |Q t| ≤ E * min t (1 / t))
@@ -354,17 +350,15 @@ lemma integrableOn_of_bounds {Q : ℝ → ℝ} (hm : Measurable Q) {E E' : ℝ} 
     congr 2; ring
 
 /- English proof (translation)
-Use `set R : ℝ → ℝ := fun w => (P (v / w) - ρ / (v / w)) * Q w / w with hR`. Establish `hRm : Measurable R` using `by simp only [hR]; fun_prop`. Establish `hRb : ∀ w ∈ Set.Ioi (0 : ℝ), |R w| ≤ E ^ 2 * Real.sqrt v * wt w`. Introduce `w hw`. Establish `h0 : 0 < w` using `hw`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : 0 < Real.sqrt w` using `Real.sqrt_pos.2 h0`. Simplify using `only [hR]`. Rewrite using `[abs_div, abs_mul, abs_of_pos h0]`. Establish `e1 : |P (v / w) - ρ / (v / w)| ≤ E * (Real.sqrt v / Real.sqrt w)`. Use `(h1 _ (by positivity)).trans ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Real.sqrt_div hv.le]`. Use `gcongr`. Conclude with `min_le_sqrt (by positivity)`. Combine the equalities or inequalities in the displayed calculation. Conclude with `h2 w h0`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `_ = _ := by unfold wt; field_simp`. Establish `hw` using `integrableOn_wt.const_mul (E ^ 2 * Real.sqrt v)`. Establish `hRi : IntegrableOn R (Set.Ioi 0)` using `Integrable.mono' hw hRm.aestronglyMeasurable ((ae_restrict_iff' measurableSet_Ioi).2 (Eventually.of_forall hRb))`. Establish `e : ∫ w in Set.Ioi (0 : ℝ), P (v / w) * Q w / w = ∫ w in Set.Ioi (0 : ℝ), (ρ / v * Q w + R w)`. Use `setIntegral_congr_fun measurableSet_Ioi fun w hw => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `h0 : 0 < w` using `hw`. Simplify using `only [hR]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, integral_add (hi.const_mul _) hRi, integral_const_mul, ← integral_const_mul (E ^ 2 * Real.sqrt v)]`.
-
-Use `gcongr ?_ + ?_`. Conclude with `le_rfl`. Conclude with `setIntegral_mono_on hRi hw measurableSet_Ioi fun w hw => (le_abs_self _).trans (hRb w hw)`.
+A detailed English derivation is pending.
 -/
 lemma integral_le {P Q : ℝ → ℝ} (hP : Measurable P) (hQ : Measurable Q) {ρ E : ℝ} (hE : 0 ≤ E)
     (h1 : ∀ t, 0 < t → |P t - ρ / t| ≤ E * min t (1 / t))
@@ -408,7 +402,7 @@ lemma integral_le {P Q : ℝ → ℝ} (hP : Measurable P) (hQ : Measurable Q) {�
 def bRe (𝓕 : LFam) (χ : AddChar 𝓕.G ℂ) (n : ℕ) : ℝ := ∑ g, (χ g).re * 𝓕.a g n
 
 /- English proof (translation)
-Establish `: χ g * χ g = 1`. Use `DFunLike.congr_fun h g` as an intermediate fact. Simplify using `using this`. Conclude with `mul_self_eq_one_iff.1 this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 lemma chi_real {𝓕 : LFam} {χ : AddChar 𝓕.G ℂ} (h : χ * χ = 1) (g : 𝓕.G) :
     χ g = 1 ∨ χ g = -1 := by
@@ -418,7 +412,7 @@ lemma chi_real {𝓕 : LFam} {χ : AddChar 𝓕.G ℂ} (h : χ * χ = 1) (g : �
   exact mul_self_eq_one_iff.1 this
 
 /- English proof (translation)
-Unfold `LFam.aChi bRe`. Use `push_cast`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Apply the tactic sequence `rcases chi_real h g with e | e <;> simp [e]`.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma aChi_eq {𝓕 : LFam} {χ : AddChar 𝓕.G ℂ} (h : χ * χ = 1) (n : ℕ) :
     𝓕.aChi χ n = (bRe 𝓕 χ n : ℂ) := by
@@ -428,9 +422,9 @@ lemma aChi_eq {𝓕 : LFam} {χ : AddChar 𝓕.G ℂ} (h : χ * χ = 1) (n : ℕ
   rcases chi_real h g with e | e <;> simp [e]
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Simplify using `[𝓕.a_zero]`. Establish `h1 : (1 : ℝ) ≤ n` using `by exact_mod_cast hn`. Establish `h` using `(abs_le.1 (𝓕.count g n h1)).2`. Rewrite `h` using `[Nat.floor_natCast]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : 𝓕.a g n ≤ ∑ m ∈ Finset.Icc 1 n, 𝓕.a g m` using `Finset.single_le_sum (fun m _ => 𝓕.a_nonneg g m) (Finset.mem_Icc.2 ⟨hn, le_rfl⟩)`. Establish `h3 : Real.sqrt n ≤ n` using `Real.sqrt_le_iff.2 ⟨by positivity, by nlinarith⟩`. Establish `h4 : 𝓕.κ * n ≤ 4 * n` using `mul_le_mul_of_nonneg_right 𝓕.κ_le (by positivity)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma a_le (𝓕 : LFam) (g : 𝓕.G) (n : ℕ) : 𝓕.a g n ≤ 14 * n := by
   rcases Nat.eq_zero_or_pos n with rfl | hn
@@ -445,7 +439,7 @@ lemma a_le (𝓕 : LFam) (g : 𝓕.G) (n : ℕ) : 𝓕.a g n ≤ 14 * n := by
   linarith
 
 /- English proof (translation)
-The claim follows from `|bRe 𝓕 χ n| ≤ (Fintype.card 𝓕.G * 14 : ℝ) * n := by unfold bRe refine (Finset.abs_sum_le_sum_abs _ _).trans ?_ refine (Finset.sum_le_card_nsmul _ _ (14 * n : ℝ) fun g _ => ?_).trans (le_of_eq ?_) · rw [abs_mul, abs_of_nonneg (𝓕.a_nonneg g n)] rcases chi_real h g with e | e <;> si …`.
+A detailed English derivation is pending.
 -/
 lemma bRe_le {𝓕 : LFam} {χ : AddChar 𝓕.G ℂ} (h : χ * χ = 1) (n : ℕ) :
     |bRe 𝓕 χ n| ≤ (Fintype.card 𝓕.G * 14 : ℝ) * n := by
@@ -457,7 +451,7 @@ lemma bRe_le {𝓕 : LFam} {χ : AddChar 𝓕.G ℂ} (h : χ * χ = 1) (n : ℕ)
   · simp [mul_assoc]
 
 /- English proof (translation)
-Unfold `bRe`. Rewrite using `[Finset.sum_eq_single 0 (fun g _ hg => by simp [𝓕.a_one_ne g hg]) (by simp)]`. Simplify using `[𝓕.a_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma bRe_one (𝓕 : LFam) (χ : AddChar 𝓕.G ℂ) : bRe 𝓕 χ 1 = 1 := by
   unfold bRe
@@ -465,7 +459,7 @@ lemma bRe_one (𝓕 : LFam) (χ : AddChar 𝓕.G ℂ) : bRe 𝓕 χ 1 = 1 := by
   simp [𝓕.a_one]
 
 /- English proof (translation)
-Unfold `th`. Rewrite using `[Complex.ofReal_tsum]`. Use `tsum_congr fun n => ?_` and prove the remaining obligations. Rewrite using `[aChi_eq h, Complex.ofReal_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma th_eq {𝓕 : LFam} {χ : AddChar 𝓕.G ℂ} (h : χ * χ = 1) (t : ℝ) :
     ∑' n : ℕ, 𝓕.aChi χ n * (Real.exp (-(t * n)) : ℂ) = (th (bRe 𝓕 χ) t : ℂ) := by
@@ -475,33 +469,29 @@ lemma th_eq {𝓕 : LFam} {χ : AddChar 𝓕.G ℂ} (h : χ * χ = 1) (t : ℝ) 
   rw [aChi_eq h, Complex.ofReal_mul]
 
 /- English proof (translation)
-Take `⟨C, hC, H⟩` from `GlobalTheory.T.tsum_exp_mul_aChi_bounds`. Use `set K := ∫ w in Set.Ioi (0 : ℝ), wt w with hK`. Establish `hK0 : 0 ≤ K` using `setIntegral_nonneg measurableSet_Ioi fun w hw => wt_nonneg hw`. Establish `hw0` using `besW_one_pos`. Use `set w0 := besW 1 with hw0def`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set δ := min 1 (w0 / (2 * (C ^ 2 * K + 1))) with hδ`. Establish `hδ0 : 0 < δ` using `by positivity`. Establish `hδ1 : δ ≤ 1` using `min_le_left _ _`. Establish `hδ2 : C ^ 2 * K * δ ≤ w0 / 2`. Establish `h1 : δ ≤ w0 / (2 * (C ^ 2 * K + 1))` using `min_le_right _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h1` using `[le_div_iff₀ (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities. Use `⟨((45 : ℕ) : ℝ), min 1 (δ ^ 2 * w0 / 8), by norm_num, by positivity, fun 𝓕 χ hχ => ?_⟩` and prove the remaining obligations. Rewrite using `[Real.rpow_natCast]`. Establish `hB` using `𝓕.B_ge`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB1 : 1 ≤ 𝓕.B` using `by linarith`. Establish `hB0 : 0 < 𝓕.B` using `by linarith`. Establish `hκ : 0 < 𝓕.κ` using `lt_of_lt_of_le (by positivity) 𝓕.κ_ge`. Establish `hcard : (1 : ℝ) ≤ Fintype.card 𝓕.G` using `by exact_mod_cast Fintype.card_pos`. Distinguish the cases in `h1 : χ = 1`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e : 𝓕.F χ 1 = ((𝓕.κ * Fintype.card 𝓕.G : ℝ) : ℂ)`. Simplify using `[LFam.F, LFam.res, h1]`. Rewrite using `[e, Complex.norm_real, Real.norm_of_nonneg (by positivity)]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `min_le_left _ _`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `le_self_pow₀ hB1 (by norm_num)`. Use `_ ≤ 𝓕.κ := 𝓕.κ_ge`. Use `_ ≤ _ := le_mul_of_one_le_right hκ.le hcard`. Establish `h11 : (1 : AddChar 𝓕.G ℂ) * 1 = 1` using `mul_one _`. Use `set ρ := 𝓕.κ * Fintype.card 𝓕.G with hρ`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hP : ∀ t, 0 < t → |th (bRe 𝓕 1) t - ρ / t| ≤ C * 𝓕.B ^ 11 * min t (1 / t)`. Introduce `t ht`. Use `((H 𝓕 1).1 t ht).2` as an intermediate fact. Rewrite `this` using `[th_eq h11, LFam.res, if_pos rfl, ← Complex.ofReal_div, ← Complex.ofReal_sub, Complex.norm_real, Real.norm_eq_abs]`. Conclude with `this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hQ : ∀ t, 0 < t → |th (bRe 𝓕 χ) t| ≤ C * 𝓕.B ^ 11 * min t (1 / t)`. Introduce `t ht`. Use `((H 𝓕 χ).1 t ht).2` as an intermediate fact. Rewrite `this` using `[th_eq hχ, LFam.res, if_neg h1, zero_div, sub_zero, Complex.norm_real, Real.norm_eq_abs]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQ' : ∀ t, 1 ≤ t → |th (bRe 𝓕 χ) t| ≤ C * 𝓕.B * Real.exp (-(t / 2))`. Introduce `t ht`. Use `((H 𝓕 χ).2 h1).1 t ht` as an intermediate fact. Rewrite `this` using `[th_eq hχ, Complex.norm_real, Real.norm_eq_abs]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF : 𝓕.F χ 1 = ((∫ t in Set.Ioi (0 : ℝ), th (bRe 𝓕 χ) t : ℝ) : ℂ)`. Rewrite using `[← ((H 𝓕 χ).2 h1).2]`. Simplify using `only [th_eq hχ]`. Conclude with `integral_ofReal`. Use `set L := ∫ t in Set.Ioi (0 : ℝ), th (bRe 𝓕 χ) t with hL`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Establish `hE : 0 ≤ C * 𝓕.B ^ 11` using `by positivity`. Use `set s := δ / 𝓕.B ^ 22 with hs`. Establish `hs0 : 0 < s` using `by positivity`. Establish `hs1 : s ≤ 1` using `(div_le_one (by positivity)).2 (hδ1.trans (one_le_pow₀ hB1))`. Establish `hv : 0 < s ^ 2` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hv1 : s ^ 2 ≤ 1` using `pow_le_one₀ hs0.le hs1`. Establish `up` using `integral_le (measurable_th _) (measurable_th _) hE hP hQ (integrableOn_of_bounds (measurable_th _) hE hQ hQ') hv`. Establish `lo` using `besW_le_integral (bRe_le h11) (bRe_le hχ) (bRe_one 𝓕 1) (bRe_one 𝓕 χ) (fun n => by simpa [bRe] using (𝓕.sq χ hχ n).1) hv`. Establish `lo'` using `besW_one_le hv hv1`. Rewrite `up` using `[Real.sqrt_sq hs0.le, ← hL, ← hK]`.
-
-Establish `e1 : (C * 𝓕.B ^ 11) ^ 2 * s * K = C ^ 2 * K * δ`. Rewrite using `[hs]`. Clear the denominators using the available nonvanishing facts. Establish `h2 : w0 / 2 ≤ ρ / s ^ 2 * L` using `by linarith`. Establish `hρ0 : 0 < ρ` using `by positivity`.
-
-Establish `hρ1 : ρ ≤ 4 * 𝓕.B` using `mul_le_mul 𝓕.κ_le 𝓕.card_le (by positivity) (by norm_num)`. Establish `h3 : w0 / 2 ≤ 4 * 𝓕.B / s ^ 2 * |L|` using `h2.trans ((mul_le_mul_of_nonneg_left (le_abs_self L) (by positivity)).trans (by gcongr))`. Rewrite using `[hF, Complex.norm_real, Real.norm_eq_abs]`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem norm_F_one_ge : ∃ A c : ℝ, 0 < A ∧ 0 < c ∧ ∀ (𝓕 : LFam) (χ : AddChar 𝓕.G ℂ), χ * χ = 1 →
     c / 𝓕.B ^ A ≤ ‖𝓕.F χ 1‖ := by

@@ -12,7 +12,7 @@ namespace Formalism.L2.S.Pv.NonVacuity
 open Formalism.BasicNotions Formalism.QuantumDeterminants Formalism.MainNotions Formalism.MainNotions.S
 
 /- English proof (translation)
-Introduce `a`. Use `⟨hz _ (Or.inl (by simp [eI])), hz _ (Or.inr (by simp only [esI]; have := a.isLt; omega))⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem hz_of_inWb {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) :
     ∀ a : Fin r, z (eI k r a) = 0 ∧ z (esI k r a) = 0 := by
@@ -22,11 +22,11 @@ theorem hz_of_inWb {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r 
 variable [Fact Formalism.L2.SG.LitS.PfNVG.BesselNVG] in
 
 /- English proof (translation)
-Take `⟨⟨hk1, hkev, -, -, hc, huHC, hlHC, hint, hhalf, hgb⟩, -⟩` from `numeric_setting_of_datum D large₂ C' Cl Cg cb Cu cT CT 1 hH hCl hCl τ u z (hz_of_inWb hz) hT`. Establish `hk2 : 2 ≤ D.R.k` using `by have := Formalism.MainNotions.BridgeLemma.five_le_k D; omega`. Establish `hσ' : IsDSHpk D.R.k D.R.rS (CayleySignature.eps48 D.R.k D.R.rS) (CayleySignature.lam48 D.R.k D.R.rS (v48 D τ) (b48 D τ)) σ`. Rewrite using `[epsilon_signature_eq, lambda_highest_weight_eq]`. Conclude with `hσ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hw0' : IsLowUnitH D.R.k D.R.rS (CayleySignature.eps48 D.R.k D.R.rS) (CayleySignature.lam48 D.R.k D.R.rS (v48 D τ) (b48 D τ)) σ w0`. Rewrite using `[epsilon_signature_eq, lambda_highest_weight_eq]`. Conclude with `hw0`. Take `⟨x, x₀, hx, hx₀, hne⟩` from `Formalism.L2.SG.LitS.PfNVG.besselNVG D.R.k D.R.rS z _ (uS D u τ) (v48 D τ) (b48 D τ) hk2 hkev hz hT hc huHC hlHC hint hhalf hgb H σ hσ' Vp π hπ w0 hw0' μW μN hW hN`. Use `⟨σ x w0, Submodule.subset_span ⟨x, hx, rfl⟩, σ x₀ w0, Submodule.subset_span ⟨x₀, hx₀, rfl⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `Formalism.FourierDecayAlt.ThreeDimData.be Formalism.FourierDecayAlt.ThreeDimData.beInt`. Rewrite using `[← Formalism.L2.S.Pv.Mom.psiGen_const]`. Conclude with `hne`.
+A detailed English derivation is pending.
 -/
 theorem nv_side {D : D7} {large₂ : SizeData₂ D} {C' Cl Cg cb Cu cT CT : ℝ} (hH : StandingHypotheses D large₂ C' Cl Cg cb Cu cT CT)
     (hCl : 1 ≤ Cl) (τ : D.what₂.Tau) (u : D.what₂.Word) {z : Fin (2 * D.R.rS + D.R.k + 1) → ℂ}
@@ -56,13 +56,13 @@ theorem nv_side {D : D7} {large₂ : SizeData₂ D} {C' Cl Cg cb Cu cT CT : ℝ}
 variable [Fact Formalism.L2.SG.LitS.PfNVG.BesselNVG] in
 
 /- English proof (translation)
-Introduce `hH τ w w' hTT θ W hW lam' hl A hA hT hT' w0 hw0`. Establish `hl0 : l1dist lam' (lamD D τ) ≤ 0` using `by simpa using hl`. Establish `hleq` using `Formalism.MainNotions.S.Pv.LemmaJ.l1dist_zero hl0`. Substitute `hleq` using the available equality. Establish `hW'` using `hW`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Take `⟨hc1, hc2, hz, hz', hTz, hTz', hG, hUW, -, hUW', -, hNq, hq, -⟩` from `hW'`. Establish `hTp : 0 < Tz D.R.k D.R.rS W.z` using `by rw [hTz]; exact hT`. Establish `hTp' : 0 < Tz D.R.k D.R.rS W.z'` using `by rw [hTz']; exact hT'`. Establish `hκtop : kapN D θ ≠ ⊤` using `ENNReal.ofReal_ne_top`. Establish `hκ0 : kapN D θ ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h0`. Establish `hμN : W.μN = 0` using `by rw [hNq, h0]; unfold haarLie; rw [zero_smul]`. Establish `hS0 : muS W.μW W.μN = 0` using `by unfold muS; rw [hμN, Measure.prod_zero, Measure.map_zero]`. Establish `h1` using `hq (fun _ => 1) measurable_const`. Rewrite `h1` using `[hS0]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `at h1`. Conclude with `hG.2.1 h1`. Establish `hNH : IsHaarOn (Nset D.R.k D.R.rS) (toBessel D τ w w' θ W (lamD D τ) A hW hA hT hT').μN` using `Formalism.MainNotions.BridgeCSB.haarLieN _ _ _ hκ0 hκtop`. Establish `hDS : IsDSHpk D.R.k D.R.rS (epsSH D.R) (lamD D τ) A.σ` using `hA.2.1`. Conclude with `⟨nv_side hH.1 hCl τ w hz hTp hDS hc1 hw0 hUW hNH, nv_side hH.1 hCl τ w' hz' hTp' hDS hc2 hw0 hUW' hNH⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nvHyp0 (D : D7) (large₂ : SizeData₂ D) (C' Cl Cg cb Cu cT CT C0 : ℝ) (hCl : 1 ≤ Cl) :
     Formalism.MainNotions.S.Pv.AmpDD.NVHyp D large₂ C' Cl Cg cb Cu cT CT C0 0 := by

@@ -21,7 +21,7 @@ namespace GlobalTheory.CompanionTheory.NForm
 open Matrix
 
 /- English proof (translation)
-Simplify using `only [mulVec_single_one, hermForm]`. Simplify using `[Matrix.mul_apply, dotProduct, mulVec, Finset.sum_mul, Finset.mul_sum, mul_assoc, col_apply]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hermForm_cols {g : ℕ} (N P Q : Matrix (Fin g) (Fin g) ℂ) (i j : Fin g) :
     hermForm N (P *ᵥ Pi.single i 1) (Q *ᵥ Pi.single j 1) =
@@ -39,7 +39,7 @@ private theorem re_of_real_add {g : ℕ} (B C : Matrix (Fin g) (Fin g) ℝ) (i j
   simp
 
 /- English proof (translation)
-Establish `: (periodMatrix X Y).map Complex.im = Y` using `by ext i j; simp [periodMatrix]`. Rewrite using `[GlobalTheory.CanTh.imInv, this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem imInv_periodMatrix {g : ℕ} (X Y : Matrix (Fin g) (Fin g) ℝ) :
     GlobalTheory.CanTh.imInv (periodMatrix X Y) = Y⁻¹.map (fun x : ℝ => (x : ℂ)) := by
@@ -47,7 +47,7 @@ private theorem imInv_periodMatrix {g : ℕ} (X Y : Matrix (Fin g) (Fin g) ℝ) 
   rw [GlobalTheory.CanTh.imInv, this]
 
 /- English proof (translation)
-The claim follows from `Matrix.map_mul (f := Complex.ofRealHom)`.
+A detailed English derivation is pending.
 -/
 private theorem map_ofReal_mul {g : ℕ} (B C : Matrix (Fin g) (Fin g) ℝ) :
     (B * C).map (fun x : ℝ => (x : ℂ)) =
@@ -55,27 +55,27 @@ private theorem map_ofReal_mul {g : ℕ} (B C : Matrix (Fin g) (Fin g) ℝ) :
   Matrix.map_mul (f := Complex.ofRealHom)
 
 /- English proof (translation)
-Establish `hYs : Yᵀ = Y`. Use extensionality with `i j`. Simplify using `using hY.isHermitian.apply i j`. Establish `hXs : Xᵀ = X` using `hX`. Establish `hu : IsUnit Y.det` using `(Matrix.isUnit_iff_isUnit_det _).1 hY.isUnit`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hYY : Y * Y⁻¹ * Y = Y` using `by rw [mul_nonsing_inv _ hu, Matrix.one_mul]`. Use `set c : Matrix (Fin g) (Fin g) ℝ → Matrix (Fin g) (Fin g) ℂ := fun B => B.map (fun x : ℝ => (x : ℂ)) with hc`. Establish `hτ : periodMatrix X Y = c X + Complex.I • c Y` using `rfl`. Establish `hτt : (periodMatrix X Y)ᵀ = c X + Complex.I • c Y`. Rewrite using `[hτ, transpose_add, transpose_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: ∀ B : Matrix (Fin g) (Fin g) ℝ, Bᵀ = B → (c B)ᵀ = c B` using `fun B hB => by`. Rewrite using `[hc]`. Simplify using `only`. Rewrite using `[← transpose_map, hB]`. Rewrite using `[this X hXs, this Y hYs]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hτc : (periodMatrix X Y).map (starRingEnd ℂ) = c X - Complex.I • c Y`. Use extensionality with `i j`. Simplify using `[periodMatrix, hc, Complex.ext_iff]`. Establish `h1c : (1 : Matrix (Fin g) (Fin g) ℂ).map (starRingEnd ℂ) = 1`. Apply the tactic sequence `ext i j; by_cases h : i = j <;> simp [Matrix.one_apply, h]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `mm : ∀ B C, c (B * C) = c B * c C` using `map_ofReal_mul`. Use extensionality with `α β`. Apply the tactic sequence `rcases α with i | i <;> rcases β with j | j <;>`. Simplify using `only [of_apply, Sum.elim_inl, Sum.elim_inr, hermForm_cols, imInv_periodMatrix, siegelGram, fromBlocks_apply₁₁, fromBlocks_apply₁₂, fromBlocks_apply₂₁, fromBlocks_apply₂₂, transpose_one, h1c, hτt, hτc, Matrix.one_mul, Matrix.mul_one]`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `: (Y⁻¹.map (fun x : ℝ => (x : ℂ))) * (c X - Complex.I • c Y) = c (Y⁻¹ * X) + Complex.I • c (-(Y⁻¹ * Y))`. Establish `hneg : ∀ B, c (-B) = -c B` using `fun B => by ext i j; simp [hc]`. Express the relevant statement in the definitionally equal form `c Y⁻¹ * _ = _`. Rewrite using `[hneg, mm, mm, Matrix.mul_sub, Matrix.mul_smul, smul_neg, sub_eq_add_neg]`. Rewrite using `[this]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `re_of_real_add _ _ i j`. Establish `: (c X + Complex.I • c Y) * (Y⁻¹.map (fun x : ℝ => (x : ℂ))) = c (X * Y⁻¹) + Complex.I • c (Y * Y⁻¹)`. Simplify using `[hc, Matrix.add_mul, map_ofReal_mul]`. Rewrite using `[this]`. Conclude with `re_of_real_add _ _ i j`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (c X + Complex.I • c Y) * (Y⁻¹.map (fun x : ℝ => (x : ℂ))) * (c X - Complex.I • c Y) = c (Y + X * Y⁻¹ * X) + Complex.I • c (Y * Y⁻¹ * X - X * Y⁻¹ * Y)`. Establish `e1 : c (Y + X * Y⁻¹ * X) = c (Y * Y⁻¹ * Y) + c (X * Y⁻¹ * X)`. Rewrite using `[hYY]`. Use extensionality with `i j`. Simplify using `[hc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `e2 : c (Y * Y⁻¹ * X - X * Y⁻¹ * Y) = c (Y * Y⁻¹ * X) - c (X * Y⁻¹ * Y)`. Use extensionality with `i j`. Simplify using `[hc]`. Rewrite using `[e1, e2]`. Simplify using `only [mm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `_ = _ + _`. Establish `hI : ∀ N : Matrix (Fin g) (Fin g) ℂ, Complex.I • (Complex.I • N) = -N` using `fun N => by`. Rewrite using `[smul_smul, Complex.I_mul_I]`. Simplify using the standard rewrite rules. Simplify using `only [Matrix.add_mul, Matrix.mul_sub, Matrix.smul_mul, Matrix.mul_smul, smul_sub, smul_add, hI]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[this]`. Use `re_of_real_add (Y + X * Y⁻¹ * X) (Y * Y⁻¹ * X - X * Y⁻¹ * Y) i j` as an intermediate fact. Simplify `this` using `[hc]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem gram_eq_siegelGram {g : ℕ} {X Y : Matrix (Fin g) (Fin g) ℝ} (hX : X.IsSymm) (hY : Y.PosDef) :
     (Matrix.of fun α β : Fin g ⊕ Fin g =>
@@ -136,19 +136,17 @@ theorem gram_eq_siegelGram {g : ℕ} {X Y : Matrix (Fin g) (Fin g) ℝ} (hX : X.
     simpa [hc] using this
 
 /- English proof (translation)
-Introduce `g Hm v hH hpos hJ`. Use `set A : Matrix (Fin g) (Fin g) ℂ := Matrix.of fun i j => v (Sum.inl j) i with hA`. Use `set F : Matrix (Fin g) (Fin g) ℂ := Matrix.of fun i j => v (Sum.inr j) i with hF`. Use `set τ : Matrix (Fin g) (Fin g) ℂ := A⁻¹ * F with hτ`. Take `⟨hu, hs, hp, hform⟩` from `GlobalTheory.HolTheta.normal_form Hm (fun j => v (Sum.inl j)) (fun j => v (Sum.inr j)) hH hpos (fun j k => by simpa [Matrix.J] using hJ (Sum.inl j) (Sum.inl k)) (fun j k => by simpa [Matrix.J] using hJ (Sum.inr j) (Sum.inr k)) (fun j k => by simpa [Matrix.J] using hJ (Sum.inl j) …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hPer : periodMatrix (τ.map Complex.re) (τ.map Complex.im) = τ`. Apply the tactic sequence `ext i j; apply Complex.ext <;> simp [periodMatrix]`. Establish `hXs : (τ.map Complex.re).IsSymm`. Use extensionality with `i j`. Simplify using `using congrArg Complex.re (hs.apply i j)`.
+By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `he : ∀ i, A⁻¹ *ᵥ v (Sum.inl i) = (1 : Matrix (Fin g) (Fin g) ℂ) *ᵥ Pi.single i 1` using `fun i => by`. Establish `: v (Sum.inl i) = A *ᵥ Pi.single i 1` using `by ext k; simp [hA]`. Rewrite using `[this, mulVec_mulVec, nonsing_inv_mul A hu]`. Establish `hf : ∀ i, A⁻¹ *ᵥ v (Sum.inr i) = τ *ᵥ Pi.single i 1` using `fun i => by`. Establish `: v (Sum.inr i) = F *ᵥ Pi.single i 1` using `by ext k; simp [hF]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[this, mulVec_mulVec]`. Use `⟨A⁻¹, τ.map Complex.re, τ.map Complex.im, Matrix.isUnit_nonsing_inv_det A hu, hXs, hp, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `z w`. Rewrite using `[hPer]`. Conclude with `hform z w`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Rewrite using `[he, one_mulVec]`. Introduce `i`. Rewrite using `[hPer]`. Conclude with `hf i`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← gram_eq_siegelGram hXs hp]`. Use extensionality with `α β`. Rewrite using `[hPer]`. Simplify using `only [of_apply]`. Rewrite using `[hform]`.
-
-Apply the tactic sequence `rcases α with i | i <;> rcases β with j | j <;> simp only [Sum.elim_inl, Sum.elim_inr, he, hf]`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem normal_form_gram : ∀ (g : ℕ) (Hm : Matrix (Fin g) (Fin g) ℂ) (v : Fin g ⊕ Fin g → Fin g → ℂ),
     Hm.IsHermitian → (∀ z : Fin g → ℂ, z ≠ 0 → 0 < (hermForm Hm z z).re) →

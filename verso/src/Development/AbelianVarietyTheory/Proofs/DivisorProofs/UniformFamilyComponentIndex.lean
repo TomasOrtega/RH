@@ -13,11 +13,11 @@ namespace GlobalTheory.GeoLevel
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c σ r U g e F ik φ hσ hr hA hP k k' δ h γ ρ ν hM hν x y' hm`. Take `⟨gam, hgam, t₁⟩` from `hM`. Establish `e₁ : ∀ a b, (F.Di (ik k')).EF (gam a) (gam b) = (F.Di (ik k)).EF a b` using `fun a b => by`. Apply `Int.cast_injective (α := ℚ)` to reduce the goal to its premises. Rewrite using `[hP.1, hP.1, hgam, hgam, h.iso, h.xi]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨P, hPe, p, hy, hd⟩` from `hP.2 k x`. Take `⟨P', hPe', p', hy', hd'⟩` from `hP.2 k' ⟨_, h.mem_dom x.2⟩`. Take `⟨k₁, k₂⟩` from `GlobalTheory.DictMove.exp_of_levMove F hr hσ ((GlobalTheory.Relab.relab_good _ H l c σ hσ).2.2.2 Dw g e) hA hν p p' gam e₁ t₁ fun v => funext fun j => by`. Rewrite using `[hPe, hPe', hgam]`. Conclude with `GlobalTheory.GeoLevel.perFr_lact_of_isMatch E r _ _ δ h x.1 _ _ _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨by rw [hm.1, hy, hy']; exact k₁, funext fun τ => funext fun i => ?_⟩` and prove the remaining obligations. Establish `d0` using `GlobalTheory.FibreDeriv.isDerivAt0_comp (hd τ i) ν.φ`. Simplify using `only [← k₂] at d0`. Rewrite using `[hm.2.1]`. Conclude with `((GlobalTheory.isDerivAt0_ex_isTanAt E H Dw l Xo _ g _ F _ P' p').2.1 _).unique d0 (hd' τ i)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem moveMatch_of_markRel : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (r : ℕ) (U : Formalism.L2.PjFree.Unf Xo c σ r) (g : ℕ) (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ)) (F : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) (fun j => Formalism.L2.PjFree.relab c σ (e j).1)) (ik : U.Comp → Fin F.n) (φ : ∀ k, (F.Di (ik k)).La ≃ₗ[𝓞 E] (U.X k).Λ), Formalism.L2.PjFree.GoodEmb c σ → 1 ≤ Dw.p + Dw.q → l.A = 1 → Pinned U e F ik φ → ∀ (k k' : U.Comp) (δ : GL (Fin r) E) (h : IsMatch (U.X k) (U.X k') δ) (γ : Dw.La →ₗ[𝓞 E] Dw.La) (ρ : Xo.X ⟶ Xo.X) (ν : SABMap Xo.univ.t Xo.univ.t ρ), MarkRel l (φ k) (φ k') (F.t (ik k)) (F.t (ik k')) γ δ → IsLevMove ρ ν γ LinearMap.id → MoveMatch U U k k' h ρ ν := by
   intro E _ _ _ H Dw l Xo c σ r U g e F ik φ hσ hr hA hP k k' δ h γ ρ ν hM hν x y' hm

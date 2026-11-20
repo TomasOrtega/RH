@@ -9,13 +9,13 @@ open CategoryTheory AlgebraicGeometry Limits ReciprocityTheory.ChartRestriction.
 namespace GlobalTheory.ConjIso
 
 /- English proof (translation)
-Introduce `p _ T _ A _ g _ _ H e _ C hC Ψ hΨ`. Use `GlobalTheory.QCoh.epi_of_locally_app_surjective Ψ fun W x hx => ?_` and prove the remaining obligations. Take `⟨V, hV, hxV, hle⟩` from `GlobalTheory.QCoh.exists_affine_mem_le x hx`. Use `⟨V, hxV, hle, fun c => ?_⟩` and prove the remaining obligations. Set `M : Submodule Γ(T, V) _` to `(LinearMap.range (GlobalTheory.QCoh.homAppLinear (Ψ ≫ C.incl) V)).map (e V hV).toLinearMap`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Establish `hspan : GlobalTheory.ConjSeq.conjDR p Γ(T, V) (GlobalTheory.SS.FrobField.cast_zero (GlobalTheory.VB.natCast_eq_zero T p (ZMod p)) V) (onAff A hV) ≤ M`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, rfl⟩`. Use `⟨(Ψ ≫ C.incl).app V (GlobalTheory.QCoh.pullbackSections (GlobalTheory.VB.frob T p (GlobalTheory.VB.natCast_eq_zero T p (ZMod p))) H (le_refl V) ((e V hV).symm y)), ⟨_, rfl⟩, ?_⟩` and prove the remaining obligations. Use `hΨ V hV ((e V hV).symm y)` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[LinearEquiv.apply_symm_apply]`. Conclude with `this`. Establish `hc : e V hV (C.incl.app V c) ∈ M` using `hspan ((hC V hV _).1 (C.incl_app_mem c))`. Take `⟨_, ⟨t, rfl⟩, ht⟩` from `hc`. Use `⟨t, C.incl_app_injective V ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(e V hV).injective ht` as an intermediate fact. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem epi_frobPull_conj : ∀ (p : ℕ) [Fact p.Prime] {T : Scheme.{0}} [Algebra (ZMod p) Γ(T, ⊤)] (A : Over T) [GrpObj A]
     (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → ∀ (H : T.Modules)

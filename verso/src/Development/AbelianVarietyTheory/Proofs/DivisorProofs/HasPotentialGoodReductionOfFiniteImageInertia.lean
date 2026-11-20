@@ -17,9 +17,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[mem_inertia_iff]`. Use `⟨?_, h.2⟩` and prove the remaining obligations. Establish `h1` using `h.1`. Use extensionality with `x`. Use `conv_rhs => rw [← h1]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem restrictScalars_mem_inertia_of_mem {K L Ω : Type} [Field K] [Field L] [Field Ω] [Algebra K L]
     [Algebra L Ω] [Algebra K Ω] [IsScalarTower K L Ω] (V : ValuationSubring Ω) (σ : Ω ≃ₐ[L] Ω)
@@ -34,17 +34,15 @@ theorem restrictScalars_mem_inertia_of_mem {K L Ω : Type} [Field K] [Field L] [
   rfl
 
 /- English proof (translation)
-Introduce `hN R K Ω _ _ _ _ _ _ _ _ _ hs V hV A _ _ hA l _ hl hfin`. Use `haveI : Algebra.IsSeparable K Ω := hs.separable`. Use `haveI : IsSepClosed Ω := hs.sep_closed`. Use `haveI : IsProper A.hom := hA.proper`. Take `⟨L, hL, hfix⟩` from `GlobalTheory.T.exists_finite_extension_killing_finite_tateModule_image K Ω A inferInstance l _ hfin`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Set `W : ValuationSubring L` to `V.comap (algebraMap L Ω)`. Establish `hW : IsAbove R K W.toSubring`. Unfold `IsAbove at hV ⊢`. Rewrite using `[← hV]`. Use extensionality with `x`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Both sides reduce to the same expression. Use `haveI : IsDiscreteValuationRing W := GlobalTheory.T.isDiscreteValuationRing_of_isAbove_alt R K L W hW`. Establish `hr : (algebraMap W L).range = W.toSubring`. Use extensionality with `x`. Conclude with `⟨fun ⟨y, hy⟩ => hy ▸ y.2, fun hx => ⟨⟨x, hx⟩, rfl⟩⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hW' : IsAbove R K (algebraMap W L).range` using `hr ▸ hW`. Take `⟨hp, hm⟩` from `GlobalTheory.T.residue_perfect_and_char_alt R K L W hW'`. Take `⟨hab, hc⟩` from `GlobalTheory.T.isAbelianScheme_and_comm_baseChange_field K L A hA`. Use `haveI : IsSepClosure L Ω := ⟨inferInstance, Algebra.isSeparable_tower_top_of_isSeparable K L Ω⟩`. Establish `hV' : IsAbove W L V.toSubring`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `IsAbove`. Rewrite using `[hr]`. Both sides reduce to the same expression. Use `⟨L, W, inferInstance, inferInstance, hL, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, hW', ?_⟩` and prove the remaining obligations. Use `(hN.iff_tateUnramified hV' hab l (hm l hl)).2 fun σ hσ => ?_` and prove the remaining obligations.
-
-Rewrite using `[GlobalTheory.T.galoisRepresentationTateModule_baseChange_eq_one_iff K L Ω A l σ]`. Conclude with `hfix _ (restrictScalars_mem_inertia_of_mem V σ hσ) fun a ha => σ.commutes ⟨a, ha⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasPotentialGoodReduction_of_finite_image_inertia : NeronOggShafarevichSt → ∀ (R K Ω : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [PerfectField (ResidueField R)] [Field K] [Algebra R K] [IsFractionRing R K] [Field Ω] [Algebra K Ω] [IsSepClosure K Ω] (V : ValuationSubring Ω), IsAbove R K V.toSubring → ∀ (A : Over (Sp K)) [GrpObj A] [IsCommMonObj A], IsAbelianScheme A → ∀ (l : ℕ) [Fact l.Prime], (l : ResidueField R) ≠ 0 → (galTate A l '' (inertia K V : Set (Ω ≃ₐ[K] Ω))).Finite → HasPotentialGoodReduction R K A := by
   intro hN R K Ω _ _ _ _ _ _ _ _ _ hs V hV A _ _ hA l _ hl hfin

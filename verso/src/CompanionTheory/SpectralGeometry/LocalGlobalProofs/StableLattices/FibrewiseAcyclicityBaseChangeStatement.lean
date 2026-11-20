@@ -23,7 +23,7 @@ open GlobalTheory.CompanionTheory.PointSurjectivity
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.PointSurjectivity.fibAc_of_closed_fibres` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=CompanionTheory%2FSpectralGeometry%2FLocalGlobalProofs%2FStableLattices%2FFibrewiseAcyclicityBaseChange.lean&line=24#L24)
 -/

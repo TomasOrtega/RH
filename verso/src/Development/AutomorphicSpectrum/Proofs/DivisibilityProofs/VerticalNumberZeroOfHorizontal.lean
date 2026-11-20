@@ -9,13 +9,11 @@ open MvPolynomial GroundTheory.Heights₂.Heights.NumbersDVR GlobalTheory.Compan
 namespace GlobalTheory.CompanionTheory.Ar.Num
 
 /- English proof (translation)
-Unfold `GroundTheory.Heights₂.Heights.FieldNumbers.relDim`. Generalize the expression as in `ringKrullDim (MRing ι F ⧸ I) = a at h ⊢`. Proceed by induction on `a using WithBot.recBotCoe with`. Consider the case `bot => exact WithBot.bot_lt_coe _`. Consider the case `coe a`.
+Replace the relevant objects with their definitions. Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `a using ENat.recTopCoe with`. Consider the case `top`. It suffices to derive a contradiction. Establish `h' : (⊤ : ℕ∞) < ((n + Fintype.card K : ℕ) : ℕ∞)` using `by exact_mod_cast h`. Conclude with `not_top_lt h'`.
+Proceed by induction. Treat this case separately. It suffices to derive a contradiction. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `coe m`. Establish `h' : ((m : ℕ) : ℕ∞) < ((n + Fintype.card K : ℕ) : ℕ∞)` using `by exact_mod_cast h`. Establish `h'' : m < n + Fintype.card K` using `by exact_mod_cast h'`. Establish `hlt : (m : ℤ) - Fintype.card K < n` using `by omega`. Express the relevant statement in the definitionally equal form `(((((m : ℤ) - Fintype.card K : ℤ) : WithTop ℤ)) : WithBot (WithTop ℤ)) < (((n : ℤ) : WithTop ℤ) : WithBot (WithTop ℤ))`.
-
-Conclude with `hlt` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem relDim_lt_of_dim_lt {F : Type} [Field F] {K : Type} [Fintype K] [DecidableEq K]
     {ι : K → Type} (I : Ideal (MRing ι F)) (n : ℕ)
@@ -40,13 +38,13 @@ theorem relDim_lt_of_dim_lt {F : Type} [Field F] {K : Type} [Fintype K] [Decidab
       exact_mod_cast hlt
 
 /- English proof (translation)
-Proceed by induction on `a using WithBot.recBotCoe with`. Consider the case `bot => exact WithBot.bot_lt_coe _`. Consider the case `coe a`. Proceed by induction on `b using WithBot.recBotCoe with`. Consider the case `bot => simp at h₁`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `coe b`. Establish `h₁' : a + 1 ≤ b` using `by exact_mod_cast h₁`. Establish `h₂' : b + 1 ≤ ((n + 1 : ℕ) : ℕ∞)` using `by exact_mod_cast h₂`. Establish `h₃ : b ≤ (n : ℕ∞)`. Establish `: b + 1 ≤ (n : ℕ∞) + 1` using `by exact_mod_cast h₂'`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(ENat.add_le_add_iff_right ENat.one_ne_top).1 this`. Establish `h₄ : a < (n : ℕ∞)`. Use `lt_of_lt_of_le ?_ h₃` and prove the remaining obligations. Use `lt_of_lt_of_le ?_ h₁'` and prove the remaining obligations. Use `ENat.lt_add_one_iff ?_ |>.2 le_rfl` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Simplify using `at h₁'`. Substitute `h₁'` using the available equality. Simplify using `at h₃`. Conclude with `h₄` after adjusting the coercions.
+Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dim_lt_of_two_drops {a b : WithBot ℕ∞} {n : ℕ} (h₁ : a + 1 ≤ b)
     (h₂ : b + 1 ≤ ((n + 1 : ℕ) : WithBot ℕ∞)) : a < (n : WithBot ℕ∞) := by
@@ -72,13 +70,13 @@ theorem dim_lt_of_two_drops {a b : WithBot ℕ∞} {n : ℕ} (h₁ : a + 1 ≤ b
       exact_mod_cast h₄
 
 /- English proof (translation)
-Establish `hres : IsLocalRing.residue O ϖ = 0` using `(IsLocalRing.residue_eq_zero_iff ϖ).2 ((IsLocalRing.mem_maximalIdeal ϖ).2 hϖ.not_isUnit)`. Establish `hsp : specialIdeal (W ⊔ Ideal.span {(C ϖ : MRing ι O)}) = specialIdeal W`. Unfold `specialIdeal`. Rewrite using `[Ideal.map_sup, Ideal.map_span, Set.image_singleton, MvPolynomial.map_C, hres, map_zero]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hdim` using `SpecialQuotDim.full O ϖ hϖ K ι (W ⊔ Ideal.span {(C ϖ : MRing ι O)}) (Ideal.mem_sup_right (Ideal.subset_span rfl))`. Rewrite `hdim` using `[hsp]`. Rewrite using `[hdim]`. Establish `hne : Ideal.Quotient.mk W (C ϖ) ≠ 0` using `fun h => hW (Ideal.Quotient.eq_zero_iff_mem.1 h)`. Establish `h1` using `ringKrullDim_quotient_succ_le_of_nonZeroDivisor (mem_nonZeroDivisors_of_ne_zero hne)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he : ringKrullDim ((MRing ι O ⧸ W) ⧸ Ideal.span {Ideal.Quotient.mk W (C ϖ : MRing ι O)}) = ringKrullDim (MRing ι O ⧸ (W ⊔ Ideal.span {(C ϖ : MRing ι O)}))`. Use `ringKrullDim_eq_of_ringEquiv ?_` and prove the remaining obligations. Establish `hm : (Ideal.span {(C ϖ : MRing ι O)}).map (Ideal.Quotient.mk W) = Ideal.span {Ideal.Quotient.mk W (C ϖ : MRing ι O)}`. Rewrite using `[Ideal.map_span, Set.image_singleton]`. Conclude with `(Ideal.quotEquivOfEq hm.symm).trans (DoubleQuot.quotQuotEquivQuotSup _ _)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h1` using `[he]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem specialIdeal_dim_add_one_le {O : Type} [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] {ϖ : O} (hϖ : Irreducible ϖ) {K : Type} [Fintype K] [DecidableEq K]
@@ -109,13 +107,13 @@ theorem specialIdeal_dim_add_one_le {O : Type} [CommRing O] [IsDomain O]
   rwa [he] at h1
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ hϖ K _ _ ι _ P d hP a f hf hfP W hW hϖW l hl`. Establish `hPp : P.IsPrime` using `hP.multiProj.isPrime`. Unfold `divCycle at hW`. Use `split_ifs at hW with hW'`. Use `swap`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `absurd rfl hW`. Establish `hWmin` using `hW'.1`. Establish `hWp : W.IsPrime` using `hWmin.1.1`. Establish `hWm : IsMultiHomogIdeal W` using `MinimalPrimeMultiHomog.full O K ι _ W (SupSpanMultiHomog.full O K ι P f a hP.multiProj.multiHomog hf) hWmin`. Establish `hPW : P ≤ W` using `le_sup_left.trans hWmin.1.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfW : f ∈ W` using `hWmin.1.2 (Ideal.mem_sup_right (Ideal.subset_span rfl))`. Establish `hlt : P < W` using `lt_of_le_of_ne hPW (fun e => hfP (e ▸ hfW))`. Establish `hdrop` using `DimStrictDrop.full (MRing ι O) P W hlt`. Rewrite `hdrop` using `[hP.dim]`. Establish `hdrop' : ringKrullDim (MRing ι O ⧸ W) + 1 ≤ ((d + Fintype.card K + 1 : ℕ) : WithBot ℕ∞)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `e : d + 1 + Fintype.card K = d + Fintype.card K + 1` using `by omega`. Rewrite `hdrop` using `[e]`. Then use the resulting hypothesis. Establish `hdim` using `dim_lt_of_two_drops (specialIdeal_dim_add_one_le hϖ W hϖW) hdrop'`. Substitute `hl` using the available equality. Conclude with `(GroundTheory.Heights₂.Heights.FieldNumbers.IntNumZeroSlot.full _ K ι (specialIdeal W)).2 (SpecialIdealMultiHomog.full O K ι W hWm) _ _ (relDim_lt_of_dim_lt _ _ hdim)`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem horizontal_vNumL_eq_zero : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (ϖ : O), Irreducible ϖ → ∀ (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (P : Ideal (MRing ι O)) (d : ℕ), IsModelOver P d → ∀ (a : K → ℕ) (f : MRing ι O), IsMultiHomog f a → f ∉ P → ∀ W, divCycle P f W ≠ 0 → (C ϖ : MRing ι O) ∉ W → ∀ l : List (K → ℤ), l.length = d → vNumL W l = 0 := by
   intro O _ _ _ ϖ hϖ K _ _ ι _ P d hP a f hf hfP W hW hϖW l hl

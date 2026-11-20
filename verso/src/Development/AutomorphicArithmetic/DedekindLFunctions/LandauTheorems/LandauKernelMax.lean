@@ -7,9 +7,9 @@ noncomputable section
 namespace Deduction
 
 /- English proof (translation)
-Establish `h` using `Real.pow_div_factorial_le_exp (a * u) (mul_nonneg ha.le hu) k`. Establish `hak : 0 < a ^ k` using `pow_pos ha k`. Rewrite using `[le_div_iff₀ hak]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow, neg_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ Real.exp (a * u) * Real.exp (-(a * u)) := mul_le_mul_of_nonneg_right h (Real.exp_pos _).le`. Use `_ = 1 := by rw [← Real.exp_add]; simp`.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem landau_kernel_max (k : ℕ) {a u : ℝ} (ha : 0 < a) (hu : 0 ≤ u) :
     u ^ k * Real.exp (-a * u) / (k.factorial : ℝ) ≤ 1 / a ^ k := by

@@ -11,7 +11,7 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G Recip
 open scoped Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HodgeConjCh2.main | exact GlobalTheory.HodgeConjCh2.main | (intros; apply GlobalTheory.HodgeConjCh2.main <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.ch2HodgeVanishes_of_poincareDeRhamDuality : GlobalTheory.CovTop.HypothesesXH → Hypotheses2 → PoincareDeRhamDuality → GlobalTheory.IndefiniteRowSideFullHecke.ZeroSectionBase.Ch2HodgeVanishes := by
   first | exact @GlobalTheory.HodgeConjCh2.main | exact GlobalTheory.HodgeConjCh2.main | (intros; apply GlobalTheory.HodgeConjCh2.main <;> assumption)

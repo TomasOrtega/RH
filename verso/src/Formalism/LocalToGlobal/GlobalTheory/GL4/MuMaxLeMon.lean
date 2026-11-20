@@ -14,37 +14,35 @@ section Gen
 variable (K : Type) [Field K] [NumberField K] [StarRing K] [IsTotallyComplex K] {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → DomWeight n)
 
 /- English proof (translation)
-Establish `hX' : ∀ v : InfinitePlace K, IsUnit ((fun _ : InfinitePlace K => (monD lam)⁻¹) v).det` using `fun v => (Matrix.isUnit_nonsing_inv_det_iff).mpr (monD_det lam)`. Establish `hφ0 : φ ≠ 0`. Introduce and unpack `rfl`. Apply `hne` to reduce the goal to its premises. Rewrite using `[eq_bot_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `y hy`. Take `⟨x, -, rfl⟩` from `Submodule.mem_map.mp hy`. Simplify using the standard rewrite rules. Take `⟨L0, hL0⟩ : ∃ L0 : Submodule (𝓞 K) (MonI lam → K), L0 = ⨆ m ∈ (Finset.univ : Finset (MonI lam)), (𝓞 K ∙ (Pi.single m (1 : K) : MonI lam → K))` from `⟨_, rfl⟩`. Establish `hmemL0 : ∀ m, (Pi.single m (1 : K) : MonI lam → K) ∈ L0` using `fun m => by`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hL0]`. Conclude with `Submodule.mem_iSup_of_mem m (Submodule.mem_iSup_of_mem (Finset.mem_univ m) (Submodule.mem_span_singleton_self _))`. Establish `hmapT : N.map (φ.restrictScalars (𝓞 K)) ≤ idealSmul (I : Submodule (𝓞 K) K) L0`. Introduce `y hy`. Take `⟨x, hx, rfl⟩` from `Submodule.mem_map.mp hy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hdec : φ x = ∑ m, (φ x m) • (Pi.single m (1 : K) : MonI lam → K)`. Use extensionality with `m'`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Use `show φ x ∈ _`. Rewrite using `[hdec]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Submodule.sum_mem _ fun m _ => Formalism.LFunctionChainParameters.slopeLatticeData.mem_idealSmul (hint x hx m) (hmemL0 m)`. Establish `horth : ∀ s t : MonI lam, s ≠ t → Formalism.BranchingDeterminantCap.OrthAt (Pi.basisFun K (MonI lam)) (fun _ : InfinitePlace K => (monD lam)⁻¹) (𝓞 K ∙ (Pi.single s (1 : K) : MonI lam → K)) (𝓞 K ∙ (Pi.single t (1 : K) : MonI lam → K))`. Introduce `s t hst v x hx y hy`. Take `⟨r, rfl⟩` from `Submodule.mem_span_singleton.mp hx`. Take `⟨r', rfl⟩` from `Submodule.mem_span_singleton.mp hy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [majAt, monH_fcoord]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `m _`. Distinguish the cases in `hm : m = s`. Substitute `hm` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[Pi.single_apply, hst]`. Simplify using `[Pi.single_apply, hm]`. Establish `hline : ∀ m, muMaxDef (Pi.basisFun K (MonI lam)) (fun _ : InfinitePlace K => (monD lam)⁻¹) (𝓞 K ∙ (Pi.single m (1 : K) : MonI lam → K)) ≤ -Real.log c0`. Introduce `m`. Use `max_slope_line_neg_log _ _ hX' _ ?_ c0 hc0 fun v => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using the standard rewrite rules. Rewrite using `[monH_norm, Finset.sum_eq_single m (fun b _ hb => by simp [Pi.single_apply, hb]) (by simp)]`. Simplify using `using hc m`. Establish `hmain` using `Formalism.BranchingDeterminantCap.OrthogonalSumAlt.main (Pi.basisFun K (MonI lam)) (fun _ : InfinitePlace K => (monD lam)⁻¹) hX' (fun m => 𝓞 K ∙ (Pi.single m (1 : K) : MonI lam → K)) (fun m => Submodule.fg_span_singleton _) horth Finset.univ`. Rewrite `hmain` using `[← hL0]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hL0ne : L0 ≠ ⊥`. Introduce `h`. Apply `hne` to reduce the goal to its premises. Rewrite using `[eq_bot_iff]`. Introduce `y hy`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨x, -, rfl⟩` from `Submodule.mem_map.mp hy`. Establish `h1 : ∀ m, (Pi.single m (1 : K) : MonI lam → K) = 0` using `fun m => by`. Use `hmemL0 m` as an intermediate fact. Rewrite `this` using `[h, Submodule.mem_bot]`. Then use the resulting hypothesis. Rewrite using `[Submodule.mem_bot]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `m`. Conclude with `absurd (h1 m) (by simp)`. Establish `hL0mu : muMaxDef (Pi.basisFun K (MonI lam)) (fun _ : InfinitePlace K => (monD lam)⁻¹) L0 ≤ -Real.log c0`. Establish `h2` using `hmain.2.2.2 ((-Real.log c0 - slopeNormalisingConstant K) / 2) (fun m _ _ => by`. Use `hline m` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite `this` using `[frameB_muMaxDef]`. Use the proof step `linarith) hL0ne`. Rewrite using `[frameB_muMaxDef]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hT` using `Formalism.LFunctionChainParameters.slopeLatticeData.muMaxDef_fractional_le (Pi.basisFun K (MonI lam)) (fun _ : InfinitePlace K => (monD lam)⁻¹) hX' hmain.1 hL0ne hI0`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hS` using `((Formalism.HN.slopeIneqMean K V κ (MonI lam → K) (MonI lam) b X (Pi.basisFun K (MonI lam)) (fun _ : InfinitePlace K => (monD lam)⁻¹) hX hX' φ N hN hne).2 (idealSmul (I : Submodule (𝓞 K) K) L0) (Formalism.LFunctionChainParameters.slopeLatticeData.idealSmul_fg I hmain.1) hmapT).2 …`. Establish `hht : htMap b X (Pi.basisFun K (MonI lam)) (fun _ : InfinitePlace K => (monD lam)⁻¹) φ ≤ 1 / (nPl K : ℝ) * ∑ v, Real.log (B v)`. Unfold `htMap`. Apply `mul_le_mul_of_nonneg_left _ (by positivity)` to reduce the goal to its premises. Apply `Finset.sum_le_sum` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v _`. Establish `hpos` using `Formalism.HN.PlaceOperatorNorms.opNormAt_pos b X (Pi.basisFun K (MonI lam)) (fun _ : InfinitePlace K => (monD lam)⁻¹) hX hX' v φ hφ0`. Establish `hle : opNormAt b X (Pi.basisFun K (MonI lam)) (fun _ : InfinitePlace K => (monD lam)⁻¹) v φ ≤ √(B v)`. Apply `Formalism.L2.Geo.ExtensionFiltration.opNormAt_le_of_points b X _ _ hX φ v _ (Real.sqrt_nonneg _)` to reduce the goal to its premises. Introduce `f`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h0 : 0 ≤ normAt (Pi.basisFun K (MonI lam)) (fun _ : InfinitePlace K => (monD lam)⁻¹) v (φ f)` using `Real.sqrt_nonneg _`. Establish `h1 : 0 ≤ normAt b X v f` using `Real.sqrt_nonneg _`. Use `Real.sqrt_le_sqrt (hnorm v f)` as an intermediate fact. Rewrite `this` using `[Real.sqrt_sq h0, Real.sqrt_mul (hB v).le, Real.sqrt_sq h1]`. Then use the resulting hypothesis. Apply `Real.log_le_log (by positivity)` to reduce the goal to its premises.
-
-Combine the equalities or inequalities in the displayed calculation. Combine the linear relations using `[hS, hT, hL0mu, hht]`.
+Chain the equalities or inequalities of the calculation. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem muMax_le_mon {V κ : Type} [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] [Fintype κ] [DecidableEq κ]
     (b : Basis κ K V) (X : InfinitePlace K → Matrix κ κ ℂ) (hX : ∀ v, IsUnit (X v).det)

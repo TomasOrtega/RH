@@ -13,7 +13,7 @@ namespace GlobalTheory.CovTop.VolUp.Proj
 variable {p q r : ℕ}
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;>`. Simplify using `[Formalism.UG.Jpq, Matrix.diagonal_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Jpq_eq_diagonal (p q : ℕ) :
     Formalism.UG.Jpq p q = Matrix.diagonal (Sum.elim (fun _ => (1 : ℂ)) (fun _ => -1)) := by
@@ -23,7 +23,7 @@ theorem Jpq_eq_diagonal (p q : ℕ) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[Jpq_eq_diagonal, Matrix.det_diagonal]`. Use `Finset.prod_ne_zero_iff.2 fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `rcases i with i | i <;> simp`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem det_Jpq_ne (p q : ℕ) : (Formalism.UG.Jpq p q).det ≠ 0 := by
   rw [Jpq_eq_diagonal, Matrix.det_diagonal]
@@ -31,7 +31,7 @@ theorem det_Jpq_ne (p q : ℕ) : (Formalism.UG.Jpq p q).det ≠ 0 := by
   rcases i with i | i <;> simp
 
 /- English proof (translation)
-Establish `h` using `congrArg Matrix.det (GlobalTheory.UpqExpChart.mat_unitary u)`. Rewrite `h` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_conjTranspose]`. Establish `hJ` using `det_Jpq_ne p q`. Apply `mul_left_cancel₀ hJ` to reduce the goal to its premises. Take the linear combination `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem star_det_mul_det (u : UpqT p q) : star (UpqT.mat u).det * (UpqT.mat u).det = 1 := by
   have h := congrArg Matrix.det (GlobalTheory.UpqExpChart.mat_unitary u)
@@ -41,7 +41,7 @@ theorem star_det_mul_det (u : UpqT p q) : star (UpqT.mat u).det * (UpqT.mat u).d
   linear_combination h
 
 /- English proof (translation)
-Introduce `h`. Use `star_det_mul_det u` as an intermediate fact. Rewrite `this` using `[h, mul_zero]`. Conclude with `zero_ne_one this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_mat_ne (u : UpqT p q) : (UpqT.mat u).det ≠ 0 := by
   intro h
@@ -50,9 +50,9 @@ theorem det_mat_ne (u : UpqT p q) : (UpqT.mat u).det ≠ 0 := by
   exact zero_ne_one this
 
 /- English proof (translation)
-Rewrite using `[Jpq_eq_diagonal, dg, Matrix.diagonal_conjTranspose, Matrix.diagonal_mul_diagonal, Matrix.diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = a₀`. Substitute `h` using the available equality.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `only [Pi.star_apply, Function.update_self]`. Take the linear combination `(Sum.elim (fun _ => (1 : ℂ)) (fun _ => -1) i) * hz`. Simplify using `[Function.update_of_ne h]`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules.
 -/
 theorem dg_unitary (a₀ : Fin p ⊕ Fin q) (z : ℂ) (hz : star z * z = 1) :
     (dg a₀ z)ᴴ * Formalism.UG.Jpq p q * dg a₀ z = Formalism.UG.Jpq p q := by
@@ -67,15 +67,15 @@ theorem dg_unitary (a₀ : Fin p ⊕ Fin q) (z : ℂ) (hz : star z * z = 1) :
   · simp [Function.update_of_ne h]
 
 /- English proof (translation)
-Rewrite using `[sMat, Matrix.det_mul, det_dg, mul_inv_cancel₀ (det_mat_ne u)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem det_sMat (a₀ : Fin p ⊕ Fin q) (u : UpqT p q) : (sMat a₀ u).det = 1 := by
   rw [sMat, Matrix.det_mul, det_dg, mul_inv_cancel₀ (det_mat_ne u)]
 
 /- English proof (translation)
-Establish `hz : star (UpqT.mat u).det⁻¹ * (UpqT.mat u).det⁻¹ = 1`. Rewrite using `[star_inv₀, ← mul_inv, star_det_mul_det, inv_one]`. Establish `h1` using `GlobalTheory.UpqExpChart.mat_unitary u`. Establish `h2` using `dg_unitary a₀ _ hz`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [sMat, Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = _ := by rw [h1, h2]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sMat_unitary (a₀ : Fin p ⊕ Fin q) (u : UpqT p q) :
     (sMat a₀ u)ᴴ * Formalism.UG.Jpq p q * sMat a₀ u = Formalism.UG.Jpq p q := by
@@ -89,7 +89,7 @@ theorem sMat_unitary (a₀ : Fin p ⊕ Fin q) (u : UpqT p q) :
     _ = _ := by rw [h1, h2]
 
 /- English proof (translation)
-Unfold `sMat dg`. Use `GlobalTheory.UpqExpChart.continuous_mat.matrix_mul (Continuous.matrix_diagonal ?_)` and prove the remaining obligations. Conclude with `continuous_const.update a₀ (GlobalTheory.UpqExpChart.continuous_mat.matrix_det.inv₀ det_mat_ne)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_sMat (a₀ : Fin p ⊕ Fin q) : Continuous (sMat a₀ : UpqT p q → _) := by
   unfold sMat dg
@@ -98,7 +98,7 @@ theorem continuous_sMat (a₀ : Fin p ⊕ Fin q) : Continuous (sMat a₀ : UpqT 
     (GlobalTheory.UpqExpChart.continuous_mat.matrix_det.inv₀ det_mat_ne)
 
 /- English proof (translation)
-Establish `h : UpqT.mat (u * v) = UpqT.mat u * UpqT.mat v` using `rfl`. Rewrite using `[sMat, sMat, h, Matrix.det_mul, hu, one_mul, Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem sMat_mul (a₀ : Fin p ⊕ Fin q) (u v : UpqT p q) (hu : (UpqT.mat u).det = 1) :
     sMat a₀ (u * v) = UpqT.mat u * sMat a₀ v := by
@@ -106,9 +106,9 @@ theorem sMat_mul (a₀ : Fin p ⊕ Fin q) (u v : UpqT p q) (hu : (UpqT.mat u).de
   rw [sMat, sMat, h, Matrix.det_mul, hu, one_mul, Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `h1 : (B * S * A).submatrix e e = B.submatrix e id * S * A.submatrix id e`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply]`. Establish `h2 : A.submatrix id e * B.submatrix e id = 1`. Rewrite using `[Matrix.submatrix_mul_equiv, hAB]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[← Matrix.det_submatrix_equiv_self e, h1, Matrix.det_mul_comm, ← Matrix.mul_assoc, h2, Matrix.one_mul]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_conj {ι : Type} [Fintype ι] [DecidableEq ι] (e : ι ≃ Fin r) (A : Matrix ι (Fin r) ℂ)
     (B : Matrix (Fin r) ι ℂ) (hAB : A * B = 1) (S : Matrix ι ι ℂ) : (B * S * A).det = S.det := by
@@ -142,7 +142,7 @@ theorem gl_val (u : UpqT p q) :
     (gl a₀ A B hAB hBA u : Matrix (Fin r) (Fin r) ℂ) = B * sMat a₀ u * A := rfl
 
 /- English proof (translation)
-Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `(continuous_const.matrix_mul (continuous_sMat a₀)).matrix_mul continuous_const`. Conclude with `(continuous_const.matrix_mul (continuous_sMat a₀).matrix_adjugate).matrix_mul continuous_const`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_gl : Continuous (gl a₀ A B hAB hBA) := by
   refine Units.continuous_iff.2 ⟨?_, ?_⟩
@@ -150,18 +150,18 @@ theorem continuous_gl : Continuous (gl a₀ A B hAB hBA) := by
   · exact (continuous_const.matrix_mul (continuous_sMat a₀).matrix_adjugate).matrix_mul continuous_const
 
 /- English proof (translation)
-Rewrite using `[gl_val, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hAB, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_gl (u : UpqT p q) :
     A * (gl a₀ A B hAB hBA u : Matrix (Fin r) (Fin r) ℂ) = sMat a₀ u * A := by
   rw [gl_val, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hAB, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `hm` using `mul_gl a₀ A B hAB hBA u`. Generalize the expression as in `(gl a₀ A B hAB hBA u : Matrix (Fin r) (Fin r) ℂ) = g at hm ⊢`. Establish `h : gᴴ * (-Hᵀ) * g = -Hᵀ`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hH]`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Aᴴ * ((sMat a₀ u)ᴴ * Formalism.UG.Jpq p q * sMat a₀ u) * A := by`. Rewrite using `[hm]`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = _ := by rw [sMat_unitary, hH]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[Matrix.mul_neg, Matrix.neg_mul, neg_inj]`. Establish `h'` using `congrArg Matrix.transpose h`. Rewrite `h'` using `[Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose, ← Matrix.mul_assoc]`. Conclude with `h'`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gl_keeps (H : Matrix (Fin r) (Fin r) ℂ) (hH : Aᴴ * Formalism.UG.Jpq p q * A = -Hᵀ) (u : UpqT p q) :
     (gl a₀ A B hAB hBA u : Matrix (Fin r) (Fin r) ℂ)ᵀ * H *
@@ -182,21 +182,19 @@ theorem gl_keeps (H : Matrix (Fin r) (Fin r) ℂ) (hH : Aᴴ * Formalism.UG.Jpq 
 end
 
 /- English proof (translation)
-Introduce `E _ _ _ r κ _ p q Ψ G x σ A e a₀ hI`. Set `B : ∀ ρ, Matrix (Fin r) (Fin (p ρ) ⊕ Fin (q ρ)) ℂ` to `fun ρ => mat x (σ ρ) * (permM (e ρ))ᵀ`. Establish `hAB : ∀ ρ, A ρ * B ρ = 1` using `fun ρ => by`. Simplify using `only [B]`. Rewrite using `[← Matrix.mul_assoc, (hI ρ).2, permM_mul_transpose]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hBA : ∀ ρ, B ρ * A ρ = 1` using `fun ρ => (Matrix.mul_eq_one_comm_of_equiv (e ρ)).1 (hAB ρ)`. Set `F : (∀ ρ, UpqT (p ρ) (q ρ)) → κ → GL (Fin r) ℂ` to `fun b ρ => gl (a₀ ρ) (A ρ) (B ρ) (hAB ρ) (hBA ρ) (b ρ)`. Establish `hF : ∀ b ρ, F b (σ.symm (σ ρ)) = gl (a₀ ρ) (A ρ) (B ρ) (hAB ρ) (hBA ρ) (b ρ)` using `fun b ρ => by`. Rewrite using `[Equiv.symm_apply_apply]`. Establish `hmem : ∀ b, (fun τ => F b (σ.symm τ)) ∈ realSU Ψ G` using `fun b => by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[DensOne.mem_realSU_iff]`. Introduce `τ`. Take `⟨ρ, rfl⟩` from `σ.surjective τ`. Simplify using `only [hF]`. Conclude with `⟨gl_keeps _ _ _ _ _ _ (hI ρ).1 _, by rw [gl_val, det_conj (e ρ) _ _ (hAB ρ), det_sMat]⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Use `⟨fun b => ⟨_, hmem b⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `Continuous.subtype_mk (continuous_pi fun τ => ?_) _` and prove the remaining obligations. Conclude with `(continuous_gl _ _ _ _ _).comp (continuous_apply _)`. Introduce `b ρ`. Simplify using `only [hF]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `mul_gl _ _ _ _ _ _`. Introduce `s b₀ hs b`. Use `Subtype.ext (funext fun τ => ?_)` and prove the remaining obligations. Take `⟨ρ, rfl⟩` from `σ.surjective τ`. Apply `Units.ext` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `((F (b₀ * b) (σ.symm (σ ρ)) : GL (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ) = (s.1 (σ ρ) : GL (Fin r) ℂ) * ((F b (σ.symm (σ ρ)) : GL (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ)`. Establish `h1 : ((s.1 (σ ρ) : GL (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ) = B ρ * UpqT.mat (b₀ ρ) * A ρ`. Rewrite using `[Matrix.mul_assoc, hs ρ, ← Matrix.mul_assoc, hBA, Matrix.one_mul]`. Establish `h2 : (UpqT.mat (b₀ ρ)).det = 1`. Rewrite using `[← det_conj (e ρ) _ _ (hAB ρ), ← h1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Conclude with `(((DensOne.mem_realSU_iff Ψ G _).1 s.2) (σ ρ)).2`. Rewrite using `[hF, hF, gl_val, gl_val, h1, Pi.mul_apply, sMat_mul _ _ _ h2]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hAB]`. Simplify using `only [Matrix.mul_assoc, Matrix.mul_one, Matrix.one_mul]`.
-
-Use `_ = _ := by simp only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_proj : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (κ : Type) [Fintype κ] (p q : κ → ℕ) (Ψ : Finset (E →+* ℂ)) (G : Matrix (Fin r) (Fin r) E) (x : Frame Ψ r) (σ : κ ≃ Ψ) (A : ∀ ρ, Matrix (Fin (p ρ) ⊕ Fin (q ρ)) (Fin r) ℂ) (e : ∀ ρ, Fin (p ρ) ⊕ Fin (q ρ) ≃ Fin r) (a₀ : ∀ ρ, Fin (p ρ) ⊕ Fin (q ρ)), IsIdent p q Ψ G x σ A e → ∃ π : (∀ ρ, UpqT (p ρ) (q ρ)) → realSU Ψ G, Continuous π ∧ IsProj p q Ψ G σ A a₀ π ∧ (∀ (s : realSU Ψ G) (b₀ : ∀ ρ, UpqT (p ρ) (q ρ)), (∀ ρ, UpqT.mat (b₀ ρ) * A ρ = A ρ * ((s.1 (σ ρ) : GL (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ)) → ∀ b, π (b₀ * b) = s * π b) := by
   intro E _ _ _ r κ _ p q Ψ G x σ A e a₀ hI

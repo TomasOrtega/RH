@@ -13,25 +13,23 @@ open scoped Real ContDiff
 namespace GlobalTheory.TorsionForm.FlatAcyc
 
 /- English proof (translation)
-Establish `hf1 : Differentiable ℝ f` using `hf.differentiable (by norm_num)`. Establish `hψ1 : Differentiable ℝ ψ` using `hψ.differentiable (by norm_num)`. Establish `hf01 : ∀ v, Differentiable ℝ (fun z => d01 f z v)` using `fun v => (contDiff_d01 hf v).differentiable one_ne_zero`. Establish `hf10 : ∀ v, Differentiable ℝ (fun z => d10 f z v)` using `fun v => (contDiff_d10 hf v).differentiable one_ne_zero`. Establish `hψ10 : ∀ v, Differentiable ℝ (fun z => d10 ψ z v)` using `fun v => (contDiff_d10 hψ v).differentiable one_ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : dbarAdjF G ψ f = fun z' => -dbarF f z'`. Use function extensionality and compare the values at `z'`. Conclude with `eq_neg_of_add_eq_zero_right (hharm z')`. Establish `hD : dbarF f = fun z' => -dbarAdjF G ψ f z'`. Use function extensionality and compare the values at `z'`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Conclude with `eq_neg_of_add_eq_zero_left (hharm z')`. Establish `h1 : dbarF (dbarAdjF G ψ f) z = 0`. Rewrite using `[hA, dbarF_neg, GlobalTheory.T.dbar_squared_eq_zero f hf01 (d01_d01_comm_of_contDiff hf), neg_zero]`. Establish `h2 : dbarAdjF G ψ (dbarF f) z = 0`. Rewrite using `[hD, dbarAdjF_neg, GlobalTheory.T.dbarAdjF_dbarAdjF_eq_zero_of_d10_symm G ψ f hf1 hψ1 hf10 hψ10 (dholo_dholo_comm hf) (dholo_dholo_comm hψ), neg_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `GlobalTheory.T.mixed_dbar_partial_commutation G ψ f hf1 hψ1 hf01 hf10 hψ10 (dbar_dholo_comm hf) z`. Rewrite `h3` using `[h1, h2, add_zero (0 : Ext (0 + 0 + g))]`. Establish `h4` using `congrFun h3 S`. Establish `hK : ∀ a c d, G a c * d01 (fun z' => d10 ψ z' (ev a)) z (ev d) = -(π : ℂ) * (K a d * G a c)`. Introduce `a c d`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[dbar_dholo_comm hψ, hdd]`. Expand and normalize the polynomial expressions, which then agree. Establish `hKG' : ∀ d c, ∑ a, K a d * G a c = if d = c then 2 else 0`. Introduce `d c`. Use `congrFun (congrFun hKG d) c` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply] at this`. Rewrite using `[this]`. Simplify using `[Matrix.ofNat_apply, Matrix.one_apply]`. Establish `hB : (∑ a, ∑ c, ∑ d, (G a c * d01 (fun z' => d10 ψ z' (ev a)) z (ev d)) • wedge (dzb 0 d) (contr (dzb 0 c) (f z))) S = -(2 * π * S.card * f z S)`. Simplify using `only [hK, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : ∀ (T : Fin g → Fin g → Fin g → ℂ), ∑ a, ∑ c, ∑ d, T a c d = ∑ c, ∑ d, ∑ a, T a c d`. Introduce `T`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl (fun c _ => Finset.sum_comm)`. Use `(e _).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : ∀ c d, ∑ a, -(π : ℂ) * (K a d * G a c) * wedge (dzb 0 d) (contr (dzb 0 c) (f z)) S = -(π : ℂ) * (if d = c then 2 else 0) * wedge (dzb 0 d) (contr (dzb 0 c) (f z)) S`. Introduce `c d`. Rewrite using `[← Finset.sum_mul, ← Finset.mul_sum, hKG']`. Simplify using `only [e2, mul_ite, ite_mul, mul_zero, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[← Finset.mul_sum, sum_wedge_contr_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `h4` using `[Pi.sub_apply, hB, Pi.neg_apply]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, Pi.add_apply, smul_eq_mul, Pi.zero_apply] at h4`. Establish `e1 : ∀ z' v, d01 (fun z'' => f z'' S) z' v = d01 f z' v S` using `fun z' v => dbar_apply_component (hf1 z') S v`. Establish `e3 : ∀ v w, d10 (fun z' => d01 f z' v S) z w = d10 (fun z' => d01 f z' v) z w S` using `fun v w => dz_apply_component ((hf01 v) z) S w`.
-
-Simplify using `only [e1, e3]`. Take the linear combination `h4`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem harmonic_weitzenboeck {g : ℕ} (G K : Matrix (Fin g) (Fin g) ℂ) (hKG : Kᵀ * G = 2)
     (ψ : (Fin g → ℂ) → ℂ) (hψ : ContDiff ℝ 2 ψ)

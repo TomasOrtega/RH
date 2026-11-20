@@ -19,12 +19,12 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} [StarRi
 def jp : JetPts t.G x d := (famEquiv x t.G d).symm g.x
 
 /- English proof (translation)
-The claim follows from `Equiv.apply_symm_apply _ _`.
+A detailed English derivation is pending.
 -/
 theorem fam_jp : famEquiv x t.G d (jp g) = g.x := Equiv.apply_symm_apply _ _
 
 /- English proof (translation)
-The claim follows from `(congrFun (fam_jp g) m).symm`.
+A detailed English derivation is pending.
 -/
 theorem x_eq (m : ℕ) : g.x m = homAt x (jIn S d m) ≫ jp g m := (congrFun (fam_jp g) m).symm
 
@@ -34,7 +34,7 @@ Both sides reduce to the same expression.
 theorem jp_eq (m : ℕ) : jp g m = homAt x (jOut S d m) ≫ g.x m := rfl
 
 /- English proof (translation)
-The claim follows from `(zero_iff t x (jp g) m).1 (by rw [fam_jp]; exact g.chart.zero m)`.
+A detailed English derivation is pending.
 -/
 theorem jp_zero (m : ℕ) : algMap x (jetAug : Jet S (Fin d) m →ₐ[S] S) ≫ jp g m = 1 :=
   (zero_iff t x (jp g) m).1 (by rw [fam_jp]; exact g.chart.zero m)
@@ -42,9 +42,9 @@ theorem jp_zero (m : ℕ) : algMap x (jetAug : Jet S (Fin d) m →ₐ[S] S) ≫ 
 def gd : (Fin d → S) →ₗ[S] TanM x t.G := dif x (jp g 1) (jp_zero g 1)
 
 /- English proof (translation)
-Establish `h` using `(tan_iff t x (jp g) (jp_zero g 1) (g.tg l) (fun j => if l = j then 1 else 0)).2 (by rw [fam_jp]; exact g.chart.tan l)`. Establish `e : (fun j => if l = j then (1 : S) else 0) = Pi.single l 1`. Use function extensionality and compare the values at `j`. Simplify using `[Pi.single_apply, eq_comm]`. Rewrite `h` using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem tg_eq (l : Fin d) : g.tg l = (tv (gd g (Pi.single l 1))).left := by
   have h := (tan_iff t x (jp g) (jp_zero g 1) (g.tg l) (fun j => if l = j then 1 else 0)).2
@@ -55,9 +55,9 @@ theorem tg_eq (l : Fin d) : g.tg l = (tv (gd g (Pi.single l 1))).left := by
   exact h
 
 /- English proof (translation)
-Establish `e : g.tg = fun i => (tv (gd g (Pi.single ((Equiv.refl (Fin d)) i) 1))).left` using `funext (tg_eq g)`. Establish `e₂ : ∑ i, a i • gd g (Pi.single i 1) = gd g a`. Simplify using `only [← map_smul, ← map_sum]`. Use `congr 1`. Use function extensionality and compare the values at `k`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[Pi.single_apply]`. Rewrite using `[e, ← e₂]`. Conclude with `comb_iff_sum t x (Equiv.refl _) (fun i => gd g (Pi.single i 1)) a w`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comb_iff (a : Fin d → S) (w : Sp (DualNumber S) ⟶ t.G.left) :
     IsCombAtG t x g.tg a w ↔ (tv (gd g a)).left = w := by
@@ -70,7 +70,7 @@ theorem comb_iff (a : Fin d → S) (w : Sp (DualNumber S) ⟶ t.G.left) :
   exact comb_iff_sum t x (Equiv.refl _) (fun i => gd g (Pi.single i 1)) a w
 
 /- English proof (translation)
-Rewrite using `[Function.bijective_iff_existsUnique]`. Introduce `W`. Use `(existsUnique_congr fun a => ?_).1 (g.basis _ (isTanAtG_of _ (tv_zero' W)))` and prove the remaining obligations. Rewrite using `[comb_iff]`. Conclude with `⟨fun h => tv_injective (Over.OverMorphism.ext h), fun h => by rw [h]⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem gd_bij : Function.Bijective (gd g) := by
   rw [Function.bijective_iff_existsUnique]
@@ -80,16 +80,16 @@ theorem gd_bij : Function.Bijective (gd g) := by
   exact ⟨fun h => tv_injective (Over.OverMorphism.ext h), fun h => by rw [h]⟩
 
 /- English proof (translation)
-The claim follows from `param_of_dif_bijective t.semi.smooth (fun m => (trunc_iff t x (jp g) m).1 (by rw [fam_jp]; exact g.chart.trunc m)) (jp_zero g) (gd_bij g)`.
+A detailed English derivation is pending.
 -/
 theorem jp_param : IsFormalParam t.G x (jp g) :=
   param_of_dif_bijective t.semi.smooth
     (fun m => (trunc_iff t x (jp g) m).1 (by rw [fam_jp]; exact g.chart.trunc m)) (jp_zero g) (gd_bij g)
 
 /- English proof (translation)
-Take `⟨f, hf, hu⟩` from `(jp_param g).2.2 m B I hI y hy`. Use `⟨f.comp (jOut S d m), ?_, fun χ hχ => ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[← hcomp, ← jp_eq]`. Conclude with `hf.symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `hu (χ.comp (jIn S d m)) (by beta_reduce` as an intermediate fact. Rewrite using `[algMap_eq, ← hcomp, ← x_eq]`. Conclude with `hχ.symm)`. Rewrite using `[← this, AlgHom.comp_assoc, jIn_jOut, AlgHom.comp_id]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coord_unique {m : ℕ} {B : Type} [CommRing B] [Algebra S B] (I : Ideal B) (hI : I ^ (m + 1) = ⊥)
     (y : overAt x B ⟶ t.G) (hy : homAt x (Ideal.Quotient.mkₐ S I) ≫ y = 1) :
@@ -104,9 +104,9 @@ theorem coord_unique {m : ℕ} {B : Type} [CommRing B] [Algebra S B] (I : Ideal 
     rw [← this, AlgHom.comp_assoc, jIn_jOut, AlgHom.comp_id]
 
 /- English proof (translation)
-Establish `e : Ideal.Quotient.mkₐ S (RingHom.ker aug) = (Algebra.ofId S _).comp aug`. Use `AlgHom.ext fun r => ?_` and prove the remaining obligations. Use `show Ideal.Quotient.mk _ r = Ideal.Quotient.mk _ (algebraMap S B (aug r))`. Rewrite using `[Ideal.Quotient.eq, RingHom.mem_ker, map_sub, AlgHom.commutes]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨χ, hχ, hu⟩` from `coord_unique g _ hI y (by rw [e, ← hcomp, hy, MonObj.comp_one])`. Use `⟨χ, ⟨?_, hχ⟩, fun χ' h => hu χ' h.2⟩` and prove the remaining obligations. Conclude with `(coord_unique g (m := m) (B := S) ⊥ (Ideal.bot_pow (by omega)) 1 (MonObj.comp_one _)).unique (by rw [← hcomp, ← hχ, hy]) (g.chart.zero m).symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem coord_aug {m : ℕ} {B : Type} [CommRing B] [Algebra S B] (aug : B →ₐ[S] S)
     (hI : RingHom.ker aug ^ (m + 1) = ⊥) (y : overAt x B ⟶ t.G) (hy : homAt x aug ≫ y = 1) :
@@ -122,13 +122,13 @@ theorem coord_aug {m : ℕ} {B : Type} [CommRing B] [Algebra S B] (aug : B →�
     (by rw [← hcomp, ← hχ, hy]) (g.chart.zero m).symm
 
 /- English proof (translation)
-The claim follows from `Chart.ker_jetAug_pow (R := S) J m`.
+A detailed English derivation is pending.
 -/
 theorem ker_aug_pow (J : Type) (m : ℕ) : RingHom.ker (jetAug : Jet S J m →ₐ[S] S) ^ (m + 1) = ⊥ :=
   Chart.ker_jetAug_pow (R := S) J m
 
 /- English proof (translation)
-Use `(existsUnique_congr fun χ => and_congr_left fun _ => ?_).1 (coord_aug g jetAug (ker_aug_pow J m) y hy)` and prove the remaining obligations. Conclude with `⟨fun h q => (AlgHom.congr_fun h (z m q)).trans (jetAug_z m q), fun h => jext fun q => (h q).trans (jetAug_z m q).symm⟩`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 -/
 theorem coord_jet (J : Type) (m : ℕ) (y : overAt x (Jet S J m) ⟶ t.G)
     (hy : homAt x (jetAug : Jet S J m →ₐ[S] S) ≫ y = 1) :
@@ -139,13 +139,13 @@ theorem coord_jet (J : Type) (m : ℕ) (y : overAt x (Jet S J m) ⟶ t.G)
     fun h => jext fun q => (h q).trans (jetAug_z m q).symm⟩
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C r`. Establish `: ∀ s : κ, (MvPolynomial.C r : MvPolynomial κ S).coeff (Finsupp.single s 1) = 0` using `fun s => by`. Rewrite using `[MvPolynomial.coeff_C, if_neg (Finsupp.single_ne_zero.2 one_ne_zero).symm]`. Simplify using `[this, TrivSqZeroExt.algebraMap_eq_inl]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `add p q hp hq`. Rewrite using `[map_add, hp, hq]`. Apply the tactic sequence `ext <;> simp [add_mul, Finset.sum_add_distrib]`. Consider the case `mul_X p n hp`. Establish `: ∀ s : κ, (p * MvPolynomial.X n).coeff (Finsupp.single s 1) = if s = n then MvPolynomial.constantCoeff p else 0` using `fun s => by`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[MvPolynomial.coeff_mul_X']`. Distinguish the cases in `h : s = n`. Substitute `h` using the available equality. Simplify using `[MvPolynomial.constantCoeff_eq]`. Simplify using `[h, Ne.symm h]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_mul, hp, MvPolynomial.aeval_X]`. Apply the tactic sequence `ext <;> simp [this, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem aeval_inr {κ : Type} [Fintype κ] [DecidableEq κ] (c : κ → S) (P : MvPolynomial κ S) :
     MvPolynomial.aeval (fun s => (TrivSqZeroExt.inr (c s) : DualNumber S)) P =
@@ -170,11 +170,11 @@ theorem aeval_inr {κ : Type} [Fintype κ] [DecidableEq κ] (c : κ → S) (P : 
     ext <;> simp [this, mul_comm]
 
 /- English proof (translation)
-Establish `hT : ∀ (c : Fin d → S) (P : MvPolynomial (Fin 1 × Fin d) S), ((jetVec c).comp (jOut S d 1)) (Ideal.Quotient.mk _ P) = MvPolynomial.aeval (fun s : Fin 1 × Fin d => (TrivSqZeroExt.inr (c s.2) : DualNumber S)) P` using `fun c P => by`. Establish `: ((jetVec c).comp (jOut S d 1)).comp (Ideal.Quotient.mkₐ S _) = MvPolynomial.aeval (fun s : Fin 1 × Fin d => (TrivSqZeroExt.inr (c s.2) : DualNumber S))` using `MvPolynomial.algHom_ext fun s => by`. Rewrite using `[MvPolynomial.aeval_X]`. Use `Eq.trans ?_ (jetVec_z_one c s.2)` and prove the remaining obligations. Conclude with `congrArg (jetVec c) (jetMap_z (S := S) 1 (fun p : Fin 1 × Fin d => MvPolynomial.X p.2) (fun _ => X_mem_orig _) s)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `AlgHom.congr_fun this P`. Use `jext fun p => ?_` and prove the remaining obligations. Rewrite using `[AlgHom.comp_apply, jetSubstP, jetMap_z, hT, hT, map_sub, aeval_inr, MvPolynomial.aeval_X, MvPolynomial.aeval_C]`. Establish `: ∀ s : Fin 1 × Fin d, (psTrunc 1 (φ p.2)).coeff (Finsupp.single s 1) = MvPowerSeries.coeff (Finsupp.single s 1) (φ p.2)` using `fun s => by`. Rewrite using `[FBIdJet.psTrunc_eq, MvPowerSeries.coeff_truncTotal _ (by simp)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Simplify using `only [this, Fintype.sum_prod_type, Finset.univ_unique, Finset.sum_singleton]`. Use `ext`. Simplify using `[TrivSqZeroExt.algebraMap_eq_inl]`. Simplify using `[lin, Matrix.mulVec, dotProduct, TrivSqZeroExt.algebraMap_eq_inl]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem vec_subst (φ : Germ.Pt S 1 d) (c : Fin d → S) :
     ((jetVec c).comp (jOut S d 1)).comp (jetSubstP 1 fun p : Fin 1 × Fin d => psTrunc 1 (φ p.2)) =
@@ -201,13 +201,13 @@ theorem vec_subst (φ : Germ.Pt S 1 d) (c : Fin d → S) :
   · simp [lin, Matrix.mulVec, dotProduct, TrivSqZeroExt.algebraMap_eq_inl]
 
 /- English proof (translation)
-Rewrite using `[← hcomp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tv_gd (c : Fin d → S) : tv (gd g c) = homAt x ((jetVec c).comp (jOut S d 1)) ≫ g.x 1 := by
   rw [← hcomp]; rfl
 
 /- English proof (translation)
-Rewrite using `[tv_gd, tv_gd, Category.assoc, g.chart.act 1 a, hcomp, vec_subst]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gd_act (a : 𝓞 E) (c : Fin d → S) :
     tv (gd g c) ≫ t.act.act a = tv (gd g ((rho g.B a).mulVec c)) := by
@@ -217,7 +217,7 @@ theorem gd_act (a : 𝓞 E) (c : Fin d → S) :
 end Gen
 
 /- English proof (translation)
-Introduce `E _ _ _ H _ _ X0 t S _ _ x d g`. Use `⟨fun d₂ g₂ => ?_, fun J _ m y hy => coord_jet g J m y hy⟩` and prove the remaining obligations. Establish `e` using `((LinearEquiv.ofBijective _ (gd_bij g)).trans (LinearEquiv.ofBijective _ (gd_bij g₂)).symm).finrank_eq`. Simplify using `using e`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem germ_univ : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)], (∀ a : 𝓞 E, star a = H.bar a) → ∀ (X0 : Scheme.{0}) (t : SAB H X0) (S : Type) [CommRing S] [IsLocalRing S] (x : Sp S ⟶ X0) (d : ℕ) (g : GermAt t x d), (∀ (d₂ : ℕ) (_ : GermAt t x d₂), d = d₂) ∧ ∀ (J : Type) [Finite J] (m : ℕ) (y : overAt x (Jet S J m) ⟶ t.G), homAt x (jetAug : Jet S J m →ₐ[S] S) ≫ y = 1 → ∃! χ : Jet S (Fin 1 × Fin d) m →ₐ[S] Jet S J m, (∀ q, (jetAug : Jet S J m →ₐ[S] S) (χ (Ideal.Quotient.mk _ (MvPolynomial.X q))) = 0) ∧ y = homAt x χ ≫ g.x m := by
   intro E _ _ _ H _ _ X0 t S _ _ x d g
@@ -226,11 +226,11 @@ theorem germ_univ : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : 
   simpa using e
 
 /- English proof (translation)
-Introduce `E _ _ _ H _ _ X0 t S _ x d g V _ _ M`. Establish `ht : ∀ v, IsTanAtG t x (M.pt v).left` using `fun v => ⟨Over.w (M.pt v), M.tan v⟩`. Set `L : V →ₗ[S] TanM x t.G` to `{ toFun := fun v => mkT (ovT (ht v)) (smT_zero_ovT (ht v)) map_add' := fun v w => tv_injective (M.add v w) map_smul' := fun c v => tv_injective (Over.OverMorphism.ext (M.smul c v)) }`. Establish `hL : ∀ v, tv (L v) = M.pt v` using `fun v => rfl`. Establish `hb : Function.Bijective L`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun v w h => M.inj ((hL v).symm.trans ((congrArg tv h).trans (hL w))), fun W => ?_⟩` and prove the remaining obligations. Take `⟨v, hv⟩` from `M.onto (tv W) (isTanAtG_of _ (tv_zero' W)).2`. Conclude with `⟨v, tv_injective hv⟩`. Set `e : V ≃ₗ[S] (Fin d → S)` to `(LinearEquiv.ofBijective L hb).trans (LinearEquiv.ofBijective _ (gd_bij g)).symm`. Establish `he : ∀ v, gd g (e v) = L v` using `fun v => (LinearEquiv.ofBijective _ (gd_bij g)).apply_symm_apply _`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨e, fun v => (comb_iff g _ _).2 (by rw [he, hL]), fun r hr a v => (gd_bij g).1 (tv_injective ?_)⟩` and prove the remaining obligations. Rewrite using `[← gd_act, he, he, hL, hL]`. Conclude with `hr a v`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem germ_lie : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)], (∀ a : 𝓞 E, star a = H.bar a) → ∀ (X0 : Scheme.{0}) (t : SAB H X0) (S : Type) [CommRing S] (x : Sp S ⟶ X0) (d : ℕ) (g : GermAt t x d) (V : Type) [AddCommGroup V] [Module S V] (M : GlobalTheory.CompanionTheory.Ar.LieModel t.G x V), ∃ e : V ≃ₗ[S] (Fin d → S), (∀ v, IsCombAtG t x g.tg (e v) (M.pt v).left) ∧ ∀ r : 𝓞 E →+* Module.End S V, M.IsActOf t.act.act r → ∀ a v, e (r a v) = (rho g.B a).mulVec (e v) := by
   intro E _ _ _ H _ _ X0 t S _ x d g V _ _ M

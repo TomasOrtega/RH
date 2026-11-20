@@ -17,7 +17,7 @@ section Hol
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
 /- English proof (translation)
-Proceed by induction on `u using Finset.induction_on with`. Consider the case `empty => simpa using differentiableOn_const (1 : ℂ)`. Consider the case `insert a u ha ih`. Simplify using `only [Finset.prod_insert ha]`. Conclude with `(h a (Finset.mem_insert_self _ _)).mul (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dOn_prod {J : Type} (u : Finset J) (f : J → E → ℂ) {s : Set E}
     (h : ∀ i ∈ u, DifferentiableOn ℂ (f i) s) : DifferentiableOn ℂ (fun b => ∏ i ∈ u, f i b) s := by
@@ -29,7 +29,7 @@ theorem dOn_prod {J : Type} (u : Finset J) (f : J → E → ℂ) {s : Set E}
     exact (h a (Finset.mem_insert_self _ _)).mul (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
 /- English proof (translation)
-Simplify using `only [Matrix.det_apply']`. Conclude with `DifferentiableOn.fun_sum fun σ _ => DifferentiableOn.const_mul (dOn_prod Finset.univ (fun i b => f b (σ i) i) fun i _ => hf (σ i) i) _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dOn_det {n : Type} [Fintype n] [DecidableEq n] (f : E → Matrix n n ℂ) {s : Set E}
     (hf : ∀ i j, DifferentiableOn ℂ (fun b => f b i j) s) : DifferentiableOn ℂ (fun b => (f b).det) s := by
@@ -38,9 +38,9 @@ theorem dOn_det {n : Type} [Fintype n] [DecidableEq n] (f : E → Matrix n n ℂ
     (dOn_prod Finset.univ (fun i b => f b (σ i) i) fun i _ => hf (σ i) i) _
 
 /- English proof (translation)
-Simplify using `only [Matrix.inv_def, Ring.inverse_eq_inv', Matrix.smul_apply, smul_eq_mul, Matrix.adjugate_apply]`. Use `DifferentiableOn.mul ((dOn_det f hf).inv hu) ?_` and prove the remaining obligations. Use `dOn_det (fun b => (f b).updateRow j (Pi.single i 1)) fun k l => ?_` and prove the remaining obligations. Distinguish the cases in `h : k = j`. Substitute `h` using the available equality.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `only [Matrix.updateRow_self]`. Conclude with `differentiableOn_const _`. Simplify using `only [Matrix.updateRow_ne h]`. Conclude with `hf k l`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dOn_inv {n : Type} [Fintype n] [DecidableEq n] (f : E → Matrix n n ℂ) {s : Set E}
     (hf : ∀ i j, DifferentiableOn ℂ (fun b => f b i j) s) (hu : ∀ b ∈ s, (f b).det ≠ 0) (i j : n) :
@@ -53,7 +53,7 @@ theorem dOn_inv {n : Type} [Fintype n] [DecidableEq n] (f : E → Matrix n n ℂ
   · simp only [Matrix.updateRow_ne h]; exact hf k l
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply]`. Conclude with `DifferentiableOn.fun_sum fun k _ => (hf i k).mul (hg k j)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dOn_mul {l n p : Type} [Fintype n] (f : E → Matrix l n ℂ) (g : E → Matrix n p ℂ) {s : Set E}
     (hf : ∀ i j, DifferentiableOn ℂ (fun b => f b i j) s) (hg : ∀ i j, DifferentiableOn ℂ (fun b => g b i j) s)
@@ -68,7 +68,7 @@ section Alg
 variable {g r : ℕ}
 
 /- English proof (translation)
-Take `⟨M, hM⟩` from `hS s s.2`. Rewrite using `[hM, Matrix.mul_assoc M V R, hVR, Matrix.mul_one]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem restr_key (V : Matrix (Fin g) (Fin r) ℂ) (R : Matrix (Fin r) (Fin g) ℂ) (S : Subalgebra ℂ (Matrix (Fin r) (Fin r) ℂ))
     (hVR : V * R = 1) (hS : ∀ s ∈ S, ∃ M : Matrix (Fin g) (Fin g) ℂ, V * s = M * V) (s : S) :
@@ -91,7 +91,7 @@ def restr (V : Matrix (Fin g) (Fin r) ℂ) (R : Matrix (Fin r) (Fin g) ℂ) (S :
       Matrix.mul_one, hVR]
 
 /- English proof (translation)
-The claim follows from `restr_key V R S hVR hS s`.
+A detailed English derivation is pending.
 -/
 theorem restr_mul (V : Matrix (Fin g) (Fin r) ℂ) (R : Matrix (Fin r) (Fin g) ℂ) (S : Subalgebra ℂ (Matrix (Fin r) (Fin r) ℂ))
     (hVR : V * R = 1) (hS : ∀ s ∈ S, ∃ M : Matrix (Fin g) (Fin g) ℂ, V * s = M * V) (s : S) :
@@ -111,7 +111,7 @@ def perM (D : PLat O bar) (e : Module.Basis (Fin r) ℤ D.La) (P : D.La →+ (Fi
   Matrix.of fun i j => P (e j) i
 
 /- English proof (translation)
-Use `conv_lhs => rw [← e.sum_repr x, map_sum]`. Use extensionality with `i`. Simplify using `only [map_zsmul, Finset.sum_apply, Pi.smul_apply, zsmul_eq_mul, perM, Matrix.mulVec, dotProduct, Matrix.of_apply]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem apply_eq_mulVec (D : PLat O bar) (e : Module.Basis (Fin r) ℤ D.La) (P : D.La →+ (Fin g → ℂ)) (x : D.La) :
     P x = perM D e P *ᵥ (fun j => ((e.repr x j : ℤ) : ℂ)) := by
@@ -121,7 +121,7 @@ theorem apply_eq_mulVec (D : PLat O bar) (e : Module.Basis (Fin r) ℤ D.La) (P 
   exact Finset.sum_congr rfl fun j _ => mul_comm _ _
 
 /- English proof (translation)
-Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.of_apply]`. Rewrite using `[apply_eq_mulVec D e P (a • e j)]`. Simplify using `[Matrix.mul_apply, actM, Matrix.mulVec, dotProduct]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem perM_mul_actM (D : PLat O bar) (e : Module.Basis (Fin r) ℤ D.La) (P : D.La →+ (Fin g → ℂ)) (a : O) :
     perM D e P * actM D e ℂ a = Matrix.of fun i j => P (a • e j) i := by
@@ -131,9 +131,9 @@ theorem perM_mul_actM (D : PLat O bar) (e : Module.Basis (Fin r) ℤ D.La) (P : 
   simp [Matrix.mul_apply, actM, Matrix.mulVec, dotProduct]
 
 /- English proof (translation)
-Rewrite using `[perM_mul_actM]`. Use `conv_lhs => rw [← e.sum_repr x]`. Rewrite using `[Finset.smul_sum]`. Repeatedly rewrite using `[smul_comm a]`. Use extensionality with `i`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[map_sum, map_zsmul, Matrix.mulVec, dotProduct, Finset.sum_apply, mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem apply_smul_eq (D : PLat O bar) (e : Module.Basis (Fin r) ℤ D.La) (P : D.La →+ (Fin g → ℂ)) (a : O) (x : D.La) :
     P (a • x) = (perM D e P * actM D e ℂ a) *ᵥ (fun j => ((e.repr x j : ℤ) : ℂ)) := by
@@ -145,9 +145,9 @@ theorem apply_smul_eq (D : PLat O bar) (e : Module.Basis (Fin r) ℤ D.La) (P : 
   simp [map_sum, map_zsmul, Matrix.mulVec, dotProduct, Finset.sum_apply, mul_comm]
 
 /- English proof (translation)
-Introduce `w`. Establish `hw : w ∈ Submodule.span ℝ (Set.range P)` using `hspan ▸ Submodule.mem_top`. Establish `hle : Submodule.span ℝ (Set.range P) ≤ (LinearMap.range (Matrix.mulVecLin (perM D e P))).restrictScalars ℝ`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨_, (apply_eq_mulVec D e P x).symm⟩`. Take `⟨v, hv⟩` from `hle hw`. Conclude with `⟨v, hv⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem perM_surj (D : PLat O bar) (e : Module.Basis (Fin r) ℤ D.La) (P : D.La →+ (Fin g → ℂ))
     (hspan : Submodule.span ℝ (Set.range P) = ⊤) : Function.Surjective (perM D e P).mulVec := by
@@ -162,9 +162,9 @@ theorem perM_surj (D : PLat O bar) (e : Module.Basis (Fin r) ℤ D.La) (P : D.La
   exact ⟨v, hv⟩
 
 /- English proof (translation)
-Use `choose v hv using fun k : Fin g => h (Pi.single k 1)`. Use `⟨Matrix.of fun l k => v k l, ?_⟩` and prove the remaining obligations. Use extensionality with `i k`. Use `congrFun (hv k) i` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct] at this`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_apply, Matrix.of_apply, this, Matrix.one_apply, Pi.single_apply]`.
+A detailed English derivation is pending.
 -/
 theorem exists_rinv (V : Matrix (Fin g) (Fin r) ℂ) (h : Function.Surjective V.mulVec) :
     ∃ R : Matrix (Fin r) (Fin g) ℂ, V * R = 1 := by
@@ -178,49 +178,45 @@ theorem exists_rinv (V : Matrix (Fin g) (Fin r) ℂ) (h : Function.Surjective V.
 end Lat
 
 /- English proof (translation)
-Introduce `O _ bar g ρ D m B b₀ P hB hb₀ hPd hper hBP`. Set `e : Module.Basis (Fin (Module.finrank ℤ D.La)) ℤ D.La` to `Module.finBasis ℤ D.La`. Set `S` to `actAlg D e`. Set `V : (Fin m → ℂ) → Matrix (Fin g) (Fin (Module.finrank ℤ D.La)) ℂ` to `fun b => perM D e (P b)`. Establish `hVd : ∀ i j, DifferentiableOn ℂ (fun b => V b i j) B` using `fun i j => (differentiableOn_pi.1 (hPd (e j))) i`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hSV : ∀ b ∈ B, ∀ s ∈ S, ∃ M : Matrix (Fin g) (Fin g) ℂ, V b * s = M * V b`. Introduce `b hb s hs`. Proceed by induction on `hs using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨a, rfl⟩` from `hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨M, hM⟩` from `(hBP b hb).2 a`. Use `⟨M, ?_⟩` and prove the remaining obligations. Use `show perM D e (P b) * actM D e ℂ a = M * perM D e (P b)`. Rewrite using `[perM_mul_actM]`. Use extensionality with `i j`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[perM, hM, Matrix.mul_apply, Matrix.mulVec, dotProduct]`. Consider the case `algebraMap c`. Use `⟨algebraMap ℂ _ c, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one]`. Simplify using the standard rewrite rules.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨M, hM⟩` from `hx`. Take `⟨N, hN⟩` from `hy`. Conclude with `⟨M + N, by rw [Matrix.mul_add, hM, hN, Matrix.add_mul]⟩`. Consider the case `mul x y _ _ hx hy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨M, hM⟩` from `hx`. Take `⟨N, hN⟩` from `hy`. Conclude with `⟨M * N, by rw [← Matrix.mul_assoc, hM, Matrix.mul_assoc, hN, Matrix.mul_assoc]⟩`. Take `⟨R₀, hR₀⟩` from `exists_rinv (V b₀) (perM_surj D e (P b₀) hper.2.2.2.1)`. Set `W : (Fin m → ℂ) → Matrix (Fin g) (Fin g) ℂ` to `fun b => V b * R₀`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hWd : ∀ i j, DifferentiableOn ℂ (fun b => W b i j) B` using `dOn_mul V (fun _ => R₀) hVd (fun _ _ => differentiableOn_const _)`. Set `B'` to `B ∩ (fun b => (W b).det) ⁻¹' {0}ᶜ`. Establish `hB'o : IsOpen B'` using `(dOn_det W hWd).continuousOn.isOpen_inter_preimage hB isOpen_compl_singleton`. Establish `hdet : ∀ b ∈ B', (W b).det ≠ 0` using `fun b hb => hb.2`. Establish `hb₀' : b₀ ∈ B'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hb₀, ?_⟩` and prove the remaining obligations. Use `show (V b₀ * R₀).det ≠ 0`. Rewrite using `[hR₀, Matrix.det_one]`. Conclude with `one_ne_zero`. Set `R : (Fin m → ℂ) → Matrix (Fin (Module.finrank ℤ D.La)) (Fin g) ℂ` to `fun b => R₀ * (W b)⁻¹`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hVR : ∀ b ∈ B', V b * R b = 1` using `fun b hb => by show V b * (R₀ * (W b)⁻¹) = 1`. Rewrite using `[← Matrix.mul_assoc]`. Conclude with `Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 (hdet b hb))`. Set `F : (Fin m → ℂ) → (S →ₐ[ℂ] Matrix (Fin g) (Fin g) ℂ)` to `fun b => if hb : b ∈ B' then restr (V b) (R b) S (hVR b hb) (hSV b hb.1) else restr (V b₀) (R b₀) S (hVR b₀ hb₀') (hSV b₀ hb₀)`. Establish `hF : ∀ b (hb : b ∈ B'), F b = restr (V b) (R b) S (hVR b hb) (hSV b hb.1)` using `fun b hb => dif_pos hb`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hFd : ∀ a i j, DifferentiableOn ℂ (fun b => F b a i j) B'`. Introduce `a i j`. Use `DifferentiableOn.congr (f := fun b => (V b * a.1 * R b) i j) ?_ ?_` and prove the remaining obligations. Use `dOn_mul (fun b => V b * a.1) R ?_ ?_ i j` and prove the remaining obligations. Conclude with `dOn_mul V (fun _ => a.1) (fun i j => (hVd i j).mono Set.inter_subset_left) (fun _ _ => differentiableOn_const _)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `dOn_mul (fun _ => R₀) (fun b => (W b)⁻¹) (fun _ _ => differentiableOn_const _) (dOn_inv W (fun i j => (hWd i j).mono Set.inter_subset_left) hdet)`. Introduce `b hb`. Rewrite using `[hF b hb]`. Both sides reduce to the same expression. Take `⟨Q, hQh, hQp, hQa⟩` from `GlobalTheory.T.gram_re_posDef_adjoint_period O bar g ρ D (P b₀) _ e hper`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hcl : ∀ x ∈ S, ∃ y ∈ S, Q * y = xᴴ * Q`. Introduce `x hx`. Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨a, rfl⟩` from `hx`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Conclude with `⟨actM D e ℂ (bar a), Algebra.subset_adjoin ⟨bar a, rfl⟩, hQa a⟩`. Consider the case `algebraMap c`. Use `⟨algebraMap ℂ _ (star c), Subalgebra.algebraMap_mem _ _, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, Matrix.conjTranspose_smul, Matrix.conjTranspose_one]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨u, hu, hu'⟩` from `hx`. Take `⟨v, hv, hv'⟩` from `hy`. Conclude with `⟨u + v, S.add_mem hu hv, by rw [Matrix.mul_add, hu', hv', Matrix.conjTranspose_add, Matrix.add_mul]⟩`. Consider the case `mul x y _ _ hx hy`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨u, hu, hu'⟩` from `hx`. Take `⟨v, hv, hv'⟩` from `hy`. Conclude with `⟨v * u, S.mul_mem hv hu, by`. Rewrite using `[← Matrix.mul_assoc, hv', Matrix.mul_assoc, hu', Matrix.conjTranspose_mul, Matrix.mul_assoc]⟩`. Use `haveI : IsSemisimpleRing S := GlobalTheory.T.isSemisimpleRing_of_posDef_adjoint_closed _ Q S hQh hQp hcl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨B'', h, hB''o, hb₀'', hB''sub, hh1, hhd, hhu⟩` from `GlobalTheory.T.holomorphic_family_conj_constant S g m B' b₀ F hB'o hb₀' hFd`. Use `⟨B'', fun b => (h b)⁻¹, hB''o, hb₀'', hB''sub.trans Set.inter_subset_left, by simp [hh1], ?_, ?_⟩` and prove the remaining obligations. Conclude with `dOn_inv h hhd (fun b hb => ((Matrix.isUnit_iff_isUnit_det _).1 (hhu b hb).1).ne_zero)`. Introduce `b hb`. Take `⟨hu, hconj⟩` from `hhu b hb`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbB'` using `hB''sub hb`. Establish `hud : IsUnit (h b).det` using `(Matrix.isUnit_iff_isUnit_det _).1 hu`. Use `⟨Matrix.isUnit_nonsing_inv_iff.2 hu, fun a x => ?_⟩` and prove the remaining obligations. Set `s : S` to `⟨actM D e ℂ a, Algebra.subset_adjoin ⟨a, rfl⟩⟩`. Establish `h1 : F b s * V b = V b * actM D e ℂ a`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hF b hbB']`. Conclude with `restr_mul _ _ _ _ _ s`. Establish `h2 : F b₀ s = ρ a`. Establish `e1 : F b₀ s * V b₀ = ρ a * V b₀`. Rewrite using `[hF b₀ hb₀', restr_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show perM D e (P b₀) * actM D e ℂ a = ρ a * perM D e (P b₀)`. Rewrite using `[perM_mul_actM]`. Use extensionality with `i j`. Simplify using `[perM, hper.1 a, Matrix.mul_apply, Matrix.mulVec, dotProduct]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h3 : (h b)⁻¹ * F b s = ρ a * (h b)⁻¹`. Establish `hc` using `hconj s`. Rewrite `hc` using `[h2]`. Establish `hi : h b * (h b)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hud`. Establish `hi' : (h b)⁻¹ * h b = 1` using `Matrix.nonsing_inv_mul _ hud`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, hi, Matrix.mul_one]`. Use `_ = (h b)⁻¹ * (h b * ρ a) * (h b)⁻¹ := by rw [hc]`. Use `_ = ρ a * (h b)⁻¹ := by rw [← Matrix.mul_assoc (h b)⁻¹, hi', Matrix.one_mul]`. Rewrite using `[apply_smul_eq D e (P b) a x, apply_eq_mulVec D e (P b) x, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`.
-
-Use `congr 1`. Express the relevant statement in the definitionally equal form `(h b)⁻¹ * (V b * actM D e ℂ a) = ρ a * (h b)⁻¹ * V b`. Rewrite using `[← h1, ← Matrix.mul_assoc, h3]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem retype : ∀ (O : Type) [Ring O] (bar : O → O) (g : ℕ) (ρ : O →+* Matrix (Fin g) (Fin g) ℂ) (D : PLat O bar) (m : ℕ) (B : Set (Fin m → ℂ)) (b₀ : Fin m → ℂ) (P : (Fin m → ℂ) → (D.La →+ (Fin g → ℂ))), IsOpen B → b₀ ∈ B → (∀ x, DifferentiableOn ℂ (fun b => P b x) B) → IsPeriod D ρ (P b₀) → (∀ b ∈ B, Submodule.span ℝ (Set.range (P b)) = ⊤ ∧ ∀ a : O, ∃ M : Matrix (Fin g) (Fin g) ℂ, ∀ x, P b (a • x) = M *ᵥ P b x) → ∃ (B' : Set (Fin m → ℂ)) (h : (Fin m → ℂ) → Matrix (Fin g) (Fin g) ℂ), IsOpen B' ∧ b₀ ∈ B' ∧ B' ⊆ B ∧ h b₀ = 1 ∧ (∀ i j, DifferentiableOn ℂ (fun b => h b i j) B') ∧ ∀ b ∈ B', IsUnit (h b) ∧ ∀ (a : O) x, h b *ᵥ P b (a • x) = ρ a *ᵥ (h b *ᵥ P b x) := by
   intro O _ bar g ρ D m B b₀ P hB hb₀ hPd hper hBP

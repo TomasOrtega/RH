@@ -31,7 +31,7 @@ def integerUnitAt (w : HeightOneSpectrum (𝓞 L)) (x : IdeleGroup L) (hx : ord 
 
 omit [NumberField K] in
 /- English proof (translation)
-The claim follows from `hx w.1 fun h ↦ hv (by rwa [mem_placesAbove, (below_eq_iff w.1 v).2 w.2] at h)`.
+A detailed English derivation is pending.
 -/
 theorem ord_eq_zero_of_mem_sIdeles_placesAbove {x : IdeleGroup L}
     (hx : x ∈ sIdeles (placesAbove L S)) {v : HeightOneSpectrum (𝓞 K)} (hv : v ∉ S)
@@ -47,7 +47,7 @@ def sIdelesIntegerPart :
 
 omit [NumberField K] in
 /- English proof (translation)
-The claim follows from `funext fun _ ↦ Units.ext rfl`.
+A detailed English derivation is pending.
 -/
 theorem integerUnitsAboveIncl_sIdelesIntegerPart (x : sIdeles (placesAbove L S)) (v : ↥Sᶜ) :
     integerUnitsAboveIncl v.1 (sIdelesIntegerPart S x v) = finiteProjAbove v.1 (x : IdeleGroup L) :=
@@ -67,9 +67,7 @@ theorem sIdelesToProduct_snd_snd (x : sIdeles (placesAbove L S)) (v : ↥Sᶜ) :
   rfl
 
 /- English proof (translation)
-Use `Prod.ext (funext fun v ↦ ?_) (Prod.ext (funext fun v ↦ ?_) (funext fun v ↦ ?_))` and prove the remaining obligations. Conclude with `infiniteProjAbove_smul v σ (x : IdeleGroup L)`. Conclude with `finiteProjAbove_smul v.1 σ (x : IdeleGroup L)`. Apply `integerUnitsAboveIncl_injective v.1` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `integerUnitsAboveIncl v.1 (sIdelesIntegerPart S (σ • x) v) = integerUnitsAboveIncl v.1 (σ • sIdelesIntegerPart S x v)`.
-
-Rewrite using `[integerUnitsAboveIncl_smul, integerUnitsAboveIncl_sIdelesIntegerPart, integerUnitsAboveIncl_sIdelesIntegerPart, coe_smul_sIdeles]`. Conclude with `finiteProjAbove_smul v.1 σ (x : IdeleGroup L)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sIdelesToProduct_smul (σ : L ≃ₐ[K] L) (x : sIdeles (placesAbove L S)) :
     sIdelesToProduct S (σ • x) = σ • sIdelesToProduct S x := by
@@ -85,7 +83,7 @@ theorem sIdelesToProduct_smul (σ : L ≃ₐ[K] L) (x : sIdeles (placesAbove L S
 
 omit [NumberField K] [NumberField L] in
 /- English proof (translation)
-The claim follows from `(InfinitePlace.liesOver_iff_comap_eq _ u).2 rfl`.
+A detailed English derivation is pending.
 -/
 theorem mem_placesOver_comap (u : InfinitePlace L) :
     u ∈ (u.comap (algebraMap K L)).placesOver L :=
@@ -94,9 +92,7 @@ theorem mem_placesOver_comap (u : InfinitePlace L) :
 omit [NumberField K] in
 
 /- English proof (translation)
-Introduce `x y h`. Use `Subtype.ext (Units.ext (adele_ext (funext fun u ↦ ?_) fun u ↦ ?_))` and prove the remaining obligations. Conclude with `congrArg (fun p : SIdelesProduct L S ↦ ((p.1 (u.comap (algebraMap K L)) ⟨u, mem_placesOver_comap u⟩ : (u.Completion)ˣ) : u.Completion)) h`. Distinguish the cases in `hu : below K u ∈ S`. Conclude with `congrArg (fun p : SIdelesProduct L S ↦ ((p.2.1 ⟨below K u, hu⟩ ⟨u, inferInstance⟩ : (u.adicCompletion L)ˣ) : u.adicCompletion L)) h`.
-
-Conclude with `congrArg (fun p : SIdelesProduct L S ↦ (((p.2.2 ⟨below K u, hu⟩ ⟨u, inferInstance⟩ : (u.adicCompletionIntegers L)ˣ) : u.adicCompletionIntegers L) : u.adicCompletion L)) h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem sIdelesToProduct_injective : Function.Injective (sIdelesToProduct (L := L) S) := by
   intro x y h
@@ -124,7 +120,7 @@ def assembleFinite (p : SIdelesProduct L S) (u : HeightOneSpectrum (𝓞 L)) :
 
 omit [NumberField K] in
 /- English proof (translation)
-Take `⟨u, hu⟩` from `w`. Establish `e : u.comap (algebraMap K L) = v` using `(InfinitePlace.liesOver_iff_comap_eq v u).1 hu`. Substitute `e` using the available equality. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem assembleInfinite_eq (p : SIdelesProduct L S) (v : InfinitePlace K) (w : v.placesOver L) :
     assembleInfinite p w.1 = p.1 v w := by
@@ -135,7 +131,7 @@ theorem assembleInfinite_eq (p : SIdelesProduct L S) (v : InfinitePlace K) (w : 
 
 omit [NumberField K] in
 /- English proof (translation)
-Take `⟨u, hu⟩` from `w`. Take `⟨v, hv⟩` from `v`. Establish `e : below K u = v` using `(below_eq_iff u v).2 hu`. Substitute `e` using the available equality. Rewrite using `[assembleFinite, dif_pos hv]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem assembleFinite_eq_of_mem (p : SIdelesProduct L S) (v : S) (w : PlacesOver L v.1) :
     assembleFinite p w.1 = p.2.1 v w := by
@@ -147,7 +143,7 @@ theorem assembleFinite_eq_of_mem (p : SIdelesProduct L S) (v : S) (w : PlacesOve
 
 omit [NumberField K] in
 /- English proof (translation)
-Take `⟨u, hu⟩` from `w`. Take `⟨v, hv⟩` from `v`. Establish `e : below K u = v` using `(below_eq_iff u v).2 hu`. Substitute `e` using the available equality. Rewrite using `[assembleFinite, dif_neg hv]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem assembleFinite_eq_of_not_mem (p : SIdelesProduct L S) (v : ↥Sᶜ) (w : PlacesOver L v.1) :
     assembleFinite p w.1 = integerUnitsAboveIncl v.1 (p.2.2 v) w := by
@@ -159,7 +155,7 @@ theorem assembleFinite_eq_of_not_mem (p : SIdelesProduct L S) (v : ↥Sᶜ) (w :
 
 omit [NumberField K] in
 /- English proof (translation)
-Rewrite using `[assembleFinite_eq_of_not_mem p ⟨below K u, hu⟩ ⟨u, inferInstance⟩]`. Conclude with `(mem_range_integerUnitsAboveIncl_iff (below K u) _).1 ⟨_, rfl⟩ ⟨u, inferInstance⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem assembleFinite_mem (p : SIdelesProduct L S) {u : HeightOneSpectrum (𝓞 L)}
     (hu : u ∉ placesAbove L S) :
@@ -169,7 +165,7 @@ theorem assembleFinite_mem (p : SIdelesProduct L S) {u : HeightOneSpectrum (𝓞
   exact (mem_range_integerUnitsAboveIncl_iff (below K u) _).1 ⟨_, rfl⟩ ⟨u, inferInstance⟩
 
 /- English proof (translation)
-The claim follows from `Filter.eventually_cofinite.2 ((placesAbove_finite hS).subset fun _ hu ↦ Classical.byContradiction fun h ↦ hu (assembleFinite_mem p h).1)`.
+A detailed English derivation is pending.
 -/
 theorem assembleFinite_eventually (hS : S.Finite) (p : SIdelesProduct L S) :
     ∀ᶠ u in Filter.cofinite,
@@ -178,7 +174,7 @@ theorem assembleFinite_eventually (hS : S.Finite) (p : SIdelesProduct L S) :
     Classical.byContradiction fun h ↦ hu (assembleFinite_mem p h).1)
 
 /- English proof (translation)
-The claim follows from `Filter.eventually_cofinite.2 ((placesAbove_finite hS).subset fun _ hu ↦ Classical.byContradiction fun h ↦ hu (assembleFinite_mem p h).2)`.
+A detailed English derivation is pending.
 -/
 theorem assembleFinite_inv_eventually (hS : S.Finite) (p : SIdelesProduct L S) :
     ∀ᶠ u in Filter.cofinite,
@@ -201,16 +197,14 @@ def assemble (hS : S.Finite) (p : SIdelesProduct L S) : IdeleGroup L where
     fun u ↦ (assembleFinite p u).inv_mul
 
 /- English proof (translation)
-The claim follows from `fun u hu ↦ (ord_eq_zero_iff u _).2 (assembleFinite_mem p hu)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem assemble_mem (hS : S.Finite) (p : SIdelesProduct L S) :
     assemble hS p ∈ sIdeles (placesAbove L S) :=
   fun u hu ↦ (ord_eq_zero_iff u _).2 (assembleFinite_mem p hu)
 
 /- English proof (translation)
-Use `Prod.ext (funext fun v ↦ funext fun w ↦ ?_) (Prod.ext (funext fun v ↦ funext fun w ↦ ?_) (funext fun v ↦ ?_))` and prove the remaining obligations. Conclude with `Units.ext (congrArg Units.val (assembleInfinite_eq p v w))`. Conclude with `Units.ext (congrArg Units.val (assembleFinite_eq_of_mem p v w))`. Apply `integerUnitsAboveIncl_injective v.1` to reduce the goal to its premises. Rewrite using `[sIdelesToProduct_snd_snd, integerUnitsAboveIncl_sIdelesIntegerPart]`.
-
-Use function extensionality and compare the values at `w`. Conclude with `Units.ext (congrArg Units.val (assembleFinite_eq_of_not_mem p v w))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem sIdelesToProduct_assemble (hS : S.Finite) (p : SIdelesProduct L S) :
     sIdelesToProduct S ⟨assemble hS p, assemble_mem hS p⟩ = p := by
@@ -226,7 +220,7 @@ theorem sIdelesToProduct_assemble (hS : S.Finite) (p : SIdelesProduct L S) :
 variable (S)
 
 /- English proof (translation)
-The claim follows from `fun p ↦ ⟨⟨assemble hS p, assemble_mem hS p⟩, sIdelesToProduct_assemble hS p⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem sIdelesToProduct_surjective (hS : S.Finite) :
     Function.Surjective (sIdelesToProduct (L := L) S) :=
@@ -237,7 +231,7 @@ def sIdelesEquivProduct (hS : S.Finite) : sIdeles (placesAbove L S) ≃* SIdeles
     ⟨sIdelesToProduct_injective S, sIdelesToProduct_surjective S hS⟩
 
 /- English proof (translation)
-The claim follows from `sIdelesToProduct_smul S σ x`.
+A detailed English derivation is pending.
 -/
 theorem sIdelesEquivProduct_smul (hS : S.Finite) (σ : L ≃ₐ[K] L) (x : sIdeles (placesAbove L S)) :
     sIdelesEquivProduct S hS (σ • x) = σ • sIdelesEquivProduct S hS x :=

@@ -25,9 +25,9 @@ noncomputable section
 namespace GlobalTheory.RowTest.BottomMeas
 
 /- English proof (translation)
-Introduce `D T L sc G W i j A A' WW X _`. Take `⟨ν, 𝓕, hν, h𝓕⟩` from `GlobalTheory.ConstRatio.exists_meas WW`. Establish `: BorelSpace (GA D WW)` using `⟨rfl⟩`. Use `⟨ν, 𝓕, hν, h𝓕, ?_⟩` and prove the remaining obligations. Use `haveI := GlobalTheory.RegSch.Ibp.isFiniteMeasure_autMeasure (V := WW) ν`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(GlobalTheory.QuotFundDom.volQ_and_integrable_iff D WW ν 𝓕 hν h𝓕).1]`. Use `ENNReal.toReal_ne_zero.2 ⟨h𝓕.measure_ne_zero (NeZero.ne ν), ?_⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.CuspDecay.measure_lt_top GlobalTheory.Mem.VolFin.finVol WW ν _ hν h𝓕).ne`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_haar_fd_volQ_ne_zero : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} {G : GridData L sc} (W : G.Weil) (i j : Fin D.R.m)
     (A A' WW : HSp D) (X : Tri T A A' WW), IsBottomTri W i j X →

@@ -29,31 +29,27 @@ namespace GlobalTheory.TorusMixedSum
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `D ψ hψ θ hθ V X S₀ r d μ' 𝓕' hμ' c hc K₀ hK₀ hK₀c μ 𝓕 hμ`. Take `⟨N, A₄, C₄, hC₄, h4⟩` from `GlobalTheory.T.siegelCone_integral_matrix_lattice_count θ hθ X.rank r c hc`. Take `⟨k₂, C₂, hC₂, h2⟩` from `GlobalTheory.T.mixed_theta_series_rapid_decay ψ hψ θ hθ V X S₀ r d μ' 𝓕' hμ' N`. Take `⟨k₁, B, C₁, hC₁, h1⟩` from `GlobalTheory.T.thetaFunction_heisenbergWord_sup_le_level_pow ψ hψ θ hθ V X K₀ hK₀ hK₀c μ 𝓕 hμ`. Take `⟨M, hM, h3⟩` from `GlobalTheory.T.mixedCoordinate_support_integral_at_level ψ hψ V X S₀ r d μ' 𝓕' hμ' K₀ hK₀ hK₀c`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `set Wc : ℝ := ∑ k ∈ Finset.range (k₂ + 1), (Fintype.card (D.what₂.Tau × Fin X.rank × Fin V.rank × Bool) : ℝ) ^ k with hWc`. Establish `hWc0 : 0 ≤ Wc` using `Finset.sum_nonneg fun _ _ => by positivity`. Use `⟨k₁ + k₂, B + A₄, C₂ * Wc * C₁ * C₄ * (M : ℝ) ^ A₄, by positivity, ?_⟩` and prove the remaining obligations. Introduce `n hn Ψ hΨ hlev t ht α hα hαc`. Use `set sob := GlobalTheory.Size.sobO (V := V) (W := X) ψ θ μ 𝓕 (k₁ + k₂) Ψ with hsob`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsob_ne : sob ≠ ⊤` using `GlobalTheory.Size.sobO_ne_top hψ hθ hμ.1 hμ.2.1 hΨ _`. Establish `hw : GlobalTheory.Size.wordSum (GlobalTheory.Size.heisDer ψ θ) GlobalTheory.HeisTaylor.supN k₂ Ψ ≤ ENNReal.ofReal (Wc * (C₁ * (n : ℝ) ^ B)) * sob`. Unfold `GlobalTheory.Size.wordSum`. Establish `hk : ∀ k ∈ Finset.range (k₂ + 1), ∀ a : Fin k → D.what₂.Tau × Fin X.rank × Fin V.rank × Bool, GlobalTheory.HeisTaylor.supN (GlobalTheory.Size.wordAct (GlobalTheory.Size.heisDer ψ θ) (List.ofFn a) Ψ) ≤ ENNReal.ofReal (C₁ * (n : ℝ) ^ B) * sob`. Introduce `k hk a`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(h1 n hn Ψ hΨ hlev (List.ofFn a)).trans ?_` and prove the remaining obligations. Rewrite using `[List.length_ofFn]`. Use `gcongr`. Conclude with `GlobalTheory.Size.wordSum_mono (by have := Finset.mem_range.1 hk; omega) Ψ`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fun, Fintype.card_fin, nsmul_eq_mul]`. Rewrite using `[← Finset.sum_mul, hWc, ENNReal.ofReal_mul hWc0, ← mul_assoc]`. Use `congr 2`. Rewrite using `[ENNReal.ofReal_sum_of_nonneg (fun _ _ => by positivity)]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[ENNReal.ofReal_pow (by positivity), ENNReal.ofReal_natCast]`. Use `push_cast`. Both sides reduce to the same expression. Use `set K := ENNReal.ofReal C₂ * (ENNReal.ofReal (Wc * (C₁ * (n : ℝ) ^ B)) * sob) with hK`. Use `set L : ℕ := M * n with hL`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hLpos : 0 < L` using `Nat.mul_pos hM hn`. Establish `hpt : ∀ ξ : Matrix (Fin X.rank) (Fin r) D.host.E, ‖d.mixS X ψ μ' 𝓕' Ψ (HMul.hMul (ξ.map (incA D) : Mx D X.rank r) α) 0‖ₑ ≤ {ξ : Matrix (Fin X.rank) (Fin r) D.host.E | ∀ i j, IsIntegral ℤ ((L : D.host.E) * ξ i j)}.indicator (fun ξ => ENNReal.ofReal ((1 + ∑ τ, ∑ i, ∑ j, ‖(compAt θ …`. Introduce `ξ`. Distinguish the cases in `h0 : d.mixS X ψ μ' 𝓕' Ψ (HMul.hMul (ξ.map (incA D) : Mx D X.rank r) α) 0 = 0`. Rewrite using `[h0, enorm_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `bot_le`. Establish `hfin : (HMul.hMul (ξ.map (incA D) : Mx D X.rank r) α).map (finPart D) = (ξ.map (incA D) : Mx D X.rank r).map (finPart D)`. Rewrite using `[Matrix.map_mul, hα, Matrix.mul_one]`. Establish `hint` using `h3 n hn Ψ hΨ hlev ξ _ hfin h0`. Rewrite using `[Set.indicator_of_mem (show ξ ∈ {ξ : Matrix (Fin X.rank) (Fin r) D.host.E | ∀ i j, IsIntegral ℤ ((L : D.host.E) * ξ i j)} from hint)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc' : ∀ τ, compAt θ τ (HMul.hMul (ξ.map (incA D) : Mx D X.rank r) α) = compAt θ τ (ξ.map (incA D) : Mx D X.rank r) * diagonal (fun k => (t k : ℂ))`. Introduce `τ`. Rewrite using `[← hαc τ]`. Conclude with `Matrix.map_mul (f := ((θ τ).comp (infPart D)))`. Establish `hb` using `h2 Ψ hΨ (HMul.hMul (ξ.map (incA D) : Mx D X.rank r) α)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [hc'] at hb`. Use `set P := ENNReal.ofReal ((1 + ∑ τ, ∑ i, ∑ j, ‖(compAt θ τ (ξ.map (incA D) : Mx D X.rank r) * diagonal (fun k => (t k : ℂ))) i j‖) ^ N) with hP`. Establish `hP0 : P ≠ 0`. Rewrite using `[hP, ne_eq, ENNReal.ofReal_eq_zero, not_le]`. Conclude with `pow_pos (by positivity) _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hPt : P ≠ ⊤` using `ENNReal.ofReal_ne_top`. Establish `hb' : ‖d.mixS X ψ μ' 𝓕' Ψ (HMul.hMul (ξ.map (incA D) : Mx D X.rank r) α) 0‖ₑ * P ≤ K` using `hb.trans (by rw [hK]; gcongr)`. Rewrite using `[ENNReal.ofReal_inv_of_pos (pow_pos (by positivity) _), ← hP, ← ENNReal.div_eq_inv_mul]`. Conclude with `(ENNReal.le_div_iff_mul_le (Or.inl hP0) (Or.inl hPt)).2 hb'`. Establish `e : sob = ENNReal.ofReal sob.toReal` using `(ENNReal.ofReal_toReal hsob_ne).symm`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_mul hC₂, ← ENNReal.ofReal_mul (by positivity)]`. Use `congr 1`. Rewrite using `[hL]`. Use `push_cast`.
-
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem sum_mixS_le : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (θ : InfFam D), IsInfFam θ →
     ∀ (V X S₀ : HSp D) (r : ℕ) (d : GlobalTheory.MixModel.HypDec V S₀ r) (μ' : Measure (Mx D X.rank r))

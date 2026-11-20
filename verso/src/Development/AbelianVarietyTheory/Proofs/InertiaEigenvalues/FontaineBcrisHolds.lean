@@ -13,14 +13,14 @@ open scoped Formalism.Per
 namespace GlobalTheory.Published
 
 /- English proof (translation)
-Introduce `b h1 h2`. Conclude with `GlobalTheory.MemLoc.fundamental_exact l C b h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem FontaineBcris.fund_holds (l : ℕ) [Fact l.Prime] (C : Core l) : C.Fund := by
   intro b h1 h2
   exact GlobalTheory.MemLoc.fundamental_exact l C b h1 h2
 
 /- English proof (translation)
-The claim follows from `FontaineBcris.of_rest fun l _ C => ⟨GlobalTheory.T.algClosure_tensor_bcris_to_bdR_injective l C, FontaineBcris.fund_holds l C, GlobalTheory.MemLoc.FundOnto.fundOnto l C, GlobalTheory.T.bcris_regular_of_tensorInj l C (GlobalTheory.T.algClosure_tensor_bcris_to_bdR_injective l C)⟩`.
+A detailed English derivation is pending.
 -/
 theorem FontaineBcris_holds : FontaineBcris :=
   FontaineBcris.of_rest fun l _ C =>

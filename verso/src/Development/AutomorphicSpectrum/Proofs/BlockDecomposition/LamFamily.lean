@@ -19,13 +19,13 @@ section Fam
 variable {K : Type} [CommRing K] {ι : Type} {a : ℕ}
 
 /- English proof (translation)
-Establish `key` using `fun (α : ι) (S : Finset ι) (hα : α ∈ S) => lam_one hDW hDL hFL (i₂ S) (i₃ S) (e₂ S ⟨α, hα⟩) (e₃ S ⟨α, hα⟩) (he₂ S _) (hi₃ S ⟨α, hα⟩) (I S) (hr₂ S _) (hr₃ S _) (f α S hα) (hI α S hα) (hnz α S hα) c`. Use `choose lam hlam using key`. Use `⟨lam, fun α S T h hα y => ?_, hlam⟩` and prove the remaining obligations. Establish `hS : S.Nonempty` using `⟨α, hα⟩`. Establish `hT : T.Nonempty` using `⟨α, h hα⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hi₃ T hT ?_` and prove the remaining obligations. Take `⟨ω, hω⟩` from `(he₂ S hS).2 (i₂ S y)`. Establish `hm : ω ∈ relOm K (Ideal.span {f α S hα}) a`. Rewrite using `[← hI α S hα]`. Conclude with `(hr₂ S hS ω).1 ⟨y, hω.symm⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `hDW K (A S) a (f α S hα)`. Take `⟨η, ⟨-, hη⟩, -⟩` from `hDL K (A S) a (f α S hα) (hnz α S hα) w hw ω hm`. Take `⟨w', hw'⟩` from `hDW K (A T) a (f α T (h hα))`. Establish `wm` using `wedge_map hFL (φ h) (f α S hα) w w' hw (by rw [hφ]; exact hw') ω`. Establish `s1` using `hlam α S hα y ω η w hw hω.symm hη`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `s2` using `hlam α T (h hα) (ρ₂ h y) (omMap (φ h) a ω) (omMap (φ h) (a + 1) η) w' hw' (by rw [hρ₂, ← hω, hx₂ h hS hT]) (by`. Rewrite using `[← wm, ← hη, ((hFL K (A S) (A T) (a + 1)).2 (φ h)).2.1, hφ])`. Rewrite using `[s2, hρ₃, s1, hx₃ h hS hT, map_zsmul (omMap (φ h) (a + 1))]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lam_family (hDW : DWedge) (hDL : DLog) (hFL : FormLaws) (A : Finset ι → Type) [∀ S, CommRing (A S)] [∀ S, Algebra K (A S)]
     {H₂ X₂ H₃ X₃ : Finset ι → Type*} [∀ S, AddCommGroup (H₂ S)] [∀ S, Module K (H₂ S)]
@@ -81,21 +81,19 @@ variable {K : Type} [CommRing K] {C : Type 1} [Category.{0} C]
   {F₁ F₂ F₃ : C ⥤ ModuleCat.{0} K} {ι : Type} [DecidableEq ι]
 
 /- English proof (translation)
-Take `⟨lam, lam_nat, lam_spec⟩` from `lam_family (K := K) (a := a) hDW hDL hFL A (H₂ := fun S => ((covSy F₂ U hQ).K S).H a) (X₂ := fun S => HU F₂ (capU U S) a) (H₃ := fun S => ((covSy F₃ U hQ).K S).H (a + 1)) (X₃ := fun S => HU F₃ (capU U S) (a + 1)) (fun S => (incl F₂ (capU U S) hQ).mapH a) (fun S => (incl F₃ (capU …`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Use the proof step `rfl)`. Use the proof step `(fun h y => by`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use the proof step `rfl)`. Use `hx₂ hx₃`. Use `cone_apply hCK hCD P U hU hQ a h1 h2 r hr β hβ lam (fun α S T h hS x => lam_nat α h hS x) ?_ n x hx` and prove the remaining obligations. Introduce `α α' S hα hα' x hx hz`. Establish `hS : S.Nonempty` using `⟨α, hα⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hi₃ S hS ?_` and prove the remaining obligations. Establish `hy : CH.d _ a x.1 = 0` using `congrArg Subtype.val hx`. Take `⟨ω, hω⟩` from `(he₂ S hS).2 ((CH.cx _).cls x.1 hy)`. Establish `hi : (incl F₂ (capU U S) hQ).mapH a (((covSy F₂ U hQ).K S).cls x hx) = e₂ S hS ω` using `hω.symm`. Establish `hm : ω ∈ relOm K (I S) a` using `(hr₂ S hS ω).1 ⟨_, hi⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hm₁ : ω ∈ relOm K (Ideal.span {f α S hα}) a` using `hI α S hα ▸ hm`. Establish `hm₂ : ω ∈ relOm K (Ideal.span {f α' S hα'}) a` using `hI α' S hα' ▸ hm`. Take `⟨w, hw⟩` from `hDW K (A S) a (f α S hα)`. Take `⟨w', hw'⟩` from `hDW K (A S) a (f α' S hα')`. Take `⟨wu, hwu⟩` from `hDW K (A S) a (u α α' S hα hα' : A S)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨η, ⟨-, hη⟩, -⟩` from `hDL K (A S) a (f α S hα) (hnz α S hα) w hw ω hm₁`. Take `⟨η', ⟨-, hη'⟩, -⟩` from `hDL K (A S) a (f α' S hα') (hnz α' S hα') w' hw' ω hm₂`. Establish `d` using `eta_diff hFL (u α α' S hα hα') (f α S hα) (f α' S hα') (huf α α' S hα hα') (hnz α S hα) w w' wu hw hw' hwu ω η η' hη hη'`. Establish `s1` using `lam_spec α S hα _ ω η w hw hi hη`. Establish `s2` using `lam_spec α' S hα' _ ω η' w' hw' hi hη'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz' : CH.d ((capU U S).ι ⋙ F₃) (a + 1) ((pairU P (capU U S)).cupC (Nat.add_comm 1 a) ((resU F₁ (capU_le U S hα)).pullC 1 (β α) - (resU F₁ (capU_le U S hα')).pullC 1 (β α')) x.1) = 0`. Rewrite using `[map_sub, LinearMap.sub_apply]`. Conclude with `congrArg Subtype.val hz`. Establish `s3` using `hcup α α' S hα hα' x.1 hy ω wu hwu hω.symm hz'`. Establish `e1 : (incl F₃ (capU U S) hQ).mapH (a + 1) (((covSy F₃ U hQ).K S).cls (etaS P U hQ β α S hα a x - etaS P U hQ β α' S hα' a x) hz) = (CH.cx ((capU U S).ι ⋙ F₃)).cls ((pairU P (capU U S)).cupC (Nat.add_comm 1 a) ((resU F₁ (capU_le U S hα)).pullC 1 (β α) - (resU F₁ (capU_le U S hα')) …`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg Submodule.Quotient.mk (Subtype.ext ?_)` and prove the remaining obligations. Conclude with `(LinearMap.congr_fun (map_sub ((pairU P (capU U S)).cupC (Nat.add_comm 1 a)) _ _) x.1).symm`. Establish `e2` using `(map_sub ((incl F₃ (capU U S) hQ).mapH (a + 1)) (lam α S hα (((covSy F₂ U hQ).K S).cls x hx)) (lam α' S hα' (((covSy F₂ U hQ).K S).cls x hx))).trans (congrArg₂ (· - ·) s1 s2)`. Use `(e1.trans s3).trans (Eq.trans ?_ e2.symm)` and prove the remaining obligations. Establish `e3 : (e₃ S ⟨α', hα'⟩ : _) = e₃ S ⟨α, hα⟩` using `rfl`.
-
-Rewrite using `[e3, ← map_sub, ← smul_sub, d]`.
+A detailed English derivation is pending.
 -/
 theorem cov_kill (hCK : ConeKill) (hCD : CovDesc) (hDW : DWedge) (hDL : DLog) (hFL : FormLaws)
     (P : CH.Pairing F₁ F₂ F₃) (U : ι → ObjectProperty C)

@@ -34,7 +34,7 @@ def emb0 (D : D7) : Emb D := D.what₂.embLL.comp (incl D)
 instance (D : D7) : Algebra (KK D) ℂ := (emb0 D).toAlgebra
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `D.O_contains x`. Conclude with `IntermediateField.subset_adjoin _ _ ⟨y, hy⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem embE_int_mem (D : D7) (x : 𝓞 D.host.E) : D.embE (x : D.host.E) ∈ Kfld D := by
   obtain ⟨y, hy⟩ := D.O_contains x
@@ -48,17 +48,17 @@ def RingTie (D : D7) : Prop :=
 def nK (D : D7) : ℕ := Module.finrank ℚ (KK D)
 
 /- English proof (translation)
-The claim follows from `Module.finrank_pos`.
+A detailed English derivation is pending.
 -/
 theorem nK_pos (D : D7) : 0 < nK D := Module.finrank_pos
 
 /- English proof (translation)
-The claim follows from `(RingOfIntegers.rank (KK D)).symm`.
+A detailed English derivation is pending.
 -/
 theorem nK_eq (D : D7) : nK D = Module.finrank ℤ (OO D) := (RingOfIntegers.rank (KK D)).symm
 
 /- English proof (translation)
-The claim follows from `Embeddings.card (KK D) ℂ`.
+A detailed English derivation is pending.
 -/
 theorem card_emb (D : D7) : Fintype.card (Emb D) = nK D := Embeddings.card (KK D) ℂ
 
@@ -78,9 +78,9 @@ def vK {D : D7} (l : Place D) (a : KK D) : WithTop ℝ :=
   if a = 0 then ⊤ else (((vAdd l a : ℤ) : ℝ) : WithTop ℝ)
 
 /- English proof (translation)
-Unfold `vK`. Use `split_ifs with h`. Conclude with `le_top`. Establish `h1 : l.valuation (KK D) (a : KK D) ≤ 1` using `l.valuation_le_one a`. Establish `h0 : l.valuation (KK D) (a : KK D) ≠ 0` using `by simpa using h`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: WithZero.log (l.valuation (KK D) (a : KK D)) ≤ 0`. Rewrite using `[← WithZero.log_one, WithZero.log_le_log h0 one_ne_zero]`. Conclude with `h1`. Establish `h2 : (0 : ℤ) ≤ vAdd l (a : KK D)` using `by unfold vAdd; omega`. Conclude with `h2` after adjusting the coercions.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem vK_nonneg {D : D7} (l : Place D) (a : OO D) : 0 ≤ vK l (a : KK D) := by
   unfold vK
@@ -142,7 +142,7 @@ def Conj (c c' : CuspGeom D j) : Prop :=
     ∀ x, γ x ∈ LinearMap.range c'.frame ↔ x ∈ LinearMap.range c.frame
 
 /- English proof (translation)
-Use `letI := D.host.cmStar`. Conclude with `⟨LinearEquiv.refl _ _, fun _ _ => rfl, fun _ => Iff.rfl, fun _ => Iff.rfl⟩`.
+Equip the data with the indicated structure. Supply the required witnesses or components.
 -/
 theorem Conj.refl : c.Conj c := by
   letI := D.host.cmStar
@@ -151,7 +151,7 @@ theorem Conj.refl : c.Conj c := by
 def killed (c₁ : ℝ) : Set (expGroup c.X) := {χ | IsShallow c.X c₁ (χ : Herm D.host (rho j))}
 
 /- English proof (translation)
-Use `letI := D.host.cmStar`. Take `⟨U, hU, hd⟩` from `(wittIndexOf_isGreatest (Wsp D j)).1`. Establish `hr : Module.finrank D.host.E U = rho j` using `hd.trans h`. Set `b : Module.Basis (Fin (rho j)) D.host.E U` to `Module.finBasisOfFinrankEq _ _ hr`. Conclude with `⟨{ lat := (Wsp D j).L0 lat_lat := (Wsp D j).standardTuple_isLattice lat_unimod := (Wsp D j).baseLattice_isUnimodular frame := U.subtype ∘ₗ b.equivFun.symm.toLinearMap frame_inj := U.subtype_injective.comp b.equivFun.symm.injective frame_iso := fun u u' => hU _ (b.equivFun.symm u) …`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem nonempty_of_wittIndex (h : wittIndex D j = rho j) : Nonempty (CuspGeom D j) := by
   letI := D.host.cmStar
@@ -263,7 +263,7 @@ abbrev CuspC (G : ThetaWeight D j) : Type := ℂ ⊗[KK D] Φ.Cusp j G
 def l2 {G : ThetaWeight D j} (σ : Emb D) (f : Φ.Cusp j G) : ℝ := √(Φ.ip σ f f).re
 
 /- English proof (translation)
-Use `Φ.vAt_smul y 0 (0 : Φ.Cusp j G)` as an intermediate fact. Simplify `this` using `[vK]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem vAt_zero {G : ThetaWeight D j} (y : Φ.Pt j) : Φ.vAt y (0 : Φ.Cusp j G) = ⊤ := by
   have := Φ.vAt_smul y 0 (0 : Φ.Cusp j G)
@@ -286,7 +286,7 @@ def MAt (G : ThetaWeight D j) (l : Place D) : Submodule (OO D) (Φ.Cusp j G) :=
 def rankM (G : ThetaWeight D j) : ℕ := Module.finrank (OO D) (Φ.M G)
 
 /- English proof (translation)
-Introduce `y hy` and use `by rw [Φ.vAt_mul]; exact add_nonneg (hf y hy) (hg y hy)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mul_mem_M {G G' : ThetaWeight D j} {f : Φ.Cusp j G} {g : Φ.Cusp j G'} (hf : f ∈ Φ.M G)
     (hg : g ∈ Φ.M G') : Φ.mul f g ∈ Φ.M (G.add G') := fun y hy => by
@@ -345,7 +345,7 @@ def deepK (G : ThetaWeight D j) (c₁ : ℝ) : Submodule (KK D) (Φ.Cusp j G) :=
   ((Φ.deepC G c₁).restrictScalars (KK D)).comap (TensorProduct.mk (KK D) ℂ (Φ.Cusp j G) 1)
 
 /- English proof (translation)
-Simplify using `[deepK, deepC, fjK, Submodule.mem_iInf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_deepK (G : ThetaWeight D j) (c₁ : ℝ) (f : Φ.Cusp j G) : f ∈ Φ.deepK G c₁ ↔
     ∀ (a : Φ.MaxCusp j), ∀ χ ∈ (Φ.geom a).killed c₁, Φ.fjK a G χ f = 0 := by
@@ -371,7 +371,7 @@ def deepRec (G : ThetaWeight D j) (T : ℕ) (c : ℝ) : Submodule (OO D) (Φ.Cus
 def rhoPRec (G : ThetaWeight D j) (T : ℕ) (c : ℝ) : ℕ := Φ.rhoP G (cOne D j T c)
 
 /- English proof (translation)
-Rewrite using `[deepKRec, mem_deepK]`. Use `⟨fun H a χ hχ => H a χ hχ.2, fun H a χ hχ => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Conclude with `hne (H a χ ⟨⟨χ.2, h j a G χ _ hne⟩, hχ⟩)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem mem_deepKRec (h : Φ.PositiveExponents) (G : ThetaWeight D j) (T : ℕ) (c : ℝ) (f : Φ.Cusp j G) :
     f ∈ Φ.deepKRec G T c ↔ ∀ (a : Φ.MaxCusp j) (χ : expGroup (Φ.geom a).X),
@@ -382,7 +382,7 @@ theorem mem_deepKRec (h : Φ.PositiveExponents) (G : ThetaWeight D j) (T : ℕ) 
   exact hne (H a χ ⟨⟨χ.2, h j a G χ _ hne⟩, hχ⟩)
 
 /- English proof (translation)
-Use `Φ.no_cusp j h` as an intermediate fact. Conclude with `eq_top_iff.2 fun f _ => (Φ.mem_deepK G c₁ f).2 fun a => isEmptyElim a`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem deepK_eq_top (h : rho j = 0) (G : ThetaWeight D j) (c₁ : ℝ) : Φ.deepK G c₁ = ⊤ := by
   have := Φ.no_cusp j h
@@ -405,9 +405,9 @@ def DeepSlope (T : ℕ) (c : ℝ) : Prop := ∀ (j : Lift D.R) (G : ThetaWeight 
 end FormsRecord
 
 /- English proof (translation)
-Unfold `vK`. Distinguish the cases in `ha : a = 0`. Simplify using `[ha]`. Distinguish the cases in `hb : b = 0`. Simplify using `[hb]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg (mul_ne_zero ha hb), if_neg ha, if_neg hb, Examples₂.PlacesToy.vAdd_mul l ha hb]`. Use `push_cast`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem vK_mul {D : D7} (l : Place D) (a b : KK D) : vK l (a * b) = vK l a + vK l b := by
   unfold vK
@@ -419,11 +419,9 @@ theorem vK_mul {D : D7} (l : Place D) (a b : KK D) : vK l (a * b) = vK l a + vK 
   push_cast; rfl
 
 /- English proof (translation)
-Distinguish the cases in `ha : a = 0`. Simplify using `[ha]`. Distinguish the cases in `hb : b = 0`. Simplify using `[hb]`. Distinguish the cases in `hab : a + b = 0`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Simplify using `[vK, hab]`. Use `Examples₂.PlacesToy.vAdd_add l ha hb hab` as an intermediate fact. Simplify using `only [vK, if_neg ha, if_neg hb, if_neg hab]`. Break down `min_le_iff.1 this with h | h` into its components or cases. Conclude with `min_le_of_left_le (by exact_mod_cast h)`.
-
-Conclude with `min_le_of_right_le (by exact_mod_cast h)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem vK_add {D : D7} (l : Place D) (a b : KK D) : min (vK l a) (vK l b) ≤ vK l (a + b) := by
   by_cases ha : a = 0
@@ -486,9 +484,9 @@ def lineRecord (D : D7) : FormsRecord D where
   fj _ _ χ := if TotPos χ.1 then LinearMap.id else 0
 
 /- English proof (translation)
-Use `⟨⟨show (lineRecord D).Cusp j G from (1 : KK D), fun y _ => ?_, show (1 : KK D) ≠ 0 from one_ne_zero⟩, fun j a G χ F h => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Place D at y`. Express the relevant statement in the definitionally equal form `0 ≤ vK y (1 : KK D)`. Simplify using `using vK_nonneg (D := D) y 1`. Assume the negation of the conclusion as `hn`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Simplify to obtain the desired conclusion from the available facts. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `h (by simp only [lineRecord]; rw [if_neg hn]; rfl)`.
+A detailed English derivation is pending.
 -/
 example (D : D7) (j : Lift D.R) (G : ThetaWeight D j) :
     (∃ f ∈ (lineRecord D).M G, f ≠ 0) ∧ (lineRecord D).PositiveExponents := by

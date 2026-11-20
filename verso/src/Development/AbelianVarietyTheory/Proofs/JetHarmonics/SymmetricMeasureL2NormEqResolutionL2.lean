@@ -22,14 +22,14 @@ open GlobalTheory.IndefiniteRowSideFullHecke.FormalDegreeHaarQuotient (Mat leviW
 variable {k r : ℕ}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨h.2.1, h.2.2.1, fun a ha => (h.2.2.2 a ha).2, fun a ha => (h.2.2.2 a ha).1, h.1⟩, fun h => ⟨h.closed, h.one_mem, h.mul_mem, fun a ha => ⟨h.unit a ha, h.inv_mem a ha⟩⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem closedSubgroup_iff (U : Set (Mat k r)) : IsClosedMatGroup U ↔ IsClosedSubgroup U :=
   ⟨fun h => ⟨h.2.1, h.2.2.1, fun a ha => (h.2.2.2 a ha).2, fun a ha => (h.2.2.2 a ha).1, h.1⟩,
     fun h => ⟨h.closed, h.one_mem, h.mul_mem, fun a ha => ⟨h.unit a ha, h.inv_mem a ha⟩⟩⟩
 
 /- English proof (translation)
-Establish `h0 : (0 : ℝ≥0∞) < μ Set.univ`. Rewrite using `[pos_iff_ne_zero]`. Conclude with `fun h' => h (Measure.measure_univ_eq_zero.mp h')`. Take `⟨t, -, -, h1, h2⟩` from `Measure.exists_subset_measure_lt_top MeasurableSet.univ h0`. Conclude with `⟨t, h1.ne', h2.ne⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_pos_lt_top {X : Type*} [MeasurableSpace X] (μ : Measure X) [SigmaFinite μ]
     (h : μ ≠ 0) : ∃ t : Set X, μ t ≠ 0 ∧ μ t ≠ ⊤ := by
@@ -39,15 +39,15 @@ theorem exists_pos_lt_top {X : Type*} [MeasurableSpace X] (μ : Measure X) [Sigm
   exact ⟨t, h1.ne', h2.ne⟩
 
 /- English proof (translation)
-Take `⟨m1, m2, m3, m4⟩` from `hμ`. Take `⟨n1, n2, n3, n4⟩` from `hν`. Establish `em : (pull hU μ).map inc = μ` using `map_pull μ m3`. Establish `en : (pull hU ν).map inc = ν` using `map_pull ν n3`. Establish `: (pull hU μ).IsMulLeftInvariant` using `pull_left μ m4`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (pull hU ν).IsMulLeftInvariant` using `pull_left ν n4`. Establish `: SigmaFinite (pull hU μ)` using `SigmaFinite.of_map _ inc_memb.measurable.aemeasurable (by rw [em]; exact m1)`. Establish `: SigmaFinite (pull hU ν)` using `SigmaFinite.of_map _ inc_memb.measurable.aemeasurable (by rw [en]; exact n1)`. Take `⟨s, s0, s1⟩` from `exists_pos_lt_top (pull hU ν) (by`. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `n2` to reduce the goal to its premises. Rewrite using `[← en, h, Measure.map_zero])`. Establish `e` using `measure_eq_div_smul (pull hU μ) (pull hU ν) s0 s1`. Generalize the expression as in `pull hU μ s / pull hU ν s = c at e`. Establish `e' : μ = c • ν` using `by rw [← em, e, Measure.map_smul, en]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Use `⟨c, ?_, ?_, e'⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `m2 (by rw [e', zero_smul])`. Introduce and unpack `rfl`. Take `⟨t, t0, t1⟩` from `exists_pos_lt_top μ m2`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `t0`, `t1` using `[e', Measure.smul_apply, smul_eq_mul]`. Distinguish the cases in `h : ν t = 0`. Conclude with `t0 (by rw [h, mul_zero])`. Conclude with `t1 (ENNReal.top_mul h)`.
+Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem haar_unique {U : Set (Mat k r)} (hU : IsClosedSubgroup U) {μ ν : Measure (Mt k r)}
     (hμ : PI.BesselPeriodGGP.IsHaarOn U μ) (hν : PI.BesselPeriodGGP.IsHaarOn U ν) :
@@ -78,9 +78,9 @@ theorem haar_unique {U : Set (Mat k r)} (hU : IsClosedSubgroup U) {μ ν : Measu
     · exact t1 (ENNReal.top_mul h)
 
 /- English proof (translation)
-Take `⟨m1, m2, m3, m4⟩` from `hμ`. Establish `: IsFiniteMeasureOnCompacts μ`. Use `⟨fun K hK => ?_⟩` and prove the remaining obligations. Establish `hle : μ K ≤ μ (K ∩ amb U)`. Use `measure_mono_ae ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hae : ∀ᵐ x ∂μ, Matrix.of x ∈ U` using `by rw [ae_iff]; exact m1`. Use `filter_upwards [hae] with x hx hK using ⟨hK, hx⟩`. Conclude with `lt_of_le_of_lt hle (m3 _ (hK.inter_right hU) fun x hx => hx.2)`. Conclude with `⟨inferInstance, m4, m1, m2⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem haar_of_compact {U : Set (Mat k r)} (hU : IsClosed U) {μ : Measure (Mt k r)}
     (hμ : GlobalTheory.IndefiniteRowSideFullHecke.FormalDegreeHaarQuotient.IsHaarOn U μ) : PI.BesselPeriodGGP.IsHaarOn U μ := by
@@ -95,13 +95,13 @@ theorem haar_of_compact {U : Set (Mat k r)} (hU : IsClosed U) {μ : Measure (Mt 
   exact ⟨inferInstance, m4, m1, m2⟩
 
 /- English proof (translation)
-Set `m : Measure (Gp U hU)` to `Measure.haar`. Establish `hm : Measurable (inc : Gp U hU → Mt k r)` using `inc_memb.measurable`. Use `⟨m.map inc, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[inc_memb.map_apply]`. Establish `: (inc : Gp U hU → Mt k r) ⁻¹' {x | Matrix.of x ∉ U} = ∅`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `x`. Simplify using `using inc_mem x`. Rewrite using `[this, measure_empty]`. Introduce `a ha`. Set `g : Gp U hU` to `⟨Matrix.of.symm a, ha⟩`.
+By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Rewrite using `[Measure.map_map (lmulM_cont a).measurable hm]`. Establish `: (lmulM a ∘ inc : Gp U hU → Mt k r) = inc ∘ (fun x => g * x)` using `rfl`. Rewrite using `[this, ← Measure.map_map hm (continuous_const_mul g).measurable, map_mul_left_eq_self]`. Introduce `C hC _`. Rewrite using `[inc_memb.map_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(inc_closedEmb.isCompact_preimage hC).measure_lt_top`. Introduce `h`. Rewrite `h` using `[Measure.map_eq_zero_iff hm.aemeasurable]`. Conclude with `NeZero.ne m h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_haar {U : Set (Mat k r)} (hU : IsClosedSubgroup U) :
     ∃ μ, GlobalTheory.IndefiniteRowSideFullHecke.FormalDegreeHaarQuotient.IsHaarOn U μ := by
@@ -125,9 +125,9 @@ theorem exists_haar {U : Set (Mat k r)} (hU : IsClosedSubgroup U) :
     exact NeZero.ne m h
 
 /- English proof (translation)
-Use `⟨fun h => ?_, haar_of_compact hU.closed⟩` and prove the remaining obligations. Take `⟨ν, hν⟩` from `exists_haar hU`. Take `⟨c, -, c1, e⟩` from `haar_unique hU h (haar_of_compact hU.closed hν)`. Use `⟨h.2.2.1, h.2.2.2, fun C hC hCU => ?_, h.2.1⟩` and prove the remaining obligations. Rewrite using `[e, Measure.smul_apply, smul_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ENNReal.mul_lt_top c1.lt_top (hν.2.2.1 C hC hCU)`.
+A detailed English derivation is pending.
 -/
 theorem isHaarOn_iff {U : Set (Mat k r)} (hU : IsClosedSubgroup U) (μ : Measure (Mt k r)) :
     PI.BesselPeriodGGP.IsHaarOn U μ ↔ GlobalTheory.IndefiniteRowSideFullHecke.FormalDegreeHaarQuotient.IsHaarOn U μ := by
@@ -139,22 +139,20 @@ theorem isHaarOn_iff {U : Set (Mat k r)} (hU : IsClosedSubgroup U) (μ : Measure
   exact ENNReal.mul_lt_top c1.lt_top (hν.2.2.1 C hC hCU)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isQuotRep_iff (G : Set (Mat k r)) (μG μS ν : Measure (Mt k r)) :
     GlobalTheory.IndefiniteRowSideFullHecke.FormalDegreeHaarQuotient.IsQuotRep G μG μS ν ↔
       ν {x | Matrix.of x ∉ G} = 0 ∧ PI.BesselPeriodGGP.IsQuotMeas μG μS ν := Iff.rfl
 
 /- English proof (translation)
-Use `⟨fun h => ⟨?_, h⟩, fun h => h.2⟩` and prove the remaining obligations. Establish `hm : MeasurableSet {x : Mt k r | Matrix.of x ∉ G}` using `(amb_closed hG).measurableSet.compl`. Establish `e` using `h (Set.indicator {x : Mt k r | Matrix.of x ∉ G} 1) (measurable_one.indicator hm)`. Rewrite `e` using `[lintegral_indicator_one hm, h1]`. Establish `hle : ∫⁻ x, Set.indicator {x : Mt k r | Matrix.of x ∉ G} (fun _ => μS Set.univ) x ∂ν ≤ 0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Use `lintegral_mono fun x => ?_` and prove the remaining obligations. Distinguish the cases in `hx : Matrix.of x ∈ G`. Rewrite using `[Set.indicator_of_notMem (by simpa using hx)]`. Conclude with `bot_le`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_mem (by simpa using hx), ← lintegral_one]`. Use `le_of_eq (lintegral_congr_ae ?_)` and prove the remaining obligations. Establish `hae : ∀ᵐ s ∂μS, Matrix.of s ∈ S` using `by rw [ae_iff]; exact h2`. Use `filter_upwards [hae] with s hs`. Rewrite using `[Set.indicator_of_mem]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Both sides reduce to the same expression. Introduce `hsx`. Apply `hx` to reduce the goal to its premises. Establish `h4` using `hG.mul_mem _ (hG.inv_mem _ (hSG hs)) _ hsx`. Establish `h5 : (Matrix.of s : Mat k r)⁻¹ * (Matrix.of s * Matrix.of x) = Matrix.of x` using `Matrix.nonsing_inv_mul_cancel_left _ _ (hG.unit _ (hSG hs))`.
-
-Conclude with `h5 ▸ h4`. Rewrite `hle` using `[lintegral_indicator_const hm, nonpos_iff_eq_zero, mul_eq_zero]`. Conclude with `hle.resolve_left fun h' => h3 (Measure.measure_univ_eq_zero.mp h')`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isQuotMeas_iff {G S : Set (Mat k r)} (hG : IsClosedSubgroup G) (hSG : S ⊆ G)
     {μG μS : Measure (Mt k r)} (h1 : μG {x | Matrix.of x ∉ G} = 0)
@@ -192,7 +190,7 @@ Both sides reduce to the same expression.
 theorem psiGen_eq : @PI.BesselPeriodGGP.psiGen = @PI.BesselMapUniq.psiGen := rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem equivariant_iff {Wp : Type*} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     (z : Fin (2 * r + k + 1) → ℂ) (c : Fin r → ℂ) (π : Mat k r → (Wp →L[ℂ] Wp)) (φ : Mat k r → Wp) :
@@ -207,7 +205,7 @@ theorem symmetricMeasure_l2Norm_eq_resolutionL2 {Wp : Type*} [NormedAddCommGroup
     PI.BesselPeriodGGP.l2SG ν φ = GlobalTheory.IndefiniteRowSideFullHecke.FormalDegreeHaarQuotient.sectionL2NormSq ν φ := rfl
 
 /- English proof (translation)
-Unfold `PI.BesselPeriodGGP.fdegH GlobalTheory.IndefiniteRowSideFullHecke.FormalDegreeHaarQuotient.formalDegreeAt GlobalTheory.IndefiniteRowSideFullHecke.FormalDegreeHaarQuotient.coefNormSq`. Rewrite using `[integral_eq_lintegral_of_nonneg_ae (Filter.Eventually.of_forall fun x => sq_nonneg _) (hm.norm.pow 2)]`. Use `congr 3`. Use function extensionality and compare the values at `x`. Rewrite using `[ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm_eq_enorm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem fdeg_eq {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (μ : Measure (Mt k r))
     (σ : Mat k r → (H →L[ℂ] H)) (w : H)
@@ -221,9 +219,9 @@ theorem fdeg_eq {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (μ
   rw [ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm_eq_enorm]
 
 /- English proof (translation)
-Take `⟨P, ⟨⟨hP, hPH⟩, -⟩, -, -, hrep, -⟩` from `hσ`. Establish `hd : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).mp hP`. Establish `hc : Continuous fun g : Mat k r => P * g * P⁻¹` using `(continuous_const.matrix_mul continuous_id).matrix_mul continuous_const`. Establish `h` using `(hrep.2.2 w).comp hc.continuousOn (s := UH (Hpk k r)) fun g hg => (Formalism.QuantumDeterminants.uHConj _ ε (Hpk k r) P hd hPH g).mp hg`. Use `h.congr fun g _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: P⁻¹ * (P * g * P⁻¹) * P = g`. Rewrite using `[Matrix.mul_assoc P, Matrix.nonsing_inv_mul_cancel_left _ _ hd, Matrix.nonsing_inv_mul_cancel_right _ _ hd]`. Simplify using `only [Function.comp_apply, this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem continuousOn_of_isDSHpk {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ} {σ : Mat k r → (H →L[ℂ] H)}
@@ -241,9 +239,9 @@ theorem continuousOn_of_isDSHpk {H : Type*} [NormedAddCommGroup H] [InnerProduct
   simp only [Function.comp_apply, this]
 
 /- English proof (translation)
-Apply `fdeg_eq` to reduce the goal to its premises. Establish `hG` using `Formalism.FourierDecayAlt.P.B2x2.closedG k r`. Establish `hr : μ.restrict (amb (UH (Hpk k r))) = μ` using `Measure.restrict_eq_self_of_ae_mem (by rw [ae_iff]; exact hμ)`. Rewrite using `[← hr]`. Establish `hc : ContinuousOn (fun x : Mt k r => ⟪w, σ (Matrix.of x) w⟫_ℂ) (amb (UH (Hpk k r)))` using `continuousOn_const.inner (continuousOn_of_isDSHpk hσ w)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hc.aestronglyMeasurable (amb_closed hG).measurableSet`.
+A detailed English derivation is pending.
 -/
 theorem fdeg_eq_of_isDSHpk {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ} {σ : Mat k r → (H →L[ℂ] H)}
@@ -262,7 +260,7 @@ theorem fdeg_eq_of_isDSHpk {H : Type*} [NormedAddCommGroup H] [InnerProductSpace
 def uinv (k r : ℕ) (h : Mat k r) : Mat k r := Hpk k r * hᴴ * Hpk k r
 
 /- English proof (translation)
-Establish `hU : hᴴ * Hpk k r * h = Hpk k r` using `hh`. Use `(Matrix.inv_eq_left_inv ?_).symm` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 theorem uinv_eq {h : Mat k r} (hh : h ∈ UH (Hpk k r)) : uinv k r h = h⁻¹ := by
   have hU : hᴴ * Hpk k r * h = Hpk k r := hh
@@ -271,15 +269,13 @@ theorem uinv_eq {h : Mat k r} (hh : h ∈ UH (Hpk k r)) : uinv k r h = h⁻¹ :=
     _ = 1 := by rw [hU, (Formalism.QuantumDeterminants.hpkFacts k r).2.1]
 
 /- English proof (translation)
-The claim follows from `(continuous_const.matrix_mul continuous_id.matrix_conjTranspose).matrix_mul continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem continuous_uinv : Continuous (uinv k r) :=
   (continuous_const.matrix_mul continuous_id.matrix_conjTranspose).matrix_mul continuous_const
 
 /- English proof (translation)
-Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Unfold `leviW`. Use `split_ifs`. Conclude with `continuous_id.matrix_elem i j`. Conclude with `continuous_const`.
-
-Conclude with `continuous_const`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_leviW : Continuous (leviW k r) := by
   refine continuous_pi fun i => continuous_pi fun j => ?_
@@ -293,14 +289,14 @@ def split (k r : ℕ) (s : Mt k r) : Mt k r × Mt k r :=
   (leviW k r (Matrix.of s), uinv k r (leviW k r (Matrix.of s)) * Matrix.of s)
 
 /- English proof (translation)
-The claim follows from `(continuous_leviW (k := k) (r := r)).prodMk (((continuous_uinv (k := k) (r := r)).comp continuous_leviW).matrix_mul continuous_id)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_split : Continuous (split k r) :=
   (continuous_leviW (k := k) (r := r)).prodMk
     (((continuous_uinv (k := k) (r := r)).comp continuous_leviW).matrix_mul continuous_id)
 
 /- English proof (translation)
-Establish `e : leviW k r (h * n) = h` using `GlobalTheory.IndefiniteRowSideFullHecke.FormalDegreeHaarQuotient.leviW_mul hh hn`. Use `Prod.ext e ?_` and prove the remaining obligations. Use `show uinv k r (leviW k r (h * n)) * (h * n) = n`. Rewrite using `[e, uinv_eq hh.1, Matrix.nonsing_inv_mul_cancel_left _ _ ((Formalism.FourierDecayAlt.P.B2x3.closedW k r z).unit h hh)]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem split_mul {z : Fin (2 * r + k + 1) → ℂ} {h n : Mat k r} (hh : h ∈ UWset k r z)
     (hn : n ∈ Nset k r) : split k r (h * n) = (h, n) := by
@@ -311,13 +307,13 @@ theorem split_mul {z : Fin (2 * r + k + 1) → ℂ} {h n : Mat k r} (hh : h ∈ 
     ((Formalism.FourierDecayAlt.P.B2x3.closedW k r z).unit h hh)]
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `Formalism.QuantumDeterminants.sGroup k r z hz`. Establish `hW` using `Formalism.FourierDecayAlt.P.B2x3.closedW k r z`. Establish `hN` using `Formalism.FourierDecayAlt.P.B2x2.closedN k r`. Use `⟨h1, h2, h3, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `a ⟨h, hh, n, hn, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Matrix.det_mul]`. Conclude with `(hW.unit h hh).mul (hN.unit n hn)`. Establish `e : Sset k r z = split k r ⁻¹' (amb (UWset k r z) ×ˢ amb (Nset k r))`. Use extensionality with `s`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨h, hh, n, hn, rfl⟩ show split k r (h * n) ∈ amb (UWset k r z) ×ˢ amb (Nset k r)`. Rewrite using `[split_mul hh hn]`. Conclude with `⟨hh, hn⟩`. Introduce and unpack `⟨hh, hn⟩`. Establish `hh' : leviW k r s ∈ UWset k r z` using `hh`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨_, hh', uinv k r (leviW k r s) * s, hn, ?_⟩` and prove the remaining obligations. Rewrite using `[uinv_eq hh'.1, Matrix.mul_nonsing_inv_cancel_left _ _ (hW.unit _ hh')]`. Rewrite using `[e]`. Conclude with `((amb_closed hW).prod (amb_closed hN)).preimage continuous_split`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem closedS {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) : IsClosedSubgroup (Sset k r z) := by
   obtain ⟨h1, h2, h3⟩ := Formalism.QuantumDeterminants.sGroup k r z hz
@@ -342,7 +338,7 @@ theorem closedS {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) : IsClosedSu
     exact ((amb_closed hW).prod (amb_closed hN)).preimage continuous_split
 
 /- English proof (translation)
-Use `hW.1` as an intermediate fact. Use `hN.1` as an intermediate fact. Establish `h1 : ∀ᵐ x ∂μW, Matrix.of x ∈ UWset k r z` using `by rw [ae_iff]; exact hW.2.2.1`. Establish `h2 : ∀ᵐ x ∂μN, Matrix.of x ∈ Nset k r` using `by rw [ae_iff]; exact hN.2.2.1`. Conclude with `(Measure.quasiMeasurePreserving_fst.ae h1).and (Measure.quasiMeasurePreserving_snd.ae h2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ae_prod {z : Fin (2 * r + k + 1) → ℂ} {μW μN : Measure (Mt k r)}
     (hW : PI.BesselPeriodGGP.IsHaarOn (UWset k r z) μW)
@@ -355,7 +351,7 @@ theorem ae_prod {z : Fin (2 * r + k + 1) → ℂ} {μW μN : Measure (Mt k r)}
   exact (Measure.quasiMeasurePreserving_fst.ae h1).and (Measure.quasiMeasurePreserving_snd.ae h2)
 
 /- English proof (translation)
-Rewrite using `[Measure.map_map continuous_split.measurable mulM_cont.measurable]`. Use `conv_rhs => rw [← Measure.map_id (μ := μW.prod μN)]`. Use `Measure.map_congr ?_` and prove the remaining obligations. Use `filter_upwards [ae_prod hW hN] with p hp`. Conclude with `split_mul hp.1 hp.2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem map_split {z : Fin (2 * r + k + 1) → ℂ} {μW μN : Measure (Mt k r)}
     (hW : PI.BesselPeriodGGP.IsHaarOn (UWset k r z) μW)
@@ -368,19 +364,17 @@ theorem map_split {z : Fin (2 * r + k + 1) → ℂ} {μW μN : Measure (Mt k r)}
   exact split_mul hp.1 hp.2
 
 /- English proof (translation)
-Use `hW.1` as an intermediate fact. Use `hN.1` as an intermediate fact. Establish `cW` using `Formalism.FourierDecayAlt.P.B2x3.closedW k r z`. Establish `hm : Measurable (mulM : Mt k r × Mt k r → Mt k r)` using `mulM_cont.measurable`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `SigmaFinite.of_map _ continuous_split.measurable.aemeasurable (by rw [map_split hW hN]; infer_instance)`. Introduce `h`. Rewrite `h` using `[Measure.map_eq_zero_iff hm.aemeasurable]`. Establish `h'` using `congrArg (fun m : Measure (Mt k r × Mt k r) => m (Set.univ ×ˢ Set.univ)) h`. Simplify using `only [Measure.prod_prod, Measure.coe_zero, Pi.zero_apply, mul_eq_zero, Measure.measure_univ_eq_zero] at h'`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h'.elim hW.2.1 hN.2.1`. Rewrite using `[← ae_iff]`. Use `(ae_map_iff hm.aemeasurable (amb_closed (closedS hz)).measurableSet).mpr ?_` and prove the remaining obligations. Use `filter_upwards [ae_prod hW hN] with p hp`. Conclude with `⟨_, hp.1, _, hp.2, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce and unpack `s ⟨h, hh, n, hn, rfl⟩`. Set `g : Mt k r → Mt k r → Mt k r` to `fun a x => lmulM (uinv k r (Matrix.of a) * n * Matrix.of a) x`. Establish `hg : Continuous (Function.uncurry g)` using `((((continuous_uinv (k := k) (r := r)).comp continuous_fst).matrix_mul continuous_const).matrix_mul continuous_fst).matrix_mul continuous_snd`. Establish `h1 : ∀ᵐ x ∂μW, Matrix.of x ∈ UWset k r z` using `by rw [ae_iff]; exact hW.2.2.1`. Establish `hp : MeasurePreserving (fun p : Mt k r × Mt k r => (lmulM h p.1, g p.1 p.2)) (μW.prod μN) (μW.prod μN)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `MeasurePreserving.skew_product ⟨(lmulM_cont h).measurable, hW.2.2.2 h hh⟩ hg.measurable ?_` and prove the remaining obligations. Use `filter_upwards [h1] with a ha`. Use `hN.2.2.2 _ ?_` and prove the remaining obligations. Use `(Formalism.QuantumDeterminants.uWNormal k r z hz _ (cW.inv_mem _ ha) n hn).1` as an intermediate fact. Rewrite `this` using `[Matrix.nonsing_inv_nonsing_inv _ (cW.unit _ ha), ← uinv_eq ha.1]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `conv_rhs => rw [← hp.map_eq]`. Rewrite using `[Measure.map_map (lmulM_cont _).measurable hm, Measure.map_map hm hp.measurable]`. Use `Measure.map_congr ?_` and prove the remaining obligations. Use `filter_upwards [ae_prod hW hN] with p hp`. Use `show h * n * (Matrix.of p.1 * Matrix.of p.2) = h * Matrix.of p.1 * (uinv k r (Matrix.of p.1) * n * Matrix.of p.1 * Matrix.of p.2)`.
-
-Rewrite using `[uinv_eq hp.1.1]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[Matrix.mul_nonsing_inv_cancel_left _ _ (cW.unit _ hp.1)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem haar_prod {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) {μW μN : Measure (Mt k r)}
     (hW : PI.BesselPeriodGGP.IsHaarOn (UWset k r z) μW)
@@ -427,11 +421,11 @@ theorem haar_prod {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) {μW μN :
     rw [Matrix.mul_nonsing_inv_cancel_left _ _ (cW.unit _ hp.1)]
 
 /- English proof (translation)
-Establish `hm : Measurable (mulM : Mt k r × Mt k r → Mt k r)` using `mulM_cont.measurable`. Distinguish the cases in `hf : AEStronglyMeasurable f ((μW.prod μN).map mulM)`. Conclude with `integral_map hm.aemeasurable hf`. Rewrite using `[integral_non_aestronglyMeasurable hf, integral_non_aestronglyMeasurable]`. Introduce `h`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hf` to reduce the goal to its premises. Rewrite `h` using `[← map_split hW hN]`. Use `(h.comp_measurable continuous_split.measurable).congr ?_` and prove the remaining obligations. Establish `hc : Continuous fun s : Mt k r => mulM (split k r s)` using `mulM_cont.comp continuous_split`. Establish `: ∀ᵐ s ∂((μW.prod μN).map mulM), mulM (split k r s) = s`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(ae_map_iff hm.aemeasurable (isClosed_eq hc continuous_id).measurableSet).mpr ?_` and prove the remaining obligations. Use `filter_upwards [ae_prod hW hN] with p hp`. Conclude with `congrArg mulM (split_mul hp.1 hp.2)`. Use `filter_upwards [this] with s hs`. Conclude with `congrArg f hs`.
+A detailed English derivation is pending.
 -/
 theorem integral_map_of_split {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {z : Fin (2 * r + k + 1) → ℂ} {μW μN : Measure (Mt k r)}
@@ -455,7 +449,7 @@ theorem integral_map_of_split {E : Type*} [NormedAddCommGroup E] [NormedSpace �
     exact congrArg f hs
 
 /- English proof (translation)
-Rewrite using `[psiGen_eq]`. Unfold `PI.BesselMapUniq.psiGen`. Rewrite using `[← Complex.exp_neg, Complex.star_def, ← Complex.exp_conj, map_mul, Complex.conj_I, Complex.conj_ofReal, neg_mul]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem star_psiGen (z : Fin (2 * r + k + 1) → ℂ) (c : Fin r → ℂ) (n : Mat k r) :
     star (PI.BesselPeriodGGP.psiGen k r z c n) = (PI.BesselMapUniq.psiGen k r z c n)⁻¹ := by
@@ -465,9 +459,9 @@ theorem star_psiGen (z : Fin (2 * r + k + 1) → ℂ) (c : Fin r → ℂ) (n : M
     Complex.conj_ofReal, neg_mul]
 
 /- English proof (translation)
-Take `⟨t, t0, t1, e⟩` from `haar_unique (closedS hz) (haar_of_compact (closedS hz).closed hS) (haar_prod hz hW hN)`. Use `⟨t.toReal, ENNReal.toReal_pos t0 t1, fun H _ _ Wp _ _ c σ π w v => ?_⟩` and prove the remaining obligations. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.FormalDegreeHaarQuotient.period`. Rewrite using `[e, integral_smul_measure, integral_map_of_split hW hN]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [ae_prod hW hN] with p hp`. Establish `h` using `(GlobalTheory.IndefiniteRowSideFullHecke.FormalDegreeHaarQuotient.twist_mul c π hp.1 hp.2 ((Formalism.FourierDecayAlt.P.B2x3.closedW k r z).unit _ hp.1)).2`. Rewrite using `[star_psiGen, ← smul_smul, ← h]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem period_eq {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) {μW μN μS : Measure (Mt k r)}
     (hW : PI.BesselPeriodGGP.IsHaarOn (UWset k r z) μW)
@@ -495,11 +489,11 @@ theorem period_eq {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) {μW μN �
   rfl
 
 /- English proof (translation)
-Use `⟨fun i j hij => ?_, fun a => ?_⟩` and prove the remaining obligations. Establish `hlt : i.val < j.val` using `hij`. Establish `hj` using `j.isLt`. Establish `h1` using `hi.1 i`. Establish `h2` using `hi.2 (j.val - 1) (by omega)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (⟨j.val - 1 + 1, by omega⟩ : Fin k) = j` using `Fin.ext (by simp only; omega)`. Rewrite `h2` using `[e]`. Establish `h3` using `hl.1.antitone (a := ⟨i.val, by omega⟩) (b := ⟨j.val - 1, by omega⟩) (by simp only [Fin.le_def]; omega)`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨m, hm⟩` from `hl.2 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Take `⟨j, hj⟩` from `hp 0 a`. Use `⟨m - j + r, ?_⟩` and prove the remaining obligations. Move the coercions through the operations in `at hm ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem isHCParam_of_interlaces {lam : Fin (2 * r + k + 1) → ℝ} {u : Fin k → ℝ}
     (hl : Formalism.QuantumDeterminants.IsHCParam lam) (hi : GlobalTheory.IndefiniteRowSideFullHecke.DecreasingNodeGaps.Interlaces r k lam u)
@@ -521,19 +515,19 @@ theorem isHCParam_of_interlaces {lam : Fin (2 * r + k + 1) → ℝ} {u : Fin k �
     linarith
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hA k r hk he v b u hl hi hp H _ _ σ hσ z hz hT Wp _ _ π hπ c hc μS hS x hx`. Establish `hk1 : 1 ≤ k` using `by omega`. Establish `hu` using `isHCParam_of_interlaces hl hi hp`. Rewrite `hi` using `[← GlobalTheory.Proof.NodeGapNoncompact.interlace_iff k r hk1]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hp` using `[← GlobalTheory.Proof.NodeGapNoncompact.parity_iff k r hk1]`. Rewrite `hl`, `hσ`, `hx` using `[← GlobalTheory.Proof.NodeGapNoncompact.lam_eq k r hk1]`. Rewrite `hσ`, `hx` using `[← GlobalTheory.Proof.NodeGapNoncompact.sign_eq k r hk1]`. Establish `: CompleteSpace H` using `hσ.choose_spec.2.1`. Establish `: FiniteDimensional ℂ Wp` using `hπ.choose_spec.2.2.1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨μW, hW⟩` from `exists_haar (Formalism.FourierDecayAlt.P.B2x3.closedW k r z)`. Take `⟨μN, hN⟩` from `exists_haar (Formalism.FourierDecayAlt.P.B2x2.closedN k r)`. Establish `hW'` using `haar_of_compact (Formalism.FourierDecayAlt.P.B2x3.closedW k r z).closed hW`. Establish `hN'` using `haar_of_compact (Formalism.FourierDecayAlt.P.B2x2.closedN k r).closed hN`. Take `⟨g, y, hg, hy, h⟩` from `hA k r z c u v b hk he hz hT hc hu hl hi hp H σ hσ Wp π hπ x hx μW μN hW' hN'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht, e⟩` from `period_eq hz hW' hN' hS`. Establish `hne : GlobalTheory.IndefiniteRowSideFullHecke.FormalDegreeHaarQuotient.period k r z c σ π μS (σ g x) (σ y x) ≠ 0`. Rewrite using `[e]`. Conclude with `smul_ne_zero ht.ne' h`. Conclude with `⟨g, hg, y, hy, Integrable.of_integral_ne_zero hne, hne⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hB k r z c u v b hk he hz hT hc _ hl hi hp H _ _ _ σ hσ Wp _ _ _ π hπ x hx μW μN hW hN`. Establish `hk1 : 1 ≤ k` using `by omega`. Rewrite `hi` using `[GlobalTheory.Proof.NodeGapNoncompact.interlace_iff k r hk1]`. Rewrite `hp` using `[GlobalTheory.Proof.NodeGapNoncompact.parity_iff k r hk1]`. Rewrite `hl`, `hσ`, `hx` using `[GlobalTheory.Proof.NodeGapNoncompact.lam_eq k r hk1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hσ`, `hx` using `[GlobalTheory.Proof.NodeGapNoncompact.sign_eq k r hk1]`. Establish `hS` using `(isHaarOn_iff (closedS hz) _).mp (haar_prod hz hW hN)`. Take `⟨g, hg, y, hy, -, h⟩` from `hB k r hk he v b u hl hi hp H σ hσ z hz hT Wp π hπ c hc _ hS x hx`. Take `⟨t, -, e⟩` from `period_eq hz hW hN hS`. Use `⟨g, y, hg, hy, fun h0 => h ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, h0, smul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem besselPeriod_iff :
     PI.BesselPeriodGGP.BesselPeriodGGP ↔ GlobalTheory.IndefiniteRowSideFullHecke.FormalDegreeHaarQuotient.BesselPeriodNeZero := by
@@ -572,7 +566,7 @@ theorem besselPeriod_iff :
     rw [e, h0, smul_zero]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ U hU μ => isHaarOn_iff ((closedSubgroup_iff U).mp hU) μ, fun _ _ G _ hG hSG _ _ ν h1 h2 => isQuotMeas_iff ((closedSubgroup_iff G).mp hG) hSG h1.2.2.1 h2.2.2.1 h2.2.1 ν, fun k r z => ⟨(closedSubgroup_iff _).mpr (Formalism.FourierDecayAlt.P.B2x2.closedG k r), (closedSubgro …`.
+Supply the required witnesses or components.
 -/
 theorem typings_equiv :
     (∀ (k r : ℕ) (U : Set (Mat k r)), IsClosedMatGroup U → ∀ μ : Measure (Mt k r),

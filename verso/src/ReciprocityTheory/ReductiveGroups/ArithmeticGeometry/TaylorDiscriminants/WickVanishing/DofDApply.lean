@@ -17,9 +17,9 @@ def dofD (F : Fin d → PS k 2 d) (v : Fin d → k) : Derivation k (PS k 1 d) (P
   ∑ j : Fin d, dofCoef F v j • pderiv k ((0 : Fin 1), j)
 
 /- English proof (translation)
-Establish `h : ∀ (s : Finset (Fin d)) (D : Fin d → Derivation k (PS k 1 d) (PS k 1 d)), (∑ j ∈ s, D j) f = ∑ j ∈ s, D j f`. Introduce `s D`. Use `Finset.induction_on s (by simp) ?_` and prove the remaining obligations. Introduce `a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, Derivation.add_apply, ih]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dofD, h]`. Simplify using `only [Derivation.smul_apply, smul_eq_mul, Dof, dofCoef]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem dofD_apply (F : Fin d → PS k 2 d) (v : Fin d → k) (f : PS k 1 d) :
     dofD F v f = Dof F v f := by
@@ -33,27 +33,27 @@ theorem dofD_apply (F : Fin d → PS k 2 d) (v : Fin d → k) (f : PS k 1 d) :
   simp only [Derivation.smul_apply, smul_eq_mul, Dof, dofCoef]
 
 /- English proof (translation)
-Simplify using `only [← dofD_apply, map_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dof_add (F : Fin d → PS k 2 d) (v : Fin d → k) (f g : PS k 1 d) :
     Dof F v (f + g) = Dof F v f + Dof F v g := by
   simp only [← dofD_apply, map_add]
 
 /- English proof (translation)
-Simplify using `only [← dofD_apply, map_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dof_zero (F : Fin d → PS k 2 d) (v : Fin d → k) : Dof F v 0 = 0 := by
   simp only [← dofD_apply, map_zero]
 
 /- English proof (translation)
-Simplify using `only [← dofD_apply, Derivation.leibniz, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dof_mul (F : Fin d → PS k 2 d) (v : Fin d → k) (f g : PS k 1 d) :
     Dof F v (f * g) = f * Dof F v g + g * Dof F v f := by
   simp only [← dofD_apply, Derivation.leibniz, smul_eq_mul]
 
 /- English proof (translation)
-Establish `hC : (C r : PS k 1 d) = r • (1 : PS k 1 d)`. Rewrite using `[MvPowerSeries.smul_eq_C_mul, mul_one]`. Rewrite using `[← dofD_apply, hC, Derivation.map_smul, Derivation.map_one_eq_zero, smul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem dof_C (F : Fin d → PS k 2 d) (v : Fin d → k) (r : k) : Dof F v (C r) = 0 := by
   have hC : (C r : PS k 1 d) = r • (1 : PS k 1 d) := by
@@ -61,14 +61,14 @@ theorem dof_C (F : Fin d → PS k 2 d) (v : Fin d → k) (r : k) : Dof F v (C r)
   rw [← dofD_apply, hC, Derivation.map_smul, Derivation.map_one_eq_zero, smul_zero]
 
 /- English proof (translation)
-Rewrite using `[dof_mul, dof_C, mul_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dof_C_mul (F : Fin d → PS k 2 d) (v : Fin d → k) (r : k) (f : PS k 1 d) :
     Dof F v (C r * f) = C r * Dof F v f := by
   rw [dof_mul, dof_C, mul_zero, add_zero]
 
 /- English proof (translation)
-Simplify using `only [← dofD_apply, map_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dof_sum (F : Fin d → PS k 2 d) (v : Fin d → k) {α : Type} (s : Finset α) (f : α → PS k 1 d) :
     Dof F v (∑ a ∈ s, f a) = ∑ a ∈ s, Dof F v (f a) := by

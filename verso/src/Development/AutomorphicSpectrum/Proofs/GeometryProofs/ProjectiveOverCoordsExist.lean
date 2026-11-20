@@ -9,11 +9,9 @@ open AlgebraicGeometry CategoryTheory CategoryTheory.Limits MonoidalCategory Car
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.XR
 open scoped CategoryTheory.Obj
 /- English proof (translation)
-Use `isLocallyNoetherian_of_affine_cover (S := fun j : Fin (N + 1) => ⟨i ⁻¹ᵁ GlobalTheory.ProjSpace.chart o N j, (GlobalTheory.ProjSpace.isAffineOpen_chart o N j).preimage i⟩) ?_ ?_` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce `x _`. Establish `hx : i x ∈ (⨆ j, GlobalTheory.ProjSpace.chart o N j)`. Rewrite using `[GlobalTheory.ProjSpace.iSup_chart]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Discharge the goal by the elementary cases of `trivial`. Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.mp hx`. Conclude with `TopologicalSpace.Opens.mem_iSup.mpr ⟨j, hj⟩`. Introduce `j`. Use `letI := GlobalTheory.ProjSpace.algebraSections o N (GlobalTheory.ProjSpace.chart o N j)`.
-
-Use `haveI : IsNoetherianRing Γ(PSpace o N, GlobalTheory.ProjSpace.chart o N j) := isNoetherianRing_of_ringEquiv _ (GlobalTheory.ProjSpace.chartAlgEquiv o N j).toRingEquiv`. Conclude with `isNoetherianRing_of_surjective _ _ (i.app (GlobalTheory.ProjSpace.chart o N j)).hom (Scheme.Hom.app_surjective i _ (GlobalTheory.ProjSpace.isAffineOpen_chart o N j))`.
+Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 private theorem isLocallyNoetherian_of_closedImmersion_pSpace (o : Type) [CommRing o] [IsNoetherianRing o] (X : Scheme.{0}) (N : ℕ)
     (i : X ⟶ PSpace o N) [IsClosedImmersion i] : IsLocallyNoetherian X := by
@@ -36,19 +34,19 @@ private theorem isLocallyNoetherian_of_closedImmersion_pSpace (o : Type) [CommRi
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `o _ _ X s hs Ω _ _ ξ hξ hcomp`. Take `⟨N, i, hi, rfl⟩` from `hs`. Use `haveI := isLocallyNoetherian_of_closedImmersion_pSpace o X N i`. Establish `hZ` using `GlobalTheory.CompanionTheory.Ar.isClopen_setOf_genPt_specializes X Ω ξ hξ`. Set `U : X.Opens` to `⟨{q | genPt ξ ⤳ q}, hZ.isOpen⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hr : Set.range ξ ⊆ Set.range U.ι`. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Establish `: y = closedPoint Ω` using `Subsingleton.elim _ _`. Substitute `this` using the available equality.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Introduce a local definition for the expression.
 
-Conclude with `specializes_rfl`. Set `ξ' : Sp Ω ⟶ U` to `IsOpenImmersion.lift U.ι ξ hr`. Establish `hfac : ξ' ≫ U.ι = ξ` using `IsOpenImmersion.lift_fac _ _ _`. Use `haveI : IsClosedImmersion U.ι := IsClosedImmersion.of_isPreimmersion _ (by rw [Scheme.Opens.range_ι]; exact hZ.isClosed)`. Establish `hξ2 : IsCptGen (ξ' ≫ U.ι)` using `by rw [hfac]; exact hξ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hgen' : IsCptGen ξ'` using `PositivityTheory.HtPt.Mf.isCptGen_of_comp ξ' U.ι hξ2`. Establish `h1 : U.ι (genPt ξ') = genPt ξ`. Express the relevant statement in the definitionally equal form `(ξ' ≫ U.ι) (closedPoint Ω) = ξ (closedPoint Ω)`. Rewrite using `[hfac]`. Establish `hall : ∀ q, genPt ξ' ⤳ q`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `q`. Rewrite using `[← U.ι.isOpenEmbedding.isInducing.specializes_iff, h1]`. Conclude with `q.2`. Take `⟨t, ht, heq⟩` from `PositivityTheory.HtPt.Mf.exists_point (ξ' ≫ U.ι ≫ i) (by simpa [Category.assoc, reassoc_of% hfac] using hcomp)`. Establish `hct : CoordTie o ξ' t` using `PositivityTheory.HtPt.Mf.coordTie_of_all (i := U.ι ≫ i) hgen' hall heq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : genPt (ξ' ≫ U.ι) = genPt ξ` using `by rw [hfac]`. Establish `hsurj : ∀ q : Cpt (ξ' ≫ U.ι), ∃ p : Cpt ξ', PositivityTheory.HtPt.Mf.push ξ' U.ι p = q`. Introduce `q`. Establish `hq : genPt ξ ⤳ q.1`. Rewrite using `[← h2]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `q.2`. Conclude with `⟨⟨⟨q.1, hq⟩, hall _⟩, Subtype.ext rfl⟩`. Establish `hfin` using `PositivityTheory.HtPt.Mf.coordTie_comp (o := o) U.ι hξ2 hsurj hct`. Rewrite `hfin` using `[hfac]`. Conclude with `⟨N + 1, t, hfin⟩`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.CompanionTheory.Relay.projective_over_coords_exist : ∀ (o : Type) [CommRing o] [IsNoetherianRing o] (X : Scheme.{0}) (s : X ⟶ Sp o), IsProjOver s → ∀ (Ω : Type) [Field Ω] [Algebra o Ω] (ξ : Sp Ω ⟶ X), IsCptGen ξ → ξ ≫ s = spMap (algebraMap o Ω) → ∃ (n : ℕ) (x : Fin n → Ω), CoordTie o ξ x := by
   intro o _ _ X s hs Ω _ _ ξ hξ hcomp

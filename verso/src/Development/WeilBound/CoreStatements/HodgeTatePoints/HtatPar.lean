@@ -42,7 +42,7 @@ theorem bcPt_left {K : Type} [Field K] (f : Ω →+* K) (ξ' : Sp K ⟶ S) (h : 
     (g : Over.mk ξ ⟶ G) : (bcPt ξ f ξ' h ≫ g).left = spMap f ≫ g.left := rfl
 
 /- English proof (translation)
-Use `HTTie.epi_spMap f` as an intermediate fact. Establish `e' : spMap f ≫ g.left = spMap f ≫ g'.left` using `congrArg CommaMorphism.left e`. Conclude with `Over.OverMorphism.ext ((cancel_epi _).1 e')`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem bcPt_cancel {K : Type} [Field K] (f : Ω →+* K) (ξ' : Sp K ⟶ S) (h : spMap f ≫ ξ = ξ') {G : Over S}
     {g g' : Over.mk ξ ⟶ G} (e : bcPt ξ f ξ' h ≫ g = bcPt ξ f ξ' h ≫ g') : g = g' := by
@@ -51,19 +51,17 @@ theorem bcPt_cancel {K : Type} [Field K] (f : Ω →+* K) (ξ' : Sp K ⟶ S) (h 
   exact Over.OverMorphism.ext ((cancel_epi _).1 e')
 
 /- English proof (translation)
-Take `⟨ev, ζ₀, hζ, hI⟩` from `h578 E H D S t Ω ξ n hn hpq hprop hfull hT`. Take `⟨I, -, hIe⟩` from `hI (AlgebraicClosure Ω) (algebraMap Ω _)`. Set `ψ` to `bcPt ξ (algebraMap Ω (AlgebraicClosure Ω)) _ rfl`. Establish `hψ : ∀ a, I.ev n a = ψ ≫ ev a` using `fun a => Over.OverMorphism.ext (hIe a)`. Establish `can : ∀ {g g' : Over.mk ξ ⟶ t.G}, ψ ≫ g = ψ ≫ g' → g = g'` using `fun e => bcPt_cancel ξ _ _ rfl e`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨ev, ζ₀, hζ, fun a b => can ?_, fun c a => can ?_, fun a => ?_, fun g => ?_, ?_, hI⟩` and prove the remaining obligations. Rewrite using `[comp_mul, ← hψ, ← hψ, ← hψ, I.add]`. Rewrite using `[← Category.assoc, ← hψ, ← hψ, I.lin]`. Rewrite using `[← I.ker n hn a, hψ]`. Conclude with `⟨fun h => by rw [h, MonObj.comp_one], fun h => can (by rw [h, MonObj.comp_one])⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hg`. Take `⟨a, ha⟩` from `(I.onto n hn (ψ ≫ g)).1 (by rw [← HTTie.comp_pow', hg, MonObj.comp_one])`. Conclude with `⟨a, can (by rw [← hψ, ha])⟩`. Introduce and unpack `⟨a, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use `can ?_` and prove the remaining obligations. Rewrite using `[HTTie.comp_pow', ← hψ, MonObj.comp_one]`. Conclude with `(I.onto n hn _).2 ⟨a, rfl⟩`. Introduce `a b k _ _ i xk gk c hx hg`. Take `⟨I', hz, hI'⟩` from `hI k i`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `rfl : xk = I'.ev n a` from `Over.OverMorphism.ext (hx.trans (hI' a).symm)`. Take `rfl : gk = I'.ev n b` from `Over.OverMorphism.ext (hg.trans (hI' b).symm)`. Establish `h0` using `I'.isom n hn a b`. Establish `hv : ((I'.ζ n ^ D.EF a b : kˣ) : k) = i ((ζ₀ ^ D.EF a b : Ωˣ) : Ω)`. Rewrite using `[Units.val_zpow_eq_zpow_val, Units.val_zpow_eq_zpow_val, map_zpow₀, hz]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[GlobalTheory.weilIs_unique_fieldPoint S t.G t.PP.L t.PP.isLB k _ n _ _ _ _ h h0, hv]`. Introduce `h`. Take `rfl : c = I'.ζ n ^ D.EF a b` from `Units.ext (h.trans hv.symm)`.
-
-Conclude with `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_isParam (h578 : type_of% @GlobalTheory.T.torsion_points_defined_generic) [CharZero Ω] (n : ℕ) (hn : 1 ≤ n) (hpq : 0 < D.p + D.q)
     (hprop : IsProper (pullback.snd t.G.hom ξ)) (hfull : FullTorsion t.G ξ n)
@@ -104,7 +102,7 @@ theorem exists_isParam (h578 : type_of% @GlobalTheory.T.torsion_points_defined_g
       exact h0
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `hev.tate k f`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem IsParam.tate' {n : ℕ} {ev : D.La → (Over.mk ξ ⟶ t.G)} {ζ₀ : Ωˣ} (hev : IsParam D t ξ n ev ζ₀)
     (k : Type) [Field k] [IsAlgClosed k] (f : Ω →+* k) (ξ' : Sp k ⟶ S) (h : spMap f ≫ ξ = ξ') :
@@ -115,9 +113,7 @@ theorem IsParam.tate' {n : ℕ} {ev : D.La → (Over.mk ξ ⟶ t.G)} {ζ₀ : Ω
   exact hev.tate k f
 
 /- English proof (translation)
-Substitute `e` using the available equality. Establish `hp : IsPullback (pullback.lift (pullback.fst f (g ≫ h)) (pullback.snd f (g ≫ h) ≫ g) (by rw [pullback.condition, Category.assoc])) (pullback.snd f (g ≫ h)) (pullback.snd f h) g`. Use `IsPullback.of_right ?_ (pullback.lift_snd _ _ _) (IsPullback.of_hasPullback f h)` and prove the remaining obligations. Rewrite using `[pullback.lift_fst]`. Conclude with `IsPullback.of_hasPullback f (g ≫ h)`.
-
-Conclude with `MorphismProperty.of_isPullback (P := @IsProper) hp inferInstance`.
+Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isProper_of_iso {G S Y Z : Scheme.{0}} (f : G ⟶ S) (h : Y ⟶ S) (g : Z ⟶ Y) (h' : Z ⟶ S) (e : g ≫ h = h')
     [IsProper (pullback.snd f h)] : IsProper (pullback.snd f h') := by
@@ -130,31 +126,29 @@ theorem isProper_of_iso {G S Y Z : Scheme.{0}} (f : G ⟶ S) (h : Y ⟶ S) (g : 
   exact MorphismProperty.of_isPullback (P := @IsProper) hp inferInstance
 
 /- English proof (translation)
-Establish `hpos : 0 < p ^ m` using `pow_pos (Fact.out : p.Prime).pos _`. Establish `hq : spMap κ.symm.toRingHom ≫ ξ = (BT.genPt A).hom ≫ x`. Rewrite using `[← hx, ← Category.assoc, ← HTTie.spec_comp]`. Use `congr 2`. Use extensionality with `a`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Establish `hκκ : spMap κ.toRingHom ≫ spMap κ.symm.toRingHom = 𝟙 _`. Rewrite using `[← HTTie.spec_comp]`. Establish `: κ.toRingHom.comp κ.symm.toRingHom = RingHom.id Ω` using `by ext a; simp`. Rewrite using `[this]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Spec.map_id _`. Set `ψ` to `bcPt ξ κ.symm.toRingHom _ hq`. Establish `ev0 : ev 0 = 1` using `(hev.ker 0).2 ⟨0, by simp⟩`. Set `φ : Multiplicative D.La →* (Over.mk ((BT.genPt A).hom ≫ x) ⟶ t.G)` to `{ toFun := fun a => ψ ≫ ev a.toAdd map_one' := by show ψ ≫ ev 0 = 1`. Rewrite using `[ev0, MonObj.comp_one]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `map_mul' := fun a b => by show ψ ≫ ev (a.toAdd + b.toAdd) = _`. Rewrite using `[hev.add, comp_mul] }`. Set `π₀ : Multiplicative D.La →* LevGrp D.La p m` to `(LinearMap.range ((p ^ m) • (LinearMap.id : D.La →ₗ[ℤ] D.La))).mkQ.toAddMonoidHom.toMultiplicative`. Establish `hπ₀ : ∀ a, π₀ (Multiplicative.ofAdd a) = lev p m a` using `fun a => rfl`. Establish `hsurj : ∀ s : LevGrp D.La p m, ∃ a, lev p m a = s` using `fun s => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨a, ha⟩` from `Submodule.Quotient.mk_surjective _ s.toAdd`. Conclude with `⟨a, congrArg Multiplicative.ofAdd ha⟩`. Establish `hlev : ∀ a : D.La, lev p m a = 1 ↔ ∃ b, a = p ^ m • b` using `fun a => by`. Establish `: lev p m a = 1 ↔ a ∈ LinearMap.range ((p ^ m) • (LinearMap.id : D.La →ₗ[ℤ] D.La))` using `Submodule.Quotient.mk_eq_zero _`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨fun ⟨b, hb⟩ => ⟨b, hb.symm⟩, fun ⟨b, hb⟩ => ⟨b, hb.symm⟩⟩`. Establish `hs₀ : Function.Surjective π₀` using `fun s => by`. Take `⟨a, ha⟩` from `hsurj s`. Conclude with `⟨Multiplicative.ofAdd a, ha⟩`. Set `τ : LevGrp D.La p m →* (Over.mk ((BT.genPt A).hom ≫ x) ⟶ t.G)` to `π₀.liftOfRightInverse (Function.surjInv hs₀) (Function.rightInverse_surjInv hs₀) ⟨φ, fun z hz => by`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : lev p m z.toAdd = 1` using `hz`. Use `show ψ ≫ ev z.toAdd = 1`. Rewrite using `[(hev.ker _).2 ((hlev _).1 h1), MonObj.comp_one]⟩`. Establish `hτ : ∀ a, τ (lev p m a) = ψ ≫ ev a` using `fun a => MonoidHom.liftOfRightInverse_comp_apply _ _ _ _ (Multiplicative.ofAdd a)`. Establish `hinj : Function.Injective τ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[injective_iff_map_eq_one]`. Introduce `s hs`. Take `⟨a, rfl⟩` from `hsurj s`. Rewrite `hs` using `[hτ]`. Conclude with `(hlev a).2 ((hev.ker a).1 (bcPt_cancel ξ _ _ hq (hs.trans (MonObj.comp_one _).symm)))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `htor : ∀ s, τ s ^ (p ^ m) = 1` using `fun s => by`. Take `⟨a, rfl⟩` from `hsurj s`. Rewrite using `[hτ, ← HTTie.comp_pow', (hev.onto _).2 ⟨a, rfl⟩, MonObj.comp_one]`. Establish `hk : ∀ (k : Type) [Field k] (f : FractionRing A →+* k), spMap (f.comp κ.symm.toRingHom) ≫ ξ = spMap f ≫ (BT.genPt A).hom ≫ x` using `fun k _ f => by`. Rewrite using `[← hq, ← Category.assoc, ← HTTie.spec_comp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hgeo : ∀ (k : Type) [Field k] [IsAlgClosed k] (f : FractionRing A →+* k) (g : Over.mk (spMap f ≫ (BT.genPt A).hom ≫ x) ⟶ t.G), g ^ (p ^ m) = 1 → ∃ s, g.left = spMap f ≫ (τ s).left`. Introduce `k _ _ f g hg`. Take `⟨I, -, hI⟩` from `hev.tate' D t ξ k _ _ (hk k f)`. Take `⟨a, rfl⟩` from `(I.onto _ hpos g).1 hg`. Use `⟨lev p m a, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hI, hτ, bcPt_left]`. Conclude with `(congrArg (· ≫ (ev a).left) (HTTie.spec_comp κ.symm.toRingHom f)).trans (Category.assoc _ _ _)`. Take `⟨Γ, i, hi, hpt⟩` from `h450 A (LevGrp D.La p m) S t.G t.semi x (p ^ m) hpos τ hinj htor hgeo`. Establish `hpt' : ∀ a, (Γ.pt (lev p m a)).left ≫ i = spMap κ.symm.toRingHom ≫ (ev a).left` using `fun a => by`. Rewrite using `[hpt, hτ, bcPt_left]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Use `⟨Γ, i, hi, fun a => ?_, fun c a => ?_, isProper_of_iso _ ξ _ _ hq, fun k _ _ f => ?_⟩` and prove the remaining obligations. Rewrite using `[hpt', ← Category.assoc, hκκ, Category.id_comp]`. Rewrite using `[← Category.assoc, hpt', hpt', hev.lin, Category.assoc]`. Both sides reduce to the same expression. Take `⟨I, hz, hI⟩` from `hev.tate' D t ξ k _ _ (hk k f)`.
-
-Use `⟨I, hz, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[hI, hpt']`. Conclude with `(congrArg (· ≫ (ev a).left) (HTTie.spec_comp κ.symm.toRingHom f)).trans (Category.assoc _ _ _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_chartGroup (h450 : type_of% @GlobalTheory.T.torsion_embedding_geometric_points) (p m : ℕ) [Fact p.Prime]
     {ev : D.La → (Over.mk ξ ⟶ t.G)} {ζ₀ : Ωˣ} (hev : IsParam D t ξ (p ^ m) ev ζ₀)

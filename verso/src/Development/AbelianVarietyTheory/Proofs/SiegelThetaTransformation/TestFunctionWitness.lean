@@ -5,7 +5,7 @@ open Matrix Complex
 namespace GlobalTheory.SW
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h k i => by simpa using (h k i).sub (hy k i), fun h k i => (h k i).add (hy k i)⟩`.
+Supply the required witnesses or components.
 -/
 private theorem intM_add_iff_of_intM_right {K : Type} [Field K] {κ ι : Type} {x y : Matrix κ ι K} (hy : IntM y) :
     IntM (x + y) ↔ IntM x :=
@@ -14,9 +14,7 @@ private theorem intM_add_iff_of_intM_right {K : Type} [Field K] {κ ι : Type} {
 open Classical in
 
 /- English proof (translation)
-Use `⟨fun x hx => ?_, fun x y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_one, one_smul]`. Assume the negation of the conclusion as `h`. Conclude with `hx (if_neg h)`. Rewrite using `[Nat.cast_one, one_smul]`.
-
-Conclude with `if_congr (intM_add_iff_of_intM_right hy) rfl rfl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ind_sb {K : Type} [Field K] [NumberField K] {κ ι : Type} [Fintype κ] [Fintype ι] :
     HasLevel 1 (fun x : Matrix κ ι K => if IntM x then (1:ℂ) else 0) := by
@@ -30,7 +28,7 @@ theorem ind_sb {K : Type} [Field K] [NumberField K] {κ ι : Type} [Fintype κ] 
 open Classical in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, one_pos, ind_sb⟩`.
+Supply the required witnesses or components.
 -/
 theorem ind_isSB {K : Type} [Field K] [NumberField K] {κ ι : Type} [Fintype κ] [Fintype ι] :
     IsSB (fun x : Matrix κ ι K => if IntM x then (1:ℂ) else 0) := ⟨1, one_pos, ind_sb⟩
@@ -38,7 +36,7 @@ theorem ind_isSB {K : Type} [Field K] [NumberField K] {κ ι : Type} [Fintype κ
 open Classical in
 
 /- English proof (translation)
-Introduce `h`. Establish `h0` using `congrFun h 0`. Rewrite `h0` using `[if_pos (show IntM (0 : Matrix κ ι K) from fun k i => by simpa using isIntegral_zero)]`. Conclude with `one_ne_zero h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ind_ne_zero {K : Type} [Field K] [NumberField K] {κ ι : Type} [Fintype κ] [Fintype ι] :
     (fun x : Matrix κ ι K => if IntM x then (1:ℂ) else 0) ≠ 0 := by

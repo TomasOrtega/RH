@@ -13,7 +13,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {d : ColDat} (a : ColArgs d)
 
 /- English proof (translation)
-Introduce `c` and use `til_tmv_rec a hS hP hQ u c`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem tilMove (hS : SpStd d.toColBase) (hP : PtSurjP d) (hQ : PtSurj d) (u : d.what₂.Word) : TilMove a u :=
   fun c => til_tmv_rec a hS hP hQ u c

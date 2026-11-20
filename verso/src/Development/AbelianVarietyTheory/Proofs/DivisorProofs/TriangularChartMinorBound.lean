@@ -9,11 +9,9 @@ open scoped Classical
 set_option autoImplicit false
 
 /- English proof (translation)
-Introduce `F _ _ Y V W p _ _ g C A U' H d T σ hT _ _ hU _ hgen i z hz`. Establish `hdiag : ∀ k, ((T (V.π z)).map V.φ) k k = V.φ (d (V.π z) k : Y.Fn)` using `fun k => by`. Rewrite using `[Matrix.map_apply, (hT _).2 k]`. Establish `htri : ((T (V.π z)).map V.φ).BlockTriangular id` using `fun a b hab => by`. Rewrite using `[Matrix.map_apply, (hT _).1 hab, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hne : ∀ k, ((T (V.π z)).map V.φ) k k ≠ 0` using `fun k => by`. Rewrite using `[hdiag k]`. Conclude with `(map_ne_zero V.φ).2 (d (V.π z) k).ne_zero`. Establish `hC` using `(GlobalTheory.T.minors_triangular_change_invariant H _ htri hne σ).2.2 (fun k hk => (hU z hz k hk).ne_zero) i`. Rewrite using `[hC, hdiag, div_eq_mul_inv, ← mul_assoc, ← mul_assoc, ← map_mul]`.
-
-Conclude with `((V.unitAt_φ (hgen i (V.π z))).mul (hU z hz _ _)).mul (hU z hz _ _).inv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ConstLat.CramerFrame.unitAt_genAt_mul_frameC : ∀ {F : Type} [Field F] [NumberField F] {Y : Var F} (V : Cover Y) (W : Y.X.Opens) (p : ℕ), p.Prime → genericPoint Y.X ∈ W → ∀ {g : ℕ} {C : CxSt F} (A : Fin g → Adl C Y) (U' : V.X.Opens) (H : Matrix (Fin (g + g)) (Fin g) V.G.functionField) (d : Y.X → Fin g → Y.Fnˣ) (T : Y.X → Matrix (Fin g) (Fin g) Y.Fn) (σ : ∀ k : ℕ, Fin k → Fin (g + g)), (∀ y, (T y).BlockTriangular id ∧ ∀ i, T y i i = (d y i : Y.Fn)) → ChartReg V U' H T → (∀ (k : ℕ) (hk : k ≤ g), minorAt H k hk (σ k) ≠ 0) → (∀ z : V.G, V.j z ∈ U' → ∀ (k : ℕ) (hk : k ≤ g), UnitAt z (minorAt (H * ((T (V.π z)).map V.φ)⁻¹) k hk (σ k))) → (AtTest V W p fun _ e y z yt => ⊤ ≤ yt ⁻¹ᵁ U' → ∀ (k : ℕ) (hk : k ≤ g) (τ : Fin k → Fin (g + g)), e.w (minorAt (valMat V H (T (below y.1)) z) k hk τ) ≤ e.w (minorAt (valMat V H (T (below y.1)) z) k hk (σ k))) → (∀ i y, UnitAt y (genAt (A i).D y * d y i)) → ∀ (i : Fin g) (z : V.G), V.j z ∈ U' → UnitAt z (V.φ (genAt (A i).D (V.π z)) * (frameC H σ i : V.G.functionField)) := by
   intro F _ _ Y V W p _ _ g C A U' H d T σ hT _ _ hU _ hgen i z hz

@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EqZeroOfIsOr
 open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.TorRef GlobalTheory.PolFan
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.PrimRay.eq_of_toReal_eq_smul` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FPrimitiveIntBilinFormEqOfPositiveRealRay.lean&line=7#L7)
 -/

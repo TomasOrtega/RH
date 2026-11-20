@@ -19,13 +19,13 @@ variable {V V' : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [NormedAddComm
   {B : Type} [NormedAddCommGroup B] [NormedSpace ℂ B]
 
 /- English proof (translation)
-The claim follows from `E.contDiff_comp_iff (f := fun v => ρ v f)`.
+A detailed English derivation is pending.
 -/
 theorem sm_comp_iff (E : V ≃L[ℝ] V') (ρ : V' → B →L[ℂ] B) (f : B) : Sm (fun v => ρ (E v)) f ↔ Sm ρ f :=
   E.contDiff_comp_iff (f := fun v => ρ v f)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun f => by simp only [map_zero, h.1], fun u v f => by simp only [h.2.1, hE, map_add], fun u f => h.2.2.1 _ f, fun f => (h.2.2.2 f).comp E.continuous⟩`.
+Supply the required witnesses or components.
 -/
 theorem isHeis_comp {om : V' → V' → ℝ} {om' : V → V → ℝ} {ρ : V' → B →L[ℂ] B} (h : IsHeis om ρ) (E : V →L[ℝ] V')
     (hE : ∀ x y, om (E x) (E y) = om' x y) : IsHeis om' fun v => ρ (E v) :=
@@ -33,7 +33,7 @@ theorem isHeis_comp {om : V' → V' → ℝ} {om' : V → V → ℝ} {ρ : V' �
     fun f => (h.2.2.2 f).comp E.continuous⟩
 
 /- English proof (translation)
-Establish `h1 : DifferentiableAt ℝ (fun v => ρ v f) (E 0)` using `(ContDiff.differentiable hf (by simp)).differentiableAt`. Establish `h2` using `fderiv_comp (0 : V) h1 E.differentiableAt`. Rewrite `h2` using `[E.fderiv, map_zero]`. Conclude with `congrArg (fun T : V →L[ℝ] B => T z) h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fderiv_comp_clm {ρ : V' → B →L[ℂ] B} {f : B} (hf : Sm ρ f) (E : V →L[ℝ] V') (z : V) :
     fderiv ℝ (fun v => ρ (E v) f) 0 z = fderiv ℝ (fun v => ρ v f) 0 (E z) := by
@@ -43,9 +43,9 @@ theorem fderiv_comp_clm {ρ : V' → B →L[ℂ] B} {f : B} (hf : Sm ρ f) (E : 
   exact congrArg (fun T : V →L[ℝ] B => T z) h2
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, h5, h6, h7, h8⟩` from `h`. Simplify using `only [sm_comp_iff] at h1 h2 h3 h4 h5 h6 h7 h8`. Use `⟨fun g => h1 _, fun g => h2 _, fun g => h3 _, fun f hf => ?_, fun g g' f hf => ?_, fun g v f hf => ?_, fun g A hA => h7 _ A fun v => hA _, fun H _ _ _ Φ hΦ g => h8 H Φ (fun v => hΦ _) _⟩` and prove the remaining obligations. Simplify using `only [map_one, h4 f hf]`. Simplify using `only [map_mul, h5 _ _ f hf]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `h6 (φ g) (E.symm v) f hf` as an intermediate fact. Simplify `this` using `only [hk, E.apply_symm_apply]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isOsc_comp (E : V ≃L[ℝ] V') {ρ : V' → B →L[ℂ] B} {G G' : Type} [Group G] [Group G'] (φ : G →* G')
     {k : G → V' → V'} {k' : G' → V → V} (hk : ∀ g v, E (k' (φ g) v) = k g (E v)) {Ω : G' → B → B}
@@ -64,9 +64,9 @@ end Transport
 variable {ι : Type} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Establish `e : a * ((1 / 2 : ℂ) • ((1 + s) * g) + (1 / 2 : ℂ) • (1 - s)) = ((1 / 2 : ℂ) • ((1 + s') * g') + (1 / 2 : ℂ) • (1 - s')) * a`. Establish `e1 : a * (s * g) = s' * g' * a` using `by rw [← mul_assoc, hs, mul_assoc, hg, mul_assoc]`. Simplify using `only [mul_add, add_mul, mul_sub, sub_mul, mul_smul_comm, smul_mul_assoc, one_mul, mul_one, hs, hg, e1]`. Use `congrArg Matrix.det e` as an intermediate fact. Rewrite `this` using `[det_mul, det_mul, mul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mul_right_cancel₀ ha this`.
+A detailed English derivation is pending.
 -/
 theorem detPlus_conj₂ {a s s' g g' : Matrix ι ι ℂ} (ha : a.det ≠ 0) (hs : a * s = s' * a) (hg : a * g = g' * a) :
     dP s g = dP s' g' := by
@@ -79,7 +79,7 @@ theorem detPlus_conj₂ {a s s' g g' : Matrix ι ι ℂ} (ha : a.det ≠ 0) (hs 
   exact mul_right_cancel₀ ha this
 
 /- English proof (translation)
-Establish `: (1 / 2 : ℂ) • ((1 + s) * 1) + (1 / 2 : ℂ) • (1 - s) = (1 : Matrix ι ι ℂ)`. Rewrite using `[mul_one]`. Use `module`. Rewrite using `[dP, this, det_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem detPlus_one₂ (s : Matrix ι ι ℂ) : dP s 1 = 1 := by
   have : (1 / 2 : ℂ) • ((1 + s) * 1) + (1 / 2 : ℂ) • (1 - s) = (1 : Matrix ι ι ℂ) := by
@@ -87,7 +87,7 @@ theorem detPlus_one₂ (s : Matrix ι ι ℂ) : dP s 1 = 1 := by
   rw [dP, this, det_one]
 
 /- English proof (translation)
-Unfold `dP`. Conclude with `Continuous.matrix_det (by fun_prop)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_dP (s : Matrix ι ι ℂ) : Continuous (dP s) := by
   unfold dP
@@ -104,7 +104,7 @@ Both sides reduce to the same expression.
 
 omit [DecidableEq ι] in
 /- English proof (translation)
-Rewrite using `[star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem form_mulVec (H a : Matrix ι ι ℂ) (x y : ι → ℂ) :
     star (a *ᵥ y) ⬝ᵥ H *ᵥ a *ᵥ x = star y ⬝ᵥ (aᴴ * H * a) *ᵥ x := by
@@ -114,7 +114,7 @@ def crd (ι : Type) [Fintype ι] : EuclideanSpace ℂ ι ≃L[ℝ] (ι → ℂ) 
 
 omit [DecidableEq ι] in
 /- English proof (translation)
-Rewrite using `[PiLp.inner_apply, dotProduct, Complex.re_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[crd, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem inner_crd (x y : EuclideanSpace ℂ ι) : ⟪x, y⟫ = (star (crd ι x) ⬝ᵥ crd ι y).re := by
   rw [PiLp.inner_apply, dotProduct, Complex.re_sum]
@@ -123,7 +123,7 @@ theorem inner_crd (x y : EuclideanSpace ℂ ι) : ⟪x, y⟫ = (star (crd ι x) 
 
 omit [DecidableEq ι] in
 /- English proof (translation)
-The claim follows from `EuclideanSpace.norm_sq_eq x`.
+A detailed English derivation is pending.
 -/
 theorem norm_sq_crd (x : EuclideanSpace ℂ ι) : ‖x‖ ^ 2 = ∑ i, ‖crd ι x i‖ ^ 2 :=
   EuclideanSpace.norm_sq_eq x
@@ -133,20 +133,20 @@ def kL (g : Matrix ι ι ℂ) : EuclideanSpace ℂ ι →L[ℝ] EuclideanSpace �
 
 omit [DecidableEq ι] in
 /- English proof (translation)
-Simplify using `[kL]`.
+Simplify using the standard rewrite rules.
 -/
 theorem crd_kL (g : Matrix ι ι ℂ) (v : EuclideanSpace ℂ ι) : crd ι (kL g v) = g *ᵥ crd ι v := by
   simp [kL]
 
 /- English proof (translation)
-The claim follows from `ContinuousLinearMap.ext fun v => (crd ι).injective (by rw [crd_kL, one_mulVec]; rfl)`.
+A detailed English derivation is pending.
 -/
 theorem kL_one : kL (1 : Matrix ι ι ℂ) = 1 :=
   ContinuousLinearMap.ext fun v => (crd ι).injective (by rw [crd_kL, one_mulVec]; rfl)
 
 omit [DecidableEq ι] in
 /- English proof (translation)
-The claim follows from `ContinuousLinearMap.ext fun v => (crd ι).injective (by rw [ContinuousLinearMap.mul_apply, crd_kL, crd_kL, crd_kL, mulVec_mulVec])`.
+A detailed English derivation is pending.
 -/
 theorem kL_mul (g g' : Matrix ι ι ℂ) : kL (g * g') = kL g * kL g' :=
   ContinuousLinearMap.ext fun v => (crd ι).injective (by
@@ -154,14 +154,14 @@ theorem kL_mul (g g' : Matrix ι ι ℂ) : kL (g * g') = kL g * kL g' :=
 
 omit [DecidableEq ι] in
 /- English proof (translation)
-Use `continuous_clm_apply.2 fun v => ?_` and prove the remaining obligations. Conclude with `(crd ι).symm.continuous.comp (continuous_id.matrix_mulVec continuous_const)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_kL : Continuous (kL : Matrix ι ι ℂ → _) := by
   refine continuous_clm_apply.2 fun v => ?_
   exact (crd ι).symm.continuous.comp (continuous_id.matrix_mulVec continuous_const)
 
 /- English proof (translation)
-Use `form_mulVec 1 g (crd ι v) (crd ι v)` as an intermediate fact. Rewrite `this` using `[mul_one, hg, one_mulVec, one_mulVec]`. Rewrite using `[norm_eq_sqrt_real_inner, norm_eq_sqrt_real_inner, inner_crd, inner_crd, crd_kL, this]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_kL {g : Matrix ι ι ℂ} (hg : gᴴ * g = 1) (v : EuclideanSpace ℂ ι) : ‖kL g v‖ = ‖v‖ := by
   have := form_mulVec 1 g (crd ι v) (crd ι v)
@@ -176,7 +176,7 @@ def cplx (s : Matrix ι ι ℂ) (h1 : sᴴ = s) (h2 : s * s = 1) : EuclideanSpac
         simp) } rfl
 
 /- English proof (translation)
-Rewrite using `[← smul_mulVec]`. Conclude with `crd_kL (I • s) v`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem crd_cplx (s : Matrix ι ι ℂ) (h1 : sᴴ = s) (h2 : s * s = 1) (v : EuclideanSpace ℂ ι) :
     crd ι (cplx s h1 h2 v) = I • s *ᵥ crd ι v := by
@@ -184,7 +184,7 @@ theorem crd_cplx (s : Matrix ι ι ℂ) (h1 : sᴴ = s) (h2 : s * s = 1) (v : Eu
   exact crd_kL (I • s) v
 
 /- English proof (translation)
-Apply `(crd ι).injective` to reduce the goal to its premises. Rewrite using `[crd_cplx, crd_cplx, mulVec_smul, mulVec_mulVec, h2, one_mulVec, smul_smul, I_mul_I, map_neg, neg_one_smul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem cplx_cplx (s : Matrix ι ι ℂ) (h1 : sᴴ = s) (h2 : s * s = 1) (v : EuclideanSpace ℂ ι) :
     cplx s h1 h2 (cplx s h1 h2 v) = -v := by
@@ -192,7 +192,7 @@ theorem cplx_cplx (s : Matrix ι ι ℂ) (h1 : sᴴ = s) (h2 : s * s = 1) (v : E
   rw [crd_cplx, crd_cplx, mulVec_smul, mulVec_mulVec, h2, one_mulVec, smul_smul, I_mul_I, map_neg, neg_one_smul]
 
 /- English proof (translation)
-Rewrite using `[omJ_skew (cplx_cplx s h1 h2), omJ, inner_crd, crd_cplx, dotProduct_smul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem omJ_cplx (s : Matrix ι ι ℂ) (h1 : sᴴ = s) (h2 : s * s = 1) (x y : EuclideanSpace ℂ ι) :
     omJ (cplx s h1 h2) x y = (star (crd ι y) ⬝ᵥ s *ᵥ crd ι x).im := by
@@ -222,33 +222,29 @@ def kU (H : Matrix ι ι ℂ) : uGrp H →* (EuclideanSpace ℂ ι →L[ℝ] Euc
   map_mul' _ _ := kL_mul _ _
 
 /- English proof (translation)
-Establish `hJ` using `cplx_cplx H h1 h2`. Establish `hρ' : IsHeis (omJ (cplx H h1 h2)) fun v => ρ (crd ι v)` using `isHeis_comp hρ (crd ι : EuclideanSpace ℂ ι →L[ℝ] (ι → ℂ)) fun x y => (omJ_cplx H h1 h2 x y).symm`. Take `⟨hl, hmu⟩` from `GlobalTheory.T.gaussianPairing_unitaryGroup_two_three (EuclideanSpace ℂ ι) ι (crd ι) norm_sq_crd H h1 h2 (cplx H h1 h2) (crd_cplx H h1 h2)`. Establish `hom : ∀ (g : uGrp H) x y, omJ (cplx H h1 h2) (kU H g x) (kU H g y) = omJ (cplx H h1 h2) x y`. Introduce `g x y`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hg : (g.1 : Matrix ι ι ℂ)ᴴ * H * g.1 = H` using `g.2`. Rewrite using `[omJ_cplx, omJ_cplx]`. Express the relevant statement in the definitionally equal form `(star (crd ι (kL _ y)) ⬝ᵥ H *ᵥ crd ι (kL _ x)).im = _`. Rewrite using `[crd_kL, crd_kL, form_mulVec, hg]`. Take `⟨Ω, hΩ, hc, hv⟩` from `GlobalTheory.T.exists_oscillatorAction_of_gaussianPairings (EuclideanSpace ℂ ι) B (cplx H h1 h2) _ hJ hρ' (uGrp H) (kU H) (fun g => dP H (g.1 : Matrix ι ι ℂ)) hom (detPlus_one₂ H) (fun g => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨e1, e2, e3⟩` from `hl (g.1 : Matrix ι ι ℂ) (kU H g) g.2 (crd_kL _)`. Establish `: star (dP H (g.1 : Matrix ι ι ℂ)) ≠ 0` using `star_ne_zero.2 e1`. Rewrite using `[e3, e2]`. Use the proof step `field_simp)`. Use the proof step `(fun g g' => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨e1, e2, e3⟩` from `hl ((g * g').1 : Matrix ι ι ℂ) (kU H (g * g')) (g * g').2 (crd_kL _)`. Establish `e4` using `(hl (g.1 : Matrix ι ι ℂ) (kU H g) g.2 (crd_kL _)).1`. Establish `e5` using `(hl (g'.1 : Matrix ι ι ℂ) (kU H g') g'.2 (crd_kL _)).1`. Establish `: star (dP H ((g * g').1 : Matrix ι ι ℂ)) ≠ 0` using `star_ne_zero.2 e1`. Establish `e6 : (g.1 : Matrix ι ι ℂ)⁻¹ * ((g * g').1 : Matrix ι ι ℂ) = g'.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.coe_units_inv, Subgroup.coe_mul, Units.val_mul, Units.inv_mul_cancel_left]`. Rewrite using `[hmu ((g * g').1 : Matrix ι ι ℂ) (g.1 : Matrix ι ι ℂ) (kU H (g * g')) (kU H g) (g * g').2 g.2 (crd_kL _) (crd_kL _), e3, e2, e6]`. Use the proof step `field_simp)`. Set `φ : G →* uGrp H` to `m.toHomUnits.codRestrict (uGrp H) hm`. Establish `hφ : ∀ g, ((φ g).1 : Matrix ι ι ℂ) = m g` using `fun _ => rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨fun g => Ω (φ g), isOsc_comp (crd ι) φ (fun g v => crd_kL _ v) hΩ, fun g hg f hf => ?_, fun hmc f hf => ?_, fun s g hs hpos hsg f hf hD => ?_⟩` and prove the remaining obligations. Establish `: φ g = 1` using `Subtype.ext (Units.ext hg)`. Simplify using `only [this]`. Conclude with `hΩ.2.2.2.1 f ((sm_comp_iff _ _ _).2 hf)`. Conclude with `hc G φ (continuous_kL.comp hmc) ((continuous_dP H).comp hmc) f ((sm_comp_iff _ _ _).2 hf)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨a, ha, has⟩` from `GlobalTheory.cartanInvolution_conj_of_posDef ι H s h1 h2 hs hpos`. Establish `hdet : a.det ≠ 0`. Introduce `h0`. Establish `e` using `congrArg Matrix.det ha`. Establish `e'` using `congrArg Matrix.det h2`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Rewrite `e` using `[det_mul, h0, mul_zero]`. Rewrite `e'` using `[det_mul, ← e, det_one]`. Simplify using `at e'`. Take `⟨u, rfl⟩` from `(Matrix.isUnit_iff_isUnit_det a).2 hdet.isUnit`. Set `a' : uGrp H` to `⟨u, ha⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `g₀ : uGrp H` to `a'⁻¹ * φ g * a'`. Establish `hg₀ : (u : Matrix ι ι ℂ) * g₀.1 = m g * u`. Establish `: a' * g₀ = φ g * a'` using `by simp only [g₀]; group`. Conclude with `congrArg (fun x : uGrp H => (x.1 : Matrix ι ι ℂ)) this`. Establish `hcomm : H * (g₀.1 : Matrix ι ι ℂ) = g₀.1 * H`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `(Units.mul_right_inj u).1 ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← mul_assoc, has, hg₀, mul_assoc, hg₀, mul_assoc, has, ← mul_assoc, ← mul_assoc, hsg]`. Establish `hiso : (g₀.1 : Matrix ι ι ℂ)ᴴ * g₀.1 = 1`. Establish `e : (g₀.1 : Matrix ι ι ℂ)ᴴ * H * g₀.1 = H` using `g₀.2`. Rewrite `e` using `[mul_assoc, hcomm, ← mul_assoc]`.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e'` using `congrArg (· * H) e`. Simplify `e'` using `only [mul_assoc, h2, mul_one]`. Set `E : EuclideanSpace ℂ ι →L[ℝ] (ι → ℂ)` to `(crd ι : EuclideanSpace ℂ ι →L[ℝ] (ι → ℂ)) ∘L kU H a'`. Establish `hE : ∀ z, E z = (u : Matrix ι ι ℂ) *ᵥ crd ι z` using `fun z => crd_kL _ z`. Establish `hvac` using `GlobalTheory.RealWeil.proj_eq_self_of_annihilated (EuclideanSpace ℂ ι) B (cplx H h1 h2) _ hJ (hρ'.twist (kU H a') (hom a')) f (ContDiff.comp (g := fun v => ρ v f) hf E.contDiff) fun z => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e1` using `fderiv_comp_clm hf E z`. Establish `e2` using `fderiv_comp_clm hf E (cplx H h1 h2 z)`. Establish `e3 : E (cplx H h1 h2 z) = I • s *ᵥ E z`. Rewrite using `[hE, hE, crd_cplx, mulVec_smul, mulVec_mulVec, mulVec_mulVec, has]`. Rewrite `e2` using `[e3]`.
-
-Establish `e4` using `hD (E z)`. Rewrite `e4` using `[← e1, ← e2]`. Conclude with `e4`. Establish `key` using `hv a' g₀ (norm_kL hiso) f ((sm_comp_iff _ _ _).2 hf) hvac`. Establish `e : a' * g₀ * a'⁻¹ = φ g` using `by simp only [g₀]; group`.
-
-Rewrite `key` using `[e, detPlus_conj₂ hdet has hg₀]`. Conclude with `key`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_osc_involution (H : Matrix ι ι ℂ) (h1 : Hᴴ = H) (h2 : H * H = 1) (B : Type) [NormedAddCommGroup B]
     [NormedSpace ℂ B] [CompleteSpace B] (ρ : (ι → ℂ) → B →L[ℂ] B) (hρ : IsHeis (fun x y => (star y ⬝ᵥ H *ᵥ x).im) ρ)
@@ -333,19 +329,19 @@ theorem exists_osc_involution (H : Matrix ι ι ℂ) (h1 : Hᴴ = H) (h2 : H * H
     exact key
 
 /- English proof (translation)
-Introduce `ι _ _ H h1 h2 B _ _ _ ρ hρ G _ m hm`. Take `⟨R, s₀, hR, hs1, hs2, rfl⟩` from `GlobalTheory.hermitian_congr_involution ι H h1 h2`. Take `⟨u, rfl⟩` from `(Matrix.isUnit_iff_isUnit_det R).2 hR.isUnit`. Establish `hback : ∀ X : Matrix ι ι ℂ, (u⁻¹).1ᴴ * (u.1ᴴ * X * u.1) * (u⁻¹).1 = X` using `fun X =>`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Set `E : (ι → ℂ) ≃L[ℝ] (ι → ℂ)` to `ContinuousLinearEquiv.equivOfInverse (mvL (u⁻¹).1) (mvL u.1) (fun v => by simp) fun v => by simp`. Establish `hE : ∀ v, E v = (u⁻¹).1 *ᵥ v` using `fun _ => rfl`. Establish `hρ' : IsHeis (fun x y => (star y ⬝ᵥ s₀ *ᵥ x).im) fun v => ρ (E v)` using `isHeis_comp hρ (E : (ι → ℂ) →L[ℝ] (ι → ℂ)) fun x y => by`. Express the relevant statement in the definitionally equal form `(star ((u⁻¹).1 *ᵥ y) ⬝ᵥ _ *ᵥ (u⁻¹).1 *ᵥ x).im = _`. Rewrite using `[form_mulVec, hback]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Set `m' : G →* Matrix ι ι ℂ` to `{ toFun := fun g => u.1 * m g * (u⁻¹).1 map_one' := by simp map_mul' := fun g g' => by simp only [map_mul, mul_assoc, Units.inv_mul_cancel_left] }`. Establish `hm' : ∀ g, m' g = u.1 * m g * (u⁻¹).1` using `fun _ => rfl`. Take `⟨Ω, hΩ, ho, hc, hv⟩` from `exists_osc_involution s₀ hs1 hs2 B _ hρ' G m' fun g => by`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hm', mul_assoc, conjTranspose_mul]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use `_ = s₀ := by rw [hm, hback]`. Use `⟨Ω, isOsc_comp E (MonoidHom.id G) (fun g v => ?_) hΩ, fun g hg f hf => ?_, fun hmc f hf => ?_, fun s g hs hpos hsg f hf hD => ?_⟩` and prove the remaining obligations. Simplify using `only [hE, hm', MonoidHom.id_apply, mulVec_mulVec, mul_assoc, Units.inv_mul_cancel_left]`. Conclude with `ho g (by simp [hm', hg]) f ((sm_comp_iff _ _ _).2 hf)`. Conclude with `hc ((continuous_const.mul hmc).mul continuous_const) f ((sm_comp_iff _ _ _).2 hf)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpos' : (s₀ * (u.1 * s * (u⁻¹).1)).PosDef`. Use `hpos.conjTranspose_mul_mul_same (B := (u⁻¹).1) (Matrix.mulVec_injective_of_isUnit (u⁻¹).isUnit)` as an intermediate fact. Establish `e : s₀ * (u.1 * s * (u⁻¹).1) = (u⁻¹).1ᴴ * (u.1ᴴ * s₀ * u.1 * s) * (u⁻¹).1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this`. Establish `key` using `hv (u.1 * s * (u⁻¹).1) g (by simp only [mul_assoc, Units.inv_mul_cancel_left]; rw [← mul_assoc s, hs, one_mul, Units.mul_inv]) hpos' (by simp only [hm', mul_assoc, Units.inv_mul_cancel_left]; rw [← mul_assoc s, hsg, mul_assoc]) f ((sm_comp_iff _ _ _).2 hf) fun z => by`. Establish `e1` using `fderiv_comp_clm hf (E : (ι → ℂ) →L[ℝ] (ι → ℂ)) z`. Establish `e2` using `fderiv_comp_clm hf (E : (ι → ℂ) →L[ℝ] (ι → ℂ)) (I • (u.1 * s * (u⁻¹).1) *ᵥ z)`. Establish `e3 : E (I • (u.1 * s * (u⁻¹).1) *ᵥ z) = I • s *ᵥ E z`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hE, mulVec_smul, mulVec_mulVec, mul_assoc, Units.inv_mul_cancel_left]`. Simplify using `only [ContinuousLinearEquiv.coe_coe] at e1 e2`. Rewrite using `[e1, e2, e3]`. Conclude with `hD _`. Rewrite using `[key, ← detPlus_conj₂ (s := s) (g := m g) hR (by simp) (by simp [hm'])]`.
+A detailed English derivation is pending.
 -/
 theorem exists_osc : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (H : Matrix ι ι ℂ), Hᴴ = H → H.det ≠ 0 → ∀ (B : Type) [NormedAddCommGroup B] [NormedSpace ℂ B] [CompleteSpace B] (ρ : (ι → ℂ) → B →L[ℂ] B), IsHeis (fun x y => (star y ⬝ᵥ H *ᵥ x).im) ρ → ∀ (G : Type) [Group G] (m : G →* Matrix ι ι ℂ), (∀ g, (m g)ᴴ * H * m g = H) → ∃ Ω : G → B → B, IsOsc ρ (fun g v => m g *ᵥ v) Ω ∧ (∀ g, m g = 1 → ∀ f, Sm ρ f → Ω g f = f) ∧ (∀ [TopologicalSpace G], Continuous m → ∀ f, Sm ρ f → Continuous fun g => Ω g f) ∧ ∀ (s : Matrix ι ι ℂ) (g : G), s * s = 1 → (H * s).PosDef → s * m g = m g * s → ∀ f, Sm ρ f → (∀ z, fderiv ℝ (fun v => ρ v f) 0 z + I • fderiv ℝ (fun v => ρ v f) 0 (I • s *ᵥ z) = 0) → Ω g f = dP s (m g) • f := by
   intro ι _ _ H h1 h2 B _ _ _ ρ hρ G _ m hm

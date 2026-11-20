@@ -15,15 +15,15 @@ open CategoryTheory Limits AlgebraicGeometry
 namespace GlobalTheory.EtC.Tr
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `Z X f _ _ h`. Establish `: IsEmpty Z` using `GlobalTheory.T.isEmpty_of_fibreFieldPointsCardLE_zero f h`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hs : Splits f (𝟙 X ≫ 𝟙 X)` using `GlobalTheory.T.splitsFinitelyOverScheme_of_isEmpty_pullback f _ (Function.isEmpty (pullback.fst f (𝟙 X ≫ 𝟙 X)))`. Establish `hmem : splitSieve f (𝟙 X) (𝟙 X)` using `⟨X, 𝟙 X, 𝟙 X, hs, Category.id_comp _⟩`. Rewrite `hmem` using `[Sieve.id_mem_iff_eq_top]`. Rewrite using `[hmem]`. Conclude with `(Scheme.etaleTopology).top_mem X`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `succ n ih`. Introduce `Z X f _ _ h`. Take `⟨hfin, het⟩` from `GlobalTheory.T.diagonalComplementSecondProjection_isFinite_etale f`. Establish `hg` using `ih (diagComplHom f) (GlobalTheory.T.fibreFieldPointsCardLE_diagonalComplementSecondProjection f n h)`. Use `GlobalTheory.T.mem_etaleTopology_of_pullback_finite_etale f _ ?_ (fun {V} v hv => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Scheme.etaleTopology).superset_covering ?_ hg` and prove the remaining obligations. Introduce and unpack `V u ⟨W, w, v, hv, rfl⟩`. Establish `h1 : Splits (pullback.snd f f) (v ≫ 𝟙 Z)` using `GlobalTheory.T.splits_pullbackSnd_of_splits_diagonalComplement f _ hv`. Establish `h2 : Splits f ((v ≫ 𝟙 Z) ≫ f)` using `GlobalTheory.T.splitsFinitelyOverScheme_of_pullback_snd f f _ h1`. Conclude with `⟨W, w, v ≫ f, by simpa using h2, by simp⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨V, 𝟙 V, v, by simpa using GlobalTheory.T.splitsFinitelyOverScheme_of_isEmpty_pullback f v hv, Category.id_comp _⟩`.
+A detailed English derivation is pending.
 -/
 theorem splitSieve_mem_of_fibrePointsLE : ∀ (n : ℕ) {Z X : Scheme.{0}} (f : Z ⟶ X) [IsFinite f] [Etale f],
     FibrePointsLE f n → splitSieve f (𝟙 X) ∈ Scheme.etaleTopology X := by
@@ -49,11 +49,11 @@ theorem splitSieve_mem_of_fibrePointsLE : ∀ (n : ℕ) {Z X : Scheme.{0}} (f : 
     · exact ⟨V, 𝟙 V, v, by simpa using GlobalTheory.T.splitsFinitelyOverScheme_of_isEmpty_pullback f v hv, Category.id_comp _⟩
 
 /- English proof (translation)
-Introduce `Z X S f _ _ x`. Set `𝒰` to `S.affineCover`. Establish `hU : Sieve.ofArrows 𝒰.X 𝒰.f ∈ Scheme.etaleTopology S` using `Scheme.zariskiTopology_le_etaleTopology _ (𝒰.mem_grothendieckTopology)`. Use `(Scheme.etaleTopology).transitive hU _ ?_` and prove the remaining obligations. Introduce and unpack `Y u ⟨W, w, _, ⟨i⟩, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Sieve.pullback_comp]`. Use `(Scheme.etaleTopology).pullback_stable w ?_` and prove the remaining obligations. Take `⟨n, hn⟩` from `GlobalTheory.T.exists_fibreFieldPointsCardLE_of_isFinite_isAffine (pullback.snd f (𝒰.f i ≫ x))`. Establish `hi` using `splitSieve_mem_of_fibrePointsLE n (pullback.snd f (𝒰.f i ≫ x)) hn`. Use `(Scheme.etaleTopology).superset_covering ?_ hi` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `V u ⟨W', w', v, hv, rfl⟩`. Establish `h1` using `GlobalTheory.T.splitsFinitelyOverScheme_of_pullback_snd f (𝒰.f i ≫ x) (v ≫ 𝟙 _) hv`. Conclude with `⟨W', w', v ≫ 𝒰.f i, by simpa using h1, by simp⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem splitSieve_mem : ∀ {Z X S : Scheme.{0}} (f : Z ⟶ X) [IsFinite f] [Etale f] (x : S ⟶ X),
     splitSieve f x ∈ Scheme.etaleTopology S := by

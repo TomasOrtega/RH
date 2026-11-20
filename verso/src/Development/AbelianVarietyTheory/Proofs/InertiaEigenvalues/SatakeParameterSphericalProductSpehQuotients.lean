@@ -24,11 +24,9 @@ variable {G V : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Add
   {π : Representation ℂ G V} {K : Subgroup G}
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `orbitMap_surjective hi h0 v`. Proceed by induction on `a using MonoidAlgebra.induction_on with`. Consider the case `of g`. Establish `: orbitMap π y (MonoidAlgebra.of ℂ G g) = π g y` using `by show π.asAlgebraHom (MonoidAlgebra.of ℂ G g) y = _`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Conclude with `h g`. Consider the case `add a b ha hb => rw [map_add, map_add]`. Conclude with `add_mem ha hb`. Consider the case `smul r a ha => rw [map_smul, map_smul]`.
-
-Conclude with `S.smul_mem _ ha`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem idem_mem_of_orbit (hs : IsSmooth π) (hi : π.IsIrreducible) (hc : IsCompact (K : Set G)) (S : Submodule ℂ V)
     {y : V} (h0 : y ≠ 0) (h : ∀ g, idem hs hc (π g y) ∈ S) (v : V) : idem hs hc v ∈ S := by
@@ -43,19 +41,17 @@ theorem idem_mem_of_orbit (hs : IsSmooth π) (hi : π.IsIrreducible) (hc : IsCom
   | smul r a ha => rw [map_smul, map_smul]; exact S.smul_mem _ ha
 
 /- English proof (translation)
-Introduce `h hh`. Distinguish the cases in `hb : fixed π K = ⊥`. Use `⟨0, fun x hx => ?_⟩` and prove the remaining obligations. Use `heckeVec_mem_fixed hK hh hx` as an intermediate fact. Rewrite `this` using `[hb]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using this`. Establish `: Nontrivial (fixed π K)` using `Submodule.nontrivial_iff_ne_bot.2 hb`. Set `A : Module.End ℂ (fixed π K)` to `(heckeLin hK hh π).restrict fun x hx => heckeVec_mem_fixed hK hh hx`. Take `⟨c, hcA⟩` from `exists_not_isUnit_sub ((Submodule.rank_le _).trans (rank_le_aleph0_of_isIrreducible hs hi)) A`. Set `B : V →ₗ[ℂ] V` to `heckeLin hK hh π - c • LinearMap.id`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hB : ∀ x, B x = heckeVec π K h x - c • x` using `fun _ => rfl`. Establish `hBf : ∀ x ∈ fixed π K, B x ∈ fixed π K` using `fun x hx => sub_mem (heckeVec_mem_fixed hK hh hx) (Submodule.smul_mem _ _ hx)`. Establish `key : ∀ g, ∀ x ∈ fixed π K, idem hs hc (π g (B x)) = B (idem hs hc (π g x))` using `fun g x hx => by`. Establish `hm` using `Final.DosetIndMem G K ℂ g`. Use `smul_right_injective V (GlobalTheory.LGrp.Zonal.card_ne_zero hK g) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show _ • _ = _ • _`. Rewrite using `[← map_smul B, ← GlobalTheory.LGrp.Zonal.heckeVec_dosetInd hs hc hK hx, ← GlobalTheory.LGrp.Zonal.heckeVec_dosetInd hs hc hK (hBf x hx), hB, hB, ← heckeVec_conv hK hh hm hx, hcomm _ hh _ hm, heckeVec_conv hK hm hh hx, ← heckeVec_smul hK hm]`. Conclude with `(heckeLin hK hm π).map_sub _ _`. Use `⟨c, fun x hx => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hinj : ∃ y ∈ fixed π K, y ≠ 0 ∧ B y = 0`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨y, hy, h0, e⟩` from `hinj`. Use `idem_mem_of_orbit hs hi hc (LinearMap.ker B) h0 (fun g => by rw [LinearMap.mem_ker, ← key g y hy, e, map_zero, map_zero]) x` as an intermediate fact. Rewrite `this` using `[idem_of_mem hs hc hx]`. Conclude with `sub_eq_zero.1 this`. Use `push Not at hinj`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `absurd ((Module.End.isUnit_iff _).2 ⟨(injective_iff_map_eq_zero _).2 fun y e => ?_, fun z => ?_⟩) hcA` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Conclude with `hinj y y.2 (fun e' => h0 (Subtype.ext e')) (congrArg Subtype.val e)`. Take `⟨y, hy, h0⟩` from `(Submodule.ne_bot_iff _).1 hb`. Use `idem_mem_of_orbit hs hi hc ((fixed π K).map B) (hinj y hy h0) (fun g => by rw [key g y hy]; exact ⟨_, idem_mem hs hc _, rfl⟩) z` as an intermediate fact.
-
-Rewrite `this` using `[idem_of_mem hs hc z.2]`. Take `⟨u, hu, e⟩` from `this`. Conclude with `⟨⟨u, hu⟩, Subtype.ext e⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_scalar [TopologicalSpace.SeparableSpace G] (hs : IsSmooth π) (hi : π.IsIrreducible)
     (hc : IsCompact (K : Set G)) (hK : IsCommensurated K)
@@ -102,9 +98,9 @@ theorem exists_scalar [TopologicalSpace.SeparableSpace G] (hs : IsSmooth π) (hi
       exact ⟨⟨u, hu⟩, Subtype.ext e⟩
 
 /- English proof (translation)
-Use `idem_mem_of_orbit hs hi hc (Submodule.span ℂ {x}) h0 (fun g => by` as an intermediate fact. Take `⟨c, e⟩` from `hH _ (Final.DosetIndMem G K ℂ g)`. Establish `e1` using `e x hx`. Rewrite `e1` using `[GlobalTheory.LGrp.Zonal.heckeVec_dosetInd hs hc hK hx]`. Rewrite using `[← inv_smul_smul₀ (GlobalTheory.LGrp.Zonal.card_ne_zero hK g) (idem hs hc (π g x)), e1, smul_smul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self x)) v`. Take `⟨c, e⟩` from `Submodule.mem_span_singleton.1 this`. Conclude with `⟨c, e.symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_idem_eq_smul (hs : IsSmooth π) (hi : π.IsIrreducible) (hc : IsCompact (K : Set G))
     (hK : IsCommensurated K) (hH : ∀ h ∈ Hecke ℂ K, ∃ c : ℂ, ∀ x ∈ fixed π K, heckeVec π K h x = c • x)
@@ -123,23 +119,21 @@ variable {α : Type} [Fintype α] {Γ X : α → Type} [∀ a, Group (Γ a)] [�
   {ρ : ∀ a, Representation ℂ (Γ a) (X a)} {U : ∀ a, Subgroup (Γ a)}
 
 /- English proof (translation)
-Establish `hC : IsCompact (Subgroup.pi Set.univ U : Set (∀ a, Γ a))` using `isCompact_univ_pi hc`. Establish `hS` using `isSmooth_piTensor hs`. Establish `h1 : ∀ (x : ∀ a, X a) (i : α) (y : X i), idem hS hC (PiTensorProduct.tprod ℂ (Function.update x i (idem (hs i) (hc i) y))) = idem hS hC (PiTensorProduct.tprod ℂ (Function.update x i y))` using `fun x i y => by`. Set `l : X i →ₗ[ℂ] ⨂[ℂ] a, X a` to `idem hS hC ∘ₗ (PiTensorProduct.tprod ℂ).toLinearMap x i`. Establish `hk : twKer (ρ i) (U i) 1 ≤ LinearMap.ker l` using `Submodule.span_le.2 (by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨u, z, rfl⟩`. Use `show l _ = 0`. Rewrite using `[map_sub, MonoidHom.one_apply, Units.val_one, one_smul, sub_eq_zero]`. Establish `hu : Pi.mulSingle i (u : Γ i) ∈ Subgroup.pi Set.univ U` using `fun a _ => by show (Pi.mulSingle i (u : Γ i) : ∀ a, Γ a) a ∈ U a`. Distinguish the cases in `e : a = i`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `e` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Pi.mulSingle_eq_of_ne e]`. Conclude with `one_mem _`. Use `Eq.trans ?_ (idem_apply_mem hS hC hu (PiTensorProduct.tprod ℂ (Function.update x i z)))` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[piTensor_tprod]`. Use `show idem hS hC (PiTensorProduct.tprod ℂ _) = _`. Use `congr 2`. Use function extensionality and compare the values at `a`. Distinguish the cases in `e : a = i`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Substitute `e` using the available equality. Simplify using the standard rewrite rules. Simplify using `[e])`. Establish `h2 : l (idem (hs i) (hc i) y - y) = 0` using `hk ((idem_eq_zero_iff (hs i) (hc i)).1 (by`. Rewrite using `[map_sub, idem_of_mem _ _ (idem_mem _ _ _), sub_self]))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Proceed by induction.
 
-Rewrite `h2` using `[map_sub, sub_eq_zero]`. Then use the resulting hypothesis. Establish `h2 : ∀ (x : ∀ a, X a) (s : Finset α), idem hS hC (PiTensorProduct.tprod ℂ (s.piecewise (fun a => idem (hs a) (hc a) (x a)) x)) = idem hS hC (PiTensorProduct.tprod ℂ x)` using `fun x s => by`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert i s hi ih`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Proceed by induction.
 
-Rewrite using `[Finset.piecewise_insert, h1, ← ih, ← Finset.piecewise_eq_of_notMem s (fun a => idem (hs a) (hc a) (x a)) x hi, Function.update_eq_self]`. Establish `h3 : ∀ u, PiTensorProduct.map (fun a => idem (hs a) (hc a)) u = idem hS hC u` using `fun u => by`. Proceed by induction on `u using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r x`. Rewrite using `[map_smul, map_smul, PiTensorProduct.map_tprod, ← h2 x Finset.univ, Finset.piecewise_univ, idem_of_mem]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `GlobalTheory.LGrp.mem_fixed.2 fun g hg => ?_` and prove the remaining obligations. Rewrite using `[piTensor_tprod]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Conclude with `GlobalTheory.LGrp.mem_fixed.1 (idem_mem _ _ _) _ (hg a trivial)`.
-
-Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Rewrite using `[h3, idem_of_mem hS hC (GlobalTheory.LGrp.mem_fixed.2 fun g hg => hv g fun a => hg a trivial)]`.
+Apply function extensionality and compare values at an arbitrary argument. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_idem_of_fixed (hs : ∀ a, IsSmooth (ρ a)) (hc : ∀ a, IsCompact (U a : Set (Γ a))) {v : ⨂[ℂ] a, X a}
     (hv : ∀ g : ∀ a, Γ a, (∀ a, g a ∈ U a) → piTensor ρ g v = v) :
@@ -201,21 +195,21 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {ρ : Representation ℂ (Levi k m) W}
 
 /- English proof (translation)
-Rewrite using `[deltaHalf_apply]`. Conclude with `Finset.prod_eq_one fun a _ => Units.ext (by simp [val_absPow, LeviInt.nabs_det_eq_one (hg a)])`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem deltaHalf_eq_one {g : Levi k m} (hg : ∀ a, g a ∈ KO k (m a)) : deltaHalf k m g = 1 := by
   rw [deltaHalf_apply]
   exact Finset.prod_eq_one fun a _ => Units.ext (by simp [val_absPow, LeviInt.nabs_det_eq_one (hg a)])
 
 /- English proof (translation)
-The claim follows from `congrFun (congrArg (fun φ : IndSp e ρ => φ.1.1) (GlobalTheory.LGrp.mem_fixed.1 hf x hx)) g`.
+A detailed English derivation is pending.
 -/
 theorem apply_mul_of_fixed {f : IndSp e ρ} (hf : f ∈ fixed (parInd e ρ) (KO k n)) (g : GL n k) {x : GL n k}
     (hx : x ∈ KO k n) : f.1.1 (g * x) = f.1.1 g :=
   congrFun (congrArg (fun φ : IndSp e ρ => φ.1.1) (GlobalTheory.LGrp.mem_fixed.1 hf x hx)) g
 
 /- English proof (translation)
-Use `Subtype.ext (Subtype.ext (funext fun g => ?_))` and prove the remaining obligations. Take `⟨p, hp, x, hx, rfl⟩` from `(LeviInt.levi_integral_facts k α n m e).2.2.2.2.2.2.2.2 g`. Use `parInd_law e ρ f ⟨p, hp⟩ 1` as an intermediate fact. Rewrite `this` using `[mul_one, h, map_zero, smul_zero]`. Conclude with `(apply_mul_of_fixed e hf p hx).trans this`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_apply_one {f : IndSp e ρ} (hf : f ∈ fixed (parInd e ρ) (KO k n)) (h : f.1.1 1 = 0) : f = 0 := by
   refine Subtype.ext (Subtype.ext (funext fun g => ?_))
@@ -225,7 +219,7 @@ theorem eq_zero_of_apply_one {f : IndSp e ρ} (hf : f ∈ fixed (parInd e ρ) (K
   exact (apply_mul_of_fixed e hf p hx).trans this
 
 /- English proof (translation)
-Establish `h1` using `parInd_law e ρ f ⟨_, leviEmb_mem_parab k e g⟩ 1`. Establish `h2` using `((LeviInt.levi_integral_facts k α n m e).1 g 1 (one_mem _)).2 ⟨hg, one_mem _⟩`. Rewrite `h1` using `[leviProj_leviEmb, deltaHalf_eq_one hg, Units.val_one, one_smul]`. Rewrite using `[← h1, ← apply_mul_of_fixed e hf 1 h2, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem apply_one_fixed {f : IndSp e ρ} (hf : f ∈ fixed (parInd e ρ) (KO k n)) (g : Levi k m)
     (hg : ∀ a, g a ∈ KO k (m a)) : ρ g (f.1.1 1) = f.1.1 1 := by
@@ -235,15 +229,15 @@ theorem apply_one_fixed {f : IndSp e ρ} (hf : f ∈ fixed (parInd e ρ) (KO k n
   rw [← h1, ← apply_mul_of_fixed e hf 1 h2, one_mul]
 
 /- English proof (translation)
-Take `⟨-, h1, -, -, -, -, -, -, h2⟩` from `LeviInt.levi_integral_facts k α n m e`. Use `choose p hp u hu hpu using h2`. Set `τ` to `(twist ρ (deltaHalf k m)).comp (leviProj k e)`. Establish `h3 : ∀ q : parab k e, (q : GL n k) ∈ KO k n → τ q x = x` using `fun q hq => by show (deltaHalf k m (leviProj k e q) : ℂ) • ρ (leviProj k e q) x = x`. Rewrite using `[deltaHalf_eq_one (h1 q hq), hx _ (h1 q hq), Units.val_one, one_smul]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h4 : ∀ (q : parab k e) y, y ∈ KO k n → τ ⟨p (q * y), hp _⟩ x = τ q x` using `fun q y hy => by`. Establish `: (⟨p (q * y), hp _⟩ : parab k e) = q * (q⁻¹ * ⟨p (q * y), hp _⟩)` using `by group`. Rewrite using `[this, map_mul, Module.End.mul_apply, h3]`. Establish `e1 : ((q⁻¹ * ⟨p (q * y), hp _⟩ : parab k e) : GL n k) = y * (u (q * y))⁻¹` using `by show (q : GL n k)⁻¹ * p (q * y) = _`. Rewrite using `[eq_mul_inv_iff_mul_eq, mul_assoc, ← hpu, inv_mul_cancel_left]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1]`. Conclude with `mul_mem hy (inv_mem (hu _))`. Establish `h5 : ∀ y ∈ KO k n, ∀ g, τ ⟨p (g * y), hp _⟩ x = τ ⟨p g, hp _⟩ x` using `fun y hy g => by`. Use `h4 ⟨p g, hp g⟩ (u g * y) (mul_mem (hu g) hy)` as an intermediate fact. Simplify `this` using `only [← mul_assoc, ← hpu]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `φ : indSpace (parab k e) τ` to `⟨fun g => τ ⟨p g, hp g⟩ x, fun q g => by`. Use `h4 (q * ⟨p g, hp g⟩) (u g) (hu g)` as an intermediate fact. Rewrite `this` using `[map_mul, Module.End.mul_apply]`. Simplify `this⟩` using `only [Subgroup.coe_mul, mul_assoc, ← hpu]`. Use `⟨⟨φ, mem_smoothPart_of_nhds (Filter.mem_of_superset (GlobalTheory.SplitFlip.isOpen_KO.mem_nhds (one_mem _)) fun g hg => Subtype.ext (funext (h5 g hg)))⟩, GlobalTheory.LGrp.mem_fixed.2 fun g hg => Subtype.ext (Subtype.ext (funext (h5 g hg))), ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `h4 1 1 (one_mem _)` as an intermediate fact. Simplify using `using this`.
+A detailed English derivation is pending.
 -/
 theorem exists_fixed_apply_one {x : W} (hx : ∀ g : Levi k m, (∀ a, g a ∈ KO k (m a)) → ρ g x = x) :
     ∃ f ∈ fixed (parInd e ρ) (KO k n), f.1.1 1 = x := by
@@ -278,15 +272,13 @@ variable {X : α → Type} [∀ a, AddCommGroup (X a)] [∀ a, Module ℂ (X a)]
   {π : ∀ a, Representation ℂ (GL (m a) k) (X a)}
 
 /- English proof (translation)
-Establish `hf'` using `SatCompare.heckeVec_mem_fixed hK hh hf`. Rewrite using `[← sub_eq_zero]`. Use `eq_zero_of_apply_one e (sub_mem hf' (Submodule.smul_mem _ _ hf)) (sub_eq_zero.2 ?_)` and prove the remaining obligations. Establish `hfin : (Function.support fun c => h (p c)).Finite` using `(Formalism.UG.P.finite_support_cosets hK hh.2).subset fun c hc h0 => hc (by`. Establish `hk : (c.out)⁻¹ * (p c : GL n k) ∈ KO k n` using `QuotientGroup.eq.1 (c.out_eq'.trans (hp c).symm)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hh.1 1 ⟨_, hk⟩ c.out` as an intermediate fact. Simplify using `only [OneMemClass.coe_one, one_mul, mul_inv_cancel_left] at this`. Conclude with `this.trans h0)`. Set `L : IndSp e (piTensor π) →ₗ[ℂ] ⨂[ℂ] a, X a` to `PiTensorProduct.map (fun a => idem (hs a) GlobalTheory.SplitFlip.isCompact_KO) ∘ₗ (LinearMap.proj (1 : GL n k)) ∘ₗ Submodule.subtype _ ∘ₗ Submodule.subtype _`. Use `(map_idem_of_fixed hs (fun _ => GlobalTheory.SplitFlip.isCompact_KO) (apply_one_fixed e hf')).symm.trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show L (heckeVec (multiProd e π) (KO k n) h f) = (_ : ℂ) • f.1.1 1`. Rewrite using `[heckeVec_eq_of_section hh.1 hf _ hp, finsum_eq_sum_of_support_subset (s := hfin.toFinset), finsum_eq_sum_of_support_subset (s := hfin.toFinset), map_sum, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun c hc => ?_` and prove the remaining obligations. Rewrite using `[map_smul, mul_assoc, mul_smul]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `show PiTensorProduct.map _ (f.1.1 (1 * (p c : GL n k))) = _`. Use `parInd_law e _ f (p c) 1` as an intermediate fact. Rewrite `this` using `[mul_one]`. Rewrite using `[one_mul, this, h1, map_smul, map_smul, map_smul, piTensor_tprod, PiTensorProduct.map_tprod,`. Use function extensionality and compare the values at `(hω c (hfin.mem_toFinset.1 hc)), MultilinearMap.map_smul_univ, mul_smul, smul_comm r]`.
-
-Conclude with `fun c hc => hfin.mem_toFinset.2 fun h0 => hc (by simp [show h (p c) = 0 from h0])`. Conclude with `fun c hc => hfin.mem_toFinset.2 fun h0 => hc (by simp [show h (p c) = 0 from h0])`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem heckeVec_multiProd (hK : IsCommensurated (KO k n)) {h : GL n k → ℂ} (hh : h ∈ Hecke ℂ (KO k n))
     (hs : ∀ a, IsSmooth (π a)) {x : ∀ a, X a} {f : IndSp e (piTensor π)} (hf : f ∈ fixed (multiProd e π) (KO k n))
@@ -335,14 +327,14 @@ variable {E : Type} [Field E] [NumberField E] {w : HeightOneSpectrum (𝓞 E)} {
   {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
 
 /- English proof (translation)
-Rewrite using `[KGL, ← SphCompletion.KO_completion w n]`. Conclude with `GlobalTheory.SplitFlip.isCompact_KO`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_KGL : IsCompact (KGL w n : Set (GL (Fin n) (w.adicCompletion E))) := by
   rw [KGL, ← SphCompletion.KO_completion w n]
   exact GlobalTheory.SplitFlip.isCompact_KO
 
 /- English proof (translation)
-The claim follows from `haveI := secondCountableTopology_GL (w.adicCompletion E) (Fin n) exists_scalar hs hi isCompact_KGL (Final.GLintComm E w n) (Final.HeckeCommGL E w n ℂ)`.
+A detailed English derivation is pending.
 -/
 theorem exists_scalar_GL {π : Representation ℂ (GL (Fin n) (w.adicCompletion E)) V} (hs : IsSmooth π)
     (hi : π.IsIrreducible) :
@@ -351,20 +343,20 @@ theorem exists_scalar_GL {π : Representation ℂ (GL (Fin n) (w.adicCompletion 
   exists_scalar hs hi isCompact_KGL (Final.GLintComm E w n) (Final.HeckeCommGL E w n ℂ)
 
 /- English proof (translation)
-The claim follows from `ExSatGL.exists_hasSatGL E w n V π h (exists_scalar_GL hs hi)`.
+A detailed English derivation is pending.
 -/
 theorem exists_hasSatGL_of_isIrreducible {π : Representation ℂ (GL (Fin n) (w.adicCompletion E)) V} (hs : IsSmooth π)
     (hi : π.IsIrreducible) (h : GlobalTheory.LGrp.IsSpherical π (KGL w n)) : ∃ B, HasSatGL w π B :=
   ExSatGL.exists_hasSatGL E w n V π h (exists_scalar_GL hs hi)
 
 /- English proof (translation)
-Take `⟨a, ha, c, hc, d, hd, rfl⟩` from `cartan h0 hu g`. Establish `a0 : ∀ i, 0 ≤ a i` using `(intM_tor h0 hu a).1 (intM_doset h1 ⟨c⁻¹, inv_mem hc, d⁻¹, inv_mem hd, by group⟩)`. Establish `a1 : ∀ i, 0 ≤ 1 - a i` using `(intM_tor h0 hu (fun _ => 1 - a _)).1 (intM_doset h2 ⟨d, hd, c, hc, by`. Establish `e : tor h0 (fun i => 1 - a i) * tor h0 a = tor h0 fun _ => 1`. Rewrite using `[← tor_add]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Rewrite using `[← mul_assoc, ← tor_const_comm, ← e]`. Use the proof step `group⟩)`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set j := (Finset.univ.filter fun i => 0 < a i).card`. Establish `hj : ∀ i : Fin n, 0 < a i ↔ (i : ℕ) < j` using `fun i => (Fin.lt_card_filter_univ_iff_apply_of_imp (fun i => 0 < a i) fun x y hxy hx => lt_of_lt_of_le hx (ha hxy)).symm`. Use `⟨j, by simpa using Finset.card_filter_le (Finset.univ : Finset (Fin n)) fun i => 0 < a i, ?_⟩` and prove the remaining obligations. Rewrite using `[dosetInd_congr ⟨c, hc, d, hd, rfl⟩, Tj_eq h0]`. Use `congr 2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Use `hj i` as an intermediate fact. Use `a0 i` as an intermediate fact. Use `a1 i` as an intermediate fact. Apply the tactic sequence `split_ifs <;> omega`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem dosetInd_eq_Tj {ϖ : w.adicCompletion E} (h0 : ϖ ≠ 0) (hu : IsUnifV E w ϖ) {g : GL (Fin n) (w.adicCompletion E)}
     (h1 : IntM g) (h2 : IntM (tor h0 (fun _ => 1) * g⁻¹)) :
@@ -388,9 +380,9 @@ theorem dosetInd_eq_Tj {ϖ : w.adicCompletion E} (h0 : ϖ ≠ 0) (hu : IsUnifV E
   split_ifs <;> omega
 
 /- English proof (translation)
-Rewrite `h` using `[Tj_eq h0]`. Take `⟨c, hc, d, hd, rfl⟩` from `mem_doset.1 (Set.mem_of_indicator_ne_zero h)`. Apply the tactic sequence `refine ⟨intM_doset ((intM_tor h0 hu _).2 fun i => by split_ifs <;> simp) ⟨c, hc, d, hd, rfl⟩, intM_doset ((intM_tor h0 hu fun i => if (i : ℕ) < j then 0 else 1).2 fun i => by split_ifs <;> simp) ⟨d⁻¹, inv_mem hd, c⁻¹, inv_mem hc, ?_⟩⟩`. Establish `e : (tor h0 fun i : Fin n => if (i : ℕ) < j then 0 else 1) * (tor h0 fun i => if (i : ℕ) < j then 1 else 0) = tor h0 fun _ => 1`. Apply the tactic sequence `rw [← tor_add]; congr 1; funext i; simp only [Pi.add_apply]; split_ifs <;> simp`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[mul_inv_rev, mul_inv_rev, ← mul_assoc, tor_const_comm, ← e]`. Use `group`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intM_of_Tj {ϖ : w.adicCompletion E} (h0 : ϖ ≠ 0) (hu : IsUnifV E w ϖ) {g : GL (Fin n) (w.adicCompletion E)}
     {j : ℕ} (h : Tj ℂ n (Ov E w) ϖ j g ≠ 0) : IntM g ∧ IntM (tor h0 (fun _ => 1) * g⁻¹) := by
@@ -405,7 +397,7 @@ theorem intM_of_Tj {ϖ : w.adicCompletion E} (h0 : ϖ ≠ 0) (hu : IsUnifV E w �
   rw [mul_inv_rev, mul_inv_rev, ← mul_assoc, tor_const_comm, ← e]; group
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.LGrp.Zonal.heckeVec_dosetInd hs isCompact_KGL (Final.GLintComm E w n) hx.2.1 g`. Rewrite `h` using `[hg, hx.2.2.2 ϖ hu j hj]`. Rewrite using `[mul_smul, h, inv_smul_smul₀ (GlobalTheory.LGrp.Zonal.card_ne_zero (Final.GLintComm E w n) g)]`. Use `congr 2`. Conclude with `SphCompletion.KO_completion w n`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem idem_of_isSatVecGL {π : Representation ℂ (GL (Fin n) (w.adicCompletion E)) V} (hs : IsSmooth π) {x : V}
     {B : Multiset ℂˣ} (hx : IsSatVecGL w π x B) {ϖ : w.adicCompletion E} (hu : IsUnifV E w ϖ) {j : ℕ} (hj : j ≤ n)
@@ -419,7 +411,7 @@ theorem idem_of_isSatVecGL {π : Representation ℂ (GL (Fin n) (w.adicCompletio
   exact SphCompletion.KO_completion w n
 
 /- English proof (translation)
-Rewrite using `[val_absPow, GlobalTheory.LGrp.BorelCompletion.nabs_completion, GlobalTheory.LGrp.BorelCompletion.ordV_eq, ← Real.rpow_intCast, ← Complex.cpow_mul_ofReal_nonneg (Nat.cast_nonneg _)]`. Use `push_cast`. Rewrite using `[neg_neg]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 -/
 theorem val_absPow_completion (s : ℂ) (x : (w.adicCompletion E)ˣ) :
     (absPow (w.adicCompletion E) s x : ℂ) = (qV E w : ℂ) ^ (-(ordV E w x : ℂ) * s) := by
@@ -431,7 +423,7 @@ theorem val_absPow_completion (s : ℂ) (x : (w.adicCompletion E)ˣ) :
 variable {c : ℕ} {N : Fin c → ℕ} (h : ∑ i, N i = n)
 
 /- English proof (translation)
-Rewrite using `[stdBlocks_val]`. Use `congr 1`. Conclude with `Finset.sum_bij (fun b _ => Fin.castLE a.2.le b) (fun b _ => Finset.mem_filter.2 ⟨Finset.mem_univ _, b.2⟩) (fun _ _ _ _ e => Fin.castLE_injective _ e) (fun b hb => ⟨⟨b, (Finset.mem_filter.1 hb).2⟩, Finset.mem_univ _, rfl⟩) fun _ _ => rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem val_stdBlocks (a : Fin c) (i : Fin (N a)) : (stdBlocks N h ⟨a, i⟩ : ℕ) = ∑ b with b < a, N b + i := by
   rw [stdBlocks_val]
@@ -441,9 +433,9 @@ theorem val_stdBlocks (a : Fin c) (i : Fin (N a)) : (stdBlocks N h ⟨a, i⟩ : 
     fun _ _ => rfl
 
 /- English proof (translation)
-Use `mem_parab_iff.2 fun x y i j hxy => hb _ _ ?_` and prove the remaining obligations. Rewrite using `[Fin.lt_def, val_stdBlocks, val_stdBlocks]`. Establish `h1 : ∑ b ∈ insert y (Finset.univ.filter (· < y)), N b ≤ ∑ b with b < x, N b` using `Finset.sum_le_sum_of_subset fun b hb => by`. Simplify using `only [Finset.mem_insert, Finset.mem_filter, Finset.mem_univ, true_and] at hb ⊢`. Conclude with `hb.elim (fun e => e ▸ hxy) fun e => e.trans hxy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[Finset.sum_insert (by simp)]`. Use `j.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem mem_parab_of_isUpperB {b : GL (Fin n) (w.adicCompletion E)} (hb : IsUpperB E w b) :
     b ∈ parab (w.adicCompletion E) (stdBlocks N h) := by
@@ -458,22 +450,22 @@ theorem mem_parab_of_isUpperB {b : GL (Fin n) (w.adicCompletion E)} (hb : IsUppe
   omega
 
 /- English proof (translation)
-Introduce `i j hij` and use `hb _ _ (by rw [Fin.lt_def, stdBlocks_val, stdBlocks_val]; exact Nat.add_lt_add_left hij _)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isUpperB_leviProj {b : parab (w.adicCompletion E) (stdBlocks N h)} (hb : IsUpperB E w b.1) (a : Fin c) :
     IsUpperB E w (leviProj _ _ b a) := fun i j hij => hb _ _ (by
   rw [Fin.lt_def, stdBlocks_val, stdBlocks_val]; exact Nat.add_lt_add_left hij _)
 
 /- English proof (translation)
-Rewrite using `[chiDelta, ← (stdBlocks N h).prod_comp, Fintype.prod_sigma, deltaHalf_apply, Units.coe_prod, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Establish `hd : (leviProj _ _ b a).val.det = ∏ i, (leviProj _ _ b a).val i i` using `Matrix.det_of_isUpperTriangular fun i j hij => isUpperB_leviProj h hb a i j hij`. Establish `h0 : ∀ i, (leviProj _ _ b a).val i i ≠ 0` using `fun i e => (Matrix.GeneralLinearGroup.det (leviProj _ _ b a)).ne_zero (hd.trans (Finset.prod_eq_zero (Finset.mem_univ i) e))`. Establish `hd' : Matrix.GeneralLinearGroup.det (leviProj _ _ b a) = ∏ i, Units.mk0 _ (h0 i)` using `Units.ext (by rw [Units.coe_prod]; exact hd)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hd', map_prod, Units.coe_prod, chiDelta, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hq : (qV E w : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (qV_ne_zero w)`. Rewrite using `[val_absPow_completion, hγ, mul_left_comm, ← Complex.cpow_add _ _ hq, val_stdBlocks]`. Establish `hn : n = ∑ b with b < a, N b + N a + ∑ b with a < b, N b`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: ∀ b, N b = (if b < a then N b else 0) + (if b = a then N b else 0) + if a < b then N b else 0` using `fun b => by`. Break down `lt_trichotomy b a with e | e | e` into its components or cases. Simplify using `[e, e.ne, e.not_gt]`. Simplify using `[e]`. Simplify using `[e, e.ne', e.not_gt]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h, Finset.sum_congr rfl fun b _ => this b, Finset.sum_add_distrib, Finset.sum_add_distrib, Finset.sum_filter, Finset.sum_filter]`. Simplify using the standard rewrite rules. Establish `hn'` using `congrArg (Nat.cast : ℕ → ℂ) hn`. Simplify using `only [modExp, Fintype.card_fin, Units.val_mk0, leviProj_apply]`. Move the coercions through the operations in `at hn' ⊢`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[hn']`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem chiDelta_eq {β : ∀ a, Fin (N a) → ℂ} {γ : Fin n → ℂ} (hγ : ∀ a i, γ (stdBlocks N h ⟨a, i⟩) = β a i)
     {b : parab (w.adicCompletion E) (stdBlocks N h)} (hb : IsUpperB E w b.1) :
@@ -510,11 +502,9 @@ theorem chiDelta_eq {β : ∀ a, Fin (N a) → ℂ} {γ : Fin n → ℂ} (hγ : 
 omit h in
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨β, rfl⟩ : ∃ β : Fin n → ℂˣ, Finset.univ.val.map β = S := by`. Take `⟨l, rfl⟩` from `Quot.exists_rep S`. Take `rfl : l.length = n` from `hS`. Conclude with `⟨l.get, by rw [Fin.univ_val_map, List.ofFn_get]; rfl⟩`. Take `⟨φ, hφ, hφ1, -⟩` from `Final.SphericalExists E w n (fun i => (β i : ℂ)) fun i => (β i).ne_zero`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨y, -, rfl⟩` from `(SphCompletion.isSpherical_iff E w n β φ).1 hφ`. Use `⟨_, _, _, prinSeries fun i => unrChar (w.adicCompletion E) (β i), β, LinearMap.proj 1 ∘ₗ Submodule.subtype _ ∘ₗ Submodule.subtype _, y, isSmooth_parInd _ _, rfl, ?_, hφ1, fun g hg z => ?_⟩` and prove the remaining obligations. Conclude with `IsSatVecGL.of_map (ρ' := rightReg ℂ _ ℂ) ((Submodule.subtype _).comp (Submodule.subtype _)) (fun _ _ => rfl) (fun u v e => Subtype.ext (Subtype.ext e)) (isSatVecGL_of_isSpherical hφ fun e => one_ne_zero (hφ1.symm.trans (congrFun e 1)))`. Use `(parInd_law _ _ z ⟨g, (mem_borel _).2 hg⟩ 1).trans (SphCompletion.law_completion w n β ⟨g, (mem_borel _).2 hg⟩ _)` as an intermediate fact. Rewrite `this` using `[mul_one]`.
-
-Conclude with `(congrArg z.1.1 (one_mul _)).trans this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_model {S : Multiset ℂˣ} (hS : S.card = n) :
     ∃ (X : Type) (_ : AddCommGroup X) (_ : Module ℂ X) (R : Representation ℂ (GL (Fin n) (w.adicCompletion E)) X)
@@ -538,15 +528,13 @@ theorem exists_model {S : Multiset ℂˣ} (hS : S.card = n) :
     exact (congrArg z.1.1 (one_mul _)).trans this
 
 /- English proof (translation)
-Take `⟨ev, hev⟩ : ∃ ev : (⨂[ℂ] a, X a) →ₗ[ℂ] ℂ, ∀ u, ev (PiTensorProduct.tprod ℂ u) = ∏ a, l a (u a)` from `⟨PiTensorProduct.lift ((MultilinearMap.mkPiAlgebra ℂ (Fin c) ℂ).compLinearMap l), fun u => by simp⟩`. Establish `hlaw : ∀ g : ∀ a, GL (Fin (N a)) (w.adicCompletion E), (∀ a, IsUpperB E w (g a)) → ∀ u, ev (piTensor R g u) = (∏ a, chiDelta E w (fun i => (β a i : ℂ)) (g a)) * ev u` using `fun g hg u => by`. Proceed by induction on `u using PiTensorProduct.induction_on with`. Consider the case `smul_tprod t z`. Rewrite using `[map_smul, map_smul, map_smul, piTensor_tprod, hev, hev, smul_eq_mul, smul_eq_mul, mul_left_comm, ← Finset.prod_mul_distrib, Finset.prod_congr rfl fun a _ => hl a _ (hg a) _]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add z z' hz hz' => rw [map_add, map_add, map_add, hz, hz', mul_add]`. Set `γ : Fin n → ℂˣ` to `(fun s : Σ a, Fin (N a) => β s.1 s.2) ∘ (stdBlocks N h).symm`. Establish `hγ : Finset.univ.val.map γ = ∑ a, Finset.univ.val.map (β a)`. Rewrite using `[← Multiset.map_map, Multiset.map_univ_val_equiv, ← Finset.univ_sigma_univ]`. Simplify using `only [Finset.sigma, Multiset.sigma, Multiset.map_bind, Multiset.map_map]`.
+Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Set `Y : IndSp (stdBlocks N h) (piTensor R) →ₗ[ℂ] (GL (Fin n) (w.adicCompletion E) → ℂ)` to `ev.compLeft _ ∘ₗ Submodule.subtype _ ∘ₗ Submodule.subtype _`. Establish `hY1 : Y F 1 = 1` using `by show ev (F.1.1 1) = 1`. Rewrite using `[hF1, hev]`. Conclude with `Finset.prod_eq_one fun a _ => h1 a`.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Y, fun _ _ => rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[← hγ]`. Use `isSatVecGL_of_isSpherical (fun b g u hb hu => ?_) fun e => one_ne_zero (hY1.symm.trans (congrFun e 1))` and prove the remaining obligations. Use `show ev (F.1.1 (b * g * u)) = _ * ev (F.1.1 g)`. Rewrite `hu` using `[← SphCompletion.KO_completion w n]`.
-
-Rewrite using `[apply_mul_of_fixed _ hF _ hu, parInd_law _ _ F ⟨b, mem_parab_of_isUpperB h hb⟩ g, map_smul, hlaw _ (isUpperB_leviProj h hb), smul_eq_mul, ← mul_assoc, ← chiDelta_eq h (β := fun a i => (β a i : ℂ)) (γ := fun i => (γ i : ℂ)) (b := ⟨b, mem_parab_of_isUpperB h hb⟩) (fun a i => congr …`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_map_isSatVecGL {X : Fin c → Type} [∀ a, AddCommGroup (X a)] [∀ a, Module ℂ (X a)]
     {R : ∀ a, Representation ℂ (GL (Fin (N a)) (w.adicCompletion E)) (X a)} {β : ∀ a, Fin (N a) → ℂˣ}
@@ -588,29 +576,27 @@ theorem exists_map_isSatVecGL {X : Fin c → Type} [∀ a, AddCommGroup (X a)] [
       (fun a i => congrArg (fun s : Σ a, Fin (N a) => (β s.1 s.2 : ℂ)) ((stdBlocks N h).symm_apply_apply ⟨a, i⟩)) hb]
 
 /- English proof (translation)
-Establish `hKO : ∀ m, KGL w m = KO (w.adicCompletion E) (Fin m)` using `fun m => (SphCompletion.KO_completion w m).symm`. Establish `hf'` using `hf`. Rewrite `hf'` using `[hKO]`. Establish `hv` using `map_idem_of_fixed hs (fun _ => GlobalTheory.SplitFlip.isCompact_KO) (apply_one_fixed _ hf')`. Establish `hsph : ∀ a, GlobalTheory.LGrp.IsSpherical (π a) (KGL w (N a))` using `fun a e => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e` using `[hKO]`. Use `h0 (eq_zero_of_apply_one _ hf' (hv.symm.trans ?_))` and prove the remaining obligations. Generalize the expression as in `f.1.1 1 = u`. Proceed by induction on `u using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r x`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately.
 
-Rewrite using `[map_smul, PiTensorProduct.map_tprod, MultilinearMap.map_coord_zero _ a, smul_zero]`. Use `idem_mem (hs a) GlobalTheory.SplitFlip.isCompact_KO (x a)` as an intermediate fact. Rewrite `this` using `[e]`. Then use the resulting hypothesis. Consider the case `add x y hx hy => rw [map_add, hx, hy, add_zero]`. Use `choose S hS using fun a => exists_hasSatGL_of_isIrreducible (hs a) (hi a) (hsph a)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Treat this case separately. Establish an intermediate fact.
 
-Use `choose x hx using fun a => (hS a).exists_vec`. Establish `hr : ∀ u, ∃ r : ℂ, PiTensorProduct.map (fun a => idem (hs a) (H` using `KO _ _) GlobalTheory.SplitFlip.isCompact_KO) u = r • PiTensorProduct.tprod ℂ x := fun u => by`. Proceed by induction on `u using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r y => choose t ht using fun a => exists_idem_eq_smul (hs a) (hi a) GlobalTheory.SplitFlip.isCompact_KO (hKO _ ▸ Final.GLintComm E w (N a)) (hKO _ ▸ exists_scalar_GL (hs a) (hi a)) (hKO _ ▸ (hx a).2.1) (hx a).1 (y a)`. Conclude with `⟨r * ∏ a, t a, by`.
+Proceed by induction. Treat this case separately. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[map_smul, PiTensorProduct.map_tprod, funext ht, MultilinearMap.map_smul_univ, mul_smul]⟩`. Consider the case `add y z hy hz`. Take `⟨r, hr⟩` from `hy`. Take `⟨t, ht⟩` from `hz`. Conclude with `⟨r + t, by rw [map_add, hr, ht, add_smul]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨r, hr⟩` from `hr (f.1.1 1)`. Rewrite `hr` using `[hv]`. Use `choose Z iZ mZ R β l y hR hβ hyS h1 hl using fun a => exists_model (w := w) (hS a).card`. Establish `hy : ∀ a, y a ∈ fixed (R a) (KO _ _)` using `fun a => hKO _ ▸ (hyS a).2.1`. Take `⟨F, hF, hF1⟩` from `exists_fixed_apply_one (stdBlocks N h) (ρ := piTensor R) (x := PiTensorProduct.tprod ℂ y) fun g hg => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result.
 
-Rewrite using `[piTensor_tprod]`. Use `congr 1`. Conclude with `funext fun a => GlobalTheory.LGrp.mem_fixed.1 (hy a) _ (hg a)`. Take `⟨Y, hYe, hY⟩` from `exists_map_isSatVecGL h h1 hl hF hF1`. Rewrite `hY` using `[funext hβ]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨S, hS, h0, hf, hY.2.2.1, fun ϖ hϖ j hj => ?_⟩` and prove the remaining obligations. Establish `hϖ0 : ϖ ≠ 0` using `fun e => by simp [IsUnifV, e] at hϖ`. Establish `hT` using `Tj_mem_hecke (n := n) hϖ j`. Establish `hK : IsCommensurated (KGL w n)` using `Final.GLintComm E w n`. Establish `e1` using `(map_heckeVec (ρ := multiProd (stdBlocks N h) R) hK hT Y hYe F).trans (hY.2.2.2 ϖ hϖ j hj)`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite `hT`, `hK`, `e1`, the goal using `[hKO]`. Establish `hp : ∀ q : GL (Fin n) (w.adicCompletion E) ⧸ KO (w.adicCompletion E) (Fin n), ∃ p : parab (w.adicCompletion E) (stdBlocks N h), ((p : GL (Fin n) (w.adicCompletion E)) : _ ⧸ KO _ _) = q` using `fun q => by`. Take `⟨p, hp, u, hu, e⟩` from `(LeviInt.levi_integral_facts _ _ _ _ (stdBlocks N h)).2.2.2.2.2.2.2.2 q.out`. Conclude with `⟨⟨p, hp⟩, (QuotientGroup.eq.2 (by simpa [e] using hu)).trans q.out_eq'⟩`. Use `choose p hp using hp`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hω : ∀ q a, ∃ t : ℂ, Tj ℂ n (Ov E w) ϖ j (p q) ≠ 0 → idem (hs a) GlobalTheory.SplitFlip.isCompact_KO (π a (leviProj _ _ (p q) a) (x a)) = t • x a ∧ idem (hR a) GlobalTheory.SplitFlip.isCompact_KO (R a (leviProj _ _ (p q) a) (y a)) = t • y a` using `fun q a => by`. Distinguish the cases in `hq : Tj ℂ n (Ov E w) ϖ j (p q) = 0`. Conclude with `⟨0, fun e => absurd hq e⟩`. Take `⟨i1, i2⟩` from `intM_of_Tj hϖ0 hϖ hq`. Take `⟨l, hl, e⟩` from `dosetInd_eq_Tj hϖ0 hϖ (g := leviProj _ _ (p q) a) (fun s t => i1 _ _) fun s t => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `i2 (stdBlocks N h ⟨a, s⟩) (stdBlocks N h ⟨a, t⟩)` as an intermediate fact. Rewrite using `[← Pi.inv_apply, ← map_inv]`. Rewrite `this`, the goal using `[Units.val_mul, tor_val, Matrix.diagonal_mul]`. Conclude with `this`. Conclude with `⟨_, fun _ => ⟨idem_of_isSatVecGL (hs a) (hx a) hϖ hl e, idem_of_isSatVecGL (hR a) (hyS a) hϖ hl e⟩⟩`.
-
-Use `choose ω hω using hω`. Rewrite `e1` using `[heckeVec_multiProd _ hK hT hR hF (hF1.trans (one_smul ℂ _).symm) p hp ω (fun q hq a => (hω q a hq).2), map_smul]`. Rewrite using `[heckeVec_multiProd _ hK hT hs hf' hr p hp ω (fun q hq a => (hω q a hq).1), smul_left_injective ℂ hY.1 e1]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sat_multiProd {X : Fin c → Type} [∀ a, AddCommGroup (X a)] [∀ a, Module ℂ (X a)]
     {π : ∀ a, Representation ℂ (GL (Fin (N a)) (w.adicCompletion E)) (X a)} (hs : ∀ a, IsSmooth (π a))
@@ -692,7 +678,7 @@ variable {ρ : Representation ℂ (GL (Fin n) (w.adicCompletion E)) V}
   {ρ' : Representation ℂ (GL (Fin n) (w.adicCompletion E)) W} {s : ℂ}
 
 /- English proof (translation)
-The claim follows from `Units.ext (by rw [KGL, ← SphCompletion.KO_completion w n] at hg simp [val_absPow, LeviInt.nabs_det_eq_one hg])`.
+A detailed English derivation is pending.
 -/
 theorem absPow_det_of_mem (s : ℂ) {g : GL (Fin n) (w.adicCompletion E)} (hg : g ∈ KGL w n) :
     absPow (w.adicCompletion E) s (Matrix.GeneralLinearGroup.det g) = 1 :=
@@ -701,7 +687,7 @@ theorem absPow_det_of_mem (s : ℂ) {g : GL (Fin n) (w.adicCompletion E)} (hg : 
     simp [val_absPow, LeviInt.nabs_det_eq_one hg])
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.LGrp.mem_fixed]`. Use `forall₂_congr fun g hg => ?_` and prove the remaining obligations. Use `T.toIntertwiningMap.isIntertwining _ _ g x` as an intermediate fact. Rewrite `this` using `[twist_apply, detChar_apply, absPow_det_of_mem s hg, Units.val_one, one_smul]`. Conclude with `(Eq.congr_left this.symm).trans T.toLinearEquiv.injective.eq_iff`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_fixed_twist (T : (twist ρ (detChar (Fin n) (absPow _ s))).Equiv ρ') (x : V) :
     T x ∈ fixed ρ' (KGL w n) ↔ x ∈ fixed ρ (KGL w n) := by
@@ -712,19 +698,17 @@ theorem mem_fixed_twist (T : (twist ρ (detChar (Fin n) (absPow _ s))).Equiv ρ'
   exact (Eq.congr_left this.symm).trans T.toLinearEquiv.injective.eq_iff
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Take `⟨x, hx, h0⟩` from `(Submodule.ne_bot_iff _).1 hB.1`. Conclude with `(Submodule.ne_bot_iff _).2 ⟨T x, (mem_fixed_twist T x).2 hx, (map_ne_zero_iff T.toLinearEquiv T.toLinearEquiv.injective).2 h0⟩`. Introduce `y hy h0`. Take `⟨x, rfl⟩` from `T.toLinearEquiv.surjective y`.
+Prove the components needed by the constructor for the conclusion. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hx` using `hB.2 x ((mem_fixed_twist T x).1 hy) ((map_ne_zero_iff _ T.toLinearEquiv.injective).1 h0)`. Use `⟨h0, hy, by rw [Multiset.card_map, hx.2.2.1], fun ϖ hϖ j hj => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.SphGal.satEig_map_mul, mul_smul, ← map_smul T.toLinearEquiv, ← hx.2.2.2 ϖ hϖ j hj, heckeVec, heckeVec]`. Establish `e` using `T.toLinearEquiv.toAddEquiv.map_finsum (fun c : _ ⧸ KGL w n => Tj ℂ n (Ov E w) ϖ j c.out • ρ c.out x)`. Rewrite using `[show T.toLinearEquiv _ = _ from e, smul_finsum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `finsum_congr fun c => ?_` and prove the remaining obligations. Distinguish the cases in `hc : Tj ℂ n (Ov E w) ϖ j c.out = 0`. Simplify using `[hc]`. Take `⟨a, ha, b, hb, e⟩` from `Set.mem_of_indicator_ne_zero hc`. Establish `hϖ0 : ϖ ≠ 0` using `fun h0 => by simp [IsUnifV, h0] at hϖ`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : Matrix.GeneralLinearGroup.det c.out = Matrix.GeneralLinearGroup.det a * Units.mk0 ϖ hϖ0 ^ j * Matrix.GeneralLinearGroup.det b`. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `c.out.val.det = a.val.det * _ * b.val.det`. Rewrite using `[e, Matrix.det_mul, Matrix.det_mul, GlobalTheory.SphGal.det_diagJ ϖ hj]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e3 : absPow (w.adicCompletion E) s (Units.mk0 ϖ hϖ0) = z` using `Units.ext (by`. Establish `: ordV E w ϖ = 1`. Rewrite using `[GlobalTheory.LGrp.BorelCompletion.ordV_eq, show Valued.v ϖ = _ from hϖ]`. Both sides reduce to the same expression. Rewrite using `[val_absPow_completion, hz, Units.val_mk0, this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use the proof step `simp)`. Use `T.toIntertwiningMap.isIntertwining _ _ c.out x` as an intermediate fact. Rewrite `this` using `[twist_apply, detChar_apply, e2, map_mul, map_mul, absPow_det_of_mem s ha, absPow_det_of_mem s hb, map_pow, e3, one_mul, mul_one, map_smul]`. Use `(congrArg (Tj ℂ n (Ov E w) ϖ j c.out • ·) this.symm).trans ?_` and prove the remaining obligations. Rewrite using `[smul_comm, Units.val_pow_eq_pow_val]`.
-
-Use `congr 1`. Conclude with `(map_smul T.toLinearEquiv _ _).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem hasSatGL_of_twist (T : (twist ρ (detChar (Fin n) (absPow _ s))).Equiv ρ') {B : Multiset ℂˣ}
     (hB : HasSatGL w ρ B) {z : ℂˣ} (hz : (z : ℂ) = (qV E w : ℂ) ^ (-s)) : HasSatGL w ρ' (B.map (· * z)) := by
@@ -767,17 +751,17 @@ theorem hasSatGL_of_twist (T : (twist ρ (detChar (Fin n) (absPow _ s))).Equiv �
 end Twist
 
 /- English proof (translation)
-Take `⟨hn, -, p, hp, -⟩` from `hσ`. Take `⟨x, hx⟩` from `hB.exists_vec`. Establish `hx'` using `hx.2.1`. Rewrite `hx'` using `[← map_fixed_of_surjective (isSmooth_prodIrr _ hn) isCompact_KGL hp]`. Take `⟨f, hf, rfl⟩` from `hx'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨R, hR, hfR⟩` from `exists_sat_multiProd hn (fun k => (spehFactor (IrrGL.of ρ hs hi) d k).2.rep.smooth) (fun k => (spehFactor (IrrGL.of ρ hs hi) d k).2.rep.irr) hf fun e => hx.1 (by rw [e, map_zero])`. Take `rfl` from `hx.unique (hfR.map p.toLinearMap (fun g y => p.isIntertwining _ _ g y) hx.1)`. Set `T : ∀ k : Fin d, (twist ρ (detChar (Fin a) (absPow _ (((d : ℂ) - 1) / 2 - (k : ℕ))))).Equiv (spehFactor (IrrGL.of ρ hs hi) d k).rep` to `fun k => (twistEquiv (IrrGL.equivOf ρ hs hi) _).trans ((IrrGL.of ρ hs hi).twEquiv _ (isSmoothChar_absPow _))`. Take `⟨S, hS⟩` from `exists_hasSatGL_of_isIrreducible hs hi (by`. Take `⟨y, hy, h0⟩` from `(Submodule.ne_bot_iff _).1 (hR ⟨0, hd⟩).1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y, rfl⟩` from `(T ⟨0, hd⟩).toLinearEquiv.surjective y`. Conclude with `(Submodule.ne_bot_iff _).2 ⟨y, (mem_fixed_twist (T ⟨0, hd⟩) y).1 hy, fun e => h0 (by rw [e, map_zero])⟩)`. Establish `hq : ∀ t : ℂ, (qV E w : ℂ) ^ t ≠ 0` using `fun t h0 => qV_ne_zero w (by exact_mod_cast ((Complex.cpow_eq_zero_iff _ _).1 h0).1)`. Use `⟨S, hS, ?_⟩` and prove the remaining obligations. Use `Eq.trans ?_ (map_sum (Multiset.mapAddMonoidHom _) _ _).symm` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Equiv.sum_comp Fin.revPerm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[(hR k).unique (hasSatGL_of_twist (T k) hS (z := Units.mk0 _ (hq _)) rfl), Multiset.coe_mapAddMonoidHom, Multiset.map_map]`. Use `Multiset.map_congr rfl fun z _ => ?_` and prove the remaining obligations. Establish `hk : ((k.rev : ℕ) : ℂ) = d - (k + 1)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fin.val_rev, Nat.cast_sub (Nat.succ_le_of_lt k.2)]`. Use `push_cast`. Both sides reduce to the same expression. Simplify using `only [Function.comp_apply, Units.val_mul, Units.val_mk0, Fin.revPerm_apply, hk]`. Use `congr 2`.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem exists_sat_of_isSpeh {a d : ℕ} (hd : 1 ≤ d) {ρ : Representation ℂ (GL (Fin a) (w.adicCompletion E)) V}
     (hs : IsSmooth ρ) (hi : ρ.IsIrreducible) {σ : Representation ℂ (GL (Fin n) (w.adicCompletion E)) W}
@@ -822,9 +806,9 @@ open GlobalTheory.CuspRep GlobalTheory.UnitaryBC GlobalTheory.DefiniteBC GlobalT
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `E _ _ w c n a d h ρ σ hd hσ T hT`. Take `⟨f, hf⟩` from `hT.exists_vec`. Take `⟨B, hB, hfB⟩` from `exists_sat_multiProd h (fun i => (σ i).smooth) (fun i => (σ i).irred) hf.2.1 hf.1`. Take `rfl` from `hf.unique hfB`. Use `choose S hS hS' using fun i => exists_sat_of_isSpeh (hd i) (ρ i).smooth (ρ i).irred (hσ i) (hB i)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨S, hS, ?_⟩` and prove the remaining obligations. Simplify using `only [Multiset.bind_def, Multiset.pure_def, Multiset.bind_singleton, Multiset.map_map, Function.comp_def]`. Conclude with `(Finset.sum_congr rfl fun i _ => hS' i).trans (map_sum (Multiset.mapAddMonoidHom _) _ _).symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem satake_locProd_speh : ∀ (E : Type) [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) (c n : ℕ) (a d : Fin c → ℕ) (h : ∑ i, d i * a i = n) (ρ : ∀ i, LocIrr w (a i)) (σ : ∀ i, LocIrr w (d i * a i)), (∀ i, 1 ≤ d i) → (∀ i, GlobalTheory.LocGL.IsSpeh (GlobalTheory.LocGL.IrrGL.of (ρ i).ρ (ρ i).smooth (ρ i).irred) (d i) (σ i).ρ) → ∀ T : Multiset ℂˣ, GlobalTheory.LFun.HasSatGL w (locProd h w σ) T → ∃ S : Fin c → Multiset ℂˣ, (∀ i, GlobalTheory.LFun.HasSatGL w (ρ i).ρ (S i)) ∧ ∑ i, ∑ k : Fin (d i), (S i).map (fun z => (z : ℂ) * ((Ideal.absNorm w.asIdeal : ℕ) : ℂ) ^ (((d i : ℂ) - 1) / 2 - (k : ℕ))) = T.map (fun z => (z : ℂ)) := by
   intro E _ _ w c n a d h ρ σ hd hσ T hT

@@ -14,11 +14,9 @@ open Formalism.MainNotions.N.KHf Formalism.WeaklyAdmissibleFiltrations Module
 section Len
 
 /- English proof (translation)
-Set `q : ↥(Q.comap f) →ₗ[O] ↥Q ⧸ P.comap Q.subtype` to `(P.comap Q.subtype).mkQ ∘ₗ LinearMap.codRestrict Q (f ∘ₗ (Q.comap f).subtype) (fun x => x.2)`. Establish `hq : Function.Surjective q`. Introduce `y`. Take `⟨⟨b, hb⟩, rfl⟩` from `Submodule.mkQ_surjective _ y`. Take `⟨a, rfl⟩` from `hf b`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨⟨a, hb⟩, rfl⟩`. Establish `hk : LinearMap.ker q = (P.comap f).comap (Q.comap f).subtype`. Use extensionality with `x`. Rewrite using `[LinearMap.mem_ker]`. Conclude with `Submodule.Quotient.mk_eq_zero _`.
-
-Conclude with `((Submodule.quotEquivOfEq _ _ hk.symm).trans (q.quotKerEquivOfSurjective hq)).length_eq`.
+Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem len_comap_surj {O A B : Type} [CommRing O] [AddCommGroup A] [Module O A] [AddCommGroup B] [Module O B]
     (f : A →ₗ[O] B) (hf : Function.Surjective f) (Q P : Submodule O B) :
@@ -50,9 +48,9 @@ def resQ : ↥Q →ₛₗ[(e : R →+* S)] ↥Q' where
 
 include hinj in
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `a b h`. Establish `h' : Ψ (a : M) = Ψ (b : M)` using `congrArg Subtype.val h`. Conclude with `Subtype.ext (hinj h')`. Introduce and unpack `⟨y, hy⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx, rfl⟩` from `(hQ y).1 hy`. Conclude with `⟨⟨x, hx⟩, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem resQ_bij : Function.Bijective (resQ e Ψ Q Q' hQ) := by
   constructor
@@ -77,13 +75,13 @@ theorem resQE_apply (x : ↥Q) : ((resQE e Ψ hinj Q Q' hQ x : ↥Q') : N) = Ψ 
 include hinj hQ hP in
 
 /- English proof (translation)
-Take `⟨E, hE⟩ : ∃ E : ↥Q ≃ₛₗ[(e : R →+* S)] ↥Q', ∀ x, ((E x : ↥Q') : N) = Ψ (x : M)` from `⟨resQE e Ψ hinj Q Q' hQ, resQE_apply e Ψ hinj Q Q' hQ⟩`. Establish `hmap : (P.comap Q.subtype).map (E : ↥Q →ₛₗ[(e : R →+* S)] ↥Q') = P'.comap Q'.subtype`. Use extensionality with `y`. Simplify using `only [Submodule.mem_map, Submodule.mem_comap, Submodule.coe_subtype, LinearEquiv.coe_coe]`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨x, hx, rfl⟩`. Rewrite using `[hE]`. Conclude with `(hP x x.2).1 hx`. Introduce `hy`. Take `⟨x, rfl⟩` from `E.surjective y`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hy` using `[hE]`. Conclude with `⟨x, (hP x x.2).2 hy, rfl⟩`. Set `F` to `Submodule.Quotient.equiv (P.comap Q.subtype) (P'.comap Q'.subtype) E hmap`. Establish `h1` using `Order.height_orderIso (Submodule.orderIsoMapComap F) ⊤`. Rewrite `h1` using `[OrderIso.map_top]`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Module.length_eq_height, Module.length_eq_height]`. Conclude with `h1.symm`.
+A detailed English derivation is pending.
 -/
 theorem len_semi :
     Module.length R (↥Q ⧸ P.comap Q.subtype) = Module.length S (↥Q' ⧸ P'.comap Q'.subtype) := by
@@ -140,7 +138,7 @@ def rowLenD (w : ℕ) : ℕ∞ :=
     (imRow i dc VT VT' Dat ρ₁ π vD hpD heD w).comap (Fs i dc VT VT' Dat w).subtype)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `_ = Br.toLLK (D.nbr i _ hn) (algebraMap (D.nd.O i) (FractionRing (D.nd.O i)) a)`. Rewrite using `[Br.toLLK, IsFractionRing.lift_algebraMap]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem heO_br {n : ℕ} (hn : K.plOf i dc n ∈ placesOver D.host.E (D.nd.l i)) (a : D.nd.O i) :
     algebraMap (Br.Ow (D.nbr i _ hn)) (Br.LLw (D.nbr i _ hn)) ((D.nbr i _ hn).eO a) =

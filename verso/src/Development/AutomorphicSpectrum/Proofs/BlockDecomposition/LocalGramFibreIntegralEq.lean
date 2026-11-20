@@ -20,7 +20,7 @@ namespace GlobalTheory.CompanionTheory.WeilSiegel.HypStage.StageExt
 open Set
 
 /- English proof (translation)
-Rewrite using `[← lintegral_indicator hO]`. Use `lintegral_congr fun v => ?_` and prove the remaining obligations. Distinguish the cases in `hv : v ∈ O`. Rewrite using `[indicator_of_mem hv]`. Rewrite using `[indicator_of_notMem hv, hf v hv]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem setLIntegral_eq_of_vanish {V : Type} [MeasurableSpace V] (μ : Measure V) {O : Set V}
     (hO : MeasurableSet O) (f : V → ℝ≥0∞) (hf : ∀ v, v ∉ O → f v = 0) :
@@ -32,19 +32,19 @@ theorem setLIntegral_eq_of_vanish {V : Type} [MeasurableSpace V] (μ : Measure V
   · rw [indicator_of_notMem hv, hf v hv]
 
 /- English proof (translation)
-Set `f : Vx × VY × Va → V` to `fun p => c p.1 p.2.2 p.2.1`. Set `ρ : Measure (Vx × VY × Va)` to `(μx.restrict Ox).prod (μY.prod μa)`. Establish `hf : Measurable f` using `hc`. Establish `key : ∀ G : V → ℝ≥0∞, Measurable G → (∀ v, v ∉ O → G v = 0) → ∫⁻ v, G v ∂(ρ.map f) = ∫⁻ x, ∫⁻ y, ∫⁻ a, G (c x a y) ∂μa ∂μY ∂μx`. Introduce `G hG hG0`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : ∀ x, ∫⁻ q, G (f (x, q)) ∂(μY.prod μa) = ∫⁻ y, ∫⁻ a, G (c x a y) ∂μa ∂μY` using `fun x => lintegral_prod (fun q => G (f (x, q))) ((hG.comp hf).comp measurable_prodMk_left).aemeasurable`. Rewrite using `[lintegral_map hG hf]`. Use `show ∫⁻ p, G (f p) ∂((μx.restrict Ox).prod (μY.prod μa)) = _`. Rewrite using `[lintegral_prod (fun p => G (f p)) (hG.comp hf).aemeasurable]`. Simplify using `only [e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `setLIntegral_eq_of_vanish μx hOx _ fun x hx => ?_` and prove the remaining obligations. Establish `h0 : ∀ y a, G (c x a y) = 0` using `fun y a => hG0 _ (h4 x a y hx)`. Simplify using `[h0]`. Establish `hmeq : μ.restrict O = ρ.map f`. Use `GlobalTheory.CompanionTheory.SW.FibreUniq.measure_eq_of_lintegral_eq _ _ cell hcell ?_ ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h : ∀ᵐ v ∂(μ.restrict O), v ∈ cell` using `(ae_restrict_iff' hO).2 h1`. Conclude with `h`. Rewrite using `[Measure.map_apply hf hcell.measurableSet.compl]`. Establish `a1 : ∀ᵐ p ∂ρ, p.1 ∈ Ox` using `Measure.quasiMeasurePreserving_fst.ae (ae_restrict_mem hOx)`. Establish `a2 : ∀ᵐ q ∂(μY.prod μa), ∀ x ∈ Ox, ∀ a, c x a q.1 ∈ cell` using `Measure.quasiMeasurePreserving_fst.ae h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a3 : ∀ᵐ p ∂ρ, ∀ x ∈ Ox, ∀ a, c x a p.2.1 ∈ cell` using `Measure.quasiMeasurePreserving_snd.ae a2`. Establish `h : ∀ᵐ p ∂ρ, f p ∈ cell` using `by filter_upwards [a1, a3] with p h h' using h' _ h _`. Conclude with `h`. Introduce `φ hφ hs hsup h0`. Take `⟨hi, hl⟩` from `h3 φ hφ hs hsup h0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hm : Measurable fun v => ENNReal.ofReal (φ v)` using `ENNReal.measurable_ofReal.comp hφ.measurable`. Establish `hv : ∀ v, v ∉ O → ENNReal.ofReal (φ v) = 0` using `fun v hv => by`. Rewrite using `[image_eq_zero_of_notMem_tsupport fun h => hv (hcO (hsup h)), ENNReal.ofReal_zero]`. Use `⟨hi.restrict, ?_⟩` and prove the remaining obligations. Rewrite using `[key _ hm hv, setLIntegral_eq_of_vanish μ hO _ hv, hl]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Establish `hH : Measurable fun q : VY × Va => ENNReal.ofReal (φ (c x q.2 q.1))` using `(hm.comp hf).comp measurable_prodMk_left`. Conclude with `(lintegral_lintegral_swap hH.aemeasurable).symm`. Rewrite using `[← key g hg hgO, ← hmeq, setLIntegral_eq_of_vanish μ hO g hgO]`.
+A detailed English derivation is pending.
 -/
 theorem lintegral_chart_of_continuous {V Vx Va VY : Type} [TopologicalSpace V] [LocallyCompactSpace V]
     [SecondCountableTopology V] [T2Space V] [MeasurableSpace V] [BorelSpace V]
@@ -112,23 +112,15 @@ namespace GlobalTheory.CompanionTheory.WeilSiegel.HypStage.StageExt
 open Set
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M J hJ R _ _ _ _ _ hR n d b lam hlam m m₁ m' hm hm₁ hm' g hg hg0`. Take `⟨hOpen, hLI, hGr, hCh, hmeas⟩` from `GlobalTheory.T.free_cell_open_independent F E σ hCM M J hJ R hR n`. Establish `hOpen0` using `(GlobalTheory.T.free_cell_open_independent F E σ hCM M J hJ R hR 0).1`. Establish `hR'` using `hR`. Take `⟨r1, r2, r3, r4, -⟩` from `hR'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI := r1`. Use `haveI := r2`. Use `haveI := r3`. Use `haveI := r4`. Take `⟨t1, t2, t3, t4, -, -, -, t8, -, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hCM R`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Supply the required witnesses or components.
 
-Use `haveI := t1`. Use `haveI := t2`. Use `haveI := t3`. Use `haveI := t4`. Use `haveI := t8 (n + 1) (M + 2)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := t8 1 (M + 2)`. Use `haveI := t8 1 n`. Use `haveI := t8 n M`. Use `haveI : SigmaFinite (m₁ 0) := GlobalTheory.CompanionTheory.WeilSiegel.FreeLocal.sigmaFinite_free σ hCM (hypOne J) R hR 1 _ _ m₁ hm₁ 0`. Use `haveI : SigmaFinite (m' 0) := GlobalTheory.CompanionTheory.WeilSiegel.FreeLocal.sigmaFinite_free σ hCM J R hR n _ _ m' hm' 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : (coordW R b lam 1 n).IsAddHaarMeasure := (GlobalTheory.T.coordinate_haar_measure F E σ hCM R d b lam hlam).2.1 1 n`. Establish `hOx : MeasurableSet {x : Fin 1 → Fin (M + 2) → R ⊗[F] E | IsUnit (x 0 0)}`. Establish `e : {x : Fin 1 → Fin (M + 2) → R ⊗[F] E | IsUnit (x 0 0)} = freeCell (R ⊗[F] E) M 0`. Use extensionality with `x`. Conclude with `⟨fun h => ⟨h, linearIndependent_empty_type⟩, fun h => h.1⟩`.
-
-Rewrite using `[e]`. Conclude with `hOpen0.measurableSet`. Establish `hO : MeasurableSet {X : Fin (n + 1) → Fin (M + 2) → R ⊗[F] E | IsUnit (X 0 0)}`. Establish `hp : Measurable fun (X : Fin (n + 1) → Fin (M + 2) → R ⊗[F] E) (_ : Fin 1) => X 0` using `measurable_pi_lambda _ fun _ => measurable_pi_apply 0`. Conclude with `hp hOx`.
-
-Establish `hc : Measurable fun p : (Fin 1 → Fin (M + 2) → R ⊗[F] E) × (Fin n → Fin M → R ⊗[F] E) × (Fin 1 → Fin n → R ⊗[F] E) => chartS R σ J p.1 p.2.2 0 p.2.1` using `hmeas.comp (measurable_fst.prodMk ((measurable_snd.comp measurable_snd).prodMk (measurable_const.prodMk (measurable_fst.comp measurable_snd))))`. Establish `c0 : ∀ᵐ X ∂(m 0), X ∈ (gramR R σ (hypOne J)) ⁻¹' {((0 : HermR R σ (n + 1)) : Matrix (Fin (n + 1)) (Fin (n + 1)) (R ⊗[F] E))} ∩ {X | LinearIndependent (R ⊗[F] E) X}` using `hm.1 0`. Establish `c1 : ∀ᵐ Y ∂(m' 0), Y ∈ (gramR R σ J) ⁻¹' {((0 : HermR R σ n) : Matrix (Fin n) (Fin n) (R ⊗[F] E))} ∩ {X | LinearIndependent (R ⊗[F] E) X}` using `hm'.1 0`. Use `lintegral_chart_of_continuous (fun x a Y => chartS R σ J x a 0 Y) hc (m 0) (m₁ 0) (m' 0) (coordW R b lam 1 n) {X | IsUnit (X 0 0)} (freeCell (R ⊗[F] E) M n) {x | IsUnit (x 0 0)} hO hOx hOpen (fun X hX => hX.1) ?_ ?_ ?_ ?_ g hg hg0` and prove the remaining obligations. Use `filter_upwards [c0] with X hX hu`.
-
-Conclude with `hGr X hX.2 hX.1 hu`. Use `filter_upwards [c1] with Y hY x hx a`. Conclude with `hCh x a 0 Y hx hY.2`. Introduce `φ hφ hs hsup h0`. Conclude with `⟨(hm.2.2 φ hφ hs (hsup.trans fun X hX => hLI X hX)).1 0 (mem_univ _), GlobalTheory.T.hyperbolic_fibre_free_extension F E σ hCM M J hJ R hR n d b lam hlam m m₁ m' hm hm₁ hm' φ hφ hs hsup h0⟩`.
-
-Introduce `x a Y hx h`. Conclude with `hx (by simpa [chartS] using h)`.
+A detailed English derivation is pending.
 -/
 theorem stages_zero_unit : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [MeasurableSpace R] [BorelSpace R], IsLocR R → ∀ (n d : ℕ) (b : Module.Basis (Fin d) F E) (lam : Measure R), lam.IsAddHaarMeasure → ∀ m m₁ m', IsGramFibFree R σ (hypOne J) (n + 1) (coordW R b lam (n + 1) (M + 2)) (coordHerm R σ b lam (n + 1)) m → IsGramFibFree R σ (hypOne J) 1 (coordW R b lam 1 (M + 2)) (coordHerm R σ b lam 1) m₁ → IsGramFibFree R σ J n (coordW R b lam n M) (coordHerm R σ b lam n) m' → ∀ g : (Fin (n + 1) → Fin (M + 2) → R ⊗[F] E) → ℝ≥0∞, Measurable g → (∀ X, ¬ IsUnit (X 0 0) → g X = 0) → ∫⁻ X, g X ∂(m 0) = ∫⁻ x, ∫⁻ Y, ∫⁻ a, g (chartS R σ J x a 0 Y) ∂(coordW R b lam 1 n) ∂(m' 0) ∂(m₁ 0) := by
   intro F E _ _ _ _ _ σ hCM M J hJ R _ _ _ _ _ hR n d b lam hlam m m₁ m' hm hm₁ hm' g hg hg0

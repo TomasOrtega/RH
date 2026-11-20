@@ -6,7 +6,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC CochainCo
 namespace LateralTheory.CohomologicalPurity
 
 /- English proof (translation)
-Rewrite using `[← Functor.map_comp, ← Functor.map_comp, dbl.inr_map]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem chainsInrSq (q : ℕ) {P' P : Arrow Spc} (φ : P' ⟶ P) :
     (chains (ZMod q)).map (dbl.inr P') ≫ (chains (ZMod q)).map (dbl.map φ) =
@@ -18,7 +18,7 @@ abbrev cokC (q : ℕ) {P' P : Arrow Spc} (φ : P' ⟶ P) :=
     ((chains (ZMod q)).map φ.right) ((chains (ZMod q)).map (dbl.map φ)) (chainsInrSq q φ)
 
 /- English proof (translation)
-Break down `x.mk_surjective with ⟨z, rfl⟩` into its components or cases. Simplify using `only [HK.pull, HK.pre, cpre_mk]`. Use `congr 1`. Use `ext1`. Simplify using `[zcomp, Cochain.ofHom_comp, Cochain.comp_assoc_of_first_is_zero_cochain]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem HK.pull_comp' (R : Type) [CommRing R] {K L M : Cx R} (f : K ⟶ L) (g : L ⟶ M) (F : Shv R) (n : ℤ)
     (x : HK R M F n) : HK.pull R (f ≫ g) F n x = HK.pull R f F n (HK.pull R g F n x) := by
@@ -29,7 +29,7 @@ theorem HK.pull_comp' (R : Type) [CommRing R] {K L M : Cx R} (f : K ⟶ L) (g : 
   simp [zcomp, Cochain.ofHom_comp, Cochain.comp_assoc_of_first_is_zero_cochain]
 
 /- English proof (translation)
-Break down `x.mk_surjective with ⟨z, rfl⟩` into its components or cases. Simplify using `only [HK.pull, HK.pre, cpre_mk]`. Use `congr 1`. Use `ext1`. Simplify using `[zcomp]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem HK.pull_id' (R : Type) [CommRing R] (K : Cx R) (F : Shv R) (n : ℤ) (x : HK R K F n) :
     HK.pull R (𝟙 K) F n x = x := by
@@ -40,7 +40,7 @@ theorem HK.pull_id' (R : Type) [CommRing R] (K : Cx R) (F : Shv R) (n : ℤ) (x 
   simp [zcomp]
 
 /- English proof (translation)
-Use `Function.bijective_iff_has_inverse.2 ⟨HK.pull R (inv f) F n, fun x => ?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← HK.pull_comp', IsIso.inv_hom_id, HK.pull_id']`. Rewrite using `[← HK.pull_comp', IsIso.hom_inv_id, HK.pull_id']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem HK.pull_bij (R : Type) [CommRing R] {K L : Cx R} (f : K ⟶ L) [IsIso f] (F : Shv R) (n : ℤ) :
     Function.Bijective (HK.pull R f F n) := by
@@ -56,9 +56,9 @@ def LeafExcIdent : Prop := ∀ (q : ℕ) (n i : ℤ), ∃ e : ∀ P : Arrow Spc,
 def LeafExcCx : Prop := ∀ (q : ℕ) {P' P : Arrow Spc} (φ : P' ⟶ P), IsIso (cokC q φ) → Exc q φ
 
 /- English proof (translation)
-Introduce `q P' P φ hφ n i`. Take `⟨e, he⟩` from `hI q n i`. Establish `hfun : ⇑(Hs.pull q φ n i) = ⇑(e P') ∘ ⇑(HK.pull (ZMod q) (cokC q φ) (tw q i) n) ∘ ⇑(e P).symm`. Use function extensionality and compare the values at `y`. Take `⟨x, rfl⟩` from `(e P).surjective y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Simplify using `[he]`. Rewrite using `[hfun]`. Conclude with `(e P').bijective.comp ((HK.pull_bij _ _ _ _).comp (e P).symm.bijective)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LeafExcCx_of (hI : LeafExcIdent) : LeafExcCx := by
   intro q P' P φ hφ n i
@@ -75,7 +75,7 @@ def LeafExcDeg : Prop := ∀ (q : ℕ) {P' P : Arrow Spc} (φ : P' ⟶ P),
     ((free (ZMod q)).map (φ.left.app p)) ((free (ZMod q)).map (φ.right.app p)) (freeSq _ φ p))) → IsIso (cokC q φ)
 
 /- English proof (translation)
-Introduce `q P' P φ h`. Conclude with `LeafExcCx_of hI q φ (hD q φ h)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem LeafExcFormal_of (hI : LeafExcIdent) (hD : LeafExcDeg) : LeafExcFormal := by
   intro q P' P φ h

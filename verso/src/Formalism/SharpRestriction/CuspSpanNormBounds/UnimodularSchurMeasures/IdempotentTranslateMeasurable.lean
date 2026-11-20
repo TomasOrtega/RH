@@ -14,7 +14,7 @@ variable {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   {lam : Fin (2 * r + k + 1) → ℝ} {σ : Mat k r → (H →L[ℂ] H)}
 
 /- English proof (translation)
-Take `⟨P, hP, hDS⟩` from `hσ`. Use `hDS.2.2.1.2.1 _ (cayley_conj_mem_diagonal_model hP ha).1 v` as an intermediate fact. Simplify `this` using `only [(cayley_conj_mem_diagonal_model hP ha).2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem discrete_series_isometry (hσ : IsDSHpk k r ε lam σ) {a : Mat k r} (ha : a ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)) (v : H) :
     ‖σ a v‖ = ‖v‖ := by
@@ -23,16 +23,16 @@ theorem discrete_series_isometry (hσ : IsDSHpk k r ε lam σ) {a : Mat k r} (ha
   simpa only [(cayley_conj_mem_diagonal_model hP ha).2] using this
 
 /- English proof (translation)
-The claim follows from `(LinearIsometry.mk (σ a : H →ₗ[ℂ] H) (discrete_series_isometry hσ ha)).inner_map_map x y`.
+A detailed English derivation is pending.
 -/
 theorem discrete_series_inner (hσ : IsDSHpk k r ε lam σ) {a : Mat k r} (ha : a ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)) (x y : H) :
     ⟪σ a x, σ a y⟫_ℂ = ⟪x, y⟫_ℂ :=
   (LinearIsometry.mk (σ a : H →ₗ[ℂ] H) (discrete_series_isometry hσ ha)).inner_map_map x y
 
 /- English proof (translation)
-Take `⟨P, hP, hDS⟩` from `hσ`. Establish `h1` using `hDS.2.2.1.2.2 v`. Establish `hc : Continuous fun x : Mat k r => P * x * P⁻¹` using `(continuous_const.matrix_mul continuous_id).matrix_mul continuous_const`. Establish `h2` using `h1.comp hc.continuousOn (fun a ha => (cayley_conj_mem_diagonal_model hP ha).1)`. Use `h2.congr fun a ha => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Function.comp, (cayley_conj_mem_diagonal_model hP ha).2]`.
+Simplify using the standard rewrite rules.
 -/
 theorem discrete_series_continuousOn (hσ : IsDSHpk k r ε lam σ) (v : H) :
     ContinuousOn (fun g => σ g v) (Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)) := by
@@ -45,7 +45,7 @@ theorem discrete_series_continuousOn (hσ : IsDSHpk k r ε lam σ) (v : H) :
   simp only [Function.comp, (cayley_conj_mem_diagonal_model hP ha).2]
 
 /- English proof (translation)
-Establish `hc : Continuous fun g : Mat k r => gᴴ * Formalism.QuantumDeterminants.Hpk k r * g` using `(continuous_id.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul continuous_id`. Conclude with `isClosed_eq hc continuous_const`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isClosed_unitary_group (k r : ℕ) : IsClosed (Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)) := by
   have hc : Continuous fun g : Mat k r => gᴴ * Formalism.QuantumDeterminants.Hpk k r * g :=
@@ -66,7 +66,7 @@ def E2 (g y : Mat X.k X.r) : ℂ := (fdegH X.μG X.σ X.w : ℂ) * star ⟪X.σ 
 variable {X}
 
 /- English proof (translation)
-Use `show (fdegH X.μG X.σ X.w : ℂ) * star ⟪X.σ g X.w, X.σ (g * y) X.w⟫_ℂ = (fdegH X.μG X.σ X.w : ℂ) * star ⟪X.w, X.σ y X.w⟫_ℂ`. Rewrite using `[discrete_series_map_mul hX.2.1 hg hy, ContinuousLinearMap.comp_apply, discrete_series_inner hX.2.1 hg]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idempotent_translate_left (hX : X.Hyp) {g y : Mat X.k X.r} (hg : g ∈ X.G) (hy : y ∈ X.G) : X.E2 g (g * y) = X.e y := by
   show (fdegH X.μG X.σ X.w : ℂ) * star ⟪X.σ g X.w, X.σ (g * y) X.w⟫_ℂ =
@@ -74,7 +74,7 @@ theorem idempotent_translate_left (hX : X.Hyp) {g y : Mat X.k X.r} (hg : g ∈ X
   rw [discrete_series_map_mul hX.2.1 hg hy, ContinuousLinearMap.comp_apply, discrete_series_inner hX.2.1 hg]
 
 /- English proof (translation)
-Establish `hc : ContinuousOn (fun y : Formalism.QuantumDeterminants.Mt X.k X.r => X.σ (Matrix.of y) v) {y | Matrix.of y ∈ X.G}` using `discrete_series_continuousOn hX.2.1 v`. Establish `hm : MeasurableSet {y : Formalism.QuantumDeterminants.Mt X.k X.r | Matrix.of y ∈ X.G}` using `(show IsClosed {y : Formalism.QuantumDeterminants.Mt X.k X.r | Matrix.of y ∈ X.G} from isClosed_unitary_group X.k X.r).measurableSet`. Use `hc.aestronglyMeasurable (μ := X.μG) hm` as an intermediate fact. Establish `hae : ∀ᵐ y ∂X.μG, y ∈ {y : Formalism.QuantumDeterminants.Mt X.k X.r | Matrix.of y ∈ X.G}` using `ae_mem hX`. Rewrite `this` using `[Measure.restrict_eq_self_of_ae_mem hae]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem meas_orbit (hX : X.Hyp) (v : X.H) : AEStronglyMeasurable (fun y => X.σ (Matrix.of y) v) X.μG := by
   have hc : ContinuousOn (fun y : Formalism.QuantumDeterminants.Mt X.k X.r => X.σ (Matrix.of y) v) {y | Matrix.of y ∈ X.G} :=
@@ -86,14 +86,14 @@ theorem meas_orbit (hX : X.Hyp) (v : X.H) : AEStronglyMeasurable (fun y => X.σ 
   rwa [Measure.restrict_eq_self_of_ae_mem hae] at this
 
 /- English proof (translation)
-The claim follows from `hχ.2.2.1.comp_measurePreserving (mp_left hX hx)`.
+A detailed English derivation is pending.
 -/
 theorem meas_Φ (hX : X.Hyp) {B : X.H → X.Vp} {χ : Mat X.k X.r → ℝ} (hχ : X.IsCut B χ) {x : Mat X.k X.r} (hx : x ∈ X.G) :
     AEStronglyMeasurable (fun y => X.Φ B χ (x * Matrix.of y)) X.μG :=
   hχ.2.2.1.comp_measurePreserving (mp_left hX hx)
 
 /- English proof (translation)
-Unfold `E2`. Use `AEStronglyMeasurable.const_mul ?_ _` and prove the remaining obligations. Conclude with `Complex.continuous_conj.comp_aestronglyMeasurable (aestronglyMeasurable_const.inner (meas_orbit hX X.w))`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem idempotent_translate_measurable (hX : X.Hyp) (g : Mat X.k X.r) : AEStronglyMeasurable (fun y => X.E2 g (Matrix.of y)) X.μG := by
   unfold E2
@@ -101,7 +101,7 @@ theorem idempotent_translate_measurable (hX : X.Hyp) (g : Mat X.k X.r) : AEStron
   exact Complex.continuous_conj.comp_aestronglyMeasurable (aestronglyMeasurable_const.inner (meas_orbit hX X.w))
 
 /- English proof (translation)
-Use `filter_upwards [ae_mem hX] with y hy`. Establish `e1 : Matrix.of (Formalism.QuantumDeterminants.lmulM g y) = g * Matrix.of y` using `rfl`. Rewrite using `[e1, idempotent_translate_left hX hg hy, Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subst (hX : X.Hyp) (B : X.H → X.Vp) (χ : Mat X.k X.r → ℝ) (x : Mat X.k X.r) {g : Mat X.k X.r}
     (hg : g ∈ X.G) :
@@ -112,7 +112,7 @@ theorem subst (hX : X.Hyp) (B : X.H → X.Vp) (χ : Mat X.k X.r → ℝ) (x : Ma
   rw [e1, idempotent_translate_left hX hg hy, Matrix.mul_assoc]
 
 /- English proof (translation)
-The claim follows from `(idempotent_translate_measurable hX g).smul (meas_Φ hX hχ hx)`.
+A detailed English derivation is pending.
 -/
 theorem meas_F (hX : X.Hyp) {B : X.H → X.Vp} {χ : Mat X.k X.r → ℝ} (hχ : X.IsCut B χ) {x : Mat X.k X.r}
     (hx : x ∈ X.G) (g : Mat X.k X.r) :
@@ -120,7 +120,7 @@ theorem meas_F (hX : X.Hyp) {B : X.H → X.Vp} {χ : Mat X.k X.r → ℝ} (hχ :
   (idempotent_translate_measurable hX g).smul (meas_Φ hX hχ hx)
 
 /- English proof (translation)
-Establish `h1 : Integrable (fun y => X.e (Matrix.of y) • X.Φ B χ (x * g * Matrix.of y)) X.μG` using `integrable_conv hX hχ he (unitary_group_mul_mem hx hg)`. Establish `h2` using `h1.congr (subst hX B χ x hg).symm`. Conclude with `((mp_left hX hg).integrable_comp (meas_F hX hχ hx g)).1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integrable_F (hX : X.Hyp) {B : X.H → X.Vp} {χ : Mat X.k X.r → ℝ} (hχ : X.IsCut B χ) (he : X.ConvolutionKernelIntegrable)
     {x g : Mat X.k X.r} (hx : x ∈ X.G) (hg : g ∈ X.G) :
@@ -131,9 +131,9 @@ theorem integrable_F (hX : X.Hyp) {B : X.H → X.Vp} {χ : Mat X.k X.r → ℝ} 
   exact ((mp_left hX hg).integrable_comp (meas_F hX hχ hx g)).1 h2
 
 /- English proof (translation)
-Rewrite using `[← integral_congr_ae (subst hX B χ x hg)]`. Establish `hmp` using `mp_left hX hg`. Establish `hm : AEStronglyMeasurable (fun y => X.E2 g (Matrix.of y) • X.Φ B χ (x * Matrix.of y)) (X.μG.map (Formalism.QuantumDeterminants.lmulM g))` using `by rw [hmp.map_eq]; exact meas_F hX hχ hx g`. Use `integral_map hmp.measurable.aemeasurable hm` as an intermediate fact. Rewrite `this` using `[hmp.map_eq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem integral_F (hX : X.Hyp) {B : X.H → X.Vp} {χ : Mat X.k X.r → ℝ} (hχ : X.IsCut B χ)
     {x g : Mat X.k X.r} (hx : x ∈ X.G) (hg : g ∈ X.G) :
@@ -148,9 +148,9 @@ theorem integral_F (hX : X.Hyp) {B : X.H → X.Vp} {χ : Mat X.k X.r → ℝ} (h
   exact this
 
 /- English proof (translation)
-Rewrite using `[← integral_congr_ae ((subst hX B χ x hg).mono fun y hy => congrArg norm hy)]`. Establish `hmp` using `mp_left hX hg`. Establish `hm : AEStronglyMeasurable (fun y => ‖X.E2 g (Matrix.of y) • X.Φ B χ (x * Matrix.of y)‖) (X.μG.map (Formalism.QuantumDeterminants.lmulM g))` using `by rw [hmp.map_eq]; exact (meas_F hX hχ hx g).norm`. Use `integral_map hmp.measurable.aemeasurable hm` as an intermediate fact. Rewrite `this` using `[hmp.map_eq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem integral_normF (hX : X.Hyp) {B : X.H → X.Vp} {χ : Mat X.k X.r → ℝ} (hχ : X.IsCut B χ)
     {x g : Mat X.k X.r} (hx : x ∈ X.G) (hg : g ∈ X.G) :
@@ -165,9 +165,9 @@ theorem integral_normF (hX : X.Hyp) {B : X.H → X.Vp} {χ : Mat X.k X.r → ℝ
   exact this
 
 /- English proof (translation)
-Establish `h1 : ∀ g : Formalism.QuantumDeterminants.Mt X.k X.r, X.e (Matrix.of g) * X.E2 (Matrix.of g) y = (fdegH X.μG X.σ X.w : ℂ) * (X.e (Matrix.of g) * ⟪X.σ y X.w, X.σ (Matrix.of g) X.w⟫_ℂ)`. Introduce `g`. Unfold `E2`. Rewrite using `[show star ⟪X.σ (Matrix.of g) X.w, X.σ y X.w⟫_ℂ = ⟪X.σ y X.w, X.σ (Matrix.of g) X.w⟫_ℂ from inner_conj_symm _ _]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [h1]`. Rewrite using `[integral_const_mul, hf (X.σ y X.w)]`. Use `show (fdegH X.μG X.σ X.w : ℂ) * ⟪X.σ y X.w, X.w⟫_ℂ = (fdegH X.μG X.σ X.w : ℂ) * star ⟪X.w, X.σ y X.w⟫_ℂ`. Rewrite using `[show star ⟪X.w, X.σ y X.w⟫_ℂ = ⟪X.σ y X.w, X.w⟫_ℂ from inner_conj_symm _ _]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idempotent_convolution_self (hf : X.EFix) (y : Mat X.k X.r) :
     ∫ g, X.e (Matrix.of g) * X.E2 (Matrix.of g) y ∂X.μG = X.e y := by
@@ -184,25 +184,23 @@ theorem idempotent_convolution_self (hf : X.EFix) (y : Mat X.k X.r) :
   rw [show star ⟪X.w, X.σ y X.w⟫_ℂ = ⟪X.σ y X.w, X.w⟫_ℂ from inner_conj_symm _ _]
 
 /- English proof (translation)
-Introduce `χ hχ x hx`. Establish `: SigmaFinite X.μG` using `hX.2.2.2.2.1.1`. Take `⟨M, hM⟩` from `hχ.2.2.2.1`. Use `set f : Formalism.QuantumDeterminants.Mt X.k X.r → Formalism.QuantumDeterminants.Mt X.k X.r → X.Vp := fun g y => (X.e (Matrix.of g) * X.E2 (Matrix.of g) (Matrix.of y)) • X.Φ B χ (x * Matrix.of y) with hfdef`. Establish `hmeas : AEStronglyMeasurable (Function.uncurry f) (X.μG.prod X.μG)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `m1 : AEStronglyMeasurable (fun p : Formalism.QuantumDeterminants.Mt X.k X.r × Formalism.QuantumDeterminants.Mt X.k X.r => X.e (Matrix.of p.1)) (X.μG.prod X.μG)` using `he.aestronglyMeasurable.comp_fst`. Establish `m2 : AEStronglyMeasurable (fun p : Formalism.QuantumDeterminants.Mt X.k X.r × Formalism.QuantumDeterminants.Mt X.k X.r => X.E2 (Matrix.of p.1) (Matrix.of p.2)) (X.μG.prod X.μG)`. Unfold `E2`. Use `AEStronglyMeasurable.const_mul ?_ _` and prove the remaining obligations. Conclude with `Complex.continuous_conj.comp_aestronglyMeasurable ((meas_orbit hX X.w).comp_fst.inner (meas_orbit hX X.w).comp_snd)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `m3 : AEStronglyMeasurable (fun p : Formalism.QuantumDeterminants.Mt X.k X.r × Formalism.QuantumDeterminants.Mt X.k X.r => X.Φ B χ (x * Matrix.of p.2)) (X.μG.prod X.μG)` using `(meas_Φ hX hχ hx).comp_snd`. Conclude with `(m1.mul m2).smul m3`. Establish `hbound : ∀ g : Mat X.k X.r, g ∈ X.G → ∫ y, ‖X.E2 g (Matrix.of y) • X.Φ B χ (x * Matrix.of y)‖ ∂X.μG ≤ M * ∫ y, ‖X.e (Matrix.of y)‖ ∂X.μG`. Introduce `g hg`. Rewrite using `[integral_normF hX hχ hx hg, ← integral_const_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `integral_mono_ae (integrable_conv hX hχ he (unitary_group_mul_mem hx hg)).norm (he.norm.const_mul M) ?_` and prove the remaining obligations. Use `filter_upwards [ae_mem hX] with y hy`. Rewrite using `[norm_smul, mul_comm]`. Conclude with `mul_le_mul_of_nonneg_right (hM _ (unitary_group_mul_mem (unitary_group_mul_mem hx hg) hy)) (norm_nonneg _)`. Establish `hint : Integrable (Function.uncurry f) (X.μG.prod X.μG)`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[integrable_prod_iff hmeas]`. Prove the components needed by the constructor for the conclusion. Use `filter_upwards [ae_mem hX] with g hg`. Use `(integrable_F hX hχ he hx hg).smul (X.e (Matrix.of g))` as an intermediate fact. Use `this.congr (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.uncurry, hfdef, Pi.smul_apply, smul_smul]`. Use `Integrable.mono' (he.norm.mul_const (M * ∫ y, ‖X.e (Matrix.of y)‖ ∂X.μG)) hmeas.norm.integral_prod_right' ?_ filter_upwards [ae_mem hX] with g hg` and prove the remaining obligations. Establish `e1 : ∀ y, ‖Function.uncurry f (g, y)‖ = ‖X.e (Matrix.of g)‖ * ‖X.E2 (Matrix.of g) (Matrix.of y) • X.Φ B χ (x * Matrix.of y)‖`. Introduce `y`. Simplify using `only [Function.uncurry, hfdef, mul_smul, norm_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [e1]`. Rewrite using `[integral_const_mul, Real.norm_eq_abs, abs_of_nonneg (mul_nonneg (norm_nonneg _) (integral_nonneg fun y => norm_nonneg _))]`. Conclude with `mul_le_mul_of_nonneg_left (hbound _ hg) (norm_nonneg _)`. Establish `s1 : rconv X.μG X.e (X.Wf B χ) x = ∫ g, ∫ y, f g y ∂X.μG ∂X.μG`. Unfold `rconv`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [ae_mem hX] with g hg`. Establish `: X.Wf B χ (x * Matrix.of g) = ∫ y, X.E2 (Matrix.of g) (Matrix.of y) • X.Φ B χ (x * Matrix.of y) ∂X.μG`. Rewrite using `[integral_F hX hχ hx hg]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, ← integral_smul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only [hfdef, mul_smul]`. Rewrite using `[s1, integral_integral_swap hint]`. Unfold `Wf rconv`.
-
-Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only [hfdef]`. Rewrite using `[integral_smul_const, idempotent_convolution_self hf]`.
+A detailed English derivation is pending.
 -/
 theorem idem_of (hX : X.Hyp) {B : X.H → X.Vp} (he : X.ConvolutionKernelIntegrable) (hf : X.EFix) : X.IdemStep B := by
   intro χ hχ x hx

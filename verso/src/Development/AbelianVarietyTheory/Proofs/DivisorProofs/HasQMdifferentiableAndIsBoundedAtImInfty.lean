@@ -10,7 +10,7 @@ namespace GlobalTheory.QFam
 open scoped UpperHalfPlane MatrixGroups ModularForm Manifold BigOperators in
 
 /- English proof (translation)
-Establish `h' : _root_.GlobalTheory.QFam.HasQ N f (fun n => PowerSeries.coeff n (PowerSeries.mk a))`. Simplify `h` using `only [PowerSeries.coeff_mk]`. Conclude with `((_root_.GlobalTheory.QFam.hasQ_coeff_iff_hasQExpansion N f _).1 h').mdifferentiable (by exact_mod_cast hN)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.QFam.HasQ.mdifferentiable {N : ℕ} {f : ℍ → ℂ} {a : ℕ → ℂ} (hN : 0 < N)
     (h : _root_.GlobalTheory.QFam.HasQ N f a) :
@@ -20,7 +20,7 @@ theorem _root_.GlobalTheory.QFam.HasQ.mdifferentiable {N : ℕ} {f : ℍ → ℂ
   exact ((_root_.GlobalTheory.QFam.hasQ_coeff_iff_hasQExpansion N f _).1 h').mdifferentiable (by exact_mod_cast hN)
 
 /- English proof (translation)
-The claim follows from `(hasQ_powerSeries_bridge.1 N f a |>.1 h).isBoundedAtImInfty (Nat.cast_pos.mpr hN)`.
+A detailed English derivation is pending.
 -/
 theorem HasQ.isBoundedAtImInfty {N : ℕ} {f : ℍ → ℂ} {a : ℕ → ℂ} (hN : 0 < N) (h : HasQ N f a) :
     UpperHalfPlane.IsBoundedAtImInfty f :=
@@ -29,9 +29,9 @@ theorem HasQ.isBoundedAtImInfty {N : ℕ} {f : ℍ → ℂ} {a : ℕ → ℂ} (h
 open scoped UpperHalfPlane MatrixGroups ModularForm Manifold BigOperators in
 
 /- English proof (translation)
-Introduce `N f a hN h`. Establish `h' : _root_.GlobalTheory.QFam.HasQ N f (fun n => PowerSeries.coeff n (PowerSeries.mk a))`. Simplify `h` using `only [PowerSeries.coeff_mk]`. Establish `hq` using `(_root_.GlobalTheory.QFam.hasQ_coeff_iff_hasQExpansion N f _).1 h'`. Establish `hpos : (0 : ℝ) < N` using `by exact_mod_cast hN`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨hq.mdifferentiable hpos, hq.isBoundedAtImInfty hpos⟩`.
+Supply the required witnesses or components.
 -/
 theorem _root_.GlobalTheory.QFam.hasQ_mdifferentiable_and_isBoundedAtImInfty :
     ∀ (N : ℕ) (f : ℍ → ℂ) (a : ℕ → ℂ), 0 < N → _root_.GlobalTheory.QFam.HasQ N f a →

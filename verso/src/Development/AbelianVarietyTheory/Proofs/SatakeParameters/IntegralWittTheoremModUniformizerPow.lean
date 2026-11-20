@@ -14,7 +14,7 @@ open Matrix GlobalTheory.Hk3.IntWitt
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))]
 
 /- English proof (translation)
-Use `show Valued.v ϖ ≤ 1`. Rewrite using `[hU.2.2.2.1]`. Conclude with `(by decide : (Multiplicative.ofAdd (-1 : ℤ)) ≤ 1)` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pi_int {ϖ : L} {σ : L →+* L} {q : ℕ} (hU : Formalism.UG.IsUnramInv ϖ σ q) : ϖ ∈ Formalism.UG.intL L := by
   show Valued.v ϖ ≤ 1
@@ -22,7 +22,7 @@ theorem pi_int {ϖ : L} {σ : L →+* L} {q : ℕ} (hU : Formalism.UG.IsUnramInv
   exact_mod_cast (by decide : (Multiplicative.ofAdd (-1 : ℤ)) ≤ 1)
 
 /- English proof (translation)
-Take `⟨g0, hg0⟩` from `hh`. Rewrite using `[← hg0]`. Conclude with `((g0 : Matrix (Fin n) (Fin n) (Formalism.UG.intL L)) r s).2`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glint_entry {n : ℕ} {h : GL (Fin n) L} (hh : h ∈ Formalism.UG.GLint (Fin n) (Formalism.UG.intL L)) (r s : Fin n) :
     (h : Matrix (Fin n) (Fin n) L) r s ∈ Formalism.UG.intL L := by
@@ -30,7 +30,7 @@ theorem glint_entry {n : ℕ} {h : GL (Fin n) L} (hh : h ∈ Formalism.UG.GLint 
   rw [← hg0]; exact ((g0 : Matrix (Fin n) (Fin n) (Formalism.UG.intL L)) r s).2
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `Subring.sum_mem _ fun s _ => (Formalism.UG.intL L).mul_mem (hM r s) (hv s)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mulVec_int {n : ℕ} {M : Matrix (Fin n) (Fin n) L} (hM : ∀ r s, M r s ∈ Formalism.UG.intL L)
     {v : Fin n → L} (hv : ∀ r, v r ∈ Formalism.UG.intL L) (r : Fin n) : (M *ᵥ v) r ∈ Formalism.UG.intL L := by
@@ -38,7 +38,7 @@ theorem mulVec_int {n : ℕ} {M : Matrix (Fin n) (Fin n) L} (hM : ∀ r s, M r s
   exact Subring.sum_mem _ fun s _ => (Formalism.UG.intL L).mul_mem (hM r s) (hv s)
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct]`. Use `dvdPow_sum _ _ fun s _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Conclude with `dvdPow_mul_int (hM r s) (hv s)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dvdPow_mulVec {ϖ : L} {k : ℕ} {n : ℕ} {M : Matrix (Fin n) (Fin n) L} (hM : ∀ r s, DvdPow ϖ k (M r s))
     {v : Fin n → L} (hv : ∀ r, v r ∈ Formalism.UG.intL L) (r : Fin n) : DvdPow ϖ k ((M *ᵥ v) r) := by
@@ -47,16 +47,16 @@ theorem dvdPow_mulVec {ϖ : L} {k : ℕ} {n : ℕ} {M : Matrix (Fin n) (Fin n) L
   rw [mul_comm]; exact dvdPow_mul_int (hM r s) (hv s)
 
 /- English proof (translation)
-Simplify using `[Formalism.UG.hform, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_eq_dot (σ : L →+* L) {n : ℕ} (J : Matrix (Fin n) (Fin n) L) (x y : Fin n → L) :
     Formalism.UG.hform σ J x y = (fun i => σ (x i)) ⬝ᵥ (J *ᵥ y) := by
   simp [Formalism.UG.hform, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Establish `hu : Formalism.UG.cT σ ((h : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * J * ((h : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = J` using `h.2`. Rewrite using `[hform_eq_dot, hform_eq_dot]`. Use `set H := ((h : GL (Fin n) L) : Matrix (Fin n) (Fin n) L)`. Establish `e1 : (fun i => σ ((H *ᵥ x) i)) = (H.map σ) *ᵥ (fun i => σ (x i))`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `RingHom.map_mulVec σ H x i`. Rewrite using `[e1, ← Matrix.vecMul_transpose, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`. Use `congr 1`. Conclude with `congrArg (· *ᵥ y) hu`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem hform_unitary (σ : L →+* L) {n : ℕ} (J : Matrix (Fin n) (Fin n) L) (h : Formalism.UG.UJ σ J) (x y : Fin n → L) :
     Formalism.UG.hform σ J (((h : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) *ᵥ x)
@@ -79,7 +79,7 @@ open Matrix GlobalTheory.Hk3.IntWitt
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))]
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `dvdPow_sum _ _ fun s _ => dvdPow_mul_int (hv s) (hM r s)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dvdPow_intMulVec {ϖ : L} {k : ℕ} {n : ℕ} {M : Matrix (Fin n) (Fin n) L} (hM : ∀ r s, M r s ∈ Formalism.UG.intL L)
     {v : Fin n → L} (hv : ∀ r, DvdPow ϖ k (v r)) (r : Fin n) : DvdPow ϖ k ((M *ᵥ v) r) := by
@@ -87,11 +87,9 @@ theorem dvdPow_intMulVec {ϖ : L} {k : ℕ} {n : ℕ} {M : Matrix (Fin n) (Fin n
   exact dvdPow_sum _ _ fun s _ => dvdPow_mul_int (hv s) (hM r s)
 
 /- English proof (translation)
-Introduce `d hd hs i`. Use `hz d hd (fun r => ?_) i` and prove the remaining obligations. Use `set w : Fin n → L := ∑ j, d j • z j with hw`. Establish `e1 : ∀ s, ((h : Matrix (Fin n) (Fin n) L) *ᵥ w) s = ∑ j, d j * ((h : Matrix (Fin n) (Fin n) L) *ᵥ z j) s`. Introduce `s`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[hw, Matrix.mulVec_sum, Matrix.mulVec_smul, Finset.sum_apply]`. Establish `e2 : ∑ j, d j * z j r = (((h⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) *ᵥ ((h : Matrix (Fin n) (Fin n) L) *ᵥ w)) r`. Rewrite using `[Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Simplify using `[hw, Finset.sum_apply]`. Rewrite using `[e2]`.
-
-Apply the tactic sequence `exact dvdPow_intMulVec (glint_entry ((Formalism.UG.GLint _ _).inv_mem hh)) (fun s => by rw [e1]; exact hs s) r`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem indepMod_mulVec {ϖ : L} {ι : Type} [Fintype ι] {n : ℕ} {h : GL (Fin n) L}
     (hh : h ∈ Formalism.UG.GLint (Fin n) (Formalism.UG.intL L)) {z : ι → Fin n → L} (hz : IndepMod ϖ z) :
@@ -109,13 +107,11 @@ theorem indepMod_mulVec {ϖ : L} {ι : Type} [Fintype ι] {n : ℕ} {h : GL (Fin
   exact dvdPow_intMulVec (glint_entry ((Formalism.UG.GLint _ _).inv_mem hh)) (fun s => by rw [e1]; exact hs s) r
 
 /- English proof (translation)
-Introduce `d hd hs i`. Set `d' : ι → L` to `fun j => if hj : p j then d ⟨j, hj⟩ else 0`. Establish `h1 : ∀ j, d' j ∈ Formalism.UG.intL L`. Introduce `j`. Distinguish the cases in `hj : p j`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [d', dif_pos hj]`. Conclude with `hd _`. Simplify using `only [d', dif_neg hj]`. Conclude with `(Formalism.UG.intL L).zero_mem`. Establish `h2 : ∀ r, ∑ j, d' j * z j r = ∑ j : {i // p i}, d j * z j.1 r`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce `r`. Rewrite using `[← Fintype.sum_subtype_add_sum_subtype p (fun j => d' j * z j r)]`. Establish `a1 : ∑ j : {i // ¬ p i}, d' j.1 * z j.1 r = 0` using `Finset.sum_eq_zero fun j _ => by simp [d', dif_neg j.2]`. Rewrite using `[a1, add_zero]`. Conclude with `Finset.sum_congr rfl fun j _ => by simp [d', dif_pos j.2]`.
-
-Use `hz d' h1 (fun r => by rw [h2]; exact hs r) i.1` as an intermediate fact. Simplify `this` using `[d', dif_pos i.2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem indepMod_sub {ϖ : L} {ι : Type} [Fintype ι] {n : ℕ} {z : ι → Fin n → L} (hz : IndepMod ϖ z)
     (p : ι → Prop) [DecidablePred p] : IndepMod ϖ (fun i : {i // p i} => z i.1) := by
@@ -142,23 +138,21 @@ namespace GlobalTheory.Hk3.IntWittMod
 open Matrix GlobalTheory.Hk3.IntWitt
 
 /- English proof (translation)
-Introduce `L _ _ _ ϖ σ q hU hq n' JT hJT hJh ι _ a z z' ha hz hz' hiz hiz' hG`. Establish `hϖ` using `pi_int hU`. Establish `key : ∀ k, 1 ≤ k → ∃ h : Formalism.UG.UJ σ (JT : Matrix (Fin n') (Fin n') L), (h : GL (Fin n') L) ∈ Formalism.UG.GLint (Fin n') (Formalism.UG.intL L) ∧ ∀ i r, DvdPow ϖ (min (a i) k) ((((h : GL (Fin n') L) : Matrix (Fin n') (Fin n') L) *ᵥ z i) r - z' i r)`. Introduce `k hk`. Proceed by induction on `k, hk using Nat.le_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `base`. Take `⟨h, hh, hc⟩` from `GlobalTheory.T.integral_witt_unitary_mod_uniformizer L ϖ σ q hU hq n' JT hJT hJh ι z z' hz hz' hiz hiz' (fun i j => dvdPow_mono hϖ (le_min (ha i) (ha j)) (hG i j))`. Use `⟨h, hh, fun i r => ?_⟩` and prove the remaining obligations. Rewrite using `[min_eq_right (ha i)]`. Conclude with `hc i r`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `succ k hk ih`. Take `⟨h, hh, hc⟩` from `ih`. Apply the tactic sequence `have hHint := glint_entry hh`. Take `⟨g, hg, hg1, hgc⟩` from `GlobalTheory.T.unitaryGroup_hensel_step_families L ϖ σ q hU hq n' JT hJT hJh {i // k < a i} (fun i => ((h : GL (Fin n') L) : Matrix (Fin n') (Fin n') L) *ᵥ z i.1) (fun i => z' i.1) k hk (fun i r => mulVec_int hHint (hz i.1) r) (fun i r => hz' i.1 r) (indepMod_sub (indepMod_mulVec …`. Establish `h0` using `hc i.1 r`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h0` using `[min_eq_right i.2.le]`. Establish `h1` using `dvdPow_neg h0`. Rewrite using `[neg_sub] at h1)` and apply the resulting hypothesis. Use the proof step `(fun i j => by`. Simplify using `only [hform_unitary]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `dvdPow_mono hϖ (le_min i.2 j.2) (hG i.1 j.1))`. Use `⟨g * h, (Formalism.UG.GLint _ _).mul_mem hg hh, fun i r => ?_⟩` and prove the remaining obligations. Establish `e : (((g * h : Formalism.UG.UJ σ (JT : Matrix (Fin n') (Fin n') L)) : GL (Fin n') L) : Matrix (Fin n') (Fin n') L) *ᵥ z i = ((g : GL (Fin n') L) : Matrix (Fin n') (Fin n') L) *ᵥ (((h : GL (Fin n') L) : Matrix (Fin n') (Fin n') L) *ᵥ z i)`. Simplify using `[Matrix.mulVec_mulVec]`. Rewrite using `[e]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hki : k < a i`. Rewrite using `[min_eq_right (Nat.succ_le_of_lt hki)]`. Conclude with `hgc ⟨i, hki⟩ r`. Use `push_neg at hki`. Rewrite using `[min_eq_left (by omega)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `hc i r`. Rewrite `h2` using `[min_eq_left hki]`. Establish `h1 : DvdPow ϖ (a i) (((((g : GL (Fin n') L) : Matrix (Fin n') (Fin n') L) - 1) *ᵥ (((h : GL (Fin n') L) : Matrix (Fin n') (Fin n') L) *ᵥ z i)) r)` using `dvdPow_mono hϖ hki (dvdPow_mulVec (fun r s => by simpa [Matrix.sub_apply] using hg1 r s) (mulVec_int hHint (hz i)) r)`. Establish `e2 : (((g : GL (Fin n') L) : Matrix (Fin n') (Fin n') L) *ᵥ (((h : GL (Fin n') L) : Matrix (Fin n') (Fin n') L) *ᵥ z i)) r - z' i r = (((((g : GL (Fin n') L) : Matrix (Fin n') (Fin n') L) - 1) *ᵥ (((h : GL (Fin n') L) : Matrix (Fin n') (Fin n') L) *ᵥ z i)) r) + ((((h : GL (Fin n' …`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, Pi.sub_apply]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2]`. Conclude with `dvdPow_add h1 h2`. Take `⟨h, hh, hc⟩` from `key (1 + ∑ i, a i) (by omega)`. Use `⟨h, hh, fun i r => ?_⟩` and prove the remaining obligations.
-
-Establish `h0` using `hc i r`. Establish `hle : a i ≤ ∑ j, a j` using `Finset.single_le_sum (fun j _ => Nat.zero_le (a j)) (Finset.mem_univ i)`. Rewrite `h0` using `[min_eq_left (by omega)]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem witt_mod_pow : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L] (ϖ : L) (σ : L →+* L) (q : ℕ),
     Formalism.UG.IsUnramInv ϖ σ q → Odd q → ∀ (n' : ℕ) (JT : GL (Fin n') L),

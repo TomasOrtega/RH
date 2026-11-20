@@ -17,9 +17,9 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
   {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX}
 
 /- English proof (translation)
-Establish `H` using `W.Q.charW.base.lev`. Set `M` to `(pk W).toLevCh`. Set `μ` to `W.P.A3.A.μ0`. Set `M' : LevCh D Unit` to `{ M with xiH := fun _ => M.xiH μ, xi := fun _ => M.xi μ, Q := fun _ => M.Q μ, xiR := fun _ => M.xiR μ }`. Take `⟨h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12, h13, h14, h15, h16, h17, h18, h19⟩` from `H`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Conclude with `GlobalTheory.SeeSaw.ComCols.isTypePlaces_of_levCh (L := M') ⟨h1, h2, fun _ => h3 _, fun _ _ _ => rfl, h5, fun _ => h6 _, fun _ => h7 _, fun _ => h8 _, h9, fun _ => h10 _, fun _ => h11 _, fun p hp => (h12 p hp).imp fun _ e _ => e _, fun _ => h13 _, h14, fun _ => h15 _, h16, h17, h …`.
+A detailed English derivation is pending.
 -/
 theorem pg_isTypePlaces (W : RealPack ex) : GlobalTheory.Core.Mi.IsTypePlaces (pk W).Pg := by
   have H := W.Q.charW.base.lev
@@ -34,7 +34,7 @@ theorem pg_isTypePlaces (W : RealPack ex) : GlobalTheory.Core.Mi.IsTypePlaces (p
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.BaseChain.stageY_is W hP 0 hm`. Conclude with `⟨h.rank, h.sigOK, h.sig, h.par, h.selfDual, h.frame, h.base, ⟨r_le_Y 0, fun _ => 1, rfl⟩, h.haar, h.fund⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem stZero_is (W : RealPack ex) (hP : PkHyp W) (hm : 0 < D.R.m) : (stZero W).st.Is (GlobalTheory.BaseChain.com W) 0 := by
   have h := GlobalTheory.BaseChain.stageY_is W hP 0 hm
@@ -43,11 +43,11 @@ theorem stZero_is (W : RealPack ex) (hP : PkHyp W) (hm : 0 < D.R.m) : (stZero W)
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Use `⟨GlobalTheory.BaseChain.com_is W hP, rfl, stZero_is W hP hm, ?_, pg_isTypePlaces W, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `hv.b 0`. Rewrite `h` using `[ht.b 0]`. Conclude with `h`. Introduce `PP`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨i, rfl⟩` from `pl.surjective PP`. Conclude with `⟨(hR.idem i).1, (hR.idem i).2, fun a ha => hR.frame i 0 a ha⟩`. Introduce `g`. Use `(hR.lev g).1.trans ⟨fun h PP => ?_, fun h i => h (pl i)⟩` and prove the remaining obligations. Take `⟨i, rfl⟩` from `pl.surjective PP`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h i`. Introduce `g x hx`. Establish `h` using `(hR.lev g.1).2 g.2 (fun i => x (pl i)) (fun i => hx (pl i))`. Conclude with `h.trans (Equiv.prod_comp pl (fun PP => (G PP).S.P.lam (x PP)))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem bot_of_read (W : RealPack ex) (hP : PkHyp W) (hm : 0 < D.R.m) {u : D.what₂.Word} (f : FamCh W u) (v : VCom f.c) (hv : v.Is)
     (ht : VTie f v) {n : ℕ} (G : (pk W).Pg → GLoc v) (pl : Fin n ≃ (pk W).Pg) (hR : GRead f (fun i => G (pl i)) pl) :
@@ -70,7 +70,7 @@ theorem bot_of_read (W : RealPack ex) (hP : PkHyp W) (hm : 0 < D.R.m) {u : D.wha
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Yd cX ex W hP u f B k _ _ _ _ ι v o n G pl h`. Establish `hm : 0 < D.R.m` using `by have := D.R.two_le_m; omega`. Establish `e : (fun i => G (pl.symm (pl i))) = G` using `funext fun i => by rw [Equiv.symm_apply_apply]`. Establish `hR : GRead f (fun i => G (pl.symm (pl i))) pl` using `by rw [e]; exact h.read`. Conclude with `bot_of_read W hP hm f v h.vis h.tie (fun PP => G (pl.symm PP)) pl hR`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem bot_of_placedBy : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex), PkHyp W → ∀ (u : D.what₂.Word) (f : FamCh W u) (B : SBes W.S.X W.Q.instEq u W.Q.Rl.ψ (D.sp.X 0)), ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : Type) (v : VCom f.c) (o : TDat f.c k ι) (n : ℕ) (G : Fin n → GLoc v) (pl : Fin n ≃ (pk W).Pg), GlobalTheory.LevZero.PlacedBy f B v o G pl → GlobalTheory.LevZero.Bot (c := f.c) (GlobalTheory.BaseChain.com W) (GlobalTheory.LevZero.stZero W) (f.g.b 0) (fun PP => G (pl.symm PP)) := by
   intro D L hT Gi Gl Kc Yd cX ex W hP u f B k _ _ _ _ ι v o n G pl h

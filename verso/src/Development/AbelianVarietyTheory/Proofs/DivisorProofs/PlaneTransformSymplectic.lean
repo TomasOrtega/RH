@@ -12,7 +12,7 @@ namespace GlobalTheory.ThK.PlaneForm
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Establish `h` using `LinearMap.BilinForm.apply_dualBasis_left (B := Algebra.traceForm F E) (traceForm_nondegenerate F E) (bE F E) j i`. Rewrite `h` using `[Algebra.traceForm_apply]`. Rewrite using `[mul_comm]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_bE_bE' (i j : Fin (Module.finrank F E)) :
     Algebra.trace F E (bE F E i * bE' F E j) = if i = j then 1 else 0 := by
@@ -22,9 +22,9 @@ theorem trace_bE_bE' (i j : Fin (Module.finrank F E)) :
   exact h
 
 /- English proof (translation)
-Use `conv_rhs => rw [← (bA F E).sum_repr a, ← (bA' F E).sum_repr b]`. Rewrite using `[Finset.sum_mul_sum, map_sum]`. Establish `hb : ∀ i j, Algebra.trace (AF F) (AE F E) (bA F E i * bA' F E j) = if i = j then 1 else 0`. Introduce `i j`. Rewrite using `[bA, bA', Algebra.TensorProduct.basis_apply, Algebra.TensorProduct.basis_apply, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `GlobalTheory.VacIndic.trace_inclR (F := F) (E := E) (bE F E i * bE' F E j)` as an intermediate fact. Rewrite `this` using `[trace_bE_bE']`. Apply the tactic sequence `split_ifs at this ⊢ <;> simpa [inclR] using this`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [map_sum, smul_mul_smul_comm, map_smul, hb, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_repr_mul (a b : AE F E) :
     ∑ i, (bA F E).repr a i * (bA' F E).repr b i = Algebra.trace (AF F) (AE F E) (a * b) := by
@@ -42,7 +42,7 @@ theorem sum_repr_mul (a b : AE F E) :
     Finset.sum_ite_eq, Finset.mem_univ, if_true]
 
 /- English proof (translation)
-Use extensionality with `i (j | t)`. Both sides reduce to the same expression. Apply the tactic sequence `fin_cases t <;> rfl`.
+By extensionality, compare the relevant components. Both sides reduce to the same expression. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem planeMat_eq_frame {n n₁ : ℕ} (H : Plane E n n₁) : planeMat H = GlobalTheory.ThK.Adapt.frame H := by
   ext i (j | t)
@@ -50,9 +50,9 @@ theorem planeMat_eq_frame {n n₁ : ℕ} (H : Plane E n n₁) : planeMat H = Glo
   · fin_cases t <;> rfl
 
 /- English proof (translation)
-Take `⟨Q, h1, -, -⟩` from `GlobalTheory.ThK.Adapt.exists_frame_inv hH hL`. Establish `hr : n₁ + 2 = n` using `hH.rank.symm`. Establish `hM : (planeMat H).submatrix id (finSumFinEquiv.trans (finCongr hr)).symm * Q.submatrix (finSumFinEquiv.trans (finCongr hr)).symm id = 1`. Rewrite using `[Matrix.submatrix_mul_equiv _ _ _ (finSumFinEquiv.trans (finCongr hr)).symm, planeMat_eq_frame, h1]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hC : planeCoef H = Q`. Rewrite using `[planeCoef, dif_pos hr, Matrix.inv_eq_right_inv hM]`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Rewrite using `[hC, planeMat_eq_frame, h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem planeMat_mul_planeCoef {σ : E →ₐ[F] E} {B : Base F E} {n n₁ i₀ i₁ : ℕ} {Y : Spc F E n} {Y₁ : Spc F E n₁}
     {H : Plane E n n₁} (hH : H.IsAdapted σ B Y Y₁ i₀ i₁) (hL : Y.L.IsLattice E) : planeMat H * planeCoef H = 1 := by
@@ -69,7 +69,7 @@ theorem planeMat_mul_planeCoef {σ : E →ₐ[F] E} {B : Base F E} {n n₁ i₀ 
   rw [hC, planeMat_eq_frame, h1]
 
 /- English proof (translation)
-Simplify using `only [pairI, sI, tI, hGX, hGW, Fintype.sum_sum_type, Fin.sum_univ_two, posS, posT, incM, Matrix.map_apply, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.zero_apply, Matrix.of_apply, Matrix.cons_val', Matrix.cons …`. Simplify using `only [map_mul, map_zero, map_one, map_neg, zero_mul, mul_zero, one_mul, mul_one, neg_mul, Finset.sum_const_zero, add_zero, zero_add, Finset.mul_sum, Finset.sum_neg_distrib, mul_neg, Finset.sum_add_distrib]`. Simplify using `only [neg_zero, zero_add, add_zero, mul_neg, neg_neg, Finset.mul_sum, Finset.sum_neg_distrib, mul_assoc, neg_add]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sum_sI_mul_pairI (σ : E →ₐ[F] E) {n d n₁ d₁ : ℕ} (X : Spc F E n) (W : Spc F E d) (X₁ : Spc F E n₁) (W₁ : Spc F E d₁)
     (H : Plane E n n₁) (H' : Plane E d d₁)
@@ -88,7 +88,7 @@ theorem sum_sI_mul_pairI (σ : E →ₐ[F] E) {n d n₁ d₁ : ℕ} (X : Spc F E
   ring
 
 /- English proof (translation)
-Establish `he : ∀ a b, (Pᵀ * J * P.map σ) a b = ∑ i, ∑ k, P i a * J i k * σ (P k b)` using `fun a b => by`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Conclude with `Finset.sum_comm`. Rewrite using `[he, he, GlobalTheory.ThK.Adapt.conj_pair σ hσ hJ]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gram_conj (σ : E →ₐ[F] E) (hσ : ∀ x : E, σ (σ x) = x) {m : ℕ} {κ : Type} [Fintype κ] {J : Matrix (Fin m) (Fin m) E}
     {η : E} (hJ : ∀ i j, σ (J j i) = η * J i j) (P : Matrix (Fin m) κ E) (i j : κ) :
@@ -99,7 +99,7 @@ theorem gram_conj (σ : E →ₐ[F] E) (hσ : ∀ x : E, σ (σ x) = x) {m : ℕ
   rw [he, he, GlobalTheory.ThK.Adapt.conj_pair σ hσ hJ]
 
 /- English proof (translation)
-Use extensionality with `(i | i) (j | j)`. Both sides reduce to the same expression. Simplify using `[incM]`. Simplify using `[incM]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [incM]`.
+By extensionality, compare the relevant components. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem incM_plane {α : Type} [Fintype α] (A : Matrix α α E) (η : E) :
     incM F (Matrix.fromBlocks A 0 0 !![0, 1; η, 0]) =
@@ -111,29 +111,29 @@ theorem incM_plane {α : Type} [Fintype α] (A : Matrix α α E) (η : E) :
   · fin_cases i <;> fin_cases j <;> simp [incM]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d n₁ d₁ r s r' s' i₀ i₁ j₀ j₁ X W X₁ W₁ H H' hB hX hW hH hH' w w'`. Establish `hσ : ∀ x : E, σ (σ x) = x` using `GlobalTheory.ThK.Adapt.conj_conj hB`. Establish `hc : ∀ z, cA σ (cA σ z) = z` using `GlobalTheory.ThK.Adapt.cA_cA hB`. Establish `hP` using `planeMat_mul_planeCoef hH hX.lat`. Establish `hQ` using `planeMat_mul_planeCoef hH' hW.lat`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : incM F (1 : Matrix (Fin n) (Fin n) E) = 1` using `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `h1' : incM F (1 : Matrix (Fin d) (Fin d) E) = 1` using `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `hrec : ∀ z, z = incM F (planeMat H) * coefLin (F` using `F) H H' z * (incM F (planeMat H'))ᵀ := fun z => by`. Simplify using `only [coefLin, LinearMap.coe_mk, AddHom.coe_mk]`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, ← GlobalTheory.ThK.Adapt.incM_mul, hP, h1, Matrix.one_mul, Matrix.mul_assoc, ← Matrix.transpose_mul, ← GlobalTheory.ThK.Adapt.incM_mul, hQ, h1', Matrix.transpose_one, Matrix.mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hg : ∀ {m m₁ : ℕ} (J : Matrix (Fin m) (Fin m) E) (P : Matrix (Fin m) (Fin m₁ ⊕ Fin 2) E), (incM F P)ᵀ * incM F J * (incM F P).map (cA σ) = incM F (Pᵀ * J * P.map σ)`. Introduce `m m₁ J P`. Rewrite using `[GlobalTheory.ThK.Adapt.incM_mul, GlobalTheory.ThK.Adapt.incM_mul]`. Both sides reduce to the same expression. Establish `hT : ∀ z z', hTens (cA σ) (incM F X.J) (incM F W.J) z z' = hTens (cA σ) (incM F (planeGram σ X.J H)) (incM F (planeGram σ W.J H')) (coefLin (F` using `F) H H' z) (coefLin (F := F) H H' z') := fun z z' => by conv_lhs => rw [hrec z, hrec z']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `(GlobalTheory.ThK.Adapt.hTens_mul (cA σ) _ _ _ _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[hg, hg]`. Both sides reduce to the same expression. Establish `hGX : planeGram σ X.J H = Matrix.fromBlocks X₁.J 0 0 !![0, 1; 1, 0]`. Rewrite using `[planeGram, planeMat_eq_frame]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.ThK.Adapt.frame_gram hB hH (one_mul 1) (fun i j => by rw [hX.herm, one_mul])`. Establish `hGW : planeGram σ W.J H' = Matrix.fromBlocks W₁.J 0 0 !![0, 1; -1, 0]`. Rewrite using `[planeGram, planeMat_eq_frame]`. Conclude with `GlobalTheory.ThK.Adapt.frame_gram hB hH' (by norm_num) (fun i j => by rw [hW.skew]; ring)`. Establish `hsX : ∀ i j, cA σ (incM F X₁.J j i) = 1 * incM F X₁.J i j` using `fun i j => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `gram_conj σ hσ (J := X.J) (η := 1) (fun i j => by rw [hX.herm, one_mul]) (planeMat H) (.inl i) (.inl j)` as an intermediate fact. Rewrite `this` using `[← planeGram, hGX]`. Simplify using `only [Matrix.fromBlocks_apply₁₁] at this`. Simplify using `only [incM, Matrix.map_apply, GlobalTheory.VacIndic.cA_inclR, this, one_mul]`. Establish `hsW : ∀ i j, cA σ (incM F (planeGram σ W.J H') j i) = -1 * incM F (planeGram σ W.J H') i j` using `fun i j => by`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `gram_conj σ hσ (J := W.J) (η := -1) (fun i j => by rw [hW.skew]; ring) (planeMat H') i j` as an intermediate fact. Rewrite `this` using `[← planeGram]`. Simplify using `only [incM, Matrix.map_apply, GlobalTheory.VacIndic.cA_inclR, this, map_mul, map_neg, map_one]`. Establish `hpq : ∀ z z', (planeT σ X W H H' z).1.1 ⬝ᵥ (planeT σ X W H H' z').1.2 = Algebra.trace (AF F) (AE F E) (∑ k, sI H H' z k * pairI σ X W H H' z' k)`. Introduce `z z'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [planeT, LinearMap.coe_mk, AddHom.coe_mk, dotProduct, Fintype.sum_prod_type, sum_repr_mul, map_sum]`. Establish `hR : ∀ z z' : Matrix (Fin n₁) (Fin d₁ ⊕ Fin 2) (AE F E), hTens (cA σ) (incM F X₁.J) (incM F (planeGram σ W.J H')) z z' = -1 * ∑ i, ∑ k, z i (.inr 1) * incM F X₁.J i k * cA σ (z' k (.inr 0)) + ∑ i, ∑ k, z i (.inr 0) * incM F X₁.J i k * cA σ (z' k (.inr 1)) + hTens (cA σ) (incM F X …`. Introduce `z z'`. Rewrite using `[hGW, incM_plane, GlobalTheory.ThK.Adapt.hTens_plane_right, map_neg, map_one]`. Establish `hL : ∀ z z', hTens (cA σ) (incM F (planeGram σ X.J H)) (incM F (planeGram σ W.J H')) z z' = ∑ j, ∑ l, z (.inr 1) j * incM F (planeGram σ W.J H') j l * cA σ (z' (.inr 0) l) + ∑ j, ∑ l, z (.inr 0) j * incM F (planeGram σ W.J H') j l * cA σ (z' (.inr 1) l) + hTens (cA σ) (incM F X₁. …`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `z z'`. Rewrite using `[hGX, incM_plane, GlobalTheory.ThK.Adapt.hTens_plane_left, map_one, one_mul]`. Establish `hkey : ∀ z z' : Matrix (Fin n₁ ⊕ Fin 2) (Fin d₁ ⊕ Fin 2) (AE F E), cA σ (∑ j, ∑ l, z (.inr 0) j * incM F (planeGram σ W.J H') j l * cA σ (z' (.inr 1) l) + ∑ i, ∑ k, z (.inl i) (.inr 0) * incM F X₁.J i k * cA σ (z' (.inl k) (.inr 1))) = -((∑ j, ∑ l, z' (.inr 1) j * incM F (planeGr …`. Introduce `z z'`. Establish `e1` using `GlobalTheory.ThK.Adapt.conj_pair (cA σ) hc hsW (fun j => z (.inr 0) j) (fun j => z' (.inr 1) j)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2` using `GlobalTheory.ThK.Adapt.conj_pair (cA σ) hc hsX (fun i => z (.inl i) (.inr 0)) (fun i => z' (.inl i) (.inr 1))`. Rewrite using `[map_add, e1, e2]`. Expand and normalize the polynomial expressions, which then agree. Establish `htr` using `GlobalTheory.VacCocycle.trace_conj (R := AF F) (cA σ) hc`. Rewrite using `[hpq, hpq, sum_sI_mul_pairI σ X W X₁ W₁ H H' hGX hGW, sum_sI_mul_pairI σ X W X₁ W₁ H H' hGX hGW, ← hkey (coefLin (F := F) H H' w) (coefLin (F := F) H H' w'), htr]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `symp`. Rewrite using `[hT, hL, hR]`. Rewrite using `[← map_sub, ← map_add]`. Use `congrArg (Algebra.trace (AF F) (AE F E)) ?_` and prove the remaining obligations. Use `show _ = _ + -1 * hTens (cA σ) (incM F X₁.J) (incM F W₁.J) ((coefLin H H' w).submatrix Sum.inl Sum.inl) ((coefLin H H' w').submatrix Sum.inl Sum.inl)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hs : ∀ z : Matrix (Fin n₁ ⊕ Fin 2) (Fin d₁ ⊕ Fin 2) (AE F E), (z.submatrix Sum.inl id).submatrix id Sum.inl = z.submatrix Sum.inl Sum.inl` using `fun z => rfl`. Simplify using `only [hs, sI, Matrix.submatrix_apply, id_eq]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem form_eq : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     {n d n₁ d₁ r s r' s' i₀ i₁ j₀ j₁ : ℕ} (X : Spc F E n) (W : Spc F E d) (X₁ : Spc F E n₁) (W₁ : Spc F E d₁)

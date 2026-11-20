@@ -19,33 +19,29 @@ set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `F _ K K' _ _ _ _ j ι' _ P' hP' n hP'n hPn W hW hWn hPW`. Use `hP'.isPrime` as an intermediate fact. Introduce `W' hW'`. Use `hW'.1.isPrime` as an intermediate fact. Use `haveI hfin := (hFR F K K' j ι' P' hP' n hP'n hPn W hW hWn hPW).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h𝒲` using `FibreFinite.proof F K K' j ι' P' hP' n hP'n hPn W hW hWn hPW`. Take `⟨-, hPW', hc⟩` from `id hW'`. Substitute `hc` using the available equality. Take `⟨ρO, hρOv, hρOk, hρOr⟩` from `hRes F K' ι' P' W' hPW'`. Take `⟨ρA, hρAv, -, hρAr⟩` from `hRes F K (fun k => ι' (j k)) (contractPrime j P') _ hPW`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hLE` using `map_homFracDegZero_le j ι' W'`. Establish `hBO` using `degZeroLoc_anti P' (Set.singleton_subset_iff.mpr hW')`. Set `L` to `(homFracDegZero (contractPrime j W')).map (contractFracMap j W')`. Set `M` to `IntermediateField.extendScalars hLE`. Set `τ : degZeroLoc P' (fibrePrimes j P' (contractPrime j W')) →+* M` to `(ρO.comp (Subalgebra.inclusion hBO).toRingHom).codRestrict M (fun b => (hρOr _).mpr ⟨_, rfl⟩)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `σ : degZeroLoc (contractPrime j P') {contractPrime j W'} →+* L` to `((contractFracMap j W').toRingHom.comp ρA).codRestrict L (fun a => ⟨ρA a, (hρAr _).mpr ⟨a, rfl⟩, rfl⟩)`. Establish `hσs : Function.Surjective σ`. Introduce and unpack `⟨z, hz⟩`. Take `⟨w, hw, rfl⟩` from `hz`. Take `⟨a, rfl⟩` from `(hρAr w).mp hw`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨a, rfl⟩`. Use `letI : Algebra (degZeroLoc (contractPrime j P') {contractPrime j W'}) L := σ.toAlgebra`. Use `letI : Algebra (degZeroLoc (contractPrime j P') {contractPrime j W'}) M := ((algebraMap L M).comp σ).toAlgebra`. Use `haveI : IsScalarTower (degZeroLoc (contractPrime j P') {contractPrime j W'}) L M := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Establish `hcomp : ∀ a : degZeroLoc (contractPrime j P') {contractPrime j W'}, τ (algebraMap _ _ a) = algebraMap _ M a`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `a`. Take `⟨b, f, g, hf, hg, -, hgW, hx⟩` from `DegZeroLocQuot.proof F K (fun k => ι' (j k)) (contractPrime j P') {contractPrime j W'} (fun V hV => by rw [hV]; infer_instance) a.1 a.2`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show ρO ⟨contractFracMap j P' a, _⟩ = contractFracMap j W' (ρA a)`. Rewrite using `[hρAv a b f g hf hg (hgW _ rfl) hx, map_div₀, contractFracMap_algebraMap, contractFracMap_algebraMap]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Apply `hρOv _ _ _ _ (isMultiHomog_rename j ι' hf) (isMultiHomog_rename j ι' hg) (hgW _ rfl)` to reduce the goal to its premises. Use `show contractFracMap j P' a = _`. Rewrite using `[hx, map_div₀, contractFracMap_algebraMap, contractFracMap_algebraMap]`. Set `τA : degZeroLoc P' (fibrePrimes j P' (contractPrime j W')) →ₐ[degZeroLoc (contractPrime j P') {contractPrime j W'}] M` to `{ τ with commutes' := hcomp }`. Establish `hmem : ∀ l : L, algebraMap L M l ∈ τ.rangeS`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Introduce `l`. Take `⟨a, rfl⟩` from `hσs l`. Conclude with `⟨_, hcomp a⟩`. Set `R : Subalgebra L M` to `{ τ.rangeS with algebraMap_mem' := hmem }`. Establish `hsurj : Function.Surjective τ`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `⟨z, hz⟩`. Take `⟨y, rfl⟩` from `(hρOr z).mp hz`. Take `⟨b, hb, s, hs, ⟨t, ht, hst⟩, hys⟩` from `hLoc F K' ι' P' hP' _ h𝒲 (fun V hV => ⟨hV.1, hV.2.1⟩) W' hW' y.1 y.2`. Establish `hs0 : τ ⟨s, hs⟩ ≠ 0`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : ρO ⟨s, hBO hs⟩ * ρO ⟨t, ht⟩ = 1`. Rewrite using `[← map_mul, ← map_one ρO]`. Conclude with `congrArg ρO (Subtype.ext hst)`. Rewrite `h1` using `[show ρO ⟨s, hBO hs⟩ = 0 from congrArg Subtype.val h0, zero_mul]`. Conclude with `zero_ne_one h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hint : IsIntegral L (τ ⟨s, hs⟩)` using `((Algebra.IsIntegral.isIntegral (R := degZeroLoc (contractPrime j P') {contractPrime j W'}) (⟨s, hs⟩ : degZeroLoc P' (fibrePrimes j P' (contractPrime j W')))).map τA).tower_top`. Take `⟨c, hc⟩` from `hint.inv_mem (A := R) ⟨⟨s, hs⟩, rfl⟩`. Establish `hbys : τ ⟨b, hb⟩ = ⟨ρO y, hz⟩ * τ ⟨s, hs⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show ρO ⟨b, hBO hb⟩ = ρO y * ρO ⟨s, hBO hs⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_mul]`. Conclude with `congrArg ρO (Subtype.ext hys.symm)`. Use `⟨⟨b, hb⟩ * c, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hc, hbys, mul_inv_cancel_right₀ hs0]`. Use `⟨RingHom.ker τ, fun x => ?_, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[RingHom.mem_ker, ← ZeroMemClass.coe_eq_zero]`. Conclude with `hρOk ⟨x, hBO x.2⟩`. Set `e : (degZeroLoc P' (fibrePrimes j P' (contractPrime j W')) ⧸ RingHom.ker τ) ≃ₐ[degZeroLoc (contractPrime j P') {contractPrime j W'}] M` to `AlgEquiv.ofRingEquiv (f := RingHom.quotientKerEquivOfSurjective hsurj) (fun a => by`. Rewrite using `[← Ideal.Quotient.mk_algebraMap, RingHom.quotientKerEquivOfSurjective_apply_mk]`. Conclude with `hcomp a)`.
-
-Use `haveI : Module.Finite (degZeroLoc (contractPrime j P') {contractPrime j W'}) M := Module.Finite.of_surjective τA.toLinearMap hsurj`. Use `haveI : Module.Finite L M := Module.Finite.of_restrictScalars_finite (degZeroLoc (contractPrime j P') {contractPrime j W'}) L M`. Use `e.toLinearEquiv.length_eq.trans ?_` and prove the remaining obligations. Rewrite using `[Module.length_eq_of_surjective (R := L) hσs, Module.length_eq_finrank, relDeg, IntermediateField.relfinrank_eq_finrank_of_le hLE]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SemilocalResidueLength.proof (hRes : DegZeroLocResidue.Statement.{u})
     (hFR : SemilocalFiniteRank.Statement.{u}) (hLoc : DegZeroLocLocalize.Statement.{u}) :

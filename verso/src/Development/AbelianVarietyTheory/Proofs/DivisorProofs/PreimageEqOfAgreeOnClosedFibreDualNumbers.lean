@@ -15,17 +15,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.LogKS
 
 /- English proof (translation)
-Introduce `k _ X B h π₁ π₂ hyp W`. Establish `hpt : ∀ b : B, π₁ b = π₂ b`. Introduce `b`. Use `set x := B.fromSpecResidueField b`. Use `set φ := Spec.preimage (x ≫ h)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφ : Spec.map φ = x ≫ h` using `Spec.map_preimage _`. Establish `hinr : ∀ c : k, φ.hom (TrivSqZeroExt.inr c) = 0`. Introduce `c`. Establish `: φ.hom (TrivSqZeroExt.inr c) * φ.hom (TrivSqZeroExt.inr c) = 0`. Rewrite using `[← map_mul, TrivSqZeroExt.inr_mul_inr, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `mul_self_eq_zero.mp this`. Set `ψ : k →+* B.residueField b` to `φ.hom.comp (TrivSqZeroExt.inlHom k k)`. Establish `hψ : ψ.comp (TrivSqZeroExt.fstHom k k k).toRingHom = φ.hom`. Use `RingHom.ext fun z => ?_` and prove the remaining obligations. Use `conv_rhs => rw [← TrivSqZeroExt.inl_fst_add_inr_snd_eq z]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, hinr, add_zero]`. Both sides reduce to the same expression. Establish `hx : x ≫ h = Spec.map (CommRingCat.ofHom ψ) ≫ spMap (TrivSqZeroExt.fstHom k k k).toRingHom`. Rewrite using `[← hφ, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp, hψ]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `e` using `hyp _ x _ hx`. Take `⟨s⟩ : Nonempty (Spec (B.residueField b))` from `inferInstance`. Establish `h1 : (x ≫ π₁) s = (x ≫ π₂) s` using `by rw [e]`. Simplify `h1` using `[x]`. Apply `TopologicalSpace.Opens.ext` to reduce the goal to its premises.
-
-Use extensionality with `b`. Express the relevant statement in the definitionally equal form `π₁ b ∈ W ↔ π₂ b ∈ W`. Rewrite using `[hpt b]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem preimage_eq_of_agree_closedFibre : ∀ (k : Type) [Field k] (X B : Scheme.{0}) (h : B ⟶ Sp (DualNumber k)) (π₁ π₂ : B ⟶ X), (∀ (Z : Scheme.{0}) (x : Z ⟶ B) (y : Z ⟶ Sp k), x ≫ h = y ≫ spMap (TrivSqZeroExt.fstHom k k k).toRingHom → x ≫ π₁ = x ≫ π₂) → ∀ W : X.Opens, π₁ ⁻¹ᵁ W = π₂ ⁻¹ᵁ W := by
   intro k _ X B h π₁ π₂ hyp W

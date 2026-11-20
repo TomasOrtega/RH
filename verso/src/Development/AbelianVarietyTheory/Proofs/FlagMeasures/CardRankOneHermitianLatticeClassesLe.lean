@@ -10,7 +10,7 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E]
 
 omit [StarRing E] in
 /- English proof (translation)
-Introduce `hb`. Use `h.span_eq_top` as an intermediate fact. Rewrite `this` using `[hb]`. Simplify using `at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ne_bot_of_isLattice {L : Submodule (𝓞 E) E} (h : Submodule.IsLattice E L) : L ≠ ⊥ := by
   intro hb
@@ -26,11 +26,11 @@ noncomputable def latUnit (L : Submodule (𝓞 E) E) (h : Submodule.IsLattice E 
 
 omit [StarRing E] in
 /- English proof (translation)
-Take `⟨a, ha⟩` from `QuotientGroup.eq.mp h`. Establish `h1 : latUnit M hM = toPrincipalIdeal (𝓞 E) E a * latUnit L hL`. Rewrite using `[ha, mul_comm, mul_inv_cancel_left]`. Establish `h2 : ((latUnit M hM : (FractionalIdeal (𝓞 E)⁰ E)ˣ) : FractionalIdeal (𝓞 E)⁰ E) = FractionalIdeal.spanSingleton (𝓞 E)⁰ (a : E) * (latUnit L hL : (FractionalIdeal (𝓞 E)⁰ E)ˣ)`. Rewrite using `[h1, Units.val_mul, coe_toPrincipalIdeal]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨a, a.ne_zero, fun y => ?_⟩` and prove the remaining obligations. Establish `h3 : (a : E) * y ∈ M ↔ (a : E) * y ∈ ((latUnit M hM : (FractionalIdeal (𝓞 E)⁰ E)ˣ) : FractionalIdeal (𝓞 E)⁰ E)` using `Iff.rfl`. Rewrite using `[h3, h2, FractionalIdeal.mem_singleton_mul]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, he⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite using `[mul_left_cancel₀ a.ne_zero he]`. Conclude with `hz`. Introduce `hy`. Conclude with `⟨y, hy, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_scale {L M : Submodule (𝓞 E) E} (hL : Submodule.IsLattice E L)
     (hM : Submodule.IsLattice E M)
@@ -59,13 +59,13 @@ def idealOf (β : E) (L : Submodule (𝓞 E) E) : Submodule (𝓞 E) E :=
   Submodule.span (𝓞 E) {t | ∃ x ∈ L, ∃ y ∈ L, t = star x * β * y}
 
 /- English proof (translation)
-Take `⟨d, hd, hdL⟩ : IsFractional (𝓞 E)⁰ L` from `FractionalIdeal.isFractional_of_fg h.fg`. Establish `hd0 : (d : E) ≠ 0`. Simplify using `using nonZeroDivisors.ne_zero hd`. Establish `hs0 : star (d : E) ≠ 0` using `by simpa using hd0`. Establish `hle : idealOf β L ≤ Submodule.span (𝓞 E) {(star (d : E))⁻¹ * β * (d : E)⁻¹}`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `t ⟨x, hx, y, hy, rfl⟩`. Take `⟨p, hp⟩` from `hdL x hx`. Take `⟨q, hq⟩` from `hdL y hy`. Establish `hi : IsIntegral ℤ (star (p : E))` using `p.isIntegral_coe.map (starRingEnd E).toIntAlgHom`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `p' : 𝓞 E` to `⟨star (p : E), hi⟩`. Use `Submodule.mem_span_singleton.mpr ⟨p' * q, ?_⟩` and prove the remaining obligations. Establish `hp' : (p : E) = d * x` using `hp`. Establish `hq' : (q : E) = d * y` using `hq`. Express the relevant statement in the definitionally equal form `(star (p : E) * (q : E)) * _ = _`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hp', hq', star_mul']`. Clear the denominators using the available nonvanishing facts. Conclude with `Submodule.FG.of_le (Submodule.fg_span_singleton _) hle`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem idealOf_fg (β : E) {L : Submodule (𝓞 E) E} (h : Submodule.IsLattice E L) :
     (idealOf β L).FG := by
@@ -90,7 +90,7 @@ theorem idealOf_fg (β : E) {L : Submodule (𝓞 E) E} (h : Submodule.IsLattice 
   exact Submodule.FG.of_le (Submodule.fg_span_singleton _) hle
 
 /- English proof (translation)
-Take `⟨x, hx, hx0⟩` from `(Submodule.ne_bot_iff L).mp (ne_bot_of_isLattice h)`. Use `(Submodule.ne_bot_iff _).mpr ⟨star x * β * x, Submodule.subset_span ⟨x, hx, x, hx, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using `[hx0, hβ]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem idealOf_ne_bot {β : E} (hβ : β ≠ 0) {L : Submodule (𝓞 E) E}
     (h : Submodule.IsLattice E L) : idealOf β L ≠ ⊥ := by
@@ -99,11 +99,11 @@ theorem idealOf_ne_bot {β : E} (hβ : β ≠ 0) {L : Submodule (𝓞 E) E}
   simp [hx0, hβ]
 
 /- English proof (translation)
-Introduce `z hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨x, hx, y, hy, rfl⟩` from `hz`. Use `Submodule.subset_span ⟨a * x, h x hx, a * y, h y hy, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[smul_eq_mul, star_mul']`. Take the linear combination `(-(star x * y)) * ht`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul r x _ hx => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ r hx`.
+A detailed English derivation is pending.
 -/
 theorem mul_mem_idealOf {β γ t a : E} {L M : Submodule (𝓞 E) E}
     (h : ∀ y ∈ L, a * y ∈ M) (ht : star a * γ * a = t * β) :
@@ -120,13 +120,13 @@ theorem mul_mem_idealOf {β γ t a : E} {L M : Submodule (𝓞 E) E}
   | smul r x _ hx => rw [smul_comm]; exact Submodule.smul_mem _ r hx
 
 /- English proof (translation)
-Establish `hs : star a ≠ 0` using `by simpa using ha`. Establish `h1 : ∀ z ∈ idealOf β L, (star a * γ * a / β) • z ∈ idealOf β L`. Introduce `z hz`. Use `mul_mem_idealOf (γ := γ) (t := star a * γ * a / β) (fun y hy => (h y).mpr hy) (by field_simp) z hz` as an intermediate fact. Rewrite `this` using `[← hN]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h2 : ∀ z ∈ idealOf β L, (β / (star a * γ * a)) • z ∈ idealOf β L`. Introduce `z hz`. Rewrite `hz` using `[hN]`. Conclude with `mul_mem_idealOf (a := a⁻¹) (fun y hy => (h _).mp (by rwa [mul_inv_cancel_left₀ ha])) (by rw [star_inv₀]; field_simp) z hz`. Establish `i1` using `isIntegral_trans (R := ℤ) _ (isIntegral_of_smul_mem_submodule _ (idealOf_ne_bot hβ hL) (idealOf_fg β hL) _ h1)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `i2` using `isIntegral_trans (R := ℤ) _ (isIntegral_of_smul_mem_submodule _ (idealOf_ne_bot hβ hL) (idealOf_fg β hL) _ h2)`. Use `⟨⟨⟨_, i2⟩, ⟨_, i1⟩, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `β / (star a * γ * a) * (star a * γ * a / β) = 1`. Clear the denominators using the available nonvanishing facts.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Clear the denominators using the available nonvanishing facts. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `RingOfIntegers.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(star a * γ * a / β) * (β / (star a * γ * a)) = 1`. Clear the denominators using the available nonvanishing facts. Express the relevant statement in the definitionally equal form `star a * γ * a * (β / (star a * γ * a)) = β`. Clear the denominators using the available nonvanishing facts.
+Express the relevant assertion in an equivalent form by its definition. Clear the denominators using the available nonvanishing facts. Express the relevant assertion in an equivalent form by its definition. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem exists_unit {β γ a : E} (hβ : β ≠ 0) (hγ : γ ≠ 0) {L M : Submodule (𝓞 E) E}
     (hL : Submodule.IsLattice E L) (ha : a ≠ 0) (h : ∀ y, a * y ∈ M ↔ y ∈ L)
@@ -162,13 +162,13 @@ noncomputable def even_im_hermitian_sub (u : (𝓞 E)ˣ) : Fin (Units.rank E) �
 
 omit [StarRing E] in
 /- English proof (translation)
-Establish `hd : ∀ i, ∃ k : ℤ, (Units.basisModTorsion E).repr (Additive.ofMul (u : (𝓞 E)ˣ ⧸ Units.torsion E)) i - (Units.basisModTorsion E).repr (Additive.ofMul (w : (𝓞 E)ˣ ⧸ Units.torsion E)) i = 2 * k`. Introduce `i`. Conclude with `(ZMod.intCast_eq_intCast_iff_dvd_sub _ _ 2).mp (congrFun h i).symm`. Use `choose k hk using hd`. Take `⟨v, hv⟩` from `QuotientGroup.mk_surjective (Additive.toMul ((Units.basisModTorsion E).equivFun.symm k))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv' : Additive.ofMul (v : (𝓞 E)ˣ ⧸ Units.torsion E) = (Units.basisModTorsion E).equivFun.symm k` using `by rw [hv]; rfl`. Establish `he : Additive.ofMul (u : (𝓞 E)ˣ ⧸ Units.torsion E) = Additive.ofMul (w : (𝓞 E)ˣ ⧸ Units.torsion E) + (2 : ℤ) • Additive.ofMul (v : (𝓞 E)ˣ ⧸ Units.torsion E)`. Apply `(Units.basisModTorsion E).equivFun.injective` to reduce the goal to its premises. Rewrite using `[map_add, map_smul, hv', LinearEquiv.apply_symm_apply]`. Use function extensionality and compare the values at `i`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Simplify using `only [Module.Basis.equivFun_apply, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Take the linear combination `hk i`. Establish `he' : ((w * v ^ 2 : (𝓞 E)ˣ) : (𝓞 E)ˣ ⧸ Units.torsion E) = u`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Rewrite using `[he, QuotientGroup.mk_mul, QuotientGroup.mk_pow, ofMul_mul, ofMul_pow, two_nsmul, two_zsmul]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(w * v ^ 2)⁻¹ * u, v, QuotientGroup.eq.mp he', ?_⟩` and prove the remaining obligations. Rewrite using `[mul_right_comm, mul_inv_cancel_left]`.
+A detailed English derivation is pending.
 -/
 theorem exists_sq_of_parity {u w : (𝓞 E)ˣ} (h : even_im_hermitian_sub u = even_im_hermitian_sub w) :
     ∃ (ζ : (𝓞 E)ˣ) (v : (𝓞 E)ˣ), ζ ∈ Units.torsion E ∧ u = w * ζ * v ^ 2 := by
@@ -197,7 +197,7 @@ theorem exists_sq_of_parity {u w : (𝓞 E)ˣ} (h : even_im_hermitian_sub u = ev
   rw [mul_right_comm, mul_inv_cancel_left]
 
 /- English proof (translation)
-Apply `φ.injective` to reduce the goal to its premises. Establish `a1 : ((φ A).re : ℂ) = φ A` using `Complex.conj_eq_iff_re.mp (by rw [← hφ, hA])`. Establish `b1 : ((φ B).re : ℂ) = φ B` using `Complex.conj_eq_iff_re.mp (by rw [← hφ, hB])`. Rewrite `h` using `[← a1, ← b1, Complex.norm_real, Complex.norm_real, Real.norm_of_nonneg pA.le, Real.norm_of_nonneg pB.le]`. Rewrite using `[← a1, ← b1, h]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_of_norm_eq (φ : E →+* ℂ) (hφ : ∀ a, φ (star a) = starRingEnd ℂ (φ a)) {A B : E}
     (hA : star A = A) (hB : star B = B) (pA : 0 < (φ A).re) (pB : 0 < (φ B).re)
@@ -210,31 +210,29 @@ theorem eq_of_norm_eq (φ : E →+* ℂ) (hφ : ∀ a, φ (star a) = starRingEnd
   rw [← a1, ← b1, h]
 
 /- English proof (translation)
-Introduce `E _ _ _ hE N`. Take `⟨φ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Establish `hφ` using `hE.2.1 φ`. Use `set S := {X : E × Submodule (𝓞 E) E // star X.1 = X.1 ∧ (∀ φ : E →+* ℂ, 0 < (φ X.1).re) ∧ Submodule.IsLattice E X.2 ∧ Submodule.span (𝓞 E) {t | ∃ x ∈ X.2, ∃ y ∈ X.2, t = star x * X.1 * y} = N} with hS`. Establish `hne : ∀ X : S, X.1.1 ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `X h0`. Use `X.2.2.1 φ` as an intermediate fact. Rewrite `this` using `[h0]`. Simplify using `at this`. Set `cls : S → (FractionalIdeal (𝓞 E)⁰ E)ˣ ⧸ (toPrincipalIdeal (𝓞 E) E).range` to `fun X => QuotientGroup.mk (latUnit X.1.2 X.2.2.2.1)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `base : S → S` to `fun X => Classical.choose (⟨X, rfl⟩ : ∃ B, cls B = cls X)`. Establish `hbase : ∀ X, cls (base X) = cls X` using `fun X => Classical.choose_spec (⟨X, rfl⟩ : ∃ B, cls B = cls X)`. Establish `hbase' : ∀ X Y, cls X = cls Y → base X = base Y`. Introduce `X Y h`. Simplify using `only [base, h]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hex : ∀ X : S, ∃ (a : E) (u : (𝓞 E)ˣ), a ≠ 0 ∧ (∀ y, a * y ∈ (base X).1.2 ↔ y ∈ X.1.2) ∧ star a * (base X).1.1 * a * ((u : 𝓞 E) : E) = X.1.1`. Introduce `X`. Take `⟨a, ha, h⟩` from `exists_scale X.2.2.2.1 (base X).2.2.2.1 (hbase X).symm`. Take `⟨u, hu⟩` from `exists_unit (hne X) (hne (base X)) X.2.2.2.1 ha h (X.2.2.2.2.trans (base X).2.2.2.2.symm)`. Conclude with `⟨a, u, ha, h, hu⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `choose a u ha hm hu using hex`. Establish `key : ∀ X Y : S, cls X = cls Y → even_im_hermitian_sub (u X) = even_im_hermitian_sub (u Y) → ∃ c : E, c ≠ 0 ∧ star c * Y.1.1 * c = X.1.1 ∧ ∀ y, c * y ∈ Y.1.2 ↔ y ∈ X.1.2`. Introduce `X Y hc hp`. Take `⟨ζ, v, hζ, hv⟩` from `exists_sq_of_parity hp`. Establish `hb` using `hbase' X Y hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv0 : ((v : 𝓞 E) : E) ≠ 0` using `by simp`. Establish `haY` using `ha Y`. Establish `hsY : star (a Y) ≠ 0` using `by simpa using haY`. Establish `hc0 : a X * ((v : 𝓞 E) : E) / a Y ≠ 0` using `div_ne_zero (mul_ne_zero (ha X) hv0) haY`. Use `⟨a X * ((v : 𝓞 E) : E) / a Y, hc0, ?_, fun y => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `eq_of_norm_eq φ hφ _ X.2.1 _ (X.2.2.1 φ)` to reduce the goal to its premises. Establish `e1 : star (a X * ((v : 𝓞 E) : E) / a Y) * Y.1.1 * (a X * ((v : 𝓞 E) : E) / a Y) = star (a X) * (base X).1.1 * a X * ((u Y : 𝓞 E) : E) * (star ((v : 𝓞 E) : E) * ((v : 𝓞 E) : E))`. Rewrite using `[← hu Y, hb, star_div₀, star_mul']`. Clear the denominators using the available nonvanishing facts. Establish `e2 : X.1.1 = star (a X) * (base X).1.1 * a X * ((u Y : 𝓞 E) : E) * (((ζ : 𝓞 E) : E) * (((v : 𝓞 E) : E) * ((v : 𝓞 E) : E)))`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[← hu X, hv]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `e3 : ‖φ ((ζ : 𝓞 E) : E)‖ = 1`. Use `(Units.mem_torsion E).mp hζ (InfinitePlace.mk φ)` as an intermediate fact.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[InfinitePlace.apply]`. Then use the resulting hypothesis. Rewrite using `[e1, e2]`. Simplify using `only [map_mul, norm_mul, hφ, e3, Complex.norm_conj, one_mul]`. Rewrite using `[star_mul', star_mul', star_star, Y.2.1]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: φ (star (a X * ((v : 𝓞 E) : E) / a Y) * Y.1.1 * (a X * ((v : 𝓞 E) : E) / a Y)) = (Complex.normSq (φ (a X * ((v : 𝓞 E) : E) / a Y)) : ℂ) * φ Y.1.1`. Rewrite using `[map_mul, map_mul, hφ, Complex.normSq_eq_conj_mul_self]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, Complex.re_ofReal_mul]`. Conclude with `mul_pos (Complex.normSq_pos.mpr ((map_ne_zero φ).mpr hc0)) (Y.2.2.1 φ)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← hm Y, ← hm X, hb]`. Establish `: a Y * (a X * ((v : 𝓞 E) : E) / a Y * y) = v • (a X * y)`. Express the relevant statement in the definitionally equal form `_ = ((v : 𝓞 E) : E) * _`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Submodule.smul_mem_iff_of_isUnit _ v.isUnit`. Set `g : Quot (fun X Y : S => ∃ c : E, c ≠ 0 ∧ star c * Y.1.1 * c = X.1.1 ∧ ∀ y, c * y ∈ Y.1.2 ↔ y ∈ X.1.2) → ClassGroup (𝓞 E) × (Fin (Units.rank E) → ZMod 2)` to `fun q => ((ClassGroup.equiv E).symm (cls q.out), even_im_hermitian_sub (u q.out))`. Establish `hg : Function.Injective g`. Introduce `q r h`. Rewrite using `[← q.out_eq, ← r.out_eq]`.
-
-Conclude with `Quot.sound (key _ _ ((ClassGroup.equiv E).symm.injective (congrArg Prod.fst h)) (congrArg Prod.snd h))`. Use `(ENat.card_le_card_of_injective hg).trans ?_` and prove the remaining obligations. Rewrite using `[ENat.card_eq_coe_fintype_card, Nat.cast_le, Fintype.card_prod, Fintype.card_fun, ZMod.card, Fintype.card_fin]`. Conclude with `Nat.mul_le_mul_left _ (Nat.pow_le_pow_right (by norm_num) (Nat.sub_le _ _))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_classes_le : ∀ (E : Type) [Field E] [NumberField E] [StarRing E], Formalism.HermitianLatticesTheory.IsCMUnram E → ∀ N : Submodule (𝓞 E) E, ENat.card (Quot (fun X Y : {X : E × Submodule (𝓞 E) E // star X.1 = X.1 ∧ (∀ φ : E →+* ℂ, 0 < (φ X.1).re) ∧ Submodule.IsLattice E X.2 ∧ Submodule.span (𝓞 E) {t | ∃ x ∈ X.2, ∃ y ∈ X.2, t = star x * X.1 * y} = N} => ∃ c : E, c ≠ 0 ∧ star c * Y.1.1 * c = X.1.1 ∧ ∀ y, c * y ∈ Y.1.2 ↔ y ∈ X.1.2)) ≤ ((classNumber E * 2 ^ Formalism.HermitianLatticesTheory.fDeg E : ℕ) : ENat) := by
   intro E _ _ _ hE N

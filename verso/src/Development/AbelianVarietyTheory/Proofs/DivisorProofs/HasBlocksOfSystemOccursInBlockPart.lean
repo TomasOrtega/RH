@@ -19,15 +19,13 @@ variable {L V J : Type} [Field L] [DecidableEq L] [AddCommGroup V] [Module L V]
 def jointGen (T : J → End L V) (y : J → L) : Submodule L V := ⨅ j, (T j).maxGenEigenspace (y j)
 
 /- English proof (translation)
-Establish `hsplit : (⨆ y ∈ Y, p y) ≤ (⨆ y ∈ Y.filter (fun y => y j = θ j), p y) ⊔ (⨆ y ∈ Y.filter (fun y => y j ≠ θ j), p y)`. Use `iSup₂_le fun y hy => ?_` and prove the remaining obligations. Distinguish the cases in `h : y j = θ j`. Conclude with `le_sup_of_le_left (le_biSup p (Finset.mem_filter.2 ⟨hy, h⟩))`. Conclude with `le_sup_of_le_right (le_biSup p (Finset.mem_filter.2 ⟨hy, h⟩))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨a, ha, b, hb, hab⟩` from `Submodule.mem_sup.1 (hsplit hY)`. Establish `hA : (⨆ y ∈ Y.filter (fun y => y j = θ j), p y) ≤ (T j).maxGenEigenspace (θ j)`. Use `iSup₂_le fun y hy => ?_` and prove the remaining obligations. Establish `hyj` using `(Finset.mem_filter.1 hy).2`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hB : (⨆ y ∈ Y.filter (fun y => y j ≠ θ j), p y) ≤ ⨆ (μ : L) (_ : μ ≠ θ j), (T j).maxGenEigenspace μ`. Use `iSup₂_le fun y hy => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `hfθ : f ∈ (T j).maxGenEigenspace (θ j)`. Rewrite using `[mem_maxGenEigenspace]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨1, by simp [hf j]⟩`. Establish `hb0 : b = 0`. Establish `hb1 : b ∈ (T j).maxGenEigenspace (θ j)`. Establish `hbe : b = f - a` using `by rw [← hab]; abel`. Rewrite using `[hbe]`.
-
-Conclude with `Submodule.sub_mem _ hfθ (hA ha)`. Conclude with `(Submodule.disjoint_def.1 ((Module.End.independent_maxGenEigenspace (T j)) (θ j))) b hb1 (hB hb)`. Rewrite using `[← hab, hb0, add_zero]`. Conclude with `ha`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_iSup_filter (T : J → End L V) (p : (J → L) → Submodule L V) (hp : ∀ y, p y ≤ jointGen T y) {θ : J → L} {f : V}
     (hf : ∀ j, T j f = θ j • f) (Y : Finset (J → L)) (j : J) (hY : f ∈ ⨆ y ∈ Y, p y) :
@@ -63,9 +61,9 @@ theorem mem_iSup_filter (T : J → End L V) (p : (J → L) → Submodule L V) (h
   exact ha
 
 /- English proof (translation)
-Proceed by induction on `Y using Finset.strongInduction with`. Consider the case `H Y ih`. Distinguish the cases in `h : ∃ y ∈ Y, y ≠ θ`. Take `⟨y0, hy0, hne⟩` from `h`. Take `⟨j, hj⟩` from `Function.ne_iff.1 hne`.
+Proceed by induction. Treat this case separately. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `ih _ (Finset.filter_ssubset.2 ⟨y0, hy0, hj⟩) (mem_iSup_filter T p hp hf Y j hY)`. Use `push_neg at h`. Conclude with `(iSup₂_le fun y hy => by rw [h y hy] : (⨆ y ∈ Y, p y) ≤ p θ) hY`.
+A detailed English derivation is pending.
 -/
 theorem mem_of_mem_iSup_finset (T : J → End L V) (p : (J → L) → Submodule L V) (hp : ∀ y, p y ≤ jointGen T y)
     {θ : J → L} {f : V} (hf : ∀ j, T j f = θ j • f) (Y : Finset (J → L)) (hY : f ∈ ⨆ y ∈ Y, p y) : f ∈ p θ := by
@@ -99,9 +97,9 @@ variable {F lam} {K : Type} [Field K] [NumberField K] [StarRing K] {G0 : Type} [
   {B : BlockDat K G0 Pl0} {w : HeightOneSpectrum (𝓞 K)}
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[pow_succ', pow_succ', Module.End.mul_apply, Module.End.mul_apply, ← ih]`. Use function extensionality and compare the values at `g`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[map_sub, map_smulₛₗ, R.hecke, heckeQ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rd_pow (R : Reads F lam B w) (i : F.I) (a : K) (k : ℕ) (v : B.S.Forms) :
     R.rd (((B.op (R.ix i) - a • (1 : End K B.S.Forms)) ^ k) v) =
@@ -116,21 +114,19 @@ theorem rd_pow (R : Reads F lam B w) (i : F.I) (a : K) (k : ℕ) (v : B.S.Forms)
 end Read
 
 /- English proof (translation)
-Introduce `K _ _ _ G0 _ _ Pl0 B w l _ ι _ N F lam R Z hop hZ θ hocc`. Take `⟨f, hfspan, hfe⟩` from `hocc`. Use `⟨?_, ⟨f, hfe⟩⟩` and prove the remaining obligations. Set `S : Set (F.I → PadicAlgCl l)` to `{y | ∃ x : B.Pl × ℕ → K, (∀ P, x (P, 0) = 1) ∧ Formalism.L2.Col.HasBlocks B.n B.q B.t B.bl x ∧ ∀ i, y i = R.e0 (x (R.ix i))}`. Set `p : (F.I → PadicAlgCl l) → Submodule (PadicAlgCl l) (F.G → NablaT (PadicAlgCl l) N lam)` to `fun y => ⨆ (_ : y ∈ S), jointGen (heckeQ F lam) y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hp : ∀ y, p y ≤ jointGen (heckeQ F lam) y` using `fun y => iSup_le fun _ => le_rfl`. Establish `key : B.ZH ≤ (⨆ y, p y).comap R.rd`. Rewrite using `[BlockDat.ZH, Formalism.L2.Col.blockSum, Formalism.L2.Col.eigSum]`. Use `iSup₂_le fun x hx => ?_` and prove the remaining obligations. Introduce `v hv`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Submodule.mem_comap]`. Distinguish the cases in `hv0 : v = 0`. Rewrite using `[hv0, map_zero]`. Conclude with `Submodule.zero_mem _`. Establish `hx1 : ∀ P, x (P, 0) = 1` using `fun P => GlobalTheory.ExpFrame.eq_one_of_occurs (op := B.op) ((Submodule.ne_bot_iff _).2 ⟨v, hv, hv0⟩) (hop P)`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.mem_iSup_of_mem (fun i => R.e0 (x (R.ix i))) ?_` and prove the remaining obligations. Use `Submodule.mem_iSup_of_mem (show (fun i => R.e0 (x (R.ix i))) ∈ S from ⟨x, hx1, hx, fun i => rfl⟩) ?_` and prove the remaining obligations. Rewrite using `[jointGen, Submodule.mem_iInf]`. Introduce `i`. Establish `hv'` using `Formalism.L2.Col.eigAt_le B.op x (R.ix i) hv`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hv'`, the goal using `[mem_maxGenEigenspace]`. Take `⟨k, hk⟩` from `hv'`. Conclude with `⟨k, by rw [← rd_pow, hk, map_zero]⟩`. Establish `hspan : Submodule.span (PadicAlgCl l) (R.rd '' Z) ≤ ⨆ y, p y`. Rewrite using `[Submodule.span_le]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨z, hz, rfl⟩`. Conclude with `key (hZ hz)`. Take `⟨Y, hY⟩` from `Submodule.mem_iSup_iff_exists_finset.1 (hspan hfspan)`. Establish `hf : ∀ i, heckeQ F lam i f = θ i • f` using `fun i => by`. Use function extensionality and compare the values at `g`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Conclude with `hfe.2.2 i g`. Establish `hθ` using `mem_of_mem_iSup_finset (heckeQ F lam) p hp hf Y hY`. Distinguish the cases in `hθS : θ ∈ S`. Conclude with `hθS`. It suffices to derive a contradiction.
-
-Establish `h0 : p θ = ⊥` using `by simp [p, hθS]`. Rewrite `hθ` using `[h0, Submodule.mem_bot]`. Conclude with `hfe.1 hθ`.
+It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasBlock_of_occurs : ∀ (K : Type) [Field K] [NumberField K] [StarRing K] (G0 : Type) [Group G0] [Fintype G0] (Pl0 : Type)
     (B : BlockDat K G0 Pl0) (w : HeightOneSpectrum (𝓞 K)) (l : ℕ) [Fact l.Prime] (ι : Type) [DecidableEq ι] (N : ℕ) (F : Frame l ι N)

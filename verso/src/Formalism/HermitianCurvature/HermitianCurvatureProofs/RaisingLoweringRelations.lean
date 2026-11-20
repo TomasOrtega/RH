@@ -7,7 +7,7 @@ namespace Formalism.FourierDecayAlt.P.VandermondePolynomialIntegral
 open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants
 
 /- English proof (translation)
-Introduce `k r Wp Wq _ _ _ _ _ _ Bs F hF u x hx`. Take `⟨hs, ⟨R, hR⟩, -⟩` from `hF`. Conclude with `(PBG.kr_AA_cpt Bs hs (Formalism.FourierDecayAlt.P.PBE.isCompact_gN_le k r R) (fun g hg hgC => by`. Assume the negation of the conclusion as `hne`. Conclude with `hgC (hR g hg hne)) r le_rfl u 0 hx).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem raising_lowering_relations : KrAA := by
   intro k r Wp Wq _ _ _ _ _ _ Bs F hF u x hx
@@ -22,7 +22,7 @@ end Formalism.FourierDecayAlt.P.VandermondePolynomialIntegral
 namespace Formalism.FourierDecayAlt.P
 
 /- English proof (translation)
-The claim follows from `VandermondePolynomialIntegral.polyTop_of VandermondePolynomialIntegral.raising_lowering_relations`.
+A detailed English derivation is pending.
 -/
 theorem polynomial_top : PBN.PolyTop := VandermondePolynomialIntegral.polyTop_of VandermondePolynomialIntegral.raising_lowering_relations
 

@@ -4,11 +4,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open IsLocalRing MvPowerSeries UpperTheory.V.Alg
 
 /- English proof (translation)
-Introduce `O _ _ R _ _ _ M _ _ _ _ _ _ _ _ hO`. Use `haveI : IsLocalRing (TrivSqZeroExt R M) := IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun a => by`. Simplify using `only [TrivSqZeroExt.isUnit_iff_isUnit_fst, TrivSqZeroExt.fst_sub, TrivSqZeroExt.fst_one]`. Conclude with `IsLocalRing.isUnit_or_isUnit_one_sub_self a.fst`. Use `haveI hST := IsScalarTower.of_algebraMap_eq (R := O) (S := R) (A := TrivSqZeroExt R M) fun c => by`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hO, TrivSqZeroExt.algebraMap_eq_inl]`. Use `haveI : Module.Finite R (TrivSqZeroExt R M) := inferInstanceAs (Module.Finite R (R × M))`. Use `co_finite O R (TrivSqZeroExt R M) ?_` and prove the remaining obligations. Introduce `x`. Take `⟨a, ha⟩` from `IsCO.res_surj (O := O) x.fst`.
-
-Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, TrivSqZeroExt.isUnit_iff_isUnit_fst, hO, TrivSqZeroExt.fst_sub, TrivSqZeroExt.fst_inl]`. Rewrite `ha` using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Alg.co_sqz :
     ∀ (O : Type) [CommRing O] [IsLocalRing O] (R : Type) [CommRing R] [Algebra O R] [IsCO O R] (M : Type) [AddCommGroup M] [Module R M] [Module Rᵐᵒᵖ M] [IsCentralScalar R M] [Module O M] [IsScalarTower O R M] [Module.Finite R M] [Algebra O (TrivSqZeroExt R M)],

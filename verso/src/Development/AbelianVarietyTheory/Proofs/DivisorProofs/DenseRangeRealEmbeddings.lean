@@ -4,27 +4,25 @@ open NumberField GlobalTheory.Shintani MeasureTheory Filter Topology
 namespace GlobalTheory.Shintani
 
 /- English proof (translation)
-Introduce `F _ _ _`. Establish `h1` using `NumberField.InfiniteAdeleRing.denseRange_algebraMap F`. Set `E : ∀ w : InfinitePlace F, w.Completion → ℝ` to `fun w z => InfinitePlace.Completion.ringEquivRealOfIsReal (IsTotallyReal.isReal w) z`. Establish `hs : Function.Surjective (Pi.map E)`. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨fun w => (InfinitePlace.Completion.ringEquivRealOfIsReal (IsTotallyReal.isReal w)).symm (y w), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `w`. Conclude with `(InfinitePlace.Completion.ringEquivRealOfIsReal (IsTotallyReal.isReal w)).apply_symm_apply (y w)`. Establish `hc : Continuous (Pi.map E)`. Use `continuous_pi fun w => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: (E w) = InfinitePlace.Completion.extensionEmbeddingOfIsReal (IsTotallyReal.isReal w)`. Use function extensionality and compare the values at `z`. Conclude with `InfinitePlace.Completion.ringEquivRealOfIsReal_apply _ z`. Express the relevant statement in the definitionally equal form `Continuous fun a : (∀ v : InfinitePlace F, v.Completion) => E w (a w)`. Rewrite using `[this]`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `(InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal (IsTotallyReal.isReal w)).continuous.comp (continuous_apply w)`. Establish `h2` using `hs.denseRange.comp h1 hc`. Set `g : (F →+* ℝ) → InfinitePlace F` to `fun σ => InfinitePlace.mk (Complex.ofRealHom.comp σ)`. Establish `hreal : ∀ σ : F →+* ℝ, ComplexEmbedding.IsReal (Complex.ofRealHom.comp σ)`. Introduce `σ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[ComplexEmbedding.isReal_iff]`. Use extensionality with `x`. Simplify using `[ComplexEmbedding.conjugate_coe_eq]`. Establish `hemb : ∀ σ : F →+* ℝ, (g σ).embedding = Complex.ofRealHom.comp σ` using `fun σ => InfinitePlace.embedding_mk_eq_of_isReal (hreal σ)`. Establish `hg : Function.Injective g`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `σ τ h`. Use `hemb σ` as an intermediate fact. Rewrite `this` using `[h, hemb τ]`. Use extensionality with `x`. Establish `h3` using `congrArg (fun f : F →+* ℂ => f x) this`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [RingHom.comp_apply, Complex.ofRealHom_eq_coe, Complex.ofReal_inj] at h3`. Conclude with `h3.symm`. Establish `hval : ∀ (x : F) (σ : F →+* ℝ), Pi.map E (algebraMap F (InfiniteAdeleRing F) x) (g σ) = σ x`. Introduce `x σ`. Express the relevant statement in the definitionally equal form `E (g σ) (algebraMap F (InfiniteAdeleRing F) x (g σ)) = σ x`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[InfiniteAdeleRing.algebraMap_apply]`. Establish `e1` using `InfinitePlace.Completion.extensionEmbeddingOfIsReal_coe (IsTotallyReal.isReal (g σ)) ((WithAbs.equiv (g σ).1).symm x)`. Establish `e2` using `InfinitePlace.embedding_of_isReal_apply (IsTotallyReal.isReal (g σ)) x`. Apply `Complex.ofReal_injective` to reduce the goal to its premises. Simplify using `only [E, InfinitePlace.Completion.ringEquivRealOfIsReal_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e3 : ((InfinitePlace.Completion.extensionEmbeddingOfIsReal (IsTotallyReal.isReal (g σ))) { toCompletion` using `↑(WithAbs.toAbs (g σ).1 x) } : ℂ) = (g σ).embedding x := by`. Rewrite using `[← e2]`. Simplify using `only [RingEquiv.apply_symm_apply, WithAbs.equiv_symm_apply, WithAbs.equiv_apply] at e1`. Conclude with `congrArg _ e1`. Rewrite using `[e3, hemb σ]`.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Both sides reduce to the same expression. Set `P : (InfinitePlace F → ℝ) → ((F →+* ℝ) → ℝ)` to `fun y σ => y (g σ)`. Establish `hPs : Function.Surjective P` using `fun z => ⟨Function.extend g z 0, funext fun σ => hg.extend_apply z 0 σ⟩`. Establish `hPc : Continuous P` using `continuous_pi fun σ => continuous_apply (g σ)`. Use `hPs.denseRange.comp h2 hPc using 1` and compare the differences between its conclusion and the goal.
-
-Use function extensionality and compare the values at `x σ`. Conclude with `(hval x σ).symm`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem denseRange_realEmbeddings :
     ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F],

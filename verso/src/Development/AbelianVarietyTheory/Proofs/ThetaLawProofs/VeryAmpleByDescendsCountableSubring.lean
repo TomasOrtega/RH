@@ -24,13 +24,13 @@ namespace GlobalTheory
 open ProjSpace in
 
 /- English proof (translation)
-Establish `hT : ∀ i : Fin (N + 1), ∃ T : Finset (MvPolynomial {j // j ≠ i} R), Ideal.span (chartAlgEquiv R N i '' T) = e.ker.ideal ⟨_, isAffineOpen_chart R N i⟩` using `fun i => by`. Take `⟨T, hT⟩` from `(IsNoetherian.noetherian ((e.ker.ideal ⟨_, isAffineOpen_chart R N i⟩).comap (chartAlgEquiv R N i)))`. Use `⟨T, ?_⟩` and prove the remaining obligations. Use `congrArg (Ideal.map (chartAlgEquiv R N i)) hT` as an intermediate fact. Rewrite `this` using `[Ideal.map_comap_of_surjective _ (chartAlgEquiv R N i).surjective]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← this]`. Conclude with `(Ideal.map_span _ _).symm`. Use `choose T hT using hT`. Use `⟨Finset.univ.biUnion fun i => (T i).biUnion MvPolynomial.coeffs, fun R₀ hs => ?_⟩` and prove the remaining obligations. Establish `key` using `comap_map_baseChange N R₀.subtype e.ker (fun i => T i) hT fun i t ht => by`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `MvPolynomial.mem_range_map_iff_coeffs_subset.2` to reduce the goal to its premises. Introduce `c hc`. Use `⟨⟨c, hs ?_⟩, rfl⟩` and prove the remaining obligations. Simplify using `only [Finset.coe_biUnion, Set.mem_iUnion]`. Conclude with `⟨i, Finset.mem_univ i, t, ht, hc⟩`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `key` using `[Scheme.IdealSheafData.map_ker]`. Establish `h` using `isPullback_of_isClosedImmersion e (e ≫ baseChange N R₀.subtype).imageι (e ≫ baseChange N R₀.subtype).toImage (baseChange N R₀.subtype) (by simp) (by rw [← key]; congr 1; exact Scheme.IdealSheafData.ker_subschemeι _)`. Conclude with `h.flip.paste_vert (isPullback_baseChange N R₀.subtype)`.
+A detailed English derivation is pending.
 -/
 theorem exists_finset_isPullback_toImage_baseChange (R : Type) [CommRing R] [IsNoetherianRing R] {X : Scheme.{0}}
     {N : ℕ} (e : X ⟶ PSpace R N) [IsClosedImmersion e] :
@@ -64,11 +64,11 @@ theorem exists_finset_isPullback_toImage_baseChange (R : Type) [CommRing R] [IsN
 open ProjSpace in
 
 /- English proof (translation)
-Introduce `R _ _ _ _ X f hf H m s S hH hs hS`. Take `⟨hs, he⟩` from `(veryAmpleBy_iff f s).1 hs`. Take `⟨c, hc⟩` from `exists_finset_isPullback_toImage_baseChange R (toProj f s hs)`. Take `⟨R₀, i₁, i₂, h₁, h₂, h₃, h₄⟩` from `GlobalTheory.exists_countable_local_pid_subring R (S ∪ c) (hS.union c.countable_toSet)`. Establish `hp` using `hc R₀ (Set.subset_union_right.trans h₂)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hp` using `[toProj_str]`. Establish `hσ : (@Surjective ⊓ @Flat ⊓ @QuasiCompact : MorphismProperty Scheme.{0}) (spMap R₀.subtype)`. Establish `h : RingHom.FaithfullyFlat (CommRingCat.ofHom R₀.subtype).hom` using `RingHom.faithfullyFlat_algebraMap_iff.2 h₄`. Rewrite `h` using `[← flat_and_surjective_SpecMap_iff]`. Conclude with `⟨⟨h.2, h.1⟩, inferInstance⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Use `flat_descendsAlong_fpqc` as an intermediate fact. Establish `hL` using `O1_isLB R₀ m`. Use `⟨R₀, i₁, i₂, _, _, _, _, _, h₁, Set.subset_union_left.trans h₂, h₃, h₄, hp, MorphismProperty.of_isPullback_of_descendsAlong (P := @Flat) hp.flip hσ hf, LB.isLB_pull hL _, veryAmpleBy_secPull_coord _, ?_⟩` and prove the remaining obligations. Use `LBIso.trans hH (LB.isLB_pull hL _) (LB.isLB_pull (LB.isLB_pull hL _) _) (lbIso_pullback_O1_toProj (f ≫ spMap R₀.subtype) s hs).symm (GenSpread.lbIso_pull_pull hL _ ?_)` and prove the remaining obligations. Rewrite using `[Scheme.Hom.toImage_imageι, toProj_baseChange]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem veryAmpleBy_descends_countable_subring : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsPrincipalIdealRing R] (X : Scheme.{0}) (f : X ⟶ Sp R) [Flat f] (H : LB X) (m : ℕ) (s : Fin (m + 1) → H.Sec) (S : Set R), H.IsLB → VeryAmpleBy f H s → S.Countable → ∃ (R₀ : Subring R) (_ : IsLocalRing R₀) (_ : IsPrincipalIdealRing R₀) (X₀ : Scheme.{0}) (f₀ : X₀ ⟶ Sp R₀) (π : X ⟶ X₀) (H₀ : LB X₀) (s₀ : Fin (m + 1) → H₀.Sec), Countable R₀ ∧ S ⊆ R₀ ∧ IsLocalHom R₀.subtype ∧ Module.FaithfullyFlat R₀ R ∧ IsPullback π f f₀ (spMap R₀.subtype) ∧ Flat f₀ ∧ H₀.IsLB ∧ VeryAmpleBy f₀ H₀ s₀ ∧ LBIso H (H₀.pull π) := by
   intro R _ _ _ _ X f hf H m s S hH hs hS

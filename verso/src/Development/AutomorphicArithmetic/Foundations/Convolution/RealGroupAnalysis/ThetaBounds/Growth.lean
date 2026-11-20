@@ -14,7 +14,7 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Ff
 open scoped Classical
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [dM]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem dM_one' {F : Type} [Field F] [NumberField F] : dM (1 : (A F)ˣ) = 1 := by
   apply Units.ext
@@ -30,25 +30,25 @@ private theorem growth_alg (a b c d V : ℝ) (n m : ℕ) :
   ring
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ D W M π f hf φ hφ h`. Take `⟨f', hf', φ', hφ', y₀, k, -, hφk, -, hred⟩` from `UpperTheory.ConvolutionTheory.R2.Ff.redLift F E D W M π f hf φ hφ h`. Take `⟨ω, hωc, hω⟩` from `UpperTheory.ConvolutionTheory.R2.cen F π`. Take `⟨σ, τ, -, -, hdec⟩` from `UpperTheory.ConvolutionTheory.R2.Ff.dec F E D`. Take `⟨C₁, N₁, hC₁⟩` from `(UpperTheory.ConvolutionTheory.R2.Ff.omGrowth F E D).2 ω hωc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hht` using `(UpperTheory.ConvolutionTheory.R2.Ff.htLe E).2`. Establish `hφ'F : φ' ∈ Fock D.δ` using `hφ'`. Take `⟨B, N₂, hB⟩` from `UpperTheory.ConvolutionTheory.R2.Ff.thBound F E D W π f' hf' φ' hφ'F {1} isCompact_singleton`. Establish `hv : M.μ M.D < ⊤` using `UpperTheory.ConvolutionTheory.R2.Ff.vol F M`. Establish `hV0 : 0 ≤ M.μ.real M.D` using `measureReal_nonneg`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hone : ∀ z, UpperTheory.ConvolutionTheory.R2.Ff.One F z → ‖UpperTheory.ConvolutionTheory.R2.lift W M f'.1 φ' (infGL E 2 z)‖ ≤ |B| * UpperTheory.ConvolutionTheory.R2.Ff.Ht z ^ N₂ * M.μ.real M.D`. Introduce `z hz`. Establish `hz' : nu F (infGL E 2 z) = 1` using `hz`. Unfold `UpperTheory.ConvolutionTheory.R2.lift`. Rewrite using `[hz', dM_one']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `norm_setIntegral_le_of_norm_le_const hv fun g _ => ?_` and prove the remaining obligations. Use `(hB z hz g 1 rfl).trans ?_` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right (le_abs_self B) (pow_nonneg (by linarith [(hht z).1]) _)`. Establish `hcen` using `(UpperTheory.ConvolutionTheory.R2.equiv F E D W M π f' hf' φ').2 ω (hω f' hf')`. Establish `hy₀` using `(hht y₀).1`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨|C₁| * (2 * (6 * UpperTheory.ConvolutionTheory.R2.Ff.Ht y₀)) ^ N₁ * (|B| * (4 * (6 * UpperTheory.ConvolutionTheory.R2.Ff.Ht y₀) ^ 2) ^ N₂ * M.μ.real M.D), N₁ + 2 * N₂, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[hred φ y, ← hφk]`. Take `⟨e, h1, h2, h3⟩` from `hdec (y₀ * y)`. Establish `hH1` using `(hht (y₀ * y)).1`. Establish `hy` using `hht y`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmul` using `(hht y₀).2.2 y`. Establish `hhy : 0 ≤ GlobalTheory.CuspRep.height y` using `by linarith [hy.1, hy.2.1]`. Establish `hc0 : 0 ≤ 6 * UpperTheory.ConvolutionTheory.R2.Ff.Ht y₀` using `by linarith`. Establish `hHle : UpperTheory.ConvolutionTheory.R2.Ff.Ht (y₀ * y) ≤ 6 * UpperTheory.ConvolutionTheory.R2.Ff.Ht y₀ * GlobalTheory.CuspRep.height y`. Establish `: 2 * UpperTheory.ConvolutionTheory.R2.Ff.Ht y₀ * UpperTheory.ConvolutionTheory.R2.Ff.Ht y ≤ 2 * UpperTheory.ConvolutionTheory.R2.Ff.Ht y₀ * (3 * GlobalTheory.CuspRep.height y)` using `mul_le_mul_of_nonneg_left hy.2.1 (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hH0 : 0 ≤ UpperTheory.ConvolutionTheory.R2.Ff.Ht (y₀ * y)` using `by linarith`. Establish `hS0 : 0 ≤ 1 + ‖(σ (y₀ * y)).val‖ + ‖(σ (y₀ * y))⁻¹.val‖`. Establish `n0` using `norm_nonneg (σ (y₀ * y)).val`. Establish `n1` using `norm_nonneg (σ (y₀ * y))⁻¹.val`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `a1 : ‖((ω (ideleNorm F E (infId E (σ (y₀ * y)))) : ℂˣ) : ℂ)‖ ≤ |C₁| * (2 * (6 * UpperTheory.ConvolutionTheory.R2.Ff.Ht y₀ * GlobalTheory.CuspRep.height y)) ^ N₁`. Use `(hC₁ _).trans ?_` and prove the remaining obligations. Use `mul_le_mul (le_abs_self _) ?_ (pow_nonneg hS0 _) (abs_nonneg _)` and prove the remaining obligations. Conclude with `pow_le_pow_left₀ hS0 (h3.trans (by linarith)) _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `a2 : ‖UpperTheory.ConvolutionTheory.R2.lift W M f'.1 φ' (infGL E 2 (τ (y₀ * y)))‖ ≤ |B| * (4 * (6 * UpperTheory.ConvolutionTheory.R2.Ff.Ht y₀ * GlobalTheory.CuspRep.height y) ^ 2) ^ N₂ * M.μ.real M.D`. Use `(hone _ h1).trans ?_` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left ?_ (abs_nonneg _)) hV0` and prove the remaining obligations. Use `pow_le_pow_left₀ (by linarith [(hht (τ (y₀ * y))).1]) (h2.trans ?_) _` and prove the remaining obligations. Use `pow_le_pow_left₀ hH0 hHle 2` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[e, hcen, norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.Ff.growth :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (M : Meas F) (π : TR.CuspSub F 2), Growth W M π := by

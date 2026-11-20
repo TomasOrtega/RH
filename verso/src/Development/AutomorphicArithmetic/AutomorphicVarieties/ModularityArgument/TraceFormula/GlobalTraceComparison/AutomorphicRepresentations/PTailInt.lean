@@ -22,13 +22,13 @@ section Meas
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.OneRep.SplitTwist.continuous_splitCentre.comp (continuous_id.div_const _)).prodMk continuous_const`.
+A detailed English derivation is pending.
 -/
 private theorem continuous_ac' : Continuous (ac E n) :=
   (GlobalTheory.OneRep.SplitTwist.continuous_splitCentre.comp (continuous_id.div_const _)).prodMk continuous_const
 
 /- English proof (translation)
-Establish `hc : Continuous fun x : H E n 0 => (ac E n (-ldet x) * x).1` using `continuous_fst.comp ((continuous_ac'.comp continuous_ldet.neg).mul continuous_id)`. Use `haveI := borelSpace_H (E := E) (n := n)`. Use `letI : MeasurableSpace (GA E n) := borel _`. Use `haveI : BorelSpace (GA E n) := ⟨rfl⟩`. Conclude with `(redBasic E n).2.2.comp hc.measurable`.
+Establish an intermediate fact. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 private theorem measurable_reduced_size : Measurable (r0 : H E n 0 → ℝ) := by
   have hc : Continuous fun x : H E n 0 => (ac E n (-ldet x) * x).1 :=
@@ -39,9 +39,7 @@ private theorem measurable_reduced_size : Measurable (r0 : H E n 0 → ℝ) := b
   exact (redBasic E n).2.2.comp hc.measurable
 
 /- English proof (translation)
-Use `haveI := borelSpace_H (E := E) (n := n)`. Use `haveI : Countable (ratH E n 0) := DiscreteGroups.T1.G.Dcy.countable_ratH'`. Establish `hm : MeasurableSet Ω` using `hΩ.measurableSet`. Use `Measurable.ennreal_tsum fun γ => ?_` and prove the remaining obligations. Establish `hc : Continuous fun x : H E n 0 => x⁻¹ * (γ : H E n 0) * x` using `(continuous_inv.mul continuous_const).mul continuous_id`.
-
-Conclude with `(measurable_one.indicator hm).comp hc.measurable`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem measurable_cnt {Ω : Set (H E n 0)} (hΩ : IsCompact Ω) :
     Measurable (cnt (ratH E n 0) Ω) := by
@@ -58,31 +56,27 @@ end Meas
 end UpperTheory.V.Z.Tf.GlobalTraceComparison.Pi
 
 /- English proof (translation)
-Introduce `hF hB hS hD E _ _ _ n ι _ s`. Use `haveI := borelSpace_H (E := E) (n := n)`. Take `⟨p, hp⟩` from `hF E n ι s`. Take `⟨Ω, hΩ, hC⟩` from `hB E n ι s`. Use `choose Cb hCb0 hCb using fun b => hC (p.x b)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose Nb hNb using fun b => hD E n s.pos s.D s.π s.fix (p.w b) (p.mem b) Ω hΩ`. Use `⟨Finset.univ.sup Nb, fun L hL => ?_⟩` and prove the remaining obligations. Use `choose Db hDb0 hDb using fun b => hNb b L hL`. Use `⟨∑ b, Cb b * Db b, Finset.sum_nonneg fun b _ => mul_nonneg (hCb0 b) (hDb0 b), fun m R ρ hR hφ A hA => ?_⟩` and prove the remaining obligations. Use `set S : Set (H E n 0) := {x | |ldet x| ≤ R ∧ ρ ≤ r0 x} with hSdef`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hSm : MeasurableSet S` using `((isClosed_le (continuous_abs.comp continuous_ldet) continuous_const).measurableSet).inter (measurableSet_le measurable_const measurable_reduced_size)`. Use `set f : p.B → H E n 0 → ℝ≥0∞ := fun b => S.indicator (fun x => ‖(p.w b).1 x.1‖ₑ * cnt (ratH E n 0) Ω x) with hf`. Establish `hfm : ∀ b, Measurable (f b)` using `fun b => by`. Use `Measurable.indicator ?_ hSm` and prove the remaining obligations. Use `Measurable.mul ?_ (measurable_cnt hΩ)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Conclude with `(((continuous_of_mem s.π (p.mem b)).comp continuous_fst).enorm).measurable`. Establish `hpt : ∀ x, A.indicator (fun x => ‖m.G x x‖ₑ) x ≤ ∑ b, ENNReal.ofReal (Cb b * ‖m.U‖) * f b x`. Introduce `x`. Distinguish the cases in `hxA : x ∈ A`. Rewrite using `[Set.indicator_of_mem hxA]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Distinguish the cases in `hx : |ldet x| ≤ R`. Establish `hxS : x ∈ S` using `⟨hx, hA x hxA hx⟩`. Rewrite using `[hp m x x]`. Use `(enorm_sum_le _ _).trans (Finset.sum_le_sum fun b _ => ?_)` and prove the remaining obligations. Rewrite using `[enorm_mul, hf]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Set.indicator_of_mem hxS]`. Combine the equalities or inequalities in the displayed calculation. Establish `h0 : m.G x x = 0`. Use `hS E n ι s m R hφ x x ?_` and prove the remaining obligations. Establish `h1 : R < |ldet x|` using `not_le.mp hx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : |ldet x + ldet x| = 2 * |ldet x|`. Rewrite using `[← two_mul, abs_mul, abs_two]`. Rewrite using `[h2]`. Use `abs_nonneg (ldet x)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[h0]`. Rewrite using `[Set.indicator_of_notMem hxA]`. Conclude with `zero_le`. Establish `h1R : (1 : ℝ) ≤ 1 + R` using `by linarith`. Establish `hT : ∀ b, ENNReal.ofReal (Cb b * ‖m.U‖) * ∫⁻ x, f b x ∂s.D.ν ≤ ENNReal.ofReal (Cb b * Db b * ‖m.U‖ * (1 + R) ^ (Finset.univ.sup Nb) * Real.exp (-(L * ρ)))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Introduce `b`. Establish `hpow : (1 + R) ^ Nb b ≤ (1 + R) ^ (Finset.univ.sup Nb)` using `pow_le_pow_right₀ h1R (Finset.le_sup (Finset.mem_univ b))`. Establish `h2 : ∫⁻ x, f b x ∂s.D.ν ≤ ENNReal.ofReal (Db b * (1 + R) ^ (Finset.univ.sup Nb) * Real.exp (-(L * ρ)))`. Use `(hDb b R ρ hR).trans (ENNReal.ofReal_le_ofReal ?_)` and prove the remaining obligations. Use `hDb0 b` as an intermediate fact.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `he` using `(Real.exp_pos (-(L * ρ))).le`. Use `gcongr`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← ENNReal.ofReal_mul (mul_nonneg (hCb0 b) (norm_nonneg _))]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[lintegral_finset_sum _ fun b _ => (hfm b).const_mul _]`. Conclude with `Finset.sum_congr rfl fun b _ => lintegral_const_mul _ (hfm b)`. Use `_ ≤ ∑ b, ENNReal.ofReal (Cb b * Db b * ‖m.U‖ * (1 + R) ^ (Finset.univ.sup Nb) * Real.exp (-(L * ρ))) := Finset.sum_le_sum fun b _ => hT b`.
-
-Use `_ = _ := by`. Rewrite using `[← ENNReal.ofReal_sum_of_nonneg]`. Use `congr 1`. Simplify using `only [Finset.sum_mul]`. Introduce `b _`.
-
-Use `mul_nonneg (hCb0 b) (hDb0 b)` as an intermediate fact. Establish `he` using `(Real.exp_pos (-(L * ρ))).le`. Establish `hp1 : 0 ≤ (1 + R) ^ (Finset.univ.sup Nb)` using `by positivity`. Check the signs of the components of the expression.
+Establish an intermediate fact. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Tf.GlobalTraceComparison.Pi.tailInt_of_bounds :
     GFac → GBound → Supp → DomInt → TailInt := by

@@ -30,7 +30,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 namespace GlobalTheory.CompanionTheory.Ar.Link
 
 /- English proof (translation)
-Introduce `hI hHS hBig hRes`. Take `⟨-, -, -, -, hZ, hD⟩` from `GlobalTheory.CompanionTheory.Ar.Giv.hsLinks_of_moriwaki hHS hBig`. Conclude with `⟨hZ, hD, trivial, GlobalTheory.T.push_down_of_arith_intersection_system hI, GlobalTheory.T.grassmann_height_Z2_of_statements hI hHS hBig hRes⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nineFree_of_intersection :
     ReciprocityTheory.ChartRestriction.G.Geo.ArithIntersectionSystemStatement → ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.MoriwakiHSStatement → ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.MoriwakiBigStatement → ReciprocityTheory.ChartRestriction.G.Geo.ResK.ResKStatement → Prov.ZhangDimensionPushDownGrassmannianHeightBounds := by

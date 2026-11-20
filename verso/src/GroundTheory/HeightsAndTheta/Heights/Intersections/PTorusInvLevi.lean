@@ -20,15 +20,13 @@ section Vectors
 variable {J : Type} [Fintype J]
 
 /- English proof (translation)
-Use `set B : J → ℝ := fun j => (z j).re * (w j).re + (z j).im * (w j).im with hB`. Use `set D : J → ℝ := fun j => (z j).re * (w j).im - (z j).im * (w j).re with hD`. Establish `hterm : ∀ j l, ‖z j * w l - z l * w j‖ ^ 2 = ‖z j‖ ^ 2 * ‖w l‖ ^ 2 + ‖z l‖ ^ 2 * ‖w j‖ ^ 2 - 2 * (B j * B l + D j * D l)`. Introduce `j l`. Simplify using `only [hB, hD, Complex.sq_norm, Complex.normSq_apply, Complex.sub_re, Complex.sub_im, Complex.mul_re, Complex.mul_im]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `e1 : sqSum z * sqSum w = ∑ j, ∑ l, ‖z j‖ ^ 2 * ‖w l‖ ^ 2`. Rewrite using `[sqSum, sqSum, Finset.sum_mul_sum]`. Establish `e2 : sqSum z * sqSum w = ∑ j, ∑ l, ‖z l‖ ^ 2 * ‖w j‖ ^ 2`. Rewrite using `[mul_comm, sqSum, sqSum, Finset.sum_mul_sum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun l _ => mul_comm _ _`. Establish `e3 : reInner z w ^ 2 = ∑ j, ∑ l, B j * B l`. Rewrite using `[reInner_apply, sq, Finset.sum_mul_sum]`. Establish `e4 : reInner z (Complex.I • w) ^ 2 = ∑ j, ∑ l, D j * D l`. Rewrite using `[reInner_apply, sq, Finset.sum_mul_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Simplify using `only [hD, Pi.smul_apply, smul_eq_mul, Complex.mul_re, Complex.mul_im, Complex.I_re, Complex.I_im]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsplit : ∑ j, ∑ l, (‖z j‖ ^ 2 * ‖w l‖ ^ 2 + ‖z l‖ ^ 2 * ‖w j‖ ^ 2 - 2 * (B j * B l + D j * D l)) = ∑ j, ∑ l, ‖z j‖ ^ 2 * ‖w l‖ ^ 2 + ∑ j, ∑ l, ‖z l‖ ^ 2 * ‖w j‖ ^ 2 - 2 * (∑ j, ∑ l, B j * B l + ∑ j, ∑ l, D j * D l)`. Simplify using `only [Finset.sum_sub_distrib, Finset.sum_add_distrib, Finset.mul_sum, mul_add]`.
-
-Rewrite using `[Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun l _ => hterm j l, hsplit, ← e1, ← e2, ← e3, ← e4]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem sum_sum_normSq_cross (z w : J → ℂ) :
     ∑ j, ∑ l, ‖z j * w l - z l * w j‖ ^ 2 =
@@ -63,7 +61,7 @@ theorem sum_sum_normSq_cross (z w : J → ℂ) :
   ring
 
 /- English proof (translation)
-The claim follows from `Finset.single_le_sum (f := fun j => ∑ l, ‖z j * w l - z l * w j‖ ^ 2) (fun _ _ => Finset.sum_nonneg fun _ _ => sq_nonneg _) (Finset.mem_univ q)`.
+A detailed English derivation is pending.
 -/
 theorem row_le (z w : J → ℂ) (q : J) :
     ∑ l, ‖z q * w l - z l * w q‖ ^ 2 ≤ ∑ j, ∑ l, ‖z j * w l - z l * w j‖ ^ 2 :=
@@ -71,7 +69,7 @@ theorem row_le (z w : J → ℂ) (q : J) :
     (fun _ _ => Finset.sum_nonneg fun _ _ => sq_nonneg _) (Finset.mem_univ q)
 
 /- English proof (translation)
-Rewrite using `[sum_sum_normSq_cross, leviForm_phi hS w]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sum_cross_eq_levi {z : J → ℂ} (hS : sqSum z ≠ 0) (w : J → ℂ) :
     ∑ j, ∑ l, ‖z j * w l - z l * w j‖ ^ 2 = 4 * sqSum z ^ 2 * leviForm phi z w := by
@@ -80,7 +78,7 @@ theorem sum_cross_eq_levi {z : J → ℂ} (hS : sqSum z ≠ 0) (w : J → ℂ) :
   ring
 
 /- English proof (translation)
-Establish `h0 : 0 ≤ ∑ j, ∑ l, ‖z j * w l - z l * w j‖ ^ 2` using `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => sq_nonneg _`. Rewrite `h0` using `[sum_cross_eq_levi hS w]`. Establish `hS2 : 0 < 4 * sqSum z ^ 2` using `by positivity`. Conclude with `(mul_nonneg_iff_of_pos_left hS2).1 h0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem leviForm_phi_nonneg {z : J → ℂ} (hS : sqSum z ≠ 0) (w : J → ℂ) : 0 ≤ leviForm phi z w := by
   have h0 : 0 ≤ ∑ j, ∑ l, ‖z j * w l - z l * w j‖ ^ 2 :=
@@ -90,11 +88,11 @@ theorem leviForm_phi_nonneg {z : J → ℂ} (hS : sqSum z ≠ 0) (w : J → ℂ)
   exact (mul_nonneg_iff_of_pos_left hS2).1 h0
 
 /- English proof (translation)
-Establish `ha : 0 < ‖z q‖ ^ 2` using `pow_pos (norm_pos_iff.2 hz) 2`. Establish `hSq : ‖z q‖ ^ 2 ≤ sqSum z` using `Finset.single_le_sum (f := fun j => ‖z j‖ ^ 2) (fun _ _ => sq_nonneg _) (Finset.mem_univ q)`. Establish `hS : sqSum z ≠ 0` using `(lt_of_lt_of_le ha hSq).ne'`. Establish `hSle : sqSum z ≤ Fintype.card J * ‖z q‖ ^ 2`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hL` using `leviForm_phi_nonneg hS w`. Establish `hrow` using `row_le z w q`. Rewrite `hrow` using `[sum_cross_eq_levi hS w]`. Establish `hterm : ∀ l, ‖(z q * w l - z l * w q) / z q ^ 2‖ ^ 2 = ‖z q * w l - z l * w q‖ ^ 2 / (‖z q‖ ^ 2) ^ 2`. Introduce `l`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[norm_div, norm_pow, div_pow]`. Rewrite using `[Finset.sum_congr rfl fun l _ => hterm l, ← Finset.sum_div, div_le_iff₀ (by positivity)]`. Establish `h2 : sqSum z ^ 2 ≤ (Fintype.card J * ‖z q‖ ^ 2) ^ 2` using `pow_le_pow_left₀ (sqSum_nonneg z) hSle 2`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem chart_bound {z w : J → ℂ} {q : J} (hq : ∀ j, ‖z j‖ ≤ ‖z q‖) (hz : z q ≠ 0) :
     ∑ l, ‖(z q * w l - z l * w q) / z q ^ 2‖ ^ 2 ≤ 4 * (Fintype.card J : ℝ) ^ 2 * leviForm phi z w := by
@@ -122,13 +120,13 @@ theorem chart_bound {z w : J → ℂ} {q : J} (hq : ∀ j, ‖z j‖ ≤ ‖z q�
     _ = _ := by ring
 
 /- English proof (translation)
-Establish `hc` using `ReciprocityTheory.AnForm.continuousOn_levi hU hφ`. Establish `hK : IsCompact (Q ×ˢ Metric.sphere (0 : J → ℂ) 1)` using `hQ.prod (isCompact_sphere 0 1)`. Take `⟨M, hM⟩` from `hK.exists_bound_of_continuousOn (hc.mono (Set.prod_mono hQU (Set.subset_univ _)))`. Use `⟨max M 0, le_max_right _ _, fun x hx v => ?_⟩` and prove the remaining obligations. Break down `eq_or_ne v 0 with rfl | hv` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `[ReciprocityTheory.AnForm.levi_zero]`. Establish `hn : 0 < ‖v‖` using `norm_pos_iff.2 hv`. Use `set v' : J → ℂ := (‖v‖⁻¹ : ℝ) • v with hv'def`. Establish `hv' : v = (‖v‖ : ℝ) • v'`. Rewrite using `[hv'def, smul_smul, mul_inv_cancel₀ hn.ne', one_smul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hv'n : ‖v'‖ = 1`. Rewrite using `[hv'def, norm_smul, Real.norm_eq_abs, abs_inv, abs_norm, inv_mul_cancel₀ hn.ne']`. Establish `hb : |ReciprocityTheory.AnForm.levi φ x v'| ≤ M`. Simplify `hM (x, v') ⟨hx, mem_sphere_zero_iff_norm.2 hv'n⟩` using `[Real.norm_eq_abs]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ReciprocityTheory.AnForm.levi_smul_dir, abs_mul, abs_of_nonneg (sq_nonneg _)]`. Use `_ ≤ ‖v‖ ^ 2 * max M 0 := by gcongr; exact hb.trans (le_max_left _ _)`. Use `_ = _ := by ring`.
+A detailed English derivation is pending.
 -/
 theorem levi_bound_compact {φ : (J → ℂ) → ℝ} {U Q : Set (J → ℂ)} (hU : IsOpen U) (hφ : ContDiffOn ℝ 2 φ U)
     (hQ : IsCompact Q) (hQU : Q ⊆ U) :
@@ -155,7 +153,7 @@ theorem levi_bound_compact {φ : (J → ℂ) → ℝ} {U Q : Set (J → ℂ)} (h
     _ = _ := by ring
 
 /- English proof (translation)
-Establish `hS : 0 ≤ ∑ p, ‖v p‖ ^ 2` using `Finset.sum_nonneg fun _ _ => sq_nonneg _`. Establish `h : ‖v‖ ≤ Real.sqrt (∑ p, ‖v p‖ ^ 2)`. Use `(pi_norm_le_iff_of_nonneg (Real.sqrt_nonneg _)).2 fun p => ?_` and prove the remaining obligations. Conclude with `(le_abs_self _).trans (Real.abs_le_sqrt (Finset.single_le_sum (f := fun p => ‖v p‖ ^ 2) (fun _ _ => sq_nonneg _) (Finset.mem_univ p)))`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem norm_mul_self_le_sum (v : J → ℂ) : ‖v‖ * ‖v‖ ≤ ∑ p, ‖v p‖ ^ 2 := by
   have hS : 0 ≤ ∑ p, ‖v p‖ ^ 2 := Finset.sum_nonneg fun _ _ => sq_nonneg _
@@ -168,7 +166,7 @@ theorem norm_mul_self_le_sum (v : J → ℂ) : ‖v‖ * ‖v‖ ≤ ∑ p, ‖v
     _ = _ := Real.mul_self_sqrt hS
 
 /- English proof (translation)
-Establish `h : (fsMetric J).ρ x = Real.sqrt (sqSum x)`. Simplify using `[fsMetric, EuclideanSpace.norm_eq, sqSum]`. Rewrite using `[h, Real.log_sqrt (sqSum_nonneg x), phi]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem log_rho_eq_phi (x : J → ℂ) : Real.log ((fsMetric J).ρ x) = phi x := by
   have h : (fsMetric J).ρ x = Real.sqrt (sqSum x) := by
@@ -177,9 +175,9 @@ theorem log_rho_eq_phi (x : J → ℂ) : Real.log ((fsMetric J).ρ x) = phi x :=
   ring
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using hg`. Consider the case `insert a s ha ih`. Establish `heq : (fun y => g y + ∑ k ∈ insert a s, c k * f k y) = fun y => (fun y' => g y' + ∑ k ∈ s, c k * f k y') y + c a * f a y`. Use function extensionality and compare the values at `y`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Finset.sum_insert ha]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[heq, ReciprocityTheory.AnForm.levi_add_smul (c a) ih.1 (hf a) w, ih.2, Finset.sum_insert ha]`. Conclude with `⟨ih.1.add (contDiffAt_const.mul (hf a)), by ring⟩`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem levi_add_sum {K : Type} {z : J → ℂ} (g : (J → ℂ) → ℝ) (f : K → (J → ℂ) → ℝ) (c : K → ℝ)
     (hg : ContDiffAt ℝ 2 g z) (hf : ∀ k, ContDiffAt ℝ 2 (f k) z) (w : J → ℂ) (s : Finset K) :
@@ -205,7 +203,7 @@ section Blocks
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Establish `h : {z : (Σ k, ι k) → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0} = ⋂ k, ⋃ i, {z | z ⟨k, i⟩ ≠ 0}`. Use extensionality with `z`. Simplify using the standard rewrite rules. Rewrite using `[h]`. Conclude with `isOpen_iInter_of_finite fun k => isOpen_iUnion fun i => isOpen_ne_fun (continuous_apply _) continuous_const`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_noZeroBlock : IsOpen {z : (Σ k, ι k) → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0} := by
   have h : {z : (Σ k, ι k) → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0} = ⋂ k, ⋃ i, {z | z ⟨k, i⟩ ≠ 0} := by
@@ -220,13 +218,13 @@ def blk (k : K) : ((Σ k, ι k) → ℂ) →L[ℂ] (ι k → ℂ) :=
     ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : (Σ k, ι k) => ℂ) ⟨k, i⟩
 
 /- English proof (translation)
-Establish `hS : ∀ k, sqSum (blk k z) ≠ 0`. Introduce `k`. Take `⟨i, hi⟩` from `hz k`. Use `(lt_of_lt_of_le (pow_pos (norm_pos_iff.2 hi) 2) ?_).ne'` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun j => ‖blk k z j‖ ^ 2) (fun _ _ => sq_nonneg _) (Finset.mem_univ i)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hf : ∀ k, ContDiffAt ℝ 2 (phi ∘ blk (ι` using `ι) k) z := fun k => (contDiffAt_phi (hS k)).comp z ((blk (ι := ι) k).restrictScalars ℝ).contDiff.contDiffAt`. Establish `hfun : (fun y => ∑ k, Real.log ((fsMetric (ι k)).ρ (fun i => y ⟨k, i⟩))) = fun y => (fun _ => (0 : ℝ)) y + ∑ k ∈ Finset.univ, (fun _ => (1 : ℝ)) k * (phi ∘ blk (ι` using `ι) k) y := by`. Use function extensionality and compare the values at `y`. Simplify using `only [zero_add, one_mul, Function.comp_apply]`. Conclude with `Finset.sum_congr rfl fun k _ => log_rho_eq_phi _`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `(levi_add_sum (fun _ => (0 : ℝ)) (fun k => phi ∘ blk (ι := ι) k) (fun _ => 1) contDiffAt_const hf w Finset.univ).2`. Use `show ReciprocityTheory.AnForm.levi _ z w = _`. Rewrite using `[hfun, h]`. Establish `h0 : ReciprocityTheory.AnForm.levi (fun _ : (Σ k, ι k) → ℂ => (0 : ℝ)) z w = 0`. Simplify using `[ReciprocityTheory.AnForm.levi]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0, zero_add]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[one_mul, ReciprocityTheory.AnForm.levi_comp w ((blk (ι := ι) k).analyticAt z) (contDiffAt_phi (hS k)), ContinuousLinearMap.fderiv]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem levi_Phi {z : (Σ k, ι k) → ℂ} (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) (w : (Σ k, ι k) → ℂ) :
     leviForm (fun y => ∑ k, Real.log ((fsMetric (ι k)).ρ (fun i => y ⟨k, i⟩))) z w =
@@ -263,41 +261,35 @@ end TorusInvariantLevi
 open TorusInvariantLevi in
 
 /- English proof (translation)
-Introduce `K _ ι _ u hu hinv`. Establish `hUo` using `isOpen_noZeroBlock (ι := ι)`. Use `set U := {z : (Σ k, ι k) → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0} with hUdef`. Use `set Q : Set ((Σ k, ι k) → ℂ) := Metric.closedBall 0 1 ∩ {x | ∀ k, ∃ j, x ⟨k, j⟩ = 1} with hQ`. Establish `hQc : IsCompact Q`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcl : IsClosed {x : (Σ k, ι k) → ℂ | ∀ k, ∃ j, x ⟨k, j⟩ = 1}`. Establish `h : {x : (Σ k, ι k) → ℂ | ∀ k, ∃ j, x ⟨k, j⟩ = 1} = ⋂ k, ⋃ j, {x | x ⟨k, j⟩ = 1}`. Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[h]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `isClosed_iInter fun k => isClosed_iUnion_of_finite fun j => isClosed_eq (continuous_apply _) continuous_const`. Conclude with `(isCompact_closedBall 0 1).inter_right hcl`. Establish `hQU : Q ⊆ U` using `fun x hx k => by`. Take `⟨j, hj⟩` from `hx.2 k`. Conclude with `⟨j, by rw [hj]; exact one_ne_zero⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨M, hM0, hM⟩` from `levi_bound_compact hUo hu hQc hQU`. Use `set B : ℝ := ∑ k, 4 * (Fintype.card (ι k) : ℝ) ^ 2 with hB`. Use `⟨M * B, fun z hz w => ?_⟩` and prove the remaining obligations. Establish `hmax : ∀ k, ∃ j, ∀ j', ‖z ⟨k, j'⟩‖ ≤ ‖z ⟨k, j⟩‖` using `fun k => by`. Take `⟨j0, _⟩` from `hz k`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨j, _, hj⟩` from `Finset.exists_max_image Finset.univ (fun j => ‖z ⟨k, j⟩‖) ⟨j0, Finset.mem_univ _⟩`. Conclude with `⟨j, fun j' => hj j' (Finset.mem_univ _)⟩`. Use `choose i hi using hmax`. Establish `hne : ∀ k, z ⟨k, i k⟩ ≠ 0` using `fun k => by`. Take `⟨j0, hj0⟩` from `hz k`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `h0`. Establish `h` using `hi k j0`. Rewrite `h` using `[h0, norm_zero]`. Conclude with `hj0 (norm_le_zero_iff.1 h)`. Use `set τ : ((Σ k, ι k) → ℂ) → ((Σ k, ι k) → ℂ) := fun y p => y p * (y ⟨p.1, i p.1⟩)⁻¹ with hτdef`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hτa : AnalyticAt ℂ τ z` using `analyticAt_pi_iff.2 fun p => ((ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : (Σ k, ι k) => ℂ) p).analyticAt z).mul (((ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : (Σ k, ι k) => ℂ) ⟨p.1, i p.1⟩).analyticAt z).inv (hne p.1))`. Establish `hτQ : τ z ∈ Q`. Use `⟨?_, fun k => ⟨i k, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[mem_closedBall_zero_iff, pi_norm_le_iff_of_nonneg zero_le_one]`. Introduce and unpack `⟨k, j⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [hτdef, norm_mul, norm_inv]`. Rewrite using `[mul_inv_le_iff₀ (norm_pos_iff.2 (hne k)), one_mul]`. Conclude with `hi k j`. Simplify using `only [hτdef]`. Conclude with `mul_inv_cancel₀ (hne k)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hev : u ∘ τ =ᶠ[𝓝 z] u`. Establish `hV : IsOpen {y : (Σ k, ι k) → ℂ | ∀ k, y ⟨k, i k⟩ ≠ 0}`. Establish `h : {y : (Σ k, ι k) → ℂ | ∀ k, y ⟨k, i k⟩ ≠ 0} = ⋂ k, {y | y ⟨k, i k⟩ ≠ 0}`. Use extensionality with `y`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Conclude with `isOpen_iInter_of_finite fun k => isOpen_ne_fun (continuous_apply _) continuous_const`. Use `filter_upwards [hV.mem_nhds hne] with y hy`. Establish `h` using `hinv (fun k => (y ⟨k, i k⟩)⁻¹) y (fun k => inv_ne_zero (hy k)) (fun k => ⟨i k, hy k⟩)`. Simplify using `only [Function.comp_apply, hτdef]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← h]`. Use `congr 1`. Use function extensionality and compare the values at `p`. Expand and normalize the polynomial expressions, which then agree. Establish `hu' : ContDiffAt ℝ 2 u (τ z)` using `hu.contDiffAt (hUo.mem_nhds (hQU hτQ))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hlevi : leviForm u z w = ReciprocityTheory.AnForm.levi u (τ z) (fderiv ℂ τ z w)` using `by show ReciprocityTheory.AnForm.levi u z w = _`. Rewrite using `[← ReciprocityTheory.AnForm.levi_congr hev w, ReciprocityTheory.AnForm.levi_comp w hτa hu']`. Establish `hD : ∀ p, fderiv ℂ τ z w p = (z ⟨p.1, i p.1⟩ * w p - z p * w ⟨p.1, i p.1⟩) / z ⟨p.1, i p.1⟩ ^ 2`. Introduce `p`. Establish `hinvq : ∀ q : (Σ k, ι k), z q ≠ 0 → HasFDerivAt (fun y : (Σ k, ι k) → ℂ => (y q)⁻¹) _ z` using `fun q hq => (hasFDerivAt_inv hq).comp z (hasFDerivAt_apply (𝕜 := ℂ) q z)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : ∀ p : (Σ k, ι k), HasFDerivAt (fun y : (Σ k, ι k) → ℂ => y p * (y ⟨p.1, i p.1⟩)⁻¹) _ z` using `fun p => (hasFDerivAt_apply (𝕜 := ℂ) p z).mul (hinvq _ (hne p.1))`. Establish `key : fderiv ℂ τ z = ContinuousLinearMap.pi fun p => fderiv ℂ (fun y : (Σ k, ι k) → ℂ => y p * (y ⟨p.1, i p.1⟩)⁻¹) z` using `fderiv_pi fun p => (hc p).differentiableAt`. Rewrite using `[key, ContinuousLinearMap.pi_apply, (hc p).fderiv]`. Establish `hq` using `hne p.1`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hS : ∀ k, sqSum (blk k z) ≠ 0`. Introduce `k`. Use `(lt_of_lt_of_le (pow_pos (norm_pos_iff.2 (hne k)) 2) ?_).ne'` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Finset.single_le_sum (f := fun j => ‖blk k z j‖ ^ 2) (fun _ _ => sq_nonneg _) (Finset.mem_univ (i k))`. Establish `hLnn : ∀ k, 0 ≤ leviForm phi (blk k z) (blk k w)` using `fun k => leviForm_phi_nonneg (hS k) _`. Establish `hblock : ∀ k, ∑ l, ‖fderiv ℂ τ z w ⟨k, l⟩‖ ^ 2 ≤ 4 * (Fintype.card (ι k) : ℝ) ^ 2 * leviForm phi (blk k z) (blk k w)`. Introduce `k`. Combine the equalities or inequalities in the displayed calculation.
-
-Establish `hv` using `hM (τ z) hτQ (fderiv ℂ τ z w)`. Establish `hsup` using `norm_mul_self_le_sum (fderiv ℂ τ z w)`. Establish `hsplit : ∑ p, ‖fderiv ℂ τ z w p‖ ^ 2 = ∑ k, ∑ l, ‖fderiv ℂ τ z w ⟨k, l⟩‖ ^ 2` using `Fintype.sum_sigma _`. Rewrite using `[hlevi, levi_Phi hz w]`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[← hsplit]`. Conclude with `mul_le_mul_of_nonneg_left hsup hM0`. Use `_ ≤ M * ∑ k, 4 * (Fintype.card (ι k) : ℝ) ^ 2 * leviForm phi (blk k z) (blk k w) := mul_le_mul_of_nonneg_left (Finset.sum_le_sum fun k _ => hblock k) hM0`. Use `_ ≤ M * ∑ k, B * leviForm phi (blk k z) (blk k w) := by`. Use `mul_le_mul_of_nonneg_left (Finset.sum_le_sum fun k _ => ?_) hM0` and prove the remaining obligations.
-
-Use `mul_le_mul_of_nonneg_right ?_ (hLnn k)` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun k => 4 * (Fintype.card (ι k) : ℝ) ^ 2) (fun _ _ => by positivity) (Finset.mem_univ k)`. Use `_ = M * B * ∑ k, leviForm phi (blk k z) (blk k w) := by`. Rewrite using `[← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem TorusInvLevi.proof : TorusInvLevi.Statement := by
   intro K _ ι _ u hu hinv

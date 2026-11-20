@@ -13,13 +13,13 @@ section L
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
 /- English proof (translation)
-Use `wlog h : modulus b ≤ modulus a generalizing a b`. Use `this b a (le_of_not_ge h)` as an intermediate fact. Rewrite using `[add_comm, max_comm]` and apply the resulting hypothesis. Distinguish the cases in `ha : a = 0`. Establish `hb : b = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[ha, modulus_zero]`. Simplify using `using h`. Simplify using `[ha, hb]`. Establish `hpos` using `modulus_pos ha`. Establish `hq : b / a ∈ 𝒪[F]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← modulus_le_one_iff, div_eq_mul_inv, modulus_mul, modulus_inv]`. Conclude with `mul_inv_le_one_of_le₀ h (le_of_lt hpos)`. Establish `h1 : 1 + b / a ∈ 𝒪[F]` using `add_mem (one_mem _) hq`. Establish `h2` using `(modulus_le_one_iff).2 h1`. Establish `h3 : a + b = a * (1 + b / a)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[h3, modulus_mul]`. Conclude with `le_max_of_le_left (mul_le_of_le_one_right zero_le h2)`.
+A detailed English derivation is pending.
 -/
 theorem modulus_add_le_max (a b : F) : modulus (a + b) ≤ max (modulus a) (modulus b) := by
   wlog h : modulus b ≤ modulus a generalizing a b
@@ -42,7 +42,7 @@ theorem modulus_add_le_max (a b : F) : modulus (a + b) ≤ max (modulus a) (modu
   exact le_max_of_le_left (mul_le_of_le_one_right zero_le h2)
 
 /- English proof (translation)
-Establish `h : modulus (-1 : F) ≤ 1` using `(modulus_le_one_iff).2 (neg_mem (one_mem _))`. Establish `e : -x = (-1) * x` using `by ring`. Rewrite using `[e, modulus_mul]`. Conclude with `mul_le_of_le_one_left zero_le h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem modulus_neg_le (x : F) : modulus (-x) ≤ modulus x := by
   have h : modulus (-1 : F) ≤ 1 := (modulus_le_one_iff).2 (neg_mem (one_mem _))

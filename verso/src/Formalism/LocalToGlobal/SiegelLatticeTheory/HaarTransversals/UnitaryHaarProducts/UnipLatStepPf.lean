@@ -10,11 +10,11 @@ open Matrix NumberField Formalism.BasicNotions Formalism.L2.SG.HidaSetting Forma
 namespace Formalism.L2.SG.Pf.UnipB
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `ratApprox_holds D X 1 (Formalism.UG.UJ (starRingEnd X.B.I.E) X.B.I.J).one_mem (k + 1) (by omega) tY htY`. Establish `hG1 : Gr X (↑(1 : GL (Fin X.B.I.n) X.B.I.E) : Matrix _ _ _) = 1`. Rewrite using `[Units.val_one]`. Conclude with `rcm_gr_one X`. Establish `hG1' : Gr X (↑(1 : GL (Fin X.B.I.n) X.B.I.E)⁻¹ : Matrix _ _ _) = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inv_one]`. Conclude with `hG1`. Use `⟨C, fun P hPk hPs => ?_⟩` and prove the remaining obligations. Take `⟨Y, hYk, -, hYs, ⟨A, hA⟩, hYC⟩` from `hC P fun v => ⟨hPk v, by`. Rewrite using `[hG1, hG1', Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul, Matrix.mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `inPat_mono (by omega) (hPk v), hPs v⟩`. Use `⟨Y, hYk, hYs, ⟨A.map (fun a => (a : X.B.I.E)), fun i j => RingOfIntegers.isIntegral_coe (A i j), hA⟩, fun v i j => ?_⟩` and prove the remaining obligations. Use `hYC v i j` as an intermediate fact. Rewrite `this`, the goal using `[Matrix.sub_apply]`. Rewrite using `[norm_sub_rev]` and apply the resulting hypothesis.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem latStep_lvl {D : D7} (X : HidaSetting D) (tY : ℕ) (htY : 0 < tY) (k : ℕ) :
     ∃ C : ℝ, ∀ P : InfinitePlace X.B.I.F → Matrix (Kap X) (Kap X) ℂ,
@@ -37,11 +37,11 @@ theorem latStep_lvl {D : D7} (X : HidaSetting D) (tY : ℕ) (htY : 0 < tY) (k : 
   rwa [norm_sub_rev]
 
 /- English proof (translation)
-Introduce `tY htY`. Use `choose C hC using latStep_lvl X tY htY`. Use `⟨∑ j ∈ Finset.range (N0 D), |C j|, Finset.sum_nonneg fun j _ => abs_nonneg _, fun k hk P hPk hPs => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hkN : k < N0 D`. Take `⟨j, rfl⟩ : ∃ j, k = j + 1` from `⟨k - 1, by omega⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Y, hY1, hY2, hY3, hY4⟩` from `hC j P hPk hPs`. Use `⟨Y, hY1, hY2, hY3, fun v i l => (hY4 v i l).trans ((le_abs_self _).trans ?_)⟩` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun j => |C j|) (fun j _ => abs_nonneg _) (Finset.mem_range.2 (by omega))`. Establish `hP0 : ∀ v, P v = 0` using `fun v => eq_zero_of_inPat (L := k) (fun i => by have := lvk_lt X i; omega) (hPk v)`. Use `⟨0, inPat_zero _, by simp, intDiv_zero _, fun v i j => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hP0 v]`. Simplify using `only [Matrix.map_zero _ (map_zero _), sub_zero, Matrix.zero_apply, norm_zero]`. Conclude with `Finset.sum_nonneg fun j _ => abs_nonneg _`.
+A detailed English derivation is pending.
 -/
 theorem latStep_holds {D : D7} (X : HidaSetting D) : LatStepP X := by
   intro tY htY
@@ -60,7 +60,7 @@ theorem latStep_holds {D : D7} (X : HidaSetting D) : LatStepP X := by
     exact Finset.sum_nonneg fun j _ => abs_nonneg _
 
 /- English proof (translation)
-Introduce `_ X` and use `latStep_holds X`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem latStepC_holds : LatStepC := fun _ X => latStep_holds X
 

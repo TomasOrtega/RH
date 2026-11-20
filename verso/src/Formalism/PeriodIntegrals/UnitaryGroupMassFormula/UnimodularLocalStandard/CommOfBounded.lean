@@ -21,22 +21,22 @@ Both sides reduce to the same expression.
 lemma cmL_omega2 : (cmL a b d ha hd lam hlam).ω₂ = lam * cmTheta b d := rfl
 
 /- English proof (translation)
-Simplify using `only [PI.ULS.stdLat, AddSubgroup.mem_pi, Set.mem_univ, forall_const, Submodule.mem_toAddSubgroup]`.
+Simplify using the standard rewrite rules.
 -/
 lemma mem_stdLat_iff (L : PeriodPair) (v : m → ℂ) : v ∈ stdLat L m ↔ ∀ i, v i ∈ L.lattice := by
   simp only [PI.ULS.stdLat, AddSubgroup.mem_pi, Set.mem_univ, forall_const,
     Submodule.mem_toAddSubgroup]
 
 /- English proof (translation)
-Rewrite using `[mul_comm, mul_div_assoc, div_self hw, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem mul_div_cancel_left_of_ne_zero {w : ℂ} (hw : w ≠ 0) (x : ℂ) : w * x / w = x := by
   rw [mul_comm, mul_div_assoc, div_self hw, mul_one]
 
 /- English proof (translation)
-Rewrite using `[lattice_iff]`. Simplify using `only [cmL_omega1, cmL_omega2, Complex.real_smul, Complex.ofReal_intCast]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨p, q, h⟩`. Conclude with `⟨p, q, by rw [h]; ring⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨p, q, h⟩`. Conclude with `⟨p, q, by rw [h]; ring⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 private theorem mem_cmL_lattice_iff (z : ℂ) :
     z ∈ (PI.ULS.cmL a b d ha hd lam hlam).lattice ↔
@@ -50,7 +50,7 @@ private theorem mem_cmL_lattice_iff (z : ℂ) :
     exact ⟨p, q, by rw [h]; ring⟩
 
 /- English proof (translation)
-Introduce `i`. Take `⟨p, q, hpq⟩` from `(mem_cmL_lattice_iff _).1 ((mem_stdLat_iff _ s).1 hs i)`. Use `⟨p * (a : ℤ), q, 1, one_ne_zero, ?_⟩` and prove the remaining obligations. Rewrite using `[hpq, mul_div_cancel_left_of_ne_zero hlam]`. Use `push_cast`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -63,25 +63,25 @@ lemma isKv_of_mem {s : m → ℂ} (hs : s ∈ stdLat (cmL a b d ha hd lam hlam) 
   ring
 
 /- English proof (translation)
-Conclude with `Nat.cast_smul_eq_nsmul ℂ N y`.
+A detailed English derivation is pending.
 -/
 private theorem natCast_smul_eq_nsmul (N : ℕ) (y : m → ℂ) : (N : ℂ) • y = N • y := by
   exact Nat.cast_smul_eq_nsmul ℂ N y
 
 /- English proof (translation)
-Rewrite using `[← natCast_smul_eq_nsmul, Pi.smul_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem nsmul_apply_eq_natCast_mul (N : ℕ) (v : m → ℂ) (i : m) : (N • v) i = (N : ℂ) * v i := by
   rw [← natCast_smul_eq_nsmul, Pi.smul_apply, smul_eq_mul]
 
 /- English proof (translation)
-Use `choose p q r hr hpq using h`. Establish `hself : ∀ z : ℤ, z ∣ (z.natAbs : ℤ)` using `fun _ => Int.dvd_natAbs.mpr dvd_rfl`. Choose the witnesses or unpack the hypotheses as in `⟨M, hM0, hMdvd⟩ : ∃ M : ℕ, M ≠ 0 ∧ ∀ i, r i ∣ (M : ℤ) := by`. Use `⟨∏ j, (r j).natAbs, Finset.prod_ne_zero_iff.mpr fun j _ => Int.natAbs_ne_zero.mpr (hr j), fun i => (hself (r i)).trans ?_⟩` and prove the remaining obligations. Establish `hi : (r i).natAbs ∣ ∏ j, (r j).natAbs` using `Finset.dvd_prod_of_mem (fun j => (r j).natAbs) (Finset.mem_univ i)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Int.natCast_dvd_natCast.mpr hi`. Use `⟨a * M, mul_ne_zero ha.ne' hM0, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_stdLat_iff]`. Introduce `i`. Take `⟨k, hk⟩` from `hMdvd i`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk' : (M : ℂ) = (r i : ℂ) * k` using `by exact_mod_cast hk`. Establish `e : v i = v i / lam * lam` using `(div_eq_iff hlam).mp rfl`. Establish `hv : (r i : ℂ) * v i = lam * (p i + q i * PI.ULS.cmTheta b d)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mem_cmL_lattice_iff]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨k * p i, a * k * q i, ?_⟩` and prove the remaining obligations. Rewrite using `[nsmul_apply_eq_natCast_mul, Nat.cast_mul, hk']`. Use `push_cast`. Take the linear combination `((a : ℂ) * k) * hv`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma exists_nsmul_mem {v : m → ℂ} (h : IsKv b d lam v) :
     ∃ N : ℕ, N ≠ 0 ∧ N • v ∈ stdLat (cmL a b d ha hd lam hlam) m := by
@@ -110,7 +110,7 @@ lemma exists_nsmul_mem {v : m → ℂ} (h : IsKv b d lam v) :
   linear_combination ((a : ℂ) * k) * hv
 
 /- English proof (translation)
-Introduce `i`. Take `⟨p, q, r, hr, h'⟩` from `h i`. Use `⟨p, q, r * N, mul_ne_zero hr (by exact_mod_cast hN), ?_⟩` and prove the remaining obligations. Rewrite using `[← h', nsmul_apply_eq_natCast_mul]`. Use `push_cast`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -123,7 +123,7 @@ lemma isKv_of_nsmul {v : m → ℂ} {N : ℕ} (hN : N ≠ 0) (h : IsKv b d lam (
   ring
 
 /- English proof (translation)
-Introduce `i`. Rewrite using `[Pi.sub_apply, sub_div]`. Conclude with `isK_sub (hv i) (hw i)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma isKv_sub {v w : m → ℂ} (hv : IsKv b d lam v) (hw : IsKv b d lam w) : IsKv b d lam (v - w) := by
   intro i
@@ -131,7 +131,7 @@ lemma isKv_sub {v w : m → ℂ} (hv : IsKv b d lam v) (hw : IsKv b d lam w) : I
   exact isK_sub (hv i) (hw i)
 
 /- English proof (translation)
-Introduce `i`. Rewrite using `[Pi.smul_apply, smul_eq_mul, mul_div_assoc]`. Conclude with `isK_mul hn ht (hv i)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma isKv_smul {e : ℤ} (hn : cmTheta b d * (b - cmTheta b d) = (e : ℂ)) {t : ℂ} {v : m → ℂ}
     (ht : IsK b d t) (hv : IsKv b d lam v) : IsKv b d lam (t • v) := by
@@ -140,9 +140,7 @@ lemma isKv_smul {e : ℤ} (hn : cmTheta b d * (b - cmTheta b d) = (e : ℂ)) {t 
   exact isK_mul hn ht (hv i)
 
 /- English proof (translation)
-Introduce `j`. Rewrite using `[Pi.single_apply]`. Use `split_ifs`. Conclude with `hw`. Rewrite using `[zero_div]`.
-
-Conclude with `⟨0, 0, 1, one_ne_zero, by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma isKv_single {w : ℂ} (hw : IsK b d (w / lam)) (i : m) : IsKv b d lam (Pi.single i w) := by
   intro j
@@ -155,7 +153,7 @@ lemma isKv_single {w : ℂ} (hw : IsK b d (w / lam)) (i : m) : IsKv b d lam (Pi.
 def kappa (L : PeriodPair) (lam : ℂ) : ℂ := lam * conj lam * ((area L : ℝ) : ℂ)⁻¹
 
 /- English proof (translation)
-Simplify using `only [kappa]`. Rewrite using `[map_mul, map_mul, map_inv₀, Complex.conj_conj, Complex.conj_ofReal]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma kappa_conj (L : PeriodPair) (lam : ℂ) : conj (kappa L lam) = kappa L lam := by
   simp only [kappa]
@@ -163,9 +161,7 @@ lemma kappa_conj (L : PeriodPair) (lam : ℂ) : conj (kappa L lam) = kappa L lam
   ring
 
 /- English proof (translation)
-Establish `harea : ((area L : ℝ) : ℂ) ≠ 0`. Rewrite using `[area_eq]`. Conclude with `Complex.ofReal_ne_zero.mpr (abs_ne_zero.mpr (detD_ne L))`. Establish `hc : conj lam ≠ 0` using `by rwa [Ne, map_eq_zero]`. Simplify using `only [kappa]`.
-
-Conclude with `mul_ne_zero (mul_ne_zero hlam hc) (inv_ne_zero harea)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma kappa_ne (L : PeriodPair) (hlam : lam ≠ 0) : kappa L lam ≠ 0 := by
   have harea : ((area L : ℝ) : ℂ) ≠ 0 := by
@@ -176,9 +172,9 @@ lemma kappa_ne (L : PeriodPair) (hlam : lam ≠ 0) : kappa L lam ≠ 0 := by
   exact mul_ne_zero (mul_ne_zero hlam hc) (inv_ne_zero harea)
 
 /- English proof (translation)
-Establish `hc : conj lam ≠ 0` using `by rwa [Ne, map_eq_zero]`. Establish `h1 : lam * lam⁻¹ = 1` using `mul_inv_cancel₀ hlam`. Establish `h2 : conj lam * (conj lam)⁻¹ = 1` using `mul_inv_cancel₀ hc`. Rewrite using `[stdH_apply]`. Simplify using `only [kappa]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_div₀]`. Take the linear combination `(-(x i * conj (y i) * ((area L : ℝ) : ℂ)⁻¹) * (conj lam * (conj lam)⁻¹)) * h1 + (-(x i * conj (y i) * ((area L : ℝ) : ℂ)⁻¹)) * h2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 lemma stdH_kappa (L : PeriodPair) (hlam : lam ≠ 0) (x y : m → ℂ) :
     stdH L m x y = kappa L lam * ∑ i, (x i / lam) * conj (y i / lam) := by
@@ -194,7 +190,7 @@ lemma stdH_kappa (L : PeriodPair) (hlam : lam ≠ 0) (x y : m → ℂ) :
     (-(x i * conj (y i) * ((area L : ℝ) : ℂ)⁻¹)) * h2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨∑ i, (x i / lam) * conj (y i / lam), isK_sum hn _ _ fun i _ => isK_mul hn (hx i) (isK_conj (hy i)), stdH_kappa L hlam x y⟩`.
+Supply the required witnesses or components.
 -/
 lemma isK_H {e : ℤ} (hn : cmTheta b d * (b - cmTheta b d) = (e : ℂ)) (L : PeriodPair) (hlam : lam ≠ 0)
     {x y : m → ℂ} (hx : IsKv b d lam x) (hy : IsKv b d lam y) :
@@ -204,20 +200,20 @@ lemma isK_H {e : ℤ} (hn : cmTheta b d * (b - cmTheta b d) = (e : ℂ)) (L : Pe
     stdH_kappa L hlam x y⟩
 
 /- English proof (translation)
-Conclude with `Int.cast_smul_eq_zsmul ℂ p y`.
+A detailed English derivation is pending.
 -/
 private theorem intCast_smul_eq_zsmul (p : ℤ) (y : m → ℂ) : (p : ℂ) • y = p • y := by
   exact Int.cast_smul_eq_zsmul ℂ p y
 
 /- English proof (translation)
-Rewrite using `[← natCast_smul_eq_nsmul N ((p : ℂ) • y), ← natCast_smul_eq_nsmul N y, smul_comm (N : ℂ) (p : ℂ) y, intCast_smul_eq_zsmul p ((N : ℂ) • y)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem nsmul_intCast_smul_comm (N : ℕ) (p : ℤ) (y : m → ℂ) : N • ((p : ℂ) • y) = p • (N • y) := by
   rw [← natCast_smul_eq_nsmul N ((p : ℂ) • y), ← natCast_smul_eq_nsmul N y, smul_comm (N : ℂ) (p : ℂ) y,
     intCast_smul_eq_zsmul p ((N : ℂ) • y)]
 
 /- English proof (translation)
-Take `⟨k, rfl⟩` from `hnN`. Establish `e : (n * k) • x = k • (n • x)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e]`. Conclude with `nsmul_mem hx k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem nsmul_mem_of_dvd_of_nsmul_mem {S : AddSubgroup (m → ℂ)} {x : m → ℂ} {n N : ℕ} (hnN : n ∣ N)
     (hx : n • x ∈ S) : N • x ∈ S := by
@@ -230,15 +226,13 @@ private theorem nsmul_mem_of_dvd_of_nsmul_mem {S : AddSubgroup (m → ℂ)} {x :
   exact nsmul_mem hx k
 
 /- English proof (translation)
-Use `choose N1 hN1 hm1 using fun i => exists_nsmul_mem (ha := ha) (hd := hd) (hlam := hlam) (h1 i)`. Use `choose N2 hN2 hm2 using fun i => exists_nsmul_mem (ha := ha) (hd := hd) (hlam := hlam) (h2 i)`. Use `⟨∏ j, N1 j * N2 j, Finset.prod_ne_zero_iff.mpr fun j _ => mul_ne_zero (hN1 j) (hN2 j), ?_⟩` and prove the remaining obligations. Establish `hdvd : ∀ i, N1 i * N2 i ∣ ∏ j, N1 j * N2 j` using `fun i => Finset.dvd_prod_of_mem (fun j => N1 j * N2 j) (Finset.mem_univ i)`. Establish `k1 : ∀ i, (∏ j, N1 j * N2 j) • φ (Pi.single i (PI.ULS.cmL a b d ha hd lam hlam).ω₁) ∈ PI.ULS.stdLat (PI.ULS.cmL a b d ha hd lam hlam) m` using `fun i => nsmul_mem_of_dvd_of_nsmul_mem ((dvd_mul_right (N1 i) (N2 i)).trans (hdvd i)) (hm1 i)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `k2 : ∀ i, (∏ j, N1 j * N2 j) • φ (Pi.single i (PI.ULS.cmL a b d ha hd lam hlam).ω₂) ∈ PI.ULS.stdLat (PI.ULS.cmL a b d ha hd lam hlam) m` using `fun i => nsmul_mem_of_dvd_of_nsmul_mem ((dvd_mul_left (N2 i) (N1 i)).trans (hdvd i)) (hm2 i)`. Introduce `s hs`. Establish `hs'` using `(mem_stdLat_iff _ s).1 hs`. Use `choose p q hpq using fun i => (lattice_iff _ _).1 (hs' i)`. Establish `hs_sum : s = ∑ i, Pi.single i (s i)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(Finset.univ_sum_single s).symm`. Rewrite using `[hs_sum, map_sum, Finset.smul_sum]`. Use `sum_mem fun i _ => ?_` and prove the remaining obligations. Establish `e : Pi.single i (s i) = ((p i : ℤ) : ℂ) • Pi.single i (PI.ULS.cmL a b d ha hd lam hlam).ω₁ + ((q i : ℤ) : ℂ) • Pi.single i (PI.ULS.cmL a b d ha hd lam hlam).ω₂`. Rewrite using `[hpq i]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `[Complex.real_smul]`. Simplify using `[Pi.single_apply, h]`.
-
-Rewrite using `[e, map_add, map_smul, map_smul, smul_add, nsmul_intCast_smul_comm, nsmul_intCast_smul_comm]`. Conclude with `add_mem (zsmul_mem (k1 i) _) (zsmul_mem (k2 i) _)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma bounded_map (φ : (m → ℂ) →ₗ[ℂ] (m → ℂ))
     (h1 : ∀ i, IsKv b d lam (φ (Pi.single i (cmL a b d ha hd lam hlam).ω₁)))
@@ -277,13 +271,11 @@ lemma bounded_map (φ : (m → ℂ) →ₗ[ℂ] (m → ℂ))
   exact add_mem (zsmul_mem (k1 i) _) (zsmul_mem (k2 i) _)
 
 /- English proof (translation)
-Unfold `PI.ULS.relIdx PI.ULS.imgLat`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← AddSubgroup.relIndex_comap]`. Use `relIdx_ne_zero_of_le_left ?_ (stdLat_smul_idx _ m hN)` and prove the remaining obligations. Introduce `x hx`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨s, hs, rfl⟩` from `AddSubgroup.mem_map.mp hx`. Rewrite using `[AddSubgroup.mem_comap]`. Use `show σ ((N : ℂ) • s) ∈ _`. Rewrite using `[map_smul, natCast_smul_eq_nsmul]`. Conclude with `h1 s hs`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `relIdx_ne_zero_of_le_left ?_ (stdLat_smul_idx _ m hN')` and prove the remaining obligations. Introduce `x hx`. Take `⟨s, hs, rfl⟩` from `AddSubgroup.mem_map.mp hx`. Use `AddSubgroup.mem_map.mpr ⟨N' • σ.symm s, h2 s hs, ?_⟩` and prove the remaining obligations. Use `show σ (N' • σ.symm s) = (N' : ℂ) • s`.
-
-Rewrite using `[map_nsmul, LinearEquiv.apply_symm_apply, natCast_smul_eq_nsmul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma comm_of_bounded (σ : (m → ℂ) ≃ₗ[ℂ] (m → ℂ)) {N N' : ℕ} (hN : N ≠ 0) (hN' : N' ≠ 0)
     (h1 : ∀ s ∈ stdLat (cmL a b d ha hd lam hlam) m, N • σ s ∈ stdLat (cmL a b d ha hd lam hlam) m)

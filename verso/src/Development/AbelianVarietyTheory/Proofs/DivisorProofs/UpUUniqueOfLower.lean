@@ -12,19 +12,19 @@ set_option autoImplicit false
 namespace GlobalTheory.FlagCell2
 
 /- English proof (translation)
-Introduce `K _ s y y' b hb h`. Establish `key : ∀ i j : Fin s, (∀ k, k < j → b i k = 0) → upU y i j = b i j`. Introduce `i j hk`. Rewrite using `[h, Matrix.mul_apply, Finset.sum_eq_single j]`. Simplify using `[upU]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `k _ hkj`. Break down `lt_or_gt_of_ne hkj with h1 | h1` into its components or cases. Rewrite using `[hk k h1, zero_mul]`. Simplify using `[upU, not_lt.mpr h1.le, hkj]`. Introduce `hj`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ j) hj`. Establish `low : ∀ (i : Fin s) (N : ℕ) (j : Fin s), j.1 < N → j < i → b i j = 0`. Introduce `i N`. Proceed by induction on `N with`. Consider the case `zero => intro j hj`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Conclude with `absurd hj (Nat.not_lt_zero _)`. Consider the case `succ N ih`. Introduce `j hj hji`. Rewrite using `[← key i j fun k hk => ih k (by have := Fin.lt_def.mp hk; omega) (hk.trans hji)]`. Simplify using `[upU, not_lt.mpr hji.le, hji.ne']`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hb1 : b = 1`. Use extensionality with `i j`. Break down `lt_trichotomy i j with h1 | rfl | h1` into its components or cases. Rewrite using `[hb i j h1, Matrix.one_apply_ne h1.ne]`. Rewrite using `[← key i i fun k hk => low i (k.1 + 1) k (Nat.lt_succ_self _) hk]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[upU]`. Rewrite using `[low i (j.1 + 1) j (Nat.lt_succ_self _) h1, Matrix.one_apply_ne h1.ne']`. Rewrite `h` using `[hb1, Matrix.one_mul]`. Use function extensionality and compare the values at `⟨⟨c, a⟩, hac⟩`. Establish `hac' : a < c` using `hac`.
+Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrFun (congrFun h a) c` as an intermediate fact. Simplify `this` using `[upU, hac']`.
+A detailed English derivation is pending.
 -/
 theorem upU_unique_of_lower : ∀ (K : Type) [Field K] (s : ℕ) (y y' : Low s → K) (b : Matrix (Fin s) (Fin s) K),
     (∀ i j, i < j → b i j = 0) → upU y = b * upU y' → y = y' := by

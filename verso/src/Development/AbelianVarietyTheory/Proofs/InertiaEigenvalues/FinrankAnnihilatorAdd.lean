@@ -8,13 +8,11 @@ variable {k M M' : Type*} [Field k] [AddCommGroup M] [Module k M] [AddCommGroup 
   [FiniteDimensional k M] [FiniteDimensional k M']
 
 /- English proof (translation)
-Use `set φ : M →ₗ[k] Dual k S := S.subtype.dualMap ∘ₗ β with hφ`. Use `set ψ : S →ₗ[k] Dual k M := β.flip ∘ₗ S.subtype with hψ`. Establish `hφψ : φ = ψ.dualMap ∘ₗ (Module.evalEquiv k M).toLinearMap`. Use extensionality with `a s`. Both sides reduce to the same expression.
+Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hrange : LinearMap.range φ = LinearMap.range ψ.dualMap`. Rewrite using `[hφψ, LinearEquiv.range_comp]`. Establish `h1` using `LinearMap.finrank_range_add_finrank_ker φ`. Establish `h2` using `LinearMap.finrank_range_add_finrank_ker ψ`. Establish `h3 : finrank k (LinearMap.range φ) = finrank k (LinearMap.range ψ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hrange, LinearMap.finrank_range_dualMap_eq_finrank_range]`. Establish `h4 : finrank k (LinearMap.ker ψ) = finrank k (LinearMap.ker β.flip)`. Establish `: LinearMap.ker ψ = (LinearMap.ker β.flip).comap S.subtype`. Rewrite using `[hψ, LinearMap.ker_comp]`. Rewrite using `[this]`.
-
-Conclude with `(Submodule.comapSubtypeEquivOfLe hS).finrank_eq`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem finrank_annihilator_add (β : M →ₗ[k] M' →ₗ[k] k) (S : Submodule k M')
     (hS : LinearMap.ker β.flip ≤ S) :
@@ -38,17 +36,17 @@ theorem finrank_annihilator_add (β : M →ₗ[k] M' →ₗ[k] k) (S : Submodule
   omega
 
 /- English proof (translation)
-Establish `hker : ∀ b : M', b ∈ LinearMap.ker β.flip → b ∈ Ae ⊓ Af'`. Introduce `b hb`. Apply `hN b` to reduce the goal to its premises. Introduce `a`. Use `LinearMap.congr_fun (LinearMap.mem_ker.mp hb) a` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `hNe : LinearMap.ker β.flip ≤ Ae` using `fun b hb => (hker b hb).1`. Establish `hNf : LinearMap.ker β.flip ≤ Af'` using `fun b hb => (hker b hb).2`. Establish `he` using `finrank_annihilator_add β Ae hNe`. Establish `hf'` using `finrank_annihilator_add β Af' hNf`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgle : Ag ≤ LinearMap.ker (Ae.subtype.dualMap ∘ₗ β)`. Introduce `a ha`. Rewrite using `[LinearMap.mem_ker]`. Use extensionality with `⟨b, hb⟩`. Simplify using `using hg a ha b hb`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hfeq : Af = LinearMap.ker (Af'.subtype.dualMap ∘ₗ β)`. Use extensionality with `a`. Rewrite using `[hf a, LinearMap.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `⟨b, hb⟩`. Simplify using `using h b hb`. Introduce `h b hb`. Use `LinearMap.congr_fun h ⟨b, hb⟩` as an intermediate fact. Simplify using `using this`.
+By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hAg` using `Submodule.finrank_mono hgle`. Rewrite using `[hfeq]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem finrank_add_le (β : M →ₗ[k] M' →ₗ[k] k) (Ag Af : Submodule k M) (Ae Af' : Submodule k M')
     (hN : ∀ b : M', (∀ a : M, β a b = 0) → b ∈ Ae ⊓ Af')

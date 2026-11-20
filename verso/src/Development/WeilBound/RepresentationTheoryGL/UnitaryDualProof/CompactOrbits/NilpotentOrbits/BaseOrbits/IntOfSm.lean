@@ -32,7 +32,7 @@ def Gs (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (e : Matrix (Fin n) (Fin n)
       _ = 1 - e := by rw [← mul_assoc, Units.inv_mul, one_mul]
 
 /- English proof (translation)
-The claim follows from `g.2`.
+A detailed English derivation is pending.
 -/
 theorem Gs_mem {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} {e : Matrix (Fin n) (Fin n) k} (g : Gs Z e) :
     (g : GL (Fin n) k) ∈ Gz Z ∧ (g : GL (Fin n) k).val * e = e * (g : GL (Fin n) k).val ∧
@@ -55,11 +55,11 @@ theorem smul_val (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (e : Matrix (Fin 
     (w : Wt e) : (g • w).1 = (g : GL (Fin n) k).val *ᵥ w.1 := rfl
 
 /- English proof (translation)
-Establish `hsub : Z ≤ Subalgebra.centralizer k (Z : Set (Matrix (Fin n) (Fin n) k))` using `fun a ha => (Subalgebra.mem_centralizer_iff k).mpr (fun b hb => hZ.1 b hb a ha)`. Establish `hle : Module.finrank k (Subalgebra.centralizer k (Z : Set (Matrix (Fin n) (Fin n) k))) ≤ Module.finrank k Z`. Establish `h0'` using `h0`. Unfold `dB0 at h0'`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 
-Establish `heq : Subalgebra.toSubmodule Z = Subalgebra.toSubmodule (Subalgebra.centralizer k (Z : Set (Matrix (Fin n) (Fin n) k)))` using `Submodule.eq_of_le_of_finrank_le hsub hle`. Establish `hmem : ∀ x : Gs Z e, ((x : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) ∈ Z`. Introduce `x`. Establish `hc : ((x : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) ∈ Subalgebra.toSubmodule (Subalgebra.centralizer k (Z : Set (Matrix (Fin n) (Fin n) k)))` using `(Subalgebra.mem_centralizer_iff k).mpr (fun a ha => (Gs_mem x).1 a ha)`. Rewrite `hc` using `[← heq]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hc`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Subgroup.coe_mul, Units.val_mul]`. Conclude with `hZ.1 _ (hmem g) _ (hmem h)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Gs_comm (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (hZ : CR Z) (h0 : dB0 Z = 0)
     (e : Matrix (Fin n) (Fin n) k) (g h : Gs Z e) : g * h = h * g := by
@@ -89,9 +89,9 @@ def sm (γ : (ValueGroupWithZero k)ˣ) (A : Matrix (Fin n) (Fin n) k) : Prop :=
   ∀ i j, valuation k (A i j) < γ ∧ valuation k (A i j) < 1
 
 /- English proof (translation)
-Simplify using `only [Matrix.add_apply, Matrix.mul_apply]`. Use `(valuation k).map_add_lt ((valuation k).map_add_lt ?_ (ha i j)) (hb i j)` and prove the remaining obligations. Use `(valuation k).map_sum_lt hc (fun l _ => ?_)` and prove the remaining obligations. Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Conclude with `hb1 l j`. Use `_ = valuation k (a i l) := mul_one _`. Use `_ < c := ha i l`.
+A detailed English derivation is pending.
 -/
 theorem ent_lt (c : ValueGroupWithZero k) (hc : c ≠ 0) (a b : Matrix (Fin n) (Fin n) k)
     (ha : ∀ i j, valuation k (a i j) < c) (hb : ∀ i j, valuation k (b i j) < c)
@@ -107,7 +107,7 @@ theorem ent_lt (c : ValueGroupWithZero k) (hc : c ≠ 0) (a b : Matrix (Fin n) (
     _ < c := ha i l
 
 /- English proof (translation)
-Establish `e : A * B - 1 = (A - 1) * (B - 1) + (A - 1) + (B - 1)` using `by noncomm_ring`. Unfold `sm at *`. Introduce `i j`. Rewrite using `[e]`. Conclude with `⟨ent_lt _ γ.ne_zero _ _ (fun i j => (hA i j).1) (fun i j => (hB i j).1) (fun i j => (hB i j).2.le) i j, ent_lt _ one_ne_zero _ _ (fun i j => (hA i j).2) (fun i j => (hB i j).2) (fun i j => (hB i j).2.le) i j⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem sm_mul (γ : (ValueGroupWithZero k)ˣ) (A B : Matrix (Fin n) (Fin n) k) (hA : sm γ (A - 1))
     (hB : sm γ (B - 1)) : sm γ (A * B - 1) := by
@@ -119,7 +119,7 @@ theorem sm_mul (γ : (ValueGroupWithZero k)ˣ) (A B : Matrix (Fin n) (Fin n) k) 
     ent_lt _ one_ne_zero _ _ (fun i j => (hA i j).2) (fun i j => (hB i j).2) (fun i j => (hB i j).2.le) i j⟩
 
 /- English proof (translation)
-Introduce `i j`. Simplify using `only [Matrix.zero_apply, map_zero]`. Conclude with `⟨zero_lt_iff.mpr γ.ne_zero, zero_lt_one⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem sm_zero (γ : (ValueGroupWithZero k)ˣ) : sm γ (0 : Matrix (Fin n) (Fin n) k) := by
   intro i j
@@ -144,7 +144,7 @@ def Ks (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (e : Matrix (Fin n) (Fin n)
     · simpa using hg
 
 /- English proof (translation)
-Establish `h1 : A i j = (A - 1) i j + (1 : Matrix (Fin n) (Fin n) k) i j` using `by simp`. Rewrite using `[h1]`. Use `((valuation k).map_add _ _).trans (max_le (hA i j).2.le ?_)` and prove the remaining obligations. Rewrite using `[Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem int_of_sm {γ : (ValueGroupWithZero k)ˣ} {A : Matrix (Fin n) (Fin n) k} (hA : sm γ (A - 1)) (i j : Fin n) :
     valuation k (A i j) ≤ 1 := by

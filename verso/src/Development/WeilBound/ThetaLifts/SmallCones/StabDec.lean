@@ -10,15 +10,13 @@ open NumberField Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK Fr
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n n₁ Y Y₁ H i₀ i₁ r s hB hY hH`. Take `⟨ε, A', h⟩` from `isFr hB hY hH`. Establish `e : fr (incM F H.ι) (incV F H.x) (incV F H.y) = incM F (fr H.ι H.x H.y)` using `fr_map _`. Use `⟨fun p t hp => ?_, fun ξ g₁ hg m hm => ?_, fun t g₁ m hm u hu => levi_conj hm hu⟩` and prove the remaining obligations. Take `⟨u, hu, g₁, m, h1, h2, h3⟩` from `stab_dec hB.cm h (det_ne hY) p t hp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨u, hu, g₁, m, h1, h2, fun hr => ?_⟩` and prove the remaining obligations. Take `⟨M, hM⟩` from `mem_ratU.1 hr`. Use `mem_ratU.2 ⟨(A' * M * fr H.ι H.x H.y).toBlocks₁₁, ?_⟩` and prove the remaining obligations. Rewrite using `[h3, hM, e, incM, incM, incM, ← Matrix.map_mul, ← Matrix.map_mul]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Take `⟨m', h1, h2⟩` from `exists_levi hB.cm h (Units.map (inclR (F := F) (AF F)).toMonoidHom ξ) g₁`. Take `⟨M, hM⟩` from `mem_ratU.1 hg`. Rewrite using `[levi_uniq h hm h1]`. Use `mem_ratU.2 ⟨fr H.ι H.x H.y * dg M ξ.1 (σ (ξ⁻¹).1) * A', ?_⟩` and prove the remaining obligations. Rewrite using `[h2, hM, e, incM, incM, incM, incM, Matrix.map_mul, Matrix.map_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Use extensionality with `(i | i) (j | j)`. Both sides reduce to the same expression. Conclude with `(map_zero (inclR (F := F) (E := E) (AF F))).symm`. Conclude with `(map_zero (inclR (F := F) (E := E) (AF F))).symm`.
-
-Apply the tactic sequence `fin_cases i <;> fin_cases j exacts [rfl, (map_zero (inclR (F := F) (E := E) (AF F))).symm, (map_zero (inclR (F := F) (E := E) (AF F))).symm, rfl]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Both sides reduce to the same expression. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem stabDec_of : StabDec := by
   intro F E _ _ _ _ _ σ B n n₁ Y Y₁ H i₀ i₁ r s hB hY hH

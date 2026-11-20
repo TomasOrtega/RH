@@ -20,9 +20,9 @@ def perTau {n g r₀ r : ℕ} (a : ℕ) (ζ : (Fin n → ℂ) → Fin r₀ → F
   (D : ℂ) • ((combMat (ζ (logExp a s)) α)⁻¹ * combMat (lam s) φ)
 
 /- English proof (translation)
-Use extensionality with `k i`. Simplify using `only [combMat, Matrix.of_apply, Matrix.mul_apply, Matrix.map_apply, hw, Finset.sum_apply, Pi.smul_apply, zsmul_eq_mul]`. Use `push_cast`. Simplify using `only [Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun m _ => by`. Simplify using `only [Pi.mul_apply, Pi.intCast_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem combMat_comb {g r r' : ℕ} (w : Fin r' → Fin g → ℂ) (l : Fin r → Fin g → ℂ) (c : Matrix (Fin r') (Fin r) ℤ)
     (α : Matrix (Fin g) (Fin r') ℚ) (hw : ∀ i, w i = ∑ j, c i j • l j) :
@@ -37,9 +37,9 @@ theorem combMat_comb {g r r' : ℕ} (w : Fin r' → Fin g → ℂ) (l : Fin r �
     simp only [Pi.mul_apply, Pi.intCast_apply]; ring
 
 /- English proof (translation)
-Use extensionality with `k j`. Simplify using `only [combMat, Matrix.of_apply, Matrix.add_apply, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply]`. Use `push_cast`. Simplify using `only [add_mul, Finset.sum_add_distrib, Finset.sum_mul]`. Use `congr 1`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun m _ => by ring`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem combMat_add_mul {g r : ℕ} (l : Fin r → Fin g → ℂ) (ε φ : Matrix (Fin g) (Fin r) ℚ)
     (b : Matrix (Fin g) (Fin g) ℚ) :
@@ -53,9 +53,9 @@ theorem combMat_add_mul {g r : ℕ} (l : Fin r → Fin g → ℂ) (ε φ : Matri
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun m _ => by ring
 
 /- English proof (translation)
-Rewrite using `[combMat_add_mul, Matrix.mul_add, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hP, Matrix.one_mul, smul_add]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `only [Matrix.smul_apply, Matrix.map_apply, smul_eq_mul]`. Establish `h` using `congrArg (Rat.cast : ℚ → ℂ) (hB i j)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Move the coercions through the operations in `at h`. Rewrite using `[h]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 -/
 theorem combMat_shift {g r : ℕ} (l : Fin r → Fin g → ℂ) (ε φ : Matrix (Fin g) (Fin r) ℚ)
     (b : Matrix (Fin g) (Fin g) ℚ) (D : ℕ) (Bk : Matrix (Fin g) (Fin g) ℤ) (hP : IsUnit (combMat l ε).det)
@@ -71,13 +71,13 @@ theorem combMat_shift {g r : ℕ} (l : Fin r → Fin g → ℂ) (ε φ : Matrix 
   rw [h]
 
 /- English proof (translation)
-Simplify using `only [logDom, Set.mem_setOf_eq] at hs ⊢`. Prove the components needed by the constructor for the conclusion. Introduce `j`. Establish `h` using `hs j`. Distinguish the cases in `hj : j = Fin.castLE ha k`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Substitute `hj` using the available equality. Establish `hk : ((Fin.castLE ha k : Fin n) : ℕ) < a` using `by simp [Fin.coe_castLE, k.isLt]`. Simplify using `only [hk, if_true] at h ⊢`. Simplify `h` using `[Pi.add_apply]`. Simplify `h` using `[Pi.add_apply, Pi.single_eq_of_ne hj]`.
+Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = Fin.castLE ha k`. Substitute `hj` using the available equality. Establish `hk : ((Fin.castLE ha k : Fin n) : ℕ) < a` using `by simp [Fin.coe_castLE, k.isLt]`. Simplify using `only [logExp, hk, if_true, Pi.add_apply, Pi.single_eq_same]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Complex.exp_add, Complex.exp_two_pi_mul_I, _root_.mul_one]`. Simplify using `[logExp, Pi.single_eq_of_ne hj]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem shift_mem {n a : ℕ} (ha : a ≤ n) (k : Fin a) {s : Fin n → ℂ} (hs : s ∈ logDom n a) :
     s + Pi.single (Fin.castLE ha k) (2 * (Real.pi : ℂ) * Complex.I) ∈ logDom n a ∧

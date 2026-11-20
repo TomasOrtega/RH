@@ -12,7 +12,7 @@ namespace GlobalTheory.EtC.FilteredSections
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Establish `: (RingHom.toMorphismProperty @RingHom.Etale).IsStableUnderCobaseChange` using `RingHom.isStableUnderCobaseChange_toMorphismProperty_iff.2 RingHom.Etale.isStableUnderBaseChange`. Conclude with `MorphismProperty.of_isPushout (P := RingHom.toMorphismProperty @RingHom.Etale) sq.flip hg`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma etale_of_isPushout {A B C P : CommRingCat.{0}} {g : A ⟶ B} {f : A ⟶ C} {inl : B ⟶ P}
     {inr : C ⟶ P} (sq : IsPushout g f inl inr) (hg : g.hom.Etale) : inr.hom.Etale := by
@@ -21,7 +21,7 @@ lemma etale_of_isPushout {A B C P : CommRingCat.{0}} {g : A ⟶ B} {f : A ⟶ C}
   exact MorphismProperty.of_isPushout (P := RingHom.toMorphismProperty @RingHom.Etale) sq.flip hg
 
 /- English proof (translation)
-Introduce `p`. Take `⟨i, v, hv⟩` from `hcov (Spec.map f p)`. Take `⟨z, hz⟩` from `GlobalTheory.EtaleCoverDescent.exists_point_of_isPushout (sq i).flip p v hv.symm`. Conclude with `⟨i, z, hz⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma cover_of_isPushout {ι : Type} {A C : CommRingCat.{0}} {B P : ι → CommRingCat.{0}}
     (g : ∀ i, A ⟶ B i) (f : A ⟶ C) (inl : ∀ i, B i ⟶ P i) (inr : ∀ i, C ⟶ P i)
@@ -34,7 +34,7 @@ lemma cover_of_isPushout {ι : Type} {A C : CommRingCat.{0}} {B P : ι → CommR
   exact ⟨i, z, hz⟩
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.EtC.sec_sep_glue_of_points R F (Spec A) ι (fun i => Spec (B i)) (fun i => Spec.map (g i)) (fun i => (HasRingHomProperty.Spec_iff (P := @Etale)).mpr (hg i)) hcov).1 y hy`.
+A detailed English derivation is pending.
 -/
 lemma eq_zero_of_cover (F : Shv R) {ι : Type} {A : CommRingCat.{0}} {B : ι → CommRingCat.{0}}
     (g : ∀ i, A ⟶ B i) (hg : ∀ i, (g i).hom.Etale)
@@ -44,7 +44,7 @@ lemma eq_zero_of_cover (F : Shv R) {ι : Type} {A : CommRingCat.{0}} {B : ι →
     (fun i => (HasRingHomProperty.Spec_iff (P := @Etale)).mpr (hg i)) hcov).1 y hy
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(η.app A ≫ (onRings F).map f).hom x = (M.map f ≫ η.app B).hom x`. Rewrite using `[η.naturality]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 lemma map_eta {M : CommRingCat.{0} ⥤ ModuleCat.{1} (ULift.{1} R)} {F : Shv R}
     (η : M ⟶ onRings F) {A B : CommRingCat.{0}} (f : A ⟶ B) (x : M.obj A) :
@@ -53,13 +53,11 @@ lemma map_eta {M : CommRingCat.{0} ⥤ ModuleCat.{1} (ULift.{1} R)} {F : Shv R}
   rw [η.naturality]
 
 /- English proof (translation)
-Use `choose k hk using hk`. Use `letI := Fintype.ofFinite ι`. Take `⟨K, hK⟩` from `IsFiltered.sup_objs_exists (Finset.univ.image k)`. Establish `e : ∀ i, k i ⟶ K` using `fun i => (hK (Finset.mem_image_of_mem _ (Finset.mem_univ i))).some`. Use `⟨K.right, K.hom, ?_⟩` and prove the remaining obligations.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `eq_zero_of_cover F (fun i => (u i).app K) (fun i => etale_of_isPushout (sq i K) (hg i)) (cover_of_isPushout g (D.map K.hom) (fun i => (v i).app K) (fun i => (u i).app K) (fun i => sq i K) hcov)` to reduce the goal to its premises. Introduce `i`. Establish `h1 : (v i).app (k i) ≫ (D' i).map (e i) = (v i).app K`. Simplify using `using ((v i).naturality (e i)).symm`. Establish `h2 : D.map K.hom ≫ (u i).app K = g i ≫ (v i).app K` using `(sq i K).w.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ((onRings F).map ((u i).app K)).hom (((onRings F).map (D.map K.hom)).hom y) = ((onRings F).map ((D' i).map (e i))).hom (((onRings F).map ((v i).app (k i))).hom (((onRings F).map (g i)).hom y))`. Use `congrArg (fun φ => ((onRings F).map φ).hom y) h2` as an intermediate fact. Rewrite `this` using `[← h1]`. Simplify using `only [Functor.map_comp, ModuleCat.hom_comp, LinearMap.comp_apply] at this`. Use `erw [Functor.map_comp (onRings F) (D.map K.hom) ((u i).app K)] at this`.
-
-Conclude with `this`. Rewrite using `[h3, hk i, map_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma stage_of_pieces (F : Shv R) {J : Type} [SmallCategory J] [IsFiltered J]
     (D : J ⥤ CommRingCat.{0}) (j : J) (y : (onRings F).obj (D.obj j)) {ι : Type} [Finite ι]
@@ -95,17 +93,15 @@ lemma stage_of_pieces (F : Shv R) {J : Type} [SmallCategory J] [IsFiltered J]
   rw [h3, hk i, map_zero]
 
 /- English proof (translation)
-Establish `hMel` using `(GlobalTheory.EtC.FilteredElements.preservesFilteredColimits_modules_iff_elements _ M).2.1 hM`. Rewrite `hm` using `[map_eta]`. Take `⟨ι, _, B, g, hg, hcov, hz⟩` from `hker _ _ hm`. Take `⟨j', f0, B', g', h, hsq, hcov'⟩` from `GlobalTheory.EtaleCoverDescent.exists_etale_cover_model_of_isColimit J D c hc ι B g hg hcov j`. Use `choose D' ιB u v hcol hpush using fun i => GlobalTheory.BaseChangeColim.exists_isColimit_pushout_under J D c hc j' (B' i) (B i) (g' i) (h i) (g i) (hsq i).2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hk : ∀ i, ∃ k : Under j', ((onRings F).map ((v i).app k)).hom (((onRings F).map (g' i)).hom ((η.app _).hom ((M.map (D.map f0)).hom m))) = 0`. Introduce `i`. Set `k0 : Under j'` to `Under.mk (𝟙 j')`. Establish `e1 : D.map f0 ≫ g' i ≫ (v i).app k0 ≫ (ιB i).app k0 = c.ι.app j ≫ g i`. Rewrite using `[(hpush i k0).2.1, (hsq i).2.w, ← Category.assoc, c.w]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdie : (M.map ((ιB i).app k0)).hom ((M.map ((v i).app k0)).hom ((M.map (g' i)).hom ((M.map (D.map f0)).hom m))) = 0`. Use `congrArg (fun φ => (M.map φ).hom m) e1` as an intermediate fact. Simplify using `only [Functor.map_comp, ModuleCat.hom_comp, LinearMap.comp_apply] at this`. Rewrite using `[this]`. Conclude with `hz i`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨k, f, hf⟩` from `(hMel (Under j') (D' i) _ (hcol i).some).2 k0 _ hdie`. Use `⟨k, ?_⟩` and prove the remaining obligations. Establish `e2 : (v i).app k0 ≫ (D' i).map f = (v i).app k`. Simplify using `using ((v i).naturality f).symm`. Rewrite using `[map_eta]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `erw [map_eta]`. Rewrite using `[← e2, Functor.map_comp, ModuleCat.hom_comp, LinearMap.comp_apply, hf, map_zero]`. Take `⟨k, f, hf⟩` from `stage_of_pieces F D j' ((η.app _).hom ((M.map (D.map f0)).hom m)) B' g' (fun i => (hsq i).1) hcov' D' u v (fun i k => (hpush i k).1) hk`. Use `⟨k, f0 ≫ f, ?_⟩` and prove the remaining obligations. Rewrite `hf`, the goal using `[map_eta]`.
-
-Rewrite using `[Functor.map_comp, Functor.map_comp, ModuleCat.hom_comp, LinearMap.comp_apply]`. Conclude with `hf`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma stage_of_eta (M : CommRingCat.{0} ⥤ ModuleCat.{1} (ULift.{1} R)) (F : Shv R)
     (η : M ⟶ onRings F) (hM : PreservesFilteredColimitsOfSize.{0, 0} M)
@@ -152,17 +148,13 @@ lemma stage_of_eta (M : CommRingCat.{0} ⥤ ModuleCat.{1} (ULift.{1} R)) (F : Sh
   exact hf
 
 /- English proof (translation)
-Introduce `R _ M F η hM hloc hker J _ _ D c hc j y hy`. Take `⟨ι, _, B, g, m, hg, hcov, hm⟩` from `hloc _ y`. Establish `hP : ∀ i, IsPushout (g i) (c.ι.app j) (pushout.inl (g i) (c.ι.app j)) (pushout.inr (g i) (c.ι.app j))` using `fun i => IsPushout.of_hasPushout _ _`. Use `choose D' ιB u v hcol hpush using fun i => GlobalTheory.BaseChangeColim.exists_isColimit_pushout_under J D c hc j (B i) (pushout (g i) (c.ι.app j)) (g i) (pushout.inl (g i) (c.ι.app j)) (pushout.inr (g i) (c.ι.app j)) (hP i)`. Establish `hk : ∀ i, ∃ k : Under j, ((onRings F).map ((v i).app k)).hom (((onRings F).map (g i)).hom y) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Set `k0 : Under j` to `Under.mk (𝟙 j)`. Establish `h0 : ((onRings F).map ((ιB i).app k0)).hom ((η.app _).hom ((M.map ((v i).app k0)).hom (m i))) = 0`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_eta, Functor.map_comp, ModuleCat.hom_comp, LinearMap.comp_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `_ = ((onRings F).map (pushout.inl (g i) (c.ι.app j))).hom ((η.app _).hom (m i)) := by`. Rewrite using `[(hpush i k0).2.1, map_eta]`. Both sides reduce to the same expression. Use `_ = ((onRings F).map (g i ≫ pushout.inl (g i) (c.ι.app j))).hom y := by`. Rewrite using `[hm i, Functor.map_comp, ModuleCat.hom_comp, LinearMap.comp_apply]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `_ = 0 := by`. Rewrite using `[pushout.condition, Functor.map_comp, ModuleCat.hom_comp, LinearMap.comp_apply, hy, map_zero]`. Take `⟨k, f, hf⟩` from `stage_of_eta M F η hM hker (Under j) (D' i) _ (hcol i).some k0 _ h0`. Use `⟨k, ?_⟩` and prove the remaining obligations. Establish `e2 : (v i).app k0 ≫ (D' i).map f = (v i).app k`.
-
-Simplify using `using ((v i).naturality f).symm`. Rewrite using `[← hm i]`. Use `erw [map_eta]`. Rewrite using `[← e2, Functor.map_comp, ModuleCat.hom_comp, LinearMap.comp_apply, ← map_eta]`. Conclude with `hf`.
-
-Conclude with `stage_of_pieces F D j y B g hg hcov D' u v (fun i k => (hpush i k).1) hk`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_at_stage_of_map_colimit_eq_zero : ∀ (R : Type) [CommRing R] (M : CommRingCat.{0} ⥤ ModuleCat.{1} (ULift.{1} R)) (F : Shv R) (η : M ⟶ onRings F), PreservesFilteredColimitsOfSize.{0, 0} M → (∀ (A : CommRingCat.{0}) (x : (onRings F).obj A), ∃ (ι : Type) (_ : Finite ι) (B : ι → CommRingCat.{0}) (g : ∀ i, A ⟶ B i) (m : ∀ i, M.obj (B i)), (∀ i, (g i).hom.Etale) ∧ (∀ p : Spec A, ∃ i v, Spec.map (g i) v = p) ∧ ∀ i, (η.app (B i)).hom (m i) = ((onRings F).map (g i)).hom x) → (∀ (A : CommRingCat.{0}) (m : M.obj A), (η.app A).hom m = 0 → ∃ (ι : Type) (_ : Finite ι) (B : ι → CommRingCat.{0}) (g : ∀ i, A ⟶ B i), (∀ i, (g i).hom.Etale) ∧ (∀ p : Spec A, ∃ i v, Spec.map (g i) v = p) ∧ ∀ i, (M.map (g i)).hom m = 0) → ∀ (J : Type) [SmallCategory J] [IsFiltered J] (D : J ⥤ CommRingCat.{0}) (c : Cocone D), IsColimit c → ∀ (j : J) (y : (onRings F).obj (D.obj j)), ((onRings F).map (c.ι.app j)).hom y = 0 → ∃ (k : J) (f : j ⟶ k), ((onRings F).map (D.map f)).hom y = 0 := by
   intro R _ M F η hM hloc hker J _ _ D c hc j y hy

@@ -19,7 +19,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 namespace GlobalTheory.LocPlSplit
 
 /- English proof (translation)
-Take `⟨-, ι, -⟩` from `Formalism.IndefR.Fin.idem_data w h (w.under (𝓞 D.host.F)) rfl`. Conclude with `⟨ι⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nonempty_of_not_isConjPl {D : D7} {w : HeightOneSpectrum (𝓞 D.host.E)}
     (h : ¬ Formalism.IndefR.Lev.IsConjPl (D := D) w w) :
@@ -28,9 +28,9 @@ theorem nonempty_of_not_isConjPl {D : D7} {w : HeightOneSpectrum (𝓞 D.host.E)
   exact ⟨ι⟩
 
 /- English proof (translation)
-Introduce `D T L sc G μ₀ hL t w hw`. Use `nonempty_of_not_isConjPl ?_` and prove the remaining obligations. Break down `Finset.mem_union.1 hw with h | h` into its components or cases. Take `⟨v, hv, rfl⟩` from `Finset.mem_image.1 h`. Take `⟨e, he⟩` from `G.pl.w_split v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `Formalism.IndefR.Fin.idemAt_split he`. Conclude with `(hL.Q_pl t w h).2 w h`.
+A detailed English derivation is pending.
 -/
 theorem locPl_split : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T} (_hL : L.Is μ₀) (t : T)
     (w : HeightOneSpectrum (𝓞 D.host.E)), w ∈ locPl G t →

@@ -5,13 +5,13 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 namespace GlobalTheory.ArchSlice
 
 /- English proof (translation)
-Introduce `F _ _ κ _ Φ hΦ`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, g, -, rfl⟩` from `hx`. Use `⟨g 0 • f, fun t => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [SchwartzMap.smul_apply, smul_eq_mul, pureA, RingEquiv.apply_symm_apply]`. Rewrite using `[mul_comm]`. Both sides reduce to the same expression. Consider the case `zero => exact ⟨0, fun t => rfl⟩`. Consider the case `add x y _ _ hx hy`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Treat this case separately.
 
-Take `⟨g₁, h₁⟩` from `hx`. Take `⟨g₂, h₂⟩` from `hy`. Conclude with `⟨g₁ + g₂, fun t => by rw [SchwartzMap.add_apply, h₁, h₂]; rfl⟩`. Consider the case `smul c x _ hx`. Take `⟨g₁, h₁⟩` from `hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨c • g₁, fun t => by rw [SchwartzMap.smul_apply, h₁]; rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_schwartz_slice : ∀ {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ], ∀ Φ ∈ schA F κ, ∃ g : SInf F κ, ∀ t : κ → mixedEmbedding.mixedSpace F,
     g t = Φ (fun i => (((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (t i), (0 : FiniteAdeleRing (𝓞 F) F)) : AF F)) := by

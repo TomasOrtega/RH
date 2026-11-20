@@ -52,14 +52,14 @@ def coverBaseFieldHom (A : MarkedIdealWithBoundary.{u}) (hv : A.IsAdmissible) (L
     (f : A.base →+* L) : (MaxContactCoverData.coverTriple A hv).base →+* L := f
 
 /- English proof (translation)
-The claim follows from `MaxContactCoverData.coverTriple_structureMorphism T hv`.
+A detailed English derivation is pending.
 -/
 theorem coverTriple_structureMorphism_eq (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible) :
     (MaxContactCoverData.coverTriple T hv).structMap = MaxContactCoverData.coverMap T hv ≫ T.structMap :=
   MaxContactCoverData.coverTriple_structureMorphism T hv
 
 /- English proof (translation)
-The claim follows from `MorphismProperty.of_isPullback (P := @AlgebraicGeometry.Surjective) (CategoryTheory.IsPullback.of_hasPullback T.structMap (specMapOfFieldHom T.base L f)).flip (FunctorialResolution.EmbeddedResolution.instSurjectiveSpecMapOfFieldHom T.base L f)`.
+A detailed English derivation is pending.
 -/
 theorem surjective_baseChange_fst (T : MarkedIdealWithBoundary.{u}) (L : Type u) [Field L]
     (f : T.base →+* L) :
@@ -69,9 +69,9 @@ theorem surjective_baseChange_fst (T : MarkedIdealWithBoundary.{u}) (L : Type u)
     (FunctorialResolution.EmbeddedResolution.instSurjectiveSpecMapOfFieldHom T.base L f)
 
 /- English proof (translation)
-Apply `Set.subset_empty_iff.mp` to reduce the goal to its premises. Introduce `y hy`. Establish `h1` using `(mem_orderAtLeastLocus_iff (T.baseChange L f).ideal T.mult y).1 hy`. Rewrite `h1` using `[hord y]`. Establish `h2 : (pullback.fst T.structMap (specMapOfFieldHom T.base L f)) y ∈ orderAtLeastLocus T.ideal T.mult` using `(mem_orderAtLeastLocus_iff T.ideal T.mult _).2 h1`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[hemp]`. Simplify using `at h2`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem orderAtLeastLocus_baseChange_eq_empty (T : MarkedIdealWithBoundary.{u}) (L : Type u) [Field L]
     (f : T.base →+* L)
@@ -114,7 +114,7 @@ def MaxContactHypersurfaceBaseChange : Prop :=
           [H.comap (pullback.fst S.structMap (specMapOfFieldHom S.base L f))])
 
 /- English proof (translation)
-Rewrite using `[Category.assoc, ← hq]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem comp_assoc_eq_of_eq_comp {X Y Z W V : Scheme.{u}}
     (p : X ⟶ Y) (q : Y ⟶ W) (b : Y ⟶ Z) (c : Z ⟶ W) (r : X ⟶ V) (s : V ⟶ W)
@@ -124,7 +124,7 @@ private theorem comp_assoc_eq_of_eq_comp {X Y Z W V : Scheme.{u}}
   exact h
 
 /- English proof (translation)
-The claim follows from `comp_assoc_eq_of_eq_comp (pullback.fst (MaxContactCoverData.coverTriple A hv).structMap (specMapOfFieldHom (MaxContactCoverData.coverTriple A hv).base L (coverBaseFieldHom A hv L f))) (MaxContactCoverData.coverTriple A hv).structMap (MaxContactCoverData.coverMap A hv) A.structMap …`.
+A detailed English derivation is pending.
 -/
 theorem coverBaseChangeMap_condition (A : MarkedIdealWithBoundary.{u}) (hv : A.IsAdmissible) (L : Type u) [Field L]
     (f : A.base →+* L) :
@@ -163,7 +163,7 @@ abbrev coverBaseChangeFiber (A : MarkedIdealWithBoundary.{u}) (hv : A.IsAdmissib
   pullback (MaxContactCoverData.coverMap (A.baseChange L f) hv') (coverBaseChangeMap A hv L f)
 
 /- English proof (translation)
-Consider the cases of `i with`. Consider the case `isTrue h => exact ⟨fun _ => h, fun _ => rfl⟩`. Consider the case `isFalse h => exact ⟨fun hb => Bool.noConfusion hb, fun hp => absurd hp h⟩`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 private theorem decide_eq_true_iff_self (p : Prop) (i : Decidable p) :
     (@decide p i = true) ↔ p := by
@@ -172,7 +172,7 @@ private theorem decide_eq_true_iff_self (p : Prop) (i : Decidable p) :
   | isFalse h => exact ⟨fun hb => Bool.noConfusion hb, fun hp => absurd hp h⟩
 
 /- English proof (translation)
-Consider the cases of `i with`. Consider the case `isTrue h => exact ⟨fun hb => Bool.noConfusion hb, fun hn => absurd h hn⟩`. Consider the case `isFalse h => exact ⟨fun _ => h, fun _ => rfl⟩`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 private theorem not_decide_eq_true_iff_not (p : Prop) (i : Decidable p) :
     ((!(@decide p i)) = true) ↔ ¬ p := by
@@ -181,7 +181,7 @@ private theorem not_decide_eq_true_iff_not (p : Prop) (i : Decidable p) :
   | isFalse h => exact ⟨fun _ => h, fun _ => rfl⟩
 
 /- English proof (translation)
-Unfold `MarkedIdealWithBoundary.nontrivialPart`. Use `congrArg (fun r => List.filter r E) (funext fun D => ?_)` and prove the remaining obligations. Use `Bool.eq_iff_iff.mpr ?_` and prove the remaining obligations. Rewrite using `[hq D]`. Conclude with `not_decide_eq_true_iff_not _ _`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem nontrivialPart_eq_filter {X : Scheme.{u}}
     {q : X.IdealSheafData → Bool} (hq : ∀ D : X.IdealSheafData, q D = true ↔ D ≠ ⊤)
@@ -194,9 +194,9 @@ private theorem nontrivialPart_eq_filter {X : Scheme.{u}}
   exact not_decide_eq_true_iff_not _ _
 
 /- English proof (translation)
-Proceed by induction on `E with`. Consider the case `nil => simp`. Consider the case `cons D E ih`. Consider the cases of `hD : p D`. Simplify using `[hpq D, hD, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules.
 
-Simplify using `[hpq D, hD, ih]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem filter_map_comap {X Y : Scheme.{u}} (g : X ⟶ Y)
     (p : Y.IdealSheafData → Bool) (q : X.IdealSheafData → Bool)
@@ -211,9 +211,9 @@ private theorem filter_map_comap {X Y : Scheme.{u}} (g : X ⟶ Y)
       · simp [hpq D, hD, ih]
 
 /- English proof (translation)
-Establish `hpq : ∀ D : Y.IdealSheafData, q (D.comap g) = p D`. Introduce `D`. Use `Bool.eq_iff_iff.mpr ?_` and prove the remaining obligations. Rewrite using `[hq, hp]`. Conclude with `comap_ne_top_iff_of_surjective g D`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : List.filter q (List.map (fun D => D.comap g) E) = List.filter q E'`. Rewrite using `[← nontrivialPart_eq_filter hq (List.map (fun D => D.comap g) E), ← nontrivialPart_eq_filter hq E']`. Conclude with `hEE`. Rewrite using `[← h1]`. Conclude with `filter_map_comap g p q hpq E`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem filter_eq_map_filter_of_nontrivialPart_eq {X Y : Scheme.{u}} (g : X ⟶ Y)
     [AlgebraicGeometry.Surjective g]
@@ -237,11 +237,9 @@ private theorem filter_eq_map_filter_of_nontrivialPart_eq {X Y : Scheme.{u}} (g 
   exact filter_map_comap g p q hpq E
 
 /- English proof (translation)
-Establish `hsurj : AlgebraicGeometry.Surjective (pullback.fst T.structMap (specMapOfFieldHom T.base L f))` using `surjective_baseChange_fst T L f`. Establish `hb : (MaxContactReduction.dropTrivialBoundary ((T.baseChange L f).withBoundary E')).boundary = List.map (fun D => D.comap (pullback.fst T.structMap (specMapOfFieldHom T.base L f))) (MaxContactReduction.dropTrivialBoundary T).boundary`. Rewrite using `[MaxContactReduction.dropTrivialBoundary_boundary, MaxContactReduction.dropTrivialBoundary_boundary, MarkedIdealWithBoundary.withBoundary_boundary]`. Use `filter_eq_map_filter_of_nontrivialPart_eq (pullback.fst T.structMap (specMapOfFieldHom T.base L f)) ?_ ?_ ?_` and prove the remaining obligations. Introduce `_`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `decide_eq_true_iff_self _ _`. Introduce `_`. Conclude with `decide_eq_true_iff_self _ _`. Establish `h` using `(MarkedIdealWithBoundary.sameNontrivialBoundary_iff ((T.baseChange L f).boundary) E').mp hE`. Rewrite `h` using `[MarkedIdealWithBoundary.baseChange_boundary]`.
-
-Conclude with `h`. Conclude with `congrArg (fun E : List (T.baseChange L f).scheme.IdealSheafData => (T.baseChange L f).withBoundary E) hb`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dropTrivialBoundary_withBoundary_baseChange (T : MarkedIdealWithBoundary.{u}) (L : Type u) [Field L]
     (f : T.base →+* L) (E' : List (T.baseChange L f).scheme.IdealSheafData)
@@ -269,14 +267,14 @@ theorem dropTrivialBoundary_withBoundary_baseChange (T : MarkedIdealWithBoundary
     (T.baseChange L f).withBoundary E) hb
 
 /- English proof (translation)
-Simplify using `[Scheme.IdealSheafData.comap_comp]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem comap_comap_comap {Q S Y X : Scheme.{u}} (q : Q ⟶ S) (c : S ⟶ Y) (p : Y ⟶ X)
     (I : X.IdealSheafData) : ((I.comap p).comap c).comap q = I.comap (q ≫ c ≫ p) := by
   simp [Scheme.IdealSheafData.comap_comp]
 
 /- English proof (translation)
-Proceed by induction on `E with`. Consider the case `nil => rfl`. Consider the case `cons D Es ih => simp only [List.map_cons, comap_comap_comap, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem map_comap_comap_comap {Q S Y X : Scheme.{u}} (q : Q ⟶ S) (c : S ⟶ Y) (p : Y ⟶ X)
     (E : List X.IdealSheafData) :
@@ -288,7 +286,7 @@ private theorem map_comap_comap_comap {Q S Y X : Scheme.{u}} (q : Q ⟶ S) (c : 
   | cons D Es ih => simp only [List.map_cons, comap_comap_comap, ih]
 
 /- English proof (translation)
-Substitute `h₁` using the available equality. Substitute `h₂` using the available equality. Rewrite using `[comap_comap_comap, comap_comap_comap, hk]`.
+Substitute using the available equality. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 private theorem comap_eq_comap_of_comp_eq {Q S₁ S₂ Y₁ Y₂ X : Scheme.{u}}
     (q₁ : Q ⟶ S₁) (q₂ : Q ⟶ S₂) (c₁ : S₁ ⟶ Y₁) (p₁ : Y₁ ⟶ X) (c₂ : S₂ ⟶ Y₂) (p₂ : Y₂ ⟶ X)
@@ -301,7 +299,7 @@ private theorem comap_eq_comap_of_comp_eq {Q S₁ S₂ Y₁ Y₂ X : Scheme.{u}}
   rw [comap_comap_comap, comap_comap_comap, hk]
 
 /- English proof (translation)
-Substitute `h₁` using the available equality. Substitute `h₂` using the available equality. Rewrite using `[map_comap_comap_comap, map_comap_comap_comap, hk]`.
+Substitute using the available equality. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 private theorem map_comap_eq_map_comap_of_comp_eq {Q S₁ S₂ Y₁ Y₂ X : Scheme.{u}}
     (q₁ : Q ⟶ S₁) (q₂ : Q ⟶ S₂) (c₁ : S₁ ⟶ Y₁) (p₁ : Y₁ ⟶ X) (c₂ : S₂ ⟶ Y₂) (p₂ : Y₂ ⟶ X)
@@ -315,7 +313,7 @@ private theorem map_comap_eq_map_comap_of_comp_eq {Q S₁ S₂ Y₁ Y₂ X : Sch
   rw [map_comap_comap_comap, map_comap_comap_comap, hk]
 
 /- English proof (translation)
-Substitute `h₁` using the available equality. Substitute `h₂` using the available equality. Rewrite using `[← Category.assoc, hpc, Category.assoc]`.
+Substitute using the available equality. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 private theorem comp_structureMorphism_eq_of_comp_eq {Q S₁ S₂ Y W : Scheme.{u}}
     (q₁ : Q ⟶ S₁) (q₂ : Q ⟶ S₂) (c₁ : S₁ ⟶ Y) (c₂ : S₂ ⟶ Y) (sY : Y ⟶ W)
@@ -327,7 +325,7 @@ private theorem comp_structureMorphism_eq_of_comp_eq {Q S₁ S₂ Y W : Scheme.{
   rw [← Category.assoc, hpc, Category.assoc]
 
 /- English proof (translation)
-Rewrite using `[← Category.assoc, hpc, Category.assoc, hcf]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem comp_comp_eq_comp_comp {Q S₁ S₂ Y₁ Y₂ X : Scheme.{u}}
     (q₁ : Q ⟶ S₁) (q₂ : Q ⟶ S₂) (c₁ : S₁ ⟶ Y₁) (p₁ : Y₁ ⟶ X) (cc : S₂ ⟶ Y₁)
@@ -337,7 +335,7 @@ private theorem comp_comp_eq_comp_comp {Q S₁ S₂ Y₁ Y₂ X : Scheme.{u}}
   rw [← Category.assoc, hpc, Category.assoc, hcf]
 
 /- English proof (translation)
-Substitute `hq` using the available equality. Substitute `hI` using the available equality. Substitute `hE` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem markedIdealWithBoundary_mk_congr (k : Type u) [Field k] (Y : Scheme.{u})
     (q q' : Y ⟶ Spec (CommRingCat.of k)) (I I' : Y.IdealSheafData) (m : ℕ)
@@ -349,19 +347,17 @@ private theorem markedIdealWithBoundary_mk_congr (k : Type u) [Field k] (Y : Sch
   rfl
 
 /- English proof (translation)
-Establish `hcf : coverBaseChangeMap A hv L f ≫ pullback.fst A.structMap (specMapOfFieldHom A.base L f) = pullback.fst (MaxContactCoverData.coverTriple A hv).structMap (specMapOfFieldHom (MaxContactCoverData.coverTriple A hv).base L (coverBaseFieldHom A hv L f)) ≫ MaxContactCoverData.coverMa …`. Unfold `coverBaseChangeMap`. Conclude with `pullback.lift_fst _ _ _`. Establish `hcs : coverBaseChangeMap A hv L f ≫ (A.baseChange L f).structMap = ((MaxContactCoverData.coverTriple A hv).baseChange L (coverBaseFieldHom A hv L f)).structMap`. Simplify using `only [MarkedIdealWithBoundary.baseChange_structureMorphism]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Unfold `coverBaseChangeMap`. Conclude with `pullback.lift_snd _ _ _`. Establish `hT : MaxContactCoverData.balancedTunedIdeal (A.baseChange L f) hv' = (MaxContactCoverData.balancedTunedIdeal A hv).comap (pullback.fst A.structMap (specMapOfFieldHom A.base L f))`. Establish `: CharZero A.base` using `hv.charZero`. Establish `: AlgebraicGeometry.Smooth A.structMap` using `hv.smooth`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: AlgebraicGeometry.LocallyOfFiniteType A.structMap` using `hv.locallyOfFiniteType`. Establish `: AlgebraicGeometry.Smooth (pullback.snd A.structMap (specMapOfFieldHom A.base L f))` using `hv'.smooth`. Establish `: AlgebraicGeometry.LocallyOfFiniteType (pullback.snd A.structMap (specMapOfFieldHom A.base L f))` using `hv'.locallyOfFiniteType`. Conclude with `balancedTunedSheaf_comap_of_isPullback hderiv A.base L f A.structMap (pullback.snd A.structMap (specMapOfFieldHom A.base L f)) (pullback.fst A.structMap (specMapOfFieldHom A.base L f)) (IsPullback.of_hasPullback A.structMap (specMapOfFieldHom A.base L f)) A.ideal A.mult`. Establish `hkey : pullback.fst (MaxContactCoverData.coverMap (A.baseChange L f) hv') (coverBaseChangeMap A hv L f) ≫ MaxContactCoverData.coverMap (A.baseChange L f) hv' ≫ pullback.fst A.structMap (specMapOfFieldHom A.base L f) = pullback.snd (MaxContactCoverData.coverMap (A.baseChange L f) …` using `comp_comp_eq_comp_comp _ _ _ _ (coverBaseChangeMap A hv L f) _ _ pullback.condition hcf`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hI1 : (MaxContactCoverData.coverTriple (A.baseChange L f) hv').ideal = ((MaxContactCoverData.balancedTunedIdeal A hv).comap (pullback.fst A.structMap (specMapOfFieldHom A.base L f))).comap (MaxContactCoverData.coverMap (A.baseChange L f) hv')`. Rewrite using `[MaxContactCoverData.coverTriple_ideal, hT]`. Conclude with `rfl`. Establish `hI2 : ((MaxContactCoverData.coverTriple A hv).baseChange L (coverBaseFieldHom A hv L f)).ideal = ((MaxContactCoverData.balancedTunedIdeal A hv).comap (MaxContactCoverData.coverMap A hv)).comap (pullback.fst (MaxContactCoverData.coverTriple A hv).structMap (specMapOfFieldHom (MaxC …`. Rewrite using `[MarkedIdealWithBoundary.baseChange_ideal, MaxContactCoverData.coverTriple_ideal]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `rfl`. Establish `hE1 : (MaxContactCoverData.coverTriple (A.baseChange L f) hv').boundary = List.map (fun D => D.comap (MaxContactCoverData.coverMap (A.baseChange L f) hv')) (List.map (fun D => D.comap (pullback.fst A.structMap (specMapOfFieldHom A.base L f))) A.boundary)`. Rewrite using `[MaxContactCoverData.coverTriple_boundary, MarkedIdealWithBoundary.baseChange_boundary]`. Conclude with `rfl`. Establish `hE2 : ((MaxContactCoverData.coverTriple A hv).baseChange L (coverBaseFieldHom A hv L f)).boundary = List.map (fun D => D.comap (pullback.fst (MaxContactCoverData.coverTriple A hv).structMap (specMapOfFieldHom (MaxContactCoverData.coverTriple A hv).base L (coverBaseFieldHom A hv L …`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[MarkedIdealWithBoundary.baseChange_boundary, MaxContactCoverData.coverTriple_boundary]`. Conclude with `rfl`. Establish `hsm : pullback.fst (MaxContactCoverData.coverMap (A.baseChange L f) hv') (coverBaseChangeMap A hv L f) ≫ (MaxContactCoverData.coverTriple (A.baseChange L f) hv').structMap = pullback.snd (MaxContactCoverData.coverMap (A.baseChange L f) hv') (coverBaseChangeMap A hv L f) ≫ ((MaxCo …` using `comp_structureMorphism_eq_of_comp_eq _ _ _ _ _ _ _ (MaxContactCoverData.coverTriple_structureMorphism (A.baseChange L f) hv') hcs pullback.condition`. Establish `hide : (MaxContactCoverData.coverTriple (A.baseChange L f) hv').ideal.comap (pullback.fst (MaxContactCoverData.coverMap (A.baseChange L f) hv') (coverBaseChangeMap A hv L f)) = ((MaxContactCoverData.coverTriple A hv).baseChange L (coverBaseFieldHom A hv L f)).ideal.comap (pullbac …` using `comap_eq_comap_of_comp_eq _ _ _ _ _ _ _ _ _ hI1 hI2 hkey`. Establish `hbd : List.map (fun D => D.comap (pullback.fst (MaxContactCoverData.coverMap (A.baseChange L f) hv') (coverBaseChangeMap A hv L f))) (MaxContactCoverData.coverTriple (A.baseChange L f) hv').boundary = List.map (fun D => D.comap (pullback.snd (MaxContactCoverData.coverMap (A.baseC …` using `map_comap_eq_map_comap_of_comp_eq _ _ _ _ _ _ _ _ _ hE1 hE2 hkey`.
-
-Conclude with `markedIdealWithBoundary_mk_congr L (coverBaseChangeFiber A hv L f hv') _ _ _ _ (MaxContactCoverData.coverTriple (A.baseChange L f) hv').mult _ _ hsm hide hbd`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pullbackAlong_coverBaseChangeFiber_eq (hderiv : DerivIdealSheafIterateCommBaseChange.{u})
     (A : MarkedIdealWithBoundary.{u}) (hv : A.IsAdmissible) (L : Type u) [Field L] [CharZero L]
@@ -472,7 +468,7 @@ theorem pullbackAlong_coverBaseChangeFiber_eq (hderiv : DerivIdealSheafIterateCo
     (MaxContactCoverData.coverTriple (A.baseChange L f) hv').mult _ _ hsm hide hbd
 
 /- English proof (translation)
-The claim follows from `MorphismProperty.of_isPullback (P := @AlgebraicGeometry.Flat) sq.flip hb`.
+A detailed English derivation is pending.
 -/
 private theorem flat_fst_of_isPullback {W X Y Z : Scheme.{u}} {fst : W ⟶ X} {snd : W ⟶ Y}
     {a : X ⟶ Z} {b : Y ⟶ Z} (sq : CategoryTheory.IsPullback fst snd a b)
@@ -480,7 +476,7 @@ private theorem flat_fst_of_isPullback {W X Y Z : Scheme.{u}} {fst : W ⟶ X} {s
   MorphismProperty.of_isPullback (P := @AlgebraicGeometry.Flat) sq.flip hb
 
 /- English proof (translation)
-The claim follows from `MorphismProperty.of_isPullback (P := @AlgebraicGeometry.Surjective) sq.flip hb`.
+A detailed English derivation is pending.
 -/
 private theorem surjective_fst_of_isPullback {W X Y Z : Scheme.{u}} {fst : W ⟶ X} {snd : W ⟶ Y}
     {a : X ⟶ Z} {b : Y ⟶ Z} (sq : CategoryTheory.IsPullback fst snd a b)
@@ -488,7 +484,7 @@ private theorem surjective_fst_of_isPullback {W X Y Z : Scheme.{u}} {fst : W ⟶
   MorphismProperty.of_isPullback (P := @AlgebraicGeometry.Surjective) sq.flip hb
 
 /- English proof (translation)
-The claim follows from `MorphismProperty.of_isPullback (P := @AlgebraicGeometry.Smooth) sq.flip hb`.
+A detailed English derivation is pending.
 -/
 private theorem smooth_fst_of_isPullback {W X Y Z : Scheme.{u}} {fst : W ⟶ X} {snd : W ⟶ Y}
     {a : X ⟶ Z} {b : Y ⟶ Z} (sq : CategoryTheory.IsPullback fst snd a b)
@@ -496,7 +492,7 @@ private theorem smooth_fst_of_isPullback {W X Y Z : Scheme.{u}} {fst : W ⟶ X} 
   MorphismProperty.of_isPullback (P := @AlgebraicGeometry.Smooth) sq.flip hb
 
 /- English proof (translation)
-Substitute `hs` using the available equality. Substitute `ha` using the available equality. Conclude with `h`.
+Substitute using the available equality. Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem isPullback_congr_hom {W X Y Z : Scheme.{u}} {fst : W ⟶ X} {snd snd' : W ⟶ Y}
     {a a' : X ⟶ Z} {b : Y ⟶ Z} (h : CategoryTheory.IsPullback fst snd a b)
@@ -506,7 +502,7 @@ private theorem isPullback_congr_hom {W X Y Z : Scheme.{u}} {fst : W ⟶ X} {snd
   exact h
 
 /- English proof (translation)
-Establish `hfst : coverBaseChangeMap A hv L f ≫ pullback.fst A.structMap (specMapOfFieldHom A.base L f) = pullback.fst (MaxContactCoverData.coverTriple A hv).structMap (specMapOfFieldHom (MaxContactCoverData.coverTriple A hv).base L (coverBaseFieldHom A hv L f)) ≫ MaxContactCoverData.coverM …` using `pullback.lift_fst _ _ _`. Establish `hsnd : coverBaseChangeMap A hv L f ≫ pullback.snd A.structMap (specMapOfFieldHom A.base L f) = pullback.snd (MaxContactCoverData.coverTriple A hv).structMap (specMapOfFieldHom (MaxContactCoverData.coverTriple A hv).base L (coverBaseFieldHom A hv L f))` using `pullback.lift_snd _ _ _`. Use `CategoryTheory.IsPullback.of_bot ?_ hfst.symm (CategoryTheory.IsPullback.of_hasPullback A.structMap (specMapOfFieldHom A.base L f))` and prove the remaining obligations. Conclude with `isPullback_congr_hom (CategoryTheory.IsPullback.of_hasPullback (MaxContactCoverData.coverTriple A hv).structMap (specMapOfFieldHom (MaxContactCoverData.coverTriple A hv).base L (coverBaseFieldHom A hv L f))) hsnd (coverTriple_structureMorphism_eq A hv)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem isPullback_coverBaseChangeMap (A : MarkedIdealWithBoundary.{u}) (hv : A.IsAdmissible)
     (L : Type u) [Field L] (f : A.base →+* L) :
@@ -532,7 +528,7 @@ private theorem isPullback_coverBaseChangeMap (A : MarkedIdealWithBoundary.{u}) 
     hsnd (coverTriple_structureMorphism_eq A hv)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hV.charZero, hV.locallyOfFiniteType, hV.nonzeroOnComponents, hV.one_le_mult, hV.quasiCompact, hV.smooth, hsnc⟩`.
+Supply the required witnesses or components.
 -/
 private theorem isAdmissible_withBoundary_singleton (S : MarkedIdealWithBoundary.{u}) (hV : S.IsAdmissible)
     (H : S.scheme.IdealSheafData) (hsnc : InStrictNormalCrossingPosition S.structMap [H]) :
@@ -541,11 +537,11 @@ private theorem isAdmissible_withBoundary_singleton (S : MarkedIdealWithBoundary
     hV.quasiCompact, hV.smooth, hsnc⟩
 
 /- English proof (translation)
-Use `hfh` as an intermediate fact. Use `hfq` as an intermediate fact. Use `hfg'` as an intermediate fact. Use `hsq` as an intermediate fact. Use `hsg'` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfc : AlgebraicGeometry.Flat (q₁ ≫ g')` using `inferInstance`. Establish `hsc : AlgebraicGeometry.Surjective (q₁ ≫ g')` using `inferInstance`. Establish `M1 : IsStrictPullbackBlowupSeq (q₁ ≫ g') u dB` using `hX.comp hdB`. Establish `M2 : IsStrictPullbackBlowupSeq (q₂ ≫ (pA ≫ g)) u dA` using `hY.comp (hZ.comp hdA)`. Establish `hcomp : (q₁ ≫ g') ≫ hh = q₂ ≫ (pA ≫ g)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hsq1, Category.assoc, hsq2]`. Establish `M2' : IsStrictPullbackBlowupSeq ((q₁ ≫ g') ≫ hh) u dA` using `M2.congr_hom hcomp.symm`. Establish `M3 : IsStrictPullbackBlowupSeq (q₁ ≫ g') u (dA.baseChange hh)` using `M2'.baseChange_of_comp`. Establish `heqv : dB.Isomorphic (dA.baseChange hh)` using `M1.isomorphic_of_isomorphic M3 (SequenceOfBlowups.isomorphic_refl u)`. Conclude with `(isStrictPullbackSequenceOfBlowups_baseChange dA hh).of_isomorphic_pullback heqv.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem isStrictPullback_descend_of_flat_surjective_cover
     {XA XB XC XC' XCb XQ : Scheme.{u}}
@@ -578,9 +574,9 @@ private theorem isStrictPullback_descend_of_flat_surjective_cover
   exact (isStrictPullbackSequenceOfBlowups_baseChange dA hh).of_isomorphic_pullback heqv.symm
 
 /- English proof (translation)
-Use `hflat` as an intermediate fact. Establish `hVC : (MaxContactCoverData.coverTriple A hv).IsAdmissible` using `BoundarySeparationByMaxContact.isAdmissible_coverTriple hstar P A hHyp`. Establish `hVCb : ((MaxContactCoverData.coverTriple A hv).baseChange L (coverBaseFieldHom A hv L f)).IsAdmissible` using `hbcV (MaxContactCoverData.coverTriple A hv) L (coverBaseFieldHom A hv L f) hVC`. Establish `hadm` using `hbcA (MaxContactCoverData.coverTriple A hv) L (coverBaseFieldHom A hv L f) hVC hVCb (MaxContactCoverData.coverMaxContactIdeal A hv) (BoundarySeparationByMaxContact.isMaxContactHypersurface_coverMaxContactIdeal hstar P A hHyp) (BoundarySeparationByMaxContact.inStrictNormalCrossing …`. Establish `hO' : ∀ x : ↥((MaxContactCoverData.coverTriple A hv).baseChange L (coverBaseFieldHom A hv L f)).scheme, orderAt ((MaxContactCoverData.coverTriple A hv).baseChange L (coverBaseFieldHom A hv L f)).ideal x ≤ ((((MaxContactCoverData.coverTriple A hv).baseChange L (coverBaseFieldHom A …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x`. Rewrite using `[hbcO (MaxContactCoverData.coverTriple A hv) L (coverBaseFieldHom A hv L f) hVC x]`. Conclude with `BoundarySeparationByMaxContact.orderAt_coverTriple_ideal_le_mult hstar P A hHyp _`. Conclude with `BoundaryLoopFieldBaseChange.isStrictPullbackBlowupSeq_reduceAlongHypersurface_baseChange hderiv hstar hinv P hmono Fam Bp hspec A (A.baseChange L f) hHyp.dim_prop hHyp'.dim_prop (MaxContactCoverData.coverTriple A hv) hVC (BoundarySeparationByMaxContact.orderAt_coverTriple_ideal_l …`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isStrictPullbackBlowupSeq_coverTriple_baseChange
     (hderiv : DerivIdealSheafIterateCommBaseChange.{u}) (hstar : _root_.FunctorialResolution.EmbeddedResolution.MaxContactCoverProperties.{u})
@@ -632,23 +628,23 @@ private theorem isStrictPullbackBlowupSeq_coverTriple_baseChange
     hadm.1 hadm.2 hinherit
 
 /- English proof (translation)
-Establish `hfA : AlgebraicGeometry.Flat (pullback.fst A.structMap (specMapOfFieldHom A.base L f))` using `inferInstance`. Establish `hVCA : (MaxContactCoverData.coverTriple A hv).IsAdmissible` using `BoundarySeparationByMaxContact.isAdmissible_coverTriple hstar P A hHyp`. Establish `hVC1 : (MaxContactCoverData.coverTriple (A.baseChange L f) hv').IsAdmissible` using `BoundarySeparationByMaxContact.isAdmissible_coverTriple hstar P (A.baseChange L f) hHyp'`. Establish `hVS2 : ((MaxContactCoverData.coverTriple A hv).baseChange L (coverBaseFieldHom A hv L f)).IsAdmissible` using `hbcV (MaxContactCoverData.coverTriple A hv) L (coverBaseFieldHom A hv L f) hVCA`. Establish `hsqc` using `isPullback_coverBaseChangeMap A hv L f`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfg : AlgebraicGeometry.Flat (MaxContactCoverData.coverMap A hv)` using `MaxContactCoverData.flat_coverMap_of_isAdmissible A hv`. Establish `hsg : AlgebraicGeometry.Surjective (MaxContactCoverData.coverMap A hv)` using `(hcff A hHyp).1`. Establish `hsmg : AlgebraicGeometry.Smooth (MaxContactCoverData.coverMap A hv)` using `MaxContactCoverData.smooth_coverMap_of_isAdmissible A hv`. Establish `hfg' : AlgebraicGeometry.Flat (MaxContactCoverData.coverMap (A.baseChange L f) hv')` using `MaxContactCoverData.flat_coverMap_of_isAdmissible (A.baseChange L f) hv'`. Establish `hsg' : AlgebraicGeometry.Surjective (MaxContactCoverData.coverMap (A.baseChange L f) hv')` using `(hcff (A.baseChange L f) hHyp').1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsmg' : AlgebraicGeometry.Smooth (MaxContactCoverData.coverMap (A.baseChange L f) hv')` using `MaxContactCoverData.smooth_coverMap_of_isAdmissible (A.baseChange L f) hv'`. Establish `hfpA : AlgebraicGeometry.Flat (pullback.fst (MaxContactCoverData.coverTriple A hv).structMap (specMapOfFieldHom (MaxContactCoverData.coverTriple A hv).base L (coverBaseFieldHom A hv L f)))` using `flat_fst_of_isPullback hsqc hfA`. Establish `hfp : AlgebraicGeometry.Flat (coverBaseChangeMap A hv L f)` using `flat_fst_of_isPullback hsqc.flip hfg`. Establish `hsp : AlgebraicGeometry.Surjective (coverBaseChangeMap A hv L f)` using `surjective_fst_of_isPullback hsqc.flip hsg`. Establish `hsmp : AlgebraicGeometry.Smooth (coverBaseChangeMap A hv L f)` using `smooth_fst_of_isPullback hsqc.flip hsmg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbig : CategoryTheory.IsPullback (pullback.fst (MaxContactCoverData.coverMap (A.baseChange L f) hv') (coverBaseChangeMap A hv L f)) (pullback.snd (MaxContactCoverData.coverMap (A.baseChange L f) hv') (coverBaseChangeMap A hv L f)) (MaxContactCoverData.coverMap (A.baseChange L f) …` using `CategoryTheory.IsPullback.of_hasPullback _ _`. Establish `hfl1` using `flat_fst_of_isPullback hbig hfp`. Establish `hsu1` using `surjective_fst_of_isPullback hbig hsp`. Establish `hsm1` using `smooth_fst_of_isPullback hbig hsmp`. Establish `hfl2` using `flat_fst_of_isPullback hbig.flip hfg'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsu2` using `surjective_fst_of_isPullback hbig.flip hsg'`. Establish `hsm2` using `smooth_fst_of_isPullback hbig.flip hsmg'`. Establish `hT : LowerDimReductionPullback.pullbackTriple (MaxContactCoverData.coverTriple (A.baseChange L f) hv') (pullback.fst (MaxContactCoverData.coverMap (A.baseChange L f) hv') (coverBaseChangeMap A hv L f)) = LowerDimReductionPullback.pullbackTriple ((MaxContactCoverData.coverTriple A …` using `pullbackAlong_coverBaseChangeFiber_eq hderiv A hv L f hv'`. Establish `hVQ2 : (LowerDimReductionPullback.pullbackTriple ((MaxContactCoverData.coverTriple A hv).baseChange L (coverBaseFieldHom A hv L f)) (pullback.snd (MaxContactCoverData.coverMap (A.baseChange L f) hv') (coverBaseChangeMap A hv L f))).IsAdmissible` using `@OrderReduction.OrderReductionHypotheses.valid_pullbackAlong hin ((MaxContactCoverData.coverTriple A hv).baseChange L (coverBaseFieldHom A hv L f)) hVS2 (coverBaseChangeFiber A hv L f hv') (pullback.snd (MaxContactCoverData.coverMap (A.baseChange L f) hv') (coverBaseChangeMap A h …`. Establish `hVQ1 : (LowerDimReductionPullback.pullbackTriple (MaxContactCoverData.coverTriple (A.baseChange L f) hv') (pullback.fst (MaxContactCoverData.coverMap (A.baseChange L f) hv') (coverBaseChangeMap A hv L f))).IsAdmissible`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hT]`. Conclude with `hVQ2`. Establish `hVb : ((MaxContactCoverData.coverTriple (A.baseChange L f) hv').withBoundary [MaxContactCoverData.coverMaxContactIdeal (A.baseChange L f) hv']).IsAdmissible` using `isAdmissible_withBoundary_singleton (MaxContactCoverData.coverTriple (A.baseChange L f) hv') hVC1 (MaxContactCoverData.coverMaxContactIdeal (A.baseChange L f) hv') (BoundarySeparationByMaxContact.inStrictNormalCrossingPosition_coverMaxContactIdeal hstar P (A.baseChange L f) hHyp' …`. Establish `hVQb` using `@OrderReduction.OrderReductionHypotheses.valid_pullbackAlong hin ((MaxContactCoverData.coverTriple (A.baseChange L f) hv').withBoundary [MaxContactCoverData.coverMaxContactIdeal (A.baseChange L f) hv']) hVb (coverBaseChangeFiber A hv L f hv') (pullback.fst (MaxContactCoverData.co …`. Establish `hsncQ1 : InStrictNormalCrossingPosition (LowerDimReductionPullback.pullbackTriple (MaxContactCoverData.coverTriple (A.baseChange L f) hv') (pullback.fst (MaxContactCoverData.coverMap (A.baseChange L f) hv') (coverBaseChangeMap A hv L f))).structMap [(MaxContactCoverData.coverMaxC …` using `hVQb.snc`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hloftQ1 : AlgebraicGeometry.LocallyOfFiniteType (LowerDimReductionPullback.pullbackTriple (MaxContactCoverData.coverTriple (A.baseChange L f) hv') (pullback.fst (MaxContactCoverData.coverMap (A.baseChange L f) hv') (coverBaseChangeMap A hv L f))).structMap` using `hVQ1.locallyOfFiniteType`. Establish `hadmQ1 : IsMaxContactHypersurface (LowerDimReductionPullback.pullbackTriple (MaxContactCoverData.coverTriple (A.baseChange L f) hv') (pullback.fst (MaxContactCoverData.coverMap (A.baseChange L f) hv') (coverBaseChangeMap A hv L f))).base (LowerDimReductionPullback.pullbackTriple …` using `@hAdm (MaxContactCoverData.coverTriple (A.baseChange L f) hv').base inferInstance hVC1.charZero (MaxContactCoverData.coverTriple (A.baseChange L f) hv').scheme (MaxContactCoverData.coverTriple (A.baseChange L f) hv').structMap hVC1.smooth hVC1.locallyOfFiniteType (coverBaseChange …`. Establish `hadmQ2` using `MaxContactFunctoriality.isMaxContactHypersurface_of_triple_eq hT.symm hVQ2.locallyOfFiniteType hVQ1.locallyOfFiniteType ((MaxContactCoverData.coverMaxContactIdeal (A.baseChange L f) hv').comap (pullback.fst (MaxContactCoverData.coverMap (A.baseChange L f) hv') (coverBaseChangeMap …`. Establish `hsncQ2` using `MaxContactFunctoriality.inStrictNormalCrossingPosition_of_triple_eq hT.symm [(MaxContactCoverData.coverMaxContactIdeal (A.baseChange L f) hv').comap (pullback.fst (MaxContactCoverData.coverMap (A.baseChange L f) hv') (coverBaseChangeMap A hv L f))] [(MaxContactCoverData.coverMaxC …`. Establish `hO2 : ∀ x : ↥((MaxContactCoverData.coverTriple A hv).baseChange L (coverBaseFieldHom A hv L f)).scheme, orderAt ((MaxContactCoverData.coverTriple A hv).baseChange L (coverBaseFieldHom A hv L f)).ideal x ≤ ((((MaxContactCoverData.coverTriple A hv).baseChange L (coverBaseFieldHom A …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Rewrite using `[hbcO (MaxContactCoverData.coverTriple A hv) L (coverBaseFieldHom A hv L f) hVCA x]`. Conclude with `BoundarySeparationByMaxContact.orderAt_coverTriple_ideal_le_mult hstar P A hHyp _`. Establish `hadmS2` using `hbcA (MaxContactCoverData.coverTriple A hv) L (coverBaseFieldHom A hv L f) hVCA hVS2 (MaxContactCoverData.coverMaxContactIdeal A hv) (BoundarySeparationByMaxContact.isMaxContactHypersurface_coverMaxContactIdeal hstar P A hHyp) (BoundarySeparationByMaxContact.inStrictNormalCrossin …`. Establish `hX : IsStrictPullbackBlowupSeq (pullback.fst (MaxContactCoverData.coverMap (A.baseChange L f) hv') (coverBaseChangeMap A hv L f)) (MaxContactReduction.reduceAlongHypersurface hinv (A.baseChange L f) (fun S' _ i => Fam i S') (LowerDimReductionPullback.pullbackTriple (MaxContactCov …` using `@BoundarySeparationBaseChange.isStrictPullbackBlowupSeq_reduceAlongHypersurface hstar hin hMC hAdm hinv P hmono Fam B hspec (A.baseChange L f) hHyp'.dim_prop (MaxContactCoverData.coverTriple (A.baseChange L f) hv') hVC1 (BoundarySeparationByMaxContact.orderAt_coverTriple_ideal_le …`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hY0 : IsStrictPullbackBlowupSeq (pullback.snd (MaxContactCoverData.coverMap (A.baseChange L f) hv') (coverBaseChangeMap A hv L f)) (MaxContactReduction.reduceAlongHypersurface hinv (A.baseChange L f) (fun S' _ i => Fam i S') (LowerDimReductionPullback.pullbackTriple ((MaxContactC …` using `@BoundarySeparationBaseChange.isStrictPullbackBlowupSeq_reduceAlongHypersurface hstar hin hMC hAdm hinv P hmono Fam B hspec (A.baseChange L f) hHyp'.dim_prop ((MaxContactCoverData.coverTriple A hv).baseChange L (coverBaseFieldHom A hv L f)) hVS2 hO2 hdimChart ((MaxContactCoverDat …`. Establish `hEqSeq : (MaxContactReduction.reduceAlongHypersurface hinv (A.baseChange L f) (fun S' _ i => Fam i S') (LowerDimReductionPullback.pullbackTriple ((MaxContactCoverData.coverTriple A hv).baseChange L (coverBaseFieldHom A hv L f)) (pullback.snd (MaxContactCoverData.coverMap (A.baseC …` using `eq_of_heq (MaxContactFunctoriality.reduceAlongHypersurface_toSequenceOfBlowups_heq hinv (A.baseChange L f) (fun S' _ i => Fam i S') hT.symm ((MaxContactCoverData.coverMaxContactIdeal (A.baseChange L f) hv').comap (pullback.fst (MaxContactCoverData.coverMap (A.baseChange L f) hv') …`. Establish `hY` using `hY0.congr_sourceSeq hEqSeq`. Establish `hZ` using `isStrictPullbackBlowupSeq_coverTriple_baseChange hderiv hstar hinv P hmono Fam B hspec hinherit hbcV hbcO hbcA A hv L f hfpA hHyp hHyp' hdimChart`. Conclude with `isStrictPullback_descend_of_flat_surjective_cover (pullback.fst A.structMap (specMapOfFieldHom A.base L f)) (MaxContactCoverData.coverMap A hv) (MaxContactCoverData.coverMap (A.baseChange L f) hv') (coverBaseChangeMap A hv L f) (pullback.fst (MaxContactCoverData.coverTriple A hv) …`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isStrictPullbackBlowupSeq_baseChange_of_cover
     (hstar : _root_.FunctorialResolution.EmbeddedResolution.MaxContactCoverProperties.{u}) (hin : OrderReduction.OrderReductionHypotheses.{u})
@@ -904,7 +900,7 @@ theorem isStrictPullbackBlowupSeq_baseChange_of_cover
     _ _ _ _ _ _ hX hY hZ hd hd'
 
 /- English proof (translation)
-Substitute `hT` using the available equality. Establish `hψ2 : ψ = ψ'` using `eq_of_heq hψ`. Substitute `hψ2` using the available equality. Conclude with `hcrit d hd`.
+Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem isStrictPullback_of_eq_of_heq
     (hinv : ComapIsoInvariance.{u}) (Fam : ℕ → PrincipalizationAssignment.{u})
@@ -927,17 +923,15 @@ private theorem isStrictPullback_of_eq_of_heq
   exact hcrit d hd
 
 /- English proof (translation)
-Establish `hord : ∀ y : ↥(T.baseChange L f).scheme, orderAt (T.baseChange L f).ideal y = orderAt T.ideal ((pullback.fst T.structMap (specMapOfFieldHom T.base L f)) y)` using `hbcO T L f hV`. Establish `hord' : ∀ x : ↥((T.baseChange L f).withBoundary E').scheme, orderAt ((T.baseChange L f).withBoundary E').ideal x ≤ ((((T.baseChange L f).withBoundary E').mult : ℕ) : ℕ∞)`. Introduce `x`. Conclude with `(hord x).le.trans (hO _)`. Distinguish the cases in `hemp : orderAtLeastLocus T.ideal T.mult = (∅ : Set ↥T.scheme)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `h1 : (MaxContactFunctoriality.maxContactPrincipalization hinv Fam T).length = 0` using `MaxContactFunctoriality.length_eq_zero_of_orderAtLeastLocus_eq_empty hinv P Fam T hV hP hO hemp`. Establish `hemp' : orderAtLeastLocus ((T.baseChange L f).withBoundary E').ideal ((T.baseChange L f).withBoundary E').mult = ∅` using `orderAtLeastLocus_baseChange_eq_empty T L f hord hemp`. Establish `h2 : (MaxContactFunctoriality.maxContactPrincipalization hinv Fam ((T.baseChange L f).withBoundary E')).length = 0` using `MaxContactFunctoriality.length_eq_zero_of_orderAtLeastLocus_eq_empty hinv P Fam ((T.baseChange L f).withBoundary E') hV' hP' hord' hemp'`. Conclude with `IsStrictPullbackBlowupSeq.of_length_zero (pullback.fst T.structMap (specMapOfFieldHom T.base L f)) (MaxContactFunctoriality.maxContactPrincipalization hinv Fam ((T.baseChange L f).withBoundary E')).toSequenceOfBlowups (MaxContactFunctoriality.maxContactPrincipalization hinv Fam T …`. Establish `hHypT : MaxContactFunctoriality.OrderReductionHypotheses P T` using `⟨hP, hO, Set.nonempty_iff_ne_empty.mpr hemp, hV⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hHypT' : MaxContactFunctoriality.OrderReductionHypotheses P ((T.baseChange L f).withBoundary E')`. Establish `hsurjfst` using `surjective_baseChange_fst T L f`. Use `⟨hP', hord', ?_, hV'⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hcon`. Conclude with `hemp (orderAtLeastLocus_eq_empty_of_comap_eq_empty (pullback.fst T.structMap (specMapOfFieldHom T.base L f)) T.ideal T.mult (Set.not_nonempty_iff_eq_empty.mp hcon))`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨d, hd, hmain⟩` from `MaxContactFunctoriality.exists_isStrictPullback_cover_dropTrivialBoundary hsf hmd htv htm T hHypT`. Take `⟨d', hd', hmain'⟩` from `MaxContactFunctoriality.exists_isStrictPullback_cover_dropTrivialBoundary hsf hmd htv htm ((T.baseChange L f).withBoundary E') hHypT'`. Rewrite using `[hmain, hmain']`. Establish `hT : MaxContactReduction.dropTrivialBoundary ((T.baseChange L f).withBoundary E') = (MaxContactReduction.dropTrivialBoundary T).baseChange L (dropTrivialBoundaryBaseFieldHom T L f)` using `dropTrivialBoundary_withBoundary_baseChange T L f E' hE`. Establish `hflat : AlgebraicGeometry.Flat (pullback.fst (MaxContactReduction.dropTrivialBoundary T).structMap (specMapOfFieldHom (MaxContactReduction.dropTrivialBoundary T).base L (dropTrivialBoundaryBaseFieldHom T L f)))` using `inferInstanceAs (AlgebraicGeometry.Flat (pullback.fst T.structMap (specMapOfFieldHom T.base L f)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hHypBC : MaxContactFunctoriality.OrderReductionHypotheses P ((MaxContactReduction.dropTrivialBoundary T).baseChange L (dropTrivialBoundaryBaseFieldHom T L f))`. Rewrite using `[← hT]`. Conclude with `hHypT'.of_dropTrivialBoundaryAdmissible htv`. Use `isStrictPullback_of_eq_of_heq hinv Fam hT ((hHypT'.of_dropTrivialBoundaryAdmissible htv).valid) (hbcV (MaxContactReduction.dropTrivialBoundary T) L (dropTrivialBoundaryBaseFieldHom T L f) (htv T hV)) d' (pullback.fst T.structMap (specMapOfFieldHom T.base L f)) (pullback.fst T.str …` and prove the remaining obligations. Introduce `e he`.
-
-Conclude with `isStrictPullbackBlowupSeq_baseChange_of_cover hstar hin hMC hAdm hderiv hbcV hbcO hbcA hinv P hmono Fam B hspec hinherit hcff (MaxContactReduction.dropTrivialBoundary T) (htv T hV) L (dropTrivialBoundaryBaseFieldHom T L f) (hbcV (MaxContactReduction.dropTrivialBoundary T) L (drop …`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isStrictPullbackBlowupSeq_baseChange_withBoundary
     (hstar : _root_.FunctorialResolution.EmbeddedResolution.MaxContactCoverProperties.{u}) (hin : OrderReduction.OrderReductionHypotheses.{u})

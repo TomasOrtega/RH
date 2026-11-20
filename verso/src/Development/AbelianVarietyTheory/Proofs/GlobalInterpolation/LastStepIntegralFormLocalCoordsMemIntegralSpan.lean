@@ -14,7 +14,7 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Ho
 namespace GlobalTheory.PerQ.Co
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Simplify using `[invTrK, inside₂, embGL, Formalism.UG.bc, Formalism.L2.Col.embAt]`. Rewrite using `[← Matrix.map_map, ← Formalism.L2.Col.map_inv_matrix, ← Formalism.L2.Col.map_inv_matrix, ← Formalism.L2.Col.map_inv_matrix]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -28,11 +28,9 @@ theorem bc_invTrK_embGL {B : Base} {n : ℕ} (g : GL (Fin n) B.fields.E) :
   rfl
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.product_first_zeroth_parts.IntSpan at *`. Proceed by induction on `hp using AddSubgroup.closure_induction with`. Consider the case `mem q hq`. Take `⟨r', f, hr', hf, rfl⟩` from `hq`. Apply `AddSubgroup.subset_closure` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `⟨r * r', f, mul_mem hr hr', hf, by rw [map_mul, mul_smul]⟩`. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add p q _ _ hp hq => rw [smul_add]`. Conclude with `add_mem hp hq`.
-
-Consider the case `neg p _ hp => rw [smul_neg]`. Conclude with `neg_mem hp`.
+Supply the required witnesses or components. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem intSpan_smul (D : D7) {n : ℕ} (w : D.what₂.places.Pl) (lam : D.what₂.Tau → DomWeight n) (r : D.what₂.LL)
     (hr : r ∈ intW D.what₂.places w) (p : MvPolynomial (D.what₂.Tau × Fin n × Fin n) ℂ)
@@ -48,15 +46,13 @@ theorem intSpan_smul (D : D7) {n : ℕ} (w : D.what₂.places.Pl) (lam : D.what�
   | neg p _ hp => rw [smul_neg]; exact neg_mem hp
 
 /- English proof (translation)
-Use `set v' := ((I.chIn u a).S B.R.m).rho B.fields.emb (GlobalTheory.Mem.Col2.lamT (B.hcW u) B.R.m) (I.perIn u a).b0 (((I.chIn u a).S B.R.m).mv (I.perIn u a).b0 ((I.perIn u a).tilPt c)) (y.1 (((I.chIn u a).S B.R.m).cl (I.perIn u a).b0 ((I.perIn u a).tilPt c))) with hv'`. Establish `hmem` using `GlobalTheory.LvT.BuiltChain.rho_mv_mem B.fields.emb ((I.chIn u a).S B.R.m) (GlobalTheory.Mem.Col2.lamT (B.hcW u) B.R.m) ((l.fmL u a).fam B.R.m) y hy (I.perIn u a).b0 ((I.perIn u a).tilPt c)`. Establish `e1 : GlobalTheory.PerQ.Co.coM I u a w c (((I.chIn u a).S B.R.m).embF B.fields.emb B.embLL (GlobalTheory.Mem.Col2.lamT (B.hcW u) B.R.m) ((l.fmL u a).fam B.R.m) y ((I.perIn u a).tilC c)) = actP (GlobalTheory.Mem.Col2.lamT (B.hcW u) B.R.m) (invTrK (embGL (Formalism.L2.Col.embAt B.em …`. Unfold `GlobalTheory.PerQ.Co.coM`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_toLinearMap]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Rewrite using `[← GlobalTheory.LvT.BuiltChain.polOf_evV B.fields.emb B.embLL]`. Use `congr 1`. Rewrite using `[hv', GlobalTheory.LvT.BuiltChain.evV_rho]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, ← bc_invTrK_embGL, ← GlobalTheory.ValCmp.use₂]`. Establish `hB` using `(GlobalTheory.T.localBasisRepLattice_integralCoords_spec I hI l u a w c).2.2.2`. Establish `hM : Submodule.IsLattice B.fields.E (((I.chIn u a).S B.R.m).Lsh (I.perIn u a).b0 ((I.perIn u a).tilPt c))` using `((l.ch u a).step B.R.m).lsh_lat (I.perIn u a).b0 ((I.perIn u a).tilPt c)`. Establish `hnat : ∀ τ, ((GlobalTheory.Mem.Col2.lamT (B.hcW u) B.R.m) τ).natW = (((I.rec7 l Z).fm u).lam (I.rec7 l Z).R.m τ).natW`. Introduce `τ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show (GlobalTheory.Mem.Col2.shW (Examples₂.lamOf (B.hcW u τ) B.R.m) _).natW = (Examples₂.lamOf (B.hcW u τ) B.R.m).natW`. Use function extensionality and compare the values at `i`. Establish `hN : 0 < B.R.N B.R.m` using `lt_of_le_of_lt (Nat.zero_le _) i.2`. Simplify using `only [DomWeight.natW, DomWeight.detShift, dif_pos hN, GlobalTheory.Mem.Col2.shW]`. Use `congr 1`.
-
-Expand and normalize the polynomial expressions, which then agree. Conclude with `(GlobalTheory.T.mem_locW_delAtr_iff' B.fields.emb B.embLL B.places (I.rec7 l Z).plEq (I.rec7 l Z).val_eq (GlobalTheory.Mem.Col2.lamT (B.hcW u) B.R.m) (((I.rec7 l Z).fm u).lam (I.rec7 l Z).R.m) hnat _ hM w _ hB v').1 (Submodule.subset_span hmem)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem latCo_one {B : Base} {X : PreX B.toPre} (I : TC B X) (hI : I.Ok) (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word)
     (a : I.ι) (w : B.places.Pl) (c : (I.perIn u a).S'.Cl)
@@ -92,11 +88,9 @@ theorem latCo_one {B : Base} {X : PreX B.toPre} (I : TC B X) (hI : I.Ok) (l : I.
     (GlobalTheory.Mem.Col2.lamT (B.hcW u) B.R.m) (((I.rec7 l Z).fm u).lam (I.rec7 l Z).R.m) hnat _ hM w _ hB v').1 (Submodule.subset_span hmem)
 
 /- English proof (translation)
-Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy => exact latCo_one I hI l Z u a w c y hy`. Consider the case `zero => rw [map_zero, Pi.zero_apply, map_zero]`. Conclude with `zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add y z _ _ hy hz => rw [map_add, Pi.add_apply, map_add]`. Conclude with `add_mem hy hz`. Consider the case `smul r y _ hy`. Establish `e : r • y = (r : B.LL) • y` using `rfl`. Rewrite using `[e, LinearMap.map_smulₛₗ, Pi.smul_apply, map_smul]`.
-
-Conclude with `intSpan_smul (I.rec7 l Z) w _ (r : B.LL) r.2 _ hy`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latCo_gen {B : Base} {X : PreX B.toPre} (I : TC B X) (hI : I.Ok) (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word)
     (a : I.ι) (w : B.places.Pl) (c : (I.perIn u a).S'.Cl) :
@@ -114,7 +108,7 @@ theorem latCo_gen {B : Base} {X : PreX B.toPre} (I : TC B X) (hI : I.Ok) (l : I.
     exact intSpan_smul (I.rec7 l Z) w _ (r : B.LL) r.2 _ hy
 
 /- English proof (translation)
-Introduce `I hI l Z _ u a w x hx c` and use `latCo_gen I hI l Z u a w c x hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem latCo_mem_intSpan : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (l0 : I.Law0 l) (u : B.Word) (a : I.ι) (w : B.places.Pl), ∀ x ∈ ((I.tw l l0 Z).fm u a).S (I.rec7 l Z).R.m w, ∀ c, GlobalTheory.PerQ.Co.coM I u a w c (((I.tw l l0 Z).fm u a).emb (I.rec7 l Z).R.m x (((I.tw l l0 Z).fm u a).til c)) ∈ Formalism.MainNotions.product_first_zeroth_parts.IntSpan (I.rec7 l Z) w (((I.rec7 l Z).fm u).lam (I.rec7 l Z).R.m) :=
   fun I hI l Z _ u a w x hx c => latCo_gen I hI l Z u a w c x hx

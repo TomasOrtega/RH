@@ -21,17 +21,17 @@ open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 noncomputable section
 
 /- English proof (translation)
-Introduce `_ _ _ D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB _ _ hO hT R Rf _ Pm rf rl p p' hm`. Establish `hstd : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ` using `hO.psi ▸ hT.base.std`. Set `S` to `GlobalTheory.WeilM.schA D.host.F (Fin W.rank × Fin (W.rank + W₁.rank))`. Set `T : S →ₗ[ℂ] (WO W X → ℂ)` to `{ toFun := fun Φ x => GlobalTheory.WeilM.thetaSum D.host.F (Γ.M.co.rho ψ (cA.symm x) Φ.1) map_add' := fun Φ Ψ => funext fun x => by`. Establish `e : Γ.M.co.rho ψ (cA.symm x) (Φ.1 + Ψ.1) = Γ.M.co.rho ψ (cA.symm x) Φ.1 + Γ.M.co.rho ψ (cA.symm x) Ψ.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `z`. Simplify using `only [GlobalTheory.WeilM.Darboux.rho, GlobalTheory.WeilM.schr, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Submodule.coe_add, Pi.add_apply, e]`. Conclude with `GlobalTheory.WeilM.thetaSum_add _ (GlobalTheory.HeisSchA.rho_mem_schA Γ.M ψ hstd _ _ Φ.2) (GlobalTheory.HeisSchA.rho_mem_schA Γ.M ψ hstd _ _ Ψ.2)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use the proof step `map_smul' := fun c Φ => funext fun x => by`. Establish `e : Γ.M.co.rho ψ (cA.symm x) (c • Φ.1) = c • Γ.M.co.rho ψ (cA.symm x) Φ.1`. Use function extensionality and compare the values at `z`. Simplify using `only [GlobalTheory.WeilM.Darboux.rho, GlobalTheory.WeilM.schr, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Simplify using `only [Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, RingHom.id_apply, e]`. Conclude with `GlobalTheory.WeilM.thetaSum_smul _ c _ }`. Set `Q` to `(algD Γ.M Bs.ψ Bs.emb).comap S.subtype`. Establish `hle : algF ψ θ true A B ≤ Q.map T`. Introduce `Φ hΦ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨ΦD, hD, hDat⟩` from `hO.algA Φ hΦ`. Use `⟨⟨ΦD, hDat.1⟩, hD, funext fun x => ?_⟩` and prove the remaining obligations. Use `hDat.2 (cA.symm x)` as an intermediate fact. Rewrite `this` using `[AddEquiv.apply_symm_apply]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hQ : Module.rank ℂ Q ≤ Module.rank ℂ (algD Γ.M Bs.ψ Bs.emb)`. Rewrite using `[(Submodule.equivMapOfInjective S.subtype Subtype.val_injective Q).rank_eq]`. Conclude with `Submodule.rank_mono (Submodule.map_comap_le _ _)`. Establish `hD : Module.rank ℂ (algD Γ.M Bs.ψ Bs.emb) ≤ Cardinal.aleph0` using `GlobalTheory.T.rank_algebraicData_schrodingerModel_le_aleph0 Γ.M Bs.ψ Bs.emb hT.geo.hM (GlobalTheory.T.rank_polynomialFock_schrodingerModel_le_aleph0 Bs Γ.M hT.base hT.geo.hV hT.geo.hW hT.geo.hM) (fun v => GlobalTheory.T.rank_schwartzBruhat_finitePlaceCompletion_le_aleph0 v _)`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SquareAgree.rank_pi_le_aleph0 : GlobalTheory.Published.HoweDualityUnitary → GlobalTheory.Published.HoweDualityReal → GlobalTheory.FunPr.Hypotheses₂ → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁)
     (B : Fr X) (α β : (AE D)ˣ →* Circle) (ν : Measure (GA D W)) (𝓕 : Set (GA D W)) (ν₁ : Measure (GA D W₁))

@@ -5,37 +5,35 @@ import GroundTheory.AutomorphicForms.GeometricLemmaFiltration
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.LocGL ValuativeRel Matrix MeasureTheory UpperTheory.ConvolutionTheory.Loc MulAction UpperTheory.Gal.LocD
 
 /- English proof (translation)
-Introduce `hstep X H _ _ _ _ _ _ _ _ _ _ _ _ _ s τ p hp hs hτ hsp hτp hcomm χ hχ k x hfix huniq hcl D hD hsum f hf`. Take `⟨C, hC⟩ : ∃ C : Fin k → Set X, C = fun j => MulAction.orbit H (x j)` from `⟨_, rfl⟩`. Establish `hCl : ∀ l y, y ∈ C l ↔ y ∈ MulAction.orbit H (x l)`. Introduce `l y`. Rewrite using `[hC]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hcov : ∀ y, ∃ l, y ∈ C l` using `fun y => ⟨(huniq y).exists.choose, (hCl _ _).mpr (huniq y).exists.choose_spec⟩`. Establish `hdisj : Pairwise fun i j => Disjoint (C i) (C j)`. Introduce `i j hij`. Rewrite using `[Set.disjoint_left]`. Introduce `y hi hj`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hij ((huniq y).unique ((hCl _ _).mp hi) ((hCl _ _).mp hj))`. Establish `hcl' : ∀ j, closure (C j) ⊆ ⋃ l, ⋃ (_ : j ≤ l), C l`. Rewrite using `[hC]`. Conclude with `hcl`. Establish `hsorb : ∀ l y, y ∈ C l → s y ∈ C l`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce `l y hy`. Rewrite `hy`, the goal using `[hCl]`. Take `⟨g, rfl⟩` from `hy`. Conclude with `⟨τ g, by rw [hcomm, hfix]⟩`. Establish `key : ∀ j : ℕ, j ≤ k → ∀ g ∈ GroundTheory.Automorphic.Whittaker.supportedIn (GroundTheory.Automorphic.Parabolic.cellUnion C j), D g = 0`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `j`. Proceed by induction on `j with`. Consider the case `zero`. Introduce `_ g hg`. Rewrite `hg` using `[GroundTheory.Automorphic.Whittaker.mem_supportedIn, GroundTheory.Automorphic.Parabolic.cellUnion_zero]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hg0 : g = 0`. Use function extensionality and compare the values at `y`. Assume the negation of the conclusion as `hy`. Conclude with `hg.2 hy`. Rewrite using `[hg0, map_zero]`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Consider the case `succ j ih`. Introduce `hjk g hg`. Establish `hj : j < k` using `by omega`. Establish `hU : GroundTheory.Automorphic.Parabolic.cellUnion C (j + 1) = GroundTheory.Automorphic.Parabolic.cellUnion C ((⟨j, hj⟩ : Fin k) : ℕ) ∪ C ⟨j, hj⟩` using `GroundTheory.Automorphic.Parabolic.cellUnion_succ (C := C) ⟨j, hj⟩`. Use `hstep X H s τ p hp hs hτ hsp hτp hcomm χ hχ D hD hsum (GroundTheory.Automorphic.Parabolic.cellUnion C (j + 1)) (closure (C ⟨j, hj⟩)) (x ⟨j, hj⟩) (GroundTheory.Automorphic.Parabolic.isOpen_cellUnion hdisj hcov hcl' (j + 1)) isClosed_closure ?_ ?_ ?_ (hfix _) ?_ g hg` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.inter_comm]`. Establish `h1` using `GroundTheory.Automorphic.Parabolic.closure_inter_cellUnion_succ hdisj hcl' ⟨j, hj⟩`. Rewrite using `[h1, hC]`. Introduce `h y hy`. Rewrite `hy`, the goal using `[GroundTheory.Automorphic.Parabolic.mem_cellUnion]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Take `⟨l, hl, hyl⟩` from `hy`. Use `⟨l, hl, ?_⟩` and prove the remaining obligations. Rewrite `hyl`, the goal using `[hCl]`. Take `⟨g', rfl⟩` from `hyl`. Conclude with `⟨h * g', mul_smul _ _ _⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `y`. Rewrite using `[GroundTheory.Automorphic.Parabolic.mem_cellUnion, GroundTheory.Automorphic.Parabolic.mem_cellUnion]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨l, hl, hsy⟩`. Take `⟨m, hm⟩` from `hcov y`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components.
 
-Establish `hlm : l = m` using `(huniq (s y)).unique ((hCl _ _).mp hsy) ((hCl _ _).mp (hsorb m y hm))`. Substitute `hlm` using the available equality. Conclude with `⟨l, hl, hm⟩`. Introduce and unpack `⟨l, hl, hy⟩`. Conclude with `⟨l, hl, hsorb l y hy⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `g' hg'`. Rewrite `hg'` using `[Submodule.mem_inf, GroundTheory.Automorphic.Whittaker.mem_supportedIn, GroundTheory.Automorphic.Whittaker.mem_vanishingOn]`. Take `⟨hg1, hg2⟩` from `hg'`. Apply `ih (by omega)` to reduce the goal to its premises. Rewrite using `[GroundTheory.Automorphic.Whittaker.mem_supportedIn]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨hg1.1, ?_⟩` and prove the remaining obligations. Introduce `y hy`. Establish `hyU` using `hg1.2 hy`. Rewrite `hyU`, the goal using `[GroundTheory.Automorphic.Parabolic.mem_cellUnion]`. Take `⟨l, hl, hyl⟩` from `hyU`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-Use `⟨l, ?_, hyl⟩` and prove the remaining obligations. Break down `Nat.lt_succ_iff_lt_or_eq.mp hl with hlt | heq` into its components or cases. Conclude with `hlt`. It suffices to derive a contradiction. Apply `hy` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hg2` to reduce the goal to its premises. Establish `hleq : l = ⟨j, hj⟩` using `Fin.ext heq`. Rewrite `hyl` using `[hleq]`. Conclude with `subset_closure hyl`. Apply `key k le_rfl f` to reduce the goal to its premises.
-
-Rewrite using `[GroundTheory.Automorphic.Parabolic.cellUnion_of_cover hcov, GroundTheory.Automorphic.Whittaker.mem_supportedIn]`. Conclude with `⟨hf, Set.subset_univ _⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.LocD.distZero :
     CellStep → DistZero := by

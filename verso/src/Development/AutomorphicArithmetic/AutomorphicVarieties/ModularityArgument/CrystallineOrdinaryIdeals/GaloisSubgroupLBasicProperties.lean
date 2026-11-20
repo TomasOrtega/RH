@@ -6,11 +6,11 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc ReciprocityTheory.Gal Mod
 namespace GlobalTheory.OrdLoc
 
 /- English proof (translation)
-Introduce `l _ O _ _ _ D`. Establish `hη : IsOpen (D.η.ker : Set (GQ l))`. Establish `: D.η.ker = GK D.Kv` using `Subgroup.ext fun g => D.η_ker g`. Rewrite using `[this]`. Use `haveI := D.Kv.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `IntermediateField.fixingSubgroup_isOpen D.Kv.1`. Establish `ho : IsOpen (D.HL : Set (GQ l))` using `hη.inter D.τ_open`. Establish `hex : ∃ s, IsInertiaInfiniteCyclotomic D s`. Take `⟨s, ⟨hs1, hs2⟩, hs⟩` from `((cycInertia l).2 D.HL ho).2`. Conclude with `⟨s, hs1, hs2, hs⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨inferInstanceAs (D.η.ker ⊓ D.τ.ker).Normal, ho, ho.isOpenEmbedding_subtypeVal, fun s hs hi => ?_, Classical.epsilon_spec hex⟩` and prove the remaining obligations. Establish `ht : D.τ s = 1` using `hs.2`. Rewrite using `[D.Ψ_I s hi, ht, mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hl_basic : ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsLocalRing O] [Algebra ℤ_[l] O] (D : Dat3 l O), D.HL.Normal ∧ IsOpen (D.HL : Set (GQ l)) ∧ IsOpenEmbedding D.HL.subtype ∧ (∀ s ∈ D.HL, s ∈ Iq l → D.Ψ s = cycA l l O s ^ D.e) ∧ GlobalTheory.OrdLoc.IsInertiaInfiniteCyclotomic D (GlobalTheory.OrdLoc.s0 D) := by
   intro l _ O _ _ _ D

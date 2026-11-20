@@ -42,13 +42,13 @@ namespace ExSt
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-Take `⟨Xo⟩` from `h₁ E H D l (by omega)`. Take `⟨g, ty, hty⟩` from `PureTypeModel.exists_isTypeFn H D.p D.q`. Take `⟨FU⟩` from `h₂ E H D l Xo (algebraMap (KA l) ℂ) g ty (by omega) rfl hty`. Set `i : Fin FU.n` to `⟨0, FU.n_pos⟩`. Take `⟨a, b⟩` from `FU.sig i`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨Pe, hP⟩` from `PeriodNonempty.exists_isPeriod E H (FU.Di i) g ty (by rw [a, b]; exact hty)`. Establish `key : ∀ p q : ℕ, p = 1 → q = 0 → IsTypeFn H p q ty → ∃ Z : CMLat hP p q, ∀ j, Function.Injective (Z.f j) ∧ Z.hh j = 1`. Introduce and unpack `_ _ rfl rfl hty`. Use `⟨LatModel.selfLat (a.trans hp) (b.trans hq) hP hty, fun j => ?_⟩` and prove the remaining obligations. Break down `j with j | j` into its components or cases.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `⟨fun _ _ h => h, rfl⟩`. Conclude with `j.elim0`. Take `⟨Z, hZ⟩` from `key _ _ hp hq hty`. Use `⟨Xo, g, ty, FU, i, Pe, hP, Z, ?_, hZ⟩` and prove the remaining obligations. Use `Module.nontrivial_of_finrank_pos (R := 𝓞 E) ?_` and prove the remaining obligations.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(FU.Di i).rank, a, hp]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem hypotheses_of_datum (h₁ : N1ab) (h₂ : N1c) (D : Datum H) (hp : D.p = 1) (hq : D.q = 0) (l : Level H) :
     ∃ (Xo : Moduli D l) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (FU : FamilyUnif Xo (algebraMap (KA l) ℂ) ty) (i : Fin FU.n)
@@ -74,7 +74,7 @@ theorem hypotheses_of_datum (h₁ : N1ab) (h₂ : N1c) (D : Datum H) (hp : D.p =
   omega
 
 /- English proof (translation)
-Take `⟨D, hp, hq⟩` from `LatModel.exists_datum`. Take `⟨l⟩ : Nonempty (Level LatModel.host)` from `inferInstance`. Conclude with `⟨⟨LatModel.negDatum D, l, hq, hp⟩, D, l, hp, hq, fun h₁ h₂ => hypotheses_of_datum h₁ h₂ D hp hq l⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem hypotheses_inhabited :
     (∃ (D : Datum LatModel.host) (_ : Level LatModel.host), D.p = 0 ∧ D.q = 1) ∧
@@ -87,11 +87,9 @@ theorem hypotheses_inhabited :
   exact ⟨⟨LatModel.negDatum D, l, hq, hp⟩, D, l, hp, hq, fun h₁ h₂ => hypotheses_of_datum h₁ h₂ D hp hq l⟩
 
 /- English proof (translation)
-Establish `hw : w.left ≫ B.G.hom = spMap σ ≫ spMap (algebraMap (𝓞 K) K)`. Rewrite using `[Over.w w]`. Use `show Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨m'.cart.1.lift _ _ hw, ⟨m'.cart.1.lift_snd _ _ _, m'.cart.1.lift_fst _ _ _⟩, fun x hx => ?_⟩` and prove the remaining obligations. Apply `m'.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[m'.cart.1.lift_fst]`. Conclude with `hx.2`. Rewrite using `[m'.cart.1.lift_snd]`.
-
-Conclude with `hx.1`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem existsUnique_point {K : Type} [Field K] [NumberField K] (σ : K →+* ℂ) {B : SAB H (Sp (𝓞 K))}
     {t₀ : SAB H (Sp K)} (m' : SABMap t₀ B (spMap (algebraMap (𝓞 K) K)))

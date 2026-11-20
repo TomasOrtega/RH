@@ -8,9 +8,9 @@ open GlobalTheory.Mum
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Establish `s_open : IsOpenImmersion (pullback.lift (𝟙 Z) i' (by simp) : Z ⟶ pullback (i' ≫ h) h)` using `MorphismProperty.of_isPullback (P := @IsOpenImmersion) (pullback_lift_diagonal_isPullback i' h) inferInstance`. Establish `e : Set.range i' = (pullback.snd (i' ≫ h) h) '' Set.range (pullback.lift (𝟙 Z) i' (by simp) : Z ⟶ pullback (i' ≫ h) h)`. Rewrite using `[← Set.range_comp]`. Use `congr 1`. Use extensionality with `z`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Rewrite using `[Function.comp_apply, ← Scheme.Hom.comp_apply, pullback.lift_snd]`. Rewrite using `[e]`. Conclude with `(pullback.snd (i' ≫ h) h).isOpenMap _ (pullback.lift (𝟙 Z) i' _).isOpenEmbedding.isOpen_range`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_range_of_etale_of_universallyOpen_comp {Y Z T : Scheme.{0}} (i' : Z ⟶ Y) (h : Y ⟶ T)
     [Etale h] (hu : UniversallyOpen (i' ≫ h)) : IsOpen (Set.range i') := by
@@ -26,11 +26,11 @@ theorem isOpen_range_of_etale_of_universallyOpen_comp {Y Z T : Scheme.{0}} (i' :
   exact (pullback.snd (i' ≫ h) h).isOpenMap _ (pullback.lift (𝟙 Z) i' _).isOpenEmbedding.isOpen_range
 
 /- English proof (translation)
-Set `i' : Z ⟶ pullback c j` to `pullback.lift i φ w`. Establish `hi' : i' ≫ pullback.snd c j = φ` using `pullback.lift_snd _ _ _`. Establish `ho : IsOpen (Set.range i')` using `isOpen_range_of_etale_of_universallyOpen_comp i' (pullback.snd c j) (by rw [hi']; exact hφ)`. Establish `hemb` using `IsPreimmersion.isEmbedding (pullback.fst c j)`. Take `⟨U, hU, hpre⟩` from `hemb.isInducing.isOpen_iff.1 ho`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨⟨U, hU⟩, ?_⟩` and prove the remaining obligations. Establish `hr : Set.range i = (pullback.fst c j) '' Set.range i'`. Rewrite using `[← Set.range_comp]`. Use `congr 1`. Use extensionality with `z`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Rewrite using `[Function.comp_apply, ← Scheme.Hom.comp_apply, pullback.lift_fst]`. Rewrite using `[hr, ← hpre, Set.image_preimage_eq_inter_range, Scheme.Pullback.range_fst]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_opens_range_eq_of_etale {X B T Z : Scheme.{0}} (c : X ⟶ B) (j : T ⟶ B) (i : Z ⟶ X) (φ : Z ⟶ T)
     (hc : Etale c) (hj : IsPreimmersion j) (hφ : UniversallyOpen φ) (w : i ≫ c = φ ≫ j) :

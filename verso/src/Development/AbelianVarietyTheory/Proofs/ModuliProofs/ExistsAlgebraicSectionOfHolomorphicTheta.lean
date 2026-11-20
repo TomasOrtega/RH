@@ -23,11 +23,11 @@ namespace GlobalTheory.HolSecAlg
 variable {A : Over (Sp ℂ)} [GrpObj A] {g : ℕ}
 
 /- English proof (translation)
-Introduce `z`. Rewrite using `[mem_closure_iff_frequently]`. Introduce `hz`. Apply `hw` to reduce the goal to its premises. Establish `hz' : ∀ᶠ x in nhds z, σ x = 0` using `by filter_upwards [hz] with x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Simplify using `using hx`. Establish `hl : Differentiable ℂ (fun t : ℂ => z + t • (w - z))` using `by fun_prop`. Establish `hd : Differentiable ℂ (fun t : ℂ => σ (z + t • (w - z)))` using `hσ.comp hl`. Establish `ha : AnalyticOnNhd ℂ (fun t : ℂ => σ (z + t • (w - z))) Set.univ` using `hd.differentiableOn.analyticOnNhd isOpen_univ`. Establish `ht : Filter.Tendsto (fun t : ℂ => z + t • (w - z)) (nhds 0) (nhds z)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hl.continuous.tendsto 0` as an intermediate fact. Simplify using `using this`. Establish `h0` using `ha.eqOn_zero_of_preconnected_of_eventuallyEq_zero isPreconnected_univ (Set.mem_univ 0) (ht.eventually hz') (Set.mem_univ 1)`. Simplify using `using h0`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem dense_ne_zero {σ : (Fin g → ℂ) → ℂ} (hσ : Differentiable ℂ σ) {w : Fin g → ℂ} (hw : σ w ≠ 0) :
     Dense {z | σ z ≠ 0} := by
@@ -50,14 +50,14 @@ theorem dense_ne_zero {σ : (Fin g → ℂ) → ℂ} (hσ : Differentiable ℂ �
   simpa using h0
 
 /- English proof (translation)
-Rewrite using `[u.ex_add, (u.ker l).2 hl, _root_.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ex_add_lattice {L : LB A.left} (u : HolUnif A L g) (z : Fin g → ℂ) {l : Fin g → ℂ} (hl : l ∈ u.Λ) :
     u.ex (z + l) = u.ex z := by
   rw [u.ex_add, (u.ker l).2 hl, _root_.mul_one]
 
 /- English proof (translation)
-Rewrite using `[← u.ker]`. Establish `h1` using `u.ex_add z (w - z)`. Rewrite `h1` using `[add_sub_cancel, h]`. Conclude with `(mul_eq_left.1 h1.symm)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sub_mem_of_ex_eq {L : LB A.left} (u : HolUnif A L g) {z w : Fin g → ℂ} (h : u.ex w = u.ex z) :
     w - z ∈ u.Λ := by
@@ -67,7 +67,7 @@ theorem sub_mem_of_ex_eq {L : LB A.left} (u : HolUnif A L g) {z w : Fin g → �
   exact (mul_eq_left.1 h1.symm)
 
 /- English proof (translation)
-Establish `hmem : x (default : PrimeSpectrum ℂ) ∈ ⨆ i, M.U i`. Rewrite using `[hM]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hmem`. Conclude with `⟨i, (top_le_preimage_iff_mem x _).2 hi⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_chart {X : Scheme.{0}} {M : LB X} (hM : ⨆ i, M.U i = ⊤) (x : Sp ℂ ⟶ X) :
     ∃ i, ⊤ ≤ x ⁻¹ᵁ M.U i := by
@@ -77,7 +77,7 @@ theorem exists_chart {X : Scheme.{0}} {M : LB X} (hM : ⨆ i, M.U i = ⊤) (x : 
   exact ⟨i, (top_le_preimage_iff_mem x _).2 hi⟩
 
 /- English proof (translation)
-Use `congrArg (valAt' x (M.U i ⊓ M.U j)) (s.compat i j)` as an intermediate fact. Rewrite `this` using `[valAt'_mul, valAt'_map x _ _ h, valAt'_map x _ _ h]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem val_compat {X : Scheme.{0}} {M : LB X} (s : M.Sec) (x : Sp ℂ ⟶ X) (i j : M.ι)
     (h : ⊤ ≤ x ⁻¹ᵁ (M.U i ⊓ M.U j)) :
@@ -86,13 +86,13 @@ theorem val_compat {X : Scheme.{0}} {M : LB X} (s : M.Sec) (x : Sp ℂ ⟶ X) (i
   rwa [valAt'_mul, valAt'_map x _ _ h, valAt'_map x _ _ h] at this
 
 /- English proof (translation)
-Use `choose c hc using fun z => exists_chart hM (u.ex z).left`. Set `σ : (Fin g → ℂ) → ℂ` to `fun z => valAt' (u.ex z).left (M.U (c z)) (s.f (c z)) / u.fr (c z) z`. Establish `hfn : u.IsFn s σ`. Introduce `i z hi`. Establish `h : ⊤ ≤ (u.ex z).left ⁻¹ᵁ (M.U i ⊓ M.U (c z))` using `(top_le_preimage_inf _ _ _).2 ⟨hi, hc z⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne` using `u.fr_ne _ z (hc z)`. Rewrite using `[val_compat s _ i (c z) h, u.fr_compat i (c z) z h]`. Simplify using `only [σ]`. Clear the denominators using the available nonvanishing facts. Use `⟨σ, fun z => ?_, hfn⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨ho, hd⟩` from `u.hol _ (s.f (c z))`. Establish `hn` using `ho.mem_nhds (hc z)`. Establish `hq` using `(hd.differentiableAt hn).mul (((u.fr_hol (c z)).differentiableAt hn).inv (u.fr_ne _ z (hc z)))`. Use `hq.congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [hn] with w hw`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `u.fr_ne _ w hw` as an intermediate fact. Simplify using `only [Pi.mul_apply, Pi.inv_apply]`. Rewrite using `[hfn _ w hw]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem exists_isFn {M : LB A.left} (hM : ⨆ i, M.U i = ⊤) (u : HolUnif A M g) (s : M.Sec) :
     ∃ σ, Differentiable ℂ σ ∧ u.IsFn s σ := by
@@ -118,7 +118,7 @@ theorem exists_isFn {M : LB A.left} (hM : ⨆ i, M.U i = ⊤) (u : HolUnif A M g
   field_simp
 
 /- English proof (translation)
-Use `eq_of_valAt'_eq valAt'_rules existsUnique_point_of_ringHom X inferInstance inferInstance U f f' ?_` and prove the remaining obligations. Introduce `x hx`. Take `⟨z, rfl⟩` from `he x`. Conclude with `h z hx`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ext_val {X : Over (Sp ℂ)} [IsReduced X.left] [LocallyOfFiniteType X.hom] {E : Type}
     (e : E → (𝟙_ (Over (Sp ℂ)) ⟶ X)) (he : Function.Surjective e) (U : X.left.Opens) (f f' : Γ(X.left, U))
@@ -129,11 +129,9 @@ theorem ext_val {X : Over (Sp ℂ)} [IsReduced X.left] [LocallyOfFiniteType X.ho
   exact h z hx
 
 /- English proof (translation)
-Use `choose U hpU hUV c hc using h`. Take `⟨s, hs, -⟩` from `TopCat.Sheaf.existsUnique_gluing' X.left.sheaf (fun p : V => U p.1 p.2) V (fun p => homOfLE (hUV p.1 p.2)) (fun p hp => TopologicalSpace.Opens.mem_iSup.mpr ⟨⟨p, hp⟩, hpU p hp⟩) (fun p => c p.1 p.2) (by`. Introduce `p q`. Use `ext_val e he (U p.1 p.2 ⊓ U q.1 q.2) _ _ fun z hz => ?_` and prove the remaining obligations. Take `⟨h1, h2⟩` from `(top_le_preimage_inf _ _ _).1 hz`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `((valAt'_map _ _ _ hz).trans (hc _ _ z h1)).trans ((valAt'_map _ _ _ hz).trans (hc _ _ z h2)).symm)`. Use `⟨s, fun z hz => ?_⟩` and prove the remaining obligations. Establish `hp` using `(top_le_preimage_iff_mem _ _).1 hz`. Establish `hz'` using `(top_le_preimage_iff_mem _ _).2 (hpU _ hp)`. Rewrite using `[← hc _ hp z hz', ← hs ⟨_, hp⟩]`.
-
-Conclude with `(valAt'_map _ _ _ hz').symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_glue {X : Over (Sp ℂ)} [IsReduced X.left] [LocallyOfFiniteType X.hom] {E : Type}
     (e : E → (𝟙_ (Over (Sp ℂ)) ⟶ X)) (he : Function.Surjective e) (V : X.left.Opens) (ψ : E → ℂ)
@@ -157,9 +155,9 @@ theorem exists_glue {X : Over (Sp ℂ)} [IsReduced X.left] [LocallyOfFiniteType 
   exact (valAt'_map _ _ _ hz').symm
 
 /- English proof (translation)
-Use `choose c hc using fun i => exists_glue u.ex u.ex_onto (N.U i) (fun z => ϑ z * u.fr i z) (h i)`. Use `⟨⟨c, fun i j => ?_⟩, hc⟩` and prove the remaining obligations. Use `ext_val u.ex u.ex_onto _ _ _ fun z hz => ?_` and prove the remaining obligations. Take `⟨h1, h2⟩` from `(top_le_preimage_inf _ _ _).1 hz`. Rewrite using `[valAt'_mul, valAt'_map _ _ _ hz, valAt'_map _ _ _ hz, hc i z h1, hc j z h2, u.fr_compat i j z hz]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem exists_sec [IsReduced A.left] [LocallyOfFiniteType A.hom] {N : LB A.left} (u : HolUnif A N g)
     (ϑ : (Fin g → ℂ) → ℂ)
@@ -194,7 +192,7 @@ def transport {L N : LB A.left} (u₀ : HolUnif A L g) (u : HolUnif A N g) (F : 
     exact u.fr_compat i j (F z) hz
 
 /- English proof (translation)
-The claim follows from `valAt'_map x _ _ hV`.
+A detailed English derivation is pending.
 -/
 theorem val_res_unit {X : Scheme.{0}} (x : Sp ℂ ⟶ X) {U V : X.Opens} (h : V ≤ U) (a : Γ(X, U)ˣ)
     (hV : ⊤ ≤ x ⁻¹ᵁ V) : valAt' x V (res h a).val = valAt' x U a.val :=
@@ -252,37 +250,33 @@ def divUnif {L N : LB A.left} (u₀ : HolUnif A L g) (u : HolUnif A N g) (hu : u
     ring
 
 /- English proof (translation)
-Establish `hint : IsIntegral P.A.left` using `polAV_isIntegral_of_isAlgClosed ℂ P`. Establish `hsm : Smooth P.A.hom` using `P.isAb.smooth`. Take `⟨n, s₀, p₀, hp₀⟩` from `GlobalTheory.T.exists_nonzero_sec_lbPow_div hL ℂ P N hN`. Establish `hcov : ∀ (x : P.A.left) (i : N.ι), x ∈ N.U i → ∃ j : (lbPow P.L n).ι, x ∈ (LB.div (lbPow P.L n) N).U (j, i)`. Introduce `x i hi`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hx : x ∈ ⨆ j, P.L.U j` using `by rw [P.isLB.cover]; trivial`. Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.1 hx`. Use `⟨fun _ => j, ?_, hi⟩` and prove the remaining obligations. Establish `: x ∈ (lbPow P.L n).U (fun _ => j)` using `by rw [Cartier.lbPow_U]; exact hj`. Conclude with `this`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcovD : ⨆ p, (LB.div (lbPow P.L n) N).U p = ⊤`. Use `top_le_iff.1 fun x _ => ?_` and prove the remaining obligations. Establish `hx : x ∈ ⨆ i, N.U i` using `by rw [hN.cover]; trivial`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hx`. Take `⟨j, hj⟩` from `hcov x i hi`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨(j, i), hj⟩`. Take `⟨σ, hσ, hfn⟩` from `exists_isFn hcovD (divUnif u₀ u hu n) s₀`. Use `replace hfn : ∀ p z, ⊤ ≤ (u₀.ex z).left ⁻¹ᵁ (LB.div (lbPow P.L n) N).U p → valAt' (u₀.ex z).left ((LB.div (lbPow P.L n) N).U p) (s₀.f p) = σ z * (u₀.fr (p.1 PUnit.unit) z ^ n * (u.fr p.2 z)⁻¹) := hfn`. Establish `hL1 : ∀ p z, ⊤ ≤ (u₀.ex z).left ⁻¹ᵁ (LB.div (lbPow P.L n) N).U p → ⊤ ≤ (u₀.ex z).left ⁻¹ᵁ (lbPow P.L n).U p.1` using `fun p z hz => ((top_le_preimage_inf _ _ _).1 hz).1`. Establish `hL2 : ∀ p z, ⊤ ≤ (u₀.ex z).left ⁻¹ᵁ (LB.div (lbPow P.L n) N).U p → ⊤ ≤ (u₀.ex z).left ⁻¹ᵁ P.L.U (p.1 PUnit.unit)` using `fun p z hz => Cartier.lbPow_U P.L n p.1 ▸ hL1 p z hz`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hN2 : ∀ p z, ⊤ ≤ (u₀.ex z).left ⁻¹ᵁ (LB.div (lbPow P.L n) N).U p → ⊤ ≤ (u.ex z).left ⁻¹ᵁ N.U p.2` using `fun p z hz => hu ▸ ((top_le_preimage_inf _ _ _).1 hz).2`. Establish `hσ0 : ∃ w, σ w ≠ 0`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Use `hp₀ (ext_val u₀.ex u₀.ex_onto _ _ _ fun z hz => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hfn _ z hz, hc, valAt'_zero, zero_mul]`. Take `⟨w₀, hw₀⟩` from `hσ0`. Establish `hdense` using `dense_ne_zero hσ hw₀`. Take `⟨s₁, hs₁⟩` from `hsec n (fun z => ϑ z * σ z) ⟨hϑ.mul hσ, fun l z => by`. Take `⟨p, hp⟩` from `exists_chart hcovD (u₀.ex z).left`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp' : ⊤ ≤ (u₀.ex (z + l)).left ⁻¹ᵁ (LB.div (lbPow P.L n) N).U p`. Rewrite using `[ex_add_lattice u₀ z l.2]`. Conclude with `hp`. Establish `e1` using `hfn p z hp`. Establish `e2` using `hfn p (z + l) hp'`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e2` using `[ex_add_lattice u₀ z l.2, e1, hAH.2.2.2 l _ z (hL2 p z hp)]`. Establish `e3` using `hper l p.2 z (hN2 p z hp)`. Establish `n1` using `u.fr_ne _ _ (hN2 p z hp)`. Establish `n2` using `u.fr_ne _ _ (hN2 p _ hp')`. Establish `n3` using `pow_ne_zero n (u₀.fr_ne _ _ (hL2 p _ hp'))`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Clear the denominators using the available nonvanishing facts. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `e2` using `[mul_pow]`. Simplify using `only [hermForm]`. Generalize the expression as in `(χ l * Complex.exp _) ^ n = c at e2 ⊢`. Clear denominators, using `at e2` for the nonvanishing conditions. Apply `mul_right_cancel₀ (mul_ne_zero n1 n2)` to reduce the goal to its premises.
+Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take the linear combination `(σ (z + l) * u.fr p.2 z) * e3 - (ϑ z * u.fr p.2 z) * e2⟩`. Use `exists_sec u ϑ fun i x hx => ?_` and prove the remaining obligations. Take `⟨j, hj⟩` from `hcov x i hx`. Take `⟨_, ⟨U, hU, rfl⟩, hxU, hUV⟩` from `P.A.left.isBasis_affineOpens.exists_subset_of_mem_open hj ((LB.div (lbPow P.L n) N).U (j, i)).isOpen`. Use `replace hUV : U ≤ (LB.div (lbPow P.L n) N).U (j, i) := hUV`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hUL : U ≤ (lbPow P.L n).U j` using `hUV.trans inf_le_left`. Establish `hUN : U ≤ N.U i` using `hUV.trans inf_le_right`. Use `⟨U, hxU, hUN, ?_⟩` and prove the remaining obligations. Rewrite using `[hu]`. Establish `hin : ∀ z, ⊤ ≤ (u₀.ex z).left ⁻¹ᵁ U → ⊤ ≤ (u₀.ex z).left ⁻¹ᵁ (LB.div (lbPow P.L n) N).U (j, i)` using `fun z hz => top_le_preimage_mono _ hUV hz`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `a : Γ(P.A.left, U)` to `resG _ hUL (s₁.f j)`. Set `b : Γ(P.A.left, U)` to `resG _ hUV (s₀.f (j, i))`. Establish `hb : ∀ z, ⊤ ≤ (u₀.ex z).left ⁻¹ᵁ U → valAt' (u₀.ex z).left U b = σ z * (u₀.fr (j PUnit.unit) z ^ n * (u.fr i z)⁻¹)` using `fun z hz => (valAt'_res _ _ _ hz).trans (hfn (j, i) z (hin z hz))`. Establish `hbne : ∀ z, ⊤ ≤ (u₀.ex z).left ⁻¹ᵁ U → σ z ≠ 0 → valAt' (u₀.ex z).left U b ≠ 0` using `fun z hz h0 => by`. Rewrite using `[hb z hz]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Conclude with `mul_ne_zero h0 (mul_ne_zero (pow_ne_zero _ (u₀.fr_ne _ z (hL2 (j, i) z (hin z hz)))) (inv_ne_zero (u.fr_ne _ z (hN2 (j, i) z (hin z hz)))))`. Establish `hab : ∀ z, ⊤ ≤ (u₀.ex z).left ⁻¹ᵁ U → valAt' (u₀.ex z).left U a = (ϑ z * u.fr i z) * valAt' (u₀.ex z).left U b` using `fun z hz => by`. Establish `n1 : u.fr i z ≠ 0` using `u.fr_ne _ z (hN2 (j, i) z (hin z hz))`. Rewrite using `[hb z hz]`. Use `((valAt'_res _ _ _ hz).trans (hs₁ j z (hL1 (j, i) z (hin z hz)))).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Clear the denominators using the available nonvanishing facts. Establish `hO : IsOpen {z | ⊤ ≤ (u₀.ex z).left ⁻¹ᵁ U}` using `(u₀.hol U 0).1`. Establish `hcont : ContinuousOn (fun z => ϑ z * u.fr i z) {z | ⊤ ≤ (u₀.ex z).left ⁻¹ᵁ U}` using `hϑ.continuous.continuousOn.mul ((u.fr_hol i).continuousOn.mono fun z hz => hN2 (j, i) z (hin z hz))`. Distinguish the cases in `hb0 : b = 0`. Use `⟨0, fun z hz => ?_⟩` and prove the remaining obligations.
-
-Take `⟨y, hy, hy0⟩` from `hdense.inter_open_nonempty _ hO ⟨z, hz⟩`. Conclude with `(hbne y hy hy0 (by rw [hb0, valAt'_zero])).elim`. Take `⟨c, hc⟩` from `GlobalTheory.T.exists_eq_mul_of_valAt'_eq_continuous_mul P P.L u₀ U a b _ hL hU hb0 hcont hab`. Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `heq : Set.EqOn (fun z => valAt' (u₀.ex z).left U c) (fun z => ϑ z * u.fr i z) ({z | ⊤ ≤ (u₀.ex z).left ⁻¹ᵁ U} ∩ {z | σ z ≠ 0})` using `fun z hz => by`.
-
-Use `hab z hz.1` as an intermediate fact. Rewrite `this` using `[hc, valAt'_mul]`. Conclude with `mul_right_cancel₀ (hbne z hz.1 hz.2) this`. Conclude with `heq.of_subset_closure (u₀.hol U c).2.continuousOn hcont Set.inter_subset_left (hdense.open_subset_closure_inter hO)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sec_of_same_ex (hL : Out.Laws) (P : Out.PolAV (Sp ℂ)) (N : LB P.A.left) (hN : N.IsLB)
     (u₀ : HolUnif P.A P.L P.g) (Hm : Matrix (Fin P.g) (Fin P.g) ℂ) (χ : u₀.Λ → ℂ) (hAH : u₀.IsAH Hm χ)
@@ -393,13 +387,13 @@ namespace GlobalTheory
 open HolSecAlg in
 
 /- English proof (translation)
-Introduce `hL _ _ hT P N u ϑ hN hϑ hper`. Take `⟨rig, hrig⟩` from `P.rigid`. Take `⟨u₀, Hm, χ, Ef, hAH, -, -, -, -, hsec, -⟩` from `hT P rig hrig`. Take `⟨F, hF⟩` from `GlobalTheory.T.exists_linear_lift_of_isMonHom_uniformisation P P P.L N u₀ u (𝟙 _) inferInstance`. Use `replace hF : ∀ z, u.ex (F z) = u₀.ex z := fun z => (hF z).trans (Category.comp_id _)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs⟩` from `exists_sec_of_same_ex hL P N hN u₀ Hm χ hAH (fun n θ h => ((hsec n).2 θ h).exists) (transport u₀ u F hF) rfl (fun z => ϑ (F z)) (hϑ.comp (LinearMap.toContinuousLinearMap F).differentiable) (fun l i z hz => by`. Establish `hl : F l ∈ u.Λ` using `by rw [← u.ker, hF, u₀.ker]; exact l.2`. Express the relevant statement in the definitionally equal form `ϑ (F (z + l)) * u.fr i (F (z + l)) = ϑ (F z) * u.fr i (F z)`. Rewrite using `[map_add]`. Conclude with `hper ⟨F l, hl⟩ i (F z) (by rw [hF]; exact hz))`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨s, fun i z hz => ?_⟩` and prove the remaining obligations. Take `⟨w, hw⟩` from `u₀.ex_onto (u.ex z)`. Establish `h1 : valAt' (u₀.ex w).left (N.U i) (s.f i) = ϑ (F w) * u.fr i (F w)` using `hs i w (by change ⊤ ≤ (u₀.ex w).left ⁻¹ᵁ N.U i; rw [hw]; exact hz)`. Establish `h2` using `hper ⟨F w - z, sub_mem_of_ex_eq u ((hF w).trans hw)⟩ i z hz`. Rewrite `h1` using `[hw]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1, ← h2]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem exists_sec_isFn_of_differentiable :
     Out.Laws → Out.Laws2 → (∀ (S : Scheme.{0}) (P : Out.PolAV S) (M : LB P.A.left), M.IsLB → ∃ t : LB.Gen (Theta P.A M), t.IsGen) → ThetaUnifAV → ∀ (P : Out.PolAV (Sp ℂ)) (N : LB P.A.left) (u : HolUnif P.A N P.g) (ϑ : (Fin P.g → ℂ) → ℂ), N.IsLB → Differentiable ℂ ϑ → (∀ (l : u.Λ) i z, ⊤ ≤ (u.ex z).left ⁻¹ᵁ N.U i → ϑ (z + l) * u.fr i (z + l) = ϑ z * u.fr i z) → ∃ s : N.Sec, u.IsFn s ϑ := by

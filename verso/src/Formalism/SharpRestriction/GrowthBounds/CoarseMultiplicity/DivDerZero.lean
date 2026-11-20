@@ -11,11 +11,11 @@ section Y
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero (KK O)] {N r : ℕ} [NeZero r]
 
 /- English proof (translation)
-Consider the cases of `M' with`. Consider the case `top => rw [PolBridge.ycond_top]`. Conclude with `Submodule.mem_top`. Consider the case `coe M'`. Consider the cases of `M with`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `top => simp at hM`. Consider the case `coe M`. Rewrite `hy`, the goal using `[PolBridge.mem_ycond_iff D]`. Rewrite using `[hv]`. Establish `h1` using `flt_op_lam1S (⟨LL.vec⟩ : Letters (Fin N)) {i : Fin N | (i : ℕ) < j} y al be n hn`.
+Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `h1.trans ?_` and prove the remaining obligations. Establish `h2 : M + (n : ℤ) ≤ M'` using `by exact_mod_cast hM`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem ycond_op (D : Formalism.BasicNotions.D7) (LL LL' : ChainLetters N) (hv : LL'.vec = LL.vec) (j : ℕ) {M M' : WithTop ℤ} (n : ℕ)
     (hM : M + ((n : ℤ) : WithTop ℤ) ≤ M') (al be : Fin N × Fin r →₀ ℕ)
@@ -40,7 +40,7 @@ theorem ycond_op (D : Formalism.BasicNotions.D7) (LL LL' : ChainLetters N) (hv :
         _ ≤ _ := by exact_mod_cast h2
 
 /- English proof (translation)
-Unfold `divDer`. Use `conv_rhs => rw [F.as_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem divDer_zero {R : Type} [CommSemiring R] {σ : Type} (F : MvPolynomial σ R) : divDer 0 F = F := by
   unfold divDer
@@ -49,7 +49,7 @@ theorem divDer_zero {R : Type} [CommSemiring R] {σ : Type} (F : MvPolynomial σ
   simp
 
 /- English proof (translation)
-Rewrite `hy`, the goal using `[mem_integral_poly_iff_coeff]`. Introduce `m`. Take `⟨o, ho⟩` from `hy m`. Conclude with `⟨o * (((m v).choose n : ℕ) : O), by rw [coeff_cth, ho, map_mul, map_natCast]⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem intPol_cth {σ : Type} (v : σ) (n : ℕ) {y : MvPolynomial σ (KK O)} (hy : y ∈ IntPol O σ) :
     cth v n y ∈ IntPol O σ := by
@@ -59,7 +59,7 @@ theorem intPol_cth {σ : Type} (v : σ) (n : ℕ) {y : MvPolynomial σ (KK O)} (
   exact ⟨o * (((m v).choose n : ℕ) : O), by rw [coeff_cth, ho, map_mul, map_natCast]⟩
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `hx`. Take `⟨b, rfl⟩` from `hy`. Conclude with `⟨a * b, by simp⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem intPol_mul {σ : Type} {x y : MvPolynomial σ (KK O)} (hx : x ∈ IntPol O σ) (hy : y ∈ IntPol O σ) :
     x * y ∈ IntPol O σ := by
@@ -68,18 +68,18 @@ theorem intPol_mul {σ : Type} {x y : MvPolynomial σ (KK O)} (hx : x ∈ IntPol
   exact ⟨a * b, by simp⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨X v, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem intPol_X {σ : Type} (v : σ) : (X v : MvPolynomial σ (KK O)) ∈ IntPol O σ := ⟨X v, by simp⟩
 
 /- English proof (translation)
-Take `⟨⟨hy1, hy2⟩, hy3⟩` from `hy`. Use `⟨⟨?_, ?_⟩, intPol_cth v n hy3⟩` and prove the remaining obligations. Unfold `chPol Formalism.MainNotions.G.Pol at hy1 ⊢`. Rewrite `hy1`, the goal using `[SetLike.mem_coe, mem_restrictSupport_iff]`. Introduce `m hm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hy1` to reduce the goal to its premises. Rewrite `hm`, the goal using `[Finset.mem_coe, mem_support_iff]`. Introduce `h0`. Conclude with `hm (by rw [coeff_cth, h0, zero_mul])`. Rewrite `hy2`, the goal using `[SetLike.mem_coe, Submodule.mem_iInf]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k`. Use `ycond_op D LL LL rfl (J k) n (hthr k) _ _ ?_ (hy2 k)` and prove the remaining obligations. Distinguish the cases in `hn : n = 0`. Substitute `hn` using the available equality. Simplify using `[vecDeg, covDeg]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `simp only [vecDeg, covDeg, Finsupp.support_single_ne_zero _ hn, Finset.sum_singleton, Finsupp.single_eq_same] split_ifs with h1 h2 <;> first | omega | (exfalso; simp_all)`.
+A detailed English derivation is pending.
 -/
 theorem yjtZ_cth (D : Formalism.BasicNotions.D7) (LL : ChainLetters N) {q : ℕ} (J : Fin q → ℕ) {thr thr' : Fin q → WithTop ℤ} (n : ℕ)
     (hthr : ∀ k, thr k + ((n : ℤ) : WithTop ℤ) ≤ thr' k) (v : Fin N × Fin r)
@@ -104,17 +104,17 @@ theorem yjtZ_cth (D : Formalism.BasicNotions.D7) (LL : ChainLetters N) {q : ℕ}
       split_ifs with h1 h2 <;> first | omega | (exfalso; simp_all)
 
 /- English proof (translation)
-Take `⟨⟨hy1, hy2⟩, hy3⟩` from `hy`. Use `⟨⟨?_, ?_⟩, intPol_mul (intPol_X _) hy3⟩` and prove the remaining obligations. Unfold `chPol Formalism.MainNotions.G.Pol at hy1 ⊢`. Rewrite `hy1`, the goal using `[SetLike.mem_coe, mem_restrictSupport_iff]`. Introduce `m hm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hm` using `[Finset.mem_coe, support_X_mul, Finset.mem_map]`. Take `⟨m0, hm0, rfl⟩` from `hm`. Establish `h0` using `hy1 hm0`. Introduce `i`. Establish `h1` using `h0 i`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [multideg, addLeftEmbedding_apply, Finsupp.add_apply] at h1 ⊢`. Rewrite using `[Finset.sum_add_distrib, h1, hd i, add_comm]`. Use `congr 1`. Distinguish the cases in `hi : i = a`. Substitute `hi` using the available equality.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[Finsupp.single_apply]`. Establish `: ∀ x : Fin r, (Finsupp.single (a, c) 1 : Fin N × Fin r →₀ ℕ) (i, x) = 0`. Introduce `x`. Rewrite using `[Finsupp.single_apply, if_neg]`. Introduce `h`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hi (congrArg Prod.fst h).symm`. Simplify using `[this, hi]`. Rewrite `hy2`, the goal using `[SetLike.mem_coe, Submodule.mem_iInf]`. Introduce `k`. Establish `h` using `ycond_op D LL LL' hv (J k) n (hthr k) (Finsupp.single (a, c) 1) 0 ?_ (hy2 k)`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h` using `[divDer_zero]`. Then use the resulting hypothesis. Simplify using `only [vecDeg, covDeg, Finsupp.support_single_ne_zero _ one_ne_zero, Finset.sum_singleton, Finsupp.single_eq_same, Finsupp.support_zero, Finset.sum_empty, add_zero] split_ifs with h1`. Conclude with `hn h1.2`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem yjtZ_X (D : Formalism.BasicNotions.D7) (LL LL' : ChainLetters N) (hv : LL'.vec = LL.vec) (a : Fin N) (c : Fin r)
     (hd : ∀ i, LL'.deg i = LL.deg i + if i = a then 1 else 0)

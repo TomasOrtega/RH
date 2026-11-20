@@ -8,11 +8,11 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R Glo
 namespace GlobalTheory.CompanionTheory.Hypotheses₂.CentreOver
 
 /- English proof (translation)
-Rewrite `hx` using `[pow_two]`. Use `Submodule.mul_induction_on hx ?_ ?_` and prove the remaining obligations. Introduce `g hg k hk`. Take `⟨n, hn⟩` from `h g hg`. Take `⟨m, hm⟩` from `h k hk`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `Ideal.mem_span_singleton'.1 hn`. Take `⟨b, hb⟩` from `Ideal.mem_span_singleton'.1 hm`. Use `⟨n + m, a * b, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Introduce and unpack `x y ⟨N, c, hc⟩ ⟨M, d, hd⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Assume the hypotheses and unpack their components.
 
-Use `⟨N + M, t ^ M * c + t ^ N * d, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 theorem LocPrincipal.exists_pow_mul_sq {A : Type} [CommRing A] {I : Ideal A} {t f : A}
     (h : ∀ g ∈ I, ∃ n : ℕ, t ^ n * g ∈ Ideal.span {f}) {x : A} (hx : x ∈ I ^ 2) :
@@ -33,11 +33,11 @@ theorem LocPrincipal.exists_pow_mul_sq {A : Type} [CommRing A] {I : Ideal A} {t 
       _ = _ := by rw [hc, hd]; ring
 
 /- English proof (translation)
-Introduce `h0`. Rewrite `h0` using `[← map_smul I.toCotangent s ⟨f, hf⟩, Ideal.toCotangent_eq_zero]`. Establish `h0' : s * f ∈ I ^ 2` using `by simpa [smul_eq_mul] using h0`. Take `⟨N, c, hc⟩` from `GlobalTheory.CompanionTheory.Hypotheses₂.CentreOver.LocPrincipal.exists_pow_mul_sq h h0'`. Establish `hcancel : t ^ N * s = c * f`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply `mul_right_cancel₀ hf0` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Establish `hmem : t ^ N * s ∈ p`. Rewrite using `[hcancel]`. Conclude with `hIp (I.mul_mem_left c hf)`.
+Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Ideal.IsPrime.mem_or_mem ‹p.IsPrime› hmem with h1 | h1` into its components or cases. Conclude with `ht (Ideal.IsPrime.mem_of_pow_mem ‹p.IsPrime› N h1)`. Conclude with `hs h1`.
+A detailed English derivation is pending.
 -/
 theorem LocPrincipal.smul_toCotangent_ne_zero {A : Type} [CommRing A] [IsDomain A] {I p : Ideal A}
     [p.IsPrime] (hIp : I ≤ p) {t f : A} (ht : t ∉ p) (hf : f ∈ I) (hf0 : f ≠ 0)
@@ -60,9 +60,9 @@ theorem LocPrincipal.smul_toCotangent_ne_zero {A : Type} [CommRing A] [IsDomain 
   · exact hs h1
 
 /- English proof (translation)
-Take `⟨g, rfl⟩` from `I.toCotangent_surjective m`. Take `⟨n, hn⟩` from `h g g.2`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.mp hn`. Use `⟨n, c, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_smul I.toCotangent (t ^ n) g, ← map_smul I.toCotangent c ⟨f, hf⟩]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `ext`. Simplify using `[smul_eq_mul, hc]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem LocPrincipal.exists_pow_smul_eq {A : Type} [CommRing A] {I : Ideal A} {t f : A}
     (hf : f ∈ I) (h : ∀ g ∈ I, ∃ n : ℕ, t ^ n * g ∈ Ideal.span {f}) (m : I.Cotangent) :
@@ -77,23 +77,21 @@ theorem LocPrincipal.exists_pow_smul_eq {A : Type} [CommRing A] {I : Ideal A} {t
   simp [smul_eq_mul, hc]
 
 /- English proof (translation)
-Take `⟨t, f, ht, hf, hf0, h⟩` from `hP`. Establish `htP : Ideal.Quotient.mk I t ∉ P.asIdeal` using `fun H => ht (Ideal.mem_comap.mpr H)`. Establish `hIq : I ≤ P.asIdeal.comap (Ideal.Quotient.mk I)` using `fun g hg => by`. Rewrite using `[Ideal.mem_comap, Ideal.Quotient.eq_zero_iff_mem.mpr hg]`. Conclude with `zero_mem _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsmul : ∀ (a : A) (m : I.Cotangent), Ideal.Quotient.mk I a • m = a • m` using `fun a m => by`. Rewrite using `[← Ideal.Quotient.algebraMap_eq, algebraMap_smul]`. Establish `hspan : Submodule.span (Localization.AtPrime P.asIdeal) {LocalizedModule.mk (I.toCotangent ⟨f, hf⟩) (1 : P.asIdeal.primeCompl)} = ⊤`. Rewrite using `[Submodule.eq_top_iff']`. Introduce `y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `y using LocalizedModule.induction_on with`. Consider the case `h m s`. Take `⟨n, c, hc⟩` from `GlobalTheory.CompanionTheory.Hypotheses₂.CentreOver.LocPrincipal.exists_pow_smul_eq hf h m`. Establish `htn : (Ideal.Quotient.mk I t) ^ n ∈ P.asIdeal.primeCompl` using `Ideal.mem_primeCompl_iff.mpr fun H => htP (Ideal.IsPrime.mem_of_pow_mem P.isPrime n H)`. Establish `key : Ideal.Quotient.mk I c • I.toCotangent ⟨f, hf⟩ = (⟨_, htn⟩ : P.asIdeal.primeCompl) • m`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submonoid.mk_smul, hsmul, ← map_pow, hsmul]`. Conclude with `hc.symm`. Rewrite using `[Submodule.mem_span_singleton]`. Use `⟨Localization.mk (Ideal.Quotient.mk I c) (⟨_, htn⟩ * s), ?_⟩` and prove the remaining obligations. Rewrite using `[LocalizedModule.mk_smul_mk, key, mul_one, LocalizedModule.mk_cancel_common_left]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hx : LocalizedModule.mk (I.toCotangent ⟨f, hf⟩) (1 : P.asIdeal.primeCompl) ≠ 0`. Introduce `H`. Rewrite `H` using `[← LocalizedModule.zero_mk (1 : P.asIdeal.primeCompl), LocalizedModule.mk_eq]`. Take `⟨⟨u, hu⟩, hu0⟩` from `H`. Take `⟨s, rfl⟩` from `Ideal.Quotient.mk_surjective u`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [one_smul, smul_zero, Submonoid.mk_smul] at hu0`. Rewrite `hu0` using `[hsmul]`. Conclude with `GlobalTheory.CompanionTheory.Hypotheses₂.CentreOver.LocPrincipal.smul_toCotangent_ne_zero hIq ht hf hf0 h (fun hs => Ideal.mem_primeCompl_iff.mp hu (Ideal.mem_comap.mp hs)) hu0`. Establish `hfree : Module.Free (Localization.AtPrime P.asIdeal) (LocalizedModule P.asIdeal.primeCompl I.Cotangent)` using `by haveI : Module.Flat (A ⧸ I) I.Cotangent := Module.Flat.of_projective`. Establish `hmem : P ∈ Module.freeLocus (A ⧸ I) I.Cotangent`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Module.freeLocus_eq_univ]`. Discharge the goal by the elementary cases of `trivial`. Conclude with `Module.mem_freeLocus.mp hmem`. Use `haveI : Module.Finite (Localization.AtPrime P.asIdeal) (LocalizedModule P.asIdeal.primeCompl I.Cotangent) := Module.Finite.of_fg_top ⟨{LocalizedModule.mk (I.toCotangent ⟨f, hf⟩) 1}, by`. Rewrite using `[Finset.coe_singleton]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Conclude with `hspan⟩`. Use `haveI := nontrivial_of_ne _ _ hx`. Establish `hle : Module.finrank (Localization.AtPrime P.asIdeal) (LocalizedModule P.asIdeal.primeCompl I.Cotangent) ≤ 1`. Use `finrank_le_of_span_eq_top (R := Localization.AtPrime P.asIdeal) (v := fun _ : Unit => LocalizedModule.mk (I.toCotangent ⟨f, hf⟩) (1 : P.asIdeal.primeCompl)) (by rw [Set.range_const]; exact hspan)` as an intermediate fact. Simplify using `using this`.
-
-Establish `hpos : 0 < Module.finrank (Localization.AtPrime P.asIdeal) (LocalizedModule P.asIdeal.primeCompl I.Cotangent)` using `(Module.finrank_pos_iff_of_free _ _).mpr inferInstance`. Use `show Module.finrank (Localization.AtPrime P.asIdeal) (LocalizedModule P.asIdeal.primeCompl I.Cotangent) = 1`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem rankAtStalk_cotangent_eq_one {A : Type} [CommRing A] [IsDomain A] (I : Ideal A)
     [Module.Finite (A ⧸ I) I.Cotangent] [Module.Projective (A ⧸ I) I.Cotangent]

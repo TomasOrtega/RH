@@ -15,17 +15,17 @@ private def fdFull {n : ℕ} (lam : Fin n → ℝ) : ℝ :=
   ∏ a : Fin n, ∏ b : Fin n, (if a = b then 1 else |lam a - lam b|)
 
 /- English proof (translation)
-The claim follows from `Finset.prod_nonneg fun _ _ => Finset.prod_nonneg fun _ _ => abs_nonneg _`.
+A detailed English derivation is pending.
 -/
 private lemma fdNum_nonneg {n : ℕ} (lam : Fin n → ℝ) : 0 ≤ fdNum lam :=
   Finset.prod_nonneg fun _ _ => Finset.prod_nonneg fun _ _ => abs_nonneg _
 
 /- English proof (translation)
-Unfold `fdNum fdFull`. Establish `key : ∀ a b : Fin n, (if a = b then (1 : ℝ) else |lam a - lam b|) = (if a < b then |lam a - lam b| else 1) * (if b < a then |lam b - lam a| else 1)`. Introduce `a b`. Break down `lt_trichotomy a b with h | h | h` into its components or cases. Simplify using `[h, h.ne, not_lt.mpr h.le]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using `[h]`. Simplify using `[h, h.ne', not_lt.mpr h.le, abs_sub_comm]`. Repeatedly rewrite using `[key, Finset.prod_mul_distrib, ← Finset.prod_filter]`. Rewrite using `[sq]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `symm`. Conclude with `Finset.prod_comm' (by intro a b; simp)`.
+Use symmetry to reverse the relation. A detailed English derivation is pending.
 -/
 private lemma fdNum_sq {n : ℕ} (lam : Fin n → ℝ) : fdNum lam ^ 2 = fdFull lam := by
   unfold fdNum fdFull
@@ -43,7 +43,7 @@ private lemma fdNum_sq {n : ℕ} (lam : Fin n → ℝ) : fdNum lam ^ 2 = fdFull 
   exact Finset.prod_comm' (by intro a b; simp)
 
 /- English proof (translation)
-Unfold `fdFull`. Conclude with `Fintype.prod_equiv σ _ _ fun a => Fintype.prod_equiv σ _ _ fun b => by`. Simplify using `[Equiv.apply_eq_iff_eq]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma fdFull_perm {n : ℕ} (lam : Fin n → ℝ) (σ : Equiv.Perm (Fin n)) :
     fdFull (lam ∘ σ) = fdFull lam := by
@@ -52,7 +52,7 @@ private lemma fdFull_perm {n : ℕ} (lam : Fin n → ℝ) (σ : Equiv.Perm (Fin 
     simp [Equiv.apply_eq_iff_eq]
 
 /- English proof (translation)
-Use `(pow_left_inj₀ (fdNum_nonneg _) (fdNum_nonneg _) two_ne_zero).mp ?_` and prove the remaining obligations. Rewrite using `[fdNum_sq, fdNum_sq, fdFull_perm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private lemma fdNum_perm {n : ℕ} (lam : Fin n → ℝ) (σ : Equiv.Perm (Fin n)) :
     fdNum (lam ∘ σ) = fdNum lam := by
@@ -60,16 +60,16 @@ private lemma fdNum_perm {n : ℕ} (lam : Fin n → ℝ) (σ : Equiv.Perm (Fin n
   rw [fdNum_sq, fdNum_sq, fdFull_perm]
 
 /- English proof (translation)
-The claim follows from `sub_pos.mpr (Nat.cast_lt.mpr h)`.
+A detailed English derivation is pending.
 -/
 private lemma fin_sub_pos {n : ℕ} {a b : Fin n} (h : a < b) :
     0 < ((b : ℕ) : ℝ) - ((a : ℕ) : ℝ) :=
   sub_pos.mpr (Nat.cast_lt.mpr h)
 
 /- English proof (translation)
-Introduce `n lam hl`. Unfold `fdegHC`. Apply `div_pos` to reduce the goal to its premises. Use `Finset.prod_pos fun a _ => Finset.prod_pos fun b hb => ?_` and prove the remaining obligations. Rewrite `hb` using `[Finset.mem_filter]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `abs_pos.mpr (sub_ne_zero.mpr fun h => hb.2.ne (hl h))`. Conclude with `Finset.prod_pos fun a _ => Finset.prod_pos fun b hb => fin_sub_pos (Finset.mem_filter.mp hb).2`.
+A detailed English derivation is pending.
 -/
 theorem formal_degree_pos_holds : FdegPos := by
   intro n lam hl
@@ -82,7 +82,7 @@ theorem formal_degree_pos_holds : FdegPos := by
       fin_sub_pos (Finset.mem_filter.mp hb).2
 
 /- English proof (translation)
-Introduce `n lam σ`. Establish `h` using `fdNum_perm lam σ`. Unfold `fdNum at h`. Unfold `fdegHC`. Rewrite using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem formal_degree_perm_holds : FdegPerm := by
   intro n lam σ
@@ -92,9 +92,9 @@ theorem formal_degree_perm_holds : FdegPerm := by
   rw [h]
 
 /- English proof (translation)
-Introduce `n lam hl`. Unfold `fdegHC vand Formalism.QuantumDeterminants.rhoStd`. Establish `h1 : ∀ a : Fin n, ∀ b ∈ univ.filter (fun b : Fin n => a < b), |lam a - lam b| = lam a - lam b` using `fun a b hb => abs_of_pos (sub_pos.mpr (hl (Finset.mem_filter.mp hb).2))`. Rewrite using `[Finset.prod_congr rfl fun a _ => Finset.prod_congr rfl (h1 a)]`. Use `push_cast`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `congr 1`. Use `Finset.prod_congr rfl fun a _ => Finset.prod_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem formal_degree_vandermonde_holds : FdegVand := by
   intro n lam hl
@@ -109,11 +109,11 @@ theorem formal_degree_vandermonde_holds : FdegVand := by
   ring
 
 /- English proof (translation)
-Introduce `n m hm`. Unfold `fdegHC`. Repeatedly rewrite using `[Finset.prod_div_distrib]`. Use `congr 1`. Use `Finset.prod_congr rfl fun a _ => Finset.prod_congr rfl fun b hb => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hab` using `(Finset.mem_filter.mp hb).2`. Establish `h2` using `fin_sub_pos hab`. Establish `h3 : (m b : ℝ) ≤ m a` using `by exact_mod_cast hm hab.le`. Establish `e : (m a : ℝ) + Formalism.QuantumDeterminants.rhoStd n a - ((m b : ℝ) + Formalism.QuantumDeterminants.rhoStd n b) = (m a : ℝ) - m b + (((b : ℕ) : ℝ) - ((a : ℕ) : ℝ))`. Simplify using `only [Formalism.QuantumDeterminants.rhoStd]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Use `show |(m a : ℝ) + Formalism.QuantumDeterminants.rhoStd n a - ((m b : ℝ) + Formalism.QuantumDeterminants.rhoStd n b)| = _`. Rewrite using `[e, abs_of_pos (by linarith)]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem formal_degree_weyl_holds : FdegWeyl := by
   intro n m hm

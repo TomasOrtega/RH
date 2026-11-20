@@ -12,13 +12,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.DownLift GlobalTheory.Core.Rk.Exh
 namespace GlobalTheory.Core.Rk.LiftOnto
 /- English proof (translation)
-Introduce `hDec hDbl hGL hHecke hHowe D G _ _ Pl0 T A Ks _ _ _ R F hG hFull`. Establish `hEul : GlobalTheory.Core.Rk.IP.EulerRight D` using `GlobalTheory.T.doublingEulerProductFarRight_of_rapidDecay_unramified hDec hGL D`. Establish `hPole : GlobalTheory.IndefiniteRowSideFullHecke.SimplePoleTwistedLift.SimplePole` using `GlobalTheory.LiftPoleObj.simplePole_of_hecke hHecke`. Establish `hNe : DownNe D` using `_root_.GlobalTheory.T.downNe_of_eulerRight_doubling hDbl hPole D hEul`. Establish `hNV : ∀ i t, NonVan R i t` using `GlobalTheory.T.thetaLift_nonvanishing_onString_of_definiteDown D hNe G Pl0 T A Ks R F hG hFull`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hEig : ∀ i t, DownEig R i t` using `GlobalTheory.T.downwardThetaLift_eigenform_is_eigenform hHowe D G Pl0 T A Ks R F hG hFull`. Establish `hGF : ∀ i t, GenFin R i t` using `GlobalTheory.T.thetaLift_generation_finitePlaces hHowe D G Pl0 T A Ks R F hG hFull`. Establish `hGI : ∀ i t, GenInf R i t` using `GlobalTheory.T.thetaLift_generation_at_realPlaces D G Pl0 T A Ks R F hG hFull`. Establish `hGM : ∀ i t, GoodMem R i t` using `GlobalTheory.T.downwardThetaLift_preserves_good D G Pl0 T A Ks R F hG hFull`. Establish `hNC : ∀ i t, GoodNoChi R i t` using `GlobalTheory.T.goodTypes_exclude_levelCharacter D G Pl0 T A Ks R F hG hFull`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPar : ∀ i t, ParamsEx R i t` using `GlobalTheory.DownLift.Params.paramsEx hDec D G Pl0 T A Ks R F hG hFull`. Establish `hU : ∀ i t, UnrCorr R i t (fun _ => True)` using `GlobalTheory.T.unramifiedThetaCorrespondence_all_goodPrimes hDec hHowe D G Pl0 T A Ks R F hG hFull`. Establish `hOk : ∀ i t (ok : Pl D.host.E → Prop), UnrCorr R i t ok`. Introduce `i t ok h hh s c y hy h1 h2 B B' hB hB' w hw _`. Conclude with `hU i t h hh s c y hy h1 h2 B B' hB hB' w hw trivial`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hTNZ : ∀ i t, TypeNZ R i t` using `fun i t => GlobalTheory.DownLift.typeNZ_of_nonVan_gen D G Pl0 T A Ks R F hG hFull i t (hNV i t) (hGI i t) (hGF i t) (hNC i t) (hGM i t)`. Conclude with `⟨GlobalTheory.LiftInjProof.liftInj_of_typeNZ D G Pl0 T A Ks R F hG hFull (fun i => ⟨hTNZ i A.μ0, hEig i A.μ0, hOk i A.μ0 _, hOk i A.μ0 _, hPar i A.μ0⟩), fun i t => ⟨hNV i t, hTNZ i t⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem liftInj_nonVan_typeNZ_of_hypotheses_alt : GlobalTheory.Published.CuspRapidDecay → _root_.GlobalTheory.Published.DoublingMethodLocalZetaIntegrals →
     GlobalTheory.Published.UnramifiedDoublingGL →
@@ -58,7 +58,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.DownLift GlobalTheory.Core.Rk.Exh
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.Core.Rk.LiftOnto.liftInj_nonVan_typeNZ_of_hypotheses_alt | exact _root_.GlobalTheory.Core.Rk.LiftOnto.liftInj_nonVan_typeNZ_of_hypotheses_alt | (intros; apply _root_.GlobalTheory.Core.Rk.LiftOnto.liftInj_nonVan_typeNZ_of_hypotheses_alt <;> assum …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.liftInj_and_nonVan_typeNZ_of_given : GlobalTheory.Published.CuspRapidDecay → _root_.GlobalTheory.Published.DoublingMethodLocalZetaIntegrals → GlobalTheory.Published.UnramifiedDoublingGL → GlobalTheory.Published.HeckeLPartialContinuation → GlobalTheory.Hk3.HoweUnram → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.LiftRows.Given R F → R.FullP → GlobalTheory.LiftRows.LiftInj R ∧ ∀ i t, NonVan R i t ∧ TypeNZ R i t := by
   first | exact @_root_.GlobalTheory.Core.Rk.LiftOnto.liftInj_nonVan_typeNZ_of_hypotheses_alt | exact _root_.GlobalTheory.Core.Rk.LiftOnto.liftInj_nonVan_typeNZ_of_hypotheses_alt | (intros; apply _root_.GlobalTheory.Core.Rk.LiftOnto.liftInj_nonVan_typeNZ_of_hypotheses_alt <;> assumption)

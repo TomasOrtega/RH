@@ -5,15 +5,15 @@ open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL Matrix Topology
 namespace GlobalTheory
 
 /- English proof (translation)
-Set `f` to `x.mulVecLin`. Take `⟨C, hKC⟩` from `Submodule.exists_isCompl (LinearMap.ker f)`. Establish `hcard : Fintype.card n = Fintype.card a + Fintype.card b`. Rewrite using `[← Fintype.card_congr e, Fintype.card_sum]`. Establish `hrn` using `LinearMap.finrank_range_add_finrank_ker f`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hrank : Module.finrank k (LinearMap.range f) = Fintype.card a` using `hx`. Rewrite `hrn` using `[hrank, Module.finrank_fintype_fun_eq_card, hcard]`. Establish `hK : Module.finrank k (LinearMap.ker f) = Fintype.card b` using `by omega`. Establish `hsum` using `Submodule.finrank_add_eq_of_isCompl hKC`. Rewrite `hsum` using `[hK, Module.finrank_fintype_fun_eq_card, hcard]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hC : Module.finrank k C = Fintype.card a` using `by omega`. Set `bK : Module.Basis b k (LinearMap.ker f)` to `(Module.finBasisOfFinrankEq k (LinearMap.ker f) hK).reindex (Fintype.equivFin b).symm`. Set `bC : Module.Basis a k C` to `(Module.finBasisOfFinrankEq k C hC).reindex (Fintype.equivFin a).symm`. Set `B : Module.Basis n k (n → k)` to `((bC.prod bK).map (Submodule.prodEquivOfIsCompl C (LinearMap.ker f) hKC.symm)).reindex e`. Establish `hB : ∀ j, f (B (e (Sum.inr j))) = 0`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `j`. Simplify using `[B, Module.Basis.reindex_apply, Module.Basis.map_apply, Module.Basis.prod_apply]`. Set `P` to `(Pi.basisFun k n).toMatrix B`. Establish `: Invertible P` using `(Pi.basisFun k n).invertibleToMatrix B`. Use `⟨unitOfInvertible P, fun i j => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show (x * P) i (e (Sum.inr j)) = 0`. Establish `hcol : (x * P) i (e (Sum.inr j)) = f (B (e (Sum.inr j))) i`. Simplify using `[P, f, Matrix.mul_apply, Matrix.mulVec, dotProduct, Module.Basis.toMatrix_apply]`. Rewrite using `[hcol, hB j]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_gl_mul_cols_eq_zero_of_rank (k m a b n : Type) [Field k] [Fintype m] [Fintype a]
     [Fintype b] [Fintype n] [DecidableEq n] (e : a ⊕ b ≃ n) (x : Matrix m n k)

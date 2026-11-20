@@ -17,7 +17,7 @@ def curryL (ι : Type) (a b : ℕ) : (DVar ι a b → ℂ) →ₗ[ℂ] VCx ι a 
   map_smul' _ _ := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ i j`. Take `⟨x, y, z⟩` from `k`. Simplify using `[curryL, Formalism.L2.Ker.coordX, Pi.single_apply, Prod.ext_iff]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem curryL_single {ι : Type} [DecidableEq ι] {a b : ℕ} (k : DVar ι a b) :
     curryL ι a b (Pi.single k 1) = Formalism.L2.Ker.coordX k := by
@@ -26,9 +26,9 @@ theorem curryL_single {ι : Type} [DecidableEq ι] {a b : ℕ} (k : DVar ι a b)
   simp [curryL, Formalism.L2.Ker.coordX, Pi.single_apply, Prod.ext_iff]
 
 /- English proof (translation)
-Establish `han : AnalyticAt ℂ G 0` using `SCV.analyticOnNhd_of_differentiable hG Set.univ 0 (Set.mem_univ _)`. Rewrite using `[derivAt0, GlobalTheory.pderivIter, GlobalTheory.pderivList, GlobalTheory.lineDerivList_comp_linearMap, ← GlobalTheory.lineDerivList_ofFn han]`. Simplify using `only [map_zero, List.map_map]`. Use `congr 1`. Apply `List.ext_getElem` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using the standard rewrite rules. Introduce `i h1 h2`. Simplify using `[curryL_single]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem derivAt0_eq_pderivIter {ι : Type} [Fintype ι] [DecidableEq ι] {a b : ℕ}
     (G : VCx ι a b → ℂ) (hG : Differentiable ℂ G) (m : DVar ι a b →₀ ℕ) :
@@ -44,7 +44,7 @@ theorem derivAt0_eq_pderivIter {ι : Type} [Fintype ι] [DecidableEq ι] {a b : 
     simp [curryL_single]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.coeff_taylor, GlobalTheory.dirPolyDeriv_monomial_eq_lineDerivList (l := α.toMultiset.toList) (by simp) _ hf, Nat.cast_prod, div_eq_inv_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem coeff_taylor_eq_pderivIter {σ : Type} [Fintype σ] [DecidableEq σ] {f : (σ → ℂ) → ℂ}
     (hf : AnalyticAt ℂ f 0) (α : σ →₀ ℕ) :
@@ -58,15 +58,15 @@ end GlobalTheory.FockTaylor
 open GlobalTheory.FockTaylor in
 
 /- English proof (translation)
-Introduce `ι _ a b G hG z₀`. Set `L` to `LinearMap.toContinuousLinearMap (curryL ι a b)`. Establish `hf : Differentiable ℂ (fun w => G (L w))` using `hG.comp L.differentiable`. Establish `hfa : AnalyticAt ℂ (fun w => G (L w)) 0` using `SCV.analyticOnNhd_of_differentiable hf Set.univ 0 (Set.mem_univ _)`. Set `c : (DVar ι a b →₀ ℕ) → ℂ` to `fun m => derivAt0 G m / ∏ j, ((m j).factorial : ℂ)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hne : ∀ m : DVar ι a b →₀ ℕ, (∏ j, ((m j).factorial : ℂ)) ≠ 0` using `fun m => Finset.prod_ne_zero_iff.mpr fun k _ => Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero _)`. Establish `hc : ∀ m, (∏ j, ((m j).factorial : ℂ)) * c m = GlobalTheory.pderivIter m (fun w => G (L w)) 0` using `fun m => by`. Rewrite using `[mul_div_cancel₀ _ (hne m), derivAt0_eq_pderivIter G hG m]`. Both sides reduce to the same expression. Establish `hc' : ∀ m, c m = MvPowerSeries.coeff m (GlobalTheory.taylor fun w => G (L w))` using `fun m => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[coeff_taylor_eq_pderivIter hfa]`. Use `show derivAt0 G m / _ = _`. Rewrite using `[derivAt0_eq_pderivIter G hG m]`. Both sides reduce to the same expression. Set `w : DVar ι a b → ℂ` to `fun k => z₀ k.1 k.2.1 k.2.2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hs` using `GlobalTheory.EntireTaylor.summable_of_entire hf c hc w`. Establish `ht` using `GlobalTheory.ProdThetaConj.tsum_of_entire hf c hc hc' w`. Establish `hterm : ∀ m : DVar ι a b →₀ ℕ, (m.prod fun k n => z₀ k.1 k.2.1 k.2.2 ^ n / (n.factorial : ℂ)) * derivAt0 G m = c m * ∏ j, w j ^ m j` using `fun m => by`. Rewrite using `[Finsupp.prod_fintype _ _ (by simp), Finset.prod_div_distrib]`. Simplify using `only [c, w]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hGz : G z₀ = G (L w)` using `rfl`. Rewrite using `[hGz, ← ht]`. Conclude with `(hs.hasSum).congr_fun hterm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FockTaylor.hasSum_derivAt0 : ∀ (ι : Type) [Fintype ι] (a b : ℕ) (G : VCx ι a b → ℂ), Differentiable ℂ G → ∀ z₀ : VCx ι a b, HasSum (fun m : DVar ι a b →₀ ℕ => (m.prod fun k n => z₀ k.1 k.2.1 k.2.2 ^ n / (n.factorial : ℂ)) * derivAt0 G m) (G z₀) := by
   intro ι _ a b G hG z₀

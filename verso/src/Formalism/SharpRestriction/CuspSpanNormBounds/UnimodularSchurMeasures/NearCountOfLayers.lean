@@ -25,17 +25,15 @@ def CSize.NearLayers {X : CData} (S : CSize X) (εN δ : ℝ) : Prop :=
               (cn_dim c.blocksFun (X.I.n - 2 * J) (e i) * Fintype.card (InfinitePlace X.I.F))
 
 /- English proof (translation)
-Use `⟨h.1, fun J c x hx T hT => ?_⟩` and prove the remaining obligations. Take `⟨hreg, e, β, π, h0, hr, hl⟩` from `h.2 J c x hx`. Use `set b : cn_Root c.length → ℝ := fun ρ => (1 + 12 * δ / cn_la (S.tau J c x) ρ) ^ (cn_dim c.blocksFun (X.I.n - 2 * J) ρ * X.I.f) with hb`. Establish `hb0 : ∀ ρ, 0 ≤ b ρ` using `fun ρ => by`. Use `(cn_la_mem hreg ρ).1` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Check the signs of the components of the expression. Use `set cc : ℕ → ℝ := fun i => if hi : i < Fintype.card (cn_Root c.length) then b (e ⟨i, hi⟩) else 1 with hcc`. Establish `hcc0 : ∀ i, 0 ≤ cc i` using `fun i => by`. Simplify using `only [hcc]`. Use `split_ifs`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Evaluate the numerical expressions. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `hb0 _`. Evaluate the numerical expressions. Establish `key` using `Formalism.HermitianLatticeCounting.Final.S7.fibreCount X.I.GFset T (Fintype.card (cn_Root c.length)) β π cc hcc0 (fun y hy z hz => h0 y z (hT y hy) (hT z hz)) (fun y hy z hz => hr y z (hT y hy) (hT z hz)) (fun i hi T' hT' ha hd => by`. Take `⟨laM, hla, hc⟩` from `hl ⟨i, hi⟩ T' (fun γ hγ => hT γ (hT' hγ)) ha hd`. Establish `hpos` using `(cn_la_mem hreg (e ⟨i, hi⟩)).1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `Formalism.HermitianLatticeCounting.Final.NearFarVolumeBounds.layerCount (InfinitePlace X.I.F) (cn_dim c.blocksFun (X.I.n - 2 * J) (e ⟨i, hi⟩)) δ (cn_la (S.tau J c x) (e ⟨i, hi⟩)) laM hδ hpos hla`. Use `le_trans hc (le_trans h1 ?_)` and prove the remaining obligations. Simplify using `only [hcc, dif_pos hi, hb]`. Use `pow_le_pow_right₀ ?_ (Nat.mul_le_mul_left _ (card_infinite_places_le_degree X.I))` and prove the remaining obligations. Establish `: 0 ≤ 12 * δ / cn_la (S.tau J c x) (e ⟨i, hi⟩)` using `by positivity`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `linarith)`. Use `le_trans key (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[Finset.prod_range]`. Establish `: ∀ i : Fin (Fintype.card (cn_Root c.length)), cc i = b (e i)` using `fun i => by simp only [hcc, dif_pos i.2]`. Rewrite using `[Finset.prod_congr rfl fun i _ => this i, Equiv.prod_comp e b]`.
-
-Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem CSize.nearCount_of_layers {X : CData} (S : CSize X) {εN δ : ℝ} (hδ : 0 ≤ δ) (h : S.NearLayers εN δ) :
     S.NearCount εN δ := by

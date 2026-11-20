@@ -19,17 +19,15 @@ theorem push_comp {O R A B' Γ : Type} [CommRing O] [CommRing R] [CommRing A] [C
     push (g.comp F) r = (GG.map (g : A →+* B')).comp (push F r) := rfl
 
 /- English proof (translation)
-Take `⟨u, hu1, hu2, hu3, j, v, hj, hdel⟩` from `GlobalTheory.T.saturatingElement_unramified_twist_eq_pow_mul_unit D E C t ht`. Establish `hr₂` using `GlobalTheory.T.crystalline_twist_by_unramified_character D E C πC hπC u hu1 hu2 hu3`. Take `⟨r, hr, hr1, hr2⟩` from `GlobalTheory.T.crystallineDeformation_amalgamate_over_fibre_product_cover hL D E B π hπ C πC hπC T (π.comp p₁) hπT p₁ p₂ rfl hcomp.symm hsurj (push f U.r.hom) _ hf hr₂`. Establish `hx : (GG.map (π : B →+* E)).comp (push f U.r.hom) = push ((π.restrictScalars O).comp f) U.r.hom` using `(push_comp (π.restrictScalars O) f U.r.hom).symm`. Take `⟨F, hF, -⟩` from `unramified_lift_deformation D U E T (π.comp p₁) hπT ((π.restrictScalars O).comp f) r hr.mult (hr.red.trans (hf.red.symm.trans hx)) hr.cont`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hF1 : (p₁.restrictScalars O).comp F = f`. Take `⟨g, -, hg⟩` from `unramified_lift_deformation D U E B π hπ ((π.restrictScalars O).comp f) (push f U.r.hom) hf.mult hx hf.cont`. Use `(hg _ ?_).trans (hg f rfl).symm` and prove the remaining obligations. Use `show push ((p₁.restrictScalars O).comp F) U.r.hom = push f U.r.hom`. Rewrite using `[push_comp, hF]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hr1`. Establish `h0` using `GlobalTheory.T.ordIdeal_eq_bot_of_crystalline_deformation hL D E T (π.comp p₁) hπT r hr`. Take `⟨hmap, -, hdelF⟩` from `GlobalTheory.T.ordinaryIdeal_saturators_map_algHom D F U.r.hom`. Establish `h1 : F (GlobalTheory.OrdLoc.del D U.r.hom ^ k * a) = 0`. Establish `h` using `Ideal.mem_map_of_mem (F : U.R →+* T) ha`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[hmap, hF, h0]`. Conclude with `(Submodule.mem_bot _).1 h`. Rewrite `h1` using `[map_mul, map_pow, hdelF, hF]`. Take `⟨-, -, hdel2⟩` from `GlobalTheory.T.ordinaryIdeal_saturators_map_algHom D (p₂.restrictScalars O) r`. Establish `hpush : push (p₂.restrictScalars O) r = r0 D.η ((Units.map (algebraMap O C : O →* C)).comp D.Ψ * u)` using `hr2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hdel2` using `[hpush, hdel]`. Establish `hP : p₂ (GlobalTheory.OrdLoc.del D r ^ k) = t ^ (j * k) * ((v ^ k : Cˣ) : C)`. Rewrite using `[map_pow, show p₂ (GlobalTheory.OrdLoc.del D r) = t ^ j * v from hdel2, mul_pow, ← pow_mul, Units.val_pow_eq_pow_val]`. Establish `h2` using `hcanc _ (F a) (j * k) (v ^ k) (by nlinarith) hP h1`. Rewrite using `[← hF1]`.
-
-Conclude with `h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem core (hL : LocalPublishedTheorems) {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [CharZero O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] [IsAdicComplete (maximalIdeal O) O] (D : Dat3 l O)
@@ -81,13 +79,9 @@ theorem core (hL : LocalPublishedTheorems) {l : ℕ} [Fact l.Prime] {O : Type} [
   exact h2
 
 /- English proof (translation)
-Introduce and unpack `a ⟨k, hk⟩`. Use `haveI : Module.Finite E B := Module.Finite.of_restrictScalars_finite ℚ_[l] E B`. Take `⟨C, _, _, _, T, _, _, _, πC, p₁, p₂, t, ht, hπC, hπT, hcomp, hsurj, hcanc⟩` from `GlobalTheory.T.exists_truncated_polynomial_thickening_fibre_square π hπ (2 * k)`. Use `letI : Algebra O C := Algebra.compHom C (algebraMap O E)`. Use `letI : Algebra ℚ_[l] C := Algebra.compHom C (algebraMap ℚ_[l] E)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `letI : Algebra ℤ_[l] C := Algebra.compHom C (algebraMap ℤ_[l] E)`. Use `haveI : IsScalarTower O E C := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `haveI : IsScalarTower ℚ_[l] E C := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `haveI : IsScalarTower ℤ_[l] O C := IsScalarTower.of_algebraMap_eq fun x => congrArg (algebraMap E C) (IsScalarTower.algebraMap_apply ℤ_[l] O E x)`. Use `haveI : IsScalarTower ℤ_[l] ℚ_[l] C := IsScalarTower.of_algebraMap_eq fun x => congrArg (algebraMap E C) (IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] E x)`.
-
-Use `haveI : Module.Finite ℚ_[l] C := Module.Finite.trans E C`. Use `letI : Algebra O T := Algebra.compHom T (algebraMap O E)`. Use `letI : Algebra ℚ_[l] T := Algebra.compHom T (algebraMap ℚ_[l] E)`. Use `letI : Algebra ℤ_[l] T := Algebra.compHom T (algebraMap ℤ_[l] E)`. Use `haveI : IsScalarTower O E T := IsScalarTower.of_algebraMap_eq fun _ => rfl`.
-
-Use `haveI : IsScalarTower ℚ_[l] E T := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `haveI : IsScalarTower ℤ_[l] O T := IsScalarTower.of_algebraMap_eq fun x => congrArg (algebraMap E T) (IsScalarTower.algebraMap_apply ℤ_[l] O E x)`. Use `haveI : IsScalarTower ℤ_[l] ℚ_[l] T := IsScalarTower.of_algebraMap_eq fun x => congrArg (algebraMap E T) (IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] E x)`. Use `haveI : Module.Finite ℚ_[l] T := Module.Finite.trans E T`. Conclude with `core hL D U E B π hπ f hf C T πC p₁ p₂ t ht hπC hπT hcomp hsurj k hcanc a hk`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem main (hL : LocalPublishedTheorems) {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [CharZero O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] [IsAdicComplete (maximalIdeal O) O] (D : Dat3 l O)

@@ -9,7 +9,7 @@ open ModularForm EisensteinSeries ModularFormClass UpperHalfPlane Formalism.L2.T
 namespace ReciprocityTheory.ChartRestriction.L1
 
 /- English proof (translation)
-Establish `key : ∀ x : ZMod 12, 5 * x ^ 3 + 7 * x ^ 5 = 0` using `by decide`. Establish `h` using `(ZMod.intCast_zmod_eq_zero_iff_dvd (5 * d ^ 3 + 7 * d ^ 5) 12).mp (by push_cast; exact key _)`. Conclude with `h` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem twelve_dvd_five_pow_three_add_seven_pow_five (d : ℤ) : (12 : ℤ) ∣ 5 * d ^ 3 + 7 * d ^ 5 := by
   have key : ∀ x : ZMod 12, 5 * x ^ 3 + 7 * x ^ 5 = 0 := by decide
@@ -18,7 +18,7 @@ theorem twelve_dvd_five_pow_three_add_seven_pow_five (d : ℤ) : (12 : ℤ) ∣ 
   exact_mod_cast h
 
 /- English proof (translation)
-Rewrite using `[ArithmeticFunction.sigma_apply, ArithmeticFunction.sigma_apply]`. Use `push_cast`. Rewrite using `[Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib]`. Conclude with `Finset.dvd_sum fun d _ => twelve_dvd_five_pow_three_add_seven_pow_five _`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sigma_congr (n : ℕ) :
     (12 : ℤ) ∣ 5 * (ArithmeticFunction.sigma 3 n : ℤ) + 7 * (ArithmeticFunction.sigma 5 n : ℤ) := by
@@ -35,9 +35,9 @@ def tZ : PowerSeries ℤ := PowerSeries.mk fun n =>
   (5 * (ArithmeticFunction.sigma 3 n : ℤ) + 7 * (ArithmeticFunction.sigma 5 n : ℤ)) / 12
 
 /- English proof (translation)
-Use extensionality with `n`. Simplify using `only [e4Z, s3Z, map_add, PowerSeries.coeff_mk, PowerSeries.coeff_C_mul, PowerSeries.coeff_one]`. Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem eisensteinFourInt_eq : e4Z = 1 + PowerSeries.C (240 : ℤ) * s3Z := by
   ext n
@@ -48,9 +48,9 @@ theorem eisensteinFourInt_eq : e4Z = 1 + PowerSeries.C (240 : ℤ) * s3Z := by
   · ring
 
 /- English proof (translation)
-Use extensionality with `n`. Simplify using `only [e6Z, s5Z, map_sub, PowerSeries.coeff_mk, PowerSeries.coeff_C_mul, PowerSeries.coeff_one]`. Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem eisensteinSixInt_eq : e6Z = 1 - PowerSeries.C (504 : ℤ) * s5Z := by
   ext n
@@ -61,7 +61,7 @@ theorem eisensteinSixInt_eq : e6Z = 1 - PowerSeries.C (504 : ℤ) * s5Z := by
   · ring
 
 /- English proof (translation)
-Use extensionality with `n`. Simplify using `only [map_add, PowerSeries.coeff_C_mul, tZ, s3Z, s5Z, PowerSeries.coeff_mk]`. Conclude with `Int.mul_ediv_cancel' (sigma_congr n)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tZ_mul : PowerSeries.C (12 : ℤ) * tZ =
     PowerSeries.C (5 : ℤ) * s3Z + PowerSeries.C (7 : ℤ) * s5Z := by
@@ -70,7 +70,7 @@ theorem tZ_mul : PowerSeries.C (12 : ℤ) * tZ =
   exact Int.mul_ediv_cancel' (sigma_congr n)
 
 /- English proof (translation)
-Establish `h` using `tZ_mul`. Rewrite using `[eisensteinFourInt_eq, eisensteinSixInt_eq]`. Simplify using `only [map_ofNat] at h ⊢`. Take the linear combination `(-144 : PowerSeries ℤ) * h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem eisenstein_cube_sub_sq_eq : e4Z ^ 3 - e6Z ^ 2 = PowerSeries.C (1728 : ℤ) *
     (tZ + PowerSeries.C (100 : ℤ) * s3Z ^ 2 + PowerSeries.C (8000 : ℤ) * s3Z ^ 3
@@ -81,7 +81,7 @@ theorem eisenstein_cube_sub_sq_eq : e4Z ^ 3 - e6Z ^ 2 = PowerSeries.C (1728 : �
   linear_combination (-144 : PowerSeries ℤ) * h
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[PowerSeries.coeff_C_mul, dZ, PowerSeries.coeff_mk, eisenstein_cube_sub_sq_eq, PowerSeries.coeff_C_mul]`. Conclude with `Int.mul_ediv_cancel' (dvd_mul_right _ _)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dZ_mul : PowerSeries.C (1728 : ℤ) * dZ = e4Z ^ 3 - e6Z ^ 2 := by
   ext n
@@ -89,7 +89,7 @@ theorem dZ_mul : PowerSeries.C (1728 : ℤ) * dZ = e4Z ^ 3 - e6Z ^ 2 := by
   exact Int.mul_ediv_cancel' (dvd_mul_right _ _)
 
 /- English proof (translation)
-Establish `h` using `dZ_mul.trans eisenstein_cube_sub_sq_eq`. Use `mul_left_cancel₀ (fun h0 => ?_) h` and prove the remaining obligations. Use `congrArg PowerSeries.constantCoeff h0` as an intermediate fact. Rewrite `this` using `[PowerSeries.constantCoeff_C, map_zero]`. Evaluate the numerical expressions using `at this`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions.
 -/
 private theorem dZ_eq_tZ_add_s3Z_sq_add_s3Z_cube_sub_s5Z_sq : dZ = tZ + PowerSeries.C (100 : ℤ) * s3Z ^ 2 +
     PowerSeries.C (8000 : ℤ) * s3Z ^ 3 - PowerSeries.C (147 : ℤ) * s5Z ^ 2 := by
@@ -100,7 +100,7 @@ private theorem dZ_eq_tZ_add_s3Z_sq_add_s3Z_cube_sub_s5Z_sq : dZ = tZ + PowerSer
   norm_num at this
 
 /- English proof (translation)
-Rewrite using `[dZ_eq_tZ_add_s3Z_sq_add_s3Z_cube_sub_s5Z_sq]`. Simplify using `only [map_sub, map_add, PowerSeries.coeff_C_mul, pow_succ, pow_zero, one_mul, PowerSeries.coeff_mul, Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk, Finset.sum_range_succ, Finset.sum_range_zero, tZ, s3Z, s5Z, PowerSeries.coeff_mk, ArithmeticFunction.sigma_apply]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Evaluate the numerical expressions.
 -/
 theorem dZ_coeff_zero : PowerSeries.coeff 0 dZ = 0 := by
   rw [dZ_eq_tZ_add_s3Z_sq_add_s3Z_cube_sub_s5Z_sq]
@@ -110,7 +110,7 @@ theorem dZ_coeff_zero : PowerSeries.coeff 0 dZ = 0 := by
   norm_num
 
 /- English proof (translation)
-Rewrite using `[dZ_eq_tZ_add_s3Z_sq_add_s3Z_cube_sub_s5Z_sq]`. Simplify using `only [map_sub, map_add, PowerSeries.coeff_C_mul, pow_succ, pow_zero, one_mul, PowerSeries.coeff_mul, Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk, Finset.sum_range_succ, Finset.sum_range_zero, tZ, s3Z, s5Z, PowerSeries.coeff_mk, ArithmeticFunction.sigma_apply]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Evaluate the numerical expressions.
 -/
 theorem dZ_coeff_one : PowerSeries.coeff 1 dZ = 1 := by
   rw [dZ_eq_tZ_add_s3Z_sq_add_s3Z_cube_sub_s5Z_sq]
@@ -120,11 +120,11 @@ theorem dZ_coeff_one : PowerSeries.coeff 1 dZ = 1 := by
   norm_num
 
 /- English proof (translation)
-Establish `h4 : qExpansion 1 ⇑((E₄.mul E₄).mul E₄) = qExpansion 1 E₄ ^ 3`. Rewrite using `[ModularForm.qExpansion_mul one_pos (by simp), ModularForm.qExpansion_mul one_pos (by simp)]`. Expand and normalize the polynomial expressions, which then agree. Establish `h6 : qExpansion 1 ⇑(E₆.mul E₆) = qExpansion 1 E₆ ^ 2`. Rewrite using `[ModularForm.qExpansion_mul one_pos (by simp)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hfun : DD = ⇑((1 / 1728 : ℂ) • ((E₄.mul E₄).mul E₄)) - ⇑((1 / 1728 : ℂ) • (E₆.mul E₆))`. Use function extensionality and compare the values at `τ`. Simplify using `only [DD, ModularForm.discriminant_eq_E₄_cube_sub_E₆_sq, Pi.sub_apply, ModularForm.coe_smul, ModularForm.coe_mul, Pi.smul_apply, Pi.mul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hd` using `congrArg (PowerSeries.map (Int.castRingHom ℂ)) dZ_mul`. Rewrite `hd` using `[map_mul, map_sub, map_pow, map_pow, PowerSeries.map_C, map_eisensteinFourInt, map_eisensteinSixInt]`. Rewrite using `[hfun, ModularForm.qExpansion_sub one_pos (by simp), ModularForm.coe_smul, ModularForm.coe_smul, ModularForm.qExpansion_smul one_pos (by simp), ModularForm.qExpansion_smul one_pos (by simp), h4, h6, ← smul_sub, ← hd, PowerSeries.smul_eq_C_mul, ← mul_assoc, ← map_mul]`. Rewrite using `[show (1 / 1728 : ℂ) * (Int.castRingHom ℂ) 1728 = 1 by norm_num, map_one, one_mul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem dC_eq : dC = qExpansion 1 DD := by
   have h4 : qExpansion 1 ⇑((E₄.mul E₄).mul E₄) = qExpansion 1 E₄ ^ 3 := by

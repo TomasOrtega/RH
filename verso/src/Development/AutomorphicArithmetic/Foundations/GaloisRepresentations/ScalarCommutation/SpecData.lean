@@ -34,7 +34,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace UpperTheory.Gal.Spc
 
 /- English proof (translation)
-Establish `hs` using `Formalism.UG.P.finite_support_cosets hK ((Formalism.UG.P.mem_hecke_iff ℂ K e).1 he).2`. Use function extensionality and compare the values at `x`. Establish `hsub : ∀ (φ : X → ℂ), (Function.support fun q : X ⧸ K => e q.out * φ (q.out⁻¹ * x)).Finite` using `fun φ => hs.subset fun q hq => left_ne_zero_of_mul hq`. Simplify using `only [conv, Pi.add_apply, mul_add]`. Conclude with `finsum_add_distrib (hsub f) (hsub f')`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem conv_add_r {X : Type} [Group X] {K : Subgroup X} (hK : Formalism.UG.IsCommensurated K) {e : X → ℂ}
     (he : e ∈ Hecke ℂ K) (f f' : X → ℂ) : conv K e (f + f') = conv K e f + conv K e f' := by
@@ -46,7 +46,7 @@ private theorem conv_add_r {X : Type} [Group X] {K : Subgroup X} (hK : Formalism
   exact finsum_add_distrib (hsub f) (hsub f')
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [conv, Pi.smul_apply, smul_eq_mul]`. Use `(finsum_congr fun q => mul_left_comm _ _ _).trans ?_` and prove the remaining obligations. Simplify `(smul_finsum c fun q : X ⧸ K => e q.out * f (q.out⁻¹ * x)).symm` using `only [smul_eq_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem conv_smul_r {X : Type} [Group X] (K : Subgroup X) (e : X → ℂ) (c : ℂ) (f : X → ℂ) :
     conv K e (c • f) = c • conv K e f := by
@@ -56,9 +56,9 @@ private theorem conv_smul_r {X : Type} [Group X] (K : Subgroup X) (e : X → ℂ
   simpa only [smul_eq_mul] using (smul_finsum c fun q : X ⧸ K => e q.out * f (q.out⁻¹ * x)).symm
 
 /- English proof (translation)
-Introduce `f hf`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem f hf => exact hs f hf`. Consider the case `zero => funext x`. Simplify using `[conv]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `add f f' _ _ h h' => rw [conv_add_r hK he, h, h']`. Consider the case `smul c f _ h => rw [conv_smul_r, h]`.
+Treat this case separately. Treat this case separately.
 -/
 private theorem span_fix {X : Type} [Group X] {K : Subgroup X} (hK : Formalism.UG.IsCommensurated K) {e : X → ℂ}
     (he : e ∈ Hecke ℂ K) (s : Set (X → ℂ)) (hs : ∀ f ∈ s, conv K e f = f) :
@@ -73,37 +73,31 @@ private theorem span_fix {X : Type} [Group X] {K : Subgroup X} (hK : Formalism.U
 end UpperTheory.Gal.Spc
 
 /- English proof (translation)
-Introduce `hWt E _ _ _ A n p _ S F x U w₀ Up V hodd hSc hGen hOff hq r W hAux N hrN hStab L hw Ty hTy hEx J g θ hseen`. Take `⟨⟨Lv, hLv⟩, ⟨Kw, hKwo, hKwc, hKwF⟩, hJo, hJc, hker, hcusp⟩` from `UpperTheory.Gal.Spc.tyTop E A n p S F x U w₀ Up V hodd hSc hGen hOff hq r W hAux N hrN hStab L hw Ty hTy`. Take `⟨u, hu, u', hu', heu, hue, hinv, hcomm, hX⟩` from `UpperTheory.Gal.Spc.auxFn E A n p S F x U w₀ Up V hodd hSc hGen hOff hq r W hAux N hrN hStab L hw Ty hTy`. Establish `hmem` using `UpperTheory.Gal.Spc.memFn E A n p S F x U w₀ Up V hodd hSc hGen hOff hq r W hAux N hrN hStab L hw Ty hTy`. Establish `hmc` using `UpperTheory.Gal.Spc.memComm E A n p S F x U w₀ Up V hodd hSc hGen hOff hq r W hAux N hrN hStab L hw Ty hTy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨thQ, hthQ, hEig⟩` from `UpperTheory.Gal.Spc.eigEx E A n p S F x U w₀ Up V hodd hSc hGen hOff hq r W hAux N hrN hStab L hw Ty hTy`. Establish `hLK : Lv.K.toSubgroup = Ty.K₀` using `hLv.trans hTy.K₀_eq.symm`. Establish `hid : TfIdem` using `pTfIdem pTfAdm (pTfCen pAvgK pTfAdm)`. Establish `hAdm1 : Ty.admitted (Ty.tf 1)` using `(pTfAdm _ _ Ty 1 (map_one _)).1`. Establish `he : Ty.tf 1 ∈ Hecke ℂ Ty.K₀` using `hAdm1.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hψ : ∀ j, (g j).fn ∈ Hecke ℂ Ty.K₀` using `fun j => (hmem (g j) (θ j) (hseen j)).1`. Establish `hring` using `pConvRing _ Ty.K₀ Ty.cms`. Establish `hoff : ∀ f ∈ Off2 W L Ty, conv Ty.K₀ (Ty.tf 1) f = f`. Use `UpperTheory.Gal.Spc.span_fix Ty.cms he _ ?_` and prove the remaining obligations. Introduce and unpack `f ⟨h, hh, -, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `(hid _ _ Ty h hh).2.2`. Establish `hrel : Rel (conv Ty.K₀) (fun j => (g j).fn) (Ty.tf 1) u u'` using `{ idem := (hid _ _ Ty 1 (map_one _)).2.1 eT := fun j => hoff _ (hmc (g j) (g j) (θ j) (θ j) (hseen j) (hseen j)).1 eu := by rw [hue, heu] TT := fun j j' => (hmc (g j) (g j') (θ j) (θ j') (hseen j) (hseen j')).2 uT := fun j => by show conv Ty.K₀ u (conv Ty.K₀ (g j).fn (Ty.tf 1)) = …`. Rewrite using `[hcomm _ (hmc (g j) (g j) (θ j) (θ j) (hseen j) (hseen j)).1, hue, (hring _ (hψ j) _ he).2 u hu, heu]`. Use `inv := by rw [hue]; exact hinv }`. Take `⟨w₁, hw₁⟩` from `hAux.nonempty`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨P₁, hP₁⟩` from `hEx.1 w₁.1 w₁.2.2`. Take `⟨P, hP⟩` from `hEx.1 w₀ hw.2`. Establish `hfac₀ : ∀ y, Ty.L.pr (F.j y) = comp w₀ y`. Introduce `y`. Rewrite using `[hTy.L_eq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hTy.fac ⟨w₀, hw⟩).1 y`. Establish `hcont : Continuous Ty.L.pr`. Rewrite using `[hTy.L_eq]`. Conclude with `UpperTheory.Gal.Spc.facCont E A n p S F ⟨w₀, hw⟩ _ (hTy.fac ⟨w₀, hw⟩)`. Establish `hat : ∀ y, P.at y = (Ty.L.pr y : Matrix (Fin n) (Fin n) (w₀.adicCompletion E))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure.
 
-Introduce `y`. Take `⟨y', rfl⟩` from `F.surj y`. Rewrite using `[hP, hfac₀]`. Use `letI : MeasurableSpace (w₀.adicCompletion E) := borel _`. Use `haveI : BorelSpace (w₀.adicCompletion E) := ⟨rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨τ, hτ, hτ2, Sp, hSp⟩` from `UpperTheory.Gal.Spc.splitC p S.G Lv (w₀.adicCompletion E) P Ty.L hcont hat Kw hKwo hKwc (by rw [hLK]; exact hKwF)`. Establish `hCe : Sp.Cusp (Ty.tf 1)`. Introduce `h`. Establish `h0` using `UpperTheory.Gal.Spc.cuspIrr_kFinite_rep_eq_centralCuspForm S.G.GAf (w₀.adicCompletion E) n Ty hJo hJc hker hcusp (Ty.tf 1) hAdm1 h.1 h.2`. Establish `h1 : (fun y => Ty.tf 1 (Sp.e.symm (y, h))) = fun y => Ty.tf 1 (Ty.L.loc y * h.1)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use function extensionality and compare the values at `fun y => by rw [hSp]; rfl`. Rewrite using `[h1]`. Conclude with `h0`. Establish `hA : ∀ m : ℕ, 1 ≤ m → ∃ A' : Set S.G.GAf, (∀ y ∈ A', (P₁.at y).charpoly.Separable ∧ GlobalTheory.LKCx.RegAf S.G y) ∧ (∀ j a, (g j).fn a ≠ 0 → ∀ y ∈ A', a * y ∈ A') ∧ ∀ y, powFn Lv.K.toSubgroup u (Ty.tf 1) m y ≠ 0 → y ∈ A'`. Introduce `m hm`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨X, hX1, hX2⟩` from `hX m hm`. Use `⟨{y | ∀ w ∈ W, (L w).pr y ∈ X w}, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `y hy`. Take `⟨y', rfl⟩` from `F.surj y`. Establish `hsep : ∀ w ∈ W, (comp w.1 y').val.charpoly.Separable` using `fun w hw' => by`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h` using `(hX1 w hw' _ (hy w hw')).1`. Rewrite `h` using `[(hTy.fac w).1]`. Then use the resulting hypothesis. Use `⟨?_, hEx.2 r hAux.prime hAux.ne y' ?_⟩` and prove the remaining obligations. Rewrite using `[hP₁]`. Conclude with `hsep w₁ hw₁`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `v hv`. Take `⟨w, hwW, rfl | rfl⟩` from `hAux.half.all v hv`. Conclude with `hsep w hwW`. Conclude with `UpperTheory.Gal.Spc.sepConj E n y' w.1 (hsep w hwW)`. Introduce `j a ha y hy w hw'`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[map_mul]`. Conclude with `(hX1 w hw' _ (hy w hw')).2 _ ((hmem (g j) (θ j) (hseen j)).2.1 a ha w hw')`. Introduce `y hy`. Rewrite `hy` using `[hLK]`. Conclude with `(hX2 y hy).2`.
-
-Establish `hso : UpperTheory.Gal.Spc.SpecOfF` using `UpperTheory.Gal.Spc.specOfF`. Unfold `UpperTheory.Gal.Spc.SpecOfF UpperTheory.Gal.Spc.ForPlaces at hso`. Establish `hso'` using `@hso p _ S.G (pSetupBasic E A n p S).1 Lv (w₀.adicCompletion E) _ _ _ _ _ _ _ P Ty.L.pr.ker _ τ hτ hτ2 Sp (w₁.1.adicCompletion E) _ _ P₁ (UpperTheory.Gal.G1.FinCls_holds E A n p S)`. Establish `key` using `hso' S.D S.L V.lam (Module.Dual ℂ V.W.Sp) ((UpperTheory.Gal.CertificateRingHomMap.xi V.W V.jz).comp thQ) (hWt E A n p S x U w₀ Up V thQ hthQ) J (fun j => (g j).fn) θ (Ty.tf 1) u u' (by rw [hLK]; exact hψ) (by rw [hLK]; exact he) (by rw [hLK]; exact hu) (by rw [hLK]; exact hu') (b …`. Take `⟨m, hm, hspec⟩` from `key`.
-
-Establish `hW` using `(UpperTheory.Gal.Spc.words p S.G Lv J (fun j => (g j).fn) (Ty.tf 1) u u' (by rw [hLK]; exact hψ) (by rw [hLK]; exact he) (by rw [hLK]; exact hu) (by rw [hLK]; exact hrel) m).1`. Take `⟨X, -, hX2⟩` from `hX m hm`. Rewrite `hspec`, `hW` using `[hLv]`. Use `⟨_, ⟨hW, fun y hy => ?_⟩, hspec⟩` and prove the remaining obligations. Rewrite `hy` using `[← hTy.K₀_eq]`.
-
-Conclude with `(hX2 y hy).1`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Spc.specData :
     UpperTheory.Gal.Int.Geo.Pl.WtOf → UpperTheory.Gal.Spc.SpecData := by

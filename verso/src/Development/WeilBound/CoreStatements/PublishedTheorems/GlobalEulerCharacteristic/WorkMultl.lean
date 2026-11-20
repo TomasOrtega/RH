@@ -7,7 +7,7 @@ open NumberField IsDedekindDomain CategoryTheory GroundTheory.ProfCoh GroundTheo
 namespace PositivityTheory.Lit1.GEN.W_multl
 
 /- English proof (translation)
-Establish `hp : IsPGroup ℓ (Multiplicative X)` using `fun g => ⟨r, by show Multiplicative.toAdd (g ^ (ℓ ^ r)) = Multiplicative.toAdd 1`. Rewrite using `[toAdd_pow]`. Conclude with `h _⟩`. Take `⟨n, hn⟩` from `hp.exists_card_eq`. Conclude with `⟨n, by rw [← hn]; rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_card_eq_pow {ℓ : ℕ} [Fact ℓ.Prime] {X : Type*} [AddCommGroup X] [Finite X] {r : ℕ}
     (h : ∀ m : X, (ℓ ^ r) • m = 0) : ∃ n : ℕ, Nat.card X = ℓ ^ n := by
@@ -18,7 +18,7 @@ theorem exists_card_eq_pow {ℓ : ℕ} [Fact ℓ.Prime] {X : Type*} [AddCommGrou
   exact ⟨n, by rw [← hn]; rfl⟩
 
 /- English proof (translation)
-The claim follows from `hS gsEulerRatio S T.X₂ ιr = gsEulerRatio S T.X₁ ιr * gsEulerRatio S T.X₃ ιr := by haveI : Finite S := hS haveI : Fintype S := Fintype.ofFinite S have hℓ : ℓ.Prime := Fact.out haveI : Nonempty S := nonempty_of_natCast_mem_of_ne_one (N := ℓ) S hℓ.one_lt.ne' hSl obtain ⟨r, hr⟩ := hl …`.
+A detailed English derivation is pending.
 -/
 theorem ratio_shortExact_l (ℓ : ℕ) [Fact ℓ.Prime] (K : FiniteSubfield) (S : Set (HeightOneSpectrum (𝓞 K.1)))
     (hS : S.Finite) (hSl : ∀ v : HeightOneSpectrum (𝓞 K.1), ((ℓ : ℕ) : 𝓞 K.1) ∈ v.asIdeal → v ∈ S)

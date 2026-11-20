@@ -20,7 +20,7 @@ open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.Conjuga
 variable {K L : Type} [Field K] [NumberField K] [Field L] [NumberField L]
 
 /- English proof (translation)
-Distinguish the cases in `hm : m = 0`. Substitute `hm` using the available equality. Simplify using `[hf]`. Rewrite using `[WithZeroMulInt.toNNReal_neg_apply hb hm, WithZeroMulInt.toNNReal_neg_apply ha hm, hab, ← zpow_natCast, ← zpow_mul, ← zpow_natCast, ← zpow_mul, mul_comm]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem to_nnreal_pow_of_eq_pow {a b : NNReal} (ha : a ≠ 0) (hb : b ≠ 0) {f : ℕ} (hf : f ≠ 0)
     (hab : b = a ^ f) (m : WithZero (Multiplicative ℤ)) :
@@ -32,13 +32,11 @@ private theorem to_nnreal_pow_of_eq_pow {a b : NNReal} (ha : a ≠ 0) (hb : b �
       ← zpow_natCast, ← zpow_mul, ← zpow_natCast, ← zpow_mul, mul_comm]
 
 /- English proof (translation)
-Establish `hq : ∀ {F : Type} [Field F] [NumberField F] (u : HeightOneSpectrum (𝓞 F)), (Ideal.absNorm u.asIdeal : NNReal) = (normV u : NNReal)`. Introduce `F _ _ u`. Simplify using `[normV, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Rewrite `h` using `[NumberField.FinitePlace.norm_def, NumberField.FinitePlace.norm_def]`. Establish `h2` using `NNReal.coe_injective h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hwq : (Ideal.absNorm w.asIdeal : NNReal) = (Ideal.absNorm v.asIdeal : NNReal) ^ f`. Rewrite using `[hq, hq, hf]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hf0 : f ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Establish `h1` using `one_lt_normV w`. Rewrite `h1` using `[hf, pow_zero]`. Conclude with `lt_irrefl _ h1`. Rewrite `h2` using `[to_nnreal_pow_of_eq_pow (HeightOneSpectrum.absNorm_ne_zero v) _ hf0 hwq, ← map_pow]`.
-
-Conclude with `(WithZeroMulInt.toNNReal_strictMono (HeightOneSpectrum.one_lt_absNorm_nnreal v)).injective h2`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem val_of_norm
     (v : HeightOneSpectrum (𝓞 K)) (w : HeightOneSpectrum (𝓞 L)) (y : (v.adicCompletion K)ˣ) (x : (w.adicCompletion L)ˣ)
@@ -65,9 +63,9 @@ private theorem val_of_norm
 variable [Algebra K L]
 
 /- English proof (translation)
-Use `⟨GroundTheory.LocalField.normUnits _ _ x, GroundTheory.Global.ideleNorm_finiteEmbedding w x, ?_⟩` and prove the remaining obligations. Use `val_of_norm (below K w) w _ x ?_ _ (GlobalTheory.ArtinTransport.normV_eq_pow ?_)` and prove the remaining obligations. Establish `h1` using `GroundTheory.Automorphic.EllipticTorus.ideleModule_ideleNorm (K := K) (IdeleGroup.finiteEmbedding w x)`. Rewrite `h1` using `[GroundTheory.Global.ideleNorm_finiteEmbedding]`. Rewrite using `[← IdeleGroup.ideleModule_finiteEmbedding, ← IdeleGroup.ideleModule_finiteEmbedding, h1]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((below_eq_iff w (below K w)).1 rfl).over.symm`.
+A detailed English derivation is pending.
 -/
 private theorem norm_loc (w : HeightOneSpectrum (𝓞 L)) (x : (w.adicCompletion L)ˣ) :
     ∃ y : ((below K w).adicCompletion K)ˣ, GroundTheory.Global.ideleNorm K L (localIdele L w x) = localIdele K (below K w) y ∧
@@ -81,7 +79,7 @@ private theorem norm_loc (w : HeightOneSpectrum (𝓞 L)) (x : (w.adicCompletion
 
 omit [Algebra K L] in
 /- English proof (translation)
-Establish `hk : diagUnits K k ∈ art.ker`. Rewrite using `[ha.ker]`. Conclude with `Subgroup.le_topologicalClosure _ (Subgroup.mem_sup_left ⟨k, rfl⟩)`. Conclude with `hk`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem art_diag {Ω : Type} [Field Ω] [Algebra K Ω] {art : Ideles K →* Gab K Ω} (ha : IsGlobalArtin art) (k : Kˣ) :
     art (diagUnits K k) = 1 := by
@@ -91,25 +89,23 @@ private theorem art_diag {Ω : Type} [Field Ω] [Algebra K Ω] {art : Ideles K �
   exact hk
 
 /- English proof (translation)
-Take `⟨ρ, hρc, hρ⟩` from `exists_abHom_of_ringEquiv K Ω L Ω (RingEquiv.refl Ω) (algebraMap K L) (fun z => IsScalarTower.algebraMap_apply K L Ω z)`. Establish `hρσ : ρ (toAb L Ω τ) = toAb K Ω σ` using `hρ τ σ (fun z => hσ z)`. Rewrite using `[← hρσ, ← hx]`. Set `ψ : Ideles L →* Gab K Ω` to `art.comp (GroundTheory.Global.ideleNorm K L) / ρ.comp art'`. It suffices to establish `hψ : ∀ y, ψ y = 1 by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the argument to an intermediate assertion.
 
-Establish `h0` using `hψ x`. Simplify using `only [ψ, MonoidHom.div_apply, MonoidHom.comp_apply, div_eq_one] at h0`. Conclude with `h0`. Introduce `y`. Apply `GlobalTheory.GabSep.eq_one_of_forall_isOpen_subgroup K Ω` to reduce the goal to its premises.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `U hU`. Use `haveI : IsClosed (U : Set (Gab K Ω)) := U.isClosed_of_isOpen hU`. Set `χ : Gab K Ω →* Gab K Ω ⧸ U` to `QuotientGroup.mk' U`. Establish `hχc : Continuous χ` using `continuous_quot_mk`. Establish `hart : Continuous art` using `ha.quot.continuous`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hart' : Continuous art'` using `ha'.quot.continuous`. Establish `hψc : Continuous ψ` using `(hart.comp GroundTheory.Global.continuous_ideleNorm).div' (hρc.comp hart')`. Take `⟨S, M, -, hS, -⟩` from `GlobalTheory.OpenIdeleCongr.open_subgroup_contains_congr K (U.comap art) (hU.preimage hart) ∅`. Establish `hfin : (below K (L` using `L) ⁻¹' (S : Set (HeightOneSpectrum (𝓞 K)))).Finite := by`. Establish `h1` using `Filter.mem_cofinite.1 (GroundTheory.Global.AdeleBaseChange.tendsto_below (K := K) (L := L) S.finite_toSet.compl_mem_cofinite)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `h1` using `[Set.preimage_compl, compl_compl]`. Then use the resulting hypothesis. Establish `hloc : ∀ w ∉ hfin.toFinset, ∀ z, (χ.comp ψ) (localIdele L w z) = 1`. Introduce `w hw`. Simplify using `only [Set.Finite.mem_toFinset, Set.mem_preimage, Finset.mem_coe] at hw`. Establish `hcomap : Ideal.comap (algebraMap (𝓞 K) (𝓞 L)) w.asIdeal = (below K w).asIdeal` using `((below_eq_iff w (below K w)).1 rfl).over.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hunit : ∀ z, IsUnitAt (below K w) z → χ (art (localIdele K (below K w) z)) = 1`. Introduce `z hz`. Conclude with `(QuotientGroup.eq_one_iff _).2 (hS _ hw z hz)`. Take `⟨-, h2⟩` from `GlobalTheory.ArtinTransport.chi_artin_transport K Ω L Ω (RingEquiv.refl Ω) (fun z => IsScalarTower.algebraMap_apply K L Ω z) art art' ha ha' ρ (fun τ' σ' h => hρ τ' σ' h) _ χ (below K w) w hcomap hunit`. Take `⟨k, hk⟩` from `exists_unif (below K w)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `GlobalTheory.FrobDense.eq_one_of_unif ((χ.comp ψ).comp (localIdele L w)) ?_` and prove the remaining obligations. Introduce `z hz`. Take `⟨y, hy, hyv⟩` from `norm_loc (K := K) w z`. Establish `hu : IsUnitAt (below K w) (y * (atFin (below K w) k ^ w.asIdeal.inertiaDeg (𝓞 K))⁻¹)`. Unfold `IsUnitAt`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `IsUnifAt at hk hz`. Rewrite using `[Units.val_mul, map_mul, Units.val_inv_eq_inv_val, map_inv₀, Units.val_pow_eq_pow_val, map_pow, hyv, hz, hk]`. Conclude with `mul_inv_cancel₀ (pow_ne_zero _ (by simp))`. Establish `e1` using `hunit _ hu`. Rewrite `e1` using `[map_mul, map_mul, map_mul, map_inv, map_inv, map_inv, map_pow, map_pow, map_pow, mul_inv_eq_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [MonoidHom.comp_apply, ψ, MonoidHom.div_apply, map_div]`. Rewrite using `[hy, e1, h2 z _ hz hk, div_self']`. Establish `hall` using `GlobalTheory.FrobDense.eq_one_of_away (χ.comp ψ) (hχc.comp hψc) ?_ hfin.toFinset hloc`. Conclude with `(QuotientGroup.eq_one_iff _).1 (DFunLike.congr_fun hall y)`. Introduce `k`.
-
-Establish `e1 : GroundTheory.Global.ideleNorm K L (diagUnits L k) = diagUnits K (Units.map (Algebra.norm K) k)` using `GroundTheory.Global.ideleNorm_diagonal k`. Simplify using `only [MonoidHom.comp_apply, ψ, MonoidHom.div_apply]`. Rewrite using `[e1, art_diag ha, art_diag (K := L) ha' k, map_one, div_one, map_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem glob_norm {Ω : Type} [Field Ω] [Algebra K Ω] [Algebra L Ω] [IsScalarTower K L Ω] [IsAlgClosure K Ω]
     [IsAlgClosure L Ω] {art : Ideles K →* Gab K Ω} {art' : Ideles L →* Gab L Ω} (ha : IsGlobalArtin art)
@@ -174,11 +170,11 @@ private theorem glob_norm {Ω : Type} [Field Ω] [Algebra K Ω] [Algebra L Ω] [
     rw [e1, art_diag ha, art_diag (K := L) ha' k, map_one, div_one, map_one]
 
 /- English proof (translation)
-Establish `hv : below K W = v` using `(below_eq_iff W v).2 ⟨hW.symm⟩`. Substitute `hv` using the available equality. Use `(GroundTheory.Global.ideleNorm_finiteEmbedding (K := K) W _).trans ?_` and prove the remaining obligations. Use `show IdeleGroup.finiteEmbedding _ _ = IdeleGroup.finiteEmbedding _ _`. Use `congr 1`.
+Establish an intermediate fact. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[GroundTheory.LocalField.coe_normUnits]`. Establish `h` using `GroundTheory.Global.ideleNorm_snd (K := K) (L := L) (IdeleGroup.diagonal L y) (below K W)`. Rewrite `h` using `[GroundTheory.Global.ideleNorm_diagonal]`. Establish `hW' : W.asIdeal.LiesOver (below K W).asIdeal` using `(below_eq_iff W _).1 rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[Fintype.prod_eq_single ⟨W, hW'⟩ ?_]`. Conclude with `h.symm`. Introduce `w hw`. Conclude with `absurd (Subtype.ext (hu w.1 w.2.over.symm)) hw`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem norm_at_unique (v : HeightOneSpectrum (𝓞 K)) (W : HeightOneSpectrum (𝓞 L))
     (hW : W.asIdeal.comap (algebraMap (𝓞 K) (𝓞 L)) = v.asIdeal)
@@ -202,7 +198,7 @@ private theorem norm_at_unique (v : HeightOneSpectrum (𝓞 K)) (W : HeightOneSp
     exact absurd (Subtype.ext (hu w.1 w.2.over.symm)) hw
 
 /- English proof (translation)
-Rewrite using `[← norm_at_unique v W hW hu y]`. Conclude with `(glob_norm ha haK _ τ (τ.restrictScalars E) (fun z => rfl) hτ.symm).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem res_art_norm (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     (K : IntermediateField E Ω) [FiniteDimensional E K] [NumberField K] [IsAlgClosure K Ω]
@@ -225,21 +221,19 @@ section Frob
 open NumberField IsDedekindDomain Neutral.B1 ReciprocityTheory.Neutral.Bridge.HCFR Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.L2.Host GlobalTheory.HeckeGal
 
 /- English proof (translation)
-Introduce `hGAR E Ω _ _ _ _ _ art ha v A hA ϖ hϖ hϖ2 π hπ`. Establish `hq : 1 < normV v` using `GlobalTheory.WeilDeligne.one_lt_normV v`. Establish `hϖ0 : (ϖ : E) ≠ 0`. Introduce `h0`. Apply `hϖ2` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `: ϖ = 0` using `by exact_mod_cast h0`. Rewrite using `[this]`. Conclude with `Ideal.zero_mem _`. Establish `hπ0 : π ≠ 0`. Introduce and unpack `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hπ` using `[zero_pow (by omega)]`. Conclude with `hϖ0 ((FaithfulSMul.algebraMap_eq_zero_iff E Ω).1 hπ.symm)`. Establish `hint : IsIntegral E π`. Use `⟨Polynomial.X ^ (normV v - 1) - Polynomial.C (ϖ : E), Polynomial.monic_X_pow_sub_C _ (by omega), ?_⟩` and prove the remaining obligations. Simplify using `[Polynomial.eval₂_sub, Polynomial.eval₂_X_pow, Polynomial.eval₂_C, hπ]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI hfd : FiniteDimensional E (IntermediateField.adjoin E {π}) := IntermediateField.adjoin.finiteDimensional hint`. Use `haveI hnf : NumberField (IntermediateField.adjoin E {π}) := NumberField.of_module_finite E (IntermediateField.adjoin E {π})`. Use `haveI halg : Algebra.IsAlgebraic E Ω := IsAlgClosure.isAlgebraic`. Use `haveI hac : IsAlgClosure (IntermediateField.adjoin E {π}) Ω := ⟨IsAlgClosure.isAlgClosed E, Algebra.IsAlgebraic.tower_top (K := E) _⟩`. Take `⟨W, hW, hu, hAW, hNW, hunif⟩` from `GlobalTheory.T.tameEisensteinExtension_unique_totallyRamified_place E Ω v A hA ϖ hϖ hϖ2 π hπ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨artK, haK⟩` from `hGAR (IntermediateField.adjoin E {π}) Ω`. Establish `hg0 : IntermediateField.AdjoinSimple.gen E π ≠ 0`. Introduce `h0`. Apply `hπ0` to reduce the goal to its premises. Use `congrArg (algebraMap (IntermediateField.adjoin E {π}) Ω) h0` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using this`. Establish `hnorm` using `(GlobalTheory.TameEis.minpoly_and_norm_of_pow_eq_uniformizer E Ω v ϖ hϖ hϖ2 π hπ).2`. Establish `hc' : IsUnifAt W (Units.map (algebraMap (IntermediateField.adjoin E {π}) (W.adicCompletion (IntermediateField.adjoin E {π}))).toMonoidHom (Units.mk0 _ hg0))` using `hunif _ rfl`. Take `⟨σ', hσ'F, hσ'⟩` from `(haK.frob W A hAW _).1 ⟨_, hc', rfl⟩`. Establish `hres` using `res_art_norm E Ω (IntermediateField.adjoin E {π}) art artK ha haK v W hW hu (Units.mk0 _ hg0) σ'⁻¹ hσ'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use `⟨σ'.restrictScalars E, ⟨hσ'F.1, fun x hx => ?_⟩, ?_, fun c hc => ?_⟩` and prove the remaining obligations. Rewrite using `[← hNW]`. Conclude with `hσ'F.2 x hx`. Conclude with `σ'.commutes (IntermediateField.AdjoinSimple.gen E π)`. Establish `hinv : (σ'.restrictScalars E)⁻¹ = (σ'⁻¹).restrictScalars E` using `rfl`.
-
-Rewrite using `[hinv, hres]`. Use `congr 2`. Use `ext`. Rewrite using `[hc]`. Simplify using `[Units.coe_map, hnorm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem frob_fix : GlobalTheory.Published.GlobalArtinReciprocity → ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω]
     [Algebra E Ω] [IsAlgClosure E Ω] (art : Ideles E →* Gab E Ω), IsGlobalArtin art →
@@ -296,37 +290,31 @@ private theorem frob_fix : GlobalTheory.Published.GlobalArtinReciprocity → ∀
     simp [Units.coe_map, hnorm]
 
 /- English proof (translation)
-Introduce `hGAR E Ω _ _ _ _ _ art ha v A hA ϖ hϖ hϖ2 π hπ x u hx hxu`. Establish `hq : 1 < normV v` using `GlobalTheory.WeilDeligne.one_lt_normV v`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed E`. Establish `hx1 : Valued.v (x : v.adicCompletion E) = 1` using `hx`. Establish `hvu : Valued.v (algebraMap E (v.adicCompletion E) (u : E)) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hx1]`. Use `Valuation.map_eq_of_sub_lt _ ?_` and prove the remaining obligations. Rewrite using `[Valuation.map_sub_swap, hx1]`. Conclude with `hxu`. Establish `hun : u ∉ v.asIdeal`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `hm`. Establish `h2` using `(HeightOneSpectrum.valuation_lt_one_iff_mem (K := E) v u).2 hm`. Establish `h3 : v.valuation E (u : E) = 1`. Rewrite using `[← HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`. Conclude with `hvu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `(ne_of_lt h2) h3`. Establish `hϖ0 : (ϖ : E) ≠ 0`. Introduce `h0`. Apply `hϖ2` to reduce the goal to its premises. Establish `: ϖ = 0` using `by exact_mod_cast h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[this]`. Conclude with `Ideal.zero_mem _`. Establish `hu0 : (u : E) ≠ 0`. Introduce `h0`. Apply `hun` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: u = 0` using `by exact_mod_cast h0`. Rewrite using `[this]`. Conclude with `Ideal.zero_mem _`. Establish `hπ0 : π ≠ 0`. Introduce and unpack `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hπ` using `[zero_pow (by omega)]`. Conclude with `hϖ0 ((FaithfulSMul.algebraMap_eq_zero_iff E Ω).1 hπ.symm)`. Establish `hϖ' : ϖ * u ∈ v.asIdeal` using `Ideal.mul_mem_right _ _ hϖ`. Establish `hrad : (v.asIdeal ^ 2).radical = v.asIdeal`. Rewrite using `[Ideal.radical_pow v.asIdeal two_ne_zero, v.isPrime.radical]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hϖ2' : ϖ * u ∉ v.asIdeal ^ 2`. Introduce `hm`. Establish `hP : (v.asIdeal ^ 2).IsPrimary` using `Ideal.isPrimary_of_isMaximal_radical (by`. Rewrite using `[hrad]`. Conclude with `v.isMaximal)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Break down `(Ideal.isPrimary_iff.1 hP).2 hm with h | h` into its components or cases. Conclude with `hϖ2 h`. Rewrite `h` using `[hrad]`. Conclude with `hun h`. Take `⟨t, ht⟩` from `IsAlgClosed.exists_pow_nat_eq (algebraMap E Ω (u : E)) (show 0 < normV v - 1 by omega)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hπt : (π * t) ^ (normV v - 1) = algebraMap E Ω ((ϖ * u : 𝓞 E) : E)`. Rewrite using `[mul_pow, hπ, ht, ← map_mul]`. Use `push_cast`. Both sides reduce to the same expression. Take `⟨τ, hτF, hτπ, hτc⟩` from `frob_fix hGAR E Ω art ha v A hA ϖ hϖ hϖ2 π hπ`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨τ', hτ'F, hτ'π, hτ'c⟩` from `frob_fix hGAR E Ω art ha v A hA (ϖ * u) hϖ' hϖ2' (π * t) hπt`. Establish `hI1` using `GlobalTheory.T.frobenius_inv_mul_mem_inertia E Ω v A hA τ τ' hτF hτ'F`. Establish `hV1` using `GlobalTheory.T.frobenius_ratio_pi_congr_tame_unit E Ω v A hA u hun π t hπ0 ht τ τ' hτF hτ'F hτπ hτ'π`. Use `set cϖ : (v.adicCompletion E)ˣ := (-1) ^ normV v * atFin v (Units.mk0 _ hϖ0) with hcϖ`. Use `set cu : (v.adicCompletion E)ˣ := atFin v (Units.mk0 _ hu0) with hcu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcu' : (cu : v.adicCompletion E) = algebraMap E (v.adicCompletion E) (u : E)`. Simplify using `[hcu, atFin]`. Establish `e1` using `hτc cϖ (by simp [hcϖ, atFin])`. Establish `e2` using `hτ'c (cϖ * cu) (by`. Simplify using `[hcϖ, hcu, atFin]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use the proof step `ring)`. Establish `e0 : toAb E Ω τ = (art (localIdele E v cϖ))⁻¹`. Rewrite using `[← e1, map_inv, inv_inv]`. Establish `e3 : toAb E Ω (τ'⁻¹ * τ) = art (localIdele E v cu)`. Rewrite using `[map_mul, e2, e0, map_mul, map_mul, mul_right_comm, mul_inv_cancel, one_mul]`.
-
-Establish `hy : Valued.v (((cu⁻¹ * x : (v.adicCompletion E)ˣ) : v.adicCompletion E) - 1) < 1`. Establish `hsplit : ((cu⁻¹ * x : (v.adicCompletion E)ˣ) : v.adicCompletion E) - 1 = ((x : v.adicCompletion E) - (cu : v.adicCompletion E)) * ((cu⁻¹ : (v.adicCompletion E)ˣ) : v.adicCompletion E)`. Rewrite using `[sub_mul, Units.mul_inv, Units.val_mul, mul_comm]`. Establish `hcuinv : Valued.v ((cu⁻¹ : (v.adicCompletion E)ˣ) : v.adicCompletion E) = 1`. Rewrite using `[Units.val_inv_eq_inv_val, map_inv₀, hcu', hvu, inv_one]`.
-
-Rewrite using `[hsplit, map_mul, hcuinv, mul_one, hcu']`. Conclude with `hxu`. Take `⟨z, hz1, hzy⟩` from `GlobalTheory.T.exists_unit_pow_normV_sub_one' E v (cu⁻¹ * x) hy`. Take `⟨ρ, hρI, hρ⟩` from `(ha.ine v A hA (art (localIdele E v z))).1 ⟨z, hz1, rfl⟩`. Use `⟨(τ'⁻¹ * τ) * ρ ^ (normV v - 1), mul_mem hI1 (pow_mem hρI _), ?_, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[map_mul, e3, map_pow, hρ, ← map_pow, ← map_pow, hzy, ← map_mul, ← map_mul, mul_inv_cancel_left]`. Rewrite using `[AlgEquiv.mul_apply, GlobalTheory.T.inertia_pow_residueCard_sub_one_apply_of_pow_mem E Ω v A hA (ϖ : E) π hπ ρ hρI]`. Conclude with `hV1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ine_of_unit : GlobalTheory.Published.GlobalArtinReciprocity → ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (art : Ideles E →* Gab E Ω), IsGlobalArtin art → ∀ (v : HeightOneSpectrum (𝓞 E)) (A : ValuationSubring Ω), Formalism.ConjugateSelfDual.IsPlaceOver A v → ∀ ϖ : 𝓞 E, ϖ ∈ v.asIdeal → ϖ ∉ v.asIdeal ^ 2 → ∀ π : Ω, π ^ (normV v - 1) = algebraMap E Ω (ϖ : E) → ∀ (x : (v.adicCompletion E)ˣ) (u : 𝓞 E), IsUnitAt v x → Valued.v ((x : v.adicCompletion E) - algebraMap E (v.adicCompletion E) (u : E)) < 1 → ∃ σ ∈ Ine (F := E) A, toAb E Ω σ = art (localIdele E v x) ∧ A.valuation (σ π / π - algebraMap E Ω (u : E)) < 1 := by
   intro hGAR E Ω _ _ _ _ _ art ha v A hA ϖ hϖ hϖ2 π hπ x u hx hxu
@@ -419,27 +407,25 @@ section Main
 open Polynomial Neutral.B1 GlobalTheory.HeckeGal
 
 /- English proof (translation)
-Establish `hn : 0 < normV v - 1`. Use `one_lt_normV v` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hne : ∀ s : Weil h, (s : G M Ω) π ≠ 0` using `fun s => (_root_.map_ne_zero _).2 hπ0`. Establish `hroot : ∀ s : Weil h, ((s : G M Ω) π / π) ^ (normV v - 1) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `s`. Rewrite using `[div_pow, ← map_pow, hπ, AlgEquiv.commutes, ← hπ, div_self (pow_ne_zero _ hπ0)]`. Establish `hmul : ∀ s s' : Weil h, ((s * s' : Weil h) : G M Ω) π / π = ((s : G M Ω) π / π) * ((s' : G M Ω) π / π)`. Introduce `s s'`. Establish `hs' : (s' : G M Ω) π = ((s' : G M Ω) π / π) * π` using `(div_mul_cancel₀ _ hπ0).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hfix` using `DiscreteGroups.sglob.DzType.weil_fix_root h s _ (hroot s')`. Rewrite using `[Subgroup.coe_mul, AlgEquiv.mul_apply, hs', map_mul, hfix]`. Clear the denominators using the available nonvanishing facts. Set `κ : Weil h →* Ωˣ` to `{ toFun := fun s => Units.mk0 ((s : G M Ω) π / π) (div_ne_zero (hne s) hπ0) map_one' := by`. Use `ext`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Introduce a local definition for the expression. By extensionality, compare the relevant components.
 
-Simplify using `[hπ0]`. Use the proof step `map_mul' := fun s s' => by`. Use `ext`. Simplify using `only [Units.val_mk0, Units.val_mul]`. Conclude with `hmul s s' }`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hκ : ∀ s, κ s ∈ rootsOfUnity (normV v - 1) Ω`. Introduce `s`. Rewrite using `[mem_rootsOfUnity]`. Use `ext`. Simplify using `[κ, hroot s]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `κ'` to `κ.codRestrict (rootsOfUnity (normV v - 1) Ω) hκ`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap M Ω).injective`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed M`. Use `haveI : NeZero (normV v - 1) := ⟨hn.ne'⟩`. Use `haveI : NeZero ((normV v - 1 : ℕ) : Ω) := ⟨Nat.cast_ne_zero.2 hn.ne'⟩`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcard : Nat.card (rootsOfUnity (normV v - 1) Ω) = Nat.card (rootsOfUnity (normV v - 1) ℂ)`. Rewrite using `[HasEnoughRootsOfUnity.natCard_rootsOfUnity, Complex.card_rootsOfUnity]`. Set `e` to `mulEquivOfCyclicCardEq hcard`. Set `ξ : Weil h →* ℂˣ` to `(rootsOfUnity (normV v - 1) ℂ).subtype.comp (e.toMonoidHom.comp κ')`. Establish `hξ : ∀ s, ξ s = 1 ↔ (s : G M Ω) π = π`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `s`. Establish `h1 : ξ s = 1 ↔ κ' s = 1`. Simplify using `only [ξ, MonoidHom.comp_apply, Subgroup.coe_subtype, MulEquiv.coe_toMonoidHom, OneMemClass.coe_eq_one, MulEquiv.map_eq_one_iff]`. Rewrite using `[h1, Subtype.ext_iff, MonoidHom.codRestrict_apply, OneMemClass.coe_one, Units.ext_iff]`. Simplify using `only [κ, MonoidHom.coe_mk, OneHom.coe_mk, Units.val_mk0, Units.val_one]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `div_eq_one_iff_eq hπ0`. Establish `hsm : IsSmooth ξ` using `by haveI : Algebra.IsAlgebraic M Ω := IsAlgClosure.isAlgebraic haveI : FiniteDimensional M (IntermediateField.adjoin M {π}) := IntermediateField.adjoin.finiteDimensional (Algebra.IsAlgebraic.isAlgebraic π).isIntegral`. Establish `hO : IsOpen (((IntermediateField.adjoin M {π}).fixingSubgroup.comap (Ine (F` using `M) A).subtype : Subgroup (Ine (F := M) A)) : Set (Ine (F := M) A)) := (IntermediateField.fixingSubgroup_isOpen (IntermediateField.adjoin M {π})).preimage continuous_subtype_val`. Use `show IsOpen (((ξ.comp (ineIncl h)).ker : Subgroup (Ine (F := M) A)) : Set (Ine (F := M) A))`. Use `Subgroup.isOpen_mono ?_ hO` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `τ hτ`. Rewrite using `[MonoidHom.mem_ker, MonoidHom.comp_apply, hξ]`. Conclude with `(IntermediateField.mem_fixingSubgroup_iff _ _).1 hτ π (IntermediateField.subset_adjoin M {π} (Set.mem_singleton π))`. Take `⟨χ, -, hχ⟩` from `ha.factor ξ hsm`. Establish `h2 : ξ (s'⁻¹ * s) = 1`.
-
-Rewrite using `[map_mul, map_inv, hχ, MonoidHom.comp_apply, MonoidHom.comp_apply, hs, inv_mul_cancel]`. Establish `h3` using `(hξ _).1 h2`. Establish `h4` using `congrArg (s' : G M Ω) h3`. Rewrite `h4` using `[← AlgEquiv.mul_apply, ← Subgroup.coe_mul, mul_inv_cancel_left]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 private theorem weil_smul_eq_of_local_artin_eq {M Ω : Type} [Field M] [NumberField M] [Field Ω] [Algebra M Ω] [IsAlgClosure M Ω]
     {A : ValuationSubring Ω} {v : HeightOneSpectrum (𝓞 M)} (h : IsPlaceOver A v)
@@ -511,15 +497,13 @@ private theorem weil_smul_eq_of_local_artin_eq {M Ω : Type} [Field M] [NumberFi
   rwa [← AlgEquiv.mul_apply, ← Subgroup.coe_mul, mul_inv_cancel_left] at h4
 
 /- English proof (translation)
-Introduce `M Ω _ _ _ _ _ g _ A v h hg hg2 a ha π hπ t x hx`. Take `⟨art, hart⟩` from `GlobalTheory.globalArtinReciprocity_holds M Ω`. Establish `hu` using `GlobalTheory.ArtinInertia.isUnitAt_artin_ine h a ha t`. Establish `hπ' : π ^ (normV v - 1) = algebraMap M Ω (((g : ℕ) : 𝓞 M) : M)`. Rewrite using `[hπ]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hπ0 : π ≠ 0` using `by haveI := charZero_of_injective_algebraMap (algebraMap M Ω).injective`. Establish `hg0 : ((g : ℕ) : Ω) ≠ 0` using `by exact_mod_cast (Fact.out : g.Prime).ne_zero`. Introduce and unpack `rfl`. Establish `hq` using `one_lt_normV v`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite `hπ` using `[zero_pow (by omega)]`. Conclude with `hg0 hπ.symm`. Take `⟨σ, hσI, hσ, hσv⟩` from `ine_of_unit GlobalTheory.globalArtinReciprocity_holds M Ω art hart v A h ((g : ℕ) : 𝓞 M) hg hg2 π hπ' (a (ineIncl h t)) x hu hx`. Establish `heq : a (ineIncl h ⟨σ, hσI⟩) = a (ineIncl h t)`. Apply `GlobalTheory.ArtinLocalInj.artin_localIdele_injective GlobalTheory.Published.chevalleyUnits' M Ω art hart v` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `only [ha.glob art hart]`. Rewrite `hσ` using `[ha.glob art hart]`. Conclude with `hσ`. Establish `key` using `weil_smul_eq_of_local_artin_eq h a ha π _ hπ0 hπ' _ _ heq`. Establish `key' : (t : G M Ω) π = σ π` using `key.symm`.
-
-Rewrite using `[key']`. Conclude with `hσv`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem tame_all : ∀ (M Ω : Type) [Field M] [NumberField M] [Field Ω] [Algebra M Ω] [IsAlgClosure M Ω] (g : ℕ) [Fact g.Prime] (A : ValuationSubring Ω) (v : HeightOneSpectrum (𝓞 M)) (h : IsPlaceOver A v), ((g : ℕ) : 𝓞 M) ∈ v.asIdeal → ((g : ℕ) : 𝓞 M) ∉ v.asIdeal ^ 2 → ∀ a : Weil h →* (v.adicCompletion M)ˣ, IsLocalArtin h a → ∀ π : Ω, π ^ (normV v - 1) = (g : Ω) → ∀ (t : Ine (F := M) A) (x : 𝓞 M), Valued.v ((a (ineIncl h t) : v.adicCompletion M) - algebraMap M (v.adicCompletion M) (x : M)) < 1 → A.valuation ((t : G M Ω) π / π - algebraMap M Ω (x : M)) < 1 := by
   intro M Ω _ _ _ _ _ g _ A v h hg hg2 a ha π hπ t x hx
@@ -550,7 +534,7 @@ private theorem tame_all : ∀ (M Ω : Type) [Field M] [NumberField M] [Field Ω
 end Main
 
 /- English proof (translation)
-The claim follows from `tame_all`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.localArtin_inertia_valuation_of_uniformizer_prime :
     ∀ (M Ω : Type) [Field M] [NumberField M] [Field Ω] [Algebra M Ω] [IsAlgClosure M Ω] (g : ℕ) [Fact g.Prime] (A : ValuationSubring Ω) (v : HeightOneSpectrum (𝓞 M)) (h : IsPlaceOver A v), ((g : ℕ) : 𝓞 M) ∈ v.asIdeal → ((g : ℕ) : 𝓞 M) ∉ v.asIdeal ^ 2 → ∀ a : Weil h →* (v.adicCompletion M)ˣ, IsLocalArtin h a → ∀ π : Ω, π ^ (normV v - 1) = (g : Ω) → ∀ (t : Ine (F := M) A) (x : 𝓞 M), Valued.v ((a (ineIncl h t) : v.adicCompletion M) - algebraMap M (v.adicCompletion M) (x : M)) < 1 → A.valuation ((t : G M Ω) π / π - algebraMap M Ω (x : M)) < 1 :=

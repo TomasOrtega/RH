@@ -7,9 +7,9 @@ namespace Formalism.MainNotions.ColumnSystems.Pf
 open Formalism.MainNotions.G MvPolynomial Formalism.MainNotions.G.GLWeightTheory Formalism.MainNotions.CovariantDegrees
 
 /- English proof (translation)
-Use extensionality with `μ`. Rewrite using `[eig_one, coeff_cth, eig_one]`. Establish `hd : Disjoint (Finsupp.single a b).support f.support`. Use `Finset.disjoint_of_subset_left Finsupp.support_single_subset ?_` and prove the remaining obligations. Rewrite using `[Finset.disjoint_singleton_left]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ha`. Rewrite using `[Finsupp.prod_add_index_of_disjoint hd, Finsupp.prod_single_index (by simp)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem op_single_add {K σ : Type} [Field K] (a : σ) (b : ℕ) (f : σ →₀ ℕ) (ha : a ∉ f.support) (u : MvPolynomial σ K) :
     monomial (Finsupp.single a b + f) (1 : K) * divDer (Finsupp.single a b + f) u =
@@ -30,15 +30,15 @@ section GlobalTheory
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero (KK O)] {N r : ℕ} [NeZero r]
 
 /- English proof (translation)
-Proceed by induction on `ν using Finsupp.induction with`. Consider the case `zero`. Introduce `_ thr thr' hthr u hu`. Rewrite using `[divDer_zero]`. Establish `: (monomial (0 : BVar N r D.T.t →₀ ℕ) (1 : KK O)) = 1` using `rfl`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, one_mul]`. Conclude with `SSt_mono D (fun k => by simpa using hthr k) hu`. Consider the case `single_add a b f ha hb ih`. Introduce `hv thr thr' hthr u hu`. Rewrite using `[op_single_add a b f ha]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsum : ((Finsupp.single a b + f).sum fun _ n => n) = b + f.sum fun _ n => n`. Rewrite using `[Finsupp.sum_add_index' (fun _ => rfl) (fun _ _ _ => rfl), Finsupp.sum_single_index rfl]`. Establish `hsupp : (Finsupp.single a b + f).support = insert a f.support`. Rewrite using `[Finsupp.support_add_eq, Finsupp.support_single_ne_zero _ hb]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finsupp.support_single_ne_zero _ hb, Finset.disjoint_singleton_left]`. Conclude with `ha`. Establish `h1` using `ih (fun v hvf => hv v (by rw [hsupp]; exact Finset.mem_insert_of_mem hvf)) thr (fun k => thr k + (((f.sum fun _ n => n : ℕ) : ℤ) : WithTop ℤ)) (fun _ => le_rfl) u hu`. Use `cth_SSt D7 hT b (fun k => ?_) a (hv a (by rw [hsupp]; exact Finset.mem_insert_self _ _)) h1` and prove the remaining obligations. Use `le_trans (le_of_eq ?_) (hthr k)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[hsum, add_assoc]`. Use `push_cast`. Rewrite using `[add_comm ((b : ℕ) : WithTop ℤ)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem op_SSt (D7 : Formalism.BasicNotions.D7) {D : BlockData N} (hT : TieOK D) (ν : BVar N r D.T.t →₀ ℕ) :
     (∀ v ∈ ν.support, OddV D v) → ∀ (thr thr' : Fin D.T.q → WithTop ℤ),
@@ -73,15 +73,13 @@ theorem op_SSt (D7 : Formalism.BasicNotions.D7) {D : BlockData N} (hT : TieOK D)
 end GlobalTheory
 
 /- English proof (translation)
-Introduce `i`. Use `(uTop S i).2` as an intermediate fact. Use `show 2 * ((uTop S i : Fin s) : ℕ) + 1 < 2 * s + 1`. Use linear arithmetic over natural numbers and integers. Use `inj := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i i' h`. Establish `h' : 2 * ((uTop S i : Fin s) : ℕ) = 2 * ((uTop S i' : Fin s) : ℕ)` using `h`. Simplify using `only [uTop] at h'`. Conclude with `Fin.ext (by omega)`. Use `sep := by`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i i' h`. Establish `h' : 2 * ((uTop S i : Fin s) : ℕ) + 1 = 2 * ((uTop S i' : Fin s) : ℕ)` using `h`. Use linear arithmetic over natural numbers and integers. Use `uW := by`. Introduce `i`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(uTop S i).2` as an intermediate fact. Prove the components needed by the constructor for the conclusion. Use `show 2 * ((uTop S i : Fin s) : ℕ) ≠ 2 * s`. Use linear arithmetic over natural numbers and integers. Use `show 2 * ((uTop S i : Fin s) : ℕ) + 1 ≠ 2 * s`.
-
-Use linear arithmetic over natural numbers and integers. Use `vecE := by`. Introduce `i h`. Use `show decide ((2 * ((uTop S i : Fin s) : ℕ) + 1) % 2 = 0) = false`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tieOK_blockBase (p : ℕ) {r s : ℕ} (S : SegData s) (aTop : Fin s → ℕ) (aPlus : ℕ) (b : SegBlock s r) :
     TieOK (blockBase p S aTop aPlus b) where
@@ -113,9 +111,9 @@ theorem tieOK_blockBase (p : ℕ) {r s : ℕ} (S : SegData s) (aTop : Fin s → 
     simp
 
 /- English proof (translation)
-Consider the cases of `x with`. Consider the case `top => simp`. Consider the case `coe y`. Simplify using `only [WithTop.map_coe]`. Establish `e : (y : ℝ) - (mm - (c4 : ℝ)) = ((y : ℝ) - mm) + (c4 : ℝ)` using `by ring`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[e, Int.floor_add_natCast]`. Establish `: ⌊(y : ℝ) - mm⌋ + (n : ℤ) ≤ ⌊(y : ℝ) - mm⌋ + (c4 : ℤ)` using `by omega`. Conclude with `this` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem thr_shift (x : WithTop ℤ) (mm : ℝ) (n c4 : ℕ) (h : n ≤ c4) :
     x.map (fun y : ℤ => ⌊(y : ℝ) - mm⌋) + ((n : ℤ) : WithTop ℤ) ≤ x.map (fun y : ℤ => ⌊(y : ℝ) - (mm - (c4 : ℝ))⌋) := by
@@ -129,17 +127,17 @@ theorem thr_shift (x : WithTop ℤ) (mm : ℝ) (n c4 : ℕ) (h : n ≤ c4) :
     exact_mod_cast this
 
 /- English proof (translation)
-Introduce `C0 CE1 CE2 X _ O _ _ _ _ j b _ c T q hT mm u hu`. Unfold `gOp`. Use `Submodule.sum_mem _ fun ν hν => Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Establish `hTie` using `tieOK_blockBase X.p (r := X.m) (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) (segAPlus X.TT X.aT j) b`. Use `op_SSt (O := O) (r := X.m) D7 hTie ν ?_ (fun k => (segmentCapacities X.p (X.seg C0 CE1 CE2 j) b k).map (fun y : ℤ => ⌊(y : ℝ) - mm⌋)) (fun k => (segmentCapacities X.p (X.seg C0 CE1 CE2 j) b k).map (fun y : ℤ => ⌊(y : ℝ) - (mm - 4 * (c : ℝ))⌋)) ?_ u hu` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `v hv`. Establish `h` using `(hT ν hν).2 v hv`. Break down `v with ⟨a, c'⟩ | ⟨l, s⟩` into its components or cases. Establish `h' : (a : ℕ) < 2 * segS X.TT j` using `h`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `e`. Use `congrArg Fin.val e` as an intermediate fact. Simplify using `only [Fin.val_castSucc] at this`. Establish `h2 : ((blockBase X.p (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) (segAPlus X.TT X.aT j) b).uPos : ℕ) = 2 * segS X.TT j` using `rfl`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Introduce `e`. Use `congrArg Fin.val e` as an intermediate fact. Simplify using `only [Fin.val_last] at this`. Use linear arithmetic over natural numbers and integers. Establish `h' : (l : ℕ) < (X.seg C0 CE1 CE2 j).t` using `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Introduce `e`. Use `congrArg Fin.val e` as an intermediate fact. Establish `h2 : ((Fin.last (blockBase X.p (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) (segAPlus X.TT X.aT j) b).T.t : Fin _) : ℕ) = (X.seg C0 CE1 CE2 j).t` using `rfl`. Use linear arithmetic over natural numbers and integers. Introduce `k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `thr_shift (segmentCapacities X.p (X.seg C0 CE1 CE2 j) b k) mm (ν.sum fun _ n => n) (4 * c) (hT ν hν).1` as an intermediate fact. Establish `e : (((4 * c : ℕ) : ℕ) : ℝ) = 4 * (c : ℝ)` using `by push_cast; ring`. Rewrite `this` using `[e]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gThetaAt (D7 : Formalism.BasicNotions.D7) : GThetaAt := by
   intro C0 CE1 CE2 X _ O _ _ _ _ j b _ c T q hT mm u hu

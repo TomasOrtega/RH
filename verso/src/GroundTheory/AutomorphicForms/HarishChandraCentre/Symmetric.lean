@@ -9,15 +9,13 @@ variable {n : ℕ}
 noncomputable abbrev psumFin (k : Fin n) : MvPolynomial (Fin n) ℂ := psum (Fin n) ℂ ((k : ℕ) + 1)
 
 /- English proof (translation)
-Proceed by induction on `k using Nat.strong_induction_on with`. Consider the case `_ k ih`. Use `set A := Algebra.adjoin ℂ (Set.range (psumFin (n := n)))`. Break down `Nat.eq_zero_or_pos k with rfl | hk0` into its components or cases. Rewrite using `[esymm_zero]`.
+Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `A.one_mem`. Establish `hps : ∀ j, 1 ≤ j → j ≤ n → psum (Fin n) ℂ j ∈ A`. Introduce `j hj1 hjn`. Use `Algebra.subset_adjoin ⟨⟨j - 1, by omega⟩, ?_⟩` and prove the remaining obligations. Use `show psum (Fin n) ℂ (j - 1 + 1) = psum (Fin n) ℂ j`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.sub_add_cancel hj1]`. Establish `hsum : (k : MvPolynomial (Fin n) ℂ) * esymm (Fin n) ℂ k ∈ A`. Rewrite using `[mul_esymm_eq_sum]`. Use `A.mul_mem (A.pow_mem (A.neg_mem A.one_mem) _) (A.sum_mem fun a ha => ?_)` and prove the remaining obligations. Rewrite `ha` using `[mem_filter, Finset.HasAntidiagonal.mem_antidiagonal]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `A.mul_mem (A.mul_mem (A.pow_mem (A.neg_mem A.one_mem) _) (ih a.1 ha.2 (by omega))) (hps a.2 (by omega) (by omega))`. Establish `hk' : (k : ℂ) ≠ 0` using `by exact_mod_cast hk0.ne'`. Establish `e : esymm (Fin n) ℂ k = (k : ℂ)⁻¹ • ((k : MvPolynomial (Fin n) ℂ) * esymm (Fin n) ℂ k)`. Rewrite using `[← map_natCast (C : ℂ →+* MvPolynomial (Fin n) ℂ) k, smul_eq_C_mul, ← mul_assoc, ← C_mul, inv_mul_cancel₀ hk', C_1, one_mul]`. Rewrite using `[e]`.
-
-Conclude with `A.smul_mem hsum _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem esymm_mem_adjoin_psum (k : ℕ) (hk : k ≤ n) :
     esymm (Fin n) ℂ k ∈ Algebra.adjoin ℂ (Set.range (psumFin (n := n))) := by
@@ -46,9 +44,7 @@ theorem esymm_mem_adjoin_psum (k : ℕ) (hk : k ≤ n) :
   exact A.smul_mem hsum _
 
 /- English proof (translation)
-Proceed by induction on `F using MvPolynomial.induction_on with`. Consider the case `C r => rw [aeval_C]`. Conclude with `A.algebraMap_mem r`. Consider the case `add p q hp hq => rw [map_add]`. Conclude with `A.add_mem hp hq`.
-
-Consider the case `mul_X p i hp => rw [map_mul, aeval_X]`. Conclude with `A.mul_mem hp (hf i)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem aeval_mem_of_forall_mem {A : Subalgebra ℂ (MvPolynomial (Fin n) ℂ)}
     (f : Fin n → MvPolynomial (Fin n) ℂ) (hf : ∀ i, f i ∈ A) (F : MvPolynomial (Fin n) ℂ) :
@@ -59,9 +55,9 @@ theorem aeval_mem_of_forall_mem {A : Subalgebra ℂ (MvPolynomial (Fin n) ℂ)}
   | mul_X p i hp => rw [map_mul, aeval_X]; exact A.mul_mem hp (hf i)
 
 /- English proof (translation)
-Take `⟨F, hF⟩` from `esymmAlgHom_fin_surjective ℂ (le_refl n) ⟨p, hp⟩`. Establish `e` using `congrArg Subtype.val hF`. Rewrite `e` using `[esymmAlgHom_apply]`. Establish `e' : aeval (fun i : Fin n => esymm (Fin n) ℂ ((i : ℕ) + 1)) F = p` using `e`. Rewrite using `[← e']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `aeval_mem_of_forall_mem _ (fun i => esymm_mem_adjoin_psum _ (by omega)) F`.
+A detailed English derivation is pending.
 -/
 theorem mem_adjoin_psum_of_isSymmetric {p : MvPolynomial (Fin n) ℂ} (hp : p.IsSymmetric) :
     p ∈ Algebra.adjoin ℂ (Set.range (psumFin (n := n))) := by
@@ -76,21 +72,19 @@ def TopClose (k : ℕ) (a b : MvPolynomial (Fin n) ℂ) : Prop :=
   a.totalDegree ≤ k ∧ b.totalDegree ≤ k ∧ (a = b ∨ (a - b).totalDegree < k)
 
 /- English proof (translation)
-Use `⟨by simp, by simp, Or.inl rfl⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem TopClose.one : TopClose (n := n) 0 1 1 := by
   refine ⟨by simp, by simp, Or.inl rfl⟩
 
 /- English proof (translation)
-Take `⟨ha, hb, hab⟩` from `h`. Take `⟨ha', hb', hab'⟩` from `h'`. Use `⟨(totalDegree_mul _ _).trans (add_le_add ha ha'), (totalDegree_mul _ _).trans (add_le_add hb hb'), ?_⟩` and prove the remaining obligations. Distinguish the cases in `e : a = b ∧ a' = b'`. Use `left`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e.1, e.2]`. Use `right`. Establish `key : a * a' - b * b' = (a - b) * a' + b * (a' - b')` using `by ring`. Rewrite using `[key]`. Use `lt_of_le_of_lt (totalDegree_add _ _) (max_lt ?_ ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Break down `hab with h1 | h1` into its components or cases. Rewrite using `[h1, sub_self, zero_mul, totalDegree_zero]`. Break down `hab' with h2 | h2` into its components or cases. Conclude with `absurd ⟨h1, h2⟩ e`. Use linear arithmetic over natural numbers and integers.
+Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `lt_of_le_of_lt (totalDegree_mul _ _) (by omega)`. Break down `hab' with h1 | h1` into its components or cases. Rewrite using `[h1, sub_self, mul_zero, totalDegree_zero]`. Break down `hab with h2 | h2` into its components or cases. Conclude with `absurd ⟨h2, h1⟩ e`.
-
-Use linear arithmetic over natural numbers and integers. Conclude with `lt_of_le_of_lt (totalDegree_mul _ _) (by omega)`.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem TopClose.mul {k l : ℕ} {a b a' b' : MvPolynomial (Fin n) ℂ} (h : TopClose k a b)
     (h' : TopClose l a' b') : TopClose (k + l) (a * a') (b * b') := by
@@ -118,7 +112,7 @@ theorem TopClose.mul {k l : ℕ} {a b a' b' : MvPolynomial (Fin n) ℂ} (h : Top
     · exact lt_of_le_of_lt (totalDegree_mul _ _) (by omega)
 
 /- English proof (translation)
-Proceed by induction on `c with`. Consider the case `zero => simpa using TopClose.one`. Consider the case `succ c ih`. Rewrite using `[pow_succ, pow_succ, Nat.succ_mul]`. Conclude with `ih.mul h`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem TopClose.pow {k : ℕ} {a b : MvPolynomial (Fin n) ℂ} (h : TopClose k a b) (c : ℕ) :
     TopClose (c * k) (a ^ c) (b ^ c) := by
@@ -129,7 +123,7 @@ theorem TopClose.pow {k : ℕ} {a b : MvPolynomial (Fin n) ℂ} (h : TopClose k 
     exact ih.mul h
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using TopClose.one`. Consider the case `insert i s hi ih`. Rewrite using `[prod_insert hi, prod_insert hi, sum_insert hi]`. Conclude with `(h i (mem_insert_self _ _)).mul (ih fun j hj => h j (mem_insert_of_mem hj))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem TopClose.prod {ι : Type*} (s : Finset ι) (k : ι → ℕ) (a b : ι → MvPolynomial (Fin n) ℂ)
     (h : ∀ i ∈ s, TopClose (k i) (a i) (b i)) :
@@ -142,7 +136,7 @@ theorem TopClose.prod {ι : Type*} (s : Finset ι) (k : ι → ℕ) (a b : ι �
     exact (h i (mem_insert_self _ _)).mul (ih fun j hj => h j (mem_insert_of_mem hj))
 
 /- English proof (translation)
-Unfold `psum`. Conclude with `IsHomogeneous.sum _ _ _ fun i _ => isHomogeneous_X_pow i k`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem isHomogeneous_psum (k : ℕ) : (psum (Fin n) ℂ k).IsHomogeneous k := by
   unfold psum
@@ -151,41 +145,35 @@ theorem isHomogeneous_psum (k : ℕ) : (psum (Fin n) ℂ k).IsHomogeneous k := b
 def psumWt (c : Fin n →₀ ℕ) : ℕ := ∑ i ∈ c.support, c i * ((i : ℕ) + 1)
 
 /- English proof (translation)
-Use `set B := Algebra.adjoin ℂ (Set.range q)`. Establish `hBsym : ∀ r ∈ B, r.IsSymmetric`. Establish `: B ≤ symmetricSubalgebra (Fin n) ℂ` using `Algebra.adjoin_le (by rintro _ ⟨k, rfl⟩; exact hq k)`. Conclude with `fun r hr => this hr`. Establish `hclose : ∀ i : Fin n, TopClose ((i : ℕ) + 1) (psumFin i) (q i)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Establish `h1 : (psumFin i).totalDegree ≤ (i : ℕ) + 1` using `(isHomogeneous_psum _).totalDegree_le`. Use `⟨h1, ?_, Or.inr ?_⟩` and prove the remaining obligations. Establish `: q i = psumFin i + (q i - psumFin i)` using `by ring`. Rewrite using `[this]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(totalDegree_add _ _).trans (max_le h1 (hdeg i).le)`. Rewrite using `[← neg_sub, totalDegree_neg]`. Conclude with `hdeg i`. Proceed by induction on `d with`. Consider the case `zero`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Introduce `p _ hp`. Rewrite using `[totalDegree_eq_zero_iff_eq_C.1 (show p.totalDegree = 0 by omega)]`. Conclude with `B.algebraMap_mem _`. Consider the case `succ d ih`. Introduce `p hp hpd`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `⟨F, rfl⟩ : ∃ F, aeval psumFin F = p := by`. Use `mem_adjoin_psum_of_isSymmetric hp` as an intermediate fact. Rewrite `this` using `[Algebra.adjoin_range_eq_range_aeval]`. Conclude with `this`. Use `set P : (Fin n →₀ ℕ) → MvPolynomial (Fin n) ℂ := fun c => c.prod fun i k => psumFin i ^ k`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set Q : (Fin n →₀ ℕ) → MvPolynomial (Fin n) ℂ := fun c => c.prod fun i k => q i ^ k`. Establish `hPhom : ∀ c, (P c).IsHomogeneous (psumWt c)`. Introduce `c`. Simplify using `only [P, Finsupp.prod, psumWt]`. Use `IsHomogeneous.prod _ _ _ fun i _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_comm]`. Conclude with `(isHomogeneous_psum _).pow _`. Establish `hPQ : ∀ c, TopClose (psumWt c) (P c) (Q c)`. Introduce `c`. Simplify using `only [P, Q, Finsupp.prod, psumWt]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `TopClose.prod _ _ _ _ fun i _ => (hclose i).pow (c i)`. Establish `hF : aeval psumFin F = ∑ c ∈ F.support, coeff c F • P c` using `by conv_lhs => rw [F.as_sum]`. Rewrite using `[map_sum]`. Use `sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[aeval_monomial, Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `set S := F.support.filter fun c => psumWt c = d + 1`. Use `set r := ∑ c ∈ S, coeff c F • Q c`. Establish `hr : r ∈ B`. Use `B.sum_mem fun c _ => B.smul_mem ?_ _` and prove the remaining obligations. Simplify using `only [Q, Finsupp.prod]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `B.prod_mem fun i _ => B.pow_mem (Algebra.subset_adjoin ⟨i, rfl⟩) _`. Establish `htop : homogeneousComponent (d + 1) (aeval psumFin F) = ∑ c ∈ S, coeff c F • P c`. Rewrite using `[hF, map_sum, sum_filter]`. Use `sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, homogeneousComponent_of_mem (hPhom c)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h : psumWt c = d + 1`. Rewrite using `[if_pos h.symm, if_pos h]`. Rewrite using `[if_neg (Ne.symm h), if_neg h, smul_zero]`. Establish `hlow : (aeval psumFin F - homogeneousComponent (d + 1) (aeval psumFin F)).totalDegree ≤ d` using `by set p := aeval psumFin F`. Rewrite using `[totalDegree, Finset.sup_le_iff]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Both sides reduce to the same expression.
 
-Introduce `m hm`. Rewrite `hm` using `[mem_support_iff, coeff_sub, coeff_homogeneousComponent]`. Establish `hm' : m ∈ p.support`. Rewrite using `[mem_support_iff]`. Introduce `h0`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hm` using `[h0]`. Simplify using `at hm`. Establish `h1` using `le_totalDegree hm'`. Distinguish the cases in `hd : m.degree = d + 1`. Rewrite `hm` using `[if_pos hd, sub_self]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd rfl hm`. Establish `: (m.sum fun _ e => e) = m.degree`. Both sides reduce to the same expression. Rewrite `h1`, the goal using `[this]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdiff : (∑ c ∈ S, coeff c F • P c - r).totalDegree ≤ d`. Rewrite using `[← sum_sub_distrib]`. Use `totalDegree_finsetSum_le fun c hc => ?_` and prove the remaining obligations. Rewrite using `[← smul_sub]`. Use `(totalDegree_smul_le _ _).trans ?_` and prove the remaining obligations.
-
-Establish `hwc : psumWt c = d + 1` using `(mem_filter.1 hc).2`. Break down `(hPQ c).2.2 with h | h` into its components or cases. Rewrite using `[h, sub_self, totalDegree_zero]`. Conclude with `Nat.zero_le _`. Rewrite `h` using `[hwc]`.
-
-Use linear arithmetic over natural numbers and integers. Establish `hkey : (aeval psumFin F - r).totalDegree ≤ d`. Establish `: aeval psumFin F - r = (aeval psumFin F - homogeneousComponent (d + 1) (aeval psumFin F)) + (∑ c ∈ S, coeff c F • P c - r)` using `by rw [htop]; ring`. Rewrite using `[this]`. Conclude with `(totalDegree_add _ _).trans (max_le hlow hdiff)`.
-
-Establish `hsym : (aeval psumFin F - r).IsSymmetric` using `(symmetricSubalgebra (Fin n) ℂ).sub_mem hp (hBsym r hr)`. Use `B.add_mem (ih _ hsym hkey) hr` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem symmetric_le_adjoin (q : Fin n → MvPolynomial (Fin n) ℂ) (hq : ∀ k, (q k).IsSymmetric)
     (hdeg : ∀ k, (q k - psum (Fin n) ℂ ((k : ℕ) + 1)).totalDegree < (k : ℕ) + 1) (d : ℕ) :
@@ -280,7 +268,7 @@ theorem symmetric_le_adjoin (q : Fin n → MvPolynomial (Fin n) ℂ) (hq : ∀ k
     rwa [sub_add_cancel] at this
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Conclude with `Algebra.adjoin_le (by rintro _ ⟨k, rfl⟩; exact hq k)`. Introduce `p hp`. Conclude with `symmetric_le_adjoin q hq hdeg _ p hp le_rfl`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem adjoin_eq_symmetricSubalgebra (q : Fin n → MvPolynomial (Fin n) ℂ)
     (hq : ∀ k, (q k).IsSymmetric)

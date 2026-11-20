@@ -13,13 +13,11 @@ open scoped Matrix
 namespace GlobalTheory.HwEigen
 
 /- English proof (translation)
-Establish `h : (Polynomial.evalRingHom (MvPolynomial.C s)).comp (Formalism.GradedWeylDivisibility.rowGen K (n` using `n) a b).toRingHom = (Formalism.GradedWeylDivisibility.rowAct K (n := n) (Matrix.transvection a b s)ᵀ).toRingHom := by`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c`. Simplify using `[Formalism.GradedWeylDivisibility.rowGen, Formalism.GradedWeylDivisibility.rowAct]`. Introduce `v`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Formalism.GradedWeylDivisibility.rowGen, Formalism.GradedWeylDivisibility.rowAct, MvPolynomial.aeval_X, Polynomial.coe_evalRingHom]`. Simplify using `[Matrix.transvection, Matrix.transpose_apply, Matrix.add_apply, Matrix.one_apply, Matrix.single_apply, add_mul, Finset.sum_add_distrib]`. Use `split_ifs with hv`. Rewrite using `[Finset.sum_eq_single a]`. Simplify using `only [hv, Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_X, and_self, if_true]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `mul_comm _ _`. Introduce `c _ hc`. Simplify using `[Ne.symm hc]`. Simplify using the standard rewrite rules. Simplify using `[Ne.symm hv]`.
-
-Conclude with `(congrArg (fun φ => φ f) h).symm`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rowAct_transvection_eq_eval (K : Type) [Field K] (n : ℕ) (a b : Fin n) (hab : a ≠ b) (s : K)
     (f : MvPolynomial (Fin n × Fin n) K) :
@@ -50,7 +48,7 @@ end GlobalTheory.HwEigen
 namespace GlobalTheory.HwEigen
 
 /- English proof (translation)
-Unfold `sqAct`. Rewrite using `[map_smul, smul_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem sqAct_smul' (K : Type) [Field K] (n : ℕ) (lam : DomWeight n) (B : GL (Fin n) K) (c : K)
     (f : MvPolynomial (Fin n × Fin n) K) : sqAct K n lam B (c • f) = c • sqAct K n lam B f := by
@@ -58,9 +56,9 @@ theorem sqAct_smul' (K : Type) [Field K] (n : ℕ) (lam : DomWeight n) (B : GL (
   rw [map_smul, smul_comm]
 
 /- English proof (translation)
-Establish `hP : Formalism.GradedWeylDivisibility.rowGen K a b f - Polynomial.C f = 0`. Apply `Polynomial.eq_zero_of_infinite_isRoot` to reduce the goal to its premises. Apply `Set.infinite_of_injective_forall_mem (f := fun s : K => (MvPolynomial.C s : MvPolynomial (Fin n × Fin n) K)) (MvPolynomial.C_injective _ _)` to reduce the goal to its premises. Introduce `s`. Simplify using `only [Set.mem_setOf_eq, Polynomial.IsRoot, Polynomial.eval_sub, Polynomial.eval_C]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[← rowAct_transvection_eq_eval K n a b hab s, hfix s, sub_self]`. Establish `h` using `congrArg (fun p => Polynomial.coeff p k) hP`. Simplify using `only [Polynomial.coeff_sub, Polynomial.coeff_C, Polynomial.coeff_zero] at h`. Rewrite `h` using `[if_neg (by omega), sub_zero]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rowDiv_eq_zero_of_fixed (K : Type) [Field K] [Infinite K] (n : ℕ) (a b : Fin n) (hab : a ≠ b)
     (f : MvPolynomial (Fin n × Fin n) K)
@@ -79,37 +77,35 @@ theorem rowDiv_eq_zero_of_fixed (K : Type) [Field K] [Infinite K] (n : ℕ) (a b
   exact h
 
 /- English proof (translation)
-Introduce `K _ _ n lam0 mu f hf hf0 hB`. Use `haveI : Infinite K := inferInstance`. Establish `hkill : ∀ a b : Fin n, a < b → ∀ k : ℕ, 1 ≤ k → Formalism.GradedWeylDivisibility.rowDiv K a b k f = 0`. Introduce `a b hab k hk`. Establish `hne : a ≠ b` using `ne_of_lt hab`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `rowDiv_eq_zero_of_fixed K n a b hne f _ k hk` to reduce the goal to its premises. Introduce `s`. Establish `hdet : (Matrix.transvection a b s).det = 1` using `Matrix.det_transvection_of_ne a b hne s`. Set `B : GL (Fin n) K` to `Matrix.nonsingInvUnit _ (by rw [hdet]; exact isUnit_one)`. Establish `hBv : (B : Matrix (Fin n) (Fin n) K) = Matrix.transvection a b s` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hent : ∀ i j, (B : Matrix (Fin n) (Fin n) K) i j = (if i = j then 1 else 0) + (if a = i ∧ b = j then s else 0)`. Introduce `i j`. Rewrite using `[hBv]`. Simplify using `[Matrix.transvection, Matrix.add_apply, Matrix.one_apply, Matrix.single_apply]`. Establish `htri : (B : Matrix (Fin n) (Fin n) K).BlockTriangular id`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j hij`. Rewrite using `[hent]`. Establish `h1 : i ≠ j` using `fun h => by subst h; exact lt_irrefl _ hij`. Establish `h2 : ¬ (a = i ∧ b = j)`. Introduce and unpack `⟨rfl, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Conclude with `lt_asymm hab hij`. Simplify using `[h1, h2]`. Establish `hdiag : ∀ i, (B : Matrix (Fin n) (Fin n) K) i i = 1`. Introduce `i`. Rewrite using `[hent]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `h2 : ¬ (a = i ∧ b = i)`. Introduce and unpack `⟨rfl, h⟩`. Conclude with `hne h.symm`. Simplify using `[h2]`. Establish `h` using `hB B htri`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Simplify using `only [hdiag, one_zpow, Finset.prod_const_one, one_smul] at h`. Establish `hdp : detPow K n B lam0.detShift = 1`. Unfold `detPow`. Establish `: Matrix.GeneralLinearGroup.det B = 1`. Use `ext`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Simplify using `[Matrix.GeneralLinearGroup.val_det_apply, hBv, hdet]`. Rewrite using `[this, one_zpow, Units.val_one]`. Unfold `sqAct at h`. Rewrite `h` using `[hdp, one_smul, hBv]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `Formalism.GradedWeylDivisibility.hwLine K n n le_rfl lam0.natW (PI.WGB.natW_anti_A lam0) f hf hkill`. Establish `he : extremal K n lam0 ≠ 0` using `Formalism.GradedWeylDivisibility.hwNe K n n le_rfl lam0.natW`. Establish `hce : f = c • extremal K n lam0` using `hc`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`.
+Assume the hypotheses and unpack their components. Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hf0 (by rw [hce, zero_smul])`. Use function extensionality and compare the values at `i`. Set `d : Fin n → K` to `Function.update (fun _ => 1) i 2`. Establish `hdd : (Matrix.diagonal d).det = 2`. Rewrite using `[Matrix.det_diagonal, Finset.prod_eq_single i]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Simplify using `[d]`. Introduce `j _ hj`. Simplify using `[d, hj]`. Simplify using the standard rewrite rules. Set `B : GL (Fin n) K` to `Matrix.nonsingInvUnit _ (by rw [hdd]; exact isUnit_iff_ne_zero.mpr two_ne_zero)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hBv : (B : Matrix (Fin n) (Fin n) K) = Matrix.diagonal d` using `rfl`. Establish `htri : (B : Matrix (Fin n) (Fin n) K).BlockTriangular id`. Rewrite using `[hBv]`. Conclude with `Matrix.blockTriangular_diagonal d`. Establish `h` using `hB B htri`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[hce, sqAct_smul', GlobalTheory.AlgWtF.DDHw.sqAct_upper K n lam0 B htri, smul_smul, smul_smul]`. Establish `h2` using `smul_left_injective K he h`. Establish `hprod : ∀ m : Fin n → ℤ, (∏ a, (B : Matrix (Fin n) (Fin n) K) a a ^ m a) = (2 : K) ^ m i`. Introduce `m`. Rewrite using `[Finset.prod_eq_single i]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[hBv, d]`. Introduce `j _ hj`. Simplify using `[hBv, d, hj]`. Simplify using the standard rewrite rules. Simplify using `only [hprod] at h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : ((2 : K) ^ lam0.w i) = (2 : K) ^ mu i`. Use `h2` as an intermediate fact. Rewrite `this` using `[mul_comm]`. Conclude with `(mul_right_cancel₀ hc0 this)`. Establish `h4 : (((2 : ℚ) ^ lam0.w i : ℚ) : K) = (((2 : ℚ) ^ mu i : ℚ) : K)`.
-
-Rewrite using `[Rat.cast_zpow, Rat.cast_zpow, Rat.cast_ofNat]`. Conclude with `h3`. Establish `h5` using `Rat.cast_injective h4`. Conclude with `(zpow_right_injective₀ (by norm_num : (0 : ℚ) < 2) (by norm_num) h5).symm`.
+A detailed English derivation is pending.
 -/
 theorem mu_eq_of_upper_eigen : ∀ (K : Type) [Field K] [CharZero K] (n : ℕ) (lam0 : DomWeight n) (mu : Fin n → ℤ)
     (f : MvPolynomial (Fin n × Fin n) K), f ∈ nablaSq K n lam0 → f ≠ 0 →

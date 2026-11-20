@@ -21,7 +21,7 @@ Both sides reduce to the same expression.
 @[simp] theorem cor_one : cor 1 = 2 := rfl
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases i <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem w_cor (i : Fin 2) : w 3 (cor i) = w 2 i := by
   fin_cases i <;> rfl
@@ -38,7 +38,7 @@ def CornerUnits (ρ : NRep F 3 K) : Prop :=
       ρ.r (F.loc0 v g) 0 2 * ρ.r (F.loc0 v g) 2 0)
 
 /- English proof (translation)
-Rewrite using `[map_mul, Matrix.mul_apply, Fin.sum_univ_three, h g 1 0 (by decide), h g 1 2 (by decide)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mid_mul (ρ : NRep F 3 K) (h : ∀ g i j, Odd (w 3 i - w 3 j) → ρ.r g i j = 0) (g g' : F.G0) :
     ρ.r (g * g') 1 1 = ρ.r g 1 1 * ρ.r g' 1 1 := by

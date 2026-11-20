@@ -20,7 +20,7 @@ def IsCcOn (U : Set V) (φ : V → ℝ) : Prop :=
   Continuous φ ∧ HasCompactSupport φ ∧ tsupport φ ⊆ U
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h φ hφ`. Conclude with `h φ hφ.1 hφ.2.1 hφ.2.2`. Introduce `h φ h1 h2 h3`. Conclude with `h φ ⟨h1, h2, h3⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem densAll_iff (μ : Measure V) (f : V → Y) (ι : X → Y) (ν : Measure X) (U : Set V) :
     DensAll μ f ι ν U ↔ DensOn (IsCcOn U) μ f ι ν := by

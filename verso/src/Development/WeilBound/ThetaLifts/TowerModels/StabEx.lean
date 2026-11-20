@@ -10,7 +10,7 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n X r s hB hX`. Take `⟨μK, hμK⟩` from `Stab.exists_haar_of_isCompact (Stab.stabK (σ := σ) B X) (Stab.isCompact_stabK hB hX)`. Take `⟨μ, hμ⟩` from `Stab.exists_haar_idele (F := F) (E := E)`. Conclude with `⟨_, μK, μ, Stab.isStab_stabK B X, Stab.isCompact_stabK hB hX, hμK, hμ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem stabEx : StabEx := by
   intro F E _ _ _ _ _ σ B n X r s hB hX

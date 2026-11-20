@@ -34,7 +34,7 @@ theorem resTrivMor_hom_apply {X Y : Rep.{u} k G} (hX : ∀ (m : N) (x : X), X.ρ
   rfl
 
 /- English proof (translation)
-Rewrite using `[← cohomologyMapAlong_id_eq_cohomologyMap, ← cohomologyMapAlong_id_eq_cohomologyMap, cohomologyConj, cohomologyConj, ← cohomologyMapAlong_comp, ← cohomologyMapAlong_comp]`. Use `cohomologyMapAlong_congr _ _ _ _ (by ext s; simp) (fun t => ?_) n` and prove the remaining obligations. Conclude with `h t`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cohomologyMap_comp_cohomologyConj_of_apply {T A : Rep.{u} k G} [IsDiscreteRep T]
     [IsDiscreteRep A] (φ ψ : Rep.res N.subtype T ⟶ Rep.res N.subtype A) (g : G)
@@ -46,13 +46,13 @@ theorem cohomologyMap_comp_cohomologyConj_of_apply {T A : Rep.{u} k G} [IsDiscre
   exact h t
 
 /- English proof (translation)
-Establish `hipa : ∀ a : A, ∑ j, i j (p j a) = a` using `fun a => by`. Use `congrArg (fun f : A →ₗ[k] A => f a) hip` as an intermediate fact. Simplify `this` using `[LinearMap.sum_apply]`. Establish `hsum : ∑ j, resTrivMor N hA hT (p j) ≫ resTrivMor N hT hA (i j) = 𝟙 _`. Use extensionality with `a`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[Rep.sum_hom, Representation.IntertwiningMap.toLinearMap_sum, LinearMap.sum_apply]`. Conclude with `hipa a`. Establish `hsum' : ∑ j, resTrivMor N hA hT (p j) ≫ resTrivMor N hT hA (A.ρ g ∘ₗ i j) = resTrivMor N hA hA (A.ρ g)`. Use extensionality with `a`. Rewrite using `[Rep.sum_hom, Representation.IntertwiningMap.toLinearMap_sum, LinearMap.sum_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `∑ j, A.ρ g (i j (p j a)) = A.ρ g a`. Rewrite using `[← map_sum, hipa]`. Establish `hj : ∀ j, cohomologyMap (resTrivMor N hT hA (i j)) n ≫ cohomologyConj A N n g = cohomologyMap (resTrivMor N hT hA (A.ρ g ∘ₗ i j)) n` using `fun j => by`. Rewrite using `[cohomologyMap_comp_cohomologyConj_of_apply N _ (resTrivMor N hT hA (A.ρ g ∘ₗ i j)) g (fun t => by rw [hg t]; rfl) n, hconj, Category.id_comp]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← cohomologyMap_id, ← hsum, cohomologyMap_sum, Preadditive.sum_comp]`. Simplify using `only [cohomologyMap_comp, Category.assoc]`. Use `_ = cohomologyMap (resTrivMor N hA hA (A.ρ g)) n := by`. Simplify using `only [hj, ← cohomologyMap_comp]`. Rewrite using `[← cohomologyMap_sum, hsum']`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cohomologyConj_eq_cohomologyMap_of_sum {T A : Rep.{u} k G} [IsDiscreteRep T]
     [IsDiscreteRep A] (hT : ∀ (m : N) (t : T), T.ρ m t = t) (hA : ∀ (m : N) (a : A), A.ρ m a = a)
@@ -98,11 +98,11 @@ attribute [local instance] Subgroup.fintypeQuotientOfFiniteIndex
 omit [(U : Subgroup G).Normal] in
 
 /- English proof (translation)
-Apply `hinv` to reduce the goal to its premises. Introduce `g`. Rewrite using `[map_sum]`. Establish `hc : ∀ c : G ⧸ (U : Subgroup G), A.ρ g (A.ρ c.out a) = A.ρ (g • c).out a`. Introduce `c`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨m, hm⟩` from `QuotientGroup.mk_out_eq_mul (U : Subgroup G) (g * c.out)`. Establish `e : (g • c).out = g * c.out * m`. Rewrite using `[← hm]`. Use `congr 1`. Use `conv_lhs => rw [← QuotientGroup.out_eq' c]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[e, map_mul, Module.End.mul_apply, hA m, ← Module.End.mul_apply, ← map_mul]`. Repeatedly rewrite using `[hc]`. Conclude with `Fintype.sum_equiv (MulAction.toPerm g) _ _ (fun _ => rfl)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_quotient_out_apply_eq_zero (A : Rep.{u} k G)
     (hA : ∀ (m : (U : Subgroup G)) (a : A), A.ρ m a = a)
@@ -124,15 +124,13 @@ theorem sum_quotient_out_apply_eq_zero (A : Rep.{u} k G)
   exact Fintype.sum_equiv (MulAction.toPerm g) _ _ (fun _ => rfl)
 
 /- English proof (translation)
-Establish `hAU : Function.Bijective fun a : Rep.res (U : Subgroup G).subtype A => (U : Subgroup G).index • a` using `hbij`. Establish `hzero : ∑ c : G ⧸ (U : Subgroup G), resTrivMor (U : Subgroup G) hA hA (A.ρ c.out) = 0`. Use extensionality with `a`. Rewrite using `[Rep.sum_hom, Representation.IntertwiningMap.toLinearMap_sum, LinearMap.sum_apply]`. Conclude with `sum_quotient_out_apply_eq_zero U A hA hinv a`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun x y => cohomologyRes_injective_of_bijective U A hbij n ?_⟩` and prove the remaining obligations. It suffices to establish `h : ∀ z : cohomology A n, (cohomologyRes A (U : Subgroup G) n).hom z = 0 by`. Rewrite using `[h x, h y]`. Introduce `z`. Use `set w := (cohomologyRes A (U : Subgroup G) n).hom z`.
+Reduce the argument to an intermediate assertion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hw : ∀ g : G, (cohomologyConj A (U : Subgroup G) n g).hom w = w` using `cohomologyRes_apply_mem_cohomologyConjInvariants A _ n z`. Apply `(bijective_nsmul_cohomology (Rep.res (U : Subgroup G).subtype A) _ hAU n).1` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(U : Subgroup G).index • w = (U : Subgroup G).index • 0`. Rewrite using `[smul_zero]`. Combine the equalities or inequalities in the displayed calculation.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_const, Finset.card_univ, Subgroup.index_eq_card, Nat.card_eq_fintype_card]`. Use `_ = ∑ c : G ⧸ (U : Subgroup G), (cohomologyConj A (U : Subgroup G) n c.out).hom w := by`. Simplify using `only [hw]`. Use `_ = (cohomologyMap (∑ c : G ⧸ (U : Subgroup G), resTrivMor (U : Subgroup G) hA hA (A.ρ c.out)) n).hom w := by`. Simplify using `only [hconj, cohomologyMap_sum, ModuleCat.hom_sum, LinearMap.sum_apply]`.
-
-Use `_ = 0 := by`. Rewrite using `[hzero, cohomologyMap_zero]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem subsingleton_cohomology_of_cohomologyConj_eq (A : Rep.{u} k G) [IsDiscreteRep A]
     (hA : ∀ (m : (U : Subgroup G)) (a : A), A.ρ m a = a)
@@ -169,7 +167,7 @@ theorem subsingleton_cohomology_of_cohomologyConj_eq (A : Rep.{u} k G) [IsDiscre
         rfl
 
 /- English proof (translation)
-The claim follows from `subsingleton_cohomology_of_cohomologyConj_eq U A hA hinv hbij n fun g => cohomologyConj_eq_cohomologyMap_of_sum (U : Subgroup G) (fun m t => hT m t) hA i p hip g (hT g) n (hconj g)`.
+A detailed English derivation is pending.
 -/
 theorem subsingleton_cohomology_of_sum {T A : Rep.{u} k G} [IsDiscreteRep T] [IsDiscreteRep A]
     (hT : ∀ (g : G) (t : T), T.ρ g t = t) (hA : ∀ (m : (U : Subgroup G)) (a : A), A.ρ m a = a)
@@ -192,13 +190,13 @@ variable {k Γ : Type u} [CommRing k] [Group Γ] [TopologicalSpace Γ] [IsTopolo
 variable [CompactSpace Γ] [TotallyDisconnectedSpace Γ]
 
 /- English proof (translation)
-Introduce `i hi`. Break down `Nat.eq_zero_or_pos i with rfl | hpos` into its components or cases. Establish `: Subsingleton (ModuleCat.of k A.ρ.invariants)` using `⟨fun a b => Subtype.ext <| by`. Rewrite using `[hinv a (fun w => a.2 w), hinv b (fun w => b.2 w)]⟩`. Conclude with `(H0Iso A).toLinearEquiv.toEquiv.subsingleton`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hz : ∀ j, 0 < j → j < i → IsZero (cohomology (Rep.res W.subtype A) j)` using `fun j hj hji => (ModuleCat.isZero_iff_subsingleton).2 (hq j hj (by omega))`. Establish `hex` using `infRes_exact A W hW (Nat.pos_iff_ne_zero.1 hpos) hz`. Establish `: Subsingleton (A.quotientToInvariants W)` using `⟨fun a b => Subtype.ext <| by`. Rewrite using `[hinv a (fun w => a.2 w), hinv b (fun w => b.2 w)]⟩`. Establish `hs` using `subsingleton_cohomology_of_subsingleton (A.quotientToInvariants W) i`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hres` using `hq i hpos hi`. Establish `hmem : ∀ z : cohomology A i, z = 0`. Introduce `z`. Establish `hk : z ∈ LinearMap.ker (cohomologyRes A W i).hom` using `LinearMap.mem_ker.2 (Subsingleton.elim _ _)`. Rewrite `hk` using `[← hex.2]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨y, rfl⟩` from `hk`. Rewrite using `[Subsingleton.elim y 0, map_zero]`. Conclude with `⟨fun x y => by rw [hmem x, hmem y]⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem subsingleton_cohomology_of_normal (W : Subgroup Γ) [W.Normal] (hW : IsClosed (W : Set Γ))
     (A : Rep.{u} k Γ) [IsDiscreteRep A] (hinv : ∀ a : A, (∀ w : W, A.ρ w a = a) → a = 0) (q : ℕ)

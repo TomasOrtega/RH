@@ -5,21 +5,17 @@ import Development.AutomorphicArithmetic.DivisorFrames.ExistsPrimeNonDivisible
 
 open Filter Topology in
 /- English proof (translation)
-Introduce `F A _ _ _ _ hsm σ m ε hε p a M hp h`. Establish `: IsNoetherianRing A` using `Algebra.FiniteType.isNoetherianRing F A`. Establish `: IsIntegrallyClosed A` using `GlobalTheory.isIntegrallyClosed_of_smooth F A`. Establish `key : ∀ (P : Ideal A), P.IsPrime → p ∈ P → ∀ (t : A) (c : Fin m → A), (∀ j, a j * t = p ^ M * c j) → ∀ j, c j ∈ P`. Introduce `P hP hpP t c ht j₀`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hc0`. Take `⟨ψ₀, hσ, hP0, hs0⟩` from `UpperTheory.exists_complex_point_prime F A σ m ε hε P hP c j₀ hc0`. Take `⟨ψ, r, hhol, h0, hσ', hne⟩` from `GlobalTheory.T.exists_holomorphic_arc_smooth_algebra_nonvanishing F A hsm ψ₀ p hp`. Establish `hlim` using `h ψ r hhol (fun u hu => (hσ' u hu).trans hσ) (by rw [h0]; exact hP0 p hpP) hne`. Establish `hball : Metric.ball (0 : ℂ) r ∈ 𝓝 (0 : ℂ)` using `Metric.ball_mem_nhds _ hhol.1`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : ∀ x, Tendsto (fun u => ψ u x) (𝓝[≠] 0) (𝓝 (ψ₀ x))` using `fun x => by`. Rewrite using `[← h0]`. Conclude with `(((hhol.2 x).differentiableAt hball).continuousAt.tendsto).mono_left nhdsWithin_le_nhds`. Establish `h1` using `hlim.mul (hc t)`. Rewrite `h1` using `[zero_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : Tendsto (fun u => ∑ j, ε j * ψ u (c j)) (𝓝[≠] 0) (𝓝 0)`. Use `h1.congr' ?_` and prove the remaining obligations. Use `filter_upwards [mem_nhdsWithin_of_mem_nhds hball, self_mem_nhdsWithin] with u hu hu0`. Establish `hpu : ψ u (p ^ M) ≠ 0`. Rewrite using `[map_pow]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `pow_ne_zero _ (hne u hu hu0)`. Rewrite using `[div_mul_eq_mul_div, div_eq_iff hpu, Finset.sum_mul, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, mul_assoc, ← map_mul, ← map_mul, ht j, mul_comm (c j)]`. Establish `h3 : Tendsto (fun u => ∑ j, ε j * ψ u (c j)) (𝓝[≠] 0) (𝓝 (∑ j, ε j * ψ₀ (c j)))` using `tendsto_finsetSum _ fun j _ => (hc (c j)).const_mul _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Conclude with `hs0 (tendsto_nhds_unique h3 h2)`. Establish `hdvd : ∀ j, p ^ M ∣ a j`. Assume the negation of the conclusion as `hcon`. Take `⟨P, t, c, j₀, hP, hd, -, hc, ht⟩` from `UpperTheory.exists_prime_non_divisible A m a (p ^ M) (pow_ne_zero M hp) (not_forall.1 hcon)`. Conclude with `hc (key P hP (hP.mem_of_pow_mem M hd) t c ht j₀)`.
-
-Use `choose b hb using hdvd`. Introduce `j`. Use `⟨b j, by rw [hb j, mul_comm], ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.radical_eq_sInf, Ideal.mem_sInf]`. Introduce and unpack `P ⟨hle, hP⟩`.
-
-Conclude with `key P hP (hle (Ideal.mem_span_singleton_self p)) 1 b (fun i => by rw [mul_one, hb i]) j`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.holomorphic_points_vanishing_at_origin :
     ∀ (F A : Type) [Field F] [CommRing A] [IsDomain A] [Algebra F A], Algebra.Smooth F A → ∀ (σ : F →+* ℂ) (m : ℕ) (ε : Fin m → ℂ), (∀ a : Fin m → F, ∑ j, σ (a j) * ε j = 0 → a = 0) → ∀ (p : A) (a : Fin m → A) (M : ℕ), p ≠ 0 → (∀ (ψ : ℂ → (A →+* ℂ)) (r : ℝ), GlobalTheory.ShFam.BdArc.IsHolPts ψ r → (∀ u ∈ Metric.ball (0 : ℂ) r, (ψ u).comp (algebraMap F A) = σ) → ψ 0 p = 0 → (∀ u ∈ Metric.ball (0 : ℂ) r, u ≠ 0 → ψ u p ≠ 0) → Filter.Tendsto (fun u => (∑ j, ε j * ψ u (a j)) / ψ u (p ^ M)) (nhdsWithin 0 {0}ᶜ) (nhds 0)) → ∀ j, ∃ b : A, a j = b * p ^ M ∧ b ∈ (Ideal.span {p}).radical := by

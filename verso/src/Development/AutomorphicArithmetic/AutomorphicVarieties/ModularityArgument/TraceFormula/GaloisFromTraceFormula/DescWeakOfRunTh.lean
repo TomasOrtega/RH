@@ -78,9 +78,7 @@ def PreOf : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : 
     ∃ D' : PositivityTheory.Rg.BcB.F.Pre E n, D'.Reg ∧ D'.ThetaStable ∧ PositivityTheory.Rg.BcB.G.SplitLike D' π ∧ ¬ PositivityTheory.Rg.BcB.G.IsOne D' π
 
 /- English proof (translation)
-Introduce `E _ _ _ hunr p _ S _ hsp _ n hn _ π hreg hd hsat`. Establish `hn1 : 1 ≤ n` using `le_trans one_le_two hn`. Break down `hRun E hunr n hn1 π hreg hd (fun w hw => hsat w fun h => hw (hsp w h)) with h | ⟨D, h1, h2, h3, h4⟩` into its components or cases. Conclude with `h`. Take `⟨D', a, b, c, d⟩` from `hP E n hn1 π hd D h1 h2 h3 h4`.
-
-Conclude with `absurd (hN E n hn1 π hreg hd D' a b c) d`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem descWeak_of_runTh (hN : GOne.NoOther) (hP : PreOf) (hRun : RunTh) : UpperTheory.V.Z.Desc.DescWeak := by
   intro E _ _ _ hunr p _ S _ hsp _ n hn _ π hreg hd hsat

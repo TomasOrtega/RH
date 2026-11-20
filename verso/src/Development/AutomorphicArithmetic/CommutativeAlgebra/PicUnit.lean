@@ -11,7 +11,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace UpperTheory.PicD
 
 /- English proof (translation)
-Unfold `unitSec ofRings.sec`. Conclude with `map_add (ModuleCat.Hom.hom ((toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ unitsF)).app (op U))) (⟨Additive.ofMul u⟩ : ULift.{1, 0} (Additive (Γ(U, ⊤))ˣ)) ⟨Additive.ofMul v⟩`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem unitSec_mul {U : Scheme.{0}} (u v : (Γ(U, ⊤))ˣ) : unitSec (u * v) = unitSec u + unitSec v := by
   unfold unitSec ofRings.sec
@@ -19,14 +19,14 @@ theorem unitSec_mul {U : Scheme.{0}} (u v : (Γ(U, ⊤))ˣ) : unitSec (u * v) = 
     (⟨Additive.ofMul u⟩ : ULift.{1, 0} (Additive (Γ(U, ⊤))ˣ)) ⟨Additive.ofMul v⟩
 
 /- English proof (translation)
-Unfold `unitSec ofRings.sec`. Conclude with `map_zero (ModuleCat.Hom.hom ((toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ unitsF)).app (op U)))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem unitSec_one {U : Scheme.{0}} : unitSec (1 : (Γ(U, ⊤))ˣ) = 0 := by
   unfold unitSec ofRings.sec
   exact map_zero (ModuleCat.Hom.hom ((toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ unitsF)).app (op U)))
 
 /- English proof (translation)
-Unfold `unitSec ofRings.sec`. Establish `h` using `congrArg (fun f => (ModuleCat.Hom.hom f) (⟨Additive.ofMul u⟩ : ULift.{1, 0} (Additive (Γ(U, ⊤))ˣ))) ((toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ unitsF)).naturality g.op)`. Conclude with `h.symm`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem unitSec_res {V U : Scheme.{0}} (g : V ⟶ U) (u : (Γ(U, ⊤))ˣ) :
     Sec.res g (unitSec u) = unitSec (Units.map g.appTop.hom.toMonoidHom u) := by

@@ -12,9 +12,9 @@ open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.EX GlobalTheory.E
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `hL p K q c b hw`. Use `⟨GlobalTheory.T.chrEq_mu0_of_bWit q b hw, GlobalTheory.T.twist_character_matches_witness q b hw, GlobalTheory.T.twist_places_match_witness q b hw, GlobalTheory.T.level_true_of_witness q b hw, ?_, GlobalTheory.T.real_data_of_witness q b hw, ⟨1, b.C.ok1⟩, (GlobalTheory.T.level_matc …` and prove the remaining obligations. Take `⟨x, a, ax, y, recPin, s, pt, sx, eF, cW, d3b, side, colPins⟩` from `hw`. Use `show (fun k : Bl.RPk b.R b.S => Nonempty (Formalism.IndefR.RealRec k.B.Q)) (Bl.rpkB b)`. Rewrite using `[y.eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨R3.realRecOf y.r⟩`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Fam.realAt_cols : ∀ {hL : GlobalTheory.Published.LocalLanglandsGL} {p : Bl.Prm hL} {K : Ctx} (q : Bl.WPt p.s K) {c : ℝ} (b : Bundle (q.w.D q.Z) q.O c), Bl.BWit q b → (∀ j : Fin q.B.R.m, Formalism.IndefR.Links.ChrEq ((pk (packB b)).mu0 ((j : ℕ) + 1)) (q.w.I.C.mu0 j)) ∧ (∀ t, Formalism.IndefR.Links.ChrEq ((pk (packB b)).xi t) (q.w.I.xi (b.P.I.tup t))) ∧ (∀ t PP, PP ∈ (pk (packB b)).Q t ↔ PP ∈ Formalism.L2.Col.QE q.w.I.sel (q.w.I.tup (b.P.I.tup t) : Formalism.L2.DIV.Chr q.B.fields.F q.B.fields.E q.B.fields.K)) ∧ LevTrue (packB b) ∧ Nonempty (Formalism.IndefR.RealRec b.B.Q) ∧ Formalism.IndefR.RealPins b.B.Q ∧ (∃ s, b.P.A3.fam3.Ok3 s) ∧ GlobalTheory.Core.Mi.IdE b.S.X ∧ ∀ u, Formalism.L2.SG.ColDict.LevelMatch b.S.X (b.S.tr u) b.S.Y.hK := by
   intro hL p K q c b hw

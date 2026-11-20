@@ -6,7 +6,7 @@ open scoped Classical
 namespace GlobalTheory.GLm
 
 /- English proof (translation)
-Take `⟨V, hV⟩` from `h`. Conclude with `⟨FDRep.of (V.ρ.comp π), fun x => hV (π x)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isChar_comp_hom {G M : Type} [Group G] [Group M] (π : G →* M) (χ : M → ℂ)
     (h : IsChar χ) : IsChar (fun x => χ (π x)) := by
@@ -14,7 +14,7 @@ theorem isChar_comp_hom {G M : Type} [Group G] [Group M] (π : G →* M) (χ : M
   exact ⟨FDRep.of (V.ρ.comp π), fun x => hV (π x)⟩
 
 /- English proof (translation)
-Take `⟨V, hV⟩` from `hα`. Take `⟨W, hW⟩` from `hβ`. Use `⟨CategoryTheory.MonoidalCategoryStruct.tensorObj V W, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[FDRep.char_tensor, Pi.mul_apply, hV, hW]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isChar_mul_fun {G : Type} [Group G] (α β : G → ℂ) (hα : IsChar α) (hβ : IsChar β) :
     IsChar (fun x => α x * β x) := by
@@ -24,7 +24,7 @@ theorem isChar_mul_fun {G : Type} [Group G] (α β : G → ℂ) (hα : IsChar α
   rw [FDRep.char_tensor, Pi.mul_apply, hV, hW]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ _ _ π χ h => isChar_comp_hom π χ h, fun _ _ α β hα hβ => isChar_mul_fun α β hα hβ⟩`.
+Supply the required witnesses or components.
 -/
 theorem isChar_comp_hom_and_mul :
     (∀ (G M : Type) [Group G] [Group M] (π : G →* M) (χ : M → ℂ),

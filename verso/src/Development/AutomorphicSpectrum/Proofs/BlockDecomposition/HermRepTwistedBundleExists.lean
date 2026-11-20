@@ -20,7 +20,7 @@ namespace GlobalTheory.CompanionTheory.MPDict.TwLine
 variable {m : ℕ} {n : Fin (m + 1) → ℕ}
 
 /- English proof (translation)
-Rewrite using `[mem_ptsIn]`. Conclude with `⟨fun h k => mem_ptsIn.2 (Set.mem_iInter.1 h k), fun h => Set.mem_iInter.2 fun k => mem_ptsIn.1 (h k)⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mem_ptsIn_mchart {y : CxPts (mpStr ℤ m n) σ₀} {c : ∀ k, Bk n k} :
     y ∈ ptsIn (mpStr ℤ m n) σ₀ (mchart c) ↔ ∀ k, y ∈ ptsIn (mpStr ℤ m n) σ₀ (blockChart n k (c k)) := by
@@ -28,7 +28,7 @@ theorem mem_ptsIn_mchart {y : CxPts (mpStr ℤ m n) σ₀} {c : ∀ k, Bk n k} :
   exact ⟨fun h k => mem_ptsIn.2 (Set.mem_iInter.1 h k), fun h => Set.mem_iInter.2 fun k => mem_ptsIn.1 (h k)⟩
 
 /- English proof (translation)
-Rewrite using `[← appLE_ratioOn inf_le_left h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem val_blockUnit {k : Fin (m + 1)} (i j : Bk n k) {W : (MP ℤ m n).Opens}
     (h : W ≤ prB n k ⁻¹ᵁ (chart ℤ (n k) i ⊓ chart ℤ (n k) j)) :
@@ -38,7 +38,7 @@ theorem val_blockUnit {k : Fin (m + 1)} (i j : Bk n k) {W : (MP ℤ m n).Opens}
   rfl
 
 /- English proof (translation)
-Establish `hW : W ≤ blockChart n k i` using `h.trans ((prB n k).preimage_mono inf_le_left)`. Rewrite using `[val_blockUnit, ← resG_pullRatio (φ := prB n k) (W := blockChart n k i) (i := i) (hi := le_rfl) hW, CxPts.ev_res hW hy]`. Conclude with `(hz k i).2 j (ptsIn_mono hW hy)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ev_blockUnit {y : CxPts (mpStr ℤ m n) σ₀} {z : (Σ k, Bk n k) → ℂ} (hz : IsUnder y z)
     {k : Fin (m + 1)} (i j : Bk n k) {W : (MP ℤ m n).Opens}
@@ -51,9 +51,9 @@ theorem ev_blockUnit {y : CxPts (mpStr ℤ m n) σ₀} {z : (Σ k, Bk n k) → �
   exact (hz k i).2 j (ptsIn_mono hW hy)
 
 /- English proof (translation)
-Introduce `k i`. Use `⟨?_, fun j hi => ?_⟩` and prove the remaining obligations. Rewrite using `[(hz k i).1]`. Simplify using `[ha k]`. Rewrite using `[(hz k i).2 j hi]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(mul_div_mul_left _ _ (ha k)).symm`.
+A detailed English derivation is pending.
 -/
 theorem IsUnder.smul {y : CxPts (mpStr ℤ m n) σ₀} {z : (Σ k, Bk n k) → ℂ} (hz : IsUnder y z)
     {a : Fin (m + 1) → ℂ} (ha : ∀ k, a k ≠ 0) : IsUnder y fun p => a p.1 * z p := by
@@ -65,9 +65,9 @@ theorem IsUnder.smul {y : CxPts (mpStr ℤ m n) σ₀} {z : (Σ k, Bk n k) → �
     exact (mul_div_mul_left _ _ (ha k)).symm
 
 /- English proof (translation)
-Establish `hp : 0 < ‖g‖` using `norm_pos_iff.2 hg`. Establish `e : (φ - Real.log (‖g‖ ^ 2)) / 2 = φ / 2 - Real.log ‖g‖`. Rewrite using `[Real.log_pow]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e, Real.exp_sub, Real.exp_log hp, norm_mul]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem norm_mul_exp_trans {g v : ℂ} (hg : g ≠ 0) (φ : ℝ) :
     ‖g * v‖ * Real.exp ((φ - Real.log (‖g‖ ^ 2)) / 2) = ‖v‖ * Real.exp (φ / 2) := by
@@ -104,11 +104,11 @@ def MonoLaw : Prop := ∀ i c c',
 variable {M a u}
 
 /- English proof (translation)
-Establish `hW : y ∈ ptsIn (mpStr ℤ m n) σ₀ (M.B.U i ⊓ M.B.U j ⊓ mchart c)` using `mem_ptsIn_inf.2 ⟨mem_ptsIn_inf.2 ⟨hi, hj⟩, hc⟩`. Establish `e` using `congrArg (fun w : Γ(MP ℤ m n, M.B.U i ⊓ M.B.U j ⊓ mchart c)ˣ => CxPts.ev (mpStr ℤ m n) σ₀ _ (w : Γ(MP ℤ m n, M.B.U i ⊓ M.B.U j ⊓ mchart c)) y) (h i j c)`. Simplify using `only [Units.val_mul, CxPts.ev_mul] at e`. Establish `e1` using `CxPts.ev_res (p := mpStr ℤ m n) (σ := σ₀) (le_inf (inf_le_left.trans inf_le_right) inf_le_right : M.B.U i ⊓ M.B.U j ⊓ mchart c ≤ M.B.U j ⊓ mchart c) hW (u j c : Γ(MP ℤ m n, M.B.U j ⊓ mchart c))`. Establish `e2` using `CxPts.ev_res (p := mpStr ℤ m n) (σ := σ₀) (inf_le_left : M.B.U i ⊓ M.B.U j ⊓ mchart c ≤ M.B.U i ⊓ M.B.U j) hW (M.B.g i j : Γ(MP ℤ m n, M.B.U i ⊓ M.B.U j))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3` using `CxPts.ev_res (p := mpStr ℤ m n) (σ := σ₀) (le_inf (inf_le_left.trans inf_le_left) inf_le_right : M.B.U i ⊓ M.B.U j ⊓ mchart c ≤ M.B.U i ⊓ mchart c) hW (u i c : Γ(MP ℤ m n, M.B.U i ⊓ mchart c))`. Establish `e' : CxPts.ev (mpStr ℤ m n) σ₀ _ (u j c : Γ(MP ℤ m n, M.B.U j ⊓ mchart c)) y = GlobalTheory.CxPts.gv (mpStr ℤ m n) σ₀ M.B i j y * CxPts.ev (mpStr ℤ m n) σ₀ _ (u i c : Γ(MP ℤ m n, M.B.U i ⊓ mchart c)) y`. Rewrite using `[← e1, GlobalTheory.CxPts.gv, ← e2, ← e3]`. Conclude with `e`. Simplify using `only [hVal]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e', (M.φ σ₀).trans i j y hi hj, mul_assoc, mul_assoc, norm_mul_exp_trans (gv_ne_zero hi hj)]`.
+A detailed English derivation is pending.
 -/
 theorem hVal_frame (h : FrameLaw M u) {y : CxPts (mpStr ℤ m n) σ₀} (z : (Σ k, Bk n k) → ℂ) {i j : M.B.ι}
     {c : ∀ k, Bk n k} (hi : y ∈ ptsIn (mpStr ℤ m n) σ₀ (M.B.U i))
@@ -133,15 +133,15 @@ theorem hVal_frame (h : FrameLaw M u) {y : CxPts (mpStr ℤ m n) σ₀} (z : (Σ
   rw [e', (M.φ σ₀).trans i j y hi hj, mul_assoc, mul_assoc, norm_mul_exp_trans (gv_ne_zero hi hj)]
 
 /- English proof (translation)
-Establish `hW : y ∈ ptsIn (mpStr ℤ m n) σ₀ (M.B.U i ⊓ (mchart c ⊓ mchart c'))` using `mem_ptsIn_inf.2 ⟨hi, mem_ptsIn_inf.2 ⟨hc, hc'⟩⟩`. Establish `hz0 : ∀ k, z ⟨k, c k⟩ ≠ 0` using `fun k => (hz k (c k)).1.1 (mem_ptsIn_mchart.1 hc k)`. Establish `hz0' : ∀ k, z ⟨k, c' k⟩ ≠ 0` using `fun k => (hz k (c' k)).1.1 (mem_ptsIn_mchart.1 hc' k)`. Set `ρ : Γ(MP ℤ m n, M.B.U i ⊓ (mchart c ⊓ mchart c'))ˣ →* ℂˣ` to `Units.map (evHom hW : _ →+* ℂ)`. Establish `hρ : ∀ w, ((ρ w : ℂˣ) : ℂ) = CxPts.ev (mpStr ℤ m n) σ₀ _ (w : Γ(MP ℤ m n, M.B.U i ⊓ (mchart c ⊓ mchart c'))) y` using `fun w => (CxPts.ev_eq hW _).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e` using `congrArg (fun w => ((ρ w : ℂˣ) : ℂ)) (h i c c')`. Simplify using `only [map_mul, map_prod, map_zpow, Units.val_mul, Units.coe_prod, Units.val_zpow_eq_zpow_val, hρ] at e`. Establish `e1` using `CxPts.ev_res (p := mpStr ℤ m n) (σ := σ₀) (le_inf inf_le_left (inf_le_right.trans inf_le_left) : M.B.U i ⊓ (mchart c ⊓ mchart c') ≤ M.B.U i ⊓ mchart c) hW (u i c : Γ(MP ℤ m n, M.B.U i ⊓ mchart c))`. Establish `e2` using `CxPts.ev_res (p := mpStr ℤ m n) (σ := σ₀) (le_inf inf_le_left (inf_le_right.trans inf_le_right) : M.B.U i ⊓ (mchart c ⊓ mchart c') ≤ M.B.U i ⊓ mchart c') hW (u i c' : Γ(MP ℤ m n, M.B.U i ⊓ mchart c'))`. Establish `e' : CxPts.ev (mpStr ℤ m n) σ₀ _ (u i c : Γ(MP ℤ m n, M.B.U i ⊓ mchart c)) y = CxPts.ev (mpStr ℤ m n) σ₀ _ (u i c' : Γ(MP ℤ m n, M.B.U i ⊓ mchart c')) y * ∏ k, (z ⟨k, c' k⟩ / z ⟨k, c k⟩) ^ a k`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← e1, ← e2]`. Use `Eq.trans e ?_` and prove the remaining obligations. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun k _ => congrArg (· ^ a k) (ev_blockUnit hz (c k) (c' k) _ hW)`. Simplify using `only [hVal]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e', norm_mul, norm_prod]`. Establish `e3 : (∏ k, ‖z ⟨k, c k⟩‖ ^ a k) * ∏ k, ‖(z ⟨k, c' k⟩ / z ⟨k, c k⟩) ^ a k‖ = ∏ k, ‖z ⟨k, c' k⟩‖ ^ a k`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `norm_pos_iff.2 (hz0 k)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_zpow, norm_div, div_zpow, mul_div_cancel₀ _ (zpow_ne_zero _ this.ne')]`. Rewrite using `[← e3]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hVal_mono (h : MonoLaw M a u) {y : CxPts (mpStr ℤ m n) σ₀} {z : (Σ k, Bk n k) → ℂ} (hz : IsUnder y z)
     {i : M.B.ι} {c c' : ∀ k, Bk n k} (hi : y ∈ ptsIn (mpStr ℤ m n) σ₀ (M.B.U i))
@@ -178,7 +178,7 @@ theorem hVal_mono (h : MonoLaw M a u) {y : CxPts (mpStr ℤ m n) σ₀} {z : (Σ
   ring
 
 /- English proof (translation)
-Establish `a1` using `mem_ptsIn_inf.1 h`. Establish `a2` using `mem_ptsIn_inf.1 h'`. Rewrite using `[hVal_mono h₂ hz a1.1 a1.2 a2.2]`. Conclude with `(hVal_frame h₁ z a1.1 a2.1 a2.2).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hVal_eq (h₁ : FrameLaw M u) (h₂ : MonoLaw M a u) {y : CxPts (mpStr ℤ m n) σ₀} {z : (Σ k, Bk n k) → ℂ}
     (hz : IsUnder y z) {i j : M.B.ι} {c c' : ∀ k, Bk n k}
@@ -191,7 +191,7 @@ theorem hVal_eq (h₁ : FrameLaw M u) (h₂ : MonoLaw M a u) {y : CxPts (mpStr �
   exact (hVal_frame h₁ z a1.1 a2.1 a2.2).symm
 
 /- English proof (translation)
-Establish `hc` using `(mem_ptsIn_inf.1 h).2`. Use `mul_pos (mul_pos (Finset.prod_pos fun k _ => zpow_pos (norm_pos_iff.2 ?_) _) (norm_pos_iff.2 ?_)) (Real.exp_pos _)` and prove the remaining obligations. Conclude with `(hz k (c k)).1.1 (mem_ptsIn_mchart.1 hc k)`. Conclude with `ev_ne_zero h (u i c).isUnit`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem hVal_pos {y : CxPts (mpStr ℤ m n) σ₀} {z : (Σ k, Bk n k) → ℂ} (hz : IsUnder y z) {i : M.B.ι}
     {c : ∀ k, Bk n k} (h : y ∈ ptsIn (mpStr ℤ m n) σ₀ (M.B.U i ⊓ mchart c)) :
@@ -203,9 +203,9 @@ theorem hVal_pos {y : CxPts (mpStr ℤ m n) σ₀} {z : (Σ k, Bk n k) → ℂ} 
   · exact ev_ne_zero h (u i c).isUnit
 
 /- English proof (translation)
-Establish `e : (∏ k, ‖b k * z ⟨k, c k⟩‖ ^ a k) = (∏ k, ‖b k‖ ^ a k) * ∏ k, ‖z ⟨k, c k⟩‖ ^ a k`. Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun k _ => by rw [norm_mul, mul_zpow]`. Simplify using `only [hVal]`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem hVal_smul {y : CxPts (mpStr ℤ m n) σ₀} (z : (Σ k, Bk n k) → ℂ) (i : M.B.ι)
     (c : ∀ k, Bk n k) (b : Fin (m + 1) → ℂ) :
@@ -218,7 +218,7 @@ theorem hVal_smul {y : CxPts (mpStr ℤ m n) σ₀} (z : (Σ k, Bk n k) → ℂ)
   ring
 
 /- English proof (translation)
-Take `⟨y, hy, -⟩` from `Under.existsUnique_isUnder m n z hz`. Use `choose c hc using hz`. Conclude with `⟨y, pick M.isLB y, c, hy, mem_ptsIn_inf.2 ⟨mem_pick _ y, mem_ptsIn_mchart.2 fun k => (hy k (c k)).1.2 (hc k)⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_data (z : (Σ k, Bk n k) → ℂ) (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) :
     ∃ (y : CxPts (mpStr ℤ m n) σ₀) (i : M.B.ι) (c : ∀ k, Bk n k), IsUnder y z ∧
@@ -229,17 +229,15 @@ theorem exists_data (z : (Σ k, Bk n k) → ℂ) (hz : ∀ k, ∃ i, z ⟨k, i�
     mem_ptsIn_mchart.2 fun k => (hy k (c k)).1.2 (hc k)⟩⟩
 
 /- English proof (translation)
-Establish `key : ∀ z : (Σ k, Bk n k) → ℂ, (∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) → ∃ r : ℝ, 0 < r ∧ ∀ (y : CxPts (mpStr ℤ m n) σ₀) (i : M.B.ι) (c : ∀ k, Bk n k), IsUnder y z → y ∈ ptsIn (mpStr ℤ m n) σ₀ (M.B.U i ⊓ mchart c) → r = hVal M a u y z i c`. Introduce `z hz`. Take `⟨y, i, c, hy, hm⟩` from `exists_data (M := M) z hz`. Use `⟨hVal M a u y z i c, hVal_pos hy hm, fun y' j c' hy' hm' => ?_⟩` and prove the remaining obligations. Take `rfl : y' = y` from `(Under.existsUnique_isUnder m n z hz).unique hy' hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `hVal_eq h₁ h₂ hy hm hm'`. Set `H : ((Σ k, Bk n k) → ℂ) → ℝ` to `fun z => if hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0 then (key z hz).choose else 0`. Establish `Hpos : ∀ z, (∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) → 0 < H z` using `fun z hz => by`. Simplify using `only [H, dif_pos hz]`. Conclude with `(key z hz).choose_spec.1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `Hval : ∀ z (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) (y : CxPts (mpStr ℤ m n) σ₀) (i : M.B.ι) (c : ∀ k, Bk n k), IsUnder y z → y ∈ ptsIn (mpStr ℤ m n) σ₀ (M.B.U i ⊓ mchart c) → H z = hVal M a u y z i c` using `fun z hz y i c hy hm => by`. Simplify using `only [H, dif_pos hz]`. Conclude with `(key z hz).choose_spec.2 y i c hy hm`. Use `⟨⟨a, H, Hpos, fun b z hb => ?_⟩, ⟨u, h₁, h₂, fun i c y z hy hm => ?_⟩, rfl⟩` and prove the remaining obligations. Distinguish the cases in `hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hz' : ∀ k, ∃ i, (fun p : Σ k, Bk n k => b p.1 * z p) ⟨k, i⟩ ≠ 0` using `fun k => by`. Take `⟨i, hi⟩` from `hz k`. Conclude with `⟨i, mul_ne_zero (hb k) hi⟩`. Take `⟨y, i, c, hy, hm⟩` from `exists_data (M := M) z hz`. Rewrite using `[Hval z hz y i c hy hm, Hval _ hz' y i c (IsUnder.smul hy hb) hm, hVal_smul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hz' : ¬ ∀ k, ∃ i, (fun p : Σ k, Bk n k => b p.1 * z p) ⟨k, i⟩ ≠ 0` using `fun h => hz fun k => by`. Take `⟨i, hi⟩` from `h k`. Conclude with `⟨i, right_ne_zero_of_mul hi⟩`. Simplify using `only [H, dif_neg hz, dif_neg hz', mul_zero]`. Establish `hc` using `(mem_ptsIn_inf.1 hm).2`.
-
-Conclude with `Hval z (fun k => ⟨c k, (hy k (c k)).1.1 (mem_ptsIn_mchart.1 hc k)⟩) y i c hy hm`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_hermLine (h₁ : FrameLaw M u) (h₂ : MonoLaw M a u) :
     ∃ A : Geo.HermLine (Bk n), IsHermRep M A ∧ A.a = a := by
@@ -283,7 +281,7 @@ namespace GlobalTheory.CompanionTheory.MPDict.TwLine
 variable {m : ℕ} {n : Fin (m + 1) → ℕ}
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(X.presheaf.map (homOfLE h').op).hom ((X.presheaf.map (homOfLE h).op).hom x.val) = _`. Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem res_res' {X : Scheme.{0}} {U V W : X.Opens} (h : V ≤ U) (h' : W ≤ V) (h'' : W ≤ U) (x : Γ(X, U)ˣ) :
     Semi.res h' (Semi.res h x) = Semi.res h'' x := by
@@ -293,7 +291,7 @@ theorem res_res' {X : Scheme.{0}} {U V W : X.Opens} (h : V ≤ U) (h' : W ≤ V)
   rfl
 
 /- English proof (translation)
-The claim follows from `(map_mul (Semi.res h) _ _).trans (congrArg₂ (· * ·) (res_res' _ _ h₁ _) ((map_inv (Semi.res h) _).trans (congrArg (·⁻¹) (res_res' _ _ h₂ _))))`.
+A detailed English derivation is pending.
 -/
 theorem res_div_g {X : Scheme.{0}} (T L : LB X) (p q : T.ι × L.ι) {W : X.Opens}
     (h : W ≤ (T.U p.1 ⊓ L.U p.2) ⊓ (T.U q.1 ⊓ L.U q.2)) (h₁ : W ≤ T.U p.1 ⊓ T.U q.1) (h₂ : W ≤ L.U p.2 ⊓ L.U q.2) :
@@ -302,7 +300,7 @@ theorem res_div_g {X : Scheme.{0}} (T L : LB X) (p q : T.ι × L.ι) {W : X.Open
     ((map_inv (Semi.res h) _).trans (congrArg (·⁻¹) (res_res' _ _ h₂ _))))
 
 /- English proof (translation)
-Establish `e` using `congrArg (Semi.res (le_inf hp hq)) (hw p q)`. Conclude with `((res_res' _ _ hp _).symm.trans e).trans ((map_mul _ _ _).trans (congrArg₂ (· * ·) (res_div_g T L p q (le_inf hp hq) h₁ h₂) (res_res' _ _ hq _)))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem iso_law {X : Scheme.{0}} {L T : LB X} {w : LB.Iso L T} (hw : w.IsGen) (p q : T.ι × L.ι) {W : X.Opens}
     (hp : W ≤ T.U p.1 ⊓ L.U p.2) (hq : W ≤ T.U q.1 ⊓ L.U q.2) (h₁ : W ≤ T.U p.1 ⊓ T.U q.1)
@@ -313,7 +311,7 @@ theorem iso_law {X : Scheme.{0}} {L T : LB X} {w : LB.Iso L T} (hw : w.IsGen) (p
     (congrArg₂ (· * ·) (res_div_g T L p q (le_inf hp hq) h₁ h₂) (res_res' _ _ hq _)))
 
 /- English proof (translation)
-Establish `e` using `linComb_punit_g (O1 ℤ (n k)) (pr ℤ m n k) 1 j j'`. Rewrite `e` using `[zpow_one]`. Conclude with `(congrArg (Semi.res h) e).trans (res_res' _ _ h' _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem res_pull_g (k : Fin (m + 1)) (j j' : PUnit → Bk n k) {W : (MP ℤ m n).Opens}
     (h : W ≤ ((O1 ℤ (n k)).pull (pr ℤ m n k)).U j ⊓ ((O1 ℤ (n k)).pull (pr ℤ m n k)).U j')
@@ -327,22 +325,22 @@ def twIdx (b : Fin m) (t : ℤ) (c : ∀ k, Bk n k) : (twB m n b t).ι :=
   Prod.mk (fun _ => c b.succ) (fun _ => c 0)
 
 /- English proof (translation)
-Introduce `_ hx` and use `⟨Set.mem_iInter.2 fun _ => mchart_le c _ hx, Set.mem_iInter.2 fun _ => mchart_le c _ hx⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem mchart_le_U (b : Fin m) (t : ℤ) (c : ∀ k, Bk n k) : mchart c ≤ (twB m n b t).U (twIdx b t c) :=
   fun _ hx => ⟨Set.mem_iInter.2 fun _ => mchart_le c _ hx, Set.mem_iInter.2 fun _ => mchart_le c _ hx⟩
 
 /- English proof (translation)
-Introduce `_ hx` and use `⟨mchart_le c k (hW hx).1, mchart_le c' k (hW hx).2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem blk_le {c c' : ∀ k, Bk n k} {W : (MP ℤ m n).Opens} (hW : W ≤ mchart c ⊓ mchart c') (k : Fin (m + 1)) :
     W ≤ prB n k ⁻¹ᵁ (chart ℤ (n k) (c k) ⊓ chart ℤ (n k) (c' k)) :=
   fun _ hx => ⟨mchart_le c k (hW hx).1, mchart_le c' k (hW hx).2⟩
 
 /- English proof (translation)
-Establish `h₁ : W ≤ ((O1 ℤ (n b.succ)).pull (pr ℤ m n b.succ)).U (fun _ => c b.succ) ⊓ ((O1 ℤ (n b.succ)).pull (pr ℤ m n b.succ)).U (fun _ => c' b.succ)` using `le_inf (fun _ hx => h hx |>.1.1) (fun _ hx => h hx |>.2.1)`. Establish `h₂ : W ≤ ((O1 ℤ (n 0)).pull (pr ℤ m n 0)).U (fun _ => c 0) ⊓ ((O1 ℤ (n 0)).pull (pr ℤ m n 0)).U (fun _ => c' 0)` using `le_inf (fun _ hx => h hx |>.1.2) (fun _ hx => h hx |>.2.2)`. Establish `e₁` using `res_pull_g b.succ (fun _ => c b.succ) (fun _ => c' b.succ) h₁ (blk_le hW b.succ)`. Establish `e₂` using `res_pull_g 0 (fun _ => c 0) (fun _ => c' 0) h₂ (blk_le hW 0)`. Establish `e₃ : (Semi.res h₂ (((O1 ℤ (n 0)).pull (pr ℤ m n 0)).g (fun _ => c 0) (fun _ => c' 0)) ^ (-t))⁻¹ = blockUnit (c 0) (c' 0) (blk_le hW 0) ^ t`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[zpow_neg, inv_inv]`. Conclude with `congrArg (· ^ t) e₂`. Conclude with `(res_div_g _ _ (twIdx b t c) (twIdx b t c') h h₁ h₂).trans (congrArg₂ (· * ·) e₁ ((congrArg (·⁻¹) (map_zpow (Semi.res h₂) _ (-t))).trans e₃))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem res_twB_g (b : Fin m) (t : ℤ) (c c' : ∀ k, Bk n k) {W : (MP ℤ m n).Opens} (hW : W ≤ mchart c ⊓ mchart c')
     (h : W ≤ (twB m n b t).U (twIdx b t c) ⊓ (twB m n b t).U (twIdx b t c')) :
@@ -364,14 +362,14 @@ theorem res_twB_g (b : Fin m) (t : ℤ) (c c' : ∀ k, Bk n k) {W : (MP ℤ m n)
     ((congrArg (·⁻¹) (map_zpow (Semi.res h₂) _ (-t))).trans e₃))
 
 /- English proof (translation)
-Rewrite using `[blockUnit, ratioUnit_self, map_one, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem blockUnit_self {k : Fin (m + 1)} (i : Bk n k) {W : (MP ℤ m n).Opens}
     (h : W ≤ prB n k ⁻¹ᵁ (chart ℤ (n k) i ⊓ chart ℤ (n k) i)) : blockUnit i i h = 1 := by
   rw [blockUnit, ratioUnit_self, map_one, map_one]
 
 /- English proof (translation)
-Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, zpow_add, Finset.prod_mul_distrib]`. Use `congr 1`. Rewrite using `[Finset.prod_eq_single p (fun k _ hk => by simp [Pi.single_apply, hk]) (by simp)]`. Simplify using the standard rewrite rules. Rewrite using `[Finset.prod_eq_single q (fun k _ hk => by simp [Pi.single_apply, hk]) (by simp)]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -390,7 +388,7 @@ def uOf (w : LB.Iso M.B (twB m n b t)) (i : M.B.ι) (c : ∀ k, Bk n k) : Γ(MP 
   Semi.res (le_inf (inf_le_right.trans (mchart_le_U b t c)) inf_le_left) (w.s (twIdx b t c, i))
 
 /- English proof (translation)
-The claim follows from `res_res' _ _ h' _`.
+A detailed English derivation is pending.
 -/
 theorem res_uOf (w : LB.Iso M.B (twB m n b t)) (i : M.B.ι) (c : ∀ k, Bk n k) {W : (MP ℤ m n).Opens}
     (h : W ≤ M.B.U i ⊓ mchart c) (h' : W ≤ (twB m n b t).U (twIdx b t c) ⊓ M.B.U i) :
@@ -398,9 +396,9 @@ theorem res_uOf (w : LB.Iso M.B (twB m n b t)) (i : M.B.ι) (c : ∀ k, Bk n k) 
   res_res' _ _ h' _
 
 /- English proof (translation)
-Introduce `i j c`. Establish `hc : M.B.U i ⊓ M.B.U j ⊓ mchart c ≤ mchart c ⊓ mchart c` using `le_inf inf_le_right inf_le_right`. Establish `hU` using `(inf_le_right : M.B.U i ⊓ M.B.U j ⊓ mchart c ≤ mchart c).trans (mchart_le_U b t c)`. Establish `hi : M.B.U i ⊓ M.B.U j ⊓ mchart c ≤ (twB m n b t).U (twIdx b t c) ⊓ M.B.U i` using `le_inf hU (inf_le_left.trans inf_le_left)`. Establish `hj : M.B.U i ⊓ M.B.U j ⊓ mchart c ≤ (twB m n b t).U (twIdx b t c) ⊓ M.B.U j` using `le_inf hU (inf_le_left.trans inf_le_right)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `iso_law hw (twIdx b t c, i) (twIdx b t c, j) hi hj (le_inf hU hU) inf_le_left`. Rewrite `e` using `[res_twB_g b t c c hc, blockUnit_self, blockUnit_self, one_zpow, one_mul, one_mul]`. Rewrite using `[res_uOf w j c _ hj, res_uOf w i c _ hi]`. Conclude with `(eq_inv_mul_iff_mul_eq.1 e).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frameLaw_uOf {w : LB.Iso M.B (twB m n b t)} (hw : w.IsGen) : FrameLaw M (uOf w) := by
   intro i j c
@@ -416,11 +414,11 @@ theorem frameLaw_uOf {w : LB.Iso M.B (twB m n b t)} (hw : w.IsGen) : FrameLaw M 
   exact (eq_inv_mul_iff_mul_eq.1 e).symm
 
 /- English proof (translation)
-Introduce `i c c'`. Establish `hc : M.B.U i ⊓ (mchart c ⊓ mchart c') ≤ mchart c ⊓ mchart c'` using `inf_le_right`. Establish `hU` using `(inf_le_right.trans inf_le_left : M.B.U i ⊓ (mchart c ⊓ mchart c') ≤ mchart c).trans (mchart_le_U b t c)`. Establish `hU'` using `(inf_le_right.trans inf_le_right : M.B.U i ⊓ (mchart c ⊓ mchart c') ≤ mchart c').trans (mchart_le_U b t c')`. Establish `hs : Semi.res (le_inf inf_le_left inf_le_left : M.B.U i ⊓ (mchart c ⊓ mchart c') ≤ M.B.U i ⊓ M.B.U i) (M.B.g i i) = 1` using `Units.ext (LB.resG_g_self M.isLB i _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi : M.B.U i ⊓ (mchart c ⊓ mchart c') ≤ (twB m n b t).U (twIdx b t c) ⊓ M.B.U i` using `le_inf hU inf_le_left`. Establish `hi' : M.B.U i ⊓ (mchart c ⊓ mchart c') ≤ (twB m n b t).U (twIdx b t c') ⊓ M.B.U i` using `le_inf hU' inf_le_left`. Establish `e` using `iso_law hw (twIdx b t c, i) (twIdx b t c', i) hi hi' (le_inf hU hU') (le_inf inf_le_left inf_le_left)`. Rewrite `e` using `[res_twB_g b t c c' hc]`. Express the relevant statement in the definitionally equal form `_ = _ * (Semi.res _ (M.B.g i i))⁻¹ * _ at e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `e` using `[hs, inv_one, mul_one]`. Rewrite using `[res_uOf w i c _ hi, res_uOf w i c' _ hi', prod_zpow_single (fun k => blockUnit (c k) (c' k) (blk_le hc k)) b.succ 0 t]`. Conclude with `e.trans (mul_comm _ _)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem monoLaw_uOf {w : LB.Iso M.B (twB m n b t)} (hw : w.IsGen) :
     MonoLaw M (Pi.single b.succ 1 + t • Pi.single 0 1) (uOf w) := by
@@ -441,7 +439,7 @@ theorem monoLaw_uOf {w : LB.Iso M.B (twB m n b t)} (hw : w.IsGen) :
   exact e.trans (mul_comm _ _)
 
 /- English proof (translation)
-Introduce and unpack `m n M b t ⟨⟨w, hw⟩⟩`. Conclude with `exists_hermLine (frameLaw_uOf hw) (monoLaw_uOf hw)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem exists_hermLine_of_twB : ∀ (m : ℕ) (n : Fin (m + 1) → ℕ) (M : HermLB (mpStr ℤ m n)) (c : Fin m) (t : ℤ),
     Nonempty (LBIso M.B (twB m n c t)) →

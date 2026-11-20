@@ -23,9 +23,9 @@ open GlobalTheory.RealGeo GlobalTheory.OneMapAll GlobalTheory.AdTh
 namespace GlobalTheory.Mem.R3.Rw.GeoTies
 
 /- English proof (translation)
-Establish `hy : y ∈ Submodule.span ℂ S` using `hS ▸ Submodule.mem_top`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy => exact h y hy`. Consider the case `zero => simp`. Consider the case `add y y' _ _ h h'`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Simplify using `only [map_add, MultilinearMap.add_apply, Pi.add_apply]`. Take the linear combination `h + h'`. Consider the case `smul a y _ h`. Simplify using `only [map_smul, MultilinearMap.smul_apply, Pi.smul_apply, smul_eq_mul]`. Take the linear combination `a * h`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Treat this case separately. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem eq_of_span {H ι X : Type} [AddCommGroup H] [Module ℂ H] {M : ι → Type} [∀ t, AddCommGroup (M t)] [∀ t, Module ℂ (M t)]
     (θ : H →ₗ[ℂ] MultilinearMap ℂ M (X → ℂ)) (v : ∀ t, M t) (a b : X) (c : ℂ) {S : Set H} (hS : Submodule.span ℂ S = ⊤)
@@ -42,7 +42,7 @@ theorem eq_of_span {H ι X : Type} [AddCommGroup H] [Module ℂ H] {M : ι → T
     linear_combination a * h
 
 /- English proof (translation)
-Use `congrArg (Submodule.map (e : H →ₗ[ℂ] H')) hS` as an intermediate fact. Rewrite `this` using `[Submodule.map_span, Submodule.map_top, LinearEquiv.range]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem span_image {H H' : Type} [AddCommGroup H] [Module ℂ H] [AddCommGroup H'] [Module ℂ H'] (e : H ≃ₗ[ℂ] H') {S : Set H}
     (hS : Submodule.span ℂ S = ⊤) : Submodule.span ℂ (e '' S) = ⊤ := by
@@ -60,9 +60,9 @@ def adOver (O : OMDat C R i Tp tup) (cc : (C.U ((i : ℕ) + 1) O.s0).Comp → �
   cc (O.dict g).1 * (O.mu g * rdU (unfBC O.hle (C.U ((i : ℕ) + 1)) (inC O.c')) f (O.dict g).1 (O.dict g).2)
 
 /- English proof (translation)
-Establish `h2` using `GlobalTheory.PhaseRational.rdU_of_isBC O.hle (C.U ((i : ℕ) + 1)) (inC O.c') h (O.dict g).1 (O.dict g).2`. Use `(congrArg (fun w => cc (O.dict g).1 * (O.mu g * w)) h2).trans ?_` and prove the remaining obligations. Simplify using `only [Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `show cc _ * (O.mu _ * ((as k : ℂ) * _)) = (as k : ℂ) * (cc _ * O.mu _ * _)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem adOver_of_isBC (O : OMDat C R i Tp tup) (cc : (C.U ((i : ℕ) + 1) O.s0).Comp → ℂ) {m : ℕ}
     {f : Rul (C.Q.Xo ((i : ℕ) + 1)) O.c'} {as : Fin m → O.c'.F} {fs : Fin m → Rul (C.Q.Xo ((i : ℕ) + 1)) C.Q.c}
@@ -75,7 +75,7 @@ theorem adOver_of_isBC (O : OMDat C R i Tp tup) (cc : (C.U ((i : ℕ) + 1) O.s0)
   ring
 
 /- English proof (translation)
-Take `⟨m, as, fs, hfs, hBC⟩` from `(GlobalTheory.FieldBC.secBC_and_cuspBC _ _ _ _ _ _ _ O.hle).2 _ (C.U ((i : ℕ) + 1)) _ _ f hf`. Establish `h1` using `(GlobalTheory.FieldBC.actLev_and_actBC _ _ _ _ _ _ _ O.hle _ _ hact).2 _ _ z m as fs f ((mem_cusp _ _ _ _ _ _).1 hf).1 (fun l => ((mem_cusp _ _ _ _ _ _).1 (hfs l)).1) hBC`. Rewrite using `[adOver_of_isBC O cc h1, adOver_of_isBC O cc hBC, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[(hE z k hk (fs l) (by rw [hn]; exact hfs l)).2 g]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -108,19 +108,19 @@ def LiftIsSum (O : OMDat T.toCore R i Unit (fun _ => A.μ0)) (κ : WeightFamilie
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Establish `hio : IoExt R` using `GlobalTheory.IoExtremal.ioExt D G Pl0 T0 A T.Q.c.F R hR.lev hR.fam hR.models hR.thP`. Establish `hn` using `PhaseOne.wt_n hT i`. Take `⟨cc₀, -, u, -, -, hser, -⟩` from `exists_ccIs_equivAt_serOf_tie D G Pl0 T0 A T R κ v₀ hR hT hio i _ _ O hP`. Generalize the expression as in `u • cc₀ = cc at hser`. Establish `hex` using `GlobalTheory.ClassSumRule.exists_cusp_isThClsD_ofPre GlobalTheory.ChartFree.chartIndep D G Pl0 T0 A T R κ v₀ hR hT i _ _ O hP ()`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Take `⟨k, hk, -⟩` from `hP.lift.lev z`. Take `⟨s, hs⟩ : ∃ s : ℂ, s = (lieFac (T.Q.Dw ((i : ℕ) + 1)) (xiR D) (wtA (κ i)) : ℝ)` from `⟨_, rfl⟩`. Take `⟨χ, hχ⟩ : ∃ χ : ℂ, χ = ∏ PP : R.Pg, ((R.chi ((i : ℕ) + 1) PP.1 (Matrix.GeneralLinearGroup.det (R.eG z PP)) : ℂˣ) : ℂ)` from `⟨_, rfl⟩`. Establish `hcc : ∀ c, cc c ≠ 0` using `fun c => norm_ne_zero_iff.1 ((hser.1 c).trans_ne one_ne_zero)`. Establish `key : ∀ h J x f y, RepsR R i A.μ0 h (O.bad ()) J (O.Lh ()) (O.gam ()) (O.vol ()) → Place R i A.μ0 h O.c0' y x → f ∈ sec (T.Q.Xo ((i : ℕ) + 1)) O.c' (wtA (κ i)) (Vc D i).rank → IsSum O () x f → ∀ g, ζ * s * adOver O cE (actLev O.c' O.lev2 z f) g = ζ * χ * (cE (O.dict (g * k)).1 / …`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h J x f y hr hy hf hx g`. Take `⟨f₁, hf₁, hx₁⟩` from `hex x`. Establish `e : f = f₁` using `isSum_unique hP () hf ((mem_cusp _ _ _ _ _ _).1 hf₁).1 hx hx₁`. Establish `h1` using `adOver_act O hn hP.act.1 hE hk (e ▸ hf₁ : f ∈ cuspOver O (κ i)) g`. Establish `h2` using `(one_mul _).symm.trans (hser.2.2 () h J hr y x hy f hf hx (g * k))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h1, h2, ← hχ, ← hs, adOver]`. Use `hcc (O.dict (g * k)).1` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish `all : ∀ y (q : AutQ (Wc D i)), R.thF i A.μ0 y (v₀ i (sg0 D A)) q.out = ζ * χ * (cE (O.dict (q.out * k)).1 / cc (O.dict (q.out * k)).1) * R.thF i A.μ0 y (v₀ i (sg0 D A)) (q.out * k)`. Introduce `y q`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `eq_of_span (R.thF i A.μ0) _ _ _ _ hS (fun y hy => ?_) y` and prove the remaining obligations. Take `⟨h, J, x, f, h1, h2, h3, h4, h5⟩` from `hy`. Rewrite using `[h5 q, ← hs]`. Conclude with `key h J x f y h1 h2 h3 h4 _`. Establish `hid : GlobalTheory.PhaseRational.IdentityAt O (κ i) cE 1`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨h, J, hr, -, hA, hPl⟩` from `(hP.tuple ()).reps`. Use `⟨hU, norm_one, z, hz, fun t => ⟨ζ, hζL, hζ, fun x hx => ⟨hex x, fun f hf hc q => ?_⟩⟩⟩` and prove the remaining obligations. Take `⟨x₀, hx₀⟩` from `(hPl x).1 hx`. Establish `h1` using `(all _ q).trans (key h J x f _ hr hx₀ hf hc q.out).symm`. Rewrite using `[one_mul, hA _ x hx₀]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `h1.trans ?_` and prove the remaining obligations. Rewrite using `[hs, mul_right_comm ζ (cE _), mul_assoc (ζ * _) (cE _)]`. Both sides reduce to the same expression. Conclude with `⟨hE, ⟨hF.ge, (GlobalTheory.FieldBC.secBC_and_cuspBC _ _ _ _ _ _ _ O.hle).2 _ _, (GlobalTheory.FieldBC.actLev_and_actBC _ _ _ _ _ _ _ O.hle _ _ hP.act.1).2, hid⟩, GlobalTheory.PhaseRational.phRat_of_identity O (κ i) _ cE 1 () rfl hF hP hT.laws.toLawsM (hT.kap i (D.eTau.symm 1)).2. …`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem oneMapOf_of_span (hR : PreChar R) (hchi : R.grp_chiW) (hT : TieIn T R κ v₀) (O : OMDat T.toCore R i Unit (fun _ => A.μ0))
     (hF : O.c'.F = D.what₂.embLL.toRatAlgHom.fieldRange)
@@ -175,11 +175,11 @@ theorem oneMapOf_of_span (hR : PreChar R) (hchi : R.grp_chiW) (hT : TieIn T R κ
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Take `⟨-, ⟨-, -, -, -, -, z, hz, h1⟩, -⟩` from `h`. Take `⟨ζ, hζL, hζ, h1⟩` from `h1 ()`. Take `⟨h, J, hr, hPx, hA, hPl⟩` from `(hP.tuple ()).reps`. Use `⟨z, hz, ζ, hζL, hζ, h, J, hr, fun y₀ => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `hPx y₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨f, hf, hc⟩, h2⟩` from `h1 x ((hPl x).2 ⟨y₀, hx⟩)`. Establish `hf'` using `((mem_cusp _ _ _ _ _ _).1 hf).1`. Use `⟨x, f, hx, hf', hc, fun q => ?_⟩` and prove the remaining obligations. Establish `h3` using `h2 f hf' hc q`. Rewrite `h3` using `[one_mul, hA _ x hx, mul_right_comm ζ (cE _), mul_assoc (ζ * _) (cE _)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h3`.
+A detailed English derivation is pending.
 -/
 theorem lift_of_oneMapOf (O : OMDat T.toCore R i Unit (fun _ => A.μ0)) {κ : WeightFamilies.Wt D ((i : ℕ) + 1)} {v₀ : (R.MW i (sg0 D A)).Vec}
     {ι x₀} (hP : O.Pins κ v₀ ι x₀) {cE : (T.U ((i : ℕ) + 1) O.s0).Comp → ℂ} (h : O.OneMapOf κ v₀ cE 1) :
@@ -201,13 +201,13 @@ theorem lift_of_oneMapOf (O : OMDat T.toCore R i Unit (fun _ => A.μ0)) {κ : We
   exact h3
 
 /- English proof (translation)
-Consider the cases of `h1`. Consider the cases of `h2`. Consider the cases of `h3`. Consider the cases of `hH`. Consider the cases of `M`.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `M'`. Take `⟨a1, a2, a3, a4, a5, a6, a7⟩` from `hM`. Simplify using `only at a1 a2 a3 a4 a5 a6 a7`. Consider the cases of `a1`. Consider the cases of `a2`.
+Split into cases according to the possible forms of the given data. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `a3`. Consider the cases of `a4`. Consider the cases of `a5`. Consider the cases of `a6`. Consider the cases of `a7`.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data.
 
-Establish `e1 : θ' = θ` using `eq_of_heq hθ`. Establish `e2 : v' = v` using `eq_of_heq hv`. Conclude with `⟨LinearEquiv.refl _ _, fun y => ⟨HEq.rfl, by rw [e1, e2]; rfl⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_equiv_lift {V : HSp D} {S S' : D.what₂.Tau → SPar} {M : DSModel V S} {M' : DSModel V S'} (hM : ModelSame M M')
     {Γ W W' : Type} {nW : NormedAddCommGroup W} {nW' : NormedAddCommGroup W'} {iW : InnerProductSpace ℂ W}
@@ -224,9 +224,9 @@ theorem exists_equiv_lift {V : HSp D} {S S' : D.what₂.Tau → SPar} {M : DSMod
   exact ⟨LinearEquiv.refl _ _, fun y => ⟨HEq.rfl, by rw [e1, e2]; rfl⟩⟩
 
 /- English proof (translation)
-Substitute `hlev` using the available equality. Take `⟨m, as, fs, hfs, h⟩` from `(GlobalTheory.FieldBC.secBC_and_cuspBC _ _ _ _ _ _ _ O.hle).1 a n f hf`. Establish `h1` using `(GlobalTheory.FieldBC.actLev_and_actBC _ _ _ _ _ _ _ O.hle _ _ hact).2 a n z m as fs f hf hfs h`. Establish `h2` using `(GlobalTheory.FieldBC.actLev_and_actBC _ _ _ _ _ _ _ h₃ _ _ hact).2 a n z m _ fs _ (GlobalTheory.FieldBCModel.rulBC_mem_sec hle hf) hfs (isBC_rulBC_trans O.hle hle h₃ hf h)`. Establish `e1` using `GlobalTheory.PhaseRational.rdU_of_isBC O.hle (C.U ((i : ℕ) + 1)) (inC O.c') h1 (O.dict g).1 (O.dict g).2`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `GlobalTheory.PhaseRational.rdU_of_isBC h₃ (C.U ((i : ℕ) + 1)) (inC c) h2 (O.dict g).1 (O.dict g).2`. Conclude with `congrArg (fun w => cc (O.dict g).1 * (O.mu g * w)) (e2.trans e1.symm)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem adOver_rulBC {C : Formalism.L2.Pj.Core D} [Algebra C.Q.c.F D.what₂.LL] {R : RealDat D A C.Q.c.F} {i : Fin D.R.m} {Tp : Type}
     {tup : Tp → T0} (O : OMDat C R i Tp tup) (hact : ActLev (Xo := C.Q.Xo ((i : ℕ) + 1)) C.Q.c O.lev2)

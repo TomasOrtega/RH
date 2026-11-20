@@ -20,13 +20,13 @@ def convRate (D : ℕ) (C t : ℝ) : ℝ :=
   C * (Real.log (ell t) / ell t + Real.log (ell t) ^ (D + 1) / ell t)
 
 /- English proof (translation)
-The claim follows from `Real.tendsto_log_atTop.comp tendsto_inv_nhdsGT_zero`.
+A detailed English derivation is pending.
 -/
 theorem tendsto_ell : Tendsto ell (𝓝[>] 0) atTop :=
   Real.tendsto_log_atTop.comp tendsto_inv_nhdsGT_zero
 
 /- English proof (translation)
-Establish `h1` using `(Real.tendsto_pow_log_div_mul_add_atTop 1 0 1 one_ne_zero).comp tendsto_ell`. Establish `h2` using `(Real.tendsto_pow_log_div_mul_add_atTop 1 0 (D + 1) one_ne_zero).comp tendsto_ell`. Establish `h` using `(h1.add h2).const_mul C`. Use `show Tendsto (fun t => C * (Real.log (ell t) / ell t + Real.log (ell t) ^ (D + 1) / ell t)) _ _`. Simplify `h` using `[Function.comp_def]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem tendsto_convRate (D : ℕ) (C : ℝ) : Tendsto (convRate D C) (𝓝[>] 0) (𝓝 0) := by
   have h1 := (Real.tendsto_pow_log_div_mul_add_atTop 1 0 1 one_ne_zero).comp tendsto_ell
@@ -42,13 +42,13 @@ def ConvergenceRate.Statement : Prop :=
       ∀ t, 0 < t → ℓ₀ ≤ ell t → |F t - L| ≤ convRate D C t
 
 /- English proof (translation)
-Introduce `D F C ℓ₀ hF`. Establish `hev : ∀ᶠ t in 𝓝[>] (0 : ℝ), ℓ₀ ≤ ell t` using `tendsto_ell.eventually_ge_atTop ℓ₀`. Establish `hc : Cauchy (map F (𝓝[>] (0 : ℝ)))`. Rewrite using `[Metric.cauchy_iff]`. Use `⟨inferInstance, fun ε hε => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hr : ∀ᶠ t in 𝓝[>] (0 : ℝ), convRate D C t < ε` using `(tendsto_convRate D C).eventually (gt_mem_nhds hε)`. Take `⟨δ, hδ, hδs⟩` from `(nhdsGT_basis (0 : ℝ)).eventually_iff.1 (hev.and hr)`. Use `⟨F '' Ioo 0 δ, mem_map.2 (mem_of_superset (Ioo_mem_nhdsGT hδ) (subset_preimage_image _ _)), ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨t, ht, rfl⟩ _ ⟨t', ht', rfl⟩`. Rewrite using `[Real.dist_eq]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Break down `le_total t' t with h | h` into its components or cases. Conclude with `(hF t t' ht'.1 h (hδs ht).1).trans_lt (hδs ht).2`. Rewrite using `[abs_sub_comm]`. Conclude with `(hF t' t ht.1 h (hδs ht').1).trans_lt (hδs ht').2`. Take `⟨L, hL⟩` from `cauchy_map_iff_exists_tendsto.1 hc`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨L, hL, fun t ht hℓ => ?_⟩` and prove the remaining obligations. Establish `hlim : Tendsto (fun t' => |F t - F t'|) (𝓝[>] 0) (𝓝 |F t - L|)` using `(continuous_abs.tendsto _).comp (tendsto_const_nhds.sub hL)`. Use `le_of_tendsto hlim ?_` and prove the remaining obligations. Use `filter_upwards [Ioo_mem_nhdsGT ht] with t' ht'`. Conclude with `hF t t' ht'.1 ht'.2.le hℓ`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ConvergenceRate.proof : ConvergenceRate.Statement := by
   intro D F C ℓ₀ hF
@@ -86,7 +86,7 @@ def tvMeasure (A : FinHolAtlas D X) (Φ : Fin D → LocPot X) : Measure X :=
 
 omit [CompactSpace X] [T2Space X] [MeasurableSpace X] [BorelSpace X] in
 /- English proof (translation)
-Establish `h` using `(P.smooth j j).continuousOn`. Rewrite `h` using `[Set.preimage_univ, Set.inter_univ]`. Conclude with `continuousOn_const.mul (h.mul (locDensCont A Φ hΦ j))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chart_weight_continuousOn (A : FinHolAtlas D X) (P : ChartPartition A)
     (Φ : Fin D → LocPot X) (hΦ : ∀ i, IsPotential A (Φ i)) (s : ℝ) (j : Fin A.n) :
@@ -99,11 +99,11 @@ theorem chart_weight_continuousOn (A : FinHolAtlas D X) (P : ChartPartition A)
 omit [CompactSpace X] [T2Space X] in
 
 /- English proof (translation)
-Establish `hT : MeasurableSet (A.chart j).target` using `(A.chart j).open_target.measurableSet`. Establish `hwc` using `chart_weight_continuousOn A P Φ hΦ s j`. Establish `hsymm : AEMeasurable (A.chart j).symm (volume.restrict (A.chart j).target)` using `(A.chart j).continuousOn_symm.aemeasurable hT`. Establish `hd : AEMeasurable (fun y => ENNReal.ofReal (s * (P.χ j ((A.chart j).symm y) * locDens A Φ j y))) (volume.restrict (A.chart j).target)` using `ENNReal.measurable_ofReal.comp_aemeasurable (hwc.aemeasurable hT)`. Establish `hlt : ∀ᵐ y ∂(volume.restrict (A.chart j).target), ENNReal.ofReal (s * (P.χ j ((A.chart j).symm y) * locDens A Φ j y)) < ⊤` using `ae_of_all _ fun _ => ENNReal.ofReal_lt_top`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsymm' : AEMeasurable (A.chart j).symm ((volume.restrict (A.chart j).target).withDensity fun y => ENNReal.ofReal (s * (P.χ j ((A.chart j).symm y) * locDens A Φ j y)))` using `hsymm.mono_ac (withDensity_absolutelyContinuous _ _)`. Establish `hfun : (fun y => (ENNReal.ofReal (s * (P.χ j ((A.chart j).symm y) * locDens A Φ j y))).toReal • (g ∘ (A.chart j).symm) y) = fun y => g ((A.chart j).symm y) * max (s * (P.χ j ((A.chart j).symm y) * locDens A Φ j y)) 0`. Use function extensionality and compare the values at `y`. Rewrite using `[ENNReal.toReal_ofReal', smul_eq_mul, Function.comp_apply, mul_comm]`. Unfold `chartPartMeasure at hi`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite `hi` using `[integrable_map_measure hg.aestronglyMeasurable hsymm', integrable_withDensity_iff_integrable_smul₀' hd hlt, hfun]`. Conclude with `hi`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrableOn_chart_of_part (A : FinHolAtlas D X) (P : ChartPartition A)
     (Φ : Fin D → LocPot X) (hΦ : ∀ i, IsPotential A (Φ i)) (s : ℝ) (j : Fin A.n) (g : X → ℝ)
@@ -134,9 +134,9 @@ theorem integrableOn_chart_of_part (A : FinHolAtlas D X) (P : ChartPartition A)
   exact hi
 
 /- English proof (translation)
-Use `⟨?_⟩` and prove the remaining obligations. Rewrite using `[tvMeasure, Measure.coe_finsetSum, Finset.sum_apply]`. Use `ENNReal.sum_lt_top.2 fun j _ => ?_` and prove the remaining obligations. Use `isFiniteMeasure_chartPartMeasure A (existsPartition A).some Φ hΦ 1 j` as an intermediate fact. Use `isFiniteMeasure_chartPartMeasure A (existsPartition A).some Φ hΦ (-1) j` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Measure.add_apply]`. Conclude with `ENNReal.add_lt_top.2 ⟨measure_lt_top _ _, measure_lt_top _ _⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFiniteMeasure_tvMeasure (A : FinHolAtlas D X) (Φ : Fin D → LocPot X)
     (hΦ : ∀ i, IsPotential A (Φ i)) : IsFiniteMeasure (tvMeasure A Φ) := by
@@ -149,13 +149,13 @@ theorem isFiniteMeasure_tvMeasure (A : FinHolAtlas D X) (Φ : Fin D → LocPot X
   exact ENNReal.add_lt_top.2 ⟨measure_lt_top _ _, measure_lt_top _ _⟩
 
 /- English proof (translation)
-Establish `h1` using `fun j => integral_chartPartMeasure A (existsPartition A).some Φ hΦ 1 j f hf hfi`. Establish `h2` using `fun j => integral_chartPartMeasure A (existsPartition A).some Φ hΦ (-1) j f hf hfi`. Establish `hI : ∀ j, Integrable f (chartPartMeasure A (existsPartition A).some Φ 1 j + chartPartMeasure A (existsPartition A).some Φ (-1) j)` using `fun j => (h1 j).1.add_measure (h2 j).1`. Establish `hm : mInt A Φ f = ∑ j, (∫ x, f x ∂chartPartMeasure A (existsPartition A).some Φ 1 j - ∫ x, f x ∂chartPartMeasure A (existsPartition A).some Φ (-1) j)`. Rewrite using `[mInt, dif_pos (existsPartition A)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `integralWith`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[(h1 j).2, (h2 j).2, ← integral_sub (integrableOn_chart_of_part A _ Φ hΦ 1 j f hf (h1 j).1) (integrableOn_chart_of_part A _ Φ hΦ (-1) j f hf (h2 j).1)]`. Use `integral_congr_ae (ae_of_all _ fun y => ?_)` and prove the remaining obligations. Simplify using `only`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions.
 
-Rewrite using `[one_mul, neg_one_mul, ← mul_sub, max_zero_sub_max_neg_zero_eq_self]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨integrable_finsetSum_measure.2 fun j _ => hI j, ?_⟩` and prove the remaining obligations. Rewrite using `[hm, tvMeasure, integral_finsetSum_measure fun j _ => (hI j).abs]`. Use `(Finset.abs_sum_le_sum_abs _ _).trans (Finset.sum_le_sum fun j _ => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[integral_add_measure (h1 j).1.abs (h2 j).1.abs]`. Conclude with `(abs_sub _ _).trans (add_le_add abs_integral_le_integral_abs abs_integral_le_integral_abs)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem abs_mInt_le (A : FinHolAtlas D X) (Φ : Fin D → LocPot X) (hΦ : ∀ i, IsPotential A (Φ i))
     (f : X → ℝ) (hf : Measurable f) (hfi : MIntegrable A Φ f) :
@@ -205,17 +205,15 @@ def ConvergenceSigned.Statement : Prop :=
       |mInt A Φ f| ≤ a * M + K * (CE * Real.log ℓ ^ (D + 1) / ℓ)
 
 /- English proof (translation)
-Introduce `D X _ _ _ _ _ A Φ hΦ Yo r M CE hB f hf hfi a K ℓ ha hK hℓ hnear hfar`. Use `isFiniteMeasure_tvMeasure A Φ hΦ` as an intermediate fact. Take `⟨hfI, habs⟩` from `abs_mInt_le A Φ hΦ f hf hfi`. Use `set ind := (tail Yo r ℓ).indicator fun x => Real.log (r x) with hind`. Establish `hindI : Integrable ind (tvMeasure A Φ)` using `hB.tailInt ℓ hℓ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (1 : ℝ) ≤ Real.exp 1` using `Real.one_le_exp zero_le_one`. Establish `hind0 : ∀ x, 0 ≤ ind x` using `fun x => Set.indicator_nonneg (fun y hy => Real.log_nonneg (by linarith [hy.2])) x`. Establish `hae : ∀ᵐ x ∂tvMeasure A Φ, x ∈ Yo` using `mem_ae_iff.2 hB.null`. Establish `hpt : ∀ᵐ x ∂tvMeasure A Φ, |f x| ≤ a + K * ind x` using `by filter_upwards [hae] with x hx`. Distinguish the cases in `hr : r x ≤ ℓ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Use `hnear x hx hr` as an intermediate fact. Use `mul_nonneg hK (hind0 x)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `replace hr := not_le.1 hr`. Establish `hxt : x ∈ tail Yo r ℓ` using `⟨hx, hr.le⟩`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hind, Set.indicator_of_mem hxt]`. Use `hfar x hx hr` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hint : ∫ x, |f x| ∂tvMeasure A Φ ≤ ∫ x, (a + K * ind x) ∂tvMeasure A Φ` using `integral_mono_ae hfI.abs ((integrable_const a).add (hindI.const_mul K)) hpt`. Rewrite `hint` using `[integral_add (integrable_const a) (hindI.const_mul K), integral_const, integral_const_mul, smul_eq_mul]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmass : (tvMeasure A Φ).real univ ≤ M`. Rewrite using `[Measure.real, ← measure_congr (ae_eq_univ.2 hB.null)]`. Conclude with `hB.mass`. Establish `e1 : (tvMeasure A Φ).real univ * a ≤ M * a` using `mul_le_mul_of_nonneg_right hmass ha`. Establish `e2 : K * ∫ x, ind x ∂tvMeasure A Φ ≤ K * (CE * Real.log ℓ ^ (D + 1) / ℓ)` using `mul_le_mul_of_nonneg_left (hB.tailLog ℓ hℓ) hK`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem ConvergenceSigned.proof : ConvergenceSigned.Statement := by
   intro D X _ _ _ _ _ A Φ hΦ Yo r M CE hB f hf hfi a K ℓ ha hK hℓ hnear hfar
@@ -259,7 +257,7 @@ open ReciprocityTheory.AnForm.M (p1 fsPot projLine_isSmoothPotential)
 attribute [local instance] projectiveLineBorel
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem projectiveLine_borelSpace : BorelSpace (OnePoint ℂ) := ⟨rfl⟩
 

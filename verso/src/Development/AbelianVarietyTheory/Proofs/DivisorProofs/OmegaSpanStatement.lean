@@ -25,23 +25,23 @@ def valH {k : Type} [Field k] {w : Sp k ⟶ X} {U : X.Opens} (h : ⊤ ≤ w ⁻�
   (Scheme.ΓSpecIso (CommRingCat.of k)).hom.hom.comp (w.appLE U ⊤ h).hom
 
 /- English proof (translation)
-The claim follows from `dif_pos h`.
+A detailed English derivation is pending.
 -/
 theorem valF_eq {k : Type} [Field k] {w : Sp k ⟶ X} {U : X.Opens} (h : ⊤ ≤ w ⁻¹ᵁ U) (a : Γ(X, U)) :
     valF w U a = valH h a := dif_pos h
 
 /- English proof (translation)
-The claim follows from `(valF_eq h _).symm.trans (valF_restrict e h a)`.
+A detailed English derivation is pending.
 -/
 theorem valH_res {k : Type} [Field k] {w : Sp k ⟶ X} {U U' : X.Opens} (e : U' ≤ U) (h : ⊤ ≤ w ⁻¹ᵁ U') (a : Γ(X, U)) :
     valH h (resG X e a) = valF w U a := (valF_eq h _).symm.trans (valF_restrict e h a)
 
 /- English proof (translation)
-Take `⟨f, hf, hp⟩` from `hη`. Use `choose M hM using fun i => (Submodule.mem_span_range_iff_exists_fun _).1 (hp i)`. Establish `h1 (i : Fin r) : (p : Γ(X, V ⊓ V')) • resM F (inf_le_left : V ⊓ V' ≤ V) (f i) = ∑ l, resG X (inf_le_left : V ⊓ V' ≤ V) (M i l) • resM F (inf_le_left : V ⊓ V' ≤ V) (η l)`. Use `congrArg (resM F (inf_le_left : V ⊓ V' ≤ V)) (hM i)` as an intermediate fact. Rewrite `this` using `[map_sum, resM_smul, map_natCast]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← this]`. Simplify using `only [resM_smul]`. Use `⟨fun l => ∑ i, (hf.basis inf_le_left).repr (resM F inf_le_right σ) i * resG X inf_le_left (M i l), ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← (hf.basis inf_le_left).sum_repr (resM F (inf_le_right : V ⊓ V' ≤ V') σ)]`. Simplify using `only [Finset.smul_sum, Finset.sum_smul, mul_smul]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_comm, GlobalTheory.VB.IsFrame.basis_apply, h1, Finset.smul_sum]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_comb {p : ℕ} {η : Fin r → Γ(F, V)} (hη : SectionsSatisfyAtPrime p η) (σ : Γ(F, V')) :
     ∃ N : Fin r → Γ(X, V ⊓ V'), (p : Γ(X, V ⊓ V')) • resM F inf_le_right σ = ∑ l, N l • resM F inf_le_left (η l) := by
@@ -61,9 +61,9 @@ theorem exists_comb {p : ℕ} {η : Fin r → Γ(F, V)} (hη : SectionsSatisfyAt
   rw [smul_comm, GlobalTheory.VB.IsFrame.basis_apply, h1, Finset.smul_sum]
 
 /- English proof (translation)
-Establish `hw : ⊤ ≤ w ⁻¹ᵁ ((V ⊓ V') ⊓ T)` using `fun q hq => ⟨⟨hV hq, hV' hq⟩, hT hq⟩`. Establish `l₁ : (V ⊓ V') ⊓ T ≤ V ⊓ T` using `inf_le_inf_right _ inf_le_left`. Establish `l₂ : (V ⊓ V') ⊓ T ≤ V' ⊓ T` using `inf_le_inf_right _ inf_le_right`. Establish `h1` using `congrArg (fun m => valH hw ((hs.basis inf_le_right).repr (resM F (inf_le_left : (V ⊓ V') ⊓ T ≤ _) m) i)) hN`. Simplify using `only [map_sum, resM_smul, resM_resM, map_natCast, map_smul, Finsupp.smul_apply, Finsupp.coe_finset_sum, Finset.sum_apply, smul_eq_mul, map_mul, valH_res] at h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← valH_res l₂ hw, crd, ← hs.repr_resM, resM_resM]`. Use `h1.trans (Finset.sum_congr rfl fun l _ => ?_)` and prove the remaining obligations. Rewrite using `[← valH_res l₁ hw, crd, ← hs.repr_resM, resM_resM]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem val_comb {p : ℕ} {η : Fin r → Γ(F, V)} {σ : Γ(F, V')} {N : Fin r → Γ(X, V ⊓ V')}
     (hN : (p : Γ(X, V ⊓ V')) • resM F inf_le_right σ = ∑ l, N l • resM F inf_le_left (η l))
@@ -81,13 +81,11 @@ theorem val_comb {p : ℕ} {η : Fin r → Γ(F, V)} {σ : Γ(F, V')} {N : Fin r
   rw [← valH_res l₁ hw, crd, ← hs.repr_resM, resM_resM]
 
 /- English proof (translation)
-Use `choose N hN using fun i => exists_comb hη (s i)`. Set `P : Matrix (Fin r) (Fin r) k` to `Matrix.of fun j i => valF w _ (crd hs (η j) i)`. Set `Q : Matrix (Fin r) (Fin r) k` to `Matrix.of fun j i => (p : k)⁻¹ * valF w _ (N j i)`. Establish `hw : ⊤ ≤ w ⁻¹ᵁ (T ⊓ T)` using `fun q hq => ⟨hT hq, hT hq⟩`. Establish `h1 : Q * P = 1`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `j i`. Use `val_comb (hN j) hs hV hT hT i` as an intermediate fact. Rewrite `this` using `[valF_eq hw, crd, ← hs.basis_apply, Module.Basis.repr_self, Finsupp.single_apply, apply_ite (valH hw), map_one, map_zero]`. Simplify using `only [Matrix.mul_apply, Q, P, Matrix.of_apply, mul_assoc, Matrix.one_apply]`. Rewrite using `[← Finset.mul_sum, ← this, inv_mul_cancel_left₀ hp]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : P * Q = 1` using `mul_eq_one_comm.1 h1`. Use `⟨fun i => Q i l, fun j => ?_⟩` and prove the remaining obligations. Use `congrFun (congrFun h2 j) l` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply, Matrix.one_apply]`. Rewrite using `[← this]`.
-
-Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_inv {p : ℕ} {η : Fin r → Γ(F, V)} (hη : SectionsSatisfyAtPrime p η) {s : Fin r → Γ(F, T)} (hs : GlobalTheory.VB.IsFrame s)
     {k : Type} [Field k] {w : Sp k ⟶ X} (hV : ⊤ ≤ w ⁻¹ᵁ V) (hT : ⊤ ≤ w ⁻¹ᵁ T) (hp : (p : k) ≠ 0) (l : Fin r) :
@@ -111,11 +109,11 @@ theorem exists_inv {p : ℕ} {η : Fin r → Γ(F, V)} (hη : SectionsSatisfyAtP
   exact Finset.sum_congr rfl fun i _ => mul_comm _ _
 
 /- English proof (translation)
-Establish `hle : X.basicOpen (p : Γ(X, V ⊓ V')) ≤ V ⊓ V'` using `X.basicOpen_le _`. Use `⟨X.basicOpen (p : Γ(X, V ⊓ V')), hle.trans inf_le_left, hle.trans inf_le_right, ?_, fun j => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Use `(X.evaluation_eq_zero_iff_notMem_basicOpen z (show z ∈ V ⊓ V' from ⟨hz, hz'⟩) (p : Γ(X, V ⊓ V'))).2 hn` as an intermediate fact. Rewrite `this` using `[map_natCast]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hp this`. Establish `hu : IsUnit (resG X hle (p : Γ(X, V ⊓ V')))` using `X.toRingedSpace.isUnit_res_basicOpen _`. Take `⟨N, hN⟩` from `exists_comb hη (η' j)`. Establish `h1` using `congrArg (resM F hle) hN`. Simplify using `only [map_sum, resM_smul, resM_resM] at h1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Submodule.smul_mem_iff_of_isUnit _ hu, h1]`. Conclude with `Submodule.sum_mem _ fun l _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨l, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem span_of_ne {p : ℕ} {η : Fin r → Γ(F, V)} (hη : SectionsSatisfyAtPrime p η) (η' : Fin r → Γ(F, V')) {z : X} (hz : z ∈ V)
     (hz' : z ∈ V') (hp : (p : X.residueField z) ≠ 0) : ∃ (U : X.Opens) (h : U ≤ V) (h' : U ≤ V'), z ∈ U ∧
@@ -142,7 +140,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {Z : LocM.Mdl Y i₀}
 
 /- English proof (translation)
-Use `⟨(h.app (Z.U a).1).hom (Z.alg a (p : Z.i.c.F)⁻¹), ?_⟩` and prove the remaining obligations. Rewrite using `[← map_natCast ((h.app (Z.U a).1).hom.comp (Z.alg a)) p, RingHom.comp_apply, ← map_mul, ← map_mul, inv_mul_cancel₀ (Nat.cast_ne_zero.2 hp), map_one, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_inv_cast (hp : p ≠ 0) {X : Scheme.{0}} (h : X ⟶ Z.X) (a : Fin Z.m) :
     ∃ q : Γ(X, h ⁻¹ᵁ (Z.U a).1), q * p = 1 := by
@@ -151,7 +149,7 @@ theorem exists_inv_cast (hp : p ≠ 0) {X : Scheme.{0}} (h : X ⟶ Z.X) (a : Fin
     inv_mul_cancel₀ (Nat.cast_ne_zero.2 hp), map_one, map_one]
 
 /- English proof (translation)
-Take `⟨q, hq⟩` from `exists_inv_cast hp h a`. Use `congrArg (valH hw) hq` as an intermediate fact. Rewrite `this` using `[map_mul, map_natCast, map_one]`. Conclude with `right_ne_zero_of_mul_eq_one this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cast_ne_zero (hp : p ≠ 0) {X : Scheme.{0}} (h : X ⟶ Z.X) {a : Fin Z.m} {k : Type} [Field k] {w : Sp k ⟶ X}
     (hw : ⊤ ≤ w ⁻¹ᵁ (h ⁻¹ᵁ (Z.U a).1)) : (p : k) ≠ 0 := by
@@ -161,7 +159,7 @@ theorem cast_ne_zero (hp : p ≠ 0) {X : Scheme.{0}} (h : X ⟶ Z.X) {a : Fin Z.
   exact right_ne_zero_of_mul_eq_one this
 
 /- English proof (translation)
-Establish `e : (spMap (intO ↥y.C.S).subtype ≫ w) ≫ h = y.gen` using `by rw [Category.assoc, hw]; rfl`. Rewrite `ha` using `[← e]`. Conclude with `ha`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gen_le {X : Scheme.{0}} {h : X ⟶ Z.X} {y : Z.Pt} {w : Sp ↥(intO ↥y.C.S) ⟶ X} (hw : w ≫ h = y.z) {a : Fin Z.m}
     (ha : ⊤ ≤ y.gen ⁻¹ᵁ (Z.U a).1) : ⊤ ≤ (spMap (intO ↥y.C.S).subtype ≫ w) ⁻¹ᵁ (h ⁻¹ᵁ (Z.U a).1) := by
@@ -170,15 +168,15 @@ theorem gen_le {X : Scheme.{0}} {h : X ⟶ Z.X} {y : Z.Pt} {w : Sp ↥(intO ↥y
   exact ha
 
 /- English proof (translation)
-Set `w' : Sp ↥y.C.S ⟶ X` to `spMap (intO ↥y.C.S).subtype ≫ w`. Establish `hT : ⊤ ≤ w' ⁻¹ᵁ (h ⁻¹ᵁ (Z.U a).1)` using `gen_le hw ha`. Establish `hV : ⊤ ≤ w' ⁻¹ᵁ V` using `fun q _ => (hU (Set.mem_univ (spMap (intO ↥y.C.S).subtype q))).1`. Establish `hV' : ⊤ ≤ w' ⁻¹ᵁ V'` using `fun q _ => (hU (Set.mem_univ (spMap (intO ↥y.C.S).subtype q))).2`. Establish `hpk : (p : ↥y.C.S) ≠ 0` using `cast_ne_zero hp h hT`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨φ, hφ⟩` from `Pull.exists_fromSpec (Z.U a).2 y.gen ha`. Establish `hφ' : spMap φ ≫ Z.chart a = y.gen` using `hφ`. Take `⟨cf, hcf⟩` from `exists_inv hη (hs a) hV hT hpk l`. Establish `htan (i : Fin r) : IsTanAtG (Y Z.i).t (y.gen ≫ Z.π) ((Z.fr a).bc φ (x i).1 (x i).2)` using `LieMet.isTan_map φ (by rw [← Category.assoc, hφ']) ((Z.frame a).1 _ _).1`. Establish `hv : IsCombAtG (Y Z.i).t (y.gen ≫ Z.π) (fun i => (Z.fr a).bc φ (x i).1 (x i).2) cf _` using `(isCombAtG_iff (Y Z.i).t (y.gen ≫ Z.π) (fun i => ovT (htan i)) cf _).2 rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `(c y w hw a φ hφ' (fun q hq => (hU hq).1) cf _ hv).2 fun j' => by`. Rewrite using `[hcf]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `h2` using `(c' y w hw a φ hφ' (fun q hq => (hU hq).2) cf _ hv).1 h1 j`. Use `h2 using 2` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Rewrite using `[inv_mul_eq_iff_eq_mul₀ hpk, Finset.mul_sum]`. Establish `h3 (i : Fin r) : (p : ↥y.C.S) * (cf i * valF w' _ (crd (hs a) (η' j) i)) = ∑ m, valF w' _ (N m) * (cf i * valF w' _ (crd (hs a) (η m) i))`. Rewrite using `[mul_left_comm, val_comb hN (hs a) hV hV' hT, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun m _ => mul_left_comm _ _ _`. Use `Eq.symm ((Finset.sum_congr rfl fun i _ => h3 i).trans ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Simplify using `only [← Finset.mul_sum, hcf, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem norm_le (hp : p ≠ 0) {X : Scheme.{0}} {h : X ⟶ Z.X} {r : ℕ} {x : Fin r → Letter Dw} {b : Bool} {F : X.Modules}
     {s : ∀ a : Fin Z.m, Fin r → Γ(F, h ⁻¹ᵁ (Z.U a).1)} {hs : ∀ a, GlobalTheory.VB.IsFrame (s a)} {V V' : X.Opens}
@@ -216,15 +214,15 @@ theorem norm_le (hp : p ≠ 0) {X : Scheme.{0}} {h : X ⟶ Z.X} {r : ℕ} {x : F
   rfl
 
 /- English proof (translation)
-Set `U₀ : X.Opens` to `(V ⊓ V') ⊓ Finset.univ.inf fun jl : Fin r × Fin r => U jl.1 jl.2`. Establish `hz₀ : z ∈ U₀` using `⟨⟨hz, hz'⟩, by`. Rewrite using `[TopologicalSpace.Opens.coe_finset_inf]`. Simplify using `using hzU⟩`. Establish `hle (j l : Fin r) : U₀ ≤ U j l` using `inf_le_right.trans (Finset.inf_le (f := fun jl : Fin r × Fin r => U jl.1 jl.2) (Finset.mem_univ (j, l)))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `l₀ : U₀ ≤ V ⊓ V'` using `inf_le_left`. Use `⟨U₀, l₀.trans inf_le_left, l₀.trans inf_le_right, hz₀, fun j => ?_⟩` and prove the remaining obligations. Establish `h1 (l : Fin r) : resG X l₀ (N j l) = p * resG X (hle j l) (t j l)`. Use `GlobalTheory.TestPts.ext_chart h hopn fun k _ w a ha hw => ?_` and prove the remaining obligations. Rewrite using `[valF_eq hw, valF_eq hw, map_mul, map_natCast, valH_res, valH_res, ht j l k w a ha (fun q hq => hle j l (hw hq)) (fun q hq => l₀ (hw hq)), mul_inv_cancel_left₀ (cast_ne_zero hp0 h ha)]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `congrArg (resM F l₀) (hN j)`. Simplify using `only [map_sum, resM_smul, resM_resM, map_natCast, h1, mul_smul] at h2`. Rewrite `h2` using `[← Finset.smul_sum]`. Take `⟨f, hf, -⟩` from `hη`. Establish `h3 : resM F (l₀.trans inf_le_right) (η' j) = ∑ l, resG X (hle j l) (t j l) • resM F (l₀.trans inf_le_left) (η l)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `(hf.basis (l₀.trans inf_le_left)).ext_elem fun i => ?_` and prove the remaining obligations. Establish `h4` using `congrArg (fun m => (hf.basis (l₀.trans inf_le_left)).repr m i) h2`. Simplify using `only [map_smul, Finsupp.smul_apply, smul_eq_mul] at h4`. Use `GlobalTheory.TestPts.ext_chart h hopn fun k _ w a ha hw => ?_` and prove the remaining obligations. Establish `h5` using `congrArg (valH hw) h4`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h5` using `[map_mul, map_mul, map_natCast]`. Rewrite using `[valF_eq hw, valF_eq hw]`. Conclude with `mul_left_cancel₀ (cast_ne_zero hp0 h ha) h5`. Rewrite using `[h3]`. Conclude with `Submodule.sum_mem _ fun l _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨l, rfl⟩)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_of_ext (hp0 : p ≠ 0) {X : Scheme.{0}} [IsReduced X] {h : X ⟶ Z.X} (hopn : ToOpen Z h) {r : ℕ}
     {F : X.Modules} {V V' : X.Opens} {η : Fin r → Γ(F, V)} {η' : Fin r → Γ(F, V')} (hη : SectionsSatisfyAtPrime p η)
@@ -268,13 +266,11 @@ theorem span_of_ext (hp0 : p ≠ 0) {X : Scheme.{0}} [IsReduced X] {h : X ⟶ Z.
 end Model
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw Xo p W Y i₀ Z hp hW _ B hB h hopn r x b F s hs V V' η η' hη _ c c' z hz hz'`. Distinguish the cases in `hpz : (p : B.X.residueField z) = 0`. Use `swap`. Conclude with `span_of_ne hη η' hz hz' hpz`. Establish `hp0 : p ≠ 0` using `hp.ne_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `choose N hN using fun j => exists_comb hη (η' j)`. Use `choose q hq using fun a => exists_inv_cast (Z := Z) hp0 h a`. Set `A : Fin r → Fin r → ∀ a, Γ(B.X, h ⁻¹ᵁ (Z.U a).1 ⊓ (V ⊓ V'))` to `fun j l a => resG B.X inf_le_left (q a) * resG B.X inf_le_right (N j l)`. Establish `hA (j l : Fin r) (k : Type) [Field k] (w : Sp k ⟶ B.X) (a : Fin Z.m) (ha : ⊤ ≤ w ⁻¹ᵁ (h ⁻¹ᵁ (Z.U a).1)) (hU : ⊤ ≤ w ⁻¹ᵁ (V ⊓ V')) : valF w _ (A j l a) = (p : k)⁻¹ * valF w _ (N j l)`. Establish `hw : ⊤ ≤ w ⁻¹ᵁ (h ⁻¹ᵁ (Z.U a).1 ⊓ (V ⊓ V'))` using `fun q hq => ⟨ha hq, hU hq⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `congrArg (valH ha) (hq a)`. Rewrite `h1` using `[map_mul, map_natCast, map_one]`. Rewrite using `[valF_eq hw, map_mul, valH_res, valH_res, valF_eq ha, eq_inv_of_mul_eq_one_left h1]`. Establish `key (j l : Fin r)` using `GlobalTheory.TestPts.exists_extension hp hW hB h hopn (A j l) (fun k _ w a a' ha ha' hU => by rw [hA j l k w a ha hU, hA j l k w a' ha' hU]) (fun y w hw a ha hU => by`. Establish `e` using `hA j l _ _ a (gen_le hw ha) fun q _ => hU (Set.mem_univ (spMap (intO ↥y.C.S).subtype q))`.
-
-Conclude with `(congrArg norm e).trans_le (norm_le hp0 hη c c' (hN j) l y w hw a ha hU))`. Use the proof step `(show z ∈ V ⊓ V' from ⟨hz, hz'⟩) hpz`. Use `choose U t hzU hUV ht using key`. Conclude with `span_of_ext hp0 hopn hη hN hz hz' t hzU fun j l k _ w a ha hw hU => (ht j l k w a ha hw).trans (hA j l k w a ha hU)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem spanSt : GlobalTheory.OmegaHT.SpanSt := by
   intro E _ _ _ H Dw Xo p W Y i₀ Z hp hW _ B hB h hopn r x b F s hs V V' η η' hη _ c c' z hz hz'

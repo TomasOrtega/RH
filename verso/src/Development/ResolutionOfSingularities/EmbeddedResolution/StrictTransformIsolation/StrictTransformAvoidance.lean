@@ -49,12 +49,12 @@ def AvoidsCenters (S : EmbeddedBlowupSequence k Y pY) : ∀ (i : ℕ), ↥(S.sch
         AvoidsCenters S i ((S.blowdown i).base x)
 
 /- English proof (translation)
-Discharge the goal by the elementary cases of `trivial`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem avoidsCenters_zero (S : EmbeddedBlowupSequence k Y pY) (x : ↥(S.schemeAt 0)) : S.AvoidsCenters 0 x := trivial
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 @[simp] theorem avoidsCenters_succ_iff (S : EmbeddedBlowupSequence k Y pY) (i : ℕ) (x : ↥(S.schemeAt (i + 1))) :
     S.AvoidsCenters (i + 1) x ↔
@@ -63,13 +63,13 @@ Unfold both sides. The equivalence is reflexive.
   Iff.rfl
 
 /- English proof (translation)
-Introduce `i`. Proceed by induction on `i with`. Consider the case `zero`. Introduce `_ _ _ _ _`. Conclude with `S.avoidsCenters_zero _`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Consider the case `succ i ih`. Introduce `hi C hC ξ hξ`. Establish `hi' : i < S.length` using `Nat.lt_of_succ_le hi`. Take `⟨C', hC', hη', hfr⟩` from `S.exists_irreducibleComponent_isGenericPoint_strictTransformMap hN i hi' C hC ξ hξ`. Establish `key : (S.strictTransformι i).base ((S.strictTransformMap i).base ξ) = (S.blowdown i).base ((S.strictTransformι (i + 1)).base ξ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h : (S.strictTransformMap i ≫ S.strictTransformι i).base ξ = (S.strictTransformι (i + 1) ≫ S.blowdown i).base ξ`. Rewrite using `[S.strictTransformMap_comp_strictTransformι i]`. Simplify using `using h`. Use `(S.avoidsCenters_succ_iff i _).mpr ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← key]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `S.notMem_ambientCenter_support_of_isGenericPoint i C' hC' hfr _ hη'`. Rewrite using `[← key]`. Conclude with `ih (Nat.le_of_succ_le hi) C' hC' _ hη'`.
+A detailed English derivation is pending.
 -/
 private theorem forall_avoidsCenters_strictTransformι_of_isGenericPoint [AlgebraicGeometry.IsReduced Y]
     (S : EmbeddedBlowupSequence k Y pY)
@@ -100,7 +100,7 @@ private theorem forall_avoidsCenters_strictTransformι_of_isGenericPoint [Algebr
       exact ih (Nat.le_of_succ_le hi) C' hC' _ hη'
 
 /- English proof (translation)
-The claim follows from `forall_avoidsCenters_strictTransformι_of_isGenericPoint S hN i hi C hC ξ hξ`.
+A detailed English derivation is pending.
 -/
 theorem avoidsCenters_strictTransformι_of_isGenericPoint [AlgebraicGeometry.IsReduced Y] (S : EmbeddedBlowupSequence k Y pY)
     (hN : ∀ j ≤ S.length, AlgebraicGeometry.IsNoetherian (S.schemeAt j)) (i : ℕ) (hi : i ≤ S.length)
@@ -110,9 +110,9 @@ theorem avoidsCenters_strictTransformι_of_isGenericPoint [AlgebraicGeometry.IsR
   forall_avoidsCenters_strictTransformι_of_isGenericPoint S hN i hi C hC ξ hξ
 
 /- English proof (translation)
-Establish `: CategoryTheory.IsIso (S.blowdown i ∣_ S.ambientCenterSupportCompl i)` using `S.isIso_blowdown_restrict_ambientCenterSupportCompl i hi`. Establish `: AlgebraicGeometry.IsOpenImmersion (S.blowdown i ∣_ S.ambientCenterSupportCompl i)` using `inferInstance`. Establish `hle : U ≤ (TopologicalSpace.Opens.map (S.blowdown i).base).obj (S.ambientCenterSupportCompl i)`. Introduce `x hx`. Conclude with `hU hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `key : (S.schemeAt (i + 1)).homOfLE hle ≫ ((S.blowdown i ∣_ S.ambientCenterSupportCompl i) ≫ (S.ambientCenterSupportCompl i).ι) = U.ι ≫ S.blowdown i`. Rewrite using `[AlgebraicGeometry.morphismRestrict_ι, ← CategoryTheory.Category.assoc, AlgebraicGeometry.Scheme.homOfLE_ι]`. Rewrite using `[← key]`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpenImmersion_ι_comp_blowdown (S : EmbeddedBlowupSequence k Y pY) (i : ℕ) (hi : i < S.length)
     (U : (S.schemeAt (i + 1)).Opens)
@@ -133,13 +133,13 @@ theorem isOpenImmersion_ι_comp_blowdown (S : EmbeddedBlowupSequence k Y pY) (i 
   infer_instance
 
 /- English proof (translation)
-Take `⟨c, hc, rfl⟩` from `hx`. Establish `hcont : Continuous ⇑(S.strictTransformMap i).base` using `(S.strictTransformMap i).base.hom.continuous`. Establish `hηC : closure ({η} : Set ↥(S.strictTransform (i + 1))) = C` using `hη`. Establish `hηC' : closure ({(S.strictTransformMap i).base η} : Set ↥(S.strictTransform i)) = C'` using `hη'`. Establish `hclosed : IsClosed (⇑(S.strictTransformMap i).base ⁻¹' C')`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hηC']`. Conclude with `isClosed_closure.preimage hcont`. Establish `hsub : C ⊆ ⇑(S.strictTransformMap i).base ⁻¹' C'`. Rewrite using `[← hηC]`. Use `closure_minimal ?_ hclosed` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z hz`. Establish `hz' : z = η` using `hz`. Substitute `hz'` using the available equality. Rewrite using `[Set.mem_preimage, ← hηC']`. Conclude with `subset_closure rfl`.
+Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨(S.strictTransformMap i).base c, hsub hc, ?_⟩` and prove the remaining obligations. Establish `key : ((S.strictTransformMap i) ≫ (S.strictTransformι i)).base c = ((S.strictTransformι (i + 1)) ≫ (S.blowdown i)).base c`. Rewrite using `[S.strictTransformMap_comp_strictTransformι i]`. Simplify using `using key`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_image_strictTransformι_of_mem_image_succ (S : EmbeddedBlowupSequence k Y pY) (i : ℕ)
     (C : Set ↥(S.strictTransform (i + 1))) (η : ↥(S.strictTransform (i + 1))) (hη : IsGenericPoint η C)
@@ -168,9 +168,9 @@ theorem mem_image_strictTransformι_of_mem_image_succ (S : EmbeddedBlowupSequenc
   simpa using key
 
 /- English proof (translation)
-Establish `hvx : V.ι.base (⟨x, hx⟩ : ↥V) = x` using `rfl`. Establish `hvy : V.ι.base (⟨y, hy⟩ : ↥V) = y` using `rfl`. Establish `h' : (V.ι ≫ π).base (⟨y, hy⟩ : ↥V) ⤳ (V.ι ≫ π).base (⟨x, hx⟩ : ↥V)`. Rewrite using `[comp_base_apply V.ι π (⟨x, hx⟩ : ↥V), comp_base_apply V.ι π (⟨y, hy⟩ : ↥V), hvx, hvy]`. Conclude with `specializes_iff_mem_closure.mpr h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hspec : (⟨y, hy⟩ : ↥V) ⤳ (⟨x, hx⟩ : ↥V)` using `hoe.isInducing.specializes_iff.mp h'`. Establish `hfin` using `hspec.map V.ι.base.hom.continuous`. Rewrite `hfin` using `[hvx, hvy]`. Conclude with `specializes_iff_mem_closure.mp hfin`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_closure_singleton_of_base_mem {X₀ X₁ : Scheme.{u}}
     (π : X₁ ⟶ X₀) (V : X₁.Opens)
@@ -189,17 +189,15 @@ private theorem mem_closure_singleton_of_base_mem {X₀ X₁ : Scheme.{u}}
   exact specializes_iff_mem_closure.mp hfin
 
 /- English proof (translation)
-Establish `hgenericImage : IsGenericPoint ((S.strictTransformι (i + 1)).base η) (⇑(S.strictTransformι (i + 1)).base '' C)` using `FunctorialResolution.EmbeddedResolution.isGenericPoint_image_of_isClosedEmbedding (S.isClosedEmbedding_strictTransformι (i + 1)) hη`. Establish `hgenericImagePrev : IsGenericPoint ((S.strictTransformι i).base ((S.strictTransformMap i).base η)) (⇑(S.strictTransformι i).base '' C')` using `FunctorialResolution.EmbeddedResolution.isGenericPoint_image_of_isClosedEmbedding (S.isClosedEmbedding_strictTransformι i) hη'`. Establish `hclA : closure ({(S.strictTransformι (i + 1)).base η} : Set ↥(S.schemeAt (i + 1))) = ⇑(S.strictTransformι (i + 1)).base '' C` using `hgenericImage`. Establish `hclB : closure ({(S.strictTransformι i).base ((S.strictTransformMap i).base η)} : Set ↥(S.schemeAt i)) = ⇑(S.strictTransformι i).base '' C'` using `hgenericImagePrev`. Establish `key : (S.strictTransformι i).base ((S.strictTransformMap i).base η) = (S.blowdown i).base ((S.strictTransformι (i + 1)).base η)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h : (S.strictTransformMap i ≫ S.strictTransformι i).base η = (S.strictTransformι (i + 1) ≫ S.blowdown i).base η`. Rewrite using `[S.strictTransformMap_comp_strictTransformι i]`. Simplify using `using h`. Establish `hclosure : (S.blowdown i).base x ∈ closure ({(S.blowdown i).base ((S.strictTransformι (i + 1)).base η)} : Set ↥(S.schemeAt i))`. Rewrite using `[← key, hclB]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hmem`. Establish `hy₀ : (S.blowdown i).base ((S.strictTransformι (i + 1)).base η) ∉ ((S.ambientCenter i).support : Set ↥(S.schemeAt i))`. Introduce `hmemc`. Conclude with `hx (closure_minimal (Set.singleton_subset_iff.mpr hmemc) ((S.ambientCenter i).support).2 hclosure)`. Take `⟨V, hVdef⟩ : ∃ V : (S.schemeAt (i + 1)).Opens, V = (TopologicalSpace.Opens.map (S.blowdown i).base).obj (S.ambientCenterSupportCompl i)` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hVsub : (V : Set ↥(S.schemeAt (i + 1))) ⊆ ⇑(S.blowdown i).base ⁻¹' ((S.ambientCenterSupportCompl i : (S.schemeAt i).Opens) : Set ↥(S.schemeAt i))`. Rewrite using `[hVdef]`. Introduce `y hy`. Conclude with `hy`. Establish `hoi : AlgebraicGeometry.IsOpenImmersion (V.ι ≫ S.blowdown i)` using `S.isOpenImmersion_ι_comp_blowdown i hi V hVsub`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hxV : x ∈ V`. Rewrite using `[hVdef]`. Conclude with `hx`. Establish `hyV : (S.strictTransformι (i + 1)).base η ∈ V`. Rewrite using `[hVdef]`.
-
-Conclude with `hy₀`. Establish `hmain` using `mem_closure_singleton_of_base_mem (S.blowdown i) V (V.ι ≫ S.blowdown i).isOpenEmbedding hxV hyV hclosure`. Rewrite using `[← hclA]`. Conclude with `hmain`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_image_strictTransformι_succ_of_mem_image [AlgebraicGeometry.IsReduced Y]
     (S : EmbeddedBlowupSequence k Y pY) (i : ℕ) (hi : i < S.length)
@@ -255,7 +253,7 @@ private theorem mem_image_strictTransformι_succ_of_mem_image [AlgebraicGeometry
   exact hmain
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun hmem => mem_image_strictTransformι_succ_of_mem_image S i hi C η hη C' hη' x hx hmem, fun hxC => mem_image_strictTransformι_of_mem_image_succ S i C η hη C' hη' x hxC⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_image_strictTransformι_iff_of_notMem_ambientCenter [AlgebraicGeometry.IsReduced Y]
     (S : EmbeddedBlowupSequence k Y pY)
@@ -273,7 +271,7 @@ end EmbeddedBlowupSequence
 namespace OpenImmersionRestriction
 
 /- English proof (translation)
-Rewrite `hx` using `[FunctorialResolution.EmbeddedResolution.support_comap_eq]`. Conclude with `hx`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_support_of_mem_support_comap {X Z : Scheme.{u}} (f : X ⟶ Z) (I : Z.IdealSheafData)
     (x : ↥X) (hx : x ∈ ((I.comap f).support : Set ↥X)) :
@@ -285,9 +283,9 @@ def reducedVanishingAssignment : VanishingAssignment.{u} :=
   fun _ T => Scheme.IdealSheafData.vanishingIdeal T
 
 /- English proof (translation)
-Use extensionality with `a`. Prove the components needed by the constructor for the conclusion. Introduce `ha`. Establish `h2 : g a ∈ (Z₁ : Set ↥W) ∩ (U : Set ↥W)` using `⟨ha, hg a⟩`. Rewrite `h2` using `[h]`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h2.1`. Introduce `ha`. Establish `h2 : g a ∈ (Z₂ : Set ↥W) ∩ (U : Set ↥W)` using `⟨ha, hg a⟩`. Rewrite `h2` using `[← h]`. Conclude with `h2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem preimage_congr_of_inter_eq {W : Scheme.{u}} {Z₁ Z₂ : TopologicalSpace.Closeds ↥W}
     {U : W.Opens} (h : (Z₁ : Set ↥W) ∩ (U : Set ↥W) = (Z₂ : Set ↥W) ∩ (U : Set ↥W))
@@ -305,9 +303,7 @@ private theorem preimage_congr_of_inter_eq {W : Scheme.{u}} {Z₁ Z₂ : Topolog
     exact h2.1
 
 /- English proof (translation)
-Establish `hg : ∀ a, (V.2.fromSpec).base a ∈ (U : Set ↥W)`. Introduce `a`. Establish `ha : (V.2.fromSpec).base a ∈ (V.1 : Set ↥W)`. Rewrite using `[← IsAffineOpen.range_fromSpec V.2]`. Conclude with `Set.mem_range_self a`.
-
-Conclude with `hV ha`. Conclude with `congrArg PrimeSpectrum.vanishingIdeal (preimage_congr_of_inter_eq h (fun a => (V.2.fromSpec).base a) hg)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem vanishingIdeal_ideal_eq_of_inter_eq {W : Scheme.{u}}
     (Z₁ Z₂ : TopologicalSpace.Closeds ↥W) (U : W.Opens)
@@ -325,9 +321,9 @@ private theorem vanishingIdeal_ideal_eq_of_inter_eq {W : Scheme.{u}}
     (preimage_congr_of_inter_eq h (fun a => (V.2.fromSpec).base a) hg)
 
 /- English proof (translation)
-Use `(agreeNear_iff _ _ _).mpr ⟨U, hx, ?_⟩` and prove the remaining obligations. Use `Scheme.IdealSheafData.ext (funext fun V => ?_)` and prove the remaining obligations. Rewrite using `[Scheme.IdealSheafData.ideal_comap_of_isOpenImmersion, Scheme.IdealSheafData.ideal_comap_of_isOpenImmersion]`. Use `congrArg _ ?_` and prove the remaining obligations. Use `vanishingIdeal_ideal_eq_of_inter_eq Z₁ Z₂ U h _ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `y hy`. Take `⟨z, -, rfl⟩` from `hy`. Conclude with `z.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem agreeNear_vanishingIdeal_of_inter_eq {W : Scheme.{u}}
     (Z₁ Z₂ : TopologicalSpace.Closeds ↥W) (U : W.Opens) (x : ↥W) (hx : x ∈ (U : Set ↥W))
@@ -345,9 +341,9 @@ theorem agreeNear_vanishingIdeal_of_inter_eq {W : Scheme.{u}}
   exact z.2
 
 /- English proof (translation)
-Establish `h1 : (1 : A) ∈ Ideal.comap φ P`. Rewrite using `[hP]`. Conclude with `Submodule.mem_top`. Establish `h2 : φ (1 : A) ∈ P` using `Ideal.mem_comap.mp h1`. Rewrite `h2` using `[map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hPtop : P = ⊤` using `Submodule.eq_top_iff'.mpr fun x => by`. Simplify using `using Ideal.mul_mem_left P x h2`. Rewrite using `[hPtop, ← Ideal.one_eq_top, one_mul]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem comap_eq_comap_mul_of_comap_eq_top {A B : Type u} [CommRing A] [CommRing B]
     (φ : A →+* B) (P Q : Ideal B) (hP : Ideal.comap φ P = ⊤) :
@@ -362,9 +358,9 @@ private theorem comap_eq_comap_mul_of_comap_eq_top {A B : Type u} [CommRing A] [
   rw [hPtop, ← Ideal.one_eq_top, one_mul]
 
 /- English proof (translation)
-Establish `hcomp : K.comap (U.ι ≫ f) = (K.comap f).comap U.ι`. Simplify using `[Scheme.IdealSheafData.comap_comp]`. Rewrite using `[hcomp, ← hmul]`. Use `Scheme.IdealSheafData.ext (funext fun V => ?_)` and prove the remaining obligations. Rewrite using `[AlgebraicGeometry.Scheme.IdealSheafData.ideal_comap_of_isOpenImmersion J U.ι V, AlgebraicGeometry.Scheme.IdealSheafData.ideal_comap_of_isOpenImmersion (I * J) U.ι V]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `only [AlgebraicGeometry.Scheme.IdealSheafData.ideal_mul, Pi.mul_apply]`. Use `comap_eq_comap_mul_of_comap_eq_top _ _ _ ?_` and prove the remaining obligations. Rewrite using `[← AlgebraicGeometry.Scheme.IdealSheafData.ideal_comap_of_isOpenImmersion I U.ι V, hI]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem comap_eq_comap_comp_of_mul_eq {X Z : Scheme.{u}} (f : X ⟶ Z) (U : X.Opens)
     (I J : X.IdealSheafData) (K : Z.IdealSheafData)
@@ -387,7 +383,7 @@ variable {k : Type u} [Field k] [CharZero k] {Y : Scheme.{u}} [AlgebraicGeometry
 
 omit [AlgebraicGeometry.QuasiCompact pY] in
 /- English proof (translation)
-Introduce `i hi` and use `(D.toEmbeddedBlowupSequence A).isNoetherian_schemeAt i hi`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isNoetherian_schemeAt_toEmbeddedBlowupSequence (D : EmbeddingDatum k Y pY) (A : PrincipalizationAlgorithm.{u}) :
     ∀ i ≤ (D.toEmbeddedBlowupSequence A).length,
@@ -395,15 +391,13 @@ theorem isNoetherian_schemeAt_toEmbeddedBlowupSequence (D : EmbeddingDatum k Y p
   fun i hi => (D.toEmbeddedBlowupSequence A).isNoetherian_schemeAt i hi
 
 /- English proof (translation)
-Introduce `i`. Proceed by induction on `i with`. Consider the case `zero`. Introduce `_ E hE x hx hcl`. Rewrite `hE` using `[(principalizationOfEmbedding k Y pY D A).boundary_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `at hE`. Consider the case `succ i ih`. Introduce `hi E hE x hx hcl`. Establish `hilt : i < (principalizationOfEmbedding k Y pY D A).length` using `hi`. Rewrite `hE` using `[(principalizationOfEmbedding k Y pY D A).boundary_succ_eq_map_strictTransform_append i hilt, List.mem_append]`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hcl'` using `((D.toEmbeddedBlowupSequence A).avoidsCenters_succ_iff i x).mp hcl`. Break down `hE with hE | hE` into its components or cases. Take `⟨E', hE', rfl⟩` from `List.mem_map.mp hE`. Establish `hmem : x ∈ ((E'.comap ((principalizationOfEmbedding k Y pY D A).transitionMapSucc i)).support : Set ↥((principalizationOfEmbedding k Y pY D A).schemeAt (i + 1)))` using `AlgebraicGeometry.Scheme.IdealSheafData.support_antitone (FunctorialResolution.EmbeddedResolution.comap_le_strictTransform ((principalizationOfEmbedding k Y pY D A).transitionMapSucc i) ((principalizationOfEmbedding k Y pY D A).center i) E') hx`. Establish `hmem2 : ((principalizationOfEmbedding k Y pY D A).transitionMapSucc i).base x ∈ (E'.support : Set ↥((principalizationOfEmbedding k Y pY D A).schemeAt i))` using `mem_support_of_mem_support_comap ((principalizationOfEmbedding k Y pY D A).transitionMapSucc i) E' x hmem`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `ih (Nat.le_of_succ_le hi) E' hE' _ hmem2 hcl'.2`. Rewrite `hE` using `[List.mem_singleton]`. Substitute `hE` using the available equality. Rewrite `hx` using `[(principalizationOfEmbedding k Y pY D A).exceptionalIdeal_eq i]`. Establish `hmem2 : ((principalizationOfEmbedding k Y pY D A).transitionMapSucc i).base x ∈ (((principalizationOfEmbedding k Y pY D A).center i).support : Set ↥((principalizationOfEmbedding k Y pY D A).schemeAt i))` using `mem_support_of_mem_support_comap ((principalizationOfEmbedding k Y pY D A).transitionMapSucc i) ((principalizationOfEmbedding k Y pY D A).center i) x hx`.
-
-Conclude with `hcl'.1 hmem2`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem forall_not_avoidsCenters_of_mem_boundary_support (D : EmbeddingDatum k Y pY)
     (A : PrincipalizationAlgorithm.{u}) :
@@ -447,7 +441,7 @@ private theorem forall_not_avoidsCenters_of_mem_boundary_support (D : EmbeddingD
         exact hcl'.1 hmem2
 
 /- English proof (translation)
-The claim follows from `forall_not_avoidsCenters_of_mem_boundary_support D A i hi E hE x hx`.
+A detailed English derivation is pending.
 -/
 theorem not_avoidsCenters_of_mem_boundary_support (D : EmbeddingDatum k Y pY) (A : PrincipalizationAlgorithm.{u})
     (i : ℕ) (hi : i ≤ (D.toEmbeddedBlowupSequence A).length)
@@ -459,7 +453,7 @@ theorem not_avoidsCenters_of_mem_boundary_support (D : EmbeddingDatum k Y pY) (A
   forall_not_avoidsCenters_of_mem_boundary_support D A i hi E hE x hx
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem ker_congr {A B : Scheme.{u}} {f g : A ⟶ B}
     [AlgebraicGeometry.QuasiCompact f] [AlgebraicGeometry.QuasiCompact g] (h : f = g) :
@@ -468,9 +462,9 @@ private theorem ker_congr {A B : Scheme.{u}} {f g : A ⟶ B}
   rfl
 
 /- English proof (translation)
-Establish `h2 : (j ≫ e.inv) ≫ e.hom = j` using `by simp`. Establish `: AlgebraicGeometry.QuasiCompact ((j ≫ e.inv) ≫ e.hom)`. Rewrite using `[h2]`. Use `infer_instance`. Establish `h3 : AlgebraicGeometry.Scheme.Hom.ker j = AlgebraicGeometry.Scheme.Hom.ker ((j ≫ e.inv) ≫ e.hom)` using `ker_congr h2.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h3]`. Conclude with `FunctorialResolution.Blowup.comap_ker_comp_of_isOpenImmersion (j ≫ e.inv) e.hom`.
+A detailed English derivation is pending.
 -/
 private theorem ker_comap_iso_hom_eq_ker_comp_inv {W B X : Scheme.{u}} (j : W ⟶ B) (e : X ≅ B)
     [AlgebraicGeometry.QuasiCompact j] [AlgebraicGeometry.QuasiCompact (j ≫ e.inv)] :
@@ -486,9 +480,9 @@ private theorem ker_comap_iso_hom_eq_ker_comp_inv {W B X : Scheme.{u}} (j : W �
   exact FunctorialResolution.Blowup.comap_ker_comp_of_isOpenImmersion (j ≫ e.inv) e.hom
 
 /- English proof (translation)
-Establish `hle : (AlgebraicGeometry.Scheme.Hom.ker f).radical ≤ AlgebraicGeometry.Scheme.Hom.ker f` using `by show (AlgebraicGeometry.Scheme.Hom.ker f).radical ≤ AlgebraicGeometry.Scheme.IdealSheafData.ofIdeals (fun U : Z.affineOpens => RingHom.ker (CommRingCat.Hom.hom (AlgebraicGeometry.Scheme.Hom.app f U.1)))`. Rewrite using `[AlgebraicGeometry.Scheme.IdealSheafData.le_ofIdeals_iff]`. Introduce `U`. Establish `h1 : (AlgebraicGeometry.Scheme.Hom.ker f).ideal U ≤ RingHom.ker (CommRingCat.Hom.hom (AlgebraicGeometry.Scheme.Hom.app f U.1))` using `AlgebraicGeometry.Scheme.IdealSheafData.ideal_ofIdeals_le _ U`. Establish `hrad : (RingHom.ker (CommRingCat.Hom.hom (AlgebraicGeometry.Scheme.Hom.app f U.1))).IsRadical`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[RingHom.ker_eq_comap_bot]`. Conclude with `Ideal.isRadical_bot.comap _`. Conclude with `le_trans (Ideal.radical_mono h1) hrad`. Conclude with `le_antisymm hle (AlgebraicGeometry.Scheme.IdealSheafData.le_radical _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem radical_ker_eq_of_isReduced {W Z : Scheme.{u}} [AlgebraicGeometry.IsReduced W]
     (f : W ⟶ Z) :
@@ -512,7 +506,7 @@ private theorem radical_ker_eq_of_isReduced {W Z : Scheme.{u}} [AlgebraicGeometr
   exact le_antisymm hle (AlgebraicGeometry.Scheme.IdealSheafData.le_radical _)
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `radical_ker_eq_of_isReduced f`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem radical_eq_of_eq_ker {Z W : Scheme.{u}} [AlgebraicGeometry.IsReduced W]
     (I : Z.IdealSheafData) (f : W ⟶ Z)
@@ -521,9 +515,9 @@ private theorem radical_eq_of_eq_ker {Z W : Scheme.{u}} [AlgebraicGeometry.IsRed
   exact radical_ker_eq_of_isReduced f
 
 /- English proof (translation)
-Establish `hB : (D.toEmbeddedBlowupSequence A).strictTransformIdeal 0 = AlgebraicGeometry.Scheme.Hom.ker (D.emb ≫ (principalizationOfEmbedding k Y pY D A).isoZero.inv)` using `EmbeddedBlowupSequence.strictTransformIdeal_zero (D.toEmbeddedBlowupSequence A)`. Establish `hA : (principalizationOfEmbedding k Y pY D A).ideal 0 = AlgebraicGeometry.Scheme.Hom.ker (D.emb ≫ (principalizationOfEmbedding k Y pY D A).isoZero.inv)`. Rewrite using `[IdealBlowupSequence.ideal_zero, FunctorialResolution.EmbeddedResolution.SequenceOfBlowups.projectionToBase_zero]`. Conclude with `ker_comap_iso_hom_eq_ker_comp_inv D.emb (principalizationOfEmbedding k Y pY D A).isoZero`. Establish `hsupp : (⟨Set.range ⇑((D.toEmbeddedBlowupSequence A).strictTransformι 0).base, hcl⟩ : TopologicalSpace.Closeds ↥((D.toEmbeddedBlowupSequence A).schemeAt 0)) = ((D.toEmbeddedBlowupSequence A).strictTransformIdeal 0).support` using `TopologicalSpace.Closeds.ext (Scheme.IdealSheafData.range_subschemeι ((D.toEmbeddedBlowupSequence A).strictTransformIdeal 0))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrad : ((D.toEmbeddedBlowupSequence A).strictTransformIdeal 0).radical = (D.toEmbeddedBlowupSequence A).strictTransformIdeal 0` using `radical_eq_of_eq_ker ((D.toEmbeddedBlowupSequence A).strictTransformIdeal 0) (D.emb ≫ (principalizationOfEmbedding k Y pY D A).isoZero.inv) hB`. Establish `key : Scheme.IdealSheafData.vanishingIdeal (⟨Set.range ⇑((D.toEmbeddedBlowupSequence A).strictTransformι 0).base, hcl⟩ : TopologicalSpace.Closeds ↥((D.toEmbeddedBlowupSequence A).schemeAt 0)) = (D.toEmbeddedBlowupSequence A).strictTransformIdeal 0`. Rewrite using `[hsupp, Scheme.IdealSheafData.vanishingIdeal_support]`. Conclude with `hrad`. Conclude with `hA.trans (hB.symm.trans key.symm)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem principalizationOfEmbedding_ideal_zero_eq_vanishingIdeal [AlgebraicGeometry.IsReduced Y]
     (D : EmbeddingDatum k Y pY) (A : PrincipalizationAlgorithm.{u})
@@ -570,11 +564,11 @@ def AgreesWithComponentsOrderOne (D : EmbeddingDatum k Y pY) (A : Principalizati
         (((D.toEmbeddedBlowupSequence A).strictTransformι i).base ξ) = 1
 
 /- English proof (translation)
-Establish `hrange : Set.range ⇑(X.fromSpecStalk x).base = {z : ↥X | z ⤳ x}`. Rewrite using `[AlgebraicGeometry.Scheme.range_fromSpecStalk]`. Establish `hy' : y ∈ Set.range ⇑(X.fromSpecStalk x).base`. Rewrite using `[hrange]`. Conclude with `hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hx' : x ∈ Set.range ⇑(X.fromSpecStalk x).base`. Rewrite using `[hrange]`. Conclude with `specializes_refl x`. Take `⟨a, ha⟩` from `hy'`. Take `⟨b, hb⟩` from `hx'`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hab : a = b`. Set `: Field ↑(X.presheaf.stalk x)` to `hfield.toField`. Establish `key : ∀ p q : PrimeSpectrum ↑(X.presheaf.stalk x), p = q` using `fun p q => Subsingleton.elim p q`. Conclude with `key a b`. Conclude with `ha.symm.trans ((congrArg (fun t => (X.fromSpecStalk x).base t) hab).trans hb)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem eq_of_specializes_of_isField_stalk {X : Scheme.{u}} (x : ↥X)
     (hfield : IsField ↑(X.presheaf.stalk x)) (y : ↥X) (hy : y ⤳ x) : y = x := by
@@ -594,11 +588,11 @@ private theorem eq_of_specializes_of_isField_stalk {X : Scheme.{u}} (x : ↥X)
   exact ha.symm.trans ((congrArg (fun t => (X.fromSpecStalk x).base t) hab).trans hb)
 
 /- English proof (translation)
-Use `⟨isIrreducible_singleton.closure, ?_⟩` and prove the remaining obligations. Introduce `S hS hsub`. Take `⟨y, hy⟩` from `QuasiSober.sober hS.closure isClosed_closure`. Establish `hy2 : closure ({y} : Set ↥X) = closure S` using `hy`. Establish `hxS : x ∈ closure S` using `subset_closure (hsub (subset_closure rfl))`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyx : y = x`. Use `h y (specializes_iff_mem_closure.mpr ?_)` and prove the remaining obligations. Rewrite using `[hy2]`. Conclude with `hxS`. Rewrite `hy2` using `[hyx]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hy2]`. Conclude with `subset_closure`.
+A detailed English derivation is pending.
 -/
 private theorem closure_singleton_mem_irreducibleComponents {X : Scheme.{u}} (x : ↥X)
     (h : ∀ y : ↥X, y ⤳ x → y = x) :
@@ -617,11 +611,11 @@ private theorem closure_singleton_mem_irreducibleComponents {X : Scheme.{u}} (x 
   exact subset_closure
 
 /- English proof (translation)
-Establish `hcont : Continuous ⇑e.inv.base` using `e.inv.base.hom.continuous`. Establish `h1 : e.inv.base w ⤳ e.inv.base (e.hom.base x)` using `hw.map hcont`. Establish `h2 : e.inv.base (e.hom.base x) = x`. Rewrite using `[← comp_base_apply e.hom e.inv x, e.hom_inv_id]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h1` using `[h2]`. Establish `h3` using `h _ h1`. Establish `h4 : e.hom.base (e.inv.base w) = w`. Rewrite using `[← comp_base_apply e.inv e.hom w, e.inv_hom_id]`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h4, h3]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem eq_of_specializes_iso_hom {X B : Scheme.{u}} (e : X ≅ B) (x : ↥X)
     (h : ∀ y : ↥X, y ⤳ x → y = x) (w : ↥B) (hw : w ⤳ e.hom.base x) :
@@ -639,11 +633,11 @@ private theorem eq_of_specializes_iso_hom {X B : Scheme.{u}} (e : X ≅ B) (x : 
   rw [← h4, h3]
 
 /- English proof (translation)
-Introduce `hfield`. Establish `hB : (D.toEmbeddedBlowupSequence A).strictTransformIdeal 0 = AlgebraicGeometry.Scheme.Hom.ker (D.emb ≫ (principalizationOfEmbedding k Y pY D A).isoZero.inv)` using `EmbeddedBlowupSequence.strictTransformIdeal_zero (D.toEmbeddedBlowupSequence A)`. Establish `hcomap : (AlgebraicGeometry.Scheme.Hom.ker D.emb).comap (principalizationOfEmbedding k Y pY D A).isoZero.hom = AlgebraicGeometry.Scheme.Hom.ker (D.emb ≫ (principalizationOfEmbedding k Y pY D A).isoZero.inv)` using `ker_comap_iso_hom_eq_ker_comp_inv D.emb (principalizationOfEmbedding k Y pY D A).isoZero`. Establish `hxsupp : ((D.toEmbeddedBlowupSequence A).strictTransformι 0).base ξ ∈ ((((D.toEmbeddedBlowupSequence A).strictTransformIdeal 0).support) : Set ↥((D.toEmbeddedBlowupSequence A).schemeAt 0))`. Rewrite using `[← Scheme.IdealSheafData.range_subschemeι ((D.toEmbeddedBlowupSequence A).strictTransformIdeal 0)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨ξ, rfl⟩`. Establish `hz : (principalizationOfEmbedding k Y pY D A).isoZero.hom.base (((D.toEmbeddedBlowupSequence A).strictTransformι 0).base ξ) ∈ ((AlgebraicGeometry.Scheme.Hom.ker D.emb).support : Set ↥D.ambient)`. Use `mem_support_of_mem_support_comap (principalizationOfEmbedding k Y pY D A).isoZero.hom (AlgebraicGeometry.Scheme.Hom.ker D.emb) _ ?_` and prove the remaining obligations. Rewrite using `[hcomap, ← hB]`. Conclude with `hxsupp`.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hnogen : ∀ y, y ⤳ ((D.toEmbeddedBlowupSequence A).strictTransformι 0).base ξ → y = ((D.toEmbeddedBlowupSequence A).strictTransformι 0).base ξ` using `fun y hy => eq_of_specializes_of_isField_stalk _ hfield y hy`. Establish `hcomp` using `closure_singleton_mem_irreducibleComponents ((principalizationOfEmbedding k Y pY D A).isoZero.hom.base (((D.toEmbeddedBlowupSequence A).strictTransformι 0).base ξ)) (eq_of_specializes_iso_hom (principalizationOfEmbedding k Y pY D A).isoZero (((D.toEmbeddedBlowupSequence A).strict …`. Conclude with `D.nonzeroOnComponents_ker _ hcomp (closure_minimal (Set.singleton_subset_iff.mpr hz) (AlgebraicGeometry.Scheme.Hom.ker D.emb).support.2)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem not_isField_stalk_strictTransformι_zero {k : Type u} [Field k] [CharZero k]
     {Y : Scheme.{u}} [AlgebraicGeometry.IsAffine Y] [AlgebraicGeometry.IsReduced Y]
@@ -685,27 +679,25 @@ private theorem not_isField_stalk_strictTransformι_zero {k : Type u} [Field k] 
       (AlgebraicGeometry.Scheme.Hom.ker D.emb).support.2)
 
 /- English proof (translation)
-Introduce `C hC ξ hξ hCcl`. Establish `: AlgebraicGeometry.IsLocallyNoetherian ((principalizationOfEmbedding k Y pY D A).schemeAt 0)` using `((D.toEmbeddedBlowupSequence A).isNoetherian_schemeAt 0 (Nat.zero_le _)).toIsLocallyNoetherian`. Establish `: TopologicalSpace.NoetherianSpace ↥((D.toEmbeddedBlowupSequence A).strictTransform 0)` using `(D.toEmbeddedBlowupSequence A).noetherianSpace_strictTransform_of_isNoetherian (isNoetherian_schemeAt_toEmbeddedBlowupSequence D A) 0 (Nat.zero_le _)`. Establish `hemb` using `(D.toEmbeddedBlowupSequence A).isClosedEmbedding_strictTransformι 0`. Establish `hclr : IsClosed (Set.range ⇑((D.toEmbeddedBlowupSequence A).strictTransformι 0).base)` using `hemb.isClosed_range`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hid0` using `principalizationOfEmbedding_ideal_zero_eq_vanishingIdeal D A hclr`. Use `set Bad : Set ↥((D.toEmbeddedBlowupSequence A).schemeAt 0) := ⋃ C'' ∈ (irreducibleComponents ↥((D.toEmbeddedBlowupSequence A).strictTransform 0) \ {C}), ⇑((D.toEmbeddedBlowupSequence A).strictTransformι 0).base '' C'' with hBaddef`. Establish `hfin : (irreducibleComponents ↥((D.toEmbeddedBlowupSequence A).strictTransform 0) \ {C}).Finite` using `TopologicalSpace.NoetherianSpace.finite_irreducibleComponents.subset Set.sdiff_subset`. Establish `hBadcl : IsClosed Bad`. Rewrite using `[hBaddef]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hfin.isClosed_biUnion (fun C'' hC'' => hemb.isClosedMap _ (isClosed_of_mem_irreducibleComponents C'' hC''.1))`. Establish `hxU : ((D.toEmbeddedBlowupSequence A).strictTransformι 0).base ξ ∈ Badᶜ`. Introduce `hmem`. Rewrite `hmem` using `[hBaddef]`. Take `⟨C'', hC''D, hxim⟩` from `Set.mem_iUnion₂.mp hmem`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨z, hzC'', hz⟩` from `hxim`. Establish `hzξ : z = ξ` using `hemb.injective hz`. Substitute `hzξ` using the available equality. Establish `hsub : C ⊆ C''`. Rewrite using `[← hξ.def]`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `closure_minimal (Set.singleton_subset_iff.mpr hzC'') (isClosed_of_mem_irreducibleComponents C'' hC''D.1)`. Conclude with `hC''D.2 (subset_antisymm (hC.2 hC''D.1.1 hsub) hsub)`. Establish `hinter : (Set.range ⇑((D.toEmbeddedBlowupSequence A).strictTransformι 0).base) ∩ Badᶜ = (⇑((D.toEmbeddedBlowupSequence A).strictTransformι 0).base '' C) ∩ Badᶜ`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Introduce and unpack `⟨⟨z, rfl⟩, hy⟩`. Use `⟨?_, hy⟩` and prove the remaining obligations. Distinguish the cases in `hz : z ∈ C`. Conclude with `⟨z, hz, rfl⟩`. Use `absurd ?_ hy` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hBaddef]`. Use `Set.mem_biUnion ⟨irreducibleComponent_mem_irreducibleComponents z, ?_⟩ ⟨z, mem_irreducibleComponent, rfl⟩` and prove the remaining obligations. Introduce `h`. Conclude with `hz (h ▸ mem_irreducibleComponent)`. Introduce and unpack `⟨⟨z, hzC, rfl⟩, hy⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Supply the required witnesses or components.
 
-Conclude with `⟨⟨z, rfl⟩, hy⟩`. Establish `hgen : IsGenericPoint (((D.toEmbeddedBlowupSequence A).strictTransformι 0).base ξ) (⇑((D.toEmbeddedBlowupSequence A).strictTransformι 0).base '' C)` using `FunctorialResolution.EmbeddedResolution.isGenericPoint_image_of_isClosedEmbedding hemb hξ`. Establish `hmax : Maximal (fun s => IsIrreducible s ∧ s ⊆ (Set.range ⇑((D.toEmbeddedBlowupSequence A).strictTransformι 0).base)) (⇑((D.toEmbeddedBlowupSequence A).strictTransformι 0).base '' C)`. Prove the components needed by the constructor for the conclusion. Conclude with `⟨hC.1.image _ hemb.continuous.continuousOn, Set.image_subset_range _ _⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `b ⟨hbirr, hbr⟩ hsub y hy`. Establish `hpre : IsIrreducible (⇑((D.toEmbeddedBlowupSequence A).strictTransformι 0).base ⁻¹' b)` using `FunctorialResolution.EmbeddedResolution.isIrreducible_preimage_of_isEmbedding hemb.isEmbedding hbirr hbr`. Establish `hCsub : C ⊆ ⇑((D.toEmbeddedBlowupSequence A).strictTransformι 0).base ⁻¹' b` using `fun z hz => hsub ⟨z, hz, rfl⟩`. Establish `hle` using `hC.2 hpre hCsub`. Take `⟨z, rfl⟩` from `hbr hy`.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨z, hle hy, rfl⟩`. Establish `hfield` using `not_isField_stalk_strictTransformι_zero D A ξ`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hid0]`. Conclude with `agreeNear_vanishingIdeal_of_inter_eq _ _ ⟨Badᶜ, hBadcl.isOpen_compl⟩ _ hxU hinter`.
-
-Rewrite using `[hid0]`. Conclude with `FunctorialResolution.EmbeddedResolution.orderAt_vanishingIdeal_eq_one_of_not_isField _ _ _ hmax hgen hfield`.
+A detailed English derivation is pending.
 -/
 private theorem agreesWithComponentsOrderOne_zero {k : Type u} [Field k] [CharZero k] {Y : Scheme.{u}}
     [AlgebraicGeometry.IsAffine Y] [AlgebraicGeometry.IsReduced Y]
@@ -783,37 +775,31 @@ private theorem agreesWithComponentsOrderOne_zero {k : Type u} [Field k] [CharZe
     exact FunctorialResolution.EmbeddedResolution.orderAt_vanishingIdeal_eq_one_of_not_isField _ _ _ hmax hgen hfield
 
 /- English proof (translation)
-Introduce `C hC η hηgen hCcl`. Establish `hN` using `isNoetherian_schemeAt_toEmbeddedBlowupSequence D A`. Establish `hi' : i < (D.toEmbeddedBlowupSequence A).length` using `Nat.lt_of_succ_le hi`. Establish `hilt : i < (principalizationOfEmbedding k Y pY D A).length` using `hi'`. Take `⟨C', hC'm, hη', hfr⟩` from `(D.toEmbeddedBlowupSequence A).exists_irreducibleComponent_isGenericPoint_strictTransformMap hN i hi' C hC η hηgen`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hC'cl : IsClosed (⇑((D.toEmbeddedBlowupSequence A).strictTransformι i).base '' C')` using `((D.toEmbeddedBlowupSequence A).isClosedEmbedding_strictTransformι i).isClosedMap _ (isClosed_of_mem_irreducibleComponents C' hC'm)`. Take `⟨hag, hord⟩` from `ih C' hC'm _ hη' hC'cl`. Take `⟨V, hxV, hVeq⟩` from `(agreeNear_iff _ _ _).mp hag`. Take `⟨V', hV'⟩ : ∃ V' : ((D.toEmbeddedBlowupSequence A).schemeAt i).Opens, V' = V` from `⟨V, rfl⟩`. Establish `hkey : ((D.toEmbeddedBlowupSequence A).strictTransformι i).base (((D.toEmbeddedBlowupSequence A).strictTransformMap i).base η) = ((D.toEmbeddedBlowupSequence A).blowdown i).base (((D.toEmbeddedBlowupSequence A).strictTransformι (i + 1)).base η)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h : ((D.toEmbeddedBlowupSequence A).strictTransformMap i ≫ (D.toEmbeddedBlowupSequence A).strictTransformι i).base η = ((D.toEmbeddedBlowupSequence A).strictTransformι (i + 1) ≫ (D.toEmbeddedBlowupSequence A).blowdown i).base η`. Rewrite using `[(D.toEmbeddedBlowupSequence A).strictTransformMap_comp_strictTransformι i]`. Simplify using `using h`. Establish `hnot` using `(D.toEmbeddedBlowupSequence A).notMem_ambientCenter_support_of_isGenericPoint i C' hC'm hfr _ hη'`. Establish `hxV' : ((D.toEmbeddedBlowupSequence A).strictTransformι i).base (((D.toEmbeddedBlowupSequence A).strictTransformMap i).base η) ∈ V'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hV']`. Conclude with `hxV`. Establish `hV'eq : ((principalizationOfEmbedding k Y pY D A).ideal i).comap V'.ι = (Scheme.IdealSheafData.vanishingIdeal (⟨⇑((D.toEmbeddedBlowupSequence A).strictTransformι i).base '' C', hC'cl⟩ : TopologicalSpace.Closeds ↥((D.toEmbeddedBlowupSequence A).schemeAt i))).comap V'.ι`. Rewrite using `[hV']`. Conclude with `hVeq`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨U, hUdef⟩ : ∃ U : ((D.toEmbeddedBlowupSequence A).schemeAt (i + 1)).Opens, U = (TopologicalSpace.Opens.map ((D.toEmbeddedBlowupSequence A).blowdown i).base).obj (V' ⊓ (D.toEmbeddedBlowupSequence A).ambientCenterSupportCompl i)` from `⟨_, rfl⟩`. Establish `hUsub : (U : Set ↥((D.toEmbeddedBlowupSequence A).schemeAt (i + 1))) ⊆ ⇑((D.toEmbeddedBlowupSequence A).blowdown i).base ⁻¹' (((D.toEmbeddedBlowupSequence A).ambientCenterSupportCompl i : ((D.toEmbeddedBlowupSequence A).schemeAt i).Opens) : Set ↥((D.toEmbeddedBlowupSequence A).sc …`. Rewrite using `[hUdef]`. Introduce `y hy`. Conclude with `hy.2`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hmemU : ∀ y : ↥U, ((D.toEmbeddedBlowupSequence A).blowdown i).base (U.ι.base y) ∉ (((D.toEmbeddedBlowupSequence A).ambientCenter i).support : Set ↥((D.toEmbeddedBlowupSequence A).schemeAt i))`. Introduce `y`. Conclude with `hUsub y.2`. Establish `hxU : ((D.toEmbeddedBlowupSequence A).strictTransformι (i + 1)).base η ∈ U`. Rewrite using `[hUdef]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ((D.toEmbeddedBlowupSequence A).blowdown i).base (((D.toEmbeddedBlowupSequence A).strictTransformι (i + 1)).base η) ∈ V'`. Rewrite using `[← hkey]`. Conclude with `hxV'`. Establish `h2 : ((D.toEmbeddedBlowupSequence A).blowdown i).base (((D.toEmbeddedBlowupSequence A).strictTransformι (i + 1)).base η) ∈ (D.toEmbeddedBlowupSequence A).ambientCenterSupportCompl i`. Rewrite using `[← hkey]`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hnot`. Conclude with `⟨h1, h2⟩`. Establish `: AlgebraicGeometry.IsOpenImmersion (U.ι ≫ (D.toEmbeddedBlowupSequence A).blowdown i)` using `EmbeddedBlowupSequence.isOpenImmersion_ι_comp_blowdown (D.toEmbeddedBlowupSequence A) i hi' U hUsub`. Establish `hexc : ((principalizationOfEmbedding k Y pY D A).exceptionalIdeal i).comap U.ι = ⊤`. Use `FunctorialResolution.EmbeddedResolution.comap_ι_eq_top_of_disjoint _ _ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.disjoint_left]`. Introduce `y hy hmem`. Rewrite `hmem` using `[(principalizationOfEmbedding k Y pY D A).exceptionalIdeal_eq i]`. Conclude with `absurd (mem_support_of_mem_support_comap ((principalizationOfEmbedding k Y pY D A).transitionMapSucc i) _ y hmem) (hUsub hy)`. Establish `hJ : ((principalizationOfEmbedding k Y pY D A).ideal (i + 1)).comap U.ι = ((principalizationOfEmbedding k Y pY D A).ideal i).comap (U.ι ≫ (D.toEmbeddedBlowupSequence A).blowdown i)` using `comap_eq_comap_comp_of_mul_eq _ U _ _ _ ((principalizationOfEmbedding k Y pY D A).ideal_succ i hilt) hexc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Establish `hle : U ≤ (TopologicalSpace.Opens.map ((D.toEmbeddedBlowupSequence A).blowdown i).base).obj V'`. Rewrite using `[hUdef]`. Introduce `y hy`. Conclude with `hy.1`. Establish `hcomapφ : ((principalizationOfEmbedding k Y pY D A).ideal i).comap (U.ι ≫ (D.toEmbeddedBlowupSequence A).blowdown i) = (Scheme.IdealSheafData.vanishingIdeal (⟨⇑((D.toEmbeddedBlowupSequence A).strictTransformι i).base '' C', hC'cl⟩ : TopologicalSpace.Closeds ↥((D.toEmbeddedBlowupS …` using `AlgebraicGeometry.Scheme.IdealSheafData.comap_ι_comp_eq_of_comap_ι_eq ((D.toEmbeddedBlowupSequence A).blowdown i) V' U hle _ _ hV'eq`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hLHS : (Scheme.IdealSheafData.vanishingIdeal (⟨⇑((D.toEmbeddedBlowupSequence A).strictTransformι i).base '' C', hC'cl⟩ : TopologicalSpace.Closeds ↥((D.toEmbeddedBlowupSequence A).schemeAt i))).comap (U.ι ≫ (D.toEmbeddedBlowupSequence A).blowdown i) = Scheme.IdealSheafData.vanishi …`. Use `FunctorialResolution.EmbeddedResolution.comap_vanishingIdeal_of_isOpenImmersion_of_coe_eq (U.ι ≫ (D.toEmbeddedBlowupSequence A).blowdown i) _ _ ?_` and prove the remaining obligations. Use extensionality with `y`. Establish `hcb` using `comp_base_apply U.ι ((D.toEmbeddedBlowupSequence A).blowdown i) y`. Establish `hiff` using `EmbeddedBlowupSequence.mem_image_strictTransformι_iff_of_notMem_ambientCenter (D.toEmbeddedBlowupSequence A) hN i hi' C η hηgen C' hη' (U.ι.base y) (hmemU y)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hy`. Establish `hy1 : U.ι.base y ∈ ⇑((D.toEmbeddedBlowupSequence A).strictTransformι (i + 1)).base '' C` using `hy`. Establish `hy2 : ((D.toEmbeddedBlowupSequence A).blowdown i).base (U.ι.base y) ∈ ⇑((D.toEmbeddedBlowupSequence A).strictTransformι i).base '' C'` using `hiff.mpr hy1`. Establish `hy3 : (U.ι ≫ (D.toEmbeddedBlowupSequence A).blowdown i).base y ∈ ⇑((D.toEmbeddedBlowupSequence A).strictTransformι i).base '' C'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hcb]`. Conclude with `hy2`. Conclude with `hy3`. Introduce `hy`. Establish `hy1 : (U.ι ≫ (D.toEmbeddedBlowupSequence A).blowdown i).base y ∈ ⇑((D.toEmbeddedBlowupSequence A).strictTransformι i).base '' C'` using `hy`.
-
-Establish `hy2 : ((D.toEmbeddedBlowupSequence A).blowdown i).base (U.ι.base y) ∈ ⇑((D.toEmbeddedBlowupSequence A).strictTransformι i).base '' C'`. Rewrite using `[← hcb]`. Conclude with `hy1`. Conclude with `hiff.mp hy2`. Use `⟨(agreeNear_iff _ _ _).mpr ⟨U, hxU, ?_⟩, ?_⟩` and prove the remaining obligations.
-
-Conclude with `hJ.trans (hcomapφ.trans (hLHS.trans (FunctorialResolution.EmbeddedResolution.comap_vanishingIdeal_of_isOpenImmersion U.ι (⟨⇑((D.toEmbeddedBlowupSequence A).strictTransformι (i + 1)).base '' C, hCcl⟩ : TopologicalSpace.Closeds ↥((D.toEmbeddedBlowupSequence A).schemeAt (i + 1)))).s …`. Establish `e1` using `FunctorialResolution.EmbeddedResolution.orderAt_comap_of_isOpenImmersion U.ι ((principalizationOfEmbedding k Y pY D A).ideal (i + 1)) (⟨((D.toEmbeddedBlowupSequence A).strictTransformι (i + 1)).base η, hxU⟩ : ↥U)`. Establish `e2` using `FunctorialResolution.EmbeddedResolution.orderAt_comap_of_isOpenImmersion (U.ι ≫ (D.toEmbeddedBlowupSequence A).blowdown i) ((principalizationOfEmbedding k Y pY D A).ideal i) (⟨((D.toEmbeddedBlowupSequence A).strictTransformι (i + 1)).base η, hxU⟩ : ↥U)`. Establish `hφp : (U.ι ≫ (D.toEmbeddedBlowupSequence A).blowdown i).base (⟨((D.toEmbeddedBlowupSequence A).strictTransformι (i + 1)).base η, hxU⟩ : ↥U) = ((D.toEmbeddedBlowupSequence A).strictTransformι i).base (((D.toEmbeddedBlowupSequence A).strictTransformMap i).base η)`. Rewrite using `[comp_base_apply U.ι ((D.toEmbeddedBlowupSequence A).blowdown i) (⟨((D.toEmbeddedBlowupSequence A).strictTransformι (i + 1)).base η, hxU⟩ : ↥U)]`.
-
-Conclude with `hkey.symm`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem agreesWithComponentsOrderOne_succ {k : Type u} [Field k] [CharZero k] {Y : Scheme.{u}}
     [AlgebraicGeometry.IsAffine Y] [AlgebraicGeometry.IsReduced Y]
@@ -964,9 +950,7 @@ private theorem agreesWithComponentsOrderOne_succ {k : Type u} [Field k] [CharZe
       _ = 1 := hord
 
 /- English proof (translation)
-Introduce `i`. Proceed by induction on `i with`. Consider the case `zero => intro _`. Conclude with `agreesWithComponentsOrderOne_zero D A`. Consider the case `succ i ih => intro hi`.
-
-Conclude with `agreesWithComponentsOrderOne_succ D A i hi (ih (Nat.le_of_succ_le hi))`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem forall_agreesWithComponentsOrderOne {k : Type u} [Field k] [CharZero k] {Y : Scheme.{u}}
     [AlgebraicGeometry.IsAffine Y] [AlgebraicGeometry.IsReduced Y]
@@ -979,7 +963,7 @@ private theorem forall_agreesWithComponentsOrderOne {k : Type u} [Field k] [Char
   | succ i ih => intro hi; exact agreesWithComponentsOrderOne_succ D A i hi (ih (Nat.le_of_succ_le hi))
 
 /- English proof (translation)
-The claim follows from `forall_agreesWithComponentsOrderOne D A i hi`.
+A detailed English derivation is pending.
 -/
 theorem agreesWithComponentsOrderOne_of_le [AlgebraicGeometry.IsReduced Y] (D : EmbeddingDatum k Y pY)
     (A : PrincipalizationAlgorithm.{u}) (i : ℕ) (hi : i ≤ (D.toEmbeddedBlowupSequence A).length) :
@@ -987,7 +971,7 @@ theorem agreesWithComponentsOrderOne_of_le [AlgebraicGeometry.IsReduced Y] (D : 
   forall_agreesWithComponentsOrderOne D A i hi
 
 /- English proof (translation)
-Introduce `k _ _ Y _ _ pY _ _ D i hi`. Conclude with `(D.toEmbeddedBlowupSequence A).noetherianSpace_strictTransform_of_isNoetherian (isNoetherian_schemeAt_toEmbeddedBlowupSequence D A) i hi`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem noetherianSpace_strictTransform (A : PrincipalizationAlgorithm.{u}) :
     ∀ (k : Type u) [Field k] [CharZero k] (Y : Scheme.{u})
@@ -1000,7 +984,7 @@ theorem noetherianSpace_strictTransform (A : PrincipalizationAlgorithm.{u}) :
   exact (D.toEmbeddedBlowupSequence A).noetherianSpace_strictTransform_of_isNoetherian (isNoetherian_schemeAt_toEmbeddedBlowupSequence D A) i hi
 
 /- English proof (translation)
-Introduce `k _ _ Y _ _ pY _ _ D i _`. Conclude with `(D.toEmbeddedBlowupSequence A).isClosedEmbedding_strictTransformι i`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isClosedEmbedding_strictTransformι (A : PrincipalizationAlgorithm.{u}) :
     ∀ (k : Type u) [Field k] [CharZero k] (Y : Scheme.{u})
@@ -1013,7 +997,7 @@ theorem isClosedEmbedding_strictTransformι (A : PrincipalizationAlgorithm.{u}) 
   exact (D.toEmbeddedBlowupSequence A).isClosedEmbedding_strictTransformι i
 
 /- English proof (translation)
-Introduce `k _ _ Y _ _ pY _ _ D i hi C hC ξ hξ E hE hx`. Conclude with `not_avoidsCenters_of_mem_boundary_support D A i hi E hE _ hx (EmbeddedBlowupSequence.avoidsCenters_strictTransformι_of_isGenericPoint (D.toEmbeddedBlowupSequence A) (isNoetherian_schemeAt_toEmbeddedBlowupSequence D A) i hi C hC ξ hξ)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem genericPoint_notMem_boundary_support (A : PrincipalizationAlgorithm.{u}) :
     ∀ (k : Type u) [Field k] [CharZero k] (Y : Scheme.{u})
@@ -1032,7 +1016,7 @@ theorem genericPoint_notMem_boundary_support (A : PrincipalizationAlgorithm.{u})
       (isNoetherian_schemeAt_toEmbeddedBlowupSequence D A) i hi C hC ξ hξ)
 
 /- English proof (translation)
-Introduce `k _ _ Y _ _ pY _ _ D i hi C hC ξ hξ hCcl`. Conclude with `agreesWithComponentsOrderOne_of_le D A i hi C hC ξ hξ hCcl`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem agreeNear_and_orderAt_eq_one_reducedVanishingAssignment (A : PrincipalizationAlgorithm.{u}) :
     ∀ (k : Type u) [Field k] [CharZero k] (Y : Scheme.{u})
@@ -1053,7 +1037,7 @@ theorem agreeNear_and_orderAt_eq_one_reducedVanishingAssignment (A : Principaliz
   exact agreesWithComponentsOrderOne_of_le D A i hi C hC ξ hξ hCcl
 
 /- English proof (translation)
-The claim follows from `{ noetherianSpace_alive := noetherianSpace_strictTransform A isClosedEmbedding_aliveι := isClosedEmbedding_strictTransformι A generic_not_mem_member := genericPoint_notMem_boundary_support A agreeNear_orderAt_eq_one := agreeNear_and_orderAt_eq_one_reducedVanishingAssignment A }`.
+A detailed English derivation is pending.
 -/
 theorem chartIsolationHypotheses_reducedVanishingAssignment (A : PrincipalizationAlgorithm.{u}) :
     ChartIsolationHypotheses reducedVanishingAssignment A :=
@@ -1063,7 +1047,7 @@ theorem chartIsolationHypotheses_reducedVanishingAssignment (A : Principalizatio
     agreeNear_orderAt_eq_one := agreeNear_and_orderAt_eq_one_reducedVanishingAssignment A }
 
 /- English proof (translation)
-Introduce `hsub`. Take `⟨ξ, hξ⟩` from `QuasiSober.sober hC.1 (isClosed_of_mem_irreducibleComponents C hC)`. Conclude with `genericPoint_notMem_boundary_support A k Y pY D i hi C hC ξ hξ E hE (hsub ⟨ξ, hξ.mem, rfl⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem not_image_irreducibleComponent_subset_boundary_support [AlgebraicGeometry.IsReduced Y]
     (D : EmbeddingDatum k Y pY) (A : PrincipalizationAlgorithm.{u}) (i : ℕ) (hi : i ≤ (D.toEmbeddedBlowupSequence A).length)

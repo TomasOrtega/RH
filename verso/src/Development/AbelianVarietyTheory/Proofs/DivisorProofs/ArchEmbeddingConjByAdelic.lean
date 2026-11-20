@@ -6,9 +6,9 @@ open scoped ContDiff
 namespace GlobalTheory.ConjArch
 
 /- English proof (translation)
-Use `GAd_ext σ J (fun u => ?_) (fun v => ?_)` and prove the remaining obligations. Distinguish the cases in `h : u = w`. Substitute `h` using the available equality. Simplify using `only [map_mul, map_inv, projArch_embArch_self]`. Simplify using `only [map_mul, map_inv, projArch_embArch_ne σ J h, mul_one, inv_mul_cancel, inv_one]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul, map_inv, proj_embArch, mul_one, inv_mul_cancel, inv_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem conj_embArch (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (w : InfinitePlace F) (y : GArch σ J w) (b : GAd σ J) :

@@ -13,7 +13,7 @@ section General
 variable {ι : Type} [Fintype ι] {M : ι → Type} [∀ σ, AddCommGroup (M σ)] [∀ σ, Module ℂ (M σ)]
 
 /- English proof (translation)
-Apply `PiTensorProduct.ext` to reduce the goal to its premises. Apply `MultilinearMap.ext` to reduce the goal to its premises. Introduce `m`. Simplify using `[Basis.coord_apply, Basis.piTensorProduct_repr_tprod_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem coord_piTensorProduct {κ : ι → Type} (c : ∀ σ, Basis (κ σ) ℂ (M σ)) (p : ∀ σ, κ σ) :
     (Basis.piTensorProduct c).coord p =
@@ -24,9 +24,9 @@ theorem coord_piTensorProduct {κ : ι → Type} (c : ∀ σ, Basis (κ σ) ℂ 
   simp [Basis.coord_apply, Basis.piTensorProduct_repr_tprod_apply]
 
 /- English proof (translation)
-Set `c` to `fun σ => Basis.ofVectorSpace ℂ (M σ)`. Apply `(Basis.piTensorProduct c).repr.injective` to reduce the goal to its premises. Use extensionality with `p`. Use `h (fun σ => (c σ).coord (p σ))` as an intermediate fact. Rewrite `this` using `[← coord_piTensorProduct]`.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify `this` using `[Basis.coord_apply]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eq_zero_of_forall_dualDistrib (x : PiTensorProduct ℂ M)
     (h : ∀ f : ∀ σ, Module.Dual ℂ (M σ),
@@ -51,7 +51,7 @@ variable {V W : ι → Type} [∀ τ, AddCommGroup (V τ)] [∀ τ, Module ℂ (
   [∀ τ, AddCommGroup (W τ)] [∀ τ, Module ℂ (W τ)]
 
 /- English proof (translation)
-Proceed by induction on `z using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r t => simp`. Consider the case `add a b ha hb => simp [ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem dualDistrib_apply_piTensorHomMap (φ : ∀ σ, Module.Dual ℂ (W σ)) (v : ∀ σ, V σ)
     (z : PiTensorProduct ℂ (fun σ => V σ →ₗ[ℂ] W σ)) :
@@ -64,15 +64,15 @@ theorem dualDistrib_apply_piTensorHomMap (φ : ∀ σ, Module.Dual ℂ (W σ)) (
   | add a b ha hb => simp [ha, hb]
 
 /- English proof (translation)
-Apply `eq_zero_of_forall_dualDistrib` to reduce the goal to its premises. Introduce `ψ`. Set `b` to `fun σ => Module.finBasis ℂ (V σ)`. Set `χ : ∀ σ, Fin (Module.finrank ℂ (V σ)) → Module.Dual ℂ (W σ)` to `fun σ j => ψ σ ∘ₗ { toFun := fun w => ((b σ).coord j).smulRight w map_add' := fun w w' => by ext; simp [smul_add] map_smul' := fun c w => by`. Use extensionality with `v`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. By extensionality, compare the relevant components.
 
-Simplify using `only [LinearMap.smulRight_apply, LinearMap.smul_apply, RingHom.id_apply]`. Conclude with `smul_comm _ _ _ }`. Establish `hψ : ψ = fun σ => ∑ j, χ σ j ∘ₗ LinearMap.applyₗ (b σ j)`. Use function extensionality and compare the values at `σ`. Apply `LinearMap.ext` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t`. Simplify using `only [χ, LinearMap.coe_sum, Finset.sum_apply, LinearMap.comp_apply, LinearMap.coe_mk, AddHom.coe_mk, LinearMap.applyₗ_apply_apply]`. Rewrite using `[← map_sum]`. Use `congr 1`. Apply `LinearMap.ext` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v`. Simplify using `[Basis.coord_apply]`. Repeatedly rewrite using `[← map_smul, ← map_sum, (b σ).sum_repr v]`. Rewrite using `[hψ, MultilinearMap.map_sum, map_sum, LinearMap.sum_apply]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `J _`. Rewrite using `[dualDistrib_apply_piTensorHomMap, hz]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem piTensorHomMap_eq_zero [∀ τ, FiniteDimensional ℂ (V τ)]
     (z : PiTensorProduct ℂ (fun σ => V σ →ₗ[ℂ] W σ))
@@ -108,15 +108,15 @@ theorem piTensorHomMap_eq_zero [∀ τ, FiniteDimensional ℂ (V τ)]
   simp
 
 /- English proof (translation)
-Set `b` to `fun σ => Module.finBasis ℂ (V σ)`. Set `B` to `Basis.piTensorProduct b`. Establish `hQ : Q = ∑ J, (B.coord J).smulRight (Q (B J))`. Apply `B.ext` to reduce the goal to its premises. Introduce `J'`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Basis.coord_apply, Finsupp.single_apply]`. Rewrite using `[hQ]`. Use `Submodule.sum_mem _ (fun J _ => ?_)` and prove the remaining obligations. Rewrite using `[coord_piTensorProduct]`. Generalize the expression as in `Q (B J) = w`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Proceed by induction on `w using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r w`. Use `⟨r • PiTensorProduct.tprod ℂ (fun σ => ((b σ).coord (J σ)).smulRight (w σ)), ?_⟩` and prove the remaining obligations. Apply `PiTensorProduct.ext` to reduce the goal to its premises. Apply `MultilinearMap.ext` to reduce the goal to its premises.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `x`. Simplify using `[MultilinearMap.map_smul_univ, smul_smul, mul_comm]`. Consider the case `add w₁ w₂ h₁ h₂`. Take `⟨a₁, ha₁⟩` from `h₁`. Take `⟨a₂, ha₂⟩` from `h₂`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨a₁ + a₂, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, ha₁, ha₂]`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mem_range_piTensorHomMap [∀ τ, FiniteDimensional ℂ (V τ)]
     (Q : PiTensorProduct ℂ V →ₗ[ℂ] PiTensorProduct ℂ W) :
@@ -173,9 +173,9 @@ section Slice
 variable {M : ι → Type} [∀ σ, AddCommGroup (M σ)] [∀ σ, Module ℂ (M σ)]
 
 /- English proof (translation)
-Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_erase.2 ⟨hi, Finset.mem_univ i⟩)]`. Use `congr 1`. Simplify using the standard rewrite rules. Apply `Finset.prod_congr rfl` to reduce the goal to its premises. Introduce `σ hσ`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Function.update_of_ne (Finset.ne_of_mem_erase hσ)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_erase_update (ψ : ∀ σ, Module.Dual ℂ (M σ)) (t : ∀ σ, M σ) {i τ : ι} (hi : i ≠ τ)
     (x : M i) :
@@ -189,7 +189,7 @@ theorem prod_erase_update (ψ : ∀ σ, Module.Dual ℂ (M σ)) (t : ∀ σ, M �
     rw [Function.update_of_ne (Finset.ne_of_mem_erase hσ)]
 
 /- English proof (translation)
-Apply `Finset.prod_congr rfl` to reduce the goal to its premises. Introduce `σ hσ`. Rewrite using `[Function.update_of_ne (Finset.ne_of_mem_erase hσ)]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_erase_update_self (ψ : ∀ σ, Module.Dual ℂ (M σ)) (t : ∀ σ, M σ) (τ : ι) (x : M τ) :
     ∏ σ ∈ Finset.univ.erase τ, ψ σ (Function.update t τ x σ) =
@@ -226,11 +226,11 @@ theorem sliceML_apply (ψ : ∀ σ, Module.Dual ℂ (M σ)) (τ : ι) (t : ∀ �
     sliceML ψ τ t = (∏ σ ∈ Finset.univ.erase τ, ψ σ (t σ)) • t τ := rfl
 
 /- English proof (translation)
-Proceed by induction on `y using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r t`. Simplify using `only [map_smul, PiTensorProduct.lift.tprod, sliceML_apply, PiTensorProduct.dualDistrib_apply]`. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ τ), Function.update_self]`. Use `congr 1`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[smul_eq_mul, mul_comm]`. Use `congr 1`. Apply `Finset.prod_congr rfl` to reduce the goal to its premises. Introduce `σ hσ`. Rewrite using `[Function.update_of_ne (Finset.ne_of_mem_erase hσ)]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add a b ha hb => simp [ha, hb]`.
+Treat this case separately.
 -/
 theorem apply_lift_sliceML (ψ : ∀ σ, Module.Dual ℂ (M σ)) (τ : ι) (χ : Module.Dual ℂ (M τ))
     (y : PiTensorProduct ℂ M) :
@@ -249,7 +249,7 @@ theorem apply_lift_sliceML (ψ : ∀ σ, Module.Dual ℂ (M σ)) (τ : ι) (χ :
   | add a b ha hb => simp [ha, hb]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `σ`. Distinguish the cases in `h : σ = τ`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Function.update_of_ne h]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem update_id_apply {N : ι → Type} [∀ σ, AddCommGroup (N σ)] [∀ σ, Module ℂ (N σ)]
     (τ : ι) (f : N τ →ₗ[ℂ] N τ) (t : ∀ σ, N σ) :
@@ -261,7 +261,7 @@ theorem update_id_apply {N : ι → Type} [∀ σ, AddCommGroup (N σ)] [∀ σ,
   · simp [Function.update_of_ne h]
 
 /- English proof (translation)
-Proceed by induction on `y using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r t`. Simplify using `only [map_smul, PiTensorProduct.map_tprod, PiTensorProduct.lift.tprod, update_id_apply, sliceML_apply, prod_erase_update_self, Function.update_self]`. Consider the case `add a b ha hb => simp [ha, hb]`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 -/
 theorem lift_sliceML_map_update (ψ : ∀ σ, Module.Dual ℂ (M σ)) (τ : ι) (f : M τ →ₗ[ℂ] M τ)
     (y : PiTensorProduct ℂ M) :
@@ -275,7 +275,7 @@ theorem lift_sliceML_map_update (ψ : ∀ σ, Module.Dual ℂ (M σ)) (τ : ι) 
   | add a b ha hb => simp [ha, hb]
 
 /- English proof (translation)
-Proceed by induction on `y using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r t => simp`. Consider the case `add a b ha hb => simp [ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem dualDistrib_map (ψ : ∀ σ, Module.Dual ℂ (M σ)) (π : ∀ σ, M σ →ₗ[ℂ] M σ)
     (y : PiTensorProduct ℂ M) :
@@ -291,15 +291,15 @@ variable {V W : ι → Type} [∀ τ, AddCommGroup (V τ)] [∀ τ, Module ℂ (
   [∀ τ, AddCommGroup (W τ)] [∀ τ, Module ℂ (W τ)]
 
 /- English proof (translation)
-Proceed by induction on `y using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r t`. Simplify using `only [map_smul, PiTensorProduct.map_tprod, update_id_apply, PiTensorProduct.piTensorHomMap_tprod_eq_map, LinearMap.smul_comp, LinearMap.comp_smul, ← smul_sub]`. Use `congr 1`. Rewrite using `[← PiTensorProduct.map_comp, ← PiTensorProduct.map_comp, commDefect_apply]`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : (fun σ => t σ ∘ₗ Function.update (fun σ => (LinearMap.id : V σ →ₗ[ℂ] V σ)) τ p.1 σ) = Function.update t τ (t τ ∘ₗ p.1)`. Use function extensionality and compare the values at `σ`. Distinguish the cases in `h : σ = τ`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Function.update_of_ne h]`. Establish `e2 : (fun σ => Function.update (fun σ => (LinearMap.id : W σ →ₗ[ℂ] W σ)) τ p.2 σ ∘ₗ t σ) = Function.update t τ (p.2 ∘ₗ t τ)`. Use function extensionality and compare the values at `σ`. Distinguish the cases in `h : σ = τ`. Substitute `h` using the available equality.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[Function.update_of_ne h]`. Rewrite using `[e1, e2]`. Conclude with `(PiTensorProduct.mapMultilinear ℂ V W).map_update_sub t τ _ _`. Consider the case `add a b ha hb`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_add, ha, hb, LinearMap.add_comp, LinearMap.comp_add]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem piTensorHomMap_map_update (y : PiTensorProduct ℂ (fun σ => V σ →ₗ[ℂ] W σ)) (τ : ι)
     (p : (V τ →ₗ[ℂ] V τ) × (W τ →ₗ[ℂ] W τ)) :
@@ -339,31 +339,29 @@ namespace GlobalTheory.PiTensorCommute
 open Module
 
 /- English proof (translation)
-Introduce `ι _ _ V W _ _ _ _ _ R Q hQ`. Set `E` to `fun σ => V σ →ₗ[ℂ] W σ`. Set `H : ∀ τ, Submodule ℂ (E τ)` to `fun τ => ⨅ p ∈ R τ, LinearMap.ker (commDefect p)`. Establish `memH : ∀ τ (t : E τ), t ∈ H τ ↔ ∀ p ∈ R τ, t ∘ₗ p.1 = p.2 ∘ₗ t`. Introduce `τ t`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [H, Submodule.mem_iInf, LinearMap.mem_ker]`. Conclude with `forall₂_congr fun p _ => sub_eq_zero`. Use `choose g hg using fun τ => LinearMap.exists_leftInverse_of_injective (H τ).subtype (H τ).ker_subtype`. Set `π : ∀ σ, E σ →ₗ[ℂ] E σ` to `fun σ => (H σ).subtype ∘ₗ g σ`. Establish `hπmem : ∀ τ t, π τ t ∈ H τ` using `fun τ t => (g τ t).2`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hπfix : ∀ τ t, t ∈ H τ → π τ t = t`. Introduce `τ t ht`. Use `LinearMap.congr_fun (hg τ) ⟨t, ht⟩` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, Submodule.coe_subtype, LinearMap.id_apply] at this`. Simplify using `[π, this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨y, rfl⟩` from `mem_range_piTensorHomMap Q`. Establish `hz : ∀ τ, ∀ p ∈ R τ, PiTensorProduct.map (Function.update (fun σ => (LinearMap.id : E σ →ₗ[ℂ] E σ)) τ (commDefect p)) y = 0`. Introduce `τ p hp`. Apply `piTensorHomMap_eq_zero` to reduce the goal to its premises. Rewrite using `[piTensorHomMap_map_update, hQ τ p hp, sub_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `OP : ∀ (ψ : ∀ σ, Module.Dual ℂ (E σ)) τ, PiTensorProduct.dualDistrib (PiTensorProduct.tprod ℂ ψ) y = PiTensorProduct.dualDistrib (PiTensorProduct.tprod ℂ (Function.update ψ τ (ψ τ ∘ₗ π τ))) y`. Introduce `ψ τ`. Establish `hKH : PiTensorProduct.lift (sliceML ψ τ) y ∈ H τ`. Rewrite using `[memH]`. Introduce `p hp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `lift_sliceML_map_update ψ τ (commDefect p) y` as an intermediate fact. Rewrite `this` using `[hz τ p hp, map_zero, commDefect_apply]`. Conclude with `(sub_eq_zero.1 this.symm)`. Establish `h1` using `apply_lift_sliceML ψ τ (ψ τ) y`. Rewrite `h1` using `[Function.update_eq_self]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← h1, ← apply_lift_sliceML, LinearMap.comp_apply, hπfix _ _ hKH]`. Establish `TEL : ∀ s : Finset ι, ∀ ψ : ∀ σ, Module.Dual ℂ (E σ), PiTensorProduct.dualDistrib (PiTensorProduct.tprod ℂ ψ) y = PiTensorProduct.dualDistrib (PiTensorProduct.tprod ℂ fun σ => if σ ∈ s then ψ σ ∘ₗ π σ else ψ σ) y`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => intro ψ`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Consider the case `insert τ s hτ ih`. Introduce `ψ`. Rewrite using `[ih ψ, OP _ τ]`. Establish `e : Function.update (fun σ => if σ ∈ s then ψ σ ∘ₗ π σ else ψ σ) τ ((if τ ∈ s then ψ τ ∘ₗ π τ else ψ τ) ∘ₗ π τ) = fun σ => if σ ∈ insert τ s then ψ σ ∘ₗ π σ else ψ σ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Use function extensionality and compare the values at `σ`. Distinguish the cases in `h : σ = τ`. Substitute `h` using the available equality. Simplify using `[hτ]`. Simplify using `[Function.update_of_ne h, h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Establish `hy : y = PiTensorProduct.map π y`. Rewrite using `[← sub_eq_zero]`. Apply `eq_zero_of_forall_dualDistrib` to reduce the goal to its premises. Introduce `ψ`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[map_sub, dualDistrib_map, TEL Finset.univ ψ]`. Simplify using the standard rewrite rules. Establish `key : ∀ x : PiTensorProduct ℂ E, PiTensorProduct.piTensorHomMap (PiTensorProduct.map π x) ∈ Submodule.span ℂ {T | ∃ t : ∀ τ, V τ →ₗ[ℂ] W τ, (∀ τ, ∀ p ∈ R τ, t τ ∘ₗ p.1 = p.2 ∘ₗ t τ) ∧ T = PiTensorProduct.map t}`. Introduce `x`. Proceed by induction on `x using PiTensorProduct.induction_on with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `smul_tprod r t`. Rewrite using `[map_smul, map_smul, PiTensorProduct.map_tprod, PiTensorProduct.piTensorHomMap_tprod_eq_map]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨fun σ => π σ (t σ), fun τ p hp => (memH τ _).1 (hπmem τ _) p hp, rfl⟩)`. Consider the case `add a b ha hb => rw [map_add, map_add]`. Conclude with `Submodule.add_mem _ ha hb`.
-
-Rewrite using `[hy]`. Conclude with `key y`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_span_map_of_commute :
     ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (V W : ι → Type) [∀ τ, AddCommGroup (V τ)]

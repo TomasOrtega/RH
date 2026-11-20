@@ -5,7 +5,7 @@ namespace GlobalTheory.CompanionTheory.Ar.BoundaryPull
 open MvPolynomial
 
 /- English proof (translation)
-Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p i hp => simp [hp]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem coe_aeval_subalgebra {K : Type} [Field K] [CharZero K] {τ : Type}
     (S : Subalgebra ℚ K) (r : τ → K) (h : ∀ p, r p ∈ S) (g : MvPolynomial τ ℤ) :
@@ -16,17 +16,17 @@ theorem coe_aeval_subalgebra {K : Type} [Field K] [CharZero K] {τ : Type}
   | mul_X p i hp => simp [hp]
 
 /- English proof (translation)
-Introduce `Ω₀ Ω _ _ _ _ _ σ σ' r₀ r₁ v hv bd S S' θ hθ h₀ h₁ q`. Establish `key : ∀ b : MvPolynomial σ ℤ, MvPolynomial.aeval r₁ (MvPolynomial.rename v b) = algebraMap Ω₀ Ω (MvPolynomial.aeval r₀ b)`. Introduce `b`. Proceed by induction on `b using MvPolynomial.induction_on with`. Consider the case `C a => simp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p i hp => simp [hp, hv]`. Prove the components needed by the constructor for the conclusion. Introduce `H g hg s hs`. Use `Ideal.mem_comap.2 (H (MvPolynomial.rename v g) (Ideal.mem_map_of_mem _ hg) (θ s) ?_)` and prove the remaining obligations.
+Treat this case separately. Treat this case separately. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hθ, hs, key]`. Introduce `H g hg s hs`. Establish `claim : ∃ t ∈ q, (t : Ω) = MvPolynomial.aeval r₁ g`. Establish `hspan : g ∈ Ideal.span ((MvPolynomial.rename v : MvPolynomial σ ℤ → MvPolynomial σ' ℤ) '' (bd : Set _))` using `hg`. Use `Submodule.span_induction (p := fun g _ => ∃ t ∈ q, (t : Ω) = MvPolynomial.aeval r₁ g) ?_ ?_ ?_ ?_ hspan` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨b, hb, rfl⟩`. Set `s₀ : S` to `aeval (fun p => (⟨r₀ p, h₀ p⟩ : S)) b`. Establish `hs₀ : (s₀ : Ω₀) = aeval r₀ b` using `coe_aeval_subalgebra S r₀ h₀ b`. Use `⟨θ s₀, Ideal.mem_comap.1 (H b hb s₀ hs₀), ?_⟩` and prove the remaining obligations. Rewrite using `[hθ, hs₀, key]`.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨0, q.zero_mem, by simp⟩`. Introduce and unpack `x y _ _ ⟨t, ht, hx⟩ ⟨u, hu, hy⟩`. Conclude with `⟨t + u, q.add_mem ht hu, by simp [hx, hy]⟩`. Introduce and unpack `c x _ ⟨t, ht, hx⟩`. Use `⟨aeval (fun p => (⟨r₁ p, h₁ p⟩ : S')) c * t, q.mul_mem_left _ ht, ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[coe_aeval_subalgebra S' r₁ h₁ c, hx]`. Take `⟨t, ht, hts⟩` from `claim`. Establish `: s = t` using `Subtype.ext (hs.trans hts.symm)`. Conclude with `this ▸ ht`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem vanishing_rename_iff :
     ∀ (Ω₀ Ω : Type) [Field Ω₀] [Field Ω] [CharZero Ω₀] [CharZero Ω] [Algebra Ω₀ Ω] (σ σ' : Type)

@@ -5,15 +5,15 @@ namespace GlobalTheory
 open MvPolynomial
 
 /- English proof (translation)
-Introduce `F _ I k _ f`. Set `K` to `FractionRing (MvPolynomial (Σ i, k i) F)`. Set `Ω` to `AlgebraicClosure K`. Establish `key : ∀ i, ∃ g : k i →+* Ω, g.comp (f i) = algebraMap F Ω`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `letI : Algebra F (k i) := (f i).toAlgebra`. Take `⟨s, hs⟩` from `exists_isTranscendenceBasis F (k i)`. Set `x : (Σ i, k i) → Ω` to `fun j => algebraMap K Ω (algebraMap (MvPolynomial (Σ i, k i) F) K (X j))`. Establish `hx : AlgebraicIndependent F x`. Establish `h0` using `MvPolynomial.algebraicIndependent_X (Σ i, k i) F`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Function.Injective (IsScalarTower.toAlgHom F (MvPolynomial (Σ i, k i) F) K)` using `IsFractionRing.injective _ _`. Establish `h2 : Function.Injective (IsScalarTower.toAlgHom F K Ω)` using `(algebraMap K Ω).injective`. Use `(h0.map' h1).map' h2` as an intermediate fact. Conclude with `this`. Establish `hv : AlgebraicIndependent F (fun b : s => x ⟨i, b.1⟩)` using `hx.comp (fun b : s => (⟨i, b.1⟩ : Σ i, k i)) (by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b hab`. Conclude with `Subtype.ext (by simpa using hab))`. Set `φ0 : IntermediateField.adjoin F (Set.range ((↑) : s → k i)) →ₐ[F] Ω` to `(IntermediateField.val _).comp (hv.aevalEquivField.toAlgHom.comp hs.1.reprField)`. Establish `halg` using `hs.isAlgebraic_field`. Take `⟨φ, -⟩` from `IntermediateField.exists_algHom_of_splits' φ0 (fun (y : k i) => ⟨(Algebra.IsAlgebraic.isAlgebraic (R := IntermediateField.adjoin F (Set.range ((↑) : s → k i))) y).isIntegral, IsAlgClosed.splits _⟩)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use `⟨φ.toRingHom, ?_⟩` and prove the remaining obligations. Use extensionality with `y`. Conclude with `φ.commutes y`. Use `choose g hg using key`. Conclude with `⟨Ω, inferInstance, inferInstance, g, algebraMap F Ω, hg⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isAlgClosed_embeddings_of_family :
     ∀ (F : Type) [Field F] (I : Type) (k : I → Type) [∀ i, Field (k i)] (f : ∀ i, F →+* k i),

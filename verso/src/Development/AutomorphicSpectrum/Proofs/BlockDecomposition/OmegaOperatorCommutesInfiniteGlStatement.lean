@@ -14,7 +14,7 @@ open scoped NumberField.AdeleRing
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.HCRep.omegaOp_comm_rt | exact GlobalTheory.CompanionTheory.HCRep.omegaOp_comm_rt | (intros; apply GlobalTheory.CompanionTheory.HCRep.omegaOp_comm_rt <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.omega_operator_commutes_infinite_gl : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a d : ℕ)
     (b : Module.Basis (Fin d) ℝ (AutomorphicForm.isExpLieAlgebra E a).lieSubalgebra) (ε : Fin d → ℝ),

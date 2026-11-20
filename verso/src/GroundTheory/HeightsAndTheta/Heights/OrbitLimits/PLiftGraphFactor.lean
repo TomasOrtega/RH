@@ -21,7 +21,7 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 def blkNorm (w : (Σ k, ι k) → ℂ) (k : K) : ℝ := Real.sqrt (∑ i, ‖w ⟨k, i⟩‖ ^ 2)
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `hw k`. Conclude with `lt_of_lt_of_le (pow_pos (norm_pos_iff.2 hi) 2) (Finset.single_le_sum (f := fun i => ‖w ⟨k, i⟩‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ i))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem blkSq_pos {w : (Σ k, ι k) → ℂ} (hw : ∀ k, ∃ i, w ⟨k, i⟩ ≠ 0) (k : K) :
     0 < ∑ i, ‖w ⟨k, i⟩‖ ^ 2 := by
@@ -30,13 +30,13 @@ theorem blkSq_pos {w : (Σ k, ι k) → ℂ} (hw : ∀ k, ∃ i, w ⟨k, i⟩ �
     (Finset.single_le_sum (f := fun i => ‖w ⟨k, i⟩‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ i))
 
 /- English proof (translation)
-The claim follows from `Real.sqrt_pos.2 (blkSq_pos hw k)`.
+A detailed English derivation is pending.
 -/
 theorem blkNorm_pos {w : (Σ k, ι k) → ℂ} (hw : ∀ k, ∃ i, w ⟨k, i⟩ ≠ 0) (k : K) : 0 < blkNorm w k :=
   Real.sqrt_pos.2 (blkSq_pos hw k)
 
 /- English proof (translation)
-Unfold `blkNorm`. Establish `: ∑ i, ‖c k * w ⟨k, i⟩‖ ^ 2 = ‖c k‖ ^ 2 * ∑ i, ‖w ⟨k, i⟩‖ ^ 2`. Simplify using `only [norm_mul, mul_pow, Finset.mul_sum]`. Rewrite using `[this, Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq (norm_nonneg _)]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem blkNorm_smul (c : K → ℂ) (w : (Σ k, ι k) → ℂ) (k : K) :
     blkNorm (fun p => c p.1 * w p) k = ‖c k‖ * blkNorm w k := by
@@ -46,7 +46,7 @@ theorem blkNorm_smul (c : K → ℂ) (w : (Σ k, ι k) → ℂ) (k : K) :
   rw [this, Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq (norm_nonneg _)]
 
 /- English proof (translation)
-Simplify using `[blkNorm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blkNorm_conj (w : (Σ k, ι k) → ℂ) (k : K) :
     blkNorm (fun p => (starRingEnd ℂ) (w p)) k = blkNorm w k := by
@@ -62,9 +62,9 @@ def fsLineZ (n : K → ℤ) : ReciprocityTheory.ChartRestriction.G.Geo.HermLine 
     rw [blkNorm_smul, mul_zpow]
 
 /- English proof (translation)
-Consider the cases of `m with`. Consider the case `ofNat k`. Simplify using `only [Int.ofNat_eq_natCast, zpow_natCast]`. Conclude with `hf.pow k`. Consider the case `negSucc k`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [zpow_negSucc]`. Conclude with `(hf.pow (k + 1)).inv (pow_ne_zero _ hx)`.
+A detailed English derivation is pending.
 -/
 theorem contDiffAt_zpow_of_ne {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] {f : E → ℝ} {x : E}
     {N : WithTop ℕ∞} (hf : ContDiffAt ℝ N f x) (hx : f x ≠ 0) (m : ℤ) :
@@ -78,9 +78,9 @@ theorem contDiffAt_zpow_of_ne {E : Type*} [NormedAddCommGroup E] [NormedSpace �
     exact (hf.pow (k + 1)).inv (pow_ne_zero _ hx)
 
 /- English proof (translation)
-Introduce `w hw`. Use `ContDiffAt.contDiffWithinAt ?_` and prove the remaining obligations. Use `show ContDiffAt ℝ _ (fun x => ∏ k, blkNorm x k ^ n k) w`. Use `contDiffAt_prod (t := Finset.univ) (f := fun k x => blkNorm x k ^ n k) fun k _ => ?_` and prove the remaining obligations. Use `contDiffAt_zpow_of_ne (f := fun x => blkNorm x k) ?_ (blkNorm_pos hw k).ne' (n k)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hs : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun x : (Σ k, ι k) → ℂ => ∑ i, ‖x ⟨k, i⟩‖ ^ 2)` using `ContDiff.sum fun i _ => (contDiff_norm_sq ℝ).comp (contDiff_apply ℝ ℂ _)`. Conclude with `hs.contDiffAt.sqrt (blkSq_pos hw k).ne'`.
+A detailed English derivation is pending.
 -/
 theorem isSmoothHerm_fsLineZ (n : K → ℤ) : IsSmoothHerm (fsLineZ (ι := ι) n) := by
   intro w hw
@@ -93,7 +93,7 @@ theorem isSmoothHerm_fsLineZ (n : K → ℤ) : IsSmoothHerm (fsLineZ (ι := ι) 
   exact hs.contDiffAt.sqrt (blkSq_pos hw k).ne'
 
 /- English proof (translation)
-Introduce `w`. Use `show ∏ k, blkNorm _ k ^ n k = ∏ k, blkNorm w k ^ n k`. Simplify using `only [blkNorm_conj]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conj_fsLineZ (n : K → ℤ) : IsConjInvariantH (fsLineZ (ι := ι) n) := by
   intro w
@@ -105,45 +105,43 @@ end LiftGraphFactor
 open LiftGraphFactor in
 
 /- English proof (translation)
-Introduce `K _ _ ι _ Ω _ y N a r v hv hgen`. Set `A : ReciprocityTheory.ChartRestriction.G.Geo.HermLine ι` to `fsLineZ (a • N.a)`. Establish `hA1 : ∀ j, v j ∈ chartLat y A.a 1` using `hv`. Establish `hgen' : KH.GeneratesOn y (fun k => ((1 : ℕ) : ℤ) * A.a k) v`. Establish `e : (fun k => ((1 : ℕ) : ℤ) * A.a k) = a • N.a`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `k`. Simplify using `[A, fsLineZ]`. Rewrite using `[e]`. Conclude with `hgen`. Take `⟨S, hSs, hSp, hSt, hSc, hSv, hSl⟩` from `hExt K ι Ω y A 1 r v (isSmoothHerm_fsLineZ _) (conj_fsLineZ _) hA1 hgen'`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `U0 : Set ((Σ k, ι k) → ℂ)` to `{w | ∀ k, ∃ i, w ⟨k, i⟩ ≠ 0}`. Establish `hAs : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) A.h U0` using `isSmoothHerm_fsLineZ _`. Use `⟨fun w => S w * A.h w ^ 2, hSs.mul (hAs.pow 2), fun w hw => mul_pos (hSp w hw) (pow_pos (A.pos w hw) 2), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `c w hc hw`. Use `show S _ * A.h _ ^ 2 = _ * (S w * A.h w ^ 2)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hSt c w hc, A.smul c w hc]`. Establish `hAa : A.a = a • N.a` using `rfl`. Rewrite using `[hAa]`. Expand and normalize the polynomial expressions, which then agree. Introduce `w`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show S _ * A.h _ ^ 2 = S w * A.h w ^ 2`. Rewrite using `[hSc w, conj_fsLineZ _ w]`. Introduce `z hz j`. Establish `hx` using `PowerBlockMetric.oldPart_mem hz`. Take `⟨c, hc⟩` from `PowerBlockMetric.graph_prop (A := A) (m := 1) hA1 hgen' hz`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hvN : ∀ j, v j ∈ chartLat y N.a a`. Introduce `j c' hc'`. Establish `h` using `hv j c' hc'`. Establish `e : ∀ k, -(((1 : ℕ) : ℤ) * (a • N.a) k) = -((a : ℤ) * N.a k)` using `fun k => by`. Simplify using `[Pi.smul_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [e] at h`. Conclude with `h`. Establish `key : ∀ j, secNormAt y N a (v j) (basePart₂ z) * N.h (basePart₂ z) ^ a = ‖PowerBlockMetric.val y A 1 (v j) (basePart₂ z)‖ * A.h (basePart₂ z)`. Introduce `j`. Take `⟨⟨g, h⟩, hr, hne⟩` from `PowerBlockMetric.exists_rep_at (hA1 j) hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hrN : PowerBlockMetric.IsRep y N.a a (v j) g h`. Take `⟨dg, dh, hg, hh, hd, hy⟩` from `hr`. Use `⟨dg, dh, hg, hh, fun k => ?_, hy⟩` and prove the remaining obligations. Rewrite using `[hd k]`. Simplify using `[A, fsLineZ, Pi.smul_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eA` using `PowerBlockMetric.val_spec (hA1 j) hx hr`. Establish `eN` using `PowerBlockMetric.val_spec (hvN j) hx hrN`. Establish `hNp : 0 < N.h (basePart₂ z)` using `N.pos _ hx.1`. Establish `hAp : 0 < A.h (basePart₂ z)` using `A.pos _ hx.1`. Establish `e2 : PowerBlockMetric.val y N a (v j) (basePart₂ z) * (N.h (basePart₂ z) : ℂ) ^ a = PowerBlockMetric.val y A 1 (v j) (basePart₂ z) * (A.h (basePart₂ z) : ℂ)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Apply `mul_right_cancel₀ hne` to reduce the goal to its premises. Use `eN.symm.trans eA` as an intermediate fact. Simplify using `only [pow_one] at this`. Take the linear combination `this`. Rewrite using `[PowerBlockMetric.secNormAt_eq (hvN j) hx]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg norm e2` as an intermediate fact. Simplify using `only [norm_mul, norm_pow, Complex.norm_real, Real.norm_of_nonneg hNp.le, Real.norm_of_nonneg hAp.le] at this`. Conclude with `this`. Establish `hS : S (basePart₂ z) = ∑ i, ‖PowerBlockMetric.val y A 1 (v i) (basePart₂ z)‖ ^ 2`. Rewrite using `[hSv _ hx]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[PowerBlockMetric.secNormAt_eq (hA1 i) hx]`. Establish `hN : ∑ i : Fin r, ‖z ⟨none, i⟩‖ ^ 2 = ‖c‖ ^ 2 * S (basePart₂ z)`. Rewrite using `[hS, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hc i, norm_mul, mul_pow]`. Establish `hSp' : 0 ≤ S (basePart₂ z)` using `(hSp _ hx.1).le`. Establish `hAp : 0 < A.h (basePart₂ z)` using `A.pos _ hx.1`. Rewrite using `[key j, hN, hc j, Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq (norm_nonneg _), Real.sqrt_mul hSp', Real.sqrt_sq hAp.le, norm_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `z hz ξ hξ`. Establish `hx` using `PowerBlockMetric.oldPart_mem hz`. Establish `hw : basePart₂ z ∈ U0` using `hx.1`. Establish `hU0o : IsOpen U0` using `LiftGraphMetric.isOpen_allNZ`. Establish `hUo : IsOpen {z : (Σ k, addIdx ι r k) → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0}` using `LiftGraphMetric.isOpen_allNZ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2le : (2 : WithTop ℕ∞) ≤ ((⊤ : ℕ∞) : WithTop ℕ∞)` using `WithTop.coe_le_coe.2 (le_top : (2 : ℕ∞) ≤ ⊤)`. Establish `hoR : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun z : (Σ k, addIdx ι r k) → ℂ => basePart₂ z)` using `((LiftGraphMetric.oldCLM (ι := ι) r).restrictScalars ℝ).contDiff`. Establish `hSlog : ContDiffAt ℝ 2 (fun w => Real.log (S w)) (basePart₂ z)` using `((hSs.contDiffAt (hU0o.mem_nhds hw)).of_le h2le).log (hSp _ hw).ne'`. Establish `hAlog : ContDiffAt ℝ 2 (fun w => Real.log (A.h w)) (basePart₂ z)` using `((hAs.contDiffAt (hU0o.mem_nhds hw)).of_le h2le).log (A.pos _ hw).ne'`. Establish `hL1 : ContDiffAt ℝ 2 (fun x : (Σ k, addIdx ι r k) → ℂ => Real.log (∑ i : Fin r, ‖x ⟨none, i⟩‖ ^ 2)) z` using `(PowerBlockMetric.contDiff_newSq.contDiffAt).log (PowerBlockMetric.newSq_pos hz.1).ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hL2 : ContDiffAt ℝ 2 (fun x : (Σ k, addIdx ι r k) → ℂ => Real.log (S (basePart₂ x))) z` using `hSlog.comp z (hoR.contDiffAt.of_le h2le)`. Establish `hL3 : ContDiffAt ℝ 2 (fun x : (Σ k, addIdx ι r k) → ℂ => Real.log (A.h (basePart₂ x))) z` using `hAlog.comp z (hoR.contDiffAt.of_le h2le)`. Establish `hcomp : ReciprocityTheory.AnForm.levi (fun x => Real.log (A.h (basePart₂ x))) z ξ = ReciprocityTheory.AnForm.levi (fun w => Real.log (A.h w)) (basePart₂ z) (basePart₂ ξ)`. Establish `h` using `ReciprocityTheory.AnForm.levi_comp (φ := fun w => Real.log (A.h w)) (τ := ⇑(LiftGraphMetric.oldCLM (ι := ι) r)) (z := z) ξ ((LiftGraphMetric.oldCLM (ι := ι) r).analyticAt z) hAlog`. Rewrite `h` using `[ContinuousLinearMap.fderiv]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Conclude with `h`. Establish `hev : (fun x : (Σ k, addIdx ι r k) → ℂ => Real.log (S (basePart₂ x) * A.h (basePart₂ x) ^ 2)) =ᶠ[𝓝 z] fun x => Real.log (S (basePart₂ x)) + (2 : ℝ) * Real.log (A.h (basePart₂ x))` using `by filter_upwards [hUo.mem_nhds hz.1] with x hx'`. Establish `hw' : basePart₂ x ∈ U0` using `fun k => hx' (some k)`. Rewrite using `[Real.log_mul (hSp _ hw').ne' (pow_pos (A.pos _ hw') 2).ne', Real.log_pow]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hgraph` using `hSl z hz ξ hξ`. Establish `hsplit : (fun z' : (Σ k, addIdx ι r k) → ℂ => Real.log (∑ j, ‖z' ⟨none, j⟩‖ ^ 2) / 2 - Real.log (S (basePart₂ z')) / 2) = fun z' => (1 / 2 : ℝ) * Real.log (∑ j, ‖z' ⟨none, j⟩‖ ^ 2) + (-1 / 2 : ℝ) * Real.log (S (basePart₂ z'))`. Use function extensionality and compare the values at `z'`. Expand and normalize the polynomial expressions, which then agree. Use `show ReciprocityTheory.AnForm.levi _ z ξ = ReciprocityTheory.AnForm.levi _ z ξ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Express the relevant statement in the definitionally equal form `ReciprocityTheory.AnForm.levi _ z ξ = (1 : ℕ) * ReciprocityTheory.AnForm.levi _ (basePart₂ z) (basePart₂ ξ) at hgraph`. Rewrite `hgraph` using `[hsplit, ReciprocityTheory.AnForm.levi_add_smul (f := fun x : (Σ k, addIdx ι r k) → ℂ => (1 / 2 : ℝ) * Real.log (∑ j, ‖x ⟨none, j⟩‖ ^ 2)) (-1 / 2 : ℝ) (contDiffAt_const.mul hL1) hL2 ξ, ]`. Establish `hhalf` using `LiftGraphMetric.levi_const_mul (1 / 2 : ℝ) hL1 ξ`. Use `erw [hhalf] at hgraph`. Rewrite `hgraph` using `[← hcomp]`.
-
-Rewrite using `[ReciprocityTheory.AnForm.levi_congr hev, ReciprocityTheory.AnForm.levi_add_smul (2 : ℝ) hL2 hL3 ξ]`. Move the coercions through the operations in `at hgraph`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem LiftGraphFactor.proof (hExt : SectionNormSqExtension.Statement) : LiftGraphFactor.Statement := by
   intro K _ _ ι _ Ω _ y N a r v hv hgen

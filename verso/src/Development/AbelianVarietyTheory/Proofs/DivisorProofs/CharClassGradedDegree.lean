@@ -20,7 +20,7 @@ namespace GlobalTheory.CharDegree
 open MvPolynomial
 
 /- English proof (translation)
-Rewrite using `[P.as_sum, map_sum]`. Use `Submodule.sum_mem _ fun d hd => ?_` and prove the remaining obligations. Rewrite using `[aeval_monomial, ← Algebra.smul_def, ← hP (mem_support_iff.1 hd), Finsupp.weight_apply]`. Conclude with `Submodule.smul_mem _ _ (SetLike.prod_mem_graded 𝒜 _ _ fun i _ => SetLike.pow_mem_graded _ (hx _))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aeval_mem {A σ : Type} [CommRing A] [Algebra ℚ A] (𝒜 : ℕ → Submodule ℚ A) [SetLike.GradedMonoid 𝒜]
     (w : σ → ℕ) (x : σ → A) (hx : ∀ i, x i ∈ 𝒜 (w i)) {P : MvPolynomial σ ℚ} {j : ℕ}
@@ -31,7 +31,7 @@ theorem aeval_mem {A σ : Type} [CommRing A] [Algebra ℚ A] (𝒜 : ℕ → Sub
   exact Submodule.smul_mem _ _ (SetLike.prod_mem_graded 𝒜 _ _ fun i _ => SetLike.pow_mem_graded _ (hx _))
 
 /- English proof (translation)
-Rewrite using `[esymm]`. Use `IsHomogeneous.sum _ _ _ fun t ht => ?_` and prove the remaining obligations. Use `IsHomogeneous.prod t (fun i => (X i : MvPolynomial (Fin r) ℚ)) (fun _ => 1) fun i _ => isHomogeneous_X _ _` as an intermediate fact. Rewrite `this` using `[Finset.sum_const, smul_eq_mul, Nat.mul_one, (Finset.mem_powersetCard.1 ht).2]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem esymm_hom (r j : ℕ) : (esymm (Fin r) ℚ j).IsHomogeneous j := by
   rw [esymm]
@@ -40,9 +40,9 @@ theorem esymm_hom (r j : ℕ) : (esymm (Fin r) ℚ j).IsHomogeneous j := by
   rwa [Finset.sum_const, smul_eq_mul, Nat.mul_one, (Finset.mem_powersetCard.1 ht).2] at this
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on' with`. Consider the case `add P Q hP hQ => simp only [map_add, hP, hQ]`. Consider the case `monomial d c`. Establish `h1 : (monomial d c : MvPolynomial (Fin r) ℚ).IsWeightedHomogeneous (fun i : Fin r => (i : ℕ) + 1) (Finsupp.weight (fun i : Fin r => (i : ℕ) + 1) d)` using `isWeightedHomogeneous_monomial _ _ _ rfl`. Use `haveI := HomogeneousSubmodule.gradedMonoid (σ := Fin r) (R := ℚ)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `aeval_mem (homogeneousSubmodule (Fin r) ℚ) _ (fun i : Fin r => esymm (Fin r) ℚ (i + 1)) (fun i => esymm_hom r _) h1`. Rewrite using `[homogeneousComponent_of_mem h2, weightedHomogeneousComponent_of_mem h1]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem comp_aeval_esymm (r j : ℕ) (P : MvPolynomial (Fin r) ℚ) :
     homogeneousComponent j (aeval (fun i : Fin r => esymm (Fin r) ℚ (i + 1)) P) =
@@ -59,9 +59,9 @@ theorem comp_aeval_esymm (r j : ℕ) (P : MvPolynomial (Fin r) ℚ) :
     split_ifs <;> simp
 
 /- English proof (translation)
-Take `⟨P, rfl⟩` from `(esymmAlgEquiv (Fin r) ℚ (Fintype.card_fin r)).surjective φ`. Establish `hv (Q : MvPolynomial (Fin r) ℚ) : (esymmAlgEquiv (Fin r) ℚ (Fintype.card_fin r) Q).1 = aeval (fun i : Fin r => esymm (Fin r) ℚ (i + 1)) Q` using `esymmAlgHom_apply Q`. Establish `e : weightedHomogeneousComponent (fun i : Fin r => (i : ℕ) + 1) j P = P`. Apply `(esymmAlgEquiv (Fin r) ℚ (Fintype.card_fin r)).injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hv, ← comp_aeval_esymm, ← hv, homogeneousComponent_of_mem hφ, if_pos rfl]`. Establish `e2 : R.char E (esymmAlgEquiv (Fin r) ℚ (Fintype.card_fin r) P) = aeval (fun i : Fin r => R.cl E (i + 1)) P` using `congrArg (aeval (fun i : Fin r => R.cl E (i + 1))) ((esymmAlgEquiv (Fin r) ℚ (Fintype.card_fin r)).symm_apply_apply P)`. Rewrite using `[e2, ← e]`. Conclude with `aeval_mem R.gr _ _ (fun i => R.cl_mem E _) (weightedHomogeneousComponent_isWeightedHomogeneous _ _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem char_mem {B : BottChern} {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y ⟶ Sp k} {D : ℕ} {h : IsRegVar p D}
     (R : ArRing B h) {r : ℕ} (E : HermVB p r) {j : ℕ} (φ : symmetricSubalgebra (Fin r) ℚ)
@@ -79,7 +79,7 @@ theorem char_mem {B : BottChern} {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y
   exact aeval_mem R.gr _ _ (fun i => R.cl_mem E _) (weightedHomogeneousComponent_isWeightedHomogeneous _ _)
 
 /- English proof (translation)
-Introduce `B k _ Y p D h R r E j`. Use `⟨char_mem R E _ ?_, char_mem R E _ (homogeneousComponent_isHomogeneous _ _)⟩` and prove the remaining obligations. Establish `: (psum (Fin r) ℚ j).IsHomogeneous j` using `IsHomogeneous.sum _ _ _ fun i _ => isHomogeneous_X_pow i j`. Conclude with `(homogeneousSubmodule (Fin r) ℚ j).smul_mem _ this`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem char_chPart_tdPart_mem : ∀ (B : BottChern) (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (D : ℕ) (h : IsRegVar p D) (R : ArRing B h) (r : ℕ) (E : HermVB p r) (j : ℕ), R.char E (chPart r j) ∈ R.gr j ∧ R.char E (tdPart r j) ∈ R.gr j := by
   intro B k _ Y p D h R r E j

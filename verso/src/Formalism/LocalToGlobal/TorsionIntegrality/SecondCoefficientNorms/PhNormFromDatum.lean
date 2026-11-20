@@ -8,78 +8,78 @@ import Formalism.LocalToGlobal.TorsionIntegrality.SecondCoefficientNorms.Binomia
 namespace Formalism.L2.Th1.C
 
 /- English proof (translation)
-The claim follows from `integralPointClosure'`.
+A detailed English derivation is pending.
 -/
 theorem ptClosure : PtClosure := integralPointClosure'
 /- English proof (translation)
-The claim follows from `adjoint_from_norm_form`.
+A detailed English derivation is pending.
 -/
 theorem adjFromNorm : AdjFromNorm := adjoint_from_norm_form
 /- English proof (translation)
-The claim follows from `norm_adjoint_all_places`.
+A detailed English derivation is pending.
 -/
 theorem normAdjAll : NormAdjAll := norm_adjoint_all_places
 /- English proof (translation)
-The claim follows from `unitary_inverse_identity`.
+A detailed English derivation is pending.
 -/
 theorem unitaryInv : UnitaryInv := unitary_inverse_identity
 /- English proof (translation)
-The claim follows from `hyperbolic_sum_identity`.
+A detailed English derivation is pending.
 -/
 theorem hyperbolicSum : HyperbolicSum := hyperbolic_sum_identity
 
 /- English proof (translation)
-The claim follows from `integralEndoClosed'`.
+A detailed English derivation is pending.
 -/
 theorem endIntClosed : EndIntClosed := integralEndoClosed'
 /- English proof (translation)
-The claim follows from `binomialScalarClosed'`.
+A detailed English derivation is pending.
 -/
 theorem binomClosed : BinomClosed := binomialScalarClosed'
 /- English proof (translation)
-The claim follows from `logNormClosed'`.
+A detailed English derivation is pending.
 -/
 theorem phNormClosed : PhNormClosed := logNormClosed'
 /- English proof (translation)
-The claim follows from `scalarLinearClosed'`.
+A detailed English derivation is pending.
 -/
 theorem zLinClosed : ZLinClosed := scalarLinearClosed'
 /- English proof (translation)
-The claim follows from `scalarLinearInt'`.
+A detailed English derivation is pending.
 -/
 theorem zLinInt : ZLinInt := scalarLinearInt'
 /- English proof (translation)
-The claim follows from `endoAll_of normAdjAll`.
+A detailed English derivation is pending.
 -/
 theorem endoAll : EndoAll := endoAll_of normAdjAll
 
 /- English proof (translation)
-The claim follows from `jetAdditivity`.
+A detailed English derivation is pending.
 -/
 theorem jetAdditive : JetAdditive := jetAdditivity
 /- English proof (translation)
-The claim follows from `jetOne'`.
+A detailed English derivation is pending.
 -/
 theorem jetOne : JetOne := jetOne'
 /- English proof (translation)
-The claim follows from `jetAdjoint'`.
+A detailed English derivation is pending.
 -/
 theorem jetAdj : JetAdj := jetAdjoint'
 /- English proof (translation)
-The claim follows from `jetExp'`.
+A detailed English derivation is pending.
 -/
 theorem jetExp : JetExp := jetExp'
 
 /- English proof (translation)
-The claim follows from `integral_endomorphism_from_datum`.
+A detailed English derivation is pending.
 -/
 theorem endIntFromDatum : EndIntFromDatum := integral_endomorphism_from_datum
 /- English proof (translation)
-The claim follows from `phi_norm_from_datum`.
+A detailed English derivation is pending.
 -/
 theorem phNormFromDatum : PhNormFromDatum := phi_norm_from_datum
 /- English proof (translation)
-The claim follows from `endoAllFromData_of endoAll`.
+A detailed English derivation is pending.
 -/
 theorem endoAllFromData : EndoAllFromData := endoAllFromData_of endoAll
 

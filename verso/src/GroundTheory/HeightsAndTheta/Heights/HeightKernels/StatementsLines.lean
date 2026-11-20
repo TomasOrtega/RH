@@ -214,21 +214,21 @@ def LinesQuotDegreeBound.Statement : Prop :=
           quotDegree (idealLattice a) (diagMetric d) b c
 
 /- English proof (translation)
-Simplify using `[stdSumBasis]`.
+Simplify using the standard rewrite rules.
 -/
 theorem stdSumBasis_inl (K : Type*) [Field K] (m k : ℕ) (i : Fin m) :
     stdSumBasis K m k (Sum.inl i) = Pi.single (Fin.castAdd k i) 1 := by
   simp [stdSumBasis]
 
 /- English proof (translation)
-Simplify using `[stdSumBasis]`.
+Simplify using the standard rewrite rules.
 -/
 theorem stdSumBasis_inr (K : Type*) [Field K] (m k : ℕ) (j : Fin k) :
     stdSumBasis K m k (Sum.inr j) = Pi.single (Fin.natAdd m j) 1 := by
   simp [stdSumBasis]
 
 /- English proof (translation)
-Apply the tactic sequence `funext x; cases x <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem stdSumBasis_elim (K : Type*) [Field K] (m k : ℕ) :
     Sum.elim (fun i => stdSumBasis K m k (Sum.inl i)) (fun j => stdSumBasis K m k (Sum.inr j)) =
@@ -236,7 +236,7 @@ theorem stdSumBasis_elim (K : Type*) [Field K] (m k : ℕ) :
   funext x; cases x <;> rfl
 
 /- English proof (translation)
-The claim follows from `(Submodule.fg_span (Set.finite_range _)).restrictScalars span_eq_top := by rw [eq_top_iff] intro v _ have h1 : (Pi.single 0 1 : Fin 1 → ℚ) ∈ Submodule.span ℚ (((stdLattice ℚ 1).restrictScalars ℤ : Submodule ℤ (Fin 1 → ℚ)) : Set (Fin 1 → ℚ)) := Submodule.subset_span (Submodule.sub …`.
+A detailed English derivation is pending.
 -/
 theorem stdLattice_isLattice_example :
     Submodule.IsLattice ℚ ((stdLattice ℚ 1).restrictScalars ℤ) where
@@ -253,7 +253,7 @@ theorem stdLattice_isLattice_example :
     rw [hv]; exact Submodule.smul_mem _ _ h1
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by simp, stdLattice_isLattice_example.fg, stdLattice_isLattice_example.span_eq_top, stdLattice_isLattice_example, le_rfl⟩`.
+Supply the required witnesses or components.
 -/
 example : Fintype.card (Fin 1) = Module.finrank ℚ (Fin 1 → ℚ) ∧
     ((stdLattice ℚ 1).restrictScalars ℤ).FG ∧
@@ -264,7 +264,7 @@ example : Fintype.card (Fin 1) = Module.finrank ℚ (Fin 1 → ℚ) ∧
     stdLattice_isLattice_example, le_rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, _, rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 example : ∃ A B : AddSubgroup (Fin 2 → ℚ),
     A = AddSubgroup.closure (Set.range (Pi.basisFun ℚ (Fin 2))) ∧
@@ -273,7 +273,7 @@ example : ∃ A B : AddSubgroup (Fin 2 → ℚ),
   ⟨_, _, rfl, rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by simp [Matrix.det_diagonal], one_ne_zero, two_ne_zero, fun _ => one_ne_zero⟩`.
+Supply the required witnesses or components.
 -/
 example : (Matrix.diagonal fun _ : Fin 2 => (2 : ℚ)).det ≠ 0 ∧
     (1 : FractionalIdeal (𝓞 ℚ)⁰ ℚ) ≠ 0 ∧ (2 : ℚ) ≠ 0 ∧
@@ -281,7 +281,7 @@ example : (Matrix.diagonal fun _ : Fin 2 => (2 : ℚ)).det ≠ 0 ∧
   ⟨by simp [Matrix.det_diagonal], one_ne_zero, two_ne_zero, fun _ => one_ne_zero⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Matrix.PosDef.one, (Pi.basisFun ℚ (Fin 2)).linearIndependent, Matrix.PosDef.one, Fin.natAdd_injective _ _⟩`.
+Supply the required witnesses or components.
 -/
 example : (1 : Matrix (Fin 2) (Fin 2) ℂ).PosDef ∧ LinearIndependent ℚ (Pi.basisFun ℚ (Fin 2)) ∧
     (1 : Matrix (Fin 1 ⊕ Fin 1) (Fin 1 ⊕ Fin 1) ℂ).PosDef ∧
@@ -290,9 +290,9 @@ example : (1 : Matrix (Fin 2) (Fin 2) ℂ).PosDef ∧ LinearIndependent ℚ (Pi.
     Fin.natAdd_injective _ _⟩
 
 /- English proof (translation)
-Introduce `B b c τ`. Establish `hB : LinearIndependent ℚ (Sum.elim b c)`. Establish `h` using `(stdSumBasis ℚ 1 1).linearIndependent`. Rewrite `h` using `[← stdSumBasis_elim]`. Simplify `h` using `only [stdSumBasis_inl, stdSumBasis_inr]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `⟨hB.comp Sum.inl Sum.inl_injective, rfl, fun _ => one_pos, fun _ => one_ne_zero, fun i => stdSumBasis_inl ℚ 1 1 i, fun j => stdSumBasis_inr ℚ 1 1 j, Fin.natAdd_injective _ _, hB, hB⟩`.
+Supply the required witnesses or components.
 -/
 example :
     let B := stdSumBasis ℚ 1 1
@@ -314,7 +314,7 @@ example :
     Fin.natAdd_injective _ _, hB, hB⟩
 
 /- English proof (translation)
-Use `⟨fun _ => one_ne_zero, fun _ _ => one_pos, ?_, rfl⟩` and prove the remaining obligations. Establish `h` using `(stdSumBasis ℚ 1 1).linearIndependent`. Rewrite `h` using `[← stdSumBasis_elim]`. Simplify `h` using `only [stdSumBasis_inl, stdSumBasis_inr]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 example : (∀ x : Fin 2, (fun _ => (1 : FractionalIdeal (𝓞 ℚ)⁰ ℚ)) x ≠ 0) ∧
     (∀ (σ : ℚ →+* ℂ) (x : Fin 2), (0 : ℝ) < (fun _ _ => (1 : ℝ)) σ x) ∧

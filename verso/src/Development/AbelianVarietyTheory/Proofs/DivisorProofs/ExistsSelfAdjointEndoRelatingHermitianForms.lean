@@ -4,7 +4,7 @@ open Matrix
 namespace GlobalTheory
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [mulVec, dotProduct, Pi.star_apply, star_sum, map_apply, star_mul', star_star]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem herm_gamma_star_map_mulVec {g : ℕ} (M : Matrix (Fin g) (Fin g) ℂ) (v : Fin g → ℂ) :
     star (M.map star *ᵥ v) = M *ᵥ star v := by
@@ -12,16 +12,16 @@ theorem herm_gamma_star_map_mulVec {g : ℕ} (M : Matrix (Fin g) (Fin g) ℂ) (v
   simp only [mulVec, dotProduct, Pi.star_apply, star_sum, map_apply, star_mul', star_star]
 
 /- English proof (translation)
-Rewrite using `[dotProduct_comm, dotProduct_mulVec, mulVec_transpose, dotProduct_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_gamma_map_mulVec_dot {g : ℕ} (B : Matrix (Fin g) (Fin g) ℂ) (z u : Fin g → ℂ) :
     (B *ᵥ z) ⬝ᵥ u = z ⬝ᵥ (Bᵀ *ᵥ u) := by
   rw [dotProduct_comm, dotProduct_mulVec, mulVec_transpose, dotProduct_comm]
 
 /- English proof (translation)
-Introduce `hdet`. Take `⟨v, hv, hHv⟩` from `(Matrix.exists_mulVec_eq_zero_iff).2 hdet`. Establish `hz : star v ≠ 0`. Introduce `h`. Apply `hv` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `using congrArg star h`. Use `hpos (star v) hz` as an intermediate fact. Rewrite `this` using `[star_star, hHv, dotProduct_zero]`. Simplify using `at this`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem herm_gamma_det_ne_zero {g : ℕ} (H₁ : Matrix (Fin g) (Fin g) ℂ)
     (hpos : ∀ z : Fin g → ℂ, z ≠ 0 → 0 < (z ⬝ᵥ H₁.mulVec (star z)).re) : H₁.det ≠ 0 := by
@@ -34,9 +34,9 @@ theorem herm_gamma_det_ne_zero {g : ℕ} (H₁ : Matrix (Fin g) (Fin g) ℂ)
   simp at this
 
 /- English proof (translation)
-Introduce `g H₁ H₂ h1 h2 hpos`. Establish `hdet : IsUnit H₁.det` using `isUnit_iff_ne_zero.2 (herm_gamma_det_ne_zero H₁ hpos)`. Use `⟨Matrix.toLin' ((H₁⁻¹ * H₂).map star), ?_, ?_⟩` and prove the remaining obligations. Introduce `z w`. Rewrite using `[Matrix.toLin'_apply, herm_gamma_star_map_mulVec, mulVec_mulVec, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hdet, Matrix.one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `z w`. Rewrite using `[Matrix.toLin'_apply, Matrix.toLin'_apply, herm_gamma_star_map_mulVec, mulVec_mulVec, herm_gamma_map_mulVec_dot, mulVec_mulVec]`. Use `congr 2`. Establish `hT : ((H₁⁻¹ * H₂).map star)ᵀ = (H₁⁻¹ * H₂)ᴴ` using `rfl`. Rewrite using `[hT, conjTranspose_mul, h2.eq, conjTranspose_nonsing_inv, h1.eq, Matrix.mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_gamma : ∀ (g : ℕ) (H₁ H₂ : Matrix (Fin g) (Fin g) ℂ), H₁.IsHermitian → H₂.IsHermitian →
     (∀ z : Fin g → ℂ, z ≠ 0 → 0 < (z ⬝ᵥ H₁.mulVec (star z)).re) →

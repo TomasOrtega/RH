@@ -7,13 +7,13 @@ open scoped TensorProduct GlobalTheory.CuspRep.CuspidalL2GL
 open UpperTheory.V.Cj UpperTheory.V.Cj.H
 
 /- English proof (translation)
-Introduce `E _ _ _ a _ S hS g`. Take `⟨A, hA⟩` from `GlobalTheory.card_latticeGL_conj_le E a`. Use `set c : GL (Fin a) (Cinf E) := GeneralLinearGroup.map (pInf E) g with hc`. Use `set f : GA E a := finGL E a (GeneralLinearGroup.map (pFin E) g) with hf`. Take `⟨C, hC0, hC⟩` from `hA ((fun s => f * s * f⁻¹) '' S) (hS.image (by fun_prop))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨B, hB0, hB⟩` from `GlobalTheory.ConstTermGrowth.height_mul_left_le (E := E) (isCompact_singleton (x := c))`. Use `⟨C * B ^ (2 * A), 2 * A, fun y => ?_⟩` and prove the remaining obligations. Take `⟨hfin, hle⟩` from `hC (c * y)`. Establish `hg : g * infGL E a y = infGL E a (c * y) * f`. Use `ga_ext ?_ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul, hf, pInf_infGL, pInf_finGL, mul_one, hc]`. Simplify using `only [map_mul, hf, pFin_infGL, pFin_finGL, mul_one, one_mul]`. Use `⟨_, hle.trans ?_, ?_⟩` and prove the remaining obligations. Establish `h0 : 0 ≤ GlobalTheory.CuspRep.height (c * y)` using `zero_le_one.trans (one_le_height _)`. Rewrite using `[mul_assoc, ← mul_pow]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `mul_le_mul_of_nonneg_left (pow_le_pow_left₀ h0 (hB c rfl y) _) hC0`. Rewrite using `[hfin.cast_ncard_eq]`. Use `Set.encard_le_encard fun γ hγ => ⟨_, hγ, ?_⟩` and prove the remaining obligations. Rewrite using `[hg]`. Use `group`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Cj.H.latCount :
     UpperTheory.V.Cj.H.LatCount := by

@@ -11,7 +11,7 @@ noncomputable section
 universe u w
 
 /- English proof (translation)
-Use `⟨QuotientAddGroup.map P.toAddSubgroup Q.toAddSubgroup f (fun x hx => hf x hx), QuotientAddGroup.map Q.toAddSubgroup P.toAddSubgroup g (fun y hy => hg y hy), ?_⟩` and prove the remaining obligations. Introduce `z`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective P z`. Express the relevant statement in the definitionally equal form `(QuotientAddGroup.mk (g (f x)) : X ⧸ P.toAddSubgroup) = QuotientAddGroup.mk x`. Rewrite using `[hgf]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem quot_retract {R R' X Y : Type*} [Ring R] [Ring R'] [AddCommGroup X] [AddCommGroup Y]
     [Module R X] [Module R' Y] (P : Submodule R X) (Q : Submodule R' Y) (f : X →+ Y) (g : Y →+ X)
@@ -67,7 +67,7 @@ def cf (I : Finset (Fin (N + 1))) (hI : I ⊆ support x) :
     rw [map_add, UT.toL_add, AddMonoidAlgebra.coeff_add, Finsupp.add_apply]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(UT.toL (locEmb η M₀ J.1 hJ (locRes h w))).coeff _ = (UT.toL (locEmb η M₀ I.1 hI w)).coeff _`. Rewrite using `[locEmb_locRes η M₀ hI hJ h w]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem cf_locResS (I J : StdCell N) (hI : I.1 ⊆ support x) (hJ : J.1 ⊆ support x) (h : I.1 ⊆ J.1)
     (w : LocMod (MvPolynomial (Fin (r + 1)) S) N (TwM η M₀) I.1) :
@@ -76,7 +76,7 @@ theorem cf_locResS (I J : StdCell N) (hI : I.1 ⊆ support x) (hJ : J.1 ⊆ supp
   rw [locEmb_locRes η M₀ hI hJ h w]
 
 /- English proof (translation)
-The claim follows from `locEmb_locRes η M₀ hI hJ h w`.
+A detailed English derivation is pending.
 -/
 theorem locEmb_locResS (I J : StdCell N) (hI : I.1 ⊆ support x) (hJ : J.1 ⊆ support x) (h : I.1 ⊆ J.1)
     (w : LocMod (MvPolynomial (Fin (r + 1)) S) N (TwM η M₀) I.1) :
@@ -92,7 +92,7 @@ def ιfun (K : Chart x) (z : ((G.twist (B.pow n)).twist (twistSys S x c)).sub K)
     (twistSub_le_twLocPart η M₀ hG hB K n c z.2)).choose
 
 /- English proof (translation)
-The claim follows from `(exists_locEmb_eq η M₀ ⟨K.1, K.2.1, Finset.subset_univ _⟩ K.2.2 (twistSub_le_twLocPart η M₀ hG hB K n c z.2)).choose_spec.1`.
+A detailed English derivation is pending.
 -/
 theorem ιfun_mem (K : Chart x) (z : ((G.twist (B.pow n)).twist (twistSys S x c)).sub K) :
     ιfun η M₀ n c hG hB K z ∈ degLoc (twGraded η M₀) c ⟨K.1, K.2.1, Finset.subset_univ _⟩ :=
@@ -100,7 +100,7 @@ theorem ιfun_mem (K : Chart x) (z : ((G.twist (B.pow n)).twist (twistSys S x c)
     (twistSub_le_twLocPart η M₀ hG hB K n c z.2)).choose_spec.1
 
 /- English proof (translation)
-The claim follows from `(exists_locEmb_eq η M₀ ⟨K.1, K.2.1, Finset.subset_univ _⟩ K.2.2 (twistSub_le_twLocPart η M₀ hG hB K n c z.2)).choose_spec.2`.
+A detailed English derivation is pending.
 -/
 theorem ιfun_emb (K : Chart x) (z : ((G.twist (B.pow n)).twist (twistSys S x c)).sub K) :
     UT.toL (locEmb η M₀ K.1 K.2.2 (ιfun η M₀ n c hG hB K z)) = single ((n : ℤ), c) (z : Ω) :=
@@ -108,7 +108,7 @@ theorem ιfun_emb (K : Chart x) (z : ((G.twist (B.pow n)).twist (twistSys S x c)
     (twistSub_le_twLocPart η M₀ hG hB K n c z.2)).choose_spec.2
 
 /- English proof (translation)
-Apply `locEmb_injective η M₀ K.2.2` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `UT.toL _ = UT.toL _`. Rewrite using `[map_add, UT.toL_add, ιfun_emb, ιfun_emb, ιfun_emb, Submodule.coe_add, single_add]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem ιfun_add (K : Chart x) (z z' : ((G.twist (B.pow n)).twist (twistSys S x c)).sub K) :
     ιfun η M₀ n c hG hB K (z + z') = ιfun η M₀ n c hG hB K z + ιfun η M₀ n c hG hB K z' := by
@@ -117,7 +117,7 @@ theorem ιfun_add (K : Chart x) (z z' : ((G.twist (B.pow n)).twist (twistSys S x
   rw [map_add, UT.toL_add, ιfun_emb, ιfun_emb, ιfun_emb, Submodule.coe_add, single_add]
 
 /- English proof (translation)
-Apply `locEmb_injective η M₀ K.2.2` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `UT.toL _ = UT.toL _`. Rewrite using `[map_zero, UT.toL_zero, ιfun_emb, Submodule.coe_zero, single_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem ιfun_zero (K : Chart x) : ιfun η M₀ n c hG hB K 0 = 0 := by
   apply locEmb_injective η M₀ K.2.2
@@ -125,7 +125,7 @@ theorem ιfun_zero (K : Chart x) : ιfun η M₀ n c hG hB K 0 = 0 := by
   rw [map_zero, UT.toL_zero, ιfun_emb, Submodule.coe_zero, single_zero]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(UT.toL (locEmb η M₀ K.1 K.2.2 (ιfun η M₀ n c hG hB K z))).coeff _ = _`. Rewrite using `[ιfun_emb, coeff_single, Finsupp.single_eq_same]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem cf_ιfun (K : Chart x) (z : ((G.twist (B.pow n)).twist (twistSys S x c)).sub K) :
     cf η M₀ n c K.1 K.2.2 (ιfun η M₀ n c hG hB K z) = z := by
@@ -133,7 +133,7 @@ theorem cf_ιfun (K : Chart x) (z : ((G.twist (B.pow n)).twist (twistSys S x c))
   rw [ιfun_emb, coeff_single, Finsupp.single_eq_same]
 
 /- English proof (translation)
-Use `map_sum (singleAddHom (R := Ω) k) (fun j => a j • v j) s` as an intermediate fact. Simplify using `only [map_zsmul] at this`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem single_sum_zsmul {ι : Type*} (s : Finset ι) (a : ι → ℤ) (v : ι → Ω) (k : ℤ × ℤ) :
     single k (∑ j ∈ s, a j • v j) = ∑ j ∈ s, a j • single k (v j) := by
@@ -142,7 +142,7 @@ theorem single_sum_zsmul {ι : Type*} (s : Finset ι) (a : ι → ℤ) (v : ι �
   exact this
 
 /- English proof (translation)
-The claim follows from `ιfun_mem η M₀ n c hG hB (downI J h).1 z`.
+A detailed English derivation is pending.
 -/
 theorem ιfun_mem' {i : ℕ} (J : Cech.Idx (Finset.univ : Finset (Fin (N + 1))) i) (h : J.1.1 ⊆ support x)
     (z : ((G.twist (B.pow n)).twist (twistSys S x c)).sub (downI J h).1) :
@@ -150,7 +150,7 @@ theorem ιfun_mem' {i : ℕ} (J : Cech.Idx (Finset.univ : Finset (Fin (N + 1))) 
   ιfun_mem η M₀ n c hG hB (downI J h).1 z
 
 /- English proof (translation)
-The claim follows from `ιfun_emb η M₀ n c hG hB (downI J h).1 z`.
+A detailed English derivation is pending.
 -/
 theorem ιfun_emb' {i : ℕ} (J : Cech.Idx (Finset.univ : Finset (Fin (N + 1))) i) (h : J.1.1 ⊆ support x)
     (z : ((G.twist (B.pow n)).twist (twistSys S x c)).sub (downI J h).1) :
@@ -164,7 +164,7 @@ def Fmap (i : ℕ) (t : Cech.Cochain (fun K : Chart x => ↥(((G.twist (B.pow n)
   fun J => if h : J.1.1 ⊆ support x then ιfun η M₀ n c hG hB (downI J h).1 (t (downI J h)) else 0
 
 /- English proof (translation)
-The claim follows from `dif_pos h`.
+A detailed English derivation is pending.
 -/
 theorem Fmap_pos (i : ℕ) (t : Cech.Cochain (fun K : Chart x => ↥(((G.twist (B.pow n)).twist (twistSys S x c)).sub K)) i)
     (J : Cech.Idx (Finset.univ : Finset (Fin (N + 1))) i) (h : J.1.1 ⊆ support x) :
@@ -172,7 +172,7 @@ theorem Fmap_pos (i : ℕ) (t : Cech.Cochain (fun K : Chart x => ↥(((G.twist (
   dif_pos h
 
 /- English proof (translation)
-The claim follows from `dif_neg h`.
+A detailed English derivation is pending.
 -/
 theorem Fmap_neg (i : ℕ) (t : Cech.Cochain (fun K : Chart x => ↥(((G.twist (B.pow n)).twist (twistSys S x c)).sub K)) i)
     (J : Cech.Idx (Finset.univ : Finset (Fin (N + 1))) i) (h : ¬ J.1.1 ⊆ support x) :
@@ -180,7 +180,7 @@ theorem Fmap_neg (i : ℕ) (t : Cech.Cochain (fun K : Chart x => ↥(((G.twist (
   dif_neg h
 
 /- English proof (translation)
-Use function extensionality and compare the values at `J`. Distinguish the cases in `h : J.1.1 ⊆ support x`. Rewrite using `[Pi.add_apply, Fmap_pos η M₀ n c hG hB i _ J h, Fmap_pos η M₀ n c hG hB i _ J h, Fmap_pos η M₀ n c hG hB i _ J h, Pi.add_apply, ιfun_add]`. Both sides reduce to the same expression. Rewrite using `[Pi.add_apply, Fmap_neg η M₀ n c hG hB i _ J h, Fmap_neg η M₀ n c hG hB i _ J h, Fmap_neg η M₀ n c hG hB i _ J h, add_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem Fmap_add (i : ℕ) (t t' : Cech.Cochain (fun K : Chart x => ↥(((G.twist (B.pow n)).twist (twistSys S x c)).sub K)) i) :
     Fmap η M₀ n c hG hB i (t + t') = Fmap η M₀ n c hG hB i t + Fmap η M₀ n c hG hB i t' := by
@@ -193,7 +193,7 @@ theorem Fmap_add (i : ℕ) (t t' : Cech.Cochain (fun K : Chart x => ↥(((G.twis
       Fmap_neg η M₀ n c hG hB i _ J h, add_zero]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `J`. Distinguish the cases in `h : J.1.1 ⊆ support x`. Rewrite using `[Fmap_pos η M₀ n c hG hB i _ J h, Pi.zero_apply, Pi.zero_apply, ιfun_zero]`. Both sides reduce to the same expression. Rewrite using `[Fmap_neg η M₀ n c hG hB i _ J h, Pi.zero_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem Fmap_zero (i : ℕ) : Fmap η M₀ n c hG hB i 0 = 0 := by
   funext J
@@ -203,9 +203,9 @@ theorem Fmap_zero (i : ℕ) : Fmap η M₀ n c hG hB i 0 = 0 := by
   · rw [Fmap_neg η M₀ n c hG hB i _ J h, Pi.zero_apply]
 
 /- English proof (translation)
-Rewrite using `[Cech.Cdeg, Submodule.mem_pi]`. Introduce `J _`. Distinguish the cases in `h : J.1.1 ⊆ support x`. Rewrite using `[Fmap_pos η M₀ n c hG hB i _ J h]`. Conclude with `ιfun_mem' η M₀ n c hG hB J h _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fmap_neg η M₀ n c hG hB i _ J h]`. Conclude with `Submodule.zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem Fmap_mem (i : ℕ) (t : Cech.Cochain (fun K : Chart x => ↥(((G.twist (B.pow n)).twist (twistSys S x c)).sub K)) i) :
     Fmap η M₀ n c hG hB i t ∈ Cech.Cdeg (locSys (MvPolynomial (Fin (r + 1)) S) N (TwM η M₀))
@@ -219,7 +219,7 @@ theorem Fmap_mem (i : ℕ) (t : Cech.Cochain (fun K : Chart x => ↥(((G.twist (
     exact Submodule.zero_mem _
 
 /- English proof (translation)
-Rewrite using `[Cech.d_apply, Submodule.coe_sum]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tval_d (i : ℕ) (t : Cech.Cochain (fun K : Chart x => ↥(((G.twist (B.pow n)).twist (twistSys S x c)).sub K)) i)
     (K : Cech.Idx (support x) (i + 1)) :
@@ -229,11 +229,11 @@ theorem tval_d (i : ℕ) (t : Cech.Cochain (fun K : Chart x => ↥(((G.twist (B.
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `J`. Distinguish the cases in `hJ : J.1.1 ⊆ support x`. Apply `locEmb_injective η M₀ hJ` to reduce the goal to its premises. Establish `e1 : UT.toL (locEmb η M₀ J.1.1 hJ (Fmap η M₀ n c hG hB (i + 1) (Cech.d _ ((G.twist (B.pow n)).twist (twistSys S x c)).res i t) J)) = ∑ j : J.1.1, Cech.sgn J.1.1 j • single ((n : ℤ), c) ((t (Cech.face (downI J hJ) j)) : Ω)`. Rewrite using `[Fmap_pos η M₀ n c hG hB (i + 1) _ J hJ, ιfun_emb', tval_d, single_sum_zsmul]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `e2 : UT.toL (locEmb η M₀ J.1.1 hJ (Cech.d (locSys (MvPolynomial (Fin (r + 1)) S) N (TwM η M₀)) locResS i (Fmap η M₀ n c hG hB i t) J)) = ∑ j : J.1.1, Cech.sgn J.1.1 j • single ((n : ℤ), c) ((t (Cech.face (downI J hJ) j)) : Ω)`. Rewrite using `[Cech.d_apply, map_sum, UT.toL_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `hf : (Cech.face J j).1.1 ⊆ support x` using `(Cech.face_subset J j).trans hJ`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[map_zsmul, UT.toL_zsmul, locEmb_locResS η M₀ (Cech.face J j).1 J.1 hf hJ, Fmap_pos η M₀ n c hG hB i _ _ hf, ιfun_emb']`. Both sides reduce to the same expression. Conclude with `e1.trans e2.symm`. Use `twLocMod_subsingleton η M₀ hJ` as an intermediate fact. Conclude with `Subsingleton.elim _ _`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem F_d (i : ℕ) (t : Cech.Cochain (fun K : Chart x => ↥(((G.twist (B.pow n)).twist (twistSys S x c)).sub K)) i) :
     Fmap η M₀ n c hG hB (i + 1) (Cech.d _ ((G.twist (B.pow n)).twist (twistSys S x c)).res i t) =
@@ -264,20 +264,20 @@ def gm (i : ℕ) (s : Cech.Cochain (locSys (MvPolynomial (Fin (r + 1)) S) N (TwM
   cf η M₀ n c (upI K).1.1 K.1.2.2 (s (upI K))
 
 /- English proof (translation)
-The claim follows from `map_add (cf η M₀ n c (upI K).1.1 K.1.2.2) _ _`.
+A detailed English derivation is pending.
 -/
 theorem gm_add (i : ℕ) (s s' : Cech.Cochain (locSys (MvPolynomial (Fin (r + 1)) S) N (TwM η M₀)) i)
     (K : Cech.Idx (support x) i) : gm η M₀ n c i (s + s') K = gm η M₀ n c i s K + gm η M₀ n c i s' K :=
   map_add (cf η M₀ n c (upI K).1.1 K.1.2.2) _ _
 
 /- English proof (translation)
-The claim follows from `map_zero (cf η M₀ n c (upI K).1.1 K.1.2.2)`.
+A detailed English derivation is pending.
 -/
 theorem gm_zero (i : ℕ) (K : Cech.Idx (support x) i) : gm η M₀ n c i 0 K = 0 :=
   map_zero (cf η M₀ n c (upI K).1.1 K.1.2.2)
 
 /- English proof (translation)
-Rewrite using `[gm, Cech.d_apply, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, cf_locResS η M₀ n c _ _ ((Cech.face_subset (upI K) j).trans K.1.2.2) K.1.2.2]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gm_d (i : ℕ) (s : Cech.Cochain (locSys (MvPolynomial (Fin (r + 1)) S) N (TwM η M₀)) i)
     (K : Cech.Idx (support x) (i + 1)) :
@@ -288,7 +288,7 @@ theorem gm_d (i : ℕ) (s : Cech.Cochain (locSys (MvPolynomial (Fin (r + 1)) S) 
   rfl
 
 /- English proof (translation)
-Rewrite using `[gm, Fmap_pos η M₀ n c hG hB i t (upI K) K.1.2.2]`. Conclude with `cf_ιfun η M₀ n c hG hB (downI (upI K) K.1.2.2).1 _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gm_Fmap (i : ℕ) (t : Cech.Cochain (fun K : Chart x => ↥(((G.twist (B.pow n)).twist (twistSys S x c)).sub K)) i)
     (K : Cech.Idx (support x) i) : gm η M₀ n c i (Fmap η M₀ n c hG hB i t) K = t K := by
@@ -297,7 +297,7 @@ theorem gm_Fmap (i : ℕ) (t : Cech.Cochain (fun K : Chart x => ↥(((G.twist (B
 
 include hG hB in
 /- English proof (translation)
-Rewrite `hs` using `[Cech.Cdeg, Submodule.mem_pi]`. Conclude with `twLocPart_le_twistSub η M₀ hG hB K.1 n c (locGood_locEmb η M₀ (upI K).1 K.1.2.2 (hs (upI K) (Set.mem_univ _)) n)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gm_mem (i : ℕ) {s : Cech.Cochain (locSys (MvPolynomial (Fin (r + 1)) S) N (TwM η M₀)) i}
     (hs : s ∈ Cech.Cdeg (locSys (MvPolynomial (Fin (r + 1)) S) N (TwM η M₀)) (degLoc (twGraded η M₀) c) i)
@@ -312,7 +312,7 @@ def Gm (i : ℕ) (s : Cech.Cochain (locSys (MvPolynomial (Fin (r + 1)) S) N (TwM
   fun K => ⟨gm η M₀ n c i s K, gm_mem η M₀ n c hG hB i hs K⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `K`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[tval_d]`. Conclude with `gm_d η M₀ n c i s K`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Gm_d (i : ℕ) (s : Cech.Cochain (locSys (MvPolynomial (Fin (r + 1)) S) N (TwM η M₀)) i)
     (hs : s ∈ Cech.Cdeg (locSys (MvPolynomial (Fin (r + 1)) S) N (TwM η M₀)) (degLoc (twGraded η M₀) c) i)
@@ -326,11 +326,11 @@ theorem Gm_d (i : ℕ) (s : Cech.Cochain (locSys (MvPolynomial (Fin (r + 1)) S) 
   exact gm_d η M₀ n c i s K
 
 /- English proof (translation)
-Consider the cases of `i with`. Consider the case `zero`. Establish `h0 : z = 0`. Express the relevant statement in the definitionally equal form `z ∈ (⊥ : Submodule S _) at hz`. Conclude with `(Submodule.mem_bot _).mp hz`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Substitute using the available equality.
 
-Substitute `h0` using the available equality. Rewrite using `[Fmap_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `succ i`. Express the relevant statement in the definitionally equal form `z ∈ LinearMap.range _ at hz`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨t, rfl⟩` from `LinearMap.mem_range.mp hz`. Rewrite using `[F_d]`. Conclude with `Submodule.mem_map.mpr ⟨Fmap η M₀ n c hG hB i t, Fmap_mem η M₀ n c hG hB i t, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem F_bdry (i : ℕ) (z : Cech.Cochain (fun K : Chart x => ↥(((G.twist (B.pow n)).twist (twistSys S x c)).sub K)) i)
     (hz : z ∈ Cech.bdry (fun K : Chart x => ↥(((G.twist (B.pow n)).twist (twistSys S x c)).sub K))
@@ -352,11 +352,11 @@ theorem F_bdry (i : ℕ) (z : Cech.Cochain (fun K : Chart x => ↥(((G.twist (B.
     exact Submodule.mem_map.mpr ⟨Fmap η M₀ n c hG hB i t, Fmap_mem η M₀ n c hG hB i t, rfl⟩
 
 /- English proof (translation)
-Consider the cases of `i with`. Consider the case `zero`. Establish `h0 : s = 0`. Express the relevant statement in the definitionally equal form `s ∈ (⊥ : Submodule (MvPolynomial (Fin (r + 1)) S) _) at hb`. Conclude with `(Submodule.mem_bot _).mp hb`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Substitute using the available equality.
 
-Substitute `h0` using the available equality. Establish `: Gm η M₀ n c hG hB 0 0 hs = 0` using `funext fun K => Subtype.ext (gm_zero η M₀ n c 0 K)`. Rewrite using `[this]`. Conclude with `Submodule.zero_mem _`. Consider the case `succ i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨s', hs', rfl⟩` from `Submodule.mem_map.mp hb`. Rewrite using `[Gm_d η M₀ n c hG hB i s' hs' hs]`. Conclude with `LinearMap.mem_range_self _ _`.
+A detailed English derivation is pending.
 -/
 theorem G_bdry (i : ℕ) (s : Cech.Cochain (locSys (MvPolynomial (Fin (r + 1)) S) N (TwM η M₀)) i)
     (hs : s ∈ Cech.Cdeg (locSys (MvPolynomial (Fin (r + 1)) S) N (TwM η M₀)) (degLoc (twGraded η M₀) c) i)

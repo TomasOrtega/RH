@@ -11,7 +11,7 @@ section Len
 variable {R : Type*} [CommRing R]
 
 /- English proof (translation)
-Use `IsLocalization.linearMap_compatibleSMul W.primeCompl` as an intermediate fact. Set `e` to `(IsLocalizedModule.linearEquiv W.primeCompl ((J : Submodule R R).toLocalizedQuotient' (Localization.AtPrime W) W.primeCompl (Algebra.linearMap R (Localization.AtPrime W))) (LocalizedModule.mkLinearMap W.primeCompl (R ⧸ J))).restrictScalars (Localization.AtPrime W)`. Rewrite using `[← e.length_eq, Ideal.localized'_eq_map]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem inh_length_locQuot (W : Ideal R) [W.IsPrime] (J : Ideal R) :
     Module.length (Localization.AtPrime W) (LocalizedModule W.primeCompl (R ⧸ J)) =
@@ -25,7 +25,7 @@ theorem inh_length_locQuot (W : Ideal R) [W.IsPrime] (J : Ideal R) :
   rw [← e.length_eq, Ideal.localized'_eq_map]
 
 /- English proof (translation)
-Rewrite using `[Localization.AtPrime.map_eq_maximalIdeal, Module.length_eq_one_iff, isSimpleModule_iff_isCoatom]`. Conclude with `Ideal.isMaximal_def.mp inferInstance`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inh_length_quot_maximal (W : Ideal R) [W.IsPrime] :
     Module.length (Localization.AtPrime W)
@@ -35,9 +35,9 @@ theorem inh_length_quot_maximal (W : Ideal R) [W.IsPrime] :
   exact Ideal.isMaximal_def.mp inferInstance
 
 /- English proof (translation)
-Use `set A := Localization.AtPrime (Ideal.span {x})`. Establish `hinj : Function.Injective (algebraMap R A)` using `IsLocalization.injective A (Ideal.span {x}).primeCompl_le_nonZeroDivisors`. Establish `: IsDomain A` using `inferInstance`. Establish `hx' : algebraMap R A x ∈ nonZeroDivisors A` using `mem_nonZeroDivisors_of_ne_zero fun h => hx (hinj (by rw [h, map_zero]))`. Rewrite using `[Ideal.map_span, Set.image_singleton, map_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `Ring.ord A (algebraMap R A x ^ m) = m`. Rewrite using `[Ring.ord_pow hx', Ring.ord, ← Set.image_singleton, ← Ideal.map_span, inh_length_quot_maximal]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inh_length_pow [IsDomain R] (x : R) (hx : x ≠ 0) [(Ideal.span {x}).IsPrime] (m : ℕ) :
     Module.length (Localization.AtPrime (Ideal.span {x}))
@@ -58,14 +58,14 @@ theorem inh_length_pow [IsDomain R] (x : R) (hx : x ≠ 0) [(Ideal.span {x}).IsP
 variable {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Rewrite using `[multAt, dif_pos hW, inh_length_locQuot, inh_length_quot_maximal]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem inh_multAt_self (W : Ideal (MRingOver R ι)) [hW : W.IsPrime] : multAt W W = 1 := by
   rw [multAt, dif_pos hW, inh_length_locQuot, inh_length_quot_maximal]
   rfl
 
 /- English proof (translation)
-Rewrite using `[multAt, dif_pos hW, inh_length_locQuot, inh_length_pow x hx]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem inh_multAt_pow [IsDomain R] (x : MRingOver R ι) (hx : x ≠ 0) [hW : (Ideal.span {x}).IsPrime]
     (m : ℕ) : multAt (Ideal.span {x ^ m}) (Ideal.span {x}) = m := by
@@ -79,9 +79,9 @@ section Div
 variable {R : Type*} [CommRing R]
 
 /- English proof (translation)
-Use extensionality with `W`. Simplify using `only [Ideal.minimalPrimes, Set.mem_ofPred_eq, Set.mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `le_antisymm (h.2 ⟨hQ, hIQ⟩ (hmin W h.1.1 h.1.2)) (hmin W h.1.1 h.1.2)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Conclude with `⟨⟨hQ, hIQ⟩, fun y hy _ => hmin y hy.1 hy.2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem inh_minimalPrimes_eq {I Q : Ideal R} [hQ : Q.IsPrime] (hIQ : I ≤ Q)
     (hmin : ∀ q : Ideal R, q.IsPrime → I ≤ q → Q ≤ q) : I.minimalPrimes = {Q} := by
@@ -94,7 +94,7 @@ theorem inh_minimalPrimes_eq {I Q : Ideal R} [hQ : Q.IsPrime] (hIQ : I ≤ Q)
     exact ⟨⟨hQ, hIQ⟩, fun y hy _ => hmin y hy.1 hy.2⟩
 
 /- English proof (translation)
-Use extensionality with `W`. Simplify using `only [Set.mem_empty_iff_false, iff_false]`. Introduce `h`. Take `⟨⟨hp, hle⟩, -⟩` from `h`. Conclude with `hp.ne_top (top_le_iff.mp hle)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem inh_minimalPrimes_top : (⊤ : Ideal R).minimalPrimes = ∅ := by
   ext W
@@ -106,9 +106,9 @@ theorem inh_minimalPrimes_top : (⊤ : Ideal R).minimalPrimes = ∅ := by
 variable {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)] {F : Type*} [Field F]
 
 /- English proof (translation)
-Use extensionality with `W`. Rewrite using `[divCycle, Finsupp.ofSupportFinite_coe, Finsupp.single_apply, hsupp, Set.mem_singleton_iff]`. Distinguish the cases in `h : W = Q`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg h, if_neg (Ne.symm h)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inh_divCycle_of_supp (P : Ideal (MRingOver F ι)) (s : MRingOver F ι) (Q : Ideal (MRingOver F ι))
     (hsupp : divSupp P s = {Q}) :
@@ -121,7 +121,7 @@ theorem inh_divCycle_of_supp (P : Ideal (MRingOver F ι)) (s : MRingOver F ι) (
   · rw [if_neg h, if_neg (Ne.symm h)]
 
 /- English proof (translation)
-Use extensionality with `W`. Rewrite using `[divCycle, Finsupp.ofSupportFinite_coe, hsupp]`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem inh_divCycle_of_supp_empty (P : Ideal (MRingOver F ι)) (s : MRingOver F ι)
     (hsupp : divSupp P s = ∅) : divCycle P s = 0 := by
@@ -131,7 +131,7 @@ theorem inh_divCycle_of_supp_empty (P : Ideal (MRingOver F ι)) (s : MRingOver F
   simp
 
 /- English proof (translation)
-Apply `inh_divCycle_of_supp_empty` to reduce the goal to its premises. Use extensionality with `W`. Simplify using `[divSupp, Ideal.span_singleton_one, inh_minimalPrimes_top]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem inh_divCycle_one (P : Ideal (MRingOver F ι)) : divCycle P 1 = 0 := by
   apply inh_divCycle_of_supp_empty
@@ -139,9 +139,9 @@ theorem inh_divCycle_one (P : Ideal (MRingOver F ι)) : divCycle P 1 = 0 := by
   simp [divSupp, Ideal.span_singleton_one, inh_minimalPrimes_top]
 
 /- English proof (translation)
-Rewrite using `[inh_divCycle_of_supp P s Q, hQ, inh_multAt_self]`. Use extensionality with `W`. Simplify using `only [divSupp, hQ, Ideal.minimalPrimes_eq_subsingleton_self, Set.mem_singleton_iff, Set.mem_ofPred_eq]`. Prove the components needed by the constructor for the conclusion. Conclude with `fun h => h.1`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Introduce and unpack `rfl`. Conclude with `⟨rfl, hrel⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem inh_divCycle_prime (P : Ideal (MRingOver F ι)) (s : MRingOver F ι) (Q : Ideal (MRingOver F ι))
     [Q.IsPrime] (hQ : P ⊔ Ideal.span {s} = Q) (hrel : IsRelevant Q) :
@@ -155,7 +155,7 @@ theorem inh_divCycle_prime (P : Ideal (MRingOver F ι)) (s : MRingOver F ι) (Q 
   · rintro rfl; exact ⟨rfl, hrel⟩
 
 /- English proof (translation)
-Apply `inh_divCycle_of_supp_empty` to reduce the goal to its premises. Use extensionality with `W`. Simplify using `only [divSupp, hQ, Ideal.minimalPrimes_eq_subsingleton_self, Set.mem_singleton_iff, Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false, not_and]`. Introduce and unpack `rfl`. Conclude with `hrel`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem inh_divCycle_irrel (P : Ideal (MRingOver F ι)) (s : MRingOver F ι) (Q : Ideal (MRingOver F ι))
     [Q.IsPrime] (hQ : P ⊔ Ideal.span {s} = Q) (hrel : ¬ IsRelevant Q) : divCycle P s = 0 := by
@@ -166,13 +166,13 @@ theorem inh_divCycle_irrel (P : Ideal (MRingOver F ι)) (s : MRingOver F ι) (Q 
   rintro rfl; exact hrel
 
 /- English proof (translation)
-Break down `m with _ | m` into its components or cases. Simplify using `[inh_divCycle_one]`. Establish `hm : (⊥ ⊔ Ideal.span {x ^ (m + 1)}).minimalPrimes = {Ideal.span {x}}`. Rewrite using `[bot_sup_eq]`. Apply `inh_minimalPrimes_eq` to reduce the goal to its premises.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Ideal.span_singleton_le_span_singleton]`. Conclude with `dvd_pow_self x (Nat.succ_ne_zero m)`. Introduce `q hq hle`. Rewrite `hle`, the goal using `[Ideal.span_singleton_le_iff_mem]`. Conclude with `hq.mem_of_pow_mem _ hle`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[inh_divCycle_of_supp ⊥ _ (Ideal.span {x}), bot_sup_eq, inh_multAt_pow x hx]`. Use extensionality with `W`. Simplify using `only [divSupp, hm, Set.mem_singleton_iff, Set.mem_ofPred_eq]`. Prove the components needed by the constructor for the conclusion. Conclude with `fun h => h.1`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `rfl`. Conclude with `⟨rfl, hrel⟩`.
+A detailed English derivation is pending.
 -/
 theorem inh_divCycle_pow (x : MRingOver F ι) (hx : x ≠ 0) [(Ideal.span {x}).IsPrime]
     (hrel : IsRelevant (Ideal.span {x})) (m : ℕ) :
@@ -194,7 +194,7 @@ theorem inh_divCycle_pow (x : MRingOver F ι) (hx : x ≠ 0) [(Ideal.span {x}).I
   · rintro rfl; exact ⟨rfl, hrel⟩
 
 /- English proof (translation)
-Rewrite using `[cycEval, Finsupp.sum_single_index (zero_mul _)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inh_cycEval_single (J : Ideal (MRingOver F ι) → ℤ) (W : Ideal (MRingOver F ι)) (m : ℤ) :
     cycEval J (Finsupp.single W m) = m * J W := by
@@ -210,13 +210,13 @@ def inhKill : MvPolynomial σ F →ₐ[F] MvPolynomial {s // s ∉ S} F :=
   aeval fun s => if h : s ∈ S then 0 else X ⟨s, h⟩
 
 /- English proof (translation)
-Simplify using `[inhKill, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem inhKill_X_mem {s : σ} (h : s ∈ S) : inhKill F S (X s) = 0 := by
   simp [inhKill, h]
 
 /- English proof (translation)
-Simplify using `[inhKill, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem inhKill_X_nmem {s : σ} (h : s ∉ S) : inhKill F S (X s) = X ⟨s, h⟩ := by
   simp [inhKill, h]
@@ -224,9 +224,9 @@ theorem inhKill_X_nmem {s : σ} (h : s ∉ S) : inhKill F S (X s) = X ⟨s, h⟩
 abbrev inhV : Ideal (MvPolynomial σ F) := Ideal.span ((fun s => (X s : MvPolynomial σ F)) '' (S : Set σ))
 
 /- English proof (translation)
-Use `Submodule.span_induction (p := fun f _ => inhKill F S f = 0) ?_ ?_ ?_ ?_ hf` and prove the remaining obligations. Introduce and unpack `_ ⟨s, hs, rfl⟩`. Conclude with `inhKill_X_mem F S hs`. Simplify using the standard rewrite rules. Introduce `a b _ _ ha hb`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[ha, hb]`. Introduce `a b _ hb`. Simplify using `[smul_eq_mul, hb]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inhV_kill {f : MvPolynomial σ F} (hf : f ∈ inhV F S) : inhKill F S f = 0 := by
   refine Submodule.span_induction (p := fun f _ => inhKill F S f = 0) ?_ ?_ ?_ ?_ hf
@@ -255,7 +255,7 @@ def inhQuotEquiv : (MvPolynomial σ F ⧸ inhV F S) ≃ₐ[F] MvPolynomial {s //
       · rw [inhKill_X_nmem F S h, rename_X])
 
 /- English proof (translation)
-Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Establish `: inhKill F S f = inhQuotEquiv F S (Ideal.Quotient.mk _ f)` using `rfl`. Rewrite using `[this, map_eq_zero_iff _ (inhQuotEquiv F S).injective]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem inhV_mem_iff (f : MvPolynomial σ F) : f ∈ inhV F S ↔ inhKill F S f = 0 := by
   rw [← Ideal.Quotient.eq_zero_iff_mem]
@@ -263,14 +263,14 @@ theorem inhV_mem_iff (f : MvPolynomial σ F) : f ∈ inhV F S ↔ inhKill F S f 
   rw [this, map_eq_zero_iff _ (inhQuotEquiv F S).injective]
 
 /- English proof (translation)
-Rewrite using `[inhV_mem_iff, inhKill_X_nmem F S h]`. Conclude with `X_ne_zero _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inhV_X_nmem {s : σ} (h : s ∉ S) : (X s : MvPolynomial σ F) ∉ inhV F S := by
   rw [inhV_mem_iff, inhKill_X_nmem F S h]
   exact X_ne_zero _
 
 /- English proof (translation)
-The claim follows from `Ideal.subset_span ⟨s, h, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem inhV_X_mem {s : σ} (h : s ∈ S) : (X s : MvPolynomial σ F) ∈ inhV F S :=
   Ideal.subset_span ⟨s, h, rfl⟩
@@ -280,7 +280,7 @@ instance inhV_isPrime : (inhV F S).IsPrime := by
   exact (inhQuotEquiv F S).toRingEquiv.toMulEquiv.isDomain
 
 /- English proof (translation)
-Rewrite using `[ringKrullDim_eq_of_ringEquiv (inhQuotEquiv F S).toRingEquiv, MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field, zero_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inhV_dim [Finite σ] :
     ringKrullDim (MvPolynomial σ F ⧸ inhV F S) = (Nat.card {s // s ∉ S} : WithBot ℕ∞) := by
@@ -288,20 +288,20 @@ theorem inhV_dim [Finite σ] :
     MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field, zero_add]
 
 /- English proof (translation)
-Simplify using `only [inhV, Finset.coe_insert, Set.image_insert_eq, Ideal.span_insert]`. Conclude with `sup_comm _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inhV_insert (p : σ) : inhV F S ⊔ Ideal.span {X p} = inhV F (insert p S) := by
   simp only [inhV, Finset.coe_insert, Set.image_insert_eq, Ideal.span_insert]
   exact sup_comm _ _
 
 /- English proof (translation)
-Simplify using `[inhV]`.
+Simplify using the standard rewrite rules.
 -/
 theorem inhV_singleton (p : σ) : inhV F {p} = Ideal.span {X p} := by
   simp [inhV]
 
 /- English proof (translation)
-Simplify using `[inhV]`.
+Simplify using the standard rewrite rules.
 -/
 theorem inhV_empty : inhV F (∅ : Finset σ) = ⊥ := by
   simp [inhV]
@@ -314,13 +314,13 @@ variable {K : Type*} [Fintype K] [DecidableEq K] {ι : K → Type*} [∀ k, Fint
   [Field F]
 
 /- English proof (translation)
-Introduce `n hn k`. Rewrite `hn` using `[support_X_pow, Finset.mem_singleton]`. Substitute `hn` using the available equality. Take `⟨k', i'⟩` from `p`. Distinguish the cases in `hk : k = k'`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Substitute `hk` using the available equality. Rewrite using `[Finset.sum_eq_single i']`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Rewrite using `[Finsupp.single_apply, if_neg]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `hb (sigma_mk_injective h).symm`. Simplify using the standard rewrite rules. Rewrite using `[Pi.single_apply, if_neg hk]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b _`. Rewrite using `[Finsupp.single_apply, if_neg]`. Introduce `h`. Conclude with `hk (congrArg Sigma.fst h).symm`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem inh_homog_X_pow (p : Σ k, ι k) (m : ℕ) :
     IsMultiHomog (X p ^ m : MRingOver F ι) (Pi.single p.1 m) := by
@@ -343,13 +343,13 @@ theorem inh_homog_X_pow (p : Σ k, ι k) (m : ℕ) :
     exact hk (congrArg Sigma.fst h).symm
 
 /- English proof (translation)
-Simplify using `using inh_homog_X_pow (F := F) p 1`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem inh_homog_X (p : Σ k, ι k) : IsMultiHomog (X p : MRingOver F ι) (Pi.single p.1 1) := by
   simpa using inh_homog_X_pow (F := F) p 1
 
 /- English proof (translation)
-Introduce `n hn k`. Rewrite `hn` using `[support_one, Finset.mem_singleton]`. Substitute `hn` using the available equality. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem inh_homog_one : IsMultiHomog (1 : MRingOver F ι) 0 := by
   intro n hn k
@@ -360,20 +360,20 @@ theorem inh_homog_one : IsMultiHomog (1 : MRingOver F ι) 0 := by
 variable [DecidableEq (Σ k, ι k)]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, by rintro _ ⟨p, _, rfl⟩; exact ⟨_, inh_homog_X p⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem inhV_homogIdeal (S : Finset (Σ k, ι k)) : IsMultiHomogIdeal (inhV F S) :=
   ⟨_, by rintro _ ⟨p, _, rfl⟩; exact ⟨_, inh_homog_X p⟩, rfl⟩
 
 /- English proof (translation)
-Introduce `k` and use `let ⟨i, hi⟩ := h k; ⟨i, inhV_X_nmem F S hi⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem inhV_relevant (S : Finset (Σ k, ι k)) (h : ∀ k, ∃ i, (⟨k, i⟩ : Σ k, ι k) ∉ S) :
     IsRelevant (inhV F S) :=
   fun k => let ⟨i, hi⟩ := h k; ⟨i, inhV_X_nmem F S hi⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨inferInstance, inhV_homogIdeal S, inhV_relevant S h⟩, by rw [inhV_dim, hc]⟩`.
+Supply the required witnesses or components.
 -/
 theorem inhV_projVar (S : Finset (Σ k, ι k)) (d : ℕ) (h : ∀ k, ∃ i, (⟨k, i⟩ : Σ k, ι k) ∉ S)
     (hc : Nat.card {s // s ∉ S} = d + Fintype.card K) : IsProjVarF (inhV F S) d :=
@@ -386,13 +386,13 @@ section Fin1
 variable {σ : Type*} {F : Type*} [Field F]
 
 /- English proof (translation)
-Establish `hne : I ≠ ⊤`. Introduce `h`. Use `hI (h ▸ Submodule.mem_top : (1 : MvPolynomial σ F) ∈ I)` as an intermediate fact. Simplify using `at this`. Use `Ideal.Quotient.nontrivial_iff.mpr hne` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hmk : (Ideal.Quotient.mk I) = (algebraMap F (MvPolynomial σ F ⧸ I)).comp (eval c)`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Rewrite using `[RingHom.comp_apply, eval_C]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `s`. Rewrite using `[RingHom.comp_apply, eval_X, show algebraMap F _ (c s) = Ideal.Quotient.mk I (C (c s)) from rfl]`. Conclude with `Ideal.Quotient.eq.mpr (hX s)`. Rewrite using `[finrank_eq_one_iff_of_nonzero' (1 : MvPolynomial σ F ⧸ I) one_ne_zero]`. Introduce `w`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨f, rfl⟩` from `Ideal.Quotient.mk_surjective w`. Use `⟨eval c f, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, mul_one, hmk, RingHom.comp_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inh_finrank_quot (I : Ideal (MvPolynomial σ F)) (c : σ → F)
     (hI : I ≤ RingHom.ker (eval c)) (hX : ∀ s, X s - C (c s) ∈ I) :

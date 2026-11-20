@@ -20,9 +20,9 @@ namespace GlobalTheory.DelWSub
 def intBall (p : ℕ) [Fact p.Prime] : Subring ℂ_[p] := GlobalTheory.ClosedBallValuationSubring.closedBallSubring ℂ_[p]
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => simp [Formalism.GradedWeylDivisibility.rowAct]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p v hp`. Rewrite using `[map_mul, MvPolynomial.eval_mul, MvPolynomial.eval_mul, hp]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Formalism.GradedWeylDivisibility.rowAct, Matrix.mul_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eval_rowAct {R : Type} [CommRing R] {N : ℕ} (G Y : Matrix (Fin N) (Fin N) R)
     (P : MvPolynomial (Fin N × Fin N) R) :
@@ -42,13 +42,13 @@ theorem weyl_eq (N : ℕ) (ν : Fin N → ℕ) :
     WeylLatticeDuality.weyl ℤ N N le_rfl ν = Formalism.GradedWeylDivisibility.weyl ℤ N N le_rfl ν := rfl
 
 /- English proof (translation)
-Set `O` to `intBall p`. Set `gO : Matrix (Fin N) (Fin N) O` to `fun a b => ⟨g a b, hg a b⟩`. Establish `hgO : gO.map O.subtype = g` using `by ext a b; rfl`. Establish `hfO : MvPolynomial.map (Int.castRingHom O) f ∈ Formalism.GradedWeylDivisibility.weyl O N N le_rfl ν` using `GlobalTheory.WeylRowAll.map_mem_weyl (Int.castRingHom O) le_rfl ν f (by rw [← weyl_eq]; exact hf)`. Establish `hQ` using `GlobalTheory.WeylRowAll.rowAct_mem_weyl O le_rfl ν gO _ hfO`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Formalism.GradedWeylDivisibility.weyl at hQ`. Take `⟨c, hc⟩` from `(Finsupp.mem_span_range_iff_exists_finsupp).1 hQ`. Use `⟨c.support, fun w => (c w : ℂ_[p]), fun w => (c w).2, fun Y => ?_⟩` and prove the remaining obligations. Establish `h1 : MvPolynomial.map (Int.castRingHom ℂ_[p]) f = MvPolynomial.map O.subtype (MvPolynomial.map (Int.castRingHom O) f)`. Rewrite using `[MvPolynomial.map_map]`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Establish `hterm : ∀ w, MvPolynomial.map O.subtype (Formalism.GradedWeylDivisibility.applyWord O w (Formalism.GradedWeylDivisibility.hw O le_rfl ν)) = MvPolynomial.map (Int.castRingHom ℂ_[p]) (WeylLatticeDuality.applyWord ℤ w (WeylLatticeDuality.hw ℤ le_rfl ν))`. Introduce `w`. Rewrite using `[← Formalism.GradedWeylDivisibility.lclosedeq_applyWord_map, Formalism.GradedWeylDivisibility.lclosedeq_hw_map]`. Use `show _ = MvPolynomial.map _ (Formalism.GradedWeylDivisibility.applyWord ℤ w (Formalism.GradedWeylDivisibility.hw ℤ le_rfl ν))`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Formalism.GradedWeylDivisibility.lclosedeq_applyWord_map, Formalism.GradedWeylDivisibility.lclosedeq_hw_map]`. Rewrite using `[h1, ← eval_rowAct, ← hgO, ← GlobalTheory.WeylRowAll.map_rowAct, ← hc, Finsupp.sum, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C, MvPolynomial.eval_mul, MvPolynomial.eval_C, hterm]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem rowSub_expand (p : ℕ) [Fact p.Prime] {N : ℕ} (ν : Fin N → ℕ)
     (g : Matrix (Fin N) (Fin N) ℂ_[p]) (hg : ∀ a b, ‖g a b‖ ≤ 1)
@@ -91,13 +91,11 @@ def act (p : ℕ) [Fact p.Prime] (T : Type) (N : ℕ) (g : T → Matrix (Fin N) 
   map_add' F G := by funext y; simp [mul_add]
 
 /- English proof (translation)
-Use `(AddSubgroup.closure_le ((WeylLatticeDuality.DelW p T N ν).comap (act p T N g c))).2 ?_ hF` and prove the remaining obligations. Introduce and unpack `_ ⟨r, f, hr, hf, rfl⟩`. Rewrite using `[SetLike.mem_coe, AddSubgroup.mem_comap]`. Use `choose s o ho hexp using fun τ => rowSub_expand p (ν τ) (g τ) (hg τ) (f τ) (hf τ)`. Establish `heq : act p T N g c (fun y => r * ∏ τ, MvPolynomial.eval (fun k : Fin N × Fin N => y τ k.1 k.2) (MvPolynomial.map (Int.castRingHom ℂ_[p]) (f τ))) = ∑ x ∈ Fintype.piFinset s, fun y => (c * r * ∏ τ, o τ (x τ)) * ∏ τ, MvPolynomial.eval (fun k : Fin N × Fin N => y τ k.1 k.2) (MvPolyn …`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `y`. Rewrite using `[Finset.sum_apply]`. Use `show c * (r * ∏ τ, MvPolynomial.eval (fun k : Fin N × Fin N => (g τ * y τ) k.1 k.2) (MvPolynomial.map (Int.castRingHom ℂ_[p]) (f τ))) = _`. Simplify using `only [hexp]`. Rewrite using `[Finset.prod_univ_sum, Finset.mul_sum, Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[heq]`. Use `AddSubgroup.sum_mem _ fun x _ => AddSubgroup.subset_closure ⟨c * r * ∏ τ, o τ (x τ), fun τ => WeylLatticeDuality.applyWord ℤ (x τ) (WeylLatticeDuality.hw ℤ le_rfl (ν τ)), ?_, fun τ => Submodule.subset_span ⟨x τ, rfl⟩, rfl⟩` and prove the remaining obligations.
-
-Rewrite using `[norm_mul, norm_mul, norm_prod]`. Conclude with `mul_le_one₀ (mul_le_one₀ hc (norm_nonneg _) hr) (Finset.prod_nonneg fun _ _ => norm_nonneg _) (Finset.prod_le_one (fun _ _ => norm_nonneg _) fun τ _ => ho τ _)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_delW_act (p : ℕ) [Fact p.Prime] (T : Type) [Fintype T] (N : ℕ) (ν : T → Fin N → ℕ)
     (g : T → Matrix (Fin N) (Fin N) ℂ_[p]) (c : ℂ_[p]) (hg : ∀ τ a b, ‖g τ a b‖ ≤ 1) (hc : ‖c‖ ≤ 1)
@@ -130,11 +128,11 @@ theorem mem_delW_act (p : ℕ) [Fact p.Prime] (T : Type) [Fintype T] (N : ℕ) (
     (Finset.prod_le_one (fun _ _ => norm_nonneg _) fun τ _ => ho τ _)
 
 /- English proof (translation)
-Set `O` to `intBall p`. Set `gO : Matrix (Fin N) (Fin N) O` to `fun a b => ⟨g a b, hg a b⟩`. Establish `hmap : gO.map O.subtype = g` using `by ext a b; rfl`. Establish `hd : O.subtype gO.det = g.det` using `by rw [RingHom.map_det]; rfl`. Establish `hdne : g.det ≠ 0` using `norm_ne_zero_iff.1 (by rw [hdet]; exact one_ne_zero)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : IsUnit gO.det`. Use `IsUnit.of_mul_eq_one (⟨g.det⁻¹, ?_⟩ : O) ?_` and prove the remaining obligations. Use `show ‖g.det⁻¹‖ ≤ 1`. Rewrite using `[norm_inv, hdet, inv_one]`. Apply `Subtype.ext show O.subtype gO.det * g.det⁻¹ = 1` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hd, mul_inv_cancel₀ hdne]`. Use `⟨gO⁻¹.map O.subtype, fun a b => (gO⁻¹ a b).2, ?_⟩` and prove the remaining obligations. Rewrite using `[← hmap, ← Matrix.map_mul, Matrix.mul_nonsing_inv _ hu, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_int_inv (p : ℕ) [Fact p.Prime] {N : ℕ} (g : Matrix (Fin N) (Fin N) ℂ_[p])
     (hg : ∀ a b, ‖g a b‖ ≤ 1) (hdet : ‖g.det‖ = 1) :
@@ -156,11 +154,11 @@ theorem exists_int_inv (p : ℕ) [Fact p.Prime] {N : ℕ} (g : Matrix (Fin N) (F
   rw [← hmap, ← Matrix.map_mul, Matrix.mul_nonsing_inv _ hu, Matrix.map_one _ (map_zero _) (map_one _)]
 
 /- English proof (translation)
-Introduce `p _ T _ N ν g c hg hdet hc F`. Prove the components needed by the constructor for the conclusion. Conclude with `mem_delW_act p T N ν g c hg hc.le F`. Introduce `h`. Establish `hinv` using `fun τ => exists_int_inv p (g τ) (hg τ) (hdet τ)`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose hm hmI hmul using hinv`. Establish `hc0 : c ≠ 0` using `norm_ne_zero_iff.1 (by rw [hc]; exact one_ne_zero)`. Use `mem_delW_act p T N ν hm c⁻¹ hmI (by rw [norm_inv, hc, inv_one]) _ h` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `y`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [← Matrix.mul_assoc, hmul, Matrix.one_mul]`. Rewrite using `[inv_mul_cancel_left₀ hc0]`.
+A detailed English derivation is pending.
 -/
 theorem delW_rowSub : ∀ (p : ℕ) [Fact p.Prime] (T : Type) [Fintype T] (N : ℕ) (ν : T → Fin N → ℕ) (g : T → Matrix (Fin N) (Fin N) ℂ_[p]) (c : ℂ_[p]), (∀ τ a b, ‖g τ a b‖ ≤ 1) → (∀ τ, ‖(g τ).det‖ = 1) → ‖c‖ = 1 → ∀ F : (T → Matrix (Fin N) (Fin N) ℂ_[p]) → ℂ_[p], F ∈ WeylLatticeDuality.DelW p T N ν ↔ (fun y => c * F (fun τ => g τ * y τ)) ∈ WeylLatticeDuality.DelW p T N ν := by
   intro p _ T _ N ν g c hg hdet hc F

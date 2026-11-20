@@ -21,14 +21,14 @@ def Bmat (h1 : X.Ψ → Matrix (Fin r) (Fin r) ℂ) (z0 x0 : Frame X.Ψ r) (τ :
     (col (mat x0 τ) (kap X.p0_le a))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `[col, Matrix.mul_apply, Matrix.mulVec, dotProduct]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 lemma col_mul' (A B : Matrix (Fin r) (Fin r) ℂ) (a : Fin r) : col (A * B) a = A *ᵥ col B a := by
   funext k
   simp [col, Matrix.mul_apply, Matrix.mulVec, dotProduct]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `only [Matrix.mulVec, dotProduct, col, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Conclude with `Finset.sum_congr rfl fun c _ ↦ mul_comm _ _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma mulVec_eq_sum_col (M : Matrix (Fin r) (Fin r) ℂ) (w : Fin r → ℂ) : M *ᵥ w = ∑ c, w c • col M c := by
   funext k
@@ -36,7 +36,7 @@ lemma mulVec_eq_sum_col (M : Matrix (Fin r) (Fin r) ℂ) (w : Fin r → ℂ) : M
   exact Finset.sum_congr rfl fun c _ ↦ mul_comm _ _
 
 /- English proof (translation)
-Simplify using `only [col_mul', Matrix.mulVec_sum, Matrix.mulVec_smul]`.
+Simplify using the standard rewrite rules.
 -/
 lemma yvec_eq (h1 : X.Ψ → Matrix (Fin r) (Fin r) ℂ) (z0 : Frame X.Ψ r) (τ : X.Ψ) (u : Fin X.p0 → ℂ) :
     ∑ b, u b • col (h1 τ * mat z0 τ) (Fin.castLE X.p0_le b) =
@@ -44,7 +44,7 @@ lemma yvec_eq (h1 : X.Ψ → Matrix (Fin r) (Fin r) ℂ) (z0 : Frame X.Ψ r) (τ
   simp only [col_mul', Matrix.mulVec_sum, Matrix.mulVec_smul]
 
 /- English proof (translation)
-Simplify using `only [hermC, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul, Finset.mul_sum]`. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ ↦ ?_` and prove the remaining obligations. Use `conv_rhs => rw [Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun b' _ ↦ Finset.sum_congr rfl fun b _ ↦ by ring`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private lemma hermC_sum_smul_left' (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) {m : ℕ}
     (c : Fin m → ℂ) (y : Fin m → Fin r → ℂ) (v : Fin r → ℂ) :
@@ -56,9 +56,9 @@ private lemma hermC_sum_smul_left' (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r
   exact Finset.sum_congr rfl fun b' _ ↦ Finset.sum_congr rfl fun b _ ↦ by ring
 
 /- English proof (translation)
-Unfold `Pos`. Use `Finset.sum_congr rfl fun b' _ ↦ ?_` and prove the remaining obligations. Establish `h : (Amat X h1 z0 x0 τ *ᵥ u) b' = ∑ b, u b * hermC τ.1 X.Gm (col (h1 τ * mat z0 τ) (Fin.castLE X.p0_le b)) (col (mat x0 τ) (Fin.castLE X.p0_le b'))`. Simplify using `only [Matrix.mulVec, dotProduct, Amat, Matrix.of_apply]`. Conclude with `Finset.sum_congr rfl fun b _ ↦ mul_comm _ _`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hermC_sum_smul_left', h]`.
+A detailed English derivation is pending.
 -/
 lemma Pos_eq (h1 : X.Ψ → Matrix (Fin r) (Fin r) ℂ) (z0 x0 : Frame X.Ψ r) (τ : X.Ψ) (u : Fin X.p0 → ℂ) :
     Pos X x0 τ (∑ b, u b • col (h1 τ * mat z0 τ) (Fin.castLE X.p0_le b)) =
@@ -72,9 +72,9 @@ lemma Pos_eq (h1 : X.Ψ → Matrix (Fin r) (Fin r) ℂ) (z0 x0 : Frame X.Ψ r) (
   rw [hermC_sum_smul_left', h]
 
 /- English proof (translation)
-Unfold `PositiveSpanMatrices.Neg`. Use `Finset.sum_congr rfl fun a _ ↦ ?_` and prove the remaining obligations. Establish `h : (Bmat X h1 z0 x0 τ *ᵥ u) a = -∑ b, u b * hermC τ.1 X.Gm (col (h1 τ * mat z0 τ) (Fin.castLE X.p0_le b)) (col (mat x0 τ) (kap X.p0_le a))`. Simplify using `only [Matrix.mulVec, dotProduct, Bmat, Matrix.of_apply, neg_mul, Finset.sum_neg_distrib]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `Finset.sum_congr rfl fun b _ ↦ mul_comm _ _`. Rewrite using `[hermC_sum_smul_left', h, norm_neg]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma Neg_eq (h1 : X.Ψ → Matrix (Fin r) (Fin r) ℂ) (z0 x0 : Frame X.Ψ r) (τ : X.Ψ) (u : Fin X.p0 → ℂ) :
     Neg X x0 τ (∑ b, u b • col (h1 τ * mat z0 τ) (Fin.castLE X.p0_le b)) =
@@ -89,17 +89,15 @@ lemma Neg_eq (h1 : X.Ψ → Matrix (Fin r) (Fin r) ℂ) (z0 x0 : Frame X.Ψ r) (
   rw [hermC_sum_smul_left', h, norm_neg]
 
 /- English proof (translation)
-Use `set y := col (h1 τ * mat z0 τ) (Fin.castLE X.p0_le b) with hy`. Use `set α := (mat x0 τ)⁻¹ *ᵥ y with hα`. Establish `hyα : y = ∑ c, α c • col (mat x0 τ) c`. Rewrite using `[← mulVec_eq_sum_col, hα, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.mpr hdet0), Matrix.one_mulVec]`. Establish `hcd : ∀ c d, hermC τ.1 X.Gm (col (mat x0 τ) c) (col (mat x0 τ) d) = if c = d then ((sgn X.p0 (c : ℕ) : ℝ) : ℂ) else 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `c d`. Use `congrFun (congrFun (hortho τ) c) d` as an intermediate fact. Simplify `this` using `[gram, Matrix.diagonal_apply]`. Establish `hh : ∀ d, hermC τ.1 X.Gm y (col (mat x0 τ) d) = α d * ((sgn X.p0 (d : ℕ) : ℝ) : ℂ)`. Introduce `d`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hyα, hermC_sum_smul_left']`. Simplify using `only [hcd, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite using `[hyα, sum_split X.p0_le]`. Use `congr 1`. Use `Finset.sum_congr rfl fun b' _ ↦ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Simplify using `only [Amat, Matrix.of_apply]`. Rewrite using `[← hy, hh]`. Establish `hb'` using `b'.isLt`. Simplify using `[sgn, hb']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.sum_congr rfl fun a _ ↦ ?_` and prove the remaining obligations. Use `congr 1`. Simplify using `only [Bmat, Matrix.of_apply]`. Rewrite using `[← hy, hh, show sgn X.p0 (kap X.p0_le a : ℕ) = -1 by simp [sgn, kap]]`. Use `push_cast`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma colW_expand (h1 : X.Ψ → Matrix (Fin r) (Fin r) ℂ) (z0 : Frame X.Ψ r) {x0 : Frame X.Ψ r}
     (hortho : X.IsOrtho x0) (τ : X.Ψ) (hdet0 : (mat x0 τ).det ≠ 0) (b : Fin X.p0) :
@@ -138,7 +136,7 @@ lemma colW_expand (h1 : X.Ψ → Matrix (Fin r) (Fin r) ℂ) (z0 : Frame X.Ψ r)
     ring
 
 /- English proof (translation)
-Establish `hb'` using `b'.isLt`. Simplify using `only [Data.lowBlock, Matrix.of_apply, Fin.castLE_inj, Fin.coe_castLE]`. Rewrite using `[dif_neg (by omega)]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma lowBlock_castLE (Z : X.Coord) (τ : X.Ψ) (b' b : Fin X.p0) :
     X.lowBlock Z τ (Fin.castLE X.p0_le b') (Fin.castLE X.p0_le b) = if b' = b then 1 else 0 := by
@@ -148,7 +146,7 @@ lemma lowBlock_castLE (Z : X.Coord) (τ : X.Ψ) (b' b : Fin X.p0) :
   simp
 
 /- English proof (translation)
-Simplify using `only [Data.lowBlock, Matrix.of_apply, if_neg (kap_ne_castLE X.p0_le a b), zero_add]`. Rewrite using `[dif_pos ⟨by simp [kap], by simp [b.isLt]⟩]`. Conclude with `congrArg₂ (Z τ) (Fin.ext (by simp [kap])) (Fin.ext (by simp))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma lowBlock_kap (Z : X.Coord) (τ : X.Ψ) (a : Fin (r - X.p0)) (b : Fin X.p0) :
     X.lowBlock Z τ (kap X.p0_le a) (Fin.castLE X.p0_le b) = Z τ a b := by
@@ -157,7 +155,7 @@ lemma lowBlock_kap (Z : X.Coord) (τ : X.Ψ) (a : Fin (r - X.p0)) (b : Fin X.p0)
   exact congrArg₂ (Z τ) (Fin.ext (by simp [kap])) (Fin.ext (by simp))
 
 /- English proof (translation)
-Establish `hm : mat (X.xZ x0 Z) τ = mat x0 τ * X.lowBlock Z τ` using `rfl`. Establish `hc : ∀ c k, col (X.lowBlock Z τ) c k = X.lowBlock Z τ k c` using `fun _ _ ↦ rfl`. Rewrite using `[hm, col_mul', mulVec_eq_sum_col, sum_split X.p0_le]`. Simplify using `only [hc, lowBlock_castLE, lowBlock_kap, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma colZ (x0 : Frame X.Ψ r) (Z : X.Coord) (τ : X.Ψ) (b : Fin X.p0) :
     col (mat (X.xZ x0 Z) τ) (Fin.castLE X.p0_le b) =

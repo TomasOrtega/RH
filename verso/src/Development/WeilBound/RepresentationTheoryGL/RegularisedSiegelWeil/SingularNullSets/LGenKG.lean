@@ -23,19 +23,19 @@ open Matrix
 variable {D : D7} {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `Matrix.map_one _ (map_zero f) (map_one f)`.
+A detailed English derivation is pending.
 -/
 theorem map_one' {T : Type} [CommRing T] (f : AE D →+* T) : (1 : Mx D n n).map f = 1 :=
   Matrix.map_one _ (map_zero f) (map_one f)
 
 /- English proof (translation)
-The claim follows from `Matrix.map_zero _ (map_zero f)`.
+A detailed English derivation is pending.
 -/
 theorem map_zero' {T : Type} [CommRing T] (f : AE D →+* T) {m p : ℕ} : (0 : Mx D m p).map f = 0 :=
   Matrix.map_zero _ (map_zero f)
 
 /- English proof (translation)
-Rewrite using `[conj_block_matrix, cj_one, cj_zero, hY, submatrix_fromBlocks_mul, submatrix_fromBlocks_mul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem unit_n (Y : Mx D n n) (hY : cj (cA D) Y = Y) :
     cj (cA D) (blk4 1 Y 0 1) * Jm D n * blk4 1 Y 0 1 = Jm D n := by
@@ -45,24 +45,24 @@ theorem unit_n (Y : Mx D n n) (hY : cj (cA D) Y = Y) :
 def nOf (Y : Mx D n n) (hY : cj (cA D) Y = Y) : G D n := (exists_G _ (unit_n Y hY)).choose
 
 /- English proof (translation)
-The claim follows from `(exists_G _ (unit_n Y hY)).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem mat_nOf (Y : Mx D n n) (hY : cj (cA D) Y = Y) : mat (nOf Y hY) = blk4 1 Y 0 1 :=
   (exists_G _ (unit_n Y hY)).choose_spec
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Y, mat_nOf Y hY⟩`.
+Supply the required witnesses or components.
 -/
 theorem isN_nOf (Y : Mx D n n) (hY : cj (cA D) Y = Y) : IsN (nOf Y hY) := ⟨Y, mat_nOf Y hY⟩
 
 /- English proof (translation)
-Rewrite using `[conj_block_matrix, cj_one, cj_zero, cj_neg, cj_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cj_Jm : cj (cA D) (Jm D n) = blk4 0 (-1) 1 0 := by
   rw [conj_block_matrix, cj_one, cj_zero, cj_neg, cj_one]
 
 /- English proof (translation)
-Rewrite using `[cj_Jm, submatrix_fromBlocks_mul, submatrix_fromBlocks_mul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem unit_w : cj (cA D) (Jm D n) * Jm D n * Jm D n = Jm D n := by
   rw [cj_Jm, submatrix_fromBlocks_mul, submatrix_fromBlocks_mul]; simp
@@ -70,32 +70,32 @@ theorem unit_w : cj (cA D) (Jm D n) * Jm D n * Jm D n = Jm D n := by
 def wE (D : D7) (n : ℕ) : G D n := (exists_G _ (unit_w (D := D) (n := n))).choose
 
 /- English proof (translation)
-The claim follows from `(exists_G _ (unit_w (D := D) (n := n))).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem mat_wE : mat (wE D n) = Jm D n := (exists_G _ (unit_w (D := D) (n := n))).choose_spec
 
 /- English proof (translation)
-The claim follows from `mat_wE`.
+A detailed English derivation is pending.
 -/
 theorem isW_wE : IsW (wE D n) := mat_wE
 
 /- English proof (translation)
-The claim follows from `mat_inv_eq (by rw [mat_wE, submatrix_fromBlocks_mul]; simp [block_matrix_one])`.
+A detailed English derivation is pending.
 -/
 theorem mat_wE_inv : mat (wE D n)⁻¹ = blk4 0 (-1) 1 0 :=
   mat_inv_eq (by rw [mat_wE, submatrix_fromBlocks_mul]; simp [block_matrix_one])
 
 /- English proof (translation)
-Rewrite using `[mat_mul, mat_mul, mat_wE, mat_nOf, mat_wE_inv, submatrix_fromBlocks_mul, submatrix_fromBlocks_mul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mat_conj (Y : Mx D n n) (hY : cj (cA D) Y = Y) :
     mat (wE D n * nOf Y hY * (wE D n)⁻¹) = blk4 1 0 (-Y) 1 := by
   rw [mat_mul, mat_mul, mat_wE, mat_nOf, mat_wE_inv, submatrix_fromBlocks_mul, submatrix_fromBlocks_mul]; simp
 
 /- English proof (translation)
-Establish `hinv : mat (nOf Y hY)⁻¹ = blk4 1 (-Y) 0 1` using `mat_inv_eq (by rw [mat_nOf, submatrix_fromBlocks_mul]; simp [block_matrix_one])`. Apply `mem_KOff` to reduce the goal to its premises. Rewrite using `[mat_nOf, block_matrix_map, hinf, map_one', map_zero', block_matrix_one]`. Introduce `v hv`. Rewrite using `[mat_nOf, block_matrix_map, hS v hv, map_one', map_zero', block_matrix_one]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `v hv i j`. Rewrite using `[hinv, mat_nOf]`. Conclude with `⟨integral_block_matrix_iff.2 ⟨IntM.one, hint v hv, IntM.zero, IntM.one⟩ i j, integral_block_matrix_iff.2 ⟨IntM.one, (hint v hv).neg, IntM.zero, IntM.one⟩ i j⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem nOf_mem {S : Finset (Pl D)} (Y : Mx D n n) (hY : cj (cA D) Y = Y) (hinf : Y.map (infPart D) = 0)
     (hS : ∀ v ∈ S, Y.map (cv D v) = 0) (hint : ∀ v ∉ S, IntM v Y) : nOf Y hY ∈ KOff D n S := by
@@ -109,9 +109,9 @@ theorem nOf_mem {S : Finset (Pl D)} (Y : Mx D n n) (hY : cj (cA D) Y = Y) (hinf 
       integral_block_matrix_iff.2 ⟨IntM.one, (hint v hv).neg, IntM.zero, IntM.one⟩ i j⟩
 
 /- English proof (translation)
-Establish `hinv : mat (wE D n * nOf Y hY * (wE D n)⁻¹)⁻¹ = blk4 1 0 Y 1` using `mat_inv_eq (by rw [mat_conj, submatrix_fromBlocks_mul]; simp [block_matrix_one])`. Establish `hneg : ∀ {T : Type} [CommRing T] (f : AE D →+* T), (-Y).map f = -(Y.map f)` using `fun f => Matrix.map_neg _ (map_neg f) _`. Apply `mem_KOff` to reduce the goal to its premises. Rewrite using `[mat_conj, block_matrix_map, hneg, hinf, neg_zero, map_one', map_zero', block_matrix_one]`. Introduce `v hv`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[mat_conj, block_matrix_map, hneg, hS v hv, neg_zero, map_one', map_zero', block_matrix_one]`. Introduce `v hv i j`. Rewrite using `[hinv, mat_conj]`. Conclude with `⟨integral_block_matrix_iff.2 ⟨IntM.one, IntM.zero, (hint v hv).neg, IntM.one⟩ i j, integral_block_matrix_iff.2 ⟨IntM.one, IntM.zero, hint v hv, IntM.one⟩ i j⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem conj_mem {S : Finset (Pl D)} (Y : Mx D n n) (hY : cj (cA D) Y = Y) (hinf : Y.map (infPart D) = 0)
     (hS : ∀ v ∈ S, Y.map (cv D v) = 0) (hint : ∀ v ∉ S, IntM v Y) :

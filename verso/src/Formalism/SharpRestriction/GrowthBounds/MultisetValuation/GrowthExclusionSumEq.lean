@@ -16,9 +16,9 @@ variable (X : Formalism.MainNotions.G.Inst D L) (Y : Formalism.MainNotions.G.Lat
 
 include hL ht0 in
 /- English proof (translation)
-Establish `hn` using `nc_n_eq X Y hT hL u w hg t0 ht0`. Unfold `Formalism.MainNotions.G.capU nc_zc`. Rewrite using `[nc_partner hg]`. Use `congr 3`. Use `show t0 + s.val • Formalism.MainNotions.G.hP D (D.what₂.places.resChar w) + k • Formalism.MainNotions.G.hP D (D.what₂.places.resChar w) = t0 + ((s.val + k) % (D.gat u w hg).P.n' (Y.vOf u w hg t0)) • Formalism.MainNotions.G.hP D (D.what₂.places.resChar w)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `key : ∀ a : ℕ, t0 + a • Formalism.MainNotions.G.hP D (D.what₂.places.resChar w) + k • Formalism.MainNotions.G.hP D (D.what₂.places.resChar w) = t0 + ((a + k) % (D.gat u w hg).P.n' (Y.vOf u w hg t0)) • Formalism.MainNotions.G.hP D (D.what₂.places.resChar w)`. Introduce `a`. Rewrite using `[hn, mod_addOrderOf_nsmul, add_nsmul, add_assoc]`. Conclude with `key s.val`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nc_capU (j : ℕ) (s : Fin ((D.gat u w hg).P.n' (Y.vOf u w hg t0))) (k : ℕ) :
     Formalism.MainNotions.G.capU X (Formalism.MainNotions.G.bL L) (D.what₂.places.resChar w) j (nc_iota Y u w hg t0 s) k =
@@ -38,11 +38,11 @@ theorem nc_capU (j : ℕ) (s : Fin ((D.gat u w hg).P.n' (Y.vOf u w hg t0))) (k :
 open Classical in
 include hL ht0 in
 /- English proof (translation)
-Establish `hinj` using `nc_iota_inj X Y hT hL u w hg t0 ht0`. Unfold `Formalism.MainNotions.G.gU`. Rewrite using `[nc_topsOn X Y hT hL u w hg t0 ht0, Finset.sum_image (fun a _ b _ h => hinj h), Finset.filter_image, Finset.sum_image (fun a _ b _ h => hinj h)]`. Establish `hf : ((Y.Fl u w hg).TT (Y.vOf u w hg t0)).filter (fun a => ¬ Formalism.MainNotions.G.IsV X (D.what₂.places.resChar w) (nc_iota Y u w hg t0 a)) = ((Y.Fl u w hg).TT (Y.vOf u w hg t0)).filter IsOddPos`. Apply `Finset.filter_congr` to reduce the goal to its premises.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `s _`. Rewrite using `[nc_isV X Y hT hL u w hg t0 ht0 s, not_not]`. Rewrite using `[hf]`. Use `congr 2`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `s _`. Rewrite using `[nc_tsum_odd]`. Apply `tsum_congr` to reduce the goal to its premises. Introduce `e`. Rewrite using `[nc_capU X Y hT hL u w hg t0 ht0]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -76,11 +76,11 @@ theorem nc_gU_eq (K : Formalism.MainNotions.G.Consts) (j : ℕ) :
 open Classical in
 include hL ht0 in
 /- English proof (translation)
-Establish `hinj` using `nc_iota_inj X Y hT hL u w hg t0 ht0`. Unfold `Formalism.MainNotions.G.g0`. Rewrite using `[nc_topsOn X Y hT hL u w hg t0 ht0, Finset.sum_image (fun a _ b _ h => hinj h)]`. Use `congr 1`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `s _`. Establish `e1 : ∀ e : ℕ, (if Odd e ∧ ¬ Formalism.MainNotions.G.Excl D (D.what₂.places.resChar w) (nc_iota Y u w hg t0 s) e then max 0 (Formalism.MainNotions.G.al L (Formalism.MainNotions.G.aL L) (nc_iota Y u w hg t0 s) / ((D.what₂.places.resChar w : ℕ) : ℝ) ^ e - Formalism.MainNotions.G.cap …`. Introduce `e`. Apply the tactic sequence `by_cases h1 : Odd e <;> by_cases h2 : Formalism.MainNotions.G.Excl D (D.what₂.places.resChar w) (nc_iota Y u w hg t0 s) e <;>`. Simplify using `[h1, h2]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Rewrite using `[tsum_congr e1, nc_tsum_odd]`. Apply `tsum_congr` to reduce the goal to its premises. Introduce `e`. Rewrite using `[nc_capU X Y hT hL u w hg t0 ht0]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem growth_exclusion_sum_eq (K : Formalism.MainNotions.G.Consts) (j : ℕ) :
     Formalism.MainNotions.G.g0 X K (Formalism.MainNotions.G.aL L) (Formalism.MainNotions.G.bL L) (D.what₂.places.resChar w) j t0 =

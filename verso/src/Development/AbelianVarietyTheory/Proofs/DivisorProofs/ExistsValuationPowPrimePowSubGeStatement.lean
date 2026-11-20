@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ResidueEqZeroIffV
 open NumberField MvPowerSeries IsLocalRing ReciprocityTheory.PGsh ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.FGDepth GlobalTheory.CharDepth GlobalTheory.FactorDepth GlobalTheory.IndefiniteRowSideFullHecke.TypedPartSplitPrimes GlobalTheory.PrimePart
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.PowLim.pow_prime_pow_close` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsValuationPowPrimePowSubGe.lean&line=52#L52)
 -/

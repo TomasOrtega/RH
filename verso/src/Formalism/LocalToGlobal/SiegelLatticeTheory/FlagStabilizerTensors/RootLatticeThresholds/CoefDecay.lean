@@ -23,7 +23,7 @@ def cf (σ : B.Mat k r → (H →L[ℂ] H)) (a b : H) (T : Wq →L[ℂ] Wp) : B.
   fun g => ⟪a, σ g b⟫_ℂ • T
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Use extensionality with `x`. Simplify using `only [Formalism.MainNotions.S.Pv.BetaCut.coefM, cf, rk1, ContinuousLinearMap.smulRight_apply, _root_.smul_apply]`. Rewrite using `[smul_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem coefM_eq (σ : B.Mat k r → (H →L[ℂ] H)) (v v' : H) (ξ : Wp) (ξ' : Wq) :
     Formalism.MainNotions.S.Pv.BetaCut.coefM σ v v' ξ ξ' = cf σ v v' (rk1 ξ ξ') := by
@@ -36,9 +36,9 @@ theorem coefM_eq (σ : B.Mat k r → (H →L[ℂ] H)) (v v' : H) (ξ : Wp) (ξ' 
 variable {σ : B.Mat k r → (H →L[ℂ] H)}
 
 /- English proof (translation)
-Introduce `g₀ hg₀`. Take `⟨U, F, hU, h0, hF, hE⟩` from `Formalism.MainNotions.LowestKTypeMultiplicity.psiD_smooth hσ hv D hD ((1 : B.Mat k r), g₀) (Formalism.MainNotions.LowestKTypeMultiplicity.UH_one k r) hg₀`. Establish `hc : ContDiff ℝ ∞ (fun g : B.Mat k r => ((1 : B.Mat k r), g))` using `contDiff_const.prodMk contDiff_id`. Use `⟨(fun g : B.Mat k r => ((1 : B.Mat k r), g)) ⁻¹' U, fun g => F (1, g), hU.preimage hc.continuous, h0, hF.comp hc.contDiffOn (fun x hx => hx), ?_⟩` and prove the remaining obligations. Introduce `g hgU hgH`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hE (1, g) hgU (Formalism.MainNotions.LowestKTypeMultiplicity.UH_one k r) hgH` as an intermediate fact. Simplify using `only [hσ.1.1, one_apply_eq_self] at this`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dsigW_smooth (hσ : Formalism.MainNotions.S.IsURepOn (B.GV k r) σ) {v : H}
     (hv : Formalism.MainNotions.S.IsSmoothVec (k := k) (r := r) σ v) (D : List (B.Mat k r))
@@ -56,9 +56,9 @@ theorem dsigW_smooth (hσ : Formalism.MainNotions.S.IsURepOn (B.GV k r) σ) {v :
   exact this
 
 /- English proof (translation)
-Introduce `g₀ hg₀`. Take `⟨U, F, hU, h0, hF, hE⟩` from `hb g₀ hg₀`. Set `L : H →L[ℝ] (Wq →L[ℂ] Wp)` to `((innerSL ℂ a).smulRight T).restrictScalars ℝ`. Use `⟨U, fun g => L (F g), hU, h0, L.contDiff.comp_contDiffOn hF, fun g hgU hgG => ?_⟩` and prove the remaining obligations. Use `show ⟪a, σ g b⟫_ℂ • T = L (F g)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e` using `hE g hgU hgG`. Simplify using `only at e`. Rewrite using `[e]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ss_cf {b : H} (hb : Formalism.MainNotions.S.IsSmoothVec (k := k) (r := r) σ b) (a : H) (T : Wq →L[ℂ] Wp) :
     PI.ComplexConjugateDerivative.SS k r (cf σ a b T) := by
@@ -73,9 +73,9 @@ theorem ss_cf {b : H} (hb : Formalism.MainNotions.S.IsSmoothVec (k := k) (r := r
   rfl
 
 /- English proof (translation)
-Establish `h1` using `Formalism.MainNotions.LowestKTypeMultiplicity.dsigW_hasDeriv hσ hv' w hw hY`. Establish `h2` using `(((innerSL ℂ a).comp (σ g)).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) h1`. Use `h2.congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Use `show ⟪a, σ (g * NormedSpace.exp ((t : ℂ) • Y)) (Formalism.MainNotions.S.dsigW σ w v')⟫_ℂ = ⟪a, σ g (σ (NormedSpace.exp ((t : ℂ) • Y)) (Formalism.MainNotions.S.dsigW σ w v'))⟫_ℂ`. Rewrite using `[hσ.1.2 g hg _ (Formalism.MainNotions.LowestKTypeMultiplicity.exp_mem_UH hY t)]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem hasDeriv_R (hσ : Formalism.MainNotions.S.IsURepOn (B.GV k r) σ) {v' : H}
     (hv' : Formalism.MainNotions.S.IsSmoothVec (k := k) (r := r) σ v') (w : List (B.Mat k r))
@@ -92,15 +92,13 @@ theorem hasDeriv_R (hσ : Formalism.MainNotions.S.IsURepOn (B.GV k r) σ) {v' : 
   rfl
 
 /- English proof (translation)
-Establish `he : NormedSpace.exp ((t : ℂ) • X) ∈ B.GV k r` using `Formalism.MainNotions.LowestKTypeMultiplicity.exp_mem_UH hX t`. Establish `hX' : Formalism.MainNotions.S.InLieHpk k r (-X)`. Establish `h : Xᴴ * Hpk k r + Hpk k r * X = 0` using `hX`. Use `show (-X)ᴴ * Hpk k r + Hpk k r * (-X) = 0`. Rewrite using `[Matrix.conjTranspose_neg, Matrix.neg_mul, Matrix.mul_neg, ← neg_add, h, neg_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `he' : NormedSpace.exp (-((t : ℂ) • X)) ∈ B.GV k r`. Rewrite using `[← smul_neg]`. Conclude with `Formalism.MainNotions.LowestKTypeMultiplicity.exp_mem_UH hX' t`. Establish `e1 : NormedSpace.exp ((t : ℂ) • X) * NormedSpace.exp (-((t : ℂ) • X)) = 1`. Rewrite using `[← Matrix.exp_add_of_commute _ _ ((Commute.refl ((t : ℂ) • X)).neg_right)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Simplify using the standard rewrite rules. Set `L : H →ₗᵢ[ℂ] H` to `⟨(σ (NormedSpace.exp ((t : ℂ) • X)) : H →ₗ[ℂ] H), fun v => hσ.2.1 _ he v⟩`. Establish `h1 : ⟪x, σ (NormedSpace.exp (-((t : ℂ) • X))) y⟫_ℂ = ⟪L x, L (σ (NormedSpace.exp (-((t : ℂ) • X))) y)⟫_ℂ` using `(L.inner_map_map _ _).symm`. Rewrite using `[h1]`. Use `show ⟪σ (NormedSpace.exp ((t : ℂ) • X)) x, σ (NormedSpace.exp ((t : ℂ) • X)) (σ (NormedSpace.exp (-((t : ℂ) • X))) y)⟫_ℂ = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : σ (NormedSpace.exp ((t : ℂ) • X)) (σ (NormedSpace.exp (-((t : ℂ) • X))) y) = y`. Use `hσ.1.2 _ he _ he'` as an intermediate fact. Rewrite `this` using `[e1, hσ.1.1]`. Establish `h3` using `congrArg (fun T : H →L[ℂ] H => T y) this`. Simplify using `using h3.symm`.
-
-Rewrite using `[h2]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inner_exp_move (hσ : Formalism.MainNotions.S.IsURepOn (B.GV k r) σ) {X : B.Mat k r}
     (hX : Formalism.MainNotions.S.InLieHpk k r X) (t : ℝ) (x y : H) :
@@ -129,11 +127,11 @@ theorem inner_exp_move (hσ : Formalism.MainNotions.S.IsURepOn (B.GV k r) σ) {X
   rw [h2]
 
 /- English proof (translation)
-Establish `hX' : Formalism.MainNotions.S.InLieHpk k r (-X)`. Establish `h : Xᴴ * Hpk k r + Hpk k r * X = 0` using `hX`. Use `show (-X)ᴴ * Hpk k r + Hpk k r * (-X) = 0`. Rewrite using `[Matrix.conjTranspose_neg, Matrix.neg_mul, Matrix.mul_neg, ← neg_add, h, neg_zero]`. Establish `h1` using `Formalism.MainNotions.LowestKTypeMultiplicity.dsigW_hasDeriv hσ hv u hu hX`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `h1.inner ℂ (hasDerivAt_const (0 : ℝ) (σ g y))`. Rewrite `h2` using `[inner_zero_right, zero_add]`. Use `h2.congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Establish `he' : NormedSpace.exp (-((t : ℂ) • X)) ∈ B.GV k r`. Rewrite using `[← smul_neg]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Formalism.MainNotions.LowestKTypeMultiplicity.exp_mem_UH hX' t`. Use `show ⟪Formalism.MainNotions.S.dsigW σ u v, σ (NormedSpace.exp (-((t : ℂ) • X)) * g) y⟫_ℂ = ⟪σ (NormedSpace.exp ((t : ℂ) • X)) (Formalism.MainNotions.S.dsigW σ u v), σ g y⟫_ℂ`. Rewrite using `[hσ.1.2 _ he' g hg]`. Conclude with `inner_exp_move hσ hX t _ _`.
+A detailed English derivation is pending.
 -/
 theorem hasDeriv_L (hσ : Formalism.MainNotions.S.IsURepOn (B.GV k r) σ) {v : H}
     (hv : Formalism.MainNotions.S.IsSmoothVec (k := k) (r := r) σ v) (u : List (B.Mat k r))
@@ -157,7 +155,7 @@ theorem hasDeriv_L (hσ : Formalism.MainNotions.S.IsURepOn (B.GV k r) σ) {v : H
   exact inner_exp_move hσ hX t _ _
 
 /- English proof (translation)
-The claim follows from `| [], _, _, _ => rfl | Y :: w, hw, g, hg => by have hw' : ∀ X ∈ w, Formalism.MainNotions.S.InLieHpk k r X := fun X hX => hw X (List.mem_cons_of_mem _ hX) have hY : Formalism.MainNotions.S.InLieHpk k r Y := hw Y List.mem_cons_self have hc := PI.ComplexConjugateDerivative.D_congr ( …`.
+A detailed English derivation is pending.
 -/
 theorem Rw_cf (hσ : Formalism.MainNotions.S.IsURepOn (B.GV k r) σ) {v' : H}
     (hv' : Formalism.MainNotions.S.IsSmoothVec (k := k) (r := r) σ v') (a : H) (T : Wq →L[ℂ] Wp) :
@@ -176,7 +174,7 @@ theorem Rw_cf (hσ : Formalism.MainNotions.S.IsURepOn (B.GV k r) σ) {v' : H}
     rw [deriv_smul_const hd.differentiableAt, hd.deriv]
 
 /- English proof (translation)
-The claim follows from `| [], w, _, hw, g, hg => Rw_cf hσ hv' v T w hw g hg | X :: u, w, hu, hw, g, hg => by have hu' : ∀ Y ∈ u, Formalism.MainNotions.S.InLieHpk k r Y := fun Y hY => hu Y (List.mem_cons_of_mem _ hY) have hX : Formalism.MainNotions.S.InLieHpk k r X := hu X List.mem_cons_self have hc := P …`.
+A detailed English derivation is pending.
 -/
 theorem dLR_cf (hσ : Formalism.MainNotions.S.IsURepOn (B.GV k r) σ) {v v' : H}
     (hv : Formalism.MainNotions.S.IsSmoothVec (k := k) (r := r) σ v) (hv' : Formalism.MainNotions.S.IsSmoothVec (k := k) (r := r) σ v')
@@ -198,9 +196,9 @@ theorem dLR_cf (hσ : Formalism.MainNotions.S.IsURepOn (B.GV k r) σ) {v v' : H}
     rw [deriv_smul_const hd.differentiableAt, hd.deriv]
 
 /- English proof (translation)
-Rewrite using `[coefM_eq]`. Use `inCC_of_CCw ⟨ss_cf hv' v _, fun u w hu hw => ?_⟩ m` and prove the remaining obligations. Establish `hu' : ∀ X ∈ u, Formalism.MainNotions.S.InLieHpk k r X` using `fun X hX => (hu X hX).1`. Establish `hw' : ∀ X ∈ w, Formalism.MainNotions.S.InLieHpk k r X` using `fun X hX => (hw X hX).1`. Take `⟨C, hC⟩` from `hdec _ (dsigW_smooth hσ hv u hu') _ (dsigW_smooth hσ hv' w hw')`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨C * ‖rk1 ξ ξ'‖, fun g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[dLR_cf hσ hv hv' _ u w hu' hw' g hg]`. Use `show B.gN g ^ A * ‖⟪Formalism.MainNotions.S.dsigW σ u v, σ g (Formalism.MainNotions.S.dsigW σ w v')⟫_ℂ • rk1 ξ ξ'‖ ≤ _`. Rewrite using `[norm_smul, ← mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_right (hC g hg) (norm_nonneg _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coefM_inCC_of_dec (hσ : Formalism.MainNotions.S.IsURepOn (B.GV k r) σ) {A : ℝ}
     (hdec : ∀ a ∈ Formalism.MainNotions.S.smoothVecs (k := k) (r := r) σ, ∀ b ∈ Formalism.MainNotions.S.smoothVecs (k := k) (r := r) σ,
@@ -220,7 +218,7 @@ theorem coefM_inCC_of_dec (hσ : Formalism.MainNotions.S.IsURepOn (B.GV k r) σ)
   exact mul_le_mul_of_nonneg_right (hC g hg) (norm_nonneg _)
 
 /- English proof (translation)
-Take `⟨C, Ws, -, hC⟩` from `ReciprocityTheory.ChartRestriction.DS.DecInf.decSm hlam hgap m' hm' hσ`. Use `coefM_inCC_of_dec (Formalism.MainNotions.LowestKTypeMultiplicity.urep_of_DS hσ) (fun a ha b hb => ⟨C * (Ws.map fun w => ‖Formalism.MainNotions.S.dsigW (k := k) (r := r) σ w b‖).sum * (Ws.map fun w => ‖Formalism.MainNotions.S.dsigW (k := k) (r := r) σ w a‖).sum, fun g hg => ?_⟩) h …` and prove the remaining obligations. Establish `h1` using `PI.ComplexConjugateDerivative.one_le_gN hg`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem coefM_inCC {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ}
     (hlam : Formalism.QuantumDeterminants.IsHCParam lam) {h : ℝ} (hgap : Formalism.QuantumDeterminants.GapAtLeast ε lam h) (m' : ℕ)

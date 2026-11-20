@@ -2,11 +2,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.HeckeAlgebras.Cont
 open IsLocalRing Matrix UpperTheory.V.Hi
 
 /- English proof (translation)
-Establish `h1 : ∀ w : Fin (W.d + 1) → Ω, ((W.ξ x⁻¹).val *ᵥ w) 0 = w 0`. Introduce `w`. Use `W.row_N x⁻¹ (inv_mem hx)` as an intermediate fact. Simplify using `only [mulVec, dotProduct]`. Repeatedly rewrite using `[this]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `h2 : ∀ w : Fin (W.d + 1) → Ω, ((W.ξ ((t⁻¹ : I.Tf) : G)).val *ᵥ w) 0 = (W.χ t⁻¹ : Ω) * w 0`. Introduce `w`. Use `W.torusAction t⁻¹` as an intermediate fact. Simplify using `only [mulVec, dotProduct]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Repeatedly rewrite using `[this]`. Simplify using the standard rewrite rules. Establish `h3 : (W.ξ (g * (x * t)))⁻¹ = W.ξ ((t⁻¹ : I.Tf) : G) * (W.ξ x⁻¹ * (W.ξ g)⁻¹)`. Simplify using `[mul_assoc]`. Rewrite using `[h3, Units.val_mul, Units.val_mul, ← mulVec_mulVec, h2, ← mulVec_mulVec, h1, map_inv]`.
+Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem UpperTheory.V.Hi.ctrlEq_row {G : Type} [Group G] {I : Iwa G} {O Ω : Type} [CommRing O] [IsLocalRing O] [Field Ω]
     [Algebra O Ω] (W : WtRep I O Ω) (g x : G) (hx : x ∈ I.Nf) (t : I.Tf) (v : Fin (W.d + 1) → Ω) :
@@ -28,13 +28,13 @@ private theorem UpperTheory.V.Hi.ctrlEq_row {G : Type} [Group G] {I : Iwa G} {O 
   rw [h3, Units.val_mul, Units.val_mul, ← mulVec_mulVec, h2, ← mulVec_mulVec, h1, map_inv]
 
 /- English proof (translation)
-Introduce `Γ Ga Gp _ _ _ X O Ω _ _ _ _ W m τ`. Use `⟨fun u F => ?_, fun a F => ?_, fun u b F => ?_⟩` and prove the remaining obligations. Use extensionality with `g i`. Express the relevant statement in the definitionally equal form `(((W.ξ g.2)⁻¹).val *ᵥ fun k => ((τ u).val *ᵥ fun j => F j (g * ((u : Ga), 1)) k) i) 0 = ((τ u).val *ᵥ fun j => (((W.ξ (g * ((u : Ga), 1)).2)⁻¹).val *ᵥ F j (g * ((u : Ga), 1))) 0) i`. Simplify using `only [mulVec, dotProduct, Prod.snd_mul, mul_one, Finset.mul_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Use `haveI : Finite (X.I.N ⧸ (X.I.Nconj a).subgroupOf X.I.N) := Nat.finite_of_card_ne_zero (X.I.fin_N a a.2) haveI := Fintype.ofFinite (X.I.N ⧸ (X.I.Nconj a).subgroupOf X.I.N)`. Simplify using `only [Frame.UF, Frame.U, Iwa.uOp, finsum_eq_sum_of_fintype, LinearMap.smul_apply, LinearMap.sum_apply, map_smul, map_sum, Finset.smul_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Use extensionality with `g i`. Use `UpperTheory.V.Hi.ctrlEq_row W g.2 (q.out : X.I.N) (X.I.N_le q.out.2) ⟨a, X.I.P_le a a.2⟩ (F i (g * (1, ((q.out : X.I.N) : Gp) * a)))` as an intermediate fact. Conclude with `this.symm`. Use extensionality with `i g k`.
+By extensionality, compare the relevant components. Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `((τ u).val *ᵥ fun j => F j (g * ((u : Ga), 1) * (1, b)) k) i = ((τ u).val *ᵥ fun j => F j (g * (1, b) * ((u : Ga), 1)) k) i`. Simplify using `[mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Hi.ctrlEq :
     ∀ (Γ Ga Gp : Type) [Group Γ] [Group Ga] [Group Gp] (X : Frame Γ Ga Gp) (O Ω : Type) [CommRing O] [IsLocalRing O] [Field Ω] [Algebra O Ω] (W : WtRep X.I O Ω) (m : ℕ) (τ : X.Ub →* GL (Fin m) Ω), (∀ u F, X.ctrl m W (X.raF (W.d + 1) τ u F) = X.ra τ u (X.ctrl m W F)) ∧ (∀ (a : X.I.P) F, X.ctrl m W (X.UF m W a F) = X.U Ω m a (X.ctrl m W F)) ∧ (∀ u (b : Gp) F, X.raF (W.d + 1) τ u (X.rpF Ω (W.d + 1) m b F) = X.rpF Ω (W.d + 1) m b (X.raF (W.d + 1) τ u F)) := by

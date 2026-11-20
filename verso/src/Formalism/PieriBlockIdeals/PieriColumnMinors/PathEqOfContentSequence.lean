@@ -6,7 +6,7 @@ namespace Formalism.CohomologicalDescent.LC
 open Formalism.CohomologicalDescent.Symmetrization Formalism.CohomologicalDescent.BinaryFormsExample
 
 /- English proof (translation)
-Establish `h1 : κ b ≤ κ a` using `h hab.le`. Establish `h2 : a.val < b.val` using `hab`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem lca_content_lt {q : ℕ} (κ : Fin q → ℕ) (h : Antitone κ) {a b : Fin q} (hab : a < b) :
     (κ b : ℤ) - (b.val : ℤ) < (κ a : ℤ) - (a.val : ℤ) := by
@@ -15,9 +15,9 @@ theorem lca_content_lt {q : ℕ} (κ : Fin q → ℕ) (h : Antitone κ) {a b : F
   omega
 
 /- English proof (translation)
-Break down `lt_trichotomy a b with hab | hab | hab` into its components or cases. Use `lca_content_lt κ h hab` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Conclude with `hab`. Use `lca_content_lt κ h hab` as an intermediate fact.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem lca_content_inj {q : ℕ} (κ : Fin q → ℕ) (h : Antitone κ) {a b : Fin q}
     (e : (κ a : ℤ) - (a.val : ℤ) = (κ b : ℤ) - (b.val : ℤ)) : a = b := by
@@ -27,11 +27,11 @@ theorem lca_content_inj {q : ℕ} (κ : Fin q → ℕ) (h : Antitone κ) {a b : 
   · have := lca_content_lt κ h hab; omega
 
 /- English proof (translation)
-Introduce `l`. Proceed by induction on `l with`. Consider the case `zero => intro _`. Rewrite using `[H.start, H'.start]`. Consider the case `succ l ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Introduce `hl`. Establish `e` using `ih (by omega)`. Establish `hln : l < n` using `by omega`. Establish `h1` using `hc ⟨l, hln⟩ (by show l < m; omega)`. Establish `h2` using `H.step ⟨l, hln⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `H'.step ⟨l, hln⟩`. Simplify using `only [cseq] at h1 h2 h3`. Rewrite `h1`, `h3` using `[← e]`. Establish `h4 : ρ ⟨l, hln⟩ = ρ' ⟨l, hln⟩` using `lca_content_inj (κ l) (H.dom l (by omega)) h1`. Rewrite using `[h2, h3, h4]`.
+Establish an intermediate fact. Simplify by unfolding definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem path_eq_of_content_sequence {q n : ℕ} {lam2 tau tau' : Fin q → ℕ} {κ κ' : ℕ → Fin q → ℕ} {ρ ρ' : Fin n → Fin q}
     (H : IsPath n lam2 tau κ ρ) (H' : IsPath n lam2 tau' κ' ρ') (m : ℕ) (hm : m ≤ n)
@@ -52,7 +52,7 @@ theorem path_eq_of_content_sequence {q n : ℕ} {lam2 tau tau' : Fin q → ℕ} 
     rw [h2, h3, h4]
 
 /- English proof (translation)
-Simplify using `[Pi.single_apply, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lca_single_ne {q : ℕ} {r a : Fin q} (h : a ≠ r) (A : Fin q → ℕ) :
     (A + Pi.single r 1 : Fin q → ℕ) a = A a := by
@@ -65,13 +65,13 @@ theorem lca_single_eq {q : ℕ} (r : Fin q) (A : Fin q → ℕ) :
     (A + Pi.single r 1 : Fin q → ℕ) r = A r + 1 := by simp
 
 /- English proof (translation)
-Establish `hjn` using `j'.isLt`. Establish `s1` using `H.step j`. Establish `d1` using `H.dom (j.val + 1) (by omega)`. Establish `hle' : κ (j.val + 1) (ρ j') ≤ κ j.val (ρ j)`. Use `hle` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `colSeq at this`. Rewrite `this` using `[hv]`. Then use the resulting hypothesis. Establish `hlt : ρ j < ρ j'`. Assume the negation of the conclusion as `hcon`. Establish `hcon : ρ j' ≤ ρ j` using `not_lt.mp hcon`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h3` using `d1 hcon`. Rewrite `h3`, `hle'` using `[s1]`. Rewrite `h3` using `[lca_single_eq]`. Use linear arithmetic over natural numbers and integers. Use `⟨hlt, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `colSeq`. Rewrite using `[hv, s1, lca_single_ne hlt.ne']`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem lca_rows_lt {q n : ℕ} {lam2 tau : Fin q → ℕ} {κ : ℕ → Fin q → ℕ} {ρ : Fin n → Fin q}
     (H : IsPath n lam2 tau κ ρ) (j j' : Fin n) (hv : j'.val = j.val + 1) (hle : colSeq κ ρ j' ≤ colSeq κ ρ j) :
@@ -92,37 +92,35 @@ theorem lca_rows_lt {q n : ℕ} {lam2 tau : Fin q → ℕ} {κ : ℕ → Fin q �
   unfold colSeq; rw [hv, s1, lca_single_ne hlt.ne']
 
 /- English proof (translation)
-Take `⟨hr, hc⟩` from `lca_rows_lt H j j' hv hlt.le`. Establish `hjn` using `j'.isLt`. Establish `s1` using `H.step j`. Establish `s2` using `H.step j'`. Rewrite `s2` using `[hv]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `d0` using `H.dom j.val (by omega)`. Establish `d2` using `H.dom (j.val + 1 + 1) (by omega)`. Establish `hA : κ j.val (ρ j') < κ j.val (ρ j)` using `by rw [← hc]; exact hlt`. Establish `hc' : cseq κ ρ j' = (κ j.val (ρ j') : ℤ) - ((ρ j').val : ℤ)`. Use `hc` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `colSeq at this`. Unfold `cseq`. Rewrite using `[this]`. Establish `hr' : (ρ j).val < (ρ j').val` using `hr`. Use `⟨by rw [hc']; unfold cseq; omega, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨κ', hκ'⟩ : ∃ κ' : ℕ → Fin q → ℕ, ∀ l, κ' l = if l = j.val + 1 then κ j.val + Pi.single (ρ j') 1 else κ l` from `⟨_, fun _ => rfl⟩`. Establish `k1 : κ' (j.val + 1) = κ j.val + Pi.single (ρ j') 1` using `by rw [hκ', if_pos rfl]`. Establish `k2 : ∀ l, l ≠ j.val + 1 → κ' l = κ l` using `fun l h => by rw [hκ', if_neg h]`. Establish `anti : Antitone (κ j.val + Pi.single (ρ j') 1)`. Introduce `a b hab`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hb : b = ρ j'`. Distinguish the cases in `ha : a = ρ j'`. Rewrite using `[ha, hb]`. Rewrite using `[hb, lca_single_eq, lca_single_ne ha]`. Establish `hab' : a < ρ j'` using `lt_of_le_of_ne (hb ▸ hab) ha`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `har : a ≤ ρ j`. Use `d0 har` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `har : ρ j < a` using `not_le.mp har`. Establish `h5` using `d2 hab'.le`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h5` using `[s2, s1]`. Rewrite `h5` using `[lca_single_eq, lca_single_ne hr.ne', lca_single_ne ha, lca_single_ne har.ne']`. Conclude with `h5`. Rewrite using `[lca_single_ne hb]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hcol : colSeq κ' (ρ ∘ Equiv.swap j j') = colSeq κ ρ ∘ Equiv.swap j j'`. Use function extensionality and compare the values at `l`. Distinguish the cases in `h1 : l = j`. Rewrite using `[h1]`. Simplify using `only [colSeq, Function.comp, Equiv.swap_apply_left]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[k2 j.val (by omega), hv, s1, lca_single_ne hr.ne']`. Distinguish the cases in `h2 : l = j'`. Rewrite using `[h2]`. Simplify using `only [colSeq, Function.comp, Equiv.swap_apply_right]`. Rewrite using `[hv, k1, lca_single_ne hr.ne]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h4 : l.val ≠ j.val + 1` using `fun h => h2 (Fin.ext (h.trans hv.symm))`. Simplify using `only [colSeq, Function.comp]`. Rewrite using `[Equiv.swap_apply_of_ne_of_ne h1 h2, k2 _ h4]`. Use `⟨κ', ⟨?_, ?_, ?_, ?_⟩, ?_, hcol⟩` and prove the remaining obligations. Rewrite using `[k2 0 (by omega), H.start]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `l`. Distinguish the cases in `h1 : l = j`. Rewrite using `[h1]`. Simplify using `only [Function.comp, Equiv.swap_apply_left]`. Rewrite using `[k1, k2 j.val (by omega)]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h2 : l = j'`. Rewrite using `[h2]`. Simplify using `only [Function.comp, Equiv.swap_apply_right]`. Rewrite using `[hv, k1, k2 (j.val + 1 + 1) (by omega), s2, s1]`. Conclude with `add_right_comm _ _ _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : l.val ≠ j.val` using `fun h => h1 (Fin.ext h)`. Establish `h4 : l.val ≠ j.val + 1` using `fun h => h2 (Fin.ext (h.trans hv.symm))`. Simplify using `only [Function.comp]`. Rewrite using `[Equiv.swap_apply_of_ne_of_ne h1 h2, k2 _ (by omega), k2 _ h4]`. Conclude with `H.step l`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[k2 n (by omega), H.stop]`. Introduce `l hl`. Distinguish the cases in `h : l = j.val + 1`. Rewrite using `[h, k1]`. Conclude with `anti`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[k2 l h]`. Conclude with `H.dom l hl`. Use function extensionality and compare the values at `l`. Use `congrFun hcol l` as an intermediate fact. Simplify using `only [colSeq, cseq, Function.comp] at this ⊢`.
-
-Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lca_swap {q n : ℕ} {lam2 tau : Fin q → ℕ} {κ : ℕ → Fin q → ℕ} {ρ : Fin n → Fin q}
     (H : IsPath n lam2 tau κ ρ) (j j' : Fin n) (hv : j'.val = j.val + 1) (hlt : colSeq κ ρ j' < colSeq κ ρ j) :
@@ -204,32 +202,32 @@ theorem lca_swap {q n : ℕ} {lam2 tau : Fin q → ℕ} {κ : ℕ → Fin q → 
     rw [this]
 
 /- English proof (translation)
-Introduce `q n lam2 tau κ ρ H j hj hlt`. Conclude with `lca_swap H j ⟨j.val + 1, hj⟩ rfl hlt`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem swap_path_exists : SwapPath := by
   intro q n lam2 tau κ ρ H j hj hlt
   exact lca_swap H j ⟨j.val + 1, hj⟩ rfl hlt
 
 /- English proof (translation)
-Take `⟨hr, hc⟩` from `lca_rows_lt H j j' hv heq.le`. Establish `hjn` using `j'.isLt`. Establish `s1` using `H.step j`. Establish `s2` using `H.step j'`. Rewrite `s2` using `[hv]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `d0` using `H.dom j.val (by omega)`. Establish `d2` using `H.dom (j.val + 1 + 1) (by omega)`. Establish `hA : κ j.val (ρ j') = κ j.val (ρ j)` using `by rw [← hc]; exact heq`. Establish `hc' : cseq κ ρ j' = (κ j.val (ρ j') : ℤ) - ((ρ j').val : ℤ)`. Use `hc` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `colSeq at this`. Unfold `cseq`. Rewrite using `[this]`. Establish `hr' : (ρ j).val < (ρ j').val` using `hr`. Prove the components needed by the constructor for the conclusion.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Establish `hrow : (ρ j').val = (ρ j).val + 1`. Assume the negation of the conclusion as `hcon`. Establish `hq` using `(ρ j').isLt`. Take `⟨a, ha⟩ : ∃ a : Fin q, a.val = (ρ j).val + 1` from `⟨⟨(ρ j).val + 1, by omega⟩, rfl⟩`. Establish `ha1 : ρ j < a` using `by show (ρ j).val < a.val; omega`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ha2 : a < ρ j'` using `by show a.val < (ρ j').val; omega`. Establish `h5` using `d2 ha2.le`. Rewrite `h5` using `[s2, s1]`. Rewrite `h5` using `[lca_single_eq, lca_single_ne hr.ne', lca_single_ne ha2.ne, lca_single_ne ha1.ne']`. Establish `h6` using `d0 ha1.le`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[hc']`. Unfold `cseq`. Use linear arithmetic over natural numbers and integers. Introduce and unpack `⟨tau', κ', ρ', H', hcs⟩`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Assume the hypotheses and unpack their components.
 
-Establish `hpre : ∀ i : Fin n, i.val < j.val → cseq κ ρ i = cseq κ' ρ' i`. Introduce `i hi`. Establish `h` using `congrFun hcs i`. Establish `h1 : i ≠ j` using `fun h => by rw [h] at hi; omega`. Establish `h2 : i ≠ j'` using `fun h => by rw [h] at hi; omega`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Function.comp] at h`. Rewrite `h` using `[Equiv.swap_apply_of_ne_of_ne h1 h2]`. Conclude with `h.symm`. Establish `e : κ j.val = κ' j.val` using `path_eq_of_content_sequence H H' j.val (by omega) hpre j.val le_rfl`. Establish `h1` using `congrFun hcs j`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.comp, Equiv.swap_apply_left] at h1`. Rewrite `h1` using `[hc']`. Unfold `cseq at h1`. Rewrite `h1` using `[← e]`. Establish `h2 : ρ' j = ρ j'` using `lca_content_inj _ d0 h1`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `H'.dom (j.val + 1) (by omega) hr.le`. Rewrite `h3` using `[H'.step j, ← e, h2, lca_single_eq, lca_single_ne hr.ne]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem lca_same {q n : ℕ} {lam2 tau : Fin q → ℕ} {κ : ℕ → Fin q → ℕ} {ρ : Fin n → Fin q}
     (H : IsPath n lam2 tau κ ρ) (j j' : Fin n) (hv : j'.val = j.val + 1) (heq : colSeq κ ρ j' = colSeq κ ρ j) :
@@ -279,7 +277,7 @@ theorem lca_same {q n : ℕ} {lam2 tau : Fin q → ℕ} {κ : ℕ → Fin q → 
     omega
 
 /- English proof (translation)
-Introduce `q n lam2 tau κ ρ H j hj heq`. Conclude with `lca_same H j ⟨j.val + 1, hj⟩ rfl heq`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem same_column : SameCol := by
   intro q n lam2 tau κ ρ H j hj heq

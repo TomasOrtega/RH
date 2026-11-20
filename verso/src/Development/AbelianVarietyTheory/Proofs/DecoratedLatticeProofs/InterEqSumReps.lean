@@ -14,11 +14,11 @@ namespace GlobalTheory.ThetaInter
 open Formalism.L2.Th1.H
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, hi⟩ ⟨j, hj⟩ h`. Simplify using `only at h`. Rewrite `h` using `[QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf]`. Establish `: z j - z i ∈ A₁` using `by simpa [neg_add_eq_sub] using h`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Subtype.ext (hinj j hj i hi this).symm`. Introduce `c`. Take `⟨⟨y, hy⟩, rfl⟩` from `QuotientAddGroup.mk_surjective c`. Take `⟨i, hi, hyi⟩` from `hsurj y hy`. Use `⟨⟨i, hi⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only`. Rewrite using `[QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf]`. Simplify `hyi` using `[neg_add_eq_sub]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem reps_bijective {V : Type} [AddCommGroup V] (A₁ A₂ : AddSubgroup V) {ι : Type} (s : Finset ι) (z : ι → V)
     (hz : ∀ i ∈ s, z i ∈ A₂) (hinj : ∀ i ∈ s, ∀ j ∈ s, z i - z j ∈ A₁ → i = j)
@@ -39,13 +39,13 @@ theorem reps_bijective {V : Type} [AddCommGroup V] (A₁ A₂ : AddSubgroup V) {
     simpa [neg_add_eq_sub] using hyi
 
 /- English proof (translation)
-Introduce `V _ _ H α A₁ A₂ hH hd₂ hs₁ hs₂ ι s z hz hinj hsurj F hF w`. Establish `hφ` using `reps_bijective A₁ A₂ s z hz hinj hsurj`. Establish `: Finite (A₂ ⧸ A₁.addSubgroupOf A₂)` using `Finite.of_surjective _ hφ.2`. Use `Fintype.ofFinite (A₂ ⧸ A₁.addSubgroupOf A₂)` as an intermediate fact. Establish `hcard : Fintype.card (A₂ ⧸ A₁.addSubgroupOf A₂) = s.card`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Fintype.card_of_bijective hφ, Fintype.card_coe]`. Establish `hinv : ∀ (a : A₂), ∀ t ∈ A₁.addSubgroupOf A₂, α ((a + t : A₂) : V) * opU H ((a + t : A₂) : V) F w = α (a : V) * opU H (a : V) F w`. Introduce `a t ht`. Rewrite using `[AddSubgroup.coe_add, alpha_opU_add hH hd₂ hs₂ a.2 t.2, opU_of_fixed hs₁ hF (AddSubgroup.mem_addSubgroupOf.1 ht), opU_mul, ← mul_assoc (α t), alpha_sq hs₂ t.2, one_mul]`. Rewrite using `[congrFun (inter_eq (H := H) (α := α) A₁ A₂ F) w, hcard]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[← Finset.sum_coe_sort s]`. Use `(Fintype.sum_bijective _ hφ _ _ fun i => ?_).symm` and prove the remaining obligations. Establish `ht : -(⟨z i, hz i i.2⟩ : A₂) + Quotient.out (((⟨z i, hz i i.2⟩ : A₂) : A₂ ⧸ A₁.addSubgroupOf A₂)) ∈ A₁.addSubgroupOf A₂`. Rewrite using `[← QuotientAddGroup.eq]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(QuotientAddGroup.out_eq' _).symm`. Use `hinv ⟨z i, hz i i.2⟩ _ ht` as an intermediate fact. Rewrite `this` using `[add_neg_cancel_left]`. Conclude with `this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inter_eq_sum_reps : ∀ {V : Type} [AddCommGroup V] [Module ℂ V] (H : Formalism.L2.Th1.H.Sesq V) (α : V → ℂ)
     (A₁ A₂ : AddSubgroup V), Formalism.L2.Th1.H.IsHerm H → Formalism.L2.Th1.H.IsSelfDual H A₂ →

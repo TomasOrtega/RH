@@ -2,9 +2,9 @@ import Mathlib
 
 open MeasureTheory in
 /- English proof (translation)
-Establish `h1 : φ.trans φ = ContinuousMulEquiv.refl G`. Use extensionality with `x`. Conclude with `hφ x`. Establish `h2 : mulEquivHaarChar φ * mulEquivHaarChar φ = 1`. Rewrite using `[← mulEquivHaarChar_trans, h1, mulEquivHaarChar_refl]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : mulEquivHaarChar φ = 1`. Establish `h : (mulEquivHaarChar φ) ^ 2 = 1` using `by rw [sq, h2]`. Conclude with `(pow_eq_one_iff_of_nonneg zero_le two_ne_zero).1 h`. Establish `h4` using `mulEquivHaarChar_smul_map μ φ`. Rewrite `h4` using `[h3, one_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Reformulated.B.Qh1.map_involution_eq {G : Type*} [Group G]
     [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G]
@@ -23,15 +23,13 @@ private theorem UpperTheory.Reformulated.B.Qh1.map_involution_eq {G : Type*} [Gr
   rwa [h3, one_smul] at h4
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ _ μ _ Γ _ F hF θ hθc hθθ hθΓ f hf hfi`. Set `φ : G ≃ₜ* G` to `{ toFun := θ invFun := θ left_inv := hθθ right_inv := hθθ map_mul' := map_mul θ continuous_toFun := hθc continuous_invFun := hθc }`. Establish `hmp : MeasureTheory.MeasurePreserving θ μ μ` using `⟨hθc.measurable, UpperTheory.Reformulated.B.Qh1.map_involution_eq μ φ hθθ⟩`. Establish `hemb : MeasurableEmbedding (θ : G → G)` using `φ.toHomeomorph.measurableEmbedding`. Set `e : Γ → Γ` to `fun γ => ⟨θ γ, hθΓ γ γ.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `he : Function.Involutive e` using `fun γ => Subtype.ext (hθθ γ)`. Establish `hF' : MeasureTheory.IsFundamentalDomain Γ (θ ⁻¹' F) μ`. Use `hF.preimage_of_equiv hmp.quasiMeasurePreserving he.bijective ?_` and prove the remaining obligations. Introduce `γ x`. Express the relevant statement in the definitionally equal form `θ (θ γ * x) = γ * θ x`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[map_mul, hθθ]`. Establish `hg : ∀ (γ : Γ) (x : G), f (θ (γ • x)) = f (θ x)`. Introduce `γ x`. Express the relevant statement in the definitionally equal form `f (θ (γ * x)) = f (θ x)`. Rewrite using `[map_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hf (e γ) (θ x)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h1 : MeasureTheory.IntegrableOn (fun x => f (θ x)) (θ ⁻¹' F) μ` using `(hmp.integrableOn_comp_preimage hemb).2 hfi`. Conclude with `(hF.integrableOn_iff hF' (f := fun x => f (θ x)) hg).2 h1`. Rewrite using `[hF.setIntegral_eq hF' (f := fun x => f (θ x)) hg]`.
-
-Conclude with `hmp.setIntegral_preimage_emb hemb f F`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qh1.twist_general.{u_1} :
     ∀ {G : Type u_1} [inst : Group G]

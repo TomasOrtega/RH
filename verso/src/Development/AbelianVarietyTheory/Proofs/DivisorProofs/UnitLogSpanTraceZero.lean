@@ -4,33 +4,29 @@ open NumberField NumberField.InfinitePlace NumberField.Units NumberField.Units.d
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hfib : ∀ σ : F →+* ℂ, c σ = c (InfinitePlace.mk σ).embedding`. Introduce `σ`. Establish `h1 : InfinitePlace.mk σ = InfinitePlace.mk (InfinitePlace.mk σ).embedding`. Rewrite using `[InfinitePlace.mk_embedding]`. Break down `InfinitePlace.mk_eq_iff.mp h1 with h | h` into its components or cases.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[← h]`. Rewrite using `[← h]`. Establish `: ComplexEmbedding.conjugate σ = (starRingEnd ℂ).comp σ` using `RingHom.ext fun r => rfl`. Rewrite using `[this, hc]`. Use `set g : InfinitePlace F → ℝ := fun w => c w.embedding with hg`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsum : ∑ w : InfinitePlace F, (w.mult : ℝ) * g w = 0`. Rewrite using `[← hs, ← Finset.univ.sum_fiberwise (fun φ : F →+* ℂ => InfinitePlace.mk φ)]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `hf : ∀ φ ∈ Finset.univ.filter (fun φ : F →+* ℂ => InfinitePlace.mk φ = w), c φ = g w`. Introduce `φ hφ`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hfib φ, (Finset.mem_filter.mp hφ).2]`. Rewrite using `[Finset.sum_congr rfl hf, Finset.sum_const, InfinitePlace.card_filter_mk_eq, nsmul_eq_mul]`. Set `B` to `(basisUnitLattice F).ofZLatticeBasis ℝ (unitLattice F)`. Set `v : logSpace F` to `fun w => (w.1.mult : ℝ) * g w.1 / 2`. Set `r : Fin (rank F) → ℝ` to `fun i => B.repr v i`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hB : ∀ i, (B i : logSpace F) = logEmbedding F (Additive.ofMul (fundSystem F i))`. Introduce `i`. Rewrite using `[Module.Basis.ofZLatticeBasis_apply, logEmbedding_fundSystem]`. Establish `hv : v = ∑ i, r i • B i` using `(B.sum_repr v).symm`. Use `set h : InfinitePlace F → ℝ := fun w => g w - ∑ i, r i * (2 * Real.log (w ((fundSystem F i : 𝓞 F) : F))) with hh`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hne : ∀ w (hw : w ≠ w₀), h w = 0`. Introduce `w hw`. Establish `hvw` using `congrFun hv ⟨w, hw⟩`. Simplify using `only [v, Finset.sum_apply, Pi.smul_apply, hB, logEmbedding_component, smul_eq_mul] at hvw`. Establish `hvw' : (w.mult : ℝ) * g w / 2 = ∑ i, r i * ((w.mult : ℝ) * Real.log (w ((fundSystem F i : 𝓞 F) : F)))` using `hvw`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : (0 : ℝ) < w.mult` using `by exact_mod_cast InfinitePlace.mult_pos`. Establish `hS : (w.mult : ℝ) * ∑ i, r i * (2 * Real.log (w ((fundSystem F i : 𝓞 F) : F))) = 2 * ∑ i, r i * ((w.mult : ℝ) * Real.log (w ((fundSystem F i : 𝓞 F) : F)))`. Rewrite using `[Finset.mul_sum, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Establish `: (w.mult : ℝ) * h w = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [hh]`. Rewrite using `[mul_sub, hS, ← hvw']`. Expand and normalize the polynomial expressions, which then agree. Break down `mul_eq_zero.mp this with h0 | h0` into its components or cases. Conclude with `absurd h0 hm.ne'`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `h0`. Establish `htot : ∑ w : InfinitePlace F, (w.mult : ℝ) * h w = 0`. Establish `hi : ∀ i, ∑ w : InfinitePlace F, (w.mult : ℝ) * (r i * (2 * Real.log (w ((fundSystem F i : 𝓞 F) : F)))) = 0`. Introduce `i`. Establish `h0` using `sum_mult_mul_log (fundSystem F i)`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun w _ => by ring`. Use `_ = 0 := by rw [h0, mul_zero]`. Simplify using `only [hh, mul_sub, Finset.sum_sub_distrib, hsum, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm, Finset.sum_eq_zero fun i _ => hi i, sub_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hall : ∀ w, h w = 0`. Introduce `w`. Distinguish the cases in `hw : w = w₀`. Substitute `hw` using the available equality. Rewrite `htot` using `[Finset.sum_eq_single w₀ (fun b _ hb => by rw [hne b hb, mul_zero]) (fun h' => absurd (Finset.mem_univ _) h')]`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hm : (0 : ℝ) < (w₀ : InfinitePlace F).mult` using `by exact_mod_cast InfinitePlace.mult_pos`. Break down `mul_eq_zero.mp htot with h0 | h0` into its components or cases. Conclude with `absurd h0 hm.ne'`. Conclude with `h0`. Conclude with `hne w hw`.
-
-Use `⟨rank F, fundSystem F, r, fun σ => ?_⟩` and prove the remaining obligations. Establish `e1` using `hall (InfinitePlace.mk σ)`. Simplify using `only [hh, sub_eq_zero] at e1`. Rewrite using `[hfib σ]`. Use `e1.trans (Finset.sum_congr rfl fun i _ => ?_)` and prove the remaining obligations.
-
-Rewrite using `[InfinitePlace.apply, Real.log_pow]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem conjInvariant_sum_zero_eq_sum_log_units (F : Type) [Field F] [NumberField F]
     (c : (F →+* ℂ) → ℝ) (hc : ∀ σ, c ((starRingEnd ℂ).comp σ) = c σ) (hs : ∑ σ, c σ = 0) :

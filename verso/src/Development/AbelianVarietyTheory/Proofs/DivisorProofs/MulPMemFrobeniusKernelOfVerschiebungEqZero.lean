@@ -9,15 +9,13 @@ open GlobalTheory GlobalTheory.PDiv GlobalTheory.PDivGroup Coalgebra Bialgebra
 namespace GlobalTheory.PDivGroup
 
 /- English proof (translation)
-Use `set K := kerIdeal ((G.mulP 1).comp ((relFrob h G).app 1)) with hK`. Set `x` to `Ideal.Quotient.mkₐ R K`. Establish `hx` using `(kerIdeal_le_ker_iff ((G.mulP 1).comp ((relFrob h G).app 1)) x).1 fun c hc => Ideal.Quotient.eq_zero_iff_mem.2 hc`. Set `y` to `x.comp ((relFrob h G).app 2 : (frobTwist h G).A 2 →ₐ[R] G.A 2)`. Establish `hy : torsionIdeal R ((frobTwist h G).A 2) p ≤ RingHom.ker y` using `(kerIdeal_le_ker_iff _ y).2 fun z => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (relFrob h G).app 2 (mulBy R _ p z) = G.mulP 1 ((relFrob h G).app 1 ((frobTwist h G).res 1 z))`. Rewrite using `[map_mulBy, ← PDivGroup.res_app, mulP_res]`. Use `hx ((frobTwist h G).res 1 z)` as an intermediate fact. Rewrite `this` using `[CoalgHomClass.counit_comp_apply]`. Conclude with `(congrArg x e).trans this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨b, rfl⟩` from `G.res_surjective 1 a`. Rewrite `ha` using `[← PDivGroup.res_app]`. Establish `hb : (verschiebung h G).app 2 b ∈ torsionIdeal R ((frobTwist h G).A 2) p`. Establish `: (verschiebung h G).app 2 b ∈ torsionIdeal R ((frobTwist h G).A 2) (p ^ 1)`. Rewrite using `[← (frobTwist h G).ker_res 1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Conclude with `ha`. Rewrite `this` using `[pow_one]`. Then use the resulting hypothesis. Establish `h1 : x ((relFrob h G).app 2 ((verschiebung h G).app 2 b)) = 0` using `hy hb`. Rewrite `h1` using `[relFrob_app_verschiebung_app]`. Rewrite using `[mulP_res]`.
-
-Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 h1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulP_mem_kerIdeal_of_verschiebung_eq_zero (p : ℕ) [Fact p.Prime] (R : Type) [CommRing R]
     (h : (p : R) = 0) (G : PDivGroup p R) (a : G.A 1) (ha : (verschiebung h G).app 1 a = 0) :

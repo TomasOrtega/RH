@@ -19,9 +19,9 @@ def Approx (F : P) (r : ℕ) (y : R) : Prop :=
 variable {l ι f}
 
 /- English proof (translation)
-Take `⟨n, b, p, h, hn, hp, hF, hy⟩` from `hF`. Take `⟨m, c, q, k, hm, hq, hG, hz⟩` from `hG`. Use `⟨n * m, (m : B) * b + (n : B) * c, p + q, h + k, mul_ne_zero hn hm, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_mul, map_mul, map_natCast, map_natCast, ← hp, ← hq]`. Use `push_cast`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hF, hG]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_add, map_mul, map_mul, map_natCast, map_natCast, ← hy, ← hz]`. Use `push_cast`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -35,9 +35,9 @@ theorem approx_add {F G : P} {r : ℕ} {y z : R} (hF : Approx l ι f F r y) (hG 
   · rw [map_add, map_mul, map_mul, map_natCast, map_natCast, ← hy, ← hz]; push_cast; ring
 
 /- English proof (translation)
-Take `⟨n, b, p, h, hn, hp, hF, hy⟩` from `hF`. Take `⟨m, c, q, k, hm, hq, hG, hz⟩` from `hG`. Use `⟨n * m, b * c, p * q, p * k + h * q + (l : P) ^ r * h * k, mul_ne_zero hn hm, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, ← hp, ← hq]`. Use `push_cast`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hF, hG]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_mul, ← hy, ← hz]`. Use `push_cast`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -51,19 +51,19 @@ theorem approx_mul {F G : P} {r : ℕ} {y z : R} (hF : Approx l ι f F r y) (hG 
   · rw [map_mul, ← hy, ← hz]; push_cast; ring
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, b, ι b, 0, one_ne_zero, by simp, by simp, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem approx_ι (b : B) (r : ℕ) : Approx l ι f (ι b) r (f b) :=
   ⟨1, b, ι b, 0, one_ne_zero, by simp, by simp, by simp⟩
 
 /- English proof (translation)
-Simplify using `using approx_ι (l := l) (ι := ι) (f := f) 1 r`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem approx_one (r : ℕ) : Approx l ι f 1 r 1 := by
   simpa using approx_ι (l := l) (ι := ι) (f := f) 1 r
 
 /- English proof (translation)
-Simplify using `using approx_ι (l := l) (ι := ι) (f := f) 0 r`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem approx_zero (r : ℕ) : Approx l ι f 0 r 0 := by
   simpa using approx_ι (l := l) (ι := ι) (f := f) 0 r
@@ -73,11 +73,11 @@ variable (htf : ∀ (n : ℕ) (x : R), n ≠ 0 → (n : R) * x = 0 → x = 0)
 include htf hK hl0
 
 /- English proof (translation)
-Take `⟨n, b, p, h, hn, hp, hF, hy⟩` from `hy`. Take `⟨m, c, q, k, hm, hq, hF', hz⟩` from `hz`. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hrs`. Establish `h0 : p - q = (l : P) ^ r * ((l : P) ^ d * k - h)` using `by linear_combination hF' - hF`. Establish `h1 : ((n * m * l ^ r : ℕ) : P) * ((l : P) ^ d * k - h) = ι ((m : B) * b - (n : B) * c)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_sub, map_mul, map_mul, map_natCast, map_natCast, ← hp, ← hq]`. Use `push_cast`. Take the linear combination `((n : P) * m) * h0.symm`. Take `⟨w, hw⟩` from `hK _ _ _ (mul_ne_zero (mul_ne_zero hn hm) (pow_ne_zero _ hl0)) h1`. Use `⟨w, (sub_eq_zero.1 (htf (n * m) _ (mul_ne_zero hn hm) ?_)).symm⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hw` using `[map_sub, map_mul, map_mul, map_natCast, map_natCast, ← hy, ← hz]`. Move the coercions through the operations in `at hw ⊢`. Take the linear combination `hw`.
+Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem approx_dvd {F : P} {r s : ℕ} (hrs : r ≤ s) {y z : R} (hy : Approx l ι f F r y)
     (hz : Approx l ι f F s z) : (l : R) ^ r ∣ y - z := by
@@ -101,7 +101,7 @@ variable [IsAdicComplete (Ideal.span {(l : R)}) R]
 omit htf hl0 in
 include hD in
 /- English proof (translation)
-Take `⟨n, b, p, h, hn, hp, hF⟩` from `hD F r`. Take `⟨y, hy⟩` from `hK n b p hn hp`. Conclude with `⟨y, n, b, p, h, hn, hp, hF, hy⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_approx (F : P) (r : ℕ) : ∃ y, Approx l ι f F r y := by
   obtain ⟨n, b, p, h, hn, hp, hF⟩ := hD F r
@@ -112,7 +112,7 @@ omit htf hK hl0 in
 variable (l) in
 
 /- English proof (translation)
-The claim follows from `IsHausdorff.haus' (I := Ideal.span {(l : R)}) x fun n => by simp only [SModEq.zero, smul_eq_mul, Ideal.mul_top] rw [Ideal.span_singleton_pow, Ideal.mem_span_singleton] exact h n`.
+A detailed English derivation is pending.
 -/
 theorem sep_l (x : R) (h : ∀ r : ℕ, (l : R) ^ r ∣ x) : x = 0 :=
   IsHausdorff.haus' (I := Ideal.span {(l : R)}) x fun n => by
@@ -122,11 +122,11 @@ theorem sep_l (x : R) (h : ∀ r : ℕ, (l : R) ^ r ∣ x) : x = 0 :=
 
 include hD in
 /- English proof (translation)
-Use `choose y hy using exists_approx hK hD F`. Take `⟨L, hL⟩` from `IsPrecomplete.prec' (I := Ideal.span {(l : R)}) y (fun {m n} hmn => by`. Simplify using `only [SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]`. Rewrite using `[Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Conclude with `approx_dvd htf hK hl0 hmn (hy m) (hy n))`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨L, fun r z hz => ?_⟩` and prove the remaining obligations. Establish `h1` using `hL r`. Simplify using `only [SModEq.sub_mem, smul_eq_mul, Ideal.mul_top] at h1`. Rewrite `h1` using `[Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Establish `h2` using `approx_dvd htf hK hl0 le_rfl (hy r) hz`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : L - z = (y r - z) - (y r - L)` using `by ring`. Rewrite using `[e]`. Conclude with `dvd_sub h2 h1`.
+A detailed English derivation is pending.
 -/
 theorem exists_lim (F : P) : ∃ L : R, ∀ r y, Approx l ι f F r y → (l : R) ^ r ∣ L - y := by
   choose y hy using exists_approx hK hD F
@@ -146,17 +146,15 @@ theorem exists_lim (F : P) : ∃ L : R, ∀ r y, Approx l ι f F r y → (l : R)
 include hD in
 
 /- English proof (translation)
-Use `choose L hL using exists_lim htf hK hl0 hD`. Establish `key : ∀ F z, (∀ r, ∃ y, Approx l ι f F r y ∧ (l : R) ^ r ∣ z - y) → L F = z` using `fun F z hz => sub_eq_zero.1 (sep_l l _ fun r => by`. Take `⟨y, hy, hzy⟩` from `hz r`. Establish `e : L F - z = (L F - y) - (z - y)` using `by ring`. Rewrite using `[e]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `dvd_sub (hL F r y hy) hzy)`. Establish `h1 : L 1 = 1` using `key 1 1 fun r => ⟨1, approx_one r, by simp⟩`. Establish `h0 : L 0 = 0` using `key 0 0 fun r => ⟨0, approx_zero r, by simp⟩`. Establish `hm : ∀ F G, L (F * G) = L F * L G`. Introduce `F G`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `key _ _ fun r => ?_` and prove the remaining obligations. Take `⟨y, hy⟩` from `exists_approx hK hD F r`. Take `⟨z, hz⟩` from `exists_approx hK hD G r`. Take `⟨c, hc⟩` from `hL F r y hy`. Take `⟨d, hd⟩` from `hL G r z hz`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Take a linear combination of the given relations to obtain the conclusion.
 
-Conclude with `⟨y * z, approx_mul hy hz, c * z + y * d + (l : R) ^ r * c * d, by`. Take the linear combination `(L G) * hc + (y + (l : R) ^ r * c) * hd⟩`. Establish `ha : ∀ F G, L (F + G) = L F + L G`. Introduce `F G`. Use `key _ _ fun r => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `exists_approx hK hD F r`. Take `⟨z, hz⟩` from `exists_approx hK hD G r`. Take `⟨c, hc⟩` from `hL F r y hy`. Take `⟨d, hd⟩` from `hL G r z hz`. Conclude with `⟨y + z, approx_add hy hz, c + d, by linear_combination hc + hd⟩`.
-
-Conclude with `⟨{ toFun := L, map_one' := h1, map_zero' := h0, map_mul' := hm, map_add' := ha }, hL⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_ringHom : ∃ E : P →+* R, ∀ F r y, Approx l ι f F r y → (l : R) ^ r ∣ E F - y := by
   choose L hL using exists_lim htf hK hl0 hD
@@ -191,9 +189,9 @@ omit hK in
 include hD in
 
 /- English proof (translation)
-Use extensionality with `F`. Use `sub_eq_zero.1 (sep_l l _ fun r => ?_)` and prove the remaining obligations. Take `⟨n, b, p, k, hn, hp, hF⟩` from `hD F r`. Establish `e1 : (n : R) * (G₁ p - G₂ p) = G₁ ((n : P) * p) - G₂ ((n : P) * p)`. Rewrite using `[map_mul, map_mul, map_natCast, map_natCast]`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h1 : G₁ p = G₂ p` using `sub_eq_zero.1 (htf n _ hn (by rw [e1, hp, h, sub_self]))`. Conclude with `⟨G₁ k - G₂ k, by rw [hF, map_add, map_add, map_mul, map_mul, map_pow, map_pow, map_natCast, map_natCast, h1]; ring⟩`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem ringHom_ext_dense (G₁ G₂ : P →+* R) (h : ∀ b, G₁ (ι b) = G₂ (ι b)) : G₁ = G₂ := by
   ext F
@@ -230,7 +228,7 @@ def iotaP : Bp l a →+* (ZMod a → K⟦X⟧⟦X⟧) :=
   Pi.ringHom fun τ => (PowerSeries.map (rhoK K t τ)).comp Polynomial.coeToPowerSeries.ringHom
 
 /- English proof (translation)
-Rewrite using `[show iotaP K t b τ = PowerSeries.map (rhoK K t τ) (b : (Polynomial (Wq l a))⟦X⟧) from rfl, coeff_map, Polynomial.coeff_coe, rhoK, RingHom.comp_apply, Polynomial.coeToPowerSeries.ringHom_apply, coeff_map, Polynomial.coeff_coe]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_iotaP (b : Bp l a) (τ : ZMod a) (i n : ℕ) :
     coeff n (coeff i (iotaP K t b τ)) = embK K t τ ((b.coeff i).coeff n) := by
@@ -239,7 +237,7 @@ theorem coeff_iotaP (b : Bp l a) (τ : ZMod a) (i n : ℕ) :
     Polynomial.coeff_coe]
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[coeff_toAc]`. Simplify using `[rhoK, embK, coeff_map, Polynomial.coeff_coe]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rhoK_eq_toAc [IsUltrametricDist K] [IsUnitBall O K] (q : Polynomial (Wq l a)) (τ : ZMod a) :
     rhoK K t τ q = (toAc t K (q : (Wq l a)⟦X⟧) τ : K⟦X⟧) := by
@@ -248,15 +246,15 @@ theorem rhoK_eq_toAc [IsUltrametricDist K] [IsUnitBall O K] (q : Polynomial (Wq 
   simp [rhoK, embK, coeff_map, Polynomial.coeff_coe]
 
 /- English proof (translation)
-The claim follows from `charZero_of_injective_algebraMap (algebraMap ℚ_[l] K).injective`.
+A detailed English derivation is pending.
 -/
 theorem charZero_K [NormedAlgebra ℚ_[l] K] : CharZero K :=
   charZero_of_injective_algebraMap (algebraMap ℚ_[l] K).injective
 
 /- English proof (translation)
-Use `charZero_K (l := l) (K := K)` as an intermediate fact. Use `(injective_iff_map_eq_zero _).2 fun w hw => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Take `⟨m, v, hv, rfl⟩` from `WittVector.exists_eq_pow_p_mul w h0`. Establish `hu : IsUnit v` using `WittVector.isUnit_of_coeff_zero_ne_zero v hv`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hw` using `[map_mul, map_pow, map_natCast]`. Conclude with `mul_ne_zero (pow_ne_zero _ (Nat.cast_ne_zero.2 hl.out.ne_zero)) (hu.map _).ne_zero hw`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem embK_injective [NormedAlgebra ℚ_[l] K] (τ : ZMod a) : Function.Injective (embK K t τ) := by
   have := charZero_K (l := l) (K := K)
@@ -270,9 +268,9 @@ theorem embK_injective [NormedAlgebra ℚ_[l] K] (τ : ZMod a) : Function.Inject
 include t in
 
 /- English proof (translation)
-Use `charZero_K (l := l) (K := K)` as an intermediate fact. Use `embK_injective (K := K) t 0 ?_` and prove the remaining obligations. Establish `h1` using `congrArg (embK K t 0) h`. Rewrite `h1` using `[map_mul, map_natCast, map_zero]`. Rewrite using `[map_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(mul_eq_zero.1 h1).resolve_left (Nat.cast_ne_zero.2 hn)`.
+A detailed English derivation is pending.
 -/
 theorem wq_nat_cancel [NormedAlgebra ℚ_[l] K] {n : ℕ} (hn : n ≠ 0) {x : Wq l a}
     (h : (n : Wq l a) * x = 0) : x = 0 := by
@@ -286,7 +284,7 @@ theorem wq_nat_cancel [NormedAlgebra ℚ_[l] K] {n : ℕ} (hn : n ≠ 0) {x : Wq
 variable {e : ℕ} (ϖ : PiSys l e)
 
 /- English proof (translation)
-Establish `h` using `Polynomial.ringHom_ext (f := (ϖ.ev a).comp Polynomial.coeToPowerSeries.ringHom) (g := Polynomial.eval₂RingHom (wA l a).toRingHom ϖ.teich) (fun w => by simp) (by simp)`. Conclude with `RingHom.congr_fun h q`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ev_coe (q : Polynomial (Wq l a)) :
     ϖ.ev a (q : (Wq l a)⟦X⟧) = q.eval₂ (wA l a).toRingHom ϖ.teich := by

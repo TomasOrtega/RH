@@ -15,9 +15,9 @@ namespace GlobalTheory.AwayFr
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {N : ℕ}
 
 /- English proof (translation)
-Introduce `a b`. Apply `GlobalTheory.T.intAtAdele_mul_of_placeComponent_eq_zero F E v Q hv` to reduce the goal to its premises. Establish `h1 : Formalism.UG.bc (Formalism.UG.prV (E` using `E) v) (y⁻¹ * y₁) = 1 := by`. Rewrite using `[map_mul, h, map_inv, inv_mul_cancel]`. Establish `h2` using `congrArg (fun g : GL (Fin N) (TensorProduct F E (v.adicCompletion F)) => (g : Matrix (Fin N) (Fin N) (TensorProduct F E (v.adicCompletion F))) a b) h1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : Formalism.UG.prV (E` using `E) v (((y⁻¹ * y₁ : GL (Fin N) _) : Matrix (Fin N) (Fin N) _) a b) = (1 : Matrix (Fin N) (Fin N) (TensorProduct F E (v.adicCompletion F))) a b := h2`. Rewrite using `[Matrix.sub_apply, map_sub, h3, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem congAt_of_prV_eq (v : HeightOneSpectrum (𝓞 F)) (Q : HeightOneSpectrum (𝓞 E)) (hv : Formalism.L2.Col.IsOver v Q) (n : ℕ)
     (y y₁ : GL (Fin N) (TensorProduct F E (FiniteAdeleRing (𝓞 F) F)))
@@ -34,7 +34,7 @@ theorem congAt_of_prV_eq (v : HeightOneSpectrum (𝓞 F)) (Q : HeightOneSpectrum
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `e : GlobalTheory.TwU.ratA F (g⁻¹ * g₁) = (y⁻¹ * GlobalTheory.TwU.ratA F g)⁻¹ * ((y⁻¹ * y₁) * (y₁⁻¹ * GlobalTheory.TwU.ratA F g₁))`. Rewrite using `[map_mul, map_inv]`. Use `group`. Rewrite using `[e]`. Conclude with `GlobalTheory.T.adelicMatrixCongruentOneAtPrime_mul_of_both F E Q n N _ _ (GlobalTheory.T.adelicMatrixCongruentOneAtPrime_inv_of_pos_depth F E Q n N _ hn hg) (GlobalTheory.T.adelicMatrixCongruentOneAtPrime_mul_of_both F E Q n N _ _ (congAt_of_prV_eq v Q hv n y y₁ h) hg₁)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem congAt_ratA_of_near (v : HeightOneSpectrum (𝓞 F)) (Q : HeightOneSpectrum (𝓞 E)) (hv : Formalism.L2.Col.IsOver v Q) (n : ℕ)
     (hn : 1 ≤ n) (y y₁ : GL (Fin N) (TensorProduct F E (FiniteAdeleRing (𝓞 F) F))) (g g₁ : GL (Fin N) E)
@@ -53,14 +53,14 @@ namespace GlobalTheory.AwayFr
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Col Formalism.L2.Ker Formalism.L2.DIV GlobalTheory.TwU GlobalTheory.TwV Formalism.UG
 
 /- English proof (translation)
-Rewrite using `[map_mul, map_mul, h, ← map_mul, ← map_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem monoidHom_mul_mul_congr_middle {M M' : Type} [Monoid M] [Monoid M'] (φ : M →* M') (a b b₁ c : M) (h : φ b₁ = φ b) :
     φ (a * b₁ * c) = φ (a * b * c) := by
   rw [map_mul, map_mul, h, ← map_mul, ← map_mul]
 
 /- English proof (translation)
-Establish `e : z = δ + (((qOf P ^ n : ℕ) : ℕ) : E) * ((((qOf P : ℕ) : E) ^ n)⁻¹ * (z - δ))`. Rewrite using `[← mul_assoc, Nat.cast_pow, mul_inv_cancel₀ (pow_ne_zero _ (GlobalTheory.TopInv.qOf_ne P)), one_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `hδ.add ((GlobalTheory.TopInv.intAt_nat (P := P) (qOf P ^ n)).mul h)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intAt_of_cong {E : Type} [Field E] [NumberField E] (P : HeightOneSpectrum (𝓞 E)) (n : ℕ) (z δ : E) (hδ : IntAt P δ)
     (h : IntAt P ((((qOf P : ℕ) : E) ^ n)⁻¹ * (z - δ))) : IntAt P z := by
@@ -70,7 +70,7 @@ theorem intAt_of_cong {E : Type} [Field E] [NumberField E] (P : HeightOneSpectru
   exact hδ.add ((GlobalTheory.TopInv.intAt_nat (P := P) (qOf P ^ n)).mul h)
 
 /- English proof (translation)
-Rewrite using `[Pi.single_apply]`. Use `split_ifs`. Simplify using `using GlobalTheory.TopInv.intAt_nat (P := P) 1`. Simplify using `using GlobalTheory.TopInv.intAt_nat (P := P) 0`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem intAt_single {E : Type} [Field E] [NumberField E] (P : HeightOneSpectrum (𝓞 E)) {n : ℕ} (s l : Fin n) :
     IntAt P ((Pi.single s 1 : Fin n → E) l) := by
@@ -80,9 +80,9 @@ theorem intAt_single {E : Type} [Field E] [NumberField E] (P : HeightOneSpectrum
   · simpa using GlobalTheory.TopInv.intAt_nat (P := P) 0
 
 /- English proof (translation)
-Take `⟨r, c, hc, e⟩` from `h`. Use `⟨(RingOfIntegers.mapRingEquiv s.iE).symm r, (RingOfIntegers.mapRingEquiv s.iE).symm c, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← mem_seamP s P, RingEquiv.apply_symm_apply]` and apply the resulting hypothesis. Apply `s.iE.injective` to reduce the goal to its premises. Establish `k : ∀ w : 𝓞 D.host.E, s.iE (algebraMap (𝓞 X.E) X.E ((RingOfIntegers.mapRingEquiv s.iE).symm w)) = algebraMap _ _ w`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Introduce `w`. Use `conv_rhs => rw [← RingEquiv.apply_symm_apply (RingOfIntegers.mapRingEquiv s.iE) w]`. Both sides reduce to the same expression. Rewrite using `[map_mul, k, k, e]`.
+Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intAt_of_seam {D : D7} {X : Fields} (s : Seam D X) (P : HeightOneSpectrum (𝓞 X.E)) (z : X.E)
     (h : IntAt (seamP s P) (s.iE z)) : IntAt P z := by
@@ -97,9 +97,9 @@ theorem intAt_of_seam {D : D7} {X : Fields} (s : Seam D X) (P : HeightOneSpectru
     rw [map_mul, k, k, e]
 
 /- English proof (translation)
-Rewrite `hw`, the goal using `[stdAt, mem_localization_standardLattice]`. Introduce `l`. Establish `e : g w l = ∑ s, g (Pi.single s 1) l * w s`. Use `congrFun (LinearMap.toMatrix'_mulVec g.toLinearMap w) l` as an intermediate fact. Rewrite using `[← LinearEquiv.coe_toLinearMap, ← this]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mulVec, dotProduct, LinearMap.toMatrix'_apply, LinearEquiv.coe_toLinearMap]`. Rewrite using `[e]`. Use `Finset.sum_induction _ (IntAt P) (fun a b ha hb => ha.add hb) (by simpa using GlobalTheory.TopInv.intAt_nat (P := P) 0) fun s _ => (hg s l).mul (hw s)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem mem_stdAt_of_int {E : Type} [Field E] [NumberField E] [StarRing E] (P : HeightOneSpectrum (𝓞 E)) {n : ℕ}
     (g : Sp E n ≃ₗ[E] Sp E n) (hg : ∀ s l, IntAt P (g (Pi.single s 1) l)) (w : Sp E n) (hw : w ∈ stdAt E n P) :
@@ -121,21 +121,21 @@ namespace GlobalTheory.AwayFr
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Col Formalism.L2.Ker Formalism.L2.DIV GlobalTheory.TwU GlobalTheory.TwV Formalism.UG
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Y cX ex t u μ St A dtU a _hPins hTie j hj β x x₁ p p₁ hp hp₁ hx P`. Establish `hSS` using `((isChainTop_iff _ _ _ _ _ _ _ _ _).1 hTie.isChainTop).1`. Establish `hQ : seamP t.seam P.1 ∈ ssRec t u μ` using `(mem_ssRec t u μ P.1).2 (by rw [hSS]; exact Finset.mem_union_right _ P.2)`. Establish `hv : IsOver (underPl D.host.F (seamP t.seam P.1)) (seamP t.seam P.1)` using `rfl`. Establish `hxv` using `hx _ ⟨_, hQ, hv⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD : 1 ≤ (t.cst μ).D P` using `((t.idx_ok μ).cst_ok).D_pos P`. Establish `c1` using `congAt_ratA_of_near _ _ hv _ hD _ _ _ _ (monoidHom_mul_mul_congr_middle _ _ _ _ _ hxv) (hp.frame P) (hp₁.frame P)`. Establish `c2` using `congAt_ratA_of_near _ _ hv _ hD _ _ _ _ (monoidHom_mul_mul_congr_middle _ _ _ _ _ hxv.symm) (hp₁.frame P) (hp.frame P)`. Rewrite `c1`, `c2` using `[← map_inv, ← map_mul]`. Establish `i1` using `GlobalTheory.T.rationalMatrix_entries_congruent_one_of_adelic_congruent _ _ _ _ _ _ c1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `i2` using `GlobalTheory.T.rationalMatrix_entries_congruent_one_of_adelic_congruent _ _ _ _ _ _ c2`. Rewrite `i1`, `i2` using `[GlobalTheory.T.residueCard_columnFieldPrimeToHostPrime_eq]`. Apply the tactic sequence `have entry : ∀ (g : Sp t.X.E (D.R.N j) ≃ₗ[t.X.E] Sp t.X.E (D.R.N j)) (l s : Fin (D.R.N j)), ((seamGL t.seam g : GL (Fin (D.R.N j)) D.host.E) : Matrix (Fin (D.R.N j)) (Fin (D.R.N j)) D.host.E) l s = t.seam.iE (g (Pi.single s 1) l) := by`. Introduce `g l s`. Use `show ((LinearMap.toMatrix' g.toLinearMap).map (t.seam.iE : t.X.E →+* D.host.E)) l s = _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.map_apply, LinearMap.toMatrix'_apply]`. Both sides reduce to the same expression. Establish `cong : ∀ g : Sp t.X.E (D.R.N j) ≃ₗ[t.X.E] Sp t.X.E (D.R.N j), (∀ l s : Fin (D.R.N j), IntAt (seamP t.seam P.1) ((((qOf P.1 : ℕ) : D.host.E) ^ (t.cst μ).D P)⁻¹ * (((seamGL t.seam g : GL (Fin (D.R.N j)) D.host.E) : Matrix (Fin (D.R.N j)) (Fin (D.R.N j)) D.host.E) l s - (1 : Matrix …`. Introduce `g h s l`. Apply `intAt_of_seam t.seam P.1` to reduce the goal to its premises.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `h l s` as an intermediate fact. Rewrite `this` using `[entry, Matrix.one_apply]`. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_mul, map_inv₀, map_pow, map_natCast, map_sub, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `h1` using `cong ((frsF t.sel (t.tup μ) p P)⁻¹ * frsF t.sel (t.tup μ) p₁ P) (by simpa only [map_mul, map_inv] using i1)`. Establish `h2` using `cong ((frsF t.sel (t.tup μ) p₁ P)⁻¹ * frsF t.sel (t.tup μ) p P) (by simpa only [map_mul, map_inv] using i2)`. Establish `int1 : ∀ s l, IntAt P.1 (((frsF t.sel (t.tup μ) p P)⁻¹ * frsF t.sel (t.tup μ) p₁ P) (Pi.single s 1) l)` using `fun s l => intAt_of_cong P.1 _ _ _ (intAt_single P.1 s l) (h1 s l)`. Establish `int2 : ∀ s l, IntAt P.1 (((frsF t.sel (t.tup μ) p₁ P)⁻¹ * frsF t.sel (t.tup μ) p P) (Pi.single s 1) l)` using `fun s l => intAt_of_cong P.1 _ _ _ (intAt_single P.1 s l) (h2 s l)`. Establish `hk : (frsF t.sel (t.tup μ) p P)⁻¹ * frsF t.sel (t.tup μ) p₁ P ∈ GLint t.X.E (D.R.N j) P.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w`. Prove the components needed by the constructor for the conclusion. Introduce `hw`. Establish `e : w = ((frsF t.sel (t.tup μ) p₁ P)⁻¹ * frsF t.sel (t.tup μ) p P) (((frsF t.sel (t.tup μ) p P)⁻¹ * frsF t.sel (t.tup μ) p₁ P) w)`. Rewrite using `[← LinearEquiv.mul_apply, mul_assoc, mul_inv_cancel_left, inv_mul_cancel]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `mem_stdAt_of_int P.1 _ int2 _ hw`. Conclude with `mem_stdAt_of_int P.1 _ int1 w`. Conclude with `⟨⟨(frsF t.sel (t.tup μ) p P)⁻¹ * frsF t.sel (t.tup μ) p₁ P, hk⟩, by simp, h1⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem frames_away : UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ St} A dtU a => ∀ j (hj : j ≤ D.R.m) β x x₁ p p₁,
     IsPtAd A a j hj β x p → IsPtAd A a j hj β x₁ p₁ →

@@ -6,7 +6,7 @@ open scoped ENNReal
 namespace PositivityTheory.Rg.Tf.Loc
 
 /- English proof (translation)
-Introduce `F _ _ _ _ n _ _ μG H μH h1 h2 h3 h4 Fn _ h5 h6 Rp h7 h8`. Take `⟨-, -, ho, hc⟩` from `hT.1 F n`. Conclude with `h F n μG H μH (unitGL F) ho hc h1 h2 h3 h4 Fn h5 h6 Rp h7 h8`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem quotient_integral_of_compact_open (hT : T0) (h : QuotientIntegralCompactOpen) : H2 := by
   intro F _ _ _ _ n _ _ μG H μH h1 h2 h3 h4 Fn _ h5 h6 Rp h7 h8
@@ -14,7 +14,7 @@ theorem quotient_integral_of_compact_open (hT : T0) (h : QuotientIntegralCompact
   exact h F n μG H μH (unitGL F) ho hc h1 h2 h3 h4 Fn h5 h6 Rp h7 h8
 
 /- English proof (translation)
-Introduce `k E _ _ _ _ _ _ _ _ _ _ _ _ hun σ hgen n _ _ _ _ δ γ hh μδ μγ h1 h2 h3 y z hz`. Conclude with `h k E hun σ hgen n (unitGL E : Subgroup (GL (Fin n) E)) (unitGL k : Subgroup (GL (Fin n) k)) (hT.1 E n).2.2.1 (fun g => (hD k E hun σ hgen).2.2.1 n g) δ γ hh μδ μγ h1 h2 h3 y z hz`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem measure_transport_of_open_set (hT : T0) (hD : D0a) (h : MeasureTransportOpenSet) : H4 := by
   intro k E _ _ _ _ _ _ _ _ _ _ _ _ hun σ hgen n _ _ _ _ δ γ hh μδ μγ h1 h2 h3 y z hz
@@ -22,9 +22,9 @@ theorem measure_transport_of_open_set (hT : T0) (hD : D0a) (h : MeasureTransport
     (hT.1 E n).2.2.1 (fun g => (hD k E hun σ hgen).2.2.1 n g) δ γ hh μδ μγ h1 h2 h3 y z hz
 
 /- English proof (translation)
-Establish `b` using `hD0b hD0a`. Establish `c` using `hD0c b`. Establish `a2` using `hA2 hA1`. Establish `n4` using `hN4 hD0a b c (hN3 hN1 hN2)`. Establish `l2` using `hL2 hD0a`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `z1` using `hZ1 hD0a hT0 hA1 a2 (hA3 a2) n4 l2 (hL3 c hL1) (hL4 hD0a hA1) (quotient_integral_of_compact_open hT0 hH2U) hH3 (measure_transport_of_open_set hT0 hD0a (hH4U hD0a hT0 hA1))`. Establish `z2` using `hZ2 l2 n4`. Introduce `k E`. Use `intros`. Apply the tactic sequence `exact ⟨by apply z1 <;> assumption, by apply z2 <;> assumption⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs and assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem bcflUnit_of_leaves (hD0a : D0a) (hD0b : D0a → IntegralBasisUnramified) (hD0c : IntegralBasisUnramified → TraceOneIntegralElement) (hT0 : T0) (hA1 : A1)
     (hA2 : A1 → A2) (hA3 : A2 → A3) (hN1 : N1) (hN2 : N2) (hN3 : N1 → N2 → N3)

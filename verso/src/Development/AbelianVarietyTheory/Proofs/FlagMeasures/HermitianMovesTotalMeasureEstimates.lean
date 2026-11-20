@@ -23,23 +23,23 @@ section abstract
 variable {W W₁ W₂ W₃ : Type} [AddCommGroup W] [AddCommGroup W₁] [AddCommGroup W₂] [AddCommGroup W₃]
 
 /- English proof (translation)
-Unfold `cint`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cint_zero (A : AddSubgroup W) : cint A (fun _ => (0 : ℂ)) = 0 := by
   unfold cint
   split_ifs <;> simp
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hn`. Conclude with `h (by unfold cint; rw [dif_neg hn])`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem nice_of_ne (A : AddSubgroup W) (φ : W → ℂ) (h : cint A φ ≠ 0) : Nice A φ := by
   by_contra hn
   exact h (by unfold cint; rw [dif_neg hn])
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4⟩` from `h`. Use `⟨h1, h2, fun w b hb => ?_, h4.subset (Set.image_mono fun w hw => ?_)⟩` and prove the remaining obligations. Use `beta_reduce`. Distinguish the cases in `hw : P w`. Rewrite using `[h3 w b hb, hg w hw b hb]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h3 w b hb]`. Simplify using `[ind, hw]`. Conclude with `left_ne_zero_of_mul hw`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fine_mul {A B : AddSubgroup W} {P : W → Prop} (h : Fine A (ind P) B) (g : W → ℂ)
     (hg : ∀ w, P w → ∀ b ∈ B, g (w + b) = g w) : Fine A (fun w => ind P w * g w) B := by
@@ -52,23 +52,23 @@ theorem fine_mul {A B : AddSubgroup W} {P : W → Prop} (h : Fine A (ind P) B) (
   · exact left_ne_zero_of_mul hw
 
 /- English proof (translation)
-Take `⟨k1, k2, k3⟩` from `GlobalTheory.T.indexMeasureIntegral_prod_fubini _ _ _ hn`. Establish `key : (fun b => cint (A₂.prod A₃) (fun w' => ind M (b, w') * g b w'.1)) = (fun b => ind P b * cint A₂ (fun u => ind (fun u => Q u ∧ Z u) u * g b u))`. Use function extensionality and compare the values at `b`. Rewrite using `[(GlobalTheory.T.indexMeasureIntegral_prod_fubini _ _ _ (k1 b)).2.2]`. Distinguish the cases in `hb : P b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[show ind P b = 1 by simp [ind, hb], one_mul]`. Use `congr 1`. Use function extensionality and compare the values at `u`. Distinguish the cases in `hq : Q u`. Distinguish the cases in `hz : Z u`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails.
 
-Establish `e : (fun t => ind M (b, u, t) * g b u) = fun t => g b u * ind (R u) t`. Use function extensionality and compare the values at `t`. Simplify using `[ind, hM, hb, hq]`. Use `((GlobalTheory.T.indexMeasureIntegral_linear_positive_norm_bound A₃).2.1 (g b u) _ (nice_of_ne _ _ (by rw [h1 u hz]; simp))).2` as an intermediate fact. Simplify using `only`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, this, h1 u hz]`. Simplify using `[ind, hq, hz]`. Establish `e : (fun t => ind M (b, u, t) * g b u) = fun _ => 0`. Use function extensionality and compare the values at `t`. Establish `: ¬ R u t` using `fun h => hz (h2 u ⟨t, h⟩)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify using `[ind, hM, this]`. Simplify using `only`. Rewrite using `[e, cint_zero]`. Simplify using `[ind, hz]`. Establish `e : (fun t => ind M (b, u, t) * g b u) = fun _ => 0`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `t`. Simplify using `[ind, hM, hq]`. Simplify using `only`. Rewrite using `[e, cint_zero]`. Simplify using `[ind, hq]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e : (fun u => cint A₃ (fun t => ind M (b, u, t) * g b u)) = fun _ => 0`. Use function extensionality and compare the values at `u`. Establish `e : (fun t => ind M (b, u, t) * g b u) = fun _ => 0`. Use function extensionality and compare the values at `t`. Simplify using `[ind, hM, hb]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, cint_zero]`. Simplify using `only`. Rewrite using `[e, cint_zero]`. Simplify using `[ind, hb]`. Simplify using `only at k2 k3`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite `k2`, `k3` using `[key]`. Conclude with `⟨k2, k3⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem triple (A₁ : AddSubgroup W₁) (A₂ : AddSubgroup W₂) (A₃ : AddSubgroup W₃) (P : W₁ → Prop)
     (Q Z : W₂ → Prop) (R : W₂ → W₃ → Prop) (M : W₁ × W₂ × W₃ → Prop)
@@ -122,16 +122,16 @@ theorem triple (A₁ : AddSubgroup W₁) (A₂ : AddSubgroup W₂) (A₃ : AddSu
   exact ⟨k2, k3⟩
 
 /- English proof (translation)
-Simplify `((GlobalTheory.T.indexMeasureIntegral_linear_positive_norm_bound A).2.1 c φ h).2` using `[mul_comm]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem cint_ind_mul (A : AddSubgroup W) (φ : W → ℂ) (h : Nice A φ) (c : ℂ) :
     cint A (fun w => φ w * c) = cint A φ * c := by
   simpa [mul_comm] using ((GlobalTheory.T.indexMeasureIntegral_linear_positive_norm_bound A).2.1 c φ h).2
 
 /- English proof (translation)
-Take `⟨e1, e2⟩` from `(GlobalTheory.T.indexMeasureIntegral_linear_positive_norm_bound A).2.1 (m : ℂ) _ h`. Use `((GlobalTheory.T.indexMeasureIntegral_linear_positive_norm_bound A).1 _ _ hφ e1).2.2 fun w => by` as an intermediate fact. Distinguish the cases in `hw : P w`. Simplify `hm w hw` using `[ind, hw]`. Simplify using `[ind, hw]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[e2]`. Simplify using `using this`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem norm_le (A : AddSubgroup W) (P : W → Prop) (h : Nice A (ind P)) (φ : W → ℂ)
     (hφ : Nice A (fun w => ind P w * φ w)) (m : ℝ) (hm : ∀ w, P w → ‖φ w‖ ≤ m) :
@@ -152,13 +152,13 @@ variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E]
 variable {L : LocE F E} {r k : ℕ} (S : Frames L r k)
 
 /- English proof (translation)
-Establish `hu` using `Subgroup.mem_iInf.1 hn.1.2 j`. Establish `hv : n.symm x ∈ S.spanTo g (j + 1)` using `(hu.1 _).1 (by simpa using hx)`. Establish `hd` using `hu.2 _ hv`. Take `⟨c, -, hc⟩` from `coords S g hv`. Use `⟨c, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg n hc` as an intermediate fact. Simplify using `using this`. Establish `h0 : hf L S.Hm (n (n.symm x) - n.symm x) (gs j) = 0` using `hf_spanTo S g hd fun i hi => by`. Rewrite using `[dual, if_neg]`. Introduce and unpack `rfl`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Simplify using `at hi`. Rewrite `h0` using `[hf_sub_l, LinearEquiv.apply_symm_apply, sub_eq_zero]`. Establish `h1 : hf L S.Hm (∑ i, c i • g i) (gs j) = ∑ i, c i * hf L S.Hm (g i) (gs j)`. Proceed by induction on `(Finset.univ : Finset (Fin (r + 1))) using Finset.induction_on with`. Consider the case `empty => simp [hf]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, hf_add_l, hf_smul_l, ih]`. Express the relevant statement in the definitionally equal form `_ = hf L S.Hm x (gs j)`. Rewrite using `[h0, hc, h1]`. Simplify using `[dual]`.
+Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_coords (g : Fin (r + 1) → S.V) (gs : Fin r → S.V)
     (dual : ∀ a j, hf L S.Hm (g a) (gs j) = if a = j.castSucc then 1 else 0)
@@ -186,7 +186,7 @@ theorem exists_coords (g : Fin (r + 1) → S.V) (gs : Fin r → S.V)
     simp [dual]
 
 /- English proof (translation)
-Simplify using `only [Frames.refB, AddSubgroup.mem_inf, AddSubgroup.mem_prod, AddSubgroup.mem_comap, AddSubgroup.mem_map, Frames.InTh, and_assoc]`. Use `and_congr Iff.rfl (and_congr Iff.rfl (exists_congr fun y => and_congr Iff.rfl ?_))` and prove the remaining obligations. Conclude with `eq_comm`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mem_refB (J : ℕ) (Λ : Submodule L.O S.V) (b : S.V × S.V) :
     b ∈ S.refB J Λ ↔ b.1 ∈ S.spanTo S.f J ∧ b.2 ∈ S.spanTo S.f' J ∧ S.InTh Λ (b.1 + b.2) := by
@@ -196,11 +196,11 @@ theorem mem_refB (J : ℕ) (Λ : Submodule L.O S.V) (b : S.V × S.V) :
   exact eq_comm
 
 /- English proof (translation)
-Establish `hs : algebraMap F E 2⁻¹ * S.h u u + L.cj (algebraMap F E 2⁻¹ * S.h u u) = S.h u u`. Rewrite using `[map_mul, AlgEquiv.commutes, Frames.h, hf_cj L S.herm.1, ← add_mul, ← map_add]`. Evaluate the numerical expressions. Establish `e : (S.sOf (b, u, t) + L.cj (S.sOf (b, u, t)) = S.h u u) ↔ t + L.cj t = 0`. Simplify using `only [Frames.sOf]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_add]`. Apply the tactic sequence `constructor <;> intro h`. Take the linear combination `h - hs`. Take the linear combination `h + hs`. Establish `hU : u ∈ S.refU J Λ ↔ u ∈ Λ ∧ u ∈ perp L S.Hm (S.spanTo S.f J ⊔ S.spanTo S.f' J)` using `Iff.rfl`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[mem_refB, hU, ← e]`. Simplify using `only [Frames.Mv, Frames.IsMove, and_assoc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem mv_iff [CharZero F] (J : ℕ) (d : S.Datum) (Λ : Submodule L.O S.V) (b : S.V × S.V) (u : S.V) (t : E) :
     S.Mv J d Λ (b, u, t) ↔ (b ∈ S.refB J Λ ∧ S.lev (S.fr d Λ) (S.fr' d Λ) (b.1 + b.2) = J) ∧
@@ -224,35 +224,35 @@ theorem mv_iff [CharZero F] (J : ℕ) (d : S.Datum) (Λ : Submodule L.O S.V) (b 
 end
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ E _ _ _ L r k S hk j β βJ d Λ hT hF`. Take `⟨B, hB, hinv⟩` from `GlobalTheory.T.exists_fineSubgroup_moves_at_lattice L r k S j β βJ d Λ hT hF`. Take `⟨hβJ, hβ, nB, cB⟩` from `GlobalTheory.T.indexIntegrable_share_top_level_vectors L r k S j β βJ d Λ hT hF`. Take `⟨u1, u2, u3⟩` from `GlobalTheory.T.term_integral_near_one_bound L r k S hk (j + 1) d Λ hT`. Establish `hTf` using `GlobalTheory.T.eichlerMove_scalar_fibre_measure_one L r k S (GlobalTheory.T.term_exponents_nonneg_and_defect_group_bound L r k S d Λ hT).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `tri` using `triple (S.refB (j + 1) Λ) (S.refU (j + 1) Λ) S.refT _ _ S.InZ _ (S.Mv (j + 1) d Λ) (mv_iff S (j + 1) d Λ) (fun u => (hTf u).1) (fun u => (hTf u).2)`. Establish `hβ' : (β : ℝ) ≠ 0` using `by positivity`. Establish `hβJ' : (βJ : ℝ) ≠ 0` using `by positivity`. Establish `cB' : cint (S.refB (j + 1) Λ) (ind fun b : S.V × S.V => b ∈ S.refB (j + 1) Λ ∧ S.lev (S.fr d Λ) (S.fr' d Λ) (b.1 + b.2) = j + 1) = (((βJ : ℝ) / β : ℝ) : ℂ)`. Rewrite using `[cB]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Both sides reduce to the same expression. Establish `e2 : (ind fun w => S.Mv (j + 1) d Λ w ∧ ¬ S.NoLeak Λ w.2.1) = fun w => ind (S.Mv (j + 1) d Λ) w * ind (fun u => ¬ S.NoLeak Λ u) w.2.1`. Use function extensionality and compare the values at `w`. Apply the tactic sequence `by_cases h1 : S.Mv (j + 1) d Λ w <;> by_cases h2 : S.NoLeak Λ w.2.1 <;> simp [ind, h1, h2]`.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `e2' : (fun u => ind (fun u => u ∈ S.refU (j + 1) Λ ∧ S.InZ u) u * ind (fun u => ¬ S.NoLeak Λ u) u) = ind fun u => u ∈ S.refU (j + 1) Λ ∧ S.InZ u ∧ ¬ S.NoLeak Λ u`. Use function extensionality and compare the values at `u`. Apply the tactic sequence `by_cases h1 : u ∈ S.refU (j + 1) Λ <;> by_cases h2 : S.NoLeak Λ u <;> by_cases h3 : S.InZ u <;>`. Simplify using `[ind, h1, h2, h3]`. Establish `n2 : Nice (S.refA (j + 1) Λ) fun w => ind (S.Mv (j + 1) d Λ) w * ind (fun u => ¬ S.NoLeak Λ u) w.2.1` using `⟨B, fine_mul hB (fun w => ind (fun u => ¬ S.NoLeak Λ u) w.2.1) fun w hw b hb => by`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `(hinv w hw b hb).2.2` as an intermediate fact. Distinguish the cases in `h : S.NoLeak Λ w.2.1`. Simplify using `only [ind, h, this.2 h, not_true, if_false]`. Simplify using `only [ind, h, mt this.1 h, not_false_iff, if_true]⟩`. Establish `n3 : Nice (S.refA (j + 1) Λ) fun w => ind (S.Mv (j + 1) d Λ) w * S.chiM j d Λ w.1 w.2.1` using `⟨B, fine_mul hB (fun w => S.chiM j d Λ w.1 w.2.1) fun w hw b hb => (hinv w hw b hb).2.1⟩`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `⟨⟨B, hB⟩, e2 ▸ n2, n3, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `t1` using `(tri (fun _ _ => 1) (by simpa using ⟨B, hB⟩)).2`. Simplify using `only [mul_one] at t1`. Rewrite `t1` using `[cint_ind_mul _ _ nB, cB']`. Establish `t1' : cint (S.refA (j + 1) Λ) (ind (S.Mv (j + 1) d Λ)) = _` using `t1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[t1', Complex.re_ofReal_mul]`. Use `u1 using 3` and compare the differences between its conclusion and the goal. Unfold `Frames.cK`. Clear the denominators using the available nonvanishing facts. Establish `t2` using `(tri (fun _ u => ind (fun u => ¬ S.NoLeak Λ u) u) n2).2`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Replace the relevant objects with their definitions. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Rewrite `t2` using `[cint_ind_mul _ _ nB, cB', e2']`. Establish `t2' : cint (S.refA (j + 1) Λ) (fun w => ind (S.Mv (j + 1) d Λ) w * ind (fun u => ¬ S.NoLeak Λ u) w.2.1) = _` using `t2`. Rewrite using `[e2, t2', Complex.re_ofReal_mul]`. Use `u2 using 1` and compare the differences between its conclusion and the goal. Unfold `Frames.cK`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Replace the relevant objects with their definitions.
 
-Clear the denominators using the available nonvanishing facts. Take `⟨s3, t3⟩` from `tri (S.chiM j d Λ) n3`. Establish `t3' : cint (S.refA (j + 1) Λ) (fun w => ind (S.Mv (j + 1) d Λ) w * S.chiM j d Λ w.1 w.2.1) = _` using `t3`. Establish `hw : S.IsTermW d Λ (S.wit d Λ).1 (S.wit d Λ).2`. Unfold `Frames.wit`.
+Clear the denominators using the available nonvanishing facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[dif_pos hT]`. Conclude with `hT.choose_spec`. Establish `hqa : (0 : ℝ) ≤ (S.q : ℝ) ^ S.a` using `by positivity`. Break down `hqa.eq_or_lt with h0 | h0` into its components or cases. Unfold `Frames.cK`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h0, zero_mul, zero_div, zero_mul]`. Check the signs of the components of the expression. Establish `bd` using `norm_le _ _ nB _ s3 (8 / 7 * (S.q : ℝ) ^ (1 - ((k : ℤ) - 2 * r - 3)) / (S.q : ℝ) ^ S.a) fun b hb => by`. Take `⟨b1, b2, b3⟩` from `(mem_refB S _ _ _).1 hb.1`. Take `⟨al, ha1, ha2⟩` from `exists_coords S S.f S.es S.dual _ hw.2.2.1 j b.1 b1`.
+Check the signs of the components of the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨al', ha1', ha2'⟩` from `exists_coords S S.f' S.es' S.dual' _ hw.2.2.2.1 j b.2 b2`. Take `⟨u, hu1, hu2, hu3⟩` from `GlobalTheory.T.frameMove_character_ne_one L r k S j β βJ d Λ hT hF b.1 b1 b.2 b2 b3 hb.2 al al' ha1 ha1'`. Rewrite `hu3` using `[ha2, ha2']`. Establish `ey : ∀ u, S.chiM j d Λ b u = L.psi0 (S.h (-(algebraMap F E S.th⁻¹) • (S.h b.1 (S.es j) • S.fr d Λ j.succ + S.h b.2 (S.es' j) • S.fr' d Λ j.succ)) u)`. Introduce `u`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Unfold `Frames.chiM`. Use `congr 1`. Simplify using `only [Frames.h, hf_smul_l, neg_mul]`. Rewrite using `[le_div_iff₀ h0]`. Simplify using `only [ey]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `u3 _ ⟨u, ⟨hu1, hu2⟩, by rw [← ey]; exact hu3⟩`. Rewrite `bd` using `[cB', Complex.ofReal_re]`. Rewrite using `[t3']`. Establish `hc : 0 ≤ S.cK β βJ` using `by unfold Frames.cK; positivity`. Use `(mul_le_mul_of_nonneg_left bd hc).trans (le_of_eq ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Clear the denominators using the available nonvanishing facts.
 
-Unfold `Frames.cK`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem total_moves : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ (r k : ℕ) (S : Frames L r k), 4 * r + 7 ≤ k → ∀ (j : Fin r) (β βJ : ℕ) (d : S.Datum) (Λ : Submodule L.O S.V), S.IsTerm d Λ → S.InFF β (j + 1) βJ d Λ → Nice (S.refA (j + 1) Λ) (ind (S.Mv (j + 1) d Λ)) ∧ Nice (S.refA (j + 1) Λ) (ind fun w => S.Mv (j + 1) d Λ w ∧ ¬ S.NoLeak Λ w.2.1) ∧ Nice (S.refA (j + 1) Λ) (fun w => ind (S.Mv (j + 1) d Λ) w * S.chiM j d Λ w.1 w.2.1) ∧ |S.cK β βJ * (cint (S.refA (j + 1) Λ) (ind (S.Mv (j + 1) d Λ))).re - 1| ≤ 8 / 7 * (S.q : ℝ) ^ (1 - ((k : ℤ) - 2 * r - 3)) ∧ S.cK β βJ * (cint (S.refA (j + 1) Λ) (ind fun w => S.Mv (j + 1) d Λ w ∧ ¬ S.NoLeak Λ w.2.1)).re ≤ 16 / 7 * (S.q : ℝ) ^ (1 - ((k : ℤ) - 2 * r - 3)) ∧ S.cK β βJ * ‖cint (S.refA (j + 1) Λ) (fun w => ind (S.Mv (j + 1) d Λ) w * S.chiM j d Λ w.1 w.2.1)‖ ≤ 8 / 7 * (S.q : ℝ) ^ (1 - ((k : ℤ) - 2 * r - 3)) := by
   intro F _ _ _ _ _ E _ _ _ L r k S hk j β βJ d Λ hT hF

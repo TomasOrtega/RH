@@ -17,7 +17,7 @@ namespace PositivityTheory.SiegelWeilFormula.AStep
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-The claim follows from `dilEx_pf n X τ`.
+A detailed English derivation is pending.
 -/
 theorem dilEx (n : ℕ) (X : Fin n → ℝ) (τ : ℝ) : ∃ y : GR n, IsDil X τ y := dilEx_pf n X τ
 
@@ -30,7 +30,7 @@ variable (H : Hyps) {d : SD σ} (R : RD d) (L : LD d) (R' : RD L.sd) (hmn : d.m 
 include H hmn hΦ hv hE in
 
 /- English proof (translation)
-The claim follows from `exists_isHolW_iteratedDeriv H R hmn hΦ hv hE w j hj hlow`.
+A detailed English derivation is pending.
 -/
 theorem holA (w : InfinitePlace F) (j : ℕ) (hj : j ≤ p.rootMultiplicity (s0 d.m d.n)) (hlow : ∀ i < j, ∀ g, iteratedDeriv i (Ê · g) (s0 d.m d.n) = 0) :
     ∃ (pp qq : ℕ) (e : ℤ), (pp = d.m ∧ qq = 0 ∨ pp = 0 ∧ qq = d.m) ∧
@@ -40,7 +40,7 @@ theorem holA (w : InfinitePlace F) (j : ℕ) (hj : j ≤ p.rootMultiplicity (s0 
 include H in
 
 /- English proof (translation)
-The claim follows from `holCoef_pf H R L w hc hT A hAc hAi pp qq e hpq hA`.
+A detailed English derivation is pending.
 -/
 theorem holCoef (w : InfinitePlace F) {nb lam 𝓖} (hc : CoefData (σ := σ) (Y := d.Y) d.b nb lam 𝓖) {T : nF σ d.Y d.b}
     {T' : nF σ L.Y L.b} (hT : L.IsSub T T') (A : d.G → ℂ) (hAc : Continuous A) (hAi : ∀ γ ∈ rat2 σ d.Y, ∀ g, A (γ * g) = A g)
@@ -53,7 +53,7 @@ theorem holCoef (w : InfinitePlace F) {nb lam 𝓖} (hc : CoefData (σ := σ) (Y
 include H hE in
 
 /- English proof (translation)
-The claim follows from `avgHol_pf H L hE hc T hT hu x`.
+A detailed English derivation is pending.
 -/
 theorem avgHol {nb lam 𝓖} (hc : CoefData (σ := σ) (Y := d.Y) d.b nb lam 𝓖) (T : nF σ d.Y d.b) {T' : nF σ L.Y L.b}
     (hT : L.IsSub T T') {uM ν 𝓤}
@@ -66,7 +66,7 @@ theorem avgHol {nb lam 𝓖} (hc : CoefData (σ := σ) (Y := d.Y) d.b nb lam �
 include H hIH hΦ hv in
 
 /- English proof (translation)
-The claim follows from `cOneVal_pf H R L R' hIH hΦ hv hc hc' hT x`.
+A detailed English derivation is pending.
 -/
 theorem cOneVal {nb lam 𝓖} (hc : CoefData (σ := σ) (Y := d.Y) d.b nb lam 𝓖) {nb' lam' 𝓖'}
     (hc' : CoefData (σ := σ) (Y := L.Y) L.b nb' lam' 𝓖') {T : nF σ d.Y d.b} {T' : nF σ L.Y L.b} (hT : L.IsSub T T') (x : d.G) :
@@ -77,7 +77,7 @@ theorem cOneVal {nb lam 𝓖} (hc : CoefData (σ := σ) (Y := d.Y) d.b nb lam �
 include H hΦ in
 
 /- English proof (translation)
-The claim follows from `cOneLaw_pf H R L hΦ w hc' T' τ y hy z x`.
+A detailed English derivation is pending.
 -/
 theorem cOneLaw (w : InfinitePlace F) {nb' lam' 𝓖'} (hc' : CoefData (σ := σ) (Y := L.Y) L.b nb' lam' 𝓖') (T' : nF σ L.Y L.b)
     (τ : ℝ) (y : GR d.n) (hy : IsDil (Pi.single L.i₀ 1) τ y) (z : ℂ) (x : d.G) :

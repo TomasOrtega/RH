@@ -39,17 +39,15 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 open GlobalTheory.IndefiniteRowSideFullHecke.CongruenceModuleMatrices
 namespace GlobalTheory.AbsoluteIrreducibilityOfTraceSpan
 /- English proof (translation)
-Introduce `hC D h32 hS i hZ hL`. Take `⟨rep, hr⟩` from `(h32 i).1.2`. Establish `hG1` using `((h32 i).2.2 rep hr).1`. Establish `hG3` using `_root_.UpperTheory.GalS.g3' ((h32 i).2.2 rep hr).2.2.1`. Establish `hJ` using `UpperTheory.GalS.jointCondition_of_constituentCondition_split D i rep hr (hG3.1 (Or.inr hL)) (hS i)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))` to `fun x => if hx : x ∈ D.nd.Z i then Classical.choose (hZ x hx (rep x) (hr x)) else 1`. Establish `hρ : ∀ x ∈ D.nd.Z i, ∃ e, IsDecomp (t` using `D.R.t) (rep x) (ρ x) (D.nd.chi i) e := by`. Introduce `x hx`. Use `Classical.choose_spec (hZ x hx (rep x) (hr x))` as an intermediate fact. Simplify using `only [ρ, dif_pos hx]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `this`. Take `⟨π, hπ, r0, ρ0, hr0, h0, habs⟩` from `hL`. Use `⟨rep, ρ, hr, D.nd.T_local i, D.nd.T_sep i, fun x => ?_, fun h d => ?_, hJ, hG3.2, hρ, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hss` using `(hr x).2.1`. Introduce `W hW`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨W', h1, h2⟩` from `hss W fun g v hv => hW g v hv`. Conclude with `⟨W', fun g v hv => h1 g v hv, h2⟩`. Take `⟨f, hf⟩` from `hG1 h d`. Establish `: (fun x => (mat (rep x) h).charpolyRev.coeff d) = (f : D.nd.X i → D.nd.O i)`. Use function extensionality and compare the values at `fun x => (hf x).symm`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `f.2`. Establish `hpos` using `pos_of_absIrrSub _ habs haveI : Nonempty (Fin D.R.r) := ⟨⟨0, hpos⟩⟩`. Use `absIrrSub_of_span_eq_top hpos _ ?_` and prove the remaining obligations. Use `span_eq_top_of_trace_eq _ (mapRep (IsLocalRing.residue (D.nd.O i)) ρ0) (fun g => ?_) (GlobalTheory.BurnsideField.span_mat_eq_top_of_absIrrSub _ habs)` and prove the remaining obligations.
-
-Rewrite using `[mat_mapRep, mat_mapRep, Matrix.trace_eq_neg_charpoly_coeff, Matrix.trace_eq_neg_charpoly_coeff, _root_.GlobalTheory.AbsoluteIrreducibilityOfTraceSpan.residual_charpoly_eq_alt_alt hC D h32 i rep hr x π (ρ x) ρ0 (hρ x hx) r0 hr0 h0 g]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem setting_of_live_alt_alt : GlobalTheory.TwSys.Cheb → ∀ (D : D7), _root_.Formalism.MainNotions.SumRepresentations.provisionFortyOne D → GlobalTheory.SplitCoef.OSplit D → ∀ i : D.nd.Loc,
     ZDecomp D.nd i → Live D.nd i → ∃ (rep : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))

@@ -8,7 +8,7 @@ namespace GlobalTheory.WpFam
 
 open scoped UpperHalfPlane MatrixGroups Matrix ModularForm ComplexConjugate in
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[Finset.sum_range_succ, Finset.sum_range_succ, ← ih]`. Use `push_cast`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -24,11 +24,11 @@ private lemma one_sub_mul_sum_range_natCast_mul_pow_add (x : ℂ) (n : ℕ) :
 
 open scoped UpperHalfPlane MatrixGroups Matrix ModularForm ComplexConjugate in
 /- English proof (translation)
-Establish `hsub : (1 - ζ) ≠ 0` using `sub_ne_zero.mpr (Ne.symm h1)`. Establish `hgeom : ∑ i ∈ Finset.range M, ζ ^ (i + 1) = 0`. Repeatedly rewrite using `[pow_succ]`. Rewrite using `[← Finset.sum_mul, geom_sum_eq h1, hM, sub_self, zero_div, zero_mul]`. Establish `key` using `one_sub_mul_sum_range_natCast_mul_pow_add ζ M`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `key` using `[hgeom, hM, mul_one]`. Establish `hq : (M : ℂ) / (1 - ζ) = -∑ i ∈ Finset.range M, (i : ℂ) * ζ ^ i`. Rewrite using `[div_eq_iff hsub]`. Take the linear combination `key`. Rewrite using `[hq]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(IsIntegral.sum _ fun i _ => (isIntegral_natCast i).mul (hζ.pow i)).neg`.
+A detailed English derivation is pending.
 -/
 private lemma isIntegral_natCast_div_one_sub_of_isIntegral_of_ne_one (ζ : ℂ) (M : ℕ) (hζ : IsIntegral ℤ ζ)
     (hM : ζ ^ M = 1) (h1 : ζ ≠ 1) : IsIntegral ℤ ((M : ℂ) / (1 - ζ)) := by
@@ -47,25 +47,19 @@ private lemma isIntegral_natCast_div_one_sub_of_isIntegral_of_ne_one (ζ : ℂ) 
 open scoped UpperHalfPlane MatrixGroups Matrix ModularForm ComplexConjugate in
 
 /- English proof (translation)
-Introduce `N _ M x k _ hx`. Take `⟨-, -, hzero, -, hpow, -, -, hint⟩` from `_root_.GlobalTheory.WpFam.AddCharZMod.main N`. Establish `h12 : IsIntegral ℤ (12 : ℂ)` using `by simpa using isIntegral_natCast (R := ℤ) (B := ℂ) 12`. Establish `htw : ∀ (a : ℕ) (s : ℂ), IsIntegral ℤ s → IsIntegral ℤ (_root_.GlobalTheory.WpFam.cSum N a s x k)`. Introduce `a s hs`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `_root_.GlobalTheory.WpFam.cSum`. Use `IsIntegral.sum _ fun m _ => ((isIntegral_natCast m).pow a).mul ?_` and prove the remaining obligations. Use `IsIntegral.add ?_ (hs.mul ?_)` and prove the remaining obligations. Use `split_ifs`. Conclude with `hint _`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `isIntegral_zero`. Use `split_ifs`. Conclude with `hint _`. Conclude with `isIntegral_zero`. Establish `hG : IsIntegral ℤ (12 * _root_.GlobalTheory.WpFam.cG N k)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails.
 
-Unfold `_root_.GlobalTheory.WpFam.cG`. Use `split_ifs`. Rewrite using `[show (12 : ℂ) * (-1 / 12) = -1 by norm_num]`. Conclude with `isIntegral_one.neg`. Conclude with `h12.mul ((isIntegral_natCast 2).mul (isIntegral_natCast _))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[isIntegral_zero]`. Establish `hB : IsIntegral ℤ ((M : ℂ) ^ 2 * _root_.GlobalTheory.WpFam.cB N x k) ∧ IsIntegral ℤ ((M : ℂ) ^ 3 * _root_.GlobalTheory.WpFam.cD N x k)`. Unfold `_root_.GlobalTheory.WpFam.cB _root_.GlobalTheory.WpFam.cD`. Use `split_ifs with hk h0`. Distinguish the cases in `h1 : _root_.GlobalTheory.WpFam.ch N (x 1) = 1`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `[h1, isIntegral_zero]`. Establish `hζM : _root_.GlobalTheory.WpFam.ch N (x 1) ^ M = 1`. Establish `hx1` using `congr_fun hx 1`. Simplify using `only [Pi.smul_apply, nsmul_eq_mul, Pi.zero_apply] at hx1`. Rewrite using `[← hpow, hx1, hzero]`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Establish `hq` using `isIntegral_natCast_div_one_sub_of_isIntegral_of_ne_one _ M (hint (x 1)) hζM h1`. Prove the components needed by the constructor for the conclusion. Rewrite using `[show (M : ℂ) ^ 2 * (_root_.GlobalTheory.WpFam.ch N (x 1) / (1 - _root_.GlobalTheory.WpFam.ch N (x 1)) ^ 2) = _root_.GlobalTheory.WpFam.ch N (x 1) * ((M : ℂ) / (1 - _root_.GlobalTheory.WpFam.ch N (x 1))) ^ 2 by`. Rewrite using `[div_pow]`. Use the proof step `ring]`.
-
-Conclude with `(hint _).mul (hq.pow 2)`. Rewrite using `[show (M : ℂ) ^ 3 * (_root_.GlobalTheory.WpFam.ch N (x 1) * (1 + _root_.GlobalTheory.WpFam.ch N (x 1)) / (1 - _root_.GlobalTheory.WpFam.ch N (x 1)) ^ 3) = _root_.GlobalTheory.WpFam.ch N (x 1) * (1 + _root_.GlobalTheory.WpFam.ch N (x 1)) * ((M : ℂ) / (1 - _root_.GlobalTheory.WpFam …`. Conclude with `((hint _).mul (isIntegral_one.add (hint _))).mul (hq.pow 3)`. Simplify using `[isIntegral_zero]`. Conclude with `⟨((isIntegral_natCast M).pow 2).mul (htw 1 1 isIntegral_one), ((isIntegral_natCast M).pow 3).mul (htw 2 (-1) isIntegral_one.neg)⟩`.
-
-Use `⟨hB.1, hB.2, ?_, hG⟩` and prove the remaining obligations. Unfold `_root_.GlobalTheory.WpFam.cP`. Use `split_ifs`. Simplify using `[isIntegral_zero]`. Rewrite using `[show 12 * (M : ℂ) ^ 2 * (_root_.GlobalTheory.WpFam.cB N x k - _root_.GlobalTheory.WpFam.cG N k) = 12 * ((M : ℂ) ^ 2 * _root_.GlobalTheory.WpFam.cB N x k) - (M : ℂ) ^ 2 * (12 * _root_.GlobalTheory.WpFam.cG N k) by ring]`.
-
-Conclude with `(h12.mul hB.1).sub (((isIntegral_natCast M).pow 2).mul hG)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.WpFam.isIntegral_coefficients : ∀ (N : ℕ) [NeZero N] (M : ℕ) (x : Fin 2 → ZMod N) (k : ℕ),
     0 < M → M • x = 0 → IsIntegral ℤ ((M : ℂ) ^ 2 * _root_.GlobalTheory.WpFam.cB N x k) ∧

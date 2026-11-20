@@ -20,7 +20,7 @@ namespace GlobalTheory.BotClassMeas
 open GlobalTheory.BotClassDict GlobalTheory.DefiniteClassAvg GlobalTheory.BotFormula
 
 /- English proof (translation)
-Use `letI : StarRing E := starRingOfComm`. Introduce `z`. Rewrite using `[inv_one, Units.val_one, Matrix.one_mulVec]`. Conclude with `Formalism.L2.Col.mem_latS_std z`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFrame_one {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n : ℕ) :
     Formalism.L2.DIV.IsFrame (1 : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (Formalism.L2.Col.stdLat E n) := by
@@ -32,7 +32,7 @@ theorem isFrame_one {F E : Type} [Field F] [NumberField F] [Field E] [NumberFiel
 variable {D : D7}
 
 /- English proof (translation)
-Establish `h1 : finHom A (realPart A k) = 1` using `realPart_mem A k`. Establish `h2 : finHom A (finPart A k) = finHom A k` using `by conv_rhs => rw [← realPart_mul_finPart A k]`. Rewrite using `[map_mul, h1, one_mul]`. Use `⟨finPart_mem A k, rfl, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[h2, ← finAdEquiv_toAfE, ← toAfE_finStd A hG]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -47,27 +47,23 @@ theorem isFinPt_finPart (A : HSp D) (hG : A.gram = 1) (k : Formalism.L2.Theta.GA
   rfl
 
 /- English proof (translation)
-Introduce `D A hA m fd hm hfd`. Establish `hV : ∀ φ : D.host.E →+* ℂ, (A.gram.map φ).PosDef` using `fun φ => by`. Rewrite using `[hA, Matrix.map_one φ (map_zero φ) (map_one φ)]`. Conclude with `Matrix.PosDef.one`. Set `V' : HSp D` to `{ A with sig := fun _ => (A.rank, 0) }`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hS' : V'.SigOK` using `fun τ => GlobalTheory.Proof.GenusMassSignature.hasSignature_of_posDef (hV τ)`. Establish `hD' : V'.IsDefinite` using `fun τ => Or.inl rfl`. Establish `hGc : IsCompact (GinfC A : Set (Formalism.L2.Theta.GA D A))` using `Formalism.IndefR.Eqv.isCompact_GinfC (V := V') hS' hD'`. Establish `hT` using `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D A`. Establish `hLC` using `hT.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSC` using `hT.2.1`. Establish `hB` using `hT.2.2.2.1`. Establish `hG` using `hT.2.2.2.2.1`. Establish `hC` using `hT.2.2.2.2.2.2`. Set `J : Subgroup (Formalism.L2.Theta.GA D A)` to `(Formalism.L2.DIV.St (1 : GL (Fin A.rank) (Lev.EAf D))).comap (Lev.finE A)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hJ : ∀ g, g ∈ J ↔ finStd A hA g ∈ GlobalTheory.NormSum.intG D A.rank` using `mem_level_iff A hA (isFrame_one _)`. Establish `hJo : IsOpen (J : Set (Formalism.L2.Theta.GA D A))`. Use `Subgroup.isOpen_of_mem_nhds _ (g := 1) ?_` and prove the remaining obligations. Use `filter_upwards [GlobalTheory.ThetaIntegrand.eventually_princ A 1 ∅] with κ hh`. Conclude with `hh.2.1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hJc : IsCompact (J : Set (Formalism.L2.Theta.GA D A))`. Take `⟨C, hCc, hCm⟩` from `GlobalTheory.ParahoricCompact.exists_compact A 1`. Use `(hCc.mul hGc).of_isClosed_subset (Subgroup.isClosed_of_isOpen J hJo) ?_` and prove the remaining obligations. Introduce `k hk`. Use `⟨finPart A k, hCm _ (finPart_mem A k) ?_, realPart A k, realPart_mem A k, finPart_mul_realPart A k⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[finE_finPart]`. Conclude with `hk`. Establish `hJtop : m J ≠ ⊤` using `hJc.measure_lt_top.ne`. Establish `hJ0 : m J ≠ 0` using `(hJo.measure_pos m ⟨1, J.one_mem⟩).ne'`. Use `⟨((m J).toReal : ℂ), Complex.ofReal_ne_zero.2 (ENNReal.toReal_pos hJ0 hJtop).ne', ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Introduce `n hn pt hpt Φ hl hinf hlev`. Substitute `hn` using the available equality. Use `haveI : Finite (GlobalTheory.NormSum.Cls D A.rank (GlobalTheory.NormSum.intG D A.rank)) := (GlobalTheory.NormSum.cls_finite_card_le D A.rank).1`. Use `haveI := Fintype.ofFinite (GlobalTheory.NormSum.Cls D A.rank (GlobalTheory.NormSum.intG D A.rank))`. Set `z : GlobalTheory.NormSum.Cls D A.rank (GlobalTheory.NormSum.intG D A.rank) → Formalism.L2.Theta.GA D A` to `fun x => pt x.out`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Take `⟨hu, hcard⟩` from `transport (finStd A hA) (GQ A) J (GlobalTheory.NormSum.ratG D A.rank) (GlobalTheory.NormSum.intG D A.rank) hJ (fun γ hγ => finStd_mem_ratG A hA hγ) (fun δ hδ => exists_rat_lift A hA hδ) (fun γ hγ γ' hγ' h => finStd_injOn A hA hγ hγ' h) z (fun x => finStd_of_isFinPt A hA (hpt _))`. Establish `hfin : ∀ l, {γ : Formalism.L2.Theta.GA D A | γ ∈ GQ A ∧ (z l)⁻¹ * γ * z l ∈ J}.Finite` using `fun l => by`. Establish `him : {γ : Formalism.L2.Theta.GA D A | γ ∈ GQ A ∧ (z l)⁻¹ * γ * z l ∈ J} = Subtype.val '' {γ : GQ A | (z l)⁻¹ * (γ : Formalism.L2.Theta.GA D A) * z l ∈ J}`. Use extensionality with `γ`. Simplify using `only [Set.mem_setOf_eq, Set.mem_image, Subtype.exists, exists_and_right, exists_eq_right]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨fun h => ⟨h.1, h.2⟩, fun ⟨h, h'⟩ => ⟨h, h'⟩⟩`. Rewrite using `[him]`. Conclude with `(GlobalTheory.InnerClassSum.finite_stab_of_measure m (GQ A) J hfd hJ0 hJtop (z l)).image _`. Establish `hr : ∀ k ∈ J, ∀ h, Φ (h * k) = Φ h` using `fun k hk h => by`. Rewrite using `[← finPart_mul_realPart A k, ← mul_assoc, hinf _ (realPart_mem A k), hlev _ _ ((hJ k).1 hk) (isFinPt_finPart A hA k)]`.
-
-Take `⟨-, -, heq⟩` from `GlobalTheory.Ker.integral_fundamentalDomain_eq_sum_doubleCoset (Formalism.L2.Theta.GA D A) m (GQ A) J fd hfd hJo hJtop _ z hu hfin Φ hl hr`. Rewrite using `[heq, finsum_eq_sum_of_fintype]`. Use `congr 1`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[hcard x]`.
-
-Both sides reduce to the same expression.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem integral_eq_vol_mul_classSum : ∀ {D : D7} (A : HSp D), A.gram = 1 → ∀ (m : Measure (Formalism.L2.Theta.GA D A)) (fd : Set (Formalism.L2.Theta.GA D A)),
     m.IsHaarMeasure → IsFundamentalDomain (GQ A) fd m →

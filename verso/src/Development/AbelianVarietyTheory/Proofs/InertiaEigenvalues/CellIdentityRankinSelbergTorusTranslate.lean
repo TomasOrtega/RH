@@ -19,7 +19,7 @@ namespace GlobalTheory.CellPw
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Establish `h : GeneralLinearGroup.map (pInf E) (GlobalTheory.CellDec.tl n ϖ l * g) = GeneralLinearGroup.map (pInf E) g`. Rewrite using `[map_mul, GlobalTheory.CellDec.tl, pInf_finGL, one_mul]`. Use function extensionality and compare the values at `i`. Conclude with `congrArg (fun M : GL (Fin n) (Cinf E) => M.val r i) h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem rowInf_tl [IsTotallyComplex E] {n : ℕ} (ϖ : ∀ w : HeightOneSpectrum (𝓞 E), (w.adicCompletion E)ˣ)
     (l : HeightOneSpectrum (𝓞 E) →₀ (Fin n → ℤ)) (g : GA E n) (r : Fin n) :
@@ -30,7 +30,7 @@ theorem rowInf_tl [IsTotallyComplex E] {n : ℕ} (ϖ : ∀ w : HeightOneSpectrum
   exact congrArg (fun M : GL (Fin n) (Cinf E) => M.val r i) h
 
 /- English proof (translation)
-Simplify using `[GlobalTheory.RSCell.bInt, GlobalTheory.RSTheta.rsPsi, GlobalTheory.ThetaPoisson.thetaFn, Set.indicator_of_notMem hm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem bInt_of_not_mem [IsTotallyComplex E] {a : ℕ} (ℓ : Fin a) (F : GA E a → ℂ) (Φ : (Fin a → Cinf E) → ℂ)
     (J : (FractionalIdeal (𝓞 E)⁰ E)ˣ) (η : Fin a → Af E) (x : ℝ) (h : GA E a)
@@ -39,7 +39,7 @@ theorem bInt_of_not_mem [IsTotallyComplex E] {a : ℕ} (ℓ : Fin a) (F : GA E a
   simp [GlobalTheory.RSCell.bInt, GlobalTheory.RSTheta.rsPsi, GlobalTheory.ThetaPoisson.thetaFn, Set.indicator_of_notMem hm]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.RSCell.bInt, GlobalTheory.RSTheta.rsPsi, GlobalTheory.ThetaPoisson.thetaFn, GlobalTheory.RSTheta.rsInf, Set.indicator_of_mem hm, ← ofReal_norm_eq_enorm, ← ENNReal.ofReal_mul (norm_nonneg _)]`. Use `congr 1`. Simplify using `only [Pi.one_apply, mul_one, norm_mul, Complex.norm_conj]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem bInt_of_mem [IsTotallyComplex E] {a : ℕ} (ℓ : Fin a) (F : GA E a → ℂ) (Φ : (Fin a → Cinf E) → ℂ)
     (J : (FractionalIdeal (𝓞 E)⁰ E)ˣ) (η : Fin a → Af E) (x : ℝ) (h : GA E a)
@@ -54,7 +54,7 @@ theorem bInt_of_mem [IsTotallyComplex E] {a : ℕ} (ℓ : Fin a) (F : GA E a →
   ring
 
 /- English proof (translation)
-Use `Finsupp.prod_add_index' (f := a) (g := b) (h := fun v y => q v ^ f y) (fun v => by simp) (fun v y₁ y₂ => by simp [zpow_add₀ (hq v)])` as an intermediate fact. Simplify `this` using `[Finsupp.prod]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem prod_supp_add {n : ℕ} (q : HeightOneSpectrum (𝓞 E) → ℝ) (hq : ∀ v, q v ≠ 0) (f : (Fin n → ℤ) →+ ℤ)
     (a b : HeightOneSpectrum (𝓞 E) →₀ (Fin n → ℤ)) :
@@ -80,37 +80,33 @@ def negSumHom (n : ℕ) : (Fin n → ℤ) →+ ℤ where
 omit [Field E] [NumberField E] in
 
 /- English proof (translation)
-Introduce `E _ _ _ m T ϖ hϖ α F l₀ U Φ J hl₀ hU hK hN hprof hΦ hJ horb x g hg l`. Establish `hνT : ∀ v ∈ T, (l.1 - l₀.1) v = 0` using `fun v hv => by simp [l.2 v hv, l₀.2 v hv]`. Set `ν : GlobalTheory.CellDec.abelian₂ E (m + 1) T` to `⟨l.1 - l₀.1, hνT⟩`. Establish `hνl : l₀.1 + ν.1 = l.1` using `by simp [ν]`. Establish `hνw : ∀ w, ν.1 w (Fin.last m) = l.1 w (Fin.last m)` using `fun w => by simp [ν, hl₀ w]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hneg : ∃ w, l.1 w (Fin.last m) < 0`. Take `⟨w, hw⟩` from `hneg`. Establish `hwT : w ∉ T` using `fun h => by simp [l.2 w h] at hw`. Rewrite using `[bInt_of_not_mem _ _ _ _ _ _ _ (GlobalTheory.T.lastRow_sub_single_not_mem_lattice_of_neg_exponent E m T ϖ hϖ J hJ g hg l w hw)]`. Establish `h2 : GlobalTheory.RSCell.cellProd T α x (l.1 - l₀.1) = 0`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Finset.prod_eq_zero (i := w) ?_ ?_` and prove the remaining obligations. Rewrite using `[Finsupp.mem_support_iff]`. Introduce `h`. Use `congrFun h (Fin.last m)` as an intermediate fact. Simplify using `[hl₀ w] at this`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[dif_neg hwT]`. Conclude with `GlobalTheory.RSCell.locFac_of_neg _ _ _ (i := Fin.last m) (by simp [hl₀ w]; exact hw)`. Rewrite using `[h2]`. Simplify using the standard rewrite rules.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `push_neg at hneg`. Establish `hl₀n : ∀ w, 0 ≤ l₀.1 w (Fin.last m)` using `fun w => (hl₀ w).ge`. Establish `hposl` using `GlobalTheory.T.lastRow_diagonal_mul_mem_lattice_iff E m T ϖ hϖ J hJ g hg l hneg`. Establish `hposl₀` using `GlobalTheory.T.lastRow_diagonal_mul_mem_lattice_iff E m T ϖ hϖ J hJ g hg l₀ hl₀n`. Distinguish the cases in `hI : (fun i => pFin E (g.val (Fin.last m) i)) - Pi.single (Fin.last m) 1 ∈ GlobalTheory.ThetaPoisson.latt (m + 1) J`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `swap`. Rewrite using `[bInt_of_not_mem _ _ _ _ _ _ _ (fun h => hI (hposl.1 h)), bInt_of_not_mem _ _ _ _ _ _ _ (fun h => hI (hposl₀.1 h))]`. Simplify using the standard rewrite rules. Rewrite using `[bInt_of_mem _ _ _ _ _ _ _ (hposl.2 hI), bInt_of_mem _ _ _ _ _ _ _ (hposl₀.2 hI), rowInf_tl, rowInf_tl]`. Use `set u : Fin (m + 1) → Cinf E := fun i => pInf E (g.val (Fin.last m) i) with hu`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hΦu : Φ u = 0`. Simplify using `[hΦu]`. Establish `hunit : IsUnit (pInf E (g.val (Fin.last m) (Fin.last m)))` using `GlobalTheory.RSTheta.isUnit_of_mem_rowSet (hΦ (subset_tsupport _ hΦu))`. Take `⟨p, hp, hpl⟩` from `GlobalTheory.T.exists_mirabolic_whittaker_reduction_cell E m T ϖ F U J hU hK hN horb g hg hunit hI`. Rewrite using `[hpl l, hpl l₀, GlobalTheory.T.ideleModule_det_diagonalUniformiser_mul E (m + 1) ϖ hϖ l.1 g, GlobalTheory.T.ideleModule_det_diagonalUniformiser_mul E (m + 1) ϖ hϖ l₀.1 g]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpr` using `hprof p hp ν (fun w => by rw [hνw]; exact hneg w)`. Rewrite `hpr` using `[hνl]`. Rewrite using `[hpr]`. Establish `hq : ∀ v : HeightOneSpectrum (𝓞 E), (qV E v : ℝ) ≠ 0` using `fun v => by`. Rewrite using `[qV, Nat.cast_ne_zero, Ne, Ideal.absNorm_eq_zero_iff]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `v.ne_bot`. Establish `hqpos : ∀ v : HeightOneSpectrum (𝓞 E), 0 < (qV E v : ℝ)` using `fun v => lt_of_le_of_ne (Nat.cast_nonneg _) (hq v).symm`. Establish `hcell : GlobalTheory.RSCell.cellProd T α x (l.1 - l₀.1) = ENNReal.ofReal (∏ w ∈ ν.1.support, ((qV E w : ℝ) ^ GlobalTheory.CellDec.wtS (m + 1) (ν.1 w) * (qV E w : ℝ) ^ (-((∑ i, (ν.1 w i : ℝ)) * x)) * ‖(if h : w ∈ T then 1 else GlobalTheory.RSCell.sphZ (Ideal.absNorm w.asIdeal) (α …`. Rewrite using `[ENNReal.ofReal_prod_of_nonneg (fun w _ => by positivity)]`. Use `Finset.prod_congr rfl fun w hw => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hwT : w ∉ T` using `fun h => (Finsupp.mem_support_iff.1 hw) (hνT w h)`. Rewrite using `[dif_neg hwT, dif_neg hwT, ← GlobalTheory.T.spherical_local_factor_norm_sq (Ideal.absNorm w.asIdeal) (Nat.pos_of_ne_zero (by`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]; exact w.ne_bot)) m (α ⟨w, hwT⟩) x (ν.1 w) (by rw [hνw]; exact hneg w),`. Use the proof step `ENNReal.ofReal_mul (by positivity), ENNReal.ofReal_mul (by positivity), ENNReal.ofReal_pow (norm_nonneg _),`. Use the proof step `ofReal_norm_eq_enorm]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hd0 : ∀ k : HeightOneSpectrum (𝓞 E) →₀ (Fin (m + 1) → ℤ), 0 ≤ GlobalTheory.CellDec.dinv (m + 1) k` using `fun k => Finset.prod_nonneg fun v _ => (zpow_pos (hqpos v) _).le`. Rewrite using `[hcell, ← ENNReal.ofReal_mul (hd0 _), ← ENNReal.ofReal_mul (hd0 _), ← ENNReal.ofReal_mul (mul_nonneg (hd0 _) <| mul_nonneg (mul_nonneg (by positivity) (norm_nonneg _)) (Real.rpow_nonneg (mul_nonneg (Finset.prod_nonneg fun v _ => (inv_pos.2 (zpow_pos (hqpos v) _)).le) ((ideleModul …`. Use `congr 1`. Establish `hd : GlobalTheory.CellDec.dinv (m + 1) l.1 = GlobalTheory.CellDec.dinv (m + 1) l₀.1 * ∏ w ∈ ν.1.support, (qV E w : ℝ) ^ GlobalTheory.CellDec.wtS (m + 1) (ν.1 w)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[← hνl]`. Conclude with `prod_supp_add (fun v => (qV E v : ℝ)) hq (wtSHom (m + 1)) l₀.1 ν.1`. Establish `hQ : ∀ k : HeightOneSpectrum (𝓞 E) →₀ (Fin (m + 1) → ℤ), ∏ v ∈ k.support, ((qV E v : ℝ) ^ ∑ i, k v i)⁻¹ = ∏ v ∈ k.support, (qV E v : ℝ) ^ negSumHom (m + 1) (k v)`. Introduce `k`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← _root_.zpow_neg]`. Both sides reduce to the same expression. Establish `hQl : ∏ v ∈ l.1.support, ((qV E v : ℝ) ^ ∑ i, l.1 v i)⁻¹ = (∏ v ∈ l₀.1.support, ((qV E v : ℝ) ^ ∑ i, l₀.1 v i)⁻¹) * ∏ v ∈ ν.1.support, ((qV E v : ℝ) ^ ∑ i, ν.1 v i)⁻¹`. Rewrite using `[hQ, hQ, hQ, ← hνl]`. Conclude with `prod_supp_add (fun v => (qV E v : ℝ)) hq (negSumHom (m + 1)) l₀.1 ν.1`.
+Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQν : (∏ v ∈ ν.1.support, ((qV E v : ℝ) ^ ∑ i, ν.1 v i)⁻¹) ^ x = ∏ v ∈ ν.1.support, (qV E v : ℝ) ^ (-((∑ i, (ν.1 v i : ℝ)) * x))`. Rewrite using `[← Real.finset_prod_rpow _ _ (fun v _ => (inv_pos.2 (zpow_pos (hqpos v) _)).le)]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[← Real.rpow_intCast, ← Real.rpow_neg (hqpos v).le, ← Real.rpow_mul (hqpos v).le]`. Use `push_cast`.
-
-Put the polynomial expressions in normal form. Establish `hD` using `((ideleModule E (GeneralLinearGroup.det g)).2 : (0 : ℝ) < _)`. Establish `hQ₀ : 0 ≤ ∏ v ∈ l₀.1.support, ((qV E v : ℝ) ^ ∑ i, l₀.1 v i)⁻¹` using `Finset.prod_nonneg fun v _ => (inv_pos.2 (zpow_pos (hqpos v) _)).le`. Establish `hQν0 : 0 ≤ ∏ v ∈ ν.1.support, ((qV E v : ℝ) ^ ∑ i, ν.1 v i)⁻¹` using `Finset.prod_nonneg fun v _ => (inv_pos.2 (zpow_pos (hqpos v) _)).le`. Rewrite using `[hd, hQl, Real.mul_rpow (mul_nonneg hQ₀ hQν0) hD.le, Real.mul_rpow hQ₀ hQν0, hQν, Real.mul_rpow hQ₀ hD.le, norm_mul, norm_prod, mul_pow, ← Finset.prod_pow, Finset.prod_mul_distrib, Finset.prod_mul_distrib]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem cell_identity : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (m : ℕ) (T : Finset (HeightOneSpectrum (𝓞 E)))
     (ϖ : ∀ w : HeightOneSpectrum (𝓞 E), (w.adicCompletion E)ˣ), (∀ w, IsUnifV E w (ϖ w : w.adicCompletion E)) →

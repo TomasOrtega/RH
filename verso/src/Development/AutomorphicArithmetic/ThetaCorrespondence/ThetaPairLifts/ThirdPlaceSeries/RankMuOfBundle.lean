@@ -15,13 +15,13 @@ open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.EX GlobalTheory.E
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Fam.MemberCount
 /- English proof (translation)
-The claim follows from `rankMu_of_cols D O.ex.lev b.R.T.toTiedDataS.cols O.ex.duStar_def u`.
+A detailed English derivation is pending.
 -/
 theorem rankMu_of_bundle_alt {D : D7} {O : Obj D} {c : ℝ} (b : _root_.GlobalTheory.Fc.BundleCondition D O c) (u : D.what₂.Word) :
     GlobalTheory.Core.Rk.RankMu D u :=
   rankMu_of_cols D O.ex.lev b.R.T.toTiedDataS.cols O.ex.duStar_def u
 /- English proof (translation)
-Introduce `_ _` and use `RowE.of_all fun _ _ _ _ b _ _ _ u => _root_.GlobalTheory.Fam.MemberCount.rankMu_of_bundle_alt b u`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem rankMu_of_good_linked : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (p : _root_.GlobalTheory.Mem.Top.Bl.Parameters hL),
     GlobalTheory.Fc.RowE (Bl.IsGoodE p.s) (_root_.GlobalTheory.Mem.Top.Bl.BundleLinkage p) (fun _ D _ _ _ => ∀ u, GlobalTheory.Core.Rk.RankMu D u) :=

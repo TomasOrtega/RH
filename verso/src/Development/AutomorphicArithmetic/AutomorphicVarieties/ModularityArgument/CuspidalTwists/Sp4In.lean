@@ -40,7 +40,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Ferr
 namespace UpperTheory.V.Cu
 
 /- English proof (translation)
-Introduce `_ _ h ok f` and use `⟨ok, Or.inr ⟨h, f.five, f.sb, f.psi⟩⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem hFit : HFit := fun _ _ h ok f => ⟨ok, Or.inr ⟨h, f.five, f.sb, f.psi⟩⟩
 

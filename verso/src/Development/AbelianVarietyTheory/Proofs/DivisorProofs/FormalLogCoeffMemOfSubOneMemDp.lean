@@ -13,7 +13,7 @@ open MvPowerSeries GlobalTheory GlobalTheory.Katz GlobalTheory.QLog GlobalTheory
 namespace GlobalTheory.DPLog
 
 /- English proof (translation)
-Distinguish the cases in `h : (Function.support f).Finite`. Rewrite using `[finsum_eq_sum f h]`. Conclude with `S.sum_mem fun i _ => hf i`. Rewrite using `[finsum_of_infinite_support h]`. Conclude with `S.zero_mem`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finsum_mem_addSubmonoid {M ι : Type*} [AddCommMonoid M] (S : AddSubmonoid M)
     {f : ι → M} (hf : ∀ i, f i ∈ S) : ∑ᶠ i, f i ∈ S := by
@@ -23,13 +23,13 @@ theorem finsum_mem_addSubmonoid {M ι : Type*} [AddCommMonoid M] (S : AddSubmono
   · rw [finsum_of_infinite_support h]; exact S.zero_mem
 
 /- English proof (translation)
-Introduce `p _ B O Q _ _ _ _ _ θ hF J hJ σ h h1 hJh`. Set `S : AddSubmonoid Q` to `J.toAddSubmonoid.map (algebraMap B Q).toAddMonoidHom`. Establish `hS : ∀ q, q ∈ S ↔ ∃ b ∈ J, q = algebraMap B Q b` using `fun q => AddSubmonoid.mem_map.trans ⟨fun ⟨b, hb, e⟩ => ⟨b, hb, e.symm⟩, fun ⟨b, hb, e⟩ => ⟨b, hb, e.symm⟩⟩`. Establish `hww : map (algebraMap B Q) h - 1 = map (algebraMap B Q) (h - 1)`. Rewrite using `[map_sub, map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsub : PowerSeries.HasSubst (map (algebraMap B Q) h - 1)` using `PowerSeries.HasSubst.of_constantCoeff_zero (by simp [h1])`. Introduce `α`. Use `(hS _).1 ?_` and prove the remaining obligations. Rewrite using `[formalLog, PowerSeries.coeff_subst hsub]`. Use `finsum_mem_addSubmonoid S fun d => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Break down `Nat.eq_zero_or_pos d with rfl | hd` into its components or cases. Simplify using `[S.zero_mem]`. Take `⟨y, hy, hwy⟩` from `DPSeries.pow_eq_factorial_mul p B O Q θ hF J hJ σ (h - 1) hJh d hd`. Take `⟨k, rfl⟩ : ∃ k, d = k + 1` from `⟨d - 1, by omega⟩`. Use `(hS _).2 ⟨((-1 : B) ^ (k + 2) * (k.factorial : B)) * coeff α y, J.mul_mem_left _ (hy α), ?_⟩` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hww, ← map_pow, hwy, coeff_map, ← map_natCast (C (σ := σ) (R := B)), coeff_C_mul, PowerSeries.coeff_log, if_neg (Nat.succ_ne_zero k), smul_eq_mul]`. Establish `e : algebraMap ℚ Q ((k + 1 : ℕ) : ℚ)⁻¹ * ((k + 1 : ℕ) : Q) = 1`. Rewrite using `[← map_natCast (algebraMap ℚ Q), ← map_mul, inv_mul_cancel₀ (by positivity), map_one]`. Rewrite using `[div_eq_mul_inv, map_mul, map_mul, map_mul, map_mul, map_pow, map_pow, map_neg, map_neg, map_one, map_one, map_natCast, map_natCast, Nat.factorial_succ, Nat.cast_mul]`. Take the linear combination `((-1 : Q) ^ (k + 2) * (k.factorial : Q) * algebraMap B Q (coeff α y)) * e`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem formalLog_in_of_sub_one_mem : ∀ (p : ℕ) [Fact p.Prime] (B O Q : Type) [CommRing B]
     [CommRing Q] [CommRing O] [Algebra B Q] [Algebra ℚ Q] (θ : B →+* O), IsFrame p Q θ →

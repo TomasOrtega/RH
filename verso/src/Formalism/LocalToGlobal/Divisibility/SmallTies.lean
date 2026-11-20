@@ -24,7 +24,7 @@ theorem lw_plEq (w : D.what₂.places.Pl) : SizeData₂.lwP w = Formalism.Divisi
   rfl
 
 /- English proof (translation)
-Rewrite using `[← lf_eW_eq_ramw, D.ram_eq w, Int.cast_natCast]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ramw_plEq (w : D.what₂.places.Pl) : ((D.what₂.places.ramIdx w : ℕ) : ℝ) = ((ramw (D.plEq w) : ℤ) : ℝ) := by
   rw [← lf_eW_eq_ramw, D.ram_eq w, Int.cast_natCast]
@@ -40,13 +40,13 @@ def FTie (L : SizeData₂ D) (N : IndefNum Bs) (eJ : Bs.J ≃ Fin D.R.m) : Prop 
   ∀ y j, N.F0 y j = L.F ((eJ j).1 + 1) (D.plEq.symm y)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem fTie_num_iff (L : SizeData₂ D) (Z : IndefScale Bs) (C CH : ℝ) (eJ : Bs.J ≃ Fin D.R.m) :
     FTie L (Z.num C CH) eJ ↔ ∀ y j, Z.F0 y j = L.F ((eJ j).1 + 1) (D.plEq.symm y) := Iff.rfl
 
 /- English proof (translation)
-Rewrite using `[Equiv.sum_comp eJ (fun i : Fin D.R.m => f (i.1 + 1)), Fin.sum_univ_eq_sum_range (fun i => f (i + 1)), Finset.range_eq_Ico, Finset.sum_Ico_add']`. Unfold `SizeData₂.lifts`. Apply `Finset.sum_congr _ (fun _ _ => rfl)` to reduce the goal to its premises. Use extensionality with `x`. Simplify using `only [Finset.mem_Icc, Finset.mem_Ico]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -61,15 +61,15 @@ theorem sum_lifts_eJ (eJ : Bs.J ≃ Fin D.R.m) (f : ℕ → ℝ) :
   omega
 
 /- English proof (translation)
-Establish `hF' : ∀ y j, N.F0 y j = L.F ((eJ j).1 + 1) (D.plEq.symm y)` using `hF`. Unfold `SizeData₂.Fo`. Rewrite using `[sum_lifts_eJ eJ, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `h1 : ∑ y ∈ S0.Tw, lw y * ((ramw y : ℝ) * N.F0 y j) = ∑ y ∈ S0.Tw ∪ L.supp.map D.plEq.toEmbedding, lw y * ((ramw y : ℝ) * N.F0 y j)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Apply `Finset.sum_subset Finset.subset_union_left` to reduce the goal to its premises. Introduce `y _ hy`. Rewrite using `[(hU y hy j).2, mul_zero, mul_zero]`. Establish `h2 : ∑ y ∈ L.supp.map D.plEq.toEmbedding, 2 * (lw y * ((ramw y : ℝ) * N.F0 y j)) = ∑ y ∈ S0.Tw ∪ L.supp.map D.plEq.toEmbedding, 2 * (lw y * ((ramw y : ℝ) * N.F0 y j))`. Apply `Finset.sum_subset Finset.subset_union_right` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `y _ hy'`. Establish `hw : D.plEq.symm y ∉ L.supp`. Introduce `hw`. Apply `hy'` to reduce the goal to its premises. Rewrite using `[Finset.mem_map]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨_, hw, by simp⟩`. Rewrite using `[hF', L.F_supp _ _ hw, mul_zero, mul_zero, mul_zero]`. Establish `h3 : ∑ w ∈ L.supp, SizeData₂.sz w (L.F ((eJ j).1 + 1) w) = ∑ y ∈ L.supp.map D.plEq.toEmbedding, 2 * (lw y * ((ramw y : ℝ) * N.F0 y j))`. Rewrite using `[Finset.sum_map]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Equiv.coe_toEmbedding]`. Rewrite using `[hF', Equiv.symm_apply_apply, SizeData₂.sz, lw_plEq, ramw_plEq]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, h3, h2, Finset.mul_sum]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem two_sumTw_eq_Fo (L : SizeData₂ D) (S0 : IndefSide Df0 N) (hU : S0.toIndefData.Untwisted N) (eJ : Bs.J ≃ Fin D.R.m)
     (hF : FTie L N eJ) :
@@ -104,7 +104,7 @@ theorem two_sumTw_eq_Fo (L : SizeData₂ D) (S0 : IndefSide Df0 N) (hU : S0.toIn
   rw [h1, h3, h2, Finset.mul_sum]
 
 /- English proof (translation)
-Unfold `FoOf`. Conclude with `two_sumTw_eq_Fo L P.base P.extra.untw eJ hF`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem two_FoOf_eq_Fo (L : SizeData₂ D) (P : IndefCore Df0 Df1 Dc Sp N) (eJ : Bs.J ≃ Fin D.R.m) (hF : FTie L N eJ) :
     2 * FoOf P = L.Fo := by
@@ -112,7 +112,7 @@ theorem two_FoOf_eq_Fo (L : SizeData₂ D) (P : IndefCore Df0 Df1 Dc Sp N) (eJ :
   exact two_sumTw_eq_Fo L P.base P.extra.untw eJ hF
 
 /- English proof (translation)
-Unfold `FoOfR`. Conclude with `two_sumTw_eq_Fo L P.base P.extra.untw eJ hF`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem two_FoOfR_eq_Fo (L : SizeData₂ D) (P : IndefCoreR Df0 Df1 Dc Sp N) (eJ : Bs.J ≃ Fin D.R.m) (hF : FTie L N eJ) :
     2 * FoOfR P = L.Fo := by
@@ -120,7 +120,7 @@ theorem two_FoOfR_eq_Fo (L : SizeData₂ D) (P : IndefCoreR Df0 Df1 Dc Sp N) (eJ
   exact two_sumTw_eq_Fo L P.base P.extra.untw eJ hF
 
 /- English proof (translation)
-The claim follows from `two_FoOf_eq_Fo L Pk.core eJ hF`.
+A detailed English derivation is pending.
 -/
 theorem foTie_pkg {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {m : ℕ} (L : SizeData₂ D) (A : FamIn D.what₂.LL G Pl0 T m)
     (P0 : Subgroup G) (ψ0 : P0 →* D.what₂.LLˣ) (P1 : Subgroup G) (ψ1 : P1 →* D.what₂.LLˣ)
@@ -130,7 +130,7 @@ theorem foTie_pkg {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {m : ℕ} (L :
     (hF : FTie L ((Zsc Pk.Zs).num Cp CHp) eJ) : 2 * FoOf Pk.core = L.Fo := two_FoOf_eq_Fo L Pk.core eJ hF
 
 /- English proof (translation)
-The claim follows from `two_FoOfR_eq_Fo L Pk.core eJ hF`.
+A detailed English derivation is pending.
 -/
 theorem foTie_pkgR {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {m : ℕ} (L : SizeData₂ D) (A : FamIn D.what₂.LL G Pl0 T m)
     (P0 : Subgroup G) (ψ0 : P0 →* D.what₂.LLˣ) (P1 : Subgroup G) (ψ1 : P1 →* D.what₂.LLˣ)
@@ -146,7 +146,7 @@ section Sg
 variable {K : Type} [Field K] [NumberField K] [StarRing K] {I : Type}
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.GlobalTheoryTheory.FamRows.flD_support_finite C u`.
+A detailed English derivation is pending.
 -/
 theorem sg_fin_sgD (C : Formalism.L2.Col.ColObj K I) (u : I) :
     (Function.support (shiftZ (Formalism.L2.GlobalTheoryTheory.FamRows.sgD C u))).Finite := Formalism.L2.GlobalTheoryTheory.FamRows.flD_support_finite C u
@@ -158,7 +158,7 @@ section Mu1
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {m : ℕ}
 
 /- English proof (translation)
-The claim follows from `column_tuple_of_level_link Pk.core.extra.level`.
+A detailed English derivation is pending.
 -/
 theorem package_column_tuple_eq (A : FamIn D.what₂.LL G Pl0 T m)
     (P0 : Subgroup G) (ψ0 : P0 →* D.what₂.LLˣ) (P1 : Subgroup G) (ψ1 : P1 →* D.what₂.LLˣ)
@@ -168,7 +168,7 @@ theorem package_column_tuple_eq (A : FamIn D.what₂.LL G Pl0 T m)
     Pk.core.cols.toIndefData.μ = Pk.core.base.toIndefData.μ := column_tuple_of_level_link Pk.core.extra.level
 
 /- English proof (translation)
-The claim follows from `column_tuple_of_level_link Pk.core.extra.level`.
+A detailed English derivation is pending.
 -/
 theorem package_column_tuple_eq_of_conventions (A : FamIn D.what₂.LL G Pl0 T m)
     (P0 : Subgroup G) (ψ0 : P0 →* D.what₂.LLˣ) (P1 : Subgroup G) (ψ1 : P1 →* D.what₂.LLˣ)

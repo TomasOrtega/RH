@@ -18,13 +18,13 @@ open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalS
 open scoped TensorProduct InnerProductSpace ComplexConjugate Pointwise
 
 /- English proof (translation)
-Introduce `K _ _ n ν _ β₁ β₂ h₁`. Establish `hc : HasCompactSupport (fun g : archGroup K n => β₁ g⁻¹)` using `β₁.hasCompactSupport.comp_homeomorph (Homeomorph.inv _)`. Establish `hΘ : Continuous (fun c : archGroup K n => β₂ c⁻¹)` using `(map_continuous β₂).comp continuous_inv`. Take `⟨hF, hD⟩` from `UpperTheory.ConvolutionTheory.Tf.derivInt K n ν (fun g => β₁ g⁻¹) h₁ hc (fun c => β₂ c⁻¹) hΘ`. Establish `e : (fun x : archGroup K n => ∫ a, (fun g : archGroup K n => β₁ g⁻¹) (a⁻¹ * x) * (fun c : archGroup K n => β₂ c⁻¹) a ∂ν) = fun g => conv ν β₁ β₂ g⁻¹`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `g`. Rewrite using `[GroundTheory.Automorphic.conv_apply, ← integral_mul_left_eq_self (μ := ν) (fun a => β₁ a * β₂ (a⁻¹ * g⁻¹)) g⁻¹]`. Use `congr 1`. Use function extensionality and compare the values at `c`. Simplify using `[mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `⟨e ▸ hF, fun u x => ?_⟩` and prove the remaining obligations. Use `Eq.trans (congrArg (fun f => (((isExpLieAlgebra K n).rightUAction u f : (isExpLieAlgebra K n).smoothFuns (F := ℂ)) : archGroup K n → ℂ) x⁻¹) (Subtype.ext e.symm : _ = (⟨_, hF⟩ : (isExpLieAlgebra K n).smoothFuns (F := ℂ)))) ?_` and prove the remaining obligations. Rewrite using `[hD u x⁻¹, ← integral_mul_left_eq_self (μ := ν) (fun a => ((isExpLieAlgebra K n).rightUAction u ⟨fun g => β₁ g⁻¹, h₁⟩ : archGroup K n → ℂ) a⁻¹ * β₂ (a⁻¹ * x)) x]`. Use `congr 1`. Use function extensionality and compare the values at `c`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.ConvolutionTheory.Tf.convL :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) (ν : Measure (archGroup K n)) [ν.IsHaarMeasure] (β₁ β₂ : CompactlySupportedContinuousMap (archGroup K n) ℂ)

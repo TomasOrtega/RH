@@ -8,21 +8,19 @@ open Formalism.BasicNotions.Loc
 namespace UpperTheory.Gal.ClosedPhiFromClosedTrace
 
 /- English proof (translation)
-Rewrite `hLI`, the goal using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Establish `key : ∑ j, (g j + g j0 * a j - if j = j0 then g j0 else 0) • e j = 0`. Rewrite using `[← hg]`. Establish `h1 : ∀ j, (g j + g j0 * a j - if j = j0 then g j0 else 0) • e j = g j • e j + (g j0 : Om l) * ((a j : Om l) * e j) - (if j = j0 then (g j0 : Om l) * e j0 else 0)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `j`. Distinguish the cases in `h : j = j0`. Substitute `h` using the available equality. Rewrite using `[if_pos rfl, if_pos rfl]`. Use `show ((g j + g j * a j - g j : F) : Om l) * e j = (g j : Om l) * e j + _ - _`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg h, if_neg h] show ((g j + g j0 * a j - 0 : F) : Om l) * e j = (g j : Om l) * e j + _ - _`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the hypotheses and the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `h2 : ∀ j, g j • Function.update e j0 (∑ i, (a i : Om l) * e i) j = g j • e j + (if j = j0 then (g j0 : Om l) * (∑ i, (a i : Om l) * e i) - (g j0 : Om l) * e j0 else 0)`. Introduce `j`. Distinguish the cases in `h : j = j0`. Substitute `h` using the available equality. Rewrite using `[Function.update_self, if_pos rfl]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `show (g j : Om l) * _ = (g j : Om l) * e j + _`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Function.update_of_ne h, if_neg h, add_zero]`. Rewrite using `[Finset.sum_congr rfl (fun j _ => h1 j), Finset.sum_congr rfl (fun j _ => h2 j)]`. Simplify using `only [Finset.sum_add_distrib, Finset.sum_sub_distrib, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true, ← Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hz` using `hLI _ key`. Establish `h0 : g j0 = 0`. Establish `h3` using `hz j0`. Rewrite `h3` using `[if_pos rfl]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `h4 : g j0 * a j0 = 0` using `by linear_combination h3`. Break down `mul_eq_zero.1 h4 with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd h ha`. Introduce `j`.
-
-Establish `h5` using `hz j`. Rewrite `h5` using `[h0]`. Simplify using `using h5`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem linearIndependent_update_sum_of_ne_zero {l : ℕ} [Fact (Nat.Prime l)] {F : IntermediateField ℚ_[l] (Om l)} {m : ℕ}
     (e : Fin m → Om l) (hLI : LinearIndependent F e) (a : Fin m → F) (j0 : Fin m) (ha : a j0 ≠ 0) :
@@ -71,19 +69,19 @@ private theorem linearIndependent_update_sum_of_ne_zero {l : ℕ} [Fact (Nat.Pri
   simpa using h5
 
 /- English proof (translation)
-Establish `ha0 : (a j0 : Om l) ≠ 0`. Introduce `h`. Rewrite `ha` using `[h, norm_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpos : 0 < ‖(a j0 : Om l)‖` using `by linarith`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Use `⟨fun j => if j = j0 then c j0 / a j0 else c j - c j0 * a j / a j0, ?_, ?_⟩` and prove the remaining obligations. Introduce `j`. Distinguish the cases in `h : j = j0`. Simplify using `only [if_pos h]`. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[norm_div, div_le_one hpos]`. Combine the linear relations using `[hc j0]`. Simplify using `only [if_neg h]`. Use `push_cast`. Rewrite using `[sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hc j) ?_)` and prove the remaining obligations. Rewrite using `[norm_neg, norm_div, norm_mul, div_le_one hpos]`. Combine the equalities or inequalities in the displayed calculation. Use `set y := ∑ i, (a i : Om l) * e i with hy`. Establish `h1 : ∀ j, ((if j = j0 then c j0 / a j0 else c j - c j0 * a j / a j0 : F) : Om l) * Function.update e j0 y j = (c j : Om l) * e j - ((c j0 : Om l) / (a j0 : Om l)) * ((a j : Om l) * e j) + (if j = j0 then ((c j0 : Om l) / (a j0 : Om l)) * y else 0)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Distinguish the cases in `h : j = j0`. Substitute `h` using the available equality. Rewrite using `[if_pos rfl, if_pos rfl, Function.update_self]`. Use `push_cast`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg h, if_neg h, Function.update_of_ne h]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_congr rfl (fun j _ => h1 j)]`. Simplify using `only [Finset.sum_add_distrib, Finset.sum_sub_distrib, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true, ← Finset.mul_sum, ← hy]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem exists_bounded_coeffs_after_update {l : ℕ} [Fact (Nat.Prime l)] {F : IntermediateField ℚ_[l] (Om l)} {m : ℕ}
     (e : Fin m → Om l) (a c : Fin m → F) (j0 : Fin m) (ha : 1 < ‖(a j0 : Om l)‖)
@@ -130,37 +128,35 @@ private theorem exists_bounded_coeffs_after_update {l : ℕ} [Fact (Nat.Prime l)
     ring
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `x _`. Conclude with `⟨0, Fin.elim0, linearIndependent_empty_type, fun j => j.elim0, fun i => i.elim0⟩`. Consider the case `succ n ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Treat this case separately.
 
-Introduce `x hx`. Take `⟨m, e, hLI, he, hc⟩` from `ih (fun i => x (Fin.castSucc i)) (fun i => hx _)`. Distinguish the cases in `hy : x (Fin.last n) ∈ Submodule.span F (Set.range e)`. Take `⟨a, ha⟩` from `(Submodule.mem_span_range_iff_exists_fun F).1 hy`. Establish `ha' : x (Fin.last n) = ∑ j, (a j : Om l) * e j` using `ha.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Distinguish the cases in `hb : ∀ j, ‖(a j : Om l)‖ ≤ 1`. Use `⟨m, e, hLI, he, fun i => ?_⟩` and prove the remaining obligations. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last => exact ⟨a, hb, ha'⟩`. Consider the case `cast i => exact hc i`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Use `push_neg at hb`. Take `⟨j1, hj1⟩` from `hb`. Use `haveI : Nonempty (Fin m) := ⟨j1⟩`. Take `⟨j0, hj0⟩` from `Finite.exists_max (fun j => ‖(a j : Om l)‖)`. Establish `ha1 : 1 < ‖(a j0 : Om l)‖` using `lt_of_lt_of_le hj1 (hj0 j1)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `ha0 : a j0 ≠ 0`. Introduce `h`. Rewrite `ha1` using `[h]`. Evaluate the numerical expressions using `at ha1`. Use `⟨m, Function.update e j0 (x (Fin.last n)), ?_, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[ha']`. Conclude with `linearIndependent_update_sum_of_ne_zero e hLI a j0 ha0`. Introduce `j`. Distinguish the cases in `h : j = j0`. Substitute `h` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Function.update_self]`. Conclude with `hx _`. Rewrite using `[Function.update_of_ne h]`. Conclude with `he j`. Introduce `i`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Proceed by induction on `i using Fin.lastCases with`. Consider the case `last`. Use `⟨Pi.single j0 1, ?_, ?_⟩` and prove the remaining obligations. Introduce `j`. Distinguish the cases in `h : j = j0`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, h]`. Rewrite using `[Finset.sum_eq_single j0]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Introduce `j _ h`. Simplify using `[Pi.single_apply, h]`. Simplify using the standard rewrite rules. Consider the case `cast i`. Take `⟨c, hc1, hc2⟩` from `hc i`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨c', hc'1, hc'2⟩` from `exists_bounded_coeffs_after_update e a c j0 ha1 hj0 hc1`. Use `⟨c', hc'1, ?_⟩` and prove the remaining obligations. Rewrite using `[hc2, hc'2, ← ha']`. Use `⟨m + 1, (Fin.snoc e (x (Fin.last n)) : Fin (m + 1) → Om l), linearIndependent_fin_snoc.2 ⟨hLI, hy⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `j`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Proceed by induction on `j using Fin.lastCases with`. Consider the case `last`. Rewrite using `[Fin.snoc_last]`. Conclude with `hx _`. Consider the case `cast j`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Fin.snoc_castSucc]`. Conclude with `he j`. Introduce `i`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Use `⟨(Fin.snoc (0 : Fin m → F) 1 : Fin (m + 1) → F), ?_, ?_⟩` and prove the remaining obligations. Introduce `j`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => simp`. Consider the case `cast j => simp`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Simplify using `[Fin.sum_univ_castSucc]`. Consider the case `cast i`. Take `⟨c, hc1, hc2⟩` from `hc i`. Use `⟨(Fin.snoc c 0 : Fin (m + 1) → F), ?_, ?_⟩` and prove the remaining obligations. Introduce `j`.
-
-Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => simp`. Consider the case `cast j => simp [hc1 j]`. Simplify using `[Fin.sum_univ_castSucc, hc2]`.
+Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem exists_bounded_independent_spanning_family {l : ℕ} [Fact (Nat.Prime l)] (F : IntermediateField ℚ_[l] (Om l)) (n : ℕ) :
     ∀ x : Fin n → Om l, (∀ i, ‖x i‖ ≤ 1) → ∃ (m : ℕ) (e : Fin m → Om l), LinearIndependent F e ∧
@@ -247,7 +243,7 @@ private theorem exists_bounded_independent_spanning_family {l : ℕ} [Fact (Nat.
           · simp [Fin.sum_univ_castSucc, hc2]
 
 /- English proof (translation)
-Introduce `l _ F n x hx` and use `exists_bounded_independent_spanning_family F n x hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem intBasis_holds : IntBasis := fun l _ F n x hx => exists_bounded_independent_spanning_family F n x hx
 

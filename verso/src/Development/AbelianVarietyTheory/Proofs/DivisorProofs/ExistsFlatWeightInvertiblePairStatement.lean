@@ -21,7 +21,7 @@ open GlobalTheory.HSApp
 set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.FlatAnyLevel.exists_flat_unit_bdd` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsFlatWeightInvertiblePair.lean&line=761#L761)
 -/

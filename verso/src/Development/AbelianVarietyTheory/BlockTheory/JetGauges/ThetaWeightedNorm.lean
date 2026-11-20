@@ -182,14 +182,14 @@ def Explicit : Prop :=
     I.a1 = (X.Ψ.card : ℝ) / (5 ^ 4 * rdE E ^ 2)
 
 /- English proof (translation)
-Unfold `n1 g0`. Use `module`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem be_weight : 2 • ((I.i * I.g0h) • I.de2) + I.n1 • (2 • I.L - I.de2) = (2 * I.n1) • I.L := by
   unfold n1 g0
   module
 
 /- English proof (translation)
-Establish `h` using `I.frame_theta_weight_pos`. Establish `: I.t * I.a1 = I.a1 + I.c1`. Unfold `t`. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem constant_lt_t_mul_a : I.c1 < I.t * I.a1 := by
   have h := I.frame_theta_weight_pos
@@ -243,7 +243,7 @@ Both sides reduce to the same expression.
 example (X : Data E r) (x0 : Frame X.Ψ r) (z : V (nd X)) : rh X (cpt X x0 z) = rhF X x0 z := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ _ _ => rfl, fun _ _ _ _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 example (X : Data E r) (a : ℝ) : IsInv X fun _ => a := ⟨fun _ _ _ _ => rfl, fun _ _ _ _ => rfl⟩
 

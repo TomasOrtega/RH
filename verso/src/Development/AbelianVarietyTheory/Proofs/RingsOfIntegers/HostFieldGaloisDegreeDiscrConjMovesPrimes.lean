@@ -16,7 +16,7 @@ open scoped Pointwise
 namespace GlobalTheory.PlaceInt
 
 /- English proof (translation)
-Apply `RingOfIntegers.ext` to reduce the goal to its premises. Set `φ : D.host.E →+* ℂ` to `Classical.choice inferInstance`. Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[H.bar_eq, IsCMField.complexEmbedding_complexConj]`. Conclude with `(D.host.conjE_apply φ x).symm`.
+Reduce the claim to the hypotheses of an applicable result. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem host_bar_eq_smul (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (x : 𝓞 D.host.E) :
     H.bar x = D.host.conj • x := by
@@ -27,17 +27,15 @@ theorem host_bar_eq_smul (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.
   exact (D.host.conjE_apply φ x).symm
 
 /- English proof (translation)
-Introduce `D H`. Use `⟨D.host.galois, D.host.der.finrank_E, D.host.der.discr_primes.1, ?_⟩` and prove the remaining obligations. Introduce `p hp`. Establish `hpp : p.Prime` using `Nat.prime_of_mem_primeFactors hp`. Use `⟨hpp, fun P hP hmem => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `hall`. Use `push Not at hall`. Establish `hmax : (Ideal.span {(p : ℤ)}).IsMaximal` using `PrincipalIdealRing.isMaximal_of_irreducible (Nat.prime_iff_prime_int.1 hpp).irreducible`. Establish `hlo : P.LiesOver (Ideal.span {(p : ℤ)})`. Use `⟨hmax.eq_of_le (Ideal.IsPrime.under ℤ P).ne_top ?_⟩` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Use `show algebraMap ℤ (𝓞 D.host.E) (p : ℤ) ∈ P`. Rewrite using `[map_natCast]`. Conclude with `hmem`. Establish `hbb : ∀ x : 𝓞 D.host.E, H.bar (H.bar x) = x` using `fun x => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[H.bar_eq, H.bar_eq, IsCMField.complexConj_apply_apply]`. Use `D.host.der.decompConj p hpp (Nat.dvd_of_mem_primeFactors hp) P ?_` and prove the remaining obligations. Rewrite using `[MulAction.mem_stabilizer_iff]`. Use extensionality with `x`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.mem_pointwise_smul_iff_inv_smul_mem]`. Establish `hinv : (D.host.conj)⁻¹ • x = H.bar x`. Rewrite using `[inv_smul_eq_iff, ← host_bar_eq_smul D H, hbb]`. Rewrite using `[hinv]`. Use `⟨fun h => ?_, hall x⟩` and prove the remaining obligations.
-
-Use `hall _ h` as an intermediate fact. Rewrite `this` using `[hbb]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem host_galois_discr_moves : ∀ (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E), IsGalois ℚ D.host.E ∧ Module.finrank ℚ D.host.E = 4 * D.R.ord ∧ (∀ p : ℕ, p.Prime → (p : ℤ) ∣ NumberField.discr D.host.E → p ∣ D.host.condN) ∧ ∀ p ∈ D.host.condN.primeFactors, p.Prime ∧ ∀ 𝔭 : Ideal (𝓞 D.host.E), 𝔭.IsPrime → (p : 𝓞 D.host.E) ∈ 𝔭 → ∃ x ∈ 𝔭, H.bar x ∉ 𝔭 := by
   intro D H

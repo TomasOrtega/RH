@@ -8,17 +8,15 @@ open scoped TensorProduct
 universe u
 
 /- English proof (translation)
-Use `haveI := hA.smooth`. Use `haveI := hA₂.proper`. Use `haveI : AlgebraicGeometry.IsReduced A.left := GlobalTheory.isReduced_of_smooth_of_isReduced A.hom`. Establish `hw : ψ₂.left ≫ A₂.hom = ψ₁.left ≫ A₁.hom` using `by rw [Over.w, Over.w]`. Take `⟨hepi, g, hg⟩` from `hE ψ₁.left A₁.hom A₂.hom ψ₂.left hw (by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `Ω _ _ x y hxy`. Establish `hxy' : x ≫ A.hom = y ≫ A.hom`. Rewrite using `[← Over.w ψ₁, ← Category.assoc, hxy, Category.assoc]`. Set `X : Over.mk (x ≫ A.hom) ⟶ A` to `Over.homMk x`. Set `Y : Over.mk (x ≫ A.hom) ⟶ A` to `Over.homMk y hxy'.symm`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : X ≫ ψ₁ = Y ≫ ψ₁` using `Over.OverMorphism.ext hxy`. Establish `h2 : (X * Y⁻¹) ≫ ψ₁ = 1`. Establish `e` using `(IsMonHom.monoidHom ψ₁ (Over.mk (x ≫ A.hom))).map_mul X Y⁻¹`. Establish `e'` using `map_inv (IsMonHom.monoidHom ψ₁ (Over.mk (x ≫ A.hom))) Y`. Simplify using `only [IsMonHom.monoidHom_apply] at e e'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e, e', h1, mul_inv_cancel]`. Establish `h3` using `hker Ω (x ≫ A.hom) (X * Y⁻¹) h2`. Establish `e` using `(IsMonHom.monoidHom ψ₂ (Over.mk (x ≫ A.hom))).map_mul X Y⁻¹`. Establish `e'` using `map_inv (IsMonHom.monoidHom ψ₂ (Over.mk (x ≫ A.hom))) Y`. Simplify using `only [IsMonHom.monoidHom_apply] at e e'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h3` using `[e, e', mul_inv_eq_one]`. Conclude with `congrArg CommaMorphism.left h3)`. Use `haveI := hepi`. Use `⟨Over.homMk g ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← cancel_epi ψ₁.left, ← Category.assoc, hg, hw]`.
-
-Conclude with `Over.OverMorphism.ext hg`.
+A detailed English derivation is pending.
 -/
 private lemma twisted_kernel_forms_nonvanishing (hE : EtDesc) (k : Type) [Field k] [IsAlgClosed k] (A A₁ A₂ : Over (Sp k)) [GrpObj A]
     [GrpObj A₁] [GrpObj A₂] (hA : IsAbelianScheme A) (hA₂ : IsAbelianScheme A₂)
@@ -53,13 +51,11 @@ private lemma twisted_kernel_forms_nonvanishing (hE : EtDesc) (k : Type) [Field 
   · exact Over.OverMorphism.ext hg
 
 /- English proof (translation)
-Introduce `hE k _ _ A A₁ A₂ _ _ _ _ _ _ hA hA₁ hA₂ ψ₁ ψ₂ h₁ h₂ f₁ e₁ s₁ f₂ e₂ s₂ hker`. Take `⟨θ, hθ⟩` from `twisted_kernel_forms_nonvanishing hE k A A₁ A₂ hA hA₂ ψ₁ ψ₂ (fun Ω _ _ t a => (hker Ω t a).1)`. Take `⟨θ', hθ'⟩` from `twisted_kernel_forms_nonvanishing hE k A A₂ A₁ hA hA₁ ψ₂ ψ₁ (fun Ω _ _ t a => (hker Ω t a).2)`. Use `haveI : Flat ψ₁.left := inferInstance`. Use `haveI : Flat ψ₂.left := inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : Epi ψ₁ := GlobalTheory.FlatQuotient.epi_of_flat_surjective ψ₁`. Use `haveI : Epi ψ₂ := GlobalTheory.FlatQuotient.epi_of_flat_surjective ψ₂`. Use `haveI : Epi (ψ₁ ⊗ₘ ψ₁) := GlobalTheory.FlatQuotient.epi_tensorHom ψ₁ ψ₁`. Establish `i1 : θ ≫ θ' = 𝟙 _`. Rewrite using `[← cancel_epi ψ₁, ← Category.assoc, hθ, hθ', Category.comp_id]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `i2 : θ' ≫ θ = 𝟙 _`. Rewrite using `[← cancel_epi ψ₂, ← Category.assoc, hθ', hθ, Category.comp_id]`. Use `⟨θ, ⟨θ', i1, i2⟩, ⟨?_, ?_⟩, hθ⟩` and prove the remaining obligations. Rewrite using `[← IsMonHom.one_hom ψ₁, Category.assoc, hθ, IsMonHom.one_hom ψ₂]`. Establish `h1 : (ψ₁ ⊗ₘ ψ₁) ≫ (θ ⊗ₘ θ) = ψ₂ ⊗ₘ ψ₂`.
-
-Rewrite using `[tensorHom_comp_tensorHom, hθ]`. Rewrite using `[← cancel_epi (ψ₁ ⊗ₘ ψ₁), ← Category.assoc, ← IsMonHom.mul_hom ψ₁, Category.assoc, hθ, IsMonHom.mul_hom ψ₂, ← Category.assoc, h1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.G3.pQuotUniq :
     EtDesc → QuotUniq := by

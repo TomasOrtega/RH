@@ -30,24 +30,24 @@ def frPerp (F : FlagD H r) : Submodule K V where
     rw [map_smulₛₗ, hx a, smul_zero]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_frPerp (F : FlagD H r) (v : V) : v ∈ frPerp F ↔ ∀ a, H.B (F.e a) v = 0 := Iff.rfl
 
 /- English proof (translation)
-The claim follows from `H.nondeg w (fun y => by rw [← H.herm y w, h y, star_zero])`.
+A detailed English derivation is pending.
 -/
 theorem B_right_nondeg (H : HermSpace K V) (w : V) (h : ∀ v, H.B v w = 0) : w = 0 :=
   H.nondeg w (fun y => by rw [← H.herm y w, h y, star_zero])
 
 /- English proof (translation)
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `c hc`. Establish `hz : c (Fin.last r) = 0`. Establish `h : H.B (∑ a, c a • F.e a) (F.e (Fin.last r)) = 0` using `by rw [hc, map_zero, LinearMap.zero_apply]`. Simplify using `only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply] at h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[Fin.sum_univ_castSucc]`. Simplify using `only [F.zperp, F.zz, smul_eq_mul, mul_zero, Finset.sum_const_zero, zero_add] at h`. Break down `mul_eq_zero.1 h with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd (neg_eq_zero.1 h) F.hT`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hc' : ∑ a : Fin r, c a.castSucc • F.e a.castSucc = 0`. Rewrite `hc` using `[Fin.sum_univ_castSucc, hz, zero_smul, add_zero]`. Conclude with `hc`. Establish `hcs` using `Fintype.linearIndependent_iff.1 F.indep (fun a => c a.castSucc) hc'`. Introduce `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `i using Fin.lastCases with`. Consider the case `last => exact hz`. Consider the case `cast a => exact hcs a`.
+A detailed English derivation is pending.
 -/
 theorem fr_indep (F : FlagD H r) : LinearIndependent K F.e := by
   rw [Fintype.linearIndependent_iff]
@@ -78,7 +78,7 @@ Both sides reduce to the same expression.
 theorem frMap_apply (F : FlagD H r) (v : V) (a : Fin (r + 1)) : frMap F v a = H.B v (F.e a) := rfl
 
 /- English proof (translation)
-Use extensionality with `v`. Rewrite using `[LinearMap.mem_ker, mem_frPerp, funext_iff]`. Use `forall_congr' fun a => ?_` and prove the remaining obligations. Rewrite using `[frMap_apply, Pi.zero_apply, ← H.herm (F.e a) v]`. Conclude with `⟨fun h => by rw [← star_star (H.B (F.e a) v), h, star_zero], fun h => by rw [h, star_zero]⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem ker_frMap (F : FlagD H r) : LinearMap.ker (frMap F) = frPerp F := by
   ext v
@@ -88,17 +88,17 @@ theorem ker_frMap (F : FlagD H r) : LinearMap.ker (frMap F) = frPerp F := by
   exact ⟨fun h => by rw [← star_star (H.B (F.e a) v), h, star_zero], fun h => by rw [h, star_zero]⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Take `⟨f, hf0, hf⟩` from `Submodule.exists_dual_map_eq_bot_of_lt_top (lt_top_iff_ne_top.2 hne) inferInstance`. Use `set c : Fin (r + 1) → K := fun a => f (fun j => if a = j then 1 else 0) with hcdef`. Establish `hfx : ∀ x, f x = ∑ a, x a * c a`. Introduce `x`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `conv_lhs => rw [pi_eq_sum_univ x]`. Simplify using `only [map_sum, map_smul, smul_eq_mul, hcdef]`. Establish `hv : ∀ v, H.B v (∑ a, star (c a) • F.e a) = 0`. Introduce `v`. Establish `h1 : f (frMap F v) = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: f (frMap F v) ∈ Submodule.map f (LinearMap.range (frMap F))` using `Submodule.mem_map_of_mem (LinearMap.mem_range_self _ v)`. Rewrite `this` using `[hf]`. Conclude with `(Submodule.mem_bot K).1 this`. Rewrite `h1` using `[hfx]`. Rewrite using `[map_sum]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [map_smulₛₗ, starRingEnd_apply, star_star, smul_eq_mul]`. Rewrite using `[← h1]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[frMap_apply, mul_comm]`. Establish `hw` using `B_right_nondeg H _ hv`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc` using `Fintype.linearIndependent_iff.1 (fr_indep F) _ hw`. Apply `hf0` to reduce the goal to its premises. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Rewrite using `[hfx]`. Simplify using `only [LinearMap.zero_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_eq_zero fun a _ => ?_` and prove the remaining obligations. Establish `: c a = 0` using `by simpa using hc a`. Rewrite using `[this, mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem range_frMap (F : FlagD H r) : LinearMap.range (frMap F) = ⊤ := by
   by_contra hne
@@ -132,7 +132,7 @@ theorem range_frMap (F : FlagD H r) : LinearMap.range (frMap F) = ⊤ := by
   rw [this, mul_zero]
 
 /- English proof (translation)
-Establish `h` using `LinearMap.finrank_range_add_finrank_ker (frMap F)`. Rewrite `h` using `[range_frMap, ker_frMap, finrank_top, Module.finrank_fin_fun]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem finrank_frPerp [FiniteDimensional K V] (F : FlagD H r) :
     Module.finrank K (frPerp F) + (r + 1) = Module.finrank K V := by
@@ -141,7 +141,7 @@ theorem finrank_frPerp [FiniteDimensional K V] (F : FlagD H r) :
   omega
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨b, -, rfl⟩ a`. Proceed by induction on `a using Fin.lastCases with`. Consider the case `last => rw [← H.herm (F.e b.castSucc) (F.e (Fin.last r)), F.zperp b, star_zero]`. Consider the case `cast a => exact F.iso a b`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem X_le_frPerp (F : FlagD H r) : F.X ≤ frPerp F := by
   refine Submodule.span_le.2 ?_
@@ -151,7 +151,7 @@ theorem X_le_frPerp (F : FlagD H r) : F.X ≤ frPerp F := by
   | cast a => exact F.iso a b
 
 /- English proof (translation)
-Establish `h : F.X = Submodule.span K (Set.range fun a : Fin r => F.e a.castSucc)` using `by show Submodule.span K _ = _`. Use `congr 1`. Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[h, finrank_span_eq_card F.indep, Fintype.card_fin]`.
+Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_X (F : FlagD H r) : Module.finrank K F.X = r := by
   have h : F.X = Submodule.span K (Set.range fun a : Fin r => F.e a.castSucc) := by
@@ -168,15 +168,15 @@ def resH (H : HermSpace K V) (W : Submodule K V) (hnd : ∀ x : W, (∀ y : W, H
   nondeg x h := hnd x h
 
 /- English proof (translation)
-Take `⟨Y, hY⟩` from `Submodule.exists_isCompl F.X`. Use `set W := Y ⊓ frPerp F with hW`. Establish `hsup : F.X ⊔ W = frPerp F`. Rewrite using `[hW, ← sup_inf_assoc_of_le Y (X_le_frPerp F), hY.sup_eq_top, top_inf_eq]`. Establish `hinf : F.X ⊓ W = ⊥`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `eq_bot_iff.2 fun x hx => ?_` and prove the remaining obligations. Conclude with `hY.inf_eq_bot ▸ ⟨hx.1, hx.2.1⟩`. Establish `hpos : ∀ (σ : K →+* ℂ) (x : W), x ≠ 0 → 0 < (σ (H.B x x)).re`. Introduce `σ x hx`. Use `hP σ x ((mem_frPerp F _).1 x.2.2) fun hxX => hx ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: (x : V) ∈ F.X ⊓ W` using `⟨hxX, x.2⟩`. Rewrite `this` using `[hinf]`. Conclude with `Subtype.ext ((Submodule.mem_bot K).1 this)`. Establish `hnd : ∀ x : W, (∀ y : W, H.B x y = 0) → x = 0`. Introduce `x h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Assume the negation of the conclusion as `hx`. Use `hpos τ₀ x hx` as an intermediate fact. Rewrite `this` using `[h x, map_zero, Complex.zero_re]`. Conclude with `lt_irrefl _ this`. Use `⟨W, resH H W hnd, ⟨fun x y => rfl, fun v => ?_⟩, ?_, fun σ x hx => hpos σ x hx⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← mem_frPerp, Submodule.range_subtype, sup_comm, hsup]`. Establish `h1` using `Submodule.finrank_sup_add_finrank_inf_eq F.X W`. Rewrite `h1` using `[hsup, hinf, finrank_bot, finrank_X]`. Establish `h2` using `finrank_frPerp F`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem exists_emb [FiniteDimensional K V] (F : FlagD H r) (τ₀ : K →+* ℂ) (hP : ∀ σ : K →+* ℂ, F.PosDefAt σ) :
     ∃ (W : Submodule K V) (HW : HermSpace K W), GlobalTheory.DegAsm.IsEmb F HW W.subtype ∧
@@ -210,11 +210,11 @@ theorem exists_emb [FiniteDimensional K V] (F : FlagD H r) (τ₀ : K →+* ℂ)
 end EmbGen
 
 /- English proof (translation)
-Introduce `D large₂ X u _`. Establish `hpos : ∀ σ : D.host.E →+* ℂ, (F0 X u).PosDefAt σ` using `fun σ => Formalism.MainNotions.KappaEndpoints.nf_pos (lf D (X.Fu u)) (tu_ne D u) (p_posX D (Tu D u) (D.mem u).A.T_prime.pos _) σ`. Set `τ₀ : D.host.E →+* ℂ` to `(IsAlgClosed.lift (M := ℂ) (R := ℚ) (S := D.host.E)).toRingHom`. Take `⟨W, HW, h1, h2, h3⟩` from `exists_emb (F0 X u) τ₀ hpos`. Use `⟨W, HW, h1, ?_, h3⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hV : Module.finrank D.host.E (VS D).V = D.R.rankY 0`. Rewrite using `[(VS D).rank_eq]`. Conclude with `D.sp.Y_rank 0 (Nat.zero_le _)`. Establish `hR : D.R.rankY 0 = 2 * D.R.rS + D.R.k + 1`. Take `⟨c, hc⟩` from `D.R.m_even`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `D.R.two_le_m` as an intermediate fact. Simplify using `only [Formalism.BasicNotions.Ranks.rankY, Formalism.BasicNotions.Ranks.rS, Formalism.BasicNotions.Ranks.r, zero_mul, add_zero]`. Use linear arithmetic over natural numbers and integers. Rewrite `h2` using `[hV, hR]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem embC : EmbC := by
   intro D large₂ X u _

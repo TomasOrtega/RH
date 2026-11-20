@@ -17,7 +17,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeR
 namespace GlobalTheory.Mem.HypCMRec
 
 /- English proof (translation)
-Use `⟨?_, GlobalTheory.DesignBC.two_le_finrank D, fun w hw h2 => hw (GlobalTheory.DesignBC.isSplitPl_of_two_mem D w h2)⟩` and prove the remaining obligations. Use `letI := D.host.cmStar`. Conclude with `D.sp.cm.cmUnram`.
+Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem hypCM_all (D : D7) : SphericalInertData.HypCM D := by
   refine ⟨?_, GlobalTheory.DesignBC.two_le_finrank D, fun w hw h2 => hw (GlobalTheory.DesignBC.isSplitPl_of_two_mem D w h2)⟩
@@ -25,7 +25,7 @@ theorem hypCM_all (D : D7) : SphericalInertData.HypCM D := by
   exact D.sp.cm.cmUnram
 
 /- English proof (translation)
-The claim follows from `evG_all fun K => lg_all K fun _ _ _ _ _ _ _ _ => hypCM_all _`.
+A detailed English derivation is pending.
 -/
 theorem hypCM_at_record : EvLgG fun K B f _ => KPx B f → ∀ (T : TwDat B) (w : ColW B f T) (Z : w.Lt), SphericalInertData.HypCM (w.D Z) :=
   evG_all fun K => lg_all K fun _ _ _ _ _ _ _ _ => hypCM_all _

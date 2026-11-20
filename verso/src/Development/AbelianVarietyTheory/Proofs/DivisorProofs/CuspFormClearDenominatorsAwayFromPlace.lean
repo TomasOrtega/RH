@@ -14,19 +14,17 @@ namespace GlobalTheory.RefSum.Clear
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c`. Use `letI := H.starRing`. Introduce `r U G f m hm hmv la k hk`. Use `set ρ : HeightOneSpectrum (𝓞 c.F) → ℝ := Function.update m la (k : ℝ) with hρ`. Establish `hsupp : (Function.support ρ).Finite`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hm.insert la).subset ?_` and prove the remaining obligations. Introduce `w hw`. Distinguish the cases in `h : w = la`. Conclude with `Or.inl h`. Use `right`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Prove the first alternative. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Simplify `hw` using `[hρ, Function.mem_support, Function.update_of_ne h]`. Take `⟨a, ha0, hala, hapos⟩` from `GlobalTheory.RefSum.ScalApprox.exists_scal c.F ρ hsupp la`. Establish `hρla : ρ la = (k : ℝ)` using `by simp [hρ]`. Establish `hvla : vAdd la a = -k`. Rewrite `hala` using `[hρla, Int.floor_intCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hala` after adjusting the coercions. Establish `hle : ∀ w, ∀ v ∈ valSet Xo c (algCls Xo c) w, ((ρ w : ℝ) : EReal) ≤ v (f : Rul Xo c)`. Introduce `w v hv`. Distinguish the cases in `h : w = la`. Substitute `h` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hρla]`. Conclude with `hk v hv`. Rewrite using `[show ρ w = m w by simp [hρ, Function.update_of_ne h]]; exact hmv w v hv`. Use `⟨a, ha0, hvla, ⟨a • f, (cuspW Xo c U G).smul_mem a f.2⟩, ?_, rfl⟩` and prove the remaining obligations. Use `show _ ∈ GlobalTheory.AllWt.supLat _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.AllWt.mem_supLat]`. Introduce `w v hv`. Use `show 0 ≤ v (a • (f : Rul Xo c))`. Rewrite using `[(isVal_valSet w v hv).smul a _ ha0]`. Establish `h1 : (0 : EReal) ≤ (((vAdd w a : ℤ) : ℝ) : EReal) + ((ρ w : ℝ) : EReal)`.
-
-Rewrite using `[← EReal.coe_add]`. Conclude with `hapos w` after adjusting the coercions. Conclude with `h1.trans (add_le_add le_rfl (hle w v hv))`.
+A detailed English derivation is pending.
 -/
 theorem clear : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l), letI := H.starRing; ∀ (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (G : WTZ E) (f : cuspW Xo c U G) (m : HeightOneSpectrum (𝓞 c.F) → ℝ), (Function.support m).Finite → (∀ w, ∀ v ∈ valSet Xo c (algCls Xo c) w, ((m w : ℝ) : EReal) ≤ v f) → ∀ (la : HeightOneSpectrum (𝓞 c.F)) (k : ℤ), (∀ v ∈ valSet Xo c (algCls Xo c) la, ((k : ℝ) : EReal) ≤ v f) → ∃ s : c.F, s ≠ 0 ∧ vLa la s = -k ∧ ∃ g ∈ latW U G, (g : Rul Xo c) = s • (f : Rul Xo c) := by
   intro E _ _ _ H Dw l Xo c

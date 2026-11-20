@@ -11,7 +11,7 @@ open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Vert Globa
 set_option autoImplicit false
 
 /- English proof (translation)
-Introduce `O _ _ _ Z Z₁ f hf E E' φ N P i`. Conclude with `GlobalTheory.Vert.FlagPairPull.cls_div_pairPull hf P i`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FlagPairExists.cls_div_pairPull : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (Z Z₁ : GlobalTheory.Vert.Model O) (f : Z₁.X ⟶ Z.X) (hf : f ≫ Z.str = Z₁.str) (E E' : Z.X.Modules) (φ : Z.GenIso E E') (N : ℕ) (P : GlobalTheory.Vert.Model.FlagPair φ N) (i : Fin N), ((GlobalTheory.FlagPairExists.pairPull hf P).div i).cls = GlobalTheory.Vert.Model.vPull hf ((P.div i).cls) := by
   intro O _ _ _ Z Z₁ f hf E E' φ N P i

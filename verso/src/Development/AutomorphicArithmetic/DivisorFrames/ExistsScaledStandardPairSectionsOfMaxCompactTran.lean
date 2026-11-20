@@ -31,7 +31,7 @@ private noncomputable def subst {m n : ℕ} (g : GL (Fin m) k) (h : GL (Fin n) k
   continuous_invFun := (continuous_const.matrix_mul continuous_id).matrix_mul continuous_const
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hf.1.comp_continuous (subst g h).continuous, hf.2.comp_homeomorph (subst g h)⟩`.
+Supply the required witnesses or components.
 -/
 private theorem subst_SB {m n : ℕ} (g : GL (Fin m) k) (h : GL (Fin n) k) {f : Matrix (Fin m) (Fin n) k → ℂ}
     (hf : f ∈ GlobalTheory.WeilM.SB (Matrix (Fin m) (Fin n) k)) :
@@ -39,7 +39,7 @@ private theorem subst_SB {m n : ℕ} (g : GL (Fin m) k) (h : GL (Fin n) k) {f : 
   ⟨hf.1.comp_continuous (subst g h).continuous, hf.2.comp_homeomorph (subst g h)⟩
 
 /- English proof (translation)
-Take `⟨X, rfl⟩` from `(subst g h).surjective Y`. Conclude with `⟨X, hf⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem subst_ne {m n : ℕ} (g : GL (Fin m) k) (h : GL (Fin n) k) {f : Matrix (Fin m) (Fin n) k → ℂ}
     {Y : Matrix (Fin m) (Fin n) k} (hf : f Y ≠ 0) : ∃ X : Matrix (Fin m) (Fin n) k, f (g.val * X * h.val) ≠ 0 := by
@@ -48,11 +48,9 @@ private theorem subst_ne {m n : ℕ} (g : GL (Fin m) k) (h : GL (Fin n) k) {f : 
 
 open GlobalTheory.StdPairCone in
 /- English proof (translation)
-Set `X : Matrix (Fin a) (Fin (a + a')) k` to `Matrix.of fun i => Fin.append ((1 : Matrix (Fin a) (Fin a) k) i) (fun _ => 0)`. Establish `h1 : blk₁ X = 1` using `by ext i j; simp [blk₁, X]`. Establish `h2 : blk₂ X = 0` using `by ext i j; simp [blk₂, X]`. Use `⟨X, ?_⟩` and prove the remaining obligations. Establish `h : (blk₁ X).det ≠ 0 ∧ IsGLO (blk₁ X) ∧ ∀ i j, blk₂ X i j ∈ GlobalTheory.SplitWeil.cball (ϖ ^ c)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[h1, h2]`. Use `⟨by simp, ⟨fun i j => ?_, by simp⟩, fun i j => by simp [GlobalTheory.SplitWeil.cball]⟩` and prove the remaining obligations. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Use `exacts [one_mem _, zero_mem _]`.
-
-Rewrite using `[stdA, dif_pos h]`. Conclude with `Units.ne_zero _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem stdA_ne (ν : kˣ →* ℂˣ) (ϖ : kˣ) (c a a' : ℕ) : ∃ X, stdA ν ϖ c a a' X ≠ 0 := by
   let X : Matrix (Fin a) (Fin (a + a')) k :=
@@ -71,11 +69,9 @@ private theorem stdA_ne (ν : kˣ →* ℂˣ) (ϖ : kˣ) (c a a' : ℕ) : ∃ X,
 
 open GlobalTheory.StdPairCone in
 /- English proof (translation)
-Set `X : Matrix (Fin a') (Fin (a + a')) k` to `Matrix.of fun i => Fin.append (fun _ => 0) ((1 : Matrix (Fin a') (Fin a') k) i)`. Establish `h1 : blk₂ X = 1` using `by ext i j; simp [blk₂, X]`. Establish `h2 : blk₁ X = 0` using `by ext i j; simp [blk₁, X]`. Use `⟨X, ?_⟩` and prove the remaining obligations. Establish `h : (blk₂ X).det ≠ 0 ∧ IsGLO (blk₂ X) ∧ ∀ i j, blk₁ X i j ∈ GlobalTheory.SplitWeil.cball (ϖ ^ c)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[h1, h2]`. Use `⟨by simp, ⟨fun i j => ?_, by simp⟩, fun i j => by simp [GlobalTheory.SplitWeil.cball]⟩` and prove the remaining obligations. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Use `exacts [one_mem _, zero_mem _]`.
-
-Rewrite using `[stdB, dif_pos h]`. Conclude with `Units.ne_zero _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem stdB_ne (ν : kˣ →* ℂˣ) (ϖ : kˣ) (c a a' : ℕ) : ∃ Y, stdB ν ϖ c a a' Y ≠ 0 := by
   let X : Matrix (Fin a') (Fin (a + a')) k :=
@@ -95,13 +91,13 @@ private theorem stdB_ne (ν : kˣ →* ℂˣ) (ϖ : kˣ) (c a a' : ℕ) : ∃ Y,
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ α β ν ϖ c m a a' hϖ hν hc hcν hα hβ nα nβ gA gB cc hgA`. Take `⟨hz, -⟩` from `GlobalTheory.T.standardPair_localZetaMatch_ne_zero α β ν ϖ c m a a' hϖ hν hc hcν hα hβ nα nβ`. Take `⟨hA, hB⟩` from `GlobalTheory.T.standardPair_members_mem_schwartzBruhat ν ϖ c a a' hϖ hcν`. Establish `hab : ν * β = α`. Rewrite using `[hν]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `x`. Simplify using the standard rewrite rules. Take `⟨lam, hl, H⟩` from `GlobalTheory.T.zetaIdentity_persists_row_column_changes k a a rfl (Fin a') (Fin a') (Fin (a + a')) (Fin (a + a')) (Equiv.refl _) (Equiv.refl _) finSumFinEquiv finSumFinEquiv (GlobalTheory.SplitFlip.haarVol (GlobalTheory.SplitWeil.KO k (Fin a'))) (GlobalTheory.SplitFlip.haarVol (G …`. Rewrite `H` using `[hab]`. Establish `H'` using `H _ _ hz`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `⟨lam, fun X => GlobalTheory.StdPairCone.stdA ν ϖ c a a' (gA.val * X * (GlobalTheory.SplitFlip.invT cc).val), fun Y => lam * GlobalTheory.StdPairCone.stdB ν ϖ c a a' (gB.val * Y * cc.val), hl, fun _ => rfl, fun _ => rfl, subst_SB gA _ hA, (GlobalTheory.WeilM.SB _).smul_mem lam (su …` and prove the remaining obligations. Take `⟨Y, hY⟩` from `stdA_ne ν ϖ c a a'`. Take `⟨X, hX⟩` from `subst_ne gA (GlobalTheory.SplitFlip.invT cc) hY`. Conclude with `fun h => hX (congrFun h X)`. Take `⟨Y, hY⟩` from `stdB_ne ν ϖ c a a'`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result.
 
-Take `⟨X, hX⟩` from `subst_ne gB cc hY`. Conclude with `fun h => mul_ne_zero hl hX (congrFun h X)`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_scaled_standardPairSections_of_maxCompact_translate :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k]

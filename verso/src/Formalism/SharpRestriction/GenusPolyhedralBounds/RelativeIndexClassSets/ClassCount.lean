@@ -20,14 +20,14 @@ section Asm
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {k : ℕ} (P : Par F E k)
 
 /- English proof (translation)
-The claim follows from `inf_le_left`.
+A detailed English derivation is pending.
 -/
 theorem Kstd_le : Kstd P.σ P.J ≤ P.GA := inf_le_left
 
 /- English proof (translation)
-Take `⟨γ0, hγ0, hγ⟩ : ((γ : P.GA) : GL (Fin k) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) ∈ ratPts P.σ P.J (FiniteAdeleRing (𝓞 F) F)` from `γ.2`. Establish `h1 : γ0 = 1`. Use `hstab S g g.2 γ0 hγ0 ?_` and prove the remaining obligations. Use `⟨_, h, ?_⟩` and prove the remaining obligations. Rewrite using `[hγ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[MulAut.conj_apply, mul_assoc]`. Substitute `h1` using the available equality. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← hγ, map_one]`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -49,7 +49,7 @@ theorem stabTriv_sub (hstab : P.StabTriv) (S : P.Splits) (g : P.GA) (γ : GamG P
 variable [StarRing E]
 
 /- English proof (translation)
-Establish `hrel : ((P.U S).subgroupOf P.GA).relIndex (KstdG P.σ P.J) = (P.U S).relIndex (Kstd P.σ P.J)` using `Subgroup.relIndex_subgroupOf (Kstd_le P)`. Establish `h` using `hfib P.GA (GamG P.σ P.J) ((P.U S).subgroupOf P.GA) (KstdG P.σ P.J) (Subgroup.comap_mono (hidx S).1) (by rw [hrel]; exact hne) hfin.1 hfin.2 (stabTriv_sub P hstab S) Quotient.out (DoubleCoset.out_eq' _ _)`. Rewrite using `[h, hrel, (hidx S).2, ← hmass Quotient.out (DoubleCoset.out_eq' _ _)]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem classCount_of (f : ℕ) (S : P.Splits) (hfib : FibCount) (hidx : IdxOK P f) (hfin : KFinite P.σ P.J)
     (hmass : MassSum P.σ P.J) (hstab : P.StabTriv) (hne : (P.U S).relIndex (Kstd P.σ P.J) ≠ 0) :
@@ -83,18 +83,18 @@ def HostGenusIn : Prop :=
     GenusIn (conjF H) (1 : Matrix (Fin k) (Fin k) H.E)
 
 /- English proof (translation)
-The claim follows from `(star_eq_conj H e).symm`.
+A detailed English derivation is pending.
 -/
 theorem host_sig (e : H.E) : conjF H e = (letI := H.cmStar; star e) := (star_eq_conj H e).symm
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨e, (conj_eq_self_iff H e).1 h⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem host_fix (e : H.E) (h : conjF H e = e) : ∃ a : H.F, algebraMap H.F H.E a = e :=
   ⟨⟨e, (conj_eq_self_iff H e).1 h⟩, rfl⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Conclude with `hs_conj_ne_one H (AlgEquiv.ext fun x => hcon x)`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem host_theta : ∃ θ : H.E, conjF H θ ≠ θ := by
   by_contra hcon
@@ -102,14 +102,14 @@ theorem host_theta : ∃ θ : H.E, conjF H θ ≠ θ := by
   exact hs_conj_ne_one H (AlgEquiv.ext fun x => hcon x)
 
 /- English proof (translation)
-Introduce `H _` and use `letI := H.cmStar Surj.genusIn_of_core hc (conjF H) (host_sig H) (host_fix H) (host_theta H)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hostGenusIn_of_core (hc : Surj.WACore) : HostGenusIn := fun H _ =>
   letI := H.cmStar
   Surj.genusIn_of_core hc (conjF H) (host_sig H) (host_fix H) (host_theta H)
 
 /- English proof (translation)
-The claim follows from `letI := H.cmStar Surj.genusSurj (conjF H) (host_sig H) (host_fix H)`.
+A detailed English derivation is pending.
 -/
 theorem host_genusSurj (k : ℕ) :
     letI := H.cmStar
@@ -118,7 +118,7 @@ theorem host_genusSurj (k : ℕ) :
   Surj.genusSurj (conjF H) (host_sig H) (host_fix H)
 
 /- English proof (translation)
-Introduce `R H T pz piG hyp S`. Use `letI := H.cmStar`. Conclude with `classCount_of (hostPar H T pz piG) R.f S Fib.fibCount (Idx.idxOK_host H T pz piG hyp) (Stab.kFinite (conjF H) (host_sig H) (fun φ a => emb_star H φ a) (hIn H R.k)) (Stab.massSum (conjF H) (host_sig H) (fun φ a => emb_star H φ a) (hIn H R.k) (host_genusSurj H R.k)) (factStabTriv H …`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem classCount_host_of (hIn : HostGenusIn) : HostCount := by
   intro R H T pz piG hyp S
@@ -129,22 +129,22 @@ theorem classCount_host_of (hIn : HostGenusIn) : HostCount := by
     (factStabTriv H T pz piG hyp) (Idx.host_relIndex_Kstd_ne_zero H T pz piG hyp S)
 
 /- English proof (translation)
-The claim follows from `classCount_host_of (hostGenusIn_of_core hc)`.
+A detailed English derivation is pending.
 -/
 theorem classCount_host_of_core (hc : Surj.WACore) : HostCount := classCount_host_of (hostGenusIn_of_core hc)
 
 /- English proof (translation)
-The claim follows from `hostGenusIn_of_core WA.waCore`.
+A detailed English derivation is pending.
 -/
 theorem hostGenusIn : HostGenusIn := hostGenusIn_of_core WA.waCore
 
 /- English proof (translation)
-The claim follows from `classCount_host_of hostGenusIn`.
+A detailed English derivation is pending.
 -/
 theorem classCount : HostCount := classCount_host_of hostGenusIn
 
 /- English proof (translation)
-Substitute `hP` using the available equality. Conclude with `classCount H T pz piG hyp S`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem classCount_par {R : Ranks} (H : Host R) (T : ℕ) (pz : 𝓞 H.E) (piG : Fin 2 → 𝓞 H.E) (hyp : LevHyp H T pz piG)
     (P : Par H.F H.E R.k) (hP : P = hostPar H T pz piG) (S : P.Splits) :

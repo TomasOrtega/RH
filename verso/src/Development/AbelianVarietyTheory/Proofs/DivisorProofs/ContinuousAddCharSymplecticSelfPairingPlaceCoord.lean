@@ -20,15 +20,15 @@ open scoped GlobalTheory.VacAny
 namespace GlobalTheory.ContSymp
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ ψ hψ n d JA JB o v M _ g`. Use `set B := GlobalTheory.WeilM.symp (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA σ) (inclR (F := F) (AF F) o) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F JA) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F JB) with hB`. Establish `hadd1 : ∀ x x' y, B (x + x') y = B x y + B x' y`. Introduce `x x' y`. Simplify using `only [hB, GlobalTheory.WeilM.symp, GlobalTheory.WeilM.hTens, ← map_add, ← mul_add, ← Finset.sum_add_distrib, Matrix.add_apply, add_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hadd2 : ∀ x y y', B x (y + y') = B x y + B x y'`. Introduce `x y y'`. Simplify using `only [hB, GlobalTheory.WeilM.symp, GlobalTheory.WeilM.hTens, Matrix.add_apply, map_add, mul_add, Finset.sum_add_distrib]`. Establish `hsm1 : ∀ (r : AF F) x y, B (r • x) y = r * B x y`. Introduce `r x y`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [hB, GlobalTheory.WeilM.symp, GlobalTheory.WeilM.hTens, Matrix.smul_apply, smul_mul_assoc, ← Finset.smul_sum, mul_smul_comm, LinearMap.map_smul, smul_eq_mul]`. Establish `hsm2 : ∀ (r : AF F) x y, B x (r • y) = r * B x y`. Introduce `r x y`. Simplify using `only [hB, GlobalTheory.WeilM.symp, GlobalTheory.WeilM.hTens, Matrix.smul_apply, map_smul, mul_smul_comm, ← Finset.smul_sum, LinearMap.map_smul, smul_eq_mul]`. Set `Bl : Matrix (Fin n) (Fin d) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E) →ₗ[AF F] Matrix (Fin n) (Fin d) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E) →ₗ[AF F] AF F` to `LinearMap.mk₂ (AF F) B hadd1 (fun r x y => by rw [hsm1, smul_eq_mul]) hadd2 (fun r x y => by rw [hsm2, smul_eq_mul])`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hexp : ∀ a : M → v.adicCompletionIntegers F, B (∑ m, GlobalTheory.EmbChart.atPlace v (a m : Fv F v) • GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F (g m)) (∑ m, GlobalTheory.EmbChart.atPlace v (a m : Fv F v) • GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorMo …`. Introduce `a`. Express the relevant statement in the definitionally equal form `Bl _ _ = _`. Simplify using `only [map_sum, LinearMap.sum_apply, map_smul, LinearMap.smul_apply, smul_eq_mul]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[hexp]`. Establish `hc : ∀ m, Continuous fun a : M → v.adicCompletionIntegers F => GlobalTheory.EmbChart.atPlace v (a m : Fv F v)` using `fun m => (GlobalTheory.VacAny.continuous_atPlace v).comp (continuous_subtype_val.comp (continuous_apply m))`. Use `hψ.comp (continuous_const.mul (continuous_finset_sum _ fun m _ => (hc m).mul (continuous_finset_sum _ fun m' _ => (hc m').mul continuous_const)))` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_psi_symp_atPlace : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (ψ : AddChar (AF F) ℂ), Continuous ψ → ∀ {n d : ℕ} (JA : Matrix (Fin n) (Fin n) E) (JB : Matrix (Fin d) (Fin d) E)

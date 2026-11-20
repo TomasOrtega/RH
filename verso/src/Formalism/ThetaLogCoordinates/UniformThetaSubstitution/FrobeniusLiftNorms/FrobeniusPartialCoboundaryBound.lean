@@ -21,9 +21,9 @@ section Supp
 variable {K : Type} [Field K]
 
 /- English proof (translation)
-Establish `h' : AA K p x y n ≠ 0` using `h`. Simplify using `only [AA] at h'`. Take `⟨i, -, hi⟩` from `Finset.exists_ne_zero_of_sum_ne_zero h'`. Take `⟨j, -, hj⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hi`. Use `split_ifs at hj with hc`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨i, j, hc.2.1, hc.2.2⟩`. Conclude with `absurd rfl hj`.
+A detailed English derivation is pending.
 -/
 private theorem exists_pow_of_coeff_AA_ne_zero {p : ℕ} {x y : Fin 2} {n : Fin 2 →₀ ℕ}
     (h : MvPowerSeries.coeff n (AA K p x y) ≠ 0) :
@@ -37,7 +37,7 @@ private theorem exists_pow_of_coeff_AA_ne_zero {p : ℕ} {x y : Fin 2} {n : Fin 
   · exact absurd rfl hj
 
 /- English proof (translation)
-Establish `key : p ^ 2 ≡ 1 [MOD p ^ 2 - 1]` using `Nat.modEq_sub (Nat.one_le_pow _ _ (by omega))`. Simplify using `using key.pow i`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem pow_sq_pow_modEq_one_sq_sub_one {p : ℕ} (hp : 2 ≤ p) (i : ℕ) :
     (p ^ 2) ^ i ≡ 1 [MOD p ^ 2 - 1] := by
@@ -45,9 +45,9 @@ private theorem pow_sq_pow_modEq_one_sq_sub_one {p : ℕ} (hp : 2 ≤ p) (i : �
   simpa using key.pow i
 
 /- English proof (translation)
-Introduce `n hn`. Take `⟨i, j, hi, hj⟩` from `exists_pow_of_coeff_AA_ne_zero hn`. Establish `hp0 : 0 < p` using `by omega`. Rewrite using `[hi, hj]`. Use `⟨pow_pos (pow_pos hp0 2) i, Nat.mul_pos hp0 (pow_pos (pow_pos hp0 2) j), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : p * (p * (p ^ 2) ^ j) = (p ^ 2) ^ (j + 1)` using `by ring`. Rewrite using `[h2]`. Conclude with `(pow_sq_pow_modEq_one_sq_sub_one hp i).trans (pow_sq_pow_modEq_one_sq_sub_one hp (j + 1)).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem support_ok_a_zero_one {p : ℕ} (hp : 2 ≤ p) : SuppOK p (AA K p 0 1) := by
   intro n hn
@@ -60,9 +60,9 @@ theorem support_ok_a_zero_one {p : ℕ} (hp : 2 ≤ p) : SuppOK p (AA K p 0 1) :
   exact (pow_sq_pow_modEq_one_sq_sub_one hp i).trans (pow_sq_pow_modEq_one_sq_sub_one hp (j + 1)).symm
 
 /- English proof (translation)
-Introduce `n hn`. Take `⟨i, j, hi, hj⟩` from `exists_pow_of_coeff_AA_ne_zero hn`. Establish `hp0 : 0 < p` using `by omega`. Rewrite using `[hi, hj]`. Use `⟨Nat.mul_pos hp0 (pow_pos (pow_pos hp0 2) j), pow_pos (pow_pos hp0 2) i, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `((pow_sq_pow_modEq_one_sq_sub_one hp j).mul_left p).trans ((pow_sq_pow_modEq_one_sq_sub_one hp i).mul_left p).symm`.
+A detailed English derivation is pending.
 -/
 theorem support_ok_a_one_zero {p : ℕ} (hp : 2 ≤ p) : SuppOK p (AA K p 1 0) := by
   intro n hn
@@ -73,9 +73,7 @@ theorem support_ok_a_one_zero {p : ℕ} (hp : 2 ≤ p) : SuppOK p (AA K p 1 0) :
   exact ((pow_sq_pow_modEq_one_sq_sub_one hp j).mul_left p).trans ((pow_sq_pow_modEq_one_sq_sub_one hp i).mul_left p).symm
 
 /- English proof (translation)
-Introduce `n hn`. Distinguish the cases in `h1 : MvPowerSeries.coeff n G = 0`. Distinguish the cases in `h2 : MvPowerSeries.coeff n H = 0`. Conclude with `absurd (by simp [h1, h2]) hn`. Conclude with `hH n h2`.
-
-Conclude with `hG n h1`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 private theorem suppOK_C_mul_sub_C_mul {p : ℕ} {G H : MvPowerSeries (Fin 2) K} (hG : SuppOK p G)
     (hH : SuppOK p H) (a b : K) :
@@ -88,15 +86,15 @@ private theorem suppOK_C_mul_sub_C_mul {p : ℕ} {G H : MvPowerSeries (Fin 2) K}
   · exact hG n h1
 
 /- English proof (translation)
-Conclude with `suppOK_C_mul_sub_C_mul (support_ok_a_zero_one hp) (support_ok_a_one_zero hp) c c'`.
+A detailed English derivation is pending.
 -/
 theorem suppOK_Gser {p : ℕ} (hp : 2 ≤ p) (c c' : K) : SuppOK p (Gser p c c') := by
   exact suppOK_C_mul_sub_C_mul (support_ok_a_zero_one hp) (support_ok_a_one_zero hp) c c'
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[Formalism.InvariantFactorPaths.G7.TwoVariableSwapLemmas.coeff_swap2]`. Establish `h1 : (Formalism.InvariantFactorPaths.G7.TwoVariableSwapLemmas.sw n) x = n y` using `by show n ((Equiv.swap (0 : Fin 2) 1).symm x) = n y`. Rewrite using `[Equiv.symm_swap, hx]`. Establish `h2 : (Formalism.InvariantFactorPaths.G7.TwoVariableSwapLemmas.sw n) y = n x` using `by show n ((Equiv.swap (0 : Fin 2) 1).symm y) = n x`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Equiv.symm_swap, hy]`. Use `show AA K p x y (Formalism.InvariantFactorPaths.G7.TwoVariableSwapLemmas.sw n) = AA K p y x n`. Simplify using `only [AA, h1, h2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem swap_two_a_series (p : ℕ) (x y : Fin 2) (hx : Equiv.swap (0 : Fin 2) 1 x = y)
     (hy : Equiv.swap (0 : Fin 2) 1 y = x) : swap2 (AA K p x y) = AA K p y x := by
@@ -112,9 +110,9 @@ theorem swap_two_a_series (p : ℕ) (x y : Fin 2) (hx : Equiv.swap (0 : Fin 2) 1
   simp only [AA, h1, h2]
 
 /- English proof (translation)
-Establish `hA : swap2 (AA K p 0 1) = AA K p 1 0` using `swap_two_a_series p 0 1 (by simp) (by simp)`. Establish `hB : swap2 (AA K p 1 0) = AA K p 0 1` using `swap_two_a_series p 1 0 (by simp) (by simp)`. Establish `eA : Aser K p = AA K p 0 1` using `rfl`. Establish `eB : Aser' K p = AA K p 1 0` using `rfl`. Use extensionality with `n`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[Formalism.InvariantFactorPaths.G7.TwoVariableSwapLemmas.coeff_swap2]`. Simplify using `only [Gser, eA, eB, map_sub, MvPowerSeries.coeff_C_mul]`. Rewrite using `[← Formalism.InvariantFactorPaths.G7.TwoVariableSwapLemmas.coeff_swap2, ← Formalism.InvariantFactorPaths.G7.TwoVariableSwapLemmas.coeff_swap2, hA, hB]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem swap_two_g_series (p : ℕ) (c c' : K) : swap2 (Gser p c c') = Gser p (-c') (-c) := by
   have hA : swap2 (AA K p 0 1) = AA K p 1 0 := swap_two_a_series p 0 1 (by simp) (by simp)
@@ -128,7 +126,7 @@ theorem swap_two_g_series (p : ℕ) (c c' : K) : swap2 (Gser p c c') = Gser p (-
   ring
 
 /- English proof (translation)
-Establish `e : (fun s => MvPowerSeries.C (a s) * (MvPowerSeries.X s : MvPowerSeries (Fin 2) K)) = a • MvPowerSeries.X`. Use function extensionality and compare the values at `s`. Simplify using `[MvPowerSeries.smul_eq_C_mul]`. Rewrite using `[e, ← MvPowerSeries.rescale_eq_subst, MvPowerSeries.coeff_rescale, Finsupp.prod_fintype _ _ (by simp), Fin.prod_univ_two]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem coeff_subst_C_mul_X_eq_mul_coeff (a : Fin 2 → K) (G : MvPowerSeries (Fin 2) K)
     (n : Fin 2 →₀ ℕ) :
@@ -143,11 +141,11 @@ private theorem coeff_subst_C_mul_X_eq_mul_coeff (a : Fin 2 → K) (G : MvPowerS
     Finsupp.prod_fintype _ _ (by simp), Fin.prod_univ_two]
 
 /- English proof (translation)
-Establish `eL : ![MvPowerSeries.C ζ * (MvPowerSeries.X 0 : MvPowerSeries (Fin 2) K), MvPowerSeries.X 1] = fun s => MvPowerSeries.C (![ζ, 1] s) * MvPowerSeries.X s`. Apply the tactic sequence `funext s; fin_cases s <;> simp`. Establish `eR : ![(MvPowerSeries.X 0 : MvPowerSeries (Fin 2) K), MvPowerSeries.C (ζ ^ p) * MvPowerSeries.X 1] = fun s => MvPowerSeries.C (![1, ζ ^ p] s) * MvPowerSeries.X s`. Apply the tactic sequence `funext s; fin_cases s <;> simp`. Rewrite using `[eL, eR]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `n`. Rewrite using `[coeff_subst_C_mul_X_eq_mul_coeff, coeff_subst_C_mul_X_eq_mul_coeff]`. Distinguish the cases in `h : MvPowerSeries.coeff n G = 0`. Simplify using `[h]`. Take `⟨-, -, hmod⟩` from `hG n h`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hmod' : n 0 % (p ^ 2 - 1) = (p * n 1) % (p ^ 2 - 1)` using `hmod`. Establish `key : ζ ^ n 0 = (ζ ^ p) ^ n 1`. Rewrite using `[← pow_mul, pow_eq_pow_mod (n 0) hζ, pow_eq_pow_mod (p * n 1) hζ, hmod']`. Simplify using `[key]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem scale_of_suppOK {p : ℕ} {G : MvPowerSeries (Fin 2) K} (hG : SuppOK p G) {ζ : K}
     (hζ : ζ ^ (p ^ 2 - 1) = 1) :
@@ -174,11 +172,11 @@ theorem scale_of_suppOK {p : ℕ} {G : MvPowerSeries (Fin 2) K} (hG : SuppOK p G
     simp [key]
 
 /- English proof (translation)
-Establish `hin : MvPowerSeries.constantCoeff (in3 F) = 0` using `by show MvPowerSeries.constantCoeff (MvPowerSeries.subst ![(MvPowerSeries.X 0 : MvPowerSeries (Fin 3) K), MvPowerSeries.X 1] F) = 0`. Rewrite using `[Formalism.G.LogP.constantCoeff_subst_of_zero F, hF0]`. Apply the tactic sequence `intro i; fin_cases i <;> simp`. Establish `e1 : MvPowerSeries.constantCoeff (MvPowerSeries.subst ![in3 F, (MvPowerSeries.X 2 : MvPowerSeries (Fin 3) K)] G) = 0`. Rewrite using `[Formalism.G.LogP.constantCoeff_subst_of_zero G, hG0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `intro i; fin_cases i <;> simp [hin]`. Establish `e2 : MvPowerSeries.constantCoeff (MvPowerSeries.subst ![(MvPowerSeries.X 0 : MvPowerSeries (Fin 3) K), MvPowerSeries.X 2] G) = 0`. Rewrite using `[Formalism.G.LogP.constantCoeff_subst_of_zero G, hG0]`. Apply the tactic sequence `intro i; fin_cases i <;> simp`. Establish `e3 : MvPowerSeries.constantCoeff (MvPowerSeries.subst ![(MvPowerSeries.X 1 : MvPowerSeries (Fin 3) K), MvPowerSeries.X 2] G) = 0`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[Formalism.G.LogP.constantCoeff_subst_of_zero G, hG0]`. Apply the tactic sequence `intro i; fin_cases i <;> simp`. Use `show MvPowerSeries.constantCoeff (MvPowerSeries.subst ![in3 F, (MvPowerSeries.X 2 : MvPowerSeries (Fin 3) K)] G - MvPowerSeries.subst ![(MvPowerSeries.X 0 : MvPowerSeries (Fin 3) K), MvPowerSeries.X 2] G - MvPowerSeries.subst ![(MvPowerSeries.X 1 : MvPowerSeries (Fin 3) K), MvPow …`. Rewrite using `[map_sub, map_sub, e1, e2, e3]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem constant_coeff_partial_coboundary {F G : MvPowerSeries (Fin 2) K}
     (hF0 : MvPowerSeries.constantCoeff F = 0) (hG0 : MvPowerSeries.constantCoeff G = 0) :
@@ -208,7 +206,7 @@ theorem constant_coeff_partial_coboundary {F G : MvPowerSeries (Fin 2) K}
   simp
 
 /- English proof (translation)
-Unfold `DeS`. Rewrite using `[Formalism.InvariantFactorPaths.G7.CoboundarySeries.map_Gser σ p c (σ c), hσσ, Formalism.InvariantFactorPaths.G7.Top.frobExprG K p c (σ c) hp hpK, ← mul_assoc, ← map_mul, inv_mul_cancel₀ hpK, map_one, one_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem DeS_Gser {p : ℕ} (hp : 2 ≤ p) (hpK : (p : K) ≠ 0) (σ : K →+* K) {c : K}
     (hσσ : σ (σ c) = c) :
@@ -220,9 +218,9 @@ theorem DeS_Gser {p : ℕ} (hp : 2 ≤ p) (hpK : (p : K) ≠ 0) (σ : K →+* K)
     ← mul_assoc, ← map_mul, inv_mul_cancel₀ hpK, map_one, one_mul]
 
 /- English proof (translation)
-Establish `hH : Hser p σ (Gser p c (σ c)) (σ c) (-c) = 0`. Unfold `Hser`. Rewrite using `[DeS_Gser hp hpK σ hσσ, map_neg]`. Expand and normalize the polynomial expressions, which then agree. Establish `h0 : d1 F (0 : MvPowerSeries (Fin 2) K) = 0`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `h` using `Formalism.InvariantFactorPaths.G7.TwoVariableSwapLemmas.partial_coboundary_C_mul hF0 (0 : K) 0`. Simplify using `using h`. Establish `h` using `Formalism.InvariantFactorPaths.G7.CoboundarySeries.partial_coboundary_h_series (p := p) σ hF0 hl (Gser p c (σ c)) (σ c) (-c)`. Rewrite `h` using `[hH, h0]`. Conclude with `sub_eq_zero.mp h.symm`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem partial_coboundary_de_s_g_series {p : ℕ} (hp : 2 ≤ p) (hpK : (p : K) ≠ 0) (σ : K →+* K) {c : K}
     (hσσ : σ (σ c) = c) {F : MvPowerSeries (Fin 2) K}
@@ -243,11 +241,11 @@ theorem partial_coboundary_de_s_g_series {p : ℕ} (hp : 2 ≤ p) (hpK : (p : K)
 end Supp
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `Formalism.InvariantFactorPaths.G7.Top.derivA K p hp hnp`. Establish `e : MvPowerSeries.pderiv (R` using `K) 0 (Gser p c c') - MvPowerSeries.C c * (at1 0 (PowerSeries.derivative K (lgF K p)) * at1 1 (g0F K p)) = c • (MvPowerSeries.pderiv (R := K) 0 (Aser K p) - at1 0 (PowerSeries.derivative K (lgF K p)) * at1 1 (g0F K p)) - c' • MvPowerSeries.pderiv (R := K) 0 (Aser' K p) := by`. Unfold `Gser`. Rewrite using `[← MvPowerSeries.smul_eq_C_mul, ← MvPowerSeries.smul_eq_C_mul, ← MvPowerSeries.smul_eq_C_mul, map_sub, Derivation.map_smul, Derivation.map_smul, smul_sub]`. Normalize the expressions using the abelian group laws.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Unfold `DerivIs`. Rewrite using `[e]`. Introduce `n`. Rewrite using `[map_sub, map_smul, map_smul, smul_eq_mul, smul_eq_mul, sub_eq_add_neg]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ ?_)` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ hc (norm_nonneg _) (h1 n)`. Rewrite using `[norm_neg, norm_mul]`. Conclude with `mul_le_one₀ hc' (norm_nonneg _) (h2 n)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem derivIs_Gser {K : Type} [NormedField K] [IsUltrametricDist K] [CharZero K] {p : ℕ}
     (hp : p.Prime) (hnp : ‖(p : K)‖ = (p : ℝ)⁻¹) {c c' : K} (hc : ‖c‖ ≤ 1) (hc' : ‖c'‖ ≤ 1) :
@@ -273,51 +271,45 @@ theorem derivIs_Gser {K : Type} [NormedField K] [IsUltrametricDist K] [CharZero 
     exact mul_le_one₀ hc' (norm_nonneg _) (h2 n)
 
 /- English proof (translation)
-Take `⟨hp, -, hnp, -, hσ⟩` from `hU`. Establish `hσF : MvPowerSeries.map σ F = F` using `(Top.lawSymm K p hp hnp F hF).1 σ`. Establish `hδi : Integral (cob F (g0F K p))` using `Top.deIntegral K p σ hp hnp hσ F hF`. Take `⟨hF0, hFi, hFc⟩` from `hF`. Establish `hp0 : p ≠ 0` using `hp.ne_zero`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hp2 : 2 ≤ p` using `hp.two_le`. Establish `hppos : (0 : ℝ) < (p : ℝ)` using `by exact_mod_cast hp.pos`. Establish `hpK : (p : K) ≠ 0`. Introduce `h`. Rewrite `hnp` using `[h, norm_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(inv_pos.mpr hppos).ne hnp`. Establish `hinv : ‖((p : K)⁻¹)‖ = (p : ℝ)` using `by rw [norm_inv, hnp, inv_inv]`. Establish `hscale : ∀ f : MvPowerSeries (Fin 3) K, Bd (p : ℝ)⁻¹ f → Integral (MvPowerSeries.C ((p : K)⁻¹) * f)`. Introduce `f hf n`. Rewrite using `[MvPowerSeries.coeff_C_mul, norm_mul, hinv]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hX0 : ∀ i : Fin 3, MvPowerSeries.constantCoeff (MvPowerSeries.X i : MvPowerSeries (Fin 3) K) = 0` using `fun i => by simp`. Establish `hXp0 : ∀ i : Fin 3, MvPowerSeries.constantCoeff ((MvPowerSeries.X i : MvPowerSeries (Fin 3) K) ^ p) = 0` using `fun i => by simp [hp0]`. Establish `hsX : ∀ i : Fin 3, PowerSeries.HasSubst (MvPowerSeries.X i : MvPowerSeries (Fin 3) K)` using `fun i => PowerSeries.HasSubst.X i`. Establish `hin3 : MvPowerSeries.HasSubst ![(MvPowerSeries.X 0 : MvPowerSeries (Fin 3) K), MvPowerSeries.X 1]` using `hasSubst_pair (hX0 0) (hX0 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `have hin3c : ∀ i : Fin 2, MvPowerSeries.constantCoeff (![(MvPowerSeries.X 0 : MvPowerSeries (Fin 3) K), MvPowerSeries.X 1] i) = 0 := fun i => by fin_cases i <;> simp`. Establish `hin3i : ∀ i : Fin 2, Integral (![(MvPowerSeries.X 0 : MvPowerSeries (Fin 3) K), MvPowerSeries.X 1] i)` using `fun i => by fin_cases i`. Conclude with `integral_X 0`. Conclude with `integral_X 1`. Establish `hA0 : MvPowerSeries.constantCoeff (in3 F) = 0` using `MvPowerSeries.constantCoeff_subst_eq_zero hin3 hin3c hF0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAi : Integral (in3 F)` using `LogarithmEquivalence.integral_subst' hin3c hin3i hFi`. Establish `hδ3i : Integral (in3 (cob F (g0F K p)))` using `LogarithmEquivalence.integral_subst' hin3c hin3i hδi`. Establish `hσA : MvPowerSeries.map σ (in3 F) = in3 F`. Unfold `in3`. Rewrite using `[map_pair σ hin3, hσF, MvPowerSeries.map_X, MvPowerSeries.map_X]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsA : PowerSeries.HasSubst (in3 F)` using `PowerSeries.HasSubst.of_constantCoeff_zero hA0`. Establish `hAp0 : MvPowerSeries.constantCoeff (in3 F ^ p) = 0`. Rewrite using `[map_pow, hA0, zero_pow hp0]`. Establish `hfA0 : MvPowerSeries.constantCoeff (frobVar p (in3 F)) = 0`. Rewrite using `[constantCoeff_frobVar hp0, hA0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set r : MvPowerSeries (Fin 3) K := MvPowerSeries.C ((p : K)⁻¹) * (frobVar p (in3 F) - in3 F ^ p) with hr`. Establish `hCC : MvPowerSeries.C (p : K) * MvPowerSeries.C ((p : K)⁻¹) = (1 : MvPowerSeries (Fin 3) K)`. Rewrite using `[← map_mul, mul_inv_cancel₀ hpK, map_one]`. Establish `hFr : frobVar p (in3 F) = in3 F ^ p + MvPowerSeries.C (p : K) * r`. Rewrite using `[hr, ← mul_assoc, hCC]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hri : Integral r`. Use `hscale _ fun n => ?_` and prove the remaining obligations. Establish `h` using `frob_congr (σ := σ) hp hnp hσ (f := in3 F) hAi n`. Rewrite `h` using `[PhiH_apply, hσA, map_sub, norm_sub_rev, ← map_sub]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h`. Establish `hr0 : MvPowerSeries.constantCoeff r = 0`. Rewrite using `[hr, map_mul, map_sub, hfA0, hAp0, sub_zero, mul_zero]`. Establish `h1 : MvPowerSeries.HasSubst ![in3 F, (MvPowerSeries.X 2 : MvPowerSeries (Fin 3) K)]` using `hasSubst_pair hA0 (hX0 2)`. Establish `h2 : MvPowerSeries.HasSubst ![(MvPowerSeries.X 0 : MvPowerSeries (Fin 3) K), MvPowerSeries.X 2]` using `hasSubst_pair (hX0 0) (hX0 2)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : MvPowerSeries.HasSubst ![(MvPowerSeries.X 1 : MvPowerSeries (Fin 3) K), MvPowerSeries.X 2]` using `hasSubst_pair (hX0 1) (hX0 2)`. Use `set Gs : MvPowerSeries (Fin 2) K := MvPowerSeries.map σ G with hGs`. Establish `hd1P : d1 F (frobVar p Gs) = MvPowerSeries.subst ![in3 F ^ p, (MvPowerSeries.X 2 : MvPowerSeries (Fin 3) K) ^ p] Gs - MvPowerSeries.subst ![(MvPowerSeries.X 0 : MvPowerSeries (Fin 3) K) ^ p, MvPowerSeries.X 2 ^ p] Gs - MvPowerSeries.subst ![(MvPowerSeries.X 1 : MvPowerSeries (Fin …`. Unfold `d1`. Rewrite using `[pair_frobVar hp0 h1, pair_frobVar hp0 h2, pair_frobVar hp0 h3]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hd1s : frobVar p (MvPowerSeries.map σ (d1 F G)) = MvPowerSeries.subst ![frobVar p (in3 F), (MvPowerSeries.X 2 : MvPowerSeries (Fin 3) K) ^ p] Gs - MvPowerSeries.subst ![(MvPowerSeries.X 0 : MvPowerSeries (Fin 3) K) ^ p, MvPowerSeries.X 2 ^ p] Gs - MvPowerSeries.subst ![(MvPowerSe …`. Unfold `d1`. Rewrite using `[map_sub, map_sub, map_pair σ h1, map_pair σ h2, map_pair σ h3, hσA, MvPowerSeries.map_X, MvPowerSeries.map_X, MvPowerSeries.map_X, frobVar_sub hp0, frobVar_sub hp0, frobVar_pair hp0 h1, frobVar_pair hp0 h2, frobVar_pair hp0 h3, frobVar_X hp0, frobVar_X hp0, frobVar_X hp0]`. Use `set Φ : MvPowerSeries (Fin 2) K := Gs - MvPowerSeries.C (σ c) * (at1 0 (lgF K p) * at1 1 (g0F K p)) with hΦ`. Establish `hΦi : Integral (MvPowerSeries.pderiv (R` using `K) 0 Φ) := by`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : MvPowerSeries.pderiv (R` using `K) 0 Φ = MvPowerSeries.map σ (MvPowerSeries.pderiv (R := K) 0 G - MvPowerSeries.C c * (at1 0 (PowerSeries.derivative K (lgF K p)) * at1 1 (g0F K p))) := by`. Rewrite using `[hΦ, map_sub, pderiv_prod, map_sub, map_mul, map_mul, MvPowerSeries.map_C, map_inVar, map_inVar, map_derivative, map_lgF, map_g0F, map_pderiv]`. Rewrite using `[e]`. Introduce `n`. Rewrite using `[MvPowerSeries.coeff_map]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `norm_sigma_le hσ hp.one_le (hDer n)`. Establish `hE1` using `Top.divDeriv K (Fin 2) (Fin 3) p hp hnp 0 Φ ![in3 F ^ p, (MvPowerSeries.X 2 : MvPowerSeries (Fin 3) K) ^ p] r hΦi (fun i => by fin_cases i`. Conclude with `hAp0`. Conclude with `hXp0 2)`. Use the proof step `(fun i => by fin_cases i`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `int_pow hAi p`. Conclude with `int_pow (integral_X 2) p) hr0 hri`. Establish `hupd : Function.update ![in3 F ^ p, (MvPowerSeries.X 2 : MvPowerSeries (Fin 3) K) ^ p] 0 (![in3 F ^ p, (MvPowerSeries.X 2 : MvPowerSeries (Fin 3) K) ^ p] 0 + MvPowerSeries.C (p : K) * r) = ![frobVar p (in3 F), (MvPowerSeries.X 2 : MvPowerSeries (Fin 3) K) ^ p]`. Use function extensionality and compare the values at `i`. Use `fin_cases i`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Simplify using `[hFr]`. Simplify using the standard rewrite rules. Rewrite `hE1` using `[hupd]`. Establish `hSΦ : ∀ u v : MvPowerSeries (Fin 3) K, MvPowerSeries.HasSubst ![u, v] → MvPowerSeries.subst ![u, v] Φ = MvPowerSeries.subst ![u, v] Gs - MvPowerSeries.C (σ c) * (PowerSeries.subst u (lgF K p) * PowerSeries.subst v (g0F K p))`. Introduce `u v h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hΦ, MvPowerSeries.subst_sub h, MvPowerSeries.subst_mul h, MvPowerSeries.subst_mul h, MvPowerSeries.subst_C, subst_single_var h, subst_single_var h]`. Both sides reduce to the same expression. Establish `hlog : PowerSeries.subst F (lgF K p) = at1 0 (lgF K p) + at1 1 (lgF K p)`. Unfold `cob at hFc`. Take the linear combination `hFc`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `hsF : PowerSeries.HasSubst F` using `PowerSeries.HasSubst.of_constantCoeff_zero hF0`. Establish `hlogA : PowerSeries.subst (in3 F) (lgF K p) = (at1 0 (lgF K p) + at1 1 (lgF K p) : MvPowerSeries (Fin 3) K)`. Establish `h` using `congrArg in3 hlog`. Unfold `in3 at h ⊢`. Rewrite `h` using `[subst_psubst hin3 hsF, MvPowerSeries.subst_add hin3, subst_single_var hin3, subst_single_var hin3]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Establish `hat : ∀ i : Fin 3, at1 i (g0F K p) = MvPowerSeries.C ((p : K)⁻¹) * frobVar p (at1 i (lgF K p))` using `fun i => by`. Unfold `at1`. Rewrite using `[subst_g_zero_eq_log hp2 hpK (hsX i), frobVar_psubst hp0 (hsX i), frobVar_X hp0]`. Establish `hδ : in3 (cob F (g0F K p)) = MvPowerSeries.C ((p : K)⁻¹) * (PowerSeries.subst (in3 F ^ p) (lgF K p) - PowerSeries.subst (frobVar p (in3 F)) (lgF K p))`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : in3 (cob F (g0F K p)) = PowerSeries.subst (in3 F) (g0F K p) - at1 0 (g0F K p) - at1 1 (g0F K p)`. Unfold `cob in3`. Rewrite using `[MvPowerSeries.subst_sub hin3, MvPowerSeries.subst_sub hin3, subst_psubst hin3 hsF, subst_single_var hin3, subst_single_var hin3]`. Both sides reduce to the same expression. Rewrite using `[e, subst_g_zero_eq_log hp2 hpK hsA, hat, hat, ← frobVar_psubst hp0 hsA, hlogA, frobVar_add hp0]`.
-
-Expand and normalize the polynomial expressions, which then agree. Establish `hgb : PowerSeries.subst ((MvPowerSeries.X 2 : MvPowerSeries (Fin 3) K) ^ p) (g0F K p) = at1 2 (lgF K p) - MvPowerSeries.X 2` using `subst_pow_g_zero hp2 hpK (hsX 2)`. Establish `key : d1 F (DeS p σ G) - MvPowerSeries.C (σ c) * (in3 (cob F (g0F K p)) * at1 2 (lgF K p)) = MvPowerSeries.C ((p : K)⁻¹) * ((frobVar p (MvPowerSeries.map σ (d1 F G)) - MvPowerSeries.C (p : K) * d1 F G) - (MvPowerSeries.subst ![frobVar p (in3 F), (MvPowerSeries.X 2 : MvPowerSeries …`. Unfold `DeS`. Rewrite using `[partial_coboundary_linear hF0, hd1P, hd1s, hSΦ _ _ (hasSubst_pair hfA0 (hXp0 2)), hSΦ _ _ (hasSubst_pair hAp0 (hXp0 2)), hgb, hδ]`.
-
-Expand and normalize the polynomial expressions, which then agree. Establish `fin : frobVar p (MvPowerSeries.map σ (d1 F G)) - MvPowerSeries.C (p : K) * d1 F G = (MvPowerSeries.subst ![frobVar p (in3 F), (MvPowerSeries.X 2 : MvPowerSeries (Fin 3) K) ^ p] Φ - MvPowerSeries.subst ![in3 F ^ p, (MvPowerSeries.X 2 : MvPowerSeries (Fin 3) K) ^ p] Φ) + MvPowerSer …`. Take the linear combination `(-(MvPowerSeries.C (p : K))) * key + MvPowerSeries.C (p : K) * hΔ - ((frobVar p (MvPowerSeries.map σ (d1 F G)) - MvPowerSeries.C (p : K) * d1 F G) - (MvPowerSeries.subst ![frobVar p (in3 F), (MvPowerSeries.X 2 : MvPowerSeries (Fin 3) K) ^ p] Φ - MvPowerSeries.subst ![in3 F ^ p, ( …`. Rewrite using `[fin]`. Use `bd_add hE1 ?_` and prove the remaining obligations.
-
-Establish `hb` using `bd_mul (inv_nonneg.mpr hppos.le) zero_le_one (bd_C (ι := Fin 3) (inv_nonneg.mpr hppos.le) hnp.le) (int_mul (bd_C zero_le_one (norm_sigma_le hσ hp.one_le hc)) (int_mul hδ3i (integral_X 2)))`. Rewrite `hb` using `[mul_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem frobenius_partial_coboundary_bound {K : Type} [NormedField K] [IsUltrametricDist K] [CharZero K] {p : ℕ}
     {σ : K →+* K} (hU : UnrOK K p σ) {F : MvPowerSeries (Fin 2) K} (hF : IsLawOfLog p F)
@@ -526,13 +518,13 @@ theorem frobenius_partial_coboundary_bound {K : Type} [NormedField K] [IsUltrame
   rwa [mul_one] at hb
 
 /- English proof (translation)
-Establish `hp2 : 2 ≤ p` using `le_of_lt hU.2.1`. Establish `hpK : (p : K) ≠ 0` using `by exact_mod_cast (show p ≠ 0 by omega)`. Establish `hσc : ‖σ c‖ ≤ 1`. Establish `h1 : ‖σ c - c ^ p‖ ≤ (p : ℝ)⁻¹` using `hU.2.2.2.2 c hc`. Establish `h2 : ‖c ^ p‖ ≤ 1` using `by rw [norm_pow]; exact pow_le_one₀ (norm_nonneg _) hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (p : ℝ)⁻¹ ≤ 1` using `inv_le_one_of_one_le₀ (by exact_mod_cast (by omega : 1 ≤ p))`. Combine the equalities or inequalities in the displayed calculation. Establish `hG0 : MvPowerSeries.constantCoeff (Gser p c (σ c)) = 0`. Assume the negation of the conclusion as `h`. Establish `h' : MvPowerSeries.coeff 0 (Gser p c (σ c)) ≠ 0`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite using `[MvPowerSeries.coeff_zero_eq_constantCoeff_apply]` and apply the resulting hypothesis. Take `⟨h1, -, -⟩` from `suppOK_Gser hp2 c (σ c) 0 h'`. Simplify using `at h1`. Establish `hd0 : MvPowerSeries.constantCoeff (d1 F (Gser p c (σ c))) = 0` using `constant_coeff_partial_coboundary hF.1 hG0`. Use `⟨by rw [sub_zero]; exact hd0, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[sub_zero]`. Establish `hDer` using `derivIs_Gser (K := K) hU.1 hU.2.2.1 hc hσc`. Establish `hΔ` using `partial_coboundary_de_s_g_series hp2 hpK σ hσσ hF.1 hF.2.2`. Establish `hB` using `frobenius_partial_coboundary_bound hU hF hc hDer hΔ`. Conclude with `(Formalism.InvariantFactorPaths.G7.Top.dworkMv K (Fin 3) p σ hU.1 hU.2.2.1 hU.2.2.2.2 _ hd0).mpr hB`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem partial_coboundary_g_series_equiv {K : Type} [NormedField K] [IsUltrametricDist K] [CharZero K] {p : ℕ}
     {σ : K →+* K} (hU : UnrOK K p σ) {F : MvPowerSeries (Fin 2) K} (hF : IsLawOfLog p F)
@@ -564,13 +556,13 @@ end CoefficientSupportCongruences
 
 open CoefficientSupportCongruences in
 /- English proof (translation)
-Introduce `K _ _ _ p σ hU F hF c hc hσσ`. Establish `hp2 : 2 ≤ p` using `le_of_lt hU.2.1`. Establish `hσc : ‖σ c‖ ≤ 1`. Establish `h1 : ‖σ c - c ^ p‖ ≤ (p : ℝ)⁻¹` using `hU.2.2.2.2 c hc`. Establish `h2 : ‖c ^ p‖ ≤ 1` using `by rw [norm_pow]; exact pow_le_one₀ (norm_nonneg _) hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (p : ℝ)⁻¹ ≤ 1` using `inv_le_one_of_one_le₀ (by exact_mod_cast (by omega : 1 ≤ p))`. Combine the equalities or inequalities in the displayed calculation. Establish `hS` using `(Formalism.InvariantFactorPaths.G7.Top.simeqRules K (Fin 2)).1`. Use `⟨?_, partial_coboundary_g_series_equiv hU hF hc hσσ, ?_, ?_⟩` and prove the remaining obligations. Introduce `n hn`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `h`. Take `⟨h0, h1, -⟩` from `suppOK_Gser (K := K) hp2 c (σ c) n h`. Use linear arithmetic over natural numbers and integers. Rewrite using `[swap_two_g_series]`. Establish `h` using `partial_coboundary_g_series_equiv hU hF (c := -σ c) (by rwa [norm_neg]) (by simp [hσσ])`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify `h` using `[hσσ]`. Introduce `ζ hζ`. Rewrite using `[scale_of_suppOK (suppOK_Gser hp2 c (σ c)) hζ]`. Conclude with `hS _`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem g_c_is_beta : GcIsBeta := by
   intro K _ _ _ p σ hU F hF c hc hσσ

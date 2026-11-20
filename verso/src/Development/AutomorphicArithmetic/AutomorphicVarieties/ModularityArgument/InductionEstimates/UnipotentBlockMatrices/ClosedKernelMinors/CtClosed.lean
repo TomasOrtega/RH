@@ -30,17 +30,15 @@ private def ctKer {K : Type} [Field K] [NumberField K] {n : ℕ} (μ : Measure (
     simp
 
 /- English proof (translation)
-Use `isClosed_of_closure_subset fun φ hφ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `constantTermL2 μ r φ =ᵐ[μ] 0`. Use `ae_of_forall_isCompact μ fun S hS => ?_` and prove the remaining obligations. Take `⟨C, hC, hCφ⟩` from `exists_lintegral_constantTermL2_sq_le μ r hS`. Use `set I := ∫⁻ y in S, ‖constantTermL2 μ r φ y‖ₑ ∂μ`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hle : ∀ ε : ℝ, 0 < ε → I ^ 2 ≤ C * ENNReal.ofReal ε ^ 2`. Introduce `ε hε`. Take `⟨ψ, hψ, hdist⟩` from `Metric.mem_closure_iff.1 hφ ε hε`. Establish `hψ' : constantTermL2 μ r ψ =ᵐ[μ] 0` using `hψ`. Establish `hI : I = ∫⁻ y in S, ‖constantTermL2 μ r (φ - ψ) y‖ₑ ∂μ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `lintegral_congr_ae (ae_restrict_of_ae ?_)` and prove the remaining obligations. Use `filter_upwards [ae_constantTermL2_sub μ r φ ψ, hψ'] with y h1 h2`. Rewrite using `[h1, h2, Pi.zero_apply, sub_zero]`. Rewrite using `[hI]`. Use `(hCφ (φ - ψ)).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `gcongr`. Rewrite using `[← ofReal_norm, ← dist_eq_norm]`. Conclude with `ENNReal.ofReal_le_ofReal hdist.le`. Establish `hI0 : I ^ 2 = 0`. Use `le_antisymm ?_ zero_le` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `ht : Tendsto (fun ε : ℝ => C * ENNReal.ofReal ε ^ 2) (𝓝[>] 0) (𝓝 0)`. Establish `h1 : Tendsto (fun ε : ℝ => ENNReal.ofReal ε ^ 2) (𝓝[>] 0) (𝓝 0)`. Use `(((ENNReal.continuous_pow 2).comp ENNReal.continuous_ofReal).tendsto 0).mono_left (nhdsWithin_le_nhds (s := Set.Ioi (0 : ℝ)))` as an intermediate fact. Simplify `this` using `[Function.comp_def]`. Simplify using `using ENNReal.Tendsto.const_mul h1 (Or.inr hC)`.
-
-Conclude with `ge_of_tendsto ht (eventually_nhdsWithin_of_forall fun ε hε => hle ε hε)`. Establish `hI' : I = 0` using `pow_eq_zero_iff two_ne_zero |>.1 hI0`. Establish `hm : AEMeasurable (fun y => ‖constantTermL2 μ r φ y‖ₑ) (μ.restrict S)` using `(stronglyMeasurable_ctFun r (Lp.stronglyMeasurable φ)).measurable.enorm.aemeasurable`. Use `filter_upwards [(lintegral_eq_zero_iff' hm).1 hI'] with y hy`. Simplify using `using hy`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem ctKer_closed {K : Type} [Field K] [NumberField K] {n : ℕ} (μ : Measure (G1 K n)) [μ.IsHaarMeasure]
     (r : ℕ) : IsClosed (ctKer μ r : Set (L2 μ)) := by
@@ -78,7 +76,7 @@ private theorem ctKer_closed {K : Type} [Field K] [NumberField K] {n : ℕ} (μ 
   simpa using hy
 
 /- English proof (translation)
-Introduce `K _ _ n μ _ r`. Conclude with `⟨ctKer μ r, ctKer_closed μ r, fun _ => Iff.rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.ctClosed :
     ∀ {K : Type} [Field K] [NumberField K] {n : ℕ} (μ : Measure (G1 K n)) [μ.IsHaarMeasure] (r : ℕ), ∃ S : Submodule ℂ (L2 μ), IsClosed (S : Set (L2 μ)) ∧

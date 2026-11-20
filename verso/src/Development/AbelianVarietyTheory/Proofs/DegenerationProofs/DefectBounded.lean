@@ -13,19 +13,19 @@ open GlobalTheory.SS
 namespace GlobalTheory.SS
 
 /- English proof (translation)
-Establish `: Module.FinitePresentation S M'` using `_root_.FinitePresentation.of_isBaseChange f ((isLocalizedModule_iff_isBaseChange (Submonoid.powers b) S f).mp inferInstance)`. Take `⟨n, p, hp⟩` from `Module.Finite.exists_fin' S M'`. Take `⟨σ, hσ⟩` from `Module.projective_lifting_property p LinearMap.id hp`. Set `eS` to `Finsupp.linearEquivFunOnFinite S S (Fin n)`. Set `eB` to `Finsupp.linearEquivFunOnFinite B B (Fin n)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `ℓ : (Fin n →₀ B) →ₗ[B] (Fin n →₀ S)` to `Finsupp.mapRange.linearMap (Algebra.linearMap B S)`. Set `p' : (Fin n →₀ S) →ₗ[S] M'` to `p ∘ₗ eS.toLinearMap`. Set `σ' : M' →ₗ[S] (Fin n →₀ S)` to `eS.symm.toLinearMap ∘ₗ σ`. Establish `hpσ : ∀ x, p' (σ' x) = x` using `fun x => by`. Simplify `LinearMap.congr_fun hσ x` using `[p', σ']`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨h, s₁, hh⟩` from `Module.FinitePresentation.exists_lift_of_isLocalizedModule (Submonoid.powers b) ℓ ((σ'.restrictScalars B) ∘ₗ f)`. Take `⟨t, s₂, ht⟩` from `Module.FinitePresentation.exists_lift_of_isLocalizedModule (Submonoid.powers b) f ((p'.restrictScalars B) ∘ₗ ℓ)`. Establish `key : f ∘ₗ (t ∘ₗ h) = f ∘ₗ ((s₂ * s₁) • LinearMap.id)`. Use `LinearMap.ext fun m => ?_` and prove the remaining obligations. Establish `e1 : f (t (h m)) = (s₂ : B) • p' (ℓ (h m))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify `LinearMap.congr_fun ht (h m)` using `[Submonoid.smul_def]`. Establish `e2 : ℓ (h m) = (s₁ : B) • σ' (f m)`. Simplify `LinearMap.congr_fun hh m` using `[Submonoid.smul_def]`. Establish `e3 : p' ((s₁ : B) • σ' (f m)) = (s₁ : B) • f m`. Use `(p'.restrictScalars B).map_smul (s₁ : B) (σ' (f m))` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[LinearMap.coe_restrictScalars]`. Rewrite using `[this, hpσ]`. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, e1, e2, e3, LinearMap.comp_apply, LinearMap.smul_apply, LinearMap.id_apply, Submonoid.smul_def, map_smul, Submonoid.coe_mul, mul_smul]`. Take `⟨s₃, hs₃⟩` from `Module.Finite.exists_smul_of_comp_eq_of_isLocalizedModule (Submonoid.powers b) f _ _ key`. Take `⟨k₁, hk₁⟩` from `s₁.2`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k₂, hk₂⟩` from `s₂.2`. Take `⟨k₃, hk₃⟩` from `s₃.2`. Simplify using `only at hk₁ hk₂ hk₃`. Use `⟨k₃ + (k₂ + k₁), n, eB.toLinearMap ∘ₗ h, ((s₃ : B) • t) ∘ₗ eB.symm.toLinearMap, ?_⟩` and prove the remaining obligations. Use `LinearMap.ext fun m => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hm` using `LinearMap.congr_fun hs₃ m`. Rewrite `hm` using `[LinearMap.smul_apply, LinearMap.smul_apply, LinearMap.comp_apply, LinearMap.smul_apply, LinearMap.id_apply, Submonoid.smul_def, Submonoid.smul_def, Submonoid.smul_def, Submonoid.coe_mul]`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply]`. Rewrite using `[LinearMap.smul_apply, LinearMap.smul_apply, LinearMap.id_apply, hm, ← hk₁, ← hk₂, ← hk₃, pow_add, pow_add, mul_smul, mul_smul, mul_smul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_pow_factor_free {B S M M' : Type} [CommRing B] [CommRing S] [Algebra B S] (b : B)
     [IsLocalization (Submonoid.powers b) S] [AddCommGroup M] [Module B M] [Module.FinitePresentation B M]
@@ -78,13 +78,13 @@ theorem exists_pow_factor_free {B S M M' : Type} [CommRing B] [CommRing S] [Alge
     ← hk₁, ← hk₂, ← hk₃, pow_add, pow_add, mul_smul, mul_smul, mul_smul]
 
 /- English proof (translation)
-Introduce `R _ _ _ π _ B _ _ _ hsm`. Establish `: IsNoetherianRing B` using `Algebra.FiniteType.isNoetherianRing R B`. Establish `: Algebra.FinitePresentation R B` using `Algebra.FinitePresentation.of_finiteType.mp inferInstance`. Take `⟨c, n, s, t, hts⟩` from `exists_pow_factor_free (S := Localization.Away (algebraMap R B π)) (M' := Ω[Localization.Away (algebraMap R B π)⁄R]) (algebraMap R B π) (KaehlerDifferential.map R R B (Localization.Away (algebraMap R B π)))`. Use `⟨c, fun R' _ _ _ a => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `letI := a.toRingHom.toAlgebra`. Introduce `w hw`. Take `⟨⟨r, hr⟩, hrw⟩` from `hw`. Establish `hsw : s.baseChange R' w = 0`. Establish `h0 : r • s.baseChange R' w = 0`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrw' : r • w = 0` using `hrw`. Rewrite using `[← LinearMap.map_smul, hrw', map_zero]`. Conclude with `(smul_eq_zero.mp h0).resolve_left (nonZeroDivisors.ne_zero hr)`. Establish `hcomp : (t.baseChange R') (s.baseChange R' w) = (algebraMap R B π ^ c) • w`. Rewrite using `[← LinearMap.comp_apply, ← LinearMap.baseChange_comp, hts, LinearMap.baseChange_smul, LinearMap.baseChange_id, LinearMap.smul_apply, LinearMap.id_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hcomp` using `[hsw, map_zero]`. Establish `hπ : algebraMap R R' π = algebraMap B R' (algebraMap R B π)` using `(a.commutes π).symm`. Rewrite using `[hπ, ← map_pow, algebraMap_smul, ← hcomp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem defect_bounded : ∀ (R : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] (π : R), Irreducible π → ∀ (B : Type) [CommRing B] [Algebra R B] [Algebra.FiniteType R B], Algebra.Smooth R (Localization.Away (algebraMap R B π)) → ∃ c : ℕ, ∀ (R' : Type) [CommRing R'] [IsDomain R'] [Algebra R R'] (a : B →ₐ[R] R'), Defect a π c := by
   intro R _ _ _ π _ B _ _ _ hsm

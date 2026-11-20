@@ -9,14 +9,14 @@ namespace GroundTheory.Heights₂.Heights.RestTerms
 open Finset
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Yoa4.add_gap_le hd`.
+A detailed English derivation is pending.
 -/
 theorem SchStrictAntiSplit.add_gap_le {r : ℕ} {d : Fin r → ℕ} (hd : StrictAnti d) :
     ∀ (k : ℕ) (i j : Fin r), (j : ℕ) = i + k → d j + k ≤ d i :=
   _root_.UpperTheory.Reformulated.B.Yoa4.add_gap_le hd
 
 /- English proof (translation)
-Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => r - 1 - i) r, Finset.sum_range_reflect (fun i => i) r, Finset.sum_range_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem SchStrictAntiSplit.sum_staircase (r : ℕ) :
     ∑ i : Fin r, (r - 1 - (i : ℕ)) = r * (r - 1) / 2 := by
@@ -24,15 +24,15 @@ theorem SchStrictAntiSplit.sum_staircase (r : ℕ) :
     Finset.sum_range_id]
 
 /- English proof (translation)
-Introduce `r n d hd hsum`. Establish `hlow : ∀ i : Fin r, r - 1 - (i : ℕ) ≤ d i`. Introduce `i`. Establish `hr : 0 < r` using `Fin.pos i`. Establish `h` using `SchStrictAntiSplit.add_gap_le hd (r - 1 - (i : ℕ)) i ⟨r - 1, by omega⟩ (by simp; omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Use `⟨hlow, ?_⟩` and prove the remaining obligations. Rewrite using `[partitionsOf, Finset.mem_filter, Finset.Nat.mem_antidiagonalTuple]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hadd : ∑ i : Fin r, (d i - (r - 1 - (i : ℕ))) + ∑ i : Fin r, (r - 1 - (i : ℕ)) = ∑ i : Fin r, d i`.
+Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => Nat.sub_add_cancel (hlow i)`. Rewrite `hadd` using `[SchStrictAntiSplit.sum_staircase]`. Use linear arithmetic over natural numbers and integers. Introduce `i j hij`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `SchStrictAntiSplit.add_gap_le hd ((j : ℕ) - i) i j (by omega)`. Use `hlow i` as an intermediate fact. Use `hlow j` as an intermediate fact. Establish `: (i : ℕ) ≤ j` using `hij`. Establish `: (j : ℕ) < r` using `j.isLt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `show d j - (r - 1 - (j : ℕ)) ≤ d i - (r - 1 - (i : ℕ))`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem SchStrictAntiSplit.proof : SchStrictAntiSplit.Statement := by
   intro r n d hd hsum

@@ -13,7 +13,7 @@ open NumberField MeasureTheory ReciprocityTheory.ChartRestriction.G.Geo.Tor Reci
 open ReciprocityTheory.ChartRestriction.G.PullbackSections Formalism.L2.Theta Formalism.BasicNotions.TH
 
 /- English proof (translation)
-Establish `hS : ReciprocityTheory.ChartRestriction.G.Out.SecBaseChangeSt` using `GlobalTheory.abelianSchemeLaws_all.1.secBaseChange`. Use `jInjRd_of_wt T hM hj a n (fun p y ψ => ?_) (GlobalTheory.Frames.algebraic_laws hS _ _ _ _ (T.Q.Xo j) T.Q.c).2.2.2.1` and prove the remaining obligations. Conclude with `GlobalTheory.Frames.FramedBaseChange.exists_frMap hS _ _ _ _ (T.Q.Xo j) T.Q.c _ _ ψ y`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem jInjRd_of_laws {D : D7} (T : Top D) (hM : LawsM T.toCore) {j : ℕ} (hj : InR D j)
     (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ) : JInjRd T j a n := by
@@ -23,9 +23,9 @@ theorem jInjRd_of_laws {D : D7} (T : Top D) (hM : LawsM T.toCore) {j : ℕ} (hj 
   exact GlobalTheory.Frames.FramedBaseChange.exists_frMap hS _ _ _ _ (T.Q.Xo j) T.Q.c _ _ ψ y
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty, Finset.sum_empty]`. Conclude with `Lp.coeFn_zero ℂ 2 μ`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Lp.coeFn_add _ _).trans (Filter.EventuallyEq.add ?_ ih)` and prove the remaining obligations. Conclude with `(Lp.coeFn_smul _ _).trans (((hφ i).coeFn_toLp).const_smul (g i))`.
+A detailed English derivation is pending.
 -/
 theorem sum_toLp_ae {α : Type} [MeasurableSpace α] (μ : Measure α) {m : ℕ} (φ : Fin m → α → ℂ)
     (hφ : ∀ i, MemLp (φ i) 2 μ) (g : Fin m → ℂ) (s : Finset (Fin m)) :
@@ -45,9 +45,9 @@ variable {D : D7} {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} {
   (mu : GA D V → ℂ) (h : JMemL2 V σ rd dict mu)
 
 /- English proof (translation)
-Establish `e : onQ V (adel V dict mu (∑ i, g i • rd (b i))) = ∑ i, g i • jFn V σ rd dict mu (b i)`. Rewrite using `[map_sum, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, map_smul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[e]`. Conclude with `sum_toLp_ae (muQ1 V) (fun i => jFn V σ rd dict mu (b i)) (fun i => h (b i)) g Finset.univ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_ae {m : ℕ} (b : Fin m → C) (g : Fin m → ℂ) :
     ((∑ i, g i • uniformisationL2 V σ rd dict mu h (b i) : Lp ℂ 2 (muQ1 V)) : AutQ V → ℂ) =ᵐ[muQ1 V]
@@ -61,9 +61,9 @@ theorem sum_ae {m : ℕ} (b : Fin m → C) (g : Fin m → ℂ) :
   exact sum_toLp_ae (muQ1 V) (fun i => jFn V σ rd dict mu (b i)) (fun i => h (b i)) g Finset.univ
 
 /- English proof (translation)
-Introduce `m b hb`. Establish `h1` using `hJ m b hb`. Rewrite `h1`, the goal using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Use `h1 g (Lp.eq_zero_iff_ae_eq_zero.2 ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `sum_ae V rd dict mu h b g` as an intermediate fact. Rewrite `this` using `[hg, map_zero, map_zero]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem indepToC_of_jInj (hJ : JInj V σ rd dict mu h) : IndepToC rd := by
   intro m b hb
@@ -78,20 +78,20 @@ theorem indepToC_of_jInj (hJ : JInj V σ rd dict mu h) : IndepToC rd := by
 end General
 
 /- English proof (translation)
-The claim follows from `indepToC_of_jInj _ _ _ _ _ hJ`.
+A detailed English derivation is pending.
 -/
 theorem jInjRd_of_jInjAt {D : D7} {T : Top D} (h : LawsP T) (j : ℕ) (hj : InR D j)
     (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ) (hd : Dom a n) (hJ : JInjAt h j hj a n hd) : JInjRd T j a n :=
   indepToC_of_jInj _ _ _ _ _ hJ
 
 /- English proof (translation)
-Introduce `m b hb`. Establish `h1` using `jInjRd_of_laws T h.toLawsCore.toLawsM hj a n m b hb`. Rewrite `h1`, the goal using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Use `h1 g ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hs` using `sum_ae (T.V j T.σ₀) (rdC (T.U j) T.σ₀ a n) (T.dict j T.σ₀) (T.mu j T.σ₀) (h.cuspidalL2Subspace j hj T.σ₀ T.good_σ₀ a n hd) b g`. Rewrite `hs` using `[hg]`. Establish `hmem : (∑ i, g i • rdC (T.U j) T.σ₀ a n (b i)) ∈ holSub (T.U j T.σ₀).X (laU (T.U j T.σ₀) a n)` using `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (rdC_mem_holSub T.good_σ₀ a n (b i))`. Establish `hz` using `hae _ _ hmem (hs.symm.trans (Lp.coeFn_zero ℂ 2 _))`. Use function extensionality and compare the values at `k x`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `hx : x ∈ ((T.U j T.σ₀).X k).dom`. Conclude with `hz k x hx`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Establish `: rdC (T.U j) T.σ₀ a n (b i) k x = 0` using `by classical`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `dif_neg hx`. Rewrite using `[this, mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem jInjAt_of_aeDom {D : D7} {T : Top D} (h : LawsP T) (j : ℕ) (hj : InR D j)
     (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ) (hd : Dom a n)
@@ -118,7 +118,7 @@ theorem jInjAt_of_aeDom {D : D7} {T : Top D} (h : LawsP T) (j : ℕ) (hj : InR D
     rw [this, mul_zero]
 
 /- English proof (translation)
-Take `⟨th, hr, -, hdU⟩` from `h.dictU j hj T.σ₀ T.good_σ₀`. Conclude with `jInjAt_of_aeDom h j hj a n hd (aeDom_of hA (h.finVol j hj T.σ₀ T.good_σ₀) hP (h.muUnit j hj T.σ₀ T.good_σ₀) hdU)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem jInjAt_of_aut {D : D7} {T : Top D} (h : LawsP T) (j : ℕ) (hj : InR D j)
     (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ) (hd : Dom a n)
@@ -130,15 +130,15 @@ theorem jInjAt_of_aut {D : D7} {T : Top D} (h : LawsP T) (j : ℕ) (hj : InR D j
     (aeDom_of hA (h.finVol j hj T.σ₀ T.good_σ₀) hP (h.muUnit j hj T.σ₀ T.good_σ₀) hdU)
 
 /- English proof (translation)
-Introduce `hJ`. Establish `h1` using `hJ 2 b hb`. Rewrite `h1` using `[Fintype.linearIndependent_iff]`. Set `v : Fin 2 → ℂ` to `fun i => toC (evR (T.Q.Xo j) T.Q.c (b i).1 y)`. Establish `hv : ∀ i k x, rdC (T.U j) T.σ₀ a n (b i) k x = if x ∈ ((T.U j T.σ₀).X k).dom then v i else 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `i k x`. Distinguish the cases in `hx : x ∈ ((T.U j T.σ₀).X k).dom`. Rewrite using `[if_pos hx]`. Use `rdU_apply_dom (T.U j T.σ₀) (b i).1 k ⟨x, hx⟩` as an intermediate fact. Rewrite `this` using `[hy]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Rewrite using `[if_neg hx]`. Conclude with `dif_neg hx`. Establish `rel : ∀ g : Fin 2 → ℂ, g 0 * v 0 + g 1 * v 1 = 0 → ∀ i, g i = 0`. Introduce `g hg`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `h1 g ?_` and prove the remaining obligations. Use function extensionality and compare the values at `k x`. Simplify using `only [Fin.sum_univ_two, Pi.add_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply, hv]`. Use `split_ifs`. Conclude with `hg`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `e` using `rel ![v 1, -v 0] (by simp; ring)`. Establish `e0 : v 0 = 0` using `by simpa using e 1`. Use `rel ![1, 0] (by simp [e0]) 0` as an intermediate fact. Simplify using `at this`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem not_jInjRd_of_const {D : D7} (T : Top D) (j : ℕ) (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ)
     (y : FrPt (T.Q.Xo j) T.Q.c (CAt T.σ₀)) (hy : ∀ k x, (T.U j T.σ₀).un k x = y)

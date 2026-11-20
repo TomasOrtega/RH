@@ -6,7 +6,7 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutJAGQQSSFSS
 namespace Formalism.FourierDecayAlt.P.CutMP.JA
 
 /- English proof (translation)
-The claim follows from `SSn.Rep.Core.GQ.gQQSSF_of_cut SSn.Rep.Core.GQ.quadratic_transfer_identity SSn.Rep.Core.GQ.quadratic_kappa_identity SSn.Rep.Core.GQ.quadratic_shift_identity`.
+A detailed English derivation is pending.
 -/
 theorem quadratic_second_shift_form : SSn.Rep.Core.GQQSSF :=
   SSn.Rep.Core.GQ.gQQSSF_of_cut SSn.Rep.Core.GQ.quadratic_transfer_identity SSn.Rep.Core.GQ.quadratic_kappa_identity SSn.Rep.Core.GQ.quadratic_shift_identity

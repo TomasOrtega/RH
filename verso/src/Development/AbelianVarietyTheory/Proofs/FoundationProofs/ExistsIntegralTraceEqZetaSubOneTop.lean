@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SmallTracesSubgr
 open GlobalTheory.K5
 
 /- English proof (translation)
-Introduce `p _ hp Ω _ _ hc T S _ j hj` and use `GlobalTheory.T.smallTraces_subgroup_galois_towerTop p Ω hp hc T _ le_rfl S j hj`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.exists_integral_trace_eq_zeta_sub_one_top : ∀ (p : ℕ) [Fact p.Prime], p ≠ 2 → ∀ (Ω : Type) [Field Ω] [Algebra (O0 p) Ω], IsClo p Ω →
   ∀ (T : Tower p Ω) (S : Finset Ω), (∀ s ∈ S, IsInt p s) → ∀ j : ℕ, 1 ≤ j →

@@ -16,35 +16,31 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {V W Y : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W] [AddCommGroup Y] [Module ℂ Y]
 
 /- English proof (translation)
-Establish `hcz : ∀ j i, i ≠ j → b.1 i j = 0` using `fun j i hi => hrz i j (Ne.symm hi)`. Establish `hcard : ∀ i, Fintype.card (Fin (b.1 i i)) = Fintype.card (m i)`. Introduce `i`. Establish `r` using `b.2.1 i`. Rewrite `r` using `[Finset.sum_eq_single i (fun j _ hj => hrz i j hj) (by simp)]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using r`. Set `E : ∀ i, Fin (b.1 i i) ≃ m i` to `fun i => Fintype.equivOfCardEq (hcard i)`. Set `f : ∀ i, (Σ j, Fin (b.1 i j)) ≃ m i` to `fun i => (OneBlockCell.valEquiv (n := fun j => b.1 i j) i rfl (fun j hj => hrz i j hj)).trans (E i)`. Set `g : ∀ j, (Σ i, Fin (b.1 i j)) ≃ m j` to `fun j => (OneBlockCell.valEquiv (n := fun i => b.1 i j) j rfl (fun i hi => hcz j i hi)).trans (E j)`. Use `⟨f, g, ?_⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hbot : twKer ρ (relUnip k f) 1 = ⊥`. Use `eq_bot_iff.2 (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨n, v, rfl⟩`. Establish `: (n : Levi k m) = 1` using `funext fun i => eq_one_of_mem_unipRad_single (f i) i (fun j hj => hrz i j hj) (n.2 i trivial)`. Simplify using `[this]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hδ : ∀ z, relDeltaHalf k (fun i j => Fin (b.1 i j)) z = 1` using `fun z => by`. Rewrite using `[relDeltaHalf_apply]`. Conclude with `Finset.prod_eq_one fun i _ => OneBlockCell.deltaHalf_eq_one_of_single i (fun j hj => hrz i j hj) (z i)`. Establish `hδ' : ∀ z, relDeltaHalf k (fun j i => Fin (b.1 i j)) z = 1` using `fun z => by`. Rewrite using `[relDeltaHalf_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Finset.prod_eq_one fun j _ => OneBlockCell.deltaHalf_eq_one_of_single j (fun i hi => hcz j i hi) (z j)`. Establish `hP : ∀ x, x ∈ relParab k g` using `fun x j _ => mem_parab_of_single (g j) j (fun i hi => hcz j i hi) (x j)`. Establish `hfg : ∀ i (t : Fin (b.1 i i)), f i ⟨i, t⟩ = g i ⟨i, t⟩` using `fun i t => rfl`. Establish `hγ : ∀ (p : relParab k g), relEmb k f (swapBlocks k (fun i j => Fin (b.1 i j)) (relProj k g p)) = (p : Levi k m)`. Introduce `p`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[relEmb_apply]`. Use `Units.ext (Matrix.ext fun x y => ?_)` and prove the remaining obligations. Take `⟨⟨a, t⟩, rfl⟩` from `(f i).surjective x`. Take `⟨⟨a', s⟩, rfl⟩` from `(f i).surjective y`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `ha : a = i`. Assume the negation of the conclusion as `hne`. Establish `h1` using `hrz i a hne`. Establish `h2` using `t.2`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `ha' : a' = i`. Assume the negation of the conclusion as `hne`. Establish `h1` using `hrz i a' hne`. Establish `h2` using `s.2`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Substitute using the available equality. Substitute using the available equality.
 
-Substitute `ha` using the available equality. Substitute `ha'` using the available equality. Rewrite using `[leviEmb_apply_same, hfg, hfg]`. Both sides reduce to the same expression. Set `Ψ : W ≃ₗ[ℂ] Jacquet ρ (relUnip k f)` to `(Submodule.quotEquivOfEqBot _ hbot).symm`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hΨ : ∀ u, Ψ u = Submodule.Quotient.mk u` using `fun u => rfl`. Set `τ` to `(twist ((relJac f ρ).comp (swapBlocks k (fun i j => Fin (b.1 i j)))) (relDeltaHalf k (fun j i => Fin (b.1 i j)))).comp (relProj k g)`. Establish `law : ∀ (p : relParab k g) u, τ p (Ψ u) = Ψ (ρ p u)`. Introduce `p u`. Rewrite using `[MonoidHom.comp_apply, twist_apply, MonoidHom.comp_apply, hΨ, relJac_mk, hδ, hδ', hΨ, hγ p]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Simplify using `only [inv_one, Units.val_one, one_smul]`. Set `F : ρ.IntertwiningMap (cellFunctor f g ρ)` to `{ toFun := fun u => ⟨⟨fun x => Ψ (ρ x u), fun p x => by show Ψ (ρ (↑p * x) u) = _`. Rewrite using `[map_mul, Module.End.mul_apply]`. Conclude with `(law p _).symm⟩,`. Use `mem_smoothPart_of_nhds (Filter.mem_of_superset ((hsm u).mem_nhds (by simp)) fun x hx => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hx' : ρ x u = u` using `hx`. Use `Subtype.ext (funext fun y => ?_)` and prove the remaining obligations. Use `show Ψ (ρ (y * x) u) = Ψ (ρ y u)`. Rewrite using `[map_mul, Module.End.mul_apply, hx'])⟩`. Use the proof step `map_add' := fun u w => Subtype.ext (Subtype.ext (funext fun x => by simp))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `map_smul' := fun c u => Subtype.ext (Subtype.ext (funext fun x => by simp))`. Use the proof step `isIntertwining' := fun h => LinearMap.ext fun u => Subtype.ext (Subtype.ext (funext fun x => by show Ψ (ρ x (ρ h u)) = Ψ (ρ (x * h) u)`. Rewrite using `[map_mul, Module.End.mul_apply])) }`. Use `⟨(LocGL.equivOfBijective F ⟨fun u w hw => ?_, fun φ => ⟨Ψ.symm (φ.1.1 1), Subtype.ext (Subtype.ext (funext fun x => ?_))⟩⟩).symm⟩` and prove the remaining obligations. Establish `h1 : Ψ (ρ 1 u) = Ψ (ρ 1 w)` using `congrArg (fun φ => φ.1.1 1) hw`.
-
-Simplify using `using h1`. Use `show Ψ (ρ x (Ψ.symm (φ.1.1 1))) = φ.1.1 x`. Use `(law ⟨x, hP x⟩ (Ψ.symm (φ.1.1 1))).symm.trans ?_` and prove the remaining obligations. Use `(congrArg (τ ⟨x, hP x⟩) (Ψ.apply_symm_apply (φ.1.1 1))).trans ?_` and prove the remaining obligations. Use `(φ.1.2 ⟨x, hP x⟩ 1).symm.trans ?_` and prove the remaining obligations.
-
-Conclude with `congrArg φ.1.1 (mul_one x)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cell_diag {α : Type} [Fintype α] [LinearOrder α] {m : α → Type} [∀ i, Fintype (m i)]
     [∀ i, DecidableEq (m i)] (b : SizeMatrix m m) (hrz : ∀ i j, j ≠ i → b.1 i j = 0)
@@ -137,7 +133,7 @@ theorem cell_diag {α : Type} [Fintype α] [LinearOrder α] {m : α → Type} [�
     exact congrArg φ.1.1 (mul_one x)
 
 /- English proof (translation)
-Establish `hn` using `GlobalTheory.ProdSupport.nontrivial_piTensor X fun a => GlobalTheory.SmGL.Model.nontrivial_of_isIrreducible (hi a)`. Take `⟨Z, _, _, υ, hυ, hs⟩` from `GlobalTheory.IrrSubquot.exists_irreducible_subquotient _ _ ((piTensor ρ).comp (MonoidHom.mulSingle Γ c)) hn`. Take `⟨φ⟩` from `nonempty_equiv_of_isSubquotient hυ (hi c) (isSubquotient_factor ρ c hυ hs)`. Conclude with `(IsSubquotient.of_injective φ.toIntertwiningMap φ.toLinearEquiv.injective).trans hs`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isSubquotient_comp_mulSingle {α : Type} [Fintype α] [DecidableEq α] {Γ X : α → Type} [∀ a, Group (Γ a)]
     [∀ a, AddCommGroup (X a)] [∀ a, Module ℂ (X a)] (ρ : ∀ a, Representation ℂ (Γ a) (X a))
@@ -151,7 +147,7 @@ theorem isSubquotient_comp_mulSingle {α : Type} [Fintype α] [DecidableEq α] {
   exact (IsSubquotient.of_injective φ.toIntertwiningMap φ.toLinearEquiv.injective).trans hs
 
 /- English proof (translation)
-Take `⟨T, -, hT⟩` from `h' α β m m' _ f g X ρ hρ hl`. Rewrite `h0` using `[hT ⟨Y, τ, hτs, hτ⟩]`. Take `⟨s, -, hs⟩` from `Finset.exists_ne_zero_of_sum_ne_zero h0`. Conclude with `⟨fun i j => (s i j).rep, fun i => jhMult_ne_zero_iff.1 (Finset.prod_ne_zero_iff.1 (left_ne_zero_of_mul hs) i (Finset.mem_univ i)), jhMult_ne_zero_iff.1 (right_ne_zero_of_mul hs)⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_of_cell (h' : CellSemisimplification k) {α β : Type} [Fintype α] [LinearOrder α] [Fintype β]
     [LinearOrder β] {m : α → Type} [∀ i, Fintype (m i)] [∀ i, DecidableEq (m i)] {m' : β → Type}
@@ -172,13 +168,13 @@ theorem exists_of_cell (h' : CellSemisimplification k) {α β : Type} [Fintype �
     jhMult_ne_zero_iff.1 (right_ne_zero_of_mul hs)⟩
 
 /- English proof (translation)
-Take `⟨s, hrow, hcol⟩` from `exists_of_cell (hG k).2 f g (fun i => (p i).smooth) (fun i => hasFiniteLength_of_isIrreducible (p i).irr) hτ hτs h0`. Establish `hR : ∀ i, ∃ t : Fin 2 → Multiset (IrrGL k), (∀ j, HasSupport (s i j).ρ (t j)) ∧ A i = ∑ j, t j` using `fun i => exists_sum_of_jac hG hBZ (hA i) (f i) (GlobalTheory.T.piExteriorTensor_smoothIrreducible_isIrreducible hBZ k _ _ fun j => s i j) (hrow i) (fun j => s i j) (fun j => isSubquotient_comp_mulSingle _ (fun j => (s i j).irr) j)`. Use `choose t ht hAt using hR`. Establish `hC : ∀ j, HasSupport (y j).ρ (∑ i, t i j)`. Introduce `j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hd : ∑ i, b i j = d j` using `by simpa using Fintype.card_congr (g j)`. Establish `h1` using `isSubquotient_factor (fun j => multiProd (g j) fun i => (s i j).ρ) j (y j).irr ((hy j).trans (isSubquotient_comp hcol _))`. Take `⟨φ⟩` from `(GlobalTheory.SmGL.Placing.parInd_jac_placing k _ _ _ (g j) (stdBlocks (fun i => b i j) hd) _).1 (piTensor fun i => (s i j).ρ)`. Set `ψ` to `φ.trans (prodIrrEquiv hd (fun i => (s i j).ρ) (fun i => (s i j).smooth) fun i => (s i j).irr)`. Conclude with `hasSupport_of_isSubquotient_prodIrr (y := fun i => IrrGL.of (s i j).ρ (s i j).smooth (s i j).irr) (fun i => (ht i j).of_equiv (IrrGL.equivOf _ _ _)) (y j).irr (h1.trans (.of_injective ψ.toIntertwiningMap ψ.toLinearEquiv.injective))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hU : ∀ j, A j = ∑ i, t i j` using `fun j => hasSupport_unique hG hBZ (hys j) (hC j)`. Simplify using `only [Fin.sum_univ_two] at hAt hU`. Establish `e1 : t 0 1 = t 1 0` using `add_left_cancel ((hAt 0).symm.trans (hU 0))`. Establish `hw : t 0 1 = 0` using `Multiset.eq_zero_of_forall_notMem fun x hx => hAB x (hAt 0 ▸ Multiset.mem_add.2 (Or.inr hx)) (hAt 1 ▸ Multiset.mem_add.2 (Or.inl (e1 ▸ hx)))`. Establish `hd1` using `(ht 0 1).sum_fst`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hd2` using `(ht 1 0).sum_fst`. Rewrite `hd2` using `[← e1, hw]`. Rewrite `hd1` using `[hw]`. Simplify using `only [Multiset.map_zero, Multiset.sum_zero, Fintype.card_fin] at hd1 hd2`. Conclude with `⟨hd1.symm, hd2.symm⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem offdiag_eq_zero (hG : GeometricLemma) (hBZ : BernsteinZelevinskyFiniteness) {d : Fin 2 → ℕ}
     (p : ∀ i, Irr k (d i)) {A : Fin 2 → Multiset (IrrGL k)} (hA : ∀ i, HasSupport (p i).π (A i))
@@ -221,17 +217,17 @@ theorem offdiag_eq_zero (hG : GeometricLemma) (hBZ : BernsteinZelevinskyFinitene
   exact ⟨hd1.symm, hd2.symm⟩
 
 /- English proof (translation)
-Set `M` to `fun i : Fin 2 => Fin (d i)`. Use `haveI : Fintype (SizeMatrix M M) := Fintype.ofFinite _`. Set `b₀ : SizeMatrix M M` to `⟨fun i j => if i = j then d i else 0, by`. Use `⟨fun i => ?_, fun j => ?_⟩` and prove the remaining obligations. Simplify using `[M]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[M]⟩`. Establish `hρ : IsSmooth (piTensor fun i => (p i).π)` using `isSmooth_piTensor fun i => (p i).smooth`. Take `⟨f₀, g₀, ⟨E₀⟩⟩` from `cell_diag b₀ (fun i j hj => by simp [b₀, Ne.symm hj]) _ hρ`. Set `f : ∀ (b : SizeMatrix M M) i, (Σ j, Fin (b.1 i j)) ≃ M i` to `fun b => if h : b = b₀ then h ▸ f₀ else b.nonempty_rows.some`. Set `g : ∀ (b : SizeMatrix M M) j, (Σ i, Fin (b.1 i j)) ≃ M j` to `fun b => if h : b = b₀ then h ▸ g₀ else b.nonempty_cols.some`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hf : f b₀ = f₀` using `by simp [f]`. Establish `hg : g b₀ = g₀` using `by simp [g]`. Establish `h1` using `(hG k).1.jhMult_eq (m := M) (m' := M) e e' hρ f g hτ`. Use `(show jhMult τ (jac e' (multiProd e fun i => (p i).π)) = _ from h1).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single b₀]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : ∀ (f' : ∀ i, (Σ j, Fin (b₀.1 i j)) ≃ M i) (g' : ∀ j, (Σ i, Fin (b₀.1 i j)) ≃ M j), f' = f₀ → g' = g₀ → jhMult τ (cellFunctor f' g' (piTensor fun i => (p i).π)) = jhMult τ (piTensor fun i => (p i).π)`. Introduce and unpack `_ _ rfl rfl`. Conclude with `jhMult_congr_right τ E₀`. Conclude with `key _ _ hf hg`. Introduce `b _ hb`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `hne`. Take `⟨z1, z2⟩` from `offdiag_eq_zero hG hBZ p hA hAB (f b) (g b) hτ hτs y hy hys hne`. Use `hb (Subtype.ext (funext fun i => funext fun j => ?_))` and prove the remaining obligations. Establish `r0` using `b.2.1 0`. Establish `r1` using `b.2.1 1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.sum_univ_two, M, Fintype.card_fin] at r0 r1`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp_all [b₀]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem jhMult_jac_multiProd (hG : GeometricLemma) (hBZ : BernsteinZelevinskyFiniteness) {d : Fin 2 → ℕ}
     (p : ∀ i, Irr k (d i)) {A : Fin 2 → Multiset (IrrGL k)} (hA : ∀ i, HasSupport (p i).π (A i))

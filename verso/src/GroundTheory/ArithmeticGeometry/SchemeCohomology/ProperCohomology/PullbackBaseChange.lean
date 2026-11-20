@@ -14,7 +14,7 @@ noncomputable section
 variable {W T U : Scheme.{u}}
 
 /- English proof (translation)
-The claim follows from `Scheme.Modules.Hom.app_smul _ a n`.
+A detailed English derivation is pending.
 -/
 lemma pullbackUnitApp_smul_at (g : T ⟶ U) (N : U.Modules) (O : U.Opens) (a : Γ(U, O))
     (n : Γ(N, O)) :
@@ -40,27 +40,21 @@ def IsBaseChangeAt (g : T ⟶ U) (N : U.Modules) (O : U.Opens) : Prop :=
       ∀ n, ψ' (Etale.pullbackUnitApp g N O n) = ψ n
 
 /- English proof (translation)
-Introduce `Q _ instQ ψ hψ`. Use `letI instW : Module Γ(W, f ⁻¹ᵁ (g ⁻¹ᵁ O)) Q := instQ`. Use `letI : Module Γ(T, g ⁻¹ᵁ O) Q := Module.compHom Q (f.app (g ⁻¹ᵁ O)).hom`. Establish `hsm : ∀ (t : Γ(T, g ⁻¹ᵁ O)) (q : Q), t • q = f.app (g ⁻¹ᵁ O) t • q` using `fun _ _ => rfl`. Take `⟨ψ₁, hψ₁, u₁⟩` from `hg Q ψ (fun a n => by`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hψ, hsm]`. Express the relevant statement in the definitionally equal form `(f ≫ g).app O a • ψ n = (f.app (g ⁻¹ᵁ O)) ((g.app O) a) • ψ n`. Rewrite using `[Scheme.Hom.comp_app]`. Use the proof step `rfl)`. Take `⟨ψ₂, hψ₂, u₂⟩` from `hf Q ψ₁.toAddMonoidHom (fun t x => ψ₁.map_smul t x)`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `c` to `(Scheme.Modules.pullbackComp f g).app N`. Set `O'` to `(f ≫ g) ⁻¹ᵁ O`. Establish `hc : ∀ n, c.inv.app O' (Etale.pullbackUnitApp (f ≫ g) N O n) = Etale.pullbackUnitApp f _ (g ⁻¹ᵁ O) (Etale.pullbackUnitApp g N O n)` using `Etale.pullbackUnitApp_comp f g N O`. Establish `hchi : ∀ x, c.hom.app O' (c.inv.app O' x) = x` using `fun x => by`. Rewrite using `[← ConcreteCategory.comp_apply, ← Scheme.Modules.Hom.comp_app, c.inv_hom_id]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Set `Φ : Γ((Scheme.Modules.pullback (f ≫ g)).obj N, O') →ₗ[Γ(W, O')] Q` to `{ toFun := fun x => ψ₂ (c.inv.app O' x) map_add' := fun x y => by`. Express the relevant statement in the definitionally equal form `ψ₂ (c.inv.app O' (x + y)) = ψ₂ (c.inv.app O' x) + ψ₂ (c.inv.app O' y)`. Use `erw [map_add, map_add]`. Use the proof step `map_smul' := fun w x => by`.
+Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `ψ₂ (c.inv.app O' (w • x)) = w • ψ₂ (c.inv.app O' x)`. Use `erw [Scheme.Modules.Hom.app_smul]`. Conclude with `ψ₂.map_smul w _ }`. Use `⟨Φ, fun n => ?_, fun ψ'' hψ'' => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ψ₂ (c.inv.app O' (Etale.pullbackUnitApp (f ≫ g) N O n)) = ψ n`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Rewrite using `[hc, hψ₂]`. Conclude with `hψ₁ n`. Set `χ : Γ((Scheme.Modules.pullback f).obj ((Scheme.Modules.pullback g).obj N), f ⁻¹ᵁ (g ⁻¹ᵁ O)) →ₗ[Γ(W, f ⁻¹ᵁ (g ⁻¹ᵁ O))] Q` to `{ toFun := fun y => ψ'' (c.hom.app O' y) map_add' := fun x y => by`. Express the relevant statement in the definitionally equal form `ψ'' (c.hom.app O' (x + y)) = ψ'' (c.hom.app O' x) + ψ'' (c.hom.app O' y)`. Use `erw [map_add, map_add]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Use the proof step `map_smul' := fun w y => by`. Express the relevant statement in the definitionally equal form `ψ'' (c.hom.app O' (w • y)) = w • ψ'' (c.hom.app O' y)`. Use `erw [Scheme.Modules.Hom.app_smul]`. Conclude with `ψ''.map_smul w _ }`. Establish `hχ : ∀ n, χ (Etale.pullbackUnitApp f _ (g ⁻¹ᵁ O) (Etale.pullbackUnitApp g N O n)) = ψ n` using `fun n => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `ψ'' (c.hom.app O' (Etale.pullbackUnitApp f _ (g ⁻¹ᵁ O) (Etale.pullbackUnitApp g N O n))) = ψ n`. Rewrite using `[← hc, hchi]`. Conclude with `hψ'' n`. Set `χ₁ : Γ((Scheme.Modules.pullback g).obj N, g ⁻¹ᵁ O) →ₗ[Γ(T, g ⁻¹ᵁ O)] Q` to `{ toFun := fun x => χ (Etale.pullbackUnitApp f _ (g ⁻¹ᵁ O) x) map_add' := fun x y => by`. Express the relevant statement in the definitionally equal form `χ (Etale.pullbackUnitApp f _ (g ⁻¹ᵁ O) (x + y)) = _`.
-
-Use `erw [map_add, map_add]`. Use the proof step `map_smul' := fun t x => by`. Express the relevant statement in the definitionally equal form `χ (Etale.pullbackUnitApp f _ (g ⁻¹ᵁ O) (t • x)) = t • χ (Etale.pullbackUnitApp f _ (g ⁻¹ᵁ O) x)`. Rewrite using `[pullbackUnitApp_smul_at, map_smul, hsm] }`. Establish `h₁ : χ₁ = ψ₁` using `u₁ χ₁ hχ`.
-
-Establish `h₂ : χ = ψ₂` using `u₂ χ (fun x => congrArg (fun l => l x) h₁)`. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `ψ'' x = ψ₂ (c.inv.app O' x)`. Rewrite using `[← h₂]`. Express the relevant statement in the definitionally equal form `ψ'' x = ψ'' (c.hom.app O' (c.inv.app O' x))`.
-
-Rewrite using `[hchi]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma IsBaseChangeAt.comp {f : W ⟶ T} {g : T ⟶ U} {N : U.Modules} {O : U.Opens}
     (hg : IsBaseChangeAt g N O)
@@ -130,11 +124,11 @@ lemma IsBaseChangeAt.comp {f : W ⟶ T} {g : T ⟶ U} {N : U.Modules} {O : U.Ope
     rw [hchi]
 
 /- English proof (translation)
-Introduce `Q _ _ ψ hψ`. Establish `hb` using `Etale.pullbackUnitApp_bijective j N hO`. Establish `: IsIso (j.app O)` using `Scheme.Hom.isIso_app j O hO`. Set `e` to `AddEquiv.ofBijective (Etale.pullbackUnitApp j N O) hb`. Establish `he : ∀ n, e.symm (Etale.pullbackUnitApp j N O n) = n` using `fun n => e.symm_apply_apply n`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hs : ∀ x, Etale.pullbackUnitApp j N O (e.symm x) = x` using `fun x => e.apply_symm_apply x`. Use `⟨{ toFun := fun x => ψ (e.symm x) map_add' := fun x y => by simp map_smul' := fun t x => ?_ }, fun n => ?_, fun ψ'' hψ'' => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩ : ∃ a : Γ(U, O), j.app O a = t` from `⟨(asIso (j.app O)).inv t, by simp⟩`. Simplify using `only [RingHom.id_apply]`. Rewrite using `[← hψ, ← hs x, he, ← pullbackUnitApp_smul_at, he]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[he]`. Use extensionality with `x`. Take `⟨n, rfl⟩` from `hb.2 x`. Simplify using `[he, hψ'']`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 lemma isBaseChangeAt_of_isOpenImmersion (j : T ⟶ U) [IsOpenImmersion j] (N : U.Modules)
     {O : U.Opens} (hO : O ≤ j.opensRange) : IsBaseChangeAt j N O := by
@@ -157,33 +151,29 @@ lemma isBaseChangeAt_of_isOpenImmersion (j : T ⟶ U) [IsOpenImmersion j] (N : U
     simp [he, hψ'']
 
 /- English proof (translation)
-Introduce `Q _ _ ψ hψ`. Establish `: IsIso (f.app (g ⁻¹ᵁ O))` using `Scheme.Hom.isIso_app f _ hO`. Set `ρ` to `asIso (f.app (g ⁻¹ᵁ O))`. Set `O'` to `(f ≫ g) ⁻¹ᵁ O`. Use `letI instW : Module Γ(W, O') Q := Module.compHom Q ρ.inv.hom`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Equip the data with the indicated structure.
 
-Establish `hsm : ∀ (w : Γ(W, O')) (q : Q), w • q = ρ.inv w • q` using `fun _ _ => rfl`. Establish `hρ : ∀ t : Γ(T, g ⁻¹ᵁ O), ρ.inv (f.app (g ⁻¹ᵁ O) t) = t` using `fun t => by`. Rewrite using `[← ConcreteCategory.comp_apply]`. Express the relevant statement in the definitionally equal form `(ρ.hom ≫ ρ.inv) t = t`. Rewrite using `[ρ.hom_inv_id]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hρ' : ∀ w : Γ(W, O'), f.app (g ⁻¹ᵁ O) (ρ.inv w) = w` using `fun w => by`. Express the relevant statement in the definitionally equal form `(ρ.inv ≫ ρ.hom) w = w`. Rewrite using `[ρ.inv_hom_id]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Take `⟨Ψ, hΨ, uΨ⟩` from `h Q ψ (fun a n => by`. Rewrite using `[hψ, hsm]`. Express the relevant statement in the definitionally equal form `_ = ρ.inv ((f.app (g ⁻¹ᵁ O)) ((g.app O) a)) • ψ n`. Rewrite using `[hρ])`. Establish `hb` using `Etale.pullbackUnitApp_bijective f ((Scheme.Modules.pullback g).obj N) hO`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `e` to `AddEquiv.ofBijective (Etale.pullbackUnitApp f _ (g ⁻¹ᵁ O)) hb`. Set `c` to `(Scheme.Modules.pullbackComp f g).app N`. Establish `hchi : ∀ x, c.inv.app O' (c.hom.app O' x) = x` using `fun x => by`. Rewrite using `[← ConcreteCategory.comp_apply, ← Scheme.Modules.Hom.comp_app, c.hom_inv_id]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hchi' : ∀ x, c.hom.app O' (c.inv.app O' x) = x` using `fun x => by`. Rewrite using `[← ConcreteCategory.comp_apply, ← Scheme.Modules.Hom.comp_app, c.inv_hom_id]`. Both sides reduce to the same expression. Set `ψ' : Γ((Scheme.Modules.pullback g).obj N, g ⁻¹ᵁ O) →ₗ[Γ(T, g ⁻¹ᵁ O)] Q` to `{ toFun := fun x => Ψ (c.hom.app O' (e x)) map_add' := fun x y => by`. Express the relevant statement in the definitionally equal form `Ψ (c.hom.app O' (e (x + y))) = Ψ (c.hom.app O' (e x)) + Ψ (c.hom.app O' (e y))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition.
 
-Use `erw [map_add, map_add, map_add]`. Use the proof step `map_smul' := fun t x => by`. Express the relevant statement in the definitionally equal form `Ψ (c.hom.app O' (Etale.pullbackUnitApp f _ (g ⁻¹ᵁ O) (t • x))) = t • Ψ (c.hom.app O' (Etale.pullbackUnitApp f _ (g ⁻¹ᵁ O) x))`. Rewrite using `[pullbackUnitApp_smul_at]`. Establish `h1` using `Scheme.Modules.Hom.app_smul c.hom (U := O') (f.app (g ⁻¹ᵁ O) t) (Etale.pullbackUnitApp f _ (g ⁻¹ᵁ O) x)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `erw [h1, map_smul, hsm, hρ] }`. Use `⟨ψ', fun n => ?_, fun ψ'' hψ'' => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Ψ (c.hom.app O' (Etale.pullbackUnitApp f _ (g ⁻¹ᵁ O) (Etale.pullbackUnitApp g N O n))) = ψ n`. Establish `hcomp` using `Etale.pullbackUnitApp_comp f g N O n`. Establish `h2 : c.hom.app O' (Etale.pullbackUnitApp f _ (g ⁻¹ᵁ O) (Etale.pullbackUnitApp g N O n)) = Etale.pullbackUnitApp (f ≫ g) N O n` using `(congrArg (fun z => c.hom.app O' z) hcomp).symm.trans (hchi' _)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `(congrArg Ψ h2).trans (hΨ n)`. Set `χ : Γ((Scheme.Modules.pullback (f ≫ g)).obj N, O') →ₗ[Γ(W, O')] Q` to `{ toFun := fun x => ψ'' (e.symm (c.inv.app O' x)) map_add' := fun x y => by`. Express the relevant statement in the definitionally equal form `ψ'' (e.symm (c.inv.app O' (x + y))) = ψ'' (e.symm (c.inv.app O' x)) + ψ'' (e.symm (c.inv.app O' y))`. Use `erw [map_add, map_add, map_add]`. Use the proof step `map_smul' := fun w x => by`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `ψ'' (e.symm (c.inv.app O' (w • x))) = ρ.inv w • ψ'' (e.symm (c.inv.app O' x))`. Establish `hs1 : c.inv.app O' (w • x) = w • c.inv.app O' x` using `Scheme.Modules.Hom.app_smul c.inv w x`. Use `set y : Γ((Scheme.Modules.pullback f).obj ((Scheme.Modules.pullback g).obj N), f ⁻¹ᵁ (g ⁻¹ᵁ O)) := c.inv.app O' x`. Establish `hs2 : e.symm (c.inv.app O' (w • x)) = ρ.inv w • e.symm y`. Apply `e.injective` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Use `(e.apply_symm_apply _).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `c.inv.app O' (w • x) = Etale.pullbackUnitApp f _ (g ⁻¹ᵁ O) (ρ.inv w • e.symm y)`. Rewrite using `[pullbackUnitApp_smul_at, hρ', hs1]`. Conclude with `congrArg (fun z => w • z) (e.apply_symm_apply y).symm`. Rewrite using `[hs2, map_smul] }`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hχ : χ = Ψ` using `uΨ χ (fun n => by`. Express the relevant statement in the definitionally equal form `ψ'' (e.symm (c.inv.app O' (Etale.pullbackUnitApp (f ≫ g) N O n))) = ψ n`. Establish `hcomp` using `Etale.pullbackUnitApp_comp f g N O n`. Establish `h3 : e.symm (c.inv.app O' (Etale.pullbackUnitApp (f ≫ g) N O n)) = Etale.pullbackUnitApp g N O n` using `(congrArg (fun z => e.symm z) hcomp).trans (e.symm_apply_apply _)`. Conclude with `(congrArg ψ'' h3).trans (hψ'' n))`.
-
-Use extensionality with `x`. Express the relevant statement in the definitionally equal form `ψ'' x = Ψ (c.hom.app O' (e x))`. Rewrite using `[← hχ]`. Express the relevant statement in the definitionally equal form `ψ'' x = ψ'' (e.symm (c.inv.app O' (c.hom.app O' (e x))))`. Establish `h4 : e.symm (c.inv.app O' (c.hom.app O' (e x))) = x` using `(congrArg (fun z => e.symm z) (hchi (e x))).trans (e.symm_apply_apply x)`.
-
-Conclude with `(congrArg ψ'' h4).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma IsBaseChangeAt.of_comp_isOpenImmersion {f : W ⟶ T} [IsOpenImmersion f] {g : T ⟶ U}
     {N : U.Modules} {O : U.Opens} (hO : g ⁻¹ᵁ O ≤ f.opensRange)
@@ -270,7 +260,7 @@ lemma IsBaseChangeAt.of_comp_isOpenImmersion {f : W ⟶ T} [IsOpenImmersion f] {
     exact (congrArg ψ'' h4).symm
 
 /- English proof (translation)
-Introduce `Q _ instQ ψ hψ`. Conclude with `@Etale.existsUnique_pullbackSection T U h _ _ N _ Q _ instQ ψ hψ`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma isBaseChangeAt_top_of_isAffine (h : T ⟶ U) [IsAffine T] [IsAffine U] (N : U.Modules)
     [N.IsQuasicoherent] : IsBaseChangeAt h N ⊤ := by
@@ -278,9 +268,9 @@ lemma isBaseChangeAt_top_of_isAffine (h : T ⟶ U) [IsAffine T] [IsAffine U] (N 
   exact @Etale.existsUnique_pullbackSection T U h _ _ N _ Q _ instQ ψ hψ
 
 /- English proof (translation)
-Use `IsBaseChangeAt.of_comp_isOpenImmersion (f := (g ⁻¹ᵁ V).ι) (by simp) ?_` and prove the remaining obligations. Rewrite using `[← morphismRestrict_ι g V]`. Use `IsBaseChangeAt.comp (isBaseChangeAt_of_isOpenImmersion V.ι N (by simp)) ?_` and prove the remaining obligations. Rewrite using `[Scheme.Opens.ι_preimage_self]`. Establish `: IsAffine V` using `hV`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: IsAffine (g ⁻¹ᵁ V)` using `hV'`. Establish `: ((Scheme.Modules.pullback V.ι).obj N).IsQuasicoherent` using `(SheafOfModules.isQuasicoherent V.toScheme.ringCatSheaf).prop_of_iso ((Scheme.Modules.restrictFunctorIsoPullback V.ι).app N) inferInstance`. Conclude with `isBaseChangeAt_top_of_isAffine (g ∣_ V) _`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isBaseChangeAt_of_isAffineOpen (g : T ⟶ U) (N : U.Modules) [N.IsQuasicoherent]
     {V : U.Opens} (hV : IsAffineOpen V) (hV' : IsAffineOpen (g ⁻¹ᵁ V)) :
@@ -297,9 +287,9 @@ theorem isBaseChangeAt_of_isAffineOpen (g : T ⟶ U) (N : U.Modules) [N.IsQuasic
   exact isBaseChangeAt_top_of_isAffine (g ∣_ V) _
 
 /- English proof (translation)
-Use `set L := Submodule.span Γ(T, g ⁻¹ᵁ O) (Set.range (Etale.pullbackUnitApp g N O))`. Take `⟨ψ', -, huniq⟩` from `h (Γ((Scheme.Modules.pullback g).obj N, g ⁻¹ᵁ O) ⧸ L) 0 (fun a n => by simp)`. Establish `h0 : (0 : _ →ₗ[Γ(T, g ⁻¹ᵁ O)] (_ ⧸ L)) = ψ'` using `huniq 0 (fun n => by simp)`. Establish `h1 : L.mkQ = ψ'` using `huniq L.mkQ (fun n => by`. Simplify using `using (Submodule.Quotient.mk_eq_zero L).2 (Submodule.subset_span ⟨n, rfl⟩))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_top_iff]`. Introduce `q _`. Use `LinearMap.congr_fun (h1.trans h0.symm) q` as an intermediate fact. Conclude with `(Submodule.Quotient.mk_eq_zero L).1 this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma IsBaseChangeAt.span_range {g : T ⟶ U} {N : U.Modules} {O : U.Opens}
     (h : IsBaseChangeAt g N O) :

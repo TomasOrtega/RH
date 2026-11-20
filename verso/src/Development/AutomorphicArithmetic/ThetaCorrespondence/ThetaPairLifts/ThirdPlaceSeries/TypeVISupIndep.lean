@@ -20,7 +20,7 @@ def phiSubmodule {cf : CharFrame D} {jE : D.host.E →+* Qb} (X : LocNd (lay0 D)
     (_ : Good X Y σ' c j (A.au.cls j h1 h2 { (M μ j h1 h2).wt with S := S', irrS := h })),
     (NG.isoTyp (M μ j h1 h2).wt.ρ S').comap (M μ j h1 h2).real
 /- English proof (translation)
-Substitute `hμ hj` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem phi_submodule_heq {cf : CharFrame D} {jE : D.host.E →+* Qb} (X : LocNd (lay0 D)) (Y : LocAut X) (A : _root_.GlobalTheory.HeightCounting.CharFrameHostEmbedding D cf jE)
     (M : MtFam D) (σ' : D.ntypes.Par) (c : Y.naut.CG 1) {μ μ' : D.what₂.Tup} {j j' : ℕ} (h1 : 1 ≤ j) (h2 : j ≤ D.R.m)
@@ -35,15 +35,15 @@ variable {D : D7} {cf : CharFrame D} {jE : D.host.E →+* Qb} {A : _root_.Global
   {tup : D.what₂.Tup → Fin D.R.m → HChar D.host.E} {X : LocNd (lay0 D)}
   {iq : ∀ i : X.nd.Loc, FractionRing (X.nd.O i) →+* Qbar (X.nd.l i)} {Y : LocAut X} {Cb : LocBC Y}
 /- English proof (translation)
-Establish `hc : ∀ P, (∃ Sig, (∀ w, isoLoc X.nd Y.naut Sig w = D.ntypes.locPar σ' w) ∧ IsBCV X.nd Y.naut i P (twistIso X.nd Y.naut (Sig ++ [muPart X.nd Y.naut i]) Y.naut.etaTinv)) ↔ Good X Y σ' (Y.muC i) (X.nd.j i) (A.au.cls (X.nd.j i) (X.nd.j_range i).1 (X.nd.j_range i).2 { (mlX M X i).wt w …` using `hS.S i P, irrS := hS.irr i P }) := by`. Introduce `P`. Establish `hl : Y.naut.locV i P = fun w => D.nbc.locAU (X.nd.j i) (Cb.embAV i P) w` using `funext (Cb.embAV_loc i P)`. Establish `hs : Y.naut.satV i P = D.nbc.satAU (X.nd.j i) (Cb.embAV i P)` using `funext (Cb.embAV_sat i P)`. Establish `hf : Y.naut.infWt i = D.nbc.infW (X.nd.j i) (D.nbc.wtAU (X.nd.j i) (Cb.embAV i P))` using `Cb.embAV_inf i P`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hS.emb i P]`. Unfold `Good`. Use `exists_congr fun Sig => and_congr_right fun _ => ?_` and prove the remaining obligations. Unfold `IsBCV BCd`. Rewrite using `[hl, hs, hf]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Iff.rfl`. Apply `le_antisymm` to reduce the goal to its premises. Use `iSup₂_le fun P hP => ?_` and prove the remaining obligations. Rewrite using `[hS.typeV i P]`. Conclude with `le_iSup_of_le (hS.S i P) (le_iSup_of_le (hS.irr i P) (le_iSup_of_le ((hc P).1 hP) le_rfl))`.
+Unfold both sides to obtain the same proposition, which implies itself. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `iSup_le fun S' => iSup_le fun hirr => iSup_le fun hg => ?_` and prove the remaining obligations. Distinguish the cases in `hb : (NG.isoTyp (mlX M X i).wt.ρ S').comap (mlX M X i).real = ⊥`. Conclude with `hb.le.trans bot_le`. Take `⟨P, hP⟩` from `hS.surj i S' hirr hb`. Establish `ht : Y.naut.typeV i P = (NG.isoTyp (mlX M X i).wt.ρ S').comap (mlX M X i).real`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hS.typeV i P, isoTyp_eq (hS.irr i P).1 hP]`. Establish `hcl : A.au.cls (X.nd.j i) (X.nd.j_range i).1 (X.nd.j_range i).2 { (mlX M X i).wt with S` using `hS.S i P, irrS := hS.irr i P } = A.au.cls (X.nd.j i) (X.nd.j_range i).1 (X.nd.j_range i).2 { (mlX M X i).wt with S := S', irrS := hirr } := (A.au.iso _ _ _ _ _).2 ⟨⟨LinearEquiv.refl _ _, fun _ _ => rfl⟩, hP⟩`. Establish `hP' : P ∈ {P | ∃ Sig, (∀ w, isoLoc X.nd Y.naut Sig w = D.ntypes.locPar σ' w) ∧ IsBCV X.nd Y.naut i P (twistIso X.nd Y.naut (Sig ++ [muPart X.nd Y.naut i]) Y.naut.etaTinv)}` using `(hc P).2 (hcl ▸ hg)`. Conclude with `le_iSup₂_of_le (f := fun P _ => Y.naut.typeV i P) P hP' ht.ge`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem supr_type_v_eq_phi_submodule (hS : _root_.GlobalTheory.HeightCounting.AutomorphicSpecialisation A M tup iq Y Cb) (σ' : D.ntypes.Par) (i : X.nd.Loc) :
     (⨆ P ∈ {P | ∃ Sig, (∀ w, isoLoc X.nd Y.naut Sig w = D.ntypes.locPar σ' w) ∧ IsBCV X.nd Y.naut i P (twistIso X.nd Y.naut (Sig ++ [muPart X.nd Y.naut i]) Y.naut.etaTinv)}, Y.naut.typeV i P) =
@@ -81,9 +81,9 @@ theorem supr_type_v_eq_phi_submodule (hS : _root_.GlobalTheory.HeightCounting.Au
       exact le_iSup₂_of_le (f := fun P _ => Y.naut.typeV i P) P hP' ht.ge
 end loc2
 /- English proof (translation)
-Introduce `D cf jE A low Pq S hL eig θ Bs M C tp _ _ _ _ _ _ big X T Sp Y Cb hS i i' σ' hmu hj`. Rewrite using `[_root_.GlobalTheory.HeightCounting.MtIndep.supr_type_v_eq_phi_submodule hS σ' i, _root_.GlobalTheory.HeightCounting.MtIndep.supr_type_v_eq_phi_submodule hS σ' i']`. Establish `hc : Y.muC i = Y.muC i'`. Take `⟨h1, h2⟩` from `X.nd.j_range i`. Establish `e` using `hS.muC i ⟨X.nd.j i - 1, by omega⟩ (by simp only; omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e'` using `hS.muC i' ⟨X.nd.j i - 1, by omega⟩ (by simp only; omega)`. Rewrite `e` using `[hmu]`. Conclude with `A.chr.e1.injective (Subtype.ext (e.trans e'.symm))`. Rewrite using `[hc]`. Conclude with `_root_.GlobalTheory.HeightCounting.MtIndep.phi_submodule_heq X Y A M σ' _ _ _ _ _ hmu hj`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem typeV_iSup_indep_alt : ∀ (D : D7) (cf : CharFrame D) (jE : D.host.E →+* Qb) (A : _root_.GlobalTheory.HeightCounting.CharFrameHostEmbedding D cf jE) (low : Finset ℕ) (Pq : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)) → PlE D.host) (S : RatDat D.ntw) (hL : ∀ j, ℕ → PlE D.host → Module.End D.what₂.LL (S.WL j)) (eig : ℕ → D.what₂.FT → ℕ → PlE D.host → ↥D.LL0) (θ : ∀ kk : Fin 2, Multiplicative (ZMod (D.host.g kk)) →* (↥D.LL0)ˣ) (Bs : SideB D cf A.row low Pq S hL eig θ) (M : MtFam D) (C : NChoice D) (tp : TupTied D cf C), ChoiceSide D cf M Bs.exp C tp → MtInput D M tp.tup C.Q → (∀ x : D.LL0, star (x : D.what₂.LL) ∈ D.LL0) → (∀ j g, ∃ z : ℤ, eExp D j g = z) → (∀ v, v ∈ placesOver D.host.E D.host.pde ∨ v ∈ placesOver D.host.E D.host.pde' → IsSplitPl D.host v) → GlobalTheory.RowTie.ChebSplit D.nd → ∀ (big : D.what₂.places.Pl → Finset ℂ) (X : LocNd (lay0 D)) (T : LocTw X) (Sp : NdSpec A.pl M C big X T), ∀ (Y : LocAut X) (Cb : LocBC Y), _root_.GlobalTheory.HeightCounting.AutomorphicSpecialisation A M tp.tup Sp.iq Y Cb → ∀ (i i' : X.nd.Loc) (σ' : D.ntypes.Par), X.nd.mu i = X.nd.mu i' → X.nd.j i = X.nd.j i' → HEq (⨆ P ∈ {P | ∃ Sig, (∀ w, isoLoc X.nd Y.naut Sig w = D.ntypes.locPar σ' w) ∧ IsBCV X.nd Y.naut i P (twistIso X.nd Y.naut (Sig ++ [muPart X.nd Y.naut i]) Y.naut.etaTinv)}, Y.naut.typeV i P) (⨆ P ∈ {P | ∃ Sig, (∀ w, isoLoc X.nd Y.naut Sig w = D.ntypes.locPar σ' w) ∧ IsBCV X.nd Y.naut i' P (twistIso X.nd Y.naut (Sig ++ [muPart X.nd Y.naut i']) Y.naut.etaTinv)}, Y.naut.typeV i' P) := by
   intro D cf jE A low Pq S hL eig θ Bs M C tp _ _ _ _ _ _ big X T Sp Y Cb hS i i' σ' hmu hj

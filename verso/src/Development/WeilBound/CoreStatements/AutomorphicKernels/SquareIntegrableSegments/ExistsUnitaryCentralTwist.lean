@@ -12,9 +12,9 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.Loc
 namespace PositivityTheory.PfEss.H2
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_nontrivial_iff_subsingleton]`. Use `haveI : IsSimpleOrder (Subrepresentation σ.ρ) := σ.irr`. Apply `(bot_ne_top : (⊥ : Subrepresentation σ.ρ) ≠ ⊤)` to reduce the goal to its premises. Apply `Subrepresentation.ext` to reduce the goal to its premises.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Use extensionality with `v`. Rewrite using `[Subsingleton.elim v 0]`. Conclude with `⟨fun _ => (⊤ : Subrepresentation σ.ρ).toSubmodule.zero_mem, fun _ => (⊥ : Subrepresentation σ.ρ).toSubmodule.zero_mem⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem nontrivial_irrRep_V {G : Type} [Group G] [TopologicalSpace G] (σ : IrrRep G) :
     Nontrivial σ.V := by
@@ -29,47 +29,39 @@ private theorem nontrivial_irrRep_V {G : Type} [Group G] [TopologicalSpace G] (�
     fun _ => (⊥ : Subrepresentation σ.ρ).toSubmodule.zero_mem⟩
 
 /- English proof (translation)
-Use `haveI hnt : Nontrivial σ.V := nontrivial_irrRep_V σ`. Use `haveI : IsSimpleOrder (Subrepresentation σ.ρ) := σ.irr`. Take `⟨v0, hv0⟩` from `exists_ne (0 : σ.V)`. Establish `hinv : ∀ (g : GL (Fin n) k) (v : σ.V), σ.ρ g⁻¹ (σ.ρ g v) = v`. Introduce `g v`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Set `S : Subgroup (GL (Fin n) k)` to `{ carrier := {g | σ.ρ g v0 = v0} mul_mem' := by`. Introduce `a b ha hb`. Simplify using `only [Set.mem_setOf_eq, map_mul, Module.End.mul_apply] at *`. Rewrite using `[hb, ha]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use the proof step `one_mem' := by simp`. Use the proof step `inv_mem' := by`. Introduce `a ha`. Simplify using `only [Set.mem_setOf_eq] at *`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hSopen : IsOpen (S : Set (GL (Fin n) k))` using `σ.smooth v0`. Set `K : Subgroup (GL (Fin n) k)` to `KO k (Fin n) ⊓ S`. Establish `hKo : IsOpen (K : Set (GL (Fin n) k))`. Rewrite using `[Subgroup.coe_inf]`. Conclude with `GlobalTheory.SplitFlip.isOpen_KO.inter hSopen`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hKc : IsCompact (K : Set (GL (Fin n) k))` using `GlobalTheory.SplitFlip.isCompact_KO.of_isClosed_subset (Subgroup.isClosed_of_isOpen K hKo) (fun x hx => (Subgroup.mem_inf.mp hx).1)`. Use `haveI hfd : FiniteDimensional ℂ (fixed σ.ρ K) := hadm.2 K hKo hKc`. Establish `hv0K : v0 ∈ fixed σ.ρ K` using `by show ∀ h : K, σ.ρ h v0 = ((1 : K →* ℂˣ) h : ℂ) • v0`. Introduce `h`. Rewrite using `[MonoidHom.one_apply, Units.val_one, one_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(Subgroup.mem_inf.mp h.2).2`. Establish `hcomm : ∀ (t : kˣ) (g : GL (Fin n) k), Matrix.GeneralLinearGroup.scalar (Fin n) t * g = g * Matrix.GeneralLinearGroup.scalar (Fin n) t`. Introduce `t g`. Use extensionality with `: 1`. Simplify using `only [Matrix.GeneralLinearGroup.scalar, Units.val_mul, Units.coe_map, MonoidHom.coe_coe]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Matrix.scalar_commute _ (fun _ => Commute.all _ _) _`. Establish `key : ∀ t : kˣ, ∃ c : ℂ, ∀ v, σ.ρ (Matrix.GeneralLinearGroup.scalar (Fin n) t) v = c • v`. Introduce `t`. Use `set s := Matrix.GeneralLinearGroup.scalar (Fin n) t with hs`. Establish `hρc : ∀ g v, σ.ρ s (σ.ρ g v) = σ.ρ g (σ.ρ s v)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `g v`. Rewrite using `[← Module.End.mul_apply, ← map_mul, hcomm, map_mul, Module.End.mul_apply]`. Establish `hW : ∀ w ∈ fixed σ.ρ K, σ.ρ s w ∈ fixed σ.ρ K`. Introduce `w hw`. Establish `hw' : ∀ h : K, σ.ρ h w = ((1 : K →* ℂˣ) h : ℂ) • w` using `hw`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show ∀ h : K, σ.ρ h (σ.ρ s w) = ((1 : K →* ℂˣ) h : ℂ) • (σ.ρ s w)`. Introduce `h`. Use `hw' h` as an intermediate fact. Rewrite `this`, the goal using `[MonoidHom.one_apply, Units.val_one, one_smul]`. Rewrite using `[← hρc, this]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Set `f : Module.End ℂ (fixed σ.ρ K)` to `(σ.ρ s).restrict hW`. Use `haveI : Nontrivial (fixed σ.ρ K) := ⟨⟨⟨v0, hv0K⟩, 0, fun h => hv0 (congrArg Subtype.val h)⟩⟩`. Take `⟨c, hc⟩` from `Module.End.exists_eigenvalue f`. Take `⟨w, hw⟩` from `hc.exists_hasEigenvector`. Set `E : Subrepresentation σ.ρ` to `{ toSubmodule := LinearMap.ker (σ.ρ s - c • LinearMap.id) apply_mem_toSubmodule := by`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `g v hv`. Simplify using `only [LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero] at hv ⊢`. Rewrite using `[hρc, hv, map_smul] }`. Break down `IsSimpleOrder.eq_bot_or_eq_top E with hE | hE` into its components or cases. It suffices to derive a contradiction.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hwE : (w : σ.V) ∈ E.toSubmodule`. Simplify using `only [E, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]`. Conclude with `congrArg Subtype.val hw.apply_eq_smul`. Rewrite `hwE` using `[hE]`. Conclude with `hw.2 (Subtype.ext ((Submodule.mem_bot ℂ).mp hwE))`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨c, fun v => ?_⟩` and prove the remaining obligations. Establish `hvE : v ∈ (⊤ : Subrepresentation σ.ρ).toSubmodule` using `Submodule.mem_top`. Rewrite `hvE` using `[← hE]`. Simplify `hvE` using `[E, sub_eq_zero]`. Use `choose c hc using key`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `huniq : ∀ a b : ℂ, a • v0 = b • v0 → a = b` using `fun a b h => smul_left_injective ℂ hv0 h`. Establish `hc0 : ∀ t, c t ≠ 0`. Introduce `t h`. Establish `h1` using `hc t v0`. Rewrite `h1` using `[h, zero_smul]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Prove the components needed by the constructor for the conclusion. Simplify using the standard rewrite rules.
 
-Apply `hv0` to reduce the goal to its premises. Rewrite using `[← hinv (Matrix.GeneralLinearGroup.scalar (Fin n) t) v0, h1, map_zero]`. Establish `hmul : ∀ a b, c (a * b) = c a * c b`. Introduce `a b`. Apply `huniq` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hc, map_mul, map_mul, Module.End.mul_apply, hc b, map_smul, hc a, smul_smul, mul_comm]`. Establish `hone : c 1 = 1`. Apply `huniq` to reduce the goal to its premises. Rewrite using `[← hc, map_one, map_one, Module.End.one_apply, one_smul]`. Set `ω : kˣ →* ℂˣ` to `{ toFun := fun t => Units.mk0 (c t) (hc0 t) map_one' := Units.ext (by simp [hone]) map_mul' := fun a b => Units.ext (by simp [hmul]) }`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcont : Continuous (Matrix.GeneralLinearGroup.scalar (Fin n) : kˣ → GL (Fin n) k)`. Apply `Units.continuous_iff.mpr` to reduce the goal to its premises. Prove the components needed by the constructor for the conclusion. Simplify using `only [Matrix.GeneralLinearGroup.scalar, Units.coe_map, MonoidHom.coe_coe]`. Conclude with `Continuous.matrix_diagonal (continuous_pi fun _ => Units.continuous_val)`.
-
-Simplify using `only [Matrix.GeneralLinearGroup.scalar, Units.coe_map_inv, MonoidHom.coe_coe, map_inv]`. Conclude with `Continuous.matrix_diagonal (continuous_pi fun _ => Units.continuous_coe_inv)`. Use `⟨ω, ?_, fun z v => hc z v⟩` and prove the remaining obligations. Use `show IsOpen (ω.ker : Set kˣ)`. Establish `hker : (ω.ker : Set kˣ) = (Matrix.GeneralLinearGroup.scalar (Fin n) : kˣ → GL (Fin n) k) ⁻¹' (S : Set (GL (Fin n) k))`.
-
-Use extensionality with `t`. Simplify using `only [SetLike.mem_coe, MonoidHom.mem_ker, Set.mem_preimage]`. Use `show Units.mk0 (c t) (hc0 t) = 1 ↔ σ.ρ (Matrix.GeneralLinearGroup.scalar (Fin n) t) v0 = v0`. Rewrite using `[hc t v0, Units.ext_iff, Units.val_mk0, Units.val_one]`. Prove the components needed by the constructor for the conclusion.
-
-Introduce `h`. Rewrite using `[h, one_smul]`. Introduce `h`. Apply `huniq` to reduce the goal to its premises. Rewrite using `[h, one_smul]`.
-
-Rewrite using `[hker]`. Conclude with `hSopen.preimage hcont`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_smooth_central_character_of_admissible {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (n : ℕ) (σ : IrrRep (GL (Fin n) k)) (hadm : IsAdmissible σ.ρ) :
@@ -195,17 +187,17 @@ private theorem exists_smooth_central_character_of_admissible {k : Type} [Field 
   exact hSopen.preimage hcont
 
 /- English proof (translation)
-Introduce `k _ _ _ _ y`. Take `⟨ω, hωs, hω⟩` from `exists_smooth_central_character_of_admissible y.fst y.snd.rep (hA k y.fst y.snd.rep.V y.snd.rep.ρ y.snd.rep.smooth y.snd.rep.irr)`. Take `⟨r, hr⟩` from `GlobalTheory.SmoothCharNorm.norm_eq_nabs_rpow k ω hωs`. Use `set s' : ℝ := -(r / (y.fst : ℝ)) with hs'`. Use `⟨absPow k (s' : ℂ), GlobalTheory.LocGL.isSmoothChar_absPow _, fun t c hsc => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hsc' : ∀ v, (y.nu (s' : ℂ)).rep (Matrix.GeneralLinearGroup.scalar (Fin (y.nu (s' : ℂ)).fst) t) v = c • v` using `hsc`. Establish `hcc` using `GlobalTheory.LocGL.UnitaryOrder.hasCentralChar_nu y hω (s' : ℂ)`. Use `haveI : Nontrivial (y.nu (s' : ℂ)).snd.rep.V := nontrivial_irrRep_V _`. Take `⟨v0, hv0⟩` from `exists_ne (0 : (y.nu (s' : ℂ)).snd.rep.V)`. Distinguish the cases in `hn : y.fst = 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn' : (y.nu (s' : ℂ)).fst = 0` using `hn`. Establish `h1` using `hsc' v0`. Establish `hs1 : Matrix.GeneralLinearGroup.scalar (Fin (y.nu (s' : ℂ)).fst) t = 1`. Use extensionality with `i j`. Conclude with `absurd i.2 (by omega)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[hs1, map_one, Module.End.one_apply]`. Establish `hc1 : c = 1` using `smul_left_injective ℂ hv0 (by show c • v0 = (1 : ℂ) • v0; rw [one_smul]; exact h1.symm)`. Rewrite using `[hc1, norm_one]`. Establish `hc : c = ((ω * absPow k (s' : ℂ) ^ y.fst) t : ℂ)` using `smul_left_injective ℂ hv0 ((hsc' v0).symm.trans (hcc t v0))`. Rewrite using `[hc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hpos : 0 < ‖((ω * absPow k (s' : ℂ) ^ y.fst) t : ℂ)‖` using `norm_pos_iff.mpr (Units.ne_zero _)`. Establish `hL` using `GlobalTheory.LocGL.UnitaryOrder.log_norm_mul_absPow ω s' y.fst t`. Rewrite `hL` using `[hr t, Real.log_rpow (GlobalTheory.SplitWeil.nabs_pos k t)]`. Apply `Real.eq_one_of_pos_of_log_eq_zero hpos` to reduce the goal to its premises. Rewrite using `[hL, hs']`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hn0 : (y.fst : ℝ) ≠ 0` using `by exact_mod_cast hn`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem exists_unitary_central_twist (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (y : IrrGL k), ∃ (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ),

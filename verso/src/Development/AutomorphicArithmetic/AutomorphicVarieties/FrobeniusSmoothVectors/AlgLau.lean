@@ -7,7 +7,7 @@ private noncomputable def UpperTheory.V.Fr.lauT (K : Type) [CommRing K] : Multip
   (AddMonoidAlgebra.of K ℤ).toHomUnits
 
 /- English proof (translation)
-Rewrite using `[← map_zpow, ← ofAdd_zsmul, smul_eq_mul, mul_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem UpperTheory.V.Fr.lauT_zpow (K : Type) [CommRing K] (m : ℤ) :
     ((lauT K (Multiplicative.ofAdd 1) ^ m : (AddMonoidAlgebra K ℤ)ˣ) : AddMonoidAlgebra K ℤ) =
@@ -16,15 +16,15 @@ private theorem UpperTheory.V.Fr.lauT_zpow (K : Type) [CommRing K] (m : ℤ) :
   rfl
 
 /- English proof (translation)
-Introduce `l _ O _ _ F n C _ _ _ K _ _ ρ hc`. Take `⟨χ, -, hχ⟩` from `hc.psi`. Take `⟨ρ', hr, hψ⟩` from `alg_twist (lauT K (Multiplicative.ofAdd 1)) (NRep.map (AddMonoidAlgebra.singleZeroRingHom : K →+* AddMonoidAlgebra K ℤ) ρ)`. Establish `hr' : ∀ g i j, ρ'.r g i j = AddMonoidAlgebra.single (w n i - w n j) (ρ.r g i j)`. Introduce `g i j`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hr, lauT_zpow, NRep.map_r]`. Simplify using `[AddMonoidAlgebra.single_mul_single]`. Establish `hψ' : ∀ v i g, ((ρ'.ψ v i g : (AddMonoidAlgebra K ℤ)ˣ) : AddMonoidAlgebra K ℤ) = AddMonoidAlgebra.single 0 (ρ.ψ v i g : K)`. Introduce `v i g`. Rewrite using `[hψ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `h1 : ∀ g i j, ρ'.r g i j ∈ lauSub (ρ.part C)`. Introduce `g i j`. Rewrite using `[hr']`. Conclude with `single_mem_lauSub _ (NRep.r_mem_part C ρ g i j)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ∀ v i g, ((ρ'.ψ v i g : (AddMonoidAlgebra K ℤ)ˣ) : AddMonoidAlgebra K ℤ) ∈ lauSub (ρ.part C)`. Introduce `v i g`. Rewrite using `[hψ']`. Apply `single_mem_lauSub` to reduce the goal to its premises. Rewrite using `[← hχ, Algebra.algebraMap_eq_smul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `Submodule.smul_mem _ _ SetLike.GradedOne.one_mem`. Conclude with `⟨NRep.restrict ρ' (lauSub (ρ.part C)) h1 h2, fun g i j => hr' g i j, fun v i g => hψ' v i g⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Fr.alg_lau :
     ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsLocalRing O] {F : Frame l (ResidueField O)} {n : ℕ} (C : Type) [CommRing C] [Algebra O C] [IsCO O C] {K : Type} [CommRing K] [Algebra C K] (ρ : NRep F n K), Cone O C ρ → ∃ ρD : NRep F n (lauSub (ρ.part C)), (∀ g i j, (ρD.r g i j).1 = AddMonoidAlgebra.single (w n i - w n j) (ρ.r g i j)) ∧ (∀ v i g, (ρD.ψ v i g : lauSub (ρ.part C)).1 = AddMonoidAlgebra.single 0 (ρ.ψ v i g : K)) := by

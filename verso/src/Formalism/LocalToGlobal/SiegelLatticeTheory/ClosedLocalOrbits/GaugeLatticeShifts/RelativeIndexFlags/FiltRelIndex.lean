@@ -6,23 +6,23 @@ namespace Formalism.L2.SG.Pf.RelativeIndexFlags.Filt
 variable {G : Type*} [Group G]
 
 /- English proof (translation)
-Establish `hN : ∀ k, (F k).Normal` using `fun k => ⟨fun a ha g => by`. Establish `h1` using `(F k).mul_mem (hmono k (hcomm k g a ha)) ha`. Rewrite using `[show g * a * g⁻¹ * a⁻¹ * a = g * a * g⁻¹ by group] at h1⟩` and apply the resulting hypothesis. Establish `hgr : ∀ k, X ⊓ F k ⊔ F (k + 1) = cj g X ⊓ F k ⊔ F (k + 1)`. Introduce `k`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[sup_le_iff]`. Use `⟨?_, le_sup_right⟩` and prove the remaining obligations. Introduce `x hx`. Establish `hy : g * x * g⁻¹ ∈ cj g X ⊓ F k` using `⟨(mem_cj g X _).2 ⟨x, hx.1, rfl⟩, (hN k).conj_mem x hx.2 g⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hc` using `hcomm k g x hx.2`. Rewrite using `[show x = (g * x * g⁻¹ * x⁻¹)⁻¹ * (g * x * g⁻¹) by group]`. Conclude with `Subgroup.mul_mem _ (Subgroup.mem_sup_right ((F (k + 1)).inv_mem hc)) (Subgroup.mem_sup_left hy)`. Rewrite using `[sup_le_iff]`. Use `⟨?_, le_sup_right⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Take `⟨x, hxX, rfl⟩` from `(mem_cj g X y).1 hy.1`. Establish `hxk : x ∈ F k`. Use `(hN k).conj_mem _ hy.2 g⁻¹` as an intermediate fact. Rewrite `this` using `[show g⁻¹ * (g * x * g⁻¹) * g⁻¹⁻¹ = x by group]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hc` using `hcomm k g x hxk`. Rewrite using `[show g * x * g⁻¹ = (g * x * g⁻¹ * x⁻¹) * x by group]`. Conclude with `Subgroup.mul_mem _ (Subgroup.mem_sup_right hc) (Subgroup.mem_sup_left ⟨hxX, hxk⟩)`. Establish `hX : ∀ k (Z : Subgroup G), Z ⊓ F k ⊓ F (k + 1) = Z ⊓ F (k + 1)` using `fun k Z => by`. Rewrite using `[inf_assoc, inf_of_le_right (hmono k)]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `main : ∀ j k, k + j = m → (X ⊓ cj g X ⊓ F k).relIndex (X ⊓ F k) = (X ⊓ cj g X ⊓ F k).relIndex (cj g X ⊓ F k)`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero`. Introduce `k hk`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Rewrite `hk` using `[Nat.add_zero]`. Substitute `hk` using the available equality. Rewrite using `[hbot]`. Simplify using `only [inf_bot_eq]`. Consider the case `succ j ih`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `k hk`. Use `hN (k + 1)` as an intermediate fact. Establish `hle1 : X ⊓ cj g X ⊓ F k ≤ X ⊓ F k` using `inf_le_inf_right _ inf_le_left`. Establish `hle2 : X ⊓ cj g X ⊓ F k ≤ cj g X ⊓ F k` using `inf_le_inf_right _ inf_le_right`. Rewrite using `[relIndex_split (F (k + 1)) _ _ hle1, relIndex_split (F (k + 1)) _ _ hle2, hX k (X ⊓ cj g X), hX k X, hX k (cj g X), ih (k + 1) (by omega), hgr k]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0` using `main m 0 (by omega)`. Rewrite `h0` using `[htop]`. Simplify using `only [inf_top_eq] at h0`. Rewrite using `[← Subgroup.inf_relIndex_right X (cj g X), ← Subgroup.inf_relIndex_left X (cj g X)]`. Conclude with `h0.symm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem filt_relIndex (F : ℕ → Subgroup G) (hmono : ∀ k, F (k + 1) ≤ F k)
     (hcomm : ∀ k (g a : G), a ∈ F k → g * a * g⁻¹ * a⁻¹ ∈ F (k + 1)) (m : ℕ)

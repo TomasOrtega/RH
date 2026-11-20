@@ -11,9 +11,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.FinPl.PutIn
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ ι p J P hP Pset e he hq`. Take `⟨q, hq⟩` from `hq`. Use `⟨fun i j hij => ?_, ?_⟩` and prove the remaining obligations. Use `(GlobalTheory.PlaceModelSum.eq_or_mul_eq_zero (p i).split (p j).split).resolve_left fun h => hij ?_` and prove the remaining obligations. Conclude with `q.injective (Subtype.ext (GlobalTheory.PlaceVec.isIdemAt_inj (hq i) (h ▸ hq j)))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨es, hes, rfl⟩, -⟩` from `he haveI : Fintype ι := Fintype.ofList J hP.all`. Establish `h1 : ∀ i, es (q i).1 = (p i).e` using `fun i => GlobalTheory.SplitHeckeAdj.idem_unique D.sp.X' (hq i) (hes _ (q i).2)`. Establish `h2 : J.toFinset = Finset.univ` using `Finset.eq_univ_of_forall fun i => List.mem_toFinset.2 (hP.all i)`. Rewrite using `[eSum, ← List.sum_toFinset _ hP.nodup, h2, ← Finset.sum_coe_sort Pset es, ← Equiv.sum_comp q]`. Conclude with `Finset.sum_congr rfl fun i _ => h1 i`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orth_and_eq_eSum : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : Type) (p : ι → SplitPt D k) (J : List ι) (P : Pl D → Prop), Places p J P → ∀ (Pset : Finset (Formalism.L2.DIV.Pl D.host.E)) (e : AE D), IsIdemSum e Pset → (∃ eq : ι ≃ Pset, ∀ i, Formalism.L2.NTheta.IsIdemAt (p i).e (eq i).1) → (∀ i j, i ≠ j → (p i).e * (p j).e = 0) ∧ e = GlobalTheory.FinPl.PutIn.eSum p J := by
   intro D k _ _ _ _ ι p J P hP Pset e he hq

@@ -13,9 +13,9 @@ open scoped ENNReal ComplexOrder
 namespace GlobalTheory.HCXi.LeOne
 
 /- English proof (translation)
-Establish `ha' : aᴴ * Hpk k r * a = Hpk k r` using `ha`. Establish `hb' : bᴴ * Hpk k r * b = Hpk k r` using `hb`. Use `show (a * b)ᴴ * Hpk k r * (a * b) = Hpk k r`. Rewrite using `[Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = Hpk k r := by rw [ha', hb']`.
+A detailed English derivation is pending.
 -/
 lemma gv_mul {k r : ℕ} {a b : Mat k r} (ha : a ∈ GV k r) (hb : b ∈ GV k r) : a * b ∈ GV k r := by
   have ha' : aᴴ * Hpk k r * a = Hpk k r := ha
@@ -27,7 +27,7 @@ lemma gv_mul {k r : ℕ} {a b : Mat k r} (ha : a ∈ GV k r) (hb : b ∈ GV k r)
     _ = Hpk k r := by rw [ha', hb']
 
 /- English proof (translation)
-Establish `hm` using `(GlobalTheory.HCXi.GramPos.gram_vHalf_pos_measurable_continuousOn k r hk).2.2.1`. Establish `hf' : Continuous (Y` using `Mt k r) fun t => Matrix.of.symm (f t) := hf`. Conclude with `(ENNReal.measurable_ofReal.comp (hm.comp hf'.measurable)).pow_const 2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma meas_v {k r : ℕ} (hk : 1 ≤ k) {α : Type} [TopologicalSpace α] [MeasurableSpace α] [OpensMeasurableSpace α]
     {f : α → Mat k r} (hf : Continuous f) :
@@ -37,12 +37,12 @@ lemma meas_v {k r : ℕ} (hk : 1 ≤ k) {α : Type} [TopologicalSpace α] [Measu
   exact (ENNReal.measurable_ofReal.comp (hm.comp hf'.measurable)).pow_const 2
 
 /- English proof (translation)
-The claim follows from `continuous_id`.
+A detailed English derivation is pending.
 -/
 lemma cont_of {k r : ℕ} : Continuous fun κ : Mt k r => (Matrix.of κ : Mat k r) := continuous_id
 
 /- English proof (translation)
-Use `continuous_pi fun p => continuous_pi fun q => ?_` and prove the remaining obligations. Unfold `ιLev`. Use `split_ifs`. Conclude with `(continuous_apply _).comp (continuous_apply _)`. Apply the tactic sequence `all_goals exact continuous_const`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma cont_lev (k i r' : ℕ) : Continuous (ιLev k i r') := by
   refine continuous_pi fun p => continuous_pi fun q => ?_
@@ -52,13 +52,13 @@ lemma cont_lev (k i r' : ℕ) : Continuous (ιLev k i r') := by
   all_goals exact continuous_const
 
 /- English proof (translation)
-The claim follows from `Finset.sum_nonneg fun _ _ => Complex.normSq_nonneg _`.
+A detailed English derivation is pending.
 -/
 lemma sqLen_nonneg {n : ℕ} (v : Fin n → ℂ) : 0 ≤ sqLen v :=
   Finset.sum_nonneg fun _ _ => Complex.normSq_nonneg _
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply, Matrix.conjTranspose_apply, sqLen, Complex.re_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.star_def, ← Complex.normSq_eq_conj_mul_self, Complex.ofReal_re]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma diag_re {n m : ℕ} (A : Matrix (Fin n) (Fin m) ℂ) (a : Fin m) :
     ((Aᴴ * A) a a).re = sqLen fun i => A i a := by
@@ -67,9 +67,9 @@ lemma diag_re {n m : ℕ} (A : Matrix (Fin n) (Fin m) ℂ) (a : Fin m) :
   rw [Complex.star_def, ← Complex.normSq_eq_conj_mul_self, Complex.ofReal_re]
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `GlobalTheory.HCXi.FrameOrth.frame_orthonormal_isotropic k r hk`. Prove the components needed by the constructor for the conclusion. Use `congrFun (congrFun h2 a) a` as an intermediate fact. Rewrite `this` using `[Matrix.mul_assoc]`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `diag_re (frame k r) a` as an intermediate fact. Rewrite `this` using `[h1]`. Rewrite `this` using `[Matrix.one_apply_eq, Complex.one_re]`. Conclude with `this.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma col_facts (k r : ℕ) (hk : 1 ≤ k) (a : Fin (r + 1)) :
     herm (Hpk k r) (fvec k r (isoVec k r) a) (fvec k r (isoVec k r) a) = 0 ∧
@@ -85,7 +85,7 @@ lemma col_facts (k r : ℕ) (hk : 1 ≤ k) (a : Fin (r + 1)) :
     exact this.symm
 
 /- English proof (translation)
-Rewrite using `[← ENNReal.ofReal_pow (Real.rpow_nonneg hs _), ← Real.rpow_natCast, ← Real.rpow_mul hs]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma sq_rpow {s : ℝ} (hs : 0 ≤ s) (m : ℕ) :
     ENNReal.ofReal (s ^ (-((m : ℝ) / 2))) ^ 2 = ENNReal.ofReal (s ^ (-(m : ℝ))) := by
@@ -95,9 +95,9 @@ lemma sq_rpow {s : ℝ} (hs : 0 ≤ s) (m : ℕ) :
   ring
 
 /- English proof (translation)
-Establish `: gram k 0 x (Fin.last 0) = sqLen (x *ᵥ isoVec k 0)`. Unfold `GlobalTheory.HCXi.gram`. Rewrite using `[show ∀ M : Matrix (Fin ((Fin.last 0 : ℕ) + 1)) (Fin ((Fin.last 0 : ℕ) + 1)) ℂ, M.det = M 0 0 from fun M => Matrix.det_fin_one M, Matrix.submatrix_apply, diag_re]`. Both sides reduce to the same expression. Unfold `vHalf`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions.
 
-Rewrite using `[this]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma vHalf_zero (k : ℕ) (x : Mat k 0) :
     vHalf k 0 x = sqLen (x *ᵥ isoVec k 0) ^ (-((k : ℝ) / 2)) := by
@@ -111,7 +111,7 @@ lemma vHalf_zero (k : ℕ) (x : Mat k 0) :
   simp
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `col_facts k 0 hk (Fin.last 0)`. Establish `h` using `GlobalTheory.HCXi.Poisson.poisson_integral k 0 μK (isoVec k 0) hk hμ h1 h2 g hg`. Rewrite using `[← h]`. Use `lintegral_congr fun κ => ?_` and prove the remaining obligations. Rewrite using `[vHalf_zero, sq_rpow (sqLen_nonneg _)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -125,19 +125,19 @@ lemma base (k : ℕ) (μK : Measure (Mt k 0)) (hk : 1 ≤ k) (hμ : IsKMeas k 0 
   simp
 
 /- English proof (translation)
-Take `⟨μ₁, hμ₁⟩` from `GlobalTheory.HCXi.exists_isKMeas k r'`. Establish `: IsProbabilityMeasure μK` using `⟨hμ.2⟩`. Establish `: IsProbabilityMeasure μ₁` using `⟨hμ₁.2⟩`. Establish `hae : ∀ᵐ κ ∂μK, (Matrix.of κ : Mat k (1 + r')) ∈ Kset k (1 + r')` using `hμ.1.conc`. Establish `hae₁ : ∀ᵐ y ∂μ₁, (Matrix.of y : Mat k r') ∈ Kset k r'` using `hμ₁.1.conc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : Measurable fun κ : Mt k (1 + r') => ENNReal.ofReal (vHalf k (1 + r') (g * Matrix.of κ)) ^ 2` using `meas_v hk (continuous_const.matrix_mul cont_of)`. Establish `hm2 : Measurable fun q : Mt k r' × Mt k (1 + r') => ENNReal.ofReal (vHalf k (1 + r') (g * Matrix.of q.2 * ιLev k 1 r' (Matrix.of q.1))) ^ 2` using `meas_v hk ((continuous_const.matrix_mul (cont_of.comp continuous_snd)).matrix_mul ((cont_lev k 1 r').comp (cont_of.comp continuous_fst)))`. Establish `hsw` using `lintegral_lintegral_swap (μ := μ₁) (ν := μK) (f := fun (y : Mt k r') (κ : Mt k (1 + r')) => ENNReal.ofReal (vHalf k (1 + r') (g * Matrix.of κ * ιLev k 1 r' (Matrix.of y))) ^ 2) hm2.aemeasurable`. Establish `he : fvec k (1 + r') (isoVec k (1 + r')) ⟨0, Nat.succ_pos _⟩ = e0 k r'`. Unfold `fvec`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[dif_pos (show (0 : ℕ) < 1 + r' by omega)]`. Both sides reduce to the same expression. Take `⟨h1, h2⟩` from `col_facts k (1 + r') hk ⟨0, Nat.succ_pos _⟩`. Rewrite `h1`, `h2` using `[he]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[lintegral_const, measure_univ, mul_one]`. Use `_ = ∫⁻ y : Mt k r', ∫⁻ κ : Mt k (1 + r'), ENNReal.ofReal (vHalf k (1 + r') (g * Matrix.of κ * ιLev k 1 r' (Matrix.of y))) ^ 2 ∂μK ∂μ₁ := by`. Use `lintegral_congr_ae (hae₁.mono fun y hy => ?_)` and prove the remaining obligations. Establish `hrm : Measurable (rmulF (ιLev k 1 r' (Matrix.of y)) : Mt k (1 + r') → Mt k (1 + r'))` using `Continuous.measurable (by unfold Formalism.FourierDecayAlt.B.rmulF; exact continuous_id.matrix_mul continuous_const)`. Simplify using `only`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [← hμ.1.right _ (GlobalTheory.HCXi.blockEmb_mem_Kset k r' _ hy)]`. Rewrite using `[lintegral_map hm hrm]`. Simplify using `only [Matrix.mul_assoc]`. Both sides reduce to the same expression. Use `_ = ∫⁻ κ : Mt k (1 + r'), ∫⁻ y : Mt k r', ENNReal.ofReal (vHalf k (1 + r') (g * Matrix.of κ * ιLev k 1 r' (Matrix.of y))) ^ 2 ∂μ₁ ∂μK := hsw`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `_ = ∫⁻ κ : Mt k (1 + r'), ENNReal.ofReal (sqLen ((g * Matrix.of κ) *ᵥ e0 k r') ^ (-((2 * (1 + r') + k : ℕ) : ℝ))) ∂μK := by`. Use `lintegral_congr_ae (hae.mono fun κ hκ => ?_)` and prove the remaining obligations. Take `⟨g₁, hg₁, hv⟩` from `GlobalTheory.T.half_volume_levi_recursion k r' hk _ (gv_mul hg hκ.1)`. Establish `hm3 : Measurable fun y : Mt k r' => ENNReal.ofReal (vHalf k r' (g₁ * Matrix.of y)) ^ 2` using `meas_v hk (continuous_const.matrix_mul cont_of)`. Simplify using `only`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← sq_rpow (sqLen_nonneg _), ← mul_one (ENNReal.ofReal _ ^ 2), ← ih μ₁ hμ₁ g₁ hg₁, ← lintegral_const_mul _ hm3]`. Use `lintegral_congr_ae (hae₁.mono fun y hy => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[hv _ hy.1, ENNReal.ofReal_mul (Real.rpow_nonneg (sqLen_nonneg _) _), mul_pow]`. Use `_ = 1 := GlobalTheory.HCXi.Poisson.poisson_integral k (1 + r') μK (e0 k r') hk hμ h1 h2 g hg`.
+A detailed English derivation is pending.
 -/
 lemma step (k r' : ℕ) (hk : 1 ≤ k)
     (ih : ∀ μ : Measure (Mt k r'), IsKMeas k r' μ → ∀ g ∈ GV k r',
@@ -194,9 +194,9 @@ lemma step (k r' : ℕ) (hk : 1 ≤ k)
     _ = 1 := GlobalTheory.HCXi.Poisson.poisson_integral k (1 + r') μK (e0 k r') hk hμ h1 h2 g hg
 
 /- English proof (translation)
-Introduce `k r μK hk`. Proceed by induction on `r with`. Consider the case `zero => exact base k μK hk`. Consider the case `succ r ih`. Establish `key : ∀ s : ℕ, s = 1 + r → ∀ μ : Measure (Mt k s), IsKMeas k s μ → ∀ g ∈ GV k s, (∫⁻ κ : Mt k s, ENNReal.ofReal (vHalf k s (g * Matrix.of κ)) ^ 2 ∂μ) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Introduce and unpack `s rfl`. Conclude with `step k r hk ih`. Conclude with `key _ (Nat.add_comm _ _) μK`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem lintegral_vHalf_sq : ∀ (k r : ℕ) (μK : Measure (Mt k r)), 1 ≤ k → IsKMeas k r μK → ∀ g ∈ GV k r,
     (∫⁻ κ : Mt k r, ENNReal.ofReal (vHalf k r (g * Matrix.of κ)) ^ 2 ∂μK) = 1 := by
@@ -215,9 +215,9 @@ end GlobalTheory.HCXi.LeOne
 namespace GlobalTheory.HCXi
 
 /- English proof (translation)
-Proceed by induction on `a using ENNReal.recTopCoe with`. Consider the case `top => simp`. Consider the case `coe x`. Establish `h : 2 * x ≤ 1 + x ^ 2`. Rewrite using `[← NNReal.coe_le_coe]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Use polynomial arithmetic with `[sq_nonneg ((x : ℝ) - 1)]`. Conclude with `h` after adjusting the coercions.
+Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem two_mul_le_one_add_sq_ennreal (a : ℝ≥0∞) : 2 * a ≤ 1 + a ^ 2 := by
   induction a using ENNReal.recTopCoe with
@@ -230,7 +230,7 @@ theorem two_mul_le_one_add_sq_ennreal (a : ℝ≥0∞) : 2 * a ≤ 1 + a ^ 2 := 
     exact_mod_cast h
 
 /- English proof (translation)
-Establish `h : 2 * ∫⁻ x, f x ∂μ ≤ 2 * 1`. Combine the equalities or inequalities in the displayed calculation. Conclude with `(ENNReal.mul_le_mul_iff_right (by simp) (by simp)).1 h`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem lintegral_le_one_of_lintegral_sq_eq_one {X : Type*} [MeasurableSpace X] (μ : Measure X)
     (hμ : μ Set.univ = 1) (f : X → ℝ≥0∞) (hf : ∫⁻ x, f x ^ 2 ∂μ = 1) : ∫⁻ x, f x ∂μ ≤ 1 := by
@@ -242,7 +242,7 @@ theorem lintegral_le_one_of_lintegral_sq_eq_one {X : Type*} [MeasurableSpace X] 
   exact (ENNReal.mul_le_mul_iff_right (by simp) (by simp)).1 h
 
 /- English proof (translation)
-Introduce `k r μK hk hμ g hg`. Conclude with `lintegral_le_one_of_lintegral_sq_eq_one μK hμ.2 _ (LeOne.lintegral_vHalf_sq k r μK hk hμ g hg)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem XiE_le_one : ∀ (k r : ℕ) (μK : Measure (Mt k r)), 1 ≤ k → IsKMeas k r μK →
     ∀ g ∈ GV k r, XiE k r μK g ≤ 1 := by

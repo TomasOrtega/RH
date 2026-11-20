@@ -12,7 +12,7 @@ namespace MainStatements.WeightKernel.PLagr
 variable {n : ℕ}
 
 /- English proof (translation)
-Introduce `a b`. Simplify using `only [Matrix.mul_apply]`. Conclude with `ContDiff.sum fun j _ => (hF a j).mul (hG j b)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma cd_mul {F G : Mx n → Matrix (Fin n) (Fin n) ℂ} (hF : ∀ a b, ContDiff ℝ ∞ (fun Y => F Y a b))
     (hG : ∀ a b, ContDiff ℝ ∞ (fun Y => G Y a b)) : ∀ a b, ContDiff ℝ ∞ (fun Y => (F Y * G Y) a b) := by
@@ -21,9 +21,9 @@ lemma cd_mul {F G : Mx n → Matrix (Fin n) (Fin n) ℂ} (hF : ∀ a b, ContDiff
   exact ContDiff.sum fun j _ => (hF a j).mul (hG j b)
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => intro a b`. Simplify using `only [pow_zero]`. Conclude with `contDiff_const`. Consider the case `succ k ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [pow_succ]`. Conclude with `cd_mul ih (fun a b => by simp only [Matrix.of_apply]; exact contDiff_apply_apply (𝕜 := ℝ) (E := ℂ) a b)`.
+A detailed English derivation is pending.
 -/
 lemma cd_pow (k : ℕ) : ∀ a b, ContDiff ℝ ∞ (fun Y : Mx n => ((Matrix.of Y) ^ k) a b) := by
   induction k with
@@ -33,9 +33,9 @@ lemma cd_pow (k : ℕ) : ∀ a b, ContDiff ℝ ∞ (fun Y : Mx n => ((Matrix.of 
     exact cd_mul ih (fun a b => by simp only [Matrix.of_apply]; exact contDiff_apply_apply (𝕜 := ℝ) (E := ℂ) a b)
 
 /- English proof (translation)
-Proceed by induction on `P using Polynomial.induction_on' with`. Consider the case `add p q hp hq => intro a b`. Simplify using `only [map_add, Matrix.add_apply]`. Conclude with `(hp a b).add (hq a b)`. Consider the case `monomial k c`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [Polynomial.aeval_monomial]`. Conclude with `cd_mul (fun a b => contDiff_const) (cd_pow k)`.
+A detailed English derivation is pending.
 -/
 lemma cd_aeval (P : ℂ[X]) : ∀ a b, ContDiff ℝ ∞ (fun Y : Mx n => (aeval (Matrix.of Y) P) a b) := by
   induction P using Polynomial.induction_on' with
@@ -45,14 +45,14 @@ lemma cd_aeval (P : ℂ[X]) : ∀ a b, ContDiff ℝ ∞ (fun Y : Mx n => (aeval 
     exact cd_mul (fun a b => contDiff_const) (cd_pow k)
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Yhd8.main g g' D h1 h2 k`.
+A detailed English derivation is pending.
 -/
 lemma conj_pow (g g' D : Matrix (Fin n) (Fin n) ℂ) (h1 : g' * g = 1) (h2 : g * g' = 1) (k : ℕ) :
     (g' * D * g) ^ k = g' * D ^ k * g :=
   _root_.UpperTheory.Reformulated.B.Yhd8.main g g' D h1 h2 k
 
 /- English proof (translation)
-Proceed by induction on `P using Polynomial.induction_on' with`. Consider the case `add p q hp hq => rw [map_add, map_add, hp, hq, mul_add, add_mul]`. Consider the case `monomial k c`. Rewrite using `[Polynomial.aeval_monomial, Polynomial.aeval_monomial, conj_pow g g' D h1 h2, ← Algebra.smul_def, ← Algebra.smul_def, mul_smul_comm, smul_mul_assoc]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 lemma aeval_conj (g g' D : Matrix (Fin n) (Fin n) ℂ) (h1 : g' * g = 1) (h2 : g * g' = 1) (P : ℂ[X]) :
     aeval (g' * D * g) P = g' * aeval D P * g := by
@@ -63,9 +63,9 @@ lemma aeval_conj (g g' D : Matrix (Fin n) (Fin n) ℂ) (h1 : g' * g = 1) (h2 : g
       ← Algebra.smul_def, ← Algebra.smul_def, mul_smul_comm, smul_mul_assoc]
 
 /- English proof (translation)
-Proceed by induction on `P using Polynomial.induction_on' with`. Consider the case `add p q hp hq => rw [map_add, hp, hq, Matrix.diagonal_add]`. Simplify using `[Polynomial.eval_add]`. Consider the case `monomial k c`. Rewrite using `[Polynomial.aeval_monomial, Matrix.diagonal_pow, Matrix.algebraMap_eq_diagonal, Matrix.diagonal_mul_diagonal]`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `j`. Simplify using `[Polynomial.eval_monomial]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 lemma aeval_diag (l : Fin n → ℂ) (P : ℂ[X]) :
     aeval (diagonal l) P = diagonal fun j => P.eval (l j) := by
@@ -82,11 +82,11 @@ end PLagr
 
 open PLagr in
 /- English proof (translation)
-Introduce `n l hl`. Use `⟨fun i Y => fun a b => (aeval (Matrix.of Y) (Lagrange.basis Finset.univ l i)) a b, fun i => ?_, ?_⟩` and prove the remaining obligations. Conclude with `contDiff_pi.2 fun a => contDiff_pi.2 fun b => cd_aeval _ a b`. Introduce `i g g' h1 h2`. Express the relevant statement in the definitionally equal form `aeval (g' * diagonal l * g) (Lagrange.basis Finset.univ l i) = _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[aeval_conj g g' _ h1 h2, aeval_diag]`. Establish `hv : (fun j => (Lagrange.basis Finset.univ l i).eval (l j)) = Pi.single i 1`. Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.single_eq_same, Lagrange.eval_basis_self hl.injOn (Finset.mem_univ _)]`. Rewrite using `[Pi.single_eq_of_ne h, Lagrange.eval_basis_of_ne (Ne.symm h) (Finset.mem_univ _)]`. Rewrite using `[hv, Matrix.diagonal_single]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lagr : Lagr := by
   intro n l hl

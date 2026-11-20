@@ -24,27 +24,25 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {W : LocWach PD LL O v n}
 
 /- English proof (translation)
-Take `⟨⟨r, b, hbN, hbA, hbW⟩, -⟩` from `h1`. Establish `hNA : ∀ z ∈ NAinf W E T, ∃ β : Fin r → RA, z = ∑ j, inclR (β j) • E.jD T (b j)`. Introduce `z hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Take `⟨a, x, hxN, rfl⟩` from `hz`. Take `⟨α, hα, -⟩` from `hbA x hxN`. Use `⟨fun j => a * E.io (α j), ?_⟩` and prove the remaining obligations. Rewrite using `[hα, map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[GlobalTheory.NL.FrobDenom.jD_smulA, smul_smul, map_mul]`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add z w _ _ hz hw`. Take `⟨β, rfl⟩` from `hz`. Take `⟨γ, rfl⟩` from `hw`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨β + γ, ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.add_apply, map_add, add_smul]`. Consider the case `smul c z _ hz`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Take `⟨β, rfl⟩` from `hz`. Use `⟨c • β, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, map_smul, smul_assoc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hDE : ∀ y : W.DD T, ∃ μ : Fin r → W.EE, y = ∑ j, μ j • b j`. Introduce `y`. Use `(W.N_base T hT).inductionOn y _ ⟨0, by simp⟩ ?_ ?_ ?_` and prove the remaining obligations. Introduce `z`. Take `⟨α, hα, -⟩` from `hbA z z.2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨fun j => algebraMap _ W.EE (α j), ?_⟩` and prove the remaining obligations. Simplify using `only [Submodule.subtype_apply, algebraMap_smul]`. Conclude with `hα`. Introduce and unpack `e y ⟨μ, rfl⟩`. Conclude with `⟨e • μ, by simp [Finset.smul_sum, smul_smul]⟩`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `y y' ⟨μ, rfl⟩ ⟨μ', rfl⟩`. Conclude with `⟨μ + μ', by simp [add_smul, Finset.sum_add_distrib]⟩`. Take `⟨β, hβ⟩` from `hNA _ hx`. Take `⟨μ, rfl⟩` from `hDE x`. Establish `hj : E.jD T (∑ j, μ j • b j) = ∑ j, E.ioE (μ j) • E.jD T (b j)`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => E.jD_smul T _ _`. Take `⟨c, -, hc⟩` from `hbW (E.jD T (∑ j, μ j • b j))`. Establish `e1` using `hc (fun j => E.ioE (μ j)) hj`. Establish `e2` using `hc (fun j => inclR (β j)) hβ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hμ : ∀ j, ∃ a : LetA O n, algebraMap _ W.EE a = μ j` using `fun j => h6 (μ j) ⟨β j, (congrFun e2 j).trans (congrFun e1 j).symm⟩`. Use `choose a ha using hμ`. Establish `: ∑ j, μ j • b j = ∑ j, a j • b j`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← ha j, algebraMap_smul]`.
-
-Rewrite using `[this]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (hbN j)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_N_of_jD (E : EtTie W RA RW inclR φR gR πA) (T : LocLat G Qp LL O)
     (hT : IsCrys PD T.ρ) (h1 : p1et W E T)
@@ -126,11 +124,11 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {W : LocWach PD LL O v n}
 
 /- English proof (translation)
-Establish `hy : ((Multiset.replicate M 0).map fun j => (W.φA ^ j) W.Q).prod • (W.φD T m - m) ∈ W.N T`. Rewrite using `[Multiset.map_replicate, Multiset.prod_replicate, pow_zero]`. Conclude with `hm`. Establish `hb : TWmap φR T (E.jD T m) - E.jD T m = E.jD T (W.φD T m - m)`. Rewrite using `[map_sub, E.jD_φ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `hF _ _ hy _ hb 0 (fun j hj => (Multiset.eq_of_mem_replicate hj).le)`. Rewrite `ha` using `[Finset.prod_range_one, pow_zero, GlobalTheory.NL.SandArb.map_mulLeft]`. Take `⟨h1, k, hk, -⟩` from `hP1`. Establish `hz` using `hk _ ha`. Use `⟨k + a, mem_N_of_jD E T hT h1 h6 _ ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.NL.FrobDenom.jD_smulA, map_pow, map_pow, pow_add, mul_smul]`. Conclude with `hz`.
+A detailed English derivation is pending.
 -/
 theorem of_tie (E : EtTie W RA RW inclR φR gR πA) (T : LocLat G Qp LL O) (hT : IsCrys PD T.ρ)
     (hF : ∀ (J : Multiset ℕ) (y : W.DD T), (J.map fun j => (W.φA ^ j) W.Q).prod • y ∈ W.N T →
@@ -161,7 +159,7 @@ end Generic
 set_option synthInstance.maxHeartbeats 200000 in
 
 /- English proof (translation)
-Introduce `D HW F l _ K s LL h W T hT M m hm`. Conclude with `of_tie ((F l).E K s LL h).tie T hT (GlobalTheory.NL.FrobDenom.main D HW F l K s LL h T hT) (GlobalTheory.NL.NygaardExtension.main D HW F l K s LL h T hT) (GlobalTheory.NL.IoXQ.main D HW F l K s LL h).2.2.2.2.2.1 M m hm`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem main : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL), let W := (HW l).W K s LL h; ∀ T : Lt K LL, IsCrys ((D.loc l).PD K) T.ρ → ∀ (M : ℕ) (m : W.DD T), W.φD T m - m ∈ invN W T (W.Q ^ M) → ∃ a : ℕ, W.X ^ a • m ∈ W.N T := by
   intro D HW F l _ K s LL h W T hT M m hm

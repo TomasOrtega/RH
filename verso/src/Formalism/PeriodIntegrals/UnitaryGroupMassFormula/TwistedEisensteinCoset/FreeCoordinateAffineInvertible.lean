@@ -13,9 +13,9 @@ section XX
 variable {E : Type} [Field E]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `l`. Simplify using `only [eN, Pi.single_apply]`. Distinguish the cases in `h : l = s`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg h, if_neg]`. Introduce `h'`. Conclude with `h (Fin.ext h')`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem xxw_eN_eq {N : ℕ} (s : Fin N) : eN E N s.1 = Pi.single s 1 := by
   funext l
@@ -28,14 +28,14 @@ theorem xxw_eN_eq {N : ℕ} (s : Fin N) : eN E N s.1 = Pi.single s 1 := by
     exact h (Fin.ext h')
 
 /- English proof (translation)
-Use `show (∀ l : Fin (n + c), l.1 ∉ {l | l < n + i} → v l = 0) ↔ _`. Simplify using `only [Set.mem_setOf_eq, not_lt]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem xxw_mem_Ufl {n c i : ℕ} (v : Fin (n + c) → E) : v ∈ Ufl E n c i ↔ ∀ l : Fin (n + c), n + i ≤ l.1 → v l = 0 := by
   show (∀ l : Fin (n + c), l.1 ∉ {l | l < n + i} → v l = 0) ↔ _
   simp only [Set.mem_setOf_eq, not_lt]
 
 /- English proof (translation)
-Simplify using `only [xx1, Matrix.toLin'_apply, Matrix.mulVec_single_one]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem xxw_entry {n' c' n c : ℕ} (xj : (Fin n' → E) →ₗ[E] (Fin n → E)) (t : FC n' c' n c → E) (s : Fin (n' + c')) (l : Fin (n + c)) :
     xx1 xj t (Pi.single s 1) l =
@@ -46,21 +46,21 @@ theorem xxw_entry {n' c' n c : ℕ} (xj : (Fin n' → E) →ₗ[E] (Fin n → E)
   rfl
 
 /- English proof (translation)
-Establish `hinX : ∀ u : Fin n → E, inX E n c u ∈ Ufl E n c 0`. Introduce `u`. Rewrite using `[xxw_mem_Ufl]`. Introduce `l hl`. Simplify using `only [inX, LinearMap.pi_apply, dif_neg (show ¬ l.1 < n by omega), LinearMap.zero_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hsum : inX E n c v = ∑ p : Fin n, v p • eN E (n + c) p.1`. Use function extensionality and compare the values at `l`. Rewrite using `[Finset.sum_apply]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, eN, mul_ite, mul_one, mul_zero]`. Distinguish the cases in `hl : l.1 < n`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [inX, LinearMap.pi_apply, dif_pos hl, LinearMap.proj_apply]`. Rewrite using `[Finset.sum_eq_single ⟨l.1, hl⟩]`. Simplify using the standard rewrite rules. Introduce `p _ hp`. Rewrite using `[if_neg]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `hp (Fin.ext h.symm)`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Simplify using `only [inX, LinearMap.pi_apply, dif_neg hl, LinearMap.zero_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result.
 
-Use `symm`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `p _`. Rewrite using `[if_neg]`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `p.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use function extensionality and compare the values at `l`. Distinguish the cases in `hl : l.1 < n`. Rewrite using `[hsum, map_sum]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Simplify using `only [inX, LinearMap.pi_apply, dif_pos hl, LinearMap.proj_apply, resX, Matrix.toLin'_apply, Matrix.mulVec, dotProduct, Matrix.of_apply]`. Use `Finset.sum_congr rfl (fun p _ => ?_)` and prove the remaining obligations. Rewrite using `[mul_comm]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `hρ.1 0 _ (hinX v)`. Rewrite `h1` using `[xxw_mem_Ufl]`. Rewrite using `[h1 l (by omega)]`. Simplify using `only [inX, LinearMap.pi_apply, dif_neg hl, LinearMap.zero_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem xxw_res {n c : ℕ} {ρ : (Fin (n + c) → E) ≃ₗ[E] (Fin (n + c) → E)} (hρ : R1cond E n c ρ) (v : Fin n → E) :
     ρ (inX E n c v) = inX E n c (resX ρ v) := by
@@ -106,15 +106,15 @@ theorem xxw_res {n c : ℕ} {ρ : (Fin (n + c) → E) ≃ₗ[E] (Fin (n + c) →
     simp only [inX, LinearMap.pi_apply, dif_neg hl, LinearMap.zero_apply]
 
 /- English proof (translation)
-Distinguish the cases in `hi : n + i < n + c`. Establish `hw : v - v ⟨n + i, hi⟩ • eN E (n + c) (n + i) ∈ Ufl E n c i`. Rewrite `hv`, the goal using `[xxw_mem_Ufl]`. Introduce `l hl`. Simplify using `only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul, eN]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hli : l.1 = n + i`. Establish `hl' : l = ⟨n + i, hi⟩` using `Fin.ext hli`. Rewrite using `[if_pos hli, hl']`. Simplify using the standard rewrite rules. Rewrite using `[if_neg hli, mul_zero, sub_zero]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hv l (by omega)`. Establish `h1` using `hρ.1 i _ hw`. Establish `h2` using `hρ.2.2 i`. Establish `e1 : ρ v - v = (ρ (v - v ⟨n + i, hi⟩ • eN E (n + c) (n + i)) - (v - v ⟨n + i, hi⟩ • eN E (n + c) (n + i))) + v ⟨n + i, hi⟩ • (ρ (eN E (n + c) (n + i)) - eN E (n + c) (n + i))`. Rewrite using `[map_sub, map_smul, smul_sub]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[e1]`. Conclude with `(Ufl E n c i).add_mem ((Ufl E n c i).sub_mem h1 hw) ((Ufl E n c i).smul_mem _ h2)`. Rewrite using `[xxw_mem_Ufl]`. Introduce `l hl`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `l.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem xxw_step {n c : ℕ} {ρ : (Fin (n + c) → E) ≃ₗ[E] (Fin (n + c) → E)} (hρ : R1cond E n c ρ) (i : ℕ)
     (v : Fin (n + c) → E) (hv : v ∈ Ufl E n c (i + 1)) : ρ v - v ∈ Ufl E n c i := by
@@ -144,7 +144,7 @@ theorem xxw_step {n c : ℕ} {ρ : (Fin (n + c) → E) ≃ₗ[E] (Fin (n + c) �
     omega
 
 /- English proof (translation)
-Use function extensionality and compare the values at `l`. Simplify using `only [xxw_entry, dif_neg hs]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private theorem xx1_single_eq_of_not_lt {n' c' n c : ℕ} (xj : (Fin n' → E) →ₗ[E] (Fin n → E))
     (t : FC n' c' n c → E) (s : Fin (n' + c')) (hs : ¬ s.1 < n') :
@@ -153,9 +153,9 @@ private theorem xx1_single_eq_of_not_lt {n' c' n c : ℕ} (xj : (Fin n' → E) �
   simp only [xxw_entry, dif_neg hs]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `l`. Rewrite using `[xxw_entry]`. Establish `hnf : ¬ IsFree n' n c l.1 s.1` using `fun h => by have := h.1; omega`. Rewrite using `[dif_neg hnf, dif_pos hs]`. Simplify using `only [inX, LinearMap.pi_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hl : l.1 < n`. Rewrite using `[dif_pos hl, dif_pos hl, LinearMap.proj_apply, LinearMap.toMatrix'_apply]`. Rewrite using `[dif_neg hl, dif_neg hl, LinearMap.zero_apply]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem xx1_single_eq_inX_of_lt {n' c' n c : ℕ} (xj : (Fin n' → E) →ₗ[E] (Fin n → E))
     (t : FC n' c' n c → E) (s : Fin (n' + c')) (hs : s.1 < n') :
@@ -170,9 +170,9 @@ private theorem xx1_single_eq_inX_of_lt {n' c' n c : ℕ} (xj : (Fin n' → E) �
   · rw [dif_neg hl, dif_neg hl, LinearMap.zero_apply]
 
 /- English proof (translation)
-Introduce `l hl`. Rewrite using `[xxw_entry]`. Establish `hnf : ¬ IsFree n' n c l.1 s.1`. Introduce and unpack `⟨-, h | ⟨-, h⟩⟩`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[dif_neg hnf, dif_neg hs]`. Both sides reduce to the same expression.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem xx1_single_apply_eq_eN_of_le {n' c' n c : ℕ} (xj : (Fin n' → E) →ₗ[E] (Fin n → E))
     (t : FC n' c' n c → E) (s : Fin (n' + c')) (hs : ¬ s.1 < n') (hj : s.1 - n' < c) :
@@ -188,29 +188,29 @@ private theorem xx1_single_apply_eq_eN_of_le {n' c' n c : ℕ} (xj : (Fin n' →
   rfl
 
 /- English proof (translation)
-Introduce `E _ n' c' n c ρ hρ xj t`. Take `⟨h1, -⟩` from `hρ`. Apply `(Pi.basisFun E (Fin (n' + c'))).ext` to reduce the goal to its premises. Introduce `s`. Rewrite using `[Pi.basisFun_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `l`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe]`. Rewrite using `[xxw_entry]`. Distinguish the cases in `hf : IsFree n' n c l.1 s.1`. Rewrite using `[dif_pos hf]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : ¬ s.1 < n'` using `by have := hf.1; omega`. Rewrite using `[xx1_single_eq_of_not_lt xj t s hs]`. Use `show _ = (ρ.toLinearMap ∘ₗ xx1 (0 : (Fin n' → E) →ₗ[E] (Fin n → E)) t) (eN E (n' + c') s.1) l`. Rewrite using `[xxw_eN_eq]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_neg hf]`. Distinguish the cases in `hs : s.1 < n'`. Rewrite using `[dif_pos hs, xx1_single_eq_inX_of_lt xj t s hs, xxw_res h1]`. Simplify using `only [inX, LinearMap.pi_apply]`. Distinguish the cases in `hl : l.1 < n`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos hl, dif_pos hl, LinearMap.proj_apply, LinearMap.toMatrix'_apply, LinearMap.comp_apply]`. Rewrite using `[dif_neg hl, dif_neg hl, LinearMap.zero_apply]`. Rewrite using `[dif_neg hs]`. Establish `hj : s.1 - n' < c`. Assume the negation of the conclusion as `hj`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hf` to reduce the goal to its premises. Use `⟨by omega, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hjc : s.1 - n' = c`. Conclude with `Or.inl hjc`. Conclude with `Or.inr ⟨by omega, by have := l.isLt; omega⟩`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Prove the first alternative. Prove the second alternative. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hj0 : s.1 - n' = 0`. Establish `hcol : xx1 xj t (Pi.single s 1) = eN E (n + c) n`. Use function extensionality and compare the values at `l'`. Rewrite using `[xxw_entry]`. Establish `hnf : ¬ IsFree n' n c l'.1 s.1`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rintro ⟨-, h | ⟨h, -⟩⟩ <;> omega`. Rewrite using `[dif_neg hnf, dif_neg hs, hj0, add_zero]`. Both sides reduce to the same expression. Rewrite using `[hcol, h1.2.1, hj0, add_zero]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hl : n + (s.1 - n') ≤ l.1`. Assume the negation of the conclusion as `hl`. Apply `hf` to reduce the goal to its premises. Conclude with `⟨by omega, Or.inr ⟨by omega, by omega⟩⟩`. Establish `hu : xx1 xj t (Pi.single s 1) - eN E (n + c) (n + (s.1 - n')) ∈ Ufl E n c (s.1 - n')`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[xxw_mem_Ufl]`. Introduce `l' hl'`. Rewrite using `[Pi.sub_apply, xx1_single_apply_eq_eN_of_le xj t s hs hj l' hl', sub_self]`. Establish `hA` using `h1.1 _ _ hu`. Establish `hB` using `h1.2.2 (s.1 - n')`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC` using `(Ufl E n c (s.1 - n')).add_mem hA hB`. Rewrite `hC` using `[map_sub, xxw_mem_Ufl]`. Establish `h3` using `hC l hl`. Simplify using `only [Pi.add_apply, Pi.sub_apply] at h3`. Establish `e2 : ρ (xx1 xj t (Pi.single s 1)) l = eN E (n + c) (n + (s.1 - n')) l`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `h3`. Rewrite using `[e2]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem unfolding_affine_space_invariant : XXP := by
   intro E _ n' c' n c ρ hρ xj t
@@ -274,7 +274,7 @@ theorem unfolding_affine_space_invariant : XXP := by
         rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Establish `h1` using `congrFun h (Fin.castAdd c p)`. Simplify `h1` using `[inX, LinearMap.pi_apply, Fin.coe_castAdd, p.isLt]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem xxw_inX_inj {n c : ℕ} {v w : Fin n → E} (h : inX E n c v = inX E n c w) : v = w := by
   funext p
@@ -282,11 +282,11 @@ theorem xxw_inX_inj {n c : ℕ} {v w : Fin n → E} (h : inX E n c v = inX E n c
   simpa [inX, LinearMap.pi_apply, Fin.coe_castAdd, p.isLt] using h1
 
 /- English proof (translation)
-Introduce `E _ n' n c ρ hρ y`. Take `⟨h1, h2⟩` from `hρ`. Use `⟨resX ρ⁻¹ ∘ₗ y, ?_⟩` and prove the remaining obligations. Establish `key : ∀ u : Fin n → E, resX ρ (resX ρ⁻¹ u) = u`. Introduce `u`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `xxw_inX_inj (c := c)` to reduce the goal to its premises. Rewrite using `[← xxw_res h1, ← xxw_res h2, ← LinearEquiv.mul_apply, mul_inv_cancel]`. Both sides reduce to the same expression. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [LinearMap.comp_apply]`. Conclude with `key (y x)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem restriction_to_affine_surjective : ResXSurjP := by
   intro E _ n' n c ρ hρ y
@@ -303,7 +303,7 @@ theorem restriction_to_affine_surjective : ResXSurjP := by
   exact key (y x)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `l`. Simplify using `only [Pi.sub_apply, xxw_entry]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem xxw_diff {n' c' n c : ℕ} (t : FC n' c' n c → E) (s : Fin (n' + c')) :
     xx1 (0 : (Fin n' → E) →ₗ[E] (Fin n → E)) t (Pi.single s 1) - xx1 (0 : (Fin n' → E) →ₗ[E] (Fin n → E)) 0 (Pi.single s 1) =
@@ -337,9 +337,9 @@ def xxwLin {n' c' n c : ℕ} (ρ : (Fin (n + c) → E) ≃ₗ[E] (Fin (n + c) �
     rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `f`. Simplify using `only [Tr, Pi.add_apply, LinearMap.comp_apply, LinearEquiv.coe_coe]`. Rewrite using `[xxw_eN_eq]`. Establish `h` using `xxw_diff (E := E) t f.1.2`. Rewrite `h` using `[sub_eq_iff_eq_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h, map_add, Pi.add_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem xxw_tr_eq {n' c' n c : ℕ} (ρ : (Fin (n + c) → E) ≃ₗ[E] (Fin (n + c) → E)) (t : FC n' c' n c → E) :
     Tr ρ t = xxwLin ρ t + Tr ρ 0 := by
@@ -352,11 +352,11 @@ theorem xxw_tr_eq {n' c' n c : ℕ} (ρ : (Fin (n + c) → E) ≃ₗ[E] (Fin (n 
   rfl
 
 /- English proof (translation)
-Establish `hρi : ρ⁻¹ ∈ R1 E n c` using `inv_mem hρ`. Establish `e1` using `unfolding_affine_space_invariant E n' c' n c ρ hρ 0 t`. Establish `e2` using `unfolding_affine_space_invariant E n' c' n c ρ⁻¹ hρi 0 (Tr ρ t)`. Rewrite `e1`, `e2` using `[LinearMap.comp_zero]`. Establish `e3 : xx1 (0 : (Fin n' → E) →ₗ[E] (Fin n → E)) (Tr ρ⁻¹ (Tr ρ t)) = xx1 (0 : (Fin n' → E) →ₗ[E] (Fin n → E)) t`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← e2, ← e1]`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe]`. Rewrite using `[← LinearEquiv.mul_apply, inv_mul_cancel]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use function extensionality and compare the values at `f`. Establish `h` using `congrFun (LinearMap.congr_fun e3 (Pi.single f.1.2 1)) f.1.1`. Rewrite `h` using `[xxw_entry, xxw_entry, dif_pos f.2, dif_pos f.2]`. Conclude with `h`.
+Both sides reduce to the same expression. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xxw_tr_inv {n' c' n c : ℕ} {ρ : (Fin (n + c) → E) ≃ₗ[E] (Fin (n + c) → E)} (hρ : ρ ∈ R1 E n c) (t : FC n' c' n c → E) :
     Tr ρ⁻¹ (Tr ρ t) = t := by
@@ -378,11 +378,11 @@ theorem xxw_tr_inv {n' c' n c : ℕ} {ρ : (Fin (n + c) → E) ≃ₗ[E] (Fin (n
   exact h
 
 /- English proof (translation)
-Introduce `E _ n' c' n c ρ hρ`. Establish `hρi : ρ⁻¹ ∈ R1 E n c` using `inv_mem hρ`. Establish `key : ∀ σ : (Fin (n + c) → E) ≃ₗ[E] (Fin (n + c) → E), σ ∈ R1 E n c → ∀ t : FC n' c' n c → E, xxwLin σ⁻¹ (xxwLin σ t) = t`. Introduce `σ hσ t`. Establish `h1` using `xxw_tr_inv hσ t`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h0` using `xxw_tr_inv hσ (0 : FC n' c' n c → E)`. Rewrite `h1` using `[xxw_tr_eq σ⁻¹, xxw_tr_eq σ t, map_add]`. Rewrite `h0` using `[xxw_tr_eq σ⁻¹]`. Combine the equalities or inequalities in the displayed calculation. Use `⟨{ xxwLin ρ with invFun := xxwLin ρ⁻¹, left_inv := key ρ hρ, right_inv := ?_ }, fun t => xxw_tr_eq ρ t⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `t`. Use `key ρ⁻¹ hρi t` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem free_coordinate_affine_invertible : TrAffP := by
   intro E _ n' c' n c ρ hρ
@@ -405,21 +405,21 @@ theorem free_coordinate_affine_invertible : TrAffP := by
   rwa [inv_inv] at this
 
 /- English proof (translation)
-Introduce `E _ n' c' n c ρ hρ xj t`. Take `⟨h1, -⟩` from `hρ`. Unfold `chArg`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl (fun i hi => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hic : i < c` using `Finset.mem_range.mp hi`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe]`. Distinguish the cases in `hs : n' + i + 1 < n' + c'`. Take `⟨s, hs_eq⟩ : ∃ s : Fin (n' + c'), s.1 = n' + i + 1` from `⟨⟨_, hs⟩, rfl⟩`. Rewrite using `[← hs_eq, xxw_eN_eq s]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hsn : ¬ s.1 < n'` using `by omega`. Establish `hu : xx1 xj t (Pi.single s 1) - xx1 (0 : (Fin n' → E) →ₗ[E] (Fin n → E)) 0 (Pi.single s 1) ∈ Ufl E n c (i + 1)`. Rewrite using `[xx1_single_eq_of_not_lt xj t s hsn, xxw_diff, xxw_mem_Ufl]`. Introduce `l hl`. Establish `hlt` using `l.isLt`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[dif_neg]`. Apply the tactic sequence `rintro ⟨-, h | ⟨-, h⟩⟩ <;> omega`. Establish `hstep` using `xxw_step h1 i _ hu`. Rewrite `hstep` using `[xxw_mem_Ufl]`. Establish `hn : n + i < n + c` using `by omega`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `hstep ⟨n + i, hn⟩ le_rfl`. Establish `h0 : xx1 (0 : (Fin n' → E) →ₗ[E] (Fin n → E)) 0 (Pi.single s 1) ⟨n + i, hn⟩ = 0`. Rewrite using `[xxw_entry, dif_pos]`. Both sides reduce to the same expression. Use `⟨by omega, Or.inr ⟨by omega, Or.inr ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Fin.val_mk]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [atN, dif_pos hn]`. Rewrite `h2` using `[map_sub, Pi.sub_apply, Pi.sub_apply, Pi.sub_apply, h0]`. Take the linear combination `h2`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `h0 : eN E (n' + c') (n' + i + 1) = 0`. Use function extensionality and compare the values at `l`. Simplify using `only [eN, Pi.zero_apply]`. Rewrite using `[if_neg]`. Use `l.isLt` as an intermediate fact.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[h0]`. Simplify using `[atN]`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem character_argument_constant_shift : ChArgP := by
   intro E _ n' c' n c ρ hρ xj t

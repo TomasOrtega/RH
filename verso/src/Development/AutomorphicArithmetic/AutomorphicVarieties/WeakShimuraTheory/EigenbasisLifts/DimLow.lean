@@ -6,29 +6,25 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial Matrix UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws UpperTheory.V.Ws.Eb GlobalTheory.GalOfCusp
 
 /- English proof (translation)
-Introduce `l _ c N B _ _ _ f J hfin hreg x p _ hpx hJp`. Take `⟨P, hP, hPp⟩` from `Ideal.exists_minimalPrimes_le hJp`. Use `haveI hPprime : P.IsPrime := hP.1.1`. Establish `hJP : J ≤ P` using `hP.1.2`. Use `haveI : IsCO c.O (B ⧸ P) := co_quot c.O B (B ⧸ P) (Ideal.Quotient.mkₐ c.O P) Ideal.Quotient.mk_surjective`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set g : MvPowerSeries (Fin N) c.O →ₐ[c.O] B ⧸ P := (Ideal.Quotient.mkₐ c.O P).comp f with hg`. Establish `hinj : Function.Injective g`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Assume the negation of the conclusion as `hne`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hmem : f a ∈ P`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `ha`. Take `⟨y, hyJ, hy⟩` from `Ideal.exists_mul_mem_of_mem_minimalPrimes hP hmem`. Conclude with `hyJ (hreg a hne y hy)`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfinP : (g : MvPowerSeries (Fin N) c.O →+* B ⧸ P).Finite`. Establish `h2` using `(RingHom.Finite.of_surjective _ (Ideal.Quotient.factor_surjective hJP)).comp hfin`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Conclude with `RingHom.ext fun a => rfl`. Establish `hxP : ∀ a ∈ P, x a = 0` using `fun a ha => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : a ∈ RingHom.ker x` using `hpx ▸ hPp ha`. Conclude with `h3`. Use `set xb : B ⧸ P →ₐ[c.O] PadicAlgCl l := Ideal.Quotient.liftₐ P x hxP with hxb`. Establish `hxbmk : ∀ b, xb (Ideal.Quotient.mk P b) = x b` using `fun b => rfl`. Establish `hht` using `htLow c N (B ⧸ P) g hinj hfinP xb`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `set q : Ideal (B ⧸ P) := RingHom.ker xb with hq`. Use `haveI : q.IsPrime := RingHom.ker_isPrime _`. Establish `hpq : p = Ideal.comap (Ideal.Quotient.mk P) q`. Use extensionality with `b`. Rewrite using `[hpx, Ideal.mem_comap, hq, RingHom.mem_ker, RingHom.mem_ker, hxbmk]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities.
 
-Set `φ` to `Localization.localRingHom p q (Ideal.Quotient.mk P) hpq`. Establish `hφ : Function.Surjective φ`. Introduce `z`. Take `⟨⟨r, s⟩, rfl⟩` from `IsLocalization.mk'_surjective q.primeCompl z`. Take `⟨r', rfl⟩` from `Ideal.Quotient.mk_surjective r`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Take `⟨s', hs'⟩` from `Ideal.Quotient.mk_surjective (s : B ⧸ P)`. Establish `hs'p : s' ∈ p.primeCompl`. Introduce `h`. Apply `s.2` to reduce the goal to its premises. Rewrite `h` using `[hpq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hs']`. Conclude with `h`. Use `⟨IsLocalization.mk' (Localization.AtPrime p) r' ⟨s', hs'p⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Localization.localRingHom_mk']`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Subtype.ext hs'`. Establish `hker : ∀ a ∈ J.map (algebraMap B (Localization.AtPrime p)), φ a = 0`. Introduce `a ha`. Establish `hle : J.map (algebraMap B (Localization.AtPrime p)) ≤ RingHom.ker φ`. Rewrite using `[Ideal.map_le_iff_le_comap]`.
-
-Introduce `b hb`. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker]`. Rewrite using `[Localization.localRingHom_to_map]`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem.mpr (hJP hb), map_zero]`. Conclude with `hle ha`.
-
-Establish `hψ` using `Ideal.Quotient.lift_surjective_of_surjective _ hker hφ`. Establish `hdim` using `ringKrullDim_le_of_surjective _ hψ`. Rewrite `hdim` using `[IsLocalization.AtPrime.ringKrullDim_eq_height q (Localization.AtPrime q)]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Eb.dimLow :
     ∀ {l : ℕ} [Fact l.Prime] (c : Coef l) (N : ℕ) (B : Type) [CommRing B] [Algebra c.O B] [IsCO c.O B] (f : MvPowerSeries (Fin N) c.O →ₐ[c.O] B) (J : Ideal B), ((Ideal.Quotient.mk J).comp (f : MvPowerSeries (Fin N) c.O →+* B)).Finite → (∀ a, a ≠ 0 → ∀ b, f a * b ∈ J → b ∈ J) →

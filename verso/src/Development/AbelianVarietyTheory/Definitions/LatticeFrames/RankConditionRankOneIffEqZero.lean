@@ -14,15 +14,15 @@ namespace GlobalTheory.Core.Rk
 open Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.Examples₂ Formalism.BasicNotions.Examples₂.NZ NumberField Module
 
 /- English proof (translation)
-Establish `h : 0 < D.R.k` using `by have := D.R.m_add_three_le_k; omega`. Establish `h' : 0 < D'.R.k` using `by omega`. Establish `hkr : (D.R.k : ℝ) = D'.R.k` using `by exact_mod_cast hk`. Prove the components needed by the constructor for the conclusion. Introduce `H t t' ht`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e1 : (D.eTau (D.eTau.symm ⟨D.R.tau1 t, (Formalism.HC.Frame.mem_Psi_iff _).2 rfl⟩) : D.R.GG) = D.R.tau1 t`. Rewrite using `[Equiv.apply_symm_apply]`. Establish `e2 : (D'.eTau (D'.eTau.symm ⟨D'.R.tau1 t', (Formalism.HC.Frame.mem_Psi_iff _).2 rfl⟩) : D'.R.GG) = D'.R.tau1 t'` using `by rw [Equiv.apply_symm_apply]`. Take `⟨a, b⟩` from `H _ _ t t' h h' e1 e2 ht`. Take `⟨c1, c2⟩` from `L.top_u _ t h e1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨d1, d2⟩` from `L'.top_u _ t' h' e2`. Rewrite `c1` using `[a, d1]`. Rewrite `c2` using `[b, d2]`. Prove the components needed by the constructor for the conclusion. Conclude with `(by linarith : (L.aT t : ℝ) = L'.aT t')` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(by linarith : (L.bT t : ℝ) = L'.bT t')` after adjusting the coercions. Introduce `H τ τ' t t' h h' e1 e2 ht`. Take `⟨a, b⟩` from `H t t' ht`. Take `⟨c1, c2⟩` from `L.top_u _ t h e1`. Take `⟨d1, d2⟩` from `L'.top_u _ t' h' e2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `c1` using `[a, hkr, ← d1]`. Rewrite `c2` using `[b, hkr, ← d2]`. Conclude with `⟨by exact_mod_cast c1, by exact_mod_cast c2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem sameTops_iff₂ {D D' : D7} (L : SizeData₂ D) (L' : SizeData₂ D') (hk : D.R.k = D'.R.k) :
     SameTops D D' ↔ ∀ (t : D.host.TT) (t' : D'.host.TT),
@@ -64,7 +64,7 @@ def Pts.ofFam {ε : ℝ} (F : FamCore ε) : Pts where
       exact Prod.mk.inj e⟩
 
 /- English proof (translation)
-Use `⟨F.x1 + 1, fun x hx i₀ u₀ hu => ?_⟩` and prove the remaining obligations. Take `⟨i, h1, h2⟩` from `F.coverS x (by linarith) i₀ u₀ hu`. Conclude with `⟨i, h1, (sameTops_iff₂ (F.L x i) (F.L x i₀) (congrArg Ranks.k (F.R_eq x i i₀))).2 h2⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Pts.ofFam_covered {ε : ℝ} (F : FamCore ε) : (Pts.ofFam F).Covered := by
   refine ⟨F.x1 + 1, fun x hx i₀ u₀ hu => ?_⟩
@@ -72,7 +72,7 @@ theorem Pts.ofFam_covered {ε : ℝ} (F : FamCore ε) : (Pts.ofFam F).Covered :=
   exact ⟨i, h1, (sameTops_iff₂ (F.L x i) (F.L x i₀) (congrArg Ranks.k (F.R_eq x i i₀))).2 h2⟩
 
 /- English proof (translation)
-The claim follows from `h.rkWin (Pts.ofFam_covered F)`.
+A detailed English derivation is pending.
 -/
 theorem Pts.ofFam_rkWin {ε : ℝ} (F : FamCore ε) (h : (Pts.ofFam F).RKAll) : (Pts.ofFam F).RKWin :=
   h.rkWin (Pts.ofFam_covered F)
@@ -91,7 +91,7 @@ structure LvP where
 instance (p : LvP) : Fact p.T.Prime := ⟨p.prime⟩
 
 /- English proof (translation)
-Take `⟨π, p, hp, hN, hK, hn, hc, -⟩` from `GlobalTheory.Mem.NormPrime.exists_norm_prime R0 H0 (H0.QS * H0.q * H0.d * (H0.g 0 * H0.g 1) ^ 2) 1 (max N 991) (by rw [modulus0]; norm_num) (Nat.coprime_one_left _)`. Conclude with `⟨⟨p, hp, lt_of_le_of_lt (le_max_right _ _) hN, π, hK, hn, by simpa using hc⟩, lt_of_le_of_lt (le_max_left _ _) hN⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_lvP (N : ℕ) : ∃ p : LvP, N < p.T := by
   obtain ⟨π, p, hp, hN, hK, hn, hc, -⟩ := GlobalTheory.Mem.NormPrime.exists_norm_prime R0 H0 (H0.QS * H0.q * H0.d * (H0.g 0 * H0.g 1) ^ 2) 1 (max N 991)
@@ -148,7 +148,7 @@ def perS (N : ℕ) (s : ℂ) : FK (Fin (N + 1)) →ₗ[ℂ] En 1 →ₗ[ℂ] ℂ
     (fun _ _ _ => by simp; ring) (fun _ _ _ => by simp; ring)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨exampleHost_typeHypothesis.cond, exampleHost_typeHypothesis.bb, exampleHost_typeHypothesis.jac⟩`.
+Supply the required witnesses or components.
 -/
 theorem tH (p : LvP) (t : R0.A) : THyp (Ht p t) := ⟨exampleHost_typeHypothesis.cond, exampleHost_typeHypothesis.bb, exampleHost_typeHypothesis.jac⟩
 
@@ -158,12 +158,12 @@ def lbl (p : LvP) (t : R0.A) : Lbl (Ht p t) :=
   (lbl_nonempty (Ht p t) (tH p t) 5 (by norm_num) (by decide) (by decide)).some
 
 /- English proof (translation)
-Use `p.big` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem LvP.ne_two (p : LvP) : p.T ≠ 2 := by have := p.big; omega
 
 /- English proof (translation)
-Use `p.big` as an intermediate fact. Conclude with `⟨show p.T ≠ 751 by omega, show p.T ≠ 991 by omega⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem LvP.ne_pde (p : LvP) : p.T ≠ H0.pde ∧ p.T ≠ H0.pde' := by
   have := p.big
@@ -196,11 +196,11 @@ section Rank
 variable {R : Ranks} {Tau : Type} [Fintype Tau] (hc : Tau → HCParam R) (N : ℕ)
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => funext _ _`. Simplify using `[colTo]`. Consider the case `succ j ih => show (chainN hc (pkg N)).K j (colTo (chainN hc (pkg N)) j (fun _ _ => 1)) = _`. Rewrite using `[ih]`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `c y`. Establish `e : ∀ a : Fin (N + 1), (chainN hc (pkg N)).wt j a • (chainN hc (pkg N)).Kmap j a c (fun _ => ((N : ℂ) + 1) ^ j) = fun _ => ((N : ℂ) + 1) ^ j` using `fun a => by`. Rewrite using `[chainN_Kmap hc (pkg N) j a c]`. Simplify using `[ColumnChain.wt]`. Establish `e2 : (chainN hc (pkg N)).K j (fun _ _ => ((N : ℂ) + 1) ^ j) c = ∑ _a : Fin (N + 1), fun _ : Unit => ((N : ℂ) + 1) ^ j`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Unfold `ColumnChain.K Formalism.ThetaLiftIndependence.kerOpM`. Rewrite using `[Finset.sum_congr rfl fun a _ => e a]`. Use `(congrFun e2 y).trans ?_` and prove the remaining obligations. Simplify using `[pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem colTo_one (j : ℕ) : colTo (chainN hc (pkg N)) j (fun _ _ => 1) = fun _ _ => ((N : ℂ) + 1) ^ j := by
   induction j with
@@ -223,7 +223,7 @@ theorem colTo_one (j : ℕ) : colTo (chainN hc (pkg N)) j (fun _ _ => 1) = fun _
 variable (T : ℕ) [Fact T.Prime] (Dst : ℝ) (hD : 0 < Dst) (hT : T ≠ 2) (s : ℂ)
 
 /- English proof (translation)
-Unfold `rkC`. Use `(Submodule.finrank_le _).trans ?_` and prove the remaining obligations. Use `show finrank ℂ (Module.Dual ℂ (En 1)) ≤ 1`. Rewrite using `[Subspace.dual_finrank_eq]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rk_le_one : rkC (chainN hc (pkg N)) (atTN hc (pkg N) T Dst hD 1 one_pos 2 one_lt_two)
     (periodN hc (pkg N) (En 1) (perS N s)) ≤ 1 := by
@@ -234,9 +234,9 @@ theorem rk_le_one : rkC (chainN hc (pkg N)) (atTN hc (pkg N) T Dst hD 1 one_pos 
   simp
 
 /- English proof (translation)
-Unfold `rkC`. Establish `: PhiC (chainN hc (pkg N)) (atTN hc (pkg N) T Dst hD 1 one_pos 2 one_lt_two) (periodN hc (pkg N) (En 1) (perS N 0)) = 0`. Use extensionality with `φ F`. Use `show (0 : ℂ) * _ * _ = 0`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, LinearMap.range_zero, finrank_bot]`.
+A detailed English derivation is pending.
 -/
 theorem rk_zero : rkC (chainN hc (pkg N)) (atTN hc (pkg N) T Dst hD 1 one_pos 2 one_lt_two)
     (periodN hc (pkg N) (En 1) (perS N 0)) = 0 := by
@@ -251,9 +251,9 @@ theorem rk_zero : rkC (chainN hc (pkg N)) (atTN hc (pkg N) T Dst hD 1 one_pos 2 
 include hT in
 
 /- English proof (translation)
-Use `le_antisymm (rk_le_one hc N T Dst hD 1) ?_` and prove the remaining obligations. Unfold `rkC`. Use `haveI : FiniteDimensional ℂ (periodN hc (pkg N) (En 1) (perS N 1)).Mt := inferInstanceAs (FiniteDimensional ℂ (En 1))`. Rewrite using `[Nat.one_le_iff_ne_zero, Ne, Submodule.finrank_eq_zero, LinearMap.range_eq_bot]`. Introduce `h`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `LinearMap.congr_fun (LinearMap.congr_fun h ⟨fun _ _ => 1, by rw [atTN_Mram _ _ _ _ _ _ _ _ _ hT]; trivial⟩) (WithLp.toLp 2 fun _ => (1 : ℂ))`. Establish `h2 : (1 : ℂ) * colTo (chainN hc (pkg N)) R.m (fun _ _ => 1) (0 : Fin (N + 1)) () * 1 = 0` using `h1`. Rewrite `h2` using `[colTo_one]`. Establish `h3 : ((N : ℂ) + 1) ≠ 0` using `by exact_mod_cast Nat.succ_ne_zero N`. Simplify using `[h3] at h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rk_one : rkC (chainN hc (pkg N)) (atTN hc (pkg N) T Dst hD 1 one_pos 2 one_lt_two)
     (periodN hc (pkg N) (En 1) (perS N 1)) = 1 := by
@@ -274,39 +274,39 @@ end Rank
 variable (p : LvP)
 
 /- English proof (translation)
-The claim follows from `(atTN_du (fun _ : Tau2 R0 => hcA c) (pkg N) p.T (dstarOf p.T) (dstarOf_pos p.T) 1 one_pos 2 one_lt_two p.ne_two).trans (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem recd_dU (t c N s u) : dU (recd p t c N s) u = N + 1 :=
   (atTN_du (fun _ : Tau2 R0 => hcA c) (pkg N) p.T (dstarOf p.T) (dstarOf_pos p.T) 1 one_pos 2 one_lt_two p.ne_two).trans (by simp)
 
 /- English proof (translation)
-The claim follows from `rk_one (fun _ : Tau2 R0 => hcA c) N p.T (dstarOf p.T) (dstarOf_pos p.T) p.ne_two`.
+A detailed English derivation is pending.
 -/
 theorem columnRank_eq_one_of_rankOne (t c N u) : rkC ((recd p t c N 1).mem u).C ((recd p t c N 1).mem u).A ((recd p t c N 1).mem u).P = 1 :=
   rk_one (fun _ : Tau2 R0 => hcA c) N p.T (dstarOf p.T) (dstarOf_pos p.T) p.ne_two
 
 /- English proof (translation)
-The claim follows from `rk_zero (fun _ : Tau2 R0 => hcA c) N p.T (dstarOf p.T) (dstarOf_pos p.T)`.
+A detailed English derivation is pending.
 -/
 theorem columnRank_eq_zero_of_rankZero (t c N u) : rkC ((recd p t c N 0).mem u).C ((recd p t c N 0).mem u).A ((recd p t c N 0).mem u).P = 0 :=
   rk_zero (fun _ : Tau2 R0 => hcA c) N p.T (dstarOf p.T) (dstarOf_pos p.T)
 
 /- English proof (translation)
-Use `show dU _ u < 2 * _ ↔ _`. Rewrite using `[recd_dU, columnRank_eq_one_of_rankOne]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem rankCondition_rankOne_iff_eq_zero (t c N u) : RK (recd p t c N 1) u ↔ N = 0 := by
   show dU _ u < 2 * _ ↔ _
   rw [recd_dU, columnRank_eq_one_of_rankOne]; omega
 
 /- English proof (translation)
-Use `show ¬ dU _ u < 2 * _`. Rewrite using `[recd_dU, columnRank_eq_zero_of_rankZero]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem not_rankCondition_rankZero (t c N u) : ¬ RK (recd p t c N 0) u := by
   show ¬ dU _ u < 2 * _
   rw [recd_dU, columnRank_eq_zero_of_rankZero]; omega
 
 /- English proof (translation)
-Unfold `RKShare`. Rewrite using `[recd_dU, columnRank_eq_one_of_rankOne]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem recd_share (t c N u) (ρ : ℝ) : RKShare ρ (recd p t c N 1) u ↔ ρ * ((N : ℝ) + 1) ≤ 1 := by
   unfold RKShare
@@ -314,15 +314,15 @@ theorem recd_share (t c N u) (ρ : ℝ) : RKShare ρ (recd p t c N 1) u ↔ ρ *
   simp
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, fun _ _ _ => ⟨rfl, rfl⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem recd_sameHost (t c N s p' t' c' N' s') : SameHost (recd p t c N s) (recd p' t' c' N' s') :=
   ⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, fun _ _ _ => ⟨rfl, rfl⟩⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `H`. Use `(H ⟨R0.tau1 0, (Formalism.HC.Frame.mem_Psi_iff _).2 rfl⟩ ⟨R0.tau1 0, (Formalism.HC.Frame.mem_Psi_iff _).2 rfl⟩ ⟨(0 : R0.A), Finset.mem_univ _⟩ ⟨(0 : R0.A), Finset.mem_univ _⟩ (show 0 < R0.k by decide) (show 0 < R0.k by decide) rfl rfl rfl).1` as an intermediate fact. Establish `h2 : hc0.u ⟨0, by decide⟩ + (c : ℚ) = hc0.u ⟨0, by decide⟩ + (c' : ℚ)` using `this`. Conclude with `add_left_cancel h2` after adjusting the coercions.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl τ τ' _ _ h h' _ _ _`. Conclude with `⟨rfl, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem recd_sameTops (t c N s p' t' c' N' s') : SameTops (recd p t c N s) (recd p' t' c' N' s') ↔ c = c' := by
   constructor
@@ -336,7 +336,7 @@ theorem recd_sameTops (t c N s p' t' c' N' s') : SameTops (recd p t c N s) (recd
     exact ⟨rfl, rfl⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨Formalism.HC.Frame.A.val_injective _ h.unitVector_val_eq, (recd_sameTops ..).1 h.sameTops⟩`. Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `⟨recd_sameHost .., rfl, fun _ _ _ => HEq.rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem recd_sameWord (t c N s u p' t' c' N' s' u') :
     SameWord (recd p t c N s) u (recd p' t' c' N' s') u' ↔ t = t' ∧ c = c' := by
@@ -347,14 +347,14 @@ theorem recd_sameWord (t c N s u p' t' c' N' s' u') :
     exact ⟨recd_sameHost .., rfl, fun _ _ _ => HEq.rfl⟩
 
 /- English proof (translation)
-The claim follows from `R0.toFrame.val_ofNat_of_lt h`.
+A detailed English derivation is pending.
 -/
 theorem val_cast (u₀ : ℕ) (h : u₀ < R0.n) : (R0.ofNat u₀ : R0.A).val = u₀ := R0.toFrame.val_ofNat_of_lt h
 
 /- English proof (translation)
-Use `⟨|a| + |b|, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h2 : 1 ≤ x ^ ε` using `Real.one_le_rpow hx hε`. Establish `h3` using `le_abs_self a`. Establish `h4` using `le_abs_self b`. Establish `h5` using `neg_abs_le b`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h6` using `abs_nonneg a`. Establish `h7` using `abs_nonneg b`. Establish `h8 : |a| + |b| ≤ (|a| + |b|) * x ^ ε` using `le_mul_of_one_le_right (by linarith) h2`. Use `⟨by linarith, ?_⟩` and prove the remaining obligations. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations.
 
 Use the polynomial consequences of the given equalities and inequalities.
 -/
@@ -378,14 +378,14 @@ def fam (N : ℝ → ℕ) (s : ℂ) : Pts :=
 def xOf : ℝ := ((recd p 0 0 0 0).mem ()).A.Xu
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨x₀, fun x hx _ u₀ hu => ⟨R0.ofNat u₀, val_cast u₀ hu, (recd_sameTops ..).2 rfl, (), h x hx _⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem fam_someAt (N : ℝ → ℕ) (s : ℂ) {Q : ℝ → ∀ D : D7, D.what₂.Word → Prop} (x₀ : ℝ)
     (h : ∀ x, x₀ ≤ x → ∀ t, Q x (recd p t 0 (N x) s) ()) : (fam p N s).SomeAt Q :=
   ⟨x₀, fun x hx _ u₀ hu => ⟨R0.ofNat u₀, val_cast u₀ hu, (recd_sameTops ..).2 rfl, (), h x hx _⟩⟩
 
 /- English proof (translation)
-Establish `h : (fam p (fun _ => 0) 1).RKRoom ε`. Take `⟨C, h⟩` from `exists_const (Real.log (xOf p)) (Real.log p.T) hε.le`. Conclude with `⟨C, C, fam_someAt p _ _ 1 fun x hx t => ⟨h x hx, (rankCondition_rankOne_iff_eq_zero ..).2 rfl⟩⟩`. Conclude with `⟨⟨0, fun _ _ _ => ⟨(), (rankCondition_rankOne_iff_eq_zero ..).2 rfl⟩⟩, h.rkWin, h, h.rkWeak hε⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem fam_yes {ε : ℝ} (hε : 0 < ε) : (fam p (fun _ => 0) 1).RKAll ∧ (fam p (fun _ => 0) 1).RKWin ∧
     (fam p (fun _ => 0) 1).RKRoom ε ∧ (fam p (fun _ => 0) 1).RKWeak ε := by
@@ -395,11 +395,9 @@ theorem fam_yes {ε : ℝ} (hε : 0 < ε) : (fam p (fun _ => 0) 1).RKAll ∧ (fa
   exact ⟨⟨0, fun _ _ _ => ⟨(), (rankCondition_rankOne_iff_eq_zero ..).2 rfl⟩⟩, h.rkWin, h, h.rkWeak hε⟩
 
 /- English proof (translation)
-Establish `hw : ¬ (fam p N 0).RKWin` using `fun h => by`. Take `⟨x₀, h⟩` from `Pts.SomeAt.exists h`. Take `⟨i, u, hu⟩` from `h x₀ le_rfl ⟨(0 : R0.A)⟩`. Conclude with `not_rankCondition_rankZero _ _ _ _ _ hu`. Use `⟨?_, hw, fun h => hw h.rkWin, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨x₀, h⟩`. Take `⟨u, hu⟩` from `h x₀ le_rfl (0 : R0.A)`. Conclude with `not_rankCondition_rankZero _ _ _ _ _ hu`. Introduce and unpack `⟨CT, h⟩`. Take `⟨x₀, h⟩` from `h.exists`.
-
-Take `⟨i, u, -, hu, -⟩` from `h x₀ le_rfl ⟨(0 : R0.A)⟩`. Conclude with `absurd (columnRank_eq_zero_of_rankZero p i 0 _ u) hu.ne'`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem fam_zero (N : ℝ → ℕ) (ε : ℝ) :
     ¬ (fam p N 0).RKAll ∧ ¬ (fam p N 0).RKWin ∧ ¬ (fam p N 0).RKRoom ε ∧ ¬ (fam p N 0).RKWeak ε := by
@@ -417,11 +415,11 @@ theorem fam_zero (N : ℝ → ℕ) (ε : ℝ) :
     exact absurd (columnRank_eq_zero_of_rankZero p i 0 _ u) hu.ne'
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Take `⟨C, h⟩` from `exists_const (Real.log (xOf p)) (Real.log p.T) hε.le`. Take `⟨x₁, hx₁⟩` from `room_le_and_share_le hε C`. Use `⟨C, fam_someAt p _ _ (max 1 x₁) fun x hx t => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `hx₁ x (le_of_max_le_right hx)`.
+Prove the components needed by the constructor for the conclusion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨h3, h4⟩` from `h x (le_of_max_le_left hx)`. Use `⟨⟨le_trans (sub_le_sub_left h1 _) h3, h4⟩, (recd_share p t 0 1 () _).2 ?_⟩` and prove the remaining obligations. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨x₀, h⟩` from `Pts.SomeAt.exists h`. Take `⟨i, u, hu⟩` from `h x₀ le_rfl ⟨(0 : R0.A)⟩`. Conclude with `absurd ((rankCondition_rankOne_iff_eq_zero p i 0 1 u).1 hu) one_ne_zero`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem fam_half {ε : ℝ} (hε : 0 < ε) : (fam p (fun _ => 1) 1).RKWeak ε ∧ ¬ (fam p (fun _ => 1) 1).RKWin := by
   constructor
@@ -441,7 +439,7 @@ theorem fam_half {ε : ℝ} (hε : 0 < ε) : (fam p (fun _ => 1) 1).RKWeak ε �
 def cls (c : ℕ) (s : ℂ) : ℝ → D7 → Prop := fun _ D => ∃ t, D = recd p t c 0 s
 
 /- English proof (translation)
-Take `⟨C, h⟩` from `exists_const (Real.log (xOf p)) (Real.log p'.T) hε`. Conclude with `⟨C, C, fam_someAt p _ _ 1 fun x hx t => ⟨recd p' t 0 0 1, (), ⟨t, rfl⟩, (recd_sameWord ..).2 ⟨rfl, rfl⟩, h x hx, (rankCondition_rankOne_iff_eq_zero ..).2 rfl⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem fam_over (p' : LvP) (s : ℂ) {ε : ℝ} (hε : 0 ≤ ε) : (fam p (fun _ => 0) s).RKRoomOver (cls p' 0 1) ε := by
   obtain ⟨C, h⟩ := exists_const (Real.log (xOf p)) (Real.log p'.T) hε
@@ -449,9 +447,9 @@ theorem fam_over (p' : LvP) (s : ℂ) {ε : ℝ} (hε : 0 ≤ ε) : (fam p (fun 
     ⟨recd p' t 0 0 1, (), ⟨t, rfl⟩, (recd_sameWord ..).2 ⟨rfl, rfl⟩, h x hx, (rankCondition_rankOne_iff_eq_zero ..).2 rfl⟩⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Use `Pts.not_rkRoomOver ?_` and prove the remaining obligations. Introduce and unpack `x D u ⟨t, rfl⟩`. Conclude with `not_rankCondition_rankZero _ _ _ _ _`. Introduce and unpack `⟨CR, CT, h⟩`.
+Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨x₀, h⟩` from `h.exists`. Take `⟨i, u, D', u', ⟨t, rfl⟩, h2, -⟩` from `h x₀ le_rfl ⟨(0 : R0.A)⟩`. Conclude with `absurd ((recd_sameWord p i 0 0 s u p' t 1 0 1 u').1 h2).2 zero_ne_one`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem fam_not_over (p' : LvP) (s : ℂ) (ε : ℝ) :
     ¬ (fam p (fun _ => 0) s).RKRoomOver (cls p' 0 0) ε ∧ ¬ (fam p (fun _ => 0) s).RKRoomOver (cls p' 1 1) ε := by
@@ -465,9 +463,9 @@ theorem fam_not_over (p' : LvP) (s : ℂ) (ε : ℝ) :
     exact absurd ((recd_sameWord p i 0 0 s u p' t 1 0 1 u').1 h2).2 zero_ne_one
 
 /- English proof (translation)
-Take `⟨p, -⟩` from `exists_lvP 0`. Take `⟨p', hp⟩` from `exists_lvP (max p.T ⌈(1 + 1 / ((R0.f : ℝ) * R0.k)) * xOf p⌉₊)`. Use `⟨⟨fam p (fun _ => 0) 0, cls p' 0 1, fam_over p p' 0 hε, (fam_zero p _ ε).2.1, ?_⟩, ⟨fam p' (fun _ => 0) 0, cls p 0 1, fam_over p' p 0 hε, (fam_zero p' _ ε).2.1, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `x i u D' u' ⟨t, rfl⟩`. Conclude with `lt_of_le_of_lt (Nat.le_ceil ((1 + 1 / ((R0.f : ℝ) * R0.k)) * xOf p)) (show _ < (p'.T : ℝ) by exact_mod_cast lt_of_le_of_lt (le_max_right _ _) hp)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `x i u D' u' ⟨t, rfl⟩`. Conclude with `lt_of_lt_of_eq (show (p.T : ℝ) < p'.T by exact_mod_cast lt_of_le_of_lt (le_max_left _ _) hp) (atTToy_Tstar_eq Tau0 p'.T).symm`.
+A detailed English derivation is pending.
 -/
 theorem room_used {ε : ℝ} (hε : 0 ≤ ε) :
     (∃ (F : Pts) (Tr : ℝ → D7 → Prop), F.RKRoomOver Tr ε ∧ ¬ F.RKWin ∧ ∀ x i u D' u', Tr x D' →
@@ -486,11 +484,11 @@ theorem room_used {ε : ℝ} (hε : 0 ≤ ε) :
       (atTToy_Tstar_eq Tau0 p'.T).symm
 
 /- English proof (translation)
-Introduce and unpack `⟨CR, CT, h⟩`. Take `⟨x₀, h⟩` from `h.exists`. Take `⟨x₁, hx₁⟩` from `Filter.eventually_atTop.1 (((tendsto_rpow_atTop (by linarith : 0 < 1 - ε)).eventually_ge_atTop (CT * 2)).and (Filter.eventually_gt_atTop (0 : ℝ)))`. Take `⟨i, u, D', u', ⟨t, rfl⟩, -, ⟨-, h3⟩, -⟩` from `h (max x₀ x₁) (le_max_left _ _) ⟨(0 : R0.A)⟩`. Take `⟨h1, h0⟩` from `hx₁ (max x₀ x₁) (le_max_right _ _)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h4 : Real.log ((q (max x₀ x₁)).T : ℝ) ≤ CT * (2 : ℕ) * (max x₀ x₁) ^ ε` using `h3`. Establish `h5` using `hq (max x₀ x₁)`. Generalize the expression as in `max x₀ x₁ = x at h1 h0 h4 h5`. Establish `h6 : x < Real.log ((q x).T : ℝ)` using `(Real.lt_log_iff_exp_lt (lt_trans (Real.exp_pos x) h5)).2 h5`. Establish `e : x ^ (1 - ε) * x ^ ε = x` using `by rw [← Real.rpow_add h0]; simp`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h7` using `mul_le_mul_of_nonneg_right h1 (Real.rpow_pos_of_pos h0 ε).le`. Move the coercions through the operations in `at h4`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem not_over_of_large {ε : ℝ} (hε : ε < 1) (q : ℝ → LvP) (hq : ∀ x, Real.exp x < (q x).T) :
     ¬ (fam p (fun _ => 0) 1).RKRoomOver (fun x => cls (q x) 0 1 x) ε := by
@@ -510,7 +508,7 @@ theorem not_over_of_large {ε : ℝ} (hε : ε < 1) (q : ℝ → LvP) (hq : ∀ 
   linarith
 
 /- English proof (translation)
-Use `⟨fun δ hδ => ?_, fun h => (fam_zero p _ _).2.2.1 (h (1 / 100) (by norm_num) (by norm_num) _ (Or.inr rfl))⟩` and prove the remaining obligations. Establish `h0 : 0 < min (δ / 2) (1 / 100)` using `by positivity`. Conclude with `⟨_, h0, (min_le_left _ _).trans_lt (by linarith), (min_le_right _ _).trans_lt (by norm_num), _, Or.inl rfl, (fam_yes p h0).2.2.1⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 example : HypEx (fun _ => Pts) (fun _ F => F = fam p (fun _ => 0) 1 ∨ F = fam p (fun _ => 0) 0) (fun _ F => F)
       (fun ε F => F.RKRoom ε) ∧

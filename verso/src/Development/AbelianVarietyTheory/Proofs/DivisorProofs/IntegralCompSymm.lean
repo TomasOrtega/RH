@@ -13,11 +13,11 @@ open scoped Matrix Pointwise NNReal
 namespace GlobalTheory.ChangeVarPi
 
 /- English proof (translation)
-Establish `hc : Continuous M.symm` using `(M.symm : (ι → k) →ₗ[k] (ι → k)).continuous_on_pi`. Use extensionality with `s hs`. Rewrite using `[Measure.map_apply hc.measurable hs, Measure.smul_apply, ← GroundTheory.Automorphic.Measures.distribHaarChar_pi_eq, ENNReal.smul_def, smul_eq_mul, distribHaarChar_mul μ M s]`. Establish `: (M.symm : (ι → k) → (ι → k)) ⁻¹' s = M • s`. Use extensionality with `x`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Set.mem_preimage]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨M.symm x, h, by simp [LinearEquiv.smul_def]⟩`. Introduce and unpack `⟨y, hy, rfl⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Simplify `hy` using `[LinearEquiv.smul_def]`. Rewrite using `[this]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_symm_eq_smul (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (ι : Type) [Fintype ι]

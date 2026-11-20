@@ -21,7 +21,7 @@ noncomputable section
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Establish `hM : IsSemipositiveRel ⊥ P (constLine (ι` using `ι) 0) := by`. Use `⟨G5.isSmoothHerm_constLine 0, fun z _ w _ => ?_⟩` and prove the remaining obligations. Simplify using `[leviForm, constLine, HermLine.ofWeight]`. Conclude with `ScaledFSTopPos.semipos_of_h_eq (funext fun z => by simp [HermLine.zcomb]) (PerturbSemipos.proof K ι ⊥ P _ 0 1 hM le_rfl zero_le_one)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fsH_semipos (P : Ideal (MRing ι)) : IsSemipositiveRel ⊥ P (fsH ι) := by
   have hM : IsSemipositiveRel ⊥ P (constLine (ι := ι) 0) := by
@@ -31,19 +31,19 @@ theorem fsH_semipos (P : Ideal (MRing ι)) : IsSemipositiveRel ⊥ P (fsH ι) :=
     (PerturbSemipos.proof K ι ⊥ P _ 0 1 hM le_rfl zero_le_one)
 
 /- English proof (translation)
-The claim follows from `Mono.semipos_constShift (fsH_semipos P) (-Real.log C)`.
+A detailed English derivation is pending.
 -/
 theorem fsScaled_semipos (P : Ideal (MRing ι)) (C : ℝ) : IsSemipositiveRel ⊥ P (fsScaled ι C) :=
   Mono.semipos_constShift (fsH_semipos P) (-Real.log C)
 
 /- English proof (translation)
-Establish `hC0 : 0 < C` using `lt_of_lt_of_le zero_lt_one hC`. Establish `hBa` using `fsScaled_a ι C`. Set `e` to `Fintype.equivFin (∀ k, ι k)`. Set `w : Fin (Fintype.card (∀ k, ι k)) → MRing ι` to `fun j => ∏ k, (X ⟨k, e.symm j k⟩ : MRing ι) ^ (fun _ : K => (1 : ℕ)) k`. Use `SmallGenHeightsNonneg.proof K ι P (fsScaled ι C) II _ w hII (fsScaled_semipos P C).1 (fun k => by rw [hBa]; norm_num) (fun j => ?_) (fun Q hQ _ => ?_) (fun j z hz => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `GroundTheory.Heights₂.Heights.Inter.ThmIUnique.isMultiHomog_coordMonomial (e.symm j) (fun _ : K => (1 : ℕ))`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`. Rewrite using `[hBa]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Set `c : ∀ k, ι k` to `fun k => (hQ.2.2 k).choose`. Conclude with `⟨e c, by`. Simplify using `only [w, Equiv.symm_apply_apply]`. Conclude with `GroundTheory.Heights₂.Heights.Inter.ThmIUnique.coordMonomial_not_mem hQ.1 c (fun k => (hQ.2.2 k).choose_spec) _⟩`. Establish `hpos` using `(fsH ι).pos z hz.1`.
+Introduce a local definition for the expression. Supply the required witnesses or components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlog` using `ScaledFSTopPos.logNorm_fsH_nonpos (e.symm j) hz.1`. Unfold `logNorm at hlog`. Rewrite `hlog` using `[Real.log_nonpos_iff (div_nonneg (norm_nonneg _) hpos.le), div_le_one hpos]`. Rewrite using `[fsScaled_h ι hC0]`. Conclude with `hlog.trans (le_mul_of_one_le_left hpos.le hC)`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fsScaled_heightsNonneg (P : Ideal (MRing ι)) {C : ℝ} (hC : 1 ≤ C) (II : IntersectionSystem)
     (hII : IsIntersectionSystem II) : HeightsNonneg II P (fsScaled ι C) := by
@@ -73,11 +73,9 @@ theorem fsScaled_heightsNonneg (P : Ideal (MRing ι)) {C : ℝ} (hC : 1 ≤ C) (
     exact hlog.trans (le_mul_of_one_le_left hpos.le hC)
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ y D II hII har hb C hC`. Use `set B := fsScaled ι C with hBdef`. Use `set F : ℝ := ((D + 1).factorial : ℝ) with hF`. Establish `hFpos : 0 < F` using `by rw [hF]; exact_mod_cast Nat.factorial_pos _`. Establish `hsemi : IsSemipositiveRel ⊥ (mCoordIdeal y) B` using `fsScaled_semipos _ C`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hT` using `hHS K ι Ω y D B ⊥ II hII har hb bot_le hsemi (Mono.conj_constShift (fsH_isConjInvariantH ι) (-Real.log C)) (ProjLine.nefOnFibres_of_nonneg _ B.a fun k => by rw [hBdef, fsScaled_a]; norm_num) (NefOnGenericOfSemipos.proof K ι _ ⊥ B bot_le hsemi) (fsScaled_heightsNonneg _ hC II hII)`. Use `set L := II K ι (mCoordIdeal y) (D + 1) (fun _ => B) with hL`. Use `⟨(|L| + 1) / F, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hT.eventually (gt_mem_nhds (show L < L + 1 by linarith)), eventually_ge_atTop 1] with n hn hn1`. Establish `hnpos : (0 : ℝ) < n` using `by exact_mod_cast hn1`.
-
-Establish `hm : (0 : ℝ) < (n : ℝ) ^ (D + 1) / F` using `by positivity`. Rewrite `hn` using `[div_lt_iff₀ hm]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem FSSmallCountBound.proof (hHS : MoriwakiHSStatement) : FSSmallCountBound.Statement := by
   intro K _ ι _ Ω _ y D II hII har hb C hC

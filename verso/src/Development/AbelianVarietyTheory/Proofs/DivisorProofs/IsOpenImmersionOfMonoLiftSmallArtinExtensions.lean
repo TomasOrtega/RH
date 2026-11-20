@@ -14,7 +14,7 @@ open IsLocalRing
 namespace GlobalTheory.ArtinOpen
 
 /- English proof (translation)
-Establish `e : Spec.map g₁ ≫ X.fromSpecStalk x = Spec.map g₂ ≫ X.fromSpecStalk x`. Rewrite using `[← cancel_mono f, Category.assoc, Category.assoc, ← Scheme.SpecMap_stalkMap_fromSpecStalk, ← Category.assoc, ← Category.assoc, ← Spec.map_comp, ← Spec.map_comp, h]`. Establish `e2` using `(SpecToEquivOfLocalRing X R).symm.injective (a₁ := ⟨x, g₁, inferInstance⟩) (a₂ := ⟨x, g₂, inferInstance⟩) (by rw [SpecToEquivOfLocalRing_symm_apply, SpecToEquivOfLocalRing_symm_apply]; exact e)`. Take `⟨_, e3⟩` from `SpecToEquivOfLocalRing_eq_iff.mp e2`. Simplify using `using e3`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem stalk_hom_ext_of_mono {X Y : Scheme.{0}} (f : X ⟶ Y) [Mono f] (x : X) (R : CommRingCat.{0})
     [IsLocalRing R] (g₁ g₂ : X.presheaf.stalk x ⟶ R) [IsLocalHom g₁.hom] [IsLocalHom g₂.hom]
@@ -29,9 +29,9 @@ theorem stalk_hom_ext_of_mono {X Y : Scheme.{0}} (f : X ⟶ Y) [Mono f] (x : X) 
   simpa using e3
 
 /- English proof (translation)
-Introduce `X Y f _ _ _ hlift`. Use `haveI : IsLocallyNoetherian X := LocallyOfFiniteType.isLocallyNoetherian f`. Establish `: Flat f`. Use `(Flat.iff_flat_stalkMap f).2 fun x => ?_` and prove the remaining obligations. Establish `hres` using `GlobalTheory.T.residueFieldMap_surjective_of_mono' f x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.T.flat_of_local_retractions_mod_maximalIdeal_pow (f.stalkMap x).hom (fun n => GlobalTheory.T.exists_stalk_retraction_of_small_lifting f hlift x hres n) ?_` and prove the remaining obligations. Introduce `n g₁ g₂ h₁ h₂ h`. Use `stalk_hom_ext_of_mono f x (CommRingCat.of (X.presheaf.stalk x ⧸ maximalIdeal (X.presheaf.stalk x) ^ (n + 1))) (CommRingCat.ofHom g₁) (CommRingCat.ofHom g₂) (by ext a; exact congr($h a))` as an intermediate fact. Conclude with `congrArg CommRingCat.Hom.hom this`. Conclude with `IsOpenImmersion.of_flat_of_mono f`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isOpenImmersion_of_lift : ∀ {X Y : Scheme.{0}} (f : X ⟶ Y) [IsLocallyNoetherian Y] [LocallyOfFiniteType f] [Mono f], (∀ (B : Type) [CommRing B] [IsLocalRing B] [IsArtinianRing B] (I : Ideal B), I ≤ IsLocalRing.maximalIdeal B → IsLocalRing.maximalIdeal B * I = ⊥ → ∀ (a : Spec (CommRingCat.of (B ⧸ I)) ⟶ X) (b : Spec (CommRingCat.of B) ⟶ Y), a ≫ f = Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk I)) ≫ b → ∃ l : Spec (CommRingCat.of B) ⟶ X, Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk I)) ≫ l = a ∧ l ≫ f = b) → IsOpenImmersion f := by
   intro X Y f _ _ _ hlift

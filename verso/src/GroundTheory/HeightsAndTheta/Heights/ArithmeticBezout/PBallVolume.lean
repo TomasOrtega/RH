@@ -7,11 +7,11 @@ namespace GroundTheory.Heights₂.Heights
 open MeasureTheory
 
 /- English proof (translation)
-Introduce `n h`. Establish `hcont : Continuous fun v : Fin n → ℂ => h.norm v`. Simplify using `only [HermNorm.norm, Matrix.mulVec, dotProduct]`. Use `fun_prop`. Establish `hopen : IsOpen (ballH h)` using `isOpen_lt hcont continuous_const`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzero : (0 : Fin n → ℂ) ∈ ballH h` using `by show h.norm 0 < 1`. Simplify using `[HermNorm.norm]`. Establish `hR : 0 ≤ ∑ j', ∑ l, ‖h.mat⁻¹ j' l‖` using `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _`. Establish `hbdd : Bornology.IsBounded (ballH h)`. Use `(Metric.isBounded_closedBall (x := (0 : Fin n → ℂ)) (r := ∑ j', ∑ l, ‖h.mat⁻¹ j' l‖)).subset fun v hv => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Metric.mem_closedBall, dist_zero_right, pi_norm_le_iff_of_nonneg hR]`. Introduce `j`. Conclude with `norm_le_of_hermNorm_lt h hv j`. Conclude with `⟨hopen.measure_pos volume ⟨0, hzero⟩, hbdd.measure_lt_top⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem BallVolume.proof : BallVolume.Statement := by
   intro n h

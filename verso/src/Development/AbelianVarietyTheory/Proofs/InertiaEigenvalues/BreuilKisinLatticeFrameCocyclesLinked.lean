@@ -11,9 +11,9 @@ open scoped Formalism.Per NNReal
 namespace GlobalTheory.BKLim.LinkCocycle
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => intro a w _; exact ⟨a, by simp⟩`. Consider the case `succ n ih`. Introduce `a w h`. Take `⟨a₁, ha₁⟩` from `GlobalTheory.HWL.TensorWitt.ainf_saturated_in_tiltWitt_prime a ((l : WCb l) ^ n * w) (by rw [h]; ring)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `ih a₁ w ha₁`. Establish `h1 : a = (l : Ainf l) * a₁` using `GlobalTheory.HWL.TensorWitt.inclW_injective (by`. Rewrite using `[map_mul, map_natCast, ha₁, h]`. Use the proof step `ring)`. Conclude with `⟨c, by rw [h1, hc]; ring⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem dvd_of_inclW {l : ℕ} [Fact l.Prime] (n : ℕ) : ∀ (a : Ainf l) (w : WCb l),
     inclW l a = (l : WCb l) ^ n * w → (l : Ainf l) ^ n ∣ a := by
@@ -28,27 +28,21 @@ theorem dvd_of_inclW {l : ℕ} [Fact l.Prime] (n : ℕ) : ∀ (a : Ainf l) (w : 
     exact ⟨c, by rw [h1, hc]; ring⟩
 
 /- English proof (translation)
-Introduce `l _ K bk N N' d d' n ρ ρ' F F' Pi R hPi hR g i j`. Use `choose M hM using hPi g`. Use `choose D hD using hR`. Use `set c : WCb l := (l : WCb l) ^ n with hc`. Use `set σ : WCb l →+* WCb l := ((galW l (g : GQ l) : WCb l ≃ₐ[ℤ_[l]] WCb l) : WCb l →+* WCb l) with hσ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `set T := F.T`. Use `set T' := F'.T`. Use `set P := zW Pi`. Use `set A := zW (ρ g)`. Use `set A' := zW (ρ' g)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set Rw := (R.map bk.ev).map (inclW l)`. Use `set Rgw := ((R.map bk.ev).map (Per.σA (g : GQ l))).map (inclW l)`. Use `set E := (F.ε g).map (inclW l)`. Use `set E' := (F'.ε g).map (inclW l)`. Use `set Ds : Matrix (Fin d) (Fin d') (WCb l) := Matrix.of D`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `set Mw : Matrix (Fin d) (Fin d') (WCb l) := zW (Matrix.of M)`. Establish `e1 : A * T.map σ = T * E` using `F.gal g`. Establish `e2 : A' * T'.map σ = T' * E'` using `F'.gal g`. Establish `e3 : P * T' - T * Rw = c • Ds` using `Matrix.ext fun i j => by`. Simplify `hD i j` using `[Ds, Rw, BK.evW, Matrix.map_map]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Establish `e4 : P * T'.map σ - T.map σ * Rgw = c • Ds.map σ`. Establish `hP : P.map σ = P` using `Matrix.ext fun i j => by simp [P, zW, σ]`. Establish `hRg : Rw.map σ = Rgw` using `Matrix.ext fun i j => by simp [Rw, Rgw, σ, galW_inclW]`. Establish `: (P * T' - T * Rw).map σ = (c • Ds).map σ` using `by rw [e3]`. Rewrite `this` using `[Matrix.map_sub _ (map_sub σ), Matrix.map_mul, Matrix.map_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[hP, hRg]`. Rewrite using `[this]`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul, hc, map_pow, map_natCast]`. Establish `e5 : P * A' - A * P = c • Mw`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hM' : Pi * ρ' g - ρ g * Pi = ((l : ℤ_[l]) ^ n) • Matrix.of M` using `Matrix.ext fun i j => by simpa using hM i j`. Establish `: (Pi * ρ' g - ρ g * Pi).map (algebraMap ℤ_[l] (WCb l)) = (((l : ℤ_[l]) ^ n) • Matrix.of M).map (algebraMap ℤ_[l] (WCb l))` using `by rw [hM']`. Rewrite `this` using `[Matrix.map_sub _ (map_sub _), Matrix.map_mul, Matrix.map_mul]`. Rewrite using `[this]`. Use extensionality with `i j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[Mw, zW, c]`. Establish `key : T * (E * Rgw - Rw * E') = (c • Ds) * E' - (c • Mw) * T'.map σ - A * (c • Ds.map σ)`. Rewrite using `[← e3, ← e4, ← e5]`. Simplify using `only [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc T E, ← e1, ← e2]`.
-
-Simplify using `only [Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws. Establish `key2 : T * (E * Rgw - Rw * E') = c • (Ds * E' - Mw * T'.map σ - A * Ds.map σ)`. Rewrite using `[key, Matrix.smul_mul, Matrix.smul_mul, Matrix.mul_smul, smul_sub, smul_sub]`. Establish `hT : T⁻¹ * T = 1` using `Matrix.nonsing_inv_mul T ((Matrix.isUnit_iff_isUnit_det T).mp F.unit)`.
-
-Establish `hX : E * Rgw - Rw * E' = c • (T⁻¹ * (Ds * E' - Mw * T'.map σ - A * Ds.map σ))`. Rewrite using `[← Matrix.mul_smul, ← key2, ← Matrix.mul_assoc, hT, Matrix.one_mul]`. Establish `hY : (F.ε g * (R.map bk.ev).map (Per.σA (g : GQ l)) - R.map bk.ev * F'.ε g).map (inclW l) = E * Rgw - Rw * E'`. Rewrite using `[Matrix.map_sub _ (map_sub _), Matrix.map_mul, Matrix.map_mul]`. Use `dvd_of_inclW n _ ((T⁻¹ * (Ds * E' - Mw * T'.map σ - A * Ds.map σ)) i j) ?_` and prove the remaining obligations.
-
-Use `congrFun (congrFun (hY.trans hX) i) j` as an intermediate fact. Simplify `this` using `[Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, hc]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem main : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (N N' d d' n : ℕ) (ρ : ↥(GK K) → Matrix (Fin d) (Fin d) (ℤ_[l])) (ρ' : ↥(GK K) → Matrix (Fin d') (Fin d') (ℤ_[l])) (F : Frame bk N d ρ) (F' : Frame bk N' d' ρ') (Pi : Matrix (Fin d) (Fin d') (ℤ_[l])) (R : Matrix (Fin d) (Fin d') (bk.S)), (∀ g i j, (l : ℤ_[l]) ^ n ∣ (Pi * ρ' g - ρ g * Pi) i j) → (∀ i j, (l : WCb l) ^ n ∣ (zW Pi * F'.T - F.T * R.map bk.evW) i j) → ∀ (g : ↥(GK K)) i j, (l : Ainf l) ^ n ∣ (F.ε g * (R.map bk.ev).map (Per.σA (g : GQ l)) - R.map bk.ev * F'.ε g) i j := by
   intro l _ K bk N N' d d' n ρ ρ' F F' Pi R hPi hR g i j

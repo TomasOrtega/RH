@@ -30,7 +30,7 @@ def ofU {σ : c.F →+* ℂ} (U : Formalism.L2.Pj.Unf Xo c σ r) : Formalism.L2.
   @Formalism.L2.PjFree.Unf.mk _ _ _ _ _ _ _ Xo c σ r U.Comp U.fin U.X U.un
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isUnf_toU {σ : c.F →+* ℂ} (U : Formalism.L2.PjFree.Unf Xo c σ r) :
     Formalism.L2.Pj.IsUnf (toU U) ↔ Formalism.L2.PjFree.IsUnf U := Iff.rfl
@@ -41,7 +41,7 @@ def SameVal (f f' : Rul Xo c) : Prop :=
   ∀ (k : Type) [Field k] [IsAlgClosed k] [Algebra c.F k] (y : FrPt Xo c k), evR Xo c f y = evR Xo c f' y
 
 /- English proof (translation)
-Introduce `_ _ _ _ _` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 theorem SameVal.refl (f : Rul Xo c) : SameVal f f := fun _ _ _ _ _ => rfl
 
@@ -150,9 +150,7 @@ variable {D : D7} {V : HSp D} {r : ℕ} {U : ∀ σ : c.F →+* ℂ, Formalism.L
   {q₁ : ℕ} {S : Tup → Finset (Plc E)}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Take `⟨i, ⟨γ, hγ, k, hk, rfl⟩, -⟩` from `hr.2 g`. Use `choose γ₀ hγ₀ using hγ.1`. Establish `e₀ : γ.1 = (Matrix.of γ₀).map (diagE E)`. Use extensionality with `a b`.
-
-Conclude with `(hγ₀ a b).symm`. Conclude with `hio ((hf _ γ e₀ (h₀ i) ⟨k, hk⟩).trans (by rw [e i]; exact (hf' _ γ e₀ (h₀ i) ⟨k, hk⟩).symm))`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem placed_ext {ι₀ : Type} {S₀ : Finset (Plc E)} {J₀ : Subgroup (UA E n)} {h₀ : ι₀ → UA E n} {lam₀ : J₀ →* c.Fˣ}
     (hr : IsRepSystem S₀ J₀ h₀) (hio : Function.Injective io) {f f' : UA E n → T}
@@ -168,9 +166,9 @@ theorem placed_ext {ι₀ : Type} {S₀ : Finset (Plc E)} {J₀ : Subgroup (UA E
 omit [∀ t, Fintype (ι t)] in
 
 /- English proof (translation)
-Use `⟨fun t x q => if hx : ∃ f, IsPlaced c dd (lam t) io f ∧ x = fun i => f (h t i) then thB t hx.choose q.out else 0, fun t f hf g => ?_⟩` and prove the remaining obligations. Establish `hx : ∃ f', IsPlaced c dd (lam t) io f' ∧ (fun i => f (h t i)) = fun i => f' (h t i)` using `⟨f, hf, rfl⟩`. Simplify using `only [dif_pos hx]`. Rewrite using `[← placed_ext (hr t) hio hf hx.choose_spec.1 (congrFun hx.choose_spec.2)]`. Establish `h1` using `Quotient.mk_out (s := QuotientGroup.rightRel (GQ V)) g`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[QuotientGroup.rightRel_apply]`. Use `hinv t f hf _ h1 (Quotient.mk (QuotientGroup.rightRel (GQ V)) g).out` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel_right]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem exists_lift (hr : ∀ t, IsRepSystem (S t) (J t) (h t)) (hio : Function.Injective io)
     (hinv : ∀ t f, IsPlaced c dd (lam t) io f → ∀ γ ∈ GQ V, ∀ g, thB t f (γ * g) = thB t f g) :

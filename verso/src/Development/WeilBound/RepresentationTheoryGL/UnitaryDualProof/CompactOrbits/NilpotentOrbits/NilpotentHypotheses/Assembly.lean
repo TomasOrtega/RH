@@ -11,19 +11,17 @@ open PositivityTheory.RgUd.T PositivityTheory.RgUd.T.Nil
 variable (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [CharZero k]
 
 /- English proof (translation)
-Unfold `NilpB`. Introduce `n Z hCR hH`. Distinguish the cases in `hd : dB0 Z = 0`. Conclude with `baseP n Z hCR hd`. Use `locQ n Z hCR fun y ξ hξ hinv => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hmono : ∀ η : (Sp k n → ℂ) →ₗ[ℂ] ℂ, Supp η (Fib Z y) → Supp η (Bz Z ×ˢ Set.univ)`. Introduce `η hη f hf hvan`. Use `hη f hf fun p hp => hvan p ?_` and prove the remaining obligations. Establish `hp' : p ∈ (Bz Z ∩ qZ Z ⁻¹' {y}) ×ˢ (Set.univ : Set (Fin n → k))` using `hp`. Conclude with `⟨hp'.1.1, hp'.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht0, ht1⟩` from `free_etale_sheaf_zmod_exists_hom_sending_generator k`. Take `⟨𝓕, hF1, hF2, hF3, hF4, hF5, hF6⟩` from `fourP n Z hCR`. Take `⟨a, ha, hP⟩` from `orbP n Z hCR (Nat.pos_of_ne_zero hd) t ht1 y`. Establish `hξB` using `hmono ξ hξ`. Establish `hFξ` using `hP (𝓕 ξ) (hF2 ξ y hξ) (hF3 ξ hξB hinv) (hH (𝓕 ξ) (hF1 ξ hξB) (hF3 ξ hξB hinv))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hξK` using `hP ξ hξ hinv (hH ξ hξB hinv)`. Establish `hc : 1 < (nabs k t)⁻¹` using `one_lt_inv_iff₀.2 ⟨ht0, ht1⟩`. Establish `key : ξ ∈ (supportedIn (UU : Set (Sp k n))).dualAnnihilator`. Use `bez _ (pull Z t) (pull Z t⁻¹) (pull_inv Z hCR t).1 (pull_inv Z hCR t).2 ?_ ((nabs k t)⁻¹) hc (dB0 Z) a ha ξ ?_ ?_` and prove the remaining obligations. Introduce `m hm`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hm`, the goal using `[Submodule.mem_dualAnnihilator]`. Conclude with `pull_kills Z hCR t m hm`. Rewrite using `[Submodule.mem_dualAnnihilator]`. Conclude with `hξK`. Rewrite using `[Submodule.mem_dualAnnihilator]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `(hF4 _ (prod_supp Z hCR t _ a ξ hξB)).2 ?_` and prove the remaining obligations. Introduce `f hf`. Establish `hfu : f ∈ supportedIn (Set.univ : Set (Sp k n))` using `(show f ∈ supportedIn (Set.univ : Set (Sp k n)) ↔ (IsLocallyConstant f ∧ HasCompactSupport f) ∧ Function.support f ⊆ Set.univ from Iff.rfl).2 ⟨((show f ∈ supportedIn (UU : Set (Sp k n)) ↔ (IsLocallyConstant f ∧ HasCompactSupport f) ∧ Function.support f ⊆ UU from Iff.rfl).1 hf).1, …`. Rewrite using `[four_prod Z hCR 𝓕 hF1 hF5 hF6 t a ξ hξB f hfu]`. Conclude with `hFξ f hf`.
-
-Conclude with `(Submodule.mem_dualAnnihilator ξ).1 key`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nilpB_of (fourP : FourP (k := k)) (orbP : OrbP (k := k)) (locQ : LocQ (k := k)) (baseP : BaseP (k := k)) :
     NilpB (k := k) := by

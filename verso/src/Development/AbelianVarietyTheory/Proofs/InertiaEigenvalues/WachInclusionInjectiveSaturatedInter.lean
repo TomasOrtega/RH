@@ -9,13 +9,13 @@ namespace GlobalTheory.IoInj
 open PowerSeries
 
 /- English proof (translation)
-Distinguish the cases in `h : ∀ n, ϖ ∣ coeff n a`. Use `left choose d hd using h`. Conclude with `⟨mk d, by ext n; simp [hd]⟩`. Use `right push_neg at h`. Establish `h1` using `Nat.find_spec h`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2 : ∀ n, ∃ d, n < Nat.find h → coeff n a = ϖ * d`. Introduce `n`. Distinguish the cases in `hn : n < Nat.find h`. Take `⟨d, hd⟩` from `not_not.mp (Nat.find_min h hn)`. Conclude with `⟨d, fun _ => hd⟩`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨0, fun h' => absurd h' hn⟩`. Use `choose d hd using h2`. Use `⟨mk fun n => if n < Nat.find h then d n else 0, Nat.find h, mk fun n => coeff (n + Nat.find h) a, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[isUnit_iff_constantCoeff]`. Simplify using `using (hO _).resolve_right h1`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Use extensionality with `n`. Rewrite using `[map_add, coeff_C_mul, coeff_X_pow_mul', coeff_mk]`. Distinguish the cases in `hn : n < Nat.find h`. Rewrite using `[if_pos hn, if_neg (by omega), hd n hn, add_zero]`. Rewrite using `[if_neg hn, if_pos (by omega), coeff_mk, Nat.sub_add_cancel (by omega), mul_zero, zero_add]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem series_form {O : Type} [CommRing O] (ϖ : O) (hO : ∀ a, IsUnit a ∨ ϖ ∣ a) (a : O⟦X⟧) :
     (∃ b, a = C ϖ * b) ∨ ∃ (b : O⟦X⟧) (k : ℕ) (u : O⟦X⟧), IsUnit u ∧ a = C ϖ * b + X ^ k * u := by
@@ -45,11 +45,11 @@ theorem series_form {O : Type} [CommRing O] (ϖ : O) (hO : ∀ a, IsUnit a ∨ �
       · rw [if_neg hn, if_pos (by omega), coeff_mk, Nat.sub_add_cancel (by omega), mul_zero, zero_add]
 
 /- English proof (translation)
-Break down `series_form ϖ hO (a i) with ⟨b, hb⟩ | ⟨b, k, u, hu, hb⟩` into its components or cases. Use `left`. Use `⟨Pi.single i b, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i'`. Distinguish the cases in `h : i' = i`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `h` using the available equality. Simplify using `[hb]`. Simplify using `[h]`. Use `right`. Use `⟨Pi.single i b, k, fun _ => u, Pi.isUnit_iff.mpr fun _ => hu, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Use function extensionality and compare the values at `i'`. Distinguish the cases in `h : i' = i`. Substitute `h` using the available equality. Simplify using `[hb]`. Simplify using `[h]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem letter_form {O ι : Type} [CommRing O] [DecidableEq ι] (ϖ : O) (hO : ∀ a, IsUnit a ∨ ϖ ∣ a)
     (a : ι → O⟦X⟧) (i : ι) :
@@ -70,11 +70,11 @@ theorem letter_form {O ι : Type} [CommRing O] [DecidableEq ι] (ϖ : O) (hO : �
     · simp [h]
 
 /- English proof (translation)
-Establish `hq : ∀ k : ℕ, ((q : O⟦X⟧)) ^ k = C ((q : O) ^ k)` using `by intro k; simp`. Establish `h1 : ∀ i n, ∃ L, ∀ k, (q : O) ^ k ∣ coeff n (a k i) - L`. Introduce `i n`. Apply `h` to reduce the goal to its premises. Introduce `k k' hk`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨d, hd⟩` from `ha k k' hk`. Use `⟨coeff n (d i), ?_⟩` and prove the remaining obligations. Use `congrArg (fun x => coeff n (x i)) hd` as an intermediate fact. Simplify `this` using `only [Pi.sub_apply, Pi.mul_apply, Pi.pow_apply, Pi.natCast_apply, map_sub, hq, coeff_C_mul]`. Use `choose L hL using h1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose d hd using hL`. Use `⟨fun i => mk (L i), fun k => ⟨fun i => mk fun n => d i n k, ?_⟩⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Use extensionality with `n`. Simplify using `only [Pi.sub_apply, Pi.mul_apply, Pi.pow_apply, Pi.natCast_apply, map_sub, hq, coeff_C_mul, coeff_mk, hd]`.
+Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem prec_pi {O ι : Type} [CommRing O] (q : ℕ)
     (h : ∀ a : ℕ → O, (∀ k k', k ≤ k' → (q : O) ^ k ∣ a k - a k') → ∃ L, ∀ k, (q : O) ^ k ∣ a k - L)
@@ -101,7 +101,7 @@ section Abstract
 variable {A E B W ι : Type} [CommRing A] [CommRing E] [CommRing B] [CommRing W] [Fintype ι]
 
 /- English proof (translation)
-Establish `hu` using `Ideal.mem_jacobson_bot.mp h (-1)`. Apply `hu.mul_right_eq_zero.mp` to reduce the goal to its premises. Take the linear combination `-he`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem idem_eq_zero {R : Type} [CommRing R] {e : R} (he : e * e = e) (h : e ∈ Ideal.jacobson (⊥ : Ideal R)) :
     e = 0 := by
@@ -110,7 +110,7 @@ theorem idem_eq_zero {R : Type} [CommRing R] {e : R} (he : e * e = e) (h : e ∈
   linear_combination -he
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[Ideal.jacobson, Ideal.mem_sInf]`. Introduce `J hJ`. Use `haveI := hJ.2.isPrime`. Conclude with `Ideal.IsPrime.mem_of_pow_mem inferInstance n ((Ideal.unit_mul_mem_iff_mem J hu).mp (h hJ))`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_jac_of_pow {R : Type} [CommRing R] {t u : R} (hu : IsUnit u) {n : ℕ}
     (h : u * t ^ n ∈ Ideal.jacobson (⊥ : Ideal R)) (hn : n ≠ 0) : t ∈ Ideal.jacobson (⊥ : Ideal R) := by
@@ -120,79 +120,73 @@ theorem mem_jac_of_pow {R : Type} [CommRing R] {t u : R} (hu : IsUnit u) {n : �
   exact Ideal.IsPrime.mem_of_pow_mem inferInstance n ((Ideal.unit_mul_mem_iff_mem J hu).mp (h hJ))
 
 /- English proof (translation)
-Establish `hpE : (p : E) = j U * j t ^ (n + 1)` using `by rw [← map_natCast j, hp]; simp`. Establish `hpW : (p : W) = f (j U) * f (j t) ^ (n + 1)` using `by rw [← map_natCast f, hpE]; simp`. Establish `hUE : IsUnit (j U)` using `hU.map j`. Establish `hUW : IsUnit (f (j U))` using `hUE.map f`. Establish `htW : f (j t) ∈ Ideal.jacobson (⊥ : Ideal W)` using `mem_jac_of_pow hUW (hpW ▸ hWJ) (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htE : j t ∈ Ideal.jacobson (⊥ : Ideal E)`. Use `mem_jac_of_pow hUE (n := n + 1) ?_ (by omega)` and prove the remaining obligations. Rewrite using `[← hpE]`. Conclude with `IsAdicComplete.le_jacobson_bot _ (Ideal.mem_span_singleton_self _)`. Establish `hsep : ∀ x : E, (∀ k, (p : E) ^ k ∣ x) → x = 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Apply `IsHausdorff.haus hE.toIsHausdorff` to reduce the goal to its premises. Introduce `k`. Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Conclude with `hx k`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `htp : ∀ k, (p : E) ^ k ∣ j t ^ ((n + 1) * k)`. Introduce `k`. Rewrite using `[hpE, pow_mul]`. Conclude with `pow_dvd_pow_of_dvd (hUE.mul_left_dvd.mpr dvd_rfl) k`. Establish `httf : ∀ x : W, f (j t) * x = 0 → x = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Apply `hWtf` to reduce the goal to its premises. Rewrite using `[hpW]`. Take the linear combination `f (j U) * f (j t) ^ n * hx`. Establish `hne' : ∀ i, ¬ f (j t) ∣ f (j (e i))`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce and unpack `i ⟨w, hw⟩`. Apply `hne i` to reduce the goal to its premises. Apply `idem_eq_zero` to reduce the goal to its premises. Rewrite using `[← map_mul, ← map_mul, hee]`. Rewrite using `[hw]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `Ideal.mul_mem_right _ _ htW`. Establish `hd : ∀ x : E, ∃ (a : A) (m : ℕ) (z : E), x * j π ^ m = j a + j t * z`. Introduce `x`. Take `⟨a, m, h⟩` from `hdense x`. Take `⟨z, hz⟩` from `Ideal.mem_span_singleton.mp h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Use `⟨a, m, j U * j t ^ n * z, ?_⟩` and prove the remaining obligations. Rewrite `hz` using `[pow_one, hpE, map_pow]`. Take the linear combination `hz`. Take `⟨πi, hπi⟩` from `hπ.exists_right_inv`. Establish `hπm : ∀ m : ℕ, j π ^ m * πi ^ m = 1` using `fun m => by rw [← mul_pow, hπi, one_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key1 : ∀ x : E, f (j t) ∣ f x → j t ∣ x`. Introduce `x hx`. Take `⟨a, m, z, h⟩` from `hd x`. Establish `ha : f (j t) ∣ f (j a)`. Establish `: f (j a) = f x * f (j π) ^ m - f (j t) * f z`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg f h` as an intermediate fact. Simplify using `only [map_mul, map_add, map_pow] at this`. Take the linear combination `-this`. Rewrite using `[this]`. Conclude with `dvd_sub (hx.mul_right _) (dvd_mul_right _ _)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h2 : ∀ i, t ∣ e i * a`. Introduce `i`. Break down `dich a i with h | ⟨b, k, u, hu, hb⟩` into its components or cases. Conclude with `h`. It suffices to derive a contradiction.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `hne' i` to reduce the goal to its premises. Establish `h3` using `congrArg (fun x => f (j x)) hb`. Simplify using `only [map_mul, map_add, map_pow] at h3`. Establish `h4 : IsUnit (f (j π) ^ k * f (j u))` using `((hπ.map f).pow k).mul ((hu.map j).map f)`. Rewrite using `[← h4.dvd_mul_left]`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `: f (j π) ^ k * f (j u) * f (j (e i)) = f (j (e i)) * f (j a) - f (j t) * f (j b)`. Take the linear combination `-h3`. Rewrite using `[this]`. Conclude with `dvd_sub (ha.mul_left _) (dvd_mul_right _ _)`. Establish `h5 : t ∣ a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Rewrite using `[← one_mul a, ← hsum, Finset.sum_mul]`. Conclude with `Finset.dvd_sum fun i _ => h2 i`. Rewrite using `[← (hπ.pow m).dvd_mul_right, h]`. Conclude with `dvd_add (map_dvd j h5) (dvd_mul_right _ _)`. Establish `key1' : ∀ (k : ℕ) (x : E), f (j t) ^ k ∣ f x → j t ^ k ∣ x`.
+Treat this case separately. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro x _`. Simplify using the standard rewrite rules. Consider the case `succ k ih`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Introduce and unpack `x ⟨y, hy⟩`. Take `⟨x', rfl⟩` from `key1 x ⟨f (j t) ^ k * y, by rw [hy]; ring⟩`. Rewrite using `[pow_succ']`. Use `mul_dvd_mul_left _ (ih _ ⟨y, ?_⟩)` and prove the remaining obligations. Rewrite using `[← sub_eq_zero]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Apply `httf` to reduce the goal to its premises. Rewrite `hy` using `[map_mul]`. Take the linear combination `hy`. Establish `key2 : ∀ x : E, (∃ y, c y = f x) → ∃ (a : A) (x' : E), x = j a + j t * x' ∧ ∃ y, c y = f x'`. Introduce and unpack `x ⟨y, hy⟩`.
+Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. It suffices to derive a contradiction.
 
-Take `⟨a, m, z, h⟩` from `hd x`. Establish `h2 : ∀ i, ∃ b d, e i * a = t * b + π ^ m * d`. Introduce `i`. Break down `dich a i with ⟨b, h⟩ | ⟨b, k, u, hu, hb⟩` into its components or cases. Conclude with `⟨b, 0, by simp [h]⟩`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Distinguish the cases in `hk : m ≤ k`. Take `⟨r, rfl⟩` from `Nat.exists_eq_add_of_le hk`. Conclude with `⟨b, π ^ r * u * e i, by rw [hb]; ring⟩`. It suffices to derive a contradiction. Take `⟨r, rfl⟩` from `Nat.exists_eq_add_of_lt (not_le.mp hk)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply `hne' i` to reduce the goal to its premises. Establish `h3` using `congrArg (fun x => f (j x)) hb`. Simplify using `only [map_mul, map_add, map_pow] at h3`. Establish `h4` using `congrArg f h`. Simplify using `only [map_mul, map_add, map_pow] at h4`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨v, hv⟩` from `hu.exists_right_inv`. Establish `h5 : IsUnit (c (g π * (-(y * g π ^ r * g v)) + 1))` using `(Ideal.mem_jacobson_bot.mp hBJ _).map c`. Simplify using `only [map_mul, map_add, map_pow, map_neg, map_one, ← hcomm, hy] at h5`. Establish `h6 : f (j u) * f (j v) = 1` using `by rw [← map_mul, ← map_mul, hv, map_one, map_one]`. Rewrite using `[← (h5.mul ((hπ.map f).pow k)).dvd_mul_left]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨-(f (j v)) * (f (j b) + f (j (e i)) * f z), ?_⟩` and prove the remaining obligations. Take the linear combination `(-f (j v)) * h3 - f (j v) * f (j (e i)) * h4 - f (j π) ^ k * f (j (e i)) * h6`. Use `choose b d hbd using h2`. Establish `h5 : a = t * ∑ i, b i + π ^ m * ∑ i, d i`. Rewrite using `[← one_mul a, ← hsum, Finset.sum_mul, Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Conclude with `Finset.sum_congr rfl fun i _ => hbd i`. Establish `h6 : x = j (∑ i, d i) + j t * ((j (∑ i, b i) + z) * πi ^ m)`. Rewrite `h` using `[h5]`. Simplify using `only [map_mul, map_add, map_pow] at h`. Take the linear combination `πi ^ m * h - (x - j (∑ i, d i)) * hπm m`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Use `⟨_, _, h6, ?_⟩` and prove the remaining obligations. Apply `hcs (g U * g t ^ n * (y - g (∑ i, d i)))` to reduce the goal to its premises. Establish `h7` using `congrArg f h6`. Rewrite `h7` using `[map_add, map_mul]`. Simplify using `only [map_mul c, map_pow c, map_sub c, ← hcomm, hy, hpW]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `f (j U) * f (j t) ^ n * h7`. Establish `key2' : ∀ (k : ℕ) (x : E), (∃ y, c y = f x) → ∃ a : A, j t ^ k ∣ x - j a`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro x _; exact ⟨0, by simp⟩`.
+Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `succ k ih`. Introduce `x hx`. Take `⟨a, x', rfl, hx'⟩` from `key2 x hx`. Take `⟨a', w, hw⟩` from `ih x' hx'`. Use `⟨a + t * a', w, ?_⟩` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[map_add, map_mul]`. Take the linear combination `j t * hw`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hsep x fun k => (htp k).trans (key1' _ x (by simp [hx]))`. Introduce `x hx`. Assume the negation of the conclusion as `hn`. Take `⟨M, hM, hxM⟩` from `exists_max_ideal_of_mem_nonunits hn`. Establish `htM : j t ∈ M` using `(Ideal.mem_sInf.mp htE) ⟨bot_le, hM⟩`.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨a, m, z, h⟩` from `hd x`. Establish `haM : j a ∈ M`. Establish `: j a = x * j π ^ m - j t * z` using `by linear_combination -h`. Rewrite using `[this]`. Conclude with `M.sub_mem (M.mul_mem_right _ hxM) (M.mul_mem_right _ htM)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion.
 
-Apply `hM.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one, ← map_one j, ← hsum, map_sum]`. Use `M.sum_mem fun i _ => ?_` and prove the remaining obligations. Break down `dich a i with ⟨b, hb⟩ | ⟨b, k, u, hu, hb⟩` into its components or cases. It suffices to derive a contradiction.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `hne' i` to reduce the goal to its premises. Establish `h3` using `congrArg (fun x => f (j x)) hb`. Simplify using `only [map_mul] at h3`. Establish `h4` using `congrArg f h`. Simplify using `only [map_mul, map_add, map_pow] at h4`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← (hx.mul ((hπ.map f).pow m)).dvd_mul_left]`. Use `⟨f (j b) + f (j (e i)) * f z, ?_⟩` and prove the remaining obligations. Take the linear combination `h3 + f (j (e i)) * h4`. Establish `h3` using `congrArg j hb`. Simplify using `only [map_mul, map_add, map_pow] at h3`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Ideal.unit_mul_mem_iff_mem M ((hπ.pow k).mul (hu.map j))]`. Establish `: j π ^ k * j u * j (e i) = j (e i) * j a - j t * j b` using `by linear_combination -h3`. Rewrite using `[this]`. Conclude with `M.sub_mem (M.mul_mem_left _ haM) (M.mul_mem_right _ htM)`. Introduce `x y hy`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `(htp 1).trans (key1' _ x ⟨f (j U) * y, by rw [hy, hpW]; ring⟩)` as an intermediate fact. Rewrite `this` using `[pow_one]`. Then use the resulting hypothesis. Introduce `x hx`. Establish `h1 : ∀ k, ∃ a : A, (p : E) ^ k ∣ x - j a` using `fun k => (key2' ((n + 1) * k) x hx).imp fun a ha => (htp k).trans ha`. Use `choose a ha using h1`.
-
-Take `⟨L, hL⟩` from `hA a (by`. Introduce `k k' hk`. Apply `hsat` to reduce the goal to its premises. Rewrite using `[Ideal.mem_span_singleton, map_sub]`. Establish `: j (a k) - j (a k') = (x - j (a k')) - (x - j (a k))` using `by ring`.
-
-Rewrite using `[this]`. Conclude with `dvd_sub ((pow_dvd_pow _ hk).trans (ha k')) (ha k))`. Use `⟨L, (sub_eq_zero.mp (hsep _ fun k => ?_)).symm⟩` and prove the remaining obligations. Establish `h2` using `map_dvd j (hL k)`. Rewrite `h2` using `[map_pow, map_natCast, map_sub]`.
-
-Establish `: x - j L = (x - j (a k)) + (j (a k) - j L)` using `by ring`. Rewrite using `[this]`. Conclude with `dvd_add (ha k) h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem abstract (j : A →+* E) (f : E →+* W) (g : A →+* B) (c : B →+* W) (hcomm : ∀ a, f (j a) = c (g a))
     (p : ℕ) (t π U : A) (n : ℕ) (hU : IsUnit U) (hp : (p : A) = U * t ^ (n + 1))
@@ -401,11 +395,11 @@ end Abstract
 open Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct GlobalTheory.HWL
 
 /- English proof (translation)
-Proceed by induction on `s with`. Consider the case `zero`. Introduce `h`. Establish `h1` using `h.map (PreTilt.coeff (O := OC l) (p := l) 0)`. Rewrite `h1` using `[map_sub, map_one, LocAinf.εroot, Function.iterate_zero_apply, AI.ε_coeff, AI.ζ_zero, map_one, sub_self]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `not_isUnit_zero h1`. Consider the case `succ s ih`. Introduce `h`. Apply `ih` to reduce the goal to its premises. Establish `h1` using `h.pow l`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h1` using `[sub_pow_char, one_pow, LocAinf.εroot, Function.iterate_succ_apply', frobeniusEquiv_symm_pow_p]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem not_isUnit_εroot_sub_one {l : ℕ} [Fact l.Prime] {P : LocPrime l} (AI : LocAinf l P) (s : ℕ) :
     ¬ IsUnit (AI.εroot s - 1) := by
@@ -423,9 +417,9 @@ theorem not_isUnit_εroot_sub_one {l : ℕ} [Fact l.Prime] {P : LocPrime l} (AI 
     rwa [sub_pow_char, one_pow, LocAinf.εroot, Function.iterate_succ_apply', frobeniusEquiv_symm_pow_p] at h1
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i'`. Express the relevant statement in the definitionally equal form `φ₀ ((Pi.single i 1 : LetA O n) (i' - 1)) = _`. Distinguish the cases in `h : i' = i + 1`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `h' : i' - 1 ≠ i` using `fun h' => h (by rw [← h']; ring)`. Simplify using `[h, h']`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem letφ_letE {O : Type} [CommRing O] {n : ℕ} (φ₀ : O⟦X⟧ →ₐ[O] O⟦X⟧) (i : ZMod n) :
     letφ φ₀ (Pi.single i 1 : LetA O n) = Pi.single (i + 1) 1 := by
@@ -437,11 +431,11 @@ theorem letφ_letE {O : Type} [CommRing O] {n : ℕ} (φ₀ : O⟦X⟧ →ₐ[O]
     simp [h, h']
 
 /- English proof (translation)
-Introduce `hi`. Establish `h1 : ∀ m : ℕ, f (j (Pi.single (i + (m : ZMod n)) 1)) = 0`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => simpa using hi`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ m ih => rw [Nat.cast_succ, ← add_assoc, ← letφ_letE φ₀, ← h₁, h₂, ih, h0]`. Apply `one_ne_zero (α := W)` to reduce the goal to its premises. Rewrite using `[← map_one f, ← map_one j, ← Finset.univ_sum_single (1 : LetA O n), map_sum, map_sum]`. Use `Finset.sum_eq_zero fun i' _ => ?_` and prove the remaining obligations. Use `h1 (i' - i).val` as an intermediate fact.
+Treat this case separately. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[ZMod.natCast_zmod_val, add_sub_cancel]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem idem_ne_zero {O E W : Type} [CommRing O] [CommRing E] [CommRing W] [Nontrivial W] {n : ℕ} [NeZero n]
     (j : LetA O n →+* E) (f : E →+* W) (φ₀ : O⟦X⟧ →ₐ[O] O⟦X⟧) (φE : E → E) (φW : W → W) (h0 : φW 0 = 0)
@@ -462,29 +456,25 @@ theorem idem_ne_zero {O E W : Type} [CommRing O] [CommRing E] [CommRing W] [Nont
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨_, hc, hl0, hlu, hfree, -, -⟩` from `GlobalTheory.Per.integers_completeDVR l LL`. Take `⟨hWc, hWtf, -, hsat, hμ⟩` from `GlobalTheory.HWL.TensorWitt.main l LL`. Use `haveI : FiniteDimensional ℚ_[l] K.1 := K.2`. Use `haveI : FiniteDimensional ℚ_[l] (K0 K) := Module.Finite.of_injective (IntermediateField.inclusion (inf_le_left : K0 K ≤ K.1)).toLinearMap (IntermediateField.inclusion_injective (inf_le_left : K0 K ≤ K.1))`. Use `haveI : NeZero (Module.finrank ℚ_[l] (K0 K)) := ⟨Module.finrank_pos.ne'⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI : Nontrivial (RW LL) := Module.FaithfullyFlat.lTensor_nontrivial ℤ_[l] ↥(OL LL) (WCb l)`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible ↥(OL LL)`. Take `⟨N, hN⟩` from `IsDiscreteValuationRing.associated_pow_irreducible hl0 hϖ`. Choose the witnesses or unpack the hypotheses as in `⟨n, rfl⟩ : ∃ n, N = n + 1 := by`. Break down `N with _ | n` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `absurd (by simpa using hN) hlu`. Conclude with `⟨n, rfl⟩`. Take `⟨u, hu⟩` from `hN.symm`. Establish `hm : IsLocalRing.maximalIdeal ↥(OL LL) = Ideal.span {ϖ}` using `hϖ.maximalIdeal_eq`. Establish `hO : ∀ a : ↥(OL LL), IsUnit a ∨ ϖ ∣ a`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Prove the first alternative. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `a`. Distinguish the cases in `h : IsUnit a`. Conclude with `Or.inl h`. Use `right`. Rewrite using `[← Ideal.mem_span_singleton, ← hm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `h`. Establish `hOp : ∀ a : ℕ → ↥(OL LL), (∀ k k', k ≤ k' → (l : ↥(OL LL)) ^ k ∣ a k - a k') → ∃ L, ∀ k, (l : ↥(OL LL)) ^ k ∣ a k - L`. Introduce `a ha`. Establish `hiff : ∀ (k : ℕ) (x y : ↥(OL LL)), x ≡ y [SMOD (IsLocalRing.maximalIdeal ↥(OL LL) ^ k • ⊤ : Submodule ↥(OL LL) ↥(OL LL))] ↔ ϖ ^ k ∣ x - y`. Introduce `k x y`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, hm, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Take `⟨L, hL⟩` from `IsPrecomplete.prec hc.toIsPrecomplete (f := a) (by`. Introduce `k k' hk`. Rewrite using `[hiff]`. Use `(pow_dvd_pow_of_dvd ?_ k).trans (ha k k' hk)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨ϖ ^ n * u, by rw [← hu]; ring⟩)`. Use `⟨L, fun k => ?_⟩` and prove the remaining obligations. Establish `h1` using `(hiff _ _ _).mp (hL ((n + 1) * k))`. Establish `h2 : (l : ↥(OL LL)) ^ k ∣ ϖ ^ ((n + 1) * k)`. Rewrite using `[pow_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `pow_dvd_pow_of_dvd hN.dvd k`. Establish `: a k - L = (a k - a ((n + 1) * k)) + (a ((n + 1) * k) - L)` using `by ring`. Rewrite using `[this]`. Conclude with `dvd_add (ha _ _ (by nlinarith)) (h2.trans h1)`. Establish `hp` using `P.PD_p K`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hE` using `R.EE_complete`. Establish `hdense` using `R.EE_dense`. Establish `hEsat` using `R.EE_sat`. Rewrite `hE`, `hdense`, `hEsat` using `[hp]`. Use `abstract (algebraMap _ R.EE) I.ioE.toRingHom I.io.toRingHom (inclR LL).toRingHom I.ioE_ext l (fun _ => C ϖ) letπ (fun _ => C (u : ↥(OL LL))) n (Pi.isUnit_iff.mpr fun _ => u.isUnit.map C) ?_ (fun i => Pi.single i 1) ?_ ?_ (letter_form ϖ hO) (prec_pi l hOp) R.EE_π hE (fun x => hden …` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Use `congrArg (C : ↥(OL LL) →+* _) hu` as an intermediate fact. Rewrite `this` using `[map_natCast, map_mul, map_pow]`. Simplify using `only [Pi.natCast_apply, Pi.mul_apply, Pi.pow_apply, ← this]`. Expand and normalize the polynomial expressions, which then agree.
-
-Introduce `i`. Rewrite using `[← Pi.single_mul, mul_one]`. Conclude with `Finset.univ_sum_single (1 : LetA ↥(OL LL) _)`. Use `haveI := hμ _ (not_isUnit_εroot_sub_one AI s)`. Express the relevant statement in the definitionally equal form `I.io letπ ∈ _`.
-
-Rewrite using `[I.io_π]`. Conclude with `IsAdicComplete.le_jacobson_bot _ (Ideal.mem_span_singleton_self _)`. Conclude with `idem_ne_zero (algebraMap _ R.EE) I.ioE.toRingHom R.φ₀ R.φE (φRW LL) (map_zero _) R.φE_ext I.ioE_φ`.
+A detailed English derivation is pending.
 -/
 theorem ioE_injective_saturated_inter (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (K : FinExt l)
     (s : ℕ) (LL : FinExt l) (_h : Good K s LL) (Γ : GamS P K s LL) (R : WSer Γ) (I : IoS AI R) (_hI : IoW I) :

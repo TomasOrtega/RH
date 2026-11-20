@@ -37,9 +37,9 @@ private def sc2 (h : (2 : K) ≠ 0) : GL (Fin 2) K :=
 variable {C : Type} [CommGroup C] (D : GL (Fin 2) K →* C)
 
 /- English proof (translation)
-Establish `e1 : sc1 h * upU x * (sc1 h)⁻¹ = upU x * upU x`. Rewrite using `[mul_inv_eq_iff_eq_mul]`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `[sc1, upU, Matrix.mul_fin_two]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e2` using `congrArg D e1`. Rewrite `e2` using `[map_mul, map_mul, map_inv, map_mul, mul_comm (D (sc1 h)), mul_inv_cancel_right]`. Conclude with `(left_eq_mul.1 e2)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem D_upU (h : (2 : K) ≠ 0) (x : K) : D (upU x) = 1 := by
   have e1 : sc1 h * upU x * (sc1 h)⁻¹ = upU x * upU x := by
@@ -52,9 +52,9 @@ private theorem D_upU (h : (2 : K) ≠ 0) (x : K) : D (upU x) = 1 := by
   exact (left_eq_mul.1 e2)
 
 /- English proof (translation)
-Establish `e1 : sc2 h * loU x * (sc2 h)⁻¹ = loU x * loU x`. Rewrite using `[mul_inv_eq_iff_eq_mul]`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `[sc2, loU, Matrix.mul_fin_two]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e2` using `congrArg D e1`. Rewrite `e2` using `[map_mul, map_mul, map_inv, map_mul, mul_comm (D (sc2 h)), mul_inv_cancel_right]`. Conclude with `(left_eq_mul.1 e2)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem D_loU (h : (2 : K) ≠ 0) (x : K) : D (loU x) = 1 := by
   have e1 : sc2 h * loU x * (sc2 h)⁻¹ = loU x * loU x := by
@@ -67,9 +67,9 @@ private theorem D_loU (h : (2 : K) ≠ 0) (x : K) : D (loU x) = 1 := by
   exact (left_eq_mul.1 e2)
 
 /- English proof (translation)
-Establish `hd : g.val 0 0 * g.val 1 1 - g.val 0 1 * g.val 1 0 = 1`. Use `congrArg Units.val hg` as an intermediate fact. Simplify `this` using `[Matrix.det_fin_two]`. Establish `e : g = upU ((g.val 0 0 - 1) / g.val 1 0) * loU (g.val 1 0) * upU ((g.val 1 1 - 1) / g.val 1 0)`. Apply `Units.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [upU, loU, Matrix.mul_apply, Fin.sum_univ_two] <;> field_simp <;> first | ring1 | linear_combination hd | linear_combination -hd`. Rewrite using `[e, map_mul, map_mul, D_upU D h, D_upU D h, D_loU D h, mul_one, mul_one]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 private theorem D_of_ne (h : (2 : K) ≠ 0) (g : GL (Fin 2) K) (hg : GeneralLinearGroup.det g = 1)
     (hc : g.val 1 0 ≠ 0) : D g = 1 := by
@@ -84,11 +84,11 @@ private theorem D_of_ne (h : (2 : K) ≠ 0) (g : GL (Fin 2) K) (hg : GeneralLine
   rw [e, map_mul, map_mul, D_upU D h, D_upU D h, D_loU D h, mul_one, mul_one]
 
 /- English proof (translation)
-Distinguish the cases in `hc : g.val 1 0 = 0`. Establish `hd : g.val 0 0 * g.val 1 1 - g.val 0 1 * g.val 1 0 = 1`. Use `congrArg Units.val hg` as an intermediate fact. Simplify `this` using `[Matrix.det_fin_two]`. Establish `h11 : g.val 1 1 ≠ 0` using `fun h0 => by simp [hc, h0] at hd`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h2 : D (g * loU 1) = 1`. Use `D_of_ne D h _ ?_ ?_` and prove the remaining obligations. Rewrite using `[map_mul, hg, one_mul]`. Use `ext`. Simplify using `[loU, Matrix.det_fin_two]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify `h11` using `[loU, Matrix.mul_apply, Fin.sum_univ_two, hc]`. Rewrite `h2` using `[map_mul, D_loU D h, mul_one]`. Then use the resulting hypothesis. Conclude with `D_of_ne D h g hg hc`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem hom_trivial_on_det_one (h : (2 : K) ≠ 0) (g : GL (Fin 2) K) (hg : GeneralLinearGroup.det g = 1) : D g = 1 := by
   by_cases hc : g.val 1 0 = 0
@@ -114,18 +114,18 @@ open Matrix
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Use `ext`. Simplify using `[Sig.dg, val_diagT, Matrix.det_diagonal, Fin.prod_univ_two]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem det_diagonal_two (d : Fin 2 → kˣ) : GeneralLinearGroup.det (Sig.dg d) = d 0 * d 1 := by
   ext
   simp [Sig.dg, val_diagT, Matrix.det_diagonal, Fin.prod_univ_two]
 
 /- English proof (translation)
-Take `⟨a, ha, _, ⟨s, hs, rfl⟩, b, hb, rfl⟩` from `(factJ k V 2).1 g hg`. Establish `h2` using `(mem_unipB _).1 ha.1`. Establish `h3` using `GlAx.mem_low.1 hb.1`. Establish `da : GeneralLinearGroup.det a = 1`. Use `ext`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[Matrix.det_fin_two, h2.1 1 0 (by decide), h2.2]`. Establish `db : GeneralLinearGroup.det b = 1`. Use `ext`. Simplify using `[Matrix.det_fin_two, h3.1 0 1 (by decide), h3.2]`. Rewrite using `[map_mul, map_mul, da, db, one_mul, mul_one, show diagT k (Fin 2) s = Sig.dg s from rfl, det_diagonal_two]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_mem (hs 0 trivial) (hs 1 trivial)`.
+A detailed English derivation is pending.
 -/
 private theorem det_in_H (V : Lev k) (g : GL (Fin 2) k) (hg : g ∈ V.J 2) : GeneralLinearGroup.det g ∈ V.H := by
   obtain ⟨a, ha, _, ⟨s, hs, rfl⟩, b, hb, rfl⟩ := (factJ k V 2).1 g hg
@@ -141,7 +141,7 @@ private theorem det_in_H (V : Lev k) (g : GL (Fin 2) k) (hg : g ∈ V.J 2) : Gen
   exact mul_mem (hs 0 trivial) (hs 1 trivial)
 
 /- English proof (translation)
-Rewrite using `[Sig.dg, Sig.dg, ← map_mul, ← map_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem dg_comm {n : ℕ} (a b : Fin n → kˣ) : Sig.dg a * Sig.dg b = Sig.dg b * Sig.dg a := by
   rw [Sig.dg, Sig.dg, ← map_mul, ← map_mul, mul_comm]
@@ -149,52 +149,46 @@ private theorem dg_comm {n : ℕ} (a b : Fin n → kˣ) : Sig.dg a * Sig.dg b = 
 end Lev
 
 /- English proof (translation)
-Establish `h : algebraMap L (Kw w) 2 ≠ 0` using `(map_ne_zero _).2 two_ne_zero`. Rewrite `h` using `[map_ofNat]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem two_ne {L : Type} [Field L] [NumberField L] (w : Plc L) : (2 : Kw w) ≠ 0 := by
   have h : algebraMap L (Kw w) 2 ≠ 0 := (map_ne_zero _).2 two_ne_zero
   rwa [map_ofNat] at h
 
 /- English proof (translation)
-Introduce `L _ _ _ U₀ S VL hP hF u hu`. Take `⟨fA, -, -, -, fE, fF, fG, fH⟩` from `uaFacts L 2`. Establish `huU : u ∈ U₀` using `(Subgroup.mem_inf.1 hu).1`. Establish `huJ : ∀ w ∈ S, cLoc w u ∈ (VL w).J 2` using `fun w hw => Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 (Subgroup.mem_inf.1 hu).2 w) hw`. Establish `huK : u ∈ Kall L 2` using `hF.1 huU`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hKfin : ∀ {y : UA L 2}, y ∈ U₀ → y ∈ finU L 2` using `fun hy => (Subgroup.mem_inf.1 (hF.1 hy)).1`. Set `δ : ∀ w : Plc L, (Kw w)ˣ` to `fun w => Matrix.GeneralLinearGroup.det (cLoc w u)`. Set `e : ∀ w : Plc L, GL (Fin 2) (Kw w)` to `fun w => Sig.dg ![δ w, 1]`. Set `g : ∀ w : Plc L, GL (Fin 2) (Kw w)` to `fun w => (cLoc w u)⁻¹ * e w`. Establish `hδ : ∀ w ∈ S, δ w ∈ (VL w).H` using `fun w hw => det_in_H _ _ (huJ w hw)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hg1 : ∀ w, Matrix.GeneralLinearGroup.det (g w) = 1` using `fun w => by`. Simplify using `only [g, e, map_mul, map_inv, det_diagonal_two]`. Simplify using `[δ]`. Establish `hgK : ∀ w ∈ S, g w ∈ GlobalTheory.LFun.KGL w 2` using `fun w hw => by`. Use `mul_mem (inv_mem ?_) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Subgroup.mem_iInf.1 (Subgroup.mem_inf.1 huK).2 w`. Rewrite using `[← GlobalTheory.HeckeEigConj.KO_eq_KGL]`. Use `dg_mem_KO fun i => ?_` and prove the remaining obligations. Use `fin_cases i`. Conclude with `(VL w).H_le (hδ w hw)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `one_mem _`. Establish `piece : ∀ w ∈ S, secW 2 w (g w) ∈ U₀ ∧ secW 2 w (g w) ∈ finU L 2 ⊓ SUA L ∧ cLoc w (secW 2 w (g w)) = g w ∧ ∀ w' ∈ S, w' ≠ w → cLoc w' (secW 2 w (g w)) = 1` using `fun w hw => by`. Establish `hs` using `hP.split w hw`. Take `⟨a1, a2, -, -⟩` from `fA w hs`. Establish `hl` using `a1 (g w)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc` using `a2 (g w)`. Establish `hoff : ∀ u' : Plc L, un u' ≠ un w → cLoc u' (secW 2 w (g w)) = 1` using `fun u' hne => MonoidHom.mem_ker.1 (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 (Subgroup.mem_inf.1 hl).2 u') hne)`. Establish `hfin` using `(Subgroup.mem_inf.1 hl).1`. Use `⟨?_, ?_, hc, fun w' hw' hne => hoff w' fun h => hne (hP.inj hw' hw h)⟩` and prove the remaining obligations. Use `hF.2 w hw (Subgroup.mem_inf.2 ⟨hl, Subgroup.mem_inf.2 ⟨hfin, Subgroup.mem_iInf.2 fun u' => ?_⟩⟩)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Distinguish the cases in `h : un u' = un w`. Conclude with `fH w hs _ (by rw [hc]; exact hgK w hw) u' h`. Rewrite using `[Subgroup.mem_comap, hoff u' h]`. Conclude with `one_mem _`. Use `Subgroup.mem_inf.2 ⟨hfin, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hom_trivial_on_det_one ((Matrix.GeneralLinearGroup.det.comp (UA L 2).subtype).comp (secW 2 w)) (two_ne w) _ (hg1 w)`. Establish `prod : ∀ T : Finset (Plc L), T ⊆ S → ∃ p : UA L 2, p ∈ U₀ ∧ p ∈ finU L 2 ⊓ SUA L ∧ (∀ w ∈ T, cLoc w p = g w) ∧ ∀ w ∈ S, w ∉ T → cLoc w p = 1` using `fun T => by`. Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => exact fun _ => ⟨1, one_mem _, one_mem _, by simp, by simp⟩`. Consider the case `insert w₀ T hw₀ ih`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Introduce `hT`. Establish `hw₀S` using `hT (Finset.mem_insert_self _ _)`. Take `⟨p, p1, p2, p3, p4⟩` from `ih fun x hx => hT (Finset.mem_insert_of_mem hx)`. Take `⟨q1, q2, q3, q4⟩` from `piece w₀ hw₀S`. Use `⟨p * secW 2 w₀ (g w₀), mul_mem p1 q1, mul_mem p2 q2, fun w hw => ?_, fun w hw hn => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Break down `Finset.mem_insert.1 hw with rfl | hw` into its components or cases. Rewrite using `[map_mul, p4 _ hw₀S hw₀, q3, one_mul]`. Rewrite using `[map_mul, p3 w hw, q4 w (hT (Finset.mem_insert_of_mem hw)) (fun h => hw₀ (h ▸ hw)), mul_one]`. Establish `hn1 : w ≠ w₀` using `fun h => hn (h ▸ Finset.mem_insert_self _ _)`. Establish `hn2 : w ∉ T` using `fun h => hn (Finset.mem_insert_of_mem h)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, p4 w hw hn2, q4 w hw hn1, one_mul]`. Take `⟨p, p1, p2, p3, -⟩` from `prod S subset_rfl`. Establish `hcw : ∀ w ∈ S, cLoc w (u * p) = e w` using `fun w hw => by`. Rewrite using `[map_mul, p3 w hw]`. Simplify using `[g]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : u * p ∈ lev U₀ S VL`. Use `Subgroup.mem_inf.2 ⟨mul_mem huU p1, Subgroup.mem_iInf.2 fun w => Subgroup.mem_iInf.2 fun hw => ?_⟩` and prove the remaining obligations. Rewrite using `[Subgroup.mem_comap, hcw w hw]`. Use `(VL w).dg_mem fun i => ?_` and prove the remaining obligations. Use `fin_cases i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hδ w hw`. Conclude with `one_mem _`. Use `⟨u * p, hc, ?_, ?_, fun x d hx hd => ?_⟩` and prove the remaining obligations. Establish `: u * (u * p)⁻¹ = u * p⁻¹ * u⁻¹` using `by group`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hn : (finU L 2 ⊓ SUA L).Normal`. Establish `h1 : (finU L 2).Normal` using `MonoidHom.normal_ker _`. Establish `h2 : (SUA L).Normal` using `MonoidHom.normal_ker _`. Conclude with `Subgroup.normal_inf_normal _ _`. Conclude with `hn.conj_mem _ (inv_mem p2) u`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `: (u * p)⁻¹ * u = p⁻¹` using `by group`. Rewrite using `[this]`. Conclude with `inv_mem p2`. Use `set c := u * p with hcdef`. Establish `hcfin : c ∈ finU L 2` using `hKfin (mul_mem huU p1)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set z := c * x * c⁻¹ * x⁻¹ with hz`. Establish `hzfin : z ∈ finU L 2` using `mul_mem (mul_mem (mul_mem hcfin hx.1) (inv_mem hcfin)) (inv_mem hx.1)`. Establish `hz1 : ∀ w ∈ S, cLoc w z = 1` using `fun w hw => by`. Simplify using `only [hz, map_mul, map_inv]`. Rewrite using `[hcw w hw, hd w hw]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `show Sig.dg _ * Sig.dg _ * (Sig.dg _)⁻¹ * (Sig.dg _)⁻¹ = 1`. Rewrite using `[dg_comm]`. Use `group`. Establish `hzall : ∀ w : Plc L, cLoc w z = 1` using `fun w => by`. Distinguish the cases in `h : ∃ w' ∈ S, un w = un w'`.
-
-Take `⟨w', hw', he⟩` from `h`. Take `⟨a, ha, ha'⟩` from `fG w' z hzfin`. Establish `h0 : cLoc w' a = 1` using `by rw [ha' w' rfl, hz1 w' hw']`. Establish `h1 : a = 1`. Rewrite using `[(fA w' (hP.split w' hw')).2.2.2 a ha, h0, map_one]`.
-
-Rewrite using `[← ha' w he, h1, map_one]`. Establish `h1 : cLoc w x = 1` using `hx.2 w fun w' hw' he => h ⟨w', hw', he⟩`. Simplify using `[hz, h1]`. Establish `hz0 : z = 1` using `fE z 1 (fun w => by rw [hzall w, map_one]) fun τ => by`. Rewrite using `[(fF z).1.1 hzfin τ, map_one]`.
-
-Establish `: c * x * c⁻¹ * x⁻¹ = 1` using `hz0`. Rewrite `this` using `[mul_inv_eq_one, mul_inv_eq_iff_eq_mul]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.So.torUA :
     UpperTheory.V.Z.Sym.So.TorUA := by

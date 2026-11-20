@@ -13,11 +13,11 @@ section Hom
 variable {R : Type} [CommRing R] {ι : Type} [Fintype ι] {n : ℕ}
 
 /- English proof (translation)
-Unfold `Pol`. Rewrite using `[mem_restrictSupport_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h m hm`. Establish `h' : ∀ i, multideg m i = d i` using `h (Finset.mem_coe.2 (mem_support_iff.2 hm))`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[weight_eq_multidegree_fun]`. Use function extensionality and compare the values at `i`. Conclude with `h' i`. Introduce `h m hm show ∀ i, multideg m i = d i`. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `h (mem_support_iff.1 (Finset.mem_coe.1 hm))` as an intermediate fact. Rewrite `this` using `[weight_eq_multidegree_fun]`. Conclude with `congrFun this i`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dv_pol_iff (F : MvPolynomial (ι × Fin n) R) (d : ι → ℕ) :
     F ∈ Pol R n d ↔ IsWeightedHomogeneous (letterWeight (ι := ι) (n := n)) F d := by
@@ -35,7 +35,7 @@ theorem dv_pol_iff (F : MvPolynomial (ι × Fin n) R) (d : ι → ℕ) :
     exact congrFun this i
 
 /- English proof (translation)
-Unfold `multidegreeComponent`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `m hm`. Establish `hm'` using `(@Finset.mem_filter _ _ (fun _ => Classical.propDecidable _) _ _).1 hm`. Conclude with `absurd hm'.2 (h m hm'.1)`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dv_comp_zero (ψ : MvPolynomial (ι × Fin n) R) (d : ι → ℕ)
     (h : ∀ m ∈ ψ.support, (fun i => multideg m i) ≠ d) : multidegreeComponent d ψ = 0 := by
@@ -46,9 +46,9 @@ theorem dv_comp_zero (ψ : MvPolynomial (ι × Fin n) R) (d : ι → ℕ)
   exact absurd hm'.2 (h m hm'.1)
 
 /- English proof (translation)
-Establish `hφ'` using `(dv_pol_iff φ e).1 hφ`. Use `conv_lhs => rw [eq_sum_multidegree_components ψ, Finset.mul_sum, map_sum]`. Rewrite using `[Finset.sum_eq_single d]`. Conclude with `(hφ'.mul ((dv_pol_iff _ _).1 (homogeneous_component_mem d ψ))).weightedHomogeneousComponent_same`. Introduce `b _ hb`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(hφ'.mul ((dv_pol_iff _ _).1 (homogeneous_component_mem b ψ))).weightedHomogeneousComponent_ne _ ?_` and prove the remaining obligations. Introduce `h`. Conclude with `hb (add_left_cancel h).symm`. Introduce `h`. Rewrite using `[dv_comp_zero ψ d (fun m hm he => h ((@Finset.mem_image _ _ (fun _ _ => Classical.propDecidable _) _ _ _).2 ⟨m, hm, he⟩)), mul_zero, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dv_whc_mul (φ ψ : MvPolynomial (ι × Fin n) R) (e d : ι → ℕ) (hφ : φ ∈ Pol R n e) :
     weightedHomogeneousComponent (letterWeight (ι := ι) (n := n)) (e + d) (φ * ψ) = φ * multidegreeComponent d ψ := by
@@ -64,13 +64,11 @@ theorem dv_whc_mul (φ ψ : MvPolynomial (ι × Fin n) R) (e d : ι → ℕ) (h�
     rw [dv_comp_zero ψ d (fun m hm he => h ((@Finset.mem_image _ _ (fun _ _ => Classical.propDecidable _) _ _ _).2 ⟨m, hm, he⟩)), mul_zero, map_zero]
 
 /- English proof (translation)
-Establish `key : ∀ d2 : ι → ℕ, e + d2 ≠ d → multidegreeComponent d2 ψ = 0`. Introduce `d2 hne`. Establish `h1` using `dv_whc_mul φ ψ e d2 hφ`. Rewrite `h1` using `[((dv_pol_iff _ _).1 h).weightedHomogeneousComponent_ne _ hne]`. Break down `mul_eq_zero.1 h1.symm with h2 | h2` into its components or cases.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `absurd h2 hφ0`. Conclude with `h2`. Rewrite using `[eq_sum_multidegree_components ψ]`. Apply `Submodule.sum_mem` to reduce the goal to its premises. Introduce `d2 _`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `hd : e + d2 = d`. Establish `: d - e = d2` using `by rw [← hd]; simp`. Rewrite using `[this]`. Conclude with `homogeneous_component_mem d2 ψ`. Rewrite using `[key d2 hd]`.
-
-Conclude with `Submodule.zero_mem _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dv_quot_hom [IsDomain R] (φ ψ : MvPolynomial (ι × Fin n) R) (e d : ι → ℕ) (hφ : φ ∈ Pol R n e) (hφ0 : φ ≠ 0)
     (h : φ * ψ ∈ Pol R n d) : ψ ∈ Pol R n (d - e) := by
@@ -90,14 +88,14 @@ theorem dv_quot_hom [IsDomain R] (φ ψ : MvPolynomial (ι × Fin n) R) (e d : �
   · rw [key d2 hd]; exact Submodule.zero_mem _
 
 /- English proof (translation)
-The claim follows from `(dv_pol_iff _ _).2 (((dv_pol_iff _ _).1 hφ).mul ((dv_pol_iff _ _).1 hψ))`.
+A detailed English derivation is pending.
 -/
 theorem dv_pol_mul (φ ψ : MvPolynomial (ι × Fin n) R) (e d : ι → ℕ) (hφ : φ ∈ Pol R n e) (hψ : ψ ∈ Pol R n d) :
     φ * ψ ∈ Pol R n (e + d) :=
   (dv_pol_iff _ _).2 (((dv_pol_iff _ _).1 hφ).mul ((dv_pol_iff _ _).1 hψ))
 
 /- English proof (translation)
-The claim follows from `(dv_pol_iff _ _).2 (((dv_pol_iff _ _).1 hφ).pow k)`.
+A detailed English derivation is pending.
 -/
 theorem dv_pol_pow (φ : MvPolynomial (ι × Fin n) R) (e : ι → ℕ) (hφ : φ ∈ Pol R n e) (k : ℕ) :
     φ ^ k ∈ Pol R n (k • e) :=
@@ -112,13 +110,13 @@ variable {R : Type} [CommRing R] {ι : Type} [Fintype ι] {r : ℕ}
 def dv_eA (A : Fin r → ι) : ι → ℕ := ∑ l : Fin r, Pi.single (A l) 1
 
 /- English proof (translation)
-Rewrite using `[dv_pol_iff]`. Unfold `letterDeterminant`. Rewrite using `[Matrix.det_apply]`. Apply `IsWeightedHomogeneous.sum` to reduce the goal to its premises. Introduce `σ _`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : IsWeightedHomogeneous (letterWeight (ι` using `ι) (n := r)) (∏ i : Fin r, (Matrix.of fun i j : Fin r => (X (A i, j) : MvPolynomial (ι × Fin r) R)) (σ i) i) (∑ i : Fin r, (Pi.single (A (σ i)) 1 : ι → ℕ)) := by`. Apply `IsWeightedHomogeneous.prod` to reduce the goal to its premises. Introduce `i _`. Conclude with `isWeightedHomogeneous_X R (letterWeight (ι := ι) (n := r)) (A (σ i), i)`. Establish `h2 : (∑ i : Fin r, (Pi.single (A (σ i)) 1 : ι → ℕ)) = dv_eA A`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `dv_eA`. Conclude with `Equiv.sum_comp σ (fun l => (Pi.single (A l) 1 : ι → ℕ))`. Rewrite `h1` using `[h2]`. Introduce `m hm`. Apply `h1` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `h0`. Apply `hm` to reduce the goal to its premises. Rewrite using `[coeff_smul, h0, smul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dv_detA_hom (A : Fin r → ι) : letterDeterminant R A ∈ Pol R r (dv_eA A) := by
   rw [dv_pol_iff]
@@ -149,9 +147,9 @@ section Division
 variable {R0 : Type} [CommRing R0] [IsDomain R0] {ι : Type} [Fintype ι] {r : ℕ} [NeZero r]
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `congrArg (MvPolynomial.eval (fun v : ι × Fin r => if A v.2 = v.1 then (1 : R0) else 0)) h`. Unfold `letterDeterminant at h1`. Rewrite `h1` using `[RingHom.map_det, map_zero]`. Establish `h2 : ((MvPolynomial.eval fun v : ι × Fin r => if A v.2 = v.1 then (1 : R0) else 0).mapMatrix (Matrix.of fun i j : Fin r => (X (A i, j) : MvPolynomial (ι × Fin r) R0))) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `i j`. Simplify using `[Matrix.one_apply, hinj.eq_iff, eq_comm]`. Rewrite `h1` using `[h2, Matrix.det_one]`. Conclude with `one_ne_zero h1`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dv_detA_ne (A : Fin r → ι) (hinj : Function.Injective A) : letterDeterminant R0 A ≠ 0 := by
   intro h
@@ -166,7 +164,7 @@ theorem dv_detA_ne (A : Fin r → ι) (hinj : Function.Injective A) : letterDete
   exact one_ne_zero h1
 
 /- English proof (translation)
-Unfold `Pol at *`. Rewrite `*` using `[mem_restrictSupport_iff]`. Conclude with `fun m hm => hG (Finset.mem_coe.2 (MvPolynomial.support_map_subset f G (Finset.mem_coe.1 hm)))`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem dv_map_pol {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') {n : ℕ} (d : ι → ℕ)
     (G : MvPolynomial (ι × Fin n) R) (hG : G ∈ Pol R n d) : MvPolynomial.map f G ∈ Pol R' n d := by
@@ -175,15 +173,15 @@ theorem dv_map_pol {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') {n 
   exact fun m hm => hG (Finset.mem_coe.2 (MvPolynomial.support_map_subset f G (Finset.mem_coe.1 hm)))
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Conclude with `⟨G, by simpa using hG, by simp, fun S' t ht => by simpa using ht⟩`. Take `⟨hE1, hE2⟩` from `hE (FractionRing R0) ι LL r S A hinj hA`. Establish `hGm` using `dv_map_pol (algebraMap R0 (FractionRing R0)) d G hG`. Establish `hv : (((otherVectorDegree LL S A d : ℤ) + (n : ℤ) : ℤ) : WithTop ℤ) ≤ valS LL S (MvPolynomial.map (algebraMap R0 (FractionRing R0)) G)`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[valuation_fraction_field_extension R0 ι LL r S G]`. Conclude with `hval`. Establish `h1` using `hE1 d _ hGm _ hv (by omega)`. Establish `hn' : ((otherVectorDegree LL S A d : ℤ) + (n : ℤ) - (otherVectorDegree LL S A d : ℤ)).toNat = n` using `by omega`. Rewrite `h1` using `[hn']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨Qt, hQt⟩` from `gauss_quotient_integral R0 ι r A hinj n G h1`. Use `⟨Qt, dv_quot_hom _ _ _ _ (dv_pol_pow _ _ (dv_detA_hom A) n) (pow_ne_zero _ (dv_detA_ne A hinj)) (hQt ▸ hG), hQt, ?_⟩` and prove the remaining obligations. Introduce `S' t ht`. Establish `hmap : MvPolynomial.map (algebraMap R0 (FractionRing R0)) G = letterDeterminant (FractionRing R0) A ^ n * MvPolynomial.map (algebraMap R0 (FractionRing R0)) Qt` using `by conv_lhs => rw [hQt]`. Rewrite using `[map_mul, map_pow, map_letter_determinant]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `hE2 _ _ _ hmap S'`. Rewrite `h2` using `[valuation_fraction_field_extension R0 ι LL r S' G, valuation_fraction_field_extension R0 ι LL r S' Qt]`. Establish `h3` using `le_trans ht h2`. Consider the cases of `h : valS LL S' Qt with`. Consider the case `top => exact le_top`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Consider the case `coe z`. Rewrite `h3` using `[h]`. Normalize the coercions in `at h3 ⊢`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Put the expressions in a common number system so they can be compared. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem dv_div_one (hE : FieldMultidegreeDivisibility) (LL : Letters ι) (S : Set ι) (A : Fin r → ι) (hinj : Function.Injective A)
     (hA : ∀ l, A l ∈ S ∧ LL.vec (A l) = true) (d : ι → ℕ) (G : MvPolynomial (ι × Fin r) R0) (hG : G ∈ Pol R0 r d)
@@ -219,9 +217,7 @@ theorem dv_div_one (hE : FieldMultidegreeDivisibility) (LL : Letters ι) (S : Se
     omega
 
 /- English proof (translation)
-Unfold `otherVectorDegree`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `i _`. Use `split_ifs`. Conclude with `h i`.
-
-Conclude with `le_rfl`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem dv_degOther_mono (LL : Letters ι) (S : Set ι) (A : Fin r → ι) (d d' : ι → ℕ) (h : ∀ i, d' i ≤ d i) :
     otherVectorDegree LL S A d' ≤ otherVectorDegree LL S A d := by
@@ -233,15 +229,15 @@ theorem dv_degOther_mono (LL : Letters ι) (S : Set ι) (A : Fin r → ι) (d d'
   · exact le_rfl
 
 /- English proof (translation)
-Proceed by induction on `tasks with`. Consider the case `nil`. Introduce `_ d G hG _`. Conclude with `⟨d, G, hG, by simp, fun S' t ht => by simpa using ht⟩`. Consider the case `cons t ts ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Treat this case separately.
 
-Introduce `ht d G hG hv`. Establish `h0` using `hv t List.mem_cons_self`. Establish `hsum : (((List.map (fun t : Set ι × (Fin r → ι) × ℕ => t.2.2) (t :: ts)).sum : ℕ) : ℤ) = (t.2.2 : ℤ) + (((ts.map fun t => t.2.2).sum : ℕ) : ℤ)`. Rewrite using `[List.map_cons, List.sum_cons]`. Use `push_cast`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `h0` using `[hsum]`. Take `⟨Q1, hQ1, hG1, hval1⟩` from `dv_div_one hE LL t.1 t.2.1 (ht t List.mem_cons_self).1 (ht t List.mem_cons_self).2 d G hG t.2.2 (le_trans (WithTop.coe_le_coe.2 (by omega)) h0)`. Take `⟨d', Qt, hQt, hQ1e, hval2⟩` from `ih (fun t' h => ht t' (List.mem_cons_of_mem _ h)) (d - t.2.2 • dv_eA t.2.1) Q1 hQ1 (fun t' h' => by`. Establish `h1` using `hv t' (List.mem_cons_of_mem _ h')`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h1` using `[hsum]`. Establish `h2` using `hval1 t'.1 _ h1`. Establish `h3` using `dv_degOther_mono LL t'.1 t'.2.1 d (d - t.2.2 • dv_eA t.2.1) (fun i => Nat.sub_le _ _)`. Conclude with `le_trans (WithTop.coe_le_coe.2 (by omega)) h2)`. Use `⟨d', Qt, hQt, ?_, fun S' x hx => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[List.map_cons, List.prod_cons, mul_assoc, ← hQ1e]`. Conclude with `hG1`. Establish `h4` using `hval2 S' _ (hval1 S' x hx)`. Rewrite using `[hsum]`. Conclude with `le_trans (WithTop.coe_le_coe.2 (by omega)) h4`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dv_div_list (hE : FieldMultidegreeDivisibility) (LL : Letters ι) (tasks : List (Set ι × (Fin r → ι) × ℕ)) :
     (∀ t ∈ tasks, Function.Injective t.2.1 ∧ ∀ l, t.2.1 l ∈ t.1 ∧ LL.vec (t.2.1 l) = true) →
@@ -285,23 +281,23 @@ section Seg
 variable {n' r : ℕ} [NeZero n'] (F : Frames n' r)
 
 /- English proof (translation)
-The claim follows from `((F.letters j).orderEmbOfFin rfl).lt_iff_lt`.
+A detailed English derivation is pending.
 -/
 theorem dv_eL_lt (j : ℤ) (a b : Fin (Mj F j)) : eL F j a < eL F j b ↔ a < b :=
   ((F.letters j).orderEmbOfFin rfl).lt_iff_lt
 
 /- English proof (translation)
-The claim follows from `((F.letters j).orderEmbOfFin rfl).injective`.
+A detailed English derivation is pending.
 -/
 theorem dv_eL_inj (j : ℤ) : Function.Injective (eL F j) := ((F.letters j).orderEmbOfFin rfl).injective
 
 /- English proof (translation)
-The claim follows from `Finset.orderEmbOfFin_mem _ rfl a`.
+A detailed English derivation is pending.
 -/
 theorem dv_eL_mem (j : ℤ) (a : Fin (Mj F j)) : eL F j a ∈ F.letters j := Finset.orderEmbOfFin_mem _ rfl a
 
 /- English proof (translation)
-Establish `h` using `Finset.range_orderEmbOfFin (F.letters j) rfl`. Establish `hx' : x ∈ Set.range ((F.letters j).orderEmbOfFin rfl)` using `by rw [h]; exact Finset.mem_coe.2 hx`. Conclude with `hx'`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dv_eL_surj (j : ℤ) (x : ℤ) (hx : x ∈ F.letters j) : ∃ a, eL F j a = x := by
   have h := Finset.range_orderEmbOfFin (F.letters j) rfl
@@ -309,7 +305,7 @@ theorem dv_eL_surj (j : ℤ) (x : ℤ) (hx : x ∈ F.letters j) : ∃ a, eL F j 
   exact hx'
 
 /- English proof (translation)
-Unfold `evensBefore`. Rewrite using `[List.pairwise_reverse]`. Conclude with `(Finset.sortedLT_sort _).pairwise`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dv_ev_dec (x : ℤ) : (evensBefore F x).Pairwise (fun a b => b < a) := by
   unfold evensBefore
@@ -317,7 +313,7 @@ theorem dv_ev_dec (x : ℤ) : (evensBefore F x).Pairwise (fun a b => b < a) := b
   exact (Finset.sortedLT_sort _).pairwise
 
 /- English proof (translation)
-Unfold `evensBefore`. Rewrite using `[List.mem_reverse, Finset.mem_sort, Finset.mem_filter, Finset.mem_Ico]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem dv_ev_mem (x y : ℤ) :
     y ∈ evensBefore F x ↔ (x - (r : ℤ) * n' ≤ y ∧ y < x) ∧ posOf n' y ∈ F.TT ∧ Even y := by
@@ -327,7 +323,7 @@ theorem dv_ev_mem (x y : ℤ) :
 variable {F} {L₁ N₁ : ℕ}
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Establish `h1` using `(window_holds_even_tops n' r F L₁ N₁ hV hn hr x l hl).2.2`. Unfold `Arow at h1`. Rewrite `h1` using `[List.getD_eq_default _ _ (not_lt.1 h)]`. Conclude with `lt_irrefl _ h1`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dv_len (hV : F.Valid L₁ N₁) (hn : Even n') (hr : 1 ≤ r) (x : ℤ) (l : ℕ) (hl : l < r) :
     l < (evensBefore F x).length := by
@@ -338,7 +334,7 @@ theorem dv_len (hV : F.Valid L₁ N₁) (hn : Even n') (hr : 1 ≤ r) (x : ℤ) 
   exact lt_irrefl _ h1
 
 /- English proof (translation)
-Unfold `Arow`. Rewrite using `[List.getD_eq_getElem _ _ (dv_len hV hn hr x l hl)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem dv_Arow_get (hV : F.Valid L₁ N₁) (hn : Even n') (hr : 1 ≤ r) (x : ℤ) (l : ℕ) (hl : l < r) :
     Arow F x l = (evensBefore F x)[l]'(dv_len hV hn hr x l hl) := by
@@ -346,7 +342,7 @@ theorem dv_Arow_get (hV : F.Valid L₁ N₁) (hn : Even n') (hr : 1 ≤ r) (x : 
   rw [List.getD_eq_getElem _ _ (dv_len hV hn hr x l hl)]
 
 /- English proof (translation)
-Rewrite using `[dv_Arow_get hV hn hr x l (by omega), dv_Arow_get hV hn hr x l' hl]`. Conclude with `(List.pairwise_iff_getElem.1 (dv_ev_dec F x)) l l' _ _ h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dv_Arow_anti (hV : F.Valid L₁ N₁) (hn : Even n') (hr : 1 ≤ r) (x : ℤ) (l l' : ℕ) (h : l < l') (hl : l' < r) :
     Arow F x l' < Arow F x l := by
@@ -354,9 +350,9 @@ theorem dv_Arow_anti (hV : F.Valid L₁ N₁) (hn : Even n') (hr : 1 ≤ r) (x :
   exact (List.pairwise_iff_getElem.1 (dv_ev_dec F x)) l l' _ _ h
 
 /- English proof (translation)
-Break down `lt_trichotomy l l' with g | g | g` into its components or cases. Use `dv_Arow_anti hV hn hr x l l' g hl'` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Conclude with `g`. Use `dv_Arow_anti hV hn hr x l' l g hl` as an intermediate fact.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem dv_Arow_inj (hV : F.Valid L₁ N₁) (hn : Even n') (hr : 1 ≤ r) (x : ℤ) (l l' : ℕ) (hl : l < r) (hl' : l' < r)
     (h : Arow F x l = Arow F x l') : l = l' := by
@@ -366,11 +362,11 @@ theorem dv_Arow_inj (hV : F.Valid L₁ N₁) (hn : Even n') (hr : 1 ≤ r) (x : 
   · have := dv_Arow_anti hV hn hr x l' l g hl; omega
 
 /- English proof (translation)
-Establish `hlow` using `bk_Arow_low F x l`. Establish `hm : y ∈ evensBefore F x` using `(dv_ev_mem F x y).2 ⟨⟨by omega, hyx⟩, hy⟩`. Take `⟨i, hi, hiy⟩` from `List.mem_iff_getElem.1 hm`. Establish `hil : i < l`. Assume the negation of the conclusion as `hc`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite `h` using `[dv_Arow_get hV hn hr x l hl]`. Break down `Nat.eq_or_lt_of_le (not_lt.1 hc) with e | e` into its components or cases. Substitute `e` using the available equality. Use linear arithmetic over natural numbers and integers. Use `(List.pairwise_iff_getElem.1 (dv_ev_dec F x)) l i (dv_len hV hn hr x l hl) hi e` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Conclude with `⟨i, hil, by rw [dv_Arow_get hV hn hr x i (by omega)]; exact hiy.symm⟩`.
+Use linear arithmetic over natural numbers and integers. Supply the required witnesses or components.
 -/
 theorem dv_Arow_newer (hV : F.Valid L₁ N₁) (hn : Even n') (hr : 1 ≤ r) (x : ℤ) (l : ℕ) (hl : l < r) (y : ℤ)
     (hy : posOf n' y ∈ F.TT ∧ Even y) (hyx : y < x) (h : Arow F x l < y) : ∃ l' < l, y = Arow F x l' := by
@@ -387,15 +383,13 @@ theorem dv_Arow_newer (hV : F.Valid L₁ N₁) (hn : Even n') (hr : 1 ≤ r) (x 
   exact ⟨i, hil, by rw [dv_Arow_get hV hn hr x i (by omega)]; exact hiy.symm⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Establish `hc' : Arow F x l < F.fr (j - 1) 0` using `not_le.1 hc`. Establish `hex : ∀ i : Fin r, ∃ l' : Fin l, F.fr (j - 1) i.val = Arow F x l'.val`. Introduce `i`. Establish `h1` using `frame_row_monotone F L₁ N₁ hV (j - 1) i.val i.2`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `frame_entry_le_last F L₁ N₁ hV (j - 1) i.val i.2`. Take `⟨l', hl', he⟩` from `dv_Arow_newer hV hn hr x l hl (F.fr (j - 1) i.val) (hV.2.2.2.2.1 (j - 1) i.val i.2) (by omega) (by omega)`. Conclude with `⟨⟨l', hl'⟩, he⟩`. Use `choose f hf using hex`. Establish `hinj : Function.Injective f`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b hab`. Establish `h1 : F.fr (j - 1) a.val = F.fr (j - 1) b.val` using `by rw [hf a, hf b, hab]`. Break down `lt_trichotomy a.val b.val with g | g | g` into its components or cases. Use `frame_entries_strictMono F L₁ N₁ hV (j - 1) a.val b.val g b.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Conclude with `Fin.ext g`. Use `frame_entries_strictMono F L₁ N₁ hV (j - 1) b.val a.val g a.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `Fintype.card_le_of_injective f hinj` as an intermediate fact. Simplify using `at this`.
-
-Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem dv_Arow_ge (hV : F.Valid L₁ N₁) (hn : Even n') (hr : 1 ≤ r) (j x : ℤ) (hx : F.fr (j - 1) (r - 1) < x)
     (l : ℕ) (hl : l < r) : F.fr (j - 1) 0 ≤ Arow F x l := by
@@ -421,14 +415,14 @@ theorem dv_Arow_ge (hV : F.Valid L₁ N₁) (hn : Even n') (hr : 1 ≤ r) (j x :
   omega
 
 /- English proof (translation)
-Unfold `Frames.letters`. Rewrite using `[Finset.mem_filter, Finset.mem_Icc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem dv_mem_letters (j y : ℤ) : y ∈ F.letters j ↔ (F.fr (j - 1) 0 ≤ y ∧ y ≤ F.fr j (r - 1)) ∧ posOf n' y ∈ F.TT := by
   unfold Frames.letters
   rw [Finset.mem_filter, Finset.mem_Icc]
 
 /- English proof (translation)
-Unfold `nonW`. Rewrite using `[Finset.mem_filter]`. Unfold `Frames.IsW`. Rewrite using `[not_le]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem dv_mem_nonW (j y : ℤ) : y ∈ nonW F j ↔ y ∈ F.letters j ∧ F.fr (j - 1) (r - 1) < y := by
   unfold nonW
@@ -437,7 +431,7 @@ theorem dv_mem_nonW (j y : ℤ) : y ∈ nonW F j ↔ y ∈ F.letters j ∧ F.fr 
   rw [not_le]
 
 /- English proof (translation)
-Rewrite `hx` using `[dv_mem_nonW, dv_mem_letters]`. Establish `h1` using `window_holds_even_tops n' r F L₁ N₁ hV hn hr x l hl`. Rewrite using `[dv_mem_letters]`. Conclude with `⟨⟨dv_Arow_ge hV hn hr j x hx.2 l hl, by omega⟩, h1.2.1⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem dv_Arow_letter (hV : F.Valid L₁ N₁) (hn : Even n') (hr : 1 ≤ r) (j x : ℤ) (hx : x ∈ nonW F j)
     (l : ℕ) (hl : l < r) : Arow F x l ∈ F.letters j := by
@@ -447,16 +441,16 @@ theorem dv_Arow_letter (hV : F.Valid L₁ N₁) (hn : Even n') (hr : 1 ≤ r) (j
   exact ⟨⟨dv_Arow_ge hV hn hr j x hx.2 l hl, by omega⟩, h1.2.1⟩
 
 /- English proof (translation)
-Use `hV.2.2.2.1 (j - 1)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem dv_frame_lt (hV : F.Valid L₁ N₁) (j : ℤ) : F.fr (j - 1) (r - 1) < F.fr j 0 := by
   have := hV.2.2.2.1 (j - 1)
   rwa [sub_add_cancel] at this
 
 /- English proof (translation)
-Rewrite using `[dv_mem_letters]`. Establish `h1` using `frame_row_monotone F L₁ N₁ hV (j - 1) l hl`. Establish `h2` using `frame_entry_le_last F L₁ N₁ hV (j - 1) l hl`. Establish `h3` using `dv_frame_lt hV j`. Establish `h4` using `frame_row_monotone F L₁ N₁ hV j (r - 1) (by omega)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨⟨h1, by omega⟩, (hV.2.2.2.2.1 (j - 1) l hl).1⟩`.
+Supply the required witnesses or components.
 -/
 theorem dv_frame_letter (hV : F.Valid L₁ N₁) (hr : 1 ≤ r) (j : ℤ) (l : ℕ) (hl : l < r) :
     F.fr (j - 1) l ∈ F.letters j := by
@@ -468,7 +462,7 @@ theorem dv_frame_letter (hV : F.Valid L₁ N₁) (hr : 1 ≤ r) (j : ℤ) (l : �
   exact ⟨⟨h1, by omega⟩, (hV.2.2.2.2.1 (j - 1) l hl).1⟩
 
 /- English proof (translation)
-Rewrite using `[dv_mem_nonW, dv_mem_letters]`. Establish `h1` using `frame_row_monotone F L₁ N₁ hV (j - 1) (r - 1) (by omega)`. Establish `h3` using `dv_frame_lt hV j`. Establish `h4` using `frame_row_monotone F L₁ N₁ hV j (r - 1) (by omega)`. Conclude with `⟨⟨⟨by omega, le_rfl⟩, (hV.2.2.2.2.1 j (r - 1) (by omega)).1⟩, by omega⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem dv_last_nonW (hV : F.Valid L₁ N₁) (hr : 1 ≤ r) (j : ℤ) : F.fr j (r - 1) ∈ nonW F j := by
   rw [dv_mem_nonW, dv_mem_letters]
@@ -478,11 +472,11 @@ theorem dv_last_nonW (hV : F.Valid L₁ N₁) (hr : 1 ≤ r) (j : ℤ) : F.fr j 
   exact ⟨⟨⟨by omega, le_rfl⟩, (hV.2.2.2.2.1 j (r - 1) (by omega)).1⟩, by omega⟩
 
 /- English proof (translation)
-Rewrite `hy` using `[dv_mem_letters]`. Establish `key : ∀ i, i < r → y ≤ F.fr (j - 1) i → ∃ l < r, y = F.fr (j - 1) l`. Introduce `i`. Proceed by induction on `i with`. Consider the case `zero => intro h0 h1; exact ⟨0, h0, by omega⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ i ih`. Introduce `h0 h1`. Distinguish the cases in `h2 : y ≤ F.fr (j - 1) i`. Conclude with `ih (by omega) h2`. Distinguish the cases in `h3 : y = F.fr (j - 1) (i + 1)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Conclude with `⟨i + 1, h0, h3⟩`. Conclude with `absurd hy.2 (hV.2.2.2.2.2.1 (j - 1) i y h0 (by omega) (by omega))`. Conclude with `key (r - 1) (by omega) hW`.
+A detailed English derivation is pending.
 -/
 theorem dv_W_frame (hV : F.Valid L₁ N₁) (hr : 1 ≤ r) (j y : ℤ) (hy : y ∈ F.letters j) (hW : y ≤ F.fr (j - 1) (r - 1)) :
     ∃ l < r, y = F.fr (j - 1) l := by
@@ -507,18 +501,18 @@ section SegDiv
 variable {n' r : ℕ} [NeZero n'] {F : Frames n' r} {L₁ N₁ : ℕ}
 
 /- English proof (translation)
-Unfold `nonW`. Conclude with `Finset.mem_filter.2 ⟨dv_eL_mem F j i, h⟩`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem dv_nonW_of (j : ℤ) (i : Fin (Mj F j)) (h : ¬ F.IsW j (eL F j i)) : eL F j i ∈ nonW F j := by
   unfold nonW
   exact Finset.mem_filter.2 ⟨dv_eL_mem F j i, h⟩
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[Finset.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `hx'` using `hx`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Unfold `nonW at hx'`. Rewrite `hx'` using `[Finset.mem_filter]`. Take `⟨a, ha⟩` from `dv_eL_surj F j x hx'.1`. Conclude with `⟨a, Finset.mem_filter.2 ⟨Finset.mem_univ _, by rw [ha]; exact hx'.2⟩, ha⟩`. Introduce and unpack `⟨a, ha, rfl⟩`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `dv_nonW_of j a (Finset.mem_filter.1 ha).2`.
+A detailed English derivation is pending.
 -/
 theorem dv_nonW_image (j : ℤ) :
     nonW F j = (univ.filter fun i : Fin (Mj F j) => ¬ F.IsW j (eL F j i)).image (eL F j) := by
@@ -537,7 +531,7 @@ theorem dv_nonW_image (j : ℤ) :
 variable {O : Type} [CommRing O] {K : ℕ}
 
 /- English proof (translation)
-Unfold `letterDeterminant`. Rewrite using `[AlgHom.map_det, AlgHom.map_det]`. Use `congr 1`. Use extensionality with `l b`. Simplify using `[plnm, plVar]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem dv_plnm_det (j : ℤ) (A : Fin r → Fin (Mj F j)) :
     plnm F j O K (rename (plVar (K := K)) (letterDeterminant O A)) =
@@ -549,13 +543,11 @@ theorem dv_plnm_det (j : ℤ) (A : Fin r → Fin (Mj F j)) :
   simp [plnm, plVar]
 
 /- English proof (translation)
-Unfold `otherVectorDegree`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `a _`. Use `split_ifs`.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hdd a`. Conclude with `le_rfl`. Use `_ = ∑ a ∈ univ.filter (fun a : Fin (Mj F j) => a ∈ {y | y < i} ∧ (LLs F j).toLetters.vec a = true ∧ a ∉ Set.range A), dd (eL F j a) := by rw [Finset.sum_filter]`. Use `_ = ∑ y ∈ (univ.filter (fun a : Fin (Mj F j) => a ∈ {y | y < i} ∧ (LLs F j).toLetters.vec a = true ∧ a ∉ Set.range A)).image (eL F j), dd y := by`. Rewrite using `[Finset.sum_image (fun a _ b _ h => dv_eL_inj F j h)]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `_ ≤ _ := by`. Apply `Finset.sum_le_sum_of_subset` to reduce the goal to its premises. Introduce `y hy`. Take `⟨a, ha, rfl⟩` from `Finset.mem_image.1 hy`. Take `⟨_, h1, h2, h3⟩` from `Finset.mem_filter.1 ha`.
-
-Use `Finset.mem_filter.2 ⟨dv_eL_mem F j a, ?_, (dv_eL_lt F j a i).2 h1, ?_⟩` and prove the remaining obligations. Conclude with `of_decide_eq_true h2`. Introduce `l hl he`. Apply `h3` to reduce the goal to its premises. Conclude with `⟨⟨l, hl⟩, dv_eL_inj F j (by rw [hA ⟨l, hl⟩]; exact he.symm)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem dv_degOther_le (j : ℤ) (i : Fin (Mj F j)) (A : Fin r → Fin (Mj F j))
     (hA : ∀ l : Fin r, eL F j (A l) = Arow F (eL F j i) l.val) (d' : Fin (Mj F j) → ℕ) (dd : ℤ → ℕ)
@@ -589,55 +581,47 @@ theorem dv_degOther_le (j : ℤ) (i : Fin (Mj F j)) (A : Fin r → Fin (Mj F j))
 variable [IsDomain O] [NeZero r] [NeZero K]
 
 /- English proof (translation)
-Establish `hAex : ∀ (i : Fin (Mj F j)) (l : Fin r), ∃ a : Fin (Mj F j), ¬ F.IsW j (eL F j i) → eL F j a = Arow F (eL F j i) l.val`. Introduce `i l`. Distinguish the cases in `h : F.IsW j (eL F j i)`. Conclude with `⟨i, fun h' => absurd h h'⟩`. Take `⟨a, ha⟩` from `dv_eL_surj F j _ (dv_Arow_letter hV hn hr j (eL F j i) (dv_nonW_of j i h) l.val l.2)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a, fun _ => ha⟩`. Use `choose Ai hAi using hAex`. Establish `hWex : ∀ l : Fin r, ∃ a, eL F j a = F.fr (j - 1) l.val` using `fun l => dv_eL_surj F j _ (dv_frame_letter hV hr j l.val l.2)`. Use `choose Aw hAw using hWex`. Establish `hne : (nonW F j).Nonempty` using `⟨_, dv_last_nonW hV hr j⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hx0` using `(dv_mem_nonW j _).1 (Finset.min'_mem _ hne)`. Take `⟨i0, hi0⟩` from `dv_eL_surj F j ((nonW F j).min' hne) hx0.1`. Establish `hi0W : ¬ F.IsW j (eL F j i0)`. Rewrite using `[hi0]`. Unfold `Frames.IsW`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `not_le.2 hx0.2`. Use `set I := univ.filter fun i : Fin (Mj F j) => ¬ F.IsW j (eL F j i) with hI`. Use `set tasks : List (Set (Fin (Mj F j)) × (Fin r → Fin (Mj F j)) × ℕ) := (I.toList.map fun i => (({y | y < i} : Set (Fin (Mj F j))), Ai i, m1)) ++ [({y | y < i0}, Aw, m2)] with htasks`. Establish `hsum : (tasks.map fun t => t.2.2).sum = I.card * m1 + m2`. Rewrite using `[htasks, List.map_append, List.sum_append, List.map_map]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `[Function.comp_def]`. Establish `hIc : I.card ≤ (F.letters j).card`. Use `Finset.card_le_univ I` as an intermediate fact. Simplify using `using this`. Establish `htot : (tasks.map fun t => t.2.2).sum ≤ ms`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsum]`. Use `Nat.mul_le_mul_right m1 hIc` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hprod : (tasks.map fun t => letterDeterminant O t.2.1 ^ t.2.2).prod = (∏ i ∈ I, letterDeterminant O (Ai i) ^ m1) * letterDeterminant O Aw ^ m2`. Rewrite using `[htasks, List.map_append, List.prod_append, List.map_map, ← Finset.prod_map_toList]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `[Function.comp_def]`. Establish `hvalid : ∀ t ∈ tasks, Function.Injective t.2.1 ∧ ∀ l, t.2.1 l ∈ t.1 ∧ (LLs F j).toLetters.vec (t.2.1 l) = true`. Introduce `t ht`. Rewrite `ht` using `[htasks, List.mem_append]`. Break down `ht with ht | ht` into its components or cases.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨i, hi, rfl⟩` from `List.mem_map.1 ht`. Establish `hiW : ¬ F.IsW j (eL F j i)` using `(Finset.mem_filter.1 (Finset.mem_toList.1 hi)).2`. Use `⟨?_, fun l => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce `l l' hll`. Establish `h1 : Arow F (eL F j i) l.val = Arow F (eL F j i) l'.val`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Rewrite using `[← hAi i l hiW, ← hAi i l' hiW]`. Conclude with `congrArg _ hll`. Conclude with `Fin.ext (dv_Arow_inj hV hn hr _ _ _ l.2 l'.2 h1)`. Use `show Ai i l < i`. Rewrite using `[← dv_eL_lt F j, hAi i l hiW]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `(window_holds_even_tops n' r F L₁ N₁ hV hn hr _ l.val l.2).2.2`. Use `show decide (Even (eL F j (Ai i l))) = true`. Rewrite using `[hAi i l hiW]`. Conclude with `decide_eq_true (window_holds_even_tops n' r F L₁ N₁ hV hn hr _ l.val l.2).1`. Rewrite `ht` using `[List.mem_singleton]`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Substitute `ht` using the available equality. Use `⟨?_, fun l => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce `l l' hll`. Establish `h1 : F.fr (j - 1) l.val = F.fr (j - 1) l'.val`. Rewrite using `[← hAw l, ← hAw l']`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `congrArg _ hll`. Break down `lt_trichotomy l.val l'.val with g | g | g` into its components or cases. Use `frame_entries_strictMono F L₁ N₁ hV (j - 1) l.val l'.val g l'.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Conclude with `Fin.ext g`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `frame_entries_strictMono F L₁ N₁ hV (j - 1) l'.val l.val g l.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `show Aw l < i0`. Rewrite using `[← dv_eL_lt F j, hAw l, hi0]`. Use `frame_entry_le_last F L₁ N₁ hV (j - 1) l.val l.2` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Use `show decide (Even (eL F j (Aw l))) = true`. Rewrite using `[hAw l]`. Conclude with `decide_eq_true (hV.2.2.2.2.1 (j - 1) l.val l.2).2`. Establish `hvals : ∀ t ∈ tasks, (((otherVectorDegree (LLs F j).toLetters t.1 t.2.1 d' : ℤ) + (((tasks.map fun t => t.2.2).sum : ℕ) : ℤ) : ℤ) : WithTop ℤ) ≤ valS (LLs F j).toLetters t.1 A`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce `t ht`. Rewrite `ht` using `[htasks, List.mem_append]`. Break down `ht with ht | ht` into its components or cases. Take `⟨i, hi, rfl⟩` from `List.mem_map.1 ht`. Establish `hiW : ¬ F.IsW j (eL F j i)` using `(Finset.mem_filter.1 (Finset.mem_toList.1 hi)).2`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h1` using `dv_degOther_le j i (Ai i) (fun l => hAi i l hiW) d' dd hdd`. Use `le_trans (WithTop.coe_le_coe.2 ?_) (hval i hiW)` and prove the remaining obligations. Use `show (otherVectorDegree (LLs F j).toLetters {y | y < i} (Ai i) d' : ℤ) + _ ≤ _`. Use linear arithmetic over natural numbers and integers. Rewrite `ht` using `[List.mem_singleton]`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Substitute `ht` using the available equality. Establish `h0 : otherVectorDegree (LLs F j).toLetters {y | y < i0} Aw d' = 0`. Unfold `otherVectorDegree`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `a _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[if_neg]`. Introduce and unpack `⟨h1, _, h3⟩`. Apply `h3` to reduce the goal to its premises. Establish `h4 : eL F j a < (nonW F j).min' hne` using `by rw [← hi0]; exact (dv_eL_lt F j a i0).2 h1`. Establish `h5 : eL F j a ≤ F.fr (j - 1) (r - 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hc`. Establish `h6 : eL F j a ∈ nonW F j` using `(dv_mem_nonW j _).2 ⟨dv_eL_mem F j a, not_le.1 hc⟩`. Use `Finset.min'_le _ _ h6` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Take `⟨l, hl, he⟩` from `dv_W_frame hV hr j _ (dv_eL_mem F j a) h5`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨⟨l, hl⟩, dv_eL_inj F j (by rw [hAw ⟨l, hl⟩]; exact he.symm)⟩`. Use `le_trans (WithTop.coe_le_coe.2 ?_) (hval i0 hi0W)` and prove the remaining obligations. Use `show (otherVectorDegree (LLs F j).toLetters {y | y < i0} Aw d' : ℤ) + _ ≤ _`. Rewrite using `[h0]`. Establish `: (0 : ℤ) ≤ ((∑ y ∈ (F.letters j).filter (fun y => Even y ∧ y < eL F j i0 ∧ ∀ l < r, y ≠ Arow F (eL F j i0) l), dd y : ℕ) : ℤ)` using `Int.natCast_nonneg _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Use linear arithmetic over natural numbers and integers. Take `⟨d1, A', hA', hAe, hval2⟩` from `dv_div_list hE (LLs F j).toLetters tasks hvalid d' A hA hvals`. Establish `hC' : CondM F j 0 A' G Mx`. Introduce `i hiW`. Take `⟨h1, h2⟩` from `hC i hiW`.
-
-Use `⟨fun he => ⟨(h1 he).1, ?_⟩, fun he => ⟨(h2 he).1, ?_⟩⟩` and prove the remaining obligations. Conclude with `le_trans (WithTop.coe_le_coe.2 (by omega)) (hval2 _ _ (h1 he).2)`. Conclude with `le_trans (WithTop.coe_le_coe.2 (by omega)) (hval2 _ _ (h2 he).2)`. Use `⟨plnm F j O K (rename (plVar (K := K)) A' * rename (tanVar (r := r)) G), ⟨d1, d'', A', G, Mx, hA', hG, hW, hC', rfl⟩, ?_⟩` and prove the remaining obligations. Establish `hDv : plnm F j O K (rename (plVar (K` using `K)) ((∏ i ∈ I, letterDeterminant O (Ai i) ^ m1) * letterDeterminant O Aw ^ m2)) = Dv F j O K m1 m2 := by`.
-
-Unfold `Dv`. Rewrite using `[map_mul, map_mul, map_prod, map_prod, map_pow, map_pow, dv_plnm_det, dv_nonW_image, Finset.prod_image (fun a _ b _ h => dv_eL_inj F j h)]`. Use `congr 1`. Apply `Finset.prod_congr rfl` to reduce the goal to its premises. Introduce `i hi`.
-
-Establish `hiW : ¬ F.IsW j (eL F j i)` using `(Finset.mem_filter.1 hi).2`. Rewrite using `[map_pow, map_pow, dv_plnm_det]`. Unfold `Dseg`. Simplify using `only [hAi i _ hiW]`. Unfold `Wseg`.
-
-Simplify using `only [hAw]`. Use `conv_lhs => rw [hAe, hprod]`. Rewrite using `[map_mul (rename (plVar (K := K))), mul_assoc, map_mul (plnm F j O K), hDv]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dv_segment (hE : FieldMultidegreeDivisibility) (hV : F.Valid L₁ N₁) (hn : Even n') (hr : 1 ≤ r) (j : ℤ) (m1 m2 ms : ℕ)
     (hms : (F.letters j).card * m1 + m2 ≤ ms) (dd : ℤ → ℕ)
@@ -781,19 +765,17 @@ theorem dv_segment (hE : FieldMultidegreeDivisibility) (hV : F.Valid L₁ N₁) 
 end SegDiv
 
 /- English proof (translation)
-Take `⟨C, hC, H⟩` from `numeric_symbol_bound_real`. Use `⟨C, hC, fun hGeom => ?_⟩` and prove the remaining obligations. Introduce `p n' r K _ _ _ _ O _ _ _ _ X deg a Y c0 c'' cStar Dd hII j dd hdd P hP`. Take `⟨d', d'', A, G, Mx, hA, hG, hsum, hW, hCM, hth, rfl⟩` from `hP`. Establish `hp` using `X.hH.1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hr` using `X.hH.2.1`. Establish `hn` using `X.hH.2.2.2.2`. Establish `hdeg : ∀ s ∈ X.Fr.TT, (a : ℝ) ≤ deg s ∧ (deg s : ℝ) ≤ 2 * a`. Establish `hII'` using `hII`. Unfold `Formalism.MainNotions.SourceCleaning.HypII at hII'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Take `⟨_, _, g3, _⟩` from `hII'`. Introduce `s hs`. Take `⟨h1, h2⟩` from `g3 s hs`. Establish `h0 : (0 : ℝ) ≤ (c'' : ℝ)` using `Nat.cast_nonneg _`. Conclude with `⟨by linarith, by linarith⟩`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `hms : (X.Fr.letters j).card * X.m1 (cPrime n' r X.Fr.TT.card c0 c'' cStar) + X.m2 (cPrime n' r X.Fr.TT.card c0 c'' cStar) ≤ mStar p X.Fr (r + K) X.N₁ (p ^ X.G') (cPrime n' r X.Fr.TT.card c0 c'' cStar)`. Unfold `Ctx.m1 Ctx.m2 Ctx.Q`. Conclude with `segment_divisions_le_bound p X.Fr (r + K) X.L₁ X.N₁ (p ^ X.G') _ X.hV j`. Use `dv_segment hE X.hV hn (by omega) j _ _ _ hms dd d' d'' A G Mx hA hG hW hCM (fun b => by have := hsum b; omega) ?_` and prove the remaining obligations. Introduce `i hiW`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `hv : valS (LLs X.Fr j).toLetters {y | y < i} A with`. Consider the case `top => exact le_top`. Consider the case `coe z`. Establish `h1` using `hth i hiW z hv`. Establish `hB` using `hGeom p n' r X.Fr X.L₁ X.N₁ hp hr hn X.hV deg a hdeg j dd hdd _ (dv_nonW_of j i hiW)`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨_, h2⟩` from `H n' r p X.Fr (r + K) X.L₁ X.N₁ X.G' deg a Y c0 c'' cStar Dd hp hr X.hV hII X.hT j _ (dv_eL_mem X.Fr j i) hiW`. Take `⟨h3, _⟩` from `h2 _ (z : ℝ) hB h1`. Establish `h0` using `level_degree_nonneg p X.Fr deg j (eL X.Fr j i)`. Establish `h4 : ((∑ y ∈ (X.Fr.letters j).filter (fun y => Even y ∧ y < eL X.Fr j i ∧ ∀ l < r, y ≠ Arow X.Fr (eL X.Fr j i) l), dd y : ℕ) : ℝ) + (mStar p X.Fr (r + K) X.N₁ (p ^ X.G') (cPrime n' r X.Fr.TT.card c0 c'' cStar) : ℝ) ≤ (z : ℝ)`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Conclude with `WithTop.coe_le_coe.2 (by exact_mod_cast h4)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem restDivM (hE : FieldMultidegreeDivisibility) : ∃ C : ℝ, 1 ≤ C ∧ (RestGeom → RestDivM C (C + 1) C) := by
   obtain ⟨C, hC, H⟩ := numeric_symbol_bound_real

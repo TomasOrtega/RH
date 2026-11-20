@@ -7,7 +7,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.PublishedFoundations.N
 open GlobalTheory.BigTop GlobalTheory.BigOn GlobalTheory.BigOn.Exp
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.BigOn.Exp.tieRat_of` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRationalityOfTwistRow.lean&line=10#L10)
 -/

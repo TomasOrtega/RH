@@ -6,14 +6,14 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 namespace LateralTheory.CohomologicalPurity.Thom.ExcSp
 
 /- English proof (translation)
-Rewrite using `[← HomologicalComplex.comp_f, ← HomologicalComplex.comp_f, comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sqw {R : Type} [CommRing R] {K L K' L' : Cx R} {f : K ⟶ L} {f' : K' ⟶ L'} {a : K ⟶ K'} {b : L ⟶ L'}
     (comm : f ≫ b = a ≫ f') (n : ℤ) : f.f n ≫ b.f n = a.f n ≫ f'.f n := by
   rw [← HomologicalComplex.comp_f, ← HomologicalComplex.comp_f, comm]
 
 /- English proof (translation)
-Rewrite using `[← Functor.map_comp, ← Functor.map_comp]`. Conclude with `congrArg (chains R).map (Arrow.w φ).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chains_sq (R : Type) [CommRing R] {P' P : Arrow Spc} (φ : P' ⟶ P) :
     (chains R).map P'.hom ≫ (chains R).map φ.right = (chains R).map φ.left ≫ (chains R).map P.hom := by
@@ -42,11 +42,11 @@ def LeafConeCok : Prop := ∀ (R : Type) [CommRing R] {K L K' L' : Cx R} (f : K 
   (∀ n, IsIso (cokernel.map _ _ _ _ (sqw comm n))) → QuasiIso (CochainComplex.mappingCone.map f f' a b comm)
 
 /- English proof (translation)
-Introduce `h1 q P' P φ hpb hc n i`. Establish `hm : Mono P.hom` using `hc.2.1`. Establish `hm' : Mono P'.hom` using `hpb.mono_fst_of_mono`. Take `⟨e, he⟩` from `hR h1 q i`. Use `hQ q φ hpb hc` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hb : Function.Bijective (HK.pull (ZMod q) (coneMap (ZMod q) φ) (tw q i) n)` using `h1 (ZMod q) _ (tw q i) n`. Establish `: (Hs.pull q φ n i : Hs q P n i → Hs q P' n i) = (e P' n hm').symm ∘ HK.pull (ZMod q) (coneMap (ZMod q) φ) (tw q i) n ∘ e P n hm`. Use function extensionality and compare the values at `x`. Simplify using `[← he P' P φ hm' hm n x]`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(e P' n hm').symm.bijective.comp (hb.comp (e P n hm).bijective)`.
+A detailed English derivation is pending.
 -/
 theorem leafExcSp_of (hQ : LeafConeQI) (hR : LeafHsRel) : LeafExcSp := by
   intro h1 q P' P φ hpb hc n i
@@ -63,7 +63,7 @@ theorem leafExcSp_of (hQ : LeafConeQI) (hR : LeafHsRel) : LeafExcSp := by
   exact (e P' n hm').symm.bijective.comp (hb.comp (e P n hm).bijective)
 
 /- English proof (translation)
-Introduce `q P' P φ hpb hc`. Establish `hm : Mono P.hom` using `hc.2.1`. Establish `hm' : Mono P'.hom` using `hpb.mono_fst_of_mono`. Conclude with `hC (ZMod q) _ _ _ _ (chains_sq (ZMod q) φ) (hM _ _ hm') (hM _ _ hm) (hK q φ hpb hc)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem leafConeQI_of (hM : LeafChainsMono) (hK : LeafCokIso) (hC : LeafConeCok) : LeafConeQI := by
   intro q P' P φ hpb hc
@@ -72,7 +72,7 @@ theorem leafConeQI_of (hM : LeafChainsMono) (hK : LeafCokIso) (hC : LeafConeCok)
   exact hC (ZMod q) _ _ _ _ (chains_sq (ZMod q) φ) (hM _ _ hm') (hM _ _ hm) (hK q φ hpb hc)
 
 /- English proof (translation)
-The claim follows from `leafExcSp_of (leafConeQI_of hM hK hC) hR`.
+A detailed English derivation is pending.
 -/
 theorem leafExcSp_of' (hM : LeafChainsMono) (hK : LeafCokIso) (hC : LeafConeCok) (hR : LeafHsRel) : LeafExcSp :=
   leafExcSp_of (leafConeQI_of hM hK hC) hR

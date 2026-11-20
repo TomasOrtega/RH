@@ -13,7 +13,7 @@ noncomputable section
 namespace GlobalTheory.EisM
 
 /- English proof (translation)
-Establish `key : (t ^ 2 / y + y * x⁻¹ * x⁻¹) / 2 - t / x = (t * x - y) ^ 2 / (2 * x ^ 2 * y)`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `: 0 ≤ (t * x - y) ^ 2 / (2 * x ^ 2 * y)` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem div_le_half_sq_add {t x y : ℝ} (hx : 0 < x) (hy : 0 < y) :
     t / x ≤ (t ^ 2 / y + y * x⁻¹ * x⁻¹) / 2 := by
@@ -24,13 +24,11 @@ theorem div_le_half_sq_add {t x y : ℝ} (hx : 0 < x) (hy : 0 < y) :
   linarith
 
 /- English proof (translation)
-Use `set σ := s.re with hσ`. Use `set δ : ℝ := σ - ((k : ℝ) + 1) / 2 with hδ`. Establish `hδ0 : 0 < δ` using `by rw [hδ]; linarith`. Establish `h1 : Summable fun n : ℕ => ‖a n‖ ^ 2 / (n : ℝ) ^ ((k : ℝ) + δ)` using `hsq δ hδ0`. Establish `h2 : Summable fun n : ℕ => (n : ℝ) ^ (-(1 + δ))` using `Real.summable_nat_rpow.mpr (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Summable.of_norm_bounded ((h1.add h2).div_const 2) fun n => ?_` and prove the remaining obligations. Rewrite using `[LSeries.norm_term_eq]`. Use `split_ifs with hn`. Establish `: 0 ≤ ‖a n‖ ^ 2 / (n : ℝ) ^ ((k : ℝ) + δ)` using `by positivity`. Establish `: 0 ≤ (n : ℝ) ^ (-(1 + δ))` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hn' : (0 : ℝ) < n` using `Nat.cast_pos.mpr (Nat.pos_of_ne_zero hn)`. Establish `e : (n : ℝ) ^ (-(1 + δ)) = (n : ℝ) ^ ((k : ℝ) + δ) * ((n : ℝ) ^ σ)⁻¹ * ((n : ℝ) ^ σ)⁻¹`. Rewrite using `[show -(1 + δ) = ((k : ℝ) + δ) + -σ + -σ by rw [hδ]; ring, Real.rpow_add hn', Real.rpow_add hn', Real.rpow_neg hn'.le]`. Rewrite using `[e]`.
-
-Conclude with `div_le_half_sq_add (Real.rpow_pos_of_pos hn' σ) (Real.rpow_pos_of_pos hn' _)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lseriesSummable_of_sq (a : ℕ → ℂ) (k : ℕ)
     (hsq : ∀ s : ℝ, 0 < s → Summable fun n : ℕ => ‖a n‖ ^ 2 / (n : ℝ) ^ ((k : ℝ) + s))
@@ -54,21 +52,19 @@ theorem lseriesSummable_of_sq (a : ℕ → ℂ) (k : ℕ)
     exact div_le_half_sq_add (Real.rpow_pos_of_pos hn' σ) (Real.rpow_pos_of_pos hn' _)
 
 /- English proof (translation)
-Introduce `k L N ε g hk hL hNL hcf`. Use `haveI : NeZero L := ⟨hL.ne'⟩`. Take `⟨f, hf⟩` from `GlobalTheory.T.exists_cuspForm_gamma1_of_isCuspFormCoeffSeq k L N ε g hk hL hNL hcf`. Establish `hcoef : ∀ n, (qExpansion 1 ⇑f).coeff n = g n` using `fun n => by`. Establish `h` using `GlobalTheory.T.coef_qExpansionFunctionUpperHalfPlane g hcf.1.1 n`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[coef, ← hf]`. Conclude with `h`. Establish `hk0 : (0 : ℤ) < (k : ℤ)` using `by exact_mod_cast hk`. Establish `hsq` using `(GlobalTheory.T.rankin_mean_square_cuspForm k L (ch ε) g hk hcf).2.2.1`. Establish `hsum : ∀ s : ℂ, ((k : ℝ) + 1) / 2 < s.re → LSeriesSummable g s` using `lseriesSummable_of_sq g k hsq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `habs : LSeries.abscissaOfAbsConv g ≤ (((((k : ℝ) + 1) / 2 : ℝ)) : EReal)` using `LSeries.abscissaOfAbsConv_le_of_forall_lt_LSeriesSummable fun y hy => hsum y (by simpa using hy)`. Establish `hdiff : Differentiable ℂ (ModularForm.L hk0 f)` using `CuspForm.differentiable_L hk0 f`. Establish `hagree : ∀ s : ℂ, (k : ℝ) / 2 + 1 < s.re → LSeries g s = ModularForm.L hk0 f s`. Introduce `s hs`. Establish `h` using `CuspForm.hasSum_L hk0 f (s := s) (by rw [Int.cast_natCast]; exact hs)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [strictWidthInfty_Gamma1, Complex.ofReal_one, Complex.one_cpow, one_mul] at h`. Establish `hs0 : s ≠ 0`. Introduce `h0; rw [h0, Complex.zero_re] at hs; have : (0 : ℝ) ≤ (k : ℝ) / 2 := by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[LSeries, ← h.tsum_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Use function extensionality and compare the values at `n`. Rewrite using `[LSeries.term_of_ne_zero' hs0, hcoef]`. Use `⟨ModularForm.L hk0 f, hdiff, fun s hs => ⟨hsum s hs, ?_⟩⟩` and prove the remaining obligations. Use `set U : Set ℂ := {c : ℂ | ((k : ℝ) + 1) / 2 < c.re} with hU`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hLU : AnalyticOnNhd ℂ (LSeries g) U` using `(LSeries_analyticOnNhd g).mono fun c hc => by`. Simplify using `only [Set.mem_setOf_eq, hU] at hc ⊢`. Conclude with `lt_of_le_of_lt habs (by exact_mod_cast hc)`. Establish `hΛU : AnalyticOnNhd ℂ (ModularForm.L hk0 f) U` using `fun z _ => hdiff.analyticAt z`. Establish `hconn : IsPreconnected U` using `(convex_halfSpace_re_gt _).isPreconnected`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set z₀ : ℂ := (((k : ℝ) + 2 : ℝ) : ℂ) with hz₀`. Establish `hz₀re : z₀.re = (k : ℝ) + 2` using `by rw [hz₀, Complex.ofReal_re]`. Establish `hk' : (0 : ℝ) ≤ k` using `Nat.cast_nonneg k`. Establish `hz₀U : z₀ ∈ U` using `by simp only [hU, Set.mem_setOf_eq, hz₀re]; linarith`. Establish `hev : LSeries g =ᶠ[𝓝 z₀] ModularForm.L hk0 f`.
-
-Establish `hopen : IsOpen {c : ℂ | (k : ℝ) / 2 + 1 < c.re}` using `isOpen_lt continuous_const Complex.continuous_re`. Use `filter_upwards [hopen.mem_nhds (by simp only [Set.mem_setOf_eq, hz₀re]; linarith)] with c hc`. Conclude with `hagree c hc`. Conclude with `hLU.eqOn_of_preconnected_of_eventuallyEq hΛU hconn hz₀U hev hs`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lseries_cusp_entire : ∀ (k L N : ℕ) (ε : DirichletCharacter ℂ N) (g : ℕ → ℂ), 1 ≤ k → 0 < L → N ∣ L →
     CF k L (ch ε) g → ∃ Λ : ℂ → ℂ, Differentiable ℂ Λ ∧

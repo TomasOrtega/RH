@@ -12,11 +12,11 @@ section F1
 variable {A : Type*} [CommRing A]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp only [Finset.sum_empty, sub_zero]`. Rewrite using `[zero_pow (pow_pos hp.pos e).ne']`. Conclude with `dvd_zero _`. Consider the case `insert i s hi ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi]`. Take `⟨t, ht⟩` from `exists_add_pow_prime_pow_eq hp (a i) (∑ i ∈ s, a i) e`. Take `⟨u, hu⟩` from `ih`. Use `⟨a i * (∑ i ∈ s, a i) * t + u, ?_⟩` and prove the remaining obligations. Establish `: (∑ i ∈ s, a i) ^ (p ^ e) = ∑ i ∈ s, a i ^ (p ^ e) + p * u` using `by rw [← hu]; ring`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ht, this]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma sum_pow_dvd (p : ℕ) (hp : p.Prime) (e : ℕ) {ι' : Type*} (s : Finset ι') (a : ι' → A) :
     (p : A) ∣ (∑ i ∈ s, a i) ^ (p ^ e) - ∑ i ∈ s, a i ^ (p ^ e) := by
@@ -38,27 +38,25 @@ section Step1
 variable {A : Type} [CommRing A] [IsDomain A] {k : ℕ}
 
 /- English proof (translation)
-Use `choose Z hZ using hd`. Establish `hK : Kv = Matrix.vecMul (fun J => W ^ o * Z J) L'`. Rewrite using `[← funext hZ, Matrix.vecMul_vecMul, h1, Matrix.vecMul_one]`. Establish `hE : ∀ I, (p : A) ∣ (∑ J, Z J * L' J I) ^ (p ^ e) - ∑ J, Z J ^ (p ^ e) * L2' J I`. Introduce `I`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `a1` using `sum_pow_dvd p hp e univ (fun J => Z J * L' J I)`. Establish `a2 : (p : A) ∣ ∑ J, (Z J * L' J I) ^ (p ^ e) - ∑ J, Z J ^ (p ^ e) * L2' J I`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.dvd_sum fun J _ => ?_` and prove the remaining obligations. Rewrite using `[mul_pow, ← mul_sub]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Dvd.dvd.mul_left (hF J I) _`. Use `dvd_add a1 a2` as an intermediate fact. Simplify using `using this`. Use `choose ρ hρ using hE`. Establish `hpow : powC (p ^ e) Kv = fun I => W ^ (o * p ^ e) * (Matrix.vecMul (fun J => Z J ^ (p ^ e)) L2' I + p * ρ I)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `I`. Establish `e1 : Kv I = W ^ o * ∑ J, Z J * L' J I`. Rewrite using `[hK]`. Simplify using `only [Matrix.vecMul, dotProduct]`. Rewrite using `[Finset.mul_sum]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `Finset.sum_congr rfl fun J _ => by ring`. Establish `e2 : (∑ J, Z J * L' J I) ^ (p ^ e) = ∑ J, Z J ^ (p ^ e) * L2' J I + p * ρ I`. Rewrite using `[← hρ I]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [powC]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e1, mul_pow, ← pow_mul, e2]`. Simplify using `only [Matrix.vecMul, dotProduct]`. Establish `hval : Matrix.vecMul (powC (p ^ e) Kv) L2 J = W ^ (o * p ^ e) * (Z J ^ (p ^ e) + p * Matrix.vecMul ρ L2 J)`. Establish `e3 : powC (p ^ e) Kv = W ^ (o * p ^ e) • (Matrix.vecMul (fun J => Z J ^ (p ^ e)) L2' + (p : A) • ρ)`. Rewrite using `[hpow]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `I`. Simplify using the standard rewrite rules. Rewrite using `[e3, Matrix.smul_vecMul, Matrix.add_vecMul, Matrix.vecMul_vecMul, h2, Matrix.vecMul_one, Matrix.smul_vecMul]`. Simplify using the standard rewrite rules. Rewrite using `[hval]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨Dvd.intro _ rfl, fun hd1 => ?_⟩` and prove the remaining obligations. Establish `hWZ : W ∣ Z J`. Rewrite `hd1` using `[hZ J, pow_succ]`. Conclude with `(mul_dvd_mul_iff_left (pow_ne_zero o hW)).mp hd1`. Take `⟨z, hz⟩` from `hWZ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hQ : 1 ≤ p ^ e` using `Nat.one_le_pow _ _ hp.pos`. Use `⟨?_, fun he => ?_⟩` and prove the remaining obligations. Rewrite using `[pow_succ]`. Use `mul_dvd_mul_left _ (dvd_add ?_ ?_)` and prove the remaining obligations. Rewrite using `[hz]; exact dvd_pow (Dvd.intro _ rfl) (by omega)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hsq, pow_two, mul_assoc]`. Conclude with `Dvd.intro _ rfl`. Establish `hQ2 : 2 ≤ p ^ e`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[pow_add]`.
-
-Use `mul_dvd_mul_left _ (dvd_add ?_ ?_)` and prove the remaining obligations. Rewrite using `[hz, mul_pow]`. Conclude with `Dvd.dvd.mul_right (pow_dvd_pow W hQ2) _`. Rewrite using `[← hsq]`. Conclude with `Dvd.intro _ rfl`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem step1 (p : ℕ) (hp : p.Prime) (W : A) (hW : W ≠ 0) (hsq : W ^ 2 = (p : A)) (e : ℕ)
     (L L' L2 L2' : Matrix (Finset (Fin k)) (Finset (Fin k)) A) (h1 : L * L' = 1) (h2 : L2' * L2 = 1)

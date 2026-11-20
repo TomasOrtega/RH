@@ -13,21 +13,19 @@ section Alg
 variable {M : Type*} [AddCommGroup M] [Module ℂ M]
 
 /- English proof (translation)
-Establish `h1 : casimir E = ∑ a, ∑ b, ((if a = b then E a a * E a a else 0) + (if P a b then E a b * E b a else 0) + (if P b a then E a b * E b a else 0))`. Unfold `casimir`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[hirr]`. Distinguish the cases in `h : P a b`. Establish `h' : ¬ P b a` using `(hP a b hab).1 h`. Simplify using `[hab, h, h']`. Establish `h' : P b a`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h''`. Conclude with `h ((hP a b hab).2 h'')`. Simplify using `[hab, h, h']`. Establish `comm : ∀ a b, E a b * E b a + E b a * E a b = E a a - E b b + 2 • (E b a * E a b)`. Introduce `a b`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `hE a b b a`. Rewrite `h` using `[if_pos rfl, if_pos rfl, sub_eq_iff_eq_add]`. Rewrite using `[h]`. Normalize the expressions using the abelian group laws. Establish `h3 : ∑ a, ∑ b, (if P b a then E a b * E b a else 0) = ∑ a, ∑ b, (if P a b then E b a * E a b else 0)` using `Finset.sum_comm`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : ∑ a, ∑ b, (if a = b then E a a * E a a else 0) = ∑ a, E a a * E a a`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Rewrite using `[h1]`. Simplify using `only [Finset.sum_add_distrib]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h3, h4, add_assoc]`. Use `congr 1`. Simplify using `only [← Finset.sum_add_distrib]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `a _`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_filter]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `b _`. Use `split_ifs`. Conclude with `comm a b`.
-
-Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem casimir_split {E : Fin n → Fin n → Module.End ℂ M} (hE : IsGlRep E)
     (P : Fin n → Fin n → Prop) [DecidableRel P] (hirr : ∀ a, ¬ P a a)
@@ -79,13 +77,13 @@ theorem casimir_split {E : Fin n → Fin n → Module.End ℂ M} (hE : IsGlRep E
 end Alg
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Simplify using `only [rho, rhoC, rhoN, Pi.add_apply]`. Establish `hgt : (univ.filter fun b : Fin n => a < b ∧ ε b = ε a).card + (univ.filter fun b : Fin n => a < b ∧ ε b ≠ ε a).card = n - 1 - (a : ℕ)`. Establish `h` using `Finset.card_filter_add_card_filter_not (s := Finset.Ioi a) (fun b => ε b = ε a)`. Rewrite `h` using `[Fin.card_Ioi]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← h]`. Apply the tactic sequence `congr 2 <;> ext b <;> simp`. Establish `hlt : (univ.filter fun b : Fin n => b < a ∧ ε b = ε a).card + (univ.filter fun b : Fin n => b < a ∧ ε b ≠ ε a).card = (a : ℕ)`. Establish `h` using `Finset.card_filter_add_card_filter_not (s := Finset.Iio a) (fun b => ε b = ε a)`. Rewrite `h` using `[Fin.card_Iio]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← h]`. Apply the tactic sequence `congr 2 <;> ext b <;> simp`. Establish `ha` using `a.isLt`. Establish `hc : ((n - 1 - (a : ℕ) : ℕ) : ℝ) = (n : ℝ) - 1 - (a : ℕ)`. Rewrite using `[Nat.cast_sub (by omega), Nat.cast_sub (by omega), Nat.cast_one]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `c1` using `congrArg (Nat.cast : ℕ → ℝ) hgt`. Establish `c2` using `congrArg (Nat.cast : ℕ → ℝ) hlt`. Move the coercions through the operations in `at c1 c2`. Rewrite `c1` using `[hc]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem rho_eq_rhoC_add_rhoN (ε : Fin n → Bool) : rho n = rhoC ε + rhoN ε := by
   classical

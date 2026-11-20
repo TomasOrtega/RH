@@ -4,9 +4,9 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Trans
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Gal.TranscendenceTraces
 
 /- English proof (translation)
-Introduce `hP hH hW l _ n i Z Z' S h p _ _ w hw hl`. Establish `key : trHl l (h ≫ p) w n i ∘ₗ pullHl l (sch.map h) n i = trHl l p (Wt.push h w) n i`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Apply `Subtype.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use function extensionality and compare the values at `k`. Rewrite using `[LinearMap.comp_apply, hH l n i (h ≫ p) w hw hl, hH l n i p (Wt.push h w) (hW h p w hw) hl]`. Use `haveI : NeZero (l ^ k) := ⟨pow_ne_zero k (Fact.out : Nat.Prime l).ne_zero⟩`. Conclude with `hP (l ^ k) n i h p w hw (by push_cast; exact hl.pow k) (x.1 k)`. Simplify using `only [trHQ, pullHQ, ← key, LinearMap.baseChange_comp]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.TranscendenceTraces.trPushQ_of :
     TrPush → TrHl → WtPush → TrPushQ := by

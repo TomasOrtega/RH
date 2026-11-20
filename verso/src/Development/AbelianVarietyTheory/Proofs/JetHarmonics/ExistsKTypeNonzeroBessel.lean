@@ -9,13 +9,13 @@ open scoped InnerProductSpace ENNReal
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hH k r ε mu R Wp _ _ _ _ z π l hds hB hnz`. Take `⟨⟨-, -, hKF, -⟩, hCyc, -⟩` from `hH`. Establish `hex : ∃ w0, PI.UpqRep.IsLowUnitH k r ε mu R.σ w0`. Take `⟨P, hP, -, -, -, -, -, ⟨S, hS⟩, -⟩` from `hds.2`. Take `⟨v, hvS, hv0, -⟩` from `hS.2.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hn : ‖v‖ ≠ 0` using `norm_ne_zero_iff.mpr hv0`. Use `⟨((‖v‖⁻¹ : ℝ) : ℂ) • v, P, hP, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[norm_smul, Complex.norm_real, norm_inv, norm_norm, inv_mul_cancel₀ hn]`. Conclude with `Submodule.smul_mem _ _ (Submodule.mem_sSup.mpr fun N hN => hN S hS hvS)`. Take `⟨w0, hlow⟩` from `hex`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hwK : R.KFin w0` using `PI.UnitaryGroupMassFormula.LowSmooth.isKFinHpk_of_lowUnit hlow`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Take `⟨w, hw, hlw⟩` from `hnz`. Use `hlw (Formalism.FourierDecayAlt.P.bessel_ne_zero_of_cyclic_orbit hCyc hKF k r ε mu R.H R.σ w0 Wp z Formalism.QuantumDeterminants.cStd π hds.1 hds.2 hlow l hB (fun x hx => hcon x ?_) w hw)` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `Submodule.span_mono ?_ hx` and prove the remaining obligations. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Conclude with `⟨g, hg, w0, hwK, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem bessel_nonzero_on_translates : Hyps → ∀ (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool) (mu : Fin (2 * r + k + 1) → ℝ) (R : Rep k r) (Wp : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp] [FiniteDimensional ℂ Wp] (z : Fin (2 * r + k + 1) → ℂ) (π : Mx k r → (Wp →L[ℂ] Wp)) (l : R.H → Wp), R.IsDS ε mu → IsBes R z π l → NzOn R l → ∃ v ∈ R.TK, l v ≠ 0 := by
   intro hH k r ε mu R Wp _ _ _ _ z π l hds hB hnz

@@ -34,181 +34,181 @@ set_option maxSynthPendingDepth 1
 namespace GroundTheory.Heights₂.Heights
 
 /- English proof (translation)
-The claim follows from `LinesLatticeBasis.proof`.
+A detailed English derivation is pending.
 -/
 theorem LinesLatticeBasis.full : LinesLatticeBasis.Statement :=
   LinesLatticeBasis.proof
 
 /- English proof (translation)
-The claim follows from `LinesGenIndexDet.proof LinesLatticeBasis.full`.
+A detailed English derivation is pending.
 -/
 theorem LinesGenIndexDet.full : LinesGenIndexDet.Statement :=
   LinesGenIndexDet.proof LinesLatticeBasis.full
 
 /- English proof (translation)
-The claim follows from `LinesIsLattice.proof`.
+A detailed English derivation is pending.
 -/
 theorem LinesIsLattice.full : LinesIsLattice.Statement :=
   LinesIsLattice.proof
 
 /- English proof (translation)
-The claim follows from `LinesGenIndexTrans.proof LinesLatticeBasis.full LinesGenIndexDet.full`.
+A detailed English derivation is pending.
 -/
 theorem LinesGenIndexTrans.full : LinesGenIndexTrans.Statement :=
   LinesGenIndexTrans.proof LinesLatticeBasis.full LinesGenIndexDet.full
 
 /- English proof (translation)
-The claim follows from `LinesGenIndexMono.proof LinesGenIndexTrans.full`.
+A detailed English derivation is pending.
 -/
 theorem LinesGenIndexMono.full : LinesGenIndexMono.Statement :=
   LinesGenIndexMono.proof LinesGenIndexTrans.full
 
 /- English proof (translation)
-The claim follows from `LinesGenIndexPi.proof`.
+A detailed English derivation is pending.
 -/
 theorem LinesGenIndexPi.full : LinesGenIndexPi.Statement :=
   LinesGenIndexPi.proof
 
 /- English proof (translation)
-The claim follows from `LinesStdPi.proof`.
+A detailed English derivation is pending.
 -/
 theorem LinesStdPi.full : LinesStdPi.Statement :=
   LinesStdPi.proof
 
 /- English proof (translation)
-The claim follows from `LinesStdIndexDet.proof LinesGenIndexDet.full`.
+A detailed English derivation is pending.
 -/
 theorem LinesStdIndexDet.full : LinesStdIndexDet.Statement :=
   LinesStdIndexDet.proof LinesGenIndexDet.full
 
 /- English proof (translation)
-The claim follows from `LinesIdealIndexPos.proof LinesIsLattice.full LinesGenIndexTrans.full`.
+A detailed English derivation is pending.
 -/
 theorem LinesIdealIndexPos.full : LinesIdealIndexPos.Statement :=
   LinesIdealIndexPos.proof LinesIsLattice.full LinesGenIndexTrans.full
 
 /- English proof (translation)
-The claim follows from `LinesProductFormula.proof`.
+A detailed English derivation is pending.
 -/
 theorem LinesProductFormula.full : LinesProductFormula.Statement :=
   LinesProductFormula.proof
 
 /- English proof (translation)
-The claim follows from `LinesIdealLatticeFG.proof`.
+A detailed English derivation is pending.
 -/
 theorem LinesIdealLatticeFG.full : LinesIdealLatticeFG.Statement :=
   LinesIdealLatticeFG.proof
 
 /- English proof (translation)
-The claim follows from `LinesIdealStdIndex.proof LinesGenIndexPi.full LinesStdPi.full`.
+A detailed English derivation is pending.
 -/
 theorem LinesIdealStdIndex.full : LinesIdealStdIndex.Statement :=
   LinesIdealStdIndex.proof LinesGenIndexPi.full LinesStdPi.full
 
 /- English proof (translation)
-The claim follows from `LinesGramChange.proof`.
+A detailed English derivation is pending.
 -/
 theorem LinesGramChange.full : LinesGramChange.Statement :=
   LinesGramChange.proof
 
 /- English proof (translation)
-The claim follows from `LinesGramPosDef.proof`.
+A detailed English derivation is pending.
 -/
 theorem LinesGramPosDef.full : LinesGramPosDef.Statement :=
   LinesGramPosDef.proof
 
 /- English proof (translation)
-The claim follows from `LinesGramDetChange.proof LinesGramChange.full`.
+A detailed English derivation is pending.
 -/
 theorem LinesGramDetChange.full : LinesGramDetChange.Statement :=
   LinesGramDetChange.proof LinesGramChange.full
 
 /- English proof (translation)
-The claim follows from `LinesFischer.proof`.
+A detailed English derivation is pending.
 -/
 theorem LinesFischer.full : LinesFischer.Statement :=
   LinesFischer.proof
 
 /- English proof (translation)
-The claim follows from `LinesDiagGram.proof`.
+A detailed English derivation is pending.
 -/
 theorem LinesDiagGram.full : LinesDiagGram.Statement :=
   LinesDiagGram.proof
 
 /- English proof (translation)
-The claim follows from `LinesGramFischerBound.proof LinesGramPosDef.full LinesFischer.full LinesDiagGram.full`.
+A detailed English derivation is pending.
 -/
 theorem LinesGramFischerBound.full : LinesGramFischerBound.Statement :=
   LinesGramFischerBound.proof LinesGramPosDef.full LinesFischer.full LinesDiagGram.full
 
 /- English proof (translation)
-The claim follows from `LinesExtendBasis.proof`.
+A detailed English derivation is pending.
 -/
 theorem LinesExtendBasis.full : LinesExtendBasis.Statement :=
   LinesExtendBasis.proof
 
 /- English proof (translation)
-The claim follows from `LinesCoordDet.proof`.
+A detailed English derivation is pending.
 -/
 theorem LinesCoordDet.full : LinesCoordDet.Statement :=
   LinesCoordDet.proof
 
 /- English proof (translation)
-The claim follows from `LinesCoordImage.proof`.
+A detailed English derivation is pending.
 -/
 theorem LinesCoordImage.full : LinesCoordImage.Statement :=
   LinesCoordImage.proof
 
 /- English proof (translation)
-The claim follows from `LinesQuotIndex.proof`.
+A detailed English derivation is pending.
 -/
 theorem LinesQuotIndex.full : LinesQuotIndex.Statement :=
   LinesQuotIndex.proof
 
 /- English proof (translation)
-The claim follows from `LinesProjLattice.proof LinesIdealLatticeFG.full`.
+A detailed English derivation is pending.
 -/
 theorem LinesProjLattice.full : LinesProjLattice.Statement :=
   LinesProjLattice.proof LinesIdealLatticeFG.full
 
 /- English proof (translation)
-The claim follows from `LinesQuotIndexSplit.proof LinesQuotIndex.full LinesCoordImage.full LinesCoordDet.full LinesIsLattice.full LinesGenIndexTrans.full LinesStdIndexDet.full LinesProjLattice.full`.
+A detailed English derivation is pending.
 -/
 theorem LinesQuotIndexSplit.full : LinesQuotIndexSplit.Statement :=
   LinesQuotIndexSplit.proof LinesQuotIndex.full LinesCoordImage.full LinesCoordDet.full LinesIsLattice.full LinesGenIndexTrans.full LinesStdIndexDet.full LinesProjLattice.full
 
 /- English proof (translation)
-The claim follows from `LinesProjIndexLower.proof LinesProjLattice.full LinesIdealLatticeFG.full LinesIsLattice.full LinesGenIndexMono.full LinesIdealStdIndex.full`.
+A detailed English derivation is pending.
 -/
 theorem LinesProjIndexLower.full : LinesProjIndexLower.Statement :=
   LinesProjIndexLower.proof LinesProjLattice.full LinesIdealLatticeFG.full LinesIsLattice.full LinesGenIndexMono.full LinesIdealStdIndex.full
 
 /- English proof (translation)
-The claim follows from `LinesLineDegree.proof`.
+A detailed English derivation is pending.
 -/
 theorem LinesLineDegree.full : LinesLineDegree.Statement :=
   LinesLineDegree.proof
 
 /- English proof (translation)
-The claim follows from `LinesQuotIndexLog.proof LinesQuotIndexSplit.full LinesProjIndexLower.full LinesIdealIndexPos.full LinesProductFormula.full LinesCoordDet.full`.
+A detailed English derivation is pending.
 -/
 theorem LinesQuotIndexLog.full : LinesQuotIndexLog.Statement :=
   LinesQuotIndexLog.proof LinesQuotIndexSplit.full LinesProjIndexLower.full LinesIdealIndexPos.full LinesProductFormula.full LinesCoordDet.full
 
 /- English proof (translation)
-The claim follows from `LinesQuotGramLog.proof LinesGramDetChange.full LinesCoordDet.full LinesGramFischerBound.full LinesGramPosDef.full`.
+A detailed English derivation is pending.
 -/
 theorem LinesQuotGramLog.full : LinesQuotGramLog.Statement :=
   LinesQuotGramLog.proof LinesGramDetChange.full LinesCoordDet.full LinesGramFischerBound.full LinesGramPosDef.full
 
 /- English proof (translation)
-The claim follows from `LinesQuotDegreeBound.proof LinesExtendBasis.full LinesQuotIndexLog.full LinesQuotGramLog.full`.
+A detailed English derivation is pending.
 -/
 theorem LinesQuotDegreeBound.full : LinesQuotDegreeBound.Statement :=
   LinesQuotDegreeBound.proof LinesExtendBasis.full LinesQuotIndexLog.full LinesQuotGramLog.full
 
 /- English proof (translation)
-The claim follows from `OrthogonalLines.proof LinesQuotDegreeBound.full LinesLineDegree.full`.
+A detailed English derivation is pending.
 -/
 theorem OrthogonalLines.full : OrthogonalLines.Statement :=
   OrthogonalLines.proof LinesQuotDegreeBound.full LinesLineDegree.full

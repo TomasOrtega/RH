@@ -31,7 +31,7 @@ theorem fibP_eq (h : V →ₗ⋆[K] V →ₗ[K] K) (U : Submodule K V) (𝔭 : I
     fibP h U 𝔭 M T = Nat.card (fibS h U 𝔭 M T) := rfl
 
 /- English proof (translation)
-Use `⟨hA.1.sup hB.1, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff, ← hc.sup_eq_top, ← hA.2, ← hB.2]`. Conclude with `sup_le (Submodule.span_mono (SetLike.coe_subset_coe.mpr le_sup_left)) (Submodule.span_mono (SetLike.coe_subset_coe.mpr le_sup_right))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLattice_sup {X Y : Submodule K V} (hc : IsCompl X Y) {A B : Submodule (𝓞 K) V}
     (hA : IsLatIn X A) (hB : IsLatIn Y B) : Submodule.IsLattice K (A ⊔ B) := by
@@ -41,13 +41,13 @@ theorem isLattice_sup {X Y : Submodule K V} (hc : IsCompl X Y) {A B : Submodule 
     (Submodule.span_mono (SetLike.coe_subset_coe.mpr le_sup_right))
 
 /- English proof (translation)
-Take `⟨n, hn, hnA⟩` from `LocF.exists_zsmul_le hA hB`. Take `⟨m, hm, hmB⟩` from `LocF.exists_zsmul_le hB hA`. Establish `hc : ((n * m : ℤ) : 𝓞 F) ≠ 0`. Conclude with `mul_ne_zero hn hm` after adjusting the coercions. Take `⟨s, hs⟩` from `(LocalFactorEquality.finite_vF_ne_zero hc).exists_finset`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨s, fun 𝔭 h𝔭 => ?_⟩` and prove the remaining obligations. Establish `hv : vF 𝔭.1 ((n * m : ℤ) : 𝓞 F) = 0`. Assume the negation of the conclusion as `hne`. Conclude with `h𝔭 ((hs 𝔭).2 hne)`. Establish `hnm` using `LocalizedFibreSets.notMem_of_vF_zero 𝔭.2 hc hv`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp` using `𝔭.2.isPrime`. Establish `hn' : ((n : ℤ) : 𝓞 F) ∉ 𝔭.1` using `fun h1 => hnm (by rw [Int.cast_mul]; exact 𝔭.1.mul_mem_right _ h1)`. Establish `hm' : ((m : ℤ) : 𝓞 F) ∉ 𝔭.1` using `fun h1 => hnm (by rw [Int.cast_mul]; exact 𝔭.1.mul_mem_left _ h1)`. Establish `key : ∀ {A B : Submodule (𝓞 K) V} (k : ℤ), ((k : ℤ) : 𝓞 F) ∉ 𝔭.1 → (∀ x ∈ A, k • x ∈ B) → locF 𝔭.1 A ≤ locF 𝔭.1 B`. Introduce `A B k hk hkA x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨t, ht, htx⟩` from `(LocF.mem_locF_iff hp A x).1 hx`. Use `(LocF.mem_locF_iff hp B x).2 ⟨(k : 𝓞 F) * t, fun h1 => (hp.mem_or_mem h1).elim hk ht, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, mul_smul, LocF.algebraMap_intCast_smul]`. Conclude with `hkA _ htx`. Conclude with `le_antisymm (key n hn' hnA) (key m hm' hmB)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_locF_eq {A B : Submodule (𝓞 K) V} (hA : Submodule.IsLattice K A)
     (hB : Submodule.IsLattice K B) :
@@ -75,7 +75,7 @@ theorem exists_locF_eq {A B : Submodule (𝓞 K) V} (hA : Submodule.IsLattice K 
   exact le_antisymm (key n hn' hnA) (key m hm' hmB)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 private lemma mem_locF_lemma {W : Type} [AddCommGroup W] [Module (𝓞 K) W] (𝔭 : Ideal (𝓞 F))
     (L : Submodule (𝓞 K) W) (x : W) :
@@ -83,9 +83,9 @@ private lemma mem_locF_lemma {W : Type} [AddCommGroup W] [Module (𝓞 K) W] (�
       {s : 𝓞 K | ∃ t : 𝓞 F, t ∉ 𝔭 ∧ algebraMap (𝓞 F) (𝓞 K) t = s}, s • x ∈ L := Iff.rfl
 
 /- English proof (translation)
-Proceed by induction on `hs using Submonoid.closure_induction with`. Consider the case `mem x hx`. Take `⟨t, ht, rfl⟩` from `hx`. Establish `ht0 : t ≠ 0` using `fun h0 => ht (h0 ▸ 𝔭.zero_mem)`. Establish `e : algebraMap (𝓞 K) K (algebraMap (𝓞 F) (𝓞 K) t) = algebraMap F K (t : F)` using `rfl`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `(map_ne_zero _).mpr (by simpa using ht0)`. Consider the case `one => simp`. Consider the case `mul x y _ _ hx hy => rw [map_mul]`. Conclude with `mul_ne_zero hx hy`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private lemma algebraMap_ne_zero_of_mem_closure_prime_compl {𝔭 : Ideal (𝓞 F)} {s : 𝓞 K}
     (hs : s ∈ Submonoid.closure {s : 𝓞 K | ∃ t : 𝓞 F, t ∉ 𝔭 ∧ algebraMap (𝓞 F) (𝓞 K) t = s}) :
@@ -101,17 +101,15 @@ private lemma algebraMap_ne_zero_of_mem_closure_prime_compl {𝔭 : Ideal (𝓞 
   | mul x y _ _ hx hy => rw [map_mul]; exact mul_ne_zero hx hy
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `x ⟨hx1, hx2⟩`. Take `⟨s, hs, hsx⟩` from `(mem_locF_lemma 𝔭 _ x).mp hx1`. Take `⟨a, ha, b, hb, hab⟩` from `Submodule.mem_sup.mp hsx`. Establish `hxX : x ∈ X` using `hx2`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsX : s • x ∈ X`. Rewrite using `[← algebraMap_smul K s x]`. Conclude with `X.smul_mem _ hxX`. Establish `hbX : b ∈ X`. Establish `: b = s • x - a` using `by rw [← hab]; abel`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `X.sub_mem hsX (hA a ha)`. Establish `hb0 : b = 0`. Use `hc.inf_eq_bot` as an intermediate fact. Establish `hmem : b ∈ X ⊓ Y` using `⟨hbX, hB b hb⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hmem` using `[this]`. Conclude with `(Submodule.mem_bot K).mp hmem`. Use `(mem_locF_lemma 𝔭 _ x).mpr ⟨s, hs, ?_⟩` and prove the remaining obligations. Rewrite using `[← hab, hb0, add_zero]`. Conclude with `ha`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `x hx`. Take `⟨s, hs, hsx⟩` from `(mem_locF_lemma 𝔭 _ x).mp hx`. Use `⟨(mem_locF_lemma 𝔭 _ x).mpr ⟨s, hs, Submodule.mem_sup_left hsx⟩, ?_⟩` and prove the remaining obligations. Establish `hs0 : algebraMap (𝓞 K) K s ≠ 0` using `algebraMap_ne_zero_of_mem_closure_prime_compl hs`. Establish `e : x = (algebraMap (𝓞 K) K s)⁻¹ • (s • x)`.
-
-Rewrite using `[← algebraMap_smul K s x, smul_smul, inv_mul_cancel₀ hs0, one_smul]`. Use `show x ∈ X`. Rewrite using `[e]`. Conclude with `X.smul_mem _ (hA _ hsx)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locF_sup_inf {X Y : Submodule K V} (hc : IsCompl X Y) {A B : Submodule (𝓞 K) V}
     (hA : ∀ x ∈ A, x ∈ X) (hB : ∀ x ∈ B, x ∈ Y) {𝔭 : Ideal (𝓞 F)} (hp : 𝔭.IsPrime) :
@@ -144,7 +142,7 @@ theorem locF_sup_inf {X Y : Submodule K V} (hc : IsCompl X Y) {A B : Submodule (
     exact X.smul_mem _ (hA _ hsx)
 
 /- English proof (translation)
-Introduce `x hx`. Establish `hx' : ∀ y ∈ B, h y x ∈ locF 𝔭 (1 : Submodule (𝓞 K) K)` using `hx`. Express the relevant statement in the definitionally equal form `∀ y ∈ A, h y x ∈ locF 𝔭 (1 : Submodule (𝓞 K) K)`. Conclude with `fun y hy => hx' y (hAB hy)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem dualF_anti (h : V →ₗ⋆[K] V →ₗ[K] K) (𝔭 : Ideal (𝓞 F)) {A B : Submodule (𝓞 K) V} (hAB : A ≤ B) :
     dualF h 𝔭 B ≤ dualF h 𝔭 A := by

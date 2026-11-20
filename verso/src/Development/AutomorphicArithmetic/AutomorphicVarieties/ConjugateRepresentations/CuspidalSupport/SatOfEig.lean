@@ -9,19 +9,17 @@ open Formalism.UG GlobalTheory.PRep GlobalTheory.LFun GlobalTheory.LGrp GlobalTh
 namespace UpperTheory.V.Cj.S
 
 /- English proof (translation)
-Introduce `E _ _ w n V _ _ π x hx0 hx hsc`. Establish `hK : IsCommensurated (KGL w n)` using `Final.GLintComm E w n`. Take `⟨ϖ, hu⟩` from `exists_isUnifV w`. Establish `h0` using `ne_zero_of_isUnifV hu`. Use `choose c hc using fun j => hsc _ (Tj_mem_hecke (n := n) hu j)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c0 : c 0 = 1`. Establish `e : Tj ℂ n (Ov E w) ϖ 0 = dosetInd ℂ (KGL w n) 1`. Rewrite using `[Tj_eq h0]`. Use `congr 1`. Use `smul_left_injective ℂ hx0 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [← hc 0, e, heckeVec_one hK hx, one_smul]`. Establish `cn : c n ≠ 0`. Introduce `e`. Establish `h1` using `hc n`. Establish `hTn : Tj ℂ n (Ov E w) ϖ n = dosetInd ℂ (KGL w n) (tor h0 fun _ => 1)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Tj_eq h0]`. Simplify using the standard rewrite rules. Rewrite `h1` using `[e, zero_smul, hTn, heckeVec_dosetInd (R := {tor h0 fun _ => 1}) hx, Finset.sum_singleton]`. Conclude with `hx0 (by simpa [← Module.End.mul_apply, ← map_mul] using congrArg (π (tor h0 fun _ => 1)⁻¹) h1)`. Introduce `γ hγ`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `mem_doset.2 ⟨1, one_mem _, 1, one_mem _, by simpa using hγ⟩`. Introduce `g hg`. Take `⟨a, ha, b, hb, rfl⟩` from `mem_doset.1 hg`. Use `⟨_, ⟨Finset.mem_singleton_self _, ?_⟩, fun γ hγ => Finset.mem_singleton.1 hγ.1⟩` and prove the remaining obligations. Rewrite using `[← tor_const_comm, mul_assoc, inv_mul_cancel_left]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `mul_mem ha hb`. Take `⟨B, hB, hBc⟩` from `GlobalTheory.T.exists_multiset_satakeEigenvalue_eq (qV E w) n (qV_ne_zero w) c c0 cn`. Use `⟨B, hx0, hx, hB, fun ϖ' hu' j hj => ?_⟩` and prove the remaining obligations. Establish `hv : Valued.v (ϖ' / ϖ) = 1`. Rewrite using `[map_div₀, hu, hu', div_self WithZero.coe_ne_zero]`.
-
-Establish `e` using `Final.TjIndep _ (Ov E w) ϖ (ϖ' / ϖ) ℂ n j hv.le (show Valued.v (ϖ' / ϖ)⁻¹ ≤ 1 by rw [map_inv₀, hv, inv_one]) (div_ne_zero (ne_zero_of_isUnifV hu') h0)`. Rewrite `e` using `[div_mul_cancel₀ _ h0]`. Rewrite using `[e, hc j, hBc j hj]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem satOfEig : SatOfEig := by
   intro E _ _ w n V _ _ π x hx0 hx hsc

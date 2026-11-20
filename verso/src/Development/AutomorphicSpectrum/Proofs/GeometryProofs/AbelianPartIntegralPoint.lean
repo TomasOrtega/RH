@@ -11,7 +11,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 open GroundTheory.Heights₂.Heights.LowerBoundFree GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Cusp
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `LevelTowerAlt.abelian_part_integral_point_bis` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FWeilBound%2FCoreStatements%2FPlurisubharmonicCones%2FAbelianPartIntegralPointBis.lean&line=21#L21)
 -/

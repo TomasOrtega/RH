@@ -8,7 +8,7 @@ namespace GlobalTheory.LegendreFacts
 open GlobalTheory.LegendreBounds
 
 /- English proof (translation)
-Unfold `mfact`. Conclude with `Finsupp.prod_fintype A _ (fun _ => Nat.factorial_zero)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem mfact_eq_prod {σ : Type} [Fintype σ] (A : σ →₀ ℕ) :
     mfact A = ∏ j, (A j).factorial := by
@@ -16,7 +16,7 @@ theorem mfact_eq_prod {σ : Type} [Fintype σ] (A : σ →₀ ℕ) :
   exact Finsupp.prod_fintype A _ (fun _ => Nat.factorial_zero)
 
 /- English proof (translation)
-Rewrite using `[Finsupp.degree_apply]`. Use `Finset.sum_subset (Finset.subset_univ _) ?_` and prove the remaining obligations. Introduce `j _ hj`. Simplify using `using hj`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem degree_eq_sum' {σ : Type} [Fintype σ] (A : σ →₀ ℕ) : A.degree = ∑ j, A j := by
   rw [Finsupp.degree_apply]
@@ -25,7 +25,7 @@ theorem degree_eq_sum' {σ : Type} [Fintype σ] (A : σ →₀ ℕ) : A.degree =
   simpa using hj
 
 /- English proof (translation)
-Unfold `capNat`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl ?_` and prove the remaining obligations. Introduce `c _`. Conclude with `Nat.div_mul_cancel (Nat.factorial_dvd_factorial (Nat.le_add_left c x))`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem capNat_mul (n0 x : ℕ) :
     capNat n0 x * ∏ c ∈ Finset.range n0, c.factorial
@@ -37,7 +37,7 @@ theorem capNat_mul (n0 x : ℕ) :
   exact Nat.div_mul_cancel (Nat.factorial_dvd_factorial (Nat.le_add_left c x))
 
 /- English proof (translation)
-Establish `: Fact l.Prime` using `⟨hl⟩`. Break down `Nat.eq_zero_or_pos N with h0 | hpos` into its components or cases. Substitute `h0` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[padicValNat_factorial (b := 2) (Nat.log_lt_of_lt_pow hpos.ne' hN)]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -51,17 +51,17 @@ private lemma padicValNat_factorial_eq_div_of_lt_sq (l : ℕ) (hl : l.Prime) (N 
     simp
 
 /- English proof (translation)
-Introduce `l hl`. Establish `hl1 : (1 : ℝ) < l` using `by exact_mod_cast hl.one_lt`. Establish `hden : (0 : ℝ) < (l : ℝ) - 1` using `by linarith`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `N`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `legendre_real l hl N`. Simplify using `using h`. Introduce `N _`. Establish `h` using `digitSum_le l N hl.one_lt`. Rewrite using `[Real.natFloor_logb_natCast]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : (((Nat.digits l N).sum : ℕ) : ℝ) ≤ (((Nat.log l N + 1) * (l - 1) : ℕ) : ℝ)`. Conclude with `h` after adjusting the coercions. Rewrite `hc` using `[Nat.cast_mul, Nat.cast_sub hl.one_lt.le, Nat.cast_add, Nat.cast_one]`. Rewrite using `[mul_comm]`. Conclude with `hc`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `σ _ A hA`. Rewrite using `[mfact_eq_prod, degree_eq_sum']`. Rewrite `hA` using `[degree_eq_sum']`. Prove the components needed by the constructor for the conclusion. Establish `h` using `((legendre_bounds l hl).2.1) σ (fun j => A j) hA`.
+Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using h`. Rewrite using `[padicValNat_prod_factorial l hl Finset.univ (fun j => A j)]`. Establish `hterm : ∀ j ∈ (Finset.univ : Finset σ), (padicValNat l (A j).factorial : ℝ) ≤ (A j : ℝ) / ((l : ℝ) - 1)` using `fun j _ => upper l hl (A j)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Finset.sum_div]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Use `push_cast`. Both sides reduce to the same expression. Introduce `N hN`. Conclude with `padicValNat_factorial_eq_div_of_lt_sq l hl N hN`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem legendre_facts : F2 := by
   intro l hl
@@ -99,17 +99,17 @@ theorem legendre_facts : F2 := by
     exact padicValNat_factorial_eq_div_of_lt_sq l hl N hN
 
 /- English proof (translation)
-Introduce `l hl n0 n x hn hn0`. Establish `hl1 : (1 : ℝ) < l` using `by exact_mod_cast hl.one_lt`. Establish `: Fact l.Prime` using `⟨hl⟩`. Prove the components needed by the constructor for the conclusion. Establish `hP : (∏ c ∈ Finset.range n0, c.factorial) ≠ 0` using `Finset.prod_ne_zero_iff.mpr (fun c _ => Nat.factorial_ne_zero c)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact.
 
-Establish `hC : capNat n0 x ≠ 0`. Introduce `h0`. Establish `h` using `capNat_mul n0 x`. Rewrite `h` using `[h0, zero_mul]`. Conclude with `(Finset.prod_ne_zero_iff.mpr (fun c _ => Nat.factorial_ne_zero (x + c))) h.symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hv : padicValNat l (capNat n0 x) + padicValNat l (∏ c ∈ Finset.range n0, c.factorial) = padicValNat l (∏ c ∈ Finset.range n0, (x + c).factorial)`. Rewrite using `[← padicValNat.mul hC hP, capNat_mul]`. Establish `hvR : (padicValNat l (capNat n0 x) : ℝ) = (padicValNat l (∏ c ∈ Finset.range n0, (x + c).factorial) : ℝ) - (padicValNat l (∏ c ∈ Finset.range n0, c.factorial) : ℝ)`. Rewrite using `[← hv]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h` using `((legendre_bounds l hl).2.2) n0 x`. Rewrite using `[hvR]`. Conclude with `h`. Establish `hlogn : 0 ≤ Real.logb l n` using `Real.logb_nonneg hl1 (by exact_mod_cast hn)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hnn : (n0 : ℝ) ≤ n` using `by exact_mod_cast hn0`. Break down `Nat.eq_zero_or_pos n0 with h0 | hpos` into its components or cases. Substitute `h0` using the available equality. Establish `: (0 : ℝ) ≤ (n : ℝ) * (Real.logb l n + 1)` using `by positivity`. Simplify using `using this`.
+Substitute using the available equality. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpos' : (0 : ℝ) < n0` using `by exact_mod_cast hpos`. Establish `hlog0 : 0 ≤ Real.logb l n0` using `Real.logb_nonneg hl1 (by exact_mod_cast hpos)`. Establish `hle : Real.logb l n0 ≤ Real.logb l n` using `Real.logb_le_logb_of_le hl1 hpos' hnn`. Establish `: (n0 : ℝ) * (Real.logb l n0 + 1) ≤ n * (Real.logb l n + 1)` using `mul_le_mul hnn (by linarith) (by linarith) (by positivity)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem capelli_bound : F3 := by
   intro l hl n0 n x hn hn0

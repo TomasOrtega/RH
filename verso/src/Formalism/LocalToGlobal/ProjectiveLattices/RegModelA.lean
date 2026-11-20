@@ -6,85 +6,73 @@ namespace Formalism.L2.Pj.RegA
 open IsLocalRing ReciprocityTheory.ChartRestriction.G.T0
 
 /- English proof (translation)
-Use `haveI hAN : IsNoetherianRing A := by first`. Consider the case `infer_instance`. Consider the case `exact Algebra.FiniteType.isNoetherianRing O A`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Establish `hϖm : ϖ ∈ maximalIdeal O`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `hϖ.not_isUnit`. Establish `hϖA0 : algebraMap O A ϖ ≠ 0`. Introduce `h0`. Establish `h1 : (1 : A) ∈ Submodule.torsion O A`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Submodule.mem_torsion_iff]`. Use `⟨⟨ϖ, mem_nonZeroDivisors_of_ne_zero hϖ.ne_zero⟩, ?_⟩` and prove the remaining obligations. Use `show ϖ • (1 : A) = 0`. Rewrite using `[Algebra.smul_def, mul_one, h0]`. Rewrite `h1` using `[Module.Flat.torsion_eq_bot, Submodule.mem_bot]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `one_ne_zero h1`. Take `⟨⟨a, b⟩, hab⟩` from `IsLocalization.surj (nonZeroDivisors A) f`. Establish `hab' : f * algebraMap A (FractionRing A) (b : A) = algebraMap A (FractionRing A) a` using `hab`. Establish `hb0 : (b : A) ≠ 0` using `nonZeroDivisors.ne_zero b.2`. Establish `hbK : algebraMap A (FractionRing A) (b : A) ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors b.2`.
+Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hPc : P.primeCompl ≤ nonZeroDivisors A` using `by first`. Consider the case `exact Ideal.primeCompl_le_nonZeroDivisors P`. Consider the case `exact le_nonZeroDivisors_of_noZeroDivisors (fun h => (show (0 : A) ∉ P from h) P.zero_mem)`. Establish `hK : ∀ x y : A, algebraMap A (Localization.AtPrime P) x = algebraMap A (Localization.AtPrime P) y → x = y` using `fun x y h => IsLocalization.injective (Localization.AtPrime P) hPc h`. Establish `hfin : ∀ x s : A, s ∉ P → (b : A) * x = a * s → ∃ a s : A, s ∉ P ∧ f * algebraMap A (FractionRing A) s = algebraMap A (FractionRing A) a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `x s hs h`. Use `⟨x, s, hs, ?_⟩` and prove the remaining obligations. Establish `h'` using `congrArg (algebraMap A (FractionRing A)) h`. Rewrite `h'` using `[map_mul, map_mul]`. Apply `mul_left_cancel₀ hbK` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Take the linear combination `(algebraMap A (FractionRing A) s) * hab' - h'`. Use `haveI hVal : ValuationRing (Localization.AtPrime P) := regVert_valuationRing P hP`. Establish `hmaxL : maximalIdeal (Localization.AtPrime P) = P.map (algebraMap A (Localization.AtPrime P))` using `by first`. Consider the case `exact Localization.AtPrime.map_eq_maximalIdeal.symm`. Consider the case `exact (Localization.AtPrime.map_eq_maximalIdeal (I := P)).symm`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Consider the case `exact (IsLocalization.AtPrime.map_eq_maximalIdeal P (Localization.AtPrime P)).symm`. Establish `hcase1 : ∀ c : Localization.AtPrime P, algebraMap A (Localization.AtPrime P) b * c = algebraMap A (Localization.AtPrime P) a → ∃ a s : A, s ∉ P ∧ f * algebraMap A (FractionRing A) s = algebraMap A (FractionRing A) a`. Introduce `c hc`. Take `⟨⟨x, s⟩, rfl⟩` from `IsLocalization.mk'_surjective P.primeCompl c`. Establish `hspec` using `IsLocalization.mk'_spec (Localization.AtPrime P) x s`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Apply `hfin x s s.2` to reduce the goal to its premises. Apply `hK` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul]`. Take the linear combination `(algebraMap A (Localization.AtPrime P) s) * hc - (algebraMap A (Localization.AtPrime P) b) * hspec`. Establish `hcond : ∃ c : Localization.AtPrime P, algebraMap A (Localization.AtPrime P) b * c = algebraMap A (Localization.AtPrime P) a ∨ algebraMap A (Localization.AtPrime P) a * c = algebraMap A (Localization.AtPrime P) b` using `by first`.
+Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Consider the case `exact ValuationRing.cond _ _`. Consider the case `exact PreValuationRing.cond _ _`. Consider the case `exact ValuationRing.cond' _ _`. Take `⟨c, hc | hc⟩` from `hcond`. Conclude with `hcase1 c hc`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hcu : IsUnit c`. Take `⟨u, rfl⟩` from `hcu`. Apply `hcase1 (↑u⁻¹)` to reduce the goal to its premises. Rewrite using `[← hc, mul_assoc, Units.mul_inv, mul_one]`. It suffices to derive a contradiction.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Take `⟨⟨d, t⟩, rfl⟩` from `IsLocalization.mk'_surjective P.primeCompl c`. Establish `hspec` using `IsLocalization.mk'_spec (Localization.AtPrime P) d t`. Establish `hdP : d ∈ P`. Assume the negation of the conclusion as `hdP`. Apply `hcu` to reduce the goal to its premises.
+Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h1 : IsUnit (algebraMap A (Localization.AtPrime P) d)` using `by first`. Consider the case `exact IsLocalization.map_units (M := P.primeCompl) (Localization.AtPrime P) ⟨d, hdP⟩`. Consider the case `exact IsLocalization.map_units (Localization.AtPrime P) (⟨d, hdP⟩ : P.primeCompl)`. Rewrite `h1` using `[← hspec]`. Conclude with `isUnit_of_mul_isUnit_left h1`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `had : a * d = (b : A) * t`. Apply `hK` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul]`. Take the linear combination `(algebraMap A (Localization.AtPrime P) t) * hc - (algebraMap A (Localization.AtPrime P) a) * hspec`. Establish `hrad : maximalIdeal (Localization.AtPrime P) ≤ (Ideal.span {algebraMap A (Localization.AtPrime P) (algebraMap O A ϖ)}).radical`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[Ideal.radical_eq_sInf]`. Use `le_sInf ?_` and prove the remaining obligations. Introduce and unpack `Q ⟨hJQ, hQ⟩`. Establish `hϖQ : algebraMap A (Localization.AtPrime P) (algebraMap O A ϖ) ∈ Q` using `hJQ (Ideal.mem_span_singleton_self _)`. Use `haveI := hQ`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hQ0P : Q.comap (algebraMap A (Localization.AtPrime P)) ≤ P`. Introduce `x hx`. Assume the negation of the conclusion as `hxP`. Establish `hu : IsUnit (algebraMap A (Localization.AtPrime P) x)` using `by first`. Consider the case `exact IsLocalization.map_units (M := P.primeCompl) (Localization.AtPrime P) ⟨x, hxP⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `exact IsLocalization.map_units (Localization.AtPrime P) (⟨x, hxP⟩ : P.primeCompl)`. Conclude with `hQ.ne_top (Ideal.eq_top_of_isUnit_mem _ (Ideal.mem_comap.mp hx) hu)`. Establish `hQ0 : Q.comap (algebraMap A (Localization.AtPrime P)) ≠ ⊥`. Introduce `h`. Establish `h2 : algebraMap O A ϖ ∈ Q.comap (algebraMap A (Localization.AtPrime P))` using `Ideal.mem_comap.mpr hϖQ`.
+Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite `h2` using `[h, Ideal.mem_bot]`. Conclude with `hϖA0 h2`. Establish `hQeq : Q.comap (algebraMap A (Localization.AtPrime P)) = P` using `regVert_eq_of_le_height_one hQ0 hQ0P hP`. Establish `hmc : Ideal.map (algebraMap A (Localization.AtPrime P)) (Q.comap (algebraMap A (Localization.AtPrime P))) = Q` using `by first`. Consider the case `exact IsLocalization.map_comap P.primeCompl (Localization.AtPrime P) Q`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `exact IsLocalization.map_comap (M := P.primeCompl) Q`. Rewrite `hmc` using `[hQeq]`. Conclude with `(hmaxL.trans hmc).le`. Use `haveI hLN : IsNoetherianRing (Localization.AtPrime P) := by first`. Consider the case `infer_instance`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Consider the case `exact IsLocalization.isNoetherianRing P.primeCompl (Localization.AtPrime P) hAN`. Establish `hfg : (maximalIdeal (Localization.AtPrime P)).FG` using `by first`. Consider the case `exact IsNoetherian.noetherian _`. Consider the case `exact (isNoetherianRing_iff.mp hLN).noetherian _`. Take `⟨n, hn⟩ : ∃ n : ℕ, maximalIdeal (Localization.AtPrime P) ^ n ≤ Ideal.span {algebraMap A (Localization.AtPrime P) (algebraMap O A ϖ)}` from `by first`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Consider the case `exact Ideal.exists_pow_le_of_le_radical_of_fg hrad hfg`. Consider the case `exact Ideal.exists_pow_le_of_le_radical_of_fg_radical hrad hfg`. Establish `hdm : algebraMap A (Localization.AtPrime P) d ∈ maximalIdeal (Localization.AtPrime P)`. Rewrite using `[hmaxL]`. Conclude with `Ideal.mem_map_of_mem _ hdP`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately.
 
-Take `⟨y, hy⟩` from `Ideal.mem_span_singleton'.mp (hn (Ideal.pow_mem_pow hdm n))`. Take `⟨⟨z, u⟩, rfl⟩` from `IsLocalization.mk'_surjective P.primeCompl y`. Establish `hspec2` using `IsLocalization.mk'_spec (Localization.AtPrime P) z u`. Establish `hzu : z * algebraMap O A ϖ = d ^ n * u`. Apply `hK` to reduce the goal to its premises.
+Treat this case separately. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite using `[map_mul, map_mul, map_pow]`. Take the linear combination `(algebraMap A (Localization.AtPrime P) u) * hy - (algebraMap A (Localization.AtPrime P) (algebraMap O A ϖ)) * hspec2`. Take `⟨s, hs_def⟩ : ∃ s : A, s = (t : A) * u` from `⟨_, rfl⟩`. Establish `hsP : s ∉ P`. Rewrite using `[hs_def]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `P.primeCompl.mul_mem t.2 u.2`. Establish `hs0 : s ≠ 0` using `fun h => hsP (h ▸ P.zero_mem)`. Establish `hpow : Submonoid.powers s ≤ nonZeroDivisors A` using `powers_le_nonZeroDivisors_of_noZeroDivisors hs0`. Use `haveI hBdom : IsDomain (Localization.Away s) := by first`. Consider the case `infer_instance`.
+Assume the hypotheses and unpack their components. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `exact IsLocalization.isDomain_localization hpow`. Use `haveI hBft : Algebra.FiniteType O (Localization.Away s) := by`. Establish `h1 : Algebra.FiniteType A (Localization.Away s)` using `by haveI := IsLocalization.Away.finitePresentation (S := Localization.Away s) s infer_instance`. Use `first`. Consider the case `exact Algebra.FiniteType.trans (inferInstance : Algebra.FiniteType O A) h1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Consider the case `infer_instance`. Use `haveI hBfl : Module.Flat O (Localization.Away s) := by haveI : Module.Flat A (Localization.Away s) := by first`. Consider the case `infer_instance`. Consider the case `exact IsLocalization.flat (Localization.Away s) (Submonoid.powers s)`. Use `first`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Consider the case `exact Module.Flat.trans O A (Localization.Away s)`. Consider the case `infer_instance`. Establish `hdisj : Disjoint (Submonoid.powers s : Set A) (P : Set A)`. Rewrite using `[Set.disjoint_left]`. Introduce and unpack `x ⟨k, rfl⟩ hk`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hsP (Ideal.IsPrime.mem_of_pow_mem inferInstance k hk)`. Use `haveI hPB : (P.map (algebraMap A (Localization.Away s))).IsPrime := by first`. Consider the case `exact IsLocalization.isPrime_of_isPrime_disjoint (Submonoid.powers s) (Localization.Away s) P inferInstance hdisj`. Consider the case `exact IsLocalization.isPrime_of_isPrime_disjoint (M := Submonoid.powers s) (S := Localization.Away s) P inferInstance hdisj`. Establish `hsp : Ideal.map (algebraMap O (Localization.Away s)) (maximalIdeal O) ≠ ⊤`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IsScalarTower.algebraMap_eq O A (Localization.Away s), ← Ideal.map_map]`. Conclude with `ne_top_of_le_ne_top hPB.ne_top (Ideal.map_mono hv)`. Establish `hinjB : Function.Injective (algebraMap A (Localization.Away s))` using `IsLocalization.injective (Localization.Away s) hpow`. Establish `he' : algebraMap A (Localization.Away s) (e * b) ≠ 0`. Introduce `h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply `mul_ne_zero he hb0` to reduce the goal to its premises. Apply `hinjB` to reduce the goal to its premises. Rewrite using `[h, map_zero]`. Take `⟨V, indexVFirst, indexVSecond, indexVThird, indexVFourth, iV5, φ, hφ⟩` from `av_point hsp _ he'`. Establish `hφe : φ (algebraMap A (Localization.Away s) e) ≠ 0`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `h`. Apply `hφ` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, h, zero_mul]`. Establish `hφb : φ (algebraMap A (Localization.Away s) b) ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `hφ` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, h, mul_zero]`. Take `⟨v, hv'⟩` from `hf V (φ.comp (IsScalarTower.toAlgHom O A (Localization.Away s))) a b hab' hφb hφe`. Establish `hv2 : φ (algebraMap A (Localization.Away s) a) = v * φ (algebraMap A (Localization.Away s) b)` using `hv'`. Establish `hsU : IsUnit (algebraMap A (Localization.Away s) s)` using `IsLocalization.Away.algebraMap_isUnit s`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Treat this case separately.
 
-Establish `hts : algebraMap A (Localization.Away s) s = algebraMap A (Localization.Away s) t * algebraMap A (Localization.Away s) u`. Rewrite using `[← map_mul]`. Conclude with `congrArg _ hs_def`. Rewrite `hsU` using `[hts]`. Establish `htU : IsUnit (φ (algebraMap A (Localization.Away s) t))` using `(isUnit_of_mul_isUnit_left hsU).map φ`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `huU : IsUnit (φ (algebraMap A (Localization.Away s) u))` using `(isUnit_of_mul_isUnit_right hsU).map φ`. Establish `hadV` using `congrArg (fun x => φ (algebraMap A (Localization.Away s) x)) had`. Simplify using `only [map_mul] at hadV`. Establish `h3 : v * φ (algebraMap A (Localization.Away s) d) = φ (algebraMap A (Localization.Away s) t)`. Apply `mul_left_cancel₀ hφb` to reduce the goal to its premises.
-
-Take the linear combination `hadV - (φ (algebraMap A (Localization.Away s) d)) * hv2`. Rewrite `htU` using `[← h3]`. Establish `hdU : IsUnit (φ (algebraMap A (Localization.Away s) d))` using `isUnit_of_mul_isUnit_right htU`. Establish `hzuV` using `congrArg (fun x => φ (algebraMap A (Localization.Away s) x)) hzu`. Simplify using `only [map_mul, map_pow] at hzuV`.
-
-Establish `h4 : IsUnit (φ (algebraMap A (Localization.Away s) z) * φ (algebraMap A (Localization.Away s) (algebraMap O A ϖ)))`. Rewrite using `[hzuV]`. Conclude with `(hdU.pow n).mul huU`. Establish `hϖU` using `isUnit_of_mul_isUnit_right h4`. Establish `hϖV : φ (algebraMap A (Localization.Away s) (algebraMap O A ϖ)) = algebraMap O V ϖ`.
-
-Rewrite using `[← IsScalarTower.algebraMap_apply O A (Localization.Away s)]`. Conclude with `φ.commutes ϖ`. Rewrite `hϖU` using `[hϖV]`. Use `haveI : Algebra.IsIntegral O V := by first`. Consider the case `infer_instance`.
-
-Consider the case `exact Algebra.IsIntegral.of_finite O V`. Establish `hmaxV : (maximalIdeal V).comap (algebraMap O V) = maximalIdeal O` using `by haveI hmx : ((maximalIdeal V).comap (algebraMap O V)).IsMaximal := by first`. Consider the case `exact Ideal.isMaximal_comap_of_isIntegral_of_isMaximal (maximalIdeal V)`. Consider the case `exact Ideal.isMaximal_comap_of_isIntegral_of_isMaximal (R := O) (maximalIdeal V)`. Consider the case `infer_instance`.
-
-Consider the case `exact Ideal.IsMaximal.under O (maximalIdeal V)`. Conclude with `IsLocalRing.eq_maximalIdeal hmx`. Establish `hmem : ϖ ∈ (maximalIdeal V).comap (algebraMap O V)`. Rewrite using `[hmaxV]`. Conclude with `hϖm`.
-
-Conclude with `mem_nonunits_iff.mp ((IsLocalRing.mem_maximalIdeal _).mp (Ideal.mem_comap.mp hmem)) hϖU`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reg_vertical_e {O A : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [IsAdicComplete (maximalIdeal O) O] [CharZero O]

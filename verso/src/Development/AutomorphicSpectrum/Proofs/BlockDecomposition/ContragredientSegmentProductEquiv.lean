@@ -16,7 +16,7 @@ namespace GlobalTheory.CompanionTheory.SegIncDual
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Substitute `e` using the available equality. Take `rfl : x = y` from `funext fun a => by simpa using hxy a`. Conclude with `⟨hd, ⟨Representation.Equiv.refl _⟩⟩`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_equiv_prodIrr_of_cast {h h' N : ℕ} (e : h = h') (x : Fin h → IrrGL k) (y : Fin h' → IrrGL k)
     (hxy : ∀ a, x a = y (Fin.cast e a)) (hd : ∑ a, (x a).1 = N) :
@@ -26,7 +26,7 @@ theorem exists_equiv_prodIrr_of_cast {h h' N : ℕ} (e : h = h') (x : Fin h → 
   exact ⟨hd, ⟨Representation.Equiv.refl _⟩⟩
 
 /- English proof (translation)
-The claim follows from `H₁.elim fun φ => H₂.elim fun ψ => ⟨φ.trans ψ⟩`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_contra_trans {h h' N : ℕ} {x y : Fin h → IrrGL k} {z : Fin h' → IrrGL k} {hd : ∑ a, (x a).1 = N}
     {hy : ∑ a, (y a).1 = N} {hz : ∑ a, (z a).1 = N} (H₁ : Nonempty ((contra (prodIrr x hd)).Equiv (prodIrr y hy)))
@@ -35,9 +35,9 @@ theorem nonempty_contra_trans {h h' N : ℕ} {x y : Fin h → IrrGL k} {z : Fin 
   H₁.elim fun φ => H₂.elim fun ψ => ⟨φ.trans ψ⟩
 
 /- English proof (translation)
-Establish `hc : ∀ x : IrrGL k, x.IsCusp → (dualCl x).IsCusp` using `fun x hx => (GlobalTheory.CompanionTheory.DualCusp.dualCl_isCusp hA x hx).1`. Establish `hv : ((Fin.rev (Fin.cast hl a) : Fin (segDual Δ).len) : ℕ) = Δ.len - (a + 1)`. Establish `h0 : ((Fin.cast hl a : Fin (segDual Δ).len) : ℕ) = a` using `rfl`. Rewrite using `[Fin.val_rev, h0]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `ha : (a : ℕ) + 1 ≤ Δ.len` using `a.2`. Express the relevant statement in the definitionally equal form `dualCl (Δ.first.nu ((a : ℕ) : ℂ)) = (segDual Δ).first.nu (((Fin.rev (Fin.cast hl a) : Fin (segDual Δ).len) : ℕ) : ℂ)`. Rewrite using `[GlobalTheory.CompanionTheory.ZcDual.dualCl_nu hA, GlobalTheory.CompanionTheory.SegDualPrec.first_segDual hc, IrrGL.nu_nu, hv, Nat.cast_sub ha]`. Use `congr 1`. Use `push_cast`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -57,9 +57,9 @@ theorem dualCl_term (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (Δ : 
   ring
 
 /- English proof (translation)
-Introduce `k _ _ _ _ hA Δ N hd`. Establish `hl : Δ.len = (segDual Δ).len` using `(GlobalTheory.CompanionTheory.SegDualPrec.len_segDual (fun x hx => (GlobalTheory.CompanionTheory.DualCusp.dualCl_isCusp hA x hx).1) Δ).symm`. Establish `H` using `@GlobalTheory.CompanionTheory.ContraProd.contra_prodIrr k _ _ _ _ hA Δ.len N Δ.term hd`. Take `⟨hd₁, H₁⟩` from `H`. Establish `H'` using `exists_equiv_prodIrr_of_cast hl (fun a => dualCl (Δ.term a)) (dec (segDual Δ)) (dualCl_term hA Δ hl) hd₁`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hd₂, H₂⟩` from `H'`. Conclude with `⟨hd₂, nonempty_contra_trans H₁ H₂⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem contra_prodIrr_term : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (Δ : Segment k) {N : ℕ}

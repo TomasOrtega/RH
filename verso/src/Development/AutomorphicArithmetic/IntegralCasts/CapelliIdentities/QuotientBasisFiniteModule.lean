@@ -1,13 +1,11 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `l _ M _ _ hM f`. Take `⟨S, hS⟩` from `hM.fg_top`. Establish `hfin : (f '' (S : Set M)).Finite` using `S.finite_toSet.image _`. Use `haveI : Finite (f '' (S : Set M)) := hfin.to_subtype`. Use `⟨IntermediateField.adjoin ℚ_[l] (f '' (S : Set M)), ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `IntermediateField.finiteDimensional_adjoin (fun x _ => Algebra.IsIntegral.isIntegral x)`. Introduce `x`. Establish `hx : x ∈ Submodule.span ℤ_[l] (S : Set M)`. Rewrite using `[hS]`. Conclude with `Submodule.mem_top`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact IntermediateField.subset_adjoin _ _ ⟨y, hy, rfl⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [map_add]`.
-
-Conclude with `add_mem ha hb`. Consider the case `smul c a _ ha`. Rewrite using `[map_smul, ← IsScalarTower.algebraMap_smul ℚ_[l] c (f a)]`. Conclude with `IntermediateField.smul_mem _ ha`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.FiniteModuleImageInFiniteExtension.qb_fdmod :
     ∀ {l : ℕ} [inst : Fact (Nat.Prime l)] {M : Type}

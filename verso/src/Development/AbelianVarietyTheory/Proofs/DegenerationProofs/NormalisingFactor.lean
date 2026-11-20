@@ -9,11 +9,11 @@ open scoped BigOperators
 namespace GlobalTheory.Ex.SymLift
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Establish `h'` using `congrArg Additive.ofMul h`. Simplify using `only [ofMul_pow] at h'`. Prove the components needed by the constructor for the conclusion.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_pow, ofMul_div]`. Take the linear combination `(norm := module) -h'`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_pow, ofMul_div]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Take the linear combination `(norm := module) -(j • h')`. Introduce and unpack `⟨rfl, rfl⟩`. Rewrite using `[← pow_mul, pow_succ, mul_div_cancel_left]`.
+Take a linear combination of the given relations to obtain the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 -/
 theorem odd_root_iff {U : Type} [CommGroup U] (j : ℕ) (E P w : U) (h : E ^ (2 * j + 1) = P ^ 2) :
     w = P / E ^ j ↔ (w ^ 2 = E ∧ w ^ (2 * j + 1) = P) := by
@@ -34,7 +34,7 @@ theorem odd_root_iff {U : Type} [CommGroup U] (j : ℕ) (E P w : U) (h : E ^ (2 
 variable {O : Type} [CommRing O] (N : NumD O)
 
 /- English proof (translation)
-Establish `a` using `NumD.Gt.pow_s p.1.2 k p'.1.1.toAdd`. Rewrite `a` using `[N.mem_QT.1 p.2, NumD.io_s, ← N.QT_pow_b p']`. Rewrite using `[NumD.tk, mul_pow, ← a, mul_assoc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem tk_pow {k : ℕ} (p p' : N.QT k) :
     N.tk p p' ^ k = N.τ p.1.1.toAdd p'.1.1.toAdd *
@@ -44,9 +44,9 @@ theorem tk_pow {k : ℕ} (p p' : N.QT k) :
   rw [NumD.tk, mul_pow, ← a, mul_assoc]
 
 /- English proof (translation)
-Establish `a` using `N.cub.N_add k 1 p''.1.2.b p.1.2.b p'.1.2.b`. Rewrite `a` using `[N.cub.face, mul_one, one_mul, N.QT_pow_b p'']`. Express the relevant statement in the definitionally equal form `p.1.2.s p''.1.1.toAdd * p'.1.2.s p''.1.1.toAdd / N.θ (N.c p''.1.1.toAdd) p.1.2.b p'.1.2.b * cubN N.θ k 1 p''.1.2.b (p.1.2.b * p'.1.2.b) * _ = _`. Use `replace a := congrArg Additive.ofMul a`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `only [NumD.tk, ofMul_mul, ofMul_div] at a ⊢`. Take the linear combination `(norm := abel) a`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem tk_mul_left {k : ℕ} (p p' p'' : N.QT k) :
     N.tk (p * p') p'' * N.θ p''.1.2.b p.1.2.b p'.1.2.b ^ k = N.tk p p'' * N.tk p' p'' := by
@@ -60,18 +60,18 @@ theorem tk_mul_left {k : ℕ} (p p' p'' : N.QT k) :
   linear_combination (norm := abel) a
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `1 * cubN N.θ k 1 p.1.2.b 1 = 1`. Rewrite using `[N.cub.N_one, one_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem tk_one_left {k : ℕ} (p : N.QT k) : N.tk 1 p = 1 := by
   change 1 * cubN N.θ k 1 p.1.2.b 1 = 1
   rw [N.cub.N_one, one_mul]
 
 /- English proof (translation)
-Take `⟨j, rfl⟩` from `hk`. Establish `e : N.wQ p = N.ψ p.1.1.toAdd * mulq N.θ N.σ (2 * j + 1) p.1.2.b / (N.tk p p / dbl N.θ N.σ p.1.2.b ^ (2 * j + 1)) ^ j`. Establish `: (2 * j + 1 - 1) / 2 = j` using `by omega`. Simplify using `only [NumD.wQ, NumB.wS, NumD.tk, this]`. Rewrite using `[e, odd_root_iff, eq_div_iff_mul_eq']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `a` using `tk_pow N p p`. Establish `b` using `(GlobalTheory.T.degenerationData_psi_quadratic_generators_linear O N 0 p.1.1.toAdd).1`. Establish `c` using `(GlobalTheory.T.mulq_dbl_cubN_relations O N.toNumB (2 * j + 1) 0 p.1.2.b 1).2.2.1`. Rewrite `b` using `[← N.QT_pow_b p]`. Use `replace a := congrArg Additive.ofMul a`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use `replace b := congrArg Additive.ofMul b`. Use `replace c := congrArg Additive.ofMul c`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_div, ofMul_pow] at a b c ⊢`. Take the linear combination `(norm := module) a + b + c`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem wQ_iff {k : ℕ} (hk : Odd k) (p : N.QT k) (w : Oˣ) :
     w = N.wQ p ↔ (w ^ 2 * dbl N.θ N.σ p.1.2.b ^ k = N.tk p p ∧
@@ -94,9 +94,9 @@ theorem wQ_iff {k : ℕ} (hk : Odd k) (p : N.QT k) (w : Oˣ) :
   linear_combination (norm := module) a + b + c
 
 /- English proof (translation)
-Establish `a` using `(GlobalTheory.T.mulq_dbl_cubN_relations O N.toNumB 2 0 x y).2.1`. Establish `c` using `N.cub.coc x y y x`. Rewrite `c` using `[N.cub.s12 (x * y), N.cub.s12 x y x, N.cub.s12 x (y * y), N.cub.s12 y y x]`. Simplify using `only [mulq, cubN, Finset.prod_range_succ, Finset.prod_range_zero, pow_zero, pow_one, one_mul, mul_one, N.cub.face, div_one, sq] at a`. Rewrite `a` using `[N.cub.s12 y y x]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `replace a := congrArg Additive.ofMul a`. Use `replace c := congrArg Additive.ofMul c`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_div, ofMul_one] at a c ⊢`. Take the linear combination `(norm := abel) c - a`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem dbl_mul (x y : N.A) :
     dbl N.θ N.σ (x * y) * (N.θ (x * y) x y * N.θ x x y * N.θ y x y) = dbl N.θ N.σ x * dbl N.θ N.σ y := by
@@ -113,23 +113,23 @@ theorem dbl_mul (x y : N.A) :
   linear_combination (norm := abel) c - a
 
 /- English proof (translation)
-Take `⟨a₁, a₂⟩` from `(wQ_iff N hk p _).1 rfl`. Take `⟨b₁, b₂⟩` from `(wQ_iff N hk p' _).1 rfl`. Rewrite using `[← div_eq_iff_eq_mul', wQ_iff N hk]`. Establish `k₁` using `(GlobalTheory.T.degenerationWeilPairing_properties O N k p p' p).2.2.2.1`. Establish `E` using `fun {u v : Oˣ} (e : u = v) => congrArg Additive.ofMul e`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Establish `t₁` using `tk_mul_left N p p' (p * p')`. Establish `t₂` using `tk_mul_left N p p' p`. Establish `t₃` using `tk_mul_left N p p' p'`. Establish `w₂` using `(GlobalTheory.T.degenerationWeilPairing_properties O N k p p' p).1`.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `w₃` using `(GlobalTheory.T.degenerationWeilPairing_properties O N k p p' p').1`. Establish `d` using `dbl_mul N p.1.2.b p'.1.2.b`. Establish `e : (p * p').1.2.b = p.1.2.b * p'.1.2.b` using `rfl`. Rewrite `t₁`, the goal using `[e]`. Take `⟨j, rfl⟩` from `hk`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `: (2 * j + 1 + 1) / 2 = j + 1` using `by omega`. Rewrite using `[this]`. Establish `a₁` using `E a₁`. Establish `b₁` using `E b₁`. Establish `k₁` using `E k₁`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `t₁` using `E t₁`. Establish `t₂` using `E t₂`. Establish `t₃` using `E t₃`. Establish `w₂` using `E w₂`. Establish `w₃` using `E w₃`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `d` using `E d`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [NumD.wp, ofMul_mul, ofMul_div, ofMul_pow, ofMul_one] at a₁ b₁ k₁ t₁ t₂ t₃ w₂ w₃ d ⊢`. Take the linear combination `(norm := module) a₁ + b₁ - k₁ - t₁ - t₂ - t₃ + w₂ + w₃ + (2 * j + 1) • d`. Establish `t` using `tk_pow N p p'`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `m` using `(GlobalTheory.T.mulq_dbl_cubN_relations O N.toNumB k 0 p.1.2.b p'.1.2.b).2.1`. Establish `s` using `N.ψ_add p.1.1.toAdd p'.1.1.toAdd`. Express the relevant statement in the definitionally equal form `_ = N.ψ (p.1.1.toAdd + p'.1.1.toAdd) * mulq N.θ N.σ k (p.1.2.b * p'.1.2.b)`. Establish `a₂` using `E a₂`. Establish `b₂` using `E b₂`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k₁` using `E k₁`. Establish `t` using `E t`. Establish `m` using `E m`. Establish `s` using `E s`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [ofMul_mul, ofMul_div, ofMul_pow, ofMul_one] at a₂ b₂ k₁ t m s ⊢`. Take the linear combination `(norm := module) a₂ + b₂ - ((k + 1) / 2) • k₁ + t - m - s`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem wQ_mul {k : ℕ} (hk : Odd k) (p p' : N.QT k) :
     N.wQ p * N.wQ p' * N.tk p p' = N.wp p p' ^ ((k + 1) / 2) * N.wQ (p * p') := by
@@ -165,19 +165,19 @@ theorem wQ_mul {k : ℕ} (hk : Odd k) (p p' : N.QT k) :
     linear_combination (norm := module) a₂ + b₂ - ((k + 1) / 2) • k₁ + t - m - s
 
 /- English proof (translation)
-Take `⟨a₁, a₂⟩` from `(wQ_iff N hk p _).1 rfl`. Rewrite using `[← eq_div_iff_mul_eq', eq_comm, wQ_iff N hk]`. Establish `E` using `fun {u v : Oˣ} (e : u = v) => congrArg Additive.ofMul e`. Establish `e : (p⁻¹).1.2.b = p.1.2.b⁻¹` using `rfl`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Establish `t₁` using `tk_mul_left N p p⁻¹ p⁻¹`. Establish `t₂` using `tk_mul_left N p p⁻¹ p`. Establish `w₁` using `(GlobalTheory.T.degenerationWeilPairing_properties O N k p p⁻¹ p).1`. Establish `w₂` using `(GlobalTheory.T.degenerationWeilPairing_properties O N k 1 1 p).1`. Establish `s` using `N.σ_inv p.1.2.b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `t₁`, `t₂`, `w₁` using `[mul_inv_cancel]`. Rewrite `w₂` using `[mul_one, left_eq_mul]`. Rewrite `w₁` using `[w₂]`. Rewrite `t₁`, `t₂` using `[tk_one_left, e]`. Rewrite `t₂` using `[N.cub.s01 p.1.2.b p.1.2.b p.1.2.b⁻¹, N.cub.s12 p.1.2.b p.1.2.b p.1.2.b⁻¹]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[e]`. Establish `a₁` using `E a₁`. Establish `t₁` using `E t₁`. Establish `t₂` using `E t₂`. Establish `w₁` using `E w₁`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s` using `E s`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [NumD.wp, dbl, inv_inv, ofMul_mul, ofMul_div, ofMul_pow, ofMul_one] at a₁ t₁ t₂ w₁ s ⊢`. Take the linear combination `(norm := module) a₁ + t₁ - t₂ + w₁ - k • s`. Establish `m` using `(GlobalTheory.T.mulq_dbl_cubN_relations O N.toNumB k 0 p.1.2.b 1).2.2.2`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `s` using `N.even p.1.1.toAdd`. Rewrite `s` using `[← N.QT_pow_b p]`. Express the relevant statement in the definitionally equal form `_ = N.ψ (-p.1.1.toAdd) * mulq N.θ N.σ k p.1.2.b⁻¹`. Establish `a₂` using `E a₂`. Establish `m` using `E m`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s` using `E s`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_div, ofMul_pow] at a₂ m s ⊢`. Take the linear combination `(norm := module) a₂ - m - s`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem wQ_inv {k : ℕ} (hk : Odd k) (p : N.QT k) : N.wQ p⁻¹ * N.σ p.1.2.b ^ k = N.wQ p := by
   obtain ⟨a₁, a₂⟩ := (wQ_iff N hk p _).1 rfl
@@ -210,7 +210,7 @@ theorem wQ_inv {k : ℕ} (hk : Odd k) (p : N.QT k) : N.wQ p⁻¹ * N.σ p.1.2.b 
     linear_combination (norm := module) a₂ - m - s
 
 /- English proof (translation)
-Introduce `_ _ N _ hk p p'` and use `⟨wQ_iff N hk p, wQ_mul N hk p p', wQ_inv N hk p⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem normalising_factor : ∀ (O : Type) [CommRing O] (N : NumD O), ∀ (k : ℕ), Odd k → ∀ p p' : N.QT k, (∀ w : Oˣ, w = N.wQ p ↔ (w ^ 2 * dbl N.θ N.σ p.1.2.b ^ k = N.tk p p ∧ w ^ k = N.ψ p.1.1.toAdd * mulq N.θ N.σ k p.1.2.b)) ∧ N.wQ p * N.wQ p' * N.tk p p' = N.wp p p' ^ ((k + 1) / 2) * N.wQ (p * p') ∧ N.wQ p⁻¹ * N.σ p.1.2.b ^ k = N.wQ p :=
   fun _ _ N _ hk p p' => ⟨wQ_iff N hk p, wQ_mul N hk p p', wQ_inv N hk p⟩

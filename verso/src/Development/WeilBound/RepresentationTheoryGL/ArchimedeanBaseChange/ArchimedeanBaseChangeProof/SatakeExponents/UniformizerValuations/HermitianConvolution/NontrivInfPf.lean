@@ -9,7 +9,7 @@ attribute [local instance] FractionRing.liftAlgebra
 namespace PositivityTheory.Rg.BcB.F.FBL.NontrivInfPf
 
 /- English proof (translation)
-Establish `hc : Fintype.card (InfinitePlace E) = 1` using `le_antisymm (Fintype.card_le_one_iff_subsingleton.2 h) Fintype.card_pos`. Rewrite `hc` using `[← IsCMField.card_infinitePlace_eq_card_infinitePlace]`. Establish `h1` using `InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces (maximalRealSubfield E)`. Establish `h2` using `InfinitePlace.card_add_two_mul_card_eq_rank (maximalRealSubfield E)`. Establish `h3` using `IsTotallyReal.nrComplexPlaces_eq_zero (maximalRealSubfield E)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -24,11 +24,11 @@ lemma finrank_real_eq_one (E : Type) [Field E] [NumberField E] [IsCMField E] (h 
   omega
 
 /- English proof (translation)
-Introduce `x`. Establish `hbot : (⊤ : Subalgebra ℚ F) = ⊥` using `Subalgebra.finrank_eq_one_iff.1 (by rw [Subalgebra.topEquiv.toLinearEquiv.finrank_eq]; exact h)`. Establish `hx : (x : F) ∈ (⊥ : Subalgebra ℚ F)` using `hbot ▸ Algebra.mem_top`. Take `⟨q, hq⟩` from `Algebra.mem_bot.1 hx`. Establish `hint : IsIntegral ℤ q`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: IsIntegral ℤ (x : F)` using `x.isIntegral_coe`. Rewrite `this` using `[← hq, isIntegral_algebraMap_iff (algebraMap ℚ F).injective]`. Then use the resulting hypothesis. Take `⟨n, hn⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hint`. Use `⟨n, ?_⟩` and prove the remaining obligations. Apply `RingOfIntegers.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← hq, ← hn]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma surj_of_finrank_one (F : Type) [Field F] [NumberField F] (h : Module.finrank ℚ F = 1) :
     Function.Surjective (algebraMap ℤ (𝓞 F)) := by
@@ -47,22 +47,22 @@ lemma surj_of_finrank_one (F : Type) [Field F] [NumberField F] (h : Module.finra
   simp
 
 /- English proof (translation)
-The claim follows from `Algebra.FormallyUnramified.of_surjective (Algebra.ofId ℤ (𝓞 F)) (surj_of_finrank_one F h)`.
+A detailed English derivation is pending.
 -/
 lemma fu_of_finrank_one (F : Type) [Field F] [NumberField F] (h : Module.finrank ℚ F = 1) :
     Algebra.FormallyUnramified ℤ (𝓞 F) :=
   Algebra.FormallyUnramified.of_surjective (Algebra.ofId ℤ (𝓞 F)) (surj_of_finrank_one F h)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hnt`. Rewrite `hnt` using `[not_nontrivial_iff_subsingleton]`. Establish `hF` using `finrank_real_eq_one E hnt`. Establish `: Algebra.FormallyUnramified ℤ (𝓞 (maximalRealSubfield E))` using `fu_of_finrank_one _ hF`. Establish `hunr : ∀ w : HeightOneSpectrum (𝓞 E), Algebra.IsUnramifiedAt ℤ w.asIdeal` using `fun w => by`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hU w` as an intermediate fact. Conclude with `Algebra.FormallyUnramified.comp ℤ (𝓞 (maximalRealSubfield E)) (Localization.AtPrime w.asIdeal)`. Establish `htop : differentIdeal ℤ (𝓞 E) = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨P, hPmax, hle⟩` from `Ideal.exists_le_maximal _ hne`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hPne : P ≠ ⊥` using `fun h => differentIdeal_ne_bot (A := ℤ) (B := 𝓞 E) (eq_bot_iff.2 (h ▸ hle))`. Set `w : HeightOneSpectrum (𝓞 E)` to `⟨P, hPmax.isPrime, hPne⟩`. Use `(not_dvd_differentIdeal_iff (A := ℤ) (P := w.asIdeal)).2 (hunr w)` as an intermediate fact. Conclude with `this (Ideal.dvd_iff_le.2 hle)`. Establish `hd` using `absNorm_differentIdeal E (𝓞 E)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hd` using `[htop, Ideal.absNorm_top]`. Establish `hrank : 1 < Module.finrank ℚ E`. Establish `h1` using `InfinitePlace.card_add_two_mul_card_eq_rank E`. Establish `h2` using `IsTotallyComplex.nrRealPlaces_eq_zero E`. Establish `h3` using `InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces E`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `h4 : 0 < Fintype.card (InfinitePlace E)` using `Fintype.card_pos`. Use linear arithmetic over natural numbers and integers. Establish `h2` using `abs_discr_gt_two hrank`. Establish `h1 : |discr E| = 1` using `by rw [Int.abs_eq_natAbs, ← hd]; rfl`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem main (E : Type) [Field E] [NumberField E] [IsCMField E]
     (hU : ∀ w : HeightOneSpectrum (𝓞 E), Algebra.IsUnramifiedAt (𝓞 (maximalRealSubfield E)) w.asIdeal) :
@@ -98,7 +98,7 @@ end PositivityTheory.Rg.BcB.F.FBL.NontrivInfPf
 namespace PositivityTheory.Rg.BcB.F.FBL
 
 /- English proof (translation)
-Introduce `E _ _ _ hU` and use `NontrivInfPf.main E hU`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem nontrivInf : NontrivInf := fun E _ _ _ hU => NontrivInfPf.main E hU
 

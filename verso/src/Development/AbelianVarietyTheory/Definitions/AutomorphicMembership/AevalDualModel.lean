@@ -14,7 +14,7 @@ open scoped Matrix in
 variable {ι : Type} {m : ι → ℕ} in
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[_root_.GlobalTheory.GoodMetric.PolyRep.lie, _root_.GlobalTheory.GoodMetric.PolyRep.proj, pderiv_X, Pi.single_apply]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem _root_.GlobalTheory.GoodMetric.PolyRep.lie_proj_model [Fintype ι] (τ : ι) {R : Type} [CommRing R] (A : _root_.GlobalTheory.FlagBundle.Mat m R) : (_root_.GlobalTheory.GoodMetric.PolyRep.proj m τ).lie A = A τ := by
   classical
@@ -52,9 +52,9 @@ def detModel (m : ι → ℕ) (τ : ι) : PolyRep m where
     rw [this]; simp
 
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C c => ext <;> simp`. Consider the case `add p q hp hq => rw [map_add, hp, hq]; ext <;> simp [add_mul, Finset.sum_add_distrib]`. Consider the case `mul_X p i hp`. Rewrite using `[map_mul, hp]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `ext`. Simplify using the standard rewrite rules. Simplify using `[add_mul, Finset.sum_add_distrib, Pi.single_apply, Finset.mul_sum, apply_ite]`. Rewrite using `[Finset.sum_mul]; exact Finset.sum_congr rfl fun _ _ => by ring`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem aeval_dual_model {σ : Type} [Fintype σ] {R : Type} [CommRing R] (x a : σ → R) (p : MvPolynomial σ ℤ) :
     aeval (fun v => (TrivSqZeroExt.inl (x v) + TrivSqZeroExt.inr (a v) : DualNumber R)) p
@@ -75,11 +75,11 @@ open MvPolynomial in
 open scoped Matrix in
 variable {ι : Type} {m : ι → ℕ} in
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a => ext <;> simp`. Consider the case `add p q hp hq`. Rewrite using `[map_add, hp, hq]`. Apply the tactic sequence `ext <;> simp [Finset.sum_add_distrib, add_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Consider the case `mul_X p v hp`. Rewrite using `[map_mul, hp, aeval_X]`. Use `ext`. Simplify using the standard rewrite rules. Simplify using `only [TrivSqZeroExt.snd_mul, TrivSqZeroExt.fst_add, TrivSqZeroExt.snd_add, TrivSqZeroExt.fst_inl, TrivSqZeroExt.snd_inl, TrivSqZeroExt.fst_inr, TrivSqZeroExt.snd_inr, Derivation.leibniz, pderiv_X, smul_eq_mul, map_add, map_mul, aeval_X, add_mul, Finset.sum_add_distrib]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_apply, Finset.mul_sum, Finset.sum_mul, mul_comm, mul_left_comm, add_comm]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma aeval_dualNumber_inl_add_inr {σ : Type} [Fintype σ] {R : Type} [CommRing R]
     (x y : σ → R) (p : MvPolynomial σ ℤ) :
@@ -107,7 +107,7 @@ open scoped Matrix in
 variable {ι : Type} {m : ι → ℕ} in
 
 /- English proof (translation)
-Establish `h1` using `congrFun (congrFun (ρ.one R) i) j`. Simplify using `only [_root_.GlobalTheory.GoodMetric.evEnt, Matrix.map_apply] at h1`. Simplify using `only [_root_.GlobalTheory.GoodMetric.PolyRep.ev, _root_.GlobalTheory.GoodMetric.evEnt, Matrix.map_apply, Matrix.of_apply, _root_.GlobalTheory.GoodMetric.PolyRep.lie]`. Use `(aeval_dualNumber_inl_add_inr (fun v : _root_.GlobalTheory.GoodMetric.EntIx m => (1 : _root_.GlobalTheory.FlagBundle.Mat m R) v.1 v.2.1 v.2.2) (fun v : _root_.GlobalTheory.GoodMetric.EntIx m => A v.1 v.2.1 v.2.2) _).trans ?_` and prove the remaining obligations. Rewrite using `[h1]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.GoodMetric.PolyRep.ev_dual_model [Fintype ι] (ρ : _root_.GlobalTheory.GoodMetric.PolyRep m) {R : Type} [CommRing R] (A : _root_.GlobalTheory.FlagBundle.Mat m R) (i j : Fin ρ.M) :
     ρ.ev (R := DualNumber R) (fun τ => Matrix.of fun a b =>
@@ -122,7 +122,7 @@ theorem _root_.GlobalTheory.GoodMetric.PolyRep.ev_dual_model [Fintype ι] (ρ : 
   rw [h1]
 
 /- English proof (translation)
-Establish `h : (aeval (R` using `ℤ) fun v : EntIx m => A v.1 v.2.1 v.2.2).mapMatrix (Matrix.of fun i j => (X ⟨τ, (i, j)⟩ : MvPolynomial (EntIx m) ℤ)) = A τ := by`. Use extensionality with `a b`. Simplify using the standard rewrite rules. Rewrite using `[← h, ← AlgHom.map_det]`. Both sides reduce to the same expression.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ev_detModel (τ : ι) {R : Type} [CommRing R] (A : Mat m R) (i j : Fin 1) :
     (detModel m τ).ev A i j = (A τ).det := by
@@ -132,9 +132,9 @@ theorem ev_detModel (τ : ι) {R : Type} [CommRing R] (A : Mat m R) (i j : Fin 1
   rw [← h, ← AlgHom.map_det]; rfl
 
 /- English proof (translation)
-Establish `h` using `ev_dual_model (detModel m τ) A i i`. Rewrite `h` using `[ev_detModel]`. Establish `h2 : (Matrix.of fun a b => (TrivSqZeroExt.inl ((1 : Mat m R) τ a b) + TrivSqZeroExt.inr (A τ a b) : DualNumber R)) = 1 + (DualNumber.eps : DualNumber R) • (A τ).map TrivSqZeroExt.inl`. Apply the tactic sequence `ext a b <;> by_cases hab : a = b <;> simp [Matrix.one_apply, hab]`. Rewrite `h` using `[h2, Matrix.det_one_add_smul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `congrArg TrivSqZeroExt.snd h`. Simplify using `[pow_two, Matrix.trace, TrivSqZeroExt.fst_sum] at h3`. Simplify using `[Matrix.trace, h3]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem lie_detModel [Fintype ι] (τ : ι) {R : Type} [CommRing R] (A : Mat m R) (i : Fin 1) :
     (detModel m τ).lie A i i = (A τ).trace := by
@@ -149,9 +149,9 @@ theorem lie_detModel [Fintype ι] (τ : ι) {R : Type} [CommRing R] (A : Mat m R
   simp [Matrix.trace, h3]
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `h1` using `ev_dual_model ρ (fun τ => (A τ)ᵀ) i j`. Establish `h2` using `ev_dual_model ρ A j i`. Establish `h3` using `congrFun (congrFun (ρ.transp (DualNumber R) (fun τ => Matrix.of fun a b => TrivSqZeroExt.inl ((1 : Mat m R) τ a b) + TrivSqZeroExt.inr (A τ a b))) i) j`. Establish `h4 : (fun τ => (Matrix.of fun a b => (TrivSqZeroExt.inl ((1 : Mat m R) τ a b) + TrivSqZeroExt.inr (A τ a b) : DualNumber R))ᵀ) = fun τ => Matrix.of fun a b => (TrivSqZeroExt.inl ((1 : Mat m R) τ a b) + TrivSqZeroExt.inr ((A τ)ᵀ a b) : DualNumber R)`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `funext τ; ext a b <;> simp [Matrix.one_apply, eq_comm]`. Rewrite `h3` using `[h4]`. Establish `h5` using `h1.symm.trans (h3.trans h2)`. Simplify using `using congrArg TrivSqZeroExt.snd h5`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem lie_transp_model [Fintype ι] (ρ : PolyRep m) {R : Type} [CommRing R] (A : Mat m R) :
     ρ.lie (fun τ => (A τ)ᵀ) = (ρ.lie A)ᵀ := by

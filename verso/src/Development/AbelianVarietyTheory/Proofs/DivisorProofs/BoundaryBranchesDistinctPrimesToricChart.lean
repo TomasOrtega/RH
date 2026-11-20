@@ -21,7 +21,7 @@ section Cancel
 variable {O : Type} [CommRing O] [IsDedekindDomain O]
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `Module.projective_lifting_property ρ LinearMap.id hρ`. Set `q` to `(LinearMap.exact_subtype_ker_map ρ).splitSurjectiveEquiv (LinearMap.ker ρ).injective_subtype ⟨s, hs⟩`. Conclude with `⟨q.1, fun x => (LinearMap.congr_fun q.2.2 x).symm⟩`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem exists_split_ker {X X' : Type} [AddCommGroup X] [Module O X] [AddCommGroup X'] [Module O X']
     [Module.Projective O X'] (ρ : X →ₗ[O] X') (hρ : Function.Surjective ρ) :
@@ -35,15 +35,15 @@ def piSumEquiv {ι μ : Type} (B : ι → (Ideal O)⁰) (A : μ → (Ideal O)⁰
   LinearEquiv.sumPiEquivProdPi O ι μ (fun i => ((Sum.elim B A i : (Ideal O)⁰) : Ideal O))
 
 /- English proof (translation)
-Use `haveI : Module.Finite O X' := Module.Finite.of_surjective ρ hρ`. Use `haveI := GlobalTheory.ProjModFinIso.projective_of_isTorsionFree (R := O) X'`. Take `⟨e₁, he₁⟩` from `exists_split_ker ρ hρ`. Take `⟨e₂, he₂⟩` from `exists_split_ker ρ' hρ'`. Establish `r1` using `e₁.finrank_eq`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `r2` using `e₂.finrank_eq`. Rewrite `r1`, `r2` using `[GlobalTheory.ProjModFinIso.finrank_prod_eq]`. Take `⟨ι, _, B, hB, ⟨eB⟩⟩` from `GlobalTheory.ProjModFinIso.exists_equiv_pi (R := O) _ (LinearMap.ker ρ) rfl`. Take `⟨ι', _, B', hB', ⟨eB'⟩⟩` from `GlobalTheory.ProjModFinIso.exists_equiv_pi (R := O) _ (LinearMap.ker ρ') rfl`. Take `⟨μ, _, A, -, ⟨eA⟩⟩` from `GlobalTheory.ProjModFinIso.exists_equiv_pi (R := O) _ X' rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hc : Fintype.card ι' = Fintype.card ι` using `by rw [hB, hB']; omega`. Set `σ : ι' ≃ ι` to `Fintype.equivOfCardEq hc`. Set `B'' : ι → (Ideal O)⁰` to `fun i => B' (σ.symm i)`. Set `eB'' : (LinearMap.ker ρ') ≃ₗ[O] ((i : ι) → (B'' i : Ideal O))` to `eB'.trans (LinearEquiv.piCongrLeft O (fun i' : ι' => (B' i' : Ideal O)) σ.symm).symm`. Set `E₁ : X ≃ₗ[O] ((i : ι ⊕ μ) → ((Sum.elim B A i : (Ideal O)⁰) : Ideal O))` to `e₁.trans ((eB.prodCongr eA).trans (piSumEquiv B A).symm)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `E₂ : X ≃ₗ[O] ((i : ι ⊕ μ) → ((Sum.elim B'' A i : (Ideal O)⁰) : Ideal O))` to `e₂.trans ((eB''.prodCongr eA).trans (piSumEquiv B'' A).symm)`. Establish `h1` using `GlobalTheory.T.prod_classGroup_mk0_eq_of_linearEquiv_pi O (ι ⊕ μ) (Sum.elim B A) (Sum.elim B'' A) ⟨E₁.symm.trans E₂⟩`. Rewrite `h1` using `[Fintype.prod_sum_type, Fintype.prod_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr] at h1`. Take `⟨eBB⟩` from `GlobalTheory.T.steinitz_pi_ideals_linearEquiv_of_classGroup_prod O ι B B'' (mul_right_cancel h1)`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `κ : (LinearMap.ker ρ) ≃ₗ[O] (LinearMap.ker ρ')` to `eB.trans (eBB.trans eB''.symm)`. Use `⟨e₂.trans ((κ.symm.prodCongr (LinearEquiv.refl O X')).trans e₁.symm), fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← he₁, ← he₂, LinearEquiv.trans_apply, LinearEquiv.trans_apply, LinearEquiv.apply_symm_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_equiv_comp_eq {X X' : Type} [AddCommGroup X] [Module O X] [Module.Finite O X] [Module.IsTorsionFree O X]
     [AddCommGroup X'] [Module O X'] [Module.IsTorsionFree O X'] (ρ ρ' : X →ₗ[O] X') (hρ : Function.Surjective ρ)
@@ -88,15 +88,15 @@ namespace GlobalTheory.BranchSep
 section Ring
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Establish `key : ∀ n : ℕ, ∀ x, φ x = 0 → x ∈ Ideal.span {t} ^ n`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro x _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Simplify using the standard rewrite rules. Consider the case `succ n ih`. Introduce `x hx`. Establish `hx' : x ∈ Ideal.span {t}` using `by by_contra hc; exact h x hc hx`. Take `⟨y, rfl⟩` from `Ideal.mem_span_singleton'.1 hx'`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hy : φ y = 0`. Rewrite `hx` using `[map_mul]`. Conclude with `(mul_eq_zero.1 hx).resolve_right h0`. Rewrite using `[pow_succ']`. Conclude with `Ideal.mul_mem_mul (ih y hy) (Ideal.mem_span_singleton_self t) |> fun h' => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify `h'` using `[mul_comm]`. Introduce `x hx`. Establish `hne : Ideal.span {t} ≠ ⊤`. Rewrite using `[Ne, Ideal.span_singleton_eq_top]`. Conclude with `fun hu => (mem_maximalIdeal t).1 ht hu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Ideal.iInf_pow_eq_bot_of_isLocalRing (Ideal.span {t}) hne` as an intermediate fact. Establish `hm : x ∈ ⨅ i, Ideal.span {t} ^ i` using `Ideal.mem_iInf.2 fun n => key n x hx`. Rewrite `hm` using `[this]`. Conclude with `hm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem injective_of_ker_le_span {R W : Type} [CommRing R] [IsLocalRing R] [IsNoetherianRing R]
     [CommRing W] [IsDomain W] (φ : R →+* W) {t : R} (ht : t ∈ maximalIdeal R) (h0 : φ t ≠ 0)
@@ -125,7 +125,7 @@ theorem injective_of_ker_le_span {R W : Type} [CommRing R] [IsLocalRing R] [IsNo
   exact hm
 
 /- English proof (translation)
-Introduce `h`. Use `MvPowerSeries.X_dvd_iff.1 h (Finsupp.single b 1) (by simp [Finsupp.single_apply, hab])` as an intermediate fact. Simplify using `[MvPowerSeries.coeff_X] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem not_X_dvd_X {σ k : Type} [Field k] {a b : σ} (hab : a ≠ b) :
     ¬ (MvPowerSeries.X a : MvPowerSeries σ k) ∣ MvPowerSeries.X b := by
@@ -137,15 +137,15 @@ theorem not_X_dvd_X {σ k : Type} [Field k] {a b : σ} (hab : a ≠ b) :
 variable (k : Type) [Field k] (m e : ℕ)
 
 /- English proof (translation)
-Set `ρ` to `MvPowerSeries.rescale (σ := σ) (R := k) (fun i => if i = s then 0 else 1)`. Establish `key : ∀ g, MvPowerSeries.X s ∣ g ↔ ρ g = 0`. Introduce `g`. Rewrite using `[MvPowerSeries.X_dvd_iff, MvPowerSeries.ext_iff]`. Use `forall_congr' fun n => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[MvPowerSeries.coeff_rescale, map_zero]`. Distinguish the cases in `hn : n s = 0`. Establish `: (n.prod fun i m => (if i = s then (0 : k) else 1) ^ m) = 1`. Use `Finset.prod_eq_one fun i hi => ?_` and prove the remaining obligations. Establish `: i ≠ s` using `fun h => (Finsupp.mem_support_iff.1 hi) (h ▸ hn)`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `[this]`. Simplify using `[hn, this]`. Establish `: (n.prod fun i m => (if i = s then (0 : k) else 1) ^ m) = 0` using `Finset.prod_eq_zero (Finsupp.mem_support_iff.2 hn) (by simp [hn])`. Simplify using `[hn, this]`. Use `⟨?_, ?_, fun a b h => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `h`. Use `congrArg (MvPowerSeries.coeff (Finsupp.single s 1)) h` as an intermediate fact. Simplify using `[MvPowerSeries.coeff_X] at this`. Introduce `h`. Use `h.map (MvPowerSeries.constantCoeff (σ := σ) (R := k))` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `at this`. Rewrite `h` using `[key, map_mul, mul_eq_zero, ← key, ← key]`. Conclude with `h`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prime_mvX {σ k : Type} [CommRing k] [IsDomain k] (s : σ) : Prime (MvPowerSeries.X s : MvPowerSeries σ k) := by
   classical
@@ -178,19 +178,17 @@ instance isPrime_span_bdParam (i : Fin m) : (Ideal.span {bdParam k m e i}).IsPri
   (Ideal.span_singleton_prime (prime_mvX (k := k) _).ne_zero).2 (prime_mvX _)
 
 /- English proof (translation)
-Introduce `V f`. Use `set t := bdParam k m e i`. Establish `hunit : ∀ r, r ∉ Ideal.span {t} → IsUnit (algebraMap (ChartRing k m e) V r)` using `fun r hr => (IsLocalization.AtPrime.isUnit_to_map_iff V (Ideal.span {t}) r).2 hr`. Establish `hj : ∀ j, j ≠ i → IsUnit (algebraMap (ChartRing k m e) V (bdParam k m e j))` using `fun j hj => hunit _ fun h => not_X_dvd_X (k := k) (Sum.inl_injective.ne hj.symm) (Ideal.mem_span_singleton.1 h)`. Establish `hm : maximalIdeal V = Ideal.span {algebraMap (ChartRing k m e) V t}`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Localization.AtPrime.map_eq_maximalIdeal, Ideal.map_span, Set.image_singleton]`. Establish `hc : (maximalIdeal V).comap f = (Ideal.span {t}).comap θ`. Rewrite using `[← Ideal.comap_comap]`. Use `congr 1`. Conclude with `Localization.AtPrime.comap_maximalIdeal`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, hc, ?_, ?_, hm, hj, hunit⟩` and prove the remaining obligations. Conclude with `RingHom.Flat.comp hθ (by rw [RingHom.flat_algebraMap_iff]; exact IsLocalization.flat _ (Ideal.span {t}).primeCompl)`. Rewrite using `[hc]`. Use `le_antisymm ?_ ?_` and prove the remaining obligations. Rewrite using `[← Ideal.map_map, ← Localization.AtPrime.map_eq_maximalIdeal]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Ideal.map_mono (Ideal.map_comap_le)`. Rewrite using `[hm, Ideal.span_le, Set.singleton_subset_iff]`. Establish `hDle : D ≤ (Ideal.span {t}).comap θ`. Introduce `x hx`. Establish `h1 : θ x ∈ D.map θ` using `Ideal.mem_map_of_mem θ hx`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[hD, Ideal.mem_span_singleton]`. Conclude with `Ideal.mem_span_singleton.2 ((Finset.dvd_prod_of_mem _ (Finset.mem_univ i)).trans h1)`. Establish `hprod : algebraMap (ChartRing k m e) V (∏ j, bdParam k m e j) ∈ ((Ideal.span {t}).comap θ).map f`. Use `Ideal.map_mono hDle ?_` and prove the remaining obligations. Rewrite using `[← Ideal.map_map, hD]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `Ideal.mem_map_of_mem _ (Ideal.mem_span_singleton_self _)`. Rewrite `hprod` using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ i), map_mul]`. Establish `hu : IsUnit (algebraMap (ChartRing k m e) V (∏ j ∈ Finset.univ.erase i, bdParam k m e j))`. Rewrite using `[map_prod]`. Conclude with `(IsUnit.prod_iff (s := Finset.univ.erase i)).2 fun j hjm => hj j (Finset.ne_of_mem_erase hjm)`.
-
-Take `⟨u, hu'⟩` from `hu`. Use `Ideal.mul_mem_right (↑u⁻¹ : V) _ hprod` as an intermediate fact. Rewrite `this` using `[← hu', mul_assoc, Units.mul_inv, mul_one]`. Then use the resulting hypothesis. Conclude with `(RingHom.charZero_iff ((residue V).comp ((algebraMap (ChartRing k m e) V).comp (MvPowerSeries.C (σ := Fin m ⊕ Fin e) (R := k)))).injective).1 inferInstance`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem side {A : Type} [CommRing A] [CharZero k] (θ : A →+* ChartRing k m e)
     (hθ : θ.Flat) (D : Ideal A) (hD : D.map θ = Ideal.span {∏ i, bdParam k m e i}) (i : Fin m) :
@@ -240,23 +238,19 @@ theorem side {A : Type} [CommRing A] [CharZero k] (θ : A →+* ChartRing k m e)
       (MvPowerSeries.C (σ := Fin m ⊕ Fin e) (R := k)))).injective).1 inferInstance
 
 /- English proof (translation)
-Take `⟨hf, hcm, hmap, hch, hm, hj, hu⟩` from `side k m e θ hθ D hD i`. Take `⟨hf', hcm', hmap', -, hm', hj', hu'⟩` from `side k m e θ hθ D hD i'`. Use `set V := Localization.AtPrime (Ideal.span {bdParam k m e i})`. Use `set V' := Localization.AtPrime (Ideal.span {bdParam k m e i'})`. Use `set a := algebraMap (ChartRing k m e) V`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set a' := algebraMap (ChartRing k m e) V'`. Take `⟨B, _, _, g0, g0', hcomp, hg0, hgm, hgm'⟩` from `GlobalTheory.T.exists_local_pushout_unramified_charZero A V V' (a.comp θ) (a'.comp θ) hf' (hcm.trans (hc.trans hcm'.symm)) hmap hmap' hch`. Use `set ϖ := g0 (a (bdParam k m e i))`. Use `set ϖ' := g0' (a' (bdParam k m e i'))`. Establish `hB : maximalIdeal B = Ideal.span {ϖ}`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Rewrite using `[← hgm, hm, Ideal.map_span, Set.image_singleton]`. Establish `hB' : maximalIdeal B = Ideal.span {ϖ'}`. Rewrite using `[← hgm', hm', Ideal.map_span, Set.image_singleton]`. Establish `hl0 : IsLocalHom g0` using `((IsLocalRing.local_hom_TFAE g0).out 0 2).2 hgm.le`. Establish `hreg : ϖ ∈ nonZeroDivisors B`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `letI := g0.toAlgebra`. Use `haveI : Module.Flat V B := hg0`. Establish `ha0 : a (bdParam k m e i) ≠ 0`. Rewrite using `[Ne, ← map_zero a]`. Conclude with `fun h => (prime_mvX (k := k) _).ne_zero (IsLocalization.injective V (Ideal.primeCompl_le_nonZeroDivisors (Ideal.span {bdParam k m e i})) h)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : IsSMulRegular V (a (bdParam k m e i))` using `IsLeftRegular.isSMulRegular (mul_right_injective₀ ha0)`. Establish `h2` using `IsSMulRegular.of_flat (S := B) h1`. Establish `key : ∀ x : B, ϖ * x = 0 → x = 0` using `fun x hx => h2 (show ϖ * x = ϖ * 0 by rw [mul_zero]; exact hx)`. Conclude with `mem_nonZeroDivisors_iff.2 ⟨key, fun x hx => key x (by rw [mul_comm]; exact hx)⟩`. Establish `hchB : CharZero (ResidueField B)` using `(RingHom.charZero_iff (ResidueField.map g0).injective).1 hch`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨W, _, _, _, h, hW, hloc, hϖ⟩` from `GlobalTheory.T.exists_localHom_completeDVR_principal_maximalIdeal B ϖ hB hreg hchB`. Establish `hmem : ∀ j, bdParam k m e j ∈ maximalIdeal (ChartRing k m e)` using `fun j => (mem_maximalIdeal _).2 (prime_mvX (k := k) _).not_unit`. Establish `hϖn : ¬ IsUnit ϖ` using `(mem_maximalIdeal ϖ).1 (hB ▸ Ideal.mem_span_singleton_self ϖ)`. Establish `hdvd1 : ϖ ∣ ϖ'` using `Ideal.mem_span_singleton.1 (hB ▸ hB' ▸ Ideal.mem_span_singleton_self ϖ')`. Establish `hdvd2 : ϖ' ∣ ϖ` using `Ideal.mem_span_singleton.1 (hB' ▸ hB ▸ Ideal.mem_span_singleton_self ϖ)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Establish `hϖ' : h ϖ' ≠ 0` using `fun h0 => hϖ (by`. Take `⟨c, hc⟩` from `hdvd2`. Rewrite using `[hc, map_mul, h0, zero_mul])`. Establish `hϖ'n : ¬ IsUnit ϖ'` using `fun hu => hϖn (isUnit_of_dvd_unit hdvd1 hu)`. Use `⟨W, inferInstance, inferInstance, inferInstance, h.comp (g0.comp a), h.comp (g0'.comp a'), hW, ?_, ?_, ?_, associated_of_dvd_dvd (map_dvd h hdvd1) (map_dvd h hdvd2), hϖ, fun hu => hϖn (hloc.map_nonunit _ hu), fun j hji => (hj j hji).map (h.comp g0), fun j hji => (hj' j hji).map ( …` and prove the remaining obligations.
-
-Use `injective_of_ker_le_span _ (hmem i) hϖ fun r hr => ?_` and prove the remaining obligations. Conclude with `((hu r hr).map (h.comp g0)).ne_zero`. Use `injective_of_ker_le_span _ (hmem i') hϖ' fun r hr => ?_` and prove the remaining obligations. Conclude with `((hu' r hr).map (h.comp g0')).ne_zero`. Use extensionality with `x`.
-
-Conclude with `congrArg h (RingHom.congr_fun hcomp x)`.
+A detailed English derivation is pending.
 -/
 theorem exists_two_traits {A : Type} [CommRing A] [CharZero k] (θ : A →+* ChartRing k m e) (hθ : θ.Flat) (D : Ideal A)
     (hD : D.map θ = Ideal.span {∏ i, bdParam k m e i}) (i i' : Fin m)
@@ -330,9 +324,9 @@ namespace GlobalTheory.BranchSep
 section SlopeTestRemainingChoices
 
 /- English proof (translation)
-Use `Module.IsTorsionFree.of_smul_eq_zero fun c x h => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hcx`. Use `push_neg at hcx`. Take `⟨r, hr, α, hα⟩` from `(Algebra.IsAlgebraic.isAlgebraic (R := ℤ) c).exists_nonzero_dvd (mem_nonZeroDivisors_of_ne_zero hcx.1)`. Establish `: r • x = 0`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← algebraMap_smul (𝓞 E) r x, hα, mul_comm, mul_smul, h, smul_zero]`. Conclude with `hcx.2 ((smul_eq_zero.1 this).resolve_left hr)`.
+A detailed English derivation is pending.
 -/
 theorem isTorsionFree_of_free (E : Type) [Field E] [NumberField E] (X : Type) [AddCommGroup X] [Module (𝓞 E) X]
     [Module.Free ℤ X] : Module.IsTorsionFree (𝓞 E) X := by
@@ -346,11 +340,9 @@ theorem isTorsionFree_of_free (E : Type) [Field E] [NumberField E] (X : Type) [A
   exact hcx.2 ((smul_eq_zero.1 this).resolve_left hr)
 
 /- English proof (translation)
-Establish `key : ∀ {a b : ℕ}, Associated (w ^ a) (w ^ b) → a ≤ b → a = b`. Introduce `a b h hab`. Assume the negation of the conclusion as `hne`. Establish `hlt : 0 < b - a` using `by omega`. Establish `h1 : Associated (w ^ a * 1) (w ^ a * w ^ (b - a))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[_root_.mul_one, ← pow_add, Nat.add_sub_cancel' hab]`. Conclude with `h`. Establish `h2 : Associated 1 (w ^ (b - a))` using `Associated.of_mul_left h1 (Associated.refl _) (pow_ne_zero _ h0)`. Conclude with `hu ((isUnit_pow_iff hlt.ne').1 (associated_one_iff_isUnit.1 h2.symm))`. Break down `le_total a b with hab | hab` into its components or cases.
-
-Conclude with `key h hab`. Conclude with `(key h.symm hab).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem pow_eq_of_associated {W : Type} [CommRing W] [IsDomain W] {w : W} (h0 : w ≠ 0) (hu : ¬ IsUnit w) {a b : ℕ}
     (h : Associated (w ^ a) (w ^ b)) : a = b := by
@@ -367,9 +359,9 @@ theorem pow_eq_of_associated {W : Type} [CommRing W] [IsDomain W] {w : W} (h0 : 
   · exact (key h.symm hab).symm
 
 /- English proof (translation)
-Rewrite using `[map_mul, map_prod, ← Finset.mul_prod_erase _ _ (Finset.mem_univ a), map_pow]`. Establish `h1 : IsUnit (ψ u)` using `u.isUnit.map ψ`. Establish `h2 : IsUnit (∏ b ∈ Finset.univ.erase a, ψ (s b ^ n b))` using `(IsUnit.prod_iff (s := Finset.univ.erase a)).2 fun b hb => by`. Rewrite using `[map_pow]`. Conclude with `(hs b (Finset.ne_of_mem_erase hb)).pow _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv⟩` from `h1.mul h2`. Use `⟨v⁻¹, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem associated_map_monomial {R W : Type} [CommRing R] [CommRing W] (ψ : R →+* W) {M : ℕ} (s : Fin M → R)
     (a : Fin M) (hs : ∀ b, b ≠ a → IsUnit (ψ (s b))) (u : Rˣ) (n : Fin M → ℕ) :
@@ -387,7 +379,7 @@ theorem associated_map_monomial {R W : Type} [CommRing R] [CommRing W] (ψ : R �
     _ = ψ (s a) ^ n a := by rw [← hv, Units.mul_inv, _root_.mul_one]
 
 /- English proof (translation)
-Use `LinearMap.ext₂ fun y z => ?_` and prove the remaining obligations. Establish `h1` using `h (y + z)`. Simplify using `only [map_add, LinearMap.add_apply] at h1`. Rewrite `h1` using `[h y, h z, hβ z y, hγ z y]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem eq_of_diag {X : Type} [AddCommGroup X] {β β' : LinearMap.BilinForm ℤ X} (hβ : ∀ y z, β y z = β z y)
     (hγ : ∀ y z, β' y z = β' z y) (h : ∀ y, β y y = β' y y) : β = β' := by
@@ -403,43 +395,39 @@ end GlobalTheory.BranchSep
 namespace GlobalTheory.BranchSep
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c φ hpq hfan hnsi Z zs i OZ N d J S π j _ BD hU hSep hUP k _ m e C ξ hT hy hx hEt hidl hrng ii ii' hcomp`. Assume the negation of the conclusion as `hne`. Take `⟨hm, hs, -, -, -, -, -⟩` from `hT`. Use `haveI : CharZero k := (RingHom.charZero_iff ((MvPowerSeries.constantCoeff (σ := Fin m ⊕ Fin e) (R := k)).comp C.b).injective).1 inferInstance`. Use `haveI : CharZero (ChartRing k m e) := (RingHom.charZero_iff (MvPowerSeries.C (σ := Fin m ⊕ Fin e) (R := k)).injective).1 inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hCN : GlobalTheory.TorRef.IsCN (ChartRing k m e)` using `GlobalTheory.ChartCone.isCN_chartRing k m e`. Establish `hTI : C.P.TorsionIso` using `GlobalTheory.FlatTors.torsionIso_holds E H (ChartRing k m e) _ ⟨hCN.1, inferInstance, hCN.2.1, hCN.2.2.1⟩ C.t C.P`. Establish `hsb : ∀ a : Fin C.m, C.s a = bdParam k m e (Fin.cast hm a)` using `hs`. Establish `hprod : ∏ a, C.s a = ∏ b, bdParam k m e b`. Rewrite using `[Finset.prod_congr rfl fun a _ => hsb a]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `Fintype.prod_equiv (finCongr hm) _ _ fun _ => rfl`. Use `set θ := (Scheme.stalkClosedPointTo ξ).hom`. Take `⟨W, _, _, _, g, g', hW, hg, hg', hgg, hass, hg0, hgu, hgj, hgj'⟩` from `exists_two_traits k m e θ hEt.1 _ (by rw [← hprod]; exact hidl) ii ii' hcomp`. Establish `hjW : Function.Injective ((algebraMap W (FractionRing W)).comp g)` using `(IsFractionRing.injective W _).comp hg`. Establish `hjW' : Function.Injective ((algebraMap W (FractionRing W)).comp g')` using `(IsFractionRing.injective W _).comp hg'`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `κ : Sp (FractionRing W) ⟶ Sp (FractionRing (ChartRing k m e))` to `spMap (IsFractionRing.lift hjW)`. Set `κ' : Sp (FractionRing W) ⟶ Sp (FractionRing (ChartRing k m e))` to `spMap (IsFractionRing.lift hjW')`. Establish `hκ : κ ≫ jK _ = jK W ≫ spMap g` using `(GlobalTheory.Ex.UnifModel.spMap_comp (IsFractionRing.lift_algebraMap hjW)).trans (GlobalTheory.Ex.UnifModel.spMap_comp fun _ => rfl).symm`. Establish `hκ' : κ' ≫ jK _ = jK W ≫ spMap g'` using `(GlobalTheory.Ex.UnifModel.spMap_comp (IsFractionRing.lift_algebraMap hjW')).trans (GlobalTheory.Ex.UnifModel.spMap_comp fun _ => rfl).symm`. Establish `hξ : ∀ h : ChartRing k m e →+* W, spMap h ≫ ξ = spMap (h.comp θ) ≫ S.fromSpecStalk _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Introduce `h`. Use `conv_lhs => rw [← Scheme.Spec_stalkClosedPointTo_fromSpecStalk ξ]`. Rewrite using `[← Category.assoc]`. Use `congr 1`. Conclude with `GlobalTheory.Ex.UnifModel.spMap_comp (a := θ) fun _ => rfl`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hy' : κ ≫ C.y = κ' ≫ C.y`. Rewrite using `[← cancel_mono j]`. Simplify using `only [Category.assoc]`. Rewrite using `[hy, ← Category.assoc, hκ, ← Category.assoc κ', hκ', Category.assoc, Category.assoc, hξ g, hξ g', hgg]`. Take `⟨tW, ⟨m1⟩⟩` from `GlobalTheory.TraitOrder.exists_pull (spMap g) C.t`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨tW', ⟨m2⟩⟩` from `GlobalTheory.TraitOrder.exists_pull (spMap g') C.t`. Take `⟨tKR, ⟨n1⟩, ⟨n2⟩⟩` from `C.gen`. Take `⟨uK, ⟨n⟩⟩` from `GlobalTheory.TraitOrder.exists_pull (κ ≫ C.y ≫ pullback.fst _ _) Xo.univ.t`. Take `⟨c1⟩` from `GlobalTheory.TraitOrder.cancel rfl n2 n`. Establish `e' : κ' ≫ C.y ≫ pullback.fst _ _ = κ ≫ C.y ≫ pullback.fst _ _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← Category.assoc, ← hy', Category.assoc]`. Take `⟨c2⟩` from `GlobalTheory.TraitOrder.cancel e' n2 n`. Take `⟨d1⟩` from `GlobalTheory.TraitOrder.comp hκ n1 c1`. Take `⟨d2⟩` from `GlobalTheory.TraitOrder.comp hκ' n1 c2`. Take `⟨x1⟩` from `GlobalTheory.TraitOrder.cancel rfl m1 d1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x2⟩` from `GlobalTheory.TraitOrder.cancel rfl m2 d2`. Use `haveI := hW.1`. Take `⟨ψ, -⟩` from `GlobalTheory.ModelUniqueChecks.existsUnique_map W (FractionRing W) tW tW' uK x1 x2`. Take `⟨m2'⟩` from `GlobalTheory.TraitOrder.comp (Category.id_comp _) m2 ψ`. Establish `hpol : GlobalTheory.LN.PolAt tW (jK W)` using `GlobalTheory.DatUniq.polAt_pull m1 (GlobalTheory.DatUniq.polAt_of_unif C.P) (jK W) κ hκ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible W`. Take `⟨V', _, _, _, f, hV', hf, hfl, hfϖ, t', m', ⟨P'⟩⟩` from `GlobalTheory.T.exists_unramified_uniformisation_polarisedTriple E H W hW ϖ hϖ tW hpol`. Take `⟨n3⟩` from `GlobalTheory.TraitOrder.comp (GlobalTheory.Ex.UnifModel.spMap_comp (d := f.comp g) fun _ => rfl) m1 m'`. Take `⟨n4⟩` from `GlobalTheory.TraitOrder.comp (GlobalTheory.Ex.UnifModel.spMap_comp (d := f.comp g') fun _ => rfl) m2' m'`. Establish `hml : ∀ b, bdParam k m e b ∈ maximalIdeal (ChartRing k m e)` using `fun b => (mem_maximalIdeal _).2 (prime_mvX (k := k) _).not_unit`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hnl : ¬ IsLocalHom (f.comp g)` using `fun hl => (mem_maximalIdeal _).1 (hml ii') (hl.map_nonunit _ ((hgj ii' fun h => hne h.symm).map f))`. Establish `hnl' : ¬ IsLocalHom (f.comp g')` using `fun hl => (mem_maximalIdeal _).1 (hml ii) (hl.map_nonunit _ ((hgj' ii hne).map f))`. Take `⟨ρ, hρs, hρ⟩` from `GlobalTheory.TraitCmp.main E H _ C.t C.P hCN hTI V' hV' (f.comp g) (hf.comp hg) hnl t' n3 P'`. Take `⟨ρ', hρs', hρ'⟩` from `GlobalTheory.TraitCmp.main E H _ C.t C.P hCN hTI V' hV' (f.comp g') (hf.comp hg') hnl' t' n4 P'`. Use `haveI : Module.IsTorsionFree (𝓞 E) C.P.D.toPre.X := isTorsionFree_of_free E _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : Module.IsTorsionFree (𝓞 E) P'.D.toPre.X := isTorsionFree_of_free E _`. Use `haveI : Module.Finite (𝓞 E) C.P.D.toPre.X := Module.Finite.of_restrictScalars_finite ℤ _ _`. Use `haveI := GlobalTheory.ProjModFinIso.projective_of_isTorsionFree (R := 𝓞 E) C.P.D.toPre.X`. Take `⟨ε, hε⟩` from `exists_equiv_comp_eq ρ ρ' hρs hρs'`. Take `⟨hd, hcp, hz⟩` from `hV'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨be, -, hmon, -⟩` from `GlobalTheory.TorRef.exists_periodForm P' hfϖ`. Establish `hsa : C.s (Fin.cast hm.symm ii) = bdParam k m e ii` using `by rw [hsb]; rfl`. Establish `hsa' : C.s (Fin.cast hm.symm ii') = bdParam k m e ii'` using `by rw [hsb]; rfl`. Establish `hπ0 : f (g (bdParam k m e ii)) ≠ 0` using `fun h0 => hg0 (hf (by rw [h0, map_zero]))`. Establish `hπu : ¬ IsUnit (f (g (bdParam k m e ii)))` using `fun h0 => hgu (hfl.map_nonunit _ h0)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hM : (l.M' : ℤ) ≠ 0` using `by exact_mod_cast (GlobalTheory.LevelExist.M'_pos l).ne'`. Establish `key : ∀ y, C.δ (Fin.cast hm.symm ii') y y = C.δ (Fin.cast hm.symm ii) (ε y) (ε y)`. Introduce `y`. Take `⟨u, n, hn, hc⟩` from `C.mono y`. Take `⟨u2, n2, hn2, hc2⟩` from `C.mono (ε y)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨u3, n3', -, hc3⟩` from `hmon (ρ' y)`. Establish `h1` using `hρ' y _ _ hc hc3`. Establish `h2` using `hρ (ε y) _ _ hc2 (by rw [hε]; exact hc3)`. Establish `h3` using `associated_map_monomial (f.comp g') C.s (Fin.cast hm.symm ii') (fun b hb => by`. Rewrite using `[hsb]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(hgj' _ fun h0 => hb (by rw [← h0]; rfl)).map f) u n`. Establish `h4` using `associated_map_monomial (f.comp g) C.s (Fin.cast hm.symm ii) (fun b hb => by`. Rewrite using `[hsb]`. Conclude with `(hgj _ fun h0 => hb (by rw [← h0]; rfl)).map f) u2 n2`. Establish `h5 : Associated ((f.comp g') (C.s (Fin.cast hm.symm ii'))) (f (g (bdParam k m e ii)))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[hsa']`. Conclude with `(hass.map f).symm`. Establish `h6 : (f.comp g) (C.s (Fin.cast hm.symm ii)) = f (g (bdParam k m e ii))` using `by rw [hsa]; rfl`. Rewrite `h4` using `[h6]`. Establish `hexp` using `pow_eq_of_associated hπ0 hπu ((h5.pow_pow (n := n (Fin.cast hm.symm ii'))).symm.trans (h3.symm.trans (h1.trans (h2.symm.trans h4))))`.
-
-Establish `e1` using `hn (Fin.cast hm.symm ii')`. Establish `e2` using `hn2 (Fin.cast hm.symm ii)`. Simplify using `only [LinearMap.smul_apply, smul_eq_mul] at e1 e2`. Rewrite `e1` using `[hexp]`. Conclude with `mul_left_cancel₀ hM (e1.trans e2.symm)`.
-
-Establish `hpull : pull ε.toLinearMap (C.δ (Fin.cast hm.symm ii)) = C.δ (Fin.cast hm.symm ii')` using `eq_of_diag (fun y z => by simp only [pull_apply]; exact (C.cone.mem _).1 _ _) (C.cone.mem _).1 fun y => by simp only [pull_apply]; exact (key y).symm`. Establish `hrays` using `hnsi C.P.D.toPre.X C.rank C.m C.δ C.cone ε _ _ hpull`. Apply `hne` to reduce the goal to its premises. Use `congrArg (Fin.cast hm) hrays` as an intermediate fact. Simplify using `using this`.
+A detailed English derivation is pending.
 -/
 theorem branch_sep : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Geo.Tor.Level H} (Xo : Moduli Dw l) (c : Coeff l) (φ : InvFun (𝓞 E)), 1 ≤ Dw.p + Dw.q → IsPolFan H.bar (min Dw.p Dw.q) φ → NoSelfInt H.bar (min Dw.p Dw.q) φ → ∀ {Z : Scheme.{0}} (zs : Z ⟶ Sp c.F) (i : Xo.XF c ⟶ Z) (OZ : LB Z) (N d : ℕ) (J : Z.IdealSheafData) {S : Scheme.{0}} (π : S ⟶ Z) (j : Xo.XF c ⟶ S) [IsOpenImmersion j] (BD : EffCartierData S), GlobalTheory.UPoinc.UPoinOnX Xo c φ zs i OZ N d J π j BD → SepB Xo c φ j → (∀ x : S, x ∉ Set.range j → UPre Xo c φ j BD d x) → ∀ (k : Type) [Field k] (m e : ℕ) (C : MonoFam Xo c φ (ChartRing k m e)) (ξ : Sp (ChartRing k m e) ⟶ S), IsTaut C → C.y ≫ j = jK _ ≫ ξ → ξ (closedPoint _) ∉ Set.range j → IsEtaleCompletion (Scheme.stalkClosedPointTo ξ).hom → idlAlong (Scheme.IdealSheafData.vanishingIdeal j.opensRange.compl) ξ = Ideal.span {∏ i, C.s i} → (∀ p : Sp (ChartRing k m e), ξ p ∈ Set.range j ↔ ∏ i, C.s i ∉ p.asIdeal) → ∀ i i' : Fin m, (Ideal.span {bdParam k m e i}).comap (Scheme.stalkClosedPointTo ξ).hom = (Ideal.span {bdParam k m e i'}).comap (Scheme.stalkClosedPointTo ξ).hom → i = i' := by
   intro E _ _ _ H Dw l Xo c φ hpq hfan hnsi Z zs i OZ N d J S π j _ BD hU hSep hUP k _ m e C ξ hT hy hx hEt hidl hrng

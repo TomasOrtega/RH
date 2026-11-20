@@ -25,7 +25,7 @@ theorem cA_tmul_pair (α : Af D.host.F) (m : D.host.E) :
     cA D (pairA D.host.F 0 α ⊗ₜ[D.host.F] m) = pairA D.host.F 0 α ⊗ₜ[D.host.F] star m := rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `_ = (x ⊗ₜ[D.host.F] (1 : D.host.E)) * ((1 : AF D.host.F) ⊗ₜ[D.host.F] m)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem tmul_eq_mul (x : AF D.host.F) (m : D.host.E) :
     (x ⊗ₜ[D.host.F] m : AE D) = algebraMap (AF D.host.F) (AE D) x * incA D m := by
@@ -33,9 +33,9 @@ theorem tmul_eq_mul (x : AF D.host.F) (m : D.host.E) :
   rw [Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.transpose_apply, Matrix.of_apply, cA_tmul_pair]`. Rewrite using `[tmul_eq_mul]`. Simplify using `only [map_mul, hA, Matrix.smul_apply, smul_eq_mul, Matrix.mul_apply, vecMulVec_apply, star_mul', star_sum, star_star, GlobalTheory.LatVac.gram_star, map_sum]`. Rewrite using `[show sndA D.host.F (pairA D.host.F 0 α) = α from rfl]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.map_apply, Finset.mul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gen_conj {v : FinPl D} (π : AE D →+* Fv D.host.F v)
     (hA : ∀ y : AF D.host.F, π (algebraMap (AF D.host.F) (AE D) y) = evalV D.host.F v (sndA D.host.F y))
@@ -56,11 +56,11 @@ theorem gen_conj {v : FinPl D} (π : AE D →+* Fv D.host.F v)
   ring
 
 /- English proof (translation)
-Use `set f : D.host.E →+* Fv D.host.F v := (rdA φ).comp (incA D) with hf`. Establish `hGi : (S.gram⁻¹.map (incA D)).map (rdA φ) * S.gram.map (fun x => rdA φ (incA D x)) = 1`. Rewrite using `[Matrix.map_map]`. Express the relevant statement in the definitionally equal form `S.gram⁻¹.map f * S.gram.map f = 1`. Rewrite using `[← Matrix.map_mul, Matrix.nonsing_inv_mul _ (GlobalTheory.LatVac.gram_det_isUnit S)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Matrix.map_one _ (map_zero f) (map_one f)`. Establish `hmid : ∀ (c : Fv D.host.F v) (V : Matrix (Fin S.rank) (Fin T.rank) (Fv D.host.F v)), (S.gram⁻¹.map (incA D)).map (rdA φ) * (c • (S.gram.map (fun x => rdA φ (incA D x)) * V)) = c • V`. Introduce `c V`. Rewrite using `[Matrix.mul_smul, ← Matrix.mul_assoc, hGi, Matrix.one_mul]`. Establish `hT : (T.gram.map (incA D)).map (rdA φ) = T.gram.map (rdQ φ)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[Matrix.map_map]`. Conclude with `congrArg _ (funext hQ)`. Unfold `adjCo`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, gen_conj (rdA φ) hA, hmid, hT]`. Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_vecMulVec, Matrix.vecMulVec_mul, Matrix.smul_apply, vecMulVec_apply, smul_eq_mul, hQ, Matrix.vecMul_vecMul, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem adjCo_gen {v : FinPl D} (φ : SplitProj D v)
     (hA : ∀ y : AF D.host.F, rdA φ (algebraMap (AF D.host.F) (AE D) y) = evalV D.host.F v (sndA D.host.F y))
@@ -95,7 +95,7 @@ variable {v : FinPl D} (φ : SplitProj D v) (S T : HSp D) (BS : GL (Fin S.rank) 
   (BT : GL (Fin T.rank) (Fv D.host.F v))
 
 /- English proof (translation)
-Unfold `adjCo`. Rewrite using `[show ((x + y : WO S T) : Matrix (Fin T.rank) (Fin S.rank) (AE D)) = (x : Matrix (Fin T.rank) (Fin S.rank) (AE D)) + (y : Matrix (Fin T.rank) (Fin S.rank) (AE D)) from rfl, Matrix.map_add _ (map_add _), Matrix.transpose_add, Matrix.mul_add, Matrix.add_mul, Matrix.map_add _ (map_a …`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem adjCo_add (x y : WO S T) : adjCo φ S T BS BT (x + y) = adjCo φ S T BS BT x + adjCo φ S T BS BT y := by
   unfold adjCo
@@ -105,7 +105,7 @@ theorem adjCo_add (x y : WO S T) : adjCo φ S T BS BT (x + y) = adjCo φ S T BS 
     Matrix.mul_add, Matrix.add_mul]
 
 /- English proof (translation)
-Unfold `adjCo`. Rewrite using `[show ((-x : WO S T) : Matrix (Fin T.rank) (Fin S.rank) (AE D)) = -(x : Matrix (Fin T.rank) (Fin S.rank) (AE D)) from rfl, Matrix.map_neg _ (map_neg _), Matrix.transpose_neg, Matrix.mul_neg, Matrix.neg_mul, Matrix.map_neg _ (map_neg _), Matrix.mul_neg, Matrix.neg_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem adjCo_neg (x : WO S T) : adjCo φ S T BS BT (-x) = -adjCo φ S T BS BT x := by
   unfold adjCo
@@ -115,7 +115,7 @@ theorem adjCo_neg (x : WO S T) : adjCo φ S T BS BT (-x) = -adjCo φ S T BS BT x
     Matrix.mul_neg, Matrix.neg_mul]
 
 /- English proof (translation)
-Unfold `adjCo`. Rewrite using `[show ((0 : WO S T) : Matrix (Fin T.rank) (Fin S.rank) (AE D)) = 0 from rfl, Matrix.map_zero _ (map_zero _), Matrix.transpose_zero, Matrix.mul_zero, Matrix.zero_mul, Matrix.map_zero _ (map_zero _), Matrix.mul_zero, Matrix.zero_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem adjCo_zero : adjCo φ S T BS BT 0 = 0 := by
   unfold adjCo
@@ -126,11 +126,11 @@ theorem adjCo_zero : adjCo φ S T BS BT 0 = 0 := by
 end Lin
 
 /- English proof (translation)
-Proceed by induction on `hw using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨β, hβ, o, rfl⟩` from `hw`. Use `AddSubgroup.subset_closure ⟨β, hβ, o • y, Λ.smul_mem o hy, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one]`. Both sides reduce to the same expression. Consider the case `zero => simp only [zero_mul]`. Conclude with `zero_mem _`. Consider the case `add x z _ _ hx hz => simp only [add_mul]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `add_mem hx hz`. Consider the case `neg x _ hx => simp only [neg_mul]`. Conclude with `neg_mem hx`.
+A detailed English derivation is pending.
 -/
 theorem mul_latHat_mem {n : ℕ} (Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E))
     {w : Af D.host.F ⊗[D.host.F] D.host.E} (hw : w ∈ intAE D) {y : Fin n → D.host.E} (hy : y ∈ Λ) :
@@ -147,19 +147,17 @@ theorem mul_latHat_mem {n : ℕ} (Λ : Submodule (𝓞 D.host.E) (Fin n → D.ho
   | neg x _ hx => simp only [neg_mul]; exact neg_mem hx
 
 /- English proof (translation)
-Introduce `D S T ΛS ΛT βS βT hS hT hfS hfT v φ e he a hmax u hu`. Take `⟨hπ, -, hQ, -, -⟩` from `GlobalTheory.SplitProjChart.chart_rdA D v φ e he`. Proceed by induction on `hu using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨α, hα, -, a', ha', s, hs, t, ht, rfl⟩` from `hw`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Introduce `i j`. Rewrite using `[adjCo_gen φ hπ.2.2.1 hQ]`. Establish `h1` using `(GlobalTheory.T.splitPlace_column_mem_completedLattice_iff_frame_integral D S ΛS βS hS hfS v φ e he fun k => incA D (s k)).1 (by`. Simplify using `only [GlobalTheory.SplitHomLattice.finPart_mul_incA]`. Conclude with `mul_latHat_mem ΛS (GlobalTheory.SplitHomLattice.idem_int he.1) hs) i`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2` using `(GlobalTheory.T.conjPart_mem_completedSelfDualLattice_iff_splitPlace D T ΛT βT hT hfT v φ e he fun k => incA D (t k)).1 (by`. Simplify using `only [GlobalTheory.SplitHomLattice.finPart_mul_incA]`. Conclude with `mul_latHat_mem ΛT (GlobalTheory.SplitHomLattice.idem_int (GlobalTheory.SplitScalar.isSplitIdem_conj he.1)) ht) j`. Simplify using `only [hQ] at h1`. Simplify using `only [GlobalTheory.SplitDualLat.cA_incA, hQ] at h2`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `hmax a' ha'`. Establish `h4 : Valued.v (evalV D.host.F v α) ≤ 1`. Use `hα v` as an intermediate fact. Rewrite `this` using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Then use the resulting hypothesis. Rewrite using `[Valuation.map_mul, Valuation.map_mul, Valuation.map_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Treat this case separately.
 
-Combine the equalities or inequalities in the displayed calculation. Consider the case `zero`. Introduce `i j`. Rewrite using `[adjCo_zero, Matrix.zero_apply, map_zero]`. Conclude with `zero_le'`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add x y _ _ hx hy`. Introduce `i j`. Rewrite using `[adjCo_add, Matrix.add_apply]`. Conclude with `Valuation.map_add_le _ (hx i j) (hy i j)`. Consider the case `neg x _ hx`.
-
-Introduce `i j`. Rewrite using `[adjCo_neg, Matrix.neg_apply, Valuation.map_neg]`. Conclude with `hx i j`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adjCo_bound : ∀ (D : D7) (S T : HSp D) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) (βS : GL (Fin S.rank) (EAf D)) (βT : GL (Fin T.rank) (EAf D)), IsSelfDualC S ΛS → IsSelfDualC T ΛT → Formalism.L2.DIV.IsFrame βS ΛS → Formalism.L2.DIV.IsFrame βT ΛT → ∀ (v : FinPl D) (φ : SplitProj D v) (e : AE D), IsIdemOf φ e → ∀ a : D.host.E, (∀ a' : D.host.E, a' ∈ D.host.AA → Valued.v (rdQ φ (star a')) ≤ Valued.v (rdQ φ (star a))) → ∀ u ∈ latO S T ΛS ΛT (fun _ => True), ∀ i j, Valued.v (adjCo φ S T (frCo φ βS) (frCo φ βT) u i j) ≤ Valued.v (rdQ φ (star a)) := by
   intro D S T ΛS ΛT βS βT hS hT hfS hfT v φ e he a hmax u hu

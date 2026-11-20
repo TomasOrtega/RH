@@ -23,9 +23,9 @@ namespace GlobalTheory.FamTrace.PairsFwd
 end GlobalTheory.FamTrace.PairsFwd
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hA u a _ hat row col _ κ _ y hy hU i g hg`. Take `⟨hP⟩` from `hA.tr.pins`. Take `⟨hC⟩` from `hA.tr.std`. Establish `hF` using `hC u`. Take `⟨k₀, hR⟩` from `hF.ends 0 (Nat.zero_le _) (Or.inl rfl)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `@GlobalTheory.FamTrace.PairsFwd.stdPair_fixed B X I hA.tr.ok hP l Z u _ _ _ hF 0 (Nat.zero_le _) (_root_.GlobalTheory.MiTop.formsAtZero W u).cls0.lev (fun x => hR.lb () x) a.k a.fld a.val a.top a.loc a.ι _ _ _ _ hat.std κ y.1 hy hU i g hg`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FamTrace.keepsPairs_of_mem_level_alt : ∀ {B : GlobalTheory.Mem.Base} {X : GlobalTheory.Mem.PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex), _root_.GlobalTheory.Fam.AllFamilyConditions W → ∀ (u : B.Word) (a : _root_.GlobalTheory.Fam.GeometricFamily W u), a.Is → a.True → ∀ row col, (a.fam row col).c.Is → ∀ κ ∈ GfC ((I.rec7 l Z).sp.X 0), ∀ y : Formalism.UG.UPts (Formalism.L2.Forms.sigD (I.rec7 l Z)) (Formalism.L2.Forms.gramN (I.rec7 l Z) 0 (Nat.zero_le _)) (FiniteAdeleRing (𝓞 (I.rec7 l Z).host.F) (I.rec7 l Z).host.F), GlobalTheory.AdForm.finM ((I.rec7 l Z).sp.X 0) (Formalism.L2.Forms.rankN (I.rec7 l Z) 0 (Nat.zero_le _)) κ = y.1.1 → (y : GL _ _) ∈ (_root_.GlobalTheory.MiTop.formsAtZero W u).cls0.lev.U → _root_.GlobalTheory.FamTrace.KeepsPairsAlt a κ := by
   intro B X I l Z L hT Gi Gl Kc Yd cX ex W hA u a _ hat row col _ κ _ y hy hU i g hg

@@ -6,13 +6,13 @@ open CategoryTheory Limits AlgebraicGeometry Opposite
 namespace LateralTheory.E.ChartAwayPf
 
 /- English proof (translation)
-Introduce `X Y B _ j _ I g hj`. Set `f` to `Spec.map (CommRingCat.ofHom (algebraMap B (Localization.Away g)))`. Establish `hf : ∀ y' : Spec (CommRingCat.of (Localization.Away g)), (show PrimeSpectrum B from f.base y') = PrimeSpectrum.comap (algebraMap B (Localization.Away g)) (show PrimeSpectrum _ from y')` using `fun _ => rfl`. Use `⟨f ≫ j, inferInstance, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨y, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨f.base y, rfl⟩`. Introduce `y hy`. Establish `: (show PrimeSpectrum B from y) ∈ Set.range (PrimeSpectrum.comap (algebraMap B (Localization.Away g)))`. Rewrite using `[PrimeSpectrum.localization_away_comap_range (Localization.Away g) g]`. Conclude with `hy`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨y', hy'⟩` from `this`. Use `⟨y', ?_⟩` and prove the remaining obligations. Use `show j.base (f.base y') = j.base y`. Rewrite using `[show f.base y' = y from (hf y').trans hy']`. Introduce `y' show j.base (f.base y') ∈ Y ↔ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hj (f.base y'), hf y', Ideal.map_le_iff_le_comap]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem ChartAway_of : LateralTheory.E.LeafChartAffPf.ChartAway := by
   intro X Y B _ j _ I g hj

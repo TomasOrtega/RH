@@ -18,7 +18,7 @@ def midNat (a : K ⊕ K' → ℕ) : K ⊕ (K₂ ⊕ K') → ℕ :=
   Sum.elim (fun k => a (.inl k)) (Sum.elim 0 (fun k => a (.inr k)))
 
 /- English proof (translation)
-Introduce `a b e`. Use function extensionality and compare the values at `l`. Break down `l with k | k` into its components or cases. Conclude with `congrFun e (.inl k)`. Conclude with `congrFun e (.inr (.inr k))`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem midNat_injective : Function.Injective (midNat (K := K) (K' := K') (K₂ := K₂)) := by
   intro a b e
@@ -28,15 +28,15 @@ theorem midNat_injective : Function.Injective (midNat (K := K) (K' := K') (K₂ 
   · exact congrFun e (.inr (.inr k))
 
 /- English proof (translation)
-Apply the tactic sequence `rintro ⟨k | k, i⟩ ⟨l | l, j⟩ h <;> dsimp only [midVar] at h <;> cases h <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem midVar_injective : Function.Injective (midVar (ι := ι) (ι' := ι') ι₂) := by
   rintro ⟨k | k, i⟩ ⟨l | l, j⟩ h <;> dsimp only [midVar] at h <;> cases h <;> rfl
 
 /- English proof (translation)
-Proceed by induction on `h using MvPolynomial.induction_on with`. Consider the case `C a => simp [mcMap, algebraMap_eq]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p v hp`. Simplify using `only [map_mul, hp, rename_X]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Apply the tactic sequence `obtain ⟨k | k, i⟩ := v <;> simp [mcMap, midVar, joinCoord]`.
+Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mcMap_rename_midVar (R : Type) [CommRing R] {Ω : Type} [Field Ω] [Algebra R Ω]
     (x : (Σ k, ι k) → Ω) (w : (Σ k, ι₂ k) → Ω) (z : (Σ k, ι' k) → Ω)
@@ -52,7 +52,7 @@ theorem mcMap_rename_midVar (R : Type) [CommRing R] {Ω : Type} [Field Ω] [Alge
     obtain ⟨k | k, i⟩ := v <;> simp [mcMap, midVar, joinCoord]
 
 /- English proof (translation)
-Simplify using `only [mcIdeal, RingHom.mem_ker, mcMap_rename_midVar]`. Conclude with `map_eq_zero_iff _ (rename_injective _ (Sum.map_injective.mpr ⟨Function.injective_id, Sum.inr_injective⟩))`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rename_mem_mcIdeal_iff (R : Type) [CommRing R] {Ω : Type} [Field Ω] [Algebra R Ω]
     (x : (Σ k, ι k) → Ω) (w : (Σ k, ι₂ k) → Ω) (z : (Σ k, ι' k) → Ω)
@@ -66,11 +66,11 @@ variable [Fintype K] [Fintype K'] [Fintype K₂] [∀ k, Fintype (ι k)] [∀ k,
   [∀ k, Fintype (ι₂ k)]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `l`. Rewrite using `[Objects.weight_blockWeight_apply]`. Break down `l with k | k | k` into its components or cases. Express the relevant statement in the definitionally equal form `_ = Finsupp.weight (blockWeight (Sum.elim ι ι')) d (.inl k)`. Rewrite using `[Objects.weight_blockWeight_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun i _ => Finsupp.mapDomain_apply midVar_injective d ⟨.inl k, i⟩`. Express the relevant statement in the definitionally equal form `_ = 0`. Use `Finset.sum_eq_zero fun i _ => Finsupp.mapDomain_of_notMem_range _ _ ?_` and prove the remaining obligations. Apply the tactic sequence `rintro ⟨⟨k' | k', j⟩, h⟩ <;> dsimp only [midVar] at h <;> cases h`. Express the relevant statement in the definitionally equal form `_ = Finsupp.weight (blockWeight (Sum.elim ι ι')) d (.inr k)`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Objects.weight_blockWeight_apply]`. Conclude with `Finset.sum_congr rfl fun i _ => Finsupp.mapDomain_apply midVar_injective d ⟨.inr k, i⟩`.
+A detailed English derivation is pending.
 -/
 theorem weight_mapDomain_midVar [DecidableEq K] [DecidableEq K'] [DecidableEq K₂]
     (d : (Σ k : K ⊕ K', Sum.elim ι ι' k) →₀ ℕ) :
@@ -90,9 +90,9 @@ theorem weight_mapDomain_midVar [DecidableEq K] [DecidableEq K'] [DecidableEq K�
     exact Finset.sum_congr rfl fun i _ => Finsupp.mapDomain_apply midVar_injective d ⟨.inr k, i⟩
 
 /- English proof (translation)
-Unfold `IsMultiHomog at hf ⊢`. Proceed by induction on `hf using IsWeightedHomogeneous.induction_on with`. Consider the case `zero => simpa using isWeightedHomogeneous_zero R _ _`. Consider the case `add p q hp hq ihp ihq => simpa [map_add] using ihp.add ihq`. Consider the case `monomial d r hr`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite using `[rename_monomial]`. Conclude with `isWeightedHomogeneous_monomial _ _ _ (by rw [weight_mapDomain_midVar, hr])`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMultiHomog_rename [DecidableEq K] [DecidableEq K'] [DecidableEq K₂] {R : Type} [CommRing R]
     {f : MvPolynomial (Σ k : K ⊕ K', Sum.elim ι ι' k) R} {a : K ⊕ K' → ℕ} (hf : IsMultiHomog f a) :
@@ -106,7 +106,7 @@ theorem isMultiHomog_rename [DecidableEq K] [DecidableEq K'] [DecidableEq K₂] 
     exact isWeightedHomogeneous_monomial _ _ _ (by rw [weight_mapDomain_midVar, hr])
 
 /- English proof (translation)
-Rewrite `hf`, the goal using `[← Objects.isMultiHomog_iff]`. Conclude with `isMultiHomog_rename hf`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMultiHomog_rename' {R : Type} [CommRing R] {f : MvPolynomial (Σ k : K ⊕ K', Sum.elim ι ι' k) R}
     {a : K ⊕ K' → ℕ} (hf : ReciprocityTheory.ChartRestriction.G.Geo.IsMultiHomog f a) :
@@ -116,9 +116,9 @@ theorem isMultiHomog_rename' {R : Type} [CommRing R] {f : MvPolynomial (Σ k : K
   exact isMultiHomog_rename hf
 
 /- English proof (translation)
-Proceed by induction on `h using MvPolynomial.induction_on' with`. Consider the case `monomial d r`. Establish `hm : IsMultiHomog (monomial d r : MvPolynomial (Σ k : K ⊕ K', Sum.elim ι ι' k) R) (Finsupp.weight (blockWeight (Sum.elim ι ι')) d)` using `isWeightedHomogeneous_monomial _ _ _ rfl`. Establish `hj` using `isMultiHomog_rename (ι₂ := ι₂) hm`. Distinguish the cases in `hb : b = Finsupp.weight (blockWeight (Sum.elim ι ι')) d`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Substitute `hb` using the available equality. Rewrite using `[IsWeightedHomogeneous.weightedHomogeneousComponent_same hm, IsWeightedHomogeneous.weightedHomogeneousComponent_same hj]`. Rewrite using `[IsWeightedHomogeneous.weightedHomogeneousComponent_ne b hm hb, IsWeightedHomogeneous.weightedHomogeneousComponent_ne _ hj (fun e => hb (midNat_injective e)), map_zero]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem rename_weightedHomogeneousComponent [DecidableEq K] [DecidableEq K'] [DecidableEq K₂] {R : Type}
     [CommRing R] (b : K ⊕ K' → ℕ) (h : MvPolynomial (Σ k : K ⊕ K', Sum.elim ι ι' k) R) :
@@ -140,11 +140,11 @@ theorem rename_weightedHomogeneousComponent [DecidableEq K] [DecidableEq K'] [De
   | add p q hp hq => simp only [map_add, hp, hq]
 
 /- English proof (translation)
-Rewrite `hQ`, the goal using `[← Objects.isMultiProjPrime_iff]`. Use `hQ.isPrime` as an intermediate fact. Use `⟨Ideal.comap_isPrime _ Q, fun h hh b => ?_, fun k => ?_⟩` and prove the remaining obligations. Rewrite `hh`, the goal using `[Ideal.mem_comap]`. Rewrite using `[rename_weightedHomogeneousComponent]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hQ.multiHomog _ hh _`. Break down `k with k | k` into its components or cases. Take `⟨i, hi⟩` from `hQ.relevant (Sum.inl k)`. Conclude with `⟨i, by rw [Ideal.mem_comap, rename_X]; exact hi⟩`. Take `⟨i, hi⟩` from `hQ.relevant (Sum.inr (Sum.inr k))`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨i, by rw [Ideal.mem_comap, rename_X]; exact hi⟩`.
+A detailed English derivation is pending.
 -/
 theorem comap_isMultiProjPrime {R : Type} [CommRing R]
     {Q : Ideal (MvPolynomial (Σ k : K ⊕ (K₂ ⊕ K'), Sum.elim ι (Sum.elim ι₂ ι') k) R)}
@@ -168,13 +168,13 @@ end JoinVerticalDivisorRight
 open JoinVerticalDivisorRight in
 
 /- English proof (translation)
-Introduce `O _ _ _ Ω _ _ K _ ι _ x K' _ ι' _ z K₂ _ ι₂ _ w b f g hD`. Take `⟨⟨α, β, hf, hg, hb⟩, hfP, hgP, hU⟩` from `hD`. Use `⟨⟨midNat α, midNat β, isMultiHomog_rename' hf, isMultiHomog_rename' hg, ?_⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `(k | k | k)`. Conclude with `hb (.inl k)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Simplify using `[midNat, midDeg]`. Conclude with `hb (.inr k)`. Rewrite using `[rename_mem_mcIdeal_iff]` and apply the resulting hypothesis. Rewrite using `[rename_mem_mcIdeal_iff]` and apply the resulting hypothesis. Introduce `Q hQ hPQ hQO`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : mcIdeal O (joinCoord x z) ≤ Q.comap (rename (midVar (ι` using `ι) (ι' := ι') ι₂)) := fun h hh => Ideal.mem_comap.mpr (hPQ ((rename_mem_mcIdeal_iff O x w z h).mpr hh))`. Establish `hO : (Q.comap (rename (midVar (ι` using `ι) (ι' := ι') ι₂))).comap (C : O →+* ReciprocityTheory.ChartRestriction.G.Geo.MRingOver O (Sum.elim ι ι')) = ⊥ := by`. Rewrite `hQO`, the goal using `[eq_bot_iff]`. Introduce `c hc`. Apply `hQO` to reduce the goal to its premises.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Simplify `hc` using `[Ideal.mem_comap, rename_C]`. Take `⟨u, v, ⟨γ, hu⟩, ⟨δ, hv⟩, huQ, hvQ, huv⟩` from `hU _ (comap_isMultiProjPrime hQ) hle hO`. Use `⟨rename (midVar ι₂) u, rename (midVar ι₂) v, ⟨_, isMultiHomog_rename' hu⟩, ⟨_, isMultiHomog_rename' hv⟩, huQ, hvQ, ?_⟩` and prove the remaining obligations. Use `(rename_mem_mcIdeal_iff O x w z _).mpr huv` as an intermediate fact. Simplify `this` using `only [map_sub, map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem JoinVerticalDivisorRight.proof : JoinVerticalDivisorRight.Statement := by
   intro O _ _ _ Ω _ _ K _ ι _ x K' _ ι' _ z K₂ _ ι₂ _ w b f g hD

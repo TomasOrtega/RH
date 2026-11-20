@@ -12,14 +12,14 @@ open PositivityTheory.RgUd.T PositivityTheory.RgUd.T.Desc.SLF PositivityTheory.R
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
 
 /- English proof (translation)
-Simplify using `using Lat_add Z m 0`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Bi.Lat_eq_map (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (m : ℕ) :
     Lat Z m = (Lat Z 0).map (smulA (pi k ^ m)) := by
   simpa using Lat_add Z m 0
 
 /- English proof (translation)
-Establish `hp : pi k ^ m ≠ 0` using `pow_ne_zero _ ((Valuation.ne_zero_iff _).1 (GLnLocal.valuation_uniformizer_ne_zero k))`. Introduce `x y hxy`. Conclude with `smul_right_injective (Matrix (Fin n) (Fin n) k) hp hxy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem smulA_injective' (m : ℕ) :
     Function.Injective (smulA (k := k) (n := n) (pi k ^ m)) := by
@@ -29,7 +29,7 @@ private theorem smulA_injective' (m : ℕ) :
   exact smul_right_injective (Matrix (Fin n) (Fin n) k) hp hxy
 
 /- English proof (translation)
-Rewrite using `[Lat_add Z m r, Lat_eq_map Z m, AddSubgroup.relIndex_map_map_of_injective _ _ (smulA_injective' m)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Bi.relIndex_lat (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (m r : ℕ) :
     (Lat Z (m + r)).relIndex (Lat Z m) = (Lat Z r).relIndex (Lat Z 0) := by
@@ -37,11 +37,9 @@ theorem Bi.relIndex_lat (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (m r : ℕ
     AddSubgroup.relIndex_map_map_of_injective _ _ (smulA_injective' m)]
 
 /- English proof (translation)
-Rewrite using `[Lat_add Z m r, Lat_eq_map Z m]`. Establish `hcomm : ((Lat Z 0).map (smulA (pi k ^ m))).map (conjA g) = ((Lat Z 0).map (conjA g)).map (smulA (pi k ^ m))`. Rewrite using `[AddSubgroup.map_map, AddSubgroup.map_map]`. Use `congr 1`. Use `ext1 x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Conclude with `conjA_smulA g _ x`. Rewrite using `[hcomm, AddSubgroup.relIndex_map_map_of_injective _ _ (smulA_injective' m)]`. Establish `hid : (conjA g⁻¹).comp (conjA g) = AddMonoidHom.id _` using `by ext1 x`. Conclude with `conjA_inv_conjA g x`. Use `AddSubgroup.relIndex_map_map_of_injective (Lat Z r) ((Lat Z 0).map (conjA g)) (conjA_injective g⁻¹)` as an intermediate fact.
-
-Rewrite `this` using `[AddSubgroup.map_map, hid, AddSubgroup.map_id]`. Conclude with `this.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Bi.relIndex_lat_conj (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (g : GL (Fin n) k) (m r : ℕ) :
     (Lat Z (m + r)).relIndex ((Lat Z m).map (conjA g)) = ((Lat Z r).map (conjA g⁻¹)).relIndex (Lat Z 0) := by
@@ -62,11 +60,11 @@ theorem Bi.relIndex_lat_conj (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (g : 
   exact this.symm
 
 /- English proof (translation)
-Introduce `n Z hZ g hg`. Take `⟨c0, hc01, hc0⟩` from `exists_shift Z g hg`. Take `⟨c1, hc1⟩` from `core Z hZ g hg`. Use `⟨c0 + c1, fun m hm m' hm' => ?_⟩` and prove the remaining obligations. Establish `h1m : 1 ≤ m` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨r, rfl⟩ : ∃ r, m' = m + r` from `⟨m' - m, by omega⟩`. Establish `hr : c1 ≤ r` using `by omega`. Use `⟨Lc_le Z g hg c0 hc0 h1m (by omega), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[relIndex_Lc_conj Z g hg c0 hc0 h1m (by omega) (by omega), relIndex_Lc Z h1m (by omega), Bi.relIndex_lat_conj, Bi.relIndex_lat]`. Conclude with `(hc1 r hr).1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[relIndex_Lc Z h1m (by omega), Bi.relIndex_lat]`. Conclude with `(hc1 r hr).2`.
+A detailed English derivation is pending.
 -/
 theorem indexSym [CharZero k] : IndexSym (k := k) := by
   intro n Z hZ g hg

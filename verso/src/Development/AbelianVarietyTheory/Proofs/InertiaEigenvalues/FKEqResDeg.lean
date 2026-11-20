@@ -10,15 +10,15 @@ open GlobalTheory.BKReal IsLocalRing Formalism.BasicNotions.Examples₂.LB
 namespace GlobalTheory.AinfK
 
 /- English proof (translation)
-Establish `hN` using `normV_eq_pow (hj.mem_placesOver h)`. Use `Nat.pow_right_injective hl.out.two_le (le_antisymm ?_ ?_)` and prove the remaining obligations. Take `⟨-, ω, hω, -⟩` from `exists_gen l (fK Bw.Kw)`. Establish `h1` using `one_lt_pow_l l (fK Bw.Kw)`. Establish `hm : ω ∈ K0 Bw.Kw` using `Kunr_fK Bw.Kw ▸ IntermediateField.subset_adjoin _ _ (show ω ^ l ^ fK Bw.Kw = ω by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Nat.sub_add_cancel h1.le, pow_succ, hω.pow_eq_one, one_mul])`. Establish `h2` using `weilToGK_frobUr hj (frob h) (a := 1) (b := 0) (actsAs_of_deg (by simp)) ⟨ω, hm.2⟩`. Rewrite `h2` using `[mul_one, mul_zero, pow_zero, frobUr_pow_root _ _ (l ^ fK Bw.Kw - 1) (by omega) (fun hd => hl.out.not_dvd_one ((Nat.dvd_sub_iff_right h1.le (dvd_pow_self l (NeZero.ne _))).1 hd)) (Subtype.ext hω.pow_eq_one)]`. Establish `h3 : ω = ω ^ l ^ resDeg l w` using `((IntermediateField.mem_fixingSubgroup_iff _ _).1 (weilToGK Bw h (frob h)).2 _ hm.1).symm.trans h2`. Establish `h4` using `one_lt_normV w`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h4` using `[hN]`. Establish `h5 : ω ^ (l ^ resDeg l w - 1) = 1` using `mul_right_cancel₀ (hω.ne_zero (by omega)) (by`. Rewrite using `[← pow_succ, Nat.sub_add_cancel h4.le, one_mul, ← h3])`. Use `Nat.le_of_dvd (by omega) (hω.dvd_of_pow_eq_one _ h5)` as an intermediate fact. Express the relevant statement in the definitionally equal form `l ^ _ ≤ l ^ _`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use linear arithmetic over natural numbers and integers. Express the relevant statement in the definitionally equal form `l ^ _ ≤ l ^ _`. Rewrite using `[← hN, ← card_res]`. Set `u : 𝓞 E →+* ↥Bw.Kw.1` to `(Bw.j.comp ((algebraMap E Ω).comp (algebraMap (𝓞 E) E))).codRestrict Bw.Kw.1 fun x => Bw.j_E _`. Set `v : 𝓞 E →+* ↥(OL Bw.Kw)` to `u.codRestrict (OL Bw.Kw) fun x => (map_isIntegral_int u (RingOfIntegers.isIntegral x)).tower_top`.
+Use linear arithmetic over natural numbers and integers. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hk : ∀ x, ((residue _).comp v) x = 0 ↔ x ∈ w.asIdeal` using `fun x => by`. Rewrite using `[RingHom.comp_apply, residue_eq_zero_iff, mem_max, ← h x, hj.valuation_lt_one_iff]`. Both sides reduce to the same expression. Use `OL_resFinite Bw.Kw` as an intermediate fact. Conclude with `Nat.card_le_card_of_injective (Ideal.Quotient.lift w.asIdeal _ fun x hx => (hk x).2 hx) (RingHom.lift_injective_of_ker_le_ideal _ _ fun x hx => (hk x).1 hx)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fK_eq_resDeg {l : ℕ} [hl : Fact l.Prime] {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω]
     [IsAlgClosure E Ω] {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {O : Type} [CommRing O]

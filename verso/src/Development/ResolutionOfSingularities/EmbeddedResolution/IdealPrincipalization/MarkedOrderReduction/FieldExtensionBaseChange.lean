@@ -42,7 +42,7 @@ abbrev baseChangeStructMap (T : MarkedIdealWithBoundary.{u}) (L : Type u) [Field
   pullback.snd T.structMap (specMapOfFieldHom T.base L f)
 
 /- English proof (translation)
-Rewrite using `[← Scheme.IdealSheafData.comap_comp, e.hom_inv_id]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem comap_hom_comap_inv_eq_self {A B : Scheme.{u}} (e : A ≅ B) (D : A.IdealSheafData) :
     (D.comap e.inv).comap e.hom = D := by
@@ -50,9 +50,9 @@ private theorem comap_hom_comap_inv_eq_self {A B : Scheme.{u}} (e : A ≅ B) (D 
   simp
 
 /- English proof (translation)
-Establish `hex : ∃ q : X.IdealSheafData × X.IdealSheafData, IsMonomialSplitting E I q.1 q.2` using `⟨(M, N), hs⟩`. Establish `hch : IsMonomialSplitting E I hex.choose.1 hex.choose.2` using `hex.choose_spec`. Establish `hNN` using `(hu _ _ hch).2`. Unfold `nonMonomialPart monomialSplitting`. Rewrite using `[dif_pos hex]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hNN.symm`.
+A detailed English derivation is pending.
 -/
 private theorem nonMonomialPart_eq_of_isMonomialSplitting_unique {X : Scheme.{u}} {E : List X.IdealSheafData}
     {I M N : X.IdealSheafData} (hs : IsMonomialSplitting E I M N)
@@ -67,7 +67,7 @@ private theorem nonMonomialPart_eq_of_isMonomialSplitting_unique {X : Scheme.{u}
   exact hNN.symm
 
 /- English proof (translation)
-Substitute `hp` using the available equality. Substitute `hI` using the available equality. Substitute `hm` using the available equality. Substitute `hE` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem markedIdealWithBoundary_mk_congr {k : Type u} [Field k] {A : Scheme.{u}}
     {p q : A ⟶ Spec (CommRingCat.of k)} {I J : A.IdealSheafData} {m n : ℕ}
@@ -76,7 +76,7 @@ private theorem markedIdealWithBoundary_mk_congr {k : Type u} [Field k] {A : Sch
   subst hp; subst hI; subst hm; subst hE; rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `hgg` using `eq_of_heq hg`. Substitute `hgg` using the available equality. Conclude with `hh`.
+Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem isPullbackBlowupSequence_of_eq_of_heq (F : PrincipalizationAssignment.{u}) (B : MarkedIdealWithBoundary.{u})
     {W U : MarkedIdealWithBoundary.{u}} (h : W = U) (g : W.scheme ⟶ B.scheme) (g' : U.scheme ⟶ B.scheme)
@@ -89,7 +89,7 @@ private theorem isPullbackBlowupSequence_of_eq_of_heq (F : PrincipalizationAssig
   exact hh
 
 /- English proof (translation)
-Establish `hh` using `(TopCat.homeoOfIso (Scheme.forgetToTop.mapIso e)).isHomeomorph`. Rewrite using `[krullDimSucc_eq_withBotSuccToNat_topologicalKrullDim, krullDimSucc_eq_withBotSuccToNat_topologicalKrullDim]`. Use `congr 1`. Conclude with `hh.topologicalKrullDim_eq`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem krullDimSucc_eq_of_iso {A B : Scheme.{u}} (e : A ≅ B) : krullDimSucc A = krullDimSucc B := by
   have hh := (TopCat.homeoOfIso (Scheme.forgetToTop.mapIso e)).isHomeomorph
@@ -98,7 +98,7 @@ theorem krullDimSucc_eq_of_iso {A B : Scheme.{u}} (e : A ≅ B) : krullDimSucc A
   exact hh.topologicalKrullDim_eq
 
 /- English proof (translation)
-Establish `hsm : AlgebraicGeometry.Smooth s` using `h.smooth`. Establish `hqc : AlgebraicGeometry.QuasiCompact s` using `h.quasiCompact`. Conclude with `{ charZero := h.charZero locallyOfFiniteType := inferInstance nonzeroOnComponents := nonzeroOnComponents_comap_iso_hom e J h.nonzeroOnComponents one_le_mult := h.one_le_mult quasiCompact := inferInstance smooth := inferInstance snc := inStrictNormalCrossingPosition_comap_iso s e …`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isAdmissible_comap_of_iso {k : Type u} [Field k] {A B : Scheme.{u}} (e : A ≅ B)
     (s : B ⟶ Spec (CommRingCat.of k)) (J : B.IdealSheafData) (m : ℕ)
@@ -118,9 +118,7 @@ theorem isAdmissible_comap_of_iso {k : Type u} [Field k] {A B : Scheme.{u}} (e :
       snc := inStrictNormalCrossingPosition_comap_iso s e E h.snc }
 
 /- English proof (translation)
-Introduce `B b pB IB EB hvalid hbp Q a b' hpb A y`. Use `hg B (b ≫ S.bottom) pB IB EB ?_ ?_ Q a (b' ≫ S.top) ?_ A y` and prove the remaining obligations. Conclude with `{ charZero := hvalid.charZero locallyOfFiniteType := hvalid.locallyOfFiniteType nonzeroOnComponents := hvalid.nonzeroOnComponents one_le_mult := hT.one_le_mult quasiCompact := hvalid.quasiCompact smooth := hvalid.smooth snc := hvalid.snc }`. Rewrite using `[Category.assoc, S.bottom_structMap]`. Conclude with `hbp`.
-
-Conclude with `hpb.paste_vert S.isPullback`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orderAtPullbackInvariant_verticalMap {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible)
     {Y : Scheme.{u}} {g : Y ⟶ T.scheme} (hg : OrderAtPullbackInvariant T g)
@@ -141,9 +139,9 @@ theorem orderAtPullbackInvariant_verticalMap {T : MarkedIdealWithBoundary.{u}} (
   · exact hpb.paste_vert S.isPullback
 
 /- English proof (translation)
-Introduce `S E hE hV`. Establish `: AlgebraicGeometry.Flat S.left` using `S.flat_verticalMap`. Take `⟨M, N, hMN⟩` from `hG.splitting_exists S.lowerTriple S.valid`. Establish `hu1 : ∀ M' N' : S.baseScheme.IdealSheafData, IsMonomialSplitting S.boundary S.ideal M' N' → M = M' ∧ N = N'` using `fun M' N' h' => hG.splitting_unique S.lowerTriple S.valid M N M' N' hMN h'`. Establish `h1` using `isMonomialSplitting_comap_of_flat S.left hMN`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hMNcomap : IsMonomialSplitting E (S.ideal.comap S.left) (M.comap S.left) (N.comap S.left)` using `(isMonomialSplitting_congr hE _ _ _).1 h1`. Establish `hu2 : ∀ M' N' : S.topScheme.IdealSheafData, IsMonomialSplitting E (S.ideal.comap S.left) M' N' → M.comap S.left = M' ∧ N.comap S.left = N'` using `fun M' N' h' => hG.splitting_unique (S.upperTriple k' q E) hV (M.comap S.left) (N.comap S.left) M' N' hMNcomap h'`. Rewrite using `[nonMonomialPart_eq_of_isMonomialSplitting_unique hMNcomap hu2, nonMonomialPart_eq_of_isMonomialSplitting_unique hMN hu1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem nonMonomialPartBaseChange_of_flat (hG : PrincipalizationGeometryHypotheses.{u}) (T : MarkedIdealWithBoundary.{u})
     {Y : Scheme.{u}} (g : Y ⟶ T.scheme) [AlgebraicGeometry.Flat g] (k' : Type u) [Field k']
@@ -166,7 +164,7 @@ theorem nonMonomialPartBaseChange_of_flat (hG : PrincipalizationGeometryHypothes
   rw [nonMonomialPart_eq_of_isMonomialSplitting_unique hMNcomap hu2, nonMonomialPart_eq_of_isMonomialSplitting_unique hMN hu1]
 
 /- English proof (translation)
-Introduce `S hsmooth E hE hSm'`. Establish `: AlgebraicGeometry.Flat S.left` using `S.flat_verticalMap`. Conclude with `monomialPrincipalization_isPullbackBlowupSequence_of_flat hG.monomialInputs τ S.lowerTriple S.topScheme k' (S.top ≫ q) S.left E hsmooth hE.symm hSm' (fun B b pB hbp IB EB hv Q a b' hpb A z => orderAtPullbackInvariant_verticalMap hT hg S B b pB IB EB hv hbp Q a b' hpb A z)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem monomialPrincipalizationBaseChange_of_flat (hG : PrincipalizationGeometryHypotheses.{u}) (τ : ComapIsoInvariance.{u})
     (T : MarkedIdealWithBoundary.{u}) (hT : T.IsAdmissible) {Y : Scheme.{u}} (g : Y ⟶ T.scheme)
@@ -183,7 +181,7 @@ theorem monomialPrincipalizationBaseChange_of_flat (hG : PrincipalizationGeometr
 namespace MarkedPullbackSquare
 
 /- English proof (translation)
-Establish `h` using `S.isPullback.paste_vert (IsPullback.of_hasPullback T.structMap (specMapOfFieldHom T.base L f))`. Rewrite `h` using `[S.bottom_structMap]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPullback_comp_baseChangeStructMap {T : MarkedIdealWithBoundary.{u}} {L : Type u} [Field L]
     {f : T.base →+* L} (S : MarkedPullbackSquare T (baseChangeProj T L f)) :
@@ -196,33 +194,29 @@ theorem isPullback_comp_baseChangeStructMap {T : MarkedIdealWithBoundary.{u}} {L
 end MarkedPullbackSquare
 
 /- English proof (translation)
-Introduce `S hord E hE hV hd`. Establish `hgstable : OrderAtPullbackInvariant T (baseChangeProj T L f)` using `orderAtPullbackInvariant_baseChange_field hG T hT L f`. Establish `hsq : IsPullback S.left (S.top ≫ baseChangeStructMap T L f) S.structMap (specMapOfFieldHom T.base L f)` using `MarkedPullbackSquare.isPullback_comp_baseChangeStructMap S`. Take `⟨e, hfst, hsnd⟩ : ∃ e : S.topScheme ≅ pullback S.structMap (specMapOfFieldHom T.base L f), e.hom ≫ pullback.fst S.structMap (specMapOfFieldHom T.base L f) = S.left ∧ e.hom ≫ pullback.snd S.structMap (specMapOfFieldHom T.base L f) = S.top ≫ baseChangeStructMap T L f` from `⟨hsq.isoPullback, hsq.isoPullback_hom_fst, hsq.isoPullback_hom_snd⟩`. Establish `hinvfst : e.inv ≫ S.left = pullback.fst S.structMap (specMapOfFieldHom T.base L f)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← hfst, Iso.inv_hom_id_assoc]`. Establish `hinvsnd : e.inv ≫ (S.top ≫ baseChangeStructMap T L f) = pullback.snd S.structMap (specMapOfFieldHom T.base L f)`. Rewrite using `[← hsnd, Iso.inv_hom_id_assoc]`. Establish `h2gen : ∀ A : S.baseScheme.IdealSheafData, (A.comap S.left).comap e.inv = A.comap (pullback.fst S.structMap (specMapOfFieldHom T.base L f))`. Introduce `A`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h : (A.comap S.left).comap e.inv = A.comap (e.inv ≫ S.left)` using `by simp`. Rewrite using `[h, hinvfst]`. Establish `hideal : (S.ideal.comap (pullback.fst S.structMap (specMapOfFieldHom T.base L f))).comap e.hom = S.ideal.comap S.left`. Establish `h : (S.ideal.comap (pullback.fst S.structMap (specMapOfFieldHom T.base L f))).comap e.hom = S.ideal.comap (e.hom ≫ pullback.fst S.structMap (specMapOfFieldHom T.base L f))` using `by simp`. Rewrite using `[h, hfst]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmapinv : ∀ l : List S.baseScheme.IdealSheafData, List.map (fun D : S.topScheme.IdealSheafData => D.comap e.inv) (List.map (fun D : S.baseScheme.IdealSheafData => D.comap S.left) l) = List.map (fun D : S.baseScheme.IdealSheafData => D.comap (pullback.fst S.structMap (specMapOfFie …`. Introduce `l`. Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons a t ih => simp only [List.map_cons, ih, h2gen a]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `hmapback : ∀ l : List S.topScheme.IdealSheafData, List.map (fun D : (pullback S.structMap (specMapOfFieldHom T.base L f)).IdealSheafData => D.comap e.hom) (List.map (fun D : S.topScheme.IdealSheafData => D.comap e.inv) l) = l`. Introduce `l`. Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons a t ih => simp only [List.map_cons, ih, comap_hom_comap_inv_eq_self e a]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `hdimS : S.lowerTriple.krullDimSucc ≤ n` using `le_trans S.dim_le hdim`. Establish `hOBS : S.lowerTriple.IsOrderBoundedByMult` using `(MarkedIdealWithBoundary.isOrderBoundedByMult_iff _).mpr hord`. Establish `hBE : MarkedIdealWithBoundary.SameNontrivialBoundary (S.lowerTriple.baseChange L f).boundary (E.map (fun D : S.topScheme.IdealSheafData => D.comap e.inv))`. Establish `h` using `MarkedIdealWithBoundary.SameNontrivialBoundary.map (fun D => D.comap e.inv) (by simp) hE`. Rewrite `h` using `[hmapinv]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`. Establish `h0` using `isAdmissible_comap_of_iso (k := L) e.symm (S.top ≫ baseChangeStructMap T L f) (S.ideal.comap S.left) S.mult E hV`. Simplify using `only [Iso.symm_hom] at h0`. Rewrite `h0` using `[hinvsnd, h2gen S.ideal]`. Establish `hval' : ((S.lowerTriple.baseChange L f).withBoundary (E.map (fun D : S.topScheme.IdealSheafData => D.comap e.inv))).IsAdmissible` using `h0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdim' : ((S.lowerTriple.baseChange L f).withBoundary (E.map (fun D : S.topScheme.IdealSheafData => D.comap e.inv))).krullDimSucc ≤ n`. Establish `hde : krullDimSucc S.topScheme = krullDimSucc (pullback S.structMap (specMapOfFieldHom T.base L f))` using `krullDimSucc_eq_of_iso e`. Use `show krullDimSucc (pullback S.structMap (specMapOfFieldHom T.base L f)) ≤ n`. Rewrite using `[← hde]`. Conclude with `hd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hOB'fun : ∀ y : ↥(pullback S.structMap (specMapOfFieldHom T.base L f)), orderAt (S.ideal.comap (pullback.fst S.structMap (specMapOfFieldHom T.base L f))) y ≤ (S.mult : ℕ∞)`. Introduce `y`. Establish `hy` using `S.orderAt_comap_verticalMap_le_of_forall_orderAt_le hT hgstable hord (e.inv y)`. Establish `h3 : orderAt ((S.ideal.comap S.left).comap e.symm.hom) y = orderAt (S.ideal.comap S.left) (e.symm.hom y)` using `orderAt_comap_of_isOpenImmersion e.symm.hom _ y`. Simplify using `only [Iso.symm_hom] at h3`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h3` using `[h2gen S.ideal]`. Rewrite using `[h3]`. Conclude with `hy`. Establish `hOB' : ((S.lowerTriple.baseChange L f).withBoundary (E.map (fun D : S.topScheme.IdealSheafData => D.comap e.inv))).IsOrderBoundedByMult` using `(MarkedIdealWithBoundary.isOrderBoundedByMult_iff _).mpr hOB'fun`. Establish `hpull` using `hF.base_change S.lowerTriple S.valid hdimS hOBS L f (E.map (fun D : S.topScheme.IdealSheafData => D.comap e.inv)) hBE hval' hdim' hOB'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `htri : ((((S.lowerTriple.baseChange L f).withBoundary (E.map (fun D : S.topScheme.IdealSheafData => D.comap e.inv))).pullbackAlong S.topScheme (S.top ≫ baseChangeStructMap T L f) e.hom).withBoundary E) = S.upperTriple L (baseChangeStructMap T L f) E` using `markedIdealWithBoundary_mk_congr rfl hideal rfl rfl`. Establish `hBE2 : MarkedIdealWithBoundary.SameNontrivialBoundary ((((S.lowerTriple.baseChange L f).withBoundary (E.map (fun D : S.topScheme.IdealSheafData => D.comap e.inv))).pullbackAlong S.topScheme (S.top ≫ baseChangeStructMap T L f) e.hom)).boundary E` using `by show MarkedIdealWithBoundary.SameNontrivialBoundary (List.map (fun D : (pullback S.structMap (specMapOfFieldHom T.base L f)).IdealSheafData => D.comap e.hom) (E.map (fun D : S.topScheme.IdealSheafData => D.comap e.inv))) E`. Rewrite using `[hmapback]`. Conclude with `MarkedIdealWithBoundary.SameNontrivialBoundary.refl E`. Establish `hval2 : (((((S.lowerTriple.baseChange L f).withBoundary (E.map (fun D : S.topScheme.IdealSheafData => D.comap e.inv))).pullbackAlong S.topScheme (S.top ≫ baseChangeStructMap T L f) e.hom)).withBoundary E).IsAdmissible`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[htri]`. Conclude with `hV`. Establish `hdim2 : (((((S.lowerTriple.baseChange L f).withBoundary (E.map (fun D : S.topScheme.IdealSheafData => D.comap e.inv))).pullbackAlong S.topScheme (S.top ≫ baseChangeStructMap T L f) e.hom)).withBoundary E).krullDimSucc ≤ n` using `hd`. Establish `hOB2 : (((((S.lowerTriple.baseChange L f).withBoundary (E.map (fun D : S.topScheme.IdealSheafData => D.comap e.inv))).pullbackAlong S.topScheme (S.top ≫ baseChangeStructMap T L f) e.hom)).withBoundary E).IsOrderBoundedByMult`. Rewrite using `[htri]`.
-
-Conclude with `(MarkedIdealWithBoundary.isOrderBoundedByMult_iff _).mpr (fun y => S.orderAt_comap_verticalMap_le_of_forall_orderAt_le hT hgstable hord y)`. Establish `hsmE : AlgebraicGeometry.Smooth e.hom` using `inferInstance`. Establish `hsjE : AlgebraicGeometry.Surjective e.hom` using `inferInstance`. Establish `hstrict` using `@IsOrderReduction.smooth_pullback_strict (fun d => d ≤ n) F G hF ((S.lowerTriple.baseChange L f).withBoundary (E.map (fun D : S.topScheme.IdealSheafData => D.comap e.inv))) hval' hdim' hOB' S.topScheme (S.top ≫ baseChangeStructMap T L f) e.hom hsmE hsjE hsnd E hBE2 hval2 hdim2 hO …`. Establish `hres` using `hpull.comp_isStrictPullbackSequenceOfBlowups hstrict`.
-
-Rewrite `hres` using `[hfst]`. Conclude with `isPullbackBlowupSequence_of_eq_of_heq F S.lowerTriple htri S.left S.left HEq.rfl hres`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem commutesWithBaseChange_baseChangeProj_of_isOrderReduction (hG : PrincipalizationGeometryHypotheses.{u}) (n : ℕ)
     (F G : PrincipalizationAssignment.{u}) (hF : IsOrderReduction (fun d => d ≤ n) F G)
@@ -350,7 +344,7 @@ theorem commutesWithBaseChange_baseChangeProj_of_isOrderReduction (hG : Principa
   exact isPullbackBlowupSequence_of_eq_of_heq F S.lowerTriple htri S.left S.left HEq.rfl hres
 
 /- English proof (translation)
-Establish `hflat : AlgebraicGeometry.Flat (baseChangeProj T L f)` using `inferInstanceAs (AlgebraicGeometry.Flat (pullback.fst T.structMap (specMapOfFieldHom T.base L f)))`. Conclude with `⟨commutesWithBaseChange_baseChangeProj_of_isOrderReduction hG n F G hF T hT hdim L f, hflat, monomialPrincipalizationBaseChange_of_flat hG τ T hT (baseChangeProj T L f) (orderAtPullbackInvariant_baseChange_field hG T hT L f) L (baseChangeStructMap T L f), nonMonomialPartBaseChang …`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem baseChangeCompatible_baseChangeProj_of_isOrderReduction (hG : PrincipalizationGeometryHypotheses.{u}) (τ : ComapIsoInvariance.{u}) (n : ℕ)
     (F G : PrincipalizationAssignment.{u}) (hF : IsOrderReduction (fun d => d ≤ n) F G)

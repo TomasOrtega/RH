@@ -8,11 +8,11 @@ open NumberField
 namespace LocBasisPlaceWork
 
 /- English proof (translation)
-Introduce `E _ _ p _ ρ N L hL hsp`. Set `A` to `Localization.AtPrime (plc ρ)`. Establish `hle : (plc ρ).primeCompl ≤ nonZeroDivisors (𝓞 E)` using `Ideal.primeCompl_le_nonZeroDivisors (plc ρ)`. Use `letI : Algebra A E := IsLocalization.localizationAlgebraOfSubmonoidLe A E (plc ρ).primeCompl (nonZeroDivisors (𝓞 E)) hle`. Establish `: IsScalarTower (𝓞 E) A E` using `IsLocalization.localization_isScalarTower_of_submonoid_le A E (plc ρ).primeCompl (nonZeroDivisors (𝓞 E)) hle`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `: IsDomain A` using `IsLocalization.isDomain_localization hle`. Establish `: IsFractionRing A E` using `IsFractionRing.isFractionRing_of_isDomain_of_isLocalization (plc ρ).primeCompl A E`. Establish `: IsDiscreteValuationRing A` using `IsLocalization.AtPrime.isDiscreteValuationRing_of_dedekind_domain (𝓞 E) (plc_ne_bot ρ) A`. Take `⟨P, hdet, hcol, hx⟩` from `core (A := A) (plc ρ).primeCompl N L hL hsp`. Use `⟨P, hdet, fun a => ?_, fun x hxL => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨s, hs, h⟩` from `hcol a`. Conclude with `⟨s, (mem_primeCompl_iff ρ s).mp hs, h⟩`. Take `⟨s, hs, c, h⟩` from `hx x hxL`. Conclude with `⟨s, (mem_primeCompl_iff ρ s).mp hs, c, h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem main : PI.LocBasisPlace := by
   intro E _ _ p _ ρ N L hL hsp

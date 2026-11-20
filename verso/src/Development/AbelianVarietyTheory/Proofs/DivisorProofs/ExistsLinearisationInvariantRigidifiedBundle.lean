@@ -18,9 +18,9 @@ namespace GlobalTheory.MumLin
 variable {X Y Z : Scheme.{0}} {L : LB X}
 
 /- English proof (translation)
-Establish `h1` using `(GlobalTheory.TripleCompare.lbIso_iff_pull_id L (L.pull σ)).1 h`. Take `⟨t, ht⟩` from `(GlobalTheory.TripleCompare.lbIso_iff_gen _ _ _ _).1 h1`. Take `⟨w, hw, -⟩` from `DVR.gen_transport (φ' := ![𝟙 X, σ]) (ε' := ![1, -1]) hL (by`. Rewrite using `[DVR.sameSum_iff_fsum, DVR.fsum_sumElim]`. Simplify using `[DVR.fsum, Fin.sum_univ_two]) t ht`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `⟨w, hw⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_gen_diff (hL : L.IsLB) (σ : X ⟶ X) (h : LBIso L (L.pull σ)) :
     ∃ w : LB.Gen (LB.LinComb L (K := Fin 2) ![𝟙 X, σ] ![1, -1]), w.IsGen := by
@@ -32,17 +32,17 @@ theorem exists_gen_diff (hL : L.IsLB) (σ : X ⟶ X) (h : LBIso L (L.pull σ)) :
   exact ⟨w, hw⟩
 
 /- English proof (translation)
-Establish `hq : (LB.mulGen L _ _ _ _ t (LB.invGen L φ' ε' t')).IsGen` using `DVR.mulGen_isGen_of_isGen t ht _ (DVR.invGen_isGen_of_isGen t' ht')`. Establish `h0 : DVR.fsum (fun k => 𝟙 Y ≫ Sum.elim φ φ' k) (Sum.elim ε fun k => -ε' k) = 0`. Rewrite using `[DVR.fsum_comp, DVR.fsum_sumElim, DVR.fsum_neg, hs, add_neg_cancel, Finsupp.mapDomain_zero]`. Take `⟨c, hc⟩` from `DVR.exists_value hL _ _ _ hq (𝟙 Y) h0`. Establish `key : ∀ (W : Scheme.{0}) (r : W ⟶ Y) (w : W) (J : (W ⟶ X) → L.ι), Good L w J → val (LB.mulGen L _ _ _ _ t (LB.invGen L φ' ε' t')) r w J = gm r w ⊤ c`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `W r w J hJ`. Establish `e1` using `val_pull hJ (LB.mulGen L _ _ _ _ t (LB.invGen L φ' ε' t')) (𝟙 Y) r`. Rewrite `e1` using `[Category.comp_id]`. Rewrite using `[← e1, val_of _ r w J (fun k => J (r ≫ 𝟙 Y ≫ Sum.elim φ φ' k)) (fun _ => rfl), ← hc _ (fun k₁ k₂ e => by simp only [e])]`. Conclude with `gm_res r w le_top (hJ.mem _ r) c`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hz1 : ∀ w : Z, gm z w ⊤ c = 1`. Introduce `w`. Take `⟨J, hJ, -⟩` from `exists_good (Z := Z) L hL w (K := PEmpty) PEmpty.elim PEmpty.elim (fun a => a.elim) (fun a => a.elim)`. Establish `e1` using `val_pull hJ t z (𝟙 Z)`. Establish `e2` using `val_pull hJ t' z (𝟙 Z)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e1`, `e2` using `[Category.id_comp]`. Rewrite using `[← key Z z w J hJ, val_mul hJ, val_inv, ← e1, ← e2, val_corr hJ H, mul_inv_cancel]`. Take `⟨d, hd⟩` from `hp c.val`. Establish `d1 : d = 1` using `fn_ext fun w _ => by`. Establish `e' : gm (𝟙 Z ≫ z) w ⊤ c = 1` using `by rw [Category.id_comp]; exact hz1 w`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e''` using `(gs_pull (𝟙 Z ≫ z) p w ⊤ trivial d).symm.trans ((congrArg (gs (𝟙 Z ≫ z) w ⊤) hd).trans ((gs_unit _ w ⊤ trivial c).trans (congrArg Units.val e')))`. Rewrite `e''` using `[Category.assoc, hzp, Category.comp_id]`. Rewrite using `[e'', gs_eq _ w ⊤ trivial, map_one, map_one, Units.val_one]`. Establish `c1 : c = 1` using `Units.ext (by rw [← hd, d1, map_one]; rfl)`. Use `corr_of_val hL fun y J hJ => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e` using `key Y (𝟙 Y) y J hJ`. Rewrite `e` using `[c1, map_one, val_mul hJ, val_inv, mul_inv_eq_one]`. Conclude with `e`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem corr_of_pull_section (hL : L.IsLB) {K K' : Type} [Fintype K] [Fintype K']
     {φ : K → (Y ⟶ X)} {ε : K → ℤ} {φ' : K' → (Y ⟶ X)} {ε' : K' → ℤ}
@@ -86,13 +86,13 @@ theorem corr_of_pull_section (hL : L.IsLB) {K K' : Type} [Fintype K] [Fintype K'
   exact e
 
 /- English proof (translation)
-Introduce `T X π e he hπ L hL ⟨r, hr⟩ Ga _ ρ θ hρ hθ heρ hiso`. Establish `hex : ∀ a, ∃ u : LB.Gen (LB.LinComb L (K` using `Fin 2) ![𝟙 X, ρ a] ![1, -1]), u.IsGen ∧ LB.Gen.Corr L _ _ _ _ (LB.pullGen L _ _ u e) (LB.mulGen L _ _ _ _ r (LB.invGen L _ _ (LB.pullGen L _ _ r (θ a)))) := by`. Introduce `a`. Take `⟨w, hw⟩` from `exists_gen_diff hL (ρ a) (hiso a)`. Use `DVR.exists_normalized_to hL _ _ w hw π e he _ _ _ (DVR.mulGen_isGen_of_isGen r hr _ (DVR.invGen_isGen_of_isGen _ (DVR.pullGen_isGen_of_isGen _ _ r hr _))) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[DVR.fsum_sumElim]`. Simplify using `[DVR.fsum, Fin.sum_univ_two, heρ a]`. Use `choose u hu hue using hex`. Use `⟨u, hu, fun a c => ?_⟩` and prove the remaining obligations. Use `corr_of_pull_section hL (hu _) (DVR.mulGen_isGen_of_isGen _ (hu a) _ (DVR.pullGen_isGen_of_isGen _ _ _ (hu c) _)) ?_ π e he hπ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[DVR.fsum_sumElim]`. Simplify using `only [DVR.fsum, Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Category.comp_id, hρ]`. Rewrite using `[add_assoc, ← add_assoc (Finsupp.single (ρ a) (-1 : ℤ)), ← Finsupp.single_add, neg_add_cancel, Finsupp.single_zero, zero_add]`. Use `corr_of_val hL fun y J hJ => ?_` and prove the remaining obligations. Establish `v1` using `val_corr hJ (hue (a * c)) (𝟙 T)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `v2` using `val_corr hJ (hue a) (𝟙 T)`. Establish `v3` using `val_corr hJ (hue c) (θ a)`. Simplify using `only [val_mul hJ, val_inv, val_pull hJ, Category.id_comp, Category.assoc, hθ] at v1 v2 v3 ⊢`. Rewrite using `[heρ a, v1, v2, v3, _root_.mul_assoc, inv_mul_cancel_left]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_linearisation : ∀ (T X : Scheme.{0}) (π : X ⟶ T) (e : T ⟶ X), e ≫ π = 𝟙 T → Function.Surjective π.appTop.hom → ∀ (L : LB X), L.IsLB → (∃ r : LB.Gen (L.pull e), r.IsGen) → ∀ (Ga : Type) [Group Ga] (ρ : Ga → (X ⟶ X)) (θ : Ga → (T ⟶ T)), (∀ a c, ρ (a * c) = ρ a ≫ ρ c) → (∀ a c, θ (a * c) = θ a ≫ θ c) → (∀ a, e ≫ ρ a = θ a ≫ e) → (∀ a, LBIso L (L.pull (ρ a))) → ∃ u : ∀ a, LB.Gen (LB.LinComb L (K := Fin 2) ![𝟙 X, ρ a] ![1, -1]), (∀ a, (u a).IsGen) ∧ ∀ a c, LB.Gen.Corr L _ _ _ _ (u (a * c)) (LB.mulGen L _ _ _ _ (u a) (LB.pullGen L _ _ (u c) (ρ a))) := by
   intro T X π e he hπ L hL ⟨r, hr⟩ Ga _ ρ θ hρ hθ heρ hiso

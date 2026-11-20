@@ -27,7 +27,7 @@ variable {R : Type} [CommRing R] [IsDomain R] {F : Type} [Field F] [Algebra (Fra
   {Z : Scheme.{0}}
 
 /- English proof (translation)
-Use `fam_ext fun α jj => fn_ext fun y hy => ?_` and prove the remaining obligations. Take `⟨J, hJ⟩` from `exists_good_at D.P.isLB y`. Use `(sec_trans (S.s α) (𝟙 _) y hy (hJ.mem _ (𝟙 _))).trans (Eq.trans (congrArg _ (h α y J hJ)) (sec_trans (T.s α) (𝟙 _) y hy (hJ.mem _ (𝟙 _))).symm)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem ext_val {D : DegPre R} {S T : Fam D F k}
     (h : ∀ (α : D.X) (y : (DegPre.BF D F).left) (J), Good D.P.L y J →
@@ -38,7 +38,7 @@ theorem ext_val {D : DegPre R} {S T : Fam D F k}
     (Eq.trans (congrArg _ (h α y J hJ)) (sec_trans (T.s α) (𝟙 _) y hy (hJ.mem _ (𝟙 _))).symm)
 
 /- English proof (translation)
-The claim follows from `gs_add q y _ (hJ.mem _ q) _ _`.
+A detailed English derivation is pending.
 -/
 theorem sval_add {D : DegPre R} (S T : Fam D F k) (α : D.X) (q : Z ⟶ (DegPre.BF D F).left) (y : Z) {J}
     (hJ : Good D.P.L y J) :
@@ -46,7 +46,7 @@ theorem sval_add {D : DegPre R} (S T : Fam D F k) (α : D.X) (q : Z ⟶ (DegPre.
   gs_add q y _ (hJ.mem _ q) _ _
 
 /- English proof (translation)
-Use `(gs_mul q y _ (hJ.mem _ q) _ _).trans (congrArg (· * _) ?_)` and prove the remaining obligations. Conclude with `(gs_res q y le_top (hJ.mem _ q) _).trans (gs_pull q (fst (TF (R := R) F) D.P.A).left y ⊤ trivial _)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sval_smul {D : DegPre R} (c : F) (S : Fam D F k) (α : D.X) (q : Z ⟶ (DegPre.BF D F).left) (y : Z) {J}
     (hJ : Good D.P.L y J) :
@@ -58,13 +58,13 @@ theorem sval_smul {D : DegPre R} (c : F) (S : Fam D F k) (α : D.X) (q : Z ⟶ (
 variable {j : ℕ} {D D' : DegPre R} (pD : IsPowDeg D' D j)
 
 /- English proof (translation)
-The claim follows from `congrArg (fun g => g.left) (whiskerLeft_fst (TF (R := R) F) (pD.pw.pr i))`.
+A detailed English derivation is pending.
 -/
 theorem prB_fst (i : Fin j) : prB pD F i ≫ (fst (TF (R := R) F) D.P.A).left = (fst (TF (R := R) F) D'.P.A).left :=
   congrArg (fun g => g.left) (whiskerLeft_fst (TF (R := R) F) (pD.pw.pr i))
 
 /- English proof (translation)
-Take `⟨hφ, H⟩` from `h α'`. Conclude with `boxPull_val (w := pD.w) (hφ := hφ) (s := fun i => (s i).s (pD.xe α' i)) H (𝟙 _) y hJ hJ'`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem box_val {S : Fam D' F k} {s : Fin j → Fam D F k} (h : IsBoxFam pD F k S s) (α' : D'.X)
     (y : (DegPre.BF D' F).left) {J J'} (hJ : Good D.P.L y J) (hJ' : Good D'.P.L y J') :
@@ -74,7 +74,7 @@ theorem box_val {S : Fam D' F k} {s : Fin j → Fam D F k} (h : IsBoxFam pD F k 
   exact boxPull_val (w := pD.w) (hφ := hφ) (s := fun i => (s i).s (pD.xe α' i)) H (𝟙 _) y hJ hJ'
 
 /- English proof (translation)
-Rewrite using `[← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ i), Function.update_self]`. Use `congrArg _ (Finset.prod_congr rfl fun l hl => ?_)` and prove the remaining obligations. Rewrite using `[Function.update_of_ne (Finset.ne_of_mem_erase hl)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_update {A S : Type*} [CommMonoid S] {j : ℕ} [DecidableEq (Fin j)] (g : Fin j → A → S) (s : Fin j → A)
     (i : Fin j) (x : A) :
@@ -84,7 +84,7 @@ theorem prod_update {A S : Type*} [CommMonoid S] {j : ℕ} [DecidableEq (Fin j)]
   rw [Function.update_of_ne (Finset.ne_of_mem_erase hl)]
 
 /- English proof (translation)
-The claim follows from `ext_val fun α y J' hJ' => by obtain ⟨J, hJ⟩ := exists_good_at D.P.isLB y exact (Units.mul_right_inj _).1 ((box_val pD hS α y hJ hJ').trans (box_val pD hT α y hJ hJ').symm)`.
+A detailed English derivation is pending.
 -/
 theorem box_unique {S T : Fam D' F k} {s : Fin j → Fam D F k} (hS : IsBoxFam pD F k S s)
     (hT : IsBoxFam pD F k T s) : S = T :=
@@ -93,7 +93,7 @@ theorem box_unique {S T : Fam D' F k} {s : Fin j → Fam D F k} (hS : IsBoxFam p
     exact (Units.mul_right_inj _).1 ((box_val pD hS α y hJ hJ').trans (box_val pD hT α y hJ hJ').symm)
 
 /- English proof (translation)
-The claim follows from `ext_val fun α y J' hJ' => by obtain ⟨J, hJ⟩ := exists_good_at D.P.isLB y have p := prod_update (fun l (t : Fam D F k) => sval (t.s (pD.xe α l)) (𝟙 _ ≫ prB pD F l) y J) s i have e := (box_val pD h α y hJ hJ').trans (p _) have e₁ := (box_val pD h₁ α y hJ hJ').trans (p _) have e₂ := …`.
+A detailed English derivation is pending.
 -/
 theorem box_add [DecidableEq (Fin j)] {S S₁ S₂ : Fam D' F k} {s : Fin j → Fam D F k} {i : Fin j} {a b : Fam D F k}
     (h : IsBoxFam pD F k S (Function.update s i (a + b))) (h₁ : IsBoxFam pD F k S₁ (Function.update s i a))
@@ -108,7 +108,7 @@ theorem box_add [DecidableEq (Fin j)] {S S₁ S₂ : Fam D' F k} {s : Fin j → 
     rw [sval_add _ _ _ _ _ hJ, sval_add _ _ _ _ _ hJ', mul_add, add_mul, e₁, e₂]
 
 /- English proof (translation)
-The claim follows from `ext_val fun α y J' hJ' => by obtain ⟨J, hJ⟩ := exists_good_at D.P.isLB y have p := prod_update (fun l (t : Fam D F k) => sval (t.s (pD.xe α l)) (𝟙 _ ≫ prB pD F l) y J) s i have e := (box_val pD h α y hJ hJ').trans (p _) have e₁ := (box_val pD h₁ α y hJ hJ').trans (p _) refine (Un …`.
+A detailed English derivation is pending.
 -/
 theorem box_smul [DecidableEq (Fin j)] {S S₁ : Fam D' F k} {s : Fin j → Fam D F k} {i : Fin j} {c : F} {a : Fam D F k}
     (h : IsBoxFam pD F k S (Function.update s i (c • a))) (h₁ : IsBoxFam pD F k S₁ (Function.update s i a)) :
@@ -127,9 +127,7 @@ end GlobalTheory.BoxLinear
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hG R _ _ j D D' pD F _ _ k`. Use `choose bx hbx using BoxFamily.exists_isBoxFam hG R j D D' pD F k`. Use `⟨⟨bx, fun s i a b => BoxLinear.box_add pD (hbx _) (hbx _) (hbx _), fun s i c a => BoxLinear.box_smul pD (hbx _) (hbx _)⟩, fun s S => ⟨fun h => ?_, fun h => ?_⟩⟩` and prove the remaining obligations. Conclude with `BoxLinear.box_unique pD h (hbx s)`. Rewrite using `[h]`.
-
-Conclude with `hbx s`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_boxFam_multilinear : GlobalFnsSt → ∀ (R : Type) [CommRing R] [IsDomain R] (j : ℕ) (D D' : DegPre R) (pD : IsPowDeg D' D j) (F : Type) [Field F] [Algebra (FractionRing R) F] (k : ℕ), ∃ bx : MultilinearMap F (fun _ : Fin j => Fam D F k) (Fam D' F k), ∀ (s : Fin j → Fam D F k) (S : Fam D' F k), IsBoxFam pD F k S s ↔ S = bx s := by
   intro hG R _ _ j D D' pD F _ _ k

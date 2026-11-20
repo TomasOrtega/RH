@@ -15,7 +15,7 @@ open Classical
 variable {B : Type*} [CommRing B]
 
 /- English proof (translation)
-The claim follows from `((IsLocalizedModule.iso p.primeCompl g).extendScalarsOfIsLocalization p.primeCompl (Localization.AtPrime p)).length_eq`.
+A detailed English derivation is pending.
 -/
 theorem length_localizedModule_eq_of_isLocalizedModule (p : Ideal B) [p.IsPrime]
     {X Y : Type*} [AddCommGroup X] [Module B X] [AddCommGroup Y] [Module B Y]
@@ -27,13 +27,13 @@ theorem length_localizedModule_eq_of_isLocalizedModule (p : Ideal B) [p.IsPrime]
     (Localization.AtPrime p)).length_eq
 
 /- English proof (translation)
-Establish `hn` using `n.isMaximal`. Establish `hm` using `m.isMaximal`. Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[length_localizedModule_eq_of_isLocalizedModule n.asIdeal (n.asIdeal.toLocalizedQuotient' (Localization.AtPrime n.asIdeal) n.asIdeal.primeCompl (Algebra.linearMap B (Localization.AtPrime n.asIdeal)))]`.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmax : n.asIdeal.localized' (Localization.AtPrime n.asIdeal) n.asIdeal.primeCompl (Algebra.linearMap B (Localization.AtPrime n.asIdeal)) = maximalIdeal (Localization.AtPrime n.asIdeal)`. Rewrite using `[Submodule.localized'_eq_span, ← Localization.AtPrime.map_eq_maximalIdeal]`. Both sides reduce to the same expression. Rewrite using `[hmax]`. Establish `: IsSimpleModule (Localization.AtPrime n.asIdeal) (Localization.AtPrime n.asIdeal ⧸ maximalIdeal (Localization.AtPrime n.asIdeal))` using `isSimpleModule_iff_isCoatom.mpr (Ideal.isMaximal_def.mp inferInstance)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Module.length_eq_one _ _`. Rewrite using `[Module.length_eq_zero_iff, LocalizedModule.subsingleton_iff]`. Take `⟨s, hsm, hsn⟩ : ∃ s ∈ m.asIdeal, s ∉ n.asIdeal` from `by by_contra! hc`. Conclude with `h (MaximalSpectrum.ext (hm.eq_of_le hn.ne_top hc).symm)`. Introduce `x`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨s, hsn, ?_⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Rewrite using `[Algebra.smul_def, Ideal.Quotient.algebraMap_eq, Ideal.Quotient.eq_zero_iff_mem.mpr hsm, zero_mul]`.
+A detailed English derivation is pending.
 -/
 theorem length_localizedModule_quotient (n m : MaximalSpectrum B) :
     length (Localization.AtPrime n.asIdeal) (LocalizedModule n.asIdeal.primeCompl (B ⧸ m.asIdeal)) =
@@ -69,11 +69,11 @@ variable {R : Type*} [CommRing R] [Algebra R B]
 variable {N : Type*} [AddCommGroup N] [Module B N] [Module R N] [IsScalarTower R B N]
 
 /- English proof (translation)
-Set `f : p →ₗ[B] q` to `inclusion h.le`. Establish `key : IsSimpleModule B (q ⧸ range f)`. Rewrite using `[range_inclusion, ← covBy_iff_quot_is_simple h.le]` and apply the resulting hypothesis. Take `⟨m, hm, ⟨e⟩⟩` from `isSimpleModule_iff_quot_maximal.mp key`. Set `g : q →ₗ[B] B ⧸ m` to `e.toLinearMap.comp (range f).mkQ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hf : Function.Injective f` using `inclusion_injective _`. Establish `hg : Function.Surjective g` using `e.surjective.comp (range f).mkQ_surjective`. Establish `hfg : Function.Exact f g` using `exact_iff.mpr ((e.ker_comp _).trans (range f).ker_mkQ)`. Use `⟨⟨m, hm⟩, length_eq_add_of_exact (f.restrictScalars R) (g.restrictScalars R) hf hg hfg, fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[← length_localizedModule_quotient n ⟨m, hm⟩]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `length_eq_add_of_exact ((IsLocalizedModule.map n.asIdeal.primeCompl (LocalizedModule.mkLinearMap _ p) (LocalizedModule.mkLinearMap _ q) f).extendScalarsOfIsLocalization n.asIdeal.primeCompl (Localization.AtPrime n.asIdeal)) ((IsLocalizedModule.map n.asIdeal.primeCompl (LocalizedM …`.
+A detailed English derivation is pending.
 -/
 theorem step {p q : Submodule B N} (h : p ⋖ q) :
     ∃ m : MaximalSpectrum B, length R q = length R p + length R (B ⧸ m.asIdeal) ∧
@@ -103,13 +103,13 @@ theorem step {p q : Submodule B N} (h : p ⋖ q) :
     (LocalizedModule.map_exact _ f g hfg)
 
 /- English proof (translation)
-Take `⟨s, hs_bot, hs_top⟩` from `isFiniteLength_iff_exists_compositionSeries.mp hN`. Establish `H : ∀ k, length R (s k) = ∑ n : MaximalSpectrum B, length (Localization.AtPrime n.asIdeal) (LocalizedModule n.asIdeal.primeCompl (s k)) * length R (B ⧸ n.asIdeal)`. Introduce `k`. Proceed by induction on `k using Fin.induction with`. Consider the case `zero`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Rewrite using `[← RelSeries.head, hs_bot]`. Simplify using `[Module.length_eq_zero]`. Consider the case `succ i hi`. Take `⟨m, h1, h2⟩` from `step (R := R) (s.step i)`. Rewrite using `[h1, hi]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[h2, add_mul, Finset.sum_add_distrib, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Use `H (Fin.last _)` as an intermediate fact. Rewrite `this` using `[← RelSeries.last, hs_top]`. Rewrite using `[← ((Submodule.topEquiv (R := B) (M := N)).restrictScalars R).length_eq, this]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[length_localizedModule_eq_of_isLocalizedModule n.asIdeal ((LocalizedModule.mkLinearMap n.asIdeal.primeCompl N).comp (Submodule.topEquiv (R := B) (M := N)).toLinearMap)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem length_eq_sum [Fintype (MaximalSpectrum B)] (hN : IsFiniteLength B N) :
     length R N = ∑ n : MaximalSpectrum B,
@@ -138,7 +138,7 @@ theorem length_eq_sum [Fintype (MaximalSpectrum B)] (hN : IsFiniteLength B N) :
       (Submodule.topEquiv (R := B) (M := N)).toLinearMap)]
 
 /- English proof (translation)
-Establish `hfin` using `Algebra.QuasiFinite.finite_primesOver (R := R) (S := B) (maximalIdeal R)`. Use `hfin.to_subtype` as an intermediate fact. Use `Finite.of_injective (β := (maximalIdeal R).primesOver B) (fun n => ⟨n.asIdeal, n.isMaximal.isPrime, ⟨(IsLocalRing.eq_maximalIdeal (Ideal.isMaximal_comap_of_isIntegral_of_isMaximal (R := R) n.asIdeal)).symm⟩⟩) ?_` and prove the remaining obligations. Introduce `n n' hnn'`. Conclude with `MaximalSpectrum.ext (congrArg Subtype.val hnn')`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem finite_maximalSpectrum [IsLocalRing R] [Module.Finite R B] :
     Finite (MaximalSpectrum B) := by
@@ -153,11 +153,11 @@ theorem finite_maximalSpectrum [IsLocalRing R] [Module.Finite R B] :
 end LengthDecomp
 
 /- English proof (translation)
-Introduce `R B _ _ _ _ _ _ b hfin`. Use `LengthDecomp.finite_maximalSpectrum (R := R) (B := B)` as an intermediate fact. Set `_ : Fintype (MaximalSpectrum B)` to `Fintype.ofFinite _`. Establish `hB : IsFiniteLength B (B ⧸ Ideal.span {b})`. Rewrite `hfin` using `[length_ne_top_iff, isFiniteLength_iff_isNoetherian_isArtinian]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[isFiniteLength_iff_isNoetherian_isArtinian]`. Conclude with `hfin.imp (isNoetherian_of_tower R) (isArtinian_of_tower R)`. Rewrite using `[LengthDecomp.length_eq_sum (R := R) hB, finsum_eq_sum_of_fintype]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `hspan : (Ideal.span {b}).localized' (Localization.AtPrime n.asIdeal) n.asIdeal.primeCompl (Algebra.linearMap B (Localization.AtPrime n.asIdeal)) = Ideal.span {algebraMap B (Localization.AtPrime n.asIdeal) b}`. Rewrite using `[Ideal.span, Submodule.localized'_span, Set.image_singleton]`. Both sides reduce to the same expression. Rewrite using `[Ring.ord, LengthDecomp.length_localizedModule_eq_of_isLocalizedModule n.asIdeal ((Ideal.span {b}).toLocalizedQuotient' (Localization.AtPrime n.asIdeal) n.asIdeal.primeCompl (Algebra.linearMap B (Localization.AtPrime n.asIdeal))), hspan]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LengthDecomp.proof : LengthDecomp.Statement := by
   intro R B _ _ _ _ _ _ b hfin

@@ -10,7 +10,7 @@ namespace Formalism.HermitianLattices.SiegelMassBounds
 
 variable [Fact Formalism.HermitianLattices.Ext.L3.HermRepUnram] in
 /- English proof (translation)
-The claim follows from `Formalism.HermitianLattices.Ext.L3.siegelMassRatio`.
+A detailed English derivation is pending.
 -/
 theorem siegel_mass_ratio : SiegelMassRatioThm := Formalism.HermitianLattices.Ext.L3.siegelMassRatio
 

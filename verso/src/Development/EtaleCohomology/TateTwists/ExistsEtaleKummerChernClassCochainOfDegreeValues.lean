@@ -45,7 +45,7 @@ noncomputable def vals {q : ℕ} {E : Spc} (a1 : ∀ U : Scheme.{0}, Sx E 1 U �
   | _ + 3, _, _, _, _ => 0
 
 /- English proof (translation)
-The claim follows from `| 0, _, _, V, U, g, x => by simp [vals] | 1, s, h, V, U, g, x => by obtain rfl : s = 1 := by omega exact h1 V U g x | 2, s, h, V, U, g, x => by obtain rfl : s = 0 := by omega exact h2 V U g x | _ + 3, _, _, V, U, g, x => by simp [vals]`.
+A detailed English derivation is pending.
 -/
 theorem vals_nat {q : ℕ} {E : Spc} (a1 : ∀ U : Scheme.{0}, Sx E 1 U → Sec ((res _ (tw q 1)).X 1) U)
     (a2 : ∀ U : Scheme.{0}, Sx E 2 U → Sec ((res _ (tw q 1)).X 0) U)
@@ -61,11 +61,11 @@ theorem vals_nat {q : ℕ} {E : Spc} (a1 : ∀ U : Scheme.{0}, Sx E 1 U → Sec 
   | _ + 3, _, _, V, U, g, x => by simp [vals]
 
 /- English proof (translation)
-Introduce `q _ E L hi`. Take `⟨a1, n1, e1⟩` from `h1 q L hi`. Take `⟨a2, n2, e2⟩` from `h2 q L hi`. Take `⟨α, hα⟩` from `hmk (ZMod q) (vals a1 a2) (vals_nat a1 a2 n1 n2)`. Use `⟨α, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `U x`. Rewrite using `[hα]`. Both sides reduce to the same expression. Introduce `U x v hv`. Rewrite using `[hα]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `e1 U x v hv`. Introduce `U x v w hv hw`. Rewrite using `[hα]`. Conclude with `e2 U x v w hv hw`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_etale_kummer_chern_class_cochain_of_degree_values (hmk : EvMk) (h1 : ExistsNaturalEtaleKummerChernClassDegreeOneValue) (h2 : ExistsNaturalEtaleKummerChernClassDegreeTwoValue) : ExistsEtaleKummerChernClassCochain := by
   intro q _ E L hi
@@ -81,7 +81,7 @@ end LateralTheory.EtaleFoundations
 
 open LateralTheory.EtaleFoundations in
 /- English proof (translation)
-Introduce `q _ E L hi`. Take `⟨α, hα⟩` from `exists_etale_kummer_chern_class_cochain_of_degree_values hmk h1 h2 q L hi`. Conclude with `⟨Cocycle.mk α 3 (by norm_num) (hd q L hi α hα), hα⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem LateralTheory.EtaleFoundations.exists_closed_etale_kummer_chern_class_cochain_of_values (hmk : EvMk) (h1 : ExistsNaturalEtaleKummerChernClassDegreeOneValue) (h2 : ExistsNaturalEtaleKummerChernClassDegreeTwoValue) (hd : EtaleKummerChernClassCochainIsCocycle) :
     LateralTheory.EtaleFoundations.first_chern_class_exists := by

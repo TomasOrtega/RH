@@ -10,7 +10,7 @@ namespace GlobalTheory.FlatInf
 open TensorProduct
 
 /- English proof (translation)
-Rewrite using `[Submodule.baseChange_eq_span, Submodule.map_span, Ideal.map]`. Use `congr 1`. Use extensionality with `y`. Simplify using `[Algebra.TensorProduct.rid_tmul, Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_eq_baseChange {R S : Type} [CommRing R] [CommRing S] [Algebra R S] (K : Ideal R) :
     Ideal.map (algebraMap R S) K =
@@ -21,7 +21,7 @@ theorem map_eq_baseChange {R S : Type} [CommRing R] [CommRing S] [Algebra R S] (
   simp [Algebra.TensorProduct.rid_tmul, Algebra.smul_def]
 
 /- English proof (translation)
-Use `letI := f.toAlgebra`. Use `haveI : Module.Flat R S := hf`. Establish `e : f = algebraMap R S` using `rfl`. Rewrite using `[e, map_eq_baseChange, map_eq_baseChange, map_eq_baseChange, GlobalTheory.baseChange_inf, Submodule.map_inf _ (Algebra.TensorProduct.rid R S S).toLinearEquiv.injective]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_inf_of_flat {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (hf : f.Flat)
     (I J : Ideal R) : Ideal.map f (I ⊓ J) = Ideal.map f I ⊓ Ideal.map f J := by
@@ -36,11 +36,9 @@ end GlobalTheory.FlatInf
 namespace GlobalTheory.FlatInf
 
 /- English proof (translation)
-Introduce `W V g hg a b`. Use `haveI := hg`. Establish `hU : ∀ y : V, ∃ U : W.affineOpens, g y ∈ U.1` using `fun y => by`. Take `⟨_, ⟨U, hU, rfl⟩, hyU, -⟩` from `W.isBasis_affineOpens.exists_subset_of_mem_open (show g y ∈ ((⊤ : W.Opens) : Set W) from trivial) (⊤ : W.Opens).isOpen`. Conclude with `⟨⟨U, hU⟩, hyU⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `choose U hyU using hU`. Establish `hA : ∀ y : V, ∃ A : V.affineOpens, y ∈ A.1 ∧ A.1 ≤ g ⁻¹ᵁ (U y).1` using `fun y => by`. Take `⟨_, ⟨A, hA, rfl⟩, hyA, hAle⟩` from `V.isBasis_affineOpens.exists_subset_of_mem_open (show y ∈ ((g ⁻¹ᵁ (U y).1 : V.Opens) : Set V) from hyU y) (g ⁻¹ᵁ (U y).1).isOpen`. Conclude with `⟨⟨A, hA⟩, hyA, hAle⟩`. Use `choose A hyA hAU using hA`.
-
-Use `Scheme.IdealSheafData.ext_of_iSup_eq_top A ?_ fun y => ?_` and prove the remaining obligations. Conclude with `eq_top_iff.2 fun y _ => TopologicalSpace.Opens.mem_iSup.2 ⟨y, hyA y⟩`. Rewrite using `[Scheme.IdealSheafData.ideal_inf, Pi.inf_apply, GlobalTheory.Principalise.comapIdealAffine _ g (U y) (A y) (hAU y), GlobalTheory.Principalise.comapIdealAffine _ g (U y) (A y) (hAU y), GlobalTheory.Principalise.comapIdealAffine _ g (U y) (A y) (hAU y), Scheme.IdealSheafData.ideal_ …`. Conclude with `map_inf_of_flat _ (g.flat_appLE (U y).2 (A y).2 (hAU y)) _ _`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comap_inf_of_flat : ∀ (W V : Scheme.{0}) (g : V ⟶ W), Flat g →
     ∀ a b : W.IdealSheafData, (a ⊓ b).comap g = a.comap g ⊓ b.comap g := by

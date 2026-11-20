@@ -14,7 +14,7 @@ variable {n : ℕ} {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] 
   {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using SmDerA.inG_zero ε`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`. Conclude with `smc_inG_add (smc_inG_rsmul (hX a (Finset.mem_insert_self a s)) (r a)) (ih fun i hi => hX i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inG_rsum {ι : Type*} (s : Finset ι) (r : ι → ℝ) (X : ι → Matrix (Fin n) (Fin n) ℂ)
     (hX : ∀ i ∈ s, inG ε (X i)) : inG ε (∑ i ∈ s, (r i : ℂ) • X i) := by
@@ -27,7 +27,7 @@ theorem inG_rsum {ι : Type*} (s : Finset ι) (r : ι → ℝ) (X : ι → Matri
       (ih fun i hi => hX i (Finset.mem_insert_of_mem hi))
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using SmDerA.dS_zero_mat (σ := σ) v`. Consider the case `insert a s ha ih`. Establish `hs : ∀ i ∈ s, inG ε (X i)` using `fun i hi => hX i (Finset.mem_insert_of_mem hi)`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, add_comm, dS_add_smul hσ (inG_rsum s r X hs) (hX a (Finset.mem_insert_self a s)) (r a) hv, ih hs, add_comm]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem dS_rsum (hσ : IsURepOn (UJset ε) σ) {ι : Type*} (s : Finset ι) (r : ι → ℝ)
     (X : ι → Matrix (Fin n) (Fin n) ℂ) (hX : ∀ i ∈ s, inG ε (X i)) {v : H} (hv : IsSmoothVecU ε σ v) :
@@ -41,11 +41,11 @@ theorem dS_rsum (hσ : IsURepOn (UJset ε) σ) {ι : Type*} (s : Finset ι) (r :
       (hX a (Finset.mem_insert_self a s)) (r a) hv, ih hs, add_comm]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using dS_smul_vec (σ := σ) 0 X 0`. Consider the case `insert a s ha ih`. Establish `hs : ∀ i ∈ s, IsSmoothVecU ε σ (v i)` using `fun i hi => hv i (Finset.mem_insert_of_mem hi)`. Establish `hsum : IsSmoothVecU ε σ (∑ i ∈ s, c i • v i)` using `by clear ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using (isSmoothVecU_zero : IsSmoothVecU ε σ (0 : H))`. Consider the case `insert b t hb ih2`. Rewrite using `[Finset.sum_insert hb]`. Conclude with `((hs b (Finset.mem_insert_self b t)).smul (c b)).add (ih2 (fun h => ha (Finset.mem_insert_of_mem h)) (fun i hi => hv i (by`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Finset.mem_insert.1 hi with rfl | hi` into its components or cases. Conclude with `Finset.mem_insert_self _ _`. Conclude with `Finset.mem_insert_of_mem (Finset.mem_insert_of_mem hi)))`. Use the proof step `(fun i hi => hs i (Finset.mem_insert_of_mem hi)))`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, dS_add_vec hσ hX ((hv a (Finset.mem_insert_self a s)).smul _) hsum, dS_smul_vec, ih hs]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dS_vsum (hσ : IsURepOn (UJset ε) σ) {X : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) {ι : Type*}
     (s : Finset ι) (c : ι → ℂ) (v : ι → H) (hv : ∀ i ∈ s, IsSmoothVecU ε σ (v i)) :
@@ -71,13 +71,13 @@ theorem dS_vsum (hσ : IsURepOn (UJset ε) σ) {X : Matrix (Fin n) (Fin n) ℂ} 
       hsum, dS_smul_vec, ih hs]
 
 /- English proof (translation)
-Establish `hY1 : S7.cpart1 ε Y = Y` using `((smc_cpart Y).2.2.2 hY).1`. Use `set L : Matrix (Fin n) (Fin n) ℂ →+ Matrix (Fin n) (Fin n) ℂ := { toFun := S7.cpart1 ε, map_zero' := by simpa using smc_cpart1_real (ε := ε) 0 0, map_add' := smc_cpart1_add }`. Establish `hdec : Y = ∑ p : Fin n × Fin n, (((Y p.1 p.2).re : ℂ) • Matrix.single p.1 p.2 1 + ((Y p.1 p.2).im : ℂ) • (Complex.I • Matrix.single p.1 p.2 1))` using `by conv_lhs => rw [Matrix.matrix_eq_sum_single Y]`. Rewrite using `[← Finset.univ_product_univ, Finset.sum_product]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions.
 
-Simplify using `only`. Rewrite using `[smul_smul, ← add_smul, Complex.re_add_im, Matrix.smul_single, smul_eq_mul, mul_one]`. Establish `h2 : Y = ∑ p : Fin n × Fin n, (((Y p.1 p.2).re : ℂ) • S7.cpart1 ε (Matrix.single p.1 p.2 1) + ((-(Y p.1 p.2).im : ℝ) : ℂ) • S7.cpart2 ε (Matrix.single p.1 p.2 1))` using `by conv_lhs => rw [← hY1, hdec]`. Express the relevant statement in the definitionally equal form `L (∑ p : Fin n × Fin n, _) = _`. Rewrite using `[map_sum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `S7.cpart1 ε _ = _`. Rewrite using `[smc_cpart1_add, smc_cpart1_real, smc_cpart1_real, smc_cpart1_I, Complex.ofReal_neg, smul_neg, neg_smul]`. Rewrite using `[Fintype.sum_prod_type]`. Use `conv_lhs => rw [h2]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_bool]`. Simplify using `only [cond_true, cond_false]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inG_expand {Y : Matrix (Fin n) (Fin n) ℂ} (hY : inG ε Y) :
     Y = ∑ p : (Fin n × Fin n) × Bool, ((cond p.2 (Y p.1.1 p.1.2).re (-(Y p.1.1 p.1.2).im) : ℝ) : ℂ) •
@@ -113,17 +113,13 @@ def FinCont (ε : Fin n → Bool) (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[�
     (∀ i, Continuous (d i)) ∧ (∀ i, IsSmoothVecU ε σ (v i)) ∧ ∀ k, z k = ∑ i, d i k • v i
 
 /- English proof (translation)
-Take `⟨ι, _, d, v, hd, hv, hz⟩` from `hz`. Use `set Y : S7.KG ε → Matrix (Fin n) (Fin n) ℂ := fun k => (S7.toMK k)ᴴ * X * S7.toMK k`. Establish `hYc : Continuous Y`. Establish `hc` using `S7.IdA.continuous_toMK (ε := ε)`. Conclude with `(hc.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul hc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hYg : ∀ k, inG ε (Y k)` using `fun k => inG_conj_K k.2 hX`. Use `set B : (Fin n × Fin n) × Bool → Matrix (Fin n) (Fin n) ℂ := fun p => cond p.2 (S7.cpart1 ε (Matrix.single p.1.1 p.1.2 1)) (S7.cpart2 ε (Matrix.single p.1.1 p.1.2 1))`. Establish `hB : ∀ p, inG ε (B p)`. Introduce and unpack `⟨q, _ | _⟩`. Conclude with `(smc_cpart _).2.1`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `(smc_cpart _).1`. Use `set r : S7.KG ε → (Fin n × Fin n) × Bool → ℝ := fun k p => cond p.2 (Y k p.1.1 p.1.2).re (-(Y k p.1.1 p.1.2).im)`. Use `⟨ι × ((Fin n × Fin n) × Bool), inferInstance, fun q k => d q.1 k * (r k q.2 : ℂ), fun q => dS σ (B q.2) (v q.1), fun q => ?_, fun q => dS_smooth hσ (hB q.2) (hv q.1), fun k => ?_⟩` and prove the remaining obligations. Use `(hd q.1).mul (Complex.continuous_ofReal.comp ?_)` and prove the remaining obligations. Establish `hent : Continuous fun k => Y k q.2.1.1 q.2.1.2` using `(continuous_apply q.2.1.2).comp ((continuous_apply q.2.1.1).comp hYc)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions.
 
-Break down `q with ⟨i, q, _ | _⟩` into its components or cases. Conclude with `(Complex.continuous_im.comp hent).neg`. Conclude with `Complex.continuous_re.comp hent`. Use `show dS σ (Y k) (z k) = _`. Rewrite using `[hz k, dS_vsum hσ (hYg k) _ _ _ fun i _ => hv i, Fintype.sum_prod_type]`.
-
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `conv_lhs => rw [inG_expand (hYg k)]`. Rewrite using `[dS_rsum hσ _ _ _ (fun p _ => hB p) (hv i), Finset.smul_sum]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Simplify using `only [r]`.
-
-Rewrite using `[smul_smul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finCont_step (hσ : IsURepOn (UJset ε) σ) {z : S7.KG ε → H} (hz : FinCont ε σ z)
     {X : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) :
@@ -161,7 +157,7 @@ theorem finCont_step (hσ : IsURepOn (UJset ε) σ) {z : S7.KG ε → H} (hz : F
     rw [smul_smul, mul_comm]
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => exact ⟨Unit, inferInstance, fun _ _ => 1, fun _ => u, fun _ => continuous_const, fun _ => hu, fun k => by simp [dSW]⟩`. Consider the case `cons X w ih`. Conclude with `finCont_step hσ (ih fun Y hY => hw Y (List.mem_cons_of_mem X hY)) (hw X List.mem_cons_self)`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem finCont_dSW (hσ : IsURepOn (UJset ε) σ) {w : List (Matrix (Fin n) (Fin n) ℂ)} (hw : ∀ X ∈ w, inG ε X)
     {u : H} (hu : IsSmoothVecU ε σ u) :
@@ -173,9 +169,9 @@ theorem finCont_dSW (hσ : IsURepOn (UJset ε) σ) {w : List (Matrix (Fin n) (Fi
     exact finCont_step hσ (ih fun Y hY => hw Y (List.mem_cons_of_mem X hY)) (hw X List.mem_cons_self)
 
 /- English proof (translation)
-Take `⟨ι, _, d, v, hd, -, hz⟩` from `finCont_dSW hσ hw hu`. Establish `e : (fun k : S7.KG ε => dSW σ w (σ (S7.toMK k) u)) = fun k => ∑ i, d i k • σ (S7.toMK k) (v i)`. Use function extensionality and compare the values at `k`. Rewrite using `[dSW_conj hσ (k := S7.toMK k) k.2 hw hu, show dSW σ (w.map fun X => (S7.toMK k)ᴴ * X * S7.toMK k) u = _ from hz k, map_sum]`. Simplify using `only [map_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Use `continuous_finsetSum _ fun i _ => (hd i).smul ?_` and prove the remaining obligations. Conclude with `(hσ.2.2 (v i)).comp_continuous S7.IdA.continuous_toMK fun k => smd_inUJ_of_Kset k.2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_dSW_orbit (hσ : IsURepOn (UJset ε) σ) {w : List (Matrix (Fin n) (Fin n) ℂ)}
     (hw : ∀ X ∈ w, inG ε X) {u : H} (hu : IsSmoothVecU ε σ u) :

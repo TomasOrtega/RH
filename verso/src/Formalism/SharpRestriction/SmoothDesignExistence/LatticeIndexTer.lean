@@ -23,19 +23,19 @@ section Family
 variable {eps : ℝ} (Fm : FamP eps)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Fm.x1 + 1, fun x hx i => (Fm.sizes x (lt_of_lt_of_le (lt_add_one _) hx) i).2.2.2.2.2.2.1.2.2.2.2.2.1⟩`.
+Supply the required witnesses or components.
 -/
 theorem dlSizeF : J.DlSize Fm :=
   ⟨Fm.x1 + 1, fun x hx i => (Fm.sizes x (lt_of_lt_of_le (lt_add_one _) hx) i).2.2.2.2.2.2.1.2.2.2.2.2.1⟩
 
 /- English proof (translation)
-Take `⟨Cn, hN⟩` from `J.numsL_wtsL_fam Fm hT hDl`. Take `⟨x0, hN⟩` from `hN Cn le_rfl 3 le_rfl`. Take `⟨x1, hT⟩` from `hT`. Take `⟨x3, h3⟩` from `flipTwoThree.le_rpow_for_large_x ((2 : ℝ) / 5) (by norm_num) 4`. Use `⟨max (max x0 x1) (max x3 (max 4 (Fm.x1 + 1))), fun x hx i u => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e0 : x ≥ x0` using `le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hx`. Establish `e1 : x ≥ x1` using `le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hx`. Establish `e3 : x3 ≤ x` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hx`. Establish `e4 : 4 ≤ x` using `le_trans (le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) (le_max_right _ _)) hx`. Establish `e5 : Fm.x1 < x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `le_trans (le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) (le_max_right _ _)) hx` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsx : (Fm.L x i).sc.x = x` using `Fm.L_x x i e5`. Establish `hm : 4 ≤ (Fm.D x i).R.m`. Establish `z1` using `(flipTwoThree.size_bounds_of_scale (Fm.L x i) (Fm.sizes x e5 i) (by rw [hsx]; exact e4)).1`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `z1` using `[hsx]`. Establish `: (4 : ℝ) ≤ (Fm.D x i).R.m` using `le_trans (h3 x e3) z1`. Conclude with `this` after adjusting the coercions. Conclude with `J.levelPrime_setting_of_sizes le_rfl (hN x e0 i).1 (hN x e0 i).2 (hT x e1 i).1 hm u`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem settingF (hT : TuSize Fm) (hDl : J.DlSize Fm) :
     ∃ x0 : ℝ, ∀ x ≥ x0, ∀ (i : Fm.Ix x) u, product_first_zeroth_parts.HidaSetting (Fm.D x i) u := by
@@ -60,7 +60,7 @@ theorem settingF (hT : TuSize Fm) (hDl : J.DlSize Fm) :
   exact J.levelPrime_setting_of_sizes le_rfl (hN x e0 i).1 (hN x e0 i).2 (hT x e1 i).1 hm u
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `settingF Fm hT hDl`. Take `⟨b, hb⟩` from `h`. Conclude with `⟨max a b, fun x hx i u => hb x (le_trans (le_max_right _ _) hx) i u (ha x (le_trans (le_max_left _ _) hx) i u)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem proved_level_prime_large_scale {crystallineComparison : ℝ} (hT : TuSize Fm) (hDl : J.DlSize Fm) (h : product_first_zeroth_parts.ConclusionOnFamily Fm crystallineComparison) :
     ∃ x0 : ℝ, ∀ x ≥ x0, ∀ (i : Fm.Ix x) u, product_first_zeroth_parts.Conclusion₂ (Fm.D x i) u crystallineComparison := by
@@ -73,7 +73,7 @@ def LevelPrimeItems (crystallineComparison : ℝ) : Prop :=
     product_first_zeroth_parts.Conclusion2 (Fm.D x i) u ∧ product_first_zeroth_parts.Conclusion5 (Fm.D x i) u crystallineComparison ∧ product_first_zeroth_parts.Conclusion6 (Fm.D x i) u ∧ product_first_zeroth_parts.Conclusion5Sharp (Fm.D x i) u
 
 /- English proof (translation)
-Take `⟨x0, h⟩` from `h`. Conclude with `⟨x0, fun x hx i u hs => ⟨(h x hx i u hs).2.1, (h x hx i u hs).2.2.2.2.1, (h x hx i u hs).2.2.2.2.2.1, (h x hx i u hs).2.2.2.2.2.2.2.2⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem levelPrimeItems_of_proved {crystallineComparison : ℝ} (h : product_first_zeroth_parts.ConclusionOnFamily Fm crystallineComparison) : LevelPrimeItems Fm crystallineComparison := by
   obtain ⟨x0, h⟩ := h
@@ -81,7 +81,7 @@ theorem levelPrimeItems_of_proved {crystallineComparison : ℝ} (h : product_fir
     (h x hx i u hs).2.2.2.2.2.2.2.2⟩⟩
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `settingF Fm hT hDl`. Take `⟨b, hb⟩` from `h`. Conclude with `⟨max a b, fun x hx i u => hb x (le_trans (le_max_right _ _) hx) i u (ha x (le_trans (le_max_left _ _) hx) i u)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem level_prime_items_large_scale {crystallineComparison : ℝ} (hT : TuSize Fm) (hDl : J.DlSize Fm) (h : LevelPrimeItems Fm crystallineComparison) :
     ∃ x0 : ℝ, ∀ x ≥ x0, ∀ (i : Fm.Ix x) u, product_first_zeroth_parts.Conclusion2 (Fm.D x i) u ∧ product_first_zeroth_parts.Conclusion5 (Fm.D x i) u crystallineComparison ∧ product_first_zeroth_parts.Conclusion6 (Fm.D x i) u ∧
@@ -91,7 +91,7 @@ theorem level_prime_items_large_scale {crystallineComparison : ℝ} (hT : TuSize
   exact ⟨max a b, fun x hx i u => hb x (le_trans (le_max_right _ _) hx) i u (ha x (le_trans (le_max_left _ _) hx) i u)⟩
 
 /- English proof (translation)
-Take `⟨C, x0, δ, hδ, H⟩` from `h`. Use `⟨C, x0, δ, hδ, fun x hx i => ?_⟩` and prove the remaining obligations. Introduce `w hw hin _`. Take `⟨_, _, h3, _, _⟩` from `H x hx i`. Conclude with `h3 w hin hw`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem admissible_sum_over_primes (h : LinkG Fm) : LocalQuadraticParts.LogTermFamily Fm := by
   obtain ⟨C, x0, δ, hδ, H⟩ := h
@@ -131,11 +131,11 @@ structure BrC : Prop where
 variable {Fm}
 
 /- English proof (translation)
-Establish `hDl` using `dlSizeF Fm`. Take `⟨Cb, x25, h25⟩` from `B.br25`. Take `⟨x10, h10⟩` from `level_prime_items_large_scale Fm hT hDl E.gl10`. Take `⟨C₅, h59⟩` from `UnusedSlot33.field_lemmas_except_seven`. Take `⟨xD, hD⟩` from `hDl`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨J.full_rank_family_of_eventually_nuFull Fm E.nuFull, J.family_served_prime_lattices Fm E.linkG, admissible_sum_over_primes Fm E.linkG, J.family_served_orbits_band Fm E.localLemmaThreeThreeTwo E.g32, J.family_scale_epsilon_condition Fm E.n33, J.family_logDerivative_regulator_boun …` and prove the remaining obligations. Establish `e5 : Fm.x1 < x`. Use `le_trans (le_max_right _ _) hx` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨a, b⟩` from `h25 x (le_trans (le_max_left _ _) hx) i`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨(Fm.sizes x e5 i).2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1, a, b⟩`.
+Supply the required witnesses or components.
 -/
 theorem admissible_top_line_family {C3 crystallineComparison C0 CH : ℝ} (E : ExtC Fm C3 crystallineComparison) (B : BrC Fm) (hCh : ChosenE Fm C0 CH) (hT : TuSize Fm)
     (hTw : TwGood Fm) : LocalQuadraticParts.AdmCF Fm := by

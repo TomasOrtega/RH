@@ -33,7 +33,7 @@ Both sides reduce to the same expression.
 theorem subfield_norm_def (x : s) : ‖x‖ = ‖(x : PadicAlgCl p)‖ := rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `NormedField.valuation x ≤ NormedField.valuation y ↔ _`. Conclude with `NNReal.coe_le_coe`.
+Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem subfield_vle_iff_norm_le (x y : s) : x ≤ᵥ y ↔ ‖x‖ ≤ ‖y‖ := by
   change NormedField.valuation x ≤ NormedField.valuation y ↔ _
@@ -48,7 +48,7 @@ instance subfield_isValuativeTopology : IsValuativeTopology s := by
   exact GroundTheory.LocalField.isValuativeTopology_of_valued
 
 /- English proof (translation)
-Rewrite using `[subfield_norm_def]`. Establish `h` using `PadicAlgCl.valuation_coe p (p : PadicAlgCl p)`. Rewrite `h` using `[PadicAlgCl.valuation_p]`. Move the coercions through the operations in `[map_natCast] at h ⊢`. Rewrite using `[← h]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -72,7 +72,7 @@ instance subfield_isNontrivial : IsNontrivial s := by
     exact absurd h2 (not_le.2 (inv_lt_one_of_one_lt₀ hp))
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[Valuation.mem_integer_iff, mem_normInteger, ← map_one (valuation s), ← Valuation.vle_iff_le, subfield_vle_iff_norm_le, norm_one]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem integer_eq_normInteger : 𝒪[s] = normInteger s := by
   ext x
@@ -82,7 +82,7 @@ theorem integer_eq_normInteger : 𝒪[s] = normInteger s := by
 end Subfield
 
 /- English proof (translation)
-Set `M` to `Subalgebra.toSubmodule K.toSubalgebra`. Establish `: FiniteDimensional ℚ_[p] M` using `(inferInstance : FiniteDimensional ℚ_[p] K)`. Establish `: ProperSpace M` using `FiniteDimensional.proper ℚ_[p] M`. Conclude with `(inferInstance : LocallyCompactSpace M)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem locallyCompactSpace_of_finiteDimensional (K : IntermediateField ℚ_[p] (PadicAlgCl p))
     [FiniteDimensional ℚ_[p] K] : LocallyCompactSpace K := by
@@ -92,7 +92,7 @@ theorem locallyCompactSpace_of_finiteDimensional (K : IntermediateField ℚ_[p] 
   exact (inferInstance : LocallyCompactSpace M)
 
 /- English proof (translation)
-Establish `: LocallyCompactSpace (K : Set (PadicAlgCl p))` using `locallyCompactSpace_of_finiteDimensional K`. Establish `: LocallyCompactSpace s` using `(Homeomorph.setCongr h).isClosedEmbedding.locallyCompactSpace`. Conclude with `{}`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isNonarchimedeanLocalField_of_coe_eq {S : Type*} [SetLike S (PadicAlgCl p)]
     [SubfieldClass S (PadicAlgCl p)] (s : S) (K : IntermediateField ℚ_[p] (PadicAlgCl p))
@@ -144,7 +144,7 @@ section Inclusion
 variable {K L : IntermediateField ℚ_[p] (PadicAlgCl p)} (h : K ≤ L)
 
 /- English proof (translation)
-Set `` to `(IntermediateField.inclusion h).toRingHom.toAlgebra`. Conclude with `⟨fun a b => by rw [subfield_vle_iff_norm_le, subfield_vle_iff_norm_le]; rfl⟩`.
+Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem valuativeExtension_inclusion :
     letI := (IntermediateField.inclusion h).toRingHom.toAlgebra
@@ -153,7 +153,7 @@ theorem valuativeExtension_inclusion :
   exact ⟨fun a b => by rw [subfield_vle_iff_norm_le, subfield_vle_iff_norm_le]; rfl⟩
 
 /- English proof (translation)
-Set `` to `(IntermediateField.inclusion h).toRingHom.toAlgebra`. Conclude with `IsScalarTower.of_algebraMap_eq fun _ => rfl`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem isScalarTower_inclusion :
     letI := (IntermediateField.inclusion h).toRingHom.toAlgebra
@@ -162,7 +162,7 @@ theorem isScalarTower_inclusion :
   exact IsScalarTower.of_algebraMap_eq fun _ => rfl
 
 /- English proof (translation)
-Set `` to `(IntermediateField.inclusion h).toRingHom.toAlgebra`. Use `isScalarTower_inclusion h` as an intermediate fact. Conclude with `Module.Finite.of_restrictScalars_finite ℚ_[p] K L`.
+Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_inclusion [FiniteDimensional ℚ_[p] L] :
     letI := (IntermediateField.inclusion h).toRingHom.toAlgebra
@@ -179,14 +179,14 @@ variable (K : IntermediateField ℚ_[p] (PadicAlgCl p)) (L : IntermediateField K
   [Normal K L]
 
 /- English proof (translation)
-The claim follows from `AlgEquiv.restrictNormalHom_surjective _`.
+A detailed English derivation is pending.
 -/
 theorem restrictNormalHom_surjective :
     Function.Surjective (AlgEquiv.restrictNormalHom L : Gal(PadicAlgCl p/K) →* Gal(L/K)) :=
   AlgEquiv.restrictNormalHom_surjective _
 
 /- English proof (translation)
-The claim follows from `L.restrictNormalHom_ker`.
+A detailed English derivation is pending.
 -/
 theorem ker_restrictNormalHom :
     (AlgEquiv.restrictNormalHom L : Gal(PadicAlgCl p/K) →* Gal(L/K)).ker = L.fixingSubgroup :=
@@ -207,52 +207,52 @@ variable (K : IntermediateField ℚ_[p] (PadicAlgCl p)) [FiniteDimensional ℚ_[
   (L : IntermediateField K (PadicAlgCl p)) [FiniteDimensional K L]
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : IsNonarchimedeanLocalField K := inferInstance
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : ValuativeExtension ℚ_[p] K := inferInstance
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : IsNonarchimedeanLocalField L := inferInstance
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : ValuativeExtension K L := inferInstance
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : Algebra 𝒪[K] 𝒪[L] := inferInstance
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : Algebra.IsSeparable K L := inferInstance
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : Normal K (PadicAlgCl p) := inferInstance
 /- English proof (translation)
-The claim follows from `GroundTheory.LocalField.lowerRamificationGroup K L i`.
+A detailed English derivation is pending.
 -/
 example (i : ℤ) : Subgroup Gal(L/K) := GroundTheory.LocalField.lowerRamificationGroup K L i
 /- English proof (translation)
-The claim follows from `GroundTheory.LocalField.differentExponent K L`.
+A detailed English derivation is pending.
 -/
 example : ℕ := GroundTheory.LocalField.differentExponent K L
 /- English proof (translation)
-The claim follows from `GroundTheory.LocalField.differentIdeal_eq_maximalIdeal_pow K L`.
+A detailed English derivation is pending.
 -/
 example : differentIdeal 𝒪[K] 𝒪[L] = 𝓂[L] ^ GroundTheory.LocalField.differentExponent K L :=
   GroundTheory.LocalField.differentIdeal_eq_maximalIdeal_pow K L
 /- English proof (translation)
-The claim follows from `GroundTheory.LocalField.upperRamificationGroup K L v`.
+A detailed English derivation is pending.
 -/
 example [IsGalois K L] (v : ℝ) : Subgroup Gal(L/K) := GroundTheory.LocalField.upperRamificationGroup K L v
 /- English proof (translation)
-The claim follows from `letI := (IntermediateField.inclusion h).toRingHom.toAlgebra haveI := valuativeExtension_inclusion h haveI := finiteDimensional_inclusion h GroundTheory.LocalField.differentExponent K' L'`.
+A detailed English derivation is pending.
 -/
 example {K' L' : IntermediateField ℚ_[p] (PadicAlgCl p)} (h : K' ≤ L') [FiniteDimensional ℚ_[p] K']
     [FiniteDimensional ℚ_[p] L'] : ℕ :=

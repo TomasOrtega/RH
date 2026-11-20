@@ -13,7 +13,7 @@ namespace GlobalTheory.TypeInertia
 variable {D : D7}
 
 /- English proof (translation)
-Establish `h : (iotaOQ D.nd D.naut i : D.nd.O i → Qbar (D.nd.l i)) = fun x => (((D.nbr i w hw).toLL x : ↥(D.nbr i w hw).LL.1) : Loc.Om (D.nd.l i))`. Use function extensionality and compare the values at `(hPH i w hw).1`. Rewrite using `[h]`. Conclude with `continuous_subtype_val.comp (continuous_subtype_val.comp (D.nbr i w hw).eO_cont)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cont_iotaOQ (hPH : tiePH (D := D)) (i : D.nd.Loc) (w : HeightOneSpectrum (𝓞 D.host.E))
     (hw : w ∈ placesOver D.host.E (D.nd.l i)) : Continuous (iotaOQ D.nd D.naut i) := by
@@ -24,7 +24,7 @@ theorem cont_iotaOQ (hPH : tiePH (D := D)) (i : D.nd.Loc) (w : HeightOneSpectrum
   exact continuous_subtype_val.comp (continuous_subtype_val.comp (D.nbr i w hw).eO_cont)
 
 /- English proof (translation)
-The claim follows from `hc.matrix_map (cont_iotaOQ hPH i w hw)`.
+A detailed English derivation is pending.
 -/
 theorem cont_mapRep (hPH : tiePH (D := D)) (i : D.nd.Loc) (w : HeightOneSpectrum (𝓞 D.host.E))
     (hw : w ∈ placesOver D.host.E (D.nd.l i)) {a : ℕ} (ρ : GE D.nd →* GL (Fin a) (D.nd.O i))
@@ -34,7 +34,7 @@ theorem cont_mapRep (hPH : tiePH (D := D)) (i : D.nd.Loc) (w : HeightOneSpectrum
   hc.matrix_map (cont_iotaOQ hPH i w hw)
 
 /- English proof (translation)
-Establish `hQ` using `(h0.2.2.2.1 i a _ w hw (cont_mapRep hPH i w hw ρ hc)).2 ⟨hdR, hm⟩`. Conclude with `((hPH i w hw).2.1 a ρ hc).2.2.1.1 hQ`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem potCrys_of (h0 : SumRepresentations.tie0 D) (hPH : tiePH (D := D)) (i : D.nd.Loc)
     (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i)) {a : ℕ}
@@ -47,9 +47,9 @@ theorem potCrys_of (h0 : SumRepresentations.tie0 D) (hPH : tiePH (D := D)) (i : 
   exact ((hPH i w hw).2.1 a ρ hc).2.2.1.1 hQ
 
 /- English proof (translation)
-Establish `h` using `D.nd.chi_cont i 1`. Establish `e : (fun g => ((chiGL i g : GL (Fin 1) (D.nd.O i)) : Matrix (Fin 1) (Fin 1) (D.nd.O i))) = fun g => Matrix.scalar (Fin 1) ((D.nd.chi i 1 g : (D.nd.O i)ˣ) : D.nd.O i)`. Use function extensionality and compare the values at `g`. Both sides reduce to the same expression. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Continuous.matrix_diagonal (continuous_pi fun _ => h)`.
+A detailed English derivation is pending.
 -/
 theorem cont_chiGL (i : D.nd.Loc) :
     Continuous fun g => ((chiGL i g : GL (Fin 1) (D.nd.O i)) : Matrix (Fin 1) (Fin 1) (D.nd.O i)) := by
@@ -61,7 +61,7 @@ theorem cont_chiGL (i : D.nd.Loc) :
   exact Continuous.matrix_diagonal (continuous_pi fun _ => h)
 
 /- English proof (translation)
-Use extensionality with `g a b`. Use `fin_cases a`. Use `fin_cases b`. Simplify using `[SumRepresentations.At.twGL, Matrix.det_unique, Matrix.algebraMap_matrix_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem twGL_one_chi {k : Type} [Field k] {Γ : Type} [Group Γ] (χ : Γ →* GL (Fin 1) k) :
     SumRepresentations.At.twGL (1 : Γ →* GL (Fin 1) k) (Matrix.GeneralLinearGroup.det.comp χ) = χ := by
@@ -70,7 +70,7 @@ theorem twGL_one_chi {k : Type} [Field k] {Γ : Type} [Group Γ] (χ : Γ →* G
   simp [SumRepresentations.At.twGL, Matrix.det_unique, Matrix.algebraMap_matrix_apply]
 
 /- English proof (translation)
-Use extensionality with `g x y`. Simplify using `[mapRep]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mapRep_one {A B : Type} [CommRing A] [CommRing B] {Γ : Type} [Group Γ] {a : ℕ} (f : A →+* B) :
     mapRep f (1 : Γ →* GL (Fin a) A) = 1 := by
@@ -78,9 +78,7 @@ theorem mapRep_one {A B : Type} [CommRing A] [CommRing B] {Γ : Type} [Group Γ]
   simp [mapRep]
 
 /- English proof (translation)
-Establish `hc : Continuous fun g => (((1 : GE D.nd →* GL (Fin 1) (D.nd.O i)) g : GL (Fin 1) (D.nd.O i)) : Matrix (Fin 1) (Fin 1) (D.nd.O i))` using `by simpa using continuous_const`. Establish `h` using `((hPH i w hw).2.1 1 (1 : GE D.nd →* GL (Fin 1) (D.nd.O i)) hc).1.2`. Rewrite `h` using `[mapRep_one]`. Apply `h` to reduce the goal to its premises. Use `haveI := (D.nbr i w hw).LL.2`.
-
-Use `show IsCrys _ _`. Conclude with `GlobalTheory.TrivCrys.isCrys_of_trivial _ _ (fun g x => by simp [LocBridge.rep])`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem crys_one (hPH : tiePH (D := D)) (i : D.nd.Loc) (w : HeightOneSpectrum (𝓞 D.host.E))
     (hw : w ∈ placesOver D.host.E (D.nd.l i)) :
@@ -95,9 +93,9 @@ theorem crys_one (hPH : tiePH (D := D)) (i : D.nd.Loc) (w : HeightOneSpectrum (�
   exact GlobalTheory.TrivCrys.isCrys_of_trivial _ _ (fun g x => by simp [LocBridge.rep])
 
 /- English proof (translation)
-Establish `h1c : SumRepresentations.At.ContQ D.nd i (1 : GE D.nd →* GL (Fin 1) (Qbar (D.nd.l i)))`. Unfold `SumRepresentations.At.ContQ`. Simplify using `using continuous_const`. Establish `hcr` using `(h0.2.2.1 i 1 1 w hw h1c).1 (crys_one hPH i w hw)`. Establish `hm1 : D.naut.mono0 (D.naut.wdOf i (1 : GE D.nd →* GL (Fin 1) (Qbar (D.nd.l i))) w)` using `D.naut.unr_mono0 _ hcr.2`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htw` using `((h0.2.2.2.2.2 i).2.2.2 1 1 χ h1c hc).2.1 w (Or.inr hcr.1) (Or.inr hdR)`. Rewrite `htw` using `[twGL_one_chi]`. Rewrite using `[htw, D.naut.monomial_char_iff _ _ (D.naut.wdOf_dim i χ w)]`. Conclude with `hm1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem monodromy_zero_of_deRham_character (h0 : SumRepresentations.tie0 D) (hPH : tiePH (D := D)) (i : D.nd.Loc)
     (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i))
@@ -119,9 +117,9 @@ section Alg
 variable {g : ℕ} [hg : Fact g.Prime]
 
 /- English proof (translation)
-Rewrite using `[Matrix.card_GL_field, ZMod.card]`. Establish `hmem : (⟨r - a, by omega⟩ : Fin r) ∈ (Finset.univ : Finset (Fin r))` using `Finset.mem_univ _`. Use `dvd_trans ?_ (Finset.dvd_prod_of_mem _ hmem)` and prove the remaining obligations. Use `⟨g ^ (r - a), ?_⟩` and prove the remaining obligations. Simplify using `only`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `e : g ^ r = g ^ a * g ^ (r - a)` using `by rw [← pow_add]; congr 1; omega`. Rewrite using `[e, Nat.sub_mul, one_mul, mul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem sub_one_dvd_card_GL {r a : ℕ} (ha : 1 ≤ a) (har : a ≤ r) :
     g ^ a - 1 ∣ Nat.card (GL (Fin r) (ZMod g)) := by
@@ -134,15 +132,13 @@ theorem sub_one_dvd_card_GL {r a : ℕ} (ha : 1 ≤ a) (har : a ≤ r) :
   rw [e, Nat.sub_mul, one_mul, mul_comm]
 
 /- English proof (translation)
-Use `set K := IntermediateField.adjoin (ZMod g) ({y} : Set (Formalism.CyclotomicNorms.Fbar g))`. Establish `hint : IsIntegral (ZMod g) y` using `Algebra.IsIntegral.isIntegral y`. Use `haveI : FiniteDimensional (ZMod g) K := IntermediateField.adjoin.finiteDimensional hint`. Use `haveI : Finite K := Module.finite_of_finite (ZMod g)`. Use `letI : Fintype K := Fintype.ofFinite K`.
+Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set a := Module.finrank (ZMod g) K`. Establish `ha : a = (minpoly (ZMod g) y).natDegree` using `IntermediateField.adjoin.finrank hint`. Establish `hda : a ≤ r`. Rewrite using `[ha]`. Use `Polynomial.natDegree_le_natDegree (minpoly.degree_le_of_ne_zero (ZMod g) y hp hroot)` as an intermediate fact.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Establish `ha1 : 1 ≤ a` using `Module.finrank_pos`. Establish `hcard : Fintype.card K = g ^ a`. Rewrite using `[Module.card_eq_pow_finrank (K := ZMod g), ZMod.card]`. Set `y' : K` to `⟨y, IntermediateField.mem_adjoin_simple_self _ _⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hy' : y' ≠ 0` using `fun h => hy (congrArg Subtype.val h)`. Establish `h1 : y' ^ (g ^ a - 1) = 1`. Rewrite using `[← hcard]`. Conclude with `FiniteField.pow_card_sub_one_eq_one y' hy'`. Take `⟨m, hm⟩` from `sub_one_dvd_card_GL (g := g) ha1 hda`.
-
-Rewrite using `[hm, pow_mul]`. Establish `: y ^ (g ^ a - 1) = 1` using `congrArg Subtype.val h1`. Rewrite using `[this, one_pow]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_card_GL_eq_one {r : ℕ} (hr : 1 ≤ r) {y : Formalism.CyclotomicNorms.Fbar g} (hy : y ≠ 0) {p : (ZMod g)[X]}
     (hp : p ≠ 0) (hd : p.natDegree ≤ r) (hroot : aeval y p = 0) :
@@ -175,7 +171,7 @@ def ySet (S : (ZMod g)[X]) (c : (ZMod g)ˣ) : Finset (Formalism.CyclotomicNorms.
     {algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g) (c : ZMod g), algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g) ((c⁻¹ : (ZMod g)ˣ) : ZMod g)}
 
 /- English proof (translation)
-Unfold `Formalism.CyclotomicNorms.rootsBar`. Rewrite using `[Polynomial.mem_roots', Polynomial.IsRoot.def, Polynomial.eval_map_algebraMap]`. Conclude with `⟨fun h => h.2, fun h => ⟨(Polynomial.map_ne_zero_iff (algebraMap (ZMod g) _).injective).2 hS, h⟩⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mem_rootsBar {S : (ZMod g)[X]} (hS : S ≠ 0) {y : Formalism.CyclotomicNorms.Fbar g} :
     y ∈ Formalism.CyclotomicNorms.rootsBar S ↔ aeval y S = 0 := by
@@ -184,9 +180,9 @@ theorem mem_rootsBar {S : (ZMod g)[X]} (hS : S ≠ 0) {y : Formalism.CyclotomicN
   exact ⟨fun h => h.2, fun h => ⟨(Polynomial.map_ne_zero_iff (algebraMap (ZMod g) _).injective).2 hS, h⟩⟩
 
 /- English proof (translation)
-Establish `h0 : algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g) x ≠ 0`. Rewrite using `[Ne, map_eq_zero_iff _ (algebraMap (ZMod g) _).injective]`. Conclude with `hx`. Use `⟨h0, ?_⟩` and prove the remaining obligations. Take `⟨m, rfl⟩` from `hN`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_mul, pow_card_GL_eq_one hr h0 (X_sub_C_ne_zero x) (by rw [natDegree_X_sub_C]; exact hr) (by rw [map_sub, aeval_X, aeval_C, sub_self]), one_pow]`.
+A detailed English derivation is pending.
 -/
 theorem alg_spec {r N : ℕ} (hr : 1 ≤ r) (hN : Nat.card (GL (Fin r) (ZMod g)) ∣ N) (x : ZMod g) (hx : x ≠ 0) :
     algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g) x ≠ 0 ∧ (algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g) x) ^ N = 1 := by
@@ -198,11 +194,11 @@ theorem alg_spec {r N : ℕ} (hr : 1 ≤ r) (hN : Nat.card (GL (Fin r) (ZMod g))
     (by rw [map_sub, aeval_X, aeval_C, sub_self]), one_pow]
 
 /- English proof (translation)
-Introduce `y hy`. Rewrite `hy` using `[ySet, Finset.mem_union, Multiset.mem_toFinset, Finset.mem_insert, Finset.mem_singleton]`. Break down `hy with hy | rfl | rfl` into its components or cases. Rewrite `hy` using `[mem_rootsBar hS]`. Establish `hy0 : y ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Rewrite `hy` using `[← Polynomial.coeff_zero_eq_aeval_zero', map_eq_zero_iff _ (algebraMap (ZMod g) _).injective]`. Conclude with `hS0 hy`. Use `⟨hy0, ?_⟩` and prove the remaining obligations. Take `⟨m, rfl⟩` from `hN`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_mul, pow_card_GL_eq_one hr hy0 hS hSd hy, one_pow]`. Conclude with `alg_spec hr hN _ c.ne_zero`. Conclude with `alg_spec hr hN _ (c⁻¹).ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem ySet_spec {r N : ℕ} (hr : 1 ≤ r) (hN : Nat.card (GL (Fin r) (ZMod g)) ∣ N) {S : (ZMod g)[X]}
     (hS : S ≠ 0) (hS0 : S.coeff 0 ≠ 0) (hSd : S.natDegree ≤ r) (c : (ZMod g)ˣ) :
@@ -222,9 +218,9 @@ theorem ySet_spec {r N : ℕ} (hr : 1 ≤ r) (hN : Nat.card (GL (Fin r) (ZMod g)
   · exact alg_spec hr hN _ (c⁻¹).ne_zero
 
 /- English proof (translation)
-Unfold `ySet`. Use `(Finset.card_union_le _ _).trans (add_le_add ?_ ?_)` and prove the remaining obligations. Use `(Multiset.toFinset_card_le _).trans ?_` and prove the remaining obligations. Unfold `Formalism.CyclotomicNorms.rootsBar`. Use `(Polynomial.card_roots' _).trans ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Polynomial.natDegree_map]`. Conclude with `hSd`. Conclude with `(Finset.card_insert_le _ _).trans (by rw [Finset.card_singleton])`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ySet_card {r : ℕ} {S : (ZMod g)[X]} (hSd : S.natDegree ≤ r) (c : (ZMod g)ˣ) :
     (ySet S c).card ≤ r + 2 := by
@@ -237,7 +233,7 @@ theorem ySet_card {r : ℕ} {S : (ZMod g)[X]} (hSd : S.natDegree ≤ r) (c : (ZM
   · exact (Finset.card_insert_le _ _).trans (by rw [Finset.card_singleton])
 
 /- English proof (translation)
-Unfold `ySet`. Use `Finset.mem_union_right _ ?_` and prove the remaining obligations. Break down `hu with rfl | rfl` into its components or cases. Conclude with `Finset.mem_insert_self _ _`. Conclude with `Finset.mem_insert_of_mem (Finset.mem_singleton_self _)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem alg_mem_ySet (S : (ZMod g)[X]) {c u : (ZMod g)ˣ} (hu : u = c ∨ u = c⁻¹) :
     algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g) (u : ZMod g) ∈ ySet S c := by
@@ -248,11 +244,9 @@ theorem alg_mem_ySet (S : (ZMod g)[X]) {c u : (ZMod g)ˣ} (hu : u = c ∨ u = c�
   · exact Finset.mem_insert_of_mem (Finset.mem_singleton_self _)
 
 /- English proof (translation)
-Establish `hne : S * (X - C (u : ZMod g)) ^ t ≠ 0` using `mul_ne_zero hS (pow_ne_zero _ (X_sub_C_ne_zero _))`. Rewrite `hy` using `[mem_rootsBar hne, map_mul, map_pow, mul_eq_zero]`. Break down `hy with hy | hy` into its components or cases. Unfold `ySet`. Conclude with `Finset.mem_union_left _ (Multiset.mem_toFinset.2 ((mem_rootsBar hS).2 hy))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `h1 : aeval y (X - C (u : ZMod g)) = 0`. Assume the negation of the conclusion as `hne`. Conclude with `pow_ne_zero t hne hy`. Rewrite `h1` using `[map_sub, aeval_X, aeval_C, sub_eq_zero]`. Rewrite using `[h1]`.
-
-Conclude with `alg_mem_ySet S hu`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem root_mem_ySet {S : (ZMod g)[X]} (hS : S ≠ 0) {c u : (ZMod g)ˣ} (hu : u = c ∨ u = c⁻¹) (t : ℕ)
     {y : Formalism.CyclotomicNorms.Fbar g} (hy : y ∈ Formalism.CyclotomicNorms.rootsBar (S * (X - C (u : ZMod g)) ^ t)) : y ∈ ySet S c := by
@@ -267,13 +261,13 @@ theorem root_mem_ySet {S : (ZMod g)[X]} (hS : S ≠ 0) {c u : (ZMod g)ˣ} (hu : 
     rw [h1]; exact alg_mem_ySet S hu
 
 /- English proof (translation)
-The claim follows from `Finset.mem_image_of_mem _ hy`.
+A detailed English derivation is pending.
 -/
 theorem inv_mem_image {Y : Finset (Formalism.CyclotomicNorms.Fbar g)} {y : Formalism.CyclotomicNorms.Fbar g} (hy : y ∈ Y) :
     y⁻¹ ∈ Y.image (·⁻¹) := Finset.mem_image_of_mem _ hy
 
 /- English proof (translation)
-Introduce `y hy`. Take `⟨z, hz, rfl⟩` from `Finset.mem_image.1 hy`. Take `⟨h1, h2⟩` from `h z hz`. Conclude with `⟨inv_ne_zero h1, by rw [inv_pow, h2, inv_one]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem image_spec {Y : Finset (Formalism.CyclotomicNorms.Fbar g)} {N : ℕ} (h : ∀ y ∈ Y, y ≠ 0 ∧ y ^ N = 1) :
     ∀ y ∈ Y.image (·⁻¹), y ≠ 0 ∧ y ^ N = 1 := by
@@ -285,7 +279,7 @@ theorem image_spec {Y : Finset (Formalism.CyclotomicNorms.Fbar g)} {N : ℕ} (h 
 end Alg
 
 /- English proof (translation)
-Unfold `Formalism.CyclotomicNorms.rootsBar`. Rewrite using `[Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C, Polynomial.roots_X_sub_C]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem rootsBar_X_sub_C {g : ℕ} [Fact g.Prime] (a : ZMod g) :
     Formalism.CyclotomicNorms.rootsBar (X - C a) = {algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g) a} := by
@@ -293,7 +287,7 @@ theorem rootsBar_X_sub_C {g : ℕ} [Fact g.Prime] (a : ZMod g) :
   rw [Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C, Polynomial.roots_X_sub_C]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨D.host.g_prime k⟩ ∀ σ ∈ Ine (F := D.host.E) (D.nd.plOm.1 w), D.naut.inePol L σ = X - C (P.om k w (algebraMap (ZMod (D.host.g k)) (Formalism.CyclotomicNorms.Fbar (D.host.g k)) a) σ) := by haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩ intro σ hσ have h := P.inertiaCharpoly …`.
+Supply the required witnesses or components.
 -/
 theorem inePol_char (P : Pend D) (k : Fin 2) (w : HeightOneSpectrum (𝓞 D.host.E))
     (hwk : w ∈ placesOver D.host.E (D.host.g k)) (L : D.naut.LP w) (a : ZMod (D.host.g k))
@@ -307,29 +301,27 @@ theorem inePol_char (P : Pend D) (k : Fin 2) (w : HeightOneSpectrum (𝓞 D.host
   rw [h, hlab, rootsBar_X_sub_C, Multiset.map_singleton, Multiset.prod_singleton]
 
 /- English proof (translation)
-Introduce `D P hLGC h0 hPH hChi i k hik r hr Xs hXs w hw`. Use `haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩`. Establish `hwk : w ∈ placesOver D.host.E (D.host.g k)` using `hik ▸ hw`. Take `⟨v, hv⟩` from `GlobalTheory.TypePlaceCover.place_cover D k w hwk`. Take `⟨s, hs, hx⟩` from `hXs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨S, hS0, hSc, hSd, hSx⟩ : ∃ S : (ZMod (D.host.g k))[X], S ≠ 0 ∧ S.coeff 0 ≠ 0 ∧ S.natDegree ≤ D.R.r ∧ ∀ x ∈ Xs, S = s v := by`. Distinguish the cases in `hne : Xs.Nonempty`. Take `⟨x0, hx0⟩` from `hne`. Take `⟨PI, -, hτ⟩` from `hx x0 hx0`. Take `⟨τ, -, hl⟩` from `hτ v`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hm, hd, hc⟩` from `(P.lz k).lab_spec τ`. Rewrite `hm`, `hd`, `hc` using `[hl]`. Conclude with `⟨s v, hm.ne_zero, hc, hd.le, fun _ _ => rfl⟩`. Conclude with `⟨1, one_ne_zero, by rw [coeff_one_zero]; exact one_ne_zero, by rw [natDegree_one]; exact Nat.zero_le _, fun x hx => absurd ⟨x, hx⟩ hne⟩`. Establish `hr1 : 1 ≤ D.R.r` using `by have := D.R.two_le_m; unfold Ranks.r; omega`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN : Nat.card (GL (Fin D.R.r) (ZMod (D.host.g k))) ∣ D.what₂.restRowsFiniteGroupCard`. Rewrite using `[D.nd.restN_card_levelGroup_eq]`. Conclude with `(dvd_pow_self _ (by unfold Ranks.f Ranks.n; positivity)).trans (Finset.dvd_prod_of_mem _ (Finset.mem_univ k))`. Establish `hcard : D.R.r + 2 ≤ D.R.nV + 1`. Use `D.R.rank_add_five_le` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
-Unfold `Ranks.nV`. Unfold `Ranks.r at *`. Use linear arithmetic over natural numbers and integers. Establish `hY` using `GlobalTheory.TypeInertia.ySet_spec hr1 hN hS0 hSc hSd (PairedCharacterCondition.chiJ D i k v)`. Establish `hYc` using `GlobalTheory.TypeInertia.ySet_card hSd (PairedCharacterCondition.chiJ D i k v)`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨u, hu, hχ⟩` from `hChi i k hik v`. Establish `hcχ` using `GlobalTheory.TypeInertia.cont_chiGL (D := D) i`. Establish `hpt : ∀ x ∈ Xs, ∃ ux : (ZMod (D.host.g k))ˣ, (ux = PairedCharacterCondition.chiJ D i k v ∨ ux = (PairedCharacterCondition.chiJ D i k v)⁻¹) ∧ ∀ M : Multiset (Formalism.CyclotomicNorms.Fbar (D.host.g k)), ((w = D.naut.plGw k v ∧ M = Formalism.CyclotomicNorms.rootsBar (S * (X - C (u …` using `D.host.E) (D.nd.plOm.1 w), D.naut.inePol (D.naut.wdOf i (mapRep (iotaOQ D.nd D.naut i) (r x)) w) σ = (M.map fun y => X - C (P.om k w y σ)).prod := by`. Introduce `x hxX`. Take `⟨PI, hPI, hτ⟩` from `hx x hxX`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨τ, hτk, hl⟩` from `hτ v`. Establish `hSv` using `hSx x hxX`. Take `⟨ux, hux, hM⟩` from `hLGC i k hik r hr x PI hPI v τ hτk (by rw [hl]; exact (hs v).1) (by rw [hl]; exact (hs v).2)`. Use `⟨ux, hux, fun M hMc => ?_⟩` and prove the remaining obligations. Take `⟨hdR, hm0, hine⟩` from `hM w M (by rw [hl, ← hSv]; exact hMc)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨GlobalTheory.TypeInertia.potCrys_of h0 hPH i w hw (r x) (hr x).1 hdR hm0, hine⟩`. Establish `hchiQ : ∀ a : ZMod (D.host.g k), Br.IsdRW D.loc D.nbr i w hw (chiGL i) → D.naut.items₂ k w (D.naut.wdOf i (mapRep (iotaOQ D.nd D.naut i) (chiGL i)) w) = X - C a → Br.IsPotCrysW D.loc D.nbr i w hw (chiGL i) ∧ ∀ σ ∈ Ine (F` using `D.host.E) (D.nd.plOm.1 w), D.naut.inePol (D.naut.wdOf i (mapRep (iotaOQ D.nd D.naut i) (chiGL i)) w) σ = X - C (P.om k w (algebraMap (ZMod (D.host.g k)) (Formalism.CyclotomicNorms.Fbar (D.host.g k)) a) σ) := by`. Introduce `a hdR hlab`. Establish `hdRQ` using `((hPH i w hw).2.1 1 (chiGL i) hcχ).2.1.2 hdR`. Use `⟨GlobalTheory.TypeInertia.potCrys_of h0 hPH i w hw _ hcχ hdRQ (GlobalTheory.TypeInertia.monodromy_zero_of_deRham_character h0 hPH i w hw _ (GlobalTheory.TypeInertia.cont_mapRep hPH i w hw _ hcχ) hdRQ), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Conclude with `GlobalTheory.TypeInertia.inePol_char P k w hwk _ a hlab (D.naut.wdOf_dim i _ w)`. Break down `hv with hfix | hconj` into its components or cases. Take `⟨hdR, hlab⟩` from `(hχ w hw).1 hfix`. Use `⟨GlobalTheory.TypeInertia.ySet S (PairedCharacterCondition.chiJ D i k v), algebraMap _ _ (u : ZMod (D.host.g k)), GlobalTheory.TypeInertia.alg_mem_ySet S hu, hY, hYc.trans hcard, ?_, hchiQ _ hdR hlab⟩` and prove the remaining obligations. Introduce `x hxX`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨ux, hux, hpx⟩` from `hpt x hxX`. Conclude with `⟨(hpx _ (Or.inl ⟨hfix, rfl⟩)).1, _, fun y hy => GlobalTheory.TypeInertia.root_mem_ySet hS0 hux _ hy, (hpx _ (Or.inl ⟨hfix, rfl⟩)).2⟩`. Take `⟨hdR, hlab⟩` from `(hχ w hw).2 hconj`. Use `⟨(GlobalTheory.TypeInertia.ySet S (PairedCharacterCondition.chiJ D i k v)).image (·⁻¹), algebraMap _ _ ((u⁻¹ : (ZMod (D.host.g k))ˣ) : ZMod (D.host.g k)), ?_, GlobalTheory.TypeInertia.image_spec hY, Finset.card_image_le.trans (hYc.trans hcard), ?_, hchiQ _ hdR hlab⟩` and prove the remaining obligations. Rewrite using `[Units.val_inv_eq_inv_val, map_inv₀]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `GlobalTheory.TypeInertia.inv_mem_image (GlobalTheory.TypeInertia.alg_mem_ySet S hu)`. Introduce `x hxX`. Take `⟨ux, hux, hpx⟩` from `hpt x hxX`. Use `⟨(hpx _ (Or.inr ⟨hconj, rfl⟩)).1, _, fun y hy => ?_, (hpx _ (Or.inr ⟨hconj, rfl⟩)).2⟩` and prove the remaining obligations. Take `⟨z, hz, rfl⟩` from `Multiset.mem_map.1 hy`.
-
-Conclude with `GlobalTheory.TypeInertia.inv_mem_image (GlobalTheory.TypeInertia.root_mem_ySet hS0 hux _ hz)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem inertial_chars : ∀ (D : D7) (P : Pend D), TypeLGC P → SumRepresentations.tie0 D → tiePH (D := D) → tieChi (D := D) →
   ∀ (i : D.nd.Loc) (k : Fin 2), D.nd.l i = D.host.g k →

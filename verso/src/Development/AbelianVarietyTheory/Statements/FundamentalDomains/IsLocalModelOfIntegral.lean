@@ -14,9 +14,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.KeyPow.Test
 
 /- English proof (translation)
-Distinguish the cases in `hV : ⊤ ≤ V`. Conclude with `(TorusAlg.valAt'_id_bijective V (top_unique hV)).1.1 (h hV)`. Establish `: V = ⊥` using `eq_bot_iff.2 fun x hx => hV fun y _ => by`. Rewrite using `[show y = x from Subsingleton.elim (α := PrimeSpectrum ℂ) _ _]` and apply the resulting hypothesis. Substitute `this` using the available equality.
-
-Conclude with `Subsingleton.elim _ _`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem fn_point_ext (V : (Sp ℂ).Opens) (f g : Γ(Sp ℂ, V))
     (h : ⊤ ≤ V → valAt' (𝟙 (Sp ℂ)) V f = valAt' (𝟙 (Sp ℂ)) V g) : f = g := by
@@ -28,15 +26,15 @@ theorem fn_point_ext (V : (Sp ℂ).Opens) (f g : Γ(Sp ℂ, V))
     exact Subsingleton.elim _ _
 
 /- English proof (translation)
-Establish `h0 : (u.ex 0).left = eSec A`. Rewrite using `[(u.ker 0).2 u.Λ.zero_mem]`. Express the relevant statement in the definitionally equal form `(toUnit _ ≫ η[A]).left = η[A].left`. Rewrite using `[toUnit_unit, Category.id_comp]`. Establish `hm : ∀ j : (L.pull (eSec A)).ι, ⊤ ≤ (L.pull (eSec A)).U j → ⊤ ≤ (u.ex 0).left ⁻¹ᵁ L.U (j PUnit.unit)` using `fun j hj y hy => by rw [h0]; exact Set.mem_iInter.1 (hj hy) PUnit.unit`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `c : (L.pull (eSec A)).ι → ℂˣ` to `fun j => if hj : ⊤ ≤ (L.pull (eSec A)).U j then Units.mk0 _ (u.fr_ne _ 0 (hm j hj)) else 1`. Set `k : ∀ U : (Sp ℂ).Opens, ℂ →+* Γ(Sp ℂ, U)` to `fun U => ((𝟙 (Sp ℂ) : Sp ℂ ⟶ Sp ℂ).appLE ⊤ U (fun _ _ => trivial)).hom.comp (Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom`. Establish `hk : ∀ (j) (hj : ⊤ ≤ (L.pull (eSec A)).U j), valAt' (𝟙 (Sp ℂ)) ((L.pull (eSec A)).U j) (k _ (c j)) = u.fr (j PUnit.unit) 0` using `fun j hj => by`. Use `(valAt'_constFn (𝟙 _) (𝟙 _) (Category.id_comp _) ((L.pull (eSec A)).U j) (c j) (fun y hy => hj hy)).trans ?_` and prove the remaining obligations. Simplify using `only [c, dif_pos hj, Units.val_mk0]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `⟨⟨fun j => Units.map (k ((L.pull (eSec A)).U j)).toMonoidHom (c j)⟩, fun i j => Units.ext (fn_point_ext _ _ _ fun hV => ?_), fun j hj => (hk j hj).symm⟩` and prove the remaining obligations. Establish `hi : ⊤ ≤ (L.pull (eSec A)).U i` using `hV.trans inf_le_left`. Establish `hj : ⊤ ≤ (L.pull (eSec A)).U j` using `hV.trans inf_le_right`. Rewrite using `[Units.val_mul, valAt'_mul]`. Establish `hV' : ⊤ ≤ (𝟙 (Sp ℂ) : Sp ℂ ⟶ Sp ℂ) ⁻¹ᵁ ((L.pull (eSec A)).U i ⊓ (L.pull (eSec A)).U j)` using `fun y hy => hV hy`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `((valAt'_res (𝟙 _) inf_le_left _ hV').trans (hk i hi)).trans (Eq.trans ?_ (congrArg _ ((valAt'_res (𝟙 _) inf_le_right _ hV').trans (hk j hj)).symm))` and prove the remaining obligations. Rewrite using `[u.fr_compat _ (j PUnit.unit) 0 ((top_le_preimage_inf _ _ _).2 ⟨hm i hi, hm j hj⟩)]`. Use `congr 1`. Establish `gg : (L.pull (eSec A)).g i j = res (le_inf (inf_le_left.trans (LB.wchart_le L (fun _ : PUnit => eSec A) i PUnit.unit)) (inf_le_right.trans (LB.wchart_le L (fun _ : PUnit => eSec A) j PUnit.unit))) (pullU (eSec A) _ (L.g (i PUnit.unit) (j PUnit.unit)))` using `(Fintype.prod_unique (fun k : PUnit => (res (le_inf (inf_le_left.trans (LB.wchart_le L (fun _ : PUnit => eSec A) i k)) (inf_le_right.trans (LB.wchart_le L (fun _ : PUnit => eSec A) j k))) (pullU (eSec A) _ (L.g (i k) (j k)))) ^ (1 : ℤ))).trans (zpow_one _)`. Rewrite using `[gg]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Eq.symm ((valAt'_map (𝟙 _) _ _ hV').trans ((valAt'_comp (𝟙 _) (eSec A) (L.U (i PUnit.unit) ⊓ L.U (j PUnit.unit)) (L.g (i PUnit.unit) (j PUnit.unit)).val).trans ?_))` and prove the remaining obligations. Rewrite using `[h0]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_isRig {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ} (u : HolUnif A L g) :
     ∃ rig : LB.Gen (L.pull (eSec A)), rig.IsGen ∧ u.IsRig rig := by
@@ -78,11 +76,11 @@ theorem exists_isRig {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ} (u
   rfl
 
 /- English proof (translation)
-Use `P.isAb.comm` as an intermediate fact. Take `⟨e₁, e₂, -⟩` from `LieComb.lieComb_algebra ℂ P.A P.g v ht`. Establish `key : ∀ (d : Fin P.g → ℂ) w, IsLieComb d v w → u.IsDiff (c • d) w` using `fun d w h => by`. Use `isDiff_sum_smul_of_isLieComb P.A P.isAb P.L _ _ u v (fun i => Pi.single i c) d w ht hd h` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use function extensionality and compare the values at `k`. Simplify using `[Finset.sum_apply, Pi.single_apply, mul_comm]`. Use `⟨ht, fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨z, hz, hu⟩` from `h₁ w hw`. Take `⟨w', hw', -⟩` from `e₁ (c⁻¹ • z)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e` using `key _ _ hw'`. Rewrite `e` using `[smul_inv_smul₀ hc]`. Take `rfl : w' = w` from `(h₂ z).unique ⟨e₂ _ _ hw', e⟩ ⟨hw, hz⟩`. Use `⟨_, hw', fun d h => ?_⟩` and prove the remaining obligations. Rewrite using `[← hu _ (key d _ h), inv_smul_smul₀ hc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isLieBasis_of_isDiff (P : Out.PolAV (Sp ℂ)) (u : HolUnif P.A P.L P.g)
     (h₁ : ∀ v, IsTangent v → ∃! w, u.IsDiff w v) (h₂ : ∀ w, ∃! v, IsTangent v ∧ u.IsDiff w v) {c : ℂ} (hc : c ≠ 0)
@@ -105,11 +103,11 @@ theorem isLieBasis_of_isDiff (P : Out.PolAV (Sp ℂ)) (u : HolUnif P.A P.L P.g)
   rw [← hu _ (key d _ h), inv_smul_smul₀ hc]
 
 /- English proof (translation)
-Take `⟨hs, hp⟩` from `TorusAlg.hypotheses_inhabited.1 g 0 Matrix.isSymm_zero`. Take `⟨P, u, th, e, hΛ, ⟨h₁, h₂⟩, hth, -⟩` from `H g _ (fun _ => α) (fun _ => β) hs hp (fun _ => hα) (fun _ => hβ)`. Substitute `e` using the available equality. Take `⟨rig, hr, hR⟩` from `exists_isRig u`. Use `choose v hv using fun i : Fin P.g => (h₂ (Pi.single i (2 * Real.pi * Complex.I)⁻¹)).exists`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hb` using `isLieBasis_of_isDiff P u h₁ h₂ (inv_ne_zero Complex.two_pi_I_ne_zero) v (fun i => (hv i).1) fun i => (hv i).2`. Take `⟨z, hz⟩` from `Function.ne_iff.1 (TorusAlg.thetaChar_level hs hp (fun _ => hα) (fun _ => hβ)).1`. Take `⟨i, hi⟩` from `exists_chart P.isLB ((u.ex z).left (default : PrimeSpectrum ℂ))`. Establish `hi'` using `(top_le_preimage_iff_mem _ _).2 hi`. Establish `hne : th.f i ≠ 0` using `fun h => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hth i z hi'` as an intermediate fact. Rewrite `this` using `[h, valAt'_zero]`. Conclude with `mul_ne_zero hz (u.fr_ne i z hi') this.symm`. Conclude with `⟨⟨P, hg, rig, hr, th, exists_mem_nonzeroLocus P th ⟨i, hne⟩, v, hb⟩, u, _, rfl, hs, hp, hΛ, hR, hth, fun i => (hv i).2⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_classical (H : TorusAlgebraic) (g : ℕ) (hg : 1 ≤ g) (α β : ℂ) (hα : α = 0 ∨ α = 1 / 2)
     (hβ : β = 0 ∨ β = 1 / 2) :
@@ -135,11 +133,11 @@ theorem exists_classical (H : TorusAlgebraic) (g : ℕ) (hg : 1 ≤ g) (α β : 
     fun i => (hv i).2⟩
 
 /- English proof (translation)
-Take `⟨x, u, τ, rfl, h₁, h₂, h₃, h₄, h₅, h₆⟩` from `exists_classical H g hg 0 0 (Or.inl rfl) (Or.inl rfl)`. Establish `e` using `hK x u τ _ _ h₁ h₂ (fun _ => Or.inl rfl) (fun _ => Or.inl rfl) h₃ h₄ h₅ h₆`. Use `x.P.isAb.comm` as an intermediate fact. Take `⟨e₁, -, -, -, e₅⟩` from `LieComb.lieComb_algebra ℂ x.P.A x.P.g x.v x.basis.1`. Set `M : Matrix (Fin x.P.g) (Fin x.P.g) ℂ` to `t • 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hM : M.det = t ^ x.P.g` using `by simp [M]`. Use `choose v' hv' using fun i => (e₁ (M i)).exists`. Establish `hb : IsLieBasis v'` using `(e₅ M v' x.basis hv').2 (by rw [hM]; exact (pow_ne_zero _ ht).isUnit)`. Establish `f` using `hH x.P x.g_pos x.rig x.rig_gen x.th x.th_ne x.v x.basis x.th x.th_ne v' hb 1 M (fun i => by rw [constFn, map_one, map_one, _root_.one_mul]) hv'`. Use `⟨⟨x.P, x.g_pos, x.rig, x.rig_gen, x.th, x.th_ne, v', hb⟩, rfl, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `_ = _ * (κ x : ℂ) at f`. Rewrite `f` using `[e, hM, _root_.one_pow, _root_.one_mul, Units.val_one, _root_.mul_one, ← pow_mul]`. Conclude with `f`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rule_values (H : TorusAlgebraic) (N : ℕ → ℕ) (κ : KeyIn ℂ → ℂˣ)
     (hH : ∀ (P : Out.PolAV (Sp ℂ)) (hg rig hr th hth v hv th' hth' v' hv') (a : ℂ)
@@ -169,11 +167,11 @@ theorem rule_values (H : TorusAlgebraic) (N : ℕ → ℕ) (κ : KeyIn ℂ → �
   exact f
 
 /- English proof (translation)
-Take `⟨N, hN, κ, -, -, -, hK, hA⟩` from `h`. Take `⟨x, u, τ, rfl, h₁, h₂, h₃, h₄, h₅, h₆⟩` from `exists_classical H g hg (1 / 2) (1 / 2) (Or.inr rfl) (Or.inr rfl)`. Establish `e` using `hK x u τ _ _ h₁ h₂ (fun _ => Or.inr rfl) (fun _ => Or.inr rfl) h₃ h₄ h₅ h₆`. Take `⟨nth, nη, hn⟩` from `exists_isArchNorm hU x`. Use `⟨x, nth, nη, rfl, hn, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨u, Hm, W, χ, θ, Fd, a₁, a₂, a₃, a₄, a₅, a₆, a₇⟩` from `hn`. Establish `f` using `hA x u Hm W χ θ Fd _ _ a₁ a₂ a₃ a₄ a₅ a₆ a₇`. Establish `p : 0 ≤ nη` using `a₇ ▸ by positivity`. Establish `hn` using `hN x.P.g`. Use `Real.pi_pos` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(pow_left_inj₀ (by positivity) (by positivity) (show 2 * N x.P.g ≠ 0 by omega)).1 ?_` and prove the remaining obligations. Rewrite `f` using `[e, Units.val_one, norm_one, _root_.one_mul]`. Rewrite using `[mul_pow, ← pow_mul, ← pow_mul, show 2 * (2 * N x.P.g) = 4 * N x.P.g by ring, f]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exists_archNorm_sq_mul_eq_two_pi_pow (H : TorusAlgebraic) (hU : ThetaUnifAV) (h : KeyFormulaPow) (g : ℕ) (hg : 1 ≤ g) :
     ∃ (x : KeyIn ℂ) (nth nη : ℝ), x.P.g = g ∧ IsArchNorm x nth nη ∧ nth ^ 2 * nη = (2 * Real.pi) ^ g := by
@@ -196,9 +194,9 @@ theorem exists_archNorm_sq_mul_eq_two_pi_pow (H : TorusAlgebraic) (hU : ThetaUni
 open NumberField IsDedekindDomain in
 
 /- English proof (translation)
-Set `f : 𝓞 K →+* (𝔭.valuation K).integer` to `(algebraMap (𝓞 K) K).codRestrict _ fun r => 𝔭.valuation_le_one r`. Take `⟨y, hy⟩` from `exists_keyPB_ring x₀ f`. Use `x.P.isAb.comm` as an intermediate fact. Use `⟨_, _, inferInstance, inferInstance, _, inferInstanceAs (IsFractionRing (𝔭.valuation K).valuationSubring K), y, x.th, x.th_ne, x.v, x.basis, fun r => r.2, fun i => by rw [constFn, map_one, map_one, _root_.one_mul], fun i => ?_, KeyCancel.keyPB_cancel _ _ _ x₀ y x f _ hy h⟩` and prove the remaining obligations. Use `(LieComb.lieComb_algebra K x.P.A x.P.g x.v x.basis.1).2.2.2.1 i using 1` and compare the differences between its conclusion and the goal.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use function extensionality and compare the values at `k`. Simplify using `[Matrix.one_apply, Pi.single_apply, eq_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem isLocalModel_of_integral {K : Type} [Field K] [NumberField K] (x₀ : KeyIn (𝓞 K)) (x : KeyIn K)
     (h : KeyPB x x₀ (algebraMap (𝓞 K) K)) (𝔭 : HeightOneSpectrum (𝓞 K)) : IsLocalModel x 𝔭 1 1 := by
@@ -216,7 +214,7 @@ theorem isLocalModel_of_integral {K : Type} [Field K] [NumberField K] (x₀ : Ke
 open NumberField IsDedekindDomain in
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `exists_keyPB_ring x₀ (algebraMap (𝓞 K) K)`. Take `⟨nth, nη, hn⟩` from `exists_archNorms hU x`. Use `⟨x, nth, nη, hx, hn, ?_⟩` and prove the remaining obligations. Simplify using `using (h K x 0 0 nth nη (fun 𝔭 => ⟨1, 1, isLocalModel_of_integral x₀ x hx 𝔭, by simp, by simp⟩) hn).2.2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem degree_of_integral (hU : ThetaUnifAV) (h : KeyDegreeSt) {K : Type} [Field K] [NumberField K]
     (x₀ : KeyIn (𝓞 K)) : ∃ (x : KeyIn K) (nth nη : (K →+* ℂ) → ℝ), KeyPB x x₀ (algebraMap (𝓞 K) K) ∧

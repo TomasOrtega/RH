@@ -9,7 +9,7 @@ variable {k : Type} [Field k]
 private def nn (p q r s t : k) : M4 k := !![1, 0, 0, 0; p, 1, 0, 0; q, s, 1, 0; r, t, -p, 1]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [adj_apply, nn, sgn, Fin.rev]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem adj_nn (p q r s t : k) :
     adj (nn p q r s t) = !![1, 0, 0, 0; -p, 1, 0, 0; -t, -s, 1, 0; -r, -q, p, 1] := by
@@ -17,9 +17,9 @@ private theorem adj_nn (p q r s t : k) :
   fin_cases i <;> fin_cases j <;> simp [adj_apply, nn, sgn, Fin.rev]
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Unfold `IsGSp`. Rewrite using `[adj_nn]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [nn, Matrix.mul_apply, Fin.sum_univ_four] <;> first | ring1 | linear_combination h | linear_combination -h`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `intro i fin_cases i <;> simp [nn]`. Apply the tactic sequence `intro i j hij fin_cases i <;> fin_cases j <;> simp_all [nn]`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem low_nn (p q r s t : k) (h : t + p * s - q = 0) : IsLow (nn p q r s t) := by
   refine ⟨?_, ?_, ?_⟩
@@ -34,11 +34,11 @@ private theorem low_nn (p q r s t : k) (h : t + p * s - q = 0) : IsLow (nn p q r
     fin_cases i <;> fin_cases j <;> simp_all [nn]
 
 /- English proof (translation)
-Establish `h0` using `congrFun h 0`. Establish `h1` using `congrFun h 1`. Simplify using `[Matrix.mulVec, dotProduct, Fin.sum_univ_two] at h0 h1`. Rewrite `hd` using `[Matrix.det_fin_two]`. Establish `h2 : A 0 0 = a' + u * A 1 0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Apply `mul_left_cancel₀ ha` to reduce the goal to its premises. Take the linear combination `hd - A 0 0 * h1 + A 1 0 * h0`. Use `⟨A 1 0, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp`.
+Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `h2`. Take the linear combination `h0 - u * h2`. Take the linear combination `h1`.
+Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem par1 (u a a' : k) (A : Matrix (Fin 2) (Fin 2) k) (ha : a ≠ 0)
     (h : A *ᵥ ![u, 1] = a • ![u, 1]) (hd : A.det = a * a') :
@@ -58,11 +58,11 @@ private theorem par1 (u a a' : k) (A : Matrix (Fin 2) (Fin 2) k) (ha : a ≠ 0)
   · linear_combination h1
 
 /- English proof (translation)
-Establish `h0` using `congrFun h 0`. Establish `h1` using `congrFun h 1`. Simplify using `[Matrix.mulVec, dotProduct, Fin.sum_univ_two] at h0 h1`. Rewrite `hd` using `[Matrix.det_fin_two]`. Establish `h2 : B 1 1 = b' + B 0 1 * w`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Apply `mul_left_cancel₀ hb` to reduce the goal to its premises. Take the linear combination `hd - B 1 1 * h0 + B 0 1 * h1`. Use `⟨B 0 1, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp`.
+Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Take the linear combination `h0`. Take the linear combination `h1 - w * h2`. Conclude with `h2`.
+Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem par2 (w b b' : k) (B : Matrix (Fin 2) (Fin 2) k) (hb : b ≠ 0)
     (h : B *ᵥ ![1, w] = b • ![1, w]) (hd : B.det = b * b') :
@@ -82,9 +82,9 @@ private theorem par2 (w b b' : k) (B : Matrix (Fin 2) (Fin 2) k) (hb : b ≠ 0)
   · exact h2
 
 /- English proof (translation)
-Take `⟨p, rfl⟩` from `par1 u a a' A ha hA dA`. Take `⟨q, rfl⟩` from `par2 w b b' B hb hB dB`. Establish `hγ : (γ : k) ≠ 0` using `γ.ne_zero`. Substitute `hn` using the available equality. Rewrite using `[adj_nn]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `intro i j hij fin_cases i <;> fin_cases j <;> first`. Consider the case `exact absurd hij (by decide)`. Consider the case `(simp [nn, mix, Matrix.mul_apply, Fin.sum_univ_four]; field_simp; ring)`. Apply the tactic sequence `intro i fin_cases i <;> (simp [nn, mix, Matrix.mul_apply, Fin.sum_univ_four]; field_simp; ring)`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem case1 (h2 : (2 : k) ≠ 0) (γ : kˣ) (u w : k) (hz : 1 + γ * u * w ≠ 0)
     (A B : Matrix (Fin 2) (Fin 2) k) (a a' b b' : k) (ha : a ≠ 0) (hb : b ≠ 0)
@@ -105,9 +105,9 @@ private theorem case1 (h2 : (2 : k) ≠ 0) (γ : kˣ) (u w : k) (hz : 1 + γ * u
     fin_cases i <;> (simp [nn, mix, Matrix.mul_apply, Fin.sum_univ_four]; field_simp; ring)
 
 /- English proof (translation)
-Take `⟨p, rfl⟩` from `par2 w a a' A ha hA dA`. Take `⟨q, rfl⟩` from `par1 u b b' B hb hB dB`. Establish `hγ : (γ : k) ≠ 0` using `γ.ne_zero`. Substitute `hn` using the available equality. Rewrite using `[adj_nn]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `intro i j hij fin_cases i <;> fin_cases j <;> first`. Consider the case `exact absurd hij (by decide)`. Consider the case `(simp [nn, mix, Matrix.mul_apply, Fin.sum_univ_four]; field_simp; ring)`. Apply the tactic sequence `intro i fin_cases i <;> (simp [nn, mix, Matrix.mul_apply, Fin.sum_univ_four]; field_simp; ring)`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem case2 (h2 : (2 : k) ≠ 0) (γ : kˣ) (u w : k) (hz : (γ : k) + u * w ≠ 0)
     (A B : Matrix (Fin 2) (Fin 2) k) (a a' b b' : k) (ha : a ≠ 0) (hb : b ≠ 0)
@@ -130,7 +130,7 @@ private theorem case2 (h2 : (2 : k) ≠ 0) (γ : kˣ) (u w : k) (hz : (γ : k) +
 end
 
 /- English proof (translation)
-Rewrite using `[IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (by rw [hx]; exact hy.ne'), hx]`. Conclude with `max_eq_left hy.le`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem norm_add_one {k : Type} [NormedField k] [IsUltrametricDist k] (x y : k) (hx : ‖x‖ = 1) (hy : ‖y‖ < 1) :
     ‖x + y‖ = 1 := by
@@ -138,7 +138,7 @@ private theorem norm_add_one {k : Type} [NormedField k] [IsUltrametricDist k] (x
   exact max_eq_left hy.le
 
 /- English proof (translation)
-Rewrite using `[two_mul]`. Conclude with `(IsUltrametricDist.norm_add_le_max w w).trans_lt (by simpa using hw)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem norm_two_mul {k : Type} [NormedField k] [IsUltrametricDist k] (w : k) (hw : ‖w‖ < 1) :
     ‖2 * w‖ < 1 := by
@@ -146,7 +146,7 @@ private theorem norm_two_mul {k : Type} [NormedField k] [IsUltrametricDist k] (w
   exact (IsUltrametricDist.norm_add_le_max w w).trans_lt (by simpa using hw)
 
 /- English proof (translation)
-Use `⟨low_nn p q r s t h, ?_, by simpa [nn] using hs, by simpa [nn] using hq⟩` and prove the remaining obligations. Introduce `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [nn, hp, hq.le, hr, hs.le, ht]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem lowQ_nn {l : ℕ} [Fact l.Prime] (p q r s t : Formalism.ConjugateSelfDual.Qbar l) (h : t + p * s - q = 0)
     (hp : ‖p‖ ≤ 1) (hq : ‖q‖ = 1) (hr : ‖r‖ ≤ 1) (hs : ‖s‖ < 1) (ht : ‖t‖ ≤ 1) : LowQ (nn p q r s t) := by
@@ -155,19 +155,17 @@ private theorem lowQ_nn {l : ℕ} [Fact l.Prime] (p q r s t : Formalism.Conjugat
   fin_cases i <;> fin_cases j <;> simp [nn, hp, hq.le, hr, hs.le, ht]
 
 /- English proof (translation)
-Introduce `l _ _ γ u w hγ hu hw`. Establish `huw : ‖u * w‖ < 1`. Rewrite using `[norm_mul]`. Conclude with `(mul_le_of_le_one_left (norm_nonneg _) hu).trans_lt hw`. Establish `hz : ‖γ * u * w‖ < 1` using `by rw [mul_assoc, norm_mul, hγ, one_mul]; exact huw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `norm_add_one 1 _ norm_one hz`. Establish `h1' : ‖1 - γ * u * w‖ = 1`. Rewrite using `[sub_eq_add_neg]; exact norm_add_one 1 _ norm_one (by rwa [norm_neg])`. Establish `h3` using `norm_add_one _ _ hγ huw`. Establish `h3' : ‖γ - u * w‖ = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sub_eq_add_neg]; exact norm_add_one _ _ hγ (by rwa [norm_neg])`. Establish `n1 : 1 + γ * u * w ≠ 0`. Introduce `h`. Rewrite `h1` using `[h, norm_zero]`. Conclude with `zero_ne_one h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `n3 : γ + u * w ≠ 0`. Introduce `h`. Rewrite `h3` using `[h, norm_zero]`. Conclude with `zero_ne_one h3`. Establish `h2` using `norm_two_mul w hw`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts.
 
-Establish `hgu : ‖γ * u‖ ≤ 1` using `by rw [norm_mul, hγ, one_mul]; exact hu`. Use `⟨⟨_, lowQ_nn (γ.val * u) (-1) (γ.val * u) (-(2 * w) / (1 + γ.val * u * w)) (-(1 - γ.val * u * w) / (1 + γ.val * u * w)) ?_ hgu (by simp) hgu ?_ ?_, fun A B a a' b b' ha hb hA hB dA dB => case1 two_ne_zero γ u w n1 A B a a' b b' ha hb hA hB dA dB _ rfl⟩, ⟨_, lowQ_nn (-u) 1 u (-(2 …` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[norm_div, norm_neg, h1, div_one]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `h2`. Rewrite using `[norm_div, norm_neg, h1, h1', div_one]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[norm_div, norm_neg, h3, div_one]`.
-
-Conclude with `h2`. Rewrite using `[norm_div, h3, h3', div_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.mix_flag_exists :
     UpperTheory.V.Sd.S2.MixFlag := by

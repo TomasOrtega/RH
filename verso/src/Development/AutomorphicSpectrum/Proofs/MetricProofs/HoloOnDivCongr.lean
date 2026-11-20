@@ -12,9 +12,9 @@ open scoped ComplexOrder Classical
 variable {e : ℕ} {X : Type} [TopologicalSpace X]
 
 /- English proof (translation)
-Introduce `j`. Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a`. Simplify `(analyticOnNhd_const (v := ((a : ℤ) : ℂ)) (s := (A.chart j).target ∩ (A.chart j).symm ⁻¹' W))` using `[Function.comp_def]`. Consider the case `add p q hp hq`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Use `hp.add hq using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `u`. Simplify using `[Function.comp_def]`. Consider the case `mul_X p q hp`. Simplify `hp.mul (hb q j)` using `[Function.comp_def]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem holoOn_eval {σ : Type} (A : FinHolAtlas e X) {W : Set X} {b : X → σ → ℂ}
     (hb : ∀ q, A.HoloOn W fun y => b y q) (p : MvPolynomial σ ℤ) :
@@ -32,9 +32,9 @@ theorem holoOn_eval {σ : Type} (A : FinHolAtlas e X) {W : Set X} {b : X → σ 
     simpa [Function.comp_def] using hp.mul (hb q j)
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `A.cover y`. Establish `h1 : (A.chart j) y ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' W` using `⟨(A.chart j).map_source hj, by`. Rewrite using `[Set.mem_preimage, (A.chart j).left_inv hj]`. Conclude with `hy⟩`. Establish `h2 : ContinuousAt (f ∘ (A.chart j).symm) ((A.chart j) y)` using `(hf j _ h1).continuousAt`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ContinuousAt (fun u => (f ∘ (A.chart j).symm) ((A.chart j) u)) y` using `ContinuousAt.comp (f := A.chart j) h2 ((A.chart j).continuousAt hj)`. Use `h3.congr ?_` and prove the remaining obligations. Use `filter_upwards [(A.chart j).open_source.mem_nhds hj] with u hu`. Simplify using `only [Function.comp_apply, (A.chart j).left_inv hu]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuousAt_of_holoOn (A : FinHolAtlas e X) {W : Set X} {f : X → ℂ} (hf : A.HoloOn W f) {y : X}
     (hy : y ∈ W) : ContinuousAt f y := by
@@ -50,7 +50,7 @@ theorem continuousAt_of_holoOn (A : FinHolAtlas e X) {W : Set X} {f : X → ℂ}
   simp only [Function.comp_apply, (A.chart j).left_inv hu]
 
 /- English proof (translation)
-Rewrite using `[isOpen_iff_mem_nhds]`. Introduce and unpack `y ⟨hy, h0⟩`. Use `filter_upwards [hW.mem_nhds hy, (continuousAt_of_holoOn A hf hy).eventually_ne h0] with u h1 h2`. Conclude with `⟨h1, h2⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isOpen_inter_ne (A : FinHolAtlas e X) {W : Set X} {f : X → ℂ} (hW : IsOpen W)
     (hf : A.HoloOn W f) : IsOpen (W ∩ {y | f y ≠ 0}) := by
@@ -60,7 +60,7 @@ theorem isOpen_inter_ne (A : FinHolAtlas e X) {W : Set X} {f : X → ℂ} (hW : 
   exact ⟨h1, h2⟩
 
 /- English proof (translation)
-Introduce `j`. Establish `hO : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' W)` using `(A.chart j).isOpen_inter_preimage_symm hW`. Establish `h1 : AnalyticOnNhd ℂ (fun u => (f ∘ (A.chart j).symm) u / (g ∘ (A.chart j).symm) u) ((A.chart j).target ∩ (A.chart j).symm ⁻¹' W)` using `fun u hu => (hf j u hu).div (hg j u hu) (h0 _ hu.2)`. Conclude with `h1.congr hO fun u hu => (hv _ hu.2).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem holoOn_div_congr (A : FinHolAtlas e X) {W : Set X} {f g v : X → ℂ} (hW : IsOpen W)
     (hf : A.HoloOn W f) (hg : A.HoloOn W g) (h0 : ∀ y ∈ W, g y ≠ 0) (hv : ∀ y ∈ W, v y = f y / g y) :
@@ -74,11 +74,11 @@ theorem holoOn_div_congr (A : FinHolAtlas e X) {W : Set X} {f g v : X → ℂ} (
   exact h1.congr hO fun u hu => (hv _ hu.2).symm
 
 /- English proof (translation)
-Take `⟨d, g, h, hg, hh, hQ, heq⟩` from `hs`. Establish `hz : eval (b y₀) (map (Int.castRingHom ℂ) h) ≠ 0`. Introduce `h0`. Use `hQ (mem_mCoordIdeal_of_aeval_eq_zero (b y₀) hh ?_)` and prove the remaining obligations. Rewrite using `[← h0]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[aeval_def, eval_map, Subsingleton.elim (algebraMap ℤ ℂ) (Int.castRingHom ℂ)]`. Establish `hx : aeval x h ≠ 0` using `fun h0 => hz (eval_eq_zero_of_mem_mcPts (hpt y₀ hy₀) (mem_mCoordIdeal_of_aeval_eq_zero x hh h0))`. Establish `Hg` using `holoOn_eval A hb g`. Establish `Hh` using `holoOn_eval A hb h`. Use `⟨W ∩ {y | eval (b y) (map (Int.castRingHom ℂ) h) ≠ 0}, isOpen_inter_ne A hW Hh, ⟨hy₀, hz⟩, Set.inter_subset_left, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `holoOn_div_congr A (isOpen_inter_ne A hW Hh) (fun j => (Hg j).mono ?_) (fun j => (Hh j).mono ?_) (fun y hy => hy.2) fun y hy => ?_` and prove the remaining obligations. Conclude with `Set.inter_subset_inter_right _ (Set.preimage_mono Set.inter_subset_left)`. Conclude with `Set.inter_subset_inter_right _ (Set.preimage_mono Set.inter_subset_left)`. Conclude with `valAt_eq (hpt y hy.1) ⟨d, g, h, hg, hh, hx, heq, hy.2, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem holoOn_valAt (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Ω : Type) [Field Ω]
     (x : (Σ k, ι k) → Ω) (s : Ω) (e : ℕ) (X : Type) [TopologicalSpace X] (A : FinHolAtlas e X) (W : Set X)

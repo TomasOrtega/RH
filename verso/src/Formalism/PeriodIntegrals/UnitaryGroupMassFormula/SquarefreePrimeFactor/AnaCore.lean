@@ -8,9 +8,9 @@ namespace PI.SqfPrimeFactor.W
 open Finset
 
 /- English proof (translation)
-Establish `h2` using `Real.log_two_lt_d9`. Establish `h128 : Real.log 128 = 7 * Real.log 2`. Rewrite using `[show (128 : ℝ) = 2 ^ 7 by norm_num, Real.log_pow]; norm_num`. Establish `hq : Real.log 100 = Real.log 128 - Real.log (128 / 100)`. Rewrite using `[Real.log_div (by norm_num) (by norm_num)]; ring`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hl : 1 - (128 / 100 : ℝ)⁻¹ ≤ Real.log (128 / 100)` using `Real.one_sub_inv_le_log_of_pos (by norm_num)`. Evaluate the numerical expressions using `at hl h2`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma ana_log : Real.log 100 < 4.64 := by
   have h2 := Real.log_two_lt_d9
@@ -24,9 +24,9 @@ lemma ana_log : Real.log 100 < 4.64 := by
   linarith
 
 /- English proof (translation)
-Establish `he : Real.exp 1 ≤ 100` using `by have := Real.exp_one_lt_d9; linarith`. Establish `h` using `Real.log_div_self_antitoneOn (Set.mem_Ici.2 he) (Set.mem_Ici.2 (he.trans hx)) hx`. Establish `hx0 : (0 : ℝ) < x` using `by linarith`. Establish `h100` using `ana_log`. Simplify using `only at h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[div_le_div_iff₀ hx0 (by norm_num)]`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 lemma ana_log_le (x : ℝ) (hx : 100 ≤ x) : Real.log x ≤ 0.0464 * x := by
   have he : Real.exp 1 ≤ 100 := by have := Real.exp_one_lt_d9; linarith
@@ -38,11 +38,11 @@ lemma ana_log_le (x : ℝ) (hx : 100 ≤ x) : Real.log x ≤ 0.0464 * x := by
   nlinarith
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨e, he, hev, he4⟩ : ∃ e ∈ ({r - 2, r - 1, r} : Finset ℕ), Even e ∧ 4 ≤ e := by`. Break down `Nat.even_or_odd r with h | h` into its components or cases. Conclude with `⟨r, by simp, h, by omega⟩`. Use `⟨r - 1, by simp, ?_, by omega⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `h`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨k, by omega⟩`. Establish `hsub : ({r - 2, r - 1, r} : Finset ℕ).filter Nat.Prime ⊆ ({r - 2, r - 1, r} : Finset ℕ).erase e`. Introduce `x hx`. Rewrite `hx` using `[mem_filter]`. Rewrite using `[mem_erase]`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, hx.1⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Use `hx.2.eq_one_or_self_of_dvd 2 (even_iff_two_dvd.1 hev)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Chain the equalities or inequalities of the calculation.
 -/
 lemma ana_three (r : ℕ) (hr : 100 ≤ r) :
     (({r - 2, r - 1, r} : Finset ℕ).filter Nat.Prime).card ≤ 2 := by
@@ -66,11 +66,11 @@ lemma ana_three (r : ℕ) (hr : 100 ≤ r) :
     _ ≤ 3 - 1 := Nat.sub_le_sub_right card_le_three 1
 
 /- English proof (translation)
-Simplify using `only [Nat.primeCounting, Nat.primeCounting', Nat.count_eq_card_filter_range]`. Establish `hsub : (range (r + 1)).filter Nat.Prime ⊆ ((range (r / 2 + 1)).filter Nat.Prime ∪ S) ∪ ({r - 2, r - 1, r} : Finset ℕ).filter Nat.Prime`. Introduce `p hp`. Rewrite `hp` using `[mem_filter, mem_range]`. Take `⟨hp1, hpp⟩` from `hp`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[mem_union, mem_union, mem_filter, mem_filter, mem_range, hS]`. Distinguish the cases in `h1 : p < r / 2 + 1`. Conclude with `Or.inl (Or.inl ⟨h1, hpp⟩)`. Distinguish the cases in `h2 : p + 3 ≤ r`. Conclude with `Or.inl (Or.inr ⟨hpp, by omega, h2⟩)`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Prove the first alternative. Consider separately whether the proposition holds or fails. Prove the first alternative.
 
-Use `Or.inr ⟨?_, hpp⟩` and prove the remaining obligations. Simplify using `only [mem_insert, mem_singleton]`. Use linear arithmetic over natural numbers and integers. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Chain the equalities or inequalities of the calculation.
 -/
 lemma ana_pi (r : ℕ) (hr : 100 ≤ r) (S : Finset ℕ)
     (hS : ∀ p, p ∈ S ↔ p.Prime ∧ r < 2 * p ∧ p + 3 ≤ r) :
@@ -95,27 +95,25 @@ lemma ana_pi (r : ℕ) (hr : 100 ≤ r) (S : Finset ℕ)
     _ ≤ _ := Nat.add_le_add (card_union_le _ _) (ana_three r hr)
 
 /- English proof (translation)
-Establish `hrR : (100 : ℝ) ≤ r` using `by exact_mod_cast hr`. Establish `hR` using `hRS ((r : ℝ) / 2) (by linarith)`. Establish `hf1 : ⌊2 * ((r : ℝ) / 2)⌋₊ = r`. Rewrite using `[mul_div_cancel₀ _ two_ne_zero]`. Conclude with `Nat.floor_natCast r`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hf2 : ⌊(r : ℝ) / 2⌋₊ = r / 2`. Rewrite using `[Nat.floor_div_ofNat, Nat.floor_natCast]`. Rewrite `hR` using `[hf1, hf2]`. Establish `hcnt : (Nat.primeCounting r : ℝ) ≤ Nat.primeCounting (r / 2) + S.card + 2`. Conclude with `ana_pi r hr S hS` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set L := Real.log r with hL`. Establish `hL2 : Real.log ((r : ℝ) / 2) < L` using `Real.log_lt_log (by linarith) (by linarith)`. Establish `hL2p : 0 < Real.log ((r : ℝ) / 2)` using `Real.log_pos (by linarith)`. Establish `hLp : 0 < L` using `by linarith`. Establish `hLle : L ≤ 0.0464 * r` using `ana_log_le r hrR`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : 3 * ((r : ℝ) / 2) / (5 * L) ≤ 3 * ((r : ℝ) / 2) / (5 * Real.log ((r : ℝ) / 2))` using `div_le_div_of_nonneg_left (by positivity) (by positivity) (by linarith)`. Establish `hc0 : 3 * ((r : ℝ) / 2) / (5 * L) < S.card + 2` using `by linarith`. Rewrite `hc0` using `[div_lt_iff₀ (by positivity)]`. Establish `hcl : (r : ℝ) ≤ S.card * (5 * L) * (4095 / 4096)` using `by nlinarith`. Establish `hg0 : (4096 : ℝ) ≤ g` using `by exact_mod_cast hg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgpos : (0 : ℝ) < g` using `by linarith`. Establish `hrpos : (0 : ℝ) < r` using `by linarith`. Establish `hterm : ∀ p ∈ S, (g : ℝ) ^ r * (4095 / 4096) / r ≤ ((g : ℝ) ^ p - g) / p * (g : ℝ) ^ (r - p)`. Introduce `p hp`. Take `⟨hpp, h2, h3⟩` from `(hS p).1 hp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp2 : 2 ≤ p` using `hpp.two_le`. Establish `hp0 : (0 : ℝ) < p` using `by exact_mod_cast hpp.pos`. Establish `hpr : (p : ℝ) ≤ r` using `by exact_mod_cast (show p ≤ r by omega)`. Establish `hsplit : (g : ℝ) ^ r = (g : ℝ) ^ p * (g : ℝ) ^ (r - p)`. Rewrite using `[← pow_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use `congr 1`. Use linear arithmetic over natural numbers and integers. Establish `hgp2 : (g : ℝ) ^ 2 ≤ (g : ℝ) ^ p` using `pow_le_pow_right₀ (by linarith) hp2`. Establish `hgp : (g : ℝ) * 4096 ≤ (g : ℝ) ^ p` using `by nlinarith`. Establish `hq : (0 : ℝ) ≤ (g : ℝ) ^ (r - p)` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hgpp : (0 : ℝ) < (g : ℝ) ^ p` using `by positivity`. Rewrite using `[hsplit]`. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul_of_nonneg_right _ hq` to reduce the goal to its premises. Apply `div_le_div_of_nonneg_right _ hp0.le` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsum : S.card * ((g : ℝ) ^ r * (4095 / 4096) / r) ≤ ∑ p ∈ S, ((g : ℝ) ^ p - g) / p * (g : ℝ) ^ (r - p)`. Use `Finset.sum_le_sum hterm` as an intermediate fact. Rewrite `this` using `[Finset.sum_const, nsmul_eq_mul]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hG : (0 : ℝ) < (g : ℝ) ^ r` using `by positivity`. Establish `hkey : (g : ℝ) ^ r / (5 * L) ≤ S.card * ((g : ℝ) ^ r * (4095 / 4096) / r)`. Rewrite using `[div_le_iff₀ (by positivity)]`. Establish `: S.card * ((g : ℝ) ^ r * (4095 / 4096) / r) * (5 * L) = (g : ℝ) ^ r * (S.card * (5 * L) * (4095 / 4096)) / r` using `by ring`. Rewrite using `[this, le_div_iff₀ hrpos]`.
-
-Conclude with `mul_le_mul_of_nonneg_left hcl hG.le`. Establish `: (1 - 1 / (5 * L)) * (g : ℝ) ^ r = (g : ℝ) ^ r - (g : ℝ) ^ r / (5 * L)` using `by ring`. Rewrite using `[this]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem ana_main (hRS : PI.PrimesDyadicRS.Claim) (g r : ℕ) (hr : 100 ≤ r) (hg : 2 ^ 12 ≤ g)
     (S : Finset ℕ) (hS : ∀ p, p ∈ S ↔ p.Prime ∧ r < 2 * p ∧ p + 3 ≤ r) :

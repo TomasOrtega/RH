@@ -19,7 +19,7 @@ namespace GlobalTheory.Mum.LamTransl
 variable {S : Scheme.{0}} (G : Over S) [GrpObj G] [IsCommMonObj G]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp [pzero, Hom.one_def]`. Consider the case `cons k l ih => rw [List.foldr_cons, ih, List.map_cons, List.prod_cons, padd, Hom.mul_def]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem foldr_eq {T : Over S} {n : ℕ} (x : Fin n → (T ⟶ G)) (l : List (Fin n)) :
     l.foldr (fun k acc => padd G (x k) acc) (pzero G T) = (l.map x).prod := by
@@ -61,11 +61,11 @@ theorem splitEquiv_apply (I : Finset (Fin 3)) : splitEquiv ⟨I⟩ = Sum.map ULi
   rfl
 
 /- English proof (translation)
-Break down `k with ⟨I⟩` into its components or cases. Rewrite using `[splitEquiv_apply]`. Establish `h` using `mem8 I`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at h`. Break down `h with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Use `all_goals`. Simplify using `(config := {decide := true}) only [split3, if_true, if_false, Finset.mem_insert, Finset.mem_singleton, Sum.map_inl, Sum.map_inr, Sum.elim_inl, Sum.elim_inr]`. Use `all_goals`. Use `⟨?_, trivial⟩` and prove the remaining obligations. Simplify using `only [φA, φB, thφ]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← Over.comp_left]`. Use `congr 1`. Rewrite using `[psum, foldr_eq, psum, foldr_eq]`. Simplify using `[List.finRange_succ, x2, x3, pt3, tr, MonObj.comp_mul]`. Apply the tactic sequence `all_goals ac_rfl`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem split_eq (k : thK) : Sum.elim (φA G a) (φB G) (splitEquiv k) = (pt3 G a).left ≫ thφ G (x3 G) k ∧
     Sum.elim ε2 (fun k => -ε2 k) (splitEquiv k) = thε k := by
@@ -87,7 +87,7 @@ theorem split_eq (k : thK) : Sum.elim (φA G a) (φB G) (splitEquiv k) = (pt3 G 
   all_goals ac_rfl
 
 /- English proof (translation)
-Introduce `ψ`. Rewrite using `[← Equiv.sum_comp splitEquiv]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [(split_eq G a k).1, (split_eq G a k).2]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sameSum : LB.SameSum (fun k => (pt3 G a).left ≫ thφ G (x3 G) k) thε (Sum.elim (φA G a) (φB G))
     (Sum.elim ε2 fun k => -ε2 k) := by
@@ -103,11 +103,11 @@ namespace GlobalTheory.Mum
 open LamTransl in
 
 /- English proof (translation)
-Introduce `S G _ _ L c a N hN hNL`. Establish `hT : (L.L.pull (tr G a).left).IsLB` using `pull_isLB L.isLB _`. Establish `hA : (LB.LinComb L.L (φA G a) ε2).IsLB` using `DVR.linComb_isLB _ L.isLB _ _`. Establish `hLam` using `GlobalTheory.SabBaseChange.cube_isLB (x2 G) L.isLB`. Establish `h1 : LBIso (abelian₂ G N) (abelian₂ G (L.L.pull (tr G a).left))` using `GlobalTheory.SabBaseChange.lbIso_cube (x2 G) hNL`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : LBIso (abelian₂ G (L.L.pull (tr G a).left)) (LB.LinComb L.L (φA G a) ε2)` using `LBIso.chartPull (chartPullLinComb L.L (tr G a).left _ (φA G a) ε2 (𝟙 _) fun k => (Category.id_comp _).symm) (chartPullSame L.L (φA G a) (φA G a) ε2 (𝟙 _) fun k => (Category.id_comp _).symm) (GlobalTheory.PolBaseChange.lbIso_refl hA)`. Establish `h3 : LBIso (abelian₂ G L.L) (LB.LinComb L.L (φA G a) ε2)`. Use `(GlobalTheory.TripleCompare.lbIso_iff_gen (L := L.L) (φB G) ε2 (φA G a) ε2).2 ?_` and prove the remaining obligations. Take `⟨t', ht', -⟩` from `DVR.gen_transport L.isLB (sameSum G a) _ (DVR.pullGen_isGen L.L _ _ c.t c.isGen (pt3 G a).left)`. Conclude with `⟨t', ht'⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `LBIso.trans (GlobalTheory.SabBaseChange.cube_isLB _ hN) (GlobalTheory.SabBaseChange.cube_isLB _ hT) hLam h1 (LBIso.trans (GlobalTheory.SabBaseChange.cube_isLB _ hT) hA hLam h2 (LBIso.symm h3))`.
+A detailed English derivation is pending.
 -/
 theorem lam_transl_iso : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (L : RigLB G), CubicalStr G L →
     ∀ (a : 𝟙_ (Over S) ⟶ G) (N : LB G.left), N.IsLB → LBIso N (L.L.pull ((toUnit G ≫ a) * 𝟙 G).left) →

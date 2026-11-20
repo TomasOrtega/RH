@@ -30,14 +30,14 @@ def pullSub {K L : Type} [Field K] [Field L] (f : K →+* L) {n : ℕ}
     exact W.smul_mem _ hv
 
 /- English proof (translation)
-Conclude with `Iff.rfl`.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_pullSub {K L : Type} [Field K] [Field L] (f : K →+* L) {n : ℕ}
     (W : Submodule L (Fin n → L)) (v : Fin n → K) : v ∈ pullSub f W ↔ f ∘ v ∈ W := by
   exact Iff.rfl
 
 /- English proof (translation)
-Use `choose v hv using fun i => hf (w i)`. Conclude with `⟨v, funext hv⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_comp_eq {K L : Type} [Field K] [Field L] (f : K →+* L) (hf : Function.Surjective f)
     {n : ℕ} (w : Fin n → L) : ∃ v : Fin n → K, f ∘ v = w := by
@@ -45,9 +45,9 @@ theorem exists_comp_eq {K L : Type} [Field K] [Field L] (f : K →+* L) (hf : Fu
   exact ⟨v, funext hv⟩
 
 /- English proof (translation)
-Introduce `g v hv`. Rewrite `hv`, the goal using `[mem_pullSub]`. Establish `heq : f ∘ ((ρ g : Matrix (Fin n) (Fin n) K).mulVec v) = ((mapRep f ρ g : GL (Fin n) L) : Matrix (Fin n) (Fin n) L).mulVec (f ∘ v)`. Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec f _ v i`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[heq]`. Conclude with `hW g (f ∘ v) hv`.
+A detailed English derivation is pending.
 -/
 theorem isInv_pullSub {Γ : Type} [Group Γ] {K L : Type} [Field K] [Field L] (f : K →+* L) {n : ℕ}
     (ρ : Γ →* GL (Fin n) K) (W : Submodule L (Fin n → L)) (hW : IsInv (mapRep f ρ) W) :
@@ -62,19 +62,17 @@ theorem isInv_pullSub {Γ : Type} [Group Γ] {K L : Type} [Field K] [Field L] (f
   exact hW g (f ∘ v) hv
 
 /- English proof (translation)
-Establish `hsurj : Function.Surjective (algebraMap K (AlgebraicClosure K))` using `(IsAlgClosed.algebraMap_bijective_of_isIntegral (k := K) (K := AlgebraicClosure K)).2`. Establish `hspan : Submodule.span (AlgebraicClosure K) ((fun v => (algebraMap K (AlgebraicClosure K)) ∘ v) '' ((⊤ : Submodule K (Fin n → K)) : Set (Fin n → K))) = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `w _`. Take `⟨v, rfl⟩` from `exists_comp_eq (algebraMap K (AlgebraicClosure K)) hsurj w`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `Submodule.subset_span ⟨v, Submodule.mem_top, rfl⟩`. Unfold `AbsIrrSub IsIrrSub`. Rewrite using `[hspan]`. Use `⟨?_, fun _ _ _ => trivial, ?_⟩` and prove the remaining obligations. Establish `: Nonempty (Fin n)` using `⟨⟨0, hn⟩⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `top_ne_bot`. Introduce `W' _ hW'`. Break down `h _ (isInv_pullSub (algebraMap K (AlgebraicClosure K)) ρ W' hW') with h0 | h1` into its components or cases. Use `left`. Rewrite using `[eq_bot_iff]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `w hw`. Take `⟨v, rfl⟩` from `exists_comp_eq (algebraMap K (AlgebraicClosure K)) hsurj w`. Establish `hv : v ∈ pullSub (algebraMap K (AlgebraicClosure K)) W'` using `(mem_pullSub _ _ _).mpr hw`. Rewrite `hv` using `[h0, Submodule.mem_bot]`. Substitute `hv` using the available equality.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[Submodule.mem_bot]`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Use `right`. Rewrite using `[eq_top_iff]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `w _`. Take `⟨v, rfl⟩` from `exists_comp_eq (algebraMap K (AlgebraicClosure K)) hsurj w`. Establish `hv : v ∈ pullSub (algebraMap K (AlgebraicClosure K)) W'`. Rewrite using `[h1]`. Discharge the goal by the elementary cases of `trivial`.
-
-Conclude with `(mem_pullSub _ _ _).mp hv`.
+Check the elementary cases of the proposition. A detailed English derivation is pending.
 -/
 theorem absIrrSub_top {Γ : Type} [Group Γ] {K : Type} [Field K] [IsAlgClosed K] {n : ℕ}
     (hn : 1 ≤ n) (ρ : Γ →* GL (Fin n) K)

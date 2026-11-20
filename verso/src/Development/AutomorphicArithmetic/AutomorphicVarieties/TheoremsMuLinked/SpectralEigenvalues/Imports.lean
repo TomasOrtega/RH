@@ -3,13 +3,13 @@ open IsLocalRing Matrix Filter UpperTheory.V UpperTheory.V.Alg UpperTheory.V.W U
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `l _ O _ _ _ _ q n m a ha p`. Establish `hl : (l : O) ∈ maximalIdeal O` using `by haveI : CharP (ResidueField O) l := IsCoef.char`. Rewrite using `[← residue_eq_zero_iff, map_natCast]`. Conclude with `CharP.cast_eq_zero _ l`. Establish `h0 : (zmultiplesHom (Om O m) 1) ((l ^ a p.1 : ℕ) : ℤ) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ((l : O) ^ a p.1) ∈ maximalIdeal O ^ m` using `Ideal.pow_le_pow_right (ha _) (Ideal.pow_mem_pow hl _)`. Establish `h2` using `Ideal.Quotient.eq_zero_iff_mem.mpr this`. Simplify using `using h2`. Set `f : ZMod (l ^ a p.1) →+ Om O m` to `ZMod.lift _ ⟨zmultiplesHom (Om O m) 1, h0⟩`. Establish `f1 : f 1 = 1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `ZMod.lift_coe (l ^ a p.1) ⟨zmultiplesHom (Om O m) 1, h0⟩ 1` as an intermediate fact. Simplify `this` using `[f]`. Use `⟨(AddMonoidHom.toMultiplicative f).comp (Pi.evalMonoidHom (fun p : Fin q × Fin n => Multiplicative (ZMod (l ^ a p.1))) p), fun p' => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : p = p'`. Substitute `h` using the available equality.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[f1]`. Simplify using `[h, Pi.mulSingle_eq_of_ne h]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Th.Sp.chi :
     ∀ (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] (q n m : ℕ) (a : Fin q → ℕ), (∀ j, m ≤ a j) → ∀ p : Fin q × Fin n, ∃ χ : Del l n a →* Multiplicative (Om O m), ∀ p', χ (Pi.mulSingle p' (Multiplicative.ofAdd 1)) = Multiplicative.ofAdd (if p = p' then 1 else 0) := by

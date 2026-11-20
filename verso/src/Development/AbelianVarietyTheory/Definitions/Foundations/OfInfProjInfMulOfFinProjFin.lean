@@ -32,12 +32,12 @@ theorem matHom_apply (g : HA R σ J) : matHom R σ J g = HA.mat R σ J g := rfl
 
 omit [TopologicalSpace R] in
 /- English proof (translation)
-The claim follows from `Subtype.val_injective`.
+A detailed English derivation is pending.
 -/
 theorem matHom_injective : Function.Injective (matHom R σ J) := Subtype.val_injective
 
 /- English proof (translation)
-The claim follows from `Topology.IsEmbedding.subtypeVal`.
+A detailed English derivation is pending.
 -/
 theorem isEmbedding_matHom : Topology.IsEmbedding (matHom R σ J) := Topology.IsEmbedding.subtypeVal
 
@@ -63,7 +63,7 @@ section LCSC
 open GlobalTheory.AdelicUnitaryTop
 
 /- English proof (translation)
-The claim follows from `haveI := locallyCompact_finiteAdele F haveI := secondCountable_finiteAdele F haveI := t2Space_finiteAdeleRing_of_numberField F lcsc_HA (Af F) σ n J`.
+A detailed English derivation is pending.
 -/
 theorem lcsc_GFin : LocallyCompactSpace (GFin σ J) ∧ SecondCountableTopology (GFin σ J) ∧ T2Space (GFin σ J) :=
   haveI := locallyCompact_finiteAdele F
@@ -72,7 +72,7 @@ theorem lcsc_GFin : LocallyCompactSpace (GFin σ J) ∧ SecondCountableTopology 
   lcsc_HA (Af F) σ n J
 
 /- English proof (translation)
-The claim follows from `haveI := secondCountable_infiniteAdele F haveI := t2Space_infiniteAdeleRing_of_numberField_field F lcsc_HA (Ainf F) σ n J`.
+A detailed English derivation is pending.
 -/
 theorem lcsc_GInf : LocallyCompactSpace (GInf σ J) ∧ SecondCountableTopology (GInf σ J) ∧ T2Space (GInf σ J) :=
   haveI := secondCountable_infiniteAdele F
@@ -80,7 +80,7 @@ theorem lcsc_GInf : LocallyCompactSpace (GInf σ J) ∧ SecondCountableTopology 
   lcsc_HA (Ainf F) σ n J
 
 /- English proof (translation)
-The claim follows from `haveI := properSpace_adicCompletion F v lcsc_HA (Fv F v) σ n J`.
+A detailed English derivation is pending.
 -/
 theorem lcsc_GLoc (v : HeightOneSpectrum (𝓞 F)) :
     LocallyCompactSpace (GLoc σ J v) ∧ SecondCountableTopology (GLoc σ J v) ∧ T2Space (GLoc σ J v) :=
@@ -88,7 +88,7 @@ theorem lcsc_GLoc (v : HeightOneSpectrum (𝓞 F)) :
   lcsc_HA (Fv F v) σ n J
 
 /- English proof (translation)
-The claim follows from `haveI : SecondCountableTopology w.Completion := (InfinitePlace.Completion.isometry_extensionEmbedding w).isEmbedding.secondCountableTopology lcsc_HA w.Completion σ n J`.
+A detailed English derivation is pending.
 -/
 theorem lcsc_GArch (w : InfinitePlace F) :
     LocallyCompactSpace (GArch σ J w) ∧ SecondCountableTopology (GArch σ J w) ∧ T2Space (GArch σ J w) :=
@@ -116,7 +116,7 @@ end LCSC
 
 omit [NumberField F] [NumberField E] in
 /- English proof (translation)
-The claim follows from `HA_ext σ J fun r s => by simp only [GlobalTheory.AutFunCompare.mat_mapH] rw [← AlgHom.comp_apply, ← Algebra.TensorProduct.map_comp, AlgHom.comp_id]`.
+A detailed English derivation is pending.
 -/
 theorem mapH_mapH {R R' R'' : Type} [CommRing R] [Algebra F R] [CommRing R'] [Algebra F R'] [CommRing R'']
     [Algebra F R''] (φ : R →ₐ[F] R') (ψ : R' →ₐ[F] R'') (g : HA R σ J) :
@@ -126,7 +126,7 @@ theorem mapH_mapH {R R' R'' : Type} [CommRing R] [Algebra F R] [CommRing R'] [Al
     rw [← AlgHom.comp_apply, ← Algebra.TensorProduct.map_comp, AlgHom.comp_id]
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (funext h)`.
+A detailed English derivation is pending.
 -/
 theorem af_ext {a b : Af F}
     (h : ∀ u, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F u a = Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F u b) : a = b := Subtype.ext (funext h)
@@ -147,7 +147,7 @@ def singleFin (v : HeightOneSpectrum (𝓞 F)) : Fv F v →ₗ[F] Af F where
     simp only [map_smul, evalV_singleV, Pi.single_smul, Pi.smul_apply, RingHom.id_apply]
 
 /- English proof (translation)
-Conclude with `Subtype.ext (Pi.single_mul v a b)`.
+A detailed English derivation is pending.
 -/
 theorem singleFin_mul (v : HeightOneSpectrum (𝓞 F)) (a b : Fv F v) :
     singleFin v (a * b) = singleFin v a * singleFin v b := by
@@ -155,7 +155,7 @@ theorem singleFin_mul (v : HeightOneSpectrum (𝓞 F)) (a b : Fv F v) :
   exact Subtype.ext (Pi.single_mul v a b)
 
 /- English proof (translation)
-Conclude with `Pi.single_eq_same v a`.
+A detailed English derivation is pending.
 -/
 theorem evalV_singleFin_self (v : HeightOneSpectrum (𝓞 F)) (a : Fv F v) :
     Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v (singleFin v a) = a := by
@@ -163,7 +163,7 @@ theorem evalV_singleFin_self (v : HeightOneSpectrum (𝓞 F)) (a : Fv F v) :
   exact Pi.single_eq_same v a
 
 /- English proof (translation)
-Conclude with `Pi.single_eq_of_ne h a`.
+A detailed English derivation is pending.
 -/
 theorem evalV_singleFin_ne {v u : HeightOneSpectrum (𝓞 F)} (h : u ≠ v) (a : Fv F v) :
     Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F u (singleFin v a) = 0 := by
@@ -171,9 +171,7 @@ theorem evalV_singleFin_ne {v u : HeightOneSpectrum (𝓞 F)} (h : u ≠ v) (a :
   exact Pi.single_eq_of_ne h a
 
 /- English proof (translation)
-Establish `hS : Filter.cofinite ≤ Filter.principal ({v}ᶜ : Set (HeightOneSpectrum (𝓞 F)))` using `Filter.le_principal_iff.2 (Set.finite_singleton v).compl_mem_cofinite`. Set `f : Fv F v → RestrictedProduct (fun u : HeightOneSpectrum (𝓞 F) => u.adicCompletion F) (fun u => (u.adicCompletionIntegers F : Set (u.adicCompletion F))) (Filter.principal {v}ᶜ)` to `fun a => ⟨Pi.single v a, fun u hu => by`. Rewrite using `[Set.mem_setOf_eq, Pi.single_eq_of_ne hu]`. Conclude with `zero_mem _⟩`. Establish `hf : Continuous f` using `RestrictedProduct.continuous_rng_of_principal.2 (continuous_single v)`.
-
-Conclude with `(RestrictedProduct.continuous_inclusion hS).comp hf`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_singleFin (v : HeightOneSpectrum (𝓞 F)) : Continuous (singleFin v) := by
   classical
@@ -235,57 +233,57 @@ theorem matHom_projArch (w : InfinitePlace F) (g : GAd σ J) :
     matHom _ σ J (projArch σ J w g) = bc (compInf F E w) (matHom _ σ J g) := rfl
 
 /- English proof (translation)
-The claim follows from `mapH_mapH σ J _ _ g`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem projFinLoc_projFin (v : HeightOneSpectrum (𝓞 F)) (g : GAd σ J) :
     projFinLoc σ J v (projFin σ J g) = proj σ J v g := mapH_mapH σ J _ _ g
 
 /- English proof (translation)
-The claim follows from `mapH_mapH σ J _ _ g`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem projInfArch_projInf (w : InfinitePlace F) (g : GAd σ J) :
     projInfArch σ J w (projInf σ J g) = projArch σ J w g := mapH_mapH σ J _ _ g
 
 /- English proof (translation)
-The claim follows from `mapH_extH_self _ _ _ _ _ (fun _ => rfl) y`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem projFin_ofFin (y : GFin σ J) : projFin σ J (ofFin σ J y) = y :=
   mapH_extH_self _ _ _ _ _ (fun _ => rfl) y
 /- English proof (translation)
-The claim follows from `mapH_extH_zero _ _ _ _ _ (fun _ => rfl) y`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem projInf_ofFin (y : GFin σ J) : projInf σ J (ofFin σ J y) = 1 :=
   mapH_extH_zero _ _ _ _ _ (fun _ => rfl) y
 /- English proof (translation)
-The claim follows from `mapH_extH_self _ _ _ _ _ (fun _ => rfl) y`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem projInf_ofInf (y : GInf σ J) : projInf σ J (ofInf σ J y) = y :=
   mapH_extH_self _ _ _ _ _ (fun _ => rfl) y
 /- English proof (translation)
-The claim follows from `mapH_extH_zero _ _ _ _ _ (fun _ => rfl) y`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem projFin_ofInf (y : GInf σ J) : projFin σ J (ofInf σ J y) = 1 :=
   mapH_extH_zero _ _ _ _ _ (fun _ => rfl) y
 
 /- English proof (translation)
-The claim follows from `mapH_extH_self _ _ _ _ _ (evalV_singleFin_self v) x`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem projFinLoc_embLocFin_self (v : HeightOneSpectrum (𝓞 F)) (x : GLoc σ J v) :
     projFinLoc σ J v (embLocFin σ J v x) = x := mapH_extH_self _ _ _ _ _ (evalV_singleFin_self v) x
 /- English proof (translation)
-The claim follows from `mapH_extH_zero _ _ _ _ _ (evalV_singleFin_ne h) x`.
+A detailed English derivation is pending.
 -/
 theorem projFinLoc_embLocFin_ne {v u : HeightOneSpectrum (𝓞 F)} (h : u ≠ v) (x : GLoc σ J v) :
     projFinLoc σ J u (embLocFin σ J v x) = 1 := mapH_extH_zero _ _ _ _ _ (evalV_singleFin_ne h) x
 /- English proof (translation)
-Conclude with `mapH_extH_self _ _ _ _ _ (fun a => Pi.single_eq_same w a) x`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem projInfArch_embArchInf_self (w : InfinitePlace F) (x : GArch σ J w) :
     projInfArch σ J w (embArchInf σ J w x) = x := by
   classical
   exact mapH_extH_self _ _ _ _ _ (fun a => Pi.single_eq_same w a) x
 /- English proof (translation)
-Conclude with `mapH_extH_zero _ _ _ _ _ (fun a => Pi.single_eq_of_ne h a) x`.
+A detailed English derivation is pending.
 -/
 theorem projInfArch_embArchInf_ne {w u : InfinitePlace F} (h : u ≠ w) (x : GArch σ J w) :
     projInfArch σ J u (embArchInf σ J w x) = 1 := by
@@ -293,75 +291,75 @@ theorem projInfArch_embArchInf_ne {w u : InfinitePlace F} (h : u ≠ w) (x : GAr
   exact mapH_extH_zero _ _ _ _ _ (fun a => Pi.single_eq_of_ne h a) x
 
 /- English proof (translation)
-Rewrite using `[← projFinLoc_projFin, projFin_ofFin]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem proj_ofFin (v : HeightOneSpectrum (𝓞 F)) (y : GFin σ J) :
     proj σ J v (ofFin σ J y) = projFinLoc σ J v y := by rw [← projFinLoc_projFin, projFin_ofFin]
 /- English proof (translation)
-Rewrite using `[← projFinLoc_projFin, projFin_ofInf, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem proj_ofInf (v : HeightOneSpectrum (𝓞 F)) (y : GInf σ J) : proj σ J v (ofInf σ J y) = 1 := by
   rw [← projFinLoc_projFin, projFin_ofInf, map_one]
 /- English proof (translation)
-Rewrite using `[← projInfArch_projInf, projInf_ofInf]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem projArch_ofInf (w : InfinitePlace F) (y : GInf σ J) :
     projArch σ J w (ofInf σ J y) = projInfArch σ J w y := by rw [← projInfArch_projInf, projInf_ofInf]
 /- English proof (translation)
-Rewrite using `[← projInfArch_projInf, projInf_ofFin, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem projArch_ofFin (w : InfinitePlace F) (y : GFin σ J) : projArch σ J w (ofFin σ J y) = 1 := by
   rw [← projInfArch_projInf, projInf_ofFin, map_one]
 
 /- English proof (translation)
-Simplify using `[emb]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem proj_emb_self (v : HeightOneSpectrum (𝓞 F)) (x : GLoc σ J v) : proj σ J v (emb σ J v x) = x := by
   simp [emb]
 /- English proof (translation)
-Simplify using `[emb, projFinLoc_embLocFin_ne σ J h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem proj_emb_ne {v u : HeightOneSpectrum (𝓞 F)} (h : u ≠ v) (x : GLoc σ J v) : proj σ J u (emb σ J v x) = 1 := by
   simp [emb, projFinLoc_embLocFin_ne σ J h]
 /- English proof (translation)
-Simplify using `[emb]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem projArch_emb (w : InfinitePlace F) (v : HeightOneSpectrum (𝓞 F)) (x : GLoc σ J v) :
     projArch σ J w (emb σ J v x) = 1 := by simp [emb]
 /- English proof (translation)
-Simplify using `[emb]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem projInf_emb (v : HeightOneSpectrum (𝓞 F)) (x : GLoc σ J v) : projInf σ J (emb σ J v x) = 1 := by
   simp [emb]
 /- English proof (translation)
-Simplify using `[embArch]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem projArch_embArch_self (w : InfinitePlace F) (x : GArch σ J w) :
     projArch σ J w (embArch σ J w x) = x := by simp [embArch]
 /- English proof (translation)
-Simplify using `[embArch, projInfArch_embArchInf_ne σ J h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem projArch_embArch_ne {w u : InfinitePlace F} (h : u ≠ w) (x : GArch σ J w) :
     projArch σ J u (embArch σ J w x) = 1 := by simp [embArch, projInfArch_embArchInf_ne σ J h]
 /- English proof (translation)
-Simplify using `[embArch]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem proj_embArch (v : HeightOneSpectrum (𝓞 F)) (w : InfinitePlace F) (x : GArch σ J w) :
     proj σ J v (embArch σ J w x) = 1 := by simp [embArch]
 /- English proof (translation)
-Simplify using `[embArch]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem projFin_embArch (w : InfinitePlace F) (x : GArch σ J w) : projFin σ J (embArch σ J w x) = 1 := by
   simp [embArch]
 
 /- English proof (translation)
-The claim follows from `Function.LeftInverse.injective (proj_emb_self σ J v)`.
+A detailed English derivation is pending.
 -/
 theorem emb_injective (v : HeightOneSpectrum (𝓞 F)) : Function.Injective (emb σ J v) :=
   Function.LeftInverse.injective (proj_emb_self σ J v)
 
 /- English proof (translation)
-The claim follows from `HA_ext σ J fun r s => by change Algebra.TensorProduct.map (evFin F v) (AlgHom.id F E) ((1 : AF F) ⊗ₜ[F] (γ.1.1 r s)) = (1 : Fv F v) ⊗ₜ[F] (γ.1.1 r s) simp`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem proj_ratEmb (v : HeightOneSpectrum (𝓞 F)) (γ : GRat σ J) :
     proj σ J v (ratEmb σ J γ) = ratLoc σ J v γ :=
@@ -371,7 +369,7 @@ The claim follows from `HA_ext σ J fun r s => by change Algebra.TensorProduct.m
     simp
 
 /- English proof (translation)
-The claim follows from `HA_ext σ J fun r s => by change Algebra.TensorProduct.map (evInf F w) (AlgHom.id F E) ((1 : AF F) ⊗ₜ[F] (γ.1.1 r s)) = (1 : w.Completion) ⊗ₜ[F] (γ.1.1 r s) simp`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem projArch_ratEmb (w : InfinitePlace F) (γ : GRat σ J) :
     projArch σ J w (ratEmb σ J γ) = ratArch σ J w γ :=
@@ -381,7 +379,7 @@ The claim follows from `HA_ext σ J fun r s => by change Algebra.TensorProduct.m
     simp
 
 /- English proof (translation)
-Rewrite using `[← mul_inv_eq_one]`. Establish `a : projInf σ J (g * h⁻¹) = 1` using `by rw [map_mul, map_inv, h1, mul_inv_cancel]`. Establish `b : projFin σ J (g * h⁻¹) = 1` using `by rw [map_mul, map_inv, h2, mul_inv_cancel]`. Conclude with `Subtype.ext (Units.ext (GlobalTheory.AutFunCounterexample.tens_inj (F := F) (E := E) (A := Ainf F) (B := Af F) _ (congrArg (fun x => (HA.mat _ _ _ x).1) a) (congrArg (fun x => (HA.mat _ _ _ x).1) b)))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ext_inf_fin {g h : GAd σ J} (h1 : projInf σ J g = projInf σ J h) (h2 : projFin σ J g = projFin σ J h) :
     g = h := by
@@ -392,39 +390,39 @@ theorem ext_inf_fin {g h : GAd σ J} (h1 : projInf σ J g = projInf σ J h) (h2 
     (congrArg (fun x => (HA.mat _ _ _ x).1) a) (congrArg (fun x => (HA.mat _ _ _ x).1) b)))
 
 /- English proof (translation)
-The claim follows from `HA_ext σ J fun r s => GlobalTheory.LatticeLocalGlobal.ext_components _ _ fun v => congrArg (fun x => (HA.mat _ _ _ x).1 r s) (e v)`.
+A detailed English derivation is pending.
 -/
 theorem GFin_ext {g h : GFin σ J} (e : ∀ v, projFinLoc σ J v g = projFinLoc σ J v h) : g = h :=
   HA_ext σ J fun r s => GlobalTheory.LatticeLocalGlobal.ext_components _ _ fun v =>
     congrArg (fun x => (HA.mat _ _ _ x).1 r s) (e v)
 
 /- English proof (translation)
-The claim follows from `HA_ext σ J fun r s => GlobalTheory.AutFunCompare.infTens_ext fun w => congrArg (fun x => (HA.mat _ _ _ x).1 r s) (e w)`.
+A detailed English derivation is pending.
 -/
 theorem GInf_ext {g h : GInf σ J} (e : ∀ w, projInfArch σ J w g = projInfArch σ J w h) : g = h :=
   HA_ext σ J fun r s => GlobalTheory.AutFunCompare.infTens_ext fun w => congrArg (fun x => (HA.mat _ _ _ x).1 r s) (e w)
 
 /- English proof (translation)
-The claim follows from `ext_inf_fin σ J (GInf_ext σ J fun w => by simp [h1 w]) (GFin_ext σ J fun v => by simp [h2 v])`.
+A detailed English derivation is pending.
 -/
 theorem GAd_ext {g h : GAd σ J} (h1 : ∀ w, projArch σ J w g = projArch σ J w h)
     (h2 : ∀ v, proj σ J v g = proj σ J v h) : g = h :=
   ext_inf_fin σ J (GInf_ext σ J fun w => by simp [h1 w]) (GFin_ext σ J fun v => by simp [h2 v])
 
 /- English proof (translation)
-The claim follows from `ext_inf_fin σ J (by simp) (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem ofInf_projInf_mul_ofFin_projFin (g : GAd σ J) :
     ofInf σ J (projInf σ J g) * ofFin σ J (projFin σ J g) = g := ext_inf_fin σ J (by simp) (by simp)
 
 /- English proof (translation)
-The claim follows from `ext_inf_fin σ J (by simp) (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem commute_ofInf_ofFin (x : GInf σ J) (y : GFin σ J) : Commute (ofInf σ J x) (ofFin σ J y) :=
   ext_inf_fin σ J (by simp) (by simp)
 
 /- English proof (translation)
-The claim follows from `GAd_ext σ J (fun w => by simp) fun u => by by_cases h : u = v · subst h; simp [hg] · simp [proj_emb_ne σ J h]`.
+A detailed English derivation is pending.
 -/
 theorem commute_emb {v : HeightOneSpectrum (𝓞 F)} (x : GLoc σ J v) {g : GAd σ J} (hg : proj σ J v g = 1) :
     Commute (emb σ J v x) g :=
@@ -434,7 +432,7 @@ theorem commute_emb {v : HeightOneSpectrum (𝓞 F)} (x : GLoc σ J v) {g : GAd 
     · simp [proj_emb_ne σ J h]
 
 /- English proof (translation)
-The claim follows from `GAd_ext σ J (fun u => by by_cases h : u = w · subst h; simp [hg] · simp [projArch_embArch_ne σ J h]) fun v => by simp`.
+A detailed English derivation is pending.
 -/
 theorem commute_embArch {w : InfinitePlace F} (x : GArch σ J w) {g : GAd σ J} (hg : projArch σ J w g = 1) :
     Commute (embArch σ J w x) g :=
@@ -444,7 +442,7 @@ theorem commute_embArch {w : InfinitePlace F} (x : GArch σ J w) {g : GAd σ J} 
     · simp [projArch_embArch_ne σ J h]) fun v => by simp
 
 /- English proof (translation)
-Introduce `a b h` and use `haveI : Nontrivial (AF F) := ⟨⟨0, 1, fun e => by obtain ⟨w⟩ : Nonempty (InfinitePlace F) := inferInstance exact zero_ne_one ((map_zero (evInf F w)).symm.trans ((congrArg (evInf F w) e).trans (map_one _)))⟩⟩ Subtype.ext (Units.ext (Matrix.ext fun r s => (inclR (F := F) (E := E) (A …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ratEmb_injective : Function.Injective (ratEmb σ J) := fun a b h =>
   haveI : Nontrivial (AF F) := ⟨⟨0, 1, fun e => by
@@ -458,65 +456,65 @@ end Lemmas
 section Cont
 
 /- English proof (translation)
-The claim follows from `continuous_mapH _ _ _ continuous_snd`.
+A detailed English derivation is pending.
 -/
 theorem continuous_projFin : Continuous (projFin σ J) := continuous_mapH _ _ _ continuous_snd
 /- English proof (translation)
-The claim follows from `continuous_mapH _ _ _ continuous_fst`.
+A detailed English derivation is pending.
 -/
 theorem continuous_projInf : Continuous (projInf σ J) := continuous_mapH _ _ _ continuous_fst
 /- English proof (translation)
-The claim follows from `continuous_mapH _ _ _ (RestrictedProduct.continuous_eval v)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_projFinLoc (v : HeightOneSpectrum (𝓞 F)) : Continuous (projFinLoc σ J v) :=
   continuous_mapH _ _ _ (RestrictedProduct.continuous_eval v)
 /- English proof (translation)
-The claim follows from `continuous_mapH _ _ _ (continuous_apply w)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_projInfArch (w : InfinitePlace F) : Continuous (projInfArch σ J w) :=
   continuous_mapH _ _ _ (continuous_apply w)
 /- English proof (translation)
-The claim follows from `continuous_mapH _ _ _ ((RestrictedProduct.continuous_eval v).comp continuous_snd)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_proj (v : HeightOneSpectrum (𝓞 F)) : Continuous (proj σ J v) :=
   continuous_mapH _ _ _ ((RestrictedProduct.continuous_eval v).comp continuous_snd)
 /- English proof (translation)
-The claim follows from `continuous_mapH _ _ _ ((continuous_apply w).comp continuous_fst)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_projArch (w : InfinitePlace F) : Continuous (projArch σ J w) :=
   continuous_mapH _ _ _ ((continuous_apply w).comp continuous_fst)
 /- English proof (translation)
-The claim follows from `continuous_extH _ _ _ _ (continuous_const.prodMk continuous_id)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_ofFin : Continuous (ofFin σ J) := continuous_extH _ _ _ _ (continuous_const.prodMk continuous_id)
 /- English proof (translation)
-The claim follows from `continuous_extH _ _ _ _ (continuous_id.prodMk continuous_const)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_ofInf : Continuous (ofInf σ J) := continuous_extH _ _ _ _ (continuous_id.prodMk continuous_const)
 /- English proof (translation)
-The claim follows from `continuous_extH _ _ _ _ (continuous_singleFin v)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_embLocFin (v : HeightOneSpectrum (𝓞 F)) : Continuous (embLocFin σ J v) :=
   continuous_extH _ _ _ _ (continuous_singleFin v)
 /- English proof (translation)
-Conclude with `continuous_extH _ _ _ _ (continuous_single w)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_embArchInf (w : InfinitePlace F) : Continuous (embArchInf σ J w) := by
   classical
   exact continuous_extH _ _ _ _ (continuous_single w)
 /- English proof (translation)
-The claim follows from `(continuous_ofFin σ J).comp (continuous_embLocFin σ J v)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_emb (v : HeightOneSpectrum (𝓞 F)) : Continuous (emb σ J v) :=
   (continuous_ofFin σ J).comp (continuous_embLocFin σ J v)
 /- English proof (translation)
-The claim follows from `(continuous_ofInf σ J).comp (continuous_embArchInf σ J w)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_embArch (w : InfinitePlace F) : Continuous (embArch σ J w) :=
   (continuous_ofInf σ J).comp (continuous_embArchInf σ J w)
 
 /- English proof (translation)
-The claim follows from `Function.LeftInverse.isClosedEmbedding (proj_emb_self σ J v) (continuous_proj σ J v) (continuous_emb σ J v)`.
+A detailed English derivation is pending.
 -/
 theorem isClosedEmbedding_emb (v : HeightOneSpectrum (𝓞 F)) : Topology.IsClosedEmbedding (emb σ J v) :=
   Function.LeftInverse.isClosedEmbedding (proj_emb_self σ J v) (continuous_proj σ J v) (continuous_emb σ J v)
@@ -555,46 +553,46 @@ def atPts (S : Finset (HeightOneSpectrum (𝓞 F))) : Subgroup (GAd σ J) :=
 variable {σ J}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => Subtype.ext h, fun h => congrArg (matHom _ σ J) h⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_finPts {g : GAd σ J} : g ∈ finPts σ J ↔ projInf σ J g = 1 :=
   ⟨fun h => Subtype.ext h, fun h => congrArg (matHom _ σ J) h⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => Subtype.ext h, fun h => congrArg (matHom _ σ J) h⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_infPts {g : GAd σ J} : g ∈ infPts σ J ↔ projFin σ J g = 1 :=
   ⟨fun h => Subtype.ext h, fun h => congrArg (matHom _ σ J) h⟩
 
 /- English proof (translation)
-The claim follows from `mem_finPts.trans ⟨fun h w => by rw [← projInfArch_projInf, h, map_one], fun h => GInf_ext σ J fun w => by simp [h w]⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_finPts_iff_forall {g : GAd σ J} : g ∈ finPts σ J ↔ ∀ w, projArch σ J w g = 1 :=
   mem_finPts.trans ⟨fun h w => by rw [← projInfArch_projInf, h, map_one],
     fun h => GInf_ext σ J fun w => by simp [h w]⟩
 
 /- English proof (translation)
-The claim follows from `mem_infPts.trans ⟨fun h v => by rw [← projFinLoc_projFin, h, map_one], fun h => GFin_ext σ J fun v => by simp [h v]⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_infPts_iff_forall {g : GAd σ J} : g ∈ infPts σ J ↔ ∀ v, proj σ J v g = 1 :=
   mem_infPts.trans ⟨fun h v => by rw [← projFinLoc_projFin, h, map_one],
     fun h => GFin_ext σ J fun v => by simp [h v]⟩
 
 /- English proof (translation)
-Simplify using `[awayPts, Subgroup.mem_iInf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_awayPts {S : Finset (HeightOneSpectrum (𝓞 F))} {g : GAd σ J} :
     g ∈ awayPts σ J S ↔ ∀ v ∈ S, proj σ J v g = 1 := by simp [awayPts, Subgroup.mem_iInf]
 
 /- English proof (translation)
-Rewrite using `[finAwayPts, Subgroup.mem_inf, mem_awayPts]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_finAwayPts {S : Finset (HeightOneSpectrum (𝓞 F))} {g : GAd σ J} :
     g ∈ finAwayPts σ J S ↔ g ∈ finPts σ J ∧ ∀ v ∈ S, proj σ J v g = 1 := by
   rw [finAwayPts, Subgroup.mem_inf, mem_awayPts]
 
 /- English proof (translation)
-Simplify using `[atPts, Subgroup.mem_iInf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_atPts {S : Finset (HeightOneSpectrum (𝓞 F))} {g : GAd σ J} :
     g ∈ atPts σ J S ↔ g ∈ finPts σ J ∧ ∀ v ∉ S, proj σ J v g = 1 := by simp [atPts, Subgroup.mem_iInf]
@@ -602,9 +600,9 @@ theorem mem_atPts {S : Finset (HeightOneSpectrum (𝓞 F))} {g : GAd σ J} :
 variable (σ J)
 
 /- English proof (translation)
-Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨γ, rfl⟩`. Conclude with `⟨γ.1, γ.2, rfl⟩`. Introduce and unpack `⟨γ, hγ, e⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨⟨γ, hγ⟩, Subtype.ext e⟩`.
+Supply the required witnesses or components.
 -/
 theorem range_ratEmb : (ratEmb σ J).range = ratPts σ J := by
   ext g
@@ -615,7 +613,7 @@ theorem range_ratEmb : (ratEmb σ J).range = ratPts σ J := by
     exact ⟨⟨γ, hγ⟩, Subtype.ext e⟩
 
 /- English proof (translation)
-Use extensionality with `g`. Rewrite using `[mem_finPts]`. Conclude with `⟨by rintro ⟨y, rfl⟩; simp, fun h => ⟨projFin σ J g, ext_inf_fin σ J (by simp [h]) (by simp)⟩⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem range_ofFin : (ofFin σ J).range = finPts σ J := by
   ext g
@@ -623,7 +621,7 @@ theorem range_ofFin : (ofFin σ J).range = finPts σ J := by
   exact ⟨by rintro ⟨y, rfl⟩; simp, fun h => ⟨projFin σ J g, ext_inf_fin σ J (by simp [h]) (by simp)⟩⟩
 
 /- English proof (translation)
-Use extensionality with `g`. Rewrite using `[mem_infPts]`. Conclude with `⟨by rintro ⟨y, rfl⟩; simp, fun h => ⟨projInf σ J g, ext_inf_fin σ J (by simp) (by simp [h])⟩⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem range_ofInf : (ofInf σ J).range = infPts σ J := by
   ext g
@@ -631,7 +629,7 @@ theorem range_ofInf : (ofInf σ J).range = infPts σ J := by
   exact ⟨by rintro ⟨y, rfl⟩; simp, fun h => ⟨projInf σ J g, ext_inf_fin σ J (by simp) (by simp [h])⟩⟩
 
 /- English proof (translation)
-Simplify using `[awayPts]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem awayPts_empty : awayPts σ J ∅ = ⊤ := by simp [awayPts]
 
@@ -649,16 +647,16 @@ def embAt (S : Finset (HeightOneSpectrum (𝓞 F))) : (∀ v : S, GLoc σ J v) �
     commute_emb σ J x (proj_emb_ne σ J (fun e => h (Subtype.ext e)) y)
 
 /- English proof (translation)
-The claim follows from `MonoidHom.noncommPiCoprod_mulSingle (fun v : S => emb σ J v) v y`.
+A detailed English derivation is pending.
 -/
 theorem embAt_mulSingle (S : Finset (HeightOneSpectrum (𝓞 F))) [DecidableEq S] (v : S) (y : GLoc σ J v) :
     embAt σ J S (Pi.mulSingle v y) = emb σ J v y :=
   MonoidHom.noncommPiCoprod_mulSingle (fun v : S => emb σ J v) v y
 
 /- English proof (translation)
-Establish `: (projAt σ J S).comp (embAt σ J S) = MonoidHom.id _` using `MonoidHom.pi_ext fun v y => by`. Use function extensionality and compare the values at `u`. Rewrite using `[MonoidHom.comp_apply, embAt_mulSingle, projAt_apply, MonoidHom.id_apply]`. Distinguish the cases in `h : u = v`. Substitute `h` using the available equality.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Rewrite using `[proj_emb_ne σ J fun e => h (Subtype.ext e), Pi.mulSingle_eq_of_ne h]`. Conclude with `DFunLike.congr_fun this x`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 @[simp] theorem projAt_embAt (S : Finset (HeightOneSpectrum (𝓞 F))) (x : ∀ v : S, GLoc σ J v) :
     projAt σ J S (embAt σ J S x) = x := by
@@ -672,13 +670,13 @@ Simplify using the standard rewrite rules. Rewrite using `[proj_emb_ne σ J fun 
   exact DFunLike.congr_fun this x
 
 /- English proof (translation)
-The claim follows from `congrFun (projAt_embAt σ J S x) v`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem proj_embAt (S : Finset (HeightOneSpectrum (𝓞 F))) (x : ∀ v : S, GLoc σ J v) (v : S) :
     proj σ J v (embAt σ J S x) = x v := congrFun (projAt_embAt σ J S x) v
 
 /- English proof (translation)
-Use `Subgroup.noncommProd_mem _ (f := fun v : S => emb σ J v (x v)) (fun _ _ _ _ h => commute_emb σ J _ (proj_emb_ne σ J (fun e => h (Subtype.ext e)) _)) fun v _ => mem_atPts.2 ⟨mem_finPts.2 (by simp), fun u hu => ?_⟩` and prove the remaining obligations. Conclude with `proj_emb_ne σ J (fun e : u = v.1 => hu (e ▸ v.2)) _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem embAt_mem (S : Finset (HeightOneSpectrum (𝓞 F))) (x : ∀ v : S, GLoc σ J v) : embAt σ J S x ∈ atPts σ J S := by
   refine Subgroup.noncommProd_mem _ (f := fun v : S => emb σ J v (x v))
@@ -686,9 +684,9 @@ theorem embAt_mem (S : Finset (HeightOneSpectrum (𝓞 F))) (x : ∀ v : S, GLoc
   exact proj_emb_ne σ J (fun e : u = v.1 => hu (e ▸ v.2)) _
 
 /- English proof (translation)
-Use `le_antisymm (by rintro _ ⟨x, rfl⟩; exact embAt_mem σ J S x) fun g hg => ⟨projAt σ J S g, ?_⟩` and prove the remaining obligations. Establish `h` using `mem_atPts.1 (embAt_mem σ J S (projAt σ J S g))`. Establish `h'` using `mem_atPts.1 hg`. Use `GAd_ext σ J (fun w => ?_) fun v => ?_` and prove the remaining obligations. Rewrite using `[mem_finPts_iff_forall.1 h.1 w, mem_finPts_iff_forall.1 h'.1 w]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hv : v ∈ S`. Conclude with `proj_embAt σ J S _ ⟨v, hv⟩`. Rewrite using `[h.2 v hv, h'.2 v hv]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem range_embAt (S : Finset (HeightOneSpectrum (𝓞 F))) : (embAt σ J S).range = atPts σ J S := by
   refine le_antisymm (by rintro _ ⟨x, rfl⟩; exact embAt_mem σ J S x) fun g hg => ⟨projAt σ J S g, ?_⟩
@@ -701,9 +699,9 @@ theorem range_embAt (S : Finset (HeightOneSpectrum (𝓞 F))) : (embAt σ J S).r
     · rw [h.2 v hv, h'.2 v hv]
 
 /- English proof (translation)
-Use extensionality with `g`. Rewrite using `[mem_atPts]`. Use `⟨?_, fun h => ⟨proj σ J v g, GAd_ext σ J (fun w => ?_) fun u => ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨mem_finPts.2 (by simp), fun u hu => proj_emb_ne σ J (by simpa using hu) x⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Rewrite using `[projArch_emb, mem_finPts_iff_forall.1 h.1 w]`. Distinguish the cases in `hu : u = v`. Substitute `hu` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[proj_emb_ne σ J hu, h.2 u (by simpa using hu)]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem range_emb (v : HeightOneSpectrum (𝓞 F)) : (emb σ J v).range = atPts σ J {v} := by
   ext g
@@ -717,7 +715,7 @@ theorem range_emb (v : HeightOneSpectrum (𝓞 F)) : (emb σ J v).range = atPts 
     · rw [proj_emb_ne σ J hu, h.2 u (by simpa using hu)]
 
 /- English proof (translation)
-The claim follows from `GAd_ext σ J (fun w => by simp [mem_finPts_iff_forall.1 (mem_atPts.1 hx).1 w]) fun v => by by_cases hv : v ∈ S · simp [mem_awayPts.1 hy v hv] · simp [(mem_atPts.1 hx).2 v hv]`.
+A detailed English derivation is pending.
 -/
 theorem commute_atPts_awayPts {S : Finset (HeightOneSpectrum (𝓞 F))} {x y : GAd σ J} (hx : x ∈ atPts σ J S)
     (hy : y ∈ awayPts σ J S) : Commute x y :=
@@ -731,7 +729,7 @@ def partAway (S : Finset (HeightOneSpectrum (𝓞 F))) (g : GAd σ J) : awayPts 
     rw [map_mul, map_inv, proj_embAt σ J S _ ⟨v, hv⟩, projAt_apply, inv_mul_cancel]⟩
 
 /- English proof (translation)
-The claim follows from `mul_inv_cancel_left _ _`.
+A detailed English derivation is pending.
 -/
 theorem embAt_mul_partAway (S : Finset (HeightOneSpectrum (𝓞 F))) (g : GAd σ J) :
     embAt σ J S (projAt σ J S g) * partAway σ J S g = g := mul_inv_cancel_left _ _
@@ -756,7 +754,7 @@ theorem atAwayEquiv_symm_apply (S : Finset (HeightOneSpectrum (𝓞 F))) (p : (�
     (atAwayEquiv σ J S).symm p = embAt σ J S p.1 * p.2 := rfl
 
 /- English proof (translation)
-The claim follows from `(atAwayEquiv σ J S).symm.injective (by rw [MulEquiv.symm_apply_apply]; exact (embAt_mul_partAway σ J S g).symm)`.
+A detailed English derivation is pending.
 -/
 theorem atAwayEquiv_apply (S : Finset (HeightOneSpectrum (𝓞 F))) (g : GAd σ J) :
     atAwayEquiv σ J S g = (projAt σ J S g, partAway σ J S g) :=
@@ -770,16 +768,16 @@ def embArchPi : (∀ w, GArch σ J w) →* GInf σ J :=
     · simp [projInfArch_embArchInf_ne σ J ht]
 
 /- English proof (translation)
-The claim follows from `MonoidHom.noncommPiCoprod_mulSingle (fun w => embArchInf σ J w) w y`.
+A detailed English derivation is pending.
 -/
 theorem embArchPi_mulSingle [DecidableEq (InfinitePlace F)] (w : InfinitePlace F) (y : GArch σ J w) :
     embArchPi σ J (Pi.mulSingle w y) = embArchInf σ J w y :=
   MonoidHom.noncommPiCoprod_mulSingle (fun w => embArchInf σ J w) w y
 
 /- English proof (translation)
-Establish `: (projInfArch σ J w).comp (embArchPi σ J) = Pi.evalMonoidHom _ w` using `MonoidHom.pi_ext fun u y => by`. Rewrite using `[MonoidHom.comp_apply, embArchPi_mulSingle, Pi.evalMonoidHom_apply]`. Distinguish the cases in `h : w = u`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[projInfArch_embArchInf_ne σ J h, Pi.mulSingle_eq_of_ne h]`. Conclude with `DFunLike.congr_fun this x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 @[simp] theorem projInfArch_embArchPi (x : ∀ w, GArch σ J w) (w : InfinitePlace F) :
     projInfArch σ J w (embArchPi σ J x) = x w := by
@@ -803,7 +801,7 @@ end Subgroups
 section ContProd
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact continuous_const`. Consider the case `insert i s hi ih`. Conclude with `((hf i).mul ih).congr fun x => (Finset.noncommProd_insert_of_notMem s i (fun i => f i x) _ hi).symm`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem continuous_noncommProd {ι X M : Type} [TopologicalSpace X] [Monoid M] [TopologicalSpace M] [ContinuousMul M]
     (f : ι → X → M) (hf : ∀ i, Continuous (f i)) (comm : ∀ x, Pairwise fun i j => Commute (f i x) (f j x))
@@ -815,13 +813,13 @@ theorem continuous_noncommProd {ι X M : Type} [TopologicalSpace X] [Monoid M] [
     exact ((hf i).mul ih).congr fun x => (Finset.noncommProd_insert_of_notMem s i (fun i => f i x) _ hi).symm
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun v => continuous_proj σ J v`.
+A detailed English derivation is pending.
 -/
 theorem continuous_projAt (S : Finset (HeightOneSpectrum (𝓞 F))) : Continuous (projAt σ J S) :=
   continuous_pi fun v => continuous_proj σ J v
 
 /- English proof (translation)
-The claim follows from `continuous_noncommProd (fun (v : S) (x : ∀ v : S, GLoc σ J v) => emb σ J v (x v)) (fun v => (continuous_emb σ J v).comp (continuous_apply v)) (fun _ _ _ h => commute_emb σ J _ (proj_emb_ne σ J (fun e => h (Subtype.ext e)) _)) Finset.univ`.
+A detailed English derivation is pending.
 -/
 theorem continuous_embAt (S : Finset (HeightOneSpectrum (𝓞 F))) : Continuous (embAt σ J S) :=
   continuous_noncommProd (fun (v : S) (x : ∀ v : S, GLoc σ J v) => emb σ J v (x v))
@@ -829,7 +827,7 @@ theorem continuous_embAt (S : Finset (HeightOneSpectrum (𝓞 F))) : Continuous 
     (fun _ _ _ h => commute_emb σ J _ (proj_emb_ne σ J (fun e => h (Subtype.ext e)) _)) Finset.univ
 
 /- English proof (translation)
-The claim follows from `(((continuous_embAt σ J S).comp (continuous_projAt σ J S)).inv.mul continuous_id).subtype_mk _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_partAway (S : Finset (HeightOneSpectrum (𝓞 F))) : Continuous (partAway σ J S) :=
   (((continuous_embAt σ J S).comp (continuous_projAt σ J S)).inv.mul continuous_id).subtype_mk _
@@ -843,7 +841,7 @@ def atAwayContEquiv (S : Finset (HeightOneSpectrum (𝓞 F))) :
       (continuous_subtype_val.comp continuous_snd) }
 
 /- English proof (translation)
-The claim follows from `continuous_noncommProd (fun w (x : ∀ w, GArch σ J w) => embArchInf σ J w (x w)) (fun w => (continuous_embArchInf σ J w).comp (continuous_apply w)) (fun _ u w h => GInf_ext σ J fun t => by by_cases ht : t = u · subst ht; simp [projInfArch_embArchInf_ne σ J h] · simp [projInfArch_e …`.
+A detailed English derivation is pending.
 -/
 theorem continuous_embArchPi : Continuous (embArchPi σ J) :=
   continuous_noncommProd (fun w (x : ∀ w, GArch σ J w) => embArchInf σ J w (x w))
@@ -859,21 +857,21 @@ def infContEquivPi : GInf σ J ≃ₜ* ∀ w, GArch σ J w :=
     continuous_invFun := continuous_embArchPi σ J }
 
 /- English proof (translation)
-Establish `: (finPts σ J : Set (GAd σ J)) = projInf σ J ⁻¹' {1}` using `Set.ext fun _ => mem_finPts`. Rewrite using `[this]`. Conclude with `isClosed_singleton.preimage (continuous_projInf σ J)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_finPts : IsClosed (finPts σ J : Set (GAd σ J)) := by
   have : (finPts σ J : Set (GAd σ J)) = projInf σ J ⁻¹' {1} := Set.ext fun _ => mem_finPts
   rw [this]; exact isClosed_singleton.preimage (continuous_projInf σ J)
 
 /- English proof (translation)
-Establish `: (infPts σ J : Set (GAd σ J)) = projFin σ J ⁻¹' {1}` using `Set.ext fun _ => mem_infPts`. Rewrite using `[this]`. Conclude with `isClosed_singleton.preimage (continuous_projFin σ J)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_infPts : IsClosed (infPts σ J : Set (GAd σ J)) := by
   have : (infPts σ J : Set (GAd σ J)) = projFin σ J ⁻¹' {1} := Set.ext fun _ => mem_infPts
   rw [this]; exact isClosed_singleton.preimage (continuous_projFin σ J)
 
 /- English proof (translation)
-Establish `: (awayPts σ J S : Set (GAd σ J)) = ⋂ v ∈ S, proj σ J v ⁻¹' {1}` using `Set.ext fun _ => by simp [mem_awayPts]`. Rewrite using `[this]`. Conclude with `isClosed_biInter fun v _ => isClosed_singleton.preimage (continuous_proj σ J v)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_awayPts (S : Finset (HeightOneSpectrum (𝓞 F))) : IsClosed (awayPts σ J S : Set (GAd σ J)) := by
   have : (awayPts σ J S : Set (GAd σ J)) = ⋂ v ∈ S, proj σ J v ⁻¹' {1} := Set.ext fun _ => by simp [mem_awayPts]
@@ -886,9 +884,9 @@ section Arch
 variable {σ} {w : InfinitePlace F}
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a e`. Use `h.1` as an intermediate fact.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `h2` using `InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply (IsTotallyReal.isReal w) a`. Establish `h3 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR _ σ (a ⊗ₜ[F] e) = a ⊗ₜ[F] σ e` using `rfl`. Rewrite using `[h3, infEmb_tmul, infEmb_tmul, map_mul, h.2.2.2 τ.1 e, ← h2, Complex.conj_ofReal]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem infEmb_sigR (h : IsCMExt F E σ) (τ : EmbOver E w) (y : w.Completion ⊗[F] E) :
     starRingEnd ℂ (infEmb τ y) = infEmb τ (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR _ σ y) := by
@@ -903,19 +901,17 @@ theorem infEmb_sigR (h : IsCMExt F E σ) (τ : EmbOver E w) (y : w.Completion �
     rfl
 
 /- English proof (translation)
-Use `h.1` as an intermediate fact. Use `h.2.1` as an intermediate fact. Establish `hr : w.IsReal` using `IsTotallyReal.isReal w`. Set `e : w.Completion ≃+* ℝ` to `InfinitePlace.Completion.ringEquivRealOfIsReal hr`. Establish `he : ∀ a, InfinitePlace.Completion.extensionEmbedding w a = ((e a : ℝ) : ℂ)` using `fun a => (InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply hr a).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x : E, (τ.1 x).im ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Conclude with `InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex (InfinitePlace.mk τ.1)) (InfinitePlace.isReal_mk_iff.2 (ComplexEmbedding.isReal_iff.2 (RingHom.ext fun x => Complex.conj_eq_iff_im.2 (hcon x))))`. Establish `hsurj : Function.Surjective (infEmb τ)`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `z`. Use `⟨e.symm (z.re - z.im / (τ.1 x).im * (τ.1 x).re) ⊗ₜ[F] 1 + e.symm (z.im / (τ.1 x).im) ⊗ₜ[F] x, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, infEmb_tmul, infEmb_tmul, he, he, e.apply_symm_apply, e.apply_symm_apply, map_one]`. Apply `Complex.ext` to reduce the goal to its premises. Simplify using `only [mul_one, Complex.add_re, Complex.ofReal_re, Complex.re_ofReal_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [mul_one, Complex.add_im, Complex.ofReal_im, Complex.im_ofReal_mul]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Use `letI : Algebra w.Completion ℂ := (InfinitePlace.Completion.extensionEmbedding w).toAlgebra`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hC : Module.finrank w.Completion ℂ = 2`. Rewrite using `[← Complex.finrank_real_complex]`. Conclude with `Algebra.finrank_eq_of_equiv_equiv e (RingEquiv.refl ℂ) (by ext a; exact (he a).symm)`. Use `haveI : Module.Finite w.Completion ℂ := Module.finite_of_finrank_pos (by rw [hC]; norm_num)`. Set `L : w.Completion ⊗[F] E →ₗ[w.Completion] ℂ` to `{ toFun := infEmb τ map_add' := map_add _ map_smul' := by`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `c y`. Establish `: c • y = (c ⊗ₜ[F] (1 : E)) * y`. Rewrite using `[Algebra.smul_def]`. Both sides reduce to the same expression. Rewrite using `[this, map_mul, infEmb_tmul, map_one, mul_one]`.
-
-Use `rfl }`. Establish `hinj : Function.Injective L` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank (by rw [Module.finrank_baseChange, h.2.2.1, hC])).2 hsurj`. Conclude with `⟨hinj, hsurj⟩`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem infEmb_bijective (h : IsCMExt F E σ) (τ : EmbOver E w) : Function.Bijective (infEmb τ) := by
   have := h.1
@@ -985,9 +981,9 @@ def infProj (τ : EmbOver E w) : Ainf F ⊗[F] E →+* ℂ :=
 
 omit [NumberField E] in
 /- English proof (translation)
-Use `⟨fun x => ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `infEmb τ ((1 : w.Completion) ⊗ₜ[F] x) = _`. Simplify using the standard rewrite rules. Establish `: (fun a : Ainf F => infProj τ (a ⊗ₜ[F] (1 : E))) = fun a => InfinitePlace.Completion.extensionEmbedding w (a w)`. Use function extensionality and compare the values at `a`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Express the relevant statement in the definitionally equal form `infEmb τ (a w ⊗ₜ[F] (1 : E)) = _`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `(InfinitePlace.Completion.isometry_extensionEmbedding _).continuous.comp (continuous_apply _)`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isInfEmb_infProj (τ : EmbOver E w) : Formalism.MainNotions.StandardLattice.IsInfEmb τ.1 (infProj τ) := by
   refine ⟨fun x => ?_, ?_⟩
@@ -1002,7 +998,7 @@ theorem isInfEmb_infProj (τ : EmbOver E w) : Formalism.MainNotions.StandardLatt
     exact (InfinitePlace.Completion.isometry_extensionEmbedding _).continuous.comp (continuous_apply _)
 
 /- English proof (translation)
-Rewrite using `[← projInfArch_projInf]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem infMat_infProj (h : IsCMExt F E σ) (τ : EmbOver E w) (g : GAd σ J) :
     Formalism.MainNotions.StandardLattice.infMat σ J (infProj τ) g = (archEquiv J h τ (projArch σ J w g)).1.1 := by

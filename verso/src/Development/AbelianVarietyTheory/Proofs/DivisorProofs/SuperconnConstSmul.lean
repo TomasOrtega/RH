@@ -20,7 +20,7 @@ open GlobalTheory.TorsionForm
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {g n : ℕ}
 
 /- English proof (translation)
-Use `filter_upwards [hs.eventuallyEq_nhds] with Q hQ`. Establish `hf : fderiv ℝ s₁ Q = fderiv ℝ s₂ Q` using `hQ.fderiv_eq`. Establish `h0 : s₁ Q = s₂ Q` using `hQ.eq_of_nhds`. Simplify using `only [superconn, nablaE, pointDifference, d10, d01, dbarV, dbarAdj, hf, h0]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem superconn_congr (τ : E → Matrix (Fin g) (Fin g) ℂ) (h : Pt E g → ℝ) (β : Fin n → E) (u : ℝ)
     {s₁ s₂ : Pt E g → Ext (n + n + g)} {P : Pt E g} (hs : s₁ =ᶠ[𝓝 P] s₂) :
@@ -31,9 +31,9 @@ theorem superconn_congr (τ : E → Matrix (Fin g) (Fin g) ℂ) (h : Pt E g → 
   simp only [superconn, nablaE, pointDifference, d10, d01, dbarV, dbarAdj, hf, h0]
 
 /- English proof (translation)
-Establish `hd : fderiv ℝ (fun Q => c • s Q) P = c • fderiv ℝ s P` using `fderiv_const_smul hs c`. Establish `h10 : ∀ v, d10 (fun Q => c • s Q) P v = c • d10 s P v` using `fun v => by`. Simplify using `only [d10, hd, ContinuousLinearMap.smul_apply]`. Use `module`. Establish `h01 : ∀ v, d01 (fun Q => c • s Q) P v = c • d01 s P v` using `fun v => by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [d01, hd, ContinuousLinearMap.smul_apply]`. Use `module`. Simplify using `only [superconn, nablaE, pointDifference, dbarV, dbarAdj, h10, h01, connForm_smul, wedge_smul, contr_smul, Finset.smul_sum, smul_add, smul_neg, smul_comm c, ← wedge_smul, ← contr_smul, wedge_add, contr_add]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem superconn_const_smul (τ : E → Matrix (Fin g) (Fin g) ℂ) (h : Pt E g → ℝ) (β : Fin n → E)
     (u : ℝ) {s : Pt E g → Ext (n + n + g)} {P : Pt E g} (hs : DifferentiableAt ℝ s P) (c : ℂ) :
@@ -48,14 +48,14 @@ theorem superconn_const_smul (τ : E → Matrix (Fin g) (Fin g) ℂ) (h : Pt E g
     wedge_add, contr_add]
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.SCV.contDiffOn_of_differentiableOn (hB.prod isOpen_univ) hφ _).restrict_scalars ℝ`.
+A detailed English derivation is pending.
 -/
 theorem phi_contDiffOn [FiniteDimensional ℂ E] {B : Set E} {φ : Pt E g → ℂ} (hB : IsOpen B)
     (hφ : DifferentiableOn ℂ φ (cov B g)) : ContDiffOn ℝ ∞ φ (cov B g) :=
   (GlobalTheory.SCV.contDiffOn_of_differentiableOn (hB.prod isOpen_univ) hφ _).restrict_scalars ℝ
 
 /- English proof (translation)
-The claim follows from `contDiffOn_univ.1 ((phi_contDiffOn hB hφ).comp (contDiff_const.prodMk contDiff_id).contDiffOn (fun _ _ => ⟨hb, trivial⟩))`.
+A detailed English derivation is pending.
 -/
 theorem phi_slice_contDiff [FiniteDimensional ℂ E] {B : Set E} {φ : Pt E g → ℂ} (hB : IsOpen B)
     {b : E} (hb : b ∈ B) (hφ : DifferentiableOn ℂ φ (cov B g)) :
@@ -72,9 +72,9 @@ open GlobalTheory.TorsionForm
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [FiniteDimensional ℂ E] {g n : ℕ}
 
 /- English proof (translation)
-Establish `hcov : IsOpen (cov B g)` using `hτ.1.prod isOpen_univ`. Establish `hP : ((b, z) : Pt E g) ∈ cov B g` using `⟨hb, trivial⟩`. Establish `hS : ContDiff ℝ ∞ (fun P : Pt E g => f P.2)` using `hf.comp contDiff_snd`. Establish `e : superconn τ h β u (fun P : Pt E g => c • f P.2) = fun Q => c • superconn τ h β u (fun P : Pt E g => f P.2) Q`. Use function extensionality and compare the values at `fun Q => superconn_const_smul τ h β u ((hS.differentiable (by simp)) Q) c`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Unfold `curv`. Rewrite using `[e]`. Conclude with `superconn_const_smul τ h β u (((GlobalTheory.T.superconnection_contDiffOn E g n B τ h β u _ hτ hh hh0 hS.contDiffOn).differentiableOn (by simp) _ hP).differentiableAt (hcov.mem_nhds hP)) c`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem curv_const_smul {B : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ} {h : Pt E g → ℝ}
     (hτ : IsPeriodMap B τ) (hh : ContDiffOn ℝ ∞ h (cov B g)) (hh0 : ∀ P ∈ cov B g, 0 < h P)
@@ -94,15 +94,13 @@ theorem curv_const_smul {B : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ} {h :
       (hcov.mem_nhds hP)) c
 
 /- English proof (translation)
-Establish `hB : IsOpen B` using `hτ.1`. Establish `hcov : IsOpen (cov B g)` using `hB.prod isOpen_univ`. Establish `hP : ((b, z) : Pt E g) ∈ cov B g` using `⟨hb, trivial⟩`. Establish `hS : ContDiff ℝ ∞ (fun P : Pt E g => f P.2)` using `hf.comp contDiff_snd`. Establish `hφs : ContDiffOn ℝ ∞ φ (cov B g)` using `phi_contDiffOn hB hφ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hψ : ContDiff ℝ ∞ (fun P : Pt E g => φ (b, P.2))` using `(phi_slice_contDiff hB hb hφ).comp contDiff_snd`. Establish `hρ : ContDiffOn ℝ ∞ (fun P : Pt E g => φ (b, P.2) / φ P) (cov B g)` using `(hψ.contDiffOn.mul (hφs.inv hφ0)).congr fun P _ => by simp [div_eq_mul_inv]`. Establish `hρ1 : ∀ y, (fun P : Pt E g => φ (b, P.2) / φ P) (b, y) = 1` using `fun y => div_self (hφ0 _ ⟨hb, trivial⟩)`. Establish `hφS : ContDiffOn ℝ ∞ (fun Q : Pt E g => φ Q • f Q.2) (cov B g)` using `hφs.smul hS.contDiffOn`. Establish `hdh : ∀ Q ∈ cov B g, DifferentiableAt ℝ h Q` using `fun Q hQ => (hh.differentiableOn (by simp) Q hQ).differentiableAt (hcov.mem_nhds hQ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : (fun Q : Pt E g => φ (b, Q.2) • f Q.2) =ᶠ[𝓝 (b, z)] fun Q => (φ (b, Q.2) / φ Q) • (φ Q • f Q.2)` using `by filter_upwards [hcov.mem_nhds hP] with Q hQ`. Rewrite using `[smul_smul, div_mul_cancel₀ _ (hφ0 Q hQ)]`. Establish `e2 : superconn τ h' β u (fun Q : Pt E g => φ Q • f Q.2) =ᶠ[𝓝 (b, z)] fun Q => φ Q • superconn τ h β u (fun P : Pt E g => f P.2) Q` using `by filter_upwards [hcov.mem_nhds hP] with Q hQ`. Apply the tactic sequence `exact GlobalTheory.T.superconnection_isometry E g n B τ h h' φ β u _ Q hB hQ hφ hφ0 hh0 (hdh Q hQ) hisom ((hS.differentiable (by simp)) Q)`. Establish `hl` using `GlobalTheory.T.superconnection_fibre_gauge E g n B τ h' β u _ _ hτ hh' hh'0 hρ hφS b hb hρ1 z`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : superconn τ h' β u (fun Q => (φ (b, Q.2) / φ Q) • (φ Q • f Q.2)) =ᶠ[𝓝 (b, z)] fun Q => (φ (b, Q.2) / φ Q) • superconn τ h' β u (fun Q : Pt E g => φ Q • f Q.2) Q + commOp τ β u (fun P : Pt E g => φ (b, P.2) / φ P) Q (φ Q • f Q.2)` using `by filter_upwards [hcov.mem_nhds hP] with Q hQ`. Conclude with `GlobalTheory.T.superconnection_smul E g n τ h' β u _ _ Q ((hρ.differentiableOn (by simp) Q hQ).differentiableAt (hcov.mem_nhds hQ)) ((hφS.differentiableOn (by simp) Q hQ).differentiableAt (hcov.mem_nhds hQ))`. Establish `hL2` using `GlobalTheory.T.superconnection_contDiffOn E g n B τ h β u _ hτ hh hh0 hS.contDiffOn`. Unfold `curv`. Use `show superconn τ h' β u (superconn τ h' β u fun Q : Pt E g => φ (b, Q.2) • f Q.2) (b, z) = _`.
-
-Rewrite using `[(superconn_congr τ h' β u (superconn_congr τ h' β u e1)).eq_of_nhds, (superconn_congr τ h' β u e3).eq_of_nhds, hl, (superconn_congr τ h' β u e2).eq_of_nhds]`. Apply the tactic sequence `exact GlobalTheory.T.superconnection_isometry E g n B τ h h' φ β u _ _ hB hP hφ hφ0 hh0 (hdh _ hP) hisom ((hL2.differentiableOn (by simp) _ hP).differentiableAt (hcov.mem_nhds hP))`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem curv_gauge {B : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ} {h h' : Pt E g → ℝ}
     {φ : Pt E g → ℂ} (hτ : IsPeriodMap B τ) (hh : ContDiffOn ℝ ∞ h (cov B g))
@@ -159,33 +157,29 @@ open GlobalTheory.TorsionForm
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [FiniteDimensional ℂ E] {g n : ℕ}
 
 /- English proof (translation)
-Take `⟨hτ, -, hj, hh⟩` from `hd`. Take `⟨-, -, hj', hh'⟩` from `hd'`. Establish `hB : IsOpen B` using `hτ.1`. Establish `hc : ∀ y, ((b, y) : Pt E g) ∈ cov B g` using `fun y => ⟨hb, trivial⟩`. Establish `hφ0 : ∀ y, φ (b, y) ≠ 0` using `fun y => hiso.2.1 _ (hc y)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφs : ContDiff ℝ ∞ (fun y => φ (b, y))` using `phi_slice_contDiff hB hb hiso.1`. Establish `hφi : ContDiff ℝ ∞ (fun y => (φ (b, y))⁻¹)` using `hφs.inv hφ0`. Establish `hφl : ∀ l ∈ M, ∀ y, φ (b, y + per (τ b) l) * j l (b, y) = j' l (b, y) * φ (b, y)` using `fun l hl y => hiso.2.2 l hl _ (hc y)`. Take `⟨hK1, hK2, hK3, hK4⟩` from `hK`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : ContDiff ℝ ∞ (fun a : ℝ × (Fin g → ℂ) × (Fin g → ℂ) => φ (b, a.2.1) * (φ (b, a.2.2))⁻¹)` using `(hφs.comp (contDiff_fst.comp contDiff_snd)).mul (hφi.comp (contDiff_snd.comp contDiff_snd))`. Conclude with `h1.contDiffOn.smul hK1`. Introduce `t ht l hl z z'`. Take `⟨e1, e2⟩` from `hK2 t ht l hl z z'`. Establish `hj'0 : j' l (b, z') ≠ 0` using `(hj'.1 l hl).2 _ (hc z')`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : φ (b, z' + per (τ b) l) ≠ 0` using `hφ0 _`. Establish `k1` using `hφl l hl z`. Establish `k2` using `hφl l hl z'`. Prove the components needed by the constructor for the conclusion. Simplify using `only [e1, smul_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Take the linear combination `(φ (b, z'))⁻¹ * k1`. Use `show j' l (b, z') • ((φ (b, z) * (φ (b, z' + per (τ b) l))⁻¹) • K t z (z' + per (τ b) l)) = (φ (b, z) * (φ (b, z'))⁻¹) • K t z z'`. Rewrite using `[← e2]`. Simplify using `only [smul_smul]`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `congr 1`. Establish `hinv : (φ (b, z' + per (τ b) l))⁻¹ = j l (b, z') * (j' l (b, z') * φ (b, z'))⁻¹`. Rewrite using `[eq_mul_inv_iff_mul_eq₀ (mul_ne_zero hj'0 (hφ0 z')), ← k2, inv_mul_cancel_left₀ hA]`. Rewrite using `[hinv]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `t ht z z' w`. Establish `hKt : ContDiff ℝ ∞ (fun y => K t y z' w)`. Establish `: ContDiffOn ℝ ∞ (fun y : Fin g → ℂ => K t y z') univ` using `hK1.comp (contDiff_const.prodMk (contDiff_id.prodMk contDiff_const)).contDiffOn (fun y _ => ⟨ht, trivial⟩)`. Conclude with `((ContinuousLinearMap.apply ℂ (Ext (n + n + g)) w).restrictScalars ℝ).contDiff.comp (contDiffOn_univ.1 this)`. Establish `hkey` using `curv_gauge hτ hh.1 hh.2.1 hh'.1 hh'.2.1 hiso.1 hiso.2.1 hisom β u hb (f := fun y => (φ (b, z'))⁻¹ • K t y z' w) (hKt.const_smul _) z`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hlin` using `curv_const_smul hτ hh.1 hh.2.1 β u hb hKt (φ (b, z'))⁻¹ z`. Establish `hd3` using `(hK3 t ht z z' w).const_smul (φ (b, z) * (φ (b, z'))⁻¹)`. Simplify using `only [ContinuousLinearMap.smul_apply]`. Rewrite using `[show (fun y => (φ (b, y) * (φ (b, z'))⁻¹) • K t y z' w) = fun y => φ (b, y) • ((φ (b, z'))⁻¹ • K t y z' w) from funext fun y => (smul_smul _ _ _).symm, hkey, hlin]`. Establish `e4 : -(φ (b, z) • (φ (b, z'))⁻¹ • curv τ h β b u (fun y => K t y z' w) z) = (φ (b, z) * (φ (b, z'))⁻¹) • -curv τ h β b u (fun y => K t y z' w) z`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[smul_neg, smul_smul]`. Rewrite using `[e4]`. Conclude with `hd3`. Introduce `f hf set f₀ : (Fin g → ℂ) → Ext (n + n + g) := fun y => (φ (b, y))⁻¹ • f y with hf₀def`. Establish `hf₀ : IsSec τ M j b f₀`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `⟨hφi.smul hf.1, fun l hl z => ?_⟩` and prove the remaining obligations. Simplify using `only [hf₀def, hf.2 l hl z, smul_smul]`. Use `congr 1`. Establish `hA : φ (b, z + per (τ b) l) ≠ 0` using `hφ0 _`. Rewrite using `[inv_mul_eq_iff_eq_mul₀ hA, ← mul_assoc, hφl l hl z, mul_assoc, mul_inv_cancel₀ (hφ0 z), mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `hT` using `hK4 f₀ hf₀`. Establish `e : (fun t z => ∫ x in D, ((φ (b, z) * (φ (b, per (τ b) x))⁻¹) • K t z (per (τ b) x)) (f (per (τ b) x))) = fun t z => φ (b, z) • ∫ x in D, K t z (per (τ b) x) (f₀ (per (τ b) x))`. Use function extensionality and compare the values at `t z`. Rewrite using `[← integral_smul]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Simplify using `[hf₀def, smul_smul, map_smul]`. Establish `ef : f = fun z => φ (b, z) • f₀ z`. Use function extensionality and compare the values at `z`. Simplify using `[hf₀def, smul_smul, mul_inv_cancel₀ (hφ0 z)]`.
-
-Use `show TendstoLocallyUniformly (fun t z => ∫ x in D, ((φ (b, z) * (φ (b, per (τ b) x))⁻¹) • K t z (per (τ b) x)) (f (per (τ b) x))) f (𝓝[>] 0)`. Rewrite using `[e]`. Use `conv => enter [2]`. Rewrite using `[ef]`. Establish `hc0 : TendstoLocallyUniformly (fun (_ : ℝ) (z : Fin g → ℂ) => φ (b, z)) (fun z => φ (b, z)) (𝓝[>] 0)` using `fun s hs x => ⟨univ, univ_mem, .of_forall fun _ _ _ => refl_mem_uniformity hs⟩`.
-
-Conclude with `hc0.smul₀ hT hφs.continuous hf₀.1.continuous`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem heatKernel_transfer {B : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ}
     {M : Submodule ℤ (Fl g)} {j j' : Fl g → Pt E g → ℂ} {h h' : Pt E g → ℝ} {φ : Pt E g → ℂ}
@@ -278,9 +272,9 @@ theorem heatKernel_transfer {B : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ}
     exact hc0.smul₀ hT hφs.continuous hf₀.1.continuous
 
 /- English proof (translation)
-Introduce `E _ _ _ g n B τ M j j' h h' φ hd hd' hiso hisom β b hb T hT`. Take `⟨F, ⟨D, hD, hK⟩, hM⟩` from `hT`. Use `⟨F, ⟨D, hD, fun u hu => ?_⟩, hM⟩` and prove the remaining obligations. Take `⟨K, hK, hF⟩` from `hK u hu`. Use `⟨_, heatKernel_transfer hd hd' hiso hisom β hb hK, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hF]`. Use `congr 2`. Use function extensionality and compare the values at `x`. Simplify using `[mul_inv_cancel₀ (hiso.2.1 _ (⟨hb, trivial⟩ : ((b, per (τ b) x) : Pt E g) ∈ cov B g))]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem isometryInv_holds : GlobalTheory.TorsionForm.IsometryInv := by
   intro E _ _ _ g n B τ M j j' h h' φ hd hd' hiso hisom β b hb T hT

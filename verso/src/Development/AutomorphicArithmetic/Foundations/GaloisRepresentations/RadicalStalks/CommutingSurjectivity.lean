@@ -6,13 +6,13 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped TensorProduct
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Assume the negation of the conclusion as `hne`. Establish `hI : Ideal.span {x} ≠ ⊥`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Establish `hmem : ((Ideal.absNorm (Ideal.span {x}) : ℕ) : 𝓞 F) ∈ Ideal.span {x}` using `Ideal.absNorm_mem _`. Take `⟨y, hy⟩` from `Ideal.mem_span_singleton'.mp hmem`. Establish `hn0 : Ideal.absNorm (Ideal.span {x}) ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]` and apply the resulting hypothesis. Establish `h1 : ((Ideal.absNorm (Ideal.span {x}) : ℕ) : O) = 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[← map_natCast (algebraMap (𝓞 F) O), ← hy, map_mul, hx, mul_zero]`. Establish `h2 : ((Ideal.absNorm (Ideal.span {x}) : ℕ) : ℤ) • (1 : O) = ((Ideal.absNorm (Ideal.span {x}) : ℕ) : ℤ) • (0 : O)`. Rewrite using `[smul_zero, zsmul_eq_mul, _root_.mul_one]`. Conclude with `h1` after adjusting the coercions. Establish `h3 : (1 : O) = 0` using `smul_right_injective O (by exact_mod_cast hn0) h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `haveI : Subsingleton O := subsingleton_of_zero_eq_one h3.symm`. Rewrite `h0` using `[Module.finrank_zero_of_subsingleton]`. Conclude with `lt_irrefl 0 h0`.
+A detailed English derivation is pending.
 -/
 private theorem laurent_adjoin_eq_of_image_eq {F O : Type} [Field F] [NumberField F] [Ring O] [Algebra (𝓞 F) O]
     [Module.Free ℤ O] [Module.Finite ℤ O] (h0 : 0 < Module.finrank ℤ O) :
@@ -39,17 +39,17 @@ private theorem laurent_adjoin_eq_of_image_eq {F O : Type} [Field F] [NumberFiel
   exact lt_irrefl 0 h0
 
 /- English proof (translation)
-Set `b` to `Module.finBasis ℤ (𝓞 F)`. Set `v : Option (Fin (Module.finrank ℤ (𝓞 F))) → O` to `fun o => Option.elim o x (fun i => algebraMap (𝓞 F) O (b i))`. Establish `hcard : ¬ LinearIndependent ℤ v`. Introduce `hli`. Establish `hle` using `hli.fintype_card_le_finrank`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hle` using `[Fintype.card_option, Fintype.card_fin, hr, RingOfIntegers.rank]`. Use linear arithmetic over natural numbers and integers. Take `⟨g, hg, i, hi⟩` from `Fintype.not_linearIndependent_iff.mp hcard`. Rewrite `hg` using `[Fintype.sum_option]`. Establish `hmap : algebraMap (𝓞 F) O (∑ j, g (some j) • b j) = ∑ j, g (some j) • algebraMap (𝓞 F) O (b j)`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_sum]`. Simplify using `only [map_zsmul]`. Establish `hg' : g none • x + algebraMap (𝓞 F) O (∑ j, g (some j) • b j) = 0`. Rewrite using `[hmap]`. Simplify `hg` using `[v]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hnone : g none ≠ 0`. Introduce `h0`. Rewrite `hg'` using `[h0, zero_smul, zero_add]`. Establish `hc0 : ∑ j, g (some j) • b j = 0` using `hinj (by rw [hg', map_zero])`. Establish `hall` using `(Fintype.linearIndependent_iff.mp b.linearIndependent) (fun j => g (some j)) hc0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the cases of `i with`. Consider the case `none => exact hi h0`. Consider the case `some j => exact hi (hall j)`. Use `⟨g none, hnone, -(∑ j, g (some j) • b j), ?_⟩` and prove the remaining obligations. Rewrite using `[map_neg, eq_neg_iff_add_eq_zero]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hg'`.
+A detailed English derivation is pending.
 -/
 private theorem wachExpansion_smul_compatible {F O : Type} [Field F] [NumberField F] [Ring O] [Algebra (𝓞 F) O]
     [Module.Free ℤ O] [Module.Finite ℤ O] (hr : Module.finrank ℤ O = Module.finrank ℚ F)
@@ -86,19 +86,17 @@ private theorem wachExpansion_smul_compatible {F O : Type} [Field F] [NumberFiel
   exact hg'
 
 /- English proof (translation)
-Introduce `x`. Take `⟨e, he, c, hc⟩` from `hs x`. Take `⟨P, hPm, hPx⟩` from `Algebra.IsIntegral.isIntegral (R := ℤ) x`. Establish `hQ : Polynomial.aeval (algebraMap ℤ O e * x) (P.scaleRoots e) = 0` using `Polynomial.scaleRoots_aeval_eq_zero (by rwa [Polynomial.aeval_def])`. Establish `hex : algebraMap ℤ O e * x = algebraMap (𝓞 F) O c`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hc, algebraMap_int_eq, Int.coe_castRingHom, zsmul_eq_mul]`. Rewrite `hQ` using `[hex, Polynomial.aeval_algebraMap_apply]`. Establish `hQ' : Polynomial.aeval c (P.scaleRoots e) = 0` using `hinj (by rw [hQ, map_zero])`. Establish `hQF : Polynomial.aeval (c : F) (P.scaleRoots e) = 0`. Establish `h0` using `congrArg (algebraMap (𝓞 F) F) hQ'`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h0` using `[map_zero, ← Polynomial.aeval_algebraMap_apply]`. Then use the resulting hypothesis. Establish `he' : ((e : ℤ) : F) ≠ 0` using `by exact_mod_cast he`. Establish `hmul : algebraMap ℤ F e * ((c : F) / e) = (c : F)`. Rewrite using `[eq_intCast]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Establish `hz : Polynomial.eval₂ (algebraMap ℤ F) ((c : F) / e) P = 0`. Establish `h` using `Polynomial.scaleRoots_eval₂_mul (p := P) (algebraMap ℤ F) ((c : F) / e) e`. Rewrite `h` using `[hmul, ← Polynomial.aeval_def, hQF]`. Conclude with `(mul_eq_zero.mp h.symm).resolve_left (pow_ne_zero _ (by rwa [eq_intCast]))`. Set `d : 𝓞 F` to `⟨(c : F) / e, ⟨P, hPm, hz⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hed : (e : 𝓞 F) * d = c`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Use `show ((e : 𝓞 F) : F) * ((c : F) / e) = (c : F)`. Establish `hcoe : ((e : 𝓞 F) : F) = (e : F)` using `by first`. Consider the case `simp`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `exact map_intCast (algebraMap (𝓞 F) F) e`. Rewrite using `[hcoe]`. Clear the denominators using the available nonvanishing facts. Use `⟨d, ?_⟩` and prove the remaining obligations. Apply `smul_right_injective O he` to reduce the goal to its premises.
-
-Use `show e • algebraMap (𝓞 F) O d = e • x`. Rewrite using `[hc, ← hed, map_mul, map_intCast, zsmul_eq_mul]`.
+Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem surj_comm {F O : Type} [Field F] [NumberField F] [CommRing O] [Algebra (𝓞 F) O]
     [Module.Free ℤ O] [Module.Finite ℤ O]
@@ -142,11 +140,11 @@ private theorem surj_comm {F O : Type} [Field F] [NumberField F] [CommRing O] [A
   rw [hc, ← hed, map_mul, map_intCast, zsmul_eq_mul]
 
 /- English proof (translation)
-Establish `hpos : 0 < Module.finrank ℤ O`. Rewrite using `[hr]`. Conclude with `Module.finrank_pos`. Establish `hinj` using `laurent_adjoin_eq_of_image_eq (F := F) (O := O) hpos`. Establish `hs` using `wachExpansion_smul_compatible (F := F) (O := O) hr hinj`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcomm : ∀ x y : O, x * y = y * x`. Introduce `x y`. Take `⟨a, ha, c, hc⟩` from `hs x`. Take `⟨b, hb, c', hc'⟩` from `hs y`. Apply `smul_right_injective O (mul_ne_zero ha hb)` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 
-Use `show (a * b) • (x * y) = (a * b) • (y * x)`. Combine the equalities or inequalities in the displayed calculation. Use `letI : CommRing O := { (inferInstance : Ring O) with mul_comm := hcomm }`. Conclude with `surj_comm hinj hs`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 private theorem exists_finset_adjoin_laurent_preimage {F O : Type} [Field F] [NumberField F] [Ring O] [Algebra (𝓞 F) O]
     [Module.Free ℤ O] [Module.Finite ℤ O] (hr : Module.finrank ℤ O = Module.finrank ℚ F) :
@@ -171,9 +169,7 @@ private theorem exists_finset_adjoin_laurent_preimage {F O : Type} [Field F] [Nu
   exact surj_comm hinj hs
 
 /- English proof (translation)
-Introduce `p _ D hm`. Use `haveI := D.freeO`. Use `haveI := D.finO`. Apply `exists_finset_adjoin_laurent_preimage` to reduce the goal to its premises. Rewrite using `[D.rankO, hm]`.
-
-Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Ord.surjO :
     ∀ (p : ℕ) [Fact p.Prime] (D : Datum p), D.m = 1 → Function.Surjective (algebraMap (𝓞 D.F) D.O) := by

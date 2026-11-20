@@ -5,9 +5,9 @@ open scoped Matrix
 open GlobalTheory.HodgeCoh GlobalTheory.CechDR Polynomial UpperTheory.Gal.W2
 
 /- English proof (translation)
-Establish `hu : IsUnit H.det` using `isUnit_iff_ne_zero.mpr hdet`. Establish `hHi : H * H⁻¹ = 1` using `Matrix.mul_nonsing_inv H hu`. Establish `hb : H.map star * (H⁻¹).map star = 1`. Establish `h` using `congrArg (fun M => (starRingEnd ℂ).mapMatrix M) hHi`. Simplify using `only [map_mul, map_one] at h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `h`. Establish `hi : (H.map star)⁻¹ = (H⁻¹).map star` using `Matrix.inv_eq_right_inv hb`. Rewrite using `[hi]`. Conclude with `mul_eq_one_comm.mp hb`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem map_star_inv_mul {g : ℕ} (H : Matrix (Fin g) (Fin g) ℂ) (hdet : H.det ≠ 0) :
     (H.map star)⁻¹ * H.map star = 1 := by
@@ -22,21 +22,19 @@ private theorem map_star_inv_mul {g : ℕ} (H : Matrix (Fin g) (Fin g) ℂ) (hde
   exact mul_eq_one_comm.mp hb
 
 /- English proof (translation)
-Introduce `hAd hLin hFib O _ bar g ρ D X s A _ S k Z c₁ c₂ P₀ M₀ hP₀ hM₀ ga H hH L hL C hC hC'' z`. Take `⟨hdet, hcomm, -⟩` from `hAd O bar g ρ D P₀ M₀ hP₀ hM₀ ga H hH`. Establish `hu : IsUnit H.det` using `isUnit_iff_ne_zero.mpr hdet`. Establish `hHi : H * H⁻¹ = 1` using `Matrix.mul_nonsing_inv H hu`. Establish `hiH : H⁻¹ * H = 1` using `Matrix.nonsing_inv_mul H hu`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbi` using `map_star_inv_mul H hdet`. Use `set C'' := H * C * (H.map star)⁻¹ with hC''def`. Set `P'' : D.La →+ (Fin g → ℂ)` to `(Matrix.toLin' H⁻¹).toAddMonoidHom.comp (perC P₀ C'')`. Establish `hP''apply : ∀ x, P'' x = H⁻¹ *ᵥ perC P₀ C'' x` using `fun x => by show Matrix.toLin' H⁻¹ (perC P₀ C'' x) = _`. Rewrite using `[Matrix.toLin'_apply]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdetInv : (H⁻¹).det ≠ 0`. Introduce `h0`. Establish `h1 : (H⁻¹ * H).det = 1` using `by rw [hiH, Matrix.det_one]`. Rewrite `h1` using `[Matrix.det_mul, h0, zero_mul]`. Conclude with `zero_ne_one h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hcommInv : ∀ a, ρ a * H⁻¹ = H⁻¹ * ρ a` using `fun a => by`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Matrix.mul_assoc, hiH, Matrix.one_mul]`. Use `_ = H⁻¹ * (ρ a * H) * H⁻¹ := by rw [hcomm a]`. Use `_ = H⁻¹ * ρ a * (H * H⁻¹) := by simp only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `_ = H⁻¹ * ρ a := by rw [hHi, Matrix.mul_one]`. Establish `hP'' : IsPeriod D ρ P''` using `hLin O bar g ρ D (perC P₀ C'') P'' H⁻¹ hC'' hdetInv hcommInv hP''apply`. Establish `hga : ∀ x, P'' (ga x) = perC P₀ C x` using `fun x => by`. Rewrite using `[hP''apply, perC_apply, perC_apply, hH.2 x, GlobalTheory.PerCoordU.star_mulVec_map, Matrix.mulVec_mulVec, hC''def]`. Establish `e : H * C * (H.map star)⁻¹ * H.map star = H * C`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_assoc, hbi, Matrix.mul_one]`. Rewrite using `[e, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_add, Matrix.mulVec_mulVec, hiH, Matrix.one_mulVec]`. Establish `hcorr` using `hL (perC P₀ C) P'' hC hP'' hga z`. Set `h : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ)` to `LinearEquiv.ofLinear (Matrix.toLin' H) (Matrix.toLin' H⁻¹) (by rw [← Matrix.toLin'_mul, hHi, Matrix.toLin'_one]) (by rw [← Matrix.toLin'_mul, hiH, Matrix.toLin'_one])`. Establish `happ : ∀ v, h v = H *ᵥ v` using `fun v => by show Matrix.toLin' H v = _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.toLin'_apply]`. Establish `hfib` using `(hFib O bar g ρ D X s A S k P'' hP'').2.2.2.2 (perC P₀ C'') h hC'' (fun x => by rw [happ, hP''apply, Matrix.mulVec_mulVec, hHi, Matrix.one_mulVec]) (L z)`. Establish `hz : fibMap H L z = fun j => h (L z j)`. Use function extensionality and compare the values at `j`. Rewrite using `[happ]`.
-
-Simplify using `[fibMap, Matrix.toLin'_apply]`. Rewrite using `[hz, hfib]`. Conclude with `hcorr`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.corrChart_of :
     UpperTheory.Gal.W2.AdExists → UpperTheory.Gal.W2.PerLin → UpperTheory.Gal.W2.PtFibre → UpperTheory.Gal.W2.CorrChart := by

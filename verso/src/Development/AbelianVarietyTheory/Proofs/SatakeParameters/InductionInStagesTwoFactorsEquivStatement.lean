@@ -7,7 +7,7 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil ValuativeRel Mat
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.SmGL.StagesTwo.ind₂_parInd_parInd_equiv` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FInductionInStagesTwoFactorsEquiv.lean&line=330#L330)
 -/

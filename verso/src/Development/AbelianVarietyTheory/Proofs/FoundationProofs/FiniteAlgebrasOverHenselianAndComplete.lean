@@ -15,11 +15,11 @@ open IsLocalRing TensorProduct in
 open WithConv in
 
 /- English proof (translation)
-Establish `h1` using `LinearMap.algHom_comp_convMul_distrib (g : A →ₐ[R] B) (toConv (HopfAlgebra.antipode R)) (toConv LinearMap.id)`. Establish `h2` using `LinearMap.convMul_comp_coalgHom_distrib (toConv LinearMap.id) (toConv (HopfAlgebra.antipode R)) (g : A →ₗc[R] B)`. Establish `e1 : (g : A →ₐ[R] B).toLinearMap ∘ₗ ofConv (1 : WithConv (A →ₗ[R] A)) = ofConv (1 : WithConv (A →ₗ[R] B))`. Use extensionality with `x`. Simplify using `only [LinearMap.convOne_def]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `(g : A →ₐ[R] B).commutes _`. Establish `e2 : ofConv (1 : WithConv (B →ₗ[R] B)) ∘ₗ (g : A →ₗc[R] B).toLinearMap = ofConv (1 : WithConv (A →ₗ[R] B))`. Use extensionality with `x`. Simplify using `[LinearMap.convOne_def]`. Rewrite `h1` using `[LinearMap.antipode_mul_id, e1]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[LinearMap.id_mul_antipode, e2]`. Establish `h` using `left_inv_eq_right_inv (ofConv_injective h1).symm (ofConv_injective h2).symm`. Simplify using `using congrArg (fun f : WithConv (A →ₗ[R] B) ↦ (ofConv f) a) h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.bialgHom_map_antipode {R A B : Type*} [CommSemiring R] [Semiring A] [Semiring B]
     [HopfAlgebra R A] [HopfAlgebra R B] (g : A →ₐc[R] B) (a : A) :
@@ -45,7 +45,7 @@ theorem _root_.GlobalTheory.bialgHom_map_antipode {R A B : Type*} [CommSemiring 
 open IsLocalRing TensorProduct in
 
 /- English proof (translation)
-The claim follows from `_root_.GlobalTheory.henselianLocalRing_of_henselianRing R`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.henselianLocalRing_of_isAdicComplete (R : Type*) [CommRing R] [IsLocalRing R]
     [IsAdicComplete (maximalIdeal R) R] : HenselianLocalRing R :=
@@ -54,7 +54,7 @@ theorem _root_.GlobalTheory.henselianLocalRing_of_isAdicComplete (R : Type*) [Co
 open IsLocalRing TensorProduct in
 
 /- English proof (translation)
-Take `⟨A, _, _, hfin, het, hloc, he⟩` from `_root_.GlobalTheory.exists_etale_lift_of_isSeparable R L`. Conclude with `⟨A, inferInstance, inferInstance, hfin, het, _root_.GlobalTheory.henselianLocalRing_of_finite R A, he⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem _root_.GlobalTheory.exists_etale_henselian_lift_of_isSeparable (R : Type u) (L : Type*) [CommRing R]
     [HenselianLocalRing R] [Field L] [Algebra (ResidueField R) L]
@@ -68,11 +68,11 @@ open IsLocalRing TensorProduct in
 open CategoryTheory in
 
 /- English proof (translation)
-Use `⟨fun S _ _ _ ↦ ⟨_root_.GlobalTheory.exists_algEquiv_pi_henselianLocalRing R S, fun c hc ↦ _root_.GlobalTheory.existsUnique_idempotent_lift_quotient R hc⟩, ?_, fun L _ _ _ _ ↦ _root_.GlobalTheory.exists_etale_henselian_lift_of_isSeparable R L⟩` and prove the remaining obligations. Use `{ faithful := ⟨fun {X Y} f g h ↦ ?_⟩ full := ⟨fun {X Y} φ ↦ ?_⟩ essSurj := ⟨fun Y ↦ ?_⟩ }` and prove the remaining obligations. Establish `: Algebra.Etale R X.obj` using `X.property.2`. Establish `: Module.Finite R Y.obj` using `Y.property.1`. Conclude with `ObjectProperty.hom_ext _ (CommAlgCat.hom_ext ((_root_.GlobalTheory.bijective_baseChange_residueField_of_etale R X.obj Y.obj).1 (congrArg (fun φ ↦ φ.hom.hom) h)))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Algebra.Etale R X.obj` using `X.property.2`. Establish `: Module.Finite R Y.obj` using `Y.property.1`. Take `⟨f, hf⟩` from `(_root_.GlobalTheory.bijective_baseChange_residueField_of_etale R X.obj Y.obj).2 φ.hom.hom`. Conclude with `⟨ObjectProperty.homMk (CommAlgCat.ofHom f), ObjectProperty.hom_ext _ (CommAlgCat.hom_ext hf)⟩`. Establish `: Algebra.Etale (ResidueField R) Y.obj` using `Y.property.2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨A, _, _, hfin, het, ⟨e⟩⟩` from `_root_.GlobalTheory.exists_etale_lift_of_etale.{u, u} R Y.obj`. Conclude with `⟨⟨CommAlgCat.of R A, ⟨hfin, het⟩⟩, ⟨ObjectProperty.isoMk _ (CommAlgCat.isoMk e)⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.finite_algebras_over_henselian (R : Type u) [CommRing R] [HenselianLocalRing R] :
     (∀ (S : Type u) [CommRing S] [Algebra R S] [Module.Finite R S],

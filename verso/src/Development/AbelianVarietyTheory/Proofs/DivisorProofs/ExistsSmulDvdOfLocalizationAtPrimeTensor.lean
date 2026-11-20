@@ -7,13 +7,13 @@ open TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `R C O _ _ _ _ _ Q _ b m ⟨m', hm'⟩`. Set `f` to `AlgebraTensorModule.rTensor R C (Algebra.linearMap O (Localization.AtPrime Q))`. Use `haveI : IsLocalizedModule Q.primeCompl f := inferInstance`. Establish `hf : ∀ x, (IsScalarTower.toAlgHom R O (Localization.AtPrime Q)).toLinearMap.rTensor C x = f x`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a c => simp [f]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Rewrite `hm'` using `[hf, algebraMap_smul]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨m'', t⟩, rfl⟩` from `IsLocalizedModule.mk'_surjective Q.primeCompl f m'`. Simplify using `only [Function.uncurry_apply_pair] at hm'`. Establish `h2 : f ((t : O) • m) = f (b • m'')`. Rewrite using `[LinearMap.map_smul, hm', smul_comm (t : O) b, ← Submonoid.smul_def, IsLocalizedModule.mk'_cancel', LinearMap.map_smul_of_tower]`. Take `⟨u, hu⟩` from `IsLocalizedModule.exists_of_eq (S := Q.primeCompl) h2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(u : O) * t, (Q.primeCompl.mul_mem u.2 t.2 : _), (u : O) • m'', ?_⟩` and prove the remaining obligations. Rewrite using `[algebraMap_smul, mul_smul]`. Simplify `hu` using `[Submonoid.smul_def, smul_comm (u : O) b]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_smul_dvd_of_localization_atPrime_tensor :
     ∀ (R C O : Type) [CommRing R] [CommRing C] [Algebra R C] [CommRing O] [Algebra R O]

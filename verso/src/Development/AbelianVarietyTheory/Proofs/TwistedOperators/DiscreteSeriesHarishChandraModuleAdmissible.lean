@@ -57,7 +57,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.ArchRec
 
 /- English proof (translation)
-Take `⟨-, h1, h2, -⟩` from `GlobalTheory.T.fockOperators_lie_representation_commute p q r s`. Establish `hw` using `GlobalTheory.FockPolGK.pol_locFin_weights p q r s`. Conclude with `⟨⟨h1, fun v => (hw.1 v).1, fun v => (hw.1 v).2⟩, ⟨h2, fun v => (hw.2 v).1, fun v => (hw.2 v).2⟩⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem isGK_fock (p q r s : ℕ) : IsGK (fockAct1 p q r s) ∧ IsGK (fockAct2 p q r s) := by
   obtain ⟨-, h1, h2, -⟩ := GlobalTheory.T.fockOperators_lie_representation_commute p q r s
@@ -65,14 +65,14 @@ theorem isGK_fock (p q r s : ℕ) : IsGK (fockAct1 p q r s) ∧ IsGK (fockAct2 p
   exact ⟨⟨h1, fun v => (hw.1 v).1, fun v => (hw.1 v).2⟩, ⟨h2, fun v => (hw.2 v).1, fun v => (hw.2 v).2⟩⟩
 
 /- English proof (translation)
-Conclude with `((h5 p q hn).1 (X.ds p q lam).U ⟨(X.ds p q lam).2, (X.ds p q lam).3⟩).2.2 (X.ds p q lam).HK (X.ds p q lam).ι ⟨(X.ds p q lam).9, (X.ds p q lam).10, (X.ds p q lam).11⟩ |>.1`.
+A detailed English derivation is pending.
 -/
 theorem discreteSeries_harishChandraModule_admissible {X : ProvA} (h5 : admQ5 X) {p q : ℕ} (hn : 1 ≤ p + q) (lam : Ix p q → ℚ) : AdmGK (X.ds p q lam).HK := by
   exact ((h5 p q hn).1 (X.ds p q lam).U ⟨(X.ds p q lam).2, (X.ds p q lam).3⟩).2.2 (X.ds p q lam).HK (X.ds p q lam).ι
     ⟨(X.ds p q lam).9, (X.ds p q lam).10, (X.ds p q lam).11⟩ |>.1
 
 /- English proof (translation)
-Take `⟨⟨d, h0, h1, h2⟩, hw1, hw2⟩` from `h`. Conclude with `⟨⟨d, h0, h2, h1⟩, hw2, hw1⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem CJoint.symm {p q r s : ℕ} {σ : Type} {a₁ : Mat p q →ₗ[ℂ] Module.End ℂ (MvPolynomial σ ℂ)}
     {a₂ : Mat r s →ₗ[ℂ] Module.End ℂ (MvPolynomial σ ℂ)} {Λ₁ Λ₂ Φ} (h : CJoint a₁ a₂ Λ₁ Λ₂ Φ) : CJoint a₂ a₁ Λ₂ Λ₁ Φ := by
@@ -80,15 +80,13 @@ theorem CJoint.symm {p q r s : ℕ} {σ : Type} {a₁ : Mat p q →ₗ[ℂ] Modu
   exact ⟨⟨d, h0, h2, h1⟩, hw2, hw1⟩
 
 /- English proof (translation)
-Take `⟨ε, h1, h2⟩` from `h`. Establish `hJ : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1`. Unfold `Formalism.REAL.Jm`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `a`. Apply the tactic sequence `split_ifs <;> norm_num`. Establish `hBd : IsUnit B.det`. Establish `hu : IsUnit (Bᴴ * G * B).det`. Rewrite using `[h1]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Matrix.isUnit_iff_isUnit_det _).mp ⟨⟨_, _, hJ, hJ⟩, rfl⟩`. Rewrite `hu` using `[Matrix.det_mul]`. Conclude with `isUnit_of_mul_isUnit_right hu`. Establish `hBHd : IsUnit Bᴴ.det`. Rewrite using `[Matrix.det_conjTranspose]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hBd.star`. Use `⟨ε, Matrix.isUnit_nonsing_inv_iff.mpr ((Matrix.isUnit_iff_isUnit_det B).mpr hBd), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← h1, Matrix.conjTranspose_nonsing_inv]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[Matrix.mul_nonsing_inv _ hBd, Matrix.mul_one, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hBHd, Matrix.one_mul]`.
-
-Rewrite using `[Matrix.nonsing_inv_nonsing_inv _ hBd, ← h2, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hBd, Matrix.mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frame_of_adapted {n : ℕ} {G s B : Mn n} (h : IsAdapted G s B) : ∃ ε, IsFrameOf G s ε B⁻¹ := by
   obtain ⟨ε, h1, h2⟩ := h
@@ -118,9 +116,7 @@ section Transport
 variable {ι ι' σ σ' Z : Type} {n p q : ℕ} {A : Mn n → (Z → ℂ) → (Z → ℂ)} {φ : Mat p q → Mn n} {c : ℚ}
 
 /- English proof (translation)
-Establish `e : PolDer A pt' (φ Y) P P' ↔ PolDer A pt (φ Y) (ς P) (ς P')` using `by simp only [PolDer, hς]`. Rewrite using `[e]`. Conclude with `h.der Y hY (ς P) (ς P')`. Use `wt μ P := by`. Simplify using `only [hς]`.
-
-Conclude with `h.wt μ (ς P)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Side.comp {pt : MvPolynomial ι ℂ → (Z → ℂ)} {pt' : MvPolynomial ι' ℂ → (Z → ℂ)}
     {κ : MvPolynomial ι ℂ ≃ₗ[ℂ] MvPolynomial σ ℂ} {a : Mat p q →ₗ[ℂ] Module.End ℂ (MvPolynomial σ ℂ)}
@@ -135,11 +131,11 @@ theorem Side.comp {pt : MvPolynomial ι ℂ → (Z → ℂ)} {pt' : MvPolynomial
     exact h.wt μ (ς P)
 
 /- English proof (translation)
-Rewrite using `[h.der Y hY P P']`. Simplify using `only [LinearEquiv.trans_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `e`. Rewrite using `[e, map_add, map_smul, hw]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `e`. Apply `w.injective` to reduce the goal to its premises. Rewrite using `[e, map_add, map_smul, hw]`. Use `wt μ P := by`. Rewrite using `[← h.wt μ P]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearEquiv.trans_apply, wtSub, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply]`. Use `forall_congr' fun i => ?_` and prove the remaining obligations. Rewrite using `[← hw, ← LinearEquiv.map_smul, ← map_sub, LinearEquiv.map_eq_zero_iff]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Side.trans {pt : MvPolynomial ι ℂ → (Z → ℂ)} {κ : MvPolynomial ι ℂ ≃ₗ[ℂ] MvPolynomial σ ℂ}
     {a : Mat p q →ₗ[ℂ] Module.End ℂ (MvPolynomial σ ℂ)} {a' : Mat p q →ₗ[ℂ] Module.End ℂ (MvPolynomial σ' ℂ)}
@@ -162,13 +158,7 @@ theorem Side.trans {pt : MvPolynomial ι ℂ → (Z → ℂ)} {κ : MvPolynomial
     rw [← hw, ← LinearEquiv.map_smul, ← map_sub, LinearEquiv.map_eq_zero_iff]
 
 /- English proof (translation)
-Establish `hd : ∀ X P P', PolDer A pt' X P P' ↔ PolDer A pt X (ς P) (ς P')` using `fun X P P' => by`. Simplify using `only [PolDer, hς]`. Use `exact`. Use the proof step `{ mem := fun P => by rw [hς]; exact h.mem _ pt_lin := fun z P Q => by`. Simplify using `only [hς, map_add, map_smul]`.
-
-Conclude with `h.pt_lin z (ς P) (ς Q)`. Use `ip_lin := h.ip_lin`. Use `ip_symm := h.ip_symm`. Use `ip_pos := h.ip_pos`. Use `stable := h.stable`.
-
-Use `lin := h.lin`. Use `one := h.one`. Use `mul := h.mul`. Use `unit := h.unit`. Use `cont := h.cont`.
-
-Use `der := fun X hX P P' hPP E hE => by`. Simplify using `only [hς]`. Conclude with `h.der X hX _ _ ((hd X P P').1 hPP) E hE }`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem L2UnitaryRepresentationData.comp {G : Mn n} {pt : MvPolynomial ι ℂ → (Z → ℂ)} {pt' : MvPolynomial ι' ℂ → (Z → ℂ)} {ip Θ}
     (h : L2UnitaryRepresentationData G A pt ip Θ) (ς : MvPolynomial ι' ℂ ≃ₗ[ℂ] MvPolynomial ι ℂ) (hς : ∀ P, pt' P = pt (ς P)) :
@@ -194,7 +184,7 @@ theorem L2UnitaryRepresentationData.comp {G : Mn n} {pt : MvPolynomial ι ℂ �
       exact h.der X hX _ _ ((hd X P P').1 hPP) E hE }
 
 /- English proof (translation)
-Introduce `d P`. Conclude with `(h' d (κ P)).trans (h d P)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Graded.trans {κ : MvPolynomial ι ℂ ≃ₗ[ℂ] MvPolynomial ι' ℂ} {w : MvPolynomial ι' ℂ ≃ₗ[ℂ] MvPolynomial σ ℂ}
     (h : Graded κ) (h' : Graded w) : Graded (κ.trans w) := by
@@ -210,7 +200,7 @@ Both sides reduce to the same expression.
 theorem swp_apply {α β : Type} (P : MvPolynomial (α × β) ℂ) : swp α β P = MvPolynomial.rename Prod.swap P := rfl
 
 /- English proof (translation)
-Introduce `d P`. Rewrite using `[swp_apply]`. Conclude with `MvPolynomial.IsHomogeneous.rename_isHomogeneous_iff Prod.swap_injective`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem graded_swp (α β : Type) : Graded (swp α β) := by
   intro d P
@@ -218,7 +208,7 @@ theorem graded_swp (α β : Type) : Graded (swp α β) := by
   exact MvPolynomial.IsHomogeneous.rename_isHomogeneous_iff Prod.swap_injective
 
 /- English proof (translation)
-Simplify using `only [swp_apply, fockIp]`. Rewrite using `[MvPolynomial.support_rename_of_injective Prod.swap_injective, Finset.sum_image (fun x _ y _ hxy => Finsupp.mapDomain_injective Prod.swap_injective hxy)]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_rename_mapDomain _ Prod.swap_injective, MvPolynomial.coeff_rename_mapDomain _ Prod.swap_injective, Finsupp.prod_mapDomain_index_inj Prod.swap_injective]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem fockIp_swp {α β : Type} (P Q : MvPolynomial (α × β) ℂ) : fockIp (swp α β P) (swp α β Q) = fockIp P Q := by
   classical
@@ -242,7 +232,7 @@ structure Reads {ι Z : Type} {n n' p q r s : ℕ} (G : Mn n) (G' : Mn n') (A : 
   l2 : ∀ ip, IP ip → ∃ N Θ, Fischer pt ip κ N ∧ L2UnitaryRepresentationData G A pt ip Θ ∧ L2UnitaryRepresentationData G' B pt ip Θ
 
 /- English proof (translation)
-The claim follows from `h.gr.trans (graded_swp _ _) s₁ := h.s₂.trans (swp _ _) fun Y P => by rw [swp_apply, swp_apply, GlobalTheory.FockSwap.rename_fockAct2] s₂ := h.s₁.trans (swp _ _) fun Y P => by rw [swp_apply, swp_apply, GlobalTheory.FockSwap.rename_fockAct1] l2 ip hip := by obtain ⟨N, Θ, hF, h1, h2 …`.
+A detailed English derivation is pending.
 -/
 theorem Reads.swap {ι Z : Type} {n n' p q r s : ℕ} {G : Mn n} {G' : Mn n'} {A : Mn n → (Z → ℂ) → (Z → ℂ)}
     {B : Mn n' → (Z → ℂ) → (Z → ℂ)} {pt : MvPolynomial ι ℂ → (Z → ℂ)} {IP : ((Z → ℂ) → (Z → ℂ) → ℂ) → Prop}
@@ -260,13 +250,13 @@ def IsIp (S T : HSp D) (ip : (WO S T → ℂ) → (WO S T → ℂ) → ℂ) : Pr
   ∃ (μ : Measure (WO S T)) (𝓕 : Set (WO S T)), μ.IsAddHaarMeasure ∧ IsAddFundamentalDomain (ratL T S) 𝓕 μ ∧ ip = ipTh μ 𝓕
 
 /- English proof (translation)
-Establish `hψ : IsStdChar D ψ (-1)` using `hω.std`. Take `⟨ς, hςg, -, hςpt⟩` from `GlobalTheory.T.fockVectors_adaptedBasis_unitary_substitution D ψ θ S T τ hψ hf.inf sS frS εS sT frT εT fS fT BS BT hf.onS hf.onT`. Apply the tactic sequence `obtain ⟨κ₀, hκp, hκg, hκip⟩ := GlobalTheory.T.exists_fockPolynomialIso_graded_isometry p q r s S.rank T.rank εS εT e e' he he'`. Establish `hL` using `GlobalTheory.T.lieAlgebrasAtPlace_act_fockVectors_by_fockOperators D ψ θ S T χS χT ω τ hf.inf hω aS aT hS hT sS frS εS sT frT εT fS fT f hf.theta hf.vac`. Take `⟨hth, hrest⟩` from `GlobalTheory.T.fockVectors_at_one_realPlace_over_vacuum D ψ θ S T τ hψ hf.inf sS frS εS sT frT εT fS fT f hf.theta hf.vac`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hinj, hfis⟩` from `hrest hf.ne`. Set `L : LPol T.rank S.rank →ₗ[ℂ] (WO S T → ℂ)` to `pureTensorL (fun k : Fin T.rank × Fin S.rank => aPlus (heisO ψ S T) θ τ (cplxO sS sT) (unitMap frS⁻¹ frT⁻¹ k.1 k.2)) f`. Establish `hLpt : ∀ P, L P = ptAt ψ θ S T τ sS sT frS⁻¹ frT⁻¹ f P` using `fun P => rfl`. Take `⟨hs1, hs2⟩` from `GlobalTheory.T.fockVectors_realPlace_act_as_fockPolynomials D ψ θ S T ω τ hf.inf sS frS εS sT frT εT fS fT aS aT L hinj hL p q r s e e' he he' κ₀ hκp`. Establish `hσ` using `hςpt f hf.theta`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨ς.trans κ₀, hςg.trans hκg, hs1.comp ς hσ, hs2.comp ς hσ, ?_⟩` and prove the remaining obligations. Introduce and unpack `ip ⟨μ, 𝓕, hμ, h𝓕, rfl⟩`. Take `⟨N, hN⟩` from `hfis μ 𝓕 hμ h𝓕`. Take `⟨Θ, hΘ1, hΘ2⟩` from `GlobalTheory.T.realPlaceGroups_act_unitarily_weakly_on_theta D ψ θ S T χS χT ω τ hf.inf hω frS εS frT εT aS aT L hth hL μ 𝓕 hμ h𝓕`. Use `⟨N, Θ, ⟨hN.1, fun P Q => ?_⟩, hΘ1.comp ς hσ, hΘ2.comp ς hσ⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hσ P, hσ Q, hN.2, LinearEquiv.trans_apply, LinearEquiv.trans_apply, hκip]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_real {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D} {χS χT : (AE D)ˣ →* Circle}
     {ω : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)} {τ : D.what₂.Tau} (hω : IsWeilDatumO ψ S T χS χT ω)
@@ -302,13 +292,13 @@ structure Good (D : D7) (X : ProvA) : Prop where
   br : GlobalTheory.IndefiniteRowSideFullHecke.BarMatrix.ModelsAreCoverSeries D
 
 /- English proof (translation)
-Establish `hpar` using `h.par p q _ hp`. Establish `hfin` using `(h.ds p q _ hp).1`. Take `⟨e, he⟩` from `GlobalTheory.T.exists_signCompatible_numbering_decreasing_enumeration V.rank p q l₁ l₂ c br cj (M.ε τ) (M.lam τ) h₁ h₂ hp (by rw [← hS]; exact M.enum τ)`. Choose the witnesses or unpack the hypotheses as in `⟨m, hm, U, hU⟩ : ∃ m : ℤ, (m : ℚ) = 2 * c ∧ ∃ U, Comparison₂ (X.ds p q (ofBlocks l₁ l₂)) M τ br cj e m U := by`. Apply the tactic sequence `cases br <;> cases cj`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 
-Take `⟨m, hm, hU⟩` from `GlobalTheory.T.discreteSeriesModelParamShiftedWeight_of_coverDiscreteSeries D h.br X V S M τ p q l₁ l₂ c hn h₁ h₂ hp hpar (by rw [hS]; rfl)`. Conclude with `⟨m, hm, hU e he.1 false⟩`. Take `⟨-, m, hm, hU⟩` from `h.br.2 X V S M τ p q l₁ l₂ c ⟨hn, h₁, h₂, hp, hpar, by rw [hS]; rfl⟩`. Take `⟨U, hU⟩` from `hU e he.1`. Conclude with `⟨m, hm, U, fun x y => U.map_add x y, fun z x => U.map_smulₛₗ z x, U.bijective, fun x => U.norm_map x, hU.grp, hU.kfin⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨-, m, hm, hU⟩` from `h.br.1 X V S M τ p q l₁ l₂ c ⟨hn, h₁, h₂, hp, hpar, by rw [hS]; rfl⟩`. Take `⟨U, hU⟩` from `hU e he.1`. Conclude with `⟨m, hm, U, fun x y => U.map_add x y, fun z x => U.map_smul z x, U.bijective, fun x => U.norm_map x, hU.grp, hU.kfin⟩`. Take `⟨m, hm, hU⟩` from `GlobalTheory.T.discreteSeriesModelParamShiftedWeight_of_coverDiscreteSeries D h.br X V S M τ p q l₁ l₂ c hn h₁ h₂ hp hpar (by rw [hS]; rfl)`. Conclude with `⟨m, hm, hU e he.1 true⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hhi` using `GlobalTheory.T.discreteSeriesModelIsometry_unit_highestVector_iff D V S M τ p q _ (X.ds p q (ofBlocks l₁ l₂)) _ c br cj e m U hp he hm hU hfin`. Take `⟨u, hu⟩` from `GlobalTheory.T.exists_kFiniteIsometry_discreteSeriesModel_detCover D V S M τ p q _ (X.ds p q (ofBlocks l₁ l₂)) _ c br cj e m U hp he hm hU hhi`. Conclude with `⟨⟨m, hm⟩, e, u, hu⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_ktie {X : ProvA} (h : Good D X) {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) (τ : D.what₂.Tau)
     {p q : ℕ} {l₁ l₂ : List ℚ} {c : ℚ} (br cj : Bool) (hn : 1 ≤ p + q) (h₁ : l₁.length = p) (h₂ : l₂.length = q)
@@ -345,7 +335,7 @@ variable {X : ProvA} {V W : HSp D} {S S' : D.what₂.Tau → SPar} {M : DSModel 
   {e' : Ix (al.length + de.length + t) (ga.length + be.length) ≃ Fin W.rank} {κ}
 
 /- English proof (translation)
-Take `⟨ht, hl, -⟩` from `hd`. Apply the tactic sequence `constructor <;> omega`.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rank_pos (hd : HypA t al be ga de) :
     1 ≤ al.length + be.length + (ga.length + de.length) ∧ 1 ≤ al.length + de.length + t + (ga.length + be.length) := by
@@ -353,7 +343,7 @@ theorem rank_pos (hd : HypA t al be ga de) :
   constructor <;> omega
 
 /- English proof (translation)
-Establish `hJ` using `GlobalTheory.T.fockJointHarmonic_vectors_iff_polynomials _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hM hN hR.s₁ hR.s₂ hR.gr`. Take `⟨hU, hD, hLn⟩` from `h3.1 t al be ga de hd`. Establish `hT` using `(GlobalTheory.T.thetaCorrespondenceTensorLaw_both_orders_of_covers X _ _ _ _ _ _ (h1.1 t al be ga de hd) hU hD hLn).1`. Establish `hPL` using `GlobalTheory.T.thetaCorrespondence_pairingLaw_of_tensorLaw _ _ _ _ _ _ _ _ _ _ _ _ _ (isGK_fock _ _ _ _).1 (isGK_fock _ _ _ _).2 (discreteSeries_harishChandraModule_admissible h.hc (rank_pos hd.1).1 _) (h.ds _ _ _ hM.par).1 hT`. Conclude with `GlobalTheory.T.thetaCorrespondence_models_of_covers_realPlace _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hM hN hR.s₁ hR.s₂ hJ hPL`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lift_up (h : Good D X) (h1 : Formalism.MainNotions.SchurIrreducible.ArchimedeanRallisFirst X) (h3 : Formalism.MainNotions.SchurIrreducible.ArchimedeanRallisUpDownLine X) (hd : Formalism.MainNotions.SchurIrreducible.DataAR t al be ga de)
     {u u'} (hM : KTie (X.ds _ _ (lamA al be ga de)) M τ (lamA al be ga de) c b true e u)
@@ -368,13 +358,13 @@ theorem lift_up (h : Good D X) (h1 : Formalism.MainNotions.SchurIrreducible.Arch
   exact GlobalTheory.T.thetaCorrespondence_models_of_covers_realPlace _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hM hN hR.s₁ hR.s₂ hJ hPL
 
 /- English proof (translation)
-Establish `hJ` using `GlobalTheory.T.fockJointHarmonic_vectors_iff_polynomials _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hN hM hR.s₂ hR.s₁ hR.gr`. Take `⟨hU, hD, hLn⟩` from `h3.1 t al be ga de hd`. Establish `hT` using `(GlobalTheory.T.thetaCorrespondenceTensorLaw_both_orders_of_covers X _ _ _ _ _ _ (h1.1 t al be ga de hd) hU hD hLn).2`. Establish `hPL` using `GlobalTheory.T.thetaCorrespondence_pairingLaw_of_tensorLaw _ _ _ _ _ _ _ _ _ _ _ _ _ (isGK_fock _ _ _ _).2 (isGK_fock _ _ _ _).1 (discreteSeries_harishChandraModule_admissible h.hc (rank_pos hd.1).2 _) (h.ds _ _ _ hN.par).1 hT`. Use `⟨GlobalTheory.T.thetaCorrespondence_models_of_covers_realPlace _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hN hM hR.s₂ hR.s₁ hJ hPL, fun ip hip => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨m, hm⟩` from `hm`. Take `⟨K, Θ, hF, hL1, -⟩` from `hR.l2 ip hip`. Establish `hC : Coef (X.fock _ _ _ _) A pt ip κ (phiFr (M.fr τ) b e) m K` using `GlobalTheory.T.fockVectors_matrixCoefficients_eq_fockRepresentation _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ (rank_pos hd.1).1 (M.fr_unit τ) (M.fr_gram τ) hM.ord.1 hm hR.s₁ hL1 hF`. Use `GlobalTheory.T.zetaIntegral_model_of_cover _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ (h1.1 t al be ga de hd) ?_ hM hN.ord.1 hm hC fun Φ hΦ => ((hJ Φ).1 hΦ).symm` and prove the remaining obligations. Introduce `v hv`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨-, -, hgap⟩` from `hd.2`. Establish `hq7 : Formalism.MainNotions.SchurIrreducible.admQ7` using `GlobalTheory.TensorHW.highestWeight_tensor`. Establish `hds2` using `GlobalTheory.SphJet.lowest_type_positive_and_decays X h.ds h.hc hq7 GlobalTheory.InducedPBW.pbw_induced`. Establish `hds3` using `GlobalTheory.T.discreteSeries_integrableCoefficient_projector X hds2 (GlobalTheory.T.polarCoordinates_unitaryPQ_doubleCover X)`. Use `(hds3 _ _ _ hM.par _ hgap ?_ v hv).1` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `Formalism.MainNotions.SchurIrreducible.rangeOfSeventhSum`. Rewrite using `[show al.length + be.length + (ga.length + de.length) = al.length + be.length + ga.length + de.length by omega]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem lift_down (h : Good D X) (h1 : Formalism.MainNotions.SchurIrreducible.ArchimedeanRallisFirst X) (h3 : Formalism.MainNotions.SchurIrreducible.ArchimedeanRallisUpDownLine X)
     (hd : Formalism.MainNotions.SchurIrreducible.DataAR t al be ga de) {u u'} (hm : ∃ m : ℤ, (m : ℚ) = 2 * c)
@@ -402,7 +392,7 @@ theorem lift_down (h : Good D X) (h1 : Formalism.MainNotions.SchurIrreducible.Ar
   rw [show al.length + be.length + (ga.length + de.length) = al.length + be.length + ga.length + de.length by omega]
 
 /- English proof (translation)
-Establish `hl` using `(GlobalTheory.LowestTypes.lowest_types t al be ga de hd).2.1`. Take `⟨-, hn, -⟩` from `hd`. Conclude with `exists_ktie h M τ (p := al.length + be.length) (q := ga.length + de.length) b j (by omega) (by simp) (by simp) hl hS`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem tie_small (h : Good D X) (hd : HypA t al be ga de) (M : DSModel V S) (τ : D.what₂.Tau) (b j : Bool)
     (hS : S τ = parOf b j (al ++ be) (ga ++ de) c) :
@@ -412,7 +402,7 @@ theorem tie_small (h : Good D X) (hd : HypA t al be ga de) (M : DSModel V S) (τ
   exact exists_ktie h M τ (p := al.length + be.length) (q := ga.length + de.length) b j (by omega) (by simp) (by simp) hl hS
 
 /- English proof (translation)
-Establish `hl` using `(GlobalTheory.LowestTypes.lowest_types t al be ga de hd).2.2.1`. Take `⟨ht, -⟩` from `hd`. Conclude with `(exists_ktie h M τ (p := al.length + de.length + t) (q := ga.length + be.length) b j (by omega) (by simp [block]; omega) (by simp) hl hS).2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem tie_large (h : Good D X) (hd : HypA t al be ga de) (M : DSModel V S) (τ : D.what₂.Tau) (b j : Bool)
     (hS : S τ = parOf b j (al ++ block t ++ de) (ga ++ be) c) :
@@ -423,9 +413,9 @@ theorem tie_large (h : Good D X) (hd : HypA t al be ga de) (M : DSModel V S) (τ
     (by simp [block]; omega) (by simp) hl hS).2
 
 /- English proof (translation)
-Introduce `PS PT MS MT hPS hPT T' i hi hW ψ θ χS χT ω hω hχT sT BS BT f hf`. Take `⟨e, u, hu⟩` from `hS MS hPS`. Take `⟨e₀, he₀⟩` from `hT MT hPT`. Take `⟨εT, fT⟩` from `frame_of_adapted hf.onT`. Take `⟨hir, his, e', he'⟩` from `GlobalTheory.T.signCompatibleNumbering_of_wittTower_lower D T T' i τ (MT.fr τ) (MT.ε τ) BT⁻¹ εT r s e₀ hW (MT.fr_gram τ) (MT.fr_unit τ) fT.2.1 fT.1 he₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨aS, haS⟩` from `GlobalTheory.T.splittingHeckeChar_exists_archimedeanExponent D θ χS _ τ hf.inf hω.hecS hω.resS`. Take `⟨κ, hR⟩` from `exists_real hω haS hχT (isFrameOf_model MS τ) fT hf hu.ord.1 he'`. Conclude with `GlobalTheory.T.noThetaMap_models_of_noPairing_covers _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hu hR.s₁ (hno i hi hir his)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem noLowerTarget {T : HSp D} {p q r s : ℕ} {lam : Ix p q → ℚ} {aT : ℚ} {pS pT : SPar}
     (hS : ∀ {P} (M : DSModel V P), P τ = pS → ∃ e u, KTie (X.ds p q lam) M τ lam aT true true e u)
@@ -443,9 +433,9 @@ theorem noLowerTarget {T : HSp D} {p q r s : ℕ} {lam : Ix p q → ℚ} {aT : �
   exact GlobalTheory.T.noThetaMap_models_of_noPairing_covers _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hu hR.s₁ (hno i hi hir his)
 
 /- English proof (translation)
-Introduce `PS PT MS MT hPS hPT S' i hi hW ψ θ χS χT ω hω hχS sS BS BT f hf`. Take `⟨e', u, hu⟩` from `hT MT hPT`. Take `⟨e₀, he₀⟩` from `hS MS hPS`. Take `⟨εS, fS⟩` from `frame_of_adapted hf.onS`. Take `⟨hip, hiq, e, he⟩` from `GlobalTheory.T.signCompatibleNumbering_of_wittTower_lower D V S' i τ (MS.fr τ) (MS.ε τ) BS⁻¹ εS p q e₀ hW (MS.fr_gram τ) (MS.fr_unit τ) fS.2.1 fS.1 he₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨aT, haT⟩` from `GlobalTheory.T.splittingHeckeChar_exists_archimedeanExponent D θ χT _ τ hf.inf hω.hecT hω.resT`. Take `⟨κ, hR⟩` from `exists_real hω hχS haT fS (isFrameOf_model MT τ) hf he hu.ord.1`. Conclude with `GlobalTheory.T.noThetaMap_models_of_noPairing_covers _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hu hR.s₂ (hno i hi hip hiq)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem noLowerSource {T : HSp D} {p q r s : ℕ} {lam : Ix r s → ℚ} {aS : ℚ} {pS pT : SPar}
     (hS : ∀ {P} (M : DSModel V P), P τ = pS → ∃ e : Ix p q ≃ Fin V.rank, SignCompat (M.ε τ) e)
@@ -463,7 +453,7 @@ theorem noLowerSource {T : HSp D} {p q r s : ℕ} {lam : Ix r s → ℚ} {aS : �
   exact GlobalTheory.T.noThetaMap_models_of_noPairing_covers _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hu hR.s₂ (hno i hi hip hiq)
 
 /- English proof (translation)
-Establish `hT` using `(GlobalTheory.T.noThetaTensorIntertwiner_lowerTowerMembers X h.ds h.hc t al be ga de hd i hi).1 h1 h2`. Conclude with `GlobalTheory.T.no_invariant_theta_pairing_of_no_tensor_intertwiner _ _ _ _ _ _ _ _ _ (isGK_fock _ _ _ _).1 (isGK_fock _ _ _ _).2 (GlobalTheory.T.fockOperators_lie_representation_commute _ _ _ _).2.2.2 (discreteSeries_harishChandraModule_admissible h.hc (rank_pos hd).1 _) hT`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pairNo_small (h : Good D X) (hd : HypA t al be ga de) (i : ℕ) (hi : 1 ≤ i) (h1 : i ≤ al.length + de.length + t)
     (h2 : i ≤ ga.length + be.length) :
@@ -473,7 +463,7 @@ theorem pairNo_small (h : Good D X) (hd : HypA t al be ga de) (i : ℕ) (hi : 1 
     (discreteSeries_harishChandraModule_admissible h.hc (rank_pos hd).1 _) hT
 
 /- English proof (translation)
-Establish `hT` using `(GlobalTheory.T.noThetaTensorIntertwiner_lowerTowerMembers X h.ds h.hc t al be ga de hd i hi).2 hf h1 h2`. Conclude with `GlobalTheory.T.no_invariant_theta_pairing_of_no_tensor_intertwiner _ _ _ _ _ _ _ _ _ (isGK_fock _ _ _ _).2 (isGK_fock _ _ _ _).1 (fun Y Z => ((GlobalTheory.T.fockOperators_lie_representation_commute _ _ _ _).2.2.2 Z Y).symm) (discreteSeries_harishChandraModule_admissible h.hc (ra …`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pairNo_large (h : Good D X) (hd : HypA t al be ga de) (hf : ∀ x ∈ al ++ be ++ ga ++ de, ((t : ℚ) + 3) / 2 ≤ |x|)
     (i : ℕ) (hi : 1 ≤ i) (h1 : i ≤ al.length + be.length) (h2 : i ≤ ga.length + de.length) :
@@ -483,9 +473,9 @@ theorem pairNo_large (h : Good D X) (hd : HypA t al be ga de) (hf : ∀ x ∈ al
     (fun Y Z => ((GlobalTheory.T.fockOperators_lie_representation_commute _ _ _ _).2.2.2 Z Y).symm) (discreteSeries_harishChandraModule_admissible h.hc (rank_pos hd).2 _) hT
 
 /- English proof (translation)
-Introduce `U _ _ B hB`. Establish `key` using `h U (B ∘ₗ (swp (Ix p q) (Ix r s)).toLinearMap) (by`. Introduce `Z hZ P v`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, swp_apply, GlobalTheory.FockSwap.rename_fockAct2]`. Conclude with `hB Z hZ _ v)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `LinearMap.ext fun P => ?_` and prove the remaining obligations. Use `LinearMap.congr_fun key ((swp (Ix p q) (Ix r s)).symm P)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem PairNo.swap {p q r s : ℕ} {T : GrpData r s} {R : DSRep T} (h : PairNo (fockAct2 p q r s) R) :
     PairNo (fockAct1 r s p q) R := by
@@ -503,11 +493,11 @@ end Core
 variable {X : ProvA}
 
 /- English proof (translation)
-Introduce `k τ V W`. Take `⟨al, be, ga, de, ⟨hA, hF, -⟩, h1, h2⟩` from `GlobalTheory.T.thetaChainStep_centred_block_parameters D k τ`. Use `⟨noLowerTarget (fun M hM => ?_) (fun M hM => ?_) (fun i hi hr hs => pairNo_small h hA i hi hr hs), noLowerSource (fun M hM => ?_) (fun M hM => ?_) (fun i hi hp hq => pairNo_large h hA hF i hi hp hq)⟩` and prove the remaining obligations. Take `⟨-, e, u, hu⟩` from `tie_small h hA M τ true true (hM.trans h1)`. Conclude with `⟨e, u, hu⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨e, u, hu⟩` from `tie_large h hA M τ false false (hM.trans h2)`. Conclude with `⟨e, hu.ord.1⟩`. Take `⟨-, e, u, hu⟩` from `tie_small h hA M τ true false (by rw [hM, parB, ← parA, h1]; rfl)`. Conclude with `⟨e, hu.ord.1⟩`. Take `⟨e, u, hu⟩` from `tie_large h hA M τ false true (by rw [hM, parB, ← parA, h2]; rfl)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨e, u, hu⟩`.
+Supply the required witnesses or components.
 -/
 theorem chainLower (h : Good D X) : ChainLower D := by
   intro k τ V W
@@ -524,9 +514,9 @@ theorem chainLower (h : Good D X) : ChainLower D := by
     exact ⟨e, u, hu⟩
 
 /- English proof (translation)
-Introduce `i τ`. Take `⟨al, de, ⟨hA, hF, -⟩, h1, h2⟩` from `GlobalTheory.T.definiteSource_pair_centred_block_parameters D i τ`. Use `noLowerTarget (fun M hM => ?_) (fun M hM => ?_) (fun j hj hr hs => PairNo.swap (pairNo_large h hA hF j hj hr hs))` and prove the remaining obligations. Take `⟨e, u, hu⟩` from `tie_large h hA M τ true true (hM.trans h2)`. Conclude with `⟨e, u, hu⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨-, e, u, hu⟩` from `tie_small h hA M τ false false (hM.trans h1)`. Conclude with `⟨e, hu.ord.1⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem pairLower (h : Good D X) : PairLower D := by
   intro i τ
@@ -539,13 +529,13 @@ theorem pairLower (h : Good D X) : PairLower D := by
     exact ⟨e, hu.ord.1⟩
 
 /- English proof (translation)
-Introduce `k τ V W`. Take `⟨al, be, ga, de, ⟨hA, -, hG⟩, e1, e2⟩` from `GlobalTheory.T.thetaChainStep_centred_block_parameters D k τ`. Establish `hd : Formalism.MainNotions.SchurIrreducible.DataAR D.R.t al be ga de` using `⟨hA, hG hg⟩`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `ψ θ χS χT ω hω hS hT PS PT MS MT hPS hPT BS BT f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨-, e, u, hu⟩` from `tie_small h hA MS τ true true (hPS.trans e1)`. Take `⟨e', u', hu'⟩` from `tie_large h hA MT τ false false (hPT.trans e2)`. Take `⟨κ, hR⟩` from `exists_real hω hS hT (isFrameOf_model MS τ) (isFrameOf_model MT τ) hf hu.ord.1 hu'.ord.1`. Conclude with `lift_up h h1 h3 hd hu hu' hR`. Introduce `ψ θ χS χT ω hω hS hT PS PT MS MT hPS hPT BS BT f hf`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨hm, e, u, hu⟩` from `tie_small h hA MS τ true false (by rw [hPS, parB, ← parA, e1]; rfl)`. Take `⟨e', u', hu'⟩` from `tie_large h hA MT τ false true (by rw [hPT, parB, ← parA, e2]; rfl)`. Take `⟨κ, hR⟩` from `exists_real hω hS hT (isFrameOf_model MS τ) (isFrameOf_model MT τ) hf hu.ord.1 hu'.ord.1`. Conclude with `(lift_down h h1 h3 hd hm hu hu' hR).1`. Introduce `ψ θ χS χT ω hω hS hT PS PT MS MT hPS hPT BS BT f hf μ 𝓕 hμ h𝓕`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hm, e, u, hu⟩` from `tie_small h hA MS τ true false (by rw [hPS, parB, ← parA, e1]; rfl)`. Take `⟨e', u', hu'⟩` from `tie_large h hA MT τ false true (by rw [hPT, parB, ← parA, e2]; rfl)`. Take `⟨κ, hR⟩` from `exists_real hω hS hT (isFrameOf_model MS τ) (isFrameOf_model MT τ) hf hu.ord.1 hu'.ord.1`. Conclude with `(lift_down h h1 h3 hd hm hu hu' hR).2 _ ⟨μ, 𝓕, hμ, h𝓕, rfl⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem chainTop (h : Good D X) (h1 : Formalism.MainNotions.SchurIrreducible.ArchimedeanRallisFirst X) (h3 : Formalism.MainNotions.SchurIrreducible.ArchimedeanRallisUpDownLine X) (hg : NodeGap D) : ChainTop D := by
   intro k τ V W
@@ -569,13 +559,13 @@ theorem chainTop (h : Good D X) (h1 : Formalism.MainNotions.SchurIrreducible.Arc
     exact (lift_down h h1 h3 hd hm hu hu' hR).2 _ ⟨μ, 𝓕, hμ, h𝓕, rfl⟩
 
 /- English proof (translation)
-Introduce `i τ`. Take `⟨al, de, ⟨hA, -, hG⟩, e1, e2⟩` from `GlobalTheory.T.definiteSource_pair_centred_block_parameters D i τ`. Establish `hd : Formalism.MainNotions.SchurIrreducible.DataAR D.R.t al [] [] de` using `⟨hA, hG hg⟩`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `ψ θ χS χT ω hω hS hT PS PT MS MT hPS hPT BS BT f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨e, u, hu⟩` from `tie_large h hA MS τ true true (hPS.trans e2)`. Take `⟨hm, e', u', hu'⟩` from `tie_small h hA MT τ false false (hPT.trans e1)`. Take `⟨κ, hR⟩` from `exists_real hω hS hT (isFrameOf_model MS τ) (isFrameOf_model MT τ) hf hu.ord.1 hu'.ord.1`. Conclude with `(lift_down h h1 h3 hd hm hu' hu hR.swap).1`. Introduce `ψ θ χS χT ω hω hS hT PS PT MS MT hPS hPT BS BT f hf`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨e, u, hu⟩` from `tie_large h hA MS τ true false (by rw [hPS, e2]; rfl)`. Take `⟨-, e', u', hu'⟩` from `tie_small h hA MT τ false true (by rw [hPT, e1]; rfl)`. Take `⟨κ, hR⟩` from `exists_real hω hS hT (isFrameOf_model MS τ) (isFrameOf_model MT τ) hf hu.ord.1 hu'.ord.1`. Conclude with `lift_up h h1 h3 hd hu' hu hR.swap`. Introduce `ψ θ χS χT ω hω hS hT PS PT MS MT hPS hPT BS BT f hf μ 𝓕 hμ h𝓕`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨e, u, hu⟩` from `tie_large h hA MS τ true true (hPS.trans e2)`. Take `⟨hm, e', u', hu'⟩` from `tie_small h hA MT τ false false (hPT.trans e1)`. Take `⟨κ, hR⟩` from `exists_real hω hS hT (isFrameOf_model MS τ) (isFrameOf_model MT τ) hf hu.ord.1 hu'.ord.1`. Conclude with `(lift_down h h1 h3 hd hm hu' hu hR.swap).2 _ ⟨μ, 𝓕, hμ, h𝓕, rfl⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem pairTop (h : Good D X) (h1 : Formalism.MainNotions.SchurIrreducible.ArchimedeanRallisFirst X) (h3 : Formalism.MainNotions.SchurIrreducible.ArchimedeanRallisUpDownLine X) (hg : NodeGap D) : PairTop D := by
   intro i τ
@@ -599,7 +589,7 @@ theorem pairTop (h : Good D X) (h1 : Formalism.MainNotions.SchurIrreducible.Arch
     exact (lift_down h h1 h3 hd hm hu' hu hR.swap).2 _ ⟨μ, 𝓕, hμ, h𝓕, rfl⟩
 
 /- English proof (translation)
-Unfold `alS GlobalTheory.Chain.expS`. Break down `Nat.even_or_odd (k : ℕ) with h | h` into its components or cases. Rewrite using `[if_pos h.add_one, if_pos h]`. Rewrite using `[if_neg (Nat.not_odd_iff_even.mpr h.add_one), if_neg (Nat.not_even_iff_odd.mpr h)]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem alS_eq (k : Fin D.R.m) (τ : D.what₂.Tau) : alS D k τ = GlobalTheory.Chain.expS D k τ := by
   unfold alS GlobalTheory.Chain.expS
@@ -609,7 +599,7 @@ theorem alS_eq (k : Fin D.R.m) (τ : D.what₂.Tau) : alS D k τ = GlobalTheory.
     ring
 
 /- English proof (translation)
-Unfold `alT GlobalTheory.Chain.expT`. Break down `Nat.even_or_odd (k : ℕ) with h | h` into its components or cases. Rewrite using `[if_pos h.add_one, if_pos h]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg (Nat.not_odd_iff_even.mpr h.add_one), if_neg (Nat.not_even_iff_odd.mpr h)]`.
+Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem alT_eq (k : Fin D.R.m) (τ : D.what₂.Tau) : alT D k τ = GlobalTheory.Chain.expT D k τ := by
   unfold alT GlobalTheory.Chain.expT
@@ -619,13 +609,13 @@ theorem alT_eq (k : Fin D.R.m) (τ : D.what₂.Tau) : alT D k τ = GlobalTheory.
   · rw [if_neg (Nat.not_odd_iff_even.mpr h.add_one), if_neg (Nat.not_even_iff_odd.mpr h)]
 
 /- English proof (translation)
-Introduce `k V W P P' M M' hPe hPe' ψ θ χS χT ω hω hχ f hf`. Substitute `hPe hPe'` using the available equality. Establish `hθ : IsInfFam θ` using `fun ρ => (hf ρ).inf ρ`. Establish `hC : GlobalTheory.Chain.ChainPar D k`. Introduce `τ`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨al, be, ga, de, ⟨hA, hF, hG⟩, h1, h2⟩` from `GlobalTheory.T.thetaChainStep_centred_block_parameters D k τ`. Use `⟨al, be, ga, de, ⟨hA, hG hg⟩, hF, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h1, alT_eq]`. Rewrite using `[h2, alS_eq]`. Establish `hW : GlobalTheory.Chain.IsStepWeil k ψ V W ω` using `⟨χS, χT, hω, fun τ => by rw [← alS_eq, ← alT_eq]; exact hχ τ⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `⟨τ₀⟩ : Nonempty D.what₂.Tau := by`. Establish `hc : Fintype.card D.what₂.Tau = D.R.f` using `D.what₂.10`. Establish `h8 : 2 ≤ D.R.m` using `D.R.8`. Establish `h12 : D.R.m ≤ 2 * D.R.ord` using `D.R.12`. Rewrite using `[← Fintype.card_pos_iff, hc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `Ranks.f Ranks.n`. Use linear arithmetic over natural numbers and integers. Establish `hV : GlobalTheory.Chain.IsVacVec ψ θ M M' f` using `⟨(hf τ₀).theta, (hf τ₀).ne, fun τ => (hf τ).vac⟩`. Take `⟨It, -, hIt⟩` from `hP k V W M M' θ ψ hθ hC`. Conclude with `⟨It, hIt ω f hW hV, fun It' h' => hL k V W M M' θ ψ hθ hC ω f hW hV It It' (hIt ω f hW hV) h'⟩`.
+Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem itLaw (hP : GlobalTheory.Chain.ItPair D) (hL : GlobalTheory.Chain.ItLine D) (hg : NodeGap D) : ItLaw D := by
   intro k V W P P' M M' hPe hPe' ψ θ χS χT ω hω hχ f hf
@@ -650,7 +640,7 @@ theorem itLaw (hP : GlobalTheory.Chain.ItPair D) (hL : GlobalTheory.Chain.ItLine
   exact ⟨It, hIt ω f hW hV, fun It' h' => hL k V W M M' θ ψ hθ hC ω f hW hV It It' (hIt ω f hW hV) h'⟩
 
 /- English proof (translation)
-Introduce `i P P' M M' hP hP' ψ θ χS χT ω hω hχ c hc hpr BV f hf`. Substitute `hP hP'` using the available equality. Establish `hθ : IsInfFam θ` using `fun ρ => (hf ρ).inf ρ`. Take `⟨io, hio⟩` from `h1 i M M' ψ θ χS χT ω hθ hω hχ c hc hpr BV f hf`. Conclude with `⟨io, hio, fun io' h' => h2 i M M' ψ θ χS χT ω hθ hω hχ c hc hpr BV f hf io io' hio h', h3 i M M' ψ θ χS χT ω hθ hω hχ c hc hpr BV f hf io hio⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ioLaw (h1 : IoEx D) (h2 : IoUniq D) (h3 : IoHarm D) : IoLaw D := by
   intro i P P' M M' hP hP' ψ θ χS χT ω hω hχ c hc hpr BV f hf
@@ -661,7 +651,7 @@ theorem ioLaw (h1 : IoEx D) (h2 : IoUniq D) (h3 : IoHarm D) : IoLaw D := by
     h3 i M M' ψ θ χS χT ω hθ hω hχ c hc hpr BV f hf io hio⟩
 
 /- English proof (translation)
-Take `⟨Y, hpar, hds, hq5, hy1, -, hy3, -⟩` from `GlobalTheory.T.exists_provA_discreteSeries_archimedeanRallis hDS hHC`. Establish `hG : Good D Y` using `⟨hpar, hds, hq5, GlobalTheory.T.thetaModels_are_coverDiscreteSeries_of_harishChandra hDS hHC D⟩`. Conclude with `⟨⟨chainLower hG, pairLower hG⟩, fun hg => ⟨chainTop hG hy1 hy3 hg, pairTop hG hy1 hy3 hg, itLaw (GlobalTheory.T.exists_uniformRealThetaIntertwiner_chainStep hDS hHC D) (GlobalTheory.T.realThetaIntertwiners_proportional_of_harishChandra hDS hHC D) hg, ioLaw (GlobalTheory.T.lowestK …`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem archOnRecord_of_cover (hDS : GlobalTheory.Published.DiscreteSeriesCover) (hHC : GlobalTheory.Published.HarishChandraModules) (D : D7)
     (X : ProvA) (hX : GlobalTheory.Chain.RealIt.ChosenSeries X) (h1 : Formalism.MainNotions.SchurIrreducible.ArchimedeanRallisFirst X) (h3 : Formalism.MainNotions.SchurIrreducible.ArchimedeanRallisUpDownLine X) :
@@ -673,7 +663,7 @@ theorem archOnRecord_of_cover (hDS : GlobalTheory.Published.DiscreteSeriesCover)
     ioLaw (GlobalTheory.T.lowestKTypeFockMap_exists_of_discreteSeries hDS hHC D) (GlobalTheory.T.lowestKTypeFockMap_unique_of_discreteSeries hDS hHC D) (GlobalTheory.T.lowestKTypeFockMap_harmonic_of_discreteSeries hDS hHC D)⟩⟩
 
 /- English proof (translation)
-Take `⟨X, hpar, -, -, h1, -, h3, -⟩` from `GlobalTheory.T.exists_provA_discreteSeries_archimedeanRallis hDS hHC`. Conclude with `archOnRecord_of_cover hDS hHC D X hpar h1 h3`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem archOnRecord (hDS : GlobalTheory.Published.DiscreteSeriesCover) (hHC : GlobalTheory.Published.HarishChandraModules) (D : D7) :
     ArchOnRecord D := by

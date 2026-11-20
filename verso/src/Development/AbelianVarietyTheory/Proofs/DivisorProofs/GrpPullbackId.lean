@@ -20,9 +20,9 @@ def Root {S T : Scheme.{0}} (A : Over S) [GrpObj A] (P : LB (G2 A).left) (t : T 
     IsGrpPullback B A t β ∧ IsSquare β β₂ ∧ ∃ L : LB B.left, L.IsLB ∧ LBIso (abelian₂ B L) (P.pull β₂)
 
 /- English proof (translation)
-Take `⟨A', _, _, β, β₂, hβ, hsq, L, hL, H⟩` from `h`. Establish `hA' : IsAbelianScheme A'` using `GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback hA hβ`. Take `⟨B', _, φ, hφ⟩` from `GlobalTheory.FlagTan.exists_isGrpPullback A' σ`. Establish `hB' : IsAbelianScheme B'` using `GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback hA' hφ`. Use `haveI : IsCommMonObj B' := hB'.comm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `V` to `lift (pushPt hφ.1.w (fst B' B')) (pushPt hφ.1.w (snd B' B'))`. Establish `hV : IsSquare φ V.left` using `GlobalTheory.LamPull.exists_isSquare hφ.1.w`. Use `⟨B', inferInstance, inferInstance, φ ≫ β, V.left ≫ β₂, hφ.comp hβ, GlobalTheory.ZM.SiegPull.isSquare_comp hV hsq, L.pull φ, pull_isLB hL φ, ?_⟩` and prove the remaining obligations. Use `LBIso.chartPull (chartPullLinComb L φ _ _ _ V.left fun I => psum_push hφ _ _ V (fun i => ?_) I.down) (chartPullSame P (fun _ : PUnit => V.left ≫ β₂) (fun _ => β₂) (fun _ => 1) V.left fun _ => rfl) H` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> simp [V, x2]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem Root.comp {S T T' : Scheme.{0}} {A : Over S} [GrpObj A] (hA : IsAbelianScheme A) {P : LB (G2 A).left}
     {t : T ⟶ S} (h : Root A P t) (σ : T' ⟶ T) : Root A P (σ ≫ t) := by

@@ -3,15 +3,15 @@ import Mathlib
 open scoped IntermediateField TensorProduct Matrix Pointwise NumberField Topology ContDiff NNReal ENNReal Polynomial DirectSum BigOperators InnerProductSpace Manifold
 
 /- English proof (translation)
-Introduce `F E _ _ _ t c h x hx`. Establish `hint : IsIntegral F t`. Apply `IsIntegral.of_pow (n := 2) (by norm_num)` to reduce the goal to its premises. Rewrite using `[h]`. Conclude with `isIntegral_algebraMap`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hx' : x ∈ Algebra.adjoin F {t}`. Rewrite using `[← IntermediateField.adjoin_simple_toSubalgebra_of_isAlgebraic hint.isAlgebraic]`. Conclude with `hx`. Use `clear hx`. Proceed by induction on `hx' using Algebra.adjoin_induction with`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Consider the case `mem y hy`. Rewrite `hy` using `[Set.mem_singleton_iff]`. Conclude with `⟨0, 1, by simp [hy]⟩`. Consider the case `algebraMap r => exact ⟨r, 0, by simp⟩`. Consider the case `add y z _ _ hy hz`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨a, b, rfl⟩` from `hy`. Take `⟨a', b', rfl⟩` from `hz`. Conclude with `⟨a + a', b + b', by rw [map_add, map_add]; ring⟩`. Consider the case `mul y z _ _ hy hz`. Take `⟨a, b, rfl⟩` from `hy`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Take `⟨a', b', rfl⟩` from `hz`. Use `⟨a * a' + b * b' * c, a * b' + b * a', ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, map_mul]`. Rewrite using `[← h]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.ReprMem.repr_mem :
     ∀ {F E : Type} [inst : Field F] [inst_1 : Field E]

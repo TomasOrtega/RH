@@ -12,27 +12,23 @@ noncomputable section
 namespace GlobalTheory.Discrepancy
 
 /- English proof (translation)
-Introduce `X _ _ p hp y hy f hf`. Use `haveI : IsProper p := ((isProjOver_iff_isProper_and_exists_isAmpleLB p).1 hp).1`. Take `⟨U, hU, hx, -⟩` from `exists_isAffineOpen_mem_and_subset (x := y) (U := ⊤) trivial`. Use `haveI : Nonempty U := ⟨⟨y, hx⟩⟩`. Use `letI := X.presheaf.algebra_section_stalk (⟨y, hx⟩ : U)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Use `haveI := hU.isLocalization_stalk ⟨y, hx⟩`. Use `(mem_range_algebraMap_iff_forall_height_eq_one (A := X.presheaf.stalk y) f).2 fun q hq h1 => ?_` and prove the remaining obligations. Set `P : PrimeSpectrum Γ(X, U)` to `⟨q.comap (algebraMap _ (X.presheaf.stalk y)), inferInstance⟩`. Establish `hP1 : P.asIdeal.height = 1` using `(IsLocalization.height_comap (hU.primeIdealOf ⟨y, hx⟩).asIdeal.primeCompl q).trans h1`. Establish `hPQ : P ≤ hU.primeIdealOf ⟨y, hx⟩` using `fun s hs => by_contra fun hs' => hq.ne_top (q.eq_top_of_isUnit_mem hs (IsLocalization.map_units (X.presheaf.stalk y) (⟨s, hs'⟩ : (hU.primeIdealOf ⟨y, hx⟩).asIdeal.primeCompl)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hz : hU.fromSpec P ∈ U`. Establish `: hU.fromSpec P ∈ Set.range hU.fromSpec` using `⟨P, rfl⟩`. Rewrite `this` using `[hU.range_fromSpec]`. Then use the resulting hypothesis. Set `z : U` to `⟨hU.fromSpec P, hz⟩`. Establish `hP : hU.primeIdealOf z = P` using `hU.fromSpec.isOpenEmbedding.injective (hU.fromSpec_primeIdealOf z)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hzx : (z : X) ⤳ y`. Establish `h` using `((PrimeSpectrum.le_iff_specializes P (hU.primeIdealOf ⟨y, hx⟩)).mp hPQ).map hU.fromSpec.continuous`. Rewrite `h` using `[hU.fromSpec_primeIdealOf ⟨y, hx⟩]`. Then use the resulting hypothesis. Use `clear_value z`. Use `haveI := hU.isLocalization_stalk z`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hc : Order.coheight (z : X) = 1`. Use `IsLocalization.AtPrime.ringKrullDim_eq_height (hU.primeIdealOf z).asIdeal (X.presheaf.stalk (z : X))` as an intermediate fact. Rewrite `this` using `[ringKrullDim_stalk_eq_coheight, hP, hP1]`. Conclude with `this` after adjusting the coercions. Use `haveI hT : IsLocalization.AtPrime (Localization.AtPrime q) P.asIdeal := IsLocalization.isLocalization_isLocalization_atPrime_isLocalization (hU.primeIdealOf ⟨y, hx⟩).asIdeal.primeCompl (Localization.AtPrime q) q`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : IsIntegrallyClosed (Localization.AtPrime q) := isIntegrallyClosed_of_isLocalization _ q.primeCompl q.primeCompl_le_nonZeroDivisors`. Establish `hs : (hU.primeIdealOf z).asIdeal.primeCompl = P.asIdeal.primeCompl`. Use extensionality with `s`. Rewrite using `[Ideal.mem_primeCompl_iff, Ideal.mem_primeCompl_iff, hP]`. Use `haveI hZ : IsLocalization P.asIdeal.primeCompl (X.presheaf.stalk (z : X)) := by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hs]`. Conclude with `hU.isLocalization_stalk z`. Set `e : X.presheaf.stalk (z : X) ≃+* Localization.AtPrime q` to `(IsLocalization.algEquiv P.asIdeal.primeCompl (X.presheaf.stalk (z : X)) (Localization.AtPrime q)).toRingEquiv`. Use `haveI : IsIntegrallyClosed (X.presheaf.stalk (z : X)) := ((IsNormalScheme.isDomain_and_isIntegrallyClosed_iff_of_ringEquiv e).2 ⟨inferInstance, inferInstance⟩).2`. Use `haveI : IsDiscreteValuationRing (X.presheaf.stalk (z : X)) := by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : Ring.KrullDimLE 1 (X.presheaf.stalk (z : X))` using `krullDimLE_of_coheight_le hc.le`. Establish `hf : ¬ IsField (X.presheaf.stalk (z : X))` using `fun h => by`. Use `ringKrullDim_eq_zero_of_isField h` as an intermediate fact. Rewrite `this` using `[ringKrullDim_stalk_eq_coheight, hc]`. Simplify using `at this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hm` using `IsLocalRing.isField_iff_maximalIdeal_eq.not.mp hf`. Establish `h3 : IsIntegrallyClosed (X.presheaf.stalk (z : X)) ∧ ∃! P : Ideal (X.presheaf.stalk (z : X)), P ≠ ⊥ ∧ P.IsPrime` using `⟨inferInstance, _, ⟨hm, inferInstance⟩, fun P hP => IsLocalRing.eq_maximalIdeal (Ring.krullDimLE_one_iff_of_noZeroDivisors.mp h1 P hP.1 hP.2)⟩`. Conclude with `((IsDiscreteValuationRing.TFAE (X.presheaf.stalk (z : X)) hf).out 0 3).mpr h3`. Take `⟨E, hE⟩` from `DivOver.exists_isAt p (z : X)`. Take `⟨a, rfl⟩` from `(hE f).1 (hf z hzx E hE)`.
-
-Take `⟨⟨c, s⟩, e⟩` from `IsLocalization.surj (hU.primeIdealOf z).asIdeal.primeCompl a`. Use `(mem_primeLocalSubalgebra_iff q _).2 ⟨algebraMap _ _ s.1, ?_, algebraMap _ _ c, ?_⟩` and prove the remaining obligations. Use `s.2` as an intermediate fact. Rewrite `this` using `[Ideal.mem_primeCompl_iff]`. Establish `h' : s.1 ∉ P.asIdeal` using `by simpa only [hP] using this`.
-
-Conclude with `h'`. Establish `e'` using `congrArg (algebraMap _ X.functionField) e`. Rewrite `e'` using `[map_mul, ← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`. Rewrite using `[Algebra.smul_def, mul_comm]`. Conclude with `((algebraMap_germ hx c).trans e'.symm).trans (congrArg _ (algebraMap_germ hx s.1).symm)`.
+A detailed English derivation is pending.
 -/
 theorem regAt_of_isIntegrallyClosed_stalk : ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (p : X ⟶ Sp ℂ), IsProjOver p → ∀ y : X, IsIntegrallyClosed (X.presheaf.stalk y) → ∀ f : X.functionField, (∀ z, z ⤳ y → ∀ E : DivOver p, E.IsAt z → f ∈ E.ring) → RegAt y f := by
   intro X _ _ p hp y hy f hf

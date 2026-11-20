@@ -15,9 +15,9 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Ho
 namespace GlobalTheory.KForm.WWUnique
 
 /- English proof (translation)
-Simplify using `only [KM.nablaX, KM.Gxz, KM.minorXZ, map_prod]`. Use `Finset.prod_congr rfl fun s _ => Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[RingHom.map_det, RingHom.map_det, AlgHom.map_det]`. Use `congr 1`. Use extensionality with `i k`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `[MvPolynomial.map_X, MvPolynomial.aeval_X, map_sum, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem aeval_map_nablaX {Lt : Type} [Fintype Lt] [DecidableEq Lt] (l : ℕ) [Fact l.Prime] (N0 N1 : ℕ)
     (nu : Lt → YoungDiagram) (I : KM.ColChoice N1 nu) :
@@ -34,19 +34,19 @@ theorem aeval_map_nablaX {Lt : Type} [Fintype Lt] [DecidableEq Lt] (l : ℕ) [Fa
   simp [MvPolynomial.map_X, MvPolynomial.aeval_X, map_sum, map_mul]
 
 /- English proof (translation)
-Introduce `D p _ N0 N1 hN nu hnu Th ph ph' κ Q hQ h I`. Use `haveI : Finite (KM.ColChoice N1 nu) := by`. Unfold `KM.ColChoice`. Use `infer_instance`. Use `letI : Fintype (KM.ColChoice N1 nu) := Fintype.ofFinite _`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `J : ((Bool × HH D) × Fin N0 × Fin N1 →₀ ℕ) → ℂ_[p]` to `fun m => (m.prod fun _ k => (k.factorial : ℂ_[p])) * MvPowerSeries.coeff m Th`. Set `σ : (Bool × HH D) × ℕ × Fin N1 → MvPolynomial (KM.XZ (Bool × HH D) N0 N1) ℂ_[p]` to `fun v => ∑ a : Fin N0, MvPolynomial.X (Sum.inl (v.1, v.2.1, a)) * MvPolynomial.X (Sum.inr (v.1, a, v.2.2))`. Set `L : Module.Dual ℂ_[p] (MvPolynomial ((Bool × HH D) × ℕ × Fin N1) ℂ_[p])` to `ph ∘ₗ GlobalTheory.KFormCore.jetL J ∘ₗ (MvPolynomial.aeval (R := ℂ_[p]) σ).toLinearMap`. Establish `hL : ∀ J' : KM.ColChoice N1 nu, L (MvPolynomial.map (Int.castRingHom _) (KM.nablaX N1 nu J')) = ph (KM.applyAt0 N0 N1 p Th (KM.Gxz N0 N1 nu J'))`. Introduce `J'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [L, LinearMap.comp_apply, AlgHom.toLinearMap_apply, σ]`. Rewrite using `[aeval_map_nablaX, GlobalTheory.KFormCore.applyAt0_eq]`. Establish `hLD : ∀ y, L (GL3Columns.DeX N1 nu y) = GL3Columns.applyQ p N0 N1 Th Q y`. Introduce `y`. Rewrite using `[GL3Columns.ww_holds D p N0 N1 nu Th ph Q hQ y, GL3Columns.wwCB_holds D ℂ_[p] N1 nu y, finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype, map_sum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun J' _ => ?_` and prove the remaining obligations. Rewrite using `[← MvPolynomial.smul_eq_C_mul, map_smul, hL, smul_eq_mul]`. Set `ψ : Module.Dual ℂ_[p] (MvPolynomial ((Bool × HH D) × ℕ × Fin N1) ℂ_[p])` to `ph' - κ • L`. Establish `hψ : ∀ y, ψ (GL3Columns.DeX N1 nu y) = 0`. Introduce `y`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `e` to `Equiv.ofBijective (tauPl D) (tauPl_bij D)`. Set `y' : D.what₂.Tau → Matrix (Fin N1) (Fin N1) ℂ_[p]` to `fun τ => Matrix.of fun a b => y (e.symm τ) a b`. Establish `hy : GL3Columns.DeX N1 nu y = GL3Columns.DeX N1 nu (fun s => GL3Columns.colsOf (y' (tauPl D s)))`. Unfold `GL3Columns.DeX`. Use `Finset.prod_congr rfl fun s _ => Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use `congr 1`. Use extensionality with `i j`. Establish `hj : (j : ℕ) < N1` using `lt_of_lt_of_le j.2 ((YoungDiagram.colLen_anti _ 0 c (Nat.zero_le _)).trans ((hnu s).trans hN))`. Establish `hs : e.symm (tauPl D s) = s` using `e.symm_apply_apply s`. Simplify using `[GL3Columns.colsOf, hj, y', hs]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hy]`. Simplify using `only [ψ, LinearMap.sub_apply, LinearMap.smul_apply, h, hLD, smul_eq_mul, sub_self]`. Establish `h4` using `GL3Columns.wwInj_holds D p N1 nu ψ hψ I`. Simplify using `only [ψ, LinearMap.sub_apply, LinearMap.smul_apply, smul_eq_mul, hL] at h4`. Conclude with `sub_eq_zero.mp h4`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ww_unique : ∀ (D : D7) {p : ℕ} [Fact p.Prime] (N0 N1 : ℕ) (hN : N0 ≤ N1) (nu : Bool × HH D → YoungDiagram)
     (hnu : ∀ z, (nu z).colLen 0 ≤ N0) (Th : MvPowerSeries ((Bool × HH D) × Fin N0 × Fin N1) ℂ_[p])

@@ -14,7 +14,7 @@ open GlobalTheory.Poinc.FibLat GlobalTheory.Poinc.Eq8
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.fibre_const_of_specializes_invariant` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFibreConstOfSpecialisationInvariant.lean&line=52#L52)
 -/

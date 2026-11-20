@@ -15,11 +15,11 @@ def bdiag (e : ι ≃ Fin a ⊕ Fin b) (A : Matrix ι ι K) : Matrix ι ι K :=
   Matrix.of fun i j => if side e i = side e j then A i j else 0
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [bdiag, Matrix.of_apply, Matrix.mul_apply]`. Use `split_ifs with hij`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hik : side e i = side e k`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos hik, if_pos (hik.symm.trans hij)]`. Rewrite using `[if_neg hik, zero_mul]`. Break down `lt_or_gt_of_ne (Ne.symm hik) with h | h` into its components or cases. Rewrite using `[hA h, zero_mul]`. Rewrite using `[hB (hij ▸ h), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation.
 
-Use `symm`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hik : side e i = side e k`. Rewrite using `[if_neg (fun h => hij (hik.trans h)), mul_zero]`. Rewrite using `[if_neg hik, zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bdiag_mul (e : ι ≃ Fin a ⊕ Fin b) {A B : Matrix ι ι K}
     (hA : A.BlockTriangular (side e)) (hB : B.BlockTriangular (side e)) :
@@ -41,7 +41,7 @@ theorem bdiag_mul (e : ι ≃ Fin a ⊕ Fin b) {A B : Matrix ι ι K}
     · rw [if_neg hik, zero_mul]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [bdiag, Matrix.of_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs with h1 h2 <;> simp_all`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem bdiag_one (e : ι ≃ Fin a ⊕ Fin b) : bdiag e (1 : Matrix ι ι K) = 1 := by
   ext i j
@@ -49,9 +49,9 @@ theorem bdiag_one (e : ι ≃ Fin a ⊕ Fin b) : bdiag e (1 : Matrix ι ι K) = 
   split_ifs with h1 h2 <;> simp_all
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [bdiag, Matrix.of_apply]`. Use `split_ifs with h`. Both sides reduce to the same expression. Establish `h1 : (g : Matrix ι ι K).BlockTriangular (side e)` using `hg.1`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (g : Matrix ι ι K).BlockTriangular (fun i => OrderDual.toDual (side e i))` using `hg.2`. Break down `lt_or_gt_of_ne (Ne.symm h) with h' | h'` into its components or cases. Conclude with `(h1 h').symm`. Conclude with `(h2 (show OrderDual.toDual (side e j) < OrderDual.toDual (side e i) from h')).symm`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem bdiag_of_levi (e : ι ≃ Fin a ⊕ Fin b) {g : GL ι K} (hg : g ∈ blockLevi e) :
     bdiag e (g : Matrix ι ι K) = g := by
@@ -66,7 +66,7 @@ theorem bdiag_of_levi (e : ι ≃ Fin a ⊕ Fin b) {g : GL ι K} (hg : g ∈ blo
     · exact (h2 (show OrderDual.toDual (side e j) < OrderDual.toDual (side e i) from h')).symm
 
 /- English proof (translation)
-Introduce `i j hij`. Simplify using `only [uMat, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_symm]`. Simplify using `only [side] at hij`. Apply the tactic sequence `rcases hi : e i with x | x <;> rcases hj : e j with y | y <;> simp_all`. Apply the tactic sequence `all_goals exact absurd hij (by decide)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem uMat_blockTriangular (e : ι ≃ Fin a ⊕ Fin b) (X : Fin a → Fin b → K) :
     (uMat e X).BlockTriangular (side e) := by
@@ -77,11 +77,11 @@ theorem uMat_blockTriangular (e : ι ≃ Fin a ⊕ Fin b) (X : Fin a → Fin b �
   all_goals exact absurd hij (by decide)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [bdiag, uMat, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_symm, Matrix.of_apply, Matrix.one_apply]`. Use `split_ifs with hs hij hij`. Substitute `hij` using the available equality. Generalize the expression as in `e i = u`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Substitute using the available equality. Replace the chosen expression with an arbitrary variable. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rcases u with x | x <;> simp`. Establish `h' : e i ≠ e j` using `e.injective.ne hij`. Simplify using `only [side] at hs`. Use `revert hs h'`. Generalize the expression as in `e i = u`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Apply the first step, then apply the next step to every resulting obligation.
 
-Generalize the expression as in `e j = v`. Apply the tactic sequence `rcases u with x | x <;> rcases v with y | y <;> simp_all`. Conclude with `absurd (by rw [hij]) hs`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem bdiag_uMat (e : ι ≃ Fin a ⊕ Fin b) (X : Fin a → Fin b → K) :
     bdiag e (uMat e X) = 1 := by
@@ -116,7 +116,7 @@ def bdiagHom (e : ι ≃ Fin a ⊕ Fin b) : blockPar (K := K) e →* GL ι K whe
     exact bdiag_mul e p.2 q.2)
 
 /- English proof (translation)
-The claim follows from `continuous_matrix fun i j => by by_cases h : side e i = side e j · simp only [bdiag, Matrix.of_apply, if_pos h] exact continuous_id.matrix_elem i j · simp only [bdiag, Matrix.of_apply, if_neg h] exact continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem continuous_bdiag (e : ι ≃ Fin a ⊕ Fin b) : Continuous (bdiag (K := K) e) :=
   continuous_matrix fun i j => by
@@ -127,7 +127,7 @@ theorem continuous_bdiag (e : ι ≃ Fin a ⊕ Fin b) : Continuous (bdiag (K := 
       exact continuous_const
 
 /- English proof (translation)
-Use `Units.continuous_iff.2 ⟨(continuous_bdiag e).comp (Units.continuous_val.comp continuous_subtype_val), ?_⟩` and prove the remaining obligations. Use `show Continuous fun p : blockPar (K := K) e => bdiag e (((p : GL ι K)⁻¹ : GL ι K) : Matrix ι ι K)`. Conclude with `(continuous_bdiag e).comp (Units.continuous_val.comp (continuous_inv.comp continuous_subtype_val))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_bdiagHom (e : ι ≃ Fin a ⊕ Fin b) : Continuous (bdiagHom (K := K) e) := by
   refine Units.continuous_iff.2 ⟨(continuous_bdiag e).comp (Units.continuous_val.comp continuous_subtype_val), ?_⟩
@@ -135,9 +135,9 @@ theorem continuous_bdiagHom (e : ι ≃ Fin a ⊕ Fin b) : Continuous (bdiagHom 
   exact (continuous_bdiag e).comp (Units.continuous_val.comp (continuous_inv.comp continuous_subtype_val))
 
 /- English proof (translation)
-Establish `: (blockPar (K` using `K) e : Set (GL ι K)) = ⋂ i, ⋂ j, ⋂ (_ : side e j < side e i), {g : GL ι K | (g : Matrix ι ι K) i j ∈ ({0} : Set K)} := by`. Use extensionality with `g`. Simplify using `only [Set.mem_iInter, Set.mem_setOf_eq, Set.mem_singleton_iff]`. Both sides reduce to the same expression. Rewrite using `[this]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isClosed_iInter fun i => isClosed_iInter fun j => isClosed_iInter fun _ => h0.preimage (Units.continuous_val.matrix_elem i j)`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_blockPar (e : ι ≃ Fin a ⊕ Fin b) (h0 : IsClosed ({0} : Set K)) :
     IsClosed (blockPar (K := K) e : Set (GL ι K)) := by
@@ -153,11 +153,9 @@ theorem isClosed_blockPar (e : ι ≃ Fin a ⊕ Fin b) (h0 : IsClosed ({0} : Set
 end Top
 
 /- English proof (translation)
-Use `set C := S.topologicalClosure`. Establish `hCQ : (C : Set G) ⊆ Q`. Rewrite using `[Subgroup.topologicalClosure_coe]`. Conclude with `closure_minimal hS hQ.isClosed`. Establish `hC : IsCompact (C : Set G)` using `hQ.of_isClosed_subset S.isClosed_topologicalClosure hCQ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : CompactSpace C := isCompact_iff_compactSpace.mp hC`. Establish `hWo : IsOpen ((W.subgroupOf C : Subgroup C) : Set C)`. Rewrite using `[Subgroup.coe_subgroupOf]`. Conclude with `hW.preimage continuous_subtype_val`. Use `haveI := Subgroup.quotient_finite_of_isOpen _ hWo`.
-
-Establish `h1 : W.relIndex C ≠ 0` using `Subgroup.index_ne_zero_of_finite`. Introduce `h`. Conclude with `h1 (Subgroup.relIndex_eq_zero_of_le_right S.le_topologicalClosure h)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem relIndex_ne_zero_of_subset_compact {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [T2Space G] {W S : Subgroup G} (hW : IsOpen (W : Set G)) {Q : Set G} (hQ : IsCompact Q)
@@ -175,39 +173,31 @@ theorem relIndex_ne_zero_of_subset_compact {G : Type} [Group G] [TopologicalSpac
   exact h1 (Subgroup.relIndex_eq_zero_of_le_right S.le_topologicalClosure h)
 
 /- English proof (translation)
-Introduce `K _ _ _ _ ι _ _ a b e γ hT K' hK'o hK'c x hx`. Use `set T := GlobalTheory.BCT.twCent (MonoidHom.id (GL ι K)) γ`. Use `set P := blockPar (K := K) e`. Use `set cx := (MulAut.conj x).toMonoidHom`. Use `set W := K'.map cx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `set S := T ⊓ ((P ⊓ K') ⊔ blockUni e).map cx`. Use `set A := T ⊓ (P ⊓ K').map cx`. Establish `hTP : T ≤ P` using `hT.trans inf_le_left`. Establish `hWmem : ∀ g, g ∈ W ↔ x⁻¹ * g * x ∈ K'` using `fun g => by`. Simplify using `only [W, cx]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Subgroup.mem_map_equiv, MulAut.conj_symm_apply]`. Establish `hWo : IsOpen (W : Set (GL ι K))`. Establish `: (W : Set (GL ι K)) = (fun g => x⁻¹ * g * x) ⁻¹' (K' : Set (GL ι K))` using `Set.ext hWmem`. Rewrite using `[this]`. Conclude with `hK'o.preimage ((continuous_const.mul continuous_id).mul continuous_const)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hSWA : W ⊓ S ≤ A`. Introduce and unpack `g ⟨hgW, hgT, -⟩`. Use `⟨hgT, Subgroup.mem_map_equiv.2 ?_⟩` and prove the remaining obligations. Rewrite using `[MulAut.conj_symm_apply]`. Conclude with `⟨P.mul_mem (P.mul_mem (P.inv_mem hx) (hTP hgT)) hx, (hWmem g).1 hgW⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : W.relIndex S ≠ 0`. Distinguish the cases in `h0 : IsClosed ({0} : Set K)`. Use `haveI : T1Space K := IsTopologicalAddGroup.t1Space K h0 haveI : T2Space (GL ι K) := Units.isEmbedding_embedProduct.t2Space`. Establish `hPc : IsClosed (P : Set (GL ι K))` using `isClosed_blockPar e h0`. Use `set π := bdiagHom (K := K) e`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hWc : IsCompact (W : Set (GL ι K))`. Establish `: (W : Set (GL ι K)) = (fun g => x * g * x⁻¹) '' (K' : Set (GL ι K))` using `rfl`. Rewrite using `[this]`. Conclude with `hK'c.image ((continuous_const.mul continuous_id).mul continuous_const)`. Establish `hQ : IsCompact (π '' {p : P | (p : GL ι K) ∈ W})` using `(hPc.isClosedEmbedding_subtypeVal.isCompact_preimage hWc).image (continuous_bdiagHom e)`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `relIndex_ne_zero_of_subset_compact hWo hQ ?_` and prove the remaining obligations. Introduce and unpack `s ⟨hsT, hsmap⟩`. Take `⟨y, hy, rfl⟩` from `Subgroup.mem_map.1 hsmap`. Use `set L' := (P ⊓ K').subgroupOf P`. Establish `hZ : (P ⊓ K') ⊔ blockUni e ≤ ((L'.map π).comap π).map P.subtype`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `sup_le ?_ ?_` and prove the remaining obligations. Introduce `g hg`. Conclude with `⟨⟨g, hg.1⟩, ⟨⟨g, hg.1⟩, hg, rfl⟩, rfl⟩`. Introduce and unpack `g ⟨X, rfl⟩`. Establish `hgP : uHom e X ∈ P` using `uMat_blockTriangular e X.toAdd`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨_, hgP⟩, ?_, rfl⟩` and prove the remaining obligations. Use `show π ⟨_, hgP⟩ ∈ L'.map π`. Establish `: π ⟨_, hgP⟩ = 1` using `Units.ext (bdiag_uMat e X.toAdd)`. Rewrite using `[this]`. Conclude with `(L'.map π).one_mem`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Take `⟨p, hp, hpy⟩` from `hZ hy`. Take `⟨l, hl, hlp⟩` from `Subgroup.mem_map.1 (Subgroup.mem_comap.1 hp)`. Use `set px : P := ⟨x, hx⟩`. Use `⟨px * l * px⁻¹, ?_, ?_⟩` and prove the remaining obligations. Use `show x * (l : GL ι K) * x⁻¹ ∈ W`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hWmem]`. Simplify `(Subgroup.mem_subgroupOf.1 hl).2` using `[mul_assoc]`. Establish `hs : cx y ∈ P` using `hTP hsT`. Establish `e1 : px * p * px⁻¹ = ⟨cx y, hs⟩` using `Subtype.ext (by simp [cx, px, ← hpy, MulAut.conj_apply])`. Rewrite using `[map_mul, map_mul, hlp, ← map_mul, ← map_mul, e1]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `Units.ext (bdiag_of_levi e (hT hsT))`. Establish `hI : (⊥ : Ideal K).closure = ⊤`. Break down `Ideal.eq_bot_or_top (⊥ : Ideal K).closure with h | h` into its components or cases. It suffices to derive a contradiction. Apply `h0` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h'` using `congrArg (fun I : Ideal K => (I : Set K)) h`. Establish `: closure ({0} : Set K) = {0}`. Simplify `h'` using `only [Ideal.coe_closure, Submodule.bot_coe]`. Conclude with `closure_eq_iff_isClosed.mp this`. Conclude with `h`.
-
-Establish `hsp0 : ∀ y : K, (0 : K) ⤳ y` using `fun y => by`. Rewrite using `[specializes_iff_mem_closure]`. Establish `: y ∈ (⊥ : Ideal K).closure` using `hI ▸ Submodule.mem_top`. Establish `h2 : y ∈ (((⊥ : Ideal K).closure : Ideal K) : Set K)` using `this`. Simplify `h2` using `only [Ideal.coe_closure, Submodule.bot_coe]`.
-
-Establish `hsp : ∀ c y : K, c ⤳ y` using `fun c y => by`. Use `(hsp0 (y - c)).map (continuous_add_right c)` as an intermediate fact. Simplify using `using this`. Establish `hspM : ∀ A B : Matrix ι ι K, A ⤳ B` using `fun A B => specializes_pi.2 fun i => specializes_pi.2 fun j => hsp _ _`. Establish `hspG : ∀ g h : GL ι K, g ⤳ h` using `fun g h => by`.
-
-Rewrite using `[← Units.isEmbedding_embedProduct.isInducing.specializes_iff]`. Simplify using `only [Units.embedProduct_apply]`. Conclude with `specializes_prod.2 ⟨hspM _ _, (hspM _ _).map MulOpposite.continuous_op⟩`. Establish `hall : ∀ g, g ∈ W` using `fun g => (hspG g 1).mem_open hWo W.one_mem`. Rewrite using `[Subgroup.relIndex_eq_one.mpr (fun g _ => hall g)]`.
-
-Conclude with `one_ne_zero`. Introduce `h`. Apply `key` to reduce the goal to its premises. Rewrite using `[← Subgroup.inf_relIndex_right]`. Conclude with `Subgroup.relIndex_eq_zero_of_le_left hSWA h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relIndex_twCent_inf_ne_zero : ∀ (K : Type) [Field K] [TopologicalSpace K] [IsTopologicalRing K] [LocallyCompactSpace K]
   (ι : Type) [Fintype ι] [DecidableEq ι] (a b : ℕ) (e : ι ≃ Fin a ⊕ Fin b) (γ : GL ι K),

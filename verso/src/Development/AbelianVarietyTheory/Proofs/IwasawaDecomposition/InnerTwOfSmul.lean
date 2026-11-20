@@ -14,12 +14,12 @@ variable {D : D7} {Bs : DefBase D.what₂.LL} {A : DefAmb Bs} {X : CxData A} {fc
   {R : Read D X fc s} {cr : Crd A fc}
 
 /- English proof (translation)
-The claim follows from `funext fun i => cj_cj s (x i)`.
+A detailed English derivation is pending.
 -/
 theorem cjv_cjv (s : Bool) {n : ℕ} (x : Fin n → ℂ) : cjv s (cjv s x) = x := funext fun i => cj_cj s (x i)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Distinguish the cases in `h : k = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne h]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem cpt_single {K : Type} [Field K] (σ : K →+* ℂ) {n : ℕ} (i : Fin n) :
     (fun k => σ ((Pi.single i 1 : Fin n → K) k)) = (Pi.single i 1 : Fin n → ℂ) := by
@@ -29,9 +29,9 @@ theorem cpt_single {K : Type} [Field K] (σ : K →+* ℂ) {n : ℕ} (i : Fin n)
   · simp [Pi.single_eq_of_ne h]
 
 /- English proof (translation)
-Establish `h : ∀ i, D.jN u (R.eNu u (Pi.single i 1)) = (M.cφ u).symm (Pi.single i 1)` using `fun i => by`. Rewrite using `[← M.cφ_eq]`. Conclude with `congrArg _ (cpt_single D.what₂.embLL i)`. Simplify using `only [h, ← map_smul, ← map_sum]`. Rewrite using `[LinearEquiv.symm_apply_eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `k`. Simplify using `[Finset.sum_apply, Pi.single_apply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_coord_jN (M : Seam R cr) (u : D.what₂.Word) (φ : D.what₂.Mu u) :
     ∑ i, M.cφ u φ i • D.jN u (R.eNu u (Pi.single i 1)) = φ := by
@@ -44,7 +44,7 @@ theorem sum_coord_jN (M : Seam R cr) (u : D.what₂.Word) (φ : D.what₂.Mu u) 
   simp [Finset.sum_apply, Pi.single_apply]
 
 /- English proof (translation)
-Simplify using `only [← map_smul, ← map_sum]`. Rewrite using `[sum_coord_jN]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_coord_eMu (M : Seam R cr) (u : D.what₂.Word) (φ : D.what₂.Mu u) :
     ∑ i, M.cφ u φ i • D.eMu u (D.jN u (R.eNu u (Pi.single i 1))) = D.eMu u φ := by
@@ -52,7 +52,7 @@ theorem sum_coord_eMu (M : Seam R cr) (u : D.what₂.Word) (φ : D.what₂.Mu u)
   rw [sum_coord_jN]
 
 /- English proof (translation)
-Substitute `hw` using the available equality. Establish `: b = fun i => D.eMu w (D.jN w (R.eNu w (Pi.single i 1)))` using `funext fun i => eq_of_heq (hb i)`. Substitute `this` using the available equality. Conclude with `heq_of_eq (sum_coord_eMu M w φ)`.
+Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem sum_coord_heq (M : Seam R cr) (u w : D.what₂.Word) (hw : w = u)
     (b : Fin ((fc X.zs).Dc.a (R.wU u)) → (D.mem w).A.Mram)
@@ -64,7 +64,7 @@ theorem sum_coord_heq (M : Seam R cr) (u w : D.what₂.Word) (hw : w = u)
   exact heq_of_eq (sum_coord_eMu M w φ)
 
 /- English proof (translation)
-Rewrite using `[Tw.inner_eq, hx, inner_smul_left]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inner_tw_of_smul {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] (s : Bool) (x y : Tw s E) (κ₀ : ℂ) (v : E)
     (hx : Tw.out x = κ₀ • v) : ⟪x, y⟫_ℂ = cj s (starRingEnd ℂ κ₀ * ⟪v, Tw.out y⟫_ℂ) := by

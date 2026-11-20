@@ -8,14 +8,14 @@ open GlobalTheory.Sieg GlobalTheory.QFam
 namespace GlobalTheory.Sieg
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp [act, Fin.sum_univ_two]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem act_one_gen (x : Fin 2 → ℚ) : act x 1 = x := by
   funext i
   fin_cases i <;> simp [act, Fin.sum_univ_two]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [act, Matrix.SpecialLinearGroup.coe_mul, Matrix.mul_apply, Fin.sum_univ_two]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem act_mul_gen (x : Fin 2 → ℚ) (γ δ : SL(2, ℤ)) : act x (γ * δ) = act (act x γ) δ := by
   funext i
@@ -24,13 +24,11 @@ theorem act_mul_gen (x : Fin 2 → ℚ) (γ δ : SL(2, ℤ)) : act x (γ * δ) =
   ring
 
 /- English proof (translation)
-Set `H : Subgroup SL(2, ℤ)` to `{ carrier := {γ | ∀ x τ, P x → f x (γ • τ) = f (act x γ) τ} one_mem' := by`. Introduce `x τ _`. Simplify using `[act_one_gen]`. Use the proof step `mul_mem' := by`. Introduce `γ δ hγ hδ x τ hx`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_smul, hγ x _ hx, hδ _ τ (hP x γ hx), act_mul_gen]`. Use the proof step `inv_mem' := by`. Introduce `γ hγ x τ hx`. Establish `h` using `hγ (act x γ⁻¹) (γ⁻¹ • τ) (hP x _ hx)`. Rewrite `h` using `[smul_inv_smul, ← act_mul_gen, inv_mul_cancel, act_one_gen]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h.symm }`. Establish `hle : Subgroup.closure {ModularGroup.S, ModularGroup.T} ≤ H`. Rewrite using `[Subgroup.closure_le]`. Introduce `γ hγ`. Break down `hγ with rfl | rfl` into its components or cases.
-
-Conclude with `hS`. Conclude with `hT`. Introduce `γ`. Establish `: γ ∈ H` using `hle (by rw [_root_.SpecialLinearGroup.SL2Z_generators]; exact Subgroup.mem_top γ)`. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem modular_law_of_generators (P : (Fin 2 → ℚ) → Prop) (f : (Fin 2 → ℚ) → ℍ → ℂ)
     (hP : ∀ x γ, P x → P (act x γ))

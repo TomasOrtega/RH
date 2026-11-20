@@ -15,13 +15,13 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.Points Gl
 namespace GlobalTheory.PushInt
 
 /- English proof (translation)
-Introduce `F _ X Y _ _ p q σ D h1 h2 h3 π hπ hg hk L f hf`. Establish `hm : Measurable (ptMap π hπ σ)` using `(PtsOver.continuous_map π hπ (spMap σ)).measurable`. Establish `key` using `fun ε => GlobalTheory.T.mixedChernMeasure_map_pullback_genericallyFinite F X Y p q σ D h1 h2 h3 π hπ hg hk L ε`. Establish `hc0 : ((π.residueDegree (genericPoint Y) : ENNReal)) ≠ 0` using `by exact_mod_cast hk`. Establish `hcT : ((π.residueDegree (genericPoint Y) : ENNReal)) ≠ ⊤` using `ENNReal.natCast_ne_top _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hI : ∀ ε, Integrable (fun y => f (ptMap π hπ σ y)) (part (fun i => (L i).pull π hπ) ε) ↔ Integrable f (part L ε)`. Introduce `ε`. Establish `e` using `integrable_map_measure (μ := part (fun i => (L i).pull π hπ) ε) hf.aestronglyMeasurable hm.aemeasurable`. Rewrite `e` using `[key ε, integrable_smul_measure hc0 hcT]`. Conclude with `e.symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hJ : ∀ ε, ∫ y, f (ptMap π hπ σ y) ∂(part (fun i => (L i).pull π hπ) ε) = (π.residueDegree (genericPoint Y) : ℝ) * ∫ y, f y ∂(part L ε)`. Introduce `ε`. Rewrite using `[← integral_map hm.aemeasurable hf.aestronglyMeasurable, key ε, integral_smul_measure]`. Simplify using the standard rewrite rules. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Intg, hI]`. Simplify using `only [Mix.int, hJ]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem mixInt_pull : ∀ (F : Type) [Field F] (X Y : Scheme.{0}) [IsIntegral X] [IsIntegral Y] (p : X ⟶ Sp F) (q : Y ⟶ Sp F) (σ : F →+* ℂ) (D : ℕ), IsProjOver p → topologicalKrullDim X = (D : ℕ) → IsProjOver q → ∀ (π : Y ⟶ X) (hπ : π ≫ p = q), π (genericPoint Y) = genericPoint X → π.residueDegree (genericPoint Y) ≠ 0 → ∀ (L : Fin D → MLine p σ) (f : CxPts p σ → ℝ), Measurable f → (Intg (fun i => (L i).pull π hπ) (fun y => f (ptMap π hπ σ y)) ↔ Intg L f) ∧ Mix.int (fun i => (L i).pull π hπ) (fun y => f (ptMap π hπ σ y)) = π.residueDegree (genericPoint Y) * Mix.int L f := by
   intro F _ X Y _ _ p q σ D h1 h2 h3 π hπ hg hk L f hf

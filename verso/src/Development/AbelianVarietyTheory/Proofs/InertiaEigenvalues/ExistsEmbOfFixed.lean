@@ -7,17 +7,15 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibl
 namespace GlobalTheory.HWL.Letters
 
 /- English proof (translation)
-Set `g : E ≃ₐ[F] E` to `AlgEquiv.ofBijective σ hσ`. Establish `hbot : IntermediateField.fixedField (Subgroup.zpowers g) = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce `x hx`. Rewrite `hx` using `[IntermediateField.mem_fixedField_iff]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `IntermediateField.mem_bot.2 (hfix x (hx g (Subgroup.mem_zpowers g)))`. Establish `hord : orderOf g = Module.finrank F E`. Establish `h` using `IntermediateField.finrank_fixedField_eq_card (Subgroup.zpowers g)`. Rewrite `h` using `[hbot, IntermediateField.finrank_bot', Nat.card_zpowers]`. Conclude with `h.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : NeZero (Module.finrank F E) := ⟨Module.finrank_pos.ne'⟩`. Set `emb : ZMod (Module.finrank F E) → (E →ₐ[F] L)` to `fun i => e.comp (g⁻¹ ^ i.val : E ≃ₐ[F] E).toAlgHom`. Establish `hord' : orderOf g⁻¹ = Module.finrank F E` using `by rw [orderOf_inv, hord]`. Establish `hinj : Function.Injective emb`. Introduce `i j h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : (g⁻¹ ^ i.val : E ≃ₐ[F] E) = g⁻¹ ^ j.val` using `AlgEquiv.ext fun x => e.injective (DFunLike.congr_fun h x)`. Rewrite `h1` using `[pow_eq_pow_iff_modEq, hord', ← ZMod.natCast_eq_natCast_iff, ZMod.natCast_zmod_val, ZMod.natCast_zmod_val]`. Conclude with `h1`. Use `⟨emb, ?_, fun i => ?_⟩` and prove the remaining obligations. Use `hinj.bijective_of_nat_card_le ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Nat.card_zmod]`. Conclude with `card_algHom_le_finrank F E L`. Establish `h1 : (g⁻¹ ^ (i + 1).val : E ≃ₐ[F] E) = g⁻¹ ^ (i.val + 1)`. Rewrite using `[pow_eq_pow_iff_modEq, hord', ← ZMod.natCast_eq_natCast_iff]`. Simplify using the standard rewrite rules.
-
-Establish `h2 : (g⁻¹ ^ (i + 1).val : E ≃ₐ[F] E) * g = g⁻¹ ^ i.val`. Rewrite using `[h1, pow_succ, inv_mul_cancel_right]`. Conclude with `AlgHom.ext fun x => congrArg e (DFunLike.congr_fun h2 x)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_emb_of_fixed {F E L : Type} [Field F] [Field E] [Field L] [Algebra F E] [Algebra F L]
     [FiniteDimensional F E] (σ : E →ₐ[F] E) (hσ : Function.Bijective σ)
@@ -60,9 +58,9 @@ theorem exists_emb_of_fixed {F E L : Type} [Field F] [Field E] [Field L] [Algebr
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Use `haveI : Nontrivial P.R.B := by`. Use `⟨⟨(P.PD K).t, 0, fun h => (P.PD K).not_mem_filtration_two ?_⟩⟩` and prove the remaining obligations. Rewrite using `[h, map_zero]`. Conclude with `zero_mem _`. Take `⟨c, hc⟩` from `(P.PD K).fund (algebraMap ↥(K0 K) P.R.B x) (by rw [(P.PD K).φ_K₀, hx]) (by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[AlgHom.commutes, IsScalarTower.algebraMap_apply ↥(K0 K) ↥K.1 P.R.BdR, Algebra.algebraMap_eq_smul_one]`. Conclude with `Submodule.smul_mem _ _ (P.PD K).one_mem)`. Use `⟨c, (algebraMap ↥(K0 K) P.R.B).injective ?_⟩` and prove the remaining obligations. Rewrite using `[← IsScalarTower.algebraMap_apply, hc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sigma_fixed (P : LocPrime l) (K : FinExt l) (x : ↥(K0 K)) (hx : (P.PD K).σ x = x) :
     ∃ c : ℚ_[l], algebraMap ℚ_[l] ↥(K0 K) c = x := by
@@ -82,7 +80,7 @@ end GlobalTheory.HWL.Letters
 namespace GlobalTheory.HWL
 
 /- English proof (translation)
-Introduce `l _ P K s LL h`. Use `haveI := (P.PD K).finK₀`. Establish `hle : K0 K ≤ LL.1` using `fun x hx => h.2.2.2 (Ks K s).val ⟨x, (le_sup_left : K0 K ≤ Ks K s) hx⟩`. Conclude with `Letters.exists_emb_of_fixed _ (P.PD K).σ_bij (Letters.sigma_fixed P K) (IntermediateField.inclusion hle)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_letters : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K : FinExt l) (s : ℕ) (LL : FinExt l), Good K s LL → ∃ emb : ZMod (Module.finrank ℚ_[l] ↥(K0 K)) → (↥(K0 K) →ₐ[ℚ_[l]] ↥LL.1), Function.Bijective emb ∧ ∀ i, (emb (i + 1)).comp (P.PD K).σ = emb i := by
   intro l _ P K s LL h

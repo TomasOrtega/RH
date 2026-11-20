@@ -30,15 +30,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.InteriorKS
 
 /- English proof (translation)
-Set `DF : Derivation F R R` to `{ toFun := D map_add' := map_add D map_smul' := fun a r => by simp [Algebra.smul_def, hD] map_one_eq_zero' := D.map_one_eq_zero leibniz' := D.leibniz }`. Set `L : Ω[R⁄F] →ₗ[R] R` to `DF.liftKaehlerDifferential`. Establish `hL : ∀ r, L (KaehlerDifferential.D F R r) = D r` using `fun r => DF.liftKaehlerDifferential_comp_D r`. Establish `hLm : ∀ w, L w ∈ m`. Introduce `w`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hw : w ∈ Submodule.span R (Set.range (KaehlerDifferential.D F R))`. Rewrite using `[KaehlerDifferential.span_range_derivation]`. Discharge the goal by the elementary cases of `trivial`. Use `(Submodule.span_le (p := Submodule.comap L m)).2 ?_ hw` and prove the remaining obligations. Introduce and unpack `_ ⟨r, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `show L _ ∈ m`. Rewrite using `[hL]`. Conclude with `hm r`. Take `⟨n, p, i, -, -, hpi⟩` from `Module.Finite.exists_comp_eq_id_of_projective R Ω[R⁄F]`. Use `⟨n, fun k => L (p (Pi.single k 1)), fun k => (((LinearMap.proj k : (Fin n → R) →ₗ[R] R) ∘ₗ i).compDer (KaehlerDifferential.D F R)).restrictScalars ℤ, fun k => hLm _, fun k a => by simp, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use extensionality with `r`. Establish `e : KaehlerDifferential.D F R r = ∑ k, i (KaehlerDifferential.D F R r) k • p (Pi.single k 1)`. Establish `e0` using `LinearMap.congr_fun hpi (KaehlerDifferential.D F R r)`. Rewrite `e0` using `[LinearMap.comp_apply, LinearMap.id_apply, pi_eq_sum_univ' (i _)]`. Simplify using `using e0.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : ∀ δ : Fin n → Derivation ℤ R R, (∑ k, δ k) r = ∑ k, δ k r` using `fun δ => by`. Rewrite using `[← Derivation.coeFnAddMonoidHom_apply, map_sum, Finset.sum_apply]`. Both sides reduce to the same expression. Rewrite using `[← hL, e, hs]`. Simplify using `[mul_comm]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_sum_smul {F R : Type} [CommRing F] [CommRing R] [Algebra F R] [Algebra.Smooth F R]
     (D : Derivation ℤ R R) (hD : ∀ a, D (algebraMap F R a) = 0) (m : Ideal R) (hm : ∀ r, D r ∈ m) :
@@ -76,13 +76,13 @@ theorem exists_sum_smul {F R : Type} [CommRing F] [CommRing R] [Algebra F R] [Al
   simp [mul_comm]
 
 /- English proof (translation)
-Set `φ : F →+* Γ(X, U.1)` to `(s.appLE ⊤ U.1 (fun _ _ => trivial)).hom.comp (Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom`. Establish `hφ : φ.Smooth`. Use `RingHom.Smooth.comp ?_ (Smooth.smooth_appLE s (isAffineOpen_top _) U.2 _)` and prove the remaining obligations. Conclude with `RingHom.Smooth.of_bijective (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of F)).inv)`. Use `letI := φ.toAlgebra`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Use `haveI : Algebra.Smooth F Γ(X, U.1) := hφ`. Take `⟨n, c, δ, hc, hδ, e⟩` from `exists_sum_smul (F := F) D.1 D.2.1 m hD`. Take `⟨y, z, hz, hyz⟩` from `hm.exists_inv hh`. Set `δ' : Fin n → logDer s I U` to `fun k => ⟨(y * h) • δ k, fun a => by`. Establish `: δ k (constFn s U.1 a) = 0` using `hδ k a`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[this], fun f _ => Ideal.mul_mem_right _ _ (Ideal.mul_mem_left _ _ hI)⟩`. Establish `e' : D = z • D + ∑ k, c k • δ' k`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `: (∑ k, c k • δ' k : logDer s I U).1 = (y * h) • D.1`. Rewrite using `[e, Finset.smul_sum, Submodule.coe_sum]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun k _ => smul_comm _ _ _`. Rewrite using `[Submodule.coe_add, this, Submodule.coe_smul, ← add_smul, add_comm, hyz, one_smul]`. Rewrite using `[e']`. Conclude with `add_mem (Submodule.smul_mem_smul hz trivial) (sum_mem fun k _ => Submodule.smul_mem_smul (hc k) trivial)`.
+A detailed English derivation is pending.
 -/
 theorem mem_smul_top {F : Type} [CommRing F] {X : Scheme.{0}} (s : X ⟶ Sp F) [Smooth s] (I : X.IdealSheafData)
     (U : X.affineOpens) (D : logDer s I U) (m : Ideal Γ(X, U.1)) (hm : m.IsMaximal) (h : Γ(X, U.1)) (hI : h ∈ I.ideal U)
@@ -111,7 +111,7 @@ def dualConst {k R : Type} [Field k] [CommRing R] (ρ : R →+* DualNumber k) : 
   (algebraMap k (DualNumber k)).comp ((TrivSqZeroExt.fstHom k k k).toRingHom.comp ρ)
 
 /- English proof (translation)
-Rewrite using `[constPt, spMap_comp', spMap_comp']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem constPt_spMap {K R : Type} [Field K] [CommRing R] (ψ : R →+* DualNumber K) :
     constPt (spMap ψ) = spMap (dualConst ψ) := by
@@ -119,7 +119,7 @@ theorem constPt_spMap {K R : Type} [Field K] [CommRing R] (ψ : R →+* DualNumb
   rfl
 
 /- English proof (translation)
-Use `⟨(s.appLE ⊤ U.1 (fun _ _ => trivial)).hom.comp (Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom, fun _ => rfl, ?_⟩` and prove the remaining obligations. Establish `h` using `IsAffineOpen.SpecMap_appLE_fromSpec s (isAffineOpen_top (Spec (CommRingCat.of F))) U.2 (fun _ _ => trivial)`. Rewrite `h` using `[IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv, ← Spec.map_comp]`. Conclude with `h.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chart_comp {F : Type} [CommRing F] {X : Scheme.{0}} (s : X ⟶ Sp F) (U : X.affineOpens) :
     ∃ σ : F →+* Γ(X, U.1), (∀ a, σ a = constFn s U.1 a) ∧ chart U ≫ s = spMap σ := by
@@ -129,19 +129,17 @@ theorem chart_comp {F : Type} [CommRing F] {X : Scheme.{0}} (s : X ⟶ Sp F) (U 
   exact h.symm
 
 /- English proof (translation)
-Take `⟨y', hy'⟩ : ∃ y' : Sp (DualNumber K) ⟶ Xo.XF c, y' ≫ Y.j = spMap φ ≫ chart U` from `⟨_, IsOpenImmersion.lift_fac Y.j _ (by rintro _ ⟨p, rfl⟩; exact hV (Set.mem_univ p))⟩`. Take `⟨σ, hσ, hcs⟩` from `chart_comp Y.s U`. Use `letI : Algebra c.F K := ((TrivSqZeroExt.fstHom K K K).toRingHom.comp (φ.comp σ)).toAlgebra`. Take `⟨A', _, lam, hlam⟩` from `GlobalTheory.FlagTan.exists_isGrpPullback Y.oF.t.G y'`. Take `⟨A₀, _, i, hi⟩` from `GlobalTheory.FlagTan.exists_isGrpPullback A' (GlobalTheory.DeRham.epsRed K)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hπ'` using `hlam.comp Y.m0.cart`. Establish `hι' : IsGrpPullback A' Y.t.G (spMap φ ≫ chart U) _` using `(hlam.comp Y.m.cart).congr hy' rfl`. Establish `hA'` using `PolPull.isAbelianScheme_of_isGrpPullback (ObjDim.isAbelianScheme Xo.univ) hπ'`. Take `⟨ρ, hρ, -, hiρ⟩` from `exists_isConstK Y.t (interior Y) U v D Θ hv hKS φ hφ hΘ hV A₀ A' _ i hA' hι' hi`. Establish `e₁` using `eq_constPt c hi hπ' hiρ hρ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hjs : Y.j ≫ Y.s = pullback.snd _ _`. Establish `h0 : spMap (RingHom.id c.F) = 𝟙 _` using `Spec.map_id _`. Rewrite using `[Model.j, Category.assoc, pullback.condition, ← Category.assoc, Y.jQ_over, h0, Category.comp_id]`. Establish `e₂ : y' ≫ pullback.snd _ _ = spMap (φ.comp σ)`. Rewrite using `[← hjs, reassoc_of% hy', hcs, spMap_comp']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e₃ : y' = constPt y'`. Use `pullback.hom_ext e₁ ?_` and prove the remaining obligations. Use `show _ = constPt (y' ≫ pullback.snd _ _)`. Rewrite using `[e₂, constPt_spMap]`. Use `congr 1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use extensionality with `a`. Simplify using `[dualConst, TrivSqZeroExt.algebraMap_eq_inl]`. Simplify using `[dualConst, TrivSqZeroExt.algebraMap_eq_inl, hσ, hc]`. Establish `e₄ : spMap φ ≫ chart U = spMap (dualConst φ) ≫ chart U`. Rewrite using `[← constPt_spMap]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show _ = constPt (spMap φ ≫ chart U)`. Rewrite using `[← hy']`. Conclude with `congrArg (· ≫ Y.j) e₃`. Establish `hU : IsAffineOpen U.1` using `U.2`. Use `haveI : Mono (chart U) := inferInstanceAs (Mono hU.fromSpec)`.
-
-Establish `e₅ : φ = dualConst φ` using `congrArg CommRingCat.Hom.hom (Spec.map_injective ((cancel_mono _).1 e₄))`. Rewrite using `[e₅]`. Simplify using `[dualConst, TrivSqZeroExt.algebraMap_eq_inl]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem snd_eq_zero {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
     {l : Geo.Tor.Level H} {Xo : Moduli Dw l} {c : Coeff l} (Y : Model Xo c (RingHom.id c.F)) (U : Y.X.affineOpens)
@@ -189,19 +187,15 @@ theorem snd_eq_zero {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c Y _ hs _ _ U n v A hv _ _ D Θ m hm ⟨x, hxi, hxU, hx⟩ hKS hΘ`. Establish `hs'` using `smooth_gen_iff.1 hs`. Use `haveI : Smooth Y.s := SmoothOfRelativeDimension.smooth Dw.dim Y.s`. Establish `hU : IsAffineOpen U.1` using `U.2`. Take `⟨h, hle, hxh⟩` from `hU.exists_basicOpen_le (V := interior Y) ⟨x, hxi⟩ hxU`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hh : h ∉ m` using `fun hh => hx h hh hxh`. Establish `hI : h ∈ (Scheme.IdealSheafData.vanishingIdeal (interior Y).compl).ideal U`. Rewrite using `[Scheme.IdealSheafData.vanishingIdeal_ideal, PrimeSpectrum.mem_vanishingIdeal]`. Introduce `p hp`. Assume the negation of the conclusion as `hn`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Use `hp (hle ?_)` and prove the remaining obligations. Establish `: p ∈ hU.fromSpec ⁻¹ᵁ Y.X.basicOpen h`. Rewrite using `[hU.fromSpec_preimage_basicOpen]`. Conclude with `hn`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `mem_smul_top Y.s _ U D m hm h hI hh fun r => ?_` and prove the remaining obligations. Take `⟨K, _, π, hπ⟩ : ∃ (K : Type) (_ : Field K) (π : Γ(Y.X, U.1) →+* K), ∀ r, π r = 0 ↔ r ∈ m` from `⟨Γ(Y.X, U.1) ⧸ m, Ideal.Quotient.field m, Ideal.Quotient.mk m, fun _ => Ideal.Quotient.eq_zero_iff_mem⟩`. Take `⟨φ, hf, hsn⟩ : ∃ φ : Γ(Y.X, U.1) →+* DualNumber K, (∀ r, (φ r).fst = π r) ∧ ∀ r, (φ r).snd = π (D.1 r)` from `⟨(dualMap π).comp (epsHom D.1), fun r => by simp [epsHom, dualMap], fun r => by simp [epsHom, dualMap]⟩`. Establish `hV : ⊤ ≤ (spMap φ ≫ chart U) ⁻¹ᵁ interior Y`. Introduce `p _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `hle ?_` and prove the remaining obligations. Establish `: spMap φ p ∈ hU.fromSpec ⁻¹ᵁ Y.X.basicOpen h`. Rewrite using `[hU.fromSpec_preimage_basicOpen]`. Introduce `hp`. Establish `hu : IsUnit (φ h)`.
-
-Rewrite using `[TrivSqZeroExt.isUnit_iff_isUnit_fst, hf]`. Conclude with `Ne.isUnit fun h0 => hh ((hπ h).1 h0)`. Conclude with `p.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ hp hu)`. Conclude with `this`. Rewrite using `[← hπ, ← hsn]`.
-
-Conclude with `snd_eq_zero Y U v D.1 Θ hv hKS φ (fun r => (hsn r).trans (hf _).symm) (fun a b => (hf _).trans ((hπ _).2 (hΘ a b))) hV (fun a => by rw [hsn, D.2.1 a, map_zero]) r`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_smul_top_of_isKS : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (Y : Model Xo c (RingHom.id c.F)), 1 ≤ Dw.p + Dw.q → SmoothOfRelativeDimension Dw.dim (genStr Y) → ReciprocityTheory.AnForm.R.FinalTheorems.Snc (genBdIdeal Y) → (∀ x ∈ genBd Y, IsClosed ({x} : Set (gen Y)) → HasRigidChart Y x) → ∀ (U : Y.X.affineOpens) (n : ℕ) (v : Fin n → (Sp (DualNumber Γ(Y.X, U.1)) ⟶ Y.t.G.left)) (A : 𝓞 E → Matrix (Fin n) (Fin n) Γ(Y.X, U.1)), (∀ i, IsTanAtG Y.t (chart U) (v i)) → (∀ w, IsTanAtG Y.t (chart U) w → ∃! cf : Fin n → Γ(Y.X, U.1), IsCombAtG Y.t (chart U) v cf w) → (∀ a i, IsCombAtG Y.t (chart U) v (A a i) (v i ≫ (Y.t.act.act a).left)) → ∀ (D : logDer Y.s (Scheme.IdealSheafData.vanishingIdeal (interior Y).compl) U) (Θ : Matrix (Fin n) (Fin n) Γ(Y.X, U.1)) (m : Ideal Γ(Y.X, U.1)), m.IsMaximal → (∃ x ∈ interior Y, x ∈ U.1 ∧ ∀ f ∈ m, x ∉ Y.X.basicOpen f) → IsKS Y.t (interior Y) U v D.1 Θ → (∀ a b, Θ a b ∈ m) → D ∈ m • (⊤ : Submodule Γ(Y.X, U.1) (logDer Y.s (Scheme.IdealSheafData.vanishingIdeal (interior Y).compl) U)) := by
   intro E _ _ _ H Dw l Xo c Y _ hs _ _ U n v A hv _ _ D Θ m hm ⟨x, hxi, hxU, hx⟩ hKS hΘ

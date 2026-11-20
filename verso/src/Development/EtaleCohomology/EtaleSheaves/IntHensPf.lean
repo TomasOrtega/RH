@@ -7,9 +7,9 @@ open IsLocalRing Polynomial
 namespace LateralTheory.E.IntHensPf
 
 /- English proof (translation)
-Use `choose a ha hag using fun i => (g i).2`. Use `⟨∑ i, ⟨c i, hc i⟩ * algebraMap A S (a i), Ideal.sum_mem _ fun i _ => Ideal.mul_mem_left _ _ (Ideal.mem_map_of_mem _ (ha i)), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `S.val _ = _`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, smul_eq_mul, ← hag]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mem_sub (A B : Type) [CommRing A] [CommRing B] [Algebra A B] (m : Ideal A) (S : Subalgebra A B)
     {n : ℕ} (c : Fin n → B) (g : Fin n → (algebraMap A B '' (m : Set A))) (hc : ∀ i, c i ∈ S) :
@@ -23,7 +23,7 @@ theorem mem_sub (A B : Type) [CommRing A] [CommRing B] [Algebra A B] (m : Ideal 
   rw [map_mul, smul_eq_mul, ← hag]; rfl
 
 /- English proof (translation)
-Rewrite using `[Ideal.jacobson, le_sInf_iff]`. Introduce and unpack `n ⟨-, hn⟩`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Establish `: (n.comap (algebraMap A B)).IsMaximal` using `Ideal.isMaximal_comap_of_isIntegral_of_isMaximal n`. Conclude with `le_of_eq (IsLocalRing.eq_maximalIdeal this).symm`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem jac (A B : Type) [CommRing A] [CommRing B] [IsLocalRing A] [Algebra A B] [Algebra.IsIntegral A B] :
     (maximalIdeal A).map (algebraMap A B) ≤ (⊥ : Ideal B).jacobson := by
@@ -34,30 +34,28 @@ theorem jac (A B : Type) [CommRing A] [CommRing B] [IsLocalRing A] [Algebra A B]
   exact le_of_eq (IsLocalRing.eq_maximalIdeal this).symm
 
 /- English proof (translation)
-Rewrite using `[eval_map]`. Conclude with `(eval₂_hom S.val.toRingHom y).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evalS (A B : Type) [CommRing A] [CommRing B] [Algebra A B] (S : Subalgebra A B) (p : S[X]) (y : S) :
     ((p.eval y : S) : B) = (p.map S.val.toRingHom).eval (y : B) := by
   rw [eval_map]; exact (eval₂_hom S.val.toRingHom y).symm
 
 /- English proof (translation)
-Use `⟨jac A B, fun f hf a0 h0 h1 => ?_⟩` and prove the remaining obligations. Use `set J := (maximalIdeal A).map (algebraMap A B) with hJ`. Take `⟨n1, c1, g1, hs1⟩` from `Submodule.mem_span_set'.1 h0`. Take `⟨v, hv⟩` from `h1.exists_left_inv`. Take `⟨u, rfl⟩` from `Ideal.Quotient.mk_surjective v`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hu : u * f.derivative.eval a0 - 1 ∈ J`. Rewrite using `[← Ideal.Quotient.eq, map_mul, hv, map_one]`. Take `⟨n2, c2, g2, hs2⟩` from `Submodule.mem_span_set'.1 hu`. Use `set s : Finset B := insert a0 (insert u (f.coeffs ∪ (Finset.univ.image c1 ∪ Finset.univ.image c2)))`. Set `S` to `Algebra.adjoin A (s : Set B)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hsS : ∀ x ∈ s, x ∈ S` using `fun x hx => Algebra.subset_adjoin hx`. Use `haveI : Module.Finite A S := Algebra.finite_adjoin_of_finite_of_isIntegral s.finite_toSet (fun x _ => Algebra.IsIntegral.isIntegral (R := A) x)`. Set `JS` to `(maximalIdeal A).map (algebraMap A S)`. Use `haveI : HenselianRing S JS := GlobalTheory.henselianRing_of_finite A JS (GlobalTheory.map_maximalIdeal_le_jacobson_of_finite A S)`. Establish `hc : (↑f.coeffs : Set B) ⊆ S.toSubring` using `fun c hc => hsS c (by simp [s, Finset.mem_coe.1 hc])`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `g : S[X]` to `f.toSubring S.toSubring hc`. Establish `hgf : g.map S.val.toRingHom = f` using `f.map_toSubring S.toSubring hc`. Set `b0 : S` to `⟨a0, hsS a0 (by simp [s])⟩`. Set `uS : S` to `⟨u, hsS u (by simp [s])⟩`. Establish `hgm : g.Monic`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Rewrite `hf` using `[← hgf]`. Conclude with `Polynomial.monic_of_injective Subtype.val_injective hf`. Establish `h0S : g.eval b0 ∈ JS`. Take `⟨y, hy, hyv⟩` from `mem_sub A B _ S c1 g1 (fun i => hsS _ (by simp [s]))`. Use `hy using 1` and compare the differences between its conclusion and the goal.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hyv, hs1, evalS, hgf]`. Establish `h1S : IsUnit (Ideal.Quotient.mk JS (g.derivative.eval b0))`. Take `⟨y, hy, hyv⟩` from `mem_sub A B _ S c2 g2 (fun i => hsS _ (by simp [s]))`. Establish `: uS * g.derivative.eval b0 - 1 ∈ JS`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `hy using 1` and compare the differences between its conclusion and the goal. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hyv, hs2]`. Simplify using `only [Subalgebra.coe_sub, Subalgebra.coe_mul, Subalgebra.coe_one, evalS]`. Rewrite using `[← derivative_map, hgf]`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[← Ideal.Quotient.eq, map_mul, map_one]`. Conclude with `⟨⟨_, _, (mul_comm _ _).trans this, this⟩, rfl⟩`. Take `⟨a, ha, ha'⟩` from `HenselianRing.is_henselian g hgm b0 h0S h1S`. Use `⟨(a : B), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[IsRoot.def, ← hgf, ← evalS, ha.eq_zero]`.
-
-Both sides reduce to the same expression. Use `Ideal.mem_map_of_mem S.val.toRingHom ha'` as an intermediate fact. Rewrite `this` using `[Ideal.map_map]`. Simplify using `using this`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem hens (A B : Type) [CommRing A] [CommRing B] [HenselianLocalRing A] [Algebra A B]
     [Algebra.IsIntegral A B] : HenselianRing B ((maximalIdeal A).map (algebraMap A B)) := by
@@ -107,7 +105,7 @@ theorem hens (A B : Type) [CommRing A] [CommRing B] [HenselianLocalRing A] [Alge
     simpa using this
 
 /- English proof (translation)
-Introduce `A B _ _ _ φ hφ`. Use `letI : Algebra A B := φ.toAlgebra`. Use `haveI : Algebra.IsIntegral A B := ⟨hφ⟩`. Conclude with `hens A B`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem IntHens_of : LateralTheory.E.IntPBPf.IntHens := by
   intro A B _ _ _ φ hφ

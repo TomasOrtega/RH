@@ -10,11 +10,11 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hH : HenselianLocalRing (CommRingCat.of A)` using `inferInstanceAs (HenselianLocalRing A)`. Establish `hfin : IsFinite ((finitePart π).ι ≫ π)` using `isFinite_finitePart (R := .of A) π`. Establish `haff : IsAffine (finitePart π).toScheme` using `isAffine_of_isAffineHom ((finitePart π).ι ≫ π)`. Set `e : Spec Γ((finitePart π).toScheme, ⊤) ≅ (finitePart π).toScheme` to `(finitePart π).toScheme.isoSpec.symm`. Take `⟨φ, hφ⟩` from `Spec.map_surjective (e.hom ≫ (finitePart π).ι ≫ π)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Establish `h₁ : φ.hom.Finite`. Rewrite using `[← IsFinite.SpecMap_iff, hφ]`. Use `infer_instance`. Establish `h₂ : φ.hom.Flat`. Rewrite using `[← Flat.SpecMap_iff, hφ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure.
 
-Use `infer_instance`. Use `letI alg : Algebra A Γ((finitePart π).toScheme, ⊤) := φ.hom.toAlgebra`. Establish `i₁ : Module.Finite A Γ((finitePart π).toScheme, ⊤)` using `h₁`. Establish `i₂ : Module.Flat A Γ((finitePart π).toScheme, ⊤)` using `h₂`. Conclude with `⟨Γ((finitePart π).toScheme, ⊤), inferInstance, alg, i₁, Module.free_of_flat_of_isLocalRing, finitePart π, e, hφ.symm, fun t ht ↦ mem_finitePart_of_eq_closedPoint (R := .of A) π t ht⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_finite_free_chart_of_henselian (A : Type) [CommRing A] [HenselianLocalRing A]
     (T : Scheme.{0}) (π : T ⟶ Sp A) [IsSeparated π]

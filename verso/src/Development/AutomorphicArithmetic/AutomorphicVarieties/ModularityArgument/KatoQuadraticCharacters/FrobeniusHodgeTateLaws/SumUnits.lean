@@ -7,9 +7,9 @@ private noncomputable def avg {l : ℕ} [Fact l.Prime] (ι : PadicAlgCl l ≃+* 
   fun i => ∑ u : (ZMod N)ˣ, δ (u : ZMod N).val * ser ι N θ m k ψ (((u : ZMod N).val : ℤ) * a) (((u : ZMod N).val : ℤ) * b) i
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [GlobalTheory.KummerEisensteinGalois.up, avg, ser, GlobalTheory.LambdaValuationPowers.chiProj, GlobalTheory.LambdaValuationPowers.coPtSb, Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, mul_one]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [← Finset.sum_sub_distrib, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun u _ => Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[show c * ((x.val : ℤ) * ((u : ZMod N).val : ℤ)) = (x.val : ℤ) * (((u : ZMod N).val : ℤ) * c) by ring, mul_comm d ((u : ZMod N).val : ℤ)]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem expand {l : ℕ} [Fact l.Prime] (ι : PadicAlgCl l ≃+* ℂ) (N : ℕ) [NeZero N] (θ : DirichletCharacter ℂ N) (m k : ℕ)
     (ψ : DirichletCharacter (PadicAlgCl l) (l ^ m)) (δ : ℕ → PadicAlgCl l) (c d : ℤ) :
@@ -31,9 +31,9 @@ private theorem expand {l : ℕ} [Fact l.Prime] (ι : PadicAlgCl l ≃+* ℂ) (N
   ring
 
 /- English proof (translation)
-Use `symm`. Use `Finset.sum_bij_ne_zero (fun b _ _ => (b : ZMod n)) (fun _ _ _ => Finset.mem_univ _) (fun a _ _ b _ _ h => Units.ext h) (fun a _ h => ?_) (fun _ _ _ => rfl)` and prove the remaining obligations. Establish `ha : IsUnit a`. Assume the negation of the conclusion as `hn`. Conclude with `h (by rw [MulChar.map_nonunit _ hn, zero_mul])`.
+Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨b, rfl⟩` from `ha`. Conclude with `⟨b, Finset.mem_univ _, h, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem sum_units {K : Type} [Field K] (n : ℕ) [NeZero n] (ψ : DirichletCharacter K n) (f : ZMod n → K) :
     ∑ a : ZMod n, ψ a * f a = ∑ b : (ZMod n)ˣ, ψ b * f b := by
@@ -48,32 +48,32 @@ private theorem sum_units {K : Type} [Field K] (n : ℕ) [NeZero n] (ψ : Dirich
   exact ⟨b, Finset.mem_univ _, h, rfl⟩
 
 /- English proof (translation)
-The claim follows from `(Nat.isCoprime_iff_coprime.2 (ZMod.val_coe_unit_coprime u)).mul_left ha`.
+A detailed English derivation is pending.
 -/
 private theorem cop_unit (N : ℕ) [NeZero N] (u : (ZMod N)ˣ) (a : ℤ) (ha : IsCoprime a N) :
     IsCoprime (((u : ZMod N).val : ℤ) * a) N :=
   (Nat.isCoprime_iff_coprime.2 (ZMod.val_coe_unit_coprime u)).mul_left ha
 
 /- English proof (translation)
-Introduce `hE hM l _ ι e N _ θ χ t α B cc c d δ lam κ' κ v hl he hlN hχ hα hc hd hEig hδ hlam m hm ψ z`. Establish `hk3 : 3 ≤ 2 * e + 1` using `by omega`. Establish `hodd : Odd (2 * e + 1)` using `⟨e, rfl⟩`. Establish `hc' : IsCoprime (c : ℤ) N` using `Nat.isCoprime_iff_coprime.2 hc`. Establish `hd' : IsCoprime (d : ℤ) N` using `Nat.isCoprime_iff_coprime.2 hd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : IsCoprime (1 : ℤ) N` using `isCoprime_one_left`. Unfold `rhs5`. Rewrite using `[expand ι N θ m (2 * e + 1) ψ δ c d]`. Use `split_ifs with hpar`. Establish `hpar' : ι (ψ (-1)) = θ (-1)` using `by rw [hpar, RingEquiv.apply_symm_apply]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : ∀ y : ZMod (l ^ m), ι (ψ (-y)) = θ (-1) * ι (ψ y)` using `fun y => by`. Rewrite using `[← hpar', ← map_mul, ← map_mul, neg_one_mul]`. Take `⟨hMF, hval⟩` from `hM (2 * e + 1) l N m θ χ (fun y => ι (ψ y)) t α B cc Fact.out hk3 hodd (NeZero.pos N) hlN hm hχ hf hα hEig`. Use `set F := frm l N m (2 * e + 1) θ (θ * χ) (fun y => ι (ψ y)) with hF`. Use `set μ := GlobalTheory.EisM.mesMu (2 * e + 1) l (GlobalTheory.EisM.hat θ) (GlobalTheory.EisM.tw2 N (θ (-1))) α B cc m (fun y => ι (ψ y)) with hμ`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hG : (fun i => ι ((fun i => ι.symm (F i)) i)) = F`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Establish `hlG : 2 * lam (fun i => ι.symm (F i)) = κ' * (N.totient : PadicAlgCl l) * ι.symm α ^ m * ι.symm μ`. Establish `h2` using `congrArg ι.symm hval`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite `h2` using `[map_mul, map_mul, map_mul, map_pow, map_natCast, map_ofNat]`. Rewrite using `[hlam _ (by rw [hG]; exact hMF), hG]`. Take the linear combination `κ' * h2`. Establish `hav : ∀ a b : ℤ, IsCoprime a N → IsCoprime b N → lam (avg ι N θ m (2 * e + 1) ψ δ a b) = ι.symm (θ (a : ZMod N)) * ι.symm ((θ * χ)⁻¹ (b : ZMod N)) * (κ' * (N.totient : PadicAlgCl l) * ι.symm α ^ m * ι.symm μ)`. Introduce `a b ha hb`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h3` using `(hE l ι N θ χ m (2 * e + 1) ψ a b hl hm hk3 hodd hχ ha hb).2.2 hpar'`. Establish `: avg ι N θ m (2 * e + 1) ψ δ a b = (2 * ι.symm (θ (a : ZMod N)) * ι.symm ((θ * χ)⁻¹ (b : ZMod N))) • fun i => ι.symm (F i)`. Use function extensionality and compare the values at `i`. Apply `ι.injective` to reduce the goal to its premises. Simplify using `only [avg, Pi.smul_apply, smul_eq_mul, map_mul, map_sum, RingEquiv.apply_symm_apply, map_ofNat]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h3 i]`. Use `Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations. Rewrite using `[hδ _ (ZMod.val_coe_unit_coprime u), ZMod.natCast_zmod_val]`. Rewrite using `[this, map_smul, smul_eq_mul, ← hlG]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `haveI : NeZero (l ^ m) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Rewrite using `[sum_units (l ^ m) ψ (fun a => z ^ a.val)]`. Simplify using `only [map_add, map_sub, map_smul, smul_eq_mul, hav _ _ h1 h1, hav _ _ hc' h1, hav _ _ h1 hd', hav _ _ hc' hd', Fin.sum_univ_four, smB, smT, Int.cast_natCast, Int.cast_one, map_one]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.cons_val_three, Matrix.head_cons, Matrix.tail_cons, Nat.cast_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hpar' : ι (ψ (-1)) ≠ θ (-1)` using `fun h => hpar (by rw [← h, RingEquiv.symm_apply_apply])`. Establish `hav : ∀ a b : ℤ, IsCoprime a N → IsCoprime b N → avg ι N θ m (2 * e + 1) ψ δ a b = 0`. Introduce `a b ha hb`. Use function extensionality and compare the values at `i`. Use `Finset.sum_eq_zero fun u _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[(hE l ι N θ χ m (2 * e + 1) ψ _ _ hl hm hk3 hodd hχ (cop_unit N u a ha) (cop_unit N u b hb)).1 hpar']`. Simplify using the standard rewrite rules. Rewrite using `[hav _ _ h1 h1, hav _ _ hc' h1, hav _ _ h1 hd', hav _ _ hc' hd']`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Kato.Joint.rhsEq :
     UpperTheory.V.Z.Kato.Joint.RhsEq := by

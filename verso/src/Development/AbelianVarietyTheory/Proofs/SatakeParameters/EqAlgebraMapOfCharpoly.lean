@@ -13,7 +13,7 @@ namespace GlobalTheory.WeilDeligne.InertiaSplit
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[toEndC_apply, Matrix.toLin'_apply]`. Conclude with `(RingHom.map_mulVec ι.toRingHom M v i).symm`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toEndC_coord (ι : Qbar l ≃+* ℂ) {n : Type} [Fintype n] [DecidableEq n]
     (M : Matrix n n (Qbar l)) (v : n → Qbar l) :
@@ -23,11 +23,9 @@ theorem toEndC_coord (ι : Qbar l ≃+* ℂ) {n : Type} [Fintype n] [DecidableEq
   exact (RingHom.map_mulVec ι.toRingHom M v i).symm
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `hM`. Introduce `v hv`. Rewrite using `[exp_eq_sum hk, map_sum, LinearMap.sum_apply]`. Use `S.sum_mem fun i hi => ?_` and prove the remaining obligations. Use `clear hi`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_rat_smul, LinearMap.smul_apply, map_pow]`. Use `S.smul_of_tower_mem _ ?_` and prove the remaining obligations. Proceed by induction on `i with`. Consider the case `zero => simpa using hv`. Consider the case `succ i ih => rw [pow_succ', Module.End.mul_apply]`.
-
-Conclude with `hS _ ih`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mem_of_exp (ι : Qbar l ≃+* ℂ) {n : Type} [Fintype n] [DecidableEq n]
     (S : Submodule ℂ (n → ℂ)) {M : Matrix n n (Qbar l)} (hM : IsNilpotent M)
@@ -44,7 +42,7 @@ theorem mem_of_exp (ι : Qbar l ≃+* ℂ) {n : Type} [Fintype n] [DecidableEq n
   | succ i ih => rw [pow_succ', Module.End.mul_apply]; exact hS _ ih
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `hM`. Rewrite using `[exp_eq_sum (k := k + 1) (pow_eq_zero_of_le (Nat.le_succ k) hk), Finset.sum_range_succ', map_add, map_sum, LinearMap.add_apply, LinearMap.sum_apply, Finset.sum_eq_zero]`. Simplify using the standard rewrite rules. Introduce `i _`. Rewrite using `[map_rat_smul, LinearMap.smul_apply, map_pow, _root_.pow_succ, Module.End.mul_apply, hv, map_zero, smul_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem exp_apply_of_eq_zero (ι : Qbar l ≃+* ℂ) {n : Type} [Fintype n] [DecidableEq n]
     {M : Matrix n n (Qbar l)} (hM : IsNilpotent M) {v : n → ℂ} (hv : toEndC ι M v = 0) :
@@ -58,7 +56,7 @@ theorem exp_apply_of_eq_zero (ι : Qbar l ≃+* ℂ) {n : Type} [Fintype n] [Dec
       smul_zero]
 
 /- English proof (translation)
-Establish `h0` using `LinearMap.aeval_self_charpoly x`. Rewrite `h0` using `[hc, map_pow, map_sub, aeval_X, aeval_C]`. Establish `hs' : (x - algebraMap ℂ (Module.End ℂ V) z).IsSemisimple` using `Module.End.isSemisimple_sub_algebraMap_iff.2 hs`. Conclude with `sub_eq_zero.1 (Module.End.eq_zero_of_isNilpotent_isSemisimple ⟨_, h0⟩ hs')`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_algebraMap_of_charpoly {V : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
     {x : Module.End ℂ V} (hs : x.IsSemisimple) {z : ℂ}
@@ -96,9 +94,9 @@ theorem pull_apply (ι : Qbar l ≃+* ℂ) {a n m : ℕ} (f : (Fin a → ℂ) �
       fun j => ι.symm ((f (fun k => ι (v k))).2 j)) := rfl
 
 /- English proof (translation)
-Rewrite using `[pull_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `e`. Use function extensionality and compare the values at `j`. Simplify using `using congrFun e j`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `e`. Use function extensionality and compare the values at `j`. Simplify using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem pull_fst_eq_zero (ι : Qbar l ≃+* ℂ) {a n m : ℕ} (f : (Fin a → ℂ) ≃ₗ[ℂ] (Fin n → ℂ) × (Fin m → ℂ))
     (v : Fin a → Qbar l) : (pull ι f v).1 = 0 ↔ (f (fun k => ι (v k))).1 = 0 := by
@@ -108,9 +106,9 @@ theorem pull_fst_eq_zero (ι : Qbar l ≃+* ℂ) {a n m : ℕ} (f : (Fin a → �
   · intro e; funext j; simp [e]
 
 /- English proof (translation)
-Rewrite using `[pull_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `e`. Use function extensionality and compare the values at `j`. Simplify using `using congrFun e j`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `e`. Use function extensionality and compare the values at `j`. Simplify using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem pull_snd_eq_zero (ι : Qbar l ≃+* ℂ) {a n m : ℕ} (f : (Fin a → ℂ) ≃ₗ[ℂ] (Fin n → ℂ) × (Fin m → ℂ))
     (v : Fin a → Qbar l) : (pull ι f v).2 = 0 ↔ (f (fun k => ι (v k))).2 = 0 := by
@@ -128,35 +126,33 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
 variable {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 
 /- English proof (translation)
-Proceed by induction on `x using WD.ind with | hP n b => ?_`. Proceed by induction on `y using WD.ind with | hP m c => ?_`. Establish `ht` using `isTameChar_tameL h hl`. Take `⟨N, hN⟩` from `exists_isMonodromy h hl ht hr`. Take `⟨z, hz, e⟩` from `hN.wdOf_spec hl ht (deg_frob (h := h)) ι`.
+Proceed by induction. Proceed by induction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `hxy` using `[e, WD.lpSum_mk, WD.mk_eq_mk]`. Take `⟨f, hfρ, hfN⟩` from `hxy`. Establish `hin : ∀ σ (hσ : σ ∈ Ine (F` using `E) A) (u : Fin a → ℂ), toEndC ι ((r σ : GL _ _) : Matrix (Fin a) (Fin a) (Qbar l)) u = z.ρ (ineIncl h ⟨σ, hσ⟩) (toEndC ι (exp (tval (tameL h hl) ⟨σ, hσ⟩ • N)) u) := by`. Introduce `σ hσ u`. Establish `hm : ((r σ : GL _ _) : Matrix (Fin a) (Fin a) (Qbar l)) = wdMat (tameL h hl) (deg_frob (h` using `h)) r N (ineIncl h ⟨σ, hσ⟩) * exp (tval (tameL h hl) ⟨σ, hσ⟩ • N) := by`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[wdMat_ineIncl, mul_assoc, ← exp_add_smul hN.1, neg_add_cancel, zero_smul, IsNilpotent.exp_zero, mul_one]`. Rewrite using `[hm, map_mul, Module.End.mul_apply, ← hN.rep_apply hl ht deg_frob ι, ← hz.ρ_ineIncl (hN.isSmooth_rep hl ht deg_frob ι)]`. Establish `stρ2 : ∀ g u, (f u).2 = 0 → (f (z.ρ g u)).2 = 0` using `fun g u hu => by`. Rewrite using `[hfρ]`. Simplify using `[hu]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `stρ1 : ∀ g u, (f u).1 = 0 → (f (z.ρ g u)).1 = 0` using `fun g u hu => by`. Rewrite using `[hfρ]`. Simplify using `[hu]`. Establish `stN2 : ∀ u, (f u).2 = 0 → (f (z.N u)).2 = 0` using `fun u hu => by`. Rewrite using `[hfN]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hu]`. Establish `stN1 : ∀ u, (f u).1 = 0 → (f (z.N u)).1 = 0` using `fun u hu => by`. Rewrite using `[hfN]`. Simplify using `[hu]`. Establish `ste2 : ∀ (s : Qbar l) u, (f u).2 = 0 → (f (toEndC ι (exp (s • N)) u)).2 = 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `s u hu`. Use `mem_of_exp ι (LinearMap.ker ((LinearMap.snd ℂ (Fin n → ℂ) (Fin m → ℂ)).comp (f : (Fin a → ℂ) →ₗ[ℂ] (Fin n → ℂ) × (Fin m → ℂ)))) (hN.1.smul s) (fun v hv => by` as an intermediate fact. Simplify using `only [LinearMap.mem_ker, LinearMap.coe_comp, Function.comp_apply, LinearMap.snd_apply, LinearEquiv.coe_coe] at hv ⊢`. Rewrite using `[toEndC_smul, LinearMap.smul_apply, ← hz.1, map_smul, Prod.smul_snd, stN2 v hv, smul_zero])`. Use `u (by simpa using hu)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Establish `ste1 : ∀ (s : Qbar l) u, (f u).1 = 0 → (f (toEndC ι (exp (s • N)) u)).1 = 0`. Introduce `s u hu`. Use `mem_of_exp ι (LinearMap.ker ((LinearMap.fst ℂ (Fin n → ℂ) (Fin m → ℂ)).comp (f : (Fin a → ℂ) →ₗ[ℂ] (Fin n → ℂ) × (Fin m → ℂ)))) (hN.1.smul s) (fun v hv => by` as an intermediate fact. Simplify using `only [LinearMap.mem_ker, LinearMap.coe_comp, Function.comp_apply, LinearMap.fst_apply, LinearEquiv.coe_coe] at hv ⊢`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[toEndC_smul, LinearMap.smul_apply, ← hz.1, map_smul, Prod.smul_fst, stN1 v hv, smul_zero])`. Use `u (by simpa using hu)`. Simplify using `using this`. Establish `hC : IsCompl (LinearMap.ker (LinearMap.snd (Qbar l) (Fin n → Qbar l) (Fin m → Qbar l))) (LinearMap.ker (LinearMap.fst (Qbar l) (Fin n → Qbar l) (Fin m → Qbar l)))`. Rewrite using `[← LinearMap.range_inl, ← LinearMap.range_inr]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `LinearMap.isCompl_range_inl_inr`. Establish `hC'` using `(Submodule.orderIsoMapComap (pull ι f).symm).isCompl hC`. Simplify using `only [Submodule.orderIsoMapComap_apply] at hC'`. Establish `memU : ∀ v : Fin a → Qbar l, v ∈ (LinearMap.ker (LinearMap.snd (Qbar l) (Fin n → Qbar l) (Fin m → Qbar l))).map ((pull ι f).symm : (Fin n → Qbar l) × (Fin m → Qbar l) →ₗ[Qbar l] (Fin a → Qbar l)) ↔ (f (fun k => ι (v k))).2 = 0` using `fun v => by`. Rewrite using `[Submodule.mem_map_equiv, LinearEquiv.symm_symm, LinearMap.mem_ker, LinearMap.snd_apply, pull_snd_eq_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `memU' : ∀ v : Fin a → Qbar l, v ∈ (LinearMap.ker (LinearMap.fst (Qbar l) (Fin n → Qbar l) (Fin m → Qbar l))).map ((pull ι f).symm : (Fin n → Qbar l) × (Fin m → Qbar l) →ₗ[Qbar l] (Fin a → Qbar l)) ↔ (f (fun k => ι (v k))).1 = 0` using `fun v => by`. Rewrite using `[Submodule.mem_map_equiv, LinearEquiv.symm_symm, LinearMap.mem_ker, LinearMap.fst_apply, pull_fst_eq_zero]`. Use `⟨_, _, hC', ?_, ?_, fun σ hσ => ⟨fun v hv => ?_, fun v hv => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[WD.lpDim_mk, Module.finrank_fin_fun, LinearEquiv.finrank_map_eq, ← LinearMap.range_inl, LinearMap.finrank_range_of_inj LinearMap.inl_injective, Module.finrank_fin_fun]`. Rewrite using `[WD.lpDim_mk, Module.finrank_fin_fun, LinearEquiv.finrank_map_eq, ← LinearMap.range_inr, LinearMap.finrank_range_of_inj LinearMap.inr_injective, Module.finrank_fin_fun]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hv`, the goal using `[memU]`. Rewrite using `[← toEndC_coord, hin σ hσ]`. Conclude with `stρ2 _ _ (ste2 _ _ hv)`. Rewrite `hv`, the goal using `[memU']`. Rewrite using `[← toEndC_coord, hin σ hσ]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `stρ1 _ _ (ste1 _ _ hv)`. Introduce `hm σ hσ c0 hc v hv`. Rewrite `hm` using `[WD.monodromyZero_ofWeilDeligneRepClass_iff]`. Rewrite `hc` using `[WD.inePol_of_mem_Ine _ hσ, WD.charPol_mk, WD.lpDim_mk]`. Establish `hsc` using `eq_algebraMap_of_charpoly (c.semisimple _) hc`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Reduce the argument to an intermediate assertion.
 
-Rewrite `hv` using `[memU']`. Use `set u : Fin a → ℂ := fun k => ι (v k) with hu`. Establish `hNu : z.N u = 0`. Rewrite using `[← f.map_eq_zero_iff, hfN]`. Apply the tactic sequence `ext j <;> simp [hv, hm]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-It suffices to establish `H : (fun i => ι ((((r σ : GL _ _) : Matrix (Fin a) (Fin a) (Qbar l)).mulVec v) i)) = fun i => ι ((c0 • v) i) by`. Use function extensionality and compare the values at `i`. Conclude with `ι.injective (congrFun H i)`. Establish `hcu : (fun i => ι ((c0 • v) i)) = ι c0 • u` using `by funext i; simp [hu]`. Rewrite using `[← toEndC_coord, hin σ hσ, exp_apply_of_eq_zero ι (hN.1.smul _) (by rw [toEndC_smul, LinearMap.smul_apply, ← hz.1, hNu, smul_zero]), hcu]`.
-
-Apply `f.injective` to reduce the goal to its premises. Rewrite using `[hfρ, map_smul]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Rewrite using `[WDRep.sum_ρ, LinearMap.prodMap_apply, Prod.smul_fst, hv, map_zero, smul_zero]`. Rewrite using `[WDRep.sum_ρ, LinearMap.prodMap_apply, Prod.smul_snd, hsc, Module.algebraMap_end_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem split_away (hl : ((l : ℕ) : 𝓞 E) ∉ w.asIdeal) (ι : Qbar l ≃+* ℂ) {a : ℕ}
     (r : G E Ω →* GL (Fin a) (Qbar l))
@@ -268,9 +264,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `_ hL D P i a ρ hρ w hw p q hpq`. Establish `hw' : ((D.nd.l i : ℕ) : 𝓞 D.host.E) ∉ w.asIdeal` using `hw`. Establish `e1` using `congrArg (P.T.e w) hpq`. Rewrite `e1` using `[(P.wdOf i a ρ w).1, P.wd.away _ _ ρ w hw', P.T.sum]`. Take `⟨U, U', hC, h1, h2, h3, h4⟩` from `GlobalTheory.WeilDeligne.InertiaSplit.split_away hw' (D.naut.iotaQC i) ρ hρ _ _ e1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨U, U', hC, by rw [h1, P.T.dim], by rw [h2, P.T.dim], h3, fun hm σ hσ c hc => h4 ((P.T.mono0 w q).1 hm) σ hσ c ?_⟩` and prove the remaining obligations. Rewrite using `[← P.T.inePol w q σ hσ, hc, P.T.dim]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem GlobalTheory.WeilDeligne.InertiaSplit.decomp_away : GlobalTheory.Published.DeRhamPotSemistable → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (P : Pin hL D), ∀ i : D.nd.Loc, (∀ a (ρ : Formalism.ConjugateSelfDual.G D.host.E D.nd.Om →* GL (Fin a) (Qbar (D.nd.l i))), Formalism.MainNotions.SumRepresentations.At.ContQ D.nd i ρ → ∀ w, w ∉ placesOver D.host.E (D.nd.l i) → ∀ p q : D.naut.LP w, D.naut.wdOf i ρ w = D.naut.lpSum p q → ∃ U U' : Submodule (Qbar (D.nd.l i)) (Fin a → Qbar (D.nd.l i)), IsCompl U U' ∧ Module.finrank (Qbar (D.nd.l i)) U = D.naut.lpDim p ∧ Module.finrank (Qbar (D.nd.l i)) U' = D.naut.lpDim q ∧ (∀ σ ∈ Ine (F := D.host.E) (D.nd.plOm.1 w), (∀ v ∈ U, ((ρ σ : GL _ _) : Matrix (Fin a) (Fin a) (Qbar (D.nd.l i))).mulVec v ∈ U) ∧ (∀ v ∈ U', ((ρ σ : GL _ _) : Matrix (Fin a) (Fin a) (Qbar (D.nd.l i))).mulVec v ∈ U')) ∧ (D.naut.mono0 q → ∀ σ ∈ Ine (F := D.host.E) (D.nd.plOm.1 w), ∀ c : Qbar (D.nd.l i), D.naut.inePol q σ = (X - C (D.naut.iotaQC i c)) ^ D.naut.lpDim q → ∀ v ∈ U', ((ρ σ : GL _ _) : Matrix (Fin a) (Fin a) (Qbar (D.nd.l i))).mulVec v = c • v)) := by
   intro _ hL D P i a ρ hρ w hw p q hpq

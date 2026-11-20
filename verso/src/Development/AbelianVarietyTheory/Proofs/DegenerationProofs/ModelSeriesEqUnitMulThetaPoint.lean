@@ -13,21 +13,21 @@ open GlobalTheory.ModelData
 namespace GlobalTheory.ModelTheta
 
 /- English proof (translation)
-Introduce `hL hTX E _ _ _ H D C _ _ _ _ _ o M N' ν' m hm p q v hpz hq hv`. Set `x : D.La → (TFK (R` to `M.W) C ⟶ M.P.A.A) := fun i => Over.homMk ((o.I.ev (m ^ 2) i).left ≫ M.φ) (by`. Rewrite using `[Category.assoc, M.cart.1.w, ← Category.assoc, Over.w]`. Use the proof step `simp)`. Establish `key` using `hTX M.W (IsLocalRing.maximalIdeal M.W) M.cdv rfl M.P.D M.P.A M.t.G M.t.semi M.P.U C M.ext N' ν' m hm D.La p q x (fun i => hpz i (x i) rfl) hq`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm0 : (m : C) ≠ 0` using `Nat.cast_ne_zero.mpr hm.pos.ne'`. Establish `hmu : IsUnit ((m : ℕ) : Γ(Sp C, ⊤))`. Establish `h1 : ((m : ℕ) : Γ(Sp C, ⊤)) = fnOf (m : C)` using `(map_natCast _ m).symm`. Rewrite using `[h1]`. Conclude with `(IsUnit.mk0 _ hm0).map _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm2 : 0 < m ^ 2` using `pow_pos hm.pos 2`. Establish `htors : ∀ i, o.I.ev (m ^ 2) i ^ (m ^ 2) = 1` using `fun i => (o.I.onto (m ^ 2) hm2 _).2 ⟨i, rfl⟩`. Establish `: Subsingleton (TFK (R` using `M.W) C).left := by`. Express the relevant statement in the definitionally equal form `Subsingleton (PrimeSpectrum C)`. Conclude with `⟨fun a b => PrimeSpectrum.ext (by`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `a.isPrime` as an intermediate fact. Use `b.isPrime` as an intermediate fact. Rewrite using `[Ideal.eq_bot_of_prime a.asIdeal, Ideal.eq_bot_of_prime b.asIdeal])⟩`. Establish `: Nonempty (TFK (R` using `M.W) C).left := by`. Express the relevant statement in the definitionally equal form `Nonempty (PrimeSpectrum C)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨⟨⊥, Ideal.isPrime_bot⟩⟩`. Establish `c1` using `(GlobalTheory.CoordSep.isThetaPt_iff (T := TFK (R := M.W) C) hm hmu x _).1 key`. Establish `hτ : 𝟙 (Sp C) ≫ (TFK (R` using `M.W) C).hom = (baseOver (Sp C)).hom ≫ jFK (R := M.W) C := by simp`. Establish `hβ : 𝟙 (Sp C) ≫ Over.Hom.left (𝟙 (TFK (R` using `M.W) C)) = 𝟙 (Sp C) := by simp`. Establish `hx : ∀ i, 𝟙 (Sp C) ≫ (x i).left = (o.I.ev (m ^ 2) i).left ≫ M.φ` using `fun i => Category.id_comp _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz` using `GlobalTheory.ThetaPtMove.over_one (T := baseOver (Sp C)) (T₀ := TFK (R := M.W) C) M.cart (𝟙 (Sp C)) hτ`. Establish `hg : ∀ th₀, IsGenSec M.P.A.A M.P.A.L 1 th₀ → IsGenSec M.P.A.A M.P.A.L 1 (VVRank.pullS M.P.A.A 1 (𝟙 (TFK (R` using `M.W) C)) th₀) := fun th h => GlobalTheory.ThetaCoord.isGenSec_pullS M.P.A.isLB (𝟙 _) (𝟙 _) (by simp) h`. Establish `hσ : IsIso (𝟙 (Sp C) : (baseOver (Sp C)).left ⟶ (TFK (R` using `M.W) C).left) := IsIso.id (Sp C)`. Establish `c2` using `GlobalTheory.FullExtend.isCoordPt_move (S := Sp (FractionRing M.W)) (S' := Sp C) (f := jFK (R := M.W) C) (T := baseOver (Sp C)) (T₀ := TFK (R := M.W) C) (𝟙 (Sp C)) (P₀ := M.P.A) (P := o.P) (φ := M.φ) M.cart M.lb (B := TFK (R := M.W) C) (𝟙 (Sp C)) (𝟙 _) hβ hτ hg (k := m) (I := D.L …`. Establish `e1 : ∀ y : Γ(Sp C, ⊤), (𝟙 (Sp C) : Sp C ⟶ Sp C).appTop.hom y = y` using `fun y => by simp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `only [e1] at c2`. Take `⟨-, huniq, hthc, hsep⟩` from `GlobalTheory.CoordSep.coord_exists_unique_separate hL C (Sp C) o.P (𝟙 (Sp C)) m hm hm0 D.La (o.I.ev (m ^ 2)) htors`. Establish `hv1 : IsCoordPt o.P m (o.I.ev (m ^ 2)) 1 (fun i => fnOf (v i))` using `(hthc v).1 hv`. Take `⟨c, hc⟩` from `(huniq 1 v (fun i => N'.tx m (q i)) hv1).1 c2`. Use `⟨⟨c, fun i => ?_⟩, fun h3 => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrFun hc i` as an intermediate fact. Simplify using `using this`. Establish `hall : ∀ y : Over.mk (𝟙 (Sp C)) ⟶ o.P.A, y ^ m ^ 2 = 1 → ∃ i, o.I.ev (m ^ 2) i = y` using `fun y hy => (o.I.onto (m ^ 2) hm2 y).1 hy`. Conclude with `(hsep h3 hall 1 1 v hv1 hv1).2`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem series_eq_unit_mul_theta : Laws → TXSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (C : Type) [NontriviallyNormedField C] [IsUltrametricDist C] [CompleteSpace C] [IsAlgClosed C] [CharZero C] (o : Full D C) (M : Mdl o) (N' : NumD C) (ν' : NumOf M.P.D.toPre C N') (m : ℕ), Odd m → ∀ (p : D.La → QkPt M.P.D.toPre C (m ^ 2)) (q : D.La → N'.QT (m ^ 2)) (v : D.La → C), (∀ x (z : TFK (R := M.W) C ⟶ M.P.A.A), z.left = (o.I.ev (m ^ 2) x).left ≫ M.φ → M.P.ToA C (m ^ 2) (p x) z) → (∀ x, ν'.QPt (p x) (q x)) → o.Theta m v → (∃ c : Cˣ, ∀ x, N'.tx m (q x) = c * v x) ∧ (3 ≤ m → v ≠ 0) := by
   intro hL hTX E _ _ _ H D C _ _ _ _ _ o M N' ν' m hm p q v hpz hq hv

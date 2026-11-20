@@ -10,15 +10,13 @@ open ModularForm (E₄ E₆)
 namespace GlobalTheory.FN
 
 /- English proof (translation)
-Introduce `Ω _ _ _ ε T P hP`. Use `choose a b hb hab using T.io_surj`. Use `set S := Finset.range (P.natDegree + 1) with hS`. Establish `hbne : ∀ f, T.io (b f) ≠ 0` using `fun f h => hb f (T.io_inj (by rw [h, map_zero]))`. Use `⟨fun i => if i ∈ S then a (P.coeff i) * ∏ j ∈ S.erase i, b (P.coeff j) else 0, T.io (∏ j ∈ S, b (P.coeff j)), ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_prod]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun j _ => hbne _`. Establish `hmem : P.natDegree ∈ S` using `by simp [hS]`. Introduce `h`. Simplify using `only [hmem, if_true] at h`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `h2` using `congrArg T.io h`. Rewrite `h2` using `[map_zero, map_mul, ← hab, map_prod, mul_assoc, Finset.mul_prod_erase S (fun j => T.io (b (P.coeff j))) hmem]`. Break down `mul_eq_zero.mp h2 with h3 | h3` into its components or cases. Conclude with `hP (Polynomial.leadingCoeff_eq_zero.mp h3)`. Conclude with `(Finset.prod_ne_zero_iff.mpr fun j _ => hbne _) h3`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `i`. Distinguish the cases in `hi : i ∈ S`. Simplify using `only [hi, if_true]`. Rewrite using `[map_mul, ← hab, map_prod, map_prod, mul_assoc, Finset.mul_prod_erase S (fun j => T.io (b (P.coeff j))) hi, mul_comm]`. Simplify using `only [hi, if_false, map_zero]`.
-
-Establish `: P.natDegree < i` using `by simp [hS] at hi; omega`. Rewrite using `[Polynomial.coeff_eq_zero_of_natDegree_lt this, mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem clear_denominators : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (T : Frac Ω ε)
     (P : Polynomial T.K), P ≠ 0 → ∃ (p : ℕ → GlobalTheory.FN.ring ε.range) (u : T.K), u ≠ 0 ∧ p P.natDegree ≠ 0 ∧

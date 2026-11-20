@@ -8,15 +8,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.Conne
 open IsLocalRing UpperTheory.V.AlgebraTools.Conn
 
 /- English proof (translation)
-Introduce `R _ _ h`. Take `⟨A, _, _, i, hA, hinj, hf⟩` from `h`. Set `: Algebra A R` to `i.toAlgebra`. Establish `: Module.Finite A R` using `hf`. Establish `: IsDomain A` using `hA.dom`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsIntegrallyClosed A` using `hA.normal`. Establish `: IsNoetherianRing A` using `hA.cm.1`. Establish `hinj' : Function.Injective (algebraMap A R)` using `hinj`. Establish `: FaithfulSMul A R` using `(faithfulSMul_iff_algebraMap_injective _ _).mpr hinj'`. Establish `: IsNoetherianRing R` using `Algebra.FiniteType.isNoetherianRing A R`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨this, fun q _ => ?_⟩` and prove the remaining obligations. Use `set p := q.comap (algebraMap A R) with hp`. Establish `: q.LiesOver p` using `⟨rfl⟩`. Establish `h1 : p.height ≤ q.height`. Rewrite using `[Ideal.height_eq_height_add_of_liesOver_of_hasGoingDown p q]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `le_self_add`. Establish `h2 : q.height ≤ p.height`. Establish `e1` using `PrimeSpectrum.height_eq_orderHeight (⟨q, inferInstance⟩ : PrimeSpectrum R)`. Establish `e2` using `PrimeSpectrum.height_eq_orderHeight (⟨p, inferInstance⟩ : PrimeSpectrum A)`. Simplify using `only at e1 e2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, e2]`. Conclude with `Order.height_le_height_apply_of_strictMono (fun P : PrimeSpectrum R => (⟨P.asIdeal.comap (algebraMap A R), inferInstance⟩ : PrimeSpectrum A)) (fun P Q hPQ => Ideal.IsIntegral.comap_lt_comap (R := A) (show P.asIdeal < Q.asIdeal from hPQ)) _`. Rewrite using `[le_antisymm h2 h1, ReciprocityTheory.CA.ringKrullDim_quotient_eq_quotient_comap_of_isIntegral (A := A) q, hA.cm.height_add_ringKrullDim_quotient, ReciprocityTheory.CA.ringKrullDim_eq_of_isIntegral_of_injective hinj']`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.Conn.dimFormula :
     ∀ {R : Type} [CommRing R] [IsDomain R], HasBase R → IsNoetherianRing R ∧ ReciprocityTheory.CA.DimFormula R := by

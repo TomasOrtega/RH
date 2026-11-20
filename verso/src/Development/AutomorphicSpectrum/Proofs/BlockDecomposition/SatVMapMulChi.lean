@@ -19,11 +19,9 @@ namespace GlobalTheory.CompanionTheory.JoinSatPf
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Establish `hmem : ∀ ψ ∈ V, ψ ∈ ⨆ f : MapsD V w σ, LinearMap.range f.1` using `fun ψ hψ => by`. Rewrite using `[iSup_range_eq hV w σ h]`. Conclude with `hψ`. Use `⟨?_, fun ψ hψ hψK hψ0 => GlobalTheory.HeightCounting.Blocks.isSatVecGL_of_mem_iSup σ.irred hs (fun f : MapsD V w σ => f.1) (fun f => f.2.2) (hmem ψ hψ) (GlobalTheory.LGrp.mem_fixed.2 hψK) hψ0⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `hs.exists_vec`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨f, h0, hfV, hf⟩` from `h`. Use `haveI := σ.irred`. Establish `hi : Function.Injective f`. Break down `Representation.IsIrreducible.injective_or_eq_zero (f.intertwiningMap_of_isIntertwiningMap σ.ρ ((finRep E N).comp (locGL E N w)) hf) with hi | hz` into its components or cases. Conclude with `hi`.
-
-Conclude with `absurd (LinearMap.ext fun s => DFunLike.congr_fun hz s) h0`. Conclude with `⟨f x, hfV x, hx.map f hf fun e => hx.1 (hi (by rw [e, map_zero]))⟩`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem satV_of_comp {N : ℕ} {V : Submodule ℂ (Sm E N)} (hV : IsDiscrete V) {w : HeightOneSpectrum (𝓞 E)}
     {σ : SmIrr (GL (Fin N) (w.adicCompletion E))} (h : IsLocCompGL V w σ) {B : Multiset ℂˣ}
@@ -44,9 +42,9 @@ theorem satV_of_comp {N : ℕ} {V : Submodule ℂ (Sm E N)} (hV : IsDiscrete V) 
   exact ⟨f x, hfV x, hx.map f hf fun e => hx.1 (hi (by rw [e, map_zero]))⟩
 
 /- English proof (translation)
-Take `⟨⟨φ, hφ, hφs⟩, -⟩` from `hs`. Establish `hfix : ∀ k ∈ KGL w N, finRep E N (locGL E N w k) φ = φ` using `fun k hk => GlobalTheory.LGrp.mem_fixed.1 hφs.2.1 k hk`. Establish `hmem : φ ∈ ⨆ f : MapsD V w σ, LinearMap.range f.1`. Rewrite using `[iSup_range_eq hV w σ h]`. Conclude with `hφ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv0, hv⟩` from `LocSph.exists_fixed_of_mem_iSup ((finRep E N).comp (locGL E N w)) σ.ρ σ.irred (fun f : MapsD V w σ => f.1) (fun f => f.2.2) (KGL w N : Set _) φ hφs.1 hfix hmem`. Establish `hsph : GlobalTheory.LGrp.IsSpherical σ.ρ (KGL w N)` using `(Submodule.ne_bot_iff _).2 ⟨v, GlobalTheory.LGrp.mem_fixed.2 hv, hv0⟩`. Take `⟨B', hB'⟩` from `GlobalTheory.SatInd.exists_hasSatGL_of_isIrreducible σ.smooth σ.irred hsph`. Establish `e : B' = B` using `((satV_of_comp hV h hB').2 φ hφ hfix hφs.1).unique hφs`. Conclude with `e ▸ hB'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasSat_of_satV {N : ℕ} {V : Submodule ℂ (Sm E N)} (hV : IsDiscrete V) {w : HeightOneSpectrum (𝓞 E)}
     {σ : SmIrr (GL (Fin N) (w.adicCompletion E))} (h : IsLocCompGL V w σ) {B : Multiset ℂˣ}
@@ -65,9 +63,9 @@ theorem hasSat_of_satV {N : ℕ} {V : Submodule ℂ (Sm E N)} (hV : IsDiscrete V
   exact e ▸ hB'
 
 /- English proof (translation)
-Establish `L` using `satLike_map_mulChi hχ (satLike_of_satV h)`. Use `⟨?_, L⟩` and prove the remaining obligations. Take `⟨⟨φ, hφ, hs⟩, -⟩` from `h`. Establish `hm : (mulChi m χ) φ ∈ V.map (mulChi m χ).toLinearMap` using `Submodule.mem_map_of_mem hφ`. Use `⟨_, hm, L _ hm (fun k hk => ?_) fun e => hs.1 ((mulChi m χ).injective (by rw [e, map_zero]))⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[finRep_mulChi, hχ _ (GlobalTheory.SphGal.isUnitAt_det_of_mem hk), Units.val_one, one_smul]`. Conclude with `congrArg _ (GlobalTheory.LGrp.mem_fixed.1 hs.2.1 k hk)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem satV_map_mulChi {m : ℕ} {V : Submodule ℂ (Sm E m)} {w : HeightOneSpectrum (𝓞 E)} {B : Multiset ℂˣ}
     {χ : HChar E} (hχ : χ.UnrAt w) (h : SatV V w B) :
@@ -86,13 +84,11 @@ def PartSat (w : HeightOneSpectrum (𝓞 E)) (x : Σ M : ℕ, Submodule ℂ (Sm 
 variable {n a b : ℕ}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc, rfl⟩`. Use `⟨List.ofFn c, ?_, List.sum_ofFn⟩` and prove the remaining obligations. Use `List.forall₂_iff_get.2 ⟨by simp [parts], fun i h₁ h₂ => ?_⟩` and prove the remaining obligations. Simplify using `only [parts, List.get_eq_getElem, List.getElem_ofFn]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `satV_of_comp (D.discrete _) (D.loc _ w) (hc _).2`. Introduce and unpack `⟨l, hl, rfl⟩`. Take `⟨hlen, hg⟩` from `List.forall₂_iff_get.1 hl`. Establish `hlen' : D.c = l.length` using `by simpa [parts] using hlen`. Establish `hS : ∀ i : Fin D.c, HasSatGL w (D.σ i w).ρ (l.get (i.cast hlen'))` using `fun i => by`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hg i.1 (by simp [parts]) (by simpa [hlen'] using i.2)` as an intermediate fact. Simplify using `only [parts, List.get_eq_getElem, List.getElem_ofFn] at this`. Conclude with `hasSat_of_satV (D.discrete i) (D.loc i w) this`. Use `⟨fun i => l.get (i.cast hlen'), fun i => ⟨(hS i).1, hS i⟩, ?_⟩` and prove the remaining obligations. Establish `e : List.ofFn (fun i : Fin D.c => l.get (i.cast hlen')) = l` using `List.ext_get (by simp [hlen']) fun i h₁ h₂ => by simp`.
-
-Rewrite using `[← List.sum_ofFn, e]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pre_sat_iff (D : Pre E n) (w : HeightOneSpectrum (𝓞 E)) (B : Multiset ℂˣ) :
     D.Sat w B ↔ ∃ l : List (Multiset ℂˣ), List.Forall₂ (PartSat w) (parts D) l ∧ l.sum = B := by
@@ -115,7 +111,7 @@ theorem pre_sat_iff (D : Pre E n) (w : HeightOneSpectrum (𝓞 E)) (B : Multiset
     rw [← List.sum_ofFn, e]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons x l ih => simp [ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem sum_map_map (f : ℂˣ → ℂˣ) (l : List (Multiset ℂˣ)) :
     (l.map (Multiset.map f)).sum = l.sum.map f := by
@@ -124,7 +120,7 @@ theorem sum_map_map (f : ℂˣ → ℂˣ) (l : List (Multiset ℂˣ)) :
   | cons x l ih => simp [ih]
 
 /- English proof (translation)
-Proceed by induction on `h with`. Consider the case `nil => exact List.Forall₂.nil`. Consider the case `cons h _ ih => exact List.Forall₂.cons (satV_map_mulChi hχ h) ih`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem forall₂_tw {χ : HChar E} {w : HeightOneSpectrum (𝓞 E)} (hχ : χ.UnrAt w)
     {p : List (Σ M : ℕ, Submodule ℂ (Sm E M))} {l : List (Multiset ℂˣ)} (h : List.Forall₂ (PartSat w) p l) :
@@ -134,9 +130,9 @@ theorem forall₂_tw {χ : HChar E} {w : HeightOneSpectrum (𝓞 E)} (hχ : χ.U
   | cons h _ ih => exact List.Forall₂.cons (satV_map_mulChi hχ h) ih
 
 /- English proof (translation)
-Introduce `E _ _ _ n a b χ₁ χ₂ Pa Pb D w Ba Bb hJ h1 h2 sa sb`. Take `⟨la, fa, rfl⟩` from `(pre_sat_iff Pa w Ba).1 sa`. Take `⟨lb, fb, rfl⟩` from `(pre_sat_iff Pb w Bb).1 sb`. Use `(pre_sat_iff D w _).2 ⟨la.map (Multiset.map (· * χ₁.val w)) ++ lb.map (Multiset.map (· * χ₂.val w)), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hJ]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `List.rel_append (forall₂_tw h1 fa) (forall₂_tw h2 fb)`. Rewrite using `[List.sum_append, sum_map_map, sum_map_map]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem joinSat : PositivityTheory.Rg.BcB.F.RS.JoinSat := by
   intro E _ _ _ n a b χ₁ χ₂ Pa Pb D w Ba Bb hJ h1 h2 sa sb

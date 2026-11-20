@@ -11,7 +11,7 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Ff
 open scoped Classical
 
 /- English proof (translation)
-Unfold `wt`. Apply the tactic sequence `split_ifs <;> positivity`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem wt_nonneg {F : Type} [Field F] [NumberField F]
     (K : Set (Fin 4 → FiniteAdeleRing (𝓞 F) F)) (N : ℕ) (v : V4 F) : 0 ≤ wt K N v := by
@@ -19,9 +19,9 @@ private theorem wt_nonneg {F : Type} [Field F] [NumberField F]
   split_ifs <;> positivity
 
 /- English proof (translation)
-Unfold `wt`. Distinguish the cases in `hv : finPartPi v ∈ K`. Rewrite using `[if_pos hv, if_pos (h hv)]`. Rewrite using `[if_neg hv] split_ifs`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression.
 
-Conclude with `le_rfl`.
+A detailed English derivation is pending.
 -/
 private theorem wt_mono {F : Type} [Field F] [NumberField F]
     {K K' : Set (Fin 4 → FiniteAdeleRing (𝓞 F) F)} (h : K ⊆ K') (N : ℕ) (v : V4 F) :
@@ -35,9 +35,9 @@ private theorem wt_mono {F : Type} [Field F] [NumberField F]
     · exact le_rfl
 
 /- English proof (translation)
-Establish `h : ∀ i, ∃ K : Set (Fin 4 → FiniteAdeleRing (𝓞 F) F), IsCompact K ∧ ∃ B : ℝ, 0 ≤ B ∧ ∀ v, ‖(e i).1 v‖ ≤ B * wt K N v`. Introduce `i`. Take `⟨K, hK, hb⟩` from `(wtBound F (e i)).2`. Take `⟨B, hB⟩` from `hb N`. Use `⟨K, hK, |B|, abs_nonneg B, fun v => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hB () (Set.mem_univ _) v).trans (mul_le_mul_of_nonneg_right (le_abs_self B) (wt_nonneg K N v))`. Use `choose K hK B hB hb using h`. Use `⟨⋃ i, K i, isCompact_iUnion hK, ∑ i, B i, Finset.sum_nonneg fun i _ => hB i, fun i v => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem common_majorant {F : Type} [Field F] [NumberField F] {n : ℕ} (e : Fin n → S4 F) (N : ℕ) :
     ∃ K : Set (Fin 4 → FiniteAdeleRing (𝓞 F) F), IsCompact K ∧ ∃ B : ℝ, 0 ≤ B ∧
@@ -65,7 +65,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   [IsTotallyReal F] [IsTotallyComplex E] {D : Dat F E}
 
 /- English proof (translation)
-Establish `h : ((W.η.1 a : ℂˣ) : ℂ) ^ 2 = 1`. Rewrite using `[← Units.val_pow_eq_pow_val, W.η_sq a, Units.val_one]`. Establish `h' : ‖((W.η.1 a : ℂˣ) : ℂ)‖ ^ 2 = 1` using `by rw [← norm_pow, h, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 h'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem norm_eta (W : Weil D) (a : (A F)ˣ) : ‖((W.η.1 a : ℂˣ) : ℂ)‖ = 1 := by
   have h : ((W.η.1 a : ℂˣ) : ℂ) ^ 2 = 1 := by
@@ -74,7 +74,7 @@ private theorem norm_eta (W : Weil D) (a : (A F)ˣ) : ‖((W.η.1 a : ℂˣ) : �
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 h'
 
 /- English proof (translation)
-Establish `h` using `LinearMap.congr_fun (W.comm (infGL E 2 y) k) φ`. Establish `hy' : nu F (infGL E 2 y) = 1` using `hy`. Rewrite `h` using `[hy', cD_one_left]`. Conclude with `h.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem om_L_comm (W : Weil D) {y : GL (Fin 2) (Cinf E)} (hy : One F y) (k : G1 F) (φ : S4 F) :
     W.Om k (W.L (infGL E 2 y) φ) = W.L (infGL E 2 y) (W.Om k φ) := by
@@ -84,7 +84,7 @@ private theorem om_L_comm (W : Weil D) {y : GL (Fin 2) (Cinf E)} (hy : One F y) 
   exact h.symm
 
 /- English proof (translation)
-Establish `hy' : nu F (infGL E 2 y) = 1` using `hy`. Rewrite using `[map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, om_L_comm W hy, W.Om_n, W.Om_m, W.L_apply, hy', ab_one]`. Simplify using `only [norm_mul, norm_ψ, one_mul, norm_eta, inv_one, Complex.ofReal_one, norm_one]`. Rewrite using `[Complex.norm_real, Real.norm_of_nonneg (by positivity)]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem norm_term (W : Weil D) {y : GL (Fin 2) (Cinf E)} (hy : One F y) (b : A F) (a : (A F)ˣ)
     (k : G1 F) (φ : S4 F) (ξ : Fin 4 → F) :
@@ -100,19 +100,19 @@ private theorem norm_term (W : Weil D) {y : GL (Fin 2) (Cinf E)} (hy : One F y) 
 end Pointwise
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ D W φ hφ c hc`. Take `⟨n, e, he⟩` from `omFin F E D W φ hφ`. Take `⟨N, hN⟩` from `wtSum F`. Take `⟨K, hK, B, hB, hBe⟩` from `common_majorant e N`. Take `⟨C, hC⟩` from `hN K hK c hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨C₀, hC₀⟩` from `wtAct F E D`. Use `⟨n * B * |C₀| ^ N * C, 2 * N, fun y hy b a k hk hca => ?_⟩` and prove the remaining obligations. Take `⟨hsum, htsum⟩` from `hC a hca`. Take `⟨cf, hcf, hk'⟩` from `he k hk`. Establish `hHt : 0 ≤ Ht y` using `by unfold Ht; positivity`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set T : ℝ := |C₀| ^ N * Ht y ^ (2 * N) with hT`. Establish `hT0 : 0 ≤ T` using `by positivity`. Establish `hTact : ∀ v, wt K N (D.act (infGL E 2 y)⁻¹ v) ≤ T * wt K N v`. Introduce `v`. Use `(hC₀ K N y v).trans (mul_le_mul_of_nonneg_right ?_ (wt_nonneg K N v))` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hM : 0 ≤ ab a ^ 2 * (n * B * T)` using `mul_nonneg (sq_nonneg _) (mul_nonneg (mul_nonneg (Nat.cast_nonneg _) hB) hT0)`. Establish `hterm : ∀ ξ : Fin 4 → F, ‖(W.Om (nU b * mD a * k) (W.L (infGL E 2 y) φ)).1 fun i => rt (ξ i)‖ ≤ (ab a ^ 2 * (n * B * T)) * wt K N (sc a ξ)`. Introduce `ξ`. Rewrite using `[norm_term W hy, hk']`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set u := D.act (infGL E 2 y)⁻¹ (sc a ξ) with hu`. Establish `hval : (∑ i, cf i • e i : S4 F).1 u = ∑ i, cf i * (e i).1 u`. Simplify using `[Submodule.coe_sum, Finset.sum_apply]`. Establish `hb : ‖(∑ i, cf i • e i : S4 F).1 u‖ ≤ n * B * wt K N u`. Rewrite using `[hval]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Use `_ = n * B * wt K N u := by`. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, mul_assoc]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hnB : 0 ≤ (n : ℝ) * B` using `mul_nonneg (Nat.cast_nonneg _) hB`. Combine the equalities or inequalities in the displayed calculation. Establish `hs` using `hsum.hasSum.mul_left (ab a ^ 2 * (n * B * T))`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.Ff.thMaj :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D), ThMaj W := by

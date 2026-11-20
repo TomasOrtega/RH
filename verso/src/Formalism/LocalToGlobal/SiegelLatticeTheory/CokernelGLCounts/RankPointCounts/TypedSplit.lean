@@ -19,9 +19,9 @@ section OneDir
 variable {D : D7} (Zd : LocDat D)
 
 /- English proof (translation)
-Establish `h` using `(Zd.agree p).2.2.2.2.2`. Rewrite `h` using `[hs]`. Consider the cases of `hsg : (D.s.atP p).split with`. Consider the case `none => rw [hsg] at h`. Conclude with `h.elim`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Consider the case `some sg => rw [hsg] at h`. Conclude with `⟨sg, rfl, h.1, h.2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem typed_split (p : PlF D) {g : Formalism.MainNotions.S.Loc.SplitG (Zd.M p).L} (hs : (Zd.M p).split = some g) :
     ∃ sg, (D.s.atP p).split = some sg ∧ g.e = sg.e ∧ g.q = sg.q := by
@@ -32,7 +32,7 @@ theorem typed_split (p : PlF D) {g : Formalism.MainNotions.S.Loc.SplitG (Zd.M p)
   | some sg => rw [hsg] at h; exact ⟨sg, rfl, h.1, h.2⟩
 
 /- English proof (translation)
-Introduce `P hP` and use `(Formalism.L2.SG.Pf.BBTie.bt_g_mem_iff p P hP).2 (by rw [← D.s_split p, hsg]; rfl)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem gS_mem_of_split (p : PlF D) {sg} (hsg : (D.s.atP p).split = some sg) :
     ∀ P : HeightOneSpectrum (𝓞 D.host.E), P.asIdeal.comap (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) = p.asIdeal →

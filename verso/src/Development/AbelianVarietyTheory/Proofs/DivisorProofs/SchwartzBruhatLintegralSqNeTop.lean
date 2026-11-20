@@ -6,23 +6,21 @@ open MeasureTheory Matrix ValuativeRel
 namespace GlobalTheory.SBNorm
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n d μ hμ f hf`. Use `letI : MeasurableSpace (Fin n × Fin d → k) := borel _`. Use `haveI : BorelSpace (Fin n × Fin d → k) := ⟨rfl⟩`. Use `haveI := hμ`. Take `⟨_, _⟩` from `GlobalTheory.SplitWeil.Model.secondCountable_and_t2_local_field (k := k)`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfc : Continuous f` using `hf.1.continuous`. Establish `hint : ∀ g ∈ GlobalTheory.WeilM.SB (Fin n × Fin d → k), Integrable (fun y => f y * (starRingEnd ℂ) (g y)) μ`. Introduce `g hg`. Establish `hgc : Continuous g` using `hg.1.continuous`. Conclude with `(hfc.mul (Complex.continuous_conj.comp hgc)).integrable_of_hasCompactSupport (hf.2.mul_right (f' := fun y => (starRingEnd ℂ) (g y)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hpt : ∀ y, ‖f y * (starRingEnd ℂ) (f y)‖ₑ = ‖f y‖ₑ ^ 2`. Introduce `y`. Rewrite using `[enorm_mul, pow_two]`. Use `congr 1`. Simplify using `[enorm_eq_nnnorm]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hfin : ∫⁻ y, ‖f y‖ₑ ^ 2 ∂μ ≠ ⊤`. Use `(hint f hf).2` as an intermediate fact. Unfold `HasFiniteIntegral at this`. Rewrite `this` using `[hpt]`. Conclude with `this.ne`.
+Rewrite the indicated hypotheses repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hfin, ?_, ?_, hint⟩` and prove the remaining obligations. Establish `h1 : ∀ y, f y * (starRingEnd ℂ) (f y) = (((‖f y‖ ^ 2 : ℝ)) : ℂ)`. Introduce `y`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Repeatedly rewrite using `[h1]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[integral_complex_ofReal]`. Use `congr 1`. Rewrite using `[integral_eq_lintegral_of_nonneg_ae (f := fun y => ‖f y‖ ^ 2) (Filter.Eventually.of_forall fun y => by positivity) ((hfc.norm.pow 2).aestronglyMeasurable)]`. Use `congr 1`. Apply `lintegral_congr` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `y`. Rewrite using `[ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm_eq_enorm]`. Introduce `hne`. Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x, f x ≠ 0 := by`. Assume the negation of the conclusion as `h`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `push_neg at h`. Conclude with `hne (funext h)`. Establish `hmeas : Measurable fun y => ‖f y‖ₑ ^ 2` using `(hfc.measurable.enorm).pow_const 2`. Rewrite using `[← pos_iff_ne_zero, lintegral_pos_iff_support hmeas]`. Establish `hsupp : Function.support (fun y => ‖f y‖ₑ ^ 2) = f ⁻¹' {0}ᶜ`.
-
-Use extensionality with `y`. Simplify using the standard rewrite rules. Rewrite using `[hsupp]`. Conclude with `(hf.1 ({0}ᶜ)).measure_pos μ ⟨x, hx⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem schwartzBruhat_memL2_inner_self : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n d : ℕ}
     (μ : @Measure (Fin n × Fin d → k) (borel _)), @Measure.IsAddHaarMeasure _ _ _ (borel _) μ →

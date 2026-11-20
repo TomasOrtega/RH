@@ -19,33 +19,29 @@ noncomputable section
 namespace GlobalTheory.Core.Rk.Dich
 
 /- English proof (translation)
-Introduce `D V γ hγ hopen`. Take `⟨g, hg, -, hγi⟩` from `exists_rat (dblSp V) hγ`. Establish `hgi : g⁻¹ ∈ Formalism.UG.UJ (D.sp.cm.sig : D.host.E →+* D.host.E) (dblSp V).gram` using `inv_mem hg`. Use `set γi : Matrix (Fin (V.rank + V.rank)) (Fin (V.rank + V.rank)) D.host.E := (g⁻¹).1 with hγidef`. Establish `hU : Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) γi * dblGram finSumFinEquiv V.gram * γi = dblGram finSumFinEquiv V.gram`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h : Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) γi * (dblSp V).gram * γi = (dblSp V).gram` using `hgi`. Rewrite `h` using `[gram_hdbl]`. Then use the resulting hypothesis. Use `set Qd := diagSnd γi with hQd`. Use `set P := leviMat finSumFinEquiv γi with hP`. Establish `hinj : ∀ x, P *ᵥ x = 0 → Qd *ᵥ x = 0 → x = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `x h1 h2`. Establish `h3 : γi *ᵥ pairVec finSumFinEquiv x x = 0`. Rewrite using `[mulVec_pairVec_diag, ← hP, ← hQd, h1, h2]`. Use function extensionality and compare the values at `j`. Simplify using `[pairVec, Sum.elim_zero_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h4 : (g.1 * γi) *ᵥ pairVec finSumFinEquiv x x = 0` using `by rw [← mulVec_mulVec, h3, mulVec_zero]`. Rewrite `h4` using `[hγidef, Units.mul_inv, one_mulVec]`. Use function extensionality and compare the values at `i`. Use `congrFun h4 (finSumFinEquiv (.inl i))` as an intermediate fact. Rewrite `this` using `[pairVec_inl]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Distinguish the cases in `hk : ∀ x, Qd *ᵥ x = 0 → x = 0`. Conclude with `absurd (GlobalTheory.T.doubled_lagrangian_transverse_in_open_orbit D V γ hγ γi hγi hk) hopen`. Use `push Not at hk`. Take `⟨x0, hx0, hx0ne⟩` from `hk`. Set `W` to `LinearMap.ker Qd.mulVecLin`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Set `b` to `Module.finBasis D.host.E W`. Set `K : Matrix (Fin V.rank) (Fin (Module.finrank D.host.E W)) D.host.E` to `Matrix.of fun i j => (b j : Fin V.rank → D.host.E) i`. Establish `hKv : ∀ y, K *ᵥ y = ((∑ j, y j • b j : W) : Fin V.rank → D.host.E)`. Introduce `y`. Use function extensionality and compare the values at `i`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `[K, Matrix.mulVec, dotProduct, Submodule.coe_sum, Finset.sum_apply, mul_comm]`. Establish `hbQ : ∀ j, Qd *ᵥ (b j : Fin V.rank → D.host.E) = 0` using `fun j => (b j).2`. Establish `hQK : Qd * K = 0`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Use `congrFun (hbQ j) i` as an intermediate fact.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Matrix.mulVec, dotProduct] at this`. Simplify using `only [Matrix.mul_apply, K, Matrix.of_apply, Matrix.zero_apply]`. Conclude with `this`. Establish `hspan : ∀ x, Qd *ᵥ x = 0 → ∃ y, x = K *ᵥ y`. Introduce `x hx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨b.repr ⟨x, hx⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hKv, b.sum_repr]`. Establish `hiso : IsIsoFrame V (P * K)`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Module.finrank_pos_iff_exists_ne_zero.2 ⟨⟨x0, hx0⟩, fun h => hx0ne (congrArg Subtype.val h)⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `(Matrix.mulVec_injective_iff (M := P * K)).1 ?_` and prove the remaining obligations. Introduce `c c' hc`. Rewrite `hc`, the goal using `[← sub_eq_zero]`. Rewrite `hc` using `[← mulVec_sub, ← mulVec_mulVec]`. Establish `h1 : K *ᵥ (c - c') = 0` using `hinj _ hc (by rw [mulVec_mulVec, hQK, zero_mulVec])`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite `h1` using `[hKv]`. Establish `h2 : (∑ j, (c - c') j • b j : W) = 0` using `Subtype.ext h1`. Use function extensionality and compare the values at `j`. Conclude with `Fintype.linearIndependent_iff.1 b.linearIndependent _ h2 j`. Establish `hI` using `isotropic_diag hU`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hI` using `[← hP, ← hQd]`. Rewrite using `[Formalism.UG.cT_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (Qd * K) * V.gram * (Qd * K) := by`.
-
-Rewrite using `[hI, Formalism.UG.cT_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 0 := by rw [hQK]; simp [Formalism.UG.cT]`. Use `⟨_, P * K, hiso, GlobalTheory.T.conj_doubling_isotropic_unipotent_mem_siegel D V γ hγ γi hγi _ K hQK hiso, ?_⟩` and prove the remaining obligations. Introduce `δ hδ hs n hn`.
-
-Take `⟨d, -, hδm, -⟩` from `exists_rat V hδ`. Take `⟨G, hG, hGe⟩` from `GlobalTheory.T.rational_isometry_keeps_isotropic_frame_of_siegel D V γ hγ γi hγi _ K hQK hspan hiso δ hδ d.1 hδm hs`. Conclude with `GlobalTheory.T.rational_isometry_normalises_isotropic_unipotent_radical D V _ (P * K) δ hδ d.1 hδm G hG hGe n hn`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem offOpen : ∀ (D : D7) (V : HSp D), ∀ γ ∈ GQ (dblSp V), ¬ (∃ δ ∈ GQ V, γ * (io V (δ, 1))⁻¹ ∈ siegel V) → ∃ (r : ℕ) (C : Matrix (Fin V.rank) (Fin r) D.host.E), IsIsoFrame V C ∧ (∀ n ∈ NI V C, ∃ p : siegel V, γ * io V (n, 1) = p * γ ∧ aP V p = 1) ∧ ∀ δ ∈ GQ V, γ * io V (δ, 1) * γ⁻¹ ∈ siegel V → ∀ n ∈ NI V C, δ * n * δ⁻¹ ∈ NI V C := by
   intro D V γ hγ hopen

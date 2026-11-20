@@ -13,11 +13,11 @@ namespace GlobalTheory.HoweLocal.LocCoords
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Use `Prod.ext ?_ ?_` and prove the remaining obligations. Conclude with `zero_mul _`. Express the relevant statement in the definitionally equal form `GlobalTheory.AdelicU.singleFin v a * b.2 = GlobalTheory.AdelicU.singleFin v (a * evFin F v b)`. Apply `GlobalTheory.AdelicU.af_ext` to reduce the goal to its premises. Introduce `w`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul]`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[GlobalTheory.AdelicU.evalV_singleFin_self, GlobalTheory.AdelicU.evalV_singleFin_self]`. Both sides reduce to the same expression.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.AdelicU.evalV_singleFin_ne hw, GlobalTheory.AdelicU.evalV_singleFin_ne hw, zero_mul]`.
+A detailed English derivation is pending.
 -/
 theorem liftV_mul (v : Pl F) (a : Fv F v) (b : AF F) :
     GlobalTheory.LatVac.liftV v a * b = GlobalTheory.LatVac.liftV v (a * evFin F v b) := by
@@ -34,7 +34,7 @@ theorem liftV_mul (v : Pl F) (a : Fv F v) (b : AF F) :
     · rw [GlobalTheory.AdelicU.evalV_singleFin_ne hw, GlobalTheory.AdelicU.evalV_singleFin_ne hw, zero_mul]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, smul_add, hx, hy, smul_add, map_add]`. Consider the case `tmul b e`. Rewrite using `[TensorProduct.smul_tmul', liftE, TensorProduct.map_tmul, TensorProduct.map_tmul, TensorProduct.smul_tmul', smul_eq_mul, smul_eq_mul, liftV_mul, GlobalTheory.LatVac.evFin_liftV]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem liftV_smul_liftE (v : Pl F) (a : Fv F v) (z : Fv F v ⊗[F] E) :
     GlobalTheory.LatVac.liftV v a • liftE (E := E) v z = liftE v (a • z) := by
@@ -46,9 +46,9 @@ theorem liftV_smul_liftE (v : Pl F) (a : Fv F v) (z : Fv F v ⊗[F] E) :
       smul_eq_mul, smul_eq_mul, liftV_mul, GlobalTheory.LatVac.evFin_liftV]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Consider the case `tmul b e`. Rewrite using `[liftE, TensorProduct.map_tmul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `evFin F v (GlobalTheory.LatVac.liftV v b) ⊗ₜ[F] e = b ⊗ₜ[F] e`. Rewrite using `[GlobalTheory.LatVac.evFin_liftV]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem compFin_liftE (v : Pl F) (z : Fv F v ⊗[F] E) : compFin F E v (liftE v z) = z := by
   induction z using TensorProduct.induction_on with
@@ -60,9 +60,9 @@ theorem compFin_liftE (v : Pl F) (z : Fv F v ⊗[F] E) : compFin F E v (liftE v 
     rw [GlobalTheory.LatVac.evFin_liftV]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [smul_add, hx, hy, map_add, map_add]`. Consider the case `tmul b e`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, liftV_mul, one_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `_ = liftE v (evFin F v b ⊗ₜ[F] e)`. Rewrite using `[liftE, TensorProduct.map_tmul]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem liftV_one_smul (v : Pl F) (z : AE F E) :
     GlobalTheory.LatVac.liftV v 1 • z = liftE v (compFin F E v z) := by
@@ -76,7 +76,7 @@ theorem liftV_one_smul (v : Pl F) (z : AE F E) :
     rfl
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, map_add, map_add]`. Consider the case `tmul b e => rfl`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem compFin_cA (σ : E →ₐ[F] E) (v : Pl F) (z : AE F E) :
     compFin F E v (cA σ z) = cv σ v (compFin F E v z) := by
@@ -86,7 +86,7 @@ theorem compFin_cA (σ : E →ₐ[F] E) (v : Pl F) (z : AE F E) :
   | tmul b e => rfl
 
 /- English proof (translation)
-Establish `h1 : a ⊗ₜ[F] e = a • ((1 : R) ⊗ₜ[F] e)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[h1, map_smul, Algebra.trace_apply, Algebra.trace_apply, ← Algebra.baseChange_lmul, LinearMap.trace_baseChange, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_tmul (R : Type) [CommRing R] [Algebra F R] (a : R) (e : E) :
     Algebra.trace R (R ⊗[F] E) (a ⊗ₜ[F] e) = a * algebraMap F R (Algebra.trace F E e) := by
@@ -96,9 +96,9 @@ theorem trace_tmul (R : Type) [CommRing R] [Algebra F R] (a : R) (e : E) :
     LinearMap.trace_baseChange, smul_eq_mul]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, map_add, map_add]`. Consider the case `tmul b e`. Express the relevant statement in the definitionally equal form `_ = Algebra.trace (Fv F v) (Fv F v ⊗[F] E) (evFin F v b ⊗ₜ[F] e)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[trace_tmul, trace_tmul, map_mul, AlgHom.commutes]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem evFin_trace (v : Pl F) (z : AE F E) :
     evFin F v (Algebra.trace (AF F) (AE F E) z) = Algebra.trace (Fv F v) (Fv F v ⊗[F] E) (compFin F E v z) := by
@@ -116,7 +116,7 @@ namespace GlobalTheory.HoweLocal.LocCoords
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Unfold `symp hTens`. Rewrite using `[evFin_trace]`. Use `congr 1`. Simplify using `only [map_mul, map_neg, map_one, map_sum, Matrix.map_apply, compFin_cA, compFin_liftE]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem symp_lift (σ : E →ₐ[F] E) (v : Pl F) {n d : ℕ} (JX : Matrix (Fin n) (Fin n) E) (JW : Matrix (Fin d) (Fin d) E)
     (x x' : Matrix (Fin n) (Fin d) (Fv F v ⊗[F] E)) :
@@ -180,7 +180,7 @@ def locDarboux (σ : E →ₐ[F] E) {n d : ℕ} {X : Spc F E n} {W : Spc F E d} 
       ZeroHom.coe_mk, dotProduct, map_sub, map_sum, map_mul]
 
 /- English proof (translation)
-Introduce `_` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 theorem isLocCo_locDarboux (σ : E →ₐ[F] E) {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (v : Pl F) :
     IsLocCo σ M v (locDarboux σ M v) := fun _ => rfl
@@ -188,7 +188,7 @@ theorem isLocCo_locDarboux (σ : E →ₐ[F] E) {n d : ℕ} {X : Spc F E n} {W :
 end GlobalTheory.HoweLocal.LocCoords
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ σ _ _ _ _ _ M v` and use `⟨_, GlobalTheory.HoweLocal.LocCoords.isLocCo_locDarboux σ M v⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.HoweLocal.exists_isLocCo : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (v : Pl F),

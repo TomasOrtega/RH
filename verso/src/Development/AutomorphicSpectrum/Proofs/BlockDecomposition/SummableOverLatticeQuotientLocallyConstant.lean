@@ -5,37 +5,35 @@ open MeasureTheory Set
 namespace GlobalTheory.CompanionTheory.SiegelND.Integ
 
 /- English proof (translation)
-Introduce `G H _ _ _ _ _ _ _ ν _ U hUo hUc ι hι f hf hs`. Set `r : H ⧸ U.comap ι → G` to `fun x => ι (Quotient.out x)`. Set `c : H ⧸ U.comap ι → Set G` to `fun x => (fun g => g - r x) ⁻¹' (U : Set G)`. Establish `hcopen : ∀ x, IsOpen (c x)` using `fun x => hUo.preimage (by fun_prop)`. Establish `hcov : ⋃ x, c x = univ`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `eq_univ_of_forall fun g => mem_iUnion.2 ?_` and prove the remaining obligations. Take `⟨h, hh⟩` from `hι g`. Use `⟨(QuotientAddGroup.mk h : H ⧸ U.comap ι), ?_⟩` and prove the remaining obligations. Establish `h1 : -h + Quotient.out (QuotientAddGroup.mk h : H ⧸ U.comap ι) ∈ U.comap ι` using `QuotientAddGroup.eq.1 (QuotientAddGroup.out_eq' _).symm`. Establish `h2 : ι (-h + Quotient.out (QuotientAddGroup.mk h : H ⧸ U.comap ι)) ∈ U` using `h1`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `U.sub_mem hh h2`. Establish `h4 : g - ι h - ι (-h + Quotient.out (QuotientAddGroup.mk h : H ⧸ U.comap ι)) = g - r (QuotientAddGroup.mk h : H ⧸ U.comap ι)`. Simplify using `only [r, map_add, map_neg]`. Normalize the expressions using the abelian group laws. Express the relevant statement in the definitionally equal form `g - r _ ∈ U`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `h3` using `[h4]`. Then use the resulting hypothesis. Establish `hdisj : Pairwise (Function.onFun Disjoint c)`. Introduce `x y hxy`. Use `Set.disjoint_left.2 fun g hgx hgy => hxy ?_` and prove the remaining obligations. Establish `hgx' : g - r x ∈ U` using `hgx`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hgy' : g - r y ∈ U` using `hgy`. Establish `h1 : ι (-Quotient.out x + Quotient.out y) ∈ U`. Establish `h3` using `U.sub_mem hgx' hgy'`. Establish `h4 : g - r x - (g - r y) = ι (-Quotient.out x + Quotient.out y)`. Simplify using `only [r, map_add, map_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Normalize the expressions using the abelian group laws. Rewrite `h3` using `[h4]`. Then use the resulting hypothesis. Establish `h2 : (QuotientAddGroup.mk (Quotient.out x) : H ⧸ U.comap ι) = QuotientAddGroup.mk (Quotient.out y)` using `QuotientAddGroup.eq.2 h1`. Rewrite `h2` using `[QuotientAddGroup.out_eq', QuotientAddGroup.out_eq']`. Then use the resulting hypothesis. Establish `hne : ∀ x, (c x).Nonempty` using `fun x => ⟨r x, by`.
+Normalize the expressions using the abelian group laws. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `r x - r x ∈ U`. Use the proof step `simp⟩`. Establish `hcount : Countable (H ⧸ U.comap ι)`. Establish `hinj : Function.Injective c`. Introduce `x y hxy`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne'`. Take `⟨g, hg⟩` from `hne x`. Conclude with `Set.disjoint_left.1 (hdisj hne') hg (hxy ▸ hg)`. Establish `hpd : (range c).PairwiseDisjoint id`. Introduce and unpack `_ ⟨x, rfl⟩ _ ⟨y, rfl⟩ hxy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hdisj (fun h => hxy (by rw [h]))`. Use `hpd.countable_of_isOpen (by rintro _ ⟨x, rfl⟩; exact hcopen x) (by rintro _ ⟨x, rfl⟩; exact hne x)` as an intermediate fact. Use `this.to_subtype` as an intermediate fact. Conclude with `Function.Injective.countable (f := Set.rangeFactorization c) (fun x y h => hinj (congrArg Subtype.val h))`. Establish `hconst : ∀ x, ∀ g ∈ c x, f g = f (r x)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Introduce `x g hg`. Use `hf (r x) (g - r x) hg` as an intermediate fact. Rewrite using `[← this]`. Use `congr 1`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcont : Continuous f`. Use `IsLocallyConstant.continuous ?_` and prove the remaining obligations. Use `(IsLocallyConstant.iff_exists_open f).2 fun g => ?_` and prove the remaining obligations. Use `⟨(fun y => y - g) ⁻¹' (U : Set G), hUo.preimage (by fun_prop), by simp, ?_⟩` and prove the remaining obligations. Introduce `y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws.
 
-Use `hf g (y - g) hy` as an intermediate fact. Rewrite using `[← this]`. Use `congr 1`. Normalize the expressions using the abelian group laws. Establish `hmeas : ∀ x, ν (c x) = ν (U : Set G)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Introduce `x`. Establish `: c x = (fun g => g + (- r x)) ⁻¹' (U : Set G)`. Use extensionality with `g`. Simplify using `[c, sub_eq_add_neg]`. Rewrite using `[this, measure_preimage_add_right]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hUfin : ν (U : Set G) < ⊤` using `hUc.measure_lt_top`. Use `⟨hcont.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Establish `hsum : ∑' x, ‖f (r x)‖ₑ < ⊤`. Establish `h1 : ∑' x, ‖f (r x)‖ₑ = ∑' x, ENNReal.ofReal ‖f (r x)‖`. Simplify using `[ofReal_norm_eq_enorm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h1]`. Conclude with `hs.tsum_ofReal_lt_top`. Establish `hint : ∫⁻ g, ‖f g‖ₑ ∂ν = (∑' x, ‖f (r x)‖ₑ) * ν (U : Set G)`. Combine the equalities or inequalities in the displayed calculation. Use `tsum_congr fun x => ?_` and prove the remaining obligations.
-
-Rewrite using `[setLIntegral_congr_fun (hcopen x).measurableSet (g := fun _ => ‖f (r x)‖ₑ) (fun g hg => by simp only [hconst x g hg]), setLIntegral_const, hmeas]`. Use `_ = (∑' x, ‖f (r x)‖ₑ) * ν (U : Set G) := ENNReal.tsum_mul_right`. Express the relevant statement in the definitionally equal form `∫⁻ g, ‖f g‖ₑ ∂ν < ⊤`. Rewrite using `[hint]`. Conclude with `ENNReal.mul_lt_top hsum hUfin`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrable_of_summable_quotient_periodic :
     ∀ (G H : Type) [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G] [SecondCountableTopology G]

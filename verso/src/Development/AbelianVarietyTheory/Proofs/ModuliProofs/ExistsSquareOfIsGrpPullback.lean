@@ -13,11 +13,11 @@ open GlobalTheory.KS
 namespace GlobalTheory.KS
 
 /- English proof (translation)
-Establish `hw : m ≫ G.hom = G'.hom ≫ f` using `h.1.w`. Set `a : Over.mk ((G' ⊗ G').hom ≫ f) ⟶ G` to `Over.homMk ((fst G' G').left ≫ m) (by`. Simplify using `only [Category.assoc, hw, Over.mk_hom]`. Rewrite using `[← Category.assoc, Over.w])`. Set `b : Over.mk ((G' ⊗ G').hom ≫ f) ⟶ G` to `Over.homMk ((snd G' G').left ≫ m) (by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Simplify using `only [Category.assoc, hw, Over.mk_hom]`. Rewrite using `[← Category.assoc, Over.w])`. Use `⟨(lift a b).left, ⟨?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Conclude with `congrArg Over.Hom.left (lift_fst a b)`. Conclude with `congrArg Over.Hom.left (lift_snd a b)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← h.2 (G' ⊗ G') (fst G' G') (snd G' G') a b rfl rfl]`. Establish `: lift a b ≫ (fst G G * snd G G) = a * b`. Rewrite using `[MonObj.comp_mul, lift_fst, lift_snd]`. Conclude with `congrArg Over.Hom.left this`. Conclude with `Over.w (lift a b)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_square_of_isGrpPullback {S S' : Scheme.{0}} (G' : Over S') [GrpObj G'] (G : Over S)
     [GrpObj G] (f : S' ⟶ S) (m : G'.left ⟶ G.left) (h : IsGrpPullback G' G f m) :
@@ -41,9 +41,9 @@ theorem exists_square_of_isGrpPullback {S S' : Scheme.{0}} (G' : Over S') [GrpOb
   · exact Over.w (lift a b)
 
 /- English proof (translation)
-Introduce `K _ P₀ R _ x₀ P m h`. Establish `hp₀ : IsProper P₀.A.hom` using `P₀.isAb.proper`. Establish `hp : IsProper P.A.hom` using `P.isAb.proper`. Use `⟨exists_square_of_isGrpPullback _ _ _ _ h, inferInstance, IsPullback.of_hasPullback _ _, fun W hW => ?_, fun W W' hW hW' => ?_⟩` and prove the remaining obligations. Establish `: IsAffineHom m` using `MorphismProperty.of_isPullback (P := @IsAffineHom) h.1.flip inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hW.preimage m`. Establish `: IsSeparated (terminal.from P.A.left)`. Rewrite using `[← terminal.comp_from P.A.hom]`. Use `infer_instance`. Conclude with `hW.inf hW'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem square_fibre_affine_opens : ∀ (K : Type) [Field K] (P₀ : Out.PolAV (Sp K)) (R : Type) [CommRing R] (x₀ : R →+* K) (P : Out.PolAV (Sp R)) (m : P₀.A.left ⟶ P.A.left), IsGrpPullback P₀.A P.A (spMap x₀) m → (∃ m₂ : (P₀.A ⊗ P₀.A).left ⟶ (P.A ⊗ P.A).left, IsSquare m m₂ ∧ m₂ ≫ (fst P.A P.A * snd P.A P.A).left = (fst P₀.A P₀.A * snd P₀.A P₀.A).left ≫ m ∧ m₂ ≫ (P.A ⊗ P.A).hom = (P₀.A ⊗ P₀.A).hom ≫ spMap x₀) ∧ IsSeparated P₀.A.hom ∧ IsPullback (fst P₀.A P₀.A).left (snd P₀.A P₀.A).left P₀.A.hom P₀.A.hom ∧ (∀ W : P.A.left.Opens, IsAffineOpen W → IsAffineOpen (m ⁻¹ᵁ W)) ∧ ∀ W W' : P.A.left.Opens, IsAffineOpen W → IsAffineOpen W' → IsAffineOpen (W ⊓ W') := by
   intro K _ P₀ R _ x₀ P m h

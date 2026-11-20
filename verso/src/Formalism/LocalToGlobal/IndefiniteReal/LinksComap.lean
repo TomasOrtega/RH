@@ -56,7 +56,7 @@ def FamReal.comap (B : FamReal D A cR cL lR lL) (f : T → T') (t0 : T) :
   rankL := B.rankL
 
 /- English proof (translation)
-The claim follows from `h.ranks v0 := h.v0 tauL_ok := h.tauL_ok pl_inj := h.pl_inj q := h.q S_fin := h.S_fin ok t P := h.ok (f t) P gramR_eq := h.gramR_eq mapR := h.mapR mapL := h.mapL coefR t := h.coefR (f t) coefL i t := h.coefL i (f t)`.
+A detailed English derivation is pending.
 -/
 theorem FamTie.comap {B : FamReal D A cR cL lR lL} {pl : Pl0 → Pl D.host.E} {S : Set (Pl D.host.E)}
     {Qt : T' → Finset (Pl D.host.E)} {tauL : D.what₂.Tau → (D.host.E →+* D.what₂.LL)}
@@ -110,7 +110,7 @@ def LevCh.comap {T T' : Type} (L : LevCh D T') (f : T → T') : LevCh D T where
   βW := L.βW
 
 /- English proof (translation)
-The claim follows from `h.mu0 eta := h.eta xi t := h.xi (f t) xi_inj := h.xi_inj.comp hf xi_base := by show L.xiH (f t0) = 1 rw [h0]; exact h.xi_base xi_fin t := h.xi_fin (f t) xi_triv t := h.xi_triv (f t) xi_tame t := h.xi_tame (f t) Pg := h.Pg Q_pl t := h.Q_pl (f t) Q_off t := h.Q_off (f t) Q_de p hp …`.
+A detailed English derivation is pending.
 -/
 theorem LevCh.comap_is {T T' : Type} {L : LevCh D T'} {μ0 : T'} (h : L.Is μ0) {f : T → T'} (hf : Function.Injective f) {t0 : T}
     (h0 : f t0 = μ0) : (L.comap f).Is t0 where
@@ -234,7 +234,7 @@ structure RealDat3.ReducedWeakCharacterisation {A3 : FamIn3 D.what₂.LL G Pl0 I
   allPl : R.AllPlaces
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.base, h.inert, h.fullY, h.fullX, h.fullP, h.allPl⟩`.
+Supply the required witnesses or components.
 -/
 theorem RealDat3.reduced_weak_of_weak_characterisation {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {R : RealDat3 D A3 Ks} {F : Face3 D A3}
     (h : R.WeakCharacterisation F) : R.ReducedWeakCharacterisation F :=
@@ -247,16 +247,14 @@ structure RealDat.ExLift {A : FamIn D.what₂.LL G Pl0 T' D.R.m} (R : RealDat D 
     ∃ y, R.PIoP i y
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun k hk _ => h1 k hk, fun _ => h2, fun i _ => h3 i⟩`.
+Supply the required witnesses or components.
 -/
 theorem RealDat.exLift_of_ex {A : FamIn D.what₂.LL G Pl0 T' D.R.m} {R : RealDat D A Ks} (f : T → T') (h1 : R.ex_ItY) (h2 : R.ex_ItX)
     (h3 : R.ex_ioP) : R.ExLift f :=
   ⟨fun k hk _ => h1 k hk, fun _ => h2, fun i _ => h3 i⟩
 
 /- English proof (translation)
-Use `⟨fun k hk ⟨y, hy⟩ => ⟨y, fun t => ?_⟩, fun ⟨y, hy⟩ => ⟨y, fun t => ?_⟩, fun i ⟨y, hy⟩ => ⟨y, fun t => ?_⟩⟩` and prove the remaining obligations. Take `⟨s, rfl⟩` from `hs t`. Conclude with `hy s`. Take `⟨s, rfl⟩` from `hs t`. Conclude with `hy s`.
-
-Take `⟨s, rfl⟩` from `hs t`. Conclude with `hy s`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem RealDat.exLift_of_surj {A : FamIn D.what₂.LL G Pl0 T' D.R.m} {R : RealDat D A Ks} {f : T → T'} (hs : Function.Surjective f) :
     R.ExLift f := by
@@ -268,11 +266,11 @@ theorem RealDat.exLift_of_surj {A : FamIn D.what₂.LL G Pl0 T' D.R.m} {R : Real
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Take `⟨⟨hlev, hgrp, hfam, hmod, hch, hth⟩, hin, hY, hX, hP, hall⟩` from `h`. Use `⟨⟨LevCh.comap_is hlev hf h0, ?_, ?_, ?_, ?_, ?_⟩, ?_, fun t k hk => hY (f t) k hk, fun t => hX (f t), fun i t => hP i (f t), hall⟩` and prove the remaining obligations. Conclude with `⟨fun t q => hgrp.red_R (f t) q, fun i t q => hgrp.red_L i (f t) q, hgrp.levels, hgrp.record, hgrp.chiW⟩`. Take `⟨g, c0R, c0L, ht⟩` from `hfam.tie`. Conclude with `⟨⟨g, c0R, c0L, ht.comap f t0⟩, hfam.Sb, fun t PP => hfam.roots (f t) PP, hfam.pl_onto, fun t P => hfam.degR (f t) P, fun i t P => hfam.degL i (f t) P, fun i t P hP => hfam.muVal i (f t) P hP, fun P hP => hfam.etaVal P (by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hP' : P ∈ A3.A.ok (f t0)` using `hP`. Rewrite using `[h0] at hP')⟩` and apply the resulting hypothesis. Conclude with `⟨hmod.inf, hmod.vpos, hmod.cX, hmod.cV, hmod.prX, fun t => hmod.HX (f t), fun i t => hmod.HV i (f t), hmod.HE, hmod.HW, hmod.gE, hmod.gW, fun t x => hmod.jX (f t) x, fun i t x => hmod.jV i (f t) x, fun t j h2 => hmod.νY (f t) j h2, fun t => hmod.νY' (f t), hmod.ν0, fun t => hmod. …`. Use `⟨fun t k hk => hch.ωY (f t) k hk, fun t => hch.ωX (f t), fun t k hk => hch.vY (f t) k hk, fun t => hch.vX (f t), fun t k hk P => hch.ptY (f t) k hk P, fun t P => hch.ptX (f t) P, fun k hk => ?_, ?_, fun t k hk => hch.ioY (f t) k hk, fun t => hch.ioX (f t), fun t => hch.Th (f t)⟩` and prove the remaining obligations. Conclude with `⟨fun ⟨y, hy⟩ t => (hch.ItY k hk).1 (hex.ItY k hk ⟨y, hy⟩) (f t), fun hn => (hch.ItY k hk).2 fun ⟨y, hy⟩ => hn ⟨y, fun t => hy (f t)⟩⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 
-Conclude with `⟨fun ⟨y, hy⟩ t => hch.ItX.1 (hex.ItX ⟨y, hy⟩) (f t), fun hn => hch.ItX.2 fun ⟨y, hy⟩ => hn ⟨y, fun t => hy (f t)⟩⟩`. Use `⟨fun i t => hth.ωP i (f t), fun i t => hth.vP i (f t), fun i t P => hth.pt_theta i (f t) P, fun i => ?_, fun i t => hth.thF i (f t), fun i t => hth.thG i (f t)⟩` and prove the remaining obligations. Conclude with `⟨fun ⟨y, hy⟩ t => (hth.ioP i).1 (hex.ioP i ⟨y, hy⟩) (f t), fun hn => (hth.ioP i).2 fun ⟨y, hy⟩ => hn ⟨y, fun t => hy (f t)⟩⟩`. Conclude with `⟨⟨hin.tie.plI_inj, fun t Q => hin.tie.okI (f t) Q⟩, hin.onto, fun t => hin.hR (f t), fun i t => hin.hL i (f t), hin.SF⟩`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem RealDat3.reduced_weak_characterisation_comap {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T' D.R.m} {R : RealDat3 D A3 Ks} {F : Face3 D A3}
     (h : R.ReducedWeakCharacterisation F) {f : T → T'} (hf : Function.Injective f) {t0 : T} (h0 : f t0 = A3.A.μ0) (hex : R.toRealDat.ExLift f)
@@ -322,7 +320,7 @@ def tupFIncl {TU TU' : Finset (Tup X.F X.E X.K S)} (hs : TU ⊆ TU') (τ : TupF 
   ⟨τ.1, τ.2.imp id fun h => hs h⟩
 
 /- English proof (translation)
-Introduce `a b h`. Take `⟨a, ha⟩` from `a`. Take `⟨b, hb⟩` from `b`. Establish `h1 : a = b` using `congrArg Subtype.val h`. Substitute `h1` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
 Both sides reduce to the same expression.
 -/

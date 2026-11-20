@@ -27,11 +27,11 @@ open GlobalTheory.CommutatorPairing GlobalTheory.BoxPhi
 variable {S : Scheme.{0}} {j : ℕ} {A A' : PolAV S} (pA : IsPowPolAV A' A j) {k : ℤ} {T : Over S}
 
 /- English proof (translation)
-Establish `hP : ∀ i, translPt A'.A x ≫ pA.pr i = T ◁ pA.pr i ≫ translPt A.A (θ i).pt` using `fun i => by`. Use `pA.hom i` as an intermediate fact. Rewrite using `[hθ, BoxTheta.translPt_hom]`. Take `⟨u, hu, hv⟩` from `exists_box_gen (pr := fun i => (pA.pr i).left) A.isLB A'.isLB pA.w pA.w_gen (K := Fin 2) (φ' := ![(snd T A'.A).left, (translPt A'.A x).left]) (φ := fun i => ![(snd T A.A).left, (translPt A.A (θ i).pt).left]) (ε := ![k, -k]) (p := fun i => (T ◁ pA.pr i).left) (fun i a => by fin_ca …`. Conclude with `congrArg (fun q => q.left) (whiskerLeft_snd T (pA.pr i)).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrArg (fun q => q.left) (hP i)) (fun i => (θ i).φ) (fun i => (θ i).isGen)`. Use `⟨⟨x, u, hu⟩, rfl, fun Z t a z J J' hJ hJ' => ?_⟩` and prove the remaining obligations. Establish `e` using `hv _ (lift t a).left z J J' hJ hJ'`. Rewrite `e` using `[prod_theta x t a (om pA.w z J J')]`. Use `e.trans (Finset.prod_congr rfl fun i _ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← Over.comp_left, lift_whiskerLeft]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem exists_box_theta (x : T ⟶ A'.A) (θ : Fin j → ThetaGrp A.A A.L k T) (hθ : ∀ i, (θ i).pt = x ≫ pA.pr i) :
     ∃ θ' : ThetaGrp A'.A A'.L k T, θ'.pt = x ∧ ∀ (Z : Over S) (t : Z ⟶ T) (a : Z ⟶ A'.A) (z : Z.left) (J J'),
@@ -56,13 +56,13 @@ theorem exists_box_theta (x : T ⟶ A'.A) (θ : Fin j → ThetaGrp A.A A.L k T) 
   rfl
 
 /- English proof (translation)
-Use `A'.isAb.comm` as an intermediate fact. Take `⟨bx, ex, vx⟩` from `exists_box_theta pA θx'.pt θx hx`. Take `⟨by', ey, vy⟩` from `exists_box_theta pA θy'.pt θy hy`. Rewrite using `[commVal_indep hG A'.isAb A'.isLB θx' θy' bx by' t t (by rw [ex]) (by rw [ey]) a z J' hJ']`. Establish `m : ∀ (x : T ⟶ A'.A) (i), ((t ≫ x) * a) ≫ pA.pr i = (t ≫ x ≫ pA.pr i) * (a ≫ pA.pr i)` using `fun x i => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `pA.hom i` as an intermediate fact. Rewrite using `[MonObj.mul_comp, Category.assoc]`. Establish `e₁` using `vx Z t a z J J' hJ hJ'`. Establish `e₂` using `vy Z t ((t ≫ θx'.pt) * a) z J J' hJ hJ'`. Establish `e₃` using `vy Z t a z J J' hJ hJ'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₄` using `vx Z t ((t ≫ θy'.pt) * a) z J J' hJ hJ'`. Rewrite `e₂` using `[mul_left_comm (t ≫ θy'.pt)]`. Simplify using `only [m, ← hx, ← hy] at e₂ e₄`. Simplify using `only [commVal, Finset.prod_mul_distrib, Finset.prod_inv_distrib, ← e₁, ← e₂, ← e₃, ← e₄, ex, ey, zpow_neg]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem commVal_pow (hG : GlobalFnsSt) (θx' θy' : ThetaGrp A'.A A'.L k T) (θx θy : Fin j → ThetaGrp A.A A.L k T)
     (hx : ∀ i, (θx i).pt = θx'.pt ≫ pA.pr i) (hy : ∀ i, (θy i).pt = θy'.pt ≫ pA.pr i)
@@ -87,11 +87,9 @@ theorem commVal_pow (hG : GlobalFnsSt) (θx' θy' : ThetaGrp A'.A A'.L k T) (θx
   abel
 
 /- English proof (translation)
-Introduce `p`. Establish `h' : ∀ i, (∃ θx θy : ThetaGrp A.A A.L k (overRes ⊤), θx.pt = overResι ⊤ ≫ x ≫ pA.pr i ∧ θy.pt = overResι ⊤ ≫ y ≫ pA.pr i) ∧ ∀ θx θy : ThetaGrp A.A A.L k (overRes ⊤), θx.pt = overResι ⊤ ≫ x ≫ pA.pr i → θy.pt = overResι ⊤ ≫ y ≫ pA.pr i → CommIsOf A.A A.L k θx θy (unitRes ⊤ (c i))` using `fun i => by`. Take `⟨V, hV, H⟩` from `h i p`. Take `rfl : V = ⊤` from `top_le_iff.1 fun q _ => by rw [Subsingleton.elim q p]; exact hV`. Conclude with `H`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `choose θx θy hx hy using fun i => (h' i).1`. Take `⟨bx, ex, -⟩` from `exists_box_theta pA (overResι ⊤ ≫ x) θx (fun i => by rw [hx, Category.assoc])`. Take `⟨by', ey, -⟩` from `exists_box_theta pA (overResι ⊤ ≫ y) θy (fun i => by rw [hy, Category.assoc])`. Use `⟨⊤, trivial, ⟨bx, by', ex, ey⟩, fun θx' θy' ex' ey' => (commIsOf_iff A'.isLB _ _ _).2 fun Z t a z J' hJ' => ?_⟩` and prove the remaining obligations. Use `choose J hJ using fun χ : Z.left ⟶ A.A.left => exists_chart A.isLB (χ z)`.
-
-Rewrite using `[commVal_pow pA hG θx' θy' θx θy (fun i => by rw [hx, ex', Category.assoc]) (fun i => by rw [hy, ey', Category.assoc]) t a z hJ hJ']`. Use `(Finset.prod_congr rfl fun i _ => (commIsOf_iff A.isLB _ _ _).1 ((h' i).2 _ _ (hx i) (hy i)) Z t _ z J hJ).trans ?_` and prove the remaining obligations. Conclude with `(map_prod _ _ _).symm.trans (congrArg _ (map_prod (Units.map (⊤ : T.left.Opens).ι.appTop.hom.toMonoidHom) c _).symm)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem weilIs_pow (hG : GlobalFnsSt) [Subsingleton T.left] (x y : T ⟶ A'.A) (c : Fin j → Γ(T.left, ⊤)ˣ)
     (h : ∀ i, WeilIs A.A A.L k (x ≫ pA.pr i) (y ≫ pA.pr i) (c i)) : WeilIs A'.A A'.L k x y (∏ i, c i) := by
@@ -114,7 +112,7 @@ theorem weilIs_pow (hG : GlobalFnsSt) [Subsingleton T.left] (x y : T ⟶ A'.A) (
   exact (map_prod _ _ _).symm.trans (congrArg _ (map_prod (Units.map (⊤ : T.left.Opens).ι.appTop.hom.toMonoidHom) c _).symm)
 
 /- English proof (translation)
-Introduce `hL _ _ _ R _ _ j A A' pA F _ _ k _ x x' c h`. Establish `: Subsingleton (TFK (R` using `R) F).left := inferInstanceAs (Subsingleton (Spec (CommRingCat.of F)))`. Establish `e : unitOn (∏ i, c i) = ∏ i, unitOn (c i)` using `map_prod (Units.map _) _ _`. Rewrite using `[e]`. Conclude with `weilIs_pow pA hL.globalFns x x' (fun i => unitOn (c i)) h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weilIs_pow_field : Laws → Laws2 → Laws4 → TwistBaseChangeStatement → ∀ (R : Type) [CommRing R] [IsDomain R] (j : ℕ) (A A' : PolAV (Spec (CommRingCat.of (FractionRing R)))) (pA : IsPowPolAV A' A j) (F : Type) [Field F] [Algebra (FractionRing R) F] (k : ℕ), 1 ≤ k → ∀ (x x' : TFK (R := R) F ⟶ A'.A) (c : Fin j → Fˣ), (∀ i, WeilIs A.A A.L k (x ≫ pA.pr i) (x' ≫ pA.pr i) (unitOn (c i))) → WeilIs A'.A A'.L k x x' (unitOn (∏ i, c i)) := by
   intro hL _ _ _ R _ _ j A A' pA F _ _ k _ x x' c h

@@ -14,27 +14,27 @@ namespace UpperTheory.V.Z.Kato.Joint.ThetaLinearAlt
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Rewrite using `[IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] (Qbar l), norm_algebraMap']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem norm_zl (c : ℤ_[l]) : ‖algebraMap ℤ_[l] (Qbar l) c‖ = ‖c‖ := by
   rw [IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] (Qbar l), norm_algebraMap']
   rfl
 
 /- English proof (translation)
-The claim follows from `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le hx hy)`.
+A detailed English derivation is pending.
 -/
 private theorem nadd {r : ℝ} {x y : Qbar l} (hx : ‖x‖ ≤ r) (hy : ‖y‖ ≤ r) : ‖x + y‖ ≤ r :=
   (IsUltrametricDist.norm_add_le_max _ _).trans (max_le hx hy)
 
 /- English proof (translation)
-Rewrite using `[norm_mul]`. Conclude with `(mul_le_of_le_one_left (norm_nonneg _) hx).trans hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem nmul {r : ℝ} {x y : Qbar l} (hx : ‖x‖ ≤ 1) (hy : ‖y‖ ≤ r) : ‖x * y‖ ≤ r := by
   rw [norm_mul]
   exact (mul_le_of_le_one_left (norm_nonneg _) hx).trans hy
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `Ideal.mem_span_singleton'.1 (PadicInt.appr_spec n c)`. Establish `h` using `congrArg (algebraMap ℤ_[l] (Qbar l)) hz`. Simplify using `only [map_mul, map_pow, map_natCast, map_sub] at h`. Rewrite using `[norm_sub_rev, ← h]`. Conclude with `nmul (by rw [norm_zl]; exact z.norm_le_one) le_rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem nappr (n : ℕ) (c : ℤ_[l]) :
     ‖((c.appr n : ℕ) : Qbar l) - algebraMap ℤ_[l] (Qbar l) c‖ ≤ ‖((l : ℕ) : Qbar l) ^ n‖ := by
@@ -45,23 +45,21 @@ private theorem nappr (n : ℕ) (c : ℤ_[l]) :
   exact nmul (by rw [norm_zl]; exact z.norm_le_one) le_rfl
 
 /- English proof (translation)
-Set `e` to `Module.Free.chooseBasis ℤ_[l] B`. Set `g : B →ₗ[ℤ_[l]] (ℕ → Qbar l)` to `e.constr ℤ_[l] (fun k => f (e k))`. Establish `h0 : ∀ i, ‖f 0 i‖ ≤ r` using `fun i => by simpa using hf 0 B.zero_mem 0 B.zero_mem 0 0 i`. Establish `hr : 0 ≤ r` using `(norm_nonneg _).trans (h0 0)`. Establish `hg : ∀ b : B, ∀ i, ‖g b i - f b i‖ ≤ r`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `b i`. Establish `hb : b ∈ Submodule.span ℤ_[l] (Set.range e)` using `by rw [e.span_eq]; trivial`. Proceed by induction on `hb using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨k, rfl⟩` from `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Simplify `hr` using `[g]`. Consider the case `zero => simpa using h0 i`. Consider the case `add x y _ _ hx hy`. Establish `h` using `hf x x.2 y y.2 1 1 i`. Simplify using `only [one_smul, map_one, one_mul] at h`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[← norm_neg]`. Use `nadd (nadd hx hy) h` as an intermediate fact. Use `this using 2` and compare the differences between its conclusion and the goal. Simplify using `only [map_add, Pi.add_apply, Submodule.coe_add]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Consider the case `smul c x _ hx`. Establish `h` using `hf x x.2 0 B.zero_mem c 0 i`. Simplify using `only [zero_smul, add_zero, map_zero, zero_mul] at h`. Rewrite `h` using `[← norm_neg]`. Use `nadd (nmul (x := algebraMap ℤ_[l] (Qbar l) c) (by rw [norm_zl]; exact c.norm_le_one) hx) h` as an intermediate fact.
+Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `this using 2` and compare the differences between its conclusion and the goal. Simplify using `only [map_smul, Pi.smul_apply, Submodule.coe_smul, Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree. Use `haveI : Module.IsTorsionFree ℤ_[l] (Qbar l) := by`. Use `(Module.isTorsionFree_iff_algebraMap_injective).2 ?_` and prove the remaining obligations.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Use `norm_zl a` as an intermediate fact. Rewrite `this` using `[ha, norm_zero]`. Conclude with `norm_eq_zero.1 this.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : Module.Flat ℤ_[l] (Qbar l) := inferInstance`. Establish `hinj : Function.Injective (B.subtype.baseChange (Qbar l))` using `Module.Flat.lTensor_preserves_injective_linearMap (M := Qbar l) B.subtype B.injective_subtype`. Take `⟨s, hs⟩` from `LinearMap.exists_leftInverse_of_injective (B.subtype.baseChange (Qbar l)) (LinearMap.ker_eq_bot.2 hinj)`. Use `⟨(g.liftBaseChange (Qbar l)) ∘ₗ s, fun b hb i => ?_⟩` and prove the remaining obligations. Establish `h1 : s ((1 : Qbar l) ⊗ₜ[ℤ_[l]] b) = (1 : Qbar l) ⊗ₜ[ℤ_[l]] (⟨b, hb⟩ : B)` using `LinearMap.congr_fun hs ((1 : Qbar l) ⊗ₜ[ℤ_[l]] (⟨b, hb⟩ : B))`.
-
-Simplify `hg ⟨b, hb⟩ i` using `[h1]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem extend {M : Type} [AddCommGroup M] [Module ℤ_[l] M] (B : Submodule ℤ_[l] M) [Module.Free ℤ_[l] B]
     (r : ℝ) (f : M → ℕ → Qbar l)
@@ -115,9 +113,9 @@ private theorem extend {M : Type} [AddCommGroup M] [Module ℤ_[l] M] (B : Submo
   simpa [h1] using hg ⟨b, hb⟩ i
 
 /- English proof (translation)
-Take `⟨⟨h0, h1⟩, h2⟩` from `Betti.isDiam_sgD (l := l) (d := 1) hN (Fact.out : l.Prime).ne_zero (Nat.coprime_one_left N)`. Use `⟨?_, h1⟩` and prove the remaining obligations. Establish `h3 : (⟨sgD N l 1, h0⟩ : CongruenceSubgroup.Gamma0 N) ∈ CongruenceSubgroup.Gamma1' N`. Rewrite using `[CongruenceSubgroup.Gamma1_mem']`. Simplify `h2` using `[en, CongruenceSubgroup.Gamma0Map]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `(CongruenceSubgroup.Gamma1_mem N _).2 ((CongruenceSubgroup.Gamma1_to_Gamma0_mem _).1 h3)`.
+A detailed English derivation is pending.
 -/
 private theorem sgD_one_mem {N : ℕ} (hN : N ≠ 0) : sgD N l 1 ∈ Gam N l := by
   obtain ⟨⟨h0, h1⟩, h2⟩ := Betti.isDiam_sgD (l := l) (d := 1) hN (Fact.out : l.Prime).ne_zero (Nat.coprime_one_left N)
@@ -128,7 +126,7 @@ private theorem sgD_one_mem {N : ℕ} (hN : N ≠ 0) : sgD N l 1 ∈ Gam N l := 
   exact (CongruenceSubgroup.Gamma1_mem N _).2 ((CongruenceSubgroup.Gamma1_to_Gamma0_mem _).1 h3)
 
 /- English proof (translation)
-Proceed by induction on `hb using Submodule.span_induction with`. Consider the case `mem x hx => exact hx.2 γ hγ`. Consider the case `zero => exact map_zero _`. Consider the case `add x y _ _ hx hy => rw [map_add, hx, hy]`. Consider the case `smul c x _ hx => rw [map_smul, hx]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 private theorem act_fix {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} (X : Tower Ω ε) {N w : ℕ} {γ : SL(2, ℤ)}
     (hγ : γ ∈ Gam N l) {b : X.Fn l} (hb : b ∈ X.B N l w) : X.act l (γ : Matrix (Fin 2) (Fin 2) ℤ) b = b := by
@@ -142,17 +140,15 @@ end UpperTheory.V.Z.Kato.Joint.ThetaLinearAlt
 
 open UpperTheory.V.Z.Kato.Joint.ThetaLinearAlt in
 /- English proof (translation)
-Introduce `l _ Ω _ _ _ ε X A N w j hS n`. Take `⟨hA, h2, hlN, h5, hw, hj⟩` from `hS`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Establish `hcop : Nat.Coprime N l` using `((Nat.Prime.coprime_iff_not_dvd Fact.out).2 hlN).symm`. Establish `hhol : ∃ φ : ℂ → ℂ, DifferentiableOn ℂ φ Hs ∧ X.an X.jK = (φ : Mero)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨φ, h1, h2⟩` from `X.j_hol`. Conclude with `⟨φ, h2, h1⟩`. Use `haveI := (GlobalTheory.T.kummerBettiModule_free_finite ε X ε.injective hhol N l w h2 h5 hcop hw).1`. Establish `hth : ∀ b ∈ X.B N l w, IsThB X A N l n b (thN X A N l n 1 b)`. Introduce `b hb`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h` using `(GlobalTheory.T.theta_lattice_diamond_action Ω ε X A N l X.j_hol h2 hlN h5 hA n w 1 hw (Nat.coprime_one_left N) b hb).1`. Rewrite `h` using `[act_fix X (sgD_one_mem (by omega)) hb]`. Then use the resulting hypothesis. Establish `hint : ∀ b ∈ X.B N l w, ∀ i, ‖th X A N j n b i‖ ≤ 1`. Introduce `b hb i`. Take `⟨f, -, -, -, h, -⟩` from `hth b hb`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hj _ (h _)`. Use `extend (X.B N l w) ‖((l : ℕ) : Qbar l) ^ n‖ (th X A N j n) ?_` and prove the remaining obligations. Introduce `b hb b' hb' c c' i`. Establish `hm : c • b + c' • b' ∈ X.B N l w` using `add_mem (Submodule.smul_mem _ _ hb) (Submodule.smul_mem _ _ hb')`. Take `⟨z, hz, h⟩` from `GlobalTheory.T.cuspFunctionalValueModPrimePow_unique_oddWeight Ω ε X A N l X.j_hol h2 hlN h5 hA n w hw _ hm _ _ (hth _ hm) (GlobalTheory.T.theta_basis_linear_combination Ω ε X A N l n w b b' hb hb' c c' _ _ (hth b hb) (hth b' hb')) ((i : ℚ) / ((1 : ℕ) : ℚ))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1` using `congrArg j h`. Simplify using `only [HahnSeries.coeff_add, HahnSeries.coeff_smul, smul_eq_mul, map_sub, map_add, map_mul, map_pow, map_natCast] at h1`. Establish `h3 : ‖j z * ((l : ℕ) : Qbar l) ^ n‖ ≤ ‖((l : ℕ) : Qbar l) ^ n‖` using `nmul (hj z hz) le_rfl`. Use `nadd (nadd h3 (nmul (hint b hb i) (nappr n c))) (nmul (hint b' hb' i) (nappr n c'))` as an intermediate fact. Use `this using 2` and compare the differences between its conclusion and the goal.
-
-Simplify using `only [th, seqN]`. Take the linear combination `h1`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Kato.Joint.thLin :
     UpperTheory.V.Z.Kato.Joint.ThLin := by

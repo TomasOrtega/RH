@@ -9,24 +9,24 @@ namespace GroundTheory.Heights₂.Heights.Targets
 open ReciprocityTheory.ChartRestriction.G.Geo Filter
 
 /- English proof (translation)
-Introduce `_ hs c hc` and use `(mem_integralClosure_iff _ _).mpr (isIntegral_algebraMap (R := chartRingZ y c) (A := Ω) (x := ⟨_, hs c hc⟩))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem chartLat_le_chartLatNm {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω]
     (y : (Σ k, ι k) → Ω) (a : K → ℤ) (τ : ℕ) : chartLat y a τ ≤ chartLatNm y a τ := fun _ hs c hc =>
   (mem_integralClosure_iff _ _).mpr (isIntegral_algebraMap (R := chartRingZ y c) (A := Ω) (x := ⟨_, hs c hc⟩))
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ y A P0 II hII hP hB _ hS hC _ _`. Use `set Q := IsSmallH (mCoordIdeal y) y A`. Use `set La := chartLat y A.a`. Use `set T := II K ι (mCoordIdeal y) (0 + 1) (fun _ => A)`. Take `⟨C, hC⟩` from `hL K ι Ω y A II hII hP hB hS.1 hC`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨C', hC'⟩` from `(hPk K ι Ω y 0 A La hP hB hS.1 fun τ => chartLat_le_chartLatNm y A.a τ).2`. Establish `h0 : ∀ τ, 0 ≤ smallSectionCount Q La τ` using `fun τ => Real.log_natCast_nonneg _`. Establish `hf : (fun k : ℕ => smallSectionCount Q La (1 * k) / (((1 * k : ℕ) : ℝ) ^ (0 + 1) / ((0 + 1).factorial : ℝ))) = fun k : ℕ => smallSectionCount Q La k / k`. Use function extensionality and compare the values at `k`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `arVolP`. Rewrite using `[hf]`. Establish `hC'0 : 0 ≤ C'` using `by simpa using (h0 0).trans (hC' 0)`. Establish `hbdd : IsBoundedUnder (· ≤ ·) atTop fun k : ℕ => smallSectionCount Q La k / k`. Use `⟨2 * C', eventually_map.mpr ((eventually_ge_atTop 1).mono fun k hk => ?_)⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hk' : (1 : ℝ) ≤ k` using `by exact_mod_cast hk`. Use `show smallSectionCount Q La k / k ≤ 2 * C'`. Rewrite using `[div_le_iff₀ (by linarith)]`. Establish `h1 : smallSectionCount Q La k ≤ C' * ((k : ℝ) + 1)` using `by simpa using hC' k`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `le_of_forall_sub_le fun ε hε => le_limsup_of_frequently_le ?_ hbdd` and prove the remaining obligations. Use `Eventually.frequently ((eventually_ge_atTop (⌈C / ε⌉₊ + 1)).mono fun k hk => ?_)` and prove the remaining obligations. Establish `hk1 : (1 : ℝ) ≤ k` using `by exact_mod_cast (Nat.le_add_left 1 _).trans hk`. Establish `hkC : C ≤ ε * k`. Establish `h1 : C / ε ≤ k` using `(Nat.le_ceil _).trans (by exact_mod_cast (Nat.le_succ _).trans hk)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite `h1` using `[div_le_iff₀ hε, mul_comm]`. Then use the resulting hypothesis. Establish `hτ : (k : ℝ) * T - C ≤ smallSectionCount Q La k` using `hC k ((Nat.le_add_left 1 _).trans hk)`. Rewrite using `[le_div_iff₀ (by linarith)]`. Use `show (T - ε) * k ≤ _`. Use the polynomial consequences of the given equalities and inequalities.
+A detailed English derivation is pending.
 -/
 theorem MoriwakiBigCurve.proof (hL : CurveCountLower.Statement)
     (hPk : HilbertSamuel.SmallPacking.Statement) : MoriwakiBigCurve.Statement := by

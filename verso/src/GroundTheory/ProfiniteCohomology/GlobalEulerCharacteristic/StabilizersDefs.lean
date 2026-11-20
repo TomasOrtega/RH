@@ -25,7 +25,7 @@ def gsRestrictGal : galUnramifiedOutside F Ω S →* (L ≃ₐ[F] L) :=
   AlgEquiv.restrictNormalHom L
 
 /- English proof (translation)
-Set `_ : Algebra L (maxUnramifiedOutside F Ω S)` to `(gsEmbedding hL).toRingHom.toAlgebra`. Establish `: IsScalarTower F L (maxUnramifiedOutside F Ω S)` using `IsScalarTower.of_algebraMap_eq fun a => ((gsEmbedding hL).commutes a).symm`. Conclude with `AlgEquiv.restrictNormal_commutes σ L l`.
+Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gsEmbedding_gsRestrictGal (σ : galUnramifiedOutside F Ω S) (l : L) :
     gsEmbedding hL (gsRestrictGal hL σ l) = σ (gsEmbedding hL l) := by
@@ -35,9 +35,7 @@ theorem gsEmbedding_gsRestrictGal (σ : galUnramifiedOutside F Ω S) (l : L) :
   exact AlgEquiv.restrictNormal_commutes σ L l
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl l`. Conclude with `(gsEmbedding_gsRestrictGal hL σ l).symm`. Introduce `h`. Use extensionality with `l`.
-
-Conclude with `(gsEmbedding hL).injective ((gsEmbedding_gsRestrictGal hL σ l).trans (h l))`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem gsRestrictGal_eq_iff (σ : galUnramifiedOutside F Ω S) (τ : L ≃ₐ[F] L) :
     gsRestrictGal hL σ = τ ↔ ∀ l : L, σ (gsEmbedding hL l) = gsEmbedding hL (τ l) := by
@@ -49,7 +47,7 @@ theorem gsRestrictGal_eq_iff (σ : galUnramifiedOutside F Ω S) (τ : L ≃ₐ[F
     exact (gsEmbedding hL).injective ((gsEmbedding_gsRestrictGal hL σ l).trans (h l))
 
 /- English proof (translation)
-Rewrite using `[gsRestrictGal_eq_iff, mem_gsOpenSubgroup_iff]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gsRestrictGal_eq_one_iff (σ : galUnramifiedOutside F Ω S) :
     gsRestrictGal hL σ = 1 ↔ σ ∈ gsOpenSubgroup S hL := by
@@ -57,14 +55,14 @@ theorem gsRestrictGal_eq_one_iff (σ : galUnramifiedOutside F Ω S) :
   rfl
 
 /- English proof (translation)
-The claim follows from `Subgroup.ext fun σ => (MonoidHom.mem_ker).trans (gsRestrictGal_eq_one_iff hL σ)`.
+A detailed English derivation is pending.
 -/
 theorem ker_gsRestrictGal :
     (gsRestrictGal hL).ker = (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside F Ω S)) :=
   Subgroup.ext fun σ => (MonoidHom.mem_ker).trans (gsRestrictGal_eq_one_iff hL σ)
 
 /- English proof (translation)
-Rewrite using `[← ker_gsRestrictGal hL]`. Conclude with `MonoidHom.normal_ker _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gsOpenSubgroup_normal :
     (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside F Ω S)).Normal := by
@@ -72,7 +70,7 @@ theorem gsOpenSubgroup_normal :
   exact MonoidHom.normal_ker _
 
 /- English proof (translation)
-Set `_ : Algebra L (maxUnramifiedOutside F Ω S)` to `(gsEmbedding hL).toRingHom.toAlgebra`. Establish `: IsScalarTower F L (maxUnramifiedOutside F Ω S)` using `IsScalarTower.of_algebraMap_eq fun a => ((gsEmbedding hL).commutes a).symm`. Conclude with `AlgEquiv.restrictNormalHom_surjective (F := F) (K₁ := L) (maxUnramifiedOutside F Ω S)`.
+Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gsRestrictGal_surjective : Function.Surjective (gsRestrictGal hL) := by
   let _ : Algebra L (maxUnramifiedOutside F Ω S) := (gsEmbedding hL).toRingHom.toAlgebra
@@ -102,14 +100,14 @@ def gsDecompGroup (v : S) : Subgroup (L ≃ₐ[F] L) :=
   ((gsRestrictGal hL).comp (gsFinFamily S ιs v).toMonoidHom).range
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_gsDecompGroup_iff (v : S) (τ : L ≃ₐ[F] L) :
     τ ∈ gsDecompGroup hL ιs v ↔ ∃ g, gsRestrictGal hL (gsFinFamily S ιs v g) = τ :=
   Iff.rfl
 
 /- English proof (translation)
-Rewrite using `[MonoidHom.map_range]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem map_range_gsQuotientGalEquiv
     [(gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside F Ω S)).Normal] (v : S) :
@@ -134,7 +132,7 @@ def gsRealDecompGroup (v : {v : InfinitePlace K.1 // v.IsReal}) : Subgroup (L.1 
   ((gsRestrictGal hL).comp (gsRealFamily S ιr v).toMonoidHom).range
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_gsRealDecompGroup_iff (v : {v : InfinitePlace K.1 // v.IsReal}) (τ : L.1 ≃ₐ[K.1] L.1) :
     τ ∈ gsRealDecompGroup S ιr hL v ↔ ∃ g, gsRestrictGal hL (gsRealFamily S ιr v g) = τ :=

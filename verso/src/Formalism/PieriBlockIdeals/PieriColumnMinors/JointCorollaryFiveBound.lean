@@ -13,7 +13,7 @@ namespace Formalism.CohomologicalDescent
 open Formalism.RankGapBounds.ChebyshevFactorialBounds
 
 /- English proof (translation)
-Unfold `IlInd Data.Icl`. Distinguish the cases in `h : ∃ y : ℤ, D.xlo τ ≤ y ∧ y ≤ D.xhi τ ∧ (l : ℤ) ∣ y - D.maxB τ`. Rewrite using `[if_pos h]`. Rewrite using `[if_neg h]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 lemma jw_Il_eq {ι : Type} (D : Data ι) (τ : ι) (l : ℕ) :
     IlInd l (D.xlo τ) (D.xhi τ) (D.maxB τ) = D.Icl τ l := by
@@ -23,7 +23,7 @@ lemma jw_Il_eq {ι : Type} (D : Data ι) (τ : ι) (l : ℕ) :
   · rw [if_neg h]
 
 /- English proof (translation)
-Rewrite using `[← jw_Il_eq]`. Unfold `IlInd`. Apply the tactic sequence `split_ifs <;> norm_num`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma jw_Icl_nonneg {ι : Type} (D : Data ι) (τ : ι) (l : ℕ) : 0 ≤ D.Icl τ l := by
   rw [← jw_Il_eq]
@@ -31,7 +31,7 @@ lemma jw_Icl_nonneg {ι : Type} (D : Data ι) (τ : ι) (l : ℕ) : 0 ≤ D.Icl 
   split_ifs <;> norm_num
 
 /- English proof (translation)
-Use `split_ifs`. Conclude with `le_min (le_min (Nat.cast_nonneg _) (Nat.cast_nonneg _)) (div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _))`. Conclude with `le_rfl`.
+A detailed English derivation is pending.
 -/
 lemma jw_gate_nonneg {ι : Type} (D : Data ι) (τ : ι) (l : ℕ) :
     (0 : ℝ) ≤ (if ((D.d0 τ l : ℕ) : ℤ) < Cor.DB D τ then

@@ -14,11 +14,11 @@ section SameUp
 variable {X : Fields} {n : ℕ} {ST SG Q : Finset (HeightOneSpectrum (𝓞 X.E))}
 
 /- English proof (translation)
-Establish `hs : DecoSet.SameOn SG p.1.1.deco (p.1.1.deco.up P q x)` using `DecoSet.sameOn_up _ P hP.ne (fun w hw => hP.sg ⟨w, hw⟩) q hx`. Establish `hb : (p.1.1.deco.up P q x).1.be = p.1.1.deco.1.be`. Unfold `DecoSet.up`. Use `split_ifs with h`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Both sides reduce to the same expression. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Distinguish the cases in `h : (∀ (w : Q) (z : Sp X.E n), p.1.1.1.2 w z ∈ (p.1.1.deco.up P q x).1.at w.1 ↔ z ∈ stdAt X.E n w.1) ∧ p.1.2 ∈ y.ys (p.1.1.deco.up P q x).1.N`. Establish `e : p.mv (p.1.1.deco.up P q x) = ⟨(⟨(p.1.1.deco.up P q x, p.1.1.1.2), h.1⟩, p.1.2), h.2⟩` using `dif_pos h`. Rewrite using `[e]`. Conclude with `⟨rfl, rfl, fun w => hs w.1 w.2, hb⟩`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `e : p.mv (p.1.1.deco.up P q x) = p` using `dif_neg h`. Rewrite using `[e]`. Conclude with `SameG.refl p`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SameG.up' {y : Ys X n} (p : PtY ST SG Q y) (P : ST) (hP : MoveHyp ST SG P) (q : 𝓞 X.E) {x : Sp X.E n}
     (hx : x ∈ p.1.1.deco.1.N) : SameG p (p.mv (p.1.1.deco.up P q x)) := by
@@ -43,11 +43,11 @@ end SameUp
 variable {B : Base} {X : PreX B.toPre} (I : TC B X)
 
 /- English proof (translation)
-Distinguish the cases in `hj : i + 1 = B.R.m`. Use `GStep.prefRep_eq_of_normal (I.stp0 u a i) c.1 (fun q' : (I.stp0 u a i).D c.1 => cosetIn q') (I.pref u a i c.1) (GStep.prefRep_normal (I.stp0 u a i) c.1 _ _ (fun p hp => hp.2.1 hj) (I.pref_of_normalFor u a i hj c.1)) c.2 _ fun h => ?_` and prove the remaining obligations. Conclude with `cosetIn_eq_of_sameG hX hPr (SameG.smul h (SameG.up' ((I.stp u a i).rep c) v (moveHyp_of_ok hPr u v) _ (Quotient.out x).2))`. Establish `h0 : ∀ q : PtAt B.R I.sel (I.tup a) (I.cst a) u i, cosetIn q = fun _ => ∅`. Introduce `q`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `P`. Establish `hq : q.1.2 = ∅`. Use `q.2` as an intermediate fact. Rewrite `this` using `[ysAt_ys_of_ne I.sel (I.tup a) (I.cst a) hj]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `z`. Simplify using `[cosetIn, hq]`. Rewrite using `[h0, h0]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem TC.cosetIn_rep_up (hX : B.fields.Ok) (hPr : (B.primes X).Ok) (u : B.Word) (a : I.ι) (i : ℕ) (v : (B.primes X).vT u)
     (c : (I.stp u a i).Cl) (x : ((I.atIn u a).A i).lv v c) :
@@ -74,7 +74,7 @@ end GlobalTheory.Mem.Col2
 namespace GlobalTheory.Mem.Col2
 
 /- English proof (translation)
-Introduce `B X I _ _ l Z u a i hi bad Ch chOf K hR v c x _`. Take `⟨k, hk⟩` from `hR`. Establish `hX : B.fields.Ok` using `(base_fields_primes_ok B X).1`. Conclude with `(hk.key ((I.fm l u a).up i v c x) c).2 ⟨rfl, I.cosetIn_rep_up hX l.pr u a i v c x⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem TC.up_keeps_chart : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) (a : I.ι) (i : ℕ) (hi : i ≤ B.R.m), ∀ {bad : Set (HeightOneSpectrum (𝓞 B.host.F))} {Ch : Type} (chOf : (I.stp u a i).Cl → Ch) (K : ∀ β : Ch, LevelChart (I.rec7 l Z) (B.T u) bad i hi (fun c : {c // chOf c = β} => (I.chain l u a).stab i c.1) (fun c => latCrd (I.rec7 l Z) i hi (I.latAt u a i c.1))), I.ReadsK l Z u a i hi chOf K → ∀ (v : (I.atT l u a).vT) (c : (I.chain l u a).cls i) (x : (I.fm l u a).lv i v c), (I.fm l u a).fv i v c x = 1 → chOf ((I.fm l u a).up i v c x) = chOf c := by
   intro B X I _ _ l Z u a i hi bad Ch chOf K hR v c x _

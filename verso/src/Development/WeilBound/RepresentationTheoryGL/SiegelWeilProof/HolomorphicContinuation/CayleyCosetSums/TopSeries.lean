@@ -15,17 +15,15 @@ variable {m n : ℕ} {e : ℤ} {G : Type} [Group G] [TopologicalSpace G] [IsTopo
   {Ê : ℂ → G → ℂ} {t : ℝ}
 
 /- English proof (translation)
-Set `S : Set (M2 n)` to `{x | InG x ∧ xᴴ * x = 1}`. Establish `hSc : IsClosed S`. Use `IsClosed.inter ?_ ?_` and prove the remaining obligations. Conclude with `isClosed_eq (((continuous_id.matrix_conjTranspose).matrix_mul continuous_const).matrix_mul continuous_id) continuous_const`. Conclude with `isClosed_eq ((continuous_id.matrix_conjTranspose).matrix_mul continuous_id) continuous_const`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hBox : IsCompact (Set.pi Set.univ fun _ : Fin n ⊕ Fin n => Set.pi Set.univ fun _ : Fin n ⊕ Fin n => Metric.closedBall (0 : ℂ) 1)` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_closedBall 0 1`. Establish `hSsub : S ⊆ (Set.pi Set.univ fun _ : Fin n ⊕ Fin n => Set.pi Set.univ fun _ : Fin n ⊕ Fin n => Metric.closedBall (0 : ℂ) 1)`. Introduce `x hx i _ j _`. Establish `hu : x ∈ Matrix.unitaryGroup (Fin n ⊕ Fin n) ℂ` using `Matrix.mem_unitaryGroup_iff'.mpr hx.2`. Simplify using `using entry_norm_bound_of_unitary hu i j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hS : IsCompact S` using `hBox.of_isClosed_subset hSc hSsub`. Use `haveI : CompactSpace S := isCompact_iff_compactSpace.mp hS`. Set `φ : S → GR n` to `fun x => ⟨⟨x.1, x.1ᴴ, mul_eq_one_comm.mp x.2.2, x.2.2⟩, x.2.1⟩`. Establish `hφ : Continuous φ`. Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `Units.continuous_iff.mpr ⟨continuous_subtype_val, ?_⟩` and prove the remaining obligations. Conclude with `continuous_subtype_val.matrix_conjTranspose`. Establish `hR : (KR n : Set (GR n)) = Set.range φ`. Use extensionality with `Y`. Prove the components needed by the constructor for the conclusion.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `hY`. Use `⟨⟨mR Y, hY⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Both sides reduce to the same expression.
-
-Introduce and unpack `⟨x, rfl⟩`. Conclude with `x.2`. Rewrite using `[hR]`. Conclude with `isCompact_range hφ`.
+Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isCompact_KR' (n : ℕ) : IsCompact ((KR n : Set (GR n))) := by
   classical
@@ -66,45 +64,41 @@ private theorem isCompact_KR' (n : ℕ) : IsCompact ((KR n : Set (GR n))) := by
   exact isCompact_range hφ
 
 /- English proof (translation)
-Use `haveI : CompactSpace (KR n) := isCompact_iff_compactSpace.mp (isCompact_KR' n)`. Use `set A : GR n := grOf a ha with hA`. Use `set B : GR n := grOf b hb with hB`. Establish `hmul : ∀ Y₁ Y₂ : GR n, mR (Y₁ * Y₂) = mR Y₁ * mR Y₂` using `fun _ _ => by simp [mR]`. Establish `hY : ∀ (w : GR n) (k : KR n) (s : Fin n → Fin n → ℝ), mR w * ιK n k * a * nU (herm s) * b = mR (w * ((k : GR n) * A * nG s * B))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Introduce `w k s`. Simplify using `only [hmul, ιK_apply, mR_nG, hA, hB, mR_grOf, mul_assoc]`. Take `⟨hbd, hE⟩` from `h.far z hz`. Set `P : KR n × (Fin n → Fin n → ℝ) → G` to `fun p => g * ι (y * ((p.1 : GR n) * A * nG p.2 * B))`. Establish `hWc : Continuous fun p : KR n × (Fin n → Fin n → ℝ) => (p.1 : GR n) * A * nG p.2 * B` using `(((continuous_subtype_val.comp continuous_fst).mul continuous_const).mul (continuous_nG.comp continuous_snd)).mul continuous_const`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hP : Continuous P` using `continuous_const.mul (h.ιc.comp (continuous_const.mul hWc))`. Establish `hKc : IsCompact (P '' (Set.univ ×ˢ tsupport ψ))` using `(isCompact_univ.prod hψc).image hP`. Take `⟨u, hu, hub⟩` from `hbd _ hKc`. Establish `hterm : ∀ q (Y : GR n), GlobalTheory.Eis.term Pp Γ (fun x : G => ((Ht x : ℝ) : ℂ) ^ (z - s₀) * f x) (g * ι Y) q = C q * fz m e (z - s₀) (mR (y₀ q * Y))`. Introduce `q Y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← hyC q Y]`. Simplify using `only [GlobalTheory.Eis.term, trm, mul_assoc]`. Establish `hBd : ∀ q (k : KR n) s, s ∈ tsupport ψ → ‖C q * fz m e (z - s₀) (mR (y₀ q * (y * ((k : GR n) * A * nG s * B))))‖ ≤ |u q|`. Introduce `q k s hs`. Establish `h1` using `hub (P (k, s)) ⟨(k, s), ⟨Set.mem_univ _, hs⟩, rfl⟩ q`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[hterm]`. Conclude with `h1.trans (le_abs_self _)`. Establish `hG : ∀ q, Continuous fun p : KR n × (Fin n → Fin n → ℝ) => fz m e (z - s₀) (mR (y₀ q * (y * ((p.1 : GR n) * A * nG p.2 * B))))` using `fun q => (continuous_fzG (m := m) (e := e) hS (z - s₀)).comp (continuous_const.mul (continuous_const.mul hWc))`. Establish `hfun : ∀ q (k : KR n) s, fz m e (z - s₀) (mR (y₀ q * y) * ιK n k * a * nU (herm s) * b) = fz m e (z - s₀) (mR (y₀ q * (y * ((k : GR n) * A * nG s * B))))`. Introduce `q k s`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hY, mul_assoc]`. Establish `hM : ∀ q, ∃ M : ℝ, ∀ (k : KR n) s, s ∈ tsupport ψ → ‖fz m e (z - s₀) (mR (y₀ q * (y * ((k : GR n) * A * nG s * B))))‖ ≤ M`. Introduce `q`. Take `⟨M, hM⟩` from `(isCompact_univ.prod hψc).exists_bound_of_continuousOn (hG q).continuousOn`. Conclude with `⟨M, fun k s hs => hM (k, s) ⟨Set.mem_univ _, hs⟩⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hψi : Integrable (fun s => ‖ψ s‖)` using `(hψ.integrable_of_hasCompactSupport hψc).norm`. Establish `hzero : ∀ s, s ∉ tsupport ψ → ψ s = 0` using `fun s hs => image_eq_zero_of_notMem_tsupport hs`. Establish `hIc : ∀ q, Continuous fun k : KR n => ∫ s, fz m e (z - s₀) (mR (y₀ q * y) * ιK n k * a * nU (herm s) * b) * ψ s`. Introduce `q`. Take `⟨M, hMb⟩` from `hM q`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Repeatedly rewrite using `[hfun]`. Use `continuous_of_dominated (bound := fun s => M * ‖ψ s‖) ?_ ?_ (hψi.const_mul M) ?_` and prove the remaining obligations. Introduce `k`. Conclude with `(((hG q).comp (continuous_const.prodMk continuous_id)).mul hψ).aestronglyMeasurable`. Introduce `k`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Filter.Eventually.of_forall fun s => ?_` and prove the remaining obligations. Distinguish the cases in `hs : s ∈ tsupport ψ`. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_right (hMb k s hs) (norm_nonneg _)`. Simplify using `[hzero s hs]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `Filter.Eventually.of_forall fun s => ?_` and prove the remaining obligations. Conclude with `((hG q).comp (continuous_id.prodMk continuous_const)).mul continuous_const`. Establish `hv : Summable fun q => |u q|` using `hu.abs`. Establish `hv0 : ∀ q, 0 ≤ |u q|` using `fun q => abs_nonneg _`. Establish `hFb : ∀ q (k : KR n) s, ‖C q * (fz m e (z - s₀) (mR (y₀ q * y) * ιK n k * a * nU (herm s) * b) * ψ s)‖ ≤ |u q| * ‖ψ s‖`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `q k s`. Rewrite using `[hfun, ← mul_assoc, norm_mul]`. Distinguish the cases in `hs : s ∈ tsupport ψ`. Conclude with `mul_le_mul_of_nonneg_right (hBd q k s hs) (norm_nonneg _)`. Simplify using `[hzero s hs]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hin : ∀ k : KR n, (Summable fun q => ∫ s, C q * (fz m e (z - s₀) (mR (y₀ q * y) * ιK n k * a * nU (herm s) * b) * ψ s)) ∧ ∫ s, ∑' q, C q * (fz m e (z - s₀) (mR (y₀ q * y) * ιK n k * a * nU (herm s) * b) * ψ s) = ∑' q, ∫ s, C q * (fz m e (z - s₀) (mR (y₀ q * y) * ιK n k * a * nU ( …`. Introduce `k`. Use `integral_tsum_supp _ (fun q => |u q|) hv hv0 (fun s => ‖ψ s‖) hψi (fun q s => hFb q k s) ?_` and prove the remaining obligations. Introduce `q`. Repeatedly rewrite using `[hfun]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Conclude with `(continuous_const.mul (((hG q).comp (continuous_const.prodMk continuous_id)).mul hψ)).aestronglyMeasurable`. Establish `hIb : ∀ q (k : KR n), ‖C q * (ρ k * ∫ s, fz m e (z - s₀) (mR (y₀ q * y) * ιK n k * a * nU (herm s) * b) * ψ s)‖ ≤ |u q| * (‖ρ k‖ * ∫ s, ‖ψ s‖)`. Introduce `q k`. Establish `h2 : ‖∫ s, C q * (fz m e (z - s₀) (mR (y₀ q * y) * ιK n k * a * nU (herm s) * b) * ψ s)‖ ≤ ∫ s, |u q| * ‖ψ s‖` using `norm_integral_le_of_norm_le (hψi.const_mul _) (Filter.Eventually.of_forall fun s => hFb q k s)`. Rewrite `h2` using `[integral_const_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h2` using `[integral_const_mul]`. Rewrite using `[mul_left_comm, norm_mul, norm_mul]`. Rewrite `h2` using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hbdρ : Integrable (fun k : KR n => ‖ρ k‖ * ∫ s, ‖ψ s‖) μ` using `(hρ.norm.mul continuous_const).integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hout` using `integral_tsum_supp (ν := μ) (fun q k => C q * (ρ k * ∫ s, fz m e (z - s₀) (mR (y₀ q * y) * ιK n k * a * nU (herm s) * b) * ψ s)) (fun q => |u q|) hv hv0 _ hbdρ hIb (fun q => (continuous_const.mul (hρ.mul (hIc q))).aestronglyMeasurable)`. Establish `hpt : ∀ (k : KR n) s, resG ι (Ê z) g (mR y * ιK n k * a * nU (herm s) * b) * ψ s = d.eval z * ∑' q, C q * (fz m e (z - s₀) (mR (y₀ q * y) * ιK n k * a * nU (herm s) * b) * ψ s)`. Introduce `k s`. Rewrite using `[hY, resG_mR, hE, cosetSum_apply, mul_assoc, ← tsum_mul_right]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion repeatedly using the stated equalities.
 
-Use `tsum_congr fun q => ?_` and prove the remaining obligations. Rewrite using `[hfun, ← mul_assoc (C q), ← hyC q]`. Simplify using `only [trm, mul_assoc]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `hout.1.congr fun q => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [tOp, integral_const_mul]`. Establish `hL : ∀ k : KR n, ρ k * ∫ s, resG ι (Ê z) g (mR y * ιK n k * a * nU (herm s) * b) * ψ s = d.eval z * ∑' q, C q * (ρ k * ∫ s, fz m e (z - s₀) (mR (y₀ q * y) * ιK n k * a * nU (herm s) * b) * ψ s)`. Introduce `k`. Repeatedly rewrite using `[hpt k]`. Rewrite using `[integral_const_mul, (hin k).2]`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Repeatedly rewrite using `[integral_const_mul]`. Rewrite using `[mul_left_comm, ← tsum_mul_left]`. Use `congr 1`. Use `tsum_congr fun q => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
-
-Simplify using `only [tOp]`. Repeatedly rewrite using `[hL]`. Rewrite using `[integral_const_mul, hout.2]`. Use `congr 1`. Use `tsum_congr fun q => ?_` and prove the remaining obligations.
-
-Rewrite using `[integral_const_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem topSeries (hS : SecFz) (h : HD m n e G Pp Γ ι s₀ Ht f U d Ê t) [MeasurableSpace (KR n)] [BorelSpace (KR n)]
     (μ : Measure (KR n)) [IsFiniteMeasure μ] {z : ℂ} (hz : t < z.re) (ρ : KR n → ℂ)

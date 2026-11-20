@@ -21,15 +21,13 @@ def AlgRes.IsGoodAtlas {P D : Ideal (MvPolynomial (Σ k, ι k) ℂ)} {e : ℕ} (
             ψ.source ⊆ O ∩ R.src i ∧ ∀ y ∈ ψ.source, ψ y = evalFam r (R.coord i y)
 
 /- English proof (translation)
-Establish `hloc : ∀ x : R.M, ∃ ψ : OpenPartialHomeomorph R.M (Fin e → ℂ), R.GoodChart ψ ∧ x ∈ ψ.source`. Introduce `x`. Take `⟨i, hx⟩` from `R.cover x`. Take `⟨ψ, hψ, hxψ, -⟩` from `R.exists_goodChart i x hx (R.sncAt i x hx).r (R.sncAt i x hx).span_eq Set.univ isOpen_univ trivial`. Conclude with `⟨ψ, hψ, hxψ⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `choose ψ hψ hxψ using hloc`. Take `⟨t, -, ht⟩` from `(isCompact_univ : IsCompact (Set.univ : Set R.M)).elim_nhds_subcover (fun x => (ψ x).source) (fun x _ => (ψ x).open_source.mem_nhds (hxψ x))`. Set `A : FinHolAtlas e R.M` to `{ n := t.card chart := fun j => ψ (t.equivFin.symm j).1 cover := fun x => by`. Take `⟨z, hz, hxz⟩` from `Set.mem_iUnion₂.mp (ht (Set.mem_univ x))`. Conclude with `⟨t.equivFin ⟨z, hz⟩, by simpa using hxz⟩`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `holo := fun j k => by`. Take `⟨ik, hsk, ⟨rk, hrk⟩, -⟩` from `hψ (t.equivFin.symm k).1`. Conclude with `R.analyticOnNhd_comp_symm (hψ _) _ _ (ψ (t.equivFin.symm k).1).open_source ik hsk rk hrk }`. Establish `hgood : ∀ j, R.GoodChart (A.chart j)` using `fun j => hψ _`. Use `⟨A, fun i h j => ?_, fun i x hx r hr O hO hxO => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨i', hs, -, g, hg, hgc⟩` from `hgood j`. Introduce and unpack `w ⟨hw, hwi⟩`. Conclude with `R.analyticAt_coord_symm hs hg hgc i h hw hwi`. Take `⟨φ, hφ, hxφ, hsub, hform⟩` from `R.exists_goodChart i x hx r hr O hO hxO`. Use `⟨φ, fun j => ⟨?_, ?_⟩, hxφ, hsub, hform⟩` and prove the remaining obligations.
-
-Conclude with `R.analyticOnNhd_comp_symm (hgood j) φ φ.source φ.open_source i (fun y hy => (hsub hy).2) r hform`. Take `⟨ij, hsj, ⟨rj, hrj⟩, -⟩` from `hgood j`. Conclude with `R.analyticOnNhd_comp_symm hφ _ _ (A.chart j).open_source ij hsj rj hrj`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem AlgRes.exists_atlas {P D : Ideal (MvPolynomial (Σ k, ι k) ℂ)} {e : ℕ} (R : AlgRes ι P D e) :
     ∃ A : FinHolAtlas e R.M, R.IsGoodAtlas A := by

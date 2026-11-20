@@ -11,13 +11,13 @@ noncomputable section
 namespace GlobalTheory.Poinc
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ M U hU z hz x hx`. Take `⟨W, f, hzW, rfl⟩` from `hx`. Establish `hne : (U : Set M.Z).Nonempty` using `⟨z, hz⟩`. Take `⟨g, hgW, hzg⟩` from `hU.exists_basicOpen_le (V := W) ⟨z, hzW⟩ hz`. Establish `hg : ((M.Z.basicOpen g : M.Z.Opens) : Set M.Z).Nonempty` using `⟨z, hzg⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hU.isLocalization_basicOpen g` as an intermediate fact. Take `⟨n, a, ha⟩` from `IsLocalization.Away.surj g (resG M.Z hgW f)`. Establish `h1` using `congrArg (M.res _ hg) ha`. Establish `h2 : ∀ t : Γ(M.Z, U), M.res _ hg (algebraMap Γ(M.Z, U) Γ(M.Z, M.Z.basicOpen g) t) = M.res U hne t` using `fun t => M.res_resG (M.Z.basicOpen_le g) hg t`. Rewrite `h1` using `[map_mul, map_pow, h2, h2, res_resG, res_apply, ← map_pow, res_apply, res_apply]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hu` using `(isUnit_O_iff _).1 ((isUnit_valF_iff hz g).2 hzg)`. Establish `hb : valF M.pt U (g ^ n) = valF M.pt U g ^ n`. Rewrite using `[← M.res_apply U hne, map_pow, res_apply]`. Establish `h0 : valF M.pt U (g ^ n) ≠ 0`. Rewrite using `[hb]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pow_ne_zero _ hu.1`. Use `⟨_, (mem_ringOn_iff_exists hne).2 ⟨a, rfl⟩, _, (mem_ringOn_iff_exists hne).2 ⟨g ^ n, rfl⟩, h0, ?_, (eq_div_iff h0).2 h1⟩` and prove the remaining obligations. Rewrite using `[hb, ← inv_pow]`. Conclude with `pow_mem hu.2 n`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_eq_div_of_mem_O_affine : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] (M : RatModel o Ω) (U : M.Z.Opens), IsAffineOpen U → ∀ z ∈ U, ∀ x ∈ M.O z, ∃ a ∈ M.ringOn (U : Set M.Z), ∃ b ∈ M.ringOn (U : Set M.Z), b ≠ 0 ∧ b⁻¹ ∈ M.O z ∧ x = a / b := by
   intro o Ω _ _ _ M U hU z hz x hx

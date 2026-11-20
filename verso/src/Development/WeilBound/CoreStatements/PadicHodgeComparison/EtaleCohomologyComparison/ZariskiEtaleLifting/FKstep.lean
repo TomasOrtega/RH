@@ -11,7 +11,7 @@ universe w w' v u v' u' v'' u''
 namespace CrystallineSemistableComparison.B
 
 /- English proof (translation)
-Use function extensionality and compare the values at `s`. Express the relevant statement in the definitionally equal form `∑ i : Fin 2, (-1 : ℤ) ^ (i : ℕ) • (F.map (GlobalTheory.CatH.toLast i s)).hom (e _ x) = 0`. Simplify using `only [he, Fin.sum_univ_two]`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem kstep_aug_d {R : Type} [CommRing R] {C : Type u} [Category.{v} C] (F : C ⥤ ModuleCat.{w} R)
     {M : Type w'} [AddCommGroup M] [Module R M] (e : ∀ T : C, M →ₗ[R] F.obj T)
@@ -31,7 +31,7 @@ variable {d : ℕ} (π : Gam (d + 1) →* Gam d)
 
 include hπ in
 /- English proof (translation)
-Apply `Multiplicative.toAdd.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Rewrite using `[hπ]`. Simplify using `[kstepLast, Fin.castSucc_ne_last]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem kstep_π_last (k : ℕ) : π (kstepLast d k) = 1 := by
   apply Multiplicative.toAdd.injective
@@ -73,7 +73,7 @@ def kstepSnoc (b : Gam d) (k : ℕ) : Gam (d + 1) :=
 
 include hπ in
 /- English proof (translation)
-Apply `Multiplicative.toAdd.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Rewrite using `[hπ]`. Simplify using `[kstepSnoc]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem kstep_π_snoc (b : Gam d) (k : ℕ) : π (kstepSnoc b k) = b := by
   apply Multiplicative.toAdd.injective
@@ -83,7 +83,7 @@ theorem kstep_π_snoc (b : Gam d) (k : ℕ) : π (kstepSnoc b k) = b := by
 
 include hπ in
 /- English proof (translation)
-Apply `Multiplicative.toAdd.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last => simp [kstepSnoc]`. Consider the case `cast i => simp [kstepSnoc, hπ]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem kstep_snoc_eq (a : Gam (d + 1)) : kstepSnoc (π a) (Multiplicative.toAdd a (Fin.last d)) = a := by
   apply Multiplicative.toAdd.injective
@@ -129,17 +129,17 @@ end kstep
 end CrystallineSemistableComparison.B
 
 /- English proof (translation)
-Introduce `R _ d M N π hπ τ h s hA n`. Apply `CrystallineSemistableComparison.B.P.fib` to reduce the goal to its premises. Introduce `T`. Establish `hM1 : M.map (X` using `SingleObj.star _) (Y := SingleObj.star _) (1 : Gam d) = 𝟙 _ := M.map_id _`. Take `rfl : T = SingleObj.star (Gam d)` from `Subsingleton.elim _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `F' : StructuredArrow (SingleObj.star (Gam d)) π.toFunctor ⥤ ModuleCat.{w} R` to `StructuredArrow.proj (SingleObj.star (Gam d)) π.toFunctor ⋙ N`. Set `e : ∀ x : StructuredArrow (SingleObj.star (Gam d)) π.toFunctor, M.obj (SingleObj.star (Gam d)) →ₗ[R] F'.obj x` to `fun x => τ ∘ₗ (M.map x.hom).hom`. Establish `he : ∀ {x y : StructuredArrow (SingleObj.star (Gam d)) π.toFunctor} (φ : x ⟶ y) a, (F'.map φ).hom (e x a) = e y a`. Introduce `x y φ a`. Establish `h1` using `h φ.right ((M.map x.hom).hom a)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `h1.symm.trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `τ ((M.map x.hom ≫ M.map (π.toFunctor.map φ.right)).hom a) = τ ((M.map y.hom).hom a)`. Rewrite using `[← M.map_comp, StructuredArrow.w φ]`. Establish `hfix : ∀ x, (N.map (X` using `SingleObj.star _) (Y := SingleObj.star _) (gen (Fin.last d))).hom (τ x) = τ x := by`. Introduce `x`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← h, show π (gen (Fin.last d)) = 1 from kstep_π_last π hπ 1, hM1]`. Both sides reduce to the same expression. Establish `hb` using `CrystallineSemistableComparison.B.P.bnat (kstepL π hπ ⋙ F') τ s hfix hA`. Establish `hadj` using `CrystallineSemistableComparison.P.adj F' (kstepL π hπ) (kstepU π) (kstepAdj π hπ)`. Establish `hup : ∀ k, UpTo (1 : R) ((Mor.restrict F' (kstepL π hπ)).hom.mapH k)` using `fun k => ((CrystallineSemistableComparison.P.upTo_alg _ (LinearMap.id (R := R)) (1 : R) 1).2.2.2.2).2 (hadj k)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hε : (Mor.restrict F' (kstepL π hπ)).hom.f 0 ∘ₗ aug F' e = aug (kstepL π hπ ⋙ F') fun _ => τ`. Use `LinearMap.ext fun x => funext fun s => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `τ ((M.map (1 : Gam d)).hom x) = τ x`. Rewrite using `[hM1]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `htr` using `(CrystallineSemistableComparison.P.res_transfer (Mor.restrict F' (kstepL π hπ)).hom (aug F' e) s 1 hup).2 (kstep_aug_d F' e he) (hε ▸ hb)`. Rewrite `htr` using `[mul_one]`. Conclude with `htr`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem CrystallineSemistableComparison.B.P.kstep : ∀ {R : Type} [CommRing R] {d : ℕ} (M : SingleObj (Gam d) ⥤ ModuleCat.{w} R) (N : SingleObj (Gam (d + 1)) ⥤ ModuleCat.{w} R) (π : Gam (d + 1) →* Gam d) (hπ : ∀ a k, Multiplicative.toAdd (π a) k = Multiplicative.toAdd a k.castSucc) (τ : M.obj (SingleObj.star _) →ₗ[R] N.obj (SingleObj.star _)) (h : ∀ (a : Gam (d + 1)) x, τ ((M.map (X := SingleObj.star _) (Y := SingleObj.star _) (π a)).hom x) = (N.map (X := SingleObj.star _) (Y := SingleObj.star _) a).hom (τ x)) (s : R), Acyc1 s τ (N.map (X := SingleObj.star _) (Y := SingleObj.star _) (gen (Fin.last d))).hom → ∀ n, IsoLe (s ^ (2 * n + 3)) n (⟨π.toFunctor, fun _ => τ, fun φ x => h φ x⟩ : Mor M N (RingHom.id R)) := by
   intro R _ d M N π hπ τ h s hA n

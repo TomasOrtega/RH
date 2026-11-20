@@ -16,25 +16,25 @@ def filt (e : ι → U) (d : ℕ) : Submodule ℂ U :=
   Submodule.span ℂ {u | ∃ l : List ι, l.length ≤ d ∧ wordProd e l = u}
 
 /- English proof (translation)
-Simplify using `[wordProd]`.
+Simplify using the standard rewrite rules.
 -/
 lemma wordProd_cons (e : ι → U) (k : ι) (l : List ι) :
     wordProd e (k :: l) = e k * wordProd e l := by simp [wordProd]
 
 /- English proof (translation)
-Simplify using `[wordProd, List.prod_append]`.
+Simplify using the standard rewrite rules.
 -/
 lemma wordProd_append (e : ι → U) (l l' : List ι) :
     wordProd e (l ++ l') = wordProd e l * wordProd e l' := by simp [wordProd, List.prod_append]
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨l, le_rfl, rfl⟩`.
+A detailed English derivation is pending.
 -/
 lemma wordProd_mem_filt (e : ι → U) (l : List ι) : wordProd e l ∈ filt e l.length :=
   Submodule.subset_span ⟨l, le_rfl, rfl⟩
 
 /- English proof (translation)
-Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨l, hl, rfl⟩`. Conclude with `⟨l, hl.trans h, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 lemma filt_mono (e : ι → U) {d d' : ℕ} (h : d ≤ d') : filt e d ≤ filt e d' := by
   apply Submodule.span_mono
@@ -42,9 +42,9 @@ lemma filt_mono (e : ι → U) {d d' : ℕ} (h : d ≤ d') : filt e d ≤ filt e
   exact ⟨l, hl.trans h, rfl⟩
 
 /- English proof (translation)
-Establish `h : filt e i * filt e j ≤ filt e (i + j)`. Rewrite using `[filt, filt, Submodule.span_mul_span]`. Apply `Submodule.span_le.mpr` to reduce the goal to its premises. Introduce and unpack `_ ⟨_, ⟨l, hl, rfl⟩, _, ⟨l', hl', rfl⟩, rfl⟩`. Use `Submodule.subset_span ⟨l ++ l', ?_, (wordProd_append e l l')⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Conclude with `h (Submodule.mul_mem_mul hx hy)`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 lemma mul_mem_filt (e : ι → U) {i j : ℕ} {x y : U} (hx : x ∈ filt e i) (hy : y ∈ filt e j) :
     x * y ∈ filt e (i + j) := by
@@ -57,7 +57,7 @@ lemma mul_mem_filt (e : ι → U) {i j : ℕ} {x y : U} (hx : x ∈ filt e i) (h
   exact h (Submodule.mul_mem_mul hx hy)
 
 /- English proof (translation)
-Apply `Submodule.span_le.mpr` to reduce the goal to its premises. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `Submodule.subset_span ⟨[k], by simp, by simp [wordProd]⟩`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 lemma span_le_filt_one (e : ι → U) : Submodule.span ℂ (Set.range e) ≤ filt e 1 := by
   apply Submodule.span_le.mpr
@@ -65,13 +65,11 @@ lemma span_le_filt_one (e : ι → U) : Submodule.span ℂ (Set.range e) ≤ fil
   exact Submodule.subset_span ⟨[k], by simp, by simp [wordProd]⟩
 
 /- English proof (translation)
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro x _`. Simplify using the standard rewrite rules. Consider the case `succ m ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `x hx`. Rewrite `hx` using `[pow_succ']`. Use `Submodule.mul_induction_on hx ?_ ?_` and prove the remaining obligations. Introduce `p hp q hq`. Rewrite using `[hD]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `Ideal.add_mem _ (Ideal.mul_mem_left _ _ hq) ?_` and prove the remaining obligations. Rewrite using `[pow_succ']`. Conclude with `Ideal.mul_mem_mul hp (ih q hq)`. Introduce `p q hp hq`. Rewrite using `[map_add]`.
-
-Conclude with `Ideal.add_mem _ hp hq`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma der_pow_mem (D : A →ₗ[ℂ] A) (hD : ∀ x y, D (x * y) = D x * y + x * D y) (I : Ideal A) :
     ∀ m : ℕ, ∀ x ∈ I ^ (m + 1), D x ∈ I ^ m := by
@@ -92,11 +90,11 @@ lemma der_pow_mem (D : A →ₗ[ℂ] A) (hD : ∀ x y, D (x * y) = D x * y + x *
       exact Ideal.add_mem _ hp hq
 
 /- English proof (translation)
-Introduce `w`. Proceed by induction on `w with`. Consider the case `nil => intro m x hx`. Simplify `hx` using `[wordProd]`. Consider the case `cons k w ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Introduce `m x hx`. Rewrite using `[wordProd_cons, map_mul, Module.End.mul_apply]`. Apply `der_pow_mem (π (e k)) (hder k) I m` to reduce the goal to its premises. Apply `ih (m + 1)` to reduce the goal to its premises. Establish `: m + (k :: w).length = m + 1 + w.length` using `by simp; omega`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite `hx` using `[this]`. Conclude with `hx`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma word_pow_mem (e : ι → U) (π : U →ₐ[ℂ] Module.End ℂ A)
     (hder : ∀ k (x y : A), π (e k) (x * y) = π (e k) x * y + x * π (e k) y) (I : Ideal A) :
@@ -113,11 +111,11 @@ lemma word_pow_mem (e : ι → U) (π : U →ₐ[ℂ] Module.End ℂ A)
     rw [this] at hx; exact hx
 
 /- English proof (translation)
-Set `S : Submodule ℂ U` to `{ carrier := {u | ∀ x ∈ (RingHom.ker χ) ^ (d + 1), χ (π u x) = 0} add_mem' := by`. Introduce `p q hp hq x hx`. Simplify using `[hp x hx, hq x hx]`. Use the proof step `zero_mem' := by intro x _; simp`. Use the proof step `smul_mem' := by`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `c p hp x hx`. Simplify using `[hp x hx] }`. Establish `h : filt e d ≤ S`. Apply `Submodule.span_le.mpr` to reduce the goal to its premises. Introduce and unpack `_ ⟨l, hl, rfl⟩ x hx`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx' : x ∈ (RingHom.ker χ) ^ (1 + l.length)` using `Ideal.pow_le_pow_right (by omega) hx`. Use `word_pow_mem e π hder (RingHom.ker χ) l 1 x hx'` as an intermediate fact. Simplify using `using this`. Introduce `u hu`. Conclude with `h hu`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma filt_vanish (e : ι → U) (π : U →ₐ[ℂ] Module.End ℂ A)
     (hder : ∀ k (x y : A), π (e k) (x * y) = π (e k) x * y + x * π (e k) y) (χ : A →ₐ[ℂ] ℂ)
@@ -141,19 +139,19 @@ lemma filt_vanish (e : ι → U) (π : U →ₐ[ℂ] Module.End ℂ A)
   exact h hu
 
 /- English proof (translation)
-Proceed by induction on `h with`. Consider the case `nil => intro d _`. Simplify using the standard rewrite rules. Consider the case `cons x h ih`. Name the introduced variables `l₁ l₂`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `d hd`. Rewrite using `[wordProd_cons, wordProd_cons, ← mul_sub]`. Consider the cases of `d with`. Consider the case `zero`. Establish `h0 : l₁ = []`.
+Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `l₁ with`. Consider the case `nil => rfl`. Consider the case `cons _ _ => simp at hd`. Substitute `h0` using the available equality. Establish `h0' : l₂ = []` using `List.nil_perm.mp h`.
+Treat this case separately. Treat this case separately. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `h0'` using the available equality. Simplify using the standard rewrite rules. Consider the case `succ d`. Use `mul_mem_filt e (span_le_filt_one e (Submodule.subset_span ⟨x, rfl⟩)) (ih d (by simp at hd; omega))` as an intermediate fact. Rewrite `this` using `[add_comm]`.
+Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately.
 
-Conclude with `this`. Consider the case `swap x y l`. Introduce `d hd`. Simplify using `only [wordProd_cons]`. Rewrite using `[← mul_assoc, ← mul_assoc, ← sub_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Treat this case separately.
 
-Establish `h1` using `span_le_filt_one e (hcomm y x)`. Conclude with `filt_mono e (by simp at hd; omega) (mul_mem_filt e h1 (wordProd_mem_filt e l))`. Consider the case `trans h₁ h₂ ih₁ ih₂`. Introduce `d hd`. Establish `a1` using `ih₁ d hd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `a2` using `ih₂ d (by rw [← h₁.length_eq]; exact hd)`. Use `Submodule.add_mem _ a1 a2` as an intermediate fact. Simplify using `using this`.
+A detailed English derivation is pending.
 -/
 lemma perm_sub_mem (e : ι → U)
     (hcomm : ∀ a b, e a * e b - e b * e a ∈ Submodule.span ℂ (Set.range e))
@@ -194,11 +192,11 @@ lemma perm_sub_mem (e : ι → U)
     simpa using this
 
 /- English proof (translation)
-Set `S : Subalgebra ℂ U` to `{ carrier := {u | ∃ d, u ∈ filt e d} mul_mem' := by`. Introduce and unpack `p q ⟨i, hp⟩ ⟨j, hq⟩`. Conclude with `⟨i + j, mul_mem_filt e hp hq⟩`. Use the proof step `add_mem' := by`. Introduce and unpack `p q ⟨i, hp⟩ ⟨j, hq⟩`.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨i + j, Submodule.add_mem _ (filt_mono e (by omega) hp) (filt_mono e (by omega) hq)⟩`. Use the proof step `algebraMap_mem' := by`. Introduce `c`. Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.algebraMap_eq_smul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ c (by simpa [wordProd] using wordProd_mem_filt e []) }`. Establish `h : Algebra.adjoin ℂ (Set.range e) ≤ S` using `Algebra.adjoin_le (by rintro _ ⟨k, rfl⟩; exact ⟨1, span_le_filt_one e (Submodule.subset_span ⟨k, rfl⟩)⟩)`. Rewrite `h` using `[hgen]`. Conclude with `h Algebra.mem_top`.
+A detailed English derivation is pending.
 -/
 lemma exists_mem_filt (e : ι → U) (hgen : Algebra.adjoin ℂ (Set.range e) = ⊤) (u : U) :
     ∃ d, u ∈ filt e d := by
@@ -223,7 +221,7 @@ lemma exists_mem_filt (e : ι → U) (hgen : Algebra.adjoin ℂ (Set.range e) = 
 def testProd (a : ι → A) (β : Multiset ι) : A := (β.map a).prod
 
 /- English proof (translation)
-Proceed by induction on `β using Multiset.induction_on with`. Consider the case `empty => simp`. Consider the case `cons b β ih`. Rewrite using `[testProd, Multiset.map_cons, Multiset.prod_cons, Multiset.card_cons, pow_succ']`. Conclude with `Ideal.mul_mem_mul (by simpa [RingHom.mem_ker] using ha b) ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma testProd_mem_pow (χ : A →ₐ[ℂ] ℂ) (a : ι → A) (ha : ∀ k, χ (a k) = 0) (β : Multiset ι) :
     testProd a β ∈ (RingHom.ker χ) ^ (Multiset.card β) := by
@@ -234,17 +232,17 @@ lemma testProd_mem_pow (χ : A →ₐ[ℂ] ℂ) (a : ι → A) (ha : ∀ k, χ (
     exact Ideal.mul_mem_mul (by simpa [RingHom.mem_ker] using ha b) ih
 
 /- English proof (translation)
-Proceed by induction on `β using Multiset.induction_on with`. Consider the case `empty => simp`. Consider the case `cons b β ih => set I := RingHom.ker χ set c : ℂ := if k = b then 1 else 0 with hc set r := D (a b) - algebraMap ℂ A c with hr set s := D (testProd a β) - algebraMap ℂ A (β.count k) * testProd a (β.erase k) with hs`. Establish `hrI : r ∈ I` using `by simp [I, RingHom.mem_ker, hr, hδ b, c]`. Establish `haI : a b ∈ I` using `by simpa [I, RingHom.mem_ker] using ha b`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxβ` using `testProd_mem_pow χ a ha β`. Establish `key : D (testProd a (b ::ₘ β)) - algebraMap ℂ A ((b ::ₘ β).count k) * testProd a ((b ::ₘ β).erase k) = r * testProd a β + a b * s`. Establish `e1 : testProd a (b ::ₘ β) = a b * testProd a β` using `by simp [testProd]`. Rewrite using `[e1, hD]`. Distinguish the cases in `hkb : k = b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hkb` using the available equality. Establish `hc1 : c = 1` using `by simp [c]`. Rewrite using `[Multiset.count_cons_self, Multiset.erase_cons_head, hr, hs, hc1]`. Distinguish the cases in `hmem : k ∈ β`. Establish `e2 : testProd a β = a k * testProd a (β.erase k)` using `by conv_lhs => rw [← Multiset.cons_erase hmem]`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Simplify using `[testProd]`. Rewrite using `[e2]`. Simplify using `only [Nat.cast_add, Nat.cast_one, map_add, map_one]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Multiset.count_eq_zero.mpr hmem]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish `hc0 : c = 0` using `by simp [c, hkb]`. Rewrite using `[Multiset.count_cons_of_ne hkb, Multiset.erase_cons_tail _ (Ne.symm hkb), hr, hs, hc0]`. Simplify using `[testProd]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key, Multiset.card_cons, pow_succ']`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_mul hrI hxβ) (Ideal.mul_mem_mul haI ih)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma der_testProd [DecidableEq ι] (D : A →ₗ[ℂ] A) (hD : ∀ x y, D (x * y) = D x * y + x * D y)
     (χ : A →ₐ[ℂ] ℂ) (a : ι → A) (ha : ∀ j, χ (a j) = 0) (k : ι)
@@ -292,9 +290,9 @@ variable [DecidableEq ι] (e : ι → U)
 include hcomm hder ha hδ
 
 /- English proof (translation)
-Establish `hx : testProd a β ∈ (RingHom.ker χ) ^ (w.length + 1)` using `hlen ▸ testProd_mem_pow χ a ha β`. Establish `hp : (k :: w).Perm (w ++ [k])` using `(List.perm_append_singleton k w).symm`. Establish `h1` using `filt_vanish e π hder χ w.length _ (perm_sub_mem e hcomm hp w.length (by simp)) _ hx`. Establish `e1 : wordProd e (k :: w) = (wordProd e (k :: w) - wordProd e (w ++ [k])) + wordProd e (w ++ [k])` using `by abel`. Rewrite using `[e1, map_add, LinearMap.add_apply, map_add, h1, zero_add, wordProd_append, map_mul, Module.End.mul_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hD` using `der_testProd (π (e k)) (hder k) χ a ha k (fun j => hδ k j) β`. Rewrite `hD` using `[← hlen]`. Establish `e2 : π (wordProd e [k]) (testProd a β) = (π (e k) (testProd a β) - algebraMap ℂ A (β.count k) * testProd a (β.erase k)) + algebraMap ℂ A (β.count k) * testProd a (β.erase k)` using `by simp [wordProd]`. Rewrite using `[e2, map_add, map_add, filt_vanish e π hder χ w.length _ (wordProd_mem_filt e w) _ hD, zero_add, ← Algebra.smul_def, map_smul, map_smul, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 lemma pair_cons (k : ι) (w : List ι) (β : Multiset ι) (hlen : w.length + 1 = Multiset.card β) :
     χ (π (wordProd e (k :: w)) (testProd a β)) =
@@ -315,17 +313,17 @@ lemma pair_cons (k : ι) (w : List ι) (β : Multiset ι) (hlen : w.length + 1 =
     ← Algebra.smul_def, map_smul, map_smul, smul_eq_mul]
 
 /- English proof (translation)
-Introduce `w`. Proceed by induction on `w with`. Consider the case `nil`. Introduce `β hβ`. Establish `: β = 0` using `Multiset.card_eq_zero.mp hβ.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Substitute `this` using the available equality. Simplify using `[wordProd, testProd]`. Consider the case `cons k w ih`. Introduce `β hβ`. Rewrite using `[pair_cons e hcomm π hder χ a ha hδ k w β (by simpa using hβ)]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hk : k ∈ β`. Establish `hcard : w.length = Multiset.card (β.erase k)`. Rewrite using `[Multiset.card_erase_of_mem hk, Nat.pred_eq_sub_one]`. Simplify using `at hβ`. Use linear arithmetic over natural numbers and integers.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[mul_ne_zero_iff, ih _ hcard]`. Establish `hcnt : (β.count k : ℂ) ≠ 0` using `by exact_mod_cast (Multiset.count_ne_zero.mpr hk)`. Simplify using `only [hcnt, ne_eq, not_false_eq_true, true_and]`. Rewrite using `[← Multiset.cons_coe]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Rewrite using `[h, Multiset.cons_erase hk]`. Introduce `h`. Rewrite using `[← h]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hcnt : β.count k = 0` using `Multiset.count_eq_zero.mpr hk`. Simplify using `only [hcnt, Nat.cast_zero, zero_mul, ne_eq, not_true_eq_false, false_iff]`. Introduce `h`. Apply `hk` to reduce the goal to its premises. Rewrite using `[← h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -356,21 +354,19 @@ lemma pair_ne_zero_iff : ∀ (w : List ι) (β : Multiset ι), w.length = Multis
       intro h; apply hk; rw [← h]; simp
 
 /- English proof (translation)
-Set `W : Sym ι (d + 1) → U` to `fun s => wordProd e (s : Multiset ι).toList`. Set `G : Submodule ℂ U` to `Submodule.span ℂ (Set.range W)`. Establish `hle : filt e (d + 1) ≤ filt e d ⊔ G`. Apply `Submodule.span_le.mpr` to reduce the goal to its premises. Introduce and unpack `_ ⟨l, hl, rfl⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Break down `Nat.lt_or_ge l.length (d + 1) with h | h` into its components or cases. Conclude with `Submodule.mem_sup_left (Submodule.subset_span ⟨l, by omega, rfl⟩)`. Establish `hl' : l.length = d + 1` using `by omega`. Set `s : Sym ι (d + 1)` to `⟨(l : Multiset ι), by simpa using hl'⟩`. Establish `hp : l.Perm (s : Multiset ι).toList`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Multiset.coe_eq_coe, Multiset.coe_toList]`. Both sides reduce to the same expression. Establish `hdiff` using `perm_sub_mem e hcomm hp d (by omega)`. Establish `e1 : wordProd e l = (wordProd e l - W s) + W s` using `by abel`. Rewrite using `[e1]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `Submodule.add_mem _ (Submodule.mem_sup_left hdiff) (Submodule.mem_sup_right (Submodule.subset_span ⟨s, rfl⟩))`. Take `⟨v, hv, t, ht, rfl⟩` from `Submodule.mem_sup.mp (hle hu)`. Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun ℂ).mp ht`. Establish `hc : ∀ s0, c s0 = 0`. Introduce `s0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx : testProd a (s0 : Multiset ι) ∈ (RingHom.ker χ) ^ (d + 1)`. Use `testProd_mem_pow χ a ha (s0 : Multiset ι)` as an intermediate fact. Rewrite `this` using `[show Multiset.card (s0 : Multiset ι) = d + 1 from s0.2]`. Then use the resulting hypothesis. Establish `h1` using `hz (testProd a (s0 : Multiset ι))`. Rewrite `h1` using `[map_add, LinearMap.add_apply, map_add, filt_vanish e π hder χ d v hv _ hx, zero_add]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h1` using `[map_sum, LinearMap.sum_apply, map_sum]`. Simplify using `only [map_smul, LinearMap.smul_apply, smul_eq_mul] at h1`. Rewrite `h1` using `[Finset.sum_eq_single s0]`. Establish `hne` using `(pair_ne_zero_iff e hcomm π hder χ a ha hδ ((s0 : Multiset ι).toList) s0 (by simp [s0.2])).mpr (by simp)`. Conclude with `(mul_eq_zero.mp h1).resolve_right hne`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `s _ hs`. Establish `hiff` using `pair_ne_zero_iff e hcomm π hder χ a ha hδ ((s : Multiset ι).toList) s0 (by simp [s.2, s0.2])`. Establish `h0 : χ (π (W s) (testProd a s0)) = 0`. Assume the negation of the conclusion as `hh`. Conclude with `hs (Sym.coe_injective (by simpa using hiff.mp hh))`.
-
-Rewrite using `[h0, mul_zero]`. Simplify using the standard rewrite rules. Simplify using `[hc, hv]`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma step_down [Fintype ι] (d : ℕ) (u : U)
     (hu : u ∈ filt e (d + 1)) (hz : ∀ x : A, χ (π u x) = 0) : u ∈ filt e d := by
@@ -422,13 +418,13 @@ end DerivFaithful
 open DerivFaithful in
 
 /- English proof (translation)
-Introduce `U A ι _ _ _ _ _ _ e hgen hcomm π hder χ a ha hδ u hu`. Take `⟨d, hd⟩` from `exists_mem_filt e hgen u`. Establish `h0 : u ∈ filt e 0`. Proceed by induction on `d with`. Consider the case `zero => exact hd`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `succ d ih => exact ih (step_down e hcomm π hder χ a ha hδ d u hd hu)`. Establish `hle : filt e 0 ≤ Submodule.span ℂ {(1 : U)}`. Apply `Submodule.span_le.mpr` to reduce the goal to its premises. Introduce and unpack `_ ⟨l, hl, rfl⟩`. Establish `: l = []` using `List.eq_nil_of_length_eq_zero (by omega)`.
+Treat this case separately. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Substitute `this` using the available equality. Simplify using `[wordProd]`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.mp (hle h0)`. Use `hu 1` as an intermediate fact. Simplify using `at this`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[this]`.
+Simplify using the standard rewrite rules.
 -/
 theorem faithful_of_derivations_dual_family : ∀ (U A ι : Type) [Ring U] [Algebra ℂ U] [CommRing A] [Algebra ℂ A] [Fintype ι] [DecidableEq ι] (e : ι → U), Algebra.adjoin ℂ (Set.range e) = ⊤ → (∀ a b, e a * e b - e b * e a ∈ Submodule.span ℂ (Set.range e)) → ∀ (π : U →ₐ[ℂ] Module.End ℂ A), (∀ k (x y : A), π (e k) (x * y) = π (e k) x * y + x * π (e k) y) → ∀ (χ : A →ₐ[ℂ] ℂ) (a : ι → A), (∀ k, χ (a k) = 0) → (∀ i k, χ (π (e i) (a k)) = if i = k then 1 else 0) → ∀ u : U, (∀ x : A, χ (π u x) = 0) → u = 0 := by
   intro U A ι _ _ _ _ _ _ e hgen hcomm π hder χ a ha hδ u hu

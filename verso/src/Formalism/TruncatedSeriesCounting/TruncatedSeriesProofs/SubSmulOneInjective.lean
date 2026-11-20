@@ -122,9 +122,9 @@ theorem len_base (R : Type) [AddCommGroup R] [Module O R] [Module.Free O R] [Mod
   simp [Finset.sum_const, nsmul_eq_mul]
 
 /- English proof (authored)
-Induct on n. For n = 0, q = 0 and len_base applies. For the step, use the exact sequence ker q → R → im q, where the second map is q with its codomain restricted. The operator on the kernel is zero. The restriction to the image is killed by the preceding power, since every element of the image already has the form q(x). The three operators q−ℓ·id commute with the sequence, and the one on the image is injective by nilpotence and torsion-freeness.
+Induct on n. For n = 0, q = 0 and the formula for the zero operator applies. For the step, use the exact sequence ker q → R → im q, where the second map is q with its codomain restricted. The operator on the kernel is zero. The restriction to the image is killed by the preceding power, since every element of the image already has the form q(x). The three operators q−ℓ·id commute with the sequence, and the one on the image is injective by nilpotence and torsion-freeness.
 
-Apply len_coker_add, then apply the induction hypothesis to the kernel and image, which are finite free submodules over the principal ideal domain. Their ranks add to the rank of R, by the quotient–image isomorphism and rank additivity. The two length formulas combine into the claimed one.
+Use additivity of cokernel length, then apply the induction hypothesis to the kernel and image, which are finite free submodules over the principal ideal domain. Their ranks add to the rank of R, by the quotient–image isomorphism and rank additivity. The two length formulas combine into the claimed one.
 -/
 theorem len_main [IsPrincipalIdealRing O] (ℓ : O) (hℓ : ℓ ≠ 0) (n : ℕ) :
     ∀ (R : Type) [AddCommGroup R] [Module O R] [Module.Free O R] [Module.Finite O R]
@@ -179,7 +179,7 @@ theorem len_main [IsPrincipalIdealRing O] (ℓ : O) (hℓ : ℓ ≠ 0) (n : ℕ)
 end Main
 
 /- English proof (authored)
-Choose an exponent n with q^n = 0. Then q^(n+1) is zero as well, so len_main applies at n with the given scalar and yields the desired length formula.
+Choose an exponent n with q^n = 0. Then q^(n+1) is zero as well, so the nilpotent-operator length formula applies at n with the given scalar and yields the desired length formula.
 -/
 theorem length_pi_zero_bound : LenPi0 := by
   intro O _ _ _ R _ _ _ _ ℓ hℓ q hq

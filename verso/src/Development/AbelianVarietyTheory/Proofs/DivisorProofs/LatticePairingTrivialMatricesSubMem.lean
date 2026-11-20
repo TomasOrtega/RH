@@ -27,7 +27,7 @@ namespace GlobalTheory.VacShapeBd
 variable {D : D7} {a a' : ℕ}
 
 /- English proof (translation)
-Unfold `GlobalTheory.WeilM.symp GlobalTheory.WeilM.hTens`. Simplify using `only [Matrix.add_apply, add_mul, Finset.sum_add_distrib, mul_add, map_add]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem symp_add_left' (ξ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE D.host.F D.host.E) {n d : ℕ}
     (JA : Matrix (Fin n) (Fin n) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE D.host.F D.host.E))
@@ -40,9 +40,9 @@ theorem symp_add_left' (ξ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorM
   simp only [Matrix.add_apply, add_mul, Finset.sum_add_distrib, mul_add, map_add]
 
 /- English proof (translation)
-Take `⟨w⟩ : Nonempty (InfinitePlace D.host.F)` from `inferInstance`. Establish `h` using `GlobalTheory.WeilSchrodingerHerm.det_ne_zero_of_hasSig (hY.sig w)`. Introduce `h0`. Apply `h` to reduce the goal to its premises. Establish `hm : (Y.J.map (B.emb w).1).det = (B.emb w).1 Y.J.det` using `(RingHom.map_det _ _).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[Matrix.det_smul, hm, h0, map_zero, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem det_ne_zero_skew (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base D.host.F D.host.E) {d : ℕ} (Y : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc D.host.F D.host.E d)
     {r s : ℕ} (hY : Y.IsSkew D.sp.cm.sig B r s) : Y.J.det ≠ 0 := by
@@ -54,9 +54,9 @@ theorem det_ne_zero_skew (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensor
   rw [Matrix.det_smul, hm, h0, map_zero, mul_zero]
 
 /- English proof (translation)
-Use `⟨GlobalTheory.SrcHalfOne.plcC τ c, ?_, GlobalTheory.SrcHalfOne.piW_plcC τ c, ?_⟩` and prove the remaining obligations. Introduce `u hu`. Establish `h0 : u * GlobalTheory.LatVac.liftV v c = 0` using `GlobalTheory.LatVac.at_liftV v c u hu`. Express the relevant statement in the definitionally equal form `u • (Formalism.L2.Theta.cA D (GlobalTheory.EmbChart.idem τ) * algebraMap (AF D.host.F) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE D.host.F D.host.E) (GlobalTheory.LatVac.liftV v c)) = 0`. Rewrite using `[Algebra.smul_def, mul_left_comm, ← map_mul, h0, map_zero, mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `GlobalTheory.SrcHalfOne.piW_cA_plcC τ c`. Rewrite `h` using `[GlobalTheory.SrcHalfOne.piW_cA]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_local (v : HeightOneSpectrum (𝓞 D.host.F)) (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v) (c : Fv D.host.F v) :
     ∃ e : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE D.host.F D.host.E, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (evFin D.host.F v) e ∧
@@ -72,17 +72,13 @@ theorem exists_local (v : HeightOneSpectrum (𝓞 D.host.F)) (τ : D.host.E →�
     exact h
 
 /- English proof (translation)
-Use `set A := Γ.V'.J.map Bs.τ₁ with hAdef`. Use `set B := (Γ.W.J.map Bs.τ₁)ᵀ with hBdef`. Establish `hA : IsUnit A.det`. Rewrite using `[isUnit_iff_ne_zero, hAdef]`. Establish `hm : (Γ.V'.J.map Bs.τ₁).det = (Bs.τ₁ : D.host.E →+* Fv D.host.F Bs.v₁) Γ.V'.J.det` using `(RingHom.map_det _ _).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hm]`. Conclude with `(map_ne_zero _).2 hV'`. Establish `hB : IsUnit B.det`. Rewrite using `[isUnit_iff_ne_zero, hBdef, Matrix.det_transpose]`. Establish `hm : (Γ.W.J.map Bs.τ₁).det = (Bs.τ₁ : D.host.E →+* Fv D.host.F Bs.v₁) Γ.W.J.det` using `(RingHom.map_det _ _).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hm]`. Conclude with `(map_ne_zero _).2 hW`. Use `choose e he using fun c => exists_local (D := D) Bs.v₁ Bs.τ₁ c`. Use `set z : Matrix (Fin a') (Fin (a + a')) (Fv D.host.F Bs.v₁) := -(A⁻¹ * Y * B⁻¹) with hz`. Use `⟨z.map e, ?_, ?_, ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions.
 
-Introduce `u hu`. Use extensionality with `i j`. Conclude with `(he (z i j)).1 u hu`. Use function extensionality and compare the values at `i j`. Conclude with `(he (z i j)).2.1`.
-
-Establish `hx : (z.map e).map (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.piW (Bs.τ₁.comp D.sp.cm.sig)) = z`. Use function extensionality and compare the values at `i j`. Conclude with `(he (z i j)).2.2`. Unfold `GlobalTheory.VacShape.coBar`. Rewrite using `[hx, ← hAdef, ← hBdef, hz]`.
-
-Simplify using `only [Units.val_one, Matrix.transpose_one, Matrix.one_mul, Matrix.mul_one, Matrix.mul_neg, Matrix.neg_mul, neg_neg]`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hA, Matrix.one_mul, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hB, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coBar_onto (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base D.host.F D.host.E) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo D.sp.cm.sig a a')
     (hV' : Γ.V'.J.det ≠ 0) (hW : Γ.W.J.det ≠ 0) (Y : Matrix (Fin a') (Fin (a + a')) (Fv D.host.F Bs.v₁)) :
@@ -121,11 +117,11 @@ theorem coBar_onto (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModel
       Matrix.nonsing_inv_mul _ hB, Matrix.mul_one]
 
 /- English proof (translation)
-Introduce `D a a' Bs Γ X om om' hTr L₁ L₂ Y h hY hYh`. Establish `hV'` using `GlobalTheory.WeilSchrodingerHerm.det_J_ne_zero D Bs Γ.V' hTr.geo.hV'`. Establish `hW` using `det_ne_zero_skew Bs Γ.W hTr.geo.hW`. Introduce `x hx hx0 hxh u hu hu0`. Take `⟨x', hx', hx'0, hx'Y⟩` from `coBar_onto Bs Γ hV' hW Y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hat : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (evFin D.host.F Bs.v₁) (x' + x)`. Introduce `w hw`. Rewrite using `[smul_add, hx' w hw, hx w hw, add_zero]`. Establish `h1` using `hYh (x' + x) hat (by rw [Matrix.map_add _ (map_add _), hx'0, hx0, add_zero]) (by rw [GlobalTheory.VacShape.coBar_add, hx'Y, hxh]) u hu hu0`. Establish `h2` using `hY x' hx' hx'0 hx'Y u hu hu0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[symp_add_left', AddChar.map_add_eq_mul, h2, one_mul]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bd_sub : ∀ {D : D7} {a a' : ℕ} (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base D.host.F D.host.E) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo D.sp.cm.sig a a')
     (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars D.host.F D.host.E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep D.sp.cm.sig Γ.V Γ.W)

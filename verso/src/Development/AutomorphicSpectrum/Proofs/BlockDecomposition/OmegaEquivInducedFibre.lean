@@ -16,7 +16,7 @@ def topR (e : c ⊕ d ≃ b) (y : Matrix c a k) : Matrix b a k := (fromRows y 0)
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [Fintype a] [DecidableEq a]
   [Fintype b] [DecidableEq b] [Fintype c] [DecidableEq c] [Fintype d] [DecidableEq d] in
 /- English proof (translation)
-Simplify using `[topR]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem topR_inl (e : c ⊕ d ≃ b) (y : Matrix c a k) (i : c) (l : a) :
     topR e y (e (.inl i)) l = y i l := by
@@ -25,14 +25,14 @@ Simplify using `[topR]`.
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [Fintype a] [DecidableEq a]
   [Fintype b] [DecidableEq b] [Fintype c] [DecidableEq c] [Fintype d] [DecidableEq d] in
 /- English proof (translation)
-Simplify using `[topR]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem topR_inr (e : c ⊕ d ≃ b) (y : Matrix c a k) (i : d) (l : a) :
     topR e y (e (.inr i)) l = 0 := by
   simp [topR]
 
 /- English proof (translation)
-Rewrite using `[mul_apply, ← e.sum_comp, Fintype.sum_sum_type]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mul_topR (e : c ⊕ d ≃ b) (g : Matrix b b k) (y : Matrix c a k) (i : b) (l : a) :
     (g * topR e y) i l = ∑ m, g i (e (.inl m)) * y m l := by
@@ -40,7 +40,7 @@ theorem mul_topR (e : c ⊕ d ≃ b) (g : Matrix b b k) (y : Matrix c a k) (i : 
   simp
 
 /- English proof (translation)
-Use extensionality with `i l`. Apply the tactic sequence `obtain ⟨i | i, rfl⟩ := e.surjective i <;> simp [mul_apply]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem topR_mul (e : c ⊕ d ≃ b) (y : Matrix c a k) (g : Matrix a a k) :
     topR e (y * g) = topR e y * g := by
@@ -48,11 +48,11 @@ theorem topR_mul (e : c ⊕ d ≃ b) (y : Matrix c a k) (g : Matrix a a k) :
   obtain ⟨i | i, rfl⟩ := e.surjective i <;> simp [mul_apply]
 
 /- English proof (translation)
-Use `le_antisymm ?_ ?_` and prove the remaining obligations. Establish `h : topR e y = ((1 : Matrix b b k).submatrix id fun i => e (.inl i)) * y`. Use extensionality with `i l`. Take `⟨i | i, rfl⟩` from `e.surjective i`. Simplify using `[mul_apply, one_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `[mul_apply, one_apply]`. Rewrite using `[h]`. Conclude with `rank_mul_le_right _ _`. Establish `h : (topR e y).submatrix (fun i => e (.inl i)) (Equiv.refl a) = y`. Use extensionality with `i l`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `h2` using `rank_submatrix_le (topR e y) (fun i => e (.inl i)) (Equiv.refl a)`. Rewrite `h2` using `[h]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem rank_topR (e : c ⊕ d ≃ b) (y : Matrix c a k) : (topR e y).rank = y.rank := by
   refine le_antisymm ?_ ?_
@@ -72,11 +72,11 @@ def topEmbR (e : c ⊕ d ≃ b) {κ : ℕ} (y : RankIn k a c {κ}) : RankIn k a 
   ⟨topR e y.1, (rank_topR e y.1).trans y.2⟩
 
 /- English proof (translation)
-Use extensionality with `x`. Use `⟨?_, fun hx => ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨y, rfl⟩ j i`. Conclude with `topR_inr e _ j i`. Establish `hxy : x.1 = topR e (x.1.submatrix (fun i => e (.inl i)) id)`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `i l`. Take `⟨i | i, rfl⟩` from `e.surjective i`. Simplify using the standard rewrite rules. Simplify using `using hx i l`. Establish `hr : (x.1.submatrix (fun i => e (.inl i)) id).rank = κ`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← rank_topR e, ← hxy]`. Conclude with `x.2`. Conclude with `⟨⟨_, hr⟩, Subtype.ext hxy.symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem range_topEmbR (e : c ⊕ d ≃ b) {κ : ℕ} :
     Set.range (topEmbR (k := k) (a := a) e (κ := κ)) = {x | ∀ j i, x.1 (e (.inr j)) i = 0} := by
@@ -95,11 +95,11 @@ theorem range_topEmbR (e : c ⊕ d ≃ b) {κ : ℕ} :
     exact ⟨⟨_, hr⟩, Subtype.ext hxy.symm⟩
 
 /- English proof (translation)
-Take `⟨_, _⟩` from `SplitWeil.Model.secondCountable_and_t2_local_field (k := k)`. Use `⟨IsEmbedding.of_comp (g := fun x : RankIn k a b {κ} => x.1.submatrix (fun i => e (.inl i)) id) (Continuous.subtype_mk (continuous_matrix fun i l => ?_) _) (continuous_subtype_val.matrix_submatrix _ _) ?_, ?_⟩` and prove the remaining obligations. Take `⟨i | i, rfl⟩` from `e.surjective i`. Simplify using `only [topR_inl]`. Conclude with `continuous_subtype_val.matrix_elem _ _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [topR_inr]`. Conclude with `continuous_const`. Use `IsEmbedding.subtypeVal (p := fun y : Matrix c a k => y.rank ∈ ({κ} : Set ℕ)) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `y`. Use extensionality with `i l`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `topR_inl e _ i l`. Rewrite using `[range_topEmbR]`. Simplify using `only [Set.setOf_forall]`. Conclude with `isClosed_iInter fun i => isClosed_iInter fun j => isClosed_eq (continuous_subtype_val.matrix_elem _ _) continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem isClosedEmbedding_topEmbR (e : c ⊕ d ≃ b) {κ : ℕ} :
     IsClosedEmbedding (topEmbR (k := k) (a := a) e (κ := κ)) := by
@@ -122,11 +122,11 @@ theorem isClosedEmbedding_topEmbR (e : c ⊕ d ≃ b) {κ : ℕ} :
       isClosed_eq (continuous_subtype_val.matrix_elem _ _) continuous_const
 
 /- English proof (translation)
-Use `Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[lAct_val]`. Use extensionality with `i l`. Use `(mul_topR e _ _ i l).trans ?_` and prove the remaining obligations. Take `⟨i | i, rfl⟩` from `e.surjective i`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `Eq.trans ?_ (topR_inl e _ i l).symm` and prove the remaining obligations. Rewrite using `[lAct_val]`. Establish `: (show GL c k from leviProj k (two e) p false)⁻¹ = leviProj k (two e) p⁻¹ false`. Rewrite using `[map_inv]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[this]`. Both sides reduce to the same expression. Use `Eq.trans ?_ (topR_inr e _ i l).symm` and prove the remaining obligations. Use `Finset.sum_eq_zero fun m _ => ?_` and prove the remaining obligations. Rewrite using `[(mem_parab_two k).1 (inv_mem p.2), zero_mul]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem lAct_topEmbR (e : c ⊕ d ≃ b) {κ : ℕ} (y : RankIn k a c {κ}) (p : parab k (two e)) :
     lAct _ (topEmbR e y) p = topEmbR e (lAct _ y (show GL c k from leviProj k (two e) p false)) := by
@@ -146,7 +146,7 @@ theorem lAct_topEmbR (e : c ⊕ d ≃ b) {κ : ℕ} (y : RankIn k a c {κ}) (p :
     rw [(mem_parab_two k).1 (inv_mem p.2), zero_mul]
 
 /- English proof (translation)
-Use `GlobalTheory.T.leftColumns_mulVec_injective_of_rank_eq_card k a c d b e (topR e y.1)ᵀ ((rank_transpose _).trans (((rank_topR e y.1).trans y.2).trans hκ)) (fun i j => topR_inr e _ j i) v ?_` and prove the remaining obligations. Establish `hs : (topR e y.1)ᵀ.submatrix id (fun i => e (.inl i)) = y.1ᵀ`. Use extensionality with `i l`. Simplify using the standard rewrite rules. Rewrite using `[hs, mulVec_transpose, h]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_zero_of_vecMul (e : c ⊕ d ≃ b) {κ : ℕ} (hκ : κ = Fintype.card c) (y : RankIn k a c {κ})
     (v : c → k) (h : v ᵥ* y.1 = 0) : v = 0 := by
@@ -157,13 +157,11 @@ theorem eq_zero_of_vecMul (e : c ⊕ d ≃ b) {κ : ℕ} (hκ : κ = Fintype.car
   rw [hs, mulVec_transpose, h]
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `GlobalTheory.T.exists_GL_mul_rightColumns_eq_zero_of_rank k a c d b e x.1ᵀ ((rank_transpose _).trans (x.2.trans hκ))`. Take `⟨u, hu⟩` from `(isUnit_transpose _).2 g.isUnit`. Take `⟨p, hp, w, hw, h⟩` from `iwasawa_blockTriangular k b (fun i => (blk (two e) i).toNat) u`. Establish `hp' : p ∈ parab k (two e)` using `(mem_parab_two k).2 fun i j => hp (by`. Rewrite using `[← two_false e, ← two_true e]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [blk_apply]`. Use the proof step `simp)`. Establish `: lAct _ x u⁻¹ ∈ Set.range (topEmbR (k` using `k) (a := a) e (κ := κ)) := by`. Rewrite using `[range_topEmbR]`. Introduce `j i`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lAct_val, inv_inv, hu, ← transpose_transpose x.1, ← transpose_mul]`. Conclude with `hg i j`. Take `⟨y, hy⟩` from `this`. Use `⟨_, w, hw, Eq.trans ?_ (congrArg (lAct _ · w) (lAct_topEmbR e y ⟨p, hp'⟩))⟩` and prove the remaining obligations. Use `show x = lAct _ (lAct _ _ p) w`.
-
-Rewrite using `[hy, ← lAct_mul, ← lAct_mul, ← h, inv_mul_cancel, lAct_one]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_topEmbR (e : c ⊕ d ≃ b) {κ : ℕ} (hκ : κ = Fintype.card c) (x : RankIn k a b {κ}) :
     ∃ y, ∃ w ∈ KO k b, x = lAct _ (topEmbR e y) w := by
@@ -183,7 +181,7 @@ theorem exists_topEmbR (e : c ⊕ d ≃ b) {κ : ℕ} (hκ : κ = Fintype.card c
   rw [hy, ← lAct_mul, ← lAct_mul, ← h, inv_mul_cancel, lAct_one]
 
 /- English proof (translation)
-Establish `hb : ((Fintype.card c : ℂ) + Fintype.card d) / 2 = (Fintype.card b : ℂ) / 2`. Rewrite using `[← Fintype.card_congr e, Fintype.card_sum]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[fibChar, omChar, hb]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 -/
 theorem fibChar_fst (e : c ⊕ d ≃ b) (μ : kˣ →* ℂˣ) (γ : GL a k) :
     fibChar a c d μ (γ, 1, 1) = omChar a b μ (γ, 1) := by
@@ -192,19 +190,15 @@ theorem fibChar_fst (e : c ⊕ d ≃ b) (μ : kˣ →* ℂˣ) (γ : GL a k) :
   simp [fibChar, omChar, hb]
 
 /- English proof (translation)
-Introduce `k _ _ _ _ a b c d _ _ _ _ _ _ _ _ e κ hκ μ hμ`. Take `⟨_, _⟩` from `SplitWeil.Model.secondCountable_and_t2_local_field (k := k)`. Take `⟨E, hE⟩` from `GlobalTheory.T.schwartzBruhat_sweep_smoothly_induced (GL b k) (RankIn k a b {κ}) (RankIn k a c {κ}) (SB (RankIn k a c {κ})) (lAct {κ}) (lAct_one _) (lAct_mul _) (continuous_lAct _) (topEmbR e) (isClosedEmbedding_topEmbR e) (parab k (two e)) (KO k b) SplitFlip.isCompact_KO (exists …`. Use `inv_mem_iff.1 ((mem_parab_two k).2 fun j i => ?_)` and prove the remaining obligations. Establish `h0 : (fun m => (g⁻¹).val (e (.inr j)) (e (.inl m))) ᵥ* y.1 = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `l`. Use `congrArg (fun x : RankIn k a b {κ} => x.1 (e (.inr j)) l) h` as an intermediate fact. Simplify using `only [lAct_val] at this`. Conclude with `(mul_topR e _ _ _ l).symm.trans (this.trans (topR_inr e _ j l))`. Conclude with `congrFun (eq_zero_of_vecMul e hκ y _ h0) i)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `((omChar a b μ).comp (MonoidHom.inr _ _))`. Use the proof step `((isSmoothChar_omChar hμ).comp _ (continuous_const.prodMk continuous_id))`. Use the proof step `((twist (MonoidHom.comp ((fibRep a c d μ κ).comp (MonoidHom.inr _ _)) (leviTwo k c d).symm.toMonoidHom) (deltaHalf k (Two c d))).comp (leviProj k (two e)))`. Use the proof step `(LinearEquiv.refl ℂ _)`. Use the proof step `(fun p w y => by set m := leviProj k (two e) p with hm`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hd : GeneralLinearGroup.det (p : GL b k) = GeneralLinearGroup.det (m false) * GeneralLinearGroup.det (m true)` using `(det_parab k (two e) p).trans ((Fintype.prod_bool _).trans (mul_comm _ _))`. Establish `hδ` using `deltaHalf_two (k := k) (m false, m true)`. Rewrite `hδ` using `[show leviTwo k c d (m false, m true) = m from (leviTwo k c d).right_inv m]`. Use `show (deltaHalf k (Two c d) m : ℂ) * (fibRep a c d μ κ (1, m false, m true) w).1 y = _`. Rewrite using `[fibRep_apply, ← mul_assoc, ← Units.val_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `congrArg₂ _ (congrArg _ ?_) rfl` and prove the remaining obligations. Rewrite using `[hδ]`. Simplify using `only [fibChar, omChar, MonoidHom.comp_apply, MonoidHom.mul_apply, detChar_apply, MonoidHom.inr_apply, MonoidHom.coe_fst, MonoidHom.coe_snd, map_one, one_mul, hd, map_mul, neg_div, absPow_neg, MonoidHom.inv_apply, absPow_add, mul_inv, inv_inv, inv_one]`. Use `ext`. Simplify using `only [Units.val_mul, Units.val_inv_eq_inv_val]`.
-
-Use the proof step `field_simp)`. Establish `hE' : ∀ Φ g y, ((E Φ).1.1 g).1 y = (omChar a b μ (1, g) : ℂ) * Φ.1 (lAct _ (topEmbR e y) g)` using `hE`. Use `⟨.mk E fun g => LinearMap.ext fun Φ => Subtype.ext (Subtype.ext (funext fun x => Subtype.ext (funext fun y => ?_)))⟩` and prove the remaining obligations. Take `⟨γ, h⟩` from `g`. Use `(hE' _ x y).trans (Eq.trans ?_ (fibRep_apply a c d μ κ γ 1 1 ((E Φ).1.1 (x * h)) y).symm)` and prove the remaining obligations.
-
-Rewrite using `[hE', omegaOn_apply, fibChar_fst e, ← mul_assoc, ← mul_assoc, ← Units.val_mul, ← Units.val_mul, ← map_mul, ← map_mul]`. Use `congrArg₂ _ (congrArg _ (congrArg _ (by simp))) (congrArg _ (Subtype.ext ?_))` and prove the remaining obligations. Simplify using `only [lAct_val, act, topEmbR, Units.val_mul, topR_mul, _root_.mul_inv_rev, Matrix.mul_assoc, Units.val_one, Matrix.one_mul, inv_one, Matrix.mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fibStr : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (a b c d : Type) [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b] [Fintype c] [DecidableEq c]

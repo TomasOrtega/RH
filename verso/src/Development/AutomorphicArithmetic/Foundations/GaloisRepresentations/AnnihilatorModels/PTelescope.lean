@@ -5,17 +5,17 @@ open CategoryTheory AlgebraicGeometry TensorProduct
 open UpperTheory.Gal.crystallineComparison
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero`. Use `⟨fun _ => ?_, fun h => absurd ⟨0, rfl⟩ h⟩` and prove the remaining obligations. Simplify using `[h0]`. Consider the case `succ m ih`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Treat this case separately.
 
-Establish `hmn : m < n` using `hm`. Take `⟨ihE, ihO⟩` from `ih (by omega)`. Establish `key : (T (m + 1)).map F^[n - (m + 1)] = (A m).map F^[n - m] + q ^ (m + 1) • (A (m + 1)).map F^[n - (m + 1)]`. Rewrite using `[hs m hmn, Multiset.map_add, Multiset.map_nsmul, Multiset.map_map]`. Use `congr 2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `e : n - m = (n - (m + 1)) + 1` using `by omega`. Rewrite using `[e, Function.iterate_succ]`. Establish `hc : (m + 1 + 1).choose 2 = (m + 1).choose 2 + (m + 1)`. Rewrite using `[Nat.choose_succ_succ', Nat.choose_one_right, add_comm]`. Simplify using `only [Finset.sum_range_succ _ (m + 1), key, hc, pow_add, smul_add, mul_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Break down `Nat.even_or_odd m with he | ho` into its components or cases. Establish `hne : ¬ Even (m + 1)` using `Nat.not_even_iff_odd.mpr he.add_one`. Simplify using `only [hne, if_false, zero_smul, add_zero, if_true]`. Use `⟨fun h => h.elim, fun _ => ?_⟩` and prove the remaining obligations. Rewrite using `[ihE he]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Establish `hne : ¬ Even m` using `Nat.not_even_iff_odd.mpr ho`. Establish `hev : Even (m + 1)` using `ho.add_one`. Simplify using `only [hev, if_false, zero_smul, add_zero, if_true]`. Use `⟨fun _ => ?_, fun h => absurd trivial h⟩` and prove the remaining obligations.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[ihO hne]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 private theorem telescope_core {P : Type} (q n : ℕ) (F : P → P) (T A : ℕ → Multiset P)
     (h0 : T 0 = A 0)
@@ -58,17 +58,17 @@ private theorem telescope_core {P : Type} (q n : ℕ) (F : P → P) (T A : ℕ �
       abel
 
 /- English proof (translation)
-Introduce `q n P F T A hAn h0 hs`. Set `T' : ℕ → Multiset P` to `fun j => if h : j < n + 1 then T ⟨j, h⟩ else 0`. Establish `hT : ∀ j : Fin (n + 1), T j = T' j` using `fun j => by`. Simplify using `only [T', dif_pos j.isLt, Fin.eta]`. Establish `h0' : T' 0 = A 0` using `by simpa [T'] using h0`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hs' : ∀ j, j < n → T' (j + 1) = (A j).map F + q ^ (j + 1) • A (j + 1)`. Introduce `j hj`. Establish `hh` using `hs ⟨j, hj⟩`. Simplify `hh` using `[T', hj, Fin.succ]`. Establish `hE : ∑ j : Fin (n + 1), wEv q j • (T j).map F^[n - j] = ∑ j ∈ Finset.range (n + 1), (if Even j then q ^ (j.choose 2) else 0) • (T' j).map F^[n - j]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[← Fin.sum_univ_eq_sum_range (fun j => (if Even j then q ^ (j.choose 2) else 0) • (T' j).map F^[n - j])]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hT j]`. Both sides reduce to the same expression. Establish `hO : ∑ j : Fin (n + 1), wOd q j • (T j).map F^[n - j] = ∑ j ∈ Finset.range (n + 1), (if Even j then 0 else q ^ (j.choose 2)) • (T' j).map F^[n - j]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[← Fin.sum_univ_eq_sum_range (fun j => (if Even j then 0 else q ^ (j.choose 2)) • (T' j).map F^[n - j])]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hT j]`. Both sides reduce to the same expression. Take `⟨h1, h2⟩` from `telescope_core q n F T' A h0' hs' n le_rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hE, hO]`. Distinguish the cases in `he : Even n`. Rewrite using `[h1 he]`. Simplify using `[hAn]`. Rewrite using `[h2 he]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hAn]`.
+Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.Gal.crystallineComparison.telescope_of :
     Telescope := by

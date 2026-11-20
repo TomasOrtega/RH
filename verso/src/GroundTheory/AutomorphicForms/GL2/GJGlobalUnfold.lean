@@ -13,7 +13,7 @@ namespace UnfoldGL
 open Reduction AutomorphicForm RightCosetSpace RankDecomp CuspidalSpectrum
 
 /- English proof (translation)
-Establish `hlim : Tendsto (fun s : Finset ι => fun x => ∑ i ∈ s, f i x) atTop (𝓝 fun x => ∑' i, f i x)` using `tendsto_pi_nhds.2 fun x => (hs x).hasSum`. Conclude with `measurable_of_tendsto_metrizable' atTop (fun s => Finset.measurable_sum s fun i _ => hf i) hlim`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measurable_tsum_of_summable {α ι : Type*} [MeasurableSpace α] [Countable ι]
     {f : ι → α → ℂ} (hf : ∀ i, Measurable (f i)) (hs : ∀ x, Summable fun i => f i x) :
@@ -52,11 +52,11 @@ def reps (k : ℕ) (g : normOneGL K n) : Set (GL (Fin n) K) :=
   {γ | ratOne K n γ * g ∈ fundamentalDomain (parabolicOne K n k)}
 
 /- English proof (translation)
-Take `⟨q, hq, hqu⟩` from `existsUnique_smul_mem_fundamentalDomain (parabolicOne K n k) (ratOne K n γ₀ * g)`. Take `⟨p, hp, hpq⟩` from `mem_parabolicOne_iff.1 q.2`. Use `⟨⟨p, hp⟩, ?_, ?_⟩` and prove the remaining obligations. Use `show ratOne K n (p * γ₀) * g ∈ fundamentalDomain (parabolicOne K n k)`. Rewrite using `[map_mul, mul_assoc, hpq]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `hq`. Introduce and unpack `⟨p', hp'⟩ h`. Establish `h' : (⟨ratOne K n p', ⟨p', hp', rfl⟩⟩ : parabolicOne K n k) • (ratOne K n γ₀ * g) ∈ fundamentalDomain (parabolicOne K n k)` using `by show ratOne K n p' * (ratOne K n γ₀ * g) ∈ fundamentalDomain (parabolicOne K n k)`. Rewrite using `[← mul_assoc, ← map_mul]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `hqu _ h'` as an intermediate fact. Use `Subtype.ext (ratOne_injective ?_)` and prove the remaining obligations. Rewrite using `[hpq]`. Conclude with `congrArg Subtype.val this`.
+A detailed English derivation is pending.
 -/
 theorem existsUnique_reps (k : ℕ) (g : normOneGL K n) (γ₀ : GL (Fin n) K) :
     ∃! p : parabolic (K := K) (n := n) k, (p : GL (Fin n) K) * γ₀ ∈ reps k g := by
@@ -90,7 +90,7 @@ theorem coe_rankEquiv {k : ℕ} (hk : k ≤ n) (g : normOneGL K n) (x : reps k g
   rfl
 
 /- English proof (translation)
-Rewrite using `[ratMat_mul, Subgroup.coe_mul, Units.val_mul, coe_ratOne_matrix]`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mul_ratMat_mul (y : AdelicGLn.AdelicGL K n) (Z : Matrix (Fin n) (Fin n) K) (γ : GL (Fin n) K)
     (g : normOneGL K n) :
@@ -102,11 +102,11 @@ theorem mul_ratMat_mul (y : AdelicGLn.AdelicGL K n) (Z : Matrix (Fin n) (Fin n) 
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `hsumR : Summable fun ξ : {ξ : Matrix (Fin n) (Fin n) K // ξ.rank = n - k} => Φ ((y : Matrix (Fin n) (Fin n) 𝔸[K]) * ratMat (ξ : Matrix (Fin n) (Fin n) K) * ((g : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K]))` using `hs.of_norm.comp_injective Subtype.val_injective`. Establish `hP : Summable fun c : reps k g × R (K` using `K) (n := n) k => Φ ((y : Matrix (Fin n) (Fin n) 𝔸[K]) * ratMat ((rankEquiv hk g c : {ξ : Matrix (Fin n) (Fin n) K // ξ.rank = n - k}) : Matrix (Fin n) (Fin n) K) * ((g : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K])) := hsumR.comp_injective (rankEquiv hk g).injective`. Rewrite using `[← (rankEquiv hk g).tsum_eq, hP.tsum_prod]`. Establish `hin : ∀ b : reps k g, (∑' c : R (K` using `K) (n := n) k, Φ ((y : Matrix (Fin n) (Fin n) 𝔸[K]) * ratMat ((rankEquiv hk g (b, c) : {ξ : Matrix (Fin n) (Fin n) K // ξ.rank = n - k}) : Matrix (Fin n) (Fin n) K) * ((g : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K]))) = thetaR k Φ y (ratOne K n (b : GL (Fin n) K) * g) …`. Introduce `b`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [coe_rankEquiv, thetaR, mul_ratMat_mul]`. Rewrite using `[tsum_congr hin, tsum_subtype (reps k g) (fun γ => thetaR k Φ y (ratOne K n γ * g))]`. Use `tsum_congr fun γ => ?_` and prove the remaining obligations. Distinguish the cases in `hγ : γ ∈ reps k g`. Rewrite using `[indicator_of_mem hγ, indicator_of_mem (show ratOne K n γ * g ∈ fundamentalDomain (parabolicOne K n k) from hγ)]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[indicator_of_notMem hγ, indicator_of_notMem (show ratOne K n γ * g ∉ fundamentalDomain (parabolicOne K n k) from hγ)]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem tsum_rank_eq {k : ℕ} (hk : k ≤ n) (Φ : Matrix (Fin n) (Fin n) 𝔸[K] → ℂ)
     (y : AdelicGLn.AdelicGL K n) (g : normOneGL K n)
@@ -142,9 +142,9 @@ theorem tsum_rank_eq {k : ℕ} (hk : k ≤ n) (Φ : Matrix (Fin n) (Fin n) 𝔸[
       (show ratOne K n γ * g ∉ fundamentalDomain (parabolicOne K n k) from hγ)]
 
 /- English proof (translation)
-Rewrite using `[← (rankEquiv hk g).tsum_eq, ENNReal.tsum_prod']`. Use `set T : normOneGL K n → ℝ≥0∞ := fun h => ∑' Z : R (K := K) (n := n) k, ‖Φ ((y : Matrix (Fin n) (Fin n) 𝔸[K]) * ratMat (Z : Matrix (Fin n) (Fin n) K) * ((h : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K]))‖ₑ with hT`. Establish `hin : ∀ b : reps k g, (∑' c : R (K` using `K) (n := n) k, ‖Φ ((y : Matrix (Fin n) (Fin n) 𝔸[K]) * ratMat ((rankEquiv hk g (b, c) : {ξ : Matrix (Fin n) (Fin n) K // ξ.rank = n - k}) : Matrix (Fin n) (Fin n) K) * ((g : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K]))‖ₑ) = T (ratOne K n (b : GL (Fin n) K) * g) := by`. Introduce `b`. Simplify using `only [hT, coe_rankEquiv, mul_ratMat_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[tsum_congr hin, tsum_subtype (reps k g) (fun γ => T (ratOne K n γ * g))]`. Use `tsum_congr fun γ => ?_` and prove the remaining obligations. Distinguish the cases in `hγ : γ ∈ reps k g`. Rewrite using `[indicator_of_mem hγ, indicator_of_mem (show ratOne K n γ * g ∈ fundamentalDomain (parabolicOne K n k) from hγ)]`. Rewrite using `[indicator_of_notMem hγ, indicator_of_notMem (show ratOne K n γ * g ∉ fundamentalDomain (parabolicOne K n k) from hγ)]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tsum_rank_enorm_eq {k : ℕ} (hk : k ≤ n) (Φ : Matrix (Fin n) (Fin n) 𝔸[K] → ℂ)
     (y : AdelicGLn.AdelicGL K n) (g : normOneGL K n) :
@@ -175,9 +175,9 @@ theorem tsum_rank_enorm_eq {k : ℕ} (hk : k ≤ n) (Φ : Matrix (Fin n) (Fin n)
       (show ratOne K n γ * g ∉ fundamentalDomain (parabolicOne K n k) from hγ)]
 
 /- English proof (translation)
-Rewrite using `[unipMatrix, Matrix.mul_add, Matrix.mul_one, add_eq_left]`. Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Matrix.zero_apply]`. Use `Finset.sum_eq_zero fun a _ => ?_` and prove the remaining obligations. Rewrite using `[blockEntry_apply]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with h`. Simplify using `[ratMat, hZ i a h.1]`. Rewrite using `[mul_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratMat_mul_unipMatrix {k : ℕ} {Z : Matrix (Fin n) (Fin n) K}
     (hZ : ∀ i j : Fin n, (j : ℕ) < k → Z i j = 0) (X : UPos n k → 𝔸[K]) :
@@ -192,7 +192,7 @@ theorem ratMat_mul_unipMatrix {k : ℕ} {Z : Matrix (Fin n) (Fin n) K}
   · rw [mul_zero]
 
 /- English proof (translation)
-Use `tsum_congr fun Z => ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[Subgroup.coe_mul, Units.val_mul, coe_unipOne, coe_unipGL, ← Matrix.mul_assoc, Matrix.mul_assoc (y : Matrix (Fin n) (Fin n) 𝔸[K]), ratMat_mul_unipMatrix Z.2.1]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem thetaR_unipOne {k : ℕ} (Φ : Matrix (Fin n) (Fin n) 𝔸[K] → ℂ) (y : AdelicGLn.AdelicGL K n)
     (X : UPos n k → 𝔸[K]) (g : normOneGL K n) :
@@ -220,7 +220,7 @@ def rightMulR {k : ℕ} (hk : k ≤ n) {p : GL (Fin n) K} (hp : p ∈ parabolic 
     simp [Matrix.mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[thetaR, thetaR, ← (rightMulR hk hp).tsum_eq (fun Z : R (K := K) (n := n) k => Φ ((y : Matrix (Fin n) (Fin n) 𝔸[K]) * ratMat (Z : Matrix (Fin n) (Fin n) K) * ((g : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K])))]`. Use `tsum_congr fun Z => ?_` and prove the remaining obligations. Use `show _ = Φ ((y : Matrix (Fin n) (Fin n) 𝔸[K]) * ratMat ((Z : Matrix (Fin n) (Fin n) K) * (p : Matrix (Fin n) (Fin n) K)) * ((g : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K]))`. Rewrite using `[mul_ratMat_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaR_ratOne {k : ℕ} (hk : k ≤ n) (Φ : Matrix (Fin n) (Fin n) 𝔸[K] → ℂ)
     (y : AdelicGLn.AdelicGL K n) {p : GL (Fin n) K} (hp : p ∈ parabolic (K := K) (n := n) k)
@@ -235,37 +235,31 @@ theorem thetaR_ratOne {k : ℕ} (hk : k ≤ n) (Φ : Matrix (Fin n) (Fin n) 𝔸
   rw [mul_ratMat_mul]
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `hbd`. Establish `hkn' : k ≤ n` using `hkn.le`. Use `set E := fundamentalDomain (parabolicOne K n k) with hE`. Use `set FΓ := fundamentalDomain (rationalGLOne K n) with hFΓ`. Use `set F : normOneGL K n → ℂ := thetaR k Φ y with hF`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set ψ' : normOneGL K n → ℂ := fun h => ψ (h : AdelicGLn.AdelicGL K n) with hψ'`. Use `set H : normOneGL K n → ℂ := E.indicator (fun h => ψ' h * F h) with hH`. Establish `hψΓ : ∀ (γ : GL (Fin n) K) (g : normOneGL K n), ψ' (ratOne K n γ * g) = ψ' g` using `fun γ g => hψl γ g`. Establish `hcoe : Continuous fun h : normOneGL K n => ((h : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K])` using `Units.continuous_val.comp continuous_subtype_val`. Establish `hψm : Measurable ψ'` using `(hψc.comp continuous_subtype_val).measurable`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hFm : Measurable F`. Use `measurable_tsum_of_summable (fun Z => ?_) (fun h => ?_)` and prove the remaining obligations. Conclude with `(hΦ.comp (continuous_const.matrix_mul hcoe)).measurable`. Conclude with `(hsum (h : AdelicGLn.AdelicGL K n)).of_norm.comp_injective Subtype.val_injective`. Establish `hHm : Measurable H` using `(hψm.mul hFm).indicator (measurableSet_fundamentalDomain _)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `hpt : ∀ g : normOneGL K n, ψ' g * ∑' ξ : {ξ : Matrix (Fin n) (Fin n) K // ξ.rank = n - k}, Φ ((y : Matrix (Fin n) (Fin n) 𝔸[K]) * ratMat (ξ : Matrix (Fin n) (Fin n) K) * ((g : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K])) = ∑' γ : rationalGLOne K n, H (γ • g)`. Introduce `g`. Rewrite using `[tsum_rank_eq hkn' Φ y g (hsum (g : AdelicGLn.AdelicGL K n)), ← tsum_mul_left, ← ratEquiv.tsum_eq]`. Use `tsum_congr fun γ => ?_` and prove the remaining obligations. Simplify using `only [hH, Subgroup.smul_def, coe_ratEquiv, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hγ : ratOne K n γ * g ∈ E`. Rewrite using `[indicator_of_mem hγ, indicator_of_mem hγ, hψΓ]`. Rewrite using `[indicator_of_notMem hγ, indicator_of_notMem hγ, mul_zero]`. Establish `hbound : ∀ g : normOneGL K n, ∑' γ : rationalGLOne K n, ‖H (γ • g)‖ₑ ≤ ENNReal.ofReal C`. Introduce `g`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Establish `h1 : ∀ γ : GL (Fin n) K, ‖H (ratOne K n γ * g)‖ₑ ≤ ‖ψ' g‖ₑ * E.indicator (fun h : normOneGL K n => ∑' Z : R (K` using `K) (n := n) k, ‖Φ ((y : Matrix (Fin n) (Fin n) 𝔸[K]) * ratMat (Z : Matrix (Fin n) (Fin n) K) * ((h : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K]))‖ₑ) (ratOne K n γ * g) := by`. Introduce `γ`. Distinguish the cases in `hγ : ratOne K n γ * g ∈ E`. Rewrite using `[hH, indicator_of_mem hγ, indicator_of_mem hγ, enorm_mul, hψΓ] gcongr`. Conclude with `enorm_tsum_le_tsum_enorm`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hH, indicator_of_notMem hγ, indicator_of_notMem hγ]`. Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← ratEquiv.tsum_eq]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `_ ≤ ∑' γ : GL (Fin n) K, ‖ψ' g‖ₑ * E.indicator (fun h : normOneGL K n => ∑' Z : R (K := K) (n := n) k, ‖Φ ((y : Matrix (Fin n) (Fin n) 𝔸[K]) * ratMat (Z : Matrix (Fin n) (Fin n) K) * ((h : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K]))‖ₑ) (ratOne K n γ * g) := ENNReal.ts …`. Use `_ = ‖ψ' g‖ₑ * ∑' ξ : {ξ : Matrix (Fin n) (Fin n) K // ξ.rank = n - k}, ‖Φ ((y : Matrix (Fin n) (Fin n) 𝔸[K]) * ratMat (ξ : Matrix (Fin n) (Fin n) K) * ((g : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K]))‖ₑ := by`. Rewrite using `[ENNReal.tsum_mul_left, tsum_rank_enorm_eq hkn']`. Use `_ ≤ ‖ψ' g‖ₑ * ∑' ξ : Matrix (Fin n) (Fin n) K, ‖Φ ((y : Matrix (Fin n) (Fin n) 𝔸[K]) * ratMat ξ * ((g : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K]))‖ₑ := by gcongr; exact ENNReal.tsum_comp_le_tsum_of_injective Subtype.val_injective _`. Use `_ = ENNReal.ofReal (‖ψ' g‖ * ∑' ξ : Matrix (Fin n) (Fin n) K, ‖Φ ((y : Matrix (Fin n) (Fin n) 𝔸[K]) * ratMat ξ * ((g : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K]))‖) := by`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[ENNReal.ofReal_mul (norm_nonneg _), ofReal_norm, ENNReal.ofReal_tsum_of_nonneg (fun _ => norm_nonneg _) (hsum (g : AdelicGLn.AdelicGL K n))]`. Simplify using `only [ofReal_norm]`. Use `_ ≤ ENNReal.ofReal C := ENNReal.ofReal_le_ofReal (hC (g : AdelicGLn.AdelicGL K n) g.2)`. Establish `hFΓfd : IsFundamentalDomain (rationalGLOne K n) FΓ μ` using `isFundamentalDomain_fundamentalDomain _ μ`. Establish `hFΓfin : μ FΓ < ∞`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Reduction.isFiniteMeasure_quotientMeasure (K := K) (n := n) μ` as an intermediate fact. Rewrite using `[← quotientMeasure_univ μ hFΓfd]`. Conclude with `measure_lt_top _ _`. Establish `hlint : ∫⁻ g, ‖H g‖ₑ ∂μ < ∞`. Rewrite using `[hFΓfd.lintegral_eq_tsum'', ← lintegral_tsum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Introduce `γ`. Conclude with `(hHm.enorm.comp (measurable_const_mul (γ : normOneGL K n))).aemeasurable.restrict`. Establish `hHint : Integrable H μ` using `⟨hHm.aestronglyMeasurable, hlint⟩`. Establish `hunf : ∫ g in FΓ, ∑' γ : rationalGLOne K n, H (γ • g) ∂μ = ∫ g, H g ∂μ`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hFΓfd.integral_eq_tsum'' H hHint, integral_tsum]`. Introduce `γ`. Conclude with `(hHm.comp (measurable_const_mul (γ : normOneGL K n))).aestronglyMeasurable.restrict`. Rewrite using `[← hFΓfd.lintegral_eq_tsum'' (fun g => ‖H g‖ₑ)]`. Conclude with `hlint.ne`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation.
 
-Establish `hint : ∫⁻ g in E, ‖ψ' g * F g‖ₑ ∂μ < ∞`. Establish `: ∫⁻ g in E, ‖ψ' g * F g‖ₑ ∂μ = ∫⁻ g, ‖H g‖ₑ ∂μ`. Rewrite using `[← lintegral_indicator (measurableSet_fundamentalDomain _)]`. Use `lintegral_congr fun g => ?_` and prove the remaining obligations. Rewrite using `[hH, enorm_indicator_eq_indicator_enorm]`.
-
-Rewrite using `[this]`. Conclude with `hlint`. Establish `hzero : ∫ g in E, ψ' g * F g ∂μ = 0`. Use `(hyp (K := K) (n := n) k).setIntegral_mul_eq_zero (μ := μ) hψm hFm ?_ ?_ hint ?_ (unipMeasure_unipFundamentalDomain_ne_zero k) (unipMeasure_unipFundamentalDomain_ne_top k)` and prove the remaining obligations. Introduce `p hp g`.
-
-Take `⟨p', hp', rfl⟩` from `mem_parabolicOne_iff.1 hp`. Rewrite using `[hψΓ, hF, thetaR_ratOne hkn' Φ y hp']`. Introduce `X g`. Conclude with `thetaR_unipOne Φ y X g`. Introduce `g`.
-
-Use `hψ k hk hkn (g : AdelicGLn.AdelicGL K n)` as an intermediate fact. Rewrite `this` using `[constantTerm]`. Simplify `this` using `[hψ']`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem setIntegral_mul_tsum_rank_eq_zero (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure]
     {ψ : AdelicGLn.AdelicGL K n → ℂ} (hψc : Continuous ψ) (hψl : IsLeftInvariant ψ)

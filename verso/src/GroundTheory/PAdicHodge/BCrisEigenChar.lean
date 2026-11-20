@@ -13,13 +13,13 @@ open GroundTheory.LocalField EigenWitt
 variable {p : ℕ} [hp : Fact p.Prime]
 
 /- English proof (translation)
-The claim follows from `(algebraMap ℚ_[p] ℂ_[p]).injective`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_padic_cp_injective : Function.Injective (algebraMap ℚ_[p] ℂ_[p]) :=
   (algebraMap ℚ_[p] ℂ_[p]).injective
 
 /- English proof (translation)
-The claim follows from `AddMonoidHomClass.isometry_of_norm _ (norm_algebraMap' ℂ_[p])`.
+A detailed English derivation is pending.
 -/
 theorem isometry_algebraMap_padic_cp : Isometry (algebraMap ℚ_[p] ℂ_[p]) :=
   AddMonoidHomClass.isometry_of_norm _ (norm_algebraMap' ℂ_[p])
@@ -27,22 +27,20 @@ theorem isometry_algebraMap_padic_cp : Isometry (algebraMap ℚ_[p] ℂ_[p]) :=
 variable {K : IntermediateField ℚ_[p] (PadicAlgCl p)}
 
 /- English proof (translation)
-The claim follows from `algebraMap_padic_cp_injective (mul_right_cancel₀ hx h)`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_mul_eq {x : ℂ_[p]} (hx : x ≠ 0) {q q' : ℚ_[p]}
     (h : algebraMap ℚ_[p] ℂ_[p] q * x = algebraMap ℚ_[p] ℂ_[p] q' * x) : q = q' :=
   algebraMap_padic_cp_injective (mul_right_cancel₀ hx h)
 
 /- English proof (translation)
-Use `choose q hq using h`. Set `ψ₀ : Gal(PadicAlgCl p/K) →* ℚ_[p]` to `{ toFun := q map_one' := eq_of_mul_eq hx (by rw [← hq, one_smul, map_one, one_mul]) map_mul' := fun σ τ => eq_of_mul_eq hx (by`. Rewrite using `[← hq, mul_smul, hq τ, smul_mul', gal_smul_algebraMap, hq σ, map_mul]`. Use the proof step `ring) }`. Establish `hcont₀ : Continuous ψ₀`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[isometry_algebraMap_padic_cp.isEmbedding.continuous_iff]`. Establish `e : (algebraMap ℚ_[p] ℂ_[p]) ∘ ψ₀ = fun σ => (σ • x) * x⁻¹`. Use function extensionality and compare the values at `σ`. Simplify using `only [Function.comp_apply]`. Express the relevant statement in the definitionally equal form `algebraMap ℚ_[p] ℂ_[p] (q σ) = _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hq σ, mul_assoc, mul_inv_cancel₀ hx, mul_one]`. Rewrite using `[e]`. Conclude with `(continuous_id.smul continuous_const).mul continuous_const`. Use `⟨ψ₀.toHomUnits, ?_, fun σ => hq σ⟩` and prove the remaining obligations. Rewrite using `[Units.continuous_iff]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `⟨hcont₀, ?_⟩` and prove the remaining obligations. Establish `e : (fun σ => (((ψ₀.toHomUnits σ)⁻¹ : ℚ_[p]ˣ) : ℚ_[p])) = ψ₀ ∘ fun σ => σ⁻¹`. Use function extensionality and compare the values at `σ`. Rewrite using `[← map_inv]`. Both sides reduce to the same expression.
-
-Rewrite using `[e]`. Conclude with `hcont₀.comp continuous_inv`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_eigenChar {x : ℂ_[p]} (hx : x ≠ 0)
     (h : ∀ σ : Gal(PadicAlgCl p/K), ∃ q : ℚ_[p], σ • x = algebraMap ℚ_[p] ℂ_[p] q * x) :
@@ -75,7 +73,7 @@ theorem exists_eigenChar {x : ℂ_[p]} (hx : x ≠ 0)
   exact hcont₀.comp continuous_inv
 
 /- English proof (translation)
-Establish `h1` using `norm_smul_gal σ x`. Rewrite `h1` using `[h, norm_mul, norm_algebraMap']`. Conclude with `mul_right_cancel₀ (norm_ne_zero_iff.2 hx) (h1.trans (one_mul _).symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_eigen_eq_one {x : ℂ_[p]} (hx : x ≠ 0) {σ : Gal(PadicAlgCl p/K)} {q : ℚ_[p]}
     (h : σ • x = algebraMap ℚ_[p] ℂ_[p] q * x) : ‖q‖ = 1 := by
@@ -102,9 +100,9 @@ theorem galRes_smul {L : IntermediateField ℚ_[p] (PadicAlgCl p)} (hKL : K ≤ 
     (σ : Gal(PadicAlgCl p/L)) (x : ℂ_[p]) : galRes hKL σ • x = σ • x := rfl
 
 /- English proof (translation)
-Use `set F := ψ '' S \ {1} with hF`. Establish `hFc : IsClosed F` using `(hfin.subset Set.sdiff_subset).isClosed`. Establish `hO : ψ ⁻¹' Fᶜ ∈ nhds (1 : Gal(PadicAlgCl p/K))`. Use `(hFc.isOpen_compl.preimage hψ).mem_nhds ?_` and prove the remaining obligations. Simplify using `[hF]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨E, hE, hsub⟩` from `(krullTopology_mem_nhds_one_iff K (PadicAlgCl p) _).1 hO`. Use `⟨E, hE, fun σ hσ hS => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Conclude with `hsub hσ ⟨⟨σ, hS, rfl⟩, hne⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem exists_fixingSubgroup_of_finite_image (ψ : Gal(PadicAlgCl p/K) →* ℚ_[p]ˣ) (hψ : Continuous ψ)
     (S : Set Gal(PadicAlgCl p/K)) (hfin : (ψ '' S).Finite) :
@@ -121,13 +119,11 @@ theorem exists_fixingSubgroup_of_finite_image (ψ : Gal(PadicAlgCl p/K) →* ℚ
   exact hsub hσ ⟨⟨σ, hS, rfl⟩, hne⟩
 
 /- English proof (translation)
-Establish `hker : σ ∈ (maximalUnramifiedExtension L (PadicAlgCl p)).fixingSubgroup`. Rewrite using `[← ker_unramifiedDegree]`. Conclude with `hσ`. Establish `hroot : ∀ ζ ∈ primeToPRoots p, σ ζ = ζ`. Introduce and unpack `ζ ⟨m, hm, hcop, hζ⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `(IntermediateField.mem_fixingSubgroup_iff _ _).1 hker ζ (unramifiedRoots_subset_maximalUnramifiedExtension (mem_unramifiedRoots_iff.2 ⟨m, ?_, hζ⟩))` and prove the remaining obligations. Introduce `h0`. Rewrite `h0` using `[CharP.cast_eq_zero_iff _ p]`. Conclude with `(Nat.Prime.coprime_iff_not_dvd hp.out).1 hcop.symm h0`. Introduce `u hu`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `hu using IntermediateField.adjoin_induction with`. Consider the case `mem x hx => exact hroot x hx`. Consider the case `algebraMap q`. Conclude with `σ.commutes (algebraMap ℚ_[p] L q)`. Consider the case `add x y _ _ hx hy => rw [map_add, hx, hy]`.
-
-Consider the case `inv x _ hx => rw [map_inv₀, hx]`. Consider the case `mul x y _ _ hx hy => rw [map_mul, hx, hy]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mem_inertia_of_degree {L : IntermediateField ℚ_[p] (PadicAlgCl p)} [FiniteDimensional ℚ_[p] L]
     {σ : Gal(PadicAlgCl p/L)} (hσ : unramifiedDegree L (PadicAlgCl p) σ = 1) :
@@ -152,29 +148,25 @@ theorem mem_inertia_of_degree {L : IntermediateField ℚ_[p] (PadicAlgCl p)} [Fi
   | mul x y _ _ hx hy => rw [map_mul, hx, hy]
 
 /- English proof (translation)
-Use `isSepClosure_padicAlgCl (L := L)` as an intermediate fact. Take `⟨σ₀, hσ₀⟩` from `unramifiedDegree_surjective (K := L) (Ω := PadicAlgCl p) (Multiplicative.ofAdd 1)`. Establish `hw : ‖((ψ σ₀ : ℚ_[p]ˣ) : ℚ_[p])‖ = 1` using `norm_eigen_eq_one hx (hψx σ₀)`. Use `set w : ℤ_[p]ˣ := PadicInt.mkUnits hw with hwdef`. Establish `hwcoe : ((w : ℤ_[p]) : ℚ_[p]) = ((ψ σ₀ : ℚ_[p]ˣ) : ℚ_[p])` using `rfl`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨f, hf, hq⟩` from `exists_card_residueField_eq_pow (L := L)`. Take `⟨b, hb, hbσ⟩` from `exists_unit_aInf_eigen (K := L) w`. Use `set cA := wittToAInf (b : WittVector p (Fpbar p)) with hcA`. Establish `hcu : IsUnit cA` using `b.isUnit.map _`. Use `set θ := WittVector.fontaineTheta (normInteger ℂ_[p]) p`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Use `set xc : ℂ_[p] := ((θ cA : normInteger ℂ_[p]) : ℂ_[p]) with hxcdef`. Establish `hxc : xc ≠ 0`. Establish `h1 : θ cA ≠ 0` using `(hcu.map θ).ne_zero`. Conclude with `fun h => h1 (Subtype.ext h)`. Use `choose z hz using hbσ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hxcσ : ∀ σ, σ • xc = algebraMap ℚ_[p] ℂ_[p] (z σ) * xc` using `fun σ => by`. Rewrite using `[hxcdef, ← AInf.fontaineTheta_gal_smul, hz σ, map_mul, Subring.coe_mul, fontaineTheta_padicIntToWitt]`. Establish `hz0 : ∀ σ, (z σ : ℚ_[p]) ≠ 0` using `fun σ h => by`. Use `norm_eigen_eq_one hxc (hxcσ σ)` as an intermediate fact. Rewrite `this` using `[h, norm_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Conclude with `zero_ne_one this`. Use `set X := x ^ f * xc⁻¹ with hXdef`. Establish `hX : X ≠ 0` using `mul_ne_zero (pow_ne_zero _ hx) (inv_ne_zero hxc)`. Establish `hXσ : ∀ σ, σ • X = algebraMap ℚ_[p] ℂ_[p] (((ψ σ : ℚ_[p]ˣ) : ℚ_[p]) ^ f * (z σ : ℚ_[p])⁻¹) * X` using `fun σ => by`. Rewrite using `[hXdef, ← galCp_apply, map_mul, map_pow, map_inv₀, galCp_apply, galCp_apply, hψx σ, hxcσ σ, map_mul, map_pow, map_inv₀]`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz' : algebraMap ℚ_[p] ℂ_[p] (z σ : ℚ_[p]) ≠ 0` using `(map_ne_zero_iff _ algebraMap_padic_cp_injective).2 (hz0 σ)`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Take `⟨ρ, hρc, hρ⟩` from `exists_eigenChar hX (fun σ => ⟨_, hXσ σ⟩)`. Establish `hρeq : ∀ σ, ((ρ σ : ℚ_[p]ˣ) : ℚ_[p]) = ((ψ σ : ℚ_[p]ˣ) : ℚ_[p]) ^ f * (z σ : ℚ_[p])⁻¹` using `fun σ => eq_of_mul_eq hX ((hρ σ).symm.trans (hXσ σ))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hz₀ : (z σ₀ : ℚ_[p]) = ((w : ℤ_[p]) : ℚ_[p]) ^ f`. Establish `h1` using `gal_smul_twist_of_degree_one hb hq hσ₀`. Rewrite `h1` using `[← hcA, hz σ₀]`. Establish `h2` using `hcu.mul_left_inj.1 h1`. Establish `h3` using `congrArg (fun y => ((θ y : normInteger ℂ_[p]) : ℂ_[p])) h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [θ, fontaineTheta_padicIntToWitt] at h3`. Rewrite using `[← PadicInt.coe_pow]`. Conclude with `algebraMap_padic_cp_injective h3`. Establish `hzI : ∀ σ, unramifiedDegree L (PadicAlgCl p) σ = 1 → (z σ : ℚ_[p]) = 1` using `fun σ hσ => by`. Establish `h1` using `gal_smul_twist_of_inertia (b : WittVector p (Fpbar p)) hσ`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite `h1` using `[← hcA, hz σ]`. Establish `h2 : IsPerfectoidField.padicIntToWitt p (z σ) * cA = IsPerfectoidField.padicIntToWitt p 1 * cA`. Rewrite using `[h1, map_one, one_mul]`. Establish `h3` using `congrArg (fun y => ((θ y : normInteger ℂ_[p]) : ℂ_[p])) (hcu.mul_left_inj.1 h2)`. Simplify using `only [θ, fontaineTheta_padicIntToWitt] at h3`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `algebraMap_padic_cp_injective h3` as an intermediate fact. Rewrite using `[this, PadicInt.coe_one]`. Set `ρC : Gal(PadicAlgCl p/L) →* ℂ_[p]` to `(algebraMap ℚ_[p] ℂ_[p]).toMonoidHom.comp ((Units.coeHom ℚ_[p]).comp ρ)`. Establish `hρC : Continuous ρC` using `isometry_algebraMap_padic_cp.continuous.comp (Units.continuous_val.comp hρc)`. Establish `hρ1 : ∀ σ, ((ρ σ : ℚ_[p]ˣ) : ℚ_[p]) = 1 → ρC σ = 1` using `fun σ h => by`.
-
-Express the relevant statement in the definitionally equal form `algebraMap ℚ_[p] ℂ_[p] ((ρ σ : ℚ_[p]ˣ) : ℚ_[p]) = 1`. Rewrite using `[h, map_one]`. Establish `hall` using `eq_one_of_degree_one ρC hρC hσ₀ (hρ1 σ₀ (by rw [hρeq, hz₀, hwcoe, mul_inv_cancel₀ (pow_ne_zero _ (Units.ne_zero _))])) (fun σ hσ => hρ1 σ (by rw [hρeq, hzI σ hσ, hI σ hσ, Units.val_one, one_pow, inv_one, mul_one]))`. Use `⟨f, hf, hcu.unit, fun σ => ⟨z σ, ?_, hz σ⟩⟩` and prove the remaining obligations. Establish `h1 : ((ρ σ : ℚ_[p]ˣ) : ℚ_[p]) = 1` using `algebraMap_padic_cp_injective (by`.
-
-Rewrite using `[map_one]`. Conclude with `hall σ)`. Rewrite `h1` using `[hρeq]`. Conclude with `(mul_inv_eq_one₀ (hz0 σ)).1 h1 |>.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_twist_of_unramified {L : IntermediateField ℚ_[p] (PadicAlgCl p)}
     [FiniteDimensional ℚ_[p] L] {x : ℂ_[p]} (hx : x ≠ 0) (ψ : Gal(PadicAlgCl p/L) →* ℚ_[p]ˣ)

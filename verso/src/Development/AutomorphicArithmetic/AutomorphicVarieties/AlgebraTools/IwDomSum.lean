@@ -6,13 +6,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.IwHec
 open ValuativeRel Matrix GlobalTheory.SmGL GlobalTheory.SplitWeil UpperTheory.V.Hi UpperTheory.V.AlgebraTools
 
 /- English proof (translation)
-Take `⟨S, hS, hb⟩` from `Set.exists_subset_bijOn (N : Set G) (fun y => ((y * d : G) : G ⧸ I))`. Establish `hq : ((fun y => ((y * d : G) : G ⧸ I)) '' (N : Set G)).Finite`. Use `h.subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `⟨⟨y, hN hy⟩, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Establish `hf : S.Finite` using `Set.Finite.of_finite_image (hb.image_eq ▸ hq) hb.injOn`. Establish `key : ∀ u y : G, ((u * d : G) : G ⧸ I) = ((y * d : G) : G ⧸ I) ↔ d⁻¹ * (u⁻¹ * y) * d ∈ I`. Introduce `u y`. Rewrite using `[QuotientGroup.eq]`. Establish `: (u * d)⁻¹ * (y * d) = d⁻¹ * (u⁻¹ * y) * d` using `by group`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this]`. Use `⟨hf.toFinset, fun u hu => hS (hf.mem_toFinset.1 hu), fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨u, hu, e⟩` from `hb.surjOn ⟨y, hy, rfl⟩`. Use `⟨u, ⟨hf.mem_toFinset.2 hu, (key u y).1 e⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `u' ⟨hu', e'⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `hb.injOn (hf.mem_toFinset.1 hu') hu (((key u' y).2 e').trans e.symm)`.
+A detailed English derivation is pending.
 -/
 private theorem domSum_reps {G : Type} [Group G] {N I : Subgroup G} (hN : N ≤ I) (d : G) (h : FinOrb I I d) :
     ∃ s : Finset G, (∀ u ∈ s, u ∈ N) ∧ ∀ y ∈ N, ∃! u, u ∈ s ∧ d⁻¹ * (u⁻¹ * y) * d ∈ I := by
@@ -34,13 +34,13 @@ private theorem domSum_reps {G : Type} [Group G] {N I : Subgroup G} (hN : N ≤ 
   exact hb.injOn (hf.mem_toFinset.1 hu') hu (((key u' y).2 e').trans e.symm)
 
 /- English proof (translation)
-Establish `H` using `leviSum G I F d hI hp {d} (fun a ha => ⟨1, one_mem _, 1, one_mem _, by simpa using ha⟩) (fun j hj => ⟨d, ⟨Finset.mem_singleton_self d, by simpa [mul_assoc] using (hn j hj).2⟩, fun a ha => Finset.mem_singleton.1 ha.1⟩) (fun _ => s) (fun a ha => by`. Rewrite using `[Finset.mem_singleton.1 ha]`. Conclude with `⟨hs, hs'⟩)`. Establish `h2` using `(hkApply A G M ρ I I d (hI d)).2.1 (s.image (· * d)) ?_ ?_ v`. Rewrite using `[hk, h2, Finset.sum_image (fun a _ b _ h => mul_right_cancel h)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `y hy`. Take `⟨u, hu, rfl⟩` from `Finset.mem_image.1 hy`. Conclude with `⟨⟨u, (hs u hu).2⟩, rfl⟩`. Introduce `q hq`. Take `⟨⟨a, u⟩, ⟨ha, hu, e⟩, huniq⟩` from `(H q).1 hq`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `had : a = d` using `Finset.mem_singleton.1 ha`. Substitute `had` using the available equality. Use `⟨u * a, ⟨Finset.mem_image.2 ⟨u, hu, rfl⟩, e⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `y ⟨hy, e'⟩`. Take `⟨u', hu', rfl⟩` from `Finset.mem_image.1 hy`.
+Establish an intermediate fact. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `huniq (a, u') ha hu' e'` as an intermediate fact. Rewrite using `[show u' = u from (Prod.ext_iff.1 this).2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem domSum_gen {G : Type} [Group G] {I : Subgroup G} (F : LeviFact I) (d : G) (hI : HeckePair I)
     (hp : F.Pos d) (hn : F.NormJ d) (s : Finset G) (hs : ∀ u ∈ s, u ∈ F.Uf ⊓ I)
@@ -71,13 +71,13 @@ private theorem domSum_gen {G : Type} [Group G] {I : Subgroup G} (F : LeviFact I
     rw [show u' = u from (Prod.ext_iff.1 this).2]
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n t ht`. Establish `key : ∀ (C : Subgroup 𝓀[k]ˣ), ∀ u ∈ unipO k n, ∀ y ∈ unipO k n, (diagT k (Fin n) t)⁻¹ * (u⁻¹ * y) * diagT k (Fin n) t ∈ iwC k n C ↔ (diagT k (Fin n) t)⁻¹ * (u⁻¹ * y) * diagT k (Fin n) t ∈ unipO k n`. Introduce `C u hu y hy`. Take `⟨F, -, -, -, hU, -, hF⟩` from `factTorus k n C`. Rewrite `hu`, `hy`, the goal using `[← hU]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `F.M_U _ (inv_mem ((hF t).2 ht).1) _ (mul_mem (inv_mem hu.1) hy.1)` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Conclude with `⟨fun h => ⟨this, h⟩, fun h => h.2⟩`. Establish `hle : unipO k n ≤ iwC k n ⊤` using `le_sup_right.trans le_sup_left`. Take `⟨s, hs, hs'⟩` from `domSum_reps hle (diagT k (Fin n) t) ((heckePairIwC k n ⊤).1 _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hs2 : ∀ (C : Subgroup 𝓀[k]ˣ), ∀ y ∈ unipO k n, ∃! u, u ∈ s ∧ (diagT k (Fin n) t)⁻¹ * (u⁻¹ * y) * diagT k (Fin n) t ∈ iwC k n C`. Introduce `C y hy`. Use `(existsUnique_congr fun u => and_congr_right fun hu => ?_).1 (hs' y hy)` and prove the remaining obligations. Rewrite using `[key ⊤ u (hs u hu) y hy, key C u (hs u hu) y hy]`. Use `⟨s, hs, fun y hy => ?_, fun C A M _ _ _ ρ v => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(existsUnique_congr fun u => and_congr_right fun hu => key ⊤ u (hs u hu) y hy).1 (hs' y hy)`. Take `⟨F, -, -, -, hU, -, hF⟩` from `factTorus k n C`. Conclude with `domSum_gen F _ (heckePairIwC k n C).1 ((hF t).2 ht) (hF t).1 s (hU ▸ hs) (hU ▸ hs2 C) A M ρ v`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.domSum :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (t : Fin n → kˣ), Dom t → ∃ s : Finset (GL (Fin n) k), (∀ u ∈ s, u ∈ unipO k n) ∧ (∀ y ∈ unipO k n, ∃! u, u ∈ s ∧ (diagT k (Fin n) t)⁻¹ * (u⁻¹ * y) * diagT k (Fin n) t ∈ unipO k n) ∧ ∀ (C : Subgroup 𝓀[k]ˣ) (A M : Type) [CommRing A] [AddCommGroup M] [Module A M] (ρ : Representation A (GL (Fin n) k) M) (v : fixd ρ (iwC k n C)), (hk ρ (iwC k n C) (diagT k (Fin n) t) v : M) = ∑ u ∈ s, ρ (u * diagT k (Fin n) t) v := by

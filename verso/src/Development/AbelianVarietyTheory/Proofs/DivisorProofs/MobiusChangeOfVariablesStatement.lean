@@ -6,7 +6,7 @@ open MeasureTheory
 open scoped ComplexOrder ENNReal
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FibLine.MoebiusLintegral.lintegral_moebius | exact GlobalTheory.FibLine.MoebiusLintegral.lintegral_moebius | (intros; apply GlobalTheory.FibLine.MoebiusLintegral.lintegral_moebius <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.mobius_change_of_variables : ∀ (β c : ℂ), c ≠ 0 → ∀ H : ℂ → ℝ≥0∞, Measurable H →
     ∫⁻ x : ℂ, ENNReal.ofReal (‖c / (1 + β * x) ^ 2‖ ^ 2) * H (c * x / (1 + β * x)) = ∫⁻ y : ℂ, H y := by

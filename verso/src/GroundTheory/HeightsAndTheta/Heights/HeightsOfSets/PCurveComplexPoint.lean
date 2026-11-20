@@ -11,9 +11,9 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo
 namespace CurveComplexPoint
 
 /- English proof (translation)
-Rewrite using `[eval₂_eq', eval₂_eq', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations. Establish `hc : (∏ i : (Σ k, ι k), c i.1 ^ d i) = ∏ k, c k ^ a k`. Rewrite using `[Fintype.prod_sigma]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show ∏ y, c k ^ d ⟨k, y⟩ = _`. Rewrite using `[Finset.prod_pow_eq_pow_sum, hf d hd k]`. Simplify using `only [mul_pow, Finset.prod_mul_distrib, hc]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem eval₂_smul_homog {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
     {F : Type*} [CommRing F] (f : MRing ι) (a : K → ℕ) (hf : IsMultiHomog f a)
@@ -31,29 +31,25 @@ theorem eval₂_smul_homog {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fint
   ring
 
 /- English proof (translation)
-Introduce `K _ ι _ W hW`. Take `⟨_, ⟨hprime, ⟨S, hS, hWS⟩, hrel⟩, hhor, _⟩` from `hW`. Use `choose c hc using hrel`. Set `R` to `MRing ι ⧸ W`. Set `F` to `FractionRing R`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `x : (Σ k, ι k) → F` to `fun p => algebraMap R F (Ideal.Quotient.mk W (X p))`. Establish `hx : ∀ k, x ⟨k, c k⟩ ≠ 0` using `fun k h => hc k (Ideal.Quotient.eq_zero_iff_mem.mp (IsFractionRing.injective R F (h.trans (map_zero _).symm)))`. Establish `hxeval : ∀ f : MRing ι, eval₂ (Int.castRingHom F) x f = algebraMap R F (Ideal.Quotient.mk W f)`. Introduce `f`. Establish `h : eval₂Hom (Int.castRingHom F) x = (algebraMap R F).comp (Ideal.Quotient.mk W)` using `ringHom_ext (fun n => by simp) (fun p => by simp [x])`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `RingHom.congr_fun h f`. Establish `: CharZero F` using `charZero_of_inj_zero fun n hn => by`. Establish `h1 : Ideal.Quotient.mk W (C (n : ℤ)) = 0` using `IsFractionRing.injective R F (by simpa using hn)`. Establish `h2 : (n : ℤ) ∈ W.comap (C : ℤ →+* MRing ι)` using `Ideal.mem_comap.mpr (Ideal.Quotient.eq_zero_iff_mem.mp h1)`. Rewrite `h2` using `[hhor, Ideal.mem_bot]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `h2` after adjusting the coercions. Set `y : (Σ k, ι k) → F` to `fun p => (x ⟨p.1, c p.1⟩)⁻¹ * x p`. Set `ψ : MvPolynomial (Σ k, ι k) ℚ →+* F` to `eval₂Hom (Rat.castHom F) y`. Establish `hψmap : ∀ f : MRing ι, ψ (map (Int.castRingHom ℚ) f) = eval₂ (Int.castRingHom F) y f`. Introduce `f`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Simplify using `only [ψ, coe_eval₂Hom, eval₂_map]`. Use `congr 1`. Conclude with `RingHom.ext_int _ _`. Establish `hWker : ∀ f ∈ W, map (Int.castRingHom ℚ) f ∈ RingHom.ker ψ`. Introduce `f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite `hf` using `[hWS]`. Establish `hle : Ideal.span S ≤ (RingHom.ker ψ).comap (map (Int.castRingHom ℚ))`. Use `Ideal.span_le.mpr fun s hs => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `hS s hs`. Establish `hsW : s ∈ W` using `hWS ▸ Ideal.subset_span hs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show ψ (map (Int.castRingHom ℚ) s) = 0`. Rewrite using `[hψmap]`. Use `(eval₂_smul_homog s a ha (fun k => (x ⟨k, c k⟩)⁻¹) x).trans ?_` and prove the remaining obligations. Rewrite using `[hxeval, Ideal.Quotient.eq_zero_iff_mem.mpr hsW, map_zero, mul_zero]`. Conclude with `hle hf`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hXker : ∀ k, (X ⟨k, c k⟩ - 1 : MvPolynomial (Σ k, ι k) ℚ) ∈ RingHom.ker ψ`. Introduce `k`. Rewrite using `[RingHom.mem_ker, map_sub, map_one]`. Simplify using `only [ψ, coe_eval₂Hom, eval₂_X, y]`. Rewrite using `[inv_mul_cancel₀ (hx k), sub_self]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Take `⟨m, hm, hkm⟩` from `Ideal.exists_le_maximal (RingHom.ker ψ) (RingHom.ker_ne_top ψ)`. Set `L` to `MvPolynomial (Σ k, ι k) ℚ ⧸ m`. Set `: Field L` to `Ideal.Quotient.field m`. Establish `: Module.Finite ℚ L` using `finite_of_finite_type_of_isJacobsonRing ℚ L`. Establish `: Algebra.IsAlgebraic ℚ L` using `Algebra.IsAlgebraic.of_finite ℚ L`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `φ : L →ₐ[ℚ] ℂ` to `IsAlgClosed.lift`. Set `z : (Σ k, ι k) → ℂ` to `fun p => φ (Ideal.Quotient.mk m (X p))`. Establish `hz : ∀ f : MRing ι, eval z (map (Int.castRingHom ℂ) f) = φ (Ideal.Quotient.mk m (map (Int.castRingHom ℚ) f))`. Introduce `f`. Establish `h : eval₂Hom (Int.castRingHom ℂ) z = (φ : L →+* ℂ).comp ((Ideal.Quotient.mk m).comp (map (Int.castRingHom ℚ)))` using `ringHom_ext (fun n => by simp) (fun p => by simp [z])`.
-
-Rewrite using `[eval_map]`. Conclude with `RingHom.congr_fun h f`. Use `⟨z, fun k => ⟨c k, ?_⟩, fun f hf => ?_⟩` and prove the remaining obligations. Establish `h1 : Ideal.Quotient.mk m (X ⟨k, c k⟩) = Ideal.Quotient.mk m 1` using `Ideal.Quotient.eq.mpr (hkm (hXker k))`. Simplify using `only [z, h1, map_one]`.
-
-Conclude with `one_ne_zero`. Rewrite using `[hz, Ideal.Quotient.eq_zero_iff_mem.mpr (hkm (hWker f hf)), map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem full : CurveComplexPoint.Statement := by
   intro K _ ι _ W hW

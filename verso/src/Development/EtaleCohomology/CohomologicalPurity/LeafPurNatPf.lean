@@ -10,9 +10,9 @@ namespace PurNatPf
 open PurPf
 
 /- English proof (translation)
-Apply the tactic sequence `apply pushout.hom_ext <;>`. Apply the tactic sequence `simp only [dbl.map, dbl.fold, pushout.map] <;> (first`. Consider the case `(erw [pushout.inl_desc_assoc, Category.assoc]; erw [pushout.inl_desc, pushout.inl_desc_assoc]; simp)`. Consider the case `(erw [pushout.inr_desc_assoc, Category.assoc]; erw [pushout.inr_desc, pushout.inr_desc_assoc]; simp)`. Consider the case `(erw [pushout.inl_desc_assoc, Category.assoc, Category.assoc]; erw [pushout.inl_desc, pushout.inl_desc]; simp)`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(erw [pushout.inr_desc_assoc, Category.assoc, Category.assoc]; erw [pushout.inr_desc, pushout.inr_desc]; simp))`.
+Treat this case separately.
 -/
 theorem fold_map {P' P : Arrow Spc} (ψ : P' ⟶ P) : dbl.map ψ ≫ dbl.fold P = dbl.fold P' ≫ ψ.right := by
   apply pushout.hom_ext <;>
@@ -23,7 +23,7 @@ theorem fold_map {P' P : Arrow Spc} (ψ : P' ⟶ P) : dbl.map ψ ≫ dbl.fold P 
       | (erw [pushout.inr_desc_assoc, Category.assoc, Category.assoc]; erw [pushout.inr_desc, pushout.inr_desc]; simp))
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `pull _ (dbl.map ψ) _ n (c - _) = _ - _`. Rewrite using `[map_sub, ← pull_comp, fold_map, pull_comp, ← pull_comp _ (dbl.inr P') (dbl.map ψ), dbl.inr_map, pull_comp]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem proj_pull (q : ℕ) {P' P : Arrow Spc} (ψ : P' ⟶ P) (n i : ℤ) (c : Ht q (dbl P) n i) :
     Hs.pull q ψ n i (Hs.proj q P n i c) = Hs.proj q P' n i (pull _ (dbl.map ψ) _ n c) := by
@@ -32,7 +32,7 @@ theorem proj_pull (q : ℕ) {P' P : Arrow Spc} (ψ : P' ⟶ P) (n i : ℤ) (c : 
   rw [map_sub, ← pull_comp, fold_map, pull_comp, ← pull_comp _ (dbl.inr P') (dbl.map ψ), dbl.inr_map, pull_comp]
 
 /- English proof (translation)
-Unfold `Hs.act`. Rewrite using `[proj_pull, (hN q).1]`. Use `congr 2`. Rewrite using `[← pull_comp, ← pull_comp, fold_map]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem act_pull (hN : DivisorNaturality) (q : ℕ) [NeZero q] {P' P : Arrow Spc} (ψ : P' ⟶ P) {n m i j : ℤ} (a : Ht q P.right n i)
     (b : Hs q P m j) : Hs.pull q ψ _ _ (Hs.act q a b) = Hs.act q (pull _ ψ.right _ _ a) (Hs.pull q ψ _ _ b) := by
@@ -42,13 +42,13 @@ theorem act_pull (hN : DivisorNaturality) (q : ℕ) [NeZero q] {P' P : Arrow Spc
   rw [← pull_comp, ← pull_comp, fold_map]
 
 /- English proof (translation)
-The claim follows from `pushout.inl_desc _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem inl_map {P' P : Arrow Spc} (φ : P' ⟶ P) : dbl.inl P' ≫ dbl.map φ = φ.right ≫ dbl.inl P :=
   pushout.inl_desc _ _ _
 
 /- English proof (translation)
-Apply `pushout.hom_ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `dbl.inl _ ≫ _ = dbl.inl _ ≫ _`. Rewrite using `[← Category.assoc, inl_map, Category.assoc, inl_map, inl_map, Arrow.comp_right, Category.assoc]`. Express the relevant statement in the definitionally equal form `dbl.inr _ ≫ _ = dbl.inr _ ≫ _`. Rewrite using `[← Category.assoc, dbl.inr_map, Category.assoc, dbl.inr_map, dbl.inr_map, Arrow.comp_right, Category.assoc]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem dbl_map_comp {P'' P' P : Arrow Spc} (α : P'' ⟶ P') (β : P' ⟶ P) :
     dbl.map α ≫ dbl.map β = dbl.map (α ≫ β) := by
@@ -59,7 +59,7 @@ theorem dbl_map_comp {P'' P' P : Arrow Spc} (α : P'' ⟶ P') (β : P' ⟶ P) :
     rw [← Category.assoc, dbl.inr_map, Category.assoc, dbl.inr_map, dbl.inr_map, Arrow.comp_right, Category.assoc]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `pull _ (dbl.map α) _ n (pull _ (dbl.map β) _ n x.1) = pull _ (dbl.map (α ≫ β)) _ n x.1`. Rewrite using `[← pull_comp, dbl_map_comp]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem pull_pull (q : ℕ) {P'' P' P : Arrow Spc} (α : P'' ⟶ P') (β : P' ⟶ P) (n i : ℤ) (x : Hs q P n i) :
     Hs.pull q α n i (Hs.pull q β n i x) = Hs.pull q (α ≫ β) n i x := by
@@ -74,7 +74,7 @@ def purOf {d : ℕ} {P : SP d} (t : Tube P) (q : ℕ) [NeZero q] (hq : IsUnit (q
       (pull _ (pullback.snd t.π (sch.map P.ι)) (tw q i) n x)) (Hs.pull q (abvMap P.U t.π) _ _ (fcl d q P)))
 
 /- English proof (translation)
-Establish `h : q ≠ 0 ∧ IsUnit (q : Γ(P.X, ⊤))` using `⟨NeZero.ne q, hq⟩`. Unfold `purT`. Rewrite using `[dif_pos h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem purT_eq {d : ℕ} (T : ∀ P : SP d, Tube P) (q : ℕ) [NeZero q] (P : SP d) (hq : IsUnit (q : Γ(P.X, ⊤)))
     (n i : ℤ) (x : Ht q (sch.obj P.Z) n i) : purT T q P n i x = purOf (T P) q hq n i x := by
@@ -85,9 +85,7 @@ theorem purT_eq {d : ℕ} (T : ∀ P : SP d, Tube P) (q : ℕ) [NeZero q] (P : S
   rfl
 
 /- English proof (translation)
-Establish `he' : (AddEquiv.ofBijective _ ((t.ok q hq).1 i n)).symm (pull _ (pullback.snd t.π (sch.map P.ι)) (tw q i) n x) = e`. Rewrite using `[AddEquiv.symm_apply_eq]`. Conclude with `he.symm`. Unfold `purOf`. Rewrite using `[he', AddEquiv.symm_apply_eq]`.
-
-Conclude with `hy.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem purOf_char {d : ℕ} {P : SP d} (t : Tube P) (q : ℕ) [NeZero q] (hq : IsUnit (q : Γ(P.X, ⊤))) (n i : ℤ)
     (x : Ht q (sch.obj P.Z) n i) (y : Hs q (opn P.U) (n + 2 * d) (i + d)) (e : Ht q t.E n i)
@@ -102,7 +100,7 @@ theorem purOf_char {d : ℕ} {P : SP d} (t : Tube P) (q : ℕ) [NeZero q] (hq : 
   exact hy.symm
 
 /- English proof (translation)
-Use `hq.map φ.f.appTop.hom` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem unit_of {d : ℕ} {P' P : SP d} (φ : P'.Hom P) (q : ℕ) (hq : IsUnit (q : Γ(P.X, ⊤))) :
     IsUnit (q : Γ(P'.X, ⊤)) := by
@@ -110,15 +108,13 @@ theorem unit_of {d : ℕ} {P' P : SP d} (φ : P'.Hom P) (q : ℕ) (hq : IsUnit (
   simpa using this
 
 /- English proof (translation)
-Use `symm`. Use `set e := (AddEquiv.ofBijective _ ((t.ok q hq).1 i n)).symm (pull _ (pullback.snd t.π (sch.map P.ι)) (tw q i) n x) with he_def`. Establish `he : pull _ (pullback.fst t.π (sch.map P.ι)) (tw q i) n e = pull _ (pullback.snd t.π (sch.map P.ι)) (tw q i) n x` using `(AddEquiv.ofBijective _ ((t.ok q hq).1 i n)).apply_symm_apply _`. Establish `hy : Hs.pull q (abvMap P.U t.π) _ _ (purOf t q hq n i x) = Hs.act q (P` using `abv P.U t.π) e (Hs.pull q (abvMap P.U t.π) _ _ (fcl d q P)) := (AddEquiv.ofBijective _ ((t.ok q hq).2.2.1 (n + 2 * d) (i + d))).apply_symm_apply _`. Establish `hw : (pullback.fst t'.π (sch.map P'.ι) ≫ b) ≫ t.π = (pullback.snd t'.π (sch.map P'.ι) ≫ sch.map φ.g) ≫ sch.map P.ι`.
+Use symmetry to reverse the relation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, hb, ← Category.assoc, pullback.condition, Category.assoc, Category.assoc, ← Functor.map_comp, ← Functor.map_comp, φ.cart.w]`. Set `c : pullback t'.π (sch.map P'.ι) ⟶ pullback t.π (sch.map P.ι)` to `pullback.lift _ _ hw`. Establish `hw2 : (pullback.fst t'.π (sch.map P'.U.ι) ≫ b) ≫ t.π = (pullback.snd t'.π (sch.map P'.U.ι) ≫ sch.map (φ.f.resLE P.U P'.U φ.le)) ≫ sch.map P.U.ι`. Rewrite using `[Category.assoc, hb, ← Category.assoc, pullback.condition, Category.assoc, Category.assoc, ← Functor.map_comp, ← Functor.map_comp, Scheme.Hom.resLE_comp_ι]`. Set `ψ : abv P'.U t'.π ⟶ abv P.U t.π` to `Arrow.homMk (pullback.lift _ _ hw2) b (by simp only [abv, Arrow.mk_hom]; exact pullback.lift_fst _ _ _)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hsq : abvMap P'.U t'.π ≫ opnMap φ.f _ _ φ.le = ψ ≫ abvMap P.U t.π`. Apply `Arrow.hom_ext` to reduce the goal to its premises. Simplify using `only [Arrow.comp_left, abvMap, opnMap, ψ, Arrow.homMk_left]`. Conclude with `(pullback.lift_snd _ _ _).symm`. Simplify using `only [Arrow.comp_right, abvMap, opnMap, ψ, Arrow.homMk_right]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hb.symm`. Apply `purOf_char t' q _ n i _ _ (pull _ b _ _ e)` to reduce the goal to its premises. Rewrite using `[← pull_comp, ← pull_comp, show pullback.fst t'.π (sch.map P'.ι) ≫ b = c ≫ pullback.fst t.π (sch.map P.ι) from (pullback.lift_fst _ _ hw).symm, show pullback.snd t'.π (sch.map P'.ι) ≫ sch.map φ.g = c ≫ pullback.snd t.π (sch.map P.ι) from (pullback.lift_snd _ _ hw).symm, pull_comp …`. Rewrite using `[pull_pull, hsq, ← pull_pull, hy]`. Use `(act_pull hN q ψ (P := abv P.U t.π) e _).trans ?_` and prove the remaining obligations.
-
-Use `congr 1`. Rewrite using `[pull_pull, ← hsq, ← pull_pull, (hC q).2.1 P' P φ hq]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem purOf_nat (hN : DivisorNaturality) {d : ℕ} (hC : IsCl d (fcl d)) {P' P : SP d} (φ : P'.Hom P) (t : Tube P) (t' : Tube P')
     (b : t'.E ⟶ t.E) (hb : b ≫ t.π = t'.π ≫ sch.map φ.f) (q : ℕ) [NeZero q] (hq : IsUnit (q : Γ(P.X, ⊤)))
@@ -159,7 +155,7 @@ theorem purOf_nat (hN : DivisorNaturality) {d : ℕ} (hC : IsCl d (fcl d)) {P' P
     rw [pull_pull, ← hsq, ← pull_pull, (hC q).2.1 P' P φ hq]
 
 /- English proof (translation)
-Apply `pushout.hom_ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `dbl.inl _ ≫ _ = dbl.inl _ ≫ _`. Rewrite using `[inl_map, h, Category.id_comp, Category.comp_id]`. Express the relevant statement in the definitionally equal form `dbl.inr _ ≫ _ = dbl.inr _ ≫ _`. Rewrite using `[dbl.inr_map, h, Category.id_comp, Category.comp_id]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem dbl_map_of_right {P : Arrow Spc} (ψ : P ⟶ P) (h : ψ.right = 𝟙 _) : dbl.map ψ = 𝟙 _ := by
   apply pushout.hom_ext
@@ -169,7 +165,7 @@ theorem dbl_map_of_right {P : Arrow Spc} (ψ : P ⟶ P) (h : ψ.right = 𝟙 _) 
     rw [dbl.inr_map, h, Category.id_comp, Category.comp_id]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `pull _ (dbl.map ψ) _ n x.1 = x.1`. Rewrite using `[dbl_map_of_right ψ h, pull_id]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem pull_of_right (q : ℕ) {P : Arrow Spc} (ψ : P ⟶ P) (h : ψ.right = 𝟙 _) (n i : ℤ) (x : Hs q P n i) :
     Hs.pull q ψ n i x = x := by
@@ -191,13 +187,13 @@ end PurNatPf
 open PurNatPf PurPf
 
 /- English proof (translation)
-Introduce `hH hCl d T hT q _ P hq P' φ n i x`. Establish `hN : DivisorNaturality` using `hH.2.2.2.2.1`. Establish `hC : IsCl d (fcl d)` using `pick_spec (hCl hH d)`. Take `⟨T', a, b, ha, hb⟩` from `hT P' P φ`. Establish `hq'` using `unit_of φ q hq`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[purT_eq T q P hq, purT_eq T q P' hq', purOf_nat hN hC φ (T P) T' b hb q hq]`. Establish `hb' : a ≫ (T P').π = T'.π ≫ sch.map (idHom P').f`. Rewrite using `[ha]`. Express the relevant statement in the definitionally equal form `_ = T'.π ≫ sch.map (𝟙 _)`. Rewrite using `[CategoryTheory.Functor.map_id, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `key` using `purOf_nat hN hC (idHom P') (T P') T' a hb' q hq' n i (pull _ (sch.map φ.g) _ _ x)`. Rewrite `key` using `[pull_of_right]`. Rewrite using `[key]`. Express the relevant statement in the definitionally equal form `_ = purOf T' q _ n i (pull _ (sch.map (𝟙 _)) _ _ _)`. Rewrite using `[CategoryTheory.Functor.map_id, pull_id]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `sch.map (𝟙 _) = _`. Rewrite using `[CategoryTheory.Functor.map_id]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem LeafPurNat_of : EtalePurityNaturality := by
   intro hH hCl d T hT q _ P hq P' φ n i x

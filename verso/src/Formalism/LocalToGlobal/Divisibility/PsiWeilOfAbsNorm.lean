@@ -32,11 +32,11 @@ def PsiWeil (Pg : Finset (Pl D.host.E)) (pl : (Σ k : Fin 2, D.nd.PlG k) ≃ ↥
     D.what₂.embLL (ψ (pl kv).1 c) = Complex.exp (2 * Real.pi * Complex.I * b / (D.host.g kv.1 : ℂ))
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h kv c`. Rewrite using `[psiTxt_apply]`. Use `set z := res kv (xiBar D (pl kv).1 * c) with hz`. Establish `hb : xiBar D (pl kv).1 * c = (((z.val : ℤ)) : kP (pl kv).1)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `(res kv).injective` to reduce the goal to its premises. Rewrite using `[map_intCast, ← hz]`. Simplify using `[ZMod.natCast_zmod_val]`. Rewrite using `[h kv c _ hb, ZMod.stdAddChar_apply, ZMod.toCircle_apply]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form.
 
-Put the polynomial expressions in normal form. Introduce `h kv c b hb`. Rewrite using `[h kv c, psiTxt_apply, hb, map_intCast, ZMod.stdAddChar_coe]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiWeil_iff (Pg : Finset (Pl D.host.E)) (pl : (Σ k : Fin 2, D.nd.PlG k) ≃ ↥Pg)
     (res : ∀ kv : (Σ k : Fin 2, D.nd.PlG k), kP (pl kv).1 ≃+* ZMod (D.host.g kv.1))
@@ -57,13 +57,13 @@ theorem psiWeil_iff (Pg : Finset (Pl D.host.E)) (pl : (Σ k : Fin 2, D.nd.PlG k)
     rw [h kv c, psiTxt_apply, hb, map_intCast, ZMod.stdAddChar_coe]
 
 /- English proof (translation)
-Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply, Nat.card_congr r.toEquiv, Nat.card_zmod]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem absNorm_eq_of_res {PP : Pl D.host.E} {n : ℕ} (r : kP PP ≃+* ZMod n) [NeZero n] : Ideal.absNorm PP.asIdeal = n := by
   rw [Ideal.absNorm_apply, Submodule.cardQuot_apply, Nat.card_congr r.toEquiv, Nat.card_zmod]
 
 /- English proof (translation)
-Introduce `kv c b hb`. Rewrite using `[h kv c b hb, absNorm_eq_of_res D (res kv)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem psiWeil_of_absNorm {Pg : Finset (Pl D.host.E)} (pl : (Σ k : Fin 2, D.nd.PlG k) ≃ ↥Pg)
     (res : ∀ kv : (Σ k : Fin 2, D.nd.PlG k), kP (pl kv).1 ≃+* ZMod (D.host.g kv.1))
@@ -76,13 +76,13 @@ theorem psiWeil_of_absNorm {Pg : Finset (Pl D.host.E)} (pl : (Σ k : Fin 2, D.nd
   rw [h kv c b hb, absNorm_eq_of_res D (res kv)]
 
 /- English proof (translation)
-Introduce `hψ`. Establish `h1` using `h kv c 1 (by rw [Int.cast_one]; exact hc)`. Rewrite `h1` using `[hψ, AddChar.one_apply, map_one]`. Establish `hg` using `D.host.g_prime kv.1`. Take `⟨m, hm⟩` from `Complex.exp_eq_one_iff.mp h1.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hgC : (D.host.g kv.1 : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr hg.ne_zero`. Establish `hpi : (2 * Real.pi * Complex.I : ℂ) ≠ 0`. Simplify using `[Real.pi_ne_zero, Complex.I_ne_zero]`. Rewrite `hm` using `[Int.cast_one, mul_one, div_eq_iff hgC]`. Establish `h3 : (2 * Real.pi * Complex.I : ℂ) * (1 - m * D.host.g kv.1) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take the linear combination `hm`. Establish `h4 : (1 : ℂ) - m * D.host.g kv.1 = 0` using `(mul_eq_zero.mp h3).resolve_left hpi`. Establish `h5 : (1 : ℤ) = m * D.host.g kv.1`. Establish `: (1 : ℂ) = m * D.host.g kv.1` using `by linear_combination h4`. Conclude with `this` after adjusting the coercions.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h6 : (D.host.g kv.1 : ℤ) ∣ 1` using `⟨m, by rw [h5]; ring⟩`. Establish `h7 : D.host.g kv.1 ∣ 1` using `by exact_mod_cast h6`. Conclude with `hg.one_lt.ne' (Nat.dvd_one.mp h7)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem PsiWeil.ne_one {Pg : Finset (Pl D.host.E)} {pl : (Σ k : Fin 2, D.nd.PlG k) ≃ ↥Pg}
     {ψ : ∀ PP : Pl D.host.E, AddChar (kP PP) D.what₂.LL} (h : PsiWeil D Pg pl ψ) (kv : Σ k : Fin 2, D.nd.PlG k)
@@ -107,7 +107,7 @@ theorem PsiWeil.ne_one {Pg : Finset (Pl D.host.E)} {pl : (Σ k : Fin 2, D.nd.PlG
   exact hg.one_lt.ne' (Nat.dvd_one.mp h7)
 
 /- English proof (translation)
-Use `⟨(AddChar.zmodChar n hζ).compAddMonoidHom (res.toRingHom.toAddMonoidHom.comp (AddMonoidHom.mulLeft (xiBar D PP))), fun c => ?_⟩` and prove the remaining obligations. Rewrite using `[psiTxt_apply, AddChar.compAddMonoidHom_apply]`. Simplify using `only [AddMonoidHom.coe_comp, Function.comp_apply, AddMonoidHom.coe_mulLeft, RingHom.toAddMonoidHom_eq_coe, AddMonoidHom.coe_coe, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, AddChar.zmodChar_apply, map_pow, he]`. Rewrite using `[ZMod.stdAddChar_apply, ZMod.toCircle_apply, ← Complex.exp_nat_mul]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -133,9 +133,9 @@ def psiAt {Pg : Finset (Pl D.host.E)} (pl : (Σ k : Fin 2, D.nd.PlG k) ≃ ↥Pg
     ((res kv).toRingHom.toAddMonoidHom.comp (AddMonoidHom.mulLeft (xiBar D (pl kv).1)))
 
 /- English proof (translation)
-Substitute `e` using the available equality. Establish `hv : psiAt D pl res ζ hζ kv (pl kv).1 rfl c = ζ kv.1 ^ (res kv (xiBar D (pl kv).1 * c)).val`. Simplify using `[psiAt, AddChar.zmodChar_apply]`. Rewrite using `[hv, map_pow, he, hb, map_intCast, ← Complex.exp_nat_mul]`. Establish `h2` using `ZMod.toCircle_intCast (N := D.host.g kv.1) b`.
+Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[ZMod.toCircle_apply]`. Rewrite using `[← h2]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem psiAt_spec {Pg : Finset (Pl D.host.E)} (pl : (Σ k : Fin 2, D.nd.PlG k) ≃ ↥Pg)
     (res : ∀ kv : (Σ k : Fin 2, D.nd.PlG k), kP (pl kv).1 ≃+* ZMod (D.host.g kv.1)) {ζ : Fin 2 → D.what₂.LL}
@@ -163,9 +163,9 @@ def psiOfRoots {Pg : Finset (Pl D.host.E)} (pl : (Σ k : Fin 2, D.nd.PlG k) ≃ 
   if h : PP ∈ Pg then psiAt D pl res ζ hζ (pl.symm ⟨PP, h⟩) PP (by simp) else 1
 
 /- English proof (translation)
-Introduce `kv c b hb`. Establish `hmem : (pl kv).1 ∈ Pg` using `(pl kv).2`. Establish `hkv : pl.symm ⟨(pl kv).1, hmem⟩ = kv` using `by simp`. Establish `hspec` using `psiAt_spec D pl res hζ he (pl.symm ⟨(pl kv).1, hmem⟩) (pl kv).1 (by simp) c b hb`. Unfold `psiOfRoots`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[dif_pos hmem, hspec, hkv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_psiWeil {Pg : Finset (Pl D.host.E)} (pl : (Σ k : Fin 2, D.nd.PlG k) ≃ ↥Pg)
     (res : ∀ kv : (Σ k : Fin 2, D.nd.PlG k), kP (pl kv).1 ≃+* ZMod (D.host.g kv.1)) {ζ : Fin 2 → D.what₂.LL}
@@ -197,9 +197,9 @@ open Classical in
 def pgOf : Finset (Pl D.host.E) := Finset.univ.image fun kv : (Σ k : Fin 2, D.nd.PlG k) => D.naut.plGw kv.1 kv.2
 
 /- English proof (translation)
-Use extensionality with `PP`. Simplify using `only [pgOf, Finset.mem_image, Finset.mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion. Introduce `hP`. Conclude with `⟨pl.symm ⟨PP, hP⟩, by rw [← h.place]; simp⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce and unpack `⟨kv, rfl⟩`. Rewrite using `[← h.place]`. Conclude with `(pl kv).2`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LvlTie.pg_eq (h : LvlTie D P0 ψ0 Ps ψs eG Pg pl res ψ eC) : Pg = pgOf D := by
   ext PP
@@ -212,7 +212,7 @@ theorem LvlTie.pg_eq (h : LvlTie D P0 ψ0 Ps ψs eG Pg pl res ψ eC) : Pg = pgOf
     exact (pl kv).2
 
 /- English proof (translation)
-The claim follows from `Equiv.ext fun kv => Subtype.ext (by rw [h.place, h'.place])`.
+A detailed English derivation is pending.
 -/
 theorem LvlTie.pl_unique {pl' : (Σ k : Fin 2, D.nd.PlG k) ≃ ↥Pg}
     {res' : ∀ kv : (Σ k : Fin 2, D.nd.PlG k), kP (pl' kv).1 ≃+* ZMod (D.host.g kv.1)}
@@ -221,14 +221,14 @@ theorem LvlTie.pl_unique {pl' : (Σ k : Fin 2, D.nd.PlG k) ≃ ↥Pg}
   Equiv.ext fun kv => Subtype.ext (by rw [h.place, h'.place])
 
 /- English proof (translation)
-Establish `hs : r.symm = r'.symm` using `RingEquiv.toRingHom_injective (Subsingleton.elim _ _)`. Rewrite using `[← r.symm_symm, hs, RingEquiv.symm_symm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem res_unique {R : Type} [Semiring R] {n : ℕ} (r r' : R ≃+* ZMod n) : r = r' := by
   have hs : r.symm = r'.symm := RingEquiv.toRingHom_injective (Subsingleton.elim _ _)
   rw [← r.symm_symm, hs, RingEquiv.symm_symm]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[h.comp g kv, Matrix.GeneralLinearGroup.map_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem LvlTie.eC_eq (h : LvlTie D P0 ψ0 Ps ψs eG Pg pl res ψ eC) (g : G) (kv : Σ k : Fin 2, D.nd.PlG k) :
     eC g (pl kv) = Matrix.GeneralLinearGroup.map (res kv).symm.toRingHom (eG g kv) := by
@@ -236,7 +236,7 @@ theorem LvlTie.eC_eq (h : LvlTie D P0 ψ0 Ps ψs eG Pg pl res ψ eC) (g : G) (kv
   simp [h.comp g kv, Matrix.GeneralLinearGroup.map_apply]
 
 /- English proof (translation)
-Use `MulEquiv.ext fun g => funext fun PP => ?_` and prove the remaining obligations. Take `⟨kv, rfl⟩` from `pl.surjective PP`. Rewrite using `[LvlTie.eC_eq h g kv, LvlTie.eC_eq h' g kv, res_unique (res kv) (res' kv)]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem LvlTie.eC_unique {res' : ∀ kv : (Σ k : Fin 2, D.nd.PlG k), kP (pl kv).1 ≃+* ZMod (D.host.g kv.1)}
     {ψ' : ∀ PP : Pl D.host.E, AddChar (kP PP) D.what₂.LL} {eC' : G ≃* G0 Pg D.R.r}
@@ -261,7 +261,7 @@ def PsiPPTie (P0 : Subgroup G) (ψ0 : P0 →* D.what₂.LLˣ) (Ps : Subgroup G) 
 variable {D}
 
 /- English proof (translation)
-Take `⟨Pg, pl, res, ψ, eC, h1, -⟩` from `h`. Conclude with `⟨Pg, pl, res, ψ, eC, h1⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem PsiPPTie.lvl {P0 : Subgroup G} {ψ0 : P0 →* D.what₂.LLˣ} {Ps : Subgroup G} {ψs : Ps →* D.what₂.LLˣ}
     {eG : G ≃* Formalism.BasicNotions.G0g D.nd} (h : PsiPPTie D P0 ψ0 Ps ψs eG) :
@@ -273,7 +273,7 @@ theorem PsiPPTie.lvl {P0 : Subgroup G} {ψ0 : P0 →* D.what₂.LLˣ} {Ps : Subg
   exact ⟨Pg, pl, res, ψ, eC, h1⟩
 
 /- English proof (translation)
-Take `⟨Pg, pl, res, ψ, eC, h1, h2⟩` from `h`. Conclude with `⟨Pg, pl, res, ψ, eC, h1, h1.pg_eq, h1.place, (psiWeil_iff D Pg pl res ψ).mp h2, fun g kv => h1.eC_eq g kv⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem PsiPPTie.spec {P0 : Subgroup G} {ψ0 : P0 →* D.what₂.LLˣ} {Ps : Subgroup G} {ψs : Ps →* D.what₂.LLˣ}
     {eG : G ≃* Formalism.BasicNotions.G0g D.nd} (h : PsiPPTie D P0 ψ0 Ps ψs eG) :

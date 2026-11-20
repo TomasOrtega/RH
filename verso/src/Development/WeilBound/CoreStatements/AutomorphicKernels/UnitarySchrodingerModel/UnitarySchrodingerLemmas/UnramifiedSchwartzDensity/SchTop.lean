@@ -7,7 +7,7 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FinitePartOpenS
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DensityIntegralStatement
 
 /- English proof (translation)
-The claim follows from `PositivityTheory.PfSWUS.SchInf.schwartzDensInf_of GlobalTheory.T.archimedean_family_continuity GlobalTheory.T.archimedean_section GlobalTheory.T.archimedean_coordinates GlobalTheory.T.archimedean_scaling GlobalTheory.T.finite_part_open GlobalTheory.T.density_integral`.
+A detailed English derivation is pending.
 -/
 theorem PositivityTheory.PfSWUS.SchInf.schwartzDensInf : PositivityTheory.PfSWUS.HMass.SchwartzDensInf :=
   PositivityTheory.PfSWUS.SchInf.schwartzDensInf_of GlobalTheory.T.archimedean_family_continuity GlobalTheory.T.archimedean_section GlobalTheory.T.archimedean_coordinates GlobalTheory.T.archimedean_scaling GlobalTheory.T.finite_part_open

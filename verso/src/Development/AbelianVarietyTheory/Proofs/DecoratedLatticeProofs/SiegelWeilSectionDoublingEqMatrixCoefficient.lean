@@ -12,9 +12,9 @@ open GlobalTheory.Core.Rk.IP
 namespace GlobalTheory.Core.Rk
 
 /- English proof (translation)
-Introduce `D ψ A B χA χB om omh _ hT ν 𝓕 _ f₁ f₂ h₁ h₂`. Use `⟨GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero.evZero_delta A B ν 𝓕 f₁ f₂, fun g => ?_⟩` and prove the remaining obligations. Establish `h` using `((hT f₁ f₂ h₁ h₂).2 g 1 1).1`. Establish `h1 : om ((1 : GA D A), (1 : GA D B)) f₂ = f₂`. Rewrite using `[show ((1 : GA D A), (1 : GA D B)) = (1 : GA D A × GA D B) from rfl, map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hd : detA A (1 : GA D A) = 1` using `map_one _`. Rewrite `h` using `[h1, hd, map_one, inv_one, Circle.coe_one, one_smul]`. Simplify using `only [swSec]`. Rewrite using `[h, GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero.evZero_delta]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem coefClause_of_thetaClause : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (A B : HSp D) (χA χB : (AE D)ˣ →* Circle) (om : WRep A B) (omh : WRep (dblSp A) B), IsWeilDatumO ψ A B χA χB om → ThetaClause ψ A B χB om omh → ∀ (ν : Measure (WO A B)) (𝓕 : Set (WO A B)), IsCovolOne (ratL B A) ν 𝓕 → CoefClause ψ A B om omh ν 𝓕 := by
   intro D ψ A B χA χB om omh _ hT ν 𝓕 _ f₁ f₂ h₁ h₂

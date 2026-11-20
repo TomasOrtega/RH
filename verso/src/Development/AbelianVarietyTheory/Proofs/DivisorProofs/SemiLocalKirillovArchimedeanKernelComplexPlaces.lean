@@ -15,7 +15,7 @@ namespace GlobalTheory.JSW.KirArchTransfer
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun w => (InfinitePlace.Completion.isometryEquivComplexOfIsComplex (IsTotallyComplex.isComplex w)).continuous.comp ((continuous_apply w).comp continuous_fst)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_pInf_here : Continuous (pInf E) :=
   continuous_pi fun w =>
@@ -23,7 +23,7 @@ theorem continuous_pInf_here : Continuous (pInf E) :=
       ((continuous_apply w).comp continuous_fst)
 
 /- English proof (translation)
-The claim follows from `Continuous.units_map _ (continuous_id.matrix_map continuous_pInf_here)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_map_pInf_here :
     Continuous (GeneralLinearGroup.map (pInf E) : GA E a → GL (Fin a) (Cinf E)) :=
@@ -37,7 +37,7 @@ theorem ent {R : Type} [CommRing R] (p : Ad E →+* R) (g : GA E a) (i j : Fin a
   rfl
 
 /- English proof (translation)
-The claim follows from `(infEq E).symm_apply_apply x`.
+A detailed English derivation is pending.
 -/
 theorem pInf_sInf (x : Cinf E) : pInf E (sInf E x) = x := (infEq E).symm_apply_apply x
 
@@ -47,7 +47,7 @@ Both sides reduce to the same expression.
 theorem pFin_sInf (x : Cinf E) : pFin E (sInf E x) = 0 := rfl
 
 /- English proof (translation)
-Establish `h` using `infGL_mul_finGL q`. Rewrite `h` using `[hq, map_one, one_mul]`. Conclude with `h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_finGL {q : GA E a} (hq : GeneralLinearGroup.map (pInf E) q = 1) :
     q = finGL E a (GeneralLinearGroup.map (pFin E) q) := by
@@ -56,7 +56,7 @@ theorem eq_finGL {q : GA E a} (hq : GeneralLinearGroup.map (pInf E) q = 1) :
   exact h.symm
 
 /- English proof (translation)
-Rewrite using `[eq_finGL hq]`. Conclude with `(infGL_comm y _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comm_infGL {q : GA E a} (hq : GeneralLinearGroup.map (pInf E) q = 1) (y : GL (Fin a) (Cinf E)) :
     q * infGL E a y = infGL E a y * q := by
@@ -64,7 +64,7 @@ theorem comm_infGL {q : GA E a} (hq : GeneralLinearGroup.map (pInf E) q = 1) (y 
   exact (infGL_comm y _).symm
 
 /- English proof (translation)
-Use `ad_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[← ent, pInf_infGL, pInf_sInf]`. Rewrite using `[← ent, pFin_infGL, pFin_sInf]`. Simplify using `[Matrix.one_apply, h]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem infGL_apply_of_ne (y : GL (Fin a) (Cinf E)) {i j : Fin a} (h : i ≠ j) :
     (infGL E a y : Matrix (Fin a) (Fin a) (Ad E)) i j = sInf E ((y : Matrix (Fin a) (Fin a) (Cinf E)) i j) := by
@@ -74,11 +74,11 @@ theorem infGL_apply_of_ne (y : GL (Fin a) (Cinf E)) {i j : Fin a} (h : i ≠ j) 
     simp [Matrix.one_apply, h]
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `(GlobalTheory.SmGL.mem_unipB (Cinf E)).1 hu`. Use `⟨fun i j hji => ?_, fun i => ?_⟩` and prove the remaining obligations. Use `ad_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[map_zero, ← ent, pInf_infGL]`. Conclude with `h1 i j hji`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_zero, ← ent, pFin_infGL]`. Simplify using `[Matrix.one_apply, hji.ne']`. Use `ad_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[map_one, ← ent, pInf_infGL]`. Conclude with `h2 i`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_one, ← ent, pFin_infGL]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem infGL_mem_NA {u : GL (Fin a) (Cinf E)} (hu : u ∈ GlobalTheory.SmGL.unipB (Cinf E) (Fin a)) :
     infGL E a u ∈ GlobalTheory.JSW.NA E a := by
@@ -92,11 +92,11 @@ theorem infGL_mem_NA {u : GL (Fin a) (Cinf E)} (hu : u ∈ GlobalTheory.SmGL.uni
     · rw [map_one, ← ent, pFin_infGL]; simp
 
 /- English proof (translation)
-Establish `hs : GlobalTheory.Whittaker.superDiag (infGL E a u) = sInf E (GlobalTheory.Whittaker.superDiag u)`. Simplify using `only [GlobalTheory.Whittaker.superDiag, map_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Establish `hij : i ≠ j`. Introduce `e`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Substitute `e` using the available equality. Simplify using `at hj`. Conclude with `infGL_apply_of_ne u hij`. Establish `h` using `GlobalTheory.ThetaPoisson.adelicChar_sInf_sum (E := E) (n := 1) (fun _ => GlobalTheory.Whittaker.superDiag u) (fun _ => 1)`. Simplify using `only [Fin.sum_univ_one, mul_one, Pi.one_apply] at h`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.JSW.psiN, hs, h]`.
+A detailed English derivation is pending.
 -/
 theorem psiN_infGL (u : GL (Fin a) (Cinf E)) :
     GlobalTheory.JSW.psiN (infGL E a u) = (𝐞 (-∑ w, 2 * (GlobalTheory.Whittaker.superDiag u w).re) : ℂ) := by
@@ -111,7 +111,7 @@ theorem psiN_infGL (u : GL (Fin a) (Cinf E)) :
   rw [GlobalTheory.JSW.psiN, hs, h]
 
 /- English proof (translation)
-Use `(GlobalTheory.SmGL.mem_unipB (Cinf E)).2 ⟨fun i j hji => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[ent, hu.1 i j hji, map_zero]`. Rewrite using `[ent, hu.2 i, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_pInf_mem_unipB {u : GA E a} (hu : u ∈ GlobalTheory.JSW.NA E a) :
     GeneralLinearGroup.map (pInf E) u ∈ GlobalTheory.SmGL.unipB (Cinf E) (Fin a) := by
@@ -120,7 +120,7 @@ theorem map_pInf_mem_unipB {u : GA E a} (hu : u ∈ GlobalTheory.JSW.NA E a) :
   · rw [ent, hu.2 i, map_one]
 
 /- English proof (translation)
-Use `⟨fun h => ?_, fun h => ad_ext ?_ ?_⟩` and prove the remaining obligations. Apply the tactic sequence `subst h; split_ifs <;> simp`. Apply the tactic sequence `rw [h.1]; split_ifs <;> simp`. Apply the tactic sequence `rw [h.2]; split_ifs <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ad_eq_ite_iff (x : Ad E) (c : Prop) [Decidable c] :
     x = (if c then 1 else 0) ↔ pInf E x = (if c then 1 else 0) ∧ pFin E x = (if c then 1 else 0) := by
@@ -130,13 +130,13 @@ theorem ad_eq_ite_iff (x : Ad E) (c : Prop) [Decidable c] :
   · rw [h.2]; split_ifs <;> simp
 
 /- English proof (translation)
-Establish `hsup : ∀ w : HeightOneSpectrum (𝓞 E), GeneralLinearGroup.map ((pLoc E w).comp (pFin E)) (infGL E (m + 1) y) = 1` using `fun w => map_cornerGL_of_zero _ _ (fun _ => map_zero (pLoc E w)) y`. Establish `hI : GeneralLinearGroup.map (pInf E) (q * infGL E (m + 1) y) = y`. Rewrite using `[map_mul, hq, one_mul, pInf_infGL]`. Establish `hF : GeneralLinearGroup.map (pFin E) (q * infGL E (m + 1) y) = GeneralLinearGroup.map (pFin E) q`. Rewrite using `[map_mul, pFin_infGL, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hrow : ∀ j, ((q * infGL E (m + 1) y : GA E (m + 1)) : Matrix (Fin (m + 1)) (Fin (m + 1)) (Ad E)) (Fin.last m) j = (if j = Fin.last m then 1 else 0) ↔ (y : Matrix (Fin (m + 1)) (Fin (m + 1)) (Cinf E)) (Fin.last m) j = (if j = Fin.last m then 1 else 0) ∧ ((GeneralLinearGroup.map (p …`. Introduce `j`. Rewrite using `[ad_eq_ite_iff, ← ent, ← ent, hI, hF]`. Establish `hS : q * infGL E (m + 1) y ∈ GlobalTheory.JSW.supS E (m + 1) S ↔ q ∈ GlobalTheory.JSW.supS E (m + 1) S`. Use `forall_congr' fun w => imp_congr_right fun _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, hsup, mul_one]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨⟨hS.1 h1, fun j => ((hrow j).1 (h2 j)).2⟩, fun j => ((hrow j).1 (h2 j)).1⟩`. Introduce and unpack `⟨⟨h1, h2⟩, h3⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨hS.2 h1, fun j => (hrow j).2 ⟨h3 j, h2 j⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_mirS_iff {m : ℕ} (S : Finset (HeightOneSpectrum (𝓞 E))) {q : GA E (m + 1)}
     (hq : GeneralLinearGroup.map (pInf E) q = 1) (y : GL (Fin (m + 1)) (Cinf E)) :
@@ -172,15 +172,15 @@ end GlobalTheory.JSW.KirArchTransfer
 namespace GlobalTheory.JSW.KirArchTransfer
 
 /- English proof (translation)
-Introduce `E _ _ _ m S b W q hbe hbC hbs hWe hWc hWg hq hWq`. Distinguish the cases in `hne : ∃ y₀ : GL (Fin (m + 1)) (Cinf E), q * infGL E (m + 1) y₀ ∈ GlobalTheory.JSW.mirS E S m`. Take `⟨y₀, hy₀⟩` from `hne`. Establish `hP` using `((mem_mirS_iff S hq y₀).1 hy₀).1`. Establish `hiff : ∀ y, q * infGL E (m + 1) y ∈ GlobalTheory.JSW.mirS E S m ↔ y ∈ GlobalTheory.JSW.mirSet (Cinf E) m` using `fun y => (mem_mirS_iff S hq y).trans ⟨fun h => h.2, fun h => ⟨hP, h⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heq : ∀ F : GA E (m + 1) → ℂ, (∀ u ∈ GlobalTheory.JSW.NA E (m + 1), ∀ g, F (u * g) = GlobalTheory.JSW.psiN u * F g) → ∀ u ∈ GlobalTheory.SmGL.unipB (Cinf E) (Fin (m + 1)), ∀ y, F (q * infGL E (m + 1) (u * y)) = (𝐞 (-∑ w, 2 * (GlobalTheory.Whittaker.superDiag u w).re) : ℂ) * F (q …`. Introduce `F hF u hu y`. Rewrite using `[map_mul, ← mul_assoc, comm_infGL hq u, mul_assoc, hF _ (infGL_mem_NA hu), psiN_infGL]`. Take `⟨C, hC, hCp⟩` from `hbC`. Take `⟨X, _, ν, _, k, γ, hk, hK⟩` from `GlobalTheory.T.kirillov_archimedean_totallyComplex_mirabolic E m (fun y => b (q * infGL E (m + 1) y)) (fun y => W (q * infGL E (m + 1) y)) (heq b hbe) ⟨chart b q, hbs, fun y => chart_val b q y⟩ ⟨GeneralLinearGroup.map (pInf E) '' C, hC.image continuous_map_pInf_here, fun y hy hb0 …`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu, hu'⟩` from `hCp _ ((hiff y).2 hy) hb0`. Use `⟨GeneralLinearGroup.map (pInf E) u, map_pInf_mem_unipB hu, _, hu', ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_inv, map_mul, hq, one_mul, pInf_infGL]⟩`. Use the proof step `(heq W hWe) hWc hWg (by simpa using hWq)`. Use `⟨X, inferInstance, ν, inferInstance, k, γ, hk, fun y hy => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hK y ((hiff y).1 hy)]`. Simplify using `only [GlobalTheory.JSW.kerInf]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[map_mul, mul_assoc]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨Unit, inferInstance, Measure.dirac (), inferInstance, fun _ => 1, fun _ => 1, GlobalTheory.JSW.isRapidInf_dirac 1, fun y hy => (hne ⟨y, hy⟩).elim⟩`.
+A detailed English derivation is pending.
 -/
 theorem kirillov_arch : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (m : ℕ) (S : Finset (HeightOneSpectrum (𝓞 E))) (b W : GA E (m + 1) → ℂ) (q : GA E (m + 1)), (∀ u ∈ GlobalTheory.JSW.NA E (m + 1), ∀ g, b (u * g) = GlobalTheory.JSW.psiN u * b g) → (∃ C : Set (GA E (m + 1)), IsCompact C ∧ ∀ p ∈ GlobalTheory.JSW.mirS E S m, b p ≠ 0 → ∃ u ∈ GlobalTheory.JSW.NA E (m + 1), u⁻¹ * p ∈ C) → ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (chart b q) (invSet E (m + 1)) → (∀ u ∈ GlobalTheory.JSW.NA E (m + 1), ∀ g, W (u * g) = GlobalTheory.JSW.psiN u * W g) → Continuous (fun y : GL (Fin (m + 1)) (Cinf E) => W (q * infGL E (m + 1) y)) → (∃ (C : ℝ) (N : ℕ), ∀ y, ‖W (q * infGL E (m + 1) y)‖ ≤ C * height y ^ N) → GeneralLinearGroup.map (pInf E) q = 1 → W q ≠ 0 → ∃ (X : Type) (_ : MeasurableSpace X) (ν : Measure X) (_ : SFinite ν) (k : X → ℂ) (γ : X → GL (Fin (m + 1)) (Cinf E)), GlobalTheory.JSW.IsRapidInf ν k γ ∧ ∀ y : GL (Fin (m + 1)) (Cinf E), q * infGL E (m + 1) y ∈ GlobalTheory.JSW.mirS E S m → GlobalTheory.JSW.kerInf ν k γ W (q * infGL E (m + 1) y) = b (q * infGL E (m + 1) y) := by
   intro E _ _ _ m S b W q hbe hbC hbs hWe hWc hWg hq hWq

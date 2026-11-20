@@ -149,7 +149,7 @@ def ExportSt0 : Prop := Closed FamHyp fun Fm _ => ∃ x0 : ℝ, ∀ (x : ℝ) (h
     GlobalTheory.TwistIndex.ExportTie p.P.A3.A (Fm.ex x hx i).nch (twE Fm x hx i) (R2 p) j (F2 p).P0 (F2 p).ψ0⁻¹ 1 v (ownAt (Fm.D x i) v)
 
 /- English proof (translation)
-The claim follows from `Closed.imp h fun _ _ _ ⟨x0, H⟩ => ⟨x0, fun x hx h0 i p r => H x hx h0 i p r.exAt r.jEvBar r.geoAct r.evInj r.ioExt r.oneMap r.prim r.ok r.framesOK r.psi⟩`.
+A detailed English derivation is pending.
 -/
 theorem ExportSt0.exportSt (h : ExportSt0) : ExportSt :=
   Closed.imp h fun _ _ _ ⟨x0, H⟩ => ⟨x0, fun x hx h0 i p r => H x hx h0 i p r.exAt r.jEvBar r.geoAct r.evInj r.ioExt r.oneMap r.prim r.ok
@@ -183,7 +183,7 @@ def LowNumSt : Prop := Closed FamHyp fun Fm _ => EvPt Fm fun x _ i p =>
 def LamLowX : Prop := Closed FamHyp fun Fm CH => EvPt Fm fun _ _ _ p => SingleIndexPlacesAreTwisted p → ∀ C, (p.S true).L6 (p.N C CH)
 
 /- English proof (translation)
-The claim follows from `Closed.imp h fun _ _ _ H hD => by obtain ⟨C0, h0, x0, hx⟩ := H hD exact ⟨C0, h0, x0, fun x h1 h2 i p hp _ => hx x h1 h2 i p hp⟩`.
+A detailed English derivation is pending.
 -/
 theorem ontoX_of_onto (h : Onto) : OntoX :=
   Closed.imp h fun _ _ _ H hD => by
@@ -191,9 +191,9 @@ theorem ontoX_of_onto (h : Onto) : OntoX :=
     exact ⟨C0, h0, x0, fun x h1 h2 i p hp _ => hx x h1 h2 i p hp⟩
 
 /- English proof (translation)
-Establish `h' : Closed 𝒞 fun Fm CH => DIVinN Fm → ∃ C0 : ℝ, 0 ≤ C0 ∧ EvPt Fm fun _ _ _ p => More p → ∀ C, C0 ≤ C → (p.S false).ON (p.N C CH)`. Take `⟨a, ha, H⟩` from `h`. Use `⟨a, ha, fun e he hle => ?_⟩` and prove the remaining obligations. Take `⟨K, hK⟩` from `H e he hle`. Conclude with `⟨K, fun Fm CH hc hL => hK Fm CH (h𝒞 Fm hc) hL⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `(h'.and hS).imp fun Fm CH _ H hD => ?_` and prove the remaining obligations. Take `⟨C0, h0, x0, hx⟩` from `H.1 hD`. Take `⟨x1, hx1⟩` from `H.2`. Conclude with `⟨C0, h0, max x0 x1, fun x h1 h2 i p hp hs => hx x h1 ((le_max_left _ _).trans h2) i p hp (hx1 x h1 ((le_max_right _ _).trans h2) i p hp hs)⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem OntoX.at_sel (h : OntoX) {𝒞 : FamClass} (h𝒞 : ∀ {eps : ℝ} (Fm : FamP eps), 𝒞 Fm → FamHyp Fm)
     (Sel : ∀ {eps : ℝ} (Fm : FamP eps) (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x), Pt Fm x hx i → Prop)
@@ -213,7 +213,7 @@ theorem OntoX.at_sel (h : OntoX) {𝒞 : FamClass} (h𝒞 : ∀ {eps : ℝ} (Fm 
     hx x h1 ((le_max_left _ _).trans h2) i p hp (hx1 x h1 ((le_max_right _ _).trans h2) i p hp hs)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => Closed.imp h fun _ _ _ ⟨x0, hx⟩ => ⟨x0, fun x h1 h2 i p hp => hx x h1 h2 i p hp hp.w1⟩, fun h => Closed.imp h fun _ _ _ ⟨x0, hx⟩ => ⟨x0, fun x h1 h2 i p hp _ => hx x h1 h2 i p hp⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem lamLowX_iff : LamLowX ↔ LamLow :=
   ⟨fun h => Closed.imp h fun _ _ _ ⟨x0, hx⟩ => ⟨x0, fun x h1 h2 i p hp => hx x h1 h2 i p hp hp.w1⟩,
@@ -239,7 +239,7 @@ def withLevel (h : ∀ u, ((ψ u : D.what₂.LLˣ) : D.what₂.LL) ∈ D.LL0) : 
       (e.symm.toMonoidHom.subgroupComap U) }
 
 /- English proof (translation)
-Use `⟨fun g => ?_, fun i b u hu => ⟨smallChar U ψ h u, rfl, ?_⟩⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `e.symm (e g) ∈ U ↔ _`. Rewrite using `[e.symm_apply_apply]`. Express the relevant statement in the definitionally equal form `sideEmb X i b (smallChar U ψ h ⟨e.symm (e u), _⟩) = _`. Simplify using `only [e.symm_apply_apply]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem levelIs_withLevel (h : ∀ u, ((ψ u : D.what₂.LLˣ) : D.what₂.LL) ∈ D.LL0) : LevelIs (withLevel Y e U ψ h) e U ψ := by
   refine ⟨fun g => ?_, fun i b u hu => ⟨smallChar U ψ h u, rfl, ?_⟩⟩
@@ -253,7 +253,7 @@ def typedData (i : X.Tw) (j : ℕ) (b : Bool) : Set (Y.Dat i j b) :=
     ((Y.psiU i b u : (FractionRing (X.O i))ˣ) : FractionRing (X.O i)) • Y.th i j b a}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨⟨typedData D.nexp, fun _ _ _ _ h => h⟩, fun _ _ _ _ h => h⟩, fun T h i j b => Set.ext fun a => ⟨T.thetaBase_invariant_action i _ b a, h i j b a⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_allData (D : D7) : (∃ T : ThData D, AllData D.nexp T.xd0) ∧ ∀ T : ThData D, AllData D.nexp T.xd0 →
     ∀ i (j : Fin D.R.m) b, T.xd0 i ((j : ℕ) + 1) b = typedData D.nexp i _ b :=
@@ -263,7 +263,7 @@ theorem exists_allData (D : D7) : (∃ T : ThData D, AllData D.nexp T.xd0) ∧ �
 variable {Y e U ψ}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨fullTieWithAll hρ rd hF hL hU⟩, h, fun _ _ _ _ h => h⟩`.
+Supply the required witnesses or components.
 -/
 theorem joint_withAll {ρ : Setup X} (hρ : ρ.Good) (rd : Rds Y ρ) (hF : ∀ i j b, Faithful (rd i j b)) (hL : ρ.LatFG)
     (hU : ρ.LevelOf Y) (h : LevelIs Y e U ψ) :
@@ -272,7 +272,7 @@ theorem joint_withAll {ρ : Setup X} (hρ : ρ.Good) (rd : Rds Y ρ) (hF : ∀ i
   ⟨⟨fullTieWithAll hρ rd hF hL hU⟩, h, fun _ _ _ _ h => h⟩
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.DimPartsCompare.tameTie_of_typesTrue h).2.1`.
+A detailed English derivation is pending.
 -/
 theorem types_of_true (C : Formalism.L2.Host.CharFrame D) (h : GlobalTheory.Mem.Top.TypesTrue D.ntypes C.P C.W) :
     GlobalTheory.DimPartsCompare.TameTie D C.W.om := (GlobalTheory.DimPartsCompare.tameTie_of_typesTrue h).2.1
@@ -282,9 +282,9 @@ section Cell
 variable {ρ : Setup X} {hρ : ρ.Good} {i : X.Tw} {j : Fin D.R.m} {b : Bool} {rd : Rd ρ Y i j b}
 
 /- English proof (translation)
-Use `(injective_iff_map_eq_zero _).2 fun f hf => ?_` and prove the remaining obligations. Establish `h0 : ((1 : X.Ok i 0) ⊗ₜ[X.O i] f : X.Ok i 0 ⊗[X.O i] Y.Fm i ((j : ℕ) + 1) b) = 0` using `T.injective_rdK 0 (by rw [rdK_tmul, hf, smul_zero, map_zero])`. Establish `: Module.Flat (X.O i) (Y.Fm i ((j : ℕ) + 1) b)`. Use `IsLocalization.flat (FractionRing (X.O i)) (nonZeroDivisors (X.O i))` as an intermediate fact. Use the proof step `Module.Flat.trans (X.O i) (FractionRing (X.O i)) _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi` using `Module.Flat.rTensor_preserves_injective_linearMap (M := Y.Fm i ((j : ℕ) + 1) b) (Algebra.linearMap (X.O i) (X.Ok i 0)) (X.Ok_inj i 0)`. Establish `h1 : ((1 : X.O i) ⊗ₜ[X.O i] f : X.O i ⊗[X.O i] Y.Fm i ((j : ℕ) + 1) b) = 0` using `hi (by rw [LinearMap.rTensor_tmul, Algebra.linearMap_apply, map_one, h0, map_zero])`. Simplify using `using congrArg (TensorProduct.lid (X.O i) _) h1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem rd_injective (T : CellTie hρ Y rd) : Function.Injective rd := by
   refine (injective_iff_map_eq_zero _).2 fun f hf => ?_
@@ -300,9 +300,9 @@ theorem rd_injective (T : CellTie hρ Y rd) : Function.Injective rd := by
   simpa using congrArg (TensorProduct.lid (X.O i) _) h1
 
 /- English proof (translation)
-Use extensionality with `f`. Use `⟨?_, fun ⟨s, h, P, hd, hf⟩ => ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨d, rfl⟩`. Conclude with `⟨_, _, _, T.dat d, T.th_eq d⟩`. Take `⟨d, -, rfl, rfl⟩` from `T.dat_onto s h P hd ⟨f, hf⟩`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨d, rd_injective T ((T.th_eq d).trans hf.symm)⟩`.
+Supply the required witnesses or components.
 -/
 theorem range_th (T : CellTie hρ Y rd) : Set.range (Y.th i ((j : ℕ) + 1) b) =
     {f | ∃ s h P, ρ.IsDatum i j b s h P ∧ rd f = ρ.theta i j b h P} := by
@@ -314,7 +314,7 @@ theorem range_th (T : CellTie hρ Y rd) : Set.range (Y.th i ((j : ℕ) + 1) b) =
     exact ⟨d, rd_injective T ((T.th_eq d).trans hf.symm)⟩
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[Set.mem_iUnion]`. Use `⟨fun ⟨d, hd⟩ => ⟨_, _, _, T.dat d, ⟨_, T.th_eq d⟩, (T.thPsi_iff k Q φ hφ d x).1 hd⟩, fun ⟨s, h, P, hd, hr, hx⟩ => ?_⟩` and prove the remaining obligations. Take `⟨d, -, rfl, rfl⟩` from `T.dat_onto s h P hd hr`. Conclude with `⟨d, (T.thPsi_iff k Q φ hφ d x).2 hx⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem iUnion_thPsi (T : CellTie hρ Y rd) {k Q φ} (hφ : IntegralHeckeForms.TwOK i k Q φ) : ⋃ d, Y.thPsi i ((j : ℕ) + 1) b k Q φ d =
     {x | ∃ s h P, ρ.IsDatum i j b s h P ∧ ρ.theta i j b h P ∈ Set.range rd ∧ rdK rd hρ k x ∈ ρ.gens i j b k Q φ h P} := by
@@ -330,18 +330,18 @@ variable {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst
   {Y0 : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ} {p : PtAt ex Csz}
 
 /- English proof (translation)
-The claim follows from `h.types.eSerTie`.
+A detailed English derivation is pending.
 -/
 theorem RecTies.eSer (h : RecTies p) : GlobalTheory.GLq.ESerTie D := h.types.eSerTie
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.TwistField.coverField_of_containsRayField _ _ _ _ _ p.T (R2 p) p.fw.laws hc.lev p.qGuard h.rayQ`.
+A detailed English derivation is pending.
 -/
 theorem RecTies.coverField (h : RecTies p) (hc : (R2 p).Char (F2 p)) : GlobalTheory.TwistField.CoverField p.T (R2 p) :=
   GlobalTheory.TwistField.coverField_of_containsRayField _ _ _ _ _ p.T (R2 p) p.fw.laws hc.lev p.qGuard h.rayQ
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `h.psiVal w hw v (((p.Tp.psi_is w hw).ram v).2 hQ)`. Establish `hy' : D.what₂.embLL y⁻¹ = (((p.Tp.psi w).val v)⁻¹ : ℂˣ).1`. Rewrite using `[map_inv₀, hy, Units.val_inv_eq_inv_val]`. Simplify using `only [Formalism.L2.Host.HChar.valTw, Complex.ofReal_zero, neg_zero, Complex.cpow_zero, mul_one]`. Conclude with `⟨y⁻¹, hy', h.psi w hw v hQ hl B σ hB hσ _ hy'⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem RecTies.psi_read (h : RecTies p) (w : D.what₂.places.Pl) (hw : D.what₂.muAt w ≠ D.what₂.mu0) (v : PlE D.host)
     (hQ : v ∉ ex.nch.Q w) (hl : v ∉ Formalism.BasicNotions.placesOver D.host.E (D.what₂.places.resChar w)) (B : ValuationSubring D.nd.Om)

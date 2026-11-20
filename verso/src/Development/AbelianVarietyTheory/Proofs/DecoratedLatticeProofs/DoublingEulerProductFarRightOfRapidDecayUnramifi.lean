@@ -27,11 +27,9 @@ open GlobalTheory.DownLift GlobalTheory.Core.Rk.Exh
 namespace GlobalTheory.Core.Rk.IP
 
 /- English proof (translation)
-Introduce `p2 p6 D`. Establish `hU` using `GlobalTheory.InertZeta.unramDoublingInert`. Establish `hPBi : ParamBoundOn D fun v => ¬ Formalism.MainNotions.SchurIrreducible.IsSplit (E` using `D.host.E) v := GlobalTheory.T.sphericalParameterBound_nonsplit_places hU D`. Establish `hPB : ParamBoundOn D (fun _ => True)`. Introduce `A L hL v _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `h : Formalism.MainNotions.SchurIrreducible.IsSplit (E := D.host.E) v`. Conclude with `GlobalTheory.Core.Rk.BdSplit.paramBound_split D A L hL v h`. Conclude with `hPBi A L hL v h`. Establish `hLZ : LocalZetaOn D (fun _ => True)`. Introduce `A L hL χ b hχ hr v _`.
-
-Distinguish the cases in `h : Formalism.MainNotions.SchurIrreducible.IsSplit (E := D.host.E) v`. Conclude with `GlobalTheory.Core.Rk.IP.localZetaOn_split p6 D A L hL χ b hχ hr v h`. Conclude with `GlobalTheory.LocZetaInertAd.localZetaOn_inert hU D hPBi A L hL χ b hχ hr v h`. Conclude with `GlobalTheory.Core.Rk.EulerProd.eulerRight p2 D (GlobalTheory.T.doublingSphericalFactorization_of_weilDualPair GlobalTheory.weilRepresentationUnitaryPair D) hLZ hPB`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem eulerRight_of_unramifiedDoubling : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.UnramifiedDoublingGL →
     ∀ D : D7, GlobalTheory.Core.Rk.IP.EulerRight D := by

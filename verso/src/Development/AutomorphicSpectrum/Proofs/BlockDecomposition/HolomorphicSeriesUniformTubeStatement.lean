@@ -5,7 +5,7 @@ import Development.WeilBound.RepresentationTheoryGL.EisensteinSeries.SiegelEisen
 open Filter Topology
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.RgEisCross.tubeGood_tsum` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FHolomorphicSeriesUniformTube.lean&line=7#L7)
 -/

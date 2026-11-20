@@ -20,9 +20,9 @@ section Gen
 variable {F E : Type} [Field F] [Field E] [Algebra F E]
 
 /- English proof (translation)
-Set `r` to `(TensorProduct.AlgebraTensorModule.rid F R R).toLinearMap`. Use `⟨r ∘ₗ α.baseChange _, r ∘ₗ β.baseChange _, fun z => ?_⟩` and prove the remaining obligations. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Simplify using `only [r, LinearMap.comp_apply, LinearMap.baseChange_tmul, LinearEquiv.coe_coe, TensorProduct.AlgebraTensorModule.rid_tmul, TensorProduct.smul_tmul, ← TensorProduct.tmul_add, ← h]`. Consider the case `add x y hx hy`. Simplify using `only [map_add, TensorProduct.add_tmul]`. Use `conv_lhs => rw [hx, hy]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem gen_coord (R : Type) [CommRing R] [Algebra F R] (α β : E →ₗ[F] F) (ξ : E) (h : ∀ e, e = α e • (1 : E) + β e • ξ) :
     ∃ a b : R ⊗[F] E →ₗ[R] R, ∀ z, z = a z ⊗ₜ[F] (1 : E) + b z ⊗ₜ[F] ξ := by
@@ -39,9 +39,9 @@ theorem gen_coord (R : Type) [CommRing R] [Algebra F R] (α β : E →ₗ[F] F) 
     abel
 
 /- English proof (translation)
-Establish `: ∀ z : (R × S) ⊗[F] E, z = LinearMap.rTensor E (LinearMap.inl F R S) (Algebra.TensorProduct.map (AlgHom.fst F R S) (AlgHom.id F E) z) + LinearMap.rTensor E (LinearMap.inr F R S) (Algebra.TensorProduct.map (AlgHom.snd F R S) (AlgHom.id F E) z)`. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => simp [← TensorProduct.add_tmul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y hx hy`. Simplify using `only [map_add]`. Use `conv_lhs => rw [hx, hy]`. Normalize the expressions using the abelian group laws. Rewrite using `[this z, h1, h2, map_zero, map_zero, add_zero]`.
+Treat this case separately. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gen_parts (R S : Type) [CommRing R] [Algebra F R] [CommRing S] [Algebra F S] (z : (R × S) ⊗[F] E)
     (h1 : Algebra.TensorProduct.map (AlgHom.fst F R S) (AlgHom.id F E) z = 0)
@@ -62,7 +62,7 @@ theorem gen_parts (R S : Type) [CommRing R] [Algebra F R] [CommRing S] [Algebra 
 end Gen
 
 /- English proof (translation)
-Introduce `h`. Use `xi_zero_im_pos D (D.eTau.symm 1)` as an intermediate fact. Rewrite `this` using `[h, map_zero]`. Simplify using `at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem embedding_xi_zero_ne_zero (D : D7) : D.host.xi0 ≠ 0 := by
   intro h
@@ -71,11 +71,9 @@ theorem embedding_xi_zero_ne_zero (D : D7) : D.host.xi0 ≠ 0 := by
   simp at this
 
 /- English proof (translation)
-Establish `li : LinearIndependent D.host.F ![(1 : D.host.E), D.host.xi0]`. Rewrite using `[LinearIndependent.pair_iff' one_ne_zero]`. Introduce `a ha`. Establish `h1 : star D.host.xi0 = D.host.xi0` using `(D.sp.cm.fixed _).2 ⟨a, by rw [← ha, Algebra.algebraMap_eq_smul_one]⟩`. Rewrite `h1` using `[GlobalTheory.DualPairCheck.star_purely_imaginary_eq_neg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `embedding_xi_zero_ne_zero D (by linear_combination (-1 / 2 : D.host.E) * h1)`. Set `b` to `basisOfLinearIndependentOfCardEqFinrank li (by rw [D.sp.cm.deg2]; simp)`. Use `⟨b.coord 0, b.coord 1, fun e => ?_⟩` and prove the remaining obligations. Use `b.sum_repr e` as an intermediate fact. Simplify using `only [Fin.sum_univ_two, b, coe_basisOfLinearIndependentOfCardEqFinrank] at this`.
-
-Conclude with `this.symm`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_coord (D : D7) : ∃ α β : D.host.E →ₗ[D.host.F] D.host.F,
     ∀ e, e = α e • (1 : D.host.E) + β e • D.host.xi0 := by
@@ -95,7 +93,7 @@ theorem exists_coord (D : D7) : ∃ α β : D.host.E →ₗ[D.host.F] D.host.F,
 instance modTop (D : D7) : IsModuleTopology (AF D.host.F) (AE D) := ⟨rfl⟩
 
 /- English proof (translation)
-Take `⟨α, β, h⟩` from `exists_coord D`. Take `⟨a, b, hab⟩` from `gen_coord (AF D.host.F) α β _ h`. Conclude with `⟨a, b, IsModuleTopology.continuous_of_linearMap _, IsModuleTopology.continuous_of_linearMap _, hab⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_coordA (D : D7) : ∃ α β : AE D →ₗ[AF D.host.F] AF D.host.F, Continuous α ∧ Continuous β ∧
     ∀ z, z = α z ⊗ₜ[D.host.F] (1 : D.host.E) + β z ⊗ₜ[D.host.F] D.host.xi0 := by
@@ -104,7 +102,7 @@ theorem exists_coordA (D : D7) : ∃ α β : AE D →ₗ[AF D.host.F] AF D.host.
   exact ⟨a, b, IsModuleTopology.continuous_of_linearMap _, IsModuleTopology.continuous_of_linearMap _, hab⟩
 
 /- English proof (translation)
-The claim follows from `haveI := D.sp.cm.totReal IsTotallyReal.isReal v`.
+A detailed English derivation is pending.
 -/
 theorem isReal (D : D7) (v : InfinitePlace D.host.F) : v.IsReal :=
   haveI := D.sp.cm.totReal
@@ -116,16 +114,14 @@ def reAt (D : D7) : Ainf D.host.F →+ (InfinitePlace D.host.F → ℝ) where
   map_add' _ _ := funext fun _ => map_add _ _ _
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun v => (InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal (isReal D v)).continuous.comp (continuous_apply v)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_reAt (D : D7) : Continuous (reAt D) :=
   continuous_pi fun v =>
     (InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal (isReal D v)).continuous.comp (continuous_apply v)
 
 /- English proof (translation)
-Unfold `GlobalTheory.IndefiniteRowSideFullHecke.HeisenbergWeilMatrices.realAd`. Use `congr 1`. Use `(RingEquiv.symm_apply_eq _).2 ?_` and prove the remaining obligations. Use `Prod.ext (funext fun v => ?_) (funext fun v => ?_)` and prove the remaining obligations. Conclude with `((InfinitePlace.Completion.isometryEquivRealOfIsReal (isReal D v)).apply_symm_apply (s v)).symm`.
-
-Conclude with `absurd (isReal D v.1) (InfinitePlace.not_isReal_iff_isComplex.2 v.2)`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem realAd_eq (D : D7) (s : InfinitePlace D.host.F → ℝ) :
     GlobalTheory.IndefiniteRowSideFullHecke.HeisenbergWeilMatrices.realAd D s = pairA D.host.F
@@ -138,7 +134,7 @@ theorem realAd_eq (D : D7) (s : InfinitePlace D.host.F → ℝ) :
   · exact absurd (isReal D v.1) (InfinitePlace.not_isReal_iff_isComplex.2 v.2)
 
 /- English proof (translation)
-Rewrite using `[realAd_eq]`. Use `congr 1`. Use function extensionality and compare the values at `v`. Conclude with `(InfinitePlace.Completion.isometryEquivRealOfIsReal (isReal D v)).symm_apply_apply (x v)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem realAd_reAt (D : D7) (x : Ainf D.host.F) : GlobalTheory.IndefiniteRowSideFullHecke.HeisenbergWeilMatrices.realAd D (reAt D x) = pairA D.host.F x 0 := by
   rw [realAd_eq]
@@ -147,7 +143,7 @@ theorem realAd_reAt (D : D7) (x : Ainf D.host.F) : GlobalTheory.IndefiniteRowSid
   exact (InfinitePlace.Completion.isometryEquivRealOfIsReal (isReal D v)).symm_apply_apply (x v)
 
 /- English proof (translation)
-Unfold `GlobalTheory.IndefiniteRowSideFullHecke.HeisenbergWeilMatrices.realAd`. Use `Prod.ext ?_ (add_zero _).symm` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = _ + _`. Simplify using `only [pairA]`. Rewrite using `[← map_add, Prod.mk_add_mk, add_zero]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -161,7 +157,7 @@ theorem realAd_add (D : D7) (s t : InfinitePlace D.host.F → ℝ) :
   rfl
 
 /- English proof (translation)
-Establish `: GlobalTheory.IndefiniteRowSideFullHecke.HeisenbergWeilMatrices.realAd D = _` using `funext (realAd_eq D)`. Rewrite using `[this]`. Conclude with `Continuous.prodMk (continuous_pi fun v => (InfinitePlace.Completion.isometryEquivRealOfIsReal (isReal D v)).symm.continuous.comp (continuous_apply v)) continuous_const`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_realAd (D : D7) : Continuous (GlobalTheory.IndefiniteRowSideFullHecke.HeisenbergWeilMatrices.realAd D) := by
   have : GlobalTheory.IndefiniteRowSideFullHecke.HeisenbergWeilMatrices.realAd D = _ := funext (realAd_eq D)
@@ -176,9 +172,7 @@ def realPtHom (D : D7) : (InfinitePlace D.host.F → ℝ) × (InfinitePlace D.ho
     abel
 
 /- English proof (translation)
-Establish `: (fun a : AF D.host.F => (a ⊗ₜ[D.host.F] e : AE D)) = fun a => a • ((1 : AF D.host.F) ⊗ₜ[D.host.F] e : AE D)`. Use function extensionality and compare the values at `a`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[this]`. Use `haveI : ContinuousSMul (AF D.host.F) (AE D) := IsModuleTopology.toContinuousSMul (AF D.host.F) _`.
-
-Conclude with `Continuous.smul (f := fun a : AF D.host.F => a) (g := fun _ : AF D.host.F => ((1 : AF D.host.F) ⊗ₜ[D.host.F] e : AE D)) continuous_id continuous_const`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_tmul (D : D7) (e : D.host.E) : Continuous fun a : AF D.host.F => (a ⊗ₜ[D.host.F] e : AE D) := by
   have : (fun a : AF D.host.F => (a ⊗ₜ[D.host.F] e : AE D)) = fun a => a • ((1 : AF D.host.F) ⊗ₜ[D.host.F] e : AE D) := by
@@ -190,7 +184,7 @@ theorem continuous_tmul (D : D7) (e : D.host.E) : Continuous fun a : AF D.host.F
     (g := fun _ : AF D.host.F => ((1 : AF D.host.F) ⊗ₜ[D.host.F] e : AE D)) continuous_id continuous_const
 
 /- English proof (translation)
-The claim follows from `haveI : ContinuousAdd (AE D) := IsModuleTopology.toContinuousAdd (AF D.host.F) _ ((continuous_tmul D 1).comp ((continuous_realAd D).comp continuous_fst)).add ((continuous_tmul D _).comp ((continuous_realAd D).comp continuous_snd))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_realPt (D : D7) : Continuous (GlobalTheory.IndefiniteRowSideFullHecke.HeisenbergWeilMatrices.realPt D) :=
   haveI : ContinuousAdd (AE D) := IsModuleTopology.toContinuousAdd (AF D.host.F) _
@@ -198,7 +192,7 @@ theorem continuous_realPt (D : D7) : Continuous (GlobalTheory.IndefiniteRowSideF
     ((continuous_tmul D _).comp ((continuous_realAd D).comp continuous_snd))
 
 /- English proof (translation)
-Establish `: ∀ s e, finPart D (GlobalTheory.IndefiniteRowSideFullHecke.HeisenbergWeilMatrices.realAd D s ⊗ₜ[D.host.F] e) = 0` using `fun s e => TensorProduct.zero_tmul _ e`. Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.HeisenbergWeilMatrices.realPt, RingHom.map_add, this, this, add_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem finPart_realPt (D : D7) (p) : finPart D (GlobalTheory.IndefiniteRowSideFullHecke.HeisenbergWeilMatrices.realPt D p) = 0 := by
   have : ∀ s e, finPart D (GlobalTheory.IndefiniteRowSideFullHecke.HeisenbergWeilMatrices.realAd D s ⊗ₜ[D.host.F] e) = 0 := fun s e =>
@@ -206,17 +200,17 @@ theorem finPart_realPt (D : D7) (p) : finPart D (GlobalTheory.IndefiniteRowSideF
   rw [GlobalTheory.IndefiniteRowSideFullHecke.HeisenbergWeilMatrices.realPt, RingHom.map_add, this, this, add_zero]
 
 /- English proof (translation)
-The claim follows from `gen_parts (Ainf D.host.F) (Af D.host.F) z h1 h2`.
+A detailed English derivation is pending.
 -/
 theorem parts_zero (D : D7) (z : AE D) (h1 : infPart D z = 0) (h2 : finPart D z = 0) : z = 0 :=
   gen_parts (Ainf D.host.F) (Af D.host.F) z h1 h2
 
 /- English proof (translation)
-Take `⟨α, β, hα, hβ, h⟩` from `exists_coordA D`. Set `r : AF D.host.F →+ (InfinitePlace D.host.F → ℝ)` to `(reAt D).comp (AddMonoidHom.fst _ _)`. Establish `hr : Continuous r` using `(continuous_reAt D).comp continuous_fst`. Set `co` to `(r.comp α.toAddMonoidHom).prod (r.comp β.toAddMonoidHom)`. Establish `k : ∀ z, infPart D (z - GlobalTheory.IndefiniteRowSideFullHecke.HeisenbergWeilMatrices.realPt D (co z)) = 0`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `z`. Establish `e : GlobalTheory.IndefiniteRowSideFullHecke.HeisenbergWeilMatrices.realPt D (co z) = pairA D.host.F (α z).1 0 ⊗ₜ[D.host.F] (1 : D.host.E) + pairA D.host.F (β z).1 0 ⊗ₜ[D.host.F] D.host.xi0`. Rewrite using `[← realAd_reAt, ← realAd_reAt]`. Both sides reduce to the same expression. Rewrite using `[RingHom.map_sub, e, sub_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [h z]`. Rewrite using `[RingHom.map_add, RingHom.map_add]`. Both sides reduce to the same expression. Use `⟨co, (hr.comp hα).prodMk (hr.comp hβ), k, fun z hz => ?_⟩` and prove the remaining obligations. Conclude with `(sub_eq_zero.1 (parts_zero D _ (k z) (by rw [RingHom.map_sub, hz, finPart_realPt, sub_zero]))).symm`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_co (D : D7) : ∃ co : AE D →+ (InfinitePlace D.host.F → ℝ) × (InfinitePlace D.host.F → ℝ),
     Continuous co ∧ (∀ z, infPart D (z - GlobalTheory.IndefiniteRowSideFullHecke.HeisenbergWeilMatrices.realPt D (co z)) = 0) ∧
@@ -242,28 +236,28 @@ def plF (D : D7) (ρ : D.what₂.Tau) : InfinitePlace D.host.F :=
   InfinitePlace.mk ((tauE D ρ).comp (algebraMap D.host.F D.host.E))
 
 /- English proof (translation)
-The claim follows from `haveI := D.sp.cm.totReal InfinitePlace.embedding_mk_eq_of_isReal (IsTotallyReal.complexEmbedding_isReal φ)`.
+A detailed English derivation is pending.
 -/
 theorem emb_mk (D : D7) (φ : D.host.F →+* ℂ) : (InfinitePlace.mk φ).embedding = φ :=
   haveI := D.sp.cm.totReal
   InfinitePlace.embedding_mk_eq_of_isReal (IsTotallyReal.complexEmbedding_isReal φ)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `ρ ρ' h`. Establish `h1 : (tauE D ρ).comp (algebraMap D.host.F D.host.E) = (tauE D ρ').comp (algebraMap D.host.F D.host.E)`. Rewrite using `[← emb_mk D (RingHom.comp _ _), ← emb_mk D ((tauE D ρ').comp _)]`. Conclude with `congrArg InfinitePlace.embedding h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : tauE D ρ D.host.xi0 = tauE D ρ' D.host.xi0`. Unfold `Host.xi0`. Simplify using `only [map_div₀, map_neg, map_one, map_mul, map_natCast, tauE_sqrtMinusD]`. Take `⟨α, β, hc⟩` from `exists_coord D`. Establish `h3 : tauE D ρ = tauE D ρ'`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `RingHom.ext fun e => ?_` and prove the remaining obligations. Rewrite using `[hc e, Algebra.smul_def, Algebra.smul_def]`. Simplify using `only [map_add, map_mul, map_one, h2]`. Rewrite using `[show tauE D ρ (algebraMap _ _ (α e)) = tauE D ρ' (algebraMap _ _ (α e)) from DFunLike.congr_fun h1 _, show tauE D ρ (algebraMap _ _ (β e)) = tauE D ρ' (algebraMap _ _ (β e)) from DFunLike.congr_fun h1 _]`. Conclude with `D.eTau.injective (Subtype.ext ((factEmb D.R D.host).1.1 h3))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `v`. Take `⟨w, hw⟩` from `InfinitePlace.comap_surjective (k := D.host.F) (K := D.host.E) v`. Establish `key : ∀ τ : D.host.E →+* ℂ, InfinitePlace.mk τ = w → τ D.host.sqrtMinusD = Complex.I * (Real.sqrt D.host.d : ℂ) → ∃ ρ, plF D ρ = v`. Introduce `τ h1 h2`. Take `⟨g, rfl⟩` from `(factEmb D.R D.host).1.2 τ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨D.eTau.symm ⟨g, ((factEmb D.R D.host).2 g).1 h2⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← hw, ← h1]`. Unfold `plF tauE`. Rewrite using `[Equiv.apply_symm_apply]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsq : w.embedding D.host.sqrtMinusD ^ 2 = (Complex.I * (Real.sqrt D.host.d : ℂ)) ^ 2`. Establish `h0 : D.host.φ₀ D.host.sqrtMinusD = Complex.I * (Real.sqrt D.host.d : ℂ)` using `D.host.φ₀_mem`. Establish `h1 : (Complex.I * (Real.sqrt D.host.d : ℂ)) ^ 2 = -(D.host.d : ℂ)`. Rewrite using `[mul_pow, Complex.I_sq, ← Complex.ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg _)]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h2 : D.host.sqrtMinusD ^ 2 = -(D.host.d : D.host.E)`. Apply `D.host.φ₀.injective` to reduce the goal to its premises. Rewrite using `[map_pow, h0, h1, map_neg, map_natCast]`. Rewrite using `[h1, ← map_pow, h2, map_neg, map_natCast]`. Break down `sq_eq_sq_iff_eq_or_eq_neg.1 hsq with h | h` into its components or cases.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `key _ (InfinitePlace.mk_embedding w) h`. Use `key (ComplexEmbedding.conjugate w.embedding) (by rw [InfinitePlace.mk_conjugate_eq, InfinitePlace.mk_embedding]) ?_` and prove the remaining obligations. Rewrite using `[ComplexEmbedding.conjugate_coe_eq, h]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem plF_bijective (D : D7) : Function.Bijective (plF D) := by
   constructor
@@ -312,9 +306,9 @@ section Gen
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Establish `key : (fun a : Ainf F => θ (a ⊗ₜ[F] (1 : E))) = fun a : Ainf F => InfinitePlace.Completion.extensionEmbedding w (a w)`. Use `(InfiniteAdeleRing.denseRange_algebraMap F).equalizer h.2 ((InfinitePlace.Completion.isometry_extensionEmbedding w).continuous.comp (continuous_apply w)) ?_` and prove the remaining obligations. Use function extensionality and compare the values at `y`. Establish `e : (algebraMap F (Ainf F) y) ⊗ₜ[F] (1 : E) = (1 : Ainf F) ⊗ₜ[F] (algebraMap F E y)`. Rewrite using `[Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show θ (algebraMap F (Ainf F) y ⊗ₜ[F] (1 : E)) = InfinitePlace.Completion.extensionEmbedding w (algebraMap F (Ainf F) y w)`. Rewrite using `[e, h.1, InfiniteAdeleRing.algebraMap_apply]`. Conclude with `((InfinitePlace.Completion.extensionEmbedding_coe w _).trans (DFunLike.congr_fun hw y)).symm`. Conclude with `congrFun key x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gen_inf_val (τ : E →+* ℂ) (w : InfinitePlace F) (hw : w.embedding = τ.comp (algebraMap F E))
     (θ : Ainf F ⊗[F] E →+* ℂ) (h : IsInfEmb τ θ) (x : Ainf F) :
@@ -333,11 +327,11 @@ theorem gen_inf_val (τ : E →+* ℂ) (w : InfinitePlace F) (hw : w.embedding =
   exact congrFun key x
 
 /- English proof (translation)
-Set `_ : Algebra F ℂ` to `(τ.comp (algebraMap F E)).toAlgebra`. Set `f : Ainf F →ₐ[F] ℂ` to `{ toRingHom := (InfinitePlace.Completion.extensionEmbedding w).comp (Pi.evalRingHom _ w) commutes' := fun x => (InfinitePlace.Completion.extensionEmbedding_coe w _).trans (DFunLike.congr_fun hw x) }`. Set `g : E →ₐ[F] ℂ` to `{ toRingHom := τ, commutes' := fun _ => rfl }`. Use `⟨(Algebra.TensorProduct.lift f g (fun _ _ => Commute.all _ _)).toRingHom, fun x => ?_, ?_⟩` and prove the remaining obligations. Use `show f 1 * g x = τ x`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_one, one_mul]`. Both sides reduce to the same expression. Establish `: (fun a : Ainf F => (Algebra.TensorProduct.lift f g (fun _ _ => Commute.all _ _)).toRingHom (a ⊗ₜ[F] (1 : E))) = fun a => InfinitePlace.Completion.extensionEmbedding w (a w)`. Use function extensionality and compare the values at `a`. Use `show f a * g 1 = _`.
+Both sides reduce to the same expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[map_one, mul_one]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `(InfinitePlace.Completion.isometry_extensionEmbedding w).continuous.comp (continuous_apply w)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gen_inf_exists (τ : E →+* ℂ) (w : InfinitePlace F) (hw : w.embedding = τ.comp (algebraMap F E)) :
     ∃ θ : Ainf F ⊗[F] E →+* ℂ, IsInfEmb τ θ := by
@@ -363,16 +357,16 @@ theorem gen_inf_exists (τ : E →+* ℂ) (w : InfinitePlace F) (hw : w.embeddin
 end Gen
 
 /- English proof (translation)
-Use `choose θ hθ using fun ρ => gen_inf_exists (tauE D ρ) (plF D ρ) (emb_mk D _)`. Conclude with `⟨θ, hθ⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_infFam (D : D7) : ∃ θ, IsInfFam (D := D) θ := by
   choose θ hθ using fun ρ => gen_inf_exists (tauE D ρ) (plF D ρ) (emb_mk D _)
   exact ⟨θ, hθ⟩
 
 /- English proof (translation)
-Unfold `GlobalTheory.IndefiniteRowSideFullHecke.HeisenbergWeilMatrices.trInf`. Use `push_cast`. Use `Fintype.sum_bijective _ (plF_bijective D) _ _ fun ρ => ?_` and prove the remaining obligations. Establish `hv` using `isReal D (plF D ρ)`. Rewrite using `[gen_inf_val (tauE D ρ) (plF D ρ) (emb_mk D _) _ (hθ ρ), InfinitePlace.mult_isReal ⟨_, hv⟩, ← InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply hv, Complex.ofReal_re]`.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Nat.cast_one, one_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sum_infFam (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (hθ : IsInfFam θ)
     (x : Ainf D.host.F) : ∑ ρ, θ ρ (x ⊗ₜ[D.host.F] (1 : D.host.E)) = (GlobalTheory.IndefiniteRowSideFullHecke.HeisenbergWeilMatrices.trInf D x : ℂ) := by

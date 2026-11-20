@@ -47,7 +47,7 @@ def redTrans : ((S.coef hI).comp S.redO).G ⟶ (viaDR hI hk s₀).G where
   naturality U V a := Thick.hom_ext fun b ↦ S.nat a b
 
 /- English proof (translation)
-Use `(CoefMap.pullCohomologyOne_comp _ _ c).symm.trans ((CoefMap.pullCohomologyOne_eq_of_natTrans _ (viaDR hI hk s₀) (S.redTrans hI hk) (fun _ _ ↦ rfl) c).trans ?_)` and prove the remaining obligations. Rewrite using `[viaDR, CoefMap.pullCohomologyOne_comp, CoefMap.pullCohomologyOne_comp]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem redO_r (c : Cr hI π s₀) :
     S.redO.pull1 (S.r hI c) = cmpO s₀ (toH1O s₀ (rho hI hk s₀ c)) := by
@@ -63,19 +63,17 @@ end GlobalTheory.LiftSys
 namespace GlobalTheory.LiftSys
 
 /- English proof (translation)
-Introduce `R R₀ _ _ I hI π _ hk X₀ s₀ S hBC hF c`. Establish `key : ∀ c, rho hI hk s₀ c ∈ F1 s₀ ↔ S.redO.pull1 (S.r hI c) = 0` using `fun c ↦ by`. Rewrite using `[Sys.redO_r S hI hk c]`. Express the relevant statement in the definitionally equal form `toH1O s₀ (rho hI hk s₀ c) = 0 ↔ _`. Conclude with `⟨fun h ↦ by rw [h, map_zero], fun h ↦ GlobalTheory.CechDR.cmpO_injective R₀ X₀ s₀ (h.trans (map_zero _).symm)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Supply the required witnesses or components.
 
-Rewrite using `[key]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨k, hk', i, hi, rfl⟩` from `Submodule.mem_sup.1 h`. Establish `h0 : S.r hI k = 0` using `hk'`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[map_add, h0, zero_add]`. Use `(key i).1 ?_` and prove the remaining obligations. Rewrite using `[(hBC.2 i).2 hi]`. Conclude with `Submodule.zero_mem _`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz⟩` from `H1.mk_surjective _ (S.r hI c)`. Rewrite `h` using `[← hz, CoefMap.pullCohomologyOne_class, H1.mk_eq_zero]`. Take `⟨g₀, hg₀⟩` from `h`. Use `choose g hg using fun U ↦ S.surj U (g₀ U)`. Set `z' : Z1 S.F` to `z - ⟨d0 _ g, commAlgFunctorCoboundaryZero_mem_cocyclesOne _ g⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hz' : S.IsIdealValuedLiftSystemCocycle z'`. Introduce `U V a`. Rewrite using `[← S.ker]`. Establish `e` using `congrFun (congrFun (congrFun hg₀ U) V) a`. Rewrite `e` using `[amitsur_d0_apply, CoefMap.pullCocycleOne_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `g₀ V - mp (OAff s₀) a (g₀ U) = S.p V (z.1 U V a) at e`. Express the relevant statement in the definitionally equal form `S.p V (z.1 U V a - (g V - mp S.F a (g U))) = 0`. Rewrite using `[map_sub, map_sub, S.nat, hg, hg, ← e, sub_self]`. Take `⟨c', hc', hrc'⟩` from `hF z' hz'`. Establish `hr : S.r hI (c - c') = 0`.
-
-Rewrite using `[map_sub, hrc', ← hz, map_sub, sub_sub_cancel]`. Conclude with `H1.mk_eq_zero.2 ⟨g, rfl⟩`. Conclude with `Submodule.mem_sup.2 ⟨c - c', hr, c', hc', sub_add_cancel c c'⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Sys.mem_K_sup_iff : ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (I : Ideal R) (hI : I ^ 2 = 0) (π : R →+* R₀)
     (hπ : Function.Surjective π) (hk : RingHom.ker π = I) (X₀ : Scheme.{0}) (s₀ : X₀ ⟶ Sp R₀),

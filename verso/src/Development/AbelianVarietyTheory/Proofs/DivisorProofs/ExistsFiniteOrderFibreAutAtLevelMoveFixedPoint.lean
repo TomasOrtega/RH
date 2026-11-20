@@ -18,13 +18,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.LevMoveFibre
 
 /- English proof (translation)
-Take `⟨u, hu, v, hv, huv⟩` from `Submodule.mem_sup.1 (hcop ▸ Submodule.mem_top : (1 : R) ∈ Mb ⊔ Mc)`. Establish `hsplit : ∀ a : La, a = u • a + v • a` using `fun a => by rw [← add_smul, huv, one_smul]`. Establish `hdec : ∀ a, ev a = evM (v • a)` using `fun a => by conv_lhs => rw [hsplit a]`. Rewrite using `[hadd, hker _ (Submodule.smul_mem_smul hu trivial), _root_.one_mul, hag _ (Submodule.smul_mem_smul hv trivial)]`. Establish `hMs : ∀ (I : Ideal R), (M : R) ∈ I → ∀ b : La, M • b ∈ I • (⊤ : Submodule R La)` using `fun I hI b => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Nat.cast_smul_eq_nsmul R]`. Conclude with `Submodule.smul_mem_smul hI trivial`. Use `⟨fun c a => ?_, fun a => ⟨fun h => ?_, hker a⟩, fun q hq => ?_⟩` and prove the remaining obligations. Rewrite using `[hdec, hdec, smul_comm, Ilin]`. Rewrite `h` using `[hdec, Iker]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `h`. Rewrite using `[hsplit a, hb]`. Conclude with `Submodule.add_mem _ (Submodule.smul_mem_smul hu trivial) (hMs Mb hMb b)`. Take `⟨b, hb⟩` from `(Ionto q).1 (by rw [← hpow]; exact hq _ hMb)`. Establish `hub : evM (u • b) = 1` using `by rw [Ilin, hb]; exact hq u hu`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨b', hb'⟩` from `(Iker _).1 hub`. Establish `hmem : b ∈ Mc • (⊤ : Submodule R La)`. Rewrite using `[hsplit b, hb']`. Conclude with `Submodule.add_mem _ (hMs Mc hMc b') (Submodule.smul_mem_smul hv trivial)`. Conclude with `⟨b, (hag b hmem).trans hb⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem alg {R : Type} [CommRing R] {La : Type} [AddCommGroup La] [Module R La] {Q : Type} [Group Q]
     (Mb Mc : Ideal R) (M : ℕ) (hcop : Mb ⊔ Mc = ⊤) (hMb : (M : R) ∈ Mb) (hMc : (M : R) ∈ Mc)
@@ -59,14 +59,14 @@ theorem alg {R : Type} [CommRing R] {La : Type} [AddCommGroup La] [Module R La] 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `⟨n, rfl⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem exists_cast {S S' : Scheme.{0}} {t : SAB H S} {t' : SAB H S'} {f f' : S' ⟶ S} (h : f = f')
     (n : SABMap t' t f) : ∃ n' : SABMap t' t f', n'.φ = n.φ := by
   subst h; exact ⟨n, rfl⟩
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero => rfl`. Consider the case `succ n ih`. Rewrite using `[Function.iterate_succ_apply', ih, pow_succ']`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem iterate_eq {C : Type*} [Category C] {X : C} (θ : Aut X) (N : ℕ) :
     (fun f : X ⟶ X => f ≫ θ.hom)^[N] (𝟙 X) = (θ ^ N).hom := by
@@ -77,9 +77,9 @@ theorem iterate_eq {C : Type*} [Category C] {X : C} (θ : Aut X) (N : ℕ) :
     rfl
 
 /- English proof (translation)
-Establish `h0 : α.act 0 = 1`. Establish `: α.act 0 * α.act 0 = α.act 0 * 1` using `by rw [_root_.mul_one, ← α.add, add_zero]`. Conclude with `mul_left_cancel this`. Proceed by induction on `n with`. Consider the case `zero => rw [Nat.cast_zero, h0, comp_one, pow_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `succ n ih => rw [Nat.cast_succ, α.add, comp_mul, ih, α.one, Category.comp_id, pow_succ]`.
+A detailed English derivation is pending.
 -/
 theorem act_natCast {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] {T : Over S} (α : OAct (𝓞 E) G)
     (q : T ⟶ G) (n : ℕ) : q ≫ α.act (n : 𝓞 E) = q ^ n := by
@@ -91,7 +91,7 @@ theorem act_natCast {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] {T
   | succ n ih => rw [Nat.cast_succ, α.add, comp_mul, ih, α.one, Category.comp_id, pow_succ]
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `hc.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Over.comp_left, Category.assoc, hψ, ← Category.assoc, he, Category.assoc, hab, ← Category.assoc, hf, he']`. Conclude with `(Over.w _).trans (Over.w _).symm`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sec_move {S' S : Scheme.{0}} {G' : Over S'} {G : Over S} [GrpObj G'] [GrpObj G] {f : S' ⟶ S}
     {φ : G'.left ⟶ G.left} (hc : IsGrpPullback G' G f φ) (e e' : 𝟙_ (Over S') ⟶ G') (ψ : G' ⟶ G')
@@ -108,23 +108,21 @@ end GlobalTheory.LevMoveFibre
 open GlobalTheory.LevMoveFibre in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo x ρ ν gM gA hlev hx`. Take `⟨t', ⟨m⟩⟩` from `exists_sab x Xo.univ.t`. Take `⟨T, hT, -⟩` from `GlobalTheory.CM.exists_pat_of_obj E H Dw l _ _ _ _ (GlobalTheory.ModelCompare.objOfSABMap Xo.univ m)`. Take `rfl : T.t = t'` from `hT`. Take `⟨n₀, hn₀⟩` from `sabComp pullCubComp E H _ _ _ Xo.univ.t Xo.univ.t T.t ρ x ν m`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn⟩` from `exists_cast hx n₀`. Take `⟨ψ, hψ, hφ, hact, -⟩` from `sabMap_iso n m rfl rfl`. Set `θ : Aut T.t.G` to `ψ`. Establish `hL` using `GlobalTheory.lawsFieldsSeparately`. Take `⟨N, hN, hθN⟩` from `GlobalTheory.AutFin.exists_pow_eq_one hL.2.2.2.2.2.1 hL.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1 Xo.univ.proper Xo.univ.ample Xo.univ.ktriv m n θ hφ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `o` to `GlobalTheory.ModelCompare.objOfSABMap Xo.univ m`. Establish `hev : ∀ a, (o.eta a).left ≫ m.φ = x ≫ (Xo.univ.eta a).left` using `fun a => (GlobalTheory.ModelCompare.objMapOfSABMap Xo.univ m).eta a`. Take `⟨β, hβ⟩ : ∃ β : KA l →+* ℂ, x ≫ Xo.s = spMap β` from `⟨(Spec.preimage (x ≫ Xo.s)).hom, by simp [spMap]⟩`. Take `⟨-, I, -, -, hM⟩` from `o.geom ℂ (𝟙 _) β (by rw [Category.id_comp]; exact hβ)`. Establish `hM' : ∀ a ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) • (⊤ : Submodule (𝓞 E) Dw.La), o.eta a = I.ev l.M a`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `a ha`. Use `hM a ha` as an intermediate fact. Rewrite `this` using `[show toUnit (Over.mk (𝟙 (Sp ℂ))) = 𝟙 (𝟙_ (Over (Sp ℂ))) from toUnit_unique _ _]`. Conclude with `(Category.id_comp _).symm.trans this`. Establish `hMM : ((l.M : ℕ) : 𝓞 E) ∈ l.Mb * l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[l.prod]`. Conclude with `Ideal.mem_span_singleton_self _`. Establish `hM0 : 0 < l.M` using `by have := l.three_le; omega`. Establish `i1 : ∀ (c : 𝓞 E) (a : Dw.La), I.ev l.M (c • a) = I.ev l.M a ≫ T.t.act.act c` using `I.lin l.M`. Establish `i2 : ∀ a, I.ev l.M a = 1 ↔ ∃ b, a = l.M • b` using `I.ker l.M hM0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `i3 : ∀ q : 𝟙_ (Over (Sp ℂ)) ⟶ T.t.G, q ^ l.M = 1 ↔ ∃ a, I.ev l.M a = q` using `I.onto l.M hM0`. Establish `e1 : ∀ a b, o.eta (a + b) = o.eta a * o.eta b` using `o.eta_add`. Establish `e2 : ∀ a ∈ l.Mb • (⊤ : Submodule (𝓞 E) Dw.La), o.eta a = 1` using `o.eta_ker`. Establish `e3 : ∀ q : 𝟙_ (Over (Sp ℂ)) ⟶ T.t.G, q ≫ T.t.act.act ((l.M : ℕ) : 𝓞 E) = q ^ l.M` using `fun q => act_natCast _ q _`. Set `evM : Dw.La → (𝟙_ (Over (Sp ℂ)) ⟶ T.t.G)` to `I.ev l.M`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM'' : ∀ a ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) • (⊤ : Submodule (𝓞 E) Dw.La), o.eta a = evM a` using `hM'`. Establish `i1' : ∀ (c : 𝓞 E) (a : Dw.La), evM (c • a) = (fun c g => g ≫ T.t.act.act c) c (evM a)` using `i1`. Establish `i2' : ∀ a, evM a = 1 ↔ ∃ b, a = l.M • b` using `i2`. Establish `i3' : ∀ q : 𝟙_ (Over (Sp ℂ)) ⟶ T.t.G, q ^ l.M = 1 ↔ ∃ a, evM a = q` using `i3`. Establish `hMb : ((l.M : ℕ) : 𝓞 E) ∈ l.Mb` using `(Ideal.mul_le_left : l.Mb * l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) ≤ l.Mb) hMM`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hMc : ((l.M : ℕ) : 𝓞 E) ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E)` using `(Ideal.mul_le_right : l.Mb * l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) ≤ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E)) hMM`. Take `⟨hlin, hker, honto⟩` from `alg (R := 𝓞 E) (La := Dw.La) (Q := 𝟙_ (Over (Sp ℂ)) ⟶ T.t.G) l.Mb (l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E)) l.M l.coprime hMb hMc (fun c g => g ≫ T.t.act.act c) o.eta evM e1 e2 hM'' i1' i2' i3' e3`. Use `⟨T.pol, T.t.act, ψ.hom, N, o.eta, hψ, hN, ?_, hact, e1, hlin, hker, honto, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[iterate_eq θ N, hθN]`. Both sides reduce to the same expression.
-
-Conclude with `sec_move m.cart (o.eta (gM a)) (o.eta a) ψ.hom ν.φ ρ (hφ.trans (hn.trans hn₀)) _ _ (hev _) (hev _) (hlev.2.1 a) hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LevMoveFibre.exists_fibreAut : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (x : Sp ℂ ⟶ Xo.X) (ρ : Xo.X ⟶ Xo.X) (ν : SABMap Xo.univ.t Xo.univ.t ρ) (gM gA : Dw.La →ₗ[𝓞 E] Dw.La), Formalism.L2.Pj.IsLevMove ρ ν gM gA → x ≫ ρ = x → ∃ (P : ReciprocityTheory.ChartRestriction.G.Out.PolAV (Sp ℂ)) (act : OAct (𝓞 E) P.A) (θ : P.A ⟶ P.A) (N : ℕ) (ev : Dw.La → (𝟙_ (Over (Sp ℂ)) ⟶ P.A)), IsMonHom θ ∧ 0 < N ∧ (fun f : P.A ⟶ P.A => f ≫ θ)^[N] (𝟙 P.A) = 𝟙 P.A ∧ (∀ a, act.act a ≫ θ = θ ≫ act.act a) ∧ (∀ a b, ev (a + b) = ev a * ev b) ∧ (∀ (c : 𝓞 E) a, ev (c • a) = ev a ≫ act.act c) ∧ (∀ a, ev a = 1 ↔ a ∈ l.Mb • (⊤ : Submodule (𝓞 E) Dw.La)) ∧ (∀ q : 𝟙_ (Over (Sp ℂ)) ⟶ P.A, (∀ c ∈ l.Mb, q ≫ act.act c = 1) → ∃ a, ev a = q) ∧ ∀ a, ev (gM a) ≫ θ = ev a := by
   intro E _ _ _ H Dw l Xo x ρ ν gM gA hlev hx

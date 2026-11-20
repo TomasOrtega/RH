@@ -36,7 +36,7 @@ theorem pushEquiv_left (h : IsGrpPullback G' G f φ) (T : Over S') (x : T ⟶ G'
     (pushEquiv h T x).left = x.left ≫ φ := rfl
 
 /- English proof (translation)
-Rewrite using `[← pushEquiv_left h, MulEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pushEquiv_symm_left (h : IsGrpPullback G' G f φ) (T : Over S') (x : Over.mk (T.hom ≫ f) ⟶ G) :
     ((pushEquiv h T).symm x).left ≫ φ = x.left := by
@@ -46,14 +46,14 @@ def secPull (h : IsGrpPullback G' G f φ) : (𝟙_ (Over S) ⟶ G) →* (𝟙_ (
   (pushEquiv h (𝟙_ (Over S'))).symm.toMonoidHom.comp (preHom (toUnit _))
 
 /- English proof (translation)
-Use `Over.w (toUnit T)` as an intermediate fact. Conclude with `(Category.comp_id _).symm.trans this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem toUnit_left' (T : Over S) : (toUnit T).left = T.hom := by
   have := Over.w (toUnit T)
   exact (Category.comp_id _).symm.trans this
 
 /- English proof (translation)
-Use `(pushEquiv_symm_left h _ _).trans ?_` and prove the remaining obligations. Use `show (toUnit _ ≫ e).left = _`. Rewrite using `[Over.comp_left, toUnit_left']`. Conclude with `congrArg (· ≫ e.left) (Category.id_comp f)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem secPull_left (h : IsGrpPullback G' G f φ) (e : 𝟙_ (Over S) ⟶ G) :
     (secPull h e).left ≫ φ = f ≫ e.left := by
@@ -63,7 +63,7 @@ theorem secPull_left (h : IsGrpPullback G' G f φ) (e : 𝟙_ (Over S) ⟶ G) :
   exact congrArg (· ≫ e.left) (Category.id_comp f)
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[pushEquiv_left, Over.comp_left, Over.comp_left, Category.assoc, secPull_left, toUnit_left', toUnit_left']`. Conclude with `(Category.assoc _ _ _).symm`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pushEquiv_secPull (h : IsGrpPullback G' G f φ) (T : Over S') (e : 𝟙_ (Over S) ⟶ G) :
     pushEquiv h T (toUnit _ ≫ secPull h e) = toUnit _ ≫ e := by
@@ -97,15 +97,13 @@ def tateMove {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D 
     exact I.isom n hn a b)
 
 /- English proof (translation)
-Introduce `hAb E _ _ _ H D l B B' _ _ b b' j S S' s s' f hρ hζ hs o`. Choose the witnesses or unpack the hypotheses as in `⟨t', ⟨m⟩⟩ : ∃ t' : SAB H S', Nonempty (SABMap t' o.t f) := by`. Take `⟨_, _, _, _, _, m, -⟩` from `sabPull Out.CubePf.cubePull f o.t`. Conclude with `⟨_, ⟨m⟩⟩`. Establish `hL : LBIso t'.PP.L (o.t.PP.L.pull m.cm.F)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨w, hw, -⟩` from `m.lin`. Conclude with `⟨w, hw⟩`. Establish `hpr` using `o.proper`. Take `⟨-, hamp, hk⟩` from `hAb S S' o.t.G t'.G f m.cm.F o.t.PP.L t'.PP.L o.t.PP.isLB t'.PP.isLB (AbelianSchemeGerms.isAbelianScheme_of_proper o.t.G o.t.semi) m.cart hL`. Use `⟨{ t := t' proper := MorphismProperty.of_isPullback (P := @IsProper) m.cart.1 hpr ample := hamp o.ample ktriv := hk o.ktriv eta := fun a => secPull m.cart (o.eta a) eta_add := fun a c => by rw [o.eta_add, map_mul] eta_ker := fun a ha => by rw [o.eta_ker a ha, map_one] etaA := fun …` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hdet, I, hI, hA, hM⟩` from `o.geom k (x ≫ f) (β.comp j) (by rw [Category.assoc, hs, ← Category.assoc, hx, spMap_comp])`. Rewrite `hdet` using `[RingHom.comp_apply, hρ]`. Rewrite `hI` using `[RingHom.comp_apply, hζ]`. Use `⟨fun τ => ?_, tateMove (pushEquiv m.cart (Over.mk x)) (fun c g => ?_) (fun n g g' c hc => ?_) I, hI, fun a => ?_, fun a ha => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.LiePull.lieMult_pull _ S S' o.t.G t'.G f m.cm.F o.t.act t'.act m.cart m.act k x τ, GlobalTheory.LiePull.lieMult_pull _ S S' o.t.G t'.G f m.cm.F o.t.act t'.act m.cart m.act k x τ]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hdet τ`. Apply `Over.OverMorphism.ext show (g.left ≫ _) ≫ _ = (g.left ≫ _) ≫ _` to reduce the goal to its premises. Rewrite using `[Category.assoc, m.act, Category.assoc]`. Conclude with `(GlobalTheory.weilIs_grpPullback_of_comm S S' o.t.G t'.G f m.cm.F o.t.PP.L t'.PP.L o.t.PP.isLB t'.PP.isLB m.cart hL (Over.mk x) n g g' _ _ _ rfl rfl).2 hc`. Conclude with `(MulEquiv.eq_symm_apply _).2 ((pushEquiv_secPull m.cart _ _).trans (hA a))`.
-
-Conclude with `(MulEquiv.eq_symm_apply _).2 ((pushEquiv_secPull m.cart _ _).trans (hM a ha))`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem objPull_of_pol : (∀ (S S' : Scheme.{0}) (G : Over S) (G' : Over S') [GrpObj G] [GrpObj G'] (f : S' ⟶ S) (φ : G'.left ⟶ G.left) (L : LB G.left) (L' : LB G'.left), L.IsLB → L'.IsLB → IsAbelianScheme G → IsGrpPullback G' G f φ → LBIso L' (L.pull φ) → IsAbelianScheme G' ∧ (Out.RelAmple G L → Out.RelAmple G' L') ∧ (Out.KTriv G L → Out.KTriv G' L')) → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (B B' : Type) [CommRing B] [CommRing B'] (b : Base l B) (b' : Base l B') (j : B →+* B') (S S' : Scheme.{0}) (s : S ⟶ Sp B) (s' : S' ⟶ Sp B') (f : S' ⟶ S), j b.ρ = b'.ρ → j b.ζ = b'.ζ → f ≫ s = s' ≫ spMap j → ∀ o : Obj D l b s, ∃ o' : Obj D l b' s', Nonempty (ObjMap o' o f) := by
   intro hAb E _ _ _ H D l B B' _ _ b b' j S S' s s' f hρ hζ hs o
@@ -148,7 +146,7 @@ theorem objPull_of_pol : (∀ (S S' : Scheme.{0}) (G : Over S) (G' : Over S') [G
   · exact (MulEquiv.eq_symm_apply _).2 ((pushEquiv_secPull m.cart _ _).trans (hM a ha))
 
 /- English proof (translation)
-Introduce `_ _` and use `objPull_of_pol`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem objPull : (∀ (S S' : Scheme.{0}) (G : Over S) (G' : Over S') [GrpObj G] [GrpObj G'] (f : S' ⟶ S) (φ : G'.left ⟶ G.left) (L : LB G.left) (L' : LB G'.left), L.IsLB → L'.IsLB → IsGrpPullback G' G f φ → LBIso L' (L.pull φ) → ∀ (T : Over S') (k : ℤ) (x y : T ⟶ G') (x₀ y₀ : Over.mk (T.hom ≫ f) ⟶ G) (c : Γ(T.left, ⊤)ˣ), x₀.left = x.left ≫ φ → y₀.left = y.left ≫ φ → (Out.WeilIs G' L' k x y c ↔ Out.WeilIs G L k x₀ y₀ c)) → (∀ (O : Type) [CommRing O] (S S' : Scheme.{0}) (G : Over S) (G' : Over S') [GrpObj G] [GrpObj G'] (f : S' ⟶ S) (φ : G'.left ⟶ G.left) (a : OAct O G) (a' : OAct O G'), IsGrpPullback G' G f φ → (∀ c, (a'.act c).left ≫ φ = φ ≫ (a.act c).left) → ∀ (k : Type) [Field k] (x : Sp k ⟶ S') (τ : O →+* k) (n : ℕ), LieMult a' x τ n ↔ LieMult a (x ≫ f) τ n) → (∀ (S S' : Scheme.{0}) (G : Over S) (G' : Over S') [GrpObj G] [GrpObj G'] (f : S' ⟶ S) (φ : G'.left ⟶ G.left) (L : LB G.left) (L' : LB G'.left), L.IsLB → L'.IsLB → IsAbelianScheme G → IsGrpPullback G' G f φ → LBIso L' (L.pull φ) → IsAbelianScheme G' ∧ (Out.RelAmple G L → Out.RelAmple G' L') ∧ (Out.KTriv G L → Out.KTriv G' L')) → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (B B' : Type) [CommRing B] [CommRing B'] (b : Base l B) (b' : Base l B') (j : B →+* B') (S S' : Scheme.{0}) (s : S ⟶ Sp B) (s' : S' ⟶ Sp B') (f : S' ⟶ S), j b.ρ = b'.ρ → j b.ζ = b'.ζ → f ≫ s = s' ≫ spMap j → ∀ o : Obj D l b s, ∃ o' : Obj D l b' s', Nonempty (ObjMap o' o f) :=
   fun _ _ => objPull_of_pol

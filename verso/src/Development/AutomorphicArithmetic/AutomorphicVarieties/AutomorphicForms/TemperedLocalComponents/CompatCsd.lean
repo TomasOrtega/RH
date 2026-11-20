@@ -22,9 +22,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace UpperTheory.V.Af
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨p, hp⟩ : RepIso R r := by`. Use `isoOfFrob P K Ω l ι n R r hc hr hs ha.1 ?_` and prove the remaining obligations. Use `filter_upwards [ha.2, eventually_not_mem K l] with w ⟨B, hB, hf⟩ hw`. Take `⟨⟨σ, hσ⟩, hi⟩` from `locCompC P K n π w`. Conclude with `⟨_, satFrob P K Ω l ι n R hc w hw σ B (((satLoc P K n w σ).2 _ π.finPart (hi σ hσ) B).1 hB) fun A h rc hrc => (H w σ hσ A h rc hrc).1 hw, hf⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `A h rc hrc`. Take `⟨h1, h2⟩` from `H w σ hσ A h rc hrc`. Use `⟨fun hw => (h1 hw).of_conj hw p fun g => by rw [hp, inv_mul_cancel_right], fun O _ _ _ Bw hj => ?_⟩` and prove the remaining obligations. Establish `h3` using `GlobalTheory.PstConj.main K Ω l ι n _ _ (Loc.tiedP l) w A h O Bw hj (R.comp (Dec (F := K) A).subtype) (r.comp (Dec (F := K) A).subtype) p (fun g => hp g.1) (h2 O Bw hj).1`. Conclude with `⟨h3.1, by rw [h3.2]; exact (h2 O Bw hj).2⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem of_model (P : Hypotheses₂) {K Ω : Type} [Field K] [NumberField K] [IsTotallyComplex K] [Field Ω] [Algebra K Ω]
     [IsAlgClosure K Ω] {l : ℕ} [Fact l.Prime] {ι : Qbar l ≃+* ℂ} {n : ℕ} {R r : G K Ω →* GL (Fin n) (Qbar l)}
@@ -44,13 +44,13 @@ private theorem of_model (P : Hypotheses₂) {K Ω : Type} [Field K] [NumberFiel
   exact ⟨h3.1, by rw [h3.2]; exact (h2 O Bw hj).2⟩
 
 /- English proof (translation)
-Take `⟨f, h0, hf⟩` from `h`. Establish `hop : ∀ g (x : ((CuspSub.triv E le_rfl).twist χ : CuspSub E 1).V), ((CuspSub.triv E le_rfl).twist χ).locRep w g x = ((CuspSub.locDet 1 χ w g : ℂˣ) : ℂ) • x` using `fun g x => by`. Rewrite using `[CuspSub.locRep_eq, CuspSub.op_triv_twist, ← CuspSub.chiDet_locGL]`. Simplify using `[opMul, opTriv, opAdd]`. Set `L : ℂ ≃ₗ[ℂ] ((CuspSub.triv E le_rfl).twist χ : CuspSub E 1).V` to `(LinearEquiv.toSpanNonzeroSingleton ℂ _ (oneFn E 1) oneFn_ne_zero).trans ((CuspSub.triv E le_rfl).toTwist χ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `f' : σ.V →ₗ[ℂ] ℂ` to `L.symm.toLinearMap ∘ₗ f`. Establish `hf' : ∀ g v, f' (σ.ρ g v) = ((CuspSub.locDet 1 χ w g : ℂˣ) : ℂ) • f' v` using `fun g v => by simp [f', hf, hop]`. Establish `h0' : f' ≠ 0` using `fun h => h0 (LinearMap.ext fun v => L.symm.injective (by simpa [f'] using LinearMap.congr_fun h v))`. Establish `hinj : Function.Injective f'`. Break down `((isIrreducible_iff _).1 σ.irred).2 (LinearMap.ker f') (fun g v hv => by` into its components or cases.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `hv`, the goal using `[LinearMap.mem_ker]`. Rewrite using `[hf', hv, smul_zero]) with h | h`. Conclude with `LinearMap.ker_eq_bot.1 h`. Conclude with `absurd (LinearMap.ker_eq_top.1 h) h0'`. Establish `hsurj : Function.Surjective f'` using `LinearMap.range_eq_top.1 ((eq_bot_or_eq_top (LinearMap.range f')).resolve_left fun h => h0' (LinearMap.range_eq_bot.1 h))`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use `(IrrGL.of_eq_of (σ := (GlobalTheory.SmGL.IrrRep.det (Fin 1) _ hχ).ρ) (hs' := (GlobalTheory.SmGL.IrrRep.det (Fin 1) _ hχ).smooth) (hi' := (GlobalTheory.SmGL.IrrRep.det (Fin 1) _ hχ).irr)).2 ⟨.mk (LinearEquiv.ofBijective f' ⟨hinj, hsurj⟩) fun g => ?_⟩` and prove the remaining obligations. Use extensionality with `v`. Conclude with `hf' g v`.
+A detailed English derivation is pending.
 -/
 private theorem cls_char {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] (χ : HChar E)
     {w : HeightOneSpectrum (𝓞 E)} {σ : SmIrr (GL (Fin 1) (w.adicCompletion E))}
@@ -79,19 +79,17 @@ private theorem cls_char {E : Type} [Field E] [NumberField E] [IsTotallyComplex 
   exact hf' g v
 
 /- English proof (translation)
-Take `⟨χ, rfl⟩` from `RankOne.exists_eq_twist π`. Use `choose m hm using (CG.isRegAlg_ofChar χ).1 hreg`. Establish `hχ` using `GlobalTheory.T.isAlgebraicHeckeCharOfWeight_of_integer_expo K χ m hm`. Take `⟨art, hart, hμ⟩` from `(GlobalTheory.Published.GlobalArtinReciprocity.heckeLAdicCharacter_and_principalIdealSt P.litN.aut.art).1 K Ω`. Take `⟨μ, ⟨hμ, hL⟩, -⟩` from `hμ l ι χ m hχ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hval : ∀ g, (GlobalTheory.TripleGal.rk1 μ g : Matrix (Fin 1) (Fin 1) (Qbar l)) = Matrix.scalar (Fin 1) (μ g : Qbar l)` using `fun g => rfl`. Establish `hc : Continuous (GlobalTheory.TripleGal.rk1 μ)`. Use `(Continuous.units_map _ ?_).comp hμ` and prove the remaining obligations. Conclude with `continuous_matrix fun i j => by fin_cases i; fin_cases j`. Simplify using `using continuous_id'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨_, hc, fun W _ => ?_, fun w σ hσ A h rc hrc => ?_⟩` and prove the remaining obligations. Take `⟨W', hW⟩` from `W.exists_isCompl`. Use `⟨W', fun g v hv => ?_, hW⟩` and prove the remaining obligations. Use `W'.smul_mem (μ g : Qbar l) hv` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `i`. Simplify using `[hval, Matrix.scalar_apply, Matrix.mulVec_diagonal]`. Establish `hcp` using `GlobalTheory.Published.ParamAboveModel.isComp_loc (w := w) χ`. Establish `e0 : ((1 - ((1 : ℕ) : ℝ)) / 2) = 0` using `by simp`. Rewrite using `[rec_algNorm hrc, e0, WD.lpTw_zero, cls_char χ hσ hcp.1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, ha, ε, -, HL⟩` from `hrc`. Rewrite using `[HL.one _ hcp.1]`. Use `⟨fun hw => ?_, fun O _ _ _ Bw hj => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Establish `h1` using `isWDOf_wdOf (h := h) (r := GlobalTheory.TripleGal.rk1 μ) hw ι (Units.continuous_val.comp hc)`. Rewrite using `[wdOf_eq_mk hw (WDRep.ofChars h (fun _ : Fin 1 => (χ.loc w).comp a) fun _ => ha.smooth hcp.1) rfl fun g => by` and apply the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `LinearMap.ext fun v => funext fun i => ?_` and prove the remaining obligations. Rewrite using `[Subsingleton.elim i 0]`. Simplify using `[toEndC_apply, Matrix.mulVec, dotProduct, hval, hL.loc_away (Or.inl hw) _ _ (ha.glob art hart g)]] at h1`. Take `⟨T⟩` from `Loc.tiedP l`. Conclude with `P.litN.aut.berger.isPstAt T Bw _ (Units.continuous_val.comp (hc.comp continuous_subtype_val)) (GlobalTheory.Published.heckeLAdicCharacterAbove_iff.1 P.litN.aut.chA K Ω l _ _ ⟨T⟩ ι art hart χ m μ hχ hμ hL w A h O Bw hj).1`.
-
-Conclude with `Lev.SsCmp.of_eq (P.litN.aut.chW K Ω l _ _ (Loc.tiedP l) ι art hart χ m μ hχ hμ hL w A h O Bw hj _ hcp a ha)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem rank_one (P : Hypotheses₂) {K Ω : Type} [Field K] [NumberField K] [IsTotallyComplex K] [Field Ω] [Algebra K Ω]
     [IsAlgClosure K Ω] {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) {π : CuspSub K 1} (hreg : (CG.mk π).IsRegAlg) :
@@ -134,9 +132,9 @@ private theorem rank_one (P : Hypotheses₂) {K Ω : Type} [Field K] [NumberFiel
 end UpperTheory.V.Af
 
 /- English proof (translation)
-Introduce `PH F Ω _ _ _ _ _ _ l _ ι n hn r π hr hreg hd ha`. Establish `P` using `PH.toClassicalTheorems`. Break down `hn.eq_or_lt with rfl | hn` into its components or cases. Take `⟨R, hc, hs, H⟩` from `rank_one (Ω := Ω) P ι hreg`. Conclude with `of_model P hc hs H hr ha`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨R, hc, hs, Haw, Hab⟩` from `P.ss F Ω l ι n hn π hd (P.litN.aut.coh F n (by omega) π hreg)`. Use `of_model P hc hs (fun w σ hσ A h rc hrc => ⟨fun hw => Haw w hw A h rc hrc σ hσ, fun O _ _ _ Bw hj => ?_⟩) hr ha` and prove the remaining obligations. Establish `h1` using `Hab _ _ (Loc.tiedP l) w A h O Bw hj`. Conclude with `⟨h1.1, h1.2 σ hσ rc hrc⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.compatCsd :
     UpperTheory.V.Af.HypothesesH → UpperTheory.V.Af.CompatCsd := by

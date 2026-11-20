@@ -21,11 +21,11 @@ noncomputable def cocone : Cocone (diag S hS) where
          naturality := fun i j h => by ext x; rfl }
 
 /- English proof (translation)
-Use `haveI : ReflectsColimitsOfShape ι (forget CommRingCat.{0}) := reflectsColimitsOfShape_of_reflectsIsomorphisms`. Use `⟨isColimitOfReflects (forget CommRingCat.{0}) ?_⟩` and prove the remaining obligations. Use `Types.FilteredColimit.isColimitOf _ _ ?_ ?_` and prove the remaining obligations. Introduce `x`. Express the relevant statement in the definitionally equal form `A at x`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi⟩` from `hcov x`. Conclude with `⟨i, ⟨x, hi⟩, rfl⟩`. Introduce `i j xi xj h`. Take `⟨k, hik, hjk⟩` from `directed_of (· ≤ ·) i j`. Use `⟨k, homOfLE hik, homOfLE hjk, ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem cocone_isColimit [IsDirected ι (· ≤ ·)] [Nonempty ι] (hcov : ∀ a, ∃ i, a ∈ S i) :
     Nonempty (IsColimit (cocone S hS)) := by
@@ -48,7 +48,7 @@ end GlobalTheory.UnionHInv
 open GlobalTheory.UnionHInv in
 
 /- English proof (translation)
-Introduce `q _ A _ ι _ _ _ S hS hcov hu hH`. Take `⟨hc⟩` from `cocone_isColimit S hS hcov`. Conclude with `GlobalTheory.T.etaleHomotopyInvariantTwists_of_filtered_colimit q ι (diag S hS) (cocone S hS) hc hu hH`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.EtC.hInv_of_directed_union : ∀ (q : ℕ) [NeZero q] (A : Type) [CommRing A] (ι : Type) [Preorder ι] [IsDirected ι (· ≤ ·)] [Nonempty ι] (S : ι → Subalgebra ℤ A), Monotone S → (∀ a, ∃ i, a ∈ S i) → (∀ i, IsUnit (q : S i)) → (∀ i, HInv q (S i)) → HInv q A := by
   intro q _ A _ ι _ _ _ S hS hcov hu hH

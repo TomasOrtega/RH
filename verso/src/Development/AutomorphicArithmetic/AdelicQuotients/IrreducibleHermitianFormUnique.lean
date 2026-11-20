@@ -4,7 +4,7 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ExistsO
 open MeasureTheory
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Qh52.exists_orthonormal_basis_sesquilinear B hh hp`.
+A detailed English derivation is pending.
 -/
 private lemma exists_orthonormal_basis_sesquilinear {V : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
     (B : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ) (hh : ∀ a b, B b a = star (B a b))
@@ -15,35 +15,31 @@ private lemma exists_orthonormal_basis_sesquilinear {V : Type} [AddCommGroup V] 
   _root_.UpperTheory.Reformulated.B.Qh52.exists_orthonormal_basis_sesquilinear B hh hp
 
 /- English proof (translation)
-Introduce `G V _ _ _ μ _ _ _ _ _ _ ρ hI B hh hp hinv hm a b c d`. Take `⟨e, he1, hpar, hcs⟩` from `exists_orthonormal_basis_sesquilinear B hh hp`. Establish `hshift : ∀ (h g : G) (x y : V), B (ρ g x) (ρ h y) = B (ρ (h⁻¹ * g) x) y`. Introduce `h g x y`. Rewrite using `[← hinv h (ρ (h⁻¹ * g) x) y, ← Module.End.mul_apply, ← map_mul, mul_inv_cancel_left]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hbd : ∀ (x y : V) (g : G), ‖B (ρ g x) y‖ ≤ Real.sqrt ((B x x).re * (B y y).re)`. Introduce `x y g`. Apply `Real.le_sqrt_of_sq_le` to reduce the goal to its premises. Use `hcs (ρ g x) y` as an intermediate fact. Rewrite `this` using `[hinv]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hint : ∀ x y z w : V, Integrable (fun g => B (ρ g x) y * star (B (ρ g z) w)) μ`. Introduce `x y z w`. Use `Integrable.of_bound (C := Real.sqrt ((B x x).re * (B y y).re) * Real.sqrt ((B z z).re * (B w w).re)) ?_ ?_` and prove the remaining obligations. Conclude with `((hm x y).mul (continuous_star.measurable.comp (hm z w))).aestronglyMeasurable`. Use `filter_upwards with g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[norm_mul, norm_star]`. Conclude with `mul_le_mul (hbd _ _ _) (hbd _ _ _) (norm_nonneg _) (Real.sqrt_nonneg _)`. Set `S : V → V → ℂ` to `fun y w => ∫ g, B (ρ g a) y * star (B (ρ g c) w) ∂μ`. Establish `hS1 : ∀ w w' y, S y (w + w') = S y w + S y w'`. Introduce `w w' y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [S, map_add, star_add, mul_add]`. Conclude with `integral_add (hint _ _ _ _) (hint _ _ _ _)`. Establish `hS2 : ∀ (r : ℂ) w y, S y (r • w) = r * S y w`. Introduce `r w y`. Establish `: ∀ g, B (ρ g a) y * star (B (ρ g c) (r • w)) = r * (B (ρ g a) y * star (B (ρ g c) w))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Introduce `g`. Simplify using `[map_smulₛₗ]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [S, this]`. Conclude with `integral_const_mul _ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hS3 : ∀ w y y', S (y + y') w = S y w + S y' w`. Introduce `w y y'`. Simplify using `only [S, map_add, add_mul]`. Conclude with `integral_add (hint _ _ _ _) (hint _ _ _ _)`. Establish `hS4 : ∀ (r : ℂ) w y, S (r • y) w = star r * S y w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Introduce `r w y`. Establish `: ∀ g, B (ρ g a) (r • y) * star (B (ρ g c) w) = star r * (B (ρ g a) y * star (B (ρ g c) w))`. Introduce `g`. Simplify using `[map_smulₛₗ]`. Expand and normalize the polynomial expressions, which then agree.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [S, this]`. Conclude with `integral_const_mul _ _`. Set `B₁ : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ` to `LinearMap.mk₂'ₛₗ (RingHom.id ℂ) (starRingEnd ℂ) (fun w y => S y w) (fun w w' y => hS1 w w' y) (fun r w y => hS2 r w y) (fun w y y' => hS3 w y y') (fun r w y => hS4 r w y)`. Establish `hB₁ : ∀ w y, B₁ w y = S y w` using `fun _ _ => rfl`. Establish `hB₁inv : ∀ h w y, B₁ (ρ h w) (ρ h y) = B₁ w y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h w y`. Simplify using `only [hB₁, S, hshift]`. Conclude with `integral_mul_left_eq_self (μ := μ) (fun g => B (ρ g a) y * star (B (ρ g c) w)) h⁻¹`. Take `⟨lam, hlam⟩` from `UpperTheory.invariant_sesquilinearForm_eq_smul_of_irreducible ρ hI B hh hp hinv B₁ hB₁inv`. Establish `hsum : lam * (Module.finrank ℂ V : ℂ) = ((μ.real Set.univ : ℝ) : ℂ) * B a c`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ∑ i, S (e i) (e i) = lam * (Module.finrank ℂ V : ℂ)`. Establish `: ∀ i, S (e i) (e i) = lam`. Introduce `i`. Rewrite using `[← hB₁, hlam, he1, mul_one]`. Simplify using `[this, mul_comm]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h2 : ∑ i, S (e i) (e i) = ∫ _g : G, B a c ∂μ`. Simplify using `only [S]`. Rewrite using `[← integral_finset_sum _ (fun i _ => hint _ _ _ _)]`. Use `congr 1`. Use function extensionality and compare the values at `g`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hinv g a c, hpar (ρ g a) (ρ g c)]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [hh (ρ g c) (e i)]`. Rewrite using `[← h1, h2, integral_const]`. Simplify using the standard rewrite rules. Establish `hn : (Module.finrank ℂ V : ℂ) ≠ 0`.
-
-Conclude with `(Module.finrank_pos (R := ℂ) (M := V)).ne'` after adjusting the coercions. Establish `hfin : (∫ g, B (ρ g a) b * star (B (ρ g c) d) ∂μ) = S b d` using `rfl`. Rewrite using `[hfin, ← hB₁, hlam, hh b d]`. Establish `hlam' : lam = ((μ.real Set.univ : ℝ) : ℂ) * B a c / (Module.finrank ℂ V : ℂ)`. Rewrite using `[eq_div_iff hn, hsum]`.
-
-Rewrite using `[hlam']`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.irreducible_hermitian_form_unique :
     ∀ {G V : Type} [Group G] [MeasurableSpace G] [MeasurableMul G] (μ : Measure G) [IsFiniteMeasure μ] [μ.IsMulLeftInvariant] [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V] [Nontrivial V] (ρ : G →* Module.End ℂ V)

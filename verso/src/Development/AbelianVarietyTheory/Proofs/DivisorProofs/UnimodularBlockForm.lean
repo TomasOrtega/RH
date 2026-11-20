@@ -11,7 +11,7 @@ def cornerExt {R : Type} [CommRing R] {r : ℕ} (A : Matrix (Fin r) (Fin r) R) :
       (fun l' => Fin.cases (motive := fun _ => R) 0 (fun k' => A l' k') k) l
 
 /- English proof (translation)
-Use extensionality with `l k`. Apply the tactic sequence `refine Fin.cases ?_ (fun l' => ?_) l <;> refine Fin.cases ?_ (fun k' => ?_) k <;>`. Simplify using `[cornerExt, Matrix.mul_apply, Fin.sum_univ_succ]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 lemma cornerExt_mul {R : Type} [CommRing R] {r : ℕ} (A B : Matrix (Fin r) (Fin r) R) :
     cornerExt A * cornerExt B = cornerExt (A * B) := by
@@ -20,7 +20,7 @@ lemma cornerExt_mul {R : Type} [CommRing R] {r : ℕ} (A B : Matrix (Fin r) (Fin
     simp [cornerExt, Matrix.mul_apply, Fin.sum_univ_succ]
 
 /- English proof (translation)
-Use extensionality with `l k`. Apply the tactic sequence `refine Fin.cases ?_ (fun l' => ?_) l <;> refine Fin.cases ?_ (fun k' => ?_) k <;>`. Simplify using `[cornerExt, Matrix.one_apply, Fin.succ_ne_zero, (Fin.succ_ne_zero _).symm]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 lemma cornerExt_one {R : Type} [CommRing R] {r : ℕ} :
     cornerExt (1 : Matrix (Fin r) (Fin r) R) = 1 := by
@@ -29,11 +29,11 @@ lemma cornerExt_one {R : Type} [CommRing R] {r : ℕ} :
     simp [cornerExt, Matrix.one_apply, Fin.succ_ne_zero, (Fin.succ_ne_zero _).symm]
 
 /- English proof (translation)
-Introduce `R _ r P'`. Use `⟨⟨cornerExt P'.val, cornerExt P'.inv, ?_, ?_⟩, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[cornerExt_mul, P'.val_inv, cornerExt_one]`. Rewrite using `[cornerExt_mul, P'.inv_val, cornerExt_one]`. Simplify using `[cornerExt]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `k`. Simplify using `[cornerExt]`. Introduce `l`. Simplify using `[cornerExt]`. Introduce `l k`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[cornerExt]`.
+Simplify using the standard rewrite rules.
 -/
 theorem exists_gl_corner_extend :
     ∀ {R : Type} [CommRing R] {r : ℕ} (P' : GL (Fin r) R), ∃ P : GL (Fin (r+1)) R, (P : Matrix (Fin (r+1)) (Fin (r+1)) R) 0 0 = 1 ∧ (∀ k : Fin r, (P : Matrix (Fin (r+1)) (Fin (r+1)) R) 0 k.succ = 0) ∧ (∀ l : Fin r, (P : Matrix (Fin (r+1)) (Fin (r+1)) R) l.succ 0 = 0) ∧ ∀ l k : Fin r, (P : Matrix (Fin (r+1)) (Fin (r+1)) R) l.succ k.succ = (P' : Matrix (Fin r) (Fin r) R) l k := by

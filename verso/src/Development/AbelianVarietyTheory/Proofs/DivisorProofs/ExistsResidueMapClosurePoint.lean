@@ -26,43 +26,37 @@ def stalkEquiv {X : Scheme.{0}} [IsIntegral X] (x : X) : X.presheaf.stalk x ≃+
       RingHom.rangeRestrict_surjective _⟩
 
 /- English proof (translation)
-Introduce `X _ _ p hp z k hk`. Establish `hprop : IsProper p`. Take `⟨N, j, hj, rfl⟩` from `hp`. Use `isProper_str ℂ N` as an intermediate fact. Use `infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsep : X.IsSeparated` using `⟨by rw [← Limits.terminal.comp_from p]; infer_instance⟩`. Take `⟨Z, i, hi, hZ, rfl⟩` from `GlobalTheory.exists_isClosedImmersion_genericPoint z`. Set `q` to `i ≫ p`. Establish `hrange : Set.range i = closure ({i (genericPoint Z)} : Set X)`. Establish `h₁` using `(genericPoint_spec Z).image i.continuous`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h₁` using `[Set.image_univ, i.isClosedEmbedding.isClosed_range.closure_eq]`. Conclude with `(isGenericPoint_def.mp h₁).symm`. Establish `hdim : topologicalKrullDim Z = k`. Rewrite using `[← GlobalTheory.topologicalKrullDim_eq_of_isEmbedding i.isClosedEmbedding.isEmbedding hrange]`. Conclude with `hk`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Take `⟨-, w, hw⟩` from `isLocModel_locRing_and_exists_trBasis Z q k (genericPoint Z) hdim`. Use `letI alg : Algebra ℂ Z.functionField := (Cartier.constFn q).toAlgebra`. Set `π₀ : locRing (i (genericPoint Z)) →+* Z.functionField` to `(i.stalkMap (genericPoint Z)).hom.comp (stalkEquiv (i (genericPoint Z))).symm.toRingHom`. Use `⟨Z.functionField, inferInstance, alg, π₀, ?_, ?_, ?_, ⟨w, hw⟩, ?_⟩` and prove the remaining obligations. Conclude with `(i.stalkMap_surjective _).comp (stalkEquiv _).symm.surjective`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `r`. Take `⟨a, rfl⟩` from `(stalkEquiv _).surjective r`. Establish `e1 : π₀ (stalkEquiv _ a) = (i.stalkMap (genericPoint Z)).hom a` using `by show (i.stalkMap (genericPoint Z)).hom ((stalkEquiv _).symm (stalkEquiv _ a)) = _`. Rewrite using `[RingEquiv.symm_apply_apply]`. Establish `e2 : ((stalkEquiv _ a : locRing _) : X.functionField) = algebraMap _ _ a` using `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e1, e2]`. Prove the components needed by the constructor for the conclusion. Introduce `h0`. Use `⟨a, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce `hu`. Use `hu.map (i.stalkMap (genericPoint Z)).hom` as an intermediate fact. Rewrite `this` using `[h0]`. Conclude with `not_isUnit_zero this`. Introduce and unpack `⟨b, hb, e⟩`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `rfl` from `IsFractionRing.injective _ X.functionField e`. Assume the negation of the conclusion as `hne`. Establish `hu : IsUnit ((i.stalkMap (genericPoint Z)).hom b)` using `isUnit_iff_ne_zero.2 hne`. Conclude with `(IsLocalRing.mem_maximalIdeal _).1 hb ((isUnit_map_iff _ _).1 hu)`. Introduce `a ha`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg` using `(algebraMap_germ (X := X) (x := i (genericPoint Z)) (U := ⊤) trivial (algX p ⊤ a)).trans (RingHom.congr_fun (fnOf_comp_algX p ⊤ (gen_mem (x := i (genericPoint Z)) trivial)) a)`. Establish `hr : (⟨Cartier.constFn p a, ha⟩ : locRing _) = stalkEquiv _ (X.presheaf.germ ⊤ _ trivial (algX p ⊤ a))` using `Subtype.ext hg.symm`. Rewrite using `[hr]`. Use `show (i.stalkMap (genericPoint Z)).hom ((stalkEquiv _).symm (stalkEquiv _ _)) = _`. Rewrite using `[RingEquiv.symm_apply_apply]`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `erw [Scheme.Hom.germ_stalkMap_apply i ⊤ (genericPoint Z) trivial (algX p ⊤ a)]`. Establish `hc : (i.app ⊤).hom (algX p ⊤ a) = algX q (i ⁻¹ᵁ ⊤) a`. Establish `e : (i ≫ p).appLE ⊤ (i ⁻¹ᵁ ⊤) (le_top.trans (Scheme.Hom.preimage_top _).ge) = p.appLE ⊤ ⊤ (le_top.trans (Scheme.Hom.preimage_top _).ge) ≫ i.appLE ⊤ (i ⁻¹ᵁ ⊤) le_rfl` using `by first`. Consider the case `rw [Scheme.Hom.appLE_comp_appLE]`. Consider the case `(simp only [Scheme.Hom.comp_appLE, Scheme.Hom.appLE, Category.assoc, Scheme.Hom.naturality_assoc]; rfl)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [algX, q, RingHom.comp_apply]`. Rewrite using `[Scheme.Hom.app_eq_appLE, e, CommRingCat.comp_apply]`. Rewrite using `[hc]`. Conclude with `RingHom.congr_fun (fnOf_comp_algX q (i ⁻¹ᵁ ⊤) (gen_mem (x := genericPoint Z) trivial)) a`. Introduce `x h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : i (genericPoint Z) ⤳ x` using `GlobalTheory.T.specializes_of_pointLocalRing_le_separated X x _ h`. Choose the witnesses or unpack the hypotheses as in `⟨y, rfl⟩ : x ∈ Set.range i := by`. Rewrite using `[hrange]`. Conclude with `specializes_iff_mem_closure.mp hs`. Establish `key : ∀ a : X.presheaf.stalk (i y), π₀ (Subring.inclusion h ⟨algebraMap _ X.functionField a, a, rfl⟩) = algebraMap (Z.presheaf.stalk y) Z.functionField ((i.stalkMap y).hom a)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce `a`. Establish `e : (Subring.inclusion h ⟨algebraMap _ X.functionField a, a, rfl⟩ : locRing _) = stalkEquiv _ ((X.presheaf.stalkSpecializes hs).hom a)`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show algebraMap _ X.functionField a = algebraMap _ X.functionField ((X.presheaf.stalkSpecializes hs).hom a)`. Simplify using `only [RingHom.algebraMap_toAlgebra]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[← CommRingCat.comp_apply, TopCat.Presheaf.stalkSpecializes_comp]`. Rewrite using `[e]`. Use `show (i.stalkMap (genericPoint Z)).hom ((stalkEquiv _).symm (stalkEquiv _ _)) = _`. Rewrite using `[RingEquiv.symm_apply_apply]`. Conclude with `Scheme.Hom.stalkSpecializes_stalkMap_apply i (genericPoint Z) y ((genericPoint_spec Z).specializes trivial) a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hR : (π₀.comp (Subring.inclusion h)).range = locRing y`. Use extensionality with `f`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨r, a, rfl⟩, rfl⟩`. Conclude with `⟨(i.stalkMap y).hom a, (key a).symm⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `⟨b, rfl⟩`. Take `⟨a, rfl⟩` from `i.stalkMap_surjective y b`. Conclude with `⟨⟨_, a, rfl⟩, key a⟩`. Establish `hloc : IsLocModel (Cartier.constFn q) (locRing y)` using `isLocModel_locRing y`. Rewrite using `[hR]`.
-
-Use `⟨hloc, fun f => ?_, fun hx => ?_⟩` and prove the remaining obligations. Take `⟨a', ha', b', hb', hb0, e⟩` from `hloc.frac f`. Rewrite `ha'`, `hb'` using `[← hR]`. Take `⟨a, rfl⟩` from `ha'`. Take `⟨b, rfl⟩` from `hb'`.
-
-Conclude with `⟨a, b, hb0, e⟩`. Establish `hy : IsClosed ({y} : Set Z)`. Establish `hpre : (i : Z → X) ⁻¹' {i y} = {y}`. Use extensionality with `t`. Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff]`.
-
-Conclude with `i.isClosedEmbedding.injective.eq_iff`. Rewrite using `[← hpre]`. Conclude with `hx.preimage i.continuous`. Conclude with `GlobalTheory.T.hasRationalResidueField_pointLocalRing_closedPoint Z q y hy`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem residueMap : ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (p : X ⟶ Sp ℂ), IsProjOver p → ∀ (z : X) (k : ℕ),
   topologicalKrullDim (closure ({z} : Set X)) = k →

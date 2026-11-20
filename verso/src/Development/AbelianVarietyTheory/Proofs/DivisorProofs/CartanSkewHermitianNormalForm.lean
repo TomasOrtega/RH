@@ -11,7 +11,7 @@ open Matrix
 open scoped ComplexOrder
 
 /- English proof (translation)
-Use `open scoped MatrixOrder in`. Establish `h0 : 0 ≤ T` using `Matrix.nonneg_iff_posSemidef.mpr hT`. Establish `hs : (CFC.sqrt T).PosSemidef` using `Matrix.nonneg_iff_posSemidef.mp (CFC.sqrt_nonneg T)`. Conclude with `⟨CFC.sqrt T, by rw [hs.1.eq, CFC.sqrt_mul_sqrt_self T h0]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_conjTranspose_mul_self_of_psd {n : ℕ} {T : Matrix (Fin n) (Fin n) ℂ} (hT : T.PosSemidef) :
     ∃ B : Matrix (Fin n) (Fin n) ℂ, T = Bᴴ * B := by
@@ -21,13 +21,13 @@ theorem exists_conjTranspose_mul_self_of_psd {n : ℕ} {T : Matrix (Fin n) (Fin 
   exact ⟨CFC.sqrt T, by rw [hs.1.eq, CFC.sqrt_mul_sqrt_self T h0]⟩
 
 /- English proof (translation)
-Establish `hU : (hS.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ)ᴴ * hS.eigenvectorUnitary = 1` using `Unitary.coe_star_mul_self hS.eigenvectorUnitary`. Establish `hSU : S * (hS.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) = (hS.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) * diagonal (fun j => (hS.eigenvalues j : ℂ))`. Use extensionality with `i j`. Rewrite using `[mul_diagonal]`. Use `congrFun (congrArg (fun v => (v : Fin n → ℂ)) (hS.mulVec_eigenvectorBasis j)) i` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Pi.smul_apply, Complex.real_smul] at this`. Rewrite using `[Matrix.IsHermitian.eigenvectorUnitary_apply, mul_comm]`. Conclude with `this`. Use `⟨_, hS.eigenvalues, hU, hSU, fun j => ?_⟩` and prove the remaining obligations. Establish `hDD : diagonal (fun j => (hS.eigenvalues j : ℂ)) * diagonal (fun j => (hS.eigenvalues j : ℂ)) = 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (hS.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ)ᴴ * (S * S) * hS.eigenvectorUnitary = diagonal (fun j => (hS.eigenvalues j : ℂ)) * diagonal (fun j => (hS.eigenvalues j : ℂ))`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, hSU, ← Matrix.mul_assoc S, hSU, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hU, Matrix.one_mul]`. Rewrite using `[← e, h2, Matrix.mul_one, hU]`. Use `congrFun (congrFun hDD j) j` as an intermediate fact. Rewrite `this` using `[diagonal_mul_diagonal, diagonal_apply_eq, one_apply_eq]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h' : hS.eigenvalues j * hS.eigenvalues j = 1` using `by exact_mod_cast this`. Conclude with `mul_self_eq_one_iff.mp h'`.
+A detailed English derivation is pending.
 -/
 theorem herm_invol_diag {n : ℕ} {S : Matrix (Fin n) (Fin n) ℂ} (hS : S.IsHermitian) (h2 : S * S = 1) :
     ∃ (U : Matrix (Fin n) (Fin n) ℂ) (d : Fin n → ℝ), Uᴴ * U = 1 ∧
@@ -61,55 +61,49 @@ open Matrix
 open scoped ComplexOrder
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `hC`. Take `⟨N, hN⟩ : ∃ N : Matrix (Fin n) (Fin n) ℂ, N = Complex.I • M` from `⟨_, rfl⟩`. Rewrite `h2`, `h3` using `[← hN]`. Establish `hNe : ∀ i j, N i j = Complex.I * M i j` using `fun i j => by rw [hN]; rfl`. Establish `hNs : N.map star = Nᵀ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `i j`. Rewrite using `[map_apply, transpose_apply, hNe, hNe, star_mul', hM j i]`. Simplify using `[Complex.star_def, Complex.conj_I]`. Establish `hT : (Nᵀ)ᴴ = Nᵀ`. Rewrite using `[conjTranspose, transpose_transpose, hNs]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hθc : θᴴ = (θ.map star)ᵀ` using `by ext i j; rfl`. Establish `h2' : θᴴ * Nᵀ * θ = Nᵀ`. Use `congrArg transpose h2` as an intermediate fact. Rewrite `this` using `[transpose_mul, transpose_mul, transpose_transpose]`. Rewrite using `[hθc, Matrix.mul_assoc, this]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hMs : z • M.map star = (z * Complex.I) • Nᵀ`. Use extensionality with `i j`. Rewrite using `[Matrix.smul_apply, Matrix.smul_apply, map_apply, transpose_apply, hNe, hM]`. Simplify using `only [smul_eq_mul]`. Establish `: Complex.I * Complex.I = -1` using `Complex.I_mul_I`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take the linear combination `(-(z * M j i)) * this`. Establish `hAh : (Nᵀ * θ)ᴴ = Nᵀ * θ`. Rewrite using `[conjTranspose_mul, hT]`. Combine the equalities or inequalities in the displayed calculation. Establish `hAθ : Nᵀ * θ * θ = Nᵀ` using `by rw [Matrix.mul_assoc, h1, Matrix.mul_one]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hform : ∀ x : Fin n → ℂ, star x ⬝ᵥ ((Nᵀ * θ) *ᵥ x) = (θ *ᵥ x) ⬝ᵥ N *ᵥ star x`. Introduce `x`. Rewrite using `[← mulVec_mulVec, dotProduct_mulVec, vecMul_transpose, dotProduct_comm]`. Establish `hPD : (Nᵀ * θ).PosDef`. Use `posDef_iff_dotProduct_mulVec.2 ⟨hAh, fun x hx => Complex.pos_iff.2 ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hform]`. Conclude with `h3 x hx`. Conclude with `((show (Nᵀ * θ).IsHermitian from hAh).im_star_dotProduct_mulVec_self x).symm`. Take `⟨B, hB⟩` from `exists_conjTranspose_mul_self_of_psd hPD.posSemidef`. Establish `hdA : (Nᵀ * θ).det ≠ 0` using `hPD.det_pos.ne'`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hdB : B.det ≠ 0`. Introduce `h`. Apply `hdA` to reduce the goal to its premises. Rewrite using `[hB, det_mul, h, mul_zero]`. Establish `hBC : B * B⁻¹ = 1` using `mul_nonsing_inv B (isUnit_iff_ne_zero.2 hdB)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hCB : B⁻¹ * B = 1` using `nonsing_inv_mul B (isUnit_iff_ne_zero.2 hdB)`. Take `⟨C, hC⟩ : ∃ C, C = B⁻¹` from `⟨_, rfl⟩`. Rewrite `hBC`, `hCB` using `[← hC]`. Establish `hNB : Nᵀ = Bᴴ * B * θ` using `by rw [← hB, hAθ]`. Establish `hSe : Cᴴ * Nᵀ * C = B * θ * C`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hNB, ← Matrix.mul_assoc, ← Matrix.mul_assoc, ← conjTranspose_mul, hBC, conjTranspose_one, Matrix.one_mul]`. Establish `hSh : (Cᴴ * Nᵀ * C).IsHermitian`. Simplify using `only [IsHermitian, conjTranspose_mul, hT, conjTranspose_conjTranspose, Matrix.mul_assoc]`. Establish `hSS : (Cᴴ * Nᵀ * C) * (Cᴴ * Nᵀ * C) = 1`. Rewrite using `[hSe]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result.
 
-Combine the equalities or inequalities in the displayed calculation. Take `⟨U, d, hU, hSU, hd⟩` from `herm_invol_diag hSh hSS`. Establish `hCS : C * (Cᴴ * Nᵀ * C) = θ * C`. Rewrite using `[hSe]`. Simplify using `only [← Matrix.mul_assoc, hCB, Matrix.one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hθQ : θ * (C * U) = C * U * diagonal (fun j => (d j : ℂ))`. Rewrite using `[← Matrix.mul_assoc, ← hCS, Matrix.mul_assoc, hSU, Matrix.mul_assoc]`. Establish `hQ : (C * U)ᴴ * Nᵀ * (C * U) = diagonal (fun j => (d j : ℂ))`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `_ = _ := by rw [hSU, ← Matrix.mul_assoc, hU, Matrix.one_mul]`. Establish `hw : star (z * Complex.I) = z * Complex.I`. Rewrite using `[star_mul', hz, Complex.star_def, Complex.conj_I]`. Expand and normalize the polynomial expressions, which then agree. Establish `hwr : ((z * Complex.I).re : ℂ) = z * Complex.I` using `Complex.conj_eq_iff_re.mp hw`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hwre : (z * Complex.I).re ≠ 0`. Introduce `h`. Rewrite `hwr` using `[h, Complex.ofReal_zero]`. Conclude with `hz0 (by simpa [Complex.I_ne_zero] using hwr.symm)`. Use `set a := (z * Complex.I).re with ha`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨r, hr⟩ : ∃ r : ℝ, r = (Real.sqrt |a|)⁻¹` from `⟨_, rfl⟩`. Take `⟨σ, hσ⟩ : ∃ σ : ℝ, σ = a / |a|` from `⟨_, rfl⟩`. Establish `hr0 : r ≠ 0`. Rewrite using `[hr]`. Conclude with `inv_ne_zero (Real.sqrt_ne_zero'.2 (abs_pos.2 hwre))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Establish `hrr : r * a * r = σ`. Rewrite using `[hσ, hr, mul_comm, ← mul_assoc, ← mul_inv, Real.mul_self_sqrt (abs_nonneg a), div_eq_inv_mul]`. Establish `hσ1 : σ = 1 ∨ σ = -1`. Rewrite using `[hσ]`. Break down `lt_or_gt_of_ne hwre with h | h` into its components or cases.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `right`. Rewrite using `[abs_of_neg h, div_neg, div_self hwre]`. Use `left`. Rewrite using `[abs_of_pos h, div_self hwre]`. Establish `hσ0 : (σ : ℂ) ≠ 0`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply the tactic sequence `rcases hσ1 with h | h <;> simp [h]`. Set `ε : Fin n → Bool` to `fun j => decide (σ * d j = 1)`. Establish `hJ : Formalism.REAL.Jm ε = (σ : ℂ) • diagonal (fun j => (d j : ℂ))`. Rewrite using `[Formalism.REAL.Jm, ← diagonal_smul]`. Use `congr 1`.
+Apply the first step, then apply the next step to every resulting obligation. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `j`. Simplify using `only [ε, Pi.smul_apply, smul_eq_mul]`. Establish `hsd : σ * d j = 1 ∨ σ * d j = -1`. Apply the tactic sequence `rcases hσ1 with h | h <;> rcases hd j with h' | h' <;> simp [h, h']`. Distinguish the cases in `h : σ * d j = 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [h, decide_true, if_true]`. Conclude with `h.symm` after adjusting the coercions. Establish `h' : σ * d j = -1` using `hsd.resolve_left h`. Simplify using `only [h, decide_false, Bool.false_eq_true, if_false]`. Conclude with `h'.symm` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨ε, (r : ℂ) • (C * U), ?_, ?_, σ, hσ0, ?_⟩` and prove the remaining obligations. Rewrite using `[isUnit_iff_isUnit_det, det_smul, det_mul, isUnit_iff_ne_zero]`. Establish `hdC : C.det ≠ 0`. Introduce `h`. Use `congrArg det hBC` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[det_mul, h, mul_zero, det_one]`. Conclude with `zero_ne_one this`. Establish `hdU : U.det ≠ 0`. Introduce `h`. Use `congrArg det hU` as an intermediate fact.
-
-Rewrite `this` using `[det_mul, h, mul_zero, det_one]`. Conclude with `zero_ne_one this`. Conclude with `mul_ne_zero (pow_ne_zero _ (by exact_mod_cast hr0)) (mul_ne_zero hdC hdU)`. Rewrite using `[hMs, ← hwr, hJ, conjTranspose_smul]`. Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, smul_smul]`.
-
-Rewrite using `[hQ]`. Use `congr 1`. Rewrite using `[← hrr]`. Simplify using `[Complex.star_def]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[hJ]`. Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, smul_smul, hθQ]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem frame (n : ℕ) (M θ : Matrix (Fin n) (Fin n) ℂ) (z : ℂ) (hz : star z = -z) (hz0 : z ≠ 0)
     (hM : ∀ i j, star (M j i) = -M i j) (hC : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsCartan (Complex.I • M) θ) :

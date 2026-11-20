@@ -15,7 +15,7 @@ variable {k : Type} [Field k] [ValuativeRel k]
 def Bd {ι κ : Type} (γ : ValueGroupWithZero k) (x : Matrix ι κ k) : Prop := ∀ r s, valuation k (x r s) ≤ γ
 
 /- English proof (translation)
-Introduce `r s`. Rewrite using `[Matrix.mul_apply]`. Use `Valuation.map_sum_le _ fun t _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `mul_le_mul' (hx r t) (hy t s)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Bd.mul {ι κ τ : Type} [Fintype κ] {γ δ : ValueGroupWithZero k} {x : Matrix ι κ k} {y : Matrix κ τ k}
     (hx : Bd γ x) (hy : Bd δ y) : Bd (γ * δ) (x * y) := by
@@ -26,13 +26,13 @@ theorem Bd.mul {ι κ τ : Type} [Fintype κ] {γ δ : ValueGroupWithZero k} {x 
   exact mul_le_mul' (hx r t) (hy t s)
 
 /- English proof (translation)
-Introduce `r s` and use `(hx r s).trans h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Bd.mono {ι κ : Type} {γ δ : ValueGroupWithZero k} {x : Matrix ι κ k} (hx : Bd γ x) (h : γ ≤ δ) :
     Bd δ x := fun r s => (hx r s).trans h
 
 /- English proof (translation)
-Introduce `r s`. Rewrite using `[Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem bd_one {ι : Type} [DecidableEq ι] : Bd 1 (1 : Matrix ι ι k) := by
   intro r s
@@ -40,13 +40,13 @@ theorem bd_one {ι : Type} [DecidableEq ι] : Bd 1 (1 : Matrix ι ι k) := by
   split_ifs <;> simp
 
 /- English proof (translation)
-Introduce `r s`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem bd_zero {ι κ : Type} (γ : ValueGroupWithZero k) : Bd γ (0 : Matrix ι κ k) := by
   intro r s; simp
 
 /- English proof (translation)
-Introduce and unpack `(r | r) (s | s)`. Use `exacts [ha r s, hb r s, hc r s, hd r s]`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem bd_fromBlocks {ι κ ι' κ' : Type} {γ : ValueGroupWithZero k} {a : Matrix ι κ k} {b : Matrix ι κ' k}
     {c : Matrix ι' κ k} {d : Matrix ι' κ' k} (ha : Bd γ a) (hb : Bd γ b) (hc : Bd γ c) (hd : Bd γ d) :
@@ -57,7 +57,7 @@ theorem bd_fromBlocks {ι κ ι' κ' : Type} {γ : ValueGroupWithZero k} {a : Ma
 variable [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Take `⟨g, rfl⟩` from `hw`. Introduce `r s`. Conclude with `(g.val r s).2`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem bd_of_mem_KO {ι : Type} [Fintype ι] [DecidableEq ι] {w : GL ι k} (hw : w ∈ KO k ι) : Bd 1 w.val := by
   obtain ⟨g, rfl⟩ := hw
@@ -65,9 +65,9 @@ theorem bd_of_mem_KO {ι : Type} [Fintype ι] [DecidableEq ι] {w : GL ι k} (hw
   exact (g.val r s).2
 
 /- English proof (translation)
-Establish `hT : IsCompact (⋃ r, ⋃ s, (fun x : Matrix ι κ k => x r s) '' S)` using `isCompact_iUnion fun r => isCompact_iUnion fun s => hS.image (by fun_prop)`. Take `⟨u, hu⟩` from `hT.elim_directed_cover (fun s : kˣ => cball s) isOpen_cball (fun y _ => by`. Distinguish the cases in `hy : y = 0`. Conclude with `Set.mem_iUnion.2 ⟨1, by simp [cball, hy]⟩`. Conclude with `Set.mem_iUnion.2 ⟨Units.mk0 y hy, by simp [cball]⟩)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Use the proof step `(fun s t => by`. Break down `le_total (valuation k (s : k)) (valuation k (t : k)) with h | h` into its components or cases. Conclude with `⟨t, fun y (hy : valuation k y ≤ _) => (hy.trans h : valuation k y ≤ _), subset_rfl⟩`. Conclude with `⟨s, subset_rfl, fun y (hy : valuation k y ≤ _) => (hy.trans h : valuation k y ≤ _)⟩)`. Conclude with `⟨valuation k (u : k), fun x hx r s => hu (Set.mem_iUnion.2 ⟨r, Set.mem_iUnion.2 ⟨s, x, hx, rfl⟩⟩)⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_bd_of_isCompact {ι κ : Type} [Finite ι] [Finite κ] {S : Set (Matrix ι κ k)} (hS : IsCompact S) :
     ∃ γ : ValueGroupWithZero k, ∀ x ∈ S, Bd γ x := by
@@ -85,11 +85,11 @@ theorem exists_bd_of_isCompact {ι κ : Type} [Finite ι] [Finite κ] {S : Set (
   exact ⟨valuation k (u : k), fun x hx r s => hu (Set.mem_iUnion.2 ⟨r, Set.mem_iUnion.2 ⟨s, x, hx, rfl⟩⟩)⟩
 
 /- English proof (translation)
-Establish `h : ∀ᶠ t in 𝓝 (0 : k), ∀ r s, Matrix.single r s t ∈ Λ`. Use `Filter.eventually_all.2 fun r => Filter.eventually_all.2 fun s => ?_` and prove the remaining obligations. Establish `hc : Continuous fun t : k => Matrix.single r s t`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.single, Matrix.of_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `split_ifs`. Use `exacts [continuous_id, continuous_const]`. Use `hc.continuousAt.eventually_mem (hΛ.mem_nhds ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules. Take `⟨u, hu⟩` from `exists_cball_subset h`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨u, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.matrix_eq_sum_single x]`. Conclude with `sum_mem fun r _ => sum_mem fun s _ => hu (hx r s) r s`.
+A detailed English derivation is pending.
 -/
 theorem exists_bd_subset {ι κ : Type} [Fintype ι] [Fintype κ] (Λ : AddSubgroup (Matrix ι κ k))
     (hΛ : IsOpen (Λ : Set (Matrix ι κ k))) :
@@ -110,11 +110,11 @@ theorem exists_bd_subset {ι κ : Type} [Fintype ι] [Fintype κ] (Λ : AddSubgr
   exact sum_mem fun r _ => sum_mem fun s _ => hu (hx r s) r s
 
 /- English proof (translation)
-Use `haveI := t2Space k`. Establish `hB : IsCompact {x : Matrix ι ι k | Bd γ x}`. Use `isCompact_univ_pi (fun _ : ι => isCompact_univ_pi (fun _ : ι => IsNonarchimedeanLocalField.isCompact_closedBall k γ))` as an intermediate fact. Establish `e : {x : Matrix ι ι k | Bd γ x} = (Set.univ.pi fun _ : ι => Set.univ.pi fun _ : ι => {x : k | valuation k x ≤ γ} : Set (ι → ι → k))`. Use extensionality with `x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Supply the required witnesses or components.
 
-Conclude with `⟨fun h r _ s _ => h r s, fun h r s => h r trivial s trivial⟩`. Rewrite using `[e]`. Conclude with `this`. Use `(Units.isClosedEmbedding_embedProduct (α := Matrix ι ι k)).isCompact_preimage (hB.prod (hB.image MulOpposite.continuous_op))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `g`. Use `and_congr_right fun _ => ⟨fun h => ⟨_, h, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨x, hx, e⟩`. Take `rfl : x = (g⁻¹).val` from `MulOpposite.op_injective e`. Conclude with `hx`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isCompact_bd {ι : Type} [Fintype ι] [DecidableEq ι] (γ : ValueGroupWithZero k) :
     IsCompact {g : GL ι k | Bd γ g.val ∧ Bd γ (g⁻¹).val} := by
@@ -139,13 +139,11 @@ theorem isCompact_bd {ι : Type} [Fintype ι] [DecidableEq ι] (γ : ValueGroupW
 
 omit [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨y, hy⟩ : ∃ y, ψ y ≠ 1 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hψ (by ext y; simp [h y])`. Use `⟨valuation k (y / u), fun a ha => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hlt`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Apply `hy` to reduce the goal to its premises. Use `ha (y / a) (by` as an intermediate fact. Rewrite `hlt`, the goal using `[map_div₀]`. Rewrite `hlt` using `[div_lt_iff₀ (by simp [zero_lt_iff])]`. Rewrite using `[div_le_iff₀ (by simp [zero_lt_iff, ha0]), mul_comm]`.
-
-Conclude with `hlt.le)`. Rewrite `this` using `[mul_div_cancel₀ _ ha0]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_bd_of_char (ψ : AddChar k Circle) (hψ : ψ ≠ 1) (u : kˣ) :
     ∃ γ : ValueGroupWithZero k, ∀ a : k,
@@ -177,9 +175,9 @@ def diagPart (lv : ι → ℕ) (b : Matrix ι ι k) : Matrix ι ι k :=
   Matrix.of fun r s => if lv r = lv s then b r s else 0
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Simplify using `only [diagPart, Matrix.of_apply]`. Use `split_ifs with h1`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `lt_or_gt_of_ne h1 with h2 | h2` into its components or cases. Rewrite using `[hb (h2.trans_le h)]`. Simplify using the standard rewrite rules. Rewrite using `[hb' h2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_diagPart_apply {lv : ι → ℕ} {b b' : Matrix ι ι k} (hb : b.BlockTriangular lv)
     (hb' : b'.BlockTriangular lv) {r s : ι} (h : lv s ≤ lv r) :
@@ -194,11 +192,11 @@ theorem mul_diagPart_apply {lv : ι → ℕ} {b b' : Matrix ι ι k} (hb : b.Blo
     · rw [hb' h2]
 
 /- English proof (translation)
-Use extensionality with `r s`. Distinguish the cases in `h : lv r = lv s`. Rewrite using `[← h1, ← mul_diagPart_apply hb hb' h.ge, Matrix.mul_apply, Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Simplify using `only [diagPart, Matrix.of_apply]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h2 : lv t = lv s`. Simplify using `[h, h2]`. Simplify using `[h2]`. Rewrite using `[Matrix.one_apply_ne (fun e => h (by rw [e])), Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun t _ => ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [diagPart, Matrix.of_apply]`. Distinguish the cases in `h2 : lv t = lv s`. Simplify using `[h, h2]`. Simplify using `[h2]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem diagPart_mul {lv : ι → ℕ} {b b' : Matrix ι ι k} (hb : b.BlockTriangular lv)
     (hb' : b'.BlockTriangular lv) (h1 : b * b' = 1) : diagPart lv b * diagPart lv b' = 1 := by
@@ -218,7 +216,7 @@ theorem diagPart_mul {lv : ι → ℕ} {b b' : Matrix ι ι k} (hb : b.BlockTria
     · simp [h2]
 
 /- English proof (translation)
-Rewrite using `[Matrix.coe_units_inv]`. Use `letI := b.invertible`. Conclude with `Matrix.blockTriangular_inv_of_blockTriangular hb`.
+Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem inv_blockTriangular {lv : ι → ℕ} {b : GL ι k} (hb : b.val.BlockTriangular lv) :
     (b⁻¹).val.BlockTriangular lv := by
@@ -233,17 +231,17 @@ def levi (lv : ι → ℕ) (b : GL ι k) (hb : b.val.BlockTriangular lv) : GL ι
 end Levi
 
 /- English proof (translation)
-Take `⟨m, m', hm, hm'⟩` from `m`. Express the relevant statement in the definitionally equal form `∀ r j, valuation k (m' r (Sum.inr j)) ≤ γ at h2`. Simplify using `only at h0 h1`. Take `⟨a, B, C, t, rfl⟩ : ∃ a B C t, m = fromBlocks a B C t` from `⟨_, _, _, _, (fromBlocks_toBlocks m).symm⟩`. Take `⟨a', B', C', t', rfl⟩ : ∃ a B C t, m' = fromBlocks a B C t` from `⟨_, _, _, _, (fromBlocks_toBlocks m').symm⟩`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Simplify by unfolding definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `rfl : C = 0` from `by ext i s; exact h0 i s`. Establish `hm2` using `hm`. Rewrite `hm2` using `[fromBlocks_multiply, ← fromBlocks_one, fromBlocks_inj]`. Take `⟨e1, e2, e3, e4⟩` from `hm2`. Simplify using `only [Matrix.zero_mul, zero_add] at e3 e4`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Establish `e5 : t' * t = 1` using `mul_eq_one_comm.1 e4`. Take `rfl : C' = 0` from `by rw [← Matrix.one_mul C', ← e5, Matrix.mul_assoc, e3, Matrix.mul_zero]`. Simplify using `only [Matrix.mul_zero, add_zero] at e1`. Establish `hγ2 : γ ≤ γ * γ` using `le_mul_of_one_le_left' hγ`. Establish `ht : Bd γ t` using `fun i j => h1 i j`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht' : Bd γ t'` using `fun i j => h2 (Sum.inr i) j`. Establish `hB' : Bd γ B'` using `fun i j => h2 (Sum.inl i) j`. Use `⟨⟨a, a', e1, mul_eq_one_comm.1 e1⟩, ⟨fromBlocks 1 (-(B' * t)) 0 t, fromBlocks 1 B' 0 t', ?_, ?_⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `[fromBlocks_multiply, Matrix.mul_assoc, e4]`. Simplify using `[fromBlocks_multiply, e5]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `ext1`. Express the relevant statement in the definitionally equal form `fromBlocks a B 0 t = fromBlocks a 0 0 1 * fromBlocks 1 (-(B' * t)) 0 t`. Establish `: a * (B' * t) = -B`. Rewrite using `[← Matrix.mul_assoc, eq_neg_of_add_eq_zero_left e2, Matrix.neg_mul, Matrix.mul_assoc, e5, Matrix.mul_one]`. Simplify using `[fromBlocks_multiply, this]`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `bd_fromBlocks (bd_one.mono (hγ.trans hγ2)) ?_ (bd_zero _) (ht.mono hγ2)` and prove the remaining obligations. Introduce `r s`. Rewrite using `[Matrix.neg_apply, Valuation.map_neg]`. Conclude with `hB'.mul ht r s`. Conclude with `bd_fromBlocks (bd_one.mono (hγ.trans hγ2)) (hB'.mono hγ2) (bd_zero _) (ht'.mono hγ2)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_embX_mul {k : Type} [Field k] [ValuativeRel k] {n : Type} [Fintype n] [DecidableEq n] {c : ℕ}
     (m : GL (n ⊕ Fin c) k) (h0 : ∀ i s, m.val (Sum.inr i) (Sum.inl s) = 0) {γ : ValueGroupWithZero k}
@@ -284,15 +282,15 @@ theorem exists_embX_mul {k : Type} [Field k] [ValuativeRel k] {n : Type} [Fintyp
   · exact bd_fromBlocks (bd_one.mono (hγ.trans hγ2)) (hB'.mono hγ2) (bd_zero _) (ht'.mono hγ2)
 
 /- English proof (translation)
-Use `haveI := secondCountable k`. Unfold `opE at hF`. Use `set e₀ : {rs : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1)) // Free p rs} → k := fun rs => d rs.1.1 rs.1.2`. Establish `hadd : ∀ e, affPt p x₀ (e₀ + e) = affPt p x₀ e + d`. Introduce `e`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `r s`. Simplify using `only [affPt, Matrix.add_apply, Matrix.of_apply]`. Use `split_ifs with h`. Simplify using `[e₀]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[hd r s h]`. Establish `hch : ∀ x : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k, ch (x + d) = ch x + ch d`. Introduce `x`. Simplify using `[ch, Finset.sum_add_distrib]`. Establish `key` using `integral_add_left_eq_self (μ := Measure.pi fun _ => ν) (fun e => F (affPt p x₀ e) * (ψ (-ch (affPt p x₀ e)) : ℂ)) e₀`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [hadd, hFd, hch, neg_add, AddChar.map_add_eq_mul, Circle.coe_mul, ← mul_assoc] at key`. Rewrite `key` using `[integral_mul_const]`. Establish `h1 : (ψ (-ch d) : ℂ) = 1`. Apply `mul_left_cancel₀ hF` to reduce the goal to its premises. Rewrite using `[mul_one]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `key` and compare the differences between its conclusion and the goal. Establish `h2 : ψ (-ch d) = 1` using `Circle.coe_eq_one.1 h1`. Rewrite `h2` using `[AddChar.map_neg_eq_inv, inv_eq_one]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem char_eq_one_of_opE_ne_zero {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] {n n' : Type} [Fintype n] [DecidableEq n]
@@ -325,11 +323,11 @@ theorem char_eq_one_of_opE_ne_zero {k : Type} [Field k] [ValuativeRel k] [Topolo
   rwa [AddChar.map_neg_eq_inv, inv_eq_one] at h2
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (Sum.inr j)]`. Simplify using `[affPt, basePt, Free]`. Introduce `s _ hs`. Distinguish the cases in `hl : lev p s < lev p r`. Rewrite using `[hb hl, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hl` using `[h]`. Break down `s with s | l` into its components or cases. Establish `: ¬ p < j.val + 1` using `by simpa [lev] using hl`. Simplify using `[affPt, basePt, Free, this]`. Establish `h1 : ¬ l.val < j.val` using `by simpa [lev] using hl`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : l.val ≠ j.val` using `fun e => hs (by rw [Fin.ext e])`. Simplify using `[affPt, basePt, Free, h1, h2]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem inv_mul_affPt_apply {k : Type} [Field k] {n n' : Type} [Fintype n] [DecidableEq n]
     [Fintype n'] [DecidableEq n'] {c p : ℕ} {b : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k}
@@ -357,41 +355,37 @@ namespace GlobalTheory.RootEx
 open Supp
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ n n' _ _ _ _ c p _ _ ψ _ hψ ν _ S hS Λ hΛ`. Take `⟨γ₁, hγ₁⟩` from `exists_bd_of_isCompact hS`. Take `⟨u, hu⟩` from `exists_bd_subset Λ hΛ`. Take `⟨γ₂, hγ₂⟩` from `exists_bd_of_char ψ hψ u`. Use `set γ : ValueGroupWithZero k := max 1 (max γ₁ γ₂) with hγ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `g0 : 1 ≤ γ` using `le_max_left _ _`. Establish `g1 : γ₁ ≤ γ` using `(le_max_left _ _).trans (le_max_right _ _)`. Establish `g2 : γ₂ ≤ γ` using `(le_max_right _ _).trans (le_max_right _ _)`. Use `⟨_, isCompact_bd (γ * γ), fun μ Φ hΦ hinv χ _ h x₀ hne => ?_⟩` and prove the remaining obligations. Take `⟨b, hb', κ, hκ, rfl⟩` from `iwasawa_blockTriangular k (n ⊕ Fin c) (Sum.elim (fun _ => 2 * p) (fun i => 2 * (i.val + 1) + 1)) h`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hb : b.val.BlockTriangular (lev p)`. Introduce `r s hrs`. Apply `hb'` to reduce the goal to its premises. Apply the tactic sequence `rcases r with r | r <;> rcases s with s | s <;> simp [lev] at hrs ⊢ <;> omega`. Establish `hκ1 : Bd 1 κ.val` using `bd_of_mem_KO hκ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hκ2 : Bd 1 (κ⁻¹).val` using `bd_of_mem_KO (inv_mem hκ)`. Establish `hdiag : ∀ i : Fin c, valuation k (b.val (Sum.inr i) (Sum.inr i)) ≤ γ₂`. Introduce `i`. Use `hγ₂ _ fun t ht => ?_` and prove the remaining obligations. Use `set E : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k := Matrix.single (Sum.inr i) (Sum.inr i.succ) t with hE`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hEb : Bd (valuation k (u : k)) E`. Introduce `r s`. Simplify using `only [hE, Matrix.single, Matrix.of_apply]`. Use `split_ifs`. Conclude with `ht`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hd : ∀ r s, (b.val * E) r s = if s = Sum.inr i.succ then b.val r (Sum.inr i) * t else 0`. Introduce `r s`. Use `split_ifs with hs`. Rewrite using `[hs, hE, Matrix.mul_single_apply_same]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[hE, Matrix.mul_single_apply_of_ne _ _ _ _ _ hs]`. Use `char_eq_one_of_opE_ne_zero ψ ν _ x₀ hne (b.val * E) ?_ ?_` as an intermediate fact. Establish `hc : ch (b.val * E) = b.val (Sum.inr i) (Sum.inr i) * t`. Simplify using `[ch, hd]`. Rewrite `this` using `[hc]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Introduce `r s hf`. Rewrite using `[hd]`. Use `split_ifs with hs`. Substitute `hs` using the available equality. Rewrite using `[hb (i := r) (j := Sum.inr i), zero_mul]`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `rcases r with r | r <;> simp [lev, Free] at hf ⊢ <;> omega`. Both sides reduce to the same expression. Introduce `x`. Establish `e1 : (x + b.val * E).toCols₁ = x.toCols₁`. Use extensionality with `r s`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `[hd]`. Establish `e2 : ((b * κ)⁻¹).val * (x + b.val * E) * (1 : GL (n' ⊕ Fin (c + 1)) k).val = ((b * κ)⁻¹).val * x * (1 : GL (n' ⊕ Fin (c + 1)) k).val + (κ⁻¹).val * E`. Rewrite using `[Units.val_one, Matrix.mul_one, Matrix.mul_one, Matrix.mul_add, ← Matrix.mul_assoc, ← Units.val_mul, _root_.mul_inv_rev, inv_mul_cancel_right]`. Establish `e3 : (κ⁻¹).val * E ∈ Λ` using `hu _ (by simpa using hκ2.mul hEb)`. Simplify using `only [om, e1, e2, hinv _ _ e3]`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `⟨e, he⟩ : ∃ e : {rs : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1)) // Free p rs} → k, Φ (((b * κ)⁻¹).val * (affPt p x₀ e : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k)) ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Apply `hne` to reduce the goal to its premises. Simplify using `only [opE, om, Units.val_one, Matrix.mul_one, hcon, mul_zero, zero_mul, integral_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hbx : Bd γ₁ ((b⁻¹).val * affPt p x₀ e)`. Use `hκ1.mul (hγ₁ _ (hΦ he))` as an intermediate fact. Rewrite `this` using `[one_mul, ← Matrix.mul_assoc, ← Units.val_mul, _root_.mul_inv_rev, mul_inv_cancel_left]`. Then use the resulting hypothesis. Establish `m0 : ∀ i s, (levi (lev p) b hb).val (Sum.inr i) (Sum.inl s) = 0`. Introduce `i s`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `(if _ then _ else _) = _`. Use `split_ifs with hl`. Apply `hb'` to reduce the goal to its premises. Simplify using `[lev] at hl ⊢`. Use linear arithmetic over natural numbers and integers.
+Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Both sides reduce to the same expression. Establish `m1 : ∀ i j, valuation k ((levi (lev p) b hb).val (Sum.inr i) (Sum.inr j)) ≤ γ`. Introduce `i j`. Express the relevant statement in the definitionally equal form `valuation k (if _ then _ else _) ≤ _`. Use `split_ifs with hl`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `rfl : i = j` from `Fin.ext (by simpa [lev] using hl)`. Conclude with `(hdiag i).trans g2`. Simplify using the standard rewrite rules. Establish `m2 : ∀ r j, valuation k (((levi (lev p) b hb)⁻¹).val r (Sum.inr j)) ≤ γ`. Introduce `r j`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `valuation k (if _ then _ else _) ≤ _`. Use `split_ifs with hl`. Rewrite using `[← inv_mul_affPt_apply (inv_blockTriangular hb) x₀ e r j hl]`. Conclude with `(hbx _ _).trans g1`. Simplify using the standard rewrite rules.
-
-Take `⟨x, w, hxw, hw1, hw2⟩` from `exists_embX_mul (levi (lev p) b hb) (γ := γ) m0 g0 m1 m2`. Use `⟨b * (levi (lev p) b hb)⁻¹ * embX c x, mul_mem (Subgroup.mem_sup_right (Subgroup.subset_closure ?_)) (Subgroup.mem_sup_left ⟨x, rfl⟩), w * κ, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `r s hrs`. Express the relevant statement in the definitionally equal form `(b.val * diagPart (lev p) (b⁻¹).val) r s = _`. Rewrite using `[mul_diagPart_apply hb (inv_blockTriangular hb) hrs, b.mul_inv]`.
-
-Simplify using `using hw1.mul hκ1`. Rewrite using `[_root_.mul_inv_rev, Units.val_mul]`. Simplify using `using hκ2.mul hw2`. Rewrite using `[mul_assoc, ← mul_assoc (embX c x), ← hxw] group`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem opE_support_compact_mod_R : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (n n' : Type) [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] (c p : ℕ) (_ : 1 ≤ p) (_ : p ≤ c) (ψ : AddChar k Circle) (_ : Continuous ψ) (_ : ψ ≠ 1) (ν : Measure k) [ν.IsAddHaarMeasure] (S : Set (Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k)) (_ : IsCompact S) (Λ : AddSubgroup (Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k)) (_ : IsOpen (Λ : Set (Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k))), ∃ Ω : Set (GL (n ⊕ Fin c) k), IsCompact Ω ∧ ∀ (μ : kˣ →* ℂˣ) (Φ : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k → ℂ), Function.support Φ ⊆ S → (∀ x, ∀ y ∈ Λ, Φ (x + y) = Φ x) → ∀ (χ : Matrix (n ⊕ Fin c) n' k → ℂ), IsLocallyConstant χ → ∀ (h : GL (n ⊕ Fin c) k) (x₀ : Matrix n n' k), opE ψ ν p (fun x => χ x.toCols₁ * om μ 1 h Φ x) x₀ ≠ 0 → ∃ r ∈ R k n c p, ∃ w ∈ Ω, h = r * w := by
   intro k _ _ _ _ _ _ n n' _ _ _ _ c p _ _ ψ _ hψ ν _ S hS Λ hΛ

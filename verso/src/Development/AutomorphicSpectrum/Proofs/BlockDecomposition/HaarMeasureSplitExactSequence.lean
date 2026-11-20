@@ -15,9 +15,7 @@ noncomputable def periodized (π : A →+ A') (Γ' : AddSubgroup A') (lam : Meas
   Measure.sum fun γ : Γ' => ((lam.restrict 𝓖).map π).map ((γ : A') + ·)
 
 /- English proof (translation)
-Rewrite using `[show periodized π Γ' lam 𝓖 = Measure.sum (fun γ : Γ' => ((lam.restrict 𝓖).map π).map ((γ : A') + ·)) from rfl, lintegral_sum_measure, lintegral_tsum]`. Use `tsum_congr fun γ => ?_` and prove the remaining obligations. Rewrite using `[lintegral_map hf (measurable_const_add _), lintegral_map _ hπ]`. Conclude with `hf.comp (measurable_const_add _)`. Introduce `γ`.
-
-Conclude with `(hf.comp ((measurable_const_add _).comp hπ)).aemeasurable`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lintegral_periodized {π : A →+ A'} (hπ : Measurable π) {Γ' : AddSubgroup A'} [Countable Γ']
     (lam : Measure A) (𝓖 : Set A) {f : A' → ℝ≥0∞} (hf : Measurable f) :
@@ -31,15 +29,15 @@ theorem lintegral_periodized {π : A →+ A'} (hπ : Measurable π) {Γ' : AddSu
     exact (hf.comp ((measurable_const_add _).comp hπ)).aemeasurable
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `c`. Apply `Measure.ext_of_lintegral` to reduce the goal to its premises. Introduce `f hf`. Rewrite using `[lintegral_map hf (measurable_const_add c), lintegral_periodized hπ lam 𝓖 (f := fun y => f (c + y)) (hf.comp (measurable_const_add c)), lintegral_periodized hπ lam 𝓖 hf]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ x : A, ∑' γ : Γ', f (c + ((γ : A') + π x)) = ∑' γ : Γ', f ((γ : A') + π (s c + x))`. Introduce `x`. Use `tsum_congr fun γ => ?_` and prove the remaining obligations. Rewrite using `[map_add, hs]`. Use `congr 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Normalize the expressions using the abelian group laws. Repeatedly rewrite using `[key]`. Establish `hemb : MeasurableEmbedding (fun x : A => s c + x)` using `(MeasurableEquiv.addLeft (s c)).measurableEmbedding`. Rewrite using `[(measurePreserving_add_left lam (s c)).setLIntegral_comp_emb hemb (fun x => ∑' γ : Γ', f ((γ : A') + π x)) 𝓖]`. Establish `hG' : IsAddFundamentalDomain Γ ((fun x : A => s c + x) '' 𝓖) lam` using `hG.vadd_of_comm (s c)`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hG'.setLIntegral_eq hG _ ?_` and prove the remaining obligations. Introduce `g x`. Use `show ∑' γ : Γ', f ((γ : A') + π ((g : A) + x)) = ∑' γ : Γ', f ((γ : A') + π x)`. Rewrite using `[← (Equiv.addRight (⟨π g, hΓ g g.2⟩ : Γ')).tsum_eq (fun γ : Γ' => f ((γ : A') + π x))]`. Use `tsum_congr fun γ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Equiv.coe_addRight, AddSubgroup.coe_add, map_add, add_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem periodized_invariant {π : A →+ A'} (hπ : Measurable π) {s : A' →+ A}
     (hs : ∀ x, π (s x) = x) {Γ : AddSubgroup A} {Γ' : AddSubgroup A'} [Countable Γ] [Countable Γ']
@@ -77,27 +75,25 @@ instance {π : A →+ A'} {Γ' : AddSubgroup A'} [Countable Γ'] {lam : Measure 
   unfold periodized; infer_instance
 
 /- English proof (translation)
-Take `⟨P, hPdef⟩ : ∃ P, P = periodized π Γ' lam 𝓖` from `⟨_, rfl⟩`. Take `⟨ν, hνdef⟩ : ∃ ν, ν = Measure.map π (lam.restrict 𝓖)` from `⟨_, rfl⟩`. Establish `hPsum : P = Measure.sum fun γ : Γ' => ν.map ((γ : A') + ·)` using `by rw [hPdef, hνdef]; rfl`. Establish `: P.IsAddLeftInvariant` using `by rw [hPdef]; exact periodized_invariant hπ hs hΓ hG`. Establish `: SFinite P` using `by rw [hPdef]; infer_instance`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: lam'.Regular` using `Measure.Regular.of_sigmaCompactSpace_of_isLocallyFiniteMeasure lam'`. Establish `: lam'.IsNegInvariant` using `Measure.IsAddHaarMeasure.isNegInvariant_of_regular lam'`. Take `⟨M, hMdef⟩ : ∃ M, M = toMeasurable lam' 𝓖'` from `⟨_, rfl⟩`. Establish `hMm : MeasurableSet M` using `by rw [hMdef]; exact measurableSet_toMeasurable lam' 𝓖'`. Establish `hMae : M =ᵐ[lam'] 𝓖'` using `by rw [hMdef]; exact hG'.nullMeasurableSet.toMeasurable_ae_eq`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM1 : lam' M = 1` using `by rw [hMdef, measure_toMeasurable, h1']`. Establish `hne : lam' ≠ 0` using `fun h => by simp [h] at h1'`. Establish `hPac : P ≪ lam'` using `absolutelyContinuous_of_isAddLeftInvariant P lam' hne`. Establish `hνP : ν ≤ P`. Establish `h0` using `Measure.le_sum (fun γ : Γ' => Measure.map (fun y : A' => (γ : A') + y) ν) 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [AddSubgroup.coe_zero, zero_add, Measure.map_id'] at h0`. Rewrite using `[hPsum]`. Conclude with `h0`. Establish `hνac : ν ≪ lam'`. Introduce `t ht`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `le_antisymm ((Measure.le_iff'.1 hνP t).trans (hPac ht).le) zero_le`. Establish `claim : ∀ T : Set A', MeasurableSet T → (∀ γ ∈ Γ', ∀ x, γ + x ∈ T ↔ x ∈ T) → lam (π ⁻¹' T ∩ 𝓖) = P (T ∩ M)`. Introduce `T hT hTinv`. Establish `e1 : lam (π ⁻¹' T ∩ 𝓖) = ν T`. Rewrite using `[hνdef, Measure.map_apply hπ hT, Measure.restrict_apply (hπ hT)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e1, hG'.measure_eq_tsum_of_ac hνac T, hPsum, Measure.sum_apply _ (hT.inter hMm)]`. Use `conv_lhs => rw [← (Equiv.neg Γ').tsum_eq]`. Use `tsum_congr fun γ => ?_` and prove the remaining obligations. Rewrite using `[Measure.map_apply (measurable_const_add _) (hT.inter hMm)]`. Establish `hpre : (fun x => (γ : A') + x) ⁻¹' (T ∩ M) = T ∩ (fun x => (γ : A') + x) ⁻¹' M`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `x`. Simplify using `only [Set.mem_preimage, Set.mem_inter_iff, hTinv γ γ.2 x]`. Establish `hset : (fun x => (γ : A') + x) ⁻¹' 𝓖' = (Equiv.neg Γ') γ +ᵥ 𝓖'`. Use extensionality with `x`. Rewrite using `[Set.mem_preimage, Set.mem_vadd_set_iff_neg_vadd_mem]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[AddSubgroup.vadd_def]`. Establish `hae : (fun x => (γ : A') + x) ⁻¹' M =ᵐ[lam'] (fun x => (γ : A') + x) ⁻¹' 𝓖'` using `(measurePreserving_add_left lam' (γ : A')).quasiMeasurePreserving.preimage_ae_eq hMae`. Rewrite using `[hpre, ← hset]`. Conclude with `measure_congr ((ae_eq_refl T).inter (hνac.ae_eq hae).symm)`. Establish `hPt : ∀ t, MeasurableSet t → P t = P M * lam' t`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `t ht`. Establish `h` using `measure_add_lintegral_eq lam' P hMm (t.indicator 1) (measurable_one.indicator ht)`. Rewrite `h` using `[hM1, one_mul, lintegral_indicator_one ht]`. Rewrite using `[h]`. Establish `hc : ∀ x : A', P ((fun z => z + x) ⁻¹' M) = P M` using `fun x => by`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Repeatedly rewrite using `[add_comm _ x]`. Conclude with `measure_preimage_add P x M`. Repeatedly rewrite using `[hc]`. Rewrite using `[lintegral_const_mul (P M) (f := fun x => t.indicator 1 (-x)) ((measurable_one.indicator ht).comp measurable_neg), lintegral_neg_eq_self (t.indicator 1), lintegral_indicator_one ht]`. Establish `hU` using `claim Set.univ MeasurableSet.univ (fun _ _ _ => by simp)`.
-
-Rewrite `hU` using `[Set.preimage_univ, Set.univ_inter, h1, Set.univ_inter]`. Rewrite using `[claim S hS hinv, hPt _ (hS.inter hMm), ← hU, one_mul]`. Conclude with `measure_congr ((ae_eq_refl S).inter hMae)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measure_preimage_inter_eq {π : A →+ A'} (hπ : Measurable π) {s : A' →+ A}
     (hs : ∀ x, π (s x) = x) {Γ : AddSubgroup A} {Γ' : AddSubgroup A'} [Countable Γ] [Countable Γ']
@@ -166,11 +162,11 @@ theorem measure_preimage_inter_eq {π : A →+ A'} (hπ : Measurable π) {s : A'
   exact measure_congr ((ae_eq_refl S).inter hMae)
 
 /- English proof (translation)
-Introduce `A A' _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ π s hπc _ hs Γ Γ' hΓc hΓ'c hΓ _ lam lam' hlam hlam' 𝓖 𝓖' hG h1 hG' h1' G hGc hGinv`. Use `hΓc` as an intermediate fact. Use `hΓ'c` as an intermediate fact. Use `hlam` as an intermediate fact. Use `hlam'` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hπ : Measurable π` using `hπc.measurable`. Establish `hGm : Measurable G` using `hGc.measurable`. Establish `key : Measure.map G (Measure.map π (lam.restrict 𝓖)) = Measure.map G (lam'.restrict 𝓖')`. Use extensionality with `B hB`. Establish `hinvB : ∀ γ ∈ Γ', ∀ x, γ + x ∈ G ⁻¹' B ↔ x ∈ G ⁻¹' B` using `fun γ hγ x => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `only [Set.mem_preimage, hGinv γ hγ x]`. Rewrite using `[Measure.map_apply hGm hB, Measure.map_apply hGm hB, Measure.map_apply hπ (hGm hB), Measure.restrict_apply (hπ (hGm hB)), Measure.restrict_apply (hGm hB)]`. Conclude with `measure_preimage_inter_eq hπ hs hΓ hG h1 hG' h1' (hGm hB) hinvB`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem integral_comp_eq : ∀ {A A' : Type} [AddCommGroup A] [TopologicalSpace A] [IsTopologicalAddGroup A] [LocallyCompactSpace A] [T2Space A] [SecondCountableTopology A] [MeasurableSpace A] [BorelSpace A] [AddCommGroup A'] [TopologicalSpace A'] [IsTopologicalAddGroup A'] [LocallyCompactSpace A'] [T2Space A'] [SecondCountableTopology A'] [MeasurableSpace A'] [BorelSpace A'] (π : A →+ A') (s : A' →+ A), Continuous π → Continuous s → (∀ x, π (s x) = x) → ∀ (Γ : AddSubgroup A) (Γ' : AddSubgroup A'), Countable Γ → Countable Γ' → (∀ γ ∈ Γ, π γ ∈ Γ') → (∀ γ ∈ Γ', s γ ∈ Γ) → ∀ (lam : Measure A) (lam' : Measure A'), lam.IsAddHaarMeasure → lam'.IsAddHaarMeasure → ∀ (𝓖 : Set A) (𝓖' : Set A'), IsAddFundamentalDomain Γ 𝓖 lam → lam 𝓖 = 1 → IsAddFundamentalDomain Γ' 𝓖' lam' → lam' 𝓖' = 1 → ∀ G : A' → ℂ, Continuous G → (∀ γ ∈ Γ', ∀ x, G (γ + x) = G x) → ∫ x in 𝓖, G (π x) ∂lam = ∫ x in 𝓖', G x ∂lam' := by
   intro A A' _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ π s hπc _ hs Γ Γ' hΓc hΓ'c hΓ _ lam lam' hlam hlam' 𝓖 𝓖' hG h1 hG' h1' G hGc hGinv

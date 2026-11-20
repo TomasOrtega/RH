@@ -20,21 +20,21 @@ variable {E V W : Type} [CommRing E] [AddCommGroup V] [Module E V] [AddCommGroup
 abbrev As {r : ℕ} (f : Fin (r + 1) → V) (j : ℕ) : Submodule E V := Submodule.span E (f '' {i | (i : ℕ) < j})
 
 /- English proof (translation)
-The claim follows from `Submodule.span_mono (Set.image_mono fun a (ha : (a : ℕ) < i) => lt_of_lt_of_le ha h)`.
+A detailed English derivation is pending.
 -/
 theorem As_mono {r : ℕ} (f : Fin (r + 1) → V) {i j : ℕ} (h : i ≤ j) : (As (E := E) f i) ≤ As (E := E) f j :=
   Submodule.span_mono (Set.image_mono fun a (ha : (a : ℕ) < i) => lt_of_lt_of_le ha h)
 
 /- English proof (translation)
-Simplify using `[As]`.
+Simplify using the standard rewrite rules.
 -/
 theorem As_zero {r : ℕ} (f : Fin (r + 1) → V) : (As (E := E) f 0) = ⊥ := by
   simp [As]
 
 /- English proof (translation)
-Simplify using `only [Submodule.mem_map_equiv, LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply, map_sub]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `⟨fun v => by simpa using h1 (e v), fun v hv => by simpa using h2 (e v) (by simpa using hv)⟩` and prove the remaining obligations. Introduce and unpack `⟨h1, h2⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨fun x => h1 _, fun x hx => h2 _ hx⟩`.
+Supply the required witnesses or components.
 -/
 theorem unip_iff (e : V ≃ₗ[E] W) (g : V ≃ₗ[E] V) (A B : Submodule E V) :
     ((∀ x, ((e.symm.trans g).trans e) x ∈ A.map (e : V →ₗ[E] W) ↔ x ∈ A.map (e : V →ₗ[E] W)) ∧
@@ -50,13 +50,11 @@ theorem unip_iff (e : V ≃ₗ[E] W) (g : V ≃ₗ[E] V) (A B : Submodule E V) :
 variable {r : ℕ} (g : V ≃ₗ[E] V) (f : Fin (r + 1) → V)
 
 /- English proof (translation)
-Introduce `v hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨i, hi, rfl⟩` from `hx`. Establish `hi' : (i : ℕ) < r` using `lt_of_lt_of_le hi hm`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hc : i = (⟨i, hi'⟩ : Fin r).castSucc` using `Fin.ext rfl`. Use `hN ⟨i, hi'⟩` as an intermediate fact. Rewrite `this` using `[← hc]`. Conclude with `As_mono f (Nat.lt_succ_iff.mp hi) this`. Consider the case `zero => simp`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Rewrite using `[map_add, add_sub_add_comm]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx`. Rewrite using `[map_smul, ← smul_sub]`.
-
-Conclude with `Submodule.smul_mem _ a hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem step (hN : ∀ a : Fin r, g (f a.castSucc) - f a.castSucc ∈ As (E := E) f a)
     (m : ℕ) (hm : m + 1 ≤ r) : ∀ v ∈ As (E := E) f (m + 1), g v - v ∈ As (E := E) f m := by
@@ -76,9 +74,9 @@ theorem step (hN : ∀ a : Fin r, g (f a.castSucc) - f a.castSucc ∈ As (E := E
     rw [map_smul, ← smul_sub]; exact Submodule.smul_mem _ a hx
 
 /- English proof (translation)
-Introduce `v hv`. Consider the cases of `m with`. Consider the case `zero => rw [As_zero] at hv ⊢`. Rewrite `hv`, the goal using `[Submodule.mem_bot]`. Simplify using `[hv]`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `succ m`. Establish `h` using `step g f hN m hm v hv`. Establish `: g v = v + (g v - v)` using `by abel`. Rewrite using `[this]`. Conclude with `Submodule.add_mem _ hv (As_mono f (Nat.le_succ m) h)`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fwd (hN : ∀ a : Fin r, g (f a.castSucc) - f a.castSucc ∈ As (E := E) f a)
     (m : ℕ) (hm : m ≤ r) : ∀ v ∈ As (E := E) f m, g v ∈ As (E := E) f m := by
@@ -91,11 +89,11 @@ theorem fwd (hN : ∀ a : Fin r, g (f a.castSucc) - f a.castSucc ∈ As (E := E)
     rw [this]; exact Submodule.add_mem _ hv (As_mono f (Nat.le_succ m) h)
 
 /- English proof (translation)
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro _ v hv`. Rewrite `hv`, the goal using `[As_zero]`. Rewrite `hv`, the goal using `[Submodule.mem_bot]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `[hv]`. Consider the case `succ m ih`. Introduce `hm v hv`. Establish `h` using `step g f hN m hm v hv`. Establish `h2` using `ih (Nat.le_of_succ_le hm) _ h`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: g.symm v = v - g.symm (g v - v)` using `by simp`. Rewrite using `[this]`. Conclude with `Submodule.sub_mem _ hv (As_mono f (Nat.le_succ m) h2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bwd (hN : ∀ a : Fin r, g (f a.castSucc) - f a.castSucc ∈ As (E := E) f a) :
     ∀ m : ℕ, m ≤ r → ∀ v ∈ As (E := E) f m, g.symm v ∈ As (E := E) f m := by
@@ -110,7 +108,7 @@ theorem bwd (hN : ∀ a : Fin r, g (f a.castSucc) - f a.castSucc ∈ As (E := E)
     rw [this]; exact Submodule.sub_mem _ hv (As_mono f (Nat.le_succ m) h2)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => by simpa using bwd g f hN m hm _ h, fun h => fwd g f hN m hm v h⟩`.
+Supply the required witnesses or components.
 -/
 theorem iff_of (hN : ∀ a : Fin r, g (f a.castSucc) - f a.castSucc ∈ As (E := E) f a)
     (m : ℕ) (hm : m ≤ r) (v : V) : g v ∈ As (E := E) f m ↔ v ∈ As (E := E) f m :=
@@ -127,9 +125,9 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
   {H : Formalism.MainNotions.S.Loc.HermSp M V} {r k : ℕ}
 
 /- English proof (translation)
-Unfold `HermSp.X As`. Use `congr 1`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨a.castSucc, a.isLt, rfl⟩`. Introduce and unpack `⟨i, hi, rfl⟩`. Conclude with `⟨⟨i, hi⟩, congrArg f (Fin.ext rfl)⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem X_eq (f : Fin (r + 1) → V) : H.X f = As (E := E) f r := by
   unfold HermSp.X As
@@ -140,9 +138,9 @@ theorem X_eq (f : Fin (r + 1) → V) : H.X f = As (E := E) f r := by
   · rintro ⟨i, hi, rfl⟩; exact ⟨⟨i, hi⟩, congrArg f (Fin.ext rfl)⟩
 
 /- English proof (translation)
-Unfold `As`. Use `congr 1`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, hb, rfl⟩`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨b.castSucc, (Fin.lt_def.mp hb : (b : ℕ) < a), rfl⟩`. Introduce and unpack `⟨i, hi, rfl⟩`. Establish `hi' : (i : ℕ) < r` using `lt_trans hi a.isLt`. Conclude with `⟨⟨i, hi'⟩, Fin.lt_def.mpr hi, congrArg f (Fin.ext rfl)⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem flag_eq (f : Fin (r + 1) → V) (a : Fin r) :
     Submodule.span E ((fun b : Fin r => f b.castSucc) '' {b | b < a}) = As (E := E) f a := by
@@ -158,7 +156,7 @@ theorem flag_eq (f : Fin (r + 1) → V) (a : Fin r) :
 variable {P : LocNG.FPair H r} {S : Frames M.L r k} (c : WCoord P S)
 
 /- English proof (translation)
-Unfold `Frames.spanTo As`. Rewrite using `[Submodule.map_span, ← Set.image_comp]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem spanTo_eq (f : Fin (r + 1) → V) (j : ℕ) :
     S.spanTo (fun a => c.e (f a)) j = (As (E := E) f j).map (c.e : V →ₗ[E] S.V) := by
@@ -167,11 +165,11 @@ theorem spanTo_eq (f : Fin (r + 1) → V) (j : ℕ) :
   rfl
 
 /- English proof (translation)
-Establish `hh : ∀ x y, hf M.L S.Hm (c.e x) (c.e y) = H.h x y` using `c.h_eq`. Use extensionality with `x`. Rewrite using `[Submodule.mem_map_equiv]`. Use `show (∀ y ∈ A.map (c.e : V →ₗ[E] S.V), hf M.L S.Hm x y = 0) ↔ ∀ y ∈ A, H.h (c.e.symm x) y = 0`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hx y hy`. Rewrite using `[← hh, LinearEquiv.apply_symm_apply]`. Conclude with `hx _ (Submodule.mem_map_of_mem hy)`. Introduce `hx y hy`. Rewrite `hy` using `[Submodule.mem_map_equiv]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `hx _ hy` as an intermediate fact. Rewrite `this` using `[← hh, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem perp_eq (A : Submodule E V) :
     perp M.L S.Hm (A.map (c.e : V →ₗ[E] S.V)) = (H.perp A).map (c.e : V →ₗ[E] S.V) := by
@@ -203,32 +201,30 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
   {H : Formalism.MainNotions.S.Loc.HermSp M V} {r k : ℕ}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_unipOn_iff {n : ℕ} (A B : Submodule E (Fin n → E)) (g : (Fin n → E) ≃ₗ[E] (Fin n → E)) :
     g ∈ unipOn A B ↔ (∀ v, g v ∈ A ↔ v ∈ A) ∧ ∀ v ∈ A, g v - v ∈ B := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_hperp_iff (A : Submodule E V) (v : V) : v ∈ H.perp A ↔ ∀ x ∈ A, H.h v x = 0 := Iff.rfl
 
 /- English proof (translation)
-Establish `hh : ∀ x y, hf M.L S.Hm (c.e x) (c.e y) = H.h x y` using `c.h_eq`. Establish `hU : (c.e.symm.trans g).trans c.e ∈ isomG M.L S.Hm ↔ LocNG.IsUnitary H g` using `by show (∀ x y, hf M.L S.Hm _ _ = hf M.L S.Hm x y) ↔ ∀ x y, H.h (g x) (g y) = H.h x y`. Prove the components needed by the constructor for the conclusion. Introduce `h x y`. Use `h (c.e x) (c.e y)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply, hh] at this`. Conclude with `this`. Introduce `h x y`. Establish `h1` using `hh (g (c.e.symm x)) (g (c.e.symm y))`. Establish `h2` using `hh (c.e.symm x) (c.e.symm y)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearEquiv.apply_symm_apply] at h2`. Simplify using `only [LinearEquiv.trans_apply]`. Rewrite using `[h1, h2, h]`. Establish `hN : ∀ n, n ∈ S.Nof (fun a => c.e (f a)) ↔ n ∈ isomG M.L S.Hm ∧ (∀ j : Fin r, n ∈ unipOn (S.spanTo (fun a => c.e (f a)) ((j : ℕ) + 1)) (S.spanTo (fun a => c.e (f a)) j)) ∧ n ∈ unipOn (perp M.L S.Hm (S.spanTo (fun a => c.e (f a)) r)) (S.spanTo (fun a => c.e (f a)) r)`. Introduce `n`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Frames.Nof, Subgroup.mem_inf, Subgroup.mem_iInf, and_assoc]`. Rewrite using `[hN, hU]`. Simplify using `only [spanTo_eq c f, perp_eq c, mem_unipOn_iff, unip_iff]`. Use `show (LocNG.IsUnitary H g ∧ (∀ a : Fin r, g (f a.castSucc) - f a.castSucc ∈ Submodule.span E ((fun b : Fin r => f b.castSucc) '' {b | b < a})) ∧ ∀ v ∈ H.perp (H.X f), g v - v ∈ H.X f) ↔ _`. Simplify using `only [flag_eq, X_eq]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hu, hfl, hp⟩`. Use `⟨hu, fun j => ⟨iff_of g f hfl _ j.isLt, step g f hfl j j.isLt⟩, ⟨fun v => ?_, hp⟩⟩` and prove the remaining obligations. Rewrite using `[mem_hperp_iff, mem_hperp_iff]`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h x hx`. Use `h (g x) ((iff_of g f hfl r le_rfl x).2 hx)` as an intermediate fact. Rewrite `this` using `[hu]`. Then use the resulting hypothesis. Introduce `h x hx`. Establish `h1` using `h (g.symm x) (bwd g f hfl r le_rfl x hx)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite `h1` using `[← hu v (g.symm x), LinearEquiv.apply_symm_apply]`. Conclude with `h1`. Introduce and unpack `⟨hu, hj, -, hp⟩`. Use `⟨hu, fun a => (hj a).2 _ (Submodule.subset_span ⟨a.castSucc, ?_, rfl⟩), hp⟩` and prove the remaining obligations. Use `show (a : ℕ) < (a : ℕ) + 1`.
-
-Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem mem_NU_iff_mem_Nof {P : LocNG.FPair H r} {S : Frames M.L r k} (c : WCoord P S)
     (f : Fin (r + 1) → V) (g : V ≃ₗ[E] V) :

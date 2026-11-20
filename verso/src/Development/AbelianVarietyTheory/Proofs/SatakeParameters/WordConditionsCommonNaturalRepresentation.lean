@@ -16,7 +16,7 @@ open NumberField IsDedekindDomain GlobalTheory.HTW GlobalTheory.HTW.Rec Formalis
 namespace GlobalTheory.HTW.Rec
 
 /- English proof (translation)
-Unfold `TruncatedSeriesCountingBounds.lowCount lowCount`. Use `congr 1`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem lowCount_eq_smallHodgeTateJumpCountOverLetter {l : ℕ} [Fact l.Prime] {P : LocPrime l} {K LL : FinExt l} (W : Wach P K LL)
     [Fintype (↥K.1 →ₐ[ℚ_[l]] ↥LL.1)] (T : Lat K LL) (a : ZMod (Module.finrank ℚ_[l] ↥(K0 K))) (η : ℕ) :
@@ -25,13 +25,13 @@ theorem lowCount_eq_smallHodgeTateJumpCountOverLetter {l : ℕ} [Fact l.Prime] {
   congr 1
 
 /- English proof (translation)
-Introduce `D L C₀ HW i r ρ π w hw Cx hG hR h7 hF hJ hP h2 hq hd`. Take `⟨ε, κ, hin⟩` from `GlobalTheory.T.hodgeTateJumps_coefExt_of_roomy_adm7 L C₀ i r ρ π w hw Cx hR h7 hF hJ hP`. Set `C : Enl D i w hw` to `⟨Cx.LL, Cx.inc⟩`. Take `⟨g, hg, hwb⟩` from `GlobalTheory.T.wordConditions_at_place_of_frobeniusOrbit L C₀ HW i w hw C hG r ρ π ε κ hR h7 h2 hq hd hin`. Use `⟨ε, g, hg, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsm` using `GlobalTheory.HTW.Rec.recWord_small_pos L C₀ (liftIdx D i) ε g _ hR hg`. Take `⟨hdeg, hloc, hnum⟩` from `hwb`. Use `{ unram := hloc.unram deg := hdeg split := hloc.split t1 := fun T h => ?_ t2 := fun T h => ?_ t2win := fun T h => ?_ num := hnum small := hsm }` and prove the remaining obligations. Take `⟨h1, h2, h3⟩` from `hloc.t1 T h`. Conclude with `⟨h1, h2, h3⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨⟨h1, _, _⟩, h4⟩` from `hloc.t2 T h`. Use `⟨h1, fun ft a => ?_⟩` and prove the remaining obligations. Rewrite using `[lowCount_eq_smallHodgeTateJumpCountOverLetter]`. Conclude with `h4 ft a`. Take `⟨⟨_, h2, h3⟩, _⟩` from `hloc.t2 T h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨h2, h3⟩`.
+A detailed English derivation is pending.
 -/
 theorem recS_wordBase_natural : ∀ {D : D7} (L : SizeData₂ D) (C₀ : ℝ) (HW : HWOf D.loc) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (π : D.nd.X i) (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i)) (Cx : TruncatedSeriesCountingIdentities.CoefExt D i w hw) (hG : Good (D.nbr i w hw).Kw 1 Cx.LL), Roomy L C₀ → LocalSituation.adm7 D → (∀ i, TruncatedSeriesCountingIdentities.FontaineAtPlacesOverL (D := D) i) → LJ.ConclusionJa D → RecS.PtIn i r ρ π → D.nd.l i ∉ D.host.small → D.nd.l i ≠ D.host.q → D.nd.l i ≠ D.host.d → ∃ (ε : ℤˣ) (g : ZMod (RecS.nLet i w hw) → D.R.GG), IsOrbit g (DV.frobG D (D.nd.l i))⁻¹ ∧ RecS.WordBase L HW i r ρ π w hw Cx hG (recWord L (liftIdx D i) ε g) := by
   intro D L C₀ HW i r ρ π w hw Cx hG hR h7 hF hJ hP h2 hq hd

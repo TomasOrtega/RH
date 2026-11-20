@@ -14,9 +14,9 @@ open PositivityTheory.RgBcC PositivityTheory.RgBcC.Fc
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Establish `hf : f = ⇑p` using `funext fun y => (h y).symm`. Substitute `hf` using the available equality. Establish `hc : Continuous (⇑p) ∧ Tendsto (⇑p) (cocompact ℝ) (𝓝 0)` using `⟨p.continuous, p.zero_at_infty'⟩`. Unfold `toC0`. Rewrite using `[dif_pos hc]`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `y`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem toC0_eq_of_coe (p : C₀(ℝ, ℂ)) (f : ℝ → ℂ) (h : ∀ y, p y = f y) : toC0 f = p := by
   have hf : f = ⇑p := funext fun y => (h y).symm
@@ -28,11 +28,11 @@ theorem toC0_eq_of_coe (p : C₀(ℝ, ℂ)) (f : ℝ → ℂ) (h : ∀ y, p y = 
   rfl
 
 /- English proof (translation)
-Establish `hpos : ∀ y : ℝ, (1 + y ^ 2) ≠ 0` using `fun y => by positivity`. Establish `hcont : Continuous (fun y : ℝ => (((1 + y ^ 2)⁻¹ : ℝ) : ℂ))`. Use `Complex.continuous_ofReal.comp ?_` and prove the remaining obligations. Conclude with `(by fun_prop : Continuous fun y : ℝ => 1 + y ^ 2).inv₀ hpos`. Establish `hat : Tendsto (fun y : ℝ => 1 + y ^ 2) (cocompact ℝ) atTop`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Tendsto (fun y : ℝ => ‖y‖ ^ 2) (cocompact ℝ) atTop` using `(tendsto_pow_atTop (by norm_num : (2 : ℕ) ≠ 0)).comp tendsto_norm_cocompact_atTop`. Establish `h2 : Tendsto (fun y : ℝ => 1 + ‖y‖ ^ 2) (cocompact ℝ) atTop` using `tendsto_atTop_add_const_left _ 1 h1`. Simplify using `using h2`. Establish `htend : Tendsto (fun y : ℝ => (((1 + y ^ 2)⁻¹ : ℝ) : ℂ)) (cocompact ℝ) (𝓝 0)`. Establish `h3 : Tendsto (fun y : ℝ => (1 + y ^ 2)⁻¹) (cocompact ℝ) (𝓝 0)` using `tendsto_inv_atTop_zero.comp hat`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : Tendsto (fun y : ℝ => (((1 + y ^ 2)⁻¹ : ℝ) : ℂ)) (cocompact ℝ) (𝓝 ((0 : ℝ) : ℂ))` using `(Complex.continuous_ofReal.tendsto 0).comp h3`. Rewrite `h4` using `[Complex.ofReal_zero]`. Then use the resulting hypothesis. Conclude with `⟨⟨⟨_, hcont⟩, htend⟩, fun y => rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_resolvent_C0 : ∃ r : C₀(ℝ, ℂ), ∀ y, r y = (((1 + y ^ 2)⁻¹ : ℝ) : ℂ) := by
   have hpos : ∀ y : ℝ, (1 + y ^ 2) ≠ 0 := fun y => by positivity
@@ -54,15 +54,15 @@ theorem exists_resolvent_C0 : ∃ r : C₀(ℝ, ℂ), ∀ y, r y = (((1 + y ^ 2)
   exact ⟨⟨⟨_, hcont⟩, htend⟩, fun y => rfl⟩
 
 /- English proof (translation)
-Introduce `n _ _ μ _ E _ Ω T F c hS g T₀ hb N _`. Take `⟨-, -, -, -, -, -, -, -, -, hPW, -⟩` from `hS`. Establish `h0` using `(hPW c g T₀ hb).1 0`. Simplify using `only [pow_zero, one_mul] at h0`. Take `⟨r, hr⟩` from `exists_resolvent_C0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hT : F.Φ r = T` using `F.res r hr`. Set `q : C₀(ℝ, ℂ)` to `⟨⟨hg c g, h0.1⟩, h0.2⟩`. Establish `hq : ∀ y, q y = hg c g y` using `fun y => rfl`. Establish `key : ∀ M : ℕ, ∃ p : C₀(ℝ, ℂ), (∀ y, p y = ((((1 + y ^ 2) ^ M)⁻¹ : ℝ) : ℂ) * hg c g y) ∧ F.Φ p = F.Φ q * T ^ M`. Introduce `M`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `M with`. Consider the case `zero => exact ⟨q, fun y => by simp [hq], by simp⟩`. Consider the case `succ M ih`. Take `⟨p, hp, hΦ⟩` from `ih`. Use `⟨p * r, fun y => ?_, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: (p * r) y = p y * r y` using `rfl`. Rewrite using `[this, hp, hr, pow_succ (1 + y ^ 2) M, mul_inv]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[F.map_mul, hΦ, hT, pow_succ, mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Take `⟨p, hp, hΦ⟩` from `key N`. Rewrite using `[toC0_eq_of_coe p _ hp, toC0_eq_of_coe q _ hq, hΦ]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem phiRes_holds : PhiRes := by
   intro n _ _ μ _ E _ Ω T F c hS g T₀ hb N _

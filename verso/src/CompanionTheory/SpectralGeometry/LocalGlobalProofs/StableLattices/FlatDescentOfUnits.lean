@@ -12,13 +12,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.CompanionTheory.FnDesc
 
 /- English proof (translation)
-Establish `: Surjective (π ∣_ U)` using `IsZariskiLocalAtTarget.restrict (P := @Surjective) ‹_› U`. Establish `p` using `isPullback_morphismRestrict π U`. Establish `: Flat (π ∣_ U)` using `MorphismProperty.of_isPullback (P := @Flat) p.flip ‹_›`. Establish `: LocallyOfFinitePresentation (π ∣_ U)` using `MorphismProperty.of_isPullback (P := @LocallyOfFinitePresentation) p.flip ‹_›`. Take `⟨b, hb⟩` from `GlobalTheory.FunDescent.exists_appTop_eq (π ∣_ U) ((GlobalTheory.FunDescent.res (π ⁻¹ᵁ U)).hom f) (by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `Z g₁ g₂ e`. Establish `k : ∀ g : Z ⟶ (π ⁻¹ᵁ U).toScheme, ⊤ ≤ (g ≫ (π ⁻¹ᵁ U).ι) ⁻¹ᵁ (π ⁻¹ᵁ U)`. Introduce `g`. Simplify using the standard rewrite rules. Use `hf Z (g₁ ≫ (π ⁻¹ᵁ U).ι) (g₂ ≫ (π ⁻¹ᵁ U).ι) (k _) (k _) (by` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, Category.assoc, ← morphismRestrict_ι, reassoc_of% e])`. Rewrite `this` using `[← GlobalTheory.FunDescent.res_comp_appTop _ g₁ _ rfl, ← GlobalTheory.FunDescent.res_comp_appTop _ g₂ _ rfl]`. Conclude with `this)`. Take `⟨a, rfl⟩` from `(GlobalTheory.FunDescent.res_bijective U).2 b`. Use `⟨a, (GlobalTheory.FunDescent.res_bijective _).1 ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← GlobalTheory.FunDescent.res_square_apply, hb]`.
+A detailed English derivation is pending.
 -/
 theorem exists_app_eq_of_lfp {X Y : Scheme.{0}} (π : X ⟶ Y) [Flat π] [Surjective π]
     [LocallyOfFinitePresentation π] (U : Y.Opens) (f : Γ(X, π ⁻¹ᵁ U))
@@ -44,9 +44,9 @@ theorem exists_app_eq_of_lfp {X Y : Scheme.{0}} (π : X ⟶ Y) [Flat π] [Surjec
   rw [← GlobalTheory.FunDescent.res_square_apply, hb]
 
 /- English proof (translation)
-Introduce `P Q f _ _ _ V`. Use `⟨fun a b h => Units.ext (GlobalTheory.FunDescent.app_injective f V (congrArg Units.val h)), fun a ha => ?_⟩` and prove the remaining obligations. Take `⟨t, ht⟩` from `exists_app_eq_of_lfp f V a.val (fun Z g₁ g₂ h₁ h₂ e => by`. Establish `k : ∀ (g : Z ⟶ P) (h : ⊤ ≤ g ⁻¹ᵁ (f ⁻¹ᵁ V)) (z : Z), gm (𝟙 Z) z ⊤ (res h (pullU g _ a)) = gm g z (f ⁻¹ᵁ V) a` using `fun g h z => (gm_res (𝟙 Z) z h trivial _).trans ((gm_pull (𝟙 Z) g z _ (h trivial) _).trans (by`. Rewrite using `[Category.id_comp]))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: res h₁ (pullU g₁ _ a) = res h₂ (pullU g₂ _ a)` using `unit_ext fun z _ => (k g₁ h₁ z).trans ((ha Z g₁ g₂ e z (h₁ trivial)).trans (k g₂ h₂ z).symm)`. Conclude with `congrArg Units.val this)`. Take `⟨s, rfl⟩` from `GlobalTheory.FunDescent.isUnit_of_isUnit_app f V t (ht ▸ a.isUnit)`. Conclude with `⟨s, Units.ext ht⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem units_descend :
     ∀ {P Q : Scheme.{0}} (f : P ⟶ Q), Flat f → LocallyOfFinitePresentation f → Surjective f → ∀ V : Q.Opens,

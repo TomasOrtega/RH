@@ -9,7 +9,7 @@ noncomputable section
 namespace GlobalTheory.FinPl
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp [map_add, hx, hy]`. Consider the case `tmul a m`. Simplify using `[Algebra.TensorProduct.basis_repr_tmul, Algebra.TensorProduct.map_tmul, Algebra.smul_def]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 -/
 theorem tensorProductBasis_repr_map_firstFactor {F E A B : Type} [Field F] [Field E] [Algebra F E] [CommRing A] [Algebra F A]
     [CommRing B] [Algebra F B] {ι : Type} (b : Module.Basis ι F E) (f : A →ₐ[F] B) (x : A ⊗[F] E) (i : ι) :
@@ -22,15 +22,15 @@ theorem tensorProductBasis_repr_map_firstFactor {F E A B : Type} [Field F] [Fiel
     simp [Algebra.TensorProduct.basis_repr_tmul, Algebra.TensorProduct.map_tmul, Algebra.smul_def]
 
 /- English proof (translation)
-Set `b` to `Module.Free.chooseBasis D.host.F D.host.E`. Set `bA` to `Algebra.TensorProduct.basis (AF D.host.F) b`. It suffices to establish `hc : ∀ i, bA.repr a i = 0 by`. Apply `bA.repr.injective` to reduce the goal to its premises. Use extensionality with `i`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the argument to an intermediate assertion. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Simplify using `using hc i`. Introduce `i`. Establish `h1 : fstA D.host.F (bA.repr a i) = 0`. Use `tensorProductBasis_repr_map_firstFactor b (fstA D.host.F) a i` as an intermediate fact. Rewrite using `[← this]`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(Algebra.TensorProduct.basis _ b).repr (infPart D a) i = 0`. Rewrite using `[h0]`. Simplify using `only [map_zero, Finsupp.coe_zero, Pi.zero_apply]`. Establish `h2 : ∀ w : Pl D, evalV D.host.F w (sndA D.host.F (bA.repr a i)) = 0`. Introduce `w`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e1` using `tensorProductBasis_repr_map_firstFactor b (sndA D.host.F) a i`. Establish `e2` using `tensorProductBasis_repr_map_firstFactor b (evalV D.host.F w) (Algebra.TensorProduct.map (sndA D.host.F) (AlgHom.id D.host.F D.host.E) a) i`. Establish `hw' : Algebra.TensorProduct.map (evalV D.host.F w) (AlgHom.id D.host.F D.host.E) (Algebra.TensorProduct.map (sndA D.host.F) (AlgHom.id D.host.F D.host.E) a) = 0` using `hw w`. Rewrite using `[← e1, ← e2, hw', LinearEquiv.map_zero]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Apply `Prod.ext` to reduce the goal to its premises. Conclude with `h1`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `w`. Conclude with `h2 w`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem CMAdele_eq_zero_of_infinite_and_finite_components_zero (D : D7) (a : AE D) (h0 : infPart D a = 0) (hw : ∀ w : Pl D, compAt D w a = 0) :
     a = 0 := by
@@ -62,18 +62,18 @@ theorem CMAdele_eq_zero_of_infinite_and_finite_components_zero (D : D7) (a : AE 
     exact h2 w
 
 /- English proof (translation)
-Simplify using `only [idAt, Submodule.mem_inf, Submodule.mem_iInf, RingHom.mem_ker, Subtype.forall]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_supportedOnPlacesIdeal_iff_components_zero_elsewhere (D : D7) (P : Pl D → Prop) (a : AE D) :
     a ∈ idAt D P ↔ infPart D a = 0 ∧ ∀ w : Pl D, ¬ P w → compAt D w a = 0 := by
   simp only [idAt, Submodule.mem_inf, Submodule.mem_iInf, RingHom.mem_ker, Subtype.forall]
 
 /- English proof (translation)
-Establish `ha : algebraMap (AF D.host.F) (AE D) ε = ε ⊗ₜ[D.host.F] (1 : D.host.E)`. Rewrite using `[Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply]`. Use `⟨?_, fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[ha]`. Express the relevant statement in the definitionally equal form `Algebra.TensorProduct.map (fstA D.host.F) (AlgHom.id D.host.F D.host.E) (ε ⊗ₜ[D.host.F] (1 : D.host.E)) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Algebra.TensorProduct.map_tmul, hε]`. Conclude with `TensorProduct.zero_tmul _ _`. Rewrite using `[ha]`. Express the relevant statement in the definitionally equal form `Algebra.TensorProduct.map (evalV D.host.F w) (AlgHom.id D.host.F D.host.E) (Algebra.TensorProduct.map (sndA D.host.F) (AlgHom.id D.host.F D.host.E) (ε ⊗ₜ[D.host.F] (1 : D.host.E))) = _`. Rewrite using `[Algebra.TensorProduct.map_tmul, Algebra.TensorProduct.map_tmul, hε]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem placeIdempotent_infinite_and_finite_components (D : D7) (v : Pl D) (ε : AF D.host.F) (α : Af D.host.F)
     (hε : ε = pairA D.host.F 0 α) :
@@ -93,13 +93,13 @@ theorem placeIdempotent_infinite_and_finite_components (D : D7) (v : Pl D) (ε :
     rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `ha`. Rewrite `ha` using `[mem_supportedOnPlacesIdeal_iff_components_zero_elsewhere]`. Take `⟨ha0, haw⟩` from `ha`. Rewrite using `[← sub_eq_zero]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Apply `CMAdele_eq_zero_of_infinite_and_finite_components_zero` to reduce the goal to its premises. Rewrite using `[RingHom.map_sub, RingHom.map_mul, h0, ha0, zero_mul, sub_zero]`. Introduce `w`. Rewrite using `[RingHom.map_sub, RingHom.map_mul]`. Distinguish the cases in `h : w = v`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Rewrite using `[c1, one_mul, sub_self]`. Rewrite using `[haw w h, mul_zero, sub_zero]`. Introduce `ha`. Rewrite using `[mem_supportedOnPlacesIdeal_iff_components_zero_elsewhere]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, fun w hw' => ?_⟩` and prove the remaining obligations. Rewrite using `[← ha, RingHom.map_mul, h0, zero_mul]`. Rewrite using `[← ha, RingHom.map_mul, c0 w hw', zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_supportedAtPlace_iff_placeIdempotent_mul (D : D7) (v : Pl D) (e : AE D) (h0 : infPart D e = 0) (c1 : compAt D v e = 1)
     (c0 : ∀ w : Pl D, w ≠ v → compAt D w e = 0) (a : AE D) : a ∈ idAt D (· = v) ↔ e * a = a := by
@@ -122,9 +122,9 @@ theorem mem_supportedAtPlace_iff_placeIdempotent_mul (D : D7) (v : Pl D) (e : AE
     · rw [← ha, RingHom.map_mul, c0 w hw', zero_mul]
 
 /- English proof (translation)
-Rewrite `ha` using `[mem_supportedOnPlacesIdeal_iff_components_zero_elsewhere]`. Take `⟨ha0, haw⟩` from `ha`. Apply `CMAdele_eq_zero_of_infinite_and_finite_components_zero` to reduce the goal to its premises. Rewrite using `[RingHom.map_mul, h0, zero_mul]`. Introduce `w`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[RingHom.map_mul]`. Distinguish the cases in `h : w = v`. Rewrite using `[haw w (fun h' => h' h), mul_zero]`. Rewrite using `[c0 w h, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem placeIdempotent_mul_supportedOffPlace_eq_zero (D : D7) (v : Pl D) (e : AE D) (h0 : infPart D e = 0)
     (c0 : ∀ w : Pl D, w ≠ v → compAt D w e = 0) (a : AE D) (ha : a ∈ idAt D (· ≠ v)) : e * a = 0 := by
@@ -139,9 +139,9 @@ theorem placeIdempotent_mul_supportedOffPlace_eq_zero (D : D7) (v : Pl D) (e : A
     · rw [c0 w h, zero_mul]
 
 /- English proof (translation)
-Introduce `D v ε ⟨α, hε, hv, hw⟩`. Take `⟨h0, hc⟩` from `placeIdempotent_infinite_and_finite_components D v ε α hε`. Establish `c1 : compAt D v (algebraMap (AF D.host.F) (AE D) ε) = 1`. Rewrite using `[hc, hv]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `c0 : ∀ w : Pl D, w ≠ v → compAt D w (algebraMap (AF D.host.F) (AE D) ε) = 0`. Introduce `w h`. Rewrite using `[hc, hw w h, TensorProduct.zero_tmul]`. Conclude with `⟨mem_supportedAtPlace_iff_placeIdempotent_mul D v _ h0 c1 c0, placeIdempotent_mul_supportedOffPlace_eq_zero D v _ h0 c0⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem placeIdem_acts : ∀ (D : D7) (v : Pl D) (ε : AF D.host.F), IsPlaceIdem D v ε →
     (∀ a : AE D, a ∈ idAt D (· = v) ↔ algebraMap (AF D.host.F) (AE D) ε * a = a) ∧

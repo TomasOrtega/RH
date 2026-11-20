@@ -19,9 +19,9 @@ open PositivityTheory.Rg.BcB.G8
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Distinguish the cases in `hs : IsSplitAt w`. Unfold `nrmL locEl`. Rewrite using `[if_pos hs, if_pos hs]`. Unfold `nrmL locEl`. Rewrite using `[if_neg hs, if_neg hs]`.
+Consider separately whether the proposition holds or fails. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Take `⟨-, -, -, hns, -⟩` from `GlobalTheory.ConjAtPlace.main E hU w`. Take `⟨hp, -⟩` from `hns hs`. Rewrite using `[map_mul, thE, GlobalTheory.ThetaPull.map_thetaGL (algebraMap E (w.adicCompletion E)) _ (cj w) (fun x => (hp x).symm)]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem unitae_nrm (hU : Unr E) (n : ℕ) (w : Pl E) (δ : GL (Fin n) E) :
     nrmL n w (locEl n w δ) = GeneralLinearGroup.map (algebraMap E (w.adicCompletion E)) (δ * thE E n δ) := by
@@ -35,25 +35,21 @@ theorem unitae_nrm (hU : Unr E) (n : ℕ) (w : Pl E) (δ : GL (Fin n) E) :
     rw [map_mul, thE, GlobalTheory.ThetaPull.map_thetaGL (algebraMap E (w.adicCompletion E)) _ (cj w) (fun x => (hp x).symm)]
 
 /- English proof (translation)
-Use `filter_upwards [GlobalTheory.EulerTwU.eventually_pc_ratF_mem δ, GlobalTheory.EulerTwU.eventually_pc_ratF_mem (δ * thE E n δ), GlobalTheory.BCT.SepBezout.bezout_eventually E _ hsep] with w h1 h2 h3`. Rewrite `h1`, `h2` using `[GlobalTheory.EulerTwU.pc_ratF]`. Establish `hN` using `unitae_nrm hU n w δ`. Establish `hbez : ∃ u v : (w.adicCompletion E)[X], (∀ i, u.coeff i ∈ w.adicCompletionIntegers E) ∧ (∀ i, v.coeff i ∈ w.adicCompletionIntegers E) ∧ u * (nrmL n w (locEl n w δ)).val.charpoly + v * derivative (nrmL n w (locEl n w δ)).val.charpoly = 1`. Establish `e : (GeneralLinearGroup.map (algebraMap E (w.adicCompletion E)) (δ * thE E n δ)).val.charpoly = (polE δ).map (algebraMap E (w.adicCompletion E))` using `Matrix.charpoly_map _ _`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hN, e]`. Conclude with `h3`. Establish `hy : locEl n w δ ∈ GlobalTheory.LFun.KGL w n`. Unfold `locEl`. Use `split_ifs`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h2`. Conclude with `h1`. Establish `hNK : nrmL n w (locEl n w δ) ∈ GlobalTheory.LFun.KGL w n` using `by rw [hN]; exact h2`. Use `⟨hy, ?_, ?_⟩` and prove the remaining obligations. Introduce `g hg`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Distinguish the cases in `hs : IsSplitAt w`. Establish `hθ : thL n w = MonoidHom.id _` using `by unfold thL; rw [if_pos hs]`. Establish `hnr : nrmL n w (locEl n w δ) = locEl n w δ` using `by unfold nrmL; rw [if_pos hs]`. Rewrite `hg` using `[hθ, MonoidHom.id_apply]`. Rewrite `hbez` using `[hnr]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht, k, hk, hgk⟩` from `GlobalTheory.SplitUniq.splitUniq E n w _ g hy hbez hg`. Use `⟨t, ?_, ?_⟩` and prove the remaining obligations. Use `show t * locEl n w δ = locEl n w δ * thL n w t`. Rewrite using `[hθ, MonoidHom.id_apply]`. Conclude with `ht`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hgk, inv_mul_cancel_left]`. Conclude with `hk`. Take `⟨t, ht, k, hk, hgk⟩` from `GlobalTheory.InertUniq.eq_twCent_mul_KGL E hU n w hs _ g hy hbez hg`. Use `⟨t, ht, ?_⟩` and prove the remaining obligations. Rewrite using `[hgk, inv_mul_cancel_left]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hk`. Introduce `t ht hc`. Establish `ht' : t * locEl n w δ = locEl n w δ * thL n w t` using `ht`. Establish `hcomm : t * nrmL n w (locEl n w δ) = nrmL n w (locEl n w δ) * t`. Distinguish the cases in `hs : IsSplitAt w`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hθ : thL n w = MonoidHom.id _` using `by unfold thL; rw [if_pos hs]`. Rewrite `ht'` using `[hθ, MonoidHom.id_apply]`. Unfold `nrmL`. Rewrite using `[if_pos hs]`. Conclude with `ht'`.
-
-Establish `hθ : thL n w = thetaGL n (cj w)` using `by unfold thL; rw [if_neg hs]`. Take `⟨-, hinv, -⟩` from `GlobalTheory.ConjAtPlace.main E hU w`. Rewrite `ht'` using `[hθ]`. Establish `hth` using `GlobalTheory.ThetaPull.thetaGL_thetaGL (a := n) (cj w) hinv t`. Unfold `nrmL`.
-
-Rewrite using `[if_neg hs]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `GlobalTheory.StabInt.mem_KGL_of_commute E n w _ t hNK hbez hcomm hc`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem unitae_single (hU : Unr E) (n : ℕ) (δ : GL (Fin n) E) (hsep : (polE δ).Separable) :
     ∀ᶠ w : Pl E in cofinite, locEl n w δ ∈ GlobalTheory.LFun.KGL w n ∧
@@ -119,7 +115,7 @@ theorem unitae_single (hU : Unr E) (n : ℕ) (δ : GL (Fin n) E) (hsep : (polE �
     exact GlobalTheory.StabInt.mem_KGL_of_commute E n w _ t hNK hbez hcomm hc
 
 /- English proof (translation)
-Establish `hK` using `h.image continuous_fst`. Use `hK.of_isClosed_subset isClosed_closure (closure_minimal ?_ hK.isClosed)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `⟨t ^ k, subset_closure ⟨k, rfl⟩, by simp⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem unitae_cpt_fst {A B : Type} [Group A] [TopologicalSpace A] [IsTopologicalGroup A] [T2Space A] [Group B]
     [TopologicalSpace B] [IsTopologicalGroup B] (t : A × B) (h : IsCompact (closure (Subgroup.zpowers t : Set (A × B)))) :
@@ -130,7 +126,7 @@ theorem unitae_cpt_fst {A B : Type} [Group A] [TopologicalSpace A] [IsTopologica
   exact ⟨t ^ k, subset_closure ⟨k, rfl⟩, by simp⟩
 
 /- English proof (translation)
-Establish `hK` using `h.image continuous_snd`. Use `hK.of_isClosed_subset isClosed_closure (closure_minimal ?_ hK.isClosed)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `⟨t ^ k, subset_closure ⟨k, rfl⟩, by simp⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem unitae_cpt_snd {A B : Type} [Group A] [TopologicalSpace A] [IsTopologicalGroup A] [Group B]
     [TopologicalSpace B] [IsTopologicalGroup B] [T2Space B] (t : A × B) (h : IsCompact (closure (Subgroup.zpowers t : Set (A × B)))) :
@@ -141,15 +137,13 @@ theorem unitae_cpt_snd {A B : Type} [Group A] [TopologicalSpace A] [IsTopologica
   exact ⟨t ^ k, subset_closure ⟨k, rfl⟩, by simp⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ hU a b S _ δ₁ δ₂ h₁ h₂`. Establish `hs₁ : (polE δ₁).Separable` using `by obtain ⟨-, -, h, -⟩ := h₁; exact h`. Establish `hs₂ : (polE δ₂).Separable` using `by obtain ⟨-, -, h, -⟩ := h₂; exact h`. Establish `hev` using `(unitae_single hU a δ₁ hs₁).and (unitae_single hU b δ₂ hs₂)`. Use `filter_upwards [(Subtype.val_injective (p := (· ∈ S))).tendsto_cofinite.eventually hev] with w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨hy1, hc1, hk1⟩, ⟨hy2, hc2, hk2⟩⟩` from `hw`. Introduce and unpack `y rfl`. Use `⟨Subgroup.mem_prod.2 ⟨hy1, hy2⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨g1, g2⟩ hg`. Establish `hg'` using `Subgroup.mem_prod.1 hg`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨t1, ht1, hk1'⟩` from `hc1 g1 hg'.1`. Take `⟨t2, ht2, hk2'⟩` from `hc2 g2 hg'.2`. Use `⟨(t1, t2), ?_, Subgroup.mem_prod.2 ⟨hk1', hk2'⟩⟩` and prove the remaining obligations. Establish `e1 : t1 * locEl a w.1 δ₁ = locEl a w.1 δ₁ * thL a w.1 t1` using `ht1`. Establish `e2 : t2 * locEl b w.1 δ₂ = locEl b w.1 δ₂ * thL b w.1 t2` using `ht2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show (t1, t2) * (locEl a w.1 δ₁, locEl b w.1 δ₂) = (locEl a w.1 δ₁, locEl b w.1 δ₂) * ((thL a w.1).prodMap (thL b w.1)) (t1, t2)`. Conclude with `Prod.ext e1 e2`. Use `(Subgroup.closure_le _).2 fun t ht => ?_` and prove the remaining obligations. Take `⟨ht1, ht2⟩` from `ht`. Establish `e : t * (locEl a w.1 δ₁, locEl b w.1 δ₂) = (locEl a w.1 δ₁, locEl b w.1 δ₂) * ((thL a w.1).prodMap (thL b w.1)) t` using `ht1`.
-
-Establish `e1 : t.1 ∈ twCent (thL a w.1) (locEl a w.1 δ₁)` using `congrArg Prod.fst e`. Establish `e2 : t.2 ∈ twCent (thL b w.1) (locEl b w.1 δ₂)` using `congrArg Prod.snd e`. Conclude with `Subgroup.mem_prod.2 ⟨hk1 _ e1 (unitae_cpt_fst t ht2), hk2 _ e2 (unitae_cpt_snd t ht2)⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem unitAE_holds : UnitAE := by
   intro E _ _ _ hU a b S _ δ₁ δ₂ h₁ h₂

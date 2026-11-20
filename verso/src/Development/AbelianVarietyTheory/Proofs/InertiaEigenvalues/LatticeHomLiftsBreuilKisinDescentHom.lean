@@ -23,9 +23,9 @@ variable {l : ℕ} [hl : Fact l.Prime] {a : ℕ} [NeZero a] {e : ℕ} [NeZero e]
   {G : Type} [Group G] [TopologicalSpace G]
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul w x`. Simplify using `only [latW, TWact, TensorProduct.map_tmul]`. Use `congr 1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `Subtype.ext (f.equiv g x)`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem latW_TWact {T T' : LocLat G ℚ_[l] K O} (f : LatHom T.L T'.L) (s : GQ l) (g : G)
     (y : TW (OW l O) T) :
@@ -39,7 +39,7 @@ theorem latW_TWact {T T' : LocLat G ℚ_[l] K O} (f : LatHom T.L T'.L) (s : GQ l
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-The claim follows from `I'.j.injective (by rw [h, I.j_act, latW_TWact, I'.j_act, h])`.
+A detailed English derivation is pending.
 -/
 theorem homW_act {P : PhiMod O K l e a ι} {Q : PhiMod O K l e a κ} {T T' : LocLat G ℚ_[l] K O}
     {I : Ident t ϖ P T} {I' : Ident t ϖ Q T'} {f : LatHom T.L T'.L} {F : BK.Hom P Q}
@@ -50,13 +50,13 @@ theorem homW_act {P : PhiMod O K l e a ι} {Q : PhiMod O K l e a κ} {T T' : Loc
 variable [TameDescentExponentData K l e a]
 
 /- English proof (translation)
-Establish `hb : ∀ i : ι, F.app (D₁.desc.act γ (bas i)) = D₂.desc.act γ (F.app (bas i))`. Introduce `i`. Take `⟨g, hg⟩` from `hcov γ`. Establish `m0 : (bas i : Vec K a ι) ∈ D₁.M` using `PhiMod.bas_mem_M _ i`. Establish `m1 : D₁.desc.act γ (bas i) ∈ D₁.M` using `D₁.desc.act_mem_M γ _ m0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `m2 : F.app (bas i) ∈ D₂.M` using `F.app_mem_M m0`. Establish `m3 : D₂.desc.act γ (F.app (bas i)) ∈ D₂.M` using `D₂.desc.act_mem_M γ _ m2`. Establish `m4 : F.app (D₁.desc.act γ (bas i)) ∈ D₂.M` using `F.app_mem_M m1`. Establish `e1` using `R₁.desc g γ hg ⟨_, mem_ME_of_mem_M m0⟩ ⟨_, mem_ME_of_mem_M m1⟩ rfl`. Establish `e2` using `R₂.desc g γ hg ⟨_, mem_ME_of_mem_M m2⟩ ⟨_, mem_ME_of_mem_M m3⟩ rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `homW_toW t ϖ F ⟨_, mem_ME_of_mem_M m1⟩`. Establish `h2` using `homW_toW t ϖ F ⟨_, mem_ME_of_mem_M m0⟩`. Establish `key : toW t ϖ D₂.toPhiMod ⟨_, mem_ME_of_mem_M m4⟩ = toW t ϖ D₂.toPhiMod ⟨_, mem_ME_of_mem_M m3⟩`. Combine the equalities or inequalities in the displayed calculation. Conclude with `congrArg Subtype.val (toW_injective t ϖ _ key)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_sum_bas v, map_sum, map_sum, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[D₁.desc.act_smul_tot, F.app_smul_tot, F.app_smul_tot, D₂.desc.act_smul_tot, hb]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem app_act_of_cover {s : G →* GQ l} {η H η' H' : ℕ} {D₁ : BKDat O K l e a ι η H}
     {D₂ : BKDat O K l e a κ η' H'} {T₁ T₂ : LocLat G ℚ_[l] K O} (R₁ : GalDat t ϖ s D₁ T₁)
@@ -93,11 +93,11 @@ theorem app_act_of_cover {s : G →* GQ l} {η H η' H' : ℕ} {D₁ : BKDat O K
 end General
 
 /- English proof (translation)
-Introduce `BS l _ a e _ _ ϖ LL _ _ η H T₁ T₂ P₁ P₂ f`. Set `f' : LatHom (resF T₁ (ϖ.field a)).L (resF T₂ (ϖ.field a)).L` to `⟨f.f, fun _ x => f.equiv _ x, f.cont, f.T_le⟩`. Take `⟨F, hF⟩` from `GlobalTheory.BKReal.Full.main BS l a e _ _ (thetaW a LL) ϖ _ _ P₁.D.toPhiMod P₂.D.toPhiMod (resF T₁ (ϖ.field a)) (resF T₂ (ϖ.field a)) (P₁.R.I.res (inclG (ϖ.field a)) (continuous_subtype_val.subtype_mk _)) (P₂.R.I.res (inclG (ϖ.field a)) (continuous_subtype_val.subtype_mk _)) P₁. …`. Establish `hF' : IsMapOf P₁.R.I P₂.R.I f F` using `hF`. Establish `hcov : ∀ γ : TameGal ↥LL.1 l e a, ∃ g : Gl l, Covers ↥LL.1 (thetaW a LL) ϖ (sQ l g) γ` using `fun γ => by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨k, -, hc⟩` from `(GlobalTheory.T.galois_eq_mul_kisinInf_tameSemidirect l a e ϖ LL).2.2.1 γ`. Use `⟨⟨k, ?_⟩, hc⟩` and prove the remaining obligations. Use `show k ∈ (⊥ : IntermediateField ℚ_[l] (Om l)).fixingSubgroup`. Rewrite using `[IntermediateField.fixingSubgroup_bot]`. Discharge the goal by the elementary cases of `trivial`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Supply the required witnesses or components.
 
-Conclude with `⟨⟨F, app_act_of_cover P₁.R P₂.R hF' hcov⟩, hF'⟩`.
+A detailed English derivation is pending.
 -/
 theorem main : GlobalTheory.Published.BhattScholzeCrystallineLattices → ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e]
     (ϖ : PiSys l e) (LL : FinExt l) [HasUnr a LL] [TameDescentExponentData ↥LL.1 l e a] (η H : ℕ) (T₁ T₂ : QLat LL)

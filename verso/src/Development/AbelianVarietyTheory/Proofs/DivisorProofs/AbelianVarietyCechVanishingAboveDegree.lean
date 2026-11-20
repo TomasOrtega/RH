@@ -13,11 +13,11 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.AmpleGen
 
 /- English proof (translation)
-Introduce `K _ _ A _ hA`. Use `haveI : IsProper A.hom := hA.proper`. Use `haveI : CompactSpace A.left := QuasiCompact.compactSpace_of_compactSpace A.hom`. Establish `hsep : IsSeparated A.hom` using `inferInstance`. Take `⟨m, V, hV, hc⟩` from `GlobalTheory.exists_fin_affine_cover (X := A.left) (V := ⊤) (by simpa using isCompact_univ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨m, fun P hP j hj hNV => ?_⟩` and prove the remaining obligations. Take `⟨κ, _, _, W, hW, hWc, hne⟩` from `hNV`. Take `⟨e⟩` from `GlobalTheory.AbLaw.cechLB_homology_equiv_of_affine_covers K A.left A.hom P κ W (Fin m) V hP hsep hW hWc hV hc j`. Apply `hne` to reduce the goal to its premises. Establish `hz : IsZero ((GlobalTheory.AbLaw.cechLB A.hom P V).X j)` using `GlobalTheory.AbLaw.isZero_cechLB_X A.hom P V (by simpa using hj)`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : IsZero ((GlobalTheory.AbLaw.cechLB A.hom P V).homology j)` using `(HomologicalComplex.exactAt_iff_isZero_homology _ _).1 (HomologicalComplex.ExactAt.of_isZero hz)`. Establish `: Subsingleton ((GlobalTheory.AbLaw.cechLB A.hom P V).homology j)` using `ModuleCat.isZero_iff_subsingleton.1 h0`. Conclude with `(HomologicalComplex.exactAt_iff_isZero_homology _ _).2 (ModuleCat.isZero_iff_subsingleton.2 e.toEquiv.subsingleton)`.
+A detailed English derivation is pending.
 -/
 theorem not_NV_of_ge :
     ∀ (K : Type) [Field K] [IsAlgClosed K] (A : Over (Sp K)) [GrpObj A], IsAbelianScheme A →

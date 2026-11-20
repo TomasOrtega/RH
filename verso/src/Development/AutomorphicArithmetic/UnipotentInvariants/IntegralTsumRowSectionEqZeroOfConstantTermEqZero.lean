@@ -25,27 +25,27 @@ private def Nq (E : Type) [Field E] [NumberField E] : Subgroup (G1 E) where
     exact ⟨-a, by simp only [UpperTheory.ConvolutionTheory.R2.rt, map_neg, M.nU_neg]⟩
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨ξ, rfl⟩`. Conclude with `M.nU_rt_mem ξ`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem Nq_le : Nq E ≤ Gam E := by
   rintro _ ⟨ξ, rfl⟩
   exact M.nU_rt_mem ξ
 
 /- English proof (translation)
-The claim follows from `DiscreteTopology.of_continuous_injective (f := Subgroup.inclusion Nq_le) (continuous_subtype_val.subtype_mk _) (Subgroup.inclusion_injective Nq_le)`.
+A detailed English derivation is pending.
 -/
 private theorem Nq_disc : DiscreteTopology (Nq E) :=
   DiscreteTopology.of_continuous_injective (f := Subgroup.inclusion Nq_le)
     (continuous_subtype_val.subtype_mk _) (Subgroup.inclusion_injective Nq_le)
 
 /- English proof (translation)
-The claim follows from `(Subgroup.inclusion_injective Nq_le).countable`.
+A detailed English derivation is pending.
 -/
 private theorem Nq_count : Countable (Nq E) :=
   (Subgroup.inclusion_injective Nq_le).countable
 
 /- English proof (translation)
-Introduce `a b h`. Establish `h1 : (nU (rt a : A E) : G1 E) 0 1 = (nU (rt b : A E) : G1 E) 0 1`. Rewrite using `[show (nU (rt a : A E) : G1 E) = nU (rt b : A E) from h]`. Establish `h2 : (rt a : A E) = rt b` using `by simpa [nU] using h1`. Conclude with `AdeleRing.algebraMap_injective (𝓞 E) E h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem nU_inj : Function.Injective (fun ξ : E => (nU (rt ξ : A E) : G1 E)) := by
   intro a b h
@@ -55,19 +55,17 @@ private theorem nU_inj : Function.Injective (fun ξ : E => (nU (rt ξ : A E) : G
   exact AdeleRing.algebraMap_injective (𝓞 E) E h2
 
 /- English proof (translation)
-Rewrite using `[← M.nU_add, ← M.nU_add, add_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem nU_comm (a b : A E) : nU a * nU b = nU b * nU a := by
   rw [← M.nU_add, ← M.nU_add, add_comm]
 
 /- English proof (translation)
-Use `haveI := Nq_disc (E := E)`. Take `⟨D, hD, hu, hf⟩` from `GlobalTheory.exists_isFundamentalDomain_subgroup (Nq E)`. Use `⟨D, hD, ⟨measurable_one.indicator hD, fun g => ?_⟩, hf⟩` and prove the remaining obligations. Take `⟨n, hn, huniq⟩` from `hu g`. Take `⟨ξ₀, hξ₀⟩` from `n.2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hn' : (nU (rt ξ₀ : A E) : G1 E) * g ∈ D`. Establish `: (n : G1 E) * g ∈ D` using `hn`. Rewrite `this` using `[← hξ₀]`. Then use the resulting hypothesis. Rewrite using `[tsum_eq_single ξ₀]`. Rewrite using `[Set.indicator_of_mem hn']`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Introduce `ξ hξ`. Use `Set.indicator_of_notMem (fun hmem => hξ ?_) _` and prove the remaining obligations. Establish `h1 : (⟨nU (rt ξ : A E), ⟨ξ, rfl⟩⟩ : Nq E) = n` using `huniq _ hmem`. Establish `h2 : (nU (rt ξ : A E) : G1 E) = n` using `congrArg Subtype.val h1`.
-
-Conclude with `nU_inj (h2.trans hξ₀.symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem exDN : ∃ S : Set (G1 E), MeasurableSet S ∧ M.NWt (S.indicator 1) ∧
     ∀ μ : Measure (G1 E), IsFundamentalDomain (Nq E) S μ := by
@@ -89,17 +87,15 @@ private theorem exDN : ∃ S : Set (G1 E), MeasurableSet S ∧ M.NWt (S.indicato
     exact nU_inj (h2.trans hξ₀.symm)
 
 /- English proof (translation)
-Establish `hc` using `(UpperTheory.ConvolutionTheory.R2.M.rowCosets E).2 σ hσ`. Use `haveI := N₀.haar`. Set `e : ({r : Fin 2 → E // r ≠ 0} × E) → Gam E` to `fun p => ⟨nU (rt p.2) * ratS E (σ p.1), (Gam E).mul_mem (M.nU_rt_mem _) ⟨_, rfl⟩⟩`. Establish `he : Function.Bijective e`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p q h`. Take `⟨p0, _, hp⟩` from `hc (e p)`. Conclude with `(hp p rfl).trans (hp q (congrArg Subtype.val h)).symm`. Introduce `γ`. Take `⟨p, hp, _⟩` from `hc γ`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨p, Subtype.ext hp.symm⟩`. Establish `key : ∀ g : G1 E, ∑' γ : Gam E, u (γ • g) * β (γ • g) = ∑' r, u (ratS E (σ r) * g)`. Introduce `g`. Rewrite using `[← (Equiv.ofBijective e he).tsum_eq, ENNReal.tsum_prod']`. Use `tsum_congr fun r => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : ∀ ξ : E, u ((Equiv.ofBijective e he (r, ξ)) • g) * β ((Equiv.ofBijective e he (r, ξ)) • g) = u (ratS E (σ r) * g) * β (nU (rt ξ) * (ratS E (σ r) * g))`. Introduce `ξ`. Establish `h2 : (Equiv.ofBijective e he (r, ξ)) • g = nU (rt ξ) * (ratS E (σ r) * g)`. Express the relevant statement in the definitionally equal form `(nU (rt ξ) * ratS E (σ r)) * g = _`. Rewrite using `[mul_assoc]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[h2, hinv]`. Repeatedly rewrite using `[h1]`. Rewrite using `[ENNReal.tsum_mul_left, hβ.2, mul_one]`. Establish `hmeas : ∀ γ : Gam E, Measurable fun g : G1 E => u (γ • g) * β (γ • g)` using `fun γ => (hu.mul hβ.1).comp (measurable_const_smul γ)`. Rewrite using `[N₀.fund.lintegral_eq_tsum'', ← lintegral_tsum fun γ => (hmeas γ).aemeasurable]`.
-
-Conclude with `lintegral_congr key`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cosetE (N₀ : MeasE E) (σ) (β u : G1 E → ℝ≥0∞) (hσ : M.RowSec (F := E) σ) (hβ : M.NWt β)
     (hu : Measurable u) (hinv : ∀ (ξ : E) g, u (nU (rt ξ) * g) = u g) :
@@ -135,7 +131,7 @@ private theorem cosetE (N₀ : MeasE E) (σ) (β u : G1 E → ℝ≥0∞) (hσ :
   exact lintegral_congr key
 
 /- English proof (translation)
-Establish `h1` using `h.image_of_equiv (ν := μ) (Equiv.mulLeft (nU b)) (measurePreserving_mul_left μ (nU b)⁻¹).quasiMeasurePreserving (Equiv.refl _) (by`. Introduce and unpack `⟨_, ξ, rfl⟩ x`. Express the relevant statement in the definitionally equal form `nU b * (nU (rt ξ) * x) = nU (rt ξ) * (nU b * x)`. Rewrite using `[← mul_assoc, ← mul_assoc, nU_comm])`. Conclude with `h1`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem shiftFd (μ : Measure (G1 E)) [μ.IsHaarMeasure] {S : Set (G1 E)}
     (h : IsFundamentalDomain (Nq E) S μ) (b : A E) :
@@ -148,7 +144,7 @@ private theorem shiftFd (μ : Measure (G1 E)) [μ.IsHaarMeasure] {S : Set (G1 E)
   exact h1
 
 /- English proof (translation)
-Use `haveI := Nq_count (E := E)`. Rewrite using `[← (measurePreserving_mul_left μ (nU b)).setIntegral_image_emb (MeasurableEquiv.mulLeft (nU b)).measurableEmbedding w S]`. Use `(shiftFd μ hS b).setIntegral_eq hS ?_` and prove the remaining obligations. Introduce and unpack `⟨_, ξ, rfl⟩ x`. Conclude with `hw ξ x`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem moveInt (μ : Measure (G1 E)) [μ.IsHaarMeasure] {S : Set (G1 E)}
     (hS : IsFundamentalDomain (Nq E) S μ) (b : A E) (w : G1 E → ℂ)
@@ -162,7 +158,7 @@ private theorem moveInt (μ : Measure (G1 E)) [μ.IsHaarMeasure] {S : Set (G1 E)
   exact hw ξ x
 
 /- English proof (translation)
-Use `haveI := Nq_count (E := E)`. Rewrite using `[(measurePreserving_mul_left μ (nU b)).setLIntegral_comp_emb (MeasurableEquiv.mulLeft (nU b)).measurableEmbedding w S]`. Use `(shiftFd μ hS b).setLIntegral_eq hS w ?_` and prove the remaining obligations. Introduce and unpack `⟨_, ξ, rfl⟩ x`. Conclude with `hw ξ x`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem moveL (μ : Measure (G1 E)) [μ.IsHaarMeasure] {S : Set (G1 E)}
     (hS : IsFundamentalDomain (Nq E) S μ) (b : A E) (w : G1 E → ℝ≥0∞)
@@ -176,17 +172,15 @@ private theorem moveL (μ : Measure (G1 E)) [μ.IsHaarMeasure] {S : Set (G1 E)}
   exact hw ξ x
 
 /- English proof (translation)
-Set `f : G1 E → ℂ` to `fun x => a x * c x`. Establish `hfI : ∀ (ξ : E) g, f (nU (rt ξ) * g) = f g` using `fun ξ g => by simp only [f, haI, hcI]`. Set `ρ : Measure (A E)` to `(adeleMeasure E).restrict (fundamentalSet E)`. Use `haveI : IsProbabilityMeasure ρ := ⟨by simp [ρ, adeleMeasure_fundamentalSet]⟩`. Set `F : A E → G1 E → ℂ` to `fun b x => a x * c (nU b * x)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hFm : Measurable (Function.uncurry F)`. Establish `hg : Measurable fun p : A E × G1 E => nU p.1 * p.2` using `((M.continuous_nU.comp continuous_fst).mul continuous_snd).measurable`. Conclude with `(ha.comp measurable_snd).mul (hc.comp hg)`. Establish `hF : ∀ b x, F b x = f (nU b * x)` using `fun b x => by simp only [F, f, haI]`. Establish `hInt : Integrable (Function.uncurry F) (ρ.prod (μ.restrict S))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨hFm.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Establish `h1 : ∫⁻ p, ‖Function.uncurry F p‖ₑ ∂(ρ.prod (μ.restrict S)) = ∫⁻ x in S, ‖f x‖ₑ ∂μ`. Rewrite using `[lintegral_prod _ hFm.enorm.aemeasurable]`. Establish `h2 : ∀ b, ∫⁻ x, ‖Function.uncurry F (b, x)‖ₑ ∂(μ.restrict S) = ∫⁻ x in S, ‖f x‖ₑ ∂μ` using `fun b => by`. Simplify using `only [Function.uncurry, hF]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `moveL μ hS b (fun x => ‖f x‖ₑ) (fun ξ g => by simp only [hfI])`. Simplify using `only [h2, lintegral_const, measure_univ, mul_one]`. Conclude with `lt_top_iff_ne_top.2 (h1 ▸ hfin)`. Establish `hswap` using `integral_integral_swap hInt`. Establish `hl : ∫ b, ∫ x, F b x ∂(μ.restrict S) ∂ρ = ∫ x in S, f x ∂μ`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : ∀ b, ∫ x, F b x ∂(μ.restrict S) = ∫ x in S, f x ∂μ` using `fun b => by`. Simplify using `only [hF]`. Conclude with `moveInt μ hS b f hfI`. Simplify using `only [h2, integral_const, probReal_univ, one_smul]`. Establish `hr : ∫ x, ∫ b, F b x ∂ρ ∂(μ.restrict S) = 0`.
-
-Simplify using `only [F, ρ, integral_const_mul, h0, mul_zero, integral_zero]`. Conclude with `hl.symm.trans (hswap.trans hr)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem van (μ : Measure (G1 E)) [μ.IsHaarMeasure] {S : Set (G1 E)}
     (hS : IsFundamentalDomain (Nq E) S μ) (a c : G1 E → ℂ) (ha : Measurable a) (hc : Measurable c)
@@ -225,17 +219,15 @@ private theorem van (μ : Measure (G1 E)) [μ.IsHaarMeasure] {S : Set (G1 E)}
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `E _ _ N σ A c hσ hA hc hAI hcI hc0 hfin`. Use `haveI : Countable E := Finsupp.Countable.of_moduleFinite (R := ℚ)`. Use `haveI := N.haar`. Take `⟨S, hSm, hβ, hS⟩` from `exDN (E := E)`. Establish `hcN : ∀ (ξ : E) x, c (nU (rt ξ) * x) = c x` using `fun ξ x => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[← M.ratS_up ξ]`. Conclude with `hcI _ x`. Set `f : G1 E → ℂ` to `fun x => A x * c x`. Establish `hf : Measurable f` using `hA.mul hc`. Establish `hfI : ∀ (ξ : E) g, f (nU (rt ξ) * g) = f g` using `fun ξ g => by simp only [f, hAI, hcN]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hL : ∀ u : G1 E → ℝ≥0∞, Measurable u → (∀ (ξ : E) g, u (nU (rt ξ) * g) = u g) → ∫⁻ g in N.D, ∑' r, u (ratS E (σ r) * g) ∂N.μ = ∫⁻ g in S, u g ∂N.μ`. Introduce `u hu hi`. Rewrite using `[← cosetE N σ _ u hσ hβ hu hi, ← lintegral_indicator hSm]`. Use `lintegral_congr fun g => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases hg : g ∈ S <;> simp [hg]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hsw : ∀ r x, A (ratS E (σ r) * x) * c x = f (ratS E (σ r) * x)` using `fun r x => by`. Simplify using `only [f, hcI]`. Simplify using `only [hsw] at hfin ⊢`. Establish `hfinS : ∫⁻ x in S, ‖f x‖ₑ ∂N.μ ≠ ⊤`. Rewrite using `[← hL (fun x => ‖f x‖ₑ) hf.enorm (fun ξ g => by simp only [hfI])]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hfin`. Set `e : {r : Fin 2 → E // r ≠ 0} → G1 E → G1 E` to `fun r g => ratS E (σ r) * g`. Establish `he : ∀ r, Measurable (e r)` using `fun r => measurable_const_mul _`. Establish `hSS` using `M.sumSide (G1 E) {r : Fin 2 → E // r ≠ 0} (N.μ.restrict N.D) e he`. Establish `hT` using `M.transfer (m := Measure.sum fun i => (N.μ.restrict N.D).map (e i)) (n := N.μ.restrict S) hf hf (fun φ hφ => (hSS.1 _ (hφ.comp hf)).trans (hL _ (hφ.comp hf) (fun ξ g => by simp only [Function.comp, hfI])))`.
-
-Establish `hI : Integrable f (N.μ.restrict S)` using `⟨hf.aestronglyMeasurable, lt_top_iff_ne_top.2 hfinS⟩`. Take `⟨-, -, h3⟩` from `hSS.2 f hf (hT.1.2 hI)`. Conclude with `h3.trans (hT.2.trans (van N.μ (hS _) A c hA hc hAI hcN hc0 hfinS))`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.integral_tsum_rowSection_eq_zero_of_constantTerm_eq_zero :
     ∀ {E : Type} [Field E] [NumberField E] (N : MeasE E) (σ : {r : Fin 2 → E // r ≠ 0} → Matrix.SpecialLinearGroup (Fin 2) E) (A c : G1 E → ℂ), M.RowSec σ → Measurable A → Measurable c → (∀ b x, A (nU b * x) = A x) → (∀ γ x, c (ratS E γ * x) = c x) → (∀ x, ∫ b in fundamentalSet E, c (nU b * x) ∂(adeleMeasure E) = 0) → (∫⁻ x in N.D, ∑' r, ‖A (ratS E (σ r) * x) * c x‖ₑ ∂N.μ) ≠ ⊤ → ∫ x in N.D, ∑' r, A (ratS E (σ r) * x) * c x ∂N.μ = 0 := by

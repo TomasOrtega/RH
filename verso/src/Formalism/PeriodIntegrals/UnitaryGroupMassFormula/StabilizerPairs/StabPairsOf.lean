@@ -9,11 +9,9 @@ namespace PI.StabPairsW
 open Formalism.QuantumDeterminants Formalism.FourierDecayAlt Formalism.FourierDecayAlt.C2
 
 /- English proof (translation)
-Introduce `k r z z' γ hs hp`. Establish `hinj : ∀ ρ1 ∈ Rst k r z z' γ, ∀ ρ2 ∈ Rst k r z z' γ, pairMap k r z z' γ ρ1 = pairMap k r z z' γ ρ2 → ρ1 = ρ2`. Introduce `ρ1 h1' ρ2 h2' heq`. Combine the equalities or inequalities in the displayed calculation. Use `⟨⟨fun ρ hρ => h1 k r z z' γ hs hp ρ hρ, fun ρ1 h1' ρ2 h2' heq => hinj ρ1 h1' ρ2 h2' heq, fun p hp' => ⟨rhoOf k r z z' γ p.1 p.2, (h3 k r z z' γ hs hp p hp').1, (h3 k r z z' γ hs hp p hp').2⟩⟩, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `ρ1 h1' ρ2 h2' heq`. Apply `hinj ρ1 h1' ρ2 h2'` to reduce the goal to its premises. Conclude with `((h4 k r z z' γ hs hp _ (h1 k r z z' γ hs hp ρ1 h1') _ (h1 k r z z' γ hs hp ρ2 h2')).1 heq)`. Introduce `ρ1 h1' ρ2 h2' heq`. Apply `hinj ρ1 h1' ρ2 h2'` to reduce the goal to its premises.
-
-Conclude with `((h4 k r z z' γ hs hp _ (h1 k r z z' γ hs hp ρ1 h1') _ (h1 k r z z' γ hs hp ρ2 h2')).2 heq)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem stabPairs_of (h1 : MapsStep) (h2 : PairFormula) (h3 : ConverseStep) (h4 : CompDet) :
     Formalism.FourierDecayAlt.C2.CurvatureConditionOneClauseThree := by

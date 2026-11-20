@@ -13,19 +13,17 @@ private lemma sec_comp {A B C : Shv ℤ} (p : A ⟶ B) (q : B ⟶ C) {V : Scheme
 
 set_option backward.isDefEq.respectTransparency false in
 /- English proof (translation)
-Establish `hinj : ∀ U : Scheme, Function.Injective (Sec.map (resι ℤ F) (U` using `U)) := fun U => (GlobalTheory.T.chosenInjectiveResolutionEtaleSheaf_sections_exactness ℤ F U).2.1`. Establish `hex : ∀ (U : Scheme) (x : Sec M U), ∃ a : Sec F U, Sec.map (resι ℤ F) a = Sec.map g x`. Introduce `U x`. Use `((GlobalTheory.T.chosenInjectiveResolutionEtaleSheaf_sections_exactness ℤ F U).1 _).1 ?_` and prove the remaining obligations. Rewrite using `[← sec_comp, hg]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Set `φ : ∀ U : Scheme, Sec M U → Sec F U` to `fun U x => (hex U x).choose`. Establish `hφ : ∀ U x, Sec.map (resι ℤ F) (φ U x) = Sec.map g x` using `fun U x => (hex U x).choose_spec`. Set `η : M.obj ⟶ F.obj` to `{ app := fun U => ModuleCat.ofHom { toFun := φ U.unop map_add' := fun x y => hinj _ (by`. Rewrite using `[hφ]`.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Use `show (ModuleCat.Hom.hom _) (x + y) = (ModuleCat.Hom.hom _) (φ _ x + φ _ y)`. Rewrite using `[map_add, map_add]`. Conclude with `congrArg₂ (· + ·) (hφ _ x).symm (hφ _ y).symm)`. Use the proof step `map_smul' := fun r x => hinj _ (by`. Rewrite using `[hφ, RingHom.id_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e1` using `(ModuleCat.Hom.hom (g.hom.app U)).map_smul r x`. Establish `e2` using `(ModuleCat.Hom.hom ((resι ℤ F).hom.app U)).map_smul r (φ _ x)`. Conclude with `e1.trans ((congrArg _ (hφ _ x).symm).trans e2.symm)) }`. Use `naturality := by`. Introduce `U V h`.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use extensionality with `x`. Apply `hinj` to reduce the goal to its premises. Establish `n1` using `congrArg (fun k => ModuleCat.Hom.hom k x) (g.hom.naturality h)`. Establish `n2` using `congrArg (fun k => ModuleCat.Hom.hom k (φ _ x)) ((resι ℤ F).hom.naturality h)`. Simplify using `only [ModuleCat.hom_comp, LinearMap.comp_apply] at n1 n2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show Sec.map (resι ℤ F) (φ _ ((ModuleCat.Hom.hom (M.obj.map h)) x)) = Sec.map (resι ℤ F) ((ModuleCat.Hom.hom (F.obj.map h)) (φ _ x))`. Rewrite using `[hφ]`. Use `n1.trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ n2.symm` and prove the remaining obligations. Conclude with `congrArg _ (hφ _ x).symm }`.
-
-Use `⟨⟨η⟩, (GlobalTheory.T.bigEtaleModuleSheaf_mono_epi_iff_sections ℤ (⟨η⟩ ≫ resι ℤ F)).2.2.2 g (fun U a => ?_)⟩` and prove the remaining obligations. Rewrite using `[sec_comp]`. Conclude with `hφ U a`.
+A detailed English derivation is pending.
 -/
 private lemma exists_lift {M F : Shv ℤ} (g : M ⟶ (res ℤ F).X 0) (hg : g ≫ (res ℤ F).d 0 1 = 0) :
     ∃ f : M ⟶ F, f ≫ resι ℤ F = g := by
@@ -71,7 +69,7 @@ private lemma exists_lift {M F : Shv ℤ} (g : M ⟶ (res ℤ F).X 0) (hg : g �
 
 set_option backward.isDefEq.respectTransparency false in
 /- English proof (translation)
-Rewrite using `[HomologicalComplex.comp_f, ← Category.assoc]`. Establish `h : sglι M ≫ ((CochainComplex.singleFunctor (Shv ℤ) 0).map f).f 0 = f ≫ sglι F`. Simplify using `[sglι, CochainComplex.singleFunctor, CochainComplex.singleFunctors, HomologicalComplex.single_map_f_self]`. Rewrite using `[h, Category.assoc, (GlobalTheory.T.chosenInjectiveResolution_etaleSheaf_properties ℤ F).2.2.2.2.1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private lemma sgl_f {M F : Shv ℤ} (f : M ⟶ F) :
     sglι M ≫ ((CochainComplex.singleFunctor (Shv ℤ) 0).map f ≫ resAug F).f 0 = f ≫ resι ℤ F := by
@@ -82,25 +80,23 @@ private lemma sgl_f {M F : Shv ℤ} (f : M ⟶ F) :
 
 set_option backward.isDefEq.respectTransparency false in
 /- English proof (translation)
-Introduce `M F`. Establish `hz : ∀ p : ℤ, p ≠ 0 → IsZero ((sgl M).X p)` using `fun p hp => HomologicalComplex.isZero_single_obj_X _ _ _ _ hp`. Establish `hL : IsZero ((res ℤ F).X (-1))` using `by haveI := (GlobalTheory.T.chosenInjectiveResolution_etaleSheaf_properties ℤ F).2.2.1`. Conclude with `CochainComplex.isZero_of_isStrictlyGE _ 0 (-1) (by norm_num)`. Establish `hβ0 : ∀ β : Cochain (sgl M) (res ℤ F) (-1), β = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `β`. Use `Cochain.ext _ _ (fun p q hpq => ?_)` and prove the remaining obligations. Distinguish the cases in `hp : p = 0`. Substitute `hp` using the available equality. Take `rfl : q = -1` from `by omega`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hL.eq_of_tgt _ _`. Conclude with `(hz p hp).eq_of_src _ _`. Establish `hcob : ∀ x : Cocycle (sgl M) (res ℤ F) 0, x ∈ coboundaries (sgl M) (res ℤ F) 0 → x = 0`. Introduce `x hx`. Take `⟨β, hβ⟩` from `(mem_coboundaries_iff x (-1) (by norm_num)).1 hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Apply `Cocycle.ext` to reduce the goal to its premises. Rewrite using `[← hβ, hβ0 β, δ_zero]`. Both sides reduce to the same expression. Establish `hmono : Mono (resι ℤ F)` using `(GlobalTheory.T.chosenInjectiveResolution_etaleSheaf_properties ℤ F).2.2.2.2.2.1`. Establish `hsg : IsIso (sglι M)` using `by dsimp [sglι] infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify by unfolding definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `f f' h`. Establish `h1 : Cocycle.ofHom ((CochainComplex.singleFunctor (Shv ℤ) 0).map f ≫ resAug F) = Cocycle.ofHom ((CochainComplex.singleFunctor (Shv ℤ) 0).map f' ≫ resAug F)`. Use `hcob _ ((CohomologyClass.mk_eq_zero_iff _).1 (by rw [CohomologyClass.mk_sub]; exact sub_eq_zero.2 h))` as an intermediate fact. Conclude with `sub_eq_zero.1 this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h2` using `congrArg (fun x : Cocycle (sgl M) (res ℤ F) 0 => (x : Cochain (sgl M) (res ℤ F) 0).v 0 0 (add_zero 0)) h1`. Simplify using `only [Cocycle.ofHom_coe, Cochain.ofHom_v] at h2`. Apply `(cancel_mono (resι ℤ F)).1` to reduce the goal to its premises. Rewrite using `[← sgl_f, ← sgl_f, h2]`. Introduce `c`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨z, rfl⟩` from `CohomologyClass.mk_surjective c`. Establish `hz1 : (z : Cochain (sgl M) (res ℤ F) 0).v 0 0 (add_zero 0) ≫ (res ℤ F).d 0 1 = 0`. Establish `e` using `congrArg (fun w : Cochain (sgl M) (res ℤ F) 1 => w.v 0 1 (zero_add 1)) ((Cocycle.mem_iff 0 1 (zero_add 1) _).1 z.2)`. Simplify using `only [δ_zero_cochain_v, Cochain.zero_v] at e`. Rewrite `e` using `[(hz 1 one_ne_zero).eq_of_tgt ((sgl M).d 0 1) 0, zero_comp, sub_zero]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Take `⟨f, hf⟩` from `exists_lift (sglι M ≫ (z : Cochain (sgl M) (res ℤ F) 0).v 0 0 (add_zero 0)) (by rw [Category.assoc, hz1, comp_zero])`. Use `⟨f, ?_⟩` and prove the remaining obligations. Use `show CohomologyClass.mk _ = CohomologyClass.mk z`. Use `congr 1`. Apply `Cocycle.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Consider separately whether the proposition holds or fails.
 
-Use `Cochain.ext _ _ (fun p q hpq => ?_)` and prove the remaining obligations. Rewrite `hpq` using `[add_zero]`. Substitute `hpq` using the available equality. Distinguish the cases in `hp : p = 0`. Substitute `hp` using the available equality.
-
-Rewrite using `[Cocycle.ofHom_coe, Cochain.ofHom_v, ← cancel_epi (sglι M), sgl_f, hf]`. Conclude with `(hz p hp).eq_of_src _ _`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.bijective_cl_hypercohomology_singleton_zero :
     ∀ (M F : Shv ℤ), Function.Bijective (cl : (M ⟶ F) → HK ℤ (sgl M) F 0) := by

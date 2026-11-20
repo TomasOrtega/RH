@@ -16,13 +16,13 @@ def evalChar (F : Type) [Field F] (N : ℕ) (α : X) : TorChar X F N →* Fˣ :=
   MonoidHom.mk' (fun τ => τ.1 (Multiplicative.ofAdd α)) fun _ _ => rfl
 
 /- English proof (translation)
-The claim follows from `map_mul τ.1 _ _`.
+A detailed English derivation is pending.
 -/
 theorem evalChar_add (α β : X) (τ : TorChar X F N) :
     evalChar F N (α + β) τ = evalChar F N α τ * evalChar F N β τ := map_mul τ.1 _ _
 
 /- English proof (translation)
-Establish `h : evalChar F N (N • mu) τ = 1` using `(map_pow τ.1 (Multiplicative.ofAdd mu) N).trans (DFunLike.congr_fun (show τ.1 ^ N = 1 from τ.2) _)`. Rewrite using `[evalChar_add, h, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem evalChar_add_nsmul (α mu : X) (τ : TorChar X F N) : evalChar F N (α + N • mu) τ = evalChar F N α τ := by
   have h : evalChar F N (N • mu) τ = 1 :=
@@ -30,13 +30,13 @@ theorem evalChar_add_nsmul (α mu : X) (τ : TorChar X F N) : evalChar F N (α +
   rw [evalChar_add, h, mul_one]
 
 /- English proof (translation)
-Establish `: NeZero (N : F)` using `⟨hN⟩`. Establish `hN0 : N ≠ 0` using `by rintro rfl; exact hN Nat.cast_zero`. Establish `: NeZero N` using `⟨hN0⟩`. Set `K : AddSubgroup X` to `(nsmulAddMonoidHom N : X →+ X).range`. Establish `hK : ∀ q : X ⧸ K, N • q = 0` using `fun q => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨x, rfl⟩` from `QuotientAddGroup.mk_surjective q`. Rewrite using `[← QuotientAddGroup.mk_nsmul, QuotientAddGroup.eq_zero_iff]`. Conclude with `⟨x, rfl⟩`. Establish `: Module.Finite ℤ (X ⧸ K)` using `Module.Finite.of_surjective (QuotientAddGroup.mk' K).toIntLinearMap (QuotientAddGroup.mk'_surjective K)`. Establish `: Finite (X ⧸ K)` using `Module.finite_of_fg_torsion _ fun q => ⟨⟨(N : ℤ), mem_nonZeroDivisors_of_ne_zero (by exact_mod_cast hN0)⟩, (natCast_zsmul q N).trans (hK q)⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : HasEnoughRootsOfUnity F N` using `inferInstance`. Establish `: HasEnoughRootsOfUnity F (Monoid.exponent (Multiplicative (X ⧸ K)))` using `h0.of_dvd F (Monoid.exponent_dvd_of_forall_pow_eq_one fun q => hK q.toAdd)`. Take `⟨φ, hφ⟩` from `CommGroup.exists_apply_ne_one_of_hasEnoughRootsOfUnity (Multiplicative (X ⧸ K)) F (a := Multiplicative.ofAdd ((β - α : X) : X ⧸ K)) fun e => by`. Take `⟨mu, hmu⟩` from `(QuotientAddGroup.eq_zero_iff _).1 (show ((β - α : X) : X ⧸ K) = 0 from e)`. Conclude with `h ⟨mu, (sub_eq_iff_eq_add'.1 hmu.symm)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `τ : TorChar X F N` to `⟨φ.comp (QuotientAddGroup.mk' K).toMultiplicative, MonoidHom.ext fun x => (map_pow φ _ N).symm.trans ((congrArg φ (show (Multiplicative.ofAdd (x.toAdd : X ⧸ K)) ^ N = 1 from hK (x.toAdd : X ⧸ K))).trans (map_one φ))⟩`. Use `⟨τ, fun e => hφ ?_⟩` and prove the remaining obligations. Establish `e₂` using `evalChar_add (β - α) α τ`. Rewrite `e₂` using `[sub_add_cancel, e]`. Conclude with `right_eq_mul.1 e₂`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_evalChar_ne [Module.Finite ℤ X] [IsAlgClosed F] (hN : (N : F) ≠ 0) {α β : X}
     (h : ¬ ∃ mu, β = α + N • mu) : ∃ τ : TorChar X F N, evalChar F N β τ ≠ evalChar F N α τ := by
@@ -75,17 +75,17 @@ def classSub (S : ∀ α, E →ₗ[F] W α) (N : ℕ) (α : X) : Submodule F E w
   smul_mem' := fun c v h β hβ => by rw [map_smul, h β hβ, smul_zero]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_classSub {S : ∀ α, E →ₗ[F] W α} {α : X} {v : E} :
     v ∈ classSub S N α ↔ ∀ β, (¬ ∃ mu, β = α + N • mu) → S β v = 0 := Iff.rfl
 
 /- English proof (translation)
-Establish `: Finite (TorChar X F N)` using `Nat.finite_of_card_ne_zero fun e => hc (by rw [e, Nat.cast_zero])`. Use `Fintype.ofFinite (TorChar X F N)` as an intermediate fact. Establish `key : ∀ β, S β ((Nat.card (TorChar X F N) : F)⁻¹ • ∑ τ, (((evalChar F N α τ)⁻¹ : Fˣ) : F) • l τ v) = ((Nat.card (TorChar X F N) : F)⁻¹ * ∑ τ, ((Units.coeHom F).comp (evalChar F N β / evalChar F N α)) τ) • S β v` using `fun β => by`. Rewrite using `[map_smul, map_sum, mul_smul, Finset.sum_smul]`. Use `congrArg _ (Finset.sum_congr rfl fun τ _ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_smul, hl, smul_smul, ← Units.val_mul, mul_comm, ← div_eq_mul_inv]`. Both sides reduce to the same expression. Use `⟨_, fun β hβ => (key β).trans ?_, fun mu => (key _).trans ?_⟩` and prove the remaining obligations. Take `⟨τ, hτ⟩` from `exists_evalChar_ne hN hβ`. Rewrite using `[sum_hom_units_eq_zero _ fun e => hτ (div_eq_one.1 (Units.ext (DFunLike.congr_fun e τ))), mul_zero, zero_smul]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ∀ τ, ((Units.coeHom F).comp (evalChar F N (α + N • mu) / evalChar F N α)) τ = 1` using `fun τ => congrArg Units.val (div_eq_one.2 (evalChar_add_nsmul α mu τ))`. Rewrite using `[Finset.sum_congr rfl fun τ _ => e τ, Finset.sum_const, Finset.card_univ, ← Nat.card_eq_fintype_card, nsmul_one, inv_mul_cancel₀ hc, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_proj [Module.Finite ℤ X] [IsAlgClosed F] (hN : (N : F) ≠ 0) (S : ∀ α, E →ₗ[F] W α)
     (hc : (Nat.card (TorChar X F N) : F) ≠ 0) (l : TorChar X F N → E → E)
@@ -108,27 +108,25 @@ theorem exists_proj [Module.Finite ℤ X] [IsAlgClosed F] (hN : (N : F) ≠ 0) (
     rw [Finset.sum_congr rfl fun τ _ => e τ, Finset.sum_const, Finset.card_univ, ← Nat.card_eq_fintype_card, nsmul_one, inv_mul_cancel₀ hc, one_smul]
 
 /- English proof (translation)
-Establish `hpos : 0 < Nat.card A` using `Nat.card_pos`. Establish `: Nontrivial E`. Apply `Module.nontrivial_of_finrank_pos (R := F)` to reduce the goal to its premises. Break down `Nat.eq_zero_or_pos (Module.finrank F E) with h | h` into its components or cases. Rewrite `hd` using `[h]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Conclude with `h`. Establish `ext : ∀ v v', (∀ α, S α v = S α v') → v = v'` using `fun v v' h => sub_eq_zero.1 (hS _ fun α => by rw [map_sub, h, sub_self])`. Use `choose c hcT using hT`. Set `l₀ : TorChar X F N → (E ≃ₗ[F] E)` to `fun τ => (Φ (a τ)).trans (LinearEquiv.smulOfUnit (c τ)⁻¹)`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `l₀e : ∀ τ v, l₀ τ v = (((c τ)⁻¹ : Fˣ) : F) • Φ (a τ) v` using `fun _ _ => rfl`. Establish `hl : ∀ τ v β, S β (l₀ τ v) = (evalChar F N β τ : F) • S β v` using `fun τ v β => by`. Rewrite using `[l₀e, map_smul, hcT, smul_smul, ← Units.val_mul, inv_mul_cancel_left]`. Set `l : TorChar X F N →* (E ≃ₗ[F] E)` to `MonoidHom.mk' l₀ fun τ τ' => LinearEquiv.ext fun v => ext _ _ fun β => by`. Rewrite using `[LinearEquiv.mul_apply, hl, hl, hl, smul_smul, map_mul, Units.val_mul]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `i : TorChar X F N ≃* a.range` to `MonoidHom.ofInjective ha`. Set `lam : a.range →* (E ≃ₗ[F] E)` to `l.comp i.symm.toMonoidHom`. Establish `hlam : ∀ t : a.range, ∃ c : Fˣ, ∀ v, lam t v = (c : F) • Φ t v` using `fun t => by`. Take `⟨τ, rfl⟩` from `i.surjective t`. Use `⟨(c τ)⁻¹, fun v => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `show l₀ (i.symm (i τ)) v = _`. Rewrite using `[i.symm_apply_apply]`. Both sides reduce to the same expression. Set `Wt : (a.range →* Fˣ) → Submodule F E` to `fun χ => { carrier := {v | ∀ t, lam t v = (χ t : F) • v} add_mem' := fun {v v'} h h' t => by rw [map_add, h t, h' t, smul_add] zero_mem' := fun t => by rw [map_zero, smul_zero] smul_mem' := fun r v h t => by rw [map_smul, h t, smul_comm] }`. Establish `hWt : ∀ χ v, v ∈ Wt χ ↔ ∀ t, lam t v = (χ t : F) • v` using `fun _ _ => Iff.rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `χ : a.range →* Fˣ` to `(evalChar F N α).comp i.symm.toMonoidHom`. Establish `hW : Wt χ = classSub S N α` using `Submodule.ext fun v => ⟨fun h β hβ => by`. Take `⟨τ, hτ⟩` from `exists_evalChar_ne (F := F) hN hβ`. Establish `h₁ : l₀ (i.symm (i τ)) v = (evalChar F N α (i.symm (i τ)) : F) • v` using `h (i τ)`. Establish `h₂` using `congrArg (S β) h₁`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h₂` using `[i.symm_apply_apply, hl, map_smul]`. Assume the negation of the conclusion as `h₃`. Conclude with `hτ (Units.ext (smul_left_injective F h₃ h₂)), fun h t => ext _ _ fun β => by`. Use `(hl (i.symm t) v β).trans ?_` and prove the remaining obligations. Rewrite using `[map_smul]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Distinguish the cases in `hβ : ∃ mu, β = α + N • mu`. Take `⟨mu, rfl⟩` from `hβ`. Rewrite using `[evalChar_add_nsmul]`. Both sides reduce to the same expression. Rewrite using `[h β hβ, smul_zero, smul_zero]⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `hci : Nat.card a.range = Nat.card (TorChar X F N)` using `(Nat.card_congr i.toEquiv).symm`. Establish `hTH : ∀ t ∈ a.range, ∀ h ∈ H, e t h = 1`. Introduce and unpack `_ ⟨τ, rfl⟩ h hh`. Take `⟨v, hv⟩` from `exists_ne (0 : E)`. Establish `h₁ : Φ (a τ) (Φ h v) = Φ h (Φ (a τ) v)` using `ext _ _ fun β => (hcT τ _ β).trans (hH h hh β _ _ _ (hcT τ v β)).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h₂ : Φ h (Φ (a τ) v) ≠ 0` using `by simpa using hv`. Apply `HeisenbergWeightDim.units_eq_of_smul_eq h₂` to reduce the goal to its premises. Rewrite using `[← hc, h₁, Units.val_one, one_smul]`. Establish `hperp` using `(perfectPairing_orthogonal_of_card F A e (HeisenbergWeightDim.comm_mul_left hm hc) (HeisenbergWeightDim.comm_mul_right hm hc) hn a.range H hTH (by rw [hci, hcard])).2.1`. Use `⟨exists_proj hN S (fun h => hA (by rw [← hcard, Nat.cast_mul, h, zero_mul])) (fun τ v => l₀ τ v) hl α, ?_, fun U hU hst => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← hW, ← hci]`. Conclude with `(heisenberg_weightSpace_finrank F A E e Φ hA hd hm hc hn a.range lam hlam Wt hWt).2 χ`. Rewrite `hU`, the goal using `[← hW]`. Conclude with `heisenberg_weightSpace_irreducible F A E e Φ hA hd hm hc hn a.range lam hlam Wt hWt χ U hU fun h hh => hst h ((hperp h).1 fun t ht => hh ⟨t, ht⟩)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem classSub_structure [Module.Finite ℤ X] [IsAlgClosed F] [FiniteDimensional F E] (hN : (N : F) ≠ 0)
     {A : Type} [CommGroup A] [Finite A] (e : A → A → Fˣ) (Φ : A → (E ≃ₗ[F] E)) (hA : (Nat.card A : F) ≠ 0)

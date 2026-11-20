@@ -12,7 +12,7 @@ open NumberField Matrix UpperTheory.V
 namespace UpperTheory.V.KT
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `ConeExtensionAcyclic.acyc_simp (good L N)`. Conclude with `KH.tupExact _ _ h1 (by rw [h2]; exact Set.univ_nonempty) h3 m`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sx_exact (L : Type) [Field L] [NumberField L] [IsTotallyComplex L] (N m : ℕ) :
     KH.FaceExactTo (Sx L N) (Sx.face L N) m := by
@@ -20,7 +20,7 @@ theorem sx_exact (L : Type) [Field L] [NumberField L] [IsTotallyComplex L] (N m 
   exact KH.tupExact _ _ h1 (by rw [h2]; exact Set.univ_nonempty) h3 m
 
 /- English proof (translation)
-Unfold `orbBound`. Use `Nat.mul_le_mul_left _ (Nat.pow_le_pow_right (by omega) ?_)` and prove the remaining obligations. Conclude with `Nat.mul_le_mul_left _ (by omega)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem orbBound_mono (L : Type) [Field L] [NumberField L] (N : ℕ) {p p' : ℕ} (h : p ≤ p') :
     orbBound L N p ≤ orbBound L N p' := by
@@ -29,7 +29,7 @@ theorem orbBound_mono (L : Type) [Field L] [NumberField L] (N : ℕ) {p p' : ℕ
   exact Nat.mul_le_mul_left _ (by omega)
 
 /- English proof (translation)
-The claim follows from `KH.mainFace (Gm L N) (Sx L N) (Sx.face L N) Sx.face_smul m _ _ (Nat.one_le_pow _ _ (by norm_num)) (sx_exact L N m) (fun p hp => ⟨(orb L N p).1, (orb L N p).2.trans (orbBound_mono L N hp)⟩) (fun p _ => stab L N p)`.
+A detailed English derivation is pending.
 -/
 theorem tors_le (L : Type) [Field L] [NumberField L] [IsTotallyComplex L] (N m : ℕ) :
     KH.TorsLe (K.HGL L N m) (KH.bound m (orbBound L N m) (3 ^ (dd L N * N)) (m + 2)) :=
@@ -39,15 +39,15 @@ theorem tors_le (L : Type) [Field L] [NumberField L] [IsTotallyComplex L] (N m :
     (fun p _ => stab L N p)
 
 /- English proof (translation)
-Use `KH.torsBound_of 24 (by norm_num) fun L _ _ hL e he => ?_` and prove the remaining obligations. Use `haveI := hL`. Use `⟨_, _, Nat.one_le_pow _ _ (by norm_num), ?_, ?_, tors_le L (4 * e + 4) (2 * e)⟩` and prove the remaining obligations. Establish `h` using `orbnum L (4 * e + 4) (2 * e) (by omega)`. Establish `hn : 1 ≤ Module.finrank ℚ L` using `Module.finrank_pos`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD : 1 ≤ absD L` using `Int.natAbs_pos.2 (discr_ne_zero L)`. Establish `hd : 1 ≤ dd L (4 * e + 4)` using `Nat.mul_pos hn (by omega)`. Establish `hT : 1 ≤ 2 * absD L * dd L (4 * e + 4)` using `Nat.mul_pos (by omega) hd`. Establish `h2 : orbBound L (4 * e + 4) (2 * e) ≤ (2 * absD L * dd L (4 * e + 4)) ^ (24 * (2 * e) * dd L (4 * e + 4) ^ 3 * (4 * e + 4))` using `h.trans (Nat.pow_le_pow_right hT (Nat.mul_le_mul_right _ (Nat.mul_le_mul_right _ (by omega))))`. Establish `hT' : (0 : ℝ) < ((2 * absD L * dd L (4 * e + 4) : ℕ) : ℝ)` using `by exact_mod_cast hT`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Nat.cast_le.2 h2).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[Nat.cast_pow, ← Real.exp_log hT', ← Real.exp_nat_mul]`. Unfold `K.tBound`. Use `congr 1`. Simplify using `only [dd, absD]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hn : 1 ≤ Module.finrank ℚ L` using `Module.finrank_pos`. Establish `h3 : (3 : ℝ) ≤ Real.exp 24` using `by have := Real.add_one_le_exp (24 : ℝ); linarith`. Establish `h1 : dd L (4 * e + 4) * (4 * e + 4) ≤ dd L (4 * e + 4) ^ 2`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_two]`. Conclude with `Nat.mul_le_mul_left _ (Nat.le_mul_of_pos_left _ hn)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Nat.cast_pow]; exact pow_le_pow_left₀ (by norm_num) (by exact_mod_cast h3) _`. Use `_ = _ := by rw [← Real.exp_nat_mul]; congr 1; simp only [dd]; push_cast; ring`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem torsBound : K.TorsBound (2 * 24 + 1) := by
   refine KH.torsBound_of 24 (by norm_num) fun L _ _ hL e he => ?_
@@ -81,7 +81,7 @@ theorem torsBound : K.TorsBound (2 * 24 + 1) := by
       _ = _ := by rw [← Real.exp_nat_mul]; congr 1; simp only [dd]; push_cast; ring
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `K.numT (2 * 24 + 1)`. Use `⟨C, fun L _ _ hL e he => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `torsBound L hL e he`. Conclude with `⟨h1, h2.trans (hC e _ _ he Module.finrank_pos (Int.natAbs_pos.2 (discr_ne_zero L)))⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem torsBoundPow : ∃ C : ℝ, K.TorsBoundPow C := by
   obtain ⟨C, hC⟩ := K.numT (2 * 24 + 1)

@@ -11,7 +11,7 @@ open MvPolynomial
 namespace PositivityTheory.Xgn.MultihomogeneousLine
 
 /- English proof (translation)
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[PositivityTheory.Xgn.multihomogeneous_eval_scale K ι (u j) a c z (hu j), norm_mul, mul_pow, norm_prod]`. Simplify using `only [norm_pow]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_scale {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)] {n : ℕ}
     (u : Fin n → MvPolynomial (Σ k, ι k) ℤ) (a : K → ℕ)
@@ -24,7 +24,7 @@ theorem sum_scale {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ 
   simp only [norm_pow]
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `h`. Conclude with `Finset.sum_pos' (fun i _ => sq_nonneg _) ⟨j, Finset.mem_univ j, pow_pos (norm_pos_iff.mpr hj) 2⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sum_pos {σ : Type} {n : ℕ} (u : Fin n → MvPolynomial σ ℤ) (z : σ → ℂ)
     (h : ∃ j, eval z (MvPolynomial.map (Int.castRingHom ℂ) (u j)) ≠ 0) :
@@ -34,7 +34,7 @@ theorem sum_pos {σ : Type} {n : ℕ} (u : Fin n → MvPolynomial σ ℤ) (z : �
     ⟨j, Finset.mem_univ j, pow_pos (norm_pos_iff.mpr hj) 2⟩
 
 /- English proof (translation)
-Rewrite using `[mul_div_mul_comm, ← div_pow, Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq (div_nonneg hx hy)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sqrt_scale (x y N D : ℝ) (hx : 0 ≤ x) (hy : 0 ≤ y) :
     Real.sqrt ((x ^ 2 * N) / (y ^ 2 * D)) = x / y * Real.sqrt (N / D) := by
@@ -43,13 +43,13 @@ theorem sqrt_scale (x y N D : ℝ) (hx : 0 ≤ x) (hy : 0 ≤ y) :
 end PositivityTheory.Xgn.MultihomogeneousLine
 
 /- English proof (translation)
-Introduce `K _ _ ι _ A a b n u v hu hv hu0 hv0 hsm hconj`. Use `⟨⟨fun k => A.a k + (a k : ℤ) - (b k : ℤ), fun z => A.h z * Real.sqrt ((∑ j, ‖eval z (MvPolynomial.map (Int.castRingHom ℂ) (u j))‖ ^ 2) / (∑ j, ‖eval z (MvPolynomial.map (Int.castRingHom ℂ) (v j))‖ ^ 2)), ?_, ?_⟩, rfl, ?_, ?_, fun _ => rfl⟩` and prove the remaining obligations. Introduce `z hz`. Conclude with `mul_pos (A.pos z hz) (Real.sqrt_pos.mpr (div_pos (MultihomogeneousLine.sum_pos u z (hu0 z hz)) (MultihomogeneousLine.sum_pos v z (hv0 z hz))))`. Introduce `c z hc`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[A.smul c z hc, MultihomogeneousLine.sum_scale u a hu, MultihomogeneousLine.sum_scale v b hv, MultihomogeneousLine.sqrt_scale _ _ _ _ (Finset.prod_nonneg fun k _ => pow_nonneg (norm_nonneg _) _) (Finset.prod_nonneg fun k _ => pow_nonneg (norm_nonneg _) _)]`. Establish `: ∀ k, ‖c k‖ ^ (A.a k + (a k : ℤ) - (b k : ℤ)) = ‖c k‖ ^ A.a k * ‖c k‖ ^ a k / ‖c k‖ ^ b k`. Introduce `k`. Establish `h0 : ‖c k‖ ≠ 0` using `norm_ne_zero_iff.mpr (hc k)`. Rewrite using `[zpow_sub₀ h0, zpow_add₀ h0, zpow_natCast, zpow_natCast]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [this, Finset.prod_div_distrib, Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree. Establish `hN : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun z : (Σ k, ι k) → ℂ => ∑ j, ‖eval z (MvPolynomial.map (Int.castRingHom ℂ) (u j))‖ ^ 2)` using `ContDiff.sum fun j _ => PositivityTheory.Xgn.polynomial_norm_square_smooth _ (u j)`. Establish `hD : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun z : (Σ k, ι k) → ℂ => ∑ j, ‖eval z (MvPolynomial.map (Int.castRingHom ℂ) (v j))‖ ^ 2)` using `ContDiff.sum fun j _ => PositivityTheory.Xgn.polynomial_norm_square_smooth _ (v j)`. Conclude with `ContDiffOn.mul hsm (ContDiffOn.sqrt (hN.contDiffOn.div hD.contDiffOn fun z hz => (MultihomogeneousLine.sum_pos v z (hv0 z hz)).ne') fun z hz => (div_pos (MultihomogeneousLine.sum_pos u z (hu0 z hz)) (MultihomogeneousLine.sum_pos v z (hv0 z hz))).ne')`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `z`. Use `hconj z` as an intermediate fact. Simplify using `only [this, PositivityTheory.Xgn.polynomial_eval_complex_conjugate, RCLike.norm_conj]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgn.multihomogeneous_line_bundle : ∀ (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (A : ReciprocityTheory.ChartRestriction.G.Geo.HermLine ι) (a b : K → ℕ) (n : ℕ) (u v : Fin n → MvPolynomial (Σ k, ι k) ℤ), (∀ j, GroundTheory.Heights₂.Heights.NumbersDVR.IsMultiHomog (u j) a) → (∀ j, GroundTheory.Heights₂.Heights.NumbersDVR.IsMultiHomog (v j) b) → (∀ z : ((Σ k, ι k) → ℂ), (∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) → ∃ j, eval z (MvPolynomial.map (Int.castRingHom ℂ) (u j)) ≠ 0) → (∀ z : ((Σ k, ι k) → ℂ), (∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) → ∃ j, eval z (MvPolynomial.map (Int.castRingHom ℂ) (v j)) ≠ 0) → ReciprocityTheory.ChartRestriction.G.Geo.IsSmoothHerm A → ReciprocityTheory.ChartRestriction.G.Geo.IsConjInvariantH A → ∃ A' : ReciprocityTheory.ChartRestriction.G.Geo.HermLine ι, A'.a = (fun k => A.a k + (a k : ℤ) - (b k : ℤ)) ∧ ReciprocityTheory.ChartRestriction.G.Geo.IsSmoothHerm A' ∧ ReciprocityTheory.ChartRestriction.G.Geo.IsConjInvariantH A' ∧ ∀ z : ((Σ k, ι k) → ℂ), A'.h z = A.h z * Real.sqrt ((∑ j, ‖eval z (MvPolynomial.map (Int.castRingHom ℂ) (u j))‖ ^ 2) / (∑ j, ‖eval z (MvPolynomial.map (Int.castRingHom ℂ) (v j))‖ ^ 2)) := by
   intro K _ _ ι _ A a b n u v hu hv hu0 hv0 hsm hconj

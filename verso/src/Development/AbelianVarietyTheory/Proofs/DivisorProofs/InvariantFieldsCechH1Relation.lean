@@ -26,21 +26,21 @@ noncomputable section
 namespace GlobalTheory.CoverRefinementPullback
 
 /- English proof (translation)
-Simplify using `only [resG]`. Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem resG_resG' {X : Scheme.{0}} {O₀ O₁ O₂ : X.Opens} (h : O₁ ≤ O₀) (h' : O₂ ≤ O₁) (s : Γ(X, O₀)) :
     resG X h' (resG X h s) = resG X (h'.trans h) s := by
   simp only [resG]; rw [← CommRingCat.comp_apply, ← Functor.map_comp]; rfl
 
 /- English proof (translation)
-Unfold `pbT`. Rewrite using `[dif_pos (show O ≤ (𝟙 X) ⁻¹ᵁ O₀ from h)]`. Simplify using `[Scheme.Hom.appLE, resG, Category.id_comp]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem pbT_id' {X : Scheme.{0}} {O₀ : X.Opens} (s : Γ(X, O₀)) {O : X.Opens} (h : O ≤ O₀) :
     pbT (𝟙 X) s O = resG X h s := by
   unfold pbT; rw [dif_pos (show O ≤ (𝟙 X) ⁻¹ᵁ O₀ from h)]; simp [Scheme.Hom.appLE, resG, Category.id_comp]; rfl
 
 /- English proof (translation)
-Unfold `dlg`. Rewrite using `[GlobalTheory.KS.rsT_of_le hT, map_mul, pbT_id' _ le_rfl, pbT_id' _ le_rfl, ← hδ.2.2 _ _ hT le_top, resG_resG', resG_resG']`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem dlg_res' {A : Type} [CommRing A] (B : Over (Sp A)) [GrpObj B] [IsCommMonObj B] (L : LB B.left)
     (δ : Fld B.left) (hδ : IsField ⊤ δ) (i j : L.ι) {T : B.left.Opens} (hT : T ≤ L.U i ⊓ L.U j) :
@@ -51,9 +51,9 @@ theorem dlg_res' {A : Type} [CommRing A] (B : Over (Sp A)) [GrpObj B] [IsCommMon
   rfl
 
 /- English proof (translation)
-Rewrite using `[dlg_res' B L δ hδ i j h₁, dlg_res' B L δ hδ j k h₂, dlg_res' B L δ hδ i k h₃, ← FinAffineCharts.cocycle_on hL i j k h₁ h₂ h₃]`. Use `set u := res h₁ (L.g i j)`. Use `set w := res h₂ (L.g j k)`. Rewrite using `[mul_inv, Units.val_mul, hδ.2.1 _ le_top, Units.val_mul]`. Establish `hu : (u : Γ(B.left, _)) * (u⁻¹ : Γ(B.left, _)ˣ).val = 1` using `Units.mul_inv u`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hw : (w : Γ(B.left, _)) * (w⁻¹ : Γ(B.left, _)ˣ).val = 1` using `Units.mul_inv w`. Take the linear combination `(-(δ _ w.val * (w⁻¹).val)) * hu + (-(δ _ u.val * (u⁻¹).val)) * hw`.
+A detailed English derivation is pending.
 -/
 theorem dlg_tri {A : Type} [CommRing A] (B : Over (Sp A)) [GrpObj B] [IsCommMonObj B] (L : LB B.left) (hL : L.IsLB)
     (δ : Fld B.left) (hδ : IsField ⊤ δ) (i j k : L.ι) {T : B.left.Opens} (h₁ : T ≤ L.U i ⊓ L.U j)
@@ -70,7 +70,7 @@ theorem dlg_tri {A : Type} [CommRing A] (B : Over (Sp A)) [GrpObj B] [IsCommMonO
   linear_combination (-(δ _ w.val * (w⁻¹).val)) * hu + (-(δ _ u.val * (u⁻¹).val)) * hw
 
 /- English proof (translation)
-Use `(dlg_res' B (FinAffineCharts.refineLB L W c h) δ hδ a b hT).trans ?_` and prove the remaining obligations. Rewrite using `[dlg_res' B L δ hδ (c a) (c b) (hT.trans (inf_le_inf (h a) (h b)))]`. Establish `e : res hT ((FinAffineCharts.refineLB L W c h).g a b) = res (hT.trans (inf_le_inf (h a) (h b))) (L.g (c a) (c b))` using `FinAffineCharts.res_res _ _ _`. Conclude with `congrArg (fun u : Γ(B.left, T)ˣ => δ T u.val * (u⁻¹).val) e`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dlg_refine {A : Type} [CommRing A] (B : Over (Sp A)) [GrpObj B] [IsCommMonObj B] (L : LB B.left)
     (δ : Fld B.left) (hδ : IsField ⊤ δ) {κ : Type} (W : κ → B.left.Opens) (c : κ → L.ι) (h : ∀ a, W a ≤ L.U (c a))
@@ -84,7 +84,7 @@ theorem dlg_refine {A : Type} [CommRing A] (B : Over (Sp A)) [GrpObj B] [IsCommM
   exact congrArg (fun u : Γ(B.left, T)ˣ => δ T u.val * (u⁻¹).val) e
 
 /- English proof (translation)
-Distinguish the cases in `h : O ≤ O₀`. Rewrite using `[GlobalTheory.KS.rsT_mul, GlobalTheory.KS.rsT_constFn q h]`. Unfold `rsT`. Simplify using `[h]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem rsT_cmul {R : Type} [CommRing R] {Y : Scheme.{0}} (q : Y ⟶ Sp R) {O₀ : Y.Opens} (r : R) (s : Γ(Y, O₀))
     (O : Y.Opens) : rsT (constFn q O₀ r * s) O = constFn q O r * rsT s O := by
@@ -93,7 +93,7 @@ theorem rsT_cmul {R : Type} [CommRing R] {Y : Scheme.{0}} (q : Y ⟶ Sp R) {O₀
   · unfold rsT; simp [h]
 
 /- English proof (translation)
-Establish `h0 : ∀ a, constFn q O (∑ b, if e b = a then cc b else 0) = ∑ b, if e b = a then constFn q O (cc b) else 0`. Apply the tactic sequence `intro a; simp only [constFn, map_sum]; refine Finset.sum_congr rfl fun b _ => ?_; split_ifs <;> simp`. Simplify using `only [h0, Finset.sum_mul, ite_mul, zero_mul]`. Rewrite using `[Finset.sum_comm]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_reindex {R : Type} [CommRing R] {Y : Scheme.{0}} (q : Y ⟶ Sp R) (O : Y.Opens) {d g : ℕ}
     (cc : Fin d → R) (e : Fin d → Fin g) (X : Fin g → Γ(Y, O)) :
@@ -105,27 +105,25 @@ theorem sum_reindex {R : Type} [CommRing R] {Y : Scheme.{0}} (q : Y ⟶ Sp R) (O
   simp
 
 /- English proof (translation)
-Introduce `R _ _ _ _ _ _ Dd g w dd' hinv hspan J V j hV hVj z hz`. Establish `hab : IsAbelianScheme Dd.toPre.P.A` using `Dd.toPre.P.isAb`. Use `haveI : CompactSpace Dd.toPre.P.A.left := by`. Use `hab.proper` as an intermediate fact. Conclude with `QuasiCompact.compactSpace_of_compactSpace Dd.toPre.P.A.hom`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨κ, hκ, W, c, hWa, hWc, hWcov⟩` from `FinAffineCharts.exists_finite_affine_cover Dd.toPre.P.L Dd.toPre.P.isLB`. Establish `hL'` using `FinAffineCharts.refineLB_isLB Dd.toPre.P.isLB W c hWc hWcov`. Establish `hiso` using `FinAffineCharts.iso_refineLB Dd.toPre.P.isLB W c hWc`. Establish `hK'` using `MulDescent.kTriv_of_lbIso Dd.toPre.P.isLB hL' hiso Dd.toPre.P.ktriv`. Establish `hA' : RelAmple Dd.toPre.P.A (FinAffineCharts.refineLB Dd.toPre.P.L W c hWc)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w0, hw0⟩ : LBIso (FinAffineCharts.refineLB Dd.toPre.P.L W c hWc) (Dd.toPre.P.L.pull (𝟙 Dd.toPre.P.A.left))` from `hiso.symm.chartPull (chartPullId _) (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull Dd.toPre.P.L (𝟙 _) (𝟙 _) rfl)`. Conclude with `relAmple_pull IsPullback.of_id_fst Dd.toPre.P.isLB hL' ((isGen_iff w0).1 hw0) ⊤ (isAffineOpen_top _) (fun _ => trivial) Dd.toPre.P.ample`. Take `⟨bs⟩` from `GlobalTheory.T.basis_tangentModule_abelianScheme_of_relDim R Dd.toPre.P.A Dd.toPre.P.g hab Dd.toPre.P.smoothDim`. Take `⟨e, he⟩` from `GlobalTheory.T.exists_subfamily_unique_repr_of_spanning_of_local R _ Dd.toPre.P.g g ⟨bs⟩ w hspan`. Establish `hI` using `GlobalTheory.T.invariant_vector_fields_basis_tangent R Dd.toPre.P.A Dd.toPre.P.g _ hab Dd.toPre.P.smoothDim hL' hA' hK' hWa hκ (fun a => w (e a)) (fun a => dd' (e a)) (fun a => hinv (e a)) he`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨z', b, hz'c, hR1, hR2⟩` from `GlobalTheory.T.exists_cechOneCocycle_on_affine_cover_mixed _ J κ V W hV hWa z hz`. Take `⟨cc, ⟨y', hy'⟩, -⟩` from `hI z' hz'c`. Take `⟨φV, hφV⟩ : ∃ φV : Fin g → C1 V, φV = fun a i i' => rsT (dlg Dd.toPre.P.A (𝟙 _) Dd.toPre.P.L (dd' a) (j i) (j i') (Dd.toPre.P.L.U (j i) ⊓ Dd.toPre.P.L.U (j i'))) (V i ⊓ V i')` from `⟨_, rfl⟩`. Take `⟨φU, hφU⟩ : ∃ φU : Fin g → C1 W, φU = fun a k k' => dlg Dd.toPre.P.A (𝟙 _) (FinAffineCharts.refineLB Dd.toPre.P.L W c hWc) (dd' a) k k' (W k ⊓ W k')` from `⟨_, rfl⟩`. Take `⟨β, hβ⟩ : ∃ β : Fin g → ∀ i k, Γ(Dd.toPre.P.A.left, V i ⊓ W k), β = fun a i k => rsT (dlg Dd.toPre.P.A (𝟙 _) Dd.toPre.P.L (dd' a) (j i) (c k) (Dd.toPre.P.L.U (j i) ⊓ Dd.toPre.P.L.U (c k))) (V i ⊓ W k)` from `⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Establish `hm1 : ∀ a i i' k, rsT (φV a i i') (V i ⊓ V i' ⊓ W k) = rsT (β a i k) (V i ⊓ V i' ⊓ W k) - rsT (β a i' k) (V i ⊓ V i' ⊓ W k)`. Introduce `a i i' k`. Substitute `hφV hβ` using the available equality. Establish `t1 : V i ⊓ V i' ⊓ W k ≤ V i ⊓ V i'` using `inf_le_left`. Establish `t2 : V i ⊓ V i' ⊓ W k ≤ V i ⊓ W k` using `le_inf (inf_le_left.trans inf_le_left) inf_le_right`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `t3 : V i ⊓ V i' ⊓ W k ≤ V i' ⊓ W k` using `le_inf (inf_le_left.trans inf_le_right) inf_le_right`. Simplify using `only`. Rewrite using `[GlobalTheory.KS.rsT_rsT (inf_le_inf (hVj i) (hVj i')) t1, GlobalTheory.KS.rsT_rsT (inf_le_inf (hVj i) (hWc k)) t2, GlobalTheory.KS.rsT_rsT (inf_le_inf (hVj i') (hWc k)) t3, ← dlg_tri _ _ Dd.toPre.P.isLB (dd' a) (hinv a).1 (j i) (j i') (c k) (t1.trans (inf_le_inf (hVj i) (hVj i') …`. Normalize the expressions using the abelian group laws. Establish `hm2 : ∀ a i k k', rsT (φU a k k') (V i ⊓ W k ⊓ W k') = rsT (β a i k') (V i ⊓ W k ⊓ W k') - rsT (β a i k) (V i ⊓ W k ⊓ W k')`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact.
 
-Introduce `a i k k'`. Substitute `hφU hβ` using the available equality. Establish `t1 : V i ⊓ W k ⊓ W k' ≤ W k ⊓ W k'` using `le_inf (inf_le_left.trans inf_le_right) inf_le_right`. Establish `t2 : V i ⊓ W k ⊓ W k' ≤ V i ⊓ W k` using `inf_le_left`. Establish `t3 : V i ⊓ W k ⊓ W k' ≤ V i ⊓ W k'` using `le_inf (inf_le_left.trans inf_le_left) inf_le_right`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Simplify using `only`. Rewrite using `[dlg_refine _ _ (dd' a) (hinv a).1 W c hWc k k' t1, GlobalTheory.KS.rsT_rsT (inf_le_inf (hVj i) (hWc k)) t2, GlobalTheory.KS.rsT_rsT (inf_le_inf (hVj i) (hWc k')) t3, ← dlg_tri _ _ Dd.toPre.P.isLB (dd' a) (hinv a).1 (j i) (c k) (c k') (t2.trans (inf_le_inf (hVj i) (hWc k))) (t1.t …`. Normalize the expressions using the abelian group laws. Use `set q := Dd.toPre.P.A.hom`. Establish `hmix` using `GlobalTheory.T.isCechOneCoboundary_of_mixed_overlaps _ J κ V W hWcov (fun i i' => z i i' - ∑ a, constFn q _ (cc a) * φV (e a) i i') (fun k k' => z' k k' - ∑ a, constFn q _ (cc a) * φU (e a) k k') (fun i k => b i k - ∑ a, constFn q _ (cc a) * β (e a) i k) (fun i i' k => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [GlobalTheory.KS.rsT_sub, GlobalTheory.KS.rsT_sum, rsT_cmul, hR1, hm1, mul_sub, Finset.sum_sub_distrib]`. Use the proof step `abel)`. Use the proof step `(fun i k k' => by`. Simplify using `only [GlobalTheory.KS.rsT_sub, GlobalTheory.KS.rsT_sum, rsT_cmul, hR2, hm2, mul_sub, Finset.sum_sub_distrib]`. Use the proof step `abel)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Use the proof step `⟨y', fun k k' => by subst hφU; exact hy' k k'⟩`. Take `⟨y, hy⟩` from `hmix`. Use `⟨fun a => ∑ b, if e b = a then cc b else 0, y, fun i i' => ?_⟩` and prove the remaining obligations. Establish `h` using `hy i i'`. Rewrite using `[sum_reindex q _ cc e (fun a => rsT (dlg Dd.toPre.P.A (𝟙 _) Dd.toPre.P.L (dd' a) (j i) (j i') (Dd.toPre.P.L.U (j i) ⊓ Dd.toPre.P.L.U (j i'))) (V i ⊓ V i'))]`.
-
-Simplify using `only at h`. Rewrite using `[← h]`. Substitute `hφV` using the available equality. Simplify using `only`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem main : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] [IsAdicComplete (maximalIdeal R) R] [Algebra ℚ R] (Dd : DegData R (maximalIdeal R)) (g : ℕ) (w : Fin g → TanM (𝟙 (Sp R)) Dd.toPre.P.A) (dd' : Fin g → Fld Dd.toPre.P.A.left), (∀ a, IsInv Dd.toPre.P.A (w a) (dd' a)) → (∀ u : TanM (𝟙 (Sp R)) Dd.toPre.P.A, ∃ cf : Fin g → R, u = ∑ a, cf a • w a) → ∀ (J : Type) (V : J → Dd.toPre.P.A.left.Opens) (j : J → Dd.toPre.P.L.ι), ⨆ i, V i = ⊤ → (∀ i, V i ≤ Dd.toPre.P.L.U (j i)) → ∀ z : C1 V, IsCoc V z → ∃ (c : Fin g → R) (y : ∀ i, Γ(Dd.toPre.P.A.left, V i)), ∀ i i', z i i' = ∑ a, constFn Dd.toPre.P.A.hom _ (c a) * rsT (dlg Dd.toPre.P.A (𝟙 _) Dd.toPre.P.L (dd' a) (j i) (j i') (Dd.toPre.P.L.U (j i) ⊓ Dd.toPre.P.L.U (j i'))) (V i ⊓ V i') + (rsT (y i') (V i ⊓ V i') - rsT (y i) (V i ⊓ V i')) := by
   intro R _ _ _ _ _ _ Dd g w dd' hinv hspan J V j hV hVj z hz

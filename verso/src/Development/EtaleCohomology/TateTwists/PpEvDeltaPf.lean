@@ -2,7 +2,7 @@ import Development.EtaleCohomology.TateTwists.EtaleSemilinearCohomologyOperation
 import Development.EtaleCohomology.TateTwists.EtaleChainCochainEvalDifferentialFormulaHolds
 
 /- English proof (translation)
-The claim follows from `LateralTheory.EtaleFoundations.etale_chain_cochain_eval_differential_formula_holds`.
+A detailed English derivation is pending.
 -/
 theorem LateralTheory.EtaleFoundations.pp_ev_delta_of : LateralTheory.EtaleFoundations.pp_ev_delta :=
   LateralTheory.EtaleFoundations.etale_chain_cochain_eval_differential_formula_holds

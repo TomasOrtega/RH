@@ -13,7 +13,7 @@ universe u
 namespace FunctorialResolution
 
 /- English proof (translation)
-Take `⟨R, h1, h2, h3⟩` from `EmbeddedResolution.strongResolutionOfSingularitiesCharZero.{u}`. Conclude with `⟨fun k _ _ X f _ _ _ => ⟨(R k X f).length, (R k X f).tower, (R k X f).isoZero, (R k X f).center, (R k X f).isBlowup⟩, h1, h2, h3⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem functorialResolutionCharZero : FunctorialResolutionCharZero.{u} := by
   obtain ⟨R, h1, h2, h3⟩ := EmbeddedResolution.strongResolutionOfSingularitiesCharZero.{u}
@@ -21,7 +21,7 @@ theorem functorialResolutionCharZero : FunctorialResolutionCharZero.{u} := by
     ⟨(R k X f).length, (R k X f).tower, (R k X f).isoZero, (R k X f).center, (R k X f).isBlowup⟩, h1, h2, h3⟩
 
 /- English proof (translation)
-Use `⟨h.1, fun x => ?_⟩` and prove the remaining obligations. Take `⟨U, hx, m, c, hc, he, a, h1, h2, h3⟩` from `h.2 x`. Conclude with `⟨U, hx, m, ⟨c, hc, he⟩, a, h1, h2, h3⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem inStrictNormalCrossingPosition_of_hasSimpleNormalCrossings {X : Scheme.{u}} {k : Type u} [Field k]
     {p : X ⟶ Spec (CommRingCat.of k)} {E : List X.IdealSheafData} (h : HasSimpleNormalCrossings p E) :
@@ -31,7 +31,7 @@ theorem inStrictNormalCrossingPosition_of_hasSimpleNormalCrossings {X : Scheme.{
   exact ⟨U, hx, m, ⟨c, hc, he⟩, a, h1, h2, h3⟩
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨U, hxU, m, c, a, S, h1, h2, h3, h4⟩` from `h x hx`. Conclude with `⟨U, hxU, m, c.map, c.comp_struct, c.isEtale, a, S, h1, h2, h3, h4⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem hasSimpleNormalCrossingsWith_of_hasStrictNormalCrossingsWith {X : Scheme.{u}} {k : Type u} [Field k]
     {p : X ⟶ Spec (CommRingCat.of k)} {Z : X.IdealSheafData} {E : List X.IdealSheafData}
@@ -46,7 +46,7 @@ noncomputable def blowupSequenceOfIdealBlowupSequence {k : Type u} [Field k] {X 
   ⟨M.length, M.tower, M.isoZero, M.center, M.isBlowup⟩
 
 /- English proof (translation)
-Use `⟨h.1, fun x => ?_⟩` and prove the remaining obligations. Take `⟨U, hx, m, c, a, h1, h2, h3⟩` from `h.2 x`. Conclude with `⟨U, hx, m, c.map, c.comp_struct, c.isEtale, a, h1, h2, h3⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem hasSimpleNormalCrossings_of_inStrictNormalCrossingPosition {X : Scheme.{u}} {k : Type u} [Field k]
     {p : X ⟶ Spec (CommRingCat.of k)} {E : List X.IdealSheafData} (h : FunctorialResolution.EmbeddedResolution.InStrictNormalCrossingPosition p E) :
@@ -56,15 +56,15 @@ theorem hasSimpleNormalCrossings_of_inStrictNormalCrossingPosition {X : Scheme.{
   exact ⟨U, hx, m, c.map, c.comp_struct, c.isEtale, a, h1, h2, h3⟩
 
 /- English proof (translation)
-Establish `: AlgebraicGeometry.IsNoetherian X` using `FunctorialResolution.EmbeddedResolution.isNoetherian_of_locallyOfFiniteType p`. Establish `key : ∀ i, i ≤ M.length → I.comap ((blowupSequenceOfIdealBlowupSequence M).structMap i) = (blowupSequenceOfIdealBlowupSequence M).exceptionalProduct i * (show ((blowupSequenceOfIdealBlowupSequence M).obj i).IdealSheafData from M.ideal i)`. Introduce `i`. Proceed by induction on `i with`. Consider the case `zero`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `_`. Express the relevant statement in the definitionally equal form `_ = ⊤ * _`. Rewrite using `[← Scheme.IdealSheafData.one_eq_top, one_mul]`. Conclude with `M.ideal_zero.symm`. Consider the case `succ n ih`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hn`. Establish `hlt : n < M.length` using `hn`. Establish `hcomp : (blowupSequenceOfIdealBlowupSequence M).structMap (n + 1) = (blowupSequenceOfIdealBlowupSequence M).blowupMap n ≫ (blowupSequenceOfIdealBlowupSequence M).structMap n` using `((blowupSequenceOfIdealBlowupSequence M).structMap_down (Nat.le_succ n)).symm`. Establish `hsucc : (M.center n).comap ((blowupSequenceOfIdealBlowupSequence M).blowupMap n) * (show ((blowupSequenceOfIdealBlowupSequence M).obj (n + 1)).IdealSheafData from M.ideal (n + 1)) = (show ((blowupSequenceOfIdealBlowupSequence M).obj n).IdealSheafData from M.ideal n).comap ((blowu …` using `M.ideal_succ n hlt`. Rewrite using `[hcomp, Scheme.IdealSheafData.comap_comp, ih hlt.le, Scheme.IdealSheafData.comap_mul, ← hsucc, ← mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use `⟨M.ideal, M.boundary, M.ideal_zero, M.boundary_zero, M.center_smooth, fun i hi => hasSimpleNormalCrossingsWith_of_hasStrictNormalCrossingsWith (M.center_snc i hi), M.ideal_vanishes, M.ideal_succ, M.boundary_succ, hM, ?_, fun i hi => M.smooth_structureMorphism i hi, fun i hi => ha …` and prove the remaining obligations. Establish `hfin : (show ((blowupSequenceOfIdealBlowupSequence M).obj M.length).IdealSheafData from M.ideal M.length) = ⊤` using `hM`. Use `(key M.length le_rfl).trans ?_` and prove the remaining obligations. Rewrite using `[hfin, ← Scheme.IdealSheafData.one_eq_top, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem isPrincipalizingSequence_of_idealBlowupSequence {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} [Smooth p] [LocallyOfFiniteType p] [QuasiCompact p]
@@ -110,9 +110,7 @@ noncomputable def principalizationRuleOfAlgorithm (A : EmbeddedResolution.Princi
     blowupSequenceOfIdealBlowupSequence (A k X p I hI E (inStrictNormalCrossingPosition_of_hasSimpleNormalCrossings hE))
 
 /- English proof (translation)
-Use `⟨principalizationRuleOfAlgorithm A, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `k _ _ X p _ _ _ I hI E hE`. Conclude with `isPrincipalizingSequence_of_idealBlowupSequence _ (inStrictNormalCrossingPosition_of_hasSimpleNormalCrossings hE) (h.lastIdeal_eq_top k X p I hI E (inStrictNormalCrossingPosition_of_hasSimpleNormalCrossings hE))`. Introduce `k _ _ X p _ _ _ I hI E hE X' p' _ _ _ φ _ hφ hI' hE'`. Conclude with `h.smooth_pullback k X p I hI E (inStrictNormalCrossingPosition_of_hasSimpleNormalCrossings hE) X' p' φ hφ hI' (inStrictNormalCrossingPosition_of_hasSimpleNormalCrossings hE')`.
-
-Introduce `k _ _ X p _ _ _ I hI E hE K _ _ _ hI' hE'`. Conclude with `h.base_change k X p I hI E (inStrictNormalCrossingPosition_of_hasSimpleNormalCrossings hE) K (algebraMap k K) hI' (inStrictNormalCrossingPosition_of_hasSimpleNormalCrossings hE')`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem functorialPrincipalizationCharZero_of_algorithm (A : EmbeddedResolution.PrincipalizationAlgorithm.{u}) (h : FunctorialResolution.EmbeddedResolution.IsFunctorialPrincipalization A) :
     FunctorialPrincipalizationCharZero.{u} := by
@@ -128,7 +126,7 @@ theorem functorialPrincipalizationCharZero_of_algorithm (A : EmbeddedResolution.
       (inStrictNormalCrossingPosition_of_hasSimpleNormalCrossings hE')
 
 /- English proof (translation)
-The claim follows from `functorialPrincipalizationCharZero_of_algorithm FunctorialResolution.EmbeddedResolution.principalizationWithRadicalCenters FunctorialResolution.EmbeddedResolution.isFunctorialPrincipalization_principalizationWithRadicalCenters`.
+A detailed English derivation is pending.
 -/
 theorem functorialPrincipalizationCharZero : FunctorialPrincipalizationCharZero.{u} :=
   functorialPrincipalizationCharZero_of_algorithm FunctorialResolution.EmbeddedResolution.principalizationWithRadicalCenters FunctorialResolution.EmbeddedResolution.isFunctorialPrincipalization_principalizationWithRadicalCenters

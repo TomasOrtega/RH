@@ -35,9 +35,9 @@ instance scalarT (T : Subring K₁) : IsScalarTower T K₁ (K₁ ⊗[K] U) :=
   ⟨fun t k l => by rw [smulT_def, Subring.smul_def, smul_eq_mul, mul_smul]⟩
 
 /- English proof (translation)
-Proceed by induction on `l using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a u`. Rewrite using `[TensorProduct.smul_tmul', TensorProduct.smul_tmul', Algebra.smul_def]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Consider the case `add x y hx hy => rw [smul_add, smul_add, hx, hy]`.
+Treat this case separately.
 -/
 theorem smulK_eq (k : K) (l : K₁ ⊗[K] U) : k • l = algebraMap K K₁ k • l := by
   induction l using TensorProduct.induction_on with
@@ -68,7 +68,7 @@ variable (T : Subring K₁) [Algebra R T]
 
 include hRT in
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `r t l`. Use `show ((r • t : T) : K₁) • l = algebraMap R K r • ((t : K₁) • l)`. Rewrite using `[smulK_eq, smul_smul, Algebra.smul_def r t, Subring.coe_mul, hRT]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tower : IsScalarTower R T (K₁ ⊗[K] U) := by
   constructor
@@ -78,7 +78,7 @@ theorem tower : IsScalarTower R T (K₁ ⊗[K] U) := by
 
 include hRT in
 /- English proof (translation)
-Establish `h` using `(tmR (K₁ := K₁) (K := K) (U := U) (R := R)).map_smul r u`. Express the relevant statement in the definitionally equal form `tm K K₁ (r • u) = r • tm K K₁ u at h`. Rewrite using `[h, smulR_def, smulT_def, hRT, smulK_eq]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem tm_smul (r : R) (u : U) : tm K K₁ (r • u) = algebraMap R T r • tm K K₁ u := by
   have h := (tmR (K₁ := K₁) (K := K) (U := U) (R := R)).map_smul r u
@@ -90,7 +90,7 @@ noncomputable def Phi (X : Submodule R U) : T ⊗[R] X →ₗ[T] K₁ ⊗[K] U :
     ((tmR (K₁ := K₁) (K := K) (U := U)).comp X.subtype)
 
 /- English proof (translation)
-Unfold `Phi`. Use `erw [LinearMap.liftBaseChange_tmul]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem Phi_tmul (X : Submodule R U) (t : T) (x : X) :
     Phi T hRT X (t ⊗ₜ x) = (t : K₁) • tm K K₁ (x : U) := by
@@ -99,9 +99,9 @@ theorem Phi_tmul (X : Submodule R U) (t : T) (x : X) :
   rfl
 
 /- English proof (translation)
-Unfold `Phi`. Use `erw [LinearMap.range_liftBaseChange]`. Use `congr 1`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨x, x.2, rfl⟩`. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨⟨x, hx⟩, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem Phi_range (X : Submodule R U) :
     LinearMap.range (Phi T hRT X) = Submodule.span T (tm K K₁ '' (X : Set U)) := by
@@ -117,11 +117,11 @@ theorem Phi_range (X : Submodule R U) :
 
 include hRT in
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact Submodule.subset_span ⟨y, hy, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => show (1 : K₁) ⊗ₜ[K] (0 : U) ∈ _`. Rewrite using `[tmul_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add y z _ _ hy hz => show (1 : K₁) ⊗ₜ[K] (y + z) ∈ _`. Rewrite using `[tmul_add]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `Submodule.add_mem _ hy hz`. Consider the case `smul r y _ hy`. Rewrite using `[tm_smul T hRT]`. Conclude with `Submodule.smul_mem _ _ hy`. Conclude with `Submodule.span_mono (Set.image_mono Submodule.subset_span)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_tm_span (G : Set U) :
     Submodule.span T (tm K K₁ '' (Submodule.span R G : Set U)) = Submodule.span T (tm K K₁ '' G) := by
@@ -147,9 +147,9 @@ variable [IsDomain R] [IsPrincipalIdealRing R] [IsFractionRing R K]
 
 include K in
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `r hr x y hxy`. Establish `hr0 : r ≠ 0` using `hr.ne_zero`. Establish `hK : algebraMap R K r ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective R K)).mpr hr0`. Apply `Subtype.ext` to reduce the goal to its premises.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h1 : r • (x : U) = r • (y : U)` using `congrArg Subtype.val hxy`. Rewrite `h1` using `[← algebraMap_smul K r (x : U), ← algebraMap_smul K r (y : U)]`. Conclude with `smul_right_injective U hK h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTorsionFree_sub (X : Submodule R U) : Module.IsTorsionFree R X := by
   constructor
@@ -162,17 +162,15 @@ theorem isTorsionFree_sub (X : Submodule R U) : Module.IsTorsionFree R X := by
   exact smul_right_injective U hK h1
 
 /- English proof (translation)
-Use `haveI : Module.Finite R X := Module.Finite.iff_fg.2 hX`. Use `haveI : Module.IsTorsionFree R X := isTorsionFree_sub (K := K) X`. Use `haveI : Module.Free R X := Module.free_of_finite_type_torsion_free'`. Set `b` to `Module.Free.chooseBasis R X`. Set `v : Module.Free.ChooseBasisIndex R X → K₁ ⊗[K] U` to `fun i => tm K K₁ ((b i : X) : U)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR : LinearIndependent R (fun i => ((b i : X) : U))` using `b.linearIndependent.map' X.subtype (Submodule.ker_subtype X)`. Establish `hK : LinearIndependent K (fun i => ((b i : X) : U))` using `(LinearIndependent.iff_fractionRing R K).1 hR`. Establish `hK₁ : LinearIndependent K₁ v` using `Module.Flat.linearIndependent_one_tmul hK`. Establish `hT : LinearIndependent T v`. Rewrite using `[linearIndependent_iff']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Introduce `s g hg i hi`. Establish `h1` using `(linearIndependent_iff'.1 hK₁) s (fun j => (g j : K₁)) (by exact hg) i hi`. Conclude with `Subtype.ext h1`. Set `b'` to `b.baseChange T`. Establish `hcomp : (Phi T hRT X) ∘ₗ b'.repr.symm.toLinearMap = Finsupp.linearCombination T v`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 
-Use `Finsupp.lhom_ext' fun i => LinearMap.ext_ring ?_` and prove the remaining obligations. Simplify using `[b', v, Basis.baseChange_apply, Phi_tmul]`. Use `first`. Consider the case `exact (one_smul _ _).symm`. Consider the case `(rw [smulT_def]; simp)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ z, Finsupp.linearCombination T v (b'.repr z) = Phi T hRT X z`. Introduce `z`. Rewrite using `[← hcomp]`. Simplify using the standard rewrite rules. Introduce `z w hzw`.
-
-Apply `b'.repr.injective` to reduce the goal to its premises. Conclude with `hT (by rw [key, key, hzw])`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem Phi_injective (X : Submodule R U) (hX : X.FG) : Function.Injective (Phi T hRT X) := by
   classical
@@ -207,23 +205,21 @@ theorem Phi_injective (X : Submodule R U) (hX : X.FG) : Function.Injective (Phi 
 
 include hRT in
 /- English proof (translation)
-Set `Y'` to `Y.comap X.subtype`. Set `Ψ : T ⊗[R] X →ₗ[T] T ⊗[R] (X ⧸ Y')` to `Y'.mkQ.baseChange T`. Establish `h1 : (Ψ : T ⊗[R] X → T ⊗[R] (X ⧸ Y')) = Y'.mkQ.lTensor T` using `LinearMap.baseChange_eq_ltensor _`. Establish `hΨ : Function.Surjective Ψ`. Rewrite using `[h1]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `LinearMap.lTensor_surjective T (Submodule.mkQ_surjective Y')`. Set `ι' : T ⊗[R] Y' →ₗ[T] T ⊗[R] X` to `Y'.subtype.baseChange T`. Establish `h2 : (ι' : T ⊗[R] Y' → T ⊗[R] X) = Y'.subtype.lTensor T` using `LinearMap.baseChange_eq_ltensor _`. Establish `hker : LinearMap.ker Ψ = LinearMap.range ι'`. Use extensionality with `z`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `hex` using `lTensor_exact T (LinearMap.exact_subtype_mkQ Y') (Submodule.mkQ_surjective Y') z`. Rewrite using `[LinearMap.mem_ker, LinearMap.mem_range, h1, hex, Set.mem_range, h2]`. Set `e1 : T ⊗[R] X ≃ₗ[T] Submodule.span T (tm K K₁ '' (X : Set U))` to `(LinearEquiv.ofInjective (Phi T hRT X) (Phi_injective T hRT X hX)).trans (LinearEquiv.ofEq _ _ (Phi_range T hRT X))`. Establish `he1 : ∀ z, ((e1 z : Submodule.span T (tm K K₁ '' (X : Set U))) : K₁ ⊗[K] U) = Phi T hRT X z`. Introduce `z`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hY : ∀ z, Phi T hRT X z ∈ Submodule.span T (tm K K₁ '' (Y : Set U)) ↔ z ∈ LinearMap.range ι'`. Introduce `z`. Prove the components needed by the constructor for the conclusion. Introduce `hz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hle : Submodule.span T (tm K K₁ '' (Y : Set U)) ≤ (LinearMap.range ι').map (Phi T hRT X)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Use `⟨ι' ((1 : T) ⊗ₜ ⟨⟨y, hYX hy⟩, hy⟩), ⟨_, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show Phi T hRT X ((1 : T) ⊗ₜ ⟨y, hYX hy⟩) = tm K K₁ y`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Phi_tmul]`. Simplify using the standard rewrite rules. Take `⟨w, hw, hwz⟩` from `hle hz`. Rewrite using `[← Phi_injective T hRT X hX hwz]`. Conclude with `hw`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately.
 
-Introduce and unpack `⟨w, rfl⟩`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul t y => show Phi T hRT X (t ⊗ₜ (y : X)) ∈ _`. Rewrite using `[Phi_tmul]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Submodule.smul_mem _ t (Submodule.subset_span ⟨(y : X), y.2, rfl⟩)`. Consider the case `add a c ha hc`. Rewrite using `[map_add, map_add]`. Conclude with `Submodule.add_mem _ ha hc`. Establish `hmap : ((Submodule.span T (tm K K₁ '' (Y : Set U))).comap (Submodule.span T (tm K K₁ '' (X : Set U))).subtype).map (e1.symm : _ →ₗ[T] _) = LinearMap.range ι'`.
-
-Use extensionality with `z`. Rewrite using `[Submodule.mem_map_equiv, LinearEquiv.symm_symm, Submodule.mem_comap, Submodule.subtype_apply, he1]`. Conclude with `hY z`. Conclude with `((Submodule.Quotient.equiv _ _ e1.symm hmap).trans ((Submodule.quotEquivOfEq _ _ hker.symm).trans (Ψ.quotKerEquivOfSurjective hΨ))).length_eq`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem length_quot_eq (X Y : Submodule R U) (hX : X.FG) (hYX : Y ≤ X) :
     Module.length T (↥(Submodule.span T (tm K K₁ '' (X : Set U))) ⧸
@@ -283,31 +279,29 @@ theorem length_quot_eq (X Y : Submodule R U) (hX : X.FG) (hYX : Y ≤ X) :
 
 include hRT in
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `z hz`. Rewrite `hz` using `[Submodule.mem_inf]`. Take `⟨hzW, hzX⟩` from `hz`. Set `fR : U →ₗ[R] U ⧸ W` to `W.mkQ.restrictScalars R`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `Xb : Submodule R (U ⧸ W)` to `X.map fR`. Set `g : X →ₗ[R] Xb` to `fR.submoduleMap X`. Establish `hg : Function.Surjective g` using `LinearMap.submoduleMap_surjective fR X`. Establish `hz0 : W.mkQ.baseChange K₁ z = 0`. Use `Submodule.span_induction (p := fun z _ => W.mkQ.baseChange K₁ z = 0) ?_ ?_ ?_ ?_ hzW` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `y hy`. Use `Submodule.span_induction (p := fun y _ => W.mkQ.baseChange K₁ y = 0) ?_ ?_ ?_ ?_ hy` and prove the remaining obligations. Introduce and unpack `_ ⟨w, hw, rfl⟩ show W.mkQ.baseChange K₁ ((1 : K₁) ⊗ₜ[K] w) = 0`. Rewrite using `[LinearMap.baseChange_tmul, Submodule.mkQ_apply, (Submodule.Quotient.mk_eq_zero W).2 hw, TensorProduct.tmul_zero]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `a b _ _ ha hb`. Rewrite using `[map_add, ha, hb, add_zero]`. Introduce `c a _ ha`. Rewrite using `[map_smul, ha, smul_zero]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `a b _ _ ha hb`. Rewrite using `[map_add, ha, hb, add_zero]`. Introduce `t a _ ha show W.mkQ.baseChange K₁ ((t : K₁) • a) = 0`. Rewrite using `[map_smul, ha, smul_zero]`. Establish `hzR : z ∈ LinearMap.range (Phi T hRT X)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Phi_range]`. Conclude with `hzX`. Take `⟨w, rfl⟩` from `hzR`. Establish `hsq : ∀ w, Phi T hRT Xb (g.baseChange T w) = W.mkQ.baseChange K₁ (Phi T hRT X w)`. Introduce `w`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul t x`. Rewrite using `[LinearMap.baseChange_tmul, Phi_tmul, Phi_tmul]`. Use `show (t : K₁) • tm K K₁ ((g x : Xb) : U ⧸ W) = W.mkQ.baseChange K₁ ((t : K₁) • (1 : K₁) ⊗ₜ[K] (x : U))`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[map_smul, LinearMap.baseChange_tmul]`. Both sides reduce to the same expression. Consider the case `add a c ha hc`. Rewrite using `[map_add, map_add, map_add, map_add, ha, hc]`. Establish `hw0 : g.baseChange T w = 0`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `Phi_injective T hRT Xb (hX.map _)` to reduce the goal to its premises. Rewrite using `[hsq, map_zero]`. Conclude with `hz0`. Establish `hex : Function.Exact (LinearMap.ker g).subtype g` using `LinearMap.exact_iff.2 (Submodule.range_subtype _).symm`. Establish `hw0' : g.lTensor T w = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Proceed by induction.
 
-Rewrite using `[← congrFun (LinearMap.baseChange_eq_ltensor (A := T) g) w]`. Conclude with `hw0`. Take `⟨v, rfl⟩` from `(lTensor_exact T hex hg w).1 hw0'`. Use `clear hzW hzX hz0 hw0 hw0'`. Proceed by induction on `v using TensorProduct.induction_on with`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `zero => simp`. Consider the case `tmul t y`. Rewrite using `[LinearMap.lTensor_tmul, Submodule.subtype_apply, Phi_tmul]`. Establish `hyW : ((y : X) : U) ∈ W`. Establish `hy : g (y : X) = 0` using `y.2`.
+Establish an intermediate fact. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `h' : W.mkQ ((y : X) : U) = 0` using `congrArg Subtype.val hy`. Conclude with `(Submodule.Quotient.mk_eq_zero W).1 h'`. Conclude with `Submodule.smul_mem _ t (Submodule.subset_span ⟨(y : X), ⟨(y : X).2, hyW⟩, rfl⟩)`. Consider the case `add a c ha hc`. Rewrite using `[map_add, map_add]`.
-
-Conclude with `Submodule.add_mem _ ha hc`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, ⟨hxX, hxW⟩, rfl⟩`. Use `⟨?_, Submodule.subset_span ⟨x, hxX, rfl⟩⟩` and prove the remaining obligations. Conclude with `Submodule.subset_span (Submodule.subset_span ⟨x, hxW, rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem span_inf_eq (X : Submodule R U) (hX : X.FG) (W : Submodule K U) :
     Submodule.span T (Submodule.span K₁ (tm K K₁ '' (W : Set U)) : Set (K₁ ⊗[K] U)) ⊓
@@ -391,7 +385,7 @@ end Base
 section DVR
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Establish `hfin` using `Module.length_ne_top_iff.mp h`. Establish `hart : IsArtinianRing T` using `(isFiniteLength_iff_isNoetherian_isArtinian.mp hfin).2`. Conclude with `IsDiscreteValuationRing.not_isField T (IsArtinianRing.isField_of_isDomain T)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem length_self_eq_top (T : Type*) [CommRing T] [IsDomain T] [IsDiscreteValuationRing T] :
     Module.length T T = ⊤ := by
@@ -401,7 +395,7 @@ theorem length_self_eq_top (T : Type*) [CommRing T] [IsDomain T] [IsDiscreteValu
   exact IsDiscreteValuationRing.not_isField T (IsArtinianRing.isField_of_isDomain T)
 
 /- English proof (translation)
-Establish `hm : IsLocalRing.maximalIdeal R = Ideal.span {p}` using `(IsDiscreteValuationRing.irreducible_iff_uniformizer p).1 hp`. Establish `h` using `IsDiscreteValuationRing.length_quotient_pow_maximalIdeal R e`. Rewrite `h` using `[hm, Ideal.span_singleton_pow]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem length_quot_span_pow {R : Type*} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
     {p : R} (hp : Irreducible p) (e : ℕ) : Module.length R (R ⧸ R ∙ p ^ e) = e := by
@@ -412,17 +406,15 @@ theorem length_quot_span_pow {R : Type*} [CommRing R] [IsDomain R] [IsDiscreteVa
   exact h
 
 /- English proof (translation)
-Take `⟨n, ι, _, p, hp, e, ⟨f⟩⟩` from `Module.equiv_free_prod_directSum R N`. Break down `Nat.eq_zero_or_pos n with hn | hn` into its components or cases. It suffices to derive a contradiction. Substitute `hn` using the available equality. Establish `h1` using `f.length_eq`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Substitute using the available equality. Establish an intermediate fact.
 
-Rewrite `h1` using `[h, Module.length_prod, (DirectSum.linearEquivFunOnFintype R ι (fun i => R ⧸ R ∙ p i ^ e i)).length_eq, Module.length_pi_of_fintype]`. Establish `h0 : Module.length R (Fin 0 →₀ R) = 0` using `by first`. Consider the case `exact Module.length_eq_zero_iff.2 inferInstance`. Consider the case `exact Module.length_eq_zero`. Rewrite `h1` using `[h0, zero_add]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : ∑ i, Module.length R (R ⧸ R ∙ p i ^ e i) = ((∑ i, e i : ℕ) : ℕ∞)`. Rewrite using `[Nat.cast_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => length_quot_span_pow (hp i) (e i)`. Rewrite `h1` using `[h2]`. Conclude with `ENat.coe_ne_top _ h1.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `g : N →ₗ[R] R` to `(Finsupp.lapply ⟨0, hn⟩) ∘ₗ (LinearMap.fst R _ _) ∘ₗ f.toLinearMap`. Establish `hg : Function.Surjective g`. Introduce `r`. Use `⟨f.symm (Finsupp.single ⟨0, hn⟩ r, 0), ?_⟩` and prove the remaining obligations. Simplify using `[g]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `φ : T ⊗[R] N →ₗ[T] T` to `(TensorProduct.AlgebraTensorModule.rid R T T).toLinearMap ∘ₗ g.baseChange T`. Establish `hφ : Function.Surjective φ`. Establish `hb : Function.Surjective (g.baseChange T)`. Rewrite using `[LinearMap.baseChange_eq_ltensor]`. Conclude with `LinearMap.lTensor_surjective T hg`.
-
-Conclude with `(TensorProduct.AlgebraTensorModule.rid R T T).surjective.comp hb`. Establish `hle` using `Module.length_le_of_surjective φ hφ`. Rewrite `hle` using `[length_self_eq_top]`. Conclude with `top_le_iff.1 hle`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem length_tensor_eq_top {R T : Type*} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
     [CommRing T] [IsDomain T] [IsDiscreteValuationRing T] [Algebra R T]

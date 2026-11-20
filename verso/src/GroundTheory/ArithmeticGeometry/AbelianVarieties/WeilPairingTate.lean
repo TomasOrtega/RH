@@ -16,9 +16,9 @@ variable {F : Type u} [Field F] [DecidableEq F] [IsAlgClosed F] {W : Weierstrass
   [W.IsElliptic]
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero`. Rewrite using `[zero_smul, pow_zero]`. Establish `h` using `weilPairing_add_right hn hS (smul_zero n) (smul_zero n)`. Rewrite `h` using `[add_zero]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mul_left_cancel₀ (weilPairing_ne_zero hn hS (smul_zero n)) (h.symm.trans (mul_one _).symm)`. Consider the case `succ m ih`. Establish `hmT : n • (m • T) = 0` using `by rw [smul_comm, hT, smul_zero]`. Rewrite using `[succ_nsmul, weilPairing_add_right hn hS hmT hT, ih, pow_succ]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weilPairing_nsmul_right {n : ℕ} (hn : (n : F) ≠ 0) {S T : W.toAffine.Point}
     (hS : n • S = 0) (hT : n • T = 0) (m : ℕ) :

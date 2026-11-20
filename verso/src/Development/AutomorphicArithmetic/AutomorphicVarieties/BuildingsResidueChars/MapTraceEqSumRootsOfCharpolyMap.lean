@@ -3,21 +3,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.C
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N Polynomial GlobalTheory.GalOfCusp UpperTheory.V.Af
 
 /- English proof (translation)
-Introduce `k _ φ B`. Use `⟨fun M hM => ?_, fun M hM => ?_⟩` and prove the remaining obligations. Rewrite using `[AddMonoidHom.map_trace, Matrix.trace_eq_sum_roots_charpoly, Matrix.charpoly_map, hM, Polynomial.roots_multiset_prod_X_sub_C]`. Establish `hN : (M.map φ).charpoly = (B.map fun b => X - C b).prod` using `by rw [Matrix.charpoly_map, hM]`. Establish `ht : (M.map φ).trace = B.sum`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.trace_eq_sum_roots_charpoly, hN, Polynomial.roots_multiset_prod_X_sub_C]`. Establish `hc : B.card = 2`. Use `Matrix.charpoly_natDegree_eq_dim (M.map φ)` as an intermediate fact. Rewrite `this` using `[hN, Polynomial.natDegree_multiset_prod_X_sub_C_eq_card]`. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨b1, b2, rfl⟩` from `Multiset.card_eq_two.mp hc`. Establish `h0` using `Matrix.aeval_self_charpoly (M.map φ)`. Rewrite `h0` using `[hN]`. Simplify using `only [Multiset.insert_eq_cons, Multiset.map_cons, Multiset.map_singleton, Multiset.prod_cons, Multiset.prod_singleton, map_mul, map_sub, aeval_X, aeval_C, Algebra.algebraMap_eq_smul_one] at h0`. Use `set N := M.map φ with hNdef`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hCH : N * N = (b1 + b2) • N - (b1 * b2) • (1 : Matrix (Fin 2) (Fin 2) ℂ)`. Establish `e : N * N - ((b1 + b2) • N - (b1 * b2) • (1 : Matrix (Fin 2) (Fin 2) ℂ)) = 0`. Rewrite using `[← h0]`. Simplify using `only [sub_mul, mul_sub, smul_mul_assoc, mul_smul_comm, one_mul, mul_one, smul_smul]`. Use `module`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `sub_eq_zero.mp e`. Establish `key : ∀ h : ℕ, (N ^ h).trace = b1 ^ h + b2 ^ h ∧ (N ^ (h + 1)).trace = b1 ^ (h + 1) + b2 ^ (h + 1)`. Introduce `h`. Proceed by induction on `h with`. Consider the case `zero`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Evaluate the numerical expressions.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `[Matrix.trace_one]`. Evaluate the numerical expressions. Simplify `ht` using `[add_comm]`. Consider the case `succ h ih`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨ih.2, ?_⟩` and prove the remaining obligations. Establish `e : N ^ (h + 1 + 1) = (b1 + b2) • N ^ (h + 1) - (b1 * b2) • N ^ h`. Rewrite using `[pow_succ, pow_succ, mul_assoc, hCH, mul_sub, mul_smul_comm, mul_smul_comm, mul_one, ← pow_succ]`. Rewrite using `[e, Matrix.trace_sub, Matrix.trace_smul, Matrix.trace_smul, ih.1, ih.2, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `h`. Rewrite using `[AddMonoidHom.map_trace, Matrix.map_pow, (key h).1]`. Simplify using `[add_comm]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.map_trace_eq_sum_roots_of_charpoly_map :
     ∀ (k : Type) [Field k] (φ : k →+* ℂ) (B : Multiset ℂ), (∀ M : Matrix (Fin 3) (Fin 3) k, M.charpoly.map φ = (B.map fun b => X - C b).prod → φ M.trace = B.sum) ∧ ∀ M : Matrix (Fin 2) (Fin 2) k, M.charpoly.map φ = (B.map fun b => X - C b).prod → ∀ h : ℕ, φ (M ^ h).trace = (B.map (· ^ h)).sum := by

@@ -8,9 +8,9 @@ set_option linter.overlappingInstances false
 open NumberField Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.GalOfCusp IsLocalRing UpperTheory.V UpperTheory.V.HV UpperTheory.V.U3 UpperTheory.V.Base UpperTheory.V.Af UpperTheory.V.Pr UpperTheory.V.Alg UpperTheory.V.J
 
 /- English proof (translation)
-Use `continuous_iff_continuousAt.2 fun x => ?_` and prove the remaining obligations. Use `Metric.tendsto_nhds.2 fun ε hε => ?_` and prove the remaining obligations. Take `⟨N, hN⟩` from `hφ (ε / 2) (half_pos hε)`. Use `(hc N x).mono fun y hy => ?_` and prove the remaining obligations. Rewrite using `[dist_eq_norm, ← map_sub]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hN _ hy).trans_lt (half_lt_self hε)`.
+A detailed English derivation is pending.
 -/
 private theorem cont_of_small {X M K : Type} [TopologicalSpace X] [AddCommGroup M] [NormedField K]
     (f : X → M) (φ : M →+ K) (W : ℕ → AddSubgroup M)
@@ -24,9 +24,9 @@ private theorem cont_of_small {X M K : Type} [TopologicalSpace X] [AddCommGroup 
   exact (hN _ hy).trans_lt (half_lt_self hε)
 
 /- English proof (translation)
-Set `s` to `Function.surjInv (Ideal.Quotient.mk_surjective (I := I))`. Establish `hs : ∀ q, Ideal.Quotient.mk I (s q) = q` using `Function.surjInv_eq _`. Take `⟨C, hC⟩` from `Finite.exists_le fun q : R ⧸ I => ‖φ (s q)‖`. Use `⟨C + 1, fun b => ?_⟩` and prove the remaining obligations. Establish `h1 : b - s (Ideal.Quotient.mk I b) ∈ I` using `Ideal.Quotient.eq.1 (hs _).symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : φ b = φ (s (Ideal.Quotient.mk I b)) + φ (b - s (Ideal.Quotient.mk I b))`. Rewrite using `[← map_add, add_sub_cancel]`. Rewrite using `[h2]`. Conclude with `(norm_add_le _ _).trans (add_le_add (hC _) (h _ h1))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem bdd_of_small {R K : Type} [CommRing R] [NormedField K] (I : Ideal R) [Finite (R ⧸ I)]
     (φ : R →+ K) (h : ∀ a ∈ I, ‖φ a‖ ≤ 1) : ∃ C : ℝ, ∀ b, ‖φ b‖ ≤ C := by
@@ -41,7 +41,7 @@ private theorem bdd_of_small {R K : Type} [CommRing R] [NormedField K] (I : Idea
   exact (norm_add_le _ _).trans (add_le_add (hC _) (h _ h1))
 
 /- English proof (translation)
-Use `haveI : Finite (ResidueField R) := Finite.of_surjective _ (resMap_bijective O R).2`. Use `haveI : Finite (R ⧸ maximalIdeal R) := ‹Finite (ResidueField R)›`. Conclude with `Ideal.finite_quotient_pow (IsNoetherian.noetherian _) k`.
+A detailed English derivation is pending.
 -/
 private theorem finite_quot (O R : Type) [CommRing O] [IsLocalRing O] [Finite (ResidueField O)] [CommRing R]
     [Algebra O R] [IsCO O R] (k : ℕ) : Finite (R ⧸ maximalIdeal R ^ k) := by
@@ -50,25 +50,21 @@ private theorem finite_quot (O R : Type) [CommRing O] [IsLocalRing O] [Finite (R
   exact Ideal.finite_quotient_pow (IsNoetherian.noetherian _) k
 
 /- English proof (translation)
-Establish `hsm : ∀ (b : B) (e : A), D (b • e) = x (algebraMap B A b) * D e + x e * D (algebraMap B A b)`. Introduce `b e`. Rewrite using `[Algebra.smul_def, hD]`. Establish `hmul : ∀ (u v : K) (s t : ℝ), ‖u‖ ≤ s → ‖v‖ ≤ t → 0 ≤ s → ‖u * v‖ ≤ s * t` using `fun u v s t hu hv h0 => by`. Rewrite using `[norm_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul hu hv (norm_nonneg _) h0`. Take `⟨C₀, hC₀⟩` from `hb`. Choose the witnesses or unpack the hypotheses as in `⟨C, hC0, hCE⟩ : ∃ C : ℝ, 0 ≤ C ∧ ∀ e ∈ E, ‖D e‖ ≤ C := by`. Take `⟨T, rfl⟩` from `hE`. Choose the witnesses or unpack the hypotheses as in `⟨C₁, hC₁⟩ : ∃ C₁ : ℝ, ∀ t ∈ T, ‖D t‖ ≤ C₁ := by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨M, hM⟩` from `(T.image fun t => ‖D t‖).exists_le`. Conclude with `⟨M, fun t ht => hM _ (Finset.mem_image_of_mem _ ht)⟩`. Use `⟨max (max C₀ C₁) 0, le_max_right _ _, fun e he => ?_⟩` and prove the remaining obligations. Establish `h0 : C₀ ≤ max (max C₀ C₁) 0` using `(le_max_left _ _).trans (le_max_left _ _)`. Establish `h1 : C₁ ≤ max (max C₀ C₁) 0` using `(le_max_right _ _).trans (le_max_left _ _)`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (0 : ℝ) ≤ max (max C₀ C₁) 0` using `le_max_right _ _`. Proceed by induction on `he using Submodule.span_induction with`. Consider the case `mem t ht => exact (hC₁ t ht).trans h1`. Consider the case `zero => simpa using h2`. Consider the case `add a b _ _ ha hb`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ha hb)`. Consider the case `smul b e _ he`. Rewrite using `[hsm]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ ?_)` and prove the remaining obligations.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hmul _ _ 1 _ (hx _) he zero_le_one`. Simplify using `using hmul _ _ 1 _ (hx _) ((hC₀ b).trans h0) zero_le_one`. Establish `hC1 : 0 < C + 1` using `by linarith`. Establish `hδ : 0 < min ε (ε / (C + 1))` using `lt_min hε (div_pos hε hC1)`. Establish `hδ1 : min ε (ε / (C + 1)) ≤ ε` using `min_le_left _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hδ2 : min ε (ε / (C + 1)) * C ≤ ε`. Establish `h1 : min ε (ε / (C + 1)) * C ≤ ε / (C + 1) * (C + 1)` using `mul_le_mul (min_le_right _ _) (by linarith) hC0 (div_pos hε hC1).le`. Rewrite `h1` using `[div_mul_cancel₀ _ hC1.ne']`. Then use the resulting hypothesis. Take `⟨k, hk⟩` from `hs _ hδ`. Use `⟨k, fun a ha => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.smul_induction_on ha (fun b hbk e he => ⟨?_, ?_⟩) (fun a a' h h' => ⟨?_, ?_⟩)` and prove the remaining obligations. Rewrite using `[hsm]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Conclude with `(hmul _ _ _ _ (hk b hbk).2 (hCE e he) hδ.le).trans hδ2`. Conclude with `(by simpa using hmul _ _ 1 _ (hx e) (hk b hbk).1 zero_le_one : _ ≤ _).trans hδ1`.
-
-Rewrite using `[Algebra.smul_def, map_mul]`. Conclude with `(by simpa using hmul _ _ _ 1 (hk b hbk).2 (hx e) hδ.le : _ ≤ _).trans hδ1`. Rewrite using `[map_add]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le h.1 h'.1)`. Rewrite using `[map_add]`.
-
-Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le h.2 h'.2)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem small_smul {B A K : Type} [CommRing B] [CommRing A] [Algebra B A] [NormedField K] [IsUltrametricDist K]
     (I : Ideal B) (x : A →+* K) (D : A →+ K) (hx : ∀ a, ‖x a‖ ≤ 1)
@@ -126,9 +122,9 @@ private theorem small_smul {B A K : Type} [CommRing B] [CommRing A] [Algebra B A
     exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le h.2 h'.2)
 
 /- English proof (translation)
-Establish `hW : ∀ (N : ℕ) (p : X), ∀ᶠ q in nhds p, e q - e p ∈ (I ^ N • Submodule.span B (Set.range e)).toAddSubgroup` using `fun N p => by`. Use `(((IsLocallyConstant.iff_eventually_eq _).1 (hc N)) p).mono fun q hq => ?_` and prove the remaining obligations. Conclude with `(Submodule.Quotient.eq _).1 hq`. Establish `hsm` using `small_smul I x D hx hD hs hb _ hE`. Use `⟨cont_of_small e x.toAddMonoidHom _ (fun ε hε => ?_) hW, cont_of_small e D _ (fun ε hε => ?_) hW⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨N, hN⟩` from `hsm ε hε`. Conclude with `⟨N, fun a ha => (hN a ha).2⟩`. Take `⟨N, hN⟩` from `hsm ε hε`. Conclude with `⟨N, fun a ha => (hN a ha).1⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem entry_cont {X B A K : Type} [TopologicalSpace X] [CommRing B] [CommRing A] [Algebra B A] [NormedField K]
     [IsUltrametricDist K] (I : Ideal B) (x : A →+* K) (D : A →+ K) (hx : ∀ a, ‖x a‖ ≤ 1)
@@ -150,7 +146,7 @@ private theorem entry_cont {X B A K : Type} [TopologicalSpace X] [CommRing B] [C
     exact ⟨N, fun a ha => (hN a ha).1⟩
 
 /- English proof (translation)
-Use `cont_of_small χ φ (fun N => (I ^ N).toAddSubgroup) hs fun N p => ?_` and prove the remaining obligations. Use `(((IsLocallyConstant.iff_eventually_eq _).1 (hc N)) p).mono fun q hq => ?_` and prove the remaining obligations. Conclude with `Ideal.Quotient.eq.1 hq`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem char_cont {X B K : Type} [TopologicalSpace X] [CommRing B] [NormedField K] (I : Ideal B) (φ : B →+ K)
     (hs : ∀ ε : ℝ, 0 < ε → ∃ k, ∀ b ∈ I ^ k, ‖φ b‖ ≤ ε) (χ : X → B) (hc : AdicCont I χ) :
@@ -160,7 +156,7 @@ private theorem char_cont {X B K : Type} [TopologicalSpace X] [CommRing B] [Norm
   exact Ideal.Quotient.eq.1 hq
 
 /- English proof (translation)
-Establish `hDy : (D ∘ₗ (IsScalarTower.toAlgHom c.O R A).toLinearMap) ∈ PtDer (ξ.comp (IsScalarTower.toAlgHom c.O R A)) (Qbar l)` using `fun f g => by show D (algebraMap R A (f * g)) = ξ (algebraMap R A f) * D (algebraMap R A g) + ξ (algebraMap R A g) * D (algebraMap R A f)`. Rewrite using `[map_mul]`. Conclude with `hD _ _`. Conclude with `derCont l c R _ _ hDy ε hε`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem der_small (l : ℕ) [Fact l.Prime] (c : Coef l) [Fr.IsCoef l c.O] {R A : Type} [CommRing R] [CommRing A]
     [Algebra c.O R] [IsCO c.O R] [Algebra c.O A] [Algebra R A] [IsScalarTower c.O R A] (ξ : A →ₐ[c.O] Qbar l)
@@ -174,7 +170,7 @@ private theorem der_small (l : ℕ) [Fact l.Prime] (c : Coef l) [Fr.IsCoef l c.O
   exact derCont l c R _ _ hDy ε hε
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `hs`. Use `haveI := finite_quot O R k`. Conclude with `bdd_of_small (maximalIdeal R ^ k) (D.toAddMonoidHom.comp (algebraMap R A).toAddMonoidHom) hk`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem der_bdd (O : Type) {R A K : Type} [CommRing O] [IsLocalRing O] [Finite (ResidueField O)] [CommRing R]
     [Algebra O R] [IsCO O R] [CommRing A] [Algebra R A] [NormedField K] [Module O K] [Module O A]
@@ -185,7 +181,7 @@ private theorem der_bdd (O : Type) {R A K : Type} [CommRing O] [IsLocalRing O] [
   exact bdd_of_small (maximalIdeal R ^ k) (D.toAddMonoidHom.comp (algebraMap R A).toAddMonoidHom) hk
 
 /- English proof (translation)
-The claim follows from `entry_cont I (x : A →+* K) D.toAddMonoidHom hx hD hs hb e hE hc`.
+A detailed English derivation is pending.
 -/
 private theorem entry_cont' {O X B A K : Type} [CommRing O] [TopologicalSpace X] [CommRing B] [CommRing A] [Algebra B A]
     [Algebra O A] [NormedField K] [Algebra O K] [IsUltrametricDist K] (I : Ideal B) (x : A →ₐ[O] K) (D : A →ₗ[O] K)
@@ -198,7 +194,7 @@ private theorem entry_cont' {O X B A K : Type} [CommRing O] [TopologicalSpace X]
   entry_cont I (x : A →+* K) D.toAddMonoidHom hx hD hs hb e hE hc
 
 /- English proof (translation)
-Establish `h : ps = fun g => algebraMap B A (χ g)` using `funext fun g => (he g).symm`. Substitute `h` using the available equality. Conclude with `⟨char_cont I ((x : A →+* K).toAddMonoidHom.comp (algebraMap B A).toAddMonoidHom) (fun ε hε => (hs ε hε).imp fun _ h b hb => (h b hb).2) χ hc, char_cont I (D.toAddMonoidHom.comp (algebraMap B A).toAddMonoidHom) (fun ε hε => (hs ε hε).imp fun _ h b hb => (h b hb).1) χ hc⟩`.
+Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components.
 -/
 private theorem char_cont' {O X B A K : Type} [CommRing O] [TopologicalSpace X] [CommRing B] [CommRing A] [Algebra B A]
     [Algebra O A] [NormedField K] [Algebra O K] (I : Ideal B) (x : A →ₐ[O] K) (D : A →ₗ[O] K)
@@ -213,9 +209,9 @@ private theorem char_cont' {O X B A K : Type} [CommRing O] [TopologicalSpace X] 
       (fun ε hε => (hs ε hε).imp fun _ h b hb => (h b hb).1) χ hc⟩
 
 /- English proof (translation)
-Introduce `l _ c _ F C₀ n hF hn S ξ hξ D hD`. Take `⟨hco, -⟩` from `Fr.co_B hF hn S`. Use `haveI := hco`. Establish `cone` using `(Fr.cone_u hF hn S).1`. Establish `hD' : ∀ f g, D (f * g) = ξ f * D g + ξ g * D f` using `hD`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : ∀ ε : ℝ, 0 < ε → ∃ k, ∀ b ∈ maximalIdeal S.B ^ k, ‖D (algebraMap S.B S.A b)‖ ≤ ε ∧ ‖ξ (algebraMap S.B S.A b)‖ ≤ ε` using `der_small l c ξ D hD'`. Establish `hb : ∃ C : ℝ, ∀ b, ‖D (algebraMap S.B S.A b)‖ ≤ C` using `der_bdd c.O D ((hs 1 one_pos).imp fun _ h b hb => (h b hb).1)`. Establish `ent` using `fun i j => entry_cont' (maximalIdeal S.B) ξ D hξ.1 hD' hs hb (fun g => S.u.r g i j) (cone.fg i j) (cone.cont i j)`. Take `⟨χ, hχ, hχe⟩` from `cone.psi`. Conclude with `⟨fun i j => (ent i j).1, fun i j => (ent i j).2, fun v i => char_cont' (maximalIdeal S.B) ξ D hs (χ v i) (hχ v i).1 (fun g => (S.u.ψ v i g : S.A)) (hχe v i)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.J.derRep :
     ∀ (l : ℕ) [Fact l.Prime] (c : Coef l) [Fr.IsCoef l c.O] (F : Fr.Frame l (ResidueField c.O)) (C₀ n : ℕ), F.Ok C₀ → (n = 2 ∨ n = 3) →

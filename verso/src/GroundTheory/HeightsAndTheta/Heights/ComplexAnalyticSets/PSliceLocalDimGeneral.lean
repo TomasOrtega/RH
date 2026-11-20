@@ -12,13 +12,11 @@ open MvPolynomial Matrix ComplexSets
 noncomputable section
 
 /- English proof (translation)
-Set `s : Finset (R ⧸ I)` to `Finset.univ.image fun i => Ideal.Quotient.mk I (t i)`. Establish `hs : Ideal.span (s : Set (R ⧸ I)) = (Ideal.span (Set.range t)).map (Ideal.Quotient.mk I)`. Rewrite using `[Ideal.map_span]`. Use `congr 1`. Use extensionality with `x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `[s]`. Establish `hjac : (Ideal.span (Set.range t)).map (Ideal.Quotient.mk I) ≤ Ring.jacobson (R ⧸ I)`. Rewrite using `[← Ideal.jacobson_bot, ← Ideal.map_quotient_self I, ← Ideal.map_jacobson_of_surjective Ideal.Quotient.mk_surjective (by rw [Ideal.mk_ker]), IsLocalRing.jacobson_eq_maximalIdeal I hI]`. Use `Ideal.map_mono ?_` and prove the remaining obligations. Rewrite using `[Ideal.span_le]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `ht i`. Establish `hkey` using `ringKrullDim_le_ringKrullDim_quotient_add_card s fun x hx => hjac (hs ▸ Ideal.subset_span hx)`. Rewrite `hkey` using `[hs, ringKrullDim_eq_of_ringEquiv (DoubleQuot.quotQuotEquivQuotSup I _)]`. Use `hkey.trans ?_` and prove the remaining obligations.
-
-Use `gcongr`. Conclude with `Finset.card_image_le.trans (by simp)` after adjusting the coercions.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ringKrullDim_quotient_le_sup_span_add {R : Type*} [CommRing R] [IsLocalRing R] [IsNoetherianRing R]
     (I : Ideal R)
@@ -47,17 +45,17 @@ theorem ringKrullDim_quotient_le_sup_span_add {R : Type*} [CommRing R] [IsLocalR
   exact_mod_cast Finset.card_image_le.trans (by simp)
 
 /- English proof (translation)
-Set `φ` to `algebraMap (MvPolynomial (Fin n) ℂ) (Localization.AtPrime (RingHom.ker (eval q : MvPolynomial (Fin n) ℂ →+* ℂ)))`. Set `t : Fin d → MvPolynomial (Fin n) ℂ` to `fun i => linPoly L i - C ((L *ᵥ q) i)`. Establish `hI : J.map φ ≠ ⊤`. Introduce `h`. Unfold `localRingAt at hdim`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Establish `: Subsingleton (Localization.AtPrime (RingHom.ker (eval q : MvPolynomial (Fin n) ℂ →+* ℂ)) ⧸ J.map φ)` using `Ideal.Quotient.subsingleton_iff.mpr h`. Rewrite `hdim` using `[ringKrullDim_eq_bot_of_subsingleton]`. Conclude with `WithBot.bot_ne_coe hdim`. Establish `ht : ∀ i, φ (t i) ∈ IsLocalRing.maximalIdeal (Localization.AtPrime (RingHom.ker (eval q : MvPolynomial (Fin n) ℂ →+* ℂ)))`. Introduce `i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Localization.AtPrime.map_eq_maximalIdeal]`. Use `Ideal.mem_map_of_mem _ ?_` and prove the remaining obligations. Simplify using `[t, RingHom.mem_ker, eval_linPoly]`. Establish `hkey` using `ringKrullDim_quotient_le_sup_span_add (J.map φ) hI (fun i => φ (t i)) ht`. Establish `hsl : (sliceIdeal J L q).map φ = J.map φ ⊔ Ideal.span (Set.range fun i => φ (t i))`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sliceIdeal, Ideal.map_sup, Ideal.map_span, ← Set.range_comp]`. Both sides reduce to the same expression. Rewrite `hkey` using `[← hsl]`. Express the relevant statement in the definitionally equal form `ringKrullDim (localRingAt J q) ≤ ringKrullDim (localRingAt (sliceIdeal J L q) q) + (d : ℕ) at hkey`. Rewrite `hkey` using `[hdim]`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `ringKrullDim (localRingAt (sliceIdeal J L q) q) = D at hkey ⊢`. Proceed by induction on `D using WithBot.recBotCoe with`. Consider the case `bot => simp at hkey`. Consider the case `coe e`. Proceed by induction on `e using ENat.recTopCoe with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `top => exact WithBot.coe_le_coe.2 le_top`. Consider the case `coe k`. Establish `h2 : ((d + 1 : ℕ) : WithBot ℕ∞) ≤ ((k + d : ℕ) : WithBot ℕ∞)` using `by simpa using hkey`. Establish `h3 : d + 1 ≤ k + d` using `by exact_mod_cast h2`. Conclude with `(show 1 ≤ k by omega)` after adjusting the coercions.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem one_le_ringKrullDim_localRingAt_sliceIdeal {n d : ℕ} (J : Ideal (MvPolynomial (Fin n) ℂ))
     (L : Matrix (Fin d) (Fin n) ℂ) (q : Fin n → ℂ)
@@ -99,11 +97,11 @@ theorem one_le_ringKrullDim_localRingAt_sliceIdeal {n d : ℕ} (J : Ideal (MvPol
       exact_mod_cast (show 1 ≤ k by omega)
 
 /- English proof (translation)
-Introduce `n d J q hJ hdim hq`. Take `⟨F, hF, hgood⟩` from `hU n d J q hJ hdim hq`. Establish `hloc` using `hL n (d + 1) J hJ hdim q hq`. Set `e : Matrix (Fin d) (Fin n) ℂ → (Fin d × Fin n → ℂ)` to `fun L ij => L ij.1 ij.2`. Set `ψ : (Fin d × Fin n → ℂ) → Matrix (Fin d) (Fin n) ℂ` to `fun y => Matrix.of fun i j => y (i, j)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `he : Continuous e` using `continuous_pi fun ij => continuous_id.matrix_elem ij.1 ij.2`. Establish `hψ : Continuous ψ` using `continuous_pi fun i => continuous_pi fun j => continuous_apply (i, j)`. Use `⟨{L | eval (e L) F ≠ 0}, ?_, ?_, fun L hLF => le_antisymm (hgood L hLF) (one_le_ringKrullDim_localRingAt_sliceIdeal J L q hloc)⟩` and prove the remaining obligations. Conclude with `isOpen_ne_fun ((MvPolynomial.continuous_eval F).comp he) continuous_const`. Rewrite using `[dense_iff_inter_open]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `U hU ⟨L₀, hL₀⟩`. Take `⟨y, hyU, hyF⟩` from `exists_eval_ne_zero_of_isOpen_pi hF (hU.preimage hψ) ⟨e L₀, hL₀⟩`. Conclude with `⟨ψ y, hyU, hyF⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem SliceLocalDimGeneral.proof (hL : LocalDimDomain.Statement)
     (hU : SliceLocalDimUpperZariski.Statement) : SliceLocalDimGeneral.Statement := by

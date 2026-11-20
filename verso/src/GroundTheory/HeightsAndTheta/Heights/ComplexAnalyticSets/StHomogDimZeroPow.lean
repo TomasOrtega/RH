@@ -17,11 +17,11 @@ def HomogDimZeroPow.Statement : Prop :=
       ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ K) ≤ 0 → ∃ N : ℕ, originIdeal n ^ N ≤ K
 
 /- English proof (translation)
-Use extensionality with `f`. Rewrite using `[originIdeal, ← Set.image_univ, mem_ideal_span_X_image, RingHom.mem_ker, constantCoeff_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Assume the negation of the conclusion as `h0`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨i, -, hi⟩` from `h 0 (mem_support_iff.2 h0)`. Conclude with `hi rfl`. Introduce `h m hm`. Establish `hm0 : m ≠ 0`. Introduce and unpack `rfl`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `mem_support_iff.1 hm h`. Take `⟨i, hi⟩` from `Finsupp.ne_iff.1 hm0`. Conclude with `⟨i, Set.mem_univ _, hi⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem originIdeal_eq_ker (n : ℕ) :
     originIdeal n = RingHom.ker (constantCoeff : MvPolynomial (Fin n) ℂ →+* ℂ) := by
@@ -40,7 +40,7 @@ theorem originIdeal_eq_ker (n : ℕ) :
     exact ⟨i, Set.mem_univ _, hi⟩
 
 /- English proof (translation)
-Rewrite using `[originIdeal_eq_ker]`. Conclude with `RingHom.ker_isMaximal_of_surjective _ (fun c => ⟨C c, constantCoeff_C _ _⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem originIdeal_isMaximal (n : ℕ) : (originIdeal n).IsMaximal := by
   rw [originIdeal_eq_ker]

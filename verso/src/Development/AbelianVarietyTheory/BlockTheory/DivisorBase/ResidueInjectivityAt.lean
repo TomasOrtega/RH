@@ -26,7 +26,7 @@ def ResInj : Prop :=
     R.models_inf → ResInjAt R
 
 /- English proof (translation)
-The claim follows from `h D G Pl0 T A Ks R hR.models.inf`.
+A detailed English derivation is pending.
 -/
 theorem ResInj.of_char (h : ResInj) {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type}
     {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]

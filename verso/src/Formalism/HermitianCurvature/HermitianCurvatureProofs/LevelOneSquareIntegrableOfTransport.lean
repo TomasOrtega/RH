@@ -16,9 +16,9 @@ variable {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type} [Normed
   [FiniteDimensional ℂ Wq] {π : Mx k r → (Wp →L[ℂ] Wp)} {π' : Mx k r → (Wq →L[ℂ] Wq)}
 
 /- English proof (translation)
-Establish `hjl : (0 : Fin (r - l.succ + 1)).val + l.succ.val = l.succ.val` using `by simp`. Establish `hκ0 : (κ : ℂ) ≠ 0` using `by exact_mod_cast hκ.ne'`. Unfold `fs`. Rewrite using `[← (shEqJ_mp l.succ l.succ 0 hjl).integral_comp', ← integral_const_mul]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `c''`. Rewrite using `[wtI_shEqJ, glue_shEqJ l.succ l.succ 0 hjl (Function.update c l t) (Function.update c l t) (fun _ _ => rfl), hT]`. Clear the denominators using the available nonvanishing facts.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem fs_tr (μ : Measure (Mt k r)) (l : Fin r) (c : Fin r → ℂ) (t : ℂ)
     {zi zi' : Fin (2 * (r - l.succ) + k + 1) → ℂ} {πi : Mx k (r - l.succ) → (Wp →L[ℂ] Wp)}
@@ -38,7 +38,7 @@ theorem fs_tr (μ : Measure (Mt k r)) (l : Fin r) (c : Fin r → ℂ) (t : ℂ)
   field_simp
 
 /- English proof (translation)
-The claim follows from `level_square_integrable_of_transport μ l.succ (Function.update c l t) μi T κ hκ hT Φ c₀ h`.
+A detailed English derivation is pending.
 -/
 theorem level_one_square_integrable_of_transport (μ : Measure (Mt k r)) (l : Fin r) (c : Fin r → ℂ) (t : ℂ)
     {zi zi' : Fin (2 * (r - l.succ) + k + 1) → ℂ} {πi : Mx k (r - l.succ) → (Wp →L[ℂ] Wp)}

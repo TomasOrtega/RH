@@ -18,7 +18,7 @@ section Fr
 variable {Γ Ga Gp : Type} [Group Γ] [Group Ga] [Group Gp] (X : Frame Γ Ga Gp) {d m : ℕ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g k`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem raF_eq (τ : X.Ub →* GL (Fin m) ℂ) (u : X.Ub) (F : Fin m → X.Fn ℂ d) (i : Fin m) :
     X.raF d τ u F i = ∑ j, τ u i j • fun g => F j (g * ((u : Ga), 1)) := by
@@ -27,7 +27,7 @@ theorem raF_eq (τ : X.Ub →* GL (Fin m) ℂ) (u : X.Ub) (F : Fin m → X.Fn �
   rfl
 
 /- English proof (translation)
-Introduce `γ g` and use `by simp only [mul_assoc] exact hF γ _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem AF_tr {ξ : Gp →* GL (Fin d) ℂ} {F : X.Fn ℂ d} (hF : F ∈ X.AF ξ) (y : Ga × Gp) :
     (fun g => F (g * y)) ∈ X.AF ξ := fun γ g => by
@@ -42,7 +42,7 @@ variable {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L] [IsCMF
   {s : HidaSetting l L Ω} {n : ℕ}
 
 /- English proof (translation)
-Use extensionality with `x`. Conclude with `(s.hw v (algebraMap (𝓞 (Lp L)) (𝓞 L) x)).symm.trans (s.hA v x)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem w_under (s : HidaSetting l L Ω) (v : Plc (Lp L)) : (s.w v).under (𝓞 (Lp L)) = v := by
   ext x
@@ -50,14 +50,14 @@ theorem w_under (s : HidaSetting l L Ω) (v : Plc (Lp L)) : (s.w v).under (𝓞 
 
 omit [Fact l.Prime] in
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `algebraMap (𝓞 (Lp L)) (𝓞 L) (l : 𝓞 (Lp L)) ∈ w.asIdeal ↔ _`. Rewrite using `[map_natCast]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem l_iff (w : Plc L) : ((l : ℕ) : 𝓞 (Lp L)) ∈ (w.under (𝓞 (Lp L))).asIdeal ↔ ((l : ℕ) : 𝓞 L) ∈ w.asIdeal := by
   change algebraMap (𝓞 (Lp L)) (𝓞 L) (l : 𝓞 (Lp L)) ∈ w.asIdeal ↔ _
   rw [map_natCast]
 
 /- English proof (translation)
-Unfold `CaseU.cmp`. Rewrite using `[dif_pos h]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cmp_of {w : Plc L} (h : ((l : ℕ) : 𝓞 L) ∉ w.asIdeal) (x : UA L n) :
     cmp n w ((away l L n).rangeRestrict x) = cLoc w x := by
@@ -86,7 +86,7 @@ noncomputable def tf (i : Fin m) (ℓ : Module.Dual ℂ (⨂[ℂ] e : Emb l (fun
     rfl
 
 /- English proof (translation)
-Use `and_congr Iff.rfl ⟨fun h i ℓ => ?_, fun h => Submodule.subset_span h⟩` and prove the remaining obligations. Conclude with `(Submodule.span_le (p := σ.comap (tf Q τ₀ ι e i ℓ))).2 (fun F hF => by exact hF i ℓ) h`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mem_Y {ξ : GV n (fun v : V.frame.Vl => s.w v.1) →* GL (Fin d) ℂ} {σ : Submodule ℂ (UA L n → ℂ)}
     {F : Fin m → (hset Q τ₀).X.Fn ℂ d} :
@@ -95,7 +95,7 @@ theorem mem_Y {ξ : GV n (fun v : V.frame.Vl => s.w v.1) →* GL (Fin d) ℂ} {�
   exact (Submodule.span_le (p := σ.comap (tf Q τ₀ ι e i ℓ))).2 (fun F hF => by exact hF i ℓ) h
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Express the relevant statement in the definitionally equal form `ℓ (infRep ι lam (g * x)⁻¹ (e (F (JU V (g * x))))) = ℓ (infRep ι lam x⁻¹ (infRep ι lam g⁻¹ (e (F (JU V g * JU V x)))))`. Establish `: JU V (g * x) = JU V g * JU V x` using `Prod.ext (map_mul _ _ _) (funext fun v => map_mul _ _ _)`. Rewrite using `[this, mul_inv_rev, map_mul, Module.End.mul_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem RU_form (F : Ga l L n × GV n (fun v : V.frame.Vl => s.w v.1) → Fin d → ℂ) (ℓ) (x : UA L n) :
     RU L n x (toForm ι e F ℓ) = toForm ι e (fun g => F (g * JU V x)) (ℓ ∘ₗ infRep ι lam x⁻¹) := by
@@ -105,9 +105,9 @@ theorem RU_form (F : Ga l L n × GV n (fun v : V.frame.Vl => s.w v.1) → Fin d 
   rw [this, mul_inv_rev, map_mul, Module.End.mul_apply]
 
 /- English proof (translation)
-Establish `h : infRep (V` using `V) ι lam x⁻¹ = 1 := by`. Establish `h1 : cInf x⁻¹ = 1` using `inv_mem hx`. Use `(congrArg PiTensorProduct.mapMonoidHom (funext fun y => ?_)).trans (map_one _)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `GlobalTheory.Branching.sqRep ℂ n _ (Matrix.GeneralLinearGroup.map _ (cInf x⁻¹)) = 1`. Rewrite using `[h1, map_one, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RU_form, h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem RU_fin (F : Ga l L n × GV n (fun v : V.frame.Vl => s.w v.1) → Fin d → ℂ) (ℓ) {x : UA L n} (hx : x ∈ finU L n) :
     RU L n x (toForm ι e F ℓ) = toForm ι e (fun g => F (g * JU V x)) ℓ := by

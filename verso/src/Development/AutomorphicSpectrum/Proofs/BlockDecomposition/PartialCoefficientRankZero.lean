@@ -12,9 +12,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.PcZero
 
 /- English proof (translation)
-Use extensionality with `i j`. Take `⟨i, rfl⟩` from `(finSumFinEquiv.trans (finCongr hn)).surjective i`. Take `⟨j, rfl⟩` from `(finSumFinEquiv.trans (finCongr hn)).surjective j`. Break down `i with i | i` into its components or cases. Conclude with `i.elim0`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `j with j | j` into its components or cases. Conclude with `j.elim0`. Simplify using `only [bl, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₂₂, Matrix.zero_apply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem blockMatrix_zero {R : Type} [Zero R] {p : ℕ} (hn : 0 + p = p) (a : Matrix (Fin 0) (Fin 0) R)
     (b : Matrix (Fin 0) (Fin p) R) (c : Matrix (Fin p) (Fin 0) R) : bl hn a b c 0 = 0 := by
@@ -28,9 +28,9 @@ theorem blockMatrix_zero {R : Type} [Zero R] {p : ℕ} (hn : 0 + p = p) (a : Mat
   simp only [bl, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₂₂, Matrix.zero_apply]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Establish `h : mat (M.nzx z x) = 1`. Rewrite using `[M.nzx_mat, blockMatrix_zero]`. Unfold `blk4`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[Matrix.fromBlocks_one, Matrix.submatrix_one_equiv]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nzx_eq_one {D : D7} {p : ℕ} {hn : 0 + p = p} (M : Maps D hn) (z : hermA D 0) (x : Mx D 0 p) :
     M.nzx z x = 1 := by
@@ -43,14 +43,14 @@ theorem nzx_eq_one {D : D7} {p : ℕ} {hn : 0 + p = p} (M : Maps D hn) (z : herm
   exact h
 
 /- English proof (translation)
-Unfold `chz halfTr trA`. Simplify using `[Matrix.trace]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem chz_eq_one {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (b₀ : HermE D 0) (z : hermA D 0) : chz ψ b₀ z = 1 := by
   unfold chz halfTr trA
   simp [Matrix.trace]
 
 /- English proof (translation)
-Unfold `zc`. Simplify using `only [nzx_eq_one, chz_eq_one, one_mul, map_one, mul_one]`. Rewrite using `[setIntegral_const, Measure.real, m.hz.2.2]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem zc_eq {D : D7} {p : ℕ} {hn : 0 + p = p} (M : Maps D hn) (m : Meas D 0 p) (ψ : AddChar (AF D.host.F) ℂ)
     (b₀ : HermE D 0) (F : G D p → ℂ) (g : G D p) : zc M m ψ b₀ F g = F g := by
@@ -60,7 +60,7 @@ theorem zc_eq {D : D7} {p : ℕ} {hn : 0 + p = p} (M : Maps D hn) (m : Meas D 0 
   simp
 
 /- English proof (translation)
-Introduce `D p hn M m ψ b₀ F g`. Unfold `PositivityTheory.Rg.Rsw.pc`. Simplify using `only [zc_eq, nzx_eq_one, one_mul]`. Rewrite using `[setIntegral_const, Measure.real, m.hμ.2.2]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pc_eq : ∀ (D : D7) (p : ℕ) (hn : 0 + p = p) (M : Maps D hn) (m : Meas D 0 p) (ψ : AddChar (AF D.host.F) ℂ)
     (b₀ : HermE D 0) (F : G D p → ℂ) (g : G D p), pc M m ψ b₀ F g = F g := by

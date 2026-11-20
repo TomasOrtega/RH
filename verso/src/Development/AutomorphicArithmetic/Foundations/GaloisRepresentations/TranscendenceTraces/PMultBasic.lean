@@ -3,7 +3,7 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Trans
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Gal.TranscendenceTraces
 
 /- English proof (translation)
-Introduce `h1 h2 h3`. Conclude with `⟨h1, h2, h3⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem UpperTheory.Gal.TranscendenceTraces.multBasic_of :
     MultBC → MultOpen → MultEt → MultBasic := by

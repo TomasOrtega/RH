@@ -19,7 +19,7 @@ variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ} {ω
   (μ : Measure (GA E a)) [μ.IsHaarMeasure]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CuspBoundSiegel.cuspFormsBounded_of_rapidDecay (GlobalTheory.cuspRapidDecaySiegelGL_of_finite GlobalTheory.automorphicFormsFiniteGL)`.
+A detailed English derivation is pending.
 -/
 theorem cuspFormsBounded : CuspFormsBoundedGL :=
   GlobalTheory.CuspBoundSiegel.cuspFormsBounded_of_rapidDecay
@@ -32,7 +32,7 @@ abbrev bddSm : Submodule ℂ (Sm E a) := (bddForms E a ω).comap (Sm E a).subtyp
 abbrev ip (φ ψ : Sm E a) : ℂ := pet (latticeGL E a) μ φ.1 ψ.1
 
 /- English proof (translation)
-Unfold `ip`. Rewrite using `[← conj_pet μ (ψ + ψ').1, ← conj_pet μ ψ.1, ← conj_pet μ ψ'.1, ← map_add]`. Conclude with `congrArg conj (pet_add_left μ hω h1 h2 h)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ip_add_right (hω : ω.IsUnitary) {φ ψ ψ' : Sm E a} (h : φ ∈ bddSm ω) (h1 : ψ ∈ bddSm ω) (h2 : ψ' ∈ bddSm ω) :
     ip μ φ (ψ + ψ') = ip μ φ ψ + ip μ φ ψ' := by
@@ -41,7 +41,7 @@ theorem ip_add_right (hω : ω.IsUnitary) {φ ψ ψ' : Sm E a} (h : φ ∈ bddSm
   exact congrArg conj (pet_add_left μ hω h1 h2 h)
 
 /- English proof (translation)
-Unfold `ip`. Rewrite using `[← conj_pet μ (c • ψ).1, ← conj_pet μ ψ.1, ← map_mul, ← pet_smul_left μ]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ip_smul_right (c : ℂ) (φ ψ : Sm E a) : ip μ φ (c • ψ) = conj c * ip μ φ ψ := by
   unfold ip
@@ -49,14 +49,14 @@ theorem ip_smul_right (c : ℂ) (φ ψ : Sm E a) : ip μ φ (c • ψ) = conj c 
   rfl
 
 /- English proof (translation)
-Rewrite using `[eq_sub_iff_add_eq, ← ip_add_right μ hω h (sub_mem h1 h2) h2, sub_add_cancel]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ip_sub_right (hω : ω.IsUnitary) {φ ψ ψ' : Sm E a} (h : φ ∈ bddSm ω) (h1 : ψ ∈ bddSm ω) (h2 : ψ' ∈ bddSm ω) :
     ip μ φ (ψ - ψ') = ip μ φ ψ - ip μ φ ψ' := by
   rw [eq_sub_iff_add_eq, ← ip_add_right μ hω h (sub_mem h1 h2) h2, sub_add_cancel]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Take `⟨r, hr, e⟩` from `pet_self_pos μ hω h fun e => hne (Subtype.ext e)`. Conclude with `hr.ne' (by exact_mod_cast e.symm.trans h0)`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_ip_self (hω : ω.IsUnitary) {φ : Sm E a} (h : φ ∈ bddSm ω) (h0 : ip μ φ φ = 0) : φ = 0 := by
   by_contra hne
@@ -64,7 +64,7 @@ theorem eq_zero_of_ip_self (hω : ω.IsUnitary) {φ : Sm E a} (h : φ ∈ bddSm 
   exact hr.ne' (by exact_mod_cast e.symm.trans h0)
 
 /- English proof (translation)
-The claim follows from `sub_eq_zero.1 <| eq_zero_of_ip_self μ hω (hD (sub_mem h h')) <| by rw [ip_sub_right μ hω (hD (sub_mem h h')) (hD h) (hD h'), e _ (sub_mem h h'), sub_self]`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_ip_eq (hω : ω.IsUnitary) {D : Submodule ℂ (Sm E a)} (hD : D ≤ bddSm ω) {p p' : Sm E a} (h : p ∈ D)
     (h' : p' ∈ D) (e : ∀ x ∈ D, ip μ x p = ip μ x p') : p = p' :=
@@ -91,7 +91,7 @@ def core (hω : ω.IsUnitary) : InnerProductSpace.Core ℂ (bddSm (a := a) ω) w
   definite x h := Subtype.ext (eq_zero_of_ip_self μ hω x.2 h)
 
 /- English proof (translation)
-Use `letI : NormedAddCommGroup H := InnerProductSpace.Core.toNormedAddCommGroup (𝕜 := ℂ)`. Use `letI : InnerProductSpace ℂ H := InnerProductSpace.ofCore _`. Take `⟨p, hp, h⟩` from `Submodule.HasOrthogonalProjection.exists_orthogonal (K := D) v`. Conclude with `⟨p, hp, (Submodule.mem_orthogonal' _ _).1 h⟩`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_orth_of_core {H : Type} [AddCommGroup H] [Module ℂ H] (c : InnerProductSpace.Core ℂ H)
     (D : Submodule ℂ H) [FiniteDimensional ℂ D] (v : H) : ∃ p ∈ D, ∀ x ∈ D, c.inner (v - p) x = 0 := by
@@ -101,9 +101,9 @@ theorem exists_orth_of_core {H : Type} [AddCommGroup H] [Module ℂ H] (c : Inne
   exact ⟨p, hp, (Submodule.mem_orthogonal' _ _).1 h⟩
 
 /- English proof (translation)
-Set `D' : Submodule ℂ (bddSm (a` to `a) ω) := D.comap (bddSm ω).subtype`. Use `haveI : FiniteDimensional ℂ D' := (Submodule.comapSubtypeEquivOfLe hD).symm.finiteDimensional`. Take `⟨p, hp, h⟩` from `exists_orth_of_core (core μ hω) D' ⟨ψ, hψ⟩`. Use `⟨p.1, hp, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h1 : ip μ x (ψ - p.1) = 0` using `h ⟨x, hD hx⟩ hx`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h1` using `[ip_sub_right μ hω (hD hx) hψ p.2, sub_eq_zero]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem exists_proj_of_finite (hω : ω.IsUnitary) {D : Submodule ℂ (Sm E a)} (hD : D ≤ bddSm ω) [FiniteDimensional ℂ D]
     {ψ : Sm E a} (hψ : ψ ∈ bddSm ω) : ∃ p ∈ D, ∀ x ∈ D, ip μ x ψ = ip μ x p := by
@@ -115,9 +115,9 @@ theorem exists_proj_of_finite (hω : ω.IsUnitary) {D : Submodule ℂ (Sm E a)} 
   rwa [ip_sub_right μ hω (hD hx) hψ p.2, sub_eq_zero] at h1
 
 /- English proof (translation)
-Use `choose f hf hf' using h`. Use `⟨⟨⟨fun ψ => ⟨f ψ.1 ψ.2, hf _ _⟩, fun ψ ψ' => Subtype.ext ?_⟩, fun c ψ => Subtype.ext ?_⟩, fun ψ => hf' _ _⟩` and prove the remaining obligations. Use `eq_of_ip_eq μ hω hD (hf _ _) (add_mem (hf _ _) (hf _ _)) fun x hx => ?_` and prove the remaining obligations. Rewrite using `[← hf' _ _ x hx]`. Conclude with `(ip_add_right μ hω (hD hx) (hW ψ.2) (hW ψ'.2)).trans ((congrArg₂ (· + ·) (hf' _ _ x hx) (hf' _ _ x hx)).trans (ip_add_right μ hω (hD hx) (hD (hf _ _)) (hD (hf _ _))).symm)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `eq_of_ip_eq μ hω hD (hf _ _) (D.smul_mem _ (hf _ _)) fun x hx => ?_` and prove the remaining obligations. Rewrite using `[← hf' _ _ x hx]`. Conclude with `(ip_smul_right μ c _ _).trans ((congrArg (conj c * ·) (hf' _ _ x hx)).trans (ip_smul_right μ c _ _).symm)`.
+A detailed English derivation is pending.
 -/
 theorem exists_linear_proj (hω : ω.IsUnitary) {D W : Submodule ℂ (Sm E a)} (hD : D ≤ bddSm ω) (hW : W ≤ bddSm ω)
     (h : ∀ ψ ∈ W, ∃ p ∈ D, ∀ x ∈ D, ip μ x ψ = ip μ x p) :
@@ -133,7 +133,7 @@ theorem exists_linear_proj (hω : ω.IsUnitary) {D W : Submodule ℂ (Sm E a)} (
     exact (ip_smul_right μ c _ _).trans ((congrArg (conj c * ·) (hf' _ _ x hx)).trans (ip_smul_right μ c _ _).symm)
 
 /- English proof (translation)
-Use `pet_mul_right_left μ hω h h' g⁻¹` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Conclude with `this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ip_rt (hω : ω.IsUnitary) {φ ψ : Sm E a} (h : φ ∈ bddSm ω) (h' : ψ ∈ bddSm ω) (g : GA E a) :
     ip μ φ (rt E a g ψ) = ip μ (rt E a g⁻¹ φ) ψ := by
@@ -142,7 +142,7 @@ theorem ip_rt (hω : ω.IsUnitary) {φ ψ : Sm E a} (h : φ ∈ bddSm ω) (h' : 
   exact this.symm
 
 /- English proof (translation)
-Introduce `x hx` and use `by rw [ip_rt μ hω (hD hx) hψ, ip_rt μ hω (hD hx) (hD hp), e _ (hg x hx)]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ip_rt_proj (hω : ω.IsUnitary) {D : Submodule ℂ (Sm E a)} (hD : D ≤ bddSm ω) {g : GA E a}
     (hg : ∀ x ∈ D, rt E a g⁻¹ x ∈ D) {ψ p : Sm E a} (hψ : ψ ∈ bddSm ω) (hp : p ∈ D)
@@ -150,7 +150,7 @@ theorem ip_rt_proj (hω : ω.IsUnitary) {D : Submodule ℂ (Sm E a)} (hD : D ≤
   rw [ip_rt μ hω (hD hx) hψ, ip_rt μ hω (hD hx) (hD hp), e _ (hg x hx)]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(rt E a (finGL E a k) * rt E a (infGL E a (Unitary.toUnits c))) φ = (rt E a (infGL E a (Unitary.toUnits c)) * rt E a (finGL E a k)) φ`. Rewrite using `[← map_mul, ← map_mul, infGL_comm]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem finRep_cptRep (k : GL (Fin a) (Af E)) (c : Kinf E a) (φ : Sm E a) :
     finRep E a k (cptRep E a c φ) = cptRep E a c (finRep E a k φ) := by
@@ -159,9 +159,7 @@ theorem finRep_cptRep (k : GL (Fin a) (Af E)) (c : Kinf E a) (φ : Sm E a) :
   rw [← map_mul, ← map_mul, infGL_comm]
 
 /- English proof (translation)
-Use `haveI : CompactSpace K := isCompact_iff_compactSpace.1 hK`. Use `IsLocallyConstant.range_finite ((IsLocallyConstant.iff_eventually_eq _).2 fun x => ?_)` and prove the remaining obligations. Establish `hc : Continuous fun y : K => x.1⁻¹ * y.1` using `continuous_const.mul continuous_subtype_val`. Use `filter_upwards [(h.preimage hc).mem_nhds (by simp)] with y hy`. Establish `hy' : finRep E a (x.1⁻¹ * y.1) φ = φ` using `hy`.
-
-Use `conv_rhs => rw [← hy', ← Module.End.mul_apply, ← map_mul, mul_inv_cancel_left]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_orbit {K : Subgroup (GL (Fin a) (Af E))} (hK : IsCompact (K : Set (GL (Fin a) (Af E)))) {φ : Sm E a}
     (h : IsOpen {k | finRep E a k φ = φ}) : (Set.range fun k : K => finRep E a k.1 φ).Finite := by
@@ -173,17 +171,15 @@ theorem finite_orbit {K : Subgroup (GL (Fin a) (Af E))} (hK : IsCompact (K : Set
   conv_rhs => rw [← hy', ← Module.End.mul_apply, ← map_mul, mul_inv_cancel_left]
 
 /- English proof (translation)
-Take `⟨t, rfl⟩` from `(Submodule.fg_iff_finiteDimensional F).2 inferInstance`. Set `T : Set (Sm E a)` to `⋃ φ ∈ t, Set.range fun k : K => finRep E a k.1 φ`. Establish `htV : ∀ φ ∈ t, φ ∈ π.V` using `fun φ hφ => hF (Submodule.subset_span hφ)`. Establish `hT : T.Finite` using `t.finite_toSet.biUnion fun φ hφ => finite_orbit hK (π.cusp φ (htV φ hφ)).1.level`. Establish `hTV : ∀ χ ∈ T, χ ∈ π.V` using `fun χ hχ => by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [T, Set.mem_iUnion] at hχ`. Take `⟨φ, hφ, k, rfl⟩` from `hχ`. Conclude with `π.stable (.fin k.1) φ (htV φ hφ)`. Establish `hTK : ∀ k ∈ K, ∀ χ ∈ T, finRep E a k χ ∈ T` using `fun k hk χ hχ => by`. Simplify using `only [T, Set.mem_iUnion] at hχ ⊢`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨φ, hφ, k', rfl⟩` from `hχ`. Conclude with `⟨φ, hφ, ⟨k * k'.1, mul_mem hk k'.2⟩, by simp only [map_mul, Module.End.mul_apply]⟩`. Use `haveI := hT.to_subtype`. Use `haveI : ∀ χ : T, FiniteDimensional ℂ (LocEx.orbSpan χ.1) := fun χ => (π.cusp _ (hTV _ χ.2)).1.kfin`. Use `⟨⨆ χ : T, LocEx.orbSpan χ.1, Submodule.span_le.2 fun φ hφ => ?_, iSup_le fun χ => Submodule.span_le.2 ?_, inferInstance, fun k hk => ?_, fun c => ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Use `Submodule.mem_iSup_of_mem ⟨φ, ?_⟩ (Submodule.subset_span ⟨1, by simp⟩)` and prove the remaining obligations. Simplify using `only [T, Set.mem_iUnion]`. Conclude with `⟨φ, hφ, 1, by simp⟩`. Introduce and unpack `_ ⟨c, rfl⟩`. Conclude with `π.stable (.cpt c) _ (hTV _ χ.2)`.
+Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(⨆ χ : T, LocEx.orbSpan χ.1) ≤ Submodule.comap (finRep E a k) (⨆ χ : T, LocEx.orbSpan χ.1)`. Use `iSup_le fun χ => Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨c, rfl⟩`. Conclude with `Submodule.mem_comap.2 (Submodule.mem_iSup_of_mem ⟨_, hTK k hk _ χ.2⟩ (Submodule.subset_span ⟨c, (finRep_cptRep k c _).symm⟩))`. Express the relevant statement in the definitionally equal form `(⨆ χ : T, LocEx.orbSpan χ.1) ≤ Submodule.comap (cptRep E a c) (⨆ χ : T, LocEx.orbSpan χ.1)`.
-
-Conclude with `iSup_le fun χ x hx => Submodule.mem_comap.2 (Submodule.mem_iSup_of_mem χ (LocEx.orbSpan_stable _ c x hx))`.
+A detailed English derivation is pending.
 -/
 theorem exists_hull (π : CuspSub E a) {K : Subgroup (GL (Fin a) (Af E))} (hK : IsCompact (K : Set (GL (Fin a) (Af E))))
     {F : Submodule ℂ (Sm E a)} (hF : F ≤ π.V) [FiniteDimensional ℂ F] :
@@ -219,15 +215,15 @@ theorem exists_hull (π : CuspSub E a) {K : Subgroup (GL (Fin a) (Af E))} (hK : 
     exact iSup_le fun χ x hx => Submodule.mem_comap.2 (Submodule.mem_iSup_of_mem χ (LocEx.orbSpan_stable _ c x hx))
 
 /- English proof (translation)
-Introduce `_ hφ` and use `mem_bddForms_of_cuspSub cuspFormsBounded hω (CuspSub.hasCentral_iff.1 h) hφ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem le_bddSm (hω : ω.IsUnitary) {π : CuspSub E a} (h : π.HasCentral ω) : π.V ≤ bddSm ω := fun _ hφ =>
   mem_bddForms_of_cuspSub cuspFormsBounded hω (CuspSub.hasCentral_iff.1 h) hφ
 
 /- English proof (translation)
-Establish `hc : ∀ τ u, ∃ c : ℂ, ∀ φ ∈ π.V, cap τ u φ = c • φ` using `fun τ u => π.exists_scalar (z := cap τ u) (Algebra.subset_adjoin ⟨τ, u, rfl⟩) fun o => by`. Consider the cases of `o with`. Consider the case `fin k => exact commute_cap_finRep τ u k`. Consider the case `cpt k => exact GlobalTheory.CapAdInv.cap_commute_rt_infGL E a τ u _`. Consider the case `lie X => exact commute_cap_lie τ u X`.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use `choose c hc using hc`. Conclude with `⟨c, hc⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_cap_scalar (π : CuspSub E a) : ∃ c : (E →+* ℂ) → ℂ → ℂ, ∀ τ u, ∀ φ ∈ π.V, cap τ u φ = c τ u • φ := by
   have hc : ∀ τ u, ∃ c : ℂ, ∀ φ ∈ π.V, cap τ u φ = c • φ := fun τ u =>
@@ -240,23 +236,19 @@ theorem exists_cap_scalar (π : CuspSub E a) : ∃ c : (E →+* ℂ) → ℂ →
   exact ⟨c, hc⟩
 
 /- English proof (translation)
-Establish `hV` using `le_bddSm hω hπ`. Take `⟨c, hc⟩` from `exists_cap_scalar π`. Take `⟨U, hUo, hUc⟩` from `GlobalTheory.GLIntegral.exists_isOpen_isCompact E a`. Set `K : Subgroup (GL (Fin a) (Af E))` to `U ⊓ LocEx.stab (finRep E a) ψ`. Establish `hKo : IsOpen (K : Set (GL (Fin a) (Af E)))` using `hUo.inter hA.level`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hKc : IsCompact (K : Set (GL (Fin a) (Af E)))` using `hUc.of_isClosed_subset (Subgroup.isClosed_of_isOpen _ hKo) inf_le_left`. Set `O` to `LocEx.orbSpan ψ`. Use `haveI : FiniteDimensional ℂ O := hA.kfin`. Establish `hO : O ≤ bddSm ω` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨k, rfl⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `mul_right_mem_bddForms hψ _)`. Establish `hψO : ψ ∈ O` using `Submodule.subset_span ⟨1, by simp⟩`. Set `ρ₀` to `GlobalTheory.PRep.sub (cptRep E a) O (LocEx.orbSpan_stable ψ)`. Establish `hρc : AutFin.IsContRep ρ₀` using `LocEx.isContRep_sub _ _`. Establish `key : ∀ D : Submodule ℂ (Sm E a), D ≤ π.V → FiniteDimensional ℂ D → (∀ k ∈ K, ∀ x ∈ D, finRep E a k x ∈ D) → (∀ k, ∀ x ∈ D, cptRep E a k x ∈ D) → ∃ p ∈ D, p ∈ AutFinGL.forms K ρ₀ c ∧ ∀ x ∈ D, ip μ x ψ = ip μ x p`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `D hD _ h1 h2`. Establish `hDb` using `hD.trans hV`. Take `⟨Q, hQ⟩` from `exists_linear_proj μ hω hDb hO fun χ hχ => exists_proj_of_finite μ hω hDb (hO hχ)`. Use `⟨(Q ⟨ψ, hψO⟩).1, (Q _).2, ⟨(π.cusp _ (hD (Q _).2)).1, fun k hk => ?_, fun g => ?_, fun τ u => hc τ u _ (hD (Q _).2)⟩, hQ ⟨ψ, hψO⟩⟩` and prove the remaining obligations. Use `eq_of_ip_eq μ hω hDb (h1 k hk _ (Q _).2) (Q _).2 fun x hx => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e` using `ip_rt_proj μ hω hDb (g := finGL E a k) (fun y hy => by`. Rewrite using `[← map_inv]`. Conclude with `h1 _ (inv_mem hk) y hy) hψ (Q ⟨ψ, hψO⟩).2 (hQ ⟨ψ, hψO⟩) x hx`. Establish `e2 : rt E a (finGL E a k) ψ = ψ` using `hk.2`. Rewrite `e` using `[e2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `e.symm.trans (hQ ⟨ψ, hψO⟩ x hx)`. Use `AutFinGL.type_of_map ρ₀ (D.subtype ∘ₗ Q) (fun k w => ?_) ⟨ψ, hψO⟩ g` and prove the remaining obligations. Use `eq_of_ip_eq μ hω hDb (Q _).2 (h2 k _ (Q _).2) fun x hx => ?_` and prove the remaining obligations. Conclude with `(hQ _ x hx).symm.trans (ip_rt_proj μ hω hDb (g := infGL E a (Unitary.toUnits k)) (fun y hy => by`. Rewrite using `[← map_inv, ← map_inv]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `h2 _ y hy) (hO w.2) (Q w).2 (hQ w) x hx)`. Set `F : Submodule ℂ (Sm E a)` to `π.V ⊓ Submodule.span ℂ (AutFinGL.forms K ρ₀ c)`. Use `haveI := GlobalTheory.automorphicFormsFiniteGL E a K hKo O ρ₀ hρc c`. Use `haveI : FiniteDimensional ℂ F := Submodule.finiteDimensional_of_le inf_le_right`. Establish `hFb : F ≤ bddSm ω` using `inf_le_left.trans hV`.
-
-Take `⟨p, hp, hp'⟩` from `exists_proj_of_finite μ hω hFb hψ`. Use `⟨p, hp.1, fun φ hφ => ?_⟩` and prove the remaining obligations. Take `⟨D, h0, hD, hfin, h1, h2⟩` from `exists_hull π hKc (F := F ⊔ ℂ ∙ φ) (sup_le inf_le_left ((Submodule.span_singleton_le_iff_mem _ _).2 hφ))`. Take `⟨q, hq, hq1, hq2⟩` from `key D hD hfin h1 h2`. Establish `e : p = q` using `eq_of_ip_eq μ hω hFb hp ⟨hD hq, Submodule.subset_span hq1⟩ fun x hx => (hp' x hx).symm.trans (hq2 x (h0 (Submodule.mem_sup_left hx)))`.
-
-Rewrite using `[e]`. Conclude with `hq2 φ (h0 (Submodule.mem_sup_right (Submodule.mem_span_singleton_self φ)))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_proj (hω : ω.IsUnitary) {π : CuspSub E a} (hπ : π.HasCentral ω) {ψ : Sm E a} (hψ : ψ ∈ bddSm ω)
     (hA : IsAutForm ψ) : ∃ p ∈ π.V, ∀ x ∈ π.V, ip μ x ψ = ip μ x p := by
@@ -308,13 +300,11 @@ theorem exists_proj (hω : ω.IsUnitary) {π : CuspSub E a} (hπ : π.HasCentral
   exact hq2 φ (h0 (Submodule.mem_sup_right (Submodule.mem_span_singleton_self φ)))
 
 /- English proof (translation)
-Establish `hV` using `le_bddSm hω hπ`. Establish `hV'` using `le_bddSm hω hπ'`. Take `⟨P, hP⟩` from `exists_linear_proj μ hω hV hV' fun ψ hψ => exists_proj μ hω hπ (hV' hψ) (π'.cusp ψ hψ).1`. Use `⟨P, fun o ψ => Subtype.ext (eq_of_ip_eq μ hω hV (P _).2 (π.op o _).2 fun x hx => ?_), hP⟩` and prove the remaining obligations. Use `(hP _ x hx).symm.trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Consider the cases of `o with`. Consider the case `fin k`. Conclude with `ip_rt_proj μ hω hV (g := finGL E a k) (fun y hy => by`. Rewrite using `[← map_inv]`. Conclude with `π.stable (.fin _) y hy) (hV' ψ.2) (P ψ).2 (hP ψ) x hx`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `cpt k`. Conclude with `ip_rt_proj μ hω hV (g := infGL E a (Unitary.toUnits k)) (fun y hy => by`. Rewrite using `[← map_inv, ← map_inv]`. Conclude with `π.stable (.cpt _) y hy) (hV' ψ.2) (P ψ).2 (hP ψ) x hx`. Consider the case `lie X`.
-
-Establish `hx'` using `π.stable (.lie X) x hx`. Establish `e1` using `pet_lie μ hω X (hV hx) (hV' ψ.2) (hV hx') (hV' (π'.stable (.lie X) _ ψ.2))`. Establish `e2` using `pet_lie μ hω X (hV hx) (hV (P ψ).2) (hV hx') (hV (π.stable (.lie X) _ (P ψ).2))`. Conclude with `neg_injective (e1.symm.trans ((hP ψ _ hx').trans e2))`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_equivariant_proj (hω : ω.IsUnitary) {π π' : CuspSub E a} (hπ : π.HasCentral ω) (hπ' : π'.HasCentral ω) :
     ∃ P : π'.V →ₗ[ℂ] π.V, (∀ o ψ, P (π'.op o ψ) = π.op o (P ψ)) ∧
@@ -338,15 +328,13 @@ theorem exists_equivariant_proj (hω : ω.IsUnitary) {π π' : CuspSub E a} (hπ
     exact neg_injective (e1.symm.trans ((hP ψ _ hx').trans e2))
 
 /- English proof (translation)
-Establish `sub : ∀ W : Submodule ℂ π.V, (∀ o, ∀ φ ∈ W, π.op o φ ∈ W) → W = ⊥ ∨ W = ⊤` using `fun W hW => by`. Establish `h` using `π.irred (W.map π.V.subtype) (Submodule.map_subtype_le _ _) (by`. Introduce and unpack `o _ ⟨φ, hφ, rfl⟩`. Conclude with `⟨_, hW o φ hφ, rfl⟩)`. Use `h.imp (fun h => ?_) fun h => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Submodule.map_injective_of_injective π.V.injective_subtype (h.trans (Submodule.map_bot _).symm)`. Conclude with `Submodule.map_injective_of_injective π.V.injective_subtype (h.trans (Submodule.map_subtype_top _).symm)`. Establish `hinj : Function.Injective S` using `LinearMap.ker_eq_bot.1 <| (sub (LinearMap.ker S) fun o φ hφ => by`. Rewrite `hφ`, the goal using `[LinearMap.mem_ker]`. Rewrite using `[hS, hφ, map_zero]).resolve_right fun h => h0 (LinearMap.ker_eq_top.1 h)`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `⟨⟨LinearMap.range S, ?_, ?_, fun h => h0 (LinearMap.range_eq_bot.1 h), fun W hW hs => ?_⟩, rfl, LinearEquiv.ofInjective S hinj, fun o φ => Subtype.ext (hS o φ)⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨φ, rfl⟩`. Conclude with `hc φ`. Introduce and unpack `o _ ⟨φ, rfl⟩`. Conclude with `⟨_, hS o φ⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (W.comap S).map S = W` using `Submodule.map_comap_eq_self hW`. Use `(sub (W.comap S) fun o φ hφ => ?_).imp (fun h => ?_) fun h => ?_` and prove the remaining obligations. Rewrite using `[Submodule.mem_comap, hS]`. Conclude with `hs o _ hφ`. Rewrite using `[← e, h, Submodule.map_bot]`.
-
-Rewrite using `[← e, h, Submodule.map_top]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_cuspSub_range (π : CuspSub E a) (S : π.V →ₗ[ℂ] Sm E a) (hS : ∀ o φ, S (π.op o φ) = act o (S φ))
     (h0 : S ≠ 0) (hc : ∀ φ, IsCuspForm (S φ)) : ∃ σ : CuspSub E a, σ.V = LinearMap.range S ∧ π.Iso σ := by
@@ -375,11 +363,11 @@ theorem exists_cuspSub_range (π : CuspSub E a) (S : π.V →ₗ[ℂ] Sm E a) (h
     · rw [← e, h, Submodule.map_top]
 
 /- English proof (translation)
-Take `⟨P, hP, hP'⟩` from `exists_equivariant_proj μ hω hπ hπ'`. Establish `h0 : π.V.subtype ∘ₗ P = 0`. Assume the negation of the conclusion as `h0`. Take `⟨σ, hσ, hi⟩` from `exists_cuspSub_range π' (π.V.subtype ∘ₗ P) (fun o φ => congrArg Subtype.val (hP o φ)) h0 fun φ => π.cusp _ (P φ).2`. Establish `hle : σ.V ≤ π.V`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hσ]`. Introduce and unpack `_ ⟨φ, rfl⟩`. Conclude with `(P φ).2`. Establish `e : σ = π` using `CuspSub.ext ((π.irred _ hle σ.stable).resolve_left σ.ne_bot)`. Conclude with `hne (Quotient.sound (e ▸ hi : π'.Iso π)).symm`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `φ hφ φ' hφ'`. Establish `e : (P ⟨φ', hφ'⟩).1 = (0 : ℂ) • φ` using `(LinearMap.congr_fun h0 ⟨φ', hφ'⟩).trans (zero_smul ℂ φ).symm`. Use `(hP' ⟨φ', hφ'⟩ φ hφ).trans ?_` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `(ip_smul_right μ 0 φ φ).trans (by simp)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pet_eq_zero_of_mk_ne (hω : ω.IsUnitary) {π π' : CuspSub E a} (hπ : π.HasCentral ω) (hπ' : π'.HasCentral ω)
     (hne : CG.mk π ≠ CG.mk π') : ∀ φ ∈ π.V, ∀ φ' ∈ π'.V, pet (latticeGL E a) μ φ.1 φ'.1 = 0 := by

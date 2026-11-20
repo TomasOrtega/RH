@@ -15,17 +15,17 @@ def unitBallSubring (E : Type) [NontriviallyNormedField E] [IsUltrametricDist E]
   neg_mem' {a} ha := by simpa using ha
 
 /- English proof (translation)
-Use `set O := unitBallSubring E`. Set `y : Matrix (Fin n) (Fin n) O` to `fun i j => ⟨x i j, hx i j⟩`. Set `w : O` to `⟨ϖ, hϖ.le⟩`. Establish `hmap : O.subtype.mapMatrix (1 + w • y) = 1 + ϖ • x`. Rewrite using `[map_add, map_one]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Establish `hdet : (1 + ϖ • x).det = ((1 + w • y).det : E)`. Rewrite using `[← hmap, ← RingHom.map_det]`. Both sides reduce to the same expression. Establish `hq : (Ideal.Quotient.mk (Ideal.span {w})) (1 + w • y).det = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.map_det, map_add, map_one]`. Establish `: (Ideal.Quotient.mk (Ideal.span {w})).mapMatrix (w • y) = 0`. Use extensionality with `i j`. Simplify using `[Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton']`. Rewrite using `[this, add_zero, Matrix.det_one]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmem : (1 + w • y).det - 1 ∈ Ideal.span {w}`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, hq, map_one, sub_self]`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.mp hmem`. Establish `hc' : ((1 + w • y).det : E) - 1 = (c : E) * ϖ`. Use `congrArg Subtype.val hc` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this.symm` using `[w]`. Establish `hlt : ‖(1 + ϖ • x).det - 1‖ < 1`. Rewrite using `[hdet, hc', norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `key : (1 + ϖ • x).det = 1 + ((1 + ϖ • x).det - 1)` using `by ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key, IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (by rw [norm_one]; exact hlt.ne')]`. Simplify using `[hlt.le]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem norm_det_one_add_smul (E : Type) [NontriviallyNormedField E] [IsUltrametricDist E] (n : ℕ)
     (x : Matrix (Fin n) (Fin n) E) (ϖ : E) (hϖ : ‖ϖ‖ < 1) (hx : ∀ i j, ‖x i j‖ ≤ 1) :

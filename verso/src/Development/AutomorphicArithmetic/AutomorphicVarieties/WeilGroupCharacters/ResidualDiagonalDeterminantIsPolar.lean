@@ -6,14 +6,14 @@ open IsLocalRing UpperTheory.V.Alg UpperTheory.V.W Polynomial
 namespace UpperTheory.V.W
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.LocallyConstantOfKernelCapelliIdentities.locConst_of_ker χ h`.
+A detailed English derivation is pending.
 -/
 private theorem locConst_of_ker {G M : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Group M]
     (χ : G →* M) (h : IsOpen (χ.ker : Set G)) : IsLocallyConstant χ :=
   _root_.UpperTheory.Reformulated.B.LocallyConstantOfKernelCapelliIdentities.locConst_of_ker χ h
 
 /- English proof (translation)
-Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Use `Filter.eventually_all.2 fun i => (IsLocallyConstant.iff_eventually_eq _).1 (h i) x` as an intermediate fact. Conclude with `this.mono fun y hy => funext hy`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem locConst_pi {G M ι : Type} [TopologicalSpace G] [Finite ι] (f : ι → G → M)
     (h : ∀ i, IsLocallyConstant (f i)) : IsLocallyConstant fun g i => f i g := by
@@ -23,7 +23,7 @@ private theorem locConst_pi {G M ι : Type} [TopologicalSpace G] [Finite ι] (f 
   exact this.mono fun y hy => funext hy
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(GDet.repAlg ρ A[X] _).det = _`. Rewrite using `[map_sub]`. Use `congr 2`. Use extensionality with `i j : 2`. Apply the tactic sequence `by_cases h : i = j <;> simp [GDet.repAlg, Matrix.one_apply, Matrix.diagonal_apply, h]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem chi_ofRep {n : ℕ} {A G : Type} [CommRing A] [Group G] (ρ : G →* Matrix (Fin n) (Fin n) A)
     (y : MonoidAlgebra A G) : (GDet.ofRep ρ).chi y =
@@ -35,7 +35,7 @@ private theorem chi_ofRep {n : ℕ} {A G : Type} [CommRing A] [Group G] (ρ : G 
   by_cases h : i = j <;> simp [GDet.repAlg, Matrix.one_apply, Matrix.diagonal_apply, h]
 
 /- English proof (translation)
-Simplify using `[GFrame.star, GFrame.starOp]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem star_single {l : ℕ} [Fact l.Prime] (F : GFrame l) (O : Type) [CommRing O] [Algebra ℤ_[l] O]
     (R : Type) [CommRing R] [Algebra O R] (n : ℕ) (g : F.G₀) (b : R) :
@@ -44,7 +44,7 @@ private theorem star_single {l : ℕ} [Fact l.Prime] (F : GFrame l) (O : Type) [
   simp [GFrame.star, GFrame.starOp]
 
 /- English proof (translation)
-Simplify using `[GFrame.star]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem star_sub {l : ℕ} [Fact l.Prime] (F : GFrame l) (O : Type) [CommRing O] [Algebra ℤ_[l] O]
     (R : Type) [CommRing R] [Algebra O R] (n : ℕ) (x y : MonoidAlgebra R F.G₀) :
@@ -52,7 +52,7 @@ private theorem star_sub {l : ℕ} [Fact l.Prime] (F : GFrame l) (O : Type) [Com
   simp [GFrame.star]
 
 /- English proof (translation)
-Establish `h : F.eps O R[X] g = Units.map (C : R →+* R[X]).toMonoidHom (F.eps O R g)` using `Units.ext rfl`. Rewrite using `[h, ← map_zpow]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem eps_C {l : ℕ} [Fact l.Prime] (F : GFrame l) (O : Type) [CommRing O] [Algebra ℤ_[l] O]
     (R : Type) [CommRing R] [Algebra O R] (g : F.G₀) (m : ℤ) :
@@ -64,21 +64,21 @@ private theorem eps_C {l : ℕ} [Fact l.Prime] (F : GFrame l) (O : Type) [CommRi
 end UpperTheory.V.W
 
 /- English proof (translation)
-Introduce `l _ F O _ _ _ _ _ _ _ n r _ hn hok`. Establish `hres : ∀ x, res O (ResidueField O) x = x` using `fun x => by`. Take `⟨a, rfl⟩` from `residue_surjective x`. Conclude with `(res O (ResidueField O)).commutes a`. Establish `hres' : (res O (ResidueField O) : ResidueField O →+* ResidueField O) = RingHom.id _` using `RingHom.ext hres`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨r.Dbar, r.psib, fun i N => ?_, ?_, fun v i => ⟨fun N => ?_, fun g => hres _, fun g => ?_⟩, fun i g => ?_, hok.1, fun u g hg h => ?_⟩, rfl, rfl⟩` and prove the remaining obligations. Establish `h1` using `locConst_pi _ fun j => locConst_of_ker _ (r.chib_open j)`. Use `(IsLocallyConstant.iff_eventually_eq _).2 fun x => ((IsLocallyConstant.iff_eventually_eq _).1 h1 x).mono fun y hy => ?_` and prove the remaining obligations. Establish `h2 : diagRep r.chib y = diagRep r.chib x`. Express the relevant statement in the definitionally equal form `Matrix.diagonal _ = Matrix.diagonal _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `j`. Rewrite using `[congrFun hy j]`. Simplify using `only [Resid.Dbar, GDet.lam, chi_ofRep]`. Simplify using `[GDet.repAlg, h2]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hres']`. Both sides reduce to the same expression. Conclude with `(locConst_of_ker _ (r.psib_open v i)).comp fun u => Ideal.Quotient.mk _ (u : ResidueField O)`. Rewrite using `[hok.2 v i g]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1` using `r.polar (ResidueField O)[X] (MonoidAlgebra.single 1 X - MonoidAlgebra.mapRingHom _ C (MonoidAlgebra.single g (1 : ResidueField O)))`. Simplify using `only [GDet.lam, GDet.chi, Resid.Dbar]`. Rewrite using `[← h1, star_sub]`. Simplify using `only [MonoidAlgebra.mapRingHom_single, star_single, eps_C]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h2 : diagRep r.chib g = 1`. Express the relevant statement in the definitionally equal form `Matrix.diagonal _ = Matrix.diagonal _`. Use `congr 1`. Use function extensionality and compare the values at `j`. Establish `h3 : r.chib j g = 1` using `(Subgroup.mem_iInf.1 (Subgroup.mem_inf.1 hg).2) j`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[h3]`. Both sides reduce to the same expression. Establish `h4 : GDet.repAlg (diagRep r.chib) (ResidueField O)[X] (MonoidAlgebra.mapRingHom _ C (MonoidAlgebra.single h (1 : ResidueField O) * (MonoidAlgebra.single g 1 - 1))) = 0`. Rewrite using `[map_mul, map_mul, map_sub, map_sub, map_one, map_one]`. Simplify using `[GDet.repAlg, h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [GDet.tr, Resid.Dbar, GDet.lam, chi_ofRep, h4, sub_zero]`. Establish `h5 : n - 1 ≠ n` using `by omega`. Simplify using `[Matrix.scalar_apply, coeff_X_pow, h5]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.W.residual_diagonal_determinant_isPolar :
     ∀ (l : ℕ) [Fact l.Prime] (F : GFrame l) (O : Type) [CommRing O] [IsLocalRing O] [IsNoetherianRing O] [IsAdicComplete (maximalIdeal O) O] [Algebra ℤ_[l] O] [Finite (ResidueField O)] [CharP (ResidueField O) l] (n : ℕ) (r : Resid F O n) [IsCO O (ResidueField O)], 1 ≤ n → r.Ok → ∃ p : Pair r (ResidueField O), p.D = r.Dbar ∧ p.ψ = r.psib := by

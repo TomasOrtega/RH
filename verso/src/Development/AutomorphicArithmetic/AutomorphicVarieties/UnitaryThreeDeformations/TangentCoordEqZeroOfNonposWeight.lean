@@ -6,7 +6,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.UnitaryThreeDeform
 open Matrix IsLocalRing ReciprocityTheory.Gal UpperTheory.V.U3 UpperTheory.V.Alg UpperTheory.V.UnitaryThreeInertia
 
 /- English proof (translation)
-Rewrite using `[MvPowerSeries.coeff_mul, Finsupp.antidiagonal_single, Finset.sum_map, Finset.Nat.antidiagonal_succ]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem coeff_single_mul {O σ : Type} [CommRing O] (f g : MvPowerSeries σ O) (i : σ) :
     MvPowerSeries.coeff (Finsupp.single i 1) (f * g) =
@@ -45,21 +45,21 @@ private noncomputable def tan0 {O σ : Type} [CommRing O] [Fintype σ] (d : σ �
     · simp [MvPowerSeries.algebraMap_apply, TrivSqZeroExt.algebraMap_eq_inl, MvPowerSeries.coeff_C]
 
 /- English proof (translation)
-Simplify using `[tan0]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem tangent_point_fst {O σ : Type} [CommRing O] [Fintype σ] (d : σ → O) (f : MvPowerSeries σ O) :
     (tan0 d f).fst = MvPowerSeries.constantCoeff f := by
   simp [tan0]
 
 /- English proof (translation)
-Simplify using `[tan0]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem tangent_point_snd {O σ : Type} [CommRing O] [Fintype σ] (d : σ → O) (f : MvPowerSeries σ O) :
     (tan0 d f).snd = ∑ i, MvPowerSeries.coeff (Finsupp.single i 1) f * d i := by
   simp [tan0]
 
 /- English proof (translation)
-Use `IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun x => ?_` and prove the remaining obligations. Rewrite using `[TrivSqZeroExt.isUnit_iff_isUnit_fst, TrivSqZeroExt.isUnit_iff_isUnit_fst]`. Simplify using `using IsLocalRing.isUnit_or_isUnit_one_sub_self x.fst`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem dual_local {O : Type} [CommRing O] [IsLocalRing O] : IsLocalRing (DualNumber O) := by
   refine IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun x => ?_
@@ -67,9 +67,9 @@ private theorem dual_local {O : Type} [CommRing O] [IsLocalRing O] : IsLocalRing
   simpa using IsLocalRing.isUnit_or_isUnit_one_sub_self x.fst
 
 /- English proof (translation)
-Use `⟨(Ideal.Quotient.liftₐ (RingHom.ker W.π) (tan0 d) fun f hf => ?_).comp (Ideal.quotientKerAlgEquivOfSurjective W.surj).symm.toAlgHom, fun f => ?_⟩` and prove the remaining obligations. Conclude with `TrivSqZeroExt.ext ((tangent_point_fst d f).trans (h0 f hf)) ((tangent_point_snd d f).trans (hd f hf))`. Establish `: (Ideal.quotientKerAlgEquivOfSurjective W.surj).symm (W.π f) = Ideal.Quotient.mk _ f`. Rewrite using `[AlgEquiv.symm_apply_eq]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Simplify using `only [AlgHom.comp_apply, AlgEquiv.coe_algHom]`. Use `erw [this]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem exists_tan {O R : Type} [CommRing O] [CommRing R] [Algebra O R] (W : WPres O ℤ R)
     (h0 : W.HasOrigin) (d : W.σ → O)
@@ -85,23 +85,21 @@ private theorem exists_tan {O R : Type} [CommRing O] [CommRing R] [Algebra O R] 
     rfl
 
 /- English proof (translation)
-Introduce `O _ _ _ _ _ _ G Γ ι _ _ _ _ _ _ _ _ _ _ _ _ _ F hF hV g₁ hg R _ _ _ u hu W hW j hj d hdw hd`. Take `⟨h0, hor⟩` from `hasOrigin F hF g₁ hg u hu W hW`. Take `⟨τ, hτ⟩` from `exists_tan W h0 d hd`. Use `haveI : IsLocalRing (DualNumber O) := dual_local`. Establish `hfst : ∀ x, (τ x).fst = W.origin h0 x` using `fun x => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨f, rfl⟩` from `W.surj x`. Rewrite using `[hτ, tangent_point_fst, WPres.origin_π]`. Use `haveI : IsLocalHom τ := ⟨fun x hx => by`. Rewrite `hx` using `[TrivSqZeroExt.isUnit_iff_isUnit_fst, hfst]`. Assume the negation of the conclusion as `hn`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : res O O (W.origin h0 x) = 0`. Rewrite using `[res_map, res_eq_zero_iff]`. Conclude with `hn`. Conclude with `(res_eq_zero_iff O O _).1 h1 hx⟩`. Establish `hr : push τ u = F.rz (DualNumber O)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `eq_rz_of_vanE F hF hV g₁ hg j hj _ (isPt_push F τ g₁ u hu.pt) (fun g a b => ?_) (fun g a b _ hab => ?_)` and prove the remaining obligations. Rewrite using `[← hor]`. Conclude with `hfst _`. Establish `hm : (u g).mat a b ∈ W.part (wt a b)`. Rewrite using `[hW.part]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Conclude with `entry_mem u g a b`. Take `⟨f, hf, e⟩` from `hm`. Establish `e' : W.π f = (u g).mat a b` using `e`. Use `show (τ ((u g).mat a b)).snd = 0`. Rewrite using `[← e', hτ, tangent_point_snd]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hi : W.wt i = j`. Rewrite using `[hf _ (by rw [Finsupp.weight_single, one_smul, hi]; exact hab.symm), zero_mul]`. Rewrite using `[hdw i hi, mul_zero]`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨g, a, b, -, -, hz⟩` from `hW.var i`. Establish `h1 : τ (W.z i) = 0`. Establish `h2 : τ ((u g).mat a b) = (F.rz (DualNumber O) g).mat a b` using `by rw [← hr]; rfl`. Rewrite using `[hz, map_sub, h2, sub_eq_zero]`. Conclude with `(τ.commutes _).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : (τ (W.z i)).snd = d i`. Rewrite using `[WPres.z, hτ, tangent_point_snd, Finset.sum_eq_single i]`. Simplify using `[MvPowerSeries.coeff_X]`. Introduce `k _ hk`. Rewrite using `[MvPowerSeries.coeff_X, if_neg, zero_mul]`.
-
-Introduce `e`. Conclude with `hk (Finsupp.single_left_injective one_ne_zero e)`. Simplify using the standard rewrite rules. Rewrite using `[← h3, h1]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.UnitaryThreeInertia.tangent_coord_eq_zero_of_nonpos_weight :
     ∀ {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O] [CharZero O] [Finite (ResidueField O)]

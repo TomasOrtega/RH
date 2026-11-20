@@ -27,9 +27,7 @@ noncomputable section
 namespace FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-Establish `h1 : embeddingIntoAmbientBlowupSequence ι s hres hno hcen 0 = s.isoZero.hom ≫ ι` using `embeddingIntoAmbientBlowupSequence_zero ι s hres hno hcen`. Establish `h2 : (AlgebraicGeometry.Scheme.Hom.ker ι).comap (ambientBlowupSequence ι s hres hno hcen).isoZero.hom = AlgebraicGeometry.Scheme.Hom.ker ι`. Rewrite using `[ambientBlowupSequence_isoObjZero]`. Conclude with `AlgebraicGeometry.Scheme.IdealSheafData.comap_id _`. Rewrite using `[h1, h2]`.
-
-Conclude with `Scheme.Hom.ker_comp_of_isIso s.isoZero.hom ι`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_embeddingIntoAmbientBlowupSequence_zero {S X : Scheme.{u}} (ι : S ⟶ X)
     [AlgebraicGeometry.IsClosedImmersion ι] [AlgebraicGeometry.IsNoetherian X]
@@ -50,13 +48,13 @@ theorem ker_embeddingIntoAmbientBlowupSequence_zero {S X : Scheme.{u}} (ι : S �
   exact Scheme.Hom.ker_comp_of_isIso s.isoZero.hom ι
 
 /- English proof (translation)
-Introduce `t`. Proceed by induction on `t with`. Consider the case `zero`. Introduce `_ hjt`. Simplify using `only [List.get_eq_getElem] at hE ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[ker_embeddingIntoAmbientBlowupSequence_zero]`. Simplify using `only [BlowupSequenceData.boundary_zero, List.getElem_map, hE]`. Consider the case `succ n ih`. Introduce `hn hjt`. Establish `hn' : n < s.length` using `hn`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hjn : j < ((ambientBlowupSequence ι s hres hno hcen).boundaryFrom E n).length`. Rewrite using `[BlowupSequenceData.boundary_length]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[ker_embeddingIntoAmbientBlowupSequence_succ ι s hres hno hcen n hn', ih (le_of_lt hn') hjn]`. Simplify using `only [List.get_eq_getElem, BlowupSequenceData.boundary_succ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[List.getElem_append_left (by simpa using hjn), List.getElem_map]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem forall_le_ker_embeddingIntoAmbient_eq_boundary_get {S X : Scheme.{u}} (ι : S ⟶ X)
     [AlgebraicGeometry.IsClosedImmersion ι] [AlgebraicGeometry.IsNoetherian X]
@@ -86,7 +84,7 @@ private theorem forall_le_ker_embeddingIntoAmbient_eq_boundary_get {S X : Scheme
       rw [List.getElem_append_left (by simpa using hjn), List.getElem_map]
 
 /- English proof (translation)
-The claim follows from `forall_le_ker_embeddingIntoAmbient_eq_boundary_get ι s hres hno hcen E j hj hE t ht hjt`.
+A detailed English derivation is pending.
 -/
 theorem ker_embeddingIntoAmbientBlowupSequence_eq_boundary_get {S X : Scheme.{u}} (ι : S ⟶ X)
     [AlgebraicGeometry.IsClosedImmersion ι] [AlgebraicGeometry.IsNoetherian X]
@@ -106,7 +104,7 @@ namespace DivisorReduction
 variable (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}) (hno : BlowupPreservesNoetherian.{u})
 
 /- English proof (translation)
-Establish `h0` using `ker_embeddingIntoAmbientBlowupSequence_zero (T.boundary.get ⟨j, hj⟩).subschemeι (MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData hres hno hpr`. Rewrite `h0` using `[AlgebraicGeometry.Scheme.IdealSheafData.ker_subschemeι]`. Conclude with `h0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_embeddingIntoAmbient_zero_eq_comap_isoObjZero (T : MarkedIdealWithBoundary.{u})
     [AlgebraicGeometry.IsNoetherian T.scheme] (j : ℕ) (hj : j < T.boundary.length)
@@ -123,9 +121,9 @@ theorem ker_embeddingIntoAmbient_zero_eq_comap_isoObjZero (T : MarkedIdealWithBo
   exact h0
 
 /- English proof (translation)
-Establish `h0` using `ker_embeddingIntoAmbientBlowupSequence_zero (T.boundary.get ⟨j, hj⟩).subschemeι (MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData hres hno hpr`. Rewrite `h0` using `[AlgebraicGeometry.Scheme.IdealSheafData.ker_subschemeι]`. Establish `hA : (T.boundary.get ⟨j, hj⟩).comap (prependedPushedMarkedSeq hres hno T j hj hb s hpr hmk).isoZero.hom = T.boundary.get ⟨j, hj⟩` using `AlgebraicGeometry.Scheme.IdealSheafData.comap_id _`. Establish `hB : (prependedPushedMarkedSeq hres hno T j hj hb s hpr hmk).transitionMapSucc 0 = (ambientBlowupSequence (T.boundary.get ⟨j, hj⟩).subschemeι (MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData hres hno hpr).isoZero.hom`. Rewrite using `[MarkedBlowupSequenceData.toMarkedSequence_blowupMorphism, BlowupSequenceData.toMarkedBlowupSequenceData_blowupMorphism, BlowupSequenceData.prepend_blowupMorphism_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `rfl`. Rewrite using `[hA, hB]`. Conclude with `h0`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_embeddingIntoAmbient_zero_eq_comap_blowupMorphism (T : MarkedIdealWithBoundary.{u})
     [AlgebraicGeometry.IsNoetherian T.scheme] (j : ℕ) (hj : j < T.boundary.length)
@@ -156,15 +154,13 @@ theorem ker_embeddingIntoAmbient_zero_eq_comap_blowupMorphism (T : MarkedIdealWi
   exact h0
 
 /- English proof (translation)
-Establish `hjt : j < ((ambientBlowupSequence (T.boundary.get ⟨j, hj⟩).subschemeι (MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData hres hno hpr).boundaryFrom T.boundary t).length`. Rewrite using `[BlowupSequenceData.boundary_length]`. Use linear arithmetic over natural numbers and integers. Establish `htS : t ≤ (MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData.length`. Rewrite using `[MarkedBlowupSequenceData.ofMarkedSequence_length]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ht`. Establish `hker : AlgebraicGeometry.Scheme.Hom.ker (embeddingIntoAmbientBlowupSequence (T.boundary.get ⟨j, hj⟩).subschemeι (MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData hres hno hpr t) = ((ambientBlowupSequence (T.boundary.get ⟨j, hj⟩).subschemeι (MarkedBlowupSequenceDa …` using `ker_embeddingIntoAmbientBlowupSequence_eq_boundary_get (T.boundary.get ⟨j, hj⟩).subschemeι (MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData hres hno hpr T.boundary j hj (AlgebraicGeometry.Scheme.IdealSheafData.ker_subschemeι _).symm t htS hjt`. Establish `hbd : (pushedMarkedSeq hres hno T j hj s hpr hmk).boundary t = (ambientBlowupSequence (T.boundary.get ⟨j, hj⟩).subschemeι (MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData hres hno hpr).boundaryFrom T.boundary t`. Rewrite using `[MarkedBlowupSequenceData.toMarkedSequence_boundary, BlowupSequenceData.toMarkedBlowupSequenceData_boundary]`. Conclude with `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hpl : (ambientBlowupSeq hres hno T j hj (lowerIdealWithoutBlowup T) (lowerBoundaryWithoutBlowup T) s hpr).length = s.toSequenceOfBlowups.length`. Establish `hh` using `ambientBlowupSequence_length (T.boundary.get ⟨j, hj⟩).subschemeι (MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData hres hno hpr`. Rewrite `hh` using `[MarkedBlowupSequenceData.ofMarkedSequence_length]`. Conclude with `hh`. Establish `htlen : t ≤ (pushedMarkedSeq hres hno T j hj s hpr hmk).toSequenceOfBlowups.length`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[MarkedBlowupSequenceData.toMarkedSequence_length, BlowupSequenceData.toMarkedBlowupSequenceData_length, hpl]`. Conclude with `ht`. Establish `hsnc` using `MarkedSequenceOfBlowups.inStrictNormalCrossingPosition_projectionToSpec_boundary effectiveCartierSupportContainsNoComponent hV (pushedMarkedSeq hres hno T j hj s hpr hmk) t htlen`. Establish `key : AlgebraicGeometry.Scheme.Hom.ker (embeddingIntoAmbientBlowupSequence (T.boundary.get ⟨j, hj⟩).subschemeι (MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData hres hno hpr t) ∈ (ambientBlowupSequence (T.boundary.get ⟨j, hj⟩).subschemeι (MarkedBlowupSequenceData …`. Rewrite using `[hker]`.
-
-Conclude with `List.getElem_mem _`. Establish `key2 : AlgebraicGeometry.Scheme.Hom.ker (embeddingIntoAmbientBlowupSequence (T.boundary.get ⟨j, hj⟩).subschemeι (MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData hres hno hpr t) ∈ (pushedMarkedSeq hres hno T j hj s hpr hmk).boundary t`. Rewrite using `[hbd]`. Conclude with `key`. Conclude with `((inStrictNormalCrossingPosition_iff _ _).mp hsnc).1 _ key2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSmoothDivisor_ker_embeddingIntoAmbient_of_eq_top (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible)
     (_hob : T.IsOrderBoundedByMult) (_hbal : T.IsBalanced hV.locallyOfFiniteType)

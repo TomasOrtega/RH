@@ -15,30 +15,30 @@ namespace GlobalTheory.CompanionTheory.WS.Orbit
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨zero_mem _, zero_mem _⟩`.
+Supply the required witnesses or components.
 -/
 theorem zero_mem_Ln {n : ℤ} : (0 : F × F) ∈ Ln F n := ⟨zero_mem _, zero_mem _⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨add_mem hv.1 hw.1, add_mem hv.2 hw.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem Ln_add {n : ℤ} {v w : F × F} (hv : v ∈ Ln F n) (hw : w ∈ Ln F n) : v + w ∈ Ln F n :=
   ⟨add_mem hv.1 hw.1, add_mem hv.2 hw.2⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨sub_mem hv.1 hw.1, sub_mem hv.2 hw.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem Ln_sub {n : ℤ} {v w : F × F} (hv : v ∈ Ln F n) (hw : w ∈ Ln F n) : v - w ∈ Ln F n :=
   ⟨sub_mem hv.1 hw.1, sub_mem hv.2 hw.2⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨neg_mem hv.1, neg_mem hv.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem Ln_neg {n : ℤ} {v : F × F} (hv : v ∈ Ln F n) : -v ∈ Ln F n :=
   ⟨neg_mem hv.1, neg_mem hv.2⟩
 
 /- English proof (translation)
-Establish `h1` using `mul_mem_valBall ha hv.1`. Establish `h2` using `mul_mem_valBall ha hv.2`. Rewrite `h1`, `h2` using `[zero_add]`. Conclude with `⟨h1, h2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem Ln_smul {n : ℤ} {a : F} {v : F × F} (ha : a ∈ valBall F 0) (hv : v ∈ Ln F n) :
     a • v ∈ Ln F n := by
@@ -48,27 +48,27 @@ theorem Ln_smul {n : ℤ} {a : F} {v : F × F} (ha : a ∈ valBall F 0) (hv : v 
   exact ⟨h1, h2⟩
 
 /- English proof (translation)
-The claim follows from `((isOpen_valBall n).preimage continuous_fst).inter ((isOpen_valBall n).preimage continuous_snd)`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_Ln (n : ℤ) : IsOpen (Ln F n) :=
   ((isOpen_valBall n).preimage continuous_fst).inter ((isOpen_valBall n).preimage continuous_snd)
 
 /- English proof (translation)
-The claim follows from `(mem_valBall_iff_le_ord (unifUnit F).ne_zero).2 (by rw [ord_unifUnit])`.
+A detailed English derivation is pending.
 -/
 theorem unif_mem : (unifUnit F : F) ∈ valBall F 1 :=
   (mem_valBall_iff_le_ord (unifUnit F).ne_zero).2 (by rw [ord_unifUnit])
 
 /- English proof (translation)
-The claim follows from `(mem_valBall_iff_le_ord t.ne_zero).2 (mem_unitFiltrationUnits_zero_iff_ord.1 ht).ge`.
+A detailed English derivation is pending.
 -/
 theorem mem_zero_of_unit {t : Fˣ} (ht : t ∈ unitFiltrationUnits F 0) : (t : F) ∈ valBall F 0 :=
   (mem_valBall_iff_le_ord t.ne_zero).2 (mem_unitFiltrationUnits_zero_iff_ord.1 ht).ge
 
 /- English proof (translation)
-Establish `hϖ : (unifUnit F : F) ≠ 0` using `(unifUnit F).ne_zero`. Distinguish the cases in `h0 : a = 0`. Conclude with `Or.inr ⟨0, zero_mem _, by simp [h0]⟩`. Establish `hord : 0 ≤ ord a` using `(mem_valBall_iff_le_ord h0).1 (mem_valBall_zero_iff.2 ha)`. Break down `hord.eq_or_lt with h | h` into its components or cases.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Prove the second alternative. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `Or.inl ⟨Units.mk0 a h0, mem_unitFiltrationUnits_zero_iff_ord.2 (by simpa using h.symm), rfl⟩`. Use `Or.inr ⟨a * (unifUnit F : F)⁻¹, ?_, by field_simp⟩` and prove the remaining obligations. Establish `hb : a * (unifUnit F : F)⁻¹ ≠ 0` using `mul_ne_zero h0 (inv_ne_zero hϖ)`. Rewrite using `[← mem_valBall_zero_iff, mem_valBall_iff_le_ord hb, ord_mul h0 (inv_ne_zero hϖ), ord_inv hϖ, ord_unifUnit]`. Use linear arithmetic over natural numbers and integers.
+Prove the first alternative. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem unit_or_mul {a : F} (ha : a ∈ 𝒪[F]) :
     (∃ t : Fˣ, t ∈ unitFiltrationUnits F 0 ∧ (t : F) = a) ∨
@@ -86,11 +86,11 @@ theorem unit_or_mul {a : F} (ha : a ∈ 𝒪[F]) :
     omega
 
 /- English proof (translation)
-Establish `hv : ValuativeRel.valuation F (t : F) = 1` using `mem_unitFiltrationUnits_zero_iff.1 ht`. Establish `hm : b * (unifUnit F : F) ∈ valBall F 1`. Use `mul_mem_valBall (mem_valBall_zero_iff.2 hb) (unif_mem (F := F))` as an intermediate fact. Simplify using `using this`. Establish `hlt` using `mem_valBall_one_iff.1 hm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hc : ValuativeRel.valuation F ((t : F) - b * (unifUnit F : F)) = 1`. Rewrite using `[Valuation.map_sub_eq_of_lt_left _ (by rw [hv]; exact hlt), hv]`. Establish `h0 : (t : F) - b * (unifUnit F : F) ≠ 0`. Introduce `h`. Rewrite `hc` using `[h, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `zero_ne_one hc`. Conclude with `⟨Units.mk0 _ h0, mem_unitFiltrationUnits_zero_iff.2 (by simpa using hc), rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem unit_sub {t : Fˣ} (ht : t ∈ unitFiltrationUnits F 0) {b : F} (hb : b ∈ 𝒪[F]) :
     ∃ c : Fˣ, c ∈ unitFiltrationUnits F 0 ∧ (c : F) = t - b * (unifUnit F : F) := by
@@ -108,15 +108,13 @@ theorem unit_sub {t : Fˣ} (ht : t ∈ unitFiltrationUnits F 0) {b : F} (hb : b 
   exact ⟨Units.mk0 _ h0, mem_unitFiltrationUnits_zero_iff.2 (by simpa using hc), rfl⟩
 
 /- English proof (translation)
-Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => exact ⟨∅, by simp, by simp, by simp⟩`. Consider the case `insert a T _ ih`. Take `⟨s, h1, h2, h3⟩` from `ih`. Distinguish the cases in `h : ∃ t' ∈ s, R a t'`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Use `⟨s, fun t a' => Finset.mem_insert_of_mem (h1 t a'), fun t ht' => ?_, h3⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 ht' with rfl | ht'` into its components or cases. Conclude with `h`. Conclude with `h2 t ht'`. Use `push Not at h`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis.
 
-Use `⟨insert a s, fun t ht' => ?_, fun t ht' => ?_, fun t ht1 t' ht2 hR => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 ht' with rfl | ht'` into its components or cases. Conclude with `Finset.mem_insert_self _ _`. Conclude with `Finset.mem_insert_of_mem (h1 t ht')`. Break down `Finset.mem_insert.1 ht' with rfl | ht'` into its components or cases.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Apply the first step, then apply the next step to every resulting obligation. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `⟨t, Finset.mem_insert_self _ _, hr t⟩`. Take `⟨u, hu, hR⟩` from `h2 t ht'`. Conclude with `⟨u, Finset.mem_insert_of_mem hu, hR⟩`. Apply the tactic sequence `rcases Finset.mem_insert.1 ht1 with e1 | e1 <;>`. Break down `Finset.mem_insert.1 ht2 with e2 | e2` into its components or cases.
-
-Rewrite using `[e1, e2]`. Conclude with `absurd (e1 ▸ hR) (h t' e2)`. Conclude with `absurd (e2 ▸ hs _ _ hR) (h t e1)`. Conclude with `h3 t e1 t' e2 hR`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_equivalence_class_representatives {α : Type} (R : α → α → Prop) (hr : ∀ a, R a a)
     (hs : ∀ a b, R a b → R b a) (ht : ∀ a b c, R a b → R b c → R a c) (T : Finset α) :
@@ -149,13 +147,13 @@ theorem exists_equivalence_class_representatives {α : Type} (R : α → α → 
         · exact h3 t e1 t' e2 hR
 
 /- English proof (translation)
-Establish `hopen : ∀ c : Fˣ, IsOpen {t : Fˣ | ((t : F) - c) • x ∈ Ln F n}` using `fun c => (isOpen_Ln n).preimage (((Units.continuous_val.sub continuous_const).smul continuous_const))`. Take `⟨T, hT, hcov⟩` from `(isCompact_unitFiltrationUnits (K := F) 0).elim_nhds_subcover (fun c => {t : Fˣ | ((t : F) - c) • x ∈ Ln F n}) (fun c _ => (hopen c).mem_nhds (by`. Rewrite using `[Set.mem_setOf_eq, sub_self, zero_smul]`. Conclude with `zero_mem_Ln))`. Take `⟨s, h1, h2, h3⟩` from `exists_equivalence_class_representatives (fun a b : Fˣ => ((a : F) - b) • x ∈ Ln F n) (fun a => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sub_self, zero_smul]`. Conclude with `zero_mem_Ln)`. Use the proof step `(fun a b h => by`. Use `Ln_neg h` as an intermediate fact. Rewrite using `[← neg_smul, neg_sub] at this)` and apply the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `(fun a b c h h' => by`. Use `Ln_add h h'` as an intermediate fact. Rewrite using `[← add_smul, sub_add_sub_cancel] at this) T` and apply the resulting hypothesis. Use `⟨s, fun t ht => hT t (h1 t ht), fun t ht => ?_, h3⟩` and prove the remaining obligations. Take `⟨c, hc, hct⟩` from `Set.mem_iUnion₂.1 (hcov ht)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨t', ht', hR⟩` from `h2 c hc`. Use `⟨t', ht', ?_⟩` and prove the remaining obligations. Use `Ln_add hct hR` as an intermediate fact. Rewrite `this` using `[← add_smul, sub_add_sub_cancel]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem exists_reps (n : ℤ) (x : F × F) :
     ∃ s : Finset Fˣ, (∀ t ∈ s, t ∈ unitFiltrationUnits F 0) ∧
@@ -187,29 +185,25 @@ theorem exists_reps (n : ℤ) (x : F × F) :
   rwa [← add_smul, sub_add_sub_cancel] at this
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ n x hx`. Take `⟨s, hU, hcov, hinj⟩` from `exists_reps n x`. Establish `hne : s.Nonempty`. Take `⟨t, ht, -⟩` from `hcov 1 (one_mem _)`. Conclude with `⟨t, ht⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `⟨s, hne, hU, ?_⟩` and prove the remaining obligations. Establish `hBA : ∀ v, v ∈ spanSet n ((unifUnit F : F) • x) → v ∈ spanSet n x`. Introduce and unpack `v ⟨a, ha, hv⟩`. Use `⟨a * (unifUnit F : F), ?_, ?_⟩` and prove the remaining obligations. Conclude with `mul_mem ha (mem_valBall_zero_iff.1 (valBall_antitone (by omega) (unif_mem (F := F))))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[mul_smul]` and apply the resulting hypothesis. Establish `hfw : ∀ v, v ∈ spanSet n x → v ∉ spanSet n ((unifUnit F : F) • x) → ∃ t ∈ s, v - (t : F) • x ∈ Ln F n`. Introduce and unpack `v ⟨a, ha, hv⟩ hvB`. Break down `unit_or_mul ha with ⟨t, ht, rfl⟩ | ⟨b, hb, rfl⟩` into its components or cases. Take `⟨t', ht', hR⟩` from `hcov t ht`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨t', ht', ?_⟩` and prove the remaining obligations. Use `Ln_add hv hR` as an intermediate fact. Rewrite using `[show v - (t : F) • x + ((t : F) - t') • x = v - (t' : F) • x by` and apply the resulting hypothesis. Rewrite using `[sub_smul]`. Use the proof step `abel] at this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `absurd ⟨b, hb, by rwa [← mul_smul]⟩ hvB`. Establish `hbw : ∀ v, ∀ t ∈ s, v - (t : F) • x ∈ Ln F n → v ∉ spanSet n ((unifUnit F : F) • x)`. Introduce and unpack `v t ht hv ⟨b, hb, hvb⟩`. Take `⟨c, hc, hct⟩` from `unit_sub (hU t ht) hb`. Establish `h1 : (c : F) • x ∈ Ln F n`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Use `Ln_sub hvb hv` as an intermediate fact. Rewrite using `[show v - b • (unifUnit F : F) • x - (v - (t : F) • x) = (c : F) • x by` and apply the resulting hypothesis. Rewrite using `[hct, sub_smul, mul_smul]`. Use the proof step `abel] at this`. Establish `h2` using `Ln_smul (mem_zero_of_unit (inv_mem hc)) h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite `h2` using `[smul_smul, Units.val_inv_eq_inv_val, inv_mul_cancel₀ c.ne_zero, one_smul]`. Conclude with `hx h2`. Use function extensionality and compare the values at `v`. Rewrite using `[Finset.sum_apply, Pi.sub_apply]`. Distinguish the cases in `h : ∃ t ∈ s, v - (t : F) • x ∈ Ln F n`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨t, ht, hv⟩` from `h`. Establish `hA : v ∈ spanSet n x` using `⟨t, mem_valBall_zero_iff.1 (mem_zero_of_unit (hU t ht)), hv⟩`. Rewrite using `[Set.indicator_of_mem hA, Set.indicator_of_notMem (hbw v t ht hv), Finset.sum_eq_single t]`. Simplify using `[cosetInd, Set.indicator, hv]`. Introduce `t' ht' hne'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Establish `: v - (t' : F) • x ∉ Ln F n` using `fun hv' => by`. Use `hne' (hinj t' ht' t ht ?_)` and prove the remaining obligations. Use `Ln_sub hv hv'` as an intermediate fact. Rewrite using `[show v - (t : F) • x - (v - (t' : F) • x) = ((t' : F) - t) • x by` and apply the resulting hypothesis. Rewrite using `[sub_smul]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Use the proof step `abel] at this`. Simplify using `[cosetInd, Set.indicator, this]`. Conclude with `fun h' => absurd ht h'`. Use `push Not at h`. Establish `hz : ∑ t ∈ s, cosetInd n ((t : F) • x) v = 0` using `Finset.sum_eq_zero fun t ht => by simp [cosetInd, Set.indicator, h t ht]`.
-
-Rewrite using `[hz]`. Distinguish the cases in `hB : v ∈ spanSet n ((unifUnit F : F) • x)`. Rewrite using `[Set.indicator_of_mem hB, Set.indicator_of_mem (hBA v hB), sub_self]`. Establish `hA : v ∉ spanSet n x` using `fun hA => by`. Take `⟨t, ht, hv⟩` from `hfw v hA hB`.
-
-Conclude with `h t ht hv`. Rewrite using `[Set.indicator_of_notMem hB, Set.indicator_of_notMem hA, sub_self]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (n : ℤ) (x : F × F), x ∉ GlobalTheory.CompanionTheory.WS.Ln F n → ∃ s : Finset Fˣ, s.Nonempty ∧ (∀ t ∈ s, t ∈ unitFiltrationUnits F 0) ∧ (GlobalTheory.CompanionTheory.WS.spanSet n x).indicator (1 : F × F → ℂ) - (GlobalTheory.CompanionTheory.WS.spanSet n (((unifUnit F : Fˣ) : F) • x)).indicator (1 : F × F → ℂ) = ∑ t ∈ s, GlobalTheory.CompanionTheory.WS.cosetInd n ((t : F) • x) := by
   intro F _ _ _ _ _ _ n x hx

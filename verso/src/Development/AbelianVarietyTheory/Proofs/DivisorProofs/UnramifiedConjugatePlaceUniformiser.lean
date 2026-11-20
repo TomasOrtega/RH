@@ -13,11 +13,9 @@ section CM
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Introduce `y hy`. Take `⟨s, hs⟩` from `(IsCMField.ringOfIntegersComplexConj_eq_self_iff E (y * IsCMField.ringOfIntegersComplexConj E y)).1 (by`. Rewrite using `[map_mul, mul_comm]`. Use `congr 1`. Use `ext`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use the proof step `simp)`. Establish `h1 : s ∈ Q.under (𝓞 (maximalRealSubfield E))`. Rewrite using `[Ideal.under_def, Ideal.mem_comap, hs]`. Conclude with `Q.mul_mem_right _ hy`. Establish `h2` using `hQ h1`.
-
-Rewrite `h2` using `[Ideal.under_def, Ideal.mem_comap, hs]`. Conclude with `(hP.mem_or_mem h2).elim id (h y)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_of_under_le (P : Ideal (𝓞 E)) [hP : P.IsPrime]
     (h : ∀ x : 𝓞 E, IsCMField.ringOfIntegersComplexConj E x ∈ P → x ∈ P) (Q : Ideal (𝓞 E))
@@ -36,19 +34,15 @@ theorem le_of_under_le (P : Ideal (𝓞 E)) [hP : P.IsPrime]
   exact (hP.mem_or_mem h2).elim id (h y)
 
 /- English proof (translation)
-Use `haveI := P.isPrime`. Use `haveI : Algebra.IsUnramifiedAt (𝓞 (maximalRealSubfield E)) P.asIdeal := Algebra.unramified_iff_forall.1 inferInstance ⟨P.asIdeal, P.isPrime⟩`. Use `set v := P.under (𝓞 (maximalRealSubfield E)) with hv`. Establish `hva : v.asIdeal = P.asIdeal.under (𝓞 (maximalRealSubfield E))` using `rfl`. Establish `hinj : Function.Injective (algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E))` using `FaithfulSMul.algebraMap_injective _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `Formalism.UG.IsInertAt`. Rewrite using `[hva]`. Establish `hle : (P.asIdeal.under (𝓞 (maximalRealSubfield E))).map (algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E)) ≤ P.asIdeal` using `Ideal.map_comap_le`. Establish `h1 : Ideal.ramificationIdx' (P.asIdeal.under (𝓞 (maximalRealSubfield E))) P.asIdeal = 1`. Use `letI := Localization.AtPrime.algebraOfLiesOver (P.asIdeal.under (𝓞 (maximalRealSubfield E))) P.asIdeal`.
+Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Ideal.IsDedekindDomain.ramificationIdx'_eq_one_iff P.ne_bot hle).2 ((Algebra.isUnramifiedAt_iff_map_eq (𝓞 (maximalRealSubfield E)) (P.asIdeal.under (𝓞 (maximalRealSubfield E))) P.asIdeal).1 ‹_›).2`. Establish `h2 : ¬ (P.asIdeal.under (𝓞 (maximalRealSubfield E))).map (algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E)) ≤ P.asIdeal ^ 2` using `fun h => (Ideal.ramificationIdx'_ne_one_iff hle).2 h h1`. Use `set I := Ideal.map (algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E)) (P.asIdeal.under (𝓞 (maximalRealSubfield E))) with hI`. Establish `hI0 : I ≠ ⊥`. Rewrite using `[hI, Ne, Ideal.map_eq_bot_iff_of_injective hinj]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `v.ne_bot`. Establish `hfac : ∀ p ∈ UniqueFactorizationMonoid.normalizedFactors I, p = P.asIdeal`. Introduce `p hp`. Take `⟨hpp, hpl⟩` from `(Ideal.mem_normalizedFactors_iff hI0).1 hp`. Establish `hp0 : p ≠ ⊥` using `fun h0 => hI0 (le_bot_iff.1 (h0 ▸ hpl))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-Use `(hpp.isMaximal hp0).eq_of_le P.isPrime.ne_top (le_of_under_le P.asIdeal h p ?_)` and prove the remaining obligations. Conclude with `(v.isMaximal.eq_of_le (Ideal.comap_ne_top _ hpp.ne_top) (Ideal.map_le_iff_le_comap.1 hpl)).ge`. Choose the witnesses or unpack the hypotheses as in `⟨n, hn⟩ : ∃ n, I = P.asIdeal ^ n := by`. Use `⟨Multiset.card (UniqueFactorizationMonoid.normalizedFactors I), ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← Ideal.prod_normalizedFactors_eq_self hI0]`.
-
-Rewrite using `[Multiset.eq_replicate_card.2 hfac, Multiset.prod_replicate, Multiset.card_replicate]`. Break down `n with _ | _ | n` into its components or cases. It suffices to derive a contradiction. Rewrite `hle` using `[hn, pow_zero, Ideal.one_eq_top, top_le_iff]`. Conclude with `P.isPrime.ne_top hle`.
-
-Simplify using `using hn`. Conclude with `absurd (hn ▸ Ideal.pow_le_pow_right (by omega)) h2`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isInertAt_under [Algebra.Unramified (𝓞 (maximalRealSubfield E)) (𝓞 E)] (P : HeightOneSpectrum (𝓞 E))
     (h : ∀ x : 𝓞 E, IsCMField.ringOfIntegersComplexConj E x ∈ P.asIdeal → x ∈ P.asIdeal) :
@@ -97,11 +91,9 @@ theorem isInertAt_under [Algebra.Unramified (𝓞 (maximalRealSubfield E)) (𝓞
   · exact absurd (hn ▸ Ideal.pow_le_pow_right (by omega)) h2
 
 /- English proof (translation)
-Take `⟨σ, ϖ, h1, h2, h3, h4, h5, h6⟩` from `GlobalTheory.InertConj.exists_conj_completion E v P h`. Use `⟨σ, ϖ, h1, h2, h3, h5, h6, h4, ?_, ?_⟩` and prove the remaining obligations. Establish `a : Ideal.absNorm v.asIdeal ≠ 1` using `fun h => v.isPrime.ne_top (Ideal.absNorm_eq_one_iff.1 h)`. Establish `b : Ideal.absNorm v.asIdeal ≠ 0` using `fun h => v.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)`. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `hN : Ideal.absNorm P.asIdeal = Ideal.absNorm v.asIdeal ^ 2`. Rewrite using `[← show Ideal.map _ v.asIdeal = P.asIdeal from h, Ideal.absNorm_algebraMap, ← Algebra.IsQuadraticExtension.finrank_eq_two (maximalRealSubfield E) E]`. Use `congr 1`. Conclude with `(Algebra.IsAlgebraic.finrank_of_isFractionRing (𝓞 (maximalRealSubfield E)) (maximalRealSubfield E) (𝓞 E) E).symm`. Rewrite using `[← hN]`.
-
-Conclude with `Formalism.UG.P.tjcosets_card_residue P`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isUnramInv [Algebra.Unramified (𝓞 (maximalRealSubfield E)) (𝓞 E)]
     (v : HeightOneSpectrum (𝓞 (maximalRealSubfield E))) (P : HeightOneSpectrum (𝓞 E))
@@ -131,9 +123,9 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `D P hP`. Use `haveI := D.host.isCMField_hostE`. Use `haveI := GlobalTheory.PlaceComp.unramified (E := D.host.E) D.sp.cm`. Establish `h` using `isInertAt_under P fun x hx => by`. Rewrite using `[← hP, Formalism.L2.Col.mem_conjIdeal]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `hx`. Take `⟨σ, ϖ, h1, h2⟩` from `exists_isUnramInv _ P h`. Conclude with `⟨σ, ϖ, _, h1, h2⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_isConjAt_isUnramInv : ∀ {D : D7} (P : HeightOneSpectrum (𝓞 D.host.E)), Formalism.HermitianLatticesTheory.conjIdeal (K := D.host.E) P.asIdeal = P.asIdeal → ∃ (σ : P.adicCompletion D.host.E →+* P.adicCompletion D.host.E) (ϖ : P.adicCompletion D.host.E) (q : ℕ), IsConjAt P σ ∧ Formalism.UG.IsUnramInv ϖ σ q := by
   intro D P hP

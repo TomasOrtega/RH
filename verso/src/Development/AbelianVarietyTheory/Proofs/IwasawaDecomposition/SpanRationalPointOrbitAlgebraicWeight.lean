@@ -5,25 +5,23 @@ open Matrix Formalism.L2.NG ReciprocityTheory.Aut Formalism.AUTREP NumberField G
 namespace GlobalTheory.AlgWtHW
 
 /- English proof (translation)
-Introduce `L _ _ _ n a ι _ _ b P hA v hv w`. Use `set x : a.W := b.equivFun.symm v with hx`. Establish `hxv : b.repr x = v`. Rewrite using `[← Module.Basis.equivFun_apply, hx, LinearEquiv.apply_symm_apply]`. Establish `hx0 : x ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Apply `hv` to reduce the goal to its premises. Rewrite using `[← hxv, h, map_zero]`. Both sides reduce to the same expression. Set `S0 : Submodule ℂ a.W` to `Submodule.span ℂ (Set.range fun γ : GQ L n => a.ρ γ x)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hinv : ∀ (g : GQ L n) (y : a.W), y ∈ S0 → a.ρ g y ∈ S0`. Introduce `g y hy`. Establish `hle : S0 ≤ S0.comap (a.ρ g)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨γ, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Use `show a.ρ g (a.ρ γ x) ∈ S0`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Conclude with `Submodule.subset_span ⟨g * γ, rfl⟩`. Conclude with `hle hy`. Set `S : Subrepresentation a.ρ` to `⟨S0, hinv⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-Establish `hxS : x ∈ S0` using `Submodule.subset_span ⟨1, by simp⟩`. Establish `hS0 : S0 = ⊤` using `by haveI := a.irr`. Break down `IsSimpleOrder.eq_bot_or_eq_top S with h | h` into its components or cases. It suffices to derive a contradiction. Apply `hx0` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Establish `h2 : S.toSubmodule = (⊥ : Subrepresentation a.ρ).toSubmodule` using `congrArg _ h`. Establish `h3 : x ∈ (⊥ : Subrepresentation a.ρ).toSubmodule` using `h2 ▸ hxS`. Express the relevant statement in the definitionally equal form `x ∈ (⊥ : Submodule ℂ a.W) at h3`. Conclude with `(Submodule.mem_bot ℂ).1 h3`. Establish `h2 : S.toSubmodule = (⊤ : Subrepresentation a.ρ).toSubmodule` using `congrArg _ h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2`. Establish `hw : w = b.equivFun.toLinearMap (b.equivFun.symm w)` using `(b.equivFun.apply_symm_apply w).symm`. Establish `hmem : b.equivFun.symm w ∈ S0` using `by rw [hS0]; trivial`. Rewrite using `[hw]`. Establish `hmap : Submodule.map b.equivFun.toLinearMap S0 ≤ Submodule.span ℂ {x | ∃ γ₀ : GL (Fin n) L, γ₀ ∈ GQ0 L n ∧ x = evM P (upt (ratPt (γ₀ : Matrix (Fin n) (Fin n) L))) *ᵥ v}`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Submodule.map_span_le]`. Introduce and unpack `_ ⟨γ, rfl⟩`. Apply `Submodule.subset_span` to reduce the goal to its premises. Establish `hγ : (γ : GA L n) ∈ ((GQ0 L n).map (Matrix.GeneralLinearGroup.map (Algebra.TensorProduct.includeLeftRingHom : L →+* AL L))).subgroupOf (GA L n)` using `γ.2`. Rewrite `hγ` using `[Subgroup.mem_subgroupOf, Subgroup.mem_map]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Take `⟨γ₀, hγ₀, he⟩` from `hγ`. Use `⟨γ₀, hγ₀, ?_⟩` and prove the remaining obligations. Establish `hE : (((γ : GAf L n) : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) = (γ₀ : Matrix (Fin n) (Fin n) L).map (Algebra.TensorProduct.includeLeftRingHom)`. Rewrite using `[← he]`. Both sides reduce to the same expression.
-
-Establish `hM` using `hA γ γ₀ hE`. Use `show b.equivFun (a.ρ γ x) = _`. Rewrite using `[Module.Basis.equivFun_apply, ← LinearMap.toMatrix_mulVec_repr b b, hxv, hM]`. Both sides reduce to the same expression. Conclude with `hmap (Submodule.mem_map_of_mem hmem)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem span_ratPt_orbit : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (a : AlgWt L n) (ι : Type) [Fintype ι] [DecidableEq ι] (b : Module.Basis ι ℂ a.W) (P : ι → ι → MvPolynomial ((L →+* ℂ) × Fin n × Fin n) ℂ), Agrees a b P → ∀ v : ι → ℂ, v ≠ 0 → ∀ w : ι → ℂ, w ∈ Submodule.span ℂ {x | ∃ γ₀ : GL (Fin n) L, γ₀ ∈ GQ0 L n ∧ x = evM P (upt (ratPt (γ₀ : Matrix (Fin n) (Fin n) L))) *ᵥ v} := by
   intro L _ _ _ n a ι _ _ b P hA v hv w

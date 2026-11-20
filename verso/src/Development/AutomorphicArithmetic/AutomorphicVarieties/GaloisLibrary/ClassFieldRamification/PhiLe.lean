@@ -6,29 +6,25 @@ open NumberField IsDedekindDomain IntermediateField UpperTheory.V.Kum UpperTheor
 open scoped Pointwise
 
 /- English proof (translation)
-Introduce `p _ P _ _ hP K hK`. Establish `hnil : Group.IsNilpotent P` using `hP.isNilpotent`. Establish `hN : K.Normal` using `Subgroup.NormalizerCondition.normal_of_coatom K normalizerCondition_of_isNilpotent hK`. Use `⟨hN, ?_⟩` and prove the remaining obligations. Establish `hQp : IsPGroup p (P ⧸ K)` using `hP.to_quotient K`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hne : Nontrivial (P ⧸ K)`. Rewrite using `[QuotientGroup.nontrivial_iff]`. Conclude with `hK.1`. Establish `hdvd : p ∣ Nat.card (P ⧸ K)`. Take `⟨n, hn⟩` from `IsPGroup.iff_card.mp hQp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : 1 < Nat.card (P ⧸ K)` using `Finite.one_lt_card`. Break down `n with _ | n` into its components or cases. Rewrite `h1` using `[hn, pow_zero]`. Conclude with `absurd h1 (lt_irrefl 1)`. Rewrite using `[hn, pow_succ]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `dvd_mul_left _ _`. Take `⟨x, hx⟩` from `exists_prime_orderOf_dvd_card' (G := P ⧸ K) p hdvd`. Establish `htop : Subgroup.zpowers x = ⊤`. Establish `h1 : K ≤ (Subgroup.zpowers x).comap (QuotientGroup.mk' K)`. Introduce `k hk`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subgroup.mem_comap, QuotientGroup.mk'_apply, (QuotientGroup.eq_one_iff k).mpr hk]`. Conclude with `one_mem _`. Break down `hK.le_iff.mp h1 with h | h` into its components or cases. Rewrite using `[eq_top_iff]`. Introduce `y _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction.
 
-Take `⟨g, rfl⟩` from `QuotientGroup.mk_surjective y`. Establish `: g ∈ (Subgroup.zpowers x).comap (QuotientGroup.mk' K)`. Rewrite using `[h]`. Conclude with `Subgroup.mem_top g`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-It suffices to derive a contradiction. Take `⟨g, rfl⟩` from `QuotientGroup.mk_surjective x`. Establish `: g ∈ (Subgroup.zpowers ((g : P ⧸ K))).comap (QuotientGroup.mk' K)` using `Subgroup.mem_zpowers _`. Rewrite `this` using `[h]`. Rewrite `hx` using `[(QuotientGroup.eq_one_iff g).mpr this, orderOf_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(Fact.out : p.Prime).one_lt.ne hx`. Establish `hcard : Nat.card (P ⧸ K) = p`. Rewrite using `[← Subgroup.card_top, ← htop, Nat.card_zpowers, hx]`. Establish `hidx : K.index = p`. Rewrite using `[Subgroup.index, hcard]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨hidx, ?_⟩` and prove the remaining obligations. Establish `hcomm : ∀ a b : P ⧸ K, a * b = b * a`. Introduce `a b`. Establish `ha : a ∈ Subgroup.zpowers x` using `htop ▸ Subgroup.mem_top a`. Establish `hb : b ∈ Subgroup.zpowers x` using `htop ▸ Subgroup.mem_top b`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨m, rfl⟩` from `Subgroup.mem_zpowers_iff.mp ha`. Take `⟨n, rfl⟩` from `Subgroup.mem_zpowers_iff.mp hb`. Conclude with `(Commute.zpow_zpow_self x m n).eq`. Use `sup_le ?_ ?_` and prove the remaining obligations. Rewrite using `[Subgroup.closure_le]`.
-
-Introduce and unpack `_ ⟨g, rfl⟩`. Use `show g ^ p ∈ K`. Rewrite using `[← QuotientGroup.eq_one_iff, QuotientGroup.mk_pow, ← hcard]`. Conclude with `pow_card_eq_one'`. Rewrite using `[commutator, Subgroup.commutator_le]`.
-
-Introduce `a _ b _`. Rewrite using `[← QuotientGroup.eq_one_iff, commutatorElement_def, QuotientGroup.mk_mul, QuotientGroup.mk_mul, QuotientGroup.mk_mul, QuotientGroup.mk_inv, QuotientGroup.mk_inv, hcomm (a : P ⧸ K) (b : P ⧸ K), mul_assoc, mul_assoc, mul_inv_cancel_left, mul_inv_cancel]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.CF.phiLe :
     ∀ (p : ℕ) [Fact p.Prime] (P : Type) [Group P] [Finite P], IsPGroup p P → ∀ K : Subgroup P, IsCoatom K → K.Normal ∧ K.index = p ∧ phi p P ≤ K := by

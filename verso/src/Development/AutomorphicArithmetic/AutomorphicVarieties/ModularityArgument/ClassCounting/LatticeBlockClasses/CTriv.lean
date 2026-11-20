@@ -4,13 +4,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open NumberField IsDedekindDomain UpperTheory.V UpperTheory.V.KL UpperTheory.V.ZK UpperTheory.V.ZK.Cl
 
 /- English proof (translation)
-Introduce `k _ A _ m θ hθ H V P U`. Introduce `_ _ _ _ _ _ _ _ _ _ μ φ z hz`. Take `⟨-, hnat, hcomp, -, hsub⟩` from `sChain A`. Establish `cyc : ∀ {G G' : Type} [Group G] [Group G'] (f : G →* G') (w : Ch A G (m + 1)), Cyc w → Cyc (cm A f (m + 1) w)`. Introduce `G G' _ _ f w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `Cyc at hw ⊢`. Rewrite using `[hnat, hw, map_zero]`. Rewrite using `[hcomp, hθ.iso (V × P) U φ _ (cyc _ _ hz), hθ.add H V P μ 1 z hz]`. Establish `htriv : (θ P) (cm A (1 : H →* P ≃ₗ[k] P) (m + 1) z) = 0`. Apply `hθ.bdry` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hf : (1 : H →* P ≃ₗ[k] P) = (1 : Unit →* P ≃ₗ[k] P).comp (1 : H →* Unit)`. Use extensionality with `h x`. Both sides reduce to the same expression. Rewrite using `[hf, hcomp]`. Take `⟨w, hw⟩` from `hsub Unit m _ (cyc (1 : H →* Unit) z hz)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hw, ← hnat]`. Conclude with `⟨_, rfl⟩`. Rewrite using `[htriv, add_zero]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.V.ZK.Cl.cTriv :
     UpperTheory.V.ZK.Cl.CTriv := by

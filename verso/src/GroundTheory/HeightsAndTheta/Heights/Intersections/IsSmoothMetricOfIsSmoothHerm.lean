@@ -17,7 +17,7 @@ variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintyp
 omit [Fintype K] [DecidableEq K] [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.map_map]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem map_rat_complex (f : ReciprocityTheory.ChartRestriction.G.Geo.MRing ι) :
     MvPolynomial.map (algebraMap ℚ ℂ) (MvPolynomial.map (Int.castRingHom ℚ) f) =
@@ -28,7 +28,7 @@ theorem map_rat_complex (f : ReciprocityTheory.ChartRestriction.G.Geo.MRing ι) 
 omit [DecidableEq K] [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Establish `h : {w : MCone ι | ∀ k, ∃ i, w ⟨k, i⟩ ≠ 0} = ⋂ k, ⋃ i, {w : MCone ι | w ⟨k, i⟩ ≠ 0}`. Use extensionality with `w`. Simplify using the standard rewrite rules. Rewrite using `[h]`. Conclude with `isOpen_iInter_of_finite fun k => isOpen_iUnion fun i => isOpen_ne_fun (continuous_apply _) continuous_const`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_blockNonzero : IsOpen {w : MCone ι | ∀ k, ∃ i, w ⟨k, i⟩ ≠ 0} := by
   have h : {w : MCone ι | ∀ k, ∃ i, w ⟨k, i⟩ ≠ 0} = ⋂ k, ⋃ i, {w : MCone ι | w ⟨k, i⟩ ≠ 0} := by
@@ -41,7 +41,7 @@ theorem isOpen_blockNonzero : IsOpen {w : MCone ι | ∀ k, ∃ i, w ⟨k, i⟩ 
 omit [DecidableEq K] in
 
 /- English proof (translation)
-Introduce `z hz`. Use `⟨_, isOpen_blockNonzero.mem_nhds hz.1, logH L, ?_, fun w _ => rfl⟩` and prove the remaining obligations. Conclude with `h.log fun w hw => (L.pos w hw).ne'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isSmoothMetric_of_isSmoothHerm (P : Ideal (MRing ι ℂ)) (L : HLine ι)
     (h : ReciprocityTheory.ChartRestriction.G.Geo.IsSmoothHerm L) : IsSmoothMetric P L := by
@@ -50,21 +50,19 @@ theorem isSmoothMetric_of_isSmoothHerm (P : Ideal (MRing ι ℂ)) (L : HLine ι)
   exact h.log fun w hw => (L.pos w hw).ne'
 
 /- English proof (translation)
-Take `⟨-, ⟨hprime, ⟨S, hS, hPS⟩, hrel⟩, hhor, hdim⟩` from `hP`. Use `hprime` as an intermediate fact. Establish `hch : ∀ m : ℤ, (C m : MvPolynomial (Σ k, ι k) ℤ) ∈ P → m = 0`. Introduce `m hm`. Establish `hm' : m ∈ P.comap (C : ℤ →+* ReciprocityTheory.ChartRestriction.G.Geo.MRing ι)` using `Ideal.mem_comap.mpr hm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hm'` using `[show P.comap (C : ℤ →+* ReciprocityTheory.ChartRestriction.G.Geo.MRing ι) = ⊥ from hhor, Ideal.mem_bot]`. Conclude with `hm'`. Take `⟨hQ, hcomap, hd⟩` from `ReciprocityTheory.AnForm.R.extQ_spec P hch`. Use `⟨(GroundTheory.Heights₂.Heights.NumbersDVR.Objects.isMultiProjPrime_iff _).mpr ⟨hQ, ⟨MvPolynomial.map (Int.castRingHom ℚ) '' S, ?_, ?_⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `hS f hf`. Conclude with `⟨a, fun m hm k => ha m (MvPolynomial.support_map_subset _ _ hm) k⟩`. Rewrite using `[hPS, Ideal.map_span]`. Introduce `k`. Take `⟨i, hi⟩` from `hrel k`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨i, fun h => hi ?_⟩` and prove the remaining obligations. Rewrite using `[← hcomap, Ideal.mem_comap, MvPolynomial.map_X]`. Conclude with `h`. Establish `hd' : ringKrullDim (MvPolynomial (Σ k, ι k) ℚ ⧸ P.map (MvPolynomial.map (Int.castRingHom ℚ))) + 1 = ((e + 1 + Fintype.card K : ℕ) : WithBot ℕ∞)`. Rewrite using `[← hdim]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Proceed by induction.
 
-Conclude with `hd`. Use `show ringKrullDim (MvPolynomial (Σ k, ι k) ℚ ⧸ P.map (MvPolynomial.map (Int.castRingHom ℚ))) = ((e + Fintype.card K : ℕ) : WithBot ℕ∞)`. Generalize the expression as in `ringKrullDim (MvPolynomial (Σ k, ι k) ℚ ⧸ P.map (MvPolynomial.map (Int.castRingHom ℚ))) = d at hd'`. Proceed by induction on `d using WithBot.recBotCoe with`. Consider the case `bot`.
+Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Rewrite `hd'` using `[WithBot.bot_add]`. Conclude with `absurd hd' (WithBot.bot_ne_coe)`. Consider the case `coe d`. Proceed by induction on `d using ENat.recTopCoe with`. Consider the case `top`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (⊤ : ℕ∞) + 1 = ((e + 1 + Fintype.card K : ℕ) : ℕ∞)` using `by exact_mod_cast hd'`. Rewrite `h3` using `[top_add]`. Conclude with `absurd h3.symm (ENat.natCast_ne_top _)`. Consider the case `coe n`. Establish `h1 : n + 1 = e + 1 + Fintype.card K` using `by exact_mod_cast hd'`.
-
-Establish `h2 : n = e + Fintype.card K` using `by omega`. Rewrite using `[h2]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isProjVarQ_of_isArithVar {P : Ideal (ReciprocityTheory.ChartRestriction.G.Geo.MRing ι)} {e : ℕ}
     (hP : ReciprocityTheory.ChartRestriction.G.Geo.IsArithVar P (e + 1)) :

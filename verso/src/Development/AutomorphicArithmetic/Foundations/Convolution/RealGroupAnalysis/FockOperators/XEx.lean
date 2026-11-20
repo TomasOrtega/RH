@@ -21,17 +21,17 @@ private noncomputable def lin {F : Type} [Field F] [NumberField F] [IsTotallyRea
 end UpperTheory.ConvolutionTheory.R2.Fo
 
 /- English proof (translation)
-Introduce `F _ _ _ w i φ hφ`. Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem G hG`. Take `⟨f, g, hg, rfl⟩` from `hG`. Establish `e : (fun v => cw w (v i) * schwartzBruhatTensorPi f g v) = schwartzBruhatTensorPi (SchwartzMap.smulLeftCLM ℂ (lin w i) f) g`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `v`. Simplify using `only [schwartzBruhatTensorPi]`. Rewrite using `[SchwartzMap.smulLeftCLM_apply_apply (lin w i).hasTemperateGrowth, smul_eq_mul, mul_assoc]`. Use `congr 1`. Rewrite using `[e]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Conclude with `schwartzBruhatTensorPi_mem _ hg`. Consider the case `zero`. Establish `e : (fun v => cw w (v i) * (0 : V4 F → ℂ) v) = 0`. Use function extensionality and compare the values at `v`. Simplify using the standard rewrite rules.
+Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `zero_mem _`. Consider the case `add G H _ _ hG hH`. Establish `e : (fun v => cw w (v i) * (G + H) v) = (fun v => cw w (v i) * G v) + fun v => cw w (v i) * H v`. Use function extensionality and compare the values at `v`.
+Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[mul_add]`. Rewrite using `[e]`. Conclude with `add_mem hG hH`. Consider the case `smul c G _ hG`. Establish `e : (fun v => cw w (v i) * (c • G) v) = c • fun v => cw w (v i) * G v`.
+Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use function extensionality and compare the values at `v`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ c hG`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.Fo.xEx :
     ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (w : InfinitePlace F) (i : Fin 4) (φ : V4 F → ℂ), φ ∈ schwartzBruhatPi F (Fin 4) → (fun v => cw w (v i) * φ v) ∈ schwartzBruhatPi F (Fin 4) := by

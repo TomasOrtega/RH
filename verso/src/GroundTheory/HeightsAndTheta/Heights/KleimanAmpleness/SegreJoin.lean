@@ -21,7 +21,7 @@ def SegreBase.Statement : Prop :=
         GeneratesOver S (segreJoin y) (IndefiniteRowSideFullHecke.Kleiman2.pullDeg β) η ↔ GeneratesOver S y β η
 
 /- English proof (translation)
-Introduce `_` and use `⟨0, IndefiniteRowSideFullHecke.Kleiman2.pnPt_ne_zero F 1 _⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem SegreBase.hyps (F : Type) [Field F] : ∀ k, ∃ i, IndefiniteRowSideFullHecke.Kleiman2.pnPt F 1 ⟨k, i⟩ ≠ 0 :=
   fun _ => ⟨0, IndefiniteRowSideFullHecke.Kleiman2.pnPt_ne_zero F 1 _⟩

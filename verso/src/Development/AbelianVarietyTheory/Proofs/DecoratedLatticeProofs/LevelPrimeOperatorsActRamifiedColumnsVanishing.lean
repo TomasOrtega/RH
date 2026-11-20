@@ -9,7 +9,7 @@ namespace GlobalTheory.AdForm
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Establish `h0 : formAt β P 0 = 0`. Use function extensionality and compare the values at `P₁`. Simplify using `[formAt]`. Simplify using `[sOp, h0]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem sOp_zero_fun {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {p : SplitPt D k} {S : HSp D} {n : Type} [Fintype n] [DecidableEq n] (β : Frame p S n) (P : Pair k n) (q : Unif k)
@@ -20,7 +20,7 @@ theorem sOp_zero_fun {D : D7} {k : Type} [Field k] [ValuativeRel k] [Topological
   simp [sOp, h0]
 
 /- English proof (translation)
-Proceed by induction on `J with`. Consider the case `nil => rfl`. Consider the case `cons i J ih => simp only [List.foldr_cons, ih]`. Conclude with `sOp_zero_fun _ _ _ _ _`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem foldr_sOp_zero_fun {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {ι : Type} {p : ι → SplitPt D k} {S : HSp D} {n : Type} [Fintype n] [DecidableEq n] (β : ∀ i, Frame (p i) S n)
@@ -31,7 +31,7 @@ theorem foldr_sOp_zero_fun {D : D7} {k : Type} [Field k] [ValuativeRel k] [Topol
   | cons i J ih => simp only [List.foldr_cons, ih]; exact sOp_zero_fun _ _ _ _ _
 
 /- English proof (translation)
-Simplify using `[infM, Formalism.L2.Theta.mt, Datum.compAt]`.
+Simplify using the standard rewrite rules.
 -/
 theorem infM_one_eq {D : D7} (θ : InfFam D) (V : HSp D) {n : ℕ} (hn : V.rank = n) (τ : D.what₂.Tau) :
     infM θ V hn 1 τ = 1 := by
@@ -41,9 +41,9 @@ variable {B : Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B
   {Ch : ℕ → Type}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Unfold `TwDat.rd rdS`. Use `split_ifs with h`. Simplify using `[hφ _ h.choose.1.2, atFr]`. Introduce `_`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem TwDat.rd_eq_zero_of_vanish (A : TwDat I l Z u a Ch) (θ : InfFam (I.rec7 l Z)) (j : ℕ) (hj : j ≤ B.R.m) (b : Ch j)
     (φ : ColT I l u a j) (hφ : ∀ c, A.chOf j c = b → φ c = 0) (y : (I.chain l u a).Y j) : A.rd θ j hj b φ y = 0 := by
@@ -56,15 +56,15 @@ theorem TwDat.rd_eq_zero_of_vanish (A : TwDat I l Z u a Ch) (θ : InfFam (I.rec7
   · rfl
 
 /- English proof (translation)
-Introduce `B X I hOk hPins l Z u a Ch₀ Ch A ιc hA θ hθ k _ _ _ _ ι p β Q L hStd J q χ hχ`. Take `⟨S, hS⟩` from `GlobalTheory.T.levelPrime_operators_act_on_ramified_columns I hOk hPins l Z u a Ch₀ A hA θ hθ k ι p β Q L hStd J q χ hχ`. Use `⟨S, fun j hj φ hφ => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `hS j hj φ hφ.1`. Use `⟨h1, fun η => ⟨⟨(h2 η).1, ?_⟩, (h2 η).2⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `c hc`. Establish `hrd0 : ∀ y, A.rd θ j hj (A.chOf j c) φ y = 0` using `fun y => TwDat.rd_eq_zero_of_vanish A θ j hj _ φ (fun c' hc' => hφ.2 c' (by rw [hc']; exact hc)) y`. Establish `hrdS : ∀ y, A.rd θ j hj (A.chOf j c) (S j η φ) y = 0`. Introduce `y`. Rewrite using `[(h2 η).2, hrd0]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `foldr_sOp_zero_fun _ _ _ _ _ _`. Use function extensionality and compare the values at `y'`. Establish `hTr : IsTr (G` using `fun _ => 1) (infM θ _ (rankN (I.rec7 l Z) j hj) 1) ⟨y'.1, y'.2⟩ ⟨y'.1, y'.2⟩ := by`. Introduce `τ`. Rewrite using `[infM_one_eq]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Use `first`. Consider the case `exact (Matrix.one_mul _).symm`. Consider the case `exact (one_mul _).symm`. Consider the case `exact (one_smul _ _).symm`. Consider the case `(show _ = _; simp [Matrix.one_mul])`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `key` using `(GlobalTheory.T.scalarForms_on_charts_of_trueColumnTuple I hOk hPins l Z u a Ch₀ A hA θ hθ j hj (S j η φ) (h2 η).1.1).2 (A.chOf j c) y' 1 (one_mem _) ⟨c, rfl⟩ 1 (one_mem _) 1 y' hTr`. Rewrite `key` using `[hrdS]`. Simplify using `using key.symm`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem twS_ramL : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) (a : I.ι) (Ch₀ Ch : ℕ → Type) (A : TwDat I l Z u a Ch₀) (ιc : ∀ j, Ch j → Ch₀ j), A.Is → ∀ θ, IsInfFam θ → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : Type) (p : ι → SplitPt (I.rec7 l Z) k) (β : ∀ j i, GlobalTheory.FinPl.Frame (p i) ((I.rec7 l Z).sp.X j) (Fin ((I.rec7 l Z).sp.X j).rank)) (Q : ∀ j, ι → Pair k (Fin ((I.rec7 l Z).sp.X j).rank)) (L : ∀ j, Lat ((I.rec7 l Z).sp.X j)), StdT I l Z u p β Q L → ∀ (J : List ι) (q : Unif k) (χ : ι → AddChar k Circle) (hχ : ∀ i, HasConductor (χ i) 1), ∃ S : ∀ j, (ι → 𝓀[k]ˣ) → ColT I l u a j → ColT I l u a j, ∀ j (hj : j ≤ B.R.m) φ, A.RamL ιc j φ → (∀ b y, IsContAut _ (A.rd θ j hj b φ y) ∧ ∀ i, GlobalTheory.FinPl.RamAt (β j i) (Q j i) (A.rd θ j hj b φ y)) ∧ ∀ η, A.RamL ιc j (S j η φ) ∧ ∀ b y, A.rd θ j hj b (S j η φ) y = J.foldr (fun i f => sOp (β j i) (Q j i) q (resChar (χ i) (hχ i) q) (η i) f) (A.rd θ j hj b φ y) := by
   intro B X I hOk hPins l Z u a Ch₀ Ch A ιc hA θ hθ k _ _ _ _ ι p β Q L hStd J q χ hχ

@@ -7,7 +7,7 @@ import Formalism.BranchSandwichDivisors.DivFromPassageAndNorm
 open MvPolynomial Formalism.GradedWeylDivisibility Formalism.BranchingDeterminantCap Formalism.BasicNotions Formalism.L2.DIV GlobalTheory.Mem.Gelf GlobalTheory.Mem.GelfCheck GlobalTheory.BrCompare
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.BrCompare.shifted_branching_list_character` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FBranchingListCharacterProduct.lean&line=74#L74)
 -/

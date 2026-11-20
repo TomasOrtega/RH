@@ -9,11 +9,9 @@ open GlobalTheory.Poinc
 namespace GlobalTheory.Poinc
 
 /- English proof (translation)
-Introduce `A K L _ _ _ _ _ _ _ _ _ _ _`. Use `letI : Algebra A L := ((algebraMap K L).comp (algebraMap A K)).toAlgebra`. Use `haveI : IsScalarTower A K L := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Use `haveI : Algebra.IsSeparable K L := inferInstance`. Use `⟨IsIntegralClosure.finite A K L (integralClosure A L), ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Finite.of_equiv _ (galRestrict A K L (integralClosure A L)).toEquiv`. Introduce `x y h`. Establish `h'` using `congrArg (algebraMap (integralClosure A L) L) h`. Rewrite `h'` using `[← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply A K L, IsScalarTower.algebraMap_apply A K L]`. Conclude with `IsFractionRing.injective A K ((algebraMap K L).injective h')`.
-
-Introduce `b hb haveI : IsFractionRing (integralClosure A L) L := integralClosure.isFractionRing_of_finite_extension K L`. Use `Algebra.isInvariant_of_isGalois' A K L (integralClosure A L)` as an intermediate fact. Conclude with `this.isInvariant b hb`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integralClosure_galois_finite_invariants :
     ∀ (A K L : Type) [CommRing A] [IsDomain A] [IsNoetherianRing A] [IsIntegrallyClosed A] [Field K] [Algebra A K] [IsFractionRing A K] [Field L] [Algebra K L] [FiniteDimensional K L] [IsGalois K L], letI : Algebra A L := ((algebraMap K L).comp (algebraMap A K)).toAlgebra; Module.Finite A (integralClosure A L) ∧ Finite (integralClosure A L ≃ₐ[A] integralClosure A L) ∧ Function.Injective (algebraMap A (integralClosure A L)) ∧ ∀ b : integralClosure A L, (∀ σ : integralClosure A L ≃ₐ[A] integralClosure A L, σ b = b) → b ∈ Set.range (algebraMap A (integralClosure A L)) := by

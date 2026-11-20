@@ -7,7 +7,7 @@ noncomputable def UpperTheory.Reformulated.B.Qf33.blk :
     fun {α n : Type} {m : α → Type} (e : (a : α) × m a ≃ n) (i : n) ↦ ((e.symm : n → (a : α) × m a) i).fst
 
 /- English proof (translation)
-Introduce `R _ α n m _ _ _ e x y hx hy`. Conclude with `Matrix.BlockTriangular.mul hx hy`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qf33.aux2 :
     ∀ (R : Type) [inst : CommRing R] {α n : Type} {m : α → Type} [inst_1 : LinearOrder α] [inst_2 : Fintype n]
@@ -19,7 +19,7 @@ theorem UpperTheory.Reformulated.B.Qf33.aux2 :
   exact Matrix.BlockTriangular.mul hx hy
 
 /- English proof (translation)
-Introduce `R _ α n m _ _ _ e`. Conclude with `Matrix.blockTriangular_one`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qf33.aux3 :
     ∀ (R : Type) [inst : CommRing R] {α n : Type} {m : α → Type} [inst_1 : LinearOrder α] [inst_2 : Fintype n]
@@ -29,9 +29,9 @@ theorem UpperTheory.Reformulated.B.Qf33.aux3 :
   exact Matrix.blockTriangular_one
 
 /- English proof (translation)
-Introduce `R _ α n m _ _ _ e x hx`. Establish `h : ((x⁻¹ : GL n R) : Matrix n n R) = (x : Matrix n n R)⁻¹` using `Matrix.coe_units_inv x`. Express the relevant statement in the definitionally equal form `((x⁻¹ : GL n R) : Matrix n n R).BlockTriangular _`. Rewrite using `[h]`. Use `letI : Invertible (x : Matrix n n R) := x.invertible`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure.
 
-Conclude with `Matrix.blockTriangular_inv_of_blockTriangular hx`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qf33.aux4 :
     ∀ (R : Type) [inst : CommRing R] {α n : Type} {m : α → Type} [inst_1 : LinearOrder α] [inst_2 : Fintype n]
@@ -64,7 +64,7 @@ noncomputable def UpperTheory.Reformulated.B.Qf33.parab :
       (a : α) → GL (m a) R
 
 /- English proof (translation)
-Introduce `R _ α n m _ _ _ _ _ e a`. Use `Matrix.submatrix_one _ ?_` and prove the remaining obligations. Introduce `i j h`. Conclude with `sigma_mk_injective (e.injective h)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qf33.aux7 :
     ∀ (R : Type) [inst : CommRing R] {α n : Type} {m : α → Type} [inst_1 : LinearOrder α] [inst_2 : (a : α) → Fintype (m a)]
@@ -79,11 +79,11 @@ theorem UpperTheory.Reformulated.B.Qf33.aux7 :
   exact sigma_mk_injective (e.injective h)
 
 /- English proof (translation)
-Introduce `R _ α n m _ _ _ _ _ _ e a x y`. Use extensionality with `i j`. Establish `hx : (↑(↑x : GL n R) : Matrix n n R).BlockTriangular (UpperTheory.Reformulated.B.Qf33.blk e)` using `x.2`. Establish `hy : (↑(↑y : GL n R) : Matrix n n R).BlockTriangular (UpperTheory.Reformulated.B.Qf33.blk e)` using `y.2`. Simplify using `only [Subgroup.coe_mul, Units.val_mul, Matrix.submatrix_apply, Matrix.mul_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← e.sum_comp, Fintype.sum_sigma, Finset.sum_eq_single a]`. Introduce `b _ hb`. Use `Finset.sum_eq_zero fun k _ ↦ ?_` and prove the remaining obligations. Break down `lt_or_gt_of_ne hb with h | h` into its components or cases. Rewrite using `[hx (by simpa [UpperTheory.Reformulated.B.Qf33.blk] using h), zero_mul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hy (i := e ⟨b, k⟩) (by simpa [UpperTheory.Reformulated.B.Qf33.blk] using h), mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ a) h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qf33.aux8 :
     ∀ (R : Type) [inst : CommRing R] {α n : Type} {m : α → Type} [Fintype α] [inst_2 : LinearOrder α]
@@ -179,7 +179,7 @@ noncomputable def UpperTheory.Reformulated.B.Qf33.unipRadLower :
       UpperTheory.Reformulated.B.Qf33.unipRad R (UpperTheory.Reformulated.B.Qf33.opp e)
 
 /- English proof (translation)
-Introduce `R _ n _ _ α m _ _ e`. Establish `h : (fun (a : α) ↦ (↑((1 : UpperTheory.Reformulated.B.Qf33.Levi R m) a) : Matrix (m a) (m a) R)) = 1` using `rfl`. Rewrite using `[h, Matrix.blockDiagonal'_one, Matrix.reindex_apply, Matrix.submatrix_one_equiv]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Reformulated.B.Qf33.zero_contDiffOn_supported :
     ∀ (R : Type) [inst : CommRing R] {n : Type} [inst_1 : Fintype n] [inst_2 : DecidableEq n] {α : Type} {m : α → Type}
@@ -192,7 +192,7 @@ theorem UpperTheory.Reformulated.B.Qf33.zero_contDiffOn_supported :
   rw [h, Matrix.blockDiagonal'_one, Matrix.reindex_apply, Matrix.submatrix_one_equiv]
 
 /- English proof (translation)
-Introduce `R _ n _ _ α m _ _ _ e g h`. Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_mul_equiv, Pi.mul_apply, Units.val_mul]`. Rewrite using `[← Matrix.blockDiagonal'_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Reformulated.B.Qf33.sign_action_map_comm :
     ∀ (R : Type) [inst : CommRing R] {n : Type} [inst_1 : Fintype n] [inst_2 : DecidableEq n] {α : Type} {m : α → Type}
@@ -229,7 +229,7 @@ noncomputable def UpperTheory.Reformulated.B.Qf33.leviEmb :
           UpperTheory.Reformulated.B.Qf33.Levi R m →* Matrix n n R }.toHomUnits
 
 /- English proof (translation)
-Take `⟨p, hp, rfl⟩` from `hg`. Use `⟨p.2, fun a i j ↦ ?_⟩` and prove the remaining obligations. Establish `h1 : UpperTheory.Reformulated.B.Qf33.leviProj R e p = 1` using `hp`. Establish `h2` using `congrArg Units.val (congrFun h1 a)`. Conclude with `congrFun (congrFun h2 i) j`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem rad_spec {R : Type} [CommRing R] {α n : Type} {m : α → Type} [Fintype α] [LinearOrder α]
     [(a : α) → Fintype (m a)] [(a : α) → DecidableEq (m a)] [Fintype n] [DecidableEq n]
@@ -243,7 +243,7 @@ private theorem rad_spec {R : Type} [CommRing R] {α n : Type} {m : α → Type}
   exact congrFun (congrFun h2 i) j
 
 /- English proof (translation)
-Take `⟨l, rfl⟩` from `hg`. Conclude with `Matrix.blockDiagonal'_apply_ne (fun (a : α) ↦ (↑(l a) : Matrix (m a) (m a) R)) (e.symm i).2 (e.symm j).2 hij`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem levi_off {R : Type} [CommRing R] {α n : Type} {m : α → Type} [Fintype α]
     [(a : α) → Fintype (m a)] [(a : α) → DecidableEq (m a)] [Fintype n] [DecidableEq n]
@@ -254,9 +254,9 @@ private theorem levi_off {R : Type} [CommRing R] {α n : Type} {m : α → Type}
     (e.symm i).2 (e.symm j).2 hij
 
 /- English proof (translation)
-Use extensionality with `i j`. Take `⟨⟨a, i⟩, rfl⟩` from `e.surjective i`. Take `⟨⟨b, j⟩, rfl⟩` from `e.surjective j`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[h1]`. Simplify using `[Matrix.one_apply]`. Rewrite using `[h0 _ _ (by simpa [UpperTheory.Reformulated.B.Qf33.blk] using hab)]`. Simplify using `[Matrix.one_apply, hab]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem eq_one_of_blocks {R : Type} [CommRing R] {α n : Type} {m : α → Type}
     [(a : α) → DecidableEq (m a)] [Fintype n] [DecidableEq n]
@@ -275,17 +275,15 @@ private theorem eq_one_of_blocks {R : Type} [CommRing R] {α n : Type} {m : α �
     simp [Matrix.one_apply, hab]
 
 /- English proof (translation)
-Introduce `R _ α n m _ _ _ _ _ _ e a ha a' ha' b hb b' hb' c hc c' hc' h`. Establish `h1 : a'⁻¹ * a = b' * c' * (b * c)⁻¹`. Rewrite using `[inv_mul_eq_iff_eq_mul, ← mul_assoc, eq_mul_inv_iff_mul_eq, ← mul_assoc, ← mul_assoc, h]`. Establish `hP : ∀ x ∈ (UpperTheory.Reformulated.B.Qf33.leviEmb R e).range, x ∈ UpperTheory.Reformulated.B.Qf33.parab R e` using `fun x hx i j hij ↦ levi_off e hx hij.ne'`. Establish `hU : ∀ x ∈ UpperTheory.Reformulated.B.Qf33.unipRad R e, x ∈ UpperTheory.Reformulated.B.Qf33.parab R e` using `fun x hx ↦ (rad_spec e hx).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : a'⁻¹ * a ∈ UpperTheory.Reformulated.B.Qf33.parab R e`. Rewrite using `[h1]`. Conclude with `mul_mem (mul_mem (hP _ hb') (hU _ hc')) (inv_mem (mul_mem (hP _ hb) (hU _ hc)))`. Establish `h3 : a'⁻¹ * a ∈ UpperTheory.Reformulated.B.Qf33.unipRad R (UpperTheory.Reformulated.B.Qf33.opp e)` using `mul_mem (inv_mem ha') ha`. Establish `h4 : a'⁻¹ * a = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ht, hd⟩` from `rad_spec _ h3`. Use `eq_one_of_blocks e (fun i j hij ↦ ?_) hd` and prove the remaining obligations. Break down `lt_or_gt_of_ne hij with hlt | hlt` into its components or cases. Conclude with `ht hlt`. Conclude with `h2 hlt`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `haa : a = a'` using `(inv_mul_eq_one.mp h4).symm`. Substitute `haa` using the available equality. Establish `h5 : b * c = b' * c'`. Rewrite `h` using `[mul_assoc, mul_assoc]`. Conclude with `mul_left_cancel h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h6 : b'⁻¹ * b = c' * c⁻¹`. Rewrite using `[inv_mul_eq_iff_eq_mul, ← mul_assoc, eq_mul_inv_iff_mul_eq, h5]`. Establish `h7 : b'⁻¹ * b = 1`. Use `eq_one_of_blocks e (fun i j hij ↦ levi_off e (mul_mem (inv_mem hb') hb) hij) ?_` and prove the remaining obligations. Rewrite using `[h6]`.
-
-Conclude with `(rad_spec e (mul_mem hc' (inv_mem hc))).2`. Establish `hbb : b = b'` using `(inv_mul_eq_one.mp h7).symm`. Substitute `hbb` using the available equality. Conclude with `⟨rfl, rfl, mul_left_cancel h5⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qf33.uniq :
     ∀ {R : Type} [inst : CommRing R] {α n : Type} {m : α → Type} [inst_1 : Fintype α] [inst_2 : LinearOrder α]

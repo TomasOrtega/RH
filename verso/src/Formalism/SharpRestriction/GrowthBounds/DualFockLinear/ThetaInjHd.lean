@@ -11,11 +11,11 @@ open Formalism.L2.G.Model (theta Hd nuL psi qf)
 open Formalism.L2.G.Model.TS (fockR)
 
 /- English proof (translation)
-Introduce `a b hab`. Consider the cases of `vec`. Simplify using `only [nuL, Bool.false_eq_true, if_false]`. Distinguish the cases in `ha : a = Fin.last m`. Establish `hb : b = Fin.last m` using `le_antisymm (Fin.le_last _) (ha ▸ hab)`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Simplify using `[ha, hb]`. Apply the tactic sequence `split_ifs <;> omega`. Simplify using `only [nuL, if_true]`. Distinguish the cases in `hb : b = 0`. Establish `ha : a = 0` using `le_antisymm (hb ▸ hab) (Fin.zero_le _)`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Simplify using `[ha, hb]`. Apply the tactic sequence `split_ifs <;> omega`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem nuL_anti (m d : ℕ) (vec : Bool) : Antitone (nuL m d vec) := by
   intro a b hab
@@ -32,11 +32,9 @@ theorem nuL_anti (m d : ℕ) (vec : Bool) : Antitone (nuL m d vec) := by
     · split_ifs <;> omega
 
 /- English proof (translation)
-Establish `h1 : (psi K m vec).comp (theta K m vec) = aeval (fun c => qf K m vec * X c)`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `c`. Simplify using `only [AlgHom.comp_apply, theta, aeval_X]`. Conclude with `Formalism.L2.G.Model.psi_Nv K m hm vec c`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (fun f => f P) h1`. Simplify using `only [AlgHom.comp_apply, h, map_zero] at h2`. Rewrite `h2` using `[Formalism.L2.G.Model.scaleHd _ P hP]`. Break down `mul_eq_zero.1 h2.symm with h3 | h3` into its components or cases. Conclude with `absurd h3 (pow_ne_zero _ (Formalism.L2.G.Model.qf_ne K m vec))`.
-
-Conclude with `h3`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem theta_inj_Hd (K : Type) [Field K] (m : ℕ) (hm : 1 ≤ m) (vec : Bool) (d : ℕ) (P : MvPolynomial (Fin (m + 1)) K)
     (hP : P ∈ Hd K (m + 1) d) (h : theta K m vec P = 0) : P = 0 := by
@@ -53,7 +51,7 @@ theorem theta_inj_Hd (K : Type) [Field K] (m : ℕ) (hm : 1 ≤ m) (vec : Bool) 
   · exact h3
 
 /- English proof (translation)
-Rewrite using `[← Formalism.L2.G.Model.theta_Hd K m hm d vec]`. Conclude with `⟨P, hP, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem theta_mem (K : Type) [Field K] (m : ℕ) (hm : 1 ≤ m) (vec : Bool) (d : ℕ) (P : MvPolynomial (Fin (m + 1)) K)
     (hP : P ∈ Hd K (m + 1) d) : theta K m vec P ∈ dualWeyl K (m + 1) (m + 1) (nuL m d vec) := by
@@ -61,9 +59,9 @@ theorem theta_mem (K : Type) [Field K] (m : ℕ) (hm : 1 ≤ m) (vec : Bool) (d 
   exact ⟨P, hP, rfl⟩
 
 /- English proof (translation)
-Introduce `K _ _ m hm vec d P hP h`. Apply `theta_inj_Hd K m hm vec d P hP` to reduce the goal to its premises. Apply `Formalism.L2.G.Model.TS.Top.nondegK K (m + 1) (m + 1) le_rfl (nuL m d vec) (nuL_anti m d vec) _ (theta_mem K m hm vec d P hP)` to reduce the goal to its premises. Introduce `P' hP'`. Rewrite `hP'` using `[← Formalism.L2.G.Model.theta_Hd K m hm d vec]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨Q, hQ, rfl⟩` from `hP'`. Rewrite using `[fR_symm]`. Conclude with `h Q hQ`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restRep : RestRep := by
   intro K _ _ m hm vec d P hP h
@@ -76,17 +74,15 @@ theorem restRep : RestRep := by
   exact h Q hQ
 
 /- English proof (translation)
-Introduce `K _ _ m hm vec d f`. Establish `hfinW : FiniteDimensional K ↥(dualWeyl K (m + 1) (m + 1) (nuL m d vec))`. Take `⟨b, hb, -⟩` from `sSBasis K (m + 1) (m + 1) (nuL m d vec)`. Establish `: Finite ↥(ssIdx (m + 1) (m + 1) (nuL m d vec))` using `(sSIdxFinite (m + 1) (m + 1) (nuL m d vec)).to_subtype`. Rewrite using `[← hb.2.1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `FiniteDimensional.span_of_finite K (Set.finite_range b)`. Set `φ : VV K m d →ₗ[K] ↥(dualWeyl K (m + 1) (m + 1) (nuL m d vec))` to `LinearMap.codRestrict _ (thV K m vec d) (fun P => theta_mem K m hm vec d P.1 ((mem_Hd_iff _).2 P.2))`. Establish `hφ : Function.Injective φ`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `P hP`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `theta_inj_Hd K m hm vec d P.1 ((mem_Hd_iff _).2 P.2)` to reduce the goal to its premises. Conclude with `congrArg Subtype.val hP`. Establish `hfinV : FiniteDimensional K (VV K m d)` using `FiniteDimensional.of_injective φ hφ`. Establish `hinj : Function.Injective (cForm K m vec d 1 1)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `P hP`. Apply `uniqV restRep hm vec d P` to reduce the goal to its premises. Introduce `Q`. Establish `h2 : cForm K m vec d 1 1 P Q = 0` using `by rw [hP]; rfl`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[cForm_apply, mul_one, mul_one]`. Conclude with `h2`. Establish `hsurj : Function.Surjective (cForm K m vec d 1 1)` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank (Subspace.dual_finrank_eq).symm).1 hinj`. Take `⟨P, hP⟩` from `hsurj f`. Use `⟨P, fun Q => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← hP, cForm_apply, mul_one, mul_one]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restRep2 : RestRep2 := by
   intro K _ _ m hm vec d f

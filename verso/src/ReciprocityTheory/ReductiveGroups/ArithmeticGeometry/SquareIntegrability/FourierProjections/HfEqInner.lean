@@ -11,13 +11,13 @@ variable {ι : Type} [Fintype ι]
 open Classical
 
 /- English proof (translation)
-Simplify using `[Hf, PiLp.inner_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Hf_eq_inner (v w : EuclideanSpace ℂ ι) : Hf v w = inner ℂ w v := by
   simp [Hf, PiLp.inner_apply]
 
 /- English proof (translation)
-Establish `h : Module.finrank ℝ (EuclideanSpace ℂ ι) = 2 * Fintype.card ι`. Rewrite using `[finrank_real_of_complex, finrank_euclideanSpace]`. Conclude with `⟨((stdOrthonormalBasis ℝ (EuclideanSpace ℂ ι)).reindex (finCongr h)).repr⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem paIso_ex : Nonempty (EuclideanSpace ℂ ι ≃ₗᵢ[ℝ] EuclideanSpace ℝ (Fin (2 * Fintype.card ι))) := by
   have h : Module.finrank ℝ (EuclideanSpace ℂ ι) = 2 * Fintype.card ι := by
@@ -25,21 +25,19 @@ theorem paIso_ex : Nonempty (EuclideanSpace ℂ ι ≃ₗᵢ[ℝ] EuclideanSpace
   exact ⟨((stdOrthonormalBasis ℝ (EuclideanSpace ℂ ι)).reindex (finCongr h)).repr⟩
 
 /- English proof (translation)
-Break down `S.eq_empty_or_nonempty with hS0 | ⟨i₀, hi₀⟩` into its components or cases. Rewrite using `[hS0, Finset.card_empty, Nat.cast_zero]`. Establish `: 0 < R` using `lt_of_lt_of_le hR0 hR`. Check the signs of the components of the expression. Use `set c := Real.sqrt (q * Real.pi) with hc`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Establish `hcpos : 0 < c`. Establish `h1` using `hlat _ (i₀ : lat Y.b).2 i₀.2`. Assume the negation of the conclusion as `hle`. Rewrite `hle` using `[not_lt]`. Establish `: c * ‖((i₀ : lat Y.b) : EuclideanSpace ℂ ι)‖ ≤ 0` using `mul_nonpos_of_nonpos_of_nonneg hle (norm_nonneg _)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨e⟩` from `(paIso_ex : Nonempty (EuclideanSpace ℂ ι ≃ₗᵢ[ℝ] EuclideanSpace ℝ (Fin (2 * Fintype.card ι))))`. Set `g : ({γ : lat Y.b | (γ : EuclideanSpace ℂ ι) ≠ 0} : Set (lat Y.b)) → EuclideanSpace ℝ (Fin (2 * Fintype.card ι))` to `fun i => c • e ((i : lat Y.b) : EuclideanSpace ℂ ι)`. Establish `hg : Function.Injective g`. Introduce `i j hij`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : e ((i : lat Y.b) : EuclideanSpace ℂ ι) = e ((j : lat Y.b) : EuclideanSpace ℂ ι)` using `smul_right_injective _ hcpos.ne' hij`. Conclude with `Subtype.ext (Subtype.ext (e.injective h1))`. Establish `hcard : ((S.image g).card : ℝ) ≤ (3 * R / R0) ^ (2 * Fintype.card ι)`. Use `hP (2 * Fintype.card ι) (S.image g) R0 R hR0 hR ?_ ?_` and prove the remaining obligations. Introduce `x hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨i, hi, rfl⟩` from `Finset.mem_image.1 hx`. Rewrite using `[norm_smul, LinearIsometryEquiv.norm_map, Real.norm_eq_abs, abs_of_pos hcpos]`. Conclude with `hS i hi`. Introduce `x hx y hy hxy`. Take `⟨i, -, rfl⟩` from `Finset.mem_image.1 hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨j, -, rfl⟩` from `Finset.mem_image.1 hy`. Establish `hij : ((i : lat Y.b) : EuclideanSpace ℂ ι) - ((j : lat Y.b) : EuclideanSpace ℂ ι) ≠ 0`. Introduce `h0`. Apply `hxy` to reduce the goal to its premises. Rewrite `h0` using `[sub_eq_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [g, h0]`. Establish `hmem : ((i : lat Y.b) : EuclideanSpace ℂ ι) - ((j : lat Y.b) : EuclideanSpace ℂ ι) ∈ lat Y.b` using `Submodule.sub_mem _ (i : lat Y.b).2 (j : lat Y.b).2`. Establish `hd : dist (g i) (g j) = c * ‖((i : lat Y.b) : EuclideanSpace ℂ ι) - ((j : lat Y.b) : EuclideanSpace ℂ ι)‖`. Simplify using `only [g, dist_eq_norm, ← smul_sub, ← map_sub, norm_smul, LinearIsometryEquiv.norm_map, Real.norm_eq_abs, abs_of_pos hcpos]`. Rewrite using `[hd]`.
-
-Conclude with `hlat _ hmem hij`. Rewrite `hcard` using `[Finset.card_image_of_injective S hg]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem paCount (hP : Ext.PackingCount) (Y : GT ι) {q : ℕ} {R0 : ℝ} (hR0 : 0 < R0)
     (hlat : ∀ γ ∈ lat Y.b, γ ≠ 0 → R0 ≤ Real.sqrt (q * Real.pi) * ‖γ‖) (R : ℝ) (hR : R0 ≤ R)
@@ -91,15 +89,15 @@ theorem paCount (hP : Ext.PackingCount) (Y : GT ι) {q : ℕ} {R0 : ℝ} (hR0 : 
   rwa [Finset.card_image_of_injective S hg] at hcard
 
 /- English proof (translation)
-Use `set s : Set (lat Y.b) := {γ : lat Y.b | (γ : EuclideanSpace ℂ ι) ≠ 0} with hs`. Set `f : lat Y.b → ℝ` to `fun γ => Real.exp (-(q * Real.pi) * ‖(γ : EuclideanSpace ℂ ι)‖ ^ 2 / 16)`. Establish `hfun : (fun γ : lat Y.b => if (γ : EuclideanSpace ℂ ι) = 0 then 0 else Real.exp (-(q * Real.pi) * ‖(γ : EuclideanSpace ℂ ι)‖ ^ 2 / 16)) = s.indicator f`. Use function extensionality and compare the values at `γ`. Distinguish the cases in `h0 : (γ : EuclideanSpace ℂ ι) = 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `: γ ∉ s` using `fun h => h h0`. Rewrite using `[if_pos h0, Set.indicator_of_notMem this]`. Establish `: γ ∈ s` using `h0`. Rewrite using `[if_neg h0, Set.indicator_of_mem this]`. Establish `hqpi : (0 : ℝ) ≤ q * Real.pi` using `by positivity`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hh : ∀ i : s, Real.exp (-(Real.sqrt (q * Real.pi) * ‖((i : lat Y.b) : EuclideanSpace ℂ ι)‖) ^ 2 / 16) = f i`. Introduce `i`. Simplify using `only [f]`. Use `congr 1`. Rewrite using `[mul_pow, Real.sq_sqrt hqpi]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨hsum, hle⟩` from `hA s (fun i => Real.sqrt (q * Real.pi) * ‖((i : lat Y.b) : EuclideanSpace ℂ ι)‖) (Fintype.card ι) R0 hR0 hR (fun i => hlat _ (i : lat Y.b).2 i.2) (fun R hR' S hS => paCount hP Y hR0 hlat R hR' S hS)`. Simplify using `only [hh] at hsum hle`. Rewrite using `[hfun]`. Use `⟨(summable_subtype_iff_indicator).1 hsum, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← tsum_subtype]`. Conclude with `hle`.
+A detailed English derivation is pending.
 -/
 theorem paTail (hP : Ext.PackingCount) (hA : Ext.GaussianTailBound) (Y : GT ι) {q : ℕ} {R0 : ℝ}
     (hq : 1 ≤ q) (hR0 : 0 < R0)

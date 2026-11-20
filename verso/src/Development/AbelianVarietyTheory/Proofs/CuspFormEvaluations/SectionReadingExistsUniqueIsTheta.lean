@@ -16,15 +16,15 @@ namespace GlobalTheory.AnVal
 variable {S : Scheme.{0}} {A : Over S} [GrpObj A]
 
 /- English proof (translation)
-Establish `he : ∀ z, (e z).left ≫ A.hom = x0` using `fun z => Over.w (e z)`. Establish `h` using `isHolFam_vtfLift A.hom x0 (fun z => (e z).left) he hol`. Apply the tactic sequence `let σ : pullback A.hom x0 ⟶ (Over.mk x0 ⊗ A).left := (pullbackSymmetry A.hom x0).hom`. Establish `key : ∀ z, (vtfQ A (e z)).left = vtfLift A.hom x0 (fun z => (e z).left) he z ≫ σ`. Introduce `z`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `symm`. Apply `vtf_pt_uniq` to reduce the goal to its premises. Establish `: σ ≫ (snd (Over.mk x0) A).left = pullback.fst A.hom x0` using `pullbackSymmetry_hom_comp_snd A.hom x0`. Rewrite using `[Category.assoc, this]`. Conclude with `pullback.lift_fst _ _ _`.
+Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: σ ≫ (fst (Over.mk x0) A).left = pullback.snd A.hom x0` using `pullbackSymmetry_hom_comp_fst A.hom x0`. Rewrite using `[Category.assoc, this]`. Conclude with `pullback.lift_snd _ _ _`. Introduce `V φ`. Establish `h1` using `h (σ ⁻¹ᵁ V) ((σ.app V).hom φ)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h2 : (fun z => valAt' (vtfQ A (e z)).left V φ) = fun z => valAt' (vtfLift A.hom x0 (fun z => (e z).left) he z) (σ ⁻¹ᵁ V) ((σ.app V).hom φ)`. Use function extensionality and compare the values at `z`. Rewrite using `[key]`. Conclude with `(valAt'_comp _ σ V φ).symm`. Establish `h3 : {z | ⊤ ≤ (vtfQ A (e z)).left ⁻¹ᵁ V} = {z | ⊤ ≤ vtfLift A.hom x0 (fun z => (e z).left) he z ⁻¹ᵁ (σ ⁻¹ᵁ V)}`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use extensionality with `z`. Rewrite using `[Set.mem_ofPred_eq, key]`. Both sides reduce to the same expression. Conclude with `⟨h3 ▸ h1.1, h3 ▸ h2 ▸ h1.2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isHolFam_vtfQ {x0 : Sp ℂ ⟶ S} {g : ℕ} (e : (Fin g → ℂ) → (Over.mk x0 ⟶ A))
     (hol : IsHolFam (fun z => (e z).left)) : IsHolFam (fun z => (vtfQ A (e z)).left) := by
@@ -60,7 +60,7 @@ theorem isHolFam_vtfQ {x0 : Sp ℂ ⟶ S} {g : ℕ} (e : (Fin g → ℂ) → (Ov
 variable {L : RigLB A} {x0 : Sp ℂ ⟶ S} {g : ℕ} (Φ : AnFr A L x0 g)
 
 /- English proof (translation)
-Establish `h : (Φ.e z).left cpt ∈ ⨆ i, L.L.U i` using `by rw [L.isLB.cover]; trivial`. Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.1 h`. Conclude with `⟨j, top_le_of_mem hj⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem AnFr.exists_chart_e (z : Fin g → ℂ) : ∃ j, ⊤ ≤ (Φ.e z).left ⁻¹ᵁ L.L.U j := by
   have h : (Φ.e z).left cpt ∈ ⨆ i, L.L.U i := by rw [L.isLB.cover]; trivial
@@ -68,7 +68,7 @@ theorem AnFr.exists_chart_e (z : Fin g → ℂ) : ∃ j, ⊤ ≤ (Φ.e z).left �
   exact ⟨j, top_le_of_mem hj⟩
 
 /- English proof (translation)
-The claim follows from `h j z _ (vtfQ_snd A _) (vtfQ_fst A _) hj`.
+A detailed English derivation is pending.
 -/
 theorem AnFr.rd_val {k : ℤ} {F : LB.Sec (LPow A L.L k (Over.mk x0))} {θ : (Fin g → ℂ) → ℂ} (h : Φ.Rd k F θ)
     (j : L.L.ι) (z : Fin g → ℂ) (hj : ⊤ ≤ (Φ.e z).left ⁻¹ᵁ L.L.U j) :
@@ -77,9 +77,9 @@ theorem AnFr.rd_val {k : ℤ} {F : LB.Sec (LPow A L.L k (Over.mk x0))} {θ : (Fi
   h j z _ (vtfQ_snd A _) (vtfQ_fst A _) hj
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h z`. Take `⟨j, hj⟩` from `Φ.exists_chart_e z`. Conclude with `⟨j, hj, Φ.rd_val h j z hj⟩`. Introduce `h j' z pt h1 h2 hj'`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨j, hj, hv⟩` from `h z`. Rewrite using `[vtf_pt_uniq A (Φ.e z) pt h1 h2]`. Conclude with `vtf_read A L.L F (Φ.e z) (fun j => Φ.fr j z) (fun a b hab => Φ.fr_g a b z hab) j j' hj hj' _ hv`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem AnFr.rd_iff (k : ℤ) (F : LB.Sec (LPow A L.L k (Over.mk x0))) (θ : (Fin g → ℂ) → ℂ) :
     Φ.Rd k F θ ↔ ∀ z, ∃ j, ⊤ ≤ (Φ.e z).left ⁻¹ᵁ L.L.U j ∧
@@ -95,7 +95,7 @@ theorem AnFr.rd_iff (k : ℤ) (F : LB.Sec (LPow A L.L k (Over.mk x0))) (θ : (Fi
     exact vtf_read A L.L F (Φ.e z) (fun j => Φ.fr j z) (fun a b hab => Φ.fr_g a b z hab) j j' hj hj' _ hv
 
 /- English proof (translation)
-Rewrite using `[Φ.rd_val h j z hj, mul_div_cancel_right₀ _ (zpow_ne_zero _ (Φ.fr_ne j z hj))]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem AnFr.rd_eq_div {k : ℤ} {F : LB.Sec (LPow A L.L k (Over.mk x0))} {θ : (Fin g → ℂ) → ℂ} (h : Φ.Rd k F θ)
     (j : L.L.ι) (z : Fin g → ℂ) (hj : ⊤ ≤ (Φ.e z).left ⁻¹ᵁ L.L.U j) :
@@ -104,9 +104,7 @@ theorem AnFr.rd_eq_div {k : ℤ} {F : LB.Sec (LPow A L.L k (Over.mk x0))} {θ : 
   rw [Φ.rd_val h j z hj, mul_div_cancel_right₀ _ (zpow_ne_zero _ (Φ.fr_ne j z hj))]
 
 /- English proof (translation)
-Use `choose c hc using Φ.exists_chart_e`. Use `⟨fun z => valAt' (vtfQ A (Φ.e z)).left ((LPow A L.L k (Over.mk x0)).U (fun _ => c z)) (F.f (fun _ => c z)) / Φ.fr (c z) z ^ k, ?_, fun θ hθ => ?_⟩` and prove the remaining obligations. Use `(Φ.rd_iff k F _).2 fun z => ⟨c z, hc z, ?_⟩` and prove the remaining obligations. Rewrite using `[div_mul_cancel₀ _ (zpow_ne_zero _ (Φ.fr_ne _ z (hc z)))]`. Use function extensionality and compare the values at `z`.
-
-Conclude with `Φ.rd_eq_div hθ (c z) z (hc z)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem AnFr.existsUnique_rd (k : ℤ) (F : LB.Sec (LPow A L.L k (Over.mk x0))) : ∃! θ, Φ.Rd k F θ := by
   choose c hc using Φ.exists_chart_e
@@ -118,19 +116,19 @@ theorem AnFr.existsUnique_rd (k : ℤ) (F : LB.Sec (LPow A L.L k (Over.mk x0))) 
     exact Φ.rd_eq_div hθ (c z) z (hc z)
 
 /- English proof (translation)
-Rewrite using `[Φ.e_add, (Φ.e_ker a).2 ha, _root_.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem AnFr.e_add_lat {a : Fin g → ℂ} (ha : a ∈ Φ.lat) (z : Fin g → ℂ) : Φ.e (z + a) = Φ.e z := by
   rw [Φ.e_add, (Φ.e_ker a).2 ha, _root_.mul_one]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `z0`. Take `⟨j, hj⟩` from `Φ.exists_chart_e z0`. Establish `hO : IsOpen {z | ⊤ ≤ (Φ.e z).left ⁻¹ᵁ L.L.U j}` using `(Φ.hol (L.L.U j) 0).1`. Establish `hv` using `(isHolFam_vtfQ Φ.e Φ.hol ((LPow A L.L k (Over.mk x0)).U (fun _ => j)) (F.f (fun _ => j))).2`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv'` using `hv.mono (s := {z | ⊤ ≤ (Φ.e z).left ⁻¹ᵁ L.L.U j}) (fun z hz => vtf_chart A L.L k (Φ.e z) (fun _ => j) hz)`. Establish `hd : DifferentiableOn ℂ θ {z | ⊤ ≤ (Φ.e z).left ⁻¹ᵁ L.L.U j}` using `(hv'.mul ((Φ.fr_hol j).zpow (m := -k) (Or.inl fun z hz => Φ.fr_ne j z hz))).congr fun z hz => by`. Rewrite using `[Φ.rd_eq_div h j z hz, div_eq_mul_inv, ← zpow_neg]`. Both sides reduce to the same expression. Conclude with `hd.differentiableAt (hO.mem_nhds hj)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha z`. Take `⟨j, hj⟩` from `Φ.exists_chart_e z`. Establish `hj' : ⊤ ≤ (Φ.e (z + a)).left ⁻¹ᵁ L.L.U j` using `by rw [Φ.e_add_lat ha]; exact hj`. Establish `h1` using `Φ.rd_val h j z hj`. Establish `h2` using `Φ.rd_val h j (z + a) hj'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[Φ.e_add_lat ha, h1, Φ.fr_per a ha j z hj, mul_zpow]`. Apply `mul_right_cancel₀ (zpow_ne_zero k (Φ.fr_ne j (z + a) hj'))` to reduce the goal to its premises. Rewrite using `[← h2, AnFr.fac]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem AnFr.isTh_of_rd {k : ℤ} {F : LB.Sec (LPow A L.L k (Over.mk x0))} {θ : (Fin g → ℂ) → ℂ}
     (h : Φ.Rd k F θ) : Φ.IsTh k θ := by
@@ -157,7 +155,7 @@ theorem AnFr.isTh_of_rd {k : ℤ} {F : LB.Sec (LPow A L.L k (Over.mk x0))} {θ :
     ring
 
 /- English proof (translation)
-Introduce `S A _ _ L x0 g Φ k F`. Conclude with `⟨Φ.existsUnique_rd k F, fun θ h => Φ.isTh_of_rd h, fun θ => Φ.rd_iff k F θ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem reading_existsUnique_isTh : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] [IsCommMonObj A] (L : RigLB A) (x0 : Sp ℂ ⟶ S) (g : ℕ) (Φ : AnFr A L x0 g), ∀ (k : ℤ) (F : LB.Sec (LPow A L.L k (Over.mk x0))), (∃! θ, Φ.Rd k F θ) ∧ (∀ θ, Φ.Rd k F θ → Φ.IsTh k θ) ∧ ∀ θ, Φ.Rd k F θ ↔ ∀ z, ∃ j, ⊤ ≤ (Φ.e z).left ⁻¹ᵁ L.L.U j ∧ valAt' (ptSecT A (Φ.e z)).left ((LPow A L.L k (Over.mk x0)).U (fun _ => j)) (F.f (fun _ => j)) = θ z * Φ.fr j z ^ k := by
   intro S A _ _ L x0 g Φ k F

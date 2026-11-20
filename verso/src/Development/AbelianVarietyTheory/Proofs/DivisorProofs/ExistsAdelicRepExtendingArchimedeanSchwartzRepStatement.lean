@@ -6,7 +6,7 @@ open scoped TensorProduct GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorMode
 open NumberField MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.BasicNotions.TH GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.FockAlg GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.RealLift
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SliceExt.exists_rep_pure | exact GlobalTheory.SliceExt.exists_rep_pure | (intros; apply GlobalTheory.SliceExt.exists_rep_pure <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.exists_adelicRep_extending_archimedeanSchwartzRep : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (G : Type) [Group G]
     (ρ : G →* (SInf F κ →L[ℂ] SInf F κ)),

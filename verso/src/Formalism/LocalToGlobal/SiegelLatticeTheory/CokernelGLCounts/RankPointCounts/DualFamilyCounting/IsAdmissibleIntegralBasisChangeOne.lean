@@ -14,7 +14,7 @@ section General
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : Formalism.BasicNotions.HSpace E} {r : ℕ}
 
 /- English proof (translation)
-Unfold `frameAct`. Rewrite using `[Finset.sum_eq_single b]`. Simplify using the standard rewrite rules. Introduce `a _ hab`. Simplify using `[Matrix.one_apply_ne hab]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -32,9 +32,9 @@ variable {D : Formalism.BasicNotions.D7} {T T' : D.host.E} {F0 : FlagG (VS D) D.
   {Λ : Submodule (𝓞 D.host.E) (VS D).V}
 
 /- English proof (translation)
-Unfold `UUS`. Use `Fin.lastCases ?_ (fun a => ?_) i` and prove the remaining obligations. Establish `e : F0.fvec (Fin.last _) = F0.z` using `by simp [FlagG.fvec]`. Rewrite using `[e]`. Conclude with `Submodule.mem_sup_left (Submodule.mem_sup_left (Submodule.mem_sup_right (Submodule.mem_span_singleton_self _)))`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : F0.fvec (Fin.castSucc a) = F0.e a` using `by simp [FlagG.fvec]`. Rewrite using `[e]`. Use `Submodule.mem_sup_left (Submodule.mem_sup_left (Submodule.mem_sup_left ?_))` and prove the remaining obligations. Conclude with `Submodule.subset_span ⟨a, 1, one_mem_ddS D a, (one_smul _ _).symm⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem f_mem_UUS (i : Fin (D.R.rS + 1)) : F0.fvec i ∈ UUS D F0 F' := by
   unfold UUS
@@ -49,9 +49,9 @@ theorem f_mem_UUS (i : Fin (D.R.rS + 1)) : F0.fvec i ∈ UUS D F0 F' := by
     exact Submodule.subset_span ⟨a, 1, one_mem_ddS D a, (one_smul _ _).symm⟩
 
 /- English proof (translation)
-Unfold `UUS`. Use `Fin.lastCases ?_ (fun a => ?_) i` and prove the remaining obligations. Establish `e : F'.fl.fvec (Fin.last _) = F'.fl.z` using `by simp [FlagG.fvec]`. Rewrite using `[e]`. Conclude with `Submodule.mem_sup_right (Submodule.mem_span_singleton_self _)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : F'.fl.fvec (Fin.castSucc a) = F'.fl.e a` using `by simp [FlagG.fvec]`. Rewrite using `[e]`. Use `Submodule.mem_sup_left (Submodule.mem_sup_right ?_)` and prove the remaining obligations. Conclude with `Submodule.subset_span ⟨a, 1, one_mem_ddS D a, (one_smul _ _).symm⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem f'_mem_UUS (i : Fin (D.R.rS + 1)) : F'.fl.fvec i ∈ UUS D F0 F' := by
   unfold UUS
@@ -65,15 +65,13 @@ theorem f'_mem_UUS (i : Fin (D.R.rS + 1)) : F'.fl.fvec i ∈ UUS D F0 F' := by
     exact Submodule.subset_span ⟨a, 1, one_mem_ddS D a, (one_smul _ _).symm⟩
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Unfold `spanE`. Rewrite using `[Submodule.span_le]`. Introduce `y hy`. Establish `hle : UUS D F0 F' ≤ (UPair D F0 F').restrictScalars (𝓞 D.host.E)`.
+Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Unfold `UUS`. Use `sup_le (sup_le (sup_le ?_ ?_) ?_) ?_` and prove the remaining obligations. Unfold `XS`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, x, -, rfl⟩`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `(UPair D F0 F').smul_mem x (Submodule.subset_span (Or.inl ⟨Fin.castSucc a, by simp [FlagG.fvec]⟩))`. Rewrite using `[Submodule.span_le, Set.singleton_subset_iff]`. Conclude with `Submodule.subset_span (Or.inl ⟨Fin.last _, by simp [FlagG.fvec]⟩)`. Unfold `XS`. Rewrite using `[Submodule.span_le]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨a, x, -, rfl⟩`. Conclude with `(UPair D F0 F').smul_mem x (Submodule.subset_span (Or.inr ⟨Fin.castSucc a, by simp [FlagG.fvec]⟩))`. Rewrite using `[Submodule.span_le, Set.singleton_subset_iff]`. Conclude with `Submodule.subset_span (Or.inr ⟨Fin.last _, by simp [FlagG.fvec]⟩)`. Conclude with `hle hy`.
-
-Unfold `UPair`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ (⟨i, rfl⟩ | ⟨i, rfl⟩)`. Conclude with `Submodule.subset_span (f_mem_UUS i)`. Conclude with `Submodule.subset_span (f'_mem_UUS i)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem spanE_UUS : spanE (VS D) (UUS D F0 F') = UPair D F0 F' := by
   apply le_antisymm
@@ -103,7 +101,7 @@ theorem spanE_UUS : spanE (VS D) (UUS D F0 F') = UPair D F0 F' := by
     · exact Submodule.subset_span (f'_mem_UUS i)
 
 /- English proof (translation)
-Unfold `UU`. Rewrite using `[hX0, hX1, hz]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem UU_eq (hX0 : XLam Λ (lf D F0) = XS D F0) (hX1 : XLam Λ F' = XS D F'.fl) (hz : F'.zt = F'.fl.z) :
     UU Λ (lf D F0) F' = UUS D F0 F' := by
@@ -112,7 +110,7 @@ theorem UU_eq (hX0 : XLam Λ (lf D F0) = XS D F0) (hX1 : XLam Λ F' = XS D F'.fl
   rfl
 
 /- English proof (translation)
-Unfold `BLat UUE`. Rewrite using `[UU_eq hX0 hX1 hz, spanE_UUS]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem blat_eq (hX0 : XLam Λ (lf D F0) = XS D F0) (hX1 : XLam Λ F' = XS D F'.fl) (hz : F'.zt = F'.fl.z) :
     BLat Λ (lf D F0) F' = Λ ⊓ (UPair D F0 F').restrictScalars (𝓞 D.host.E) := by
@@ -120,15 +118,13 @@ theorem blat_eq (hX0 : XLam Λ (lf D F0) = XS D F0) (hX1 : XLam Λ F' = XS D F'.
   rw [UU_eq hX0 hX1 hz, spanE_UUS]
 
 /- English proof (translation)
-Rewrite using `[loc_BB_g D F0 F' P hg]`. Use `le_antisymm (Formalism.L2.SG.Pf.locP_le_locP' (Submodule.span_le.2 ?_)) (Formalism.L2.SG.Pf.localization_mono' (Submodule.span_le.2 ?_))` and prove the remaining obligations. Introduce and unpack `v ((hv | hv) | ⟨b, rfl⟩)`. Establish `hv' : v ∈ XS D F0` using `by rw [← hX0]; exact hv`. Use `((XS_le_locP_e D F0 P hg).trans (Formalism.L2.SG.Pf.localization_mono' (Submodule.span_le.2 ?_))) hv'` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `e_mem_MMg D F0 F' a`. Rewrite `hv` using `[Set.mem_singleton_iff]`. Rewrite using `[hv]`. Conclude with `Formalism.L2.SG.Pf.le_locP' _ _ (z_mem_MMg D F0 F')`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Formalism.L2.SG.Pf.le_locP' _ _ ?_` and prove the remaining obligations. Simplify using `only [frame, frameAct_one]`. Conclude with `m_mem_MMg D F0 F' b`. Introduce and unpack `v (⟨i, rfl⟩ | ⟨b, rfl⟩)`. Proceed by induction on `i using Fin.lastCases with`.
+Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `last => rw [fvec_last]`. Conclude with `Submodule.subset_span (Or.inl (Or.inr rfl))`. Consider the case `cast a`. Rewrite using `[fvec_cast]`. Use `Submodule.subset_span (Or.inl (Or.inl ?_))` and prove the remaining obligations.
-
-Rewrite using `[hX0]`. Conclude with `e_mem_XS D F0 a`. Use `Submodule.subset_span (Or.inr ⟨b, ?_⟩)` and prove the remaining obligations. Simplify using `only [frame, frameAct_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mplus1_loc (hX0 : XLam Λ (lf D F0) = XS D F0) (P : Ideal (𝓞 D.host.E)) [P.IsPrime]
     (hg : ((gS D : ℕ) : 𝓞 D.host.E) ∈ P) :
@@ -157,11 +153,11 @@ theorem mplus1_loc (hX0 : XLam Λ (lf D F0) = XS D F0) (P : Ideal (𝓞 D.host.E
       simp only [frame, frameAct_one]
 
 /- English proof (translation)
-Use `⟨fun a b h => Matrix.one_apply_ne (ne_of_lt h).symm, fun a => Matrix.one_apply_eq a, fun b P _ => ?_⟩` and prove the remaining obligations. Use `P.isPrime` as an intermediate fact. Establish `hm : (((gS D : ℕ) : D.host.E))⁻¹ • (F'.fl.fvec b - F0.fvec b) ∈ Λ`. Use `MMg_le_BB D F0 F' (m_mem_MMg D F0 F' b)` as an intermediate fact. Rewrite `this` using `[← hB]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.1`. Use `⟨1, P.asIdeal.primeCompl.one_mem, ?_⟩` and prove the remaining obligations. Rewrite using `[one_smul]`. Establish `e : frame F' b - frameAct (frame (lf D F0)) 1 b = ((gS D : ℕ) : 𝓞 D.host.E) • ((((gS D : ℕ) : D.host.E))⁻¹ • (F'.fl.fvec b - F0.fvec b))`. Rewrite using `[frameAct_one, smulO, map_natCast, smul_smul, mul_inv_cancel₀ (g_ne D), one_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) hm`.
+A detailed English derivation is pending.
 -/
 theorem isAdmissibleIntegralBasisChange_one (hB : Λ ⊓ (UPair D F0 F').restrictScalars (𝓞 D.host.E) = BB D F0 F') :
     AdmWit Λ (gS D) (lf D F0) F' 1 := by
@@ -180,9 +176,9 @@ theorem isAdmissibleIntegralBasisChange_one (hB : Λ ⊓ (UPair D F0 F').restric
   exact Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) hm
 
 /- English proof (translation)
-Take `⟨-, ⟨-, -, hL, hF⟩, hX0⟩` from `hR`. Take `⟨⟨hL', -, -⟩, h1, ⟨ξ, hξ, hgen⟩, ⟨hF', hX1⟩, -⟩` from `hE`. Rewrite using `[← blat_eq hX0 hX1 hz]`. Apply `Formalism.L2.SG.Pf.eq_of_locP` to reduce the goal to its premises. Introduce `P`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `P.isPrime` as an intermediate fact. Distinguish the cases in `hg : ((gS D : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal`. Rewrite using `[(hgen P).1 hg, Formalism.L2.SG.Pf.Mplus_eq_MplusInt hL hF hL' hF' P hg ξ hξ, ← Formalism.L2.SG.Pf.Mplus_eq_MplusInt hL hF hL' hF' P hg 1 h1, mplus1_loc hX0 P.asIdeal hg]`. Rewrite using `[(hgen P).2 hg, UU_eq hX0 hX1 hz, ← loc_BB_ng D F0 F' P.asIdeal hg]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem forward {Z : MatZ D} (hz : F'.zt = F'.fl.z) (hR : IsRowLat D F0 Λ) (hE : F' ∈ EZ T' F0 Λ Z) :
     Λ ⊓ (UPair D F0 F').restrictScalars (𝓞 D.host.E) = BB D F0 F' := by
@@ -198,13 +194,13 @@ theorem forward {Z : MatZ D} (hz : F'.zt = F'.fl.z) (hR : IsRowLat D F0 Λ) (hE 
   · rw [(hgen P).2 hg, UU_eq hX0 hX1 hz, ← loc_BB_ng D F0 F' P.asIdeal hg]
 
 /- English proof (translation)
-Establish `hw` using `indep D F0 F'.fl hG`. Establish `hX0` using `xlam0 hw hB`. Establish `hX1` using `xlam1 hw hB`. Establish `hzΛ : F0.z ∈ Λ` using `BB_le_Lam hw hB (MMg_le_BB D F0 F' (z_mem_MMg D F0 F'))`. Establish `hz'Λ : F'.fl.z ∈ Λ` using `BB_le_Lam hw hB (MMg_le_BB D F0 F' (z'_mem_MMg D F0 F'))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFC0 : IsFixedConv Λ (gS D) (lf D F0)`. Use `⟨fun P => ?_, prim0 hw hB⟩` and prove the remaining obligations. Take `⟨c, hc0, hc1, hc2⟩` from `xs_locGen D F0 P`. Conclude with `⟨c, hc0, hc1, by rw [hX0]; exact hc2⟩`. Establish `hFC1 : IsFixedConv Λ (gS D) F'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `⟨fun P => ?_, prim1 hw hB⟩` and prove the remaining obligations. Take `⟨c, hc0, hc1, hc2⟩` from `xs_locGen D F'.fl P`. Conclude with `⟨c, hc0, hc1, by rw [hX1]; exact hc2⟩`. Establish `h1` using `isAdmissibleIntegralBasisChange_one hB`. Use `⟨⟨Formalism.MainNotions.BridgeRowsGenus.unimodular_mem_genus hU D.sp.cm (VS D) Λ hlat huni, ⟨hlat, huni, ⟨hzΛ, rfl⟩, hFC0⟩, hX0⟩, ⟨⟨hz'Λ, hz⟩, ⟨1, h1⟩, hG⟩, h1, ⟨1, h1, fun P => ?_⟩, ⟨hFC1, hX1⟩, hZ⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `P.isPrime` as an intermediate fact. Use `⟨fun hg => ?_, fun hg => ?_⟩` and prove the remaining obligations. Rewrite using `[blat_eq hX0 hX1 hz, hB, mplus1_loc hX0 P.asIdeal hg]`. Rewrite using `[blat_eq hX0 hX1 hz, hB, UU_eq hX0 hX1 hz, loc_BB_ng D F0 F' P.asIdeal hg]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem backward (hU : Formalism.MainNotions.BridgeRowsGenus.LocUnimod) {Z : MatZ D} (hz : F'.zt = F'.fl.z)
     (hZ : ZhatL (lf D F0) F' = Z) (hG : GZ T T' (Zhat F0 F'.fl) ≠ 0)
@@ -242,9 +238,9 @@ open Formalism.L2.SG.Pf.Cnt.R3
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `D u u' _ F0 what₂ _ Z F' hz hZ hP`. Establish `hG : GZ (Tn u) (Tn u') (Zhat F0 F'.fl) ≠ 0`. Substitute `hZ` using the available equality. Conclude with `totPos_ne D hP`. Rewrite using `[MMof_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨BB_latIn D F0 F', fun Λ => ⟨fun ⟨hR, hE⟩ => ?_, fun ⟨hlat, huni, hB⟩ => ?_⟩⟩` and prove the remaining obligations. Conclude with `⟨hR.2.1.1, hR.2.1.2.1, forward hz hR hE⟩`. Conclude with `backward hU hz hZ hG hlat huni hB`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mmChar_of (hU : Formalism.MainNotions.BridgeRowsGenus.LocUnimod) : MMChar := by
   intro D u u' _ F0 what₂ _ Z F' hz hZ hP

@@ -19,9 +19,9 @@ variable {n : ℕ}
 section Abstract
 
 /- English proof (translation)
-Use `Submodule.eq_starProjection_of_mem_of_inner_eq_zero (hS _ (Submodule.starProjection_apply_mem S x)) fun w hw => ?_` and prove the remaining obligations. Set `I : H →ₗᵢ[ℂ] H` to `⟨U.toLinearMap, hU⟩`. Establish `e : inner ℂ (U x - U (S.starProjection x)) (U (U' w)) = inner ℂ (x - S.starProjection x) (U' w)`. Rewrite using `[← map_sub]`. Conclude with `I.inner_map_map _ _`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[hUU']`. Rewrite using `[e]`. Conclude with `Submodule.starProjection_inner_eq_zero _ _ (hS' w hw)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem starProjection_comm {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (S : Submodule ℂ H) [S.HasOrthogonalProjection] (U U' : H →L[ℂ] H) (hU : ∀ v, ‖U v‖ = ‖v‖)
@@ -39,9 +39,9 @@ theorem starProjection_comm {H : Type*} [NormedAddCommGroup H] [InnerProductSpac
   exact Submodule.starProjection_inner_eq_zero _ _ (hS' w hw)
 
 /- English proof (translation)
-Set `b` to `Module.finBasis ℂ S`. Use `choose M a ha using fun i => hall (b i)`. Use `⟨Finset.univ.sup M, ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.range_eq_top, eq_top_iff, ← b.span_eq, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨a', h⟩` from `hmono _ _ (Finset.le_sup (Finset.mem_univ i)) (a i)`. Conclude with `⟨a', h.trans (ha i)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_surjective {S : Type*} [AddCommGroup S] [Module ℂ S] [FiniteDimensional ℂ S]
     {A : ℕ → Type*} [∀ m, AddCommGroup (A m)] [∀ m, Module ℂ (A m)] (f : ∀ m, A m →ₗ[ℂ] S)
@@ -61,9 +61,7 @@ end Abstract
 section Hol
 
 /- English proof (translation)
-Unfold `lead`. Distinguish the cases in `h : i ≤ n`. Simplify using `only [dif_pos h]`. Conclude with `(continuous_id.matrix_submatrix _ _).matrix_det`. Simplify using `only [dif_neg h]`.
-
-Conclude with `continuous_const`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_lead (i : ℕ) : Continuous (lead i : Matrix (Fin n) (Fin n) ℂ → ℂ) := by
   unfold lead
@@ -74,7 +72,7 @@ theorem continuous_lead (i : ℕ) : Continuous (lead i : Matrix (Fin n) (Fin n) 
     exact continuous_const
 
 /- English proof (translation)
-Establish `e : OmegaSet n = ⋂ i : Fin n, {z | lead ((i : ℕ) + 1) z ≠ 0}`. Use extensionality with `z`. Simplify using `[OmegaSet]`. Rewrite using `[e]`. Conclude with `isOpen_iInter_of_finite fun i => isOpen_ne_fun (continuous_lead _) continuous_const`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_OmegaSet (n : ℕ) : IsOpen (OmegaSet n) := by
   have e : OmegaSet n = ⋂ i : Fin n, {z | lead ((i : ℕ) + 1) z ≠ 0} := by
@@ -84,16 +82,16 @@ theorem isOpen_OmegaSet (n : ℕ) : IsOpen (OmegaSet n) := by
   exact isOpen_iInter_of_finite fun i => isOpen_ne_fun (continuous_lead _) continuous_const
 
 /- English proof (translation)
-The claim follows from `(hF.1.differentiableOn (by simp)).differentiableAt ((isOpen_OmegaSet n).mem_nhds hz)`.
+A detailed English derivation is pending.
 -/
 theorem differentiableAt_of_mem_OmF {F : Matrix (Fin n) (Fin n) ℂ → ℂ} (hF : F ∈ OmF n)
     {z : Matrix (Fin n) (Fin n) ℂ} (hz : z ∈ OmegaSet n) : DifferentiableAt ℂ F z :=
   (hF.1.differentiableOn (by simp)).differentiableAt ((isOpen_OmegaSet n).mem_nhds hz)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Distinguish the cases in `hz : z ∈ OmegaSet n`. Simplify using `only [lop, if_pos hz, Pi.add_apply]`. Establish `e : fderiv ℂ (F + G) z = fderiv ℂ F z + fderiv ℂ G z` using `((differentiableAt_of_mem_OmF hF hz).hasFDerivAt.add (differentiableAt_of_mem_OmF hG hz).hasFDerivAt).fderiv`. Rewrite using `[e]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [ContinuousLinearMap.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[lop, if_neg hz]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 -/
 theorem lop_add (Y : Matrix (Fin n) (Fin n) ℂ) {F G : Matrix (Fin n) (Fin n) ℂ → ℂ} (hF : F ∈ OmF n)
     (hG : G ∈ OmF n) : lop Y (F + G) = lop Y F + lop Y G := by
@@ -109,9 +107,9 @@ theorem lop_add (Y : Matrix (Fin n) (Fin n) ℂ) {F G : Matrix (Fin n) (Fin n) �
   · simp [lop, if_neg hz]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Distinguish the cases in `hz : z ∈ OmegaSet n`. Simplify using `only [lop, if_pos hz, Pi.smul_apply]`. Establish `e : fderiv ℂ (c • F) z = c • fderiv ℂ F z` using `((differentiableAt_of_mem_OmF hF hz).hasFDerivAt.const_smul c).fderiv`. Rewrite using `[e]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Simplify using `[lop, if_neg hz]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem lop_smul (Y : Matrix (Fin n) (Fin n) ℂ) (c : ℂ) {F : Matrix (Fin n) (Fin n) ℂ → ℂ} (hF : F ∈ OmF n) :
     lop Y (c • F) = c • lop Y F := by
@@ -131,7 +129,7 @@ def lopL (h1 : ∀ (Y : Matrix (Fin n) (Fin n) ℂ) (F : Matrix (Fin n) (Fin n) 
   map_smul' c F := Subtype.ext (lop_smul Y c F.2)
 
 /- English proof (translation)
-The claim follows from `| [] => rfl | p :: w => by show lop (Matrix.single p.1 p.2 1) _ = lop (Matrix.single p.1 p.2 1) _ rw [lword_coe h1 Φ w]`.
+A detailed English derivation is pending.
 -/
 theorem lword_coe (h1 : ∀ (Y : Matrix (Fin n) (Fin n) ℂ) (F : Matrix (Fin n) (Fin n) ℂ → ℂ), F ∈ OmF n → lop Y F ∈ OmF n)
     (Φ : OmF n) : ∀ w : List (Fin n × Fin n),
@@ -143,19 +141,19 @@ theorem lword_coe (h1 : ∀ (Y : Matrix (Fin n) (Fin n) ℂ) (F : Matrix (Fin n)
       rw [lword_coe h1 Φ w]
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, h5⟩` from `hH n μ`. Set `L : Fin n → Fin n → Module.End ℂ (OmF n)` to `fun a b => lopL h1 (Matrix.single a b 1)`. Set `Φ : OmF n` to `⟨PhiO μ, h3⟩`. Establish `hmap : Submodule.span ℂ (Set.range fun w : List (Fin n × Fin n) => lw w (PhiO μ)) = (Submodule.span ℂ (Set.range fun w : List (Fin n × Fin n) => lword L w Φ)).map (OmF n).subtype`. Rewrite using `[Submodule.map_span, ← Set.range_comp]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Use function extensionality and compare the values at `w`. Conclude with `(lword_coe h1 Φ w).symm`. Rewrite `hB` using `[hmap]`. Take `⟨x, hx, rfl⟩` from `hB`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hGl : IsGlRep L`. Introduce `a b c d`. Use `LinearMap.ext fun F => Subtype.ext ?_` and prove the remaining obligations. Establish `h` using `h2 F a b c d F.2`. Apply the tactic sequence `by_cases hbc : b = c <;> by_cases hda : d = a`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Simplify using `only [if_pos hbc, if_pos hda] at h ⊢`. Conclude with `h`. Simplify using `only [if_pos hbc, if_neg hda] at h ⊢`. Conclude with `h`. Simplify using `only [if_neg hbc, if_pos hda] at h ⊢`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h`. Simplify using `only [if_neg hbc, if_neg hda] at h ⊢`. Conclude with `h`. Establish `hd : ∀ a, L a a Φ = (((μ a : ℤ) : ℝ) : ℂ) • Φ`. Introduce `a`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Subtype.ext ?_` and prove the remaining obligations. Use `h4 a` as an intermediate fact. Simplify `this` using `[L, Φ, lopL]`. Establish `hl : ∀ a b, b < a → L a b Φ = 0` using `fun a b hab => Subtype.ext (h5 a b hab)`. Establish `hx0 : x ≠ 0` using `fun h => h0 (by simp [h])`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hwx : ∀ c, L c c x = (η c : ℂ) • x` using `fun c => Subtype.ext (hw c)`. Take `⟨r1, r2⟩` from `hL n (OmF n) L (fun a => ((μ a : ℤ) : ℝ)) η Φ x hGl hd hl hx hwx hx0`. Use `⟨r1, fun he => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `r2 he`. Conclude with `⟨c, congrArg Subtype.val hc⟩`.
+A detailed English derivation is pending.
 -/
 theorem lowAlg_model (hL : LowAlg) (hH : HolFacts) (μ : Fin n → ℤ) (η : Fin n → ℝ)
     {B : Matrix (Fin n) (Fin n) ℂ → ℂ}
@@ -207,9 +205,9 @@ variable {ε : Fin n → Bool} {lam : Fin n → ℝ} {T : KType ε (lowK ε lam)
   {Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)}
 
 /- English proof (translation)
-Simplify using `only [actF, Finset.sum_apply, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Establish `e : (fun g => inner ℂ T.w (Ψ g ((a + c • a') x))) = fun g => jfun Ψ T.w (a x) g + c * jfun Ψ T.w (a' x) g`. Use function extensionality and compare the values at `g`. Simplify using `[jfun, inner_add_right, inner_smul_right]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Conclude with `icx_eword_add_smul (datumFunction_isSmoothL2 hP T.w (a x)).1 (datumFunction_isSmoothL2 hP T.w (a' x)).1 c _ g hg`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actF_add_smul (hP : IsPsiFor ε lam T Ψ) {m : ℕ} (a a' : AS T m) (c : ℂ)
     {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) :
@@ -224,9 +222,9 @@ theorem actF_add_smul (hP : IsPsiFor ε lam T Ψ) {m : ℕ} (a a' : AS T m) (c :
   exact icx_eword_add_smul (datumFunction_isSmoothL2 hP T.w (a x)).1 (datumFunction_isSmoothL2 hP T.w (a' x)).1 c _ g hg
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `only [actF, Finset.sum_apply]`. Use `Finset.sum_eq_zero fun x _ => ?_` and prove the remaining obligations. Establish `e : (fun g => inner ℂ T.w (Ψ g ((0 : AS T m) x))) = fun _ => (0 : ℂ)`. Use function extensionality and compare the values at `g`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using the standard rewrite rules. Rewrite using `[e, icx_eword_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem actF_zero {m : ℕ} : actF T Ψ (0 : AS T m) = 0 := by
   funext g
@@ -238,7 +236,7 @@ theorem actF_zero {m : ℕ} : actF T Ψ (0 : AS T m) = 0 := by
   rw [e, icx_eword_zero]
 
 /- English proof (translation)
-Simplify using `only [actF, Finset.sum_apply]`. Conclude with `memLp_finsetSum _ fun x _ => (datumFunction_isSmoothL2 hP T.w (a x)).2 (ofW x)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem actF_memLp (hP : IsPsiFor ε lam T Ψ) {m : ℕ} (a : AS T m) :
     MemLp (fun g : Formalism.REAL.UJ ε => actF T Ψ a (Formalism.MainNotions.S.umat g)) 2 (Formalism.REAL.muG ε) := by
@@ -275,30 +273,30 @@ section Sub
 variable {ε : Fin n → Bool}
 
 /- English proof (translation)
-The claim follows from `k.1.2`.
+A detailed English derivation is pending.
 -/
 theorem toMK_mem (k : KG ε) : toMK k ∈ UJset ε := k.1.2
 
 /- English proof (translation)
-The claim follows from `(continuous_toM ε).comp continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem continuous_toMK : Continuous (fun k : KG ε => toMK k) :=
   (continuous_toM ε).comp continuous_subtype_val
 
 /- English proof (translation)
-The claim follows from `(rreg_isURepOn ε).1.2 _ (toMK_mem k) _ (toMK_mem k')`.
+A detailed English derivation is pending.
 -/
 theorem rreg_toMK_mul (k k' : KG ε) :
     rreg ε (toMK (k * k')) = (rreg ε (toMK k)).comp (rreg ε (toMK k')) :=
   (rreg_isURepOn ε).1.2 _ (toMK_mem k) _ (toMK_mem k')
 
 /- English proof (translation)
-The claim follows from `(rreg_isURepOn ε).1.1`.
+A detailed English derivation is pending.
 -/
 theorem rreg_toMK_one : rreg ε (toMK (1 : KG ε)) = 1 := (rreg_isURepOn ε).1.1
 
 /- English proof (translation)
-Establish `h` using `rreg_toMK_mul k k⁻¹`. Rewrite `h` using `[mul_inv_cancel, rreg_toMK_one]`. Conclude with `(DFunLike.congr_fun h v).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rreg_toMK_inv (k : KG ε) (v : L2 ε) : rreg ε (toMK k) (rreg ε (toMK k⁻¹) v) = v := by
   have h := rreg_toMK_mul k k⁻¹
@@ -311,27 +309,25 @@ def sigS (S : Submodule ℂ (L2 ε)) (hK : Formalism.MainNotions.S.IsKStableOn �
 variable {lam : Fin n → ℝ} {T : KType ε (lowK ε lam)} {Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)}
 
 /- English proof (translation)
-Set `f : ∀ m, AS T m →ₗ[ℂ] S` to `fun m => S.orthogonalProjectionOnto.toLinearMap ∘ₗ actLin hP m`. Take `⟨h1, h2, -⟩` from `hEx n ε lam T Ψ hP`. Establish `hall : ∀ y : S, ∃ (m : ℕ) (a : AS T m), f m a = y`. Introduce `y`. Establish `hy : (y : L2 ε) ∈ Hlam ε Ψ T.w` using `hle y.2`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Set `Gs : Submodule ℂ (L2 ε)` to `(genSub (smE ε (rreg ε)) (datumV ε Ψ T.w)).map (smD ε (rreg ε)).subtype`. Set `R : Submodule ℂ S` to `Gs.map S.orthogonalProjectionOnto.toLinearMap`. Establish `hRc : IsClosed (R : Set S)` using `Submodule.closed_of_finiteDimensional R`. Establish `hy' : (y : L2 ε) ∈ closure (Gs : Set (L2 ε))` using `hy`. Establish `hm : S.orthogonalProjectionOnto (y : L2 ε) ∈ closure (R : Set S)` using `map_mem_closure S.orthogonalProjectionOnto.continuous hy' fun x hx => ⟨x, hx, rfl⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hm` using `[hRc.closure_eq, Submodule.orthogonalProjectionOnto_mem_subspace_eq_self]`. Take `⟨_, ⟨x, hx, rfl⟩, hxy⟩` from `hm`. Take `⟨m, a, ha⟩` from `h1 x hx`. Use `⟨m, a, ?_⟩` and prove the remaining obligations. Rewrite using `[← hxy]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg S.orthogonalProjectionOnto ha.symm`. Establish `hmono : ∀ m m', m ≤ m' → ∀ a : AS T m, ∃ a' : AS T m', f m' a' = f m a`. Introduce `m m' hm a`. Take `⟨a', h⟩` from `h2 m m' hm a`. Conclude with `⟨a', congrArg S.orthogonalProjectionOnto h⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm⟩` from `exists_surjective f hall hmono`. Use `compactSpace_KG ε` as an intermediate fact. Take `⟨r1, r2, r3, r4, r5⟩` from `hRho n ε (lowK ε lam) T m`. Set `ρl : KG ε → (AS T m →ₗ[ℂ] AS T m)` to `fun k => { toFun := rhoA T m k, map_add' := r3 k, map_smul' := r4 k }`. Set `ρ : KG ε → (AS T m →L[ℂ] AS T m)` to `fun k => LinearMap.toContinuousLinearMap (ρl k)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hρ1 : ρ 1 = 1` using `ContinuousLinearMap.ext r1`. Establish `hρ2 : ∀ g h, ρ (g * h) = ρ g ∘L ρ h` using `fun g h => ContinuousLinearMap.ext (r2 g h)`. Establish `hρ3 : Continuous ρ` using `continuous_clm_apply.2 r5`. Establish `hσ1 : sigS S hK 1 = 1`. Use `ContinuousLinearMap.ext fun y => Subtype.ext ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show rreg ε (toMK (1 : KG ε)) y = y`. Rewrite using `[rreg_toMK_one]`. Both sides reduce to the same expression. Establish `hσ2 : ∀ g h, sigS S hK (g * h) = sigS S hK g ∘L sigS S hK h`. Introduce `g h`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `ContinuousLinearMap.ext fun y => Subtype.ext ?_` and prove the remaining obligations. Use `show rreg ε (toMK (g * h)) y = rreg ε (toMK g) (rreg ε (toMK h) y)`. Rewrite using `[rreg_toMK_mul]`. Both sides reduce to the same expression. Establish `hσ3 : ∀ y, Continuous fun g => sigS S hK g y`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `y`. Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations. Conclude with `((rreg_isURepOn ε).2.2 (y : L2 ε)).comp_continuous continuous_toMK toMK_mem`. Establish `heq : ∀ g a, f m (ρ g a) = sigS S hK g (f m a)`. Introduce `k a`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `Subtype.ext ?_` and prove the remaining obligations. Use `show (S.starProjection (actL T Ψ (rhoA T m k a))) = rreg ε (toMK k) (S.starProjection (actL T Ψ a))`. Rewrite using `[← hAct n ε lam T Ψ m hP k a]`. Conclude with `starProjection_comm S _ (rreg ε (toMK k⁻¹)) ((rreg_isURepOn ε).2.1 _ (toMK_mem k)) (rreg_toMK_inv k) (hK _ k.2) (hK _ (k⁻¹).2) _`. Take `⟨s, hs1, hs2⟩` from `hSec (KG ε) (AS T m) S ρ (sigS S hK) hρ1 hρ2 hρ3 hσ1 hσ2 hσ3 (f m) hm heq`.
-
-Conclude with `⟨m, s, hs1, hs2⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_section (hSec : EquivSection) (hRho : RhoRep) (hAct : ActEquiv) (hEx : Exhaust)
     (hP : IsPsiFor ε lam T Ψ) (S : Submodule ℂ (L2 ε)) [FiniteDimensional ℂ S] [S.HasOrthogonalProjection]
@@ -398,31 +394,27 @@ theorem exists_section (hSec : EquivSection) (hRho : RhoRep) (hAct : ActEquiv) (
 end Sub
 
 /- English proof (translation)
-Simplify using `using toL2_smul_smooth ε 0 (0 : Matrix (Fin n) (Fin n) ℂ → ℂ)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem toL2_zero_eq_zero (ε : Fin n → Bool) : toL2 ε (0 : Matrix (Fin n) (Fin n) ℂ → ℂ) = 0 := by
   simpa using toL2_smul_smooth ε 0 (0 : Matrix (Fin n) (Fin n) ℂ → ℂ)
 
 /- English proof (translation)
-Introduce `hLow hHol hSec hRho hAct _ _ hTr hEx hBeta n ε lam T μ hHC hMu hP S hfd hle hK`. Use `haveI := hfd`. Use `haveI : CompleteSpace S := FiniteDimensional.complete ℂ S`. Take `⟨m, s, hs1, hs2⟩` from `exists_section hSec hRho hAct hEx hP S hle hK`. Establish `hwt : ∀ (η : Fin n → ℝ) (x : S), Formalism.MainNotions.S.IsWtOn (Formalism.REAL.Kset ε) (rreg ε) η (x : L2 ε) → betaF T μ (s x) ∈ Submodule.span ℂ (Set.range fun w : List (Fin n × Fin n) => lw w (PhiO μ)) ∧ ∀ c, lop (Matrix.single c c 1) (betaF T μ (s x)) = ((((μ c : ℤ) : ℝ) + η …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `η x hx`. Use `hBeta n ε (lowK ε lam) T μ m η (s x) fun θ k hk => ?_` and prove the remaining obligations. Establish `hσ : sigS S hK k x = Complex.exp (((∑ c, η c * θ c : ℝ) : ℂ) * Complex.I) • x`. Use `Subtype.ext ?_` and prove the remaining obligations. Use `show rreg ε (toMK k) x = _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hm : toMK k ∈ Formalism.REAL.Kset ε` using `k.2`. Rewrite `hm`, the goal using `[hk]`. Conclude with `hx θ hm`. Rewrite using `[← hs2, hσ, map_smul]`. Use `⟨Matrix (Fin n) (Fin n) ℂ → ℂ, inferInstance, inferInstance, betaLin T μ m ∘ₗ s, PhiO μ, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `S' hS' hK' hne`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Take `⟨v, hv, hv0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Apply `hv0` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `x : S` to `⟨v, hS' hv⟩`. Establish `hz : ∀ k, betaF T μ (rhoA T m k (s x)) = 0` using `fun k => by`. Rewrite using `[← hs2 k x]`. Conclude with `hcon (sigS S hK k x) (hK' _ k.2 v hv)`. Establish `hF : ∀ g, inUJ ε g → actF T (PsiM T μ) (s x) g = (0 : Matrix (Fin n) (Fin n) ℂ → ℂ) g`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `g₀ hg₀`. Take `⟨W, hW, k₀, h⟩` from `hTr n ε lam T μ m hHC hMu (s x) g₀ hg₀`. Rewrite using `[h g₀ (mem_of_mem_nhds hW) hg₀]`. Simplify using `[hz]`. Establish `hL : actL T (PsiM T μ) (s x) = 0` using `(toL2_congr_of_forall_inUJ_eq hF).trans (toL2_zero_eq_zero ε)`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `hs1 x`. Rewrite `h` using `[hL, map_zero]`. Conclude with `congrArg Subtype.val h.symm`. Introduce `η x hx hne`. Take `⟨hb, hl⟩` from `hwt η x hx`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨c, hc1, hc2⟩` from `(lowAlg_model hLow hHol μ (fun c => ((μ c : ℤ) : ℝ) + η c - lowK ε lam c) hb hl hne).1`. Use `⟨c, hc1, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a`. Establish `h` using `congrFun hc2 a`. Simplify using `only [Pi.add_apply] at h ⊢`.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Introduce `x hx`. Distinguish the cases in `h0 : betaF T μ (s x) = 0`. Conclude with `⟨0, by rw [zero_smul]; exact h0⟩`. Take `⟨hb, hl⟩` from `hwt _ x hx`.
-
-Conclude with `(lowAlg_model hLow hHol μ (fun c => ((μ c : ℤ) : ℝ) + lowK ε lam c - lowK ε lam c) hb hl h0).2 (by funext a; simp)`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem key_of_steps : LowAlg → HolFacts → EquivSection → RhoRep → ActEquiv → RhoTorus → TorW → Transfer →
     Exhaust → BetaWeight → PositivityTheory.RgDs.Key := by

@@ -7,7 +7,7 @@ open GlobalTheory.CompanionTheory.EGlue
 namespace GlobalTheory.CompanionTheory.EGlue
 
 /- English proof (translation)
-Introduce `E _ _ _ N t s φ h hφ`. Proceed by induction on `h with`. Consider the case `leaf V z z₀ h => exact Conv.leaf V (fun k => z (φ k)) z₀ (h.comp hφ.tendsto_atTop)`. Consider the case `node _ _ i₁ i₂ => exact Conv.node i₁ i₂`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem convComp_proved : ConvComp := by
   intro E _ _ _ N t s φ h hφ

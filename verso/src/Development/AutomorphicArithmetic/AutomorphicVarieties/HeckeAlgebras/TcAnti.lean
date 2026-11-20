@@ -112,7 +112,7 @@ def glData : IwaData (GL (Fin n) k) where
   z := upow k n fun i => (n : ℤ) - 1 - (i : ℕ)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, fun i i' h => by have : (i : ℕ) ≤ i' := h change (if (i' : ℕ) < j then (1 : ℤ) else 0) ≤ if (i : ℕ) < j then 1 else 0 split_ifs <;> omega, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem al_mem (j : ℕ) : al k n j ∈ (glData k n).P :=
   ⟨_, fun i i' h => by

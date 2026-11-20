@@ -9,7 +9,7 @@ namespace GlobalTheory.SnMass.VolN
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[Submodule.mem_one]`. Take `⟨y, rfl⟩` from `hx`. Establish `hy : IsIntegral ℤ (e (algebraMap (𝓞 E) E y))` using `(RingOfIntegers.isIntegral_coe y).map (e : E →+* E).toIntAlgHom`. Conclude with `⟨⟨_, hy⟩, rfl⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem ringEquiv_mem_one (e : E ≃+* E) {x : E} (hx : x ∈ (1 : Submodule (𝓞 E) E)) :
     e x ∈ (1 : Submodule (𝓞 E) E) := by
@@ -20,13 +20,11 @@ theorem ringEquiv_mem_one (e : E ≃+* E) {x : E} (hx : x ∈ (1 : Submodule (�
   exact ⟨⟨_, hy⟩, rfl⟩
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[FractionalIdeal.mem_dual (one_ne_zero (α := FractionalIdeal (𝓞 E)⁰ E))]`. Introduce `a ha`. Establish `ha' : e.symm a ∈ (1 : FractionalIdeal (𝓞 E)⁰ E)`. Rewrite `ha`, the goal using `[← FractionalIdeal.mem_coe, FractionalIdeal.coe_one]`. Conclude with `ringEquiv_mem_one e.symm ha`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `hx _ ha'`. Set `f : E ≃ₐ[ℚ] E` to `AlgEquiv.ofRingEquiv (f := e) (fun q => map_ratCast e q)`. Establish `key : Algebra.traceForm ℚ E (e x) a = Algebra.traceForm ℚ E x (e.symm a)`. Simplify using `only [Algebra.traceForm_apply]`. Establish `: e x * a = f (x * e.symm a)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul]`. Use `show e x * a = e x * e (e.symm a)`. Rewrite using `[RingEquiv.apply_symm_apply]`. Rewrite using `[this, Algebra.trace_eq_of_algEquiv]`. Rewrite using `[key]`.
-
-Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ringEquiv_mem_dual (e : E ≃+* E) {x : E}
     (hx : x ∈ FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (𝓞 E)⁰ E)) :
@@ -48,11 +46,11 @@ theorem ringEquiv_mem_dual (e : E ≃+* E) {x : E}
   rw [key]; exact h
 
 /- English proof (translation)
-Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => intro x hx`. Rewrite `hx`, the goal using `[pow_zero]`. Conclude with `ringEquiv_mem_one e hx`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `succ j ih`. Introduce `x hx`. Rewrite `hx`, the goal using `[pow_succ]`. Use `Submodule.mul_induction_on hx (fun m hm n hn => ?_) (fun a b ha hb => ?_)` and prove the remaining obligations. Rewrite using `[map_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.mul_mem_mul (ih m hm) (hM n hn)`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ ha hb`.
+A detailed English derivation is pending.
 -/
 theorem ringEquiv_mem_pow (e : E ≃+* E) (M : Submodule (𝓞 E) E) (hM : ∀ x ∈ M, e x ∈ M) :
     ∀ (j : ℕ) (x : E), x ∈ M ^ j → e x ∈ M ^ j := by
@@ -67,7 +65,7 @@ theorem ringEquiv_mem_pow (e : E ≃+* E) (M : Submodule (𝓞 E) E) (hM : ∀ x
     · rw [map_add]; exact Submodule.add_mem _ ha hb
 
 /- English proof (translation)
-Establish `hd : ((differentIdeal ℤ (𝓞 E) : FractionalIdeal (𝓞 E)⁰ E))⁻¹ = FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (𝓞 E)⁰ E)`. Rewrite using `[coeIdeal_differentIdeal ℤ ℚ E (𝓞 E), inv_inv]`. Rewrite `hx`, the goal using `[dInv, hd, ← FractionalIdeal.mem_coe, FractionalIdeal.coe_pow]`. Conclude with `ringEquiv_mem_pow e _ (fun y hy => ringEquiv_mem_dual e hy) j x hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ringEquiv_mem_dInv (e : E ≃+* E) (j : ℕ) (x : E) (hx : x ∈ dInv E j) : e x ∈ dInv E j := by
   have hd : ((differentIdeal ℤ (𝓞 E) : FractionalIdeal (𝓞 E)⁰ E))⁻¹ =
@@ -77,7 +75,7 @@ theorem ringEquiv_mem_dInv (e : E ≃+* E) (j : ℕ) (x : E) (hx : x ∈ dInv E 
   exact ringEquiv_mem_pow e _ (fun y hy => ringEquiv_mem_dual e hy) j x hx
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ _ j x hx`. Establish `hb : Function.Bijective ((σ : E →+* E).toRatAlgHom)` using `AlgHom.bijective _`. Conclude with `ringEquiv_mem_dInv (RingEquiv.ofBijective (σ : E →+* E) hb) j x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem conj_mem_dInv : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (j : ℕ) (x : E), x ∈ dInv E j → σ x ∈ dInv E j := by

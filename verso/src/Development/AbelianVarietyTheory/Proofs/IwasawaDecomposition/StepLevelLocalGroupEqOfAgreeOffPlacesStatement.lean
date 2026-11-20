@@ -4,7 +4,7 @@ import Formalism.LocalToGlobal.HermitianForms.IsLocBasis
 open NumberField IsDedekindDomain Formalism.UG Formalism.L2.Forms
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.stepLevel_uloc_eq_of_agree` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FStepLevelLocalGroupEqOfAgreeOffPlaces.lean&line=40#L40)
 -/

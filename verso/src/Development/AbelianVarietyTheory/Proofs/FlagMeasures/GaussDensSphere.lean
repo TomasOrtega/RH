@@ -8,18 +8,18 @@ noncomputable section
 namespace GlobalTheory.GaussMean.Sphere
 
 /- English proof (translation)
-Simplify using `[EuclideanSpace.norm_eq]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem norm_toLp_eq_sqrt_sum_norm_sq (n : ℕ) (y : Fin (n + 1) → ℂ) :
     ‖(WithLp.toLp 2 y : EuclideanSpace ℂ (Fin (n + 1)))‖ = Real.sqrt (∑ i, ‖y i‖ ^ 2) := by
   simp [EuclideanSpace.norm_eq]
 
 /- English proof (translation)
-Establish `hset : {y : Fin (n + 1) → ℂ | Real.sqrt (∑ i, ‖y i‖ ^ 2) < 1} = {y : Fin (n + 1) → ℂ | ∑ i, ‖y i‖ ^ (2 : ℝ) < 1}`. Use extensionality with `y`. Simplify using `only [Set.mem_setOf_eq, Real.rpow_two]`. Rewrite using `[Real.sqrt_lt' one_pos, one_pow]`. Rewrite using `[hset, Complex.volume_sum_rpow_lt_one (Fin (n + 1)) (by norm_num : (1 : ℝ) ≤ 2)]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : (2 : ℝ) / 2 + 1 = 2` using `by norm_num`. Establish `h3 : 2 * (Fintype.card (Fin (n + 1)) : ℝ) / 2 + 1 = ((n + 1 : ℕ) : ℝ) + 1`. Simplify using `only [Fintype.card_fin]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[h2, h3, Real.Gamma_two, Real.Gamma_nat_eq_factorial, mul_one, Fintype.card_fin, ENNReal.toReal_ofReal (by positivity)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem volume_complex_unit_ball_toReal (n : ℕ) :
     (volume {y : Fin (n + 1) → ℂ | Real.sqrt (∑ i, ‖y i‖ ^ 2) < 1}).toReal =
@@ -37,15 +37,13 @@ private theorem volume_complex_unit_ball_toReal (n : ℕ) :
     ENNReal.toReal_ofReal (by positivity)]
 
 /- English proof (translation)
-Set `e` to `MeasurableEquiv.toLp 2 (Fin (n + 1) → ℂ)`. Set `μ : Measure (EuclideanSpace ℂ (Fin (n + 1)))` to `(volume : Measure (Fin (n + 1) → ℂ)).map e`. Use `haveI : μ.IsAddHaarMeasure := by`. Establish `h` using `(PiLp.continuousLinearEquiv 2 ℝ (fun _ : Fin (n + 1) => ℂ)).symm.isAddHaarMeasure_map (volume : Measure (Fin (n + 1) → ℂ))`. Conclude with `h`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdim : Module.finrank ℝ (EuclideanSpace ℂ (Fin (n + 1))) = 2 * (n + 1)`. Rewrite using `[finrank_real_of_complex, finrank_euclideanSpace_fin]`. Establish `hball : μ.real (Metric.ball 0 1) = Real.pi ^ (n + 1) / ((n + 1).factorial : ℝ)`. Rewrite using `[Measure.real, MeasurableEquiv.map_apply, ← volume_complex_unit_ball_toReal n]`. Use `congr 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `y`. Simplify using `[e, norm_toLp_eq_sqrt_sum_norm_sq]`. Establish `key` using `integral_fun_norm_addHaar μ f`. Rewrite `key` using `[integral_map_equiv]`. Simplify using `only [e, MeasurableEquiv.toLp_apply, norm_toLp_eq_sqrt_sum_norm_sq] at key`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[key, hdim, hball, show 2 * (n + 1) - 1 = 2 * n + 1 by omega, nsmul_eq_mul, smul_eq_mul]`. Simplify using `only [smul_eq_mul]`. Rewrite using `[Nat.factorial_succ]`. Use `push_cast`. Establish `hf : (n.factorial : ℝ) ≠ 0` using `by positivity`.
-
-Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem integral_radial (n : ℕ) (f : ℝ → ℝ) :
     ∫ y : Fin (n + 1) → ℂ, f (Real.sqrt (∑ i, ‖y i‖ ^ 2)) =
@@ -75,15 +73,15 @@ theorem integral_radial (n : ℕ) (f : ℝ → ℝ) :
   field_simp
 
 /- English proof (translation)
-Establish `hq (y : Fin (n + 1) → ℂ) : qEps (allPos (n + 1)) y = ∑ i, ‖y i‖ ^ 2`. Simplify using `[qEps, allPos]`. Establish `hmeas : MeasurableSet {y : Fin (n + 1) → ℂ | qEps (allPos (n + 1)) y ≤ t}`. Simplify using `only [hq]`. Conclude with `measurableSet_le (by fun_prop) measurable_const`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hind : {y : Fin (n + 1) → ℂ | qEps (allPos (n + 1)) y ≤ t}.indicator gauss = fun y => (Set.Iic (Real.sqrt t)).indicator (fun r => Real.exp (-r ^ 2)) (Real.sqrt (∑ i, ‖y i‖ ^ 2))`. Use function extensionality and compare the values at `y`. Establish `hs : 0 ≤ ∑ i, ‖y i‖ ^ 2` using `by positivity`. Distinguish the cases in `hy : ∑ i, ‖y i‖ ^ 2 ≤ t`. Establish `hy' : Real.sqrt (∑ i, ‖y i‖ ^ 2) ≤ Real.sqrt t` using `Real.sqrt_le_sqrt hy`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_mem (by simpa [hq] using hy), Set.indicator_of_mem (show Real.sqrt (∑ i, ‖y i‖ ^ 2) ∈ Set.Iic (Real.sqrt t) from hy'), Real.sq_sqrt hs, gauss]`. Establish `hy' : ¬ Real.sqrt (∑ i, ‖y i‖ ^ 2) ≤ Real.sqrt t`. Introduce `h`. Conclude with `hy ((Real.sqrt_le_sqrt_iff ht.le).mp h)`. Rewrite using `[Set.indicator_of_notMem (by simpa [hq] using hy), Set.indicator_of_notMem (show Real.sqrt (∑ i, ‖y i‖ ^ 2) ∉ Set.Iic (Real.sqrt t) from hy')]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← integral_indicator hmeas, hind, integral_radial n ((Set.Iic (Real.sqrt t)).indicator (fun r => Real.exp (-r ^ 2))), intervalIntegral.integral_of_le (Real.sqrt_nonneg t)]`. Use `congr 1`. Establish `hfun : (fun r : ℝ => r ^ (2 * n + 1) * (Set.Iic (Real.sqrt t)).indicator (fun r => Real.exp (-r ^ 2)) r) = (Set.Iic (Real.sqrt t)).indicator (fun r => r ^ (2 * n + 1) * Real.exp (-r ^ 2))`. Use function extensionality and compare the values at `r`. Distinguish the cases in `hr : r ∈ Set.Iic (Real.sqrt t)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Set.indicator_of_mem hr]`. Simplify using `[Set.indicator_of_notMem hr]`. Rewrite using `[hfun, setIntegral_indicator measurableSet_Iic, Set.Ioi_inter_Iic]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ball_integral (n : ℕ) {t : ℝ} (ht : 0 < t) :
     ∫ y in {y : Fin (n + 1) → ℂ | qEps (allPos (n + 1)) y ≤ t}, gauss y =
@@ -122,11 +120,9 @@ theorem ball_integral (n : ℕ) {t : ℝ} (ht : 0 < t) :
   rw [hfun, setIntegral_indicator measurableSet_Iic, Set.Ioi_inter_Iic]
 
 /- English proof (translation)
-Use `set C : ℝ := 2 * Real.pi ^ (n + 1) / (n.factorial : ℝ) with hC`. Use `set h : ℝ → ℝ := fun r => r ^ (2 * n + 1) * Real.exp (-r ^ 2) with hh`. Establish `hF : (fun t : ℝ => ∫ y in {y : Fin (n + 1) → ℂ | qEps (allPos (n + 1)) y ≤ t}, gauss y) =ᶠ[nhds 1] fun t => C * ∫ r in (0 : ℝ)..Real.sqrt t, h r` using `by filter_upwards [lt_mem_nhds one_pos] with t ht using ball_integral n ht`. Establish `hcont : Continuous h` using `by rw [hh]; fun_prop`. Establish `h1` using `(hcont.integral_hasStrictDerivAt 0 (Real.sqrt 1)).hasDerivAt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `Real.hasDerivAt_sqrt (one_ne_zero : (1 : ℝ) ≠ 0)`. Establish `hd` using `(h1.comp (1 : ℝ) h2).const_mul C`. Rewrite using `[gaussDens]`. Use `(hF.deriv_eq.trans hd.deriv).trans ?_` and prove the remaining obligations. Simplify using `only [hh, hC, Real.sqrt_one, one_pow, one_mul]`.
-
-Clear the denominators using the available nonvanishing facts. Apply the tactic sequence `try ring`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem gaussDens_sphere (n : ℕ) :
     gaussDens (allPos (n + 1)) 1 = Real.pi ^ (n + 1) * Real.exp (-1) / (n.factorial : ℝ) := by

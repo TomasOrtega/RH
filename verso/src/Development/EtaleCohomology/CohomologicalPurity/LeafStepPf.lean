@@ -10,7 +10,7 @@ namespace LateralTheory.CohomologicalPurity.Cl.Flq.StepPf
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Use `show (G.obj.map (f ≫ g).op).hom x = (G.obj.map f.op).hom ((G.obj.map g.op).hom x)`. Rewrite using `[op_comp, Functor.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem res_comp {G : Shv R} {A B C : Scheme.{0}} (f : A ⟶ B) (g : B ⟶ C) (x : Sec G C) :
     Sec.res (f ≫ g) x = Sec.res f (Sec.res g x) := by
@@ -18,19 +18,19 @@ theorem res_comp {G : Shv R} {A B C : Scheme.{0}} (f : A ⟶ B) (g : B ⟶ C) (x
   rw [op_comp, Functor.map_comp]; rfl
 
 /- English proof (translation)
-The claim follows from `map_sub (G.obj.map f.op).hom x y`.
+A detailed English derivation is pending.
 -/
 theorem res_sub {G : Shv R} {A B : Scheme.{0}} (f : A ⟶ B) (x y : Sec G B) :
     Sec.res f (x - y) = Sec.res f x - Sec.res f y := map_sub (G.obj.map f.op).hom x y
 
 /- English proof (translation)
-The claim follows from `map_sub (φ.hom.app (op A)).hom x y`.
+A detailed English derivation is pending.
 -/
 theorem map_sub' {F G : Shv R} (φ : F ⟶ G) {A : Scheme.{0}} (x y : Sec F A) :
     Sec.map φ (x - y) = Sec.map φ x - Sec.map φ y := map_sub (φ.hom.app (op A)).hom x y
 
 /- English proof (translation)
-The claim follows from `map_zero (φ.hom.app (op A)).hom`.
+A detailed English derivation is pending.
 -/
 theorem map_zero' {F G : Shv R} (φ : F ⟶ G) {A : Scheme.{0}} : Sec.map φ (0 : Sec F A) = 0 :=
   map_zero (φ.hom.app (op A)).hom
@@ -42,7 +42,7 @@ theorem map_comp' {F G H : Shv R} (φ : F ⟶ G) (ψ : G ⟶ H) {A : Scheme.{0}}
     Sec.map (φ ≫ ψ) x = Sec.map ψ (Sec.map φ x) := rfl
 
 /- English proof (translation)
-Use `show (φ.hom.app (op A)).hom ((F.obj.map f.op).hom x) = (G.obj.map f.op).hom ((φ.hom.app (op B)).hom x)`. Conclude with `congrArg (fun m => ModuleCat.Hom.hom m x) (φ.hom.naturality f.op)`.
+A detailed English derivation is pending.
 -/
 theorem map_res {F G : Shv R} (φ : F ⟶ G) {A B : Scheme.{0}} (f : A ⟶ B) (x : Sec F B) :
     Sec.map φ (Sec.res f x) = Sec.res f (Sec.map φ x) := by
@@ -50,9 +50,7 @@ theorem map_res {F G : Shv R} (φ : F ⟶ G) {A B : Scheme.{0}} (f : A ⟶ B) (x
   exact congrArg (fun m => ModuleCat.Hom.hom m x) (φ.hom.naturality f.op)
 
 /- English proof (translation)
-Establish `e : V.ι ⁻¹ᵁ U ≤ (X.homOfLE h) ⁻¹ᵁ (W.ι ⁻¹ᵁ U)`. Rewrite using `[← Scheme.Hom.comp_preimage, Scheme.homOfLE_ι]`. Establish `hc : (V.ι ⁻¹ᵁ U).ι ≫ X.homOfLE h = (X.homOfLE h).resLE (W.ι ⁻¹ᵁ U) (V.ι ⁻¹ᵁ U) e ≫ (W.ι ⁻¹ᵁ U).ι` using `(Scheme.Hom.resLE_comp_ι _ e).symm`. Use `show Sec.res (V.ι ⁻¹ᵁ U).ι (Sec.res (X.homOfLE h) b) = 0`. Rewrite using `[← res_comp, hc, res_comp, hb]`.
-
-Conclude with `map_zero _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem van_rs {G : Shv R} {X : Scheme.{0}} {U V W : X.Opens} (h : V ≤ W) (b : Sec G W.toScheme)
     (hb : Sec.res (W.ι ⁻¹ᵁ U).ι b = 0) : Sec.res (V.ι ⁻¹ᵁ U).ι (rs h b) = 0 := by
@@ -65,7 +63,7 @@ theorem van_rs {G : Shv R} {X : Scheme.{0}} {U V W : X.Opens} (h : V ≤ W) (b :
   exact map_zero _
 
 /- English proof (translation)
-The claim follows from `(LeafRs_of R G X T V W h h' a a).2`.
+A detailed English derivation is pending.
 -/
 theorem rs_rs {G : Shv R} {X : Scheme.{0}} {T V W : X.Opens} (h : V ≤ W) (h' : T ≤ V) (a : Sec G W.toScheme) :
     rs h' (rs h a) = rs (h'.trans h) a := (LeafRs_of R G X T V W h h' a a).2
@@ -87,13 +85,13 @@ namespace LateralTheory.CohomologicalPurity.Cl.Flq.StepPf
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-The claim follows from `map_res _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem map_rs {F G : Shv R} (φ : F ⟶ G) {X : Scheme.{0}} {V W : X.Opens} (h : V ≤ W) (x : Sec F W.toScheme) :
     Sec.map φ (rs h x) = rs h (Sec.map φ x) := map_res _ _ _
 
 /- English proof (translation)
-The claim follows from `res_sub _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem rs_sub {G : Shv R} {X : Scheme.{0}} {V W : X.Opens} (h : V ≤ W) (x y : Sec G W.toScheme) :
     rs h (x - y) = rs h x - rs h y := res_sub _ _ _
@@ -103,7 +101,7 @@ def BdG (K : Cx R) {X : Scheme.{0}} (U : X.Opens) (n : ℤ) (W : X.Opens) : AddS
     ((K.d (n - 1) n).hom.app (op W.toScheme)).hom.toAddMonoidHom
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, hb, rfl⟩`. Conclude with `⟨b, hb, rfl⟩`. Introduce and unpack `⟨b, hb, rfl⟩`. Conclude with `⟨b, hb, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_BdG {K : Cx R} {X : Scheme.{0}} {U : X.Opens} {n : ℤ} {W : X.Opens} (a : Sec (K.X n) W.toScheme) :
     a ∈ BdG K U n W ↔ Bd K (W.ι ⁻¹ᵁ U) n a := by
@@ -112,20 +110,20 @@ theorem mem_BdG {K : Cx R} {X : Scheme.{0}} {U : X.Opens} {n : ℤ} {W : X.Opens
   · rintro ⟨b, hb, rfl⟩; exact ⟨b, hb, rfl⟩
 
 /- English proof (translation)
-The claim follows from `(mem_BdG a).1 ((AddSubgroup.closure_le _).2 (fun b hb => (mem_BdG b).2 hb) ha)`.
+A detailed English derivation is pending.
 -/
 theorem bd_of_BN {K : Cx R} {X : Scheme.{0}} {U : X.Opens} {n : ℤ} {W : X.Opens} {a : Sec (K.X n) W.toScheme}
     (ha : a ∈ BN K U n W) : Bd K (W.ι ⁻¹ᵁ U) n a :=
   (mem_BdG a).1 ((AddSubgroup.closure_le _).2 (fun b hb => (mem_BdG b).2 hb) ha)
 
 /- English proof (translation)
-The claim follows from `AddSubgroup.subset_closure ha`.
+A detailed English derivation is pending.
 -/
 theorem BN_of_bd {K : Cx R} {X : Scheme.{0}} {U : X.Opens} {n : ℤ} {W : X.Opens} {a : Sec (K.X n) W.toScheme}
     (ha : Bd K (W.ι ⁻¹ᵁ U) n a) : a ∈ BN K U n W := AddSubgroup.subset_closure ha
 
 /- English proof (translation)
-Take `⟨b, hb, rfl⟩` from `ha`. Conclude with `⟨rs h b, van_rs h b hb, map_res _ _ _⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem bd_rs {K : Cx R} {X : Scheme.{0}} {U V W : X.Opens} {n : ℤ} (h : V ≤ W) {a : Sec (K.X n) W.toScheme}
     (ha : Bd K (W.ι ⁻¹ᵁ U) n a) : Bd K (V.ι ⁻¹ᵁ U) n (rs h a) := by
@@ -133,7 +131,7 @@ theorem bd_rs {K : Cx R} {X : Scheme.{0}} {U V W : X.Opens} {n : ℤ} (h : V ≤
   exact ⟨rs h b, van_rs h b hb, map_res _ _ _⟩
 
 /- English proof (translation)
-Introduce `a ha`. Establish `: BN K U n W ≤ (BN K U n V).comap ((K.X n).obj.map (X.homOfLE h).op).hom.toAddMonoidHom` using `(AddSubgroup.closure_le _).2 fun b hb => BN_of_bd (bd_rs h hb)`. Conclude with `this ha`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem BN_rs {K : Cx R} {X : Scheme.{0}} {U V W : X.Opens} {n : ℤ} (h : V ≤ W) :
     ∀ a ∈ BN K U n W, rs h a ∈ BN K U n V := by
@@ -143,9 +141,9 @@ theorem BN_rs {K : Cx R} {X : Scheme.{0}} {U V W : X.Opens} {n : ℤ} (h : V ≤
   exact this ha
 
 /- English proof (translation)
-Introduce `a ha`. Use `hinj (n - 1)` as an intermediate fact. Establish `: BN K U n V ≤ (BN K U n W).map ((K.X n).obj.map (X.homOfLE h).op).hom.toAddMonoidHom` using `(AddSubgroup.closure_le _).2 fun b hb => by`. Take `⟨c, hc, rfl⟩` from `hb`. Take `⟨c', hc', hrs⟩` from `hE R (K.X (n - 1)) X U V W h c hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨Sec.map (K.d (n - 1) n) c', BN_of_bd ⟨c', hc', rfl⟩, ?_⟩` and prove the remaining obligations. Use `show rs h (Sec.map (K.d (n - 1) n) c') = _`. Rewrite using `[← map_rs, hrs]`. Take `⟨b, hb, e⟩` from `this ha`. Conclude with `⟨b, hb, e⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem BN_ext (hE : LeafSNext) {K : Cx R} (hinj : ∀ s, Injective (K.X s)) {X : Scheme.{0}} {U V W : X.Opens} {n : ℤ}
     (h : V ≤ W) : ∀ a ∈ BN K U n V, ∃ b ∈ BN K U n W, rs h b = a := by
@@ -162,9 +160,9 @@ theorem BN_ext (hE : LeafSNext) {K : Cx R} (hinj : ∀ s, Injective (K.X s)) {X 
   exact ⟨b, hb, e⟩
 
 /- English proof (translation)
-Establish `e : n - 1 + 1 = n` using `by ring`. Prove the components needed by the constructor for the conclusion. Introduce `h0`. Rewrite using `[← K.d_comp_XIsoOfEq_hom e, map_comp', h0, map_zero']`. Introduce `h0`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← K.d_comp_XIsoOfEq_inv e, map_comp', h0, map_zero']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem d_shift {K : Cx R} {n : ℤ} {A : Scheme.{0}} (x : Sec (K.X (n - 1)) A) :
     Sec.map (K.d (n - 1) (n - 1 + 1)) x = 0 ↔ Sec.map (K.d (n - 1) n) x = 0 := by
@@ -174,15 +172,15 @@ theorem d_shift {K : Cx R} {n : ℤ} {A : Scheme.{0}} (x : Sec (K.X (n - 1)) A) 
   · intro h0; rw [← K.d_comp_XIsoOfEq_inv e, map_comp', h0, map_zero']
 
 /- English proof (translation)
-Establish `H' : ∀ k : {x : X // x ∈ W}, ∃ (V : X.Opens) (h : V ≤ W), k.1 ∈ V ∧ ∃ b : Sec (K.X (n - 1)) V.toScheme, Sec.res (V.ι ⁻¹ᵁ U).ι b = 0 ∧ Sec.map (K.d (n - 1) n) b = rs h a`. Introduce `k`. Take `⟨V, h, hx, hb⟩` from `H k.1 k.2`. Take `⟨b, hb0, hbd⟩` from `bd_of_BN hb`. Conclude with `⟨V, h, hx, b, hb0, hbd⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `choose V h hx b hb0 hbd using H'`. Take `⟨c, hc⟩` from `hZ R (K.X (n - 1)) X (ZN K U (n - 1)) hOK.1 hOK.2.1 hOK.2.2 W _ V h b (fun x hxW => ⟨⟨x, hxW⟩, hx _⟩) (fun k l => by`. Use `(mem_Zc _).2 ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[res_sub, van_rs _ _ (hb0 k), van_rs _ _ (hb0 l), sub_zero]`. Rewrite using `[d_shift, map_sub', map_rs, map_rs, hbd, hbd, rs_rs, rs_rs]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `sub_self _)`. Establish `hvan : Sec.res (W.ι ⁻¹ᵁ U).ι c = 0` using `hL R (K.X (n - 1)) X U W c fun x hxW => ⟨V ⟨x, hxW⟩, h _, hx _, by`. Use `((mem_Zc _).1 (hc ⟨x, hxW⟩)).1` as an intermediate fact. Rewrite `this` using `[res_sub, hb0, sub_zero]`. Conclude with `this⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hd : Sec.map (K.d (n - 1) n) c = a`. Rewrite using `[← sub_eq_zero]`. Apply `hSep R (K.X n) X W` to reduce the goal to its premises. Introduce `x hxW`. Use `⟨V ⟨x, hxW⟩, h _, hx _, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hz` using `(d_shift _).1 ((mem_Zc _).1 (hc ⟨x, hxW⟩)).2`. Rewrite `hz` using `[map_sub', map_rs, hbd]`. Rewrite using `[rs_sub]`. Conclude with `hz`. Conclude with `BN_of_bd ⟨c, hvan, hd⟩`.
+A detailed English derivation is pending.
 -/
 theorem BN_loc (hZ : LateralTheory.CohomologicalPurity.Cl.LeafZorn) (hSep : LeafSep) (hL : LeafSNloc) {K : Cx R} {X : Scheme.{0}}
     {U : X.Opens} {n : ℤ} (hOK : OK (ZN K U (n - 1))) (W : X.Opens) (a : Sec (K.X n) W.toScheme)
@@ -216,7 +214,7 @@ theorem BN_loc (hZ : LateralTheory.CohomologicalPurity.Cl.LeafZorn) (hSep : Leaf
   exact BN_of_bd ⟨c, hvan, hd⟩
 
 /- English proof (translation)
-Introduce `R _ K hZ hinj X U n hOK`. Conclude with `⟨fun V W h a ha => BN_rs h a ha, fun W a H => BN_loc hZ hSep hL hOK W a H, fun V W h a ha => BN_ext hE hinj h a ha⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem LeafStep_of_parts (hSep : LeafSep) (hL : LeafSNloc) (hE : LeafSNext) : LateralTheory.CohomologicalPurity.Cl.Flq.LeafStep := by
   intro R _ K hZ hinj X U n hOK
@@ -230,11 +228,11 @@ namespace LateralTheory.CohomologicalPurity.Cl.Flq.StepPf
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Establish `hG : Presheaf.IsSheaf (Scheme.etaleTopology) (G.obj ⋙ forget (ModuleCat.{1} (ULift.{1} R)))` using `(Presheaf.isSheaf_iff_isSheaf_forget _ _ (forget (ModuleCat.{1} (ULift.{1} R)))).1 G.cond`. Establish `hmem : Sieve.generate (Presieve.ofArrows P f) ∈ Scheme.etaleTopology Y`. Apply `Precoverage.generate_mem_toGrothendieck` to reduce the goal to its premises. Use `(Scheme.ofArrows_mem_precoverage_iff (P := (@Etale : MorphismProperty Scheme.{0}))).2 ⟨fun y => ?_, fun i => ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `hcov y`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨i, hi⟩`. Conclude with `(inferInstance : Etale (f i))`. Establish `hS` using `hG.isSheafFor _ hmem`. Rewrite `hS` using `[← Presieve.isSheafFor_iff_generate, Presieve.isSheafFor_arrows_iff]`. Establish `hc : Presieve.Arrows.Compatible (G.obj ⋙ forget (ModuleCat.{1} (ULift.{1} R))) f (fun _ => (0 : Sec G _))`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j Z gi gj _`. Express the relevant statement in the definitionally equal form `(G.obj.map gi.op).hom 0 = (G.obj.map gj.op).hom 0`. Simplify using the standard rewrite rules. Take `⟨t, -, ht⟩` from `hS _ hc`. Rewrite using `[ht s (fun i => hs i), ht 0 (fun i => by change (G.obj.map (f i).op).hom 0 = 0; simp)]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sep_cover (G : Shv R) {Y : Scheme.{0}} {A : Type} (P : A → Scheme.{0}) (f : ∀ i, P i ⟶ Y)
     [∀ i, IsOpenImmersion (f i)] (hcov : ∀ y, ∃ i, y ∈ Set.range (f i)) (s : Sec G Y)
@@ -258,11 +256,11 @@ theorem sep_cover (G : Shv R) {Y : Scheme.{0}} {A : Type} (P : A → Scheme.{0})
   rw [ht s (fun i => hs i), ht 0 (fun i => by change (G.obj.map (f i).op).hom 0 = 0; simp)]
 
 /- English proof (translation)
-Introduce `R _ G X W s H`. Use `choose V h hx hs using H`. Apply `sep_cover G (fun k : {x : X // x ∈ W} => (V k.1 k.2).toScheme) (fun k => X.homOfLE (h k.1 k.2))` to reduce the goal to its premises. Introduce `y`. Establish `hy : W.ι y ∈ W`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: W.ι y ∈ Set.range W.ι` using `⟨y, rfl⟩`. Rewrite `this` using `[Scheme.Opens.range_ι]`. Then use the resulting hypothesis. Use `⟨⟨W.ι y, hy⟩, ?_⟩` and prove the remaining obligations. Establish `: y ∈ (X.homOfLE (h (W.ι y) hy)).opensRange`. Rewrite using `[Scheme.opensRange_homOfLE]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hx _ hy`. Conclude with `this`. Introduce `k`. Conclude with `hs k.1 k.2`.
+A detailed English derivation is pending.
 -/
 theorem LeafSep_of : LeafSep := by
   intro R _ G X W s H
@@ -283,13 +281,13 @@ end LateralTheory.CohomologicalPurity.Cl.Flq.StepPf
 namespace LateralTheory.CohomologicalPurity.Cl.Flq.StepPf
 
 /- English proof (translation)
-Introduce `R _ G X U W c H`. Use `choose V h hx hs using H`. Establish `e : ∀ k : {x : X // x ∈ W}, (V k.1 k.2).ι ⁻¹ᵁ U ≤ (X.homOfLE (h k.1 k.2)) ⁻¹ᵁ (W.ι ⁻¹ᵁ U)` using `fun k => by`. Rewrite using `[← Scheme.Hom.comp_preimage, Scheme.homOfLE_ι]`. Establish `hI : ∀ k : {x : X // x ∈ W}, IsOpenImmersion ((X.homOfLE (h k.1 k.2)).resLE (W.ι ⁻¹ᵁ U) _ (e k))` using `fun k => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsOpenImmersion ((X.homOfLE (h k.1 k.2)).resLE (W.ι ⁻¹ᵁ U) _ (e k) ≫ (W.ι ⁻¹ᵁ U).ι)`. Rewrite using `[Scheme.Hom.resLE_comp_ι]`. Use `infer_instance`. Conclude with `IsOpenImmersion.of_comp _ (W.ι ⁻¹ᵁ U).ι`. Apply `sep_cover G (fun k : {x : X // x ∈ W} => ((V k.1 k.2).ι ⁻¹ᵁ U).toScheme) (fun k => (X.homOfLE (h k.1 k.2)).resLE (W.ι ⁻¹ᵁ U) _ (e k))` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `y`. Take `⟨⟨x, hxW⟩, hyU⟩` from `y`. Use `⟨⟨x, hxW⟩, ⟨⟨x, hx x hxW⟩, hyU⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Scheme.Hom.coe_resLE_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `congr($(X.homOfLE_ι (h x hxW)) ⟨x, hx x hxW⟩)`. Introduce `k`. Rewrite using `[← res_comp, Scheme.Hom.resLE_comp_ι, res_comp]`. Conclude with `hs k.1 k.2`.
+A detailed English derivation is pending.
 -/
 theorem LeafSNloc_of : LeafSNloc := by
   intro R _ G X U W c H
@@ -319,17 +317,15 @@ end LateralTheory.CohomologicalPurity.Cl.Flq.StepPf
 namespace LateralTheory.CohomologicalPurity.Cl.Flq.StepPf
 
 /- English proof (translation)
-The claim follows from `map_zero (G.obj.map f.op).hom`.
+A detailed English derivation is pending.
 -/
 theorem res_zero {R : Type} [CommRing R] {G : Shv R} {A B : Scheme.{0}} (f : A ⟶ B) :
     Sec.res f (0 : Sec G B) = 0 := map_zero (G.obj.map f.op).hom
 
 /- English proof (translation)
-Use `⟨inferInstance, inferInstance, isPullback_opens_inf_le _ _, fun y => ?_⟩` and prove the remaining obligations. Establish `hy : y.1 ∈ A ⊔ B` using `y.2`. Break down `(TopologicalSpace.Opens.mem_sup.1 hy) with h1 | h1` into its components or cases. Use `left`. Establish `: y ∈ (X.homOfLE (le_sup_left : A ≤ A ⊔ B)).opensRange`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Scheme.opensRange_homOfLE]`. Conclude with `h1`. Conclude with `this`. Use `right`. Establish `: y ∈ (X.homOfLE (le_sup_right : B ≤ A ⊔ B)).opensRange`.
-
-Rewrite using `[Scheme.opensRange_homOfLE]`. Conclude with `h1`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mv_opens {X : Scheme.{0}} (A B : X.Opens) :
     LateralTheory.KummerTheory.ContCut.IsMV (X.homOfLE (inf_le_left : A ⊓ B ≤ A)) (X.homOfLE inf_le_right)
@@ -347,15 +343,15 @@ theorem mv_opens {X : Scheme.{0}} (A B : X.Opens) :
     exact this
 
 /- English proof (translation)
-Introduce `R _ G _ X U V W h c hc`. Establish `hT : V ⊔ (W ⊓ U) ≤ W` using `sup_le h inf_le_left`. Establish `H : Set.range (X.homOfLE (inf_le_left : V ⊓ (W ⊓ U) ≤ V)) ⊆ Set.range (V.ι ⁻¹ᵁ U).ι`. Rewrite using `[Scheme.Opens.range_ι]`. Introduce and unpack `_ ⟨⟨p, hp⟩, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Scheme.homOfLE_apply']`. Conclude with `hp.2.2`. Establish `hst : Sec.res (X.homOfLE (inf_le_left : V ⊓ (W ⊓ U) ≤ V)) c = Sec.res (X.homOfLE (inf_le_right : V ⊓ (W ⊓ U) ≤ W ⊓ U)) (0 : Sec G (W ⊓ U).toScheme)`. Rewrite using `[← IsOpenImmersion.lift_fac (V.ι ⁻¹ᵁ U).ι (X.homOfLE _) H, res_comp, hc, res_zero, res_zero]`. Take `⟨z, hz1, hz2⟩` from `(LateralTheory.KummerTheory.GluePf.Glue_of R G _ _ _ _ (mv_opens V (W ⊓ U))).2 c 0 hst`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c', hc'⟩` from `LateralTheory.KummerTheory.FlasquePf.Flasque_of R G (X.homOfLE hT) z`. Establish `hc'' : Sec.res (X.homOfLE hT) c' = z` using `hc'`. Use `⟨c', ?_, ?_⟩` and prove the remaining obligations. Establish `H2 : Set.range (W.ι ⁻¹ᵁ U).ι ⊆ Set.range (X.homOfLE (inf_le_left : W ⊓ U ≤ W))`. Rewrite using `[Scheme.Opens.range_ι]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p hp`. Establish `: p ∈ (X.homOfLE (inf_le_left : W ⊓ U ≤ W)).opensRange`. Rewrite using `[Scheme.opensRange_homOfLE]`. Conclude with `⟨p.2, hp⟩`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨m, hm⟩ : ∃ m, m ≫ X.homOfLE (inf_le_left : W ⊓ U ≤ W) = (W.ι ⁻¹ᵁ U).ι` from `⟨_, IsOpenImmersion.lift_fac _ _ H2⟩`. Rewrite using `[← hm, res_comp, ← Scheme.homOfLE_homOfLE X (le_sup_right : W ⊓ U ≤ V ⊔ (W ⊓ U)) hT, res_comp, hc'', hz2, res_zero]`. Use `show Sec.res (X.homOfLE h) c' = c`. Rewrite using `[← Scheme.homOfLE_homOfLE X (le_sup_left : V ≤ V ⊔ (W ⊓ U)) hT, res_comp, hc'', hz1]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LeafSNext_of : LeafSNext := by
   intro R _ G _ X U V W h c hc
@@ -386,7 +382,7 @@ theorem LeafSNext_of : LeafSNext := by
     rw [← Scheme.homOfLE_homOfLE X (le_sup_left : V ≤ V ⊔ (W ⊓ U)) hT, res_comp, hc'', hz1]
 
 /- English proof (translation)
-The claim follows from `LeafStep_of_parts LeafSep_of LeafSNloc_of LeafSNext_of`.
+A detailed English derivation is pending.
 -/
 theorem LeafStep_of : LateralTheory.CohomologicalPurity.Cl.Flq.LeafStep := LeafStep_of_parts LeafSep_of LeafSNloc_of LeafSNext_of
 

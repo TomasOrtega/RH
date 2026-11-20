@@ -17,9 +17,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.UMin.ThetaMapGen
 
 /- English proof (translation)
-Introduce `S G _ _ L ρ hL hρ g m n o K _ _ _ z f₁ f₂ hm hu hn hP hs h₁ h₂`. Take `⟨⟨θ, hθ⟩, -⟩` from `GlobalTheory.T.principallyPolarisedFibre_exists_generator_stable S G L hL g K z hP`. Establish `hmK : (m : K) ≠ 0`. Set `φ : o →+* K` to `(Spec.preimage (f₁ ≫ PSpace.str o n)).hom`. Use `hu.map φ` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite `this` using `[map_natCast]`. Conclude with `this.ne_zero`. Take `⟨pt, c, hc⟩` from `GlobalTheory.T.exists_thetaConstantList_algClosed S G L ρ hL hρ g m (n + 1) K z θ hm hmK hn hP`. Establish `hH : HasTh G L ρ m z c` using `⟨θ, pt, hθ, hc⟩`. Conclude with `(GlobalTheory.T.projectiveHomogeneousCoords_field_determine_descend).1 o K n f₁ f₂ (symTup c) hs (h₁ c hH) (h₂ c hH)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem agree_at_geom : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (L : LB G.left) (ρ : LB.Gen (L.pull (eSec G))), L.IsLB → ρ.IsGen →
     ∀ (g m n : ℕ) (o K : Type) [CommRing o] [Field K] [IsAlgClosed K] (z : Sp K ⟶ S) (f₁ f₂ : Sp K ⟶ PSpace o n),
@@ -37,21 +37,17 @@ theorem agree_at_geom : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonO
   exact (GlobalTheory.T.projectiveHomogeneousCoords_field_determine_descend).1 o K n f₁ f₂ (symTup c) hs (h₁ c hH) (h₂ c hH)
 
 /- English proof (translation)
-Introduce `S G _ _ L ρ hL hρ g m n o _ X s q hm h3 hu hn hN hLN h0 hP`. Establish `loc : ∀ x : X, ∃ (W : X.Opens) (h : W.toScheme ⟶ PSpace o n), x ∈ W ∧ h ≫ PSpace.str o n = W.ι ≫ s ∧ ThMap G L ρ m (W.ι ≫ q) h`. Introduce `x`. Take `⟨U, hxU, h1, h2, h3', h4⟩` from `GlobalTheory.T.exists_affineOpen_normal_noetherian_charZero X hN hLN h0 x`. Conclude with `GlobalTheory.T.exists_nhd_thetaMap_on_normal_charZero_affine S G L ρ hL hρ g m n o X s q hm h3 hu hn hP U h1 h2 h3' h4 x hxU`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose W h hxW hs hT using loc`. Use `haveI : ∀ x : X, _root_.IsReduced (X.presheaf.stalk x) := fun x => by haveI := (hN x).1; infer_instance`. Use `haveI : IsReduced X := isReduced_of_isReduced_stalk X`. Establish `hcov : (⨆ x, W x) = ⊤`. Rewrite using `[eq_top_iff]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x _`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨x, hxW x⟩`. Take `⟨f, hf, hfW⟩` from `GlobalTheory.T.glue_projectiveSpace_maps_of_agree_geometric_points o n X s X W h hcov hs (by`. Introduce `i j K _ _ y y' hyy`. Use `agree_at_geom S G L ρ hL hρ g m n o K (y ≫ (W i).ι ≫ q) _ _ hm hu hn (by rw [← Category.assoc]; exact hP K _) ?_ ?_ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Category.assoc, hs, Category.assoc, hs, ← Category.assoc, hyy, Category.assoc]`. Introduce `c hc`. Conclude with `hT i K y c hc`. Introduce `c hc`. Use `hT j K y' c (by rwa [← Category.assoc, ← hyy, Category.assoc])` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `this)`. Use `⟨f, hf, ?_⟩` and prove the remaining obligations. Introduce `K _ x c hc`. Set `p0 : Sp K` to `IsLocalRing.closedPoint K`. Set `i` to `x.base p0`.
+Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hr : Set.range x.base ⊆ Set.range (W i).ι.base`. Introduce and unpack `_ ⟨y, rfl⟩`. Establish `: y = p0` using `Subsingleton.elim _ _`. Substitute `this` using the available equality. Rewrite using `[Scheme.Opens.range_ι]`.
-
-Conclude with `hxW i`. Set `x'` to `IsOpenImmersion.lift (W i).ι x hr`. Establish `hx' : x' ≫ (W i).ι = x` using `IsOpenImmersion.lift_fac _ _ _`. Use `hT i K x' c (by rw [← Category.assoc, hx']; exact hc)` as an intermediate fact. Rewrite using `[← hx', Category.assoc, hfW i]`.
-
-Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (L : LB G.left) (ρ : LB.Gen (L.pull (eSec G))), L.IsLB → ρ.IsGen → ∀ (g m n : ℕ) (o : Type) [CommRing o] (X : Scheme.{0}) (s : X ⟶ Sp o) (q : X ⟶ S), Odd m → 3 ≤ m → IsUnit (m : o) → n + 1 = m ^ (4 * g) → Geo.Tor.IsNormalScheme X → IsLocallyNoetherian X → (∀ x : X, CharZero (X.residueField x)) → (∀ (R : Type) [CommRing R] (x : Sp R ⟶ X), PolFib G L g (x ≫ q)) → ∃ f : X ⟶ PSpace o n, f ≫ PSpace.str o n = s ∧ ThMap G L ρ m q f := by
   intro S G _ _ L ρ hL hρ g m n o _ X s q hm h3 hu hn hN hLN h0 hP

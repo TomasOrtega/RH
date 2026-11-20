@@ -8,7 +8,7 @@ set_option maxSynthPendingDepth 1
 namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.LeavesOrthogonalSum
 
 /- English proof (translation)
-Introduce `h τ s hs m hm`. Establish `h'` using `h τ m hm s (by linarith)`. Simplify `h'` using `[rowSum_eq, freqIntegral_eq, GroundTheory.Heights₂.Heights.LeavesOrthogonalSum.expTwoPiI, GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.LeavesOrthogonalSum.expTwoPiI]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem RowPoisson.rowPoisson_half_implies_one :
     GroundTheory.Heights₂.Heights.LeavesOrthogonalSum.RowPoisson.Statement →
@@ -19,7 +19,7 @@ theorem RowPoisson.rowPoisson_half_implies_one :
     GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.LeavesOrthogonalSum.expTwoPiI] using h'
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨RowPoisson.rowPoisson_half_implies_one, fun _ => GroundTheory.Heights₂.Heights.LeavesOrthogonalSum.RowPoisson.proof⟩`.
+Supply the required witnesses or components.
 -/
 theorem RowPoisson.equiv :
     GroundTheory.Heights₂.Heights.LeavesOrthogonalSum.RowPoisson.Statement ↔

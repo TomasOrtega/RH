@@ -4,7 +4,7 @@ open NumberField
 namespace GlobalTheory
 
 /- English proof (translation)
-Rewrite using `[differentIdeal_eq_differentIdeal_mul_differentIdeal ℤ (𝓞 K) (𝓞 K')]`. Conclude with `Ideal.mul_le_left`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem differentIdeal_int_le_differentIdeal (K K' : Type) [Field K] [NumberField K] [Field K']
     [NumberField K'] [Algebra K K'] :
@@ -13,23 +13,19 @@ theorem differentIdeal_int_le_differentIdeal (K K' : Type) [Field K] [NumberFiel
   exact Ideal.mul_le_left
 
 /- English proof (translation)
-Introduce `K K' L _ _ _ _ _ _ _ _ _ n M hM`. Use `set φ : (Fin n → K') → (Fin n → L) := fun x i => algebraMap K' L (x i) with hφ`. Use `set P := Submodule.span (𝓞 L) ((fun (x : Fin n → K) i => algebraMap K' L (algebraMap K K' (x i))) '' {x | (fun i => algebraMap K K' (x i)) ∈ M}) with hP`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `Submodule.subset_span ⟨_, hx, rfl⟩`. Establish `himg : ∀ y ∈ Submodule.span (𝓞 K') {y : Fin n → K' | y ∈ M ∧ ∃ y0 : Fin n → K, y = fun i => algebraMap K K' (y0 i)}, φ y ∈ P`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `mem y hy`. Take `⟨hyM, y0, rfl⟩` from `hy`. Conclude with `Submodule.subset_span ⟨y0, hyM, rfl⟩`. Consider the case `zero`. Establish `h0 : φ 0 = 0` using `by funext i; simp [hφ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0]`. Conclude with `P.zero_mem`. Consider the case `add a b _ _ ha hb`. Establish `: φ (a + b) = φ a + φ b` using `by funext i; simp [hφ]`. Rewrite using `[this]`.
+Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `P.add_mem ha hb`. Consider the case `smul c a _ ha`. Establish `: φ (c • a) = algebraMap (𝓞 K') (𝓞 L) c • φ a`. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `algebraMap K' L ((c : K') * a i) = ((algebraMap (𝓞 K') (𝓞 L) c : 𝓞 L) : L) * φ a i`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_mul]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `P.smul_mem _ ha`. Rewrite using `[Ideal.map, Submodule.span_smul_span, Submodule.span_le]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `z hz`. Take `⟨_, ⟨d, hd, rfl⟩, _, ⟨x, hx, rfl⟩, rfl⟩` from `Set.mem_smul.mp hz`. Establish `hdK : d ∈ differentIdeal (𝓞 K) (𝓞 K')` using `differentIdeal_int_le_differentIdeal K K' hd`. Establish `hmem` using `differentIdeal_smul_mem_span_rational K K' n M hM d hdK x hx`. Establish `h` using `himg _ hmem`.
-
-Establish `: φ (d • x) = algebraMap (𝓞 K') (𝓞 L) d • φ x`. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `algebraMap K' L ((d : K') * x i) = ((algebraMap (𝓞 K') (𝓞 L) d : 𝓞 L) : L) * φ x i`. Rewrite using `[map_mul]`. Both sides reduce to the same expression.
-
-Rewrite `h` using `[this]`. Conclude with `h`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_rational_le_span_and_different_smul_le :
     ∀ (K K' L : Type) [Field K] [NumberField K] [Field K'] [NumberField K'] [Field L] [NumberField L] [Algebra K K'] [IsGalois K K'] [Algebra K' L] (n : ℕ) (M : Submodule (𝓞 K') (Fin n → K')), (∀ (s : K' ≃ₐ[K] K'), ∀ x ∈ M, (fun i => s (x i)) ∈ M) → Submodule.span (𝓞 L) ((fun (x : Fin n → K) i => algebraMap K' L (algebraMap K K' (x i))) '' {x | (fun i => algebraMap K K' (x i)) ∈ M}) ≤ Submodule.span (𝓞 L) ((fun x i => algebraMap K' L (x i)) '' (M : Set (Fin n → K'))) ∧ (differentIdeal ℤ (𝓞 K')).map (algebraMap (𝓞 K') (𝓞 L)) • Submodule.span (𝓞 L) ((fun x i => algebraMap K' L (x i)) '' (M : Set (Fin n → K'))) ≤ Submodule.span (𝓞 L) ((fun (x : Fin n → K) i => algebraMap K' L (algebraMap K K' (x i))) '' {x | (fun i => algebraMap K K' (x i)) ∈ M}) := by

@@ -18,15 +18,15 @@ section Abstract
 variable {R : Type} [CommRing R] {β : Type} [Fintype β] [DecidableEq β] [Invertible (2 : R)]
 
 /- English proof (translation)
-Establish `hNtT : Ntᵀ = N` using `by rw [← hNT, transpose_transpose]`. Establish `hMT : (Δ * x * Nt)ᵀ = N * (xᵀ * Δt)` using `by simp only [transpose_mul, hNtT, hΔT, Matrix.mul_assoc]`. Establish `hMf : (Δ * x * Nt).map f = Δ * (x.map f * Nt)` using `by simp only [Matrix.map_mul, hΔf, hNtf, Matrix.mul_assoc]`. Establish `hPT : (1 + ⅟(2 : R) • (Δ * x * Nt))ᵀ = 1 + ⅟(2 : R) • (N * (xᵀ * Δt))`. Rewrite using `[transpose_add, transpose_one, transpose_smul, hMT]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hPf : (1 + ⅟(2 : R) • (Δ * x * Nt)).map f = 1 + ⅟(2 : R) • (Δ * (x.map f * Nt))`. Rewrite using `[Matrix.map_add f (map_add f), Matrix.map_one f (map_zero f) (map_one f), Matrix.map_smul' _ _ _ (map_mul f), map_half, hMf]`. Establish `A1 : N * (xᵀ * Δt) * K * (Δ * (x.map f * Nt)) = 0`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[show Δt * (K * (Δ * (x.map f * Nt))) = 0 by rw [← Matrix.mul_assoc, ← Matrix.mul_assoc, e5, Matrix.zero_mul]]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `A2 : N * (xᵀ * Δt) * K + K * (Δ * (x.map f * Nt)) = 0`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, e3, ← Matrix.mul_assoc K Δ, e4]`. Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `_ = 0 := by rw [hZ]; simp`. Establish `expand : ∀ U V : Matrix (β ⊕ β) (β ⊕ β) R, (1 + ⅟(2 : R) • U) * K * (1 + ⅟(2 : R) • V) = K + ⅟(2 : R) • (U * K + K * V) + (⅟(2 : R) * ⅟(2 : R)) • (U * K * V)`. Introduce `U V`. Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.one_mul, Matrix.mul_one, Matrix.smul_mul, Matrix.mul_smul, smul_add, smul_smul]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hPT, hPf, expand, A2, A1]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_unitary_of_skew (f : R →+* R) (J : Matrix β β R) (K : Matrix (β ⊕ β) (β ⊕ β) R)
     (Δ N : Matrix (β ⊕ β) β R) (Δt Nt : Matrix β (β ⊕ β) R) (x : Matrix β β R)
@@ -63,25 +63,21 @@ theorem mem_unitary_of_skew (f : R →+* R) (J : Matrix β β R) (K : Matrix (β
 end Abstract
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ d W v h2 Z hZat hZlat hZskew`. Use `letI : Invertible (2 : AE F E) := invTwoE`. Use `set f : AE F E →+* AE F E := ((cA σ : AE F E →ₐ[AF F] AE F E) : AE F E →+* AE F E) with hf`. Use `set J : Matrix (Fin d) (Fin d) (AE F E) := incM F W.J with hJ`. Establish `h1 : (1 : Matrix (Fin d) (Fin d) (AE F E)).map f = 1` using `Matrix.map_one f (map_zero f) (map_one f)`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm1 : (-1 : Matrix (Fin d) (Fin d) (AE F E)).map f = -1` using `by rw [Matrix.map_neg _ (map_neg f), h1]`. Establish `hΔT : (fromRows (1 : Matrix (Fin d) (Fin d) (AE F E)) 1 : Matrix (Fin d ⊕ Fin d) (Fin d) (AE F E))ᵀ = fromCols 1 1`. Rewrite using `[transpose_fromRows, transpose_one]`. Establish `hNT : (fromRows (1 : Matrix (Fin d) (Fin d) (AE F E)) (-1) : Matrix (Fin d ⊕ Fin d) (Fin d) (AE F E))ᵀ = fromCols 1 (-1)`. Rewrite using `[transpose_fromRows, transpose_one, transpose_neg, transpose_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΔf : (fromRows (1 : Matrix (Fin d) (Fin d) (AE F E)) 1 : Matrix (Fin d ⊕ Fin d) (Fin d) (AE F E)).map f = fromRows 1 1` using `by rw [fromRows_map, h1]`. Establish `hNtf : (fromCols (1 : Matrix (Fin d) (Fin d) (AE F E)) (-1) : Matrix (Fin d) (Fin d ⊕ Fin d) (AE F E)).map f = fromCols 1 (-1)` using `by rw [fromCols_map, h1, hm1]`. Establish `hskew : Zᵀ * J + J * Z.map f = 0` using `hZskew`. Use `set M : Matrix (Fin d ⊕ Fin d) (Fin d ⊕ Fin d) (AE F E) := (fromRows (1 : Matrix (Fin d) (Fin d) (AE F E)) 1 : Matrix (Fin d ⊕ Fin d) (Fin d) (AE F E)) * Z * (fromCols (1 : Matrix (Fin d) (Fin d) (AE F E)) (-1) : Matrix (Fin d) (Fin d ⊕ Fin d) (AE F E)) with hMdef`. Establish `hinv` using `mul_inv_eq (fromRows (1 : Matrix (Fin d) (Fin d) (AE F E)) 1 : Matrix (Fin d ⊕ Fin d) (Fin d) (AE F E)) (fromCols (1 : Matrix (Fin d) (Fin d) (AE F E)) (-1) : Matrix (Fin d) (Fin d ⊕ Fin d) (AE F E)) e1 Z`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hmem` using `mem_unitary_of_skew f J (dbl J) _ _ _ _ Z hΔT hNT hΔf hNtf (e3 J) (e4 J) (e5 J) hskew`. Set `P : GL (Fin d ⊕ Fin d) (AE F E)` to `⟨1 + ⅟(2 : AE F E) • M, 1 - ⅟(2 : AE F E) • M, hinv.1, hinv.2⟩`. Set `p : UD σ W` to `⟨P, hmem⟩`. Establish `hMu : ∀ u : AF F, evFin F v u = 0 → u • M = 0`. Introduce `u hu`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `hu' : u • Z = 0` using `hZat u hu`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hMdef]`. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul]`. Use `_ = 0 := by rw [hu']; simp`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hpK : p ∈ KD σ W v`. Use `⟨fun u hu => ?_, fun z hz => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Use `show u • ((1 + ⅟(2 : AE F E) • M) - 1) = 0`. Rewrite using `[add_sub_cancel_left, smul_comm, hMu u hu, smul_zero]`. Use `show (1 + ⅟(2 : AE F E) • M) *ᵥ z ∈ latD W v`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Matrix.add_mulVec, Matrix.one_mulVec, Matrix.smul_mulVec, hMdef]`. Simplify using `only [← Matrix.mulVec_mulVec]`. Conclude with `latD_add hz (latD_half h2 (latD_diag (hZlat _ (lat_antiT hz))))`. Use `show (1 - ⅟(2 : AE F E) • M) *ᵥ z ∈ latD W v`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.smul_mulVec, hMdef]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [← Matrix.mulVec_mulVec]`. Conclude with `latD_sub hz (latD_half h2 (latD_diag (hZlat _ (lat_antiT hz))))`. Use `⟨p, hpK, ⟨1, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `key : ((1 : Matrix (Fin d ⊕ Fin d) (Fin d ⊕ Fin d) (AE F E)) + ⅟(2 : AE F E) • M) * (fromRows (1 : Matrix (Fin d) (Fin d) (AE F E)) 1 : Matrix (Fin d ⊕ Fin d) (Fin d) (AE F E)) = (fromRows (1 : Matrix (Fin d) (Fin d) (AE F E)) 1 : Matrix (Fin d ⊕ Fin d) (Fin d) (AE F E))`. Rewrite using `[Matrix.add_mul, Matrix.one_mul, Matrix.smul_mul, hMdef, Matrix.mul_assoc _ _ (fromRows (1 : Matrix (Fin d) (Fin d) (AE F E)) 1 : Matrix (Fin d ⊕ Fin d) (Fin d) (AE F E)), e1, Matrix.mul_zero, smul_zero, add_zero]`.
-
-Use `show ((1 : Matrix (Fin d ⊕ Fin d) (Fin d ⊕ Fin d) (AE F E)) + ⅟(2 : AE F E) • M) * (fromRows (1 : Matrix (Fin d) (Fin d) (AE F E)) 1 : Matrix (Fin d ⊕ Fin d) (Fin d) (AE F E)) = (fromRows (1 : Matrix (Fin d) (Fin d) (AE F E)) 1 : Matrix (Fin d ⊕ Fin d) (Fin d) (AE F E)) * ((1 : G …`. Rewrite using `[Units.val_one, Matrix.mul_one]`. Conclude with `key`. Establish `hNt : (antiCols (F` using `F) (E := E) d)ᵀ = fromCols (1 : Matrix (Fin d) (Fin d) (AE F E)) (-1) := by`. Rewrite using `[antiCols, transpose_fromRows, transpose_one, transpose_neg, transpose_one]`.
-
-Use `show (1 + ⅟(2 : AE F E) • M) = _`. Rewrite using `[hNt, invOf_two_eq, algebraMap_smul]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem unip_mem : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (d : ℕ)
     (W : Spc F E d) (v : Pl F), (2 : 𝓞 F) ∉ v.asIdeal → ∀ Z : Matrix (Fin d) (Fin d) (AE F E), At (evFin F v) Z →

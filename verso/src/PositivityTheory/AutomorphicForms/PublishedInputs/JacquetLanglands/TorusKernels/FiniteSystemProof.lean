@@ -7,7 +7,7 @@ open scoped NNReal
 namespace UpperTheory.Esk.Fin0Aux
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[Nat.cast_succ]`. Conclude with `Valuation.map_add_le ν ih (by simp)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nat_le_one (ν : Valuation ℂ ℝ≥0) (n : ℕ) : ν (n : ℂ) ≤ 1 := by
   induction n with
@@ -17,15 +17,13 @@ theorem nat_le_one (ν : Valuation ℂ ℝ≥0) (n : ℕ) : ν (n : ℂ) ≤ 1 :
     exact Valuation.map_add_le ν ih (by simp)
 
 /- English proof (translation)
-Take `⟨m, rfl⟩ : ∃ m, l = m + 2` from `⟨l - 2, by have := hl.two_le; omega⟩`. Establish `e : (1 + y) ^ (m + 2) - 1 = ∑ k ∈ Finset.range (m + 1), y ^ (k + 1) * ((m + 2).choose (k + 1) : ℂ) + y ^ (m + 2)`. Rewrite using `[add_comm (1 : ℂ) y, add_pow, Finset.sum_range_succ, Finset.sum_range_succ']`. Simplify using `only [one_pow, mul_one, pow_zero, Nat.choose_zero_right, Nat.choose_self, Nat.cast_one]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e]`. Apply `Valuation.map_add_le` to reduce the goal to its premises. Apply `Valuation.map_sum_le` to reduce the goal to its premises. Introduce `k hk`. Establish `hk'` using `Finset.mem_range.1 hk`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨q, hq⟩` from `hl.dvd_choose_self (Nat.succ_ne_zero k) (by omega)`. Rewrite using `[Valuation.map_mul, hq, Nat.cast_mul, Valuation.map_mul, Valuation.map_pow]`. Establish `h1 : ν y ^ (k + 1) ≤ ν y`. Rewrite using `[pow_succ]`. Conclude with `mul_le_of_le_one_left zero_le (pow_le_one₀ zero_le hy)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `nat_le_one ν q`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_one, mul_comm]`. Use `gcongr`. Conclude with `le_max_left _ _`.
-
-Rewrite using `[Valuation.map_pow]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem step (ν : Valuation ℂ ℝ≥0) (l : ℕ) (hl : l.Prime) (y : ℂ) (hy : ν y ≤ 1) :
     ν ((1 + y) ^ l - 1) ≤ max (ν (l : ℂ)) (ν y) * ν y := by
@@ -54,9 +52,9 @@ theorem step (ν : Valuation ℂ ℝ≥0) (l : ℕ) (hl : l.Prime) (y : ℂ) (hy
       _ ≤ _ := by gcongr; exact le_max_right _ _
 
 /- English proof (translation)
-Introduce `a`. Proceed by induction on `a with`. Consider the case `zero => simp`. Consider the case `succ a ih`. Establish `e : (1 + x) ^ (l ^ (a + 1)) - 1 = (1 + ((1 + x) ^ (l ^ a) - 1)) ^ l - 1`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[add_sub_cancel, ← pow_mul, ← pow_succ]`. Rewrite using `[e]`. Establish `hθ : max (ν (l : ℂ)) (ν x) ≤ 1` using `max_le hνl.le hx.le`. Establish `hya : ν ((1 + x) ^ (l ^ a) - 1) ≤ ν x` using `ih.trans (mul_le_of_le_one_left zero_le (pow_le_one₀ zero_le hθ))`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem iter (ν : Valuation ℂ ℝ≥0) (l : ℕ) (hl : l.Prime) (hνl : ν (l : ℂ) < 1) (x : ℂ) (hx : ν x < 1) :
     ∀ a : ℕ, ν ((1 + x) ^ (l ^ a) - 1) ≤ max (ν (l : ℂ)) (ν x) ^ a * ν x := by
@@ -80,20 +78,20 @@ def lam {J : Type} (S : Finset (J → ℂ)) (a : (J → ℂ) → ℂ) : ((J → 
   ∑ s ∈ S, a s • (LinearMap.proj s : ((J → ℂ) → ℂ) →ₗ[ℂ] ℂ)
 
 /- English proof (translation)
-Simplify using `[lam, LinearMap.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lam_apply {J : Type} (S : Finset (J → ℂ)) (a : (J → ℂ) → ℂ) (g : (J → ℂ) → ℂ) :
     lam S a g = ∑ s ∈ S, a s * g s := by
   simp [lam, LinearMap.sum_apply]
 
 /- English proof (translation)
-Introduce `Fs`. Proceed by induction on `Fs with`. Consider the case `nil => intro _ W hW`. Simplify using `using hB W hW`. Consider the case `cons f Fs ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Introduce `hF W hW`. Establish `hf` using `hF f List.mem_cons_self`. Establish `hF' : ∀ g ∈ Fs, ν g.1 ≤ 1 ∧ ν g.2.2 ≤ 1` using `fun g hg => hF g (List.mem_cons_of_mem _ hg)`. Establish `e : (fun s : J → ℂ => (W.map s).prod * ((f :: Fs).map fun f => f.1 * s f.2.1 + f.2.2).prod) = f.1 • (fun s : J → ℂ => ((W ++ [f.2.1]).map s).prod * (Fs.map fun f => f.1 * s f.2.1 + f.2.2).prod) + f.2.2 • (fun s : J → ℂ => (W.map s).prod * (Fs.map fun f => f.1 * s f.2.1 + f.2.2).p …`. Use function extensionality and compare the values at `s`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [List.map_cons, List.prod_cons, List.map_append, List.prod_append, List.map_nil, List.prod_nil, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, map_add, map_smul, map_smul, smul_eq_mul, smul_eq_mul]`. Apply `Valuation.map_add_le` to reduce the goal to its premises. Rewrite using `[Valuation.map_mul]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Valuation.map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem factors {J : Type} (ν : Valuation ℂ ℝ≥0) (Λ : ((J → ℂ) → ℂ) →ₗ[ℂ] ℂ) (P : List J → Prop)
     (hP : ∀ W j, P W → P (W ++ [j])) (B : ℝ≥0) (hB : ∀ W, P W → ν (Λ fun s => (W.map s).prod) ≤ B) :
@@ -123,7 +121,7 @@ theorem factors {J : Type} (ν : Valuation ℂ ℝ≥0) (Λ : ((J → ℂ) → �
         _ = B := one_mul B
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [List.replicate_succ, List.flatten_cons, List.count_append, ih]`. Expand and normalize the polynomial expressions, which then agree.
+Proceed by induction. Treat this case separately. Treat this case separately. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem count_rep {J : Type} [DecidableEq J] (l : List J) (j : J) (n : ℕ) :
     ((List.replicate n l).flatten).count j = n * l.count j := by
@@ -132,7 +130,7 @@ theorem count_rep {J : Type} [DecidableEq J] (l : List J) (j : J) (n : ℕ) :
   | succ n ih => rw [List.replicate_succ, List.flatten_cons, List.count_append, ih]; ring
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [List.replicate_succ, List.flatten_cons, List.map_append, List.prod_append, ih, pow_succ']`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem prod_rep {α : Type} (l : List α) (g : α → ℂ) (n : ℕ) :
     (((List.replicate n l).flatten).map g).prod = (l.map g).prod ^ n := by
@@ -141,11 +139,11 @@ theorem prod_rep {α : Type} (l : List α) (g : α → ℂ) (n : ℕ) :
   | succ n ih => rw [List.replicate_succ, List.flatten_cons, List.map_append, List.prod_append, ih, pow_succ']
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons y l ih`. Establish `hy` using `h y List.mem_cons_self`. Establish `hl` using `ih fun z hz => h z (List.mem_cons_of_mem _ hz)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP : ν l.prod ≤ 1`. Establish `: l.prod = (l.prod - 1) + 1` using `by ring`. Rewrite using `[this]; exact Valuation.map_add_le ν hl.le (by simp)`. Rewrite using `[List.prod_cons, show y * l.prod - 1 = (y - 1) * l.prod + (l.prod - 1) by ring]`. Apply `Valuation.map_add_lt ν _ hl` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Valuation.map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem prod_near_one (ν : Valuation ℂ ℝ≥0) (l : List ℂ) (h : ∀ y ∈ l, ν (y - 1) < 1) : ν (l.prod - 1) < 1 := by
   induction l with
@@ -163,35 +161,31 @@ theorem prod_near_one (ν : Valuation ℂ ℝ≥0) (l : List ℂ) (h : ∀ y ∈
       _ < 1 := by rw [mul_one]; exact hy
 
 /- English proof (translation)
-Establish `hj : ∀ u ∈ S.erase t, ∃ j, u j ≠ t j`. Introduce `u hu`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `(Finset.ne_of_mem_erase hu) (funext h)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `: Nonempty J` using `⟨j0⟩`. Use `choose! jj hjj using hj`. Set `c : ℂ → ℂ` to `fun x => if ν x ≤ 1 then 1 else x⁻¹`. Establish `hc : ∀ x, ν (c x) ≤ 1 ∧ ν (c x * x) ≤ 1 ∧ c x ≠ 0`. Introduce `x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hx : ν x ≤ 1`. Simplify using `only [c, if_pos hx, one_mul]; exact ⟨by simp, hx, one_ne_zero⟩`. Simplify using `only [c, if_neg hx] push_neg at hx`. Establish `hx0 : x ≠ 0` using `by rintro rfl; simp at hx`. Use `⟨?_, ?_, inv_ne_zero hx0⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_inv₀]`. Conclude with `inv_le_one_of_one_le₀ hx.le`. Rewrite using `[inv_mul_cancel₀ hx0]`. Simplify using the standard rewrite rules. Set `Fs : List (ℂ × J × ℂ)` to `(S.erase t).toList.map fun u => (c (u (jj u)), jj u, -(c (u (jj u)) * u (jj u)))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hFs : ∀ f ∈ Fs, ν f.1 ≤ 1 ∧ ν f.2.2 ≤ 1`. Introduce `f hf`. Take `⟨u, -, rfl⟩` from `List.mem_map.1 hf`. Conclude with `⟨(hc _).1, by rw [Valuation.map_neg]; exact (hc _).2.1⟩`. Establish `hP : ∀ (W : List J) (j : J), (∀ i ∈ L, 1 ≤ W.count i) → (∀ i ∈ L, 1 ≤ (W ++ [j]).count i)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Introduce `W j hW i hi`. Rewrite using `[List.count_append]`. Use `hW i hi` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `key` using `factors ν (lam S a) (fun W => ∀ j ∈ L, 1 ≤ W.count j) hP 1 (fun W hW => by rw [lam_apply]; exact hB W hW) Fs hFs`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hR0 : ∀ u ∈ S, u ≠ t → (Fs.map fun f => f.1 * u f.2.1 + f.2.2).prod = 0`. Introduce `u hu hne`. Apply `List.prod_eq_zero` to reduce the goal to its premises. Use `List.mem_map.2 ⟨(c (u (jj u)), jj u, -(c (u (jj u)) * u (jj u))), ?_, ?_⟩` and prove the remaining obligations. Conclude with `List.mem_map.2 ⟨u, Finset.mem_toList.2 (Finset.mem_erase.2 ⟨hne, hu⟩), rfl⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Simplify using the standard rewrite rules. Establish `hRt : (Fs.map fun f => f.1 * t f.2.1 + f.2.2).prod ≠ 0`. Apply `List.prod_ne_zero` to reduce the goal to its premises. Introduce `h`. Take `⟨f, hf, hf0⟩` from `List.mem_map.1 h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨u, hu, rfl⟩` from `List.mem_map.1 hf`. Establish `hu'` using `Finset.mem_toList.1 hu`. Establish `e : c (u (jj u)) * t (jj u) + -(c (u (jj u)) * u (jj u)) = c (u (jj u)) * (t (jj u) - u (jj u))` using `by ring`. Simplify using `only at hf0`. Rewrite `hf0` using `[e]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `mul_eq_zero.1 hf0 with h1 | h1` into its components or cases. Conclude with `(hc _).2.2 h1`. Conclude with `hjj u hu' (sub_eq_zero.1 h1).symm`. Use `set K := a t * (L.toList.map t).prod * (Fs.map fun f => f.1 * t f.2.1 + f.2.2).prod with hKdef`. Establish `hK : K ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `mul_ne_zero (mul_ne_zero hat ?_) hRt` and prove the remaining obligations. Apply `List.prod_ne_zero` to reduce the goal to its premises. Introduce `h`. Take `⟨j, hj, hj0⟩` from `List.mem_map.1 h`. Conclude with `htL j (Finset.mem_toList.1 hj) hj0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hn : ∀ n : ℕ, ν K * ν (t j0) ^ n ≤ 1`. Introduce `n`. Use `key (L.toList ++ List.replicate n j0) (by` as an intermediate fact. Introduce `j hj`. Rewrite using `[List.count_append]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: 1 ≤ L.toList.count j` using `List.count_pos_iff.2 (Finset.mem_toList.2 hj)`. Use the proof step `omega)`. Rewrite `this` using `[lam_apply, Finset.sum_eq_single t (fun u hu hne => mul_eq_zero_of_right _ (mul_eq_zero_of_right _ (hR0 u hu hne))) (fun h => absurd ht h)]`. Establish `e : a t * (((L.toList ++ List.replicate n j0).map t).prod * (Fs.map fun f => f.1 * t f.2.1 + f.2.2).prod) = K * t j0 ^ n`. Rewrite using `[hKdef, List.map_append, List.prod_append, List.map_replicate, List.prod_replicate]`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite `this` using `[e, Valuation.map_mul, Valuation.map_pow]`. Then use the resulting hypothesis. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Establish `hK0 : 0 < ν K` using `pos_iff_ne_zero.2 ((Valuation.ne_zero_iff ν).2 hK)`.
-
-Take `⟨n, hn'⟩` from `pow_unbounded_of_one_lt (ν K)⁻¹ hlt`. Establish `h1 : ν K * (ν K)⁻¹ < ν K * ν (t j0) ^ n` using `mul_lt_mul_of_pos_left hn' hK0`. Rewrite `h1` using `[mul_inv_cancel₀ hK0.ne']`. Conclude with `absurd (hn n) (not_le.2 h1)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral {J : Type} [DecidableEq J] (ν : Valuation ℂ ℝ≥0) (L : Finset J) (S : Finset (J → ℂ))
     (a : (J → ℂ) → ℂ)
@@ -279,77 +273,67 @@ end UpperTheory.Esk.Fin0Aux
 
 open UpperTheory.Esk.Fin0Aux in
 /- English proof (translation)
-Introduce `hSys ν l hl hνl J V V' _ _ _ _ _ _ _ T T' hT hT' L ε ρ hρ hε hW f s hf0 hfs hsL`. Take `⟨S, m, hS, hm, hmsum, htr⟩` from `hSys J V T hT`. Take `⟨S', m', hS', hm', -, htr'⟩` from `hSys J V' T' hT'`. Establish `intV : ∀ u ∈ S, (∀ j ∈ L, u j ≠ 0) → ∀ j, ν (u j) ≤ 1` using `fun u hu huL j => integral ν L S (fun s => (m s : ℂ)) (fun W hW' => by rw [← htr W]; exact (hW W 1 le_rfl hW').1) u hu (Nat.cast_ne_zero.2 (by have := hm u hu; omega)) huL j`. Establish `intV' : ∀ u ∈ S', (∀ j ∈ L, u j ≠ 0) → ∀ j, ν (u j) ≤ 1` using `fun u hu huL j => integral ν L S' (fun s => (m' s : ℂ)) (fun W hW' => by rw [← htr' W]; exact (hW W 1 le_rfl hW').2.1) u hu (Nat.cast_ne_zero.2 (by have := hm' u hu; omega)) huL j`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsS : s ∈ S` using `(hS s).2 ⟨f, hf0, hfs⟩`. Establish `hs0 : ∀ j ∈ L, s j ≠ 0` using `fun j hj h => by have := hsL j hj; rw [h, map_zero] at this; exact zero_ne_one this`. Establish `hsint : ∀ j, ν (s j) ≤ 1` using `intV s hsS hs0`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hS'nc : ∀ u ∈ S', ∃ j, 1 ≤ ν (u j - s j)`. Introduce `u hu`. Take `⟨f', hf', hu'⟩` from `(hS' u).1 hu`. Conclude with `hcon f' u hf' hu'`. Break down `isEmpty_or_nonempty J with hJ | hJ` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hS'e : S' = ∅` using `Finset.eq_empty_of_forall_notMem fun u hu => by`. Take `⟨j, -⟩` from `hS'nc u hu`. Conclude with `(IsEmpty.false j).elim`. Establish `hd1 : 1 ≤ Module.finrank ℂ V` using `hmsum ▸ (hm s hsS).trans (Finset.single_le_sum (fun _ _ => Nat.zero_le _) hsS)`. Establish `hεd` using `hε _ hd1 le_rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨r, hr⟩` from `NNReal.exists_pow_lt_of_lt_one (lt_of_le_of_lt zero_le hεd) hρ`. Use `(hW [] (r + 1) (by omega) (fun j _ => (IsEmpty.false j).elim)).2.2` as an intermediate fact. Rewrite `this` using `[htr, htr', hS'e, Finset.sum_empty, sub_zero]`. Simplify using `only [List.map_nil, List.prod_nil, mul_one] at this`. Rewrite `this` using `[← Nat.cast_sum, hmsum]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `absurd this (not_le.2 (max_lt hεd ((pow_le_pow_of_le_one zero_le hρ.le (by omega)).trans_lt hr)))`. Set `NC : Finset (J → ℂ)` to `(S ∪ S').filter fun u => (∀ j ∈ L, u j ≠ 0) ∧ ∃ j, 1 ≤ ν (u j - s j)`. Establish `hNC : ∀ u ∈ NC, ∃ j, 1 ≤ ν (u j - s j)` using `fun u hu => (Finset.mem_filter.1 hu).2.2`. Use `choose! jn hjn using hNC`. Establish `hNCint : ∀ u ∈ NC, ∀ j, ν (u j) ≤ 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u hu j`. Take `⟨h1, h2, -⟩` from `Finset.mem_filter.1 hu`. Break down `Finset.mem_union.1 h1 with h | h` into its components or cases. Conclude with `intV u h h2 j`. Conclude with `intV' u h h2 j`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hne : ∀ u ∈ NC, s (jn u) - u (jn u) ≠ 0`. Introduce `u hu h`. Use `hjn u hu` as an intermediate fact. Rewrite `this` using `[Valuation.map_sub_swap, h, map_zero]`. Conclude with `absurd this (by simp)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Set `Fl : List (ℂ × J × ℂ)` to `NC.toList.map fun v => ((s (jn v) - v (jn v))⁻¹, jn v, -(v (jn v) * (s (jn v) - v (jn v))⁻¹))`. Establish `hFl : ∀ f ∈ Fl, ν f.1 ≤ 1 ∧ ν f.2.2 ≤ 1`. Introduce `f hf`. Take `⟨v, hv, rfl⟩` from `List.mem_map.1 hf`. Establish `hv'` using `Finset.mem_toList.1 hv`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : ν (s (jn v) - v (jn v))⁻¹ ≤ 1`. Rewrite using `[map_inv₀, Valuation.map_sub_swap]`. Conclude with `inv_le_one_of_one_le₀ (hjn v hv')`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Rewrite using `[Valuation.map_neg, Valuation.map_mul]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Set `G : (J → ℂ) → ℂ` to `fun u => (L.toList.map u).prod * (Fl.map fun f => f.1 * u f.2.1 + f.2.2).prod`. Establish `hG0 : ∀ u ∈ S ∪ S', (∃ j, 1 ≤ ν (u j - s j)) → G u = 0`. Introduce `u hu hnc`. Distinguish the cases in `hI : ∀ j ∈ L, u j ≠ 0`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `huNC : u ∈ NC` using `Finset.mem_filter.2 ⟨hu, hI, hnc⟩`. Apply `mul_eq_zero_of_right` to reduce the goal to its premises. Apply `List.prod_eq_zero` to reduce the goal to its premises. Use `List.mem_map.2 ⟨((s (jn u) - u (jn u))⁻¹, jn u, -(u (jn u) * (s (jn u) - u (jn u))⁻¹)), ?_, ?_⟩` and prove the remaining obligations. Conclude with `List.mem_map.2 ⟨u, Finset.mem_toList.2 huNC, rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Simplify using `only`. Expand and normalize the polynomial expressions, which then agree. Use `push_neg at hI`. Take `⟨j, hj, hj0⟩` from `hI`. Apply `mul_eq_zero_of_left` to reduce the goal to its premises.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Apply `List.prod_eq_zero` to reduce the goal to its premises. Conclude with `List.mem_map.2 ⟨j, Finset.mem_toList.2 hj, hj0⟩`. Set `Cinv : ℂ` to `(L.toList.map fun j => (s j)⁻¹).prod`. Establish `hCinv : ν Cinv = 1`. Establish `: ∀ l' : List J, (∀ j ∈ l', j ∈ L) → ν (l'.map fun j => (s j)⁻¹).prod = 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `l' hl'`. Proceed by induction on `l' with`. Consider the case `nil => simp`. Consider the case `cons j l' ih`. Rewrite using `[List.map_cons, List.prod_cons, Valuation.map_mul, map_inv₀, hsL j (hl' j List.mem_cons_self), ih fun i hi => hl' i (List.mem_cons_of_mem _ hi)]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Conclude with `this _ fun j hj => Finset.mem_toList.1 hj`. Set `cong : Finset (J → ℂ)` to `S.filter fun u => ∀ j, ν (u j - s j) < 1`. Establish `hcong : ∀ u ∈ cong, ν (Cinv * G u - 1) < 1`. Introduce `u hu`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hu'` using `(Finset.mem_filter.1 hu).2`. Establish `e : Cinv * G u = ((L.toList.map fun j => u j * (s j)⁻¹) ++ (Fl.map fun f => f.1 * u f.2.1 + f.2.2)).prod`. Rewrite using `[List.prod_append, List.prod_map_mul]`. Simplify using `only [G, Cinv]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Apply `prod_near_one` to reduce the goal to its premises. Introduce `y hy`. Break down `List.mem_append.1 hy with hy | hy` into its components or cases. Take `⟨j, hj, rfl⟩` from `List.mem_map.1 hy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hsj` using `hs0 j (Finset.mem_toList.1 hj)`. Rewrite using `[show u j * (s j)⁻¹ - 1 = (u j - s j) * (s j)⁻¹ by field_simp, Valuation.map_mul, map_inv₀, hsL j (Finset.mem_toList.1 hj), inv_one, mul_one]`. Conclude with `hu' j`. Take `⟨f, hf, rfl⟩` from `List.mem_map.1 hy`. Take `⟨v, hv, rfl⟩` from `List.mem_map.1 hf`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hv'` using `Finset.mem_toList.1 hv`. Establish `hn0` using `hne v hv'`. Simplify using `only`. Rewrite using `[show (s (jn v) - v (jn v))⁻¹ * u (jn v) + -(v (jn v) * (s (jn v) - v (jn v))⁻¹) - 1 = (u (jn v) - s (jn v)) * (s (jn v) - v (jn v))⁻¹ by field_simp; ring]`. Rewrite using `[Valuation.map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : ν (s (jn v) - v (jn v))⁻¹ ≤ 1`. Rewrite using `[map_inv₀, Valuation.map_sub_swap]`. Conclude with `inv_le_one_of_one_le₀ (hjn v hv')`. Combine the equalities or inequalities in the displayed calculation. Use `set d : ℕ := ∑ u ∈ cong, m u with hd`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hscong : s ∈ cong` using `Finset.mem_filter.2 ⟨hsS, fun j => by simp⟩`. Establish `hd1 : 1 ≤ d` using `(hm s hsS).trans (Finset.single_le_sum (fun _ _ => Nat.zero_le _) hscong)`. Establish `hd2 : d ≤ Module.finrank ℂ V` using `hmsum ▸ Finset.sum_le_sum_of_subset (Finset.filter_subset _ _)`. Establish `hεd` using `hε d hd1 hd2`. Establish `hd0 : 0 < ν (d : ℂ)` using `lt_of_le_of_lt zero_le hεd`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Set `τ : ℝ≥0` to `cong.sup fun u => ν (Cinv * G u - 1)`. Establish `hτ : τ < 1`. Rewrite using `[Finset.sup_lt_iff zero_lt_one]`. Conclude with `hcong`. Use `set θ : ℝ≥0 := max (max (ν (l : ℂ)) τ) ρ with hθdef`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hθ : θ < 1` using `max_lt (max_lt hνl hτ) hρ`. Take `⟨a, ha⟩` from `NNReal.exists_pow_lt_of_lt_one hd0 hθ`. Use `set n : ℕ := l ^ a with hn`. Establish `hn1 : 1 ≤ n` using `Nat.one_le_iff_ne_zero.2 (pow_ne_zero _ hl.ne_zero)`. Establish `hbound : ν ((lam S (fun u => (m u : ℂ)) - lam S' (fun u => (m' u : ℂ))) fun u => G u ^ n) ≤ max ε (ρ ^ n)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `key` using `factors ν (lam S (fun u => (m u : ℂ)) - lam S' (fun u => (m' u : ℂ))) (fun W => ∀ j ∈ L, n ≤ W.count j) (fun W j hW i hi => by rw [List.count_append]; have := hW i hi; omega) (max ε (ρ ^ n)) (fun W hW' => by`. Rewrite using `[LinearMap.sub_apply, lam_apply, lam_apply, ← htr W, ← htr' W]`. Conclude with `(hW W n hn1 hW').2.2)`. Use the proof step `((List.replicate n Fl).flatten) (by`. Introduce `f hf`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Take `⟨l', hl', hfl⟩` from `List.mem_flatten.1 hf`. Rewrite `hfl` using `[List.eq_of_mem_replicate hl']`. Conclude with `hFl f hfl)`. Use the proof step `((List.replicate n L.toList).flatten) (by`. Introduce `j hj`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[count_rep]`. Establish `: 1 ≤ L.toList.count j` using `List.count_pos_iff.2 (Finset.mem_toList.2 hj)`. Use the proof step `nlinarith)`. Use `key using 3` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `u`.
+Fix the arbitrary inputs or assume the hypotheses. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[prod_rep, prod_rep, mul_pow]`. Establish `hval : Cinv ^ n * ((lam S (fun u => (m u : ℂ)) - lam S' (fun u => (m' u : ℂ))) fun u => G u ^ n) = (d : ℂ) + ∑ u ∈ cong, (m u : ℂ) * ((1 + (Cinv * G u - 1)) ^ n - 1)`. Rewrite using `[LinearMap.sub_apply, lam_apply, lam_apply, mul_sub, Finset.mul_sum, Finset.mul_sum]`. Establish `h2 : ∑ u ∈ S', Cinv ^ n * ((m' u : ℂ) * G u ^ n) = 0`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Introduce `u hu`. Rewrite using `[hG0 u (Finset.mem_union_right _ hu) (hS'nc u hu), zero_pow (by omega)]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : ∑ u ∈ S, Cinv ^ n * ((m u : ℂ) * G u ^ n) = ∑ u ∈ cong, (m u : ℂ) * (Cinv * G u) ^ n`. Rewrite using `[Finset.sum_filter]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `u hu`. Use `split_ifs with hc`. Expand and normalize the polynomial expressions, which then agree. Use `push_neg at hc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hG0 u (Finset.mem_union_left _ hu) (by obtain ⟨j, hj⟩ := hc; exact ⟨j, hj⟩), zero_pow (by omega)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, h2, sub_zero, hd]`. Use `push_cast`. Rewrite using `[← Finset.sum_add_distrib]`.
-
-Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `u _`. Expand and normalize the polynomial expressions, which then agree. Establish `hsmall : ν (∑ u ∈ cong, (m u : ℂ) * ((1 + (Cinv * G u - 1)) ^ n - 1)) ≤ θ ^ a`. Apply `Valuation.map_sum_le` to reduce the goal to its premises.
-
-Introduce `u hu`. Rewrite using `[Valuation.map_mul]`. Establish `hx` using `hcong u hu`. Establish `h1` using `iter ν l hl hνl _ hx a`. Establish `hle : ν (Cinv * G u - 1) ≤ τ` using `Finset.le_sup (f := fun u => ν (Cinv * G u - 1)) hu`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[one_mul, mul_one]`. Conclude with `pow_le_pow_left₀ zero_le ((max_le_max le_rfl hle).trans (le_max_left _ _)) a`. Establish `hρn : ρ ^ n ≤ θ ^ a` using `(pow_le_pow_of_le_one zero_le hρ.le (Nat.lt_pow_self hl.one_lt).le).trans (pow_le_pow_left₀ zero_le (le_max_right _ _) a)`. Establish `hdeq : (d : ℂ) = Cinv ^ n * ((lam S (fun u => (m u : ℂ)) - lam S' (fun u => (m' u : ℂ))) fun u => G u ^ n) - ∑ u ∈ cong, (m u : ℂ) * ((1 + (Cinv * G u - 1)) ^ n - 1)`.
-
-Rewrite using `[hval]`. Expand and normalize the polynomial expressions, which then agree. Establish `hfin : ν (d : ℂ) ≤ max (max ε (ρ ^ n)) (θ ^ a)`. Rewrite using `[hdeq]`. Apply `Valuation.map_sub_le` to reduce the goal to its premises.
-
-Rewrite using `[Valuation.map_mul, Valuation.map_pow, hCinv, one_pow, one_mul]`. Conclude with `hbound.trans (le_max_left _ _)`. Conclude with `hsmall.trans (le_max_right _ _)`. Establish `: max (max ε (ρ ^ n)) (θ ^ a) < ν (d : ℂ)` using `max_lt (max_lt hεd (hρn.trans_lt ha)) ha`. Conclude with `absurd hfin (not_le.2 this)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Esk.finite_system_proof : UpperTheory.Esk.Sys → UpperTheory.Esk.Fin0 := by
   intro hSys ν l hl hνl J V V' _ _ _ _ _ _ _ T T' hT hT' L ε ρ hρ hε hW f s hf0 hfs hsL

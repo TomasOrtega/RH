@@ -15,9 +15,9 @@ variable {D : D7} (X : HidaSetting D) (Y : Formalism.L2.SG.Full.Full X) (u u' : 
   (κ : Term D u u' (X.Fu u) (Y.what₂ u) → ℕ)
 
 /- English proof (translation)
-Introduce `R ρ s hs`. Establish `hA` using `Formalism.L2.SG.LeadingMinorsNonvanishing.atSomeAll_holds D X Y u u' s.1.toTerm`. Establish `hG : s.1.toTerm.G ≠ 0`. Introduce `h`. Apply `s.2.1` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show Formalism.L2.SG.TermOp.Gt s.1 = 0`. Simplify using `[Formalism.L2.SG.TermOp.Gt, Formalism.L2.SG.TermOp.GTerm.G, h]`. Conclude with `hA hG hs`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem liftAtSomeC_holds : Formalism.L2.SG.Pf.RowForm.LiftAtSomeC X Y u u' κ := by
   intro R ρ s hs
@@ -30,7 +30,7 @@ theorem liftAtSomeC_holds : Formalism.L2.SG.Pf.RowForm.LiftAtSomeC X Y u u' κ :
   exact hA hG hs
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.SG.Pf.PhaseLiftCell.phaseAgreement_of_lift X Y u u' κ (liftAtSomeC_holds X Y u u' κ) (Formalism.L2.SG.Pf.FinitePhaseConjugation.finPhaseC_of (hNR := Formalism.L2.SG.Pf.normRepExists_of (Formalism.L2.SG.Pf.NormRepX.norm_representative_holds D u u' hP) (Formalism.L2.SG …`.
+A detailed English derivation is pending.
 -/
 theorem phaseTieC_holds (hP : Formalism.MainNotions.S.Lat.PrimeHyp D u (Formalism.MainNotions.S.Lat.Tu D u')) :
     Formalism.L2.SG.Pf.RowForm.PhaseTieC X Y u u' κ :=

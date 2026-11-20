@@ -10,7 +10,7 @@ open GroundTheory.Automorphic (permGL indRep)
 open DoubleCoset (doubleCoset)
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.LeviCont.levi_iso_homeo` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FLeviEquivContinuous.lean&line=13#L13)
 -/

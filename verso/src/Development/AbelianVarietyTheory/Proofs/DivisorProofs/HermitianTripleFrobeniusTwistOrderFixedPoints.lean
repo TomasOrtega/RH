@@ -10,7 +10,7 @@ namespace GlobalTheory.LKMid.SigIter
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => rfl`. Consider the case `succ k ih => rw [Function.iterate_succ_apply', Function.iterate_succ_apply', ← ih]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Both sides reduce to the same expression.
 -/
 theorem iterate_fst (G : HTGroup p) (r k : ℕ) (g : Gr G r) :
     ((⇑(sigG G r))^[k] g).1 = (⇑(GlobalTheory.LKLoc.sig p (Q0 p) 1 r))^[k] g.1 := by
@@ -19,7 +19,7 @@ theorem iterate_fst (G : HTGroup p) (r k : ℕ) (g : Gr G r) :
   | succ k ih => rw [Function.iterate_succ_apply', Function.iterate_succ_apply', ← ih]; rfl
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => rfl`. Consider the case `succ k ih => rw [Function.iterate_succ_apply', Function.iterate_succ_apply', ← ih]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Both sides reduce to the same expression.
 -/
 theorem iterate_snd (G : HTGroup p) (r k : ℕ) (g : Gr G r) (i : Fin G.m) :
     ((⇑(sigG G r))^[k] g).2 i = (⇑(sigRes p (G.Fw i) G.n r))^[k] (g.2 i) := by
@@ -28,9 +28,9 @@ theorem iterate_snd (G : HTGroup p) (r k : ℕ) (g : Gr G r) (i : Fin G.m) :
   | succ k ih => rw [Function.iterate_succ_apply', Function.iterate_succ_apply', ← ih]; rfl
 
 /- English proof (translation)
-Establish `h : ∀ (k : ℕ) (i j : Fin 1), ((⇑(GlobalTheory.LKLoc.sig p (Q0 p) 1 r))^[k] g).val i j = (⇑(frobQ p r))^[k] (g.val i j)`. Introduce `k i j`. Proceed by induction on `k with`. Consider the case `zero => rfl`. Consider the case `succ k ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[Function.iterate_succ_apply', Function.iterate_succ_apply', ← ih]`. Both sides reduce to the same expression. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Rewrite using `[h, GlobalTheory.LKResNrmConj.frobQ_iterate_self p r hr]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem unramifiedExtFrobeniusGL_one_iterate_degree (r : ℕ) (hr : 0 < r) (g : GL (Fin 1) (Qr p r)) :
     (⇑(GlobalTheory.LKLoc.sig p (Q0 p) 1 r))^[r] g = g := by
@@ -46,14 +46,14 @@ theorem unramifiedExtFrobeniusGL_one_iterate_degree (r : ℕ) (hr : 0 < r) (g : 
   rw [h, GlobalTheory.LKResNrmConj.frobQ_iterate_self p r hr]
 
 /- English proof (translation)
-The claim follows from `Algebra.TensorProduct.includeLeft_injective (S := ℚ_[p]) (algebraMap ℚ_[p] (Qr p r)).injective`.
+A detailed English derivation is pending.
 -/
 theorem inclK_injective (K : IntermediateField ℚ_[p] (PadicAlgCl p)) (r : ℕ) :
     Function.Injective (inclK p K r) :=
   Algebra.TensorProduct.includeLeft_injective (S := ℚ_[p]) (algebraMap ℚ_[p] (Qr p r)).injective
 
 /- English proof (translation)
-Use `Prod.ext ?_ (funext fun i => ?_)` and prove the remaining obligations. Rewrite using `[iterate_fst, unramifiedExtFrobeniusGL_one_iterate_degree r hr]`. Rewrite using `[iterate_snd, GlobalTheory.LKResNrmConj.sigRes_iterate_self p (G.Fw i) G.n r hr]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem iterate_self (G : HTGroup p) (r : ℕ) (hr : 0 < r) (g : Gr G r) : (⇑(sigG G r))^[r] g = g := by
   refine Prod.ext ?_ (funext fun i => ?_)
@@ -61,11 +61,11 @@ theorem iterate_self (G : HTGroup p) (r : ℕ) (hr : 0 < r) (g : Gr G r) : (⇑(
   · rw [iterate_snd, GlobalTheory.LKResNrmConj.sigRes_iterate_self p (G.Fw i) G.n r hr]
 
 /- English proof (translation)
-Use `Prod.ext ?_ (funext fun i => ?_)` and prove the remaining obligations. Use `Units.ext (Matrix.ext fun a b => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `frobQ p r (((inclG G r γ).1 : Matrix (Fin 1) (Fin 1) (Qr p r)) a b) = _`. Simplify using `only [inclG, MonoidHom.prodMap, MonoidHom.prod_apply, MonoidHom.coe_comp, Function.comp_apply, MonoidHom.coe_fst, GeneralLinearGroup.coe_scalar, Matrix.scalar_apply, Units.coe_map, MonoidHom.coe_coe]`. Distinguish the cases in `h : a = b`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using `[Matrix.diagonal_apply_eq]`. Simplify using `[Matrix.diagonal_apply_ne _ h]`. Use `Units.ext (Matrix.ext fun a b => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `sigKQ p (G.Fw i) r (((inclG G r γ).2 i : Matrix (Fin G.n) (Fin G.n) (KQ p (G.Fw i) r)) a b) = _`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [inclG, MonoidHom.prodMap, MonoidHom.prod_apply, MonoidHom.coe_comp, Function.comp_apply, MonoidHom.coe_snd, Pi.monoidHom_apply, Pi.evalMonoidHom_apply, GeneralLinearGroup.map_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe]`. Conclude with `sigKQ_apply_inclK p (G.Fw i) r _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fix_incl (G : HTGroup p) (r : ℕ) (γ : Gp G) : sigG G r (inclG G r γ) = inclG G r γ := by
   refine Prod.ext ?_ (funext fun i => ?_)
@@ -91,9 +91,9 @@ namespace GlobalTheory.LKMid.SigIter
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Introduce `γ γ' h`. Establish `h1` using `congrArg (fun g : Gr G r => ((g.1 : Matrix (Fin 1) (Fin 1) (Qr p r)) 0 0)) h`. Establish `h2` using `fun i (a b : Fin G.n) => congrArg (fun g : Gr G r => ((g.2 i : Matrix (Fin G.n) (Fin G.n) (KQ p (G.Fw i) r)) a b)) h`. Simplify using `only [inclG, MonoidHom.prodMap, MonoidHom.prod_apply, MonoidHom.coe_comp, Function.comp_apply, MonoidHom.coe_fst, MonoidHom.coe_snd, GeneralLinearGroup.coe_scalar, Matrix.scalar_apply, Units.coe_map, MonoidHom.coe_coe, Pi.monoidHom_apply, Pi.evalMonoidHom_apply, GeneralLinearGrou …`. Use `Prod.ext (Units.ext ((algebraMap ℚ_[p] (Qr p r)).injective h1)) (funext fun i => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Units.ext (Matrix.ext fun a b => inclK_injective (G.Fw i) r (h2 i a b))`.
+A detailed English derivation is pending.
 -/
 theorem incl_injective (G : HTGroup p) (r : ℕ) : Function.Injective (inclG G r) := by
   intro γ γ' h
@@ -108,19 +108,17 @@ theorem incl_injective (G : HTGroup p) (r : ℕ) : Function.Injective (inclG G r
   exact Units.ext (Matrix.ext fun a b => inclK_injective (G.Fw i) r (h2 i a b))
 
 /- English proof (translation)
-Establish `hf : frobQ p r ((g.1 : Matrix (Fin 1) (Fin 1) (Qr p r)) 0 0) = (g.1 : Matrix (Fin 1) (Fin 1) (Qr p r)) 0 0` using `congrArg (fun x : Gr G r => ((x.1 : Matrix (Fin 1) (Fin 1) (Qr p r)) 0 0)) hg`. Take `⟨c, hc⟩` from `frobQ_fixed_mem p r hr _ hf`. Establish `hdet1 : IsUnit ((g.1 : Matrix (Fin 1) (Fin 1) (Qr p r)) 0 0)`. Use `Matrix.isUnits_det_units g.1` as an intermediate fact. Rewrite `this` using `[Matrix.det_fin_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Rewrite `hc` using `[map_zero]`. Conclude with `not_isUnit_zero (hc ▸ hdet1)`. Establish `hfix : ∀ i (a b : Fin G.n), ∃ x : G.Fw i, inclK p (G.Fw i) r x = (g.2 i : Matrix (Fin G.n) (Fin G.n) (KQ p (G.Fw i) r)) a b` using `fun i a b => sigKQ_fixed_eq_inclK p (G.Fw i) r hr _ (congrArg (fun x : Gr G r => ((x.2 i : Matrix (Fin G.n) (Fin G.n) (KQ p (G.Fw i) r)) a b)) hg)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose M hM using hfix`. Establish `hmap : ∀ i, (Matrix.of (M i)).map (inclK p (G.Fw i) r) = (g.2 i : Matrix (Fin G.n) (Fin G.n) _)` using `fun i => Matrix.ext fun a b => hM i a b`. Establish `hdet : ∀ i, (Matrix.of (M i)).det ≠ 0`. Introduce `i h0`. Establish `e` using `RingHom.map_det (inclK p (G.Fw i) r).toRingHom (Matrix.of (M i))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e` using `[h0, map_zero, RingHom.mapMatrix_apply]`. Establish `e' : (Matrix.of (M i)).map (inclK p (G.Fw i) r).toRingHom = (g.2 i : Matrix (Fin G.n) (Fin G.n) _)` using `hmap i`. Rewrite `e` using `[e']`. Establish `hu` using `Matrix.isUnits_det_units (g.2 i)`. Rewrite `hu` using `[← e]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsub : Subsingleton (KQ p (G.Fw i) r)` using `subsingleton_of_zero_eq_one (isUnit_zero_iff.1 hu)`. Use `inclK_injective (G.Fw i) r (Subsingleton.elim (inclK p (G.Fw i) r 1) (inclK p (G.Fw i) r 0))` as an intermediate fact. Conclude with `one_ne_zero this`. Use `⟨(Units.mk0 c hc0, fun i => GeneralLinearGroup.mkOfDetNeZero (Matrix.of (M i)) (hdet i)), ?_⟩` and prove the remaining obligations. Use `Prod.ext (Units.ext (Matrix.ext fun a b => ?_)) (funext fun i => Units.ext ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `ha : a = 0` using `Subsingleton.elim _ _`. Establish `hb : b = 0` using `Subsingleton.elim _ _`. Substitute `ha hb` using the available equality. Simplify using `only [inclG, MonoidHom.prodMap, MonoidHom.prod_apply, MonoidHom.coe_comp, Function.comp_apply, MonoidHom.coe_fst, GeneralLinearGroup.coe_scalar, Matrix.scalar_apply, Units.coe_map, MonoidHom.coe_coe, Matrix.diagonal_apply_eq, Units.val_mk0]`. Conclude with `hc`.
-
-Rewrite using `[← hmap i]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem fixed_mem_range (G : HTGroup p) (r : ℕ) (hr : 0 < r) (g : Gr G r) (hg : sigG G r g = g) :
     g ∈ (inclG G r).range := by
@@ -166,7 +164,7 @@ theorem fixed_mem_range (G : HTGroup p) (r : ℕ) (hr : 0 < r) (g : Gr G r) (hg 
     rfl
 
 /- English proof (translation)
-Introduce `_ _ G r hr` and use `⟨iterate_self G r hr, fix_incl G r, incl_injective G r, fixed_mem_range G r hr⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem main : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (r : ℕ), 0 < r →
     (∀ g : Gr G r, (⇑(sigG G r))^[r] g = g) ∧ (∀ γ : Gp G, sigG G r (inclG G r γ) = inclG G r γ) ∧
@@ -176,6 +174,6 @@ theorem main : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (r : ℕ), 0 < r →
 end GlobalTheory.LKMid.SigIter
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.LKMid.SigIter.main`.
+A detailed English derivation is pending.
 -/
 example : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (r : ℕ), 0 < r → (∀ g : Gr G r, (⇑(sigG G r))^[r] g = g) ∧ (∀ γ : Gp G, sigG G r (inclG G r γ) = inclG G r γ) ∧ Function.Injective (inclG G r) ∧ ∀ g : Gr G r, sigG G r g = g → g ∈ (inclG G r).range := GlobalTheory.LKMid.SigIter.main

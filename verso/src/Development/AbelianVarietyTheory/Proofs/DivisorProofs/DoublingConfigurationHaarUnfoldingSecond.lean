@@ -23,35 +23,21 @@ namespace GlobalTheory.IwasawaLine
 set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 200000 in
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B b a' G G₁ H H' hC hB hG hG₁ K μK μ hK hμK hμ m hm`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsModuleTopology (AF F) (AE F E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Use `haveI := GlobalTheory.AdelicUnitaryTop.locallyCompact_adele F`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`. Take `⟨e⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (AF F)`. Use `haveI : LocallyCompactSpace (AE F E) := e.isClosedEmbedding.locallyCompactSpace`. Use `haveI : T2Space (AE F E) := e.isEmbedding.t2Space`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `haveI : SecondCountableTopology (AE F E) := e.isEmbedding.secondCountableTopology`. Use `haveI : LocallyCompactSpace (AE F E)ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isClosedEmbedding.locallyCompactSpace`. Use `haveI : LocallyCompactSpace (AE F E)ˣ := Units.isClosedEmbedding_embedProduct.locallyCompactSpace`. Use `haveI : SecondCountableTopology (AE F E)ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isEmbedding.secondCountableTopology`. Use `haveI : SecondCountableTopology (AE F E)ˣ := Units.isEmbedding_embedProduct.secondCountableTopology`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `haveI : T2Space (AE F E)ˣ := Units.isEmbedding_embedProduct.t2Space`. Use `haveI : BorelSpace (AE F E)ˣ := ⟨rfl⟩`. Take `⟨i1, i2, i3⟩` from `GlobalTheory.T.adelic_unitary_locally_compact_hausdorff F E σ (b + 2) G.V.J`. Take `⟨j1, j2, j3⟩` from `GlobalTheory.T.adelic_unitary_locally_compact_hausdorff F E σ b G₁.V.J`. Use `haveI : BorelSpace (UA σ G.V.J) := ⟨rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Use `haveI : BorelSpace (UA σ G₁.V.J) := ⟨rfl⟩`. Use `haveI := hμ`. Use `haveI := hG₁.hM.haar`. Use `haveI := hG.hM.haar`. Use `haveI := hμK`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : SigmaFinite μ := inferInstance`. Use `haveI : SigmaFinite G₁.M.μ := inferInstance`. Use `haveI : (μ.prod G₁.M.μ).IsHaarMeasure := inferInstance`. Establish `hKc : IsCompact (K : Set (UA σ G.V.J))`. Establish `hKe : (K : Set (UA σ G.V.J)) = (GlobalTheory.StabHaar.stabK (σ` using `σ) B G.V : Set _) := by`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `g`. Conclude with `(hK g).trans (GlobalTheory.StabHaar.isStab_stabK B G.V g).symm`. Take `⟨C, hC1, hC2⟩` from `GlobalTheory.T.relatively_compact_stabilizer F E σ B (b + 2) G.V _ _ hB hG.hV`. Rewrite using `[hKe]`. Conclude with `hC1.of_isClosed_subset (GlobalTheory.StabHaar.isClosed_stabK B G.V (GlobalTheory.LatHatClosed.isClosed_latHat F E _ G.V hG.hV.lat)) hC2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨hmul, hcont⟩` from `GlobalTheory.T.levi_section_multiplicative F E σ B b a' G G₁ H H' hC hB hG hG₁ m hm`. Establish `h11 : m 1 1 = 1`. Establish `h` using `hmul 1 1 1 1`. Rewrite `h` using `[one_mul, one_mul]`. Conclude with `mul_left_cancel (h.symm.trans (mul_one _).symm)`.
-
-Set `j : ((AE F E)ˣ × UA σ G₁.V.J) →* UA σ G.V.J` to `{ toFun := fun x => m x.1 x.2, map_one' := h11, map_mul' := fun x y => hmul _ _ _ _ }`. Set `δ : ((AE F E)ˣ × UA σ G₁.V.J) →* ℝ≥0` to `(powMonoidHom (b + 1)).comp ((absE F E).comp (MonoidHom.fst _ _))`. Establish `hδc : Continuous δ` using `(continuous_pow (b + 1)).comp (GlobalTheory.Doubling.continuous_absE.comp continuous_fst)`. Establish `hδ : ∀ x, δ x = absE F E x.1 ^ (b + 1)` using `fun x => rfl`. Take `⟨hNc, hemb⟩` from `GlobalTheory.T.unipotent_radical_closed_bis F E σ B b a' G G₁ H H' hC hB hG hG₁ m hm`.
-
-Use `haveI : LocallyCompactSpace (unip σ G.V H) := hNc.locallyCompactSpace`. Set `μN : Measure (unip σ G.V H)` to `Measure.haar`. Take `⟨c, hc0, hcT, hform⟩` from `GlobalTheory.T.haar_measure_iwasawa_quotient (UA σ G.V.J) ((AE F E)ˣ × UA σ G₁.V.J) (unip σ G.V H) K j δ G.M.μ μN μK (μ.prod G₁.M.μ) hG.hM.haar inferInstance hμK inferInstance hKc hcont hδc (fun x n hn => GlobalTheory.T.levi_normalizes_unipotent F E σ B b a' G G₁ H H' hC hB hG hG …`. Rewrite using `[hδ x, ENNReal.coe_pow]`. Conclude with `GlobalTheory.T.levi_conjugation_haar F E σ B b a' G G₁ H H' hC hB hG hG₁ μN inferInstance x.1 x.2 (m x.1 x.2) (hm _ _) f hf)`.
-
-Use the proof step `(fun g => by`. Take `⟨n, hn, l, g₀, k, hk, rfl⟩` from `GlobalTheory.T.stabilizer_levi_compatible F E σ B b a' G G₁ H H' hC hB hG hG₁ K hK m hm g`. Conclude with `⟨n, hn, (l, g₀), k, hk, rfl⟩)`. Use `⟨μN, c, inferInstance, hc0, hcT, fun φ hφ => ?_⟩` and prove the remaining obligations. Rewrite using `[hform φ hφ]`.
-
-Use `congr 1`. Use `lintegral_congr fun k => ?_` and prove the remaining obligations. Establish `hmeas : Measurable fun p : ((AE F E)ˣ × UA σ G₁.V.J) × unip σ G.V H => φ (p.2.1 * j p.1 * k.1) * ((δ p.1 : ℝ≥0) : ℝ≥0∞)⁻¹`. Use `(hφ.comp (Continuous.measurable ?_)).mul (Continuous.measurable ?_).inv` and prove the remaining obligations. Conclude with `((continuous_subtype_val.comp continuous_snd).mul (hcont.comp continuous_fst)).mul continuous_const`.
-
-Conclude with `ENNReal.continuous_coe.comp (hδc.comp continuous_fst)`. Rewrite using `[lintegral_prod _ hmeas.lintegral_prod_right'.aemeasurable]`. Use `lintegral_congr fun l => lintegral_congr fun g₀ => lintegral_congr fun n => ?_` and prove the remaining obligations. Establish `hne : absE F E l ≠ 0`. Introduce `h0`.
-
-Establish `h` using `(absE F E).map_mul l l⁻¹`. Rewrite `h` using `[mul_inv_cancel, map_one, h0, zero_mul]`. Conclude with `one_ne_zero h`. Establish `hpos : (0 : ℝ) < (absE F E l : ℝ)`. Rewrite using `[NNReal.coe_pos]`.
-
-Conclude with `pos_iff_ne_zero.2 hne`. Use `show φ (n.1 * m l g₀ * k.1) * ((δ (l, g₀) : ℝ≥0) : ℝ≥0∞)⁻¹ = _`. Use `congr 1`. Rewrite using `[hδ, show (1 - ((b + 2 : ℕ) : ℝ)) = -((b + 1 : ℕ) : ℝ) by push_cast; ring, Real.rpow_neg hpos.le, Real.rpow_natCast, ENNReal.ofReal_inv_of_pos (by positivity), ← NNReal.coe_pow, ENNReal.ofReal_coe_nnreal]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iwasawa_formula : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')
     (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' → B.IsGood σ → G.IsGood B → G₁.IsGood B →

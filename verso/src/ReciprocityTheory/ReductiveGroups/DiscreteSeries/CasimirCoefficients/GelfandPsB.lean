@@ -17,7 +17,7 @@ variable {n : ℕ}
 namespace GPs
 
 /- English proof (translation)
-Use `first`. Consider the case `exact contDiff_apply_apply (𝕜 := ℂ) (n := ∞) i j`. Consider the case `fun_prop`. Consider the case `exact ((contDiff_apply ℂ (Fin n → ℂ) i).clm_apply contDiff_const).comp contDiff_id`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma contDiff_entry (i j : Fin n) : ContDiff ℂ ∞ (fun z : Matrix (Fin n) (Fin n) ℂ => z i j) := by
   first
@@ -26,14 +26,14 @@ lemma contDiff_entry (i j : Fin n) : ContDiff ℂ ∞ (fun z : Matrix (Fin n) (F
     | exact ((contDiff_apply ℂ (Fin n → ℂ) i).clm_apply contDiff_const).comp contDiff_id
 
 /- English proof (translation)
-Conclude with `contDiff_pi.2 fun i => contDiff_pi.2 fun j => h i j`.
+A detailed English derivation is pending.
 -/
 lemma contDiff_mat {X : Type*} [NormedAddCommGroup X] [NormedSpace ℂ X] {f : X → Matrix (Fin n) (Fin n) ℂ}
     (h : ∀ i j, ContDiff ℂ ∞ (fun x => f x i j)) : ContDiff ℂ ∞ f := by
   exact contDiff_pi.2 fun i => contDiff_pi.2 fun j => h i j
 
 /- English proof (translation)
-Apply `contDiff_mat` to reduce the goal to its premises. Introduce `i j`. Simplify using `only [Matrix.mul_apply]`. Apply the tactic sequence `exact ContDiff.sum fun k _ => ((contDiff_entry i k).comp hf).mul ((contDiff_entry k j).comp hg)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma contDiff_mmul {X : Type*} [NormedAddCommGroup X] [NormedSpace ℂ X] {f g : X → Matrix (Fin n) (Fin n) ℂ}
     (hf : ContDiff ℂ ∞ f) (hg : ContDiff ℂ ∞ g) : ContDiff ℂ ∞ (fun x => f x * g x) := by
@@ -43,16 +43,16 @@ lemma contDiff_mmul {X : Type*} [NormedAddCommGroup X] [NormedSpace ℂ X] {f g 
   exact ContDiff.sum fun k _ => ((contDiff_entry i k).comp hf).mul ((contDiff_entry k j).comp hg)
 
 /- English proof (translation)
-Conclude with `contDiff_mmul (contDiff_mmul (contDiff_snd.comp contDiff_snd) contDiff_fst) (contDiff_fst.comp contDiff_snd)`.
+A detailed English derivation is pending.
 -/
 lemma contDiff_trip : ContDiff ℂ ∞ (fun p : Matrix (Fin n) (Fin n) ℂ × Matrix (Fin n) (Fin n) ℂ ×
     Matrix (Fin n) (Fin n) ℂ => p.2.2 * p.1 * p.2.1) := by
   exact contDiff_mmul (contDiff_mmul (contDiff_snd.comp contDiff_snd) contDiff_fst) (contDiff_fst.comp contDiff_snd)
 
 /- English proof (translation)
-Unfold `lead`. Distinguish the cases in `h : i ≤ n`. Simplify using `only [h, dite_true, Matrix.det_apply, Units.smul_def, zsmul_eq_mul]`. Use `ContDiff.sum fun σ _ => contDiff_const.mul ?_` and prove the remaining obligations. Use `first`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Treat this case separately.
 
-Consider the case `exact contDiff_prod fun l _ => contDiff_entry (Fin.castLE h (σ l)) (Fin.castLE h l)`. Consider the case `exact ContDiff.finset_prod fun l _ => contDiff_entry (Fin.castLE h (σ l)) (Fin.castLE h l)`. Simplify using `only [h, dite_false]`. Conclude with `contDiff_const`.
+Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma contDiff_lead' (i : ℕ) : ContDiff ℂ ∞ (fun z : Matrix (Fin n) (Fin n) ℂ => lead i z) := by
   unfold lead
@@ -66,13 +66,13 @@ lemma contDiff_lead' (i : ℕ) : ContDiff ℂ ∞ (fun z : Matrix (Fin n) (Fin n
     exact contDiff_const
 
 /- English proof (translation)
-Conclude with `ReciprocityTheory.ChartRestriction.DS.S7.isOpen_omega`.
+A detailed English derivation is pending.
 -/
 lemma isOpen_omega : IsOpen (OmegaSet n : Set (Matrix (Fin n) (Fin n) ℂ)) := by
   exact ReciprocityTheory.ChartRestriction.DS.S7.isOpen_omega
 
 /- English proof (translation)
-Break down `m with k | k` into its components or cases. Simplify `hf.pow k` using `only [Int.ofNat_eq_coe, zpow_natCast]`. Use `((hf.pow (k + 1)).inv (fun x hx => pow_ne_zero _ (h0 x hx))).congr fun x _ => ?_` and prove the remaining obligations. Conclude with `zpow_negSucc (f x) k`.
+Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma contDiffOn_zpow' {f : Matrix (Fin n) (Fin n) ℂ → ℂ} {s : Set (Matrix (Fin n) (Fin n) ℂ)}
     (hf : ContDiffOn ℂ ∞ f s) (h0 : ∀ x ∈ s, f x ≠ 0) (m : ℤ) : ContDiffOn ℂ ∞ (fun y => f y ^ m) s := by
@@ -82,7 +82,7 @@ lemma contDiffOn_zpow' {f : Matrix (Fin n) (Fin n) ℂ → ℂ} {s : Set (Matrix
     exact zpow_negSucc (f x) k
 
 /- English proof (translation)
-Conclude with `phiM_contDiffOn μ`.
+A detailed English derivation is pending.
 -/
 lemma sm_phi (μ : Fin n → ℤ) : ContDiffOn ℂ ∞ (PhiM μ) (OmegaSet n) := by
   exact phiM_contDiffOn μ
@@ -91,7 +91,7 @@ def Wset (n : ℕ) : Set (Matrix (Fin n) (Fin n) ℂ × Matrix (Fin n) (Fin n) �
   {p | p.2.2 * p.1 * p.2.1 ∈ OmegaSet n}
 
 /- English proof (translation)
-Conclude with `isOpen_omega.preimage contDiff_trip.continuous`.
+A detailed English derivation is pending.
 -/
 lemma isOpen_kappaOpenNeighbourhood : IsOpen (Wset n) := by
   exact isOpen_omega.preimage contDiff_trip.continuous
@@ -101,13 +101,13 @@ def g0 (μ : Fin n → ℤ) :
   fun p => PhiM μ (p.2.2 * p.1 * p.2.1)
 
 /- English proof (translation)
-Conclude with `(sm_phi μ).comp contDiff_trip.contDiffOn (fun p hp => hp)`.
+A detailed English derivation is pending.
 -/
 lemma smooth_g0_on_Wset (μ : Fin n → ℤ) : ContDiffOn ℂ ∞ (g0 μ) (Wset n) := by
   exact (sm_phi μ).comp contDiff_trip.contDiffOn (fun p hp => hp)
 
 /- English proof (translation)
-Conclude with `(hg.contDiffAt (isOpen_kappaOpenNeighbourhood.mem_nhds hp)).differentiableAt (by simp)`.
+A detailed English derivation is pending.
 -/
 lemma dAtW {g : Matrix (Fin n) (Fin n) ℂ × Matrix (Fin n) (Fin n) ℂ × Matrix (Fin n) (Fin n) ℂ → ℂ}
     (hg : ContDiffOn ℂ ∞ g (Wset n)) {p} (hp : p ∈ Wset n) : DifferentiableAt ℂ g p := by
@@ -119,7 +119,7 @@ def DH (X : Matrix (Fin n) (Fin n) ℂ)
   fun p => fderiv ℂ g p (X * p.1, 0)
 
 /- English proof (translation)
-Establish `h2 : ContDiff ℂ ∞ (fun p : Matrix (Fin n) (Fin n) ℂ × Matrix (Fin n) (Fin n) ℂ × Matrix (Fin n) (Fin n) ℂ => ((X * p.1, 0) : Matrix (Fin n) (Fin n) ℂ × Matrix (Fin n) (Fin n) ℂ × Matrix (Fin n) (Fin n) ℂ))` using `(contDiff_mmul contDiff_const contDiff_fst).prodMk contDiff_const`. Apply the tactic sequence `have hmn : (∞ : WithTop ℕ∞) + 1 ≤ ∞ := by first | simp | (exact_mod_cast le_rfl) | norm_cast | exact le_of_eq (by rfl)`. Conclude with `(hg.fderiv_of_isOpen isOpen_kappaOpenNeighbourhood hmn).clm_apply h2.contDiffOn`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma sm_DH (X : Matrix (Fin n) (Fin n) ℂ)
     {g : Matrix (Fin n) (Fin n) ℂ × Matrix (Fin n) (Fin n) ℂ × Matrix (Fin n) (Fin n) ℂ → ℂ}
@@ -132,7 +132,7 @@ lemma sm_DH (X : Matrix (Fin n) (Fin n) ℂ)
   exact (hg.fderiv_of_isOpen isOpen_kappaOpenNeighbourhood hmn).clm_apply h2.contDiffOn
 
 /- English proof (translation)
-Establish `hs : HasFDerivAt (fun y : Matrix (Fin n) (Fin n) ℂ => ((y, p.2) : Matrix (Fin n) (Fin n) ℂ × Matrix (Fin n) (Fin n) ℂ × Matrix (Fin n) (Fin n) ℂ)) ((ContinuousLinearMap.id ℂ _).prod 0) p.1` using `(hasFDerivAt_id _).prodMk (hasFDerivAt_const _ _)`. Establish `h1` using `hg.hasFDerivAt.comp p.1 hs`. Establish `h2 : fderiv ℂ (fun y => g (y, p.2)) p.1 = (fderiv ℂ g p).comp ((ContinuousLinearMap.id ℂ _).prod 0)` using `h1.fderiv`. Unfold `DH Lhol`. Rewrite using `[h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -151,7 +151,7 @@ def I0 (n : ℕ) := fderiv ℂ (fun y : Matrix (Fin n) (Fin n) ℂ =>
   ((y, 0) : Matrix (Fin n) (Fin n) ℂ × Matrix (Fin n) (Fin n) ℂ × Matrix (Fin n) (Fin n) ℂ)) 0
 
 /- English proof (translation)
-Establish `hs : HasFDerivAt (fun y : Matrix (Fin n) (Fin n) ℂ => ((y, 0) : Matrix (Fin n) (Fin n) ℂ × Matrix (Fin n) (Fin n) ℂ × Matrix (Fin n) (Fin n) ℂ)) ((ContinuousLinearMap.id ℂ _).prod 0) 0` using `(hasFDerivAt_id _).prodMk (hasFDerivAt_const _ _)`. Unfold `I0`. Rewrite using `[hs.fderiv]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma zeroEmbedding_apply (H : Matrix (Fin n) (Fin n) ℂ) : I0 n H = (H, 0) := by
   have hs : HasFDerivAt (fun y : Matrix (Fin n) (Fin n) ℂ => ((y, 0) : Matrix (Fin n) (Fin n) ℂ × Matrix (Fin n) (Fin n) ℂ × Matrix (Fin n) (Fin n) ℂ))
@@ -161,7 +161,7 @@ lemma zeroEmbedding_apply (H : Matrix (Fin n) (Fin n) ℂ) : I0 n H = (H, 0) := 
   rfl
 
 /- English proof (translation)
-Establish `hs : HasFDerivAt (fun y : Matrix (Fin n) (Fin n) ℂ => ((y, q) : Matrix (Fin n) (Fin n) ℂ × Matrix (Fin n) (Fin n) ℂ × Matrix (Fin n) (Fin n) ℂ)) ((ContinuousLinearMap.id ℂ _).prod 0) x` using `(hasFDerivAt_id _).prodMk (hasFDerivAt_const _ _)`. Conclude with `hs.congr_fderiv (ContinuousLinearMap.ext fun H => by rw [zeroEmbedding_apply]; rfl)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma hasFDerivAt_slice (q : Matrix (Fin n) (Fin n) ℂ × Matrix (Fin n) (Fin n) ℂ)
     (x : Matrix (Fin n) (Fin n) ℂ) :
@@ -194,9 +194,9 @@ Both sides reduce to the same expression.
 lemma psM_eq (T : KType ε Λ) (μ : Fin n → ℤ) : psM T μ = Fint T (g0 μ) := rfl
 
 /- English proof (translation)
-Establish `hM : Continuous (fun k : KG ε => toMK k)`. Unfold `toMK toM`. Use `first`. Consider the case `fun_prop`. Consider the case `exact Units.continuous_val.comp (continuous_subtype_val.comp continuous_subtype_val)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `done`. Conclude with `continuous_fst.prodMk ((hM.comp continuous_snd).prodMk (hM.comp (continuous_inv.comp continuous_snd)))`.
+A detailed English derivation is pending.
 -/
 lemma continuous_emb : Continuous (fun q : Matrix (Fin n) (Fin n) ℂ × KG ε => emb q.1 q.2) := by
   have hM : Continuous (fun k : KG ε => toMK k) := by
@@ -208,7 +208,7 @@ lemma continuous_emb : Continuous (fun q : Matrix (Fin n) (Fin n) ℂ × KG ε =
   exact continuous_fst.prodMk ((hM.comp continuous_snd).prodMk (hM.comp (continuous_inv.comp continuous_snd)))
 
 /- English proof (translation)
-Conclude with `hx k`.
+A detailed English derivation is pending.
 -/
 lemma emb_mem {x : Matrix (Fin n) (Fin n) ℂ} (hx : x ∈ Ps1.Uset ε) (k : KG ε) : emb x k ∈ Wset n := by
   exact hx k
@@ -219,7 +219,7 @@ def FD (T : KType ε Λ)
   fderiv ℂ (fun y : 𝕄f => g (emb y k) • Pk T k) x
 
 /- English proof (translation)
-Establish `h1` using `((dAtW hg hx).hasFDerivAt.comp x (hasFDerivAt_slice (toMK k, toMK k⁻¹) x)).smul_const (Pk T k)`. Conclude with `h1.differentiableAt.hasFDerivAt`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma hasFDerivAt_FD (T : KType ε Λ)
     {g : Matrix (Fin n) (Fin n) ℂ × Matrix (Fin n) (Fin n) ℂ × Matrix (Fin n) (Fin n) ℂ → ℂ}
@@ -229,9 +229,9 @@ lemma hasFDerivAt_FD (T : KType ε Λ)
   exact h1.differentiableAt.hasFDerivAt
 
 /- English proof (translation)
-Establish `h1` using `((dAtW hg hx).hasFDerivAt.comp x (hasFDerivAt_slice (toMK k, toMK k⁻¹) x)).smul_const (Pk T k)`. Establish `h2 : FD T g x k = ((fderiv ℂ g (emb x k)).comp (I0 n)).smulRight (Pk T k)` using `h1.fderiv`. Establish `h3 : ∀ v : Matrix (Fin n) (Fin n) ℂ, ((fderiv ℂ g (emb x k)).comp (I0 n)).smulRight (Pk T k) v = fderiv ℂ g (emb x k) (v, 0) • Pk T k` using `fun v => by`. Rewrite using `[ContinuousLinearMap.smulRight_apply, ContinuousLinearMap.comp_apply, zeroEmbedding_apply]`. Rewrite using `[h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h3 H`.
+A detailed English derivation is pending.
 -/
 lemma FD_apply (T : KType ε Λ)
     {g : Matrix (Fin n) (Fin n) ℂ × Matrix (Fin n) (Fin n) ℂ × Matrix (Fin n) (Fin n) ℂ → ℂ}
@@ -250,9 +250,9 @@ section Int
 variable {g : Matrix (Fin n) (Fin n) ℂ × Matrix (Fin n) (Fin n) ℂ × Matrix (Fin n) (Fin n) ℂ → ℂ}
 
 /- English proof (translation)
-Establish `hop : Continuous (fun k : KG ε => T.op k)` using `continuous_subtype_val.comp T.cont`. Establish `hPk : Continuous (Pk T)` using `(hop.mul continuous_const).mul (hop.comp continuous_inv)`. Rewrite using `[continuousOn_clm_apply]`. Introduce `H`. Establish `hc : ContinuousOn (fun q : Matrix (Fin n) (Fin n) ℂ × KG ε => fderiv ℂ g (emb q.1 q.2) (H, 0) • Pk T q.2) (Ps1.Uset ε ×ˢ Set.univ)` using `(((hg.continuousOn_fderiv_of_isOpen isOpen_kappaOpenNeighbourhood (by simp)).comp continuous_emb.continuousOn (fun q hq => emb_mem hq.1 q.2)).clm_apply continuousOn_const).smul (hPk.comp continuous_snd).continuousOn`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `hc.congr fun q hq => ?_` and prove the remaining obligations. Conclude with `FD_apply T hg q.2 (emb_mem hq.1 q.2) H`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma contOn_FD (T : KType ε Λ) (hg : ContDiffOn ℂ ∞ g (Wset n)) :
     ContinuousOn (fun q : Matrix (Fin n) (Fin n) ℂ × KG ε => FD T g q.1 q.2) (Ps1.Uset ε ×ˢ Set.univ) := by
@@ -268,7 +268,7 @@ lemma contOn_FD (T : KType ε Λ) (hg : ContDiffOn ℂ ∞ g (Wset n)) :
   exact FD_apply T hg q.2 (emb_mem hq.1 q.2) H
 
 /- English proof (translation)
-Establish `hop : Continuous (fun k : KG ε => T.op k)` using `continuous_subtype_val.comp T.cont`. Establish `hPk : Continuous (Pk T)` using `(hop.mul continuous_const).mul (hop.comp continuous_inv)`. Establish `he : Continuous (fun k : KG ε => emb x k)` using `continuous_emb.comp (continuous_const.prodMk continuous_id)`. Establish `hgc : Continuous (fun k => g (emb x k))` using `hg.continuousOn.comp_continuous he (fun k => emb_mem hx k)`. Conclude with `hgc.smul hPk`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma cont_int (T : KType ε Λ) (hg : ContDiffOn ℂ ∞ g (Wset n)) {x : Matrix (Fin n) (Fin n) ℂ}
     (hx : x ∈ Ps1.Uset ε) : Continuous fun k => g (emb x k) • Pk T k := by
@@ -279,7 +279,7 @@ lemma cont_int (T : KType ε Λ) (hg : ContDiffOn ℂ ∞ g (Wset n)) {x : Matri
   exact hgc.smul hPk
 
 /- English proof (translation)
-Conclude with `(contOn_FD T hg).comp_continuous (continuous_const.prodMk continuous_id) (fun k => ⟨hx, Set.mem_univ _⟩)`.
+A detailed English derivation is pending.
 -/
 lemma cont_FD (T : KType ε Λ) (hg : ContDiffOn ℂ ∞ g (Wset n)) {x : Matrix (Fin n) (Fin n) ℂ}
     (hx : x ∈ Ps1.Uset ε) : Continuous (FD T g x) := by
@@ -288,25 +288,23 @@ lemma cont_FD (T : KType ε Λ) (hg : ContDiffOn ℂ ∞ g (Wset n)) {x : Matrix
 variable [CompactSpace (KG ε)]
 
 /- English proof (translation)
-Conclude with `(cont_int T hg hx).integrable_of_hasCompactSupport (isClosed_tsupport _).isCompact`.
+A detailed English derivation is pending.
 -/
 lemma int_int (T : KType ε Λ) (hg : ContDiffOn ℂ ∞ g (Wset n)) {x : Matrix (Fin n) (Fin n) ℂ}
     (hx : x ∈ Ps1.Uset ε) : Integrable (fun k => g (emb x k) • Pk T k) (muK ε) := by
   exact (cont_int T hg hx).integrable_of_hasCompactSupport (isClosed_tsupport _).isCompact
 
 /- English proof (translation)
-Conclude with `(cont_FD T hg hx).integrable_of_hasCompactSupport (isClosed_tsupport _).isCompact`.
+A detailed English derivation is pending.
 -/
 lemma int_FD (T : KType ε Λ) (hg : ContDiffOn ℂ ∞ g (Wset n)) {x : Matrix (Fin n) (Fin n) ℂ}
     (hx : x ∈ Ps1.Uset ε) : Integrable (FD T g x) (muK ε) := by
   exact (cont_FD T hg hx).integrable_of_hasCompactSupport (isClosed_tsupport _).isCompact
 
 /- English proof (translation)
-Unfold `Fint`. Use `HasFDerivAt.const_smul (f := fun x : 𝕄f => ∫ k, g (emb x k) • Pk T k ∂(muK ε)) ?_ (cK T)` and prove the remaining obligations. Take `⟨r, hr, hball⟩` from `Metric.isOpen_iff.1 (Ps1.isOpen_Uset (ε := ε)) z hz`. Establish `hcb : Metric.closedBall z (r / 2) ⊆ Ps1.Uset ε` using `(Metric.closedBall_subset_ball (by linarith)).trans hball`. Establish `hK : IsCompact (Metric.closedBall z (r / 2) ×ˢ (Set.univ : Set (KG ε)))` using `(isCompact_closedBall z (r / 2)).prod isCompact_univ`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨C, hC⟩` from `hK.exists_bound_of_continuousOn ((contOn_FD T hg).mono (Set.prod_mono hcb le_rfl))`. Use `hasFDerivAt_integral_of_dominated_of_fderiv_le (F' := FD T g) (Metric.ball_mem_nhds (z : 𝕄f) (half_pos hr)) ?_ (int_int T hg hz) ?_ ?_ (integrable_const C) ?_` and prove the remaining obligations. Use `filter_upwards [(Ps1.isOpen_Uset (ε := ε)).mem_nhds hz] with y hy`. Conclude with `(cont_int T hg hy).aestronglyMeasurable`. Conclude with `(cont_FD T hg hz).aestronglyMeasurable`.
-
-Conclude with `ae_of_all _ fun k y hy => hC (y, k) ⟨Metric.ball_subset_closedBall hy, Set.mem_univ _⟩`. Conclude with `ae_of_all _ fun k y hy => hasFDerivAt_FD T hg k (emb_mem (hcb (Metric.ball_subset_closedBall hy)) k)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma hasFDerivAt_Fint (T : KType ε Λ) (hg : ContDiffOn ℂ ∞ g (Wset n)) {z : Matrix (Fin n) (Fin n) ℂ}
     (hz : z ∈ Ps1.Uset ε) :
@@ -328,11 +326,11 @@ lemma hasFDerivAt_Fint (T : KType ε Λ) (hg : ContDiffOn ℂ ∞ g (Wset n)) {z
   · exact ae_of_all _ fun k y hy => hasFDerivAt_FD T hg k (emb_mem (hcb (Metric.ball_subset_closedBall hy)) k)
 
 /- English proof (translation)
-Establish `h2 : fderiv ℂ (fun x : 𝕄f => Fint T g x) z = cK T • ∫ k, FD T g z k ∂(muK ε)` using `(hasFDerivAt_Fint T hg hz).fderiv`. Establish `h4 : fderiv ℂ (fun x : 𝕄f => Fint T g x) z (X * z) = cK T • ∫ k, FD T g z k (X * z) ∂(muK ε)`. Rewrite using `[h2]`. Conclude with `congrArg (cK T • ·) (ContinuousLinearMap.integral_apply (int_FD T hg hz) (show 𝕄f from X * z))`. Establish `h5 : ∀ k, FD T g z k (X * z) = DH X g (emb z k) • Pk T k` using `fun k => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[FD_apply T hg k (emb_mem hz k)]`. Both sides reduce to the same expression. Unfold `Lhol`. Use `h4.trans ?_` and prove the remaining obligations. Unfold `Fint`.
+Both sides reduce to the same expression. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Simplify using `only [h5]`.
+A detailed English derivation is pending.
 -/
 lemma lhol_Fint (T : KType ε Λ) (hg : ContDiffOn ℂ ∞ g (Wset n)) (X : Matrix (Fin n) (Fin n) ℂ)
     {z : Matrix (Fin n) (Fin n) ℂ} (hz : z ∈ Ps1.Uset ε) : Lhol X (Fint T g) z = Fint T (DH X g) z := by
@@ -349,7 +347,7 @@ lemma lhol_Fint (T : KType ε Λ) (hg : ContDiffOn ℂ ∞ g (Wset n)) (X : Matr
   simp only [h5]
 
 /- English proof (translation)
-Unfold `Fint`. Rewrite using `[← Finset.smul_sum]`. Use `congr 1`. Simplify using `only [Finset.sum_apply, Finset.sum_smul]`. Conclude with `integral_finset_sum s fun i hi => int_int T (hG i hi) hx`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma Fint_sum (T : KType ε Λ) {ι : Type*} (s : Finset ι)
     (G : ι → Matrix (Fin n) (Fin n) ℂ × Matrix (Fin n) (Fin n) ℂ × Matrix (Fin n) (Fin n) ℂ → ℂ)
@@ -368,11 +366,9 @@ section Ops
 variable {g : Matrix (Fin n) (Fin n) ℂ × Matrix (Fin n) (Fin n) ℂ × Matrix (Fin n) (Fin n) ℂ → ℂ}
 
 /- English proof (translation)
-Proceed by induction on `m generalizing a b with`. Consider the case `zero`. Simplify using `only [opPow]`. Use `split_ifs`. Conclude with `hg`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Conclude with `contDiff_zero_fun.contDiffOn`. Consider the case `succ m ih`. Simplify using `only [opPow]`. Establish `: (∑ c, DH (M a c) (opPow (fun a b => DH (M a b)) m c b g)) = fun p => ∑ c, DH (M a c) (opPow (fun a b => DH (M a b)) m c b g) p`. Use function extensionality and compare the values at `p`.
-
-Simplify using `[Finset.sum_apply]`. Rewrite using `[this]`. Conclude with `ContDiffOn.sum fun c _ => sm_DH _ (ih c b)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma sm_opPowH (M : Fin n → Fin n → Matrix (Fin n) (Fin n) ℂ) (hg : ContDiffOn ℂ ∞ g (Wset n))
     (m : ℕ) (a b : Fin n) : ContDiffOn ℂ ∞ (opPow (fun a b => DH (M a b)) m a b g) (Wset n) := by
@@ -391,11 +387,11 @@ lemma sm_opPowH (M : Fin n → Fin n → Matrix (Fin n) (Fin n) ℂ) (hg : ContD
     exact ContDiffOn.sum fun c _ => sm_DH _ (ih c b)
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero`. Introduce `a b p hp`. Simplify using `only [opPow]`. Apply the tactic sequence `split_ifs <;> rfl`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Consider the case `succ m ih`. Introduce `a b p hp`. Simplify using `only [opPow, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[DH_slice (M a c) (dAtW (sm_opPowH M hg m c b) hp)]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hV : IsOpen {y : Matrix (Fin n) (Fin n) ℂ | (y, p.2) ∈ Wset n}` using `isOpen_kappaOpenNeighbourhood.preimage (continuous_id.prodMk continuous_const)`. Conclude with `GPs.lhol_congr hV (fun y hy => ih c b (y, p.2) hy) (M a c) hp`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma opPowH_slice (M : Fin n → Fin n → Matrix (Fin n) (Fin n) ℂ) (hg : ContDiffOn ℂ ∞ g (Wset n))
     (m : ℕ) : ∀ a b, ∀ p ∈ Wset n, opPow (fun a b => DH (M a b)) m a b g p =
@@ -417,11 +413,11 @@ lemma opPowH_slice (M : Fin n → Fin n → Matrix (Fin n) (Fin n) ℂ) (hg : Co
 variable {ε : Fin n → Bool} {Λ : Fin n → ℝ} [CompactSpace (KG ε)]
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero`. Introduce `a b z hz`. Simplify using `only [opPow]`. Use `split_ifs`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Simplify using `[Fint]`. Consider the case `succ m ih`. Introduce `a b z hz`. Simplify using `only [opPow, Finset.sum_apply]`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fint_sum T Finset.univ _ (fun c _ => sm_DH (M a c) (sm_opPowH M hg m c b)) hz]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[GPs.lhol_congr (Ps1.isOpen_Uset (ε := ε)) (fun y hy => ih c b y hy) (M a c) hz]`. Conclude with `lhol_Fint T (sm_opPowH M hg m c b) (M a c) hz`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma opPow_Fint (T : KType ε Λ) (M : Fin n → Fin n → Matrix (Fin n) (Fin n) ℂ)
     (hg : ContDiffOn ℂ ∞ g (Wset n)) (m : ℕ) : ∀ a b, ∀ z ∈ Ps1.Uset ε,
@@ -442,11 +438,11 @@ lemma opPow_Fint (T : KType ε Λ) (M : Fin n → Fin n → Matrix (Fin n) (Fin 
     exact lhol_Fint T (sm_opPowH M hg m c b) (M a c) hz
 
 /- English proof (translation)
-Establish `key : ∀ k : KG ε, (∑ a, opPow (fun a b => DH (M a b)) m a a (g0 μ)) (emb z k) = C * g0 μ (emb z k)`. Introduce `k`. Establish `hp` using `emb_mem hz k`. Rewrite using `[Finset.sum_apply, Finset.sum_congr rfl fun a _ => opPowH_slice M (smooth_g0_on_Wset μ) m a a _ hp]`. Establish `h` using `hM k z (hz k)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `opGelfand at h`. Rewrite `h` using `[Finset.sum_apply]`. Conclude with `h`. Rewrite using `[psM_eq]`. Unfold `opGelfand`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_apply, Finset.sum_congr rfl fun a _ => opPow_Fint T M (smooth_g0_on_Wset μ) m a a z hz, ← Fint_sum T Finset.univ _ (fun a _ => sm_opPowH M (smooth_g0_on_Wset μ) m a a) hz]`. Unfold `Fint`. Repeatedly rewrite using `[key, mul_smul]`. Rewrite using `[integral_smul, smul_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gelfand_Fint (T : KType ε Λ) (μ : Fin n → ℤ) (M : Fin n → Fin n → Matrix (Fin n) (Fin n) ℂ)
     (m : ℕ) (C : ℂ)
@@ -475,7 +471,7 @@ theorem gelfand_Fint (T : KType ε Λ) (μ : Fin n → ℤ) (M : Fin n → Fin n
 end Ops
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `lhs : (A * Matrix.single a b 1 * B : Matrix (Fin n) (Fin n) ℂ) i j = A i a * B b j`. Simplify using `[Matrix.mul_apply, Matrix.single_apply, ite_and, Finset.sum_ite_eq, Finset.sum_ite_eq', ite_mul]`. Rewrite using `[lhs, Matrix.sum_apply]`. Simplify using `[Matrix.sum_apply, Matrix.single_apply, ite_and, Finset.sum_ite_eq, Finset.sum_ite_eq']`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma exp1 (A B : Matrix (Fin n) (Fin n) ℂ) (a b : Fin n) :
     A * Matrix.single a b 1 * B = ∑ c, ∑ d, (Aᵀ a c * Bᵀ d b) • Matrix.single c d (1 : ℂ) := by
@@ -486,7 +482,7 @@ lemma exp1 (A B : Matrix (Fin n) (Fin n) ℂ) (a b : Fin n) :
   simp [Matrix.sum_apply, Matrix.single_apply, ite_and, Finset.sum_ite_eq, Finset.sum_ite_eq']
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `lhs : (A * Matrix.single (Fin.rev b) (Fin.rev a) 1 * B : Matrix (Fin n) (Fin n) ℂ) i j = A i (Fin.rev b) * B (Fin.rev a) j`. Simplify using `[Matrix.mul_apply, Matrix.single_apply, ite_and, Finset.sum_ite_eq, Finset.sum_ite_eq', ite_mul]`. Rewrite using `[lhs, Matrix.sum_apply]`. Simplify using `[Matrix.sum_apply, Matrix.single_apply, ite_and, Finset.sum_ite_eq, Finset.sum_ite_eq', Fin.rev_eq_iff, mul_comm]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma exp2 (A B : Matrix (Fin n) (Fin n) ℂ) (a b : Fin n) :
     A * Matrix.single (Fin.rev b) (Fin.rev a) 1 * B = ∑ c, ∑ d, ((B.submatrix Fin.revPerm Fin.revPerm) a c *
@@ -498,13 +494,13 @@ lemma exp2 (A B : Matrix (Fin n) (Fin n) ℂ) (a b : Fin n) :
   simp [Matrix.sum_apply, Matrix.single_apply, ite_and, Finset.sum_ite_eq, Finset.sum_ite_eq', Fin.rev_eq_iff, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.transpose_mul, h, Matrix.transpose_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma tr1 {A B : Matrix (Fin n) (Fin n) ℂ} (h : B * A = 1) : Aᵀ * Bᵀ = 1 := by
   rw [← Matrix.transpose_mul, h, Matrix.transpose_one]
 
 /- English proof (translation)
-Rewrite using `[Matrix.submatrix_mul_equiv, h, Matrix.submatrix_one_equiv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma sub1 {A B : Matrix (Fin n) (Fin n) ℂ} (h : B * A = 1) :
     (B.submatrix Fin.revPerm Fin.revPerm) * (A.submatrix Fin.revPerm Fin.revPerm) = 1 := by

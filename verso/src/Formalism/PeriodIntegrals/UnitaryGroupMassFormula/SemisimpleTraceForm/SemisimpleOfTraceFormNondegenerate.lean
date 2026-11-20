@@ -9,9 +9,9 @@ open PI.SSAscent
 open Matrix
 
 /- English proof (translation)
-Use `IsSemisimpleModule.of_injective (LinearMap.pi fun j : Fin a => LinearMap.toSpanSingleton A (Fin a → k) (Pi.single j 1)) ?_` and prove the remaining obligations. Use `(injective_iff_map_eq_zero _).mpr fun x hx => ?_` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `i j`. Establish `h1` using `congrFun (congrFun hx j) i`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.pi_apply, LinearMap.toSpanSingleton_apply, smul_sub_def, Pi.zero_apply] at h1`. Simplify `h1` using `[Matrix.mulVec, dotProduct, Pi.single_apply]`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem isSemisimpleModule_self_of_vectors {k : Type} [Field k] {a : ℕ}
     (A : Subalgebra k (Matrix (Fin a) (Fin a) k)) [IsSemisimpleModule A (Fin a → k)] :
@@ -27,25 +27,23 @@ private theorem isSemisimpleModule_self_of_vectors {k : Type} [Field k] {a : ℕ
   simpa [Matrix.mulVec, dotProduct, Pi.single_apply] using h1
 
 /- English proof (translation)
-Establish `hnil : ∀ z : A, (∀ y ∈ A, Matrix.trace ((z : Matrix (Fin a) (Fin a) K) * y) = 0) → IsNilpotent z`. Introduce `z hz`. Establish `hM : IsNilpotent (z : Matrix (Fin a) (Fin a) K)`. Use `hT K a _ fun m hm => ?_` and prove the remaining obligations. Consider the cases of `m with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data.
 
-Consider the case `zero => exact absurd hm (lt_irrefl 0)`. Consider the case `succ m`. Rewrite using `[pow_succ']`. Conclude with `hz _ (pow_mem z.2 m)`. Take `⟨n, hn⟩` from `hM`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨n, Subtype.ext (by simpa using hn)⟩`. Establish `hspan : ∀ e ∈ Ideal.span ({x} : Set A), IsNilpotent e`. Introduce `e he`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.mp he`. Apply `hnil` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Establish `hc : ((c * x : A) : Matrix (Fin a) (Fin a) K) = (c : Matrix (Fin a) (Fin a) K) * (x : Matrix (Fin a) (Fin a) K)` using `rfl`. Rewrite using `[hc, mul_assoc, Matrix.trace_mul_comm, mul_assoc]`. Conclude with `hx _ (A.mul_mem hy c.2)`. Take `⟨L, hc⟩` from `exists_isCompl (Ideal.span ({x} : Set A))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (1 : A) ∈ Ideal.span ({x} : Set A) ⊔ L`. Rewrite using `[hc.sup_eq_top]`. Conclude with `Submodule.mem_top`. Take `⟨e, he, f, hf, hef⟩` from `Submodule.mem_sup.mp h1`. Establish `hdis` using `Submodule.disjoint_def.mp hc.disjoint`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hee : e * e = e`. Establish `h2 : e - e * e ∈ Ideal.span ({x} : Set A)` using `sub_mem he (Ideal.mul_mem_left _ e he)`. Establish `h3 : e - e * e ∈ L`. Establish `h4 : e - e * e = e * f`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h4]`. Conclude with `Ideal.mul_mem_left _ e hf`. Conclude with `(sub_eq_zero.mp (hdis _ h2 h3)).symm`. Establish `he0 : e = 0`. Take `⟨n, hn⟩` from `hspan e he`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `key : ∀ m : ℕ, e ^ (m + 1) = e`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => rw [zero_add, pow_one]`. Consider the case `succ m ih => rw [pow_succ, ih, hee]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← key n, pow_succ, hn, zero_mul]`. Establish `hxf : x = x * f`. Combine the equalities or inequalities in the displayed calculation. Use `hdis x (Ideal.subset_span (Set.mem_singleton x)) ?_` and prove the remaining obligations. Rewrite using `[hxf]`.
-
-Conclude with `Ideal.mul_mem_left _ x hf`.
+A detailed English derivation is pending.
 -/
 private theorem eq_zero_of_trace_mul_eq_zero' {K : Type} [Field K] [CharZero K] {a : ℕ}
     (hT : TraceNilStep) (A : Subalgebra K (Matrix (Fin a) (Fin a) K))
@@ -103,9 +101,7 @@ private theorem eq_zero_of_trace_mul_eq_zero' {K : Type} [Field K] [CharZero K] 
   exact Ideal.mul_mem_left _ x hf
 
 /- English proof (translation)
-Introduce `K _ _ Γ _ a ρ hρ`. Use `haveI := isSemisimple_of_isSSRep ρ hρ`. Use `haveI := isSemisimpleModule_self_of_vectors (imAlg ρ)`. Introduce `x hx hxy`. Establish `h` using `eq_zero_of_trace_mul_eq_zero' hT (imAlg ρ) ⟨x, hx⟩ hxy`.
-
-Simplify using `using congrArg Subtype.val h`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem downStep_of (hT : TraceNilStep) : DownStep := by
   intro K _ _ Γ _ a ρ hρ
@@ -116,7 +112,7 @@ theorem downStep_of (hT : TraceNilStep) : DownStep := by
   simpa using congrArg Subtype.val h
 
 /- English proof (translation)
-Take `⟨n, hn⟩` from `IsSemiprimaryRing.isNilpotent (R := R)`. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `h : x ^ n ∈ Ring.jacobson R ^ n` using `Submodule.pow_mem_pow (Ring.jacobson R) hx n`. Rewrite `h` using `[hn]`. Simplify using `using h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem isNilpotent_of_mem_jacobson_of_artinian {R : Type} [Ring R] [IsArtinianRing R] (x : R)
     (hx : x ∈ Ring.jacobson R) : IsNilpotent x := by
@@ -127,11 +123,9 @@ private theorem isNilpotent_of_mem_jacobson_of_artinian {R : Type} [Ring R] [IsA
   simpa using h
 
 /- English proof (translation)
-Use `haveI : Module.Finite k A := Module.Finite.of_injective (A.val.toLinearMap) Subtype.val_injective`. Use `haveI : IsArtinianRing A := IsArtinianRing.of_finite k A`. Use `IsArtinianRing.isSemisimpleRing_iff_jacobson.mpr ?_` and prove the remaining obligations. Use `(Submodule.eq_bot_iff _).mpr fun x hx => ?_` and prove the remaining obligations. Establish `hx0 : (x : Matrix (Fin a) (Fin a) k) = 0`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `h x x.2 fun y hy => ?_` and prove the remaining obligations. Establish `hyx : ((⟨y, hy⟩ : A) * x) ∈ Ring.jacobson A` using `Ideal.mul_mem_left _ _ hx`. Establish `hn : IsNilpotent (((⟨y, hy⟩ : A) * x : A) : Matrix (Fin a) (Fin a) k)` using `(isNilpotent_of_mem_jacobson_of_artinian _ hyx).map A.val`. Rewrite using `[Matrix.trace_mul_comm]`. Conclude with `(Matrix.isNilpotent_trace_of_isNilpotent hn).eq_zero`.
-
-Conclude with `Subtype.ext hx0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isSemisimpleRing_of_trNondeg {k : Type} [Field k] {a : ℕ}
     (A : Subalgebra k (Matrix (Fin a) (Fin a) k)) (h : TrNondeg A) :
@@ -150,7 +144,7 @@ private theorem isSemisimpleRing_of_trNondeg {k : Type} [Field k] {a : ℕ}
   exact Subtype.ext hx0
 
 /- English proof (translation)
-Introduce `k _ Γ _ a ρ h`. Apply `isSSRep_of_isSemisimple` to reduce the goal to its premises. Use `haveI := isSemisimpleRing_of_trNondeg (imAlg ρ) h`. Use `infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem semisimpleOfTraceFormNondegenerate : UpStep := by
   intro k _ Γ _ a ρ h

@@ -1,11 +1,11 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `G Q _ _ _ _ Γ _ μ _ D π hπ hinv hcov p hp`. Rewrite `hp`, the goal using `[MeasureTheory.ae_iff]`. Take `⟨N, hsub, hNm, hN0⟩` from `MeasureTheory.exists_measurable_superset_of_null hp`. Rewrite `hN0` using `[MeasureTheory.Measure.map_apply hπ hNm, MeasureTheory.Measure.restrict_apply (hπ hNm)]`. Establish `hcover : {y | ¬ p (π y)} ⊆ ⋃ γ : Γ, (fun g : G => (γ : G) * g) ⁻¹' (π ⁻¹' N ∩ D)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `y hy`. Take `⟨γ, hγ⟩` from `hcov y`. Use `Set.mem_iUnion.2 ⟨γ, ?_, hγ⟩` and prove the remaining obligations. Use `show π ((γ : G) * y) ∈ N`. Rewrite using `[hinv]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hsub hy`. Use `MeasureTheory.measure_mono_null hcover (MeasureTheory.measure_iUnion_null fun γ => ?_)` and prove the remaining obligations. Rewrite using `[MeasureTheory.measure_preimage_mul]`. Conclude with `hN0`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ae_fundamental_domain :
     ∀ {G Q : Type} [Group G] [MeasurableSpace G] [MeasurableMul G] [MeasurableSpace Q]

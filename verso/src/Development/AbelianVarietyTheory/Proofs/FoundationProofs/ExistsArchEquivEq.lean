@@ -18,7 +18,7 @@ def placeOf (D : D7) (ρ : D.what₂.Tau) : InfinitePlace D.host.F :=
   InfinitePlace.mk ((tauE D ρ).comp (algebraMap D.host.F D.host.E))
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CMTypePlaces.places_bijective D`.
+A detailed English derivation is pending.
 -/
 theorem placeOf_bijective (D : D7) : Function.Bijective (placeOf D) := GlobalTheory.CMTypePlaces.places_bijective D
 
@@ -34,20 +34,20 @@ Both sides reduce to the same expression.
 @[simp] theorem embOverOf_val (D : D7) (ρ : D.what₂.Tau) : (embOverOf D ρ).1 = tauE D ρ := rfl
 
 /- English proof (translation)
-Introduce `ρ` and use `isInfEmb_infProj (embOverOf D ρ)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isInfFam_infProj (D : D7) : IsInfFam (D := D) fun ρ : D.what₂.Tau => infProj (embOverOf D ρ) :=
   fun ρ => isInfEmb_infProj (embOverOf D ρ)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, isInfFam_infProj D⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_isInfFam (D : D7) : ∃ θ, IsInfFam (D := D) θ := ⟨_, isInfFam_infProj D⟩
 
 variable {D : D7}
 
 /- English proof (translation)
-Rewrite using `[placeOf, ← hτ, τ.2, InfinitePlace.mk_embedding]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_placeOf {ρ : D.what₂.Tau} {w : InfinitePlace D.host.F} (τ : EmbOver D.host.E w) (hτ : τ.1 = tauE D ρ) :
     w = placeOf D ρ := by
@@ -56,14 +56,14 @@ theorem eq_placeOf {ρ : D.what₂.Tau} {w : InfinitePlace D.host.F} (τ : EmbOv
 variable {θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)}
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.LettersCheck.isInfEmb_unique _ _ _ (hθ ρ) (hτ ▸ isInfEmb_infProj τ)`.
+A detailed English derivation is pending.
 -/
 theorem eq_infProj (hθ : IsInfFam θ) {ρ : D.what₂.Tau} {w : InfinitePlace D.host.F} (τ : EmbOver D.host.E w)
     (hτ : τ.1 = tauE D ρ) : θ ρ = infProj τ :=
   GlobalTheory.LettersCheck.isInfEmb_unique _ _ _ (hθ ρ) (hτ ▸ isInfEmb_infProj τ)
 
 /- English proof (translation)
-Use `⟨mem_infPts.2 (projFin_embArch _ _ w x), ?_, fun ρ' h => ?_⟩` and prove the remaining obligations. Rewrite using `[eq_infProj hθ τ hτ, infMat_infProj V.gram (isCMExt_host D), projArch_embArch_self]`. Establish `hw : placeOf D ρ' ≠ w` using `fun e => h ((placeOf_bijective D).1 (e.trans (eq_placeOf τ hτ)))`. Rewrite using `[eq_infProj hθ (embOverOf D ρ') rfl, infMat_infProj V.gram (isCMExt_host D), projArch_embArch_ne _ _ hw, map_one]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem isAtTau_embArch (hθ : IsInfFam θ) (V : HSp D) {ρ : D.what₂.Tau} {w : InfinitePlace D.host.F}
     (τ : EmbOver D.host.E w) (hτ : τ.1 = tauE D ρ) (x : GArch D.sp.cm.sig V.gram w) :
@@ -76,7 +76,7 @@ theorem isAtTau_embArch (hθ : IsInfFam θ) (V : HSp D) {ρ : D.what₂.Tau} {w 
     rfl
 
 /- English proof (translation)
-Establish `h` using `(archEquiv V.gram (isCMExt_host D) τ x).2`. Rewrite using `[gramAt, ← hτ]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem archEquiv_mem_UH (V : HSp D) {ρ : D.what₂.Tau} {w : InfinitePlace D.host.F}
     (τ : EmbOver D.host.E w) (hτ : τ.1 = tauE D ρ) (x : GArch D.sp.cm.sig V.gram w) :
@@ -86,7 +86,7 @@ theorem archEquiv_mem_UH (V : HSp D) {ρ : D.what₂.Tau} {w : InfinitePlace D.h
   exact h
 
 /- English proof (translation)
-Take `⟨θ, hθ⟩` from `exists_isInfFam D`. Take `⟨h, hh, -⟩` from `GlobalTheory.PointAtPlace.existsUnique_isAtTau V ρ θ hθ g hg`. Use `⟨projArch _ _ w h, ?_⟩` and prove the remaining obligations. Rewrite using `[← infMat_infProj, ← eq_infProj hθ τ hτ]`. Conclude with `hh.2.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_archEquiv_eq (V : HSp D) {ρ : D.what₂.Tau} {w : InfinitePlace D.host.F}
     (τ : EmbOver D.host.E w) (hτ : τ.1 = tauE D ρ) {g : Matrix (Fin V.rank) (Fin V.rank) ℂ}
@@ -99,7 +99,7 @@ theorem exists_archEquiv_eq (V : HSp D) {ρ : D.what₂.Tau} {w : InfinitePlace 
   exact hh.2.1
 
 /- English proof (translation)
-Establish `hu` using `GlobalTheory.PointAtPlace.existsUnique_isAtTau V ρ θ hθ _ (archEquiv_mem_UH V τ hτ x)`. Use `hu.unique ?_ (isAtTau_embArch hθ V τ hτ x)` and prove the remaining obligations. Unfold `atTau`. Rewrite using `[dif_pos hu.exists]`. Conclude with `hu.exists.choose_spec`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem atTau_archEquiv (hθ : IsInfFam θ) (V : HSp D) {ρ : D.what₂.Tau} {w : InfinitePlace D.host.F}
     (τ : EmbOver D.host.E w) (hτ : τ.1 = tauE D ρ) (x : GArch D.sp.cm.sig V.gram w) :

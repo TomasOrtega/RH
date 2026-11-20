@@ -27,9 +27,9 @@ section Core
 variable {K : Type} [CommRing K]
 
 /- English proof (translation)
-Introduce `i j hij`. Establish `hj : j.val < r`. Apply the tactic sequence `unfold Formalism.L2.DIV.blk2 at hij; split_ifs at hij with h1 h2 <;> omega`. Establish `hi : ¬ i.val < r`. Apply the tactic sequence `unfold Formalism.L2.DIV.blk2 at hij; split_ifs at hij with h1 h2 <;> omega`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hne : i ≠ j` using `fun h => hi (h ▸ hj)`. Use `show M.val i j = 0`. Rewrite using `[hM i j, dif_neg (fun h => hi h.1), if_neg hne]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pl_blkDiag_mem {m r : ℕ} {x : GL (Fin r) K} {M : GL (Fin m) K} (hM : GlobalTheory.FrameBlockDiagonal.IsBlockDiagonalWithIdentity x M) :
     M ∈ Formalism.L2.DIV.blockTri (Formalism.L2.DIV.blk2 r) := by
@@ -43,9 +43,9 @@ theorem pl_blkDiag_mem {m r : ℕ} {x : GL (Fin r) K} {M : GL (Fin m) K} (hM : G
   rw [hM i j, dif_neg (fun h => hi h.1), if_neg hne]
 
 /- English proof (translation)
-Establish `ha` using `a.2`. Unfold `Formalism.L2.DIV.blkOf Formalism.L2.DIV.blk2`. Use `split_ifs with h`. Both sides reduce to the same expression. Establish `: (a.val - r) / t = 0` using `Nat.div_eq_of_lt (by omega)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Both sides reduce to the same expression. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem pl_blkOf_eq {m r t : ℕ} (hm : m = r + t) (a : Fin m) :
     Formalism.L2.DIV.blkOf r t a = Formalism.L2.DIV.blk2 r a := by
@@ -57,7 +57,7 @@ theorem pl_blkOf_eq {m r t : ℕ} (hm : m = r + t) (a : Fin m) :
     omega
 
 /- English proof (translation)
-Establish `: (Formalism.L2.DIV.blkOf r t : Fin m → ℕ) = Formalism.L2.DIV.blk2 r` using `funext (pl_blkOf_eq hm)`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem pl_blockTri_eq {m r t : ℕ} (hm : m = r + t) :
     Formalism.L2.DIV.blockTri (κ := K) (n := m) (Formalism.L2.DIV.blkOf r t) = Formalism.L2.DIV.blockTri (Formalism.L2.DIV.blk2 r) := by
@@ -65,19 +65,19 @@ theorem pl_blockTri_eq {m r t : ℕ} (hm : m = r + t) :
   rw [this]
 
 /- English proof (translation)
-Establish `hM2` using `pl_blkDiag_mem hM`. Establish `hbinv` using `(Formalism.L2.DIV.blockTri (κ := K) (Formalism.L2.DIV.blk2 r)).inv_mem hb`. Establish `hbM` using `(Formalism.L2.DIV.blockTri (κ := K) (Formalism.L2.DIV.blk2 r)).mul_mem hb hM2`. Establish `hall` using `(Formalism.L2.DIV.blockTri (κ := K) (Formalism.L2.DIV.blk2 r)).mul_mem hbM hbinv`. Establish `hE` using `pl_blockTri_eq (K := K) hm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hE ▸ hall, ?_, ?_⟩` and prove the remaining obligations. Establish `hMr : Formalism.L2.DIV.upperLeftBlock hr M = x`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Rewrite using `[Formalism.L2.DIV.upper_block_val_submatrix hr hM2, Matrix.submatrix_apply, hM, dif_pos ⟨i.2, j.2⟩]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Unfold `Formalism.L2.DIV.upperLeftBlock at hMr ⊢`. Rewrite using `[Formalism.L2.DIV.extendMatrixByIdentityAlongIndices_mul _ hbM hbinv, Formalism.L2.DIV.extendMatrixByIdentityAlongIndices_mul _ hb hM2, Formalism.L2.DIV.extendOne_inv _ hb, hMr]`. Establish `hb' : b ∈ Formalism.L2.DIV.blockTri (Formalism.L2.DIV.blkOf r t)` using `hE ▸ hb`. Establish `hM' : M ∈ Formalism.L2.DIV.blockTri (Formalism.L2.DIV.blkOf r t)` using `hE ▸ hM2`.
+Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbinv' : b⁻¹ ∈ Formalism.L2.DIV.blockTri (Formalism.L2.DIV.blkOf r t)` using `hE ▸ hbinv`. Establish `hbM'` using `(Formalism.L2.DIV.blockTri (κ := K) (Formalism.L2.DIV.blkOf r t)).mul_mem hb' hM'`. Establish `hdM : Formalism.L2.DIV.dBlk (Formalism.L2.DIV.blkOf r t) 1 M = 1`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Formalism.L2.DIV.diag_block_det_val 1 hM', Units.val_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hsub : (M.val.submatrix (Subtype.val : {a : Fin m // Formalism.L2.DIV.blkOf r t a = 1} → Fin m) (Subtype.val : {a : Fin m // Formalism.L2.DIV.blkOf r t a = 1} → Fin m)) = 1`. Use extensionality with `a c`. Establish `ha : ¬ a.1.val < r` using `fun h => by`. Establish `h2` using `a.2`. Simplify using `[Formalism.L2.DIV.blkOf, h] at h2`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.submatrix_apply, hM, dif_neg (fun h => ha h.1), Matrix.one_apply]`. Distinguish the cases in `hac : a = c`. Substitute `hac` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg hac, if_neg (fun h => hac (Subtype.ext h))]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `show (M.val.submatrix (Subtype.val : {a : Fin m // Formalism.L2.DIV.blkOf r t a = 1} → Fin m) (Subtype.val : {a : Fin m // Formalism.L2.DIV.blkOf r t a = 1} → Fin m)).det = 1`. Rewrite using `[hsub, Matrix.det_one]`. Rewrite using `[Formalism.L2.DIV.diag_block_det_mul hbM' hbinv', Formalism.L2.DIV.diag_block_det_mul hb' hM', hdM, mul_one]`. Unfold `Formalism.L2.DIV.dBlk`. Rewrite using `[Formalism.L2.DIV.extendOne_inv _ hb', mul_inv_cancel]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pl_core {m r t : ℕ} (hm : m = r + t) (hr : r ≤ m) {b M : GL (Fin m) K} {x : GL (Fin r) K}
     (hb : b ∈ Formalism.L2.DIV.blockTri (Formalism.L2.DIV.blk2 r)) (hM : GlobalTheory.FrameBlockDiagonal.IsBlockDiagonalWithIdentity x M) :
@@ -120,7 +120,7 @@ theorem pl_core {m r t : ℕ} (hm : m = r + t) (hr : r ≤ m) {b M : GL (Fin m) 
     rw [Formalism.L2.DIV.extendOne_inv _ hb', mul_inv_cancel]
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Establish `hXe : X = b * M * b⁻¹` using `Units.ext (Matrix.ext fun a c => hX a c)`. Substitute `hXe` using the available equality. Conclude with `pl_core hm hr hb hM`.
+Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem pl_core_cast {n m r t : ℕ} (hn : n = m) (hm : m = r + t) (hr : r ≤ m) (hr' : r ≤ n) {b M : GL (Fin m) K}
     {X : GL (Fin n) K} {x : GL (Fin r) K}
@@ -135,9 +135,9 @@ theorem pl_core_cast {n m r t : ℕ} (hn : n = m) (hm : m = r + t) (hr : r ≤ m
   exact pl_core hm hr hb hM
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Substitute `hY` using the available equality. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `a c`. Establish `h` using `hX a c`.
+Substitute using the available equality. Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Rewrite `h` using `[mul_one, mul_inv_cancel]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pl_one_cast {n m : ℕ} (hn : n = m) {b Y : GL (Fin m) K} {X : GL (Fin n) K} (hY : Y = 1)
     (hX : ∀ a c : Fin m, X.val (Fin.cast hn.symm a) (Fin.cast hn.symm c) = (b * Y * b⁻¹).val a c) : X = 1 := by
@@ -162,9 +162,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarR
   {LL : Type} [CommRing LL]
 
 /- English proof (translation)
-Unfold `Formalism.L2.DIV.levFn`. Rewrite using `[Finset.prod_eq_one (fun PP hPP => Finset.prod_eq_one (fun c hc => by rw [hg PP hPP c hc, map_one])), Finset.prod_eq_one (fun PP hPP => by rw [hq PP hPP, map_one])]`. Establish `h1 : Formalism.L2.DIV.ext1 Ld.P.H Ld.P.chi (Formalism.L2.DIV.rTup β Ld x) = 1`. Unfold `Formalism.L2.DIV.ext1`. Use `split_ifs`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hP]`. Both sides reduce to the same expression. Both sides reduce to the same expression. Rewrite using `[h1, mul_one, mul_one]`.
+Both sides reduce to the same expression. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pl_levFn_eq_one (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (Ld : Formalism.L2.DIV.LevDat E LL n)
     (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (hP : Ld.P.chi = 1)
@@ -185,25 +185,23 @@ theorem pl_levFn_eq_one (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (Ld 
 end LevFn
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ R cG k s P L H1 H2 H3 H4`. Establish `hn : (Formalism.IndefR.Links.Vc D k).rank = D.R.nV` using `GlobalTheory.FrameBlockDiagonal.rankV D k`. Establish `hm : D.R.nV = D.R.r + D.R.t` using `rfl`. Establish `hr : D.R.r ≤ D.R.nV` using `Nat.le_add_right _ _`. Establish `hr' : D.R.r ≤ (Formalism.IndefR.Links.Vc D k).rank` using `hn ▸ hr`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : ∀ PP : ↥R.Pg, ∃ b : GL (Fin D.R.nV) (Formalism.L2.DIV.kP PP.1), b ∈ Formalism.L2.DIV.blockTri (Formalism.L2.DIV.blk2 D.R.r) ∧ ∀ h : G0g D.nd, ∃ M : GL (Fin D.R.nV) (Formalism.L2.DIV.kP PP.1), GlobalTheory.FrameBlockDiagonal.IsBlockDiagonalWithIdentity (R.eG ((R.eG.trans cG). …`. Introduce and unpack `⟨PP, hPP⟩`. Take `⟨s', φ, b, hw, hres, hfr, hb⟩` from `H3 PP (Or.inl hPP)`. Substitute `hw` using the available equality. Use `⟨b, hb hPP, fun h => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y, hy, hbd⟩` from `(H4 h s' φ hres).2 hPP`. Conclude with `⟨_, hbd, hfr (L h) (H1 h) y hy⟩`. Establish `hB : ∀ PP ∈ R.Q s, ∀ h : G0g D.nd, Formalism.L2.DIV.redFn (R.βV k) PP (Formalism.IndefR.Lev.finE (Formalism.IndefR.Links.Vc D k) (P.ψ (L h))) = 1`. Introduce `PP hPP h`. Take `⟨s', φ, b, hw, hres, hfr, -⟩` from `H3 PP (Or.inr hPP)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Substitute `hw` using the available equality. Take `⟨y, hy, h1⟩` from `(H4 h s' φ hres).1 hPP`. Conclude with `pl_one_cast hn h1 (hfr (L h) (H1 h) y hy)`. Use `choose bf hbf Mf hMd hMe using hA`. Use `⟨R.eG.symm (fun PP => (Formalism.L2.DIV.upperLeftBlock hr (bf PP))⁻¹), fun g => ?_⟩` and prove the remaining obligations.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set c := R.eG.symm (fun PP => (Formalism.L2.DIV.upperLeftBlock hr (bf PP))⁻¹) with hc`. Use `set h := (R.eG.trans cG) (c * g * c⁻¹) with hh`. Establish `hsymm : (R.eG.trans cG).symm h = c * g * c⁻¹` using `MulEquiv.symm_apply_apply _ _`. Establish `hx : ∀ PP : ↥R.Pg, R.eG ((R.eG.trans cG).symm h) PP = (Formalism.L2.DIV.upperLeftBlock hr (bf PP))⁻¹ * R.eG g PP * Formalism.L2.DIV.upperLeftBlock hr (bf PP)`. Introduce `PP`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hsymm, map_mul, map_mul, map_inv, hc, MulEquiv.apply_symm_apply]`. Simplify using `only [Pi.mul_apply, Pi.inv_apply, inv_inv]`. Establish `hcore : ∀ PP : ↥R.Pg, Formalism.L2.DIV.redFn (R.βV k) PP.1 (Formalism.IndefR.Lev.finE (Formalism.IndefR.Links.Vc D k) (P.ψ (L h))) ∈ Formalism.L2.DIV.blockTri (Formalism.L2.DIV.blkOf D.R.r D.R.t) ∧ Formalism.L2.DIV.upperLeftBlock hr' (Formalism.L2.DIV.redFn (R.βV k) PP.1 (Formali …`. Introduce `PP`. Take `⟨h1, h2, h3⟩` from `pl_core_cast hn hm hr hr' (hbf PP) (hMd PP h) (hMe PP h)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨h1, ?_, h3⟩` and prove the remaining obligations. Rewrite using `[h2, hx PP]`. Use `group`. Establish `hSt` using `H2 (L h) (H1 h)`. Use `⟨⟨P.into _, Formalism.L2.DIV.mem_parLev.2 ⟨GlobalTheory.LevFinCong.finE_mem_UA _ _, hSt, fun PP hPP => (hcore ⟨PP, hPP⟩).1, fun PP hPP => ?_⟩, ?_⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hB PP hPP h]`. Conclude with `Subgroup.one_mem _`. Use function extensionality and compare the values at `PP`. Conclude with `(hcore PP).2.1`. Unfold `Formalism.IndefR.Lev.levChi`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[pl_levFn_eq_one _ _ _ rfl, Units.val_one]`. Introduce `PP hPP c' hc'`. Establish `hc0 : c' = 0`. Establish `: c' < 1` using `Finset.mem_range.1 hc'`. Use linear arithmetic over natural numbers and integers.
-
-Substitute `hc0` using the available equality. Conclude with `(hcore ⟨PP, hPP⟩).2.2`. Introduce `PP hPP`. Rewrite using `[hB PP hPP h]`. Conclude with `Formalism.L2.DIV.blockDiagonalExtendByOnePrimeField_one _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_conj_parahoric_lift : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type}
   [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (cG : Formalism.L2.DIV.G0 R.Pg D.R.r ≃* G0g D.nd) (k : Fin D.R.m) (s : T)

@@ -18,7 +18,7 @@ variable [CommRing k] [CharP k p] [PerfectRing k p]
 
 omit [CharP k p] [PerfectRing k p] in
 /- English proof (translation)
-Simplify using `only [Ideal.span_singleton_pow, smul_eq_mul, Ideal.mul_top, SModEq.sub_mem]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sMod_iff (x y : 𝕎 k) (n : ℕ) :
     x ≡ y [SMOD ((Ideal.span {(p : 𝕎 k)}) ^ n • ⊤ : Submodule (𝕎 k) (𝕎 k))] ↔
@@ -26,13 +26,11 @@ theorem sMod_iff (x y : 𝕎 k) (n : ℕ) :
   simp only [Ideal.span_singleton_pow, smul_eq_mul, Ideal.mul_top, SModEq.sub_mem]
 
 /- English proof (translation)
-Establish `hmono : ∀ m n, m ≤ n → a n - a m ∈ Ideal.span {(p : 𝕎 k) ^ m}`. Introduce `m n hmn`. Proceed by induction on `n, hmn using Nat.le_induction with`. Consider the case `base => simp`. Consider the case `succ n hmn ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `h1 : a (n + 1) - a n ∈ Ideal.span {(p : 𝕎 k) ^ m}` using `Ideal.span_singleton_le_span_singleton.mpr (pow_dvd_pow _ hmn) (h n)`. Use `Ideal.add_mem _ ih h1` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws. Take `⟨L, hL⟩` from `IsPrecomplete.prec' (I := Ideal.span {(p : 𝕎 k)}) a (fun {m n} hmn => by`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result.
 
-Rewrite using `[sMod_iff, ← neg_sub]`. Conclude with `neg_mem (hmono m n hmn))`. Use `⟨L, fun n => ?_⟩` and prove the remaining obligations. Use `(sMod_iff _ _ _).mp (hL n)` as an intermediate fact. Rewrite using `[← neg_sub]`.
-
-Conclude with `neg_mem this`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_limit (a : ℕ → 𝕎 k) (h : ∀ n, a (n + 1) - a n ∈ Ideal.span {(p : 𝕎 k) ^ n}) :
     ∃ L, ∀ n, L - a n ∈ Ideal.span {(p : 𝕎 k) ^ n} := by
@@ -55,7 +53,7 @@ theorem exists_limit (a : ℕ → 𝕎 k) (h : ∀ n, a (n + 1) - a n ∈ Ideal.
   exact neg_mem this
 
 /- English proof (translation)
-The claim follows from `IsHausdorff.haus' (I := Ideal.span {(p : 𝕎 k)}) x (fun n => by rw [sMod_iff, sub_zero] exact h n)`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_forall_mem (x : 𝕎 k) (h : ∀ n, x ∈ Ideal.span {(p : 𝕎 k) ^ n}) : x = 0 :=
   IsHausdorff.haus' (I := Ideal.span {(p : 𝕎 k)}) x (fun n => by
@@ -63,23 +61,21 @@ theorem eq_zero_of_forall_mem (x : 𝕎 k) (h : ∀ n, x ∈ Ideal.span {(p : �
     exact h n)
 
 /- English proof (translation)
-Use `choose X Y hXY using hmod`. Establish `hTpow : ∀ n x, T ((p : 𝕎 k) ^ n • x) = (p : 𝕎 k) ^ n • T x`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `succ n ih => intro x`. Rewrite using `[pow_succ', mul_smul, hT, ih, mul_smul]`. Introduce `z`. Set `zs : ℕ → (ι → 𝕎 k)` to `fun n => Nat.rec z (fun _ w => Y w) n`. Set `s : ℕ → (ι → 𝕎 k)` to `fun n => ∑ j ∈ range n, (p : 𝕎 k) ^ j • X (zs j)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hA : ∀ n, z - T (s n) = (p : 𝕎 k) ^ n • zs n`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp [s, zs]`. Consider the case `succ n ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `e1 : s (n + 1) = s n + (p : 𝕎 k) ^ n • X (zs n)` using `Finset.sum_range_succ _ _`. Establish `e2 : zs (n + 1) = Y (zs n)` using `rfl`. Establish `h' : zs n - T (X (zs n)) = (p : 𝕎 k) • Y (zs n)`. Rewrite using `[sub_eq_iff_eq_add']`. Conclude with `hXY (zs n)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e1, map_add, hTpow, ← sub_sub, ih, ← smul_sub, h', smul_smul, ← pow_succ, e2]`. Establish `hstep : ∀ i n, s (n + 1) i - s n i ∈ Ideal.span {(p : 𝕎 k) ^ n}`. Introduce `i n`. Establish `e1 : s (n + 1) = s n + (p : 𝕎 k) ^ n • X (zs n)` using `Finset.sum_range_succ _ _`. Rewrite using `[e1, Pi.add_apply, add_sub_cancel_left, Pi.smul_apply, smul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `Ideal.mem_span_singleton.mpr (dvd_mul_right _ _)`. Use `choose L hL using fun i => exists_limit (fun n => s n i) (hstep i)`. Use `choose u hu using fun n i => Ideal.mem_span_singleton'.mp (hL i n)`. Use `⟨L, ?_⟩` and prove the remaining obligations. Establish `hLs : ∀ n, L - s n = (p : 𝕎 k) ^ n • (fun i => u n i)`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Use symmetry to reverse the relation.
 
-Introduce `n`. Use function extensionality and compare the values at `i`. Simplify using `[← hu n i, mul_comm]`. Use function extensionality and compare the values at `i`. Use `symm`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← sub_eq_zero]`. Apply `eq_zero_of_forall_mem` to reduce the goal to its premises. Introduce `n`. Establish `: z - T L = (p : 𝕎 k) ^ n • (zs n - T (fun i => u n i))`. Rewrite using `[show L = s n + (L - s n) by abel, map_add, ← sub_sub, hA, hLs, hTpow, smul_sub]`.
-
-Rewrite using `[← Pi.sub_apply, this, Pi.smul_apply, smul_eq_mul]`. Conclude with `Ideal.mem_span_singleton.mpr (dvd_mul_right _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem surjective_of_mod_p {ι : Type*} (T : (ι → 𝕎 k) →+ (ι → 𝕎 k))
     (hT : ∀ x, T ((p : 𝕎 k) • x) = (p : 𝕎 k) • T x)
@@ -153,7 +149,7 @@ theorem matOp_apply (A : Matrix ι ι (𝕎 k)) (τ : 𝕎 k →+* 𝕎 k) (x : 
 
 omit [CharP k p] in
 /- English proof (translation)
-Rewrite using `[matOp_apply, matOp_apply, ← Matrix.mulVec_smul]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `[map_natCast]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem matOp_p_smul (A : Matrix ι ι (𝕎 k)) (τ : 𝕎 k →+* 𝕎 k) (x : ι → 𝕎 k) :
     matOp A τ ((p : 𝕎 k) • x) = (p : 𝕎 k) • matOp A τ x := by
@@ -186,7 +182,7 @@ theorem resOp_apply (A : Matrix ι ι (𝕎 k)) (x : ι → k) :
     resOp A e x = A.map (fun a => a.coeff 0) *ᵥ (fun i => x i ^ p ^ e) := rfl
 
 /- English proof (translation)
-Rewrite using `[resOp_apply, resOp_apply, ← Matrix.mulVec_smul]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `[mul_pow]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem resOp_smul (A : Matrix ι ι (𝕎 k)) (c : k) (x : ι → k) :
     resOp A e (c • x) = c ^ p ^ e • resOp A e x := by
@@ -196,7 +192,7 @@ theorem resOp_smul (A : Matrix ι ι (𝕎 k)) (c : k) (x : ι → k) :
   simp [mul_pow]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [red, matOp_apply, resOp_apply, Matrix.mulVec, dotProduct, Matrix.map_apply]`. Rewrite using `[← WittVector.constantCoeff_apply, map_sum]`. Simplify using `[WittVector.mul_coeff_zero, hτ]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem red_matOp (A : Matrix ι ι (𝕎 k)) {τ : 𝕎 k →+* 𝕎 k}
     (hτ : ∀ y, (τ y).coeff 0 = y.coeff 0 ^ p ^ e) (x : ι → 𝕎 k) :
@@ -207,7 +203,7 @@ theorem red_matOp (A : Matrix ι ι (𝕎 k)) {τ : 𝕎 k →+* 𝕎 k}
   simp [WittVector.mul_coeff_zero, hτ]
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero => rfl`. Consider the case `succ N ih => rw [Function.iterate_succ_apply', Function.iterate_succ_apply', red_matOp A hτ, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem red_iterate_matOp (A : Matrix ι ι (𝕎 k)) {τ : 𝕎 k →+* 𝕎 k}
     (hτ : ∀ y, (τ y).coeff 0 = y.coeff 0 ^ p ^ e) (x : ι → 𝕎 k) (N : ℕ) :
@@ -218,7 +214,7 @@ theorem red_iterate_matOp (A : Matrix ι ι (𝕎 k)) {τ : 𝕎 k →+* 𝕎 k}
 
 omit [CharP k p] [Fintype ι] in
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[red, ← WittVector.constantCoeff_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem red_sub (x y : ι → 𝕎 k) : red (x - y) = red x - red y := by
   funext i
@@ -226,7 +222,7 @@ theorem red_sub (x y : ι → 𝕎 k) : red (x - y) = red x - red y := by
 
 omit [Fintype ι] in
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[red, ← WittVector.constantCoeff_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem red_p_smul (x : ι → 𝕎 k) : red ((p : 𝕎 k) • x) = 0 := by
   funext i
@@ -236,9 +232,9 @@ variable [PerfectRing k p]
 
 omit [Fintype ι] in
 /- English proof (translation)
-Establish `: ∀ i, ∃ y, x i = (p : 𝕎 k) * y` using `fun i => by`. Establish `hi : (x i).coeff 0 = 0` using `congrFun h i`. Take `⟨y, hy⟩` from `Ideal.mem_span_singleton'.mp ((mem_span_p_iff_coeff_zero_eq_zero (x i)).mpr hi)`. Conclude with `⟨y, by rw [← hy, mul_comm]⟩`. Use `choose y hy using this`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨y, funext fun i => by simp [hy i]⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_eq_p_smul_of_red (x : ι → 𝕎 k) (h : red x = 0) : ∃ y, x = (p : 𝕎 k) • y := by
   have : ∀ i, ∃ y, x i = (p : 𝕎 k) * y := fun i => by
@@ -251,7 +247,7 @@ theorem exists_eq_p_smul_of_red (x : ι → 𝕎 k) (h : red x = 0) : ∃ y, x =
 
 omit [CharP k p] [Fintype ι] [PerfectRing k p] in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun i => teichmuller p (x i), funext fun _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_lift (x : ι → k) : ∃ y : ι → 𝕎 k, red y = x :=
   ⟨fun i => teichmuller p (x i), funext fun _ => rfl⟩
@@ -263,9 +259,9 @@ section AlgClosed
 variable [Field k] [IsAlgClosed k] [CharP k p] {ι : Type*} [Fintype ι] {e : ℕ}
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `surjective_of_mod_p (matOp A τ - AddMonoidHom.id _) (fun x => by simp [matOp_p_smul, smul_sub]) (fun z => by`. Take `⟨xb, hxb⟩` from `SemilinearResidue.exists_sub_eq (p := p) he (resOp_smul (p := p) (e := e) A) (red z)`. Take `⟨x, rfl⟩` from `exists_lift (p := p) xb`. Take `⟨y, hy⟩` from `exists_eq_p_smul_of_red (z - (matOp A τ x - x)) (by`. Rewrite using `[red_sub, red_sub, red_matOp A hτ, hxb, sub_self])`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨x, y, by simp [← hy]⟩) z`. Conclude with `⟨x, by simpa using hx⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem matOp_sub_surjective (he : 0 < e) (A : Matrix ι ι (𝕎 k)) {τ : 𝕎 k →+* 𝕎 k}
     (hτ : ∀ y, (τ y).coeff 0 = y.coeff 0 ^ p ^ e) (z : ι → 𝕎 k) :
@@ -280,9 +276,9 @@ theorem matOp_sub_surjective (he : 0 < e) (A : Matrix ι ι (𝕎 k)) {τ : 𝕎
   exact ⟨x, by simpa using hx⟩
 
 /- English proof (translation)
-Take `⟨yb, hyb0, hyb⟩` from `SemilinearResidue.exists_fixed_ne_zero (p := p) he (resOp_smul (p := p) (e := e) A) (red x₀) (fun N => by rw [← red_iterate_matOp A hτ]; exact hx₀ N)`. Take `⟨y₀, rfl⟩` from `exists_lift (p := p) yb`. Take `⟨w, hw⟩` from `exists_eq_p_smul_of_red (matOp A τ y₀ - y₀) (by`. Rewrite using `[red_sub, red_matOp A hτ, hyb, sub_self])`. Take `⟨x, hx⟩` from `matOp_sub_surjective he A hτ w`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨y₀ - (p : 𝕎 k) • x, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, matOp_p_smul, sub_eq_sub_iff_sub_eq_sub, hw, ← smul_sub, hx]`. Rewrite using `[red_sub, red_p_smul, sub_zero]`. Conclude with `hyb0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_fixed (he : 0 < e) (A : Matrix ι ι (𝕎 k)) {τ : 𝕎 k →+* 𝕎 k}
     (hτ : ∀ y, (τ y).coeff 0 = y.coeff 0 ^ p ^ e) (x₀ : ι → 𝕎 k)

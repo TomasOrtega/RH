@@ -13,7 +13,7 @@ open GlobalTheory.CxPts
 namespace GlobalTheory.CompanionTheory.VanDescent
 
 /- English proof (translation)
-Introduce `F _ Y p hp U O hUO`. Establish `: JacobsonSpace Y` using `LocallyOfFiniteType.jacobsonSpace p`. Take `⟨z, hzU, hzO⟩` from `Set.not_subset.1 hUO`. Take `⟨y, ⟨hy, hy'⟩, hc⟩` from `nonempty_inter_closedPoints (Z := (U : Set Y) ∩ (O : Set Y)ᶜ) ⟨z, hzU, hzO⟩ (U.isOpen.isLocallyClosed.inter O.isOpen.isClosed_compl.isLocallyClosed)`. Conclude with `⟨y, hc, hy, hy'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_closed_mem_notMem : ∀ (F : Type) [Field F] (Y : Scheme.{0}) (p : Y ⟶ Sp F), LocallyOfFiniteType p → ∀ (U O : Y.Opens), ¬ U ≤ O → ∃ z : Y, IsClosed ({z} : Set Y) ∧ z ∈ U ∧ z ∉ O := by
   intro F _ Y p hp U O hUO
@@ -24,7 +24,7 @@ theorem exists_closed_mem_notMem : ∀ (F : Type) [Field F] (Y : Scheme.{0}) (p 
   exact ⟨y, hc, hy, hy'⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Distinguish the cases in `hi : y ∈ ptsIn p σ (B.U i)`. Conclude with `hy (ptsIn_mono hs ((secVal_ne_zero_iff s hi).1 h))`. Conclude with `h (by rw [secVal_apply]; exact ev_of_notMem hi _)`.
+Assume the negation of the conclusion and derive a contradiction. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem secVal_eq_zero_of_le {F : Type} [Field F] {Y : Scheme.{0}} {p : Y ⟶ Sp F} {σ : F →+* ℂ}
     {B : LB Y} {O : Y.Opens} (s : B.Sec) (hs : nonzeroLocus s ≤ O) (i : B.ι) (y : CxPts p σ)
@@ -35,31 +35,29 @@ theorem secVal_eq_zero_of_le {F : Type} [Field F] {Y : Scheme.{0}} {p : Y ⟶ Sp
   · exact h (by rw [secVal_apply]; exact ev_of_notMem hi _)
 
 /- English proof (translation)
-Introduce `F _ Y p σ hp B hB O x hx`. Set `J` to `{z : Y // IsClosed ({z} : Set Y) ∧ z ∉ O}`. Establish `hpt` using `fun j : J => GlobalTheory.CompanionTheory.Ar.ClosedPt.exists_residue_eval F Y p σ hp B hB j.1 j.2.1`. Use `choose K instF instA instFD e he_smul he_ne he_pt using hpt`. Set `G : Submodule ℂ (B.ι → CxPts p σ → ℂ)` to `Submodule.span ℂ {f | ∃ s : B.Sec, nonzeroLocus s ≤ O ∧ secVal p σ s = f}`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `Z : Submodule ℂ (B.ι → CxPts p σ → ℂ)` to `{ carrier := {v | ∀ i y, y ∉ ptsIn p σ O → v i y = 0} add_mem' := fun {u v} hu hv i y hy => by simp [hu i y hy, hv i y hy] zero_mem' := fun i y _ => rfl smul_mem' := fun c v hv i y hy => by simp [hv i y hy] }`. Establish `hGZ : G ≤ Z` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨s, hs, rfl⟩ i y hy`. Conclude with `secVal_eq_zero_of_le s hs i y hy)`. Establish `key : ∀ (n : ℕ) (b : Fin n → B.Sec) (d : Fin n → ℂ) (g : B.ι → CxPts p σ → ℂ), g ∈ G → (∑ l, d l • secVal p σ (b l) + g) ∈ Z → (∑ l, d l • secVal p σ (b l) + g) ∈ G`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro b d g hg _`. Simplify using `using hg`. Consider the case `succ m ih`.
+Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `b d g hg hv`. Distinguish the cases in `H : ∀ a : Fin (m + 1) → F, (∀ j, ∑ l, algebraMap F (K j) (a l) * e j (b l) = 0) → a = 0`. Establish `hz : ∀ j (τ : K j →+* ℂ), τ.comp (algebraMap F (K j)) = σ → ∑ l, d l * τ (e j (b l)) = 0`. Introduce `j τ hτ`. Take `⟨y, i, hyz, hy⟩` from `he_pt j τ hτ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyO : y ∉ ptsIn p σ O` using `fun h => j.2.2 (hyz ▸ mem_ptsIn.1 h)`. Establish `h1` using `hv i y hyO`. Establish `h2` using `hGZ hg i y hyO`. Simplify using `only [Pi.add_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, h2, add_zero, hy] at h1`. Conclude with `h1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hd : d = 0` using `GlobalTheory.CompanionTheory.Arith.DedekindDescent.linIndep_descent F σ J K (Fin (m + 1)) (fun l j => e j (b l)) H d hz`. Substitute `hd` using the available equality. Simplify using `using hg`. Use `push Not at H`. Take `⟨a, ha0, ha⟩` from `H`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hes : ∀ j, e j (∑ l, algX p ⊤ (a l) • b l) = 0` using `fun j => by`. Simplify using `only [map_sum, he_smul]`. Conclude with `ha0 j`. Establish `hsO : nonzeroLocus (∑ l, algX p ⊤ (a l) • b l) ≤ O`. Assume the negation of the conclusion as `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨z, hzc, hzs, hzO⟩` from `exists_closed_mem_notMem F Y p hp _ O h`. Conclude with `he_ne ⟨z, hzc, hzO⟩ _ hzs (hes _)`. Establish `hsG : secVal p σ (∑ l, algX p ⊤ (a l) • b l) ∈ G` using `Submodule.subset_span ⟨_, hsO, rfl⟩`. Establish `hsv : secVal p σ (∑ l, algX p ⊤ (a l) • b l) = ∑ l, σ (a l) • secVal p σ (b l)`. Simplify using `only [map_sum, secVal_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hsG` using `[hsv]`. Take `⟨l₀, hl₀⟩` from `Function.ne_iff.1 ha`. Establish `hσ : σ (a l₀) ≠ 0` using `(map_ne_zero σ).2 hl₀`. Take `⟨c, hc⟩ : ∃ c, c = d l₀ * (σ (a l₀))⁻¹` from `⟨_, rfl⟩`. Establish `hdc : d l₀ = c * σ (a l₀)` using `by rw [hc, inv_mul_cancel_right₀ hσ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `heq : ∑ l, d l • secVal p σ (b l) + g = ∑ i, (d (l₀.succAbove i) - c * σ (a (l₀.succAbove i))) • secVal p σ (b (l₀.succAbove i)) + (g + c • ∑ l, σ (a l) • secVal p σ (b l))`. Rewrite using `[Fin.sum_univ_succAbove _ l₀, Fin.sum_univ_succAbove (fun l => σ (a l) • _) l₀]`. Simplify using `only [sub_smul, Finset.sum_sub_distrib, mul_smul, ← Finset.smul_sum, hdc]`. Use `module`. Rewrite `hv`, the goal using `[heq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `ih _ _ _ (G.add_mem hg (G.smul_mem c hsG)) hv`. Establish `hxspan : x ∈ Submodule.span ℂ (Set.range (SecC.of p σ : B.Sec → SecC p σ B))` using `by rw [SecC.span_range_of (p := p) (σ := σ) (B := B)]; exact Submodule.mem_top`. Take `⟨n, f, g, hfg⟩` from `Submodule.mem_span_set'.1 hxspan`. Use `choose b hb using fun i => (g i).2`. Establish `hval : SecC.val x = ∑ l, f l • secVal p σ (b l) + 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[← hfg, add_zero, map_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, ← hb l, SecC.val_of]`. Establish `hxZ : SecC.val x ∈ Z` using `hx`. Rewrite `hxZ` using `[hval]`.
-
-Establish `hmem` using `key n b f 0 G.zero_mem hxZ`. Rewrite `hmem` using `[← hval]`. Take `⟨m, as, ss, hss⟩` from `Submodule.mem_span_set'.1 hmem`. Use `choose t ht1 ht2 using fun j => (ss j).2`. Conclude with `⟨m, as, t, ht1, by rw [← hss]; exact Finset.sum_congr rfl fun j _ => by rw [ht2]⟩`.
+A detailed English derivation is pending.
 -/
 theorem vanish_descent : ∀ (F : Type) [Field F] (Y : Scheme.{0}) (p : Y ⟶ Sp F) (σ : F →+* ℂ), LocallyOfFiniteType p → ∀ (B : ReciprocityTheory.ChartRestriction.G.Semi.LB Y), B.IsLB → ∀ (O : Y.Opens) (x : GlobalTheory.SecC p σ B), (∀ i y, y ∉ GlobalTheory.CxPts.ptsIn p σ O → GlobalTheory.SecC.val x i y = 0) → ∃ (m : ℕ) (as : Fin m → ℂ) (ss : Fin m → B.Sec), (∀ j, ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus (ss j) ≤ O) ∧ GlobalTheory.SecC.val x = ∑ j, as j • GlobalTheory.CxPts.secVal p σ (ss j) := by
   intro F _ Y p σ hp B hB O x hx

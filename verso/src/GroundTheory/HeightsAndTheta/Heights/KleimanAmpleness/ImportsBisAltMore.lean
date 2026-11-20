@@ -9,11 +9,11 @@ namespace GroundTheory.Heights₂.Heights.Kleiman.TranslateEq
 open MvPolynomial
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hA S _ _ N M _ _ _ _ G hfin`. Take `⟨c₀, hc₀⟩` from `hA S N M (gradedEquiv S N M G) hfin`. Take `⟨e, -, -⟩` from `hC S N`. Use `⟨c₀, fun i hi c hc => ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `hc₀ i hi c hc` as an intermediate fact. Conclude with `(e M G i c).injective.subsingleton`. Introduce `hB S _ _ N M _ _ _ _ 𝓜 hfin`. Take `⟨G, rfl⟩` from `(gradedEquiv S N M).surjective 𝓜`. Take `⟨c₀, hc₀⟩` from `hB S N M G hfin`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨e, -, -⟩` from `hC S N`. Use `⟨c₀, fun i hi c hc => ?_⟩` and prove the remaining obligations. Use `hc₀ i hi c hc` as an intermediate fact. Conclude with `(e M G i c).symm.injective.subsingleton`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem SerreVanish.equiv (hC : GradedCech.Statement) :
     Kleiman.SerreVanish.Statement.{0, 0} ↔ IndefiniteRowSideFullHecke.Kleiman.SerreVanish.Statement := by

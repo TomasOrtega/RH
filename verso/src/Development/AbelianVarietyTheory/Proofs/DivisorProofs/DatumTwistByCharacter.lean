@@ -24,21 +24,19 @@ namespace GlobalTheory
 open GlobalTheory.TorsionForm in
 
 /- English proof (translation)
-Introduce `E _ _ g B τ M M' j h hD hM hle χ`. Take `⟨hP, hM', ⟨hd, hc⟩, hs, hpos, hinv⟩` from `hD`. Use `haveI : Finite (↥M' ⧸ M.submoduleOf M') := finite_quotient_of_isLat_le M M' hM hM' hle`. Establish `hnorm : ∀ q, ‖χ q‖ = 1`. Introduce `q`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hfin : IsOfFinAddOrder q` using `isOfFinAddOrder_of_finite q`. Establish `hn : 0 < addOrderOf q` using `hfin.addOrderOf_pos`. Establish `hpow : χ q ^ addOrderOf q = 1`. Rewrite using `[← AddChar.map_nsmul_eq_pow, addOrderOf_nsmul_eq_zero, AddChar.map_zero_eq_one]`. Establish `: ‖χ q‖ ^ addOrderOf q = 1` using `by rw [← norm_pow, hpow, norm_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hn.ne').1 this`. Establish `hval : ∀ l (hl : l ∈ M') (P : Pt E g), twistFactor M M' χ j l P = χ (Submodule.Quotient.mk ⟨l, hl⟩) * j l P`. Introduce `l hl P`. Unfold `twistFactor`. Rewrite using `[dif_pos hl]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨hP, hM', ⟨fun l hl => ⟨?_, ?_⟩, ?_⟩, hs, hpos, ?_⟩` and prove the remaining obligations. Establish `: twistFactor M M' χ j l = fun P => χ (Submodule.Quotient.mk ⟨l, hl⟩) * j l P`. Use function extensionality and compare the values at `(hval l hl)`. Rewrite using `[this]`. Conclude with `(hd l hl).1.const_mul _`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `P hP'`. Rewrite using `[hval l hl]`. Use `mul_ne_zero ?_ ((hd l hl).2 P hP')` and prove the remaining obligations. Introduce `h0`. Use `hnorm (Submodule.Quotient.mk ⟨l, hl⟩)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[h0, norm_zero]`. Conclude with `zero_ne_one this`. Introduce `l hl l' hl' P hP'`. Rewrite using `[hval _ (M'.add_mem hl hl'), hval l hl, hval l' hl', hc l hl l' hl' P hP']`. Establish `: (Submodule.Quotient.mk ⟨l + l', M'.add_mem hl hl'⟩ : ↥M' ⧸ M.submoduleOf M') = Submodule.Quotient.mk ⟨l, hl⟩ + Submodule.Quotient.mk ⟨l', hl'⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← Submodule.Quotient.mk_add]`. Both sides reduce to the same expression. Rewrite using `[this, AddChar.map_add_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Introduce `l hl P hP'`.
-
-Rewrite using `[hval l hl, norm_mul, hnorm, one_mul]`. Conclude with `hinv l hl P hP'`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isDatum_twistFactor : ∀ (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E] (g : ℕ) (B : Set E) (τ : E → Matrix (Fin g) (Fin g) ℂ) (M M' : Submodule ℤ (Fl g)) (j : Fl g → Pt E g → ℂ) (h : Pt E g → ℝ), IsDatum B τ M' j h → IsLat M → M ≤ M' → ∀ χ : AddChar (M' ⧸ M.submoduleOf M') ℂ, IsDatum B τ M' (twistFactor M M' χ j) h := by
   intro E _ _ g B τ M M' j h hD hM hle χ

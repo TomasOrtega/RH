@@ -18,7 +18,7 @@ variable {nb : nA σ d.Y d.b → d.G} {uM : (Fin L.n → AE F E) → d.G} {nb' :
   {cM : (Fin L.n → AE F E) × AF F → d.G} {δ : E}
 
 /- English proof (translation)
-Conclude with `CoordK.coordsC_ck h hc hU hc' hT h𝓐 hP hPc Ψ hΨ x`.
+A detailed English derivation is pending.
 -/
 theorem coordsC (h : Hyp L nb uM nb' w₁ cM δ) {lam : Measure (nA σ d.Y d.b)} {𝓖 : Set (nA σ d.Y d.b)}
     (hc : CoefData (σ := σ) (Y := d.Y) d.b nb lam 𝓖) {ν : Measure (Fin L.n → AE F E)} {𝓤 : Set (Fin L.n → AE F E)}
@@ -35,7 +35,7 @@ theorem coordsC (h : Hyp L nb uM nb' w₁ cM δ) {lam : Measure (nA σ d.Y d.b)}
   exact CoordK.coordsC_ck h hc hU hc' hT h𝓐 hP hPc Ψ hΨ x
 
 /- English proof (translation)
-Conclude with `CoordK.coordsE_ck h hc hU hc' hT h𝓐 hP hPc Ψ hΨm hΨ x`.
+A detailed English derivation is pending.
 -/
 theorem coordsE (h : Hyp L nb uM nb' w₁ cM δ) {lam : Measure (nA σ d.Y d.b)} {𝓖 : Set (nA σ d.Y d.b)}
     (hc : CoefData (σ := σ) (Y := d.Y) d.b nb lam 𝓖) {ν : Measure (Fin L.n → AE F E)} {𝓤 : Set (Fin L.n → AE F E)}

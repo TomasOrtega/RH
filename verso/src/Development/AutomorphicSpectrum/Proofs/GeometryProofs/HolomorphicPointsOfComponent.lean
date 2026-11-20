@@ -12,13 +12,13 @@ open GroundTheory.Heights₂.Heights.LowerBoundFree GlobalTheory.CompanionTheory
 namespace GlobalTheory.CompanionTheory.Ar.Flat.LabConst
 
 /- English proof (translation)
-Take `⟨hsp, t, ht, rfl⟩` from `h`. Establish `hg'` using `ConstReg.genMap_germ_const ξ s hs ⟨centre z, hsp⟩ o`. Establish `ht'` using `hg.inj ⟨centre z, hsp⟩ (ht.trans hg'.symm)`. Rewrite using `[ht']`. Establish `h1 : X.presheaf.germ ⊤ (centre z) trivial ≫ Scheme.stalkClosedPointTo z = z.appTop ≫ (Scheme.ΓSpecIso (CommRingCat.of R)).hom`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(Scheme.germ_stalkClosedPointTo z ⊤ trivial).trans ?_` and prove the remaining obligations. Simplify using `only [Iso.trans_hom, Functor.mapIso_hom, Iso.op_hom, Scheme.Hom.appTop]`. Use `congr 1`. Establish `h1'` using `congrArg (fun q => q.hom (s.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of O)).inv.hom o))) h1`. Use `h1'.trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : z.appTop.hom (s.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of O)).inv.hom o)) = (Spec.map (CommRingCat.ofHom ρ)).appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of O)).inv.hom o)`. Rewrite using `[← hz]`. Simplify using `only [Scheme.Hom.comp_appTop]`. Both sides reduce to the same expression. Establish `h3` using `congrArg (fun q => q.hom o) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom ρ))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `h3' : (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom (ρ o) = (Spec.map (CommRingCat.ofHom ρ)).appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of O)).inv.hom o)` using `h3`. Use `show (Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom (z.appTop.hom (s.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of O)).inv.hom o))) = ρ o`. Rewrite using `[h2, ← h3']`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem valAt_const {X : Scheme.{0}} {Ω : Type} [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (hg : IsCptGen ξ)
     {O : Type} [CommRing O] [Algebra O Ω] (s : X ⟶ Spec (CommRingCat.of O))
@@ -47,11 +47,9 @@ theorem valAt_const {X : Scheme.{0}} {Ω : Type} [Field Ω] (ξ : Spec (CommRing
   simp
 
 /- English proof (translation)
-Establish `hne : p.map (Int.castRingHom ℂ) ≠ 0` using `(hp.map _).ne_zero`. Establish `hfin : ((p.map (Int.castRingHom ℂ)).rootSet ℂ).Finite` using `Polynomial.rootSet_finite _ _`. Use `haveI : Finite ((p.map (Int.castRingHom ℂ)).rootSet ℂ) := hfin`. Use `haveI : DiscreteTopology ((p.map (Int.castRingHom ℂ)).rootSet ℂ) := inferInstance`. Use `IsPreconnected.constant_of_mapsTo (convex_ball _ _).isPreconnected (T := (p.map (Int.castRingHom ℂ)).rootSet ℂ) ⟨inferInstance⟩ hf.continuousOn (fun x hx => ?_) hb hb'` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Polynomial.mem_rootSet]`. Use `⟨hne, ?_⟩` and prove the remaining obligations. Establish `h` using `hr x hx`. Rewrite `h` using `[Polynomial.aeval_def, Polynomial.eval₂_eq_eval_map, algebraMap_int_eq]`. Rewrite using `[Polynomial.coe_aeval_eq_eval]`.
-
-Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem const_of_root {n : ℕ} (f : (Fin n → ℂ) → ℂ) (hf : DifferentiableOn ℂ f (Metric.ball 0 1))
     (p : Polynomial ℤ) (hp : p.Monic)
@@ -72,21 +70,21 @@ theorem const_of_root {n : ℕ} (f : (Fin n → ℂ) → ℂ) (hf : Differentiab
   exact h
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c Y S Ω _ K _ J _ y 𝔐 R _ jj n ψ hψ`. Establish `hB : ∀ b : Fin n → ℂ, ∃ σ : CMType H ⊕ CMType H → (𝓞 E →+* ℂ), 𝔐.LabVal (spMap (ψ b) ≫ jj) id σ ∧ IsCMFam (fun τ => σ (.inl τ)) ∧ IsCMFam (fun τ => σ (.inr τ))`. Introduce `b`. Take `⟨σ, h1, -, -, -, -, h6⟩` from `GlobalTheory.T.cusp_correspondence_bound E H D l Xo c Y S Ω K J y 𝔐 ℂ (spMap (ψ b) ≫ jj)`. Take `⟨h7, h8, -⟩` from `h6 (RingHom.id ℂ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨σ, h1, by simpa using h7, by simpa using h8⟩`. Use `choose σ hσ hc1 hc2 using hB`. Take `⟨ρ, hρ⟩ : ∃ ρ : 𝓞 c.F →+* R, spMap ρ = jj ≫ 𝔐.f ≫ Y.s` from `⟨(Spec.preimage (jj ≫ 𝔐.f ≫ Y.s)).hom, by simp [spMap]⟩`. Use `letI : Algebra (𝓞 c.F) Ω := (𝔐.cst.comp (algebraMap (𝓞 c.F) c.F)).toAlgebra`. Establish `key : ∀ (s : CMType H ⊕ CMType H) (a : 𝓞 E), ∃ r : R, ∀ b, σ b s a = ψ b r`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s a`. Establish `hint : IsIntegral ℤ (labelEmb c s a)` using `(NumberField.RingOfIntegers.isIntegral a).map (labelEmb c s).toIntAlgHom`. Use `⟨ρ (IsIntegralClosure.mk' (𝓞 c.F) _ hint), fun b => ?_⟩` and prove the remaining obligations. Use `valAt_const 𝔐.ξ 𝔐.tie.gen (𝔐.f ≫ Y.s) 𝔐.cst_over (spMap (ψ b) ≫ jj) ((ψ b).comp ρ) ?_ _ _ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, ← hρ]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[spMap]`. Establish `h` using `hσ b s a`. Establish `he : algebraMap (𝓞 c.F) Ω (IsIntegralClosure.mk' (𝓞 c.F) _ hint) = 𝔐.emb (id s) a` using `by show 𝔐.cst (algebraMap (𝓞 c.F) c.F (IsIntegralClosure.mk' (𝓞 c.F) _ hint)) = 𝔐.cst (labelEmb c s a)`. Rewrite using `[IsIntegralClosure.algebraMap_mk']`. Rewrite using `[he]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h`. Establish `h0 : (0 : Fin n → ℂ) ∈ Metric.ball (0 : Fin n → ℂ) 1` using `Metric.mem_ball_self one_pos`. Establish `hconst : ∀ b ∈ Metric.ball (0 : Fin n → ℂ) 1, σ b = σ 0`. Introduce `b hb`. Use function extensionality and compare the values at `s`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `RingHom.ext fun a => ?_` and prove the remaining obligations. Take `⟨r, hr⟩` from `key s a`. Take `⟨p, hpm, hpe⟩` from `NumberField.RingOfIntegers.isIntegral a`. Use `const_of_root (fun b => σ b s a) ?_ p hpm ?_ hb h0` and prove the remaining obligations. Establish `: (fun b => σ b s a) = fun b => ψ b r` using `funext hr`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[this]`. Conclude with `hψ.2 r`. Introduce `x _`. Establish `h1 : Polynomial.aeval a p = 0` using `hpe`. Establish `h2 : Polynomial.aeval (σ x s a) p = (σ x s).toIntAlgHom (Polynomial.aeval a p)` using `Polynomial.aeval_algHom_apply (σ x s).toIntAlgHom a p`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, h1, map_zero]`. Use `⟨σ 0, fun b hb => ?_, hc1 0, hc2 0⟩` and prove the remaining obligations. Rewrite using `[← hconst b hb]`. Conclude with `hσ b`.
+A detailed English derivation is pending.
 -/
 theorem labVal_const_of_isHolPts : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Tor.Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (S : Finset ℕ) (Ω : Type) [Field Ω] (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (𝔐 : HodgeCpt Y S y) (R : Type) [CommRing R] (jj : Sp R ⟶ 𝔐.X) (n : ℕ) (ψ : (Fin n → ℂ) → (R →+* ℂ)), Flat.IsHolPts (Metric.ball 0 1) ψ → ∃ σ : CMType H ⊕ CMType H → (𝓞 E →+* ℂ), (∀ b ∈ Metric.ball (0 : Fin n → ℂ) 1, 𝔐.LabVal (spMap (ψ b) ≫ jj) id σ) ∧ IsCMFam (fun τ => σ (.inl τ)) ∧ IsCMFam (fun τ => σ (.inr τ)) := by
   intro E _ _ _ H D l Xo c Y S Ω _ K _ J _ y 𝔐 R _ jj n ψ hψ

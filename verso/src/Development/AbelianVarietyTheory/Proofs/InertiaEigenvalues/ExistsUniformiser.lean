@@ -6,7 +6,7 @@ open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual Reciproc
 namespace GlobalTheory.UseLocUnif
 
 /- English proof (translation)
-Introduce `l _ LL`. Take `⟨hdvr, -⟩` from `GlobalTheory.FinExtIntegers.dvr_complete LL`. Conclude with `IsDiscreteValuationRing.exists_irreducible ↥(OL LL)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_uniformiser : ∀ (l : ℕ) [Fact l.Prime] (LL : FinExt l), ∃ lam : ↥(OL LL), Irreducible lam := by
   intro l _ LL

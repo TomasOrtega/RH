@@ -13,15 +13,15 @@ open Formalism.QuantumDeterminants Formalism.MainNotions.S Formalism.MainNotions
 variable {k r : ℕ}
 
 /- English proof (translation)
-Establish `hN` using `Formalism.MainNotions.InverseNormDecayBounds.normInvP k r`. Establish `hy1 : 1 ≤ Formalism.FourierDecayAlt.B.gN y` using `(hN.1 y hy).2`. Establish `hs1 : 1 ≤ Formalism.FourierDecayAlt.B.gN s` using `(hN.1 s hs).2`. Establish `hyinv : Formalism.FourierDecayAlt.B.gN y⁻¹ = Formalism.FourierDecayAlt.B.gN y` using `(hN.1 y hy).1`. Establish `hdet : IsUnit y.det`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : yᴴ * Hpk k r * y = Hpk k r` using `hy`. Establish `h2` using `congrArg Matrix.det h1`. Rewrite `h2` using `[Matrix.det_mul, Matrix.det_mul]`. Establish `hH : IsUnit (Hpk k r).det` using `Formalism.MainNotions.BesselShellMomentBounds.Hpk_det_unit k r`. Establish `h3 : (yᴴ).det * y.det = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `hH.mul_left_cancel` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Conclude with `IsUnit.of_mul_eq_one ((yᴴ).det) (by rw [mul_comm]; exact h3)`. Establish `hsy : s = s * y * y⁻¹` using `by rw [Matrix.mul_nonsing_inv_cancel_right _ _ hdet]`. Establish `hle : Formalism.FourierDecayAlt.B.gN s ≤ Formalism.FourierDecayAlt.B.gN (s * y) * Formalism.FourierDecayAlt.B.gN y`.
+Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hypos : 0 < Formalism.FourierDecayAlt.B.gN y` using `by linarith`. Establish `hspos : 0 < Formalism.FourierDecayAlt.B.gN s` using `by linarith`. Establish `hq : Formalism.FourierDecayAlt.B.gN s / Formalism.FourierDecayAlt.B.gN y ≤ Formalism.FourierDecayAlt.B.gN (s * y)`. Rewrite using `[div_le_iff₀ hypos]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hle`. Establish `hqpos : 0 < Formalism.FourierDecayAlt.B.gN s / Formalism.FourierDecayAlt.B.gN y` using `div_pos hspos hypos`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.div_rpow hspos.le hypos.le, Real.rpow_neg hypos.le, div_eq_mul_inv, inv_inv, mul_comm]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gN_shift {s y : Mx k r} (hs : s ∈ UH (Hpk k r)) (hy : y ∈ UH (Hpk k r)) {a : ℝ} (ha : 0 ≤ a) :
     Formalism.FourierDecayAlt.B.gN (s * y) ^ (-a) ≤ Formalism.FourierDecayAlt.B.gN y ^ a * Formalism.FourierDecayAlt.B.gN s ^ (-a) := by
@@ -59,7 +59,7 @@ variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSp
   {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp]
 
 /- English proof (translation)
-Establish `h2 : IsClosed {p : Mt k r × Mt k r | Matrix.of p.1 ∈ UWset k r z}` using `(PI.WUN.isClosed_UW z).preimage continuous_fst`. Establish `h3 : IsClosed {p : Mt k r × Mt k r | Matrix.of p.2 ∈ Nset k r}` using `(PI.WUN.isClosed_N k r).preimage continuous_snd`. Conclude with `(h2.inter h3).measurableSet`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measurableSet_S (z : Fin (2 * r + k + 1) → ℂ) :
     MeasurableSet {p : Mt k r × Mt k r | Matrix.of p.1 ∈ UWset k r z ∧ Matrix.of p.2 ∈ Nset k r} := by
@@ -70,9 +70,9 @@ theorem measurableSet_S (z : Fin (2 * r + k + 1) → ℂ) :
   exact (h2.inter h3).measurableSet
 
 /- English proof (translation)
-Establish `hm : Continuous (fun p : Mt k r × Mt k r => (Matrix.of p.1 : Mx k r) * Matrix.of p.2)` using `(continuous_fst : Continuous (fun p : Mt k r × Mt k r => p.1)).matrix_mul continuous_snd`. Establish `h` using `(ds_rep hds).2.2.2 w`. Establish `hc : ContinuousOn (fun p : Mt k r × Mt k r => ⟪v, σ (Matrix.of p.1 * Matrix.of p.2) w⟫_ℂ) {p : Mt k r × Mt k r | Matrix.of p.1 ∈ UWset k r z ∧ Matrix.of p.2 ∈ Nset k r}`. Use `continuousOn_const.inner (h.comp hm.continuousOn ?_)` and prove the remaining obligations. Introduce `p hp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hGr.1 _ hp.1.1 _ hp.2.1`. Establish `hc'` using `hc.aestronglyMeasurable (μ := μW.prod μN) (measurableSet_S z)`. Rewrite `hc'` using `[Measure.restrict_eq_self_of_ae_mem (s := {p : Mt k r × Mt k r | Matrix.of p.1 ∈ UWset k r z ∧ Matrix.of p.2 ∈ Nset k r}) hM1]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem coefS_aesm {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ} {σ : Mx k r → (H →L[ℂ] H)}
     (hds : IsDSHpk k r ε lam σ) {z : Fin (2 * r + k + 1) → ℂ} (hGr : Cv.GrpF k r z)
@@ -92,7 +92,7 @@ theorem coefS_aesm {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1
     (s := {p : Mt k r × Mt k r | Matrix.of p.1 ∈ UWset k r z ∧ Matrix.of p.2 ∈ Nset k r}) hM1] at hc'
 
 /- English proof (translation)
-Use `Integrable.mono' (hS.const_mul |C|) (Cv.beF_aesm z c π μW μN σ w v hM.2.2.2 (coefS_aesm hds hGr hM.1 w v)) ?_` and prove the remaining obligations. Use `filter_upwards [hM.1] with p hp`. Establish `hs : Matrix.of p.1 * Matrix.of p.2 ∈ UH (Hpk k r)` using `hGr.1 _ hp.1.1 _ hp.2.1`. Establish `g1` using `((normInvP k r).1 _ hs).2`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem int_beF_of_bd {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ}
     {σ : Mx k r → (H →L[ℂ] H)} (hds : IsDSHpk k r ε lam σ) {z : Fin (2 * r + k + 1) → ℂ} {c : ℂ}
@@ -116,9 +116,9 @@ theorem int_beF_of_bd {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k 
         mul_le_mul_of_nonneg_left (Real.rpow_le_rpow_of_exponent_le g1 (by linarith)) (abs_nonneg C)
 
 /- English proof (translation)
-Introduce `y hy`. Establish `hyx : y * x ∈ UH (Hpk k r)` using `Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul hy hx`. Establish `e : σ y (σ x w) = σ (y * x) w` using `by rw [hSg.2.1 _ hy _ hx]; rfl`. Establish `g1` using `((normInvP k r).1 _ hyx).2`. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem bd_shift {σ : Mx k r → (H →L[ℂ] H)} (hSg : Cv.SigU σ) {w v : H} {b C : ℝ} (hb : 0 ≤ b)
     (hbd : ∀ y ∈ UH (Hpk k r), ‖⟪v, σ y w⟫_ℂ‖ ≤ C * Formalism.FourierDecayAlt.B.gN y ^ (-b))
@@ -137,15 +137,13 @@ theorem bd_shift {σ : Mx k r → (H →L[ℂ] H)} (hSg : Cv.SigU σ) {w v : H} 
     _ = _ := by ring
 
 /- English proof (translation)
-Establish `hprod : Integrable (fun q : Mt k r × (Mt k r × Mt k r) => Formalism.FourierDecayAlt.B.gN (Matrix.of q.1) ^ (-(b / 2)) * Formalism.FourierDecayAlt.B.gN (Matrix.of q.2.1 * Matrix.of q.2.2) ^ (-(b / 2))) (μG.prod (μW.prod μN))`. Conclude with `hGg.mul_prod hS`. Use `Integrable.mono' (hprod.const_mul (|C| * |C|)) ?_ ?_` and prove the remaining obligations. Conclude with `((coef_aesm hds hHaar u v).comp_fst.norm).mul (matrix_coefficient_ae_strongly_measurable hds hGr hHaar hM1 u v).norm`. Use `filter_upwards [joint_ae hHaar hM1] with q hq`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy : Matrix.of q.1 ∈ UH (Hpk k r)` using `hq.1`. Establish `hs : sM q.2 ∈ UH (Hpk k r)` using `hGr.1 _ hq.2.1.1 _ hq.2.2.1`. Establish `hsy : sM q.2 * Matrix.of q.1 ∈ UH (Hpk k r)` using `Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul hs hy`. Establish `gy` using `((normInvP k r).1 _ hy).2`. Establish `gsy` using `((normInvP k r).1 _ hsy).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `gs` using `((normInvP k r).1 _ hs).2`. Establish `hb2 : 0 ≤ b / 2` using `by linarith`. Establish `a1 : ‖⟪v, σ (Matrix.of q.1) u⟫_ℂ‖ ≤ |C| * Formalism.FourierDecayAlt.B.gN (Matrix.of q.1) ^ (-b)` using `(hbd _ hy).trans (mul_le_mul_of_nonneg_right (le_abs_self C) (Real.rpow_nonneg (by linarith) _))`. Establish `a2 : ‖⟪v, σ (sM q.2 * Matrix.of q.1) u⟫_ℂ‖ ≤ |C| * (Formalism.FourierDecayAlt.B.gN (Matrix.of q.1) ^ (b / 2) * Formalism.FourierDecayAlt.B.gN (sM q.2) ^ (-(b / 2)))`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `ey : Formalism.FourierDecayAlt.B.gN (Matrix.of q.1) ^ (-b) * Formalism.FourierDecayAlt.B.gN (Matrix.of q.1) ^ (b / 2) = Formalism.FourierDecayAlt.B.gN (Matrix.of q.1) ^ (-(b / 2))`. Rewrite using `[← Real.rpow_add (by linarith)]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (by positivity)]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem dInt_of_bd {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ}
     {σ : Mx k r → (H →L[ℂ] H)} (hds : IsDSHpk k r ε lam σ) {z : Fin (2 * r + k + 1) → ℂ}

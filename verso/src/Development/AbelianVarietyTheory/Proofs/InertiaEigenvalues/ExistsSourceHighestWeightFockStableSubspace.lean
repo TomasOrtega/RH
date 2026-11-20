@@ -30,9 +30,9 @@ open GlobalTheory.LowestKType GlobalTheory.IndefiniteRowSideFullHecke.RaisingLow
 variable {D : D7} {n m : ℕ}
 
 /- English proof (translation)
-Unfold `GlobalTheory.LowestKType.sop GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.fockS`. Rewrite using `[Finset.sum_eq_single a, Finset.sum_eq_single b]`. Simplify using the standard rewrite rules. Introduce `k _ hk`. Simplify using `[Matrix.single_apply, Ne.symm hk]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `k _ hk`. Simplify using `[Matrix.single_apply, Ne.symm hk]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma sop_eq (w : GlobalTheory.ExportSeries.Weight D n) (τ : D.what₂.Tau) (a b : Fin n) :
     (sop w τ a b : Module.End ℂ (PolF D m n)) =
@@ -49,7 +49,7 @@ lemma sop_eq (w : GlobalTheory.ExportSeries.Weight D n) (τ : D.what₂.Tau) (a 
   · simp
 
 /- English proof (translation)
-Simplify using `[raiO, lowO, sgn, hi]`.
+Simplify using the standard rewrite rules.
 -/
 lemma term_lt (w : GlobalTheory.ExportSeries.Weight D n) (τ : D.what₂.Tau) (a b : Fin n) (i : Fin m) (hi : (i : ℕ) < w.p τ)
     (P : PolF D m n) :
@@ -60,7 +60,7 @@ lemma term_lt (w : GlobalTheory.ExportSeries.Weight D n) (τ : D.what₂.Tau) (a
   simp [raiO, lowO, sgn, hi]
 
 /- English proof (translation)
-Simplify using `[raiO, lowO, sgn, hi]`.
+Simplify using the standard rewrite rules.
 -/
 lemma term_ge (w : GlobalTheory.ExportSeries.Weight D n) (τ : D.what₂.Tau) (a b : Fin n) (i : Fin m) (hi : ¬ (i : ℕ) < w.p τ)
     (P : PolF D m n) :
@@ -71,7 +71,7 @@ lemma term_ge (w : GlobalTheory.ExportSeries.Weight D n) (τ : D.what₂.Tau) (a
   simp [raiO, lowO, sgn, hi]
 
 /- English proof (translation)
-Rewrite using `[pderiv_monomial, X, monomial_mul, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma mono1 (u v : FVar D m n) (α : FVar D m n →₀ ℕ) (c : ℂ) :
     (X u * pderiv v (monomial α c) : PolF D m n) = monomial (Finsupp.single u 1 + (α - Finsupp.single v 1)) (c * α v) := by
@@ -79,7 +79,7 @@ lemma mono1 (u v : FVar D m n) (α : FVar D m n →₀ ℕ) (c : ℂ) :
   rw [pderiv_monomial, X, monomial_mul, one_mul]
 
 /- English proof (translation)
-Rewrite using `[X, monomial_mul, one_mul, pderiv_monomial]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma mono2 (u v : FVar D m n) (α : FVar D m n →₀ ℕ) (c : ℂ) :
     (pderiv u (X v * monomial α c) : PolF D m n) =
@@ -91,9 +91,9 @@ def lamM (w : GlobalTheory.ExportSeries.Weight D n) (τ : D.what₂.Tau) (a : Fi
   ∑ i : Fin m, ((if (i : ℕ) < w.p τ then (α (τ, i, a) : ℂ) else -((α (τ, i, a) : ℂ) + 1)) + 1 / 2)
 
 /- English proof (translation)
-Rewrite using `[mono1]`. Distinguish the cases in `h : α v = 0`. Simplify using `[h]`. Establish `: Finsupp.single v 1 + (α - Finsupp.single v 1) = α`. Rewrite using `[add_comm]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `tsub_add_cancel_of_le (Finsupp.single_le_iff.2 (Nat.one_le_iff_ne_zero.2 h))`. Rewrite using `[this, smul_monomial, smul_eq_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma diag_X (v : FVar D m n) (α : FVar D m n →₀ ℕ) (c : ℂ) :
     (X v * pderiv v (monomial α c) : PolF D m n) = (α v : ℂ) • monomial α c := by
@@ -106,7 +106,7 @@ lemma diag_X (v : FVar D m n) (α : FVar D m n →₀ ℕ) (c : ℂ) :
     rw [this, smul_monomial, smul_eq_mul, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[mono2, add_tsub_cancel_left, smul_monomial]`. Simplify using `[Finsupp.single_apply]`. Put the polynomial expressions in normal form.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Put the polynomial expressions in normal form.
 -/
 lemma diag_D (v : FVar D m n) (α : FVar D m n →₀ ℕ) (c : ℂ) :
     (pderiv v (X v * monomial α c) : PolF D m n) = ((α v : ℂ) + 1) • monomial α c := by
@@ -116,9 +116,9 @@ lemma diag_D (v : FVar D m n) (α : FVar D m n →₀ ℕ) (c : ℂ) :
   ring_nf
 
 /- English proof (translation)
-Rewrite using `[sop_eq, LinearMap.sum_apply]`. Unfold `lamM`. Rewrite using `[Finset.sum_smul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.add_apply]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hi : (i : ℕ) < w.p τ`. Rewrite using `[term_lt w τ a a i hi, diag_X]`. Simplify using `[hi, add_smul]`. Rewrite using `[term_ge w τ a a i hi, diag_D]`. Simplify using `[hi, add_smul, neg_smul]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma sop_diag (w : GlobalTheory.ExportSeries.Weight D n) (τ : D.what₂.Tau) (a : Fin n) (α : FVar D m n →₀ ℕ) (c : ℂ) :
     sop w τ a a (monomial α c : PolF D m n) = lamM w τ a α • monomial α c := by
@@ -135,9 +135,9 @@ lemma sop_diag (w : GlobalTheory.ExportSeries.Weight D n) (τ : D.what₂.Tau) (
     simp [hi, add_smul, neg_smul]
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on' with`. Consider the case `monomial u c`. Rewrite using `[sop_diag, coeff_smul, coeff_monomial, smul_eq_mul]`. Use `split_ifs with h`. Rewrite using `[h]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Consider the case `add p q hp hq => rw [map_add, coeff_add, coeff_add, hp, hq, mul_add]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 lemma coeff_sop_diag (w : GlobalTheory.ExportSeries.Weight D n) (τ : D.what₂.Tau) (a : Fin n) (P : PolF D m n)
     (β : FVar D m n →₀ ℕ) : coeff β (sop w τ a a P) = lamM w τ a β * coeff β P := by
@@ -156,20 +156,20 @@ def gV (w : GlobalTheory.ExportSeries.Weight D n) (v : FVar D m n) : ℤ :=
 def ht (w : GlobalTheory.ExportSeries.Weight D n) (α : FVar D m n →₀ ℕ) : ℤ := ∑ v, gV w v * (α v : ℤ)
 
 /- English proof (translation)
-Unfold `ht`. Simplify using `[mul_add, Finset.sum_add_distrib]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 lemma ht_add (w : GlobalTheory.ExportSeries.Weight D n) (α β : FVar D m n →₀ ℕ) : ht w (α + β) = ht w α + ht w β := by
   unfold ht; simp [mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Unfold `ht`. Simplify using `[Finsupp.single_apply]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 lemma ht_single (w : GlobalTheory.ExportSeries.Weight D n) (u : FVar D m n) : ht w (Finsupp.single u 1) = gV w u := by
   classical
   unfold ht; simp [Finsupp.single_apply]
 
 /- English proof (translation)
-Establish `e : α - Finsupp.single v 1 + Finsupp.single v 1 = α` using `tsub_add_cancel_of_le (Finsupp.single_le_iff.2 h)`. Establish `h2` using `congrArg (ht w) e`. Rewrite `h2` using `[ht_add, ht_single]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma ht_sub (w : GlobalTheory.ExportSeries.Weight D n) (α : FVar D m n →₀ ℕ) (v : FVar D m n) (h : 1 ≤ α v) :
     ht w (α - Finsupp.single v 1) = ht w α - gV w v := by
@@ -179,26 +179,26 @@ lemma ht_sub (w : GlobalTheory.ExportSeries.Weight D n) (α : FVar D m n →₀ 
   linarith
 
 /- English proof (translation)
-Rewrite using `[ht_add, ht_single, ht_sub w α v h]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma ht_move (w : GlobalTheory.ExportSeries.Weight D n) (α : FVar D m n →₀ ℕ) (u v : FVar D m n) (h : 1 ≤ α v) :
     ht w (Finsupp.single u 1 + (α - Finsupp.single v 1)) = ht w α + (gV w u - gV w v) := by
   rw [ht_add, ht_single, ht_sub w α v h]; ring
 
 /- English proof (translation)
-Rewrite `hβ` using `[sop_eq, LinearMap.sum_apply]`. Take `⟨i, -, hi⟩` from `Finset.mem_biUnion.1 (support_sum hβ)`. Rewrite `hi` using `[LinearMap.add_apply]`. Simplify using `only [hab, if_false, LinearMap.zero_apply, add_zero] at hi`. Distinguish the cases in `hp : (i : ℕ) < w.p τ`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Rewrite `hi`, `with`, `h0` using `[term_lt w τ a b i hp, mono1, support_monomial] at hi split_ifs`. Simplify using `at hi`. Rewrite `hi` using `[Finset.mem_singleton]`. Substitute `hi` using the available equality. Establish `h1 : 1 ≤ α (τ, i, b)`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Establish an intermediate fact.
 
-Break down `Nat.eq_zero_or_pos (α (τ, i, b)) with h | h` into its components or cases. Simplify using `[h] at h0`. Conclude with `h`. Rewrite using `[ht_move w α _ _ h1]`. Simplify using `[gV, hp]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hi`, `with`, `h0` using `[term_ge w τ a b i hp, support_neg, mono2, support_monomial] at hi split_ifs`. Simplify using `at hi`. Rewrite `hi` using `[Finset.mem_singleton]`. Substitute `hi` using the available equality. Establish `hne : ((τ, i, b) : FVar D m n) ≠ (τ, i, a)`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Apply `hab` to reduce the goal to its premises. Simplify using `only [Prod.mk.injEq] at h`. Conclude with `h.2.2.symm`. Establish `hu : ((Finsupp.single ((τ, i, b) : FVar D m n) 1 + α : FVar D m n →₀ ℕ) (τ, i, a)) = α (τ, i, a)`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[Finsupp.single_apply, hne]`. Rewrite `h0` using `[hu]`. Establish `h1 : 1 ≤ α (τ, i, a)`. Break down `Nat.eq_zero_or_pos (α (τ, i, a)) with h | h` into its components or cases. Simplify using `[h] at h0`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `h`. Rewrite using `[add_tsub_assoc_of_le (Finsupp.single_le_iff.2 h1), ht_move w α _ _ h1]`. Simplify using `[gV, hp]`.
+A detailed English derivation is pending.
 -/
 lemma sop_off_mono (w : GlobalTheory.ExportSeries.Weight D n) (τ : D.what₂.Tau) (a b : Fin n) (hab : a ≠ b)
     (α β : FVar D m n →₀ ℕ) (c : ℂ) (hβ : β ∈ (sop w τ a b (monomial α c : PolF D m n)).support) :
@@ -238,7 +238,7 @@ lemma sop_off_mono (w : GlobalTheory.ExportSeries.Weight D n) (τ : D.what₂.Ta
       simp [gV, hp]
 
 /- English proof (translation)
-Rewrite `hβ` using `[as_sum P, map_sum]`. Take `⟨α, hα, h⟩` from `Finset.mem_biUnion.1 (support_sum hβ)`. Conclude with `⟨α, hα, sop_off_mono w τ a b hab α β _ h⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma sop_off (w : GlobalTheory.ExportSeries.Weight D n) (τ : D.what₂.Tau) (a b : Fin n) (hab : a ≠ b)
     (P : PolF D m n) (β : FVar D m n →₀ ℕ) (hβ : β ∈ (sop w τ a b P).support) :
@@ -255,9 +255,9 @@ def wtZ (w : GlobalTheory.ExportSeries.Weight D n) (τ : D.what₂.Tau) (a : Fin
   ∑ i : Fin m, (if (i : ℕ) < w.p τ then (1 : ℤ) else -1) * (α (τ, i, a) : ℤ)
 
 /- English proof (translation)
-Unfold `ht wtZ gV`. Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_prod_type, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma ht_eq (w : GlobalTheory.ExportSeries.Weight D n) (α : FVar D m n →₀ ℕ) :
     ht w α = ∑ τ, ∑ a : Fin n, ((n : ℤ) - (a : ℕ)) * wtZ w τ a α := by
@@ -271,7 +271,7 @@ lemma ht_eq (w : GlobalTheory.ExportSeries.Weight D n) (α : FVar D m n →₀ �
   ring
 
 /- English proof (translation)
-Unfold `lamM wtZ`. Use `push_cast`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> ring`.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma lamM_eq (w : GlobalTheory.ExportSeries.Weight D n) (τ : D.what₂.Tau) (a : Fin n) (α : FVar D m n →₀ ℕ) :
     lamM w τ a α = (wtZ w τ a α : ℂ) + ∑ i : Fin m, ((if (i : ℕ) < w.p τ then (0 : ℂ) else -1) + 1 / 2) := by
@@ -282,7 +282,7 @@ lemma lamM_eq (w : GlobalTheory.ExportSeries.Weight D n) (τ : D.what₂.Tau) (a
   split_ifs <;> ring
 
 /- English proof (translation)
-Rewrite using `[ht_eq, ht_eq]`. Use `Finset.sum_congr rfl fun τ _ => Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Establish `h1` using `h τ a`. Rewrite `h1` using `[lamM_eq, lamM_eq, add_left_inj]`. Rewrite using `[Int.cast_inj.1 h1]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 lemma ht_of_lam (w : GlobalTheory.ExportSeries.Weight D n) (α β : FVar D m n →₀ ℕ)
     (h : ∀ τ a, lamM w τ a α = lamM w τ a β) : ht w α = ht w β := by
@@ -293,21 +293,19 @@ lemma ht_of_lam (w : GlobalTheory.ExportSeries.Weight D n) (α β : FVar D m n �
   rw [Int.cast_inj.1 h1]
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `P hc _ α0 hα0`. Rewrite `hc` using `[Nat.le_zero, Finset.card_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[hc] at hα0`. Consider the case `succ k ih`. Introduce `P hc hPV α0 hα0`. Distinguish the cases in `hP : Pure w P`. Conclude with `⟨P, hPV, hα0, hP⟩`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Simplify using `only [Pure, not_forall] at hP`. Take `⟨τ, a, α, hα, β, hβ, hne⟩` from `hP`. Choose the witnesses or unpack the hypotheses as in `⟨γ, hγ, hγne⟩ : ∃ γ ∈ P.support, lamM w τ a γ ≠ lamM w τ a α0 := by`. Distinguish the cases in `h : lamM w τ a α = lamM w τ a α0`. Conclude with `⟨β, hβ, fun h' => hne (h.trans h'.symm)⟩`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Conclude with `⟨α, hα, h⟩`. Use `set R := sop w τ a a P - lamM w τ a γ • P with hR`. Establish `hcoeff : ∀ δ, coeff δ R = (lamM w τ a δ - lamM w τ a γ) * coeff δ P`. Introduce `δ`. Rewrite using `[hR, coeff_sub, coeff_smul, coeff_sop_diag, smul_eq_mul]`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hRV : R ∈ V` using `V.sub_mem (hV P hPV τ a a) (V.smul_mem _ hPV)`. Establish `hsub : R.support ⊆ P.support.erase γ`. Introduce `δ hδ`. Rewrite `hδ` using `[mem_support_iff, hcoeff]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mem_erase, mem_support_iff]`. Use `⟨fun h => ?_, fun h => hδ (by rw [h, mul_zero])⟩` and prove the remaining obligations. Substitute `h; exact hδ (by rw [sub_self, zero_mul])` using the available equality. Establish `hcard : R.support.card ≤ k`. Use `Finset.card_le_card hsub` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[Finset.card_erase_of_mem hγ]`. Use linear arithmetic over natural numbers and integers. Establish `hα0R : α0 ∈ R.support`. Rewrite using `[mem_support_iff, hcoeff]`. Conclude with `mul_ne_zero (sub_ne_zero.2 (Ne.symm hγne)) (mem_support_iff.1 hα0)`.
-
-Conclude with `ih R hcard hRV α0 hα0R`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma purify (w : GlobalTheory.ExportSeries.Weight D n) (V : Submodule ℂ (PolF D m n))
     (hV : ∀ P ∈ V, ∀ (τ : D.what₂.Tau) (a b : Fin n), sop w τ a b P ∈ V) :
@@ -350,9 +348,9 @@ lemma purify (w : GlobalTheory.ExportSeries.Weight D n) (V : Submodule ℂ (PolF
     exact ih R hcard hRV α0 hα0R
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `(Submodule.fg_iff_finiteDimensional V).2 inferInstance`. Use `⟨s.biUnion fun P => P.support, fun P hP => ?_⟩` and prove the remaining obligations. Rewrite `hP` using `[← hs]`. Proceed by induction on `hP using Submodule.span_induction with`. Consider the case `mem x hx => exact Finset.subset_biUnion_of_mem (fun P : PolF D m n => P.support) hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => exact (support_add).trans (Finset.union_subset hx hy)`. Consider the case `smul c x _ hx => exact (support_smul).trans hx`.
+Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 lemma exists_F (V : Submodule ℂ (PolF D m n)) [FiniteDimensional ℂ V] :
     ∃ F : Finset (FVar D m n →₀ ℕ), ∀ P ∈ V, P.support ⊆ F := by
@@ -367,7 +365,7 @@ lemma exists_F (V : Submodule ℂ (PolF D m n)) [FiniteDimensional ℂ V] :
   | smul c x _ hx => exact (support_smul).trans hx
 
 /- English proof (translation)
-Use extensionality with `γ`. Rewrite using `[coeff_sop_diag, coeff_smul, smul_eq_mul]`. Distinguish the cases in `hγ : coeff γ Q = 0`. Rewrite using `[hγ, mul_zero, mul_zero]`. Rewrite using `[hQ τ a γ (mem_support_iff.2 hγ) α hα]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 lemma pure_eigen (w : GlobalTheory.ExportSeries.Weight D n) (Q : PolF D m n) (hQ : Pure w Q) (α : FVar D m n →₀ ℕ)
     (hα : α ∈ Q.support) (τ : D.what₂.Tau) (a : Fin n) : sop w τ a a Q = lamM w τ a α • Q := by
@@ -383,17 +381,15 @@ end GlobalTheory.NHwExist
 open GlobalTheory.NHwExist in
 
 /- English proof (translation)
-Introduce `D n m w V hfin hne hst`. Take `⟨F, hF⟩` from `exists_F V`. Take `⟨B, hB⟩ : ∃ B : ℤ, ∀ α ∈ F, ht w α ≤ B` from `⟨∑ α ∈ F, |ht w α|, fun α hα => (le_abs_self _).trans (Finset.single_le_sum (fun x _ => abs_nonneg (ht w x)) hα)⟩`. Establish `key : ∀ k : ℕ, ∀ Q ∈ V, Pure w Q → ∀ α ∈ Q.support, B - ht w α ≤ k → ∃ P ∈ V, P ≠ 0 ∧ ∃ lam : D.what₂.Tau → Fin n → ℂ, GlobalTheory.LowestKType.IsNHw w lam P`. Introduce `k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `k using Nat.strong_induction_on with`. Consider the case `_ k ih`. Introduce `Q hQ hpure α hα hk`. Distinguish the cases in `hr : ∀ (τ : D.what₂.Tau) (a b : Fin n), a < b → GlobalTheory.LowestKType.sop w τ a b Q = 0`. Use `⟨Q, hQ, fun h => by simp [h] at hα, fun τ a => lamM w τ a α, hr, fun τ a => ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `pure_eigen w Q hpure α hα τ a`. Simplify using `only [not_forall] at hr`. Take `⟨τ, a, b, hab, hne⟩` from `hr`. Choose the witnesses or unpack the hypotheses as in `⟨β, hβ⟩ : (GlobalTheory.LowestKType.sop w τ a b Q).support.Nonempty := by`. Rewrite using `[Finset.nonempty_iff_ne_empty, Ne, MvPolynomial.support_eq_empty]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hne`. Take `⟨α', hα', hht⟩` from `sop_off w τ a b (ne_of_lt hab) Q β hβ`. Establish `heq : ht w α' = ht w α` using `ht_of_lam w α' α (fun τ a => hpure τ a α' hα' α hα)`. Take `⟨Q', hQ'V, hβQ', hpure'⟩` from `purify w V hst _ _ le_rfl (hst Q hQ τ a b) β hβ`. Establish `hβB : ht w β ≤ B` using `hB β (hF Q' hQ'V hβQ')`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hab' : (a : ℕ) < (b : ℕ)` using `hab`. Conclude with `ih (B - ht w β).toNat (by omega) Q' hQ'V hpure' β hβQ' (Int.self_le_toNat _)`. Take `⟨P, hPV, hP0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Choose the witnesses or unpack the hypotheses as in `⟨α0, hα0⟩ : P.support.Nonempty := by`. Rewrite using `[Finset.nonempty_iff_ne_empty, Ne, MvPolynomial.support_eq_empty]`.
-
-Conclude with `hP0`. Take `⟨Q, hQV, hα0Q, hpure⟩` from `purify w V hst _ P le_rfl hPV α0 hα0`. Conclude with `key (B - ht w α0).toNat Q hQV hpure α0 hα0Q (Int.self_le_toNat _)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.exists_nHw_of_fockS_stable : ∀ (D : D7) (n m : ℕ) (w : GlobalTheory.ExportSeries.Weight D n) (V : Submodule ℂ (PolF D m n)), FiniteDimensional ℂ V → V ≠ ⊥ → (∀ P ∈ V, ∀ (τ : D.what₂.Tau) (a b : Fin n), GlobalTheory.LowestKType.sop w τ a b P ∈ V) → ∃ P ∈ V, P ≠ 0 ∧ ∃ lam : D.what₂.Tau → Fin n → ℂ, GlobalTheory.LowestKType.IsNHw w lam P := by
   classical

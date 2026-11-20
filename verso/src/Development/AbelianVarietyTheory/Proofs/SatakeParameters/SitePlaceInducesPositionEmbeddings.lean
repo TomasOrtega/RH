@@ -9,7 +9,7 @@ noncomputable section
 namespace GlobalTheory.TwV
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S`. Conclude with `GlobalTheory.TwU.lamPos_of_posEmb (sysS H X std) S.E.toCEmb D _ S.lam _ (ex.cmp.embW u w hg) S.hK (J.Gd.cmp.tie u w hg).pos_emb`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem pos_at_site : AllSites (fun {D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X} [Fact (D.what₂.places.resChar w).Prime] {std t J} S => S.Pos) := by
   intro D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S

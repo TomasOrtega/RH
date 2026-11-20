@@ -22,13 +22,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
 abbrev ksbConj (τ : E →+* ℂ) : E →+* ℂ := (starRingEnd ℂ).comp τ
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[ksbConj]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem ksbConj_ksbConj (τ : E →+* ℂ) : ksbConj (ksbConj τ) = τ := by
   ext x; simp [ksbConj]
 
 /- English proof (translation)
-Introduce `h`. Establish `h2` using `H.sqrt_neg_disc_sq`. Rewrite `h2` using `[h]`. Establish `hd : (H.d : ℂ) = 0` using `by linear_combination h2`. Conclude with `H.d_prime.ne_zero (by exact_mod_cast hd)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cmHostImaginaryRootValue_ne_zero (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) : H.rt0 ≠ 0 := by
   intro h
@@ -38,11 +38,11 @@ theorem cmHostImaginaryRootValue_ne_zero (H : ReciprocityTheory.ChartRestriction
   exact H.d_prime.ne_zero (by exact_mod_cast hd)
 
 /- English proof (translation)
-Establish `h` using `H.sqrt_neg_disc_sq`. Establish `hre` using `congrArg Complex.re h`. Establish `him` using `congrArg Complex.im h`. Simplify using `[pow_two] at hre him`. Establish `hd : (0:ℝ) < H.d` using `by exact_mod_cast H.d_prime.pos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hx : H.rt0.re = 0`. Assume the negation of the conclusion as `hx`. Establish `hy : H.rt0.im = 0`. Establish `h3 : (2 * H.rt0.re) * H.rt0.im = 0` using `by linarith`. Conclude with `(mul_eq_zero.1 h3).resolve_left (mul_ne_zero two_ne_zero hx)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hre` using `[hy]`. Use polynomial arithmetic with `[sq_nonneg H.rt0.re]`. Apply the tactic sequence `apply Complex.ext <;> simp [hx]`.
+Use the polynomial consequences of the given equalities and inequalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem cmHostImaginaryRootValue_conj_eq_neg (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) : starRingEnd ℂ H.rt0 = -H.rt0 := by
   have h := H.sqrt_neg_disc_sq
@@ -60,9 +60,9 @@ theorem cmHostImaginaryRootValue_conj_eq_neg (H : ReciprocityTheory.ChartRestric
   apply Complex.ext <;> simp [hx]
 
 /- English proof (translation)
-Establish `h1 : ((H.rt : E)) ^ 2 = -(H.d : E)`. Use `congrArg (algebraMap (𝓞 E) E) H.rt_sq` as an intermediate fact. Simplify using `using this`. Establish `h : (τ (H.rt : E)) ^ 2 = H.rt0 ^ 2`. Rewrite using `[← map_pow, h1, map_neg, map_natCast, H.sqrt_neg_disc_sq]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sq_eq_sq_iff_eq_or_eq_neg.1 h`.
+A detailed English derivation is pending.
 -/
 theorem ksb_emb_rt (τ : E →+* ℂ) : τ (H.rt : E) = H.rt0 ∨ τ (H.rt : E) = -H.rt0 := by
   have h1 : ((H.rt : E)) ^ 2 = -(H.d : E) := by
@@ -73,9 +73,9 @@ theorem ksb_emb_rt (τ : E →+* ℂ) : τ (H.rt : E) = H.rt0 ∨ τ (H.rt : E) 
   exact sq_eq_sq_iff_eq_or_eq_neg.1 h
 
 /- English proof (translation)
-Establish `hne : -H.rt0 ≠ H.rt0` using `fun h => cmHostImaginaryRootValue_ne_zero H (by linear_combination -h / 2)`. Simplify using `only [ksbConj, RingHom.comp_apply]`. Break down `ksb_emb_rt (H := H) τ with h | h` into its components or cases. Rewrite using `[h, cmHostImaginaryRootValue_conj_eq_neg]`. Simplify using `[hne]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h, map_neg, cmHostImaginaryRootValue_conj_eq_neg, neg_neg]`. Conclude with `iff_of_true rfl hne`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ksbConj_mem_iff (τ : E →+* ℂ) : ksbConj τ (H.rt : E) = H.rt0 ↔ ¬ τ (H.rt : E) = H.rt0 := by
   have hne : -H.rt0 ≠ H.rt0 := fun h => cmHostImaginaryRootValue_ne_zero H (by linear_combination -h / 2)
@@ -85,7 +85,7 @@ theorem ksbConj_mem_iff (τ : E →+* ℂ) : ksbConj τ (H.rt : E) = H.rt0 ↔ �
   · rw [h, map_neg, cmHostImaginaryRootValue_conj_eq_neg, neg_neg]; exact iff_of_true rfl hne
 
 /- English proof (translation)
-Establish `e1 : {τ : E →+* ℂ // ¬ τ (H.rt : E) = H.rt0} ≃ {τ : E →+* ℂ // τ (H.rt : E) = H.rt0}` using `{ toFun := fun τ => ⟨ksbConj τ.1, (ksbConj_mem_iff τ.1).2 τ.2⟩ invFun := fun τ => ⟨ksbConj τ.1, by rw [ksbConj_mem_iff, not_not]; exact τ.2⟩ left_inv := fun τ => Subtype.ext (ksbConj_ksbConj τ.1) right_inv := fun τ => Subtype.ext (ksbConj_ksbConj τ.1) }`. Establish `h1` using `Fintype.card_congr (Equiv.sumCompl fun τ : E →+* ℂ => τ (H.rt : E) = H.rt0)`. Rewrite `h1` using `[Fintype.card_sum, Fintype.card_congr e1, NumberField.Embeddings.card E ℂ]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem ksb_card_cmType :
     Fintype.card {τ : E →+* ℂ // τ (H.rt : E) = H.rt0} = Module.finrank ℚ E / 2 := by
@@ -108,9 +108,9 @@ def ksbFst (P : PairIx H Dw) : FlatIx Dw := ⟨P.1.1, P.2.1⟩
 def ksbSnd (P : PairIx H Dw) : FlatIx Dw := ⟨ksbConj P.1.1, P.2.2⟩
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `congrArg Sigma.fst h`. Simplify using `only [ksbFst, ksbSnd] at h1`. Establish `h2` using `P.1.2`. Rewrite `h2` using `[h1, ksbConj_mem_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h2 Q.1.2`.
+A detailed English derivation is pending.
 -/
 theorem ksbFst_ne_ksbSnd (P Q : PairIx H Dw) : ksbFst Dw P ≠ ksbSnd Dw Q := by
   intro h
@@ -121,9 +121,9 @@ theorem ksbFst_ne_ksbSnd (P Q : PairIx H Dw) : ksbFst Dw P ≠ ksbSnd Dw Q := by
   exact h2 Q.1.2
 
 /- English proof (translation)
-Take `⟨⟨τ, hτ⟩, i, k⟩` from `P`. Take `⟨⟨τ', hτ'⟩, i', k'⟩` from `Q`. Simplify using `only [ksbFst, ksbSnd, Sigma.mk.inj_iff] at h1 h2`. Take `⟨rfl, hi⟩` from `h1`. Take `⟨-, hk⟩` from `h2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `hi`, `hk` using `[heq_iff_eq]`. Substitute `hi hk` using the available equality. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem ksb_pair_inj {P Q : PairIx H Dw} (h1 : ksbFst Dw P = ksbFst Dw Q) (h2 : ksbSnd Dw P = ksbSnd Dw Q) :
     P = Q := by
@@ -137,7 +137,7 @@ theorem ksb_pair_inj {P Q : PairIx H Dw} (h1 : ksbFst Dw P = ksbFst Dw Q) (h2 : 
   rfl
 
 /- English proof (translation)
-Take `⟨τ, i⟩` from `s`. Take `⟨σ, k⟩` from `t`. Simplify using `only at h hs`. Substitute `h` using the available equality. Conclude with `⟨⟨⟨τ, hs⟩, i, k⟩, rfl, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem ksb_exists_pair (s t : FlatIx Dw) (h : t.1 = ksbConj s.1) (hs : s.1 (H.rt : E) = H.rt0) :
     ∃ P, ksbFst Dw P = s ∧ ksbSnd Dw P = t := by
@@ -148,9 +148,9 @@ theorem ksb_exists_pair (s t : FlatIx Dw) (h : t.1 = ksbConj s.1) (hs : s.1 (H.r
   exact ⟨⟨⟨τ, hs⟩, i, k⟩, rfl, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[Nat.card_eq_fintype_card]`. Establish `hm1 : ∀ τ : {τ : E →+* ℂ // τ (H.rt : E) = H.rt0}, Dw.mult τ.1 = Dw.p` using `fun τ => if_pos τ.2`. Establish `hm2 : ∀ τ : {τ : E →+* ℂ // τ (H.rt : E) = H.rt0}, Dw.mult (ksbConj τ.1) = Dw.q` using `fun τ => if_neg (by rw [ksbConj_mem_iff, not_not]; exact τ.2)`. Rewrite using `[Fintype.card_sigma]`. Simplify using `only [Fintype.card_prod, Fintype.card_fin, hm1, hm2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_const, Finset.card_univ, smul_eq_mul, Datum.dim, ksb_card_cmType]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ksb_card_pairIx : Nat.card (PairIx H Dw) = Dw.dim := by
   classical
@@ -177,7 +177,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} (c : Coeff l) {R : Type} [CommRing R] (φ : c.F →+* R) {n : ℕ} (e : FlatIx Dw ≃ Fin n)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Apply `h` to reduce the goal to its premises. Establish `: s = ksbConj t` using `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) (RingHom.ext fun a => hc a)`. Rewrite using `[this, ksbConj_ksbConj]`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ksb_exists_ne {s t : E →+* ℂ} (h : t ≠ ksbConj s) :
     ∃ a : 𝓞 E, s (a : E) ≠ starRingEnd ℂ (t (a : E)) := by
@@ -188,7 +188,7 @@ theorem ksb_exists_ne {s t : E →+* ℂ} (h : t ≠ ksbConj s) :
   rw [this, ksbConj_ksbConj]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[embK_coe, embK_coe, H.bar_eq, h]`. Simplify using `[ksbConj]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ksb_embK_bar {s t : E →+* ℂ} (h : t = ksbConj s) (a : 𝓞 E) : embK c t (H.bar a) = embK c s a := by
   apply Subtype.ext
@@ -196,9 +196,9 @@ theorem ksb_embK_bar {s t : E →+* ℂ} (h : t = ksbConj s) (a : 𝓞 E) : embK
   simp [ksbConj]
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `ksb_exists_ne h`. Use `⟨a, fun h0 => ha ?_⟩` and prove the remaining obligations. Rewrite `h0` using `[sub_eq_zero]`. Establish `h1` using `congrArg ((↑) : c.F → ℂ) h0`. Rewrite `h1` using `[embK_coe, embK_coe, H.bar_eq, IsCMField.complexEmbedding_complexConj]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem ksb_embK_sub_ne {s t : E →+* ℂ} (h : t ≠ ksbConj s) :
     ∃ a : 𝓞 E, embK c s a - embK c t (H.bar a) ≠ 0 := by
@@ -212,9 +212,9 @@ theorem ksb_embK_sub_ne {s t : E →+* ℂ} (h : t ≠ ksbConj s) :
 def ksbA (a : 𝓞 E) : Matrix (Fin n) (Fin n) R := Matrix.diagonal fun x => φ (embK c (e.symm x).1 a)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Simplify using `only [ksbA, Matrix.diagonal_apply, Pi.single_apply, Equiv.symm_apply_apply]`. Distinguish the cases in `hy : y = e s`. Substitute `hy` using the available equality. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg (Ne.symm hy), if_neg hy]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ksbA_row (a : 𝓞 E) (s : FlatIx Dw) :
     ksbA Dw c φ e a (e s) = Pi.single (e s) (φ (embK c s.1 a)) := by
@@ -228,11 +228,11 @@ def ksbEps : Fin Dw.dim ≃ PairIx H Dw :=
   (Fintype.equivFinOfCardEq (by rw [← Nat.card_eq_fintype_card]; exact ksb_card_pairIx Dw)).symm
 
 /- English proof (translation)
-Use `(LogKS.mem_balanced_diagonal (fun a => H.bar a) (fun x a => φ (embK c (e.symm x).1 a)) Θ).trans ?_` and prove the remaining obligations. Use `and_congr_right fun _ => ⟨fun h s t hst => ?_, fun h a x y => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `ksb_embK_sub_ne c hst`. Establish `hu : IsUnit (φ (embK c s.1 a - embK c t.1 (H.bar a)))` using `(IsUnit.mk0 _ ha).map φ`. Establish `h2` using `h a (e s) (e t)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Equiv.symm_apply_apply] at h2`. Rewrite `h2` using `[← map_sub]`. Conclude with `hu.mul_right_eq_zero.1 h2`. Take `⟨s, rfl⟩` from `e.surjective x`. Take `⟨t, rfl⟩` from `e.surjective y`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [Equiv.symm_apply_apply]`. Distinguish the cases in `hst : t.1 = ksbConj s.1`. Rewrite using `[ksb_embK_bar c hst, sub_self, zero_mul]`. Rewrite using `[h s t hst, mul_zero]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ksb_mem_balanced_iff (Θ : Matrix (Fin n) (Fin n) R) :
     Θ ∈ LogKS.balanced H.bar (ksbA Dw c φ e) ↔
@@ -261,9 +261,9 @@ theorem ksb_symPair_apply (P : PairIx H Dw) (x y : Fin n) :
         (if x = e (ksbSnd Dw P) ∧ y = e (ksbFst Dw P) then 1 else 0) := rfl
 
 /- English proof (translation)
-Rewrite using `[ksb_symPair_apply, if_neg, if_neg, add_zero]`. Introduce and unpack `⟨h1, h2⟩`. Rewrite `h1`, `h2` using `[e.injective.eq_iff]`. Substitute `h1 h2` using the available equality. Conclude with `h (by simp only [ksbFst, ksbSnd, ksbConj_ksbConj])`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨h1, h2⟩`. Rewrite `h1`, `h2` using `[e.injective.eq_iff]`. Substitute `h1 h2` using the available equality. Conclude with `h (by simp only [ksbFst, ksbSnd, ksbConj_ksbConj])`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem ksb_symPair_eq_zero (P : PairIx H Dw) (s t : FlatIx Dw) (h : t.1 ≠ ksbConj s.1) :
     (symPair (R := R) e P) (e s) (e t) = 0 := by
@@ -278,7 +278,7 @@ theorem ksb_symPair_eq_zero (P : PairIx H Dw) (s t : FlatIx Dw) (h : t.1 ≠ ksb
     exact h (by simp only [ksbFst, ksbSnd, ksbConj_ksbConj])
 
 /- English proof (translation)
-Use extensionality with `x y`. Rewrite using `[Matrix.transpose_apply, ksb_symPair_apply, ksb_symPair_apply, add_comm]`. Apply the tactic sequence `congr 1 <;> exact if_congr and_comm rfl rfl`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ksb_symPair_transpose (P : PairIx H Dw) : (symPair (R := R) e P)ᵀ = symPair e P := by
   ext x y
@@ -286,18 +286,16 @@ theorem ksb_symPair_transpose (P : PairIx H Dw) : (symPair (R := R) e P)ᵀ = sy
   congr 1 <;> exact if_congr and_comm rfl rfl
 
 /- English proof (translation)
-The claim follows from `(ksb_mem_balanced_iff Dw c φ e _).2 ⟨ksb_symPair_transpose Dw e P, fun s t h => ksb_symPair_eq_zero Dw e P s t h⟩`.
+A detailed English derivation is pending.
 -/
 theorem ksb_symPair_mem (P : PairIx H Dw) : symPair e P ∈ LogKS.balanced H.bar (ksbA Dw c φ e) :=
   (ksb_mem_balanced_iff Dw c φ e _).2
     ⟨ksb_symPair_transpose Dw e P, fun s t h => ksb_symPair_eq_zero Dw e P s t h⟩
 
 /- English proof (translation)
-Rewrite using `[Matrix.sum_apply, Finset.sum_eq_single Q]`. Rewrite using `[Matrix.smul_apply, ksb_symPair_apply, if_pos ⟨rfl, rfl⟩, if_neg, add_zero, smul_eq_mul, mul_one]`. Introduce and unpack `⟨h1, -⟩`. Conclude with `ksbFst_ne_ksbSnd Dw Q Q (e.injective h1)`. Introduce `P _ hP`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.smul_apply, ksb_symPair_apply, if_neg, if_neg, add_zero, smul_zero]`. Introduce and unpack `⟨h1, -⟩`. Conclude with `ksbFst_ne_ksbSnd Dw Q P (e.injective h1)`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `hP (ksb_pair_inj Dw (e.injective h1) (e.injective h2)).symm`.
-
-Introduce `h`. Conclude with `absurd (Finset.mem_univ Q) h`.
+Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ksb_sum_apply_fst (f : PairIx H Dw → R) (Q : PairIx H Dw) :
     (∑ P, f P • symPair (R := R) e P) (e (ksbFst Dw Q)) (e (ksbSnd Dw Q)) = f Q := by
@@ -315,11 +313,9 @@ theorem ksb_sum_apply_fst (f : PairIx H Dw → R) (Q : PairIx H Dw) :
     exact absurd (Finset.mem_univ Q) h
 
 /- English proof (translation)
-Rewrite using `[Matrix.sum_apply, Finset.sum_eq_single Q]`. Rewrite using `[Matrix.smul_apply, ksb_symPair_apply, if_neg, if_pos ⟨rfl, rfl⟩, zero_add, smul_eq_mul, mul_one]`. Introduce and unpack `⟨h1, -⟩`. Conclude with `ksbFst_ne_ksbSnd Dw Q Q (e.injective h1).symm`. Introduce `P _ hP`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.smul_apply, ksb_symPair_apply, if_neg, if_neg, add_zero, smul_zero]`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `hP (ksb_pair_inj Dw (e.injective h2) (e.injective h1)).symm`. Introduce and unpack `⟨h1, -⟩`. Conclude with `ksbFst_ne_ksbSnd Dw P Q (e.injective h1).symm`.
-
-Introduce `h`. Conclude with `absurd (Finset.mem_univ Q) h`.
+Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ksb_sum_apply_snd (f : PairIx H Dw → R) (Q : PairIx H Dw) :
     (∑ P, f P • symPair (R := R) e P) (e (ksbSnd Dw Q)) (e (ksbFst Dw Q)) = f Q := by
@@ -337,13 +333,11 @@ theorem ksb_sum_apply_snd (f : PairIx H Dw → R) (Q : PairIx H Dw) :
     exact absurd (Finset.mem_univ Q) h
 
 /- English proof (translation)
-Take `⟨hsym, hz⟩` from `(ksb_mem_balanced_iff Dw c φ e Θ).1 hΘ`. Use extensionality with `x y`. Take `⟨s, rfl⟩` from `e.surjective x`. Take `⟨t, rfl⟩` from `e.surjective y`. Distinguish the cases in `hst : t.1 = ksbConj s.1`.
+Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hs : s.1 (H.rt : E) = H.rt0`. Take `⟨P, rfl, rfl⟩` from `ksb_exists_pair Dw s t hst hs`. Conclude with `ksb_sum_apply_fst Dw e _ P`. Establish `ht : t.1 (H.rt : E) = H.rt0` using `by rw [hst, ksbConj_mem_iff]; exact hs`. Establish `hts : s.1 = ksbConj t.1` using `by rw [hst, ksbConj_ksbConj]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨P, rfl, rfl⟩` from `ksb_exists_pair Dw t s hts ht`. Rewrite using `[ksb_sum_apply_snd]`. Establish `h3` using `congrFun (congrFun hsym (e (ksbSnd Dw P))) (e (ksbFst Dw P))`. Rewrite `h3` using `[Matrix.transpose_apply]`. Conclude with `h3`.
-
-Rewrite using `[hz s t hst, Matrix.sum_apply]`. Conclude with `Finset.sum_eq_zero fun P _ => by rw [Matrix.smul_apply, ksb_symPair_eq_zero Dw e P s t hst, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ksb_decomp (Θ : Matrix (Fin n) (Fin n) R) (hΘ : Θ ∈ LogKS.balanced H.bar (ksbA Dw c φ e)) :
     ∑ P, Θ (e (ksbFst Dw P)) (e (ksbSnd Dw P)) • symPair (R := R) e P = Θ := by
@@ -378,7 +372,7 @@ def ksbBasis : Module.Basis (PairIx H Dw) R (LogKS.balanced H.bar (ksbA Dw c φ 
   Module.Basis.ofEquivFun (ksbEquiv Dw c φ e)
 
 /- English proof (translation)
-Rewrite using `[ksbBasis, Module.Basis.coe_ofEquivFun]`. Simplify using `[ksbEquiv, Pi.single_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ksbBasis_apply (P : PairIx H Dw) : (ksbBasis Dw c φ e P).1 = symPair e P := by
   rw [ksbBasis, Module.Basis.coe_ofEquivFun]
@@ -401,9 +395,9 @@ theorem KSBasis.ksb_map_reindex {R M N ι κ : Type} [CommRing R] [AddCommGroup 
   simp
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c TF U n e v φU hv huniq hact`. Establish `hA : ∀ a i, IsCombAtG TF.Y.t (LogKS.chart U) v (ksbA Dw c φU e a i) (v i ≫ (TF.Y.t.act.act a).left)`. Introduce `a i`. Take `⟨s, rfl⟩` from `e.surjective i`. Rewrite using `[ksbA_row]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hact a s.1 s.2`. Take `⟨e', he'⟩` from `TF.logKS U n v (ksbA Dw c φU e) hv huniq hA`. Use `⟨ksbEps Dw, ((ksbBasis Dw c φU e).map e'.symm).reindex (ksbEps Dw).symm, fun j => (he' _ _).2 ?_⟩` and prove the remaining obligations. Rewrite using `[ksb_map_reindex (ksbBasis Dw c φU e) e' (ksbEps Dw) j, ksbBasis_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_logKS_symPair_basis : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (TF : TorFlag Xo c) (U : TF.Y.X.affineOpens) (n : ℕ) (e : (Σ τ : E →+* ℂ, Fin (Dw.mult τ)) ≃ Fin n) (v : Fin n → (Sp (DualNumber Γ(TF.Y.X, U.1)) ⟶ TF.Y.t.G.left)) (φU : c.F →+* Γ(TF.Y.X, U.1)), (∀ i, IsTanAtG TF.Y.t (LogKS.chart U) (v i)) → (∀ w', IsTanAtG TF.Y.t (LogKS.chart U) w' → ∃! cf : Fin n → Γ(TF.Y.X, U.1), IsCombAtG TF.Y.t (LogKS.chart U) v cf w') → (∀ (a : 𝓞 E) (τ : E →+* ℂ) (i : Fin (Dw.mult τ)), IsCombAtG TF.Y.t (LogKS.chart U) v (Pi.single (e ⟨τ, i⟩) (φU (embK c τ a))) (v (e ⟨τ, i⟩) ≫ (TF.Y.t.act.act a).left)) → ∃ (ε : Fin Dw.dim ≃ GlobalTheory.LogKSDiv.PairIx H Dw) (b : Module.Basis (Fin Dw.dim) Γ(TF.Y.X, U.1) (LogKS.logDer TF.Y.s (Scheme.IdealSheafData.vanishingIdeal (LogKS.interior TF.Y).compl) U)), ∀ j, LogKS.IsKS TF.Y.t (LogKS.interior TF.Y) U v (b j).1 (GlobalTheory.LogKSDiv.symPair e (ε j)) := by
   intro E _ _ _ H Dw l Xo c TF U n e v φU hv huniq hact

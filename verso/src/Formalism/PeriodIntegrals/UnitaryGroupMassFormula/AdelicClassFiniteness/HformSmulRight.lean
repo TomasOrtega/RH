@@ -14,23 +14,23 @@ section Form
 variable {E : Type} [Field E] [StarRing E] {m : ℕ} (J : Matrix (Fin m) (Fin m) E)
 
 /- English proof (translation)
-Simplify using `[hform, map_add, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_add_left' (x x' y : Fin m → E) :
     hform (starRingEnd E) J (x + x') y = hform (starRingEnd E) J x y + hform (starRingEnd E) J x' y := by
   simp [hform, map_add, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `[hform, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_add_right' (x y y' : Fin m → E) :
     hform (starRingEnd E) J x (y + y') = hform (starRingEnd E) J x y + hform (starRingEnd E) J x y' := by
   simp [hform, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Unfold `hform`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul, starRingEnd_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hform_smul_left' (c : E) (x y : Fin m → E) :
     hform (starRingEnd E) J (c • x) y = star c * hform (starRingEnd E) J x y := by
@@ -43,9 +43,9 @@ theorem hform_smul_left' (c : E) (x y : Fin m → E) :
   ring
 
 /- English proof (translation)
-Unfold `hform`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hform_smul_right' (c : E) (x y : Fin m → E) :
     hform (starRingEnd E) J x (c • y) = c * hform (starRingEnd E) J x y := by
@@ -58,11 +58,11 @@ theorem hform_smul_right' (c : E) (x y : Fin m → E) :
   ring
 
 /- English proof (translation)
-Establish `hJ' : ∀ i j, J i j = star (J j i)`. Introduce `i j`. Establish `h` using `congrFun (congrFun hJ i) j`. Simplify using `only [cT, Matrix.transpose_apply, Matrix.map_apply, starRingEnd_apply] at h`. Conclude with `h.symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Unfold `hform`. Simplify using `only [starRingEnd_apply, star_sum, star_mul', star_star]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hJ' j i]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem hform_swap' (hJ : IsHerm (starRingEnd E) J) (x y : Fin m → E) :
     hform (starRingEnd E) J y x = star (hform (starRingEnd E) J x y) := by
@@ -79,15 +79,13 @@ theorem hform_swap' (hJ : IsHerm (starRingEnd E) J) (x y : Fin m → E) :
   ring
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Set `f : (Fin m → E) →ₗ[E] E` to `{ toFun := fun y => hform (starRingEnd E) J x y map_add' := fun y y' => hform_add_right' J x y y' map_smul' := fun c y => by simpa using hform_smul_right' J c x y }`. Establish `hle : Submodule.span E S ≤ LinearMap.ker f`. Rewrite using `[Submodule.span_le]`.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z hz`. Conclude with `LinearMap.mem_ker.mpr (h z hz)`. Establish `hall : ∀ y, hform (starRingEnd E) J x y = 0`. Introduce `y`. Establish `hy : y ∈ Submodule.span E S`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hS]`. Conclude with `Submodule.mem_top`. Conclude with `LinearMap.mem_ker.mp (hle hy)`. Establish `hv : (fun i => starRingEnd E (x i)) ᵥ* J = 0`. Use function extensionality and compare the values at `j`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hj` using `hall (Pi.single j 1)`. Simplify `hj` using `[hform, Matrix.vecMul, dotProduct, Pi.single_apply]`. Establish `hv0` using `Matrix.eq_zero_of_vecMul_eq_zero hdet hv`. Apply `hx` to reduce the goal to its premises. Use function extensionality and compare the values at `i`.
-
-Establish `hi` using `congrFun hv0 i`. Simplify using `using hi`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem hform_exists_ne (hdet : J.det ≠ 0) (S : Set (Fin m → E)) (hS : Submodule.span E S = ⊤)
     {x : Fin m → E} (hx : x ≠ 0) : ∃ z ∈ S, hform (starRingEnd E) J x z ≠ 0 := by
@@ -120,9 +118,9 @@ theorem hform_exists_ne (hdet : J.det ≠ 0) (S : Set (Fin m → E)) (hS : Submo
 end Form
 
 /- English proof (translation)
-Establish `h : IsIntegral ℤ (algebraMap (𝓞 E) E q)` using `by first`. Consider the case `exact NumberField.RingOfIntegers.isIntegral_coe q`. Consider the case `exact q.2`. Establish `h2 : IsIntegral ℤ (star (algebraMap (𝓞 E) E q))`. Establish `h3` using `h.map (starRingEnd E).toIntAlgHom`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `first`. Consider the case `exact h3`. Consider the case `simpa using h3`. Conclude with `⟨⟨_, h2⟩, rfl⟩`.
+Treat this case separately. Treat this case separately. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem star_int {E : Type} [Field E] [NumberField E] [StarRing E] (q : 𝓞 E) :
     ∃ q' : 𝓞 E, algebraMap (𝓞 E) E q' = star (algebraMap (𝓞 E) E q) := by
@@ -138,13 +136,13 @@ theorem star_int {E : Type} [Field E] [NumberField E] [StarRing E] (q : 𝓞 E) 
   exact ⟨⟨_, h2⟩, rfl⟩
 
 /- English proof (translation)
-Establish `hN' : (N : 𝓞 F) ≠ 0`. Introduce `h`. Establish `h2` using `congrArg (algebraMap (𝓞 F) F) h`. Simplify using `only [map_natCast, map_zero, Nat.cast_eq_zero] at h2`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Establish `hI : Ideal.span {(N : 𝓞 F)} ≠ ⊥`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hN'`. Use `haveI : Finite (𝓞 F ⧸ Ideal.span {(N : 𝓞 F)}) := by first`. Consider the case `exact @Finite.of_fintype _ (Ideal.fintypeQuotientOfFreeOfNeBot _ hI)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `exact Ideal.finiteQuotientOfFreeOfNeBot _ hI`. Use `⟨Set.range (Function.surjInv (Ideal.Quotient.mk_surjective (I := Ideal.span {(N : 𝓞 F)}))), Set.finite_range _, ?_⟩` and prove the remaining obligations. Introduce `f`. Use `⟨_, Set.mem_range_self (Ideal.Quotient.mk (Ideal.span {(N : 𝓞 F)}) f), ?_⟩` and prove the remaining obligations. Establish `h` using `Function.surjInv_eq (Ideal.Quotient.mk_surjective (I := Ideal.span {(N : 𝓞 F)})) (Ideal.Quotient.mk (Ideal.span {(N : 𝓞 F)}) f)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `h` using `[Ideal.Quotient.eq]`. Take `⟨g, hg⟩` from `Ideal.mem_span_singleton'.mp h`. Use `⟨-g, ?_⟩` and prove the remaining obligations. Take the linear combination `hg`.
+Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem exists_finite_residue_reps_mod_natCast (F : Type) [Field F] [NumberField F] (N : ℕ) (hN : 0 < N) :
     ∃ T : Set (𝓞 F), T.Finite ∧ ∀ f : 𝓞 F, ∃ r ∈ T, ∃ g : 𝓞 F, f = r + (N : 𝓞 F) * g := by
@@ -172,55 +170,51 @@ private theorem exists_finite_residue_reps_mod_natCast (F : Type) [Field F] [Num
   linear_combination hg
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ hCM m d hd`. Take `⟨B, hB⟩` from `hIB E`. Establish `hreps : ∀ k : ℕ, ∃ T : Set (𝓞 F), T.Finite ∧ ∀ f : 𝓞 F, ∃ r ∈ T, ∃ g : 𝓞 F, f = r + ((2 * d * (k + 1) : ℕ) : 𝓞 F) * g` using `fun k => exists_finite_residue_reps_mod_natCast F _ (Nat.mul_pos (Nat.mul_pos (by norm_num) hd) k.succ_pos)`. Use `choose T hTf hT using hreps`. Use `⟨⋃ k ∈ Set.Iio B, (fun r : 𝓞 F => !![(0 : E), ((d * (k + 1) : ℕ) : E); ((d * (k + 1) : ℕ) : E), algebraMap F E (algebraMap (𝓞 F) F r)]) '' T k, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(Set.finite_Iio B).biUnion fun k _ => (hTf k).image _`. Introduce `Γ hΓ`. Simplify using `only [Set.mem_iUnion, Set.mem_image] at hΓ`. Take `⟨k, _, r, _, rfl⟩` from `hΓ`. Establish `ha : ((d * (k + 1) : ℕ) : E) ≠ 0`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ne, Nat.cast_eq_zero]`. Conclude with `(Nat.mul_pos hd k.succ_pos).ne'`. Rewrite using `[Matrix.det_fin_two_of]`. Introduce `h`. Apply `mul_ne_zero ha ha` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Take the linear combination `-h`. Introduce `p hp x hxM hx0 hxx`. Simplify using `only [Lat, Set.mem_setOf_eq] at hp`. Take `⟨hJ, hdet, -, hspan, hint, hdual⟩` from `hp`. Establish `hinj : Function.Injective (algebraMap (𝓞 E) E)` using `by first`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact NumberField.RingOfIntegers.coe_injective`. Consider the case `exact IsFractionRing.injective (𝓞 E) E`. Consider the case `exact NoZeroSMulDivisors.algebraMap_injective (𝓞 E) E`. Consider the case `exact FaithfulSMul.algebraMap_injective (𝓞 E) E`. Take `⟨I, hIdef⟩ : ∃ I : Ideal (𝓞 E), ∀ g, g ∈ I ↔ ∃ y ∈ p.2, algebraMap (𝓞 E) E g = hform (starRingEnd E) p.1 x y` from `⟨{ carrier := {g | ∃ y ∈ p.2, algebraMap (𝓞 E) E g = hform (starRingEnd E) p.1 x y} add_mem' := by`.
+Treat this case separately. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `g g' ⟨y, hy, hg⟩ ⟨y', hy', hg'⟩`. Conclude with `⟨y + y', p.2.add_mem hy hy', by rw [map_add, hg, hg', hform_add_right']⟩`. Use the proof step `zero_mem' := ⟨0, p.2.zero_mem, by simp [hform]⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `r g ⟨y, hy, hg⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨r • y, p.2.smul_mem r hy, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_eq_mul, map_mul, hg, ← algebraMap_smul E r y, hform_smul_right'] },`. Use `fun g => Iff.rfl⟩`. Take `⟨z, hzM, hz⟩` from `hform_exists_ne p.1 hdet (p.2 : Set (Fin m → E)) hspan hx0`. Take `⟨g0, hg0⟩` from `hint x hxM z hzM`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hI : I ≠ ⊥`. Introduce `hbot`. Establish `hmem : g0 ∈ I` using `(hIdef g0).mpr ⟨z, hzM, hg0⟩`. Rewrite `hmem` using `[hbot, Ideal.mem_bot]`. Apply `hz` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hg0, hmem, map_zero]`. Take `⟨c, hcI, hc0, e, he1, heB, hdiv⟩` from `hB I hI`. Take `⟨y0, hy0M, hc⟩` from `(hIdef c).mp hcI`. Take `⟨k, rfl⟩ : ∃ k, e = k + 1` from `⟨e - 1, by omega⟩`. Establish `hc' : algebraMap (𝓞 E) E c ≠ 0` using `fun h => hc0 (hinj (by rw [h, map_zero]))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hsc : star (algebraMap (𝓞 E) E c) ≠ 0` using `star_ne_zero.mpr hc'`. Take `⟨t, ht⟩ : ∃ t : E, t * star (algebraMap (𝓞 E) E c) = ((k + 1 : ℕ) : E)` from `⟨_, div_mul_cancel₀ _ hsc⟩`. Establish `hts : star t * algebraMap (𝓞 E) E c = ((k + 1 : ℕ) : E)`. Establish `h` using `congrArg star ht`. Simplify `h` using `only [star_mul', star_star, star_natCast]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw : ∀ z' ∈ p.2, hform (starRingEnd E) p.1 z' (t • x) ∈ (algebraMap (𝓞 E) E).range`. Introduce `z' hz'`. Take `⟨gz, hgz⟩` from `hint x hxM z' hz'`. Take `⟨q, hq⟩` from `hdiv gz ((hIdef gz).mpr ⟨z', hz', hgz⟩)`. Establish `hq' : ((k + 1 : ℕ) : E) * hform (starRingEnd E) p.1 x z' = algebraMap (𝓞 E) E c * algebraMap (𝓞 E) E q`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Establish `h` using `congrArg (algebraMap (𝓞 E) E) hq`. Rewrite `h` using `[map_mul, map_mul, map_natCast, hgz]`. Conclude with `h`. Establish `E1 : ((k + 1 : ℕ) : E) * star (hform (starRingEnd E) p.1 x z') = star (algebraMap (𝓞 E) E c) * star (algebraMap (𝓞 E) E q)`. Establish `h` using `congrArg star hq'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Simplify `h` using `only [star_mul', star_natCast]`. Take `⟨q', hq''⟩` from `star_int q`. Use `⟨q', ?_⟩` and prove the remaining obligations. Rewrite using `[hq'', hform_smul_right', hform_swap' p.1 hJ x z']`. Apply `mul_left_cancel₀ hsc` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `-E1 - star (hform (starRingEnd E) p.1 x z') * ht`. Establish `hv0M : (d : E) • (t • x) ∈ p.2` using `hdual (t • x) hw`. Establish `hv00 : hform (starRingEnd E) p.1 ((d : E) • (t • x)) ((d : E) • (t • x)) = 0`. Rewrite using `[hform_smul_left', hform_smul_left', hform_smul_right', hform_smul_right', hxx]`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hv0y : hform (starRingEnd E) p.1 ((d : E) • (t • x)) y0 = ((d * (k + 1) : ℕ) : E)`. Rewrite using `[hform_smul_left', hform_smul_left', ← hc, hts, star_natCast]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Generalize the expression as in `(d : E) • (t • x) = v0 at hv0M hv00 hv0y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Take `⟨β, hβ⟩` from `hint y0 hy0M y0 hy0M`. Establish `hbstar : star (hform (starRingEnd E) p.1 y0 y0) = hform (starRingEnd E) p.1 y0 y0` using `(hform_swap' p.1 hJ y0 y0).symm`. Take `⟨f, hf⟩` from `(hCM.fixed _).mp hbstar`. Establish `hβint : IsIntegral ℤ (algebraMap (𝓞 E) E β)` using `by first`. Consider the case `exact NumberField.RingOfIntegers.isIntegral_coe β`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `exact β.2`. Establish `hfint : IsIntegral ℤ f`. Rewrite `hβint` using `[hβ, ← hf]`. Conclude with `(isIntegral_algHom_iff (algebraMap F E).toIntAlgHom (algebraMap F E).injective).mp hβint`. Take `⟨r, hrT, g, hfg⟩` from `hT k ⟨f, hfint⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hgint : IsIntegral ℤ (algebraMap F E (algebraMap (𝓞 F) F g))`. Establish `h1 : IsIntegral ℤ (algebraMap (𝓞 F) F g)` using `by first`. Consider the case `exact NumberField.RingOfIntegers.isIntegral_coe g`. Consider the case `exact g.2`. Conclude with `h1.map (algebraMap F E).toIntAlgHom`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨sE, hsE⟩ : ∃ sE : 𝓞 E, algebraMap (𝓞 E) E sE = -(algebraMap F E (algebraMap (𝓞 F) F g))` from `⟨⟨_, hgint.neg⟩, rfl⟩`. Establish `hsstar : star (algebraMap (𝓞 E) E sE) = algebraMap (𝓞 E) E sE`. Rewrite using `[hsE, star_neg, (hCM.fixed (algebraMap F E (algebraMap (𝓞 F) F g))).mpr ⟨_, rfl⟩]`. Establish `hv1M : y0 + sE • v0 ∈ p.2` using `p.2.add_mem hy0M (p.2.smul_mem sE hv0M)`. Establish `hsm : sE • v0 = (algebraMap (𝓞 E) E sE) • v0` using `(algebraMap_smul E sE v0).symm`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hyv0 : hform (starRingEnd E) p.1 y0 v0 = ((d * (k + 1) : ℕ) : E)`. Rewrite using `[hform_swap' p.1 hJ v0 y0, hv0y, star_natCast]`. Establish `h01 : hform (starRingEnd E) p.1 v0 (y0 + sE • v0) = ((d * (k + 1) : ℕ) : E)`. Rewrite using `[hsm, hform_add_right', hform_smul_right', hv0y, hv00]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h10 : hform (starRingEnd E) p.1 (y0 + sE • v0) v0 = ((d * (k + 1) : ℕ) : E)`. Rewrite using `[hsm, hform_add_left', hform_smul_left', hyv0, hv00]`. Expand and normalize the polynomial expressions, which then agree. Establish `hfg' : f = algebraMap (𝓞 F) F r + ((2 * d * (k + 1) : ℕ) : F) * algebraMap (𝓞 F) F g`. Establish `h` using `congrArg (algebraMap (𝓞 F) F) hfg`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h` using `[map_add, map_mul, map_natCast]`. Conclude with `h`. Establish `h11 : hform (starRingEnd E) p.1 (y0 + sE • v0) (y0 + sE • v0) = algebraMap F E (algebraMap (𝓞 F) F r)`. Rewrite using `[hsm]`. Simplify using `only [hform_add_left', hform_add_right', hform_smul_left', hform_smul_right']`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Rewrite using `[hyv0, hv0y, hv00, hsstar, ← hf, hfg', hsE, map_add, map_mul, map_natCast]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `⟨![v0, y0 + sE • v0], ?_, ?_⟩` and prove the remaining obligations. Introduce `i fin_cases i`.
-
-Simplify using `using hv0M`. Simplify using `using hv1M`. Simplify using `only [Set.mem_iUnion, Set.mem_image]`. Use `⟨k, Set.mem_Iio.mpr (by omega), r, hrT, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`.
-
-Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [gram, h01, h10, h11, hv00]`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem partIso_of (hIB : IdealBoundAll) : PartIso := by
   intro F E _ _ _ _ _ _ hCM m d hd

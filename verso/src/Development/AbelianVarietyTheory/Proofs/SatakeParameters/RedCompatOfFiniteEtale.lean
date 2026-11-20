@@ -15,7 +15,7 @@ section CyclicComplexMaps
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Establish `h1 : (chainMap R t).f (-(p : ℤ)) = (chainsXIso R (sch.obj X) p).hom ≫ ((AlgebraicTopology.alternatingFaceMapComplex (Shv R)).map (simpMap R t)).f p ≫ (chainsXIso R (sch.obj Z) p).inv` using `HomologicalComplex.extendMap_f _ ComplexShape.embeddingDownNat (i := p) rfl`. Rewrite using `[h1, Iso.inv_hom_id_assoc]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem chainMap_f {X Z : Scheme.{0}} (t : freeSch R X ⟶ freeSch R Z) (p : ℕ) :
     (chainsXIso R (sch.obj X) p).inv ≫ (chainMap R t).f (-(p : ℤ)) = t ≫ (chainsXIso R (sch.obj Z) p).inv := by
@@ -27,7 +27,7 @@ theorem chainMap_f {X Z : Scheme.{0}} (t : freeSch R X ⟶ freeSch R Z) (p : ℕ
   rfl
 
 /- English proof (translation)
-Rewrite using `[ev_def, Cochain.zero_cochain_comp_v, Cochain.ofHom_v, ← Category.assoc, chainMap_f]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ev_chainMap {X Z : Scheme.{0}} (t : freeSch R X ⟶ freeSch R Z) {I : Cx R} {n : ℤ}
     (α : Cochain ((chains R).obj (sch.obj Z)) I n) (p : ℕ) (s : ℤ) (h : -(p : ℤ) + n = s) (U : Scheme.{0})
@@ -44,14 +44,14 @@ section Key
 variable {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S)
 
 /- English proof (translation)
-The claim follows from `map_sum (mapHom F G a) g s`.
+A detailed English derivation is pending.
 -/
 theorem secMap_sum {F G : Shv R} {ι : Type*} (s : Finset ι) (g : ι → (F ⟶ G)) {U : Scheme.{0}} (a : Sec F U) :
     Sec.map (∑ j ∈ s, g j) a = ∑ j ∈ s, Sec.map (g j) a :=
   map_sum (mapHom F G a) g s
 
 /- English proof (translation)
-The claim follows from `free_exists P _ (fun U x => show Sec ((restr φ).obj ((free S).obj P)) U from freeGen S P U x) (fun V U g x => freeGen_res P g x)`.
+A detailed English derivation is pending.
 -/
 theorem exists_free_restr (P : PSh) : ∃ ι : (free R).obj P ⟶ (restr φ).obj ((free S).obj P),
     ∀ U x, Sec.map ι (freeGen R P U x) = (show Sec ((restr φ).obj ((free S).obj P)) U from freeGen S P U x) :=
@@ -59,11 +59,11 @@ theorem exists_free_restr (P : PSh) : ∃ ι : (free R).obj P ⟶ (restr φ).obj
     (fun V U g x => freeGen_res P g x)
 
 /- English proof (translation)
-Introduce `T x m s hs hiso`. Apply `free_ext` to reduce the goal to its premises. Introduce `V w`. Establish `e` using `congrArg (fun g => Sec.map ι (Sec.map g (freeGen R (yoneda.obj T) V w))) (ht T x m s hs hiso)`. Express the relevant statement in the definitionally equal form `Sec.map ι (Sec.map t (Sec.map ((free R).map (yoneda.map x)) (freeGen R (yoneda.obj T) V w))) = Sec.map ι (Sec.map (∑ j, (free R).map (yoneda.map (s j))) (freeGen R (yoneda.obj T) V w)) at e`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `Sec.map t' (Sec.map ((free S).map (yoneda.map x)) (freeGen S (yoneda.obj T) V w)) = Sec.map (∑ j, (free S).map (yoneda.map (s j))) (freeGen S (yoneda.obj T) V w)`. Rewrite using `[freeGen_map, ht']`. Rewrite `e` using `[freeGen_map]`. Use `e.trans ?_` and prove the remaining obligations. Rewrite using `[secMap_sum, secMap_sum]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(map_sum (ι.hom.app (op V)).hom _ Finset.univ).trans (Finset.sum_congr rfl fun j _ => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Sec.map ι (Sec.map ((free R).map (yoneda.map (s j))) (freeGen R (yoneda.obj T) V w)) = _`. Rewrite using `[freeGen_map, freeGen_map, hι]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem isTransfer_reduce {Z X : Scheme.{0}} {f : Z ⟶ X} {t : freeSch R X ⟶ freeSch R Z} (ht : IsTransfer R f t)
     (ι : freeSch R Z ⟶ (restr φ).obj (freeSch S Z))
@@ -90,11 +90,11 @@ theorem isTransfer_reduce {Z X : Scheme.{0}} {f : Z ⟶ X} {t : freeSch R X ⟶ 
   rw [freeGen_map, freeGen_map, hι]
 
 /- English proof (translation)
-Take `⟨ι, hι⟩` from `exists_free_restr φ (yoneda.obj Z)`. Take `⟨t', ht'⟩` from `free_exists (R := S) (yoneda.obj X) (freeSch S Z) (fun U y => show Sec (freeSch S Z) U from Sec.map ι (Sec.map tR (freeGen R (yoneda.obj X) U y))) (fun V U g y => by`. Use `(map_res ι g _).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Sec.map ι (Sec.res g (Sec.map tR (freeGen R (yoneda.obj X) U y))) = _`. Rewrite using `[map_res, freeGen_res])`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hT` using `huniq t' (isTransfer_reduce φ htR ι hι t' ht')`. Substitute `hT` using the available equality. Rewrite using `[ht']`. Establish `hm : ι ≫ (restr φ).map B = A ≫ ρ'` using `free_ext _ _ (fun V z => by`. Express the relevant statement in the definitionally equal form `Sec.map B (Sec.map ι (freeGen R (yoneda.obj Z) V z)) = Sec.map ρ' (Sec.map A (freeGen R (yoneda.obj Z) V z))`.
+Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hι]`. Conclude with `hAB V z)`. Conclude with `congrArg (fun g => Sec.map g (Sec.map tR (freeGen R (yoneda.obj X) U y))) hm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem key_free {Z X : Scheme.{0}} {f : Z ⟶ X} {I : Shv R} {J : Shv S} (A : freeSch R Z ⟶ I) (B : freeSch S Z ⟶ J)
     (ρ' : I ⟶ (restr φ).obj J)
@@ -122,13 +122,13 @@ theorem key_free {Z X : Scheme.{0}} {f : Z ⟶ X} {I : Shv R} {J : Shv S} (A : f
 end Key
 
 /- English proof (translation)
-Introduce `k x`. Establish `hl : l ≠ 0` using `(Fact.out : l.Prime).ne_zero`. Use `haveI : NeZero (l ^ (k + 1)) := ⟨pow_ne_zero _ hl⟩`. Establish `hd : l ^ k ∣ l ^ (k + 1)` using `pow_dvd_pow l (Nat.le_succ k)`. Take `⟨t0, ht0, -⟩` from `hex (ZMod (l ^ (k + 1)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `htQ` using `transfer_spec (ZMod (l ^ (k + 1))) ⟨t0, ht0⟩`. Take `⟨t1, ht1, hu1⟩` from `hex (ZMod (l ^ k))`. Establish `huniq : ∀ t, IsTransfer (ZMod (l ^ k)) f t → t = transfer (ZMod (l ^ k)) f` using `fun t ht => (hu1 t ht).trans (hu1 _ (transfer_spec _ ⟨t1, ht1⟩)).symm`. Take `⟨α, rfl⟩` from `x.mk_surjective`. Take `⟨β, hβ⟩` from `(redMap (l ^ (k + 1)) (l ^ k) i).image_exists (sch.obj Z) n α`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : red (l ^ (k + 1)) (l ^ k) (sch.obj Z) n i (CohomologyClass.mk α) = CohomologyClass.mk β` using `(redMap (l ^ (k + 1)) (l ^ k) i).op_spec _ n α β hβ`. Rewrite using `[h1]`. Establish `key` using `(redMap (l ^ (k + 1)) (l ^ k) i).op_spec (sch.obj X) n (zcomp (Cocycle.ofHom (chainMap _ (transfer _ f))) α (zero_add n)) (zcomp (Cocycle.ofHom (chainMap _ (transfer _ f))) β (zero_add n)) (by`. Introduce `p s h U y`. Express the relevant statement in the definitionally equal form `ev ((Cochain.ofHom (chainMap _ (transfer _ f))).comp β.1 (zero_add n)) p s h U y = (redMap (l ^ (k + 1)) (l ^ k) i).app U s (ev ((Cochain.ofHom (chainMap _ (transfer _ f))).comp α.1 (zero_add n)) p s h U y)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ev_chainMap, ev_chainMap]`. Conclude with `key_free (ZMod.castHom hd (ZMod (l ^ k))) _ _ (ScalarExt.semiHom (redMap (l ^ (k + 1)) (l ^ k) i) (ScalarExt.zmod_semilinear hd _) s) (fun V z => (ev_def β.1 p s h V z).symm.trans ((hβ p s h V z).trans (congrArg _ (ev_def α.1 p s h V z)))) htQ huniq U y)`. Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem redCompat_of_finite_etale (l : ℕ) [Fact l.Prime] {Z X : Scheme.{0}} (f : Z ⟶ X) [IsFinite f] [Etale f]
     (hex : ∀ (R : Type) [CommRing R], ∃! t, IsTransfer R f t) (n i : ℤ) : RedCompat l f n i := by

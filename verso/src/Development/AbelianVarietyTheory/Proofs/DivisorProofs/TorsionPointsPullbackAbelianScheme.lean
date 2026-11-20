@@ -15,9 +15,9 @@ namespace GlobalTheory.KerConst
 open GlobalTheory.LevelCompare
 
 /- English proof (translation)
-Establish `h` using `(IsPullback.of_hasPullback (GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureForms.mulBy A k) η[A]).map (Over.forget S)`. Establish `h₁ : IsFinite (GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureForms.mulBy A k).left` using `hf`. Establish `h₁' : Etale (GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureForms.mulBy A k).left` using `he`. Establish `h₂ : IsFinite (pullback.snd (GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureForms.mulBy A k) η[A]).left` using `MorphismProperty.of_isPullback (P := @IsFinite) h h₁`. Establish `h₂' : Etale (pullback.snd (GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureForms.mulBy A k) η[A]).left` using `MorphismProperty.of_isPullback (P := @Etale) h h₁'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Over.w (pullback.snd (GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureForms.mulBy A k) η[A])]`. Conclude with `⟨MorphismProperty.comp_mem @IsFinite _ _ h₂ (inferInstanceAs (IsFinite (𝟙 S))), by haveI := h₂'; haveI : Etale (𝟙_ (Over S)).hom := inferInstanceAs (Etale (𝟙 S)); infer_instance⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem finite_etale_ker {S : Scheme.{0}} (A : Over S) [GrpObj A] (k : ℕ)
     (hf : IsFinite (𝟙 A ^ k).left) (he : Etale (𝟙 A ^ k).left) :
@@ -40,21 +40,19 @@ namespace GlobalTheory.KerConst
 open GlobalTheory.LevelCompare
 
 /- English proof (translation)
-Introduce `hG n hn`. Use `hG.comm` as an intermediate fact. Use `hG.smooth` as an intermediate fact. Use `hG.proper` as an intermediate fact. Establish `hu : IsUnit (n : Γ(Spec (CommRingCat.of Ω), ⊤))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : IsUnit (n : Ω)` using `hn.isUnit`. Simplify using `using h1.map (Scheme.ΓSpecIso (CommRingCat.of Ω)).inv.hom`. Take `⟨hfin, het⟩` from `finite_etale_ker G n (GlobalTheory.GrpTangent.isFinite_id_pow G hu) (GlobalTheory.GrpTangent.etale_id_pow G hu)`. Use `(isKer_iff (A := G) (k := n) (fun x : {x : 𝟙_ (Over (Spec (CommRingCat.of Ω))) ⟶ G // x ^ n = 1} => x.1) (fun x => x.2)).2 ?_` and prove the remaining obligations. Use `haveI := formallyUnramified_ker G hu`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `haveI := locallyOfFiniteType_ker G n`. Apply `isIso_desc_of_lists` to reduce the goal to its premises. Introduce `K _ _ s u`. Use `letI : Algebra Ω K := (Spec.preimage s).hom.toAlgebra`. Establish `hs : s = spMap (algebraMap Ω K)` using `(Spec.map_preimage s).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hts : ∀ (T : Over (Spec (CommRingCat.of Ω))), (toUnit T).left = T.hom` using `fun T => by`. Simplify using `using Over.w (toUnit T)`. Take `⟨x₀, hx₀, hx⟩` from `GlobalTheory.FinEtPoints.exists_point_of_finite_etale Ω K (Ker G n).left (Ker G n).hom hfin het u.left (by rw [Over.w u]; exact hs)`. Set `t₀ : 𝟙_ (Over (Spec (CommRingCat.of Ω))) ⟶ Ker G n` to `Over.homMk x₀ hx₀`. Establish `hp : (t₀ ≫ pullback.fst _ _) ^ n = 1`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← comp_mulBy, Category.assoc, pullback.condition, ← Category.assoc, Hom.one_def]`. Use `congr 1`. Conclude with `toUnit_unique _ _`. Use `existsUnique_of_exists_of_unique ⟨⟨_, hp⟩, ?_⟩ ?_` and prove the remaining obligations. Establish `e : kerPt (t₀ ≫ pullback.fst _ _) hp = t₀` using `ker_ext (kerPt_fst _ _) show toUnit _ ≫ kerPt (t₀ ≫ pullback.fst _ _) hp = u`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[Over.comp_left, hts]`. Use `show s ≫ x₀ = u.left`. Conclude with `(congrArg (· ≫ x₀) hs).trans hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `i j hi hj`. Establish `h1` using `congrArg (fun v => v ≫ pullback.fst _ _) (hi.trans hj.symm)`. Simplify using `only [Category.assoc, kerPt_fst] at h1`. Establish `h2` using `congrArg CommaMorphism.left h1`. Simplify using `only [Over.comp_left, hts] at h2`.
-
-Use `haveI : Epi s := hs ▸ GlobalTheory.FinEtPoints.epi_spMap_field Ω K (algebraMap Ω K)`. Conclude with `Subtype.ext (Over.OverMorphism.ext ((cancel_epi s).mp h2))`.
+A detailed English derivation is pending.
 -/
 theorem isPullback_const_ker (Ω : Type) [Field Ω] [IsAlgClosed Ω]
     (G : Over (Spec (CommRingCat.of Ω))) [GrpObj G] : IsAbelianScheme G → ∀ (n : ℕ), (n : Ω) ≠ 0 →

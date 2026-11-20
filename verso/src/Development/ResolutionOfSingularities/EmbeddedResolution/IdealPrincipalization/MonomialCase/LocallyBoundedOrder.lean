@@ -14,23 +14,21 @@ open AlgebraicGeometry CategoryTheory TopologicalSpace
 namespace FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-Rewrite using `[isOpen_iff_forall_mem_open]`. Introduce `x hx`. Establish `hx' : stalkIdeal J x = (⊥ : Ideal (X.presheaf.stalk x))` using `hx`. Choose the witnesses or unpack the hypotheses as in `⟨U, hxU⟩ : ∃ U : X.affineOpens, x ∈ (U : X.Opens) := by`. Establish `h1 : x ∈ (⨆ i : X.affineOpens, (i : X.Opens))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[AlgebraicGeometry.iSup_affineOpens_eq_top X]`. Discharge the goal by the elementary cases of `trivial`. Conclude with `TopologicalSpace.Opens.mem_iSup.mp h1`. Establish `: IsNoetherianRing Γ(X, (U : X.Opens))` using `AlgebraicGeometry.IsLocallyNoetherian.component_noetherian U`. Take `⟨s, hs⟩ : (J.ideal U).FG` from `IsNoetherian.noetherian (J.ideal U)`.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hzero : ∀ g ∈ s, (X.presheaf.germ (U : X.Opens) x hxU).hom g = 0`. Introduce `g hg`. Establish `hgI : g ∈ J.ideal U`. Rewrite using `[← hs]`. Conclude with `Submodule.subset_span (Finset.mem_coe.mpr hg)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hmem` using `germ_mem_stalkIdeal J x U hxU hgI`. Rewrite `hmem` using `[hx']`. Simplify using `using hmem`. Establish `hWex : ∀ g : Γ(X, (U : X.Opens)), ∃ (W : X.Opens) (i : W ⟶ (U : X.Opens)), x ∈ W ∧ (g ∈ s → (X.presheaf.map i.op).hom g = 0)`. Introduce `g`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hg : g ∈ s`. Take `⟨V, iV, hxV, hi⟩` from `X.toLocallyRingedSpace.toRingedSpace.exists_res_eq_zero_of_germ_eq_zero (U : X.Opens) g ⟨x, hxU⟩ (hzero g hg)`. Conclude with `⟨V, iV, hxV, fun _ => hi⟩`. Conclude with `⟨(U : X.Opens), 𝟙 _, hxU, fun h => absurd h hg⟩`. Use `choose W i hxW hres using hWex`.
+Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `⟨((U : X.Opens) : Set ↥X) ∩ ⋂ g ∈ (s : Set Γ(X, (U : X.Opens))), ((W g : X.Opens) : Set ↥X), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `y ⟨hyU, hyW⟩`. Establish `hyW' : ∀ g ∈ s, y ∈ W g` using `fun g hg => Set.mem_iInter₂.mp hyW g (Finset.mem_coe.mpr hg)`. Establish `hmain : ∀ g ∈ s, (X.presheaf.germ (U : X.Opens) y hyU).hom g = 0`. Introduce `g hg`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : (X.presheaf.germ (W g) y (hyW' g hg)).hom ((X.presheaf.map (i g).op).hom g) = 0`. Rewrite using `[hres g hg, map_zero]`. Conclude with `(X.presheaf.germ_res_apply (i g) y (hyW' g hg) g).symm.trans h3`. Use `show stalkIdeal J y = ⊥`. Rewrite using `[stalkIdeal_eq_map_germ J y U hyU, ← le_bot_iff, Ideal.map_le_iff_le_comap, ← hs, Submodule.span_le]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `g hg`. Establish `hg0` using `hmain g (Finset.mem_coe.mp hg)`. Establish `hmem : (X.presheaf.germ (U : X.Opens) y hyU).hom g ∈ (⊥ : Ideal (X.presheaf.stalk y))`. Rewrite using `[hg0]`. Conclude with `Submodule.zero_mem _`.
-
-Simplify using `using hmem`. Conclude with `(TopologicalSpace.Opens.isOpen (U : X.Opens)).inter (Set.Finite.isOpen_biInter s.finite_toSet (fun g _ => TopologicalSpace.Opens.isOpen (W g)))`. Conclude with `⟨hxU, Set.mem_iInter₂.mpr (fun g _ => hxW g)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isOpen_setOf_stalkIdeal_eq_bot {X : Scheme.{u}} [AlgebraicGeometry.IsLocallyNoetherian X]
     (J : X.IdealSheafData) :
@@ -91,7 +89,7 @@ theorem isOpen_setOf_stalkIdeal_eq_bot {X : Scheme.{u}} [AlgebraicGeometry.IsLoc
   · exact ⟨hxU, Set.mem_iInter₂.mpr (fun g _ => hxW g)⟩
 
 /- English proof (translation)
-Use `hT.locallyOfFiniteType` as an intermediate fact. Establish `: IsNoetherianRing T.base` using `inferInstance`. Prove the components needed by the constructor for the conclusion. Introduce `U`. Conclude with `@isNoetherianRing_sections T.base _ _ T.scheme T.structMap _ U (sectionsAlgebra T.base T.structMap U.1) (algebraMap_sectionsAlgebra T.base T.structMap U.1)`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem isLocallyNoetherian_of_isAdmissible (T : MarkedIdealWithBoundary.{u}) (hT : T.IsAdmissible) :
     AlgebraicGeometry.IsLocallyNoetherian T.scheme := by
@@ -104,11 +102,11 @@ private theorem isLocallyNoetherian_of_isAdmissible (T : MarkedIdealWithBoundary
     (algebraMap_sectionsAlgebra T.base T.structMap U.1)
 
 /- English proof (translation)
-Use `isLocallyNoetherian_of_isAdmissible T hT` as an intermediate fact. Introduce `hbot`. Take `⟨y, hyC, hyJ⟩` from `Set.not_subset.mp (hJ (irreducibleComponent x) (irreducibleComponent_mem_irreducibleComponents x))`. Establish `hirr : IsIrreducible (irreducibleComponent x)` using `isIrreducible_irreducibleComponent`. Establish `hcl : IsClosed ((J.support : Set ↥T.scheme))` using `J.support.2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨z, hzC, hz1, hz2⟩` from `hirr.2 {w : ↥T.scheme | stalkIdeal J w = ⊥} ((J.support : Set ↥T.scheme)ᶜ) (isOpen_setOf_stalkIdeal_eq_bot J) hcl.isOpen_compl ⟨x, mem_irreducibleComponent, hbot⟩ ⟨y, hyC, hyJ⟩`. Establish `hz1' : stalkIdeal J z = ⊥` using `hz1`. Establish `hztop : stalkIdeal J z = ⊤`. Assume the negation of the conclusion as `hne`. Conclude with `hz2 ((mem_support_iff_stalkIdeal_ne_top J z).2 hne)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h1 : (1 : T.scheme.presheaf.stalk z) ∈ (⊥ : Ideal (T.scheme.presheaf.stalk z))`. Rewrite using `[← hz1', hztop]`. Conclude with `Submodule.mem_top`. Rewrite `h1` using `[Ideal.mem_bot]`. Conclude with `one_ne_zero h1`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem stalkIdeal_ne_bot_of_isAdmissible_of_nonzeroOnComponents (T : MarkedIdealWithBoundary.{u}) (hT : T.IsAdmissible)
     (J : T.scheme.IdealSheafData) (hJ : NonzeroOnComponents J) (x : ↥T.scheme) :
@@ -134,19 +132,19 @@ private theorem stalkIdeal_ne_bot_of_isAdmissible_of_nonzeroOnComponents (T : Ma
   exact one_ne_zero h1
 
 /- English proof (translation)
-Use `hT.charZero` as an intermediate fact. Use `hT.smooth` as an intermediate fact. Use `hT.locallyOfFiniteType` as an intermediate fact. Use `isLocallyNoetherian_of_isAdmissible T hT` as an intermediate fact. Establish `hfin : ∀ x : ↥T.scheme, orderAt J x ≠ ⊤` using `fun x => orderAt_ne_top_of_stalkIdeal_ne_bot J x (stalkIdeal_ne_bot_of_isAdmissible_of_nonzeroOnComponents T hT J hJ x)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hclosed : ∀ m : ℕ, IsClosed (orderAtLeastLocus J m)` using `fun m => isClosed_orderAtLeastLocus T.base T.structMap J m`. Establish `hspec : IsCompact (Set.univ : Set ↥(Spec (CommRingCat.of T.base)))`. Simplify using the standard rewrite rules. Establish `hcpt : IsCompact (Set.univ : Set ↥T.scheme)`. Establish `h` using `hT.quasiCompact.isCompact_preimage Set.univ isOpen_univ hspec`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using h`. Establish `hempty : (Set.univ : Set ↥T.scheme) ∩ (⋂ m : ℕ, orderAtLeastLocus J m) = ∅`. Rewrite using `[← Set.not_nonempty_iff_eq_empty]`. Introduce and unpack `⟨x, -, hx⟩`. Establish `hx'` using `Set.mem_iInter.mp hx`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h1 : ∀ m : ℕ, (m : ℕ∞) ≤ orderAt J x` using `fun m => (mem_orderAtLeastLocus_iff J m x).1 (hx' m)`. Take `⟨n, hn⟩ : ∃ n : ℕ, orderAt J x = (n : ℕ∞)` from `⟨(orderAt J x).toNat, (ENat.natCast_toNat (hfin x)).symm⟩`. Establish `h3 : ((n + 1 : ℕ) : ℕ∞) ≤ ((n : ℕ) : ℕ∞)`. Rewrite using `[← hn]`. Conclude with `h1 (n + 1)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h4 : n + 1 ≤ n` using `by exact_mod_cast h3`. Use linear arithmetic over natural numbers and integers. Take `⟨u, hu⟩` from `hcpt.elim_finite_subfamily_closed (fun m : ℕ => orderAtLeastLocus J m) hclosed hempty`. Establish `hMempty : ¬ ((Set.univ : Set ↥T.scheme) ∩ ⋂ i ∈ u, orderAtLeastLocus J i).Nonempty`. Rewrite using `[Set.not_nonempty_iff_eq_empty]`.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hu`. Use `⟨u.sup id, fun x => ?_⟩` and prove the remaining obligations. Establish `hxnot : x ∉ orderAtLeastLocus J (u.sup id)`. Introduce `hx`. Use `hMempty ⟨x, Set.mem_univ x, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Set.mem_iInter]`. Introduce `i hi`. Conclude with `orderAtLeastLocus_subset_of_le J (Finset.le_sup (f := id) hi) hx`. Rewrite `hxnot` using `[mem_orderAtLeastLocus_iff]`. Conclude with `le_of_lt (not_le.mp hxnot)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_orderAt_le (T : MarkedIdealWithBoundary.{u}) (hT : T.IsAdmissible)
     (J : T.scheme.IdealSheafData) (hJ : NonzeroOnComponents J) :

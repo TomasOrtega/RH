@@ -16,7 +16,7 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `h` using `(A.restrictScalars ℝ).iteratedFDeriv_comp_left (f := φ) (x := t) (i := k)`. Establish `h2` using `congrArg (fun L => L (fun _ : Fin k => (1 : ℝ))) h`. Simplify using `only [iteratedDeriv_eq_iteratedFDeriv]`. Simplify using `only [ContinuousLinearMap.compContinuousMultilinearMap_coe, Function.comp_apply] at h2`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem iteratedDeriv_equiv {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] (A : V ≃L[ℂ] V) (φ : ℝ → V) (k : ℕ)
     (t : ℝ) : iteratedDeriv k (fun s => A (φ s)) t = A (iteratedDeriv k φ t) := by
@@ -27,7 +27,7 @@ theorem iteratedDeriv_equiv {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V
   exact h2
 
 /- English proof (translation)
-Use `iteratedDeriv_equiv A φ 1 t` as an intermediate fact. Simplify `this` using `only [iteratedDeriv_one]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem deriv_equiv {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] (A : V ≃L[ℂ] V) (φ : ℝ → V) (t : ℝ) :
     deriv (fun s => A (φ s)) t = A (deriv φ t) := by
@@ -35,11 +35,11 @@ theorem deriv_equiv {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] (A : V
   simpa only [iteratedDeriv_one] using this
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4⟩` from `hu`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(A.restrictScalars ℝ : E.V →L[ℝ] E.V).contDiff.comp_contDiffOn h1`. Introduce `t`. Use `⟨(A.restrictScalars ℝ : E.V →L[ℝ] E.V).contDiff.comp_contDiffOn (h2 t).1, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg k`. Simplify using `only`. Rewrite using `[(h2 t).2 g hg k, hA]`. Introduce `t g hg`. Rewrite using `[iteratedDeriv_equiv A (fun s => u s g) 2 t, h3 t g hg, om_equiv]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg`. Rewrite using `[deriv_equiv A (fun s => u s g) 0, h4 g hg, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wave_equiv (E : KMod n) (A : E.V ≃L[ℂ] E.V) (hA : ∀ (k : Matrix.unitaryGroup (Fin n) ℂ) v, A (E.ρ k v) = E.ρ k (A v))
     (u : ℝ → Mat n → E.V) (hu : IsWave E u) : IsWave E fun t x => A (u t x) := by
@@ -57,13 +57,13 @@ theorem wave_equiv (E : KMod n) (A : E.V ≃L[ℂ] E.V) (hA : ∀ (k : Matrix.un
     rw [deriv_equiv A (fun s => u s g) 0, h4 g hg, map_zero]
 
 /- English proof (translation)
-Take `⟨u, hu, hu0⟩` from `hWE n E f hf`. Establish `hAu` using `wave_equiv E A hA u hu`. Establish `hone : (1 : Mat n) ∈ GLs n` using `by simp [GLs]`. Establish `key : ∀ F F' : Mat n → E.V, Set.EqOn F F' (GLs n) → act μ E ks F 1 = act μ E ks F' 1`. Introduce `F F' h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `act`. Use `congr 1`. Use function extensionality and compare the values at `y`. Rewrite using `[h]`. Simplify using `only [GLs, Set.mem_setOf_eq, one_mul]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `((Matrix.isUnit_iff_isUnit_det _).mp y.isUnit).ne_zero`. Rewrite using `[key (fun x => A (f x)) (fun x => A (u 0 x)) (fun x hx => by simp only [hu0 x hx]), key f (u 0) (fun x hx => (hu0 x hx).symm), hks.2.2.2 _ hAu 1 hone, hks.2.2.2 _ hu 1 hone]`. Use `Eq.trans ?_ (congrFun (zop_equiv A w _) 1)` and prove the remaining obligations. Use `congr 2`. Use function extensionality and compare the values at `x'`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← A.integral_comp_comm]`. Use `congr 1`. Use function extensionality and compare the values at `t`. Conclude with `((A : E.V →L[ℂ] E.V).map_smul_of_tower (g t) (u t x')).symm`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem act_equiv (hWE : WaveEx) [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n))
     [μ.IsHaarMeasure] (E : KMod n) (A : E.V ≃L[ℂ] E.V)

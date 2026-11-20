@@ -11,39 +11,35 @@ noncomputable section
 variable {E : Type} [Field E] [NumberField E] [NumberField.IsCMField E]
 
 /- English proof (translation)
-Establish `hdetOf : ∀ x ∈ X.dom, ∀ τ, (mat x τ).det ≠ 0`. Introduce `x hx τ`. Simplify using `only [Data.dom, GG, Set.mem_setOf_eq] at hx`. Conclude with `(hx τ).1`. Establish `hcolLI : ∀ x ∈ X.dom, ∀ τ, LinearIndependent ℂ (fun b : Fin X.p0 => col (mat x τ) (Fin.castLE X.p0_le b))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx τ`. Establish `hu : IsUnit (mat x τ)` using `(Matrix.isUnit_iff_isUnit_det _).mpr (Ne.isUnit (hdetOf x hx τ))`. Conclude with `(Matrix.linearIndependent_cols_iff_isUnit.mpr hu).comp (Fin.castLE X.p0_le) (Fin.castLE_injective _)`. Establish `hineq : ∀ τ (u : Fin X.p0 → ℂ), ∑ a, ‖(LowerBlockMatrices.Bmat X.toData h1 z0 x0 τ *ᵥ u) a‖ ^ 2 ≤ δ ^ 2 * ∑ b', ‖(LowerBlockMatrices.Amat X.toData h1 z0 x0 τ *ᵥ u) b'‖ ^ 2`. Introduce `τ u`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv : (∑ b, u b • col (mat z0 τ) (Fin.castLE X.p0_le b)) ∈ PositiveSpanMatrices.Spos X.toData z0 τ` using `Submodule.sum_mem _ (fun b _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨b, rfl⟩))`. Establish `k` using `BlockIdentityExpansion.key X ξ z0 x0 f h1 δ hz hx0 hortho hflag hf hI hUz hgraph τ _ hv`. Rewrite `k` using `[← LowerBlockMatrices.yvec_eq (X := X.toData), LowerBlockMatrices.Neg_eq (X := X.toData), LowerBlockMatrices.Pos_eq (X := X.toData)]`. Conclude with `k`. Establish `hAdet : ∀ τ, (LowerBlockMatrices.Amat X.toData h1 z0 x0 τ).det ≠ 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce `τ`. Rewrite using `[Ne, ← Matrix.exists_mulVec_eq_zero_iff]`. Introduce and unpack `⟨u, hu0, hAu⟩`. Use `set v : Fin r → ℂ := ∑ b, u b • col (mat z0 τ) (Fin.castLE X.p0_le b) with hvdef`. Use `set y : Fin r → ℂ := ∑ b, u b • col (h1 τ * mat z0 τ) (Fin.castLE X.p0_le b) with hydef`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP : PositiveSpanMatrices.Pos X.toData x0 τ y = 0`. Rewrite using `[hydef, LowerBlockMatrices.Pos_eq (X := X.toData), hAu]`. Simplify using the standard rewrite rules. Establish `hNle : PositiveSpanMatrices.Neg X.toData x0 τ y ≤ 0`. Establish `k` using `hineq τ u`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `k` using `[hAu]`. Rewrite using `[hydef, LowerBlockMatrices.Neg_eq (X := X.toData)]`. Simplify using `using k`. Establish `hN : PositiveSpanMatrices.Neg X.toData x0 τ y = 0` using `le_antisymm hNle (PositiveSpanMatrices.Neg_nonneg (X := X.toData) x0 τ y)`. Establish `hy0 : y = 0` using `PositiveSpanMatrices.eq_zero_of_Pos_Neg (X := X.toData) hortho τ (hdetOf x0 hx0 τ) y hP hN`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hyv : y = h1 τ *ᵥ v`. Rewrite using `[hydef, hvdef, LowerBlockMatrices.yvec_eq (X := X.toData)]`. Establish `hvv : hermC τ.1 X.Gm v v = 0`. Rewrite using `[← hU τ v v, ← hyv, hy0, hermC_zero_left]`. Establish `hvx0 : v ∈ PositiveSpanMatrices.Spos X.toData x0 τ`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hv : v ∈ PositiveSpanMatrices.Spos X.toData z0 τ` using `Submodule.sum_mem _ (fun b _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨b, rfl⟩))`. Unfold `PositiveSpanMatrices.Spos at hv ⊢`. Rewrite using `[← hflag τ]`. Conclude with `hv`. Establish `hv0 : v = 0` using `PositiveSpanMatrices.zero_of_mem_self (X := X.toData) hortho τ (hdetOf x0 hx0 τ) v hvx0 hvv`.
+Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply `hu0` to reduce the goal to its premises. Use function extensionality and compare the values at `b`. Conclude with `Fintype.linearIndependent_iff.mp (hcolLI z0 hz τ) u hv0 b`. Set `Z1 : X.Coord` to `fun τ => (LowerBlockMatrices.Bmat X.toData h1 z0 x0 τ * (LowerBlockMatrices.Amat X.toData h1 z0 x0 τ)⁻¹ : Matrix (Fin (r - X.p0)) (Fin X.p0) ℂ)`. Use `⟨Z1, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `τ`. Establish `hA` using `hAdet τ`. Use `PositiveSpanMatrices.span_eq_of_mat _ _ (LowerBlockMatrices.Amat X.toData h1 z0 x0 τ) hA (fun b => ?_)` and prove the remaining obligations. Establish `hZA : ∀ a, ∑ b', Z1 τ a b' * LowerBlockMatrices.Amat X.toData h1 z0 x0 τ b' b = LowerBlockMatrices.Bmat X.toData h1 z0 x0 τ a b`. Introduce `a`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `congrFun (congrFun (Matrix.nonsing_inv_mul_cancel_right (LowerBlockMatrices.Amat X.toData h1 z0 x0 τ) (LowerBlockMatrices.Bmat X.toData h1 z0 x0 τ) ((Matrix.isUnit_iff_isUnit_det _).mp ((Matrix.isUnit_iff_isUnit_det _).mpr (Ne.isUnit hA)))) a) b`. Rewrite `h` using `[Matrix.mul_apply]`. Conclude with `h`. Use `show col (h1 τ * mat z0 τ) (Fin.castLE X.p0_le b) = _`. Rewrite using `[LowerBlockMatrices.colW_expand (X := X.toData) h1 z0 hortho τ (hdetOf x0 hx0 τ) b]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [LowerBlockMatrices.colZ (X := X.toData), smul_add, Finset.sum_add_distrib, Finset.smul_sum, smul_smul]`. Use `congr 1`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun a _ => ?_)` and prove the remaining obligations. Rewrite using `[← Finset.sum_smul, ← hZA a]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congr 1`. Use `Finset.sum_congr rfl (fun b' _ => ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Use `Real.iSup_le (fun τ => ?_) hδ` and prove the remaining obligations. Unfold `Data.opN`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `Real.sSup_le (fun t ht => ?_) hδ` and prove the remaining obligations. Take `⟨v, hv, rfl⟩` from `ht`. Use `set A := LowerBlockMatrices.Amat X.toData h1 z0 x0 τ with hAdef`. Use `set B := LowerBlockMatrices.Bmat X.toData h1 z0 x0 τ with hBdef`. Establish `hA` using `hAdet τ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `set u := A⁻¹ *ᵥ v with hudef`. Establish `hAu : A *ᵥ u = v`. Rewrite using `[hudef, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (Ne.isUnit hA), Matrix.one_mulVec]`. Establish `hZv : Matrix.of (Z1 τ) *ᵥ v = B *ᵥ u`. Rewrite using `[hudef, Matrix.mulVec_mulVec]`.
-
-Both sides reduce to the same expression. Rewrite using `[hZv]`. Establish `k` using `hineq τ u`. Rewrite `k` using `[hAu]`. Establish `hpos : 0 < ∑ j, ‖v j‖ ^ 2`.
-
-Take `⟨j, hj⟩` from `Function.ne_iff.mp hv`. Conclude with `Finset.sum_pos' (fun _ _ => by positivity) ⟨j, Finset.mem_univ _, pow_pos (norm_pos_iff.mpr hj) 2⟩`. Rewrite using `[div_le_iff₀ (Real.sqrt_pos.mpr hpos)]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.sqrt_mul (sq_nonneg δ), Real.sqrt_sq hδ]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitary_fixing_isotropic_plane (r : ℕ) (X : DataX E r) (ξ : Fin r → E) (z0 x0 : Frame X.Ψ r)
     (f : X.Ψ → Fin (r - 2) → Fin r → ℂ) (h1 : X.Ψ → Matrix (Fin r) (Fin r) ℂ) (δ : ℝ)

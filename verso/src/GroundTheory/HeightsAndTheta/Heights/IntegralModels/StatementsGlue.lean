@@ -33,7 +33,7 @@ def halfThirdOpens : Bool → SpecZ.Opens := fun b =>
   if b then invOpen (𝟙 SpecZ) 2 else invOpen (𝟙 SpecZ) 3
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 lemma mem_invOpen_id (m : ℤ) (x : SpecZ) : x ∈ invOpen (𝟙 SpecZ) m ↔ m ∉ x.asIdeal := Iff.rfl
 

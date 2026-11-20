@@ -12,7 +12,7 @@ open scoped Classical
 namespace UpperTheory.Gal.InertialTypesAlt.G
 
 /- English proof (translation)
-Establish `h` using `(isOpen_ker_finIdele K (χ.1.comp (finId K)) (χ.2.1.comp (continuous_finId K))).preimage ((Matrix.GeneralLinearGroup.continuous_det (n := Fin n)).comp (CuspSub.continuous_locGL (a := n) v))`. Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`. Conclude with `Iff.of_eq (congrArg (fun u => χ.1 u = 1) (finId_det_locGL v g).symm)`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 private theorem isOpen_ker_chiAt {K : Type} [Field K] [NumberField K] (n : ℕ) (χ : HChar K) (v : Pl K) :
     IsOpen {g : Gw n v | χ.loc v (Matrix.GeneralLinearGroup.det g) = 1} := by
@@ -23,9 +23,9 @@ private theorem isOpen_ker_chiAt {K : Type} [Field K] [NumberField K] (n : ℕ) 
   exact Iff.of_eq (congrArg (fun u => χ.1 u = 1) (finId_det_locGL v g).symm)
 
 /- English proof (translation)
-Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Establish `hc : Continuous fun y : Gw n v => x⁻¹ * y` using `continuous_const.mul continuous_id`. Establish `hm : (fun y : Gw n v => x⁻¹ * y) ⁻¹' {g : Gw n v | χ.loc v (Matrix.GeneralLinearGroup.det g) = 1} ∈ nhds x` using `((isOpen_ker_chiAt n χ v).preimage hc).mem_nhds (by simp)`. Use `filter_upwards [hm] with y hy`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy' : χ.loc v (Matrix.GeneralLinearGroup.det (x⁻¹ * y)) = 1` using `hy`. Rewrite `hy'` using `[map_mul, map_mul, map_inv, map_inv]`. Establish `e : χ.loc v (Matrix.GeneralLinearGroup.det y) = χ.loc v (Matrix.GeneralLinearGroup.det x)` using `(inv_mul_eq_one.1 hy').symm`. Simplify using `only [chiAt, e]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem isLocallyConstant_chiAt {K : Type} [Field K] [NumberField K] (n : ℕ) (χ : HChar K) (v : Pl K) :
     IsLocallyConstant (chiAt n χ v) := by
@@ -42,7 +42,7 @@ private theorem isLocallyConstant_chiAt {K : Type} [Field K] [NumberField K] (n 
   simp only [chiAt, e]
 
 /- English proof (translation)
-Introduce `K _ _ n χ v`. Use `⟨isLocallyConstant_chiAt n χ v, fun g => ?_, fun f hf => ?_⟩` and prove the remaining obligations. Simplify using `only [chiAt, HChar.loc_inv]`. Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`. Conclude with `⟨hf.1.mul (isLocallyConstant_chiAt n χ v), hf.2.mul_right⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem chiBasic : ChiBasic := by
   intro K _ _ n χ v

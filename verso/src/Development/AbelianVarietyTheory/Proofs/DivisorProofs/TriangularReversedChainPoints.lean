@@ -15,11 +15,11 @@ namespace GlobalTheory.TriFrame
 open GlobalTheory.Twist (resM_resM resM_smul)
 
 /- English proof (translation)
-Introduce `T hT`. Set `Q : GL (Fin r) Γ(X, T)` to `Matrix.GeneralLinearGroup.map (resG X hT) P`. Establish `hQ : Function.Bijective (Matrix.vecMulLinear (Q : Matrix (Fin r) (Fin r) Γ(X, T)))`. Use `Function.bijective_iff_has_inverse.2 ⟨fun a => Matrix.vecMul a ((Q⁻¹ : GL _ _) : Matrix _ _ _), fun a => ?_, fun a => ?_⟩` and prove the remaining obligations. Simplify using `[Matrix.vecMul_vecMul]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.vecMul_vecMul]`. Establish `h2` using `(he T hT).comp hQ`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `a`. Simplify using `only [Function.comp_apply, Fintype.linearCombination_apply, map_sum, resM_smul, Matrix.vecMulLinear_apply, Matrix.vecMul, dotProduct, Finset.sum_smul, Finset.smul_sum, smul_smul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem isFrame_gl_smul {X : Scheme.{0}} {V : X.Opens} {F : X.Modules} {r : ℕ} {e : Fin r → Γ(F, V)} (he : IsFrame e)
     (P : GL (Fin r) Γ(X, V)) :
@@ -39,9 +39,9 @@ theorem isFrame_gl_smul {X : Scheme.{0}} {V : X.Opens} {F : X.Modules} {r : ℕ}
   rfl
 
 /- English proof (translation)
-Introduce `X A V V' h F r s hs e he P ρ h0 h1`. Establish `key (l i : Fin r) : coordIn hs (fun l => ∑ m, (P : Matrix (Fin r) (Fin r) Γ(X, V')) (Fin.rev l) m • resM F h (e m)) l i = ((P : Matrix (Fin r) (Fin r) Γ(X, V')).map (resG X (inf_le_left : V' ⊓ A ≤ V')) * (Matrix.of fun l j => GlobalTheory.ChainPts.coef true he hs l (Fin.rev j)).m …`. Simplify using `only [coordIn, map_sum, resM_smul, map_smul, Finsupp.finset_sum_apply, Finsupp.smul_apply, smul_eq_mul, Matrix.mul_apply, Matrix.map_apply, Matrix.of_apply, Fin.rev_rev]`. Use `Finset.sum_congr rfl fun m _ => congrArg _ ?_` and prove the remaining obligations. Use `hs.repr_resM (inf_le_right : V ⊓ A ≤ A) (inf_le_inf_right A h) (resM F inf_le_left (e m)) i` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this`, the goal using `[resM_resM]`. Conclude with `this`. Use `⟨_, (isFrame_gl_smul (he.res h) P).comp_equiv Fin.revPerm, fun i l hil => ?_, fun i => ?_⟩` and prove the remaining obligations. Conclude with `(key i l).trans (h0 _ _ (Fin.rev_lt_rev.2 hil))`. Conclude with `(congrArg (· * _) (key i i)).trans (h1 _)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_isTri_of_gl : ∀ (X : Scheme.{0}) (A V V' : X.Opens) (h : V' ≤ V) (F : X.Modules) (r : ℕ) (s : Fin r → Γ(F, A)) (hs : IsFrame s) (e : Fin r → Γ(F, V)) (he : IsFrame e) (P : GL (Fin r) Γ(X, V')) (ρ : Fin r → Γ(X, V' ⊓ A)), (∀ l j, j < l → ((P : Matrix (Fin r) (Fin r) Γ(X, V')).map (resG X (inf_le_left : V' ⊓ A ≤ V')) * (Matrix.of fun l j => GlobalTheory.ChainPts.coef true he hs l (Fin.rev j)).map (resG X (inf_le_inf_right A h))) l j = 0) → (∀ j, ((P : Matrix (Fin r) (Fin r) Γ(X, V')).map (resG X (inf_le_left : V' ⊓ A ≤ V')) * (Matrix.of fun l j => GlobalTheory.ChainPts.coef true he hs l (Fin.rev j)).map (resG X (inf_le_inf_right A h))) j j * ρ j = 1) → ∃ e' : Fin r → Γ(F, V'), IsFrame e' ∧ IsTri hs e' ∧ ∀ i, coordIn hs e' i i * ρ (Fin.rev i) = 1 := by
   intro X A V V' h F r s hs e he P ρ h0 h1

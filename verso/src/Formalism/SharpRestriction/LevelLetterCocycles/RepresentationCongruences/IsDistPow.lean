@@ -14,7 +14,7 @@ variable {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 variable {l : ℕ} [Fact l.Prime] (P : PhiData O l)
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.N.FrobeniusPowerSeries.IsDist at hg ⊢`. Rewrite using `[map_pow]`. Conclude with `pow_ne_zero k hg`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ArcLengthThreeDescent.isDist_pow {g : O⟦X⟧} (hg : IsDist g) (k : ℕ) : IsDist (g ^ k) := by
   unfold Formalism.MainNotions.N.FrobeniusPowerSeries.IsDist at hg ⊢
@@ -22,21 +22,19 @@ theorem ArcLengthThreeDescent.isDist_pow {g : O⟦X⟧} (hg : IsDist g) (k : ℕ
   exact pow_ne_zero k hg
 
 /- English proof (translation)
-Establish `hϖ0 : (C ϖ : O⟦X⟧) ≠ 0`. Introduce `h0`. Apply `hϖ.ne_zero` to reduce the goal to its premises. Establish `h1` using `congrArg PowerSeries.constantCoeff h0`. Simplify using `using h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hres : IsLocalRing.residue O ϖ = 0`. Rewrite using `[IsLocalRing.residue_eq_zero_iff]`. Conclude with `(IsLocalRing.mem_maximalIdeal _).2 (mem_nonunits_iff.2 hϖ.not_isUnit)`. Establish `step : ∀ (m : ℕ) (H : O⟦X⟧), C ϖ * H ∈ Ideal.span {C ϖ ^ (m + 1), G} → H ∈ Ideal.span {C ϖ ^ m, G}`. Introduce `m H h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `h`, the goal using `[Ideal.mem_span_pair]`. Take `⟨A, B, hAB⟩` from `h`. Establish `h1` using `congrArg (PowerSeries.map (IsLocalRing.residue O)) hAB`. Simplify using `only [map_add, map_mul, map_pow, PowerSeries.map_C, hres, map_zero, zero_pow (by omega : m + 1 ≠ 0), mul_zero, zero_mul, zero_add] at h1`. Establish `hB : B.map (IsLocalRing.residue O) = 0` using `(mul_eq_zero.1 h1).resolve_right hG`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcoef : ∀ k, ∃ b : O, PowerSeries.coeff k B = ϖ * b`. Introduce `k`. Establish `h2` using `congrArg (PowerSeries.coeff k) hB`. Rewrite `h2` using `[PowerSeries.coeff_map, map_zero, IsLocalRing.residue_eq_zero_iff, (IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).1 hϖ, Ideal.mem_span_singleton']`. Take `⟨b, hb⟩` from `h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨b, by rw [← hb, mul_comm]⟩`. Use `choose b hb using hcoef`. Establish `hBeq : B = C ϖ * PowerSeries.mk b`. Use extensionality with `k`. Rewrite using `[PowerSeries.coeff_C_mul, PowerSeries.coeff_mk, hb]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨A, PowerSeries.mk b, ?_⟩` and prove the remaining obligations. Apply `mul_left_cancel₀ hϖ0` to reduce the goal to its premises. Rewrite using `[← hAB, hBeq, pow_succ]`. Expand and normalize the polynomial expressions, which then agree. Proceed by induction on `a generalizing H m with`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simpa using h`. Consider the case `succ a ih`. Apply `step m H` to reduce the goal to its premises. Apply `ih (m := m + 1) (H := C ϖ * H)` to reduce the goal to its premises. Rewrite using `[← mul_assoc, ← pow_succ]`.
-
-Rewrite using `[show a + (m + 1) = a + 1 + m by omega]` and apply the resulting hypothesis.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem ArcLengthThreeDescent.cancel {ϖ : O} (hϖ : Irreducible ϖ) {G : O⟦X⟧} (hG : IsDist G) (a m : ℕ) {H : O⟦X⟧}
     (h : C ϖ ^ a * H ∈ Ideal.span {C ϖ ^ (a + m), G}) : H ∈ Ideal.span {C ϖ ^ m, G} := by
@@ -81,21 +79,21 @@ theorem ArcLengthThreeDescent.cancel {ϖ : O} (hϖ : Irreducible ϖ) {G : O⟦X�
     rwa [show a + (m + 1) = a + 1 + m by omega]
 
 /- English proof (translation)
-Distinguish the cases in `hx : x = 0`. Conclude with `⟨0, by simp [hx]⟩`. Take `⟨a, w, hw⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hx hϖ`. Take `⟨v, hv⟩` from `l_eq_unit_mul_pow hϖ P.hl0`. Use `set E := eO (O := O) l with hE`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hle : E * κ ≤ E * K + a`. Use `⟨(v : O) ^ K * ((v⁻¹ : Oˣ) : O) ^ κ * ϖ ^ (E * K + a - E * κ) * w, ?_⟩` and prove the remaining obligations. Establish `key : ϖ ^ (E * κ) * ϖ ^ (E * K + a - E * κ) = ϖ ^ (E * K) * ϖ ^ a`. Rewrite using `[← pow_add, ← pow_add]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `hvv : (v : O) ^ κ * ((v⁻¹ : Oˣ) : O) ^ κ = 1`. Rewrite using `[← mul_pow, Units.mul_inv, one_pow]`. Rewrite using `[hw, hv, mul_pow, mul_pow, ← pow_mul, ← pow_mul]`. Take the linear combination `((v : O) ^ K * (w : O) * ϖ ^ (E * κ) * ϖ ^ (E * K + a - E * κ)) * hvv + ((v : O) ^ K * (w : O)) * key`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. It suffices to derive a contradiction.
 
-Use `exfalso push Not at hle`. Establish `hlk : (C ((l : O) ^ κ) : O⟦X⟧) = C ((v : O) ^ κ) * C ϖ ^ (E * κ)`. Rewrite using `[hv, mul_pow, ← pow_mul]`. Simplify using `only [map_mul, map_pow]`. Establish `hmem : C ϖ ^ a * (C (w : O) * P.p 1 ^ b₁) ∈ Ideal.span {C ϖ ^ (a + (E * κ - a)), P.p 2 ^ y}`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : C ϖ ^ a * (C (w : O) * P.p 1 ^ b₁) = C x * P.p 1 ^ b₁`. Rewrite using `[hw, map_mul, map_pow]`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : a + (E * κ - a) = E * κ` using `by omega`. Rewrite using `[e1, e2, Ideal.mem_span_pair]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨C ((v : O) ^ κ) * α, -β, by linear_combination h - α * hlk⟩`. Establish `hmem2` using `ArcLengthThreeDescent.cancel hϖ (ArcLengthThreeDescent.isDist_pow (P.isDist_p 2) y) a (E * κ - a) hmem`. Establish `hmem3 : P.p 1 ^ b₁ ∈ Ideal.span {C ϖ ^ (E * κ - a), P.p 2 ^ y}`. Use `Ideal.mul_mem_left _ (C ((w⁻¹ : Oˣ) : O)) hmem2` as an intermediate fact. Rewrite `this` using `[← mul_assoc, ← map_mul, Units.inv_mul, map_one, one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hmem3` using `[ContD.mem_iff_le]`. Establish `hdesc : cont ϖ (P.p 2 ^ y) (P.p 1 ^ b₁) = cont ϖ (P.p 1 ^ y) ((X : O⟦X⟧) ^ b₁)`. Use `P.cont_phi_phi_eq hϖ (ArcLengthThreeDescent.isDist_pow (P.isDist_p 1) y) ((X : O⟦X⟧) ^ b₁)` as an intermediate fact. Establish `e1 : P.φ (P.p 1) = P.p 2` using `(P.p_succ 1).symm`. Establish `e0 : P.φ X = P.p 1` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[map_pow, map_pow, e1, e0]`. Then use the resulting hypothesis. Rewrite `hmem3` using `[hdesc]`. Establish `h3` using `hmem3.trans hK`. Establish `h4 : E * κ - a ≤ E * K` using `by exact_mod_cast h3`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem ArcLengthThreeDescent.const_int {ϖ : O} (hϖ : Irreducible ϖ) (b₁ y κ K : ℕ) (x : O) (α β : O⟦X⟧)
     (h : C ((l : O) ^ κ) * α - C x * P.p 1 ^ b₁ = P.p 2 ^ y * β)
@@ -143,11 +141,11 @@ theorem ArcLengthThreeDescent.const_int {ϖ : O} (hϖ : Irreducible ϖ) (b₁ y 
     omega
 
 /- English proof (translation)
-Establish `hl0 : 0 < l` using `(Fact.out : l.Prime).pos`. Establish `hdm` using `Nat.div_add_mod (b₁ + l - 1) l`. Establish `hr` using `Nat.mod_lt (b₁ + l - 1) hl0`. Establish `hla : b₁ ≤ l * ((b₁ + l - 1) / l)`. Generalize the expression as in `l * ((b₁ + l - 1) / l) = P at hdm ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Use linear arithmetic over natural numbers and integers. Establish `hya : y ≤ (b₁ + l - 1) / l` using `Nat.le_of_mul_le_mul_left (hge.trans hla) hl0`. Establish `hmono : cont ϖ (P.p 1 ^ y) ((X : O⟦X⟧) ^ b₁) ≤ cont ϖ (P.p 1 ^ y) ((X : O⟦X⟧) ^ (l * ((b₁ + l - 1) / l)))`. Unfold `cont`. Use `iSup₂_le fun k hk => le_iSup₂_of_le k ?_ le_rfl` and prove the remaining obligations.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Nat.sub_add_cancel hla, pow_add]`. Conclude with `Ideal.mul_mem_left _ _ hk`. Use `hmono.trans ?_` and prove the remaining obligations. Rewrite using `[P.E1 hϖ _ y hy]`. Conclude with `iInf₂_le (y - 1) (Finset.mem_range.2 (by omega))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ArcLengthThreeDescent.cont_le {ϖ : O} (hϖ : Irreducible ϖ) (b₁ y : ℕ) (hy : 1 ≤ y) (hge : l * y ≤ b₁) :
     cont ϖ (P.p 1 ^ y) ((X : O⟦X⟧) ^ b₁) ≤
@@ -176,19 +174,19 @@ def ArcLengthThreeDescent.Kc (l b₁ y : ℕ) : ℕ :=
   if b₁ < l * y then 0 else (b₁ + l - 1) / l - (y - 1) + padicValNat l (((b₁ + l - 1) / l).choose (y - 1))
 
 /- English proof (translation)
-Establish `hl2 : 2 ≤ l` using `hl.out.two_le`. Establish `hl1 : (1 : ℝ) < (l : ℝ)` using `by exact_mod_cast (by omega : 1 < l)`. Establish `hl0 : 0 < l` using `by omega`. Unfold `ArcLengthThreeDescent.Kc`. Rewrite using `[if_neg (not_lt.2 hge)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `set a := (b₁ + l - 1) / l with ha`. Establish `ha_le : a ≤ y + η`. Establish `h2 : a < y + η + 1`. Rewrite using `[ha, Nat.div_lt_iff_lt_mul hl0]`. Establish `: (y + η + 1) * l = l * (y + η) + l` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Establish `hly : l ≤ l * y` using `by nlinarith`. Establish `ha_pos : 1 ≤ a`. Rewrite using `[ha, Nat.le_div_iff_mul_le hl0]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `ha_b : a ≤ b₁`. Establish `h3 : a * l ≤ b₁ + l - 1` using `Nat.div_mul_le_self _ _`. Establish `h4 : 2 * a ≤ a * l` using `by nlinarith`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hv : padicValNat l (a.choose (y - 1)) ≤ Nat.log l a`. Rewrite using `[← Nat.factorization_def _ hl.out]`. Conclude with `Nat.factorization_choose_le_log`. Establish `hlog1 : (Nat.log l a : ℝ) ≤ Real.logb l a`. Establish `h1 : ((l ^ Nat.log l a : ℕ) : ℝ) ≤ (a : ℝ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Conclude with `Nat.pow_log_le_self l (by omega : a ≠ 0)` after adjusting the coercions. Move the coercions through the operations in `at h1`. Establish `h2` using `Real.logb_le_logb_of_le hl1 (by positivity) h1`. Rewrite `h2` using `[Real.logb_pow, Real.logb_self_eq_one hl1, mul_one]`. Then use the resulting hypothesis. Establish `hlog2 : Real.logb l a ≤ Real.logb l b₁` using `Real.logb_le_logb_of_le hl1 (by exact_mod_cast (by omega : 0 < a)) (by exact_mod_cast ha_b)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hcast : ((a - (y - 1) + padicValNat l (a.choose (y - 1)) : ℕ) : ℝ) ≤ (η : ℝ) + 1 + (Nat.log l a : ℝ)`. Establish `h5 : a - (y - 1) + padicValNat l (a.choose (y - 1)) ≤ η + 1 + Nat.log l a` using `by omega`. Conclude with `h5` after adjusting the coercions. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem ArcLengthThreeDescent.Kc_le (l b₁ y η : ℕ) [hl : Fact l.Prime] (hy : 1 ≤ y) (hge : l * y ≤ b₁)
     (hlt : b₁ < l * (y + η)) : (ArcLengthThreeDescent.Kc l b₁ y : ℝ) ≤ η + 1 + Real.logb l b₁ := by
@@ -242,7 +240,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 variable [FiniteDimensional Qp LL]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [Formalism.BasicNotions.letE, Pi.mul_apply, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ArcLengthThreeDescent.letE_idem (c : ZMod n) : (letE (O := O) c : LetA O n) * letE c = letE c := by
   funext i
@@ -250,9 +248,9 @@ theorem ArcLengthThreeDescent.letE_idem (c : ZMod n) : (letE (O := O) c : LetA O
   split_ifs <;> simp
 
 /- English proof (translation)
-Use `show ∀ δ ∈ W.DelF, W.γA δ (letE c) = letE c`. Introduce `δ _`. Use function extensionality and compare the values at `i`. Use `show (W.γ₀ δ) ((letE c : LetA O n) i) = (letE c : LetA O n) i`. Distinguish the cases in `h : i = c`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Substitute `h` using the available equality. Simplify using `[Formalism.BasicNotions.letE]`. Simplify using `[Formalism.BasicNotions.letE, Pi.single_apply, h]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ArcLengthThreeDescent.letE_mem (W : LocWach PD LL O v n) (c : ZMod n) : (letE (O := O) c : LetA O n) ∈ W.AΔ := by
   show ∀ δ ∈ W.DelF, W.γA δ (letE c) = letE c
@@ -265,31 +263,29 @@ theorem ArcLengthThreeDescent.letE_mem (W : LocWach PD LL O v n) (c : ZMod n) : 
   · simp [Formalism.BasicNotions.letE, Pi.single_apply, h]
 
 /- English proof (translation)
-Establish `: Fact PD.p.Prime` using `Fact.mk PD.hp`. Take `⟨Br⟩` from `exists_phiBridge W hcase hP9 T hT hO hinj`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Take `⟨κ, x, hx⟩` from `hf2`. Use `set K := ArcLengthThreeDescent.Kc PD.p b₁ y with hKdef`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hf1' : InFr W c (Br.cst 1) (Br.cst (Br.P.p 1 ^ b₁)) f`. Rewrite using `[Br.cst_one, Br.cst_pow, ← Br.ps_eq]`. Conclude with `hf1`. Establish `hx' : InFr W c (Br.cst (Br.P.p 2 ^ y)) (Br.cst (Br.P.p 1 ^ b₁)) (lE W κ * f - algebraMap (LetA O n) W.EE (letE c) * algebraMap O W.EE x)`. Rewrite using `[Br.cst_pow, Br.cst_pow, ← Br.ps_eq, ← Br.ps_eq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hx`. Take `⟨U₁, U₂, hU⟩` from `Br.inFr_const c hf1' hx'`. Establish `hrel : C (((PD.p : ℕ) : O) ^ κ) * U₁ - C x * Br.P.p 1 ^ b₁ = Br.P.p 2 ^ y * U₂`. Rewrite using `[map_pow]`. Take the linear combination `-hU`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Establish `hK : cont ϖ (Br.P.p 1 ^ y) ((X : O⟦X⟧) ^ b₁) ≤ ((eO (O` using `O) PD.p * K : ℕ) : ℕ∞) := by`. Rewrite using `[hKdef]`. Unfold `ArcLengthThreeDescent.Kc`. Use `split_ifs with hlt`. Rewrite using `[Br.P.cont_pow_X_pow_eq_zero_of_lt hϖ y b₁ hy hb hlt]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Conclude with `ArcLengthThreeDescent.cont_le Br.P hϖ b₁ y hy (by omega)`. Take `⟨X₂, hX₂⟩` from `ArcLengthThreeDescent.const_int Br.P hϖ b₁ y κ K x U₁ U₂ hrel hK`. Establish `hLA : ∀ k : ℕ, algebraMap (LetA O n) W.EE (lA W ^ k) = lE W k`. Introduce `k`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `[lA, lE, map_pow, map_natCast]`. Establish `hOE : ∀ z : O, algebraMap O W.EE z = algebraMap (LetA O n) W.EE (algebraMap O (LetA O n) z)` using `fun z => IsScalarTower.algebraMap_apply O (LetA O n) W.EE z`. Establish `hX₂E : lE W κ * algebraMap O W.EE X₂ = lE W K * algebraMap O W.EE x`. Use `congrArg (algebraMap O W.EE) hX₂` as an intermediate fact. Simplify `this` using `[lE, map_mul, map_pow, map_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `he` using `ArcLengthThreeDescent.letE_idem (O := O) (n := n) c`. Establish `heM` using `ArcLengthThreeDescent.letE_mem W c`. Establish `hpsM : ∀ s : ℕ, ps W s ∈ W.AΔ` using `fun s => by rw [Br.ps_eq]; exact Br.cst_mem _`. Establish `hlM : lA W ∈ W.AΔ` using `by rw [Br.lA_eq]; exact Br.cst_mem _`. Take `⟨u₀, hu₀, hf1e⟩` from `hf1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨u₂, hu₂, hxe⟩` from `hx`. Use `⟨X₂, lE W K * f - algebraMap (LetA O n) W.EE (letE c) * algebraMap O W.EE X₂, by ring, ?_, ?_⟩` and prove the remaining obligations. Use `set H : LetA O n := lA W ^ K * (letE c * 1 * u₀) - letE c * algebraMap O (LetA O n) X₂ * ps W 1 ^ b₁ with hHdef`. Establish `hH : algebraMap (LetA O n) W.EE H = algebraMap (LetA O n) W.EE (ps W 1 ^ b₁) * (lE W K * f - algebraMap (LetA O n) W.EE (letE c) * algebraMap O W.EE X₂)`. Rewrite using `[hHdef, map_sub, map_mul (algebraMap (LetA O n) W.EE) (lA W ^ K), hLA, ← hf1e, hOE X₂]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [map_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hHm : H ∈ W.AΔ`. Rewrite using `[hHdef]`. Conclude with `sub_mem (mul_mem (pow_mem hlM _) (mul_mem (mul_mem heM (one_mem _)) hu₀)) (mul_mem (mul_mem heM (Subalgebra.algebraMap_mem _ X₂)) (pow_mem (hpsM 1) _))`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hk : lA W ^ κ * (1 * H) = ps W 2 ^ y * (lA W ^ K * (letE c * u₂))`. Apply `W.EE_inj` to reduce the goal to its premises. Rewrite using `[one_mul, map_mul, map_mul, map_mul, map_mul, hLA, hLA, hH]`. Rewrite `hxe` using `[map_mul, map_mul]`. Take the linear combination `(lE W K) * hxe - (algebraMap (LetA O n) W.EE (ps W 1 ^ b₁) * algebraMap (LetA O n) W.EE (letE c)) * hX₂E`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Establish `hN₂ : ps W 2 ^ y ∈ PiPs W` using `Submonoid.pow_mem _ (Submonoid.subset_closure (Set.mem_insert_of_mem _ (Set.mem_range_self 2))) y`. Take `⟨yy, hyy, hyyeq⟩` from `saturation_fraction_ring W hcase hP9 hinj (ps W 2 ^ y) 1 1 hN₂ (one_mem _) (one_mem _) H (by rw [one_mul]; exact hHm) ⟨κ, lA W ^ K * (letE c * u₂), mul_mem (pow_mem hlM _) (mul_mem heM hu₂), hk⟩`. Use `⟨yy, hyy, ?_⟩` and prove the remaining obligations. Establish `hHe : letE c * H = H`. Rewrite using `[hHdef]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(lA W ^ K * u₀ - algebraMap O (LetA O n) X₂ * ps W 1 ^ b₁) * he`. Rewrite using `[← hH, ← hHe, ← one_mul H, hyyeq, mul_assoc]`. Take `⟨κ₀, x₀, u₃, hu₃, h0e⟩` from `hf0`. Use `⟨κ₀, ((PD.p : ℕ) : O) ^ K * x₀ - ((PD.p : ℕ) : O) ^ κ₀ * X₂, lA W ^ K * u₃, mul_mem (pow_mem hlM _) hu₃, ?_⟩` and prove the remaining obligations. Establish `hX₀ : algebraMap O W.EE (((PD.p : ℕ) : O) ^ K * x₀ - ((PD.p : ℕ) : O) ^ κ₀ * X₂) = lE W K * algebraMap O W.EE x₀ - lE W κ₀ * algebraMap O W.EE X₂`.
-
-Simplify using `[lE, map_sub, map_mul, map_pow, map_natCast]`. Rewrite using `[hX₀, map_mul, map_mul, map_mul, hLA]`. Rewrite `h0e` using `[map_mul, map_mul]`. Take the linear combination `(lE W K) * h0e`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem ArcLengthThreeDescent.split [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O]
     (W : LocWach PD LL O v n) (hcase : Formalism.MainNotions.LiftingTheory.CaseA W) (hP9 : Formalism.MainNotions.DeltaInvariantLattices.P9W W)

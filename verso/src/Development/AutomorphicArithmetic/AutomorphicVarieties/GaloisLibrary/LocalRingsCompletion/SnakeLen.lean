@@ -5,9 +5,9 @@ open IsDiscreteValuationRing (addVal)
 open scoped Pointwise TensorProduct Topology
 
 /- English proof (translation)
-Use `Module.length_eq_add_of_exact (LinearMap.range f).subtype h.rangeRestrict (Submodule.injective_subtype _) h.surjective_rangeRestrict ?_` and prove the remaining obligations. Introduce `n`. Rewrite using `[Subtype.ext_iff, ZeroMemClass.coe_zero]`. Express the relevant statement in the definitionally equal form `h n = 0 ↔ _`. Rewrite using `[e n]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, rfl⟩`. Conclude with `⟨⟨f m, m, rfl⟩, rfl⟩`. Introduce and unpack `⟨⟨_, m, rfl⟩, rfl⟩`. Conclude with `⟨m, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 private theorem len_mid {R M N P : Type} [CommRing R] [AddCommGroup M] [Module R M]
     [AddCommGroup N] [Module R N] [AddCommGroup P] [Module R P] (f : M →ₗ[R] N) (h : N →ₗ[R] P)
@@ -33,9 +33,9 @@ private def tmap {R M N : Type} [CommRing R] [AddCommGroup M] [Module R M]
     rw [← map_smul, hx, map_zero]
 
 /- English proof (translation)
-Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `⟨⟨x, (Submodule.mem_torsionBy_iff _ _).2 ?_⟩, rfl⟩` and prove the remaining obligations. Simplify using `using hx`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce and unpack `⟨⟨y, hy⟩, rfl⟩`. Simplify using `using (Submodule.mem_torsionBy_iff _ _).1 hy`.
+Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem ex_tors {R : Type} (M : Type) [CommRing R] [AddCommGroup M] [Module R M] (g : R) :
     Function.Exact (Submodule.torsionBy R M g).subtype (g • (LinearMap.id : M →ₗ[R] M)) := by
@@ -48,9 +48,9 @@ private theorem ex_tors {R : Type} (M : Type) [CommRing R] [AddCommGroup M] [Mod
     simpa using (Submodule.mem_torsionBy_iff _ _).1 hy
 
 /- English proof (translation)
-Introduce `x`. Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨b, -, rfl⟩` from `(Submodule.mem_smul_pointwise_iff_exists _ _ _).1 hx`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨b, by simp⟩`. Introduce and unpack `⟨b, rfl⟩`. Conclude with `(Submodule.mem_smul_pointwise_iff_exists _ _ _).2 ⟨b, Submodule.mem_top, by simp⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem ex_quot {R : Type} (M : Type) [CommRing R] [AddCommGroup M] [Module R M] (g : R) :
     Function.Exact (g • (LinearMap.id : M →ₗ[R] M)) (g • (⊤ : Submodule R M)).mkQ := by
@@ -64,35 +64,33 @@ private theorem ex_quot {R : Type} (M : Type) [CommRing R] [AddCommGroup M] [Mod
     exact (Submodule.mem_smul_pointwise_iff_exists _ _ _).2 ⟨b, Submodule.mem_top, by simp⟩
 
 /- English proof (translation)
-Introduce `R _ g A B D _ _ _ _ _ _ i j hi hj hij`. Establish `h₁ : i ∘ₗ (g • LinearMap.id : A →ₗ[R] A) = (g • LinearMap.id : B →ₗ[R] B) ∘ₗ i`. Use extensionality with `a`. Simplify using the standard rewrite rules. Establish `h₂ : j ∘ₗ (g • LinearMap.id : B →ₗ[R] B) = (g • LinearMap.id : D →ₗ[R] D) ∘ₗ j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `b`. Simplify using the standard rewrite rules. Set `G : QuotSMulTop g A →ₗ[R] QuotSMulTop g B` to `Submodule.mapQ _ _ i (by`. Introduce `a ha`. Rewrite using `[Submodule.mem_comap]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Take `⟨b, -, rfl⟩` from `(Submodule.mem_smul_pointwise_iff_exists _ _ _).1 ha`. Rewrite using `[map_smul]`. Conclude with `Submodule.smul_mem_pointwise_smul _ _ _ Submodule.mem_top)`. Set `H : QuotSMulTop g B →ₗ[R] QuotSMulTop g D` to `Submodule.mapQ _ _ j (by`. Introduce `a ha`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.mem_comap]`. Take `⟨b, -, rfl⟩` from `(Submodule.mem_smul_pointwise_iff_exists _ _ _).1 ha`. Rewrite using `[map_smul]`. Conclude with `Submodule.smul_mem_pointwise_smul _ _ _ Submodule.mem_top)`. Establish `hG : G ∘ₗ (g • ⊤ : Submodule R A).mkQ = (g • ⊤ : Submodule R B).mkQ ∘ₗ i`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Use extensionality with `a`. Both sides reduce to the same expression. Establish `hδr` using `SnakeLemma.exact_δ'_right (g • LinearMap.id) (g • LinearMap.id) (g • LinearMap.id) i j hij i j hij h₁ h₂ (Submodule.torsionBy R B g).subtype (ex_tors B g) (Submodule.torsionBy R D g).subtype (ex_tors D g) (g • ⊤ : Submodule R A).mkQ (ex_quot A g) hj hi (tmap g j) (by ext x; rfl) …`. Establish `hδl` using `SnakeLemma.exact_δ'_left (g • LinearMap.id) (g • LinearMap.id) (g • LinearMap.id) i j hij i j hij h₁ h₂ (Submodule.torsionBy R D g).subtype (ex_tors D g) (g • ⊤ : Submodule R A).mkQ (ex_quot A g) (g • ⊤ : Submodule R B).mkQ (ex_quot B g) hj hi G hG (Submodule.mkQ_surjective _)`. Establish `e1 : Function.Exact (tmap g i) (tmap g j)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `hx' : j x.1 = 0` using `congrArg Subtype.val hx`. Take `⟨a, ha⟩` from `(hij x.1).1 hx'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨a, ?_⟩, Subtype.ext ha⟩` and prove the remaining obligations. Rewrite using `[Submodule.mem_torsionBy_iff]`. Apply `hi` to reduce the goal to its premises. Rewrite using `[map_smul, ha, map_zero]`. Conclude with `(Submodule.mem_torsionBy_iff _ _).1 x.2`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `⟨a, rfl⟩`. Conclude with `Subtype.ext (hij.apply_apply_eq_zero a.1)`. Establish `i1 : Function.Injective (tmap g i)` using `fun x y hxy => Subtype.ext (hi (congrArg Subtype.val hxy))`. Establish `e4 : Function.Exact G H`. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨b, rfl⟩` from `Submodule.mkQ_surjective _ y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (j b) = 0 at hy`. Rewrite `hy` using `[Submodule.Quotient.mk_eq_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨d, -, hd⟩` from `(Submodule.mem_smul_pointwise_iff_exists _ _ _).1 hy`. Take `⟨b', rfl⟩` from `hj d`. Take `⟨a, ha⟩` from `(hij (b - g • b')).1 (by rw [map_sub, map_smul, hd, sub_self])`. Use `⟨Submodule.Quotient.mk a, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (i a) = Submodule.Quotient.mk b`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[ha, Submodule.Quotient.eq, sub_sub_cancel_left]`. Conclude with `Submodule.neg_mem _ (Submodule.smul_mem_pointwise_smul _ _ _ Submodule.mem_top)`. Introduce and unpack `⟨x, hx⟩`. Rewrite using `[← hx]`. Take `⟨a, rfl⟩` from `Submodule.mkQ_surjective _ x`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (j (i a)) = 0`. Rewrite using `[hij.apply_apply_eq_zero, Submodule.Quotient.mk_zero]`. Establish `s4 : Function.Surjective H`. Introduce `y`. Take `⟨d, rfl⟩` from `Submodule.mkQ_surjective _ y`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨b, rfl⟩` from `hj d`. Conclude with `⟨Submodule.Quotient.mk b, rfl⟩`. Establish `L1` using `len_mid (tmap g i) (tmap g j) e1`. Establish `L2` using `len_mid _ _ hδr`. Establish `L3` using `len_mid _ _ hδl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `L4` using `len_mid G H e4`. Establish `r1 : Module.length R (LinearMap.range (tmap g i)) = Module.length R (Submodule.torsionBy R A g)` using `(LinearEquiv.ofInjective _ i1).length_eq.symm`. Establish `r4 : Module.length R (LinearMap.range H) = Module.length R (QuotSMulTop g D)`. Rewrite using `[LinearMap.range_eq_top.2 s4, Module.length_top]`. Establish `arith : ∀ p x y z q : ℕ∞, p + (x + y) + (z + q) = p + x + (y + z) + q ∧ p + x ≤ p + (x + y) ∧ z + q ≤ y + z + q ∧ p ≤ p + x ∧ q ≤ z + q ∧ y + z ≤ x + y + (z + q) ∧ x + y ≤ p + x + (y + z)`.
-
-Introduce `p x y z q`. Conclude with `⟨by ring, le_iff_exists_add.2 ⟨y, by ring⟩, le_iff_exists_add.2 ⟨y, by ring⟩, le_iff_exists_add.2 ⟨x, by ring⟩, le_iff_exists_add.2 ⟨z, by ring⟩, le_iff_exists_add.2 ⟨x + q, by ring⟩, le_iff_exists_add.2 ⟨p + z, by ring⟩⟩`. Unfold `invLen coinvLen`. Rewrite using `[L1, L2, L3, L4, r1, r4]`. Conclude with `arith _ _ _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.abelian₂.snake_len :
     ∀ (R : Type) [CommRing R] (g : R) (A B D : Type) [AddCommGroup A] [Module R A] [AddCommGroup B] [Module R B] [AddCommGroup D] [Module R D]

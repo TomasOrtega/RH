@@ -8,7 +8,7 @@ namespace GlobalTheory.FockAdjLines
 open Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible GlobalTheory.FockAlg MvPolynomial
 
 /- English proof (translation)
-Use extensionality with `a b`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;>`. Simplify using `[Jm, Formalism.UG.Jpq, Matrix.diagonal_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Jm_eq_diagonal (p q : ℕ) :
     Jm p q = Matrix.diagonal (Sum.elim (fun _ => 1) (fun _ => -1)) := by
@@ -18,9 +18,9 @@ theorem Jm_eq_diagonal (p q : ℕ) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Introduce `p q r s H _ _ ι hι Z P Q`. Use `GlobalTheory.FockAdj.inner_omAct hι _ _ ?_ P Q` and prove the remaining obligations. Introduce and unpack `⟨a, c⟩ ⟨b, d⟩`. Rewrite using `[Jm_eq_diagonal, Jm_eq_diagonal, Matrix.kroneckerMap_diagonal_diagonal _ (by simp) (by simp), Matrix.mul_diagonal, Matrix.diagonal_mul]`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> rcases c with c | c <;> rcases d with d | d <;>`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[linePos]`.
+Simplify using the standard rewrite rules.
 -/
 theorem inner_omAct_adj : ∀ (p q r s : ℕ) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] (ι : Pol p q r s →ₗ[ℂ] H), IsFockIP ι → ∀ (Z : Matrix (Ln p q r s) (Ln p q r s) ℂ) (P Q : Pol p q r s), inner ℂ (ι (omAct p q r s Z P)) (ι Q) = inner ℂ (ι P) (ι (omAct p q r s (Matrix.kroneckerMap (· * ·) (Jm p q) (Jm r s) * Z.conjTranspose * Matrix.kroneckerMap (· * ·) (Jm p q) (Jm r s)) Q)) := by
   intro p q r s H _ _ ι hι Z P Q

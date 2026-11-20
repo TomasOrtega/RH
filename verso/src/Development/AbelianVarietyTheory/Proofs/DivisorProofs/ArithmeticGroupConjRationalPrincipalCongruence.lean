@@ -16,17 +16,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.MsRepsFwd
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨z, hz, hzx⟩` from `hx`. Take `⟨y, hy, hzy⟩` from `hκ z hz`. Set `i : E →+* GlobalTheory.AdLat.RA F E` to `inclR (F := F) (Af F)`. Establish `hf : ∀ v : Fin n → E, GlobalTheory.AdLat.fv F v = i ∘ v` using `fun _ => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e1 : i ∘ (δ *ᵥ x) = δ.map i *ᵥ (i ∘ x)` using `funext fun a => RingHom.map_mulVec i δ x a`. Establish `e2 : i ∘ (δ *ᵥ x) - i ∘ x = M • (g *ᵥ y)`. Rewrite using `[e1, ← hf x, ← hzx, Matrix.mulVec_mulVec, he, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_sub, hzy, Matrix.mulVec_smul]`. Break down `Nat.eq_zero_or_pos M with hM | hM` into its components or cases. Substitute `hM` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality.
 
-Establish `hx0 : δ *ᵥ x - x = 0`. Use function extensionality and compare the values at `a`. Apply `hinj` to reduce the goal to its premises. Establish `e3` using `congrFun e2 a`. Simplify using `only [Pi.sub_apply, Function.comp, zero_smul, Pi.zero_apply] at e3`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.sub_apply, Pi.zero_apply, map_sub, map_zero]`. Conclude with `e3`. Use `⟨0, ⟨0, zero_mem _, ?_⟩, by rw [hx0, zero_smul]⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_zero]`. Use function extensionality and compare the values at `a`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[GlobalTheory.AdLat.fv]`. Establish `hME : (M : E) ≠ 0` using `by exact_mod_cast hM.ne'`. Use `⟨(M : E)⁻¹ • (δ *ᵥ x - x), ⟨y, hy, ?_⟩, by` and prove the remaining obligations. Rewrite using `[← Nat.cast_smul_eq_nsmul E, smul_smul, mul_inv_cancel₀ hME, one_smul]⟩`. Rewrite using `[hf]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `a`. Establish `e3` using `congrFun e2 a`. Simplify using `only [Pi.sub_apply, Function.comp, Pi.smul_apply, nsmul_eq_mul, smul_eq_mul, map_mul, map_sub] at e3 ⊢`. Rewrite using `[e3, ← map_natCast i M, ← mul_assoc, ← map_mul, inv_mul_cancel₀ hME, map_one, one_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latOf_congr (F E : Type) [Field F] [NumberField F] [Field E] [CharZero E] [Algebra F E]
     (n M : ℕ) (L : Set (Fin n → E)) (g κ : Matrix (Fin n) (Fin n) (GlobalTheory.AdLat.RA F E))
@@ -66,9 +66,9 @@ theorem latOf_congr (F E : Type) [Field F] [NumberField F] [Field E] [CharZero E
     rw [e3, ← map_natCast i M, ← mul_assoc, ← map_mul, inv_mul_cancel₀ hME, map_one, one_mul]
 
 /- English proof (translation)
-Establish `hh : ∀ u v : Fin r → E, herm G u v = u ⬝ᵥ (G *ᵥ (fun b => cc (v b)))`. Introduce `u v`. Simplify using `only [herm, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]`. Establish `hc : (fun b => cc ((δ *ᵥ y) b)) = δ.map cc *ᵥ (fun b => cc (y b))`. Use function extensionality and compare the values at `b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [cc, Matrix.mulVec, dotProduct, map_sum, map_mul, Matrix.map_apply]`. Rewrite using `[hh, hh, hc, dotProduct_comm (δ *ᵥ x), Matrix.dotProduct_mulVec, ← Matrix.mulVec_transpose, dotProduct_comm _ x, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, h]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem herm_mulVec {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (G δ : Matrix (Fin r) (Fin r) E)
     (h : δᵀ * G * δ.map cc = G) (x y : Fin r → E) : herm G (δ *ᵥ x) (δ *ᵥ y) = herm G x y := by
@@ -88,53 +88,49 @@ namespace GlobalTheory.MsRepsFwd
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `D V Comp X dict Kf th M x0 hK hth hD hdom hA hGm k g hg Λk hΛk γ hγ`. Take `⟨-, -, -, -, -, hfib⟩` from `hD`. Take `⟨-, hrat, -, hsur⟩` from `(GlobalTheory.T.adelicUnitary_exists_with_prescribed_parts D V).2 (X k).Ψ (th k) (X k).cmType (hth k)`. Establish `hact : ∀ h, ∀ τ, mat (rmul (x0 k) (archMat V th rfl x0 h k)) τ = archM V (th k τ) h * mat (x0 k) τ`. Introduce `h τ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show mat (x0 k) τ * ((mat (x0 k) τ)⁻¹ * Matrix.reindex (finCongr rfl) (finCongr rfl) (archM V (th k τ) h) * mat (x0 k) τ) = _`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 (hdom k τ).1), Matrix.one_mul]`. Both sides reduce to the same expression. Establish `key : ∀ h ∈ GinfC V, ∃ γ'' ∈ (X k).Γ, dict (g * h) = ⟨k, lact γ'' (rmul (x0 k) (archMat V th rfl x0 h k))⟩`. Use `hA g` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hg]`. Conclude with `this`. Establish `h0` using `ReciprocityTheory.ChartRestriction.G.AR.Up.PairUnfoldPf.gramE (X k) hγ`. Rewrite `h0` using `[hGm k]`. Establish `h1 : ((γ : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map cc)ᵀ * V.gram * γ.1 = V.gram`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrArg (fun A => -Aᵀ) h0` as an intermediate fact. Simplify `this` using `[Matrix.transpose_mul, Matrix.mul_assoc, Matrix.neg_mul, Matrix.mul_neg]`. Establish `hun : ∀ τ : (X k).Ψ, ((γ.1.map τ.1).map (starRingEnd ℂ))ᵀ * V.gram.map τ.1 * γ.1.map τ.1 = V.gram.map τ.1`. Introduce `τ`. Establish `hcc : (γ.1.map τ.1).map (starRingEnd ℂ) = (γ.1.map cc).map τ.1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `a b`. Conclude with `(IsCMField.complexEmbedding_complexConj D.host.E τ.1 _).symm`. Rewrite using `[hcc, ← Matrix.transpose_map, ← Matrix.map_mul, ← Matrix.map_mul, h1]`. Take `⟨h, hh, hw⟩` from `hsur _ hun`. Establish `hw' : ∀ τ : (X k).Ψ, archM V (th k τ) h = γ.1.map τ.1` using `hw`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨γ'', h1', h2⟩` from `key h hh`. Take `⟨γ₀, hγ₀, κ, hκ, hdc⟩` from `hfib g (g * h) (by`. Rewrite using `[hg]`. Use `⟨γ'' * γ, mul_mem h1' hγ, ?_⟩` and prove the remaining obligations. Rewrite using `[h2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `τ`. Use `show γ''.1.map τ.1 * mat (rmul (x0 k) (archMat V th rfl x0 h k)) τ = (γ'' * γ).1.map τ.1 * mat (x0 k) τ`. Rewrite using `[hact, hw', Units.val_mul, Matrix.map_mul, Matrix.mul_assoc])`. Take `⟨δ, hδ1, hδ2⟩` from `hrat γ₀ hγ₀`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hγ₀'` using `Subgroup.mem_subgroupOf.1 (show γ₀ ∈ HFinIn (AF D.host.F) _ (HSpace.gram V) from hγ₀)`. Take `⟨δ', hδ', hδ'e⟩` from `Subgroup.mem_map.1 hγ₀'`. Use `haveI : Nontrivial (Af D.host.F) := by`. Take `⟨P, hP⟩` from `Ideal.exists_maximal (𝓞 D.host.F)`. Conclude with `(Formalism.UG.evalV D.host.F ⟨P, hP.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hP (RingOfIntegers.not_isField D.host.F)⟩).toRingHom.domain_nontrivial`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : Nontrivial (Af D.host.F ⊗[D.host.F] D.host.E) := (Algebra.TensorProduct.includeLeft_injective (R := D.host.F) (S := D.host.F) (A := Af D.host.F) (B := D.host.E) (algebraMap D.host.F D.host.E).injective).nontrivial`. Establish `hinj : Function.Injective (inclR (F` using `D.host.F) (E := D.host.E) (Af D.host.F)) := (inclR (F := D.host.F) (E := D.host.E) (Af D.host.F)).injective`. Establish `hfv : (finHom V γ₀).1 = γ₀.1.1.map (Algebra.TensorProduct.map (sndA D.host.F) (AlgHom.id D.host.F D.host.E))` using `rfl`. Establish `hδδ : δ = δ'`. Apply `Units.ext` to reduce the goal to its premises.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Matrix.map_injective hinj` to reduce the goal to its premises. Use `show δ.1.map (inclR (Af D.host.F)) = δ'.1.map (inclR (Af D.host.F))`. Rewrite using `[← hδ2, hfv, ← hδ'e]`. Use extensionality with `a b`. Use `show (Algebra.TensorProduct.map (sndA D.host.F) (AlgHom.id D.host.F D.host.E)) (inclR (AF D.host.F) (δ'.1 a b)) = inclR (Af D.host.F) (δ'.1 a b)`.
+Express the relevant assertion in an equivalent form by its definition. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `[inclR]`. Substitute `hδδ` using the available equality. Establish `hLg` using `GlobalTheory.Member.latHat_eq_hat_and_gram D V`. Establish `hU : (δ.1.map cc)ᵀ * V.gram * δ.1 = V.gram`. Express the relevant statement in the definitionally equal form `Formalism.UG.cT _ δ.1 * V.gram * δ.1 = V.gram at hδ'`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `hδ' using 3` and compare the differences between its conclusion and the goal. Use extensionality with `a b`. Simplify using `only [Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply]`. Use `congr 1`. Establish `hmat : δ.1ᵀ * -(V.gram)ᵀ * δ.1.map cc = -(V.gram)ᵀ`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg (fun A => -Aᵀ) hU` as an intermediate fact. Simplify `this` using `[Matrix.transpose_mul, Matrix.mul_assoc, Matrix.neg_mul, Matrix.mul_neg]`. Take `⟨-, hκ2⟩` from `(hK κ⁻¹).1 (inv_mem hκ)`. Take `⟨-, hκ3⟩` from `(hK κ).1 hκ`. Rewrite `hκ2`, `hκ3` using `[hLg.1]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hh0 : finHom V h = 1` using `hh`. Establish `hfin : finHom V γ₀ * finHom V g = finHom V g * finHom V κ⁻¹`. Establish `: γ₀ * g = g * h * κ⁻¹` using `by rw [hdc]; group`. Rewrite using `[← map_mul, this, map_mul, map_mul, hh0, mul_one]`. Establish `hfin' : finHom V γ₀⁻¹ * finHom V g = finHom V g * finHom V κ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: γ₀⁻¹ * g = g * κ * h⁻¹`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← map_mul, this, map_mul, map_mul, map_inv, hh0, inv_one, mul_one]`. Establish `hd : finHom V γ₀ = Formalism.UG.bc (inclR (F` using `D.host.F) (E := D.host.E) (Af D.host.F)) δ := Units.ext hδ2`. Establish `he1 : δ.1.map (inclR (F` using `D.host.F) (Af D.host.F)) * (finHom V g).1 = (finHom V g).1 * (finHom V κ⁻¹).1 := by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hδ2, ← Units.val_mul, hfin, Units.val_mul]`. Establish `he2 : (δ⁻¹).1.map (inclR (F` using `D.host.F) (Af D.host.F)) * (finHom V g).1 = (finHom V g).1 * (finHom V κ).1 := by`. Establish `e0 : finHom V γ₀⁻¹ = Formalism.UG.bc (inclR (F` using `D.host.F) (E := D.host.E) (Af D.host.F)) δ⁻¹ := by`. Rewrite using `[map_inv, map_inv, hd]`. Establish `e` using `congrArg Units.val hfin'`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite `e` using `[Units.val_mul, Units.val_mul, e0]`. Conclude with `e`. Establish `C1` using `latOf_congr D.host.F D.host.E V.rank M (GlobalTheory.Member.latC V : Set (Fin V.rank → D.host.E)) (finHom V g).1 (finHom V κ⁻¹).1 δ.1 hinj hκ2 he1`. Establish `C2` using `latOf_congr D.host.F D.host.E V.rank M (GlobalTheory.Member.latC V : Set (Fin V.rank → D.host.E)) (finHom V g).1 (finHom V κ).1 (δ⁻¹).1 hinj hκ3 he2`. Establish `hmem : ∀ x, x ∈ Λk ↔ x ∈ GlobalTheory.AdLat.latOf D.host.F (finHom V g).1 (GlobalTheory.Member.latC V : Set (Fin V.rank → D.host.E))`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `x`. Rewrite using `[← SetLike.mem_coe, hΛk]`. Establish `hcong : ∀ x ∈ Λk, ∃ y ∈ Λk, δ.1 *ᵥ x - x = M • y`. Introduce `x hx`. Take `⟨y, hy, e⟩` from `C1 x ((hmem x).1 hx)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨y, (hmem y).2 hy, e⟩`. Establish `hcong' : ∀ x ∈ Λk, ∃ y ∈ Λk, (δ⁻¹).1 *ᵥ x - x = M • y`. Introduce `x hx`. Take `⟨y, hy, e⟩` from `C2 x ((hmem x).1 hx)`. Conclude with `⟨y, (hmem y).2 hy, e⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hstab : ∀ x, x ∈ Λk ↔ δ.1 *ᵥ x ∈ Λk`. Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨y, hy, e⟩` from `hcong x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[show δ.1 *ᵥ x = x + M • y by rw [← e]; abel]`. Conclude with `Λk.add_mem hx (nsmul_mem hy M)`. Introduce `hx`. Take `⟨y, hy, e⟩` from `hcong' _ hx`. Rewrite `e` using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show x = δ.1 *ᵥ x + M • y by rw [← e]; abel]`. Conclude with `Λk.add_mem hx (nsmul_mem hy M)`. Establish `hinf : infHom V γ₀ * infHom V g = infHom V g * infHom V h`. Establish `h0 : infHom V κ⁻¹ = 1` using `((hK κ⁻¹).1 (inv_mem hκ)).1`. Establish `: γ₀ * g = g * h * κ⁻¹` using `by rw [hdc]; group`.
-
-Rewrite using `[← map_mul, this, map_mul, map_mul, h0, mul_one]`. Establish `hm : ∀ τ a b, archM V (th k τ) (a * b) = archM V (th k τ) a * archM V (th k τ) b`. Introduce `τ a b`. Unfold `archM`. Rewrite using `[map_mul, Units.val_mul, Matrix.map_mul]`.
-
-Use `⟨δ, ⟨⟨herm_mulVec _ _ hmat, hstab⟩, hcong⟩, fun τ hτ => ?_⟩` and prove the remaining obligations. Rewrite using `[← hw' ⟨τ, hτ⟩, ← hδ1 ⟨τ, hτ⟩, ← hm, ← hm]`. Establish `e : infHom V (g * h) = infHom V (γ₀ * g)` using `by rw [map_mul, map_mul, hinf]`. Unfold `archM`. Rewrite using `[e]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_rat_congr : ∀ (D : D7) (V : Formalism.BasicNotions.TH.HSp D) (Comp : Type) (X : Comp → Data D.host.E V.rank)
     (dict : GA D V → Σ k, Frame (X k).Ψ V.rank) (Kf : Subgroup (GA D V))

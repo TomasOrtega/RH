@@ -8,14 +8,14 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.Af.Wd
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨MonoidHom.toHomUnits (((Units.coeHom K).comp ψ).codRestrict L hψ), fun _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 private theorem exists_lift {Γ k K : Type} [Group Γ] [Field k] [Field K] [Algebra k K] (L : IntermediateField k K)
     (ψ : Γ →* Kˣ) (hψ : ∀ g, (ψ g : K) ∈ L) : ∃ ψL : Γ →* (↥L)ˣ, ∀ g, ((ψL g : ↥L) : K) = ψ g :=
   ⟨MonoidHom.toHomUnits (((Units.coeHom K).comp ψ).codRestrict L hψ), fun _ => rfl⟩
 
 /- English proof (translation)
-Establish `e : Bw.repE L r g = Matrix.toLin' (r (Bw.e.symm g) : Matrix (Fin m) (Fin m) ↥L.1)` using `LinearMap.ext fun _ => rfl`. Rewrite using `[e, LinearMap.toMatrix_eq_toMatrix', LinearMap.toMatrix'_toLin']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem toMatrix_repE {l : ℕ} [Fact l.Prime] {E Ω : Type} [Field E] [Field Ω] [Algebra E Ω]
     {Gw : Subgroup (Ω ≃ₐ[E] Ω)} {O : Type} [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O]
@@ -27,19 +27,15 @@ private theorem toMatrix_repE {l : ℕ} [Fact l.Prime] {E Ω : Type} [Field E] [
   rw [e, LinearMap.toMatrix_eq_toMatrix', LinearMap.toMatrix'_toLin']
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ l _ ι n r w A h O _ _ _ Bw hj κ χ hχ hfl hr`. Take `⟨p, hp⟩` from `hfl`. Set `r' : ↥(Dec (F` to `F) A) →* GL (Fin n) (Qbar l) := (MulAut.conj p).toMonoidHom.comp (r.comp (Dec (F := F) A).subtype)`. Establish `hr' : ∀ s, r' s = p * r s * p⁻¹` using `fun _ => rfl`. Establish `hc` using `GlobalTheory.T.fontaineParameter_invariant_under_conjugation F Ω l ι n (Loc.PP l) (Loc.AIP l) (Loc.tiedP l) w A h O Bw hj (r.comp (Dec (F := F) A).subtype) r' p hr' hr`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hpst, hwd⟩` from `hc`. Establish `hm` using `wdAt_of_isPstAt ι Bw h hj hpst`. Take `⟨L₁, r₁, hm₁, hp₁, e₁⟩` from `hm`. Establish `hL : ∃ L : FinExt l, L₁.1 ≤ L.1 ∧ ∀ i s, (χ i s : Om l) ∈ L.1`. Establish `hfin : (⋃ i, Units.val '' Set.range (χ i)).Finite` using `Set.finite_iUnion fun i => (hχ i).image _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : Finite ↥(⋃ i, Units.val '' Set.range (χ i)) := hfin`. Use `⟨supExt L₁ ⟨IntermediateField.adjoin ℚ_[l] (⋃ i, Units.val '' Set.range (χ i)), IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral x⟩, le_sup_left, fun i s => ?_⟩` and prove the remaining obligations. Conclude with `(le_sup_right : IntermediateField.adjoin ℚ_[l] (⋃ i, Units.val '' Set.range (χ i)) ≤ _) (IntermediateField.subset_adjoin _ _ (Set.mem_iUnion.2 ⟨i, _, ⟨s, rfl⟩, rfl⟩))`. Take `⟨L, h₁, hχL⟩` from `hL`. Establish `hm₂` using `hm₁.enlarge h₁`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp₂` using `GlobalTheory.T.isPotentiallySemistable_coefficientField_enlarge (Loc.PP l) Bw h₁ r₁ hp₁`. Establish `e₂` using `GlobalTheory.T.potSemistableParameter_coefficientField_enlarge (Loc.PP l) ι Bw h hj h₁ r₁ hp₁`. Generalize the expression as in `mapRep (IntermediateField.inclusion h₁).toRingHom r₁ = r₂ at hm₂ hp₂ e₂`. Establish `er : ∀ s i j, (p * r (s : ↥(Dec (F` using `F) A)) * p⁻¹ : GL (Fin n) (Qbar l)) i j = (((r₂ s : Matrix (Fin n) (Fin n) ↥L.1) i j : ↥L.1) : Om l) := fun s i j => by rw [← hr', ← hm₂.2]; rfl`. Establish `hκL : ∀ i s, (κ i s : Om l) ∈ L.1` using `fun i s => by`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← (hp s).2 i, er]`. Conclude with `SetLike.coe_mem _`. Use `choose κL hκ using fun i => exists_lift L.1 ((κ i).comp Bw.e.symm.toMonoidHom) fun g => hκL i _`. Use `choose χL hχ' using fun i => exists_lift L.1 (((χ i).comp (Dec (F := F) A).subtype).comp Bw.e.symm.toMonoidHom) fun g => hχL i _`. Use `⟨L, Bw.repE L r₂, κL, χL, hp₂, hwd.symm.trans (e₁.trans e₂.symm), ⟨Pi.basisFun _ _, fun g => ⟨fun i j hij => ?_, fun i => ?_⟩⟩, fun i s => ?_, fun i s => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[toMatrix_repE]`. Conclude with `Subtype.ext ((er _ i j).symm.trans ((hp _).1 i j hij))`. Rewrite using `[toMatrix_repE]`. Conclude with `Subtype.ext (((er _ i i).symm.trans ((hp _).2 i)).trans (hκ i g).symm)`. Rewrite using `[hκ]`.
-
-Conclude with `congrArg (fun t => (κ i t : Qbar l)) (Bw.e.symm_apply_apply s)`. Rewrite using `[hχ']`. Conclude with `congrArg (fun t : ↥(Dec (F := F) A) => (χ i t : Qbar l)) (Bw.e.symm_apply_apply s)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.galois_representation_model_over_finite_extension :
     UpperTheory.V.Af.Wd.Model := by

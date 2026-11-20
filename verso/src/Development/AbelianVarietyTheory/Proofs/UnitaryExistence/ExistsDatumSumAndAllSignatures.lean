@@ -19,7 +19,7 @@ def blockEnd {U V W : Type} [AddCommGroup U] [Module ℝ U] [AddCommGroup V] [Mo
   e.symm.toLinearMap ∘ₗ (f.prodMap g) ∘ₗ e.toLinearMap
 
 /- English proof (translation)
-Simplify using `[blockEnd, Prod.map]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blockEnd_apply {U V W : Type} [AddCommGroup U] [Module ℝ U] [AddCommGroup V] [Module ℝ V] [AddCommGroup W]
     [Module ℝ W] (e : U ≃ₗ[ℝ] V × W) (f : V →ₗ[ℝ] V) (g : W →ₗ[ℝ] W) (x : U) :
@@ -27,7 +27,7 @@ theorem blockEnd_apply {U V W : Type} [AddCommGroup U] [Module ℝ U] [AddCommGr
   simp [blockEnd, Prod.map]
 
 /- English proof (translation)
-Use extensionality with `x`. Apply `e.injective` to reduce the goal to its premises. Simplify using `[blockEnd_apply]`.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem blockEnd_comp {U V W : Type} [AddCommGroup U] [Module ℝ U] [AddCommGroup V] [Module ℝ V] [AddCommGroup W]
     [Module ℝ W] (e : U ≃ₗ[ℝ] V × W) (f f' : V →ₗ[ℝ] V) (g g' : W →ₗ[ℝ] W) :
@@ -37,7 +37,7 @@ theorem blockEnd_comp {U V W : Type} [AddCommGroup U] [Module ℝ U] [AddCommGro
   simp [blockEnd_apply]
 
 /- English proof (translation)
-Establish `h1 : blockEnd e f g = e.symm.conj (f.prodMap g)`. Use extensionality with `x`. Simplify using `[blockEnd, LinearEquiv.conj_apply]`. Rewrite using `[h1, LinearMap.trace_conj', LinearMap.trace_prodMap']`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_blockEnd {U V W : Type} [AddCommGroup U] [Module ℝ U] [AddCommGroup V] [Module ℝ V] [AddCommGroup W]
     [Module ℝ W] [Module.Finite ℝ V] [Module.Finite ℝ W] (e : U ≃ₗ[ℝ] V × W) (f : V →ₗ[ℝ] V) (g : W →ₗ[ℝ] W) :
@@ -51,18 +51,18 @@ def sumForm {L M : Type} [AddCommGroup L] [AddCommGroup M] (B : LinearMap.BilinF
   B.compl₁₂ (LinearMap.fst ℤ L M) (LinearMap.fst ℤ L M) + C.compl₁₂ (LinearMap.snd ℤ L M) (LinearMap.snd ℤ L M)
 
 /- English proof (translation)
-Simplify using `[sumForm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sumForm_apply {L M : Type} [AddCommGroup L] [AddCommGroup M] (B : LinearMap.BilinForm ℤ L)
     (C : LinearMap.BilinForm ℤ M) (x y : L × M) : sumForm B C x y = B x.1 y.1 + C x.2 y.2 := by
   simp [sumForm]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `x y h`. Use `Prod.ext (hB.1 ?_) (hC.1 ?_)` and prove the remaining obligations. Use extensionality with `z`. Use `LinearMap.congr_fun h (z, 0)` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify `this` using `[sumForm_apply]`. Use extensionality with `z`. Use `LinearMap.congr_fun h (0, z)` as an intermediate fact. Simplify `this` using `[sumForm_apply]`. Introduce `φ`.
+Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨x, hx⟩` from `hB.2 (φ ∘ₗ LinearMap.inl ℤ L M)`. Take `⟨y, hy⟩` from `hC.2 (φ ∘ₗ LinearMap.inr ℤ L M)`. Use `⟨(x, y), LinearMap.ext fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[sumForm_apply, hx, hy]`. Simplify using `[← map_add]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sumForm_bijective {L M : Type} [AddCommGroup L] [AddCommGroup M] (B : LinearMap.BilinForm ℤ L)
     (C : LinearMap.BilinForm ℤ M) (hB : Function.Bijective B) (hC : Function.Bijective C) :
@@ -84,9 +84,9 @@ theorem sumForm_bijective {L M : Type} [AddCommGroup L] [AddCommGroup M] (B : Li
     simp [← map_add]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, LinearMap.add_apply, Prod.fst_add, Prod.snd_add, ha, hb]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `tmul r u`.
+Proceed by induction. Treat this case separately. Treat this case separately. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, Prod.fst_add, Prod.snd_add, ha, hb]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `tmul s v => simp [sumForm_apply, add_smul, add_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 -/
 theorem sumForm_baseChange {L M : Type} [AddCommGroup L] [AddCommGroup M] (B : LinearMap.BilinForm ℤ L)
     (C : LinearMap.BilinForm ℤ M) (x y : ℝ ⊗[ℤ] (L × M)) :
@@ -182,7 +182,7 @@ def sumDatum (D D' : Datum H) : Datum H where
       · rw [Complex.add_im]; ring
 
 /- English proof (translation)
-Rewrite using `[IsCyclotomicExtension.finrank (n := 28) CM.CyclotomicTwentyEight.CyclotomicFieldTwentyEight (Polynomial.cyclotomic.irreducible_rat (by norm_num))]`. Evaluate the decidable proposition.
+Rewrite the conclusion using the stated equalities. Evaluate the decidable proposition.
 -/
 theorem finrank_cyclotomic_twenty_eight : Module.finrank ℚ CM.CyclotomicTwentyEight.CyclotomicFieldTwentyEight = 12 := by
   rw [IsCyclotomicExtension.finrank (n := 28) CM.CyclotomicTwentyEight.CyclotomicFieldTwentyEight (Polynomial.cyclotomic.irreducible_rat (by norm_num))]
@@ -195,9 +195,9 @@ end GlobalTheory.DatumSum
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `⟨fun E _ _ _ H D D' => ⟨DatumSum.sumDatum D D', LinearEquiv.refl (𝓞 E) (D.La × D'.La), rfl, rfl, fun x y => DatumSum.sumForm_apply D.EF D'.EF x y⟩, ?_⟩` and prove the remaining obligations. Use `⟨CM.CyclotomicTwentyEight.CyclotomicFieldTwentyEight, inferInstance, inferInstance, inferInstance, CM.CyclotomicTwentyEight.host, ?_, fun p q => ?_⟩` and prove the remaining obligations. Rewrite using `[DatumSum.finrank_cyclotomic_twenty_eight]`. Evaluate the numerical expressions. Take `⟨D, hp, hq⟩` from `CM.CyclotomicTwentyEight.exists_datum`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Extract witnesses or component facts from the available result.
 
-Use `⟨DatumSum.sumDatum (powDatum D p) (powDatum (CM.oppDatum D) q), ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `p * D.p + q * D.q = p`. Simplify using `[hp, hq]`. Express the relevant statement in the definitionally equal form `p * D.q + q * D.p = q`. Simplify using `[hp, hq]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem exists_datum_sum_and_all_signatures :
     (∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D D' : Datum H), ∃ (D'' : Datum H) (e : D''.La ≃ₗ[𝓞 E] D.La × D'.La), D''.p = D.p + D'.p ∧ D''.q = D.q + D'.q ∧ ∀ x y, D''.EF x y = D.EF (e x).1 (e y).1 + D'.EF (e x).2 (e y).2) ∧ ∃ (E : Type) (_ : Field E) (_ : NumberField E) (_ : IsCMField E) (H : Host E), 2 < Module.finrank ℚ E ∧ ∀ p q : ℕ, ∃ D : Datum H, D.p = p ∧ D.q = q := by

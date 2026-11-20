@@ -9,15 +9,15 @@ open MeasureTheory ValuativeRel Matrix GlobalTheory.PRep GlobalTheory.SplitWeil 
 namespace GlobalTheory.ParHecke.CosetSub
 
 /- English proof (translation)
-Take `⟨U, hU⟩` from `W.exists_isCompl`. Take `⟨U', hU'⟩` from `W'.exists_isCompl`. Establish `h1` using `Submodule.finrank_add_eq_of_isCompl hU`. Establish `h2` using `Submodule.finrank_add_eq_of_isCompl hU'`. Establish `h3 : Module.finrank F U = Module.finrank F U'` using `by omega`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `a : W ≃ₗ[F] W'` to `LinearEquiv.ofFinrankEq _ _ h`. Set `b : U ≃ₗ[F] U'` to `LinearEquiv.ofFinrankEq _ _ h3`. Set `e : V ≃ₗ[F] V` to `(Submodule.prodEquivOfIsCompl W U hU).symm ≪≫ₗ (a.prodCongr b) ≪≫ₗ Submodule.prodEquivOfIsCompl W' U' hU'`. Establish `he : ∀ w : W, e w = a w`. Introduce `w`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[e]`. Use `⟨e, ?_⟩` and prove the remaining obligations. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Use `he ⟨w, hw⟩` as an intermediate fact.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `e w ∈ W'`. Simplify using `only at this`. Rewrite using `[this]`. Conclude with `(a ⟨w, hw⟩).2`. Introduce `w hw`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨a.symm ⟨w, hw⟩, (a.symm ⟨w, hw⟩).2, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `e _ = w`. Rewrite using `[he]`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_equiv_map_eq {F V : Type} [Field F] [AddCommGroup V]
     [Module F V] [FiniteDimensional F V] (W W' : Submodule F V)
@@ -50,13 +50,13 @@ theorem exists_equiv_map_eq {F V : Type} [Field F] [AddCommGroup V]
     simp
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `exists_equiv_map_eq W W' h`. Set `M : Matrix D D (IsLocalRing.ResidueField O)` to `LinearMap.toMatrix' e.toLinearMap`. Use `choose A hA using fun i j => IsLocalRing.residue_surjective (R := O) (M i j)`. Establish `hAM : (Matrix.of A).map (IsLocalRing.residue O) = M`. Use extensionality with `i j`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Conclude with `hA i j`. Establish `hM : M.det ≠ 0`. Establish `: M.det = LinearMap.det e.toLinearMap` using `LinearMap.det_toMatrix' _`. Rewrite using `[this]`. Conclude with `(LinearEquiv.isUnit_det' e).ne_zero`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hu : IsUnit (Matrix.of A).det`. Rewrite using `[← IsLocalRing.residue_ne_zero_iff_isUnit, RingHom.map_det]`. Express the relevant statement in the definitionally equal form `((Matrix.of A).map (IsLocalRing.residue O)).det ≠ 0`. Rewrite using `[hAM]`. Conclude with `hM`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Take `⟨g, hg⟩` from `(Matrix.isUnit_iff_isUnit_det _).2 hu`. Use `⟨g, ?_⟩` and prove the remaining obligations. Rewrite using `[hg, hAM, ← he]`. Use `congr 1`. Conclude with `Matrix.toLin'_toMatrix' e.toLinearMap`.
+A detailed English derivation is pending.
 -/
 theorem exists_gl_map_eq (O : Type) [CommRing O] [IsLocalRing O] (D : Type) [Fintype D] [DecidableEq D]
     (W W' : Submodule (IsLocalRing.ResidueField O) (D → IsLocalRing.ResidueField O))
@@ -90,7 +90,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 def projE (F : Type) [Field F] (s : Finset D) : Matrix D D F := diagonal fun i => if i ∈ s then 1 else 0
 
 /- English proof (translation)
-Rewrite using `[projE, rank_diagonal]`. Rewrite using `[Fintype.card_subtype]`. Use `congr 1`. Use extensionality with `i`. Apply the tactic sequence `by_cases h : i ∈ s <;> simp [h]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rank_projE (F : Type) [Field F] (s : Finset D) : (projE F s).rank = s.card := by
   classical
@@ -110,7 +110,7 @@ def colSp (s : Finset D) (κ : GL D 𝒪[k]) : Submodule 𝓀[k] (D → 𝓀[k])
   LinearMap.range (red κ.1 * projE 𝓀[k] s).mulVecLin
 
 /- English proof (translation)
-Rewrite using `[← rank_projE 𝓀[k] s]`. Use `rank_mul_eq_right_of_isUnit_det _ _ ?_` and prove the remaining obligations. Establish `: (red κ.1).det = IsLocalRing.residue 𝒪[k] κ.1.det` using `(RingHom.map_det _ _).symm`. Rewrite using `[this]`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 κ.isUnit).map _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_colSp (s : Finset D) (κ : GL D 𝒪[k]) : Module.finrank 𝓀[k] (colSp s κ) = s.card := by
   rw [← rank_projE 𝓀[k] s]
@@ -120,7 +120,7 @@ theorem finrank_colSp (s : Finset D) (κ : GL D 𝒪[k]) : Module.finrank 𝓀[k
   exact ((Matrix.isUnit_iff_isUnit_det _).1 κ.isUnit).map _
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `exists_gl_map_eq 𝒪[k] D (LinearMap.range (projE 𝓀[k] s).mulVecLin) U (by rw [hU, ← rank_projE 𝓀[k] s]; rfl)`. Conclude with `⟨g, by rw [colSp, mulVecLin_mul, LinearMap.range_comp]; exact hg⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_colSp (s : Finset D) (U : Submodule 𝓀[k] (D → 𝓀[k])) (hU : Module.finrank 𝓀[k] U = s.card) :
     ∃ κ : GL D 𝒪[k], colSp s κ = U := by
@@ -129,14 +129,14 @@ theorem exists_colSp (s : Finset D) (U : Submodule 𝓀[k] (D → 𝓀[k])) (hU 
   exact ⟨g, by rw [colSp, mulVecLin_mul, LinearMap.range_comp]; exact hg⟩
 
 /- English proof (translation)
-Rewrite using `[colSp, LinearMap.range_le_ker_iff, ← mulVecLin_mul, Matrix.mul_assoc, ← toLin'_apply', map_eq_zero_iff _ toLin'.injective]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem colSp_le_ker_iff (s : Finset D) (κ : GL D 𝒪[k]) (Y : Matrix D' D 𝓀[k]) [Fintype D'] [DecidableEq D'] :
     colSp s κ ≤ LinearMap.ker Y.mulVecLin ↔ Y * red κ.1 * projE 𝓀[k] s = 0 := by
   rw [colSp, LinearMap.range_le_ker_iff, ← mulVecLin_mul, Matrix.mul_assoc, ← toLin'_apply', map_eq_zero_iff _ toLin'.injective]
 
 /- English proof (translation)
-Rewrite using `[IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, Valuation.Integer.not_isUnit_iff_valuation_lt_one, Valuation.mem_integer_iff, ← le_uniformizer_iff, ← hϖ, map_mul, map_inv₀, mul_inv_le_iff₀ (by rw [hϖ]; exact uniformizer_pos), one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem div_mem_iff {ϖ : kˣ} (hϖ : valuation k (ϖ : k) = uniformizer k) (x : 𝒪[k]) :
     (x : k) * (ϖ : k)⁻¹ ∈ 𝒪[k] ↔ IsLocalRing.residue 𝒪[k] x = 0 := by
@@ -145,9 +145,9 @@ theorem div_mem_iff {ϖ : kˣ} (hϖ : valuation k (ϖ : k) = uniformizer k) (x :
     map_mul, map_inv₀, mul_inv_le_iff₀ (by rw [hϖ]; exact uniformizer_pos), one_mul]
 
 /- English proof (translation)
-Rewrite using `[val_torusElt, projE, ← Matrix.ext_iff]`. Use `forall_congr' fun i => forall_congr' fun j => ?_` and prove the remaining obligations. Rewrite using `[mul_diagonal, mul_diagonal]`. Distinguish the cases in `h : j ∈ s`. Use `div_mem_iff hϖ (M i j)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Simplify using `only [indic, h, Pi.neg_apply, if_true, _root_.zpow_neg, zpow_one, mul_one, map_apply, Matrix.zero_apply]`. Conclude with `this`. Simplify using `only [indic, h, Pi.neg_apply, if_false, neg_zero, zpow_zero, mul_one, mul_zero, map_apply, Matrix.zero_apply, iff_true]`. Conclude with `(M i j).2`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem int_mul_torus_iff {ϖ : kˣ} (hϖ : valuation k (ϖ : k) = uniformizer k) (s : Finset D) (M : Matrix D' D 𝒪[k]) :
     (∀ i j, (inc M * (torusElt k D ϖ (-indic s)).1) i j ∈ 𝒪[k]) ↔ red M * projE 𝓀[k] s = 0 := by
@@ -163,7 +163,7 @@ theorem int_mul_torus_iff {ϖ : kˣ} (hϖ : valuation k (ϖ : k) = uniformizer k
 
 omit [DecidableEq D] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Introduce `i j` and use `by rw [mul_apply] exact sum_mem fun l _ => mul_mem (hA i l) (hB l j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem int_mul {m n : Type} {A : Matrix m D k} {B : Matrix D n k} (hA : ∀ i j, A i j ∈ 𝒪[k]) (hB : ∀ i j, B i j ∈ 𝒪[k]) :
     ∀ i j, (A * B) i j ∈ 𝒪[k] := fun i j => by
@@ -171,7 +171,7 @@ theorem int_mul {m n : Type} {A : Matrix m D k} {B : Matrix D n k} (hA : ∀ i j
   exact sum_mem fun l _ => mul_mem (hA i l) (hB l j)
 
 /- English proof (translation)
-Take `⟨κ, rfl⟩` from `hg`. Introduce `i j`. Conclude with `(κ.1 i j).2`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem int_of_KO {g : GL D k} (hg : g ∈ KO k D) : ∀ i j, g.1 i j ∈ 𝒪[k] := by
   obtain ⟨κ, rfl⟩ := hg
@@ -179,11 +179,11 @@ theorem int_of_KO {g : GL D k} (hg : g ∈ KO k D) : ∀ i j, g.1 i j ∈ 𝒪[k
   exact (κ.1 i j).2
 
 /- English proof (translation)
-Set `A : Matrix D D 𝒪[k]` to `fun i j => ⟨_, hg i j⟩`. Set `B : Matrix D D 𝒪[k]` to `fun i j => ⟨_, hg' i j⟩`. Establish `hA : inc A = g.1` using `rfl`. Establish `hB : inc B = (g⁻¹).1` using `rfl`. Establish `inj : Function.Injective (inc : Matrix D D 𝒪[k] → Matrix D D k)` using `map_injective Subtype.val_injective`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : inc (1 : Matrix D D 𝒪[k]) = 1` using `Matrix.map_one _ (map_zero _) (map_one _)`. Use `⟨⟨A, B, inj ?_, inj ?_⟩, Units.ext hA⟩` and prove the remaining obligations. Rewrite using `[h1, inc, Matrix.map_mul]`. Express the relevant statement in the definitionally equal form `g.1 * (g⁻¹).1 = 1`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1, inc, Matrix.map_mul]`. Express the relevant statement in the definitionally equal form `(g⁻¹).1 * g.1 = 1`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem KO_of_int {g : GL D k} (hg : ∀ i j, g.1 i j ∈ 𝒪[k]) (hg' : ∀ i j, (g⁻¹).1 i j ∈ 𝒪[k]) : g ∈ KO k D := by
   let A : Matrix D D 𝒪[k] := fun i j => ⟨_, hg i j⟩
@@ -201,7 +201,7 @@ theorem KO_of_int {g : GL D k} (hg : ∀ i j, g.1 i j ∈ 𝒪[k]) (hg' : ∀ i 
     simp
 
 /- English proof (translation)
-Use `⟨fun h => ?_, fun h => int_mul h (int_of_KO hg)⟩` and prove the remaining obligations. Use `int_mul h (int_of_KO (inv_mem hg))` as an intermediate fact. Rewrite `this` using `[Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.mul_one]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem int_mul_KO_iff {A : Matrix D' D k} {g : GL D k} (hg : g ∈ KO k D) :
     (∀ i j, (A * g.1) i j ∈ 𝒪[k]) ↔ ∀ i j, A i j ∈ 𝒪[k] := by
@@ -210,7 +210,7 @@ theorem int_mul_KO_iff {A : Matrix D' D k} {g : GL D k} (hg : g ∈ KO k D) :
   rwa [Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.mul_one] at this
 
 /- English proof (translation)
-Establish `e1 : red y * red κ.1 = red (y * κ.1)` using `Matrix.map_mul.symm`. Establish `e2 : inc y * (incG κ).1 = inc (y * κ.1)` using `Matrix.map_mul.symm`. Rewrite using `[colSp_le_ker_iff, e1, ← int_mul_torus_iff hϖ, Units.val_mul, ← Matrix.mul_assoc, e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem int_iff_colSp {ϖ : kˣ} (hϖ : valuation k (ϖ : k) = uniformizer k) (s : Finset D) [Fintype D'] [DecidableEq D']
     (y : Matrix D' D 𝒪[k]) (κ : GL D 𝒪[k]) :
@@ -220,13 +220,11 @@ theorem int_iff_colSp {ϖ : kˣ} (hϖ : valuation k (ϖ : k) = uniformizer k) (s
   rw [colSp_le_ker_iff, e1, ← int_mul_torus_iff hϖ, Units.val_mul, ← Matrix.mul_assoc, e2]
 
 /- English proof (translation)
-Establish `e : (torusElt k D ϖ (-indic s))⁻¹ = torusElt k D ϖ (indic s)`. Rewrite using `[inv_eq_iff_mul_eq_one]`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, val_torusElt, val_torusElt, diagonal_mul_diagonal, Units.val_one, ← diagonal_one]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `i`. Rewrite using `[← zpow_add₀ ϖ.ne_zero]`. Simplify using the standard rewrite rules. Introduce `i j`. Rewrite using `[e, val_torusElt, diagonal_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hlt : valuation k (ϖ : k) < 1` using `hϖ ▸ uniformizer_lt_one`. Use `split_ifs with h`. Distinguish the cases in `h' : i ∈ s`. Simplify `hlt.le` using `[indic, h', Valuation.mem_integer_iff]`. Simplify using `[indic, h']`.
-
-Conclude with `zero_mem _`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem int_torus_inv {ϖ : kˣ} (hϖ : valuation k (ϖ : k) = uniformizer k) (s : Finset D) :
     ∀ i j, ((torusElt k D ϖ (-indic s))⁻¹).1 i j ∈ 𝒪[k] := by
@@ -248,7 +246,7 @@ theorem int_torus_inv {ϖ : kˣ} (hϖ : valuation k (ϖ : k) = uniformizer k) (s
   · exact zero_mem _
 
 /- English proof (translation)
-Rewrite using `[_root_.mul_inv_rev, Units.val_mul]`. Conclude with `int_mul (int_torus_inv hϖ s) (int_of_KO (inv_mem hκ))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem int_coset_inv {ϖ : kˣ} (hϖ : valuation k (ϖ : k) = uniformizer k) (s : Finset D) {κ : GL D k} (hκ : κ ∈ KO k D) :
     ∀ i j, ((κ * torusElt k D ϖ (-indic s))⁻¹).1 i j ∈ 𝒪[k] := by
@@ -256,9 +254,9 @@ theorem int_coset_inv {ϖ : kˣ} (hϖ : valuation k (ϖ : k) = uniformizer k) (s
   exact int_mul (int_torus_inv hϖ s) (int_of_KO (inv_mem hκ))
 
 /- English proof (translation)
-Set `y : Matrix D D 𝒪[k]` to `fun i j => ⟨_, int_coset_inv hϖ s (κ := incG κ₁) ⟨κ₁, rfl⟩ i j⟩`. Establish `hy : inc y = ((incG κ₁ * torusElt k D ϖ (-indic s))⁻¹).1` using `rfl`. Rewrite using `[Units.val_mul, ← hy, int_iff_colSp hϖ]`. Use `h.trans ?_` and prove the remaining obligations. Rewrite using `[← int_iff_colSp hϖ, hy, ← Units.val_mul, inv_mul_cancel]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `int_of_KO (one_mem _)`.
+A detailed English derivation is pending.
 -/
 theorem int_quot_of_le {ϖ : kˣ} (hϖ : valuation k (ϖ : k) = uniformizer k) (s : Finset D) (κ₁ κ₂ : GL D 𝒪[k])
     (h : colSp s κ₂ ≤ colSp s κ₁) :
@@ -271,15 +269,15 @@ theorem int_quot_of_le {ϖ : kˣ} (hϖ : valuation k (ϖ : k) = uniformizer k) (
   exact int_of_KO (one_mem _)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `KO_of_int (int_quot_of_le hϖ s κ₁ κ₂ h.ge) ?_` and prove the remaining obligations. Rewrite using `[_root_.mul_inv_rev, inv_inv]`. Conclude with `int_quot_of_le hϖ s κ₂ κ₁ h.le`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Establish `key : ∀ y : Matrix D D 𝒪[k], colSp s κ₁ ≤ LinearMap.ker (red y).mulVecLin ↔ colSp s κ₂ ≤ LinearMap.ker (red y).mulVecLin`. Introduce `y`. Rewrite using `[← int_iff_colSp hϖ, ← int_iff_colSp hϖ, ← int_mul_KO_iff h, Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel_left]`. Establish `key2 : ∀ U : Submodule 𝓀[k] (D → 𝓀[k]), ∃ y : Matrix D D 𝒪[k], LinearMap.ker (red y).mulVecLin = U`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `U`. Take `⟨U', hU⟩` from `U.exists_isCompl`. Set `p : (D → 𝓀[k]) →ₗ[𝓀[k]] (D → 𝓀[k])` to `U'.subtype ∘ₗ Submodule.projectionOnto U' U hU.symm`. Use `choose A hA using fun i j => IsLocalRing.residue_surjective (R := 𝒪[k]) (LinearMap.toMatrix' p i j)`. Establish `hAM : red (Matrix.of A) = LinearMap.toMatrix' p`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `i j`. Conclude with `hA i j`. Use `⟨Matrix.of A, ?_⟩` and prove the remaining obligations. Rewrite using `[hAM, ← toLin'_apply', toLin'_toMatrix', LinearMap.ker_comp, Submodule.ker_subtype, Submodule.comap_bot, Submodule.ker_projectionOnto]`. Apply `le_antisymm` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `key2 (colSp s κ₂)`. Rewrite using `[← hy, key, hy]`. Take `⟨y, hy⟩` from `key2 (colSp s κ₁)`. Rewrite using `[← hy, ← key, hy]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colSp_eq_iff {ϖ : kˣ} (hϖ : valuation k (ϖ : k) = uniformizer k) (s : Finset D) (κ₁ κ₂ : GL D 𝒪[k]) :
     colSp s κ₁ = colSp s κ₂ ↔
@@ -313,21 +311,21 @@ theorem colSp_eq_iff {ϖ : kˣ} (hϖ : valuation k (ϖ : k) = uniformizer k) (s 
       rw [← hy, ← key, hy]
 
 /- English proof (translation)
-Introduce `k _ _ _ _ D D' _ _ _ _ ϖ hϖ s RK hR y`. Use `set g₀ := torusElt k D ϖ (-indic s) with hg₀`. Establish `hex : ∀ g : RK, ∃ κ : GL D 𝒪[k], ∃ κ' ∈ KO k D, g.1 = incG κ * g₀ * κ'`. Introduce `g`. Take `⟨_, ⟨κ, rfl⟩, κ', hκ', e⟩` from `hR.1 g.1 g.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨κ, κ', hκ', e⟩`. Use `choose κ κ' hκ' hg using hex`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Use `Finset.sum_eq_zero fun g hgR => ?_` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[ParHecke.intInd, if_neg]`. Introduce `h`. Apply `hy` to reduce the goal to its premises. Establish `e : g = incG (κ ⟨g, hgR⟩) * g₀ * κ' ⟨g, hgR⟩` using `hg ⟨g, hgR⟩`. Rewrite `h` using `[e, Units.val_mul, ← Matrix.mul_assoc, int_mul_KO_iff (hκ' _)]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `int_mul h (int_coset_inv hϖ s (κ := incG (κ ⟨g, hgR⟩)) ⟨_, rfl⟩)` as an intermediate fact. Rewrite `this` using `[Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.mul_one]`. Then use the resulting hypothesis. Introduce and unpack `y₀ rfl`. Establish `hint : ∀ g : RK, (∀ i j, (inc y₀ * g.1.1) i j ∈ 𝒪[k]) ↔ colSp s (κ g) ≤ LinearMap.ker (red y₀).mulVecLin`. Introduce `g`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← int_iff_colSp hϖ, hg g, Units.val_mul, ← Matrix.mul_assoc, int_mul_KO_iff (hκ' g)]`. Establish `hco : ∀ (g : RK) (c : GL D 𝒪[k]), g.1⁻¹ * (incG c * g₀) ∈ KO k D ↔ colSp s (κ g) = colSp s c`. Introduce `g c`. Rewrite using `[colSp_eq_iff hϖ, hg g, _root_.mul_inv_rev, mul_assoc, (KO k D).mul_mem_cancel_left (inv_mem (hκ' g))]`. Set `f : {g : RK // ∀ i j, (inc y₀ * g.1.1) i j ∈ 𝒪[k]} → {U : Submodule 𝓀[k] (D → 𝓀[k]) // U ≤ LinearMap.ker (y₀.map (IsLocalRing.residue 𝒪[k])).mulVecLin ∧ Module.finrank 𝓀[k] U = s.card}` to `fun g => ⟨colSp s (κ g.1), (hint g.1).1 g.2, finrank_colSp s _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Establish `hf : Function.Bijective f`. Prove the components needed by the constructor for the conclusion. Introduce `g₁ g₂ h`. Establish `h' : colSp s (κ g₁.1) = colSp s (κ g₂.1)` using `congrArg Subtype.val h`. Use `(hR.2 (incG (κ g₂.1)) ⟨_, rfl⟩).unique ⟨g₁.1.2, (hco _ _).2 h'⟩ ⟨g₂.1.2, (hco _ _).2 rfl⟩` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `Subtype.ext (Subtype.ext this)`. Introduce and unpack `⟨U, hU, hd⟩`. Take `⟨c, rfl⟩` from `exists_colSp s U hd`. Take `⟨g, ⟨hgR, hgc⟩, -⟩` from `hR.2 (incG c) ⟨_, rfl⟩`. Establish `e` using `(hco ⟨g, hgR⟩ c).1 hgc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `⟨⟨⟨g, hgR⟩, (hint _).2 (e ▸ hU)⟩, Subtype.ext e⟩`. Rewrite using `[← Nat.card_eq_of_bijective f hf, ← Finset.sum_coe_sort, Nat.card_eq_fintype_card, Fintype.card_subtype]`. Simplify using `only [ParHecke.intInd]`. Rewrite using `[Finset.sum_boole]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_intInd_cosets : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (D D' : Type) [Fintype D] [DecidableEq D] [Fintype D'] [DecidableEq D'] (ϖ : kˣ), valuation k (ϖ : k) = uniformizer k → ∀ (s : Finset D) RK, IsRepsK (torusElt k D ϖ (-indic s)) RK → ∀ y : Matrix D' D k, ((¬ ∀ i j, y i j ∈ 𝒪[k]) → ∑ g ∈ RK, ParHecke.intInd (y * g.1) = 0) ∧ ∀ y₀ : Matrix D' D 𝒪[k], y = y₀.map (algebraMap 𝒪[k] k) → ∑ g ∈ RK, ParHecke.intInd (y * g.1) = (Nat.card {U : Submodule 𝓀[k] (D → 𝓀[k]) // U ≤ LinearMap.ker (y₀.map (IsLocalRing.residue 𝒪[k])).mulVecLin ∧ Module.finrank 𝓀[k] U = s.card} : ℂ) := by
   intro k _ _ _ _ D D' _ _ _ _ ϖ hϖ s RK hR y

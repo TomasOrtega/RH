@@ -21,7 +21,7 @@ theorem weyl_inv_val {R : Type*} [CommRing R] :
     (((w0 : GL (Fin 2) R)⁻¹ : GL (Fin 2) R) : Matrix (Fin 2) (Fin 2) R) = !![0, -1; 1, 0] := rfl
 
 /- English proof (translation)
-Rewrite using `[weyl_inv_val]`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp [Matrix.vecMul, dotProduct, Fin.sum_univ_two]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem vecMul_weyl_inv {R : Type*} [CommRing R] (r : Fin 2 → R) :
     r ᵥ* (((w0 : GL (Fin 2) R)⁻¹ : GL (Fin 2) R) : Matrix (Fin 2) (Fin 2) R) = ![r 1, -r 0] := by
@@ -30,7 +30,7 @@ theorem vecMul_weyl_inv {R : Type*} [CommRing R] (r : Fin 2 → R) :
   fin_cases i <;> simp [Matrix.vecMul, dotProduct, Fin.sum_univ_two]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `r`. Rewrite using `[rightTranslate_apply, vecMul_weyl_inv]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sFA_eq (Φ : (Fin 2 → 𝔸[ℚ]) → ℂ) :
     sFA Φ = rightTranslate (w0⁻¹ : GL (Fin 2) 𝔸[ℚ]) (adelicFourier2 ℚ Φ) := by
@@ -39,7 +39,7 @@ theorem sFA_eq (Φ : (Fin 2 → 𝔸[ℚ]) → ℂ) :
   rfl
 
 /- English proof (translation)
-Establish `h : (g : Matrix (Fin 2) (Fin 2) 𝔸[ℚ]).det = ((GeneralLinearGroup.det g : (𝔸[ℚ])ˣ) : 𝔸[ℚ])` using `rfl`. Rewrite using `[Matrix.coe_units_inv, Matrix.inv_def, h, Ring.inverse_unit]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_val (g : G2) : ((g⁻¹ : G2) : Matrix (Fin 2) (Fin 2) 𝔸[ℚ]) =
     (((GeneralLinearGroup.det g)⁻¹ : (𝔸[ℚ])ˣ) : 𝔸[ℚ]) • (g : Matrix (Fin 2) (Fin 2) 𝔸[ℚ]).adjugate := by
@@ -47,7 +47,7 @@ theorem inv_val (g : G2) : ((g⁻¹ : G2) : Matrix (Fin 2) (Fin 2) 𝔸[ℚ]) =
   rw [Matrix.coe_units_inv, Matrix.inv_def, h, Ring.inverse_unit]
 
 /- English proof (translation)
-Establish `hd : ((inv2 g : G2) : Matrix (Fin 2) (Fin 2) 𝔸[ℚ]) = !![(((GeneralLinearGroup.det g)⁻¹ : (𝔸[ℚ])ˣ) : 𝔸[ℚ]), 0; 0, (((GeneralLinearGroup.det g)⁻¹ : (𝔸[ℚ])ˣ) : 𝔸[ℚ])] * (g : Matrix (Fin 2) (Fin 2) 𝔸[ℚ])` using `rfl`. Rewrite using `[hd, inv_val g, weyl_inv_val, Matrix.adjugate_fin_two]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two, Matrix.vecMul, dotProduct]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem det_inverse_twist_weyl_transpose (g : G2) :
     ((inv2 g : G2) : Matrix (Fin 2) (Fin 2) 𝔸[ℚ]) *
@@ -62,7 +62,7 @@ theorem det_inverse_twist_weyl_transpose (g : G2) :
   fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two, Matrix.vecMul, dotProduct]
 
 /- English proof (translation)
-Establish `h : (fun i : Fin 2 => algebraMap ℚ 𝔸[ℚ] ((0 : Fin 2 → ℚ) i)) = 0`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Rewrite using `[Ad3.R.row, h, zero_vecMul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem row_zero (g : G2) : Ad3.R.row 0 g = 0 := by
   have h : (fun i : Fin 2 => algebraMap ℚ 𝔸[ℚ] ((0 : Fin 2 → ℚ) i)) = 0 := by
@@ -71,7 +71,7 @@ theorem row_zero (g : G2) : Ad3.R.row 0 g = 0 := by
   rw [Ad3.R.row, h, zero_vecMul]
 
 /- English proof (translation)
-Rewrite using `[hf.tsum_eq_add_tsum_ite 0, add_comm]`. Use `congr 1`. Use `tsum_subtype {ξ : Fin 2 → ℚ | ξ ≠ 0} f` as an intermediate fact. Use `this.trans (tsum_congr fun ξ => ?_)` and prove the remaining obligations. Apply the tactic sequence `by_cases h : ξ = 0 <;> simp [Set.indicator, h]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tsum_nz_add {f : (Fin 2 → ℚ) → ℂ} (hf : Summable f) :
     ∑' ξ : NZ, f ξ.1 + f 0 = ∑' ξ, f ξ := by
@@ -89,7 +89,7 @@ def rotQ : (Fin 2 → ℚ) ≃ (Fin 2 → ℚ) where
   right_inv ξ := by funext i; fin_cases i <;> simp
 
 /- English proof (translation)
-Rewrite using `[vecMul_weyl_inv]`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp [rotQ]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem alg_rotQ (ξ : Fin 2 → ℚ) :
     (fun i => algebraMap ℚ 𝔸[ℚ] (rotQ ξ i)) =
@@ -99,7 +99,7 @@ theorem alg_rotQ (ξ : Fin 2 → ℚ) :
   fin_cases i <;> simp [rotQ]
 
 /- English proof (translation)
-Rewrite using `[sFA_eq, rightTranslate_apply, Ad3.R.row, vecMul_vecMul, det_inverse_twist_weyl_transpose, ← vecMul_vecMul, alg_rotQ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sFA_row (Φ : (Fin 2 → 𝔸[ℚ]) → ℂ) (g : G2) (ξ : Fin 2 → ℚ) :
     sFA Φ (Ad3.R.row ξ (inv2 g)) = adelicFourier2 ℚ Φ ((fun i => algebraMap ℚ 𝔸[ℚ] (rotQ ξ i)) ᵥ*
@@ -107,21 +107,19 @@ theorem sFA_row (Φ : (Fin 2 → 𝔸[ℚ]) → ℂ) (g : G2) (ξ : Fin 2 → �
   rw [sFA_eq, rightTranslate_apply, Ad3.R.row, vecMul_vecMul, det_inverse_twist_weyl_transpose, ← vecMul_vecMul, alg_rotQ]
 
 /- English proof (translation)
-Introduce `Φ hΦ`. Establish `hF` using `adelicFourier2_mem_schwartzBruhat2 hΦ`. Establish `hS : sFA Φ ∈ schwartzBruhat2 ℚ`. Rewrite using `[sFA_eq]`. Conclude with `rightTranslate_mem_schwartzBruhat2 _ hF`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hS, ?_, fun g => ?_⟩` and prove the remaining obligations. Establish `hdet : ((IdeleGroup.ideleModule ℚ (GeneralLinearGroup.det ((w0 : G2)⁻¹)) : ℝ)) = 1`. Establish `: GeneralLinearGroup.det ((w0 : G2)⁻¹) = 1` using `by ext1`. Express the relevant statement in the definitionally equal form `Matrix.det (((w0 : G2)⁻¹ : G2) : Matrix (Fin 2) (Fin 2) 𝔸[ℚ]) = 1`. Rewrite using `[weyl_inv_val, Matrix.det_fin_two_of]`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[this, map_one]`. Both sides reduce to the same expression. Establish `h0 : sFA (sFA Φ) 0 = adelicFourier2 ℚ (sFA Φ) 0`. Rewrite using `[sFA_eq (sFA Φ), rightTranslate_apply, zero_vecMul]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0, sFA_eq Φ, adelicFourier2_rightTranslate, zero_vecMul, adelicFourier2_adelicFourier2 hΦ, hdet]`. Simplify using the standard rewrite rules. Establish `s1 : Summable fun ξ => Φ (Ad3.R.row ξ g)` using `(poisson_rightTranslate hΦ g).1.of_norm`. Establish `s2 : Summable fun ξ => sFA Φ (Ad3.R.row ξ (inv2 g))` using `(poisson_rightTranslate hS (inv2 g)).1.of_norm`. Establish `e1 : th Φ g + Φ 0 = ∑' ξ, Φ (Ad3.R.row ξ g)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `tsum_nz_add s1` as an intermediate fact. Rewrite `this` using `[row_zero]`. Conclude with `this`. Establish `e2 : th (sFA Φ) (inv2 g) + sFA Φ 0 = ∑' ξ, sFA Φ (Ad3.R.row ξ (inv2 g))`. Use `tsum_nz_add s2` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[row_zero]`. Conclude with `this`. Rewrite using `[e1, e2]`. Simplify using `only [sFA_row]`. Rewrite using `[rotQ.tsum_eq (fun ξ => adelicFourier2 ℚ Φ ((fun i => algebraMap ℚ 𝔸[ℚ] (ξ i)) ᵥ* ((g⁻¹ : G2) : Matrix (Fin 2) (Fin 2) 𝔸[ℚ])ᵀ))]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hc : (((Dt g)⁻¹ : ℝ) : ℂ) = (((IdeleGroup.ideleModule ℚ (Matrix.GeneralLinearGroup.det g) : ℝ))⁻¹ : ℂ)`. Rewrite using `[Complex.ofReal_inv]`. Both sides reduce to the same expression. Rewrite using `[hc]`. Simplify using `only [Ad3.R.row]`.
-
-Conclude with `tsum_rightTranslate_eq hΦ g`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem theta_functional_equation : Ad3.R.AdelicThetaPoissonSummation := by
   intro Φ hΦ

@@ -24,7 +24,7 @@ open GlobalTheory.Cartier GlobalTheory.Discrepancy GlobalTheory.QCoh
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `k _ X q hq`. Use `letI := algebraΓOfHom q`. Introduce `L M M' hL hM hM' a b C hC e`. Take `⟨H, hH⟩` from `exists_isAmpleLB_of_isProjOver hq`. Rewrite using `[hC.interNumRed_of_cls_eq_add hH hL (isLB_lbPow hM a) (isLB_lbPow hM' b) (by rw [cls_lbPow hM, cls_lbPow hM', e]), hC.interNumRed_lbPow hH hM, hC.interNumRed_lbPow hH hM']`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem interNumRed_of_cls_eq_nsmul_add : ∀ (k : Type) [Field k] (X : Scheme.{0}) (q : X ⟶ Sp k), IsProjOver q → letI := algebraΓOfHom q; ∀ (L M M' : LB X) (hL : L.IsLB) (hM : M.IsLB) (hM' : M'.IsLB) (a b : ℕ) (C : Closeds X), IsCompleteCurve k C → cls L hL = a • cls M hM + b • cls M' hM' → interNumRed k C ![L] = a * interNumRed k C ![M] + b * interNumRed k C ![M'] := by
   intro k _ X q hq

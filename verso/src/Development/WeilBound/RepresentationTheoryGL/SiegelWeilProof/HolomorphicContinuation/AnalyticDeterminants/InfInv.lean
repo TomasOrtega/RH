@@ -16,31 +16,29 @@ open PositivityTheory.Rg.Sw PositivityTheory.Rg.Sw.LVs
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Simplify using `[eA, JJ, Matrix.fromBlocks_multiply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eA_comm {n : ℕ} (a b : Fin n) : eA a b * JJ n = JJ n * eA a b := by
   simp [eA, JJ, Matrix.fromBlocks_multiply]
 
 /- English proof (translation)
-Simplify using `[eB, JJ, Matrix.fromBlocks_multiply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eB_comm {n : ℕ} (a b : Fin n) : eB a b * JJ n = JJ n * eB a b := by
   simp [eB, JJ, Matrix.fromBlocks_multiply]
 
 /- English proof (translation)
-Introduce `n F1 F2 Ω hΩ hGΩ hF1 hF2 hlaw Kg _ _ _ _ _ _ μ _ ι hι hK Z`. Establish `hΘc : ContDiffOn ℂ ∞ (fun y => F1 y * F2 y) Ω` using `hF1.mul hF2`. Establish `hKk : ∀ k : Kg, InK (ι k)` using `fun k => (hK (ι k)).2 ⟨k, rfl⟩`. Establish `hmem : ∀ k : Kg, ι k ∈ Ω` using `fun k => hGΩ (hKk k).1`. Establish `hlawΘ` using `hP n (fun y => F1 y * F2 y) Ω hΩ hGΩ (hΘc.differentiableOn (by simp)) (fun p x hp hp0 hx => hlaw p x hp hp0 hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU : KSet n ⊆ Ω` using `fun g hg => hGΩ hg.1`. Establish `hcd : ∀ c : M2 n → ℂ, ContDiff ℝ ∞ c → ContDiffOn ℝ 1 (fun y => c y * (F1 y * F2 y)) Ω` using `fun c hc => (hc.contDiffOn.mul (hΘc.restrict_scalars ℝ)).of_le (by simp)`. Establish `hA : ∀ a b : Fin n, Integrable (fun k => dK (fun y => cA Z a b y * (F1 y * F2 y)) (ι k) (eA a b)) μ ∧ ∫ k, dK (fun y => cA Z a b y * (F1 y * F2 y)) (ι k) (eA a b) ∂μ = 0` using `fun a b => hL n Kg μ ι hι hK _ Ω hΩ hU (hcd _ (hC n Z a b).1) (eA a b) (eA_comm a b)`. Establish `hB : ∀ a b : Fin n, Integrable (fun k => dK (fun y => cB Z a b y * (F1 y * F2 y)) (ι k) (eB a b)) μ ∧ ∫ k, dK (fun y => cB Z a b y * (F1 y * F2 y)) (ι k) (eB a b) ∂μ = 0` using `fun a b => hL n Kg μ ι hι hK _ Ω hΩ hU (hcd _ (hC n Z a b).2) (eB a b) (eB_comm a b)`. Establish `key : ∀ k : Kg, fderiv ℂ F1 (ι k) (ι k * Z) * F2 (ι k) + F1 (ι k) * fderiv ℂ F2 (ι k) (ι k * Z) = ∑ a : Fin n, ∑ b : Fin n, (dK (fun y => cA Z a b y * (F1 y * F2 y)) (ι k) (eA a b) + dK (fun y => cB Z a b y * (F1 y * F2 y)) (ι k) (eB a b))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `k`. Establish `hnh : Ω ∈ nhds (ι k)` using `hΩ.mem_nhds (hmem k)`. Establish `hd1 : DifferentiableAt ℂ F1 (ι k)` using `((hF1.differentiableOn (by simp)) _ (hmem k)).differentiableAt hnh`. Establish `hd2 : DifferentiableAt ℂ F2 (ι k)` using `((hF2.differentiableOn (by simp)) _ (hmem k)).differentiableAt hnh`. Establish `hprod : fderiv ℂ (fun y => F1 y * F2 y) (ι k) (ι k * Z) = fderiv ℂ F1 (ι k) (ι k * Z) * F2 (ι k) + F1 (ι k) * fderiv ℂ F2 (ι k) (ι k * Z)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h : HasFDerivAt (fun y => F1 y * F2 y) (F1 (ι k) • fderiv ℂ F2 (ι k) + F2 (ι k) • fderiv ℂ F1 (ι k)) (ι k)` using `hd1.hasFDerivAt.mul hd2.hasFDerivAt`. Rewrite using `[h.fderiv]`. Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← hprod]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hI n (fun y => F1 y * F2 y) (ι k) Z (hKk k) ((hΘc.contDiffAt hnh).of_le (by simp)) (fun Y hY => hlawΘ (ι k) (hKk k).1 Y hY)`. Repeatedly rewrite using `[key]`. Rewrite using `[integral_finset_sum]`. Use `Finset.sum_eq_zero (fun a _ => ?_)` and prove the remaining obligations. Rewrite using `[integral_finset_sum]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_eq_zero (fun b _ => ?_)` and prove the remaining obligations. Rewrite using `[integral_add (hA a b).1 (hB a b).1, (hA a b).2, (hB a b).2, add_zero]`. Introduce `b _`. Conclude with `(hA a b).1.add (hB a b).1`. Introduce `a _`.
-
-Conclude with `integrable_finset_sum _ (fun b _ => (hA a b).1.add (hB a b).1)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem infInv_of (hL : LeftDeriv) (hP : LawDeriv) (hI : PtId) (hC : CDiff) : InfInv := by
   intro n F1 F2 Ω hΩ hGΩ hF1 hF2 hlaw Kg _ _ _ _ _ _ μ _ ι hι hK Z
@@ -95,7 +93,7 @@ end PositivityTheory.Rg.Sw.LVs.II
 namespace PositivityTheory.Rg.Sw.LVs
 
 /- English proof (translation)
-The claim follows from `II.infInv_of II.leftDeriv II.lawDeriv II.ptId II.cDiff`.
+A detailed English derivation is pending.
 -/
 theorem infInv : InfInv := II.infInv_of II.leftDeriv II.lawDeriv II.ptId II.cDiff
 

@@ -19,7 +19,7 @@ namespace GlobalTheory.LastLen
 open Matrix MeasureTheory Finset in
 open scoped InnerProductSpace ENNReal in
 /- English proof (translation)
-Establish `hgH : gᴴ * _root_.Formalism.QuantumDeterminants.Hpk k r * g = _root_.Formalism.QuantumDeterminants.Hpk k r` using `hg`. Establish `hdet : IsUnit g.det` using `_root_.GlobalTheory.TensLen.isUnit_det_of_unitary (_root_.Formalism.QuantumDeterminants.GBasic.Hpk_sq k r) hgH`. Establish `h` using `_root_.Formalism.FourierDecayAlt.P.SettingConstruction.form_of_unitary (_root_.Formalism.QuantumDeterminants.Hpk k r) hgH (g⁻¹ *ᵥ w) (g⁻¹ *ᵥ w)`. Rewrite `h` using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hdet, Matrix.one_mulVec]`. Conclude with `h.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma herm_splitForm_inv_mulVec_eq_of_mem {k r : ℕ} {g : _root_.Formalism.FourierDecayAlt.ThreeDimData.Mx k r}
     (hg : g ∈ _root_.BranchingSupport.GG k r) (w : Fin (2 * r + k + 1) → ℂ) :
@@ -33,7 +33,7 @@ private lemma herm_splitForm_inv_mulVec_eq_of_mem {k r : ℕ} {g : _root_.Formal
 open Matrix MeasureTheory Finset in
 open scoped InnerProductSpace ENNReal in
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct, _root_.Formalism.QuantumDeterminants.GBasic.Hpk_eq, ite_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma splitForm_mulVec_apply_eq_sgn_mul_sig (k r : ℕ) (u : Fin (2 * r + k + 1) → ℂ)
     (i : Fin (2 * r + k + 1)) :
@@ -44,7 +44,7 @@ private lemma splitForm_mulVec_apply_eq_sgn_mul_sig (k r : ℕ) (u : Fin (2 * r 
 open Matrix MeasureTheory Finset in
 open scoped InnerProductSpace ENNReal in
 /- English proof (translation)
-Unfold `_root_.Formalism.QuantumDeterminants.herm`. Simplify using `only [dotProduct, Pi.star_apply, splitForm_mulVec_apply_eq_sgn_mul_sig]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 private lemma herm_splitForm_eq_sum_star_mul_sgn_mul_sig (k r : ℕ) (u : Fin (2 * r + k + 1) → ℂ) :
     _root_.Formalism.QuantumDeterminants.herm (_root_.Formalism.QuantumDeterminants.Hpk k r) u u = ∑ i, star (u i) * (_root_.Formalism.QuantumDeterminants.GBasic.sgn k r i * u (_root_.Formalism.QuantumDeterminants.GBasic.sig k r i)) := by
@@ -54,11 +54,11 @@ private lemma herm_splitForm_eq_sum_star_mul_sgn_mul_sig (k r : ℕ) (u : Fin (2
 open Matrix MeasureTheory Finset in
 open scoped InnerProductSpace ENNReal in
 /- English proof (translation)
-Establish `hz' : ∀ i : Fin (2 * r + k + 1), (i : ℕ) < r ∨ r + k < (i : ℕ) → z i = 0` using `hz`. Rewrite using `[herm_splitForm_eq_sum_star_mul_sgn_mul_sig, herm_splitForm_eq_sum_star_mul_sgn_mul_sig]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.sub_apply]`. Distinguish the cases in `h1 : (i : ℕ) < r`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Establish `hσ` using `_root_.Formalism.QuantumDeterminants.GBasic.sig_lo k r i h1`. Rewrite using `[hz' i (Or.inl h1), hz' (_root_.Formalism.QuantumDeterminants.GBasic.sig k r i) (Or.inr (by omega)), hy (_root_.Formalism.QuantumDeterminants.GBasic.sig k r i) (by omega)]`. Simplify using the standard rewrite rules. Distinguish the cases in `h2 : r + k < (i : ℕ)`. Rewrite using `[hz' i (Or.inr h2), hy i (by omega)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[_root_.Formalism.QuantumDeterminants.GBasic.sig_mid k r i (by omega) (by omega), hy i (by omega), sub_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private lemma herm_splitForm_sub_eq_of_isotropic {k r : ℕ} (z y : Fin (2 * r + k + 1) → ℂ)
     (hz : _root_.Formalism.QuantumDeterminants.inWb k r z) (hy : ∀ i : Fin (2 * r + k + 1), r ≤ (i : ℕ) → y i = 0) :
@@ -80,11 +80,11 @@ private lemma herm_splitForm_sub_eq_of_isotropic {k r : ℕ} (z y : Fin (2 * r +
 open Matrix MeasureTheory Finset in
 open scoped InnerProductSpace ENNReal in
 /- English proof (translation)
-Establish `hs : ∀ i, ‖_root_.Formalism.QuantumDeterminants.GBasic.sgn k r i‖ = 1`. Introduce `i`. Unfold `_root_.Formalism.QuantumDeterminants.GBasic.sgn`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hperm : ∑ i, Complex.normSq (u (_root_.Formalism.QuantumDeterminants.GBasic.sig k r i)) = ∑ i, Complex.normSq (u i)` using `Equiv.sum_comp (Function.Involutive.toPerm _ (_root_.Formalism.QuantumDeterminants.GBasic.sig_sig k r)) (fun i => Complex.normSq (u i))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[herm_splitForm_eq_sum_star_mul_sgn_mul_sig, Complex.re_sum, ← Finset.sum_neg_distrib]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Establish `h1` using `Complex.abs_re_le_norm (star (u i) * (_root_.Formalism.QuantumDeterminants.GBasic.sgn k r i * u (_root_.Formalism.QuantumDeterminants.GBasic.sig k r i)))`. Rewrite `h1` using `[norm_mul, norm_mul, norm_star, hs, one_mul]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Complex.normSq_eq_norm_sq, Complex.normSq_eq_norm_sq]`. Use polynomial arithmetic with `[neg_le_abs (star (u i) * (_root_.Formalism.QuantumDeterminants.GBasic.sgn k r i * u (_root_.Formalism.QuantumDeterminants.GBasic.sig k r i))).re, sq_nonneg (‖u i‖ - ‖u (_root_.Formalism.QuantumDeterminants.GBasic.sig k r i)‖)]`. Use `_ = ∑ i, Complex.normSq (u i) := by`. Rewrite using `[← Finset.sum_div, Finset.sum_add_distrib, hperm]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private lemma neg_re_herm_splitForm_le_sum_normSq (k r : ℕ) (u : Fin (2 * r + k + 1) → ℂ) :
     -(_root_.Formalism.QuantumDeterminants.herm (_root_.Formalism.QuantumDeterminants.Hpk k r) u u).re ≤ ∑ i, Complex.normSq (u i) := by
@@ -111,19 +111,19 @@ open Matrix MeasureTheory Finset in
 open scoped InnerProductSpace ENNReal in
 
 /- English proof (translation)
-Introduce `k r z hz hT g hg`. Establish `hpos` using `(_root_.GlobalTheory.TensLen.lengths k r z hz hT g hg).2.2.1`. Use `⟨?_, fun a => ⟨hpos a, _root_.BranchingSupport.TensInh.lenA_eq_lA z g a⟩⟩` and prove the remaining obligations. Establish `hbound : √(_root_.Formalism.QuantumDeterminants.Tz k r z) ≤ _root_.BranchingSupport.lenA k r z g (Fin.last r)`. Rewrite using `[_root_.BranchingSupport.TensInh.lenA_eq_lA]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `_root_.Formalism.MainNotions.S.lA _root_.Formalism.MainNotions.S.eucl`. Use `le_csInf ⟨_, 0, Submodule.zero_mem _, rfl⟩ ?_` and prove the remaining obligations. Introduce and unpack `t ⟨y, hy, rfl⟩`. Apply `Real.sqrt_le_sqrt` to reduce the goal to its premises. Establish `hy0 : ∀ i : Fin (2 * r + k + 1), r ≤ (i : ℕ) → y i = 0`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Introduce `i hi`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨b, rfl⟩` from `hx`. Unfold `_root_.Formalism.QuantumDeterminants.bvec _root_.Formalism.QuantumDeterminants.eI`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Use `Pi.single_eq_of_ne ?_ _` and prove the remaining obligations. Introduce `h`. Establish `h'` using `congrArg Fin.val h`. Use `b.1.isLt` as an intermediate fact. Simplify using `only at h'`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Consider the case `zero => rfl`. Consider the case `add x x' _ _ hx hx' => simp [hx, hx']`. Consider the case `smul c x _ hx => simp [hx]`. Establish `hf : _root_.Formalism.QuantumDeterminants.fvec k r z (Fin.last r) = z`.
+Use linear arithmetic over natural numbers and integers. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Unfold `_root_.Formalism.QuantumDeterminants.fvec`. Simplify using the standard rewrite rules. Rewrite using `[hf]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[herm_splitForm_inv_mulVec_eq_of_mem hg, herm_splitForm_sub_eq_of_isotropic z y hz hy0, _root_.Formalism.FourierDecayAlt.P.TwoByOneBlock.herm_self_eq]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Use `_ ≤ _ := neg_re_herm_splitForm_le_sum_normSq k r _`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.LastLen.last_len : ∀ (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ), _root_.Formalism.QuantumDeterminants.inWb k r z → 0 < _root_.Formalism.QuantumDeterminants.Tz k r z → ∀ g ∈ _root_.BranchingSupport.GG k r, _root_.Formalism.QuantumDeterminants.Tz k r z ≤ _root_.BranchingSupport.lenA k r z g (Fin.last r) ^ 2 ∧ ∀ a, 0 < _root_.BranchingSupport.lenA k r z g a ∧ _root_.BranchingSupport.lenA k r z g a = _root_.Formalism.MainNotions.S.lA k r z g a := by
   intro k r z hz hT g hg

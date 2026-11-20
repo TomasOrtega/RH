@@ -16,9 +16,9 @@ section
 variable {ι : Type} {R : Type} [CommRing R]
 
 /- English proof (translation)
-Establish `hg` using `isGradedMap_lsmul (GrSum.grading hx) (X_mem_polyGrading (R := R) i)`. Use `⟨hg.injective_iff.2 fun n => ?_, hg.surjective_iff.2 fun n => ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨_, a, rfl⟩ ⟨_, b, rfl⟩ e`. Establish `e' : (X i : MvPolynomial ι R) • GrSum.of hx n a = (X i : MvPolynomial ι R) • GrSum.of hx n b` using `congrArg Subtype.val e`. Rewrite `e'` using `[GrSum.X_smul_of, GrSum.X_smul_of]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `rfl` from `(h n).1 (GrSum.of_injective hx _ e')`. Both sides reduce to the same expression. Introduce and unpack `⟨_, b, rfl⟩`. Take `⟨a, rfl⟩` from `(h n).2 b`. Conclude with `⟨⟨_, a, rfl⟩, Subtype.ext (GrSum.X_smul_of hx i n a)⟩`.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem GrSum.X_smul_bijective {A : ℤ → Type} [∀ n, AddCommGroup (A n)] [∀ n, Module R (A n)]
     {x : ι → ∀ n, A n →ₗ[R] A (n + 1)} (hx : OperatorsCommute x) {i : ι}
@@ -37,7 +37,7 @@ theorem GrSum.X_smul_bijective {A : ℤ → Type} [∀ n, AddCommGroup (A n)] [�
     exact ⟨⟨_, a, rfl⟩, Subtype.ext (GrSum.X_smul_of hx i n a)⟩
 
 /- English proof (translation)
-Use `Finset.prod_induction _ (fun p : MvPolynomial ι R => Function.Bijective fun m : N => p • m) (fun p q hp hq => ?_) ?_ h` and prove the remaining obligations. Simplify using `only [mul_smul]`. Conclude with `hp.comp hq`. Simplify using `only [one_smul]`. Conclude with `Function.bijective_id`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem xProd_smul_bijective_of {N : Type} [AddCommGroup N] [Module (MvPolynomial ι R) N]
     (s : Finset ι) (h : ∀ i ∈ s, Function.Bijective fun m : N => (X i : MvPolynomial ι R) • m) :
@@ -50,17 +50,17 @@ theorem xProd_smul_bijective_of {N : Type} [AddCommGroup N] [Module (MvPolynomia
     exact Function.bijective_id
 
 /- English proof (translation)
-Set `e` to `LinearEquiv.ofBijective _ (toHomLoc_bijective 𝒩 hb n)`. Use `⟨e.symm.toLinearMap ∘ₗ homLocMap hf s n, e.symm.bijective.comp ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Introduce and unpack `⟨_, k, m, hm, rfl⟩ hz`. Establish `hz' : awayMap _ f (awayFrac M (xProd R s) k m) = 0` using `congrArg Subtype.val hz`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite `hz'` using `[awayMap_awayFrac, map_eq_zero_iff _ (awayFrac_injective hb.1 k)]`. Conclude with `Subtype.ext (awayFrac_eq_zero_iff.2 (h₁ _ m hm hz'))`. Use `homLocMap_surjective_of hf (fun y => ?_) n` and prove the remaining obligations. Proceed by induction on `y using Decomposition.inductionOn 𝒩 with`. Consider the case `zero => exact ⟨0, by simp⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `@homogeneous d a`. Take `⟨k, y, hy⟩` from `h₂ d a a.2`. Conclude with `⟨k, y, hy⟩`. Consider the case `add a b ha hb`. Take `⟨k, ha⟩` from `ha`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨j, hb⟩` from `hb`. Use `⟨k + j, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Use `add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[add_comm, pow_add, mul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ _ ha`. Rewrite using `[pow_add, mul_smul]`. Conclude with `Submodule.smul_mem _ _ hb`. Introduce `z k m hm`. Establish `h : awayFrac N (xProd R s) 0 (e.symm (homLocMap hf s n z) : N) = awayMap _ f z` using `congrArg Subtype.val (e.apply_symm_apply (homLocMap hf s n z))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `awayFrac_injective hb.1 0` to reduce the goal to its premises. Rewrite using `[map_smul]`. Use `erw [h]`. Rewrite using `[← hm, awayMap_awayFrac, pow_smul_awayFrac]`.
+A detailed English derivation is pending.
 -/
 theorem exists_homLoc_bijective_of
     {M : Type} [AddCommGroup M] [Module R M] [Module (MvPolynomial ι R) M]
@@ -108,7 +108,7 @@ theorem exists_homLoc_bijective_of
     rw [← hm, awayMap_awayFrac, pow_smul_awayFrac]
 
 /- English proof (translation)
-Take `⟨ψ, hψ, hψ'⟩` from `exists_homLoc_bijective_of hf s (xProd_smul_bijective_of s fun i hi => GrSum.X_smul_bijective hx (hb i hi)) h₁ (by rintro n _ ⟨a, rfl⟩; exact h₂ n a) n`. Use `⟨(GrSum.pieceEquiv hx n).symm.toLinearMap ∘ₗ ψ, (GrSum.pieceEquiv hx n).symm.bijective.comp hψ, fun z k m e => ?_⟩` and prove the remaining obligations. Rewrite using `[← hψ' z k m e]`. Conclude with `congrArg (fun w : GrSum.grading hx n => xProd R s ^ k • (w : GrSum hx)) ((GrSum.pieceEquiv hx n).apply_symm_apply (ψ z))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_homLoc_bijective_grSum
     {M : Type} [AddCommGroup M] [Module R M] [Module (MvPolynomial ι R) M]
@@ -133,9 +133,9 @@ theorem exists_homLoc_bijective_grSum
     ((GrSum.pieceEquiv hx n).apply_symm_apply (ψ z))
 
 /- English proof (translation)
-Take `⟨k, m, hm, e⟩` from `z.2`. Take `⟨a', ha'⟩` from `hf hm`. Establish `h1 : g m = GrSum.map hx hy r hr (f m)`. Rewrite using `[hfg _ m a' ha'.symm, ← ha', GrSum.map_of]`. Take `⟨c, hc⟩ : ∃ c, xProd R t = c * xProd R s` from `exists_eq_mul_left_of_dvd (Finset.prod_dvd_prod_of_subset s t X h)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h2` using `hb' k (c ^ k • m) (by rw [coe_homLocRes, ← e, locRes_awayFrac X h hc])`. Rewrite `h2` using `[map_smul, h1, ← ha k m e, map_smul, GrSum.map_of, ← mul_smul, ← mul_pow, ← hc]`. Establish `h3` using `xProd_smul_bijective_of t fun i hi => GrSum.X_smul_bijective hy (hb i hi)`. Conclude with `GrSum.of_injective hy n (IsSMulRegular.pow k h3.1 h2)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem homLoc_grSum_res
     {M : Type} [AddCommGroup M] [Module R M] [Module (MvPolynomial ι R) M]
@@ -169,7 +169,7 @@ theorem homLoc_grSum_res
 end
 
 /- English proof (translation)
-Use `choose φ hφ hφ' using fun I => exists_homLoc_bijective_grSum (hx I) (hρ I) I (hbij I) (hker I) (hcoker I) t`. Use `⟨Cube.homMk (A := grCube ι 𝒢 t) φ fun {I J} h z => ?_, hφ⟩` and prove the remaining obligations. Conclude with `homLoc_grSum_res (hx I) (hx J) (fun n => Cube.res (A n) h) (fun i n a => (Cube.app_res (x i n) h a).symm) (hρ I) (hres I J h) h (hbij J) z _ _ (hφ' I z) (hφ' J _)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_grCube_hom_bijective (ι : Type) [LinearOrder ι] [Fintype ι] (R : Type) [CommRing R]
     (G : Type) [AddCommGroup G] [Module R G] [Module (MvPolynomial ι R) G]

@@ -11,9 +11,9 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.Q Fo
 variable {k r : ℕ}
 
 /- English proof (translation)
-Unfold `herm bvec`. Simplify using `only [dotProduct, Pi.star_apply]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `s _`. Use `congr 1`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ad_herm_bvec (q : Fin (2 * r + k + 1)) (w : Fin (2 * r + k + 1) → ℂ) :
     herm (Hpk k r) (bvec q) w = ∑ s, star (w s) * Hpk k r s q := by
@@ -25,9 +25,9 @@ theorem ad_herm_bvec (q : Fin (2 * r + k + 1)) (w : Fin (2 * r + k + 1) → ℂ)
   simp [Matrix.mulVec, dotProduct, Pi.single_apply]
 
 /- English proof (translation)
-Simplify using `only [ad_herm_bvec]`. Unfold `herm`. Simplify using `only [dotProduct, Pi.star_apply, Matrix.mulVec, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `q _`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `s _`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ad_herm_sum (v w : Fin (2 * r + k + 1) → ℂ) :
     herm (Hpk k r) v w = ∑ q, v q * herm (Hpk k r) (bvec q) w := by
@@ -42,7 +42,7 @@ theorem ad_herm_sum (v w : Fin (2 * r + k + 1) → ℂ) :
   ring
 
 /- English proof (translation)
-Unfold `herm`. Use `first`. Consider the case `rw [star_dotProduct]`. Consider the case `rw [Matrix.star_dotProduct]`. Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, GBasic.Hpk_herm]`.
+Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ad_herm_symm (v w : Fin (2 * r + k + 1) → ℂ) :
     herm (Hpk k r) v w = star (herm (Hpk k r) w v) := by
@@ -53,9 +53,9 @@ theorem ad_herm_symm (v w : Fin (2 * r + k + 1) → ℂ) :
   rw [Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, GBasic.Hpk_herm]
 
 /- English proof (translation)
-Unfold `unitB`. Rewrite using `[ad_herm_sum v (Bs b)]`. Use function extensionality and compare the values at `p`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.of_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `q _`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ad_unitB_mulVec {m : ℕ} (Bs : Fin m → Fin (2 * r + k + 1) → ℂ) (a b : Fin m)
     (v : Fin (2 * r + k + 1) → ℂ) :
@@ -69,9 +69,9 @@ theorem ad_unitB_mulVec {m : ℕ} (Bs : Fin m → Fin (2 * r + k + 1) → ℂ) (
   ring
 
 /- English proof (translation)
-Unfold `unitB`. Use function extensionality and compare the values at `p`. Use `show ∑ q, star (Bs a q * herm (Hpk k r) (bvec p) (Bs b)) * (Hpk k r *ᵥ v) q = herm (Hpk k r) v (Bs a) * star (herm (Hpk k r) (bvec p) (Bs b))`. Rewrite using `[show herm (Hpk k r) v (Bs a) = ∑ q, star (Bs a q) * (Hpk k r *ᵥ v) q from rfl, Finset.sum_mul]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Apply function extensionality and compare values at an arbitrary argument. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `q _`. Rewrite using `[star_mul']`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem ad_unitB_ct_mulVec {m : ℕ} (Bs : Fin m → Fin (2 * r + k + 1) → ℂ) (a b : Fin m)
     (v : Fin (2 * r + k + 1) → ℂ) :
@@ -88,9 +88,9 @@ theorem ad_unitB_ct_mulVec {m : ℕ} (Bs : Fin m → Fin (2 * r + k + 1) → ℂ
   ring
 
 /- English proof (translation)
-Establish `hs : ∀ (c : ℂ) (A : Mx k r) (x : Fin (2 * r + k + 1) → ℂ), (c • A) *ᵥ x = c • (A *ᵥ x)`. Introduce `c A x`. Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.smul_apply, smul_eq_mul, Pi.smul_apply, Finset.mul_sum, mul_assoc]`. Establish `e : ((Hpk k r)⁻¹ * Zᴴ * Hpk k r) *ᵥ v = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, h2, Matrix.mulVec_zero]`. Unfold `hpart1 hpart2`. Prove the components needed by the constructor for the conclusion. Rewrite using `[hs, Matrix.sub_mulVec, h1, e, sub_zero, smul_zero]`. Rewrite using `[hs, Matrix.add_mulVec, h1, e, add_zero, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem ad_hpart_kill {Z : Mx k r} {v : Fin (2 * r + k + 1) → ℂ} (h1 : Z *ᵥ v = 0)
     (h2 : Zᴴ *ᵥ (Hpk k r *ᵥ v) = 0) :
@@ -107,7 +107,7 @@ theorem ad_hpart_kill {Z : Mx k r} {v : Fin (2 * r + k + 1) → ℂ} (h1 : Z *�
   · rw [hs, Matrix.add_mulVec, h1, e, add_zero, smul_zero]
 
 /- English proof (translation)
-Apply `ad_hpart_kill` to reduce the goal to its premises. Rewrite using `[ad_unitB_mulVec, hb, zero_smul]`. Rewrite using `[ad_unitB_ct_mulVec, ha, zero_smul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem ad_unitB_kill {m : ℕ} (Bs : Fin m → Fin (2 * r + k + 1) → ℂ) (a b : Fin m)
     {v : Fin (2 * r + k + 1) → ℂ} (ha : herm (Hpk k r) v (Bs a) = 0) (hb : herm (Hpk k r) v (Bs b) = 0) :
@@ -117,7 +117,7 @@ theorem ad_unitB_kill {m : ℕ} (Bs : Fin m → Fin (2 * r + k + 1) → ℂ) (a 
   · rw [ad_unitB_ct_mulVec, ha, zero_smul]
 
 /- English proof (translation)
-Unfold `herm`. Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hg]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem ad_herm_g {g : Mx k r} (hg : gᴴ * Hpk k r * g = Hpk k r) (x y : Fin (2 * r + k + 1) → ℂ) :
     herm (Hpk k r) (g *ᵥ x) (g *ᵥ y) = herm (Hpk k r) x y := by
@@ -125,9 +125,9 @@ theorem ad_herm_g {g : Mx k r} (hg : gᴴ * Hpk k r * g = Hpk k r) (x y : Fin (2
   rw [Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hg]
 
 /- English proof (translation)
-Establish `key : ∀ v, unitB (Hpk k r) (fun c => g *ᵥ Bs c) a b *ᵥ v = (g * unitB (Hpk k r) Bs a b * g⁻¹) *ᵥ v`. Introduce `v`. Rewrite using `[ad_unitB_mulVec, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, ad_unitB_mulVec, Matrix.mulVec_smul]`. Use `congr 1`. Use `conv_lhs => rw [show v = g *ᵥ (g⁻¹ *ᵥ v) by rw [Matrix.mulVec_mulVec, hgi, Matrix.one_mulVec]]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Conclude with `ad_herm_g hg _ _`. Use extensionality with `p q`. Use `congrFun (key (Pi.single q 1)) p` as an intermediate fact. Simplify `this` using `[Matrix.mulVec, dotProduct, Pi.single_apply]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem ad_unitB_conj {g : Mx k r} (hg : gᴴ * Hpk k r * g = Hpk k r) (hgi : g * g⁻¹ = 1)
     {m : ℕ} (Bs : Fin m → Fin (2 * r + k + 1) → ℂ) (a b : Fin m) :
@@ -144,13 +144,13 @@ theorem ad_unitB_conj {g : Mx k r} (hg : gᴴ * Hpk k r * g = Hpk k r) (hgi : g 
   simpa [Matrix.mulVec, dotProduct, Pi.single_apply] using this
 
 /- English proof (translation)
-Establish `hH : Hpk k r * Hpk k r = 1` using `hpk_sq'`. Establish `e1 : gᴴ * Hpk k r = Hpk k r * g⁻¹`. Combine the equalities or inequalities in the displayed calculation. Establish `e2 : Hpk k r * (g⁻¹)ᴴ = g * Hpk k r`. Establish `h` using `congrArg Matrix.conjTranspose e1`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, hpk_h]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, hH, Matrix.mul_one]`. Use `_ = Hpk k r * (Hpk k r * g) * Hpk k r := by rw [h]`. Use `_ = _ := by rw [← Matrix.mul_assoc, hH, Matrix.one_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : (Hpk k r)⁻¹ * (g * Z * g⁻¹)ᴴ * Hpk k r = g * ((Hpk k r)⁻¹ * Zᴴ * Hpk k r) * g⁻¹`. Rewrite using `[hpk_inv, Matrix.conjTranspose_mul, Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [e1, e2]; simp only [Matrix.mul_assoc]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Unfold `hpart1 hpart2`. Rewrite using `[key]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_sub, Matrix.sub_mul]`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_add, Matrix.add_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ad_hpart_conj {g : Mx k r} (hg : gᴴ * Hpk k r * g = Hpk k r) (hgi : g * g⁻¹ = 1) (Z : Mx k r) :
     hpart1 (Hpk k r) (g * Z * g⁻¹) = g * hpart1 (Hpk k r) Z * g⁻¹ ∧

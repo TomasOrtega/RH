@@ -11,7 +11,7 @@ variable {V : Type*} [NormedAddCommGroup V] [InnerProductSpace ℝ V] [FiniteDim
   [MeasurableSpace V] [BorelSpace V]
 
 /- English proof (translation)
-Rewrite using `[show (2 * Real.pi * Complex.I * (r : ℂ)) = ((2 * Real.pi * r : ℝ) : ℂ) * Complex.I by push_cast; ring]`. Conclude with `Complex.norm_exp_ofReal_mul_I _`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma norm_exp_two_pi_I_mul (r : ℝ) : ‖Complex.exp (2 * Real.pi * Complex.I * (r : ℂ))‖ = 1 := by
   rw [show (2 * Real.pi * Complex.I * (r : ℂ)) = ((2 * Real.pi * r : ℝ) : ℂ) * Complex.I by
@@ -19,15 +19,15 @@ lemma norm_exp_two_pi_I_mul (r : ℝ) : ‖Complex.exp (2 * Real.pi * Complex.I 
   exact Complex.norm_exp_ofReal_mul_I _
 
 /- English proof (translation)
-Introduce `Λ _ _ f hf b hb hfO hFO x`. Take `⟨hdd, hdz⟩` from `hD Λ`. Use `haveI := hdd`. Use `haveI : IsZLattice ℝ (dual Λ) := hdz`. Establish `hphase : (fun v : V => (𝓕 f : V → ℂ) v * Complex.exp (2 * Real.pi * Complex.I * (⟪v, x⟫ : ℝ))) =O[cocompact V] (fun v => ‖v‖ ^ (-b))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(Asymptotics.IsBigO.of_bound 1 (Filter.Eventually.of_forall fun v => ?_)).trans hFO` and prove the remaining obligations. Rewrite using `[norm_mul, norm_exp_two_pi_I_mul, mul_one, one_mul]`. Establish `hsum` using `h1 (dual Λ) _ b hb hphase`. Use `⟨hsum, ?_⟩` and prove the remaining obligations. Take `⟨hint, hper, hcont, hinv⟩` from `h2 Λ f hf b hb hfO`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `B` to `Module.Free.chooseBasis ℤ Λ`. Establish `hD'` using `ZLattice.isAddFundamentalDomain B (volume : Measure V)`. Establish `hcoef : ∀ μ : dual Λ, ∫ y in ZSpan.fundamentalDomain (B.ofZLatticeBasis ℝ Λ), (∑' l : Λ, f ((l : V) + y)) * Complex.exp (-(2 * Real.pi * Complex.I * (⟪(μ : V), y⟫ : ℝ))) = (𝓕 f : V → ℂ) μ` using `fun μ => h3 Λ f hint _ hD' μ μ.2`. Establish `hFs : Summable (fun μ : dual Λ => (𝓕 f : V → ℂ) μ)` using `h1 (dual Λ) _ b hb hFO`. Establish `hG` using `h4 Λ (fun y => ∑' l : Λ, f ((l : V) + y)) hcont (fun l y => by simpa using hinv l y) _ hD' (by simpa only [hcoef] using hFs) x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hcoef] at hG`. Establish `hval : (ZLattice.covolume Λ : ℂ)⁻¹ * ∑' μ : dual Λ, (𝓕 f : V → ℂ) μ * Complex.exp (2 * Real.pi * Complex.I * (⟪(μ : V), x⟫ : ℝ)) = ∑' l : Λ, f ((l : V) + x)`. Rewrite using `[← tsum_mul_left, ← hG.tsum_eq]`. Use `congr 1`. Use function extensionality and compare the values at `μ`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hval]`. Conclude with `(hper x).hasSum`.
+A detailed English derivation is pending.
 -/
 theorem poissonDecay_of (hD : DualIsLattice V) (h1 : LatticeSummableDecay V)
     (h2 : Periodization V) (h3 : UnfoldCoeff V) (h4 : LatticeFourierSeries V) : PoissonDecay V := by
@@ -62,7 +62,7 @@ theorem poissonDecay_of (hD : DualIsLattice V) (h1 : LatticeSummableDecay V)
   exact (hper x).hasSum
 
 /- English proof (translation)
-Introduce `Λ _ _ f x`. Establish `hd : (Module.finrank ℝ V : ℝ) < Module.finrank ℝ V + 1` using `by linarith`. Conclude with `hP Λ f f.continuous _ hd (h6 f _).1 (h6 f _).2 x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem poissonSchwartz_of (hP : PoissonDecay V) (h6 : SchwartzDecay V) : PoissonSchwartz V := by
   intro Λ _ _ f x
@@ -70,7 +70,7 @@ theorem poissonSchwartz_of (hP : PoissonDecay V) (h6 : SchwartzDecay V) : Poisso
   exact hP Λ f f.continuous _ hd (h6 f _).1 (h6 f _).2 x
 
 /- English proof (translation)
-Introduce `Λ _ _ t ht x`. Take `⟨hc, hO, -⟩` from `h5 t ht`. Establish `hd : (Module.finrank ℝ V : ℝ) < Module.finrank ℝ V + 1` using `by linarith`. Take `⟨-, hs, -⟩` from `h2 Λ _ hc _ hd (hO _)`. Conclude with `Complex.summable_ofReal.1 (hs x)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem thetaSummable_of (h2 : Periodization V) (h5 : GaussFourier V) : ThetaSummable V := by
   intro Λ _ _ t ht x
@@ -80,7 +80,7 @@ theorem thetaSummable_of (h2 : Periodization V) (h5 : GaussFourier V) : ThetaSum
   exact Complex.summable_ofReal.1 (hs x)
 
 /- English proof (translation)
-Introduce `Λ _ _ t ht`. Establish `hs` using `hS Λ t ht 0`. Simplify using `only [add_zero] at hs`. Use `hs.le_tsum 0 (fun j _ => (Real.exp_pos _).le)` as an intermediate fact. Simplify `this` using `[theta]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem thetaPos_of (hS : ThetaSummable V) : ThetaPos V := by
   intro Λ _ _ t ht
@@ -90,17 +90,15 @@ theorem thetaPos_of (hS : ThetaSummable V) : ThetaPos V := by
   simpa [theta] using this
 
 /- English proof (translation)
-Introduce `Λ _ _ t ht x`. Take `⟨hc, hO, hF⟩` from `h5 t ht`. Establish `hd : (Module.finrank ℝ V : ℝ) < Module.finrank ℝ V + 1` using `by linarith`. Take `⟨hsum, hhas⟩` from `hP Λ _ hc _ hd (hO _) (by`. Establish `hO2` using `(hO (Module.finrank ℝ V + 1))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hfun : (𝓕 (fun v : V => (Real.exp (-Real.pi * t * ‖v‖ ^ 2) : ℂ)) : V → ℂ) = fun w => ((t ^ (-(Module.finrank ℝ V : ℝ) / 2) : ℝ) : ℂ) * (Real.exp (-Real.pi * ‖w‖ ^ 2 / t) : ℂ)`. Use function extensionality and compare the values at `hF`. Take `⟨-, hO', -⟩` from `h5 (1 / t) (by positivity)`. Rewrite using `[hfun]`. Use `((hO' (Module.finrank ℝ V + 1)).congr_left fun w => ?_).const_mul_left _` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 2`. Use the proof step `field_simp) x`. Simplify using `only [hF] at hsum hhas`. Use `set c : ℂ := ((t ^ (-(Module.finrank ℝ V : ℝ) / 2) : ℝ) : ℂ)`. Establish `hc0 : c ≠ 0`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [c, ne_eq, Complex.ofReal_eq_zero]`. Conclude with `(Real.rpow_pos_of_pos ht _).ne'`. Establish `hsum' : Summable (fun μ : dual Λ => (Real.exp (-Real.pi * ‖(μ : V)‖ ^ 2 / t) : ℂ) * Complex.exp (2 * Real.pi * Complex.I * (⟪(μ : V), x⟫ : ℝ)))`. Use `(hsum.mul_left c⁻¹).congr fun μ => ?_` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts.
+Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨hsum', ?_⟩` and prove the remaining obligations. Rewrite using `[thetaShift, Complex.ofReal_tsum, hhas.tsum_eq]`. Establish `: (fun μ : dual Λ => c * (Real.exp (-Real.pi * ‖(μ : V)‖ ^ 2 / t) : ℂ) * Complex.exp (2 * Real.pi * Complex.I * (⟪(μ : V), x⟫ : ℝ))) = fun μ : dual Λ => c * ((Real.exp (-Real.pi * ‖(μ : V)‖ ^ 2 / t) : ℂ) * Complex.exp (2 * Real.pi * Complex.I * (⟪(μ : V), x⟫ : ℝ)))`. Use function extensionality and compare the values at `μ`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[this, tsum_mul_left]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem thetaShiftInversion_of (hP : PoissonDecay V) (h2 : Periodization V) (h5 : GaussFourier V) :
     ThetaShiftInversion V := by
@@ -137,13 +135,13 @@ theorem thetaShiftInversion_of (hP : PoissonDecay V) (h2 : Periodization V) (h5 
   ring
 
 /- English proof (translation)
-Introduce `Λ _ _ t ht`. Take `⟨-, h⟩` from `hS Λ (1 / t) (by positivity) 0`. Establish `hl : thetaShift Λ (1 / t) 0 = theta Λ (1 / t)`. Simplify using `[thetaShift, theta]`. Rewrite `h` using `[hl]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hr : ∀ μ : dual Λ, (Real.exp (-Real.pi * ‖(μ : V)‖ ^ 2 / (1 / t)) : ℂ) * Complex.exp (2 * Real.pi * Complex.I * (⟪(μ : V), (0 : V)⟫ : ℝ)) = ((Real.exp (-Real.pi * t * ‖(μ : V)‖ ^ 2) : ℝ) : ℂ)`. Introduce `μ`. Rewrite using `[inner_zero_right, Complex.ofReal_zero, mul_zero, Complex.exp_zero, mul_one]`. Use `congr 2`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts.
 
-Simplify using `only [hr] at h`. Rewrite `h` using `[← Complex.ofReal_tsum]`. Establish `hpow : (1 / t) ^ (-(Module.finrank ℝ V : ℝ) / 2) = t ^ ((Module.finrank ℝ V : ℝ) / 2)`. Rewrite using `[one_div, Real.inv_rpow ht.le, neg_div, Real.rpow_neg ht.le, inv_inv]`. Rewrite `h` using `[hpow]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h' : (theta Λ (1 / t) : ℂ) = (((ZLattice.covolume Λ)⁻¹ * t ^ ((Module.finrank ℝ V : ℝ) / 2) * theta (dual Λ) t : ℝ) : ℂ)`. Rewrite using `[h, theta]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Conclude with `h'` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem thetaInversion_of (hS : ThetaShiftInversion V) : ThetaInversion V := by
   intro Λ _ _ t ht

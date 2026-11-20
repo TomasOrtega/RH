@@ -18,9 +18,9 @@ section Gen
 variable {K C H Y : Type} [Field K] [AddCommGroup C] [Module K C] [AddCommGroup H] [Module ℂ H] {σ : K →+* ℂ}
 
 /- English proof (translation)
-Use `le_antisymm (Submodule.span_le.2 ?_) (Submodule.span_mono ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨f, rfl⟩`. Rewrite using `[← b.sum_repr f, map_sum]`. Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smulₛₗ]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `⟨_, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem span_range_eq_basis {n : ℕ} (b : Module.Basis (Fin n) K C) (j : C →ₛₗ[σ] H) :
     Submodule.span ℂ (Set.range j) = Submodule.span ℂ (Set.range fun k => j (b k)) := by
@@ -34,9 +34,9 @@ theorem span_range_eq_basis {n : ℕ} (b : Module.Basis (Fin n) K C) (j : C →�
     exact ⟨_, rfl⟩
 
 /- English proof (translation)
-Use `top_le_iff.1 fun x _ => ?_` and prove the remaining obligations. Establish `e : (Set.range fun f => ev (j f)) = ev '' Set.range j` using `Set.range_comp ev j`. Establish `h1` using `h x`. Rewrite `h1` using `[e, Submodule.span_image]`. Take `⟨y, hy, hxy⟩` from `h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hinj hxy ▸ hy`.
+A detailed English derivation is pending.
 -/
 theorem span_eq_top_of_ev (j : C → H) (ev : H →ₗ[ℂ] (Y → ℂ)) (hinj : Function.Injective ev)
     (h : ∀ x, ev x ∈ Submodule.span ℂ (Set.range fun f => ev (j f))) : Submodule.span ℂ (Set.range j) = ⊤ := by
@@ -48,9 +48,9 @@ theorem span_eq_top_of_ev (j : C → H) (ev : H →ₗ[ℂ] (Y → ℂ)) (hinj :
   exact hinj hxy ▸ hy
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[Fintype.linearIndependent_iff]`. Introduce `c hc k`. Establish `h2 : ∑ i, star (c i) • φ i = 0`. Use function extensionality and compare the values at `g`. Use `congrArg (starRingEnd ℂ) (congrFun hc g)` as an intermediate fact.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify `this` using `[Finset.sum_apply]`. Simplify using `using h _ h2 k`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem indep_conj {m : ℕ} {φ : Fin m → Y → ℂ} (h : LinearIndependent ℂ φ) :
     LinearIndependent ℂ fun k g => starRingEnd ℂ (φ k g) := by
@@ -76,19 +76,17 @@ def evL (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) (v : (R.MW i σ).Vec) : (R
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `good : ∀ (i : Fin D.R.m) σ, GoodEmb T.Q.c (res T σ) → (∀ (m : ℕ) (b : Fin m → Cu T κ i), LinearIndependent T.Q.c.F b → LinearIndependent ℂ fun k => jTop T R κ v₀ i σ (b k)) ∧ Submodule.span ℂ (Set.range (jTop T R κ v₀ i σ)) = ⊤`. Introduce `i σ hσ`. Establish `hV : T.V ((i : ℕ) + 1) (res T σ) = Wc D i` using `hl.spaceW _ (inR i) _ hσ`. Establish `he : ∀ f, evL T R i σ (v₀ i σ) (jTop T R κ v₀ i σ f) = phiC T hV (wtA (κ i)) (f : T.R ((i : ℕ) + 1))` using `jTop_good T R κ v₀ hσ hV (hJ i σ hσ hV)`. Use `⟨fun m b hb => LinearIndependent.of_comp (evL T R i σ (v₀ i σ)) ?_, span_eq_top_of_ev _ (evL T R i σ (v₀ i σ)) (hI i σ hσ) fun x => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : (evL T R i σ (v₀ i σ)) ∘ (fun k => jTop T R κ v₀ i σ (b k)) = fun k => phiC T hV (wtA (κ i)) (b k : T.R ((i : ℕ) + 1))` using `funext fun k => he (b k)`. Rewrite using `[e]`. Conclude with `h1 i _ hσ hV m b hb`. Rewrite using `[funext he]`. Conclude with `h2 i σ hσ hV x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `i σ`. Distinguish the cases in `hσ : GoodEmb T.Q.c (res T σ)`. Conclude with `good i σ hσ`. Establish `hσ' : GoodEmb T.Q.c (resC T σ)` using `good_resC T hσ`. Establish `hV : T.V ((i : ℕ) + 1) (resC T σ) = Wc D i` using `hl.spaceW _ (inR i) _ hσ'`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨v, -, he⟩` from `jTop_bar T R κ v₀ hσ hV (hB i σ hσ hV)`. Establish `hind : ∀ (m : ℕ) (b : Fin m → Cu T κ i), LinearIndependent T.Q.c.F b → LinearIndependent ℂ fun k => jTop T R κ v₀ i σ (b k)` using `fun m b hb => by`. Use `LinearIndependent.of_comp (evL T R i σ v) ?_` and prove the remaining obligations. Establish `e : (evL T R i σ v) ∘ (fun k => jTop T R κ v₀ i σ (b k)) = fun k g => starRingEnd ℂ (phiC T hV (wtA (κ i)) (b k : T.R ((i : ℕ) + 1)) g)` using `funext fun k => he (b k)`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `indep_conj (h1 i _ hσ' hV m b hb)`. Use `⟨hind, ?_⟩` and prove the remaining obligations. Take `⟨b⟩` from `hasB_nTop T hl κ i`. Establish `hs` using `(good i ((starRingEnd ℂ).comp σ) hσ').2`. Rewrite `hs`, the goal using `[span_range_eq_basis b]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `d1 : Module.finrank ℂ (R.HW i ((starRingEnd ℂ).comp σ)).H ≤ nTop T κ i`. Rewrite using `[← finrank_top, ← hs]`. Conclude with `(finrank_range_le_card _).trans (Fintype.card_fin _).le`. Establish `hi` using `hind _ b b.linearIndependent`. Use `Submodule.eq_top_of_finrank_eq (le_antisymm (Submodule.finrank_le _) ?_)` and prove the remaining obligations.
-
-Rewrite using `[finrank_span_eq_card hi, Fintype.card_fin]`. Conclude with `(h3 i σ hσ).trans d1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jUnif_of (hl : LawsJ T) (hJ : JEvExists T R κ v₀) (hB : JEvBar T R κ) (hI : EvInj T R v₀)
     (h1 : ∀ (i : Fin D.R.m) σ, GoodEmb T.Q.c σ → ∀ (hV : T.V ((i : ℕ) + 1) σ = Wc D i) (m : ℕ) (b : Fin m → Cu T κ i),

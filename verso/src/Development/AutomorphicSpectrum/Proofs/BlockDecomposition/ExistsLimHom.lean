@@ -15,16 +15,16 @@ def Tends (x : ℕ → T) (L : T) : Prop := ∀ k, ∃ M, ∀ m, M ≤ m → x m
 variable {ϖ}
 
 /- English proof (translation)
-Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smodEq_iff {a b : T} {k : ℕ} :
     a ≡ b [SMOD ((Ideal.span {ϖ}) ^ k • ⊤ : Submodule T T)] ↔ a - b ∈ Ideal.span {ϖ ^ k} := by
   rw [SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow]
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero]`. Use `IsHausdorff.haus (inferInstance : IsHausdorff (Ideal.span {ϖ}) T) _ fun k => ?_` and prove the remaining obligations. Establish `h0 : L - L' ∈ Ideal.span {ϖ ^ k}`. Take `⟨M, hM⟩` from `h k`. Take `⟨M', hM'⟩` from `h' k`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `sub_mem (hM' (max M M') (le_max_right _ _)) (hM (max M M') (le_max_left _ _))` as an intermediate fact. Simplify using `using this`. Establish `: L - L' ≡ 0 [SMOD ((Ideal.span {ϖ}) ^ k • ⊤ : Submodule T T)]` using `smodEq_iff.2 (by simpa using h0)`. Conclude with `this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Tends.unique [IsHausdorff (Ideal.span {ϖ}) T] {x : ℕ → T} {L L' : T} (h : Tends ϖ x L)
     (h' : Tends ϖ x L') : L = L' := by
@@ -40,11 +40,11 @@ theorem Tends.unique [IsHausdorff (Ideal.span {ϖ}) T] {x : ℕ → T} {L L' : T
   exact this
 
 /- English proof (translation)
-Use `choose M hM using h`. Set `N : ℕ → ℕ` to `fun k => (Finset.range (k + 1)).sup M`. Establish `hN : ∀ k, M k ≤ N k` using `fun k => Finset.le_sup (Finset.self_mem_range_succ k)`. Establish `hmono : Monotone N` using `fun a b hab => Finset.sup_mono (Finset.range_subset_range.2 (Nat.succ_le_succ hab))`. Establish `hc : ∀ k m, N k ≤ m → x m - x (N k) ∈ Ideal.span {ϖ ^ k}` using `fun k m hm => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `sub_mem (hM k m ((hN k).trans hm)) (hM k (N k) (hN k))` as an intermediate fact. Simplify using `using this`. Take `⟨L, hL⟩` from `IsPrecomplete.prec (inferInstance : IsPrecomplete (Ideal.span {ϖ}) T) (f := fun k => x (N k)) (fun {a b} hab => smodEq_iff.2 (by`. Use `hc a (N b) (hmono hab)` as an intermediate fact. Rewrite using `[← neg_sub]`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `neg_mem this))`. Use `⟨L, fun k => ⟨N k, fun m hm => ?_⟩⟩` and prove the remaining obligations. Use `add_mem (hc k m hm) (smodEq_iff.1 (hL k))` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_tends [IsAdicComplete (Ideal.span {ϖ}) T] (x : ℕ → T)
     (h : ∀ k, ∃ M, ∀ m, M ≤ m → x m - x M ∈ Ideal.span {ϖ ^ k}) : ∃ L, Tends ϖ x L := by
@@ -66,7 +66,7 @@ theorem exists_tends [IsAdicComplete (Ideal.span {ϖ}) T] (x : ℕ → T)
   simpa using this
 
 /- English proof (translation)
-Introduce `k` and use `by obtain ⟨M, hM⟩ := hx k obtain ⟨M', hM'⟩ := hy k refine ⟨max M M', fun m hm => ?_⟩ have := add_mem (hM m ((le_max_left _ _).trans hm)) (hM' m ((le_max_right _ _).trans hm)) convert this using 1; ring`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Tends.add {x y : ℕ → T} {a b : T} (hx : Tends ϖ x a) (hy : Tends ϖ y b) :
     Tends ϖ (fun m => x m + y m) (a + b) := fun k => by
@@ -77,7 +77,7 @@ theorem Tends.add {x y : ℕ → T} {a b : T} (hx : Tends ϖ x a) (hy : Tends ϖ
   convert this using 1; ring
 
 /- English proof (translation)
-Introduce `k` and use `by obtain ⟨M, hM⟩ := hx k obtain ⟨M', hM'⟩ := hy k refine ⟨max M M', fun m hm => ?_⟩ have := add_mem (Ideal.mul_mem_right (y m) _ (hM m ((le_max_left _ _).trans hm))) (Ideal.mul_mem_left _ a (hM' m ((le_max_right _ _).trans hm))) convert this using 1; ring`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Tends.mul {x y : ℕ → T} {a b : T} (hx : Tends ϖ x a) (hy : Tends ϖ y b) :
     Tends ϖ (fun m => x m * y m) (a * b) := fun k => by
@@ -89,14 +89,12 @@ theorem Tends.mul {x y : ℕ → T} {a b : T} (hx : Tends ϖ x a) (hy : Tends ϖ
   convert this using 1; ring
 
 /- English proof (translation)
-Introduce `k` and use `⟨0, fun _ _ => by simp⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem tends_const (a : T) : Tends ϖ (fun _ => a) a := fun k => ⟨0, fun _ _ => by simp⟩
 
 /- English proof (translation)
-Use `choose L hL using fun f => exists_tends (ϖ := ϖ) (fun m => a m f) (h f)`. Use `⟨{ toFun := L, map_one' := ?_, map_mul' := ?_, map_zero' := ?_, map_add' := ?_ }, hL⟩` and prove the remaining obligations. Conclude with `(hL 1).unique (by simpa using tends_const (ϖ := ϖ) (1 : T))`. Introduce `f g`. Conclude with `(hL (f * g)).unique (by simpa using (hL f).mul (hL g))`.
-
-Conclude with `(hL 0).unique (by simpa using tends_const (ϖ := ϖ) (0 : T))`. Introduce `f g`. Conclude with `(hL (f + g)).unique (by simpa using (hL f).add (hL g))`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_lim_hom {S : Type} [CommRing S] [IsAdicComplete (Ideal.span {ϖ}) T] (a : ℕ → S →+* T)
     (h : ∀ f k, ∃ M, ∀ m, M ≤ m → a m f - a M f ∈ Ideal.span {ϖ ^ k}) :
@@ -115,7 +113,7 @@ end Lim
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Take `⟨M, hM⟩` from `GlobalTheory.CompanionTheory.PadicShift.exists_period l _ (f.2 k)`. Use `⟨M, fun z z' h => Ideal.Quotient.eq.1 (hM z z' ?_)⟩` and prove the remaining obligations. Rewrite using `[← Ideal.mem_span_singleton, ← PadicInt.ker_toZModPow, RingHom.mem_ker, map_sub, h, sub_self]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_period (A : PAlg l) (f : (A.cont ℤ_[l]).A) (k : ℕ) :
     ∃ M : ℕ, ∀ z z' : ℤ_[l], PadicInt.toZModPow M z = PadicInt.toZModPow M z' →

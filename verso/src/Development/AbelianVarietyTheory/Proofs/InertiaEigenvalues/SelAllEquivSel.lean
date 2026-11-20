@@ -15,11 +15,11 @@ section
 variable {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
 
 /- English proof (translation)
-Establish `m : ∀ y : Ω, y ∈ g • A ↔ (g⁻¹ : G F Ω) y ∈ A` using `fun y => by`. Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, AlgEquiv.smul_def]`. Establish `m' : ∀ y : Ω, (g • A).valuation y < 1 ↔ A.valuation ((g⁻¹ : G F Ω) y) < 1` using `fun y => by`. Rewrite using `[valuation_lt_one_iff', valuation_lt_one_iff', m, m, map_inv₀, map_eq_zero_iff _ (g⁻¹ : G F Ω).injective]`. Establish `c : ∀ x : Ω, (g⁻¹ : G F Ω) (g x) = x` using `fun x => by show (g⁻¹ * g) x = x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Use `⟨?_, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h : σ • g • A = g • A` using `hσ.1 show (g⁻¹ * σ * g) • A = A`. Rewrite using `[mul_smul, mul_smul, h, inv_smul_smul]`. Establish `hx' : (g • A).valuation (g x) ≤ 1`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[ValuationSubring.valuation_le_one_iff, m, c]`. Conclude with `(A.valuation_le_one_iff x).1 hx`. Establish `h` using `(m' _).1 (hσ.2 _ hx')`. Rewrite `h` using `[map_sub, c]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_Ine {A : ValuationSubring Ω} {g σ : G F Ω} (hσ : σ ∈ Ine (F := F) (g • A)) :
     g⁻¹ * σ * g ∈ Ine (F := F) A := by
@@ -50,7 +50,7 @@ variable {R R' : Type} [CommRing R] [CommRing R'] {M : Type} [AddCommGroup M] [M
 include he in
 
 /- English proof (translation)
-Apply `e.injective` to reduce the goal to its premises. Establish `: toGS Ω S σ = 1` using `(QuotientGroup.eq_one_iff σ).2 hσ`. Rewrite using `[he, this, map_one]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem triv_of_mem {σ : G F Ω} (hσ : σ ∈ NS Ω S) (m : M) : ρ σ m = m := by
   apply e.injective
@@ -72,13 +72,11 @@ Both sides reduce to the same expression.
 theorem infZ_apply (z : Z1 ρS) (g : G F Ω) : (infZ e he z).1 g = e.symm (z.1 (toGS Ω S g)) := rfl
 
 /- English proof (translation)
-Rewrite using `[Submodule.Quotient.eq, Submodule.Quotient.eq, Submodule.mem_comap, Submodule.mem_comap, mem_coboundaries1, mem_coboundaries1]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, hm⟩`. Use `⟨e m, fun g => ?_⟩` and prove the remaining obligations. Take `⟨g, rfl⟩ : ∃ g', toGS Ω S g' = g` from `QuotientGroup.mk'_surjective _ g`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `h1 : e.symm (z.1 (toGS Ω S g)) - e.symm (z'.1 (toGS Ω S g)) = ρ g m - m` using `hm g`. Establish `h2` using `congrArg e h1`. Rewrite `h2` using `[map_sub, map_sub, he, e.apply_symm_apply, e.apply_symm_apply]`. Conclude with `h2`. Introduce and unpack `⟨m, hm⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨e.symm m, fun g => ?_⟩` and prove the remaining obligations. Establish `h1 : z.1 (toGS Ω S g) - z'.1 (toGS Ω S g) = ρS (toGS Ω S g) m - m` using `hm (toGS Ω S g)`. Express the relevant statement in the definitionally equal form `e.symm (z.1 (toGS Ω S g)) - e.symm (z'.1 (toGS Ω S g)) = _`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[map_sub, map_sub, he, e.apply_symm_apply, e.apply_symm_apply, e.apply_symm_apply]`.
-
-Conclude with `h1`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mk_infZ_eq_iff (z z' : Z1 ρS) :
     (Submodule.Quotient.mk (infZ e he z) : H1 ρ) = Submodule.Quotient.mk (infZ e he z') ↔
@@ -103,13 +101,13 @@ theorem mk_infZ_eq_iff (z z' : Z1 ρS) :
 def infH : H1 ρS → H1 ρ := fun x => Submodule.Quotient.mk (infZ e he x.out)
 
 /- English proof (translation)
-The claim follows from `(mk_infZ_eq_iff e he _ _).2 (Quotient.out_eq' _)`.
+A detailed English derivation is pending.
 -/
 theorem infH_mk (z : Z1 ρS) : infH e he (Submodule.Quotient.mk z) = Submodule.Quotient.mk (infZ e he z) :=
   (mk_infZ_eq_iff e he _ _).2 (Quotient.out_eq' _)
 
 /- English proof (translation)
-Introduce `x y h`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Rewrite `h` using `[infH_mk, infH_mk]`. Conclude with `(mk_infZ_eq_iff e he _ _).1 h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem infH_injective : Function.Injective (infH e he) := by
   intro x y h
@@ -119,7 +117,7 @@ theorem infH_injective : Function.Injective (infH e he) := by
   exact (mk_infZ_eq_iff e he _ _).1 h
 
 /- English proof (translation)
-Apply `Subgroup.le_topologicalClosure` to reduce the goal to its premises. Apply `Subgroup.subset_normalClosure` to reduce the goal to its premises. Simplify using `only [Set.mem_iUnion]`. Conclude with `⟨v, hv, A, hA, hσ⟩`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem Ine_le_NS {v : HeightOneSpectrum (𝓞 F)} (hv : v ∉ S) {A : ValuationSubring Ω} (hA : IsPlaceOver A v)
     {σ : G F Ω} (hσ : σ ∈ Ine (F := F) A) : σ ∈ NS Ω S := by
@@ -129,7 +127,7 @@ theorem Ine_le_NS {v : HeightOneSpectrum (𝓞 F)} (hv : v ∉ S) {A : Valuation
   exact ⟨v, hv, A, hA, hσ⟩
 
 /- English proof (translation)
-Use `z.2.2 1 1` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem z_one {Γ : Type} [Group Γ] [TopologicalSpace Γ] {π : Representation R Γ M} (z : Z1 π) : z.1 1 = 0 := by
   have := z.2.2 1 1
@@ -138,9 +136,9 @@ theorem z_one {Γ : Type} [Group Γ] [TopologicalSpace Γ] {π : Representation 
 include he in
 
 /- English proof (translation)
-Establish `h0 : resH1 ρ (Dec (F` using `F) A).subtype continuous_subtype_val (Submodule.Quotient.mk z) ∈ Formalism.GaloisCohomology.unrAt ρ A ↔ (Submodule.Quotient.mk (restrictCocycles1 _ ((Ine (F := F) A).subgroupOf (Dec (F := F) A)).subtype continuous_subtype_val (restrictCocycles1 ρ (Dec (F := F) A).subtype continuo …`. Rewrite using `[h0, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, mem_coboundaries1]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, hm⟩ σ hσ`. Establish `h1 : z.1 σ = ρ σ m - m` using `hm ⟨⟨σ, Ine_le_Dec A hσ⟩, hσ⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[h1, triv_of_mem e he (Ine_le_NS hv hA hσ), sub_self]`. Introduce `h`. Use `⟨0, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[map_zero, sub_zero]`. Conclude with `h g.1.1 g.2`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_unrAt_iff {v : HeightOneSpectrum (𝓞 F)} (hv : v ∉ S) {A : ValuationSubring Ω} (hA : IsPlaceOver A v)
     (z : Z1 ρ) :
@@ -162,17 +160,17 @@ theorem mem_unrAt_iff {v : HeightOneSpectrum (𝓞 F)} (hv : v ∉ S) {A : Valua
 include he in
 
 /- English proof (translation)
-Establish `hz` using `z.2.2`. Establish `hinv : ∀ g, z.1 g + ρ g (z.1 g⁻¹) = 0` using `fun g => by`. Rewrite using `[← hz, mul_inv_cancel, z_one]`. Set `K : Subgroup (G F Ω)` to `{ carrier := {g | g ∈ NS Ω S ∧ z.1 g = 0} one_mem' := ⟨one_mem _, z_one z⟩ mul_mem' := by`. Introduce and unpack `a b ⟨ha, ha'⟩ ⟨hb, hb'⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨mul_mem ha hb, by rw [hz, ha', hb', map_zero, add_zero]⟩`. Use the proof step `inv_mem' := by`. Introduce and unpack `a ⟨ha, ha'⟩`. Use `⟨inv_mem ha, ?_⟩` and prove the remaining obligations. Use `hinv a` as an intermediate fact.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[ha', zero_add, triv_of_mem e he ha] at this }` and apply the resulting hypothesis. Establish `hK : K.Normal` using `⟨by`. Introduce and unpack `a ⟨ha, ha'⟩ g`. Use `⟨(normal_NS S).conj_mem a ha g, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc, hz, hz, ha', zero_add, triv_of_mem e he ha, hinv]⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : IsClosed (K : Set (G F Ω))` using `(isClosed_NS Ω S).inter ((isClosed_discrete {(0 : M)}).preimage z.2.1)`. Establish `hle : Subgroup.normalClosure (⋃ v ∈ Sᶜ, ⋃ A ∈ {A : ValuationSubring (Ω) | IsPlaceOver A v}, Inertia (F` using `F) A) ≤ K := by`. Apply `Subgroup.normalClosure_le_normal` to reduce the goal to its premises. Introduce `τ hτ`. Simplify using `only [Set.mem_iUnion] at hτ`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv, B, hB, hτ⟩` from `hτ`. Take `⟨g, rfl⟩` from `exists_smul_eq_of_isPlaceOver (F := F) (A.2 v) hB`. Establish `h1` using `conj_Ine (F := F) hτ`. Establish `h2 : g⁻¹ * τ * g ∈ K` using `⟨Ine_le_NS hv (A.2 v) h1, h v hv _ h1⟩`. Establish `h3` using `hK.conj_mem _ h2 g`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : g * (g⁻¹ * τ * g) * g⁻¹ = τ` using `by group`. Rewrite `h3` using `[h4]`. Then use the resulting hypothesis. Introduce `σ hσ`. Conclude with `(Subgroup.topologicalClosure_minimal _ hle hc hσ).2`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem vanish_NS [IsAlgClosure F Ω] (A : Formalism.GaloisCohomology.Places F Ω) (z : Z1 ρ)
     (h : ∀ v ∉ S, ∀ σ ∈ Ine (F := F) (A.1 v), z.1 σ = 0) : ∀ σ ∈ NS Ω S, z.1 σ = 0 := by
@@ -212,11 +210,11 @@ theorem vanish_NS [IsAlgClosure F Ω] (A : Formalism.GaloisCohomology.Places F �
   exact (Subgroup.topologicalClosure_minimal _ hle hc hσ).2
 
 /- English proof (translation)
-Establish `hz` using `z.2.2`. Establish `hw : ∀ a b : G F Ω, (QuotientGroup.leftRel (NS Ω S)) a b → e (z.1 a) = e (z.1 b)`. Introduce `a b hab`. Rewrite `hab` using `[QuotientGroup.leftRel_apply]`. Establish `: z.1 (a * (a⁻¹ * b)) = z.1 a` using `by rw [hz, h _ hab, map_zero, add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← this, mul_inv_cancel_left]`. Use `⟨⟨Quotient.lift (fun g => e (z.1 g)) hw, Continuous.quotient_lift ((continuous_of_discreteTopology (f := e)).comp z.2.1) hw, fun g g' => ?_⟩, ?_⟩` and prove the remaining obligations. Take `⟨g, rfl⟩ : ∃ g', toGS Ω S g' = g` from `QuotientGroup.mk'_surjective _ g`. Take `⟨g', rfl⟩ : ∃ g'', toGS Ω S g'' = g'` from `QuotientGroup.mk'_surjective _ g'`. Rewrite using `[← map_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `e (z.1 (g * g')) = e (z.1 g) + ρS (toGS Ω S g) (e (z.1 g'))`. Rewrite using `[hz, map_add, he]`. Conclude with `Subtype.ext (funext fun g => e.symm_apply_apply (z.1 g))`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_infZ (z : Z1 ρ) (h : ∀ σ ∈ NS Ω S, z.1 σ = 0) : ∃ z', infZ e he z' = z := by
   have hz := z.2.2
@@ -237,17 +235,17 @@ theorem exists_infZ (z : Z1 ρ) (h : ∀ σ ∈ NS Ω S, z.1 σ = 0) : ∃ z', i
 end
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ R R' _ _ M _ _ _ _ M' _ _ _ _ S A ρ ρS e _ he L LS hL hLS`. Establish `key : ∀ (z : Z1 ρS) (v : S), resH1 ρ (Dec (F` using `F) (A.1 v.1)).subtype continuous_subtype_val (Submodule.Quotient.mk (infZ e he z)) ∈ L v.1 ↔ resH1 ρS (locFam S (fun v => A.1 v.1) v) (continuous_locFam S _ v) (Submodule.Quotient.mk z) ∈ LS v := fun z v => hLS v (restrictCocycles1 ρ (Dec (F := F) (A.1 v.1)).subtype continuous_su …`. Establish `hall : ∀ y : H1 ρ, y ∈ Formalism.GaloisCohomology.SelAll ρ A L ↔ ∀ v, resH1 ρ (Dec (F` using `F) (A.1 v)).subtype continuous_subtype_val y ∈ L v := fun y => mem_Sel ρ (fun v => (Dec (F := F) (A.1 v)).subtype) (fun _ => continuous_subtype_val) L y`. Establish `hmem : ∀ x : H1 ρS, x ∈ Sel ρS (locFam S (fun v => A.1 v.1)) (continuous_locFam S _) LS ↔ infH e he x ∈ Formalism.GaloisCohomology.SelAll ρ A L`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite using `[infH_mk, hall, mem_Sel]`. Prove the components needed by the constructor for the conclusion. Introduce `h v`. Distinguish the cases in `hv : v ∈ S`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Conclude with `(key z ⟨v, hv⟩).2 (h ⟨v, hv⟩)`. Rewrite using `[hL v hv, mem_unrAt_iff e he (by simpa using hv) (A.2 v)]`. Introduce `σ hσ`. Establish `: toGS Ω (S : Set (HeightOneSpectrum (𝓞 F))) σ = 1` using `(QuotientGroup.eq_one_iff σ).2 (Ine_le_NS (by simpa using hv) (A.2 v) hσ)`. Rewrite using `[infZ_apply, this, z_one, map_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h v`. Conclude with `(key z v).1 (h v.1)`. Use `⟨(Equiv.ofBijective (fun x : Sel ρS (locFam S (fun v => A.1 v.1)) (continuous_locFam S _) LS => (⟨infH e he x.1, (hmem _).1 x.2⟩ : Formalism.GaloisCohomology.SelAll ρ A L)) ⟨?_, ?_⟩).symm⟩` and prove the remaining obligations. Introduce `x y h`. Conclude with `Subtype.ext (infH_injective e he (congrArg Subtype.val h))`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `⟨y, hy⟩`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Establish `hy'` using `(hall _).1 hy`. Take `⟨z', rfl⟩` from `exists_infZ e he z (vanish_NS e he A z fun v hv => by`. Establish `hv' : v ∉ S` using `by simpa using hv`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Supply the required witnesses or components.
 
-Use `hy' v` as an intermediate fact. Rewrite using `[hL v hv', mem_unrAt_iff e he hv (A.2 v)] at this)` and apply the resulting hypothesis. Conclude with `⟨⟨Submodule.Quotient.mk z', (hmem _).2 (by rw [infH_mk]; exact hy)⟩, Subtype.ext (infH_mk e he z')⟩`.
+A detailed English derivation is pending.
 -/
 theorem selAll_equiv_sel : ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (R R' : Type) [CommRing R] [CommRing R'] (M : Type) [AddCommGroup M] [Module R M] [TopologicalSpace M] [DiscreteTopology M] (M' : Type) [AddCommGroup M'] [Module R' M'] [TopologicalSpace M'] [DiscreteTopology M'] (S : Finset (HeightOneSpectrum (𝓞 F))) (A : Formalism.GaloisCohomology.Places F Ω) (ρ : Representation R (G F Ω) M) (ρS : Representation R' (GS Ω (S : Set (HeightOneSpectrum (𝓞 F)))) M') (e : M ≃+ M'), ContAction ρ → (∀ g m, e (ρ g m) = ρS (toGS Ω _ g) (e m)) → ∀ (L : ∀ v, Submodule R (H1 (ρ.comp (Dec (F := F) (A.1 v)).subtype))) (LS : LocCond ρS (locFam S (fun v => A.1 v.1))), (∀ v ∉ S, L v = Formalism.GaloisCohomology.unrAt ρ (A.1 v)) → (∀ (v : S) (z : Z1 (ρ.comp (Dec (F := F) (A.1 v.1)).subtype)) (z' : Z1 (ρS.comp (locFam S (fun v => A.1 v.1) v))), (∀ g, z'.1 g = e (z.1 g)) → (Submodule.Quotient.mk z ∈ L v.1 ↔ Submodule.Quotient.mk z' ∈ LS v)) → Nonempty (Formalism.GaloisCohomology.SelAll ρ A L ≃ Sel ρS (locFam S (fun v => A.1 v.1)) (continuous_locFam S _) LS) := by
   intro F Ω _ _ _ _ _ R R' _ _ M _ _ _ _ M' _ _ _ _ S A ρ ρS e _ he L LS hL hLS

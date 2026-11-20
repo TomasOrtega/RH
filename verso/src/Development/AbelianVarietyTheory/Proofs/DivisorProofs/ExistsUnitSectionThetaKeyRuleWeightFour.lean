@@ -17,7 +17,7 @@ open GlobalTheory.FlatTw GlobalTheory.IndefiniteRowSideFullHecke.ComponentMassSu
 namespace GlobalTheory.KeyFourth
 
 /- English proof (translation)
-Rewrite using `[kch, ← Finset.prod_pow]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, smul_eq_mul, mul_comm, zpow_mul]`. Use `norm_cast`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared.
 -/
 theorem prod_zpow_four_smul_keyEx {E : Type} [Field E] [NumberField E] [IsCMField E]
     {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {S : Type} [CommRing S] (t : Ix Dw → Sˣ) :
@@ -30,29 +30,29 @@ theorem prod_zpow_four_smul_keyEx {E : Type} [Field E] [NumberField E] [IsCMFiel
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `κ h₁ h₂ h₃ E _ _ _ H Dw l Xo c g e hpq`. Take `⟨hL, -, h, hA⟩` from `evLaws_genFr_atlas E H Dw l Xo c`. Take `⟨v, hv⟩` from `exists_chart_units h₁ h₂ h₃ e hpq h`. Take `⟨f, hf, hfb⟩` from `GlobalTheory.T.exists_integer_exponent_section_of_chart_regular E H Dw l Xo c h ((4 : ℤ) • keyEx Dw) (fun Z => (v Z : Om Z)) fun C => by`. Take `⟨-, u, -, -, huv⟩` from `hv C`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[prod_zpow_four_smul_keyEx, ← Units.val_mul, ← huv]`. Conclude with `(u : C.R).2`. Take `⟨f', hf', hfb'⟩` from `GlobalTheory.T.exists_integer_exponent_section_of_chart_regular E H Dw l Xo c h (-((4 : ℤ) • keyEx Dw)) (fun Z => (((v Z)⁻¹ : (Om Z)ˣ) : Om Z)) fun C => by`. Take `⟨-, u, -, -, huv⟩` from `hv C`. Establish `hm : Units.map (C.R.val : C.R →* Om C.Z) u = kch C.t ^ 4 * v C.Z` using `Units.ext huv`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : (∏ i, C.t i ^ (-((4 : ℤ) • keyEx Dw)) i) = (kch C.t ^ 4)⁻¹`. Rewrite using `[← prod_zpow_four_smul_keyEx, ← Finset.prod_inv_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.neg_apply, zpow_neg]`. Establish `hq : (kch C.t ^ 4)⁻¹ * (v C.Z)⁻¹ = Units.map (C.R.val : C.R →* Om C.Z) u⁻¹`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_inv, hm, mul_inv_rev, mul_comm]`. Rewrite using `[hp, ← Units.val_mul, hq]`. Conclude with `((u⁻¹ : (C.R)ˣ) : C.R).2`. Establish `h0 : GlobalTheory.AllWt.secZ Xo c 0 = sec Xo c 0 0`. Rewrite using `[← GlobalTheory.AllWt.secZ_nat]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `cases i <;> rfl`. Establish `hm` using `GlobalTheory.AllWt.mul_mem_secZ hf hf'`. Rewrite `hm` using `[add_neg_cancel, h0]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `GlobalTheory.AllWt.one_mem_secZ (Xo := Xo) (c := c)`. Rewrite `h1` using `[h0]`. Establish `hff : f * f' = 1`. Use `sub_eq_zero.1 (sec_eq_zero_of_generic_values E H Dw l Xo c hL h (hA h) 0 0 _ (sub_mem hm h1) fun Z => ?_)` and prove the remaining obligations. Establish `e₁ : evC h Z (f * f') = evC h Z f * evC h Z f'` using `by simp only [evC, evR, evalAt_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₂ : evC h Z (1 : Rul Xo c) = 1` using `evalAt_one _ _ _ (hL.test _ _)`. Establish `e₃` using `(evalL (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) (genFr h Z)).map_sub (f * f') 1`. Use `e₃.trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `evC h Z (f * f') - evC h Z 1 = 0`. Rewrite using `[e₁, e₂, hfb, hfb', Units.mul_inv, sub_self]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨⟨f, f', hff, (mul_comm _ _).trans hff⟩, hf, ?_⟩` and prove the remaining obligations. Introduce `F _ _ _ y Φ hΦ`. Express the relevant statement in the definitionally equal form `evR Xo c f y = _`. Take `⟨C, ψ, z, t', hz, hb⟩` from `hA h F y`. Take `⟨ΦC, u, hΦC, hu, huv⟩` from `hv C`.
+Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨p, a, u₀, hu₀⟩` from `hL.test C.R C.y`. Establish `k₁ : evR Xo c f C.yg = C.R.val (evR Xo c f C.y)`. Rewrite using `[GlobalTheory.FlagTan.evR_eq hf.1 hu₀, GlobalTheory.FlagTan.evR_eq hf.1 (GlobalTheory.FlagTan.frMap_comp (χ := C.R.val.comp a) hu₀ C.gen fun _ => rfl)]`. Both sides reduce to the same expression. Establish `k₂ : evR Xo c f C.yg = ((u : C.R) : Om C.Z)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.FlagTan.evR_frBor hf C.bor, prod_zpow_four_smul_keyEx, huv]`. Use `hfb C.Z` as an intermediate fact. Simplify using `only [evC] at this`. Rewrite using `[this, Units.val_mul]`. Establish `k₃ : evR Xo c f C.y = (u : C.R)` using `Subtype.val_injective (k₁.symm.trans k₂)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `k₄ : evR Xo c f z = ψ (u : C.R)`. Rewrite using `[GlobalTheory.FlagTan.evR_eq hf.1 (GlobalTheory.FlagTan.frMap_comp (χ := ψ.comp a) hu₀ hz fun _ => rfl), ← k₃, GlobalTheory.FlagTan.evR_eq hf.1 hu₀]`. Both sides reduce to the same expression. Take `⟨Ψ, hΨ⟩` from `GlobalTheory.T.exists_universalTripleFibre_at_framedPoint E H Dw l Xo c g e F z hpq`. Establish `k₅` using `GlobalTheory.T.theta_key_rule_triangular_frame_change_fourth_power κ h₁ h₂ E H Dw l Xo c g e F t' z y Ψ Φ hb hΨ hΦ`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `k₆ : (κ F Ψ.key : F) = ψ (u : C.R)` using `hu F ψ.toRingHom Ψ.key (GlobalTheory.T.universal_triple_fibres_base_change_key_data E H Dw l Xo c g e C.R F ψ C.y z ΦC Ψ hz hΦC hΨ)`. Rewrite using `[GlobalTheory.FlagTan.evR_frBor hf hb, prod_zpow_four_smul_keyEx, k₄, k₅, Units.val_mul, k₆]`.
+A detailed English derivation is pending.
 -/
 theorem exists_unit_secZ_keyRule : ∀ (κ : GlobalTheory.KeyCl.Rule), GlobalTheory.KeyCl.Homog (fun _ => 1) κ → GlobalTheory.KeyCl.Funct κ → GlobalTheory.KeyCl.FamUnit κ → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (g : ℕ) (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ)), 1 ≤ Dw.p + Dw.q → ∃ K : (Rul Xo c)ˣ, (K : Rul Xo c) ∈ secZ Xo c ((4 : ℤ) • keyEx Dw) ∧ (∀ (F : Type) [Field F] [CharZero F] [Algebra c.F F] (y : FrPt Xo c F) (Φ : FibKey Xo F y.x), Tied e y.s y.u Φ → evR Xo c (K : Rul Xo c) y = (κ F Φ.key : F)) := by
   intro κ h₁ h₂ h₃ E _ _ _ H Dw l Xo c g e hpq

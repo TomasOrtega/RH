@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ToroidalCo
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `h` and use `h.toroidalChartsForFan`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem toroidalChartsForFan_of_toroidalForFanKS :
     GlobalTheory.Published.ToroidalForFanKS → GlobalTheory.Published.ToroidalChartsForFan :=

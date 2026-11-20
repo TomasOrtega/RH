@@ -28,15 +28,13 @@ open Filter Topology
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Establish `hin : ∀ (T : Finset (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F)) w, w ∈ T → evalV F w (sndA F (1 - GlobalTheory.FinDecomp.idemS F T)) = 0`. Introduce `T w hw`. Express the relevant statement in the definitionally equal form `evFin F w (1 - GlobalTheory.FinDecomp.idemS F T) = 0`. Rewrite using `[map_sub, map_one, GlobalTheory.FinDecomp.evFin_idemS, if_pos hw, sub_self]`. Establish `hint : ∀ (T : Finset (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F)) w, evalV F w (sndA F (1 - GlobalTheory.FinDecomp.idemS F T)) ∈ w.adicCompletionIntegers F`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `T w`. Express the relevant statement in the definitionally equal form `evFin F w (1 - GlobalTheory.FinDecomp.idemS F T) ∈ w.adicCompletionIntegers F`. Rewrite using `[map_sub, map_one, GlobalTheory.FinDecomp.evFin_idemS]`. Use `split_ifs`. Rewrite using `[sub_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_mem _`. Rewrite using `[sub_zero]`. Conclude with `one_mem _`. Set `A : ∀ w : HeightOneSpectrum (𝓞 F), Set (w.adicCompletion F)` to `fun w => w.adicCompletionIntegers F`. Set `o : ∀ w, A w` to `fun w => ⟨0, zero_mem (w.adicCompletionIntegers F)⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `g : Finset (HeightOneSpectrum (𝓞 F)) → ∀ w, A w` to `fun T w => ⟨_, hint T w⟩`. Establish `hg : Tendsto g atTop (𝓝 o)`. Rewrite using `[tendsto_pi_nhds]`. Introduce `w`. Use `tendsto_const_nhds.congr' ?_` and prove the remaining obligations.
-
-Use `filter_upwards [eventually_ge_atTop ({w} : Finset _)] with T hT`. Conclude with `Subtype.ext (hin T w (hT (Finset.mem_singleton_self w))).symm`. Establish `h` using `((RestrictedProduct.isEmbedding_structureMap (A := A) (𝓕 := cofinite)).continuous.tendsto o).comp hg`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tendsto_snd_one_sub_idemS :
     Tendsto (fun T : Finset (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) => sndA F (1 - GlobalTheory.FinDecomp.idemS F T)) atTop (𝓝 0) := by
@@ -76,7 +74,7 @@ open Filter Topology
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Introduce `u hu`. Establish `h1 : u.1 = 0` using `(InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (by rw [map_zero]; exact hu)`. Use `show (u.1 * 1, u.2 * 0) = (0, 0)`. Rewrite using `[h1, zero_mul, mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem at_infIdem : At (evI F) (pairA F 1 0) := by
   intro u hu
@@ -85,9 +83,9 @@ theorem at_infIdem : At (evI F) (pairA F 1 0) := by
   rw [h1, zero_mul, mul_zero]
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.FinDecomp.fst_idemS (F := F) T`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `1 - fstA F (GlobalTheory.FinDecomp.idemS F T) = 1 + 0`. Rewrite using `[h, sub_zero, add_zero]`. Express the relevant statement in the definitionally equal form `sndA F (1 - GlobalTheory.FinDecomp.idemS F T) = 0 + sndA F (1 - GlobalTheory.FinDecomp.idemS F T)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[zero_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem one_sub_idemS_eq (T : Finset (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F)) :
     1 - GlobalTheory.FinDecomp.idemS F T = pairA F 1 0 + pairA F 0 (sndA F (1 - GlobalTheory.FinDecomp.idemS F T)) := by
@@ -99,7 +97,7 @@ theorem one_sub_idemS_eq (T : Finset (GlobalTheory.IndefiniteRowSideFullHecke.We
     rw [zero_add]
 
 /- English proof (translation)
-Establish `h` using `(tendsto_const_nhds (x := (0 : Ainf F))).prodMk_nhds (tendsto_snd_one_sub_idemS (F := F))`. Conclude with `h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tendsto_cut :
     Tendsto (fun T : Finset (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) => pairA F 0 (sndA F (1 - GlobalTheory.FinDecomp.idemS F T))) atTop (𝓝 0) := by
@@ -107,11 +105,11 @@ theorem tendsto_cut :
   exact h
 
 /- English proof (translation)
-Establish `key : ∀ T : Finset (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F), GlobalTheory.FinDecomp.phi (GlobalTheory.FinDecomp.idemS F T) M = M + pairA F 0 (sndA F (1 - GlobalTheory.FinDecomp.idemS F T)) • (1 - M)`. Introduce `T`. Establish `h0 : pairA F 1 0 • (1 - M) = 0` using `by rw [← neg_sub, smul_neg, hM, neg_zero]`. Establish `h1 : GlobalTheory.FinDecomp.phi (GlobalTheory.FinDecomp.idemS F T) M = M + (1 - GlobalTheory.FinDecomp.idemS F T) • (1 - M)`. Simplify using `only [GlobalTheory.FinDecomp.phi, sub_smul, smul_sub, one_smul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[h1, congrArg (· • (1 - M)) (one_sub_idemS_eq T), add_smul, h0, zero_add]`. Repeatedly rewrite using `[key]`. Establish `h` using `(tendsto_const_nhds (x := M)).add ((tendsto_cut (F := F)).smul_const (1 - M))`. Establish `e : M + (0 : AF F) • (1 - M) = M` using `by rw [zero_smul, add_zero]`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[e]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tendsto_phi {n : ℕ} (M : Matrix (Fin n) (Fin n) (AE F E)) (hM : pairA F 1 0 • (M - 1) = 0) :
     Tendsto (fun T : Finset (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) => GlobalTheory.FinDecomp.phi (GlobalTheory.FinDecomp.idemS F T) M) atTop (𝓝 M) := by
@@ -137,9 +135,9 @@ namespace GlobalTheory.FinDecompLim
 open Filter Topology
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ d J K hK`. Establish `hM : pairA F 1 0 • (mat K - 1) = 0` using `hK _ at_infIdem`. Establish `hN : pairA F 1 0 • (mat K⁻¹ - 1) = 0`. Establish `h : mat K⁻¹ - 1 = mat K⁻¹ * (1 - mat K)`. Rewrite using `[Matrix.mul_sub, Matrix.mul_one, GlobalTheory.FinDecomp.mat_inv_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, ← Matrix.mul_smul, ← neg_sub (mat K), smul_neg, hM, neg_zero, Matrix.mul_zero]`. Rewrite using `[tendsto_subtype_rng, Units.isEmbedding_embedProduct.tendsto_nhds_iff]`. Express the relevant statement in the definitionally equal form `Tendsto (fun T : Finset (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) => (GlobalTheory.FinDecomp.phi (GlobalTheory.FinDecomp.idemS F T) (mat K), MulOpposite.op (GlobalTheory.FinDecomp.phi (GlobalTheory.FinDecomp.idemS F T) (mat K⁻¹)))) atTop (𝓝 (mat K, MulOpposi …`. Conclude with `(tendsto_phi _ hM).prodMk_nhds ((MulOpposite.continuous_op.tendsto _).comp (tendsto_phi _ hN))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem tendsto_loc_idemS : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (d : ℕ)
     (J : Matrix (Fin d) (Fin d) E) (K : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UA σ J),

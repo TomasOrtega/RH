@@ -23,17 +23,15 @@ section Dim
 attribute [local instance low] specializationOrder
 
 /- English proof (translation)
-Establish `key (a : S) : Order.height (f a) ≤ Order.height a`. Use `Order.height_le_iff'.2 fun p hp => ?_` and prove the remaining obligations. Proceed by induction on `p using RelSeries.inductionOn' generalizing a with`. Consider the case `singleton x => simp`. Consider the case `snoc p x hx ih`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Simplify using `only [RelSeries.last_snoc] at hp`. Substitute `hp` using the available equality. Establish `hx' : p.last < f a` using `hx`. Take `⟨a', ha, e⟩` from `hf.specializingMap (show f a ⤳ p.last from hx'.le)`. Establish `hlt : a' < a` using `lt_of_le_of_ne ha fun h => hx'.ne (by rw [← e, h])`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `grw [RelSeries.snoc_length, Nat.cast_add, Nat.cast_one, ih a' e.symm]`. Conclude with `Order.height_add_one_le hlt`. Establish `key' (p : LTSeries W) : p.length + Order.height (genericPoint T) ≤ Order.height (j p.last)`. Proceed by induction on `p using RelSeries.inductionOn' with`. Consider the case `singleton x => simpa [h] using key (j x)`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `snoc p x hx ih`. Establish `hx' : p.last < x` using `hx`. Establish `hlt : j p.last < j x` using `lt_of_le_of_ne (Specializes.map hx'.le hj) (hi.ne hx'.ne)`. Rewrite using `[RelSeries.last_snoc, RelSeries.snoc_length, Nat.cast_add, Nat.cast_one, add_right_comm]`. Conclude with `(add_le_add_left ih 1).trans (Order.height_add_one_le hlt)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure.
 
-Establish `hT : topologicalKrullDim T = Order.height (genericPoint T)`. Use `(Order.krullDim_eq_of_orderIso (irreducibleSetEquivPoints (α := T))).trans ?_` and prove the remaining obligations. Use `letI : OrderTop T := { top := genericPoint T, le_top := genericPoint_specializes }`. Conclude with `Order.height_top_eq_krullDim.symm`. Rewrite using `[hT, show topologicalKrullDim W = Order.krullDim W from Order.krullDim_eq_of_orderIso (irreducibleSetEquivPoints (α := W)), show topologicalKrullDim S = Order.krullDim S from Order.krullDim_eq_of_orderIso (irreducibleSetEquivPoints (α := S))]`.
-
-Break down `isEmpty_or_nonempty W with _ | _` into its components or cases. Simplify using `[Order.krullDim_eq_bot]`. Rewrite using `[Order.krullDim_eq_iSup_length, ← WithBot.coe_add, ENat.iSup_add, WithBot.coe_iSup (OrderTop.bddAbove _)]`. Conclude with `iSup_le fun p => (WithBot.coe_le_coe.2 (key' p)).trans (Order.height_le_krullDim _)`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dim_add_dim_le {S T W : Type*} [TopologicalSpace S] [TopologicalSpace T]
     [TopologicalSpace W] [QuasiSober S] [T0Space S] [QuasiSober T] [T0Space T] [QuasiSober W]
@@ -100,7 +98,7 @@ def genFibreStr : f.genFibre ⟶ Sp f.fnField := f.f.fiberToSpecResidueField _
 instance : Algebra f.fnField Γ(f.genFibre, ⊤) := algebraΓOfHom f.genFibreStr
 
 /- English proof (translation)
-The claim follows from `.of_hasPullback _ _`.
+A detailed English derivation is pending.
 -/
 theorem isPullback_genFibre :
     IsPullback f.genFibreι f.genFibreStr f.f (Z.X.fromSpecResidueField (genericPoint Z.X)) :=
@@ -114,7 +112,7 @@ instance : IsAffineHom f.genFibreι :=
   MorphismProperty.of_isPullback f.isPullback_genFibre.flip this
 
 /- English proof (translation)
-Rewrite using `[← Z.dim_eq, ← Z₁.dim_eq]`. Conclude with `dim_add_dim_le f.f.isClosedMap f.genFibreι.continuous (f.f.fiberι _).isEmbedding.injective fun w => (f.f.range_fiberι _).le ⟨w, rfl⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dim_genFibre_add_le : topologicalKrullDim f.genFibre + (Z.relDim + 1 : ℕ) ≤
     (Z₁.relDim + 1 : ℕ) := by
@@ -127,9 +125,9 @@ instance : Nonempty f.genFibre :=
   ((f.f.range_fiberι _).ge hx).elim fun w _ => ⟨w⟩
 
 /- English proof (translation)
-Establish `h` using `f.dim_genFibre_add_le`. Establish `h₀ : topologicalKrullDim f.genFibre ≠ ⊥` using `mt topologicalKrullDim_eq_bot_iff.1 (not_isEmpty_iff.2 inferInstance)`. Generalize the expression as in `topologicalKrullDim f.genFibre = a at *`. Use `lift a to ℕ∞ using h₀`. Establish `h' : a + (Z.relDim + 1 : ℕ) ≤ (Z₁.relDim + 1 : ℕ)` using `by exact_mod_cast h`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `lift a to ℕ using by rintro rfl; simp at h'`. Establish `h'' : a + (Z.relDim + 1) ≤ Z₁.relDim + 1` using `by exact_mod_cast h'`. Conclude with `⟨a, rfl, by omega⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_dim_genFibre :
     ∃ n : ℕ, topologicalKrullDim f.genFibre = n ∧ n + Z.relDim ≤ Z₁.relDim := by
@@ -146,19 +144,19 @@ theorem exists_dim_genFibre :
 include f in
 
 /- English proof (translation)
-The claim follows from `have ⟨_, _, h⟩ := f.exists_dim_genFibre le_of_add_le_right h`.
+A detailed English derivation is pending.
 -/
 theorem relDim_le : Z.relDim ≤ Z₁.relDim :=
   have ⟨_, _, h⟩ := f.exists_dim_genFibre
   le_of_add_le_right h
 
 /- English proof (translation)
-The claim follows from `Nat.add_sub_of_le f.relDim_le`.
+A detailed English derivation is pending.
 -/
 theorem relDim_add : Z.relDim + f.relDim = Z₁.relDim := Nat.add_sub_of_le f.relDim_le
 
 /- English proof (translation)
-Take `⟨n, e, h⟩` from `f.exists_dim_genFibre`. Rewrite using `[e]`. Conclude with `Nat.le_sub_of_add_le h` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dim_genFibre_le : topologicalKrullDim f.genFibre ≤ f.relDim := by
   obtain ⟨n, e, h⟩ := f.exists_dim_genFibre
@@ -166,7 +164,7 @@ theorem dim_genFibre_le : topologicalKrullDim f.genFibre ≤ f.relDim := by
   exact_mod_cast Nat.le_sub_of_add_le h
 
 /- English proof (translation)
-The claim follows from `have ⟨_, hA⟩ := Z₁.exists_isAmpleLB (hA.pull_of_isAffineHom f.genFibreι).diffVanish_chiPic_of_isProper (f := f.genFibreStr) (fun _ => rfl) _ (suppDim_structureModule.trans_le f.dim_genFibre_le)`.
+A detailed English derivation is pending.
 -/
 theorem diffVanish_genFibre :
     DiffVanish (f.relDim + 1) (chiPic f.fnField (structureModule f.genFibre)) :=
@@ -178,7 +176,7 @@ def fibreDeg : PicSym Z₁.X →ₗ[ℚ] ℚ :=
   picForm f.diffVanish_genFibre ∘ₗ (picSymPull f.genFibreι).toLinearMap
 
 /- English proof (translation)
-Establish `h` using `fun i => Semi.LB.isLB_pull (hL i) f.genFibreι`. Rewrite using `[interNum_eq_multiDiff _ _ h, ← picForm_prod f.diffVanish_genFibre, fibreDeg, LinearMap.comp_apply, AlgHom.toLinearMap_apply, map_prod]`. Conclude with `congrArg _ (Finset.prod_congr rfl fun i _ => pullback_firstChern _ (hL i) (h i))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fibreDeg_prod {ι : Type} [Fintype ι] {L : ι → LB Z₁.X} (hL : ∀ i, (L i).IsLB) :
     f.fibreDeg (∏ i, c1 (L i) (hL i)) = if Fintype.card ι = f.relDim then
@@ -210,14 +208,14 @@ theorem genEquiv_apply {V : Z.X.Opens} (h : V ≤ Z.gen) (a : Γ(Z.X, V)) :
     genEquiv h a = (Z.gen.ι.app V).hom a := rfl
 
 /- English proof (translation)
-The claim follows from `Cartier.app_resG Z.gen.ι h' a`.
+A detailed English derivation is pending.
 -/
 theorem genEquiv_resG {U V : Z.X.Opens} (h : V ≤ Z.gen) (h' : V ≤ U) (a : Γ(Z.X, U)) :
     genEquiv h (resG Z.X h' a) = (Z.gen.ι.appLE U _ (Z.gen.ι.preimage_mono h')).hom a :=
   Cartier.app_resG Z.gen.ι h' a
 
 /- English proof (translation)
-Rewrite using `[VB.pullback_map_smulHom]`. Establish `h : IsUnit (Z.gen.ι.appTop (Z.const g))` using `RingedSpace.isUnit_of_isUnit_germ _ _ _ fun x _ => (Scheme.mem_basicOpen_top _ _ x).1 ((Scheme.preimage_basicOpen_top Z.gen.ι _).le (Z.gen_le_basicOpen hg x.2))`. Conclude with `(isUnit_iff_isIso _).1 (h.map (smulEnd _))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isIso_genRes_map_smulHom (E : Z.X.Modules) {g : O} (hg : g ≠ 0) :
     IsIso (Z.genRes.map (smulHom E (Z.const g))) := by
@@ -261,7 +259,7 @@ def pull (φ : Z.GenIso E E') :
     ((genPullIso hf).app E').symm
 
 /- English proof (translation)
-Simplify using `only [pull, Iso.trans_inv, Iso.symm_inv, Iso.app_hom, Iso.app_inv, Functor.mapIso_inv, h, Category.assoc]`. Conclude with `NatIso.naturality_2 (genPullIso hf) ψ`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pull_inv {φ : Z.GenIso E E'} {ψ : E' ⟶ E} (h : φ.inv = Z.genRes.map ψ) :
     (φ.pull hf).inv = Z₁.genRes.map ((Scheme.Modules.pullback f).map ψ) := by
@@ -270,7 +268,7 @@ theorem pull_inv {φ : Z.GenIso E E'} {ψ : E' ⟶ E} (h : φ.inv = Z.genRes.map
   exact NatIso.naturality_2 (genPullIso hf) ψ
 
 /- English proof (translation)
-The claim follows from `Iso.ext (Iso.inv_eq_inv _ _ |>.1 (by rw [pull_inv hf (smul_inv g hg), VB.pullback_map_smulHom f, appTop_const hf, smul_inv]))`.
+A detailed English derivation is pending.
 -/
 theorem pull_smul (g : O) (hg : g ≠ 0) : (smul E g hg).pull hf = smul _ g hg :=
   Iso.ext (Iso.inv_eq_inv _ _ |>.1 (by
@@ -286,7 +284,7 @@ def detUnit (c : Chart E r) (c' : Chart E' r) [E.IsQuasicoherent] [E'.IsQuasicoh
     (h.trans (Z.gen.ι.preimage_mono inf_le_left)) (h.trans (Z.gen.ι.preimage_mono inf_le_right))
 
 /- English proof (translation)
-Establish `e` using `c.isFrame.val_detUnit_pullback d.isFrame Z.gen.ι (hc.trans inf_le_left) (hd.trans inf_le_left) h`. Establish `e'` using `c'.isFrame.val_detUnit_pullback d'.isFrame Z.gen.ι (hc.trans inf_le_right) (hd.trans inf_le_right) h`. Rewrite `e'` using `[← (c'.isFrame.pullback Z.gen.ι).detUnit_map_iso _ φ.inv]`. Rewrite using `[map_mul, map_inv, ← Units.ext (v := Units.map _ _) e, ← Units.ext (v := Units.map _ _) e', mul_right_comm, detUnit, detUnit, IsFrame.detUnit_mul, eq_mul_inv_iff_mul_eq, IsFrame.detUnit_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem detUnit_rel (c d : Chart E r) (c' d' : Chart E' r) [E.IsQuasicoherent]
     [E'.IsQuasicoherent] {V : Z.X.Opens} (hc : V ≤ c.U ⊓ c'.U) (hd : V ≤ d.U ⊓ d'.U)
@@ -334,7 +332,7 @@ def div (hE : IsVB E r) (hE' : IsVB E' r) : VertDiv Z :=
 variable (hE : IsVB E r) (hE' : IsVB E' r) (hE'' : IsVB E'' r)
 
 /- English proof (translation)
-The claim follows from `hE.isQuasicoherent haveI := hE'.isQuasicoherent genEquiv (h.trans inf_le_left) ((φ.div hE hE').eqn (c, c') h) = (φ.detUnit c c' (Z.gen.ι.preimage_mono (h.trans inf_le_right))).val := by change genEquiv _ (resG Z.X h ((genEquiv inf_le_left).symm _)) = _ rw [genEquiv_apply, Cartier …`.
+A detailed English derivation is pending.
 -/
 theorem genEquiv_eqn_div (c : Chart E r) (c' : Chart E' r) {W : Z.X.Opens}
     (h : W ≤ Z.gen ⊓ (c.U ⊓ c'.U)) :
@@ -347,19 +345,19 @@ theorem genEquiv_eqn_div (c : Chart E r) (c' : Chart E' r) {W : Z.X.Opens}
   exact congrArg Units.val (IsFrame.res_detUnit _ _ _ _ _)
 
 /- English proof (translation)
-The claim follows from `(VertDiv.vCls_cls _).trans (cls_div _ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem vCls_div : Z.vCls (φ.div hE hE').cls = cls _ hE.isLB_det - cls _ hE'.isLB_det :=
   (VertDiv.vCls_cls _).trans (cls_div _ _ _)
 
 /- English proof (translation)
-Use `hE.isQuasicoherent` as an intermediate fact. Use `hE'.isQuasicoherent` as an intermediate fact. Use `hE''.isQuasicoherent` as an intermediate fact. Use `VertDiv.IsSum.cls_eq fun i j k => ?_` and prove the remaining obligations. Take `⟨c, c'⟩` from `i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨d', d''⟩` from `j`. Take `⟨e, e''⟩` from `k`. Establish `h₁ : c.U ⊓ c'.U ⊓ (d'.U ⊓ d''.U) ⊓ (e.U ⊓ e''.U) ≤ c.U ⊓ c'.U` using `inf_le_left.trans inf_le_left`. Establish `h₂ : c.U ⊓ c'.U ⊓ (d'.U ⊓ d''.U) ⊓ (e.U ⊓ e''.U) ≤ d'.U ⊓ d''.U` using `inf_le_left.trans inf_le_right`. Establish `h₃ : c.U ⊓ c'.U ⊓ (d'.U ⊓ d''.U) ⊓ (e.U ⊓ e''.U) ≤ e.U ⊓ e''.U` using `inf_le_right`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨e.isFrame.detUnit c.isFrame (h₃.trans inf_le_left) (h₁.trans inf_le_left) * c'.isFrame.detUnit d'.isFrame (h₁.trans inf_le_right) (h₂.trans inf_le_left) * d''.isFrame.detUnit e''.isFrame (h₂.trans inf_le_right) (h₃.trans inf_le_right), (genEquiv inf_le_left).injective ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, genEquiv_eqn_div, genEquiv_eqn_div, genEquiv_eqn_div, genEquiv_resG]`. Simplify using `only [Units.val_mul, map_mul, ← IsFrame.val_detUnit_pullback]`. Simplify using `only [← Units.val_mul]`. Use `congrArg Units.val ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← (c'.isFrame.pullback Z.gen.ι).detUnit_map_iso _ φ.inv, ← (d''.isFrame.pullback Z.gen.ι).detUnit_map_iso _ (φ ≪≫ φ').inv, detUnit, detUnit, detUnit, ← (d'.isFrame.pullback Z.gen.ι).detUnit_map_iso _ φ.inv, show ∀ a b c d e : Γ(Z.gen.toScheme, _)ˣ, a * b * c * (d * e) = a * d * …`. Conclude with `(IsFrame.detUnit_mul _ _ _ _ _ _).symm`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cls_div_trans (φ' : Z.GenIso E' E'') :
     (div (φ ≪≫ φ') hE hE'').cls = (φ.div hE hE').cls + (φ'.div hE' hE'').cls := by
@@ -392,9 +390,9 @@ theorem cls_div_trans (φ' : Z.GenIso E' E'') :
 variable {φ} {ψ : E' ⟶ E}
 
 /- English proof (translation)
-Use `hE.isQuasicoherent` as an intermediate fact. Use `hE'.isQuasicoherent` as an intermediate fact. Use `(genEquiv (h.trans inf_le_left)).injective ?_` and prove the remaining obligations. Rewrite using `[genEquiv_eqn_div, genEquiv_resG, detUnit, IsFrame.val_detUnit, Module.Basis.det_apply, Module.Basis.det_apply, RingHom.map_det]`. Use `congrArg _ (Matrix.ext fun i j => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[RingHom.mapMatrix_apply, Matrix.map_apply, Module.Basis.toMatrix_apply, Module.Basis.toMatrix_apply, ← c.isFrame.pullback_basis_repr, hψ, pullback_map_app_pullbackSections, app_resM]`. Use `congr 2`. Conclude with `(res_pullbackSections _ _ _ _ _).trans (pullbackSections_res _ _ _ _ _).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem eqn_div_of_hom (hψ : φ.inv = Z.genRes.map ψ) (c : Chart E r) (c' : Chart E' r)
     {W V : Z.X.Opens} (h : W ≤ Z.gen ⊓ V) (hV : V ≤ c.U ⊓ c'.U) :
@@ -414,9 +412,9 @@ theorem eqn_div_of_hom (hψ : φ.inv = Z.genRes.map ψ) (c : Chart E r) (c' : Ch
   exact (res_pullbackSections _ _ _ _ _).trans (pullbackSections_res _ _ _ _ _).symm
 
 /- English proof (translation)
-Set `s : (φ.div hE hE').M.Sec` to `⟨fun p : Chart E r × Chart E' r => (p.1.isFrame.basis (inf_le_left : p.1.U ⊓ p.2.U ≤ _)).det fun i => ψ.app _ (resM E' inf_le_right (p.2.e i)), fun p q => Z.resG_injective inf_le_right le_rfl <| by`. Express the relevant statement in the definitionally equal form `resG _ _ (resG _ _ _) = resG _ _ (_ * resG _ _ _)`. Rewrite using `[map_mul, resG_resG, resG_resG]`. Conclude with `(eqn_div_of_hom hE hE' hψ p.1 p.2 (inf_le_inf_left _ inf_le_left) le_rfl).symm.trans (((φ.div hE hE').eqn_rel p q _ _ _).trans (congrArg _ (eqn_div_of_hom hE hE' hψ q.1 q.2 (inf_le_inf_left _ inf_le_right) le_rfl)))⟩`. Establish `h : (φ.div hE hE').Extends 1 s` using `VertDiv.extends_one (LB.sec_ext fun p => (eqn_div_of_hom hE hE' hψ p.1 p.2 le_rfl le_rfl).symm.trans (resG_self _ _))`.
+Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨_, h.cls_eq_ofEff.symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem isEff_cls_div (hψ : φ.inv = Z.genRes.map ψ) : IsEff (φ.div hE hE').cls := by
   let s : (φ.div hE hE').M.Sec :=
@@ -433,9 +431,9 @@ theorem isEff_cls_div (hψ : φ.inv = Z.genRes.map ψ) : IsEff (φ.div hE hE').c
   exact ⟨_, h.cls_eq_ofEff.symm⟩
 
 /- English proof (translation)
-Rewrite using `[← Z.div_pow hg r (pow_ne_zero r hg), ← VertDiv.cls_const, ← add_zero (VertDiv.const Z _ _).cls, ← VertDiv.cls_zero Z]`. Use `VertDiv.IsSum.cls_eq fun i j k => ?_` and prove the remaining obligations. Take `⟨c, c'⟩` from `k`. Use `⟨c.isFrame.detUnit c'.isFrame (inf_le_right.trans inf_le_left) (inf_le_right.trans inf_le_right), (eqn_div_of_hom hE hE hφ c c' le_rfl inf_le_right).trans ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = _ * (resG _ _ (resG _ _ _) * resG _ _ 1)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [smulHom_app_apply, IsFrame.val_detUnit]`. Rewrite using `[AlternatingMap.map_smul_univ, map_one, mul_one, smul_eq_mul, map_mul, mul_comm, resG_resG]`. Simplify using `only [Finset.prod_const, Finset.card_univ, Fintype.card_fin, Model.const, map_pow]`. Conclude with `congrArg (_ * · ^ r) (resG_resG _ _ _)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cls_div_of_smul {φ : Z.GenIso E E} {g : O} (hg : g ≠ 0)
     (hφ : φ.inv = Z.genRes.map (smulHom E (Z.const g))) :
@@ -487,7 +485,7 @@ instance mono_step (i : Fin N) : Mono (fl.step i) := mono_of_mono_fac (fl.step_�
 include fl in
 
 /- English proof (translation)
-The claim follows from `(fl.isVB (Fin.last N)).of_iso (asIso (fl.ι _))`.
+A detailed English derivation is pending.
 -/
 theorem isVB_self : IsVB E N := (fl.isVB (Fin.last N)).of_iso (asIso (fl.ι _))
 
@@ -498,7 +496,7 @@ def π (i : Fin N) : fl.F i.succ ⟶ fl.gr i := cokernel.π _
 instance epi_π (i : Fin N) : Epi (fl.π i) := inferInstanceAs (Epi (cokernel.π _))
 
 /- English proof (translation)
-Introduce `x` and use `by have : Nonempty X := ⟨x⟩ obtain ⟨s, hs⟩ := (fl.isSubbundle i).isVB_cokernel obtain ⟨h, -⟩ := VBExt.isVB_and_cls_det_of_shortExact X (.mk (fl.ι i) (cokernel.π _) (cokernel.condition _)) i s { exact := ShortComplex.exact_cokernel _ } (fl.isVB i) hs obtain rfl : s = N - i := by h …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isVB_cokernel (i : Fin (N + 1)) : IsVB (cokernel (fl.ι i)) (N - i) := fun x => by
   have : Nonempty X := ⟨x⟩
@@ -509,7 +507,7 @@ theorem isVB_cokernel (i : Fin (N + 1)) : IsVB (cokernel (fl.ι i)) (N - i) := f
   exact hs x
 
 /- English proof (translation)
-Use `VB.isVB_X₁_of_shortExact X _ 1 _ (shortExact_cokernel_comp (fl.step i) (fl.ι i.succ)) ?_ (fl.isVB_cokernel i.succ)` and prove the remaining obligations. Establish `h` using `(fl.isVB_cokernel i.castSucc).of_iso (cokernelIsoOfEq (fl.step_ι i).symm)`. Rewrite `h` using `[show N - (i.castSucc : ℕ) = 1 + (N - (i.succ : ℕ)) by simp; omega]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isVB_gr (i : Fin N) : IsVB (fl.gr i) 1 := by
   refine VB.isVB_X₁_of_shortExact X _ 1 _ (shortExact_cokernel_comp (fl.step i) (fl.ι i.succ)) ?_
@@ -520,16 +518,16 @@ theorem isVB_gr (i : Fin N) : IsVB (fl.gr i) 1 := by
 def root (i : Fin N) : LB X := det (fl.gr i) 1
 
 /- English proof (translation)
-The claim follows from `(fl.isVB_gr i).isLB_det`.
+A detailed English derivation is pending.
 -/
 theorem isLB_root (i : Fin N) : (fl.root i).IsLB := (fl.isVB_gr i).isLB_det
 
 /- English proof (translation)
-Establish `key (i : Fin (N + 1)) : cls _ (fl.isVB i).isLB_det = ∑ j : Fin N, if (j : ℕ) < i then cls _ (fl.isLB_root j) else 0`. Proceed by induction on `i using Fin.induction with`. Consider the case `zero`. Use `VB.isVB_zero_iff.1 (fl.isVB 0)` as an intermediate fact. Conclude with `(((VB.isFrame_freeFrame X (Fin 0)).map_iso ((VB.isVB_zero_iff.1 (VB.isVB_freeModule_fin X 0)).iso this).hom).cls_det_eq_zero _).trans (by simp)`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `succ i ih`. Take `⟨h, e⟩` from `VBExt.isVB_and_cls_det_of_shortExact X (.mk (fl.step i) (cokernel.π _) (cokernel.condition _)) _ _ { exact := ShortComplex.exact_cokernel _ } (fl.isVB _) (fl.isVB_gr i)`. Use `e.trans ((congrArg (· + _) ih).trans ?_)` and prove the remaining obligations. Use `(congrArg _ (Finset.sum_ite_eq_of_mem' Finset.univ i (fun j => cls _ (fl.isLB_root j)) (Finset.mem_univ i)).symm).trans ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [Fin.val_castSucc, Fin.val_succ, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | omega | simp`. Conclude with `((cls_eq_iff (fl.isVB (Fin.last N)).isLB_det _).2 ((fl.isVB _).lbIso_det_of_iso (asIso (fl.ι _)))).symm.trans ((key _).trans (by simp))`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem cls_det : cls _ fl.isVB_self.isLB_det = ∑ i, cls _ (fl.isLB_root i) := by
   have key (i : Fin (N + 1)) : cls _ (fl.isVB i).isLB_det =
@@ -591,7 +589,7 @@ def ofBiprod {L M : X.Modules} (hL : IsVB L 1) (hM : IsVB M 1) : Flag (L ⊞ M) 
   isIso_last := IsIso.id _
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨cokernelZeroIsoTarget⟩, ⟨cokernelBiprodInlIso⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem nonempty_gr_ofBiprod {L M : X.Modules} (hL : IsVB L 1) (hM : IsVB M 1) :
     Nonempty ((ofBiprod hL hM).gr 0 ≅ L) ∧ Nonempty ((ofBiprod hL hM).gr 1 ≅ M) :=
@@ -623,14 +621,14 @@ namespace FlagPair
 variable {φ : Z.GenIso E E'} (P : FlagPair φ N)
 
 /- English proof (translation)
-The claim follows from `Iso.ext ((cancel_mono _).1 (h.trans (P.gen_ι i).symm))`.
+A detailed English derivation is pending.
 -/
 theorem gen_unique (i : Fin (N + 1)) (ψ : Z.GenIso (P.fl.F i) (P.fl'.F i))
     (h : ψ.hom ≫ Z.genRes.map (P.fl'.ι i) = Z.genRes.map (P.fl.ι i) ≫ φ.hom) : ψ = P.gen i :=
   Iso.ext ((cancel_mono _).1 (h.trans (P.gen_ι i).symm))
 
 /- English proof (translation)
-Rewrite using `[← cancel_mono (Z.genRes.map (P.fl'.ι i.succ)), Category.assoc, Category.assoc, gen_ι, ← Functor.map_comp, ← Functor.map_comp_assoc, Flag.step_ι, Flag.step_ι, gen_ι]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gen_step (i : Fin N) : Z.genRes.map (P.fl.step i) ≫ (P.gen i.succ).hom =
     (P.gen i.castSucc).hom ≫ Z.genRes.map (P.fl'.step i) := by
@@ -643,7 +641,7 @@ def grIso (i : Fin N) : Z.GenIso (P.fl.gr i) (P.fl'.gr i) :=
       (PreservesCokernel.iso Z.genRes (P.fl'.step i)).symm
 
 /- English proof (translation)
-Simplify using `[grIso, Flag.π, Flag.gr]`.
+Simplify using the standard rewrite rules.
 -/
 theorem π_grIso_hom (i : Fin N) : Z.genRes.map (P.fl.π i) ≫ (P.grIso i).hom =
     (P.gen i.succ).hom ≫ Z.genRes.map (P.fl'.π i) := by
@@ -652,7 +650,7 @@ theorem π_grIso_hom (i : Fin N) : Z.genRes.map (P.fl.π i) ≫ (P.grIso i).hom 
 def div (i : Fin N) : VertDiv Z := (P.grIso i).div (P.fl.isVB_gr i) (P.fl'.isVB_gr i)
 
 /- English proof (translation)
-Rewrite using `[div, GenIso.vCls_div]`. Conclude with `(sub_sub_cancel _ _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cls_root' (i : Fin N) :
     cls _ (P.fl'.isLB_root i) = cls _ (P.fl.isLB_root i) - Z.vCls (P.div i).cls := by
@@ -677,7 +675,7 @@ def ofSMul (fl : Flag E N) (g : O) (hg : g ≠ 0) : FlagPair (GenIso.smul E g hg
       ← Functor.map_comp, ← Functor.map_comp, smulHom_comp]
 
 /- English proof (translation)
-Use `(GenIso.cls_div_of_smul (fl.isVB_gr i) hg ?_).trans (one_nsmul _)` and prove the remaining obligations. Establish `h` using `(ofSMul fl g hg).π_grIso_hom i`. Rewrite `h` using `[← Iso.inv_comp_eq, ← Category.assoc, ← Iso.eq_comp_inv]`. Rewrite using `[← cancel_epi (Z.genRes.map (fl.π i)), ← Functor.map_comp, ← smulHom_comp, Functor.map_comp]`. Conclude with `h.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cls_div_ofSMul (fl : Flag E N) (g : O) (hg : g ≠ 0) (i : Fin N) :
     ((ofSMul fl g hg).div i).cls = Z.div g hg := by

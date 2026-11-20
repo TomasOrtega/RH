@@ -8,13 +8,11 @@ noncomputable section
 namespace GlobalTheory.DualCrit
 
 /- English proof (translation)
-Set `ι : K →+* AlgebraicClosure K` to `algebraMap K (AlgebraicClosure K)`. Apply `ι.injective` to reduce the goal to its premises. Rewrite using `[map_sum]`. Establish `hq : ι.comp (algebraMap ℚ K) = algebraMap ℚ (AlgebraicClosure K)` using `RingHom.ext_rat _ _`. Rewrite using `[← RingHom.comp_apply, hq, trace_eq_sum_embeddings (AlgebraicClosure K)]`.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `f : (E →+* K) → (E →ₐ[ℚ] AlgebraicClosure K)` to `fun σ => (ι.comp σ).toRatAlgHom`. Establish `hinj : Function.Injective f`. Introduce `σ σ' h`. Use extensionality with `y`. Apply `ι.injective` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `congrArg (fun g : E →ₐ[ℚ] AlgebraicClosure K => g y) h`. Establish `hbij : Function.Bijective f`. Rewrite using `[Fintype.bijective_iff_injective_and_card]`. Use `⟨hinj, ?_⟩` and prove the remaining obligations. Rewrite using `[hcard, AlgHom.card]`.
-
-Conclude with `(Fintype.sum_bijective f hbij (fun σ => ι (σ x)) (fun τ => τ x) (fun σ => rfl)).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_eq_sum_ringHom {E : Type} [Field E] [NumberField E] {K : Type} [Field K] [CharZero K]
     [Fintype (E →+* K)] (hcard : Fintype.card (E →+* K) = Module.finrank ℚ E) (x : E) :
@@ -37,13 +35,13 @@ theorem trace_eq_sum_ringHom {E : Type} [Field E] [NumberField E] {K : Type} [Fi
   exact (Fintype.sum_bijective f hbij (fun σ => ι (σ x)) (fun τ => τ x) (fun σ => rfl)).symm
 
 /- English proof (translation)
-Use `set bd := (Algebra.traceForm ℚ E).dualBasis (traceForm_nondegenerate ℚ E) b`. Set `A : Matrix ι (E →+* K) K` to `fun j τ => τ (b j)`. Set `B : Matrix (E →+* K) ι K` to `fun τ k => τ (bd k)`. Establish `hAB : A * B = 1`. Use extensionality with `j k`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_apply, Matrix.one_apply]`. Simplify using `only [A, B]`. Rewrite using `[show (∑ τ : E →+* K, τ (b j) * τ (bd k)) = ∑ τ : E →+* K, τ (bd k * b j) from Finset.sum_congr rfl fun τ _ => by rw [map_mul, mul_comm]]`. Rewrite using `[← trace_eq_sum_ringHom hcard, ← Algebra.traceForm_apply, LinearMap.BilinForm.apply_dualBasis_left]`. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `e : ι ≃ (E →+* K)` using `Fintype.equivOfCardEq (by rw [hcard, Module.finrank_eq_card_basis b])`. Establish `hBA : B * A = 1` using `(Matrix.mul_eq_one_comm_of_equiv e).1 hAB`. Establish `h` using `congrFun (congrFun hBA σ) σ'`. Rewrite `h` using `[Matrix.mul_apply, Matrix.one_apply]`. Simplify using `only [A, B] at h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem sum_basis_mul_dual {E : Type} [Field E] [NumberField E] {K : Type} [Field K] [CharZero K]
     [Fintype (E →+* K)] (hcard : Fintype.card (E →+* K) = Module.finrank ℚ E)
@@ -71,19 +69,15 @@ theorem sum_basis_mul_dual {E : Type} [Field E] [NumberField E] {K : Type} [Fiel
     _ = _ := by rw [h]; exact if_congr eq_comm rfl rfl
 
 /- English proof (translation)
-Introduce `E _ _ _ O _ _ _ _ K _ _ _ hcard D hD σ`. Use `haveI : CharZero K := charZero_of_injective_algebraMap (IsFractionRing.injective O K)`. Use `haveI : Finite (E →+* K) := Nat.finite_of_card_ne_zero (by rw [hcard]; exact Module.finrank_pos.ne')`. Use `letI : Fintype (E →+* K) := Fintype.ofFinite _`. Establish `hcard' : Fintype.card (E →+* K) = Module.finrank ℚ E`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Nat.card_eq_fintype_card, hcard]`. Use `set b := RingOfIntegers.basis E`. Use `set bQ := integralBasis E`. Use `set bd := (Algebra.traceForm ℚ E).dualBasis (traceForm_nondegenerate ℚ E) bQ`. Establish `hint : ∀ j (x : 𝓞 E), ∃ n : ℤ, Algebra.trace ℚ E (bd j * x) = n`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `j x`. Use `⟨b.repr x j, ?_⟩` and prove the remaining obligations. Establish `h1 : Algebra.trace ℚ E (bd j * x) = bQ.repr (x : E) j`. Rewrite using `[← Algebra.traceForm_apply]`. Use `conv_lhs => rw [← bQ.sum_repr (x : E)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[map_sum]`. Simplify using `only [bd, map_smul, LinearMap.BilinForm.apply_dualBasis_left, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[h1]`. Conclude with `(integralBasis_repr_apply E x j).trans (eq_intCast _ _)`. Use `choose z hz using fun j => hD σ (bd j) (hint j)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hmem : ∀ j, ((b j : 𝓞 E) : E) ∈ orderC (⊤ : Ideal (OF E))` using `fun j => mem_orderC.2 ⟨0, b j, by rw [Ideal.map_top]; exact Submodule.mem_top, by simp⟩`. Use `⟨∑ j, (⟨((b j : 𝓞 E) : E), hmem j⟩ : orderC (⊤ : Ideal (OF E))) ⊗ₜ[ℤ] z j, fun σ' => ?_⟩` and prove the remaining obligations. Establish `hc : ∀ j, coordAt O (⊤ : Ideal (OF E)) σ' ((⟨((b j : 𝓞 E) : E), hmem j⟩ : orderC (⊤ : Ideal (OF E))) ⊗ₜ[ℤ] z j) = algebraMap O K D * (σ' (bQ j) * σ (bd j))`. Introduce `j`. Use `show σ' ((b j : 𝓞 E) : E) * algebraMap O K (z j) = _`.
-
-Rewrite using `[hz j, integralBasis_apply]`. Simplify using `only [b]`. Rewrite using `[← RingOfIntegers.coe_eq_algebraMap]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_sum, Finset.sum_congr rfl fun j _ => hc j, ← Finset.mul_sum, sum_basis_mul_dual hcard' bQ σ σ']`.
-
-Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem clearsIdem_top_of_dual : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O] (K : Type) [Field K] [Algebra O K] [IsFractionRing O K], Nat.card (E →+* K) = Module.finrank ℚ E → ∀ D : O, (∀ (σ : E →+* K) (y : E), (∀ x : 𝓞 E, ∃ n : ℤ, Algebra.trace ℚ E (y * x) = n) → ∃ z : O, algebraMap O K z = algebraMap O K D * σ y) → ClearsIdem K (⊤ : Ideal (OF E)) D := by
   intro E _ _ _ O _ _ _ _ K _ _ _ hcard D hD σ

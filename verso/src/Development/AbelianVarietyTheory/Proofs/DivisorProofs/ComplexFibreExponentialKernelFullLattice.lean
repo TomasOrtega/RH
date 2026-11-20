@@ -14,11 +14,11 @@ noncomputable section
 namespace GlobalTheory.ExpKernel
 
 /- English proof (translation)
-Distinguish the cases in `hd : DifferentiableAt ℂ h 0`. Establish `hl : HasFDerivAt (fun t : ℂ => t • w) ((ContinuousLinearMap.id ℂ ℂ).smulRight w) 0` using `((ContinuousLinearMap.id ℂ ℂ).smulRight w).hasFDerivAt`. Establish `h0 : HasFDerivAt h (fderiv ℂ h 0) ((0 : ℂ) • w)` using `by rw [zero_smul]; exact hd.hasFDerivAt`. Establish `h1` using `h0.comp (0 : ℂ) hl`. Establish `h2 : HasFDerivAt (fun t : ℂ => h (t • w)) (0 : ℂ →L[ℂ] ℂ) 0`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [hc]`. Conclude with `hasFDerivAt_const _ _`. Use `congrArg (fun L : ℂ →L[ℂ] ℂ => L 1) (h1.unique h2)` as an intermediate fact. Simplify using `using this`. Rewrite using `[fderiv_zero_of_not_differentiableAt hd]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem fderiv_apply_eq_zero {g : ℕ} (h : (Fin g → ℂ) → ℂ) (w : Fin g → ℂ) (hc : ∀ t : ℂ, h (t • w) = h 0) :
     fderiv ℂ h 0 w = 0 := by
@@ -34,27 +34,25 @@ theorem fderiv_apply_eq_zero {g : ℕ} (h : (Fin g → ℂ) → ℂ) (w : Fin g 
   · rw [fderiv_zero_of_not_differentiableAt hd]; rfl
 
 /- English proof (translation)
-Introduce `X G _ _ g hG hg y e he`. Take `⟨hadd, hsurj, hhol, hd1, hd2⟩` from `he`. Set `A : Over (Sp ℂ)` to `(Over.pullback y).obj G`. Use `letI : GrpObj A := Functor.grpObjObj`. Set `φ : A.left ⟶ G.left` to `pullback.fst G.hom y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Establish `hp : IsGrpPullback A G y φ` using `isGrpPullback_pullback G y`. Establish `hA : IsAbelianScheme A` using `GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback hG hp`. Establish `hgA : SmoothOfRelativeDimension g A.hom` using `(smoothOfRelativeDimension_isStableUnderBaseChange g).of_isPullback hp.1 hg`. Take `⟨L, ⟨u⟩⟩` from `GlobalTheory.HomDescentQb.exists_holUnif A g hA hgA`. Take `⟨ht₁, ht₂⟩` from `GlobalTheory.TorusTransfer.tangent_bijective u hgA`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `inj : ∀ x x' : 𝟙_ (Over (Sp ℂ)) ⟶ A, x.left ≫ φ = x'.left ≫ φ → x = x'` using `fun x x' h => Over.OverMorphism.ext (hp.1.hom_ext h (by rw [Over.w x, Over.w x']))`. Establish `lift : ∀ x₀ : Over.mk y ⟶ G, ∃ x : 𝟙_ (Over (Sp ℂ)) ⟶ A, x.left ≫ φ = x₀.left` using `fun x₀ => ⟨Over.homMk (hp.1.lift x₀.left (𝟙 _) ((Over.w x₀).trans (Category.id_comp _).symm)) (hp.1.lift_snd _ _ _), hp.1.lift_fst _ _ _⟩`. Use `choose Φ hΦ using lift`. Establish `Φmul : ∀ x x', Φ (x * x') = Φ x * Φ x'` using `fun x x' => inj _ _ (by`. Rewrite using `[hΦ, ← hp.2 _ (Φ x) (Φ x') (pushPt hp.1.w (Φ x)) (pushPt hp.1.w (Φ x')) rfl rfl]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_left_congr (Category.id_comp _).symm _ _ _ _ (hΦ x).symm (hΦ x').symm)`. Establish `Φinj : Function.Injective Φ` using `fun x x' h => Over.OverMorphism.ext (by rw [← hΦ, ← hΦ, h])`. Establish `Φone : Φ 1 = 1`. Use `Φmul 1 1` as an intermediate fact. Rewrite `this` using `[_root_.mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `left_eq_mul.1 this`. Establish `hol : IsHolTo (Set.univ : Set (Fin g → ℂ)) (fun z => (Φ (e z)).left)` using `FibreUnif.isHolTo_of_isPullback hp.1 (e := fun z => (Φ (e z)).left) (fun z => Over.w (Φ (e z))) (by simpa only [hΦ] using hhol)`. Take `⟨F, hF, -⟩` from `GlobalTheory.existsUnique_linear_lift_of_isHolTo A hA L g g u ht₁ ht₂ (fun z => Φ (e z)) (fun z z' => by rw [hadd, Φmul]) hol`. Establish `Finj : Function.Injective F` using `(injective_iff_map_eq_zero F).2 fun w hw => by`. Establish `hconst : ∀ t : ℂ, e (t • w) = e 0` using `fun t => Φinj (by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hF, ← hF, map_smul, hw, smul_zero, map_zero])`. Establish `hiff : ∀ v, IsDerivAt0 (fun z => (e z).left) w v ↔ IsDerivAt0 (fun z => (e z).left) 0 v`. Introduce `v`. Unfold `IsDerivAt0`. Use `and_congr_right fun _ => forall_congr' fun U => forall_congr' fun hU => forall_congr' fun f => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Rewrite using `[map_zero, fderiv_apply_eq_zero _ w (fun t => by simp only [hconst t, zero_smul])]`. Take `⟨v, hv, -⟩` from `hd1 w`. Conclude with `(hd2 v hv.1).unique hv ((hiff _).1 hv)`. Set `F' : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ)` to `LinearEquiv.ofInjectiveEndo F Finj`. Establish `hF' : ∀ z, F' z = F z` using `fun _ => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hker : ∀ z, e z = 1 ↔ F z ∈ u.Λ` using `fun z => by`. Rewrite using `[← u.ker, hF, ← Φone, Φinj.eq_iff]`. Set `Λ : Submodule ℤ (Fin g → ℂ)` to `u.Λ.comap F.toAddMonoidHom.toIntLinearMap`. Establish `hmem : ∀ z, z ∈ Λ ↔ F z ∈ u.Λ` using `fun _ => Iff.rfl`. Use `⟨Λ, ?_, ?_, fun z => (hker z).trans (hmem z).symm⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `u.discrete` as an intermediate fact. Set `c : (Fin g → ℂ) ≃L[ℂ] (Fin g → ℂ)` to `F'.toContinuousLinearEquiv`. Set `f : Λ → u.Λ` to `fun x => ⟨F x, (hmem x).1 x.2⟩`. Establish `hcomp : (Subtype.val ∘ f) = c ∘ (Subtype.val : Λ → Fin g → ℂ)` using `rfl`. Establish `hemb : Topology.IsEmbedding f`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Topology.IsEmbedding.subtypeVal.of_comp_iff, hcomp]`. Conclude with `c.toHomeomorph.isEmbedding.comp Topology.IsEmbedding.subtypeVal`. Conclude with `hemb.discreteTopology`. Set `Fr : (Fin g → ℂ) ≃ₗ[ℝ] (Fin g → ℂ)` to `F'.restrictScalars ℝ`. Establish `hset : (Λ : Set (Fin g → ℂ)) = Fr.symm '' (u.Λ : Set (Fin g → ℂ))`.
-
-Rewrite using `[LinearEquiv.image_symm_eq_preimage]`. Use extensionality with `z`. Conclude with `hmem z`. Rewrite using `[hset, ← LinearEquiv.coe_coe, Submodule.span_image, u.full, Submodule.map_top, LinearMap.range_eq_top]`. Conclude with `Fr.symm.surjective`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kernel_isFullLattice : ∀ (X : Scheme.{0}) (G : Over X) [GrpObj G] [IsCommMonObj G] (g : ℕ), IsAbelianScheme G →
     SmoothOfRelativeDimension g G.hom → ∀ (y : Sp ℂ ⟶ X) (e : (Fin g → ℂ) → (Over.mk y ⟶ G)), IsExp y e →

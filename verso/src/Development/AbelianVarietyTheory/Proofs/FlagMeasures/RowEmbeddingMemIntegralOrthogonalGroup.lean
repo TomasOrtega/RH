@@ -11,55 +11,55 @@ section Alg
 variable {E : Type} [Field E] (σ : E →+* E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
 
 /- English proof (translation)
-Simplify using `[form, Matrix.mulVec_add, dotProduct_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem form_add_left (x x' y : Fin n → E) : form σ J (x + x') y = form σ J x y + form σ J x' y := by
   simp [form, Matrix.mulVec_add, dotProduct_add]
 
 /- English proof (translation)
-Simplify using `[form, Matrix.mulVec_sub, dotProduct_sub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem form_sub_left (x x' y : Fin n → E) : form σ J (x - x') y = form σ J x y - form σ J x' y := by
   simp [form, Matrix.mulVec_sub, dotProduct_sub]
 
 /- English proof (translation)
-Simplify using `[form, Matrix.mulVec_smul, dotProduct_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem form_smul_left (c : E) (x y : Fin n → E) : form σ J (c • x) y = c * form σ J x y := by
   simp [form, Matrix.mulVec_smul, dotProduct_smul]
 
 /- English proof (translation)
-Simplify using `[form, dotProduct, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem form_add_right (x y y' : Fin n → E) : form σ J x (y + y') = form σ J x y + form σ J x y' := by
   simp [form, dotProduct, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `[form, dotProduct, sub_mul, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem form_sub_right (x y y' : Fin n → E) : form σ J x (y - y') = form σ J x y - form σ J x y' := by
   simp [form, dotProduct, sub_mul, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Simplify using `[form, dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem form_neg_right (x y : Fin n → E) : form σ J x (-y) = -form σ J x y := by
   simp [form, dotProduct]
 
 /- English proof (translation)
-Simplify using `[form, Matrix.mulVec_neg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem form_neg_left (x y : Fin n → E) : form σ J (-x) y = -form σ J x y := by
   simp [form, Matrix.mulVec_neg]
 
 /- English proof (translation)
-Simplify using `[form, dotProduct, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem form_smul_right (c : E) (x y : Fin n → E) : form σ J x (c • y) = σ c * form σ J x y := by
   simp [form, dotProduct, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Simplify using `only [form, dotProduct, mulVec, map_sum, map_mul, hσ, hJ, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem form_herm (hσ : ∀ x, σ (σ x) = x) (hJ : ∀ i j, σ (J j i) = J i j) (x y : Fin n → E) :
     form σ J x y = σ (form σ J y x) := by
@@ -69,9 +69,9 @@ theorem form_herm (hσ : ∀ x, σ (σ x) = x) (hJ : ∀ i j, σ (J j i) = J i j
   ring
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `only [rowE, mulVec, dotProduct, form, vecMul, add_mul, sub_mul, Finset.sum_add_distrib, Finset.sum_sub_distrib, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true, Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, Finset.sum_mul, mul_ass …`. Rewrite using `[Finset.sum_comm (f := fun (a b : Fin n) => y i * (σ (e b) * (J b a * x a))), Finset.sum_comm (f := fun (a b : Fin n) => t * (e i * (σ (e b) * (J b a * x a)))), Finset.sum_comm (f := fun (a b : Fin n) => e i * (σ (y b) * (J b a * x a))), ← Finset.sum_add_distrib]`. Use `congr 2`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Use function extensionality and compare the values at `a`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -94,9 +94,9 @@ theorem rowE_mulVec (e y : Fin n → E) (t : E) (x : Fin n → E) :
     ring
 
 /- English proof (translation)
-Use extensionality with `i j`. Use `h (Pi.single j 1) (Pi.single i 1)` as an intermediate fact. Simplify using `only [form, dotProduct, mulVec, Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true, apply_ite σ, map_one, map_zero, ite_mul, one_mul, zero_mul] at this`. Rewrite using `[← this]`. Simplify using `only [IsUn, cT, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul, Finset.mul_sum]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem isUn_of_form (g : Matrix (Fin n) (Fin n) E)
     (h : ∀ x x', form σ J (g *ᵥ x) (g *ᵥ x') = form σ J x x') : IsUn σ J g := by
@@ -122,7 +122,7 @@ variable {E : Type} [Field E] {σ : E →+* E} (hσ : ∀ x, σ (σ x) = x) {n :
 include hσ hJ he hye ht
 
 /- English proof (translation)
-Establish `hey : form σ J e y = 0` using `by rw [form_herm σ J hσ hJ, hye, map_zero]`. Establish `h1 : form σ J y x' = σ (form σ J x' y)` using `form_herm σ J hσ hJ _ _`. Establish `h2 : form σ J e x' = σ (form σ J x' e)` using `form_herm σ J hσ hJ _ _`. Simplify using `only [rowE_mulVec, form_add_left, form_sub_left, form_smul_left, form_add_right, form_sub_right, form_smul_right, map_add, map_sub, map_mul, hσ, he, hye, hey, h1, h2]`. Take the linear combination `(form σ J x e * σ (form σ J x' e)) * ht`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem form_rowE (x x' : Fin n → E) :
     form σ J (rowE σ J e y t *ᵥ x) (rowE σ J e y t *ᵥ x') = form σ J x x' := by
@@ -134,11 +134,11 @@ theorem form_rowE (x x' : Fin n → E) :
   linear_combination (form σ J x e * σ (form σ J x' e)) * ht
 
 /- English proof (translation)
-Establish `hey : form σ J e y = 0` using `by rw [form_herm σ J hσ hJ, hye, map_zero]`. Establish `hα : form σ J (rowE σ J e (-y) (σ t) *ᵥ x) e = form σ J x e`. Simplify using `only [rowE_mulVec, form_add_left, form_sub_left, form_smul_left, form_neg_left, he, hye]`. Expand and normalize the polynomial expressions, which then agree. Establish `hβ : form σ J (rowE σ J e (-y) (σ t) *ᵥ x) y = form σ J x y - form σ J x e * form σ J y y`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Simplify using `only [rowE_mulVec, form_add_left, form_sub_left, form_smul_left, form_neg_left, form_neg_right, hey]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[rowE_mulVec σ J e y t, hα, hβ, rowE_mulVec σ J e (-y) (σ t) x]`. Use extensionality with `i`. Simplify using `only [Pi.add_apply, Pi.sub_apply, Pi.smul_apply, Pi.neg_apply, smul_eq_mul, form_neg_right]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Take the linear combination `(form σ J x e * e i) * ht`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem rowE_inv (x : Fin n → E) :
     rowE σ J e y t *ᵥ (rowE σ J e (-y) (σ t) *ᵥ x) = x := by
@@ -162,15 +162,15 @@ variable {E : Type} [Field E] [NumberField E]
 open GlobalTheory.SnMass.FrameDual in
 
 /- English proof (translation)
-Establish `hO : ∀ w ∈ Λ, form σ J v w ∈ (algebraMap (𝓞 E) E).range` using `(hΛ.2 v).1 hv`. Establish `hα : form σ J v e ∈ 𝔞⁻¹`. Rewrite using `[FractionalIdeal.mem_inv_iff h0]`. Introduce `z hz`. Use `hO _ (he _ (hs z hz))` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[form_smul_right, hσ, mul_comm]`. Take `⟨d, hd⟩` from `this`. Conclude with `(FractionalIdeal.mem_one_iff _).2 ⟨d, hd⟩`. Establish `hβ : form σ J v y ∈ 𝔞`. Establish `h0' : 𝔞⁻¹ ≠ 0` using `inv_ne_zero h0`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← inv_inv 𝔞, FractionalIdeal.mem_inv_iff h0']`. Introduce `z hz`. Use `hO _ (hy _ (Stab.inv hσ hs h0 z hz))` as an intermediate fact. Rewrite `this` using `[form_smul_right, hσ, mul_comm]`. Take `⟨d, hd⟩` from `this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(FractionalIdeal.mem_one_iff _).2 ⟨d, hd⟩`. Establish `hγ : t * form σ J v e ∈ 𝔞`. Use `FractionalIdeal.mul_mem_mul ht hα` as an intermediate fact. Rewrite `this` using `[mul_assoc, mul_inv_cancel₀ h0, mul_one]`. Then use the resulting hypothesis. Establish `hvec : rowE σ J e y t *ᵥ v = v + form σ J v e • y + (t * form σ J v e) • e - form σ J v y • e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[rowE_mulVec, smul_add, smul_smul, mul_comm (form σ J v e) t, add_assoc]`. Rewrite using `[hvec]`. Conclude with `Λ.sub_mem (Λ.add_mem (Λ.add_mem hv (hy _ hα)) (he _ hγ)) (he _ hβ)`.
+A detailed English derivation is pending.
 -/
 theorem rowE_mem {σ : E →+* E} (hσ : ∀ x, σ (σ x) = x) {n : ℕ} {J : Matrix (Fin n) (Fin n) E}
     {Λ : Submodule (𝓞 E) (Fin n → E)} (hΛ : GlobalTheory.SgGlob.SelfDual σ J Λ) {𝔞 : FractionalIdeal (𝓞 E)⁰ E}
@@ -209,7 +209,7 @@ end GlobalTheory.SnMass.VolN.RowIso
 namespace GlobalTheory.SnMass.VolN.RowIso
 
 /- English proof (translation)
-Simplify using `only [form, pairM, cT, Matrix.mul_apply, dotProduct, mulVec, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem form_col_col {E : Type} [Field E] (σ : E →+* E) {n m : ℕ} (J : Matrix (Fin n) (Fin n) E)
     (P : Matrix (Fin n) (Fin m) E) (b c : Fin m) :
@@ -223,35 +223,31 @@ theorem form_col_col {E : Type} [Field E] (σ : E →+* E) {n m : ℕ} (J : Matr
 open GlobalTheory.SnMass.FrameDual in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ k r J Λ P f T A s hV a y t hyc hyt hyΛ htI`. Take `⟨hcm, -, hJ, hΛ, hP, -, htup, -⟩` from `hV`. Use `set σ' : E →+* E := (σ : E →+* E) with hσ'`. Establish `hσ : ∀ x, σ' (σ' x) = x`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Establish `h` using `hcm.2.2.2 τ`. Simplify using `only [hσ', AlgHom.coe_toRingHom, h, star_star]`. Establish `hJ' : ∀ i j, σ' (J j i) = J i j` using `hJ.1`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyt' : form σ' J y y + t + σ' t = 0` using `hyt`. Use `set e : Fin (2 * r + k + 1) → E := fun i => P i a.castSucc with he_def`. Use `set 𝔞 : FractionalIdeal (𝓞 E)⁰ E := dInv E (r - a.val) with h𝔞`. Establish `heb : ∀ b c : Fin r, form σ' J (fun i => P i b.castSucc) (fun i => P i c.castSucc) = 0`. Introduce `b c`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[form_col_col, hP.2, TF, Matrix.diagonal_apply]`. Apply the tactic sequence `split_ifs with h1 h2 <;> first | rfl | exact absurd h2 (Fin.castSucc_ne_last c)`. Establish `hee : form σ' J e e = 0` using `heb a a`. Establish `hye : form σ' J y e = 0` using `hyc a le_rfl`. Establish `hyb : ∀ b : Fin r, b ≤ a → form σ' J (fun i => P i b.castSucc) y = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `b hb`. Rewrite using `[form_herm σ' J hσ hJ', hyc b hb, map_zero]`. Establish `h0 : 𝔞 ≠ 0` using `dInv_ne_zero _`. Establish `hs : Stab σ' 𝔞` using `stab_dInv hσ _`. Establish `he𝔞 : ∀ c ∈ 𝔞, c • e ∈ Λ`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `c hc`. Use `htup (Submodule.subset_span ⟨Fin.castAdd r a.castSucc, c, ?_, ?_⟩)` and prove the remaining obligations. Rewrite using `[frameDualTupleIdeals_castAdd]`. Conclude with `hc`. Use function extensionality and compare the values at `i`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[sideM, he_def]`. Establish `ht2 : t ∈ 𝔞 * 𝔞`. Rewrite using `[h𝔞, dInv, ← pow_add, ← two_mul]`. Conclude with `htI`. Use `⟨⟨isUn_of_form σ' J _ (form_rowE hσ hJ' hee hye hyt'), ?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Use `⟨Matrix.of fun i j => (if i = j then 1 else 0) - (if i = a then form σ' J (fun l => P l j.castSucc) y else 0), ?_, ?_⟩` and prove the remaining obligations. Introduce `i j`. Use `⟨fun hji => ?_, fun hij => ?_⟩` and prove the remaining obligations. Establish `hne : i ≠ j` using `(ne_of_lt hji).symm`. Distinguish the cases in `hia : i = a`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Substitute using the available equality. Consider separately whether the proposition holds or fails.
 
-Substitute `hia` using the available equality. Simplify using `[hne, hyb j (le_of_lt hji)]`. Simplify using `[hne, hia]`. Substitute `hij` using the available equality. Distinguish the cases in `hia : i = a`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition.
 
-Substitute `hia` using the available equality. Simplify using `[hyb i le_rfl]`. Simplify using `[hia]`. Use extensionality with `l j`. Express the relevant statement in the definitionally equal form `(rowE σ' J e y t *ᵥ fun m => P m j.castSucc) l = ∑ i : Fin r, P l i.castSucc * ((if i = j then 1 else 0) - (if i = a then form σ' J (fun l => P l j.castSucc) y else 0))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[rowE_mulVec, heb j a]`. Simplify using `only [Matrix.of_apply, eOf, Matrix.submatrix_apply, id, mul_sub, Finset.sum_sub_distrib, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true, Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, zero_mul, add_zero, he_def]`. Expand and normalize the polynomial expressions, which then agree. Introduce `v hv`. Establish `hve : form σ' J v e = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congrFun hv a` as an intermediate fact. Rewrite `this` using `[← Matrix.mulVec_mulVec]`. Simplify `this` using `[form, cT, mulVec, dotProduct, eOf, he_def]`. Use `⟨Pi.single a (-form σ' J v y), ?_⟩` and prove the remaining obligations. Rewrite using `[rowE_mulVec, hve, Matrix.mulVec_single]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `l`. Apply the tactic sequence `simp [eOf, he_def] <;> ring`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Conclude with `rowE_mem hσ hΛ h0 hs he𝔞 hyΛ ht2 hv`.
-
-Introduce `v hv`. Establish `hy' : ∀ c ∈ 𝔞⁻¹, c • (-y) ∈ Λ` using `fun c hc => by`. Rewrite using `[smul_neg]`. Conclude with `Λ.neg_mem (hyΛ c hc)`. Use `⟨rowE σ' J e (-y) (σ' t) *ᵥ v, rowE_mem hσ hΛ h0 hs he𝔞 hy' (hs.mul hs t ht2) hv, ?_⟩` and prove the remaining obligations.
-
-Conclude with `rowE_inv hσ hJ' hee hye hyt' v`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem rowE_mem_GN : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (k r : ℕ) (J : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) E) (Λ : Submodule (𝓞 E) (Fin (2 * r + k + 1) → E)) (P : Matrix (Fin (2 * r + k + 1)) (Fin (r + 1)) E) (f : Matrix (Fin (2 * r + k + 1)) (Fin r) E) (T : F) (A : InfinitePlace E → Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (s : Fin r → ℝ), IsVolData σ J Λ P f T A s → ∀ (a : Fin r) (y : Fin (2 * r + k + 1) → E) (t : E), (∀ c : Fin r, c ≤ a → form (σ : E →+* E) J y (fun i => P i c.castSucc) = 0) → form (σ : E →+* E) J y y + t + σ t = 0 → (∀ c ∈ (dInv E (r - a.val))⁻¹, c • y ∈ Λ) → t ∈ dInv E (2 * (r - a.val)) → rowE (σ : E →+* E) J (fun i => P i a.castSucc) y t ∈ GN (σ : E →+* E) J Λ P := by
   intro F E _ _ _ _ _ σ k r J Λ P f T A s hV a y t hyc hyt hyΛ htI

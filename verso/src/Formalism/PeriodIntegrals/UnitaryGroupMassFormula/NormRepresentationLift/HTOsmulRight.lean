@@ -14,19 +14,19 @@ open NumberField IsDedekindDomain Formalism.BasicNotions
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ}
 
 /- English proof (translation)
-Rewrite using `[← smul_coe, LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hT_osmul_left (a : 𝓞 E) (y w : S.V) : S.hT (a • y) w = star (a : E) * S.hT y w := by
   rw [← smul_coe, LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply]
 
 /- English proof (translation)
-Rewrite using `[← smul_coe, map_smul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hT_osmul_right (a : 𝓞 E) (y w : S.V) : S.hT y (a • w) = (a : E) * S.hT y w := by
   rw [← smul_coe, map_smul, smul_eq_mul]
 
 /- English proof (translation)
-Rewrite using `[hT_osmul_left, coe_cj, star_star]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hT_cj_left (a : 𝓞 E) (y w : S.V) : S.hT (cj a • y) w = (a : E) * S.hT y w := by
   rw [hT_osmul_left, coe_cj, star_star]
@@ -40,19 +40,17 @@ variable (Λ : Submodule (𝓞 E) S.V) (hU : Formalism.HermitianLatticesTheory.I
 
 include hU hind hloc in
 /- English proof (translation)
-Take `⟨β, hβ1, hβ2⟩` from `exists_beta P`. Use `set x := ∑ i, α i • e i with hx`. Establish `hxE : x = ∑ i, (α i : E) • e i` using `by simp only [hx, smul_coe]`. Establish `hβx : β • x ∈ Λ`. Rewrite using `[← hU]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Submodule.mem_iInf _).mpr fun y => (Submodule.mem_iInf _).mpr fun hy => ?_` and prove the remaining obligations. Take `⟨o, ho, hxo⟩` from `hα y hy`. Take `⟨o', ho'⟩` from `hβ1 o ho`. Use `show S.hT y (β • x) ∈ (1 : Submodule (𝓞 E) E)`. Rewrite using `[map_smul, smul_eq_mul, hxo, ho']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Submodule.mem_one.mpr ⟨o', rfl⟩`. Establish `hβxE : β • x ∈ Submodule.span E (Set.range e)`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Rewrite using `[hxE]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨s, hs, hsx⟩` from `hloc _ hβx hβxE`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun (𝓞 E)).mp hsx`. Establish `hcoef : ∀ i, (c i : E) = (s : E) * β * (α i : E)`. Establish `h1 : ∑ i, (c i : E) • e i = ∑ i, ((s : E) * β * (α i : E)) • e i`. Establish `: s • β • x = ∑ i, ((s : E) * β * (α i : E)) • e i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← smul_coe, hxE, Finset.smul_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, smul_smul]`. Rewrite using `[← this, ← hc]`. Simplify using `only [smul_coe]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce `i`. Use `(Fintype.linearIndependent_iff.mp hind) (fun i => (c i : E) - (s : E) * β * (α i : E)) (by simp only [sub_smul, Finset.sum_sub_distrib, h1, sub_self]) i` as an intermediate fact. Conclude with `sub_eq_zero.mp this`. Introduce `i`. Assume the negation of the conclusion as `hi`.
-
-Establish `hsα : s * α i ∉ P.asIdeal` using `fun h => (P.isPrime.mem_or_mem h).elim hs hi`. Conclude with `hβ2 (s * α i) hsα (c i) (by rw [hcoef]; push_cast; ring)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem coeff_mem_P (α : Fin r → 𝓞 E)
     (hα : ∀ y ∈ Λ, ∃ o ∈ P.asIdeal, S.hT y (∑ i, α i • e i) = (o : E)) : ∀ i, α i ∈ P.asIdeal := by

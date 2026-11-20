@@ -11,7 +11,7 @@ open MeasureTheory Metric Filter Topology
 variable {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)] {e : ℕ}
 
 /- English proof (translation)
-Establish `h : {z : (Σ k, ι k) → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0} = ⋂ k, ⋃ i, {z | z ⟨k, i⟩ ≠ 0}`. Use extensionality with `z`. Simplify using the standard rewrite rules. Rewrite using `[h]`. Conclude with `isOpen_iInter_of_finite fun k => isOpen_iUnion fun i => isOpen_ne_fun (continuous_apply _) continuous_const`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_blockNonzero : IsOpen {z : (Σ k, ι k) → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0} := by
   have h : {z : (Σ k, ι k) → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0} = ⋂ k, ⋃ i, {z | z ⟨k, i⟩ ≠ 0} := by
@@ -22,14 +22,14 @@ theorem isOpen_blockNonzero : IsOpen {z : (Σ k, ι k) → ℂ | ∀ k, ∃ i, z
     isOpen_ne_fun (continuous_apply _) continuous_const
 
 /- English proof (translation)
-The claim follows from `analyticAt_pi_iff.mp h p`.
+A detailed English derivation is pending.
 -/
 theorem analyticAt_coord {γ : (Fin e → ℂ) → (Σ k, ι k) → ℂ} {y : Fin e → ℂ}
     (h : AnalyticAt ℂ γ y) (p : Σ k, ι k) : AnalyticAt ℂ (fun y' => γ y' p) y :=
   analyticAt_pi_iff.mp h p
 
 /- English proof (translation)
-Establish `hh : ContDiffAt ℝ 2 L.h (γ y)` using `(hL.contDiffAt (isOpen_blockNonzero.mem_nhds hy)).of_le (WithTop.coe_le_coe.mpr le_top)`. Establish `hγr : ContDiffAt ℝ 2 γ y` using `(hγ.contDiffAt (n := 2)).restrict_scalars ℝ`. Conclude with `(hh.comp y hγr).log (L.pos _ hy).ne'`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pot_contDiffAt {L : HermLine ι} (hL : IsSmoothHerm L) {γ : (Fin e → ℂ) → (Σ k, ι k) → ℂ}
     {y : Fin e → ℂ} (hγ : AnalyticAt ℂ γ y) (hy : ∀ k, ∃ i, γ y ⟨k, i⟩ ≠ 0) :
@@ -40,25 +40,23 @@ theorem pot_contDiffAt {L : HermLine ι} (hL : IsSmoothHerm L) {γ : (Fin e → 
   exact (hh.comp y hγr).log (L.pos _ hy).ne'
 
 /- English proof (translation)
-Take `⟨a, ha, hsm, -⟩` from `hs`. Establish `hy0` using `hy`. Use `choose i0 hi0 using hy0`. Take `⟨c, hc⟩ : ∃ c : (Fin e → ℂ) → K → ℂ, ∀ y' k, c y' k = γ' y' ⟨k, i0 k⟩ / γ y' ⟨k, i0 k⟩` from `⟨_, fun _ _ => rfl⟩`. Establish `hnz : ∀ᶠ y' in 𝓝 y, ∀ k, γ y' ⟨k, i0 k⟩ ≠ 0` using `Filter.eventually_all.mpr fun k => (analyticAt_coord hγ ⟨k, i0 k⟩).continuousAt.eventually_ne (hi0 k)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrel : ∀ᶠ y' in 𝓝 y, (∀ k, γ y' ⟨k, i0 k⟩ ≠ 0) ∧ (∀ k, c y' k ≠ 0) ∧ γ' y' = bsmul (c y') (γ y')` using `by filter_upwards [hnz, hseg] with y' h0 hs'`. Take `⟨h1, h2⟩` from `eq_bsmul_of_segre_eq i0 h0 hs'`. Establish `hcy : c y' = fun k => γ' y' ⟨k, i0 k⟩ / γ y' ⟨k, i0 k⟩` using `funext (hc y')`. Use `⟨h0, fun k => ?_, by rw [hcy]; exact h2⟩` and prove the remaining obligations. Rewrite using `[hc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `div_ne_zero (h1 k) (h0 k)`. Take `⟨-, hc0, hyrel⟩` from `hrel.self_of_nhds`. Establish `hlog : logNorm A s (γ' y) = logNorm A s (γ y)`. Rewrite using `[hyrel]`. Conclude with `logNorm_bsmul A ha hsm hc0 _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Rewrite using `[hlog]`. Use `congr 1`. Establish `hj : ∀ j, cxHessian (fun y' => pot L j (γ' y')) y = cxHessian (fun y' => pot L j (γ y')) y`. Introduce `j`. Establish `hcan : ∀ k, AnalyticAt ℂ (fun y' => c y' k) y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `k`. Establish `hfun : (fun y' => c y' k) = fun y' => γ' y' ⟨k, i0 k⟩ / γ y' ⟨k, i0 k⟩`. Use function extensionality and compare the values at `fun y' => hc y' k`. Rewrite using `[hfun]`. Conclude with `(analyticAt_coord hγ' _).div (analyticAt_coord hγ _) (hi0 k)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hG : AnalyticAt ℂ (fun y' => ∑ k, (((L j).a k : ℝ) : ℂ) * Complex.log (c y' k / c y k)) y`. Establish `hk : ∀ k, AnalyticAt ℂ (fun y' => (((L j).a k : ℝ) : ℂ) * Complex.log (c y' k / c y k)) y`. Introduce `k`. Use `analyticAt_const.mul (((hcan k).div analyticAt_const (hc0 k)).clog ?_)` and prove the remaining obligations. Use `show c y k / c y k ∈ Complex.slitPlane`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[div_self (hc0 k)]`. Conclude with `Complex.one_mem_slitPlane`. Establish `h` using `Finset.analyticAt_sum (𝕜 := ℂ) (f := fun (k : K) (y' : Fin e → ℂ) => (((L j).a k : ℝ) : ℂ) * Complex.log (c y' k / c y k)) (c := y) Finset.univ (fun k _ => hk k)`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `y'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_apply]`. Establish `hev : (fun y' => pot L j (γ' y')) =ᶠ[𝓝 y] fun y' => pot L j (γ y') + (∑ k, (((L j).a k : ℝ) : ℂ) * Complex.log (c y' k / c y k)).re + ∑ k, ((L j).a k : ℝ) * Real.log ‖c y k‖` using `by filter_upwards [hrel] with y' hy'`. Take `⟨h0, hck, h2⟩` from `hy'`. Establish `hpos : 0 < (L j).h (γ y')` using `(L j).pos _ fun k => ⟨i0 k, h0 k⟩`. Establish `hne : ∀ k ∈ Finset.univ, ‖c y' k‖ ^ (L j).a k ≠ 0` using `fun k _ => zpow_ne_zero _ (norm_ne_zero_iff.mpr (hck k))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `key : ∀ k, Real.log (‖c y' k‖ / ‖c y k‖) = Real.log ‖c y' k‖ - Real.log ‖c y k‖` using `fun k => Real.log_div (norm_ne_zero_iff.mpr (hck k)) (norm_ne_zero_iff.mpr (hc0 k))`. Establish `hb : (L j).h (bsmul (c y') (γ y')) = (∏ k, ‖c y' k‖ ^ (L j).a k) * (L j).h (γ y')` using `(L j).smul _ _ hck`. Simplify using `only [pot]`. Rewrite using `[h2, hb, Real.log_mul (Finset.prod_ne_zero_iff.mpr hne) hpos.ne', Real.log_prod hne]`. Simplify using `only [Complex.re_sum, Complex.re_ofReal_mul, Complex.log_re, norm_div, key, Real.log_zpow, mul_sub, Finset.sum_sub_distrib]`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[cxHessian_congr hev]`. Conclude with `cxHessian_add_re _ (pot_contDiffAt (hL j) hγ hy) hG`. Simplify using `only [maDensity, hj]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem density_eq {L : Fin e → HermLine ι} (hL : ∀ j, IsSmoothHerm (L j)) {A : HermLine ι}
     {s : MRing ι} {P : Ideal (MRing ι)} (hs : IsSectionOn P A s)
@@ -134,7 +132,7 @@ theorem density_eq {L : Fin e → HermLine ι} (hL : ∀ j, IsSmoothHerm (L j)) 
   simp only [maDensity, hj]
 
 /- English proof (translation)
-Take `⟨U, hU, hUo, hyU⟩` from `_root_.mem_nhds_iff.mp (h.2.mono fun _ h' => h'.1)`. Rewrite using `[analyticAt_pi_iff]`. Introduce `p`. Conclude with `hA e U _ hUo (fun y' hy' => (differentiableAt_pi.mp (hU hy') p).differentiableWithinAt) y hyU`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem sheet_analyticAt (hA : OsgoodStatement) {P : Ideal (MRing ι)}
     {Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)} {y : Fin e → ℂ}
@@ -146,9 +144,7 @@ theorem sheet_analyticAt (hA : OsgoodStatement) {P : Ideal (MRing ι)}
   exact hA e U _ hUo (fun y' hy' => (differentiableAt_pi.mp (hU hy') p).differentiableWithinAt) y hyU
 
 /- English proof (translation)
-Introduce `K _ ι _ P e Ψ L A s hvar hgood hL _ hs`. Establish `hbad` using `badSet_null hA (hfib K ι P e Ψ hvar hgood)`. Use `filter_upwards [measure_eq_zero_iff_ae_notMem.mp hbad] with y hy w γ γ' h h'`. Establish `hseg : (fun y' => segre (γ y')) =ᶠ[𝓝 y] fun y' => segre (γ' y')`. Assume the negation of the conclusion as `hne`.
-
-Conclude with `hy ⟨w, γ, γ', h, h', hne⟩`. Conclude with `density_eq hL hs (sheet_analyticAt hA h) (sheet_analyticAt hA h') h.2.self_of_nhds.2.1.1 hseg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem sheetIndep_of (hA : OsgoodStatement) (hfib : FibreFiniteStatement) : SheetIndepStatement := by
   intro K _ ι _ P e Ψ L A s hvar hgood hL _ hs
@@ -160,7 +156,7 @@ theorem sheetIndep_of (hA : OsgoodStatement) (hfib : FibreFiniteStatement) : She
   exact density_eq hL hs (sheet_analyticAt hA h) (sheet_analyticAt hA h') h.2.self_of_nhds.2.1.1 hseg
 
 /- English proof (translation)
-The claim follows from `sheetIndep_of osgood fibreFinite`.
+A detailed English derivation is pending.
 -/
 theorem sheetIndep : SheetIndepStatement := sheetIndep_of osgood fibreFinite
 

@@ -12,9 +12,9 @@ namespace GlobalTheory.Mem.FieldsEx
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Establish `: Group.FG (𝓞 E)ˣ` using `Group.fg_iff_monoid_fg.2 inferInstance`. Use `Subgroup.finiteIndex_range_powMonoidHom_of_fg (𝓞 E)ˣ h0` as an intermediate fact. Establish `: Finite ((𝓞 E)ˣ ⧸ (powMonoidHom h : (𝓞 E)ˣ →* (𝓞 E)ˣ).range)` using `Subgroup.finite_quotient_of_finiteIndex`. Use `⟨Set.range (Quotient.out : (𝓞 E)ˣ ⧸ (powMonoidHom h : (𝓞 E)ˣ →* (𝓞 E)ˣ).range → (𝓞 E)ˣ), @Set.finite_range _ _ _ this, fun u => ?_⟩` and prove the remaining obligations. Take `⟨⟨_, w, rfl⟩, hw⟩` from `QuotientGroup.mk_out_eq_mul (powMonoidHom h : (𝓞 E)ˣ →* (𝓞 E)ˣ).range u`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨_, ⟨(u : (𝓞 E)ˣ ⧸ (powMonoidHom h : (𝓞 E)ˣ →* (𝓞 E)ˣ).range), rfl⟩, w⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[hw]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_finite_units_mod_pow {h : ℕ} (h0 : h ≠ 0) :
     ∃ S : Set (𝓞 E)ˣ, S.Finite ∧ ∀ u : (𝓞 E)ˣ, ∃ s ∈ S, ∃ w : (𝓞 E)ˣ, u = s * w ^ h := by
@@ -29,17 +29,15 @@ theorem exists_finite_units_mod_pow {h : ℕ} (h0 : h ≠ 0) :
   simp
 
 /- English proof (translation)
-Establish `key : ∀ y : powIdealElts E h, ∃ 𝔞 : (FractionalIdeal (𝓞 E)⁰ E)ˣ, FractionalIdeal.spanSingleton (𝓞 E)⁰ (y : E) = (𝔞 : FractionalIdeal (𝓞 E)⁰ E) ^ h`. Introduce and unpack `⟨y, hy, 𝔞, ha⟩`. Use `⟨Units.mk0 𝔞 ?_, ha⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Rewrite `ha` using `[zero_pow h0, FractionalIdeal.spanSingleton_eq_zero_iff]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hy ha`. Use `choose A hA using key`. Set `c : powIdealElts E h → ClassGroup (𝓞 E)` to `fun y => ClassGroup.mk E (A y)`. Set `r : Set.range c → E` to `fun t => (t.2.choose : E)`. Use `⟨Set.range r, Set.finite_range _, fun y hy => ⟨_, ⟨⟨c ⟨y, hy⟩, _, rfl⟩, rfl⟩, ?_⟩⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht : c ⟨y, hy⟩ ∈ Set.range c` using `⟨_, rfl⟩`. Establish `h1 : c ht.choose = c ⟨y, hy⟩` using `ht.choose_spec`. Express the relevant statement in the definitionally equal form `∃ (x : E) (u : (𝓞 E)ˣ), y = x ^ h * (ht.choose : E) * ((u : 𝓞 E) : E)`. Generalize the expression as in `ht.choose = s at h1`. Establish `h2 : ClassGroup.mk E (A ⟨y, hy⟩ * (A s)⁻¹) = 1`.
+Express the relevant assertion in an equivalent form by its definition. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_mul, map_inv, mul_inv_eq_one]`. Conclude with `h1.symm`. Take `⟨x, hx⟩` from `(FractionalIdeal.isPrincipal_iff _).1 (ClassGroup.mk_eq_one_iff.1 h2)`. Establish `h3 : ((A ⟨y, hy⟩ : (FractionalIdeal (𝓞 E)⁰ E)ˣ) : FractionalIdeal (𝓞 E)⁰ E) = FractionalIdeal.spanSingleton (𝓞 E)⁰ x * A s`. Rewrite using `[← hx, ← Units.val_mul, inv_mul_cancel_right]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h4 : FractionalIdeal.spanSingleton (𝓞 E)⁰ (x ^ h * s) = FractionalIdeal.spanSingleton (𝓞 E)⁰ y`. Rewrite using `[← FractionalIdeal.spanSingleton_mul_spanSingleton, ← FractionalIdeal.spanSingleton_pow, hA s, ← mul_pow, ← h3]`. Conclude with `(hA ⟨y, hy⟩).symm`. Take `⟨u, hu⟩` from `FractionalIdeal.spanSingleton_eq_spanSingleton.1 h4`. Use `⟨x, u, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← hu, Units.smul_def, Algebra.smul_def, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_finite_mod_units_pow {h : ℕ} (h0 : h ≠ 0) :
     ∃ S : Set E, S.Finite ∧ ∀ y ∈ powIdealElts E h, ∃ s ∈ S, ∃ (x : E) (u : (𝓞 E)ˣ),
@@ -76,9 +74,9 @@ theorem exists_finite_mod_units_pow {h : ℕ} (h0 : h ≠ 0) :
   rw [← hu, Units.smul_def, Algebra.smul_def, mul_comm]
 
 /- English proof (translation)
-Take `⟨S, hS, H⟩` from `exists_finite_mod_units_pow (E := E) h0`. Take `⟨T, hT, H'⟩` from `exists_finite_units_mod_pow (E := E) h0`. Use `⟨Set.image2 (fun s (t : (𝓞 E)ˣ) => s * ((t : 𝓞 E) : E)) S T, hS.image2 _ hT, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨s, hs, x, u, rfl⟩` from `H y hy`. Take `⟨t, ht, w, rfl⟩` from `H' u`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨_, ⟨s, hs, t, ht, rfl⟩, x * ((w : 𝓞 E) : E), ?_⟩` and prove the remaining obligations. Simplify using `only [Units.val_mul, Units.val_pow_eq_pow_val, map_mul, map_pow, RingOfIntegers.coe_eq_algebraMap]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exists_finite_mod_pow {h : ℕ} (h0 : h ≠ 0) :
     ∃ S : Set E, S.Finite ∧ ∀ y ∈ powIdealElts E h, ∃ s ∈ S, ∃ x : E, y = x ^ h * s := by
@@ -92,17 +90,15 @@ theorem exists_finite_mod_pow {h : ℕ} (h0 : h ≠ 0) :
   ring
 
 /- English proof (translation)
-Take `⟨S, hS, H⟩` from `exists_finite_mod_pow (E := E) h0`. Set `R : Set ℂ` to `⋃ s ∈ insert 1 S, {z | z ^ h = φ s}`. Establish `hR : R.Finite` using `(hS.insert 1).biUnion fun s _ => ((Polynomial.nthRoots h (φ s)).finite_toSet).subset fun z hz => (Polynomial.mem_nthRoots (Nat.pos_of_ne_zero h0)).2 hz`. Establish `: Finite R` using `hR`. Establish `h1 : FiniteDimensional ℚ (IntermediateField.adjoin ℚ R)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `IntermediateField.finiteDimensional_adjoin fun z hz => ?_` and prove the remaining obligations. Take `⟨s, -, hs⟩` from `Set.mem_iUnion₂.1 hz`. Use `IsIntegral.of_pow (Nat.pos_of_ne_zero h0) ?_` and prove the remaining obligations. Rewrite using `[show z ^ h = φ s from hs]`. Conclude with `(Algebra.IsIntegral.isIntegral s).map φ.toRatAlgHom`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : FiniteDimensional ℚ (imField φ)` using `(AlgEquiv.ofInjectiveField φ.toRatAlgHom).toLinearEquiv.finiteDimensional`. Establish `h3 : FiniteDimensional ℚ (imField φ ⊔ IntermediateField.adjoin ℚ R : IntermediateField ℚ ℂ)` using `IntermediateField.finiteDimensional_sup _ _`. Establish `hE : ∀ x, φ x ∈ imField φ ⊔ IntermediateField.adjoin ℚ R` using `fun x => (le_sup_left : imField φ ≤ _) ⟨x, rfl⟩`. Establish `hz : ∀ s ∈ insert 1 S, ∀ z : ℂ, z ^ h = φ s → z ∈ imField φ ⊔ IntermediateField.adjoin ℚ R` using `fun s hs z hz => (le_sup_right : IntermediateField.adjoin ℚ R ≤ _) (IntermediateField.subset_adjoin ℚ R (Set.mem_iUnion₂.2 ⟨s, hs, hz⟩))`. Establish `hle : kummerField φ h ≤ imField φ ⊔ IntermediateField.adjoin ℚ R`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(kummerField_le_iff φ).2 ⟨hE, hz 1 (Set.mem_insert _ _) _ ?_, fun y hy z hzy => ?_⟩` and prove the remaining obligations. Rewrite using `[map_one]`. Conclude with `(Complex.isPrimitiveRoot_exp h h0).pow_eq_one`. Take `⟨s, hs, x, rfl⟩` from `H y hy`. Establish `hx : φ x ≠ 0`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[map_ne_zero]`. Introduce and unpack `rfl`. Conclude with `hy.1 (by rw [zero_pow h0, zero_mul])`. Establish `h4` using `hz s (Set.mem_insert_of_mem _ hs) (z / φ x) (by`. Rewrite using `[div_pow, hzy, map_mul, map_pow, mul_div_cancel_left₀ _ (pow_ne_zero _ hx)])`.
-
-Simplify `mul_mem h4 (hE x)` using `[hx]`. Conclude with `Module.Finite.of_injective (IntermediateField.inclusion hle).toLinearMap (IntermediateField.inclusion_injective hle)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_kummerField (E : Type) [Field E] [NumberField E] (φ : E →+* ℂ) (h : ℕ) (h0 : h ≠ 0) :
     FiniteDimensional ℚ (kummerField φ h) := by

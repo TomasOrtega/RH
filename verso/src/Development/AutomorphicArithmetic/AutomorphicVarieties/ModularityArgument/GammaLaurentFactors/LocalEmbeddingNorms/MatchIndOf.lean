@@ -26,13 +26,11 @@ section Primes
 variable {K M : Type} [Field K] [NumberField K] [Field M] [NumberField M] [Algebra K M]
 
 /- English proof (translation)
-Establish `hne : Ideal.absNorm w.asIdeal ≠ 0` using `by rw [Ne, Ideal.absNorm_eq_zero_iff]; exact w.ne_bot`. Establish `hcard : Ideal.absNorm w.asIdeal = Nat.card (𝓞 F ⧸ w.asIdeal)`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Establish `: Finite (𝓞 F ⧸ w.asIdeal)` using `Nat.finite_of_card_ne_zero (hcard ▸ hne)`. Use `Fact.mk hq` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨x, hx⟩` from `exists_prime_addOrderOf_dvd_card' (G := 𝓞 F ⧸ w.asIdeal) q (hcard ▸ hd)`. Establish `h1 : q • x = 0` using `hx ▸ addOrderOf_nsmul_eq_zero x`. Establish `hx0 : x ≠ 0`. Introduce `h0`. Rewrite `hx` using `[h0, addOrderOf_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hq.one_lt.ne hx`. Use `w.isPrime` as an intermediate fact. Rewrite `h1` using `[nsmul_eq_mul]`. Establish `h2` using `(mul_eq_zero.1 h1).resolve_right hx0`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast]`.
-
-Conclude with `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem natCast_mem {F : Type} [Field F] [NumberField F] (w : HeightOneSpectrum (𝓞 F)) {q : ℕ}
     (hq : q.Prime) (hd : q ∣ Ideal.absNorm w.asIdeal) : (q : 𝓞 F) ∈ w.asIdeal := by
@@ -54,14 +52,14 @@ private theorem natCast_mem {F : Type} [Field F] [NumberField F] (w : HeightOneS
   exact h2
 
 /- English proof (translation)
-Rewrite using `[normV, Ideal.absNorm_apply, Submodule.cardQuot_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem normV_absNorm {F : Type} [Field F] [NumberField F] (w : HeightOneSpectrum (𝓞 F)) :
     normV w = Ideal.absNorm w.asIdeal := by
   rw [normV, Ideal.absNorm_apply, Submodule.cardQuot_apply]
 
 /- English proof (translation)
-Establish `: w.asIdeal.LiesOver (w.under (𝓞 K)).asIdeal` using `⟨rfl⟩`. Use `w.isMaximal` as an intermediate fact. Use `(w.under (𝓞 K)).isMaximal` as an intermediate fact. Rewrite using `[Ideal.inertiaDeg'_eq_inertiaDeg, Ideal.absNorm_pow_inertiaDeg]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem absNorm_pow (w : HeightOneSpectrum (𝓞 M)) :
     Ideal.absNorm w.asIdeal = Ideal.absNorm (w.under (𝓞 K)).asIdeal ^ (w.under (𝓞 K)).asIdeal.inertiaDeg' w.asIdeal := by
@@ -71,7 +69,7 @@ private theorem absNorm_pow (w : HeightOneSpectrum (𝓞 M)) :
   rw [Ideal.inertiaDeg'_eq_inertiaDeg, Ideal.absNorm_pow_inertiaDeg]
 
 /- English proof (translation)
-Use `v.isMaximal` as an intermediate fact. Rewrite using `[← hE]`. Conclude with `Ideal.sum_ramification_inertia (𝓞 M) K M v.ne_bot`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sum_ef (hE : Module.finrank K M = 2) (v : HeightOneSpectrum (𝓞 K)) :
     ∑ P ∈ IsDedekindDomain.primesOverFinset v.asIdeal (𝓞 M), v.asIdeal.ramificationIdx' P * v.asIdeal.inertiaDeg' P = 2 := by
@@ -80,7 +78,7 @@ private theorem sum_ef (hE : Module.finrank K M = 2) (v : HeightOneSpectrum (�
   exact Ideal.sum_ramification_inertia (𝓞 M) K M v.ne_bot
 
 /- English proof (translation)
-Rewrite using `[IsDedekindDomain.mem_primesOverFinset_iff (w.under (𝓞 K)).ne_bot]`. Conclude with `⟨w.isPrime, ⟨rfl⟩⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 private theorem mem_over (w : HeightOneSpectrum (𝓞 M)) :
     w.asIdeal ∈ IsDedekindDomain.primesOverFinset (w.under (𝓞 K)).asIdeal (𝓞 M) := by
@@ -88,14 +86,14 @@ private theorem mem_over (w : HeightOneSpectrum (𝓞 M)) :
   exact ⟨w.isPrime, ⟨rfl⟩⟩
 
 /- English proof (translation)
-Establish `: w.asIdeal.LiesOver (w.under (𝓞 K)).asIdeal` using `⟨rfl⟩`. Conclude with `Nat.pos_of_ne_zero (Ideal.IsDedekindDomain.ramificationIdx'_ne_zero_of_liesOver _ (w.under (𝓞 K)).ne_bot)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem e_pos (w : HeightOneSpectrum (𝓞 M)) : 0 < (w.under (𝓞 K)).asIdeal.ramificationIdx' w.asIdeal := by
   have : w.asIdeal.LiesOver (w.under (𝓞 K)).asIdeal := ⟨rfl⟩
   exact Nat.pos_of_ne_zero (Ideal.IsDedekindDomain.ramificationIdx'_ne_zero_of_liesOver _ (w.under (𝓞 K)).ne_bot)
 
 /- English proof (translation)
-Establish `: w.asIdeal.LiesOver (w.under (𝓞 K)).asIdeal` using `⟨rfl⟩`. Use `(w.under (𝓞 K)).isMaximal` as an intermediate fact. Conclude with `Nat.pos_of_ne_zero (Ideal.inertiaDeg'_ne_zero _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem f_pos (w : HeightOneSpectrum (𝓞 M)) : 0 < (w.under (𝓞 K)).asIdeal.inertiaDeg' w.asIdeal := by
   have : w.asIdeal.LiesOver (w.under (𝓞 K)).asIdeal := ⟨rfl⟩
@@ -103,13 +101,13 @@ private theorem f_pos (w : HeightOneSpectrum (𝓞 M)) : 0 < (w.under (𝓞 K)).
   exact Nat.pos_of_ne_zero (Ideal.inertiaDeg'_ne_zero _ _)
 
 /- English proof (translation)
-Establish `h1` using `mem_over (K := K) w`. Establish `h2` using `mem_over (K := K) w'`. Rewrite `h2` using `[hu]`. Establish `hne' : w.asIdeal ≠ w'.asIdeal` using `fun h => hne (HeightOneSpectrum.ext h.symm)`. Establish `hsub : ({w.asIdeal, w'.asIdeal} : Finset (Ideal (𝓞 M))) ⊆ IsDedekindDomain.primesOverFinset (w.under (𝓞 K)).asIdeal (𝓞 M)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x hx`. Rewrite `hx` using `[Finset.mem_insert, Finset.mem_singleton]`. Apply the tactic sequence `rcases hx with rfl | rfl <;> assumption`. Establish `hle` using `Finset.sum_le_sum_of_subset (f := fun P => (w.under (𝓞 K)).asIdeal.ramificationIdx' P * (w.under (𝓞 K)).asIdeal.inertiaDeg' P) hsub`. Rewrite `hle` using `[Finset.sum_pair hne', sum_ef hE]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `a` using `e_pos (K := K) w`. Establish `b` using `f_pos (K := K) w`. Establish `c` using `e_pos (K := K) w'`. Establish `d` using `f_pos (K := K) w'`. Rewrite `c`, `d` using `[hu]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: (w.under (𝓞 K)).asIdeal.inertiaDeg' w.asIdeal ≤ 1` using `by nlinarith`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 private theorem f_one (hE : Module.finrank K M = 2) {w w' : HeightOneSpectrum (𝓞 M)} (hne : w' ≠ w)
     (hu : w'.under (𝓞 K) = w.under (𝓞 K)) : (w.under (𝓞 K)).asIdeal.inertiaDeg' w.asIdeal = 1 := by
@@ -135,11 +133,11 @@ private theorem f_one (hE : Module.finrank K M = 2) {w w' : HeightOneSpectrum (�
   omega
 
 /- English proof (translation)
-Establish `h` using `sum_ef (K := K) (M := M) hE (w.under (𝓞 K))`. Rewrite `h` using `[Finset.sum_eq_single_of_mem w.asIdeal (mem_over w) (fun Q hQ hQw => ?_), he, one_mul]`. Conclude with `h`. It suffices to derive a contradiction. Apply `hQw` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hQ` using `[IsDedekindDomain.mem_primesOverFinset_iff (w.under (𝓞 K)).ne_bot]`. Take `⟨hQp, hQl⟩` from `hQ`. Establish `hQ0 : Q ≠ ⊥`. Introduce and unpack `rfl`. Apply `(w.under (𝓞 K)).ne_bot` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hQl.over]`. Conclude with `Ideal.comap_bot_of_injective _ (FaithfulSMul.algebraMap_injective _ _)`. Use `honly ⟨Q, hQp, hQ0⟩ (HeightOneSpectrum.ext hQl.over.symm)` as an intermediate fact. Conclude with `congrArg HeightOneSpectrum.asIdeal this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem f_two (hE : Module.finrank K M = 2) (w : HeightOneSpectrum (𝓞 M))
     (honly : ∀ w' : HeightOneSpectrum (𝓞 M), w'.under (𝓞 K) = w.under (𝓞 K) → w' = w)
@@ -162,15 +160,13 @@ private theorem f_two (hE : Module.finrank K M = 2) (w : HeightOneSpectrum (𝓞
     exact congrArg HeightOneSpectrum.asIdeal this
 
 /- English proof (translation)
-Take `⟨N, hN⟩` from `ReciprocityTheory.Cheb.exists_forall_isUnramifiedAt M`. Use `⟨N, fun w hw => ?_⟩` and prove the remaining obligations. Establish `h1 : 1 < Ideal.absNorm (w.under (𝓞 K)).asIdeal` using `NumberField.HeightOneSpectrum.one_lt_absNorm _`. Establish `hq` using `Nat.minFac_prime h1.ne'`. Establish `hqv : ((Nat.minFac (Ideal.absNorm (w.under (𝓞 K)).asIdeal) : ℕ) : 𝓞 K) ∈ (w.under (𝓞 K)).asIdeal` using `natCast_mem _ hq (Nat.minFac_dvd _)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hqN : N < Nat.minFac (Ideal.absNorm (w.under (𝓞 K)).asIdeal)`. Assume the negation of the conclusion as `hle`. Use `push_neg at hle`. Apply `hw` to reduce the goal to its premises. Take `⟨k, hk⟩` from `Nat.dvd_factorial hq.pos hle`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hk, Nat.cast_mul]`. Conclude with `Ideal.mul_mem_right _ _ hqv`. Establish `hqw : ((Nat.minFac (Ideal.absNorm (w.under (𝓞 K)).asIdeal) : ℕ) : 𝓞 M) ∈ w.asIdeal`. Establish `: algebraMap (𝓞 K) (𝓞 M) ((Nat.minFac (Ideal.absNorm (w.under (𝓞 K)).asIdeal) : ℕ) : 𝓞 K) ∈ w.asIdeal` using `hqv`. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `haveI := w.isPrime`. Use `haveI := hN _ hq hqN w.asIdeal hqw`. Establish `hsq` using `ReciprocityTheory.Cheb.natCast_notMem_sq_of_isUnramifiedAt hq w.asIdeal`. Apply `Ideal.ramificationIdx'_spec` to reduce the goal to its premises. Rewrite using `[pow_one, Ideal.map_le_iff_le_comap]`.
-
-Conclude with `le_rfl`. Introduce `h`. Establish `h3` using `h (Ideal.mem_map_of_mem (algebraMap (𝓞 K) (𝓞 M)) hqv)`. Rewrite `h3` using `[map_natCast]`. Conclude with `hsq (by simpa using h3)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem unram_bound (K M : Type) [Field K] [NumberField K] [Field M] [NumberField M] [Algebra K M] :
     ∃ N : ℕ, ∀ w : HeightOneSpectrum (𝓞 M),
@@ -203,9 +199,9 @@ private theorem unram_bound (K M : Type) [Field K] [NumberField K] [Field M] [Nu
     exact hsq (by simpa using h3)
 
 /- English proof (translation)
-Use `p.isMaximal` as an intermediate fact. Take `⟨Q, hQm, hQl⟩` from `Ideal.exists_maximal_ideal_liesOver_of_isIntegral (S := 𝓞 M) p.asIdeal`. Establish `hQ0 : Q ≠ ⊥`. Introduce and unpack `rfl`. Apply `p.ne_bot` to reduce the goal to its premises.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hQl.over]`. Conclude with `Ideal.comap_bot_of_injective _ (FaithfulSMul.algebraMap_injective _ _)`. Conclude with `⟨⟨Q, hQm.isPrime, hQ0⟩, HeightOneSpectrum.ext hQl.over.symm⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem exists_over (p : HeightOneSpectrum (𝓞 K)) :
     ∃ w : HeightOneSpectrum (𝓞 M), w.under (𝓞 K) = p := by
@@ -219,7 +215,7 @@ private theorem exists_over (p : HeightOneSpectrum (𝓞 K)) :
   exact ⟨⟨Q, hQm.isPrime, hQ0⟩, HeightOneSpectrum.ext hQl.over.symm⟩
 
 /- English proof (translation)
-Establish `: {w : HeightOneSpectrum (𝓞 M) | w.under (𝓞 K) ∈ S} ⊆ ⋃ p ∈ S, HeightOneSpectrum.asIdeal ⁻¹' (↑(IsDedekindDomain.primesOverFinset (p : HeightOneSpectrum (𝓞 K)).asIdeal (𝓞 M)) : Set (Ideal (𝓞 M)))`. Introduce `w hw`. Conclude with `Set.mem_biUnion hw (mem_over w)`. Use `(hS.biUnion fun p _ => ?_).subset this` and prove the remaining obligations. Conclude with `(Finset.finite_toSet _).preimage (fun a _ b _ h => HeightOneSpectrum.ext h)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem finite_above (S : Set (HeightOneSpectrum (𝓞 K))) (hS : S.Finite) :
     {w : HeightOneSpectrum (𝓞 M) | w.under (𝓞 K) ∈ S}.Finite := by
@@ -232,15 +228,13 @@ private theorem finite_above (S : Set (HeightOneSpectrum (𝓞 K))) (hS : S.Fini
   exact (Finset.finite_toSet _).preimage (fun a _ b _ h => HeightOneSpectrum.ext h)
 
 /- English proof (translation)
-Take `⟨N, hN⟩` from `unram_bound K M`. Establish `hT` using `Filter.eventually_cofinite.1 hI`. Establish `hR : {p : HeightOneSpectrum (𝓞 K) | ((N.factorial : ℕ) : 𝓞 K) ∈ p.asIdeal}.Finite`. Establish `h0 : Ideal.span {((N.factorial : ℕ) : 𝓞 K)} ≠ 0`. Rewrite using `[Ideal.zero_eq_bot, Ne, Ideal.span_singleton_eq_bot]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Nat.factorial_pos N).ne'` after adjusting the coercions. Conclude with `(Ideal.finite_factors h0).subset fun p hp => Ideal.dvd_span_singleton.2 hp`. Establish `hF` using `hR.union (hT.image fun w => w.under (𝓞 K))`. Use `⟨hF.toFinset, fun w hw => ?_⟩` and prove the remaining obligations. Rewrite `hw` using `[Set.Finite.mem_toFinset]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgood` using `not_not.1 fun h => hw (Or.inr ⟨w, h, rfl⟩)`. Establish `he` using `hN w fun h => hw (Or.inl h)`. Distinguish the cases in `hs : ∃ w' : HeightOneSpectrum (𝓞 M), w' ≠ w ∧ w'.under (𝓞 K) = w.under (𝓞 K)`. Take `⟨w', hne, hu⟩` from `hs left`. Use `⟨?_, w', hne, hu, hgood.1 w' hne hu⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[absNorm_pow (K := K) w, f_one hE hne hu, pow_one]`. Use `push_neg at hs`. Establish `honly : ∀ w' : HeightOneSpectrum (𝓞 M), w'.under (𝓞 K) = w.under (𝓞 K) → w' = w` using `fun w' hu => by_contra fun hne => hs w' hne hu`. Establish `hN2 : Ideal.absNorm w.asIdeal = Ideal.absNorm (w.under (𝓞 K)).asIdeal ^ 2`. Rewrite using `[absNorm_pow (K := K) w, f_two hE w honly he]`.
-
-Use `right`. Use `⟨hN2, hgood.2 ?_⟩` and prove the remaining obligations. Rewrite using `[normV_absNorm, normV_absNorm, hN2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ind_key (hE : Module.finrank K M = 2) (sat : HeightOneSpectrum (𝓞 M) → Multiset ℂˣ → Prop)
     (satP : HeightOneSpectrum (𝓞 K) → Multiset ℂˣ → Prop) (hI : IndSys sat satP) :
@@ -286,7 +280,7 @@ private def pick {X : Type} (sat : X → Multiset ℂˣ → Prop) (w : X) : Mult
   if h : ∃ B, sat w B then h.choose else 0
 
 /- English proof (translation)
-Establish `h' : ∃ B, sat w B` using `⟨B, h⟩`. Rewrite using `[pick, dif_pos h']`. Conclude with `h'.choose_spec`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pick_spec {X : Type} {sat : X → Multiset ℂˣ → Prop} {w : X} {B : Multiset ℂˣ} (h : sat w B) :
     sat w (pick sat w) := by
@@ -295,25 +289,23 @@ private theorem pick_spec {X : Type} {sat : X → Multiset ℂˣ → Prop} {w : 
   exact h'.choose_spec
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.LFun.HasSatGL.unique ((CG.hasSat_mk σ w B).1 h) ((CG.hasSat_mk σ w B').1 h')`.
+A detailed English derivation is pending.
 -/
 private theorem sat_unique {F : Type} [Field F] [NumberField F] [IsTotallyComplex F] {n : ℕ} (σ : CuspSub F n)
     {w : HeightOneSpectrum (𝓞 F)} {B B' : Multiset ℂˣ} (h : (CG.mk σ).HasSat w B) (h' : (CG.mk σ).HasSat w B') : B = B' :=
   GlobalTheory.LFun.HasSatGL.unique ((CG.hasSat_mk σ w B).1 h) ((CG.hasSat_mk σ w B').1 h')
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.LFun.HasSatGL.card ((CG.hasSat_mk σ w B).1 h)`.
+A detailed English derivation is pending.
 -/
 private theorem sat_card {F : Type} [Field F] [NumberField F] [IsTotallyComplex F] {n : ℕ} (σ : CuspSub F n)
     {w : HeightOneSpectrum (𝓞 F)} {B : Multiset ℂˣ} (h : (CG.mk σ).HasSat w B) : Multiset.card B = n :=
   GlobalTheory.LFun.HasSatGL.card ((CG.hasSat_mk σ w B).1 h)
 
 /- English proof (translation)
-Establish `hN : (1 : ℝ) ≤ (Ideal.absNorm w.asIdeal : ℝ)`. Establish `: Ideal.absNorm w.asIdeal ≠ 0` using `by rw [Ne, Ideal.absNorm_eq_zero_iff]; exact w.ne_bot`. Conclude with `Nat.one_le_iff_ne_zero.2 this` after adjusting the coercions. Establish `hmono : (Ideal.absNorm w.asIdeal : ℝ) ^ c₀ ≤ (Ideal.absNorm w.asIdeal : ℝ) ^ c` using `Real.rpow_le_rpow_of_exponent_le hN hc`. Introduce `b hb'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨b₀, hb₀, rfl⟩` from `Multiset.mem_map.1 hb'`. Take `⟨h1, h2⟩` from `hb b₀ hb₀`. Use `⟨h1.trans hmono, ?_⟩` and prove the remaining obligations. Establish `: ((b₀ : ℂ))⁻¹ = ((b₀⁻¹ : ℂˣ) : ℂ)` using `(Units.val_inv_eq_inv_val b₀).symm`. Rewrite using `[this]`.
-
-Conclude with `h2.trans hmono`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem bound_cx {F : Type} [Field F] [NumberField F] (w : HeightOneSpectrum (𝓞 F)) {B : Multiset ℂˣ} {c₀ c : ℝ}
     (hc : c₀ ≤ c) (hb : ∀ b ∈ B, ‖(b : ℂ)‖ ≤ (Ideal.absNorm w.asIdeal : ℝ) ^ c₀ ∧
@@ -340,16 +332,16 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 
 omit [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Introduce `x hx` and use `by have h := hab x hx rwa [MonoidHom.mul_apply, ha x hx, one_mul] at h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem unr_cancel {a b : kˣ →* ℂˣ} (ha : IsUnram a) (hab : IsUnram (a * b)) : IsUnram b := fun x hx => by
   have h := hab x hx
   rwa [MonoidHom.mul_apply, ha x hx, one_mul] at h
 
 /- English proof (translation)
-Establish `e : ∀ x : kˣ, ValuativeRel.valuation k (x : k) = 1 → a x = b x` using `fun x hx => by`. Use `h x hx` as an intermediate fact. Rewrite `this` using `[MonoidHom.mul_apply, MonoidHom.inv_apply, mul_inv_eq_one]`. Then use the resulting hypothesis. Unfold `cnt`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Use `Multiset.filter_congr fun y _ => exists_congr fun ξ => exists_congr fun hξ => and_congr_right fun _ => ?_` and prove the remaining obligations. Use `forall_congr' fun x => forall_congr' fun hx => ?_` and prove the remaining obligations. Rewrite using `[MonoidHom.mul_apply, MonoidHom.mul_apply, e x hx]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem cnt_congr (s : Multiset (IrrGL k)) {a b : kˣ →* ℂˣ} (h : IsUnram (a * b⁻¹)) : cnt s a = cnt s b := by
   have e : ∀ x : kˣ, ValuativeRel.valuation k (x : k) = 1 → a x = b x := fun x hx => by
@@ -362,7 +354,7 @@ private theorem cnt_congr (s : Multiset (IrrGL k)) {a b : kˣ →* ℂˣ} (h : I
   rw [MonoidHom.mul_apply, MonoidHom.mul_apply, e x hx]
 
 /- English proof (translation)
-Unfold `cnt`. Rewrite using `[Multiset.card_eq_zero, Multiset.filter_eq_nil]`. Introduce and unpack `y hy ⟨ξ, hξ, rfl, hu⟩`. Conclude with `h ξ hξ hy hu`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem cnt_zero (s : Multiset (IrrGL k)) (a : kˣ →* ℂˣ)
     (h : ∀ ξ hξ, IrrGL.ofChar ξ hξ ∈ s → ¬ IsUnram (ξ * a)) : cnt s a = 0 := by
@@ -372,7 +364,7 @@ private theorem cnt_zero (s : Multiset (IrrGL k)) (a : kˣ →* ℂˣ)
   exact h ξ hξ hy hu
 
 /- English proof (translation)
-Use `cnt_zero s a fun ξ hξ hy hu => ?_` and prove the remaining obligations. Take `⟨μ, hμ, e⟩` from `hs _ hy`. Rewrite `hu` using `[IrrGL.ofChar_inj.1 e]`. Conclude with `ha (unr_cancel hμ hu)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cnt_zero_of_unr (s : Multiset (IrrGL k)) (a : kˣ →* ℂˣ) (hs : ∀ y ∈ s, y.IsUnramChar)
     (ha : ¬ IsUnram a) : cnt s a = 0 := by
@@ -382,9 +374,9 @@ private theorem cnt_zero_of_unr (s : Multiset (IrrGL k)) (a : kˣ →* ℂˣ) (h
   exact ha (unr_cancel hμ hu)
 
 /- English proof (translation)
-Set `g : IrrGL k → (kˣ →* ℂˣ)` to `fun y => if h : ∃ ξ hξ, y = IrrGL.ofChar ξ hξ then h.choose else 1`. Use `⟨s.toFinset.image g, fun ξ hξ hy => Finset.mem_image.2 ⟨_, Multiset.mem_toFinset.2 hy, ?_⟩⟩` and prove the remaining obligations. Establish `h : ∃ ξ' hξ', IrrGL.ofChar ξ hξ = IrrGL.ofChar ξ' hξ'` using `⟨ξ, hξ, rfl⟩`. Express the relevant statement in the definitionally equal form `(if h : ∃ ξ' hξ', IrrGL.ofChar ξ hξ = IrrGL.ofChar ξ' hξ' then h.choose else 1) = ξ`. Rewrite using `[dif_pos h]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Take `⟨h1, h2⟩` from `h.choose_spec`. Conclude with `(IrrGL.ofChar_inj.1 h2).symm`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem exists_bad (s : Multiset (IrrGL k)) :
     ∃ T : Finset (kˣ →* ℂˣ), ∀ ξ hξ, IrrGL.ofChar ξ hξ ∈ s → ξ ∈ T := by
@@ -399,7 +391,7 @@ private theorem exists_bad (s : Multiset (IrrGL k)) :
 end Cnt
 
 /- English proof (translation)
-Use `haveI : (Valued.v : Valuation (w.adicCompletion F) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _`. Use `forall_congr' fun x => imp_congr_left ?_` and prove the remaining obligations. Conclude with `(ValuativeRel.isEquiv (ValuativeRel.valuation (w.adicCompletion F)) Valued.v).eq_one_iff_eq_one.symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem unrAt_iff {F : Type} [Field F] [NumberField F] (χ : HChar F) (w : HeightOneSpectrum (𝓞 F)) :
     χ.UnrAt w ↔ IsUnram (χ.loc w) := by
@@ -420,7 +412,7 @@ private def Key (sat : HeightOneSpectrum (𝓞 M) → Multiset ℂˣ → Prop) (
     ∃ B B' : Multiset ℂˣ, sat w (B'.map (· ^ 2)) ∧ B = B' + B'.map (fun b => -b) ∧ satP (w.under (𝓞 K)) B)
 
 /- English proof (translation)
-Break down `h with ⟨-, w', -, -, B, B', h1, -, h⟩ | ⟨-, B, B', h1, -, h⟩` into its components or cases. Conclude with `⟨⟨_, h1⟩, _, h⟩`. Conclude with `⟨⟨_, h1⟩, _, h⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 private theorem Key.sat {sat : HeightOneSpectrum (𝓞 M) → Multiset ℂˣ → Prop}
     {satP : HeightOneSpectrum (𝓞 K) → Multiset ℂˣ → Prop} {w : HeightOneSpectrum (𝓞 M)} (h : Key sat satP w) :
@@ -430,15 +422,15 @@ private theorem Key.sat {sat : HeightOneSpectrum (𝓞 M) → Multiset ℂˣ →
   · exact ⟨⟨_, h1⟩, _, h⟩
 
 /- English proof (translation)
-Simplify using `only [← CG.twist_mk]`. Break down `h with ⟨hN, w', hne, hw', B, B', hB, hB', hBP⟩ | ⟨hN, B, B', hB, rfl, hBP⟩` into its components or cases. Take `⟨u1, v1⟩` from `hξ w hu`. Take `⟨u2, v2⟩` from `hξ w' (hw' ▸ hu)`. Rewrite `v1` using `[f_one h2 hne hw', pow_one]`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `v2` using `[f_one h2 hne.symm hw'.symm, pow_one, hw']`. Use `Or.inl ⟨hN, w', hne, hw', _, _, hB.twist u1, hB'.twist u2, ?_⟩` and prove the remaining obligations. Establish `hP` using `hBP.twist hu`. Rewrite `hP` using `[Multiset.map_add]`. Rewrite using `[v1, v2]` and apply the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Take `⟨u1, v1⟩` from `hξ w hu`. Establish `hf : (w.under (𝓞 K)).asIdeal.inertiaDeg' w.asIdeal = 2` using `Nat.pow_right_injective (NumberField.HeightOneSpectrum.one_lt_absNorm (w.under (𝓞 K))) ((absNorm_pow (K := K) w).symm.trans hN)`. Rewrite `v1` using `[hf]`. Use `Or.inr ⟨hN, _, B'.map (· * χ.val (w.under (𝓞 K))), ?_, rfl, ?_⟩` and prove the remaining obligations. Establish `h` using `hB.twist u1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h` using `[v1, Multiset.map_map]`. Rewrite using `[Multiset.map_map]`. Use `h using 2` and compare the differences between its conclusion and the goal. Simplify using `[mul_pow]`. Establish `h` using `hBP.twist hu`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify `h` using `[Multiset.map_add, Multiset.map_map, Function.comp_def]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem key_twist [IsTotallyComplex K] [IsTotallyComplex M] (h2 : Module.finrank K M = 2)
     {P : CuspSub K (2 * 2)} {π : CuspSub M 2} (χ : HChar K) (ξ : HChar M)
@@ -471,29 +463,27 @@ private theorem key_twist [IsTotallyComplex K] [IsTotallyComplex M] (h2 : Module
       simpa [Multiset.map_add, Multiset.map_map, Function.comp_def] using h
 
 /- English proof (translation)
-Take `⟨cP, hcP⟩` from `satBd K (2 * 2) P`. Take `⟨cπ, hcπ⟩` from `satBd M 2 π`. Establish `hfin` using `finite_above (M := M) (S : Set (HeightOneSpectrum (𝓞 K))) S.finite_toSet`. Take `⟨SM, hSM⟩ : ∃ SM : Finset (HeightOneSpectrum (𝓞 M)), SM = hfin.toFinset` from `⟨_, rfl⟩`. Establish `memSM : ∀ w, w ∈ SM ↔ w.under (𝓞 K) ∈ S` using `fun w => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hSM, Set.Finite.mem_toFinset]`. Both sides reduce to the same expression. Take `⟨BK, hBK⟩ : ∃ BK, BK = pick (CG.mk P).HasSat` from `⟨_, rfl⟩`. Take `⟨BM, hBM⟩ : ∃ BM, BM = pick (CG.mk π).HasSat` from `⟨_, rfl⟩`. Establish `satK : ∀ p ∉ S, (CG.mk P).HasSat p (BK p)` using `fun p hp => by`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨w, rfl⟩` from `exists_over (M := M) p`. Rewrite using `[hBK]`. Take `⟨B, h⟩` from `(hkey w hp).sat.2`. Conclude with `pick_spec h`. Establish `satM : ∀ w ∉ SM, (CG.mk π).HasSat w (BM w)` using `fun w hw => by`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hBM]`. Take `⟨B, h⟩` from `(hkey w fun h => hw ((memSM w).2 h)).sat.1`. Conclude with `pick_spec h`. Establish `hq : 1 < Ideal.absNorm v.asIdeal` using `NumberField.HeightOneSpectrum.one_lt_absNorm v`. Take `⟨β, Q, hβ, hQ0, hQd, pK⟩` from `hSide K (2 * 2) (by norm_num) P S hK BK satK sK _ (fun _ => 1) hq fun u hu => ⟨hsK u, fun h => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[pow_one, not_not.1 fun e => h (zK u hu e)]⟩`. Take `⟨β', Q', hβ', hQ0', hQd', pM⟩` from `hSide M 2 le_rfl π SM (fun w hw => (memSM w).2 (hM w hw)) BM satM sM _ (fun w => v.asIdeal.inertiaDeg' w.asIdeal) hq fun w hw => ⟨hsM w, fun h => by`. Establish `e : w.under (𝓞 K) = v` using `not_not.1 fun e => h (zM w ((memSM w).1 hw) e)`. Rewrite using `[← e]`. Conclude with `absNorm_pow w⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c, hc⟩` from `regroup K M h2 (S : Set (HeightOneSpectrum (𝓞 K))) (SM : Set (HeightOneSpectrum (𝓞 M))) (cx BK) (cx BM) (max cP cπ) 4 (fun w => by simpa using memSM w) (fun p hp => by`. Establish `hs` using `satK p (by simpa using hp)`. Use `⟨by simp [cx, sat_card P hs], bound_cx p (le_max_left cP cπ) (hcP p _ hs)⟩)` and prove the remaining obligations. Use the proof step `(fun w hw => by`. Establish `hs` using `satM w (by simpa using hw)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨by simp [cx, sat_card π hs], bound_cx w (le_max_right cP cπ) (hcπ w _ hs)⟩)` and prove the remaining obligations. Use the proof step `(fun w hw => by`. Establish `hw₁ : w ∉ SM` using `by simpa using hw`. Establish `hw' : w.under (𝓞 K) ∉ S` using `fun h => hw₁ ((memSM w).2 h)`. Establish `s1` using `satK _ hw'`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `s2` using `satM w hw₁`. Break down `hkey w hw' with ⟨hN, w', hne, hu, B, B', h1, h3, h4⟩ | ⟨hN, B, B', h1, h3, h4⟩` into its components or cases. Use `left`. Use `⟨hN, w', hne, hu, ?_⟩` and prove the remaining obligations. Establish `s3` using `satM w' fun h => hw' (hu ▸ (memSM w').1 h)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Rewrite using `[cx, cx, cx, sat_unique P s1 h4, sat_unique π s2 h1, sat_unique π s3 h3, Multiset.map_add]`. Use `right`. Use `⟨hN, B'.map fun b : ℂˣ => (b : ℂ), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[cx, sat_unique π s2 h1, Multiset.map_map, Multiset.map_map]`. Conclude with `Multiset.map_congr rfl fun b _ => by simp`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[cx, sat_unique P s1 h4, h3, Multiset.map_add, Multiset.map_map, Multiset.map_map]`. Use `congr 1)`. Establish `pM'` using `hOps.2.2.1 _ _ _ _ _ _ _ c pM (fun s hs => ((hc s).1 hs).symm) (fun s hs => ((hc s).2 hs).symm)`. Establish `e` using `hCross _ _ _ _ _ _ _ (by exact_mod_cast hq) hβ hβ' hQ0 hQ0' pK pM'`. Rewrite `hQd` using `[e, hQd', Finset.sum_eq_single_of_mem v hv (fun u hu hne => by rw [zK u hu hne, mul_zero]), one_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hQd]`. Establish `hsub : (Finset.univ : Finset (PlacesOver M v)).map (Function.Embedding.subtype _) ⊆ SM`. Introduce `w hw`. Take `⟨w, -, rfl⟩` from `Finset.mem_map.1 hw`. Establish `: w.1.under (𝓞 K) = v` using `HeightOneSpectrum.ext w.2.over.symm`.
-
-Conclude with `(memSM w.1).2 (by rw [this]; exact hv)`. Rewrite using `[← Finset.sum_subset hsub (fun w hw hw' => ?_), Finset.sum_map]`. Both sides reduce to the same expression. Rewrite using `[zM w ((memSM w).1 hw) fun e => hw' ?_, mul_zero]`. Conclude with `Finset.mem_map.2 ⟨⟨w, ⟨congrArg HeightOneSpectrum.asIdeal e.symm⟩⟩, Finset.mem_univ _, rfl⟩`.
+A detailed English derivation is pending.
 -/
 private theorem core [IsTotallyComplex K] [IsTotallyComplex M] (hOps : PairGOps) (hCross : CrossG) (hSide : SideG)
     (h2 : Module.finrank K M = 2) (P : CuspSub K (2 * 2)) (π : CuspSub M 2) (S : Finset (HeightOneSpectrum (𝓞 K)))
@@ -572,13 +562,11 @@ private theorem core [IsTotallyComplex K] [IsTotallyComplex M] (hOps : PairGOps)
     exact Finset.mem_map.2 ⟨⟨w, ⟨congrArg HeightOneSpectrum.asIdeal e.symm⟩⟩, Finset.mem_univ _, rfl⟩
 
 /- English proof (translation)
-Use `haveI : Algebra.IsQuadraticExtension K M := { finrank_eq_two' := h2 }`. Take `⟨η, h1, h3⟩` from `normCnt K M (h2 ▸ Nat.prime_two)`. Use `⟨⟨(Filter.eventually_cofinite.1 h1).toFinset, fun u hu w θ hθ hn => ?_⟩, fun u w θ hθ => ((h3 u w).2.2 θ (isSmoothChar_of_isUnram hθ)).2.1 hθ⟩` and prove the remaining obligations. Rewrite `hu` using `[Set.Finite.mem_toFinset, Set.mem_setOf_eq, not_not]`. Establish `hc` using `((h3 u w).2.2 θ hθ).2.2 hn`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpos : 0 < ∑ w' : PlacesOver M u, fdeg w'`. Establish `hw` using `(hu.2 w).2`. Establish `: 0 < fdeg w` using `Nat.pos_of_ne_zero fun e => by rw [e, h2] at hw; omega`. Conclude with `lt_of_lt_of_le this (Finset.single_le_sum (f := fun w' : PlacesOver M u => fdeg w') (fun _ _ => Nat.zero_le _) (Finset.mem_univ w))`. Rewrite `hpos` using `[← hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨j, hj⟩` from `Finset.card_pos.1 hpos`. Establish `hj'` using `(Finset.mem_filter.1 hj).2`. Establish `hη : IsUnram ((η ^ j).loc u)` using `fun x hx => by`. Establish `e : (η ^ j).loc u x = η.loc u x ^ j` using `MonoidHom.pow_apply η.1 j _`. Rewrite using `[e, (unrAt_iff η u).1 hu.1 x hx, one_pow]`.
-
-Conclude with `unr_cancel hη (mul_comm θ _ ▸ hj')`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem norm_units (h2 : Module.finrank K M = 2) :
     (∃ T : Finset (HeightOneSpectrum (𝓞 K)), ∀ u ∉ T, ∀ (w : PlacesOver M u) (θ : (u.adicCompletion K)ˣ →* ℂˣ),
@@ -610,19 +598,15 @@ end InductionMatchingPlacesAbove
 
 open InductionMatchingPlacesAbove in
 /- English proof (translation)
-Introduce `hOps hCross hSide hSupp hNL hTw K M _ _ _ _ _ _ _ h2 P π hI v s s' hs hs' θ hθ`. Take `⟨S₁, hkey⟩` from `ind_key h2 _ _ hI`. Take `⟨⟨T, hT⟩, hnm⟩` from `norm_units h2`. Establish `FK` using `hSupp K (2 * 2) (by norm_num) P`. Establish `FM` using `hSupp M 2 (by norm_num) π`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose sK hsK using fun u => (FK u).1`. Use `choose sM hsM using fun w => (FM w).1`. Use `choose bK hbK using fun u => exists_bad (sK u)`. Use `choose bM hbM using fun w => exists_bad (sM w)`. Take `⟨S₀, hS₀⟩ : ∃ S₀ : Finset (HeightOneSpectrum (𝓞 K)), ∀ u, u ∈ S₀ ↔ u = v ∨ u ∈ S₁ ∨ u ∈ T ∨ u ∈ GroundTheory.Automorphic.GJStandardL.ramifiedPlaces K ∨ ∃ w ∈ GroundTheory.Automorphic.GJStandardL.ramifiedPlaces M, w.under (𝓞 K) = u` from `⟨insert v (S₁ ∪ (T ∪ (GroundTheory.Automorphic.GJStandardL.ramifiedPlaces K ∪ (GroundTheory.Automorphic.GJStandardL.ramifiedPlaces M).image fun w => w.under (𝓞 K)))), fun u => by simp⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨χ, hχv, hχ⟩` from `hTw K M v θ hθ S₀ bK bM`. Take `⟨ξ, hξ⟩` from `hNL K M χ`. Take `⟨S, hS⟩ : ∃ S : Finset (HeightOneSpectrum (𝓞 K)), ∀ u, u ∈ S ↔ u ∈ S₀ ∨ ¬ χ.UnrAt u` from `⟨S₀ ∪ (GlobalTheory.Mem.UnrAe.finite_ramified χ).toFinset, fun u => by simp⟩`. Use `choose tK htK using fun u => (FK u).2.2.2.2 χ _ (hsK u)`. Use `choose tM htM using fun w => (FM w).2.2.2.2 ξ _ (hsM w)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `k₀ : ∀ w : HeightOneSpectrum (𝓞 M), w.under (𝓞 K) ∉ S₀ → Key (CG.mk π).HasSat (CG.mk P).HasSat w` using `fun w hw => hkey w fun h => hw ((hS₀ _).2 (Or.inr (Or.inl h)))`. Establish `main` using `core hOps hCross hSide h2 (P.twist χ) (π.twist ξ) S (fun w hw => key_twist h2 χ ξ (fun w hu => (hξ (w.under (𝓞 K)) ⟨w, ⟨rfl⟩⟩).2.1 hu) (not_not.1 fun h => hw ((hS _).2 (Or.inr h))) (k₀ w fun h => hw ((hS _).2 (Or.inl h)))) (fun u hu => (hS _).2 (Or.inl ((hS₀ _).2 (by tauto)))) (f …`. Rewrite using `[(htK u).2.1, mul_one]`. Distinguish the cases in `h0 : u ∈ S₀`. Conclude with `cnt_zero _ _ fun ζ hζ hy => (hχ u h0 hne).1 ζ (hbK u ζ hζ hy)`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨w, rfl⟩` from `exists_over (M := M) u`. Take `⟨B, hB⟩` from `(k₀ w h0).sat.2`. Conclude with `cnt_zero_of_unr _ _ ((FK _).2.2.2.1 _ B (hsK _) hB) fun h => ((hS _).1 hu).resolve_left h0 ((unrAt_iff χ _).2 h))`. Use the proof step `(fun w hu hne => by`. Rewrite using `[(htM w).2.1, mul_one, (hξ (w.under (𝓞 K)) ⟨w, ⟨rfl⟩⟩).1]`.
-
-Distinguish the cases in `h0 : w.under (𝓞 K) ∈ S₀`. Conclude with `cnt_zero _ _ fun ζ hζ hy => (hχ _ h0 hne).2 ⟨w, ⟨rfl⟩⟩ ζ (hbM w ζ hζ hy)`. Take `⟨B, hB⟩` from `(k₀ w h0).sat.1`. Conclude with `cnt_zero_of_unr _ _ ((FM _).2.2.2.1 _ B (hsM _) hB) fun h => ((hS _).1 hu).resolve_left h0 ((unrAt_iff χ _).2 (hT _ (fun h' => h0 ((hS₀ _).2 (by tauto))) _ _ (GlobalTheory.HeckeComp.smooth_loc χ _) h)))`. Rewrite `main` using `[(htK v).2.1, mul_one, cnt_congr _ hχv, (FK v).2.1 _ _ (hsK v) hs]`.
-
-Rewrite using `[main]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[(htM w.1).2.1, mul_one, (hξ v w).1, (FM w.1).2.1 _ _ (hsM w.1) (hs' w)]`. Use `congr 1`. Conclude with `cnt_congr _ (hnm v w _ hχv)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem matchIndOf : MatchIndOf := by
   intro hOps hCross hSide hSupp hNL hTw K M _ _ _ _ _ _ _ h2 P π hI v s s' hs hs' θ hθ

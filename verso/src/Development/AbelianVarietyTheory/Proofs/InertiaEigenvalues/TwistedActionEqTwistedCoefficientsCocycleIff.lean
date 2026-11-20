@@ -18,15 +18,15 @@ open TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `G _ _ LL _ O _ _ V _ _ _ _ ρ L X _ _ χ`. Establish `h1 : ∀ g m, tableLineDegreeTwo.actTw L X χ g m = twCoef (latRep L) χ X g m`. Introduce `g m`. Proceed by induction on `m using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul a x`. Simplify using `only [tableLineDegreeTwo.actTw, LinearMap.smul_apply, LinearMap.rTensor_tmul]`. Rewrite using `[coefRep_tmul, twistRep_apply]`. Simplify using `[latRep, smul_tmul', MonoidHom.inv_apply]`. Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb]`.
+Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Use `⟨h1, fun z => ?_⟩` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hz, hc⟩`. Use `⟨⟨hz, fun _ => Submodule.mem_top⟩, ?_⟩` and prove the remaining obligations. Use `show (ReciprocityTheory.Def.d1 (twCoef (latRep L) χ X)) z = 0`.
+Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Express the relevant statement in the definitionally equal form `twCoef (latRep L) χ X x.1 (z x.2) - z (x.1 * x.2) + z x.1 = 0`. Rewrite using `[hc, ← h1]`. Normalize the expressions using the abelian group laws. Introduce and unpack `⟨⟨hz, -⟩, hk⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hz, fun g h => ?_⟩` and prove the remaining obligations. Establish `e : twCoef (latRep L) χ X g (z h) - z (g * h) + z g = 0` using `congrFun hk (g, h)`. Rewrite using `[h1, ← sub_eq_zero, ← neg_eq_zero, ← e]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem actTw_eq_twCoef_and_isCoc_iff : ∀ {G : Type} [Group G] [TopologicalSpace G] {LL : Type} [Field LL] {O : Type} [CommRing O]
     [Algebra O LL] {V : Type} [AddCommGroup V] [Module LL V] [Module O V] [IsScalarTower O LL V]

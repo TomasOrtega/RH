@@ -26,17 +26,17 @@ open Classical in
 def dimPer (σ : E →+* ℂ) : ℕ := if σ ∈ X.Ψ then r - X.p0 else X.p0
 
 /- English proof (translation)
-Simplify using `[dimPer, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dimPer_mem {σ : E →+* ℂ} (h : σ ∈ X.Ψ) : dimPer X σ = r - X.p0 := by simp [dimPer, h]
 
 /- English proof (translation)
-Simplify using `[dimPer, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dimPer_not_mem {σ : E →+* ℂ} (h : σ ∉ X.Ψ) : dimPer X σ = X.p0 := by simp [dimPer, h]
 
 /- English proof (translation)
-Use `X.p0_le` as an intermediate fact. Distinguish the cases in `h : σ ∈ X.Ψ`. Rewrite using `[dimPer_mem X h, dimPer_not_mem X ((X.cmType σ).mp h)]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[dimPer_not_mem X h, dimPer_mem X (conj_mem X h)]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -48,7 +48,7 @@ theorem dimPer_add (σ : E →+* ℂ) :
   · rw [dimPer_not_mem X h, dimPer_mem X (conj_mem X h)]; omega
 
 /- English proof (translation)
-Rewrite using `[Fintype.card_sigma, sum_emb_split X]`. Simplify using `[dimPer_add]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem card_idx_dimPer : Fintype.card (Idx (dimPer X)) = X.Ψ.card * r := by
   rw [Fintype.card_sigma, sum_emb_split X]
@@ -63,7 +63,7 @@ def rowFn (i : Idx (dimPer X)) : X.Ψ × Fin r :=
       have := lt_of_lt_of_eq i.2.2 (dimPer_not_mem X h); have := X.p0_le; omega⟩)
 
 /- English proof (translation)
-Unfold `rowFn`. Rewrite using `[dif_pos τ.2]`. Conclude with `Prod.ext rfl (Fin.ext ha.symm)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rowFn_mem (τ : X.Ψ) (i : Fin (dimPer X τ.1)) (a : Fin r) (ha : (a : ℕ) = X.p0 + i) :
     rowFn X ⟨τ.1, i⟩ = (τ, a) := by
@@ -72,7 +72,7 @@ theorem rowFn_mem (τ : X.Ψ) (i : Fin (dimPer X τ.1)) (a : Fin r) (ha : (a : �
   exact Prod.ext rfl (Fin.ext ha.symm)
 
 /- English proof (translation)
-Unfold `rowFn`. Rewrite using `[dif_neg ((X.cmType _).mp τ.2)]`. Conclude with `Prod.ext (Subtype.ext (conj_conj_X _)) (Fin.ext ha.symm)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rowFn_conj (τ : X.Ψ) (i : Fin (dimPer X (ComplexEmbedding.conjugate τ.1))) (a : Fin r)
     (ha : (a : ℕ) = X.p0 - 1 - i) : rowFn X ⟨ComplexEmbedding.conjugate τ.1, i⟩ = (τ, a) := by
@@ -81,9 +81,9 @@ theorem rowFn_conj (τ : X.Ψ) (i : Fin (dimPer X (ComplexEmbedding.conjugate τ
   exact Prod.ext (Subtype.ext (conj_conj_X _)) (Fin.ext ha.symm)
 
 /- English proof (translation)
-Use `(Fintype.bijective_iff_surjective_and_card _).2 ⟨?_, by rw [card_idx_dimPer]; simp⟩` and prove the remaining obligations. Introduce and unpack `⟨τ, a⟩`. Use `a.2` as an intermediate fact. Distinguish the cases in `h : (a : ℕ) < X.p0`. Conclude with `⟨_, rowFn_conj X τ ⟨X.p0 - 1 - a, by`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Rewrite using `[dimPer_not_mem X ((X.cmType _).mp τ.2)]; omega⟩ a (by simp only; omega)⟩`. Conclude with `⟨_, rowFn_mem X τ ⟨a - X.p0, by rw [dimPer_mem X τ.2]; omega⟩ a (by simp only; omega)⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem rowFn_bijective : Function.Bijective (rowFn X) := by
   refine (Fintype.bijective_iff_surjective_and_card _).2 ⟨?_, by rw [card_idx_dimPer]; simp⟩
@@ -102,7 +102,7 @@ Both sides reduce to the same expression.
 theorem rowEquiv_apply (i : Idx (dimPer X)) : rowEquiv X i = rowFn X i := rfl
 
 /- English proof (translation)
-Rewrite using `[rowEquiv_apply, rowFn]`. Use `split_ifs with h`. Conclude with `rowType_of_le X _ (Nat.le_add_right _ _)`. Use `lt_of_lt_of_eq i.2.2 (dimPer_not_mem X h)` as an intermediate fact. Rewrite using `[rowType_of_lt X _ (by simp only; omega), conj_conj_X]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rowType_rowEquiv (i : Idx (dimPer X)) : rowType X (rowEquiv X i) = i.1 := by
   rw [rowEquiv_apply, rowFn]
@@ -151,7 +151,7 @@ theorem scaled_apply (x : Frame X.Ψ r) (v : Fin r → E) (i : Idx (dimPer X)) :
     scaled X x v i = (Real.sqrt (X.c (rowEquiv X i).1) : ℂ) * per X x v (rowEquiv X i) := rfl
 
 /- English proof (translation)
-Use extensionality with `i`. Express the relevant statement in the definitionally equal form `_ = i.1 (α : E) * scaled X x v i`. Rewrite using `[scaled_apply, scaled_apply, per_smul, rowType_rowEquiv]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem scaled_smul (x : Frame X.Ψ r) (α : 𝓞 E) (v : Fin r → E) :
     scaled X x ((α : E) • v) = act α (scaled X x v) := by
@@ -161,9 +161,9 @@ theorem scaled_smul (x : Frame X.Ψ r) (α : 𝓞 E) (v : Fin r → E) :
   ring
 
 /- English proof (translation)
-Simplify using `only [Finset.mul_sum]`. Rewrite using `[Hf, ← Fintype.sum_prod_type' fun τ a => (X.c τ : ℂ) * (perR X x y (τ, a) * conj (perR X x y' (τ, a)))]`. Use `Fintype.sum_equiv (rowEquiv X) _ _ fun i => ?_` and prove the remaining obligations. Establish `h : (Real.sqrt (X.c (rowEquiv X i).1) : ℂ) * Real.sqrt (X.c (rowEquiv X i).1) = X.c (rowEquiv X i).1`. Rewrite using `[← Complex.ofReal_mul, Real.mul_self_sqrt (c_pos X _).le]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[scaledR_apply, scaledR_apply, map_mul, Complex.conj_ofReal, ← h]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Hf_scaledR (x : Frame X.Ψ r) (y y' : X.Ψ → Fin r → ℂ) :
     Hf (scaledR X x y) (scaledR X x y') =
@@ -186,7 +186,7 @@ variable {X} {x : Frame X.Ψ r}
 include hx
 
 /- English proof (translation)
-Use `congrFun (congrFun (hx τ) a) b` as an intermediate fact. Rewrite `this` using `[diagonal_apply]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem col_orth (τ : X.Ψ) (a b : Fin r) :
     hermC τ.1 X.Gm (FD.col (mat x τ) a) (FD.col (mat x τ) b) =
@@ -195,7 +195,7 @@ theorem col_orth (τ : X.Ψ) (a b : Fin r) :
   rwa [diagonal_apply] at this
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `congrArg Matrix.det (hx τ)`. Rewrite `h1` using `[UnitFrame.gram_eq, det_mul, det_transpose, h, zero_mul, det_diagonal]`. Use `Finset.prod_ne_zero_iff.mpr (fun a _ => ?_) h1.symm` and prove the remaining obligations. Apply the tactic sequence `unfold FD.sgn; split_ifs <;> simp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem det_ne_zero (τ : X.Ψ) : (mat x τ).det ≠ 0 := by
   intro h
@@ -205,7 +205,7 @@ theorem det_ne_zero (τ : X.Ψ) : (mat x τ).det ≠ 0 := by
   unfold FD.sgn; split_ifs <;> simp
 
 /- English proof (translation)
-Introduce `τ` and use `by refine ⟨det_ne_zero hx τ, fun i => ?_⟩ rw [dmin, lminor, hx, submatrix_diagonal _ _ (Fin.castLE_injective _), det_diagonal] have h : ∏ a : Fin i, ((fun a : Fin r => ((sgn X.p0 (a : ℕ) : ℝ) : ℂ)) ∘ Fin.castLE (Nat.le_of_lt_succ i.isLt)) a = ((psgn X.p0 i : ℝ) : ℂ) := by rw [psg …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_dom : x ∈ X.dom := fun τ => by
   refine ⟨det_ne_zero hx τ, fun i => ?_⟩
@@ -219,11 +219,11 @@ theorem mem_dom : x ∈ X.dom := fun τ => by
   unfold FD.sgn; split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `perR`. Use `split_ifs with h`. Rewrite using `[← hermC_conj τ.1 X.Gm_herm, Complex.norm_conj]`. Establish `hu : mat x τ *ᵥ ((mat x τ)⁻¹ *ᵥ y τ) = y τ`. Rewrite using `[mulVec_mulVec, mul_nonsing_inv _ (det_ne_zero hx τ).isUnit, one_mulVec]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcol : FD.col (mat x τ) a = mat x τ *ᵥ Pi.single a 1`. Use extensionality with `k`. Simplify using `[FD.col]`. Use `conv_rhs => rw [hcol, ← hu]`. Rewrite using `[UnitFrame.hermC_mulVec, hx]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only at h`. Simplify using `[dotProduct, mulVec_diagonal, FD.sgn, h, Pi.single_apply, apply_ite]`.
+A detailed English derivation is pending.
 -/
 theorem norm_perR (y : X.Ψ → Fin r → ℂ) (τ : X.Ψ) (a : Fin r) :
     ‖perR X x y (τ, a)‖ = ‖hermC τ.1 X.Gm (y τ) (FD.col (mat x τ) a)‖ := by
@@ -240,7 +240,7 @@ theorem norm_perR (y : X.Ψ → Fin r → ℂ) (τ : X.Ψ) (a : Fin r) :
     simp [dotProduct, mulVec_diagonal, FD.sgn, h, Pi.single_apply, apply_ite]
 
 /- English proof (translation)
-Establish `hmaj (τ : X.Ψ)` using `TorusAtDataPf.maj_eq_sum X τ _ (col_orth hx τ) x rfl ((TorusAtDataPf.e_linInd X τ _ (col_orth hx τ)).comp _ (Fin.castLE_injective X.p0_le)) (y τ)`. Simplify using `only [hmaj, Finset.mul_sum, ← norm_perR hx]`. Rewrite using `[EuclideanSpace.norm_sq_eq, ← Fintype.sum_prod_type' fun τ a => X.c τ * ‖perR X x y (τ, a)‖ ^ 2]`. Use `Fintype.sum_equiv (rowEquiv X) _ _ fun i => ?_` and prove the remaining obligations. Rewrite using `[scaledR_apply, norm_mul, mul_pow, Complex.norm_real, Real.norm_of_nonneg (Real.sqrt_nonneg _), Real.sq_sqrt (c_pos X _).le]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_sq_scaledR (y : X.Ψ → Fin r → ℂ) :
     ‖scaledR X x y‖ ^ 2 = ∑ τ : X.Ψ, X.c τ * X.maj x τ (y τ) := by
@@ -254,11 +254,11 @@ theorem norm_sq_scaledR (y : X.Ψ → Fin r → ℂ) :
     Real.sq_sqrt (c_pos X _).le]
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `y hy`. Use function extensionality and compare the values at `τ`. Assume the negation of the conclusion as `h`. Establish `h1` using `norm_sq_scaledR hx y`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite `h1` using `[hy, norm_zero]`. Establish `h2 : 0 < ∑ τ : X.Ψ, X.c τ * X.maj x τ (y τ)`. Use `Finset.sum_pos' (fun σ _ => mul_nonneg (c_pos X σ).le ?_) ⟨τ, Finset.mem_univ _, mul_pos (c_pos X τ) (X.maj_pos (mem_dom hx) τ h)⟩` and prove the remaining obligations. Break down `eq_or_ne (y σ) 0 with h0 | h0` into its components or cases. Simplify using `[h0, Data.maj, Data.posPart, hermC]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Conclude with `(X.maj_pos (mem_dom hx) σ h0).le`. Rewrite `h2` using `[← h1]`. Simplify using `at h2`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem scaledR_injective : Function.Injective (scaledR X x) := by
   rw [injective_iff_map_eq_zero]
@@ -284,11 +284,11 @@ def scaledEquiv : (X.Ψ → Fin r → ℂ) ≃ₗ[ℝ] Vsp (dimPer X) :=
     ring)
 
 /- English proof (translation)
-Take `⟨b₀, hb₀⟩` from `CMLattice.exists_basis_lattice E r X`. Use `⟨(b₀.map (scaledEquiv hx)).reindex (finCongr (by rw [card_idx_dimPer])), fun y => ?_⟩` and prove the remaining obligations. Establish `h1 : Submodule.span ℤ (Set.range (b₀.map (scaledEquiv hx))) = (Submodule.span ℤ (Set.range b₀)).map ((scaledR X x).restrictScalars ℤ)`. Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[lat, Module.Basis.range_reindex, h1, Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl⟩`. Take `⟨v, hv, rfl⟩` from `(hb₀ z).1 hz`. Conclude with `⟨v, hv, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨v, hv, rfl⟩`. Conclude with `⟨_, (hb₀ _).2 ⟨v, hv, rfl⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem exists_basis : ∃ b : Module.Basis (Fin (2 * Fintype.card (Idx (dimPer X)))) ℝ
     (Vsp (dimPer X)), ∀ y, y ∈ lat b ↔ ∃ v ∈ X.Λ, scaled X x v = y := by
@@ -307,13 +307,13 @@ theorem exists_basis : ∃ b : Module.Basis (Fin (2 * Fintype.card (Idx (dimPer 
     exact ⟨_, (hb₀ _).2 ⟨v, hv, rfl⟩, rfl⟩
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(Hf (scaledR X x _) (scaledR X x _)).im = _`. Rewrite using `[Hf_scaledR, EF_def, UnitFrame.trace_eq_sum_re X.Ψ X.cmType, Complex.im_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `h` using `UnitFrame.im_sum_periods X.p0 τ.1 X.Gm (mat x τ) (hx τ) (Data.emb τ.1 u) (Data.emb τ.1 v)`. Rewrite using `[Complex.im_ofReal_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(congrArg _ h).trans ?_` and prove the remaining obligations. Establish `h0` using `re_map_xi_eq_zero X τ.1`. Establish `hs` using `X.κ0_sign τ`. Rewrite using `[hermC_emb_eq_map_herm, c_eq_two_mul_abs_im, map_mul, Complex.mul_re]`. Apply the tactic sequence `rcases X.κ0_xi with h | h <;> rw [h] at hs ⊢ <;>`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [map_neg, map_mul, map_div₀, map_ofNat] at hs ⊢`. Establish `: (τ.1 X.ξ0).im < 0` using `by simp at hs; linarith`. Rewrite using `[abs_of_neg this]`. Simplify using `[h0]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `: 0 < (τ.1 X.ξ0).im` using `by simp at hs; linarith`. Rewrite using `[abs_of_pos this]`. Simplify using `[h0]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem im_Hf_scaled (u v : Fin r → E) :
     (Hf (scaled X x u) (scaled X x v)).im = EF X u v := by
@@ -346,13 +346,13 @@ def basis : Module.Basis (Fin (2 * Fintype.card (Idx (dimPer Y.toData)))) ℝ
     (Vsp (dimPer Y.toData)) := (exists_basis hx).choose
 
 /- English proof (translation)
-The claim follows from `(exists_basis hx).choose_spec y`.
+A detailed English derivation is pending.
 -/
 theorem mem_lat_basis (y : Vsp (dimPer Y.toData)) :
     y ∈ lat (basis hx) ↔ ∃ v ∈ Y.Λ, scaled Y.toData x v = y := (exists_basis hx).choose_spec y
 
 /- English proof (translation)
-Take `⟨v, hv, rfl⟩` from `(mem_lat_basis hx y).1 hy`. Conclude with `(mem_lat_basis hx _).2 ⟨(α : E) • v, Y.Λ.smul_mem α hv, scaled_smul _ x α v⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem stable (α : 𝓞 E) (y : Vsp (dimPer Y.toData)) (hy : y ∈ lat (basis hx)) :
     act α y ∈ lat (basis hx) := by
@@ -360,9 +360,9 @@ theorem stable (α : 𝓞 E) (y : Vsp (dimPer Y.toData)) (hy : y ∈ lat (basis 
   exact (mem_lat_basis hx _).2 ⟨(α : E) • v, Y.Λ.smul_mem α hv, scaled_smul _ x α v⟩
 
 /- English proof (translation)
-Take `⟨u, hu, rfl⟩` from `(mem_lat_basis hx y).1 hy`. Take `⟨v, hv, rfl⟩` from `(mem_lat_basis hx z).1 hz`. Take `⟨k, hk⟩` from `Y.EF_int u hu v hv`. Rewrite using `[im_Hf_scaled hx]`. Break down `EF_eq_or Y.toData with h | h` into its components or cases.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `⟨k, by rw [h, hk, Rat.cast_intCast]⟩`. Conclude with `⟨-k, by rw [h, hk]; simp⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem integral (y z : Vsp (dimPer Y.toData)) (hy : y ∈ lat (basis hx))
     (hz : z ∈ lat (basis hx)) : ∃ k : ℤ, (Hf y z).im = k := by
@@ -375,11 +375,11 @@ theorem integral (y z : Vsp (dimPer Y.toData)) (hy : y ∈ lat (basis hx))
   · exact ⟨-k, by rw [h, hk]; simp⟩
 
 /- English proof (translation)
-Set `j : Y.Λ →+ lat (basis hx)` to `{ toFun := fun v => ⟨scaled Y.toData x v, (mem_lat_basis hx _).2 ⟨v, v.2, rfl⟩⟩ map_zero' := by ext1; simp map_add' := fun u v => by ext1; simp }`. Take `⟨u, hu, hψ⟩` from `Y.EF_perf (ψ.comp j)`. Establish `hu' : scaled Y.toData x u ∈ lat (basis hx)` using `(mem_lat_basis hx _).2 ⟨u, hu, rfl⟩`. Break down `EF_eq_or Y.toData with h | h` into its components or cases. Use `⟨_, hu', ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨z, hz⟩`. Take `⟨v, hv, rfl⟩` from `(mem_lat_basis hx z).1 hz`. Rewrite using `[im_Hf_scaled hx, h, ← hψ ⟨v, hv⟩, Rat.cast_intCast]`. Both sides reduce to the same expression. Use `⟨_, neg_mem hu', ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨z, hz⟩`. Take `⟨v, hv, rfl⟩` from `(mem_lat_basis hx z).1 hz`. Rewrite using `[im_Hf_neg_left, im_Hf_scaled hx, h, ← hψ ⟨v, hv⟩, Rat.cast_neg, neg_neg, Rat.cast_intCast]`. Both sides reduce to the same expression.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem perfect (ψ : lat (basis hx) →+ ℤ) : ∃ y ∈ lat (basis hx), ∀ z : lat (basis hx),
     (ψ z : ℝ) = (Hf y (z : Vsp (dimPer Y.toData))).im := by
@@ -405,16 +405,16 @@ variable {w₀ : 𝓞 E} (hw : (w₀ : E) + cc (w₀ : E) = 1)
 
 include hw in
 /- English proof (translation)
-Rewrite using `[← sub_eq_iff_eq_add'.2 hw.symm]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coe_one_sub : ((1 - w₀ : 𝓞 E) : E) = cc (w₀ : E) := by
   rw [← sub_eq_iff_eq_add'.2 hw.symm]
   simp
 
 /- English proof (translation)
-Introduce `y hy z hz`. Take `⟨k, hk⟩` from `integral hx y _ hy (stable hx (1 - w₀) z hz)`. Establish `h : z = act w₀ z + act (1 - w₀) z`. Use extensionality with `i`. Simplify using `[act]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Use `⟨-k, ?_⟩` and prove the remaining obligations. Establish `h2` using `im_Hf_add_right y (act w₀ z) (act (1 - w₀) z)`. Rewrite `h2` using `[← h]`. Use `push_cast`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/

@@ -25,7 +25,7 @@ variable {c : R →+* R} {J : Matrix (Fin d) (Fin d) R} {X Y : Fin d → R}
 
 include hXX hYY in
 /- English proof (translation)
-Establish `e1 : (J *ᵥ fun i => c (Y i)) ⬝ᵥ Y = 0` using `by rw [dotProduct_comm]; exact hYY`. Establish `e2 : (J *ᵥ fun i => c (X i)) ⬝ᵥ X = 0` using `by rw [dotProduct_comm]; exact hXX`. Simplify using `only [unipMat, fromBlocks_multiply, map_neg, neg_neg, Matrix.one_mul, Matrix.mul_one, Matrix.smul_mul, Matrix.mul_smul, vecMulVec_mul_vecMulVec, e1, e2, zero_smul, vecMulVec_zero, smul_zero, neg_smul, Matrix.neg_mul, Matrix.mul_neg, neg_zero, add_zero, neg_add_cancel, add_neg_can …`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem unip_mul_neg (β : R) : unipMat c J X Y β * unipMat c J X Y (-β) = 1 := by
   have e1 : (J *ᵥ fun i => c (Y i)) ⬝ᵥ Y = 0 := by rw [dotProduct_comm]; exact hYY
@@ -36,13 +36,13 @@ theorem unip_mul_neg (β : R) : unipMat c J X Y β * unipMat c J X Y (-β) = 1 :
 
 include hc hJ hXX hYY in
 /- English proof (translation)
-Establish `hu` using `conj_mulVec c J hJ Y hc`. Establish `hw` using `conj_mulVec c J hJ X hc`. Establish `d1 : (X ᵥ* J) ⬝ᵥ (fun i => c (X i)) = 0` using `by rw [← dotProduct_mulVec]; exact hXX`. Establish `d4 : (Y ᵥ* J) ⬝ᵥ (fun i => c (Y i)) = 0` using `by rw [← dotProduct_mulVec]; exact hYY`. Establish `hmap : (unipMat c J X Y β).map c = fromBlocks 1 (c β • vecMulVec (fun i => c (X i)) (-(Y ᵥ* J))) (-β • vecMulVec (fun i => c (Y i)) (-(X ᵥ* J))) 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hu, ← hw]`. Simplify using `only [unipMat, fromBlocks_map]`. Use `congr 1`. Conclude with `Matrix.map_one c (map_zero c) (map_one c)`. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.map_apply, vecMulVec_apply]`. Use extensionality with `i j`. Simplify using `[Matrix.map_apply, vecMulVec_apply, hc]`. Conclude with `Matrix.map_one c (map_zero c) (map_one c)`. Establish `htr : (unipMat c J X Y β)ᵀ = fromBlocks 1 (-(c β) • vecMulVec (J *ᵥ fun i => c (X i)) Y) (β • vecMulVec (J *ᵥ fun i => c (Y i)) X) 1`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[unipMat, fromBlocks_transpose, transpose_smul, transpose_vecMulVec]`. Rewrite using `[hmap, htr]`. Simplify using `only [fromBlocks_multiply, Matrix.one_mul, Matrix.mul_one, Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Matrix.smul_mul, Matrix.mul_smul, Matrix.neg_mul, Matrix.mul_neg, vecMulVec_mul, mul_vecMulVec, vecMulVec_mul_vecMulVec, vecMulVec_neg, dotProduct_neg, neg_dotProduct, …`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem unip_unitary (β : R) :
     (unipMat c J X Y β)ᵀ * fromBlocks J 0 0 (-J) * (unipMat c J X Y β).map c = fromBlocks J 0 0 (-J) := by
@@ -73,11 +73,11 @@ end Props
 end GlobalTheory.DblUnipU
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ hA β`. Establish `hσ` using `GlobalTheory.LeviTorus.sigma_invol hP.base.cm`. Establish `hc : ∀ a : AE F E, (cA σ).toRingHom ((cA σ).toRingHom a) = a` using `GlobalTheory.LeviTorus.cA_invol hσ`. Establish `hJ : ∀ i j, (cA σ).toRingHom (incM F W.J j i) = -incM F W.J i j`. Introduce `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe, incM, Matrix.map_apply, GlobalTheory.LeviTorus.cA_incl, hP.skew.skew i j, map_neg]`. Establish `hXX : incV F H'.x ⬝ᵥ incM F W.J *ᵥ (fun i => (cA σ).toRingHom (incV F H'.x i)) = 0`. Rewrite using `[show (fun i => (cA σ).toRingHom (incV F H'.x i)) = fun i => cA σ (incV F H'.x i) from rfl, GlobalTheory.LeviTorus.form_incl, hA.xx, map_zero]`. Establish `hYY : incV F H'.y ⬝ᵥ incM F W.J *ᵥ (fun i => (cA σ).toRingHom (incV F H'.y i)) = 0`. Rewrite using `[show (fun i => (cA σ).toRingHom (incV F H'.y i)) = fun i => cA σ (incV F H'.y i) from rfl, GlobalTheory.LeviTorus.form_incl, hA.yy, map_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h01` using `GlobalTheory.DblUnipU.unip_mul_neg hXX hYY β`. Establish `h10 : GlobalTheory.DblUnip.unipMat (cA σ).toRingHom (incM F W.J) (incV F H'.x) (incV F H'.y) (-β) * GlobalTheory.DblUnip.unipMat (cA σ).toRingHom (incM F W.J) (incV F H'.x) (incV F H'.y) β = 1`. Simplify `GlobalTheory.DblUnipU.unip_mul_neg hXX hYY (-β)` using `only [neg_neg]`. Conclude with `⟨⟨⟨_, _, h01, h10⟩, GlobalTheory.DblUnipU.unip_unitary hc hJ hXX hYY β⟩, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.DblUnipU.exists_unip : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →

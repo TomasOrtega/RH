@@ -3,15 +3,15 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.SphericalHeckeO
 open MeasureTheory GroundTheory.Automorphic GroundTheory.Automorphic.Spherical GroundTheory.Automorphic.GLnLocal GroundTheory.Automorphic.Iwasawa UpperTheory.ConvolutionTheory.H
 
 /- English proof (translation)
-Set `S : A ⧸ J.subgroupOf A → Set G` to `fun q => (fun g => ((q.out : G) * t)⁻¹ * g) ⁻¹' (I : Set G)`. Establish `hU : {g | ∃ x ∈ A, ∃ y ∈ I, g = x * t * y} = ⋃ q, S q`. Use extensionality with `g`. Simplify using `only [Set.mem_setOf_eq, Set.mem_iUnion, S, Set.mem_preimage, SetLike.mem_coe]`. Prove the components needed by the constructor for the conclusion.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨x, hx, y, hy, rfl⟩`. Use `⟨((⟨x, hx⟩ : A) : A ⧸ J.subgroupOf A), ?_⟩` and prove the remaining obligations. Establish `h` using `QuotientGroup.eq.1 (QuotientGroup.out_eq' ((⟨x, hx⟩ : A) : A ⧸ J.subgroupOf A))`. Rewrite `h` using `[Subgroup.mem_subgroupOf, hJ]`. Use `I.mul_mem h hy` as an intermediate fact.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify `this` using `[mul_assoc]`. Introduce and unpack `⟨q, hq⟩`. Conclude with `⟨q.out, q.out.2, _, hq, by group⟩`. Establish `hd : Pairwise (Function.onFun Disjoint S)`. Introduce `p q hpq`.
+Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Set.disjoint_left.2 fun g hp hq => hpq ?_` and prove the remaining obligations. Rewrite using `[← QuotientGroup.out_eq' p, ← QuotientGroup.out_eq' q, QuotientGroup.eq, Subgroup.mem_subgroupOf, hJ]`. Use `I.mul_mem hp (I.inv_mem hq)` as an intermediate fact. Simplify `this` using `[mul_assoc]`. Rewrite using `[hU, measure_iUnion hd (fun q => measurable_const_mul _ hI)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [S, measure_preimage_mul]`. Rewrite using `[ENNReal.tsum_const, Subgroup.relIndex, Subgroup.index, ENat.card_eq_coe_natCard]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem meas_union {G : Type*} [Group G] [MeasurableSpace G] [MeasurableMul G]
     (μ : Measure G) [μ.IsMulLeftInvariant] (A I J : Subgroup G) (t : G)
@@ -45,17 +45,15 @@ private theorem meas_union {G : Type*} [Group G] [MeasurableSpace G] [Measurable
   simp
 
 /- English proof (translation)
-Use `borelize B`. Set `ν : Measure B` to `Measure.haar`. Establish `hJs : (J : Set B) = (fun g => t⁻¹ * g) ⁻¹' ((fun g => g * t) ⁻¹' (A : Set B))`. Use extensionality with `x`. Conclude with `hJ x`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hJo : IsOpen (J : Set B)`. Rewrite using `[hJs]; exact (hAo.preimage (by fun_prop)).preimage (by fun_prop)`. Use `haveI : CompactSpace A := isCompact_iff_compactSpace.1 hAc`. Use `haveI : Finite (A ⧸ J.subgroupOf A) := Subgroup.quotient_finite_of_isOpen _ (hJo.preimage continuous_subtype_val)`. Establish `h1` using `meas_union ν A J J 1 (by simp) hJo.measurableSet`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `h2 : {g | ∃ x ∈ A, ∃ y ∈ J, g = x * 1 * y} = (A : Set B)`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, y, hy, rfl⟩`. Conclude with `A.mul_mem (by simpa using hx) (hJA hy)`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `hg`. Conclude with `⟨g, hg, 1, J.one_mem, by simp⟩`. Establish `h3 : ν (J : Set B) = Measure.modularCharacter t * ν (A : Set B)`. Rewrite using `[hJs, measure_preimage_mul, ← Measure.map_apply (measurable_mul_const t) hAo.measurableSet, Measure.measure_isMulInvariant_eq_smul_of_isCompact_closure _ ν hAc.closure, ← Measure.modularCharacterFun_eq_haarScalarFactor]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[h2, h3, ← mul_assoc]`. Establish `h0 : ν (A : Set B) ≠ 0` using `hAo.measure_ne_zero ν ⟨1, A.one_mem⟩`. Establish `h4 : (J.relIndex A : ENNReal) * Measure.modularCharacter t = 1`. Apply `(ENNReal.mul_left_inj h0 hAc.measure_lt_top.ne).1` to reduce the goal to its premises. Rewrite using `[← h1, one_mul]`.
-
-Rewrite `h4` using `[mul_comm]`. Conclude with `h4` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem index_modular {B : Type*} [Group B] [TopologicalSpace B] [IsTopologicalGroup B]
     [LocallyCompactSpace B] [T2Space B] (A J : Subgroup B) (t : B) (hAc : IsCompact (A : Set B)) (hAo : IsOpen (A : Set B))
@@ -92,17 +90,17 @@ private theorem index_modular {B : Type*} [Group B] [TopologicalSpace B] [IsTopo
   exact_mod_cast h4
 
 /- English proof (translation)
-Set `J : Subgroup G` to `I.comap (MulAut.conj (t : G)⁻¹).toMonoidHom`. Establish `hJ : ∀ x, x ∈ J ↔ (t : G)⁻¹ * x * t ∈ I` using `fun x => by simp [J]`. Establish `hJo : IsOpen (J : Set G)`. Establish `: (J : Set G) = (fun x => (t : G)⁻¹ * x * t) ⁻¹' (I : Set G)` using `Set.ext hJ`. Rewrite using `[this]; exact hIo.preimage (by fun_prop)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hAc : IsCompact ((I ⊓ B : Subgroup G) : Set G)` using `hIc.inter_right hB`. Use `haveI : CompactSpace (I ⊓ B : Subgroup G) := isCompact_iff_compactSpace.1 hAc`. Use `haveI : Finite ((I ⊓ B : Subgroup G) ⧸ J.subgroupOf (I ⊓ B)) := Subgroup.quotient_finite_of_isOpen _ (hJo.preimage continuous_subtype_val)`. Establish `e1` using `meas_union μ (I ⊓ B) I J t hJ hIo.measurableSet`. Establish `e2 : {g | ∃ x ∈ I, ∃ y ∈ I, g = x * t * y} = {g | ∃ x ∈ I ⊓ B, ∃ y ∈ I, g = x * t * y}`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk, y, hy, rfl⟩`. Take `⟨x, hxB, hxI, z, hz, rfl⟩` from `h2 k hk`. Conclude with `⟨x, ⟨hxI, hxB⟩, _, I.mul_mem hz hy, by group⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨x, hx, y, hy, rfl⟩`. Conclude with `⟨x, hx.1, y, hy, rfl⟩`. Establish `e3` using `index_modular (I.subgroupOf B) (J.subgroupOf B) t (hB.isClosedEmbedding_subtypeVal.isCompact_preimage hIc) (hIo.preimage continuous_subtype_val) (fun x => by rw [Subgroup.mem_subgroupOf, Subgroup.mem_subgroupOf, hJ]; rfl) (fun x hx => by`. Rewrite `hx` using `[Subgroup.mem_subgroupOf, hJ]`. Use `h1 _ (B.mul_mem (B.mul_mem (B.inv_mem t.2) x.2) t.2) hx` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[Subgroup.mem_subgroupOf]`. Simplify `this)` using `[mul_assoc]`. Establish `e4 : (J.subgroupOf B).relIndex (I.subgroupOf B) = J.relIndex (I ⊓ B)`. Rewrite using `[← Subgroup.inf_subgroupOf_right I B, Subgroup.relIndex_subgroupOf inf_le_right]`. Rewrite `e3` using `[e4]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e2, e1, ← mul_assoc]`. Establish `e5 : (Measure.modularCharacter t : ENNReal) * (J.relIndex (I ⊓ B) : ENNReal) = 1`. Conclude with `e3` after adjusting the coercions. Rewrite using `[e5, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem meas_dcoset {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G]
     [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [μ.IsMulLeftInvariant] (B I : Subgroup G)
@@ -145,11 +143,11 @@ private theorem meas_dcoset {G : Type*} [Group G] [TopologicalSpace G] [IsTopolo
   rw [e5, one_mul]
 
 /- English proof (translation)
-Establish `he : ∀ i j, ((torusPow F n a * g * (torusPow F n a)⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i j = (uniformizer F : F) ^ (a i - a j) * (g : Matrix (Fin n) (Fin n) F) i j`. Introduce `i j`. Rewrite using `[← torusPow_neg, Units.val_mul, Units.val_mul, coe_torusPow, coe_torusPow, Matrix.mul_diagonal, Matrix.diagonal_mul, sub_eq_add_neg, zpow_add₀ (GLnLocal.uniformizer_ne_zero F), Pi.neg_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `hle : ∀ i j, ValuativeRel.valuation F (((torusPow F n a * g * (torusPow F n a)⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i j) ≤ ValuativeRel.valuation F ((g : Matrix (Fin n) (Fin n) F) i j)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Introduce `i j`. Rewrite using `[he]`. Break down `lt_or_ge (a i) (a j) with hij | hij` into its components or cases. Rewrite using `[h i j hij, mul_zero]`. Simplify `hij)` using `using Parabolic.valuation_zpow_mul_le_pow_mul (F := F) (e := 0) (z := a i - a j) (x := (g : Matrix (Fin n) (Fin n) F) i j) (by simpa`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨h1, h2, h3⟩` from `(mem_iwahori_iff F n).1 hg`. Use `(mem_iwahori_iff F n).2 ⟨fun i j => (hle i j).trans (h1 i j), fun i j hij => (hle i j).trans_lt (h2 i j hij), fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[he, sub_self, zpow_zero, one_mul, h3]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem conj_mem {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] {n : ℕ}
     (a : Fin n → ℤ) {g : GL (Fin n) F} (hg : g ∈ iwahori F n)
@@ -176,11 +174,11 @@ private theorem conj_mem {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace
   rw [he, sub_self, zpow_zero, one_mul, h3]
 
 /- English proof (translation)
-Introduce `F _ _ _ _ n _ _ μ _ a ha`. Establish `key` using `meas_dcoset μ (blockUpper F n (id : Fin n → Fin n)) (iwahori F n) (Measures.isClosed_blockUpper F n _) (isCompact_iwahori F n) (isOpen_iwahori F n) (torusBorel F n a) (fun x hxB hxI => conj_mem a hxI fun i j hij => (mem_blockUpper F n).1 hxB (lt_of_not_ge fun h => (ha h).not_gt h …`. Take `⟨x, hx, y, hy, z, hz, rfl⟩` from `Parabolic.iwahori_iwahoriFactorization' (β := (id : Fin n → Fin n)) monotone_id k hk`. Use `⟨x * y, mul_mem (Parabolic.unipotentRadical_le_blockUpper hx.2) (Parabolic.levi_le_blockUpper hy.2), mul_mem hx.1 hy.1, z, ?_, rfl⟩` and prove the remaining obligations. Use `conj_mem (-a) hz.1 fun i j hij => (Parabolic.mem_oppositeUnipotentRadical.1 hz.2).1 i j (lt_of_not_ge fun h => (ha h).not_gt (neg_lt_neg_iff.1 hij))` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[torusPow_neg, inv_inv] at this)` and apply the resulting hypothesis. Establish `h2 : halfModulus F a ^ 2 = ((Measure.modularCharacter (torusBorel F n a) : ℝ) : ℂ)`. Rewrite using `[halfModulus_eq, modularCharacter_torusBorel, ← zpow_natCast, ← zpow_mul, mul_comm, zpow_mul, zpow_natCast, sqrtQ_sq]`. Use `push_cast`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Rewrite using `[h2, measureReal_def, measureReal_def, ← key, ENNReal.toReal_mul, ENNReal.coe_toReal, Complex.ofReal_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem UpperTheory.ConvolutionTheory.H.dcoVol :
     ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] (n : ℕ)

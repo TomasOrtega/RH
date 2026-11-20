@@ -3,11 +3,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open TensorProduct IsLocalRing Polynomial UpperTheory.V.W UpperTheory.V.Alg UpperTheory.V.CA
 
 /- English proof (translation)
-Proceed by induction on `t with`. Consider the case `nil`. Introduce `a ha`. Simplify using `only [List.map_nil, List.prod_nil, mul_one]`. Rewrite using `[hg, mul_add, hJ a ha, zero_add]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Consider the case `cons z s ih`. Introduce `a ha`. Simplify using `only [List.map_cons, List.prod_cons]`. Establish `hmem : π (a * g' * z) = 0` using `by simp [map_mul, ha]`. Combine the equalities or inequalities in the displayed calculation.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hJ a ha, zero_add]`. Simplify using `only [mul_assoc]`. Use `_ = e * (a * g' * z) * (g' * (s.map (· * g')).prod) := ih _ hmem`. Use `_ = e * a * (g' * (z * g' * (s.map (· * g')).prod)) := by simp only [mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem idempotent_sandwich_list_prod_eq_of_kernel {k E : Type} [Field k] [Ring E] [Algebra k E] {n : ℕ}
     (π : E →ₐ[k] (Fin n → k)) (e g g' : E) (hg : g = e + g')
@@ -31,23 +31,23 @@ private theorem idempotent_sandwich_list_prod_eq_of_kernel {k E : Type} [Field k
       _ = e * a * (g' * (z * g' * (s.map (· * g')).prod)) := by simp only [mul_assoc]
 
 /- English proof (translation)
-Introduce `n k E _ _ _ e π he hπ hsc`. Establish `hJ : ∀ z, π z = 0 → ∀ i, e i * z * e i = 0`. Introduce `z hz i`. Take `⟨a, ha⟩` from `hsc i z`. Establish `ha0 : a = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify `(congrFun (congrArg π ha) i).symm` using `[map_mul, hz, hπ]`. Rewrite using `[ha, ha0, zero_smul]`. Use `⟨fun x => ⟨fun hz i => hJ x hz i, fun h => ?_⟩, fun x hx => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Establish `h2` using `congrFun (congrArg π (h i)) i`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify `h2` using `[map_mul, hπ]`. Take `⟨F, hF⟩ : ∃ F : Finset (Fin n) → E, ∀ T, F T = ∑ i ∈ T, e i` from `⟨_, fun _ => rfl⟩`. Establish `D : ∀ (m : ℕ) (T : Finset (Fin n)), T.card = m → ∀ t : List E, (∀ y ∈ t, π y = 0) → m ≤ t.length → F T * (t.map (· * F T)).prod = 0`. Introduce `m`. Proceed by induction on `m with`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero`. Introduce `T hT t _ _`. Rewrite `hT` using `[Finset.card_eq_zero]`. Substitute `hT` using the available equality. Simplify using `[hF]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Consider the case `succ m ih`. Introduce `T hT t ht hlen`. Consider the cases of `t with`. Consider the case `nil => simp at hlen`. Consider the case `cons y s`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Rewrite using `[show F T * ((y :: s).map (· * F T)).prod = ∑ i ∈ T, e i * ((y :: s).map (· * F T)).prod by rw [hF T, Finset.sum_mul]]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `i hi`. Simplify using `only [List.map_cons, List.prod_cons]`. Rewrite using `[show e i * (y * F T * (s.map (· * F T)).prod) = e i * y * (F T * (s.map (· * F T)).prod) by simp only [mul_assoc]]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hsplit : F T = e i + F (T.erase i)`. Rewrite using `[hF, hF, Finset.add_sum_erase T e hi]`. Rewrite using `[idempotent_sandwich_list_prod_eq_of_kernel π (e i) (F T) (F (T.erase i)) hsplit (fun z hz => hJ z hz i) s y (ht y (by simp))]`. Rewrite using `[ih (T.erase i) (by rw [Finset.card_erase_of_mem hi, hT]; rfl) s (fun z hz => ht z (by simp [hz])) (by simp at hlen; omega), mul_zero]`. Establish `key` using `D n Finset.univ (by simp) (List.ofFn x) (by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `y hy`. Rewrite `hy` using `[List.mem_ofFn]`. Take `⟨s, rfl⟩` from `hy`. Conclude with `hx s)`. Use the proof step `(by simp)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : F Finset.univ = 1` using `by rw [hF]; exact he.complete`. Rewrite `key` using `[h1, one_mul, show (fun y : E => y * 1) = id from funext mul_one, List.map_id]`. Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.CA.f_nil :
     ∀ {n : ℕ} {k E : Type} [Field k] [Ring E] [Algebra k E] (e : Fin n → E) (π : E →ₐ[k] (Fin n → k)), CompleteOrthogonalIdempotents e → (∀ i, π (e i) = Pi.single i 1) → (∀ i x, ∃ a : k, e i * x * e i = a • e i) → (∀ x, π x = 0 ↔ ∀ i, e i * x * e i = 0) ∧ ∀ x : Fin n → E, (∀ s, π (x s) = 0) → (List.ofFn x).prod = 0 := by

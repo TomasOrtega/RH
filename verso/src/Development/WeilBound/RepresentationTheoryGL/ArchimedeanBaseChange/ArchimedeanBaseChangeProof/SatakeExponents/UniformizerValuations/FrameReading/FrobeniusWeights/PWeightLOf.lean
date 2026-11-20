@@ -12,7 +12,7 @@ set_option synthInstance.maxHeartbeats 200000
 namespace PositivityTheory.Rg.BcB.F.FG
 
 /- English proof (translation)
-Unfold `mOf infOfWeight PositivityTheory.RgBcC.infOf`. Simplify using `only [InfinitePlace.mk_embedding, decide_true, if_true, one_mul]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[add_sub_assoc]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem mOf_infOf_embedding {E : Type} [Field E] [NumberField E] {n : ℕ} (l : InfinitePlace E → DomWeight n)
     (v : InfinitePlace E) :
@@ -24,17 +24,15 @@ theorem mOf_infOf_embedding {E : Type} [Field E] [NumberField E] {n : ℕ} (l : 
   rw [add_sub_assoc]
 
 /- English proof (translation)
-Take `⟨G, hG, hG0⟩` from `h`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Apply `hG0` to reduce the goal to its premises. Establish `: pairSpace (⊥ : Submodule ℂ (Sm E a)) U₂ = ⊥`.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Unfold `pairSpace`. Rewrite using `[Submodule.span_eq_bot]`. Introduce and unpack `F ⟨φ₁, hφ₁, φ₂, -, rfl⟩`. Rewrite `hφ₁` using `[Submodule.mem_bot]`. Substitute `hφ₁` using the available equality.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules. Rewrite `hG` using `[this, Submodule.mem_bot]`. Conclude with `hG`. Introduce and unpack `rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hG0` to reduce the goal to its premises. Establish `: pairSpace U₁ (⊥ : Submodule ℂ (Sm E b)) = ⊥`. Unfold `pairSpace`. Rewrite using `[Submodule.span_eq_bot]`. Introduce and unpack `F ⟨φ₁, -, φ₂, hφ₂, rfl⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hφ₂` using `[Submodule.mem_bot]`. Substitute `hφ₂` using the available equality. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules. Rewrite `hG` using `[this, Submodule.mem_bot]`.
-
-Conclude with `hG`.
+Substitute using the available equality. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem space_ne_bot_of_pair {E : Type} [Field E] [NumberField E] [IsCMField E] {a b : ℕ}
     {U₁ : Submodule ℂ (Sm E a)} {U₂ : Submodule ℂ (Sm E b)} (h : ∃ G ∈ pairSpace U₁ U₂, G ≠ 0) :
@@ -67,9 +65,9 @@ theorem space_ne_bot_of_pair {E : Type} [Field E] [NumberField E] [IsCMField E] 
     exact hG
 
 /- English proof (translation)
-Introduce `hIT hReg hJI hTI hWJ E _ _ _ hU n hn π hπ μ e hμ lam hw a b l₁ l₂ hsum s₁ s₂ Pa Pb D hC h₁ h₂ hex τ lam' hτ`. Take `⟨hne₁, hne₂⟩` from `space_ne_bot_of_pair hex`. Rewrite using `[hJI E n a b (μ ^ b) (μ ^ a) Pa Pb D hC.join τ, hTI hIT E a s₁ Pa τ _ hC.g₁ hC.u₁ hC.t₁ hne₁ (h₁ τ), hTI hIT E b s₂ Pb τ _ hC.g₂ hC.u₂ hC.t₂ hne₂ (h₂ τ)]`. Use `hWJ E hU n a b μ e π lam (mOf fun v => PositivityTheory.RgBcC.infOf (l₁ v).w) (mOf fun v => PositivityTheory.RgBcC.infOf (l₂ v).w) hn hμ hπ hw (hReg E a l₁).1 (hReg E b l₂).1 ?_ τ lam' hτ` and prove the remaining obligations. Introduce `v`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[mOf_infOf_embedding, mOf_infOf_embedding]`. Conclude with `hsum v`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weightLOf_holds : WeightLOf := by
   intro hIT hReg hJI hTI hWJ E _ _ _ hU n hn π hπ μ e hμ lam hw a b l₁ l₂ hsum s₁ s₂ Pa Pb D hC h₁ h₂ hex τ lam' hτ

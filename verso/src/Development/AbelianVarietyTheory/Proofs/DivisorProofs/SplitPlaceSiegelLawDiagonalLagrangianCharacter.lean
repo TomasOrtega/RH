@@ -8,7 +8,7 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 open Formalism.IndefR.DatumF
 /- English proof (citation)
-Apply `PositivityTheory.ThKW.lagrangian_integral_parseval` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FWeilBound%2FThetaLifts%2FReductions%2FWeilPairs%2FSplitPlaceSiegelLawDiagonalLagrangianCharacter.lean&line=45#L45)
 -/

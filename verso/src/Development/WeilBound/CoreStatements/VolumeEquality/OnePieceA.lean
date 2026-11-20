@@ -9,9 +9,9 @@ open AlgebraicGeometry CategoryTheory Filter Topology Metric
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.TB.ValAt GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Flat
 
 /- English proof (translation)
-Introduce `U f`. Establish `e : {b ∈ T | ⊤ ≤ y b ⁻¹ᵁ U} = T ∩ {b ∈ B | ⊤ ≤ y b ⁻¹ᵁ U}`. Use extensionality with `b`. Conclude with `⟨fun hb => ⟨hb.1, h hb.1, hb.2⟩, fun hb => ⟨hb.1, hb.2.2⟩⟩`. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨hT.inter (hy U f).1, (hy U f).2.mono Set.inter_subset_right⟩`.
+Supply the required witnesses or components.
 -/
 theorem isHolTo_mono {X : Scheme.{0}} {n : ℕ} {B T : Set (Fin n → ℂ)} {y : (Fin n → ℂ) → (Sp ℂ ⟶ X)}
     (hy : IsHolTo B y) (hT : IsOpen T) (h : T ⊆ B) : IsHolTo T y := by
@@ -23,19 +23,17 @@ theorem isHolTo_mono {X : Scheme.{0}} {n : ℕ} {B T : Set (Fin n → ℂ)} {y :
   exact ⟨hT.inter (hy U f).1, (hy U f).2.mono Set.inter_subset_right⟩
 
 /- English proof (translation)
-Take `⟨V, hV, hqV, hVU⟩` from `exists_isAffineOpen_mem_and_subset (X := X) (x := q) (U := U) hq`. Set `ρ' : CommRingCat.of K ⟶ Γ(X, V)` to `(Scheme.ΓSpecIso (CommRingCat.of K)).inv ≫ s.appLE ⊤ V (fun _ _ => trivial)`. Set `ρ : K →+* Γ(X, V)` to `ρ'.hom`. Establish `hρ : ρ.FiniteType`. Establish `h1` using `LocallyOfFiniteType.finiteType_appLE s (isAffineOpen_top (Sp K)) hV (fun _ _ => trivial)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom.FiniteType` using `RingHom.FiniteType.of_surjective _ (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of K)).inv).2`. Conclude with `h1.comp h2`. Use `letI : Algebra K Γ(X, V) := ρ.toAlgebra`. Use `haveI : Algebra.FiniteType K Γ(X, V) := hρ`. Use `letI : Algebra K ℂ := σ.toAlgebra`.
+Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Use `haveI : Nonempty V := ⟨⟨q, hqV⟩⟩`. Take `⟨M, hM⟩` from `Ideal.exists_maximal Γ(X, V)`. Use `haveI : IsJacobsonRing Γ(X, V) := isJacobsonRing_of_finiteType (A := K)`. Use `letI := Ideal.Quotient.field M`. Use `haveI : Module.Finite K (Γ(X, V) ⧸ M) := finite_of_finite_type_of_isJacobsonRing K (Γ(X, V) ⧸ M)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `e : (Γ(X, V) ⧸ M) →ₐ[K] ℂ` to `IsAlgClosed.lift`. Set `χ : Γ(X, V) →ₐ[K] ℂ` to `e.comp (Ideal.Quotient.mkₐ K M)`. Set `x : Sp ℂ ⟶ X` to `spMap χ.toRingHom ≫ hV.fromSpec`. Establish `hmem : ∀ p, x p ∈ V` using `fun p => by`. Establish `: x p = hV.fromSpec ((spMap χ.toRingHom) p)` using `by simp [x]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[this, ← SetLike.mem_coe, ← hV.range_fromSpec]`. Conclude with `⟨_, rfl⟩`. Use `⟨x, ?_, fun p _ => hVU (hmem p)⟩` and prove the remaining obligations. Establish `hc : ρ' ≫ CommRingCat.ofHom χ.toRingHom = CommRingCat.ofHom σ`. Use extensionality with `z`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `χ.commutes z`. Establish `h0 : hV.fromSpec ≫ s = Spec.map ρ'`. Rewrite using `[← IsAffineOpen.SpecMap_appLE_fromSpec s (isAffineOpen_top _) hV (fun _ _ => trivial), IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv, ← Spec.map_comp]`. Establish `e : x ≫ s = Spec.map (ρ' ≫ CommRingCat.ofHom χ.toRingHom)`. Rewrite using `[Spec.map_comp]`.
-
-Simplify using `only [x, Category.assoc]`. Rewrite using `[h0]`. Rewrite using `[e, hc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_point {K : Type} [Field K] (σ : K →+* ℂ) {X : Scheme.{0}} (s : X ⟶ Sp K) [LocallyOfFiniteType s]
     (U : X.Opens) {q : X} (hq : q ∈ U) : ∃ x : Sp ℂ ⟶ X, x ≫ s = spMap σ ∧ ⊤ ≤ x ⁻¹ᵁ U := by

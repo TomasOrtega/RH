@@ -17,15 +17,13 @@ open CategoryTheory AlgebraicGeometry KaehlerDifferential DividedPowers Reciproc
 namespace GlobalTheory.SmoothLift
 
 /- English proof (translation)
-Use `choose f hf using h1`. Establish `uniq : ∀ c h h', p c h → p c h' → h' = h`. Introduce `c h h' ph ph'`. Establish `q` using `hadd _ _ _ _ ph' (hsmul (-1) _ _ ph)`. Rewrite `q` using `[neg_one_smul, neg_one_smul, add_neg_cancel]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `add_neg_eq_zero.1 ((h0 _ _ q).1 rfl)`. Set `g : M →ₗ[R] N` to `{ toFun := f map_add' := fun a b ↦ uniq _ _ _ (hadd _ _ _ _ (hf a) (hf b)) (hf (a + b)) map_smul' := fun r a ↦ uniq _ _ _ (hsmul r _ _ (hf a)) (hf (r • a)) }`. Establish `inj : Function.Injective g`. Introduce `a b hab`. Establish `q` using `hadd _ _ _ _ (hf a) (hsmul (-1) _ _ (hf b))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `q` using `[neg_one_smul, neg_one_smul]`. Establish `hab' : f a = f b` using `hab`. Rewrite `q` using `[hab', add_neg_cancel]`. Conclude with `add_neg_eq_zero.1 ((h0 _ _ q).2 rfl)`. Establish `surj : Function.Surjective g`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `h`. Take `⟨c, hc⟩` from `h2 h`. Conclude with `⟨c, uniq _ _ _ hc (hf c)⟩`. Use `⟨LinearEquiv.ofBijective g ⟨inj, surj⟩, fun c h ↦ ⟨?_, fun ph ↦ uniq _ _ _ ph (hf c)⟩⟩` and prove the remaining obligations. Introduce and unpack `rfl`.
-
-Conclude with `hf c`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem exists_linearEquiv_of_rel {R : Type*} [CommRing R] {M N : Type*} [AddCommGroup M] [Module R M]
     [AddCommGroup N] [Module R N] (p : M → N → Prop) (h1 : ∀ c, ∃ h, p c h) (h2 : ∀ h, ∃ c, p c h)
@@ -61,11 +59,11 @@ end GlobalTheory.SmoothLift
 namespace GlobalTheory.SmoothLift
 
 /- English proof (translation)
-Establish `Λ : ∀ D : Data, Lift D` using `fun D ↦ Classical.choice (GlobalTheory.T.nonempty_smoothLiftAffineThickenings D)`. Take `⟨hr1, hr2⟩` from `GlobalTheory.T.crystallineCechDeRham_relations_total_detect_zero`. Establish `E1 : ∀ D : Data, ∃ e : CatCoh.H1 (O D.κ D.t) ≃ₗ[D.R] HH1 D.s, ∀ c h, e c = h ↔ (Λ D).Rel1 c h` using `fun D ↦ exists_linearEquiv_of_rel _ (hr1 D (Λ D)).1 (hr1 D (Λ D)).2.1 (hr1 D (Λ D)).2.2 (GlobalTheory.T.smoothLift_comparisonRelations_add_smul D (Λ D)).1 (GlobalTheory.T.smoothLift_comparisonRelations_add_smul D (Λ D)).2.1`. Establish `E2 : ∀ D : Data, ∃ e : CatCoh.H2 (O D.κ D.t) ≃ₗ[D.R] HH2 D.s, ∀ c h, e c = h ↔ (Λ D).Rel2 c h` using `fun D ↦ exists_linearEquiv_of_rel _ (hr2 D (Λ D)).1 (hr2 D (Λ D)).2.1 (hr2 D (Λ D)).2.2 (GlobalTheory.T.smoothLift_comparisonRelations_add_smul D (Λ D)).2.2.1 (GlobalTheory.T.smoothLift_comparisonRelations_add_smul D (Λ D)).2.2.2`. Use `choose e₁ he₁ using E1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose e₂ he₂ using E2`. Establish `r1 : ∀ D c, (Λ D).Rel1 c (e₁ D c)` using `fun D c ↦ (he₁ D c _).1 rfl`. Establish `r2 : ∀ D c, (Λ D).Rel2 c (e₂ D c)` using `fun D c ↦ (he₂ D c _).1 rfl`. Use `⟨e₁, e₂, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `D a b`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(he₂ D _ _).2 (GlobalTheory.T.comparison_relations_respect_cup D (Λ D) a b _ _ (r1 D a) (r1 D b))`. Introduce `D m c`. Conclude with `(he₁ D _ _).2 (GlobalTheory.T.smoothLift_degreeOne_comparisonRelation D (Λ D) m c)`. Introduce `D D' σ φ φ₀ h m hc`. Conclude with `⟨fun c ↦ GlobalTheory.T.crystallineDeRhamRelation_natural_smoothLift_morphism.1 D D' (Λ D) (Λ D') σ φ φ₀ h m hc c _ _ (r1 D c) (r1 D' _), fun c ↦ GlobalTheory.T.crystallineDeRhamRelation_natural_smoothLift_morphism.2 D D' (Λ D) (Λ D') σ φ φ₀ h m hc c _ _ (r2 D c) (r2 D' _)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem crystallineSmoothLift_of_relations : GlobalTheory.Published.CrystallineSmoothLift := by
   have Λ : ∀ D : Data, Lift D := fun D ↦ Classical.choice (GlobalTheory.T.nonempty_smoothLiftAffineThickenings D)

@@ -17,11 +17,11 @@ open Finset Polynomial
 namespace Formalism.IrreducibleCountingLemmas.TW
 
 /- English proof (translation)
-The claim follows from `Formalism.CyclotomicNorms.substitutionAdaptive`.
+A detailed English derivation is pending.
 -/
 theorem substitution_SUB : LemmaSUB := Formalism.CyclotomicNorms.substitutionAdaptive
 /- English proof (translation)
-The claim follows from `Formalism.CyclotomicNorms.lowPowerSeries`.
+A detailed English derivation is pending.
 -/
 theorem low_power_series_LOW : LemmaLOW := Formalism.CyclotomicNorms.lowPowerSeries
 

@@ -12,29 +12,25 @@ namespace GlobalTheory.ShFam.Hor.LogCh
 open Topology in
 set_option autoImplicit false in
 /- English proof (translation)
-Use `set L : (Fin r → ℝ) →ₗ[ℝ] (Fin g → ℂ) := Fintype.linearCombination ℝ l₁ with hL`. Establish `hLapp : ∀ x, L x = ∑ j, x j • l₁ j` using `fun x => by`. Simplify using `[hL, Fintype.linearCombination_apply]`. Establish `hker : LinearMap.ker L = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Conclude with `funext (Fintype.linearIndependent_iff.1 hl x (by rw [← hLapp]; exact hx))`. Take `⟨K, -, hK⟩` from `L.exists_antilipschitzWith hker`. Use `set k : ℝ := (K : ℝ) + 1 with hk`. Establish `hk0 : 0 < k` using `by positivity`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hbound : ∀ x, ‖x‖ ≤ k * ‖L x‖` using `fun x => by`. Establish `h` using `hK.le_mul_dist x 0`. Simplify using `only [map_zero, dist_zero_right] at h`. Use polynomial arithmetic with `[norm_nonneg (L x)]`. Use `⟨1 / (2 * k * ((r : ℝ) + 1)), by positivity, fun l hl c hc => ?_⟩` and prove the remaining obligations.
+Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `set δ : ℝ := 1 / (2 * k * ((r : ℝ) + 1)) with hδ`. Use `set x : Fin r → ℝ := fun j => (c j : ℝ) with hx`. Establish `hcx : ∑ j, c j • l j = ∑ j, x j • l j`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `[hx, Int.cast_smul_eq_zsmul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hsplit : L x = ∑ j, x j • l j - ∑ j, x j • (l j - l₁ j)`. Rewrite using `[hLapp]`. Simplify using `[smul_sub, Finset.sum_sub_distrib]`. Establish `hsum : ‖∑ j, x j • (l j - l₁ j)‖ ≤ r * (‖x‖ * ‖l - l₁‖)`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use `Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations. Rewrite using `[norm_smul]`. Conclude with `mul_le_mul (norm_le_pi_norm x j) (by simpa using norm_le_pi_norm (l - l₁) j) (norm_nonneg _) (norm_nonneg _)`. Use `_ = r * (‖x‖ * ‖l - l₁‖) := by simp`. Establish `hLx : ‖L x‖ < δ + r * (‖x‖ * δ)`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsplit]`. Combine the equalities or inequalities in the displayed calculation. Establish `h1 : ‖∑ j, x j • l j‖ < δ` using `by rw [← hcx]; exact hc`. Establish `h2 : r * (‖x‖ * ‖l - l₁‖) ≤ r * (‖x‖ * δ)` using `by gcongr`. Combine the linear equalities and inequalities to obtain the conclusion.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hkδ : k * δ * ((r : ℝ) + 1) = 1 / 2`. Rewrite using `[hδ]`. Clear the denominators using the available nonvanishing facts. Establish `hxlt : ‖x‖ < 1`. Establish `hb` using `hbound x`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr : (0 : ℝ) ≤ r` using `Nat.cast_nonneg r`. Establish `hxn` using `norm_nonneg x`. Establish `hδ0 : 0 < δ` using `by positivity`. Establish `: ‖x‖ < k * δ + k * δ * r * ‖x‖`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hkδ0 : 0 < k * δ` using `mul_pos hk0 hδ0`. Establish `hkδ' : k * δ * r + k * δ = 1 / 2` using `by rw [← hkδ]; ring`. Establish `ha : k * δ * r ≤ 1 / 2` using `by linarith`. Establish `ha2 : k * δ ≤ 1 / 2` using `by nlinarith`. Establish `hm : k * δ * r * ‖x‖ ≤ 1 / 2 * ‖x‖` using `mul_le_mul_of_nonneg_right ha hxn`.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Use function extensionality and compare the values at `j`. Establish `hj : ‖x j‖ < 1` using `lt_of_le_of_lt (norm_le_pi_norm x j) hxlt`. Establish `hj' : |(c j : ℝ)| < 1` using `by simpa [hx] using hj`. Establish `: |c j| < 1` using `by exact_mod_cast hj'`.
-
-Simplify using `using Int.abs_lt_one_iff.1 this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem exists_pos_int_combination_eq_zero_near_of_linearIndependent {g r : ℕ} {l₁ : Fin r → Fin g → ℂ}
     (hl : LinearIndependent ℝ l₁) :
@@ -107,17 +103,15 @@ open Topology in
 set_option autoImplicit false in
 
 /- English proof (translation)
-Establish `hex : ∀ b ∈ B, ∃ m : Fin r → ℤ, ζ b = ∑ j, m j • lam b j` using `fun b hb => ((hbas b hb).2 (ζ b)).1 (hmem b hb)`. Set `F : (Fin n → ℂ) → Fin r → ℤ` to `fun b => if hb : b ∈ B then (hex b hb).choose else 0`. Establish `hF : ∀ b ∈ B, ζ b = ∑ j, F b j • lam b j`. Introduce `b hb`. Simplify using `only [F, dif_pos hb]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `(hex b hb).choose_spec`. Establish `hloc : ∀ b₁ ∈ B, ∀ᶠ b in 𝓝[B] b₁, F b = F b₁`. Introduce `b₁ hb₁`. Take `⟨δ, hδ, hkey⟩` from `exists_pos_int_combination_eq_zero_near_of_linearIndependent (hbas b₁ hb₁).1`. Establish `h1 : ∀ᶠ b in 𝓝[B] b₁, ‖lam b - lam b₁‖ < δ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : ContinuousWithinAt (fun b => ‖lam b - lam b₁‖) B b₁` using `((hlam b₁ hb₁).sub continuousWithinAt_const).norm`. Conclude with `hc.eventually (eventually_lt_nhds (by simpa using hδ))`. Establish `hcomb : Continuous (fun l : Fin r → Fin g → ℂ => ∑ j, F b₁ j • l j)` using `continuous_finset_sum _ fun j _ => (continuous_apply j).const_smul (F b₁ j)`. Establish `h2 : ∀ᶠ b in 𝓝[B] b₁, ‖ζ b - ∑ j, F b₁ j • lam b j‖ < δ`. Establish `hc : ContinuousWithinAt (fun b => ‖ζ b - ∑ j, F b₁ j • lam b j‖) B b₁` using `((hζ b₁ hb₁).sub (hcomb.continuousAt.comp_continuousWithinAt (hlam b₁ hb₁))).norm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `hc.eventually (eventually_lt_nhds ?_)` and prove the remaining obligations. Use `show ‖ζ b₁ - ∑ j, F b₁ j • lam b₁ j‖ < δ`. Rewrite using `[← hF b₁ hb₁, sub_self, norm_zero]`. Conclude with `hδ`. Use `filter_upwards [h1, h2, self_mem_nhdsWithin] with b hb1 hb2 hbB`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hdiff : ∑ j, (F b - F b₁) j • lam b j = ζ b - ∑ j, F b₁ j • lam b j`. Rewrite using `[hF b hbB]`. Simplify using `[sub_smul, Finset.sum_sub_distrib]`. Conclude with `sub_eq_zero.1 (hkey (lam b) hb1 (F b - F b₁) (by rw [hdiff]; exact hb2))`. Establish `hcont : ContinuousOn F B` using `fun b₁ hb₁ => continuousWithinAt_const.congr_of_eventuallyEq (hloc b₁ hb₁) rfl`.
-
-Use `⟨F b₀, fun b hb => ?_⟩` and prove the remaining obligations. Rewrite using `[← hB.constant hcont hb hb₀]`. Conclude with `hF b hb`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ShFam.Hor.LogCh.exists_const_coords (n g r : ℕ) (B : Set (Fin n → ℂ))
     (K : (Fin n → ℂ) → Set (Fin g → ℂ))

@@ -32,49 +32,43 @@ section Gal
 open GlobalTheory.TameValChar
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ M _ φ P e m hopen hm hI`. Establish `hAC : IsAlgClosed Ω` using `IsAlgClosure.isAlgClosed E`. Take `⟨A0, hA0⟩` from `ReciprocityTheory.Gal.exists_isPlaceOver Ω P`. Take `⟨γ, hγ⟩` from `GlobalTheory.TameInertiaGen.exists_tameGenAt E Ω P A0 hA0`. Take `⟨hq2, hq1⟩` from `two_le_normV_and_not_mem P`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `set q := Formalism.ConjugateSelfDual.normV P with hqdef`. Use `set n := q - 1 with hndef`. Take `⟨N0, hN0⟩` from `hI A0 hA0 γ hγ.1`. Use `set L := n * m ^ N0 with hLdef`. Establish `hL : ((L : ℕ) : 𝓞 E) ∉ P.asIdeal`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hLdef, Nat.cast_mul, Nat.cast_pow]`. Conclude with `P.isPrime.mul_notMem hq1 (fun h => hm (P.isPrime.mem_of_pow_mem _ h))`. Establish `hL0 : L ≠ 0` using `ne_zero_of_not_mem hL`. Choose the witnesses or unpack the hypotheses as in `⟨ϖ0, hϖ0, hϖ0'⟩ : ∃ ϖ0 : 𝓞 E, ϖ0 ∈ P.asIdeal ∧ ϖ0 ∉ P.asIdeal ^ 2 := by`. Establish `hlt` using `Ideal.pow_succ_lt_pow (P := P.asIdeal) P.ne_bot 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite `hlt` using `[pow_one]`. Take `⟨x, hx, hx'⟩` from `SetLike.exists_of_lt hlt`. Conclude with `⟨x, hx, hx'⟩`. Establish `hϖ0ne : algebraMap E Ω (ϖ0 : E) ≠ 0`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `hϖ0'` to reduce the goal to its premises. Establish `: ϖ0 = 0`. Establish `h' : ((ϖ0 : E)) = 0` using `(map_eq_zero _).1 h`. Conclude with `h'` after adjusting the coercions. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `zero_mem _`. Take `⟨π1, hπ1⟩` from `IsAlgClosed.exists_pow_nat_eq (algebraMap E Ω (ϖ0 : E)) (Nat.pos_of_ne_zero hL0)`. Establish `hπ1ne : π1 ≠ 0`. Introduce and unpack `rfl`. Rewrite `hπ1` using `[zero_pow hL0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hϖ0ne hπ1.symm`. Establish `hw : ∀ τ : Formalism.ConjugateSelfDual.G E Ω, (∀ y : Ω, y ≠ 0 → A0.valuation (τ y / y - 1) < 1) → φ τ = 1` using `fun τ hτ => GlobalTheory.WildOpenKernel.eq_one_of_wild φ P A0 m hA0 hopen hm τ hτ (hI A0 hA0 τ (GlobalTheory.TameGenPowers.wild_mem_Ine hτ))`. Establish `hγL : φ γ ^ L = 1`. Rewrite using `[hLdef, mul_comm, pow_mul, hN0, one_pow]`. Establish `hJ` using `GlobalTheory.TameJoint.exists_pow_joint φ P A0 L γ π1 (ϖ0 : E) hA0 hopen hL hγ hw hγL hπ1ne hπ1`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set ζ1 := γ π1 / π1 with hζ1def`. Establish `hγπ1 : γ π1 = ζ1 * π1` using `by rw [hζ1def, div_mul_cancel₀ _ hπ1ne]`. Establish `hζ1L : ζ1 ^ L = 1`. Rewrite using `[hζ1def, div_pow, ← map_pow, hπ1, AlgEquiv.commutes, div_self hϖ0ne]`. Take `⟨σ0, hσ0, hprim⟩` from `GlobalTheory.TameRootSurj.main P A0 L ϖ0 π1 hA0 hL hϖ0 hϖ0' hπ1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨b0, -, hb0⟩` from `hJ σ0 hσ0`. Establish `hζ1prim : IsPrimitiveRoot ζ1 L`. Rewrite `hprim` using `[hb0, mul_div_cancel_right₀ _ hπ1ne]`. Establish `h1 : L ∣ orderOf ζ1` using `hprim.eq_orderOf ▸ orderOf_pow_dvd b0`. Establish `h2 : orderOf ζ1 ∣ L` using `orderOf_dvd_of_pow_eq_one hζ1L`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : orderOf ζ1 = L` using `Nat.dvd_antisymm h2 h1`. Conclude with `h3 ▸ IsPrimitiveRoot.orderOf ζ1`. Take `⟨τ, hτ⟩` from `ReciprocityTheory.Gal.exists_isFrob hA0`. Establish `hσF : τ * γ * τ⁻¹ ∈ ReciprocityTheory.Gal.Ine (F` using `E) A0 := ReciprocityTheory.Gal.conj_mem_Ine hτ.1 hγ.1`. Use `set η := (τ⁻¹ : Formalism.ConjugateSelfDual.G E Ω) π1 / π1 with hηdef`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `hη : η ^ L = 1`. Rewrite using `[hηdef, div_pow, ← map_pow, hπ1, AlgEquiv.commutes, div_self hϖ0ne]`. Establish `hyη : (τ⁻¹ : Formalism.ConjugateSelfDual.G E Ω) π1 = η * π1` using `by rw [hηdef, div_mul_cancel₀ _ hπ1ne]`. Establish `hγη : γ η = η` using `ine_fix_root hA0 hL hγ.1 hη`. Establish `hcalc : (τ * γ * τ⁻¹) π1 = ζ1 ^ q * π1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : (τ * γ * τ⁻¹) π1 = τ (γ ((τ⁻¹ : Formalism.ConjugateSelfDual.G E Ω) π1))` using `rfl`. Establish `e2 : γ ((τ⁻¹ : Formalism.ConjugateSelfDual.G E Ω) π1) = ζ1 * (τ⁻¹ : Formalism.ConjugateSelfDual.G E Ω) π1`. Rewrite using `[hyη, map_mul, hγη, hγπ1]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, e2, map_mul, ReciprocityTheory.Gal.mul_inv_apply, frob_root hA0 hL hτ hζ1L]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨b, hbφ, hbπ⟩` from `hJ _ hσF`. Establish `hφconj : φ (τ * γ * τ⁻¹) = φ γ`. Rewrite using `[map_mul, map_mul, mul_comm (φ τ), mul_assoc, ← map_mul, mul_inv_cancel, map_one, mul_one]`. Rewrite `hbπ` using `[hcalc]`. Establish `hζq : ζ1 ^ q = ζ1 ^ b` using `mul_right_cancel₀ hπ1ne hbπ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmod : q ≡ b [MOD L]` using `modEq_of_pow_eq hζ1prim hL0 hζq`. Establish `hordγ : orderOf (φ γ) ∣ L` using `orderOf_dvd_of_pow_eq_one hγL`. Establish `hγq : φ γ ^ q = φ γ ^ b` using `pow_eq_pow_iff_modEq.2 (hmod.of_dvd hordγ)`. Establish `hγn : φ γ ^ n = 1`. Establish `h1 : φ γ ^ n * φ γ = φ γ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← pow_succ, show n + 1 = q by omega, hγq, ← hbφ, hφconj]`. Conclude with `mul_eq_right.1 h1`. Use `set π0 := π1 ^ (m ^ N0) with hπ0def`. Establish `hπ0 : π0 ^ n = algebraMap E Ω (ϖ0 : E)`. Rewrite using `[hπ0def, ← pow_mul, mul_comm, ← hLdef]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `hπ1`. Establish `hπ0ne : π0 ≠ 0` using `pow_ne_zero _ hπ1ne`. Use `set ζ0 := ζ1 ^ (m ^ N0) with hζ0def`. Establish `hζ0prim : IsPrimitiveRoot ζ0 n` using `hζ1prim.pow (Nat.pos_of_ne_zero hL0) (by rw [hLdef, mul_comm])`. Establish `hC : ∀ σ ∈ ReciprocityTheory.Gal.Ine (F` using `E) A0, ∃ b : ℕ, φ σ = φ γ ^ b ∧ σ π0 = ζ0 ^ b * π0 := by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `σ hσ`. Take `⟨b, h1, h2⟩` from `hJ σ hσ`. Use `⟨b, h1, ?_⟩` and prove the remaining obligations. Rewrite using `[hπ0def, map_pow, h2, hζ0def, mul_pow, ← pow_mul, ← pow_mul, mul_comm b]`. Establish `hn1A : ¬ A0.valuation (n : Ω) < 1` using `not_val_lt_one hA0 hq1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hordn : orderOf (φ γ) ∣ n` using `orderOf_dvd_of_pow_eq_one hγn`. Establish `hK : ∀ (σ : Formalism.ConjugateSelfDual.G E Ω) (u : 𝓞 E) (a : ℕ), Formalism.L2.NX.TameRep P e σ u → A0.valuation (ζ0 ^ a - (algebraMap E Ω (u : E)) ^ e) < 1 → φ σ = φ γ ^ a`. Introduce `σ u a hσ ha`. Take `⟨g, hg, hgv⟩` from `GlobalTheory.TameMove.tameRep_move P e σ u A0 ϖ0 π0 hA0 hϖ0 hϖ0' hπ0 hσ`. Take `⟨b, hbφ, hbπ⟩` from `hC _ hg`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hφg : φ (g * σ * g⁻¹) = φ σ`. Rewrite using `[map_mul, map_mul, mul_comm (φ g), mul_assoc, ← map_mul, mul_inv_cancel, map_one, mul_one]`. Rewrite `hgv` using `[hbπ, mul_div_cancel_right₀ _ hπ0ne]`. Establish `hab : ζ0 ^ a = ζ0 ^ b`. Use `ReciprocityTheory.Gal.eq_of_pow_eq_one A0 hn1A ?_ ?_ ?_` and prove the remaining obligations.
-
-Rewrite using `[← pow_mul, mul_comm, pow_mul, hζ0prim.pow_eq_one, one_pow]`. Rewrite using `[← pow_mul, mul_comm, pow_mul, hζ0prim.pow_eq_one, one_pow]`. Establish `e1 : ζ0 ^ a - ζ0 ^ b = (ζ0 ^ a - (algebraMap E Ω (u : E)) ^ e) - (ζ0 ^ b - (algebraMap E Ω (u : E)) ^ e)`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`.
-
-Conclude with `lt_of_le_of_lt (Valuation.map_sub _ _ _) (max_lt ha hgv)`. Establish `hmod' : a ≡ b [MOD n]` using `modEq_of_pow_eq hζ0prim (ne_zero_of_not_mem hq1) hab`. Rewrite using `[← hφg, hbφ]`. Conclude with `(pow_eq_pow_iff_modEq.2 (hmod'.of_dvd hordn)).symm`. Introduce `σ u hu hσ`.
-
-Take `⟨a, ha⟩` from `GlobalTheory.TamePowTeich.exists_zeta_pow_close P A0 ζ0 hA0 hζ0prim u e hu`. Establish `hex : ∃ σ : Formalism.ConjugateSelfDual.G E Ω, Formalism.L2.NX.TameRep P e σ u` using `⟨σ, hσ⟩`. Rewrite using `[Formalism.L2.NX.tameVal, dif_pos hex, hK _ u a hex.choose_spec ha, hK σ u a hσ ha]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tameVal_eq_of_tameRep : ∀ {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] {M : Type}
     [CommGroup M] (φ : Formalism.ConjugateSelfDual.G E Ω →* M) (P : HeightOneSpectrum (𝓞 E)) (e : ℤ) (m : ℕ),
@@ -197,11 +191,11 @@ theorem tameVal_eq_of_tameRep : ∀ {E Ω : Type} [Field E] [NumberField E] [Fie
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω]
 
 /- English proof (translation)
-Establish `hζ0 : ζ ≠ 0`. Introduce and unpack `rfl`. Rewrite `hζ` using `[zero_pow (ne_zero_of_not_mem hk)]`. Conclude with `zero_ne_one hζ`. Establish `hfix : σ ζ = ζ` using `ine_fix_root hA hk hσ hζ`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Proceed by induction.
 
-Proceed by induction on `e using Int.induction_on with`. Consider the case `zero => simp`. Consider the case `succ i ih`. Rewrite using `[add_comm (i : ℤ) 1, zpow_add, zpow_one, AlgEquiv.mul_apply, ih, map_mul, map_zpow₀, hfix, hπ, zpow_add₀ hζ0, zpow_one]`. Expand and normalize the polynomial expressions, which then agree.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Consider the case `pred i ih`. Apply `σ.injective` to reduce the goal to its premises. Rewrite using `[← AlgEquiv.mul_apply, ← zpow_one_add, map_mul, map_zpow₀, hfix, hπ, show (1 + (-(i : ℤ) - 1)) = -(i : ℤ) by ring, ih, zpow_sub_one₀ hζ0]`. Clear the denominators using the available nonvanishing facts.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem zpow_apply_root {A : ValuationSubring Ω} {P : HeightOneSpectrum (𝓞 E)} (hA : Formalism.ConjugateSelfDual.IsPlaceOver A P) {k : ℕ}
     (hk : ((k : ℕ) : 𝓞 E) ∉ P.asIdeal) {σ : Formalism.ConjugateSelfDual.G E Ω} (hσ : σ ∈ ReciprocityTheory.Gal.Ine (F := E) A) {ζ π : Ω}
@@ -223,13 +217,11 @@ theorem zpow_apply_root {A : ValuationSubring Ω} {P : HeightOneSpectrum (𝓞 E
     field_simp
 
 /- English proof (translation)
-Take `⟨hq2, hq1⟩` from `two_le_normV_and_not_mem P`. Establish `hϖ : algebraMap E Ω (ϖ : E) ≠ 0`. Introduce `h`. Apply `h2` to reduce the goal to its premises. Establish `h' : ((ϖ : E)) = 0` using `(map_eq_zero _).1 h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[show ϖ = 0 from RingOfIntegers.coe_eq_zero_iff.1 h']`. Conclude with `zero_mem _`. Establish `hπ0 : π ≠ 0`. Introduce and unpack `rfl`. Rewrite `hπ` using `[zero_pow (ne_zero_of_not_mem hq1)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hϖ hπ.symm`. Establish `hζ : (σ π / π) ^ (normV P - 1) = 1`. Rewrite using `[div_pow, ← map_pow, hπ, AlgEquiv.commutes, div_self hϖ]`. Use `⟨A, hA, zpow_mem hσ e, ϖ, π, h1, h2, hπ, ?_⟩` and prove the remaining obligations. Rewrite using `[zpow_apply_root hA hq1 hσ hζ (div_mul_cancel₀ _ hπ0).symm e, mul_div_cancel_right₀ _ hπ0]`.
-
-Conclude with `zpow_close (L_vone P A hA u hu) hv e`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tameRep_zpow {A : ValuationSubring Ω} {P : HeightOneSpectrum (𝓞 E)} (hA : Formalism.ConjugateSelfDual.IsPlaceOver A P)
     {σ : Formalism.ConjugateSelfDual.G E Ω} (hσ : σ ∈ ReciprocityTheory.Gal.Ine (F := E) A) {ϖ : 𝓞 E} {π : Ω} (h1 : ϖ ∈ P.asIdeal) (h2 : ϖ ∉ P.asIdeal ^ 2)
@@ -257,13 +249,13 @@ end Gal
 open Formalism.IndefR.Datum in
 
 /- English proof (translation)
-Take `⟨hi, h1⟩` from `GlobalTheory.IdemRes.resS_idem_eq_one D _ PP h`. Establish `he : idemAt PP * idemAt PP = idemAt PP` using `h.1.1`. Establish `hb : toEAf D (incA D (a : D.host.E)) = ((oToS D.host.F D.host.E a : Formalism.L2.Herm.intAf D.host.F D.host.E) : EAf D)` using `rfl`. Establish `hval : ((Formalism.L2.JoinChr.locU h.1.1 (Units.mk0 (a : D.host.E) ha0) : (AE D)ˣ) : AE D) = 1 + idemAt PP * (incA D (a : D.host.E) - 1)` using `rfl`. Generalize the expression as in `Formalism.L2.JoinChr.locU h.1.1 (Units.mk0 (a : D.host.E) ha0) = x at hval ⊢`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `incA D (a : D.host.E) = b at hb hval`. Establish `hv : toEAf D (x : AE D) = ((1 + ⟨_, hi⟩ * (oToS D.host.F D.host.E a - 1) : Formalism.L2.Herm.intAf D.host.F D.host.E) : EAf D)`. Rewrite using `[hval, GlobalTheory.ConjTwist.map_loc, hb]`. Both sides reduce to the same expression. Establish `hx : toEAf D (x : AE D) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[hv]`. Conclude with `Subtype.property _`. Use `hc x ?_ hx z ?_` and prove the remaining obligations. Rewrite using `[hval]`. Take the linear combination `(1 - b) * he`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `e2 : (⟨_, hx⟩ : Formalism.L2.Herm.intAf D.host.F D.host.E) = 1 + ⟨_, hi⟩ * (oToS D.host.F D.host.E a - 1)` using `Subtype.ext hv`. Use `(congrArg (resS D.host.F PP) e2).trans ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.ConjTwist.map_loc, h1, resS_oToS, hz]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem eq_res_locU {D : D7} {M : Type} [CommGroup M] {χ : (AE D)ˣ →* M} {PP : Pl D.host.E}
     (h : Formalism.L2.NTheta.IsIdemAt (idemAt PP) PP) {c : (kP PP)ˣ →* M} (hc : IsResAt χ PP c) (a : 𝓞 D.host.E)
@@ -293,17 +285,15 @@ theorem eq_res_locU {D : D7} {M : Type} [CommGroup M] {χ : (AE D)ˣ →* M} {PP
     ring
 
 /- English proof (translation)
-Introduce `hGAR D rc hrc R _ f φ hopen PP m hm hI hid c hc e u hu z hz`. Use `haveI : IsCMField D.host.E := D.host.isCMField_hostE`. Use `haveI : IsAlgClosed D.nd.Om := IsAlgClosure.isAlgClosed D.host.E`. Take `⟨A, hA⟩` from `ReciprocityTheory.Gal.exists_isPlaceOver D.nd.Om PP`. Take `⟨hq2, hq1⟩` from `GlobalTheory.TameValChar.two_le_normV_and_not_mem PP`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `⟨ϖ, hϖ1, hϖ2⟩ : ∃ ϖ0 : 𝓞 D.host.E, ϖ0 ∈ PP.asIdeal ∧ ϖ0 ∉ PP.asIdeal ^ 2 := by`. Establish `hlt` using `Ideal.pow_succ_lt_pow (P := PP.asIdeal) PP.ne_bot 1`. Rewrite `hlt` using `[pow_one]`. Take `⟨x, hx, hx'⟩` from `SetLike.exists_of_lt hlt`. Conclude with `⟨x, hx, hx'⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨π, hπ⟩` from `IsAlgClosed.exists_pow_nat_eq (algebraMap D.host.E D.nd.Om (ϖ : D.host.E)) (show 0 < normV PP - 1 by omega)`. Establish `hu0 : (u : D.host.E) ≠ 0` using `fun h => hu (by`. Rewrite using `[show u = 0 from RingOfIntegers.coe_eq_zero_iff.1 h]`. Conclude with `zero_mem _)`. Establish `hxu : IsUnitAt PP (Formalism.L2.Host.atFin PP (Units.mk0 (u : D.host.E) hu0))` using `by show Valued.v (((u : D.host.E) : PP.adicCompletion D.host.E)) = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`. Conclude with `(HeightOneSpectrum.valuation_eq_one_iff_notMem _).2 hu`. Take `⟨σ, hσI, hσart, hσval⟩` from `GlobalTheory.TameRecip.exists_ine_of_unit hGAR D.host.E D.nd.Om rc.art hrc.artin PP A hA ϖ hϖ1 hϖ2 π hπ (Formalism.L2.Host.atFin PP (Units.mk0 (u : D.host.E) hu0)) u hxu (by simp [Formalism.L2.Host.atFin])`. Establish `hsym : rc.sym (Formalism.L2.JoinChr.locU hid.1.1 (Units.mk0 (u : D.host.E) hu0)) = GlobalTheory.HeckeGal.toAb D.host.E D.nd.Om σ`. Rewrite using `[hσart, Recip.sym, MonoidHom.comp_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congr 1`. Conclude with `Units.ext (hrc.loc PP _ (GlobalTheory.HeckeDetChar.isPlIdem hid) (Units.mk0 (u : D.host.E) hu0))`. Take `⟨N, hN⟩` from `hI A hA σ hσI`. Establish `h1` using `charOf_eq rc f hopen hsym (pow_ne_zero N (GlobalTheory.TameValChar.ne_zero_of_not_mem hm)) hN`. Rewrite `h1` using `[eq_res_locU hid hc u hu0 z hz]`.
-
-Rewrite using `[tameVal_eq_of_tameRep φ PP e m hopen hm hI _ u hu (tameRep_zpow hA hσI hϖ1 hϖ2 hπ hu hσval e), h1, map_zpow]`. Establish `h2 : ∀ w : Rˣ, f (w : R) = ((Units.map f.toMonoidHom w : ℂˣ) : ℂ)` using `fun _ => rfl`. Rewrite using `[h2, h2, map_zpow, Units.val_zpow_eq_zpow_val]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem res_zpow_eq_tameVal : GlobalTheory.Published.GlobalArtinReciprocity → ∀ (D : D7) (rc : Recip D D.nd.Om), rc.Good → ∀ (R : Type) [CommRing R] (f : R →+* ℂ) (φ : G D.host.E D.nd.Om →* Rˣ), IsOpen (φ.ker : Set (G D.host.E D.nd.Om)) → ∀ (PP : Pl D.host.E) (m : ℕ), ((m : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal → (∀ A : ValuationSubring D.nd.Om, IsPlaceOver A PP → ∀ σ ∈ Ine (F := D.host.E) A, ∃ N : ℕ, φ σ ^ (m ^ N) = 1) → Formalism.L2.NTheta.IsIdemAt (idemAt PP) PP → ∀ c : (kP PP)ˣ →* Circle, IsResAt (GlobalTheory.SeriesTie.charOf rc f φ) PP c → ∀ (e : ℤ) (u : 𝓞 D.host.E), u ∉ PP.asIdeal → ∀ z : (kP PP)ˣ, (z : kP PP) = Ideal.Quotient.mk PP.asIdeal u → ((c z : Circle) : ℂ) ^ e = f (NX.tameVal φ PP e u).1 := by
   intro hGAR D rc hrc R _ f φ hopen PP m hm hI hid c hc e u hu z hz

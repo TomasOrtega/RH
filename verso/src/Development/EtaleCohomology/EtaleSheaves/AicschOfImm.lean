@@ -6,9 +6,9 @@ open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC LateralTheory.E.t_
 namespace LateralTheory.E.CovPf
 
 /- English proof (translation)
-Introduce `p hp hd`. Take `⟨a, ha⟩` from `h (p.map (e.symm : B →+* A)) (hp.map _) (by`. Rewrite using `[Polynomial.natDegree_map_eq_of_injective e.symm.injective])` and apply the resulting hypothesis. Use `⟨e a, ?_⟩` and prove the remaining obligations. Rewrite `ha` using `[Polynomial.eval_map]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `congrArg (e : A →+* B) ha`. Rewrite `h2` using `[Polynomial.hom_eval₂, map_zero]`. Establish `h3 : ((e : A →+* B).comp (e.symm : B →+* A)) = RingHom.id B` using `by ext x; simp`. Rewrite `h2` using `[h3]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aic_equiv {A B : Type} [CommRing A] [CommRing B] (e : A ≃+* B) (h : AIC A) : AIC B := by
   intro p hp hd
@@ -23,9 +23,9 @@ theorem aic_equiv {A B : Type} [CommRing A] [CommRing B] (e : A ≃+* B) (h : AI
   exact h2
 
 /- English proof (translation)
-Establish `: IsIntegral Z` using `hZ.1`. Use `⟨isIntegral_of_isOpenImmersion i, fun V hV hne => ?_⟩` and prove the remaining obligations. Establish `h1` using `hZ.2 (i ''ᵁ V) (hV.image_of_isOpenImmersion i) (by`. Take `⟨x, hx⟩` from `hne`. Conclude with `⟨i.base x, x, hx, rfl⟩)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `aic_equiv (i.appIso V).commRingCatIsoToRingEquiv h1`.
+A detailed English derivation is pending.
 -/
 theorem aicsch_of_imm {W Z : Scheme.{0}} (i : W ⟶ Z) [IsOpenImmersion i] [Nonempty W] (hZ : AICSch Z) :
     AICSch W := by
@@ -36,7 +36,7 @@ theorem aicsch_of_imm {W Z : Scheme.{0}} (i : W ⟶ Z) [IsOpenImmersion i] [None
   exact aic_equiv (i.appIso V).commRingCatIsoToRingEquiv h1
 
 /- English proof (translation)
-Use `hq.map (i.appTop).hom` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem unit_of_hom {W Z : Scheme.{0}} (i : W ⟶ Z) (q : ℕ) (hq : IsUnit (q : Γ(Z, ⊤))) :
     IsUnit (q : Γ(W, ⊤)) := by
@@ -52,7 +52,7 @@ def StepP (q : ℕ) (P : Scheme.{0} → Prop) : Prop :=
     P U → P V → (Nonempty ↥(pullback f g : Scheme.{0}) → P (pullback f g)) → P X
 
 /- English proof (translation)
-Introduce `W i _ hr hW`. Take `⟨w⟩` from `hW`. Establish `: i.base w ∈ Set.range i` using `⟨w, rfl⟩`. Rewrite `this` using `[hr]`. Conclude with `this.elim`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem R_empty (P : Scheme.{0} → Prop) {Z : Scheme.{0}} : R P (∅ : Set Z) := by
   intro W i _ hr hW
@@ -61,7 +61,7 @@ theorem R_empty (P : Scheme.{0} → Prop) {Z : Scheme.{0}} : R P (∅ : Set Z) :
   rw [hr] at this; exact this.elim
 
 /- English proof (translation)
-Introduce `W i _ hr hW`. Establish `e : Set.range i = Set.range A.ι` using `by rw [hr]; simp`. Establish `hWa : IsAffine W` using `(IsAffine.iff_of_isIso (IsOpenImmersion.isoOfRangeEq i A.ι e).hom).mpr hA`. Conclude with `haff W hWa (aicsch_of_imm i hZ) (unit_of_hom i q hq)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem R_aff (q : ℕ) (P : Scheme.{0} → Prop) (haff : ∀ Z : Scheme.{0}, IsAffine Z → AICSch Z → IsUnit (q : Γ(Z, ⊤)) → P Z)
     {Z : Scheme.{0}} (hZ : AICSch Z) (hq : IsUnit (q : Γ(Z, ⊤))) (A : Z.Opens) (hA : IsAffineOpen A) :
@@ -72,17 +72,15 @@ theorem R_aff (q : ℕ) (P : Scheme.{0} → Prop) (haff : ∀ Z : Scheme.{0}, Is
   exact haff W hWa (aicsch_of_imm i hZ) (unit_of_hom i q hq)
 
 /- English proof (translation)
-Introduce `W i _ hr hW`. Break down `s.eq_empty_or_nonempty with hs0 | ⟨x, hx⟩` into its components or cases. Substitute `hs0; exact Rt W i (by simpa using hr) hW` using the available equality. Break down `t.eq_empty_or_nonempty with ht0 | ⟨y, hy⟩` into its components or cases. Substitute `ht0; exact Rs W i (by simpa using hr) hW` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality.
 
-Establish `subs : s ⊆ Set.range i` using `hr ▸ Set.subset_union_left`. Establish `subt : t ⊆ Set.range i` using `hr ▸ Set.subset_union_right`. Set `U' : W.Opens` to `i ⁻¹ᵁ ⟨s, hs⟩`. Set `V' : W.Opens` to `i ⁻¹ᵁ ⟨t, ht⟩`. Establish `rU : Set.range (U'.ι ≫ i) = s`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[Scheme.Hom.comp_base, TopCat.coe_comp, Set.range_comp, Scheme.Opens.range_ι]`. Conclude with `Set.image_preimage_eq_of_subset subs`. Establish `rV : Set.range (V'.ι ≫ i) = t`. Rewrite using `[Scheme.Hom.comp_base, TopCat.coe_comp, Set.range_comp, Scheme.Opens.range_ι]`. Conclude with `Set.image_preimage_eq_of_subset subt`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `subs hx`. Take `⟨v, hv⟩` from `subt hy`. Establish `neU : Nonempty U'.toScheme` using `⟨⟨w, show i.base w ∈ s from hw ▸ hx⟩⟩`. Establish `neV : Nonempty V'.toScheme` using `⟨⟨v, show i.base v ∈ t from hv ▸ hy⟩⟩`. Establish `hZW : AICSch W` using `aicsch_of_imm i hZ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use `hstep U'.ι V'.ι ?_ hZW (aicsch_of_imm U'.ι hZW) (aicsch_of_imm V'.ι hZW) (unit_of_hom i q hq) (Rs _ (U'.ι ≫ i) rU neU) (Rt _ (V'.ι ≫ i) rV neV) (fun hne => Rst _ (pullback.fst U'.ι V'.ι ≫ U'.ι ≫ i) ?_ hne)` and prove the remaining obligations. Use extensionality with `w'`. Simplify using `only [Scheme.Opens.range_ι, Set.mem_union, Set.mem_univ, iff_true]`. Establish `: i.base w' ∈ s ∪ t` using `hr ▸ ⟨w', rfl⟩`. Conclude with `this`.
-
-Rewrite using `[← Category.assoc, Scheme.Hom.comp_base, TopCat.coe_comp, Set.range_comp, IsOpenImmersion.range_pullback_to_base_of_left, Scheme.Opens.range_ι, Scheme.Opens.range_ι]`. Conclude with `Set.image_preimage_eq_of_subset (Set.inter_subset_left.trans subs)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem R_step (q : ℕ) (P : Scheme.{0} → Prop) (hstep : StepP q P) {Z : Scheme.{0}} (hZ : AICSch Z)
     (hq : IsUnit (q : Γ(Z, ⊤))) {s t : Set Z} (hs : IsOpen s) (ht : IsOpen t)
@@ -123,11 +121,11 @@ variable {Z : Scheme.{0}} (Q : Set Z → Prop) (hE : Q ∅) (hB : ∀ A : Z.Open
 include hE hB hS
 
 /- English proof (translation)
-Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => intro f`. Simplify using `using hE`. Consider the case `insert a t ha ih`. Introduce `f`.
+Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.set_biUnion_insert]`. Establish `hI : (Z.basicOpen (f a) : Set Z) ∩ ⋃ i ∈ t, (Z.basicOpen (f i) : Set Z) = ⋃ i ∈ t, (Z.basicOpen (f a * f i) : Set Z)`. Simplify using `[Scheme.basicOpen_mul, Set.inter_iUnion₂]`. Use `hS (Z.basicOpen (f a)).isOpen (isOpen_biUnion fun i _ => (Z.basicOpen (f i)).isOpen) (hB _ (hA.basicOpen _)) (ih f) ?_` and prove the remaining obligations. Rewrite using `[hI]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ih _`.
+A detailed English derivation is pending.
 -/
 theorem stage1 (A : Z.Opens) (hA : IsAffineOpen A) {ι : Type} (t : Finset ι) :
     ∀ f : ι → Γ(Z, A), Q (⋃ i ∈ t, (Z.basicOpen (f i) : Set Z)) := by
@@ -145,9 +143,7 @@ theorem stage1 (A : Z.Opens) (hA : IsAffineOpen A) {ι : Type} (t : Finset ι) :
     rw [hI]; exact ih _
 
 /- English proof (translation)
-Establish `hch : ∀ x : S, ∃ f : Γ(Z, A), Z.basicOpen f ≤ ⟨S, hSo⟩ ∧ (x : Z) ∈ Z.basicOpen f` using `fun x => hA.exists_basicOpen_le (V := ⟨S, hSo⟩) ⟨x.1, x.2⟩ (hSA x.2)`. Use `choose f hf1 hf2 using hch`. Take `⟨t, ht⟩` from `hSc.elim_finite_subcover (fun x : S => (Z.basicOpen (f x) : Set Z)) (fun x => (Z.basicOpen _).isOpen) (fun x hx => Set.mem_iUnion.2 ⟨⟨x, hx⟩, hf2 _⟩)`. Establish `: S = ⋃ i ∈ t, (Z.basicOpen (f i) : Set Z)` using `subset_antisymm ht (Set.iUnion₂_subset fun i _ => hf1 i)`. Rewrite using `[this]`.
-
-Conclude with `stage1 Q hE hB hS A hA t f`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stage1' (A : Z.Opens) (hA : IsAffineOpen A) (S : Set Z) (hSo : IsOpen S) (hSc : IsCompact S)
     (hSA : S ⊆ A) : Q S := by
@@ -161,9 +157,9 @@ theorem stage1' (A : Z.Opens) (hA : IsAffineOpen A) (S : Set Z) (hSo : IsOpen S)
   rw [this]; exact stage1 Q hE hB hS A hA t f
 
 /- English proof (translation)
-Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => simpa using hE`. Consider the case `insert a t ha ih`. Rewrite using `[Finset.set_biUnion_insert]`. Establish `hTo : IsOpen (⋃ i ∈ t, ((i : Z.Opens) : Set Z))` using `isOpen_biUnion fun i _ => (i : Z.Opens).isOpen`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hTc : IsCompact (⋃ i ∈ t, ((i : Z.Opens) : Set Z))` using `t.isCompact_biUnion fun i _ => i.2.isCompact`. Use `hS (a : Z.Opens).isOpen hTo (hB _ a.2) ih ?_` and prove the remaining obligations. Conclude with `stage1' Q hE hB hS a a.2 _ ((a : Z.Opens).isOpen.inter hTo) (QuasiSeparatedSpace.inter_isCompact _ _ (a : Z.Opens).isOpen a.2.isCompact hTo hTc) Set.inter_subset_left`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem stage2 [QuasiSeparatedSpace Z] (t : Finset Z.affineOpens) :
     Q (⋃ i ∈ t, ((i : Z.Opens) : Set Z)) := by
@@ -179,9 +175,9 @@ theorem stage2 [QuasiSeparatedSpace Z] (t : Finset Z.affineOpens) :
       (QuasiSeparatedSpace.inter_isCompact _ _ (a : Z.Opens).isOpen a.2.isCompact hTo hTc) Set.inter_subset_left
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover (fun U : Z.affineOpens => ((U : Z.Opens) : Set Z)) (fun U => (U : Z.Opens).isOpen) (fun x _ => by`. Establish `: x ∈ (⨆ i : Z.affineOpens, (i : Z.Opens))` using `by rw [iSup_affineOpens_eq_top]; trivial`. Simplify `this)` using `[TopologicalSpace.Opens.mem_iSup]`. Establish `: (Set.univ : Set Z) = ⋃ i ∈ t, ((i : Z.Opens) : Set Z)` using `subset_antisymm ht (Set.subset_univ _)`. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `stage2 Q hE hB hS t`.
+A detailed English derivation is pending.
 -/
 theorem stage3 [CompactSpace Z] [QuasiSeparatedSpace Z] : Q Set.univ := by
   obtain ⟨t, ht⟩ := isCompact_univ.elim_finite_subcover (fun U : Z.affineOpens => ((U : Z.Opens) : Set Z))
@@ -194,7 +190,7 @@ theorem stage3 [CompactSpace Z] [QuasiSeparatedSpace Z] : Q Set.univ := by
 end Topo
 
 /- English proof (translation)
-Introduce `q P hiso haff hstep Z _ _ hZ hq`. Establish `h` using `stage3 (R P (Z := Z)) (R_empty P) (fun A hA => R_aff q P haff hZ hq A hA) (fun hs ht Rs Rt Rst => R_step q P hstep hZ hq hs ht Rs Rt Rst)`. Establish `: IsIntegral Z` using `hZ.1`. Conclude with `h Z (𝟙 Z) (by simp) inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Cov_of : LateralTheory.E.AICAcycPf.Cov := by
   intro q P hiso haff hstep Z _ _ hZ hq

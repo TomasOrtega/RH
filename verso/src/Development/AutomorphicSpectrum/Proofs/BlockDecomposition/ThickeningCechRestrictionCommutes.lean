@@ -9,11 +9,11 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.FormalAlg.Lift
 
 /- English proof (translation)
-Use `GlobalTheory.LB.sec_ext_of_cover hL.cover fun p q => ?_` and prove the remaining obligations. Establish `h` using `SecOn.coord_congr hL hM (pullPow v 0) hw (oneOn N rfl V') p q (O := V' ⊓ ((pw N' 0).pull β).U p ⊓ (pw N 0).U q) inf_le_left (inf_le_inf_right _ inf_le_left) (inf_le_inf_right _ inf_le_right)`. Establish `c1 : GlobalTheory.LB.coord (SecOn.pullLE (pw N' 0) β V V' e (oneOn N' rfl V)) p = 1`. Rewrite using `[SecOn.coord_pullLE]`. Conclude with `map_one _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `c2 : GlobalTheory.LB.coord (oneOn N (rfl : (0 : ℤ) = 0) V') q = 1` using `rfl`. Establish `c3 : (show Γ(X, ((pw N' 0).pull β).U p ⊓ (pw N 0).U q)ˣ from (pullPow v 0).s (p, q)) = 1` using `zpow_zero _`. Rewrite `h` using `[c2, c3]`. Rewrite using `[c1]`. Use `Eq.trans ?_ h.symm` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem pullLE_oneOn_eq_congr {X Y : Scheme.{0}} {N : LB X} {N' : LB Y} {β : X ⟶ Y}
     (v : LB.Iso N (N'.pull β)) (hL : (pw N 0).IsLB) (hM : ((pw N' 0).pull β).IsLB)
@@ -36,7 +36,7 @@ theorem pullLE_oneOn_eq_congr {X Y : Scheme.{0}} {N : LB X} {N' : LB Y} {β : X 
   simp
 
 /- English proof (translation)
-Introduce `R _ I Y β hβ N v hN ι D hDβ a h e S`. Substitute `h` using the available equality. Simplify using `only [red, redL, LinearMap.comp_apply, LinearEquiv.coe_coe]`. Rewrite using `[LinearEquiv.symm_apply_eq, SecOnR.pull_of, SecOnR.linEquiv_of]`. Conclude with `congrArg (SecOnR.of _ _ _) (pullLE_oneOn_eq_congr (v e) _ _ _ _ _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem red_oneOn : ∀ (R : Type) [CommRing R] (I : Ideal R) (Y : ∀ e : ℕ, Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))) (β : ∀ e, (Y e).left ⟶ (Y (e + 1)).left) (hβ : ∀ e, IsPullback (β e) (Y e).hom (Y (e + 1)).hom (thickTrans R I e)) (N : ∀ e, LB (Y e).left) (v : ∀ e, LB.Iso (N e) ((N (e + 1)).pull (β e))) (hN : ∀ e, (N e).IsLB ∧ (v e).IsGen) (ι : Type) (D : ∀ e, Finset ι → (Y e).left.Opens) (hDβ : ∀ e S, D e S ≤ β e ⁻¹ᵁ D (e + 1) S) (a : ℤ) (h : a = 0) (e : ℕ) (S : Finset ι), red I Y N D β hβ v hN hDβ a e S (SecOnR.of _ _ _ (oneOn (N (e + 1)) h (D (e + 1) S))) = SecOnR.of _ _ _ (oneOn (N e) h (D e S)) := by
   intro R _ I Y β hβ N v hN ι D hDβ a h e S

@@ -22,15 +22,13 @@ namespace GlobalTheory.CoefUniq
 open GlobalTheory.CoefModel
 
 /- English proof (translation)
-Introduce `D V θ c lam c0 c0' hθ hc ht ht'`. Take `⟨E, hE, hEρ⟩` from `GlobalTheory.CoefReal.exists_real_model V θ c lam c0 hθ hc ht`. Take `⟨E', hE', hEρ'⟩` from `GlobalTheory.CoefReal.exists_real_model V θ c lam c0' hθ hc ht'`. Set `ψ : Module.End ℂ c.W` to `E'.toLinearMap ∘ₗ E.symm.toLinearMap`. Establish `hψ : ∀ u ∈ GinfC V, ∀ w, ψ (c.ρ u w) = c.ρ u (ψ w)` using `fun u hu w => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨v, rfl⟩` from `E.surjective w`. Express the relevant statement in the definitionally equal form `E' (E.symm (c.ρ u (E v))) = c.ρ u (E' (E.symm (E v)))`. Rewrite using `[hEρ u hu, E.symm_apply_apply, E.symm_apply_apply, hEρ' u hu]`. Use `haveI := hc.2.2.2.1`. Take `⟨μ, hμ⟩` from `Module.End.exists_eigenvalue ψ`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hU` using `GlobalTheory.GenRealSchur.irr_real c hc (Module.End.eigenspace ψ μ) fun u hu => by`. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Establish `hw' : ψ w = μ • w` using `Module.End.mem_eigenspace_iff.1 hw`. Conclude with `Module.End.mem_eigenspace_iff.2 (by rw [hψ u hu, hw', map_smul])`. Break down `hU with h0 | h0` into its components or cases.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `absurd h0 hμ`. Use `⟨μ, fun F => ?_⟩` and prove the remaining obligations. Establish `h1 : E (mapVV D.what₂.embLL lam F) ∈ Module.End.eigenspace ψ μ` using `h0 ▸ Submodule.mem_top`. Rewrite `h1` using `[Module.End.mem_eigenspace_iff]`. Rewrite using `[← hE, ← hE']`.
-
-Conclude with `(congrArg E' (E.symm_apply_apply _)).symm.trans h1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem schur_scalar : ∀ (D : D7) (V : HSp D) (θ : InfFam D) (c : CoefA V) (lam : D.what₂.Tau → DomWeight V.rank)
     (c0 c0' : VV D.what₂.LL lam →ₛₗ[D.what₂.embLL] c.coef.W), IsInfFam θ → c.Is →
@@ -59,17 +57,17 @@ theorem schur_scalar : ∀ (D : D7) (V : HSp D) (θ : InfFam D) (c : CoefA V) (l
   exact (congrArg E' (E.symm_apply_apply _)).symm.trans h1
 
 /- English proof (translation)
-Introduce `K V W ι _ _ _ _ _ _ _ σ b c hli φ ζ hφ`. Establish `key : ∀ i k, σ (b.repr (φ (b i)) k) = if k = i then ζ else 0`. Introduce `i`. Establish `e1 : c (φ (b i)) = ∑ k, σ (b.repr (φ (b i)) k) • c (b k)` using `by conv_lhs => rw [← b.sum_repr (φ (b i))]`. Rewrite using `[map_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [LinearMap.map_smulₛₗ]`. Establish `e2 : ∑ k, (if k = i then ζ else 0) • c (b k) = ζ • c (b i)`. Simplify using `[ite_smul]`. Establish `h1 : ∑ k, (σ (b.repr (φ (b i)) k) - if k = i then ζ else 0) • c (b k) = 0`. Simplify using `only [sub_smul, Finset.sum_sub_distrib, ← e1, e2, hφ, sub_self]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `k`. Conclude with `sub_eq_zero.1 (Fintype.linearIndependent_iff.1 hli _ h1 k)`. Take `⟨i0⟩` from `‹Nonempty ι›`. Use `set a := b.repr (φ (b i0)) i0 with ha`. Establish `hd : ∀ i, b.repr (φ (b i)) i = a` using `fun i => σ.injective (by rw [key, key, if_pos rfl, if_pos rfl])`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ho : ∀ i k, k ≠ i → b.repr (φ (b i)) k = 0` using `fun i k hk => σ.injective (by rw [key, if_neg hk, map_zero])`. Establish `hb : ∀ i, φ (b i) = a • b i`. Introduce `i`. Use `b.repr.injective (Finsupp.ext fun k => ?_)` and prove the remaining obligations. Rewrite using `[map_smul, Finsupp.smul_apply, b.repr_self, Finsupp.single_apply, smul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hk : i = k`. Substitute `hk` using the available equality. Rewrite using `[if_pos rfl, mul_one, hd]`. Rewrite using `[if_neg hk, mul_zero, ho i k (Ne.symm hk)]`. Establish `hφa : φ = a • LinearMap.id` using `b.ext fun i => by rw [hb i]; rfl`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨a, (key i0 i0).trans (if_pos rfl), fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[hφa]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem scalar_of_basis : ∀ {K V W ι : Type} [Field K] [AddCommGroup V] [Module K V] [AddCommGroup W] [Module ℂ W]
     [Fintype ι] [Nonempty ι] (σ : K →+* ℂ) (b : Module.Basis ι K V) (c : V →ₛₗ[σ] W),
@@ -107,9 +105,9 @@ theorem scalar_of_basis : ∀ {K V W ι : Type} [Field K] [AddCommGroup V] [Modu
   rfl
 
 /- English proof (translation)
-Take `⟨n, hn, h⟩` from `NumberField.Embeddings.pow_eq_one_of_norm_eq_one K ℂ hi (fun φ => by`. Establish `h1` using `congrArg φ hs`. Rewrite `h1` using `[map_mul, map_one, show φ (star a) = starRingEnd ℂ (φ a) from hm φ, Complex.conj_mul']`. Establish `h2 : ‖φ a‖ ^ 2 = 1` using `by exact_mod_cast h1`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 h2)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨n, hn.ne', h⟩`.
+A detailed English derivation is pending.
 -/
 theorem pow_eq_one_of_cmMax {K : Type} [Field K] [NumberField K] [StarRing K] {a : K} (hm : a ∈ Formalism.DivisionValues.cmMax K)
     (hs : star a * a = 1) (hi : IsIntegral ℤ a) : ∃ n : ℕ, n ≠ 0 ∧ a ^ n = 1 := by
@@ -121,9 +119,9 @@ theorem pow_eq_one_of_cmMax {K : Type} [Field K] [NumberField K] [StarRing K] {a
   exact ⟨n, hn.ne', h⟩
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k, b.repr y k ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Conclude with `hy (b.repr.injective (Finsupp.ext fun k => by simpa using not_not.1 (fun h => hc ⟨k, h⟩)))`. Establish `e1 : a = b.repr (a • y) k * (b.repr y k)⁻¹`. Rewrite using `[map_smul, Finsupp.smul_apply, smul_eq_mul, mul_inv_cancel_right₀ hk]`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1]`. Conclude with `K0.mul_mem (h1 k) (K0.inv_mem (h2 k))`.
+A detailed English derivation is pending.
 -/
 theorem mem_of_coords {K V ι : Type} [Field K] [AddCommGroup V] [Module K V] (K0 : Subfield K) (b : Module.Basis ι K V)
     {y : V} (a : K) (hy : y ≠ 0) (h1 : ∀ k, b.repr (a • y) k ∈ K0) (h2 : ∀ k, b.repr y k ∈ K0) : a ∈ K0 := by
@@ -136,7 +134,7 @@ theorem mem_of_coords {K V ι : Type} [Field K] [AddCommGroup V] [Module K V] (K
   exact K0.mul_mem (h1 k) (K0.inv_mem (h2 k))
 
 /- English proof (translation)
-Establish `e1 : pair (a • y) (a • y) = star a * a * pair y y`. Rewrite using `[map_smul, LinearMap.map_smulₛₗ₂, smul_eq_mul, smul_eq_mul, starRingEnd_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[e1]`. Conclude with `mul_right_cancel₀ hy (h.trans (one_mul _).symm)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem star_mul_self_of_pair {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V]
     (pair : V →ₗ⋆[K] V →ₗ[K] K) (a : K) {y : V} (hy : pair y y ≠ 0) (h : pair (a • y) (a • y) = pair y y) :
@@ -148,7 +146,7 @@ theorem star_mul_self_of_pair {K V : Type} [Field K] [StarRing K] [AddCommGroup 
   exact mul_right_cancel₀ hy (h.trans (one_mul _).symm)
 
 /- English proof (translation)
-Introduce `h0` and use `by have h1 := hq x x rw [h0, map_zero] at h1 exact hx (hinj ((inner_self_eq_zero.1 h1).trans (map_zero coef).symm))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem pair_ne_zero {K V W : Type} [Field K] [AddCommGroup V] [Module K V] [NormedAddCommGroup W] [InnerProductSpace ℂ W]
     (σ : K →+* ℂ) (coef : V →ₛₗ[σ] W) (hinj : Function.Injective coef) (q : V → V → K)
@@ -158,7 +156,7 @@ theorem pair_ne_zero {K V W : Type} [Field K] [AddCommGroup V] [Module K V] [Nor
   exact hx (hinj ((inner_self_eq_zero.1 h1).trans (map_zero coef).symm))
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 (isIntegral_of_smul_mem_submodule L hne hfg a h)`. Rewrite using `[← hy]`. Conclude with `NumberField.RingOfIntegers.isIntegral_coe y`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIntegral_of_keeps {K V : Type} [Field K] [NumberField K] [AddCommGroup V] [Module K V] [Module (𝓞 K) V]
     [IsScalarTower (𝓞 K) K V] (L : Submodule (𝓞 K) V) (hne : L ≠ ⊥) (hfg : L.FG) (a : K) (h : ∀ n ∈ L, a • n ∈ L) :
@@ -168,21 +166,19 @@ theorem isIntegral_of_keeps {K V : Type} [Field K] [NumberField K] [AddCommGroup
   exact NumberField.RingOfIntegers.isIntegral_coe y
 
 /- English proof (translation)
-Introduce `D X c c₂ hc hc₂ j`. Take `⟨g, c0R, h⟩` from `hc`. Take `⟨g₂, c0R₂, h₂⟩` from `hc₂`. Take `⟨ζ, hζ⟩` from `schur_scalar D (Vc D j) X.R.θ (X.R.cV j) (FWT.lamV D j) (c j) (c₂ j) X.char.models.inf (X.char.models.cV j) (h.mapL j) (h₂.mapL j)`. Break down `subsingleton_or_nontrivial (VV D.what₂.LL (FWT.lamV D j)) with hs | hs` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Use `⟨1, 1, one_ne_zero, one_pow _, fun F => ?_⟩` and prove the remaining obligations. Rewrite using `[Subsingleton.elim F 0, map_zero, map_zero, smul_zero]`. Take `⟨e, hrat, hco, hpa, hnab, -⟩` from `h.coefL j X.A3.A.μ0`. Take `⟨e₂, hrat₂, hco₂, hpa₂, hnab₂, -⟩` from `h₂.coefL j X.A3.A.μ0`. Establish `hφ : ∀ v, c j ((e₂.symm.trans e) v) = ζ • c j v` using `fun v => (hco (e₂.symm v)).symm.trans ((hco₂ _).trans ((congrArg (c₂ j) (e₂.apply_symm_apply v)).trans (hζ v)))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : Nonempty _ := (bVV D.what₂.LL (FWT.lamV D j)).index_nonempty`. Take `⟨a, hζa, ha⟩` from `scalar_of_basis D.what₂.embLL (bVV D.what₂.LL (FWT.lamV D j)) (c j) (h.mapL j).2.1 (e₂.symm.trans e).toLinearMap ζ hφ`. Establish `hea : ∀ x, e x = a • e₂ x` using `fun x => (congrArg e (e₂.symm_apply_apply x)).symm.trans (ha (e₂ x))`. Use `haveI := e.toEquiv.nontrivial`. Take `⟨i0⟩` from `(X.A3.A.MtCSD j X.A3.A.μ0).bV.index_nonempty`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx0` using `(X.A3.A.MtCSD j X.A3.A.μ0).bV.ne_zero i0`. Establish `hy0 : e₂ ((X.A3.A.MtCSD j X.A3.A.μ0).bV i0) ≠ 0` using `fun h0 => hx0 (e₂.injective (h0.trans (map_zero e₂).symm))`. Establish `hm : a ∈ Formalism.DivisionValues.cmMax D.what₂.LL` using `mem_of_coords _ (bVV D.what₂.LL (FWT.lamV D j)) a hy0 (fun k => hea _ ▸ hrat i0 k) (hrat₂ i0)`. Establish `hs : star a * a = 1`. Establish `hinj` using `GlobalTheory.GalLift.rescale_inj _ D.what₂.embLL _ (X.R.B.L j X.A3.A.μ0).pres.coef_li`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hp0` using `pair_ne_zero D.what₂.embLL _ hinj _ (X.R.B.L j X.A3.A.μ0).pres.coef_pair hx0`. Use `star_mul_self_of_pair _ a ((hpa₂ _ _).trans_ne hp0) ?_` and prove the remaining obligations. Rewrite using `[← hea, hpa, hpa₂]`. Establish `hi : IsIntegral ℤ a`. Take `⟨cl, -⟩` from `((X.R.B.L j X.A3.A.μ0).pres.reps 1).exists`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hL` using `nabAtr_isLattice (labLL D) (FWT.lamV D j) _ (GlobalTheory.RepsCompare.isLattice_hLat (Vc D j) ((X.R.B.L j X.A3.A.μ0).pres.y cl))`. Use `isIntegral_of_keeps _ (fun h0 => ?_) hL.fg a (fun n hn => ?_)` and prove the remaining obligations. Establish `h1` using `hL.span_eq_top`. Rewrite `h1` using `[h0, Submodule.bot_coe, Submodule.span_zero_singleton]`. Conclude with `bot_ne_top h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hn` using `[← hnab₂ cl]`. Take `⟨m, hm, rfl⟩` from `hn`. Rewrite using `[← hnab cl]`. Conclude with `⟨m, hm, hea m⟩`. Take `⟨n, hn, han⟩` from `pow_eq_one_of_cmMax hm hs hi`.
-
-Conclude with `⟨ζ, n, hn, by rw [← hζa, ← map_pow, han, map_one], hζ⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_root_of_unity : ∀ (D : D7) (X : RealSide D) (c c₂ : ∀ j : Fin D.R.m, VV D.what₂.LL (FWT.lamV D j) →ₛₗ[D.what₂.embLL] (X.R.cV j).W), IsCoef X c → IsCoef X c₂ → ∀ j, ∃ (ζ : ℂ) (n : ℕ), n ≠ 0 ∧ ζ ^ n = 1 ∧ ∀ F, c₂ j F = ζ • c j F := by
   intro D X c c₂ hc hc₂ j

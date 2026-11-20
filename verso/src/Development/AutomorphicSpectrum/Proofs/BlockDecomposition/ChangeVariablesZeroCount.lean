@@ -9,7 +9,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.FSCrofton
 
 /- English proof (translation)
-Use `conv_lhs => rw [← (EuclideanSpace.basisFun (Fin d) ℂ).sum_repr v]`. Simplify using `[map_sum]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem clm_apply_eq_sum {d : ℕ} (T : V d →L[ℂ] ℂ) (v : V d) :
     T v = ∑ a, v a * T (EuclideanSpace.single a 1) := by
@@ -17,7 +17,7 @@ theorem clm_apply_eq_sum {d : ℕ} (T : V d →L[ℂ] ℂ) (v : V d) :
   simp [map_sum]
 
 /- English proof (translation)
-The claim follows from `|((Matrix.toEuclideanCLM (𝕜 := ℂ) M : V d →L[ℂ] V d).restrictScalars ℝ).det| = ‖M.det‖ ^ 2 := by have h1 : ((Matrix.toEuclideanCLM (𝕜 := ℂ) M : V d →L[ℂ] V d).restrictScalars ℝ).det = Algebra.norm ℝ (LinearMap.det (Matrix.toEuclideanLin M : V d →ₗ[ℂ] V d)) := by rw [← LinearMap.d …`.
+A detailed English derivation is pending.
 -/
 theorem abs_det_restrictScalars_toEuclideanCLM {d : ℕ} (M : Matrix (Fin d) (Fin d) ℂ) :
     |((Matrix.toEuclideanCLM (𝕜 := ℂ) M : V d →L[ℂ] V d).restrictScalars ℝ).det| =
@@ -30,25 +30,23 @@ theorem abs_det_restrictScalars_toEuclideanCLM {d : ℕ} (M : Matrix (Fin d) (Fi
   simp [Complex.normSq_eq_norm_sq]
 
 /- English proof (translation)
-Set `F : V d → Matrix β (Fin d) ℂ` to `fun z => Matrix.of fun j a => fderiv ℂ (f j) z (EuclideanSpace.single a 1)`. Set `M : V d → Matrix (Fin d) (Fin d) ℂ` to `fun z => -(Matrix.of C * F z)`. Set `g : V d → V d` to `fun z => WithLp.toLp 2 (fun k => -∑ j, C k j * f j z)`. Set `L : V d → V d →L[ℂ] V d` to `fun z => Matrix.toEuclideanCLM (𝕜 := ℂ) (M z)`. Set `f' : V d → V d →L[ℝ] V d` to `fun z => (L z).restrictScalars ℝ`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hderC : ∀ z ∈ A, HasFDerivWithinAt g (L z) A z`. Introduce `z hz`. Rewrite using `[hasFDerivWithinAt_euclidean]`. Introduce `k`. Establish `hj : ∀ j, HasFDerivAt (f j) (fderiv ℂ (f j) z) z` using `fun j => ((hf j).differentiableAt (hU.mem_nhds (hAU hz))).hasFDerivAt`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hs : HasFDerivAt (fun w => -∑ j, C k j * f j w) (-∑ j, C k j • fderiv ℂ (f j) z) z` using `(HasFDerivAt.fun_sum fun j _ => (hj j).const_mul (C k j)).neg`. Establish `he : PiLp.proj 2 (fun _ : Fin d => ℂ) k ∘L L z = -∑ j, C k j • fderiv ℂ (f j) z`. Use extensionality with `v`. Establish `hv : ∀ j, fderiv ℂ (f j) z v = ∑ a, v a * F z j a` using `fun j => clm_apply_eq_sum _ v`. Express the relevant statement in the definitionally equal form `((Matrix.toEuclideanCLM (𝕜 := ℂ) (M z)) v).ofLp k = _`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Matrix.ofLp_toEuclideanCLM]`. Simplify using `only [ContinuousLinearMap.neg_apply, ContinuousLinearMap.sum_apply, ContinuousLinearMap.smul_apply, smul_eq_mul, hv]`. Simplify using `only [M, Matrix.mulVec, dotProduct, Matrix.neg_apply, Matrix.mul_apply, Matrix.of_apply, neg_mul, Finset.sum_neg_distrib, neg_inj]`. Repeatedly rewrite using `[Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`. Rewrite using `[he]`. Conclude with `hs.hasFDerivWithinAt`. Establish `hder : ∀ z ∈ A, HasFDerivWithinAt g (f' z) A z` using `fun z hz => (hderC z hz).restrictScalars ℝ`. Establish `hdet : ∀ z, |(f' z).det| = ‖(Matrix.of C * F z).det‖ ^ 2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `z`. Use `abs_det_restrictScalars_toEuclideanCLM (M z)` as an intermediate fact. Rewrite `this` using `[show (M z).det = (-1) ^ Fintype.card (Fin d) * (Matrix.of C * F z).det from Matrix.det_neg _]`. Simplify using `using this`. Establish `hp : MeasurePreserving (MeasurableEquiv.toLp 2 (Fin d → ℂ)) (volume : Measure (Fin d → ℂ)) (volume : Measure (V d))` using `MeasurePreserving.symm (MeasurableEquiv.toLp 2 (Fin d → ℂ)).symm (GlobalTheory.volume_preserving_ofLp_complex (Fin d))`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw` using `(GroundTheory.Heights₂.Heights.AreaMultiplicityWeight.proof (V d) volume A g f' hA hder).2 (fun y => h y.ofLp) (hh.comp (MeasurableEquiv.toLp 2 (Fin d → ℂ)).symm.measurable)`. Establish `hfib : ∀ c : Fin d → ℂ, {z ∈ A | ∀ k, c k + ∑ j, C k j * f j z = 0} = {z ∈ A | g z = WithLp.toLp 2 c}`. Introduce `c`. Use extensionality with `z`. Simplify using `only [Set.mem_setOf_eq, g]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `and_congr_right fun _ => ?_` and prove the remaining obligations. Rewrite using `[(WithLp.toLp_injective 2).eq_iff, funext_iff]`. Use `forall_congr' fun k => ?_` and prove the remaining obligations. Rewrite using `[neg_eq_iff_add_eq_zero, add_comm]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `lintegral_congr fun c => ?_` and prove the remaining obligations. Rewrite using `[hfib c, mul_comm]`. Both sides reduce to the same expression. Use `_ = ∫⁻ y : V d, (({z ∈ A | g z = y}.encard : ℕ∞) : ℝ≥0∞) * h y.ofLp := hp.lintegral_comp_emb (MeasurableEquiv.measurableEmbedding _) (fun y : V d => (({z ∈ A | g z = y}.encard : ℕ∞) : ℝ≥0∞) * h y.ofLp)`. Use `_ = ∫⁻ z in A, h (g z).ofLp * ENNReal.ofReal |(f' z).det| := hw.symm`.
-
-Use `_ = _ := by`. Use `lintegral_congr fun z => ?_` and prove the remaining obligations. Rewrite using `[hdet z]`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem area_formula_neg_comb (d : ℕ) (β : Type) [Fintype β] (U A : Set (V d)) (f : β → V d → ℂ)
     (C : Fin d → β → ℂ) (h : (Fin d → ℂ) → ℝ≥0∞) (hU : IsOpen U)

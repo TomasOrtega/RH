@@ -13,7 +13,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.WS
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp only [rowAct, Units.val_mul, Matrix.mul_apply, Fin.sum_univ_two] <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rowAct_mul_left {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] (v g : GL (Fin 2) F) (w : F × F) :
@@ -21,17 +21,15 @@ theorem rowAct_mul_left {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace 
   ext <;> simp only [rowAct, Units.val_mul, Matrix.mul_apply, Fin.sum_univ_two] <;> ring
 
 /- English proof (translation)
-Establish `h00 : v.val 0 0 = 1` using `hv.2 0`. Establish `h11 : v.val 1 1 = 1` using `hv.2 1`. Establish `h10 : v.val 1 0 = 0` using `hv.1 (by decide : (0 : Fin 2) < 1)`. Use `set x := v.val 0 1 with hx`. Use `set h : F → ℂ := fun y => (Ψ ∘ rowAct g) ((u : F), (u : F) * y) * (χ (-y) : ℂ) with hh`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ y : F, (Ψ ∘ rowAct (v * g)) ((u : F), (u : F) * y) * (χ (-y) : ℂ) = (χ x : ℂ) * h (y + x)`. Introduce `y`. Establish `hrow : rowAct v ((u : F), (u : F) * y) = ((u : F), (u : F) * (y + x))`. Use `ext`. Simplify using `only [rowAct, h00, h10]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [rowAct, h11, ← hx]`. Expand and normalize the polynomial expressions, which then agree. Establish `hchi : (χ (-y) : ℂ) = (χ x : ℂ) * (χ (-(y + x)) : ℂ)`. Rewrite using `[← Circle.coe_mul, ← AddChar.map_add_eq_mul]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hh, Function.comp_apply, rowAct_mul_left, hrow, hchi]`. Expand and normalize the polynomial expressions, which then agree. Establish `htr : ∫ y, h (y + x) ∂selfDualMeasure χ = ∫ y, h y ∂selfDualMeasure χ` using `integral_add_right_eq_self h x`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Replace the relevant objects with their definitions.
 
-Combine the equalities or inequalities in the displayed calculation. Unfold `inn`. Conclude with `integral_congr_ae (Eventually.of_forall key)`. Use `_ = (χ x : ℂ) * inn χ (Ψ ∘ rowAct g) u := by`. Rewrite using `[integral_const_mul, htr]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem inn_unipotent_left {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F]
@@ -67,15 +65,15 @@ theorem inn_unipotent_left {F : Type} [Field F] [ValuativeRel F] [TopologicalSpa
         rfl
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ χ c₁ c₂ Ψ v g hv`. Establish `h00 : v.val 0 0 = 1` using `hv.2 0`. Establish `h11 : v.val 1 1 = 1` using `hv.2 1`. Establish `h10 : v.val 1 0 = 0` using `hv.1 (by decide : (0 : Fin 2) < 1)`. Establish `hdetv : Matrix.GeneralLinearGroup.det v = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Units.ext` to reduce the goal to its premises. Simplify using `[Matrix.det_fin_two, h00, h11, h10]`. Establish `hdet : Matrix.GeneralLinearGroup.det (v * g) = Matrix.GeneralLinearGroup.det g`. Rewrite using `[map_mul, hdetv, one_mul]`. Establish `hpsi : Whittaker.psiN (Circle.coeHom.compAddChar χ) v = (χ (v.val 0 1) : ℂ)`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hs : Whittaker.superdiagSum (v : Matrix (Fin 2) (Fin 2) F) = v.val 0 1`. Simplify using `[Whittaker.superdiagSum, Fin.sum_univ_two]`. Rewrite using `[Whittaker.psiN, hs]`. Both sides reduce to the same expression. Establish `hlin : lin χ c₁ c₂ (Ψ ∘ rowAct (v * g)) = (χ (v.val 0 1) : ℂ) * lin χ c₁ c₂ (Ψ ∘ rowAct g)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Unfold `lin`. Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae (Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Simplify using `only [den, inn_unipotent_left χ Ψ v g hv u]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[WL, WL, hdet, hlin, hpsi]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem WL_unipotent_left : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (χ : AddChar F Circle) (c₁ c₂ : Fˣ →* ℂˣ) (Ψ : F × F → ℂ) (v g : GL (Fin 2) F), v ∈ Iwasawa.unipotent F 2 → GlobalTheory.CompanionTheory.WS.WL χ c₁ c₂ Ψ (v * g) = Whittaker.psiN (Circle.coeHom.compAddChar χ) v * GlobalTheory.CompanionTheory.WS.WL χ c₁ c₂ Ψ g := by
   intro F _ _ _ _ _ _ χ c₁ c₂ Ψ v g hv

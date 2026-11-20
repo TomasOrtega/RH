@@ -139,9 +139,9 @@ def Gam (k r : ℕ) (T T' κ b CA bv : ℝ) : ℝ :=
   2 * ((2 * r + k + 1 : ℕ) : ℝ) ^ (3 / 2 : ℝ) * H1 k r T κ b CA bv * H1 k r T' κ b CA bv
 
 /- English proof (translation)
-Take `⟨hc, hg, hq, -⟩` from `H`. Break down `le_or_gt q 0 with h0 | h0` into its components or cases. Conclude with `le_trans (by linarith) (abs_nonneg _)`. Use `le_trans ?_ (hg a b hab)` and prove the remaining obligations. Establish `hr : (0 : ℝ) ≤ r` using `Nat.cast_nonneg r`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : 1 ≤ Real.sqrt (2 * r + 2)` using `Real.one_le_sqrt.2 (by linarith)`. Establish `hm : c ≤ max 1 c` using `le_max_right _ _`. Establish `h1 : c * (100 * q) ≤ 100 * max 1 c * q` using `by nlinarith`. Establish `h2 : 100 * max 1 c * q ≤ 100 * max 1 c * q * Real.sqrt (2 * r + 2)` using `le_mul_of_one_le_right (by positivity) hs`. Conclude with `le_of_mul_le_mul_left (h1.trans (h2.trans hq)) hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem IsRange.gap_opp {lam : Fin (2 * r + k + 1) → ℝ} {c h q : ℝ} (H : IsRange k r lam c h q)
     {a b : Fin (2 * r + k + 1)} (hab : sgnCN k r a ≠ sgnCN k r b) : 100 * q ≤ |lam a - lam b| := by
@@ -158,7 +158,7 @@ theorem IsRange.gap_opp {lam : Fin (2 * r + k + 1) → ℝ} {c h q : ℝ} (H : I
   exact le_of_mul_le_mul_left (h1.trans (h2.trans hq)) hc
 
 /- English proof (translation)
-Establish `h1 : ¬ a.val < k - 1` using `by omega`. Establish `h2 : ¬ b.val < k - 1` using `by omega`. Simplify using `only [sgnCN, h1, h2, if_false, ne_eq, decide_eq_decide]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem sgnCN_succ_ne {a b : Fin (2 * r + k + 1)} (ha : k - 1 ≤ a.val) (hb : b.val = a.val + 1) :
     sgnCN k r a ≠ sgnCN k r b := by
@@ -168,7 +168,7 @@ theorem sgnCN_succ_ne {a b : Fin (2 * r + k + 1)} (ha : k - 1 ≤ a.val) (hb : b
   omega
 
 /- English proof (translation)
-Establish `h1` using `H.gap_opp (sgnCN_succ_ne (a := ⟨k - 1, by omega⟩) (b := ⟨k, by omega⟩) le_rfl (by simp; omega))`. Establish `h2` using `S.2.2 ⟨k - 1, by omega⟩ le_rfl`. Establish `h3` using `S.2.2 ⟨k, by omega⟩ (by simp)`. Apply the tactic sequence `refine h1.trans (abs_le.2 ⟨?_, ?_⟩) <;> linarith [h2.1, h2.2, h3.1, h3.2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem IsRange.le_bv {lam : Fin (2 * r + k + 1) → ℝ} {bv c h q : ℝ} (hk : 1 ≤ k) (S : IsShape k r lam bv)
     (H : IsRange k r lam c h q) : 100 * q ≤ bv := by
@@ -178,13 +178,13 @@ theorem IsRange.le_bv {lam : Fin (2 * r + k + 1) → ℝ} {bv c h q : ℝ} (hk :
   refine h1.trans (abs_le.2 ⟨?_, ?_⟩) <;> linarith [h2.1, h2.2, h3.1, h3.2]
 
 /- English proof (translation)
-Establish `hab' : a.val < b.val` using `hab`. Establish `hpos : lam b < lam a` using `S.1.1 hab`. Distinguish the cases in `hb : b.val < k - 1`. Establish `h1` using `H.2.2.2 a b hab hb`. Break down `le_or_gt q 0 with h0 | h0` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `: 1 ≤ max 1 c` using `le_max_left _ _`. Use the polynomial consequences of the given equalities and inequalities. Distinguish the cases in `ha : a.val < k - 1`. Establish `h1` using `H.le_bv (by omega) S`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `h2` using `(S.2.1 a ha).1`. Establish `h3` using `(S.2.2 b (by omega)).2`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlt : a.val + 1 < 2 * r + k + 1` using `by have := b.2; omega`. Establish `h1` using `H.gap_opp (sgnCN_succ_ne (a := a) (b := ⟨a.val + 1, hlt⟩) (by omega) rfl)`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : lam ⟨a.val + 1, hlt⟩ < lam a` using `S.1.1 (show a.val < a.val + 1 by omega)`. Establish `h3 : lam b ≤ lam ⟨a.val + 1, hlt⟩` using `S.1.1.antitone (show a.val + 1 ≤ b.val by omega)`. Rewrite `h1` using `[abs_of_pos (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem IsRange.le_gap {lam : Fin (2 * r + k + 1) → ℝ} {bv c h q : ℝ} (S : IsShape k r lam bv)
     (H : IsRange k r lam c h q) {a b : Fin (2 * r + k + 1)} (hab : a < b) : 100 * q ≤ lam a - lam b := by
@@ -209,7 +209,7 @@ theorem IsRange.le_gap {lam : Fin (2 * r + k + 1) → ℝ} {bv c h q : ℝ} (S :
     linarith
 
 /- English proof (translation)
-The claim follows from `|μ a - lam a| + |μ b - lam b| ≤ dist1 μ lam := by rw [← Finset.sum_pair (f := fun a => |μ a - lam a|) hab] exact Finset.sum_le_sum_of_subset_of_nonneg (Finset.subset_univ _) fun _ _ _ => abs_nonneg _`.
+A detailed English derivation is pending.
 -/
 theorem abs_add_abs_le_dist1 {n : ℕ} (μ lam : Fin n → ℝ) {a b : Fin n} (hab : a ≠ b) :
     |μ a - lam a| + |μ b - lam b| ≤ dist1 μ lam := by
@@ -217,7 +217,7 @@ theorem abs_add_abs_le_dist1 {n : ℕ} (μ lam : Fin n → ℝ) {a b : Fin n} (h
   exact Finset.sum_le_sum_of_subset_of_nonneg (Finset.subset_univ _) fun _ _ _ => abs_nonneg _
 
 /- English proof (translation)
-Establish `h1` using `H.le_gap S hab`. Establish `h2` using `(abs_add_abs_le_dist1 μ lam hab.ne).trans hμ.2`. Establish `h3` using `neg_abs_le (μ a - lam a)`. Establish `h4` using `le_abs_self (μ b - lam b)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem InPP.gap_ge {lam μ : Fin (2 * r + k + 1) → ℝ} {bv c h q : ℝ} (hμ : InPP lam q μ) (S : IsShape k r lam bv)
     (H : IsRange k r lam c h q) {a b : Fin (2 * r + k + 1)} (hab : a < b) :
@@ -229,9 +229,9 @@ theorem InPP.gap_ge {lam μ : Fin (2 * r + k + 1) → ℝ} {bv c h q : ℝ} (hμ
   linarith
 
 /- English proof (translation)
-Use `⟨fun a b hab => ?_, fun a => ?_⟩` and prove the remaining obligations. Establish `h1` using `hμ.gap_ge S H hab`. Establish `h2 : lam b < lam a` using `S.1.1 hab`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨m, hm⟩` from `hμ.1 a`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Take `⟨m', hm'⟩` from `S.1.2 a`. Conclude with `⟨m + m', by push_cast at *; linarith⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem InPP.isHCParam {lam μ : Fin (2 * r + k + 1) → ℝ} {bv c h q : ℝ} (hμ : InPP lam q μ) (S : IsShape k r lam bv)
     (H : IsRange k r lam c h q) : IsHCParam μ := by
@@ -264,20 +264,20 @@ theorem detRep_apply (μ : Fin (2 * r + k + 1) → ℝ) (g : Mat k r) (v : ℂ) 
     (detRep k r μ).σ g v = g.det ^ ⌊μ 0⌋₊ * v := rfl
 
 /- English proof (translation)
-The claim follows from `(contDiff_apply ℝ ℂ j).comp (contDiff_apply ℝ (Fin (2 * r + k + 1) → ℂ) i)`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_entry (i j : Fin (2 * r + k + 1)) : ContDiff ℝ ∞ (fun g : Mat k r => g i j) :=
   (contDiff_apply ℝ ℂ j).comp (contDiff_apply ℝ (Fin (2 * r + k + 1) → ℂ) i)
 
 /- English proof (translation)
-Simplify using `only [Matrix.det_apply']`. Apply the tactic sequence `exact ContDiff.sum fun s _ => ContDiff.mul contDiff_const (contDiff_prod fun i _ => contDiff_entry (s i) i)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem contDiff_det : ContDiff ℝ ∞ (fun g : Mat k r => g.det) := by
   simp only [Matrix.det_apply']
   exact ContDiff.sum fun s _ => ContDiff.mul contDiff_const (contDiff_prod fun i _ => contDiff_entry (s i) i)
 
 /- English proof (translation)
-Introduce `g₀ _`. Use `⟨Set.univ, fun g => g.det ^ ⌊μ 0⌋₊ * v, isOpen_univ, trivial, ?_, fun g _ _ => rfl⟩` and prove the remaining obligations. Establish `h : ContDiff ℝ ∞ (fun g : Mat k r => g.det ^ ⌊μ 0⌋₊ * v)` using `(contDiff_det.pow _).mul contDiff_const`. Conclude with `h.contDiffOn`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem detRep_smooth (μ : Fin (2 * r + k + 1) → ℝ) (v : ℂ) :
     v ∈ smoothVecs (k := k) (r := r) (detRep k r μ).σ := by
@@ -287,9 +287,9 @@ theorem detRep_smooth (μ : Fin (2 * r + k + 1) → ℝ) (v : ℂ) :
   exact h.contDiffOn
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => exact ⟨1, fun v => by simp [dsigW]⟩`. Consider the case `cons X w ih`. Take `⟨c, hc⟩` from `ih`. Use `⟨deriv (fun t : ℝ => (NormedSpace.exp ((t : ℂ) • X)).det ^ ⌊μ 0⌋₊) 0 * c, fun v => ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : dsigW (k` using `k) (r := r) (H := ℂ) (detRep k r μ).σ (X :: w) v = deriv (fun t : ℝ => (NormedSpace.exp ((t : ℂ) • X)).det ^ ⌊μ 0⌋₊ * dsigW (k := k) (r := r) (H := ℂ) (detRep k r μ).σ w v) 0 := rfl`. Rewrite using `[h1, hc, deriv_mul_const_field, mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem detRep_dsigW (μ : Fin (2 * r + k + 1) → ℝ) (w : List (Mat k r)) :
     ∃ c : ℂ, ∀ v : ℂ, dsigW (k := k) (r := r) (H := ℂ) (detRep k r μ).σ w v = c * v := by
@@ -304,7 +304,7 @@ theorem detRep_dsigW (μ : Fin (2 * r + k + 1) → ℝ) (w : List (Mat k r)) :
     rw [h1, hc, deriv_mul_const_field, mul_assoc]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun I J => Subtype.ext (by rw [(Finset.card_eq_iff_eq_univ I.1).1 (by simpa using I.2), (Finset.card_eq_iff_eq_univ J.1).1 (by simpa using J.2)])⟩`.
+Supply the required witnesses or components.
 -/
 theorem subsingleton_idx_top : Subsingleton (Idx k r (2 * r + k + 1)) :=
   ⟨fun I J => Subtype.ext (by
@@ -314,13 +314,13 @@ theorem subsingleton_idx_top : Subsingleton (Idx k r (2 * r + k + 1)) :=
 attribute [local instance] subsingleton_idx_top
 
 /- English proof (translation)
-The claim follows from `(Finset.card_eq_iff_eq_univ I.1).1 (by simpa using I.2)`.
+A detailed English derivation is pending.
 -/
 theorem idx_univ (I : Idx k r (2 * r + k + 1)) : I.1 = Finset.univ :=
   (Finset.card_eq_iff_eq_univ I.1).1 (by simpa using I.2)
 
 /- English proof (translation)
-Establish `hb : Function.Bijective (I.1.orderEmbOfFin I.2)` using `(Finite.injective_iff_bijective).1 (I.1.orderEmbOfFin I.2).injective`. Conclude with `Matrix.det_submatrix_equiv_self (Equiv.ofBijective _ hb) M`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem minor_top (M : Mat k r) (I : Idx k r (2 * r + k + 1)) : minorIJ M I I = M.det := by
   have hb : Function.Bijective (I.1.orderEmbOfFin I.2) :=
@@ -328,7 +328,7 @@ theorem minor_top (M : Mat k r) (I : Idx k r (2 * r + k + 1)) : minorIJ M I I = 
   exact Matrix.det_submatrix_equiv_self (Equiv.ofBijective _ hb) M
 
 /- English proof (translation)
-Introduce `_ y _ _` and use `detRep_smooth μ y p_smooth := fun I x _ => detRep_smooth _ (x I) ι_lin := fun _ _ _ _ _ _ => rfl p_lin := fun _ _ _ _ _ _ => rfl ι_equiv := by intro I g _ y _ funext J have hJ : J = I := Subsingleton.elim _ _ subst hJ have hu : (Finset.univ : Finset (Idx k r (2 * r + k + 1))) = { …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isTensDec_det (P : Mat k r) (hP : IsUnit P.det) (μ : Fin (2 * r + k + 1) → ℝ) (hμ : 0 ≤ μ 0) :
     IsTensDec (detRep k r) false P (2 * r + k + 1) μ (fun _ y _ => y) (fun I x => x I) where
@@ -379,9 +379,9 @@ theorem isTensDec_det (P : Mat k r) (hP : IsUnit P.det) (μ : Fin (2 * r + k + 1
     exact (norm_mul c (x I)).le
 
 /- English proof (translation)
-Use `⟨fun I => ?_, fun I x _ y _ => ?_, fun I J h => absurd (Subsingleton.elim I J) h⟩` and prove the remaining obligations. Unfold `epsI`. Use `Finset.prod_induction _ (fun t : ℝ => t = 1 ∨ t = -1) ?_ (Or.inl rfl) ?_` and prove the remaining obligations. Apply the tactic sequence `rintro a b (rfl | rfl) (rfl | rfl) <;> simp`. Apply the tactic sequence `intro a _; split_ifs <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hu : (Finset.univ : Finset (Idx k r (2 * r + k + 1))) = {I}`. Use extensionality with `K`. Simplify using `[Subsingleton.elim K I]`. Simplify using `only [HRep.hh, hu, Finset.sum_singleton]`. Both sides reduce to the same expression.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem isHHNorm_det (μ : Fin (2 * r + k + 1) → ℝ) :
     IsHHNorm (detRep k r) false (2 * r + k + 1) μ (fun _ y _ => y) epsI := by
@@ -396,12 +396,12 @@ theorem isHHNorm_det (μ : Fin (2 * r + k + 1) → ℝ) :
     rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨Finset.univ, by simp⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem idx_top_nonempty : Nonempty (Idx k r (2 * r + k + 1)) := ⟨⟨Finset.univ, by simp⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun I J => Subtype.ext ((Finset.card_eq_zero.mp I.2).trans (Finset.card_eq_zero.mp J.2).symm)⟩`.
+Supply the required witnesses or components.
 -/
 theorem subsingleton_idx_zero : Subsingleton (Idx k r 0) :=
   ⟨fun I J => Subtype.ext ((Finset.card_eq_zero.mp I.2).trans (Finset.card_eq_zero.mp J.2).symm)⟩
@@ -409,11 +409,9 @@ theorem subsingleton_idx_zero : Subsingleton (Idx k r 0) :=
 attribute [local instance] subsingleton_idx_zero
 
 /- English proof (translation)
-Establish `hu : ∀ J : Idx k r 0, (Finset.univ : Finset (Idx k r 0)) = {J}` using `fun J => by`. Use extensionality with `K`. Simplify using `[Subsingleton.elim K J]`. Use `exact`. Use the proof step `{ ι_smooth := fun I y hy J => hy p_smooth := fun I x hx => hx I ι_lin := fun I a y _ y' _ => rfl p_lin := fun I a x x' _ _ => rfl ι_equiv := fun I g _ y _ => by`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `J`. Simplify using `[HRep.tens, minorIJ, hu J]`. Use `sum_ι_p := fun x _ => by`. Use function extensionality and compare the values at `J`. Simplify using `[hu J]`.
-
-Use `p_ι_self := fun I y _ => rfl`. Use `p_ι_ne := fun I J h => (h (Subsingleton.elim _ _)).elim`. Use `ι_cont := fun I J w hw => ⟨1, [w], by simpa using hw, fun v _ => by simp⟩`. Use `p_cont := fun I w hw => ⟨1, [w], by simpa using hw, fun v _ => by simp [hu I]⟩ }`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isTensDec_zero (A : HRep k r) (dual : Bool) (P : Mat k r) (μ : Fin (2 * r + k + 1) → ℝ) :
     IsTensDec (fun _ => A) dual P 0 μ (fun _ y _ => y) (fun I x => x I) := by
@@ -436,13 +434,13 @@ theorem isTensDec_zero (A : HRep k r) (dual : Bool) (P : Mat k r) (μ : Fin (2 *
     p_cont := fun I w hw => ⟨1, [w], by simpa using hw, fun v _ => by simp [hu I]⟩ }
 
 /- English proof (translation)
-Use `⟨⟨⟨?_, ?_⟩, ?_, ?_⟩, one_pos, ?_, ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `intro a b h; fin_cases a <;> fin_cases b <;> simp_all <;> norm_num`. Introduce `a`. Use `fin_cases a`. Conclude with `⟨-501, by simp; norm_num⟩`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨-1000, by simp; norm_num⟩`. Introduce `i h`. Use linear arithmetic over natural numbers and integers. Apply the tactic sequence `intro i _; fin_cases i <;> simp <;> norm_num`. Apply the tactic sequence `intro a b h; fin_cases a <;> fin_cases b <;> simp_all [sgnCN] <;> norm_num [abs_of_pos, abs_of_neg]`.
+Fix the arbitrary inputs or assume the hypotheses. Use linear arithmetic over natural numbers and integers. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `: Real.sqrt 2 ≤ 3/2`. Rewrite using `[Real.sqrt_le_iff]`. Evaluate the numerical expressions. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j _ h`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem shape_range : IsShape 1 0 ![-(1001/2), -(1999/2)] 500 ∧ IsRange 1 0 ![-(1001/2), -(1999/2)] 1 499 3 := by
   refine ⟨⟨⟨?_, ?_⟩, ?_, ?_⟩, one_pos, ?_, ?_, ?_⟩

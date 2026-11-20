@@ -26,19 +26,19 @@ def DictX_k : Prop :=
         ∀ h ∈ UAt σ W (evFin F v), ∀ h₀ : GL (Fin d) (Fv F v), (mat h).map (piW t) = h₀ →
           Reads v ι (om (1, h)) (omB (chrW χW t) (chrW χX t) 1 h₀)
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n d B X W M om χX χW hB ⟨_, _, hX⟩ ⟨_, _, hW⟩ hom v t`. Take `⟨⟨sec, h⟩, -⟩` from `hS F E σ hB.cm v t`. Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Establish `uu : ∀ {m : ℕ} {J : Matrix (Fin m) (Fin m) E}, IsUnit J.det → IsUnit ((incM F J).map (piW t))` using `fun {m J} hJ => by`. Rewrite using `[incM_map h]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((Matrix.isUnit_iff_isUnit_det J).2 hJ).map (t : E →+* Fv F v).mapMatrix`. Establish `hG : Grams σ t (incM F X.J) (incM F W.J)`. Use `⟨uu (GlobalTheory.CompanionTheory.Ar.RT.isUnit_det_of_cartan (F := F) X.J (B.emb w).1 1 (X.θ w) (by rw [one_smul]; exact hX.cartan w)), uu (GlobalTheory.CompanionTheory.Ar.RT.isUnit_det_of_cartan (F := F) W.J (B.emb w).1 Complex.I (W.θ w) (hW.cartan w)), 1, one_mul _, Matrix.ext …` and prove the remaining obligations. Rewrite using `[incM_map' h, incM_map h, one_smul, hX.herm]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[incM_map' h, incM_map h, neg_smul, one_smul, hW.skew, map_neg]`. Both sides reduce to the same expression. Take `⟨ι₀, hι₀⟩` from `exists_lm hM hA hB.std h hG M.co`. Take `⟨hR, ⟨d', hd', hL⟩, -⟩` from `hom`. Take `⟨ε, -, hε, hε'⟩` from `hG.sym`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨_, linBar_of_lm hA hU h hG hι₀⟩, fun g₀ => h.exists_ug hε hG.uA g₀, fun g₀ => h.exists_ug hε' hG.uB g₀, fun ι hι => ?_⟩` and prove the remaining obligations. Establish `lm` using `lm_of_linBar hA hB.std h hG hι`. Use `⟨fun g hg g₀ e φ hφ => ?_, fun g hg g₀ e φ hφ => ?_⟩` and prove the remaining obligations. Take `⟨φ₁, h1, h2, h3⟩` from `acts_formula hM hC hA hB.std h hG.swap (lm.swap hd') hL.isWeilB g hg g₀ e φ hφ`. Use `⟨φ₁, h1, h2, funext fun Y => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `congrFun h3 (ofM Yᵀ)` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, LinearMap.funLeft_apply, Pi.smul_apply, rmL_apply, swH_apply, toM_ofM, smul_eq_mul] at this`. Simplify using `only [omB, gdet, map_one, Units.val_one, mul_one, apow_one, Matrix.mul_one]`. Use `this.trans (congrArg _ (congrArg _ ?_))` and prove the remaining obligations. Rewrite using `[← transpose_transpose (g₀.1ᵀ * Y), transpose_mul, transpose_transpose]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Take `⟨φ₁, h1, h2, h3⟩` from `acts_formula hM hC hA hB.std h hG lm hR.isWeilB g hg g₀ e φ hφ`. Use `⟨φ₁, h1, h2, funext fun Y => ?_⟩` and prove the remaining obligations. Use `congrFun h3 (ofM Y)` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, LinearMap.funLeft_apply, Pi.smul_apply, rmL_apply, toM_ofM, smul_eq_mul] at this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [omB, gdet, map_one, Units.val_one, mul_one, one_mul, apow_one, transpose_one, Matrix.one_mul]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem dictX_of_k (hM : ModelEx) (hC : Cyc) (hA : AdSt) (hS : SecSt) (hU : ActsUniq) : _root_.PositivityTheory.KCo.DictX_k := by
   intro F E _ _ _ _ _ σ n d B X W M om χX χW hB ⟨_, _, hX⟩ ⟨_, _, hW⟩ hom v t

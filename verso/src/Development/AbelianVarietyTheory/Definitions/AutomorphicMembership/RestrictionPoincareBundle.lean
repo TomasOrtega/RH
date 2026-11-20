@@ -36,7 +36,7 @@ variable {G}
 omit [GrpObj G] [IsCommMonObj G] in
 
 /- English proof (translation)
-The claim follows from `(smallPicEquiv X).symm.map_eq_zero_iff.trans (cls_eq_zero_iff hL)`.
+A detailed English derivation is pending.
 -/
 theorem smallCls_eq_zero_iff {X : Scheme.{0}} {L : LB X} (hL : L.IsLB) : smallCls L hL = 0 ↔ ∃ t : LB.Gen L, t.IsGen :=
   (smallPicEquiv X).symm.map_eq_zero_iff.trans (cls_eq_zero_iff hL)
@@ -44,7 +44,7 @@ theorem smallCls_eq_zero_iff {X : Scheme.{0}} {L : LB X} (hL : L.IsLB) : smallCl
 omit [GrpObj G] [IsCommMonObj G] in
 
 /- English proof (translation)
-Simplify using `[smallPull, pull_comp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem smallPull_comp {X Y Z : Scheme.{0}} (g : Z ⟶ Y) (f : Y ⟶ X) (c : SmallPic X) :
     smallPull (g ≫ f) c = smallPull g (smallPull f c) := by
@@ -53,7 +53,7 @@ theorem smallPull_comp {X Y Z : Scheme.{0}} (g : Z ⟶ Y) (f : Y ⟶ X) (c : Sma
 omit [IsCommMonObj G] in
 
 /- English proof (translation)
-Rewrite using `[IsRigCls, smallPull_smallCls _ hL (pull_isLB hL _), smallCls_eq_zero_iff]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem isRigCls_iff {L : LB G.left} (hL : L.IsLB) : IsRigCls G (smallCls L hL) ↔ Out.Rigidified G L := by
   rw [IsRigCls, smallPull_smallCls _ hL (pull_isLB hL _), smallCls_eq_zero_iff]; rfl
@@ -65,7 +65,7 @@ def IsBiextCls (P : RigPic (G ⊗ G)) : Prop := ∃ L : RigLB (G ⊗ G), rigCls 
 def diagCls (w : G ⟶ G) (P : RigPic (G ⊗ G)) : SmallPic G.left := smallPull (lift (𝟙 G) w).left P.1
 
 /- English proof (translation)
-Establish `e : η[G] ≫ lift (𝟙 G) w = η[G ⊗ G]`. Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp`. Rewrite using `[IsRigCls, diagCls, ← smallPull_comp, eSec, ← Over.comp_left, e]`. Conclude with `P.2`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isRigCls_diagCls (w : G ⟶ G) [IsMonHom w] (P : RigPic (G ⊗ G)) : IsRigCls G (diagCls w P) := by
   have e : η[G] ≫ lift (𝟙 G) w = η[G ⊗ G] := by
@@ -80,7 +80,7 @@ def sqMap : (G' ⊗ G').left ⟶ (G ⊗ G).left := (lift (pushHom h _ (fst G' G'
 omit [IsCommMonObj G] [IsCommMonObj G'] in
 
 /- English proof (translation)
-The claim follows from `congrArg (fun q => q.left) (lift_fst (pushHom h _ (fst G' G')) (pushHom h _ (snd G' G')))`.
+A detailed English derivation is pending.
 -/
 @[reassoc] theorem sqMap_fst : sqMap h ≫ (fst G G).left = (fst G' G').left ≫ φ :=
   congrArg (fun q => q.left) (lift_fst (pushHom h _ (fst G' G')) (pushHom h _ (snd G' G')))
@@ -88,7 +88,7 @@ The claim follows from `congrArg (fun q => q.left) (lift_fst (pushHom h _ (fst G
 omit [IsCommMonObj G] [IsCommMonObj G'] in
 
 /- English proof (translation)
-The claim follows from `congrArg (fun q => q.left) (lift_snd (pushHom h _ (fst G' G')) (pushHom h _ (snd G' G')))`.
+A detailed English derivation is pending.
 -/
 @[reassoc] theorem sqMap_snd : sqMap h ≫ (snd G G).left = (snd G' G').left ≫ φ :=
   congrArg (fun q => q.left) (lift_snd (pushHom h _ (fst G' G')) (pushHom h _ (snd G' G')))
@@ -96,13 +96,13 @@ The claim follows from `congrArg (fun q => q.left) (lift_snd (pushHom h _ (fst G
 omit [GrpObj G] [IsCommMonObj G] in
 
 /- English proof (translation)
-The claim follows from `pullback.hom_ext h₁ h₂`.
+A detailed English derivation is pending.
 -/
 theorem sq_hom_ext {T : Scheme.{0}} {a b : T ⟶ (G ⊗ G).left} (h₁ : a ≫ (fst G G).left = b ≫ (fst G G).left)
     (h₂ : a ≫ (snd G G).left = b ≫ (snd G G).left) : a = b := pullback.hom_ext h₁ h₂
 
 /- English proof (translation)
-Establish `e : η[G'].left ≫ φ = f ≫ η[G].left` using `(cubeMapOf h).e_comm`. Use `sq_hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, sqMap_fst, eSec, eSec, ← Over.comp_left_assoc, Category.assoc, ← Over.comp_left, IsMonHom.one_hom, IsMonHom.one_hom, e]`. Rewrite using `[Category.assoc, sqMap_snd, eSec, eSec, ← Over.comp_left_assoc, Category.assoc, ← Over.comp_left, IsMonHom.one_hom, IsMonHom.one_hom, e]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem eSec_sqMap : eSec (G' ⊗ G') ≫ sqMap h = f ≫ eSec (G ⊗ G) := by
   have e : η[G'].left ≫ φ = f ≫ η[G].left := (cubeMapOf h).e_comm
@@ -118,7 +118,7 @@ def sqPull (P : RigPic (G ⊗ G)) : RigPic (G' ⊗ G') :=
     exact (smallPull_comp _ _ _).trans ((congrArg _ P.2).trans (map_zero _))⟩
 
 /- English proof (translation)
-Use `(smallPull_comp _ _ _).symm.trans (Eq.trans (congrArg (smallPull · P.1) ?_) (smallPull_comp _ _ _))` and prove the remaining obligations. Use `sq_hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, sqMap_fst, ← Over.comp_left, ← Over.comp_left_assoc, lift_fst, lift_fst]`. Simplify using the standard rewrite rules. Rewrite using `[Category.assoc, Category.assoc, sqMap_snd, ← Over.comp_left, ← Over.comp_left_assoc, lift_snd, lift_snd, hw]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem smallPull_diagCls {w : G ⟶ G} {w' : G' ⟶ G'} (hw : w'.left ≫ φ = φ ≫ w.left) (P : RigPic (G ⊗ G)) :
     smallPull φ (diagCls w P) = diagCls w' (sqPull h P) := by
@@ -143,7 +143,7 @@ def poiCls : RigPic ((tens t Λ).G ⊗ (tens t Λ).G) := rigCls (poi t Λ)
 def diag (P : RigPic ((tens t Λ).G ⊗ (tens t Λ).G)) : SmallPic (tens t Λ).G.left := diagCls ((tens t Λ).act.act H.w0) P
 
 /- English proof (translation)
-The claim follows from `(smallPull_smallCls _ _ (pull_isLB (poi t Λ).isLB _)).trans ((smallCls_eq_iff _ _).2 (pp_iso_pull t Λ).symm)`.
+A detailed English derivation is pending.
 -/
 theorem diag_poiCls : diag t Λ (poiCls t Λ) = ppCls t Λ :=
   (smallPull_smallCls _ _ (pull_isLB (poi t Λ).isLB _)).trans ((smallCls_eq_iff _ _).2 (pp_iso_pull t Λ).symm)
@@ -151,7 +151,7 @@ theorem diag_poiCls : diag t Λ (poiCls t Λ) = ppCls t Λ :=
 variable {t} {t' : SAB H X'} {f : X' ⟶ X} (m : SABMap t' t f)
 
 /- English proof (translation)
-The claim follows from `smallPull_diagCls _ ((map Λ m).act H.w0) P`.
+A detailed English derivation is pending.
 -/
 theorem smallPull_diag (P : RigPic ((tens t Λ).G ⊗ (tens t Λ).G)) :
     smallPull (map Λ m).φ (diag t Λ P) = diag t' Λ (sqPull (map Λ m).cart P) :=
@@ -169,9 +169,9 @@ variable {S S' : Scheme.{0}} {O : Type} [CommRing O] {M : Type} [AddCommGroup M]
   {b₁' : OAct O A₁'}
 
 /- English proof (translation)
-Establish `key : ∀ y : A₁ ⟶ A₁, pushHom hψ' A₁ (y ≫ t₁.mapRight t₁' hq₁) = pushHom hψ A₁ y ≫ t.mapRight t' hq` using `fun y => by`. Use `t₁.induction_on (P := fun y => pushHom hψ' A₁ (y ≫ t₁.mapRight t₁' hq₁) = pushHom hψ A₁ y ≫ t.mapRight t' hq) y (by simp) (fun m x => Over.OverMorphism.ext ?_) (fun y z hy hz => by rw [MonObj.mul_comp, map_mul, map_mul, MonObj.mul_comp, hy, hz])` and prove the remaining obligations. Rewrite using `[Category.assoc, IsTensor.tmul_mapRight]`. Express the relevant statement in the definitionally equal form `(x.left ≫ _ ≫ _) ≫ ψ' = ((x.left ≫ _) ≫ ψ) ≫ _`. Simplify using `only [Category.assoc]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Rewrite using `[hm', reassoc_of% e, reassoc_of% hm, ← Over.comp_left _ _ _ (t.tmul m), IsTensor.tmul_mapRight, Over.comp_left]`. Establish `e` using `congrArg (fun q => q.left) (key (𝟙 A₁))`. Rewrite `e` using `[Category.id_comp]`. Conclude with `e.trans (congrArg (· ≫ _) (Category.id_comp ψ))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mapRight_comm (t : IsTensor A b G a M) (t' : IsTensor A' b' G' a' M) (t₁ : IsTensor A₁ b₁ G₁ a₁ M)
     (t₁' : IsTensor A₁' b₁' G₁' a₁' M) {f : S' ⟶ S} {φ : G₁.left ⟶ G.left} {φ' : G₁'.left ⟶ G'.left} {ψ : A₁.left ⟶ A.left}
@@ -198,21 +198,21 @@ section Thick
 variable {R : Type} [CommRing R] (I : Ideal R) (e : ℕ)
 
 /- English proof (translation)
-The claim follows from `(pullback.lift_fst _ _ _).trans (Category.comp_id _)`.
+A detailed English derivation is pending.
 -/
 @[reassoc] theorem thickMap_fst (G : Over (Sp R)) :
     thickMap R I e G ≫ pullback.fst G.hom (thick R I (e + 1)) = pullback.fst G.hom (thick R I e) :=
   (pullback.lift_fst _ _ _).trans (Category.comp_id _)
 
 /- English proof (translation)
-The claim follows from `pullback.lift_snd _ _ _`.
+A detailed English derivation is pending.
 -/
 @[reassoc] theorem thickMap_snd (G : Over (Sp R)) :
     thickMap R I e G ≫ pullback.snd G.hom (thick R I (e + 1)) = pullback.snd G.hom (thick R I e) ≫ thickTrans R I e :=
   pullback.lift_snd _ _ _
 
 /- English proof (translation)
-The claim follows from `(isGrpPullback_pullback G (thick R I (e + 1))).cancel ((isGrpPullback_pullback G (thick R I e)).congr (Out.thickTrans_comp R I e).symm (thickMap_fst I e G).symm) (thickMap_snd I e G)`.
+A detailed English derivation is pending.
 -/
 theorem isGrpPullback_thickMap (G : Over (Sp R)) [GrpObj G] :
     IsGrpPullback (thickObj R I e G) (thickObj R I (e + 1) G) (thickTrans R I e) (thickMap R I e G) :=
@@ -221,7 +221,7 @@ theorem isGrpPullback_thickMap (G : Over (Sp R)) [GrpObj G] :
     (thickMap_snd I e G)
 
 /- English proof (translation)
-Establish `h₁ : ∀ e, ((Over.pullback (thick R I e)).map u).left ≫ pullback.fst _ _ = pullback.fst _ _ ≫ u.left` using `fun _ => pullback.lift_fst _ _ _`. Establish `h₂ : ∀ e, ((Over.pullback (thick R I e)).map u).left ≫ pullback.snd _ _ = pullback.snd _ _` using `fun _ => pullback.lift_snd _ _ _`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, thickMap_fst, h₁, Category.assoc, h₁, thickMap_fst_assoc]`. Rewrite using `[Category.assoc, thickMap_snd, reassoc_of% h₂, Category.assoc, h₂, thickMap_snd]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_thickMap {G G' : Over (Sp R)} (u : G ⟶ G') :
     ((Over.pullback (thick R I e)).map u).left ≫ thickMap R I e G' =
@@ -249,7 +249,7 @@ def abPartLB : RigLB U.D.toPre.P.A := ⟨U.D.toPre.P.L, U.D.toPre.rig, U.D.toPre
 def abTensLB : RigLB (abTens U Λ) := Λ.thetaOn (abPartAct U) H.w0 (abPartLB U)
 
 /- English proof (translation)
-The claim follows from `letI := H.starRing ⟨(U.U.gt e).q_hom, fun c => U.lin.q_lin e c⟩`.
+A detailed English derivation is pending.
 -/
 theorem isLinearHom_q (e : ℕ) : IsLinearHom (t.act.pullback (thick R I e) _) ((abPartAct U).pullback (thick R I e) _)
     (U.U.gt e).q :=
@@ -261,15 +261,15 @@ def qTens (e : ℕ) : thickObj R I e (tens t Λ).G ⟶ thickObj R I e (abTens U 
     (isLinearHom_q U e)
 
 /- English proof (translation)
-The claim follows from `IsTensor.isLinearHom_mapRight _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem isLinearHom_qTens (e : ℕ) : IsLinearHom ((tens t Λ).act.pullback (thick R I e) _)
     ((Λ.act (abPartAct U)).pullback (thick R I e) _) (qTens U Λ e) := IsTensor.isLinearHom_mapRight _ _ _
 
 /- English proof (translation)
-Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, thickMap_fst, Category.assoc]`. Conclude with `(U.U.gt_q e).symm`. Establish `h₁ : (U.U.gt e).q.left ≫ pullback.snd _ _ = pullback.snd _ _` using `Over.w (U.U.gt e).q`. Establish `h₂ : (U.U.gt (e + 1)).q.left ≫ pullback.snd _ _ = pullback.snd _ _` using `Over.w (U.U.gt (e + 1)).q`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, thickMap_snd, reassoc_of% h₁, Category.assoc, h₂, thickMap_snd]`.
+A detailed English derivation is pending.
 -/
 theorem q_thickMap (e : ℕ) : (U.U.gt e).q.left ≫ thickMap R I e _ = thickMap R I e _ ≫ (U.U.gt (e + 1)).q.left := by
   apply pullback.hom_ext
@@ -280,7 +280,7 @@ theorem q_thickMap (e : ℕ) : (U.U.gt e).q.left ≫ thickMap R I e _ = thickMap
     rw [Category.assoc, thickMap_snd, reassoc_of% h₁, Category.assoc, h₂, thickMap_snd]
 
 /- English proof (translation)
-The claim follows from `mapRight_comm ((tens.isTensor t Λ).pullback (thick R I (e + 1))) ((Λ.isTensor (abPartAct U)).pullback (thick R I (e + 1))) ((tens.isTensor t Λ).pullback (thick R I e)) ((Λ.isTensor (abPartAct U)).pullback (thick R I e)) (isGrpPullback_thickMap I e (tens t Λ).G) (isGrpPullback_thi …`.
+A detailed English derivation is pending.
 -/
 theorem qTens_thickMap (e : ℕ) : (qTens U Λ e).left ≫ thickMap R I e _ = thickMap R I e _ ≫ (qTens U Λ (e + 1)).left :=
   mapRight_comm ((tens.isTensor t Λ).pullback (thick R I (e + 1))) ((Λ.isTensor (abPartAct U)).pullback (thick R I (e + 1)))
@@ -320,7 +320,7 @@ def levToDat (G : Over (Sp A.R)) (e : ℕ) : (thickObj _ (defIdeal A) e ((Over.p
     (thickObj A.R (maximalIdeal A.R) e G).left := hMap (φ := A.f) (hφ := le_rfl) G _ (𝟙 _)
 
 /- English proof (translation)
-The claim follows from `@Out.PullGtPf.isGrpPullback_hMap _ _ _ _ _ _ _ _ A.f le_rfl e G _ _ _ (Iso.refl _) (inferInstanceAs (IsMonHom (𝟙 _)))`.
+A detailed English derivation is pending.
 -/
 theorem isGrpPullback_levToDat (G : Over (Sp A.R)) [GrpObj G] (e : ℕ) :
     IsGrpPullback (thickObj _ (defIdeal A) e ((Over.pullback (spMap A.f)).obj G)) (thickObj A.R (maximalIdeal A.R) e G)
@@ -328,7 +328,7 @@ theorem isGrpPullback_levToDat (G : Over (Sp A.R)) [GrpObj G] (e : ℕ) :
   @Out.PullGtPf.isGrpPullback_hMap _ _ _ _ _ _ _ _ A.f le_rfl e G _ _ _ (Iso.refl _) (inferInstanceAs (IsMonHom (𝟙 _)))
 
 /- English proof (translation)
-The claim follows from `(Out.PullGtPf.hMap_fst _ _ _).trans (congrArg _ (Category.id_comp _))`.
+A detailed English derivation is pending.
 -/
 @[reassoc] theorem levToDat_fst (G : Over (Sp A.R)) (e : ℕ) :
     levToDat A G e ≫ pullback.fst _ _ = pullback.fst _ _ ≫ pullback.fst G.hom (spMap A.f) :=
@@ -340,7 +340,7 @@ def prLev (e : ℕ) : gtLev A Λ e ⟶ bLev A Λ e :=
     ((isGrpPullback_levToDat A (abTens A.U Λ) e).1.lift_snd _ _ _)
 
 /- English proof (translation)
-The claim follows from `(isGrpPullback_levToDat A (abTens A.U Λ) e).1.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 @[reassoc] theorem prLev_levToDat (e : ℕ) :
     (prLev A Λ e).left ≫ levToDat A _ e = levToDat A _ e ≫ (qTens A.U Λ e).left :=
@@ -354,20 +354,20 @@ instance isMonHom_prLev (e : ℕ) : IsMonHom (prLev A Λ e) :=
 def prPt (e : ℕ) : (gtLev A Λ e).left ⟶ (bPt A Λ).left := (prLev A Λ e).left ≫ pullback.fst _ _
 
 /- English proof (translation)
-Rewrite using `[prPt, Category.assoc, ← levToDat_fst, prLev_levToDat_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem prPt_fst (e : ℕ) : prPt A Λ e ≫ pullback.fst _ _ = levToDat A _ e ≫ (qTens A.U Λ e).left ≫ pullback.fst _ _ := by
   rw [prPt, Category.assoc, ← levToDat_fst, prLev_levToDat_assoc]
 
 /- English proof (translation)
-Establish `h : (prLev A Λ e).left ≫ pullback.snd _ _ = pullback.snd _ _` using `Over.w (prLev A Λ e)`. Rewrite using `[prPt, Category.assoc, pullback.condition, pullback.condition, reassoc_of% h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem prPt_hom (e : ℕ) : prPt A Λ e ≫ (bPt A Λ).hom = pullback.fst _ _ ≫ (gPt A Λ).hom := by
   have h : (prLev A Λ e).left ≫ pullback.snd _ _ = pullback.snd _ _ := Over.w (prLev A Λ e)
   rw [prPt, Category.assoc, pullback.condition, pullback.condition, reassoc_of% h]
 
 /- English proof (translation)
-Apply `pullback.hom_ext` to reduce the goal to its premises. Establish `h : gtTrans A Λ e ≫ levToDat A _ (e + 1) = levToDat A _ e ≫ thickMap _ _ e _` using `Out.PullGtPf.hMap_thick _ _ _`. Rewrite using `[Category.assoc, prPt_fst, prPt_fst, reassoc_of% h, ← reassoc_of% qTens_thickMap, thickMap_fst]`. Conclude with `(Category.assoc _ _ _).trans ((congrArg _ (prPt_hom A Λ (e + 1))).trans ((thickMap_fst_assoc _ _ _ _).trans (prPt_hom A Λ e).symm))`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gtTrans_prPt (e : ℕ) : gtTrans A Λ e ≫ prPt A Λ (e + 1) = prPt A Λ e := by
   apply pullback.hom_ext
@@ -391,7 +391,7 @@ variable {X : Scheme.{0}} {π : X ⟶ Y.X} {t : SAB H X} (m : SABMap t Y.t π) (
 include hz in
 
 /- English proof (translation)
-The claim follows from `((isGrpPullback_pullback _ (spMap A.f)).comp (tens.map Λ A.m).cart).congr (A.fac.trans hz.symm) rfl`.
+A detailed English derivation is pending.
 -/
 theorem isGrpPullback_gPt_base : IsGrpPullback (gPt A Λ) (tens Y.t Λ).G (z ≫ π) (pullback.fst _ _ ≫ (tens.map Λ A.m).φ) :=
   ((isGrpPullback_pullback _ (spMap A.f)).comp (tens.map Λ A.m).cart).congr (A.fac.trans hz.symm) rfl
@@ -401,7 +401,7 @@ def gPtTo : (gPt A Λ).left ⟶ (tens t Λ).G.left :=
     (by rw [(isGrpPullback_gPt_base A Λ z hz).1.w, Category.assoc])
 
 /- English proof (translation)
-The claim follows from `(tens.map Λ m).cart.1.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem gPtTo_φ : gPtTo A Λ m z hz ≫ (tens.map Λ m).φ = pullback.fst _ _ ≫ (tens.map Λ A.m).φ :=
   (tens.map Λ m).cart.1.lift_fst _ _ _
@@ -450,20 +450,20 @@ def thbTrue (ct : At S κ p) : ThbSt ct (uniTrue ct) where
 variable (ct : At S κ p) (Λ : (uniTrue ct).Unim)
 
 /- English proof (translation)
-Rewrite using `[← amb_w0_eq_boundaryLocalData_w0 A]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 example (P : (thbTrue ct).StrictHenselianAcyclic Λ) : (thbTrue ct).dg P = diagCls ((tens ct.Xm.t Λ).act.act (BoundaryLocalData.w0 D)) P := by
   rw [← amb_w0_eq_boundaryLocalData_w0 A]; rfl
 
 /- English proof (translation)
-The claim follows from `haveI := (tens ct.Xm.t Λ).act.hom A.H.w0 isRigCls_diagCls _ P`.
+A detailed English derivation is pending.
 -/
 example (P : (thbTrue ct).StrictHenselianAcyclic Λ) : (thbTrue ct).rigG ((thbTrue ct).dg P) :=
   haveI := (tens ct.Xm.t Λ).act.hom A.H.w0
   isRigCls_diagCls _ P
 
 /- English proof (translation)
-The claim follows from `(level_fpull _ _ e _).symm.trans ((congrArg (level e) h).trans (level_fpull _ _ e _))`.
+A detailed English derivation is pending.
 -/
 example (y : ct.Pt ct.Xm) (L : (thbTrue ct).LBG Λ) (M : (thbTrue ct).LBB y Λ)
     (h : (thbTrue ct).resGt L y = (thbTrue ct).prPull M) (e : ℕ) :

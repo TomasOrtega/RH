@@ -19,9 +19,7 @@ private noncomputable def UpperTheory.unitsIntegrand {ι : Type} [Fintype ι] (�
     Φ (fun w => (a w : ℂ))
 
 /- English proof (translation)
-Establish `h1 : ∀ w, Measurable fun a : ι → ℂˣ => (a w : ℂ)` using `fun w => measurable_units_val.comp (measurable_pi_apply w)`. Establish `h2 : ∀ w, Measurable fun a : ι → ℂˣ => (‖(a w : ℂ)‖ : ℂ)` using `fun w => Complex.measurable_ofReal.comp (h1 w).norm`. Unfold `UpperTheory.unitsIntegrand`. Use `Measurable.mul (Measurable.mul ?_ ?_) (hΦ.measurable.comp (measurable_pi_lambda _ h1))` and prove the remaining obligations. Conclude with `Finset.measurable_prod _ fun w _ => ((h1 w).div (h2 w)).pow_const _`.
-
-Conclude with `(Complex.measurable_ofReal.comp (Finset.measurable_prod _ fun w _ => (h1 w).norm.pow_const 2)).pow_const _`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.measurable_unitsIntegrand {ι : Type} [Fintype ι] (κ : ι → ℤ) (e : ℕ) (Φ : (ι → ℂ) → ℂ)
     (hΦ : Continuous Φ) : Measurable (UpperTheory.unitsIntegrand κ e Φ) := by
@@ -36,13 +34,13 @@ private theorem UpperTheory.measurable_unitsIntegrand {ι : Type} [Fintype ι] (
       (Finset.measurable_prod _ fun w _ => (h1 w).norm.pow_const 2)).pow_const _
 
 /- English proof (translation)
-Establish `hw : ∀ b : ι → ℂ, (∀ i, b i ≠ 0) → invSqWt b = ENNReal.ofReal (∏ i, (‖b i‖ ^ 2)⁻¹)`. Introduce `b hb`. Establish `hx : ∀ i, 0 < ‖b i‖` using `fun i => norm_pos_iff.2 (hb i)`. Rewrite using `[invSqWt, ENNReal.ofReal_prod_of_nonneg (fun i _ => by positivity)]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[ENNReal.ofReal_inv_of_pos (by have := hx i; positivity), ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm, ENNReal.inv_pow]`. Rewrite using `[unitsHaar, integral_map measurable_toUnits.aemeasurable (UpperTheory.measurable_unitsIntegrand κ e Φ hΦ).aestronglyMeasurable, wVol, integral_withDensity_eq_integral_toReal_smul measurable_invSqWt (ae_ne_zero.mono fun b hb => by rw [hw b hb]; exact ENNReal.ofReal_lt_top)]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [ae_ne_zero] with b hb`. Establish `hval : ∀ i, ((GlobalTheory.ArchIdeleDecay.toUnits b i : ℂˣ) : ℂ) = b i` using `fun i => by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[GlobalTheory.ArchIdeleDecay.toUnits, hb i]`. Rewrite using `[hw b hb, ENNReal.toReal_ofReal (by positivity)]`. Simplify using `only [UpperTheory.unitsIntegrand, hval, FreeSingleHomotopyEquivDiscreteChains.UpperTheory.Dv.ConeB.wt, Complex.real_smul]`. Use `push_cast`. Rewrite using `[← mul_assoc, mul_comm, ← Finset.prod_pow, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h : (‖b i‖ : ℂ) ≠ 0` using `by exact_mod_cast norm_ne_zero_iff.2 (hb i)`. Rewrite using `[pow_succ ((‖b i‖ : ℂ) ^ 2) e, ← pow_mul]`. Clear the denominators using the available nonvanishing facts.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.integral_units_haar_eq_weight {ι : Type} [Fintype ι] (κ : ι → ℤ) (e : ℕ) (Φ : (ι → ℂ) → ℂ)
     (hΦ : Continuous Φ) :
@@ -73,13 +71,13 @@ private theorem UpperTheory.integral_units_haar_eq_weight {ι : Type} [Fintype �
   field_simp
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B hcm μ hμ ν κ hν k`. Take `⟨_, _, _, _, _⟩` from `idelesAt_facts E (evI F)`. Take `⟨e, he⟩` from `exists_archEquiv hcm B.emb`. Use `haveI := e.isHaarMeasure_map μ`. Establish `hsm` using `isMulLeftInvariant_eq_smul (unitsHaar (InfinitePlace F)) (μ.map e)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set c := haarScalarFactor (unitsHaar (InfinitePlace F)) (μ.map e)`. Establish `hc0 : c ≠ 0`. Introduce `h`. Apply `unitsHaar_ne_zero (ι := InfinitePlace F)` to reduce the goal to its premises. Rewrite using `[hsm, h, zero_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hm : μ.map e = (c⁻¹ : NNReal) • unitsHaar (InfinitePlace F)`. Rewrite using `[hsm, smul_smul, inv_mul_cancel₀ hc0, one_smul]`. Use `⟨(((c⁻¹ : NNReal) : ℝ) : ℂ), by exact_mod_cast inv_ne_zero hc0, fun Φ hΦ => ?_⟩` and prove the remaining obligations. Establish `hme : MeasurableEmbedding e` using `e.toHomeomorph.measurableEmbedding`. Establish `h1` using `hme.integral_map (μ := μ) (UpperTheory.unitsIntegrand κ k Φ)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[hm, integral_smul_nnreal_measure, UpperTheory.integral_units_haar_eq_weight κ k Φ hΦ]`. Rewrite using `[← Complex.real_smul, ← NNReal.smul_def, h1]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun l => ?_)` and prove the remaining obligations. Simplify using `only [UpperTheory.unitsIntegrand, he, absE_of_mem_arch hcm B.emb l.2]`. Rewrite using `[hν l.1 l.2]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.idele_integral_character_nonzero :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E), IsCMExt F E σ → ∀ (μ : Measure (idelesAt E (evI F))), μ.IsHaarMeasure →

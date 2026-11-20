@@ -10,23 +10,21 @@ open scoped TensorProduct NNReal Matrix
 namespace GlobalTheory.PsiTriv
 
 /- English proof (translation)
-Set `f : FiniteAdeleRing (𝓞 F) F → AF F` to `fun y => (0, y)`. Establish `hf : Continuous f` using `continuous_const.prodMk continuous_id`. Establish `hW : (fun y => ψ (f y)) ⁻¹' {z : ℂ | ‖z - 1‖ < 1 / 2} ∈ 𝓝 (0 : FiniteAdeleRing (𝓞 F) F)`. Use `((isOpen_lt (continuous_norm.comp (continuous_id.sub continuous_const)) continuous_const).preimage (hψ.comp hf)).mem_nhds ?_` and prove the remaining obligations. Use `show ‖ψ (0 : AF F) - 1‖ < 1 / 2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AddChar.map_zero_eq_one]`. Evaluate the numerical expressions. Take `⟨d, hd0, hd⟩` from `GroundTheory.Global.exists_forall_mul_mem_of_mem_nhds hW`. Use `set D : FiniteAdeleRing (𝓞 F) F := algebraMap F _ (algebraMap (𝓞 F) F d) with hD`. Establish `htriv : ∀ y ∈ GroundTheory.Global.integralFiniteAdeles (𝓞 F) F, ψ (f (D * y)) = 1`.
+Evaluate the numerical expressions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `y hy`. Use `GroundTheory.Global.eq_one_of_sq_mem (s := {z | ∃ y ∈ GroundTheory.Global.integralFiniteAdeles (𝓞 F) F, ψ (f (D * y)) = z}) ?_ ?_ ⟨y, hy, rfl⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Use `⟨a + a, add_mem ha ha, ?_⟩` and prove the remaining obligations. Rewrite using `[sq, ← AddChar.map_add_eq_mul]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `show ((0 : InfiniteAdeleRing F), D * (a + a)) = ((0 : InfiniteAdeleRing F) + 0, D * a + D * a)`. Rewrite using `[mul_add, add_zero]`. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Conclude with `hd a ha`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hm0 : Ideal.absNorm (Ideal.span {d}) ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`. Conclude with `hd0`. Take `⟨e, he⟩` from `Ideal.mem_span_singleton'.1 (Ideal.absNorm_mem (Ideal.span {d}))`. Use `⟨Ideal.absNorm (Ideal.span {d}), Nat.pos_of_ne_zero hm0, fun t ht0 ht => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hdF : algebraMap (𝓞 F) F d ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective (𝓞 F) F)).2 hd0`. Set `y : FiniteAdeleRing (𝓞 F) F` to `algebraMap F _ (algebraMap (𝓞 F) F d)⁻¹ * t.2`. Establish `hty : t = f (D * y)`. Use `Prod.ext ht0 ?_` and prove the remaining obligations. Use `show t.2 = algebraMap F _ (algebraMap (𝓞 F) F d) * (algebraMap F _ (algebraMap (𝓞 F) F d)⁻¹ * t.2)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← mul_assoc, ← map_mul, mul_inv_cancel₀ hdF, map_one, one_mul]`. Rewrite using `[hty]`. Use `htriv y fun v => ?_` and prove the remaining obligations. Establish `hv : ‖t.2 v‖ ≤ _` using `ht v`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, ← Valued.toNormedField.norm_le_one_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hy : y v = algebraMap F (Fv F v) (algebraMap (𝓞 F) F d)⁻¹ * t.2 v` using `rfl`. Establish `hm : ((Ideal.absNorm (Ideal.span {d}) : ℕ) : Fv F v) = algebraMap F (Fv F v) (algebraMap (𝓞 F) F e) * algebraMap F (Fv F v) (algebraMap (𝓞 F) F d)`. Rewrite using `[← map_mul, ← map_mul, he, map_natCast, map_natCast]`. Establish `hdv : algebraMap F (Fv F v) (algebraMap (𝓞 F) F d) ≠ 0` using `(map_ne_zero _).2 hdF`. Establish `he1 : ‖algebraMap F (Fv F v) (algebraMap (𝓞 F) F e)‖ ≤ 1` using `FinitePlace.norm_le_one F v e`.
-
-Rewrite using `[hy, map_inv₀, norm_mul, norm_inv, inv_mul_le_iff₀ (norm_pos_iff.2 hdv)]`. Rewrite `hv` using `[hm, norm_mul]`. Use polynomial arithmetic with `[norm_nonneg (algebraMap F (Fv F v) (algebraMap (𝓞 F) F d)), norm_nonneg (t.2 v)]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem exists_nat_trivial {F : Type} [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ) (hψ : Continuous ψ) :
     ∃ m : ℕ, 0 < m ∧ ∀ t : AF F, t.1 = 0 → (∀ v, ‖evFin F v t‖ ≤ ‖(m : Fv F v)‖) → ψ t = 1 := by

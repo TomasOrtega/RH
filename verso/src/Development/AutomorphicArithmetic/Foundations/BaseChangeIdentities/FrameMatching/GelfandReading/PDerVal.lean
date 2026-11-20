@@ -17,9 +17,9 @@ attribute [local instance] PositivityTheory.Rg.BcB.F.borelG PositivityTheory.Rg.
 namespace UpperTheory.BaseChangeIdentities.GelfandReading
 
 /- English proof (translation)
-Unfold `valA`. Establish `h : ∀ v' : InfinitePlace E, f (if v' = v then [(s, k)] else []) (χ v') = (if v' = v then GlobalTheory.Dec.gelfVal (χ v s) k else 1) * f [] (χ v')`. Introduce `v'`. Distinguish the cases in `hv : v' = v`. Substitute `hv` using the available equality.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[hf]`. Simplify using `[hv]`. Simplify using `only [h, Finset.prod_mul_distrib, Finset.prod_ite_eq', Finset.mem_univ, if_true]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem valA_single {E : Type} [Field E] [NumberField E] [IsCMField E] {m : ℕ}
     (f : List (Bool × ℕ) → Inf m → ℂ)
@@ -40,11 +40,11 @@ private theorem valA_single {E : Type} [Field E] [NumberField E] [IsCMField E] {
 end UpperTheory.BaseChangeIdentities.GelfandReading
 
 /- English proof (translation)
-Introduce `E _ _ _ a b l₁ l₂ μ₁ μ₂ μa μb A κ _ ψ ψ' r r' v s k χa χb`. Establish `hw : ∀ {m : ℕ} (s : Bool) (k : ℕ) (χ : Inf m), A.valW [(s, k)] χ = GlobalTheory.Dec.gelfVal (χ s) k * A.valW [] χ`. Introduce `m s k χ`. Simplify using `[Arch.valW, zVal]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Establish `h` using `UpperTheory.BaseChangeIdentities.GelfandReading.valA_single (fun w => A.valW (m := a) w) hw v s k χa`. Simplify using `only [PT.val, Arch.pt]`. Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree. Establish `h` using `UpperTheory.BaseChangeIdentities.GelfandReading.valA_single (fun w => A.valW (m := b) w) hw v s k χb`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Simplify using `only [PT.val, Arch.pt]`. Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem UpperTheory.BaseChangeIdentities.GelfandReading.pDerVal :
     UpperTheory.BaseChangeIdentities.GelfandReading.DerVal := by

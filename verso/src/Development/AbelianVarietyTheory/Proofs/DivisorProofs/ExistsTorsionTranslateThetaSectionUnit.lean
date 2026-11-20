@@ -15,7 +15,7 @@ noncomputable section
 namespace GlobalTheory.Poinc.IntTerm
 
 /- English proof (translation)
-Rewrite using `[← gs_pull f g z U h a, gs_eq f z _ h, gs_eq g (f z) U h]`. Conclude with `(Scheme.Hom.germ_stalkMap_apply f _ z h _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gs_comp_stalkMap {X Y Z : Scheme.{0}} (f : Z ⟶ Y) (g : Y ⟶ X) (z : Z) (U : X.Opens) (h : g (f z) ∈ U)
     (a : Γ(X, U)) : gs (f ≫ g) z U a = (f.stalkMap z).hom (gs g (f z) U a) := by
@@ -23,11 +23,11 @@ theorem gs_comp_stalkMap {X Y Z : Scheme.{0}} (f : Z ⟶ Y) (g : Y ⟶ X) (z : Z
   exact (Scheme.Hom.germ_stalkMap_apply f _ z h _).symm
 
 /- English proof (translation)
-Introduce `U _ hh`. Establish `e0 : D.famφB 0 0 = 𝟙 _` using `rfl`. Establish `e1 : D.famφB 0 1 = 𝟙 _` using `by show (padd D.P.A (𝟙 D.P.A) (toUnit _ ≫ D.c 0)).left = _`. Rewrite using `[ThetaOne.c_zero, MonObj.comp_one]`. Use `show ((𝟙 D.P.A) * 1).left = _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[_root_.mul_one]`. Both sides reduce to the same expression. Establish `e2 : D.famφB 0 2 = D.famφB 0 3` using `by show (toUnit D.P.A ≫ D.c 0).left = (toUnit D.P.A ≫ η[D.P.A]).left`. Rewrite using `[ThetaOne.c_zero, MonObj.comp_one]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.prod_univ_four, Fin.prod_univ_one, e0, e1, e2]`. Simplify using `[DegPre.famε]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem formEq_famφB_zero {V : Type} [CommRing V] [IsDomain V] (D : DegPre V) {Y : Scheme.{0}} (h : Y ⟶ D.P.A.left) :
     FormEq (fun i => h ≫ D.famφB 0 i) (DegPre.famε 1) (fun _ : Fin 1 => h) (fun _ => (1 : ℤ)) := by
@@ -46,29 +46,25 @@ theorem formEq_famφB_zero {V : Type} [CommRing V] [IsDomain V] (D : DegPre V) {
   simp [DegPre.famε]
 
 /- English proof (translation)
-Introduce `V _ _ _ D θ hθ N hN hNV C b hb a`. Establish `hL` using `GlobalTheory.abelianSchemeLaws_all.1`. Set `k` to `AlgebraicClosure (ResidueField V)`. Set `f : V →+* k` to `(algebraMap (ResidueField V) k).comp (residue V)`. Set `r : Sp k ⟶ Sp V` to `Spec.map (CommRingCat.ofHom f)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hNk : (N : k) ≠ 0`. Use `(hNV.map f).ne_zero` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Set `θ'` to `ThetaOne.pullTo D f θ`. Establish `hbasis` using `hθ k f θ' (ThetaOne.isPullSecLC_pullTo D f θ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨j₀, hj₀⟩` from `ThetaOne.exists_ne_zero D f θ' hbasis`. Take `⟨th, hth⟩` from `exists_sec D.P.isLB (formEq_famφB_zero D (snd (Over.mk r) D.P.A).left) θ'`. Establish `hne : SecM.ofSec D.P.A (L` using `D.P.L) (a := 1) (T := Over.mk r) th ≠ 0 := by`. Introduce `h0`. Apply `hj₀` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hz : ∀ j, th.f j = 0` using `fun j => congrFun (congrArg Subtype.val h0) j`. Use `sec_ext_val D.P.isLB (s' := H1.SectionArithmetic.secZero _) (fun y J hJ => ?_) j₀` and prove the remaining obligations. Rewrite using `[← hth _ (𝟙 _) y J hJ]`. Use `show gs _ y _ (th.f _) = gs _ y _ 0`. Use `erw [hz]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `gz : ∀ {Y : Scheme.{0}} (y : Y) (U : Y.Opens), gs (𝟙 Y) y U 0 = 0` using `fun y U => by`. Apply the tactic sequence `unfold gs; split_ifs <;> simp only [map_zero]`. Conclude with `(gz _ _).trans (gz _ _).symm`. Take `⟨y, hy, hu⟩` from `GlobalTheory.UT.ExactTerm.exists_good_point hL.goodPt hL.polBaseChange D.P r hN hNk th hne (toUnit (Over.mk r) ≫ a)`. Take `⟨c, hc⟩` from `hb k r y hy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `hmul : (toUnit (Over.mk r) ≫ a) * y = toUnit (Over.mk r) ≫ (a * b c)` using `by rw [hc, MonObj.comp_mul]`. Rewrite `hu` using `[hmul]`. Set `g` to `a * b c`. Set `q : Sp k` to `closedPoint k`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨J, hJ, -⟩` from `exists_good D.P.L D.P.isLB q (K := Empty) Empty.elim Empty.elim (·.elim) (·.elim)`. Establish `h1` using `hu q J hJ`. Establish `hρ : (ptSecT D.P.A (toUnit (Over.mk r) ≫ g)).left ≫ (snd (Over.mk r) D.P.A).left = r ≫ g.left`. Rewrite using `[← Over.comp_left, ptSecT, lift_snd, Over.comp_left]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hθ'e : θ' = H1.SectionArithmetic.pullSec θ (snd (Over.mk r) D.P.A).left` using `SecOps.sec_ext fun j => ThetaOne.isPullSecLC_pullTo D f θ j`. Establish `h2 : IsUnit (sval θ (r ≫ g.left) q J)`. Establish `e` using `hth _ (ptSecT D.P.A (toUnit (Over.mk r) ≫ g)).left q J hJ`. Rewrite using `[← hρ, ← H1.SectionArithmetic.sval_pullSec θ _ _ q hJ, ← hθ'e, ← e]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hrq : r q = closedPoint V` using `by show (Spec.map (CommRingCat.ofHom f)).base (closedPoint k) = _`. Rewrite using `[Spec.map_base]`. Conclude with `IsLocalRing.comap_closedPoint f`. Use `⟨fun σ => J (r ≫ σ), fun σ => ?_, ?_⟩` and prove the remaining obligations. Use `hJ (r ≫ σ)` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `this` using `[Scheme.Hom.comp_apply, hrq]`. Then use the resulting hypothesis. Rewrite `h2` using `[sval_of θ (r ≫ g.left) q J (fun i => J (r ≫ g.left ≫ D.famφB 0 i)) (fun i => by rw [Category.assoc])]`. Establish `hm : g.left (r q) ∈ (LB.LinComb D.P.L (D.famφB 0) (DegPre.famε 1)).U (fun i => J (r ≫ g.left ≫ D.famφB 0 i))` using `show g.left (r q) ∈ LB.wchart D.P.L (D.famφB 0) (fun i => J (r ≫ g.left ≫ D.famφB 0 i)) from Set.mem_iInter.2 fun i => by`. Use `hJ (r ≫ g.left ≫ D.famφB 0 i)` as an intermediate fact. Simplify `this` using `[Scheme.Hom.comp_apply]`.
-
-Establish `h2' : IsUnit ((r.stalkMap q).hom (gs g.left (r q) _ (θ.f (fun i => J (r ≫ g.left ≫ D.famφB 0 i)))))`. Rewrite using `[← gs_comp_stalkMap r g.left q _ hm]`. Conclude with `h2`. Establish `h3` using `isUnit_of_map_unit (r.stalkMap q).hom _ h2'`. Rewrite `h3` using `[hrq]`.
-
-Conclude with `h3`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unitAt_mul : ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (D : DegPre V) (θ : D.SecB 1 0), IntTerm.IsTheta D θ → ∀ N : ℕ, 2 ≤ N → IsUnit (N : V) → ∀ (C : Type) (b : C → (𝟙_ (Over (Sp V)) ⟶ D.P.A)), IntTerm.Exhausts D.P N b → ∀ a : 𝟙_ (Over (Sp V)) ⟶ D.P.A, ∃ c, IntTerm.UnitAt D θ (a * b c) := by
   intro V _ _ _ D θ hθ N hN hNV C b hb a

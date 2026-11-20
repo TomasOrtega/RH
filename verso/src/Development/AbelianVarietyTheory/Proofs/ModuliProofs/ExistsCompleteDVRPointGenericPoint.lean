@@ -14,7 +14,7 @@ open GlobalTheory.Models GlobalTheory.ModelSum
 namespace GlobalTheory.GenTrait
 
 /- English proof (translation)
-Establish `h1 : CharZero Γ(Z, ⊤)` using `RingHom.charZero (f.appTop ≫ (Scheme.ΓSpecIso (CommRingCat.of W)).hom).hom`. Establish `: Nonempty (⊤ : Z.Opens)` using `⟨⟨genericPoint Z, trivial⟩⟩`. Conclude with `charZero_of_injective_ringHom (Z.germToFunctionField_injective ⊤)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem charZero_functionField (Z : Scheme.{0}) [IsIntegral Z] (W : Type) [CommRing W] [CharZero W]
     (f : Sp W ⟶ Z) : CharZero Z.functionField := by
@@ -24,9 +24,9 @@ theorem charZero_functionField (Z : Scheme.{0}) [IsIntegral Z] (W : Type) [CommR
   exact charZero_of_injective_ringHom (Z.germToFunctionField_injective ⊤)
 
 /- English proof (translation)
-Introduce `Z _ W _ _ _ f`. Use `charZero_functionField Z W f` as an intermediate fact. Use `⟨PowerSeries Z.functionField, inferInstance, inferInstance, inferInstance, ?_, spMap (algebraMap Z.functionField (PowerSeries Z.functionField)) ≫ Z.fromSpecStalk (genericPoint Z), fun y => ?_⟩` and prove the remaining obligations. Conclude with `⟨inferInstance, by rw [PowerSeries.maximalIdeal_eq_span_X]; infer_instance, algebraRat.charZero _⟩`. Rewrite using `[Scheme.Hom.comp_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Establish `hy : ∀ p : PrimeSpectrum Z.functionField, p = IsLocalRing.closedPoint Z.functionField` using `fun p => Subsingleton.elim _ _`. Conclude with `(congrArg (Z.fromSpecStalk (genericPoint Z)) (hy _)).trans Scheme.fromSpecStalk_closedPoint`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_trait_genericPoint : ∀ (Z : Scheme.{0}) [IsIntegral Z] (W : Type) [CommRing W] [IsDomain W] [CharZero W] (_ : Sp W ⟶ Z), ∃ (R : Type) (_ : CommRing R) (_ : IsDomain R) (_ : IsLocalRing R), GlobalTheory.LN.CDvr R ∧ ∃ χ : Sp R ⟶ Z, ∀ y, χ y = genericPoint Z := by
   intro Z _ W _ _ _ f

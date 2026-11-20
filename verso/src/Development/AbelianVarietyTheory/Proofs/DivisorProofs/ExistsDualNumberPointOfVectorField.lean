@@ -20,13 +20,13 @@ def epsOn (V : (Sp (DualNumber S)).Opens) : Γ(Sp (DualNumber S), V) :=
     ((Scheme.ΓSpecIso (CommRingCat.of (DualNumber S))).inv.hom DualNumber.eps)
 
 /- English proof (translation)
-Rewrite using `[epsOn, ← map_mul, ← map_mul, DualNumber.eps_mul_eps, map_zero, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem epsOn_mul_self (V : (Sp (DualNumber S)).Opens) : epsOn V * epsOn V = 0 := by
   rw [epsOn, ← map_mul, ← map_mul, DualNumber.eps_mul_eps, map_zero, map_zero]
 
 /- English proof (translation)
-Rewrite using `[epsOn, epsOn, ← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem epsOn_res {V V' : (Sp (DualNumber S)).Opens} (h : V' ≤ V) :
     ((Sp (DualNumber S)).presheaf.map (homOfLE h).op).hom (epsOn V) = epsOn V' := by
@@ -36,7 +36,7 @@ theorem epsOn_res {V V' : (Sp (DualNumber S)).Opens} (h : V' ≤ V) :
 variable {Z : Scheme.{0}} {W : Z.Opens} {e : ∀ O : Z.Opens, Γ(Z, O) → Γ(Z, O)}
 
 /- English proof (translation)
-Establish `h` using `he.2.1 V hV 1 1`. Simplify using `only [mul_one, one_mul] at h`. Take the linear combination `-h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem field_one (he : IsField W e) {V : Z.Opens} (hV : V ≤ W) : e V 1 = 0 := by
   have h := he.2.1 V hV 1 1
@@ -44,7 +44,7 @@ theorem field_one (he : IsField W e) {V : Z.Opens} (hV : V ≤ W) : e V 1 = 0 :=
   linear_combination -h
 
 /- English proof (translation)
-Establish `h` using `he.1 V hV 0 0`. Simplify using `only [add_zero] at h`. Take the linear combination `-h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem field_zero (he : IsField W e) {V : Z.Opens} (hV : V ≤ W) : e V 0 = 0 := by
   have h := he.1 V hV 0 0
@@ -55,13 +55,13 @@ variable (g₀ : Sp S ⟶ Z) (hg : ⊤ ≤ g₀ ⁻¹ᵁ W)
 
 include hg in
 /- English proof (translation)
-Introduce `_ hx` and use `TopologicalSpace.Opens.mem_inf.2 ⟨hx, hg trivial⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem le_inf_preimage (U : Z.Opens) : (proj S ≫ g₀) ⁻¹ᵁ U ≤ (proj S ≫ g₀) ⁻¹ᵁ (U ⊓ W) :=
   fun _ hx => TopologicalSpace.Opens.mem_inf.2 ⟨hx, hg trivial⟩
 
 /- English proof (translation)
-Rewrite using `[resG, ← CommRingCat.comp_apply, Scheme.Hom.map_appLE, Scheme.Hom.app_eq_appLE]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem appLE_res (U : Z.Opens) (f : Γ(Z, U)) :
     ((proj S ≫ g₀).appLE (U ⊓ W) _ (le_inf_preimage g₀ hg U)).hom (resG Z inf_le_left f) =
@@ -89,9 +89,9 @@ variable {S : Type} [CommRing S] {Z : Scheme.{0}} {W : Z.Opens} {e : ∀ O : Z.O
 variable (g₀ : Sp S ⟶ Z) (hg : ⊤ ≤ g₀ ⁻¹ᵁ W)
 
 /- English proof (translation)
-Simplify using `only [psi, RingHom.coe_mk, MonoidHom.coe_mk, OneHom.coe_mk, map_add, map_mul, epsOn_res]`. Use `congr 1`. Rewrite using `[resG, ← CommRingCat.comp_apply, ← CommRingCat.comp_apply, Scheme.Hom.naturality]`. Both sides reduce to the same expression. Use `congr 1`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h2 : resG Z (inf_le_left : U' ⊓ W ≤ U') (resG Z h f) = resG Z (inf_le_inf_right W h) (resG Z (inf_le_left : U ⊓ W ≤ U) f)`. Simplify using `only [resG, ← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression. Rewrite using `[h2, he.2.2 _ _ _ inf_le_right, resG, ← CommRingCat.comp_apply, ← CommRingCat.comp_apply, Scheme.Hom.map_appLE, Scheme.Hom.appLE_map]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem psi_res (he : IsField W e) {U U' : Z.Opens} (h : U' ≤ U) (f : Γ(Z, U)) :
     psi g₀ hg he U' (resG Z h f) =
@@ -128,11 +128,11 @@ def pshHom (he : IsField W e) : (Sp (DualNumber S)).toPresheafedSpace.Hom Z.toPr
   ⟨(proj S ≫ g₀).base, cMap g₀ hg he⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `a ha`. Take `⟨U, hU, f, rfl⟩` from `TopCat.Presheaf.germ_exist _ a`. Rewrite `ha` using `[PresheafedSpace.stalkMap_germ_apply]`. Express the relevant statement in the definitionally equal form `IsUnit ((Sp (DualNumber S)).presheaf.germ _ y hU (((proj S ≫ g₀).app U).hom f + epsOn _ * ((proj S ≫ g₀).appLE (U ⊓ W) _ (le_inf_preimage g₀ hg U)).hom (e (U ⊓ W) (resG Z inf_le_left f)))) at ha`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `ha` using `[map_add]`. Establish `hn : IsNilpotent ((Sp (DualNumber S)).presheaf.germ _ y hU (epsOn _ * ((proj S ≫ g₀).appLE (U ⊓ W) _ (le_inf_preimage g₀ hg U)).hom (e (U ⊓ W) (resG Z inf_le_left f))))`. Use `⟨2, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_pow, mul_pow, pow_two (epsOn _), epsOn_mul_self, zero_mul, map_zero]`. Establish `h2` using `hn.neg.isUnit_add_right_of_commute ha (Commute.all _ _)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[add_comm, add_neg_cancel_right]`. Conclude with `(isUnit_map_iff ((proj S ≫ g₀).stalkMap y).hom _).mp ((congrArg IsUnit (Scheme.Hom.germ_stalkMap_apply (proj S ≫ g₀) U y hU f)).mpr h2)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLocal (he : IsField W e) (y : Sp (DualNumber S)) :
     IsLocalHom ((pshHom g₀ hg he).stalkMap y).hom := by
@@ -167,9 +167,9 @@ variable {S : Type} [CommRing S] {Z : Scheme.{0}} {W : Z.Opens} {e : ∀ O : Z.O
 variable (g₀ : Sp S ⟶ Z) (hg : ⊤ ≤ g₀ ⁻¹ᵁ W)
 
 /- English proof (translation)
-Use `show Spec.map _ ≫ Spec.map _ = _`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Establish `: (TrivSqZeroExt.fstHom S S S).toRingHom.comp (algebraMap S (DualNumber S)) = RingHom.id S`. Use extensionality with `a`. Simplify using `[TrivSqZeroExt.algebraMap_eq_inl]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, CommRingCat.ofHom_id, Spec.map_id]`.
+A detailed English derivation is pending.
 -/
 theorem fst_comp_proj : spMap (TrivSqZeroExt.fstHom S S S).toRingHom ≫ proj S = 𝟙 _ := by
   show Spec.map _ ≫ Spec.map _ = _
@@ -180,9 +180,9 @@ theorem fst_comp_proj : spMap (TrivSqZeroExt.fstHom S S S).toRingHom ≫ proj S 
   rw [this, CommRingCat.ofHom_id, Spec.map_id]
 
 /- English proof (translation)
-Rewrite using `[epsOn, ← CommRingCat.comp_apply, Scheme.Hom.naturality, CommRingCat.comp_apply]`. Establish `: ((spMap (TrivSqZeroExt.fstHom S S S).toRingHom).app ⊤).hom ((Scheme.ΓSpecIso (CommRingCat.of (DualNumber S))).inv.hom DualNumber.eps) = 0`. Establish `h1` using `congrArg (fun q => q.hom DualNumber.eps) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (TrivSqZeroExt.fstHom S S S).toRingHom))`. Establish `h2 : (CommRingCat.ofHom (TrivSqZeroExt.fstHom S S S).toRingHom ≫ (Scheme.ΓSpecIso (CommRingCat.of S)).inv).hom DualNumber.eps = 0` using `by show (Scheme.ΓSpecIso (CommRingCat.of S)).inv.hom ((TrivSqZeroExt.fstHom S S S).toRingHom DualNumber.eps) = 0`. Establish `h3 : (TrivSqZeroExt.fstHom S S S).toRingHom DualNumber.eps = 0` using `by simp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h3, map_zero]`. Conclude with `h1.symm.trans h2`. Rewrite using `[this, map_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fst_app_epsOn (V : (Sp (DualNumber S)).Opens) :
     ((spMap (TrivSqZeroExt.fstHom S S S).toRingHom).app V).hom (epsOn V) = 0 := by
@@ -200,7 +200,7 @@ theorem fst_app_epsOn (V : (Sp (DualNumber S)).Opens) :
   rw [this, map_zero]
 
 /- English proof (translation)
-Use `Scheme.Hom.ext (by rw [Scheme.Hom.comp_base, Scheme.Hom.comp_base, hb]) fun U => ?_` and prove the remaining obligations. Rewrite using `[Scheme.Hom.comp_app, Scheme.Hom.comp_app, h U]`. Use `erw [Category.assoc, Category.assoc, ← Functor.map_comp, ← op_comp, eqToHom_trans, eqToHom_refl, op_id, CategoryTheory.Functor.map_id, Category.comp_id]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem comp_eq_of_app {X T Y : Scheme.{0}} (i : X ⟶ T) (w q : T ⟶ Y) (hb : w.base = q.base)
     (h : ∀ U : Y.Opens, w.app U ≫ i.app (w ⁻¹ᵁ U) = q.app U ≫ i.app (q ⁻¹ᵁ U) ≫
@@ -212,7 +212,7 @@ theorem comp_eq_of_app {X T Y : Scheme.{0}} (i : X ⟶ T) (w q : T ⟶ Y) (hb : 
   rfl
 
 /- English proof (translation)
-Simplify using `only [psi, RingHom.coe_mk, MonoidHom.coe_mk, OneHom.coe_mk, map_add, map_mul, fst_app_epsOn, zero_mul, add_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fst_app_psi (he : IsField W e) (U : Z.Opens) (a : Γ(Z, U)) :
     ((spMap (TrivSqZeroExt.fstHom S S S).toRingHom).app ((proj S ≫ g₀) ⁻¹ᵁ U)).hom (psi g₀ hg he U a) =
@@ -221,9 +221,9 @@ theorem fst_app_psi (he : IsField W e) (U : Z.Opens) (a : Γ(Z, U)) :
     add_zero]
 
 /- English proof (translation)
-Establish `hb : spMap (TrivSqZeroExt.fstHom S S S).toRingHom ≫ proj S ≫ g₀ = g₀`. Rewrite using `[← Category.assoc, fst_comp_proj, Category.id_comp]`. Use `Eq.trans (comp_eq_of_app _ _ (proj S ≫ g₀) (epsPoint_base g₀ hg he) fun U => ?_) hb` and prove the remaining obligations. Use `erw [eqToHom_refl, op_id, CategoryTheory.Functor.map_id, Category.comp_id]`. Apply `CommRingCat.hom_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `RingHom.ext` to reduce the goal to its premises. Introduce `a`. Conclude with `fst_app_psi g₀ hg he U a`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem fst_comp (he : IsField W e) : spMap (TrivSqZeroExt.fstHom S S S).toRingHom ≫ epsPoint g₀ hg he = g₀ := by
   have hb : spMap (TrivSqZeroExt.fstHom S S S).toRingHom ≫ proj S ≫ g₀ = g₀ := by
@@ -242,7 +242,7 @@ variable {S : Type} [CommRing S] {Z : Scheme.{0}} {W : Z.Opens} {e : ∀ O : Z.O
 variable (g₀ : Sp S ⟶ Z) (hg : ⊤ ≤ g₀ ⁻¹ᵁ W)
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.Points.valR_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem valR_comp_epsPoint (he : IsField W e) {C : Type} [CommRing C] (x : Sp C ⟶ Sp (DualNumber S))
     (O : Z.Opens) (f : Γ(Z, O)) :
@@ -251,13 +251,13 @@ theorem valR_comp_epsPoint (he : IsField W e) {C : Type} [CommRing C] (x : Sp C 
   rfl
 
 /- English proof (translation)
-Establish `hxπ : spMap (dualMap ρ) ≫ proj S = proj S' ≫ spMap ρ` using `by show Spec.map _ ≫ Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Apply the tactic sequence `ext a <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`. Establish `hy : spMap (dualMap ρ) ≫ proj S ≫ g₀ = proj S' ≫ spMap ρ ≫ g₀`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[← Category.assoc, hxπ, Category.assoc]`. Establish `hyO : ⊤ ≤ (spMap (dualMap ρ) ≫ proj S ≫ g₀) ⁻¹ᵁ O`. Rewrite using `[hy]`. Conclude with `GlobalTheory.Points.le_preimage_comp _ _ hρ (GlobalTheory.Points.le_preimage_top _)`. Establish `hyW : ⊤ ≤ (spMap (dualMap ρ) ≫ proj S ≫ g₀) ⁻¹ᵁ W`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc]`. Conclude with `GlobalTheory.Points.le_preimage_comp _ _ hg (GlobalTheory.Points.le_preimage_top _)`. Establish `hyOW : ⊤ ≤ (spMap (dualMap ρ) ≫ proj S ≫ g₀) ⁻¹ᵁ (O ⊓ W)` using `fun z hz => TopologicalSpace.Opens.mem_inf.2 ⟨hyO hz, hyW hz⟩`. Establish `hx : ⊤ ≤ spMap (dualMap ρ) ⁻¹ᵁ ((proj S ≫ g₀) ⁻¹ᵁ O)` using `hyO`. Rewrite using `[valR_comp_epsPoint]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [psi, RingHom.coe_mk, MonoidHom.coe_mk, OneHom.coe_mk]`. Rewrite using `[GlobalTheory.Points.valR_add _ _ hx, GlobalTheory.Points.valR_mul _ _ hx, ← GlobalTheory.Points.valR_comp, GlobalTheory.Points.valR_appLE _ _ _ hx, he.2.2 O (O ⊓ W) inf_le_left hO f, GlobalTheory.Points.valR_res _ _ hyOW, epsOn, GlobalTheory.Points.valR_res _ _ hx, GlobalTheory. …`. Simplify using `[dualMap, TrivSqZeroExt.algebraMap_eq_inl]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem snd_valR (he : IsField W e) {S' : Type} [CommRing S'] (ρ : S →+* S') (O : Z.Opens) (hO : O ≤ W)
     (hρ : ⊤ ≤ (spMap ρ ≫ g₀) ⁻¹ᵁ O) (f : Γ(Z, O)) :
@@ -287,7 +287,7 @@ theorem snd_valR (he : IsField W e) {S' : Type} [CommRing S'] (ρ : S →+* S') 
   simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]
 
 /- English proof (translation)
-Introduce `Z W e he S _ g₀ hg`. Conclude with `⟨epsPoint g₀ hg he, fst_comp g₀ hg he, fun S' _ ρ O hO hρ f => snd_valR g₀ hg he ρ O hO hρ f⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem exists_epsPoint : ∀ (Z : Scheme.{0}) (W : Z.Opens) (e : ∀ O : Z.Opens, Γ(Z, O) → Γ(Z, O)), IsField W e →
     ∀ (S : Type) [CommRing S] (g₀ : Sp S ⟶ Z), ⊤ ≤ g₀ ⁻¹ᵁ W → ∃ w : Sp (DualNumber S) ⟶ Z,

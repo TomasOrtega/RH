@@ -4,11 +4,11 @@ open GlobalTheory GlobalTheory.LogDR
 namespace GlobalTheory.LogDR
 
 /- English proof (translation)
-Introduce `K _ n x M H a hx hlt`. Take `⟨hli, hsp⟩` from `hx`. Set `b` to `Module.Basis.mk hli hsp.ge`. Use `haveI : FiniteDimensional K Ω[K⁄ℤ] := Module.Finite.of_basis b`. Establish `hr : Module.finrank K Ω[K⁄ℤ] = n`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Module.finrank_eq_card_basis b, Fintype.card_fin]`. Unfold `_root_.GlobalTheory.LogDR.spanForms`. Rewrite using `[AddSubgroup.closure_eq_bot_iff]`. Introduce and unpack `η ⟨c, -, v, -, rfl⟩`. Establish `hdep : ¬ LinearIndependent K v` using `fun hv => by`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hv.fintype_card_le_finrank` as an intermediate fact. Rewrite `this` using `[Fintype.card_fin, hr]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[AlternatingMap.map_linearDependent _ _ hdep, smul_zero]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.LogDR.spanForms_eq_bot_of_lt_card : ∀ (K : Type) [Field K] (n : ℕ) (x : Fin n → Kˣ)
     (M : Set K) (H : Set Ω[K⁄ℤ]) (a : ℕ), _root_.GlobalTheory.LogDR.IsCoord x → n < a →

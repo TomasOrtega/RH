@@ -10,19 +10,19 @@ variable {V K : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Fie
   [IsFractionRing V K]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨0, by simp, Or.inl rfl, by simp⟩`. Consider the case `insert a s ha ih`. Take `⟨t, h0, hts, hdiv⟩` from `ih`. Distinguish the cases in `ht : t = 0`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Establish `hs` using `h0 ht`. Use `⟨a, fun hz x hx => ?_, Or.inr (Finset.mem_insert_self a s), fun x hx => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hx with hx | hx` into its components or cases. Rewrite using `[hx]`. Conclude with `hz`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hs x hx`. Break down `Finset.mem_insert.1 hx with hx | hx` into its components or cases. Conclude with `⟨1, by simp [hx]⟩`. Conclude with `⟨0, by simp [hs x hx]⟩`. Establish `hts' : t = 0 ∨ t ∈ insert a s`.
+Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Break down `hts with h | h` into its components or cases. Conclude with `Or.inl h`. Conclude with `Or.inr (Finset.mem_insert_of_mem h)`. Distinguish the cases in `haz : a = 0`. Use `⟨t, fun h => absurd h ht, hts', fun x hx => ?_⟩` and prove the remaining obligations.
+Prove the second alternative. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Break down `Finset.mem_insert.1 hx with hx | hx` into its components or cases. Conclude with `⟨0, by simp [hx, haz]⟩`. Conclude with `hdiv x hx`. Break down `(ValuationRing.iff_isInteger_or_isInteger V K).1 inferInstance (a / t) with ⟨r, hr⟩ | ⟨r, hr⟩` into its components or cases. Use `⟨t, fun h => absurd h ht, hts', fun x hx => ?_⟩` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Break down `Finset.mem_insert.1 hx with hx | hx` into its components or cases. Conclude with `⟨r, by rw [hx, hr]; field_simp⟩`. Conclude with `hdiv x hx`. Use `⟨a, fun h => absurd h haz, Or.inr (Finset.mem_insert_self a s), fun x hx => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hx with hx | hx` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨1, by simp [hx]⟩`. Take `⟨q, hq⟩` from `hdiv x hx`. Use `⟨q * r, ?_⟩` and prove the remaining obligations. Rewrite using `[hq, map_mul, hr]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem exists_divisor (s : Finset K) : ∃ t : K, (t = 0 → ∀ x ∈ s, x = 0) ∧ (t = 0 ∨ t ∈ s) ∧
     ∀ x ∈ s, ∃ r : V, x = algebraMap V K r * t := by
@@ -63,11 +63,11 @@ theorem exists_divisor (s : Finset K) : ∃ t : K, (t = 0 → ∀ x ∈ s, x = 0
             field_simp
 
 /- English proof (translation)
-Take `⟨s, rfl⟩` from `hS`. Take `⟨t, -, hts, hdiv⟩` from `exists_divisor (V := V) s`. Use `⟨t, le_antisymm ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[span_le]`. Introduce `x hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨r, hr⟩` from `hdiv x hx`. Rewrite using `[SetLike.mem_coe, mem_span_singleton]`. Conclude with `⟨r, by rw [hr, Algebra.smul_def]⟩`. Rewrite using `[span_le, Set.singleton_subset_iff]`. Break down `hts with h | h` into its components or cases.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[h]`. Conclude with `zero_mem _`. Conclude with `subset_span h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fg_eq_span_singleton (S : Submodule V K) (hS : S.FG) : ∃ t : K, S = span V {t} := by
   classical
@@ -91,41 +91,37 @@ def tailZero (m : ℕ) (i : Fin m) : Submodule V (Fin m → K) where
   smul_mem' r α ha j hj := by simp [ha j hj]
 
 /- English proof (translation)
-Use `haveI : IsNoetherian V Λ := isNoetherian_of_fg_of_noetherian Λ hfg`. Establish `key : ∀ i : Fin m, ∃ b : Fin m → K, b ∈ Λ ∧ (∀ j, i < j → b j = 0) ∧ b i ≠ 0 ∧ ∀ α ∈ Λ, (∀ j, i < j → α j = 0) → ∃ c : V, α i = c • b i`. Introduce `i`. Set `I : Submodule V K` to `(Λ ⊓ tailZero (V := V) (K := K) m i).map (LinearMap.proj i)`. Establish `hIfg : I.FG`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ((tailZero (V` using `V) (K := K) m i).comap Λ.subtype).FG := IsNoetherian.noetherian _`. Establish `h2` using `h1.map Λ.subtype`. Rewrite `h2` using `[Submodule.map_comap_subtype]`. Conclude with `h2.map _`. Take `⟨t, ht⟩` from `fg_eq_span_singleton I hIfg`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `tI : t ∈ I` using `ht ▸ mem_span_singleton_self t`. Take `⟨b, ⟨hbΛ, hbz⟩, hbt⟩` from `Submodule.mem_map.1 tI`. Establish `hbt' : b i = t` using `hbt`. Establish `hmem : ∀ α ∈ Λ, (∀ j, i < j → α j = 0) → ∃ c : V, α i = c • b i`. Introduce `α hα hz`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : α i ∈ I` using `Submodule.mem_map.2 ⟨α, ⟨hα, hz⟩, rfl⟩`. Rewrite `h3` using `[ht, mem_span_singleton]`. Take `⟨c, hc⟩` from `h3`. Conclude with `⟨c, by rw [hbt', hc]⟩`. Use `⟨b, hbΛ, hbz, ?_, hmem⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨α, hα, hz, hne'⟩` from `hne i`. Take `⟨c, hc⟩` from `hmem α hα hz`. Introduce `h0`. Conclude with `hne' (by rw [hc, h0, smul_zero])`. Use `choose β hβΛ hβz hβd hβc using key`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `indep : ∀ r : Fin m → V, ∑ i, r i • β i = 0 → r = 0`. Introduce `r hr`. Assume the negation of the conclusion as `hne0`. Establish `hS : (Finset.univ.filter fun i => r i ≠ 0).Nonempty`. Take `⟨i, hi⟩` from `Function.ne_iff.1 hne0`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `⟨i, by simpa using hi⟩`. Establish `hi : r ((Finset.univ.filter fun i => r i ≠ 0).max' hS) ≠ 0`. Establish `h4` using `Finset.max'_mem _ hS`. Simplify using `using h4`. Use `set i := (Finset.univ.filter fun i => r i ≠ 0).max' hS with hidef`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgt : ∀ j, i < j → r j = 0`. Introduce `j hj`. Assume the negation of the conclusion as `h`. Establish `h5 : j ≤ i` using `Finset.le_max' _ j (by simpa using h)`. Conclude with `absurd hj (not_lt.2 h5)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hcoord` using `congrFun hr i`. Rewrite `hcoord` using `[Finset.sum_apply, Finset.sum_eq_single i]`. Rewrite `hcoord` using `[Pi.smul_apply, Pi.zero_apply, Algebra.smul_def, mul_eq_zero]`. Break down `hcoord with h | h` into its components or cases. Conclude with `hi ((IsFractionRing.injective V K) (by rw [h, map_zero]))`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hβd i h`. Introduce `j _ hji`. Rewrite using `[Pi.smul_apply]`. Break down `lt_or_gt_of_ne hji with h | h` into its components or cases. Rewrite using `[hβz j i h, smul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hgt j h, zero_smul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`. Establish `exist : ∀ k : ℕ, ∀ α ∈ Λ, (∀ j : Fin m, k ≤ j.val → α j = 0) → ∃ r : Fin m → V, α = ∑ i, r i • β i`. Introduce `k`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Proceed by induction on `k with`. Consider the case `zero`. Introduce `α _ hz`. Use `⟨0, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[hz j (Nat.zero_le _)]`. Consider the case `succ k ih`. Introduce `α hα hz`. Distinguish the cases in `hk : k < m`. Set `i : Fin m` to `⟨k, hk⟩`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `hβc i α hα (fun j hj => hz j (by have h6 : k < j.val := hj; omega))`. Take `⟨r, hr⟩` from `ih (α - c • β i) (Λ.sub_mem hα (Λ.smul_mem c (hβΛ i))) (by`. Introduce `j hj`. Simplify using `only [Pi.sub_apply, Pi.smul_apply]`. Break down `Nat.eq_or_lt_of_le hj with h | h` into its components or cases.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h7 : j = i` using `Fin.ext h.symm`. Rewrite using `[h7, hc, sub_self]`. Rewrite using `[hz j h, hβz i j (show i < j from h), smul_zero, sub_zero])`. Establish `hs : ∑ j, (Pi.single i c : Fin m → V) j • β j = c • β i`. Rewrite using `[Finset.sum_eq_single i (fun j _ hj => by rw [Pi.single_eq_of_ne hj, zero_smul]) (by simp), Pi.single_eq_same]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨r + Pi.single i c, ?_⟩` and prove the remaining obligations. Rewrite `hr` using `[sub_eq_iff_eq_add]`. Rewrite using `[hr]`. Simplify using `only [Pi.add_apply, add_smul, Finset.sum_add_distrib, hs]`. Conclude with `ih α hα (fun j hj => hz j (by have := j.isLt; omega))`.
-
-Use `⟨β, hβΛ, hβz, hβd, ?_⟩` and prove the remaining obligations. Introduce `α hα`. Take `⟨r, hr⟩` from `exist m α hα (fun j hj => absurd j.isLt (not_lt.2 hj))`. Use `⟨r, hr, fun r' hr' => ?_⟩` and prove the remaining obligations. Establish `h8` using `indep (r' - r) (by`.
-
-Simplify using `only [Pi.sub_apply, sub_smul, Finset.sum_sub_distrib]`. Rewrite using `[← hr, ← hr', sub_self])`. Conclude with `sub_eq_zero.1 h8`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem herm (m : ℕ) (Λ : Submodule V (Fin m → K)) (hfg : Λ.FG)
     (hne : ∀ i : Fin m, ∃ α ∈ Λ, (∀ j, i < j → α j = 0) ∧ α i ≠ 0) :
@@ -225,37 +221,31 @@ theorem herm (m : ℕ) (Λ : Submodule V (Fin m → K)) (hfg : Λ.FG)
   exact sub_eq_zero.1 h8
 
 /- English proof (translation)
-Set `emb : (Fin n → V) → (Fin n → K)` to `fun c j => algebraMap V K (c j)`. Establish `embinj : Function.Injective emb` using `fun c c' h =>`. Use function extensionality and compare the values at `fun j => IsFractionRing.injective V K (congrFun h j)`. Establish `embadd : ∀ c c', emb (c + c') = emb c + emb c'` using `fun c c' => funext fun j => by simp [emb]`. Establish `embsmul : ∀ (r : V) c, emb (r • c) = algebraMap V K r • emb c` using `fun r c =>`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `fun j => by simp [emb]`. Establish `embM : ∀ a c, M a (emb c) = emb (L a c)` using `fun a c => hM a c`. Set `E : Submodule V (Fin n → V)` to `{ carrier := {c | ∀ a, L a c = χ a • c} add_mem' := fun {c c'} hc hc' a => by`. Simplify using `only [Set.mem_setOf_eq] at hc hc' ⊢`. Rewrite using `[map_add, hc a, hc' a, smul_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `zero_mem' := fun a => by simp`. Use the proof step `smul_mem' := fun r c hc a => by`. Simplify using `only [Set.mem_setOf_eq] at hc ⊢`. Rewrite using `[map_smul, hc a, smul_comm] }`. Establish `memE : ∀ c, c ∈ E ↔ ∀ a, L a c = χ a • c` using `fun c => Iff.rfl`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `eigK : ∀ c ∈ E, ∀ a, M a (emb c) = algebraMap V K (χ a) • emb c` using `fun c hc a => by`. Rewrite using `[embM, (memE c).1 hc a, embsmul]`. Establish `hco : ∀ c : E, ∃! cf : Fin m → K, emb c = ∑ i, cf i • v i` using `fun c => hb _ (eigK c c.2)`. Use `choose g spec hgu using hco`. Set `f : E →ₗ[V] (Fin m → K)` to `{ toFun := g map_add' := fun c c' => (hgu (c + c') _ (by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.coe_add, embadd, spec c, spec c', ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.add_apply, add_smul])).symm`. Use the proof step `map_smul' := fun r c => (hgu (r • c) _ (by`. Rewrite using `[Submodule.coe_smul, embsmul, spec c, Finset.smul_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[RingHom.id_apply, Pi.smul_apply, smul_smul]`. Use `congr 1`. Conclude with `(Algebra.smul_def _ _).symm)).symm }`. Establish `fspec : ∀ c : E, emb c = ∑ i, f c i • v i` using `spec`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `finj : Function.Injective f` using `fun x y h => Subtype.ext (embinj (by rw [fspec x, fspec y, h]))`. Establish `hfg : (LinearMap.range f).FG`. Rewrite using `[LinearMap.range_eq_map]`. Conclude with `(IsNoetherian.noetherian (⊤ : Submodule V E)).map f`. Establish `hne : ∀ i : Fin m, ∃ α ∈ LinearMap.range f, (∀ j, i < j → α j = 0) ∧ α i ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `i`. Take `⟨d, hd⟩` from `IsLocalization.exist_integer_multiples (nonZeroDivisors V) (Finset.univ) (v i)`. Use `choose c hc using fun j => hd j (Finset.mem_univ j)`. Establish `hcv : emb c = algebraMap V K (d : V) • v i`. Use function extensionality and compare the values at `j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show algebraMap V K (c j) = _`. Rewrite using `[hc j, Algebra.smul_def, Pi.smul_apply, smul_eq_mul]`. Establish `hcE : c ∈ E` using `fun a => embinj (by`. Rewrite using `[← embM, hcv, map_smul, hv, embsmul, hcv, smul_comm])`. Establish `hfc : f ⟨c, hcE⟩ = Pi.single i (algebraMap V K (d : V))` using `(hgu ⟨c, hcE⟩ _ (by show emb c = _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hcv, Finset.sum_eq_single i (fun j _ hj => by rw [Pi.single_eq_of_ne hj, zero_smul]) (by simp), Pi.single_eq_same])).symm`. Use `⟨f ⟨c, hcE⟩, ⟨⟨c, hcE⟩, rfl⟩, fun j hj => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hfc, Pi.single_eq_of_ne (ne_of_gt hj)]`. Rewrite using `[hfc, Pi.single_eq_same]`. Introduce `h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `nonZeroDivisors.ne_zero d.2 (IsFractionRing.injective V K (by rw [h0, map_zero]))`. Take `⟨β, hβΛ, hβz, hβd, hβu⟩` from `herm m (LinearMap.range f) hfg hne`. Use `choose e he using hβΛ`. Use `⟨fun i => (e i : Fin n → V), fun a i => (e i).2 a, ?_, ?_⟩` and prove the remaining obligations. Introduce `c hc`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `key : ∀ r' : Fin m → V, c = ∑ i, r' i • (e i : Fin n → V) ↔ f ⟨c, hc⟩ = ∑ i, r' i • β i`. Introduce `r'`. Establish `hsum : ((∑ i, r' i • e i : E) : Fin n → V) = ∑ i, r' i • (e i : Fin n → V)` using `by simp`. Establish `hf : f (∑ i, r' i • e i) = ∑ i, r' i • β i` using `by simp [map_sum, map_smul, he]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Rewrite using `[← hf]`. Use `congr 1`. Conclude with `Subtype.ext (by rw [hsum]; exact h)`. Introduce `h`.
-
-Rewrite `h` using `[← hf]`. Establish `h'` using `congrArg Subtype.val (finj h)`. Rewrite `h'` using `[hsum]`. Conclude with `h'`. Take `⟨r, hr, hru⟩` from `hβu (f ⟨c, hc⟩) ⟨⟨c, hc⟩, rfl⟩`.
-
-Conclude with `⟨r, (key r).2 hr, fun r' h => hru r' ((key r').1 h)⟩`. Introduce `i`. Use `⟨β i, hβd i, hβz i, ?_⟩` and prove the remaining obligations. Establish `h9` using `fspec (e i)`. Rewrite `h9` using `[he i]`.
-
-Conclude with `h9`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eig_basis {n m : ℕ} {ι : Type} (L : ι → (Fin n → V) →ₗ[V] (Fin n → V)) (χ : ι → V)
     (M : ι → (Fin n → K) →ₗ[K] (Fin n → K))
@@ -351,13 +341,11 @@ theorem eig_basis {n m : ℕ} {ι : Type} (L : ι → (Fin n → V) →ₗ[V] (F
     exact h9
 
 /- English proof (translation)
-Set `A : Matrix (Fin m) (Fin m) K` to `Matrix.of C`. Establish `hA : A.IsLowerTriangular` using `fun i j h => hCz i j h`. Establish `hdet : A.det ≠ 0`. Rewrite using `[Matrix.det_of_lowerTriangular A hA]`. Conclude with `Finset.prod_ne_zero_iff.2 (fun i _ => hCd i)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hu : IsUnit A.det` using `isUnit_iff_ne_zero.2 hdet`. Establish `expand : ∀ d : Fin m → K, ∑ i, d i • ∑ j, C i j • v j = ∑ j, (Matrix.vecMul d A) j • v j`. Introduce `d`. Simplify using `only [Matrix.vecMul, dotProduct, A, Matrix.of_apply, Finset.smul_sum, smul_smul, Finset.sum_smul]`. Conclude with `Finset.sum_comm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `w hw`. Take `⟨cf, hcf, huniq⟩` from `hb w hw`. Use `⟨Matrix.vecMul cf A⁻¹, ?_, fun d hd => ?_⟩` and prove the remaining obligations. Use `show w = _`. Rewrite using `[expand, Matrix.vecMul_vecMul, Matrix.nonsing_inv_mul A hu, Matrix.vecMul_one]`.
-
-Conclude with `hcf`. Establish `h1 : Matrix.vecMul d A = cf` using `huniq _ (by show w = _; rw [← expand]; exact hd)`. Rewrite using `[← h1, Matrix.vecMul_vecMul, Matrix.mul_nonsing_inv A hu, Matrix.vecMul_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tri_basis {n m : ℕ} (P : (Fin n → K) → Prop) (v : Fin m → (Fin n → K))
     (hb : ∀ w, P w → ∃! cf : Fin m → K, w = ∑ i, cf i • v i) (C : Fin m → Fin m → K)

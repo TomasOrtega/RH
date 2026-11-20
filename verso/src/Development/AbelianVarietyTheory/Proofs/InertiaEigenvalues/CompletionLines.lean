@@ -19,7 +19,7 @@ def serLine (u : ℤ) (d : M) (c : F⟦X⟧) : ℤ → M :=
   fun m => if 0 ≤ m + u then coeff (m + u).toNat c • d else 0
 
 /- English proof (translation)
-Use function extensionality and compare the values at `m`. Rewrite using `[serAct, finsum_eq_single _ 0 (fun j hj => by rw [coeff_one, if_neg hj, zero_smul])]`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem serAct_one (y : ℤ → M) : serAct (1 : F⟦X⟧) y = y := by
   funext m

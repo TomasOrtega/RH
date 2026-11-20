@@ -24,9 +24,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 namespace GlobalTheory.RowsCClose
 /- English proof (translation)
-Introduce `hL D P J hA hB a1 a8 p1 hi`. Take `⟨p41, _, p42⟩` from `p1`. Take `⟨tl, lt, io, rb⟩` from `_root_.GlobalTheory.TieLabAt.main_alt_alt hL D P`. Establish `iface` using `_root_.GlobalTheory.AdmIface.main_alt_alt D`. Establish `bc : ∀ i, BCEx D.nd D.naut i` using `iface.1 a1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `lift : ∀ i, GlobalTheory.ThetaExh.LiftParam D.nd D.naut i` using `iface.2.2.1 p42`. Establish `isot : Rows.IsotInternal D.what₂` using `iface.2.2.2.2.2.mp a8`. Establish `rho : GlobalDatumResidualRepCondition D` using `_root_.GlobalTheory.ParamRep.jointCond_33_rho_of_signature_adm5 D hA.tie0 hA.a2 hB.a4 hA.a5 p41 (GlobalTheory.GoodCuspPoint.main D tl) (_root_.GlobalTheory.XiOver.main_alt_alt_alt D P.cf P.C P.tp P.chr P.val hA.tie0 hA.a2 hA.a5)`. Establish `rp : _root_.UpperTheory.GalS.RowRepAtGN D` using `_root_.GlobalTheory.RowRepOcc.repAtGN_of_point_split D hA.tie0 hA.a2 hA.a5 p42 rho hA.gsp (_root_.GlobalTheory.T.point_of_aux42_aux41 hL D P p42 p41)`. Conclude with `{ c4b := _root_.GlobalTheory.RowTie.tameGenerator_residual_alt_alt D rb io lt rp rho := rho dz := _root_.GlobalTheory.GoodDepthZero.main_alt_alt D hA.tie0 hB.a4 p41 hA.gsp parUp := GlobalTheory.RowTie.parUpRec_of_ties D P.T hB.thetaOne (fun i => (hi i).1) bc (fun i => (hi i).2.1) …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem main_alt_alt : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (P : _root_.GlobalTheory.NPin.CharacterChoiceData hL D), _root_.GlobalTheory.NPin.CharacterChoiceJoin P → _root_.GlobalTheory.NRows.RowsAAlt D →
     GlobalTheory.NRows.RowsB D → Formalism.MainNotions.SumRepresentations.adm1 D → Formalism.MainNotions.SumRepresentations.adm8 D → _root_.Formalism.MainNotions.SumRepresentations.provisionFirst D →

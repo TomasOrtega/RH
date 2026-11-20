@@ -26,14 +26,14 @@ namespace VarpiDivModule
 variable {p O S}
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext fun x => H.lie_smul a x`.
+A detailed English derivation is pending.
 -/
 theorem onLie_eq (H : VarpiDivModule p O S) (a : O) :
     H.ι.onLie a = algebraMap O S a • LinearMap.id :=
   LinearMap.ext fun x => H.lie_smul a x
 
 /- English proof (translation)
-The claim follows from `H.ι.map_algebraMap a`.
+A detailed English derivation is pending.
 -/
 theorem ι_algebraMap [Algebra ℤ_[p] O] (H : VarpiDivModule p O S) (a : ℤ_[p]) :
     H.ι (algebraMap ℤ_[p] O a) = algebraMap ℤ_[p] (End H.G) a :=
@@ -66,7 +66,7 @@ Both sides reduce to the same expression.
     Hom.f (f ≫ g) = f.f ≫ g.f := rfl
 
 /- English proof (translation)
-The claim follows from `Hom.ext h`.
+A detailed English derivation is pending.
 -/
 @[ext] theorem hom_ext {H H' : VarpiDivModule p O S} {f g : H ⟶ H'} (h : f.f = g.f) : f = g :=
   Hom.ext h
@@ -82,7 +82,7 @@ def IsOneDimOfHeight [Algebra ℤ_[p] O] (H : VarpiDivModule p O S) (n : ℕ) : 
   H.HasDim 1 ∧ H.HasOHeight n
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => h.2.2, fun h => ⟨inferInstance, inferInstance, h⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem hasOHeight_iff [Algebra ℤ_[p] O] [Module.Free ℤ_[p] O] [Module.Finite ℤ_[p] O]
     (H : VarpiDivModule p O S) (n : ℕ) :
@@ -90,7 +90,7 @@ theorem hasOHeight_iff [Algebra ℤ_[p] O] [Module.Free ℤ_[p] O] [Module.Finit
   ⟨fun h => h.2.2, fun h => ⟨inferInstance, inferInstance, h⟩⟩
 
 /- English proof (translation)
-Rewrite using `[PDivGroup.Action.onLie_apply, PDivGroup.padicAction, Algebra.algebraMap_eq_smul_one, PDivGroup.lieMap_smul (algebraMap ℤ_[p] S)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem padicAction_onLie [Algebra ℤ_[p] S] (G : PDivGroup p S) (a : ℤ_[p]) (x : G.Lie) :
     (PDivGroup.padicAction G).onLie a x = algebraMap ℤ_[p] S a • x := by
@@ -111,7 +111,7 @@ Both sides reduce to the same expression.
     (ofPDiv p G h).G = G := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨inferInstance, inferInstance, by rw [Module.finrank_self, mul_one]; rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem ofPDiv_hasOHeight [Algebra ℤ_[p] S] (G : PDivGroup p S) (h : IsNilpotent (p : S)) :
     (ofPDiv p G h).HasOHeight G.height :=
@@ -122,7 +122,7 @@ variable (p) in
 abbrev ResRing : Type := ℤ_[p] ⧸ Ideal.span {(p : ℤ_[p])}
 
 /- English proof (translation)
-Rewrite using `[← map_natCast (Ideal.Quotient.mk (Ideal.span {(p : ℤ_[p])}))]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCast_resRing : ((p : ℕ) : ResRing p) = 0 := by
   rw [← map_natCast (Ideal.Quotient.mk (Ideal.span {(p : ℤ_[p])}))]
@@ -134,12 +134,12 @@ def muMod : VarpiDivModule p ℤ_[p] (ResRing p) :=
   ofPDiv p (PDivGroup.mu p (ResRing p)) ⟨1, by rw [pow_one, natCast_resRing]⟩
 
 /- English proof (translation)
-The claim follows from `ofPDiv_hasOHeight _ _`.
+A detailed English derivation is pending.
 -/
 theorem muMod_hasOHeight : (muMod p).HasOHeight 1 := ofPDiv_hasOHeight _ _
 
 /- English proof (translation)
-Introduce `h` and use `by exact one_ne_zero (h.2.2.trans (zero_mul _))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example : ¬ (muMod p).HasOHeight 0 := fun h => by
   exact one_ne_zero (h.2.2.trans (zero_mul _))
@@ -157,7 +157,7 @@ def unifDiag (ϖ : R) : Matrix (Fin n) (Fin n) R := diagonal (Function.update 1 
 def coUnifDiag (ϖ : R) : Matrix (Fin n) (Fin n) R := diagonal (Function.update (fun _ => ϖ) 0 1)
 
 /- English proof (translation)
-Distinguish the cases in `h : i = j`. Apply the tactic sequence `subst h; by_cases h0 : i = 0 <;> simp [unifDiag, h0]`. Simplify using `[unifDiag, h]`.
+Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem unifDiag_apply (ϖ : R) (i j : Fin n) :
     unifDiag ϖ i j = if i = j then (if i = 0 then ϖ else 1) else 0 := by
@@ -166,9 +166,9 @@ theorem unifDiag_apply (ϖ : R) (i j : Fin n) :
   · simp [unifDiag, h]
 
 /- English proof (translation)
-Rewrite using `[unifDiag, coUnifDiag, diagonal_mul_diagonal]`. Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Apply the tactic sequence `by_cases h : i = 0 <;> simp [diagonal, h]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[diagonal, hij]`.
+Simplify using the standard rewrite rules.
 -/
 theorem unifDiag_mul_coUnifDiag (ϖ : R) :
     (unifDiag ϖ : Matrix (Fin n) (Fin n) R) * coUnifDiag ϖ = ϖ • 1 := by
@@ -180,9 +180,9 @@ theorem unifDiag_mul_coUnifDiag (ϖ : R) :
   · simp [diagonal, hij]
 
 /- English proof (translation)
-Rewrite using `[unifDiag, coUnifDiag, diagonal_mul_diagonal]`. Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Apply the tactic sequence `by_cases h : i = 0 <;> simp [diagonal, h]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[diagonal, hij]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coUnifDiag_mul_unifDiag (ϖ : R) :
     (coUnifDiag ϖ : Matrix (Fin n) (Fin n) R) * unifDiag ϖ = ϖ • 1 := by
@@ -204,14 +204,14 @@ def Bset (K : Type) [Field K] [Algebra R K] (ϖ : R) : Set (GL (Fin n) K) :=
   {g | ∃ β ∈ BsetInt n ϖ, g.val = β.map (algebraMap R K)}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, 1, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem unifDiag_mem (ϖ : R) : unifDiag ϖ ∈ BsetInt n ϖ := ⟨1, 1, by simp⟩
 
 /- English proof (translation)
-Take `⟨k₁, k₂, rfl⟩` from `hβ`. Use `⟨(k₂⁻¹).val * coUnifDiag ϖ * (k₁⁻¹).val, ?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = ϖ • 1 := by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mul, unifDiag_mul_coUnifDiag, Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = ϖ • 1 := by`. Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mul, coUnifDiag_mul_unifDiag, Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mul_eq_smul {ϖ : R} {β : Matrix (Fin n) (Fin n) R} (hβ : β ∈ BsetInt n ϖ) :
     ∃ γ : Matrix (Fin n) (Fin n) R, β * γ = ϖ • 1 ∧ γ * β = ϖ • 1 := by
@@ -246,21 +246,21 @@ def sigmaConj (σ : R ≃+* R) (g : GL (Fin n) R) (β : Matrix (Fin n) (Fin n) R
   g.val * β * (sigmaGL σ g⁻¹).val
 
 /- English proof (translation)
-Simplify using `only [sigmaConj, inv_one, map_one, Units.val_one, Matrix.one_mul, Matrix.mul_one]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem sigmaConj_one (σ : R ≃+* R) (β : Matrix (Fin n) (Fin n) R) :
     sigmaConj σ 1 β = β := by
   simp only [sigmaConj, inv_one, map_one, Units.val_one, Matrix.one_mul, Matrix.mul_one]
 
 /- English proof (translation)
-Simplify using `only [sigmaConj, _root_.mul_inv_rev, map_mul, Units.val_mul, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sigmaConj_mul (σ : R ≃+* R) (g h : GL (Fin n) R) (β : Matrix (Fin n) (Fin n) R) :
     sigmaConj σ (g * h) β = sigmaConj σ g (sigmaConj σ h β) := by
   simp only [sigmaConj, _root_.mul_inv_rev, map_mul, Units.val_mul, Matrix.mul_assoc]
 
 /- English proof (translation)
-Take `⟨k₁, k₂, rfl⟩` from `hβ`. Conclude with `⟨g * k₁, k₂ * sigmaGL σ g⁻¹, by simp only [sigmaConj, Units.val_mul, Matrix.mul_assoc]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem sigmaConj_mem (σ : R ≃+* R) (g : GL (Fin n) R) {ϖ : R} {β : Matrix (Fin n) (Fin n) R}
     (hβ : β ∈ BsetInt n ϖ) : sigmaConj σ g β ∈ BsetInt n ϖ := by
@@ -375,13 +375,13 @@ def coMat {ϖ : R} (β : BsetInt n ϖ) : Matrix (Fin n) (Fin n) R :=
   (exists_mul_eq_smul β.2).choose
 
 /- English proof (translation)
-The claim follows from `(exists_mul_eq_smul β.2).choose_spec.1`.
+A detailed English derivation is pending.
 -/
 theorem mul_coMat {ϖ : R} (β : BsetInt n ϖ) : β.1 * coMat β = ϖ • 1 :=
   (exists_mul_eq_smul β.2).choose_spec.1
 
 /- English proof (translation)
-The claim follows from `(exists_mul_eq_smul β.2).choose_spec.2`.
+A detailed English derivation is pending.
 -/
 theorem coMat_mul {ϖ : R} (β : BsetInt n ϖ) : coMat β * β.1 = ϖ • 1 :=
   (exists_mul_eq_smul β.2).choose_spec.2
@@ -407,16 +407,16 @@ Both sides reduce to the same expression.
     (x : Fin n → R) : (dieu σ hϖ β).F x = β.1 *ᵥ fun i => σ (x i) := rfl
 
 /- English proof (translation)
-The claim follows from `Module.finrank_fin_fun R`.
+A detailed English derivation is pending.
 -/
 theorem finrank_dieu [Nontrivial R] (σ : R ≃+* R) {ϖ : R} (hϖ : σ ϖ = ϖ) (β : BsetInt n ϖ) :
     Module.finrank R (dieu σ hϖ β).M = n :=
   Module.finrank_fin_fun R
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Express the relevant statement in the definitionally equal form `_ = ϖ * (Pi.single (0 : Fin n) (1 : R) : Fin n → R) k`. Rewrite using `[dieu_F]`. Simplify using `only [mulVec, dotProduct, unifDiag_apply]`. Distinguish the cases in `hk : k = 0`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Substitute `hk` using the available equality. Simplify using `[Pi.single_apply]`. Simplify using `[Pi.single_apply, hk]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem dieu_unifDiag_F_zero (σ : R ≃+* R) {ϖ : R} (hϖ : σ ϖ = ϖ) :
     (dieu σ hϖ ⟨unifDiag ϖ, unifDiag_mem ϖ⟩).F (Pi.single (0 : Fin n) (1 : R)) = ϖ • Pi.single (0 : Fin n) (1 : R) := by
@@ -429,9 +429,9 @@ theorem dieu_unifDiag_F_zero (σ : R ≃+* R) {ϖ : R} (hϖ : σ ϖ = ϖ) :
   · simp [Pi.single_apply, hk]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Rewrite using `[dieu_F]`. Simplify using `only [mulVec, dotProduct, unifDiag_apply]`. Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[Pi.single_apply, hi]`. Simplify using `[Pi.single_apply, hk]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem dieu_unifDiag_F_ne (σ : R ≃+* R) {ϖ : R} (hϖ : σ ϖ = ϖ) {i : Fin n} (hi : i ≠ 0) :
     (dieu σ hϖ ⟨unifDiag ϖ, unifDiag_mem ϖ⟩).F (Pi.single i (1 : R)) = Pi.single i (1 : R) := by
@@ -443,9 +443,9 @@ theorem dieu_unifDiag_F_ne (σ : R ≃+* R) {ϖ : R} (hϖ : σ ϖ = ϖ) {i : Fin
   · simp [Pi.single_apply, hk]
 
 /- English proof (translation)
-Introduce `h`. Take `⟨x, hx⟩` from `h (Pi.single (0 : Fin n) (1 : R))`. Establish `h0` using `congrFun hx 0`. Express the relevant statement in the definitionally equal form `(unifDiag ϖ *ᵥ fun i => σ (x i)) 0 = (Pi.single (0 : Fin n) (1 : R) : Fin n → R) 0 at h0`. Simplify using `only [mulVec, dotProduct, unifDiag_apply] at h0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Simplify using `at h0`. Conclude with `hu (isUnit_iff_exists_inv.2 ⟨_, h0⟩)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dieu_unifDiag_not_surjective (σ : R ≃+* R) {ϖ : R} (hϖ : σ ϖ = ϖ) (hu : ¬ IsUnit ϖ) :
     ¬ Function.Surjective (dieu σ hϖ ⟨unifDiag (n := n) ϖ, unifDiag_mem ϖ⟩).F := by
@@ -464,7 +464,7 @@ section Example
 variable (p : ℕ) [Fact p.Prime]
 
 /- English proof (translation)
-The claim follows from `dieu_unifDiag_not_surjective _ _ fun h => by have h1 := PadicInt.isUnit_iff.1 h rw [PadicInt.norm_p, inv_eq_one, Nat.cast_eq_one] at h1 exact (Fact.out : p.Prime).one_lt.ne' h1`.
+A detailed English derivation is pending.
 -/
 example : ¬ Function.Surjective (dieu (RingEquiv.refl ℤ_[p]) (ϖ := (p : ℤ_[p])) rfl
     ⟨unifDiag (n := 2) (p : ℤ_[p]), unifDiag_mem _⟩).F :=
@@ -475,7 +475,7 @@ example : ¬ Function.Surjective (dieu (RingEquiv.refl ℤ_[p]) (ϖ := (p : ℤ_
       exact (Fact.out : p.Prime).one_lt.ne' h1
 
 /- English proof (translation)
-The claim follows from `finrank_dieu _ _ _`.
+A detailed English derivation is pending.
 -/
 example : Module.finrank ℤ_[p] (dieu (RingEquiv.refl ℤ_[p]) (ϖ := (p : ℤ_[p])) rfl
     ⟨unifDiag (n := 3) (p : ℤ_[p]), unifDiag_mem _⟩).M = 3 := finrank_dieu _ _ _
@@ -487,9 +487,9 @@ section Conj
 variable {R : Type} [CommRing R] {σ : R ≃+* R} {ϖ : R}
 
 /- English proof (translation)
-Establish `hinj : ∀ y z : D'.M, D'.F y = D'.F z → y = z` using `fun y z h => by`. Establish `h1` using `congrArg D'.V h`. Rewrite `h1` using `[D'.V_F, D'.V_F, ← sub_eq_zero, ← smul_sub]`. Conclude with `sub_eq_zero.1 (hreg _ h1)`. Apply `hinj` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hF, D.F_V, D'.F_V, map_smul]`.
+A detailed English derivation is pending.
 -/
 theorem RelDieudonne.V_comm_of_F_comm {D D' : RelDieudonne R σ ϖ} (e : D.M ≃ₗ[R] D'.M)
     (hF : ∀ x, e (D.F x) = D'.F (e x)) (hreg : ∀ y : D'.M, ϖ • y = 0 → y = 0) (x : D.M) :
@@ -521,7 +521,7 @@ Both sides reduce to the same expression.
 @[simp] theorem glEquiv_apply (g : GL (Fin n) R) (x : Fin n → R) : glEquiv g x = g.val *ᵥ x := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec (σ : R →+* R) g x i`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem sigma_mulVec (σ : R ≃+* R) (g : Matrix (Fin n) (Fin n) R) (x : Fin n → R) :
     (fun i => σ ((g *ᵥ x) i)) = g.map σ *ᵥ fun i => σ (x i) := by
@@ -545,7 +545,7 @@ def dieuIsoOfConj (hϖ : σ ϖ = ϖ) (hreg : ϖ ∈ nonZeroDivisors R) (β β' :
       exact (mem_nonZeroDivisors_iff.1 hreg |>.1) _ this⟩
 
 /- English proof (translation)
-The claim follows from `let ⟨g, hg⟩ := h ⟨dieuIsoOfConj hϖ hreg β β' g hg⟩`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_iso_of_rel (hϖ : σ ϖ = ϖ) (hreg : ϖ ∈ nonZeroDivisors R) {β β' : BsetInt n ϖ}
     (h : (sigmaSetoid n σ ϖ) β β') : Nonempty (RelDieudonne.Iso (dieu σ hϖ β) (dieu σ hϖ β')) :=
@@ -559,16 +559,16 @@ section BsetField
 variable {R : Type} [CommRing R] {n : ℕ} [NeZero n]
 
 /- English proof (translation)
-Rewrite using `[unifDiag, det_diagonal, Finset.prod_update_of_mem (Finset.mem_univ _)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_unifDiag (ϖ : R) : (unifDiag ϖ : Matrix (Fin n) (Fin n) R).det = ϖ := by
   rw [unifDiag, det_diagonal, Finset.prod_update_of_mem (Finset.mem_univ _)]
   simp
 
 /- English proof (translation)
-Establish `hd : ((unifDiag ϖ : Matrix (Fin n) (Fin n) R).map (algebraMap R K)).det ≠ 0`. Establish `h1 : ((unifDiag ϖ : Matrix (Fin n) (Fin n) R).map (algebraMap R K)).det = algebraMap R K ϖ`. Rewrite using `[show ((unifDiag ϖ : Matrix (Fin n) (Fin n) R).map (algebraMap R K)) = (algebraMap R K).mapMatrix (unifDiag ϖ) from rfl, ← RingHom.map_det, det_unifDiag]`. Rewrite using `[h1]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨GeneralLinearGroup.mkOfDetNeZero _ hd, ⟨_, unifDiag_mem ϖ, rfl⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_mem_Bset (K : Type) [Field K] [Algebra R K] (ϖ : R) (h : algebraMap R K ϖ ≠ 0) :
     ∃ g ∈ Bset n K ϖ, g.val = (unifDiag ϖ).map (algebraMap R K) := by
@@ -582,7 +582,7 @@ theorem exists_mem_Bset (K : Type) [Field K] [Algebra R K] (ϖ : R) (h : algebra
   exact ⟨GeneralLinearGroup.mkOfDetNeZero _ hd, ⟨_, unifDiag_mem ϖ, rfl⟩, rfl⟩
 
 /- English proof (translation)
-The claim follows from `exists_mem_Bset _ _ (by simp [(Fact.out : p.Prime).ne_zero])`.
+A detailed English derivation is pending.
 -/
 example (p : ℕ) [Fact p.Prime] : ∃ g ∈ Bset 2 ℚ_[p] (p : ℤ_[p]),
     g.val = (unifDiag (p : ℤ_[p])).map (algebraMap ℤ_[p] ℚ_[p]) :=

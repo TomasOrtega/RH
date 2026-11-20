@@ -2,11 +2,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.A
 
 open MeasureTheory Set UpperHalfPlane in
 /- English proof (translation)
-Rewrite using `[pos_iff_ne_zero]`. Introduce `h0`. Establish `hac : (volume.comap UpperHalfPlane.coe : Measure ℍ) ≪ (volume : Measure ℍ)`. Rewrite using `[volume_def]`. Use `withDensity_absolutelyContinuous' ?_ (Filter.Eventually.of_forall fun z => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Measurable.aemeasurable (Measurable.coe_nnreal_ennreal ?_)` and prove the remaining obligations. Use `Continuous.measurable ?_` and prove the remaining obligations. Use `.pow (.div₀ continuous_const ?_ ?_) _` and prove the remaining obligations. Conclude with `continuous_im.subtype_mk _`. Conclude with `fun x ↦ NNReal.ne_iff.mp x.im_ne_zero`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Establish `hz : NNReal.mk z.im z.im_pos.le ≠ 0` using `NNReal.ne_iff.mp z.im_ne_zero`. Conclude with `ENNReal.coe_ne_zero.mpr (pow_ne_zero _ (one_div_ne_zero hz))`. Establish `h1` using `hac h0`. Rewrite `h1` using `[measurableEmbedding_coe.comap_apply]`. Conclude with `((isOpenEmbedding_coe.isOpenMap U hU).measure_pos volume (hne.image _)).ne' h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.Af.Rs.volume_open_pos_upper_half_plane (U : Set ℍ) (hU : IsOpen U) (hne : U.Nonempty) :
     0 < (volume : Measure ℍ) U := by
@@ -28,9 +28,9 @@ private theorem UpperTheory.V.Af.Rs.volume_open_pos_upper_half_plane (U : Set �
 
 open MeasureTheory Set UpperHalfPlane in
 /- English proof (translation)
-Introduce `_ φ hc h0 hint z hz hpos`. Rewrite using `[setIntegral_pos_iff_support_of_nonneg_ae (Filter.Eventually.of_forall h0) hint]`. Establish `hV : IsOpen {w : ℍ | 0 < φ w}` using `isOpen_lt continuous_const hc`. Rewrite `hz` using `[ModularGroup.fd_eq_closure_fdo]`. Establish `hne : ({w : ℍ | 0 < φ w} ∩ ModularGroup.fdo).Nonempty` using `mem_closure_iff.mp hz _ hV hpos`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `(UpperTheory.V.Af.Rs.volume_open_pos_upper_half_plane _ (hV.inter ModularGroup.isOpen_fdo) hne).trans_le (measure_mono ?_)` and prove the remaining obligations. Introduce and unpack `w ⟨hw, hw'⟩`. Conclude with `⟨ne_of_gt hw, ModularGroup.fdo_subset_fd hw'⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem UpperTheory.V.Af.Rs.fdPos :
     UpperTheory.V.Af.Rs.VolMap → UpperTheory.V.Af.Rs.FdPos := by

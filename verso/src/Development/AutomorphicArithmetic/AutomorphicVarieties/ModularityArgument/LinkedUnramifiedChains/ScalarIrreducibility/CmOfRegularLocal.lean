@@ -10,9 +10,7 @@ open NumberField Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.
 
 open GroundTheory.Heights₂.Heights in
 /- English proof (translation)
-Use `haveI hL : IsLocalRing A := IsRegularLocalRing.toIsLocalRing`. Use `haveI hN : IsNoetherian A A := IsRegularLocalRing.toIsNoetherian`. Take `⟨rs, hreg, hmax, hlen⟩` from `GroundTheory.Arith.SchemeCoh.exists_isRegular_ofList_eq_maximalIdeal (R := A)`. Use `@IsCohenMacaulayLocalRing.mk A _ hL hN ⟨rs, fun r hr => ?_, hreg.toIsWeaklyRegular, hlen.symm⟩` and prove the remaining obligations. Rewrite using `[← hmax]`.
-
-Conclude with `Ideal.subset_span hr`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cm_of_regular_local (A : Type) [CommRing A] [IsRegularLocalRing A] :
     IsCohenMacaulayLocalRing A := by
@@ -26,13 +24,11 @@ private theorem cm_of_regular_local (A : Type) [CommRing A] [IsRegularLocalRing 
 open GroundTheory.Heights₂.Heights in
 
 /- English proof (translation)
-Use `set I : Ideal A := Ideal.span (Set.range x) with hI`. Set `e : A ⧸ I ≃+* B` to `(Ideal.quotEquivOfEq hk.symm).trans (RingHom.quotientKerEquivOfSurjective hφ)`. Establish `hdimB : ringKrullDim B = ringKrullDim (A ⧸ I)` using `(ringKrullDim_eq_of_ringEquiv e).symm`. Establish `hs : ((Finset.univ.image x : Finset A) : Set A) = Set.range x`. Rewrite using `[Finset.coe_image, Finset.coe_univ, Set.image_univ]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcard : (Finset.univ.image x).card ≤ k` using `Finset.card_image_le.trans (Finset.card_fin k).le`. Establish `hle : ringKrullDim A ≤ ringKrullDim (A ⧸ I) + (k : WithBot ℕ∞)`. Establish `h0` using `ringKrullDim_le_ringKrullDim_quotient_add_card (R := A) (Finset.univ.image x) (by`. Rewrite using `[hs, IsLocalRing.ringJacobson_eq_maximalIdeal]`. Introduce and unpack `_ ⟨i, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hx i)`. Rewrite `h0` using `[hs]`. Use `h0.trans ?_` and prove the remaining obligations. Use `gcongr`. Establish `heq : ringKrullDim (A ⧸ I) + (k : WithBot ℕ∞) = ringKrullDim A` using `le_antisymm (hdimB ▸ hd) hle`.
-
-Establish `hCM : IsCohenMacaulayLocalRing (A ⧸ I)` using `CMParameterQuotient.proof CMRegularElement.proof A k x hx heq`. Establish `: IsCohenMacaulayLocalRing B` using `IsCohenMacaulayLocalRing.of_ringEquiv e`. Conclude with `mem_minimalPrimes_of_mem_associatedPrimes hP`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem ass_min_of_surj {A B : Type} [CommRing A] [IsCohenMacaulayLocalRing A] [CommRing B]
     [Nontrivial B] (φ : A →+* B) (hφ : Function.Surjective φ) {k : ℕ} (x : Fin k → A)
@@ -63,13 +59,11 @@ private theorem ass_min_of_surj {A B : Type} [CommRing A] [IsCohenMacaulayLocalR
   exact mem_minimalPrimes_of_mem_associatedPrimes hP
 
 /- English proof (translation)
-Establish `hPprime : P.IsPrime` using `hP.1`. Establish `hdis : Disjoint (Q.primeCompl : Set R) (P : Set R)`. Rewrite using `[Set.disjoint_left]`. Introduce `a ha haP`. Conclude with `ha (hPQ haP)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `set P' : Ideal (Localization.AtPrime Q) := P.map (algebraMap R (Localization.AtPrime Q)) with hP'`. Establish `hcomap : Ideal.comap (algebraMap R (Localization.AtPrime Q)) P' = P` using `IsLocalization.comap_map_of_isPrime_disjoint Q.primeCompl (Localization.AtPrime Q) hPprime hdis`. Establish `hass : P' ∈ associatedPrimes (Localization.AtPrime Q) (Localization.AtPrime Q)`. Use `Module.associatedPrimes.mem_associatedPrimes_of_comap_mem_associatedPrimes_of_isLocalizedModule Q.primeCompl (Algebra.linearMap R (Localization.AtPrime Q)) P' ?_` and prove the remaining obligations. Rewrite using `[hcomap]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hP`. Establish `hmin : P' ∈ (Ideal.map (algebraMap R (Localization.AtPrime Q)) (⊥ : Ideal R)).minimalPrimes`. Rewrite using `[Ideal.map_bot]`. Conclude with `h P' hass`. Rewrite `hmin` using `[IsLocalization.minimalPrimes_map Q.primeCompl (Localization.AtPrime Q) (⊥ : Ideal R)]`.
-
-Establish `key : Ideal.comap (algebraMap R (Localization.AtPrime Q)) P' ∈ (⊥ : Ideal R).minimalPrimes` using `hmin`. Rewrite `key` using `[hcomap]`. Conclude with `key`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem min_of_localized {R : Type} [CommRing R] (Q : Ideal R) [Q.IsPrime] {P : Ideal R}
     (hP : P ∈ associatedPrimes R R) (hPQ : P ≤ Q)
@@ -97,17 +91,13 @@ private theorem min_of_localized {R : Type} [CommRing R] (Q : Ideal R) [Q.IsPrim
   exact key
 
 /- English proof (translation)
-Introduce `O _ _ _ _ N N' R _ p f hp hker Q hQ hht P hP hPQ`. Use `set q : Ideal (MvPowerSeries (Fin N) O) := Q.comap p with hq`. Use `haveI : IsRegularLocalRing (MvPowerSeries (Fin N) O) := GlobalTheory.FormalIsogeny.isRegularLocalRing_mvPowerSeries O (Fin N)`. Use `haveI : IsRegularLocalRing (Localization.AtPrime q) := GroundTheory.Arith.SchemeCoh.IsRegularLocalRing.localization_atPrime q`. Use `haveI : GroundTheory.Heights₂.Heights.IsCohenMacaulayLocalRing (Localization.AtPrime q) := cm_of_regular_local _`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `φ : Localization.AtPrime q →+* Localization.AtPrime Q` to `Localization.localRingHom q Q p rfl`. Establish `hφ : Function.Surjective φ` using `RingHom.surjective_localRingHom_of_surjective p hp Q`. Establish `hkerφ : RingHom.ker φ = (RingHom.ker p).map (algebraMap _ (Localization.AtPrime q))` using `IsLocalization.ker_map (M := q.primeCompl) (S := Localization.AtPrime q) (Localization.AtPrime Q) p (Submonoid.map_comap_eq_of_surjective hp Q.primeCompl)`. Establish `hkx : RingHom.ker φ = Ideal.span (Set.range (fun i => algebraMap _ (Localization.AtPrime q) (f i)))`. Rewrite using `[hkerφ, hker, Ideal.map_span, ← Set.range_comp]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hx : ∀ i, algebraMap _ (Localization.AtPrime q) (f i) ∈ maximalIdeal (Localization.AtPrime q)`. Introduce `i`. Rewrite using `[IsLocalization.AtPrime.to_map_mem_maximal_iff (Localization.AtPrime q) q]`. Establish `hfi : f i ∈ RingHom.ker p`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hker]`. Conclude with `Ideal.subset_span ⟨i, rfl⟩`. Use `show p (f i) ∈ Q`. Rewrite using `[RingHom.mem_ker.mp hfi]`. Conclude with `Q.zero_mem`.
-
-Establish `hd : ringKrullDim (Localization.AtPrime Q) + (N' : WithBot ℕ∞) ≤ ringKrullDim (Localization.AtPrime q)`. Rewrite using `[IsLocalization.AtPrime.ringKrullDim_eq_height Q (Localization.AtPrime Q), IsLocalization.AtPrime.ringKrullDim_eq_height q (Localization.AtPrime q)]`. Conclude with `hht` after adjusting the coercions. Use `min_of_localized Q hP hPQ ?_` and prove the remaining obligations. Introduce `P' hP'`.
-
-Conclude with `ass_min_of_surj φ hφ _ hx hkx hd hP'`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.J.unmix :
     ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O] (N N' : ℕ) (R : Type) [CommRing R]

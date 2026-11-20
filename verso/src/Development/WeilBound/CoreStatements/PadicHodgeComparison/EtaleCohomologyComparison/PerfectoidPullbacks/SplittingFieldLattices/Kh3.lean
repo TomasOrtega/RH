@@ -13,7 +13,7 @@ namespace CrystallineSemistableComparison.Pb
 
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨trivial, @gr_cech_fin⟩`.
+Supply the required witnesses or components.
 -/
 theorem kh3 : True ∧ KH.GrCechFin := ⟨trivial, @gr_cech_fin⟩
 

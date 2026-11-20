@@ -16,14 +16,14 @@ namespace UpperTheory.V.Z.Sym.So.CongruenceExistence
 variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.LFun.KGL, GlobalTheory.AdelicU.mem_GLint_iff]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem memK {w : Plc L} (h : GL (Fin n) (Kw w)) : h ∈ GlobalTheory.LFun.KGL w n ↔
     (∀ i j, h.1 i j ∈ w.adicCompletionIntegers L) ∧ ∀ i j, (h⁻¹).1 i j ∈ w.adicCompletionIntegers L := by
   rw [GlobalTheory.LFun.KGL, GlobalTheory.AdelicU.mem_GLint_iff]; rfl
 
 /- English proof (translation)
-Rewrite using `[UpperTheory.V.Af.Ohat, Subring.mem_iInf]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem memO {x : Af L} : x ∈ UpperTheory.V.Af.Ohat L ↔ ∀ w : Plc L, pLoc L w x ∈ w.adicCompletionIntegers L := by
   rw [UpperTheory.V.Af.Ohat, Subring.mem_iInf]; rfl
@@ -38,33 +38,31 @@ private theorem cLoc_val (w : Plc L) (x : UA L n) (i j : Fin n) :
     (cLoc w x).1 i j = pLoc L w ((fp x).1 i j) := rfl
 
 /- English proof (translation)
-Rewrite using `[← map_inv, ← map_inv]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem cLoc_inv_val (w : Plc L) (x : UA L n) (i j : Fin n) :
     ((cLoc w x)⁻¹).1 i j = pLoc L w (((fp x)⁻¹).1 i j) := by
   rw [← map_inv, ← map_inv]; rfl
 
 /- English proof (translation)
-Apply the tactic sequence `simp only [Matrix.one_apply]; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem pLoc_one (w : Plc L) (i j : Fin n) :
     pLoc L w ((1 : Matrix (Fin n) (Fin n) (Af L)) i j) = (1 : Matrix (Fin n) (Fin n) (Kw w)) i j := by
   simp only [Matrix.one_apply]; split_ifs <;> simp
 
 /- English proof (translation)
-Establish `hd : ∀ (w : Plc L) (i j : Fin n), (mL w x - 1) i j = pLoc L w ((fp x).1 i j - (1 : Matrix (Fin n) (Fin n) (Af L)) i j)` using `fun w i j => by`. Rewrite using `[map_sub, pLoc_one, Matrix.sub_apply]`. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hf, hk⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Take `⟨h1, h2, h3⟩` from `UpperTheory.V.Af.mem_KLev.1 hk`. Use `⟨⟨hf, Subgroup.mem_iInf.2 fun w => (memK _).2 ⟨fun i j => ?_, fun i j => ?_⟩⟩, fun w i j => ?_⟩` and prove the remaining obligations. Rewrite using `[cLoc_val]`. Conclude with `memO.1 (h1 i j) w`. Rewrite using `[cLoc_inv_val]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `memO.1 (h2 i j) w`. Take `⟨y, hy, e⟩` from `h3 i j`. Use `⟨pLoc L w y, memO.1 hy w, ?_⟩` and prove the remaining obligations. Rewrite using `[hd, show (fp x).1 i j - (1 : Matrix (Fin n) (Fin n) (Af L)) i j = (m : Af L) * y from e, map_mul, map_natCast]`. Introduce and unpack `⟨⟨hf, hK⟩, hc⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK' : ∀ w : Plc L, cLoc w x ∈ GlobalTheory.LFun.KGL w n` using `fun w => Subgroup.mem_iInf.1 hK w`. Establish `hm' : (m : L) ≠ 0` using `Nat.cast_ne_zero.2 hm`. Use `set u : Af L := algebraMap L (Af L) (m : L)⁻¹ with hu'`. Establish `hu : u * (m : Af L) = 1`. Rewrite using `[hu', ← map_natCast (algebraMap L (Af L)), ← map_mul, inv_mul_cancel₀ hm', map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hf, UpperTheory.V.Af.mem_KLev.2 ⟨fun i j => memO.2 fun w => ?_, fun i j => memO.2 fun w => ?_, fun i j => ⟨u * ((fp x).1 i j - (1 : Matrix (Fin n) (Fin n) (Af L)) i j), memO.2 fun w => ?_, ?_⟩⟩⟩` and prove the remaining obligations. Rewrite using `[← cLoc_val]`. Conclude with `((memK _).1 (hK' w)).1 i j`. Rewrite using `[← cLoc_inv_val]`. Conclude with `((memK _).1 (hK' w)).2 i j`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨a, ha, e⟩` from `hc w i j`. Rewrite using `[map_mul, ← hd, e, ← mul_assoc]`. Establish `: pLoc L w u * (m : Kw w) = 1`. Use `congrArg (pLoc L w) hu` as an intermediate fact. Rewrite `this` using `[map_mul, map_natCast, map_one]`. Then use the resulting hypothesis.
-
-Rewrite using `[this, one_mul]` and apply the resulting hypothesis. Rewrite using `[← mul_assoc, mul_comm _ u, hu, one_mul]`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_iff {m : ℕ} (hm : m ≠ 0) (x : UA L n) :
     (x ∈ finU L n ∧ fp x ∈ UpperTheory.V.Af.KLev L n m) ↔
@@ -102,12 +100,12 @@ private theorem mem_iff {m : ℕ} (hm : m ≠ 0) (x : UA L n) :
 private def cong (m : ℕ) : Subgroup (UA L n) := finU L n ⊓ (UpperTheory.V.Af.KLev L n m).comap fp
 
 /- English proof (translation)
-Introduce `x` and use `mem_iff hm x`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem isCong {m : ℕ} (hm : m ≠ 0) : IsCong m (cong (L := L) (n := n) m) := fun x => mem_iff hm x
 
 /- English proof (translation)
-Use `⟨fun x hx => ((isCong hm x).1 hx).1, ?_⟩` and prove the remaining obligations. Establish `hc : Continuous fun x : finU L n => fp (x : UA L n)` using `GlobalTheory.CuspRep.continuous_mapFin.comp (continuous_subtype_val.comp continuous_subtype_val)`. Use `(UpperTheory.V.Af.isOpen_KLev (F := L) (n := n) (M := m) (Nat.one_le_iff_ne_zero.2 hm)).preimage hc using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Conclude with `⟨fun h => h.2, fun h => ⟨x.2, h⟩⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Supply the required witnesses or components.
 -/
 private theorem isLevel {m : ℕ} (hm : m ≠ 0) : IsLevel (cong (L := L) (n := n) m) := by
   refine ⟨fun x hx => ((isCong hm x).1 hx).1, ?_⟩
@@ -118,9 +116,7 @@ private theorem isLevel {m : ℕ} (hm : m ≠ 0) : IsLevel (cong (L := L) (n := 
   exact ⟨fun h => h.2, fun h => ⟨x.2, h⟩⟩
 
 /- English proof (translation)
-Rewrite using `[Matrix.transvection, Matrix.add_apply, Matrix.one_apply, Matrix.single_apply]`. Use `add_mem ?_ ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`.
-
-Use `split_ifs`. Conclude with `hc`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem trans_int {w : Plc L} {i j : Fin n} {c : Kw w} (hc : c ∈ w.adicCompletionIntegers L) (a b : Fin n) :
     Matrix.transvection i j c a b ∈ w.adicCompletionIntegers L := by
@@ -139,25 +135,23 @@ private def el {w : Plc L} {i j : Fin n} (h : i ≠ j) : GL (Fin n) (Kw w) :=
     by rw [Matrix.transvection_mul_transvection_same _ _ h]; simp⟩
 
 /- English proof (translation)
-The claim follows from `(memK _).2 ⟨fun a b => trans_int (one_mem _) a b, fun a b => trans_int (neg_mem (one_mem _)) a b⟩`.
+A detailed English derivation is pending.
 -/
 private theorem el_mem {w : Plc L} {i j : Fin n} (h : i ≠ j) : el (w := w) h ∈ GlobalTheory.LFun.KGL w n :=
   (memK _).2 ⟨fun a b => trans_int (one_mem _) a b, fun a b => trans_int (neg_mem (one_mem _)) a b⟩
 
 /- English proof (translation)
-Introduce `hmw`. Take `⟨h1, -, -, -, -, -, -, h8⟩` from `UpperTheory.V.Z.Sym.Dict.Br.uaFacts L n`. Take `⟨hl, hc, -, -⟩` from `h1 w hw`. Establish `hij : (⟨0, by omega⟩ : Fin n) ≠ ⟨1, by omega⟩` using `by simp [Fin.ext_iff]`. Use `set g : GL (Fin n) (Kw w) := el hij with hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx` using `hl g`. Establish `hK : secW n w g ∈ Kall L n`. Use `⟨hx.1, Subgroup.mem_iInf.2 fun u => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hu : un u = un w`. Use `h8 w hw _ ?_ u hu` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc]`. Conclude with `el_mem hij`. Establish `: secW n w g ∈ (cLoc (E` using `L) (n := n) u).ker := Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 hx.2 u) hu`. Conclude with `Subgroup.mem_comap.2 (by rw [MonoidHom.mem_ker.1 this]; exact one_mem _)`. Take `⟨a, ha, e⟩` from `((isCong hm _).1 (hle ⟨hx, hK⟩)).2 w ⟨0, by omega⟩ ⟨1, by omega⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e1 : (mL w (secW n w g) - 1) ⟨0, by omega⟩ ⟨1, by omega⟩ = 1`. Rewrite using `[mL, hc]`. Simplify using `[g, el, Matrix.transvection, Matrix.single_apply]`. Rewrite `e` using `[e1]`. Establish `hv : Valued.v ((m : Kw w)) < 1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0` using `(HeightOneSpectrum.valuation_lt_one_iff_mem (K := L) w (m : 𝓞 L)).2 hmw`. Establish `e2 : (m : Kw w) = algebraMap L (Kw w) (algebraMap (𝓞 L) L (m : 𝓞 L))` using `by simp`. Rewrite using `[e2]`. Use `first`. Consider the case `(rw [HeightOneSpectrum.algebraMap_adicCompletion, HeightOneSpectrum.valuedAdicCompletion_eq_valuation']; exact h0)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `(rw [HeightOneSpectrum.algebraMap_adicCompletion, HeightOneSpectrum.valuedAdicCompletion_eq_valuation]; exact h0)`. Consider the case `(erw [HeightOneSpectrum.valuedAdicCompletion_eq_valuation']; exact h0)`. Establish `ha' : Valued.v a ≤ 1` using `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 ha`. Use `congrArg Valued.v e` as an intermediate fact. Rewrite `this` using `[map_one, map_mul]`.
-
-Establish `h3 : Valued.v (m : Kw w) * Valued.v a < 1`. Combine the equalities or inequalities in the displayed calculation. Conclude with `absurd this h3.ne'`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem last {m : ℕ} (hn : 2 ≤ n) (w : Plc L) (hw : IsSplitAt w)
     (hle : locU n w ⊓ Kall L n ≤ cong (L := L) (n := n) m) (hm : m ≠ 0) : (m : 𝓞 L) ∉ w.asIdeal := by
@@ -200,7 +194,7 @@ end UpperTheory.V.Z.Sym.So.CongruenceExistence
 
 open UpperTheory.V.Z.Sym.So.CongruenceExistence in
 /- English proof (translation)
-Introduce `L _ _ _ n m hm`. Conclude with `⟨cong m, isCong hm, isLevel hm, fun hn w hw hle => last hn w hw hle hm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem UpperTheory.V.Z.Sym.So.congEx :
     UpperTheory.V.Z.Sym.So.CongEx := by

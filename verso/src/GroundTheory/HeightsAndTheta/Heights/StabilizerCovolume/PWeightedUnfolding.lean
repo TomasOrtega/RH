@@ -11,7 +11,7 @@ open NumberField MeasureTheory GroundTheory.Heights₂.Heights.IndefiniteRowSide
 open scoped ENNReal Matrix ComplexOrder
 
 /- English proof (translation)
-Simplify using `only [ReciprocityTheory.ChartRestriction.G.SA.hf, Matrix.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hf_smul {R : Type*} [CommRing R] {ι : Type*} [Fintype ι] (σ : R →+* R) (r : R)
     (J : Matrix ι ι R) (x y : ι → R) :
@@ -21,7 +21,7 @@ theorem hf_smul {R : Type*} [CommRing R] {ι : Type*} [Fintype ι] (σ : R →+*
   ring
 
 /- English proof (translation)
-Use extensionality with `g`. Express the relevant statement in the definitionally equal form `(g : Matrix ι ι K)ᵀ * (r • J) * (g : Matrix ι ι K).map σ = r • J ↔ (g : Matrix ι ι K)ᵀ * J * (g : Matrix ι ι K).map σ = J`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul]`. Conclude with `(smul_right_injective _ hr).eq_iff`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitaryOf_smul_eq {K : Type*} [Field K] {ι : Type*} [Fintype ι] [DecidableEq ι] (σ : K →+* K)
     (J : Matrix ι ι K) {r : K} (hr : r ≠ 0) : unitaryOf σ (r • J) = unitaryOf σ J := by
@@ -34,7 +34,7 @@ theorem unitaryOf_smul_eq {K : Type*} [Field K] {ι : Type*} [Fintype ι] [Decid
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {N : ℕ}
 
 /- English proof (translation)
-Establish `hJ : ∀ i j, conjE E (V.J i j) = V.J j i` using `fun i j => (congrFun (congrFun V.herm i) j).symm`. Simplify using `only [HermSpace.h, ReciprocityTheory.ChartRestriction.G.SA.hf, map_sum, map_mul, hJ, conjE_apply, IsCMField.complexConj_apply_apply]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem conjE_h (V : HermSpace E N) (x y : Fin N → E) : conjE E (V.h y x) = V.h x y := by
   have hJ : ∀ i j, conjE E (V.J i j) = V.J j i := fun i j =>
@@ -56,21 +56,21 @@ def scaleSpace (V : HermSpace E N) (n : ℕ) (hn : 0 < n) : HermSpace E N where
     exact ((Nat.cast_ne_zero.2 hn.ne' : (n : E) ≠ 0).isUnit.pow _).mul V.nondeg
 
 /- English proof (translation)
-The claim follows from `hf_smul _ _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem scaleSpace_h (V : HermSpace E N) (n : ℕ) (hn : 0 < n) (x y : Fin N → E) :
     (scaleSpace V n hn).h x y = n * V.h x y :=
   hf_smul _ _ _ _ _
 
 /- English proof (translation)
-The claim follows from `unitaryOf_smul_eq _ _ (Nat.cast_ne_zero.2 hn.ne')`.
+A detailed English derivation is pending.
 -/
 theorem unitaryGroup_scale (V : HermSpace E N) (n : ℕ) (hn : 0 < n) :
     unitaryGroup (scaleSpace V n hn) = unitaryGroup V :=
   unitaryOf_smul_eq _ _ (Nat.cast_ne_zero.2 hn.ne')
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[placeJ, scaleSpace, Matrix.map_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem placeJ_scale (V : HermSpace E N) (n : ℕ) (hn : 0 < n) (w : InfinitePlace E) :
     placeJ (scaleSpace V n hn) w = (n : ℂ) • placeJ V w := by
@@ -78,7 +78,7 @@ theorem placeJ_scale (V : HermSpace E N) (n : ℕ) (hn : 0 < n) (w : InfinitePla
   simp [placeJ, scaleSpace, Matrix.map_apply]
 
 /- English proof (translation)
-Unfold `realPoints`. Use `congr 1`. Use function extensionality and compare the values at `w`. Rewrite using `[placeJ_scale]`. Conclude with `unitaryOf_smul_eq _ _ (Nat.cast_ne_zero.2 hn.ne')`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem realPoints_scale (V : HermSpace E N) (n : ℕ) (hn : 0 < n) :
     realPoints (scaleSpace V n hn) = realPoints V := by
@@ -105,9 +105,9 @@ def scaleMaj {V : HermSpace E N} (M : Majorant V) (n : ℕ) (hn : 0 < n) : Major
     field_simp
 
 /- English proof (translation)
-Unfold `wNorm`. Use `congr 1`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `hn' : (n : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 hn.ne'`. Express the relevant statement in the definitionally equal form `c w / n * (ReciprocityTheory.ChartRestriction.G.SA.hf (starRingEnd ℂ) ((n : ℂ) • M.H w) (x w) (x w)).re = _`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hf_smul]`. Simplify using `only [Complex.mul_re, Complex.natCast_re, Complex.natCast_im, zero_mul, sub_zero]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 -/
 theorem wNorm_scale {V : HermSpace E N} (M : Majorant V) (n : ℕ) (hn : 0 < n) (c : InfinitePlace E → ℝ)
     (x : InfinitePlace E → Fin N → ℂ) :
@@ -122,21 +122,19 @@ theorem wNorm_scale {V : HermSpace E N} (M : Majorant V) (n : ℕ) (hn : 0 < n) 
   field_simp
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `hL.1`. Take `⟨y, hy0, hy⟩` from `exists_integral_multiples ℤ ℚ ((S ×ˢ S).image fun p => V.h p.1 p.2)`. Establish `hn : 0 < y.natAbs` using `Int.natAbs_pos.2 hy0`. Establish `hden : ∀ a ∈ (S ×ˢ S).image (fun p => V.h p.1 p.2), IsIntegral ℤ ((y.natAbs : E) * a)`. Introduce `a ha`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `hy a ha`. Break down `Int.natAbs_eq y with h | h` into its components or cases. Rewrite `h1` using `[h]`. Simplify `h1` using `[zsmul_eq_mul]`. Rewrite `h1` using `[h]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify `h1.neg` using `[zsmul_eq_mul]`. Use `⟨y.natAbs, hn, ?_⟩` and prove the remaining obligations. Use `set V' := scaleSpace V y.natAbs hn`. Establish `hgen : ∀ x ∈ S, ∀ z ∈ S, IsIntegral ℤ (V'.h x z)` using `fun x hx z hz => by`. Rewrite using `[scaleSpace_h]`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hden _ (Finset.mem_image.2 ⟨(x, z), Finset.mem_product.2 ⟨hx, hz⟩, rfl⟩)`. Establish `key1 : ∀ z ∈ S, ∀ x ∈ L, IsIntegral ℤ (V'.h x z)`. Introduce `z hz x hx`. Rewrite `hx` using `[← hS]`. Proceed by induction on `hx using Submodule.span_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `mem x hx => exact hgen x hx z hz`. Consider the case `zero => simpa [HermSpace.h, ReciprocityTheory.ChartRestriction.G.SA.hf] using (isIntegral_zero : IsIntegral ℤ (0 : E))`. Consider the case `add a b _ _ ha hb => rw [h_add_left]`. Conclude with `ha.add hb`. Consider the case `smul r a _ ha`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← IsScalarTower.algebraMap_smul E r a, h_smul_left]`. Conclude with `(show IsIntegral ℤ (algebraMap (𝓞 E) E r) from r.isIntegral_coe).mul ha`. Establish `key2 : ∀ x ∈ L, x ∈ dual V' L`. Introduce `x hx`. Rewrite `hx` using `[← hS]`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Introduce `z hz`. Rewrite using `[← conjE_h]`. Conclude with `(key1 x hx z hz).map (conjE E).toIntAlgHom`.
-
-Consider the case `zero => exact zero_mem _`. Consider the case `add a b _ _ ha hb => exact add_mem ha hb`. Consider the case `smul r a _ ha => exact Submodule.smul_mem _ r ha`. Conclude with `fun x hx z hz => key2 x hx z hz`.
+Treat this case separately. Treat this case separately. Treat this case separately. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem exists_scale_integral (V : HermSpace E N) (L : Submodule (𝓞 E) (Fin N → E)) (hL : IsLattice L) :
     ∃ (n : ℕ) (hn : 0 < n), ∀ x ∈ L, ∀ y ∈ L, IsIntegral ℤ ((scaleSpace V n hn).h x y) := by
@@ -198,14 +196,14 @@ theorem realScale_eq_mk (g : RealPts V) :
     realScale V n hn g = ⟨g.1, by rw [realPoints_scale]; exact g.2⟩ := rfl
 
 /- English proof (translation)
-Rewrite using `[realScale_eq_mk, Subtype.coe_mk]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coe_realScale (g : RealPts V) :
     ((realScale V n hn g : RealPts (scaleSpace V n hn)) : InfinitePlace E → GL (Fin N) ℂ) = g := by
   rw [realScale_eq_mk, Subtype.coe_mk]
 
 /- English proof (translation)
-Unfold `gAct`. Rewrite using `[coe_realScale]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem gAct_realScale (g : RealPts V) (x : InfinitePlace E → Fin N → ℂ) :
     gAct (realScale V n hn g) x = gAct g x := by
@@ -213,13 +211,13 @@ theorem gAct_realScale (g : RealPts V) (x : InfinitePlace E → Fin N → ℂ) :
   rw [coe_realScale]
 
 /- English proof (translation)
-The claim follows from `continuous_subtype_val.subtype_mk _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_realScale : Continuous (realScale V n hn) :=
   continuous_subtype_val.subtype_mk _
 
 /- English proof (translation)
-The claim follows from `continuous_subtype_val.subtype_mk _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_realScale_symm : Continuous (realScale V n hn).symm :=
   continuous_subtype_val.subtype_mk _
@@ -234,13 +232,13 @@ Both sides reduce to the same expression.
 theorem realScaleMeas_apply (g : RealPts V) : realScaleMeas V n hn g = realScale V n hn g := rfl
 
 /- English proof (translation)
-Establish `hU` using `unitaryGroup_scale V n hn`. Rewrite using `[Subgroup.mem_map, Subgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨δ, hδ, rfl⟩`. Rewrite `hδ` using `[Subgroup.mem_inf]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨⟨δ.1, by rw [hU]; exact δ.2⟩, Subgroup.mem_inf.2 ⟨hδ.1, hδ.2⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `w`. Both sides reduce to the same expression. Introduce and unpack `⟨δ, hδ, h⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Assume the hypotheses and unpack their components.
 
-Rewrite `hδ` using `[Subgroup.mem_inf]`. Use `⟨⟨δ.1, by rw [← hU]; exact δ.2⟩, Subgroup.mem_inf.2 ⟨hδ.1, hδ.2⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h'` using `congrArg (fun x : RealPts (scaleSpace V n hn) => (x : InfinitePlace E → GL (Fin N) ℂ)) h`. Rewrite `h'` using `[coe_realScale]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← h']`. Use function extensionality and compare the values at `w`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 -/
 theorem mem_gammaVecInf_scale (L : Submodule (𝓞 E) (Fin N → E)) (v₀ : Fin N → E) (g : RealPts V) :
     g ∈ gammaVecInf V L v₀ ↔ realScale V n hn g ∈ gammaVecInf (scaleSpace V n hn) L v₀ := by
@@ -266,19 +264,19 @@ theorem mem_gammaVecInf_scale (L : Submodule (𝓞 E) (Fin N → E)) (v₀ : Fin
 end Transport
 
 /- English proof (translation)
-Introduce `E _ _ _ N V M c hc L v₀ hL hv₀ hne hiso μ hμ`. Take `⟨n, hn, hint⟩` from `exists_scale_integral V L hL`. Establish `hψ : ⇑(realScaleMeas V n hn) = ⇑(realScale V n hn)` using `funext (realScaleMeas_apply V n hn)`. Establish `: μ.IsHaarMeasure` using `hμ`. Establish `hμ' : (μ.map (realScaleMeas V n hn)).IsHaarMeasure`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hψ]`. Conclude with `(realScale V n hn).isHaarMeasure_map μ (continuous_realScale V n hn) (continuous_realScale_symm V n hn)`. Establish `hc' : ∀ w, 0 < c w / n` using `fun w => div_pos (hc w) (Nat.cast_pos.2 hn)`. Establish `hiso' : (scaleSpace V n hn).h v₀ v₀ = 0` using `by rw [scaleSpace_h, hiso, mul_zero]`. Take `⟨s', hs'm, hs', hfin, hhom⟩` from `h₁ E N (scaleSpace V n hn) (scaleMaj M n hn) (fun w => c w / n) hc' L v₀ hL hint hv₀ hne hiso' _ hμ'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `e : gammaVecInf (scaleSpace V n hn) L v₀ → gammaVecInf V L v₀` to `fun γ => ⟨(realScale V n hn).symm γ, (mem_gammaVecInf_scale V n hn L v₀ _).2 (by`. Rewrite using `[MulEquiv.apply_symm_apply]`. Conclude with `γ.2)⟩`. Establish `he : Function.Bijective e`. Use `⟨fun a b hab => Subtype.ext ((realScale V n hn).symm.injective (congrArg Subtype.val hab)), fun γ => ⟨⟨realScale V n hn γ, (mem_gammaVecInf_scale V n hn L v₀ _).1 γ.2⟩, ?_⟩⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `(realScale V n hn).symm_apply_apply _`. Establish `hfd : IsFundamentalDomain (gammaVecInf V L v₀) (realScaleMeas V n hn ⁻¹' s') μ`. Use `hs'.preimage_of_equiv ((realScaleMeas V n hn).measurable.measurePreserving μ).quasiMeasurePreserving he ?_` and prove the remaining obligations. Introduce `γ x`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `realScaleMeas V n hn (((realScale V n hn).symm γ : RealPts V) * x) = (γ : RealPts (scaleSpace V n hn)) * realScaleMeas V n hn x`. Rewrite using `[hψ, map_mul, MulEquiv.apply_symm_apply]`. Establish `hpt : ∀ (t : ℝ) (g : RealPts V), wBelowInd (scaleMaj M n hn) (fun w => c w / n) v₀ t (realScaleMeas V n hn g) = wBelowInd M c v₀ t g`. Introduce `t g`. Unfold `wBelowInd`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[realScaleMeas_apply, ← map_inv, gAct_realScale, wNorm_scale]`. Establish `hint_eq : ∀ t : ℝ, (∫⁻ g in realScaleMeas V n hn ⁻¹' s', wBelowInd M c v₀ t g ∂μ) = ∫⁻ g in s', wBelowInd (scaleMaj M n hn) (fun w => c w / n) v₀ t g ∂(μ.map (realScaleMeas V n hn))`. Introduce `t`. Rewrite using `[MeasurableEquiv.restrict_map, lintegral_map_equiv]`. Repeatedly rewrite using `[hpt]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨realScaleMeas V n hn ⁻¹' s', (realScaleMeas V n hn).measurable hs'm, hfd, ?_, fun t ht => ?_⟩` and prove the remaining obligations. Rewrite using `[hint_eq]`. Conclude with `hfin`. Rewrite using `[hint_eq, hint_eq, hhom t ht]`.
+A detailed English derivation is pending.
 -/
 theorem WeightedUnfolding.proof (h₁ : WeightedUnfoldingIntegral.Statement) : WeightedUnfolding.Statement := by
   intro E _ _ _ N V M c hc L v₀ hL hv₀ hne hiso μ hμ

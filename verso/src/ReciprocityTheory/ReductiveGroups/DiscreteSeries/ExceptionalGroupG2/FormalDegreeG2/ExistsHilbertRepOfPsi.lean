@@ -11,17 +11,17 @@ namespace ReciprocityTheory.ChartRestriction.DS.G2
 open ReciprocityTheory.ChartRestriction.DS.Lap.Base
 
 /- English proof (translation)
-Introduce `n ε lam T Ψ hgap hP`. Establish `hv₀ : T.w ≠ 0`. Introduce `h`. Establish `h1` using `T.w_norm`. Rewrite `h1` using `[h, norm_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `zero_ne_one h1`. Establish `hN0 : ‖uniformisationL2 ε Ψ T.w T.w‖ ≠ 0` using `norm_ne_zero_iff.mpr (datumEmbedding_highest_ne_zero hgap hP hv₀)`. Take `⟨c, hc⟩ : ∃ c : ℂ, c = ((‖uniformisationL2 ε Ψ T.w T.w‖⁻¹ : ℝ) : ℂ)` from `⟨_, rfl⟩`. Establish `h0 : uniformisationL2 ε Ψ T.w 0 = 0` using `by simpa using datumEmbedding_smul hP T.w 0 T.w`. Establish `hmem` using `datumEmbedding_mem_smooth hP T.w (c • T.w)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨L2 ε, inferInstance, inferInstance, rreg ε, uniformisationL2 ε Ψ T.w (c • T.w), ?_, ?_⟩` and prove the remaining obligations. Use `⟨rreg_isURepOn ε, hmem, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[datumEmbedding_smul hP, norm_smul, hc, Complex.norm_of_nonneg (inv_nonneg.mpr (norm_nonneg _)), inv_mul_cancel₀ hN0]`. Prove the components needed by the constructor for the conclusion. Introduce `a`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[rightDerivative_datum_embedding hP T.w (c • T.w) rfl, map_smul, T.w_wt a, Submodule.coe_smul, ← datumEmbedding_smul hP, smul_comm]`. Introduce `a b hab hε`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[rightDerivative_datum_embedding hP T.w (c • T.w) hε, map_smul, T.w_hw a b hab hε, smul_zero, h0]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Conclude with `datumV_casimir hP T.w _ ((mem_datumV_iff hP T.w _).2 ⟨c • T.w, rfl⟩)`. Introduce `g hg`. Establish `key : ((‖uniformisationL2 ε Ψ T.w T.w‖ ^ 2 : ℝ) : ℂ) * (starRingEnd ℂ c * c) = 1`. Rewrite using `[hc, Complex.conj_ofReal, ← Complex.ofReal_mul, ← Complex.ofReal_mul, ← Complex.ofReal_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[pow_two, mul_mul_mul_comm, mul_inv_cancel₀ hN0, one_mul]`. Rewrite using `[formulaF hgap hP hv₀ hg (c • T.w) (c • T.w), map_smul, inner_smul_left, inner_smul_right, ← mul_assoc (starRingEnd ℂ c), ← mul_assoc, key, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_hilbert_rep_of_psi :
   ∀ (n : ℕ) (ε : Fin n → Bool) (lam : Fin n → ℝ) (T : S7.KType ε (lowK ε lam))

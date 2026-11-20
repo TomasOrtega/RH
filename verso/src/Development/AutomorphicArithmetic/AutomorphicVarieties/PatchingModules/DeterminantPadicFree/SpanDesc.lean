@@ -2,7 +2,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.De
 open Matrix IsLocalRing UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa
 
 /- English proof (translation)
-Introduce `i j`. Use `⟨fun _ => trivial, fun e => ?_⟩` and prove the remaining obligations. Establish `h0 : Z i j = 0` using `(hZ i j).2 e`. Rewrite using `[Submodule.mem_bot, Matrix.map_apply, h0, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem sd_map_ev {F F' : Type} [Field F] [Field F'] (f : F →+* F') {n a : ℕ}
     {Z : Matrix (Fin n) (Fin n) F} (hZ : Z ∈ Ev F F n a) : Z.map f ∈ Ev F' F' n a := by
@@ -12,13 +12,11 @@ private theorem sd_map_ev {F F' : Type} [Field F] [Field F'] (f : F →+* F') {n
   rw [Submodule.mem_bot, Matrix.map_apply, h0, map_zero]
 
 /- English proof (translation)
-Proceed by induction on `hY using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨i, rfl⟩` from `hy`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Consider the case `zero`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Establish an intermediate fact.
 
-Establish `: (0 : Matrix (Fin n) (Fin n) F).map f = 0` using `by ext i j; simp`. Rewrite using `[this]`. Conclude with `Submodule.zero_mem _`. Consider the case `add y z _ _ hy hz`. Establish `: (y + z).map f = y.map f + z.map f` using `by ext i j; simp`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[this]`. Conclude with `Submodule.add_mem _ hy hz`. Consider the case `smul c y _ hy`. Establish `: (c • y).map f = f c • y.map f` using `by ext i j; simp`. Rewrite using `[this]`.
-
-Conclude with `Submodule.smul_mem _ _ hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sd_up {F F' ι : Type} [Field F] [Field F'] (f : F →+* F') {n : ℕ}
     (r : ι → Matrix (Fin n) (Fin n) F) (Y : Matrix (Fin n) (Fin n) F)
@@ -39,15 +37,13 @@ private theorem sd_up {F F' ι : Type} [Field F] [Field F'] (f : F →+* F') {n 
     rw [this]; exact Submodule.smul_mem _ _ hy
 
 /- English proof (translation)
-Proceed by induction on `hY using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨i, rfl⟩` from `hy`. Introduce `c`. Establish `: (c • (r i).map f).map p = p c • r i`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use extensionality with `s t`. Simplify using `[hp]`. Use `show (c • (r i).map f).map p ∈ _`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `zero`. Introduce `c`. Establish `: (c • (0 : Matrix (Fin n) (Fin n) F')).map p = 0` using `by ext i j; simp`. Rewrite using `[this]`. Conclude with `Submodule.zero_mem _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Consider the case `add y z _ _ hy hz`. Introduce `c`. Establish `: (c • (y + z)).map p = (c • y).map p + (c • z).map p` using `by ext i j; simp [mul_add]`. Rewrite using `[this]`. Conclude with `Submodule.add_mem _ (hy c) (hz c)`.
-
-Consider the case `smul d y _ hy`. Introduce `c`. Rewrite using `[smul_smul]`. Conclude with `hy _`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sd_down {F F' ι : Type} [Field F] [Field F'] (f : F →+* F') {n : ℕ}
     (r : ι → Matrix (Fin n) (Fin n) F) (p : F' →+ F) (hp : ∀ (c : F') (x : F), p (c * f x) = p c * x)
@@ -76,23 +72,23 @@ private theorem sd_down {F F' ι : Type} [Field F] [Field F'] (f : F →+* F') {
     rw [smul_smul]; exact hy _
 
 /- English proof (translation)
-Introduce `F F' ι _ _ f n a r hr`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `sd_map_ev f (hr i)`. Introduce `Z hZ`. Establish `hZ' : Z = ∑ i, ∑ j, single i j (Z i j)` using `matrix_eq_sum_single Z`. Rewrite using `[hZ']`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.sum_mem _ fun i _ => Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `e : ((i : ℕ) < a) ↔ ((j : ℕ) < a)`. Establish `h1 : (single i j 1 : Matrix (Fin n) (Fin n) F) ∈ Ev F F n a` using `fun p q => ⟨fun _ => trivial, fun e' => by`. Rewrite using `[Submodule.mem_bot, Matrix.single_apply, if_neg]`. Introduce and unpack `⟨rfl, rfl⟩`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `e' e⟩`. Rewrite `h1` using `[← h]`. Establish `h2` using `Submodule.smul_mem _ (Z i j) (sd_up f r _ h1)`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `p q`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [Matrix.smul_apply, Matrix.map_apply, Matrix.single_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `: Z i j = 0` using `(hZ i j).2 e`. Simplify using `[this]`. Introduce `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `hr i`. Introduce `Z hZ`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `letI : Algebra F F' := f.toAlgebra`. Take `⟨p, hp⟩` from `LinearMap.exists_leftInverse_of_injective (Algebra.linearMap F F') (LinearMap.ker_eq_bot.2 f.injective)`. Establish `hp1 : ∀ x : F, p (f x) = x` using `fun x => LinearMap.congr_fun hp x`. Establish `hp2 : ∀ (c : F') (x : F), p.toAddMonoidHom (c * f x) = p.toAddMonoidHom c * x`. Introduce `c x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : c * f x = x • c` using `by rw [mul_comm]; rfl`. Use `show p (c * f x) = p c * x`. Rewrite using `[h3, map_smul, smul_eq_mul, mul_comm]`. Establish `h1` using `sd_map_ev f hZ`. Rewrite `h1` using `[← h]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `h2` using `sd_down f r p.toAddMonoidHom hp2 _ h1 1`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `s t`. Simplify using `[hp1]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.Det.spanDesc :
     ∀ {F F' ι : Type} [Field F] [Field F'] (f : F →+* F') {n a : ℕ} (r : ι → Matrix (Fin n) (Fin n) F), (∀ i, r i ∈ Ev F F n a) → (Submodule.span F (Set.range r) = Ev F F n a ↔ Submodule.span F' (Set.range fun i => (r i).map f) = Ev F' F' n a) := by

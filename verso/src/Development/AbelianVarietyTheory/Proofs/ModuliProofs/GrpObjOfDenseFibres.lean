@@ -13,15 +13,13 @@ open scoped CategoryTheory.Obj TensorProduct
 namespace GlobalTheory.FibreGrp
 
 /- English proof (translation)
-Establish `: IsReduced X.left` using `GlobalTheory.isReduced_of_smooth_of_isReduced X.hom`. Use `choose U j hj hfg using h`. Set `incl : (∐ fun q : Sg => pullback X.hom (j q.1 q.2)) ⟶ X.left` to `Sigma.desc fun q : Sg => pullback.fst X.hom (j q.1 q.2)`. Establish `hincl : ∀ q : Sg, Sigma.ι (fun q : Sg => pullback X.hom (j q.1 q.2)) q ≫ incl = pullback.fst X.hom (j q.1 q.2)` using `fun q => Sigma.ι_desc _ q`. Establish `hdense : Dense (X.hom ⁻¹' Sg)` using `hSg.preimage X.hom.isOpenMap`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsDominant incl`. Use `⟨Dense.mono ?_ hdense⟩` and prove the remaining obligations. Introduce `x hx`. Establish `hx' : x ∈ Set.range (pullback.fst X.hom (j _ hx))`. Rewrite using `[Scheme.Pullback.range_fst]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hj _ hx`. Take `⟨y, hy⟩` from `hx'`. Use `⟨Sigma.ι (fun q : Sg => pullback X.hom (j q.1 q.2)) ⟨_, hx⟩ y, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, hincl]`. Conclude with `hy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `ext_of_isDominant_of_isSeparated Y.hom (by rw [Over.w f, Over.w g]) incl ?_` and prove the remaining obligations. Use `Sigma.hom_ext _ _ fun q => ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, hincl, ← Category.assoc, hincl]`. Establish `key` using `hfg q.1 q.2 (Over.mk (pullback.snd X.hom (j q.1 q.2))) (Over.homMk (pullback.fst X.hom (j q.1 q.2)) (by simp only [Over.mk_hom]; exact pullback.condition))`.
-
-Conclude with `congrArg CommaMorphism.left key`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hom_ext_of_fibres {S : Scheme.{0}} [IsReduced S] {Sg : Set S} (hSg : Dense Sg) {X Y : Over S}
     [Smooth X.hom] [IsSeparated Y.hom] {f g : X ⟶ Y}
@@ -53,7 +51,7 @@ theorem hom_ext_of_fibres {S : Scheme.{0}} [IsReduced S] {Sg : Set S} (hSg : Den
   exact congrArg CommaMorphism.left key
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Smooth (pullback.fst P.hom Q.hom ≫ P.hom)`. Use `infer_instance`.
+Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 private theorem smooth_tensor_hom {S : Scheme.{0}} (P Q : Over S) [Smooth P.hom] [Smooth Q.hom] :
     Smooth (P ⊗ Q).hom := by
@@ -61,14 +59,14 @@ private theorem smooth_tensor_hom {S : Scheme.{0}} (P Q : Over S) [Smooth P.hom]
   infer_instance
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Smooth (𝟙 S)`. Use `infer_instance`.
+Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 private theorem smooth_tensorUnit_hom (S : Scheme.{0}) : Smooth (𝟙_ (Over S)).hom := by
   change Smooth (𝟙 S)
   infer_instance
 
 /- English proof (translation)
-Use `hom_ext_of_fibres hSg fun p hp => ?_` and prove the remaining obligations. Take `⟨K, _, x, A, _, φ, hx, hc, pb, hm, hi, he⟩` from `hfib p hp`. Conclude with `⟨Sp K, x, hx, H K x A φ pb hm hi he⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem eq_of_points_lemma_3 {R : Type} [CommRing R] [IsReduced R] {Z : Over (Sp R)} [IsSeparated Z.hom]
     {m : Z ⊗ Z ⟶ Z} {i : Z ⟶ Z} {e : 𝟙_ (Over (Sp R)) ⟶ Z} {Sg : Set (Sp R)} (hSg : Dense Sg)
@@ -90,27 +88,27 @@ namespace GlobalTheory
 open GrpDense FibreGrp
 
 /- English proof (translation)
-Introduce `R _ _ Z m i e Sg hSg hsm hpr hgc hfib`. Establish `: Smooth Z.hom` using `hsm`. Establish `: IsProper Z.hom` using `hpr`. Establish `: Smooth (𝟙_ (Over (Sp R))).hom` using `smooth_tensorUnit_hom (Sp R)`. Establish `: Smooth (Z ⊗ Z).hom` using `smooth_tensor_hom Z Z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Smooth (𝟙_ (Over (Sp R)) ⊗ Z).hom` using `smooth_tensor_hom _ _`. Establish `: Smooth (Z ⊗ 𝟙_ (Over (Sp R))).hom` using `smooth_tensor_hom _ _`. Establish `: Smooth ((Z ⊗ Z) ⊗ Z).hom` using `smooth_tensor_hom _ _`. Establish `one_mul' : e ▷ Z ≫ m = (λ_ Z).hom`. Use `eq_of_points_lemma_3 hSg hfib ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `K _ x A _ _ φ pb hm hi he T t`. Take `⟨c, hc⟩` from `GrpDense.pushPt_surjective pb T (t ≫ snd (𝟙_ (Over (Sp R))) Z)`. Rewrite using `[← lift_comp_fst_snd t, toUnit_unique (t ≫ fst (𝟙_ (Over (Sp R))) Z) (toUnit _), lift_whiskerRight_assoc, lift_leftUnitor_hom, ← hc, GrpDense.pushPt_one pb.w he T, GrpDense.pushPt_mul pb.w hm, _root_.one_mul]`. Establish `mul_one' : Z ◁ e ≫ m = (ρ_ Z).hom`. Use `eq_of_points_lemma_3 hSg hfib ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `K _ x A _ _ φ pb hm hi he T t`. Take `⟨c, hc⟩` from `GrpDense.pushPt_surjective pb T (t ≫ fst Z (𝟙_ (Over (Sp R))))`. Rewrite using `[← lift_comp_fst_snd t, toUnit_unique (t ≫ snd Z (𝟙_ (Over (Sp R)))) (toUnit _), lift_whiskerLeft_assoc, lift_rightUnitor_hom, ← hc, GrpDense.pushPt_one pb.w he T, GrpDense.pushPt_mul pb.w hm, _root_.mul_one]`. Establish `mul_assoc' : m ▷ Z ≫ m = (α_ Z Z Z).hom ≫ Z ◁ m ≫ m`. Use `eq_of_points_lemma_3 hSg hfib ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `K _ x A _ _ φ pb hm hi he T t`. Take `⟨a, ha⟩` from `GrpDense.pushPt_surjective pb T (t ≫ fst (Z ⊗ Z) Z ≫ fst Z Z)`. Take `⟨b, hb⟩` from `GrpDense.pushPt_surjective pb T (t ≫ fst (Z ⊗ Z) Z ≫ snd Z Z)`. Take `⟨c, hc⟩` from `GrpDense.pushPt_surjective pb T (t ≫ snd (Z ⊗ Z) Z)`. Establish `ht : t = lift (lift (pushPt pb.w a) (pushPt pb.w b)) (pushPt pb.w c)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[ha, hb, hc]`. Simplify using `only [← Category.assoc, lift_comp_fst_snd]`. Rewrite using `[ht]`. Simplify using `only [lift_whiskerRight_assoc, lift_lift_associator_hom_assoc, lift_whiskerLeft_assoc, GrpDense.pushPt_mul pb.w hm, _root_.mul_assoc]`. Establish `left_inv' : lift i (𝟙 Z) ≫ m = toUnit Z ≫ e`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `eq_of_points_lemma_3 hSg hfib ?_` and prove the remaining obligations. Introduce `K _ x A _ _ φ pb hm hi he T t`. Take `⟨c, rfl⟩` from `GrpDense.pushPt_surjective pb T t`. Rewrite using `[comp_lift_assoc, Category.comp_id, GrpDense.pushPt_inv pb.w hi, GrpDense.pushPt_mul pb.w hm, ← Category.assoc (pushPt pb.w c) (toUnit Z) e, toUnit_unique (pushPt pb.w c ≫ toUnit Z) (toUnit _), GrpDense.pushPt_one pb.w he T, _root_.inv_mul_cancel]`. Establish `right_inv' : lift (𝟙 Z) i ≫ m = toUnit Z ≫ e`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `eq_of_points_lemma_3 hSg hfib ?_` and prove the remaining obligations. Introduce `K _ x A _ _ φ pb hm hi he T t`. Take `⟨c, rfl⟩` from `GrpDense.pushPt_surjective pb T t`. Rewrite using `[comp_lift_assoc, Category.comp_id, GrpDense.pushPt_inv pb.w hi, GrpDense.pushPt_mul pb.w hm, ← Category.assoc (pushPt pb.w c) (toUnit Z) e, toUnit_unique (pushPt pb.w c ≫ toUnit Z) (toUnit _), GrpDense.pushPt_one pb.w he T, _root_.mul_inv_cancel]`. Establish `comm' : (β_ Z Z).hom ≫ m = m`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `eq_of_points_lemma_3 hSg hfib ?_` and prove the remaining obligations. Introduce `K _ x A _ _ φ pb hm hi he T t`. Take `⟨a, ha⟩` from `GrpDense.pushPt_surjective pb T (t ≫ fst Z Z)`. Take `⟨b, hb⟩` from `GrpDense.pushPt_surjective pb T (t ≫ snd Z Z)`. Establish `ht : t = lift (pushPt pb.w a) (pushPt pb.w b)` using `by rw [ha, hb, lift_comp_fst_snd]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[ht, lift_braiding_hom_assoc, GrpDense.pushPt_mul pb.w hm, GrpDense.pushPt_mul pb.w hm, _root_.mul_comm]`. Set `G : GrpObj Z` to `{ one := e, mul := m, one_mul := one_mul', mul_one := mul_one', mul_assoc := mul_assoc', inv := i, left_inv := left_inv', right_inv := right_inv' }`. Use `⟨G, rfl, rfl, rfl, ?_, ?_⟩` and prove the remaining obligations. Conclude with `{ comm := ⟨comm'⟩, smooth := hsm, proper := hpr, geomConnected := hgc }`. Introduce `S' x A _ φ pb hm'`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨pb, fun T a b a₀ b₀ ha hb => ?_⟩` and prove the remaining obligations. Establish `ea : a₀ = pushPt pb.w a` using `Over.OverMorphism.ext ha`. Establish `eb : b₀ = pushPt pb.w b` using `Over.OverMorphism.ext hb`. Substitute `ea eb` using the available equality. Conclude with `congrArg CommaMorphism.left (GrpDense.pushPt_mul pb.w hm' a b)`.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem grpObj_of_dense_fibres :
     ∀ (R : Type) [CommRing R] [IsReduced R] (Z : Over (Sp R)) (m : Z ⊗ Z ⟶ Z) (i : Z ⟶ Z) (e : 𝟙_ (Over (Sp R)) ⟶ Z) (Sg : Set (Sp R)), Dense Sg → Smooth Z.hom → IsProper Z.hom → GeometricallyConnected Z.hom → (∀ p ∈ Sg, ∃ (K : Type) (_ : Field K) (x : Sp K ⟶ Sp R) (A : Over (Sp K)) (_ : GrpObj A) (φ : A.left ⟶ Z.left), p ∈ Set.range x ∧ IsCommMonObj A ∧ IsPullback φ A.hom Z.hom x ∧ (∀ φ₂ : (A ⊗ A).left ⟶ (Z ⊗ Z).left, IsSquare φ φ₂ → φ₂ ≫ m.left = (μ[A]).left ≫ φ) ∧ φ ≫ i.left = (ι[A]).left ≫ φ ∧ x ≫ e.left = (η[A]).left ≫ φ) → ∃ _ : GrpObj Z, μ[Z] = m ∧ η[Z] = e ∧ ι[Z] = i ∧ IsAbelianScheme Z ∧ ∀ (S' : Scheme.{0}) (x : S' ⟶ Sp R) (A : Over S') [GrpObj A] (φ : A.left ⟶ Z.left), IsPullback φ A.hom Z.hom x → (∀ φ₂ : (A ⊗ A).left ⟶ (Z ⊗ Z).left, IsSquare φ φ₂ → φ₂ ≫ m.left = (μ[A]).left ≫ φ) → IsGrpPullback A Z x φ := by

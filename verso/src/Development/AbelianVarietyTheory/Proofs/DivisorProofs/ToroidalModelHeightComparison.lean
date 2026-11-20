@@ -17,15 +17,15 @@ open GlobalTheory.LieFilt
 namespace GlobalTheory.LieFilt
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c Oz _ β Z F _ _ e X W q jB πB ρ hpb hρ M r g τ t ht ch V hV hVa f hf`. Use `haveI : IsAffineHom jB := MorphismProperty.of_isPullback (P := @IsAffineHom) hpb.flip inferInstance`. Establish `hW : IsAffineOpen (jB ⁻¹ᵁ V)` using `hVa.preimage jB`. Take `⟨x₀, h₀, e₀⟩` from `TangentOrigin.exists_evalPt_eq hW (RingHom.id Γ(W, jB ⁻¹ᵁ V))`. Establish `hx₀ : ⊤ ≤ (x₀ ≫ jB) ⁻¹ᵁ V` using `h₀`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc₀ : ⊤ ≤ (x₀ ≫ πB ≫ genι Z) ⁻¹ᵁ ch.U`. Rewrite using `[← hρ]`. Conclude with `fun p hp => hV (hx₀ hp)`. Establish `hψ : x₀ ≫ πB ≫ genStr Z ≫ spMap e.toRingHom = spMap (Spec.preimage (x₀ ≫ πB ≫ genStr Z ≫ spMap e.toRingHom)).hom` using `(Spec.map_preimage _).symm`. Establish `hv₀` using `fun i => ((ht.1 V f hf _ x₀ hx₀ _ hψ).1 i).1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Matrix.of fun b i => tanEv Z.t (hv₀ i) hc₀ (ch.e b), fun K _ x hx hx' i hv hc b => ?_⟩` and prove the remaining obligations. Establish `hφ : ⊤ ≤ (spMap (TangentOrigin.evalPt x _ hx') ≫ x₀) ⁻¹ᵁ (jB ⁻¹ᵁ V)` using `fun p _ => h₀ (Set.mem_univ _)`. Establish `ex : spMap (TangentOrigin.evalPt x _ hx') ≫ x₀ = x`. Use `TangentOrigin.ext_evalPt hW hφ hx' (RingHom.ext fun a => ?_)` and prove the remaining obligations. Rewrite using `[TangentOrigin.evalPt_spMap_comp _ x₀ _ h₀ hφ, e₀]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `TangentOrigin.evalPt x _ hx' (tanEv Z.t (hv₀ i) hc₀ (ch.e b)) = _`. Generalize the expression as in `TangentOrigin.evalPt x _ hx' = φ at ex`. Substitute `ex` using the available equality. Establish `key : ∀ (y : Sp K ⟶ Z.X) (w : Sp (DualNumber K) ⟶ Z.t.G.left) (hw : IsTanAtG Z.t y w) (hy : ⊤ ≤ y ⁻¹ᵁ ch.U), y = spMap φ ≫ x₀ ≫ πB ≫ genι Z → w = spMap (Formalism.L2.Pj.dualMap φ) ≫ t V f hf _ x₀ hx₀ i → φ (tanEv Z.t (hv₀ i) hc₀ (ch.e b)) = tanEv Z.t hw hy (ch.e b)`.
+Express the relevant assertion in an equivalent form by its definition. Replace the chosen expression with an arbitrary variable. Substitute using the available equality. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `y w hw hy rfl rfl`. Conclude with `(GlobalTheory.LocM.tanEv_baseChange E H _ Z.t _ _ _ hc₀ _ (hv₀ i) K φ hw hy _).symm`. Conclude with `key _ _ hv hc (Category.assoc _ _ _) (ht.2.2 V f hf _ _ φ x₀ hx₀ hx i)`.
+A detailed English derivation is pending.
 -/
 theorem exists_genCoord : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H}

@@ -20,24 +20,24 @@ noncomputable section
 namespace GlobalTheory.AlgClosedDescent
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_base_point_of_finite_etale_over_algClosed`.
+A detailed English derivation is pending.
 -/
 theorem finiteEtale_point_of_ext : ∀ (k₀ K : Type) [Field k₀] [IsAlgClosed k₀] [Field K] [Algebra k₀ K] (X : Scheme.{0}) (p : X ⟶ Sp k₀), IsFinite p → Etale p → ∀ x : Sp K ⟶ X, x ≫ p = spMap (algebraMap k₀ K) → ∃ x₀ : Sp k₀ ⟶ X, x₀ ≫ p = 𝟙 _ ∧ spMap (algebraMap k₀ K) ≫ x₀ = x := GlobalTheory.T.exists_base_point_of_finite_etale_over_algClosed
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_abelian_endomorphism_spread_specialise`.
+A detailed English derivation is pending.
 -/
 theorem exists_spread_specialise : ∀ (k₀ K : Type) [Field k₀] [IsAlgClosed k₀] [Field K] [Algebra k₀ K] (B : Over (Sp k₀)) [GrpObj B], IsAbelianScheme B → ∀ f : (Over.pullback (spMap (algebraMap k₀ K))).obj B ⟶ (Over.pullback (spMap (algebraMap k₀ K))).obj B, IsMonHom f → ∃ (R : Subalgebra k₀ K) (g : R →ₐ[k₀] k₀) (Ψ : (Over.pullback (spMap (algebraMap k₀ R))).obj B ⟶ (Over.pullback (spMap (algebraMap k₀ R))).obj B) (f₀ : B ⟶ B) (σ : B.left ⟶ pullback B.hom (spMap (algebraMap k₀ R))), IsMonHom Ψ ∧ IsMonHom f₀ ∧ GlobalTheory.Spread.bcMap B.hom R.val ≫ Ψ.left ≫ pullback.fst _ _ = f.left ≫ pullback.fst _ _ ∧ σ ≫ pullback.fst _ _ = 𝟙 _ ∧ σ ≫ pullback.snd _ _ = B.hom ≫ spMap g.toRingHom ∧ f₀.left = σ ≫ Ψ.left ≫ pullback.fst _ _ := GlobalTheory.T.exists_abelian_endomorphism_spread_specialise
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.spread_endomorphism_torsion_section_eq_specialisation`.
+A detailed English derivation is pending.
 -/
 theorem torsion_section_comp_eq : ∀ (k₀ K : Type) [Field k₀] [IsAlgClosed k₀] [Field K] [Algebra k₀ K] (B : Over (Sp k₀)) [GrpObj B], IsAbelianScheme B → ∀ (R : Subalgebra k₀ K) (g : R →ₐ[k₀] k₀) (Ψ : (Over.pullback (spMap (algebraMap k₀ R))).obj B ⟶ (Over.pullback (spMap (algebraMap k₀ R))).obj B) (f₀ : B ⟶ B) (σ : B.left ⟶ pullback B.hom (spMap (algebraMap k₀ R))), IsMonHom Ψ → IsMonHom f₀ → σ ≫ pullback.fst _ _ = 𝟙 _ → σ ≫ pullback.snd _ _ = B.hom ≫ spMap g.toRingHom → f₀.left = σ ≫ Ψ.left ≫ pullback.fst _ _ → ∀ (N : ℕ), (N : k₀) ≠ 0 → ∀ y₀ : 𝟙_ (Over (Sp k₀)) ⟶ B, y₀ ^ N = 1 → ∀ c : Sp R ⟶ pullback B.hom (spMap (algebraMap k₀ R)), c ≫ pullback.fst _ _ = spMap (algebraMap k₀ R) ≫ y₀.left → c ≫ pullback.snd _ _ = 𝟙 _ → c ≫ Ψ.left ≫ pullback.fst _ _ = spMap (algebraMap k₀ R) ≫ y₀.left ≫ f₀.left := GlobalTheory.T.spread_endomorphism_torsion_section_eq_specialisation
 
 variable {k₀ K : Type} [Field k₀] [IsAlgClosed k₀] [Field K] [Algebra k₀ K]
 
 /- English proof (translation)
-Establish `h : IsUnit (N : k)` using `hN.isUnit`. Simplify using `using h.map (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isUnit_natCast_gamma {k : Type} [Field k] {N : ℕ} (hN : (N : k) ≠ 0) :
     IsUnit (N : Γ(Sp k, ⊤)) := by
@@ -45,9 +45,9 @@ theorem isUnit_natCast_gamma {k : Type} [Field k] {N : ℕ} (hN : (N : k) ≠ 0)
   simpa using h.map (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom
 
 /- English proof (translation)
-Substitute `ht` using the available equality. Use `haveI : IsAbelianScheme B := hB`. Take `⟨-, hfin, het⟩` from `GrpTangent.finiteEtale_mulN_torsion B (isUnit_natCast_gamma hN)`. Take `⟨x, hx, -⟩` from `LatticeTorsion.existsUnique_torsion B N u hu`. Take `⟨x₀, hx₀, hjx⟩` from `finiteEtale_point_of_ext k₀ K _ (torsion B N).hom hfin het x.left (Over.w x)`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `y₀' : 𝟙_ (Over (Sp k₀)) ⟶ torsion B N` to `Over.homMk x₀ hx₀`. Use `⟨y₀' ≫ torsion.ι B N, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← MonObj.comp_pow, LatticeTorsion.torsionι_pow_eq_one, MonObj.comp_one]`. Rewrite using `[← hx, Over.comp_left, ← hjx, Over.comp_left, Category.assoc]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem torsion_descent (B : Over (Sp k₀)) [GrpObj B] (hB : IsAbelianScheme B) (N : ℕ)
     (hN : (N : k₀) ≠ 0) {t : Sp K ⟶ Sp k₀} (ht : t = spMap (algebraMap k₀ K))
@@ -65,11 +65,9 @@ theorem torsion_descent (B : Over (Sp k₀)) [GrpObj B] (hB : IsAbelianScheme B)
     rfl
 
 /- English proof (translation)
-Use `hA.comm` as an intermediate fact. Establish `hS` using `isSemiAbelian_of_isAbelianScheme A hA`. Establish `hm : IsMonHom (F₁ * F₂⁻¹)` using `{ one_hom := by`. Rewrite using `[MonObj.comp_mul, GrpObj.comp_inv, IsMonHom.one_hom, IsMonHom.one_hom, mul_inv_cancel, one_eq_one]`. Use `mul_hom := by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e (z : A ⊗ A ⟶ A) : z ≫ (F₁ * F₂⁻¹) = z ≫ F₁ * (z ≫ F₂)⁻¹`. Rewrite using `[MonObj.comp_mul, GrpObj.comp_inv]`. Rewrite using `[mul_eq_mul, e, MonObj.mul_comp, MonObj.mul_comp, MonObj.comp_mul, tensorHom_fst, tensorHom_snd, e, e, mul_inv, _root_.mul_mul_mul_comm] }`. Establish `h1` using `GlobalTheory.TorsionDense.eq_one_of_torsion_comp_eq_one Ω A A hS hS l hl hlk (F₁ * F₂⁻¹) hm (fun _ _ y a hy ↦ by`. Rewrite using `[MonObj.comp_mul, GrpObj.comp_inv]`.
-
-Conclude with `mul_inv_eq_one.mpr (h y a hy))`. Conclude with `mul_inv_eq_one.mp h1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hom_eq_of_lTorsion {Ω : Type} [Field Ω] [IsAlgClosed Ω] {A : Over (Sp Ω)} [GrpObj A]
     (hA : IsAbelianScheme A) (F₁ F₂ : A ⟶ A) [IsMonHom F₁] [IsMonHom F₂] {l : ℕ} (hl : l.Prime)
@@ -93,11 +91,9 @@ theorem hom_eq_of_lTorsion {Ω : Type} [Field Ω] [IsAlgClosed Ω] {A : Over (Sp
   exact mul_inv_eq_one.mp h1
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `CharP.exists k`. Distinguish the cases in `h2 : p = 2`. Substitute `h2` using the available equality. Use `⟨3, Nat.prime_three, fun h3 ↦ ?_⟩` and prove the remaining obligations. Use `(CharP.cast_eq_zero_iff k 2 3).mp (by exact_mod_cast h3)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Use `⟨2, Nat.prime_two, fun h3 ↦ ?_⟩` and prove the remaining obligations. Establish `h4` using `(CharP.cast_eq_zero_iff k p 2).mp (by exact_mod_cast h3)`. Break down `(Nat.dvd_prime Nat.prime_two).mp h4 with h5 | h5` into its components or cases. Conclude with `CharP.char_ne_one k p h5`.
-
-Conclude with `h2 h5`.
+Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem exists_prime_ne_zero (k : Type) [Field k] : ∃ l : ℕ, l.Prime ∧ (l : k) ≠ 0 := by
   obtain ⟨p, hp⟩ := CharP.exists k
@@ -113,31 +109,29 @@ theorem exists_prime_ne_zero (k : Type) [Field k] : ∃ l : ℕ, l.Prime ∧ (l 
     · exact h2 h5
 
 /- English proof (translation)
-Take `⟨R, g, Ψ, f₀, σ, hΨ, hf₀, hbc, hσ₁, hσ₂, hf₀σ⟩` from `exists_spread_specialise k₀ K B hB f hf`. Establish `key : (Over.pullback (spMap (algebraMap k₀ K))).map f₀ = f`. Set `Ω` to `AlgebraicClosure K`. Set `qΩ : Sp Ω ⟶ Sp K` to `spMap (algebraMap K Ω)`. Use `letI : Algebra k₀ Ω := ((algebraMap K Ω).comp (algebraMap k₀ K)).toAlgebra`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Equip the data with the indicated structure.
 
-Establish `hιj : qΩ ≫ spMap (algebraMap k₀ K) = spMap (algebraMap k₀ Ω)`. Simplify using `only [qΩ, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Apply the tactic sequence `try rfl`. Use `haveI := hf₀`. Use `haveI := hΨ`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `ActDescent.pullback_map_injective qΩ` to reduce the goal to its premises. Establish `hBK` using `isAbelianScheme_overPullback (spMap (algebraMap k₀ K)) B hB`. Establish `hA` using `isAbelianScheme_overPullback qΩ _ hBK`. Take `⟨l, hl, hlk⟩` from `exists_prime_ne_zero k₀`. Establish `hlΩ : (l : Ω) ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `h`. Apply `hlk` to reduce the goal to its premises. Apply `(algebraMap k₀ Ω).injective` to reduce the goal to its premises. Rewrite using `[map_natCast, h, map_zero]`. Use `hom_eq_of_lTorsion hA _ _ hl hlΩ fun y a hy => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₁` using `isGrpPullback_pullback B (spMap (algebraMap k₀ K))`. Establish `h₂` using `isGrpPullback_pullback ((Over.pullback (spMap (algebraMap k₀ K))).obj B) qΩ`. Establish `h₁₂` using `h₂.comp h₁`. Set `u` to `pushHom h₁₂ (𝟙_ _) y`. Establish `hu : u ^ (l ^ a) = 1` using `by rw [← map_pow, hy, map_one]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨y₀, hy₀, huy⟩` from `torsion_descent (K := Ω) B hB (l ^ a) (by rw [Nat.cast_pow]; exact pow_ne_zero _ hlk) (t := (𝟙_ (Over (Sp Ω))).hom ≫ qΩ ≫ spMap (algebraMap k₀ K)) (by rw [hιj]; exact Category.id_comp _) u hu`. Establish `hu' : y.left ≫ pullback.fst ((Over.pullback (spMap (algebraMap k₀ K))).obj B).hom qΩ ≫ pullback.fst B.hom (spMap (algebraMap k₀ K)) = qΩ ≫ spMap (algebraMap k₀ K) ≫ y₀.left`. Establish `e : u.left = y.left ≫ pullback.fst ((Over.pullback (spMap (algebraMap k₀ K))).obj B).hom qΩ ≫ pullback.fst B.hom (spMap (algebraMap k₀ K))` using `rfl`. Rewrite using `[← e, huy]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hy0 : y₀.left ≫ B.hom = 𝟙 _` using `Over.w y₀`. Set `w : Sp K ⟶ pullback B.hom (spMap (algebraMap k₀ K))` to `pullback.lift (spMap (algebraMap k₀ K) ≫ y₀.left) (𝟙 _) (by rw [Category.assoc, hy0]; exact (Category.comp_id _).trans (Category.id_comp _).symm)`. Establish `e2 : y.left ≫ pullback.snd (pullback.snd B.hom (spMap (algebraMap k₀ K))) qΩ = 𝟙 _` using `Over.w y`. Establish `hv : y.left ≫ pullback.fst ((Over.pullback (spMap (algebraMap k₀ K))).obj B).hom qΩ = qΩ ≫ w`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, hu', Category.assoc, pullback.lift_fst]`. Rewrite using `[Category.assoc, Category.assoc, pullback.lift_snd, Category.comp_id]`. Establish `e1 : pullback.fst (pullback.snd B.hom (spMap (algebraMap k₀ K))) qΩ ≫ pullback.snd B.hom (spMap (algebraMap k₀ K)) = pullback.snd (pullback.snd B.hom (spMap (algebraMap k₀ K))) qΩ ≫ qΩ` using `pullback.condition`. Use `erw [e1]`. Rewrite using `[← Category.assoc, e2, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Set `c : Sp R ⟶ pullback B.hom (spMap (algebraMap k₀ R))` to `pullback.lift (spMap (algebraMap k₀ R) ≫ y₀.left) (𝟙 _) (by rw [Category.assoc, hy0]; exact (Category.comp_id _).trans (Category.id_comp _).symm)`. Establish `hwc : w ≫ Spread.bcMap B.hom R.val = spMap R.val.toRingHom ≫ c`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Spread.bcMap_fst, pullback.lift_fst, Category.assoc, pullback.lift_fst, ← Category.assoc, Spread.spMap_algHom_comp]`. Rewrite using `[Category.assoc, Spread.bcMap_snd, pullback.lift_snd_assoc, Category.assoc, pullback.lift_snd, Category.id_comp, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC` using `torsion_section_comp_eq k₀ K B hB R g Ψ f₀ σ hΨ hf₀ hσ₁ hσ₂ hf₀σ (l ^ a) (by rw [Nat.cast_pow]; exact pow_ne_zero _ hlk) y₀ hy₀ c (pullback.lift_fst _ _ _) (pullback.lift_snd _ _ _)`. Establish `m1 : ((Over.pullback qΩ).map ((Over.pullback (spMap (algebraMap k₀ K))).map f₀)).left ≫ pullback.fst ((Over.pullback (spMap (algebraMap k₀ K))).obj B).hom qΩ = pullback.fst ((Over.pullback (spMap (algebraMap k₀ K))).obj B).hom qΩ ≫ ((Over.pullback (spMap (algebraMap k₀ K))).map f …` using `ActDescent.pullback_map_left_fst _`. Establish `m3 : ((Over.pullback (spMap (algebraMap k₀ K))).map f₀).left ≫ pullback.fst B.hom (spMap (algebraMap k₀ K)) = pullback.fst B.hom (spMap (algebraMap k₀ K)) ≫ f₀.left` using `ActDescent.pullback_map_left_fst _`. Establish `m4 : ((Over.pullback qΩ).map f).left ≫ pullback.fst ((Over.pullback (spMap (algebraMap k₀ K))).obj B).hom qΩ = pullback.fst ((Over.pullback (spMap (algebraMap k₀ K))).obj B).hom qΩ ≫ f.left` using `ActDescent.pullback_map_left_fst _`. Establish `hL : y.left ≫ ((Over.pullback qΩ).map ((Over.pullback (spMap (algebraMap k₀ K))).map f₀)).left ≫ pullback.fst ((Over.pullback (spMap (algebraMap k₀ K))).obj B).hom qΩ ≫ pullback.fst B.hom (spMap (algebraMap k₀ K)) = qΩ ≫ spMap (algebraMap k₀ K) ≫ y₀.left ≫ f₀.left`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[reassoc_of% m1, m3, reassoc_of% hu']`. Establish `hR : y.left ≫ ((Over.pullback qΩ).map f).left ≫ pullback.fst ((Over.pullback (spMap (algebraMap k₀ K))).obj B).hom qΩ ≫ pullback.fst B.hom (spMap (algebraMap k₀ K)) = qΩ ≫ spMap (algebraMap k₀ K) ≫ y₀.left ≫ f₀.left`. Rewrite using `[reassoc_of% m4, ← hbc]`. Use `erw [reassoc_of% hv]`. Rewrite using `[reassoc_of% hwc, hC, ← Spread.spMap_algHom_comp R.val]`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Category.assoc]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `h₁₂.1.hom_ext` to reduce the goal to its premises. Simplify using `only [Over.comp_left, Category.assoc]`. Conclude with `hL.trans hR.symm`.
-
-Simplify using `only [Over.comp_left, Category.assoc, Over.w]`. Conclude with `⟨f₀, ⟨hf₀, key⟩, fun f₁ hf₁ => ActDescent.pullback_map_injective (spMap (algebraMap k₀ K)) B B (hf₁.2.trans key.symm)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem endo_descent (B : Over (Sp k₀)) [GrpObj B] (hB : IsAbelianScheme B)
     (f : (Over.pullback (spMap (algebraMap k₀ K))).obj B ⟶
@@ -232,17 +226,17 @@ theorem endo_descent (B : Over (Sp k₀)) [GrpObj B] (hB : IsAbelianScheme B)
     ActDescent.pullback_map_injective (spMap (algebraMap k₀ K)) B B (hf₁.2.trans key.symm)⟩
 
 /- English proof (translation)
-Use `hB.comm` as an intermediate fact. Use `hB.smooth` as an intermediate fact. Use `hB.proper` as an intermediate fact. Establish `hnu` using `isUnit_natCast_gamma hn`. Use `GrpTangent.isFinite_mulN B hnu` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `GrpTangent.etale_mulN B hnu` as an intermediate fact. Establish `h₁` using `isGrpPullback_pullback B (spMap (algebraMap k₀ K))`. Establish `hw : (y.left ≫ pullback.fst B.hom (spMap (algebraMap k₀ K))) ≫ (mulN B n).left = spMap (algebraMap k₀ K) ≫ z₀.left`. Establish `e1 : (pushHom h₁ (𝟙_ _) y ≫ mulN B n) = pushHom h₁ (𝟙_ _) (y ^ n)`. Rewrite using `[GrpTangent.comp_mulN, map_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2` using `congrArg (fun z => z.left) e1`. Simplify using `only [Over.comp_left] at e2`. Conclude with `e2.trans hz`. Set `x : Sp K ⟶ pullback (mulN B n).left z₀.left` to `pullback.lift (y.left ≫ pullback.fst B.hom (spMap (algebraMap k₀ K))) (spMap (algebraMap k₀ K)) hw`. Take `⟨x₀, hx₀, hjx⟩` from `finiteEtale_point_of_ext k₀ K _ (pullback.snd (mulN B n).left z₀.left) inferInstance inferInstance x (pullback.lift_snd _ _ _)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hz0 : z₀.left ≫ B.hom = 𝟙 _` using `Over.w z₀`. Establish `hfB : pullback.fst (mulN B n).left z₀.left ≫ B.hom = pullback.snd (mulN B n).left z₀.left`. Rewrite using `[← Over.w (mulN B n), ← Category.assoc, pullback.condition, Category.assoc, hz0, Category.comp_id]`. Set `y₀ : 𝟙_ (Over (Sp k₀)) ⟶ B` to `Over.homMk (x₀ ≫ pullback.fst _ _) (by rw [Category.assoc, hfB, hx₀]; rfl)`. Establish `hepi : Epi (spMap (algebraMap k₀ K))` using `Flat.epi_of_flat_of_surjective _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy₀ : y.left ≫ pullback.fst B.hom (spMap (algebraMap k₀ K)) = spMap (algebraMap k₀ K) ≫ y₀.left`. Express the relevant statement in the definitionally equal form `_ = spMap (algebraMap k₀ K) ≫ x₀ ≫ pullback.fst _ _`. Rewrite using `[← Category.assoc, hjx, pullback.lift_fst]`. Use `⟨y₀, ⟨?_, hy₀⟩, fun y₁ hy₁ => ?_⟩` and prove the remaining obligations. Rewrite using `[← GrpTangent.comp_mulN]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(x₀ ≫ pullback.fst _ _) ≫ (mulN B n).left = z₀.left`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hx₀, Category.id_comp]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[← cancel_epi (spMap (algebraMap k₀ K)), ← hy₁.2, hy₀]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem point_descent (B : Over (Sp k₀)) [GrpObj B] (hB : IsAbelianScheme B) (n : ℕ)
     (hn : (n : k₀) ≠ 0) (y : 𝟙_ (Over (Sp K)) ⟶ (Over.pullback (spMap (algebraMap k₀ K))).obj B)

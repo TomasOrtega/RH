@@ -14,9 +14,9 @@ namespace GlobalTheory.CompanionTheory.TorusCh.CommMem
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-Use extensionality with `g : 1`. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(thetaR (conjAd E) n (thetaR (conjAd E) n g)).val i j = g.val i j`. Rewrite using `[thetaR_val]`. Establish `h : (thetaR (conjAd E) n g)⁻¹ = thetaR (conjAd E) n g⁻¹` using `(map_inv _ _).symm`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h, thetaR_val, inv_inv]`. Simplify using `[GlobalTheory.CompanionTheory.OnlyStab.conjAd_invol]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem thetaA_sq_eq_one : (thetaA E n) ^ 2 = 1 := by
   ext g : 1
@@ -28,7 +28,7 @@ theorem thetaA_sq_eq_one : (thetaA E n) ^ 2 = 1 := by
   simp [GlobalTheory.CompanionTheory.OnlyStab.conjAd_invol]
 
 /- English proof (translation)
-Rewrite using `[nrm, map_mul, ← GlobalTheory.CompanionTheory.RatDisc.thetaA_ratGL]`. Simplify using `[twNorm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem twNorm_ratGL (d : GL (Fin n) E) :
     twNorm (thetaA E n) 2 (ratGL E n d) = ratGL E n (nrm d) := by
@@ -36,7 +36,7 @@ theorem twNorm_ratGL (d : GL (Fin n) E) :
   simp [twNorm]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `by_cases h : i = j <;> simp [rm, Matrix.algebraMap_matrix_apply, h]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rm_algebraMap (a : E) :
     rm (algebraMap E (Matrix (Fin n) (Fin n) E) a) =
@@ -45,9 +45,9 @@ theorem rm_algebraMap (a : E) :
   by_cases h : i = j <;> simp [rm, Matrix.algebraMap_matrix_apply, h]
 
 /- English proof (translation)
-Proceed by induction on `f using Polynomial.induction_on with`. Consider the case `C a`. Rewrite using `[aeval_C, rm_algebraMap]`. Conclude with `(Algebra.commutes _ x).symm`. Consider the case `add p q hp hq`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, rm_add, mul_add, add_mul, hp, hq]`. Consider the case `monomial m a h`. Establish `e : aeval γ (C a * X ^ (m + 1)) = aeval γ (C a * X ^ m) * γ`. Simplify using `only [map_mul, map_pow, aeval_X, pow_succ, mul_assoc]`. Rewrite using `[e, rm_mul, ← mul_assoc, h, mul_assoc, hx, mul_assoc]`.
+Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comm_rm_aeval (x : Matrix (Fin n) (Fin n) (Ad E)) (γ : Matrix (Fin n) (Fin n) E)
     (hx : x * rm γ = rm γ * x) (f : E[X]) : x * rm (aeval γ f) = rm (aeval γ f) * x := by
@@ -63,9 +63,9 @@ theorem comm_rm_aeval (x : Matrix (Fin n) (Fin n) (Ad E)) (γ : Matrix (Fin n) (
     rw [e, rm_mul, ← mul_assoc, h, mul_assoc, hx, mul_assoc]
 
 /- English proof (translation)
-Introduce `E _ _ _ n d t ht e he`. Take `⟨f, rfl⟩` from `he`. Use `comm_rm_aeval _ _ ?_ f` and prove the remaining obligations. Establish `h` using `twCent_commute_twNorm (thetaA E n) thetaA_sq_eq_one (ratGL E n d) ht`. Rewrite `h` using `[twNorm_ratGL]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `congrArg Units.val h`.
+A detailed English derivation is pending.
 -/
 theorem adCent_comm_rm : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (d : GL (Fin n) E) (t : GA E n), t ∈ adCent d → ∀ e : Matrix (Fin n) (Fin n) E, IsPol (nrm d).val e → t.val * rm e = rm e * t.val := by
   intro E _ _ _ n d t ht e he

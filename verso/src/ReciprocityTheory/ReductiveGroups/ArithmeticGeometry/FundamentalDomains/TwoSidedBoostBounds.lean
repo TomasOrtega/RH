@@ -12,11 +12,11 @@ namespace TwoSidedBoostBounds
 variable {r : ℕ} (X : Data E r)
 
 /- English proof (translation)
-Establish `hσ' : 0 < σ⁻¹` using `inv_pos.2 hσ`. Establish `ha : 0 < σ ^ 2` using `by positivity`. Establish `hl` using `BoostLowerBounds.boost_lower (X := X) (τ := τ) (z := z) hz hee he0 hσ' (Matrix.mulVec (boost X τ e (X.jp z τ e) (X.maj z τ e) σ⁻¹) w)`. Simplify using `only [inv_inv] at hl`. Take `⟨hm, hff, hef, hfe⟩` from `BoostLowerBounds.plane_facts (X := X) (τ := τ) (z := z) hz hee he0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Rewrite `hl` using `[RankOneBoostIsometries.boost_comp X τ hm hee hff hef hfe hσ]`. Simplify using `only [inv_pow, inv_inv] at hl`. Establish `hmm : max (σ ^ 2) (σ ^ 2)⁻¹ * min (σ ^ 2)⁻¹ (σ ^ 2) = 1`. Break down `le_total (σ ^ 2) (σ ^ 2)⁻¹ with h | h` into its components or cases. Rewrite using `[max_eq_right h, min_eq_right h, inv_mul_cancel₀ ha.ne']`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[max_eq_left h, min_eq_left h, mul_inv_cancel₀ ha.ne']`. Establish `hM : 0 ≤ max (σ ^ 2) (σ ^ 2)⁻¹` using `le_max_of_le_left ha.le`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, hmm, one_mul]`. Use `_ ≤ max (σ ^ 2) (σ ^ 2)⁻¹ * X.maj z τ w := mul_le_mul_of_nonneg_left hl hM`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem boost_upper (τ : X.Ψ) {z : Frame X.Ψ r} (hz : z ∈ X.dom) {e : Fin r → ℂ}
     (hee : hermC τ.1 X.Gm e e = 0) (he0 : e ≠ 0) {σ : ℝ} (hσ : 0 < σ) (w : Fin r → ℂ) :
@@ -42,7 +42,7 @@ theorem boost_upper (τ : X.Ψ) {z : Frame X.Ψ r} (hz : z ∈ X.dom) {e : Fin r
     _ ≤ max (σ ^ 2) (σ ^ 2)⁻¹ * X.maj z τ w := mul_le_mul_of_nonneg_left hl hM
 
 /- English proof (translation)
-Unfold `Data.c`. Establish `h : τ.1 X.ξ0 ≠ 0` using `(map_ne_zero _).2 X.ξ0_ne`. Use `norm_pos_iff.2 h` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem c_pos (τ : X.Ψ) : 0 < X.c τ := by
   unfold Data.c
@@ -51,23 +51,23 @@ theorem c_pos (τ : X.Ψ) : 0 < X.c τ := by
   linarith
 
 /- English proof (translation)
-Take `⟨_, hξξ, hξ0⟩` from `hξ`. Establish `hiso : ∀ τ : X.Ψ, hermC τ.1 X.Gm (Data.emb τ.1 ξ) (Data.emb τ.1 ξ) = 0` using `fun τ => by`. Rewrite using `[hermC_emb, hξξ, map_zero]`. Establish `he0 : ∀ τ : X.Ψ, Data.emb τ.1 ξ ≠ 0` using `fun τ h => hξ0 (funext fun a => by`. Use `congrFun h a` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this)` using `[Data.emb]`. Establish `hIsoV : X.IsIsoV (fun τ => Data.emb τ.1 ξ)` using `fun τ => ⟨hiso τ, he0 τ⟩`. Establish `hm0 : 0 ≤ X.maj x τ (Data.emb τ.1 ξ)` using `MajorantConjugateTransfer.maj_nonneg X hx τ _`. Establish `hc0 : 0 ≤ X.c τ` using `(c_pos X τ).le`. Establish `hyd : X.flow ξ (fun τ => ((s τ).re : ℂ)) x ∈ X.dom` using `((flowDomainCriterion_holds r X (fun τ => Data.emb τ.1 ξ) hIsoV x hx (fun τ => ((s τ).re : ℂ))).1).2 (fun τ => by simp)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsplit` using `flow_split (X := X) (ξ := ξ) hiso s x`. Establish `hyd2 : X.flow ξ (fun τ => I * ((s τ).im : ℂ)) (X.flow ξ (fun τ => ((s τ).re : ℂ)) x) ∈ X.dom` using `hsplit ▸ hy`. Establish `hmy : X.maj (X.flow ξ (fun τ => ((s τ).re : ℂ)) x) τ (Data.emb τ.1 ξ) = X.maj x τ (Data.emb τ.1 ξ)`. Rewrite using `[majorant_realFlow_transfer X ξ (fun τ => (s τ).re) hx hyd τ (hiso τ) (Data.emb τ.1 ξ), Data.flow_fix (X := X) (τ := τ) (ξ := ξ) _ _ (hiso τ)]`. Establish `hq : 0 < 1 + X.c τ * (s τ).im * X.maj x τ (Data.emb τ.1 ξ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `((flowDomainCriterion_holds r X (fun τ => Data.emb τ.1 ξ) hIsoV x hx s).1).1 hy τ`. Simplify using `only [Data.ttV, div_div_eq_mul_div, div_one] at h`. Establish `e1 : (s τ).im * (X.c τ * X.maj x τ (Data.emb τ.1 ξ)) = X.c τ * (s τ).im * X.maj x τ (Data.emb τ.1 ξ)` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hq' : 0 < 1 + X.c τ * (s τ).im * X.maj (X.flow ξ (fun τ => ((s τ).re : ℂ)) x) τ (Data.emb τ.1 ξ)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[hmy]`. Conclude with `hq`. Establish `hlow` using `ImaginaryMajorants.maj_imag_flow (X := X) hyd ξ (fun τ => (s τ).im) hyd2 τ (hiso τ) (he0 τ) hq' w`. Establish `heq` using `ImaginaryMajorants.maj_imag_eq (X := X) hyd ξ (fun τ => (s τ).im) hyd2 τ (hiso τ) (he0 τ) hq' w`. Establish `hsq : 0 < Real.sqrt (1 + X.c τ * (s τ).im * X.maj (X.flow ξ (fun τ => ((s τ).re : ℂ)) x) τ (Data.emb τ.1 ξ))` using `Real.sqrt_pos.2 hq'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hup` using `boost_upper X τ hyd (hiso τ) (he0 τ) hsq w`. Rewrite `hup` using `[Real.sq_sqrt hq'.le]`. Simplify using `only [hmy] at hlow heq hup`. Establish `hyw` using `majorant_realFlow_transfer X ξ (fun τ => (s τ).re) hx hyd τ (hiso τ) w`. Establish `hup1` using `FlowMatrixMajorants.maj_flow_le (X := X) (τ := τ) (ξ := ξ) hx (-(s τ).re) w`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Complex.ofReal_neg, abs_neg] at hup1`. Establish `hlo1` using `FlowMatrixMajorants.maj_flow_le (X := X) (τ := τ) (ξ := ξ) hx ((s τ).re) (Matrix.mulVec (X.flowMat ξ τ (-((s τ).re : ℂ))) w)`. Rewrite `hlo1` using `[FlowMatrixMajorants.flowMat_inv (X := X) (τ := τ) (ξ := ξ) (hiso τ)]`. Rewrite `hup1`, `hlo1` using `[← hyw]`. Establish `hP : 0 < (1 + X.c τ * |(s τ).re| * X.maj x τ (Data.emb τ.1 ξ)) ^ 2` using `by positivity`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmin0 : 0 ≤ min (1 + X.c τ * (s τ).im * X.maj x τ (Data.emb τ.1 ξ)) (1 + X.c τ * (s τ).im * X.maj x τ (Data.emb τ.1 ξ))⁻¹` using `le_min hq.le (inv_nonneg.2 hq.le)`. Establish `hmax0 : 0 ≤ max (1 + X.c τ * (s τ).im * X.maj x τ (Data.emb τ.1 ξ)) (1 + X.c τ * (s τ).im * X.maj x τ (Data.emb τ.1 ξ))⁻¹` using `le_max_of_le_left hq.le`. Establish `hdiv : X.maj x τ w / (1 + X.c τ * |(s τ).re| * X.maj x τ (Data.emb τ.1 ξ)) ^ 2 ≤ X.maj (X.flow ξ (fun τ => ((s τ).re : ℂ)) x) τ w`. Rewrite using `[div_le_iff₀ hP, mul_comm]`. Conclude with `hlo1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hsplit]`. Use `⟨hq, ?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[heq]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem maj_two_sided {x : Frame X.Ψ r} (hx : x ∈ X.dom) {ξ : Fin r → E} (hξ : X.IsIso ξ)
     (s : X.Ψ → ℂ) (hy : X.flow ξ s x ∈ X.dom) (τ : X.Ψ) (w : Fin r → ℂ) :

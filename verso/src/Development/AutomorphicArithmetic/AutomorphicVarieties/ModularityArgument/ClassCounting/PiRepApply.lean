@@ -10,7 +10,7 @@ section
 variable {k : Type} [Field k] {A : Type} [CommRing A] {m : ℕ} {θ : Fam k A (m + 1)} {G : Type} [Group G]
 
 /- English proof (translation)
-Unfold `Cyc at *`. Rewrite using `[(sChain A).2.1, hz, map_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem cyc_cm {H : Type} [Group H] (f : G →* H) {z : Ch A G (m + 1)} (hz : Cyc z) :
     Cyc (cm A f (m + 1) z) := by
@@ -18,7 +18,7 @@ private theorem cyc_cm {H : Type} [Group H] (f : G →* H) {z : Ch A G (m + 1)} 
   rw [(sChain A).2.1, hz, map_zero]
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `hz`. Conclude with `⟨cm A f _ y, (sChain A).2.1 _ _ _ _ _⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem bd_cm {H : Type} [Group H] (f : G →* H) {z : Ch A G (m + 1)} (hz : Bd z) :
     Bd (cm A f (m + 1) z) := by
@@ -26,7 +26,7 @@ private theorem bd_cm {H : Type} [Group H] (f : G →* H) {z : Ch A G (m + 1)} (
   exact ⟨cm A f _ y, (sChain A).2.1 _ _ _ _ _⟩
 
 /- English proof (translation)
-Establish `e : ρ = (cj φ).comp σ`. Use extensionality with `g v`. Simplify using `[cj, hφ]`. Rewrite using `[e, (sChain A).2.2.1, h.iso _ _ φ _ (cyc_cm σ hz)]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem val_iso (h : IsAdd θ) {V W : Type} [AddCommGroup V] [Module k V] [Finite V] [AddCommGroup W]
     [Module k W] [Finite W] (σ : G →* (W ≃ₗ[k] W)) (ρ : G →* (V ≃ₗ[k] V)) (φ : W ≃ₗ[k] V)
@@ -38,9 +38,9 @@ private theorem val_iso (h : IsAdd θ) {V W : Type} [AddCommGroup V] [Module k V
   rw [e, (sChain A).2.2.1, h.iso _ _ φ _ (cyc_cm σ hz)]
 
 /- English proof (translation)
-Establish `h1 : (1 : G →* (V ≃ₗ[k] V)) = (1 : Unit →* (V ≃ₗ[k] V)).comp (1 : G →* Unit)`. Use extensionality with `g v`. Both sides reduce to the same expression. Rewrite using `[h1, (sChain A).2.2.1 G Unit _ (1 : G →* Unit) (1 : Unit →* (V ≃ₗ[k] V)) (m + 1) z]`. Apply `h.bdry` to reduce the goal to its premises.
+Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `bd_cm` to reduce the goal to its premises. Conclude with `(sChain A).2.2.2.2 Unit m _ (cyc_cm _ hz)`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 private theorem val_one (h : IsAdd θ) {V : Type} [AddCommGroup V] [Module k V] [Finite V]
     {z : Ch A G (m + 1)} (hz : Cyc z) : θ V (cm A (1 : G →* (V ≃ₗ[k] V)) (m + 1) z) = 0 := by
@@ -59,11 +59,11 @@ private def piRep {V : Type} [AddCommGroup V] [Module k V] (ρ : G →* (V ≃�
   map_mul' a b := by ext; simp
 
 /- English proof (translation)
-Proceed by induction on `d with`. Consider the case `zero`. Establish `h0 : piRep ρ 0 = 1`. Use extensionality with `g f i`. Conclude with `i.elim0`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0, val_one h hz]`. Simplify using the standard rewrite rules. Consider the case `succ d ih`. Set `φ : (Fin (d + 1) → V) ≃ₗ[k] V × (Fin d → V)` to `{ toFun := fun f => (f 0, Fin.tail f) invFun := fun p => Fin.cons p.1 p.2 map_add' := fun f g => rfl map_smul' := fun c f => rfl left_inv := fun f => Fin.cons_self_tail f right_inv := fun p => by simp }`. Establish `hφ : ∀ g w, φ (piRep ρ (d + 1) g w) = sumRep ρ (piRep ρ d) g (φ w)`.
+Simplify using the standard rewrite rules. Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g w`. Both sides reduce to the same expression. Rewrite using `[val_iso h (piRep ρ (d + 1)) (sumRep ρ (piRep ρ d)) φ hφ hz, h.add G V (Fin d → V) ρ (piRep ρ d) z hz, ih]`. Use `push_cast`. Rewrite using `[add_smul, one_smul, add_comm]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem val_pi (h : IsAdd θ) {V : Type} [AddCommGroup V] [Module k V] [Finite V] (ρ : G →* (V ≃ₗ[k] V))
     {z : Ch A G (m + 1)} (hz : Cyc z) (d : ℕ) :
@@ -94,7 +94,7 @@ private theorem val_pi (h : IsAdd θ) {V : Type} [AddCommGroup V] [Module k V] [
 end
 
 /- English proof (translation)
-Simplify using `[red, Matrix.mulVec, dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem red_apply {k : Type} [Field k] {R : Type} [CommRing R] (r : R →+* k) (n : ℕ) (g : GL (Fin n) R)
     (v : Fin n → k) (i : Fin n) :
@@ -104,29 +104,27 @@ private theorem red_apply {k : Type} [Field k] {R : Type} [CommRing R] (r : R �
 end UpperTheory.V.ZK
 
 /- English proof (translation)
-Introduce `k _ _ A _ m θ hθ R _ r`. Establish `hcomp : ∀ {n n' : ℕ} (f : GL (Fin n) R →* GL (Fin n') R) (z : Ch A (GL (Fin n) R) (m + 1)), cm A (red r n') (m + 1) (cm A f (m + 1) z) = cm A ((red r n').comp f) (m + 1) z` using `fun f z => ((sChain A).2.2.1 _ _ _ f (red r _) (m + 1) z).symm`. Use `⟨fun n z hz => ?_, fun n n' hn z hz => ?_, fun d n z hz => ?_⟩` and prove the remaining obligations. Conclude with `hθ.bdry _ _ (bd_cm _ hz)`. Simplify using `only [LinearMap.comp_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcomp]`. Set `φ : (Fin n' → k) ≃ₗ[k] (Fin n → k) × (Fin (n' - n) → k)` to `{ toFun := fun f => (fun i => f (Fin.castLE hn i), fun j => f ⟨n + j, by omega⟩) invFun := fun p i => if hi : (i : ℕ) < n then p.1 ⟨i, hi⟩ else p.2 ⟨i - n, by omega⟩ map_add' := fun f g => rfl map_smul' := fun c f => rfl left_inv := fun f => by`. Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : (i : ℕ) < n`. Simplify using `[hi]`.
+Introduce a local definition for the expression. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [hi, dite_false]`. Use `congr 1`. Use `ext`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations.
 
-Use `right_inv := fun p => by`. Use `Prod.ext (funext fun i => ?_) (funext fun j => ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using `}`. Establish `hφ : ∀ g w, φ (((red r n').comp (stab R n n' hn)) g w) = sumRep (red r n) (1 : GL (Fin n) R →* ((Fin (n' - n) → k) ≃ₗ[k] (Fin (n' - n) → k))) g (φ w)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `g w`. Use `Prod.ext (funext fun i => ?_) (funext fun j => ?_)` and prove the remaining obligations. Simplify using `[φ, sumRep, red_apply, stab_apply]`. Use `symm`. Use `Fintype.sum_of_injective (Fin.castLE hn) (Fin.castLE_injective hn) _ _ ?_ ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x hx`. Establish `hxn : ¬ (x : ℕ) < n` using `fun h => hx ⟨⟨x, h⟩, Fin.ext rfl⟩`. Establish `hne : Fin.castLE hn i ≠ x` using `fun h => hxn (h ▸ i.isLt)`. Simplify using `[hxn, hne]`. Introduce `j`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `[φ, sumRep, red_apply, stab_apply]`. Rewrite using `[val_iso hθ _ _ φ hφ hz, hθ.add _ _ _ _ _ z hz, val_one hθ hz, add_zero]`. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[hcomp, ← val_pi hθ (red r n) hz d]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ∀ x : Fin d × Fin n, (finProdFinEquiv x).divNat = x.1 ∧ (finProdFinEquiv x).modNat = x.2` using `fun x => by`. Establish `hn0 : 0 < n` using `lt_of_le_of_lt (Nat.zero_le _) x.2.isLt`. Use `⟨Fin.ext ?_, Fin.ext ?_⟩` and prove the remaining obligations. Simplify using `only [finProdFinEquiv, Fin.divNat, Equiv.coe_fn_mk]`. Rewrite using `[Nat.add_mul_div_left _ _ hn0, Nat.div_eq_of_lt x.2.isLt, zero_add]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Simplify using `[finProdFinEquiv, Fin.modNat, Nat.mod_eq_of_lt]`. Set `φ : (Fin d → Fin n → k) ≃ₗ[k] (Fin (d * n) → k)` to `{ toFun := fun f p => f (finProdFinEquiv.symm p).1 (finProdFinEquiv.symm p).2 invFun := fun g i a => g (finProdFinEquiv (i, a)) map_add' := fun f g => rfl map_smul' := fun c f => rfl left_inv := fun f => by`. Use function extensionality and compare the values at `i a`. Simplify using the standard rewrite rules. Use `right_inv := fun g => by`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `p`. Use `show g (finProdFinEquiv ((finProdFinEquiv.symm p).1, (finProdFinEquiv.symm p).2)) = g p`. Rewrite using `[Prod.mk.eta, Equiv.apply_symm_apply] }`. Establish `hφ : ∀ g w, φ (piRep (red r n) d g w) = ((red r (d * n)).comp (psi R d n)) g (φ w)`. Introduce `g w`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `p`. Take `⟨⟨i, a⟩, rfl⟩` from `finProdFinEquiv.surjective p`. Simplify using `[φ, piRep, red_apply, psi, h1]`. Rewrite using `[← finProdFinEquiv.sum_comp]`. Simplify using `[h1, Fintype.sum_prod_type, Matrix.one_apply]`.
-
-Use `done`. Conclude with `(val_iso hθ _ _ φ hφ hz).symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.ZK.sPhi :
     UpperTheory.V.ZK.SPhi := by

@@ -14,7 +14,7 @@ def homog (a : Fin N) (Q : MvPolynomial (Fin N) K) : MvPolynomial (Fin N) K :=
   ∑ m ∈ Q.support, monomial (m + Finsupp.single a (Q.totalDegree - m.degree)) (Q.coeff m)
 
 /- English proof (translation)
-Use `IsHomogeneous.sum _ _ _ fun m hm => isHomogeneous_monomial _ ?_` and prove the remaining obligations. Establish `hle : m.degree ≤ Q.totalDegree` using `le_totalDegree hm`. Rewrite using `[map_add, Finsupp.degree_single]`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem homog_isHomogeneous (a : Fin N) (Q : MvPolynomial (Fin N) K) :
     (homog a Q).IsHomogeneous Q.totalDegree := by
@@ -25,11 +25,11 @@ theorem homog_isHomogeneous (a : Fin N) (Q : MvPolynomial (Fin N) K) :
   omega
 
 /- English proof (translation)
-Establish `hQ : aeval (fun i => y i / y a) Q = ∑ m ∈ Q.support, aeval (fun i => y i / y a) (monomial m (Q.coeff m))` using `by conv_lhs => rw [Q.as_sum]`. Rewrite using `[map_sum]`. Rewrite using `[hQ, homog, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `hle : m.degree ≤ Q.totalDegree` using `le_totalDegree hm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[aeval_monomial, aeval_monomial, Finsupp.prod_add_index' (fun _ => pow_zero _) (fun _ _ _ => pow_add _ _ _), Finsupp.prod_single_index (by simp)]`. Simplify using `only [Finsupp.prod, div_pow, Finset.prod_div_distrib, Finset.prod_pow_eq_pow_sum]`. Establish `hd : m.degree = ∑ i ∈ m.support, m i` using `rfl`. Rewrite using `[← hd]`. Establish `e : y a ^ Q.totalDegree = y a ^ (Q.totalDegree - m.degree) * y a ^ m.degree`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← pow_add, Nat.sub_add_cancel hle]`. Rewrite using `[e]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem aeval_homog {L : Type*} [Field L] [Algebra K L] (a : Fin N) (Q : MvPolynomial (Fin N) K) (y : Fin N → L)
     (hy : y a ≠ 0) : aeval y (homog a Q) = y a ^ Q.totalDegree * aeval (fun i => y i / y a) Q := by
@@ -52,9 +52,9 @@ theorem aeval_homog {L : Type*} [Field L] [Algebra K L] (a : Fin N) (Q : MvPolyn
   field_simp
 
 /- English proof (translation)
-Establish `key : ∀ a b : Fin N, v a ≠ 0 → v b ≠ 0 → IntermediateField.adjoin K (Set.range fun i => v i / v a) ≤ IntermediateField.adjoin K (Set.range fun i => v i / v b)`. Introduce `a b ha hb`. Rewrite using `[IntermediateField.adjoin_le_iff, Set.range_subset_iff]`. Introduce `i`. Establish `e : v i / v a = (v i / v b) / (v a / v b)` using `by field_simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[SetLike.mem_coe, e]`. Conclude with `IntermediateField.div_mem _ (IntermediateField.subset_adjoin K _ ⟨i, rfl⟩) (IntermediateField.subset_adjoin K _ ⟨a, rfl⟩)`. Conclude with `le_antisymm (key a b ha hb) (key b a hb ha)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adjoin_ratio_eq {L : Type*} [Field L] [Algebra K L] (v : Fin N → L) {a b : Fin N} (ha : v a ≠ 0)
     (hb : v b ≠ 0) :
@@ -78,9 +78,9 @@ variable {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} 
   (N : ℕ) {wL : WeightFamilies.Wt D j} (w : Fin N → B.Cusp j wL)
 
 /- English proof (translation)
-Establish `h0` using `MvPolynomial.algebraicIndependent_X (Idx D j N) (X.Ol la)`. Establish `hinj1 : Function.Injective (algebraMap (Pol X la N) (Op X la N))` using `IsLocalization.injective (Op X la N) (Ideal.primeCompl_le_nonZeroDivisors (gI X la N))`. Establish `hinj2 : Function.Injective (algebraMap (Op X la N) (Kp X la N))` using `IsFractionRing.injective _ _`. Set `g : Pol X la N →ₐ[X.Ol la] Kp X la N` to `(IsScalarTower.toAlgHom (X.Ol la) (Op X la N) (Kp X la N)).comp (IsScalarTower.toAlgHom (X.Ol la) (Pol X la N) (Op X la N))`. Establish `h1 : AlgebraicIndependent (X.Ol la) (fun p : Idx D j N => algebraMap (Op X la N) (Kp X la N) (Tv X la N p))` using `h0.map' (f := g) (hinj2.comp hinj1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: Algebra.IsAlgebraic (X.Ol la) (X.Kl la)` using `IsLocalization.isAlgebraic (X.Kl la) (nonZeroDivisors (X.Ol la))`. Conclude with `h1.extendScalars (X.Kl la)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tv_indep :
     AlgebraicIndependent (X.Kl la) (fun p : Idx D j N => algebraMap (Op X la N) (Kp X la N) (Tv X la N p)) := by
@@ -98,7 +98,7 @@ theorem tv_indep :
   exact h1.extendScalars (X.Kl la)
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[coe_sfr, Formalism.MainNotions.Gaps.EtaleWeightGaps.sec, map_sum]`. Use `push_cast`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Algebra.smul_def]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -113,7 +113,7 @@ theorem sfr_eq (i : Fin (WeightFamilies.dimY D j + 1)) :
   rfl
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[coe_sfr, frac_apply, pow_one, section_mul_inverse_eq_one]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sfr_zero : sfr X la w 0 = 1 := by
   apply Subtype.ext
@@ -126,29 +126,27 @@ set_option synthInstance.maxHeartbeats 200000 in
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `𝔮 h𝔮 hJ hK Pw k hPw hne hmem`. Establish `: 𝔮.IsPrime` using `h𝔮`. Establish `hvf : (fun i => gF (X.inc wL (w i))) = v` using `funext hv`. Rewrite `hne` using `[hvf]`. Set `Fr` to `↥(Frac0 X la w)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Set `κ` to `FractionRing (Fr ⧸ 𝔮)`. Set `ρ : Fr →+* κ` to `(algebraMap (Fr ⧸ 𝔮) κ).comp (Ideal.Quotient.mk 𝔮)`. Establish `hρ : ∀ f, ρ f = 0 ↔ f ∈ 𝔮` using `fun f => by`. Rewrite using `[RingHom.comp_apply, IsFractionRing.to_map_eq_zero_iff, Ideal.Quotient.eq_zero_iff_mem]`. Set `ρK : Kp X la N →+* κ` to `ρ.comp (algebraMap (Kp X la N) Fr)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `algKl : Algebra (X.Kl la) κ` to `(ρK.comp (algebraMap (X.Kl la) (Kp X la N))).toAlgebra`. Set `algK : Algebra B.KO κ` to `((ρK.comp (algebraMap (X.Kl la) (Kp X la N))).comp (algebraMap B.KO (X.Kl la))).toAlgebra`. Set `_` to `algKl`. Set `_` to `algK`. Establish `: IsScalarTower B.KO (X.Kl la) κ` using `@IsScalarTower.of_algebraMap_eq B.KO (X.Kl la) κ _ _ _ _ algKl algK (fun _ => rfl)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `x : Fin N → κ` to `fun i => ρ (xw X la N w i)`. Set `t : Fin (WeightFamilies.dimY D j + 1) × Fin N → κ` to `fun p => ρK (algebraMap (Op X la N) (Kp X la N) (Tv X la N p))`. Establish `ht : AlgebraicIndependent B.KO t`. Set `g : Kp X la N →ₐ[X.Kl la] κ` to `{ ρK with commutes' := fun _ => rfl }`. Establish `h1` using `(tv_indep X la N).map' (f := g) ρK.injective`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `h1.restrictScalars (algebraMap B.KO (X.Kl la)).injective`. Establish `hρpol : ∀ Q : MvPolynomial (Fin N) B.KO, ρ (polX X la N w Q) = aeval x Q` using `fun Q => by`. Rewrite using `[polX, MvPolynomial.eval₂_comp_left, aeval_def]`. Both sides reduce to the same expression. Establish `hlin : ∀ i : Fin (WeightFamilies.dimY D j), ∑ k, t (i.succ, k) * x k = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Establish `h` using `congrArg ρ (sfr_eq X la N w i.succ)`. Rewrite `h` using `[map_sum]`. Simplify using `only [map_mul] at h`. Rewrite using `[← (hρ _).mpr (hJ (sfr_succ_mem_Jid X la w i)), h]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hlin0 : ∑ k, t (0, k) * x k = 1`. Establish `h` using `congrArg ρ (sfr_eq X la N w 0)`. Rewrite `h` using `[map_sum, sfr_zero, map_one]`. Simplify using `only [map_mul] at h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Both sides reduce to the same expression. Take `⟨a, -, ha⟩` from `Finset.exists_ne_zero_of_sum_ne_zero (hlin0.symm ▸ one_ne_zero : ∑ k, t (0, k) * x k ≠ 0)`. Establish `hxa : x a ≠ 0` using `right_ne_zero_of_mul ha`. Establish `hva : v a ≠ 0`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Apply `hxa` to reduce the goal to its premises. Use `(hρ _).mpr (hK ?_)` and prove the remaining obligations. Rewrite using `[RingHom.mem_ker, phiZ_xw, hv, h0, map_zero, zero_mul]`. Take `⟨a₀, ha₀, htr₀⟩` from `htr`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `htra : Algebra.trdeg B.KO (IntermediateField.adjoin B.KO (Set.range fun i => v i / v a)) ≤ WeightFamilies.dimY D j`. Rewrite using `[CurveCount.adjoin_ratio_eq v hva ha₀]`. Conclude with `htr₀`. Establish `htrans : ∀ Q : MvPolynomial (Fin N) B.KO, aeval (fun i => v i / v a) Q = 0 → aeval (fun i => x i / x a) Q = 0`. Introduce `Q hQ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hH` using `CurveCount.homog_isHomogeneous a Q`. Establish `hv0 : aeval v (CurveCount.homog a Q) = 0` using `by rw [CurveCount.aeval_homog a Q v hva, hQ, mul_zero]`. Establish `hq : polX X la N w (CurveCount.homog a Q) ∈ 𝔮` using `hK (by`. Rewrite using `[RingHom.mem_ker, phiZ_polX X la N w gF hH, hvf, hv0, map_zero, mul_zero])`. Establish `hx0 : aeval x (CurveCount.homog a Q) = 0` using `by rw [← hρpol]; exact (hρ _).mpr hq`.
-
-Rewrite `hx0` using `[CurveCount.aeval_homog a Q x hxa]`. Conclude with `(mul_eq_zero.mp hx0).resolve_left (pow_ne_zero _ hxa)`. Conclude with `CurveCount.countCore v x a hva hxa htra htrans t ht hlin hlin0 Pw hPw hne (by rw [← hρpol]; exact (hρ _).mpr hmem)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem countQAt_of (v : Fin N → Ω) (hv : ∀ i, gF (X.inc wL (w i)) = v i)
     (htr : ∃ a₀, v a₀ ≠ 0 ∧

@@ -5,13 +5,13 @@ namespace GlobalTheory.SumCompSurjective
 open Finset
 
 /- English proof (translation)
-Establish `hfib : ∀ q : Q, (univ.filter fun y : G => π y = q).card = (univ.filter fun y : G => π y = 0).card`. Introduce `q`. Take `⟨a, rfl⟩` from `hπ q`. Use `Finset.card_bij (fun y _ => y - a) ?_ ?_ ?_` and prove the remaining obligations. Introduce `y hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [mem_filter, mem_univ, true_and] at hy ⊢`. Rewrite using `[map_sub, hy, sub_self]`. Introduce `y _ z _ h`. Conclude with `sub_left_injective h`. Introduce `z hz`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [mem_filter, mem_univ, true_and] at hz`. Use `⟨z + a, ?_, by simp⟩` and prove the remaining obligations. Simplify using `only [mem_filter, mem_univ, true_and]`. Rewrite using `[map_add, hz, zero_add]`. Use `⟨(univ.filter fun y : G => π y = 0).card, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.card_pos.2 ⟨0, by simp⟩`. Rewrite using `[← Finset.sum_fiberwise (s := univ) (g := fun y : G => π y) (f := fun y => g (π y)), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_congr rfl (g := fun _ => g q) (fun y hy => by rw [(mem_filter.1 hy).2]), Finset.sum_const, hfib q, nsmul_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_comp_surjective {G Q : Type} [AddCommGroup G] [AddCommGroup Q] [Fintype G] [Fintype Q]
     (π : G →+ Q) (hπ : Function.Surjective (⇑π : G → Q)) (g : Q → ℂ) :

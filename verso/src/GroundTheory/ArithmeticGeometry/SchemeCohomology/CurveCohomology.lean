@@ -15,14 +15,14 @@ section Scalars
 variable [IsIntegral X]
 
 /- English proof (translation)
-Rewrite using `[restrictTop, sectionValue_res le_top y r, sectionValue_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma sectionValue_restrictTop (V : X.Opens) (y : V) (r : Γ(X, ⊤)) :
     sectionValue V y (restrictTop V r) = X.germToFunctionField ⊤ r := by
   rw [restrictTop, sectionValue_res le_top y r, sectionValue_eq]
 
 /- English proof (translation)
-Rewrite using `[sectionValue_restrictTop, algebraMap_functionField]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma sectionValue_scalar (V : X.Opens) (y : V) (c : k) :
     sectionValue V y (restrictTop V (scalarRingHom X c)) = algebraMap k X.functionField c := by
@@ -31,7 +31,7 @@ lemma sectionValue_scalar (V : X.Opens) (y : V) (c : k) :
 variable [IsLocallyNoetherian X] [IsNormalScheme X]
 
 /- English proof (translation)
-Rewrite using `[IsScalarTower.algebraMap_apply k (X.presheaf.stalk Z.point) X.functionField]`. Conclude with `Z.valuation_algebraMap_le_one _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma PrimeDivisor.valuation_algebraMap_scalar_le_one (Z : PrimeDivisor X) (c : k) :
     Z.valuation (algebraMap k X.functionField c) ≤ 1 := by
@@ -39,7 +39,7 @@ lemma PrimeDivisor.valuation_algebraMap_scalar_le_one (Z : PrimeDivisor X) (c : 
   exact Z.valuation_algebraMap_le_one _
 
 /- English proof (translation)
-Rewrite `hf`, the goal using `[mem_pointSubgroup_iff]`. Introduce `h`. Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 lemma mul_mem_pointSubgroup (D : WeilDivisor X) (x : X) (c : k) {f : X.functionField}
     (hf : f ∈ pointSubgroup D x) : algebraMap k X.functionField c * f ∈ pointSubgroup D x := by
@@ -57,7 +57,7 @@ section Endo
 variable [IsIntegral X]
 
 /- English proof (translation)
-Introduce `y`. Take `⟨W, hyW, h⟩` from `t.2 y`. Conclude with `⟨W, hyW, fun z hz => by simp only [h z hz]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma mul_mem_constSections (c : k) {V : X.Opens} (t : constSections V) :
     (fun y => algebraMap k X.functionField c * t.1 y) ∈ constSections V := by
@@ -88,7 +88,7 @@ lemma quotMul_mk (c : k) (x : X) (f : X.functionField) :
   rfl
 
 /- English proof (translation)
-Introduce `y`. Take `⟨W, hyW, h⟩` from `a.2 y`. Use `⟨W, hyW, h.subset ?_⟩` and prove the remaining obligations. Introduce and unpack `z ⟨hzW, hz⟩`. Conclude with `⟨hzW, fun h0 => hz (by simp only [h0, map_zero])⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 lemma quotMul_mem_quotSections (c : k) {V : X.Opens} (a : quotSections D V) :
     (fun z : V => quotMul D c z.1 (a.1 z)) ∈ quotSections D V := by
@@ -152,7 +152,7 @@ def globalL (D : WeilDivisor X) : Submodule k X.functionField where
 
 omit [HasExt.{w'} (Sheaf (Opens.grothendieckTopology X.toTopCat) AddCommGrpCat.{u})] in
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 lemma mem_globalL (D : WeilDivisor X) (f : X.functionField) :
     f ∈ globalL k D ↔ ∀ Z : PrimeDivisor X, Z.valuation f ≤ WithZero.exp (D Z) := Iff.rfl
@@ -177,7 +177,7 @@ noncomputable def divisorH0AddEquiv (D : WeilDivisor X) :
   (Sheaf.H.equiv₀ (modulesAb (divisorSheaf D)) isTerminalTop).trans (divisorSectionsTopEquiv k D)
 
 /- English proof (translation)
-The claim follows from `divisorSections_apply_eq D _ _ _`.
+A detailed English derivation is pending.
 -/
 lemma divisorH0AddEquiv_apply (D : WeilDivisor X) (x : Sheaf.H.{w'} (modulesAb (divisorSheaf D)) 0)
     (y : (⊤ : X.Opens)) :

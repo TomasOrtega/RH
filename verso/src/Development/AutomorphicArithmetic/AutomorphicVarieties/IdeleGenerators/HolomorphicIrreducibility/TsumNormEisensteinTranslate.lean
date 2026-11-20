@@ -11,9 +11,9 @@ namespace UpperTheory.V.Sd
 private def gS (S : Set (Fin 2 → ℤ)) (k : ℤ) (z : ℍ) : ℂ := ∑' x : S, eisSummand k x z
 
 /- English proof (translation)
-Establish `hk' : (2 : ℝ) < k` using `by norm_cast`. Establish `p_sum : Summable fun x : S ↦ ‖x.val‖ ^ (-k)` using `mod_cast (summable_one_div_norm_rpow hk').subtype (· ∈ S)`. Simplify using `only [tendstoLocallyUniformly_iff_forall_isCompact, gS]`. Introduce `K hK`. Take `⟨A, B, hB, HABK⟩` from `subset_verticalStrip_of_isCompact hK`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `(tendstoUniformlyOn_tsum (hu := p_sum.mul_left <| r ⟨⟨A, B⟩, hB⟩ ^ (-k : ℝ)) (fun p z hz ↦ ?_)).mono HABK` and prove the remaining obligations. Simplify `summand_bound_of_mem_verticalStrip (by positivity) p hB hz` using `only [eisSummand, one_div, ← _root_.zpow_neg, norm_zpow, ← Real.rpow_intCast, Int.cast_neg]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 private lemma gS_tendsto {k : ℤ} (hk : 3 ≤ k) (S : Set (Fin 2 → ℤ)) :
     TendstoLocallyUniformly (fun (s : Finset S) ↦ (∑ x ∈ s, eisSummand k x ·))
@@ -30,7 +30,7 @@ private lemma gS_tendsto {k : ℤ} (hk : 3 ≤ k) (S : Set (Fin 2 → ℤ)) :
     Int.cast_neg] using summand_bound_of_mem_verticalStrip (by positivity) p hB hz
 
 /- English proof (translation)
-Rewrite using `[← upperHalfPlaneSet, ← range_coe, ← Set.image_univ]`. Apply `TendstoLocallyUniformlyOn.comp (s := ⊤) _ _ _ (OpenPartialHomeomorph.continuousOn_symm _)` to reduce the goal to its premises. Simplify using `only [Set.top_eq_univ, tendstoLocallyUniformlyOn_univ]`. Apply `gS_tendsto hk` to reduce the goal to its premises. Simplify using `only [Topology.IsOpenEmbedding.toOpenPartialHomeomorph_target, Set.top_eq_univ, Set.mapsTo_range_iff, Set.mem_univ, forall_const]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 private lemma gS_tendstoOn {k : ℤ} (hk : 3 ≤ k) (S : Set (Fin 2 → ℤ)) :
     TendstoLocallyUniformlyOn (fun (s : Finset S) ↦
@@ -44,7 +44,7 @@ private lemma gS_tendstoOn {k : ℤ} (hk : 3 ≤ k) (S : Set (Fin 2 → ℤ)) :
       Set.mapsTo_range_iff, Set.mem_univ, forall_const]
 
 /- English proof (translation)
-Rewrite using `[UpperHalfPlane.mdifferentiable_iff]`. Conclude with `(gS_tendstoOn hk S).differentiableOn (Eventually.of_forall fun s ↦ DifferentiableOn.fun_sum fun _ _ ↦ eisSummand_extension_differentiableOn _ _) isOpen_upperHalfPlaneSet`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma gS_mdiff {k : ℤ} (hk : 3 ≤ k) (S : Set (Fin 2 → ℤ)) :
     MDifferentiable 𝓘(ℂ) 𝓘(ℂ) (gS S k) := by
@@ -64,7 +64,7 @@ private def vE (γ : SL(2, ℤ)) : (Fin 2 → ℤ) ≃ (Fin 2 → ℤ) where
     simp only [vecMul_vecMul, this, vecMul_one]
 
 /- English proof (translation)
-Use `ext1 z`. Repeatedly rewrite using `[SL_slash_apply, _root_.zpow_neg, mul_inv_eq_iff_eq_mul₀ (zpow_ne_zero _ <| denom_ne_zero _ z), gS, eisSummand_SL2_apply, tsum_mul_left, mul_comm (_ ^ k)]`. Use `congr 1`. Conclude with `(Equiv.Set.image (vE γ) S (vE γ).injective).tsum_eq (eisSummand k · z)`.
+Rewrite the conclusion repeatedly using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 private lemma gS_slash (S : Set (Fin 2 → ℤ)) (k : ℤ) (γ : SL(2, ℤ)) :
     gS S k ∣[k] γ = gS (vE γ '' S) k := by
@@ -76,7 +76,7 @@ private lemma gS_slash (S : Set (Fin 2 → ℤ)) (k : ℤ) (γ : SL(2, ℤ)) :
   exact (Equiv.Set.image (vE γ) S (vE γ).injective).tsum_eq (eisSummand k · z)
 
 /- English proof (translation)
-Unfold `gS`. Conclude with `le_trans (norm_tsum_le_tsum_norm ((summable_norm_eisSummand hk z).subtype _)) (Summable.tsum_subtype_le (fun x : Fin 2 → ℤ => ‖eisSummand k x z‖) _ (fun _ => norm_nonneg _) (summable_norm_eisSummand hk z))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private lemma gS_norm_le (S : Set (Fin 2 → ℤ)) (k : ℤ) (hk : 3 ≤ k) (z : ℍ) :
     ‖gS S k z‖ ≤ ∑' (x : Fin 2 → ℤ), ‖eisSummand k x z‖ := by
@@ -86,11 +86,11 @@ private lemma gS_norm_le (S : Set (Fin 2 → ℤ)) (k : ℤ) (hk : 3 ≤ k) (z :
       (summable_norm_eisSummand hk z))
 
 /- English proof (translation)
-Establish `key : ∀ x : Fin 2 → ℤ, eisSummand k x (ModularGroup.T ^ n • z) = eisSummand k (vE (ModularGroup.T ^ n) x) z`. Introduce `x`. Establish `hx : vE (ModularGroup.T ^ n) x = ![x 0, x 0 * n + x 1]`. Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;> simp [vE, ModularGroup.coe_T_zpow, Matrix.vecMul, dotProduct, Fin.sum_univ_two, Matrix.vecHead, Matrix.vecTail]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[hx]`. Simplify using `only [eisSummand, ModularGroup.coe_T_zpow_smul_eq]`. Use `congr 1`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Int.cast_add, Int.cast_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Repeatedly rewrite using `[key]`. Conclude with `(vE (ModularGroup.T ^ n)).tsum_eq (fun y => ‖eisSummand k y z‖)`.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma tsum_norm_eisenstein_translate (k n : ℤ) (z : ℍ) :
     ∑' (x : Fin 2 → ℤ), ‖eisSummand k x (ModularGroup.T ^ n • z)‖ =
@@ -112,11 +112,11 @@ private lemma tsum_norm_eisenstein_translate (k n : ℤ) (z : ℍ) :
   exact (vE (ModularGroup.T ^ n)).tsum_eq (fun y => ‖eisSummand k y z‖)
 
 /- English proof (translation)
-Rewrite using `[UpperHalfPlane.isBoundedAtImInfty_iff]`. Establish `hk' : (2 : ℝ) < k` using `by norm_cast`. Use `⟨∑' (x : Fin 2 → ℤ), r ⟨⟨(1 : ℝ), 2⟩, Nat.ofNat_pos⟩ ^ (-k) * ‖x‖ ^ (-k), 2, ?_⟩` and prove the remaining obligations. Introduce `z hz`. Take `⟨n, hn⟩` from `ModularGroup_T_zpow_mem_verticalStrip z (N := 1) Nat.one_pos`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Nat.cast_one, one_mul] at hn`. Apply `le_trans (gS_norm_le S k hk z)` to reduce the goal to its premises. Rewrite using `[← tsum_norm_eisenstein_translate k n z]`. Apply `(summable_norm_eisSummand hk _).tsum_le_tsum _` to reduce the goal to its premises. Conclude with `(summable_one_div_norm_rpow hk').mul_left <| r ⟨⟨(1 : ℝ), 2⟩, Nat.ofNat_pos⟩ ^ (-k)` after adjusting the coercions.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Repeatedly rewrite using `[eisSummand, norm_zpow]`. Conclude with `summand_bound_of_mem_verticalStrip (lt_trans two_pos hk').le x two_pos (verticalStrip_anti_right 1 hz hn)` after adjusting the coercions.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma gS_bdd (S : Set (Fin 2 → ℤ)) {k : ℤ} (hk : 3 ≤ k) : IsBoundedAtImInfty (gS S k) := by
   rw [UpperHalfPlane.isBoundedAtImInfty_iff]
@@ -136,9 +136,9 @@ private lemma gS_bdd (S : Set (Fin 2 → ℤ)) {k : ℤ} (hk : 3 ≤ k) : IsBoun
       (verticalStrip_anti_right 1 hz hn)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Simplify using `only [eisFun, gS, Pi.smul_apply, smul_eq_mul]`. Use `congr 1`. Set `e : {v : ℤ × ℤ // ((v.1 : ZMod N) = 0 ∧ (v.2 : ZMod N) = a)} ≃ {v : Fin 2 → ℤ | (v 0 : ZMod N) = 0 ∧ (v 1 : ZMod N) = a}` to `(finTwoArrowEquiv ℤ).symm.subtypeEquiv fun v => by simp`. Rewrite using `[← e.tsum_eq]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments.
 -/
 private lemma eisFun_eq (N k : ℕ) (a : ZMod N) :
     eisFun N k a = ((N : ℂ) ^ k / lipC k) •
@@ -156,13 +156,11 @@ end UpperTheory.V.Sd
 
 open UpperTheory.V.Sd in
 /- English proof (translation)
-Introduce `N k _ hk a`. Establish `hk' : (3 : ℤ) ≤ k` using `by exact_mod_cast hk`. Use `⟨{ toFun := eisFun N k a, slash_action_eq' := ?_, holo' := ?_, bdd_at_cusps' := ?_ }, rfl⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨A, (hA : A ∈ Gamma1 N), rfl⟩`. Establish `h` using `eisSlash N k hk a A (Gamma1_in_Gamma0 N hA)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite `h` using `[((Gamma1_mem N A).mp hA).2.1, mul_one]`. Conclude with `h`. Use `show MDifferentiable 𝓘(ℂ) 𝓘(ℂ) (eisFun N k a)`. Rewrite using `[eisFun_eq]`. Conclude with `(gS_mdiff hk' _).const_smul _`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `c hc`. Rewrite `hc` using `[Subgroup.IsArithmetic.isCusp_iff_isCusp_SL2Z]`. Rewrite using `[OnePoint.isBoundedAt_iff_forall_SL2Z hc]`. Introduce `γ _`. Use `show IsBoundedAtImInfty (eisFun N k a ∣[(k : ℤ)] γ)`.
-
-Rewrite using `[eisFun_eq, SL_smul_slash, gS_slash]`. Conclude with `(gS_bdd _ hk').smul _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Sd.eisMF :
     UpperTheory.V.Sd.EisMF := by

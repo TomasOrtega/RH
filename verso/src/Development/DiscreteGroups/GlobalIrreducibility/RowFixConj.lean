@@ -10,25 +10,25 @@ namespace DiscreteGroups.sglob.DzFe
 variable {g : ℕ}
 
 /- English proof (translation)
-Apply `exists_corner` to reduce the goal to its premises. Introduce `l`. Rewrite using `[conj_apply]`. Establish `ha` using `rot_inv_val hk.le (Fin.last m)`. Establish `hb` using `rot_inv_val hk.le l`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hal` using `((finRotate (m + 1) ^ k)⁻¹ (Fin.last m)).isLt`. Establish `hll` using `l.isLt`. Rewrite `ha` using `[Fin.val_last]`. Distinguish the cases in `hb0 : (((finRotate (m + 1) ^ k)⁻¹ l : Fin (m + 1)) : ℕ) = 0`. Rewrite using `[hh.2 ((finRotate (m + 1) ^ k)⁻¹ (Fin.last m)) ((finRotate (m + 1) ^ k)⁻¹ l) hb0 (by omega), if_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Introduce `e`. Use `congrArg Fin.val e` as an intermediate fact. Rewrite `this` using `[Fin.val_last]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hh.1 _ _ hb0]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `e : l = Fin.last m`. Substitute `e` using the available equality. Rewrite using `[if_pos rfl, if_pos rfl]`. Rewrite using `[if_neg e, if_neg]`. Introduce `e2`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `e (Equiv.injective _ e2).symm`. Introduce `i`. Rewrite using `[conj_apply]`. Establish `hb` using `rot_inv_val hk.le (Fin.last m)`. Establish `hbl` using `((finRotate (m + 1) ^ k)⁻¹ (Fin.last m)).isLt`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hb` using `[Fin.val_last]`. Rewrite using `[hh.1 ((finRotate (m + 1) ^ k)⁻¹ i) ((finRotate (m + 1) ^ k)⁻¹ (Fin.last m)) (by omega)]`. Distinguish the cases in `e : i = Fin.last m`. Substitute `e` using the available equality. Rewrite using `[if_pos rfl, if_pos rfl]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg e, if_neg]`. Introduce `e2`. Conclude with `e (Equiv.injective _ e2)`. Introduce `i l hil`. Rewrite using `[conj_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha` using `rot_inv_val hk.le i.castSucc`. Establish `hb` using `rot_inv_val hk.le l.castSucc`. Establish `hal` using `((finRotate (m + 1) ^ k)⁻¹ i.castSucc).isLt`. Establish `hil' : (i : ℕ) < l` using `hil`. Establish `hll` using `l.isLt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite `ha`, `hb` using `[Fin.coe_castSucc]`. Distinguish the cases in `hb0 : (((finRotate (m + 1) ^ k)⁻¹ l.castSucc : Fin (m + 1)) : ℕ) = 0`. Conclude with `hh.2 ((finRotate (m + 1) ^ k)⁻¹ i.castSucc) ((finRotate (m + 1) ^ k)⁻¹ l.castSucc) hb0 (by omega)`. Rewrite using `[hh.1 _ _ hb0, if_neg]`. Introduce `e2`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use `congrArg Fin.val (Equiv.injective _ e2)` as an intermediate fact. Rewrite `this` using `[Fin.coe_castSucc, Fin.coe_castSucc]`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem colFix_conj [Fact g.Prime] {m k : ℕ} (hk : k < m) (h : GL (Fin (m + 1)) (ZMod g))
     (hh : IsColFix (m - 1 - k) h) :
@@ -80,25 +80,25 @@ theorem colFix_conj [Fact g.Prime] {m k : ℕ} (hk : k < m) (h : GL (Fin (m + 1)
       omega
 
 /- English proof (translation)
-Apply `exists_corner` to reduce the goal to its premises. Introduce `l`. Rewrite using `[conj_apply]`. Establish `ha` using `rot_inv_val hk.le (Fin.last m)`. Establish `hal` using `((finRotate (m + 1) ^ k)⁻¹ (Fin.last m)).isLt`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `ha` using `[Fin.val_last]`. Rewrite using `[hh.1 ((finRotate (m + 1) ^ k)⁻¹ (Fin.last m)) ((finRotate (m + 1) ^ k)⁻¹ l) (by omega)]`. Distinguish the cases in `e : l = Fin.last m`. Substitute `e` using the available equality. Rewrite using `[if_pos rfl, if_pos rfl]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg e, if_neg]`. Introduce `e2`. Conclude with `e (Equiv.injective _ e2).symm`. Introduce `i`. Rewrite using `[conj_apply]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ha` using `rot_inv_val hk.le i`. Establish `hb` using `rot_inv_val hk.le (Fin.last m)`. Establish `hbl` using `((finRotate (m + 1) ^ k)⁻¹ (Fin.last m)).isLt`. Establish `hil` using `i.isLt`. Rewrite `hb` using `[Fin.val_last]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `ha0 : (((finRotate (m + 1) ^ k)⁻¹ i : Fin (m + 1)) : ℕ) = 0`. Rewrite using `[hh.2 ((finRotate (m + 1) ^ k)⁻¹ i) ((finRotate (m + 1) ^ k)⁻¹ (Fin.last m)) ha0 (by omega) (by omega), if_neg]`. Introduce `e`. Use `congrArg Fin.val e` as an intermediate fact. Rewrite `this` using `[Fin.val_last]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[hh.1 _ _ ha0]`. Distinguish the cases in `e : i = Fin.last m`. Substitute `e` using the available equality. Rewrite using `[if_pos rfl, if_pos rfl]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg e, if_neg]`. Introduce `e2`. Conclude with `e (Equiv.injective _ e2)`. Introduce `i l hil`. Rewrite using `[conj_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha` using `rot_inv_val hk.le i.castSucc`. Establish `hb` using `rot_inv_val hk.le l.castSucc`. Establish `hbl` using `((finRotate (m + 1) ^ k)⁻¹ l.castSucc).isLt`. Establish `hil' : (i : ℕ) < l` using `hil`. Establish `hll` using `l.isLt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite `ha`, `hb` using `[Fin.coe_castSucc]`. Distinguish the cases in `ha0 : (((finRotate (m + 1) ^ k)⁻¹ i.castSucc : Fin (m + 1)) : ℕ) = 0`. Conclude with `hh.2 ((finRotate (m + 1) ^ k)⁻¹ i.castSucc) ((finRotate (m + 1) ^ k)⁻¹ l.castSucc) ha0 (by omega) (by omega)`. Rewrite using `[hh.1 _ _ ha0, if_neg]`. Introduce `e2`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use `congrArg Fin.val (Equiv.injective _ e2)` as an intermediate fact. Rewrite `this` using `[Fin.coe_castSucc, Fin.coe_castSucc]`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem rowFix_conj [Fact g.Prime] {m k : ℕ} (hk : k < m) (h : GL (Fin (m + 1)) (ZMod g))
     (hh : IsRowFix (m - 1 - k) h) :

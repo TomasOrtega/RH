@@ -18,9 +18,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.WcB.Indep
 
 /- English proof (translation)
-Unfold `GL2LocalData.rW`. Use `split_ifs with h`. Expand and normalize the polynomial expressions, which then agree. Establish `: (fun u => (χ ((a * Algebra.norm F z + d * Algebra.norm F u - Algebra.trace F E (σ z * u)) / c) : ℂ) * (k * f u)) = fun u => k * ((χ ((a * Algebra.norm F z + d * Algebra.norm F u - Algebra.trace F E (σ z * u)) / c) : ℂ) * f u)`. Use function extensionality and compare the values at `u`.
+Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, integral_const_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem rW_const_mul {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
     [MeasurableSpace F] [BorelSpace F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
@@ -36,13 +36,13 @@ theorem rW_const_mul {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] 
     ring
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ E _ _ _ _ _ _ _ _ _ _ _ χ σ μ lam c Φ hΦ g t t' hN`. Establish `hu : Algebra.norm F ((t' * t⁻¹ : Eˣ) : E) = 1`. Establish `h1 : Algebra.norm F ((t' * t⁻¹ : Eˣ) : E) * Algebra.norm F (t : E) = Algebra.norm F (t : E)`. Rewrite using `[← map_mul, ← Units.val_mul, inv_mul_cancel_right, hN]`. Establish `h2 : Algebra.norm F (t : E) ≠ 0` using `((t.isUnit).map (Algebra.norm F : E →* F)).ne_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_right_cancel₀ h2 (h1.trans (one_mul _).symm)`. Establish `hf : (fun x => Φ (x * (t' : E))) = fun x => (((c (t' * t⁻¹))⁻¹ : ℂˣ) : ℂ) * Φ (x * (t : E))`. Use function extensionality and compare the values at `x`. Rewrite using `[← hΦ.2.2 _ hu (x * (t : E))]`. Use `congr 1`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_assoc, ← Units.val_mul, mul_comm t, inv_mul_cancel_right]`. Establish `hc : ((c t' : ℂˣ) : ℂ) = ((c t : ℂˣ) : ℂ) * ((c (t' * t⁻¹) : ℂˣ) : ℂ)`. Rewrite using `[← Units.val_mul, ← map_mul, mul_comm t, inv_mul_cancel_right]`. Establish `hk : ((c (t' * t⁻¹) : ℂˣ) : ℂ) * (((c (t' * t⁻¹))⁻¹ : ℂˣ) : ℂ) = 1`. Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `wS`. Rewrite using `[hf, rW_const_mul, hc]`. Take the linear combination `(-((c t : ℂˣ) : ℂ) * (((modulus (g.val).det : ℝ) : ℂ) ^ (1 / 2 : ℂ)) * GL2LocalData.rW χ σ μ lam (g.val 0 0 / (g.val).det) (g.val 0 1) (g.val 1 0 / (g.val).det) (g.val 1 1) (fun x => Φ (x * (t : E))) 1) * hk`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem wS_indep : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (E : Type) [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] [MeasurableSpace E] [BorelSpace E] [Algebra F E] [ValuativeExtension F E] [FiniteDimensional F E] [Algebra.IsSeparable F E] [Fact (Module.finrank F E = 2)] (χ : AddChar F Circle) (σ : E ≃ₐ[F] E) (μ : Measure E) (lam : ℂ) (c : Eˣ →* ℂˣ) (Φ : E → ℂ), Φ ∈ GL2LocalData.SBc F E c → ∀ (g : GL (Fin 2) F) (t t' : Eˣ), Algebra.norm F (t : E) = Algebra.norm F (t' : E) → wS χ σ μ lam c Φ g t = wS χ σ μ lam c Φ g t' := by
   intro F _ _ _ _ _ _ E _ _ _ _ _ _ _ _ _ _ _ χ σ μ lam c Φ hΦ g t t' hN

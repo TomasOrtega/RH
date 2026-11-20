@@ -10,7 +10,7 @@ namespace Formalism.MainNotions.Gaps.EtaleWeightGaps.Num
 variable {D : D7} {L : SizeData₂ D} {P : ParameterChoice' D L}
 
 /- English proof (translation)
-Rewrite using `[T.Dp_eq]`. Unfold `WeightFamilies.dimY Ranks.sigW Ranks.r`. Simplify using `[Nat.choose_two_right]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem dm_eq (T : ParamsT D L P) : WeightFamilies.dimY D D.R.m = T.Dp := by
   rw [T.Dp_eq]
@@ -18,13 +18,13 @@ theorem dm_eq (T : ParamsT D L P) : WeightFamilies.dimY D D.R.m = T.Dp := by
   simp [Nat.choose_two_right]
 
 /- English proof (translation)
-Unfold `q0N`. Establish `hT40` using `T.TO_40`. Establish `hTpos : (0 : ℝ) < (T.TO : ℝ)` using `by exact_mod_cast (show 0 < T.TO by omega)`. Establish `hZ' : (1 : ℝ) ≤ zBase L`. Establish `h : (1 : ℝ) ≤ 10 ^ 60` using `by norm_num`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hPP : 1 ≤ T.PP`. Rewrite using `[T.PP_eq]`. Conclude with `one_le_mul_of_one_le_of_one_le T.one_le_CP (Real.one_le_rpow hZ' (by linarith [T.eP_ge]))`. Establish `hbpos : 0 < L.sc.b` using `by unfold Scale.b; exact Real.exp_pos _`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (T.TO : ℝ) ≤ L.sc.b ^ (1 / 2 : ℝ)` using `le_trans (le_mul_of_one_le_right hTpos.le hPP) T.TO_PP'`. Establish `h2` using `mul_self_le_mul_self hTpos.le h1`. Rewrite `h2` using `[← Real.rpow_add hbpos]`. Evaluate the numerical expressions using `at h2`. Establish `hq : (T.TO : ℝ) ≤ L.sc.b / (T.TO : ℝ)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[le_div_iff₀ hTpos]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `le_trans hq (Nat.le_ceil _)` after adjusting the coercions.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem order_le_modulus (T : ParamsT D L P) (S : SizesAt L) (hZ : 10 ^ 60 ≤ zBase L) : T.TO ≤ q0N T := by
   unfold q0N
@@ -70,7 +70,7 @@ section Run
 variable (T : ParamsT D L P) (S : SizesAt L) (hZ : 10 ^ 60 ≤ zBase L)
 
 /- English proof (translation)
-Unfold `RunN.Tq Tp`. Simplify using `only [runOf]`. Rewrite using `[dm_eq T]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem eTq : ((runOf T S hZ).Tq : ℝ) = (T.TO : ℝ) + ((T.Dp : ℝ) + 2) := by
   unfold RunN.Tq Tp
@@ -80,7 +80,7 @@ theorem eTq : ((runOf T S hZ).Tq : ℝ) = (T.TO : ℝ) + ((T.Dp : ℝ) + 2) := b
   ring
 
 /- English proof (translation)
-Unfold `RunN.Q`. Use `push_cast`. Combine the linear relations using `[eTq T S hZ]`.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem eQ : ((runOf T S hZ).Q : ℝ) = (T.TO : ℝ) + ((T.Dp : ℝ) + 2) + 2 * D.R.r := by
   unfold RunN.Q
@@ -88,9 +88,9 @@ theorem eQ : ((runOf T S hZ).Q : ℝ) = (T.TO : ℝ) + ((T.Dp : ℝ) + 2) + 2 * 
   linarith [eTq T S hZ]
 
 /- English proof (translation)
-Unfold `RunN.kl`. Use `push_cast`. Rewrite using `[eTq T S hZ]`. Establish `hd : (Dm D : ℝ) = (T.Dp : ℝ)` using `by first`. Consider the case `(unfold Dm; exact_mod_cast dm_eq T)`.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `(simp only [Dm]; exact_mod_cast dm_eq T)`. Consider the case `exact_mod_cast dm_eq T`. Rewrite using `[hd]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem ekl : ((runOf T S hZ).kl : ℝ) =
     ((T.Dp : ℝ) + 2) * T.nWn + 2 * D.R.r + ((T.TO : ℝ) + ((T.Dp : ℝ) + 2)) * (q0N T : ℝ) := by
@@ -105,7 +105,7 @@ theorem ekl : ((runOf T S hZ).kl : ℝ) =
   rw [hd]
 
 /- English proof (translation)
-Establish `h` using `T.split`. Unfold `Ranks.nV`. Conclude with `h` after adjusting the coercions.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem enV : (D.R.nV : ℝ) = (T.nP : ℝ) + (T.TO : ℝ) * T.nWn := by
   have h := T.split
@@ -113,7 +113,7 @@ theorem enV : (D.R.nV : ℝ) = (T.nP : ℝ) + (T.TO : ℝ) * T.nWn := by
   exact_mod_cast h
 
 /- English proof (translation)
-Use `(rn_of T S hZ).sK ?_` and prove the remaining obligations. Establish `h` using `(runOf T S hZ).ka_size_le`. Rewrite `h` using `[ekl, eTq, eQ, enV T]`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ka_le : (runOf T S hZ).ka.size ≤ 4 * ((D.R.f : ℝ) * D.R.r) * L.sc.b := by
   refine (rn_of T S hZ).sK ?_
@@ -122,11 +122,11 @@ theorem ka_le : (runOf T S hZ).ka.size ≤ 4 * ((D.R.f : ℝ) * D.R.r) * L.sc.b 
   exact h
 
 /- English proof (translation)
-Rewrite using `[ekl T S hZ]`. Establish `hT40` using `T.TO_40`. Establish `hTpos : (0 : ℝ) < (T.TO : ℝ)` using `by exact_mod_cast (show 0 < T.TO by omega)`. Establish `hq : L.sc.b / (T.TO : ℝ) ≤ (q0N T : ℝ)` using `by unfold q0N; exact Nat.le_ceil _`. Establish `hq' : L.sc.b ≤ (T.TO : ℝ) * (q0N T : ℝ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hq` using `[div_le_iff₀ hTpos]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h0 : (0 : ℝ) ≤ (T.Dp : ℝ)` using `by positivity`. Establish `h1 : (0 : ℝ) ≤ (T.nWn : ℝ)` using `by positivity`. Establish `h2 : (0 : ℝ) ≤ (q0N T : ℝ)` using `by positivity`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (0 : ℝ) ≤ (D.R.r : ℝ)` using `by positivity`. Use polynomial arithmetic with `[mul_nonneg (add_nonneg h0 (by norm_num : (0 : ℝ) ≤ 2)) h1, mul_nonneg (add_nonneg h0 (by norm_num : (0 : ℝ) ≤ 2)) h2]`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem b_le_kl : L.sc.b ≤ ((runOf T S hZ).kl : ℝ) := by
   rw [ekl T S hZ]
@@ -144,12 +144,12 @@ theorem b_le_kl : L.sc.b ≤ ((runOf T S hZ).kl : ℝ) := by
     mul_nonneg (add_nonneg h0 (by norm_num : (0 : ℝ) ≤ 2)) h2]
 
 /- English proof (translation)
-The claim follows from `(b_le_kl T S hZ).trans (runOf T S hZ).ka_size_ge`.
+A detailed English derivation is pending.
 -/
 theorem b_le_ka : L.sc.b ≤ (runOf T S hZ).ka.size := (b_le_kl T S hZ).trans (runOf T S hZ).ka_size_ge
 
 /- English proof (translation)
-Use `(rn_of T S hZ).sL ?_` and prove the remaining obligations. Establish `h` using `(runOf T S hZ).wL_size_le`. Rewrite `h` using `[eQ]`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wL_le : (runOf T S hZ).wL.size * (T.TO : ℝ) ≤ 2 * ((D.R.f : ℝ) * D.R.r) * L.sc.b := by
   refine (rn_of T S hZ).sL ?_
@@ -158,7 +158,7 @@ theorem wL_le : (runOf T S hZ).wL.size * (T.TO : ℝ) ≤ 2 * ((D.R.f : ℝ) * D
   exact h
 
 /- English proof (translation)
-Use `(rn_of T S hZ).dL ?_` and prove the remaining obligations. Establish `h` using `(runOf T S hZ).DF_wL_le`. Rewrite `h` using `[eQ]`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dF_le : (DF (runOf T S hZ).wL : ℝ) ≤ 2 * ((D.R.f : ℝ) * D.R.r) * L.sc.b := by
   refine (rn_of T S hZ).dL ?_
@@ -167,14 +167,14 @@ theorem dF_le : (DF (runOf T S hZ).wL : ℝ) ≤ 2 * ((D.R.f : ℝ) * D.R.r) * L
   exact h
 
 /- English proof (translation)
-Take `⟨Y, h1, -, -, h2⟩` from `P.g_Y`. Conclude with `h1.trans (h2 i).1`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem g_ge (P : ParameterChoice' D L) (i : Fin 2) : ((D.R.k : ℝ) * L.sc.b) ^ 8 ≤ (D.host.g i : ℝ) := by
   obtain ⟨Y, h1, -, -, h2⟩ := P.g_Y
   exact h1.trans (h2 i).1
 
 /- English proof (translation)
-Unfold `qq`. Use `first`. Consider the case `(rw [Nat.cast_min]; exact le_min (g_ge P 0) (g_ge P 1))`. Consider the case `(push_cast; exact le_min (g_ge P 0) (g_ge P 1))`.
+Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem qq_ge (P : ParameterChoice' D L) : ((D.R.k : ℝ) * L.sc.b) ^ 8 ≤ (qq D : ℝ) := by
   unfold qq
@@ -183,7 +183,7 @@ theorem qq_ge (P : ParameterChoice' D L) : ((D.R.k : ℝ) * L.sc.b) ^ 8 ≤ (qq 
   | (push_cast; exact le_min (g_ge P 0) (g_ge P 1))
 
 /- English proof (translation)
-Unfold `WeightFamilies.RRv`. Use `first`. Consider the case `rfl`. Consider the case `simp`.
+Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem eRR : WeightFamilies.RRv D 2 = D.host.rdE ^ 2 := by
   unfold WeightFamilies.RRv
@@ -192,7 +192,7 @@ theorem eRR : WeightFamilies.RRv D 2 = D.host.rdE ^ 2 := by
   | simp
 
 /- English proof (translation)
-Unfold `g0`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem eg0 : (g0 D : ℝ) = 1250 * D.R.r := by
   unfold g0
@@ -200,30 +200,28 @@ theorem eg0 : (g0 D : ℝ) = 1250 * D.R.r := by
   ring
 
 /- English proof (translation)
-Unfold `WeightFamilies.PPv`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem growth_at_one_eq_zBase : WeightFamilies.PPv D L 1 1 = zBase L := by
   unfold WeightFamilies.PPv
   simp
 
 /- English proof (translation)
-Establish `hR` using `rn_of T S hZ`. Establish `hd0 : (0 : ℝ) ≤ (DF (runOf T S hZ).wL : ℝ)` using `Nat.cast_nonneg _`. Establish `hd` using `dF_le T S hZ`. Establish `hq` using `qq_ge P`. Establish `hq0 : (0 : ℝ) < (qq D : ℝ)` using `lt_of_lt_of_le (by have := hR.b_pos; have := hR.k1; positivity) hq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb` using `hR.h3b hd0 hd hq`. Establish `hx1 : 1 ≤ L.sc.x ^ T.Cp` using `Real.one_le_rpow L.sc.one_lt_alt.le T.Cp_nonneg`. Establish `hfk : (D.R.f : ℝ) ≤ D.R.k` using `by exact_mod_cast f_le_k D`. Establish `hmk : (D.R.m : ℝ) ≤ D.R.k`. Use `D.R.m_add_three_le_k` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(by omega : D.R.m ≤ D.R.k)` after adjusting the coercions. Establish `hm0 : (0 : ℝ) < D.R.m`. Use `D.R.two_le_m` as an intermediate fact. Conclude with `(by omega : 0 < D.R.m)` after adjusting the coercions. Use `⟨?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Real.rpow_zero, one_mul, eRR, WeightFamilies.PPv_rec T]`. Conclude with `hR.h3a hd0 hd hq`. Rewrite using `[Real.rpow_zero, one_mul, eRR, WeightFamilies.PPv_rec T, eg0]`. Conclude with `hb`. Rewrite using `[Real.rpow_zero, one_mul, WeightFamilies.PPv_rec T, dm_eq T]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `le_trans ?_ T.TO_ge` and prove the remaining obligations. Establish `hden : 0 < (D.R.m : ℝ) * L.de2` using `mul_pos hm0 L.thickDensity_pos`. Apply `div_le_div_of_nonneg_right _ hden.le` to reduce the goal to its premises. Establish `hP` using `hR.PP_pos`. Conclude with `le_mul_of_one_le_right (by positivity) hx1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show (T.TO : ℝ) * (WeightFamilies.RRv D 2 * WeightFamilies.PPv D L T.CP T.eP * (DF (runOf T S hZ).wL : ℝ) ^ 2 / (qq D : ℝ)) * g0 D ≤ 1`. Rewrite using `[eRR, WeightFamilies.PPv_rec T, eg0]`. Establish `e : (T.TO : ℝ) * (D.host.rdE ^ 2 * T.PP * (DF (runOf T S hZ).wL : ℝ) ^ 2 / (qq D : ℝ)) * (1250 * D.R.r) = ((T.TO : ℝ) * (1250 * D.R.r) * D.host.rdE ^ 2 * T.PP * (DF (runOf T S hZ).wL : ℝ) ^ 2) / (qq D : ℝ)` using `by ring`. Rewrite using `[e, div_le_one hq0]`. Conclude with `hb`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show (D.R.f : ℝ) * (D.R.m : ℝ) ^ 3 * WeightFamilies.RRv D 2 ^ 2 * (WeightFamilies.RRv D 2 * WeightFamilies.PPv D L T.CP T.eP * (DF (runOf T S hZ).wL : ℝ) ^ 2 / (qq D : ℝ)) ≤ 1 / 2`. Rewrite using `[eRR, WeightFamilies.PPv_rec T]`. Establish `hfm : (D.R.f : ℝ) * (D.R.m : ℝ) ^ 3 ≤ (D.R.k : ℝ) ^ 4`. Establish `: (D.R.m : ℝ) ^ 3 ≤ (D.R.k : ℝ) ^ 3` using `pow_le_pow_left₀ hm0.le hmk 3`. Combine the equalities or inequalities in the displayed calculation.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `he` using `hR.h3e hd0 hd hq (fm := (D.R.f : ℝ) * (D.R.m : ℝ) ^ 3) (by positivity) hfm`. Establish `e : (D.R.f : ℝ) * (D.R.m : ℝ) ^ 3 * (D.host.rdE ^ 2) ^ 2 * (D.host.rdE ^ 2 * T.PP * (DF (runOf T S hZ).wL : ℝ) ^ 2 / (qq D : ℝ)) = ((D.R.f : ℝ) * (D.R.m : ℝ) ^ 3 * (D.host.rdE ^ 2) ^ 2 * (D.host.rdE ^ 2 * T.PP * (DF (runOf T S hZ).wL : ℝ) ^ 2)) / (qq D : ℝ)` using `by ring`. Rewrite using `[e, div_le_iff₀ hq0]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[dm_eq T]`.
-
-Use `hR.h3f hd0 hd hq` as an intermediate fact. Establish `e : (T.Dp : ℝ) + 2 + 2 = (T.Dp : ℝ) + 4` using `by ring`. Rewrite `this` using `[e]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem third_hypothesis_of_params : H3 L (NonvanishingSectionCondition T) T.CP T.eP 2 0 (runOf T S hZ).wL T.TO := by
   have hR := rn_of T S hZ

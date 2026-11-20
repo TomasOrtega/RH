@@ -6,13 +6,13 @@ open scoped InnerProductSpace ENNReal
 namespace GlobalTheory.Amp
 
 /- English proof (translation)
-Establish `hr' : (1 : ℝ) ≤ r` using `by exact_mod_cast hr`. Establish `h4 : (4 : ℝ) ≤ 4 * r` using `by linarith`. Establish `h1 : ((r : ℝ) + 1) * 24 ≤ (4 * r : ℝ) ^ 3`. Establish `: (r : ℝ) ≤ (r : ℝ) ^ 3` using `le_self_pow₀ hr' (by norm_num)`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `he : Real.exp 1 ≤ 4 * r`. Use `Real.exp_one_lt_d9` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hexp : 11 * r ^ 2 + 3 + (24 * r ^ 3 + 1) + 2 * r + r * (r + 2) ≤ 44 * r ^ 3`. Establish `a1 : r ≤ r ^ 3` using `Nat.le_self_pow (by norm_num) r`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a2 : r ^ 2 ≤ r ^ 3` using `Nat.pow_le_pow_right hr (by norm_num)`. Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion. Use `_ = (4 * r : ℝ) ^ (11 * r ^ 2 + 3 + (24 * r ^ 3 + 1) + 2 * r + r * (r + 2)) := by`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules.
 
-Simplify using `only [pow_add]`. Use `_ ≤ _ := pow_le_pow_right₀ (by linarith) hexp`.
+A detailed English derivation is pending.
 -/
 theorem absArith_const (r : ℕ) (hr : 1 ≤ r) :
     (4 * r : ℝ) ^ (11 * r ^ 2) * ((r + 1) * 24) * 4 ^ (24 * r ^ 3 + 1) * (r : ℝ) ^ (2 * r) *
@@ -38,15 +38,15 @@ theorem absArith_const (r : ℕ) (hr : 1 ≤ r) :
     _ ≤ _ := pow_le_pow_right₀ (by linarith) hexp
 
 /- English proof (translation)
-Establish `hm' : (0 : ℝ) < m` using `by exact_mod_cast hm`. Establish `hk' : (0 : ℝ) < ((m + r + 2 : ℕ) : ℝ)` using `by positivity`. Establish `hpe : 0 < Real.pi * Real.exp 1` using `by positivity`. Establish `h1 : (((m + r + 2 : ℕ) : ℝ) / m) ^ m ≤ Real.exp 1 ^ (r + 2)`. Establish `h2 : ((m + r + 2 : ℕ) : ℝ) / m ≤ Real.exp (((r + 2 : ℕ) : ℝ) / m)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Real.add_one_le_exp (((r + 2 : ℕ) : ℝ) / m)` as an intermediate fact. Use `le_trans (le_of_eq ?_) this` and prove the remaining obligations. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.exp_nat_mul, ← Real.exp_nat_mul]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Establish `h3 : (((m + r + 2 : ℕ) : ℝ) / m) ^ (r * m) ≤ Real.exp 1 ^ (r * (r + 2))`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Rewrite using `[mul_comm r m, mul_comm r (r + 2), pow_mul, pow_mul]`. Use `gcongr`. Establish `h4 : (4 : ℝ) ^ m ≤ 4 ^ (r * m)` using `pow_le_pow_right₀ (by norm_num) (Nat.le_mul_of_pos_left m hr)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← pow_mul, ← mul_pow, ← mul_pow, ← mul_pow]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ _ := by gcongr`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem absArith_shift (r m : ℕ) (hr : 1 ≤ r) (hm : 1 ≤ m) :
     (Real.pi * Real.exp 1 / m) ^ (r * m) * 4 ^ m * (2 ^ r) ^ m ≤
@@ -82,13 +82,13 @@ theorem absArith_shift (r m : ℕ) (hr : 1 ≤ r) (hm : 1 ≤ m) :
     _ ≤ _ := by gcongr
 
 /- English proof (translation)
-Introduce `k r H₁ De D hr hk hH hDe hD`. Take `⟨m, rfl⟩ : ∃ m, k = m + r + 2` from `⟨k - 2 - r, by omega⟩`. Establish `hm : 1 ≤ m` using `by omega`. Establish `hmk : m + r + 2 - 2 - r = m` using `by omega`. Unfold `absBd`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[hmk]`. Establish `hA` using `absArith_const r hr`. Establish `hB` using `absArith_shift r m hr hm`. Establish `hC : De ^ (12 * r ^ 2) * De ^ (2 * r) ≤ De ^ (14 * r ^ 2)`. Rewrite using `[← pow_add]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pow_le_pow_right₀ hDe (by nlinarith)`. Establish `hH0 : 0 ≤ H₁` using `by linarith`. Establish `hDe0 : 0 ≤ De` using `by linarith`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[div_pow (2 ^ r : ℝ) D m, div_eq_mul_inv ((2 ^ r : ℝ) ^ m)]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ ((4 * r : ℝ) ^ (11 * r ^ 2) * ((r + 1) * 24) * 4 ^ (24 * r ^ 3 + 1) * (r : ℝ) ^ (2 * r)) * (Real.exp 1 ^ (r * (r + 2)) * (8 * Real.pi * Real.exp 1 / ((m + r + 2 : ℕ) : ℝ)) ^ (r * m)) * De ^ (14 * r ^ 2) * H₁ ^ (24 * r ^ 3) * (D ^ m)⁻¹ := by gcongr`. Use `_ = ((4 * r : ℝ) ^ (11 * r ^ 2) * ((r + 1) * 24) * 4 ^ (24 * r ^ 3 + 1) * (r : ℝ) ^ (2 * r) * Real.exp 1 ^ (r * (r + 2))) * H₁ ^ (24 * r ^ 3) * De ^ (14 * r ^ 2) * (8 * Real.pi * Real.exp 1 / ((m + r + 2 : ℕ) : ℝ)) ^ (r * m) * (D ^ m)⁻¹ := by`. The two sides agree by associativity and commutativity. Use `_ ≤ _ := by gcongr`.
+The two sides agree by associativity and commutativity. A detailed English derivation is pending.
 -/
 theorem absArith : ∀ (k r : ℕ) (H₁ De D : ℝ), 1 ≤ r → 2 * r + 6 ≤ k → 1 ≤ H₁ → 1 ≤ De → 0 < D → ((4 * r : ℝ) ^ (11 * r ^ 2) * De ^ (12 * r ^ 2) * (Real.pi * Real.exp 1 / ((k - 2 - r : ℕ) : ℝ)) ^ (r * (k - 2 - r)) * 4 ^ (k - 2 - r) * ((r + 1) * 4 ^ (24 * r ^ 3 + 1))) * 24 * (r : ℝ) ^ (2 * r) * H₁ ^ (24 * r ^ 3) * De ^ (2 * r) * (2 ^ r / D) ^ (k - 2 - r) ≤ absBd k r H₁ De D := by
   intro k r H₁ De D hr hk hH hDe hD

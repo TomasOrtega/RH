@@ -7,9 +7,9 @@ open Matrix
 open scoped ComplexOrder
 
 /- English proof (translation)
-Use `⟨(hG.1.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ), hG.1.eigenvalues, ?_, fun i => hG.eigenvalues_pos i, ?_⟩` and prove the remaining obligations. Establish `h` using `hG.1.eigenvectorUnitary.2`. Rewrite `h` using `[Matrix.mem_unitaryGroup_iff']`. Simplify `h` using `[Matrix.star_eq_conjTranspose]`. Establish `h` using `hG.1.spectral_theorem`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `h.trans ?_` and prove the remaining obligations. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression.
 -/
 private theorem exists_unitary_diagonal_pos_of_posDef {n : ℕ} (G : Matrix (Fin n) (Fin n) ℂ) (hG : G.PosDef) :
     ∃ (U : Matrix (Fin n) (Fin n) ℂ) (μ : Fin n → ℝ), Uᴴ * U = 1 ∧ (∀ i, 0 < μ i) ∧
@@ -24,21 +24,19 @@ private theorem exists_unitary_diagonal_pos_of_posDef {n : ℕ} (G : Matrix (Fin
     rfl
 
 /- English proof (translation)
-Take `⟨U, μ, hUU, hμ, hG'⟩` from `exists_unitary_diagonal_pos_of_posDef G hG`. Establish `hr : ∀ i, Real.sqrt (μ i) * (Real.sqrt (μ i))⁻¹ = 1` using `fun i => mul_inv_cancel₀ (Real.sqrt_pos.mpr (hμ i)).ne'`. Establish `hr2 : ∀ i, (Real.sqrt (μ i))⁻¹ * μ i * (Real.sqrt (μ i))⁻¹ = 1`. Introduce `i`. Establish `hs : Real.sqrt (μ i) ≠ 0` using `(Real.sqrt_pos.mpr (hμ i)).ne'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hsq : Real.sqrt (μ i) * Real.sqrt (μ i) = μ i` using `Real.mul_self_sqrt (hμ i).le`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hsq]`. Use `_ = 1 := by rw [← mul_assoc, inv_mul_cancel₀ hs, one_mul, mul_inv_cancel₀ hs]`. Set `d : Fin n → ℂ` to `fun i => (((Real.sqrt (μ i))⁻¹ : ℝ) : ℂ)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `e : Fin n → ℂ` to `fun i => ((Real.sqrt (μ i) : ℝ) : ℂ)`. Establish `hde : ∀ i, e i * d i = 1`. Introduce `i`. Use `show ((Real.sqrt (μ i) : ℝ) : ℂ) * (((Real.sqrt (μ i))⁻¹ : ℝ) : ℂ) = 1`. Rewrite using `[← Complex.ofReal_mul, hr i, Complex.ofReal_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hdd : ∀ i, d i * (μ i : ℂ) * d i = 1`. Introduce `i`. Use `show (((Real.sqrt (μ i))⁻¹ : ℝ) : ℂ) * (μ i : ℂ) * (((Real.sqrt (μ i))⁻¹ : ℝ) : ℂ) = 1`. Rewrite using `[← Complex.ofReal_mul, ← Complex.ofReal_mul, hr2 i, Complex.ofReal_one]`. Establish `hdH : (diagonal d)ᴴ = diagonal d`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Matrix.diagonal_conjTranspose]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `[d]`. Use `⟨U * diagonal d, ?_, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Establish `h : diagonal e * Uᴴ * (U * diagonal d) = 1`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by`. Rewrite using `[hUU, Matrix.mul_one, Matrix.diagonal_mul_diagonal]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Simplify using `only [hde]`. Conclude with `Matrix.diagonal_one`. Conclude with `Matrix.isUnit_det_of_left_inverse h`. Rewrite using `[Matrix.conjTranspose_mul, hdH, hG']`. Combine the equalities or inequalities in the displayed calculation.
-
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by`. Rewrite using `[hUU, Matrix.mul_one, Matrix.mul_one, Matrix.diagonal_mul_diagonal, Matrix.diagonal_mul_diagonal]`. Simplify using `only [hdd]`. Conclude with `Matrix.diagonal_one`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_congr_one {n : ℕ} (G : Matrix (Fin n) (Fin n) ℂ) (hG : G.PosDef) :
     ∃ y : Matrix (Fin n) (Fin n) ℂ, IsUnit y.det ∧ yᴴ * G * y = 1 := by

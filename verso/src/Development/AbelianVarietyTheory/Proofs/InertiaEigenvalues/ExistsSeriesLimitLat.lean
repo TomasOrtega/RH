@@ -13,11 +13,11 @@ namespace GlobalTheory.ExpImage
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N Formalism.MainNotions.LocalSituation GlobalTheory.Cyc
 
 /- English proof (translation)
-Establish `hc : IsAdicComplete (Ideal.span {((l : ℕ) : Ainf l)}) (Ainf l)` using `WittVector.isAdicCompleteIdealSpanP`. Establish `key : ∀ (n : ℕ) (u v : Ainf l), u ≡ v [SMOD ((Ideal.span {((l : ℕ) : Ainf l)}) ^ n • ⊤ : Submodule (Ainf l) (Ainf l))] ↔ ((l : ℕ) : Ainf l) ^ n ∣ u - v`. Introduce `n u v`. Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Take `⟨x, hx⟩` from `hc.toIsPrecomplete.prec (f := fun n => ∑ i ∈ Finset.range n, ((l : ℕ) : Ainf l) ^ i * a i) (by`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `m n hmn`. Rewrite using `[key, ← dvd_neg, neg_sub, ← Finset.sum_Ico_eq_sub _ hmn]`. Conclude with `Finset.dvd_sum fun i hi => Dvd.dvd.mul_right (pow_dvd_pow _ (Finset.mem_Ico.mp hi).1) _)`. Use `⟨x, fun n => ?_⟩` and prove the remaining obligations. Use `hx n` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[key, ← dvd_neg, neg_sub]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem exists_Ainf_series_limit (l : ℕ) [Fact l.Prime] (a : ℕ → Ainf l) :
     ∃ x : Ainf l, ∀ n : ℕ, ∃ y : Ainf l,
@@ -42,17 +42,17 @@ theorem exists_Ainf_series_limit (l : ℕ) [Fact l.Prime] (a : ℕ → Ainf l) :
   exact this
 
 /- English proof (translation)
-Use `choose k hk using hc`. Set `K : ℕ → ℕ` to `fun n => ∑ i ∈ Finset.range (n + 1), k i`. Establish `hK1 : ∀ n, k n ≤ K n` using `fun n => by`. Simplify using `only [K, Finset.sum_range_succ]`. Use linear arithmetic over natural numbers and integers.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hK2 : ∀ n, K n ≤ K (n + 1)` using `fun n => by`. Simplify using `only [K, Finset.sum_range_succ k (n + 1)]`. Use linear arithmetic over natural numbers and integers. Establish `hblock : ∀ n R, K n ≤ R → ∑ j ∈ Finset.range R, c j - ∑ j ∈ Finset.range (K n), c j ∈ Lat AI M n`. Introduce `n R hR`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.sum_Ico_eq_sub _ hR]`. Conclude with `AddSubgroup.sum_mem _ fun j hj => hk n j ((hK1 n).trans (Finset.mem_Ico.mp hj).1)`. Use `choose a ha using fun n => (mem_Lat AI).mp (hblock n (K (n + 1)) (hK2 n))`. Establish `htel : ∀ n, ∑ j ∈ Finset.range (K n), c j - ∑ j ∈ Finset.range (K 0), c j - io AI (∑ i ∈ Finset.range n, ((l : ℕ) : Ainf l) ^ i * a i) ∈ FilB P (M : ℤ)`. Introduce `n`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Use `add_mem ih (ha n)` as an intermediate fact. Rewrite using `[Finset.sum_range_succ (fun i => ((l : ℕ) : Ainf l) ^ i * a i), map_add]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Take `⟨x, hx⟩` from `exists_Ainf_series_limit l a`. Use `⟨∑ j ∈ Finset.range (K 0), c j + io AI x, add_mem (Submodule.sum_mem _ fun j _ => h0 j) (io_mem AI x), fun n => ⟨K n, fun R hR => ?_⟩⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `hx n`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `io_mem_Lat AI M n y`. Rewrite `h1` using `[← hy, map_sub]`. Use `sub_mem (sub_mem h1 (FilB_le_Lat AI (n := n) (htel n))) (hblock n R hR)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_series_limit_Lat (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (M : ℕ)
     (c : ℕ → P.R.BdR) (h0 : ∀ k, c k ∈ FilB P 0)

@@ -13,9 +13,9 @@ open scoped InnerProductSpace ComplexOrder ContDiff
 namespace GlobalTheory.LipFlow
 
 /- English proof (translation)
-Establish `him : ∀ x, (I x x).im = 0` using `fun x => ((Complex.le_def.1 (h x)).2).symm`. Establish `h1` using `him (x + y)`. Establish `h2` using `him (x + Complex.I • y)`. Establish `hx` using `him x`. Establish `hy` using `him y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [map_add, LinearMap.add_apply, LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, RingHom.id_apply, Complex.conj_I, Complex.add_im, Complex.add_re, Complex.mul_im, Complex.mul_re, Complex.I_re, Complex.I_im, Complex.neg_re, Complex.neg_im] at h1 h2`. Apply `Complex.ext` to reduce the goal to its premises. Simplify using `only [Complex.conj_re]`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [Complex.conj_im]`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -34,9 +34,9 @@ theorem herm {V : Type} [AddCommGroup V] [Module ℂ V] (I : V →ₗ⋆[ℂ] V 
   · simp only [Complex.conj_im]; linarith
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.HermitianCauchySchwarz.main`. Consider the case `exact _root_.GlobalTheory.HermitianCauchySchwarz.main`. Consider the case `(apply _root_.GlobalTheory.HermitianCauchySchwarz.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.HermitianCauchySchwarz.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.HermitianCauchySchwarz.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.HermitianCauchySchwarz.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem cauchy {V : Type} [AddCommGroup V] [Module ℂ V] (I : V →ₗ⋆[ℂ] V →ₗ[ℂ] ℂ)
     (h : ∀ x, 0 ≤ I x x) (x y : V) : ‖I x y‖ ^ 2 ≤ (I x x).re * (I y y).re := by
@@ -49,9 +49,9 @@ theorem cauchy {V : Type} [AddCommGroup V] [Module ℂ V] (I : V →ₗ⋆[ℂ] 
   | (intros; exact _root_.GlobalTheory.HermitianCauchySchwarz.main ..)
 
 /- English proof (translation)
-Rewrite using `[← integrableOn_univ, ← Set.Iic_union_Ioi (a := (0:ℝ))]`. Use `IntegrableOn.union ?_ ?_` and prove the remaining obligations. Use `(integrableOn_exp_mul_Iic he 0).congr_fun (fun x hx => ?_) measurableSet_Iic` and prove the remaining obligations. Simplify using `only [abs_of_nonpos (Set.mem_Iic.1 hx)]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Expand and normalize the polynomial expressions, which then agree. Use `(exp_neg_integrableOn_Ioi 0 he).congr_fun (fun x hx => ?_) measurableSet_Ioi` and prove the remaining obligations. Simplify using `only [abs_of_pos (Set.mem_Ioi.1 hx)]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem integrable_exp_abs {e : ℝ} (he : 0 < e) :
     Integrable (fun s : ℝ => Real.exp (-(e * |s|))) := by
@@ -65,11 +65,11 @@ theorem integrable_exp_abs {e : ℝ} (he : 0 < e) :
     congr 1; ring
 
 /- English proof (translation)
-Establish `hA : 0 ≤ A`. Use `(norm_nonneg _).trans (h 0)` as an intermediate fact. Simplify using `using this`. Use `(h _).trans ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, ← Real.exp_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `gcongr`. Establish `: |t| ≤ |r| + |r + t|`. Use `abs_sub (r + t) r` as an intermediate fact. Simplify using `only [add_sub_cancel_left] at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities.
+A detailed English derivation is pending.
 -/
 theorem decay_shift {φ : ℝ → ℂ} {A e : ℝ} (he : 0 < e)
     (h : ∀ s, ‖φ s‖ ≤ A * Real.exp (-(e * |s|))) (r t : ℝ) :
@@ -87,7 +87,7 @@ theorem decay_shift {φ : ℝ → ℂ} {A e : ℝ} (he : 0 < e)
   nlinarith
 
 /- English proof (translation)
-Use `((integrable_exp_abs he).const_mul A).mono' (by fun_prop) (ae_of_all _ fun s => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, Complex.norm_exp]`. Simplify using `using h s`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem integrable_fourier {φ : ℝ → ℂ} (hc : Continuous φ) {A e : ℝ} (he : 0 < e)
     (h : ∀ s, ‖φ s‖ ≤ A * Real.exp (-(e * |s|))) (ξ : ℝ) :
@@ -97,9 +97,9 @@ theorem integrable_fourier {φ : ℝ → ℂ} (hc : Continuous φ) {A e : ℝ} (
   simpa using h s
 
 /- English proof (translation)
-Rewrite using `[← integral_const_mul, ← integral_add_left_eq_self (fun s : ℝ => Complex.exp (Complex.I * ξ * r) * (Complex.exp (-(Complex.I * ξ * s)) * φ s)) r]`. Use `congr 1`. Use function extensionality and compare the values at `s`. Rewrite using `[← mul_assoc, ← Complex.exp_add]`. Use `congr 2`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fourier_shift (φ : ℝ → ℂ) (ξ r : ℝ) :
     ∫ s : ℝ, Complex.exp (-(Complex.I * ξ * s)) * φ (r + s)
@@ -112,55 +112,53 @@ theorem fourier_shift (φ : ℝ → ℂ) (ξ r : ℝ) :
   congr 2; push_cast; ring
 
 /- English proof (translation)
-Introduce `V _ _ I U C v hpos h0 hadd hiso hlip ⟨A, e, he, hdec⟩`. Use `set φ : ℝ → ℂ := fun s => I v (U s v) with hφ`. Establish `hU : ∀ s t x, U s (U t x) = U (s + t) x` using `fun s t x => by rw [hadd]; rfl`. Establish `hre : ∀ x, 0 ≤ (I x x).re` using `fun x => (Complex.le_def.1 (hpos x)).1`. Establish `him : ∀ x, (I x x).im = 0` using `fun x => ((Complex.le_def.1 (hpos x)).2).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcont : Continuous φ`. Rewrite using `[continuous_iff_continuousAt]`. Introduce `t`. Rewrite using `[ContinuousAt, tendsto_iff_norm_sub_tendsto_zero]`. Establish `hb : ∀ᶠ u in nhds t, ‖φ u - φ t‖ ≤ Real.sqrt ((I v v).re * (C * (u - t) ^ 2 * (I v v).re))` using `by filter_upwards [Metric.closedBall_mem_nhds t one_pos] with u hu`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu' : |u - t| ≤ 1` using `by simpa [Real.dist_eq] using hu`. Apply `Real.le_sqrt_of_sq_le` to reduce the goal to its premises. Establish `e1 : φ u - φ t = I v (U (u - t) (U t v) - U t v)`. Simplify using `[hφ, hU]`. Rewrite using `[e1]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(cauchy I hpos _ _).trans ?_` and prove the remaining obligations. Use `hlip (u - t) (U t v) hu'` as an intermediate fact. Rewrite `this` using `[hiso]`. Conclude with `mul_le_mul_of_nonneg_left this (hre v)`. Use `squeeze_zero' (Filter.Eventually.of_forall fun _ => norm_nonneg _) hb ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `: Continuous fun u : ℝ => Real.sqrt ((I v v).re * (C * (u - t) ^ 2 * (I v v).re))` using `by fun_prop`. Simplify using `using this.tendsto t`. Establish `hsum : ∀ (k : ℕ) (t : Fin k → ℝ) (z : Fin k → ℂ) (r : ℝ), I (∑ i, z i • U (t i) v) (U r (∑ i, z i • U (t i) v)) = ∑ i, ∑ j, star (z i) * z j * φ (r + (t j - t i))`. Introduce `k t z r`. Rewrite using `[map_sum (U r), map_sum I, LinearMap.sum_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `: I (U (t i) v) (U r (U (t j) v)) = φ (r + (t j - t i))`. Simplify using `only [hφ]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← hiso (t i) v (U (r + (t j - t i)) v), hU, hU]`. Use `congr 3`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, RingHom.id_apply, this]`. Simplify using `only [RCLike.star_def]`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hφpos` using `GlobalTheory.PosDefFT.fourier_nonneg φ hcont ⟨A, e, he, hdec⟩ (fun k t z => by`. Use `hsum k t z 0` as an intermediate fact. Simplify using `only [h0, LinearMap.id_apply, zero_add] at this`. Rewrite using `[← this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hpos _)`. Establish `hzero : φ = 0`. Use `GlobalTheory.eq_zero_of_exp_decay_of_fourier_eq_zero_on_halfLine φ (Real.pi * (|C| + 1)) hcont ⟨A, e, he, hdec⟩ fun ξ hξ => ?_` and prove the remaining obligations. Establish `hC : 0 ≤ |C|` using `abs_nonneg C`. Establish `hξ0 : 0 < ξ` using `lt_of_lt_of_le (by positivity) hξ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set s : ℝ := Real.pi / ξ with hs`. Establish `hs0 : 0 < s` using `by positivity`. Establish `hs1 : s * (|C| + 1) ≤ 1`. Rewrite using `[hs, div_mul_eq_mul_div, div_le_one hξ0]`. Conclude with `hξ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Introduce a local definition for the expression.
 
-Establish `hs2 : s ≤ 1` using `by nlinarith`. Establish `hCs : C * s ^ 2 ≤ 1`. Use `le_abs_self C` as an intermediate fact. Use polynomial arithmetic with `[mul_nonneg hC hs0.le]`. Set `ψ : ℝ → ℂ` to `fun t => ((C * s ^ 2 - 2 : ℝ) : ℂ) * φ t + φ (s + t) + φ (-s + t)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hψc : Continuous ψ` using `by fun_prop`. Establish `hψd : ∀ t, ‖ψ t‖ ≤ (|C * s ^ 2 - 2| * A + A * Real.exp (e * |s|) + A * Real.exp (e * |-s|)) * Real.exp (-(e * |t|))`. Introduce `t`. Establish `a1` using `decay_shift he hdec s t`. Establish `a2` using `decay_shift he hdec (-s) t`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `a3 : ‖((C * s ^ 2 - 2 : ℝ) : ℂ) * φ t‖ ≤ |C * s ^ 2 - 2| * (A * Real.exp (-(e * |t|)))`. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_eq_abs]`. Conclude with `mul_le_mul_of_nonneg_left (hdec t) (abs_nonneg _)`. Use `(norm_add₃_le).trans ?_` and prove the remaining obligations. Use `(add_le_add (add_le_add a3 a1) a2).trans (le_of_eq (by ring))` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hψpos` using `GlobalTheory.PosDefFT.fourier_nonneg ψ hψc ⟨_, e, he, hψd⟩ (fun k t z => by set x := ∑ i, z i • U (t i) v with hx`. Establish `b0` using `hsum k t z 0`. Establish `b1` using `hsum k t z s`. Establish `b2` using `hsum k t z (-s)`. Rewrite `b0`, `b1`, `b2` using `[← hx]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [h0, LinearMap.id_apply, zero_add] at b0`. Establish `b3 : I (U s x) x = I x (U (-s) x)`. Rewrite using `[← hiso s x (U (-s) x), hU]`. Simplify using `[h0]`. Establish `b4 : ∑ i, ∑ j, star (z i) * z j * ψ (t j - t i) = ((C * s ^ 2 - 2 : ℝ) : ℂ) * I x x + I x (U s x) + I x (U (-s) x)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[b0, b1, b2]`. Simplify using `only [ψ, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring` and prove the remaining obligations. Establish `b5 : ((C * s ^ 2 - 2 : ℝ) : ℂ) * I x x + I x (U s x) + I x (U (-s) x) = ((C * s ^ 2 : ℝ) : ℂ) * I x x - I (U s x - x) (U s x - x)`. Simplify using `only [map_sub, LinearMap.sub_apply, hiso, b3]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[b4, b5, Complex.le_def]`. Use `hlip s x (by rwa [abs_of_pos hs0])` as an intermediate fact. Prove the components needed by the constructor for the conclusion.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Complex.sub_re, Complex.re_ofReal_mul]`. Simplify using `using this`. Rewrite using `[Complex.sub_im, Complex.im_ofReal_mul, him, him]`. Use the proof step `simp) ξ`. Establish `i0` using `integrable_fourier hcont he hdec ξ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `i1` using `integrable_fourier (φ := fun t => φ (s + t)) (by fun_prop) he (decay_shift he hdec s) ξ`. Establish `i2` using `integrable_fourier (φ := fun t => φ (-s + t)) (by fun_prop) he (decay_shift he hdec (-s)) ξ`. Establish `hξs : Complex.I * ξ * s = Real.pi * Complex.I`. Establish `: (ξ : ℂ) * s = Real.pi`. Rewrite using `[← Complex.ofReal_mul, hs, mul_div_cancel₀ _ hξ0.ne']`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← this]`. Expand and normalize the polynomial expressions, which then agree. Establish `hF : ∫ t : ℝ, Complex.exp (-(Complex.I * ξ * t)) * ψ t = ((C * s ^ 2 - 4 : ℝ) : ℂ) * ∫ t : ℝ, Complex.exp (-(Complex.I * ξ * t)) * φ t`. Establish `: (fun t : ℝ => Complex.exp (-(Complex.I * ξ * t)) * ψ t) = fun t : ℝ => ((C * s ^ 2 - 2 : ℝ) : ℂ) * (Complex.exp (-(Complex.I * ξ * t)) * φ t) + Complex.exp (-(Complex.I * ξ * t)) * φ (s + t) + Complex.exp (-(Complex.I * ξ * t)) * φ (-s + t)`. Use function extensionality and compare the values at `t`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [ψ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, integral_add (by exact (i0.const_mul _).add i1) i2, integral_add (i0.const_mul _) i1, integral_const_mul, fourier_shift, fourier_shift, hξs]`. Establish `h2 : Complex.I * ξ * ((-s : ℝ) : ℂ) = -(Real.pi * Complex.I)`. Rewrite using `[← hξs]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2, Complex.exp_neg, Complex.exp_pi_mul_I]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `hψpos` using `[hF]`. Establish `p0` using `hφpos ξ`. Use `set F := ∫ t : ℝ, Complex.exp (-(Complex.I * ξ * t)) * φ t`. Take `⟨p1, p2⟩` from `Complex.le_def.1 p0`. Establish `p3` using `(Complex.le_def.1 hψpos).1`.
+Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `p3` using `[Complex.re_ofReal_mul]`. Simplify using `only [Complex.zero_re, Complex.zero_im] at p1 p2 p3`. Apply `Complex.ext` to reduce the goal to its premises. Simplify using `only [Complex.zero_re]`. Use the polynomial consequences of the given equalities and inequalities.
-
-Simplify using `[← p2]`. Use `congrFun hzero 0` as an intermediate fact. Simplify `this` using `[hφ, h0]`.
+A detailed English derivation is pending.
 -/
 theorem coeff_eq_zero : ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (I : V →ₗ⋆[ℂ] V →ₗ[ℂ] ℂ) (U : ℝ → V →ₗ[ℂ] V) (C : ℝ) (v : V), (∀ x, 0 ≤ I x x) → U 0 = LinearMap.id → (∀ s t, U (s + t) = (U s).comp (U t)) → (∀ s x y, I (U s x) (U s y) = I x y) → (∀ s x, |s| ≤ 1 → (I (U s x - x) (U s x - x)).re ≤ C * s ^ 2 * (I x x).re) → (∃ A e : ℝ, 0 < e ∧ ∀ s, ‖I v (U s v)‖ ≤ A * Real.exp (-(e * |s|))) → I v v = 0 := by
   intro V _ _ I U C v hpos h0 hadd hiso hlip ⟨A, e, he, hdec⟩

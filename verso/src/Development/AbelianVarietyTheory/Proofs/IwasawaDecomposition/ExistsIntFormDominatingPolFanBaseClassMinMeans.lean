@@ -17,7 +17,7 @@ section Formulas
 variable {X : Type} [AddCommGroup X]
 
 /- English proof (translation)
-Unfold `evalW`. Conclude with `Finsupp.sum_add_index' (fun _ => by simp) (fun _ _ _ => by push_cast; ring)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem evalW_add_left (w w' : (X × X) →₀ ℤ) (B : X →ₗ[ℤ] X →ₗ[ℤ] ℝ) :
     evalW (w + w') B = evalW w B + evalW w' B := by
@@ -25,13 +25,13 @@ theorem evalW_add_left (w w' : (X × X) →₀ ℤ) (B : X →ₗ[ℤ] X →ₗ[
   exact Finsupp.sum_add_index' (fun _ => by simp) (fun _ _ _ => by push_cast; ring)
 
 /- English proof (translation)
-Simplify using `[evalW]`.
+Simplify using the standard rewrite rules.
 -/
 theorem evalW_zero_left (B : X →ₗ[ℤ] X →ₗ[ℤ] ℝ) : evalW (0 : (X × X) →₀ ℤ) B = 0 := by
   simp [evalW]
 
 /- English proof (translation)
-Unfold `evalW`. Rewrite using `[Finsupp.sum_smul_index' (fun _ => by simp), Finsupp.mul_sum]`. Use `Finsupp.sum_congr fun p _ => ?_` and prove the remaining obligations. Simplify using `only [smul_eq_mul, Int.cast_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem evalW_zsmul_left (k : ℤ) (w : (X × X) →₀ ℤ) (B : X →ₗ[ℤ] X →ₗ[ℤ] ℝ) :
     evalW (k • w) B = k * evalW w B := by
@@ -42,7 +42,7 @@ theorem evalW_zsmul_left (k : ℤ) (w : (X × X) →₀ ℤ) (B : X →ₗ[ℤ] 
   ring
 
 /- English proof (translation)
-Unfold `evalW`. Conclude with `Finsupp.sum_single_index (by simp)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem evalW_single_left (p : X × X) (k : ℤ) (B : X →ₗ[ℤ] X →ₗ[ℤ] ℝ) :
     evalW (Finsupp.single p k) B = k * B p.1 p.2 := by
@@ -50,7 +50,7 @@ theorem evalW_single_left (p : X × X) (k : ℤ) (B : X →ₗ[ℤ] X →ₗ[ℤ
   exact Finsupp.sum_single_index (by simp)
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [evalW_zero_left]`. Consider the case `insert j s hj ih => rw [Finset.sum_insert hj, Finset.sum_insert hj, evalW_add_left, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem evalW_finset_sum_left {ι : Type} (s : Finset ι) (f : ι → (X × X) →₀ ℤ) (B : X →ₗ[ℤ] X →ₗ[ℤ] ℝ) :
     evalW (∑ i ∈ s, f i) B = ∑ i ∈ s, evalW (f i) B := by
@@ -60,7 +60,7 @@ theorem evalW_finset_sum_left {ι : Type} (s : Finset ι) (f : ι → (X × X) �
   | insert j s hj ih => rw [Finset.sum_insert hj, Finset.sum_insert hj, evalW_add_left, ih]
 
 /- English proof (translation)
-Simplify using `only [lamW, evalW_zsmul_left, evalW_add_left, evalW_finset_sum_left, evalW_single_left]`. Use `push_cast`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules.
 -/
 theorem evalW_lamW (D N n : ℕ) (𝓜 : Finset ℕ) (r : (Fin n → ℤ) →ₗ[ℤ] X) (w : (X × X) →₀ ℤ)
     (a : ∀ M : ℕ, (Fin n → ZMod (M + 1)) → Fin n → ℤ) (B : X →ₗ[ℤ] X →ₗ[ℤ] ℝ) :
@@ -71,13 +71,13 @@ theorem evalW_lamW (D N n : ℕ) (𝓜 : Finset ℕ) (r : (Fin n → ℤ) →ₗ
   simp
 
 /- English proof (translation)
-Establish `hE : ∀ M, (fineMean M).eval X (fun x z => B x z) = (((M : ℝ) + 1) ^ n)⁻¹ * ∑ y, classMin M (fun x z => B (r x) (r z)) y`. Introduce `M`. Rewrite using `[(fineMean M).eval_eq hr]`. Simplify using `[fineMean]`. Establish `key : ∀ M ∈ 𝓜, (∏ M ∈ 𝓜, ((M : ℝ) + 1) ^ n) * (((M : ℝ) + 1) ^ n)⁻¹ = ∏ M' ∈ 𝓜.erase M, ((M' : ℝ) + 1) ^ n`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `M hM`. Rewrite using `[← Finset.mul_prod_erase 𝓜 (fun M : ℕ => ((M : ℝ) + 1) ^ n) hM]`. Establish `: ((M : ℝ) + 1) ^ n ≠ 0` using `by positivity`. Clear the denominators using the available nonvanishing facts. Establish `hs : (∏ M ∈ 𝓜, ((M : ℝ) + 1) ^ n) * ∑ M ∈ 𝓜, (((M : ℝ) + 1) ^ n)⁻¹ * ∑ y, classMin M (fun x z => B (r x) (r z)) y = ∑ M ∈ 𝓜, (∏ M' ∈ 𝓜.erase M, ((M' : ℝ) + 1) ^ n) * ∑ y, classMin M (fun x z => B (r x) (r z)) y`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun M hM => by rw [← mul_assoc, key M hM]`. Establish `h1 : evalR (baseFun O D φ 𝓜) B = D * (evalR φ B + ∑ M ∈ 𝓜, (fineMean M).eval X (fun x z => B x z))` using `eval_baseFun D φ 𝓜 _`. Rewrite using `[h1]`. Simplify using `only [hE, kDen]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hs, Finset.mul_sum]`. Simplify using `only [mul_assoc]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem kDen_mul_evalR_baseFun {O : Type} [CommRing O] [Module.Finite ℤ O] [Module O X] [Module.Finite O X]
     [Module.Finite ℤ X] (D : ℕ) (φ : InvFun ℤ) (N n : ℕ) (𝓜 : Finset ℕ) {r : (Fin n → ℤ) →ₗ[ℤ] X}
@@ -113,7 +113,7 @@ theorem kDen_mul_evalR_baseFun {O : Type} [CommRing O] [Module.Finite ℤ O] [Mo
       simp only [mul_assoc]
 
 /- English proof (translation)
-The claim follows from `csInf_le ⟨0, by rintro _ ⟨b, -, rfl⟩; exact hB b⟩ ⟨x, hx, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem classMin_le_of_nonneg (M : ℕ) {n : ℕ} {B : (Fin n → ℤ) → (Fin n → ℤ) → ℝ} (hB : ∀ x, 0 ≤ B x x)
     {y : Fin n → ZMod (M + 1)} {x : Fin n → ℤ} (hx : redV M x = y) : classMin M B y ≤ B x x :=
@@ -122,45 +122,41 @@ theorem classMin_le_of_nonneg (M : ℕ) {n : ℕ} {B : (Fin n → ℤ) → (Fin 
 end Formulas
 
 /- English proof (translation)
-Introduce `E _ _ _ H D φs 𝓜 X _ _ _ _ N m n u w r a hD hφ hN hu hS hr ha`. Use `choose F hF using fun (M : ℕ) (y : Fin n → ZMod (M + 1)) => GlobalTheory.T.dickson_exists_finite_subfamily_below m (fun a' : {a' : Fin n → ℤ // redV M a' = y} => fun j => (u j (r a'.1) (r a'.1)).toNat)`. Set `vec : ∀ M : ℕ, (Fin n → ZMod (M + 1)) → (Fin n → ℤ) → Fin m → ℤ` to `fun M y a' i => u i (r (a M y)) (r (a M y)) - u i (r a') (r a')`. Establish `hI` using `GlobalTheory.T.strictlyConcave_polFan_cone_real_forms X φs N m u w hφ hu hS`. Establish `hsum : ∀ (t : Fin m → ℝ) (x z : X), (∑ i, t i • toReal (u i)) x z = ∑ i, t i * (u i x z : ℝ)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t x z`. Simplify using `[LinearMap.sum_apply]`. Establish `hP : 0 < ∏ M ∈ 𝓜, ((M : ℝ) + 1) ^ n` using `Finset.prod_pos fun _ _ => by positivity`. Establish `hc : ∀ M ∈ 𝓜, 0 < (N : ℝ) * ∏ M' ∈ 𝓜.erase M, ((M' : ℝ) + 1) ^ n` using `fun M _ => mul_pos (by exact_mod_cast hN) (Finset.prod_pos fun _ _ => by positivity)`. Establish `hD' : (0 : ℝ) < D` using `by exact_mod_cast hD`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle_gen : ∀ B ∈ psdCone (id : ℤ → ℤ) X, (kDen N n 𝓜 : ℝ) * evalR (baseFun (𝓞 E) D φs 𝓜) B ≤ evalW (lamW D N n 𝓜 r w a) B`. Introduce `B hB`. Rewrite using `[kDen_mul_evalR_baseFun D φs N n 𝓜 hr, evalW_lamW]`. Establish `h1` using `((hI.2 B hB).1)`. Establish `h2 : ∀ M ∈ 𝓜, ∑ y, classMin M (fun x z => B (r x) (r z)) y ≤ ∑ y, B (r (a M y)) (r (a M y))` using `fun M _ => Finset.sum_le_sum fun y _ => classMin_le_of_nonneg M (fun x => nonneg_of_mem_psdCone hB (r x)) (ha M y)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `Finset.sum_le_sum fun M hM => mul_le_mul_of_nonneg_left (h2 M hM) (hc M hM).le`. Establish `h4` using `mul_le_mul_of_nonneg_left h1 hP.le`. Conclude with `mul_le_mul_of_nonneg_left (add_le_add h4 h3) hD'.le`. Establish `hback : ∀ B ∈ rcone u, (∀ M ∈ 𝓜, ∀ y, classMin M (fun x z => B (r x) (r z)) y = B (r (a M y)) (r (a M y))) → (kDen N n 𝓜 : ℝ) * evalR (baseFun (𝓞 E) D φs 𝓜) B = evalW (lamW D N n 𝓜 r w a) B`. Introduce `B hB hcl`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[kDen_mul_evalR_baseFun D φs N n 𝓜 hr, evalW_lamW, hI.1 B hB]`. Use `congr 2`. Conclude with `Finset.sum_congr rfl fun M hM => by rw [Finset.sum_congr rfl fun y _ => hcl M hM y]`. Use `⟨⋃ M ∈ (𝓜 : Set ℕ), ⋃ y : Fin n → ZMod (M + 1), (fun a' : {a' : Fin n → ℤ // redV M a' = y} => vec M y a'.1) '' (F M y : Set _), ?_, ?_, ?_, ?_, hback⟩` and prove the remaining obligations. Conclude with `Set.Finite.biUnion (Finset.finite_toSet 𝓜) fun M _ => Set.finite_iUnion fun y => (Finset.finite_toSet _).image _`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `β hβ hβ0`. Establish `hB : toReal β ∈ psdCone H.bar X`. Use `GlobalTheory.T.nonneg_sum_smul_intBilinFormToReal_mem_psdCone (𝓞 E) H.bar X 1 ![β] ![1] (fun i => by fin_cases i; simpa using hβ) (fun i y => by fin_cases i; simpa using hβ0 y) (fun i => by fin_cases i; simp)` as an intermediate fact. Simplify using `using this`. Rewrite using `[← evalR_toReal]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hle_gen _ (GlobalTheory.T.balancedPsdRationalRadicalCone_subset_intCone (𝓞 E) H.bar X hB)`. Introduce `B hB heq`. Establish `hB'` using `GlobalTheory.T.balancedPsdRationalRadicalCone_subset_intCone (𝓞 E) H.bar X hB`. Rewrite `heq` using `[kDen_mul_evalR_baseFun D φs N n 𝓜 hr, evalW_lamW]`. Establish `heq'` using `mul_left_cancel₀ hD'.ne' heq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `(hI.2 B hB').1`. Establish `hy : ∀ M, ∀ y, 0 ≤ B (r (a M y)) (r (a M y)) - classMin M (fun x z => B (r x) (r z)) y` using `fun M y => sub_nonneg.2 (classMin_le_of_nonneg M (fun x => nonneg_of_mem_psdCone hB' (r x)) (ha M y))`. Establish `hT : 0 ≤ ∑ M ∈ 𝓜, ((N : ℝ) * ∏ M' ∈ 𝓜.erase M, ((M' : ℝ) + 1) ^ n) * ∑ y, (B (r (a M y)) (r (a M y)) - classMin M (fun x z => B (r x) (r z)) y)` using `Finset.sum_nonneg fun M hM => mul_nonneg (hc M hM).le (Finset.sum_nonneg fun y _ => hy M y)`. Establish `hT' : ∑ M ∈ 𝓜, ((N : ℝ) * ∏ M' ∈ 𝓜.erase M, ((M' : ℝ) + 1) ^ n) * ∑ y, (B (r (a M y)) (r (a M y)) - classMin M (fun x z => B (r x) (r z)) y) = ∑ M ∈ 𝓜, ((N : ℝ) * ∏ M' ∈ 𝓜.erase M, ((M' : ℝ) + 1) ^ n) * ∑ y, B (r (a M y)) (r (a M y)) - ∑ M ∈ 𝓜, ((N : ℝ) * ∏ M' ∈ 𝓜.erase M, ((M' : …`. Rewrite using `[← Finset.sum_sub_distrib]`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Finset.sum_congr rfl fun M _ => by rw [Finset.sum_sub_distrib, mul_sub]`. Establish `h4` using `mul_le_mul_of_nonneg_left h1 hP.le`. Establish `hT0 : ∑ M ∈ 𝓜, ((N : ℝ) * ∏ M' ∈ 𝓜.erase M, ((M' : ℝ) + 1) ^ n) * ∑ y, (B (r (a M y)) (r (a M y)) - classMin M (fun x z => B (r x) (r z)) y) = 0`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hW : (N : ℝ) * evalR φs B = evalW w B`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (∏ M ∈ 𝓜, ((M : ℝ) + 1) ^ n) * (N * evalR φs B) = (∏ M ∈ 𝓜, ((M : ℝ) + 1) ^ n) * evalW w B`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `mul_left_cancel₀ hP.ne' this`. Establish `hcl : ∀ M ∈ 𝓜, ∀ y, classMin M (fun x z => B (r x) (r z)) y = B (r (a M y)) (r (a M y))`. Introduce `M hM y`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e1` using `(Finset.sum_eq_zero_iff_of_nonneg fun M hM => mul_nonneg (hc M hM).le (Finset.sum_nonneg fun y _ => hy M y)).1 hT0 M hM`. Establish `e2` using `(mul_eq_zero.1 e1).resolve_left (hc M hM).ne'`. Establish `e3` using `(Finset.sum_eq_zero_iff_of_nonneg fun y _ => hy M y).1 e2 y (Finset.mem_univ _)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hcm : ∀ M y (x : Fin n → ℤ), redV M x = y → classMin M (fun x z => B (r x) (r z)) y ≤ B (r x) (r x)` using `fun M y x hx => classMin_le_of_nonneg M (fun x => nonneg_of_mem_psdCone hB' (r x)) hx`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨t, ht0, rfl⟩` from `(hI.2 B hB').2 hW`. Use `⟨t, ht0, ?_, rfl⟩` and prove the remaining obligations. Introduce `v hv`. Simplify using `only [Set.mem_iUnion, Set.mem_image, Finset.mem_coe] at hv`. Take `⟨M, hM, y, a', ha'F, rfl⟩` from `hv`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e` using `hcl M hM y`. Establish `e'` using `hcm M y a'.1 a'.2`. Rewrite `e'` using `[e, hsum, hsum]`. Rewrite `e` using `[hsum]`. Establish `: ∑ i, ((vec M y a'.1 i : ℤ) : ℝ) * t i = ∑ i, t i * (u i (r (a M y)) (r (a M y)) : ℝ) - ∑ i, t i * (u i (r a'.1) (r a'.1) : ℝ)`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [vec]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[this]`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `t ht hA`. Use `hback _ ⟨t, ht, rfl⟩ fun M hM y => ?_` and prove the remaining obligations. Use `IsLeast.csInf_eq ⟨⟨a M y, ha M y, rfl⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨x, hx, rfl⟩`. Take `⟨a', ha'F, hle⟩` from `hF M y ⟨x, hx⟩`. Establish `hmem : vec M y a'.1 ∈ ⋃ M ∈ (𝓜 : Set ℕ), ⋃ y : Fin n → ZMod (M + 1), (fun a' : {a' : Fin n → ℤ // redV M a' = y} => vec M y a'.1) '' (F M y : Set _)`. Simplify using `only [Set.mem_iUnion, Set.mem_image, Finset.mem_coe]`. Conclude with `⟨M, hM, y, a', ha'F, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h1` using `hA _ hmem`. Establish `h2 : ∑ i, ((vec M y a'.1 i : ℤ) : ℝ) * t i = ∑ i, t i * (u i (r (a M y)) (r (a M y)) : ℝ) - ∑ i, t i * (u i (r a'.1) (r a'.1) : ℝ)`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [vec]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : ∑ i, t i * (u i (r a'.1) (r a'.1) : ℝ) ≤ ∑ i, t i * (u i (r x) (r x) : ℝ)`. Use `Finset.sum_le_sum fun i _ => mul_le_mul_of_nonneg_left ?_ (ht i)` and prove the remaining obligations. Establish `p1` using `hu.nonneg i (r a'.1)`.
-
-Establish `p2` using `hu.nonneg i (r x)`. Establish `p3 : (u i (r a'.1) (r a'.1)).toNat ≤ (u i (r x) (r x)).toNat` using `hle i`. Conclude with `(show u i (r a'.1) (r a'.1) ≤ u i (r x) (r x) by omega)` after adjusting the coercions. Use `show (∑ i, t i • toReal (u i)) (r (a M y)) (r (a M y)) ≤ (∑ i, t i • toReal (u i)) (r x) (r x)`. Rewrite using `[hsum, hsum]`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_contact_baseFun_lamW : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : ℕ) (φs : InvFun ℤ) (𝓜 : Finset ℕ) (X : Type) [AddCommGroup X] [Module (𝓞 E) X] [Module.Finite (𝓞 E) X] [Module.Finite ℤ X] (N m n : ℕ) (u : Fin m → LinearMap.BilinForm ℤ X) (w : (X × X) →₀ ℤ) (r : (Fin n → ℤ) →ₗ[ℤ] X) (a : ∀ M : ℕ, (Fin n → ZMod (M + 1)) → Fin n → ℤ), 0 < D → IsPolFanOn (id : ℤ → ℤ) φs X → 0 < N → IsCone (id : ℤ → ℤ) φs u → StrictWith (id : ℤ → ℤ) φs N (linW w) u → Function.Surjective r → (∀ M y, redV M (a M y) = y) → ∃ A : Set (Fin m → ℤ), A.Finite ∧ (∀ β ∈ balForms H.bar X, (∀ y, 0 ≤ β y y) → (kDen N n 𝓜 : ℝ) * (baseFun (𝓞 E) D φs 𝓜).evalZ β ≤ evalW (lamW D N n 𝓜 r w a) (toReal β)) ∧ (∀ B ∈ psdCone H.bar X, (kDen N n 𝓜 : ℝ) * evalR (baseFun (𝓞 E) D φs 𝓜) B = evalW (lamW D N n 𝓜 r w a) B → ∃ t : Fin m → ℝ, (∀ i, 0 ≤ t i) ∧ (∀ v ∈ A, ∑ i, (v i : ℝ) * t i ≤ 0) ∧ B = ∑ i, t i • toReal (u i)) ∧ (∀ t : Fin m → ℝ, (∀ i, 0 ≤ t i) → (∀ v ∈ A, ∑ i, (v i : ℝ) * t i ≤ 0) → (kDen N n 𝓜 : ℝ) * evalR (baseFun (𝓞 E) D φs 𝓜) (∑ i, t i • toReal (u i)) = evalW (lamW D N n 𝓜 r w a) (∑ i, t i • toReal (u i))) ∧ ∀ B ∈ rcone u, (∀ M ∈ 𝓜, ∀ y, classMin M (fun x z => B (r x) (r z)) y = B (r (a M y)) (r (a M y))) → (kDen N n 𝓜 : ℝ) * evalR (baseFun (𝓞 E) D φs 𝓜) B = evalW (lamW D N n 𝓜 r w a) B := by
   intro E _ _ _ H D φs 𝓜 X _ _ _ _ N m n u w r a hD hφ hN hu hS hr ha

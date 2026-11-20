@@ -17,21 +17,19 @@ noncomputable section
 namespace GlobalTheory.LowCoefPos
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hL i hP v hv hI`. Establish `hθ : IsInfFam R.θ` using `hL.models.inf`. Establish `: (R.νW i).IsHaarMeasure` using `(hL.models.νW i).1.1`. Establish `hrep : ∀ ρ (x : (R.MW i (sg0 D A)).H ρ), Continuous fun h : GA D (Wc D i) => (R.MW i (sg0 D A)).rep ρ (infMat D.sp.cm.sig (Wc D i).gram (R.θ ρ) h) x`. Introduce `ρ x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmem : ∀ h : GA D (Wc D i), (R.MW i (sg0 D A)).fr ρ * infMat D.sp.cm.sig (Wc D i).gram (R.θ ρ) h * ((R.MW i (sg0 D A)).fr ρ)⁻¹ ∈ UJset ((R.MW i (sg0 D A)).ε ρ)` using `fun h => GlobalTheory.DualCoef.frame_mem (R.MW i (sg0 D A)) ρ (GlobalTheory.FockCompare.RealAction.infMat_mem_UH hθ (Wc D i) h ρ)`. Conclude with `(((R.MW i (sg0 D A)).ds ρ).2.2.1.2.2 x).comp_continuous ((continuous_const.matrix_mul (GlobalTheory.Mem.VolExists.continuous_infMat (Wc D i).gram (hθ ρ))).matrix_mul continuous_const) hmem`. Establish `hc : Continuous (lowCoefSq R i v)`. Unfold `lowCoefSq`. Use `(continuous_finsetProd _ fun ρ _ => ?_).norm.pow 2` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `continuous_const.inner (hrep ρ _)`. Establish `h0 : ∀ h, 0 ≤ lowCoefSq R i v h` using `fun h => by unfold lowCoefSq; positivity`. Establish `h1 : lowCoefSq R i v 1 = 1`. Unfold `lowCoefSq`. Establish `e : ∀ ρ, ⟪((v ρ : (R.MW i (sg0 D A)).sm ρ) : (R.MW i (sg0 D A)).H ρ), (R.MW i (sg0 D A)).rep ρ (infMat D.sp.cm.sig (Wc D i).gram (R.θ ρ) 1) ((v ρ : (R.MW i (sg0 D A)).sm ρ) : (R.MW i (sg0 D A)).H ρ)⟫_ℂ = 1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `ρ`. Rewrite using `[GlobalTheory.PointAtPlaceHom.infMat_one, GlobalTheory.DualCoef.rep_one, ContinuousLinearMap.one_apply, inner_self_eq_norm_sq_to_K, hv ρ]`. Simplify using the standard rewrite rules. Simplify using `[e]`. Use `set O : Set (GA D (Wc D i)) := GlobalTheory.AutMult.toFin (Wc D i) ⁻¹' {g : GfC (Wc D i) | (g : GA D (Wc D i)) ∈ levG _ (R.βW i) (R.datWp i R.triv)} with hO`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hOo : IsOpen O` using `(GlobalTheory.LevelOpen.isOpen_levG _ _ _).preimage (GlobalTheory.AutMult.continuous_toFin _)`. Establish `hOs : O ⊆ realLev R i`. Introduce `h hh`. Conclude with `⟨_, (GlobalTheory.AutMult.toInf (Wc D i) h).2, _, hh, (GlobalTheory.AutMult.toInf_mul_toFin h).symm⟩`. Establish `h1O : (1 : GA D (Wc D i)) ∈ O` using `by show ((GlobalTheory.AutMult.toFin (Wc D i) 1 : GfC (Wc D i)) : GA D (Wc D i)) ∈ levG _ (R.βW i) (R.datWp i R.triv)`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_one]`. Conclude with `(levW R i).one_mem`. Use `set U : Set (GA D (Wc D i)) := {h | (1 : ℝ) / 2 < lowCoefSq R i v h} ∩ O with hU`. Establish `hUo : IsOpen U` using `(isOpen_lt continuous_const hc).inter hOo`. Establish `h1U : (1 : GA D (Wc D i)) ∈ U` using `⟨by rw [Set.mem_setOf_eq, h1]; norm_num, h1O⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hUs : U ⊆ Function.support (lowCoefSq R i v) ∩ realLev R i`. Introduce `h hh`. Use `⟨?_, hOs hh.2⟩` and prove the remaining obligations. Use `hh.1` as an intermediate fact. Rewrite `this` using `[Set.mem_setOf_eq]`.
-
-Rewrite using `[Function.mem_support]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpos : 0 < R.νW i U` using `hUo.measure_pos _ ⟨1, h1U⟩`. Rewrite using `[setIntegral_pos_iff_support_of_nonneg_ae (Filter.Eventually.of_forall h0) hI]`. Conclude with `lt_of_lt_of_le hpos (measure_mono hUs)`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_lowCoefSq_pos : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), Laws R F → ∀ i, LevProd R i → ∀ v, IsUnitVec R i v → IntegrableOn (lowCoefSq R i v) (realLev R i) (R.νW i) → 0 < ∫ h in realLev R i, lowCoefSq R i v h ∂(R.νW i) := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hL i hP v hv hI

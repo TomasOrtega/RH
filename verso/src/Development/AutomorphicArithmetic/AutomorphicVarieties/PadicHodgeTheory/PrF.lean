@@ -5,13 +5,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.Z
 open Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions.N Formalism.BasicNotions Formalism.BasicNotions.Loc ReciprocityTheory.Gal TensorProduct Module UpperTheory.V.Loc Topology
 
 /- English proof (translation)
-Introduce `hP l _ G _ _ _ φ hφ E _ _ _ _ _ V _ _ _ _ _ _ _ _ _ ρ hc hpos hd`. Take `⟨h0, -, -, hf⟩` from `UpperTheory.V.Loc.posBasic hP φ hφ ρ hc hpos`. Take `⟨hfin, -, h1, h2⟩` from `UpperTheory.V.Loc.tateRat (v := l) (l := l) hP φ hφ ρ hc`. Establish `hB` using `(UpperTheory.V.Loc.z1fMap φ ρ ρ).1 hc`. Rewrite `h2` using `[hd, finrank_bot]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[h0, finrank_bot, h2, if_pos rfl, zero_add, zero_add]`. Establish `htop : finiteCohomology φ ρ = ⊤` using `Submodule.eq_top_of_finrank_eq (hf.trans h1.symm)`. Use `le_antisymm (fun c hc' => hc'.1) (fun c hc' => ?_)` and prove the remaining obligations. Establish `hm : (Submodule.mkQ _ (⟨c, hc'⟩ : ↥(ReciprocityTheory.Gal.Z1 ρ)) : ReciprocityTheory.Gal.H1 ρ) ∈ finiteCohomology φ ρ`. Rewrite using `[htop]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Discharge the goal by the elementary cases of `trivial`. Take `⟨y, hy, hyc⟩` from `hm`. Establish `hsub` using `(Submodule.Quotient.eq _).1 hyc`. Establish `h3 : (y : G → V) - c ∈ UpperTheory.V.Loc.finiteCocycles φ ρ` using `hB hsub`. Establish `h4` using `(UpperTheory.V.Loc.finiteCocycles φ ρ).sub_mem hy h3`.
+Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using h4`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem UpperTheory.V.Loc.prF :
     LocalPublishedTheorems → ∀ {l : ℕ} [Fact l.Prime] {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (φ : G →* GQ l) (hφ : IsOpenEmbedding φ) {E : Type} [Field E] [Algebra ℚ_[l] E] [FiniteDimensional ℚ_[l] E] [Algebra ℤ_[l] E] [IsScalarTower ℤ_[l] ℚ_[l] E] {V : Type} [AddCommGroup V] [Module E V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] E V] [FiniteDimensional ℚ_[l] V] [TopologicalSpace V] [IsModuleTopology ℚ_[l] V] [IsTopologicalAddGroup V] [ContinuousConstSMul E V] (ρ : Representation E G V), ContAction ρ → Positive φ ρ → H0dual ((cycA l l E).comp φ) ρ = ⊥ → UpperTheory.V.Loc.finiteCocycles φ ρ = Z1 ρ := by

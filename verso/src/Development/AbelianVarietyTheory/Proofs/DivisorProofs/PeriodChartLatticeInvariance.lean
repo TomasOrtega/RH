@@ -12,7 +12,7 @@ open scoped ContDiff
 namespace GlobalTheory.PeriodChartLattice
 
 /- English proof (translation)
-Introduce `k _ S p P h σ c τ ex H l hl Q hQ`. Take `⟨v, z⟩` from `Q`. Establish `hv : v ∈ c.e.target` using `hQ.1`. Establish `H'` using `(IsPeriodChart.isUnifChart H).2.2 v hv`. Conclude with `(H'.2.2 (z + GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe.per (τ v) l) z).2 ⟨l, hl, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ex_transl_eq : ∀ (k : Type) [CommRing k] (S : Scheme.{0}) (p : S ⟶ Sp k) (P : PPAS S) (h : VMetric p (omega P.A) P.g) (σ : k →+* ℂ) (c : AlgChart p σ 1) (τ : V 1 → Matrix (Fin P.g) (Fin P.g) ℂ) (ex : Pt (V 1) P.g → CxPts (P.A.hom ≫ p) σ), IsPeriodChart h c τ ex → ∀ l ∈ stdLat P.g, ∀ Q ∈ cov c.e.target P.g, ex (GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe.transl τ l Q) = ex Q := by
   intro k _ S p P h σ c τ ex H l hl Q hQ

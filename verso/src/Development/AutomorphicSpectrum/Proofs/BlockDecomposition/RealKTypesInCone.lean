@@ -16,7 +16,7 @@ section Generic
 variable {n : ℕ} {Y X : Type} [NormedAddCommGroup Y] [InnerProductSpace ℂ Y]
 
 /- English proof (translation)
-Rewrite `hr`, the goal using `[Submodule.mem_orthogonal]`. Introduce `u hu`. Rewrite using `[← hK b a u r]`. Conclude with `hr _ (hS b a u hu)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orth_stable {Kf : Fin n → Fin n → Module.End ℂ Y}
     (hK : ∀ a b (x y : Y), ⟪Kf a b x, y⟫_ℂ = ⟪x, Kf b a y⟫_ℂ) {S : Submodule ℂ Y}
@@ -27,19 +27,19 @@ theorem orth_stable {Kf : Fin n → Fin n → Module.End ℂ Y}
   exact hr _ (hS b a u hu)
 
 /- English proof (translation)
-The claim follows from `inner_self_eq_zero (𝕜 := ℂ).1 ((Submodule.mem_orthogonal _ _).1 h' x h)`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_mem_orth {S : Submodule ℂ Y} {x : Y} (h : x ∈ S) (h' : x ∈ Sᗮ) : x = 0 :=
   inner_self_eq_zero (𝕜 := ℂ).1 ((Submodule.mem_orthogonal _ _).1 h' x h)
 
 /- English proof (translation)
-Substitute `e` using the available equality. Use `⟨fun a => ?_, fun a b hab he => ?_⟩` and prove the remaining obligations. Establish `h` using `hz.1 a`. Rewrite `h` using `[map_add, smul_add]`. Establish `h1 : Kf a a p - (μ a : ℂ) • p ∈ S` using `S.sub_mem (hS a a p hp) (S.smul_mem _ hp)`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : Kf a a p - (μ a : ℂ) • p = -(Kf a a r - (μ a : ℂ) • r)`. Rewrite using `[eq_neg_iff_add_eq_zero]`. Rewrite using `[sub_add_sub_comm, h, sub_self]`. Establish `h3 : Kf a a p - (μ a : ℂ) • p ∈ Sᗮ`. Rewrite using `[h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Sᗮ.neg_mem (Sᗮ.sub_mem (orth_stable hK hS a a hr) (Sᗮ.smul_mem _ hr))`. Conclude with `sub_eq_zero.1 (eq_zero_of_mem_orth h1 h3)`. Establish `h` using `hz.2 a b hab he`. Rewrite `h` using `[map_add]`. Establish `h2 : Kf a b p = -(Kf a b r)` using `eq_neg_of_add_eq_zero_left h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `eq_zero_of_mem_orth (hS a b p hp) ?_` and prove the remaining obligations. Rewrite using `[h2]`. Conclude with `Sᗮ.neg_mem (orth_stable hK hS a b hr)`.
+A detailed English derivation is pending.
 -/
 theorem proj_highest {Kf : Fin n → Fin n → Module.End ℂ Y}
     (hK : ∀ a b (x y : Y), ⟪Kf a b x, y⟫_ℂ = ⟪x, Kf b a y⟫_ℂ) {S : Submodule ℂ Y}
@@ -66,17 +66,13 @@ theorem proj_highest {Kf : Fin n → Fin n → Module.End ℂ Y}
     exact Sᗮ.neg_mem (orth_stable hK hS a b hr)
 
 /- English proof (translation)
-Set `T : Submodule ℂ Y` to `S ⊓ LinearMap.ker π`. Use `haveI : FiniteDimensional ℂ T := Submodule.finiteDimensional_inf_left S _`. Use `haveI : CompleteSpace T := FiniteDimensional.complete ℂ T`. Establish `hT : ∀ a b, ∀ w ∈ T, Kf a b w ∈ T` using `fun a b w hw => ⟨hS a b w hw.1, by`. Establish `h0 : π w = 0` using `hw.2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `show π (Kf a b w) = 0`. Rewrite using `[hπ, h0, map_zero]⟩`. Take `⟨t, ht, c, hc, e⟩` from `T.exists_add_mem_mem_orthogonal m`. Establish `hcS : c ∈ S`. Establish `: c = m - t` using `by rw [e]; abel`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `S.sub_mem hm ht.1`. Establish `hπt : π t = 0` using `ht.2`. Establish `hπc : π c = π m` using `by rw [e, map_add, hπt, zero_add]`. Use `⟨c, hcS, hπc, fun a => ?_, fun a b hab he => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : Kf a a c - (ν a : ℂ) • c ∈ T`. Use `⟨S.sub_mem (hS a a c hcS) (S.smul_mem _ hcS), ?_⟩` and prove the remaining obligations. Use `show π (Kf a a c - (ν a : ℂ) • c) = 0`. Rewrite using `[map_sub, map_smul, hπ, hπc, hx.1 a, sub_self]`. Establish `h2 : Kf a a c - (ν a : ℂ) • c ∈ Tᗮ` using `Tᗮ.sub_mem (orth_stable hK hT a a hc) (Tᗮ.smul_mem _ hc)`.
-
-Conclude with `sub_eq_zero.1 (eq_zero_of_mem_orth h1 h2)`. Establish `h1 : Kf a b c ∈ T`. Use `⟨hS a b c hcS, ?_⟩` and prove the remaining obligations. Use `show π (Kf a b c) = 0`. Rewrite using `[hπ, hπc, hx.2 a b hab he]`.
-
-Conclude with `eq_zero_of_mem_orth h1 (orth_stable hK hT a b hc)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_highest [AddCommGroup X] [Module ℂ X] {Kf : Fin n → Fin n → Module.End ℂ Y}
     (hK : ∀ a b (x y : Y), ⟪Kf a b x, y⟫_ℂ = ⟪x, Kf b a y⟫_ℂ) {S : Submodule ℂ Y} [FiniteDimensional ℂ S]
@@ -141,7 +137,7 @@ theorem dsum_mk (p : Module.End ℂ V × Module.End ℂ W) (x : V) (w : W) :
     dsum p (WithLp.toLp 2 (x, w)) = WithLp.toLp 2 (p.1 x, p.2 w) := rfl
 
 /- English proof (translation)
-The claim follows from `WithLp.ofLp_injective 2 (Prod.ext h1 h2)`.
+A detailed English derivation is pending.
 -/
 theorem y_ext {y z : 𝐘} (h1 : y.ofLp.1 = z.ofLp.1) (h2 : y.ofLp.2 = z.ofLp.2) : y = z :=
   WithLp.ofLp_injective 2 (Prod.ext h1 h2)
@@ -150,9 +146,9 @@ def sumF (E : Fin n → Fin n → Module.End ℂ V) (F : Fin n → Fin n → Mod
     Fin n → Fin n → Module.End ℂ (WithLp 2 (V × W)) := fun a b => dsum (E a b, F a b)
 
 /- English proof (translation)
-Introduce `a b c d`. Establish `h1` using `hE a b c d`. Establish `h2` using `hF a b c d`. Apply the tactic sequence `have key : (E a b, F a b) * (E c d, F c d) - (E c d, F c d) * (E a b, F a b) = (if b = c then (E a d, F a d) else 0) - (if d = a then (E c b, F c b) else 0) := by split_ifs at h1 h2 ⊢ <;> exact Prod.ext (by simpa using h1) (by simpa using h2)`. Establish `h3` using `congrArg dsum key`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite `h3` using `[map_sub, map_sub, map_mul, map_mul]`. Simplify using `only [sumF]`. Rewrite using `[h3]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem glRel_sumF {E : Fin n → Fin n → Module.End ℂ V} {F : Fin n → Fin n → Module.End ℂ W}
     (hE : GlRel E) (hF : GlRel F) : GlRel (sumF E F) := by
@@ -169,7 +165,7 @@ theorem glRel_sumF {E : Fin n → Fin n → Module.End ℂ V} {F : Fin n → Fin
   split_ifs <;> simp
 
 /- English proof (translation)
-Simplify using `only [sumF]`. Rewrite using `[← map_mul, ← map_mul]`. Conclude with `congrArg dsum (Prod.ext (hE a b c d) (hF a b c d))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comm_sumF {E E' : Fin n → Fin n → Module.End ℂ V} {F F' : Fin n → Fin n → Module.End ℂ W}
     (hE : ∀ a b c d, E a b * E' c d = E' c d * E a b) (hF : ∀ a b c d, F a b * F' c d = F' c d * F a b)
@@ -179,7 +175,7 @@ theorem comm_sumF {E E' : Fin n → Fin n → Module.End ℂ V} {F F' : Fin n �
   exact congrArg dsum (Prod.ext (hE a b c d) (hF a b c d))
 
 /- English proof (translation)
-Simplify using `only [kF, sumF]`. Rewrite using `[← map_add]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem kF_sumF (E1 E2 : Fin n → Fin n → Module.End ℂ V) (F1 F2 : Fin n → Fin n → Module.End ℂ W) (a b : Fin n) :
     kF (sumF E1 F1) (sumF E2 F2) a b = dsum (kF E1 E2 a b, kF F1 F2 a b) := by
@@ -188,11 +184,9 @@ theorem kF_sumF (E1 E2 : Fin n → Fin n → Module.End ℂ V) (F1 F2 : Fin n �
   rfl
 
 /- English proof (translation)
-Proceed by induction on `m generalizing a b with`. Consider the case `zero`. Simplify using `only [epow]`. Use `split_ifs`. Conclude with `(map_one dsum).symm`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Conclude with `(map_zero dsum).symm`. Consider the case `succ m ih`. Simplify using `only [epow, ih, sumF]`. Simplify using `only [← map_mul]`. Rewrite using `[← map_sum]`.
-
-Conclude with `congrArg dsum (Prod.ext (by simp [Prod.fst_sum]) (by simp [Prod.snd_sum]))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem epow_sumF (E : Fin n → Fin n → Module.End ℂ V) (F : Fin n → Fin n → Module.End ℂ W) (m : ℕ) (a b : Fin n) :
     epow (sumF E F) m a b = dsum (epow E m a b, epow F m a b) := by
@@ -209,7 +203,7 @@ theorem epow_sumF (E : Fin n → Fin n → Module.End ℂ V) (F : Fin n → Fin 
     exact congrArg dsum (Prod.ext (by simp [Prod.fst_sum]) (by simp [Prod.snd_sum]))
 
 /- English proof (translation)
-Simplify using `only [gelA, epow_sumF]`. Rewrite using `[← map_sum]`. Conclude with `congrArg dsum (Prod.ext (by simp [Prod.fst_sum]) (by simp [Prod.snd_sum]))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gelA_sumF (E : Fin n → Fin n → Module.End ℂ V) (F : Fin n → Fin n → Module.End ℂ W) (m : ℕ) :
     gelA (sumF E F) m = dsum (gelA E m, gelA F m) := by
@@ -218,7 +212,7 @@ theorem gelA_sumF (E : Fin n → Fin n → Module.End ℂ V) (F : Fin n → Fin 
   exact congrArg dsum (Prod.ext (by simp [Prod.fst_sum]) (by simp [Prod.snd_sum]))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a b`. Simplify using `only [barF, sumF]`. Rewrite using `[← map_neg]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem barF_sumF (E : Fin n → Fin n → Module.End ℂ V) (F : Fin n → Fin n → Module.End ℂ W) :
     barF (sumF E F) = sumF (barF E) (barF F) := by
@@ -228,9 +222,9 @@ theorem barF_sumF (E : Fin n → Fin n → Module.End ℂ V) (F : Fin n → Fin 
   rfl
 
 /- English proof (translation)
-Use `⟨fun a => ?_, fun a b hab he => ?_⟩` and prove the remaining obligations. Establish `h'` using `h.1 a`. Rewrite `h'` using `[kF_sumF]`. Conclude with `congrArg (fun z : 𝐘 => z.ofLp.1) h'`. Establish `h'` using `h.2 a b hab he`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h'` using `[kF_sumF]`. Conclude with `congrArg (fun z : 𝐘 => z.ofLp.1) h'`.
+A detailed English derivation is pending.
 -/
 theorem hwSp_fst {E1 E2 : Fin n → Fin n → Module.End ℂ V} {F1 F2 : Fin n → Fin n → Module.End ℂ W}
     {ν : Fin n → ℝ} {y : 𝐘} (h : y ∈ hwSp (sumF E1 F1) (sumF E2 F2) ν) : y.ofLp.1 ∈ hwSp E1 E2 ν := by
@@ -243,9 +237,9 @@ theorem hwSp_fst {E1 E2 : Fin n → Fin n → Module.End ℂ V} {F1 F2 : Fin n �
     exact congrArg (fun z : 𝐘 => z.ofLp.1) h'
 
 /- English proof (translation)
-Use `⟨fun a => ?_, fun a b hab he => ?_⟩` and prove the remaining obligations. Establish `h'` using `h.1 a`. Rewrite `h'` using `[kF_sumF]`. Conclude with `congrArg (fun z : 𝐘 => z.ofLp.2) h'`. Establish `h'` using `h.2 a b hab he`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h'` using `[kF_sumF]`. Conclude with `congrArg (fun z : 𝐘 => z.ofLp.2) h'`.
+A detailed English derivation is pending.
 -/
 theorem hwSp_snd {E1 E2 : Fin n → Fin n → Module.End ℂ V} {F1 F2 : Fin n → Fin n → Module.End ℂ W}
     {ν : Fin n → ℝ} {y : 𝐘} (h : y ∈ hwSp (sumF E1 F1) (sumF E2 F2) ν) : y.ofLp.2 ∈ hwSp F1 F2 ν := by
@@ -258,7 +252,7 @@ theorem hwSp_snd {E1 E2 : Fin n → Fin n → Module.End ℂ V} {F1 F2 : Fin n �
     exact congrArg (fun z : 𝐘 => z.ofLp.2) h'
 
 /- English proof (translation)
-Use `⟨fun a => ?_, fun a b hab he => ?_⟩` and prove the remaining obligations. Rewrite using `[kF_sumF]`. Conclude with `y_ext (hx.1 a) (hw.1 a)`. Rewrite using `[kF_sumF]`. Conclude with `y_ext (hx.2 a b hab he) (hw.2 a b hab he)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hwSp_mk {E1 E2 : Fin n → Fin n → Module.End ℂ V} {F1 F2 : Fin n → Fin n → Module.End ℂ W}
     {ν : Fin n → ℝ} {x : V} {w : W} (hx : x ∈ hwSp E1 E2 ν) (hw : w ∈ hwSp F1 F2 ν) :
@@ -270,7 +264,7 @@ theorem hwSp_mk {E1 E2 : Fin n → Fin n → Module.End ℂ V} {F1 F2 : Fin n �
     exact y_ext (hx.2 a b hab he) (hw.2 a b hab he)
 
 /- English proof (translation)
-Rewrite using `[kF_sumF, kF_sumF, WithLp.prod_inner_apply, WithLp.prod_inner_apply, dsum_fst, dsum_snd, dsum_fst, dsum_snd]`. Conclude with `congrArg₂ (· + ·) (hE a b _ _) (hF a b _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unit_sumF {E1 E2 : Fin n → Fin n → Module.End ℂ V} {F1 F2 : Fin n → Fin n → Module.End ℂ W}
     (hE : ∀ a b (x y : V), ⟪kF E1 E2 a b x, y⟫_ℂ = ⟪x, kF E1 E2 b a y⟫_ℂ)
@@ -280,7 +274,7 @@ theorem unit_sumF {E1 E2 : Fin n → Fin n → Module.End ℂ V} {F1 F2 : Fin n 
   exact congrArg₂ (· + ·) (hE a b _ _) (hF a b _ _)
 
 /- English proof (translation)
-Set `f : (S1 × S2) →ₗ[ℂ] 𝐘` to `(WithLp.linearEquiv 2 ℂ (V × W)).symm.toLinearMap ∘ₗ (S1.subtype.prodMap S2.subtype)`. Use `⟨LinearMap.range f, inferInstance, fun y => ⟨?_, fun h => ⟨(⟨_, h.1⟩, ⟨_, h.2⟩), rfl⟩⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨⟨s1, s2⟩, rfl⟩`. Conclude with `⟨s1.2, s2.2⟩`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem exists_prod_sub (S1 : Submodule ℂ V) (S2 : Submodule ℂ W) [FiniteDimensional ℂ S1] [FiniteDimensional ℂ S2] :
     ∃ S : Submodule ℂ 𝐘, FiniteDimensional ℂ S ∧ ∀ y : 𝐘, y ∈ S ↔ y.ofLp.1 ∈ S1 ∧ y.ofLp.2 ∈ S2 := by
@@ -291,9 +285,9 @@ theorem exists_prod_sub (S1 : Submodule ℂ V) (S2 : Submodule ℂ W) [FiniteDim
   exact ⟨s1.2, s2.2⟩
 
 /- English proof (translation)
-Take `⟨S1, h1, m1, s1⟩` from `hE y.ofLp.1`. Take `⟨S2, h2, m2, s2⟩` from `hF y.ofLp.2`. Use `haveI := h1`. Use `haveI := h2`. Take `⟨S, hS, hm⟩` from `exists_prod_sub S1 S2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨S, hS, (hm y).2 ⟨m1, m2⟩, fun a b w hw => ?_⟩` and prove the remaining obligations. Establish `hw'` using `(hm w).1 hw`. Rewrite using `[hm, kF_sumF]`. Conclude with `⟨s1 a b _ hw'.1, s2 a b _ hw'.2⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem locFin_sumF {E1 E2 : Fin n → Fin n → Module.End ℂ V} {F1 F2 : Fin n → Fin n → Module.End ℂ W}
     (hE : ∀ x : V, ∃ S : Submodule ℂ V, FiniteDimensional ℂ S ∧ x ∈ S ∧ ∀ a b, ∀ w ∈ S, kF E1 E2 a b w ∈ S)
@@ -311,7 +305,7 @@ theorem locFin_sumF {E1 E2 : Fin n → Fin n → Module.End ℂ V} {F1 F2 : Fin 
   exact ⟨s1 a b _ hw'.1, s2 a b _ hw'.2⟩
 
 /- English proof (translation)
-The claim follows from `glRel_sumF hV.gl1 M.gl1 gl2 := glRel_sumF hV.gl2 M.gl2 comm := comm_sumF hV.comm M.comm unitK := unit_sumF hV.unitK M.unitK locFin := locFin_sumF hV.locFin M.locFin ch1 m x := by rw [gelA_sumF] exact y_ext (hV.ch1 m _) (M.ch1 m _) ch2 m x := by rw [barF_sumF, gelA_sumF] exact y_e …`.
+A detailed English derivation is pending.
 -/
 theorem admissible_direct_sum_cone {lam : Fin n → ℤ} {lev : Fin n → ℕ} {E1 E2 : Fin n → Fin n → Module.End ℂ V}
     (hV : AdmFor lam lev E1 E2) (M : Model lam lev) (hN : ∀ ν, IsSecondTypeWeight lam lev ν → hwSp M.F1 M.F2 ν = ⊥) :
@@ -349,29 +343,29 @@ section PairAlg
 variable {E1 E2 : Fin n → Fin n → Module.End ℂ V} {F1 F2 : Fin n → Fin n → Module.End ℂ W}
 
 /- English proof (translation)
-The claim follows from `Algebra.subset_adjoin ⟨a, b, Or.inl rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem first_generator_mem_pair_algebra (a b : Fin n) : (E1 a b, F1 a b) ∈ pairAlg E1 E2 F1 F2 :=
   Algebra.subset_adjoin ⟨a, b, Or.inl rfl⟩
 
 /- English proof (translation)
-The claim follows from `Algebra.subset_adjoin ⟨a, b, Or.inr rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem second_generator_mem_pair_algebra (a b : Fin n) : (E2 a b, F2 a b) ∈ pairAlg E1 E2 F1 F2 :=
   Algebra.subset_adjoin ⟨a, b, Or.inr rfl⟩
 
 /- English proof (translation)
-The claim follows from `add_mem (first_generator_mem_pair_algebra a b) (second_generator_mem_pair_algebra a b)`.
+A detailed English derivation is pending.
 -/
 theorem kpair_mem (a b : Fin n) : (kF E1 E2 a b, kF F1 F2 a b) ∈ pairAlg E1 E2 F1 F2 :=
   add_mem (first_generator_mem_pair_algebra a b) (second_generator_mem_pair_algebra a b)
 
 /- English proof (translation)
-Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨a, b, rfl | rfl⟩` from `hx`. Conclude with `⟨_, first_generator_mem_pair_algebra a b⟩`. Conclude with `⟨_, second_generator_mem_pair_algebra a b⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Consider the case `algebraMap r => exact ⟨algebraMap ℂ _ r, Subalgebra.algebraMap_mem _ r⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨x2, hx⟩` from `hx`. Take `⟨y2, hy⟩` from `hy`. Conclude with `⟨x2 + y2, add_mem hx hy⟩`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `mul x y _ _ hx hy`. Take `⟨x2, hx⟩` from `hx`. Take `⟨y2, hy⟩` from `hy`. Conclude with `⟨x2 * y2, mul_mem hx hy⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_pair_of_mem_alg {a : Module.End ℂ V} (ha : a ∈ alg E1 E2) :
     ∃ a2 : Module.End ℂ W, (a, a2) ∈ pairAlg E1 E2 F1 F2 := by
@@ -391,11 +385,9 @@ theorem exists_pair_of_mem_alg {a : Module.End ℂ V} (ha : a ∈ alg E1 E2) :
     exact ⟨x2 * y2, mul_mem hx hy⟩
 
 /- English proof (translation)
-Proceed by induction on `hp using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨a, b, rfl | rfl⟩` from `hx`. Conclude with `Algebra.subset_adjoin ⟨a, b, Or.inl rfl⟩`. Conclude with `Algebra.subset_adjoin ⟨a, b, Or.inr rfl⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `algebraMap r`. Rewrite using `[AlgHom.commutes]`. Conclude with `Subalgebra.algebraMap_mem _ r`. Consider the case `add x y _ _ hx hy`. Rewrite using `[map_add]`.
-
-Conclude with `add_mem hx hy`. Consider the case `mul x y _ _ hx hy`. Rewrite using `[map_mul]`. Conclude with `mul_mem hx hy`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dsum_mem_alg {p : Module.End ℂ V × Module.End ℂ W} (hp : p ∈ pairAlg E1 E2 F1 F2) :
     dsum p ∈ alg (sumF E1 F1) (sumF E2 F2) := by
@@ -415,7 +407,7 @@ theorem dsum_mem_alg {p : Module.End ℂ V × Module.End ℂ W} (hp : p ∈ pair
     exact mul_mem hx hy
 
 /- English proof (translation)
-Establish `h1` using `hp.unitK a b x y`. Establish `h2` using `hp.unitP a b x y`. Simplify using `only [kF, pF, LinearMap.add_apply, LinearMap.sub_apply, inner_add_left, inner_add_right, inner_sub_left, inner_sub_right] at h1 h2`. Take the linear combination `(h1 + h2) / 2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem adj_one (hp : IsPair E1 E2) (a b : Fin n) (x y : V) : ⟪E1 a b x, y⟫_ℂ = ⟪x, E2 b a y⟫_ℂ := by
   have h1 := hp.unitK a b x y
@@ -425,7 +417,7 @@ theorem adj_one (hp : IsPair E1 E2) (a b : Fin n) (x y : V) : ⟪E1 a b x, y⟫_
   linear_combination (h1 + h2) / 2
 
 /- English proof (translation)
-Establish `h1` using `hp.unitK a b x y`. Establish `h2` using `hp.unitP a b x y`. Simplify using `only [kF, pF, LinearMap.add_apply, LinearMap.sub_apply, inner_add_left, inner_add_right, inner_sub_left, inner_sub_right] at h1 h2`. Take the linear combination `(h1 - h2) / 2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem adj_two (hp : IsPair E1 E2) (a b : Fin n) (x y : V) : ⟪E2 a b x, y⟫_ℂ = ⟪x, E1 b a y⟫_ℂ := by
   have h1 := hp.unitK a b x y
@@ -435,15 +427,13 @@ theorem adj_two (hp : IsPair E1 E2) (a b : Fin n) (x y : V) : ⟪E2 a b x, y⟫_
   linear_combination (h1 - h2) / 2
 
 /- English proof (translation)
-Proceed by induction on `hpA using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨a, b, rfl | rfl⟩` from `hx`. Conclude with `⟨_, second_generator_mem_pair_algebra b a, adj_one hp a b⟩`. Conclude with `⟨_, first_generator_mem_pair_algebra b a, adj_two hp a b⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Consider the case `algebraMap r`. Use `⟨algebraMap ℂ _ (starRingEnd ℂ r), Subalgebra.algebraMap_mem _ _, fun x y => ?_⟩` and prove the remaining obligations. Use `show ⟪algebraMap ℂ (Module.End ℂ V) r x, y⟫_ℂ = ⟪x, algebraMap ℂ (Module.End ℂ V) (starRingEnd ℂ r) y⟫_ℂ`. Simplify using `[Module.algebraMap_end_apply, inner_smul_left, inner_smul_right, mul_comm]`. Consider the case `add x y _ _ hx hy`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨q, hq, hq'⟩` from `hx`. Take `⟨q', hr, hr'⟩` from `hy`. Use `⟨q + q', add_mem hq hr, fun u w => ?_⟩` and prove the remaining obligations. Use `show ⟪(x.1 + y.1) u, w⟫_ℂ = ⟪u, (q.1 + q'.1) w⟫_ℂ`. Rewrite using `[LinearMap.add_apply, LinearMap.add_apply, inner_add_left, inner_add_right, hq', hr']`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `mul x y _ _ hx hy`. Take `⟨q, hq, hq'⟩` from `hx`. Take `⟨q', hr, hr'⟩` from `hy`. Use `⟨q' * q, mul_mem hr hq, fun u w => ?_⟩` and prove the remaining obligations. Use `show ⟪x.1 (y.1 u), w⟫_ℂ = ⟪u, q'.1 (q.1 w)⟫_ℂ`.
-
-Rewrite using `[hq', hr']`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_adj (hp : IsPair E1 E2) {p : Module.End ℂ V × Module.End ℂ W} (hpA : p ∈ pairAlg E1 E2 F1 F2) :
     ∃ q ∈ pairAlg E1 E2 F1 F2, ∀ x y : V, ⟪p.1 x, y⟫_ℂ = ⟪x, q.1 y⟫_ℂ := by
@@ -482,7 +472,7 @@ def genN (A : Subalgebra ℂ (Module.End ℂ V × Module.End ℂ W)) (z : 𝐘) 
     exact ⟨c • p, A.smul_mem hp c, by rw [map_smul, LinearMap.smul_apply]⟩
 
 /- English proof (translation)
-Take `⟨p, hp, rfl⟩` from `hy`. Conclude with `⟨q * p, mul_mem hq hp, by rw [map_mul]; rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem genN_stable {A : Subalgebra ℂ (Module.End ℂ V × Module.End ℂ W)} {z y : 𝐘}
     {q : Module.End ℂ V × Module.End ℂ W} (hq : q ∈ A) (hy : y ∈ genN A z) : dsum q y ∈ genN A z := by
@@ -494,21 +484,19 @@ def sndL : 𝐘 →ₗ[ℂ] W := LinearMap.snd ℂ V W ∘ₗ (WithLp.linearEqui
 def fstL : 𝐘 →ₗ[ℂ] V := LinearMap.fst ℂ V W ∘ₗ (WithLp.linearEquiv 2 ℂ (V × W)).toLinearMap
 
 /- English proof (translation)
-Use `set N := genN (pairAlg E1 E2 F1 F2) (WithLp.toLp 2 (v, f) : 𝐘) with hN`. Set `N0 : Submodule ℂ 𝐘` to `N ⊓ LinearMap.ker sndL`. Establish `hK0 : ∀ a b, ∀ y ∈ N0, kF (sumF E1 F1) (sumF E2 F2) a b y ∈ N0`. Introduce `a b y hy`. Rewrite using `[kF_sumF]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨genN_stable (kpair_mem a b) hy.1, ?_⟩` and prove the remaining obligations. Establish `h0 : y.ofLp.2 = 0` using `hy.2`. Use `show (kF F1 F2 a b) y.ofLp.2 = 0`. Rewrite using `[h0, map_zero]`. Establish `key : ∀ u' : V, (WithLp.toLp 2 (u', 0) : 𝐘) ∈ N → ⟪u', v⟫_ℂ = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `u' hu'`. Take `⟨S', hfd, hmem, hst⟩` from `hloc (WithLp.toLp 2 (u', 0))`. Use `haveI := hfd`. Set `S : Submodule ℂ 𝐘` to `S' ⊓ N0`. Use `haveI : FiniteDimensional ℂ S := Submodule.finiteDimensional_inf_left S' N0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : CompleteSpace S := FiniteDimensional.complete ℂ S`. Establish `hSst : ∀ a b, ∀ w ∈ S, kF (sumF E1 F1) (sumF E2 F2) a b w ∈ S` using `fun a b w hw => ⟨hst a b w hw.1, hK0 a b w hw.2⟩`. Take `⟨p, hpS, r, hr, e⟩` from `S.exists_add_mem_mem_orthogonal (WithLp.toLp 2 (v, 0) : 𝐘)`. Establish `hph : p ∈ hwSp (sumF E1 F1) (sumF E2 F2) μ` using `proj_highest hunit hSst (hwSp_mk hv (Submodule.zero_mem _)) hpS hr e`. Take `⟨c, hc⟩` from `hmult p hph hpS.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp0 : p.ofLp.2 = 0` using `hpS.2.2`. Establish `hcf : c • f = 0`. Rewrite `hp0` using `[hc]`. Conclude with `hp0`. Establish `hc0 : c = 0` using `(smul_eq_zero.1 hcf).resolve_right hf`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Establish `hpz : p = 0` using `by rw [hc, hc0, zero_smul]`. Establish `hre : r = WithLp.toLp 2 (v, 0)` using `by rw [e, hpz, zero_add]`. Establish `h` using `(Submodule.mem_orthogonal _ _).1 hr (WithLp.toLp 2 (u', 0)) ⟨hmem, hu', show (0 : W) = 0 from rfl⟩`. Rewrite `h` using `[hre, WithLp.prod_inner_apply]`. Simplify using `using h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨p, hpA, hpe⟩` from `hu`. Establish `hpv : p.1 v = u` using `congrArg (fun z : 𝐘 => z.ofLp.1) hpe`. Take `⟨q, hq, hadj⟩` from `exists_adj hp hpA`. Establish `hqu : (WithLp.toLp 2 (q.1 u, 0) : 𝐘) ∈ N`. Establish `h` using `genN_stable (z := (WithLp.toLp 2 (v, f) : 𝐘)) hq (show (WithLp.toLp 2 (u, 0) : 𝐘) ∈ N from ⟨p, hpA, hpe⟩)`.
-
-Rewrite `h` using `[dsum_mk, map_zero]`. Conclude with `h`. Establish `h1 : ⟪u, u⟫_ℂ = 0`. Combine the equalities or inequalities in the displayed calculation. Conclude with `inner_self_eq_zero (𝕜 := ℂ).1 h1`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem first_summand_zero {E1 E2 : Fin n → Fin n → Module.End ℂ V} {F1 F2 : Fin n → Fin n → Module.End ℂ W}
     (hp : IsPair E1 E2)
@@ -568,15 +556,13 @@ theorem first_summand_zero {E1 E2 : Fin n → Fin n → Module.End ℂ V} {F1 F2
 end Sum
 
 /- English proof (translation)
-Introduce `hM n lam hlam lev hlev V _ _ E1 E2 hp hadm M hMn v hv hv0 ν x hx hx0 ⟨a, ha, hax⟩`. Establish `hY` using `admissible_direct_sum_cone hadm M hMn`. Use `set A := pairAlg E1 E2 M.F1 M.F2 with hA`. Use `set vf : WithLp 2 (V × M.W) := WithLp.toLp 2 (v, M.f) with hvf`. Establish `hvfh : vf ∈ hwSp (sumF E1 M.F1) (sumF E2 M.F2) (muQ lam lev)` using `hwSp_mk hv M.hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvf0 : vf ≠ 0` using `fun h => hv0 (congrArg (fun z : WithLp 2 (V × M.W) => z.ofLp.1) h)`. Establish `hmult : ∀ w ∈ hwSp (sumF E1 M.F1) (sumF E2 M.F2) (muQ lam lev), w ∈ genN A vf → ∃ c : ℂ, w = c • vf`. Introduce and unpack `w hw ⟨p, hpA, rfl⟩`. Conclude with `hM n lam hlam lev hlev _ _ _ hY vf _ hvfh hw hvf0 ⟨dsum p, dsum_mem_alg hpA, rfl⟩`. Take `⟨a2, ha2⟩` from `exists_pair_of_mem_alg (F1 := M.F1) (F2 := M.F2) ha`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hm : dsum (a, a2) vf ∈ genN A vf` using `⟨_, ha2, rfl⟩`. Take `⟨S', hfd, hmem, hst⟩` from `hY.locFin (dsum (a, a2) vf)`. Use `haveI := hfd`. Set `S : Submodule ℂ (WithLp 2 (V × M.W))` to `S' ⊓ genN A vf`. Use `haveI : FiniteDimensional ℂ S := Submodule.finiteDimensional_inf_left S' _`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hSst : ∀ i j, ∀ w ∈ S, kF (sumF E1 M.F1) (sumF E2 M.F2) i j w ∈ S` using `fun i j w hw => ⟨hst i j w hw.1, by rw [kF_sumF]; exact genN_stable (kpair_mem i j) hw.2⟩`. Establish `hπm : fstL (dsum (a, a2) vf) = x` using `hax`. Take `⟨y, hyS, hyx, hyh⟩` from `lift_highest hY.unitK hSst fstL (kF E1 E2) (fun i j y => by rw [kF_sumF]; rfl) (m := dsum (a, a2) vf) (ν := ν) ⟨hmem, hm⟩ (by rw [hπm]; exact hx)`. Rewrite `hyx` using `[hπm]`. Establish `hyw : y.ofLp.2 ∈ hwSp M.F1 M.F2 ν` using `hwSp_snd (E1 := E1) (E2 := E2) hyh`.
-
-Use `M.cone ν _ hyw fun h0 => hx0 ?_` and prove the remaining obligations. Establish `hye : y = WithLp.toLp 2 (x, 0)` using `y_ext hyx h0`. Conclude with `first_summand_zero hp hY.unitK hY.locFin hv M.ne hmult (hye ▸ hyS.2)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem k_types_in_weight_cone : KTypeGenerationHighest := by
   intro hM n lam hlam lev hlev V _ _ E1 E2 hp hadm M hMn v hv hv0 ν x hx hx0 ⟨a, ha, hax⟩

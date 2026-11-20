@@ -9,15 +9,13 @@ section approx
 variable {U : Type*} [CommGroup U]
 
 /- English proof (translation)
-Introduce `u hu hZ`. Use `choose! c hc using step`. Set `w : ℕ → U` to `fun n => Nat.rec u (fun n x => x / f (c n x)) n`. Establish `hw : ∀ n, w n ∈ V n ∧ w n ∈ Z`. Introduce `n`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `n with`. Consider the case `zero => exact ⟨hu, hZ⟩`. Consider the case `succ n ih => exact ⟨(hc n _ ih.1 ih.2).2, Z.div_mem ih.2 (hfZ _)⟩`. Establish `hprod : ∀ n, w n = u / f (∏ k ∈ range n, c k (w k))`. Introduce `n`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `n with`. Consider the case `zero => simp [w]`. Consider the case `succ n ih`. Rewrite using `[prod_range_succ, map_mul, ← div_div, ← ih]`. Take `⟨s, hs0, hs⟩` from `hcomp (fun k => c k (w k)) (fun k => (hc k _ (hw k).1 (hw k).2).1)`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨s, hs0, ?_⟩` and prove the remaining obligations. Establish `h1 : u / f s = 1` using `hsep _ fun n => by`. Establish `h2 : u / f s = w n / f (s / ∏ k ∈ range n, c k (w k))`. Rewrite using `[hprod n, map_div, div_div_div_cancel_right]`. Rewrite using `[h2]`.
-
-Conclude with `(V n).div_mem (hw n).1 (hfV n _ (hs n))`. Conclude with `(div_eq_one.1 h1).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_of_approx (V : ℕ → Subgroup U)
     (hcomp : ∀ v : ℕ → U, (∀ k, v k ∈ V k) → ∃ s ∈ V 0, ∀ n, s / ∏ k ∈ range n, v k ∈ V n)
@@ -70,7 +68,7 @@ variable {G} {I : ℕ → AddSubgroup R} {e : R →+ R} (h : Filt G I e)
 include h
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => exact le_rfl`. Consider the case `succ n ih => exact (h.anti n).trans ih`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem le_zero (n : ℕ) : I n ≤ I 0 := by
   induction n with
@@ -78,7 +76,7 @@ theorem le_zero (n : ℕ) : I n ≤ I 0 := by
   | succ n ih => exact (h.anti n).trans ih
 
 /- English proof (translation)
-Establish `: x * u = x * (u - 1) + x` using `by ring`. Rewrite using `[this]`. Conclude with `(I n).add_mem (h.anti n (h.mul n _ _ hx hu)) hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_unit {n : ℕ} {x u : R} (hx : x ∈ I n) (hu : u - 1 ∈ I 0) : x * u ∈ I n := by
   have : x * u = x * (u - 1) + x := by ring
@@ -86,11 +84,9 @@ theorem mul_unit {n : ℕ} {x u : R} (hx : x ∈ I n) (hu : u - 1 ∈ I 0) : x *
   exact (I n).add_mem (h.anti n (h.mul n _ _ hx hu)) hx
 
 /- English proof (translation)
-Introduce `h0`. Establish `h1 : (1 : R) ∈ I 0`. Establish `: (1 : R) = - x` using `by linear_combination h0`. Rewrite using `[this]`. Conclude with `(I 0).neg_mem hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hn : ∀ n, (1 : R) ∈ I n`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => exact h1`. Consider the case `succ n ih => simpa using h.mul n 1 1 ih h1`.
-
-Conclude with `one_ne_zero (h.sep 1 hn)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem one_add_ne_zero {x : R} (hx : x ∈ I 0) : 1 + x ≠ 0 := by
   intro h0
@@ -122,12 +118,12 @@ def V (n : ℕ) : Subgroup Rˣ where
     rwa [add_sub_cancel, ← Units.val_inv_eq_inv_val] at this
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_V {n : ℕ} {u : Rˣ} : u ∈ h.V n ↔ (u : R) - 1 ∈ I n := Iff.rfl
 
 /- English proof (translation)
-Introduce `_ hu` and use `h.le_zero n hu`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem V_le_zero (n : ℕ) : h.V n ≤ h.V 0 := fun _ hu => h.le_zero n hu
 
@@ -139,13 +135,13 @@ Both sides reduce to the same expression.
 theorem mkU_val (x : R) (hx : x ∈ I 0) : (h.mkU x hx : R) = 1 + x := rfl
 
 /- English proof (translation)
-Rewrite using `[mem_V, mkU_val, add_sub_cancel_left]`. Conclude with `hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mkU_mem {n : ℕ} (x : R) (hx : x ∈ I n) : h.mkU x (h.le_zero n hx) ∈ h.V n := by
   rw [mem_V, mkU_val, add_sub_cancel_left]; exact hx
 
 /- English proof (translation)
-Rewrite using `[mem_V]`. Establish `: ((u / v : Rˣ) : R) - 1 = ((u : R) - v) * ((v⁻¹ : Rˣ) : R)`. Rewrite using `[div_eq_mul_inv, Units.val_mul, sub_mul, Units.mul_inv]`. Rewrite using `[this]`. Conclude with `h.mul_unit huv ((h.V 0).inv_mem hv)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem div_mem_V {n : ℕ} {u v : Rˣ} (hv : v ∈ h.V 0) (huv : (u : R) - v ∈ I n) : u / v ∈ h.V n := by
   rw [mem_V]
@@ -155,9 +151,9 @@ theorem div_mem_V {n : ℕ} {u v : Rˣ} (hv : v ∈ h.V 0) (huv : (u : R) - v �
   exact h.mul_unit huv ((h.V 0).inv_mem hv)
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Establish `hE` using `ih fun j hj => hy j (mem_insert_of_mem hj)`. Establish `hS : ∑ j ∈ s, y j ∈ I n` using `(I n).sum_mem fun j hj => hy j (mem_insert_of_mem hj)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hya` using `hy a (mem_insert_self a s)`. Rewrite using `[prod_insert ha, sum_insert ha]`. Establish `: (1 + y a) * ∏ j ∈ s, (1 + y j) - 1 - (y a + ∑ j ∈ s, y j) = (∏ j ∈ s, (1 + y j) - 1 - ∑ j ∈ s, y j) + y a * (∏ j ∈ s, (1 + y j) - 1 - ∑ j ∈ s, y j) + y a * ∑ j ∈ s, y j` using `by ring`. Rewrite using `[this]`. Conclude with `(I (n + 1)).add_mem ((I (n + 1)).add_mem hE (h.mul n _ _ hya (h.le_zero _ hE))) (h.mul n _ _ hya (h.le_zero _ hS))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_one_add {ι : Type*} {n : ℕ} (s : Finset ι) (y : ι → R) (hy : ∀ j ∈ s, y j ∈ I n) :
     ∏ j ∈ s, (1 + y j) - 1 - ∑ j ∈ s, y j ∈ I (n + 1) := by
@@ -177,11 +173,11 @@ theorem prod_one_add {ι : Type*} {n : ℕ} (s : Finset ι) (y : ι → R) (hy :
       (h.mul n _ _ hya (h.le_zero _ hS))
 
 /- English proof (translation)
-Establish `hP : ∀ n, ∏ k ∈ range n, v k ∈ h.V 0` using `fun n => (h.V 0).prod_mem fun k _ => h.V_le_zero k (hv k)`. Establish `hx : ∀ k, ((v k : R) - 1) * ((∏ j ∈ range k, v j : Rˣ) : R) ∈ I k` using `fun k => h.mul_unit (hv k) (hP k)`. Take `⟨t, ht⟩` from `h.comp _ hx`. Establish `hsum : ∀ n, ∑ k ∈ range n, ((v k : R) - 1) * ((∏ j ∈ range k, v j : Rˣ) : R) = ((∏ j ∈ range n, v j : Rˣ) : R) - 1`. Introduce `n`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [sum_range_succ, ih, prod_range_succ, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `ht0 : t ∈ I 0` using `by simpa using ht 0`.
+Proceed by induction. Treat this case separately. Treat this case separately. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `⟨h.mkU t ht0, h.mkU_mem t ht0, fun n => h.div_mem_V (hP n) ?_⟩` and prove the remaining obligations. Use `ht n` as an intermediate fact. Rewrite `this` using `[hsum]`. Rewrite using `[mkU_val]`. Use `this using 1` and compare the differences between its conclusion and the goal.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -207,7 +203,7 @@ theorem V_comp (v : ℕ → Rˣ) (hv : ∀ k, v k ∈ h.V k) :
   ring
 
 /- English proof (translation)
-The claim follows from `Units.ext (sub_eq_zero.1 (h.sep _ hu))`.
+A detailed English derivation is pending.
 -/
 theorem V_sep (u : Rˣ) (hu : ∀ n, u ∈ h.V n) : u = 1 :=
   Units.ext (sub_eq_zero.1 (h.sep _ hu))

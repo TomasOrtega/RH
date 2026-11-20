@@ -15,26 +15,24 @@ variable {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F))
 def piu : Fv F v := (PI.VolStabSW.exists_unif_Fv v).choose
 
 /- English proof (translation)
-The claim follows from `(PI.VolStabSW.exists_unif_Fv v).choose_spec.1`.
+A detailed English derivation is pending.
 -/
 theorem piu_ne : piu v ≠ 0 := (PI.VolStabSW.exists_unif_Fv v).choose_spec.1
 
 /- English proof (translation)
-The claim follows from `(PI.VolStabSW.exists_unif_Fv v).choose_spec.2.1`.
+A detailed English derivation is pending.
 -/
 theorem piu_tendsto : Tendsto (fun k : ℕ => piu v ^ k) atTop (𝓝 0) :=
   (PI.VolStabSW.exists_unif_Fv v).choose_spec.2.1
 
 /- English proof (translation)
-The claim follows from `(PI.VolStabSW.exists_unif_Fv v).choose_spec.2.2`.
+A detailed English derivation is pending.
 -/
 theorem piu_mem : piu v ∈ v.adicCompletionIntegers F :=
   (PI.VolStabSW.exists_unif_Fv v).choose_spec.2.2
 
 /- English proof (translation)
-Establish `hP : ∀ c ∈ C, ∀ᶠ z : Fv F v × X in 𝓝 ((0 : Fv F v), c), z.1 • z.2 ∈ U`. Introduce `c _`. Establish `hc : Continuous fun z : Fv F v × X => z.1 • z.2` using `continuous_fst.smul continuous_snd`. Conclude with `(hc.tendsto ((0 : Fv F v), c)).eventually_mem (by simpa using hU)`. Establish `hev` using `hC.eventually_forall_of_forall_eventually (P := fun s c => s • c ∈ U) hP`.
-
-Conclude with `(piu_tendsto v).eventually hev`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tube {X : Type} [AddCommGroup X] [Module (Fv F v) X] [TopologicalSpace X]
     [ContinuousSMul (Fv F v) X] {C : Set X} (hC : IsCompact C) {U : Set X}
@@ -49,7 +47,7 @@ theorem tube {X : Type} [AddCommGroup X] [Module (Fv F v) X] [TopologicalSpace X
 variable (ψ : AddChar (AF F) ℂ)
 
 /- English proof (translation)
-Establish `h` using `PI.VolStabSW.SdUniqW.singleV_add v (0 : Fv F v) 0`. Rewrite `h` using `[add_zero]`. Conclude with `(add_eq_left.1 h.symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem singleV_zero : singleV F v 0 = 0 := by
   have h := PI.VolStabSW.SdUniqW.singleV_add v (0 : Fv F v) 0
@@ -57,26 +55,26 @@ theorem singleV_zero : singleV F v 0 = 0 := by
   exact (add_eq_left.1 h.symm)
 
 /- English proof (translation)
-Simplify using `only [psiV, singleV_zero]`. Conclude with `AddChar.map_zero_eq_one ψ`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem psiV_zero : psiV F ψ v 0 = 1 := by
   simp only [psiV, singleV_zero]
   exact AddChar.map_zero_eq_one ψ
 
 /- English proof (translation)
-The claim follows from `PI.VolStabSW.SdUniqW.psiV_add ψ v r s`.
+A detailed English derivation is pending.
 -/
 theorem psiV_add' (r s : Fv F v) : psiV F ψ v (r + s) = psiV F ψ v r * psiV F ψ v s :=
   PI.VolStabSW.SdUniqW.psiV_add ψ v r s
 
 /- English proof (translation)
-Rewrite using `[← psiV_add', neg_add_cancel, psiV_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem psiV_neg_mul (r : Fv F v) : psiV F ψ v (-r) * psiV F ψ v r = 1 := by
   rw [← psiV_add', neg_add_cancel, psiV_zero]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [psiV_zero]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.prod_insert ha, psiV_add', ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem psiV_sum {ι : Type} (s : Finset ι) (f : ι → Fv F v) :
     psiV F ψ v (∑ i ∈ s, f i) = ∏ i ∈ s, psiV F ψ v (f i) := by
@@ -86,7 +84,7 @@ theorem psiV_sum {ι : Type} (s : Finset ι) (f : ι → Fv F v) :
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.prod_insert ha, psiV_add', ih]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp [psiV_zero]`. Consider the case `succ n ih => rw [succ_nsmul, psiV_add', ih, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem psiV_nsmul (n : ℕ) (r : Fv F v) : psiV F ψ v (n • r) = psiV F ψ v r ^ n := by
   induction n with
@@ -99,7 +97,7 @@ def OpenKer : Prop :=
 def ballK (k : ℕ) : Set (Fv F v) := {t | (piu v ^ k)⁻¹ * t ∈ v.adicCompletionIntegers F}
 
 /- English proof (translation)
-Establish `ho : IsOpen (ballK v k)` using `(Valued.isOpen_valuationSubring _).preimage (continuous_const.mul continuous_id)`. Conclude with `ho.mem_nhds (by simp [ballK, zero_mem])`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ballK_mem_nhds (k : ℕ) : ballK v k ∈ 𝓝 (0 : Fv F v) := by
   have ho : IsOpen (ballK v k) :=
@@ -107,7 +105,7 @@ theorem ballK_mem_nhds (k : ℕ) : ballK v k ∈ 𝓝 (0 : Fv F v) := by
   exact ho.mem_nhds (by simp [ballK, zero_mem])
 
 /- English proof (translation)
-Establish `h` using `hk _ ht`. Rewrite `h` using `[← mul_assoc, mul_inv_cancel₀ (pow_ne_zero k (piu_ne v)), one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem psiV_ballK {k : ℕ} (hk : ∀ c ∈ v.adicCompletionIntegers F, psiV F ψ v (piu v ^ k * c) = 1)
     {t : Fv F v} (ht : t ∈ ballK v k) : psiV F ψ v t = 1 := by
@@ -115,9 +113,9 @@ theorem psiV_ballK {k : ℕ} (hk : ∀ c ∈ v.adicCompletionIntegers F, psiV F 
   rwa [← mul_assoc, mul_inv_cancel₀ (pow_ne_zero k (piu_ne v)), one_mul] at h
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `h`. Use `continuous_iff_continuousAt.2 fun r => ?_` and prove the remaining obligations. Establish `hev : ∀ᶠ t in 𝓝 r, psiV F ψ v t = psiV F ψ v r`. Establish `h1 : Tendsto (fun t => t - r) (𝓝 r) (𝓝 0)` using `tendsto_sub_nhds_zero_iff.2 tendsto_id`. Use `filter_upwards [h1 (ballK_mem_nhds v k)] with t ht`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `psiV_add' v ψ r (t - r)` as an intermediate fact. Rewrite `this` using `[add_sub_cancel, psiV_ballK v ψ hk ht, mul_one]`. Conclude with `this`. Conclude with `continuousAt_const.congr (hev.mono fun t ht => ht.symm)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_psiV_of (h : OpenKer v ψ) : Continuous (psiV F ψ v) := by
   obtain ⟨k, hk⟩ := h
@@ -131,19 +129,17 @@ theorem continuous_psiV_of (h : OpenKer v ψ) : Continuous (psiV F ψ v) := by
   exact continuousAt_const.congr (hev.mono fun t ht => ht.symm)
 
 /- English proof (translation)
-Establish `hc` using `continuous_psiV_of v ψ h`. Establish `hbd : ∀ x : Fv F v, ∃ B : ℝ, ∀ n : ℕ, ‖psiV F ψ v x‖ ^ n ≤ B`. Introduce `x`. Take `⟨j, hj⟩` from `((piu_tendsto v).mul_const x).eventually ((Valued.isOpen_valuationSubring (Fv F v)).mem_nhds (by simp [zero_mem]) : ((v.adicCompletionIntegers F : Set (Fv F v))) ∈ 𝓝 (0 * x)) |>.exists`. Use `set H : Set (Fv F v) := {t | piu v ^ j * t ∈ v.adicCompletionIntegers F}`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hHc : IsCompact H`. Establish `e : H = (fun t => (piu v ^ j)⁻¹ * t) '' (v.adicCompletionIntegers F : Set (Fv F v))`. Use extensionality with `t`. Prove the components needed by the constructor for the conclusion. Introduce `ht`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨piu v ^ j * t, ht, ?_⟩` and prove the remaining obligations. Simplify using `[← mul_assoc, inv_mul_cancel₀ (pow_ne_zero j (piu_ne v))]`. Introduce and unpack `⟨s, hs, rfl⟩`. Simplify `hs` using `[H, ← mul_assoc, mul_inv_cancel₀ (pow_ne_zero j (piu_ne v))]`. Rewrite using `[e]`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `(PI.AdicCompletionValuation.isCompact_adicCompletionIntegers F v).image (continuous_const.mul continuous_id)`. Take `⟨B, hB⟩` from `hHc.exists_bound_of_continuousOn (hc.norm.continuousOn)`. Use `⟨B, fun n => ?_⟩` and prove the remaining obligations. Establish `hn : (n • x) ∈ H` using `by show piu v ^ j * (n • x) ∈ v.adicCompletionIntegers F`. Rewrite using `[mul_smul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(v.adicCompletionIntegers F).toAddSubgroup.nsmul_mem hj n`. Establish `h2` using `hB _ hn`. Rewrite `h2` using `[psiV_nsmul, norm_norm, norm_pow]`. Conclude with `h2`. Establish `hle : ∀ x : Fv F v, ‖psiV F ψ v x‖ ≤ 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Introduce `x`. Take `⟨B, hB⟩` from `hbd x`. Assume the negation of the conclusion as `hgt`. Use `push Not at hgt`. Take `⟨n, hn⟩` from `pow_unbounded_of_one_lt B hgt`.
-
-Conclude with `absurd (hB n) (not_le.2 hn)`. Establish `h1` using `hle r`. Establish `h2` using `hle (-r)`. Establish `h3 : ‖psiV F ψ v (-r)‖ * ‖psiV F ψ v r‖ = 1` using `by rw [← norm_mul, psiV_neg_mul, norm_one]`. Use polynomial arithmetic with `[norm_nonneg (psiV F ψ v r), norm_nonneg (psiV F ψ v (-r))]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem norm_psiV_of (h : OpenKer v ψ) (r : Fv F v) : ‖psiV F ψ v r‖ = 1 := by
   have hc := continuous_psiV_of v ψ h
@@ -187,9 +183,9 @@ theorem norm_psiV_of (h : OpenKer v ψ) (r : Fv F v) : ‖psiV F ψ v r‖ = 1 :
   nlinarith [norm_nonneg (psiV F ψ v r), norm_nonneg (psiV F ψ v (-r))]
 
 /- English proof (translation)
-Establish `hU : {s : Fv F v | t⁻¹ * s ∈ v.adicCompletionIntegers F} ∈ 𝓝 (0 : Fv F v)` using `((Valued.isOpen_valuationSubring _).preimage (continuous_const.mul continuous_id)).mem_nhds (by simp [zero_mem])`. Take `⟨k, hk⟩` from `(tube v (PI.AdicCompletionValuation.isCompact_adicCompletionIntegers F v) hU).exists`. Use `⟨k, fun c hc => ?_⟩` and prove the remaining obligations. Establish `h1` using `h _ (hk c hc)`. Simplify using `only [smul_eq_mul] at h1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e : t⁻¹ * (piu v ^ k * c) * t = piu v ^ k * c` using `by field_simp`. Rewrite `h1` using `[e]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem openKer_of (t : Fv F v) (ht : t ≠ 0)
     (h : ∀ c ∈ v.adicCompletionIntegers F, psiV F ψ v (c * t) = 1) : OpenKer v ψ := by

@@ -60,13 +60,13 @@ namespace GroundTheory.Heights₂.Heights.NumbersDVR
 open GroundTheory.Heights₂.Heights.FieldNumbers in
 
 /- English proof (translation)
-Establish `hq` using `DegZeroLocQuot.proof.{0}`. Establish `hdzl` using `DegZeroLocLocal.proof hq`. Establish `hdzn` using `DegZeroLocNoetherian.proof hq`. Establish `hmh` using `MChartHomog.proof.{0}`. Establish `hmd` using `MChartDehomog.proof.{0}`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmt` using `MChartTrdeg.proof hmh`. Establish `hdzr` using `DegZeroLocalRing.proof hdzl hdzn (DegZeroLocDim.proof hmh hmt (MChartLocDim.proof hq hmd hmh))`. Establish `hnum` using `ConeVarNumerator.proof hq`. Establish `hcone` using `ConeLocalLength.proof LocalizedQuotientLength.proof (ConeLocalFlat.proof (ConePolyLocalization.proof hdzl (ConeVarUnit.proof hq hnum) ConeVarSurj.proof (ConeVarInj.proof hnum)))`. Establish `hfr` using `DegZeroLocFrac.proof.{0}`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hff` using `FibreFinite.proof.{0}`. Establish `hint` using `SemilocalIntegral.proof ValuativeCentre.proof.{0}`. Establish `hrank` using `SemilocalFiniteRank.proof hff (SemilocalFinite.proof hint (LocalIntegralClosureFinite.proof NoetherIntegralClosureFinite.proof (FunctionFieldFinite.proof hmd hmt) hq hmd hfr) hdzn) hfr`. Establish `hfrd` using `FibreRelDim.proof.{0}`. Establish `hlz` using `DegZeroLocLocalize.proof.{0}`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hres` using `DegZeroLocResidue.proof.{0}`. Establish `hmaxi` using `SemilocalMaxIdeals.proof hff hfrd (FibreNonempty.proof hrank hdzr) DegZeroLocUnits.proof DegZeroLocSeparate.proof hlz (SemilocalResidueLength.proof hres hrank hlz)`. Establish `hlen` using `SemilocalLength.proof (SemilocalLengthSum.proof hff hrank hdzr FiniteAlgebraLengthSum.proof hmaxi) hfrd DivCycleMinimal.proof hcone`. Conclude with `DivPushForwardLocal.proof DivCycleMinimal.proof hcone hdzr hrank hlen`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem DivPushForwardLocalZero : FieldNumbers.DivPushForwardLocal.Statement.{0} := by
   have hq := DegZeroLocQuot.proof.{0}
@@ -99,14 +99,14 @@ theorem DivPushForwardLocalZero : FieldNumbers.DivPushForwardLocal.Statement.{0}
   exact DivPushForwardLocal.proof DivCycleMinimal.proof hcone hdzr hrank hlen
 
 /- English proof (translation)
-The claim follows from `FlagBundleDim.proof TwistedDualGensSpan.proof (SpanBundleDim.proof PointIdealMultiProj.proof SpanBundleTrdegGe.proof SpanBundleTrdegLe.proof)`.
+A detailed English derivation is pending.
 -/
 theorem FlagBundleDim.full : FlagBundleDim.Statement :=
   FlagBundleDim.proof TwistedDualGensSpan.proof
     (SpanBundleDim.proof PointIdealMultiProj.proof SpanBundleTrdegGe.proof SpanBundleTrdegLe.proof)
 
 /- English proof (translation)
-The claim follows from `NumericalSegre.of_open FlagBundleDim.full FlagBundleSectionForms.proof (FlagBundleSectionDiv.proof FlagBundleDim.full MultAtOfSaturated.proof ProjIdealFormValue.proof TruncSpecialize.proof FlagBundleChartSection.proof) FlagLineSection.proof FlagLineDegree.proof DivPushForwardLoca …`.
+A detailed English derivation is pending.
 -/
 theorem NumericalSegre.full : NumericalSegre.Statement :=
   NumericalSegre.of_open FlagBundleDim.full FlagBundleSectionForms.proof

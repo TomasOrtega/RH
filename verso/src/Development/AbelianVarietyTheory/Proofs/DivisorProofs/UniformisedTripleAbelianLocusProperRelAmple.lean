@@ -25,15 +25,15 @@ namespace GlobalTheory.AbLocusPol
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-Distinguish the cases in `hf : _root_.IsField O`. Take `⟨u, ⟨mu⟩⟩` from `GlobalTheory.PolLocal.exists_pull (Out.jK O) t`. Take `⟨hA, hK⟩` from `GlobalTheory.LocM.PolFibre.ample_kTriv_of_polAt mu hpol`. Use `haveI : IsIso (Out.jK O) := GlobalTheory.PolLocal.isIso_spMap _ (GlobalTheory.PolLocal.algebraMap_fractionRing_bijective O hf)`. Conclude with `(GlobalTheory.PolLocal.ample_kTriv_of_iso mu hA hK).1`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨V, _, _, _, ρ, hρ, hloc⟩` from `GlobalTheory.KTrivSpread.exists_dvr O hf`. Take `⟨tV, ⟨mV⟩⟩` from `GlobalTheory.PolLocal.exists_pull (spMap ρ) t`. Take `⟨tK, ⟨mK⟩⟩` from `GlobalTheory.PolLocal.exists_pull (spMap (algebraMap V (FractionRing V))) tV`. Establish `hpV : GlobalTheory.LN.PolAt tV (Out.jK V)` using `GlobalTheory.PolNormal.polAt_generic_pull ρ hρ mV hpol`. Take `⟨hAK, hKK⟩` from `GlobalTheory.LocM.PolFibre.ample_kTriv_of_polAt mK hpV`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hAV, hKV⟩` from `GlobalTheory.PolDvr.relAmple_kTriv_of_generic_fibre GlobalTheory.HomExtExamples.homExtSt_holds GlobalTheory.allSixLaws.1 GlobalTheory.allSixLaws.2.1 E H V (FractionRing V) tV tK mK (GlobalTheory.PolLocal.isProper_of_map mV hprop) hAK hKK`. Take `⟨uk, ⟨mk⟩⟩` from `GlobalTheory.PolLocal.exists_pull (spMap (IsLocalRing.residue V)) tV`. Take `⟨hAk, hKk⟩` from `GlobalTheory.PolLocal.pull_ample_kTriv mk hAV hKV`. Take `⟨n, -⟩` from `GlobalTheory.ObjMaps.exists_sab_comp mV mk`. Set `β : O →+* IsLocalRing.ResidueField V` to `(IsLocalRing.residue V).comp ρ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hpβ : GlobalTheory.LN.PolAt t (spMap β)`. Rewrite using `[GlobalTheory.PolLocal.spMap_comp]`. Conclude with `GlobalTheory.LocM.PolFibre.polAt_of_map n (by haveI := hprop; infer_instance) hAk hKk`. Take `⟨r, hr, hA⟩` from `GlobalTheory.PolNearAmple.relAmple_near_of_polAt E H O t hprop (IsLocalRing.ResidueField V) β hpβ`. Establish `hu : IsUnit r` using `isUnit_of_map_unit ρ r ((IsLocalRing.residue_ne_zero_iff_isUnit _).1 hr)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨m₀, -⟩` from `GlobalTheory.ObjMaps.exists_sab_id t`. Establish `e : spMap (RingHom.id O) = 𝟙 (Sp O)`. Simplify using `only [spMap, CommRingCat.ofHom_id, Spec.map_id]`. Conclude with `hA O (RingHom.id O) hu t (e ▸ m₀)`.
+A detailed English derivation is pending.
 -/
 theorem relAmple_local {O : Type} [CommRing O] [IsDomain O] [IsLocalRing O] [IsNoetherianRing O] [CharZero O]
     (t : SAB H (Sp O)) (hprop : IsProper t.G.hom) (hpol : GlobalTheory.LN.PolAt t (Out.jK O)) :
@@ -65,11 +65,11 @@ theorem relAmple_local {O : Type} [CommRing O] [IsDomain O] [IsLocalRing O] [IsN
   exact hA O (RingHom.id O) hu t (e ▸ m₀)
 
 /- English proof (translation)
-Establish `hA : Out.RelAmple t.G t.PP.L`. Use `t.semi.quasiCompact` as an intermediate fact. Use `t.semi.separated` as an intermediate fact. Use `GlobalTheory.AmpleLocal.relAmple_of_locally (Sp S) t.G t.PP.L t.PP.isLB inferInstance inferInstance fun q => ?_` and prove the remaining obligations. Establish `: q.asIdeal.IsPrime` using `q.isPrime`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Set `O` to `Localization.AtPrime q.asIdeal`. Take `⟨tO, ⟨m⟩⟩` from `GlobalTheory.PolLocal.exists_pull (spMap (algebraMap S O)) t`. Establish `hi : Function.Injective (algebraMap S O)` using `IsLocalization.injective O q.asIdeal.primeCompl_le_nonZeroDivisors`. Establish `: CharZero O` using `charZero_of_injective_algebraMap hi`. Establish `hA` using `relAmple_local tO (GlobalTheory.PolLocal.isProper_of_map m hp) (GlobalTheory.PolNormal.polAt_generic_pull _ hi m hg)`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨w, hw, -⟩` from `m.lin`. Conclude with `GlobalTheory.AmpleSpreadAt.relAmple_spread_at S q t.G t.PP.L hp t.PP.isLB tO.G m.φ tO.PP.L m.cart.1 tO.PP.isLB ⟨w, hw⟩ hA`. Conclude with `⟨hA, GlobalTheory.KTrivGenericPt.kTriv_of_polAt_generic E H S t hp hA hg⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem relAmple_kTriv_of_generic {S : Type} [CommRing S] [IsDomain S] [CharZero S] [IsNoetherianRing S]
     (t : SAB H (Sp S)) (hp : IsProper t.G.hom) (hg : GlobalTheory.LN.PolAt t (Out.jK S)) :
@@ -91,15 +91,15 @@ theorem relAmple_kTriv_of_generic {S : Type} [CommRing S] [IsDomain S] [CharZero
   exact ⟨hA, GlobalTheory.KTrivGenericPt.kTriv_of_polAt_generic E H S t hp hA hg⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H R _ _ _ _ _ _ t P m tt htt hab S x t' hx ⟨mx⟩`. Establish `: CharZero R` using `algebraRat.charZero R`. Establish `hf : ∏ i, tt i ≠ 0` using `Finset.prod_ne_zero_iff.2 fun i _ => htt i`. Generalize the expression as in `∏ i, tt i = f at hf hab hx`. Set `Rf` to `Localization.Away f`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Introduce a local definition for the expression.
 
-Establish `hle` using `powers_le_nonZeroDivisors_of_noZeroDivisors hf`. Establish `hi : Function.Injective (algebraMap R Rf)` using `IsLocalization.injective Rf hle`. Establish `: IsDomain Rf` using `IsLocalization.isDomain_localization hle`. Establish `: CharZero Rf` using `charZero_of_injective_algebraMap hi`. Take `⟨tf, ⟨mf⟩⟩` from `GlobalTheory.PolLocal.exists_pull (spMap (algebraMap R Rf)) t`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hrange : Set.range (spMap (algebraMap R Rf)) = (PrimeSpectrum.basicOpen f : Set (PrimeSpectrum R))` using `PrimeSpectrum.localization_away_comap_range Rf f`. Establish `habf : abLocus tf.G = Set.univ` using `Set.eq_univ_of_forall fun z => (abLocus_pullback abLocusOne t.semi mf.cart.1 z).1 ((hab _).2 (hrange.le ⟨z, rfl⟩))`. Establish `hg : GlobalTheory.LN.PolAt tf (Out.jK Rf)` using `GlobalTheory.PolNormal.polAt_generic_pull _ hi mf (GlobalTheory.DatUniq.polAt_of_unif P)`. Establish `hpf : IsProper tf.G.hom` using `GlobalTheory.ProperOfAbelianFibres.isProper_of_polAt_of_abLocus E H Rf tf hg habf`. Take `⟨hA, hK⟩` from `relAmple_kTriv_of_generic tf hpf hg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: IsOpenImmersion (spMap (algebraMap R Rf))`. Unfold `spMap`. Conclude with `IsOpenImmersion.of_isLocalization f`. Establish `hr : Set.range x ⊆ Set.range (spMap (algebraMap R Rf))`. Introduce and unpack `_ ⟨s, rfl⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `hrange.ge (hx s)`. Take `⟨m', -⟩` from `GlobalTheory.ArcObj.exists_sab_fac mf mx (g := IsOpenImmersion.lift _ x hr) (IsOpenImmersion.lift_fac _ _ hr).symm`. Take `⟨w, hw, -⟩` from `m'.lin`. Conclude with `⟨GlobalTheory.PolLocal.isProper_of_map m' hpf, GlobalTheory.AmpleLocalBase.relAmple_baseChange m'.cart.1 tf.PP.isLB t'.PP.isLB ⟨w, hw⟩ hA, kTriv_pull m'.cart tf.PP.isLB t'.PP.isLB ((isGen_iff w).1 hw) hK⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isProper_relAmple_kTriv_of_abLocus : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] [IsAdicComplete (maximalIdeal R) R] [Algebra ℚ R] (t : SAB H (Sp R)) (P : PELUnif (maximalIdeal R) t) (m : ℕ) (tt : Fin m → R), (∀ i, tt i ≠ 0) → (∀ p : Sp R, p ∈ abLocus t.G ↔ ∏ i, tt i ∉ p.asIdeal) → ∀ (S : Scheme.{0}) (x : S ⟶ Sp R) (t' : SAB H S), (∀ s : S, ∏ i, tt i ∉ (x s).asIdeal) → Nonempty (SABMap t' t x) → IsProper t'.G.hom ∧ Out.RelAmple t'.G t'.PP.L ∧ Out.KTriv t'.G t'.PP.L := by
   intro E _ _ _ H R _ _ _ _ _ _ t P m tt htt hab S x t' hx ⟨mx⟩

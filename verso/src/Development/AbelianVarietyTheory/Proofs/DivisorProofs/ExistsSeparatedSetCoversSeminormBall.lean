@@ -6,21 +6,21 @@ set_option autoImplicit false
 namespace GlobalTheory.VolBr
 
 /- English proof (translation)
-Introduce `G _ Λ B hB R hfin`. Set `sep : Finset G → Prop` to `fun T => ∀ x ∈ T, ∀ y ∈ T, x ≠ y → x - y ∉ B 1`. Take `⟨T, hT, hmax⟩` from `Finset.exists_max_image (hfin.toFinset.powerset.filter sep) Finset.card ⟨∅, by simp [sep]⟩`. Rewrite `hT` using `[Finset.mem_filter, Finset.mem_powerset]`. Take `⟨hTS, hTsep⟩` from `hT`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hsub : (T : Set G) ⊆ B R` using `fun x hx => hfin.mem_toFinset.1 (hTS hx)`. Establish `h0 : (0 : G) ∈ B 1` using `hB.zero_mem 1 zero_le_one`. Establish `hsymm : ∀ u, u ∈ B 1 → -u ∈ B 1`. Introduce `u hu`. Use `hB.sub_mem 0 1 0 u (hB.zero_mem 0 le_rfl) hu` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `hcov : ∀ x ∈ B R, ∃ t ∈ T, x - t ∈ B 1`. Introduce `x hx`. Distinguish the cases in `hxT : x ∈ T`. Conclude with `⟨x, hxT, by simpa using h0⟩`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `hins : insert x T ∈ hfin.toFinset.powerset.filter sep`. Rewrite using `[Finset.mem_filter, Finset.mem_powerset]`. Use `⟨Finset.insert_subset (hfin.mem_toFinset.2 hx) hTS, ?_⟩` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha b hb hab`. Rewrite `ha`, `hb` using `[Finset.mem_insert]`. Apply the tactic sequence `rcases ha with ha | ha <;> rcases hb with hb | hb`. Conclude with `absurd (ha.trans hb.symm) hab`. Rewrite using `[ha]`.
+Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hne b hb`. Rewrite using `[hb]; intro h; exact hne a ha (by simpa using hsymm _ h)`. Conclude with `hTsep a ha b hb hab`. Establish `hc` using `hmax _ hins`. Rewrite `hc` using `[Finset.card_insert_of_notMem hxT]`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Use `choose! f hfT hf using hcov`. Use `⟨T, hsub, hTsep, ?_⟩` and prove the remaining obligations. Establish `hmaps : Set.MapsTo (fun x => (f x, x - f x)) (B R) ((T : Set G) ×ˢ B 1)` using `fun x hx => ⟨hfT x hx, hf x hx⟩`. Establish `hinj : Set.InjOn (fun x => (f x, x - f x)) (B R)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 
-Introduce `x _ y _ h`. Simplify using `only [Prod.mk.injEq] at h`. Take `⟨h1, h2⟩` from `h`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem exists_sep_cover : ∀ (G : Type) [AddCommGroup G] (Λ : AddSubgroup G) (B : ℝ → Set G), IsBallFam Λ B →
     ∀ R : ℝ, (B R).Finite → ∃ T : Finset G, (T : Set G) ⊆ B R ∧ (∀ x ∈ T, ∀ y ∈ T, x ≠ y → x - y ∉ B 1) ∧
@@ -72,7 +72,7 @@ theorem exists_sep_cover : ∀ (G : Type) [AddCommGroup G] (Λ : AddSubgroup G) 
     _ = T.card * (B 1).encard := by rw [Set.encard_prod, Set.encard_coe_eq_coe_finsetCard]
 
 /- English proof (translation)
-The claim follows from `exists_sep_cover`.
+A detailed English derivation is pending.
 -/
 example : ∀ (G : Type) [AddCommGroup G] (Λ : AddSubgroup G) (B : ℝ → Set G), IsBallFam Λ B → ∀ R : ℝ, (B R).Finite → ∃ T : Finset G, (T : Set G) ⊆ B R ∧ (∀ x ∈ T, ∀ y ∈ T, x ≠ y → x - y ∉ B 1) ∧ (B R).encard ≤ T.card * (B 1).encard := exists_sep_cover
 

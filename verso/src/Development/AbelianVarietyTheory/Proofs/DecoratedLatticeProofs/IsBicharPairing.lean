@@ -9,21 +9,21 @@ open scoped Topology
 namespace GlobalTheory.LocMod.Inhab
 
 /- English proof (translation)
-Use `letI : Fintype (L ⧸ K.addSubgroupOf L) := Fintype.ofFinite _`. Set `A : AddSubgroup G` to `{ carrier := {y | ∀ κ ∈ K, χ κ y = 1} zero_mem' := fun κ _ => h.zero_right κ add_mem' := fun {a b} ha hb κ hκ => by rw [h.right, ha κ hκ, hb κ hκ, mul_one] neg_mem' := fun {a} ha κ hκ => by`. Use `h.right κ a (-a)` as an intermediate fact. Rewrite using `[add_neg_cancel, h.zero_right, ha κ hκ, one_mul, eq_comm] at this }` and apply the resulting hypothesis. Establish `hcl : ∀ g : V, (∀ κ ∈ K, ρ κ g = g) → ∀ a b : L, (QuotientAddGroup.mk a : L ⧸ K.addSubgroupOf L) = QuotientAddGroup.mk b → ρ a g = ρ b g` using `fun g hg a b hab => by`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `: -(a : G) + b ∈ K` using `(QuotientAddGroup.eq (s := K.addSubgroupOf L)).1 hab`. Rewrite using `[← hg _ this, hρ, add_neg_cancel_left, hg _ this]`. Assume the negation of the conclusion as `hcon`. Establish `hz : ∀ y ∈ A, ∑ q : L ⧸ K.addSubgroupOf L, χ (q.out : L) y • ρ (q.out : L) f = 0` using `fun y hy => by`. Establish `hfix : ∀ κ ∈ K, ρ κ (σ y f) = σ y f` using `fun κ hκ => by rw [hc, hy κ hκ, hK κ hκ, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hσ y _ ?_` and prove the remaining obligations. Simplify using `only [map_sum, map_smul, ← hc]`. Assume the negation of the conclusion as `hne`. Use `hcon ⟨_, P.sum_mem fun q _ => hP _ (q.out : L).2 _ (hP' y f hf), hne, fun u hu => ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Fintype.sum_equiv (Equiv.addLeft (QuotientAddGroup.mk (⟨u, hu⟩ : L))) _ _ fun q => ?_` and prove the remaining obligations. Rewrite using `[hρ]`. Use `hcl _ hfix (⟨u, hu⟩ + q.out) _ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Set `ch : (L ⧸ K.addSubgroupOf L) → (Multiplicative A →* ℂ)` to `fun q => { toFun := fun y => χ (q.out : L) (y.toAdd : A) map_one' := h.zero_right _ map_mul' := fun a b => h.right _ _ _ }`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Establish `hinj : Function.Injective ch`. Introduce `q q' hq`. Rewrite using `[← q.out_eq', ← q'.out_eq', QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf]`. Assume the negation of the conclusion as `hn`. Take `⟨y, hy, hne⟩` from `hsep _ (-q.out + q'.out : L).2 hn`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Establish `e : χ (q.out : L) y = χ (q'.out : L) y` using `DFunLike.congr_fun hq (Multiplicative.ofAdd ⟨y, hy⟩)`. Rewrite `hne` using `[AddSubgroup.coe_add, AddSubgroup.coe_neg, h.left, ← e, h.neg_mul]`. Conclude with `hne rfl`. Establish `hli` using `(linearIndependent_monoidHom (Multiplicative A) ℂ).comp ch hinj`. Rewrite `hli` using `[Fintype.linearIndependent_iff]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `f0 ((Module.forall_dual_apply_eq_zero_iff ℂ f).1 fun ℓ => ?_)` and prove the remaining obligations. Use `hli (fun q => ℓ (ρ (q.out : L) f)) (by` as an intermediate fact. Use function extensionality and compare the values at `y`. Use `congrArg ℓ (hz _ y.toAdd.2)` as an intermediate fact. Simplify using `only [map_sum, map_smul, smul_eq_mul, map_zero] at this`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_apply]`. Use `Eq.trans (Finset.sum_congr rfl fun q _ => ?_) this` and prove the remaining obligations. Simplify using `[ch, mul_comm]) (QuotientAddGroup.mk 0)`. Rewrite `this` using `[hcl f hK _ 0 (QuotientAddGroup.out_eq' _), hK ((0 : L) : G) K.zero_mem]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_fixed {G V : Type} [AddCommGroup G] [AddCommGroup V] [Module ℂ V] {χ : G → G → ℂ} (h : IsBichar χ)
     (ρ σ : G → V →ₗ[ℂ] V) (hρ : ∀ x x' f, ρ x (ρ x' f) = ρ (x + x') f) (hσ : ∀ y f, σ y f = 0 → f = 0)
@@ -92,7 +92,7 @@ def box (a : kˣ) : AddSubgroup (Matrix Y Y' k) where
   neg_mem' := fun ha r q => by simpa using ha r q
 
 /- English proof (translation)
-Use extensionality with `x`. Conclude with `⟨fun h r _ q _ => h r q, fun h r q => h r trivial q trivial⟩`.
+By extensionality, compare the relevant components. Supply the required witnesses or components.
 -/
 theorem box_eq (a : kˣ) :
     (box Y Y' a : Set (Matrix Y Y' k)) = Set.pi Set.univ fun _ : Y => Set.pi Set.univ fun _ : Y' => cball a := by
@@ -100,30 +100,30 @@ theorem box_eq (a : kˣ) :
   exact ⟨fun h r _ q _ => h r q, fun h r q => h r trivial q trivial⟩
 
 /- English proof (translation)
-Rewrite using `[box_eq]`. Conclude with `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_cball a`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_box (a : kˣ) : IsCompact (box Y Y' a : Set (Matrix Y Y' k)) := by
   rw [box_eq]
   exact isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_cball a
 
 /- English proof (translation)
-Rewrite using `[box_eq]`. Conclude with `isOpen_set_pi Set.finite_univ fun _ _ => isOpen_set_pi Set.finite_univ fun _ _ => isOpen_cball a`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_box (a : kˣ) : IsOpen (box Y Y' a : Set (Matrix Y Y' k)) := by
   rw [box_eq]
   exact isOpen_set_pi Set.finite_univ fun _ _ => isOpen_set_pi Set.finite_univ fun _ _ => isOpen_cball a
 
 /- English proof (translation)
-Use `haveI : CompactSpace (box Y Y' a) := isCompact_iff_compactSpace.1 (isCompact_box a)`. Conclude with `AddSubgroup.quotient_finite_of_isOpen _ ((isOpen_box b).preimage continuous_subtype_val)`.
+A detailed English derivation is pending.
 -/
 theorem finite_box (a b : kˣ) : Finite (box Y Y' a ⧸ (box Y Y' b).addSubgroupOf (box Y Y' a)) := by
   haveI : CompactSpace (box Y Y' a) := isCompact_iff_compactSpace.1 (isCompact_box a)
   exact AddSubgroup.quotient_finite_of_isOpen _ ((isOpen_box b).preimage continuous_subtype_val)
 
 /- English proof (translation)
-Establish `h` using `(isCompact_box (Y := Y) (Y' := Y') (1 : kˣ)).eventually_forall_of_forall_eventually (x₀ := (0 : k)) (P := fun c x => c • x ∈ U) fun x _ => (continuous_smul.tendsto' ((0 : k), x) 0 (zero_smul _ _)).eventually hU`. Take `⟨s, hs⟩` from `exists_cball_subset h`. Use `⟨s, fun x hx => ?_⟩` and prove the remaining obligations. Use `hs (show (s : k) ∈ cball s from le_refl (valuation k (s : k))) ((s : k)⁻¹ • x) fun r q => by` as an intermediate fact. Establish `h0 : valuation k (s : k) ≠ 0` using `by simp`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.smul_apply, smul_eq_mul, map_mul, map_inv₀, Units.val_one, map_one]`. Conclude with `inv_mul_le_one_of_le₀ (hx r q) zero_le'`. Rewrite `this` using `[smul_inv_smul₀ s.ne_zero]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_box_subset {U : Set (Matrix Y Y' k)} (hU : U ∈ 𝓝 0) : ∃ a : kˣ, ∀ x ∈ box Y Y' a, x ∈ U := by
   have h := (isCompact_box (Y := Y) (Y' := Y') (1 : kˣ)).eventually_forall_of_forall_eventually (x₀ := (0 : k))
@@ -140,13 +140,13 @@ theorem exists_box_subset {U : Set (Matrix Y Y' k)} (hU : U ∈ 𝓝 0) : ∃ a 
 def pairing (ψ : AddChar k Circle) (t b : Matrix Y Y' k) : ℂ := ψ (∑ r, ∑ q, b r q * t r q)
 
 /- English proof (translation)
-Simplify using `only [pairing, mul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pairing_comm (ψ : AddChar k Circle) (t b : Matrix Y Y' k) : pairing ψ t b = pairing ψ b t := by
   simp only [pairing, mul_comm]
 
 /- English proof (translation)
-Simplify using `[pairing, mul_add, Finset.sum_add_distrib, AddChar.map_add_eq_mul] right a b y := by simp [pairing, add_mul, Finset.sum_add_distrib, AddChar.map_add_eq_mul] zero_left y := by simp [pairing] zero_right y := by simp [pairing]`.
+Simplify using the standard rewrite rules.
 -/
 theorem isBichar_pairing (ψ : AddChar k Circle) : IsBichar (pairing (Y := Y) (Y' := Y') ψ) where
   left a b y := by simp [pairing, mul_add, Finset.sum_add_distrib, AddChar.map_add_eq_mul]
@@ -155,9 +155,9 @@ theorem isBichar_pairing (ψ : AddChar k Circle) : IsBichar (pairing (Y := Y) (Y
   zero_right y := by simp [pairing]
 
 /- English proof (translation)
-Unfold `pairing`. Rewrite using `[Finset.sum_eq_single r, Finset.sum_eq_single q]`. Simplify using the standard rewrite rules. Introduce `q' _ h`. Simplify using `[h.symm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `r' _ h`. Simplify using `[h.symm]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem pairing_single (ψ : AddChar k Circle) (t : Matrix Y Y' k) (r : Y) (q : Y') (c : k) :
     pairing ψ t (Matrix.single r q c) = ψ (c * t r q) := by
@@ -170,7 +170,7 @@ theorem pairing_single (ψ : AddChar k Circle) (t : Matrix Y Y' k) (r : Y) (q : 
   · simp
 
 /- English proof (translation)
-Rewrite using `[pairing, (hd d).2 le_rfl _ (Valuation.map_sum_le _ fun r _ => Valuation.map_sum_le _ fun q _ => h r q)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pairing_eq_one {ψ : AddChar k Circle} {d : kˣ} (hd : HasConductor ψ d) {t b : Matrix Y Y' k}
     (h : ∀ r q, valuation k (b r q * t r q) ≤ valuation k (d : k)) : pairing ψ t b = 1 := by
@@ -178,15 +178,13 @@ theorem pairing_eq_one {ψ : AddChar k Circle} {d : kˣ} (hd : HasConductor ψ d
   rfl
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨r, q, h⟩ : ∃ r q, valuation k (a : k) < valuation k (u r q) := by`. Assume the negation of the conclusion as `hh`. Use `push Not at hh`. Conclude with `hu hh`. Establish `ha : 0 < valuation k (a : k)` using `zero_lt_iff.2 (by simp)`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd0 : 0 < valuation k (d : k)` using `zero_lt_iff.2 (by simp)`. Establish `hu0 : 0 < valuation k (u r q)` using `ha.trans h`. Establish `hne : u r q ≠ 0` using `fun e => by simp [e] at hu0`. Establish `: ¬ ∀ z : k, valuation k z ≤ valuation k (u r q * (d / a)) → ψ z = 1` using `fun hh => by`. Use `(hd _).1 hh` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[map_mul, map_div₀, mul_div_left_comm, mul_le_iff_le_one_right hd0, div_le_one₀ ha]`. Conclude with `absurd h (not_lt.2 this)`. Use `push Not at this`. Take `⟨z, hz, hz1⟩` from `this`. Use `⟨Matrix.single r q (z / u r q), fun r' q' => ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.single_apply] split_ifs`. Rewrite using `[map_div₀, div_le_iff₀ hu0, mul_comm, ← map_mul]`. Simplify using `using hz`. Simplify using the standard rewrite rules. Rewrite using `[pairing_single, div_mul_cancel₀ _ hne]`.
-
-Conclude with `fun e => hz1 (Subtype.ext e)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem exists_sep {ψ : AddChar k Circle} {d : kˣ} (hd : HasConductor ψ d) (a : kˣ) {u : Matrix Y Y' k}
     (hu : u ∉ box Y Y' a) : ∃ y ∈ box Y Y' (d / a), pairing ψ u y ≠ 1 := by
@@ -214,7 +212,7 @@ theorem exists_sep {ψ : AddChar k Circle} {d : kˣ} (hd : HasConductor ψ d) (a
     exact fun e => hz1 (Subtype.ext e)
 
 /- English proof (translation)
-The claim follows from `pairing_eq_one hd fun r q => by rw [map_mul] refine (mul_le_mul' (hy r q) (hu r q)).trans_eq ?_ rw [← map_mul, ← Units.val_mul, div_mul_cancel]`.
+A detailed English derivation is pending.
 -/
 theorem pairing_box {ψ : AddChar k Circle} {d : kˣ} (hd : HasConductor ψ d) {a : kˣ} {u y : Matrix Y Y' k}
     (hu : u ∈ box Y Y' a) (hy : y ∈ box Y Y' (d / a)) : pairing ψ u y = 1 :=
@@ -224,15 +222,13 @@ theorem pairing_box {ψ : AddChar k Circle} {d : kˣ} (hd : HasConductor ψ d) {
     rw [← map_mul, ← Units.val_mul, div_mul_cancel]
 
 /- English proof (translation)
-Take `⟨d, hd⟩` from `exists_hasConductor_of_continuous ψ hψ h1`. Establish `hb` using `isBichar_pairing (Y := Y) (Y' := Y') ψ`. Take `⟨a, ha⟩` from `exists_box_subset (sm f hf)`. Use `haveI := finite_box (Y := Y) (Y' := Y') 1 a`. Take `⟨g, hg, g0, hg1⟩` from `exists_fixed hb ρ σ hρ (fun y f h => by rw [← σ0 f, ← neg_add_cancel y, ← hσ, h, map_zero]) hc (box Y Y' 1) (box Y Y' a) (fun u _ hu => let ⟨y, hy, hne⟩ := exists_sep hd a hu; ⟨y, fun κ hκ => pairing_box hd hκ hy, hne⟩) P (fun u _ => hP u) hP' hf f0 ha`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb'⟩` from `exists_box_subset (sm' g hg)`. Use `haveI := finite_box (Y := Y) (Y' := Y') (d / 1) b`. Set `Q : Submodule ℂ V` to `{ carrier := {v | v ∈ P ∧ ∀ x ∈ box Y Y' (1 : kˣ), ρ x v = v} zero_mem' := ⟨P.zero_mem, fun _ _ => map_zero _⟩ add_mem' := fun h h' => ⟨P.add_mem h.1 h'.1, fun x hx => by rw [map_add, h.2 x hx, h'.2 x hx]⟩ smul_mem' := fun c _ h => ⟨P.smul_mem c h.1, fun x hx => by rw [map_smul, …`. Establish `hb2 : IsBichar fun y x : Matrix Y Y' k => pairing ψ (-x) y` using `⟨fun a b y => hb.right _ _ _, fun a y z => by rw [neg_add, hb.left], fun y => hb.zero_right _, fun a => by rw [neg_zero, hb.zero_left]⟩`. Take `⟨g', hg', g0', hg2⟩` from `exists_fixed hb2 σ ρ hσ (fun y f h => by rw [← ρ0 f, ← neg_add_cancel y, ← hρ, h, map_zero]) (fun y x f => by rw [hc, smul_smul, hb.neg_mul, one_smul]) (box Y Y' (d / 1)) (box Y Y' b) (fun u _ hu => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y, hy, hne⟩` from `exists_sep hd b hu`. Use `⟨-y, fun κ hκ => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[neg_neg, pairing_comm]`. Conclude with `pairing_box hd hκ hy`. Rewrite using `[neg_neg, pairing_comm])` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Use `Q (fun u hu v hv => ⟨hP' u v hv.1, fun x hx => by rw [hc, pairing_box hd hx hu, hv.2 x hx, one_smul]⟩)`. Use the proof step `(fun y v hv => ⟨hP y v hv.1, fun x hx => by rw [hρ, add_comm, ← hρ, hv.2 x hx]⟩) ⟨hg, hg1⟩ g0 hb'`. Use `⟨g', hg'.1, g0', hg'.2, fun y hy => hg2 y ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Take `⟨x, hx, hne⟩` from `exists_sep hd _ hn`.
-
-Rewrite `hx` using `[div_one, div_self']`. Conclude with `hne ((pairing_comm ψ y x).trans (hy x hx))`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_vacuum {V : Type} [AddCommGroup V] [Module ℂ V] {ψ : AddChar k Circle} (hψ : Continuous ψ) (h1 : ψ ≠ 1)
     (ρ σ : Matrix Y Y' k → V →ₗ[ℂ] V) (hρ : ∀ x x' f, ρ x (ρ x' f) = ρ (x + x') f)

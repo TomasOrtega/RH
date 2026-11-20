@@ -6,19 +6,19 @@ open CategoryTheory Limits AlgebraicGeometry LateralTheory.E.BuildCut LateralThe
 namespace LateralTheory.E.FMrangePfQc
 
 /- English proof (translation)
-Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => exact ⟨0, IsIdempotentElem.zero, fun p => by simp⟩`. Consider the case `insert a t _ ih`. Take `⟨e, he, hpe⟩` from `ih`. Take `⟨f, u, hf, hu, rfl⟩` from `hW.2 a`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨f + e - f * e, ?_, fun p => ?_⟩` and prove the remaining obligations. Unfold `IsIdempotentElem at *`. Take the linear combination `(1 - e + (e * e - e)) * hf + (1 - f) * he`. Establish `hfe : f * (f + e - f * e) = f`. Use `hf.eq` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Take the linear combination `(1 - e) * this`. Establish `hef : e * (f + e - f * e) = e`. Use `he.eq` as an intermediate fact. Take the linear combination `(1 - f) * this`. Establish `key : f + e - f * e ∈ p.asIdeal ↔ f ∈ p.asIdeal ∧ e ∈ p.asIdeal`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨hfe ▸ p.asIdeal.mul_mem_left f h, hef ▸ p.asIdeal.mul_mem_left e h⟩`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `p.asIdeal.sub_mem (p.asIdeal.add_mem h1 h2) (p.asIdeal.mul_mem_right e h1)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hfu : f * u ∈ p.asIdeal ↔ f ∈ p.asIdeal`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨v, hv⟩` from `hu.exists_right_inv`. Use `p.asIdeal.mul_mem_right v h` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[mul_assoc, hv, mul_one]`. Then use the resulting hypothesis. Conclude with `fun h => p.asIdeal.mul_mem_right u h`. Establish `h1` using `hpe p`. Simplify using `only [Set.mem_compl_iff, PrimeSpectrum.mem_zeroLocus, Finset.coe_insert, Set.insert_subset_iff] at h1 ⊢`. Rewrite using `[key]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [SetLike.mem_coe, hfu, not_iff_not.mp h1]`.
+A detailed English derivation is pending.
 -/
 theorem finset_idem {W : Type} [CommRing W] (hW : ProdACF W) (t : Finset W) :
     ∃ e : W, IsIdempotentElem e ∧ ∀ p : PrimeSpectrum W, p ∈ (PrimeSpectrum.zeroLocus (t : Set W))ᶜ ↔ e ∉ p.asIdeal := by
@@ -54,7 +54,7 @@ theorem finset_idem {W : Type} [CommRing W] (hW : ProdACF W) (t : Finset W) :
       simp only [SetLike.mem_coe, hfu, not_iff_not.mp h1]
 
 /- English proof (translation)
-Introduce `W _ hW U hU`. Take `⟨t, ht⟩` from `(@PrimeSpectrum.isCompact_isOpen_iff W _ (U : Set (Spec (CommRingCat.of W)))).1 ⟨hU, U.isOpen⟩`. Take `⟨e, he, hpe⟩` from `finset_idem hW t`. Use `⟨e, he, fun p => ?_⟩` and prove the remaining obligations. Rewrite using `[← hpe p, ht]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -67,7 +67,7 @@ theorem QcIdem_pf : QcIdem := by
   rfl
 
 /- English proof (translation)
-The claim follows from `FMrange_of_leaves hI QcIdem_pf`.
+A detailed English derivation is pending.
 -/
 theorem FMrange_of (hI : IdemLift) : FMrange :=
   FMrange_of_leaves hI QcIdem_pf

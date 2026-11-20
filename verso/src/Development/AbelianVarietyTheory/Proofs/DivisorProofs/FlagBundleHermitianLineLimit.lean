@@ -25,9 +25,9 @@ open GlobalTheory.HermFrame GlobalTheory.Points
 open scoped ContDiff ComplexOrder
 
 /- English proof (translation)
-Simplify using `only [ofValues, GlobalTheory.LineForm.OmReal.sesq_expand hα (L _), AddSubmonoidClass.coe_finset_sum, Subalgebra.coe_smul, sym, map_sum, map_smul, map_mul, (pull_dz L _).1, (pull_dz L _).2, Finset.sum_mul, Finset.mul_sum, Finset.sum_smul, Finset.smul_sum, smul_mul_smul_comm, smul_ …`. Use `conv_lhs => enter [2, a, 2, b]`. Rewrite using `[Finset.sum_comm]`. Use `conv_lhs => enter [2, a]`. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [Finset.sum_comm]`. Use `conv_lhs => enter [2, c, 2, a]`. Rewrite using `[Finset.sum_comm]`. Use `conv_lhs => enter [2, c]`. Rewrite using `[Finset.sum_comm]`.
+A detailed English derivation is pending.
 -/
 theorem pull_ofValues {n m : ℕ} (L : V n →L[ℂ] V m) {α : V m → V m → ℂ} (hα : IsSesq α) :
     pull L (ofValues α : Alt m) = ofValues (fun ξ η => α (L ξ) (L η)) := by
@@ -41,7 +41,7 @@ theorem pull_ofValues {n m : ℕ} (L : V n →L[ℂ] V m) {α : V m → V m → 
   conv_lhs => enter [2, c]; rw [Finset.sum_comm]
 
 /- English proof (translation)
-Simplify using `only [form_eq_sum, submatrix_apply, Function.comp_apply]`. Rewrite using `[← e.sum_comp]`. Conclude with `Finset.sum_congr rfl fun a _ => by rw [← e.sum_comp]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem form_submatrix {r r' : Type} [Fintype r] [Fintype r'] (e : r' ≃ r) (M : Matrix r r ℂ) (u u' : r → ℂ) :
     form (M.submatrix e e) (u ∘ e) (u' ∘ e) = form M u u' := by
@@ -50,9 +50,9 @@ theorem form_submatrix {r r' : Type} [Fintype r] [Fintype r'] (e : r' ≃ r) (M 
   exact Finset.sum_congr rfl fun a _ => by rw [← e.sum_comp]
 
 /- English proof (translation)
-Establish `hn : x.ch.target ∈ 𝓝 x.crd` using `x.ch.open_target.mem_nhds (x.ch.map_source x.2)`. Establish `h1` using `Complex.reCLM.contDiff.comp_contDiffOn (hf x.1.1)`. Establish `h2 : ContDiffOn ℝ ∞ (fun v => f (x.ch.symm v)) x.ch.target` using `(h1.mono fun v hv => ⟨hv, trivial⟩).congr fun v _ => by simp`. Rewrite using `[← delAt_dbarAt_fun ((h2.contDiffAt hn).of_le (by norm_cast))]`. Use `GlobalTheory.SecForm.DdcGerm.ddc_eq_of_eventuallyEq A _ x _ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [hn] with v hv`. Rewrite using `[HolAtlas.loc, dif_pos hv]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ddc_fn_apply {M : Type} [TopologicalSpace M] {n : ℕ} (A : HolAtlas M n) {f : M → ℝ}
     (hf : A.SmoothOn Set.univ fun y => (f y : ℂ)) (x : A.Pt) :
@@ -70,19 +70,19 @@ theorem ddc_fn_apply {M : Type} [TopologicalSpace M] {n : ℕ} (A : HolAtlas M n
 variable {k : Type} [CommRing k] {B Y : Scheme.{0}} {q : B ⟶ Sp k} {p : Y ⟶ Sp k} {D D' : ℕ}
 
 /- English proof (translation)
-Establish `hS` using `lineSC_shortExact flB`. Establish `hS'` using `lineSC_shortExact fl`. Use `set m := (h.pull π w).met σ with hm`. Set `c : Chart E 2` to `b.mid hS`. Set `c' : Chart ((Scheme.Modules.pullback π).obj E) 2` to `c.pull (h.met σ).isVB π`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hc' : y ∈ ptsIn p σ c'.U` using `hb`. Establish `hG : m.G c' y = (h.met σ).G c (PtsOver.map π w _ y)` using `(h.met σ).pull_G π w c hb`. Establish `hK' : K = (m.G c' y).submatrix (finSumFinEquiv (m` using `1) (n := 1)) (finSumFinEquiv (m := 1) (n := 1)) := by`. Rewrite using `[hG, hK]`. Conclude with `Met.gram_frame (S := lineSC flB) (r := 1) (s := 1) (h.met σ) hS b hb`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e₁ : m.gram a.frame y = chg A K`. Rewrite using `[hK', hA, chg_submatrix]`. Use `(Met.gram_frame (S := lineSC fl) (r := 1) (s := 1) m hS' a ha).trans ?_` and prove the remaining obligations. Conclude with `congrArg (fun M : Matrix (Fin 2) (Fin 2) ℂ => M.submatrix (finSumFinEquiv (m := 1) (n := 1)) (finSumFinEquiv (m := 1) (n := 1))) (m.trans c' (a.mid hS') y hc')`. Use `⟨e₁, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hy : y ∈ ptsIn p σ (a.U ⊓ π ⁻¹ᵁ b.U)` using `mem_ptsIn_inf.2 ⟨ha, hb⟩`. Establish `key` using `hv (a.U ⊓ π ⁻¹ᵁ b.U) (Twist.resM _ inf_le_left (a.e 0)) (QCoh.pullbackSections π _ inf_le_right (b.e 0)) y hy`. Rewrite `key` using `[QCoh.pullback_map_app_pullbackSections, Twist.app_resM, m.form_resM _ _ _ hy]`. Establish `e₂ : m.form (QCoh.pullbackSections π E (inf_le_right : a.U ⊓ π ⁻¹ᵁ b.U ≤ _) ((flB.ι 1).app b.U (b.e 0))) (QCoh.pullbackSections π E (inf_le_right : a.U ⊓ π ⁻¹ᵁ b.U ≤ _) ((flB.ι 1).app b.U (b.e 0))) y = K (Sum.inl 0) (Sum.inl 0)`. Rewrite using `[hK]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `(h.met σ).form_pull π w _ _ _ hy`. Establish `e₃ : m.form ((fl.ι 1).app a.U (a.e 0)) ((fl.ι 1).app a.U (a.e 0)) y = chg A K (Sum.inl 0) (Sum.inl 0)`. Rewrite using `[← e₁]`. Both sides reduce to the same expression. Establish `e₄ : m.form (QCoh.pullbackSections π E (inf_le_right : a.U ⊓ π ⁻¹ᵁ b.U ≤ _) ((flB.ι 1).app b.U (b.e 0))) (Twist.resM _ (inf_le_left : a.U ⊓ π ⁻¹ᵁ b.U ≤ _) ((fl.ι 1).app a.U (a.e 0))) y = form K (Pi.single (Sum.inl 0) 1) (fun i => A i (Sum.inl 0))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[m.form_eq c' hc' _ _ hy, Chart.crd_pull c _ π w _ _ hy hb, Chart.crd_resM _ _ _ hy, hK', ← form_submatrix (finSumFinEquiv (m := 1) (n := 1))]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Use `(b.crd_frame hS hb i (.inl 0)).trans ?_` and prove the remaining obligations. Simplify using `[Pi.single_apply, one_apply]`.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[hA]`. Simplify using `[Chart.tr, VBExt.AdaptedChart.mid, VBExt.AdaptedChart.frame, c', c, -finSumFinEquiv_apply_left]`. Rewrite `key` using `[e₂, e₃, e₄]`. Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem gram_and_cos {π : Y ⟶ B} {w : π ≫ q = p} {E : B.Modules} (h : VMetric q E 2) {flB : Vert.Flag E 2}
     {fl : Vert.Flag ((Scheme.Modules.pullback π).obj E) 2} {σ : k →+* ℂ} {v : CxPts p σ → ℝ}
@@ -139,23 +139,21 @@ theorem gram_and_cos {π : Y ⟶ B} {w : π ≫ q = p} {E : B.Modules} (h : VMet
   exact key
 
 /- English proof (translation)
-Establish `hS` using `lineSC_shortExact flB`. Establish `hS'` using `lineSC_shortExact fl`. Use `set f : CxPts p σ → CxPts q σ := PtsOver.map π w _ with hf`. Establish `hm : ∀ z, (f z).1 = z.1 ≫ π` using `fun _ => rfl`. Set `x' : (hB.atlas σ).Pt` to `⟨(_, f x.pt), ((hB.atlas σ).cover (f x.pt)).choose_spec⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `a` to `frameAt fl x.pt`. Set `b` to `frameAt flB (f x.pt)`. Establish `ha : x.pt ∈ ptsIn p σ a.U` using `mem_frameAt fl x.pt`. Establish `hb : f x.pt ∈ ptsIn q σ b.U` using `mem_frameAt flB (f x.pt)`. Set `c' : Chart ((Scheme.Modules.pullback π).obj E) 2` to `(b.mid hS).pull (h.met σ).isVB π`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hc' : x.pt ∈ ptsIn p σ c'.U` using `hb`. Set `φ` to `x'.ch ∘ f ∘ x.ch.symm`. Set `G : V D → Matrix (Fin 1 ⊕ Fin 1) (Fin 1 ⊕ Fin 1) ℂ` to `fun u => (h.met σ).gram b.frame (x'.ch.symm u)`. Set `A : V D' → Matrix (Fin 1 ⊕ Fin 1) (Fin 1 ⊕ Fin 1) ℂ` to `fun u => (c'.tr p σ (a.mid hS') (x.ch.symm u)).submatrix (finSumFinEquiv (m := 1) (n := 1)) (finSumFinEquiv (m := 1) (n := 1))`. Establish `e : x.ch.symm x.crd = x.pt` using `x.ch.left_inv x.2`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ho` using `ChartGlue.isOpen_over x.ch (x'.ch.open_source.preimage (continuous_of_comp hm))`. Establish `hx` using `ho.mem_nhds (ChartGlue.mem_over x.ch x.2 (show x.pt ∈ f ⁻¹' x'.ch.source from x'.2))`. Establish `hφ : AnalyticAt ℂ φ x.crd` using `GlobalTheory.SCV.analyticAt_of_differentiableOn (AlgChart.holo_map hm x.1.1 x'.1.1) hx`. Establish `hφx : φ x.crd = x'.crd` using `congrArg (fun z => x'.ch (f z)) e`. Establish `hG : MContDiffAt ∞ G (φ x.crd)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hφx]`. Conclude with `((H σ).gram b.frame hb).mContDiffAt x'.1.1 x'.2`. Establish `hGp : ∀ᶠ u in 𝓝 (φ x.crd), (G u).PosDef`. Rewrite using `[hφx]`. Conclude with `Met.eventually_posDef (S := lineSC flB) (r := 1) (s := 1) (h.met σ) hS b x'.1.1 x'.2 hb`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hG1 : MContDiffAt 1 G (φ x.crd)` using `hG.of_le (by norm_cast)`. Establish `e₁ : pullF hB hY σ π w (fld (hB.atlas σ) (omF hB σ h flB)) x = ofValues (extTrace (fun u => G (φ u)) x.crd)`. Express the relevant statement in the definitionally equal form `pull (fderiv ℂ φ x.crd) (ofValues (extTrace G x'.crd) : Alt D) = _`. Rewrite using `[← hφx, pull_ofValues _ (OmReal.isSesq_extTrace hG1 hGp)]`. Use `congrArg (fun α : V D' → V D' → ℂ => (ofValues α : Alt D')) (funext fun ξ => funext fun η => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[extTrace_comp_holo hG1 hGp hφ.contDiffAt]`. Establish `hloc : ∀ᶠ u in 𝓝 x.crd, ((h.pull π w).met σ).gram a.frame (x.ch.symm u) = chg (A u) (G (φ u)) ∧ ‖form (G (φ u)) (Pi.single (Sum.inl 0) 1) (fun i => A u i (Sum.inl 0))‖ ^ 2 = v (x.ch.symm u) * (chg (A u) (G (φ u)) (Sum.inl 0) (Sum.inl 0)).re * (G (φ u) (Sum.inl 0) (Sum.inl 0)).re` using `by filter_upwards [hx, (ChartGlue.isOpen_over x.ch (isOpen_ptsIn a.U)).mem_nhds (ChartGlue.mem_over x.ch x.2 ha), (ChartGlue.isOpen_over x.ch (isOpen_ptsIn c'.U)).mem_nhds (ChartGlue.mem_over x.ch x.2 hc')] with u h₁ h₂ h₃`. Conclude with `gram_and_cos h hv a b h₂.2 h₃.2 rfl (congrArg ((h.met σ).gram b.frame) (x'.ch.left_inv h₁.2))`. Establish `e₂ : (omF hY σ (h.pull π w) fl x : Alt D') = ofValues (extTrace (fun u => chg (A u) (G (φ u))) x.crd)`. Rewrite using `[← extTrace_congr (hloc.mono fun u hu => hu.1)]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Rewrite using `[e₁, e₂, ddc_fn_apply _ hs]`. Use `GlobalTheory.T.hermitian_frame_form_norm_sq_eq D' (fun u => G (φ u)) A (fun u => v (x.ch.symm u)) x.crd (fun i j => ((hG i j).of_le (by norm_cast)).comp x.crd (hφ.contDiffAt.restrict_scalars ℝ)) (hφ.continuousAt.eventually hGp) (fun i j => ?_) ?_ (by rw [e, hx1]) (hloc.mono fun u …` and prove the remaining obligations. Conclude with `GlobalTheory.SCV.analyticAt_of_differentiableOn (AlgChart.holo x.1.1 _ _) ((ChartGlue.isOpen_over x.ch (isOpen_ptsIn _)).mem_nhds (ChartGlue.mem_over x.ch x.2 (mem_ptsIn_inf.2 ⟨ha, hc'⟩)))`. Simplify using `only [A, det_submatrix_equiv_self, e]`.
-
-Conclude with `(isUnit_iff_isUnit_det _).1 (c'.isUnit_tr (a.mid hS') hc' ha)`.
+A detailed English derivation is pending.
 -/
 theorem ddc_mul_omF_sub (hB : IsRegVar q D) (hY : IsRegVar p D') {π : Y ⟶ B} {w : π ≫ q = p} {E : B.Modules}
     {h : VMetric q E 2} (H : h.IsCInf) {flB : Vert.Flag E 2}
@@ -215,15 +213,15 @@ theorem ddc_mul_omF_sub (hB : IsRegVar q D) (hY : IsRegVar p D') {π : Y ⟶ B} 
     exact (isUnit_iff_isUnit_det _).1 (c'.isUnit_tr (a.mid hS') hc' ha)
 
 /- English proof (translation)
-Introduce `k _ B Y _ _ q p d hB hY π w E h H flB fl hfl A σ v hv K`. Take `⟨-, -, hsm⟩` from `GlobalTheory.CosSqSmooth.cosSq_smooth k B Y q p d hB hY π w E h H flB fl hfl A σ v hv`. Establish `hs : (hY.atlas σ).SmoothOn Set.univ fun y => ((1 - v y : ℝ) : ℂ)` using `fun i => ((contDiffOn_const (c := (1 : ℂ))).sub (hsm i)).congr fun u _ => by simp`. Take `⟨-, halg, -, hev, -⟩` from `GlobalTheory.T.smoothForms_calculus_holomorphicAtlas _ _ (hY.atlas σ)`. Take `⟨hc1, hom, -⟩` from `GlobalTheory.T.firstChern_form_properties k Y p (d + 1) hY σ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, homB, hpl⟩` from `GlobalTheory.T.firstChern_form_properties k B q d hB σ`. Establish `hf` using `(hY.atlas σ).isForm_fn hs`. Establish `hP (P : MvPolynomial (Fin 5) ℝ)` using `(hev _ (fun i => c1F hY σ (fam5 π w H flB fl A i)) P fun i => (hc1 _ (fam5 π w H flB fl A i)).1.1).1`. Establish `hdb` using `(halg 0 _ _ hf hf).2.2.2.2.1`. Establish `hdd` using `(halg 0 _ _ hdb hdb).2.2.2.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hddc : (hY.atlas σ).IsForm ((hY.atlas σ).ddc ((hY.atlas σ).fn fun y => 1 - v y))` using `(halg kappa _ _ hdd hdd).2.2.1`. Establish `h₁` using `(hom _ (h.pull π w) (H.pull π w) fl fl).1.1`. Establish `h₂ : (hY.atlas σ).IsForm (pullF hB hY σ π w (fld (hB.atlas σ) (omF hB σ h flB)))` using `((((GlobalTheory.T.smoothForms_calculus_holomorphicAtlas _ _ (hB.atlas σ)).2.2.2.2 _ _ (hY.atlas σ) _ (hpl Y p _ hY π w).1).2 0 _ 0).2.2.2 (homB E h H flB flB).1.1).1`. Establish `h₃ : (hY.atlas σ).IsForm (fld (hY.atlas σ) (omF hY σ (h.pull π w) fl) - pullF hB hY σ π w (fld (hB.atlas σ) (omF hB σ h flB)))`. Rewrite using `[sub_eq_add_neg, ← neg_one_smul ℂ (pullF hB hY σ π w _)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(halg 0 _ _ h₁ (halg (-1) _ _ h₂ h₂).2.2.1).1`. Simplify using `only [mul_assoc ((hY.atlas σ).fn fun y => _ / (1 - v y + _) ^ 2)]`. Use `GlobalTheory.T.flag_bundle_chern_integral_rank_two k B Y q p d hB hY π w E h H flB fl hfl A σ v hv _ (halg 0 _ _ (halg 0 _ _ hddc (halg 0 _ _ hf (hP _)).2.1).1 (halg 0 _ _ (hP K) h₃).2.1).2.1 fun x hx => ?_` and prove the remaining obligations. Establish `key` using `ddc_mul_omF_sub hB hY H hv hs x hx`. Establish `hz : (hY.atlas σ).fn (fun y => 1 - v y) x = 0` using `by simp [HolAtlas.fn, hx]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : ∀ β : Alt (d + 1), β * evalF (hY.atlas σ) (fun i => c1F hY σ (fam5 π w H flB fl A i)) K x = evalF (hY.atlas σ) (fun i => c1F hY σ (fam5 π w H flB fl A i)) K x * β` using `fun β => Subalgebra.mem_center_iff.1 (Subtype.property _) β`. Simplify using `only [Pi.mul_apply, Pi.add_apply, Pi.sub_apply, hz, zero_mul, add_zero]`. Rewrite using `[← mul_assoc, hc, mul_assoc]`. Use `erw [key]`. Simplify using `[dens]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tendsto_integral_conc : ∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) [IsIntegral B] [IsIntegral Y] (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (d : ℕ)
     (hB : IsRegVar q d) (hY : IsRegVar p (d + 1)) (π : Y ⟶ B) (w : π ≫ q = p) (E : B.Modules) (h : VMetric q E 2) (H : h.IsCInf)

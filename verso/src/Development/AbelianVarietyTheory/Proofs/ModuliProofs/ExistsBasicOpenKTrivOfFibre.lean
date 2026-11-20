@@ -19,11 +19,11 @@ open scoped CategoryTheory.Obj TensorProduct
 namespace GlobalTheory.KTrivSpread
 
 /- English proof (translation)
-Take `⟨p, hp₀⟩ : ∃ p : PrimeSpectrum R, ∀ r, r ∈ p.asIdeal ↔ algebraMap R K r = 0` from `⟨⟨RingHom.ker (algebraMap R K), RingHom.ker_isPrime _⟩, fun _ => Iff.rfl⟩`. Set `l : p.asIdeal.ResidueField →+* K` to `Ideal.ResidueField.lift p.asIdeal (algebraMap R K) (fun r hr => (hp₀ r).1 hr) (fun r hr => (IsUnit.mk0 _ (fun e => hr ((hp₀ r).2 e))))`. Use `letI : Algebra p.asIdeal.ResidueField K := l.toAlgebra`. Establish `: IsScalarTower R p.asIdeal.ResidueField K` using `IsScalarTower.of_algebraMap_eq fun r => (Ideal.ResidueField.lift_algebraMap _ _ _ _ r).symm`. Establish `h₁ : Subsingleton (K ⊗[p.asIdeal.ResidueField] (p.asIdeal.ResidueField ⊗[R] J))` using `(TensorProduct.AlgebraTensorModule.cancelBaseChange R p.asIdeal.ResidueField K K J).toEquiv.subsingleton`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₂ : Subsingleton (p.asIdeal.ResidueField ⊗[R] J)` using `Module.FaithfullyFlat.lTensor_reflects_triviality p.asIdeal.ResidueField K _`. Establish `h₃ : p ∉ Module.support R J`. Rewrite using `[Module.mem_support_iff_nontrivial_residueField_tensorProduct, not_nontrivial_iff_subsingleton]`. Conclude with `h₂`. Rewrite `h₃` using `[Module.mem_support_iff_of_finite, SetLike.not_le_iff_exists]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨f, hf, hp⟩` from `h₃`. Conclude with `⟨f, fun e => hp ((hp₀ f).2 e), Module.mem_annihilator.1 hf⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_smul_eq_zero {R K J : Type} [CommRing R] [Field K] [Algebra R K] [AddCommGroup J] [Module R J]
     [Module.Finite R J] (h : Subsingleton (K ⊗[R] J)) : ∃ f : R, algebraMap R K f ≠ 0 ∧ ∀ m : J, f • m = 0 := by
@@ -46,17 +46,17 @@ theorem exists_smul_eq_zero {R K J : Type} [CommRing R] [Field K] [Algebra R K] 
   exact ⟨f, fun e => hp ((hp₀ f).2 e), Module.mem_annihilator.1 hf⟩
 
 /- English proof (translation)
-Use `letI := α.toAlgebra`. Use `letI := x.toAlgebra`. Establish `: Module.Finite R B` using `hα`. Set `s : B →ₐ[R] R` to `{ σ with commutes' := hσ }`. Set `P : B →ₗ[R] B` to `LinearMap.id - (Algebra.linearMap R B).comp s.toLinearMap`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hP : ∀ b, P b = b - α (σ b)` using `fun b => rfl`. Establish `hPP : ∀ b, P (P b) = P b` using `fun b => by`. Rewrite using `[hP (P b), hP, map_sub, hσ, sub_self, map_zero, sub_zero]`. Establish `h₀ : ∀ b, (1 : K) ⊗ₜ[R] P b = 0` using `fun b => by`. Use `h (K ⊗[R] B) (Algebra.TensorProduct.includeRight (R := R) (A := K) (B := B)).toRingHom Algebra.TensorProduct.includeLeftRingHom (RingHom.ext fun r => ((Algebra.TensorProduct.includeRight (R := R) (A := K) (B := B)).commutes r).trans rfl) b` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hP, TensorProduct.tmul_sub, sub_eq_zero]`. Conclude with `this`. Establish `h₁ : ∀ m : LinearMap.range P, (1 : K) ⊗ₜ[R] m = 0`. Introduce and unpack `⟨_, b, rfl⟩`. Use `congrArg (P.rangeRestrict.lTensor K) (h₀ b)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[map_zero, LinearMap.lTensor_tmul]`. Rewrite using `[← this]`. Use `congr 1`. Conclude with `Subtype.ext (hPP b).symm`. Establish `h₂ : Subsingleton (K ⊗[R] LinearMap.range P)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Proceed by induction.
 
-Use `subsingleton_of_forall_eq 0 fun z => ?_` and prove the remaining obligations. Proceed by induction on `z with`. Consider the case `zero => rfl`. Consider the case `tmul k m => rw [← _root_.mul_one k, ← smul_eq_mul, ← TensorProduct.smul_tmul', h₁, smul_zero]`. Consider the case `add a b ha hb => rw [ha, hb, add_zero]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨f, hf, H⟩` from `exists_smul_eq_zero h₂`. Use `⟨f, hf, fun b => ?_⟩` and prove the remaining obligations. Use `congrArg Subtype.val (H ⟨P b, b, rfl⟩)` as an intermediate fact. Rewrite using `[← hP]`. Conclude with `(Algebra.smul_def f (P b)).symm.trans this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mul_sub_eq_zero {R B K : Type} [CommRing R] [CommRing B] [Field K] (α : R →+* B) (hα : α.Finite)
     (σ : B →+* R) (hσ : ∀ r, σ (α r) = r) (x : R →+* K)
@@ -96,19 +96,17 @@ theorem exists_mul_sub_eq_zero {R B K : Type} [CommRing R] [CommRing B] [Field K
   exact (Algebra.smul_def f (P b)).symm.trans this
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `hw`. Use `replace hw := (isGen_iff w).1 hw`. Introduce `p`. Take `⟨V, hV, c, hc⟩` from `hx p`. Use `⟨V, hV, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Set `T : Over S` to `Over.mk (t ≫ f)`. Set `T₂ : Over S'` to `Over.mk ((fst T A).left ≫ t)`. Establish `sq : (snd T A).left ≫ A.hom = ((fst T A).left ≫ t) ≫ f` using `pullback.condition.symm.trans (Category.assoc _ _ _).symm`. Set `a : T₂ ⟶ Over.mk t` to `Over.homMk (fst T A).left rfl`. Set `b : T₂ ⟶ A'` to `Over.homMk (h.1.lift _ _ sq) (h.1.lift_snd _ _ _)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hb : b.left ≫ φ = (snd T A).left` using `h.1.lift_fst _ _ _`. Establish `k₁ : (lift a b).left ≫ (fst (Over.mk t) A').left = (fst T A).left` using `congrArg (fun q => q.left) (lift_fst a b)`. Establish `k₂ : (lift a b).left ≫ (snd (Over.mk t) A').left ≫ φ = (snd T A).left` using `(Category.assoc _ _ _).symm.trans ((congrArg (fun q => q.left ≫ φ) (lift_snd a b)).trans hb)`. Establish `k₃ : (lift a b).left ≫ ((fst (Over.mk t) A' ≫ x) * snd (Over.mk t) A').left ≫ φ = ((fst T A ≫ pushPt h.1.w x) * snd T A).left`. Establish `e : lift a b ≫ ((fst (Over.mk t) A' ≫ x) * snd (Over.mk t) A') = (a ≫ x) * b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MonObj.comp_mul, lift_fst_assoc, lift_snd]`. Set `j : Over.mk (T₂.hom ≫ f) ⟶ T ⊗ A` to `Over.homMk (𝟙 _) ((Category.id_comp _).trans ((Over.w (snd T A)).symm.trans sq))`. Establish `e₁` using `h.2 T₂ (a ≫ x) b (j ≫ fst T A ≫ pushPt h.1.w x) (j ≫ snd T A) ((Category.id_comp _).trans (Category.assoc _ _ _).symm) ((Category.id_comp _).trans hb.symm)`. Rewrite `e₁` using `[← MonObj.comp_mul, ← e]`. Conclude with `(Category.assoc _ _ _).symm.trans (e₁.symm.trans (Category.id_comp _))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components.
 
-Take `⟨n, hn⟩ : ∃ n : ((fst T A).left ⁻¹ᵁ V).toScheme ⟶ ((fst (Over.mk t) A').left ⁻¹ᵁ V).toScheme, n ≫ ((fst (Over.mk t) A').left ⁻¹ᵁ V).ι = ((fst T A).left ⁻¹ᵁ V).ι ≫ (lift a b).left` from `⟨IsOpenImmersion.lift _ (((fst T A).left ⁻¹ᵁ V).ι ≫ (lift a b).left) (by`. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `(congrArg (fun q => q y.1 ∈ V) k₁).mpr y.2), IsOpenImmersion.lift_fac _ _ _⟩`. Take `⟨c₁, h₁⟩` from `gen_chartPull (chartPullIn L' _ _ _) c hc`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c₂, h₂, -⟩` from `exists_up hw hL hL' c₁ h₁`. Use `gen_chartPull (chartPullOut L _ _ _ _ fun k => ?_) _ (DVR.pullGen_isGen _ _ _ c₂ h₂ n)` and prove the remaining obligations. Use `show n ≫ (_ ≫ _) ≫ φ = _`. Rewrite using `[Category.assoc, ← Category.assoc n, hn, Category.assoc]`. Use `fin_cases k`.
-
-Use `exacts [congrArg (_ ≫ ·) k₃, congrArg (_ ≫ ·) k₂]`.
+A detailed English derivation is pending.
 -/
 theorem memKL_push {S S' : Scheme.{0}} {f : S' ⟶ S} {A : Over S} {A' : Over S'} [GrpObj A] [GrpObj A']
     {φ : A'.left ⟶ A.left} {L : LB A.left} {L' : LB A'.left} (h : IsGrpPullback A' A f φ) (hL : L.IsLB)
@@ -153,9 +151,9 @@ theorem memKL_push {S S' : Scheme.{0}} {f : S' ⟶ S} {A : Over S} {A' : Over S'
   exacts [congrArg (_ ≫ ·) k₃, congrArg (_ ≫ ·) k₂]
 
 /- English proof (translation)
-Use `hA.comm` as an intermediate fact. Take `⟨d, -, n, s, hs⟩` from `(Unif.relAmple_iff_veryAmpleBy R A L hL).1 ha`. Establish `hp : AbLaw.IsProjBy A.hom` using `⟨_, AbLaw.isLB_pw hL _, n, s, hs⟩`. Take `⟨hO, -, hK⟩` from `UU.TrivTwist.inK_iff_trivial_twist _ A L hL`. Take `⟨Z, i, hi, hZ⟩` from `_root_.GlobalTheory.UU.TwistKer.exists_closed_twist_kernel globalFns_holds R A hA hp L _ hL hO`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨Z, i, hi, AmpleStabFinite.isFinite_of_relAmple globalFns_holds R A hA L _ hL hO ha Z i hi hZ, fun T x => (hK _ rfl T x).trans (hZ T x)⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_finite_rep (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (L : LB A.left)
     (hA : IsAbelianScheme A) (hL : L.IsLB) (ha : Out.RelAmple A L) :
@@ -170,31 +168,27 @@ theorem exists_finite_rep (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (
     fun T x => (hK _ rfl T x).trans (hZ T x)⟩
 
 /- English proof (translation)
-Introduce `R _ _ A _ L K _ x A₀ _ φ₀ hA hL ha h₀ hk`. Take `⟨Z, i, hi, hfin, hZ⟩` from `exists_finite_rep R A L hA hL ha`. Establish `: IsAffine Z.left` using `isAffine_of_isAffineHom Z.hom`. Set `ε` to `Z.left.isoSpec`. Take `⟨e, he⟩` from `(hZ (𝟙_ _) 1).1 (memKL_one hL _)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨α, hα⟩` from `Spec.map_surjective (ε.inv ≫ Z.hom)`. Take `⟨σ, hσ⟩` from `Spec.map_surjective (R := Γ(Z.left, ⊤)) (S := CommRingCat.of R) (e.left ≫ ε.hom)`. Establish `hασ : α ≫ σ = 𝟙 _` using `Spec.map_injective (by`. Rewrite using `[Spec.map_comp, hα, hσ, Category.assoc, Iso.hom_inv_id_assoc, Spec.map_id]`. Conclude with `Over.w e)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hαf : α.hom.Finite`. Rewrite using `[← IsFinite.SpecMap_iff, hα]`. Use `infer_instance`. Establish `key : ∀ (C : Type) [CommRing C] (t : Sp C ⟶ Sp R) (z : Over.mk t ⟶ Z) (ψ : Γ(Z.left, ⊤) ⟶ CommRingCat.of C), Spec.map ψ = z.left ≫ ε.hom → (z ≫ i = 1 ↔ ψ = σ ≫ α ≫ ψ)`. Introduce `C _ t z ψ hψ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₁ : toUnit (Over.mk t) ≫ e ≫ i = 1` using `by rw [he, MonObj.comp_one]`. Establish `e₂ : Spec.map (σ ≫ α ≫ ψ) = (toUnit (Over.mk t) ≫ e).left ≫ ε.hom`. Establish `e₃ : Spec.map (α ≫ ψ) = t`. Rewrite using `[Spec.map_comp, hψ, hα, Category.assoc, Iso.hom_inv_id_assoc]`. Conclude with `Over.w z`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e₄ : (toUnit (Over.mk t)).left = t` using `(Category.comp_id _).symm.trans (Over.w (toUnit (Over.mk t)))`. Rewrite using `[Spec.map_comp, e₃, hσ, Over.comp_left, e₄]`. Conclude with `(Category.assoc _ _ _).symm`. Establish `: Mono i` using `Over.mono_of_mono_left i`. Rewrite using `[← e₁, ← Category.assoc, cancel_mono, ← Spec.map_injective.eq_iff, e₂, hψ, cancel_mono]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Conclude with `⟨fun h => by rw [h], Over.OverMorphism.ext⟩`. Take `⟨f, hf, H⟩` from `exists_mul_sub_eq_zero α.hom hαf σ.hom (fun r => congrArg (fun q => q.hom r) hασ) x (by`. Introduce `C _ ψ κ hψ b`. Set `d : Sp C ⟶ Z.left` to `Spec.map (CommRingCat.ofHom ψ) ≫ ε.inv`. Set `t : Sp C ⟶ Sp K` to `spMap κ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `hd : d ≫ Z.hom = t ≫ spMap x`. Simplify using `only [d, t, spMap, Category.assoc, ← hα, ← Spec.map_comp]`. Use `congr 1`. Conclude with `CommRingCat.hom_ext hψ`. Establish `hdi : (d ≫ i.left) ≫ A.hom = t ≫ spMap x`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, Over.w i, hd]`. Set `y : Over.mk t ⟶ A₀` to `Over.homMk (h₀.1.lift _ _ hdi) (h₀.1.lift_snd _ _ _)`. Set `z : Over.mk (t ≫ spMap x) ⟶ Z` to `Over.homMk d hd`. Establish `hz : z ≫ i = pushPt h₀.1.w y` using `Over.OverMorphism.ext (h₀.1.lift_fst _ _ hdi).symm`. Establish `hL₀ : (L.pull φ₀).IsLB` using `DVR.linComb_isLB _ hL _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hy : y = 1` using `hk _ t y (memKL_of_push h₀ hL hL₀ (lbIso_self hL₀) y ((hZ _ _).2 ⟨z, hz⟩))`. Establish `hy' : pushPt h₀.1.w y = 1` using `(congrArg (pushHom h₀ (Over.mk t)) hy).trans (map_one _)`. Use `(key C _ z (CommRingCat.ofHom ψ) (by show _ = (_ ≫ ε.inv) ≫ ε.hom` as an intermediate fact. Rewrite using `[Category.assoc, Iso.inv_hom_id, Category.comp_id])).1 (hz.trans hy')`. Conclude with `congrArg (fun q => q.hom b) this)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨f, hf, fun R' _ φ A' _ π hu h C _ t y hy => ?_⟩` and prove the remaining obligations. Establish `hL' : (L.pull π).IsLB` using `DVR.linComb_isLB _ hL _ _`. Take `⟨z, hz⟩` from `(hZ _ _).1 (memKL_push h hL hL' (lbIso_self hL') t y hy)`. Take `⟨ψ, hψ⟩` from `Spec.map_surjective (R := Γ(Z.left, ⊤)) (S := CommRingCat.of C) (z.left ≫ ε.hom)`. Take `⟨τ, rfl⟩` from `Spec.map_surjective t`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : α ≫ ψ = CommRingCat.ofHom φ ≫ τ` using `Spec.map_injective (by`. Rewrite using `[Spec.map_comp, Spec.map_comp, hα, hψ, Category.assoc, Iso.hom_inv_id_assoc]`. Conclude with `Over.w z)`. Establish `hu' : IsUnit (ψ.hom (α.hom f))`. Establish `: ψ.hom (α.hom f) = τ.hom (φ f)` using `congrArg (fun q => q.hom f) hc`.
-
-Rewrite using `[this]`. Conclude with `hu.map _`. Establish `h₁ : z ≫ i = 1` using `(key C _ z ψ hψ).2 (CommRingCat.hom_ext (RingHom.ext fun b => by`. Use `congrArg ψ.hom (H b)` as an intermediate fact. Rewrite `this` using `[map_mul, map_zero, hu'.mul_right_eq_zero, map_sub, sub_eq_zero]`.
-
-Conclude with `this))`. Establish `inj : ∀ {T : Over (Sp R')} {u v : T ⟶ A'}, pushPt h.1.w u = pushPt h.1.w v → u = v` using `fun {T u v} e => Over.OverMorphism.ext (h.1.hom_ext (congrArg (fun q => q.left) e) (by rw [Over.w, Over.w]))`. Conclude with `inj ((hz.symm.trans h₁).trans (map_one (pushHom h (Over.mk (Spec.map τ)))).symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_kTriv_of_isUnit : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (A : Over (Sp R)) [GrpObj A] (L : LB A.left) (K : Type) [Field K] (x : R →+* K) (A₀ : Over (Sp K)) [GrpObj A₀] (φ₀ : A₀.left ⟶ A.left), IsAbelianScheme A → L.IsLB → Out.RelAmple A L → IsGrpPullback A₀ A (spMap x) φ₀ → Out.KTriv A₀ (L.pull φ₀) → ∃ f : R, x f ≠ 0 ∧ ∀ (R' : Type) [CommRing R'] (φ : R →+* R') (A' : Over (Sp R')) [GrpObj A'] (π : A'.left ⟶ A.left), IsUnit (φ f) → IsGrpPullback A' A (spMap φ) π → Out.KTriv A' (L.pull π) := by
   intro R _ _ A _ L K _ x A₀ _ φ₀ hA hL ha h₀ hk

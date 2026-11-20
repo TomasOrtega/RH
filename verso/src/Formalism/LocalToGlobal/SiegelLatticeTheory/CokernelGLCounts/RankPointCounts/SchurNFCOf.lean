@@ -18,9 +18,9 @@ open Formalism.L2.SG.KappaOffDiagonal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `D X u u' Λ Λ' q hdiff hrel hG P hP`. Take `⟨C, hC, hM⟩` from `hB D X u u' Λ Λ' q hrel hG`. Take `⟨v₀⟩ : Nonempty (InfinitePlace X.B.I.F)` from `inferInstance`. Use `hA D.R.k (InfinitePlace X.B.I.F) (X.Vloc u) (X.Vloc u') (X.Vpi u) (X.Vpi u') (X.tensU u) (X.tensU u') (X.tensU_inner u) (X.tensU_span u) (X.tensU_inner u') (X.tensU_span u') (X.piLoc u) (X.piLoc u') (fun v i => ((D.hcW u (X.pl v)).u i : ℝ)) (fun v i => ((D.hcW u' (X.pl v)).u i : …` and prove the remaining obligations. Introduce `M hMu`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨h, hh, h1, h2⟩` from `hM M hMu`. Conclude with `⟨X.piU u h, X.piU u' (q.1.1.1⁻¹ * h * q.1.1.1), h1, h2, hP h hh⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem schurNFC_of (hA : SchurCoreA) (hB : GeomB) : SchurNFC := by
   intro D X u u' Λ Λ' q hdiff hrel hG P hP
@@ -37,7 +37,7 @@ theorem schurNFC_of (hA : SchurCoreA) (hB : GeomB) : SchurNFC := by
 end PI.SchurPlaces
 
 /- English proof (translation)
-The claim follows from `PI.SchurPlaces.schurNFC_of (PI.SchurPlaces.schurCoreA_of Formalism.MainNotions.BridgeLemma.schur_lemma_unitary_distinct_params) (PI.SchurPlaces.Geo.geomB_of PI.SchurPlaces.leviTens PI.SchurPlaces.wfrSpan PI.SchurPlaces.cplxNF)`.
+A detailed English derivation is pending.
 -/
 theorem schurNFC : Formalism.L2.SG.KappaOffDiagonal.SchurNFC :=
   PI.SchurPlaces.schurNFC_of (PI.SchurPlaces.schurCoreA_of Formalism.MainNotions.BridgeLemma.schur_lemma_unitary_distinct_params)

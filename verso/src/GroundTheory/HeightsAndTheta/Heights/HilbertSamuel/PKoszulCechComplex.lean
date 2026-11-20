@@ -19,7 +19,7 @@ variable {S : Type} [CommRing S] {K : Type} [Fintype K] [LinearOrder K] {ι : K 
   [∀ k, Fintype (ι k)] [∀ k, LinearOrder (ι k)]
 
 /- English proof (translation)
-Establish `h0` using `(Finset.sum_eq_zero_iff.mp C.2.2) l (Finset.mem_univ _)`. Use `(C.2.1 l).card_pos` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem card_zeroCell (C : KH.Cell K ι 0) (l : K) : (C.1 l).card = 1 := by
   have h0 := (Finset.sum_eq_zero_iff.mp C.2.2) l (Finset.mem_univ _)
@@ -27,13 +27,13 @@ theorem card_zeroCell (C : KH.Cell K ι 0) (l : K) : (C.1 l).card = 1 := by
   omega
 
 /- English proof (translation)
-The claim follows from `Finset.singleton_subset_iff.mpr (Finset.min'_mem _ _)`.
+A detailed English derivation is pending.
 -/
 theorem frontCell_sub {n : ℕ} (C : KH.Cell K ι n) (l : K) : (frontCell C).1 l ⊆ C.1 l :=
   Finset.singleton_subset_iff.mpr (Finset.min'_mem _ _)
 
 /- English proof (translation)
-Proceed by induction on `x using LocalizedModule.induction_on with`. Consider the case `h m t => rw [cellRes_mk h₁, cellRes_mk h₂, cellRes_mk (h₁.trans h₂)]`.
+Proceed by induction. Treat this case separately.
 -/
 theorem cellRes_comp {M : Type*} [AddCommGroup M] [Module (MRingOver S ι) M] {A F I : ∀ k, Finset (ι k)}
     (h₁ : KH.cellMon S A ≤ KH.cellMon S F) (h₂ : KH.cellMon S F ≤ KH.cellMon S I)
@@ -43,7 +43,7 @@ theorem cellRes_comp {M : Type*} [AddCommGroup M] [Module (MRingOver S ι) M] {A
   | h m t => rw [cellRes_mk h₁, cellRes_mk h₂, cellRes_mk (h₁.trans h₂)]
 
 /- English proof (translation)
-Proceed by induction on `x using LocalizedModule.induction_on with`. Consider the case `h m t => rw [LocalizedModule.smul'_mk, cellRes_mk h, cellRes_mk h, LocalizedModule.smul'_mk]`.
+Proceed by induction. Treat this case separately.
 -/
 theorem cellRes_smul {V : Ideal (MRingOver S ι)} {J I : ∀ k, Finset (ι k)}
     (h : KH.cellMon S J ≤ KH.cellMon S I) (s : S) (x : LocalizedModule (KH.cellMon S J) (MRingOver S ι ⧸ V)) :
@@ -52,11 +52,9 @@ theorem cellRes_smul {V : Ideal (MRingOver S ι)} {J I : ∀ k, Finset (ι k)}
   | h m t => rw [LocalizedModule.smul'_mk, cellRes_mk h, cellRes_mk h, LocalizedModule.smul'_mk]
 
 /- English proof (translation)
-Unfold `KH.locPart at hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨m, t, a, ht, hm, rfl⟩` from `hx`. Rewrite using `[cellRes_mk h]`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mk_mem_locPart m _ a ht hm`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`.
-
-Consider the case `smul s x _ hx => rw [cellRes_smul h]`. Conclude with `Submodule.smul_mem _ s hx`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem cellRes_mem_locPart {V : Ideal (MRingOver S ι)} {J I : ∀ k, Finset (ι k)}
     (h : KH.cellMon S J ≤ KH.cellMon S I) {c : K → ℤ}
@@ -74,37 +72,35 @@ theorem cellRes_mem_locPart {V : Ideal (MRingOver S ι)} {J I : ∀ k, Finset (�
   | smul s x _ hx => rw [cellRes_smul h]; exact Submodule.smul_mem _ s hx
 
 /- English proof (translation)
-Establish `hne : ∀ k, (E.1 k).Nonempty` using `E.2.1`. Establish `hsum : ∑ k, ((E.1 k).card - 1) = 1` using `E.2.2`. Establish `hpos : ∀ k, 1 ≤ (E.1 k).card` using `fun k => Finset.card_pos.mpr (hne k)`. Establish `hcard₀ : (E.1 k₀).card = 2` using `by rw [hE]; exact Finset.card_pair hab`. Establish `hother : ∀ l, l ≠ k₀ → (E.1 l).card = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `l hl`. Establish `h2` using `Finset.sum_le_sum_of_subset (f := fun k => (E.1 k).card - 1) (Finset.subset_univ {l, k₀})`. Rewrite `h2` using `[Finset.sum_pair hl]`. Establish `h3` using `h2.trans hsum.le`. Use `hpos l` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hface : ∀ i ∈ E.1 k₀, (∀ l, (Function.update E.1 k₀ ((E.1 k₀).erase i) l).Nonempty) ∧ ∑ l, ((Function.update E.1 k₀ ((E.1 k₀).erase i) l).card - 1) = 0`. Introduce `i hi`. Establish `hc : ((E.1 k₀).erase i).card = 1` using `by rw [Finset.card_erase_of_mem hi, hcard₀]`. Use `⟨fun l => ?_, Finset.sum_eq_zero fun l _ => ?_⟩` and prove the remaining obligations.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hl : l = k₀`. Substitute `hl; rw [Function.update_self]; exact Finset.card_pos.mp (by omega)` using the available equality. Rewrite using `[Function.update_of_ne hl]`. Conclude with `hne l`. Distinguish the cases in `hl : l = k₀`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hl` using the available equality. Rewrite using `[Function.update_self, hc]`. Both sides reduce to the same expression. Rewrite using `[Function.update_of_ne hl, hother l hl]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `ha : a ∈ E.1 k₀` using `by rw [hE]; simp`. Establish `hb : b ∈ E.1 k₀` using `by rw [hE]; simp`. Establish `hsign : KH.faceSign E.1 k₀ a = -KH.faceSign E.1 k₀ b`. Unfold `KH.faceSign`. Break down `lt_or_gt_of_ne hab with h | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `e₁ : ((E.1 k₀).filter (· < a)).card = 0`. Rewrite using `[hE]`. Simplify using `[Finset.filter_insert, Finset.filter_singleton, h.not_gt]`. Establish `e₂ : ((E.1 k₀).filter (· < b)).card = 1`. Rewrite using `[hE]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Finset.filter_insert, Finset.filter_singleton, h]`. Rewrite using `[e₁, e₂]`. Expand and normalize the polynomial expressions, which then agree. Establish `e₁ : ((E.1 k₀).filter (· < a)).card = 1`. Rewrite using `[hE]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Finset.filter_insert, Finset.filter_singleton, h]`. Establish `e₂ : ((E.1 k₀).filter (· < b)).card = 0`. Rewrite using `[hE]`. Simplify using `[Finset.filter_insert, Finset.filter_singleton, h.not_gt]`. Rewrite using `[e₁, e₂]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `key : ∀ (f : KH.CechC S ι M 0) (C C' : KH.Cell K ι 0), C = C' → KH.cellRes S M C.1 E.1 (f C) = KH.cellRes S M C'.1 E.1 (f C')`. Introduce and unpack `f C _ rfl`. Both sides reduce to the same expression. Establish `eA : (⟨_, hface b hb⟩ : KH.Cell K ι 0) = A`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show Function.update E.1 k₀ ((E.1 k₀).erase b) = A.1`. Rewrite using `[hA, hE, Finset.pair_comm, Finset.erase_insert (by simpa using hab.symm)]`. Establish `eB : (⟨_, hface a ha⟩ : KH.Cell K ι 0) = B`. Apply `Subtype.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show Function.update E.1 k₀ ((E.1 k₀).erase a) = B.1`. Rewrite using `[hB, hE, Finset.erase_insert (by simpa using hab)]`. Use `⟨KH.faceSign E.1 k₀ b, by unfold KH.faceSign; exact neg_one_pow_eq_or ℤ _, fun f => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(∑ k : K, ∑ i ∈ E.1 k, _ : KH.CechC S ι M 0 →ₗ[MRingOver S ι] LocalizedModule (KH.cellMon S E.1) M) f = _`. Rewrite using `[Finset.sum_eq_single k₀, Finset.sum_eq_add_of_mem a b ha hb hab, dif_pos (hface a ha), dif_pos (hface b hb)]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsign, LinearMap.add_apply]`. Express the relevant statement in the definitionally equal form `(-KH.faceSign E.1 k₀ b) • KH.cellRes S M _ E.1 (f ⟨_, hface a ha⟩) + KH.faceSign E.1 k₀ b • KH.cellRes S M _ E.1 (f ⟨_, hface b hb⟩) = _`. Rewrite using `[key f _ _ eA, key f _ _ eB]`. Generalize the expression as in `KH.faceSign E.1 k₀ b = σ`. Generalize the expression as in `KH.cellRes S M A.1 E.1 (f A) = x`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Generalize the expression as in `KH.cellRes S M B.1 E.1 (f B) = y`. Establish `alg : ∀ {N : Type _} [AddCommGroup N] (σ : ℤ) (x y : N), -σ • y + σ • x = σ • (x - y)` using `by intros; rw [smul_sub, neg_smul, neg_add_eq_sub]`. Conclude with `alg σ x y`. Introduce `i hi hne'`. Establish `: i = a ∨ i = b` using `by rw [hE] at hi; simpa using hi`.
+Establish an intermediate fact. The claim follows by propositional logic. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-The claim follows by propositional logic. Introduce `l _ hl`. Use `Finset.sum_eq_zero fun i hi => dif_neg fun h => ?_` and prove the remaining obligations. Use `(h.1 l)` as an intermediate fact. Rewrite `this` using `[Function.update_self, ← Finset.card_pos, Finset.card_erase_of_mem hi, hother l hl]`.
-
-Use linear arithmetic over natural numbers and integers. Introduce `h`. Conclude with `absurd (Finset.mem_univ k₀) h`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem cechD_pair {M : Type*} [AddCommGroup M] [Module (MRingOver S ι) M] (E : KH.Cell K ι 1) (k₀ : K)
     (a b : ι k₀) (hab : a ≠ b) (hE : E.1 k₀ = {a, b}) (A B : KH.Cell K ι 0)
@@ -186,33 +182,27 @@ theorem cechD_pair {M : Type*} [AddCommGroup M] [Module (MRingOver S ι) M] (E :
   · intro h; exact absurd (Finset.mem_univ k₀) h
 
 /- English proof (translation)
-Distinguish the cases in `hk : A.1 k₀ = B.1 k₀`. Establish `: A = B` using `Subtype.ext (funext fun l => by`. Distinguish the cases in `hl : l = k₀`. Rewrite using `[hl]`. Conclude with `hk`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Conclude with `hAB l hl)`. Substitute `this` using the available equality. Both sides reduce to the same expression. Take `⟨a, ha⟩` from `Finset.card_eq_one.mp (card_zeroCell A k₀)`. Take `⟨b, hb⟩` from `Finset.card_eq_one.mp (card_zeroCell B k₀)`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hab : a ≠ b` using `fun h => hk (by rw [ha, hb, h])`. Establish `hEne : ∀ l, (Function.update A.1 k₀ {a, b} l).Nonempty`. Introduce `l`. Distinguish the cases in `hl : l = k₀`. Rewrite using `[hl, Function.update_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Finset.insert_nonempty _ _`. Rewrite using `[Function.update_of_ne hl]`. Conclude with `A.2.1 l`. Establish `hEsum : ∑ l, ((Function.update A.1 k₀ {a, b} l).card - 1) = 1`. Rewrite using `[Finset.sum_eq_single k₀]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Function.update_self, Finset.card_pair hab]`. Introduce `l _ hl`. Rewrite using `[Function.update_of_ne hl, card_zeroCell A l]`. Both sides reduce to the same expression. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Conclude with `absurd (Finset.mem_univ k₀) h`. Set `E : KH.Cell K ι 1` to `⟨Function.update A.1 k₀ {a, b}, hEne, hEsum⟩`. Establish `hAE : ∀ l, A.1 l ⊆ E.1 l`. Introduce `l`. Use `show A.1 l ⊆ Function.update A.1 k₀ {a, b} l`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hl : l = k₀`. Rewrite using `[hl, Function.update_self, ha]`. Simplify using the standard rewrite rules. Rewrite using `[Function.update_of_ne hl]`. Establish `hBE : ∀ l, B.1 l ⊆ E.1 l`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `l`. Use `show B.1 l ⊆ Function.update A.1 k₀ {a, b} l`. Distinguish the cases in `hl : l = k₀`. Rewrite using `[hl, Function.update_self, hb]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[Function.update_of_ne hl, hAB l hl]`. Establish `hEI : ∀ l, E.1 l ⊆ I l`. Introduce `l`. Use `show Function.update A.1 k₀ {a, b} l ⊆ I l`. Distinguish the cases in `hl : l = k₀`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hl, Function.update_self]`. Introduce `x hx`. Break down `Finset.mem_insert.mp hx with rfl | hx` into its components or cases. Conclude with `hA _ (by rw [ha]; simp)`. Rewrite using `[Finset.mem_singleton] at hx; subst hx; exact hB _ (by rw [hb]; simp)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[Function.update_of_ne hl]`. Conclude with `hA l`. Establish `hA' : A.1 = Function.update E.1 k₀ {a}`. Use function extensionality and compare the values at `l`. Use `show A.1 l = Function.update (Function.update A.1 k₀ {a, b}) k₀ {a} l`.
-
-Distinguish the cases in `hl : l = k₀`. Rewrite using `[hl, Function.update_self, ha]`. Rewrite using `[Function.update_of_ne hl, Function.update_of_ne hl]`. Establish `hB' : B.1 = Function.update E.1 k₀ {b}`. Use function extensionality and compare the values at `l`.
-
-Use `show B.1 l = Function.update (Function.update A.1 k₀ {a, b}) k₀ {b} l`. Distinguish the cases in `hl : l = k₀`. Rewrite using `[hl, Function.update_self, hb]`. Rewrite using `[Function.update_of_ne hl, Function.update_of_ne hl, hAB l hl]`. Take `⟨σ, hσ, hd⟩` from `cechD_pair (S := S) (M := M) E k₀ a b hab (Function.update_self _ _ _) A B hA' hB'`.
-
-Rewrite using `[← cellRes_comp (cellMon_mono hAE) (cellMon_mono hEI), ← cellRes_comp (cellMon_mono hBE) (cellMon_mono hEI), res_eq_of_cechD hσ (hd z) hz]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem res_agree {M : Type*} [AddCommGroup M] [Module (MRingOver S ι) M] {z : KH.CechC S ι M 0}
     (hz : KH.cechD S ι M 0 z = 0) (I : ∀ k, Finset (ι k)) (A B : KH.Cell K ι 0) (hA : ∀ l, A.1 l ⊆ I l)
@@ -279,11 +269,11 @@ theorem res_agree {M : Type*} [AddCommGroup M] [Module (MRingOver S ι) M] {z : 
     res_eq_of_cechD hσ (hd z) hz]
 
 /- English proof (translation)
-Establish `hFI : ∀ l, Function.update I.1 k ((I.1 k).erase i) l ⊆ I.1 l`. Introduce `l`. Distinguish the cases in `hl : l = k`. Substitute `hl` using the available equality. Rewrite using `[Function.update_self]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.erase_subset _ _`. Rewrite using `[Function.update_of_ne hl]`. Unfold `restrict0`. Rewrite using `[cellRes_comp (cellMon_mono (frontCell_sub (⟨_, h⟩ : KH.Cell K ι n))) (cellMon_mono hFI)]`. Use `res_agree hz I.1 _ _ (fun l => (frontCell_sub _ l).trans (hFI l)) (frontCell_sub I) k fun l hl => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `show {(Function.update I.1 k ((I.1 k).erase i) l).min' _} = {(I.1 l).min' _}`. Simplify using `only [Function.update_of_ne hl]`.
+A detailed English derivation is pending.
 -/
 theorem cellRes_restrict0_face {M : Type} [AddCommGroup M] [Module (MRingOver S ι) M] {z : KH.CechC S ι M 0}
     (hz : KH.cechD S ι M 0 z = 0) {n : ℕ} (I : KH.Cell K ι (n + 1)) (k : K) (i : ι k)
@@ -303,11 +293,11 @@ theorem cellRes_restrict0_face {M : Type} [AddCommGroup M] [Module (MRingOver S 
   simp only [Function.update_of_ne hl]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `I`. Simplify using `only [KH.cechD, LinearMap.pi_apply, LinearMap.sum_apply]`. Establish `hms : ∀ {κ : Type} (s : Finset κ) (r : LocalizedModule (KH.cellMon S I.1) (MRingOver S ι ⧸ V)) (g : κ → LocalizedModule (KH.cellMon S I.1) (MRingOver S ι ⧸ V)), r * ∑ k ∈ s, g k = ∑ k ∈ s, r * g k` using `fun s r g => Finset.mul_sum s g r`. Rewrite using `[hms]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hms]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Express the relevant statement in the definitionally equal form `KH.faceSign I.1 k i • KH.cellRes S _ _ I.1 (restrict0 z ⟨_, h⟩ * ψ ⟨_, h⟩) = restrict0 z I * (KH.faceSign I.1 k i • KH.cellRes S _ _ I.1 (ψ ⟨_, h⟩))`. Rewrite using `[cellRes_mul, cellRes_restrict0_face hz I k i h]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `alg : ∀ {A : Type} [CommRing A] (m : ℤ) (a b : A), m • (a * b) = a * (m • b)` using `by intros; simp only [zsmul_eq_mul]; ring`. Conclude with `alg (A := LocalizedModule (KH.cellMon S I.1) (MRingOver S ι ⧸ V)) _ _ _`. Conclude with `(mul_zero (restrict0 z I)).symm`.
+A detailed English derivation is pending.
 -/
 theorem cechD_mul_restrict0 {V : Ideal (MRingOver S ι)} {z : KH.CechC S ι (MRingOver S ι ⧸ V) 0}
     (hz : KH.cechD S ι (MRingOver S ι ⧸ V) 0 z = 0) {n : ℕ} (ψ : KH.CechC S ι (MRingOver S ι ⧸ V) n) :
@@ -336,14 +326,14 @@ def kosExt {V : Ideal (MRingOver S ι)} {R q n : ℕ} (φ : KosC S ι V R q n) (
   if h : T.card = q then φ ⟨T, h⟩ else 0
 
 /- English proof (translation)
-The claim follows from `dif_pos h`.
+A detailed English derivation is pending.
 -/
 theorem kosExt_of_card {V : Ideal (MRingOver S ι)} {R q n : ℕ} (φ : KosC S ι V R q n) {T : Finset (Fin R)}
     (h : T.card = q) : kosExt φ T = φ ⟨T, h⟩ :=
   dif_pos h
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(∑ j : Fin R, _) = _`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : j ∈ J.1`. Rewrite using `[dif_pos h, if_pos h]`. Rewrite using `[dif_neg h, if_neg h, kosExt_of_card φ (by rw [Finset.card_insert_of_notMem h, J.2])]`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem kosD_apply {V : Ideal (MRingOver S ι)} {R : ℕ} (z : Fin R → KH.CechC S ι (MRingOver S ι ⧸ V) 0) (p n : ℕ)
     (φ : KosC S ι V R (p + 1) n) (J : {J : Finset (Fin R) // J.card = p}) (I : KH.Cell K ι n) :
@@ -357,7 +347,7 @@ theorem kosD_apply {V : Ideal (MRingOver S ι)} {R : ℕ} (z : Fin R → KH.Cech
   · rw [dif_neg h, if_neg h, kosExt_of_card φ (by rw [Finset.card_insert_of_notMem h, J.2])]
 
 /- English proof (translation)
-Unfold `kosExt`. Use `split_ifs`. Both sides reduce to the same expression. Conclude with `(map_zero _).symm`.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem kosExt_kosCech {V : Ideal (MRingOver S ι)} {R q n : ℕ} (φ : KosC S ι V R q n) (T : Finset (Fin R)) :
     kosExt (kosCech S ι V R q n φ) T = KH.cechD S ι (MRingOver S ι ⧸ V) n (kosExt φ T) := by
@@ -367,13 +357,13 @@ theorem kosExt_kosCech {V : Ideal (MRingOver S ι)} {R q n : ℕ} (φ : KosC S �
   · exact (map_zero _).symm
 
 /- English proof (translation)
-Simplify using `only [kosPart, KH.cechCc, Submodule.mem_toAddSubgroup, Submodule.mem_pi, Set.mem_univ, true_implies] at hφ ⊢`. Establish `hr : ∀ j (I : KH.Cell K ι n), restrict0 (z j) I ∈ KH.locPart ι (KH.quotPart S V) (KH.cellMon S I.1) α` using `fun j I => cellRes_mem_locPart (cellMon_mono (frontCell_sub I)) (Submodule.mem_pi.mp (hz j).1 (frontCell I) (Set.mem_univ _))`. Establish `e : α + (c - ((p + 1 : ℕ) : ℤ) • α) = c - (p : ℤ) • α`. Use function extensionality and compare the values at `k`. Simplify using `only [Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Introduce `J I`. Rewrite using `[kosD_apply]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `split_ifs with h`. Conclude with `Submodule.zero_mem _`. Establish `hx : restrict0 (z j) I * kosExt φ (insert j J.1) I ∈ KH.locPart ι (KH.quotPart S V) (KH.cellMon S I.1) (c - (p : ℤ) • α)`. Rewrite using `[← e]`. Use `locPart_mul (hr j I) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Rewrite using `[kosExt_of_card φ (by rw [Finset.card_insert_of_notMem h, J.2])]`. Conclude with `hφ _ I`. Use `zsmul_mem hx (kosSign J.1 j) using 1` and compare the differences between its conclusion and the goal. Conclude with `(zsmul_eq_mul (restrict0 (z j) I * kosExt φ (insert j J.1) I) (kosSign J.1 j)).symm`.
+A detailed English derivation is pending.
 -/
 theorem kosD_mem_kosPart {V : Ideal (MRingOver S ι)} {α : K → ℤ} {R : ℕ}
     {z : Fin R → KH.CechC S ι (MRingOver S ι ⧸ V) 0} (hz : ∀ j, z j ∈ KH.cechZc ι (KH.quotPart S V) α 0)
@@ -404,13 +394,11 @@ theorem kosD_mem_kosPart {V : Ideal (MRingOver S ι)} {α : K → ℤ} {R : ℕ}
     exact (zsmul_eq_mul (restrict0 (z j) I * kosExt φ (insert j J.1) I) (kosSign J.1 j)).symm
 
 /- English proof (translation)
-Use function extensionality and compare the values at `J I`. Establish `hsplit : kosD z p n φ J = ∑ j : Fin R, if j ∈ J.1 then 0 else (kosSign J.1 j) • (fun I' => restrict0 (z j) I' * kosExt φ (insert j J.1) I')`. Use function extensionality and compare the values at `I'`. Rewrite using `[kosD_apply, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `split_ifs`. Both sides reduce to the same expression. Conclude with `(zsmul_eq_mul (restrict0 (z j) I' * kosExt φ (insert j J.1) I') (kosSign J.1 j)).symm`. Use `show KH.cechD S ι _ n (kosD z p n φ J) I = kosD z p (n + 1) (kosCech S ι V R (p + 1) n φ) J I`. Rewrite using `[hsplit, map_sum, Finset.sum_apply, kosD_apply]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `split_ifs`. Rewrite using `[map_zero]`. Both sides reduce to the same expression. Rewrite using `[map_zsmul, cechD_mul_restrict0 (hz j), kosExt_kosCech]`.
-
-Conclude with `zsmul_eq_mul (restrict0 (z j) I * KH.cechD S ι _ n (kosExt φ (insert j J.1)) I) (kosSign J.1 j)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kosCech_kosD {V : Ideal (MRingOver S ι)} {R : ℕ} {z : Fin R → KH.CechC S ι (MRingOver S ι ⧸ V) 0}
     (hz : ∀ j, KH.cechD S ι (MRingOver S ι ⧸ V) 0 (z j) = 0) (p n : ℕ) (φ : KosC S ι V R (p + 1) n) :
@@ -433,7 +421,7 @@ theorem kosCech_kosD {V : Ideal (MRingOver S ι)} {R : ℕ} {z : Fin R → KH.Ce
     exact zsmul_eq_mul (restrict0 (z j) I * KH.cechD S ι _ n (kosExt φ (insert j J.1)) I) (kosSign J.1 j)
 
 /- English proof (translation)
-Unfold `kosSign`. Rewrite using `[Finset.filter_insert, if_pos hab, Finset.card_insert_of_notMem (fun h => ha (Finset.mem_filter.mp h).1), pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem kosSign_insert_lt {R : ℕ} {J : Finset (Fin R)} {a b : Fin R} (ha : a ∉ J) (hab : a < b) :
     kosSign (insert a J) b = -kosSign J b := by
@@ -443,7 +431,7 @@ theorem kosSign_insert_lt {R : ℕ} {J : Finset (Fin R)} {a b : Fin R} (ha : a �
   ring
 
 /- English proof (translation)
-Unfold `kosSign`. Rewrite using `[Finset.filter_insert, if_neg (not_lt.mpr hab.le)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem kosSign_insert_gt {R : ℕ} {J : Finset (Fin R)} {a b : Fin R} (hab : b < a) :
     kosSign (insert a J) b = kosSign J b := by
@@ -451,7 +439,7 @@ theorem kosSign_insert_gt {R : ℕ} {J : Finset (Fin R)} {a b : Fin R} (hab : b 
   rw [Finset.filter_insert, if_neg (not_lt.mpr hab.le)]
 
 /- English proof (translation)
-Break down `lt_or_gt_of_ne hne with h | h` into its components or cases. Rewrite using `[kosSign_insert_lt hj h, kosSign_insert_gt h]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[kosSign_insert_gt h, kosSign_insert_lt hj' h]`. Expand and normalize the polynomial expressions, which then agree.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem kosSign_swap {R : ℕ} {J : Finset (Fin R)} {j j' : Fin R} (hj : j ∉ J) (hj' : j' ∉ J) (hne : j ≠ j') :
     kosSign J j * kosSign (insert j J) j' = -(kosSign J j' * kosSign (insert j' J) j) := by
@@ -460,25 +448,21 @@ theorem kosSign_swap {R : ℕ} {J : Finset (Fin R)} {j j' : Fin R} (hj : j ∉ J
   · rw [kosSign_insert_gt h, kosSign_insert_lt hj' h]; ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `J I`. Rewrite using `[kosD_apply]`. Establish `hms : ∀ (r : LocalizedModule (KH.cellMon S I.1) (MRingOver S ι ⧸ V)) (g : Fin R → LocalizedModule (KH.cellMon S I.1) (MRingOver S ι ⧸ V)), r * ∑ k, g k = ∑ k, r * g k` using `fun r g => Finset.mul_sum Finset.univ g r`. Establish `hm0 : ∀ (a b : LocalizedModule (KH.cellMon S I.1) (MRingOver S ι ⧸ V)), a * (b * 0) = 0` using `fun a b => (congrArg (fun y => a * y) (mul_zero b)).trans (mul_zero a)`. Take `⟨G, hG⟩ : ∃ G : Fin R → Fin R → LocalizedModule (KH.cellMon S I.1) (MRingOver S ι ⧸ V), ∀ j j', G j j' = if j ∈ J.1 then 0 else if j' ∈ insert j J.1 then 0 else (kosSign J.1 j : LocalizedModule (KH.cellMon S I.1) (MRingOver S ι ⧸ V)) * (restrict0 (z j) I * ((kosSign (insert j J.1 …` from `⟨_, fun _ _ => rfl⟩`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hA : ∀ j, (if j ∈ J.1 then 0 else (kosSign J.1 j : LocalizedModule (KH.cellMon S I.1) (MRingOver S ι ⧸ V)) * (restrict0 (z j) I * kosExt (kosD z (p + 1) n φ) (insert j J.1) I)) = ∑ j', G j j'`. Introduce `j`. Distinguish the cases in `hj : j ∈ J.1`. Rewrite using `[if_pos hj]`. Conclude with `(Finset.sum_eq_zero fun j' _ => (hG j j').trans (if_pos hj)).symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hj, kosExt_of_card _ (by rw [Finset.card_insert_of_notMem hj, J.2]), kosD_apply, hms, hms]`. Use `Finset.sum_congr rfl fun j' _ => ?_` and prove the remaining obligations. Simplify using `only`. Distinguish the cases in `hj' : j' ∈ insert j J.1`. Rewrite using `[if_pos hj', hm0, hG, if_neg hj, if_pos hj']`.
+Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hj', hG, if_neg hj, if_neg hj']`. Establish `hG0 : ∀ j j', (j ∈ J.1 ∨ j' ∈ J.1 ∨ j = j') → G j j' = 0`. Introduce `j j' h`. Rewrite using `[hG]`. Distinguish the cases in `hj : j ∈ J.1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos hj]`. Rewrite using `[if_neg hj, if_pos]`. Break down `h with h | h | h` into its components or cases. Conclude with `absurd h hj`. Conclude with `Finset.mem_insert_of_mem h`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h]`. Conclude with `Finset.mem_insert_self _ _`. Rewrite using `[Finset.sum_congr rfl fun j _ => hA j, ← Finset.sum_product']`. Use `Finset.sum_involution (fun x _ => x.swap) ?_ ?_ (fun x _ => Finset.mem_product.mpr ⟨Finset.mem_univ _, Finset.mem_univ _⟩) (fun x _ => Prod.swap_swap x)` and prove the remaining obligations. Introduce and unpack `⟨j, j'⟩ _ show G j j' + G j' j = 0`.
+Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `h : j ∈ J.1 ∨ j' ∈ J.1 ∨ j = j'`. Rewrite using `[hG0 j j' h, hG0 j' j (by tauto)]`. Conclude with `add_zero 0`. Simplify using `only [not_or] at h`. Take `⟨hj, hj', hne⟩` from `h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `replace hne : j ≠ j' := hne`. Establish `hs` using `kosSign_swap hj hj' hne`. Establish `hs' : ((kosSign J.1 j : ℤ) : LocalizedModule (KH.cellMon S I.1) (MRingOver S ι ⧸ V)) * (kosSign (insert j J.1) j' : LocalizedModule (KH.cellMon S I.1) (MRingOver S ι ⧸ V)) = -((kosSign J.1 j' : LocalizedModule (KH.cellMon S I.1) (MRingOver S ι ⧸ V)) * (kosSign (insert j' J.1) j : …`. Establish `cast : ∀ {A : Type} [CommRing A] (a b c d : ℤ), a * b = -(c * d) → (a : A) * (b : A) = -((c : A) * (d : A))`. Introduce `A _ a b c d h`.
-
-Conclude with `congrArg (fun x : ℤ => (x : A)) h` after adjusting the coercions. Conclude with `cast (A := LocalizedModule (KH.cellMon S I.1) (MRingOver S ι ⧸ V)) _ _ _ _ hs`. Rewrite using `[hG, hG, if_neg hj, if_neg hj', if_neg (by simp [Finset.mem_insert, hne.symm, hj']), if_neg (by simp [Finset.mem_insert, hne, hj]), Finset.insert_comm j j' J.1]`. Take the linear combination `(restrict0 (z j) I * restrict0 (z j') I * kosExt φ (insert j' (insert j J.1)) I) * hs'`. Introduce and unpack `⟨j, j'⟩ _ hne heq`.
-
-Apply `hne` to reduce the goal to its premises. Establish `: j' = j` using `(Prod.ext_iff.mp heq).1`. Conclude with `hG0 j j' (Or.inr (Or.inr this.symm))`.
+Take a linear combination of the given relations to obtain the conclusion. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem kosD_kosD {V : Ideal (MRingOver S ι)} {R : ℕ} (z : Fin R → KH.CechC S ι (MRingOver S ι ⧸ V) 0) (p n : ℕ)
     (φ : KosC S ι V R (p + 1 + 1) n) : kosD z p n (kosD z (p + 1) n φ) = 0 := by
@@ -552,7 +536,7 @@ end KoszulCechComplex
 open KoszulCech KoszulCechComplex in
 
 /- English proof (translation)
-Introduce `S _ K _ _ ι _ _ V α R z hz c p n`. Conclude with `⟨kosD_mem_kosPart hz c p n, kosCech_kosD (fun j => LinearMap.mem_ker.mp (hz j).2) p n, kosD_kosD z p n⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem KoszulCechComplex.proof : KoszulCechComplex.Statement := by
   intro S _ K _ _ ι _ _ V α R z hz c p n

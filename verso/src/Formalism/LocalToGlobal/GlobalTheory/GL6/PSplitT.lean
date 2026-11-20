@@ -16,7 +16,7 @@ variable {R K : Type} [CommRing R] [IsDedekindDomain R] [Field K] [Algebra R K] 
   (v : HeightOneSpectrum R)
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `h`. Establish `hy : Valued.v (y : v.adicCompletion K) ≤ 1` using `y.2`. Use `push_cast`. Rewrite using `[map_mul, map_pow]`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem valuation_le_of_pow_dvd {ϖ x : v.adicCompletionIntegers K} {n : ℕ} (h : ϖ ^ n ∣ x) :
     Valued.v (x : v.adicCompletion K) ≤ Valued.v (ϖ : v.adicCompletion K) ^ n := by
@@ -29,25 +29,21 @@ theorem valuation_le_of_pow_dvd {ϖ x : v.adicCompletionIntegers K} {n : ℕ} (h
     _ = Valued.v (ϖ : v.adicCompletion K) ^ n := mul_one _
 
 /- English proof (translation)
-Establish `hI : ∀ (n : ℕ) (x : v.adicCompletionIntegers K), x ∈ ((maximalIdeal (v.adicCompletionIntegers K)) ^ n • ⊤ : Submodule (v.adicCompletionIntegers K) (v.adicCompletionIntegers K)) ↔ ϖ ^ n ∣ x`. Introduce `n x`. Rewrite using `[Ideal.smul_eq_mul, Ideal.mul_top, hϖ.maximalIdeal_eq, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Establish `hϖ0 : (ϖ : v.adicCompletion K) ≠ 0` using `fun h => hϖ.ne_zero (Subtype.ext h)`. Establish `hlt : Valued.v (ϖ : v.adicCompletion K) < 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `lt_of_le_of_ne ϖ.2 fun h => hϖ.not_isUnit ?_` and prove the remaining obligations. Conclude with `adicCompletionIntegers.isUnit_iff_valued_eq_one.2 h`. Use `⟨fun f hf => ?_⟩` and prove the remaining obligations. Establish `hd : ∀ N a b, N ≤ a → N ≤ b → ϖ ^ N ∣ f a - f b`. Introduce `N a b ha hb`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `le_total a b with h | h` into its components or cases. Use `hf h` as an intermediate fact. Rewrite `this` using `[SModEq.sub_mem, hI]`. Conclude with `(pow_dvd_pow ϖ ha).trans this`. Use `hf h` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[SModEq.sub_mem, hI]`. Conclude with `(pow_dvd_pow ϖ hb).trans (dvd_sub_comm.1 this)`. Use `set g : ℕ → v.adicCompletion K := fun n => (f n : v.adicCompletion K) with hg`. Establish `hC : CauchySeq g`. Rewrite using `[(Valued.hasBasis_uniformity (v.adicCompletion K) (WithZero (Multiplicative ℤ))).cauchySeq_iff]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `y _`. Take `⟨N, hN⟩` from `exists_pow_lt₀ hlt (Units.map (MonoidWithZeroHom.ValueGroup₀.embedding (f := (.ofClass (Valued.v : Valuation (v.adicCompletion K) (WithZero (Multiplicative ℤ)))))) y)`. Use `⟨N, fun m hm n hn => ?_⟩` and prove the remaining obligations. Use `show Valued.v.restrict (g n - g m) < y.1`. Rewrite using `[Valuation.restrict_lt_iff_lt_embedding]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `lt_of_le_of_lt ?_ hN` and prove the remaining obligations. Use `valuation_le_of_pow_dvd v (hd N n m hn hm)` as an intermediate fact. Conclude with `this`. Take `⟨L, hL⟩` from `cauchySeq_tendsto_of_complete hC`. Establish `hO : IsClosed ((v.adicCompletionIntegers K : Set (v.adicCompletion K)))` using `Valued.isClosed_valuationSubring (v.adicCompletion K)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLm : L ∈ v.adicCompletionIntegers K` using `hO.mem_of_tendsto hL (Eventually.of_forall fun n => (f n).2)`. Use `⟨⟨L, hLm⟩, fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[SModEq.sub_mem, hI]`. Establish `hpn : (ϖ : v.adicCompletion K) ^ n ≠ 0` using `pow_ne_zero _ hϖ0`. Establish `hS : IsClosed ((fun x => (x - g n) * ((ϖ : v.adicCompletion K) ^ n)⁻¹) ⁻¹' (v.adicCompletionIntegers K : Set (v.adicCompletion K)))` using `hO.preimage ((continuous_id.sub continuous_const).mul continuous_const)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hLS` using `hS.mem_of_tendsto hL (by`. Rewrite using `[eventually_atTop]`. Use `⟨n, fun m hm => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `hd n m n hm le_rfl`. Use `show (g m - g n) * ((ϖ : v.adicCompletion K) ^ n)⁻¹ ∈ v.adicCompletionIntegers K`.
-
-Establish `: g m - g n = (ϖ : v.adicCompletion K) ^ n * (c : v.adicCompletion K)`. Simplify using `only [hg]`. Conclude with `congrArg Subtype.val hc`. Rewrite using `[this, mul_comm, ← mul_assoc, inv_mul_cancel₀ hpn, one_mul]`. Conclude with `c.2)`.
-
-Use `⟨-⟨_, hLS⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Use `show g n - L = (ϖ : v.adicCompletion K) ^ n * -((L - g n) * ((ϖ : v.adicCompletion K) ^ n)⁻¹)`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem completion_integers_precomplete {ϖ : v.adicCompletionIntegers K} (hϖ : Irreducible ϖ) :
     IsPrecomplete (maximalIdeal (v.adicCompletionIntegers K)) (v.adicCompletionIntegers K) := by
@@ -110,9 +106,9 @@ theorem completion_integers_precomplete {ϖ : v.adicCompletionIntegers K} (hϖ :
   ring
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible (v.adicCompletionIntegers K)`. Establish `: IsPrecomplete (maximalIdeal (v.adicCompletionIntegers K)) (v.adicCompletionIntegers K)` using `completion_integers_precomplete v hϖ`. Establish `: IsAdicComplete (maximalIdeal (v.adicCompletionIntegers K)) (v.adicCompletionIntegers K)` using `{}`. Establish `hm : (X ^ 2 - C a : (v.adicCompletionIntegers K)[X]).Monic` using `monic_X_pow_sub_C a two_ne_zero`. Establish `hd : eval b (derivative (X ^ 2 - C a : (v.adicCompletionIntegers K)[X])) = 2 * b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[one_add_one_eq_two]`. Take `⟨r, hr, hrb⟩` from `HenselianRing.is_henselian (I := maximalIdeal (v.adicCompletionIntegers K)) (X ^ 2 - C a) hm b (by simpa [sq] using hab) (by rw [hd]; exact hu.map _)`. Use `⟨r, ?_, hrb⟩` and prove the remaining obligations. Establish `h0 : r ^ 2 - a = 0` using `by simpa using hr`. Take the linear combination `h0`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem hensel_sqrt_completion_integers (a b : v.adicCompletionIntegers K) (hab : b * b - a ∈ maximalIdeal (v.adicCompletionIntegers K))
     (hu : IsUnit (2 * b)) :
@@ -130,9 +126,9 @@ theorem hensel_sqrt_completion_integers (a b : v.adicCompletionIntegers K) (hab 
   linear_combination h0
 
 /- English proof (translation)
-Rewrite using `[ValuationSubring.valuation_lt_one_iff]`. Establish `hE` using `Valuation.isEquiv_valuation_valuationSubring (Valued.v : Valuation (v.adicCompletion K) (WithZero (Multiplicative ℤ)))`. Establish `key : ∀ x : v.adicCompletion K, (v.adicCompletionIntegers K).valuation x < 1 ↔ Valued.v x < 1`. Introduce `x`. Use `(hE.lt_iff_lt (x := x) (y := 1)).symm` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[map_one, map_one]`. Then use the resulting hypothesis. Rewrite using `[key, algebraMap_adicCompletionIntegers_apply, valuedAdicCompletion_eq_valuation']`. Conclude with `valuation_lt_one_iff_mem v r`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_maximal_ideal_completion_iff (r : R) :
     algebraMap R (v.adicCompletionIntegers K) r ∈ maximalIdeal (v.adicCompletionIntegers K) ↔ r ∈ v.asIdeal := by
@@ -153,9 +149,9 @@ section Idem
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Use `haveI : Finite G := Nat.finite_of_card_ne_zero (by rw [hG]; exact hp.ne_zero)`. Use `haveI : Fintype G := Fintype.ofFinite G`. Use `haveI : Fact p.Prime := ⟨hp⟩`. Use `haveI : CharP G p := charP_of_card_eq_prime (by rw [← Nat.card_eq_fintype_card]; exact hG)`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h' : ((2 : ℕ) : G) = 0` using `by exact_mod_cast h`. Rewrite `h'` using `[CharP.cast_eq_zero_iff G p]`. Establish `h3` using `Nat.le_of_dvd (by norm_num) h'`. Establish `h4` using `hp.two_le`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem two_ne_zero_odd_prime_field {G : Type} [Field G] {p : ℕ} (hp : p.Prime) (hG : Nat.card G = p) (h2 : p ≠ 2) :
     (2 : G) ≠ 0 := by
@@ -171,29 +167,25 @@ theorem two_ne_zero_odd_prime_field {G : Type} [Field G] {p : ℕ} (hp : p.Prime
   omega
 
 /- English proof (translation)
-Establish `hm` using `mem_maximal_ideal_completion_iff (K := F) v`. Establish `hab' : algebraMap (𝓞 F) (v.adicCompletionIntegers F) b * algebraMap (𝓞 F) (v.adicCompletionIntegers F) b - algebraMap (𝓞 F) (v.adicCompletionIntegers F) a ∈ maximalIdeal (v.adicCompletionIntegers F)`. Rewrite using `[← map_mul, ← map_sub, hm]`. Conclude with `hab`. Establish `h2b : (2 : 𝓞 F) * b ∉ v.asIdeal` using `fun h => (v.isPrime.mem_or_mem h).elim h2 hb`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : IsUnit (2 * algebraMap (𝓞 F) (v.adicCompletionIntegers F) b)`. Rewrite using `[← notMem_maximalIdeal]`. Establish `: (2 : v.adicCompletionIntegers F) * algebraMap (𝓞 F) (v.adicCompletionIntegers F) b = algebraMap (𝓞 F) (v.adicCompletionIntegers F) (2 * b)` using `by rw [map_mul, map_ofNat]`. Rewrite using `[this, hm]`. Conclude with `h2b`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨r, hr, hrb⟩` from `hensel_sqrt_completion_integers v _ _ hab' hu`. Establish `hur : IsUnit (2 * r)`. Rewrite using `[← notMem_maximalIdeal]`. Introduce `h`. Apply `notMem_maximalIdeal.2 hu` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: 2 * algebraMap (𝓞 F) (v.adicCompletionIntegers F) b = 2 * r - 2 * (r - algebraMap (𝓞 F) (v.adicCompletionIntegers F) b)` using `by ring`. Rewrite using `[this]`. Conclude with `sub_mem h (Ideal.mul_mem_left _ _ hrb)`. Take `⟨s, hs⟩` from `hur.exists_right_inv`. Use `set φ := (v.adicCompletionIntegers F).subtype`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set H : v.adicCompletion F := φ (r * s)`. Use `set Y : v.adicCompletion F := φ s`. Use `set A : v.adicCompletion F := algebraMap F (v.adicCompletion F) (a : F)`. Establish `hA : φ (algebraMap (𝓞 F) (v.adicCompletionIntegers F) a) = A` using `rfl`. Establish `hH2 : 2 * H = 1`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `: (2 : v.adicCompletionIntegers F) * (r * s) = 1` using `by rw [← hs]; ring`. Use `congrArg φ this` as an intermediate fact. Rewrite `this` using `[map_mul, map_ofNat, map_one]`. Then use the resulting hypothesis. Establish `hAY : A * (Y * Y) = H * H`. Establish `: algebraMap (𝓞 F) (v.adicCompletionIntegers F) a * (s * s) = (r * s) * (r * s)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hr]`. Expand and normalize the polynomial expressions, which then agree. Use `congrArg φ this` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul, hA]`. Then use the resulting hypothesis. Establish `hR : ∀ y : v.adicCompletionIntegers F, ((1 : E) ⊗ₜ[F] (φ y)) ∈ intV E v` using `fun y => Subring.subset_closure (Or.inr ⟨⟨y, y.2⟩, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hL : ((α : E) ⊗ₜ[F] (1 : v.adicCompletion F)) ∈ intV E v` using `Subring.subset_closure (Or.inl ⟨⟨(α : E), ⟨α, rfl⟩⟩, rfl⟩)`. Establish `hαα : ((α : E) * α) ⊗ₜ[F] (Y * Y) = (1 : E) ⊗ₜ[F] (A * (Y * Y))`. Rewrite using `[ha, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul, Algebra.smul_def]`. Use `⟨(1 : E) ⊗ₜ[F] H + (α : E) ⊗ₜ[F] Y, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `add_mem (hR _) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Establish `: (α : E) ⊗ₜ[F] Y = ((α : E) ⊗ₜ[F] (1 : v.adicCompletion F)) * ((1 : E) ⊗ₜ[F] Y)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Rewrite using `[this]`. Conclude with `mul_mem hL (hR _)`. Establish `h1 : H * H + A * (Y * Y) = H` using `by linear_combination H * hH2 + hAY`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h3 : H * Y + Y * H = Y` using `by linear_combination Y * hH2`. Simplify using `only [add_mul, mul_add, Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_one, hαα]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [TensorProduct.tmul_add]`. Normalize the expressions using the abelian group laws.
-
-Use `_ = _ := by rw [h1, h3]`. Establish `h1 : (1 : v.adicCompletion F) = H + H` using `by linear_combination -hH2`. Establish `hs1 : sigR σ (v.adicCompletion F) ((1 : E) ⊗ₜ[F] H + (α : E) ⊗ₜ[F] Y) = (1 : E) ⊗ₜ[F] H - (α : E) ⊗ₜ[F] Y`. Simplify using `only [sigR, RingHom.coe_coe, AlgHom.toRingHom_eq_coe, map_add, Algebra.TensorProduct.map_tmul, map_one, AlgHom.id_apply, hσ, TensorProduct.neg_tmul, sub_eq_add_neg]`. Rewrite using `[hs1, Algebra.TensorProduct.one_def]`.
-
-Use `conv_rhs => rw [h1]`. Rewrite using `[TensorProduct.tmul_add]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem split_idempotent_of_square_root (σ : E →ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) (α : 𝓞 E) (a b : 𝓞 F)
     (hσ : σ (α : E) = -(α : E)) (ha : (α : E) * α = algebraMap F E (a : F))
@@ -270,14 +262,14 @@ section Tied
 variable {D : D7} {u : D.what₂.Word}
 
 /- English proof (translation)
-Use `letI := D.host.cmStar`. Conclude with `bridge_star_holds D.R D.host x`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem forms_involution_eq_host_conj (x : D.host.E) : sigD D x = D.host.conj x := by
   letI := D.host.cmStar
   exact bridge_star_holds D.R D.host x
 
 /- English proof (translation)
-Conclude with `D.host.conj_conj x`.
+A detailed English derivation is pending.
 -/
 theorem host_conj_involutive (x : D.host.E) : D.host.conj (D.host.conj x) = x := by
   exact D.host.conj_conj x
@@ -285,25 +277,23 @@ theorem host_conj_involutive (x : D.host.E) : D.host.conj (D.host.conj x) = x :=
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `v`. Take `⟨pb, hpb⟩ : ∃ pb : 𝓞 D.host.E, (pb : D.host.E) = D.host.conj (A.piU : D.host.E)` from `⟨⟨_, map_isIntegral_int D.host.conj (RingOfIntegers.isIntegral_coe A.piU)⟩, rfl⟩`. Establish `hres_pb` using `A.res_conj v pb hpb`. Take `⟨α, hαd⟩ : ∃ α : 𝓞 D.host.E, α = A.piU - pb` from `⟨_, rfl⟩`. Establish `hαE : (α : D.host.E) = (A.piU : D.host.E) - D.host.conj (A.piU : D.host.E)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hαd, ← hpb]`. Both sides reduce to the same expression. Establish `hσα : sigD D (α : D.host.E) = -(α : D.host.E)`. Rewrite using `[hαE, map_sub, forms_involution_eq_host_conj, forms_involution_eq_host_conj, host_conj_involutive]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hfix : (α : D.host.E) * α ∈ (algebraMap D.host.F D.host.E).range`. Use `letI := D.host.cmStar`. Rewrite using `[← D.sp.cm.fixed]`. Establish `h1 : star (α : D.host.E) = -(α : D.host.E)` using `hσα`. Rewrite using `[star_mul, h1]`.
+Establish an intermediate fact. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨a0, ha0⟩` from `hfix`. Establish `ha0i : IsIntegral ℤ a0`. Establish `h1 : IsIntegral ℤ (algebraMap D.host.F D.host.E a0)`. Rewrite using `[ha0]`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `RingOfIntegers.isIntegral_coe (α * α)`. Conclude with `(isIntegral_algHom_iff (IsScalarTower.toAlgHom ℤ D.host.F D.host.E) (algebraMap D.host.F D.host.E).injective).1 h1`. Take `⟨a, had⟩ : ∃ a : 𝓞 D.host.F, (a : D.host.F) = a0` from `⟨⟨a0, ha0i⟩, rfl⟩`. Take `⟨ρ, hρ⟩ : ∃ ρ : 𝓞 D.host.F →+* (D.mem u).A.Fv v, ∀ x, ρ x = A.res v (algebraMap (𝓞 D.host.F) (𝓞 D.host.E) x)` from `⟨(A.res v).comp (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)), fun _ => rfl⟩`. Establish `hmem : ∀ x : 𝓞 D.host.F, x ∈ (A.eV v).1.asIdeal ↔ ρ x = 0` using `fun x => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[A.res_v v, hρ]`. Establish `hT` using `(D.mem u).A.T_prime`. Establish `hcard : Nat.card ((D.mem u).A.Fv v) = (D.mem u).A.T`. Rewrite using `[Nat.card_eq_fintype_card, (D.mem u).A.card_Fv v]`. Establish `hsurj : Function.Surjective ρ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `htop` using `subgroup_prime_card_eq_top hT hcard (ρ : 𝓞 D.host.F →+ (D.mem u).A.Fv v).range ⟨1, map_one ρ⟩ one_ne_zero`. Introduce `y`. Establish `hy : y ∈ (ρ : 𝓞 D.host.F →+ (D.mem u).A.Fv v).range` using `by rw [htop]; exact AddSubgroup.mem_top y`. Conclude with `AddMonoidHom.mem_range.1 hy`. Take `⟨b, hb⟩` from `hsurj (A.res v α)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hresα : A.res v α = -(A.res v pb)`. Rewrite using `[hαd, map_sub, A.res_pi v, zero_sub]`. Establish `hαa : algebraMap (𝓞 D.host.F) (𝓞 D.host.E) a = α * α`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Use `show algebraMap D.host.F D.host.E (a : D.host.F) = (α : D.host.E) * α`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[had, ha0]`. Establish `hbv : b ∉ (A.eV v).1.asIdeal`. Rewrite using `[hmem, hb, hresα, neg_eq_zero]`. Conclude with `hres_pb`. Establish `h2v : (2 : 𝓞 D.host.F) ∉ (A.eV v).1.asIdeal`.
-
-Rewrite using `[hmem, map_ofNat]`. Conclude with `two_ne_zero_odd_prime_field hT hcard (D.T_ne_two u)`. Establish `habv : b * b - a ∈ (A.eV v).1.asIdeal`. Rewrite using `[hmem, map_sub, map_mul, hb, hρ, hαa, map_mul, sub_self]`. Conclude with `split_idempotent_of_square_root (sigD D) (A.eV v).1 α a b hσα (by rw [had, ha0]) habv hbv h2v`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem splitAtT_of_tied (A : AtTTied u) : SplitAtT A := by
   intro v
@@ -362,25 +352,25 @@ theorem splitAtT_of_tied (A : AtTTied u) : SplitAtT A := by
   exact split_idempotent_of_square_root (sigD D) (A.eV v).1 α a b hσα (by rw [had, ha0]) habv hbv h2v
 
 /- English proof (translation)
-The claim follows from `local_diamonds_of_split Tf (splitAtT_of_tied Tf.atT)`.
+A detailed English derivation is pending.
 -/
 theorem local_diamonds_exist_all (Tf : FormsTied D u) : LocalDiamondElementsExist Tf :=
   local_diamonds_of_split Tf (splitAtT_of_tied Tf.atT)
 
 /- English proof (translation)
-Conclude with `diamond_elements_of_local Tf (local_diamonds_exist_all Tf)`.
+A detailed English derivation is pending.
 -/
 theorem diamond_elements_exist_all (Tf : FormsTied D u) : DiamondElementsExist Tf := by
   exact diamond_elements_of_local Tf (local_diamonds_exist_all Tf)
 
 /- English proof (translation)
-Conclude with `diamond_mul_of_local_diamonds Tf (local_diamonds_exist_all Tf)`.
+A detailed English derivation is pending.
 -/
 theorem DiaMul_tied (Tf : FormsTied D u) : Formalism.MainNotions.product_first_zeroth_parts.DiaMul D u := by
   exact diamond_mul_of_local_diamonds Tf (local_diamonds_exist_all Tf)
 
 /- English proof (translation)
-Conclude with `transport_iso_of_diamond_elements Tf (diamond_elements_exist_all Tf)`.
+A detailed English derivation is pending.
 -/
 theorem TrIso_tied (Tf : FormsTied D u) : Formalism.MainNotions.product_first_zeroth_parts.TrIso D u := by
   exact transport_iso_of_diamond_elements Tf (diamond_elements_exist_all Tf)
@@ -388,7 +378,7 @@ theorem TrIso_tied (Tf : FormsTied D u) : Formalism.MainNotions.product_first_ze
 end Tied
 
 /- English proof (translation)
-Conclude with `admissible_of_diamonds_and_round_trips (fun _ _ Tf _ => diamond_elements_exist_all Tf) hR`.
+A detailed English derivation is pending.
 -/
 theorem admissible_of_round_trips
     (hR : ∀ (D : D7) (u : D.what₂.Word), FormsCompatible D u → Formalism.MainNotions.product_first_zeroth_parts.RoundUp D u ∧ Formalism.MainNotions.product_first_zeroth_parts.RoundDn D u) :
@@ -396,7 +386,7 @@ theorem admissible_of_round_trips
   exact admissible_of_diamonds_and_round_trips (fun _ _ Tf _ => diamond_elements_exist_all Tf) hR
 
 /- English proof (translation)
-Conclude with `frobenius_no_kernel_of_frobenius_similitude (fun _ _ Tf _ => diamond_elements_exist_all Tf) h`.
+A detailed English derivation is pending.
 -/
 theorem hecke_identities_no_kernel_of_split
     (h : ∀ (D : D7) (u : D.what₂.Word), FormsCompatible D u → Formalism.MainNotions.product_first_zeroth_parts.HidaSetting D u →

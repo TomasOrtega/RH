@@ -7,7 +7,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.BuildingsResidueCh
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N Polynomial GlobalTheory.GalOfCusp UpperTheory.V.Af
 
 /- English proof (translation)
-Introduce `h`. Establish `hc : IsCoprime (l : 𝓞 K) (p : 𝓞 K)` using `Nat.Coprime.cast ((Nat.coprime_primes hl hp).2 hlp)`. Take `⟨a, b, hab⟩` from `hc`. Conclude with `w.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (hab ▸ w.asIdeal.add_mem (w.asIdeal.mul_mem_left a h) (w.asIdeal.mul_mem_left b hw)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem not_mem_of_distinct_prime {K : Type} [Field K] [NumberField K] {p l : ℕ} (w : HeightOneSpectrum (𝓞 K)) (hp : p.Prime)
     (hl : l.Prime) (hlp : l ≠ p) (hw : (p : 𝓞 K) ∈ w.asIdeal) : (l : 𝓞 K) ∉ w.asIdeal := by
@@ -18,9 +18,9 @@ private theorem not_mem_of_distinct_prime {K : Type} [Field K] [NumberField K] {
     (hab ▸ w.asIdeal.add_mem (w.asIdeal.mul_mem_left a h) (w.asIdeal.mul_mem_left b hw)))
 
 /- English proof (translation)
-Use `⟨(UpperTheory.isIrr_twist_and_repIso_of_twist_repIso _ _ 3 _).1 ρ h.irr, h.aut, ?_, by decide⟩` and prove the remaining obligations. Establish `h1` using `UpperTheory.level_twist_cyclotomic_pow K Ω l 3 N _ ρ (-1) h.level`. Rewrite `h1` using `[zpow_neg_one]`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply the tactic sequence `fin_cases i <;> simp <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem admissible_twist_cyclotomic {K Ω : Type} [Field K] [NumberField K] [IsCMField K] [Field Ω] [Algebra K Ω] [IsAlgClosure K Ω]
     {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (e N : ℕ) (ρ : G K Ω →* GL (Fin 3) (Qbar l)) (h : Adm3 ι e N ρ) :
@@ -33,23 +33,21 @@ private theorem admissible_twist_cyclotomic {K Ω : Type} [Field K] [NumberField
   fin_cases i <;> simp <;> ring
 
 /- English proof (translation)
-Introduce `hC K _ _ _`. Take `⟨c, A, hK⟩` from `hC K 3 (by norm_num)`. Use `⟨c * 2 ^ A, A, fun e he N hN p w hp hw hpN hpd => ?_⟩` and prove the remaining obligations. Establish `hN' : (Ideal.absNorm w.asIdeal : ℕ) = normV w`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hq : 1 ≤ normV w`. Rewrite using `[← hN']`. Conclude with `Nat.one_le_iff_ne_zero.2 (by simpa [Ideal.absNorm_eq_zero_iff] using w.ne_bot)`. Establish `hqC : ((normV w : ℕ) : ℂ) ≠ 0` using `by exact_mod_cast (by omega : normV w ≠ 0)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨D, hcard, hcl⟩` from `hK ![(e : ℤ) - 1, -1, -(e : ℤ) - 1] (by`. Use `Fin.strictAnti_iff_succ_lt.2 fun i => ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> simp <;> omega)`. Use the proof step `(by`. Introduce `i`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply the tactic sequence `fin_cases i <;> simp [Fin.rev] <;> ring)`. Use the proof step `(e + 1)`. Use the proof step `(by`. Introduce `i`. Rewrite using `[abs_le]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `fin_cases i <;> simp <;> omega)`. Use `N hN p w hp hw hpN hpd`. Take `⟨T, u, hT⟩` from `UpperTheory.traces_from_eigenvalues_rank3 (normV w) e hq D`. Use `⟨T, ?_, fun l _ hl2 hlp Ω _ _ _ ι B hB σ hσ => ?_⟩` and prove the remaining obligations. Rewrite using `[← Nat.card_congr u, mul_assoc, ← mul_pow]`.
+Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hcard.trans (Nat.mul_le_mul_left _ (Nat.pow_le_pow_left ?_ _))` and prove the remaining obligations. Use the polynomial consequences of the given equalities and inequalities. Take `⟨cl, h1, h2⟩` from `hcl l hl2 hlp Ω ι`. Use `⟨fun r => u (cl ⟨_, admissible_twist_cyclotomic ι e N r.1 r.2⟩), fun r r' H => ?_, fun r => ?_⟩` and prove the remaining obligations. Conclude with `(UpperTheory.isIrr_twist_and_repIso_of_twist_repIso _ _ 3 _).2 _ _ (h1 _ _ (u.injective H))`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hl` using `not_mem_of_distinct_prime w hp (Fact.out : l.Prime) hlp hw`. Establish `e2` using `ReciprocityTheory.Gal.cycZ_of_isFrob hl hB hσ`. Establish `e3 : ((cycBar K Ω l σ : (Qbar l)ˣ) : Qbar l) = (normV w : Qbar l)`. Express the relevant statement in the definitionally equal form `algebraMap ℚ_[l] (Qbar l) (((ReciprocityTheory.Gal.cycZ K Ω l σ : ℤ_[l]ˣ) : ℤ_[l]) : ℚ_[l]) = _`. Rewrite using `[e2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `h3` using `(UpperTheory.map_trace_eq_sum_roots_of_charpoly_map _ ι.toRingHom _).1 _ ((h2 ⟨_, admissible_twist_cyclotomic ι e N r.1 r.2⟩ B hB).2 σ hσ)`. Rewrite `h3` using `[tw_val, Matrix.trace_smul, MonoidHom.inv_apply, map_inv (cycBar K Ω l), inv_inv, e3, smul_eq_mul, map_mul, map_natCast]`. Rewrite using `[hT, eq_comm, RingEquiv.symm_apply_eq]`. Simplify using `only [mul_inv]`.
-
-Rewrite using `[Multiset.sum_map_mul_left, ← h3, inv_mul_cancel_left₀ hqC]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.frobenius_trace_count_bound_of_cm_eigensystem_count :
     CountK → ∀ (K : Type) [Field K] [NumberField K] [IsCMField K], ∃ c A : ℕ, ∀ e : ℕ, 1 ≤ e → ∀ N : ℕ, 1 ≤ N → ∀ (p : ℕ) (w : HeightOneSpectrum (𝓞 K)), p.Prime → (p : 𝓞 K) ∈ w.asIdeal → ¬ p ∣ N → ¬ (p : ℤ) ∣ discr K → ∃ D : TrData (normV w) e, Nat.card D.S ≤ c * (N * (e + 1)) ^ A ∧ ∀ (l : ℕ) [Fact l.Prime], l ≠ 2 → l ≠ p → ∀ (Ω : Type) [Field Ω] [Algebra K Ω] [IsAlgClosure K Ω] (ι : Qbar l ≃+* ℂ) (B : ValuationSubring Ω), IsPlaceOver B w → ∀ σ : G K Ω, IsFrob B (normV w) σ → D.Classifies ι σ⁻¹ (Adm3 ι e N) := by

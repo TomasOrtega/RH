@@ -9,15 +9,15 @@ open scoped WithZero TensorProduct
 namespace GlobalTheory.CNorm
 
 /- English proof (translation)
-Establish `hζ : ζ ≠ 0` using `h.root.ne_zero h.prime.ne_zero`. Establish `h1 : ∀ j, algebraMap F E (((ζ ^ k)⁻¹) ^ j) * (σ ^ j) (∑ i ∈ Finset.range p, a i • θ ^ i) = ∑ i ∈ Finset.range p, ((ζ ^ i / ζ ^ k) ^ j) • (a i • θ ^ i)`. Introduce `j`. Rewrite using `[map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_smul, map_pow, map_pow (σ ^ j), h.pow_apply, div_eq_mul_inv]`. Simplify using `only [Algebra.smul_def, mul_pow, map_mul, map_pow]`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[h1]`. Rewrite using `[Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[← Finset.sum_smul]`. Rewrite using `[Finset.sum_eq_single k]`. Rewrite using `[div_self (pow_ne_zero _ hζ)]`. Simplify using `[Algebra.smul_def]`. Introduce `i hi hik`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hne : ζ ^ i / ζ ^ k ≠ 1`. Introduce `h0`. Rewrite `h0` using `[div_eq_one_iff_eq (pow_ne_zero _ hζ)]`. Conclude with `hik (h.root.pow_inj (Finset.mem_range.1 hi) hk h0)`. Establish `hp : (ζ ^ i / ζ ^ k) ^ p = 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[div_pow, ← pow_mul, ← pow_mul, mul_comm i, mul_comm k, pow_mul, pow_mul, h.root.pow_eq_one, one_pow, one_pow, div_one]`. Rewrite using `[geom_sum_eq hne, hp, sub_self, zero_div, zero_smul]`. Introduce `h0`. Conclude with `absurd (Finset.mem_range.2 hk) h0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem IsKum.sum_conj_eq {p : ℕ} {F E : Type} [Field F] [Field E] [Algebra F E] {ζ δ : F} {θ : E}
     {σ : E ≃ₐ[F] E} (h : IsKum p ζ δ θ σ) (a : ℕ → F) (k : ℕ) (hk : k < p) :
@@ -51,15 +51,13 @@ theorem IsKum.sum_conj_eq {p : ℕ} {F E : Type} [Field F] [Field E] [Algebra F 
     exact absurd (Finset.mem_range.2 hk) h0
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `w.intValuation_exists_uniformizer`. Take `⟨y, hy⟩` from `IsDedekindDomain.exists_forall_sub_mem_ideal (s := T) (fun v : HeightOneSpectrum (𝓞 E) => v.asIdeal) (fun _ => 2) (fun v _ => v.prime) (fun i _ j _ hij h => hij (HeightOneSpectrum.ext h)) (fun v => if v.1 = w then π else 0)`. Establish `h1 : w.intValuation y = WithZero.exp (-1)`. Establish `h2` using `hy w hw`. Simplify using `only [if_true] at h2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h2` using `[← HeightOneSpectrum.intValuation_le_pow_iff_mem]`. Establish `h3 : w.intValuation (y - π) < w.intValuation π`. Rewrite using `[hπ]`. Conclude with `h2.trans_lt (WithZero.exp_lt_exp.2 (by norm_num))`. Use `w.intValuation.map_add_eq_of_lt_right h3` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[sub_add_cancel, hπ]`. Then use the resulting hypothesis. Use `⟨(y : E), by rw [HeightOneSpectrum.valuation_of_algebraMap, h1], fun w' hw' => ?_⟩` and prove the remaining obligations. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap]`. Distinguish the cases in `hww : w' = w`. Rewrite using `[hww, h1, ← WithZero.exp_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `WithZero.exp_lt_exp.2 (by norm_num)`. Establish `h2` using `hy w' hw'`. Simplify using `only [if_neg hww, sub_zero] at h2`. Rewrite `h2` using `[← HeightOneSpectrum.intValuation_le_pow_iff_mem]`. Rewrite using `[← WithZero.exp_zero]`.
-
-Conclude with `h2.trans_lt (WithZero.exp_lt_exp.2 (by norm_num))`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_uniformizer_lt_one (E : Type) [Field E] [NumberField E]
     (w : HeightOneSpectrum (𝓞 E)) (T : Finset (HeightOneSpectrum (𝓞 E))) (hw : w ∈ T) :
@@ -91,27 +89,25 @@ theorem exists_uniformizer_lt_one (E : Type) [Field E] [NumberField E]
     exact h2.trans_lt (WithZero.exp_lt_exp.2 (by norm_num))
 
 /- English proof (translation)
-Introduce `p F E _ _ _ _ _ ζ δ θ σ h w hp hδ`. Take `⟨e, he, hw⟩` from `(places_over F E).2.2 w`. Take `⟨-, -, hgal, -⟩` from `kummer_galois p F E ζ δ θ σ h`. Establish `hp0` using `h.prime.ne_zero`. Take `⟨y, hy1, hy2⟩` from `exists_uniformizer_lt_one E w (finite_places_over F E (w.under (𝓞 F))).toFinset (by simp)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hconj : ∀ τ : E ≃ₐ[F] E, w.valuation E (τ y) < 1`. Introduce `τ`. Take `⟨w', h1, h2⟩` from `(galois_places_transitive F E).1 τ w`. Rewrite using `[← h2]`. Conclude with `hy2 w' (by simpa using h1)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hint : IsIntegral F θ` using `⟨X ^ p - C δ, monic_X_pow_sub_C δ hp0, by simp [h.pow]⟩`. Set `pb : PowerBasis F E` to `PowerBasis.ofAdjoinEqTop hint h.gen`. Establish `hgen : pb.gen = θ` using `PowerBasis.ofAdjoinEqTop_gen hint h.gen`. Establish `hdim : pb.dim = p`. Rewrite using `[← pb.natDegree_minpoly, hgen, h.minpoly_eq, natDegree_X_pow_sub_C]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨f, hf, hyf⟩` from `pb.exists_eq_aeval y`. Rewrite `hf` using `[hdim]`. Rewrite `hyf` using `[hgen, Polynomial.aeval_eq_sum_range' hf]`. Establish `hpE : w.valuation E (p : E) = 1`. Use `hw (p : F)` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[map_natCast, hp, one_pow]`. Then use the resulting hypothesis. Establish `hθ : w.valuation E θ = 1`. Use `hw δ` as an intermediate fact. Rewrite `this` using `[hδ, one_pow, ← h.pow, map_pow]`. Conclude with `(pow_eq_one_iff_of_nonneg zero_le hp0).1 this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hζ : w.valuation E (algebraMap F E ζ) = 1`. Establish `: w.valuation E (algebraMap F E ζ) ^ p = 1`. Rewrite using `[← map_pow, ← map_pow, h.root.pow_eq_one, map_one, map_one]`. Conclude with `(pow_eq_one_iff_of_nonneg zero_le hp0).1 this`. Establish `hco : ∀ k ∈ Finset.range p, w.valuation E (f.coeff k • θ ^ k) ≤ WithZero.exp (-1 : ℤ) ^ e`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `k hk`. Establish `h1` using `h.sum_conj_eq f.coeff k (Finset.mem_range.1 hk)`. Rewrite `h1` using `[← hyf]`. Establish `h2 : w.valuation E ((p : E) * (f.coeff k • θ ^ k)) < 1`. Rewrite using `[← h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `(w.valuation E).map_sum_lt one_ne_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, map_inv₀, map_pow, map_pow, map_inv₀, map_pow, hζ]`. Simplify using `using hconj (σ ^ j)`. Rewrite `h2` using `[map_mul, hpE, one_mul]`. Rewrite `h2`, the goal using `[Algebra.smul_def, map_mul, map_pow, hθ, one_pow, mul_one, hw]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h3 : (w.under (𝓞 F)).valuation F (f.coeff k) < 1`. Assume the negation of the conclusion as `h4`. Conclude with `absurd h2 (not_lt.2 (one_le_pow₀ (not_lt.1 h4)))`. Establish `h5 : (w.under (𝓞 F)).valuation F (f.coeff k) ≤ WithZero.exp (-1 : ℤ)`. Rewrite using `[← WithZero.lt_mul_exp_iff_le WithZero.exp_ne_zero, ← WithZero.exp_add]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using h3`. Conclude with `pow_le_pow_left₀ zero_le h5 e`. Establish `h6 : w.valuation E y ≤ WithZero.exp (-1 : ℤ) ^ e`. Rewrite using `[hyf]`. Conclude with `(w.valuation E).map_sum_le hco`.
-
-Rewrite `h6` using `[hy1, ← WithZero.exp_nsmul, WithZero.exp_le_exp, nsmul_eq_mul]`. Establish `h7 : e = 1` using `by omega`. Introduce `x`. Rewrite using `[hw, h7, pow_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kummer_valuation_unramified : ∀ (p : ℕ) (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (ζ δ : F) (θ : E) (σ : E ≃ₐ[F] E), IsKum p ζ δ θ σ → ∀ w : HeightOneSpectrum (𝓞 E), (w.under (𝓞 F)).valuation F (p : F) = 1 → (w.under (𝓞 F)).valuation F δ = 1 → ∀ x : F, w.valuation E (algebraMap F E x) = (w.under (𝓞 F)).valuation F x := by
   intro p F E _ _ _ _ _ ζ δ θ σ h w hp hδ

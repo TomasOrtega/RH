@@ -19,9 +19,9 @@ variable {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 : Type} {A : FamIn D.what₂.L
 end GlobalTheory.FlipRun
 open GlobalTheory.RowClaim in
 /- English proof (translation)
-Introduce `hP hLC hWC hTI hCK`. Take `⟨C0, H⟩` from `(((((_root_.GlobalTheory.T.twist_square_commutes hP hWC hTI).and (_root_.GlobalTheory.T.flipRun_cusp_transition hLC hP)).and (_root_.GlobalTheory.T.endCusp_leadingForm_listed hP)).and (_root_.GlobalTheory.T.flipSequence_initial_term hP hLC)).and GlobalTheory.T.localFlipStage_isTe …`. Use `⟨C0, fun ε CF h => ?_⟩` and prove the remaining obligations. Take `⟨x₀, H⟩` from `H ε CF h`. Use `⟨x₀, fun D large₂ e hx Γ _ _ Pl0 T A Ks _ _ _ R F s ch i j => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨⟨⟨⟨⟨a, b⟩, c⟩, d⟩, f⟩, g⟩` from `H D large₂ e hx Γ Pl0 T A Ks R F s ch i j`. Conclude with `GlobalTheory.FlipRun.flipAt_of s.core.lev ch a b c d f (fun i j t => (g i j t).2)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FlipRun.twist_sign_flip_succ : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.LiftsCuspidal → GlobalTheory.SquareSt.WeilConvergence →
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → ConstK → StepFlip := by
@@ -40,7 +40,7 @@ section
 open GlobalTheory.RowClaim
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.FlipRun.twist_sign_flip_succ | exact _root_.GlobalTheory.FlipRun.twist_sign_flip_succ | (intros; apply _root_.GlobalTheory.FlipRun.twist_sign_flip_succ <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.twisted_lift_flip_invariant : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.LiftsCuspidal → GlobalTheory.SquareSt.WeilConvergence → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → ConstK → StepFlip := by
   first | exact @_root_.GlobalTheory.FlipRun.twist_sign_flip_succ | exact _root_.GlobalTheory.FlipRun.twist_sign_flip_succ | (intros; apply _root_.GlobalTheory.FlipRun.twist_sign_flip_succ <;> assumption)

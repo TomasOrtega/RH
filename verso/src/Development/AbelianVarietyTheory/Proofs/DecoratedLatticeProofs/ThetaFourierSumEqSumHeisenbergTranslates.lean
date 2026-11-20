@@ -18,19 +18,19 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.HalfFourier
 
 /- English proof (translation)
-Introduce `D ψ S T e Λ f₀ Φ f ι s K xs ys k hk hθ hx hy hΛ hΦ`. Take `⟨⟨Tm, hTm⟩, hall⟩` from `hθ`. Establish `hvac : Tm (halfInd e Λ) = f₀` using `by simpa using hTm.vac`. Use `set g : ι → WO S T → ℂ := fun i t => ψ (symplO S T t (ys i)) * halfInd e Λ t with hg`. Establish `hhalf : ∀ t, halfInd e Λ t ≠ 0 → t ∈ Λ ∧ IsHalf e t`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t ht`. Assume the negation of the conclusion as `h`. Conclude with `ht (by simp [halfInd, h])`. Establish `hSB : ∀ i ∈ s, IsSBHalf e Λ (g i)`. Introduce `i hi`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨fun t ht => ?_, k, hk, fun u hu hh t => ?_, fun t ht => ?_⟩` and prove the remaining obligations. Conclude with `(hhalf t (right_ne_zero_of_mul ht)).2`. Establish `hku : k • u ∈ Λ` using `Λ.nsmul_mem hu k`. Establish `hkh : IsHalf e (k • u)`. Introduce `a b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `e * ((k • u : Matrix _ _ (AE D)) a b) = (k • u : Matrix _ _ (AE D)) a b`. Rewrite using `[Matrix.smul_apply, nsmul_eq_mul, mul_left_comm, hh a b]`. Establish `hind : halfInd e Λ (t + k • u) = halfInd e Λ t`. Establish `: (t + k • u ∈ Λ ∧ IsHalf e (t + k • u)) ↔ (t ∈ Λ ∧ IsHalf e t)`. Rewrite using `[Λ.add_mem_cancel_right hku]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `and_congr_right fun _ => forall_congr' fun a => forall_congr' fun b => ?_` and prove the remaining obligations. Rewrite using `[Matrix.add_apply, mul_add, hkh a b, add_left_inj]`. Simplify using `only [halfInd, this]`. Simplify using `only [hg, hind, GlobalTheory.LatVac.symplO_add_left, AddChar.map_add_eq_mul, hΛ i hi u hu, mul_one]`. Conclude with `Λ.nsmul_mem (hhalf t (right_ne_zero_of_mul ht)).1 k`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hΦ' : Φ = ∑ i ∈ s, K i • fun t => g i (t + xs i)`. Use function extensionality and compare the values at `t`. Rewrite using `[hΦ t, Finset.sum_apply]`. Both sides reduce to the same expression. Rewrite using `[hall Tm hTm, hΦ', map_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hTm.trans _ (hSB i hi) (xs i) (hx i hi)]`. Use `congr 2`. Establish `: g i = fun t => ψ (symplO S T t (ys i)) * halfInd e Λ t` using `rfl`. Rewrite using `[this, hTm.modul _ (GlobalTheory.isSBHalf_halfInd e Λ) (ys i) (hy i hi), hvac]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaAt_eq_sum_heis_translates : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (e : AE D) (Λ : AddSubgroup (WO S T)) (f₀ Φ f : WO S T → ℂ) (ι : Type) (s : Finset ι) (K : ι → ℂ) (xs ys : ι → WO S T) (k : ℕ), 0 < k → IsThetaAt ψ (symplO S T) (heisO ψ S T) e Λ 1 f₀ Φ f → (∀ i ∈ s, IsHalf e (xs i)) → (∀ i ∈ s, IsHalf (cA D e) (ys i)) → (∀ i ∈ s, ∀ u ∈ Λ, ψ (symplO S T (k • u) (ys i)) = 1) → (∀ t, Φ t = ∑ i ∈ s, K i * (ψ (symplO S T (t + xs i) (ys i)) * halfInd e Λ (t + xs i))) → f = ∑ i ∈ s, K i • heisO ψ S T (xs i) (heisO ψ S T (ys i) f₀) := by
   intro D ψ S T e Λ f₀ Φ f ι s K xs ys k hk hθ hx hy hΛ hΦ

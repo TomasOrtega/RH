@@ -20,9 +20,9 @@ open scoped Classical
 namespace GlobalTheory.LineGroup
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ a a' B G X om om' _ γ _ T hA`. Take `⟨r₀, hR, hinj⟩` from `GlobalTheory.ArchUniq.exists_admissible_finite_factor (F := F) (Fin a × Fin (a + a'))`. Use `⟨fun s t f => hinj _ _ ?_, fun f => hinj _ _ ?_⟩` and prove the remaining obligations. Rewrite using `[← hA (s + t) f r₀ (hR f), ← hA s (T t f) r₀ (hR _), ← hA t f r₀ (hR f), ofAdd_add, map_mul, show ((1 : UA σ G.V.J), γ (Multiplicative.ofAdd s) * γ (Multiplicative.ofAdd t)) = ((1 : UA σ G.V.J), γ (Multiplicative.ofAdd s)) * (1, γ (Multiplicative.ofAdd t)) by`. Simplify using `[Prod.mk_mul_mk], map_mul, Module.End.mul_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hA 0 f r₀ (hR f), ofAdd_zero, map_one, Prod.mk_one_one, map_one, Module.End.one_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem archOp_oneParam : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {a a' : ℕ} (B : Base F E) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W),

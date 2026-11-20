@@ -8,7 +8,7 @@ open GlobalTheory.Published GlobalTheory.Published.AbVarRed
 namespace GlobalTheory.ValConj
 
 /- English proof (translation)
-Set `: TopologicalSpace Ω` to `⊥`. Establish `: DiscreteTopology Ω` using `⟨rfl⟩`. Establish `: ContinuousSMul (Ω ≃ₐ[K] Ω) Ω` using `continuousSMul_iff_stabilizer_isOpen.mpr fun y => stabilizer_isOpen_of_isIntegral y`. Rewrite using `[IsLocallyConstant.iff_continuous]`. Conclude with `(continuous_id.smul continuous_const : Continuous fun g : Ω ≃ₐ[K] Ω => g • x)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLocallyConstant_apply {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω] [IsGalois K Ω] (x : Ω) :
     IsLocallyConstant (fun g : Ω ≃ₐ[K] Ω => g x) := by
@@ -20,13 +20,13 @@ theorem isLocallyConstant_apply {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω
   exact (continuous_id.smul continuous_const : Continuous fun g : Ω ≃ₐ[K] Ω => g • x)
 
 /- English proof (translation)
-Establish `key` using `(isCompact_univ (X := Ω ≃ₐ[K] Ω)).inter_iInter_nonempty (fun x : Ω => {g : Ω ≃ₐ[K] Ω | g x ∈ V' ↔ x ∈ V}) (fun x => ((isLocallyConstant_apply (K := K) x).comp (fun y => y ∈ V' ↔ x ∈ V)).isClosed_fiber True |> fun h => by simpa using h) (fun u => by`. Set `L : IntermediateField K Ω` to `(FiniteGaloisIntermediateField.adjoin K (u : Set Ω)).toIntermediateField`. Establish `hL : ∀ x ∈ u, x ∈ L` using `fun x hx => FiniteGaloisIntermediateField.subset_adjoin K (u : Set Ω) hx`. Establish `hc : ∀ W : ValuationSubring Ω, IsAbove R K W.toSubring → IsAbove R K (W.comap (algebraMap L Ω)).toSubring` using `fun W hW => by`. Unfold `IsAbove at hW ⊢`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[← hW]`. Use extensionality with `y`. Both sides reduce to the same expression. Take `⟨τ, hτ⟩` from `GlobalTheory.T.galois_transitive_on_valuation_rings R K L _ _ (hc V hV) (hc V' hV')`. Use `⟨τ.liftNormal Ω, trivial, Set.mem_iInter₂.2 fun x hx => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : τ.liftNormal Ω x = algebraMap L Ω (τ ⟨x, hL x hx⟩)` using `τ.liftNormal_commutes Ω ⟨x, hL x hx⟩`. Express the relevant statement in the definitionally equal form `τ.liftNormal Ω x ∈ V' ↔ x ∈ V`. Rewrite using `[h1, ← ValuationSubring.mem_comap, ← hτ]`. Conclude with `ValuationSubring.smul_mem_pointwise_smul_iff (g := τ) (x := (⟨x, hL x hx⟩ : L)) (S := V.comap (algebraMap L Ω)))`. Take `⟨g, -, hg⟩` from `key`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨g, ?_⟩` and prove the remaining obligations. Use extensionality with `y`. Take `⟨x, rfl⟩` from `g.surjective y`. Use `Set.mem_iInter.1 hg x` as an intermediate fact. Conclude with `(ValuationSubring.smul_mem_pointwise_smul_iff (g := g) (x := x)).trans (Iff.symm this)`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_smul_eq_of_isAbove (R K : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [Field K]
     [Algebra R K] [IsFractionRing R K] (Ω : Type) [Field Ω] [Algebra K Ω] [IsGalois K Ω]

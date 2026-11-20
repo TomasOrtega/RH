@@ -7,23 +7,21 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `X Z hZ hpc`. Rewrite using `[isOpen_iff_forall_mem_open]`. Introduce `x hx`. Take `⟨_, ⟨U, hU, rfl⟩, hxU, -⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ x) isOpen_univ`. Establish `hU : IsAffineOpen U` using `hU`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key : ∀ (p : PrimeSpectrum Γ(X, U)) (a : Γ(X, U)), hU.fromSpec p ∈ X.basicOpen a ↔ a ∉ p.asIdeal`. Introduce `p a`. Establish `h` using `hU.fromSpec_preimage_basicOpen a`. Establish `h2 : p ∈ hU.fromSpec ⁻¹ᵁ X.basicOpen a ↔ p ∈ PrimeSpectrum.basicOpen a`. Rewrite using `[h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Conclude with `h2`. Establish `hopen : IsOpen (X` using `PrimeSpectrum Γ(X, U)) (hU.fromSpec ⁻¹' Z) := by`. Use `GlobalTheory.isOpen_of_stableUnderGeneralization_of_constructible_pieces Γ(X, U) _ ?_ ?_` and prove the remaining obligations. Introduce `p q hpq hp`.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hZ (hpq.map hU.fromSpec.continuous) hp`. Introduce `p hp`. Take `⟨W, W', J, hWW', hpW, hpJ, hsub⟩` from `hpc _ hp`. Establish `hpU : hU.fromSpec p ∈ U` using `hU.range_fromSpec.le ⟨p, rfl⟩`. Take `⟨a, haW, hpa⟩` from `hU.exists_basicOpen_le (V := W) ⟨_, hpW⟩ hpU`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc : ∀ c : Γ(X, W'), ∃ c' : Γ(X, U), X.basicOpen c' = X.basicOpen a ⊓ X.basicOpen c`. Introduce `c`. Take `⟨c', hc'⟩` from `hU.basicOpen_basicOpen_is_basicOpen a (X.presheaf.map (homOfLE (haW.trans hWW')).op c)`. Conclude with `⟨c', by rw [hc', Scheme.basicOpen_res]⟩`. Use `choose g hg using hc`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨a, J.image g, (key p a).1 hpa, ?_, ?_⟩` and prove the remaining obligations. Introduce `c' hc'`. Take `⟨c, hcJ, rfl⟩` from `Finset.mem_image.1 hc'`. Assume the negation of the conclusion as `hn`. Use `(key p _).2 hn` as an intermediate fact.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[hg]`. Conclude with `hpJ c hcJ this.2`. Introduce `t hta htI`. Establish `hta'` using `(key t a).2 hta`. Use `hsub _ (haW hta') fun c hcJ htc => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `(key t (g c)).1 ?_ (htI _ (Finset.mem_image_of_mem g hcJ))` and prove the remaining obligations. Rewrite using `[hg]`. Conclude with `⟨hta', htc⟩`. Use `⟨hU.fromSpec '' (hU.fromSpec ⁻¹' Z), Set.image_preimage_subset _ _, hU.fromSpec.isOpenEmbedding.isOpenMap _ hopen, ?_⟩` and prove the remaining obligations. Take `⟨p, rfl⟩` from `hU.range_fromSpec.ge hxU`.
-
-Conclude with `⟨p, hx, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isOpen_of_stableUnderGeneralization_of_locallyClosed_pieces :
     ∀ (X : Scheme.{0}) (Z : Set X), StableUnderGeneralization Z → (∀ x ∈ Z, ∃ (W W' : X.Opens) (J : Finset Γ(X, W')), W ≤ W' ∧ x ∈ W ∧ (∀ c ∈ J, x ∉ X.basicOpen c) ∧ ∀ y ∈ W, (∀ c ∈ J, y ∉ X.basicOpen c) → y ∈ Z) → IsOpen Z := by

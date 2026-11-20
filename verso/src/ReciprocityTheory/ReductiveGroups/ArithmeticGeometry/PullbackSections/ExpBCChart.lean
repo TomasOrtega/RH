@@ -39,7 +39,7 @@ def bcD : overAt x0' (DualNumber S') ⟶ overAt x0 (DualNumber S) :=
     rw [← Category.assoc, ← Category.assoc, spMap_comp_spMap, spMap_comp_spMap, dualMap_comp_alg])
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp [Hom.one_def]`. Consider the case `cons a L ih => simp only [List.map_cons, List.prod_cons, ih, Hom.mul_def, comp_lift_assoc]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem list_prod_comp {T T' : Over Xo.X} (f : T' ⟶ T) (L : List (T ⟶ Xo.univ.t.G)) :
     (L.map (f ≫ ·)).prod = f ≫ L.prod := by
@@ -49,9 +49,9 @@ theorem list_prod_comp {T T' : Over Xo.X} (f : T' ⟶ T) (L : List (T ⟶ Xo.uni
 
 include hx in
 /- English proof (translation)
-Take `⟨u, hu, hp⟩` from `h`. Use `⟨fun i => bcD ψ hx ≫ u i, fun i => ?_, ?_⟩` and prove the remaining obligations. Use `show spMap (dualMap ψ) ≫ (u i).left = _`. Rewrite using `[hu i, ← Category.assoc, spMap_comp_spMap, dualMap_comp_epsMul, ← spMap_comp_spMap, Category.assoc]`. Establish `e : List.ofFn (fun i => bcD ψ hx ≫ u i) = (List.ofFn u).map (bcD ψ hx ≫ ·)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[List.map_ofFn]`. Both sides reduce to the same expression. Rewrite using `[e, list_prod_comp, Over.comp_left, hp]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isCombAt_bc {k : ℕ} {v : Fin k → (Sp (DualNumber S) ⟶ Xo.univ.t.G.left)} {cf : Fin k → S}
     {w : Sp (DualNumber S) ⟶ Xo.univ.t.G.left} (h : IsCombAt x0 v cf w) :

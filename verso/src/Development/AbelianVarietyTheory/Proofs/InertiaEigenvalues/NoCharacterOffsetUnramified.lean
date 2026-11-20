@@ -11,7 +11,7 @@ namespace GlobalTheory.UnrNoChi
 variable {D : D7} (i : D.nd.Loc)
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[mapM, twistM, RingHom.mapMatrix_apply, Matrix.map_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mapM_twistM' {k : ℕ} (M : GE D.nd →* Matrix (Fin k) (Fin k) (D.nd.O i)) (χ : GE D.nd →* (D.nd.O i)ˣ)
     (g : GE D.nd) :
@@ -20,9 +20,9 @@ theorem mapM_twistM' {k : ℕ} (M : GE D.nd →* Matrix (Fin k) (Fin k) (D.nd.O 
   simp [mapM, twistM, RingHom.mapMatrix_apply, Matrix.map_apply]
 
 /- English proof (translation)
-Take `⟨-, e, he⟩` from `hρ`. Establish `ht : 0 < D.R.t` using `D.R.t_odd.pos`. Use `set u := e.symm (0, Pi.single (⟨0, ht⟩ : Fin D.R.t) 1) with hu`. Establish `h` using `congrArg (fun p => p.2 (⟨0, ht⟩ : Fin D.R.t)) (he γ u)`. Simplify using `only [hγ, Units.val_one, Matrix.map_one (toK D.nd i) (map_zero _) (map_one _), Matrix.one_mulVec, hu, LinearEquiv.apply_symm_apply, Pi.single_eq_same, mul_one] at h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Units.ext` to reduce the goal to its premises. Apply `IsFractionRing.injective (D.nd.O i) (KK D.nd i)` to reduce the goal to its premises. Simplify using `using h.symm`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem chi_one_eq_one (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (π : D.nd.X i)
     (ρ : GE D.nd →* GL (Fin D.R.r) (D.nd.O i)) (hρ : GlobalTheory.IndefiniteRowSideFullHecke.BaseSizes.IsRankRPart D i (r π) ρ)
@@ -40,13 +40,13 @@ theorem chi_one_eq_one (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i
 end GlobalTheory.UnrNoChi
 
 /- English proof (translation)
-Introduce `D L nch i r π ρ hF _ _ hHG hr _ hρ`. Establish `hUnr` using `Formalism.MainNotions.N.galois_condition_four_of D i r hF.Conclusion1.1 hr`. Establish `hSub` using `Formalism.MainNotions.N.galois_condition_six_of D i r hF.Conclusion2.2.1 hHG hr`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `x _ hxZ u hu`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hu0`. Use `hxZ (hSub x ⟨u, hu0, fun g => ?_⟩)` and prove the remaining obligations. Establish `h` using `hu g`. Rewrite `h` using `[rTwO, GlobalTheory.UnrNoChi.mapM_twistM', Matrix.smul_mulVec]`. Use `conv_rhs => rw [← h]`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_smul, ← map_mul, MonoidHom.inv_apply, ← Units.val_mul, mul_inv_cancel, Units.val_one, map_one, one_smul]`. Introduce `v hvl hvS hvQ x _ γ hγ`. Establish `hχ` using `GlobalTheory.UnrNoChi.chi_one_eq_one i r π ρ hρ (hUnr π v hvl hvS hvQ γ hγ)`. Establish `hx : rO D.nd i r x γ = 1` using `by simp [rO, hUnr x v hvl hvS hvQ γ hγ]`. Rewrite using `[rTwO, twistM]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[hx, hχ]`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.UnrNoChi.main : ∀ (D : D7) (L : SizeData₂ D) (nch : NChoice D) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (π : D.nd.X i) (ρ : GE D.nd →* GL (Fin D.R.r) (D.nd.O i)), GlobalTheory.NFacts.Facts D nch → LevelStarExponents.lStar L < (D.nd.l i : ℝ) → (∀ k, D.nd.l i ≠ D.host.g k) → HG D.nd D.naut i → GoodR D.nd i r → π ∈ D.nd.Z i → GlobalTheory.IndefiniteRowSideFullHecke.BaseSizes.IsRankRPart D i (r π) ρ → NoChiOff i r Set.univ ∧ UnrOut i r Set.univ := by
   intro D L nch i r π ρ hF _ _ hHG hr _ hρ

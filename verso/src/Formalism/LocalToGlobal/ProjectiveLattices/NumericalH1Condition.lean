@@ -42,7 +42,7 @@ def OrdTieOn (h : GenFrEx Xo c) (δ : ∀ Z : Comp Xo c, AddValuation (Om Z) (Wi
         (∃ g ∈ sec Xo c a n, evC h Z g ≠ 0) → vAtV y f = ⊤)
 
 /- English proof (translation)
-Introduce `Z v la hv ho` and use `let ⟨y, hy, _⟩ := H Z v la hv ho ⟨y, hy⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem OrdTieOn.ordTie {h : GenFrEx Xo c} {δ : ∀ Z : Comp Xo c, AddValuation (Om Z) (WithTop ℤ) → Ix Dw → ℤ}
     {cls : ∀ (T : CDVR) (ι : c.F →+* T.Fr), IntFr Xo c T ι → Prop} {PY : HeightOneSpectrum (𝓞 c.F) → Type}
@@ -52,9 +52,9 @@ theorem OrdTieOn.ordTie {h : GenFrEx Xo c} {δ : ∀ Z : Comp Xo c, AddValuation
   ⟨y, hy⟩
 
 /- English proof (translation)
-Unfold `ramIdx`. Take `⟨a, ha, ha0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot la.ne_bot`. Establish `hK : ((a : K)) ≠ 0` using `by exact_mod_cast ha0`. Establish `hne : v (algebraMap K Ω (a : K)) ≠ ⊤` using `hv.1 _ ((map_ne_zero _).2 hK)`. Take `⟨n, hn⟩` from `WithTop.ne_top_iff_exists.1 hne`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `le_csInf ⟨n, a, ha, ha0, hn.symm⟩ ?_` and prove the remaining obligations. Introduce and unpack `m ⟨b, hb, _, hbm⟩`. Establish `h1` using `(ho b).2 hb`. Rewrite `h1` using `[hbm]`. Establish `h0 : (0 : ℤ) < m` using `by exact_mod_cast h1`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -88,25 +88,23 @@ variable [Fintype (Comp Xo c)] (h : GenFrEx Xo c)
     (wsize : WTZ E → ℝ) (DF PN PQ tableDegreeThreeBase PP0' Pd Gc PI4 Pet tableLineDegreeFive tableLineDegreeTwo Prw PO f r : ℝ)
 
 /- English proof (translation)
-Use `⟨fun la => mul_nonneg (Nat.cast_nonneg _) (hnu.1 la), ?_, hnu.2.2, ?_⟩` and prove the remaining obligations. Use `hnu.2.1.subset fun la hla => ?_` and prove the remaining obligations. Rewrite `hla`, the goal using `[Function.mem_support]`. Introduce `h0`. Apply `hla` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show (ramOverZ la : ℝ) * nus la = 0`. Rewrite using `[h0, mul_zero]`. Introduce `Z v la hadm hover show ((⨅ j : {j // valC h uL.1 uL.2 (wR j) Z ≠ 0}, ordC (δ Z v) v (wtZ uL.1 uL.2) (valC h uL.1 uL.2 (wR j) Z) : ℤ) : ℝ) ≤ (ramIdx (K := c.F) v la : ℝ) * nuOf c nus la + cc / (2 * (i : ℝ)) * (ordC (δ Z v) v ((i * g0) • wtZ ude.1 ude.2) (valC h uet.1 uet.2 etR Z) …`. Rewrite using `[← huet]`. Establish `hv : IsNormDiscrete v` using `hadm.1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hty, hzero⟩` from `htie Z v la hv hover`. Take `⟨T', io, e, ho, z, _, eta, _, hq⟩` from `y.2`. Set `y1 : PtV Xo c (trivialClassCondition Xo c) Unit (fun _ _ _ _ => True) la` to `PtV.mk la ho z trivial () trivial`. Establish `hyv : vAtV y1 = vAtV y` using `funext fun g => by show y1.1.1 g = y.1.1 g`. Rewrite using `[hq]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hc' : (0 : ℝ) ≤ cc / (2 * (i : ℝ))` using `div_nonneg hcc (by positivity)`. Establish `hR` using `(hreg.1.2 ⟨uL, hdL⟩ ⟨uet, hdE⟩ (N + 1) (fun k => ⟨wR k, hw k⟩) ⟨etR, he⟩ (nuOf c nus) (cc / (2 * (i : ℝ))) hc' hnz (fun la' y0 => hcomb la' y0.1 y0.2)).1 la ⟨vAtV y1, y1, rfl⟩`. Establish `hR' : 0 ≤ vAtV y etR ∧ (vAtV y etR ≠ ⊤ → (⨅ k, vAtV y (wR k)) ≤ ((nuOf c nus la : ℝ) : EReal) + ((cc / (2 * (i : ℝ)) : ℝ) : EReal) * vAtV y etR)`. Rewrite using `[← hyv]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hR`. Establish `he1 : 1 ≤ ramIdx (K` using `c.F) v la := one_le_ramIdx hv hover`. Establish `hepos : (0 : ℝ) < (ramIdx (K` using `c.F) v la : ℝ) := by`. Conclude with `(show (0 : ℤ) < ramIdx (K := c.F) v la by omega)` after adjusting the coercions. Establish `hE` using `(hty uet.1 uet.2 etR (cusp_le_sec Xo c U _ _ he) (hetZ Z))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `htopE : vAtV y etR ≠ ⊤`. Introduce `htop`. Rewrite `hE` using `[htop, EReal.mul_top_of_pos (by exact_mod_cast hepos)]`. Conclude with `EReal.coe_ne_top _ hE`. Take `⟨x, hx⟩ : ∃ x : ℝ, vAtV y etR = (x : EReal)` from `⟨_, (EReal.coe_toReal htopE (vAtV_ne_bot y etR)).symm⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hB` using `hR'.2 htopE`. Rewrite `hB` using `[hx, ← EReal.coe_mul, ← EReal.coe_add]`. Rewrite `hE` using `[hx, ← EReal.coe_mul, EReal.coe_eq_coe_iff]`. Take `⟨k0, hk0⟩ : ∃ k0, vAtV y (wR k0) = ⨅ k, vAtV y (wR k)` from `exists_eq_ciInf_of_finite`. Rewrite `hB` using `[← hk0]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hk0Z : evC h Z (wR k0) ≠ 0`. Introduce `h0`. Rewrite `hB` using `[hzero uL.1 uL.2 (wR k0) (cusp_le_sec Xo c U _ _ (hw k0)) h0 ⟨wR (jc Z), cusp_le_sec Xo c U _ _ (hw (jc Z)), hwb Z⟩]`. Conclude with `absurd hB (not_le.2 (EReal.coe_lt_top _))`. Establish `hW` using `hty uL.1 uL.2 (wR k0) (cusp_le_sec Xo c U _ _ (hw k0)) hk0Z`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `htopW : vAtV y (wR k0) ≠ ⊤` using `fun ht => by`. Rewrite `hB` using `[ht]`. Conclude with `absurd hB (not_le.2 (EReal.coe_lt_top _))`. Take `⟨t, ht⟩ : ∃ t : ℝ, vAtV y (wR k0) = (t : EReal)` from `⟨_, (EReal.coe_toReal htopW (vAtV_ne_bot y _)).symm⟩`. Rewrite `hW` using `[ht, ← EReal.coe_mul, EReal.coe_eq_coe_iff]`.
-
-Rewrite `hB` using `[ht, EReal.coe_le_coe_iff]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem height_H1_of_data {rU : ℕ} (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ rU) (hreg : regular₂ Xo c U)
     (hdL : Dom uL.1 uL.2) (hdE : Dom uet.1 uet.2) (hw : ∀ k, wR k ∈ cusp Xo c U uL.1 uL.2)

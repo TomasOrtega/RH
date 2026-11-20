@@ -17,7 +17,7 @@ open UpperTheory.V UpperTheory.V.Af UpperTheory.V.Af.Gu
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.CuspRep.CG.isRegAlg_iff _).2 fun τ => by have e := ((ParLaws.hasInfChar_infChar (CG.mk P) τ).twist κ).infChar_eq rw [CG.twist_mk] at e rw [e, (InfType.expo_of_infType K κ).1 m hκ τ] refine ⟨(h τ).1.map (add_left_injective _), fun z hz => ?_⟩ obtain ⟨y, hy, rfl⟩ := M …`.
+A detailed English derivation is pending.
 -/
 private theorem regAlg_twist {K : Type} [Field K] [NumberField K] [IsTotallyComplex K] {n : ℕ} {P : CuspSub K n}
     (h : (CG.mk P).IsRegAlg) {κ : HChar K} {m : (K →+* ℂ) → ℤ} (hκ : κ.IsAlg m) : (CG.mk (P.twist κ)).IsRegAlg := (GlobalTheory.CuspRep.CG.isRegAlg_iff _).2 fun τ => by
@@ -30,13 +30,13 @@ private theorem regAlg_twist {K : Type} [Field K] [NumberField K] [IsTotallyComp
   exact ⟨k + m τ, by push_cast; ring⟩
 
 /- English proof (translation)
-Introduce `PH hC hS E Ω _ _ _ _ _ _ l _ ι a ha P χ ξ m hreg hpol hξ hd σ hσ`. Establish `Pr` using `PH.toClassicalTheorems`. Take `⟨r, wt, HT, H⟩` from `(GlobalTheory.T.local_global_of_gelfand_kazhdan Pr.litN.aut.gk).2 Pr.litN.aut.gal E Ω l ι a ha P χ hreg hpol`. Establish `hatt : AttC ι r P`. Use `⟨H.ss, (((hS E a P).2).and (eventually_not_mem E l)).mono ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `w ⟨⟨B, hB⟩, hw⟩`. Conclude with `⟨B, hB, satFrob Pr E Ω l ι a r H.cont w hw (σ w) B (((hS E a P).1 w _ (hσ w) B).1 hB) fun A h rc hrc => H.away w hw A h rc hrc _ (hσ w)⟩`. Take `⟨art, hart⟩` from `Pr.litN.aut.art E Ω`. Take `⟨μ, hμc, hμ⟩` from `hart.exists_isLAdicOf ι (isAlgPos_of_isAlg hξ)`. Establish `hL` using `hC E Ω l ι a ha (tw r μ) (P.twist ξ) (UpperTheory.galoisRep_irreducibility_criterion.2 _ _ a _ μ H.cont hμc) (regAlg_twist hreg hξ) hd (Cq.attTwist E Ω l ι a r P hatt art ξ m μ hart hμ)`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨T⟩` from `Loc.tiedP l`. Use `⟨r, HT, ⟨H.cont, H.ss, fun w A h O _ _ _ Bw hj => ?_, fun w A h rc hrc => ⟨fun hw => ?_, fun O _ _ _ Bw hj => ?_⟩⟩, H.weights⟩` and prove the remaining obligations. Conclude with `⟨(H.above _ _ ⟨T⟩ w A h O Bw hj).deRham, (H.above _ _ ⟨T⟩ w A h O Bw hj).jumps⟩`. Conclude with `H.away w hw A h rc hrc _ (hσ w)`. Establish `hpst : IsPstAt (Loc.PP l) Bw (r.comp (Dec (F` using `E) A).subtype) := Pr.litN.aut.berger.isPstAt T Bw _ (Units.continuous_val.comp (H.cont.comp continuous_subtype_val)) (H.above _ _ ⟨T⟩ w A h O Bw hj).deRham`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c1, c2⟩` from `(hL w _ ((hσ w).twist ξ) A h rc hrc).2 O Bw hj`. Conclude with `⟨hpst, Lev.untwistS Pr.litN.aut.chA Pr.litN.aut.chW Pr.litN.aut.berger E Ω l ι a r H.cont art ξ m μ hart (isAlgPos_of_isAlg hξ) hμc hμ w A h O Bw hj hpst c1 (σ w) rc hrc c2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.compatible_polarization_of_link :
     HypothesesH → CompatCsd → SatLink → CompatPol := by

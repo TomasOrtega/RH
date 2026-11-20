@@ -28,11 +28,11 @@ section Generic
 variable {X Y Y' Z : Scheme.{0}}
 
 /- English proof (translation)
-Unfold `resTop`. Simplify using `only`. Use `fn_ext fun y hy0 => ?_` and prove the remaining obligations. Establish `hy : (𝟙 Y) y ∈ LB.wchart L φ j` using `hy0`. Use `show gs (𝟙 Y) y (LB.wchart L φ j) (s.f j) = gs (𝟙 Y) y (LB.wchart L φ j) _`.
+Replace the relevant objects with their definitions. Simplify by unfolding definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨J, hJ, hs⟩` from `sval_trans hL s y j hy`. Establish `hy'` using `hJ.mem φ (𝟙 Y)`. Establish `e : ∀ i, gs (𝟙 Y) y (LB.wchart L φ j) ((t i).f j) = (trF φ ε (𝟙 Y) y j (fun k => J (𝟙 Y ≫ φ k))).val * sval (t i) (𝟙 Y) y J` using `fun i => (sec_trans (t i) (𝟙 Y) y hy hy').trans (congrArg _ (sval_of (t i) (𝟙 Y) y J _ fun _ => rfl).symm)`. Rewrite using `[hs, H y J hJ, Finset.mul_sum, gs_fsum _ _ _ hy]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ (gs_mul (𝟙 Y) y (LB.wchart L φ j) hy _ ((t i).f j)).symm` and prove the remaining obligations. Rewrite using `[gs_res (𝟙 Y) y le_top hy (b i), e i]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem lin_of_sval {L : LB X} (hL : L.IsLB) {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     {s : LB.Sec (LB.LinComb L φ ε)} {n : ℕ} (b : Fin n → Γ(Y, ⊤)) (t : Fin n → LB.Sec (LB.LinComb L φ ε))
@@ -56,7 +56,7 @@ theorem lin_of_sval {L : LB X} (hL : L.IsLB) {K : Type} [Fintype K] {φ : K → 
   ring
 
 /- English proof (translation)
-Rewrite using `[gs_eq r z ⊤ trivial, map_one, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gs_one (r : Z ⟶ Y) (z : Z) : gs r z ⊤ (1 : Γ(Y, ⊤)) = 1 := by
   rw [gs_eq r z ⊤ trivial, map_one, map_one]
@@ -64,7 +64,7 @@ theorem gs_one (r : Z ⟶ Y) (z : Z) : gs r z ⊤ (1 : Γ(Y, ⊤)) = 1 := by
 end Generic
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert x S hx ih`. Rewrite using `[Finset.sum_insert hx, Finset.prod_insert hx, v.map_mul, WithTop.coe_add]`. Conclude with `add_le_add (h x) ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_val_prod {F : Type} [Field F] (v : AddValuation F (WithTop ℚ)) {T : Type} (S : Finset T)
     (a : T → F) (q : T → ℚ) (h : ∀ i, ((q i : ℚ) : WithTop ℚ) ≤ v (a i)) :
@@ -79,29 +79,27 @@ theorem le_val_prod {F : Type} [Field F] (v : AddValuation F (WithTop ℚ)) {T :
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `V _ _ _ ϖ hϖ j D D' pD Q hQ F _ _ v k Fs F' hB r hr`. Unfold `IsBoxFam at hB`. Unfold `NuGe at hr ⊢`. Introduce `α'`. Establish `hBα` using `hB α'`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `clear hB`. Take `⟨hφ, hB⟩` from `hBα`. Unfold `VGe at hr ⊢`. Use `choose n a σ σF hsc hv he using fun i => hr i (pD.xe α' i)`. Use `clear hr`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM` using `D.toPre.P.isLB`. Establish `hM'` using `D'.toPre.P.isLB`. Use `choose σB hσB using fun m : (∀ i, Fin (n i)) => exists_boxSec_val hM hM' pD.w pD.w_gen (D'.toPre.famφB α') (DegPre.famε k) (fun i => (pD.pw.pr i).left) (fun i => D.toPre.famφB (pD.xe α' i)) (famφB_pr pD α') (fun i => σ i (m i))`. Use `choose σFB hσFB using fun m : (∀ i, Fin (n i)) => exists_boxSec_val hM hM' pD.w pD.w_gen (D'.toPre.famφ F α') (DegPre.famε k) (prB pD F) (fun i => D.toPre.famφ F (pD.xe α' i)) hφ (fun i => σF i (m i))`. Establish `hpr : ∀ i, (DegPre.prB D'.toPre F).left ≫ (pD.pw.pr i).left = prB pD F i ≫ (DegPre.prB D.toPre F).left`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions.
 
-Introduce `i`. Unfold `prB`. Rewrite using `[← Over.comp_left, ← Over.comp_left]`. Use `congr 1`. Unfold `DegPre.prB`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Establish `hsc' : ∀ m : (∀ i, Fin (n i)), GeneratorPullback.SecScal D'.toPre.P.L (D'.toPre.famφ F α') (DegPre.famε k) (σFB m) (D'.toPre.famφB α') (DegPre.famε k) (σB m) (DegPre.prB D'.toPre F).left 1` using `fun m => BoxFamScalar.secScal_box hM hM' pD.w (GC.famφ_eq D'.toPre F α') hpr (σFB m) (fun i => σF i (m i)) (σB m) (fun i => σ i (m i)) (fun y J J' hJ hJ' => hσFB m _ (𝟙 _) y J J' hJ hJ') (fun y J J' hJ hJ' => hσB m _ (DegPre.prB D'.toPre F).left y J J' hJ hJ') (fun _ => 1) 1 (fun …`. Set `e` to `Fintype.equivFin (∀ i, Fin (n i))`. Use `⟨Fintype.card (∀ i, Fin (n i)), fun l => ∏ i, a i (e.symm l i), fun l => σB (e.symm l), fun l => σFB (e.symm l), fun l => hsc' _, fun l => ?_, fun jM => ?_⟩` and prove the remaining obligations. Use `le_trans (le_of_eq ?_) (le_val_prod v Finset.univ _ _ fun i => hv i (e.symm l i))` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `congr 1`. Simplify using `only [Finset.sum_add_distrib, Finset.sum_div, Int.cast_sum]`. Establish `H : ∀ (y : (D'.toPre.BF F).left) (J' : ((D'.toPre.BF F).left ⟶ D'.toPre.P.A.left) → D'.toPre.P.L.ι), Good D'.toPre.P.L y J' → sval (F'.s α') (𝟙 _) y J' = ∑ l, gs (𝟙 _) y ⊤ (((fst (TF (R` using `V) F) D'.toPre.P.A).left.appTop).hom ((Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom (∏ i, a i (e.symm l i)))) * sval (σFB (e.symm l)) (𝟙 _) y J' := by`. Introduce `y J' hJ'`. Take `⟨J, hJ, -⟩` from `exists_good _ hM y (K := Empty) Empty.elim Empty.elim (fun x => x.elim) (fun x => x.elim)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hle : ∀ (jN : Fin 4 → Fin j → D.toPre.P.L.ι) (jM : Fin 4 → D'.toPre.P.L.ι) (i : Fin j), LB.wchart (LB.LinComb D.toPre.P.L (fun i => (pD.pw.pr i).left) (fun _ => 1)) (D'.toPre.famφ F α') jN ⊓ LB.wchart D'.toPre.P.L (D'.toPre.famφ F α') jM ≤ prB pD F i ⁻¹ᵁ LB.wchart D.toPre.P.L (D. …` using `fun jN jM i => inf_le_left.trans (box_le_of_comp D.toPre.P.L (fun i => (pD.pw.pr i).left) (D'.toPre.famφ F α') (D.toPre.famφ F (pD.xe α' i)) (prB pD F i) i (hφ i) jN)`. Establish `hF` using `BoxFamScalar.box_sval pD.w hφ (F'.s α') (fun i => (Fs i).s (pD.xe α' i)) hle hB (𝟙 _) y hJ hJ'`. Establish `hfac : ∀ i, sval ((Fs i).s (pD.xe α' i)) (𝟙 _ ≫ prB pD F i) y J = ∑ l, gs (𝟙 _ ≫ prB pD F i) y ⊤ (((fst (TF (R` using `V) F) D.toPre.P.A).left.appTop).hom ((Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom (a i l))) * sval (σF i l) (𝟙 _ ≫ prB pD F i) y J := by`. Introduce `i`. Establish `hm` using `hJ.mem (D.toPre.famφ F (pD.xe α' i)) (𝟙 _ ≫ prB pD F i)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Unfold `sval`. Use `(congrArg (gs (𝟙 _ ≫ prB pD F i) y _) (he i _)).trans ?_` and prove the remaining obligations. Use `(gs_fsum _ y _ hm _ _).trans (Finset.sum_congr rfl fun l _ => ?_)` and prove the remaining obligations. Use `(gs_mul _ y _ hm _ _).trans ?_` and prove the remaining obligations. Unfold `DegPre.constBF`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (· * _) (gs_res _ y le_top hm _)`. Establish `hcst : ∀ m : (∀ i, Fin (n i)), ∏ i, gs (𝟙 _ ≫ prB pD F i) y ⊤ (((fst (TF (R` using `V) F) D.toPre.P.A).left.appTop).hom ((Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom (a i (m i)))) = gs (𝟙 _) y ⊤ (((fst (TF (R := V) F) D'.toPre.P.A).left.appTop).hom ((Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom (∏ i, a i (m i)))) := by`. Introduce `m`. Use `BoxFamScalar.gs_scal_prod (fst (TF (R := V) F) D.toPre.P.A).left (fst (TF (R := V) F) D'.toPre.P.A).left (prB pD F) (fun i => ?_) y (fun i => a i (m i))` and prove the remaining obligations. Unfold `prB`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Over.comp_left]`. Simplify using the standard rewrite rules. Use `(Units.mul_right_inj (∏ a, bw pD.w (𝟙 _ ≫ D'.toPre.famφ F α' a) y (fun i => J ((𝟙 _ ≫ D'.toPre.famφ F α' a) ≫ (pD.pw.pr i).left)) (J' (𝟙 _ ≫ D'.toPre.famφ F α' a)) ^ DegPre.famε k a)).1 ?_` and prove the remaining obligations. Use `hF.trans ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [hfac]`. Rewrite using `[Finset.prod_univ_sum, Fintype.piFinset_univ]`. Rewrite using `[Equiv.sum_comp e.symm (fun m => ((∏ a, bw pD.w (𝟙 _ ≫ D'.toPre.famφ F α' a) y (fun i => J ((𝟙 _ ≫ D'.toPre.famφ F α' a) ≫ (pD.pw.pr i).left)) (J' (𝟙 _ ≫ D'.toPre.famφ F α' a)) ^ DegPre.famε k a) : _) * (gs (𝟙 _) y ⊤ (((fst (TF (R := V) F) D'.toPre.P.A).left.appTop).hom ((Scheme. …`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_mul_distrib, hcst m, ← hσFB m _ (𝟙 _) y J J' hJ hJ']`.
-
-Expand and normalize the polynomial expressions, which then agree. Establish `key` using `lin_of_sval hM' _ (fun l => σFB (e.symm l)) H jM`. Unfold `resTop at key`. Unfold `DegPre.constBF`. Conclude with `key`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem main : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (ϖ : V), Irreducible ϖ → ∀ (j : ℕ) (D D' : DegData V (maximalIdeal V)) (pD : IsPowDeg D'.toPre D.toPre j) (Q : D.toPre.X → ℤ), QForm.IsQ D.toPre ϖ Q → ∀ (F : Type) [Field F] [Algebra (FractionRing V) F] (v : AddValuation F (WithTop ℚ)) (k : ℕ) (Fs : Fin j → Fam D.toPre F k) (F' : Fam D'.toPre F k), IsBoxFam pD F k F' Fs → ∀ r : Fin j → ℚ, (∀ i, NuGe D Q F v k (Fs i) (r i)) → NuGe D' (fun x => ∑ i, Q (pD.xe x i)) F v k F' (∑ i, r i) := by
   intro V _ _ _ ϖ hϖ j D D' pD Q hQ F _ _ v k Fs F' hB r hr

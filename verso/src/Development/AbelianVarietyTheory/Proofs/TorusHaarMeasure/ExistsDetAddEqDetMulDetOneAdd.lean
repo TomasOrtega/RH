@@ -9,15 +9,15 @@ namespace GlobalTheory
 open scoped MatrixOrder in
 
 /- English proof (translation)
-Establish `hP0 : (0 : Matrix n n ℂ) ≤ P` using `nonneg_iff_posSemidef.mpr hP`. Use `set S := CFC.sqrt P with hSdef`. Establish `hS0 : (0 : Matrix n n ℂ) ≤ S` using `CFC.sqrt_nonneg P`. Establish `hSS : S * S = P` using `CFC.sqrt_mul_sqrt_self P hP0`. Establish `hSh : Sᴴ = S` using `(nonneg_iff_posSemidef.mp hS0).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdS : S.det ≠ 0`. Introduce `h`. Apply `hd` to reduce the goal to its premises. Rewrite using `[← hSS, det_mul, h, zero_mul]`. Establish `hSu : IsUnit S.det` using `isUnit_iff_ne_zero.mpr hdS`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl : S * S⁻¹ = 1` using `mul_nonsing_inv S hSu`. Establish `hr : S⁻¹ * S = 1` using `nonsing_inv_mul S hSu`. Establish `hback : S * (S⁻¹ * Q * S⁻¹) * S = Q`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `_ = Q := by rw [hl, hr, Matrix.one_mul, Matrix.mul_one]`. Use `⟨S⁻¹ * Q * S⁻¹, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `hQ.conjTranspose_mul_mul_same S⁻¹`. Rewrite `h` using `[conjTranspose_nonsing_inv, hSh]`. Then use the resulting hypothesis. Introduce `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hback, h, Matrix.mul_zero, Matrix.zero_mul]`. Establish `hPQ : P + Q = S * (1 + S⁻¹ * Q * S⁻¹) * S`. Rewrite using `[Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, hSS, hback]`. Rewrite using `[hPQ, det_mul, det_mul, ← hSS, det_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_det_add_eq_det_mul_det_one_add {n : Type} [Fintype n] [DecidableEq n]
     {P Q : Matrix n n ℂ} (hP : P.PosSemidef) (hQ : Q.PosSemidef) (hd : P.det ≠ 0) :
@@ -49,11 +49,11 @@ theorem exists_det_add_eq_det_mul_det_one_add {n : Type} [Fintype n] [DecidableE
     ring
 
 /- English proof (translation)
-Use `set U : Matrix n n ℂ := (hR.1.eigenvectorUnitary : Matrix n n ℂ) with hU`. Establish `hspec : R = U * diagonal (RCLike.ofReal ∘ hR.1.eigenvalues) * star U` using `by conv_lhs => rw [hR.1.spectral_theorem]`. Both sides reduce to the same expression. Establish `hUU : U * star U = 1` using `Unitary.mul_star_self_of_mem hR.1.eigenvectorUnitary.2`. Establish `hdU : U.det * (star U).det = 1` using `by rw [← det_mul, hUU, det_one]`.
+Establish an intermediate fact. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : 1 + R = U * diagonal (fun i => 1 + (hR.1.eigenvalues i : ℂ)) * star U`. Establish `hd1 : diagonal (fun i => 1 + (hR.1.eigenvalues i : ℂ)) = 1 + diagonal (RCLike.ofReal ∘ hR.1.eigenvalues)`. Rewrite using `[← diagonal_one, diagonal_add]`. Both sides reduce to the same expression. Rewrite using `[hd1, Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, hUU, ← hspec]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, det_mul, det_mul, det_diagonal, mul_right_comm, hdU, one_mul]`. Use `push_cast`. Both sides reduce to the same expression.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private lemma det_one_add_eq_prod_eigenvalues {n : Type} [Fintype n] [DecidableEq n] {R : Matrix n n ℂ}
     (hR : R.PosSemidef) :
@@ -75,11 +75,9 @@ private lemma det_one_add_eq_prod_eigenvalues {n : Type} [Fintype n] [DecidableE
   rfl
 
 /- English proof (translation)
-Use `⟨∏ i, (1 + hR.1.eigenvalues i), det_one_add_eq_prod_eigenvalues hR, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Finset.one_le_prod fun i _ => le_add_of_nonneg_right (hR.eigenvalues_nonneg i)`. Introduce `hc`. Apply `hR.1.eigenvalues_eq_zero_iff.mp` to reduce the goal to its premises. Use function extensionality and compare the values at `j`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hj : 1 + hR.1.eigenvalues j ≤ ∏ i, (1 + hR.1.eigenvalues i)`. Rewrite using `[← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ j)]`. Conclude with `le_mul_of_one_le_right (by linarith [hR.eigenvalues_nonneg j]) (Finset.one_le_prod fun i _ => le_add_of_nonneg_right (hR.eigenvalues_nonneg i))`. Use `hR.eigenvalues_nonneg j` as an intermediate fact. Simplify using `only [Pi.zero_apply]`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 private lemma exists_one_le_det_one_add_of_posSemidef {n : Type} [Fintype n] [DecidableEq n] {R : Matrix n n ℂ}
     (hR : R.PosSemidef) :
@@ -98,15 +96,13 @@ private lemma exists_one_le_det_one_add_of_posSemidef {n : Type} [Fintype n] [De
     linarith
 
 /- English proof (translation)
-Introduce `n _ _ P Q hP hQ`. Take `⟨hPre, hPim⟩` from `Complex.nonneg_iff.mp hP.det_nonneg`. Take `⟨hSre, -⟩` from `Complex.nonneg_iff.mp (hP.add hQ).det_nonneg`. Distinguish the cases in `hd : P.det = 0`. Use `⟨hPre, ?_, fun h => absurd hd h⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hd, Complex.zero_re]`. Conclude with `hSre`. Take `⟨R, hR, hR0, hdet⟩` from `exists_det_add_eq_det_mul_det_one_add hP hQ hd`. Take `⟨c, hc, hc1, hcR⟩` from `exists_one_le_det_one_add_of_posSemidef hR`. Establish `hre : (P + Q).det.re = P.det.re * c`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hdet, hc, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im, mul_zero, sub_zero]`. Establish `hpos : 0 < P.det.re`. Break down `hPre.lt_or_eq with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd (Complex.ext (by rw [← h, Complex.zero_re]) (by rw [← hPim, Complex.zero_im])) hd`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨hPre, ?_, fun _ hle => hR0 (hcR ?_)⟩` and prove the remaining obligations. Rewrite using `[hre]`. Conclude with `le_mul_of_one_le_right hPre hc1`. Rewrite `hle` using `[hre]`. Assume the negation of the conclusion as `hlt`.
-
-Establish `: P.det.re * 1 < P.det.re * c` using `mul_lt_mul_of_pos_left (not_le.mp hlt) hpos`. Combine the linear equalities and inequalities to obtain the conclusion.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem det_re_mono_of_posSemidef :
     ∀ (n : Type) [Fintype n] [DecidableEq n] (P Q : Matrix n n ℂ), P.PosSemidef → Q.PosSemidef →

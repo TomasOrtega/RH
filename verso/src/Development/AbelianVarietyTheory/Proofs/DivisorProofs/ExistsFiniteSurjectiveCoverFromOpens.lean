@@ -9,19 +9,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.FinCover
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Use `⟨∅, Scheme.emptyTo X, inferInstance, by simp, fun K _ y' => ?_⟩` and prove the remaining obligations. Conclude with `(show PEmpty from y' (closedPoint K)).elim`. Consider the case `insert a S _ ih`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨Y, q, hq, hr, hK⟩` from `ih`. Use `hp a` as an intermediate fact. Use `⟨N a ⨿ Y, coprod.desc (p a) q, inferInstance, fun t ht => ?_, fun K _ y' => ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Break down `Finset.mem_insert.1 ht with rfl | ht` into its components or cases.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Conclude with `⟨(coprod.inl : N t ⟶ N t ⨿ Y) x, by rw [← Scheme.Hom.comp_apply, coprod.inl_desc]⟩`. Take `⟨y, hy⟩` from `hr t ht ⟨x, rfl⟩`. Conclude with `⟨(coprod.inr : Y ⟶ N a ⨿ Y) y, by rw [← Scheme.Hom.comp_apply, coprod.inr_desc, hy]⟩`. Establish `hsub : ∀ x : Sp K, x = closedPoint K` using `fun x => Subsingleton.elim (α := PrimeSpectrum K) _ _`. Establish `hc` using `(isCompl_range_inl_inr (N a) Y).sup_eq_top`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : y' (closedPoint K) ∈ Set.range (coprod.inl : N a ⟶ N a ⨿ Y) ∪ Set.range (coprod.inr : Y ⟶ N a ⨿ Y)`. Establish `h : y' (closedPoint K) ∈ (⊤ : Set (N a ⨿ Y : Scheme.{0}))` using `trivial`. Rewrite `h` using `[← hc]`. Conclude with `h`. Break down `hm with hm | hm` into its components or cases.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hs : Set.range y' ⊆ Set.range (coprod.inl : N a ⟶ N a ⨿ Y)`. Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[hsub x]`. Conclude with `hm`. Use `⟨a, IsOpenImmersion.lift _ y' hs, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `conv_rhs => rw [← IsOpenImmersion.lift_fac _ y' hs]`. Rewrite using `[Category.assoc, coprod.inl_desc]`. Establish `hs : Set.range y' ⊆ Set.range (coprod.inr : Y ⟶ N a ⨿ Y)`. Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[hsub x]`.
-
-Conclude with `hm`. Take `⟨t, z, hz⟩` from `hK K (IsOpenImmersion.lift _ y' hs)`. Use `⟨t, z, ?_⟩` and prove the remaining obligations. Use `conv_rhs => rw [← IsOpenImmersion.lift_fac _ y' hs]`. Rewrite using `[Category.assoc, coprod.inr_desc, hz]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_finite_union {X : Scheme.{0}} {T : Type} (N : T → Scheme.{0}) (p : ∀ t, N t ⟶ X)
     (hp : ∀ t, IsFinite (p t)) (S : Finset T) :
@@ -63,13 +61,13 @@ theorem exists_finite_union {X : Scheme.{0}} {T : Type} (N : T → Scheme.{0}) (
         rw [Category.assoc, coprod.inr_desc, hz]
 
 /- English proof (translation)
-Introduce `X Z i T _ M U g hg hU hx`. Establish `hU' : ∀ t, Set.range i ⊆ Set.range (U t).ι` using `fun t => by`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `hU t`. Use `Fintype.ofFinite T` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `i' : ∀ t, X ⟶ (U t).toScheme` to `fun t => IsOpenImmersion.lift (U t).ι i (hU' t)`. Establish `hi' : ∀ t, i' t ≫ (U t).ι = i` using `fun t => IsOpenImmersion.lift_fac _ _ _`. Take `⟨Y, q, hq, hr, hK⟩` from `exists_finite_union (fun t => pullback (g t) (i' t)) (fun t => pullback.snd (g t) (i' t)) (fun t => by have := hg t; infer_instance) Finset.univ`. Use `⟨Y, q, hq, ⟨fun x => ?_⟩, fun K _ y' => ?_⟩` and prove the remaining obligations. Take `⟨t, w, hw⟩` from `hx x`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hg t` as an intermediate fact. Use `hr t (Finset.mem_univ t) ?_` and prove the remaining obligations. Rewrite using `[Scheme.Pullback.range_snd]`. Rewrite `hw` using `[← hi' t, Scheme.Hom.comp_apply, Scheme.Hom.comp_apply, (U t).ι.isOpenEmbedding.isInducing.specializes_iff]`. Conclude with `hw.mem_closed (g t).isClosedMap.isClosed_range ⟨w, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨t, z, hz⟩` from `hK K y'`. Use `⟨t, z ≫ pullback.fst (g t) (i' t), ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, pullback.condition_assoc, hi' t, ← Category.assoc, hz, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_finite_surjective_cover : ∀ (X Z : Scheme.{0}) (i : X ⟶ Z) (T : Type) [Finite T] (M : T → Scheme.{0}) (U : T → Z.Opens) (g : ∀ t, M t ⟶ (U t).toScheme), (∀ t, IsFinite (g t)) → (∀ t, Set.range i ⊆ (U t : Set Z)) → (∀ x : X, ∃ (t : T) (w : M t), (g t ≫ (U t).ι) w ⤳ i x) → ∃ (Y : Scheme.{0}) (q : Y ⟶ X), IsFinite q ∧ Surjective q ∧ ∀ (K : Type) [Field K] (y' : Sp K ⟶ Y), ∃ (t : T) (yM : Sp K ⟶ M t), yM ≫ g t ≫ (U t).ι = y' ≫ q ≫ i := by
   intro X Z i T _ M U g hg hU hx

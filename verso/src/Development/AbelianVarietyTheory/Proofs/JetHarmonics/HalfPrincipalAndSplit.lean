@@ -18,19 +18,17 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.DIV.Cons
 namespace GlobalTheory.HalfGen
 
 /- English proof (translation)
-Use `set I : Ideal (𝓞 E) := Ideal.span {(g : 𝓞 E)} with hI`. Use `set s := UniqueFactorizationMonoid.normalizedFactors I with hs`. Establish `hI0 : I ≠ ⊥`. Rewrite using `[hI, Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hg.ne_zero` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hprod : s.prod = I` using `Ideal.prod_normalizedFactors_eq_self hI0`. Establish `hprime : ∀ P ∈ s, Prime P` using `fun P hP => UniqueFactorizationMonoid.prime_of_normalized_factor P hP`. Establish `hN : Ideal.absNorm I = g ^ Module.finrank ℚ E`. Rewrite using `[hI, Ideal.absNorm_span_natCast, RingOfIntegers.rank]`. Establish `hle : ∀ a ∈ s.map Ideal.absNorm, g ≤ a`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `a ha`. Take `⟨P, hP, rfl⟩` from `Multiset.mem_map.mp ha`. Establish `hdvd : Ideal.absNorm P ∣ g ^ Module.finrank ℚ E`. Rewrite using `[← hN, ← hprod]`. Conclude with `map_dvd _ (Multiset.dvd_prod hP)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨k, -, hk⟩` from `(Nat.dvd_prime_pow hg).mp hdvd`. Establish `hk0 : k ≠ 0`. Introduce and unpack `rfl`. Rewrite `hk` using `[pow_zero, Ideal.absNorm_eq_one_iff]`. Conclude with `(hprime P hP).ne_one (by rw [hk, Ideal.one_eq_top])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hk]`. Conclude with `Nat.le_self_pow hk0 g`. Establish `h1 : s.card ≤ Module.finrank ℚ E`. Use `Multiset.pow_card_le_prod hle` as an intermediate fact. Rewrite `this` using `[← map_multiset_prod, hprod, hN, Multiset.card_map]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `(Nat.pow_le_pow_iff_right hg.one_lt).1 this`. Establish `h2 : Module.finrank ℚ E ≤ s.toFinset.card`. Rewrite using `[← h, ← Set.ncard_coe_finset]`. Use `Set.ncard_le_ncard_of_injOn (fun v => v.asIdeal) (fun v hv => ?_) (fun v _ w _ e => HeightOneSpectrum.ext e) (Finset.finite_toSet _)` and prove the remaining obligations. Rewrite using `[Finset.mem_coe, Multiset.mem_toFinset, hs, Ideal.mem_normalizedFactors_iff hI0]`.
-
-Conclude with `⟨v.isPrime, (Ideal.span_singleton_le_iff_mem _).2 hv⟩`. Establish `h3` using `Multiset.toFinset_card_le s`. Conclude with `⟨by omega, Multiset.toFinset_card_eq_card_iff_nodup.1 (by omega)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem factors_of_ncard_places (E : Type) [Field E] [NumberField E] (g : ℕ) (hg : g.Prime)
     (h : {v : HeightOneSpectrum (𝓞 E) | ((g : ℕ) : 𝓞 E) ∈ v.asIdeal}.ncard = Module.finrank ℚ E) :
@@ -74,26 +72,24 @@ theorem factors_of_ncard_places (E : Type) [Field E] [NumberField E] (g : ℕ) (
   exact ⟨by omega, Multiset.toFinset_card_eq_card_iff_nodup.1 (by omega)⟩
 
 /- English proof (translation)
-Apply `IsFractionRing.injective (𝓞 D.host.E) D.host.E` to reduce the goal to its premises. Conclude with `barE_eq_conj D _`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem barE_piG {D : D7} (EX : ErrX D) (i : Fin 2) : barE D (EX.piG i) = piBarO EX i := by
   apply IsFractionRing.injective (𝓞 D.host.E) D.host.E
   exact barE_eq_conj D _
 
 /- English proof (translation)
-Introduce `D T h EX`. Establish `hb : ∀ i, T.Q.H.bar (EX.piG i) = piBarO EX i` using `fun i => by rw [bar_core, barE_piG]`. Establish `hbb : ∀ a, T.Q.H.bar (T.Q.H.bar a) = a` using `fun a => by rw [bar_core, bar_core, barE_barE]`. Establish `hn : ∀ i, piBarO EX i * T.Q.H.bar (piBarO EX i) = ((D.host.g i : ℕ) : 𝓞 D.host.E)` using `fun i => by`. Rewrite using `[← hb, hbb, mul_comm, hb]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `RPfVal.piG_mul_bar EX i`. Establish `hM : T.Q.l.Mb = Ideal.span {piOf T EX 0 * piOf T EX 1}`. Rewrite using `[← Ideal.span_singleton_mul_span_singleton, span_piOf T h, span_piOf T h, Mb_eq T h]`. Establish `hp : ∀ i, piOf T EX i * T.Q.H.bar (piOf T EX i) = ((D.host.g i : ℕ) : 𝓞 D.host.E)` using `fun i => by`. Rewrite using `[bar_core]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `piOf_mul_barE T EX i`. Establish `hpp : (piOf T EX 0 * piOf T EX 1) * T.Q.H.bar (piOf T EX 0 * piOf T EX 1) = ((D.host.g 0 : ℕ) : 𝓞 D.host.E) * ((D.host.g 1 : ℕ) : 𝓞 D.host.E)`. Rewrite using `[map_mul, ← hp 0, ← hp 1]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨⟨T.Q.H.bar (piOf T EX 0 * piOf T EX 1), ?_, ?_⟩, fun i => ⟨hb i, hn i⟩, fun ho => ?_, fun _ _ i => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show T.Q.H.bar _ * T.Q.H.bar (T.Q.H.bar _) = _`. Rewrite using `[hbb, mul_comm, hpp, level_M T h, Nat.cast_mul]`. Use `show _ = Ideal.span {T.Q.H.bar (T.Q.H.bar _)}`. Rewrite using `[hbb, hM]`. Establish `hcg : IsCoprime ((D.host.g 0 : ℕ) : 𝓞 D.host.E) ((D.host.g 1 : ℕ) : 𝓞 D.host.E)` using `Nat.Coprime.cast ((Nat.coprime_primes (D.host.g_prime 0) (D.host.g_prime 1)).2 D.host.g_ne)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `hcg` using `[← hn 0, ← hn 1]`. Establish `hc : IsCoprime (piBarO EX 0) (piBarO EX 1)` using `hcg.of_mul_left_left.of_mul_right_left`. Establish `hd : ∀ i, piBarO EX i ∣ piOf T EX 0 * piOf T EX 1` using `fun i => Ideal.mem_span_singleton.1 (ho i (hM ▸ Ideal.mem_span_singleton_self _))`. Take `⟨c, hcc⟩` from `hc.mul_dvd (hd 0) (hd 1)`. Establish `hg : ((D.host.g 0 : ℕ) : 𝓞 D.host.E) * ((D.host.g 1 : ℕ) : 𝓞 D.host.E) ≠ 0` using `mul_ne_zero (Nat.cast_ne_zero.2 (D.host.g_prime 0).ne_zero) (Nat.cast_ne_zero.2 (D.host.g_prime 1).ne_zero)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hu : c * T.Q.H.bar c = 1`. Apply `mul_left_cancel₀ hg` to reduce the goal to its premises. Rewrite using `[_root_.mul_one]`. Use `conv_rhs => rw [← hpp, hcc, map_mul, map_mul]`. Rewrite using `[← hn 0, ← hn 1]`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hM, hcc]`. Conclude with `Ideal.span_singleton_mul_right_unit (IsUnit.of_mul_eq_one _ hu) _`. Conclude with `factors_of_ncard_places D.host.E (D.host.g i) (D.host.g_prime i) (D.nd.g_split i)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem half_principal_and_split : ∀ (D : D7) (T : Core D), LawsM T → ∀ EX : ErrX D,
  letI := T.Q.H.starRing

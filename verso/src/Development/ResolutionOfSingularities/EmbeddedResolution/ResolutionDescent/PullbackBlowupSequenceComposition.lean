@@ -12,7 +12,7 @@ open CategoryTheory AlgebraicGeometry
 namespace FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-Establish `h0 : (CategoryTheory.homOfLE h).op = 𝟙 (Opposite.op a)` using `rfl`. Rewrite using `[u.transitionMap_def, h0, CategoryTheory.Functor.map_id]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem transitionMap_self {X : Scheme.{u}} (u : SequenceOfBlowups X) {a : ℕ}
     (h : a ≤ a) : u.transitionMap h = 𝟙 (u.schemeAt a) := by
@@ -20,11 +20,11 @@ private theorem transitionMap_self {X : Scheme.{u}} (u : SequenceOfBlowups X) {a
   rw [u.transitionMap_def, h0, CategoryTheory.Functor.map_id]
 
 /- English proof (translation)
-Introduce `a b hab`. Proceed by induction on `b, hab using Nat.le_induction with`. Consider the case `base`. Introduce `hb`. Establish `ht : t.transitionMap (le_refl a) = 𝟙 (t.schemeAt a)` using `transitionMap_self t (le_refl a)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hs : s.transitionMap (le_refl a) = 𝟙 (s.schemeAt a)` using `transitionMap_self s (le_refl a)`. Rewrite using `[ht, hs, Category.comp_id, Category.id_comp]`. Consider the case `succ n hn ih`. Introduce `hb`. Establish `hn' : n ≤ L` using `Nat.le_of_succ_le hb`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : n ≤ n + 1` using `Nat.le_succ n`. Rewrite using `[← t.transitionMap_trans hn h1, ← s.transitionMap_trans hn h1, ← t.blowupMorphism_eq_transitionMap n, ← s.blowupMorphism_eq_transitionMap n, ← Category.assoc, hstep n hb, Category.assoc, ih hn']`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem SequenceOfBlowups.iso_hom_comp_transitionMap {X : Scheme.{u}} (s t : SequenceOfBlowups X) (L : ℕ)
     (e : ∀ i : ℕ, i ≤ L → (s.schemeAt i ≅ t.schemeAt i))
@@ -48,7 +48,7 @@ theorem SequenceOfBlowups.iso_hom_comp_transitionMap {X : Scheme.{u}} (s t : Seq
       simp
 
 /- English proof (translation)
-Introduce `b hb`. Establish `hd` using `FunctorialResolution.EmbeddedResolution.SequenceOfBlowups.iso_hom_comp_transitionMap s t L e hstep 0 b (Nat.zero_le b) hb`. Establish `h0 : (e 0 ((Nat.zero_le b).trans hb)).hom ≫ t.isoZero.hom = s.isoZero.hom` using `hzero`. Rewrite using `[FunctorialResolution.EmbeddedResolution.SequenceOfBlowups.projectionToBase_def, FunctorialResolution.EmbeddedResolution.SequenceOfBlowups.projectionToBase_def, ← Category.assoc, hd, Category.assoc, h0]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem SequenceOfBlowups.iso_hom_comp_projectionToBase {X : Scheme.{u}} (s t : SequenceOfBlowups X) (L : ℕ)
     (e : ∀ i : ℕ, i ≤ L → (s.schemeAt i ≅ t.schemeAt i))
@@ -63,13 +63,11 @@ theorem SequenceOfBlowups.iso_hom_comp_projectionToBase {X : Scheme.{u}} (s t : 
     hd, Category.assoc, h0]
 
 /- English proof (translation)
-Introduce `a b hab`. Proceed by induction on `b, hab using Nat.le_induction with`. Consider the case `base`. Introduce `hb`. Rewrite using `[transitionMap_self, transitionMap_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(IsPullback.of_horiz_isIso ⟨by simp⟩).flip`. Consider the case `succ b hab ih`. Introduce `hb`. Establish `hlt : b < L` using `hb`. Establish `key` using `(hstep b hlt).paste_vert (ih hlt.le)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₁ : t.transitionMapSucc b ≫ t.transitionMap hab = t.transitionMap (hab.trans (Nat.le_succ b))`. Rewrite using `[SequenceOfBlowups.blowupMorphism_eq_transitionMap, SequenceOfBlowups.transitionMap_trans]`. Establish `e₂ : s.transitionMapSucc b ≫ s.transitionMap hab = s.transitionMap (hab.trans (Nat.le_succ b))`. Rewrite using `[SequenceOfBlowups.blowupMorphism_eq_transitionMap, SequenceOfBlowups.transitionMap_trans]`. Rewrite `key` using `[e₁, e₂]`.
-
-Conclude with `key`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPullback_transitionMap_of_isPullback_blowupMorphism {X' X : Scheme.{u}}
     (t : SequenceOfBlowups X') (s : SequenceOfBlowups X) (L : ℕ)
@@ -96,9 +94,9 @@ theorem isPullback_transitionMap_of_isPullback_blowupMorphism {X' X : Scheme.{u}
       exact key
 
 /- English proof (translation)
-Introduce `b hb`. Establish `hA` using `isPullback_transitionMap_of_isPullback_blowupMorphism t s L σ hstep 0 b (Nat.zero_le b) hb`. Establish `hsq : CommSq t.isoZero.hom (σ 0 ((Nat.zero_le b).trans hb)) g s.isoZero.hom` using `⟨hzero.symm⟩`. Establish `hB : IsPullback (σ 0 ((Nat.zero_le b).trans hb)) t.isoZero.hom s.isoZero.hom g` using `(IsPullback.of_horiz_isIso hsq).flip`. Rewrite using `[t.projectionToBase_def b, s.projectionToBase_def b]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hA.paste_vert hB`.
+A detailed English derivation is pending.
 -/
 theorem isPullback_projectionToBase_of_isPullback_blowupMorphism {X' X : Scheme.{u}} (g : X' ⟶ X)
     (t : SequenceOfBlowups X') (s : SequenceOfBlowups X) (L : ℕ)
@@ -118,7 +116,7 @@ theorem isPullback_projectionToBase_of_isPullback_blowupMorphism {X' X : Scheme.
   exact hA.paste_vert hB
 
 /- English proof (translation)
-Introduce `i hi`. Establish `hsq : IsPullback (σ i hi) (t.projectionToBase i) (s.projectionToBase i) g` using `isPullback_projectionToBase_of_isPullback_blowupMorphism g t s L σ hzero hstep i hi`. Establish `hg : AlgebraicGeometry.Surjective g` using `inferInstance`. Conclude with `MorphismProperty.of_isPullback (P := @AlgebraicGeometry.Surjective) hsq.flip hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem surjective_of_isPullback_blowupMorphism {X' X : Scheme.{u}} (g : X' ⟶ X)
     [AlgebraicGeometry.Surjective g]
@@ -137,11 +135,11 @@ theorem surjective_of_isPullback_blowupMorphism {X' X : Scheme.{u}} (g : X' ⟶ 
 namespace IsStrictPullbackBlowupSeq
 
 /- English proof (translation)
-Take `⟨hl1, σ, hz1, hp1, hc1⟩` from `hu`. Take `⟨hl2, τ, hz2, hp2, hc2⟩` from `ht`. Establish `hle : ∀ i : ℕ, i ≤ u.length → i ≤ t.length` using `fun i hi => by omega`. Establish `hlt : ∀ i : ℕ, i < u.length → i < t.length` using `fun i hi => by omega`. Use `⟨hl1.trans hl2, fun i hi => σ i hi ≫ τ i (hle i hi), ?_, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Category.assoc, hz2, ← Category.assoc, hz1, Category.assoc]`. Introduce `i hi`. Conclude with `(hp1 i hi).paste_horiz (hp2 i (hlt i hi))`. Introduce `i hi`. Rewrite using `[hc1 i hi, hc2 i (hlt i hi)]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Scheme.IdealSheafData.comap_comp]`.
+A detailed English derivation is pending.
 -/
 theorem comp {X'' X' X : Scheme.{u}} {ψ : X'' ⟶ X'} {φ : X' ⟶ X}
     {u : SequenceOfBlowups X''} {t : SequenceOfBlowups X'} {s : SequenceOfBlowups X}
@@ -160,13 +158,13 @@ theorem comp {X'' X' X : Scheme.{u}} {ψ : X'' ⟶ X'} {φ : X' ⟶ X}
     simp [Scheme.IdealSheafData.comap_comp]
 
 /- English proof (translation)
-Establish `hlen : t.length = s.length` using `h.1`. Take `⟨σ, hzero, hpb, hcen⟩` from `h.2`. Establish `hlen' : t.length = t'.length` using `he.1`. Take `⟨e, hezero, hestep, hecen⟩` from `he.2`. Establish `hconv : ∀ i : ℕ, i ≤ t'.length → i ≤ t.length` using `fun i hi => by omega`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨hlen'.symm.trans hlen, fun i hi => (e i (hconv i hi)).inv ≫ σ i (hconv i hi), ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `key : ((e 0 (hconv 0 (Nat.zero_le t'.length))).inv ≫ σ 0 (hconv 0 (Nat.zero_le t'.length))) ≫ s.isoZero.hom = t'.isoZero.hom ≫ g`. Rewrite using `[Category.assoc, hzero, Iso.inv_comp_eq, ← Category.assoc, hezero]`. Conclude with `key`. Introduce `i hi`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hi' : i < t.length` using `by omega`. Establish `hsq : CommSq (e (i + 1) hi').inv (t'.transitionMapSucc i) (t.transitionMapSucc i) (e i hi'.le).inv`. Use `⟨?_⟩` and prove the remaining obligations. Rewrite using `[Iso.inv_comp_eq, ← Category.assoc, hestep i hi', Category.assoc, Iso.hom_inv_id, Category.comp_id]`. Conclude with `(IsPullback.of_horiz_isIso hsq).paste_horiz (hpb i hi')`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i hi`. Establish `hi' : i < t.length` using `by omega`. Establish `key : t'.center i = (s.center i).comap ((e i hi'.le).inv ≫ σ i hi'.le)`. Rewrite using `[Scheme.IdealSheafData.comap_comp, ← hcen i hi', ← hecen i hi', ← Scheme.IdealSheafData.comap_comp, Iso.inv_hom_id, Scheme.IdealSheafData.comap_id]`. Conclude with `key`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem of_isomorphic_pullback {X' X : Scheme.{u}} {g : X' ⟶ X}
     {t t' : SequenceOfBlowups X'} {s : SequenceOfBlowups X}
@@ -198,11 +196,11 @@ theorem of_isomorphic_pullback {X' X : Scheme.{u}} {g : X' ⟶ X}
     exact key
 
 /- English proof (translation)
-Take `⟨hl1, σ, hz1, hp1, hc1⟩` from `h`. Take `⟨hl2, e, hz2, hp2, hc2⟩` from `he`. Establish `hle : ∀ i : ℕ, i ≤ t.length → i ≤ s.length` using `fun i hi => by omega`. Establish `hlt : ∀ i : ℕ, i < t.length → i < s.length` using `fun i hi => by omega`. Use `⟨hl1.trans hl2, fun i hi => σ i hi ≫ (e i (hle i hi)).hom, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Category.assoc, hz2]`. Conclude with `hz1`. Introduce `i hi`. Use `(hp1 i hi).paste_horiz ?_` and prove the remaining obligations. Conclude with `IsPullback.of_horiz_isIso ⟨hp2 i (hlt i hi)⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i hi`. Establish `h2` using `hc2 i (hlt i hi)`. Rewrite using `[hc1 i hi, ← h2]`. Simplify using `[Scheme.IdealSheafData.comap_comp]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem of_isomorphic_base {X' X : Scheme.{u}} {g : X' ⟶ X}
     {t : SequenceOfBlowups X'} {s s' : SequenceOfBlowups X}
@@ -224,29 +222,29 @@ theorem of_isomorphic_base {X' X : Scheme.{u}} {g : X' ⟶ X}
     simp [Scheme.IdealSheafData.comap_comp]
 
 /- English proof (translation)
-Rewrite using `[SequenceOfBlowups.projectionToBase_def, transitionMap_self s (le_refl 0), Category.id_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem projectionToBase_zero {X : Scheme.{u}} (s : SequenceOfBlowups X) :
     s.projectionToBase 0 = s.isoZero.hom := by
   rw [SequenceOfBlowups.projectionToBase_def, transitionMap_self s (le_refl 0), Category.id_comp]
 
 /- English proof (translation)
-Rewrite using `[SequenceOfBlowups.blowupMorphism_eq_transitionMap, SequenceOfBlowups.transitionMap_comp_projectionToBase]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem blowupMorphism_comp_projectionToBase {X : Scheme.{u}} (s : SequenceOfBlowups X) (i : ℕ) :
     s.transitionMapSucc i ≫ s.projectionToBase i = s.projectionToBase (i + 1) := by
   rw [SequenceOfBlowups.blowupMorphism_eq_transitionMap, SequenceOfBlowups.transitionMap_comp_projectionToBase]
 
 /- English proof (translation)
-Take `⟨hl, σ, hz, hp, hc⟩` from `h`. Take `⟨hl', τ, hz', hp', hc'⟩` from `h'`. Establish `hlen : t.length ≤ t'.length` using `le_of_eq (hl.trans hl'.symm)`. Establish `hA : ∀ i : ℕ, ∀ hi : i ≤ t.length, IsPullback (σ i hi) (t.projectionToBase i) (s.projectionToBase i) g` using `isPullback_projectionToBase_of_isPullback_blowupMorphism g t s t.length σ hz hp`. Establish `hB : ∀ i : ℕ, ∀ hi : i ≤ t'.length, IsPullback (τ i hi) (t'.projectionToBase i) (s.projectionToBase i) g` using `isPullback_projectionToBase_of_isPullback_blowupMorphism g t' s t'.length τ hz' hp'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ i : ℕ, ∀ hi : i ≤ t.length, ∃ e : t.schemeAt i ≅ t'.schemeAt i, e.hom ≫ τ i (hi.trans hlen) = σ i hi ∧ e.hom ≫ t'.projectionToBase i = t.projectionToBase i` using `fun i hi => ⟨(hA i hi).isoIsPullback _ _ (hB i (hi.trans hlen)), (hA i hi).isoIsPullback_hom_fst _ _ (hB i (hi.trans hlen)), (hA i hi).isoIsPullback_hom_snd _ _ (hB i (hi.trans hlen))⟩`. Use `choose e he1 he2 using key`. Use `⟨hl.trans hl'.symm, e, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h0` using `he2 0 (Nat.zero_le t.length)`. Rewrite `h0` using `[projectionToBase_zero t', projectionToBase_zero t]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i hi`. Establish `hi2 : i < t'.length` using `lt_of_lt_of_le hi hlen`. Use `(hB i (hi.le.trans hlen)).hom_ext ?_ ?_` and prove the remaining obligations. Establish `w1 : τ (i + 1) hi2 ≫ s.transitionMapSucc i = t'.transitionMapSucc i ≫ τ i hi2.le` using `(hp' i hi2).w`. Establish `w2 : σ (i + 1) hi ≫ s.transitionMapSucc i = t.transitionMapSucc i ≫ σ i hi.le` using `(hp i hi).w`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, Category.assoc, ← w1, he1 i hi.le, ← Category.assoc, he1 (i + 1) hi]`. Conclude with `w2`. Rewrite using `[Category.assoc, Category.assoc, blowupMorphism_comp_projectionToBase t' i, he2 (i + 1) hi, he2 i hi.le, blowupMorphism_comp_projectionToBase t i]`. Introduce `i hi`. Establish `hi2 : i < t'.length` using `lt_of_lt_of_le hi hlen`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hc' i hi2, hc i hi, ← he1 i hi.le]`. Simplify using `[Scheme.IdealSheafData.comap_comp]`.
+A detailed English derivation is pending.
 -/
 theorem isomorphic {X' X : Scheme.{u}} {g : X' ⟶ X}
     {t t' : SequenceOfBlowups X'} {s : SequenceOfBlowups X}
@@ -288,7 +286,7 @@ theorem isomorphic {X' X : Scheme.{u}} {g : X' ⟶ X}
     simp [Scheme.IdealSheafData.comap_comp]
 
 /- English proof (translation)
-Take `⟨hlen, σ, -, -, hcen⟩` from `h`. Establish `hi' : i < t.length` using `by omega`. Rewrite using `[hcen i hi', hs, Scheme.IdealSheafData.comap_top]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem center_eq_top {X' X : Scheme.{u}} {g : X' ⟶ X}
     {t : SequenceOfBlowups X'} {s : SequenceOfBlowups X}
@@ -299,7 +297,7 @@ theorem center_eq_top {X' X : Scheme.{u}} {g : X' ⟶ X}
   rw [hcen i hi', hs, Scheme.IdealSheafData.comap_top]
 
 /- English proof (translation)
-Take `⟨hlen, _, _, _, hcen⟩` from `h`. Introduce `i hi htop`. Establish `hi' : i < t.length` using `by omega`. Use `ht i hi' ?_` and prove the remaining obligations. Rewrite using `[hcen i hi', htop]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -316,11 +314,9 @@ theorem center_ne_top_of_forall_center_ne_top {X' X : Scheme.{u}} {g : X' ⟶ X}
   simp
 
 /- English proof (translation)
-Use `(Scheme.IdealSheafData.support_eq_bot_iff I).mp ?_` and prove the remaining obligations. Establish `hsup` using `Scheme.IdealSheafData.support_comap I f`. Rewrite `hsup` using `[h, Scheme.IdealSheafData.support_top]`. Use `TopologicalSpace.Closeds.coe_eq_empty.mp (Set.eq_empty_of_forall_notMem ?_)` and prove the remaining obligations. Introduce `z hz`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨y, hy⟩` from `f.surjective z`. Rewrite `hz` using `[← hy]`. Establish `h2 : y ∈ (⊥ : TopologicalSpace.Closeds ↥Y)`. Rewrite using `[hsup]`. Conclude with `hz`.
-
-Conclude with `h2`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem idealSheafData_eq_top_of_comap_eq_top {Y Z : Scheme.{u}} (f : Y ⟶ Z)
     [AlgebraicGeometry.Surjective f] (I : Z.IdealSheafData)
@@ -338,9 +334,9 @@ private theorem idealSheafData_eq_top_of_comap_eq_top {Y Z : Scheme.{u}} (f : Y 
   exact h2
 
 /- English proof (translation)
-Use `⟨?_, fun hs => center_eq_top h i hi hs⟩` and prove the remaining obligations. Introduce `ht`. Take `⟨hlen, σ, hzero, hpb, hcen⟩` from `h`. Establish `hi' : i < t.length` using `by omega`. Establish `hsurj : AlgebraicGeometry.Surjective (σ i hi'.le)` using `surjective_of_isPullback_blowupMorphism g t s t.length σ hzero hpb i hi'.le`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc` using `hcen i hi'`. Rewrite `hc` using `[ht]`. Conclude with `idealSheafData_eq_top_of_comap_eq_top (σ i hi'.le) (s.center i) hc.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem center_eq_top_iff {X' X : Scheme.{u}} {g : X' ⟶ X}
     [AlgebraicGeometry.Surjective g]

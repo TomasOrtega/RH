@@ -5,9 +5,7 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry GroundTheory.Arith.S
 namespace GlobalTheory.CompanionTheory.GE
 
 /- English proof (translation)
-Introduce `X J Z ψ hψ V hV U hU h`. Establish `hft : ((ψ ≫ J.subschemeι).appLE V U h).hom.FiniteType` using `by haveI : LocallyOfFiniteType ψ := inferInstance haveI : LocallyOfFiniteType (ψ ≫ J.subschemeι) := inferInstance`. Conclude with `LocallyOfFiniteType.finiteType_appLE (ψ ≫ J.subschemeι) hV hU h`. Use `letI : Algebra Γ(X, V) Γ(Z, U) := ((ψ ≫ J.subschemeι).appLE V U h).hom.toAlgebra`. Introduce `R _ _ _`.
-
-Use `haveI : Algebra.FiniteType Γ(X, V) Γ(Z, U) := by`. Conclude with `hft`. Use `haveI : Algebra.FiniteType R (R ⊗[Γ(X, V)] Γ(Z, U)) := inferInstance`. Conclude with `Algebra.FiniteType.isNoetherianRing R _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem krull_noeth_chart : ∀ {X : Scheme.{0}} (J : X.IdealSheafData) {Z : Scheme.{0}} (ψ : Z ⟶ J.subscheme), IsProper ψ → ∀ (V : X.Opens), IsAffineOpen V → ∀ (U : Z.Opens), IsAffineOpen U → ∀ h : U ≤ (ψ ≫ J.subschemeι) ⁻¹ᵁ V, letI : Algebra Γ(X, V) Γ(Z, U) := ((ψ ≫ J.subschemeι).appLE V U h).hom.toAlgebra; ∀ (R : Type) [CommRing R] [IsNoetherianRing R] [Algebra Γ(X, V) R], IsNoetherianRing (R ⊗[Γ(X, V)] Γ(Z, U)) := by
   intro X J Z ψ hψ V hV U hU h

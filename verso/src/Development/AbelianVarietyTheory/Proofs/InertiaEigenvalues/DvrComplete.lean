@@ -8,13 +8,13 @@ open PowerSeries Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Fo
 namespace GlobalTheory.FinExtIntegers
 
 /- English proof (translation)
-Introduce `l _ LL`. Unfold `OL`. Establish `hfd : FiniteDimensional ℚ_[l] ↥LL.1` using `LL.2`. Establish `: IsScalarTower ℤ_[l] ℚ_[l] ↥LL.1` using `inferInstance`. Establish `hfin : Module.Finite ℤ_[l] ↥(integralClosure ℤ_[l] ↥LL.1)` using `IsIntegralClosure.finite ℤ_[l] ℚ_[l] ↥LL.1 ↥(integralClosure ℤ_[l] ↥LL.1)`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: FaithfulSMul ℤ_[l] ↥LL.1` using `ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.cl_faithful ℤ_[l] ℚ_[l] ↥LL.1`. Establish `hdvr : IsDiscreteValuationRing ↥(integralClosure ℤ_[l] ↥LL.1)` using `ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.cl_dvr ℤ_[l] ℚ_[l] ↥LL.1`. Establish `hloc : IsLocalHom (algebraMap ℤ_[l] ↥(integralClosure ℤ_[l] ↥LL.1))` using `ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.cl_isLocalHom ℤ_[l] ↥LL.1`. Use `⟨hdvr, GlobalTheory.CompleteFiniteExtension.isAdicComplete_of_finite_local ℤ_[l] _, ?_⟩` and prove the remaining obligations. Introduce `hu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hl : ¬IsUnit (l : ℤ_[l])`. Rewrite using `[PadicInt.not_isUnit_iff, PadicInt.norm_p]`. Conclude with `inv_lt_one_of_one_lt₀ (by exact_mod_cast (Fact.out : l.Prime).one_lt)`. Apply `hl` to reduce the goal to its premises. Apply `(isUnit_map_iff (algebraMap ℤ_[l] ↥(integralClosure ℤ_[l] ↥LL.1)) _).mp` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hu`.
+A detailed English derivation is pending.
 -/
 theorem dvr_complete : ∀ {l : ℕ} [Fact l.Prime] (LL : FinExt l), ∃ _ : IsDiscreteValuationRing ↥(OL LL), IsAdicComplete (IsLocalRing.maximalIdeal ↥(OL LL)) ↥(OL LL) ∧ ¬ IsUnit ((l : ℕ) : ↥(OL LL)) := by
   intro l _ LL

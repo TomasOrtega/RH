@@ -8,9 +8,9 @@ namespace GlobalTheory.GaussCount
 
 open Module in
 /- English proof (translation)
-Rewrite using `[Nat.cast_prod, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `hi' : i ≤ m` using `by have := Finset.mem_range.mp hi; omega`. Rewrite using `[Nat.cast_sub (Nat.pow_le_pow_right hq hi')]`. Establish `e : (q : ℤ) ^ m = (q : ℤ) ^ i * (q : ℤ) ^ (m - i)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← pow_add, Nat.add_sub_cancel' hi']`. Use `push_cast`. Rewrite using `[e]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private lemma cast_prod_pow_sub_pow_eq_prod_pow_mul_prod (q m a : ℕ) (hq : 0 < q) (h : a ≤ m) :
     ((∏ i ∈ Finset.range a, (q ^ m - q ^ i) : ℕ) : ℤ) =
@@ -27,7 +27,7 @@ private lemma cast_prod_pow_sub_pow_eq_prod_pow_mul_prod (q m a : ℕ) (hq : 0 <
 
 open Module in
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => exact _root_.GlobalTheory.IndefiniteRowSideFullHecke.GaussianBinomialFormula.gaussBinom_zero_right q 0`. Consider the case `succ n ih`. Rewrite using `[_root_.GlobalTheory.IndefiniteRowSideFullHecke.GaussianBinomialFormula.gaussBinom_succ_succ, _root_.GlobalTheory.IndefiniteRowSideFullHecke.GaussianBinomialFormula.gaussBinom_eq_zero q n (n + 1) (by omega), Nat.sub_self, pow_zero, ih]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private lemma gaussBinom_self (q n : ℕ) : _root_.GlobalTheory.IndefiniteRowSideFullHecke.GaussianBinomialFormula.gaussBinom q n n = 1 := by
   induction n with
@@ -39,15 +39,15 @@ private lemma gaussBinom_self (q n : ℕ) : _root_.GlobalTheory.IndefiniteRowSid
 
 open Module in
 /- English proof (translation)
-Proceed by induction on `n generalizing a with`. Consider the case `zero`. Break down `a with _ | a` into its components or cases. Simplify using `[_root_.GlobalTheory.IndefiniteRowSideFullHecke.GaussianBinomialFormula.gaussBinom_zero_right]`. Rewrite using `[_root_.GlobalTheory.IndefiniteRowSideFullHecke.GaussianBinomialFormula.gaussBinom_zero_succ, Finset.prod_range_succ']`.
+Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Consider the case `succ n ih`. Break down `a with _ | a` into its components or cases. Simplify using `[_root_.GlobalTheory.IndefiniteRowSideFullHecke.GaussianBinomialFormula.gaussBinom_zero_right]`. Establish `h1` using `ih (a + 1)`.
+Simplify using the standard rewrite rules. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2` using `ih a`. Rewrite `h1` using `[Finset.prod_range_succ, Finset.prod_range_succ]`. Establish `hB : (∏ i ∈ Finset.range a, ((q : ℤ) ^ (n - i) - 1)) * ((q : ℤ) ^ (n - a) * (q : ℤ) ^ (a + 1) - (q : ℤ) ^ (n + 1)) = 0`. Distinguish the cases in `han : a ≤ n`. Rewrite using `[← pow_add, show n - a + (a + 1) = n + 1 by omega]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.prod_eq_zero (i := n) (Finset.mem_range.mpr (by omega)) (by simp)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[_root_.GlobalTheory.IndefiniteRowSideFullHecke.GaussianBinomialFormula.gaussBinom_succ_succ, Finset.prod_range_succ, Finset.prod_range_succ']`. Simplify using `only [Nat.add_sub_add_right, Nat.sub_zero]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Take the linear combination `h1 + (q : ℤ) ^ (n - a) * ((q : ℤ) ^ (a + 1) - 1) * h2 + hB`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private lemma gaussBinom_mul_prod_pow_succ_sub_one (q n a : ℕ) :
     (_root_.GlobalTheory.IndefiniteRowSideFullHecke.GaussianBinomialFormula.gaussBinom q n a : ℤ) * ∏ i ∈ Finset.range a, ((q : ℤ) ^ (i + 1) - 1) =
@@ -78,7 +78,7 @@ private lemma gaussBinom_mul_prod_pow_succ_sub_one (q n a : ℕ) :
 
 open Module in
 /- English proof (translation)
-Simplify `gaussBinom_mul_prod_pow_succ_sub_one q n n` using `[gaussBinom_self]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private lemma prod_pow_succ_sub_one_eq_prod_pow_sub (q n : ℕ) :
     ∏ i ∈ Finset.range n, ((q : ℤ) ^ (i + 1) - 1) = ∏ i ∈ Finset.range n, ((q : ℤ) ^ (n - i) - 1) := by
@@ -86,7 +86,7 @@ private lemma prod_pow_succ_sub_one_eq_prod_pow_sub (q n : ℕ) :
 
 open Module in
 /- English proof (translation)
-Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `i _`. Establish `: (1 : ℤ) < (q : ℤ) ^ (i + 1)` using `one_lt_pow₀ (by exact_mod_cast hq) (by omega)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 private lemma prod_pow_succ_sub_one_ne_zero {q : ℕ} (hq : 1 < q) (n : ℕ) :
     ∏ i ∈ Finset.range n, ((q : ℤ) ^ (i + 1) - 1) ≠ 0 := by
@@ -97,11 +97,11 @@ private lemma prod_pow_succ_sub_one_ne_zero {q : ℕ} (hq : 1 < q) (n : ℕ) :
 
 open Module in
 /- English proof (translation)
-Establish `hq : 1 < Nat.card k` using `Finite.one_lt_card`. Distinguish the cases in `hj : j ≤ finrank k V`. Establish `h` using `_root_.GlobalTheory.SubspaceNumber.card_subspaces_mul k V j hj`. Establish `hZ` using `congrArg (fun x : ℕ => (x : ℤ)) h`. Simplify using `only [Nat.cast_mul] at hZ`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `hZ` using `[cast_prod_pow_sub_pow_eq_prod_pow_mul_prod (Nat.card k) j j (by omega) le_rfl, cast_prod_pow_sub_pow_eq_prod_pow_mul_prod (Nat.card k) _ j (by omega) hj, ← prod_pow_succ_sub_one_eq_prod_pow_sub (Nat.card k) j, ← gaussBinom_mul_prod_pow_succ_sub_one (Nat.card k) (finrank k V) j]`. Establish `hQ : ∏ i ∈ Finset.range j, ((Nat.card k : ℕ) : ℤ) ^ i ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun i _ => pow_ne_zero _ (by exact_mod_cast (show Nat.card k ≠ 0 by omega))`. Establish `hF` using `prod_pow_succ_sub_one_ne_zero hq j`. Establish `key : (Nat.card {L : Submodule k V // finrank k L = j} : ℤ) = _root_.GlobalTheory.IndefiniteRowSideFullHecke.GaussianBinomialFormula.gaussBinom (Nat.card k) (finrank k V) j`. Apply `mul_right_cancel₀ (mul_ne_zero hQ hF)` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Take the linear combination `hZ`. Conclude with `key` after adjusting the coercions. Rewrite using `[_root_.GlobalTheory.IndefiniteRowSideFullHecke.GaussianBinomialFormula.gaussBinom_eq_zero _ _ _ (by omega)] haveI : IsEmpty {L : Submodule k V // finrank k L = j} := ⟨fun ⟨L, hL⟩ => by have := Submodule.finrank_le L; omega⟩`. Conclude with `Nat.card_of_isEmpty`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma card_submodule_finrank_eq_gaussBinom (k : Type) [Field k] [Finite k] (V : Type) [AddCommGroup V]
     [Module k V] [FiniteDimensional k V] (j : ℕ) :
@@ -133,7 +133,7 @@ private lemma card_submodule_finrank_eq_gaussBinom (k : Type) [Field k] [Finite 
 open Module in
 
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.GaussianBinomialFormula.SubspaceCount`. Introduce `k _ _ V _ _ _ j`. Conclude with `card_submodule_finrank_eq_gaussBinom k V j`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.GaussCount.subspaceCount : _root_.GlobalTheory.IndefiniteRowSideFullHecke.GaussianBinomialFormula.SubspaceCount := by
   unfold _root_.GlobalTheory.IndefiniteRowSideFullHecke.GaussianBinomialFormula.SubspaceCount
@@ -142,9 +142,9 @@ theorem _root_.GlobalTheory.GaussCount.subspaceCount : _root_.GlobalTheory.Indef
 
 open Module in
 /- English proof (translation)
-Rewrite using `[mul_assoc, ← mul_assoc (_root_.GlobalTheory.IndefiniteRowSideFullHecke.GaussianBinomialFormula.gaussBinom q n a : ℤ), gaussBinom_mul_prod_pow_succ_sub_one, prod_pow_succ_sub_one_eq_prod_pow_sub q (n - a), prod_pow_succ_sub_one_eq_prod_pow_sub q n]`. Establish `hsplit` using `Finset.prod_range_add (fun i => (q : ℤ) ^ (n - i) - 1) a (n - a)`. Rewrite `hsplit` using `[Nat.add_sub_cancel' h]`. Rewrite using `[hsplit]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Nat.sub_sub]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private lemma gaussBinom_mul_prod_mul_prod_sub_eq_prod (q n a : ℕ) (h : a ≤ n) :
     (_root_.GlobalTheory.IndefiniteRowSideFullHecke.GaussianBinomialFormula.gaussBinom q n a : ℤ) * (∏ i ∈ Finset.range a, ((q : ℤ) ^ (i + 1) - 1)) *
@@ -160,9 +160,9 @@ private lemma gaussBinom_mul_prod_mul_prod_sub_eq_prod (q n a : ℕ) (h : a ≤ 
 
 open Module in
 /- English proof (translation)
-Establish `h1` using `gaussBinom_mul_prod_mul_prod_sub_eq_prod q n a h`. Establish `h2` using `gaussBinom_mul_prod_mul_prod_sub_eq_prod q n (n - a) (Nat.sub_le n a)`. Rewrite `h2` using `[Nat.sub_sub_self h]`. Establish `hne` using `mul_ne_zero (prod_pow_succ_sub_one_ne_zero hq a) (prod_pow_succ_sub_one_ne_zero hq (n - a))`. Establish `: (_root_.GlobalTheory.IndefiniteRowSideFullHecke.GaussianBinomialFormula.gaussBinom q n (n - a) : ℤ) = _root_.GlobalTheory.IndefiniteRowSideFullHecke.GaussianBinomialFormula.gaussBinom q n a`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `mul_right_cancel₀ hne` to reduce the goal to its premises. Take the linear combination `h2 - h1`. Conclude with `this` after adjusting the coercions.
+Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 private lemma gaussBinom_sub_eq_gaussBinom {q : ℕ} (hq : 1 < q) (n a : ℕ) (h : a ≤ n) :
     _root_.GlobalTheory.IndefiniteRowSideFullHecke.GaussianBinomialFormula.gaussBinom q n (n - a) = _root_.GlobalTheory.IndefiniteRowSideFullHecke.GaussianBinomialFormula.gaussBinom q n a := by
@@ -178,9 +178,9 @@ private lemma gaussBinom_sub_eq_gaussBinom {q : ℕ} (hq : 1 < q) (n a : ℕ) (h
 open Module in
 
 /- English proof (translation)
-Establish `hq : 1 < Nat.card k` using `Finite.one_lt_card`. Distinguish the cases in `hj : j ≤ finrank k V`. Establish `e : {L : Submodule k V // finrank k (V ⧸ L) = j} ≃ {L : Submodule k V // finrank k L = finrank k V - j}` using `Equiv.subtypeEquivRight fun L => by`. Use `L.finrank_quotient_add_finrank` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[Nat.card_congr e, card_submodule_finrank_eq_gaussBinom k V, gaussBinom_sub_eq_gaussBinom hq _ _ hj]`. Rewrite using `[_root_.GlobalTheory.IndefiniteRowSideFullHecke.GaussianBinomialFormula.gaussBinom_eq_zero _ _ _ (by omega)] haveI : IsEmpty {L : Submodule k V // finrank k (V ⧸ L) = j} := ⟨fun ⟨L, hL⟩ => by have := L.finrank_quotient_add_finrank; omega⟩`. Conclude with `Nat.card_of_isEmpty`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.GaussCount.card_codim (k : Type) [Field k] [Finite k] (V : Type) [AddCommGroup V] [Module k V]
     [FiniteDimensional k V] (j : ℕ) :
@@ -202,15 +202,15 @@ theorem _root_.GlobalTheory.GaussCount.card_codim (k : Type) [Field k] [Finite k
 open Module in
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp [_root_.GlobalTheory.IndefiniteRowSideFullHecke.GaussianBinomialFormula.gaussBinom_zero_right]`. Consider the case `succ m ih`. Establish `h0 : ∑ j ∈ Finset.range (m + 1 + 1), (-1 : R) ^ j * (q : R) ^ (j * (j - 1) / 2) * (_root_.GlobalTheory.IndefiniteRowSideFullHecke.GaussianBinomialFormula.gaussBinom q m j : R) * Y ^ j = ∑ j ∈ Finset.range (m + 1), (-1 : R) ^ j * (q : R) ^ (j * (j - 1) / 2) * (_root_.GlobalTheory. …`. Rewrite using `[Finset.sum_range_succ, _root_.GlobalTheory.IndefiniteRowSideFullHecke.GaussianBinomialFormula.gaussBinom_eq_zero q m (m + 1) (by omega)]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `h2` using `Finset.sum_range_succ' (fun j => (-1 : R) ^ j * (q : R) ^ (j * (j - 1) / 2) * (_root_.GlobalTheory.IndefiniteRowSideFullHecke.GaussianBinomialFormula.gaussBinom q m j : R) * Y ^ j) (m + 1)`. Establish `h1 : ∑ j ∈ Finset.range (m + 1), (-1 : R) ^ (j + 1) * (q : R) ^ ((j + 1) * (j + 1 - 1) / 2) * ((q ^ (m - j) * _root_.GlobalTheory.IndefiniteRowSideFullHecke.GaussianBinomialFormula.gaussBinom q m j : ℕ) : R) * Y ^ (j + 1) = -((q : R) ^ m * Y) * ∑ j ∈ Finset.range (m + 1), (-1 : R …`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hjm : j ≤ m` using `by have := Finset.mem_range.mp hj; omega`. Establish `e : (q : R) ^ m = (q : R) ^ j * (q : R) ^ (m - j)`. Rewrite using `[← pow_add, Nat.add_sub_cancel' hjm]`. Rewrite using `[Nat.triangle_succ, e]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hterm : ∀ j, (-1 : R) ^ (j + 1) * (q : R) ^ ((j + 1) * (j + 1 - 1) / 2) * (_root_.GlobalTheory.IndefiniteRowSideFullHecke.GaussianBinomialFormula.gaussBinom q (m + 1) (j + 1) : R) * Y ^ (j + 1) = (-1 : R) ^ (j + 1) * (q : R) ^ ((j + 1) * (j + 1 - 1) / 2) * (_root_.GlobalTheory.In …`. Introduce `j`. Rewrite using `[_root_.GlobalTheory.IndefiniteRowSideFullHecke.GaussianBinomialFormula.gaussBinom_succ_succ]`. Use `push_cast`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.prod_range_succ, ← ih, Finset.sum_range_succ', Finset.sum_congr rfl fun j _ => hterm j, Finset.sum_add_distrib, h1]`. Simplify using `only [_root_.GlobalTheory.IndefiniteRowSideFullHecke.GaussianBinomialFormula.gaussBinom_zero_right] at h2 ⊢`. Take the linear combination `h0 - h2`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem _root_.GlobalTheory.GaussCount.gauss_formula (q : ℕ) (R : Type) [CommRing R] (Y : R) (m : ℕ) :
     ∑ j ∈ Finset.range (m + 1),

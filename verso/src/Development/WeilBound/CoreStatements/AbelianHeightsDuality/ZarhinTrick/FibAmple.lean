@@ -31,11 +31,11 @@ namespace PositivityTheory.PrwZar
 variable {S : Scheme.{0}} {A B : Over S} [GrpObj A] [GrpObj B]
 
 /- English proof (translation)
-Apply `fourfold_product_ext` to reduce the goal to its premises. Introduce `i`. Rewrite using `[Category.assoc, eMap', g4lift_prj]`. Use `ext1`. Rewrite using `[Category.assoc, lift_fst, Category.assoc, pow_comp', Category.id_comp, MonObj.comp_mul, comp_pow', comp_prod_zpow]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [← Category.assoc, eMap, g4lift_prj, lift_fst, lift_snd]`. Simplify using `only [pow_comp']`. Establish `key : ∀ j : Fin 4, (((prj (A ⊗ B) j ≫ snd A B) ≫ mu) ^ (2 * m)) ^ α i j = (((prj (A ⊗ B) j ≫ snd A B) ≫ mu) ^ α i j) ^ (2 * m)`. Introduce `j`. Rewrite using `[← zpow_natCast, ← zpow_natCast, ← zpow_mul, ← zpow_mul, mul_comm]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [key, Finset.prod_pow, mul_pow, inv_pow, inv_mul_cancel_right]`. Rewrite using `[Category.assoc, lift_snd, Category.assoc, pow_comp', Category.id_comp, ← Category.assoc, eMap, g4lift_prj, lift_snd]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem eMap_comp_eMap'_eq_id_pow [IsCommMonObj A] (mu : B ⟶ A) [IsMonHom mu] (α : Matrix (Fin 4) (Fin 4) ℤ)
     (m : ℕ) : eMap mu α m ≫ eMap' mu α m = 𝟙 (G4 (A ⊗ B)) ^ (2 * m) := by
@@ -56,19 +56,17 @@ private theorem eMap_comp_eMap'_eq_id_pow [IsCommMonObj A] (mu : B ⟶ A) [IsMon
       g4lift_prj, lift_snd]
 
 /- English proof (translation)
-Use `haveI : IsCommMonObj A := hA.comm`. Use `haveI : IsCommMonObj B := hB.comm`. Establish `hP : P.IsLB` using `hD.isLB`. Establish `hAB : IsAbelianScheme (A ⊗ B)` using `AbelianSchemeGerms.isAbelianScheme_tensor A B hA hB`. Establish `h4 : IsAbelianScheme (G4 (A ⊗ B))` using `AbelianSchemeGerms.isAbelianScheme_tensor _ _ hAB (AbelianSchemeGerms.isAbelianScheme_tensor _ _ hAB (AbelianSchemeGerms.isAbelianScheme_tensor _ _ hAB hAB))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG : IsAbelianScheme ((Over.pullback s).obj (G4 (A ⊗ B)))` using `Z2.isAbelianScheme_pb s _ h4`. Establish `hfin` using `isFinite_mu_fibre hA hB g hgA hgB l mu m hm h₁ h₂ s L hL ha`. Establish `hlp` using `relAmple_lPart hA hB mu s L hL ha hfin`. Establish `hlpLB : (lPart mu s L).IsLB` using `LB.isLB_linComb hL _ _`. Establish `hzb : (zb mu α s P L).IsLB` using `isLB_zb mu α s hP hL`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `c1 : (Over.pullback s).map (eMap' mu α m) ≫ (Over.pullback s).map (eMap mu α m) = 𝟙 _ ^ (2 * m)`. Rewrite using `[← Functor.map_comp, eMap'_comp_eMap, Z2.pb_map_id_pow]`. Establish `c2 : (Over.pullback s).map (eMap mu α m) ≫ (Over.pullback s).map (eMap' mu α m) = 𝟙 _ ^ (2 * m)`. Rewrite using `[← Functor.map_comp, eMap_comp_eMap'_eq_id_pow, Z2.pb_map_id_pow]`. Establish `hE1 : ((zb mu α s P L).pull (Over.Hom.left ((Over.pullback s).map (eMap mu α m)))).IsLB` using `LB.isLB_pull hzb _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE` using `two_cls_eMap hA hB hD hD' l mu α s L hL e m hm h₁ h₂ hα hα' hE1 hlpLB`. Establish `hEa` using `relAmple_of_two_smul hG hE1 hlpLB 2 (by norm_num) hE hlp`. Take `⟨hE'fin, -, -, -⟩` from `Z2.fin_surj_core hG hG ((Over.pullback s).map (eMap' mu α m)) ((Over.pullback s).map (eMap mu α m)) (2 * m) (by omega) c1 c2 hlpLB hlp`. Use `haveI := hE'fin`. Use `haveI : IsProper ((Over.pullback s).obj (G4 (A ⊗ B))).hom := hG.proper`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `GlobalTheory.PosDefAmple.relAmple_pull_of_isAffineHom ((Over.pullback s).map (eMap' mu α m)) hE1 hEa`. Establish `hNLB` using `LB.isLB_pull hE1 (Over.Hom.left ((Over.pullback s).map (eMap' mu α m)))`. Establish `hP2 : ((zb mu α s P L).pull (Over.Hom.left (𝟙 ((Over.pullback s).obj (G4 (A ⊗ B))) ^ (2 * m)))).IsLB` using `LB.isLB_pull hzb _`. Establish `hpow` using `Z2.two_cls_pow hA hB hD hD' l mu α s L hL e (2 * m) hP2`. Establish `hN : cls _ hNLB = cls _ hP2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cls_pull hE1, cls_pull hzb, cls_pull hzb, ← pull_comp, ← Over.comp_left, c1]`. Establish `hM : (lbPow (zb mu α s P L) ((2 * m) ^ 2)).IsLB` using `GlobalTheory.isLB_lbPow hzb _`. Establish `key : 2 • cls _ hM = 2 • cls _ hNLB`. Rewrite using `[hN, hpow, cls_lbPow hzb, smul_smul]`. Establish `h3` using `relAmple_of_two_smul hG hM hNLB 2 (by norm_num) key h2`.
-
-Conclude with `relAmple_of_lbPow hG hzb ((2 * m) ^ 2) (Nat.one_le_pow _ _ (by omega)) h3`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem relAmple_zb (hA : IsAbelianScheme A) (hB : IsAbelianScheme B) {P : LB (A ⊗ B).left} (hD : IsDual A B P)
     (hD' : IsDual B A (swap P)) (l : A ⟶ B) [IsMonHom l] (mu : B ⟶ A) [IsMonHom mu] (α : Matrix (Fin 4) (Fin 4) ℤ)

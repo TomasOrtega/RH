@@ -19,9 +19,9 @@ open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual Reciproc
 namespace GlobalTheory.ExtraFromFacts
 
 /- English proof (translation)
-Introduce `hP`. Take `⟨CT, hCT⟩` from `GlobalTheory.T.bound_of_twisting_eigen_series_facts hP`. Use `⟨8 * (CT : ℝ), CT, by positivity, ?_⟩` and prove the remaining obligations. Introduce `D nch hf h`. Use `⟨?_, hCT D nch hf h⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hchi, ⟨Q, hDZ, hE⟩, hine, hser⟩` from `h`. Establish `hS` using `GlobalTheory.T.steps_of_artin_reciprocity hP.artin`. Conclude with `GlobalTheory.T.joint_condition_of_eigen_central_series D Q hE (hS.2.1 hS.1 D Q) hser hf.Conclusion1.1 hf.what₂.a.tieLab hf.adm.1.1.1 hf.adm.1.1.2.2.1 hf.adm.1.1.2.2.2.2.2.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem main : Hypotheses₂ → ∃ (C : ℝ) (CT : ℕ), 0 ≤ C ∧ ∀ (D : D7) (nch : NChoice D), GlobalTheory.NFacts.Facts D nch → (PairedCharacterCondition.tieChi (D := D) ∧ (∃ Q : PairedCharacterCondition.Pend (D), PairedCharacterCondition.admDZ Q ∧ GlobalTheory.Pass.EigSpan Q) ∧ GlobalTheory.Pass.TieInePoly (D) ∧ GlobalTheory.TypeLeaf.SerLoc (D)) → Extra D C CT := by
   intro hP

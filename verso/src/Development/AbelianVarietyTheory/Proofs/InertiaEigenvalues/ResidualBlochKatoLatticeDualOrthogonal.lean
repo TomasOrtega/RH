@@ -7,9 +7,9 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 namespace GlobalTheory.ResOrth
 
 /- English proof (translation)
-Establish `h1 : Submodule.span k S ≤ A.map B.mkQ` using `Submodule.span_le.2 fun ξ hξ => by`. Take `⟨z, hz, rfl⟩` from `hS ξ hξ`. Conclude with `⟨z, hz, rfl⟩`. Take `⟨z, hz, e⟩` from `h1 hx`. Establish `h2 : z - x ∈ B` using `(Submodule.Quotient.eq B).1 e`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `using A.sub_mem hz (hB h2)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_of_mk_mem_span {k Z : Type} [CommRing k] [AddCommGroup Z] [Module k Z] {A B : Submodule k Z} (hB : B ≤ A)
     {S : Set (Z ⧸ B)} (hS : ∀ ξ ∈ S, ∃ z ∈ A, ξ = Submodule.Quotient.mk z) {x : Z}
@@ -60,7 +60,7 @@ variable [TopologicalSpace M] [DiscreteTopology M] [TopologicalSpace M'] [Discre
 variable {χ ρ ρ' P}
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `(mem_coboundaries1 _ _).1 hx`. Use `⟨fun g => P m (y g), ((IsLocallyConstant.iff_continuous _).2 hy.1).comp _, fun g h => ?_⟩` and prove the remaining obligations. Simplify using `only [hm, hy.2, map_sub, map_add, LinearMap.sub_apply, hP]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cupCob_of_left_coboundary (hP : ∀ g x y, P (ρ g x) (ρ' g y) = χ g * P x y) {x : Γ → M} (hx : x ∈ B1 ρ)
     {y : Γ → M'} (hy : y ∈ Z1 ρ') : CupCob χ ρ' P x y := by
@@ -70,7 +70,7 @@ theorem cupCob_of_left_coboundary (hP : ∀ g x y, P (ρ g x) (ρ' g y) = χ g *
   ring
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `(mem_coboundaries1 _ _).1 hy`. Establish `h1 : Continuous fun g => ρ' g m` using `hρ'.comp (f := fun g : Γ => (g, m)) (by fun_prop)`. Use `⟨fun g => -P (x g) (ρ' g m), (((IsLocallyConstant.iff_continuous _).2 hx.1).prodMk ((IsLocallyConstant.iff_continuous _).2 h1)).comp fun p => -P p.1 p.2, fun g h => ?_⟩` and prove the remaining obligations. Simplify using `only [hm, hx.2, map_sub, map_add, map_mul, LinearMap.add_apply, Module.End.mul_apply, hP]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cupCob_of_right_coboundary (hP : ∀ g x y, P (ρ g x) (ρ' g y) = χ g * P x y) (hρ' : ContAction ρ')
     {x : Γ → M} (hx : x ∈ Z1 ρ) {y : Γ → M'} (hy : y ∈ B1 ρ') : CupCob χ ρ' P x y := by
@@ -82,9 +82,9 @@ theorem cupCob_of_right_coboundary (hP : ∀ g x y, P (ρ g x) (ρ' g y) = χ g 
   ring
 
 /- English proof (translation)
-Use `mem_of_mk_mem_span (A := (leftPerp χ ρ' P y.1).comap (Z1 ρ).subtype) (fun z hz => cupCob_of_left_coboundary hP hz y.2) (fun ξ hξ => ?_) hx` and prove the remaining obligations. Take `⟨z, hz, rfl⟩` from `hS ξ hξ`. Use `⟨z, ?_, rfl⟩` and prove the remaining obligations. Use `mem_of_mk_mem_span (A := (rightPerp χ ρ' P z.1).comap (Z1 ρ').subtype) (fun z' hz' => cupCob_of_right_coboundary hP hρ' z.2 hz') (fun ξ' hξ' => ?_) hy` and prove the remaining obligations. Take `⟨z', hz', rfl⟩` from `hS' ξ' hξ'`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨z', h z z' hz hz', rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem cupCob_of_span (hP : ∀ g x y, P (ρ g x) (ρ' g y) = χ g * P x y) (hρ' : ContAction ρ')
     {S : Set (H1 ρ)} {S' : Set (H1 ρ')} (p : Z1 ρ → Prop) (p' : Z1 ρ' → Prop)
@@ -108,11 +108,11 @@ section DVR
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
 /- English proof (translation)
-Establish `h0 : algebraMap O (FractionRing O) ϖ ≠ 0` using `by simpa using hϖ.ne_zero`. Set `φ : O →ₗ[O] KmodO O` to `(Submodule.mkQ _).comp ((LinearMap.mulLeft O (algebraMap O (FractionRing O) ϖ)⁻¹).comp (Algebra.linearMap O (FractionRing O)))`. Establish `hk : LinearMap.ker φ = IsLocalRing.maximalIdeal O`. Use extensionality with `a`. Rewrite using `[LinearMap.mem_ker, hϖ.maximalIdeal_eq, Ideal.mem_span_singleton]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `(Submodule.Quotient.mk_eq_zero _).trans ⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨b, hb⟩`. Use `⟨b, IsFractionRing.injective O (FractionRing O) ?_⟩` and prove the remaining obligations. Establish `hb' : algebraMap O (FractionRing O) b = (algebraMap O (FractionRing O) ϖ)⁻¹ * algebraMap O (FractionRing O) a` using `hb`. Rewrite using `[map_mul, hb', mul_inv_cancel_left₀ h0]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨b, rfl⟩`. Use `⟨b, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap O (FractionRing O) b = (algebraMap O (FractionRing O) ϖ)⁻¹ * algebraMap O (FractionRing O) (ϖ * b)`. Rewrite using `[map_mul, inv_mul_cancel_left₀ h0]`. Conclude with `⟨(IsLocalRing.maximalIdeal O).liftQ φ hk.ge, LinearMap.ker_eq_bot.1 (Submodule.ker_liftQ_eq_bot _ _ _ hk.le), fun a => rfl⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_residue_embedding {ϖ : O} (hϖ : Irreducible ϖ) :
     ∃ f : IsLocalRing.ResidueField O →ₗ[O] KmodO O, Function.Injective f ∧ ∀ a : O,
@@ -139,11 +139,11 @@ theorem exists_residue_embedding {ϖ : O} (hϖ : Irreducible ϖ) :
     LinearMap.ker_eq_bot.1 (Submodule.ker_liftQ_eq_bot _ _ _ hk.le), fun a => rfl⟩
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ b`. Take `⟨x, y, hy, rfl⟩` from `IsFractionRing.div_surjective (A := O) a`. Establish `hy0 : y ≠ 0` using `nonZeroDivisors.ne_zero hy`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Take `⟨n, hn⟩` from `IsDiscreteValuationRing.associated_pow_irreducible hy0 hϖ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `hl` using `[hϖ.maximalIdeal_eq, Ideal.mem_span_singleton]`. Take `⟨c, hc⟩` from `hn.dvd.trans (pow_dvd_pow_of_dvd hl n)`. Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[← Submodule.mkQ_apply, ← map_nsmul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Use `⟨c * x, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : algebraMap O (FractionRing O) y ≠ 0` using `by simpa using hy0`. Rewrite using `[Algebra.linearMap_apply, nsmul_eq_mul, Nat.cast_pow, ← map_natCast (algebraMap O (FractionRing O)), ← map_pow, hc, map_mul, map_mul]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem kmod_torsion {l : ℕ} (hl : (l : O) ∈ IsLocalRing.maximalIdeal O) (b : KmodO O) :
     ∃ n : ℕ, l ^ n • b = 0 := by
@@ -168,7 +168,7 @@ variable {D : Formalism.BasicNotions.D7} {N : NData D.R D.host D.what₂} {X : N
   {K : Type} [Field K] [Algebra (X.O0 i) K]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Simplify using `[repOn, matAct, Matrix.mulVec, dotProduct]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem red_apply (ρ : GE N →* GL (Fin D.R.r) (X.O0 i)) (g : GE N) (m : Fin D.R.r → K) :
     red i K ρ g m = ((ρ g : Matrix (Fin D.R.r) (Fin D.R.r) (X.O0 i)).map (algebraMap (X.O0 i) K)).mulVec m := by
@@ -176,9 +176,9 @@ theorem red_apply (ρ : GE N →* GL (Fin D.R.r) (X.O0 i)) (g : GE N) (m : Fin D
   simp [repOn, matAct, Matrix.mulVec, dotProduct]
 
 /- English proof (translation)
-Establish `h3 : IsUnit (Tmat i s g).det`. Rewrite using `[← Tgl_coe]`. Conclude with `Matrix.isUnits_det_units _`. Establish `e : (Tmat i s g).transpose * Tdual i s g = ((eps0 X i g : (X.O0 i)ˣ) : X.O0 i) • 1`. Rewrite using `[Tdual, Matrix.mul_smul, ← Matrix.transpose_mul, Matrix.nonsing_inv_mul _ h3, Matrix.transpose_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[red_apply, red_apply, hρ, Tgl_coe, ← Matrix.vecMul_transpose, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, ← Matrix.transpose_map, ← Matrix.map_mul, e, Matrix.smul_one_eq_diagonal, Matrix.diagonal_map (map_zero _), ← Matrix.smul_one_eq_diagonal, Matrix.smul_mulVec, Matrix.o …`.
+A detailed English derivation is pending.
 -/
 theorem red_dot (s : X.Sig i) {ρ : GE N →* GL (Fin D.R.r) (X.O0 i)} (hρ : IsDual i s ρ) (g : GE N)
     (x y : Fin D.R.r → K) :
@@ -192,23 +192,23 @@ theorem red_dot (s : X.Sig i) {ρ : GE N →* GL (Fin D.R.r) (X.O0 i)} (hρ : Is
     ← Matrix.smul_one_eq_diagonal, Matrix.smul_mulVec, Matrix.one_mulVec, dotProduct_smul, smul_eq_mul]
 
 /- English proof (translation)
-Introduce `hT D N X bkP i s hG K _ _ _ _ hK ρ hρ v hv x y hx hy`. Establish `hloc : IsLocalHom (algebraMap (X.O0 i) K)` using `⟨fun a ha => by`. Assume the negation of the conclusion as `hn`. Conclude with `ha.ne_zero (hK a hn)⟩`. Establish `hc : ContAction (red i K ρ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.PrimeToInertia.contAction_repOn (X.twistBaseCoefficientRing_isAdic i) ρ ?_ 1 (by rw [MonoidHom.ker_one, Subgroup.coe_top]; exact isOpen_univ) fun b => ⟨1, fun x hx => ?_⟩` and prove the remaining obligations. Repeatedly rewrite using `[hρ _]`. Conclude with `GlobalTheory.PrimeToInertia.continuous_Tdual i s`. Rewrite `hx` using `[pow_one, IsLocalRing.maximalIdeal_eq_bot, Ideal.mem_bot]`. Rewrite using `[hx, zero_smul]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hx`, `hy` using `[bkOn, dif_pos hv]`. Use `cupCob_of_span (ρ := (red i K (Tgl i s)).comp (DecV N v).subtype) (ρ' := (red i K ρ).comp (DecV N v).subtype) (P := dotProductBilin K K) (fun g a b => red_dot s hρ g.1 a b) (hc.comp (f := fun p : DecV N v × (Fin D.R.r → K) => ((p.1 : GE N), p.2)) (by fun_prop)) (fun z => ∃ d b, I …` and prove the remaining obligations. Introduce and unpack `ξ ⟨z, c, d, b, h1, h2, h3, rfl⟩`. Conclude with `⟨z, ⟨d, b, isFCoc_iff.2 ⟨c, h1, h2⟩, h3⟩, rfl⟩`. Introduce and unpack `ξ ⟨z, c, d, b, h1, h2, h3, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨z, ⟨d, b, isFCoc_iff.2 ⟨c, h1, h2⟩, h3⟩, rfl⟩`. Introduce and unpack `z z' ⟨d, b, hd, e⟩ ⟨d', b', hd', e'⟩`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible (X.O0 i)`. Establish `hopen : IsOpen ((IsLocalRing.maximalIdeal (X.O0 i) : Ideal (X.O0 i)) : Set (X.O0 i))`. Simplify using `using (isAdic_iff.1 (X.twistBaseCoefficientRing_isAdic i)).1 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlc : ∀ a, IsLocallyConstant fun g => IsLocalRing.residue (X.O0 i) (d' g a)` using `fun a => by`. Establish `hca : Continuous fun g => d' g a` using `(continuous_apply a).comp hd'.continuous`. Use `(IsLocallyConstant.iff_eventually_eq _).2 fun g => ?_` and prove the remaining obligations. Use `filter_upwards [(hopen.preimage (hca.sub (continuous_const (y := d' g a)))).mem_nhds (x := g) (by simp)] with h hh`. Rewrite using `[← sub_eq_zero, ← map_sub, IsLocalRing.residue_eq_zero_iff]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hh`. Take `⟨f, hf, ef⟩` from `(GlobalTheory.T.lift_blochKatoCocycle_iff_orthogonal_lattice D N X bkP i s hG ρ hρ v hv ϖ hϖ d' hlc (fun g h a => by`. Rewrite using `[hd'.cocycle, hρ]; simp)).1 ⟨d', hd', fun g a => by simp⟩ d hd`. Take `⟨ι, hι, eι⟩` from `exists_residue_embedding hϖ`. Use `X.twistBaseCoefficientRing_residueField_finite i` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c, hc, ec⟩` from `GlobalTheory.LocalH2Injective.h2_inj hT D.host.E N.Om (X.l i) _ v (N.plOm.2 v) (X.O0 i) _ _ ι hι (kmod_torsion (GlobalTheory.PrimeToInertia.l_mem i)) (fun g h => IsLocalRing.residue (X.O0 i) (d g ⬝ᵥ (Tdual i s g.1).mulVec (d' h))) f hf (fun g h => (eι _).trans (ef g h))`. Set `π : IsLocalRing.ResidueField (X.O0 i) →+* K` to `IsLocalRing.ResidueField.lift (algebraMap (X.O0 i) K)`. Establish `hπ : ∀ a, π (IsLocalRing.residue (X.O0 i) a) = algebraMap (X.O0 i) K a` using `fun a => rfl`. Use `⟨fun g => b * b' * π (c g), hc.comp fun t => b * b' * π t, fun g h => ?_⟩` and prove the remaining obligations. Establish `e1` using `congrArg π (ec g h)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e1` using `[hπ, map_add, map_sub, Algebra.smul_def, map_mul]`. Establish `e2 : π (algebraMap (X.O0 i) _ (algebraMap ℤ_[X.l i] (X.O0 i) ((cycZ D.host.E N.Om (X.l i) g.1 : ℤ_[X.l i]ˣ) : ℤ_[X.l i]))) = algebraMap (X.O0 i) K ((eps0 X i g.1 : (X.O0 i)ˣ) : X.O0 i)` using `rfl`. Rewrite `e1` using `[e2]`. Establish `e3 : z.1 g ⬝ᵥ red i K ρ g.1 (z'.1 h) = b * b' * algebraMap (X.O0 i) K (d g ⬝ᵥ (Tdual i s g.1).mulVec (d' h))`. Rewrite using `[red_apply, hρ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [dotProduct, Matrix.mulVec, e, e', map_sum, map_mul, Matrix.map_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring` and prove the remaining obligations. Use `e3.trans ?_` and prove the remaining obligations. Rewrite using `[e1]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem bkOn_orthogonal : LocalTateDuality → ∀ (D : Formalism.BasicNotions.D7) (N : NData D.R D.host D.what₂) (X : NTw D.R D.host D.what₂ D.LL0 N) (bkP : BKPh X) (i : X.Tw) (s : X.Sig i), GalHyp bkP i s → ∀ (K : Type) [Field K] [Algebra (X.O0 i) K] [TopologicalSpace K] [DiscreteTopology K], IsRes i K → ∀ ρ, IsDual i s ρ → ∀ v ∈ placesOver D.host.E (X.l i), ∀ (x : Z1 ((red i K (Tgl i s)).comp (DecV N v).subtype)) (y : Z1 ((red i K ρ).comp (DecV N v).subtype)), Submodule.Quotient.mk x ∈ bkOn bkP i (Tgl i s) (1 : GE N →* Kˣ) K v → Submodule.Quotient.mk y ∈ bkOn bkP i ρ (1 : GE N →* Kˣ) K v → CupCob (fun g : DecV N v => algebraMap (X.O0 i) K ((eps0 X i g.1 : (X.O0 i)ˣ) : X.O0 i)) ((red i K ρ).comp (DecV N v).subtype) (dotProductBilin K K) x.1 y.1 := by
   intro hT D N X bkP i s hG K _ _ _ _ hK ρ hρ v hv x y hx hy

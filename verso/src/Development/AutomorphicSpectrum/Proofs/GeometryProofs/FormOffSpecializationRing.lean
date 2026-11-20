@@ -15,7 +15,7 @@ section Forms
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Introduce `m hm k`. Break down `Finset.mem_union.mp (MvPolynomial.support_add hm) with h | h` into its components or cases. Conclude with `hf m h k`. Conclude with `hg m h k`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem mh_add {f g : MRing ι} {a : K → ℕ} (hf : IsMultiHomog f a) (hg : IsMultiHomog g a) :
     IsMultiHomog (f + g) a := by
@@ -26,7 +26,7 @@ theorem mh_add {f g : MRing ι} {a : K → ℕ} (hf : IsMultiHomog f a) (hg : Is
   · exact hg m h k
 
 /- English proof (translation)
-Introduce `m hm k`. Rewrite `hm` using `[MvPolynomial.support_neg]`. Conclude with `hf m hm k`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mh_neg {f : MRing ι} {a : K → ℕ} (hf : IsMultiHomog f a) : IsMultiHomog (-f) a := by
   intro m hm k
@@ -34,16 +34,16 @@ theorem mh_neg {f : MRing ι} {a : K → ℕ} (hf : IsMultiHomog f a) : IsMultiH
   exact hf m hm k
 
 /- English proof (translation)
-Introduce `m hm`. Simplify using `at hm`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem mh_zero (a : K → ℕ) : IsMultiHomog (0 : MRing ι) a := by
   intro m hm
   simp at hm
 
 /- English proof (translation)
-Introduce `m hm k`. Establish `hm0 : m = 0`. Rewrite `hm` using `[MvPolynomial.mem_support_iff, MvPolynomial.coeff_C]`. Assume the negation of the conclusion as `hne`. Conclude with `hm (if_neg (Ne.symm hne))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Substitute using the available equality.
 
-Substitute `hm0` using the available equality. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mh_C (r : ℤ) : IsMultiHomog (MvPolynomial.C r : MRing ι) 0 := by
   classical
@@ -56,7 +56,7 @@ theorem mh_C (r : ℤ) : IsMultiHomog (MvPolynomial.C r : MRing ι) 0 := by
   simp
 
 /- English proof (translation)
-Introduce `m hm k`. Take `⟨m1, h1, m2, h2, rfl⟩` from `Finset.mem_add.mp (MvPolynomial.support_mul f g hm)`. Simplify using `only [Finsupp.coe_add, Pi.add_apply, Finset.sum_add_distrib, hf m1 h1 k, hg m2 h2 k]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 private theorem isMultiHomog_mul_of_mRing {f g : MRing ι} {a b : K → ℕ} (hf : IsMultiHomog f a) (hg : IsMultiHomog g b) :
     IsMultiHomog (f * g) (a + b) := by
@@ -66,9 +66,9 @@ private theorem isMultiHomog_mul_of_mRing {f g : MRing ι} {a b : K → ℕ} (hf
   simp only [Finsupp.coe_add, Pi.add_apply, Finset.sum_add_distrib, hf m1 h1 k, hg m2 h2 k]
 
 /- English proof (translation)
-Use `revert h`. Use `Finset.induction_on S ?_ ?_` and prove the remaining obligations. Introduce `_`. Simplify using `using mh_C (ι := ι) 1`. Introduce `i S hi ih h`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_insert hi, Finset.sum_insert hi]`. Conclude with `isMultiHomog_mul_of_mRing (h i (Finset.mem_insert_self i S)) (ih fun j hj => h j (Finset.mem_insert_of_mem hj))`.
+A detailed English derivation is pending.
 -/
 theorem mh_prod {I : Type} (S : Finset I) {f : I → MRing ι} {d : I → K → ℕ}
     (h : ∀ i ∈ S, IsMultiHomog (f i) (d i)) : IsMultiHomog (∏ i ∈ S, f i) (∑ i ∈ S, d i) := by
@@ -89,19 +89,19 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : 
   {y : (Σ k, ι k) → Ω} {z : (Σ k, ι k) → 𝕜}
 
 /- English proof (translation)
-Use `⟨0, 0, 0, 1, mh_zero 0, by simpa using mh_C (ι := ι) 1, fun k => by simp, by simp, by simp, by simp⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem hv_zero : Small.HasVal y (0 : K → ℤ) (0 : Ω) z (0 : 𝕜) := by
   refine ⟨0, 0, 0, 1, mh_zero 0, by simpa using mh_C (ι := ι) 1, fun k => by simp, by simp, by simp, by simp⟩
 
 /- English proof (translation)
-Take `⟨dg, dh, g, hp, hg, hh, e, ey, hz, ez⟩` from `h`. Take `⟨dg', dh', g', hp', hg', hh', e', ey', hz', ez'⟩` from `h'`. Establish `hd : dg = dh` using `funext fun k => by`. Use `e k` as an intermediate fact. Simplify using `only [Pi.zero_apply, add_zero] at this`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `this` after adjusting the coercions. Establish `hd' : dg' = dh'` using `funext fun k => by`. Use `e' k` as an intermediate fact. Simplify using `only [Pi.zero_apply, add_zero] at this`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Substitute `hd hd'` using the available equality. Use `⟨dg + dg', dg + dg', g * hp' + g' * hp, hp * hp', mh_add (isMultiHomog_mul_of_mRing hg hh') ?_, isMultiHomog_mul_of_mRing hh hh', fun k => by simp, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[add_comm dg dg']`. Conclude with `isMultiHomog_mul_of_mRing hg' hh`. Simplify using `only [map_add, map_mul, ey, ey']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_mul]`. Conclude with `mul_ne_zero hz hz'`. Simplify using `only [map_add, map_mul, ez, ez']`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hv_add {s s' : Ω} {w w' : 𝕜} (h : Small.HasVal y (0 : K → ℤ) s z w)
     (h' : Small.HasVal y (0 : K → ℤ) s' z w') : Small.HasVal y (0 : K → ℤ) (s + s') z (w + w') := by
@@ -128,7 +128,7 @@ theorem hv_add {s s' : Ω} {w w' : 𝕜} (h : Small.HasVal y (0 : K → ℤ) s z
     ring
 
 /- English proof (translation)
-Take `⟨dg, dh, g, hp, hg, hh, e, ey, hz, ez⟩` from `h`. Conclude with `⟨dg, dh, -g, hp, mh_neg hg, hh, e, by rw [map_neg, ey, neg_mul], hz, by rw [map_neg, ez, neg_mul]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem hv_neg {s : Ω} {w : 𝕜} (h : Small.HasVal y (0 : K → ℤ) s z w) :
     Small.HasVal y (0 : K → ℤ) (-s) z (-w) := by
@@ -136,7 +136,7 @@ theorem hv_neg {s : Ω} {w : 𝕜} (h : Small.HasVal y (0 : K → ℤ) s z w) :
   exact ⟨dg, dh, -g, hp, mh_neg hg, hh, e, by rw [map_neg, ey, neg_mul], hz, by rw [map_neg, ez, neg_mul]⟩
 
 /- English proof (translation)
-Conclude with `⟨d, d, g, h, hg, hh, fun k => by simp, e, hz, (div_mul_cancel₀ _ hz).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem hv_quot {d : K → ℕ} {g h : MRing ι} (hg : IsMultiHomog g d) (hh : IsMultiHomog h d)
     {s : Ω} (e : MvPolynomial.aeval y g = s * MvPolynomial.aeval y h) (hz : MvPolynomial.aeval z h ≠ 0) :
@@ -144,7 +144,7 @@ theorem hv_quot {d : K → ℕ} {g h : MRing ι} (hg : IsMultiHomog g d) (hh : I
   exact ⟨d, d, g, h, hg, hh, fun k => by simp, e, hz, (div_mul_cancel₀ _ hz).symm⟩
 
 /- English proof (translation)
-Use `⟨0, 0, 1, MvPolynomial.C (n : ℤ), by simpa using mh_C (ι := ι) 1, mh_C (n : ℤ), fun k => by simp, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `[hn]`. Simplify using `using hn`. Simplify using `[hn]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 -/
 theorem hv_natInv [CharZero Ω] [CharZero 𝕜] {n : ℕ} (hn : n ≠ 0) :
     Small.HasVal y (0 : K → ℤ) ((n : Ω))⁻¹ z ((n : 𝕜))⁻¹ := by
@@ -183,7 +183,7 @@ def valMap (hz : z ∈ Small.ptsOver 𝕜 (mCoordIdeal y)) : valRing y z →+* �
       (hv_add a.2.choose_spec b.2.choose_spec)
 
 /- English proof (translation)
-Conclude with `x.2.choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem hasVal_valMap (hz : z ∈ Small.ptsOver 𝕜 (mCoordIdeal y)) (x : valRing y z) :
     Small.HasVal y (0 : K → ℤ) (x : Ω) z (valMap hz x) := by
@@ -192,17 +192,15 @@ theorem hasVal_valMap (hz : z ∈ Small.ptsOver 𝕜 (mCoordIdeal y)) (x : valRi
 end Values
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ _ y hbir B`. Establish `hb' : ∀ s : Ω, ∃ (d : K → ℕ) (g h : MRing ι), IsMultiHomog g d ∧ IsMultiHomog h d ∧ MvPolynomial.aeval y h ≠ 0 ∧ MvPolynomial.aeval y g = s * MvPolynomial.aeval y h` using `hbir`. Use `choose d g hq hg hh hyne e using hb'`. Establish `key : ∀ f : MRing ι, MvPolynomial.eval (fun _ => (1 : Ω)) (mConeMap y f) = MvPolynomial.aeval y f`. Introduce `f`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `f using MvPolynomial.induction_on`. Simplify using `[mConeMap]`. Name the introduced variables `hp hq`. Simplify using `only [map_add, hp, hq]`. Name the introduced variables `hp`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [map_mul, hp]`. Simplify using `[mConeMap]`. Use `⟨∏ b ∈ B, hq b, ⟨⟨∑ b ∈ B, d b, mh_prod B fun b _ => hh b⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `hu`. Establish `h0 : MvPolynomial.aeval y (∏ b ∈ B, hq b) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← key, show mConeMap y (∏ b ∈ B, hq b) = 0 from hu, map_zero]`. Rewrite `h0` using `[map_prod, Finset.prod_eq_zero_iff]`. Take `⟨b, _, hb⟩` from `h0`. Conclude with `hyne b hb`. Introduce `𝕜 _ _ z hz hzu`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Rewrite `hzu` using `[map_prod]`. Use `⟨valRing y z, valMap hz, ?_, ?_, fun x => hasVal_valMap hz x⟩` and prove the remaining obligations. Introduce `b hb`. Conclude with `⟨_, hv_quot (hg b) (hh b) (e b) (Finset.prod_ne_zero_iff.mp hzu b hb)⟩`. Introduce `n hn`.
-
-Conclude with `⟨_, hv_natInv hn⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_subring_val : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Ω : Type) [Field Ω] [CharZero Ω] (y : (Σ k, ι k) → Ω), Birational y → ∀ B : Finset Ω, ∃ u : MRing ι, Small.IsFormOff (mCoordIdeal y) u ∧ ∀ (𝕜 : Type) [Field 𝕜] [CharZero 𝕜] (z : (Σ k, ι k) → 𝕜), z ∈ Small.ptsOver 𝕜 (mCoordIdeal y) → MvPolynomial.aeval z u ≠ 0 → ∃ (A : Subring Ω) (ev : A →+* 𝕜), (↑B : Set Ω) ⊆ A ∧ (∀ n : ℕ, n ≠ 0 → ((n : Ω))⁻¹ ∈ A) ∧ ∀ x : A, Small.HasVal y 0 (x : Ω) z (ev x) := by
   intro K _ ι _ Ω _ _ y hbir B

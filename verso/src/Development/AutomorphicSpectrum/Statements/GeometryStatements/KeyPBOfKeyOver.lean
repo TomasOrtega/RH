@@ -26,7 +26,7 @@ def keyInOf {R : Type} [CommRing R] (t : SAB H (Sp R)) (th : t.PP.L.Sec) (g : �
   basis := hv
 
 /- English proof (translation)
-Take `⟨φ, he, w, h1, h2, h3, h4, h5⟩` from `h`. Use `⟨φ, he, w, rfl, dualMap f, h1, h2, h3, h4, fun a => ?_, ?_, h5⟩` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`. Apply the tactic sequence `ext <;> simp [dualMap]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem keyPB_of_keyOver {R K : Type} [CommRing R] [Field K] (f : R →+* K) (t : SAB H (Sp R)) (th : t.PP.L.Sec)
     (x : KeyIn K) (v : Fin x.P.g → (epsR R ⟶ t.G)) (hv hab hd hs ha hk hth) (h : KeyOver f t th x v) :
@@ -37,7 +37,7 @@ theorem keyPB_of_keyOver {R K : Type} [CommRing R] [Field K] (f : R →+* K) (t 
   · ext <;> simp [dualMap]
 
 /- English proof (translation)
-Take `⟨u, hu, -⟩` from `hκ R K _ x (keyPB_of_keyOver _ t th x v hv hab hd hs ha hk hth h)`. Conclude with `⟨u, hu⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem unit_of_good (κ : GlobalTheory.KeyCl.Rule) (hκ : GlobalTheory.KeyCl.UnitSp κ) {R K : Type} [CommRing R] [IsDomain R]
     [IsDiscreteValuationRing R] [Field K] [CharZero K] [Algebra R K] [IsFractionRing R K] (t : SAB H (Sp R))

@@ -27,7 +27,7 @@ section Glob
 variable {D : Formalism.BasicNotions.D7} (X : HidaSetting D) (hb : Formalism.L2.SG.AdBridge.AdBridgeIso X.B.I)
 
 /- English proof (translation)
-Take `⟨K, hKe, -, -, -, hfin⟩` from `LocIdx_main X hb (Formalism.L2.SG.Closed.level_subgroup_is_group X) (Formalism.L2.SG.Closed.level_subgroup_properties X) p`. Establish `hcl : KvS X p = K` using `by rw [KvS, ← hKe, Subgroup.closure_eq]`. Rewrite using `[lIdx, LocIdx_KppvS X hb (Formalism.L2.SG.Closed.level_subgroup_is_group X) p, hcl]`. Conclude with `hfin`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lIdx_ne (p : TypX X) : lIdx X hb p ≠ 0 := by
   obtain ⟨K, hKe, -, -, -, hfin⟩ := LocIdx_main X hb (Formalism.L2.SG.Closed.level_subgroup_is_group X)
@@ -37,23 +37,23 @@ theorem lIdx_ne (p : TypX X) : lIdx X hb p ≠ 0 := by
   exact hfin
 
 /- English proof (translation)
-The claim follows from `Nat.one_le_iff_ne_zero.mpr (Formalism.L2.SG.Pf.modulus_g_ne_zero X)`.
+A detailed English derivation is pending.
 -/
 theorem g_pos : 1 ≤ X.B.g := Nat.one_le_iff_ne_zero.mpr (Formalism.L2.SG.Pf.modulus_g_ne_zero X)
 
 /- English proof (translation)
-The claim follows from `X.B.I.topf_open X.B.g (g_pos X)`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_Kg : IsOpen (X.B.I.Kg X.B.g) := X.B.I.topf_open X.B.g (g_pos X)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Formalism.L2.SG.Pf.unitaryCongruence.K_one _, fun y _ => ⟨0, zero_mem _, by rw [show X.B.I.fmat 1 = 1 from rfl, sub_self, Matrix.zero_mulVec, smul_zero]⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem one_mem_Kg : (1 : X.B.I.Gf) ∈ X.B.I.Kg X.B.g :=
   ⟨Formalism.L2.SG.Pf.unitaryCongruence.K_one _, fun y _ => ⟨0, zero_mem _, by rw [show X.B.I.fmat 1 = 1 from rfl, sub_self, Matrix.zero_mulVec, smul_zero]⟩⟩
 
 /- English proof (translation)
-Use `Subgroup.isOpen_of_mem_nhds _ (g := 1) ?_` and prove the remaining obligations. Use `Filter.mem_of_superset ((isOpen_Kg X).mem_nhds (one_mem_Kg X)) ?_` and prove the remaining obligations. Introduce `x hx`. Conclude with `((Formalism.L2.SG.Closed.level_subgroup_properties X).1 x hx).1`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isOpen_levelSubgroup' : IsOpen ((levelSubgroupOfCharacter X (Formalism.L2.SG.Closed.level_subgroup_is_group X) : Subgroup X.B.I.Gf) : Set X.B.I.Gf) := by
   refine Subgroup.isOpen_of_mem_nhds _ (g := 1) ?_
@@ -62,7 +62,7 @@ theorem isOpen_levelSubgroup' : IsOpen ((levelSubgroupOfCharacter X (Formalism.L
   exact ((Formalism.L2.SG.Closed.level_subgroup_properties X).1 x hx).1
 
 /- English proof (translation)
-Rewrite using `[← PI.MassDataKppVolLemmas.IP_gIdx X hb (Formalism.L2.SG.Closed.level_subgroup_is_group X)]`. Conclude with `PI.MassDataKppVolLemmas.IP_idxProd X hb PI.MassDataKppVolLemmas.single_component_surjective (Formalism.L2.SG.Closed.level_subgroup_is_group X) (Formalism.L2.SG.Closed.level_subgroup_properties X)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relIdx_eq : ((levelSubgroupOfCharacter X (Formalism.L2.SG.Closed.level_subgroup_is_group X)).relIndex (KsetSub X.B.I)) =
     ∏ p : TypX X, lIdx X hb p := by
@@ -71,9 +71,9 @@ theorem relIdx_eq : ((levelSubgroupOfCharacter X (Formalism.L2.SG.Closed.level_s
     (Formalism.L2.SG.Closed.level_subgroup_is_group X) (Formalism.L2.SG.Closed.level_subgroup_properties X)
 
 /- English proof (translation)
-Establish `hle : levelSubgroupOfCharacter X (Formalism.L2.SG.Closed.level_subgroup_is_group X) ≤ KsetSub X.B.I` using `fun x hx => (Formalism.L2.SG.Closed.level_subgroup_properties X).2.1 x hx`. Establish `hi : (levelSubgroupOfCharacter X (Formalism.L2.SG.Closed.level_subgroup_is_group X)).relIndex (KsetSub X.B.I) ≠ 0`. Rewrite using `[relIdx_eq X hb]`. Conclude with `Finset.prod_ne_zero_iff.2 fun p _ => lIdx_ne X hb p`. Use `Glob_measure_eq_relIndex_mul X.B.μf (KsetSub X.B.I) (levelSubgroupOfCharacter X (Formalism.L2.SG.Closed.level_subgroup_is_group X)) hle (isOpen_levelSubgroup' X) hi` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[relIdx_eq X hb]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem muK_eq : X.B.μf X.B.I.Kset =
     ((∏ p : TypX X, lIdx X hb p : ℕ) : ℝ≥0∞) * X.B.μf X.K2 := by
@@ -88,9 +88,9 @@ theorem muK_eq : X.B.μf X.B.I.Kset =
   exact this
 
 /- English proof (translation)
-Establish `hL` using `Formalism.L2.SG.Closed.level_subgroup_properties X`. Establish `hv2 : 0 < X.volK2` using `ENNReal.toReal_pos hL.2.2.1.ne' hL.2.2.2.ne`. Rewrite using `[muK_eq X hb, ENNReal.toReal_mul, ENNReal.toReal_natCast]`. Unfold `HidaSetting.volK2 at hv2 ⊢`. Rewrite using `[mul_div_assoc, div_self hv2.ne', mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Both sides reduce to the same expression.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem ratio_eq : (X.B.μf X.B.I.Kset).toReal / X.volK2 = ∏ p : TypX X, (lIdx X hb p : ℝ) := by
   have hL := Formalism.L2.SG.Closed.level_subgroup_properties X
@@ -104,15 +104,15 @@ theorem ratio_eq : (X.B.μf X.B.I.Kset).toReal / X.volK2 = ∏ p : TypX X, (lIdx
 end Glob
 
 /- English proof (translation)
-Take `⟨t, rfl⟩` from `hm`. Establish `ht : (t + t) / 2 = t` using `by omega`. Rewrite using `[ht]`. Take `⟨s, rfl⟩ : ∃ s, t = s + 1` from `⟨t - 1, by omega⟩`. Establish `e1 : k + (s + 1 + (s + 1)) - 1 = k + 2 * s + 1` using `by omega`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e2 : k + 2 * s + 1 - 1 = k + 2 * s` using `by omega`. Rewrite `h` using `[e1, e2]`. Simplify using `only [Nat.add_sub_cancel]`. Establish `hA : s * (s - 1) + 2 * s * (k + 1) + s ^ 2 = 2 * s * s + s + 2 * s * k`. Consider the cases of `s with`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Split into cases according to the possible forms of the given data.
 
-Consider the case `zero => simp`. Consider the case `succ r`. Simplify using `only [Nat.add_sub_cancel]`. Expand and normalize the polynomial expressions, which then agree. Establish `hK : (k + 1) * k / 2 = k * (k - 1) / 2 + k`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Consider the cases of `k with`. Consider the case `zero => simp`. Consider the case `succ j`. Simplify using `only [Nat.add_sub_cancel]`. Rewrite using `[show (j + 1 + 1) * (j + 1) = (j + 1) * j + 2 * (j + 1) by ring, Nat.add_mul_div_left _ _ (by norm_num)]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hB : (k + 2 * s + 1) * (k + 2 * s) / 2 = (2 * s * s + s + 2 * s * k) + (k + 1) * k / 2`. Rewrite using `[show (k + 2 * s + 1) * (k + 2 * s) = (k + 1) * k + 2 * (2 * s * s + s + 2 * s * k) by ring, Nat.add_mul_div_left _ _ (by norm_num)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hA]`. Rewrite `h` using `[hB, hK]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -148,9 +148,9 @@ theorem rowLev_arith (k m c : ℕ) (hm : Even m) (h2 : 2 ≤ m) (h : c + k = (k 
   omega
 
 /- English proof (translation)
-Establish `h2` using `R.two_le_m`. Rewrite using `[Nat.card_congr (Equiv.subtypeEquivRight fun A : GL (Fin (R.k + R.m - 1)) (ZMod g) => Formalism.MainNotions.J.isRowLev_iff R.k (R.m / 2 - 1) (A : Matrix (Fin (R.k + R.m - 1)) (Fin (R.k + R.m - 1)) (ZMod g))), Formalism.MainNotions.J.card_pat _ (by`. Simplify using `only [Formalism.MainNotions.J.rowS, Formalism.MainNotions.J.upS, Finset.mem_filter, Finset.mem_univ, true_and]`. Conclude with `fun p hp => hp.1), Nat.card_zmod]`. Unfold `nnC ukC`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Replace the relevant objects with their definitions.
 
-Rewrite using `[MassDataIdxStIm.card_isN, Nat.card_congr (MassDataIdxStIm.upUniGEquiv R.k), MassDataIdxStIm.card_uni, ZMod.card, ← pow_add]`. Use `congr 1`. Establish `h` using `Formalism.MainNotions.J.card_rowS R.k (R.m / 2 - 1) (R.k + R.m - 1) (by omega)`. Rewrite using `[rowLev_arith R.k R.m _ R.m_even h2 h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem card_rowLev (R : Formalism.BasicNotions.Ranks) (g : ℕ) [Fact g.Prime] :
     Nat.card {A : GL (Fin (R.k + R.m - 1)) (ZMod g) //
@@ -171,9 +171,9 @@ theorem card_rowLev (R : Formalism.BasicNotions.Ranks) (g : ℕ) [Fact g.Prime] 
   rfl
 
 /- English proof (translation)
-Establish `hc0 : Nat.card (Formalism.FourierDecayAlt.S3.Idx R.rS R.k) = Nat.card (Fin (R.k + R.m - 1))`. Take `⟨t, ht⟩` from `R.m_even`. Establish `h2` using `R.two_le_m`. Simplify using `only [Formalism.FourierDecayAlt.S3.Idx, Formalism.FourierDecayAlt.S3.Mid, Nat.card_sum, Nat.card_eq_fintype_card, Fintype.card_sum, Fintype.card_fin, Fintype.card_unit, Formalism.BasicNotions.Ranks.rS]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Establish `hc : Fintype.card (Formalism.FourierDecayAlt.S3.Idx R.rS R.k) = Fintype.card (Fin (R.k + R.m - 1))`. Rewrite using `[← Nat.card_eq_fintype_card, ← Nat.card_eq_fintype_card]`. Conclude with `hc0`. Unfold `ggC`. Conclude with `Nat.card_congr (Units.mapEquiv (Matrix.reindexAlgEquiv (ZMod g) (ZMod g) (Fintype.equivOfCardEq hc)).toMulEquiv).toEquiv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem ggC_eq (R : Formalism.BasicNotions.Ranks) (g : ℕ) :
     ggC R.rS R.k g = Nat.card (GL (Fin (R.k + R.m - 1)) (ZMod g)) := by
@@ -195,13 +195,13 @@ section Loc
 variable {D : Formalism.BasicNotions.D7} (X : HidaSetting D) (hb : Formalism.L2.SG.AdBridge.AdBridgeIso X.B.I)
 
 /- English proof (translation)
-Take `⟨K, hKs, -, -, -⟩` from `MassDataIdxSteps.stK_holds X p`. Take `⟨ρ, hρ, hker⟩` from `hR K hKs`. Take `⟨A, hAs, hAk, hcard⟩` from `hI K hKs ρ hρ hker`. Use `MassDataIdxSteps.finite_GL X p` as an intermediate fact. Establish `key` using `MassDataIdxSteps.redIdx K _ ρ hρ A hAk`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hKv : KvS X p = K`. Establish `e : (K : Set _) = Formalism.L2.SG.TypedSets.Kv X.B.I.cm.sig X.B.I.J (lamS X) p.1` using `hKs`. Rewrite using `[KvS, ← e, Subgroup.closure_eq]`. Establish `hKpp : KppvS X hb p = A.map K.subtype`. Rewrite using `[KppvS]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : Formalism.L2.SG.TypedSets.compSet X.B.I.cm.sig X.B.I.J (levelUnitary X hb) p.1 = ((A.map K.subtype : Subgroup (MassDataIdxSteps.HAp X p)) : Set (MassDataIdxSteps.HAp X p))`. Rewrite using `[Subgroup.coe_map]`. Conclude with `hAs.symm`. Rewrite using `[e, Subgroup.closure_eq]`. Establish `hidx : lIdx X hb p = A.index`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lIdx, hKv, hKpp, Subgroup.relIndex, Subgroup.subgroupOf, Subgroup.comap_map_eq_self_of_injective K.subtype_injective]`. Rewrite using `[hidx, ← hcard]`. Conclude with `key`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lIdx_mul (p : TypX X) (hR : MassDataIdxSteps.StRed X p) (hI : MassDataIdxSteps.StImA X hb p) :
     lIdx X hb p * (nnC D.R.rS D.R.k (gOf p) * ukC D.R.k (gOf p)) = ggC D.R.rS D.R.k (gOf p) := by
@@ -226,13 +226,11 @@ theorem lIdx_mul (p : TypX X) (hR : MassDataIdxSteps.StRed X p) (hI : MassDataId
   exact key
 
 /- English proof (translation)
-Use `haveI : Fact (gOf p).Prime := by`. Unfold `gOf`. Use `split_ifs`. Conclude with `⟨D.host.g_prime 0⟩`. Conclude with `⟨D.host.g_prime 1⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm` using `lIdx_mul X hb p hR hI`. Establish `hpos : 0 < ggC D.R.rS D.R.k (gOf p)`. Rewrite using `[ggC_eq D.R (gOf p)]`. Conclude with `Nat.card_pos`. Establish `hne : nnC D.R.rS D.R.k (gOf p) * ukC D.R.k (gOf p) ≠ 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Introduce `h`. Rewrite `hm` using `[h, mul_zero]`. Use linear arithmetic over natural numbers and integers. Unfold `Formalism.MainNotions.StandardLattice.idxRowLoc Formalism.MainNotions.StandardLattice.idxLoc`. Rewrite using `[card_rowLev D.R (gOf p), ← ggC_eq D.R (gOf p), ← hm]`.
-
-Establish `hne' : ((nnC D.R.rS D.R.k (gOf p) * ukC D.R.k (gOf p) : ℕ) : ℝ) ≠ 0` using `by exact_mod_cast hne`. Rewrite using `[Nat.cast_mul (lIdx X hb p), mul_div_assoc, div_self hne', mul_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lIdx_eq (p : TypX X) (hR : MassDataIdxSteps.StRed X p) (hI : MassDataIdxSteps.StImA X hb p) :
     (lIdx X hb p : ℝ) = Formalism.MainNotions.StandardLattice.idxRowLoc (gOf p) D.R.k D.R.m := by
@@ -272,7 +270,7 @@ def hosMap {R S : Type*} [CommRing R] [IsDedekindDomain R] [CommRing S] [IsDedek
     · exact (map_ne_zero_iff e e.injective).2 hx0
 
 /- English proof (translation)
-Apply `IsDedekindDomain.HeightOneSpectrum.ext` to reduce the goal to its premises. Use extensionality with `x`. Simplify using `[hosMap]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem hosMap_symm {R S : Type*} [CommRing R] [IsDedekindDomain R] [CommRing S] [IsDedekindDomain S] (e : R ≃+* S)
     (v : HeightOneSpectrum R) : hosMap e.symm (hosMap e v) = v := by
@@ -301,7 +299,7 @@ def iF : X.B.I.F ≃+* D.host.F :=
       exact ⟨a, Subtype.ext ha⟩⟩
 
 /- English proof (translation)
-Rewrite using `[Nat.card_congr (overEquiv (RingOfIntegers.mapRingEquiv (iF X)) (D.host.g i))]`. Conclude with `(Formalism.MainNotions.J.splitsF_g D i).1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_over (i : Fin 2) :
     Nat.card {v : HeightOneSpectrum (𝓞 X.B.I.F) // ((D.host.g i : ℕ) : 𝓞 X.B.I.F) ∈ v.asIdeal} = D.R.f := by
@@ -309,9 +307,9 @@ theorem card_over (i : Fin 2) :
   exact (Formalism.MainNotions.J.splitsF_g D i).1
 
 /- English proof (translation)
-Establish `hne : D.host.g 0 ≠ D.host.g 1` using `D.host.g_ne`. Establish `hcop : IsCoprime ((D.host.g 0 : ℕ) : ℤ) ((D.host.g 1 : ℕ) : ℤ)` using `Nat.isCoprime_iff_coprime.mpr ((Nat.coprime_primes (D.host.g_prime 0) (D.host.g_prime 1)).mpr hne)`. Take `⟨a, b, hab⟩` from `hcop`. Establish `h2 : (a : 𝓞 X.B.I.F) * ((D.host.g 0 : ℕ) : 𝓞 X.B.I.F) + (b : 𝓞 X.B.I.F) * ((D.host.g 1 : ℕ) : 𝓞 X.B.I.F) = 1`. Use `congrArg (Int.cast : ℤ → 𝓞 X.B.I.F) hab` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Move the coercions through the operations in `at this`. Conclude with `this`. Apply `v.isPrime.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one, ← h2]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ h0) (Ideal.mul_mem_left _ _ h1)`.
+Move the embeddings inside the algebraic operations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_both (v : HeightOneSpectrum (𝓞 X.B.I.F)) (h0 : ((D.host.g 0 : ℕ) : 𝓞 X.B.I.F) ∈ v.asIdeal)
     (h1 : ((D.host.g 1 : ℕ) : 𝓞 X.B.I.F) ∈ v.asIdeal) : False := by
@@ -329,13 +327,11 @@ theorem not_both (v : HeightOneSpectrum (𝓞 X.B.I.F)) (h0 : ((D.host.g 0 : ℕ
   exact Ideal.add_mem _ (Ideal.mul_mem_left _ _ h0) (Ideal.mul_mem_left _ _ h1)
 
 /- English proof (translation)
-Establish `hne : D.host.g 0 ≠ D.host.g 1` using `D.host.g_ne`. Establish `htyp : ((D.host.g 0 : ℕ) : 𝓞 X.B.I.F) ∈ p.1.asIdeal ∨ ((D.host.g 1 : ℕ) : 𝓞 X.B.I.F) ∈ p.1.asIdeal` using `(Formalism.L2.SG.TypedSets.mem_typSet X.B.I.F (D.host.g 0) (D.host.g 1) (D.host.g_prime 0).ne_zero (D.host.g_prime 1).ne_zero p.1).1 p.2`. Unfold `Formalism.L2.SG.TypedSets.gOf`. Apply the tactic sequence `obtain rfl | rfl : i = 0 ∨ i = 1 := by fin_cases i <;> simp`. Distinguish the cases in `h0 : ((D.host.g 0 : ℕ) : 𝓞 X.B.I.F) ∈ p.1.asIdeal`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Consider separately whether the proposition holds or fails.
 
-Simplify using `[h0]`. Simplify using `[h0, Ne.symm hne]`. Distinguish the cases in `h0 : ((D.host.g 0 : ℕ) : 𝓞 X.B.I.F) ∈ p.1.asIdeal`. Simplify using `only [h0, if_true]`. Prove the components needed by the constructor for the conclusion.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Conclude with `absurd h hne`. Introduce `h1`. Conclude with `(not_both X p.1 h0 h1).elim`. Simplify using `only [h0, if_false]`.
-
-Conclude with `⟨fun _ => htyp.resolve_left h0, fun _ => trivial⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem gOf_iff (i : Fin 2) (p : TypX X) : gOf p = D.host.g i ↔ ((D.host.g i : ℕ) : 𝓞 X.B.I.F) ∈ p.1.asIdeal := by
   have hne : D.host.g 0 ≠ D.host.g 1 := D.host.g_ne
@@ -367,13 +363,11 @@ def typEquiv (i : Fin 2) :
   right_inv v := rfl
 
 /- English proof (translation)
-Rewrite using `[← Fintype.prod_subtype_mul_prod_subtype (fun p : TypX X => gOf p = D.host.g 0)]`. Establish `hiff : ∀ p : TypX X, ¬ gOf p = D.host.g 0 ↔ gOf p = D.host.g 1`. Introduce `p`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hp` using `(mem_typSet X.B.I.F (D.host.g 0) (D.host.g 1) (D.host.g_prime 0).ne_zero (D.host.g_prime 1).ne_zero p.1).1 p.2`. Break down `hp with h0 | h1` into its components or cases. Conclude with `absurd ((gOf_iff X 0 p).2 h0) h`. Conclude with `(gOf_iff X 1 p).2 h1`. Introduce `h h'`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `not_both X p.1 ((gOf_iff X 0 p).1 h') ((gOf_iff X 1 p).1 h)`. Establish `h1 : ∀ p : {p : TypX X // gOf p = D.host.g 0}, φ (gOf p.1) = φ (D.host.g 0)` using `fun p => by`. Rewrite using `[p.2]`. Establish `h2 : ∀ p : {p : TypX X // ¬ gOf p = D.host.g 0}, φ (gOf p.1) = φ (D.host.g 1)` using `fun p => by`. Rewrite using `[(hiff p.1).1 p.2]`.
-
-Rewrite using `[Fintype.prod_congr _ _ h1, Fintype.prod_congr _ _ h2, Finset.prod_const, Finset.prod_const, Finset.card_univ, Finset.card_univ, ← Nat.card_eq_fintype_card, ← Nat.card_eq_fintype_card, Nat.card_congr (typEquiv X 0), card_over X 0, Nat.card_congr ((Equiv.subtypeEquivRight hiff).tr …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_typ (φ : ℕ → ℝ) :
     ∏ p : TypX X, φ (gOf p) = φ (D.host.g 0) ^ D.R.f * φ (D.host.g 1) ^ D.R.f := by
@@ -406,7 +400,7 @@ section Main
 variable {D : Formalism.BasicNotions.D7} (X : HidaSetting D)
 
 /- English proof (translation)
-Set `hb` to `(Formalism.L2.SG.Closed.adelic_isomorphism_statement X.B.I).1`. Unfold `Formalism.L2.SG.Pf.RowDictPf.DstarIdx`. Rewrite using `[ratio_eq X hb]`. Rewrite using `[Finset.prod_congr rfl (fun p _ => lIdx_eq X hb p (hR p) (hI hb p))]`. Rewrite using `[prod_typ X (fun g => Formalism.MainNotions.StandardLattice.idxRowLoc g D.R.k D.R.m)]`.
+Introduce a local definition for the expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -421,7 +415,7 @@ theorem dstarIdx_of (hR : ∀ p : TypX X, MassDataIdxSteps.StRed X p)
   rfl
 
 /- English proof (translation)
-The claim follows from `dstarIdx_of X (fun p => Formalism.L2.SG.Pf.MassDataX.stRed_holds X p) (fun hb p => Formalism.L2.SG.Pf.MassDataX.stImA_holds X hb p)`.
+A detailed English derivation is pending.
 -/
 theorem dstarIdx_holds : Formalism.L2.SG.Pf.RowDictPf.DstarIdx X :=
   dstarIdx_of X (fun p => Formalism.L2.SG.Pf.MassDataX.stRed_holds X p) (fun hb p => Formalism.L2.SG.Pf.MassDataX.stImA_holds X hb p)

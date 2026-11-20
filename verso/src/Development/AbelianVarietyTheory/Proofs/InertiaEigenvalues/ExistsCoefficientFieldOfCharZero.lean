@@ -9,29 +9,25 @@ section Field
 open Polynomial
 
 /- English proof (translation)
-Set `T : Set (Subring S)` to `{Λ | ∀ x ∈ Λ, x ∈ maximalIdeal S → x = 0}`. Establish `hbot : (⊥ : Subring S) ∈ T`. Introduce `x hx hm`. Take `⟨n, rfl⟩` from `Subring.mem_bot.1 hx`. Rewrite `hm` using `[← residue_eq_zero_iff, map_intCast, Int.cast_eq_zero]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[hm]`. Take `⟨Λ, -, hΛ⟩` from `zorn_le_nonempty₀ T (fun c hc hch y hy => by`. Use `⟨sSup c, fun x hx => ?_, fun z hz => le_sSup hz⟩` and prove the remaining obligations. Take `⟨K, hK, hxK⟩` from `(Subring.mem_sSup_of_directedOn ⟨y, hy⟩ hch.directedOn).1 hx`. Conclude with `hc hK x hxK) ⊥ hbot`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hT : ∀ x ∈ Λ, x ∈ maximalIdeal S → x = 0` using `hΛ.prop`. Establish `hF : IsField Λ`. Use `⟨exists_pair_ne _, mul_comm, fun {x} hx => ?_⟩` and prove the remaining obligations. Establish `hu : IsUnit (x : S)`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression.
 
-Conclude with `hx (Subtype.ext (hT _ x.2 h))`. Set `Λ' : Subring S` to `{ carrier := {s | ∃ n : ℕ, (x : S) ^ n * s ∈ Λ} one_mem' := ⟨0, by simp⟩ zero_mem' := ⟨0, by simp⟩ mul_mem' := by`. Introduce and unpack `a b ⟨n, hn⟩ ⟨m, hm⟩`. Conclude with `⟨n + m, by convert Λ.mul_mem hn hm using 1; ring⟩`. Use the proof step `add_mem' := by`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Introduce and unpack `a b ⟨n, hn⟩ ⟨m, hm⟩`. Conclude with `⟨n + m, by`. Use `Λ.add_mem (Λ.mul_mem (Λ.pow_mem x.2 m) hn) (Λ.mul_mem (Λ.pow_mem x.2 n) hm) using 1` and compare the differences between its conclusion and the goal. Use the proof step `ring⟩`. Use the proof step `neg_mem' := by`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `a ⟨n, hn⟩`. Conclude with `⟨n, by convert Λ.neg_mem hn using 1; ring⟩ }`. Establish `h' : Λ' ∈ T`. Introduce and unpack `s ⟨n, hn⟩ hm`. Conclude with `(hu.pow n).mul_right_eq_zero.1 (hT _ hn (Ideal.mul_mem_left _ _ hm))`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hle : Λ' ≤ Λ` using `hΛ.le_of_ge h' fun s hs => ⟨0, by simpa using hs⟩`. Take `⟨y, hy⟩` from `hu.exists_right_inv`. Conclude with `⟨⟨y, hle ⟨1, by rw [pow_one, hy]; exact Λ.one_mem⟩⟩, Subtype.ext hy⟩`. Use `⟨Λ, hF, fun s => ?_⟩` and prove the remaining obligations. Use `letI := hF.toField`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `key : ∀ a : S, (∀ f : Λ[X], aeval a f ∈ maximalIdeal S → aeval a f = 0) → a ∈ Λ` using `fun a ha => by`. Establish `h' : (aeval (R` using `Λ) a).toRingHom.range ∈ T := by`. Introduce and unpack `_ ⟨f, rfl⟩ hm`. Conclude with `ha f hm`. Conclude with `hΛ.le_of_ge h' (fun y hy => ⟨C ⟨y, hy⟩, by simp; rfl⟩) ⟨X, by simp⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hres : ∀ (a : S) (f : Λ[X]), residue S (aeval a f) = aeval (residue S a) f` using `fun a f => (aeval_algHom_apply (IsScalarTower.toAlgHom Λ S (ResidueField S)) a f).symm`. Distinguish the cases in `hs : IsAlgebraic Λ (residue S s)`. Establish `hi` using `hs.isIntegral haveI : CharZero Λ := RingHom.charZero (algebraMap Λ (ResidueField S))`. Establish `hsep : (minpoly Λ (residue S s)).Separable` using `(minpoly.irreducible hi).separable`. Take `⟨a, ha, has⟩` from `HenselianRing.is_henselian (I := maximalIdeal S) ((minpoly Λ (residue S s)).map (algebraMap Λ S)) ((minpoly.monic hi).map _) s (by rw [eval_map_algebraMap, ← residue_eq_zero_iff, hres, minpoly.aeval]) (by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[derivative_map, eval_map_algebraMap]`. Use `hsep.aeval_derivative_ne_zero (minpoly.aeval Λ (residue S s))` as an intermediate fact. Rewrite `this` using `[← hres]`. Conclude with `(isUnit_iff_ne_zero (G₀ := ResidueField S)).2 this)`. Establish `e : residue S a = residue S s` using `by rw [← sub_eq_zero, ← map_sub, residue_eq_zero_iff]; exact has`.
-
-Use `⟨a, key a fun f hf => ?_, by rw [← neg_sub]; exact neg_mem has⟩` and prove the remaining obligations. Rewrite `hf` using `[← residue_eq_zero_iff, hres, e]`. Take `⟨q, rfl⟩` from `minpoly.dvd _ _ hf`. Rewrite `ha` using `[IsRoot.def, eval_map_algebraMap]`. Rewrite using `[map_mul, ha, zero_mul]`.
-
-Use `⟨s, key s fun f hf => ?_, by simp⟩` and prove the remaining obligations. Rewrite `hf` using `[← residue_eq_zero_iff, hres]`. Assume the negation of the conclusion as `h`. Conclude with `hs ⟨f, by rintro rfl; simp at h, hf⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem exists_coefficientField_of_charZero (S : Type) [CommRing S] [IsLocalRing S] [IsAdicComplete (maximalIdeal S) S]
     [CharZero (ResidueField S)] :
@@ -107,17 +103,15 @@ theorem exists_coefficientField_of_charZero (S : Type) [CommRing S] [IsLocalRing
 end Field
 
 /- English proof (translation)
-Establish `h0 : (p : S) ∈ maximalIdeal S` using `by rw [hp0]; exact zero_mem _`. Take `⟨B, hB, hB'⟩` from `GlobalTheory.PBasis.exists_pBasis (ResidueField S) p hp (by rw [← map_natCast (residue S), residue_eq_zero_iff]; exact h0)`. Use `choose l hl using residue_surjective (R := S)`. Establish `hL : residue S '' (l '' B) = B` using `by simp [Set.image_image, hl]`. Establish `hinj : Set.InjOn (residue S) (l '' B)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨x, -, rfl⟩ _ ⟨y, -, rfl⟩ h`. Rewrite `h` using `[hl, hl]`. Rewrite using `[h]`. Rewrite `hB`, `hB'` using `[← hL]`. Establish `hs` using `CoeffSubring.exists_level_sub_mem hp h0 hB`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `CoeffSubring.exists_iInf_sub_mem h0 hs`. Use `set Λ : Subring S := ⨅ n, CoeffSubring.level p (l '' B) n`. Establish `h2 : ∀ a ∈ Λ, a ∈ maximalIdeal S → a = 0` using `fun a ha hm => by`. Rewrite using `[← zero_dvd_iff, ← hp0]`. Use `CoeffSubring.dvd_of_forall_sub_mul_mem fun n => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨t, -, ht⟩` from `CoeffSubring.exists_sub_mul_mem hp h0 hinj hB' hs n (Subring.mem_iInf.1 ha n) hm`. Conclude with `⟨t, Ideal.pow_le_pow_right n.le_succ ht⟩`. Use `⟨Λ, ⟨exists_pair_ne _, mul_comm, fun {x} hx => ?_⟩, h1⟩` and prove the remaining obligations. Establish `hu : IsUnit (x : S)`. Assume the negation of the conclusion as `h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hx (Subtype.ext (h2 _ x.2 h))`. Take `⟨y, hy⟩` from `hu.exists_right_inv`. Take `⟨a, ha, hya⟩` from `h1 y`. Use `⟨⟨a, ha⟩, Subtype.ext (sub_eq_zero.1 (h2 _ (Λ.sub_mem (Λ.mul_mem x.2 ha) Λ.one_mem) ?_))⟩` and prove the remaining obligations. Establish `: (x : S) * a - 1 = -x * (y - a)` using `by rw [← hy]; ring`.
-
-Use `show (x : S) * a - 1 ∈ _`. Rewrite using `[this]`. Conclude with `Ideal.mul_mem_left _ _ hya`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_coefficientField_of_prime (S : Type) [CommRing S] [IsLocalRing S] [IsNoetherianRing S]
     [IsAdicComplete (maximalIdeal S) S] {p : ℕ} (hp : p.Prime) (hp0 : (p : S) = 0) :
@@ -156,21 +150,21 @@ theorem exists_coefficientField_of_prime (S : Type) [CommRing S] [IsLocalRing S]
 open MvPowerSeries GlobalTheory.CohenStructure
 
 /- English proof (translation)
-Distinguish the cases in `hm : maximalIdeal S = ⊥`. Use `letI := (isField_iff_maximalIdeal_eq.2 hm).toField`. Conclude with `⟨S, inferInstance, inferInstance, RingHom.id S, Function.injective_id, RingHom.Finite.id S⟩`. Take `⟨a, ha, ha0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hm`. Use `letI := hF.toField`.
+Consider separately whether the proposition holds or fails. Equip the data with the indicated structure. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Take `⟨n, x₀, hx₀, hd, N, hN⟩` from `GlobalTheory.exists_systemOfParameters_insert S a ha0 ha`. Set `x : Fin (n + 1) → S` to `Fin.cons a x₀`. Establish `hx : ∀ i, x i ∈ maximalIdeal S` using `fun i => Fin.cases ha hx₀ i`. Set `A` to `MvPowerSeries (Fin (n + 1)) Λ`. Set `φ : A →ₐ[Λ] S` to `mvEvalAdic Λ (maximalIdeal S) x hx`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `letI : Algebra A S := φ.toRingHom.toAlgebra`. Establish `: IsDomain A` using `isDomain_mvPowerSeries Λ (n + 1)`. Establish `hb : maximalIdeal Λ = ⊥` using `isField_iff_maximalIdeal_eq.1 hF`. Establish `: IsAdicComplete (maximalIdeal Λ) Λ` using `by rw [hb]; infer_instance`. Establish `hA` using `isAdicComplete_mvPowerSeries Λ (n + 1)`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : (maximalIdeal A).map (algebraMap A S) ≤ maximalIdeal S`. Use `Ideal.map_le_iff_le_comap.2 fun g hg => ?_` and prove the remaining obligations. Establish `h4` using `algHom_sub_constantCoeff_mem φ (K := maximalIdeal S) (fun j => by simpa [φ] using hx j) g`. Establish `h5` using `FormalIsogeny.mem_maximalIdeal_iff_constantCoeff.1 hg`. Rewrite `h5` using `[hb, Ideal.mem_bot]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h4` using `[h5, map_zero, sub_zero]`. Then use the resulting hypothesis. Establish `hge : maximalIdeal S ^ N ≤ (maximalIdeal A).map (algebraMap A S)`. Use `hN.trans (Ideal.span_le.2 ?_)` and prove the remaining obligations. Rewrite using `[← Fin.range_cons]`. Introduce and unpack `_ ⟨i, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `show x i ∈ _`. Rewrite using `[← mvEvalAdic_X (A := Λ) (maximalIdeal S) x hx i]`. Conclude with `Ideal.mem_map_of_mem (algebraMap A S) (FormalIsogeny.mem_maximalIdeal_iff_constantCoeff.2 (by simp))`. Establish `: IsHausdorff ((maximalIdeal A).map (algebraMap A S)) S` using `IsHausdorff.of_isLocalRing _ _ (ne_top_of_le_ne_top (maximalIdeal.isMaximal _).ne_top hle)`. Establish `: Module.Finite A (S ⧸ (maximalIdeal A).map (algebraMap A S))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `finite_quotient_of_pow_le (fun s => ?_) hge` and prove the remaining obligations. Take `⟨a, ha, h⟩` from `h1 s`. Use `⟨C ⟨a, ha⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[show algebraMap A S (C ⟨a, ha⟩) = a from mvEvalAdic_C _ x hx _]` and apply the resulting hypothesis. Establish `hfin : Module.Finite A S` using `FormalIsogeny.finite_of_finite_quotient_map (maximalIdeal A)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨A, inferInstance, FormalIsogeny.isRegularLocalRing_mvPowerSeries Λ (Fin (n + 1)), algebraMap A S, injective_of_ringKrullDim_eq (n := n + 1) ?_ (by rw [hd]; norm_cast), hfin⟩` and prove the remaining obligations. Rewrite using `[FormalIsogeny.ringKrullDim_mvPowerSeries, ringKrullDim_eq_zero_of_isField hF, Nat.card_eq_fintype_card, Fintype.card_fin, zero_add]`.
+A detailed English derivation is pending.
 -/
 theorem exists_of_coefficientField (S : Type) [CommRing S] [IsDomain S] [IsLocalRing S]
     [IsNoetherianRing S] [hc : IsAdicComplete (maximalIdeal S) S] (Λ : Subring S) (hF : IsField Λ)
@@ -221,21 +215,21 @@ theorem exists_of_coefficientField (S : Type) [CommRing S] [IsDomain S] [IsLocal
     Nat.card_eq_fintype_card, Fintype.card_fin, zero_add]
 
 /- English proof (translation)
-Take `⟨B, hB, hB'⟩` from `GlobalTheory.PBasis.exists_pBasis (ResidueField S) p hp (by rw [← map_natCast (residue S), residue_eq_zero_iff]; exact h0)`. Take `⟨Λ, h1, h2, h3⟩` from `CoeffSubring.exists_coeffSubring hp hp0 h0 hB hB'`. Take `⟨_, hm, hΛ⟩` from `GlobalTheory.isDVR_of_closed_subring_principal S Λ p (by simpa using hp0) (by simpa using h0) hc h1 h2 h3`. Take `⟨n, x, hx, hd, N, hN⟩` from `GlobalTheory.exists_systemOfParameters_insert S p hp0 h0`. Set `A` to `MvPowerSeries (Fin n) Λ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `φ : A →ₐ[Λ] S` to `mvEvalAdic Λ (maximalIdeal S) x hx`. Use `letI : Algebra A S := φ.toRingHom.toAlgebra`. Establish `: IsDomain A` using `isDomain_mvPowerSeries Λ n`. Establish `hA` using `isAdicComplete_mvPowerSeries Λ n`. Establish `hle : (maximalIdeal A).map (algebraMap A S) ≤ maximalIdeal S`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Ideal.map_le_iff_le_comap.2 fun g hg => ?_` and prove the remaining obligations. Establish `h4` using `algHom_sub_constantCoeff_mem φ (K := maximalIdeal S) (fun j => by simpa [φ] using hx j) g`. Establish `h5` using `FormalIsogeny.mem_maximalIdeal_iff_constantCoeff.1 hg`. Rewrite `h5` using `[hm, Ideal.mem_span_singleton]`. Take `⟨c, hc⟩` from `h5`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h6 : algebraMap Λ S (constantCoeff g) ∈ maximalIdeal S`. Rewrite using `[hc, map_mul, map_natCast]`. Conclude with `Ideal.mul_mem_right _ _ h0`. Establish `h7` using `add_mem h4 h6`. Rewrite `h7` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hge : maximalIdeal S ^ N ≤ (maximalIdeal A).map (algebraMap A S)`. Use `hN.trans (Ideal.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ (rfl | ⟨i, rfl⟩)`. Rewrite using `[← map_natCast (algebraMap A S)]`. Use `Ideal.mem_map_of_mem _ (FormalIsogeny.mem_maximalIdeal_iff_constantCoeff.2 ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_natCast, hm]`. Conclude with `Ideal.mem_span_singleton_self _`. Rewrite using `[← mvEvalAdic_X (A := Λ) (maximalIdeal S) x hx i]`. Conclude with `Ideal.mem_map_of_mem (algebraMap A S) (FormalIsogeny.mem_maximalIdeal_iff_constantCoeff.2 (by simp))`. Establish `: IsHausdorff ((maximalIdeal A).map (algebraMap A S)) S` using `IsHausdorff.of_isLocalRing _ _ (ne_top_of_le_ne_top (maximalIdeal.isMaximal _).ne_top hle)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `: Module.Finite A (S ⧸ (maximalIdeal A).map (algebraMap A S))`. Use `finite_quotient_of_pow_le (fun s => ?_) hge` and prove the remaining obligations. Take `⟨a, ha, h⟩` from `h1 s`. Use `⟨C ⟨a, ha⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[show algebraMap A S (C ⟨a, ha⟩) = a from mvEvalAdic_C _ x hx _]` and apply the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hfin : Module.Finite A S` using `FormalIsogeny.finite_of_finite_quotient_map (maximalIdeal A)`. Use `⟨A, inferInstance, FormalIsogeny.isRegularLocalRing_mvPowerSeries Λ (Fin n), algebraMap A S, injective_of_ringKrullDim_eq (n := n + 1) ?_ (by rw [hd]; norm_cast), hfin⟩` and prove the remaining obligations. Rewrite using `[FormalIsogeny.ringKrullDim_mvPowerSeries, IsDiscreteValuationRing.ringKrullDim_eq_one, Nat.card_eq_fintype_card, Fintype.card_fin, add_comm]`. Use `norm_cast`.
+Put the expressions in a common number system so they can be compared. A detailed English derivation is pending.
 -/
 theorem exists_of_mixed (S : Type) [CommRing S] [IsDomain S] [IsLocalRing S]
     [IsNoetherianRing S] [hc : IsAdicComplete (maximalIdeal S) S] {p : ℕ} (hp : p.Prime)
@@ -289,9 +283,9 @@ theorem exists_of_mixed (S : Type) [CommRing S] [IsDomain S] [IsLocalRing S]
   norm_cast
 
 /- English proof (translation)
-Introduce `S _ _ _ _ _`. Take `⟨p, hp⟩` from `CharP.exists (ResidueField S)`. Break down `CharP.char_is_prime_or_zero (ResidueField S) p with h | rfl` into its components or cases. Distinguish the cases in `hp0 : (p : S) = 0`. Take `⟨Λ, hF, h1⟩` from `exists_coefficientField_of_prime S h hp0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Conclude with `exists_of_coefficientField S Λ hF h1`. Conclude with `exists_of_mixed S h (by rw [← residue_eq_zero_iff, map_natCast]; exact CharP.cast_eq_zero _ p) hp0`. Use `haveI := CharP.charP_to_charZero (ResidueField S)`. Take `⟨Λ, hF, h1⟩` from `exists_coefficientField_of_charZero S`. Conclude with `exists_of_coefficientField S Λ hF h1`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_finite_over_regular :
     ∀ (S : Type) [CommRing S] [IsDomain S] [IsLocalRing S] [IsNoetherianRing S]

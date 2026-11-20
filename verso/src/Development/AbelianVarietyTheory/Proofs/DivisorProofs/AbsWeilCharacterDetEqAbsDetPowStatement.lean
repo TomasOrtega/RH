@@ -8,7 +8,7 @@ open MeasureTheory Matrix
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.HeisUnit.exists_unitary_factor` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAbsWeilCharacterDetEqAbsDetPow.lean&line=15#L15)
 -/

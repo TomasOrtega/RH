@@ -23,7 +23,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     (W : LocWach PD LL O v n) (T : LocLat G Qp LL O)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `[letE]`. Simplify using `[letE, h]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem letE_mul (i : ZMod n) (a : LetA O n) : (letE i : LetA O n) * a = Pi.single i (a i) := by
   funext j
@@ -32,7 +32,7 @@ theorem letE_mul (i : ZMod n) (a : LetA O n) : (letE i : LetA O n) * a = Pi.sing
   · simp [letE, h]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `[letE]`. Simplify using `[letE, h]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem single_mul_letE (i : ZMod n) (a : PowerSeries O) :
     (Pi.single i a : LetA O n) * letE i = Pi.single i a := by
@@ -42,35 +42,35 @@ theorem single_mul_letE (i : ZMod n) (a : PowerSeries O) :
   · simp [letE, h]
 
 /- English proof (translation)
-The claim follows from `single_mul_letE i 1`.
+A detailed English derivation is pending.
 -/
 theorem letE_mul_self (i : ZMod n) : (letE i : LetA O n) * letE i = letE i :=
   single_mul_letE i 1
 
 /- English proof (translation)
-Rewrite using `[letE_mul]`. Simplify using `[letE, h]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem letE_mul_ne {i j : ZMod n} (h : i ≠ j) : (letE i : LetA O n) * letE j = 0 := by
   rw [letE_mul]
   simp [letE, h]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `[letE, Finset.sum_apply, Pi.single_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem sum_letE [NeZero n] : ∑ i : ZMod n, (letE i : LetA O n) = 1 := by
   funext j
   simp [letE, Finset.sum_apply, Pi.single_apply]
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_smul, sum_letE, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_letE_smul [NeZero n] (x : W.DD T) : ∑ i : ZMod n, (letE i : LetA O n) • x = x := by
   rw [← Finset.sum_smul, sum_letE, one_smul]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Use `⟨(W.N T).smul_mem _ hy, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(letE i : LetA O n) • (letE i : LetA O n) • y = (letE i : LetA O n) • y`. Rewrite using `[smul_smul, letE_mul_self]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨hx, he⟩`. Conclude with `⟨x, hx, he⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_Nl_iff (i : ZMod n) (x : W.DD T) :
     x ∈ W.Nl T i ↔ x ∈ W.N T ∧ (letE i : LetA O n) • x = x := by
@@ -83,11 +83,11 @@ theorem mem_Nl_iff (i : ZMod n) (x : W.DD T) :
     exact ⟨x, hx, he⟩
 
 /- English proof (translation)
-Use `⟨?_, le_antisymm (iSup_le fun i x hx => ((mem_Nl_iff W T i x).1 hx).1) fun x hx => ?_⟩` and prove the remaining obligations. Introduce `i`. Rewrite using `[Submodule.disjoint_def]`. Introduce `x hx hx'`. Establish `hk : (⨆ (j) (_ : j ≠ i), W.Nl T j) ≤ LinearMap.ker (LinearMap.lsmul (LetA O n) (W.DD T) (letE i))`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `iSup_le fun j => iSup_le fun hj y hy => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.mem_ker, LinearMap.lsmul_apply, ← ((mem_Nl_iff W T j y).1 hy).2, smul_smul, letE_mul_ne hj.symm, zero_smul]`. Establish `h0` using `hk hx'`. Rewrite `h0` using `[LinearMap.mem_ker, LinearMap.lsmul_apply, ((mem_Nl_iff W T i x).1 hx).2]`. Conclude with `h0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← sum_letE_smul W T x]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.mem_iSup_of_mem i ⟨x, hx, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem lettersDecompose [NeZero n] : GlobalTheory.IndefiniteRowSideFullHecke.LetterBasisDecomposition.LettersDecompose W T := by
   refine ⟨?_, le_antisymm (iSup_le fun i x hx => ((mem_Nl_iff W T i x).1 hx).1) fun x hx => ?_⟩
@@ -106,15 +106,15 @@ theorem lettersDecompose [NeZero n] : GlobalTheory.IndefiniteRowSideFullHecke.Le
     exact Submodule.sum_mem _ fun i _ => Submodule.mem_iSup_of_mem i ⟨x, hx, rfl⟩
 
 /- English proof (translation)
-Establish `hli : LinearIndependent (LetA O n) (fun k => (b k : W.DD T))` using `b.linearIndependent.map' (W.N T).subtype (W.N T).ker_subtype`. Use `⟨fun k => ⟨b k, (b k).2, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `x ⟨y, hy, rfl⟩`. Establish `hy' : y = ∑ k, b.repr ⟨y, hy⟩ k • (b k : W.DD T)`. Use `congrArg Subtype.val (b.sum_repr ⟨y, hy⟩)` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[AddSubmonoidClass.coe_finsetSum]`. Conclude with `this.symm`. Generalize the expression as in `b.repr ⟨y, hy⟩ = a at hy'`. Substitute `hy'` using the available equality. Establish `key : (letE i : LetA O n) • (∑ k, a k • (b k : W.DD T)) = ∑ k, (Pi.single i (a k i) : LetA O n) • (b k : W.DD T)`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [smul_smul, letE_mul]`. Use `⟨fun k => a k i, ?_, fun c hc => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(letE i : LetA O n) • (∑ k, a k • (b k : W.DD T)) = _`. Rewrite using `[key]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun k _ => by rw [smul_smul, single_mul_letE]`. Express the relevant statement in the definitionally equal form `(letE i : LetA O n) • (∑ k, a k • (b k : W.DD T)) = _ at hc`. Rewrite `hc` using `[key]`. Simplify using `only [smul_smul, single_mul_letE] at hc`. Use function extensionality and compare the values at `k`.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h0` using `Fintype.linearIndependent_iff.1 hli (fun k => (Pi.single i (c k) : LetA O n) - Pi.single i (a k i)) (by simp only [sub_smul, Finset.sum_sub_distrib, hc, sub_self]) k`. Establish `h1` using `congrFun h0 i`. Simplify `h1` using `[sub_eq_zero]`.
+A detailed English derivation is pending.
 -/
 theorem isLetterBasis {r : ℕ} (b : Module.Basis (Fin r) (LetA O n) ↥(W.N T)) (i : ZMod n) :
     GlobalTheory.IndefiniteRowSideFullHecke.WachLettersFreeness.IsLetterBasis W T i (fun k => (letE i : LetA O n) • (b k : W.DD T)) := by
@@ -149,13 +149,13 @@ theorem isLetterBasis {r : ℕ} (b : Module.Basis (Fin r) (LetA O n) ↥(W.N T))
 attribute [local instance] GlobalTheory.IndefiniteRowSideFullHecke.LetterBasisDecomposition.letterModule
 
 /- English proof (translation)
-Take `⟨hm, hu⟩` from `isLetterBasis W T b i`. Set `f : Fin r → ↥(W.Nl T i)` to `fun k => ⟨_, hm k⟩`. Establish `hs : ∀ c : Fin r → PowerSeries O, ((∑ k, c k • f k : ↥(W.Nl T i)) : W.DD T) = ∑ k, (Pi.single i (c k) : LetA O n) • (letE i : LetA O n) • (b k : W.DD T)`. Introduce `c`. Rewrite using `[AddSubmonoidClass.coe_finsetSum]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun k _ => GlobalTheory.IndefiniteRowSideFullHecke.LetterBasisDecomposition.letter_smul W T i (c k) (f k)`. Establish `hli : LinearIndependent (PowerSeries O) f`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `c hc k`. Establish `h1` using `hs c`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hc]`. Establish `h2` using `(hu 0 (Submodule.zero_mem _)).unique h1 (y₂ := fun _ => 0) (by simp)`. Conclude with `congrFun h2 k`. Establish `hsp : ⊤ ≤ Submodule.span (PowerSeries O) (Set.range f)`. Introduce `x _`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, hc, -⟩` from `hu x.1 x.2`. Rewrite using `[Submodule.mem_span_range_iff_exists_fun]`. Conclude with `⟨c, Subtype.ext ((hs c).trans hc.symm)⟩`. Conclude with `⟨Module.Basis.mk hli hsp, fun k => by rw [Module.Basis.mk_apply]⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_letter_basis {r : ℕ} (b : Module.Basis (Fin r) (LetA O n) ↥(W.N T)) (i : ZMod n) :
     ∃ c : Module.Basis (Fin r) (PowerSeries O) ↥(W.Nl T i),
@@ -184,7 +184,7 @@ theorem exists_letter_basis {r : ℕ} (b : Module.Basis (Fin r) (LetA O n) ↥(W
 end Generic
 
 /- English proof (translation)
-Use `haveI := (P.PD K).finK₀`. Use `haveI : NeZero (Module.finrank ℚ_[l] ↥(K0 K)) := ⟨Module.finrank_pos.ne'⟩`. Take `⟨b⟩` from `N_basis_loc H K s LL h T hT`. Conclude with `⟨lettersDecompose _ T, fun i => ⟨(exists_letter_basis _ T b i).choose⟩, fun i => ⟨_, isLetterBasis _ T b i⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem letters_loc {l : ℕ} [Fact l.Prime] {P : LocPrime l} (H : LocHW l P) (K : FinExt l) (s : ℕ)
     (LL : FinExt l) (h : Good K s LL) (T : Lt K LL) (hT : IsCrys (P.PD K) T.ρ) :

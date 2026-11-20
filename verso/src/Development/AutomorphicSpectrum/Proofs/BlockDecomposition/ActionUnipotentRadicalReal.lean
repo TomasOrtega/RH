@@ -25,7 +25,7 @@ def fl : Lr n ≃ Lr n where
   right_inv l := by simp
 
 /- English proof (translation)
-Simplify using `[fl]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem fl_fl (l : Lr n) : fl (fl l) = l := by simp [fl]
 
@@ -42,7 +42,7 @@ Both sides reduce to the same expression.
 def flS (A : Finset (Lr n)) : Finset (Lr n) := A.map fl.toEmbedding
 
 /- English proof (translation)
-Unfold `flS`. Rewrite using `[Finset.mem_map_equiv]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_flS {l : Lr n} {A : Finset (Lr n)} : l ∈ flS A ↔ fl l ∈ A := by
   unfold flS
@@ -50,33 +50,33 @@ theorem mem_flS {l : Lr n} {A : Finset (Lr n)} : l ∈ flS A ↔ fl l ∈ A := b
   rfl
 
 /- English proof (translation)
-Use extensionality with `l`. Simplify using `[mem_flS]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 @[simp] theorem flS_flS (A : Finset (Lr n)) : flS (flS A) = A := by
   ext l
   simp [mem_flS]
 
 /- English proof (translation)
-Use extensionality with `m`. Simplify using `[mem_flS, fl.injective.eq_iff]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem flS_insert (l : Lr n) (A : Finset (Lr n)) : flS (insert (fl l) A) = insert l (flS A) := by
   ext m
   simp [mem_flS, fl.injective.eq_iff]
 
 /- English proof (translation)
-Use extensionality with `m`. Simplify using `[mem_flS, fl.injective.eq_iff]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem flS_erase (l : Lr n) (A : Finset (Lr n)) : flS (A.erase (fl l)) = (flS A).erase l := by
   ext m
   simp [mem_flS, fl.injective.eq_iff]
 
 /- English proof (translation)
-Simplify using `[flS]`.
+Simplify using the standard rewrite rules.
 -/
 theorem card_flS (A : Finset (Lr n)) : (flS A).card = A.card := by simp [flS]
 
 /- English proof (translation)
-Establish `h1 : (i.1.1 : ℕ) < i.1.2` using `i.2`. Establish `h2 : (i.1.2 : ℕ) < n` using `i.1.2.2`. Establish `h3 : (i.1.1 : ℕ) + 1 ≤ n` using `by omega`. Establish `h4 : ((i.1.1 : ℕ) + 1) * n ≤ n * n` using `Nat.mul_le_mul_right n h3`. Unfold `key`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
 Use the polynomial consequences of the given equalities and inequalities.
 -/
@@ -89,9 +89,9 @@ theorem key_lt (i : Pos n) : key i < n * n := by
   nlinarith
 
 /- English proof (translation)
-Take `⟨s, i⟩` from `m`. Take `⟨t, j⟩` from `l`. Establish `hi` using `key_lt i`. Establish `hj` using `key_lt j`. Establish `hn : n * n ≤ (n + 1) * (n + 1)` using `by nlinarith`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `cases s <;> cases t <;> simp [PositivityTheory.RgBcC.RealD.keyL, GlobalTheory.CompanionTheory.PairMult.keyL, fl] <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem key_iff (m l : Lr n) : PositivityTheory.RgBcC.RealD.keyL m < PositivityTheory.RgBcC.RealD.keyL l ↔
     GlobalTheory.CompanionTheory.PairMult.keyL (fl m) < GlobalTheory.CompanionTheory.PairMult.keyL (fl l) := by
@@ -103,9 +103,9 @@ theorem key_iff (m l : Lr n) : PositivityTheory.RgBcC.RealD.keyL m < PositivityT
   cases s <;> cases t <;> simp [PositivityTheory.RgBcC.RealD.keyL, GlobalTheory.CompanionTheory.PairMult.keyL, fl] <;> omega
 
 /- English proof (translation)
-Unfold `PositivityTheory.RgBcC.RealD.sgL GlobalTheory.CompanionTheory.PairMult.sgL`. Use `congr 1`. Unfold `flS`. Rewrite using `[Finset.filter_map, Finset.card_map]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Apply `Finset.filter_congr` to reduce the goal to its premises. Introduce `j _`. Use `key_iff (fl j) l` as an intermediate fact. Simplify using `using this`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sg_eq (l : Lr n) (A : Finset (Lr n)) :
     PositivityTheory.RgBcC.RealD.sgL l (flS A) = GlobalTheory.CompanionTheory.PairMult.sgL (fl l) A := by
@@ -131,14 +131,14 @@ Both sides reduce to the same expression.
 theorem Phi_apply (x : Finset (Lr n) → V) (A : Finset (Lr n)) : Phi x A = x (flS A) := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `A`. Simplify using `[Phi_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 @[simp] theorem Phi_Phi (x : Finset (Lr n) → V) : Phi (Phi x) = x := by
   funext A
   simp [Phi_apply]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `A`. Use `show (if l ∈ flS A then 0 else PositivityTheory.RgBcC.RealD.sgL l (flS A) • x (insert l (flS A))) = if fl l ∈ A then 0 else GlobalTheory.CompanionTheory.PairMult.sgL (fl l) A • x (flS (insert (fl l) A))`. Simplify using `only [mem_flS, sg_eq, flS_insert]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Phi_ann (l : Lr n) (x : Finset (Lr n) → V) : Phi (annL l x) = annq (fl l) (Phi x) := by
   funext A
@@ -147,7 +147,7 @@ theorem Phi_ann (l : Lr n) (x : Finset (Lr n) → V) : Phi (annL l x) = annq (fl
   simp only [mem_flS, sg_eq, flS_insert]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `A`. Use `show (if l ∈ flS A then PositivityTheory.RgBcC.RealD.sgL l (flS A) • x ((flS A).erase l) else 0) = if fl l ∈ A then GlobalTheory.CompanionTheory.PairMult.sgL (fl l) A • x (flS (A.erase (fl l))) else 0`. Simplify using `only [mem_flS, sg_eq, flS_erase]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Phi_cre (l : Lr n) (x : Finset (Lr n) → V) : Phi (creL l x) = creq (fl l) (Phi x) := by
   funext A
@@ -161,7 +161,7 @@ Both sides reduce to the same expression.
 theorem Phi_lift (T : V →ₗ[ℂ] V) (x : Finset (Lr n) → V) : Phi (liftL n T x) = liftq n T (Phi x) := rfl
 
 /- English proof (translation)
-Take `⟨s, i⟩` from `l`. Apply the tactic sequence `cases s <;> simp [xL, Tl, Ts, fl, kA, pA]`.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem xL_eq (E1 E2 : Fin n → Fin n → Module.End ℂ V) (l : Lr n) : xL E1 E2 l = Tl E1 E2 (fl l) := by
   obtain ⟨s, i⟩ := l
@@ -183,14 +183,14 @@ def supS (V : Type) [AddCommGroup V] [Module ℂ V] (P : Lr n → Prop) : Submod
     exact h (by simp [h1])
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_supS {P : Lr n → Prop} {x : Finset (Lr n) → V} : x ∈ supS V P ↔ SuppL P x := Iff.rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `A`. Use `show (if l ∈ A then 0 else PositivityTheory.RgBcC.RealD.sgL l A • x (insert l A)) = 0`. Distinguish the cases in `h : l ∈ A`. Simplify using `[h]`. Establish `: x (insert l A) = 0` using `by_contra fun h0 => hl (hx _ h0 l (Finset.mem_insert_self l A))`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[h, this]`.
+A detailed English derivation is pending.
 -/
 theorem ann_zero {P : Lr n → Prop} {x : Finset (Lr n) → V} (hx : SuppL P x) {l : Lr n} (hl : ¬ P l) :
     annL l x = 0 := by
@@ -202,9 +202,9 @@ theorem ann_zero {P : Lr n → Prop} {x : Finset (Lr n) → V} (hx : SuppL P x) 
     simp [h, this]
 
 /- English proof (translation)
-Introduce `A hA m hm`. Establish `h1 : (if l ∈ A then 0 else PositivityTheory.RgBcC.RealD.sgL l A • x (insert l A)) ≠ 0` using `hA`. Distinguish the cases in `h : l ∈ A`. Simplify using `[h] at h1`. Rewrite `h1` using `[if_neg h]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : x (insert l A) ≠ 0` using `fun h0 => h1 (by rw [h0, smul_zero])`. Conclude with `hx _ h2 m (Finset.mem_insert_of_mem hm)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ann_supp {P : Lr n → Prop} {x : Finset (Lr n) → V} (hx : SuppL P x) (l : Lr n) : SuppL P (annL l x) := by
   intro A hA m hm
@@ -216,9 +216,9 @@ theorem ann_supp {P : Lr n → Prop} {x : Finset (Lr n) → V} (hx : SuppL P x) 
     exact hx _ h2 m (Finset.mem_insert_of_mem hm)
 
 /- English proof (translation)
-Introduce `A hA m hm`. Establish `h1 : (if l ∈ A then PositivityTheory.RgBcC.RealD.sgL l A • x (A.erase l) else 0) ≠ 0` using `hA`. Distinguish the cases in `h : l ∈ A`. Rewrite `h1` using `[if_pos h]`. Establish `h2 : x (A.erase l) ≠ 0` using `fun h0 => h1 (by rw [h0, smul_zero])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `hml : m = l`. Conclude with `hml ▸ hl`. Conclude with `hx _ h2 m (Finset.mem_erase.2 ⟨hml, hm⟩)`. Simplify using `[h] at h1`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cre_supp {P : Lr n → Prop} {x : Finset (Lr n) → V} (hx : SuppL P x) {l : Lr n} (hl : P l) :
     SuppL P (creL l x) := by
@@ -234,9 +234,9 @@ theorem cre_supp {P : Lr n → Prop} {x : Finset (Lr n) → V} (hx : SuppL P x) 
 
 open Classical in
 /- English proof (translation)
-Unfold `bdL`. Rewrite using `[LinearMap.add_apply, LinearMap.sum_apply, LinearMap.sum_apply]`. Use `congr 1`. Apply the tactic sequence `refine Finset.sum_congr rfl fun l _ => ?_ split_ifs <;> simp [Module.End.mul_apply]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp [Module.End.mul_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem bdL_apply (S : Lr n → Prop) (E1 E2 : Fin n → Fin n → Module.End ℂ V) (x : Finset (Lr n) → V) :
     bdL S E1 E2 x = (∑ l : Lr n, if S l then liftL n (xL E1 E2 l) (annL l x) else 0) +
@@ -256,13 +256,13 @@ theorem bdL_apply (S : Lr n → Prop) (E1 E2 : Fin n → Fin n → Module.End �
     split_ifs <;> simp [Module.End.mul_apply]
 
 /- English proof (translation)
-Unfold `bdq`. Rewrite using `[LinearMap.add_apply]`. Use `congrArg₂ (· + ·) ?_ ?_` and prove the remaining obligations. Rewrite using `[LinearMap.sum_apply]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.sum_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `split_ifs`. Both sides reduce to the same expression. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem bdq_apply (E1 E2 : Fin n → Fin n → Module.End ℂ V) (y : Finset (Lr n) → V) :
     bdq E1 E2 y = (∑ l : Lr n, liftq n (Tl E1 E2 l) (annq l y)) +
@@ -288,13 +288,13 @@ theorem bdq_apply (E1 E2 : Fin n → Fin n → Module.End ℂ V) (y : Finset (Lr
     · rfl
 
 /- English proof (translation)
-Establish `e : ∀ l m : Lr n, (∑ k : Lr n, if (fl l).2.1.2 = (fl m).2.1.1 ∧ k.1 = xor (fl l).1 (fl m).1 ∧ k.2.1.1 = (fl l).2.1.1 ∧ k.2.1.2 = (fl m).2.1.2 then H (fl (fl l)) (fl (fl m)) (fl k) else 0) = ∑ k : Pos n, if l.2.1.2 = m.2.1.1 ∧ k.1.1 = l.2.1.1 ∧ k.1.2 = m.2.1.2 then H l m ((l.1 == …`. Introduce `l m`. Rewrite using `[← Equiv.sum_comp fl, Fintype.sum_prod_type, Fintype.sum_bool]`. Take `⟨s, i⟩` from `l`. Take `⟨t, j⟩` from `m`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Apply the tactic sequence `cases s <;> cases t <;> simp [fl]`. Rewrite using `[← Equiv.sum_comp fl]`. Establish `e2 : ∀ l : Lr n, (∑ m : Lr n, ∑ k : Lr n, if (fl l).2.1.2 = m.2.1.1 ∧ k.1 = xor (fl l).1 m.1 ∧ k.2.1.1 = (fl l).2.1.1 ∧ k.2.1.2 = m.2.1.2 then H (fl (fl l)) (fl m) (fl k) else 0) = ∑ t : Bool, ∑ j : Pos n, ∑ k : Pos n, if l.2.1.2 = j.1.1 ∧ k.1.1 = l.2.1.1 ∧ k.1.2 = j.1.2 then H l …`. Introduce `l`. Rewrite using `[← Equiv.sum_comp fl]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `(Finset.sum_congr rfl fun m _ => e l m).trans ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_prod_type]`. Use `(Finset.sum_congr rfl fun l _ => e2 l).trans ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Finset.sum_comm`.
+A detailed English derivation is pending.
 -/
 theorem sum_letters {M : Type} [AddCommGroup M] (H : Lr n → Lr n → Lr n → M) :
     (∑ l : Lr n, ∑ m : Lr n, ∑ k : Lr n,
@@ -327,15 +327,15 @@ theorem sum_letters {M : Type} [AddCommGroup M] (H : Lr n → Lr n → Lr n → 
 
 open Classical in
 /- English proof (translation)
-Rewrite using `[bdL_apply, bdq_apply, map_add, map_sum, map_sum]`. Use `congrArg₂ (· + ·) ?_ ?_` and prove the remaining obligations. Rewrite using `[← Equiv.sum_comp fl (fun l => liftq n (Tl E1 E2 l) (annq l (Phi x)))]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : S l`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos h, Phi_lift, Phi_ann, xL_eq]`. Rewrite using `[if_neg h, map_zero, ← Phi_ann, ann_zero hx h, map_zero, map_zero]`. Rewrite using `[← sum_letters (fun l m k => creq k (annq m (annq l (Phi x))))]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `hk : Phi (creL k (annL m (annL l x))) = creq (fl k) (annq (fl m) (annq (fl l) (Phi x)))`. Rewrite using `[Phi_cre, Phi_ann, Phi_ann]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hR : l.2.1.2 = m.2.1.1 ∧ k.1 = xor l.1 m.1 ∧ k.2.1.1 = l.2.1.1 ∧ k.2.1.2 = m.2.1.2`. Rewrite using `[if_pos hR]`. Distinguish the cases in `hl : S l`. Distinguish the cases in `hm : S m`. Rewrite using `[if_pos ⟨hl, hm, hR⟩, hk]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg (fun h => hm h.2.1), map_zero, ← hk, ann_zero (ann_supp hx l) hm]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg (fun h => hl h.1), map_zero, ← hk, ann_zero hx hl]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg hR, if_neg (fun h => hR h.2.2), map_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem Phi_bd (S : Lr n → Prop) (E1 E2 : Fin n → Fin n → Module.End ℂ V) {x : Finset (Lr n) → V} (hx : SuppL S x) :
     Phi (bdL S E1 E2 x) = bdq E1 E2 (Phi x) := by
@@ -366,9 +366,9 @@ theorem Phi_bd (S : Lr n → Prop) (E1 E2 : Fin n → Fin n → Module.End ℂ V
     · rw [if_neg hR, if_neg (fun h => hR h.2.2), map_zero]
 
 /- English proof (translation)
-Unfold `adLL`. Rewrite using `[LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `split_ifs`. Both sides reduce to the same expression. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem adLL_apply (lev : Fin n → ℕ) (s : Bool) (p q : Fin n) (x : Finset (Lr n) → V) :
     adLL lev s p q x = ∑ l : Lr n, ∑ k : Lr n,
@@ -383,9 +383,9 @@ theorem adLL_apply (lev : Fin n → ℕ) (s : Bool) (p q : Fin n) (x : Finset (L
   · rfl
 
 /- English proof (translation)
-Unfold `adLq`. Rewrite using `[LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression.
 -/
 theorem adLq_apply (s : Bool) (p q : Fin n) (y : Finset (Lr n) → V) :
     adLq s p q y = ∑ t : Bool, ∑ i : Pos n, ∑ k : Pos n,
@@ -400,20 +400,20 @@ theorem adLq_apply (s : Bool) (p q : Fin n) (y : Finset (Lr n) → V) :
   rfl
 
 /- English proof (translation)
-Apply the tactic sequence `cases s <;> cases t <;> cases c <;> simp [adCL, fl, CompanionTheory.RgExh.U.adC]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem adC_eq (s t c : Bool) (p q : Fin n) (i k : Pos n) :
     adCL s p q (fl (t, i)) (fl (c, k)) = if c = (!s == t) then CompanionTheory.RgExh.U.adC p q i k else 0 := by
   cases s <;> cases t <;> cases c <;> simp [adCL, fl, CompanionTheory.RgExh.U.adC]
 
 /- English proof (translation)
-Rewrite using `[adLL_apply, adLq_apply, map_sum]`. Establish `h1 : ∀ l k : Lr n, Phi (if inUU lev l then adCL s p q l k • creL k (annL l x) else 0) = adCL s p q l k • creq (fl k) (annq (fl l) (Phi x))`. Introduce `l k`. Distinguish the cases in `h : inUU lev l`. Rewrite using `[if_pos h, map_smul, Phi_cre, Phi_ann]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg h, map_zero, ← Phi_ann, ann_zero hx h]`. Simplify using the standard rewrite rules. Establish `h2 : ∀ l : Lr n, Phi (∑ k : Lr n, if inUU lev l then adCL s p q l k • creL k (annL l x) else 0) = ∑ k : Lr n, adCL s p q l k • creq (fl k) (annq (fl l) (Phi x))`. Introduce `l`. Rewrite using `[map_sum]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun k _ => h1 l k`. Use `(Finset.sum_congr rfl fun l _ => h2 l).trans ?_` and prove the remaining obligations. Rewrite using `[← Equiv.sum_comp fl, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun t _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Equiv.sum_comp fl, Fintype.sum_prod_type, Fintype.sum_bool]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [adC_eq, fl_fl]`. Apply the tactic sequence `cases s <;> cases t <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem Phi_ad (lev : Fin n → ℕ) (s : Bool) (p q : Fin n) {x : Finset (Lr n) → V} (hx : SuppL (inUU lev) x) :
     Phi (adLL lev s p q x) = adLq (!s) p q (Phi x) := by
@@ -442,9 +442,9 @@ def tau : FreeAlgebra ℂ (Bool × Fin n × Fin n) →ₐ[ℂ] FreeAlgebra ℂ (
     else FreeAlgebra.ι ℂ (true, p.2) + FreeAlgebra.ι ℂ (false, p.2)
 
 /- English proof (translation)
-Establish `h : (ev2 E1 E2).comp tau = evKP E1 E2`. Use `FreeAlgebra.hom_ext ?_` and prove the remaining obligations. Use function extensionality and compare the values at `p`. Take `⟨s, p, q⟩` from `p`. Apply the tactic sequence `cases s <;> simp [tau, ev2, evKP, pA, kA]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `DFunLike.congr_fun h a`.
+A detailed English derivation is pending.
 -/
 theorem evalPair_tau_eq_evalKPair (E1 E2 : Fin n → Fin n → Module.End ℂ V) (a : FreeAlgebra ℂ (Bool × Fin n × Fin n)) :
     ev2 E1 E2 (tau a) = evKP E1 E2 a := by
@@ -456,9 +456,9 @@ theorem evalPair_tau_eq_evalKPair (E1 E2 : Fin n → Fin n → Module.End ℂ V)
   exact DFunLike.congr_fun h a
 
 /- English proof (translation)
-Establish `h : (evB lev E1 E2).comp tau = evLv lev E1 E2`. Use `FreeAlgebra.hom_ext ?_` and prove the remaining obligations. Use function extensionality and compare the values at `p`. Take `⟨s, p, q⟩` from `p`. Apply the tactic sequence `by_cases hl : lev p = lev q <;> cases s <;> simp [tau, evB, evLv, pA, kA, hl]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `DFunLike.congr_fun h b`.
+A detailed English derivation is pending.
 -/
 theorem evB_tau (lev : Fin n → ℕ) (E1 E2 : Fin n → Fin n → Module.End ℂ V) (b : FreeAlgebra ℂ (Bool × Fin n × Fin n)) :
     evB lev E1 E2 (tau b) = evLv lev E1 E2 b := by
@@ -470,9 +470,9 @@ theorem evB_tau (lev : Fin n → ℕ) (E1 E2 : Fin n → Fin n → Module.End �
   exact DFunLike.congr_fun h b
 
 /- English proof (translation)
-Unfold `c1 c2`. Rewrite using `[← smul_add]`. Establish `: lFq E1 E2 true p q + lFq E1 E2 false p q + (lFq E1 E2 true p q - lFq E1 E2 false p q) = (2 : ℂ) • lFq E1 E2 true p q`. Rewrite using `[two_smul]`. Normalize the expressions using the abelian group laws.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[this, smul_smul]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem c_add (E1 E2 : Fin n → Fin n → Module.End ℂ V) (p q : Fin n) :
     c1 E1 E2 p q + c2 E1 E2 p q = lFq E1 E2 true p q := by
@@ -486,9 +486,9 @@ theorem c_add (E1 E2 : Fin n → Fin n → Module.End ℂ V) (p q : Fin n) :
   norm_num
 
 /- English proof (translation)
-Unfold `c1 c2`. Rewrite using `[← smul_sub]`. Establish `: lFq E1 E2 true p q + lFq E1 E2 false p q - (lFq E1 E2 true p q - lFq E1 E2 false p q) = (2 : ℂ) • lFq E1 E2 false p q`. Rewrite using `[two_smul]`. Normalize the expressions using the abelian group laws.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[this, smul_smul]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem c_sub (E1 E2 : Fin n → Fin n → Module.End ℂ V) (p q : Fin n) :
     c1 E1 E2 p q - c2 E1 E2 p q = lFq E1 E2 false p q := by
@@ -502,7 +502,7 @@ theorem c_sub (E1 E2 : Fin n → Fin n → Module.End ℂ V) (p q : Fin n) :
   norm_num
 
 /- English proof (translation)
-Introduce `A hA`. Use `hx A fun h => hA ?_` and prove the remaining obligations. Use `show T (x A) = 0`. Rewrite using `[h, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_supp {P : Lr n → Prop} {x : Finset (Lr n) → V} (hx : SuppL P x) (T : V →ₗ[ℂ] V) :
     SuppL P (liftL n T x) := by
@@ -512,17 +512,15 @@ theorem lift_supp {P : Lr n → Prop} {x : Finset (Lr n) → V} (hx : SuppL P x)
   rw [h, map_zero]
 
 /- English proof (translation)
-Rewrite using `[adLL_apply, ← mem_supS]`. Use `Submodule.sum_mem _ fun l _ => Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hl : inUU lev l`. Rewrite using `[if_pos hl]`. Distinguish the cases in `hc : adCL s p q l k = 0`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hc, zero_smul]`. Conclude with `Submodule.zero_mem _`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Establish `hk : inUU lev k`. Assume the negation of the conclusion as `hk`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hc` to reduce the goal to its premises. Establish `h0 : lev l.2.1.1 < lev l.2.1.2` using `hl`. Establish `h1 : ¬ (q = l.2.1.1 ∧ k.1 = xor s l.1 ∧ k.2.1 = (p, l.2.1.2))`. Introduce and unpack `⟨rfl, _, h3⟩`. Apply `hk` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `show lev k.2.1.1 < lev k.2.1.2`. Rewrite using `[h3]`. Simplify `h0` using `[hpq]`. Establish `h2 : ¬ (l.2.1.2 = p ∧ k.1 = xor s l.1 ∧ k.2.1 = (l.2.1.1, q))`. Introduce and unpack `⟨rfl, _, h3⟩`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `hk` to reduce the goal to its premises. Use `show lev k.2.1.1 < lev k.2.1.2`. Rewrite using `[h3]`. Simplify `h0` using `[← hpq]`. Simplify using `[adCL, h1, h2]`.
-
-Conclude with `cre_supp (ann_supp hx l) hk`. Rewrite using `[if_neg hl]`. Conclude with `Submodule.zero_mem _`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ad_supp (lev : Fin n → ℕ) (s : Bool) {p q : Fin n} (hpq : lev p = lev q) {x : Finset (Lr n) → V}
     (hx : SuppL (inUU lev) x) : SuppL (inUU lev) (adLL lev s p q x) := by
@@ -556,21 +554,21 @@ theorem ad_supp (lev : Fin n → ℕ) (s : Bool) {p q : Fin n} (hpq : lev p = le
     exact Submodule.zero_mem _
 
 /- English proof (translation)
-Proceed by induction on `b using FreeAlgebra.induction with`. Consider the case `grade0 r`. Introduce `x hx`. Simplify using `only [AlgHom.commutes, Module.algebraMap_end_apply]`. Conclude with `⟨(supS V (inUU lev)).smul_mem r hx, map_smul Phi r x⟩`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Consider the case `grade1 p`. Introduce `x hx`. Take `⟨s, p, q⟩` from `p`. Distinguish the cases in `hl : lev p = lev q`. Establish `e1 : evLc lev E1 E2 (FreeAlgebra.ι ℂ (s, p, q)) x = liftL n (if s then pA E1 E2 p q else kA E1 E2 p q) x + adLL lev s p q x`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Simplify using `[evLc, hl]`. Establish `e2 : evB lev (c1 E1 E2) (c2 E1 E2) (tau (FreeAlgebra.ι ℂ (s, p, q))) = lFq E1 E2 (!s) p q`. Apply the tactic sequence `cases s <;> simp [tau, evB, hl, c_add, c_sub]`. Rewrite using `[e1, e2]`. Use `⟨(supS V (inUU lev)).add_mem (lift_supp hx _) (ad_supp lev s hl hx), ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_add, Phi_lift, Phi_ad lev s p q hx]`. Establish `e3 : lFq E1 E2 (!s) p q (Phi x) = liftq n (Ts E1 E2 (!s) p q) (Phi x) + adLq (!s) p q (Phi x)`. Unfold `lFq`. Rewrite using `[LinearMap.add_apply]`. Rewrite using `[e3]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `cases s <;> simp [Ts, kA, pA]`. Establish `e1 : evLc lev E1 E2 (FreeAlgebra.ι ℂ (s, p, q)) = 0` using `by simp [evLc, hl]`. Establish `e2 : evB lev (c1 E1 E2) (c2 E1 E2) (tau (FreeAlgebra.ι ℂ (s, p, q))) = 0`. Apply the tactic sequence `cases s <;> simp [tau, evB, hl]`. Rewrite using `[e1, e2]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [LinearMap.zero_apply, map_zero]`. Conclude with `⟨(supS V (inUU lev)).zero_mem, trivial⟩`. Consider the case `mul a b ha hb`. Introduce `x hx`. Take `⟨h1, h2⟩` from `hb x hx`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨h3, h4⟩` from `ha _ h1`. Simplify using `only [map_mul, Module.End.mul_apply]`. Conclude with `⟨h3, by rw [h4, h2]⟩`. Consider the case `add a b ha hb`. Introduce `x hx`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨h1, h2⟩` from `ha x hx`. Take `⟨h3, h4⟩` from `hb x hx`. Simplify using `only [map_add, LinearMap.add_apply]`. Conclude with `⟨(supS V (inUU lev)).add_mem h1 h3, by rw [h2, h4]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem Phi_evLc (lev : Fin n → ℕ) (E1 E2 : Fin n → Fin n → Module.End ℂ V)
     (b : FreeAlgebra ℂ (Bool × Fin n × Fin n)) :
@@ -618,7 +616,7 @@ theorem Phi_evLc (lev : Fin n → ℕ) (E1 E2 : Fin n → Fin n → Module.End �
     exact ⟨(supS V (inUU lev)).add_mem h1 h3, by rw [h2, h4]⟩
 
 /- English proof (translation)
-Use extensionality with `l`. Take `⟨s, i⟩` from `l`. Apply the tactic sequence `cases s <;> simp [mem_flS, omQ, omU, fl]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem flS_omQ (lev : Fin n → ℕ) : flS (omQ lev) = omU lev := by
   ext l
@@ -626,11 +624,11 @@ theorem flS_omQ (lev : Fin n → ℕ) : flS (omQ lev) = omU lev := by
   cases s <;> simp [mem_flS, omQ, omU, fl]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `A`. Rewrite using `[Phi_apply]`. Unfold `topq`. Distinguish the cases in `h : A = omQ lev`. Substitute `h` using the available equality.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[flS_omQ]`. Simplify using the standard rewrite rules. Establish `h' : flS A ≠ omU lev`. Introduce `h2`. Apply `h` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `h2` using `[← flS_omQ]`. Use `congrArg flS h2` as an intermediate fact. Simplify using `using this`. Rewrite using `[Pi.single_eq_of_ne h', Pi.single_eq_of_ne h]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem Phi_top (lev : Fin n → ℕ) (u : V) : Phi (Pi.single (omU lev) u) = topq lev u := by
   funext A
@@ -649,9 +647,9 @@ theorem Phi_top (lev : Fin n → ℕ) (u : V) : Phi (Pi.single (omU lev) u) = to
     rw [Pi.single_eq_of_ne h', Pi.single_eq_of_ne h]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `A`. Use `show T (topq lev u A) = topq lev (T u) A`. Unfold `topq`. Distinguish the cases in `h : A = omQ lev`. Substitute `h` using the available equality.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[Pi.single_eq_of_ne h, Pi.single_eq_of_ne h, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_top (lev : Fin n → ℕ) (T : V →ₗ[ℂ] V) (u : V) : liftq n T (topq lev u) = topq lev (T u) := by
   funext A
@@ -663,9 +661,7 @@ theorem lift_top (lev : Fin n → ℕ) (T : V →ₗ[ℂ] V) (u : V) : liftq n T
   · rw [Pi.single_eq_of_ne h, Pi.single_eq_of_ne h, map_zero]
 
 /- English proof (translation)
-Introduce `A hA l hl`. Establish `hAe : A = omU lev`. Assume the negation of the conclusion as `h`. Conclude with `hA (Pi.single_eq_of_ne h _)`. Substitute `hAe` using the available equality.
-
-Conclude with `(Finset.mem_filter.1 hl).2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem single_supp (lev : Fin n → ℕ) (u : V) : SuppL (inUU lev) (Pi.single (omU lev) u : Finset (Lr n) → V) := by
   intro A hA l hl
@@ -676,9 +672,7 @@ theorem single_supp (lev : Fin n → ℕ) (u : V) : SuppL (inUU lev) (Pi.single 
   exact (Finset.mem_filter.1 hl).2.2
 
 /- English proof (translation)
-Introduce `A hA l hl`. Establish `hAe : A = omQ lev`. Assume the negation of the conclusion as `h`. Conclude with `hA (Pi.single_eq_of_ne h _)`. Substitute `hAe` using the available equality.
-
-Conclude with `(Finset.mem_filter.1 hl).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem top_supp (lev : Fin n → ℕ) (u : V) : SuppQ (inKU lev) (topq lev u) := by
   intro A hA l hl
@@ -689,7 +683,7 @@ theorem top_supp (lev : Fin n → ℕ) (u : V) : SuppQ (inKU lev) (topq lev u) :
   exact (Finset.mem_filter.1 hl).2
 
 /- English proof (translation)
-Introduce `A hA`. Establish `hAe : A = omQ lev`. Assume the negation of the conclusion as `h`. Conclude with `hA (Pi.single_eq_of_ne h _)`. Rewrite using `[hAe]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem top_deg (lev : Fin n → ℕ) (u : V) : DegQ (omQ lev).card (topq lev u) := by
   intro A hA
@@ -701,11 +695,9 @@ theorem top_deg (lev : Fin n → ℕ) (u : V) : DegQ (omQ lev).card (topq lev u)
 end Chains
 
 /- English proof (translation)
-Use `⟨fun l h => h.2, ?_⟩` and prove the remaining obligations. Introduce `s t i j k h1 h2 h3 hs ht`. Take `⟨hs1, hs2⟩` from `hs`. Take `⟨ht1, ht2⟩` from `ht`. Simplify using `only at hs1 ht1 hs2 ht2`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Substitute `hs1 ht1` using the available equality. Use `⟨rfl, ?_⟩` and prove the remaining obligations. Use `show lev k.1.1 < lev k.1.2`. Rewrite using `[h2, h3]`. Rewrite `hs2` using `[h1]`.
-
-Conclude with `hs2.trans ht2`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSubL_inKU (lev : Fin n → ℕ) : IsSubL lev (inKU lev) := by
   refine ⟨fun l h => h.2, ?_⟩
@@ -721,25 +713,25 @@ theorem isSubL_inKU (lev : Fin n → ℕ) : IsSubL lev (inKU lev) := by
   exact hs2.trans ht2
 
 /- English proof (translation)
-Rewrite using `[← flS_omQ, card_flS]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem omQ_card (lev : Fin n → ℕ) : (omQ lev).card = (omU lev).card := by
   rw [← flS_omQ, card_flS]
 
 /- English proof (translation)
-Introduce `n lev hlev a b ha hab V _ _ E1 E2 hE v hv`. Establish `hP : PairRel E1 E2` using `hE`. Establish `hcyc : bdq E1 E2 (topq lev v) = 0`. Use `hT n lev V E1 E2 hP v ?_` and prove the remaining obligations. Introduce and unpack `⟨s, i⟩ ⟨hs, hi⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Simplify using `only at hs`. Substitute `hs` using the available equality. Use `hv (fl (true, i)) rfl hi` as an intermediate fact. Rewrite `this` using `[xL_eq, fl_fl]`. Then use the resulting hypothesis. Take `⟨w, hw1, hw2, hw3⟩` from `hG n lev (inKU lev) (tau a) (tau b) hlev (isSubL_inKU lev) (by`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Introduce `V _ _ E1 E2 hP`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨s, i⟩ ⟨hs, _⟩`. Simplify using `only at hs`. Substitute `hs` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Rewrite using `[evalPair_tau_eq_evalKPair]`. Conclude with `ha V E1 E2 hP i.1.1 i.1.2`. Introduce `x`. Take `⟨w, hw⟩` from `hab V E1 E2 hP x`. Use `⟨fun l => w (fl l), ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[evalPair_tau_eq_evalKPair, evB_tau, hw, ← Equiv.sum_comp fl]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : inUU lev l`. Rewrite using `[if_pos h, if_pos (show inUL lev (fl l) from h), xL_eq, fl_fl]`. Rewrite using `[if_neg h, if_neg (show ¬ inUL lev (fl l) from h)]) V E1 E2 hP (omQ lev).card (topq lev v)`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use the proof step `(top_supp lev v) (top_deg lev v) hcyc`. Establish `hsw : SuppL (inUU lev) (Phi w)`. Introduce `A hA l hl`. Conclude with `hw1 (flS A) hA (fl l) (by simpa [mem_flS] using hl)`. Establish `hdw : DegL ((omU lev).card + 1) (Phi w)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `A hA`. Rewrite using `[← omQ_card, ← hw2 (flS A) hA, card_flS]`. Use `⟨Phi w, hsw, hdw, ?_⟩` and prove the remaining obligations. Apply `(show Function.Injective (Phi : (Finset (Lr n) → V) → _) from Function.LeftInverse.injective Phi_Phi)` to reduce the goal to its premises. Rewrite using `[Phi_bd _ E1 E2 hsw, Phi_Phi, ← hw3, map_sub, Phi_top, (Phi_evLc lev E1 E2 b _ (single_supp lev v)).2, Phi_top, lift_top, evalPair_tau_eq_evalKPair]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actUU_of (hG : GlobalTheory.CompanionTheory.PairMult.GenCOU2) (hT : GlobalTheory.CompanionTheory.PairMult.TopCyc) : PositivityTheory.RgBcC.RealD.ActUU := by
   intro n lev hlev a b ha hab V _ _ E1 E2 hE v hv
@@ -781,7 +773,7 @@ theorem actUU_of (hG : GlobalTheory.CompanionTheory.PairMult.GenCOU2) (hT : Glob
     lift_top, evalPair_tau_eq_evalKPair]
 
 /- English proof (translation)
-The claim follows from `actUU_of GlobalTheory.T.pair_multiplicity_generic_unitary GlobalTheory.T.pair_multiplicity_top_cycle`.
+A detailed English derivation is pending.
 -/
 theorem actUU : PositivityTheory.RgBcC.RealD.ActUU := actUU_of GlobalTheory.T.pair_multiplicity_generic_unitary GlobalTheory.T.pair_multiplicity_top_cycle
 

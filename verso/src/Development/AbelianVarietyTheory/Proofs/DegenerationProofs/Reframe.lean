@@ -12,13 +12,13 @@ open GlobalTheory GlobalTheory.Ex GlobalTheory.Ex.Arch
 namespace GlobalTheory.Ex.Arch
 
 /- English proof (translation)
-Introduce `hT Q L₀ g u₀ _ _ _`. Take `⟨rig, hrig⟩` from `Q.rigid`. Take `⟨u, Hm, χ, Ef, hAH, -, ht₁, ht₂, -, -, hEf, -⟩` from `hT Q rig hrig`. Take `⟨F, hF₀, -⟩` from `HomLinear.exists_linear_of_isMonHom Q.A Q.A Q.isAb Q.isAb L₀ Q.L g Q.g u₀ u ht₁ ht₂ (𝟙 _) inferInstance`. Establish `hF : ∀ z, u.ex (F z) = u₀.ex z` using `fun z => (hF₀ z).trans (Category.comp_id _)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hΛ : ∀ z, F z ∈ u.Λ ↔ z ∈ u₀.Λ` using `fun z => by rw [← u.ker, hF, u₀.ker]`. Establish `cΛ : (u.Λ : Set (Fin Q.g → ℂ)).Countable`. Use `u.discrete` as an intermediate fact. Conclude with `(countable_of_Lindelof_of_discrete : Countable u.Λ)`. Establish `cΛ₀ : (u₀.Λ : Set (Fin g → ℂ)).Countable`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `u₀.discrete` as an intermediate fact. Conclude with `(countable_of_Lindelof_of_discrete : Countable u₀.Λ)`. Establish `Finj : Function.Injective F` using `(injective_iff_map_eq_zero F).2 fun z hz => FibreUnif.eq_zero_of_smul_mem_countable cΛ₀ fun t => (hΛ _).1 (by rw [map_smul, hz, smul_zero]; exact u.Λ.zero_mem)`. Establish `Fsurj : Function.Surjective F` using `FibreUnif.surjective_of_countable F cΛ fun v => by`. Take `⟨z, hz⟩` from `u₀.ex_onto (u.ex v)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨z, (u.ker _).1 ?_⟩` and prove the remaining obligations. Use `u.ex_add (v - F z) (F z)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel, hF, hz]`. Conclude with `right_eq_mul.1 this`. Conclude with `⟨u, Hm, χ, Ef, LinearEquiv.ofBijective F ⟨Finj, Fsurj⟩, hAH, hEf, hF⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem reframe : ThetaUnifAV → ReframeSt := by
   intro hT Q L₀ g u₀ _ _ _

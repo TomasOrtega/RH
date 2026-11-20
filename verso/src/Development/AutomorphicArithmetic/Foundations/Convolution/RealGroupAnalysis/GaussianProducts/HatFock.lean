@@ -23,9 +23,9 @@ private def gR (δ : F) (v : V4 F) : ℂ :=
   Complex.exp (-(Real.pi : ℂ) * ((∑ w, TR.pInf F (v 0 ^ 2 + 2 * (v 2 ^ 2 - rt δ * v 3 ^ 2)) w : ℝ) : ℂ))
 
 /- English proof (translation)
-Establish `h : (∑ w, TR.pInf F (v 0 ^ 2 + v 1 ^ 2 + 2 * (v 2 ^ 2 - rt δ * v 3 ^ 2)) w : ℝ) = (∑ w, TR.pInf F (v 0 ^ 2 + 2 * (v 2 ^ 2 - rt δ * v 3 ^ 2)) w) + ∑ w, TR.pInf F (v 1) w ^ 2`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `e : v 0 ^ 2 + v 1 ^ 2 + 2 * (v 2 ^ 2 - rt δ * v 3 ^ 2) = (v 0 ^ 2 + 2 * (v 2 ^ 2 - rt δ * v 3 ^ 2)) + v 1 ^ 2` using `by ring`. Rewrite using `[e, map_add, map_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[gauss, gR, gE, ← Complex.exp_add, h]`. Use `push_cast`. Put the polynomial expressions in normal form.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form.
 -/
 private theorem gauss_split (δ : F) (v : V4 F) : gauss δ v = gR δ v * gE (v 1) := by
   have h : (∑ w, TR.pInf F (v 0 ^ 2 + v 1 ^ 2 + 2 * (v 2 ^ 2 - rt δ * v 3 ^ 2)) w : ℝ) =
@@ -41,7 +41,7 @@ private theorem gauss_split (δ : F) (v : V4 F) : gauss δ v = gR δ v * gE (v 1
   ring_nf
 
 /- English proof (translation)
-Establish `h0 : Function.update v 1 s 0 = v 0` using `Function.update_of_ne (by decide) _ _`. Establish `h2 : Function.update v 1 s 2 = v 2` using `Function.update_of_ne (by decide) _ _`. Establish `h3 : Function.update v 1 s 3 = v 3` using `Function.update_of_ne (by decide) _ _`. Simplify using `only [gR, h0, h2, h3]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 private theorem gR_update (δ : F) (v : V4 F) (s : A F) : gR δ (Function.update v 1 s) = gR δ v := by
   have h0 : Function.update v 1 s 0 = v 0 := Function.update_of_ne (by decide) _ _
@@ -50,7 +50,7 @@ private theorem gR_update (δ : F) (v : V4 F) (s : A F) : gR δ (Function.update
   simp only [gR, h0, h2, h3]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = 1`. Substitute `h` using the available equality. Simplify using `[finPartPi]`. Simplify using `[finPartPi, Function.update_of_ne h]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem finPart_update (v : V4 F) (s : A F) :
     finPartPi (Function.update v 1 s) = Function.update (finPartPi v) 1 s.2 := by
@@ -60,20 +60,20 @@ private theorem finPart_update (v : V4 F) (s : A F) :
   · simp [finPartPi, Function.update_of_ne h]
 
 /- English proof (translation)
-Simplify using `[mon, pow_add, Finset.prod_mul_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem mon_add (e₁ e₂ : InfinitePlace F → ℕ) (s : A F) :
     mon (e₁ + e₂) s = mon e₁ s * mon e₂ s := by
   simp [mon, pow_add, Finset.prod_mul_distrib]
 
 /- English proof (translation)
-Simplify using `[mon]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem mon_zero (s : A F) : mon (0 : InfinitePlace F → ℕ) s = 1 := by
   simp [mon]
 
 /- English proof (translation)
-Rewrite using `[mon, Finset.prod_eq_single w]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Pi.single_eq_of_ne hb]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem mon_single (w : InfinitePlace F) (s : A F) :
     mon (Pi.single w 1) s = ((TR.pInf F s w : ℝ) : ℂ) := by
@@ -88,9 +88,9 @@ private def Good (δ : F) (χ : V4 F → ℂ) : Prop :=
     hat χ ∈ FockFn δ
 
 /- English proof (translation)
-Use `⟨fun v => by simpa using integrable_zero _ _ _, ?_⟩` and prove the remaining obligations. Establish `: hat (0 : V4 F → ℂ) = 0`. Use function extensionality and compare the values at `v`. Simplify using `[hat]`. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_mem _`.
+A detailed English derivation is pending.
 -/
 private theorem good_zero (δ : F) : Good δ (0 : V4 F → ℂ) := by
   refine ⟨fun v => by simpa using integrable_zero _ _ _, ?_⟩
@@ -101,9 +101,9 @@ private theorem good_zero (δ : F) : Good δ (0 : V4 F → ℂ) := by
   exact zero_mem _
 
 /- English proof (translation)
-Use `⟨fun v => ?_, ?_⟩` and prove the remaining obligations. Use `((h₁.1 v).add (h₂.1 v)).congr (ae_of_all _ fun s => ?_)` and prove the remaining obligations. Simplify using `only [Pi.add_apply, add_mul]`. Establish `: hat (χ₁ + χ₂) = hat χ₁ + hat χ₂`. Use function extensionality and compare the values at `v`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [hat, Pi.add_apply, add_mul]`. Conclude with `integral_add (h₁.1 v) (h₂.1 v)`. Rewrite using `[this]`. Conclude with `add_mem h₁.2 h₂.2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem good_add {δ : F} {χ₁ χ₂ : V4 F → ℂ} (h₁ : Good δ χ₁) (h₂ : Good δ χ₂) :
     Good δ (χ₁ + χ₂) := by
@@ -118,9 +118,9 @@ private theorem good_add {δ : F} {χ₁ χ₂ : V4 F → ℂ} (h₁ : Good δ �
     exact add_mem h₁.2 h₂.2
 
 /- English proof (translation)
-Use `⟨fun v => ?_, ?_⟩` and prove the remaining obligations. Simplify `(h.1 v).const_mul c` using `only [Pi.smul_apply, smul_eq_mul, mul_assoc]`. Establish `: hat (c • χ) = c • hat χ`. Use function extensionality and compare the values at `v`. Simplify using `only [hat, Pi.smul_apply, smul_eq_mul, mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Conclude with `integral_const_mul _ _`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ c h.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem good_smul {δ : F} (c : ℂ) {χ : V4 F → ℂ} (h : Good δ χ) : Good δ (c • χ) := by
   refine ⟨fun v => ?_, ?_⟩
@@ -133,17 +133,17 @@ private theorem good_smul {δ : F} (c : ℂ) {χ : V4 F → ℂ} (h : Good δ χ
     exact Submodule.smul_mem _ c h.2
 
 /- English proof (translation)
-Take `⟨P, hP, hH⟩` from `hermAdel F e`. Establish `hfin` using `finHat F g hg`. Establish `hs : ∀ (v : V4 F) (s : A F), (m (Function.update v 1 s) * mon e (Function.update v 1 s 1)) * gauss δ (Function.update v 1 s) * g (finPartPi (Function.update v 1 s)) = (m v * gR δ v) * (mon e s * gE s * g (Function.update (finPartPi v) 1 s.2))`. Introduce `v s`. Rewrite using `[gauss_split, gR_update, hi, finPart_update, Function.update_self]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Use `⟨fun v => ?_, ?_⟩` and prove the remaining obligations. Take `⟨hint, -⟩` from `hH _ (hfin.1 (finPartPi v))`. Simplify using `only [hs]`. Establish `hc : Continuous fun s : A F => ψ (-(s * v 1))` using `continuous_ψ.comp (continuous_id.mul continuous_const).neg`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hi'` using `hint.const_mul (m v * gR δ v)`. Use `hi'.mono (hi'.aestronglyMeasurable.mul hc.aestronglyMeasurable) (ae_of_all _ fun s => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul _ (ψ _), norm_ψ, mul_one]`. Conclude with `le_of_eq (by simp only [mon, gE])`. Establish `hval : hat (fun v => (m v * mon e (v 1)) * gauss δ v * g (finPartPi v)) = fun v => (m v * P (v 1)) * gauss δ v * (fun u : Fin 4 → FiniteAdeleRing (𝓞 F) F => ∫ s, g (Function.update u 1 s) * ((finiteAdelicChar F (-(s * u 1)) : Circle) : ℂ) ∂(finiteAdeleMeasure F)) (finPartPi v)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `v`. Take `⟨-, hv⟩` from `hH _ (hfin.1 (finPartPi v))`. Establish `h1 : ∫ s : A F, mon e s * gE s * g (Function.update (finPartPi v) 1 s.2) * ψ (-(s * v 1)) ∂(adeleMeasure F) = P (v 1) * gE (v 1) * ∫ s, g (Function.update (finPartPi v) 1 s) * ((finiteAdelicChar F (-(s * finPartPi v 1)) : Circle) : ℂ) ∂(finiteAdeleMeasure F)` using `hv (v 1)`. Establish `hI : ∀ s : A F, (m (Function.update v 1 s) * mon e (Function.update v 1 s 1)) * gauss δ (Function.update v 1 s) * g (finPartPi (Function.update v 1 s)) * ψ (-(s * v 1)) = (m v * gR δ v) * (mon e s * gE s * g (Function.update (finPartPi v) 1 s.2) * ψ (-(s * v 1)))`. Introduce `s`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hat, hI]`. Rewrite using `[integral_const_mul, h1, gauss_split]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hval]`. Conclude with `Submodule.subset_span ⟨_, polyFn.mul_mem hm hP, _, hfin.2, rfl⟩`.
+A detailed English derivation is pending.
 -/
 private theorem good_gen (δ : F) {m : V4 F → ℂ} (hm : m ∈ polyFn (F := F)) (hi : Ind m)
     (e : InfinitePlace F → ℕ) {g : (Fin 4 → FiniteAdeleRing (𝓞 F) F) → ℂ}
@@ -191,15 +191,15 @@ private theorem good_gen (δ : F) {m : V4 F → ℂ} (hm : m ∈ polyFn (F := F)
     exact Submodule.subset_span ⟨_, polyFn.mul_mem hm hP, _, hfin.2, rfl⟩
 
 /- English proof (translation)
-Establish `h0 : p ∈ Subalgebra.toSubmodule (polyFn (F` using `F)) := hp`. Rewrite `h0` using `[polyFn, Algebra.adjoin_eq_span]`. Use `Submodule.span_mono ?_ h0` and prove the remaining obligations. Introduce `q hq`. Proceed by induction on `hq using Submonoid.closure_induction with`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `mem q hq`. Take `⟨i, w, rfl⟩` from `hq`. Distinguish the cases in `h : i = 1`. Substitute `h` using the available equality. Conclude with `⟨1, one_mem _, fun _ _ => rfl, Pi.single w 1, by funext v; simp [mon_single]⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components.
 
-Use `⟨_, Algebra.subset_adjoin ⟨i, w, rfl⟩, fun v s => ?_, 0, ?_⟩` and prove the remaining obligations. Simplify using `only [Function.update_of_ne h]`. Use function extensionality and compare the values at `v`. Simplify using `[mon_zero]`. Consider the case `one => exact ⟨1, one_mem _, fun _ _ => rfl, 0, by funext v; simp [mon_zero]⟩`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `mul a b _ _ ha hb`. Take `⟨m₁, h₁, i₁, e₁, rfl⟩` from `ha`. Take `⟨m₂, h₂, i₂, e₂, rfl⟩` from `hb`. Use `⟨m₁ * m₂, mul_mem h₁ h₂, fun v s => ?_, e₁ + e₂, ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.mul_apply, i₁ v s, i₂ v s]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `v`. Simplify using `only [Pi.mul_apply, mon_add]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem poly_decomp {p : V4 F → ℂ} (hp : p ∈ polyFn (F := F)) :
     p ∈ Submodule.span ℂ {q : V4 F → ℂ | ∃ m ∈ polyFn (F := F), Ind m ∧
@@ -228,15 +228,15 @@ private theorem poly_decomp {p : V4 F → ℂ} (hp : p ∈ polyFn (F := F)) :
       ring
 
 /- English proof (translation)
-Proceed by induction on `hp using Submodule.span_induction with`. Consider the case `mem q hq`. Take `⟨m, hm, hi, e, rfl⟩` from `hq`. Conclude with `good_gen δ hm hi e hg`. Consider the case `zero`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Establish an intermediate fact.
 
-Establish `: (fun v : V4 F => (0 : V4 F → ℂ) v * gauss δ v * g (finPartPi v)) = 0`. Use function extensionality and compare the values at `v`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `good_zero δ`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `add a b _ _ ha hb`. Establish `: (fun v : V4 F => (a + b) v * gauss δ v * g (finPartPi v)) = (fun v => a v * gauss δ v * g (finPartPi v)) + fun v => b v * gauss δ v * g (finPartPi v)`. Use function extensionality and compare the values at `v`. Simplify using `only [Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[this]`. Conclude with `good_add ha hb`. Consider the case `smul c a _ ha`. Establish `: (fun v : V4 F => (c • a) v * gauss δ v * g (finPartPi v)) = c • fun v => a v * gauss δ v * g (finPartPi v)`. Use function extensionality and compare the values at `v`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `good_smul c ha`.
+A detailed English derivation is pending.
 -/
 private theorem good_poly (δ : F) {g : (Fin 4 → FiniteAdeleRing (𝓞 F) F) → ℂ}
     (hg : g ∈ finiteSchwartzBruhatPi F (ι := Fin 4)) {p : V4 F → ℂ}
@@ -266,9 +266,9 @@ private theorem good_poly (δ : F) {g : (Fin 4 → FiniteAdeleRing (𝓞 F) F) �
     exact good_smul c ha
 
 /- English proof (translation)
-Proceed by induction on `hχ using Submodule.span_induction with`. Consider the case `mem f hf`. Take `⟨p, hp, g, hg, rfl⟩` from `hf`. Conclude with `good_poly δ hg (poly_decomp hp)`. Consider the case `zero => exact good_zero δ`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b _ _ ha hb => exact good_add ha hb`. Consider the case `smul c a _ ha => exact good_smul c ha`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem good_fock (δ : F) {χ : V4 F → ℂ} (hχ : χ ∈ FockFn δ) : Good δ χ := by
   induction hχ using Submodule.span_induction with
@@ -284,7 +284,7 @@ end UpperTheory.ConvolutionTheory.R2.G.FockHat
 end
 
 /- English proof (translation)
-Introduce `F _ _ _ δ χ hχ`. Conclude with `(FockHat.good_fock δ hχ).2`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.G.hatFock :
     ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (δ : F), ∀ χ ∈ FockFn δ, hat χ ∈ FockFn δ := by

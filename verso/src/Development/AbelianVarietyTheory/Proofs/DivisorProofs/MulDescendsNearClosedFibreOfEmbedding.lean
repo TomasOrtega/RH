@@ -15,23 +15,21 @@ open GlobalTheory.Mum
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Introduce `R _ _ _ hR M G' _ _ _ E N fU l hl1 hl2`. Take `⟨hNoeth, -, hIC, -⟩` from `hR`. Take `⟨hbij, hsurj⟩` from `GlobalTheory.T.appTop_bijective_and_surjective_normalDomain R M`. Use `haveI := M.proper`. Use `haveI := M.integral`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI := N.smooth`. Take `⟨O, h, hfib, hover, hpt⟩` from `GlobalTheory.T.exists_open_mul_point_on_pullback_containing_closedFibre R M G' N`. Establish `hconst` using `GlobalTheory.T.closedFibre_productCoord_constant_on_projectionFibres R M G' E N fU l hl1 hl2 hsurj O h hpt`. Establish `hflat : Flat (N.U ⊗ N.U).hom`. Rewrite using `[Over.tensorObj_hom]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `infer_instance`. Establish `hPB : IsPullback (pullback.fst (N.U ⊗ N.U).hom M.π) (pullback.snd (N.U ⊗ N.U).hom M.π) (N.U ⊗ N.U).hom M.π` using `IsPullback.of_hasPullback _ _`. Establish `hpsurj : Surjective (pullback.fst (N.U ⊗ N.U).hom M.π)` using `by haveI : Surjective M.π := hsurj infer_instance`. Establish `key : ∀ i : {y₀ : (N.U ⊗ N.U).left // (N.U ⊗ N.U).hom y₀ = closedPoint R}, ∃ (V : (N.U ⊗ N.U).left.Opens) (hV : pullback.fst (N.U ⊗ N.U).hom M.π ⁻¹ᵁ V ≤ O) (h₀ : V.toScheme ⟶ N.U.left), i.1 ∈ V ∧ (pullback.fst (N.U ⊗ N.U).hom M.π ∣_ V) ≫ h₀ = (pullback (N.U ⊗ N.U).hom M.π).homOfL …`. Introduce and unpack `⟨y₀, hy₀⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨z, hz⟩` from `hpsurj.surj y₀`. Establish `hzO : z ∈ O` using `hfib z (by rw [hz]; exact hy₀)`. Conclude with `GlobalTheory.T.morphism_descends_near_fibre_rigidity R M.S _ _ N.U.left M.π _ _ _ M.proper hsurj hbij hflat hPB O h y₀ (h ⟨z, hzO⟩) (fun z' hz' => hfib z' (by rw [hz']; exact hy₀)) (fun z' hz' => hconst z' ⟨z, hzO⟩ (by rw [hz']; exact hz.symm) (by rw [hz']; exact hy₀))`. Use `choose V hV h₀ hmem hcomm using key`. Take `⟨hV', m, hm, huniq⟩` from `GlobalTheory.T.morphism_local_descents_glue_union R M.S _ _ N.U.left M.π _ _ _ M.proper hsurj M.integral hflat hPB O h _ V hV h₀ hcomm`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨⨆ i, V i, m, fun z hz => TopologicalSpace.Opens.mem_iSup.2 ⟨⟨z, hz⟩, hmem _⟩, ?_, ?_⟩` and prove the remaining obligations. Apply `huniq` to reduce the goal to its premises. Simplify using `only [reassoc_of% hm, hover, Scheme.homOfLE_ι_assoc, morphismRestrict_ι_assoc]`. Introduce `T v s x y hx hy`. Establish `hc : (v ≫ (⨆ i, V i).ι) ≫ (N.U ⊗ N.U).hom = s ≫ M.π`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Take `⟨x₀, h1, h2, -⟩` from `hx`. Establish `e1 : (fst N.U N.U).left ≫ N.U.hom = (N.U ⊗ N.U).hom` using `Over.w _`. Simplify using `only [← e1, ← h2, Category.assoc, ← pullback.condition]`. Rewrite using `[reassoc_of% h1]`. Set `z : T ⟶ pullback (N.U ⊗ N.U).hom M.π` to `pullback.lift (v ≫ (⨆ i, V i).ι) s hc`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Set `z₁` to `(isPullback_morphismRestrict (pullback.fst (N.U ⊗ N.U).hom M.π) (⨆ i, V i)).lift v z (pullback.lift_fst _ _ _).symm`. Establish `hz₁a : z₁ ≫ (pullback.fst (N.U ⊗ N.U).hom M.π ∣_ ⨆ i, V i) = v` using `IsPullback.lift_fst _ _ _ _`. Establish `hz₁b : z₁ ≫ (pullback.fst (N.U ⊗ N.U).hom M.π ⁻¹ᵁ ⨆ i, V i).ι = z` using `IsPullback.lift_snd _ _ _ _`. Set `t` to `z₁ ≫ (pullback (N.U ⊗ N.U).hom M.π).homOfLE hV'`. Establish `ht : t ≫ O.ι = z`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [t, Category.assoc, Scheme.homOfLE_ι, hz₁b]`. Establish `hvm : v ≫ m = t ≫ h` using `by rw [← hz₁a, Category.assoc, hm, Category.assoc]`. Rewrite using `[hvm]`. Use `hpt T t s x y (by rw [reassoc_of% ht, pullback.lift_snd]) ?_ ?_` and prove the remaining obligations. Rewrite using `[reassoc_of% ht, pullback.lift_fst_assoc]`.
-
-Conclude with `hx`. Rewrite using `[reassoc_of% ht, pullback.lift_fst_assoc]`. Conclude with `hy`.
+A detailed English derivation is pending.
 -/
 theorem Near.law_of_emb : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], AdmBase R (maximalIdeal R) → ∀ (M : Modif R) (G' : Over M.S) [GrpObj G'] [IsCommMonObj G'], IsSemiAbelian G' → ∀ (E : Emb M.π G') (N : Near M.π G') (fU : N.U.left ⟶ PSpace R E.N) (l : pullback N.U.hom M.π ⟶ E.H.toScheme), l ≫ E.H.ι = N.u → l ≫ E.f = pullback.fst _ _ ≫ fU → N.Law := by
   intro R _ _ _ hR M G' _ _ _ E N fU l hl1 hl2

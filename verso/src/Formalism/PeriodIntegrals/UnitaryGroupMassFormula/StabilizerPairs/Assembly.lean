@@ -5,17 +5,17 @@ import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.FrameInd
 namespace PI.StabPairsW
 
 /- English proof (translation)
-The claim follows from `gramInv_of frameInd`.
+A detailed English derivation is pending.
 -/
 theorem gram_matrix_invariance : GramInv := gramInv_of frameInd
 
 /- English proof (translation)
-The claim follows from `pairFormula_of gram_matrix_invariance`.
+A detailed English derivation is pending.
 -/
 theorem stabilizer_pair_formula : PairFormula := pairFormula_of gram_matrix_invariance
 
 /- English proof (translation)
-The claim follows from `stabPairs_of mapsStep stabilizer_pair_formula h compDet`.
+A detailed English derivation is pending.
 -/
 theorem stabPairs_of_converse (h : ConverseStep) : Formalism.FourierDecayAlt.C2.CurvatureConditionOneClauseThree :=
   stabPairs_of mapsStep stabilizer_pair_formula h compDet

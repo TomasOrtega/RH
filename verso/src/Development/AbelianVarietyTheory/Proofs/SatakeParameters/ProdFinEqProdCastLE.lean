@@ -3,9 +3,9 @@ import Mathlib
 namespace GlobalTheory.ProdFinCastLE
 
 /- English proof (translation)
-Use `symm`. Rewrite using `[show (∏ r : Fin a, f (Fin.castLE h r)) = ∏ x ∈ Finset.univ.map ⟨Fin.castLE h, Fin.castLE_injective h⟩, f x by`. Rewrite using `[Finset.prod_map]`. Use the proof step `rfl]`. Use `Finset.prod_subset (Finset.subset_univ _) fun x _ hx => hf x ?_` and prove the remaining obligations.
+Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`. Conclude with `hx (Finset.mem_map.2 ⟨⟨x, hlt⟩, Finset.mem_univ _, Fin.ext rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem prod_fin_eq_prod_castLE {a b : ℕ} {M : Type} [CommMonoid M] (h : a ≤ b) (f : Fin b → M)
     (hf : ∀ r : Fin b, a ≤ (r : ℕ) → f r = 1) :

@@ -22,7 +22,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.TypeLawTransport.typeLaw_transport_fwd) | (exact GlobalTheory.TypeLawTransport.typeLaw_transport_fwd) | (intros; apply GlobalTheory.TypeLawTransport.typeLaw_transport_fwd <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.place_iso_compatible_local_langlands_two : ∀ (E E' Ω : Type) [Field E] [NumberField E] [Field E'] [NumberField E'] [Field Ω] [Algebra E Ω] [Algebra E' Ω] [IsAlgClosure E Ω] [IsAlgClosure E' Ω] (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (w' : HeightOneSpectrum (𝓞 E')) (h : IsPlaceOver A w) (h' : IsPlaceOver A w') (j : E →+* E') (i : w.adicCompletion E ≃+* w'.adicCompletion E'), GlobalTheory.LocLanglands.PlaceIso A w A w' (RingEquiv.refl Ω) j i → ∀ (rc : IrrGL (w.adicCompletion E) → WD h) (rc' : IrrGL (w'.adicCompletion E') → WD h'), (∀ x x', RepRel i x x' → WDRel (RingEquiv.refl Ω) (rc x) (rc' x')) → UpperTheory.Zero.LLC.TypeLaw h rc → UpperTheory.Zero.LLC.TypeLaw h' rc' := by
   first | (exact @GlobalTheory.TypeLawTransport.typeLaw_transport_fwd) | (exact GlobalTheory.TypeLawTransport.typeLaw_transport_fwd) | (intros; apply GlobalTheory.TypeLawTransport.typeLaw_transport_fwd  <;> assumption)

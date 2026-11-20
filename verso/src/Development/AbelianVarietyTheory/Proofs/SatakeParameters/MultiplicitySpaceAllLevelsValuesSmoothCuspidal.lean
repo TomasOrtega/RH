@@ -12,7 +12,7 @@ open Formalism.IndefR Formalism.IndefR.Mult Formalism.L2.Theta Formalism.BasicNo
 namespace GlobalTheory.MinfCusp
 
 /- English proof (translation)
-Introduce `D θ V S n P M T hT v`. Take `⟨N, hN⟩` from `(principalLevelFrame.mem_Minf (θ := θ) (P := P) (M := M)).1 hT`. Establish `h` using `(GlobalTheory.MultMem.mem_mult_iff D θ V S M _ _ T).1 hN`. Conclude with `⟨h.aut v, h.cusp v⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem minf_val_autCusp : ∀ {D : D7} (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) {V : Formalism.BasicNotions.TH.HSp D}
     {S : D.what₂.Tau → Formalism.BasicNotions.TH.SPar} {n : ℕ} (P : principalLevelFrame.RowPsi V n) (M : DSModel V S),

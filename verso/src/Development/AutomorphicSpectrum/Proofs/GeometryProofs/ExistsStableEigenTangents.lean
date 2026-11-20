@@ -21,7 +21,7 @@ variable {ι O : Type} [Fintype ι] [CommRing O]
 variable {R N : Type} [CommRing R] [AddCommGroup N] [Module R N]
 
 /- English proof (translation)
-Simplify using `[eigSp, Submodule.mem_iInf, LinearMap.mem_ker, sub_eq_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_eig (ρ : O →+* Module.End R N) (σ : O →+* R) (u : N) : u ∈ eigSp ρ σ ↔ ∀ a, ρ a u = σ a • u := by
   simp [eigSp, Submodule.mem_iInf, LinearMap.mem_ker, sub_eq_zero]
@@ -33,16 +33,16 @@ def sumMap (ρ : O →+* Module.End R N) (τ : ι → O →+* R) : (∀ s, eigSp
   ∑ s, (eigSp ρ (τ s)).subtype ∘ₗ LinearMap.proj s
 
 /- English proof (translation)
-Simplify using `[sumMap, LinearMap.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sumMap_apply (ρ : O →+* Module.End R N) (τ : ι → O →+* R) (g : ∀ s, eigSp ρ (τ s)) :
     sumMap ρ τ g = ∑ s, (g s : N) := by
   simp [sumMap, LinearMap.sum_apply]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `g g' e`. Use `(h (sumMap ρ τ g)).unique (y₁ := fun s => (g s : N)) (y₂ := fun s => (g' s : N)) ⟨fun s a => (mem_eig ρ (τ s) _).1 (g s).2 a, (sumMap_apply ρ τ g).symm⟩ ⟨fun s a => (mem_eig ρ (τ s) _).1 (g' s).2 a, by rw [e, sumMap_apply]⟩` as an intermediate fact. Conclude with `funext fun s => Subtype.ext (congrFun this s)`. Introduce `m`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨f, ⟨hf, hs⟩, -⟩` from `h m`. Conclude with `⟨fun s => ⟨f s, (mem_eig ρ (τ s) _).2 (hf s)⟩, by rw [sumMap_apply]; exact hs⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem sumMap_bij {ρ : O →+* Module.End R N} {τ : ι → O →+* R} (h : Splits ρ τ) :
     Function.Bijective (sumMap ρ τ) := by
@@ -57,9 +57,7 @@ theorem sumMap_bij {ρ : O →+* Module.End R N} {τ : ι → O →+* R} (h : Sp
     exact ⟨fun s => ⟨f s, (mem_eig ρ (τ s) _).2 (hf s)⟩, by rw [sumMap_apply]; exact hs⟩
 
 /- English proof (translation)
-Set `e` to `LinearEquiv.ofBijective (sumMap ρ τ) (sumMap_bij h)`. Use `haveI hP : Module.Projective R (∀ s, eigSp ρ (τ s)) := Module.Projective.of_equiv e.symm`. Establish `key : ∀ s, Module.Free R (eigSp ρ (τ s)) ∧ Module.Finite R (eigSp ρ (τ s))` using `fun s => by haveI : Module.Finite R (∀ s, eigSp ρ (τ s)) := Module.Finite.equiv e.symm haveI : Module.Finite R (eigSp ρ (τ s)) := Module.Finite.of_surjective (LinearMap.proj s : (∀ s, eigSp ρ (τ s)) →ₗ[R] eigSp ρ (τ s)) (fun y => ⟨Pi.single s y, by simp⟩) haveI : Module.Projectiv …`. Conclude with `⟨Module.free_of_flat_of_isLocalRing, inferInstance⟩`. Use `⟨fun s => Module.finrank R (eigSp ρ (τ s)), ⟨fun s => ?_⟩⟩` and prove the remaining obligations.
-
-Use `haveI := (key s).1`. Use `haveI := (key s).2`. Conclude with `Module.finBasis R _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_bases [DecidableEq ι] [IsLocalRing R] [Module.Finite R N] [Module.Projective R N]
     {ρ : O →+* Module.End R N} {τ : ι → O →+* R} (h : Splits ρ τ) :
@@ -86,7 +84,7 @@ def totBasis [DecidableEq ι] {ρ : O →+* Module.End R N} {τ : ι → O →+*
   (Pi.basis b).map (LinearEquiv.ofBijective (sumMap ρ τ) (sumMap_bij h))
 
 /- English proof (translation)
-Simplify using `only [totBasis, Module.Basis.map_apply, LinearEquiv.ofBijective_apply, sumMap_apply, Pi.basis_apply]`. Rewrite using `[Finset.sum_eq_single s]`. Simplify using the standard rewrite rules. Introduce `s' _ hs`. Simplify using `[Pi.single_eq_of_ne hs]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -103,17 +101,15 @@ theorem totBasis_apply [DecidableEq ι] {ρ : O →+* Module.End R N} {τ : ι �
 variable {T N' : Type} [CommRing T] [AddCommGroup N'] [Module T N']
 
 /- English proof (translation)
-Establish `hv : ∀ s i, ∀ a, ρ' a (β (b s i)) = (θ.comp (τ s)) a • β (b s i)` using `fun s i a => by`. Rewrite using `[hρ, (mem_eig ρ (τ s) _).1 (b s i).2 a, β.map_smulₛₗ]`. Both sides reduce to the same expression. Use `⟨?_, le_antisymm (Submodule.span_le.2 ?_) fun w hw => ?_⟩` and prove the remaining obligations. Use `B.linearIndependent.comp (Sigma.mk s) sigma_mk_injective` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Conclude with `funext fun i => (hB s i).symm`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `(mem_eig ρ' _ _).2 (hv s i)`. Set `f : ι → N'` to `fun s' => ∑ i, B.repr w ⟨s', i⟩ • β (b s' i)`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hf : ∀ s' a, ρ' a (f s') = (θ.comp (τ s')) a • f s'` using `fun s' a => by`. Simplify using `only [f, map_sum, Finset.smul_sum, map_smul, hv s']`. Conclude with `Finset.sum_congr rfl fun i _ => smul_comm _ _ _`. Establish `hsum : ∑ s', f s' = w`. Use `B.sum_repr w` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `this` using `[Fintype.sum_sigma]`. Simplify `this` using `only [f, hB]`. Establish `hw'` using `(mem_eig ρ' _ _).1 hw`. Establish `hu` using `(h' w).unique (y₁ := f) (y₂ := fun s' => if s' = s then w else 0) ⟨hf, hsum⟩ ⟨fun s' a => by`. Distinguish the cases in `e : s' = s`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Substitute `e` using the available equality. Simplify using `using hw' a`. Simplify using `[e], by simp⟩`. Establish `: w = f s` using `by simpa using (congrFun hu s).symm`. Rewrite using `[this]`.
-
-Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem image_frame [DecidableEq ι] {θ : R →+* T} {ρ : O →+* Module.End R N} {τ : ι → O →+* R}
     {ρ' : O →+* Module.End T N'} (h' : Splits ρ' fun s => θ.comp (τ s)) {r : ι → ℕ}
@@ -159,7 +155,7 @@ namespace GlobalTheory.CompanionTheory.Ar.LocFn.EigStalk
 open GlobalTheory.CompanionTheory.Ar.LieVB
 
 /- English proof (translation)
-Use `letI : Algebra c.F S := κ.toAlgebra`. Conclude with `fun m => GlobalTheory.T.existsUnique_cmEmbedding_eigenvector_sum E H l c S N ρ m`.
+Equip the data with the indicated structure. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem splits_of {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {l : Level H} (c : Coeff l)
     {S : Type} [CommRing S] (κ : c.F →+* S) {N : Type} [AddCommGroup N] [Module S N]
@@ -168,15 +164,15 @@ theorem splits_of {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E
   exact fun m => GlobalTheory.T.existsUnique_cmEmbedding_eigenvector_sum E H l c S N ρ m
 
 /- English proof (translation)
-Introduce `E _ _ _ H l c X t A _ _ x κ σ`. Use `haveI hsm : Smooth t.G.hom := t.semi.smooth`. Take `⟨N, _, _, ⟨M⟩⟩` from `lieModel_exists X t.G A x`. Take `⟨ρ, hρ, -⟩` from `lieModel_exists_unique_act X t.G A x N M (𝓞 E) t.act.act t.act.hom t.act.one t.act.mul t.act.add`. Take `⟨hfin, hproj, -⟩` from `GlobalTheory.T.lie_model_finite_base_change X t.G A x N M`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsp` using `splits_of c κ ρ`. Take `⟨r, ⟨b⟩⟩` from `exists_bases hsp`. Use `⟨r σ, fun i => M.pt (b σ i), ?_⟩` and prove the remaining obligations. Introduce `T _ θ x' hx' v hv`. Substitute `hx'` using the available equality.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Take `⟨N', _, _, ⟨M'⟩⟩` from `lieModel_exists X t.G T (spMap θ ≫ x)`. Take `⟨ρ', hρ', -⟩` from `lieModel_exists_unique_act X t.G T (spMap θ ≫ x) N' M' (𝓞 E) t.act.act t.act.hom t.act.one t.act.mul t.act.add`. Set `q` to `Fintype.equivFin (Σ s, Fin (r s))`. Take `⟨β, B, hB, hβ⟩` from `basis_tr θ x (spMap θ ≫ x) rfl M M' ((totBasis hsp b).reindex q)`. Establish `hB' : ∀ s i, (B.reindex q.symm) ⟨s, i⟩ = β (b s i)` using `fun s i => by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Module.Basis.reindex_apply, Equiv.symm_symm, hB, Module.Basis.reindex_apply, Equiv.symm_apply_apply, totBasis_apply]`. Establish `hact : ∀ a e, ρ' a (β e) = β (ρ a e)` using `fun a e => pt_left_inj M' (by`. Rewrite using `[hβ, hρ a e, Over.comp_left, ← Category.assoc, ← hβ e, hρ' a (β e), Over.comp_left])`. Establish `hsp' : Splits ρ' (fun s : E →+* ℂ => θ.comp (κ.comp (tauIn c s)))` using `splits_of c (θ.comp κ) ρ'`. Take `⟨hli, hspan⟩` from `image_frame hsp' b β (B.reindex q.symm) hB' hact σ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hvv : v = fun k => M'.pt (β (b σ k))` using `funext fun k => Over.OverMorphism.ext (by`. Rewrite using `[hv k, hβ])`. Rewrite using `[hvv]`. Conclude with `(((GlobalTheory.T.lie_model_eigenvectors_action X T t.G (spMap θ ≫ x) N' M').2 (𝓞 E) t.act ρ' ((θ.comp κ).comp (tauIn c σ)) hρ').2 _ _).2 ⟨hli, hspan⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_stableEig : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (l : Level H) (c : Coeff l) (X : Scheme.{0}) (t : SAB H X) (A : Type) [CommRing A] [IsLocalRing A] (x : Sp A ⟶ X) (κ : c.F →+* A) (σ : E →+* ℂ), ∃ (r : ℕ) (e : Fin r → (epsAt x ⟶ t.G)), StableEig t x κ σ e := by
   classical

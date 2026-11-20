@@ -12,13 +12,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.DVRExt
 
 /- English proof (translation)
-Introduce `R _ P W L _ _ _ _ _ _ f x`. Use `haveI : ValuationRing W := inferInstance`. Establish `hv : ValuativeCriterion P.A.hom`. Establish `h : IsProper P.A.hom` using `P.isAb.proper`. Rewrite `h` using `[IsProper.eq_valuativeCriterion]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h.1.1.1`. Establish `hsq : x.left ≫ P.A.hom = spMap (algebraMap W L) ≫ spMap f`. Rewrite using `[Over.w x]`. Express the relevant statement in the definitionally equal form `Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `S : ValuativeCommSq P.A.hom` to `{ R := W, K := L, i₁ := x.left, i₂ := spMap f, commSq := ⟨hsq⟩ }`. Establish `hU` using `(hv S).some`. Use `⟨Over.homMk hU.default.l hU.default.fac_right, hU.default.fac_left, ?_⟩` and prove the remaining obligations. Introduce `y hy`. Establish `hy2 : y.left ≫ P.A.hom = spMap f` using `Over.w y`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `T : S.commSq.LiftStruct` to `⟨y.left, hy, hy2⟩`. Establish `hT : T = hU.default` using `hU.uniq T`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `T.l = hU.default.l`. Rewrite using `[hT]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unique_extend : ∀ (R : Type) [CommRing R] (P : PolAV (Sp R)) (W L : Type) [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Field L] [Algebra W L] [IsFractionRing W L] (f : R →+* W) (x : Over.mk (spMap ((algebraMap W L).comp f)) ⟶ P.A), ∃! y : Over.mk (spMap f) ⟶ P.A, spMap (algebraMap W L) ≫ y.left = x.left := by
   intro R _ P W L _ _ _ _ _ _ f x

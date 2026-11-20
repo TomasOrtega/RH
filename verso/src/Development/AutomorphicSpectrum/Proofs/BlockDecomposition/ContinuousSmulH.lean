@@ -15,7 +15,7 @@ section Abstract
 variable {M : Type} [AddCommGroup M] [TopologicalSpace M]
 
 /- English proof (translation)
-Rewrite using `[AddMonoidHom.mem_ker, map_sub, hPs _ (hPm x), sub_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sub_mem_ker (S : AddSubgroup M) (P : M →+ M) (hPm : ∀ x, P x ∈ S) (hPs : ∀ s ∈ S, P s = s) (x : M) :
     x - P x ∈ P.ker := by
@@ -43,15 +43,11 @@ def imKer [IsTopologicalAddGroup M] (S : AddSubgroup M) (P : M →+ M) (hPc : Co
   continuous_invFun := (hPc.subtype_mk _).prodMk ((continuous_id.sub hPc).subtype_mk _)
 
 /- English proof (translation)
-Use `haveI : SecondCountableTopology S := Topology.IsInducing.subtypeVal.secondCountableTopology`. Use `haveI : T2Space S := Topology.IsEmbedding.subtypeVal.t2Space`. Use `haveI : SecondCountableTopology P.ker := Topology.IsInducing.subtypeVal.secondCountableTopology`. Use `haveI : T2Space P.ker := Topology.IsEmbedding.subtypeVal.t2Space`. Establish `hcl : IsClosed (P.ker : Set M)`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `: (P.ker : Set M) = P ⁻¹' {0}`. Use extensionality with `x`. Simplify using `[AddMonoidHom.mem_ker]`. Rewrite using `[this]`. Conclude with `isClosed_singleton.preimage hPc`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Use `haveI : LocallyCompactSpace P.ker := hcl.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `set Ψ := imKer S P hPc hPm hPs with hΨ`. Use `set T := GlobalTheory.CompanionTheory.CgMod.restr S U hU hU' with hT`. Establish `e : ((Ψ.symm.trans (GlobalTheory.ModuLR.prodCE T (ContinuousAddEquiv.refl P.ker))).trans Ψ) = U`. Use extensionality with `x`.
-
-Take `⟨p, rfl⟩` from `Ψ.surjective x`. Express the relevant statement in the definitionally equal form `Ψ (GlobalTheory.ModuLR.prodCE T (ContinuousAddEquiv.refl P.ker) (Ψ.symm (Ψ p))) = U (Ψ p)`. Establish `hl : Ψ.symm (Ψ p) = p` using `Ψ.left_inv p`. Rewrite using `[hl]`. Express the relevant statement in the definitionally equal form `U p.1.1 + p.2.1 = U (p.1.1 + p.2.1)`.
-
-Rewrite using `[map_add, hfix _ p.2.2]`. Rewrite using `[← e, GlobalTheory.ModuLR.addEquivAddHaarChar_transport Ψ, GlobalTheory.T.addEquivAddHaarChar_prodCongr, addEquivAddHaarChar_refl, mul_one]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem char_restr [IsTopologicalAddGroup M] [LocallyCompactSpace M] [SecondCountableTopology M] [T2Space M]
     [MeasurableSpace M] [BorelSpace M] (S : AddSubgroup M) [LocallyCompactSpace S] (P : M →+ M)
@@ -92,11 +88,9 @@ set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨i1, i2, i3, i4, -, -⟩` from `lattice_Mx D n n`. Use `haveI : IsTopologicalAddGroup (Mx D n n) := i1`. Use `haveI : LocallyCompactSpace (Mx D n n) := i2`. Use `haveI : SecondCountableTopology (Mx D n n) := i3`. Use `haveI : T2Space (Mx D n n) := i4`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : SecondCountableTopology (hermA D n) := Topology.IsInducing.subtypeVal.secondCountableTopology`. Use `haveI : T2Space (hermA D n) := Topology.IsEmbedding.subtypeVal.t2Space`. Take `⟨d, e, hde, hd, he⟩` from `exists_anti_units D`. Establish `hsq` using `char_sq (hermA D n) (hermPartHom D n) continuous_hermPart hermPart_mem (fun s hs => hermPart_of_mem hs) (mulCE d e hde) (fun s hs => hermPart_anti hd hs) (fun s hs => hermPart_anti he hs) (fun x => hermPart_split he hde x) (GlobalTheory.ModuLR.lrCE a (ad a)⁻¹) (lr_smul a d e hde) …`. Establish `hlr : addEquivAddHaarChar (GlobalTheory.ModuLR.lrCE a (ad a)⁻¹) = absA D (Matrix.GeneralLinearGroup.det a : (AE D)ˣ) ^ n * absA D (Matrix.GeneralLinearGroup.det a : (AE D)ˣ) ^ n`.
-
-Establish `h` using `GlobalTheory.ResidueEisenstein.ModMat.addEquivAddHaarChar_lrCE _ _ D.sp.cm.sig (isCMExt_host D) n n a (ad a)⁻¹`. Rewrite using `[h]`. Conclude with `congrArg (fun t => absA D (Matrix.GeneralLinearGroup.det a : (AE D)ˣ) ^ n * t ^ n) (absA_det_ad_inv a)`. Conclude with `(pow_left_inj₀ zero_le zero_le two_ne_zero).1 ((hsq.trans hlr).trans (sq _).symm)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem char_herm [BorelSpace (Mx D n n)] [LocallyCompactSpace (hermA D n)] (a : GL (Fin n) (AE D)) :
     addEquivAddHaarChar (restr (hermA D n) (GlobalTheory.ModuLR.lrCE a (ad a)⁻¹) (lr_herm a) (lr_herm_symm a)) =
@@ -122,7 +116,7 @@ theorem char_herm [BorelSpace (Mx D n n)] [LocallyCompactSpace (hermA D n)] (a :
   exact (pow_left_inj₀ zero_le zero_le two_ne_zero).1 ((hsq.trans hlr).trans (sq _).symm)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `adj (e • x.1) = e • x.1`. Establish `h : adj x.1 = x.1` using `x.2`. Rewrite using `[adj_smul, h, hc]`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_herm {e : AE D} (hc : cA D e = e) (x : hermA D n) : e • x.1 ∈ hermA D n := by
   change adj (e • x.1) = e • x.1
@@ -136,19 +130,19 @@ def smulH (e : AE D) (hc : cA D e = e) : hermA D n →+ hermA D n where
 
 set_option synthInstance.maxHeartbeats 400000 in
 /- English proof (translation)
-The claim follows from `((continuous_const_smul e).comp continuous_subtype_val).subtype_mk _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_smulH (e : AE D) (hc : cA D e = e) : Continuous (smulH (n := n) e hc) :=
   ((continuous_const_smul e).comp continuous_subtype_val).subtype_mk _
 
 /- English proof (translation)
-Rewrite using `[← Matrix.smul_mul, ← Matrix.mul_smul, h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_sandwich (e : AE D) (A B x : Mx D n n) (h : e • x = x) : e • (A * x * B) = A * x * B := by
   rw [← Matrix.smul_mul, ← Matrix.mul_smul, h]
 
 /- English proof (translation)
-Establish `h : (g.1 - 1) * x = 0`. Rewrite using `[← hg, Matrix.smul_mul, ← Matrix.mul_smul, hx, Matrix.mul_zero]`. Rewrite `h` using `[Matrix.sub_mul, Matrix.one_mul, sub_eq_zero]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_fix {e : AE D} (g : GL (Fin n) (AE D)) (hg : e • (g.1 - 1) = g.1 - 1) (x : Mx D n n) (hx : e • x = 0) :
     g.1 * x = x := by
@@ -158,9 +152,9 @@ theorem mul_fix {e : AE D} (g : GL (Fin n) (AE D)) (hg : e • (g.1 - 1) = g.1 -
   exact h
 
 /- English proof (translation)
-Establish `h1` using `mul_fix g hg x.1 hx`. Establish `h2 : adj x.1 = x.1` using `x.2`. Establish `h3 : x.1 * adj g.1 = x.1`. Use `congrArg adj h1` as an intermediate fact. Rewrite `this` using `[adj_mul, h2]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[h1, h3]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sandwich_fix {e : AE D} (g : GL (Fin n) (AE D)) (hg : e • (g.1 - 1) = g.1 - 1) (x : hermA D n)
     (hx : e • x.1 = 0) : g.1 * x.1 * adj g.1 = x.1 := by

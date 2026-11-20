@@ -19,7 +19,7 @@ def HasRk (H : Host E) (p q : ℕ) {g : ℕ} {Λ : Type} [AddCommGroup Λ] [Modu
   ∀ s : E →+* ℂ, Module.finrank ℂ (eigSp R.B (s.comp (algebraMap (𝓞 E) E))) = if s (H.rt : E) = H.rt0 then p else q
 
 /- English proof (translation)
-Use `RingHom.ext fun a => ?_` and prove the remaining obligations. Set `ψ : E →+* ℂ` to `κ.comp (τ.1.codRestrict c.F (c.conj τ.1))`. Use `show ψ ((H.bar a : 𝓞 E) : E) = starRingEnd ℂ (ψ (a : E))`. Rewrite using `[H.bar_eq, IsCMField.complexEmbedding_complexConj]`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem label_conj (κ : c.F →+* ℂ) (τ : CMType H) :
     κ.comp (labelEmb c (.inr τ)) = (starRingEnd ℂ).comp (κ.comp (labelEmb c (.inl τ))) := by
@@ -29,7 +29,7 @@ theorem label_conj (κ : c.F →+* ℂ) (τ : CMType H) :
   rw [H.bar_eq, IsCMField.complexEmbedding_complexConj]
 
 /- English proof (translation)
-Rewrite using `[label_conj]`. Conclude with `RingHom.ext fun a => by simp`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem label_conj' (κ : c.F →+* ℂ) (τ : CMType H) :
     κ.comp (labelEmb c (.inl τ)) = (starRingEnd ℂ).comp (κ.comp (labelEmb c (.inr τ))) := by
@@ -37,13 +37,13 @@ theorem label_conj' (κ : c.F →+* ℂ) (τ : CMType H) :
   exact RingHom.ext fun a => by simp
 
 /- English proof (translation)
-The claim follows from `LabPt.bijective_of_injective H _ (FamEx.labelEmb_comp_injective E H l c κ)`.
+A detailed English derivation is pending.
 -/
 theorem label_bij (κ : c.F →+* ℂ) : Function.Bijective fun lab : CMType H ⊕ CMType H => κ.comp (labelEmb c lab) :=
   LabPt.bijective_of_injective H _ (FamEx.labelEmb_comp_injective E H l c κ)
 
 /- English proof (translation)
-Use `LabPt.isCMFam_of_bijective _ _ ?_ (label_conj κ)` and prove the remaining obligations. Use `label_bij (c := c) κ using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `s`. Apply the tactic sequence `rcases s with τ | τ <;> rfl`.
+Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem label_cm (κ : c.F →+* ℂ) :
     IsCMFam (fun τ : CMType H => κ.comp (labelEmb c (.inl τ))) ∧ IsCMFam (fun τ : CMType H => κ.comp (labelEmb c (.inr τ))) := by
@@ -53,15 +53,15 @@ theorem label_cm (κ : c.F →+* ℂ) :
   rcases s with τ | τ <;> rfl
 
 /- English proof (translation)
-Establish `hne : -H.rt0 ≠ H.rt0` using `fun e => FamEx.rt0_ne_zero H (by linear_combination (-1/2 : ℂ) * e)`. Prove the components needed by the constructor for the conclusion. Introduce `h τ`. Take `⟨s, hs, hv⟩` from `FamEx.exists_emb_label E H l c κ (.inl τ)`. Take `⟨s', hs', hv'⟩` from `FamEx.exists_emb_label E H l c κ (.inr τ)`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e` using `hv ρ hρ`. Establish `e'` using `hv' ρ hρ`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, hκ] at e e'`. Rewrite using `[hs, hs', h s, h s', if_pos e, if_neg (by rw [e']; exact hne)]`. Conclude with `⟨rfl, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Introduce `h s`. Take `⟨lab, hl⟩` from `(label_bij (c := c) κ).2 (s.comp (algebraMap (𝓞 E) E))`. Take `⟨s', hs', hv'⟩` from `FamEx.exists_emb_label E H l c κ lab`. Establish `e` using `hv' ρ hρ`. Establish `hl' : κ.comp (labelEmb c lab) = s.comp (algebraMap (𝓞 E) E)` using `hl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : s (H.rt : E) = s' (H.rt : E)` using `RingHom.congr_fun (hl'.symm.trans hs') H.rt`. Rewrite using `[← hl', e2, e]`. Break down `lab with τ | τ` into its components or cases. Simplify using `only [Sum.elim_inl, hκ, if_true]`. Conclude with `(h τ).1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Sum.elim_inr, hκ, if_neg hne]`. Conclude with `(h τ).2`.
+A detailed English derivation is pending.
 -/
 theorem hasRk_iff (κ : c.F →+* ℂ) (ρ : c.F) (hρ : (ρ : ℂ) = H.rt0) (hκ : κ ρ = H.rt0) (p q : ℕ) {g : ℕ} {Λ : Type}
     [AddCommGroup Λ] [Module (𝓞 E) Λ] (R : RiemLat E g Λ) :
@@ -91,9 +91,9 @@ theorem hasRk_iff (κ : c.F →+* ℂ) (ρ : c.F) (hρ : (ρ : ℂ) = H.rt0) (h�
       exact (h τ).2
 
 /- English proof (translation)
-Rewrite using `[hasRk_iff κ ρ hρ hκ]`. Use `forall_congr' fun τ => ?_` and prove the remaining obligations. Break down `hs with ⟨rfl, rfl, rfl⟩ | ⟨rfl, rfl, rfl⟩` into its components or cases. Rewrite using `[label_conj' κ τ]`. Conclude with `and_comm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[label_conj κ τ]`.
+A detailed English derivation is pending.
 -/
 theorem hasSig_iff (κ : c.F →+* ℂ) (ρ : c.F) (hρ : (ρ : ℂ) = H.rt0) (hκ : κ ρ = H.rt0) (p q : ℕ)
     (sm : CMType H → CMType H ⊕ CMType H) (j j' : ℕ)
@@ -108,7 +108,7 @@ theorem hasSig_iff (κ : c.F →+* ℂ) (ρ : c.F) (hρ : (ρ : ℂ) = H.rt0) (h
   · rw [label_conj κ τ]
 
 /- English proof (translation)
-Break down `hs with rfl | rfl` into its components or cases. Conclude with `(label_cm κ).2`. Conclude with `(label_cm κ).1`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem side_cm (κ : c.F →+* ℂ) (sm : CMType H → CMType H ⊕ CMType H) (hs : sm = Sum.inr ∨ sm = Sum.inl) :
     IsCMFam fun τ => κ.comp (labelEmb c (sm τ)) := by

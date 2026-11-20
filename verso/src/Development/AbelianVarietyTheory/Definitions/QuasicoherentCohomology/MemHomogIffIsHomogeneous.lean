@@ -13,20 +13,20 @@ def map (f : M →ₗ[R] M') : SymmetricAlgebra R M →ₐ[R] SymmetricAlgebra R
   SymmetricAlgebra.lift (SymmetricAlgebra.ι R M' ∘ₗ f)
 
 /- English proof (translation)
-Simplify using `[map]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem map_ι (f : M →ₗ[R] M') (m : M) :
     map f (SymmetricAlgebra.ι R M m) = SymmetricAlgebra.ι R M' (f m) := by
   simp [map]
 
 /- English proof (translation)
-Use extensionality with `m`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 @[simp] theorem map_id : map (LinearMap.id : M →ₗ[R] M) = AlgHom.id R _ := by
   ext m; simp
 
 /- English proof (translation)
-Use extensionality with `m`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_comp (g : M' →ₗ[R] M'') (f : M →ₗ[R] M') :
     map (g ∘ₗ f) = (map g).comp (map f) := by
@@ -38,7 +38,7 @@ def homog (d : ℕ) : Submodule R (SymmetricAlgebra R M) :=
   LinearMap.range (SymmetricAlgebra.ι R M) ^ d
 
 /- English proof (translation)
-Simplify `LinearMap.mem_range_self _ m` using `only [homog, pow_one]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ι_mem_homog (m : M) : SymmetricAlgebra.ι R M m ∈ homog R M 1 := by
   simpa only [homog, pow_one] using LinearMap.mem_range_self _ m
@@ -81,9 +81,9 @@ instance gradedAlgebra : GradedAlgebra (homog R M) :=
       exact DirectSum.of_eq_of_gradedMonoid_eq (Sigma.subtype_ext (add_comm _ _) rfl)
 
 /- English proof (translation)
-Establish `h1 : (LinearMap.range (SymmetricAlgebra.ι R M)).map φ.toLinearMap ≤ P`. Introduce and unpack `_ ⟨_, ⟨m, rfl⟩, rfl⟩`. Conclude with `h m`. Establish `h2` using `Submodule.map_pow (LinearMap.range (SymmetricAlgebra.ι R M)) φ d`. Establish `h3 : φ x ∈ ((LinearMap.range (SymmetricAlgebra.ι R M)) ^ d).map φ.toLinearMap` using `⟨x, hx, rfl⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[h2]`. Conclude with `pow_le_pow_left' h1 d h3`.
+A detailed English derivation is pending.
 -/
 theorem algHom_mem_pow {A : Type*} [CommRing A] [Algebra R A]
     (φ : SymmetricAlgebra R M →ₐ[R] A) (P : Submodule R A)
@@ -99,16 +99,16 @@ theorem algHom_mem_pow {A : Type*} [CommRing A] [Algebra R A]
   exact pow_le_pow_left' h1 d h3
 
 /- English proof (translation)
-The claim follows from `algHom_mem_pow (map f) _ (fun m => by simp) hx`.
+A detailed English derivation is pending.
 -/
 theorem map_mem_homog (f : M →ₗ[R] M') {d : ℕ} {x : SymmetricAlgebra R M}
     (hx : x ∈ homog R M d) : map f x ∈ homog R M' d :=
   algHom_mem_pow (map f) _ (fun m => by simp) hx
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.pow_induction_on_left' with`. Consider the case `algebraMap r => simp`. Consider the case `add x y i hx hy ihx ihy => rw [map_add, map_add, ihx, ihy, mul_add]`. Consider the case `mem_mul m hm i x hx ih`. Take `⟨_, rfl⟩` from `hm`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_mul, map_mul, ih, h, pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem algHom_eq_pow_mul {A : Type*} [CommRing A] [Algebra R A]
     (φ ψ : SymmetricAlgebra R M →ₐ[R] A) (s : A)
@@ -122,15 +122,15 @@ theorem algHom_eq_pow_mul {A : Type*} [CommRing A] [Algebra R A]
     rw [map_mul, map_mul, ih, h, pow_succ]; ring
 
 /- English proof (translation)
-Rewrite using `[← MvPolynomial.mem_homogeneousSubmodule, ← MvPolynomial.homogeneousSubmodule_one_pow]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `algHom_mem_pow (SymmetricAlgebra.equivMvPolynomial b).toAlgHom _ (fun m => ?_) hx` and prove the remaining obligations. Establish `hm : m ∈ Submodule.span R (Set.range b)` using `by rw [b.span_eq]; trivial`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Proceed by induction on `hm using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`. Simplify using `using MvPolynomial.isHomogeneous_X R i`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => simpa only [map_add] using Submodule.add_mem _ hx hy`. Consider the case `smul r x _ hx => simpa only [map_smul] using Submodule.smul_mem _ r hx`. Introduce `hx`. Establish `h1 : (MvPolynomial.homogeneousSubmodule ι R 1).map (SymmetricAlgebra.equivMvPolynomial b).symm.toAlgHom.toLinearMap ≤ LinearMap.range (SymmetricAlgebra.ι R M)`. Rewrite using `[MvPolynomial.homogeneousSubmodule_one_eq_span_X, Submodule.map_span, Submodule.span_le]`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨_, ⟨i, rfl⟩, rfl⟩`. Conclude with `⟨b i, by simp⟩`. Establish `h2` using `Submodule.map_pow (MvPolynomial.homogeneousSubmodule ι R 1) (SymmetricAlgebra.equivMvPolynomial b).symm.toAlgHom d`. Establish `h3 : x ∈ ((MvPolynomial.homogeneousSubmodule ι R 1) ^ d).map (SymmetricAlgebra.equivMvPolynomial b).symm.toAlgHom.toLinearMap` using `⟨_, hx, by simp⟩`. Rewrite `h3` using `[h2]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `pow_le_pow_left' h1 d h3`.
+A detailed English derivation is pending.
 -/
 theorem mem_homog_iff_isHomogeneous {ι : Type*} (b : Basis ι R M) (d : ℕ)
     (x : SymmetricAlgebra R M) :
@@ -180,7 +180,7 @@ def mapOver (j : M →ₗ[R] W) : SymmetricAlgebra R M →ₐ[R] SymmetricAlgebr
   SymmetricAlgebra.lift ((SymmetricAlgebra.ι S W).restrictScalars R ∘ₗ j)
 
 /- English proof (translation)
-Simplify using `[mapOver]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem mapOver_ι (j : M →ₗ[R] W) (m : M) :
     mapOver S j (SymmetricAlgebra.ι R M m) = SymmetricAlgebra.ι S W (j m) := by
@@ -193,7 +193,7 @@ noncomputable def baseChangeHom (j : M →ₗ[R] W) :
   Algebra.TensorProduct.lift (Algebra.ofId S _) (mapOver S j) (fun _ _ => Commute.all _ _)
 
 /- English proof (translation)
-Simplify using `[baseChangeHom, Algebra.smul_def, Algebra.ofId_apply]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem baseChangeHom_tmul (j : M →ₗ[R] W) (s : S) (x : SymmetricAlgebra R M) :
     baseChangeHom S j (s ⊗ₜ x) = s • mapOver S j x := by
@@ -212,22 +212,22 @@ noncomputable def baseChangeEquiv {j : M →ₗ[R] W} (h : IsBaseChange S j) :
       simp [h.lift_eq, Algebra.TensorProduct.one_def])
 
 /- English proof (translation)
-The claim follows from `baseChangeHom_tmul j s x`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem baseChangeEquiv_tmul {j : M →ₗ[R] W} (h : IsBaseChange S j) (s : S)
     (x : SymmetricAlgebra R M) : baseChangeEquiv h (s ⊗ₜ x) = s • mapOver S j x :=
   baseChangeHom_tmul j s x
 
 /- English proof (translation)
-Set `Φ : S ⊗[R] Dual R M →ₗ[S] Dual S W` to `h.toDual.liftBaseChange S`. Set `e` to `lTensorHomEquivHomLTensor R M S R`. Establish `key : ∀ (t : S ⊗[R] Dual R M) (m : M), Φ t (j m) = TensorProduct.rid R S (e t m)`. Introduce `t m`. Proceed by induction on `t using TensorProduct.induction_on with`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, LinearMap.add_apply, hx, hy]`. Consider the case `tmul s ξ`. Simplify using `[Φ, e, h.toDual_comp_apply, Algebra.smul_def, mul_comm]`. Use `IsBaseChange.of_equiv (LinearEquiv.ofBijective Φ ⟨?_, ?_⟩) (fun ξ => by change Φ _ = _; simp [Φ])` and prove the remaining obligations.
+Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `t ht`. Apply `e.injective` to reduce the goal to its premises. Use extensionality with `m`. Apply `(TensorProduct.rid R S).injective` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← key, ht]`. Simplify using the standard rewrite rules. Introduce `φ`. Use `⟨e.symm ((TensorProduct.rid R S).symm.toLinearMap ∘ₗ φ.restrictScalars R ∘ₗ j), ?_⟩` and prove the remaining obligations. Use `h.algHom_ext _ _ fun m => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[key]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isBaseChange_dual [Module.Finite R M] [Module.Projective R M] {j : M →ₗ[R] W}
     (h : IsBaseChange S j) : IsBaseChange S h.toDual := by
@@ -256,9 +256,9 @@ theorem isBaseChange_dual [Module.Finite R M] [Module.Projective R M] {j : M →
     simp
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.pow_induction_on_left' with`. Consider the case `algebraMap r`. Rewrite using `[AlgHom.commutes, IsScalarTower.algebraMap_apply R S (SymmetricAlgebra S W)]`. Conclude with `SetLike.algebraMap_mem_graded (homog S W) _`. Consider the case `add x y i hx hy ihx ihy => rw [map_add]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Conclude with `Submodule.add_mem _ ihx ihy`. Consider the case `mem_mul m hm i x hx ih`. Take `⟨m, rfl⟩` from `hm`. Rewrite using `[map_mul, mapOver_ι, Nat.succ_eq_one_add]`. Conclude with `SetLike.mul_mem_graded (ι_mem_homog _) ih`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mapOver_mem_homog (j : M →ₗ[R] W) {d : ℕ} {x : SymmetricAlgebra R M}
     (hx : x ∈ homog R M d) : mapOver S j x ∈ homog S W d := by
@@ -273,7 +273,7 @@ theorem mapOver_mem_homog (j : M →ₗ[R] W) {d : ℕ} {x : SymmetricAlgebra R 
     exact SetLike.mul_mem_graded (ι_mem_homog _) ih
 
 /- English proof (translation)
-Establish `h1 : Function.Injective (Algebra.TensorProduct.includeRight : SymmetricAlgebra R M →ₐ[R] S ⊗[R] SymmetricAlgebra R M)` using `Algebra.TensorProduct.includeRight_injective hS`. Introduce `x y hxy`. Apply `h1` to reduce the goal to its premises. Apply `(baseChangeEquiv h).injective` to reduce the goal to its premises. Simplify using `using hxy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mapOver_injective [Module.Projective R M] {j : M →ₗ[R] W} (h : IsBaseChange S j)
     (hS : Function.Injective (algebraMap R S)) : Function.Injective (mapOver S j) := by

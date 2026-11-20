@@ -9,19 +9,19 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets
 open Topology
 
 /- English proof (translation)
-Introduce `σ _ X w d A hX hirr hiso hnd`. Take `⟨N, hN, hsub⟩` from `hS σ X w d A hX hirr hiso hnd`. Use `⟨N, hN, ?_⟩` and prove the remaining obligations. Introduce `x hx e A' O V g hO hV hxV hg hleft hXV`. Assume the negation of the conclusion as `hlt`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite `hlt` using `[not_le]`. Take `⟨y, hyV, hyX, O₁, V₁, g₁, hO₁, hV₁, hyV₁, hg₁, hleft₁, hXV₁⟩` from `mem_closure_iff.1 (hsub hx) V hV hxV`. Establish `hy : y ∈ g₁ '' O₁` using `hXV₁ ▸ ⟨hyX, hyV₁⟩`. Take `⟨t₀, ht₀, rfl⟩` from `hy`. Use `set U : Set (Fin d → ℂ) := O₁ ∩ g₁ ⁻¹' V with hUdef`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hU : IsOpen U` using `hg₁.continuousOn.isOpen_inter_preimage hO₁ hV`. Establish `hUne : U.Nonempty` using `⟨t₀, ht₀, hyV⟩`. Establish `hdiff : DifferentiableOn ℂ (fun t => A' (g₁ t)) U` using `A'.differentiable.comp_differentiableOn (hg₁.differentiableOn.mono Set.inter_subset_left)`. Establish `hmem : ∀ t ∈ U, ∃ u ∈ O, g₁ t = g u`. Introduce `t ht`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : g₁ t ∈ X ∩ V₁` using `hXV₁ ▸ Set.mem_image_of_mem g₁ ht.1`. Establish `h2 : g₁ t ∈ X ∩ V` using `⟨h1.1, ht.2⟩`. Rewrite `h2` using `[hXV]`. Take `⟨u, hu, hgu⟩` from `h2`. Conclude with `⟨u, hu, hgu.symm⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz⟩` from `HolomorphicFibreInfinite.proof d e U (fun t => A' (g₁ t)) hlt hU hUne hdiff`. Apply `hz` to reduce the goal to its premises. Use `Set.Subsingleton.finite ?_` and prove the remaining obligations. Introduce `t₁ ht₁ t₂ ht₂`. Take `⟨u₁, hu₁, hg1⟩` from `hmem t₁ ht₁.1`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨u₂, hu₂, hg2⟩` from `hmem t₂ ht₂.1`. Establish `hz1 : A' (g₁ t₁) = z` using `ht₁.2`. Establish `hz2 : A' (g₁ t₂) = z` using `ht₂.2`. Rewrite `hz1` using `[hg1, hleft u₁ hu₁]`. Rewrite `hz2` using `[hg2, hleft u₂ hu₂]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hgg : g₁ t₁ = g₁ t₂` using `by rw [hg1, hg2, hz1, hz2]`. Rewrite using `[← hleft₁ t₁ ht₁.1.1, ← hleft₁ t₂ ht₂.1.1, hgg]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IrreducibleGermRegularDimGe.proof (hS : FiniteProjectionSheetsDense.Statement) :
     IrreducibleGermRegularDimGe.Statement := by

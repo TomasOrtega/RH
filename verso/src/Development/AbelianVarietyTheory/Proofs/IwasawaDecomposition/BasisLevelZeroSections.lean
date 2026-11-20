@@ -17,7 +17,7 @@ section Sections
 variable {S : Scheme.{0}} {G : Over S} {L : LB G.left}
 
 /- English proof (translation)
-Establish `aux : ∀ x : K → Γ(Y, LB.wchart M φ j ⊓ LB.wchart M φ j')ˣ, ∏ k, x k ^ ((0 : ℕ) : ℤ) = 1` using `fun x => by simp`. Conclude with `aux _`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem linComb_g_zero {X Y : Scheme.{0}} (M : LB X) {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (j j' : K → M.ι) :
     (LB.LinComb M φ (fun _ => ((0 : ℕ) : ℤ))).g j j' = 1 := by
@@ -31,7 +31,7 @@ def oneSec (T : Over S) : LB.Sec (LPow G L ((0 : ℕ) : ℤ) T) where
     exact (congrArg Units.val (linComb_g_zero L _ j j')).symm
 
 /- English proof (translation)
-Establish `hm : r z ∈ LB.wchart L (fun _ : Fin 1 => (snd T G).left) (fun _ => J (r ≫ (snd T G).left))` using `hJ.mem _ r`. Conclude with `(gs_eq r z _ hm 1).trans (by rw [map_one, map_one])`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sval_oneSec (T : Over S) {Z : Scheme.{0}} (r : Z ⟶ (T ⊗ G).left) (z : Z) {J : (Z ⟶ G.left) → L.ι}
     (hJ : Good L z J) :
@@ -40,7 +40,7 @@ theorem sval_oneSec (T : Over S) {Z : Scheme.{0}} (r : Z ⟶ (T ⊗ G).left) (z 
   exact (gs_eq r z _ hm 1).trans (by rw [map_one, map_one])
 
 /- English proof (translation)
-Take `⟨s', hs'⟩` from `ReciprocityTheory.ChartRestriction.G.Geo.Tor.exists_sec hL (φ' := (Fin.elim0 : Fin 0 → ((T ⊗ G).left ⟶ G.left))) (ε' := (Fin.elim0 : Fin 0 → ℤ)) (fun U _ h => by simp) s`. Establish `hle : (⊤ : (T ⊗ G).left.Opens) ≤ LB.wchart L (Fin.elim0 : Fin 0 → ((T ⊗ G).left ⟶ G.left)) Fin.elim0` using `fun _ _ => Set.mem_iInter.2 fun k => k.elim0`. Use `⟨((T ⊗ G).left.presheaf.map (homOfLE hle).op).hom (s'.f Fin.elim0), fun z J hJ => ?_⟩` and prove the remaining obligations. Conclude with `(hs' _ (𝟙 _) z J hJ).symm.trans ((sval_of s' (𝟙 _) z J _ (fun k => k.elim0)).trans (gs_res (𝟙 _) z hle trivial _).symm)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_fn (hL : L.IsLB) {T : Over S} (s : LB.Sec (LPow G L ((0 : ℕ) : ℤ) T)) :
     ∃ a : Γ((T ⊗ G).left, ⊤), ∀ (z : (T ⊗ G).left) (J), Good L z J →
@@ -60,13 +60,13 @@ end Sections
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-Establish `hp : IsProper (pullback.snd t.G.hom (Out.jK R))` using `(GlobalTheory.DatUniq.polAt_of_unif U).1`. Use `t.semi.smooth` as an intermediate fact. Use `t.semi.geomConnected` as an intermediate fact. Establish `: GeometricallyIntegral t.G.hom` using `GlobalTheory.geometricallyIntegral_of_smooth _`. Establish `hχ : spMap (g.comp (algebraMap R (FractionRing R))) = spMap g ≫ Out.jK R` using `by show Spec.map (CommRingCat.ofHom (g.comp (algebraMap R (FractionRing R)))) = Spec.map (CommRingCat.ofHom g) ≫ Spec.map (CommRingCat.ofHom (algebraMap R (FractionRing R)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression. Generalize the expression as in `hc : spMap (g.comp (algebraMap R (FractionRing R))) = χ at hχ`. Establish `H : IsPullback (snd (Over.mk χ) t.G).left (fst (Over.mk χ) t.G).left t.G.hom χ` using `(IsPullback.of_hasPullback χ t.G.hom).flip`. Establish `: Smooth (fst (Over.mk χ) t.G).left` using `MorphismProperty.of_isPullback H ‹_›`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: GeometricallyIntegral (fst (Over.mk χ) t.G).left` using `MorphismProperty.of_isPullback H ‹_›`. Establish `H2 : IsPullback (pullback.lift (snd (Over.mk χ) t.G).left ((fst (Over.mk χ) t.G).left ≫ spMap g) (by rw [H.w, hχ, Category.assoc])) (fst (Over.mk χ) t.G).left (pullback.snd t.G.hom (Out.jK R)) (spMap g)` using `IsPullback.of_right (by rw [pullback.lift_fst, ← hχ]; exact H) (pullback.lift_snd _ _ _) (IsPullback.of_hasPullback t.G.hom (Out.jK R))`. Establish `: IsProper (fst (Over.mk χ) t.G).left` using `MorphismProperty.of_isPullback H2 hp`. Establish `: IsAffine (Over.mk χ).left` using `inferInstanceAs (IsAffine (Sp F))`. Establish `: IsLocallyNoetherian (Over.mk χ).left` using `inferInstanceAs (IsLocallyNoetherian (Sp F))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `ProperFunctions.isIso_appTop_of_isAffine (fst (Over.mk χ) t.G).left` as an intermediate fact. Conclude with `ConcreteCategory.bijective_of_isIso _`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem bijective_fst {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {t : SAB H (Sp R)} (U : PELUnif I t)
     {F : Type} [Field F] (g : FractionRing R →+* F) :
@@ -96,13 +96,13 @@ theorem bijective_fst {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {t : SA
   exact ConcreteCategory.bijective_of_isIso _
 
 /- English proof (translation)
-Introduce `E _ _ _ H R _ _ _ t U N n b hN hB F _ ψ hψ s`. Substitute `hN` using the available equality. Take `⟨g, rfl⟩ : ∃ g : FractionRing R →+* F, ψ = g.comp (algebraMap R (FractionRing R))` from `⟨IsFractionRing.lift hψ, RingHom.ext fun r => (IsFractionRing.lift_algebraMap hψ r).symm⟩`. Take `⟨cK, hcK, -⟩` from `hB (oneSec _)`. Establish `h1 : Lin t.G t.PP.L 0 (jC (algebraMap R (FractionRing R)) g) (fun _ : Fin 1 => oneSec _) (fun _ => 1) (oneSec _)`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `z J hJ`. Rewrite using `[Fin.sum_univ_one, sval_oneSec _ _ z hJ, sval_oneSec _ _ z hJ, GlobalTheory.FramePull.gs_one, _root_.one_mul]`. Establish `H1` using `lin_comp _ _ hcK h1`. Rewrite `H1` using `[jC_toBase]`. Take `⟨a, ha⟩` from `exists_fn t.PP.isLB s`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨f, rfl⟩` from `(bijective_fst U g).2 a`. Use `⟨fun i => f * (jC (algebraMap R (FractionRing R)) g).left.appTop.hom (cK i), fun z J hJ => ?_⟩` and prove the remaining obligations. Establish `e1` using `H1 z J hJ`. Rewrite `e1` using `[sval_oneSec _ _ z hJ]`. Establish `gv : gs (𝟙 _) z ⊤ ((fst (Over.mk (spMap (g.comp (algebraMap R (FractionRing R))))) t.G).left.appTop.hom f) = gs (fst (Over.mk (spMap (g.comp (algebraMap R (FractionRing R))))) t.G).left z ⊤ f` using `(gs_pull (𝟙 _) _ z ⊤ trivial f).trans (by rw [Category.id_comp])`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[ha z J hJ, gv]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e1, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [gs_mul _ z ⊤ trivial, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_of_basisAlong_zero :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R] [IsDomain R]

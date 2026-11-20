@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.Re
 open scoped SchwartzMap Matrix
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.ArchUniq.exists_pairing_coords` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsPairingCoordinatesSchrodingerFolland.lean&line=56#L56)
 -/

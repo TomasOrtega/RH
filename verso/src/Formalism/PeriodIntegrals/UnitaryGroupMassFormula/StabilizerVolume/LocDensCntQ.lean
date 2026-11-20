@@ -8,13 +8,13 @@ namespace PI.VolStabS
 open Polynomial
 
 /- English proof (translation)
-Set `L : (k × k) →ₗ[k] K` to `(LinearMap.fst k k k).smulRight (1 : K) + (LinearMap.snd k k k).smulRight r`. Establish `hL : ∀ p : k × k, L p = algebraMap k K p.1 + algebraMap k K p.2 * r`. Introduce `p`. Simplify using `[L, Algebra.smul_def]`. Establish `hfun : (fun p : k × k => algebraMap k K p.1 + algebraMap k K p.2 * r) = ⇑L`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `fun p => (hL p).symm`. Rewrite using `[hfun]`. Establish `hinj : Function.Injective L`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `p hp`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hp` using `[hL]`. Take `⟨h1, h2⟩` from `h0 p.1 p.2 hp`. Conclude with `Prod.ext h1 h2`. Establish `H : Module.finrank k (k × k) = Module.finrank k K`. Rewrite using `[hK]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Conclude with `⟨hinj, (LinearMap.injective_iff_surjective_of_finrank_eq_finrank H).mp hinj⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem bijective_algebraMap_add_mul_of_finrank_two {k K : Type} [Field k] [CommRing K]
     [Algebra k K] [Module.Finite k K] (hK : Module.finrank k K = 2) (r : K)
@@ -40,7 +40,7 @@ private theorem bijective_algebraMap_add_mul_of_finrank_two {k K : Type} [Field 
   exact ⟨hinj, (LinearMap.injective_iff_surjective_of_finrank_eq_finrank H).mp hinj⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨{ toFun := Prod.swap invFun := Prod.swap left_inv := fun x => Prod.swap_swap x right_inv := fun x => Prod.swap_swap x map_mul' := fun x y => rfl map_add' := fun x y => rfl commutes' := fun c => rfl }, fun x => rfl⟩`.
+Supply the required witnesses or components.
 -/
 private theorem exists_algEquiv_prod_swap (k : Type) [Field k] :
     ∃ σ : (k × k) ≃ₐ[k] (k × k), ∀ x, σ x = x.swap :=
@@ -53,19 +53,19 @@ private theorem exists_algEquiv_prod_swap (k : Type) [Field k] :
      commutes' := fun c => rfl }, fun x => rfl⟩
 
 /- English proof (translation)
-Establish `h2K : (2 : K) ≠ 0`. Introduce `h`. Establish `h11 : algebraMap k K (1 + 1) = 0`. Rewrite using `[map_add, map_one]`. Take the linear combination `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `h11' : (1 + 1 : k) = 0` using `(algebraMap k K).injective (h11.trans (map_zero _).symm)`. Conclude with `h2 (by linear_combination h11')`. Use `⟨⟨hinv, Or.inl ⟨Field.toIsField K, hK, ?_⟩⟩, ?_⟩` and prove the remaining obligations. Introduce `hσr`. Establish `h1 : r = -r`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hσ` using `[hσr]`. Establish `hr0 : r = 0`. Establish `h2r : (2 : K) * r = 0` using `by linear_combination h1`. Conclude with `(mul_eq_zero.mp h2r).resolve_left h2K`. Apply `hD` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `(algebraMap k K).injective` to reduce the goal to its premises. Rewrite using `[← hr, hr0, mul_zero, map_zero]`. Apply `bijective_algebraMap_add_mul_of_finrank_two hK r` to reduce the goal to its premises. Introduce `a b h`. Distinguish the cases in `hb : b = 0`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Substitute `hb` using the available equality. Simplify using `only [map_zero, zero_mul, add_zero] at h`. Use `⟨?_, rfl⟩` and prove the remaining obligations. Apply `(algebraMap k K).injective` to reduce the goal to its premises. Rewrite using `[h, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-It suffices to derive a contradiction. Apply `hsq` to reduce the goal to its premises. Use `⟨-a / b, ?_⟩` and prove the remaining obligations. Apply `(algebraMap k K).injective` to reduce the goal to its premises. Establish `hbK : algebraMap k K b ≠ 0` using `(_root_.map_ne_zero _).mpr hb`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hrc : r = algebraMap k K (-a / b)`. Rewrite using `[map_div₀, map_neg, eq_div_iff hbK]`. Take the linear combination `h`. Rewrite using `[← hr, hrc, map_mul]`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isQuadInv_and_bijective_of_not_isSquare (k K : Type) [Field k] [Field K] [Algebra k K] [Module.Finite k K]
     (h2 : (2 : k) ≠ 0) (D : k) (hD : D ≠ 0) (hsq : ¬ IsSquare D)
@@ -109,27 +109,25 @@ private theorem isQuadInv_and_bijective_of_not_isSquare (k K : Type) [Field k] [
       rw [← hr, hrc, map_mul]
 
 /- English proof (translation)
-Distinguish the cases in `hsq : IsSquare D`. Take `⟨s, hs⟩` from `hsq`. Establish `hs0 : s ≠ 0` using `fun h => hD (by rw [hs, h, mul_zero])`. Take `⟨σ, hσ⟩` from `exists_algEquiv_prod_swap k`. Use `⟨k × k, inferInstance, inferInstance, σ, (s, -s), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun x => by rw [hσ, hσ, Prod.swap_swap], Or.inr ⟨AlgEquiv.refl, fun x => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hσ]`. Both sides reduce to the same expression. Apply the tactic sequence `ext <;> simp [hs]`. Rewrite using `[hσ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `ext <;> simp`. Apply `bijective_algebraMap_add_mul_of_finrank_two` to reduce the goal to its premises. Simplify using the standard rewrite rules. Introduce `a b h`. Establish `e1 : a + b * s = 0`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `congrArg Prod.fst h`. Establish `e2 : a + b * -s = 0`. Conclude with `congrArg Prod.snd h`. Establish `hb : (2 * s) * b = 0` using `by linear_combination e1 - e2`. Establish `hb0 : b = 0` using `(mul_eq_zero.mp hb).resolve_left (mul_ne_zero h2 hs0)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `⟨?_, hb0⟩` and prove the remaining obligations. Take the linear combination `e1 - s * hb0`. Establish `hroot : ∀ b : k, b ^ 2 ≠ D` using `fun b hb => hsq ⟨b, by rw [← hb, sq]⟩`. Establish `hirr : Irreducible (X ^ 2 - C D : k[X])`. Conclude with `X_pow_sub_C_irreducible_of_prime Nat.prime_two hroot`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Fact (Irreducible (X ^ 2 - C D : k[X]))` using `⟨hirr⟩`. Establish `hf0 : (X ^ 2 - C D : k[X]) ≠ 0` using `hirr.ne_zero`. Establish `hfin : Module.finrank k (AdjoinRoot (X ^ 2 - C D : k[X])) = 2`. Rewrite using `[(AdjoinRoot.powerBasis hf0).finrank, AdjoinRoot.powerBasis_dim, natDegree_X_pow_sub_C]`. Establish `: Module.Finite k (AdjoinRoot (X ^ 2 - C D : k[X]))` using `(AdjoinRoot.powerBasis hf0).finite`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hr : AdjoinRoot.root (X ^ 2 - C D : k[X]) * AdjoinRoot.root (X ^ 2 - C D : k[X]) = algebraMap k (AdjoinRoot (X ^ 2 - C D : k[X])) D`. Establish `h0 : aeval (AdjoinRoot.root (X ^ 2 - C D : k[X])) (X ^ 2 - C D : k[X]) = 0`. Rewrite using `[AdjoinRoot.aeval_eq, AdjoinRoot.mk_self]`. Simplify using `only [map_sub, aeval_X_pow, aeval_C] at h0`. Take the linear combination `h0`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hneg : aeval (-AdjoinRoot.root (X ^ 2 - C D : k[X])) (X ^ 2 - C D : k[X]) = 0`. Simplify using `only [map_sub, aeval_X_pow, aeval_C]`. Take the linear combination `hr`. Establish `hneg' : eval₂ (algebraMap k (AdjoinRoot (X ^ 2 - C D : k[X]))) (-AdjoinRoot.root (X ^ 2 - C D : k[X])) (X ^ 2 - C D : k[X]) = 0`. Rewrite using `[← aeval_def]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `hneg`. Choose the witnesses or unpack the hypotheses as in `⟨τ, hτr⟩ : ∃ τ : AdjoinRoot (X ^ 2 - C D : k[X]) →ₐ[k] AdjoinRoot (X ^ 2 - C D : k[X]), τ (AdjoinRoot.root _) = -AdjoinRoot.root (X ^ 2 - C D : k[X]) := by`. Conclude with `⟨{ AdjoinRoot.lift (algebraMap k _) (-AdjoinRoot.root _) hneg' with commutes' := fun c => by simp [AdjoinRoot.algebraMap_eq] }, AdjoinRoot.lift_root hneg'⟩`. Establish `hττ : τ.comp τ = AlgHom.id k _`. Apply `AdjoinRoot.algHom_ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[AlgHom.comp_apply, hτr, map_neg, hτr, neg_neg, AlgHom.id_apply]`. Set `σ'` to `AlgEquiv.ofAlgHom τ τ hττ hττ`. Establish `hσ : σ' (AdjoinRoot.root (X ^ 2 - C D : k[X])) = -AdjoinRoot.root (X ^ 2 - C D : k[X])` using `hτr`. Establish `hinv : ∀ x, σ' (σ' x) = x` using `fun x => DFunLike.congr_fun hττ x`. Take `⟨hq, hbij⟩` from `isQuadInv_and_bijective_of_not_isSquare k (AdjoinRoot (X ^ 2 - C D : k[X])) h2 D hD hsq hfin (AdjoinRoot.root _) hr σ' hσ hinv`.
-
-Conclude with `⟨AdjoinRoot (X ^ 2 - C D : k[X]), inferInstance, inferInstance, σ', AdjoinRoot.root _, hq, hr, hσ, hbij⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_quadAlg (k : Type) [Field k] [Finite k] (h2 : (2 : k) ≠ 0) (D : k) (hD : D ≠ 0) :
     ∃ (K : Type) (_ : CommRing K) (_ : Algebra k K) (σ' : K ≃ₐ[k] K) (r : K),

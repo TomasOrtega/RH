@@ -8,7 +8,7 @@ open scoped TensorProduct ENNReal nonZeroDivisors
 namespace GlobalTheory.SnMass.VolN
 
 /- English proof (translation)
-Establish `hH` using `(GlobalTheory.T.haar_lie_nilpotent_coordinates k r).1`. Use `haveI : SigmaFinite (haarLie (Nset k r) 1) := hH.1`. Establish `hf : ∀ w, MeasurePreserving (lmulM (gM A γ w)) (haarLie (Nset k r) 1) (haarLie (Nset k r) 1)` using `fun w => ⟨GlobalTheory.Amp.StabMeas.meas_lmul _, hH.2.2.2 _ (hN w)⟩`. Conclude with `measurePreserving_pi (fun _ : InfinitePlace E => haarLie (Nset k r) 1) (fun _ => haarLie (Nset k r) 1) hf`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem actM_measurePreserving (E : Type) [Field E] [NumberField E] (k r : ℕ)
     (A : InfinitePlace E → Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)

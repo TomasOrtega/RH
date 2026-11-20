@@ -4,13 +4,13 @@ open NumberField Polynomial
 namespace GlobalTheory
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Establish `hmem : a ∈ RingHom.ker ρ` using `ha`. Establish `hn : ((Ideal.absNorm (RingHom.ker ρ) : ℕ) : 𝓞 F) ∈ RingHom.ker ρ` using `Ideal.absNorm_mem _`. Rewrite `hn` using `[RingHom.mem_ker, map_natCast]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨χ, hχ⟩` from `exists_ne (0 : X)`. Establish `h1 : (Ideal.absNorm (RingHom.ker ρ) : ℕ) • χ = 0`. Use `congrArg (fun f : Module.End ℤ X => f χ) hn` as an intermediate fact. Simplify using `using this`. Rewrite `h1` using `[← Nat.cast_smul_eq_nsmul ℤ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : Ideal.absNorm (RingHom.ker ρ) = 0`. Break down `smul_eq_zero.mp h1 with h | h` into its components or cases. Conclude with `h` after adjusting the coercions. Conclude with `absurd h hχ`. Rewrite `h2` using `[Ideal.absNorm_eq_zero_iff]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `hmem` using `[h2]`. Simplify using `using hmem`.
+A detailed English derivation is pending.
 -/
 theorem ringOfIntegers_action_injective (F : Type) [Field F] [NumberField F] (X : Type)
     [AddCommGroup X] [Module.Free ℤ X] [Nontrivial X] (ρ : 𝓞 F →+* Module.End ℤ X) :
@@ -34,23 +34,21 @@ theorem ringOfIntegers_action_injective (F : Type) [Field F] [NumberField F] (X 
   simpa using hmem
 
 /- English proof (translation)
-Use `set B := Module.Free.chooseBasis ℤ X`. Set `T : Module.End ℤ X` to `B.constr ℤ (fun s => ∑ r, ((B.repr (ρ a (B s)) r) / p) • B r)`. Establish `hT : algebraMap ℤ (Module.End ℤ X) p * T = ρ a`. Apply `B.ext` to reduce the goal to its premises. Introduce `s`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Module.End.mul_apply, Module.algebraMap_end_apply]`. Simplify using `only [T, Module.Basis.constr_basis, Finset.smul_sum, smul_smul]`. Use `conv_rhs => rw [← B.sum_repr (ρ a (B s))]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[Int.mul_ediv_cancel' (h _ r)]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨f, hfm, hf⟩` from `Algebra.IsIntegral.isIntegral (R := ℤ) T`. Establish `hf' : aeval T f = 0` using `by rw [aeval_def]; exact hf`. Establish `h1` using `Polynomial.scaleRoots_aeval_eq_zero (r := p) hf'`. Rewrite `h1` using `[hT]`. Establish `h2 : aeval a (f.scaleRoots p) = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `ringOfIntegers_action_injective F X ρ` to reduce the goal to its premises. Rewrite using `[map_zero]`. Use `Polynomial.aeval_algHom_apply (ρ.toIntAlgHom) a (f.scaleRoots p)` as an intermediate fact. Express the relevant statement in the definitionally equal form `ρ.toIntAlgHom _ = 0`. Rewrite using `[← this]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1`. Establish `h3 : aeval (algebraMap (𝓞 F) F a) (f.scaleRoots p) = 0`. Rewrite using `[Polynomial.aeval_algebraMap_apply, h2, map_zero]`. Establish `hpF : (algebraMap ℤ F p) ≠ 0` using `by simpa using hp`. Use `set β : F := algebraMap (𝓞 F) F a / algebraMap ℤ F p with hβdef`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Establish `hβa : algebraMap ℤ F p * β = algebraMap (𝓞 F) F a`. Rewrite using `[hβdef]`. Clear the denominators using the available nonvanishing facts. Establish `h4 : eval₂ (algebraMap ℤ F) β f = 0`. Establish `e` using `Polynomial.scaleRoots_eval₂_mul (p := f) (algebraMap ℤ F) β p`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite `e` using `[hβa, ← aeval_def, h3]`. Conclude with `(mul_eq_zero.mp e.symm).resolve_left (pow_ne_zero _ hpF)`. Establish `hβ : IsIntegral ℤ β` using `⟨f, hfm, h4⟩`. Set `y : 𝓞 F` to `⟨β, hβ⟩`. Establish `hy : p • y = a`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Rewrite using `[map_zsmul, zsmul_eq_mul]`. Establish `: algebraMap (𝓞 F) F y = β` using `rfl`. Rewrite using `[this, ← hβa]`. Simplify using the standard rewrite rules.
-
-Introduce `i`. Use `⟨b.repr y i, ?_⟩` and prove the remaining obligations. Rewrite using `[← hy, map_zsmul, Finsupp.smul_apply, smul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dvd_coord_of_action_dvd (F : Type) [Field F] [NumberField F] (X : Type)
     [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] [Nontrivial X]
@@ -103,39 +101,31 @@ theorem dvd_coord_of_action_dvd (F : Type) [Field F] [NumberField F] (X : Type)
   rw [← hy, map_zsmul, Finsupp.smul_apply, smul_eq_mul]
 
 /- English proof (translation)
-Introduce `F _ _ X _ _ _ ρ k _ ι _ b w hw hyp`. Assume the negation of the conclusion as `hX`. Use `haveI : Nontrivial X := Module.finrank_pos_iff.mp (Nat.pos_of_ne_zero hX)`. Choose the witnesses or unpack the hypotheses as in `⟨i0, hi0⟩ : ∃ i, w i ≠ 0 := by`. Assume the negation of the conclusion as `hc`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `push_neg at hc`. Conclude with `hw (funext hc)`. Use `set B := Module.Free.chooseBasis ℤ X`. Establish `key : ∀ (χ : X) (r : Module.Free.ChooseBasisIndex ℤ X), ∑ i, (B.repr (ρ (b i) χ) r) • w i = 0`. Introduce `χ r`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `hyp ((Int.castAddHom k).comp (B.coord r).toAddMonoidHom) χ` as an intermediate fact. Rewrite using `[← this]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[zsmul_eq_mul, mul_comm]`. Establish `lin : ∀ (e : ι → ℤ) (χ : X) (r : Module.Free.ChooseBasisIndex ℤ X), B.repr (ρ (∑ i, e i • b i) χ) r = ∑ i, e i * B.repr (ρ (b i) χ) r`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Equip the data with the indicated structure.
 
-Introduce `e χ r`. Simplify using `[map_sum, map_zsmul, LinearMap.sum_apply, Finsupp.finset_sum_apply]`. Break down `CharP.char_is_prime_or_zero k (ringChar k) with hp | hp` into its components or cases. Use `set p := ringChar k with hpdef haveI : Fact p.Prime := ⟨hp⟩ haveI : CharP k p := ringChar.charP k`. Use `letI : Algebra (ZMod p) k := ZMod.algebra k p`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Choose the witnesses or unpack the hypotheses as in `⟨π, hπ⟩ : ∃ π : Module.Dual (ZMod p) k, π (w i0) ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hi0 ((Module.forall_dual_apply_eq_zero_iff (ZMod p) (w i0)).mp hc)`. Use `set e : ι → ℤ := fun i => ((π (w i)).val : ℤ) with hedef`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hdiv : ∀ (χ : X) (r : Module.Free.ChooseBasisIndex ℤ X), (p : ℤ) ∣ B.repr (ρ (∑ i, e i • b i) χ) r`. Introduce `χ r`. Rewrite using `[lin, ← ZMod.intCast_zmod_eq_zero_iff_dvd]`. Use `congrArg π (key χ r)` as an intermediate fact. Rewrite `this` using `[map_sum, map_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← this]`. Use `push_cast`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, zsmul_eq_mul, hedef]`. Simplify using `[ZMod.natCast_zmod_val, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Equip the data with the indicated structure.
 
-Establish `h` using `GlobalTheory.dvd_coord_of_action_dvd F X ρ ι b p (by exact_mod_cast hp.ne_zero) _ hdiv i0`. Rewrite `h` using `[Module.Basis.repr_sum_self]`. Apply `hπ` to reduce the goal to its premises. Rewrite using `[← ZMod.natCast_zmod_val (π (w i0))]`. Establish `h' : ((((π (w i0)).val : ℕ) : ℤ) : ZMod p) = 0` using `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).mpr h`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h'` after adjusting the coercions. Use `haveI : CharZero k := by`. Use `ringChar.charP k` as an intermediate fact. Rewrite `this` using `[hp]`. Conclude with `CharP.charP_to_charZero k`.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `letI : Algebra ℚ k := DivisionRing.toRatAlgebra`. Choose the witnesses or unpack the hypotheses as in `⟨π, hπ⟩ : ∃ π : Module.Dual ℚ k, π (w i0) ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hi0 ((Module.forall_dual_apply_eq_zero_iff ℚ (w i0)).mp hc)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Use `set c : ι → ℚ := fun i => π (w i) with hcdef`. Use `set e : ι → ℤ := fun i => (c i).num * ∏ j ∈ Finset.univ.erase i, ((c j).den : ℤ) with hedef`. Establish `he : ∀ i, (e i : ℚ) = c i * ∏ j, ((c j).den : ℚ)`. Introduce `i`. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ i), ← mul_assoc, Rat.mul_den_eq_num, hedef]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `push_cast`. Both sides reduce to the same expression. Establish `hzero : ∀ (χ : X) (r : Module.Free.ChooseBasisIndex ℤ X), B.repr (ρ (∑ i, e i • b i) χ) r = 0`. Introduce `χ r`. Rewrite using `[lin]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg π (key χ r)` as an intermediate fact. Rewrite `this` using `[map_sum, map_zero]`. Simplify using `only [map_zsmul] at this`. Establish `h2 : ((∑ i, e i * B.repr (ρ (b i) χ) r : ℤ) : ℚ) = (∏ j, ((c j).den : ℚ)) * ∑ i, (B.repr (ρ (b i) χ) r) • π (w i)`. Use `push_cast`.
-
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[he, zsmul_eq_mul, hcdef]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h2` using `[this, mul_zero]`.
-
-Conclude with `h2` after adjusting the coercions. Establish `hρ : ρ (∑ i, e i • b i) = 0`. Use extensionality with `χ`. Simplify using `only [LinearMap.zero_apply]`. Conclude with `B.ext_elem fun r => by rw [hzero, map_zero, Finsupp.zero_apply]`.
-
-Establish `ha : (∑ i, e i • b i) = 0` using `GlobalTheory.ringOfIntegers_action_injective F X ρ (by rw [hρ, map_zero])`. Establish `h0` using `congrArg (fun x => b.repr x i0) ha`. Simplify using `only [Module.Basis.repr_sum_self, map_zero, Finsupp.zero_apply] at h0`. Establish `hc0 : c i0 ≠ 0` using `hπ`. Establish `: (e i0 : ℚ) ≠ 0`.
-
-Rewrite using `[he]`. Conclude with `mul_ne_zero hc0 (Finset.prod_ne_zero_iff.mpr fun j _ => by exact_mod_cast (c j).den_nz)`. Conclude with `this (by exact_mod_cast h0)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_eq_zero_of_dual_killed : ∀ (F : Type) [Field F] [NumberField F] (X : Type)
     [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] (ρ : 𝓞 F →+* Module.End ℤ X)

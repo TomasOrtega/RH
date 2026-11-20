@@ -23,13 +23,13 @@ def valAt (v : Pl F) (w : HeightOneSpectrum (𝓞 E)) (y : Fv F v ⊗[F] E) : Wi
 def ordAt (v : Pl F) (w : HeightOneSpectrum (𝓞 E)) (x : (Fv F v ⊗[F] E)ˣ) : ℤ := -WithZero.log (valAt v w x.1)
 
 /- English proof (translation)
-The claim follows from `dif_pos h`.
+A detailed English derivation is pending.
 -/
 theorem valAt_of_under {v : Pl F} {w : HeightOneSpectrum (𝓞 E)} (h : w.under (𝓞 F) = v) (y : Fv F v ⊗[F] E) :
     valAt v w y = Valued.v (toCompl h y) := dif_pos h
 
 /- English proof (translation)
-Unfold `valAt`. Use `split_ifs with h`. Conclude with `(Valuation.ne_zero_iff _).2 (x.isUnit.map (toCompl h)).ne_zero`. Conclude with `one_ne_zero`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem valAt_ne_zero (v : Pl F) (w : HeightOneSpectrum (𝓞 E)) (x : (Fv F v ⊗[F] E)ˣ) : valAt v w x.1 ≠ 0 := by
   unfold valAt
@@ -38,14 +38,14 @@ theorem valAt_ne_zero (v : Pl F) (w : HeightOneSpectrum (𝓞 E)) (x : (Fv F v �
   · exact one_ne_zero
 
 /- English proof (translation)
-Rewrite using `[ordAt, neg_neg, WithZero.exp_log (valAt_ne_zero v w x)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem valAt_eq_exp (v : Pl F) (w : HeightOneSpectrum (𝓞 E)) (x : (Fv F v ⊗[F] E)ˣ) :
     valAt v w x.1 = WithZero.exp (-ordAt v w x) := by
   rw [ordAt, neg_neg, WithZero.exp_log (valAt_ne_zero v w x)]
 
 /- English proof (translation)
-Unfold `valAt`. Use `split_ifs with h`. Rewrite using `[map_mul, map_mul]`. Rewrite using `[mul_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valAt_mul (v : Pl F) (w : HeightOneSpectrum (𝓞 E)) (y z : Fv F v ⊗[F] E) :
     valAt v w (y * z) = valAt v w y * valAt v w z := by
@@ -55,7 +55,7 @@ theorem valAt_mul (v : Pl F) (w : HeightOneSpectrum (𝓞 E)) (y z : Fv F v ⊗[
   · rw [mul_one]
 
 /- English proof (translation)
-Establish `h` using `valAt_mul v w x.1 y.1`. Rewrite `h` using `[← Units.val_mul, valAt_eq_exp, valAt_eq_exp, valAt_eq_exp, ← WithZero.exp_add]`. Use `WithZero.exp_injective h` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem ordAt_mul (v : Pl F) (w : HeightOneSpectrum (𝓞 E)) (x y : (Fv F v ⊗[F] E)ˣ) :
     ordAt v w (x * y) = ordAt v w x + ordAt v w y := by
@@ -65,7 +65,7 @@ theorem ordAt_mul (v : Pl F) (w : HeightOneSpectrum (𝓞 E)) (x y : (Fv F v ⊗
   linarith
 
 /- English proof (translation)
-Establish `h` using `ordAt_mul v w 1 1`. Rewrite `h` using `[mul_one]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem ordAt_one (v : Pl F) (w : HeightOneSpectrum (𝓞 E)) : ordAt v w (1 : (Fv F v ⊗[F] E)ˣ) = 0 := by
   have h := ordAt_mul v w 1 1
@@ -73,7 +73,7 @@ theorem ordAt_one (v : Pl F) (w : HeightOneSpectrum (𝓞 E)) : ordAt v w (1 : (
   linarith
 
 /- English proof (translation)
-Establish `h` using `ordAt_mul v w x x⁻¹`. Rewrite `h` using `[mul_inv_cancel, ordAt_one]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem ordAt_inv (v : Pl F) (w : HeightOneSpectrum (𝓞 E)) (x : (Fv F v ⊗[F] E)ˣ) : ordAt v w x⁻¹ = -ordAt v w x := by
   have h := ordAt_mul v w x x⁻¹
@@ -91,7 +91,7 @@ def ordHom (v : Pl F) :
     exact congrArg Multiplicative.ofAdd (funext fun w => ordAt_mul v w.1 x y)
 
 /- English proof (translation)
-Rewrite using `[valAt_of_under h]`. Use `show Valued.v (toCompl h ((1 : Fv F v) ⊗ₜ[F] (b : E))) = _`. Rewrite using `[toCompl_tmul, map_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valAt_one_tmul (v : Pl F) (w : HeightOneSpectrum (𝓞 E)) (h : w.under (𝓞 F) = v) (b : Eˣ) :
     valAt v w ((Units.map (Algebra.TensorProduct.includeRight : E →ₐ[F] Fv F v ⊗[F] E).toMonoidHom b : (Fv F v ⊗[F] E)ˣ) : Fv F v ⊗[F] E) =

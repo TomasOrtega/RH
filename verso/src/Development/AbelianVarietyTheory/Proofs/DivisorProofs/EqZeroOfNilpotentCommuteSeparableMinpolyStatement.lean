@@ -7,7 +7,7 @@ open Matrix NumberField GlobalTheory.LKTrip GlobalTheory.LKRes GlobalTheory.LKMi
 open scoped TensorProduct Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.LKCx.ClsReg.eq_zero_of_commute_of_pow_eq_zero) | (exact GlobalTheory.LKCx.ClsReg.eq_zero_of_commute_of_pow_eq_zero) | (intros; apply GlobalTheory.LKCx.ClsReg.eq_zero_of_commute_of_pow_eq_zero <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.eq_zero_of_nilpotent_commute_separable_minpoly : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (y₀ : G.C), (minpoly G.F y₀).Separable →
     (minpoly G.F y₀).natDegree = G.n → ∀ x : G.C, Commute x y₀ → ∀ k : ℕ, x ^ k = 0 → x = 0 := by

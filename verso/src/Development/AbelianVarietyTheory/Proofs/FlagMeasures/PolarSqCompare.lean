@@ -14,9 +14,9 @@ open scoped ENNReal NNReal
 namespace GlobalTheory.PolarCompare
 
 /- English proof (translation)
-Establish `h1 : 0 ≤ ∑ i : Fin P, ‖z (Sum.inl i)‖ ^ 2` using `Finset.sum_nonneg fun i _ => by positivity`. Establish `h2 : 0 ≤ ∑ j : Fin Q, ‖z (Sum.inr j)‖ ^ 2` using `Finset.sum_nonneg fun j _ => by positivity`. Rewrite using `[Fintype.sum_sum_type]`. Simplify using `only [qf, Complex.normSq_eq_norm_sq]`. Rewrite using `[abs_le]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `constructor <;> linarith`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem abs_qf_le_sum_sq {P Q : ℕ} (z : Sp P Q) : |qf z| ≤ ∑ i, ‖z i‖ ^ 2 := by
   have h1 : 0 ≤ ∑ i : Fin P, ‖z (Sum.inl i)‖ ^ 2 := Finset.sum_nonneg fun i _ => by positivity
@@ -27,11 +27,11 @@ theorem abs_qf_le_sum_sq {P Q : ℕ} (z : Sp P Q) : |qf z| ≤ ∑ i, ‖z i‖ 
   constructor <;> linarith
 
 /- English proof (translation)
-Establish `hr2 : 0 < r ^ 2` using `by positivity`. Establish `hs : s < 1` using `by linarith`. Establish `hsr : s * r ^ 2 < r ^ 2` using `by nlinarith`. Establish `hS2 : 2 * S < r ^ 2` using `by nlinarith`. Establish `hT2 : T ^ 2 < r ^ 2` using `by nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTr : T < r` using `by nlinarith`. Establish `hN2 : N * N ≤ (T + S) * (T + S)` using `mul_self_le_mul_self hN h1`. Establish `a1 : T * S ≤ r * S` using `mul_le_mul_of_nonneg_right hTr.le hS`. Establish `a2 : r * (2 * S) ≤ r * r ^ 2` using `mul_le_mul_of_nonneg_left hS2.le hr0.le`. Establish `a3 : (2 * S) * (2 * S) ≤ r ^ 2 * r ^ 2` using `mul_self_le_mul_self (by linarith) hS2.le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a4 : r * r ^ 2 * r ≤ r * r ^ 2 * (1 / 2)` using `mul_le_mul_of_nonneg_left hr1.le (by positivity)`. Establish `a5 : 3 * r * r ^ 2 < (1 - s) * r ^ 2` using `mul_lt_mul_of_pos_right hr hr2`. Use polynomial arithmetic with `[mul_pos hr0 hr2]`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem sq_compare_left {T S N r s : ℝ} (hT : 0 ≤ T) (hS : 0 ≤ S) (hN : 0 ≤ N)
     (hr0 : 0 < r) (hr1 : r < 1 / 2) (hr : 3 * r < 1 - s) (h1 : N ≤ T + S)
@@ -53,13 +53,13 @@ theorem sq_compare_left {T S N r s : ℝ} (hT : 0 ≤ T) (hS : 0 ≤ S) (hN : 0 
   nlinarith [mul_pos hr0 hr2]
 
 /- English proof (translation)
-Establish `hr2 : 0 < r ^ 2` using `by positivity`. Establish `hS2 : 2 * S < r ^ 2` using `by nlinarith`. Establish `hNr : N < r` using `by nlinarith`. Establish `hrr : r ^ 2 < r / 2` using `by nlinarith [mul_pos hr0 (sub_pos.mpr hr1)]`. Establish `hT3r : T ≤ 3 * r` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTE : T - T ^ 3 / 16 ≤ E` using `h3 (by linarith)`. Establish `hc1 : T * T ≤ 3 * r * (3 * r)` using `mul_self_le_mul_self hT hT3r`. Establish `hc2 : T * T * T ≤ 3 * r * (3 * r) * (3 * r)` using `mul_le_mul hc1 hT3r hT (by positivity)`. Establish `hr3 : r ^ 2 * r ≤ r ^ 2 * (1 / 2)` using `mul_le_mul_of_nonneg_left hr1.le (sq_nonneg r)`. Establish `hb0 : 0 ≤ S + T ^ 3 / 16` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb2 : S + T ^ 3 / 16 ≤ 2 * r ^ 2` using `by nlinarith`. Establish `hTNb : T ≤ N + (S + T ^ 3 / 16)` using `by linarith`. Establish `hT2 : T * T ≤ (N + (S + T ^ 3 / 16)) * (N + (S + T ^ 3 / 16))` using `mul_self_le_mul_self hT hTNb`. Establish `a1 : N * (S + T ^ 3 / 16) ≤ r * (S + T ^ 3 / 16)` using `mul_le_mul_of_nonneg_right hNr.le hb0`. Establish `a2 : r * (S + T ^ 3 / 16) ≤ r * (2 * r ^ 2)` using `mul_le_mul_of_nonneg_left hb2 hr0.le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a3 : (S + T ^ 3 / 16) * (S + T ^ 3 / 16) ≤ (2 * r ^ 2) * (2 * r ^ 2)` using `mul_self_le_mul_self hb0 hb2`. Establish `a4 : r * r ^ 2 * r ≤ r * r ^ 2 * (1 / 2)` using `mul_le_mul_of_nonneg_left hr1.le (by positivity)`. Establish `a5 : 11 * r * r ^ 2 < (s - 1) * r ^ 2` using `mul_lt_mul_of_pos_right hr hr2`. Use polynomial arithmetic with `[mul_pos hr0 hr2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem sq_compare_right {T S N E r s : ℝ} (hT : 0 ≤ T) (hS : 0 ≤ S) (hN : 0 ≤ N)
     (hr0 : 0 < r) (hr1 : r < 1 / 2) (hr : 11 * r < s - 1) (h1 : E ≤ N + S) (h2 : T ≤ 2 * E)
@@ -91,27 +91,27 @@ theorem sq_compare_right {T S N E r s : ℝ} (hT : 0 ≤ T) (hS : 0 ≤ S) (hN :
   nlinarith [mul_pos hr0 hr2]
 
 /- English proof (translation)
-Introduce `P Q P' Q' e t ht`. Establish `ht0 : 0 < t` using `by linarith`. Establish `hA : 0 < 1 - t⁻¹ ^ 2`. Establish `h1 : t⁻¹ < 1` using `inv_lt_one_of_one_lt₀ ht`. Establish `h2 : 0 < t⁻¹` using `inv_pos.mpr ht0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hB : 0 < t ^ 2 - 1` using `by nlinarith`. Establish `hc : 0 < min (1 / 2 : ℝ) (min ((1 - t⁻¹ ^ 2) / 3) ((t ^ 2 - 1) / 11))` using `lt_min (by norm_num) (lt_min (div_pos hA (by norm_num)) (div_pos hB (by norm_num)))`. Use `filter_upwards [inter_mem_nhdsWithin (Set.Ioi (0 : ℝ)) (Iio_mem_nhds hc)] with r hr`. Take `⟨hr0, hrc⟩` from `hr`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_Ioi, Set.mem_Iio] at hr0 hrc`. Establish `hr1 : r < 1 / 2` using `lt_of_lt_of_le hrc (min_le_left _ _)`. Establish `hr2 : 3 * r < 1 - t⁻¹ ^ 2`. Use `lt_of_lt_of_le hrc ((min_le_right _ _).trans (min_le_left _ _))` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hr3 : 11 * r < t ^ 2 - 1`. Use `lt_of_lt_of_le hrc ((min_le_right _ _).trans (min_le_right _ _))` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Introduce and unpack `⟨θ, z⟩ hu`. Simplify using `only [Set.mem_Ioo] at hu`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hθ : |θ| ≤ Real.pi` using `abs_le.mpr ⟨hu.1.le, hu.2.le⟩`. Establish `hq : |sg (e none) * qf z| ≤ ∑ i, ‖z i‖ ^ 2`. Rewrite using `[abs_mul]`. Apply the tactic sequence `rcases sg_eq (e none) with h | h <;> rw [h] <;> simpa using abs_qf_le_sum_sq z`. Establish `hρ1` using `(abs_sqrt_sub_one_le (sg (e none) * qf z)).trans hq`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw1 : ‖Complex.exp ((θ : ℂ) * Complex.I)‖ = 1` using `Complex.norm_exp_ofReal_mul_I θ`. Establish `hpt : ptSq e (polarPt e (θ, z)) = ‖(Real.sqrt (1 - sg (e none) * qf z) : ℂ) * Complex.exp ((θ : ℂ) * Complex.I) - 1‖ ^ 2 + 2 * ∑ i, ‖z i‖ ^ 2`. Simplify using `only [ptSq, polarPt_none, polarPt_some]`. Establish `htan : tanSq (θ, z) = |θ| ^ 2 + 2 * ∑ i, ‖z i‖ ^ 2`. Simplify using `only [tanSq, sq_abs]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨hb1, hb2, hb3⟩` from `exp_bounds θ hθ`. Rewrite using `[hpt, htan]`. Generalize the expression as in `Real.sqrt (1 - sg (e none) * qf z) = ρ at hρ1 ⊢`. Generalize the expression as in `Complex.exp ((θ : ℂ) * Complex.I) = w at hw1 hb1 hb2 hb3 ⊢`. Generalize the expression as in `∑ i, ‖z i‖ ^ 2 = S at hρ1 ⊢`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Establish `hS0 : 0 ≤ S` using `(abs_nonneg _).trans hρ1`. Establish `hdiff : ‖(ρ : ℂ) * w - w‖ = |ρ - 1|`. Establish `: (ρ : ℂ) * w - w = ((ρ - 1 : ℝ) : ℂ) * w` using `by push_cast; ring`. Rewrite using `[this, norm_mul, hw1, mul_one, Complex.norm_real, Real.norm_eq_abs]`. Establish `hNE : ‖(ρ : ℂ) * w - 1‖ ≤ |θ| + S`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `norm_sub_le_norm_sub_add_norm_sub ((ρ : ℂ) * w) w 1` as an intermediate fact. Rewrite `this` using `[hdiff]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hEN : ‖w - 1‖ ≤ ‖(ρ : ℂ) * w - 1‖ + S`. Use `norm_sub_le_norm_sub_add_norm_sub w ((ρ : ℂ) * w) 1` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[norm_sub_rev w ((ρ : ℂ) * w), hdiff]`. Combine the linear equalities and inequalities to obtain the conclusion. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite `h` using `[mul_pow]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `sq_compare_left (abs_nonneg θ) hS0 (norm_nonneg _) hr0 hr1 hr2 hNE h`. Introduce `h`. Rewrite using `[mul_pow]`. Conclude with `sq_compare_right (abs_nonneg θ) hS0 (norm_nonneg _) hr0 hr1 hr3 hEN hb2 hb3 h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem polar_sq_compare : ∀ (P Q P' Q' : ℕ) (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕ Fin Q)) (t : ℝ), 1 < t → ∀ᶠ r in 𝓝[>] (0 : ℝ), ∀ u : ℝ × Sp P' Q', u.1 ∈ Set.Ioo (-Real.pi) Real.pi → (tanSq u < (t⁻¹ * r) ^ 2 → ptSq e (polarPt e u) < r ^ 2) ∧ (ptSq e (polarPt e u) < r ^ 2 → tanSq u < (t * r) ^ 2) := by
   intro P Q P' Q' e t ht

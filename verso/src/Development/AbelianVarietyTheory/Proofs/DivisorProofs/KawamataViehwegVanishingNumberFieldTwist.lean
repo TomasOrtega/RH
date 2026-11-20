@@ -23,7 +23,7 @@ namespace GlobalTheory.HSCore.VanishNumberField
 open GlobalTheory.AbLaw
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hV`. Rewrite `hV` using `[not_subsingleton_iff_nontrivial]`. Conclude with `not_nontrivial_iff_subsingleton.2 h (Module.FaithfullyFlat.lTensor_nontrivial k E V)`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subsingleton_of_tensor {k E V : Type} [Field k] [Field E] [Algebra k E] [AddCommGroup V] [Module k V]
     (h : Subsingleton (TensorProduct k E V)) : Subsingleton V := by
@@ -32,11 +32,11 @@ theorem subsingleton_of_tensor {k E V : Type} [Field k] [Field E] [Algebra k E] 
   exact not_nontrivial_iff_subsingleton.2 h (Module.FaithfullyFlat.lTensor_nontrivial k E V)
 
 /- English proof (translation)
-Use `letI := algebraΓOfHom f`. Use `letI := algebraΓOfHom f'`. Establish `: CompactSpace X` using `QuasiCompact.compactSpace_of_compactSpace f`. Use `isAffineHom_diagonal_of_isSeparated f` as an intermediate fact. Take `⟨m, D, hD, hc⟩` from `exists_fin_affine_cover (X := X) (V := ⊤) isCompact_univ`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hD'` using `isAffineOpen_finset_biInf hD`. Take `⟨e₁⟩` from `FieldChangeInter.nonempty_coh_equiv f hM hc hD' n`. Take `⟨e₂⟩` from `FieldChangeInter.nonempty_coh_equiv f' (LB.isLB_pull hM π) (D := fun i => π ⁻¹ᵁ D i) (by rw [← Scheme.Hom.preimage_iSup, hc]; rfl) (fun s hs => isAffineOpen_biInf_preimage H (hD' s hs)) n`. Take `⟨e₃⟩` from `FieldChangeInter.nonempty_homology_equiv E (cechLB f M D) n`. Establish `e₄` using `((HomologicalComplex.homologyFunctor _ _ n).mapIso (cechLBBaseChangeIso hM H hD')).toLinearEquiv`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h₁ : Subsingleton (TensorProduct k E ((cechLB f M D).homology n))` using `(e₃.symm.toEquiv.trans (e₄.toEquiv.trans e₂.toEquiv)).subsingleton_congr.2 h`. Conclude with `e₁.symm.toEquiv.subsingleton_congr.2 (subsingleton_of_tensor h₁)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem subsingleton_coh_of_pull {k E : Type} [Field k] [Field E] [Algebra k E] {X X' : Scheme.{0}}
     {f : X ⟶ Spec (CommRingCat.of k)} {f' : X' ⟶ Spec (CommRingCat.of E)} {π : X' ⟶ X} [QuasiCompact f] [IsSeparated f]
@@ -59,9 +59,9 @@ theorem subsingleton_coh_of_pull {k E : Type} [Field k] [Field E] [Algebra k E] 
   exact e₁.symm.toEquiv.subsingleton_congr.2 (subsingleton_of_tensor h₁)
 
 /- English proof (translation)
-Establish `key : topologicalKrullDim (Set.univ : Set Y) = D`. Use `topologicalKrullDim_eq_of_forall_exists_isOpen Set.univ_nonempty fun x _ => ?_` and prove the remaining obligations. Take `⟨U, hU, hx, -⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.1 Y.isBasis_affineOpens (TopologicalSpace.Opens.mem_top x)`. Use `replace hU : IsAffineOpen (X := Y) U := hU`. Use `⟨U, U.isOpen, hx, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.inter_univ, topologicalKrullDim_eq_of_isEmbedding hU.fromSpec.isOpenEmbedding.isEmbedding hU.range_fromSpec]`. Conclude with `(PrimeSpectrum.topologicalKrullDim_eq_ringKrullDim (R := Γ(Y, U))).trans (SmoothDim.ringKrullDim_affineOpen k _ p _ h U hU ⟨x, hx⟩)`. Rewrite using `[← key]`. Conclude with `(topologicalKrullDim_eq_of_isEmbedding (e := (id : Y → Y)) Topology.IsEmbedding.id Set.range_id).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem topologicalKrullDim_eq_of_smooth {k : Type} [Field k] {Y : Scheme.{0}} [Nonempty Y] (p : Y ⟶ Sp k) (D : ℕ)
     (h : SmoothOfRelativeDimension D p) : topologicalKrullDim Y = D := by
@@ -78,23 +78,19 @@ theorem topologicalKrullDim_eq_of_smooth {k : Type} [Field k] {Y : Scheme.{0}} [
   exact (topologicalKrullDim_eq_of_isEmbedding (e := (id : Y → Y)) Topology.IsEmbedding.id Set.range_id).symm
 
 /- English proof (translation)
-Introduce `Q K _ _ G hnef hbig j hj q hq`. Use `lift j to ℕ using hj`. Set `Ω` to `AlgebraicClosure K`. Set `S` to `G.toLinSys`. Establish `hV : S.IsVariety` using `G.geom.alg.variety`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hV'` using `hV.baseChange Ω`. Establish `hH` using `S.isPullback_baseChange Ω`. Use `haveI : IsIntegral (S.baseChange Ω).Y := hV'.isIntegral`. Use `haveI : SmoothOfRelativeDimension G.D (S.baseChange Ω).str := hV'.smooth`. Take `⟨hprop, A₀, hA₀⟩` from `(isProjOver_iff_isProper_and_exists_isAmpleLB _).1 hV.proj`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := hprop`. Establish `hstr : strHom K G.Y = G.str` using `strHom_eq fun _ => rfl`. Establish `hproj : IsProjOver (strHom K G.Y)` using `hstr ▸ hV.proj`. Use `haveI : IsProper (strHom K G.Y) := hstr ▸ hprop`. Establish `hLnef : IsNef K G.L` using `IsGenerated.isNef_of_isProjOver (L := G.L) ⟨G.N, G.b, G.geom.alg.bpf⟩ hV.proj`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hLj : IsNef K (lbPow G.L j)` using `hLnef.pow hA₀ j`. Establish `hNnef : IsNef K (tens G.LA (lbPow G.L j))` using `hnef.tens_of_isProjOver hLj hV.proj`. Establish `hNbig : IsBig K (tens G.LA (lbPow G.L j))` using `hbig.tens_nef Q.nef hproj hnef hLj`. Use `haveI : IsIntegralHom (spMap (algebraMap K Ω)) := IsIntegralHom.SpecMap_iff.2 fun x => Algebra.IsIntegral.isIntegral x`. Use `haveI : IsIntegralHom (S.bcFst Ω) := MorphismProperty.of_isPullback (P := @IsIntegralHom) hH.flip ‹_›`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `π` to `S.bcFst Ω`. Establish `hN'nef : IsNef Ω ((tens G.LA (lbPow G.L j)).pull π)` using `PosBaseChange.isNef_pull hNnef hA₀ (hA₀.pull_of_isAffineHom π) π π.isClosedMap`. Establish `hN'big : IsBig Ω ((tens G.LA (lbPow G.L j)).pull π)`. Take `⟨D₀, hD₀, c, hc, hm⟩` from `hNbig.3`. Establish `hD : topologicalKrullDim G.Y = G.D` using `topologicalKrullDim_eq_of_smooth G.str G.D hV.smooth`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `rfl : D₀ = G.D` from `by exact_mod_cast hD₀.symm.trans hD`. Establish `hL` using `LB.isLB_pull hNbig.1 π`. Use `(isBig_iff (f := (S.baseChange Ω).str) (fun _ => rfl) hV'.proj (topologicalKrullDim_eq_of_smooth _ G.D hV'.smooth)).2 ⟨hL, c, hc, hm.mono fun m hm => hm.trans_eq (congrArg _ ?_)⟩` and prove the remaining obligations. Rewrite using `[lineBundleGlobalSectionsDim_congr_picardClass (isLB_lbPow hL m) (LB.isLB_pull (isLB_lbPow hNbig.1 m) π) (by rw [cls_lbPow hL, cls_pull hNbig.1, cls_pull (isLB_lbPow hNbig.1 m), cls_lbPow hNbig.1, map_nsmul])]`. Conclude with `(FieldChangeInter.hdim_pull hH (isLB_lbPow hNbig.1 m) 0).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hM'` using `LB.isLB_pull (G.isLB_adj j) π`. Establish `hKV : Subsingleton (coh (twist (structureModule (S.baseChange Ω).Y) ((G.adj j).pull π)) q)` using `Q.kv.twist (k := Ω) (p := (S.baseChange Ω).str) (fun _ => rfl) hV'.proj (G.K.baseChange hH) hN'nef hN'big hM' (by`. Rewrite using `[cls_pull (G.isLB_adj j) π]`. Use `erw [cls_pull G.K.isLB π, cls_pull hNnef.isLB π]`. Rewrite using `[← map_add]`.
-
-Use `congr 1`. Use `erw [cls_tens (isLB_tens G.K.isLB G.isLBA) (Twist.isLB_lbZPow G.isLB j), cls_tens G.K.isLB G.isLBA, cls_tens G.isLBA (isLB_lbPow G.isLB j)]`. Conclude with `add_assoc _ _ _) hq`. Establish `hY : Subsingleton (coh (twist (structureModule G.Y) (G.adj j)) q)` using `subsingleton_coh_of_pull (f := G.str) (f' := (S.baseChange Ω).str) hH (G.isLB_adj j) q hKV`. Establish `hB : (tens G.K.bundle G.LA).IsLB` using `isLB_tens G.K.isLB G.isLBA`.
-
-Take `⟨i⟩` from `nonempty_twist_twist_iso_of_cls_eq (structureModule G.Y) hB (Twist.isLB_lbZPow G.isLB j) (G.isLB_adj j) rfl`. Conclude with `(cohOn.mapIso Γ(G.Y, ⊤) ⊤ q ((twistFunctor (lbZPow G.L j)).mapIso (Twist.unitTwistIso (tens G.K.bundle G.LA)).symm ≪≫ i)).toEquiv.subsingleton_congr.2 hY`.
+A detailed English derivation is pending.
 -/
 theorem vanishFrom_adj : Quoted → ∀ (K : Type) [Field K] [NumberField K] (G : Geo K), IsNef K G.LA → IsBig K G.LA →
     VanishFrom G.L (GlobalTheory.LB.toMod (tens G.K.bundle G.LA)) 0 := by

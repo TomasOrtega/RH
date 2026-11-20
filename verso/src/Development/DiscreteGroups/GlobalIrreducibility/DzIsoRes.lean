@@ -15,7 +15,7 @@ variable {E : Type} [Field E] [NumberField E] {w : HeightOneSpectrum (𝓞 E)} {
 include hi
 
 /- English proof (translation)
-Rewrite using `[← norm_le_iff i hi, RingEquiv.apply_symm_apply]`. Conclude with `(val_le_iff _).1 ((Valuation.mem_integer_iff _ _).1 y.2)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_symm_le (y : 𝒪[w.adicCompletion E]) : ‖i.symm (y : w.adicCompletion E)‖ ≤ 1 := by
   rw [← norm_le_iff i hi, RingEquiv.apply_symm_apply]
@@ -43,7 +43,7 @@ theorem coe_toInt (y : 𝒪[w.adicCompletion E]) : ((toInt i hi y : ℤ_[g]) : �
 def redO : 𝒪[w.adicCompletion E] →+* ZMod g := (PadicInt.toZMod (p := g)).comp (toInt i hi)
 
 /- English proof (translation)
-Introduce `a`. Use `⟨(a.val : 𝒪[w.adicCompletion E]), ?_⟩` and prove the remaining obligations. Use `show PadicInt.toZMod (toInt i hi (a.val : 𝒪[w.adicCompletion E])) = a`. Rewrite using `[map_natCast, map_natCast, ZMod.natCast_zmod_val]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem redO_surjective : Function.Surjective (redO i hi) := by
   intro a
@@ -52,7 +52,7 @@ theorem redO_surjective : Function.Surjective (redO i hi) := by
   rw [map_natCast, map_natCast, ZMod.natCast_zmod_val]
 
 /- English proof (translation)
-Use extensionality with `y`. Rewrite using `[← IsLocalRing.residue_eq_zero_iff, residue_eq_zero_iff_lt, RingHom.mem_ker]`. Use `show PadicInt.toZMod (toInt i hi y) = 0 ↔ _`. Rewrite using `[← RingHom.mem_ker, PadicInt.ker_toZMod, IsLocalRing.mem_maximalIdeal, PadicInt.mem_nonunits, PadicInt.norm_def, coe_toInt, ← valuation_lt_iff i hi, RingEquiv.apply_symm_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_redO : RingHom.ker (redO i hi) = IsLocalRing.maximalIdeal 𝒪[w.adicCompletion E] := by
   ext y
@@ -62,7 +62,7 @@ theorem ker_redO : RingHom.ker (redO i hi) = IsLocalRing.maximalIdeal 𝒪[w.adi
     coe_toInt, ← valuation_lt_iff i hi, RingEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Establish `e : (𝒪[w.adicCompletion E] ⧸ IsLocalRing.maximalIdeal 𝒪[w.adicCompletion E]) ≃+* ZMod g` using `(Ideal.quotEquivOfEq (ker_redO i hi).symm).trans (RingHom.quotientKerEquivOfSurjective (redO_surjective i hi))`. Use `show Nat.card (𝒪[w.adicCompletion E] ⧸ IsLocalRing.maximalIdeal 𝒪[w.adicCompletion E]) = g`. Rewrite using `[Nat.card_congr e.toEquiv, Nat.card_zmod]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resCard_eq : resCard (w.adicCompletion E) = g := by
   have e : (𝒪[w.adicCompletion E] ⧸ IsLocalRing.maximalIdeal 𝒪[w.adicCompletion E]) ≃+* ZMod g :=
@@ -71,11 +71,11 @@ theorem resCard_eq : resCard (w.adicCompletion E) = g := by
   rw [Nat.card_congr e.toEquiv, Nat.card_zmod]
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[le_uniformizer_iff]`. Conclude with `(valuation_lt_iff i hi _).2 Padic.norm_p_lt_one`. Take `⟨y, hy⟩` from `valuation_surjective (K := w.adicCompletion E) (uniformizer (w.adicCompletion E))`. Establish `hx : ‖i.symm y‖ < 1` using `(valuation_lt_iff i hi _).1 (by rw [RingEquiv.apply_symm_apply, hy]; exact uniformizer_lt_one)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨x', hx'⟩ : ∃ x' : ℤ_[g], (x' : ℚ_[g]) = i.symm y` from `⟨⟨i.symm y, hx.le⟩, rfl⟩`. Take `⟨c, hc⟩` from `(PadicInt.norm_lt_one_iff_dvd x').1 (by rw [PadicInt.norm_def, hx']; exact hx)`. Establish `e` using `congrArg (fun z : ℤ_[g] => (z : ℚ_[g])) hc`. Simplify using `only [PadicInt.coe_mul, PadicInt.coe_natCast, hx'] at e`. Establish `e2 : y = i (g : ℚ_[g]) * i (c : ℚ_[g])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_mul, ← e, RingEquiv.apply_symm_apply]`. Rewrite using `[← hy, e2, map_mul]`. Conclude with `mul_le_of_le_one_right' ((valuation_le_iff i hi _).2 c.2)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valuation_i_eq_uniformizer : valuation (w.adicCompletion E) (i (g : ℚ_[g])) = uniformizer (w.adicCompletion E) := by
   apply le_antisymm
@@ -94,7 +94,7 @@ theorem valuation_i_eq_uniformizer : valuation (w.adicCompletion E) (i (g : ℚ_
     exact mul_le_of_le_one_right' ((valuation_le_iff i hi _).2 c.2)
 
 /- English proof (translation)
-Rewrite using `[← map_natCast i g, valuation_i_eq_uniformizer i hi]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem valuation_natCast_eq_uniformizer : valuation (w.adicCompletion E) (g : w.adicCompletion E) = uniformizer (w.adicCompletion E) := by
   rw [← map_natCast i g, valuation_i_eq_uniformizer i hi]

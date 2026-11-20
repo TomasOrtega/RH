@@ -8,31 +8,25 @@ open ValuativeRel Matrix
 namespace GlobalTheory.RankCoinv
 
 /- English proof (translation)
-Establish `hdep : ¬ LinearIndependent k X.row`. Introduce `h`. Rewrite `h` using `[linearIndependent_iff_card_eq_finrank_span]`. Rewrite `hX` using `[rank_eq_finrank_span_row]`. Conclude with `(lt_irrefl _) (h ▸ hX)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc, i₁, hi₁⟩` from `Fintype.not_linearIndependent_iff.1 hdep`. Establish `hcj : ∀ j, ∑ i, c i * X i j = 0`. Introduce `j`. Use `congrFun hc j` as an intermediate fact. Simplify `this` using `[Finset.sum_apply, Matrix.row]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨i₀, -, hmax⟩` from `Finset.exists_max_image Finset.univ (fun i => valuation k (c i)) ⟨i₁, Finset.mem_univ _⟩`. Establish `hc0 : c i₀ ≠ 0`. Introduce `h0`. Use `hmax i₁ (Finset.mem_univ _)` as an intermediate fact. Rewrite `this` using `[h0, map_zero, le_zero_iff, Valuation.zero_iff]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hi₁ this`. Use `set c' : A → k := fun i => c i / c i₀ with hc'`. Establish `hc'int : ∀ i, c' i ∈ 𝒪[k]`. Introduce `i`. Rewrite using `[Valuation.mem_integer_iff, hc', map_div₀]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpos : 0 < valuation k (c i₀)`. Rewrite using `[zero_lt_iff]`. Conclude with `(Valuation.ne_zero_iff _).2 hc0`. Conclude with `(div_le_one₀ hpos).2 (hmax i (Finset.mem_univ _))`. Establish `hc'0 : c' i₀ = 1` using `div_self hc0`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Set `E : Matrix A A k` to `Matrix.of fun i j => if i = i₀ ∧ j ≠ i₀ then c' j else 0`. Establish `hEE : E * E = 0`. Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, E, Matrix.of_apply, Matrix.zero_apply]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hl : l = i₀`. Simplify using `[hl]`. Simplify using `[hl]`. Establish `hEint : ∀ i j, E i j ∈ 𝒪[k]`. Introduce `i j`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Simplify using `only [E, Matrix.of_apply]`. Use `split_ifs`. Conclude with `hc'int j`. Conclude with `zero_mem _`. Establish `h1int : ∀ i j, (1 : Matrix A A k) i j ∈ 𝒪[k]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j`. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Set `g : GL A k` to `⟨1 + E, 1 - E, by rw [add_mul, one_mul, mul_sub, mul_one, hEE]; abel, by rw [sub_mul, one_mul, mul_add, mul_one, hEE]; abel⟩`. Use `⟨g, ?_, i₀, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.SplitFlip.mem_KO_iff]`. Use `⟨fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Use `show (1 + E) i j ∈ 𝒪[k]`.
-
-Conclude with `add_mem (h1int i j) (hEint i j)`. Use `show (1 - E) i j ∈ 𝒪[k]`. Conclude with `sub_mem (h1int i j) (hEint i j)`. Use `show (((1 : Matrix A A k) + E) * X) i₀ j = 0`. Establish `hrow : ∀ l, (1 + E) i₀ l = c' l`.
-
-Introduce `l`. Distinguish the cases in `hl : l = i₀`. Substitute `hl` using the available equality. Simplify using `[E, hc'0]`. Simplify using `[E, hl, Matrix.one_apply, Ne.symm hl]`.
-
-Rewrite using `[Matrix.mul_apply]`. Repeatedly rewrite using `[hrow, hc', div_mul_eq_mul_div, ← Finset.sum_div, hcj j, zero_div]`.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_KO_row_zero_of_rank_lt (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (A D : Type) [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D]

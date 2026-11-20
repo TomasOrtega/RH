@@ -13,13 +13,11 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-Introduce `E _ _ _ H D' l c L R V _ _ _ _ _ _ bR bV t₁ P₁ t P iw θ hθ I _ s ε e₁ e hs h₁ h`. Use `set f : R := ∏ k, s k with hf`. Establish `hfθ : θ f ≠ 0`. Rewrite using `[hf, map_prod]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun k _ => hs k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdiv : ∀ k, ∃ n : ℕ, s k ∣ f ^ n` using `fun k => ⟨1, by rw [pow_one, hf]; exact Finset.dvd_prod_of_mem s (Finset.mem_univ k)⟩`. Establish `hpsi` using `GlobalTheory.T.psiUnitOn_basicOpen_of_comesFromBase L P₁.D.toPre P₁.oD iw s ε e₁ h₁ f hdiv`. Take `⟨t', P', hD, ⟨m⟩, hx, hact⟩` from `GlobalTheory.T.exists_linearUniformisation_pullback_localMap R V bR bV t₁ P₁ θ hθ f hfθ hpsi`. Set `e' : P'.D.toPre.X ≃ₗ[𝓞 E] L.D.X` to `(hD.xe.toLinearEquiv hx).trans e₁`. Establish `h'` using `GlobalTheory.T.comesFromBase_stable_under_pullback_of_data L P₁.D.toPre P₁.oD P'.D.toPre P'.oD iw θ s ε e₁ hD e' (fun y => rfl) hact hs h₁`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hD₂, he₂, hact₂⟩` from `GlobalTheory.T.exists_isPullDeg_id_same_coordinates L P'.D.toPre P'.oD P.D.toPre P.oD (θ.comp iw) (fun k => θ (s k)) ε e' e hs h' h`. Establish `hx₂ : ∀ (x : 𝓞 E) y, hD₂.xe (x • y) = x • hD₂.xe y`. Introduce `x y`. Apply `e'.injective` to reduce the goal to its premises. Rewrite using `[he₂, map_smul, map_smul, he₂]`.
-
-Take `⟨m₂⟩` from `GlobalTheory.T.tripleIso_of_linear_degenerationData_iso V bV t' t P' P hD₂ hx₂ hact₂`. Conclude with `GlobalTheory.TraitOrder.comp (Category.id_comp _) m m₂`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.UCanon.sabMap_of_same_coords : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D' : Datum H} {l : Geo.Tor.Level H} {c : Coeff l} (L : LowBase D' c) (R V : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [CommRing V] [IsDomain V] [IsLocalRing V], GlobalTheory.Mum.Base R → GlobalTheory.Mum.Base V → ∀ (t₁ : SAB H (Sp R)) (P₁ : PELUnif (maximalIdeal R) t₁) (t : SAB H (Sp V)) (P : PELUnif (maximalIdeal V) t) (iw : L.W →+* R) (θ : R →+* V), IsLocalHom θ → ∀ {I : Type} [Fintype I] (s : I → R) (ε : I → LinearMap.BilinForm ℤ L.D.X) (e₁ : P₁.D.toPre.X ≃ₗ[𝓞 E] L.D.X) (e : P.D.toPre.X ≃ₗ[𝓞 E] L.D.X), (∀ k, θ (s k) ≠ 0) → DivFrom L P₁.D.toPre P₁.oD iw s ε e₁ → DivFrom L P.D.toPre P.oD (θ.comp iw) (fun k => θ (s k)) ε e → Nonempty (SABMap t t₁ (spMap θ)) := by
   intro E _ _ _ H D' l c L R V _ _ _ _ _ _ bR bV t₁ P₁ t P iw θ hθ I _ s ε e₁ e hs h₁ h

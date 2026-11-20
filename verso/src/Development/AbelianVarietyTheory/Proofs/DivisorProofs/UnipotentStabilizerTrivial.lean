@@ -13,33 +13,27 @@ open Formalism.UG (cT cT_mul cT_one)
 namespace GlobalTheory.EisCT
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J r X Y hcm hJ hW w hw hwyx ν hν hS`. Establish `hxy : cT (σ : E →+* E) (col0 X) * J * col0 Y = 1`. Use extensionality with `i j`. Establish `h` using `congrFun (congrFun hW.xy 0) 0`. Use `fin_cases i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `fin_cases j`. Simplify `h` using `[col0, cT, Matrix.mul_apply]`. Use `set x := col0 X`. Use `set y := col0 Y`. Use `set M := (matHom _ σ J ν).1 with hMdef`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `set S := sigR (AF F) σ`. Establish `c1 : ∀ {a b : ℕ} (Z : Matrix (Fin a) (Fin b) E), cT S (adMat F Z) = adMat F (cT (σ : E →+* E) Z)` using `fun Z => rfl`. Establish `hxyA : cT S (adMat F x) * adMat F J * adMat F y = 1`. Rewrite using `[c1]`. Simplify using `only [adMat, ← Matrix.map_mul, hxy]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Take `⟨hMx, B, hB⟩` from `(mem_unipRad_iff_dual hxy ν).1 hν`. Establish `hMx' : M * adMat F x = adMat F x`. Rewrite `hMx` using `[Matrix.sub_mul, Matrix.one_mul, sub_eq_zero]`. Conclude with `hMx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hU : cT S M * adMat F J * M = adMat F J` using `ν.2`. Take `⟨l, hl⟩` from `hS`. Use `set W := matHom _ σ J w`. Establish `hWi : (W⁻¹).1 * adMat F x = adMat F y`. Rewrite using `[← hwyx, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hMy : M * adMat F y = l.1 • adMat F y`. Rewrite `hl` using `[map_mul, map_mul, map_inv, Units.val_mul, Units.val_mul, Matrix.mul_assoc, Matrix.mul_assoc, hWi]`. Use `congrArg ((W⁻¹).1 * ·) hl` as an intermediate fact. Rewrite `this` using `[← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul, Matrix.mul_smul, hWi]`. Conclude with `this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxJM : cT S (adMat F x) * adMat F J * M = cT S (adMat F x) * adMat F J` using `by conv_lhs => rw [← hMx']`. Rewrite using `[cT_mul, Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc (cT S M), hU]`. Establish `hl1 : l.1 = 1`. Establish `h1` using `congrArg (· * adMat F y) hxJM`. Rewrite `h1` using `[Matrix.mul_assoc _ M, hMy, Matrix.mul_smul, hxyA]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `congrFun (congrFun h1 0) 0` as an intermediate fact. Simplify using `using this`. Rewrite `hMy` using `[hl1, one_smul]`. Establish `hmy : (M - 1) * adMat F y = 0` using `by rw [Matrix.sub_mul, Matrix.one_mul, hMy, sub_self]`. Establish `e : adMat F (1 - y * (cT (σ : E →+* E) x * J)) = 1 - adMat F y * (cT S (adMat F x) * adMat F J)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[c1]`. Simplify using `only [adMat]`. Rewrite using `[Matrix.map_sub _ (map_sub _), Matrix.map_one _ (map_zero _) (map_one _), Matrix.map_mul, Matrix.map_mul]`. Rewrite `hB` using `[e, Matrix.mul_sub, Matrix.mul_one, ← Matrix.mul_assoc, hmy, Matrix.zero_mul, sub_zero]`. Establish `hM1 : M = adMat F x * B + 1` using `sub_eq_iff_eq_add.1 hB`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `cadd : ∀ P Q : Matrix (Fin n) (Fin n) (AF F ⊗[F] E), cT S (P + Q) = cT S P + cT S Q` using `fun P Q => by`. Use extensionality with `i j`. Simplify using `[cT]`. Establish `hUy` using `congrArg (· * adMat F y) hU`. Rewrite `hUy` using `[Matrix.mul_assoc _ M, hMy]`.
+Treat this case separately. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `conv_lhs at hUy => rw [hM1]`. Rewrite `hUy` using `[cadd, cT_one, cT_mul, Matrix.add_mul, Matrix.add_mul, Matrix.one_mul, Matrix.mul_assoc (cT S B), Matrix.mul_assoc (cT S B), hxyA, Matrix.mul_one, add_eq_right]`. Establish `hss : ∀ a : AF F ⊗[F] E, S (S a) = a` using `fun a => by`. Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`.
-
-Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `tmul a e => exact congrArg (a ⊗ₜ[F] ·) (GlobalTheory.SiegelSet.sigma_sigma hcm e)`. Establish `hB0 : B = 0`. Use extensionality with `i j`. Use `congrFun (congrFun hUy j) i` as an intermediate fact.
-
-Simplify using `only [cT, Matrix.transpose_apply, Matrix.map_apply, Matrix.zero_apply] at this`. Rewrite using `[Matrix.zero_apply, ← hss (B i j), this, map_zero]`. Rewrite `hM1` using `[hB0, Matrix.mul_zero, zero_add]`. Apply `matHom_injective (AF F) σ J` to reduce the goal to its premises. Rewrite using `[map_one]`.
-
-Conclude with `Units.ext hM1`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bigCell_uniq : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (r : ℕ) (X Y : Matrix (Fin n) (Fin (r + 1)) E),

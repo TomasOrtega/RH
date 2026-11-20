@@ -18,7 +18,7 @@ open ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P
 variable {e : ℕ} {X : Type} [TopologicalSpace X]
 
 /- English proof (translation)
-The claim follows from `((hP.1 x j).of_le two_le_infty).contDiffAt (((A.chart j).continuousOn_symm.isOpen_inter_preimage (A.chart j).open_target (P.isOpen_U x)).mem_nhds hy)`.
+A detailed English derivation is pending.
 -/
 theorem potential_contDiffAt (A : FinHolAtlas e X) (P : LocPot X) (hP : IsPotential A P) (x : X)
     (j : Fin A.n) {y : Fin e → ℂ} (hy : y ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' P.U x) :
@@ -28,7 +28,7 @@ theorem potential_contDiffAt (A : FinHolAtlas e X) (P : LocPot X) (hP : IsPotent
       (P.isOpen_U x)).mem_nhds hy)
 
 /- English proof (translation)
-Introduce `x j y hy w hw`. Establish `h : levi ((P.rsmul c).φ x ∘ (A.chart j).symm) y w = c * levi (P.φ x ∘ (A.chart j).symm) y w` using `TailChernBound.levi_smul' c (potential_contDiffAt A P hP x j hy) w`. Rewrite using `[h]`. Conclude with `mul_pos hc (hpos x j y hy w hw)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPosPot_rsmul (A : FinHolAtlas e X) (P : LocPot X) (hP : IsPotential A P)
     (hpos : IsPosPot A P) {c : ℝ} (hc : 0 < c) : IsPosPot A (P.rsmul c) := by
@@ -40,13 +40,13 @@ theorem isPosPot_rsmul (A : FinHolAtlas e X) (P : LocPot X) (hP : IsPotential A 
   exact mul_pos hc (hpos x j y hy w hw)
 
 /- English proof (translation)
-Introduce `x j y hy w`. Establish `hyΦ : y ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' Φ.U x` using `⟨hy.1, hy.2.1.1⟩`. Establish `hyΘ : y ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' Θ.U x` using `⟨hy.1, hy.2.2⟩`. Establish `hΘa` using `potential_contDiffAt A Θ hΘ x j hyΘ`. Establish `hΦa` using `potential_contDiffAt A Φ hΦ x j hyΦ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : (Φ + LocPot.ofFun (fun _ => 0) + Θ.rsmul (C + 1)).φ x ∘ (A.chart j).symm = fun z => (C + 1) * (Θ.φ x ∘ (A.chart j).symm) z + 1 * (Φ.φ x ∘ (A.chart j).symm) z`. Use function extensionality and compare the values at `z`. Use `show Φ.φ x _ + 0 + (C + 1) * Θ.φ x _ = (C + 1) * Θ.φ x _ + 1 * Φ.φ x _`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : (Θ.rsmul C + Φ).φ x ∘ (A.chart j).symm = fun z => C * (Θ.φ x ∘ (A.chart j).symm) z + 1 * (Φ.φ x ∘ (A.chart j).symm) z`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `z`. Use `show C * Θ.φ x _ + Φ.φ x _ = C * Θ.φ x _ + 1 * Φ.φ x _`. Expand and normalize the polynomial expressions, which then agree. Establish `h0` using `hC x j y ⟨hy.1, hy.2.2, hy.2.1.1⟩ w`. Rewrite `h0` using `[e2, TailChernBound.levi_lin C 1 hΘa hΦa w]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e1, TailChernBound.levi_lin (C + 1) 1 hΘa hΦa w]`. Establish `h1 : 0 ≤ levi (Θ.φ x ∘ (A.chart j).symm) y w` using `TailBoundAlt.isPsh_of_isPosPot A Θ hΘp x j y hyΘ w`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem isPsh_add_rsmul_succ (A : FinHolAtlas e X) (Θ Φ : LocPot X) (hΘ : IsPotential A Θ)
     (hΘp : IsPosPot A Θ) (hΦ : IsPotential A Φ) (C : ℝ) (hC : IsPsh A (Θ.rsmul C + Φ)) :
@@ -76,7 +76,7 @@ theorem isPsh_add_rsmul_succ (A : FinHolAtlas e X) (Θ Φ : LocPot X) (hΘ : IsP
 end PosDom
 
 /- English proof (translation)
-Introduce `K _ J _ II Ψ _ Ω _ _ W _ _ D M Φ hΦ`. Take `⟨Θ₀, hΘ₀, hloc⟩` from `GlobalTheory.T.local_holomorphic_section_of_potential K J (mCoordIdeal D.y) D.n M D.A' D.A'_pos.1`. Establish `hpos` using `GlobalTheory.T.local_section_of_potential_on_model II Ψ K J Ω W D M Θ₀ hΘ₀ hloc`. Take `⟨C, hC0, hC, -⟩` from `ReciprocityTheory.AnForm.P.TailBoundAlt.exists_psh_chern_bound M.atlas Θ₀ Φ hΘ₀ hpos hΦ`. Conclude with `⟨Θ₀.rsmul (C + 1), ReciprocityTheory.AnForm.M.isPotentialRsmul M.atlas (C + 1) Θ₀ hΘ₀, isPosPot_rsmul M.atlas Θ₀ hΘ₀ hpos (by linarith), isPsh_add_rsmul_succ M.atlas Θ₀ Φ hΘ₀ hpos hΦ C hC⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_posPot_dominating : ∀ (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (II : IntersectionSystem) (Ψ : Type) [Fintype Ψ] (Ω : Type) [Field Ω] [Algebra ℚ Ω] (W : Ψ → Type) [∀ τ, AddCommGroup (W τ)] [∀ τ, Module Ω (W τ)] (D : ComponentData II Ψ K J Ω W) (M : XModel D) (Φ : ReciprocityTheory.AnForm.M.LocPot M.Xc), ReciprocityTheory.AnForm.M.IsPotential M.atlas Φ → ∃ Θ : ReciprocityTheory.AnForm.M.LocPot M.Xc, ReciprocityTheory.AnForm.M.IsPotential M.atlas Θ ∧ ReciprocityTheory.AnForm.M.IsPosPot M.atlas Θ ∧ ReciprocityTheory.AnForm.M.IsPsh M.atlas (Φ + ReciprocityTheory.AnForm.M.LocPot.ofFun (fun _ => 0) + Θ) := by
   intro K _ J _ II Ψ _ Ω _ _ W _ _ D M Φ hΦ

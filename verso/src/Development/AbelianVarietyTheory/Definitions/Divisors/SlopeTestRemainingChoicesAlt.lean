@@ -31,7 +31,7 @@ structure SqIn (σ : K →+* ℂ) : Prop where
 variable {G μ₀}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun a => let ⟨δ, t0, b⟩ := h.norms a ⟨δ, t0, fun ij => let ⟨P, P', c⟩ := b ij; ⟨P, P', c.1, hσ c.2.1, hσ c.2.2⟩⟩, fun i j s c x y a b d e => hσ (h.toric i j s c x y a b d e)⟩`.
+Supply the required witnesses or components.
 -/
 theorem SqIn.mono {σ : K →+* ℂ} {σ' : K' →+* ℂ} (h : SqIn G μ₀ σ) (hσ : Set.range σ ⊆ Set.range σ') : SqIn G μ₀ σ' :=
   ⟨fun a => let ⟨δ, t0, b⟩ := h.norms a

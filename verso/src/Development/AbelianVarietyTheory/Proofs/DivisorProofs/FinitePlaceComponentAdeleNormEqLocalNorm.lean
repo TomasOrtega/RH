@@ -8,13 +8,13 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.NormAtPlace
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ v x`. Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Set `e` to `Module.finBasis F E`. Set `b` to `Algebra.TensorProduct.basis (AF F) e`. Set `b'` to `Algebra.TensorProduct.basis (Fv F v) e`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hrepr : ∀ (z : AF F ⊗[F] E) i, b'.repr (compFin F E v z) i = evFin F v (b.repr z i)`. Introduce `z i`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a y`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [compFin, b, b', AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.map_tmul, AlgHom.id_apply, Algebra.TensorProduct.basis_repr_tmul, Finsupp.smul_apply, Finsupp.mapRange_apply, smul_eq_mul, map_mul, AlgHom.commutes]`. Consider the case `add y z hy hz => simp only [map_add, Finsupp.add_apply, hy, hz]`. Establish `hb : ∀ j, compFin F E v (b j) = b' j`. Introduce `j`. Simplify using `[compFin, b, b', Algebra.TensorProduct.basis_apply]`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hmat : Algebra.leftMulMatrix b' (compFin F E v x) = (Algebra.leftMulMatrix b x).map (evFin F v)`. Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, Algebra.leftMulMatrix_eq_repr_mul, Algebra.leftMulMatrix_eq_repr_mul, ← hb j, ← map_mul, hrepr]`. Rewrite using `[Algebra.norm_eq_matrix_det b', Algebra.norm_eq_matrix_det b, hmat]`. Conclude with `AlgHom.map_det (evFin F v) (Algebra.leftMulMatrix b x)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evFin_norm_eq : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (v : Pl F) (x : AE F E),
     evFin F v (Algebra.norm (AF F) x) = Algebra.norm (Fv F v) (compFin F E v x) := by

@@ -8,11 +8,9 @@ namespace ReciprocityTheory.ChartRestriction.DS.Xi
 open Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.FourierDecayAlt.B2 BL
 
 /- English proof (translation)
-Take `⟨-, -, -, -, hNB, -⟩` from `hB2`. Introduce `k _ δ _`. Use `⟨1, one_pos, fun s _ z _ _ μN hμ => ?_⟩` and prove the remaining obligations. Use `set o : Mt k 0 := ((1 : Mat k 0) : Mt k 0) with ho`. Establish `hc : μN ({o}ᶜ : Set (Mt k 0)) = 0`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `hμ.conc`. Rewrite `h` using `[hNB k]`. Conclude with `h`. Establish `hr : μN.restrict {o} = μN` using `Measure.restrict_eq_self_of_ae_mem (ae_iff.2 (by simpa [Set.compl_def] using hc))`. Unfold `IInt`.
-
-Rewrite using `[← hr, lintegral_singleton]`. Conclude with `ENNReal.mul_lt_top (ENNReal.mul_lt_top ENNReal.ofReal_lt_top ENNReal.ofReal_lt_top) (hμ.finite_compact _ isCompact_singleton)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bStepBase_of (hB2 : InductiveHeisenbergInputs) : BStepBase := by
   obtain ⟨-, -, -, -, hNB, -⟩ := hB2
@@ -29,31 +27,31 @@ theorem bStepBase_of (hB2 : InductiveHeisenbergInputs) : BStepBase := by
     (hμ.finite_compact _ isCompact_singleton)
 
 /- English proof (translation)
-Take `⟨-, -, -, hNR, -, hHC, -, -, -, -, -, hHH, -, -, -, -, hHU, -, -, -, hCN, -, -, -, hHN, -, hHA⟩` from `hB2`. Introduce `k r r' hr hk δ hδ hδ2 hB'`. Substitute `hr` using the available equality. Take `⟨e', he', hB'⟩` from `hB'`. Take `⟨γ, hγd⟩ : ∃ γ : ℝ, γ = min (δ / 8) (e' / 2)` from `⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hγ : 0 < γ` using `by rw [hγd]; exact lt_min (by positivity) (by positivity)`. Establish `hγ8 : γ ≤ δ / 8` using `by rw [hγd]; exact min_le_left _ _`. Establish `hγe : γ ≤ e' / 2` using `by rw [hγd]; exact min_le_right _ _`. Establish `hD : (0 : ℝ) < 4 * (1 + r') + 4` using `by positivity`. Use `⟨min (e' / 2) (γ / (4 * (1 + r') + 4)), lt_min (by positivity) (div_pos hγ hD), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `s hs z hzW hzT μN hμN`. Establish `he0 : ∀ l, 0 < s0 k (1 + r') l - s l` using `fun l => (hs l).1`. Establish `heS : ∀ l, s0 k (1 + r') l - s l ≤ γ / (4 * (1 + r') + 4)` using `fun l => le_trans (hs l).2 (min_le_right _ _)`. Establish `heS' : ∀ l, s0 k (1 + r') l - s l ≤ e' / 2` using `fun l => le_trans (hs l).2 (min_le_left _ _)`. Establish `hs0 : ∀ l, s0N (1 + r') (k - 1) l = s0 k (1 + r') l`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `l`. Unfold `s0N s0`. Use `split_ifs`. Both sides reduce to the same expression. Move the coercions through the operations in `[Nat.cast_sub hk]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Both sides reduce to the same expression. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hsum : (s0 k (1 + r') 0 - s 0) + 2 * ∑ i : Fin (1 + r'), (s0 k (1 + r') i.succ - s i.succ) < γ / 2`. Establish `h1 : ∑ i : Fin (1 + r'), (s0 k (1 + r') i.succ - s i.succ) ≤ (1 + r') * (γ / (4 * (1 + r') + 4))`. Combine the equalities or inequalities in the displayed calculation. Establish `key : (3 + 2 * (r' : ℝ)) * (γ / (4 * (1 + r') + 4)) < γ / 2`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_div_assoc', div_lt_div_iff₀ hD (by norm_num)]; nlinarith`. Combine the linear relations using `[heS 0]`. Take `⟨C, hC⟩` from `os_q hOS (1 + r') r' (k - 1) (by omega) δ γ (fun l => s0 k (1 + r') l - s l) hδ hδ2 hγ hγ8 he0 hsum`. Establish `hC' : ∀ (η η' : Fin (1 + r') → ℂ) (ζ : Fin (k - 1) → ℂ) (c₀ : ℝ), η' ⟨0, by omega⟩ ≠ 0 → ∫⁻ x, GI s δ η η' ζ c₀ x ≤ ENNReal.ofReal (C * ‖η' ⟨0, by omega⟩‖ ^ (-γ) * (1 + |c₀|) ^ (-δ / 4))`. Introduce `η η' ζ c₀ h`.
+Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hse : s = fun l => s0N (1 + r') (k - 1) l - (s0 k (1 + r') l - s l)` using `by funext l; rw [hs0]; ring`. Rewrite using `[hse]`. Conclude with `hC η η' ζ c₀ h`. Take `⟨z1, hz1W, rfl⟩ : ∃ z1, inWb k r' z1 ∧ z = liftVec k 1 r' z1` from `⟨_, shifted_mem_weightSpace z hzW, z_lift z hzW⟩`. Establish `hz1T : 0 < Tz k r' z1` using `by rw [← tz_lift]; exact hzT`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcz` using `cz_ne hk z1 hz1T`. Establish `hsP : ∀ a : Fin (r' + 1), 0 < s0 k r' a - (s (su a) - if a = 0 then γ else 0) ∧ s0 k r' a - (s (su a) - if a = 0 then γ else 0) ≤ e'`. Introduce `a`. Establish `hs0a : s0 k r' a = s0 k (1 + r') (su a)`. Unfold `s0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : a.val < r'`. Rewrite using `[if_pos h, if_pos (show (su a).val < 1 + r' by rw [su_val]; omega)]`. Rewrite using `[if_neg h, if_neg (show ¬ (su a).val < 1 + r' by rw [su_val]; omega)]`. Rewrite using `[hs0a]`. Establish `h1` using `he0 (su a)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `h2` using `heS' (su a)`. Apply the tactic sequence `split_ifs <;> constructor <;> linarith`. Take `⟨μ', hμ'⟩` from `hHN k r'`. Establish `hfin` using `hB' _ hsP z1 hz1W hz1T μ' hμ'`. Take `⟨c, hc⟩` from `hHU k (1 + r') (Nset k (1 + r')) _ μN (hCN k (1 + r')) (hNR k r' μ' hμ') hμN.conc hμN.left hμN.finite_compact`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[hc]`. Unfold `IInt`. Rewrite using `[lintegral_smul_measure, ENNReal.smul_def, smul_eq_mul]`. Use `ENNReal.mul_lt_top ENNReal.coe_lt_top ?_` and prove the remaining obligations. Establish `: IsFiniteMeasureOnCompacts μ'` using `⟨fun ⦃K⦄ hK => hμ'.finite_compact K hK⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsFiniteMeasureOnCompacts (μHeis k r')` using `⟨fun ⦃K⦄ hK => (hHH k r').finite_compact K hK⟩`. Use `set F : Mt k (1 + r') → ℝ≥0∞ := fun n => ENNReal.ofReal (xiR k (1 + r') s (Matrix.of n)) * ENNReal.ofReal ((1 + |lam k (1 + r') (liftVec k 1 r' z1) (Matrix.of n)|) ^ (-δ)) with hFd`. Establish `hsw : (μHeis k r').prod (μ'.map (levM k r')) = ((μ'.map (levM k r')).prod (μHeis k r')).map Prod.swap` using `(Measure.prod_swap).symm`. Establish `hae : ∀ᵐ m ∂μ', m ∈ Nset k r'` using `ae_iff.2 hμ'.conc`. Establish `hpt : ∀ m ∈ Nset k r', ∫⁻ h, F (mulM (h, levM k r' m)) ∂(μHeis k r') ≤ ENNReal.ofReal (C * ‖herm (Hpk k r') (phiV k r' ⟨0, by omega⟩) (fvec k r' z1 ⟨0, by omega⟩)‖ ^ (-γ)) * (ENNReal.ofReal (xiR k r' (fun a => s (su a) - if a = 0 then γ else 0) (Matrix.of m)) * ENNReal.ofReal ((1 …`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 
-Introduce `m hm`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem bStepSucc_of (hB2 : InductiveHeisenbergInputs) (hIW : IW) (hF : FormulaF) (hOS : OS) : BStepSucc := by
   obtain ⟨-, -, -, hNR, -, hHC, -, -, -, -, -, hHH, -, -, -, -, hHU, -, -, -, hCN, -, -, -, hHN, -, hHA⟩ := hB2

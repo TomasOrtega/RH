@@ -15,11 +15,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp [zpow_neg, mul_inv_cancel₀ (zpow_ne_zero k (hf 0))]`. Consider the case `succ n ih`. Rewrite using `[Finset.prod_range_succ, ih, pow_succ]`. Establish `h1 : f n ^ (-k) * f n ^ k = 1` using `by rw [zpow_neg, inv_mul_cancel₀ (zpow_ne_zero k (hf n))]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : Complex.exp (-((k : ℂ) * (Real.pi / 2 * (n * n * h)))) * Complex.exp (-((k : ℂ) * Real.pi * (n * h)) - (k : ℂ) * Real.pi * h / 2) = Complex.exp (-((k : ℂ) * (Real.pi / 2 * (((n + 1 : ℕ) : ℂ) * ((n + 1 : ℕ) : ℂ) * h))))`. Rewrite using `[← Complex.exp_add]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← h2]`. Take the linear combination `(c ^ n * c * Complex.exp (-((k : ℂ) * (Real.pi / 2 * (n * n * h)))) * Complex.exp (-((k : ℂ) * Real.pi * (n * h)) - (k : ℂ) * Real.pi * h / 2) * (f 0 ^ k * f (n + 1) ^ (-k))) * h1`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem telescope (c h : ℂ) (k : ℤ) (f : ℕ → ℂ) (hf : ∀ i, f i ≠ 0) (n : ℕ) :
     ∏ i ∈ Finset.range n, (c * Complex.exp (-((k : ℂ) * Real.pi * (i * h)) - (k : ℂ) * Real.pi * h / 2) *
@@ -40,13 +40,13 @@ theorem telescope (c h : ℂ) (k : ℤ) (f : ℕ → ℂ) (hf : ∀ i, f i ≠ 0
         (f 0 ^ k * f (n + 1) ^ (-k))) * h1
 
 /- English proof (translation)
-Unfold `hermForm`. Rewrite using `[smul_dotProduct, smul_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_smul_left {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (a : ℂ) (z w : Fin g → ℂ) :
     hermForm Hm (a • z) w = a * hermForm Hm z w := by unfold hermForm; rw [smul_dotProduct, smul_eq_mul]
 
 /- English proof (translation)
-Unfold `hermForm`. Rewrite using `[star_smul, star_natCast, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_nat_right {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (a : ℕ) (z w : Fin g → ℂ) :
     hermForm Hm z ((a : ℂ) • w) = a * hermForm Hm z w := by unfold hermForm; rw [star_smul, star_natCast, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]
@@ -61,12 +61,12 @@ Both sides reduce to the same expression.
 theorem translPt_mul (x : T ⟶ A) : translPt A x = (fst T A ≫ x) * snd T A := rfl
 
 /- English proof (translation)
-Unfold `translT`. Conclude with `lift_snd _ _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem translT_snd (y : T ⟶ A) : translT A y ≫ snd T A = translPt A y := by unfold translT; exact lift_snd _ _
 
 /- English proof (translation)
-Establish `hf : translT A y ≫ fst T A = fst T A` using `by unfold translT; exact lift_fst _ _`. Rewrite using `[translPt_mul, translPt_mul, comp_mul, ← Category.assoc, hf, translT_snd, translPt_mul, comp_mul, _root_.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem translT_translPt [IsCommMonObj A] (x y : T ⟶ A) :
     translT A y ≫ translPt A x = translPt A (x * y) := by
@@ -74,7 +74,7 @@ theorem translT_translPt [IsCommMonObj A] (x y : T ⟶ A) :
   rw [translPt_mul, translPt_mul, comp_mul, ← Category.assoc, hf, translT_snd, translPt_mul, comp_mul, _root_.mul_assoc]
 
 /- English proof (translation)
-Unfold `ptSecT translPt`. Rewrite using `[comp_lift_assoc, lift_fst_assoc, Category.id_comp, lift_snd]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pt_translPt (x z : T ⟶ A) : ptSecT A z ≫ translPt A x = x * z := by
   unfold ptSecT translPt
@@ -82,7 +82,7 @@ theorem pt_translPt (x z : T ⟶ A) : ptSecT A z ≫ translPt A x = x * z := by
   rfl
 
 /- English proof (translation)
-Establish `h` using `pt_translPt A x z`. Unfold `ptSecT at h ⊢`. Unfold `translT`. Rewrite using `[comp_lift, lift_fst, h]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem pt_translT (x z : T ⟶ A) : ptSecT A z ≫ translT A x = ptSecT A (x * z) := by
   have h := pt_translPt A x z
@@ -91,7 +91,7 @@ theorem pt_translT (x z : T ⟶ A) : ptSecT A z ≫ translT A x = ptSecT A (x * 
   rw [comp_lift, lift_fst, h]
 
 /- English proof (translation)
-Unfold `powφ`. Simplify using `only`. Rewrite using `[Matrix.cons_val_zero, ← Over.comp_left, translT_snd]`.
+Replace the relevant objects with their definitions. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem powφ_zero (x : T ⟶ A) (n : ℕ) (i : Fin n) : powφ A x n (i, 0) = (translPt A (x ^ (i : ℕ))).left := by
   unfold powφ
@@ -99,7 +99,7 @@ theorem powφ_zero (x : T ⟶ A) (n : ℕ) (i : Fin n) : powφ A x n (i, 0) = (t
   rw [Matrix.cons_val_zero, ← Over.comp_left, translT_snd]
 
 /- English proof (translation)
-Unfold `powφ`. Simplify using `only`. Rewrite using `[Matrix.cons_val_one, Matrix.cons_val_fin_one, ← Over.comp_left, translT_translPt, ← pow_succ']`.
+Replace the relevant objects with their definitions. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem powφ_one [IsCommMonObj A] (x : T ⟶ A) (n : ℕ) (i : Fin n) :
     powφ A x n (i, 1) = (translPt A (x ^ ((i : ℕ) + 1))).left := by
@@ -108,9 +108,9 @@ theorem powφ_one [IsCommMonObj A] (x : T ⟶ A) (n : ℕ) (i : Fin n) :
   rw [Matrix.cons_val_one, Matrix.cons_val_fin_one, ← Over.comp_left, translT_translPt, ← pow_succ']
 
 /- English proof (translation)
-Introduce `p _`. Establish `hp` using `hj (show p ∈ (⊤ : (Sp ℂ).Opens) from trivial)`. Unfold `LB.wchart at hp ⊢`. Unfold `powφ at hp`. Simplify using `at hp ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Conclude with `hp i`.
+A detailed English derivation is pending.
 -/
 private theorem isChart_choose_and_symm_apply (L : LB A.left) (k : ℤ) (θ : ThetaGrp A L k T) (n : ℕ) (q : Sp ℂ ⟶ (T ⊗ A).left)
     (j : Fin n × Fin 2 → L.ι) (hj : ⊤ ≤ q ⁻¹ᵁ LB.wchart L (powφ A θ.pt n) j) (i : Fin n) :
@@ -124,7 +124,7 @@ private theorem isChart_choose_and_symm_apply (L : LB A.left) (k : ℤ) (θ : Th
   exact hp i
 
 /- English proof (translation)
-Establish `key : Z.presheaf.map (homOfLE e2).op ≫ Z.presheaf.map (homOfLE e1).op ≫ q.appLE W ⊤ h = q.appLE (ψ ⁻¹ᵁ V) ⊤ h'`. Simplify using `only [Scheme.Hom.map_appLE]`. Rewrite using `[Scheme.Hom.comp_appLE, CommRingCat.comp_apply, ← key]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem exists_unit_mul_eq_mul_uniformizer_pow {Z Y : Scheme.{0}} (q : Sp ℂ ⟶ Z) (ψ : Z ⟶ Y) (V : Y.Opens) {W W' : Z.Opens}
     (e1 : W ≤ W') (e2 : W' ≤ ψ ⁻¹ᵁ V) (h : ⊤ ≤ q ⁻¹ᵁ W) (h' : ⊤ ≤ (q ≫ ψ) ⁻¹ᵁ V) (u : Γ(Y, V)) :
@@ -137,9 +137,9 @@ private theorem exists_unit_mul_eq_mul_uniformizer_pow {Z Y : Scheme.{0}} (q : S
   rfl
 
 /- English proof (translation)
-Unfold `valAt'`. Rewrite using `[dif_pos h]`. Simplify using `only [dif_pos (h' _)]`. Unfold `valAt res pullU`. Simplify using `only [Units.coe_prod, map_prod, Units.coe_map, MonoidHom.coe_coe]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Use `Finset.prod_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[exists_unit_mul_eq_mul_uniformizer_pow q (ψ i) (V i) (e1 i) (e2 i) h (h' i)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem valAt'_prod_res_pullU_eq_prod {Z Y : Scheme.{0}} {n : ℕ} (q : Sp ℂ ⟶ Z) (W : Z.Opens) (h : ⊤ ≤ q ⁻¹ᵁ W)
     (ψ : Fin n → (Z ⟶ Y)) (V : Fin n → Y.Opens) (W' : Fin n → Z.Opens) (e1 : ∀ i, W ≤ W' i)
@@ -155,7 +155,7 @@ private theorem valAt'_prod_res_pullU_eq_prod {Z Y : Scheme.{0}} {n : ℕ} (q : 
   rw [exists_unit_mul_eq_mul_uniformizer_pow q (ψ i) (V i) (e1 i) (e2 i) h (h' i)]
 
 /- English proof (translation)
-Unfold `powGen LB.pullGen`. Conclude with `valAt'_prod_res_pullU_eq_prod q _ hj _ _ _ _ _ _ (fun i => isChart_choose_and_symm_apply A L k θ n q j hj i)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem val_powGen (L : LB A.left) (k : ℤ) (θ : ThetaGrp A L k T) (n : ℕ) (q : Sp ℂ ⟶ (T ⊗ A).left)
     (j : Fin n × Fin 2 → L.ι) (hj : ⊤ ≤ q ⁻¹ᵁ LB.wchart L (powφ A θ.pt n) j) :
@@ -169,7 +169,7 @@ theorem val_powGen (L : LB A.left) (k : ℤ) (θ : ThetaGrp A L k T) (n : ℕ) (
 end
 
 /- English proof (translation)
-Proceed by induction on `i with`. Consider the case `zero => simpa using (Φ.e_ker 0).mpr Φ.lat.zero_mem`. Consider the case `succ i ih => rw [Nat.cast_succ, add_smul, one_smul, Φ.e_add, ih, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem e_nat {S : Scheme.{0}} {A : Over S} [GrpObj A] {L : RigLB A} {x0 : Sp ℂ ⟶ S} {g : ℕ} (Φ : AnFr A L x0 g)
     (x : Fin g → ℂ) (i : ℕ) : Φ.e ((i : ℂ) • x) = Φ.e x ^ i := by
@@ -178,33 +178,33 @@ theorem e_nat {S : Scheme.{0}} {A : Over S} [GrpObj A] {L : RigLB A} {x0 : Sp �
   | succ i ih => rw [Nat.cast_succ, add_smul, one_smul, Φ.e_add, ih, pow_succ]
 
 /- English proof (translation)
-Introduce `S A _ _ L x0 g Φ k n U x c hT hx hC`. Take `⟨hpt, hrd⟩` from `hT`. Establish `he0 : Φ.e 0 = 1` using `(Φ.e_ker 0).mpr Φ.lat.zero_mem`. Establish `hpts : ∀ m : ℕ, (ptSecT A (Φ.e 0)).left ≫ (translPt A (U.pt ^ m)).left = (Φ.e ((m : ℂ) • x)).left`. Introduce `m`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Over.comp_left, pt_translPt, he0, _root_.mul_one, hpt, ← e_nat]`. Establish `hptT : ∀ m : ℕ, (ptSecT A (Φ.e 0)).left ≫ (translT A (U.pt ^ m)).left = (ptSecT A (Φ.e ((m : ℂ) • x))).left`. Introduce `m`. Rewrite using `[← Over.comp_left, pt_translT, he0, _root_.mul_one, hpt, ← e_nat]`. Establish `hs : ∀ m : ℕ, (((m + 1 : ℕ)) : ℂ) • x = x + (m : ℂ) • x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `m`. Use `push_cast`. Rewrite using `[add_smul, one_smul, add_comm]`. Establish `hG : Φ.GenRd (powφ A U.pt n) _ (powGen A L.L k U n) (ptSecT A (Φ.e 0)).left (fun p => ![((p.1 : ℕ) : ℂ) • x, x + ((p.1 : ℕ) : ℂ) • x] p.2) (∏ i : Fin n, c * fock Φ.Hm k x (fun _ => 1) (((i : ℕ) : ℂ) • x))`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨i, b⟩`. Apply the tactic sequence `rcases (show b = 0 ∨ b = 1 by fin_cases b <;> simp) with rfl | rfl`. Rewrite using `[powφ_zero, hpts]`. Both sides reduce to the same expression. Rewrite using `[powφ_one, hpts, hs]`.
+Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Introduce `j hj`. Rewrite using `[val_powGen A L.L k U n _ j hj, Fintype.prod_prod_type, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Establish `hc` using `isChart_choose_and_symm_apply A L.L k U n _ j hj i`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hc`, the goal using `[hptT]`. Conclude with `(hrd (((i : ℕ) : ℂ) • x)).2 _ hc`. Establish `h1 : Φ.GenRd _ _ (LB.oneGen L.L) (ptSecT A (Φ.e 0)).left (fun e => e.elim) 1`. Use `⟨fun kk => kk.elim, fun j' hj' => ?_⟩` and prove the remaining obligations. Unfold `valAt'`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos hj']`. Unfold `valAt LB.oneGen`. Simplify using `only [Units.val_one, Fintype.prod_empty, _root_.mul_one]`. Conclude with `(congrArg (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom.hom (map_one _)).trans (map_one _)`. Take `⟨J, hJ, heq⟩` from `(GlobalTheory.AnValGenCorr.genRd_corr_mul_inv S A L x0 g Φ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hG h1).1 hC`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Fintype.prod_empty, _root_.one_mul] at heq`. Take `⟨f, hfdef⟩ : ∃ f : ℕ → ℂ, f = fun m : ℕ => Φ.fr (J (translPt A (U.pt ^ m)).left) ((m : ℂ) • x)` from `⟨_, rfl⟩`. Establish `hf : ∀ m, f m ≠ 0`. Introduce `m`. Rewrite using `[hfdef]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hc` using `hJ (translPt A (U.pt ^ m)).left`. Rewrite `hc` using `[hpts m]`. Conclude with `Φ.fr_ne _ _ hc`. Establish `key : ∏ i ∈ Finset.range n, (c * Complex.exp (-((k : ℂ) * Real.pi * (i * hermForm Φ.Hm x x)) - (k : ℂ) * Real.pi * hermForm Φ.Hm x x / 2) * (f i ^ k * f (i + 1) ^ (-k))) = 1`. Use `Eq.trans ?_ heq` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_range, Fintype.prod_prod_type, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[Fin.prod_univ_two, powφ_zero, powφ_one, hfdef]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, fock, herm_smul_left, hs, _root_.mul_one, powε]`. Rewrite `key` using `[telescope c (hermForm Φ.Hm x x) k f hf n]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hpn : U.pt ^ n = U.pt ^ 0` using `by rw [pow_zero, hpt, ← e_nat, (Φ.e_ker _).mpr hx]`. Establish `hc0` using `hJ (translPt A (U.pt ^ 0)).left`. Rewrite `hc0` using `[hpts 0]`. Simplify using `only [Nat.cast_zero, zero_smul] at hc0`. Establish `hper` using `Φ.fr_per _ hx _ 0 hc0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h0 : hermForm Φ.Hm 0 ((n : ℂ) • x) = 0` using `by simp [hermForm]`. Simplify using `only [h0, mul_zero, zero_add] at hper`. Establish `hfn` using `hf n`. Rewrite `key`, `hfn` using `[hfdef]`. Simplify using `only [hpn, Nat.cast_zero, zero_smul] at key hfn`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `key` using `[hper, mul_zpow, mul_zpow]`. Establish `hB : Complex.exp (-((k : ℂ) * (Real.pi / 2 * ((n : ℂ) * (n : ℂ) * hermForm Φ.Hm x x)))) * Complex.exp (Real.pi / 2 * hermForm Φ.Hm ((n : ℂ) • x) ((n : ℂ) • x)) ^ k = 1`. Rewrite using `[← Complex.exp_int_mul, ← Complex.exp_add, herm_smul_left, herm_nat_right, ← Complex.exp_zero]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hnk : Φ.fr (J (translPt A (U.pt ^ 0)).left) ((n : ℂ) • x) ^ k * Φ.fr (J (translPt A (U.pt ^ 0)).left) ((n : ℂ) • x) ^ (-k) = 1`. Rewrite using `[zpow_neg, mul_inv_cancel₀ (zpow_ne_zero _ hfn)]`. Take the linear combination `key - c ^ n * Φ.χ ((n : ℂ) • x) ^ k * Complex.exp (-((k : ℂ) * (Real.pi / 2 * ((n : ℂ) * (n : ℂ) * hermForm Φ.Hm x x)))) * Complex.exp (Real.pi / 2 * hermForm Φ.Hm ((n : ℂ) • x) ((n : ℂ) • x)) ^ k * hnk - c ^ n * Φ.χ ((n : ℂ) • x) ^ k * hB`.
+A detailed English derivation is pending.
 -/
 theorem thConst_pow : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] [IsCommMonObj A] (L : RigLB A) (x0 : Sp ℂ ⟶ S) (g : ℕ) (Φ : AnFr A L x0 g), ∀ (k : ℤ) (n : ℕ) (U : ThetaGrp A L.L k (Over.mk x0)) (x : Fin g → ℂ) (c : ℂ), Φ.ThConst k U x c → (n : ℂ) • x ∈ Φ.lat → LB.Gen.Corr L.L _ _ _ _ (powGen A L.L k U n) (LB.oneGen L.L) → c ^ n * Φ.χ ((n : ℂ) • x) ^ k = 1 := by
   intro S A _ _ L x0 g Φ k n U x c hT hx hC

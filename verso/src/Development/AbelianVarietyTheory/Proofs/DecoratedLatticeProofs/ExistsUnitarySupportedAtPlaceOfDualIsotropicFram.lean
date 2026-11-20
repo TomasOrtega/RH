@@ -7,7 +7,7 @@ namespace GlobalTheory.IwaPlace.BuildQ
 variable {D : D7}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `r`. Simplify using `only [colMul, Matrix.mulVec, dotProduct, Matrix.mul_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem mulVec_colMul {m n k : ℕ} (M : Mx D m n) (X : Mx D n k) (i : Fin k) (a : AE D) :
     M *ᵥ colMul X i a = fun r => a * (M ⬝ X) r i := by
@@ -17,21 +17,21 @@ theorem mulVec_colMul {m n k : ℕ} (M : Mx D m n) (X : Mx D n k) (i : Fin k) (a
   ring
 
 /- English proof (translation)
-Apply the tactic sequence `ext i j; simp [adj, Matrix.diagonal_apply]; split_ifs <;> simp_all [eq_comm]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem adj_diagonal {n : ℕ} (f : Fin n → AE D) :
     adj (Matrix.diagonal f) = Matrix.diagonal (fun i => cA D (f i)) := by
   ext i j; simp [adj, Matrix.diagonal_apply]; split_ifs <;> simp_all [eq_comm]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.mul_assoc, h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_tail {a m n k : ℕ} {A : Mx D a m} {B : Mx D m n} {C : Mx D a n} (h : A ⬝ B = C) (X : Mx D n k) :
     A ⬝ (B ⬝ X) = C ⬝ X := by
   rw [← Matrix.mul_assoc, h]
 
 /- English proof (translation)
-Rewrite using `[← h]`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mul_tail₃ {a m n p k : ℕ} {A : Mx D a m} {B : Mx D m n} {B' : Mx D n p} {C : Mx D a p}
     (h : A ⬝ (B ⬝ B') = C) (X : Mx D p k) :
@@ -39,7 +39,7 @@ theorem mul_tail₃ {a m n p k : ℕ} {A : Mx D a m} {B : Mx D m n} {B' : Mx D n
   rw [← h]; simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[← h]`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mul_tail₄ {a m n p q k : ℕ} {A : Mx D a m} {B : Mx D m n} {B' : Mx D n p} {B'' : Mx D p q} {C : Mx D a q}
     (h : A ⬝ (B ⬝ (B' ⬝ B'')) = C) (X : Mx D q k) :
@@ -53,42 +53,42 @@ namespace GlobalTheory.IwaPlace.BuildQ
 variable {D : D7} {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ)
 
 /- English proof (translation)
-Rewrite using `[mul_tail₃ d.gram_XX, Matrix.zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gXX {k : ℕ} (X : Mx D ρ k) : adj d.jX ⬝ (gA S ⬝ (d.jX ⬝ X)) = 0 := by
   rw [mul_tail₃ d.gram_XX, Matrix.zero_mul]
 /- English proof (translation)
-Rewrite using `[mul_tail₃ d.gram_YY, Matrix.zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gYY {k : ℕ} (X : Mx D ρ k) : adj d.jY ⬝ (gA S ⬝ (d.jY ⬝ X)) = 0 := by
   rw [mul_tail₃ d.gram_YY, Matrix.zero_mul]
 /- English proof (translation)
-Rewrite using `[mul_tail₃ d.gram_YX, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gYX {k : ℕ} (X : Mx D ρ k) : adj d.jY ⬝ (gA S ⬝ (d.jX ⬝ X)) = X := by
   rw [mul_tail₃ d.gram_YX, Matrix.one_mul]
 /- English proof (translation)
-Rewrite using `[mul_tail₃ d.gram_XY, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gXY {k : ℕ} (X : Mx D ρ k) : adj d.jX ⬝ (gA S ⬝ (d.jY ⬝ X)) = X := by
   rw [mul_tail₃ d.gram_XY, Matrix.one_mul]
 /- English proof (translation)
-Rewrite using `[mul_tail₃ d.gram_0X, Matrix.zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem g0X {k : ℕ} (X : Mx D ρ k) : adj d.j0 ⬝ (gA S ⬝ (d.jX ⬝ X)) = 0 := by
   rw [mul_tail₃ d.gram_0X, Matrix.zero_mul]
 /- English proof (translation)
-Rewrite using `[mul_tail₃ d.gram_0Y, Matrix.zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem g0Y {k : ℕ} (X : Mx D ρ k) : adj d.j0 ⬝ (gA S ⬝ (d.jY ⬝ X)) = 0 := by
   rw [mul_tail₃ d.gram_0Y, Matrix.zero_mul]
 /- English proof (translation)
-Rewrite using `[mul_tail₃ d.wittDecomp_gram_X_anisotropic, Matrix.zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem adjoint_jX_gram_j_zero_eq_zero {k : ℕ} (X : Mx D S₀.rank k) : adj d.jX ⬝ (gA S ⬝ (d.j0 ⬝ X)) = 0 := by
   rw [mul_tail₃ d.wittDecomp_gram_X_anisotropic, Matrix.zero_mul]
 /- English proof (translation)
-The claim follows from `mul_tail₃ d.gram_00 X`.
+A detailed English derivation is pending.
 -/
 theorem g00 {k : ℕ} (X : Mx D S₀.rank k) : adj d.j0 ⬝ (gA S ⬝ (d.j0 ⬝ X)) = gA S₀ ⬝ X :=
   mul_tail₃ d.gram_00 X
@@ -100,40 +100,40 @@ namespace GlobalTheory.IwaPlace.BuildQ
 variable {D : D7} {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ)
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.smul_apply, smul_eq_mul, (hε _).1 (hx i j)]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_eq_of_mem {P : Pl D → Prop} {ε : AE D} (hε : ∀ a, a ∈ idAt D P ↔ ε * a = a)
     {m n : ℕ} {x : Mx D m n} (hx : ∀ i j, x i j ∈ idAt D P) : ε • x = x := by
   ext i j; rw [Matrix.smul_apply, smul_eq_mul, (hε _).1 (hx i j)]
 
 /- English proof (translation)
-Rewrite using `[sub_mul, one_mul, hεε, sub_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem one_sub_mul_self {ε : AE D} (hεε : ε * ε = ε) : (1 - ε) * ε = 0 := by
   rw [sub_mul, one_mul, hεε, sub_self]
 
 /- English proof (translation)
-Rewrite using `[mul_sub, mul_one, one_sub_mul_self hεε, sub_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem one_sub_sq {ε : AE D} (hεε : ε * ε = ε) : (1 - ε) * (1 - ε) = 1 - ε := by
   rw [mul_sub, mul_one, one_sub_mul_self hεε, sub_zero]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.smul_mul, ← hx, smul_smul, one_sub_mul_self hεε, zero_smul, Matrix.zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem kill_left {ε : AE D} (hεε : ε * ε = ε) {m n k : ℕ} {x : Mx D m n} (hx : ε • x = x) (X : Mx D n k) :
     (1 - ε) • (x ⬝ X) = 0 := by
   rw [← Matrix.smul_mul, ← hx, smul_smul, one_sub_mul_self hεε, zero_smul, Matrix.zero_mul]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.mul_smul, ← hx, smul_smul, one_sub_mul_self hεε, zero_smul, Matrix.mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem kill_right {ε : AE D} (hεε : ε * ε = ε) {m n k : ℕ} {x : Mx D n k} (hx : ε • x = x) (X : Mx D m n) :
     (1 - ε) • (X ⬝ x) = 0 := by
   rw [← Matrix.mul_smul, ← hx, smul_smul, one_sub_mul_self hεε, zero_smul, Matrix.mul_zero]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.smul_apply, Matrix.diagonal_apply, smul_eq_mul]`. Use `split_ifs with h`. Conclude with `hαε i`. Rewrite using `[mul_zero]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diag_absorb {ε : AE D} {n : ℕ} {α : Fin n → AE D} (hαε : ∀ i, ε * α i = α i) :
     ε • Matrix.diagonal α = Matrix.diagonal α := by
@@ -144,9 +144,9 @@ theorem diag_absorb {ε : AE D} {n : ℕ} {α : Fin n → AE D} (hαε : ∀ i, 
   · rw [mul_zero]
 
 /- English proof (translation)
-Establish `: (fun i => α i * β i) = fun _ => ε` using `funext hαβ`. Rewrite using `[this]`. Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem diag_const {ε : AE D} {n : ℕ} {α β : Fin n → AE D} (hαβ : ∀ i, α i * β i = ε) :
     (Matrix.diagonal fun i => α i * β i) = ε • (1 : Mx D n n) := by
@@ -159,9 +159,9 @@ theorem diag_const {ε : AE D} {n : ℕ} {α β : Fin n → AE D} (hαβ : ∀ i
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Establish `hcA1 : cA D (1 - ε) = 1 - ε` using `by rw [map_sub, map_one, hεc]`. Establish `hadjc : ε • adj c' = adj c'` using `by conv_rhs => rw [← hc]`. Rewrite using `[adj_smul, hεc]`. Simplify using `only [adj_add, adj_mul, adj_smul, adj_diagonal, cA_cA, hcA1, Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc]`. Simplify using `only [mul_tail₄ H1, Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_one, Matrix.one_mul, gYX d, d.gram_YX, kill_left hεε (diag_absorb hαε), kill_left hεε hb, add_zero, smul_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[zero_add, Matrix.diagonal_mul_diagonal, one_sub_sq hεε]`. Rewrite using `[diag_const hαβ, smul_smul, hεε, ← add_smul, add_sub_cancel, one_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem imYX {ε : AE D} (hεε : ε * ε = ε) (hεc : cA D ε = ε) {α β : Fin ρ → AE D} (hαε : ∀ i, ε * α i = α i)
     (hαβ : ∀ i, α i * β i = ε) {b : Mx D ρ ρ} (hb : ε • b = b) {c' : Mx D S.rank ρ} (hc : ε • c' = c')
@@ -184,21 +184,21 @@ namespace GlobalTheory.IwaPlace.BuildQ
 variable {D : D7} {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ)
 
 /- English proof (translation)
-Rewrite using `[← Matrix.mul_smul, ← Matrix.mul_smul, kill_left hεε hx, Matrix.mul_zero, Matrix.mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem kill_mid₂ {ε : AE D} (hεε : ε * ε = ε) {m n p q k : ℕ} {x : Mx D p q} (hx : ε • x = x)
     (A : Mx D m n) (B : Mx D n p) (X : Mx D q k) : (1 - ε) • (A ⬝ (B ⬝ (x ⬝ X))) = 0 := by
   rw [← Matrix.mul_smul, ← Matrix.mul_smul, kill_left hεε hx, Matrix.mul_zero, Matrix.mul_zero]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_smul, ← Matrix.smul_mul, hx]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem absorb_mul {ε : AE D} {m n k : ℕ} {x : Mx D m n} (hx : ε • x = x) (X : Mx D n k) :
     x ⬝ (ε • X) = x ⬝ X := by
   rw [Matrix.mul_smul, ← Matrix.smul_mul, hx]
 
 /- English proof (translation)
-Rewrite using `[adj_mul, Matrix.mul_assoc, gXX, Matrix.mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem imXX {ε : AE D} {β : Fin ρ → AE D} {b : Mx D ρ ρ} :
     adj (d.jX ⬝ (b ⬝ Matrix.diagonal β + (1 - ε) • (1 : Mx D ρ ρ))) ⬝
@@ -207,7 +207,7 @@ theorem imXX {ε : AE D} {β : Fin ρ → AE D} {b : Mx D ρ ρ} :
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Establish `hcA1 : cA D (1 - ε) = 1 - ε` using `by rw [map_sub, map_one, hεc]`. Establish `hadjc : ε • adj c' = adj c'` using `by conv_rhs => rw [← hc]`. Rewrite using `[adj_smul, hεc]`. Simplify using `only [adj_add, adj_mul, adj_smul, adj_diagonal, cA_cA, hcA1, Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc]`. Simplify using `only [mul_tail₃ H2, Matrix.mul_zero, Matrix.smul_mul, Matrix.mul_smul, smul_smul, d.gram_YY, smul_zero, kill_mid₂ hεε hc, kill_left hεε (diag_absorb hαε), add_zero, Matrix.zero_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem imYY {ε : AE D} (hεε : ε * ε = ε) (hεc : cA D ε = ε) {α : Fin ρ → AE D} (hαε : ∀ i, ε * α i = α i)
     {c' : Mx D S.rank ρ} (hc : ε • c' = c') (H2 : adj c' ⬝ (gA S ⬝ c') = 0) :
@@ -223,7 +223,7 @@ theorem imYY {ε : AE D} (hεε : ε * ε = ε) (hεc : cA D ε = ε) {α : Fin 
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Simplify using `only [adj_sub, adj_mul, adj_gA, adj_adj, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_assoc, d.gram_00, d.wittDecomp_gram_X_anisotropic, gXX, g0X, Matrix.mul_zero, sub_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem imOO {b : Mx D ρ ρ} {c' : Mx D S.rank ρ} :
     adj (d.j0 - (d.jX ⬝ b) ⬝ (adj c' ⬝ (gA S ⬝ d.j0))) ⬝ (gA S ⬝ (d.j0 - (d.jX ⬝ b) ⬝ (adj c' ⬝ (gA S ⬝ d.j0)))) = gA S₀ := by
@@ -232,7 +232,7 @@ theorem imOO {b : Mx D ρ ρ} {c' : Mx D S.rank ρ} :
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Simplify using `only [adj_sub, adj_mul, Matrix.sub_mul, Matrix.mul_assoc, gXX, g0X, Matrix.mul_zero, sub_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem imOX {ε : AE D} {β : Fin ρ → AE D} {b : Mx D ρ ρ} {c' : Mx D S.rank ρ} :
     adj (d.j0 - (d.jX ⬝ b) ⬝ (adj c' ⬝ (gA S ⬝ d.j0))) ⬝ (gA S ⬝ (d.jX ⬝ (b ⬝ Matrix.diagonal β + (1 - ε) • (1 : Mx D ρ ρ)))) = 0 := by
@@ -240,9 +240,9 @@ theorem imOX {ε : AE D} {β : Fin ρ → AE D} {b : Mx D ρ ρ} {c' : Mx D S.ra
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Establish `adjH1 : adj b ⬝ (adj d.jX ⬝ (gA S ⬝ c')) = ε • (1 : Mx D ρ ρ)`. Use `congrArg adj H1` as an intermediate fact. Simplify `this` using `only [adj_mul, adj_gA, adj_adj, adj_smul, adj_one, hεc, Matrix.mul_assoc]`. Simplify using `only [adj_sub, adj_mul, adj_gA, adj_adj, Matrix.sub_mul, Matrix.mul_add, Matrix.mul_assoc]`. Rewrite using `[mul_tail₄ adjH1, Matrix.smul_mul, Matrix.one_mul, absorb_mul hc, sub_self, zero_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_smul, d.gram_0Y, d.gram_XY, Matrix.mul_one, smul_zero, kill_mid₂ hεε hc, sub_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem imOY {ε : AE D} (hεε : ε * ε = ε) (hεc : cA D ε = ε) {α : Fin ρ → AE D} {b : Mx D ρ ρ} (hb : ε • b = b)
     {c' : Mx D S.rank ρ} (hc : ε • c' = c')
@@ -264,9 +264,9 @@ variable {D : D7} {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ)
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `e : M - 1 = (M ⬝ d.jX - d.jX) ⬝ d.pX + (M ⬝ d.j0 - d.j0) ⬝ d.p0 + (M ⬝ d.jY - d.jY) ⬝ d.pY`. Establish `e1 : M - 1 = (M - 1) ⬝ (d.jX ⬝ d.pX + d.j0 ⬝ d.p0 + d.jY ⬝ d.pY)`. Rewrite using `[d.sum_eq_one, Matrix.mul_one]`. Rewrite using `[e1]`. Simplify using `only [Matrix.mul_add, ← Matrix.mul_assoc, Matrix.sub_mul, Matrix.one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, smul_add, smul_add, ← Matrix.smul_mul, ← Matrix.smul_mul, ← Matrix.smul_mul, hX, h0, hY]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_sub_one {ε : AE D} (M : Mx D S.rank S.rank)
     (hX : ε • (M ⬝ d.jX - d.jX) = M ⬝ d.jX - d.jX) (h0 : ε • (M ⬝ d.j0 - d.j0) = M ⬝ d.j0 - d.j0)
@@ -279,7 +279,7 @@ theorem smul_sub_one {ε : AE D} (M : Mx D S.rank S.rank)
   rw [e, smul_add, smul_add, ← Matrix.smul_mul, ← Matrix.smul_mul, ← Matrix.smul_mul, hX, h0, hY]
 
 /- English proof (translation)
-Establish `e : x + (1 - ε) • y - y = x - ε • y`. Rewrite using `[sub_smul, one_smul]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, smul_sub, hx, smul_smul, hεε]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_shift {ε : AE D} (hεε : ε * ε = ε) {m n : ℕ} {x : Mx D m n} (hx : ε • x = x) (y : Mx D m n) :
     ε • (x + (1 - ε) • y - y) = x + (1 - ε) • y - y := by
@@ -288,7 +288,7 @@ theorem smul_shift {ε : AE D} (hεε : ε * ε = ε) {m n : ℕ} {x : Mx D m n}
   rw [e, smul_sub, hx, smul_smul, hεε]
 
 /- English proof (translation)
-Take the linear combination `x * hab + hx - y * ha`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem scalar_X {R : Type*} [CommRing R] {ε a b x y : R} (ha : ε * a = a) (hab : a * b = ε) (hx : ε * x = x) :
     a * (x * b + (1 - ε) * y) = x := by
@@ -300,15 +300,15 @@ open GlobalTheory.IwaPlace.BuildQ in
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D S S₀ ρ d v ε hεε hεc _ hε α β b c' hα hβ hαβ hb hc' H1 H2`. Establish `hb' : ε • b = b` using `smul_eq_of_mem hε hb`. Establish `hc : ε • c' = c'` using `smul_eq_of_mem hε hc'`. Establish `hαε : ∀ i, ε * α i = α i` using `fun i => (hε _).1 (hα i)`. Establish `hβε : ∀ i, ε * β i = β i` using `fun i => (hε _).1 (hβ i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h : HypDec.Images S S₀ (d.jX ⬝ (b ⬝ Matrix.diagonal β + (1 - ε) • (1 : Mx D ρ ρ))) (d.j0 - (d.jX ⬝ b) ⬝ (adj c' ⬝ (gA S ⬝ d.j0))) (c' ⬝ Matrix.diagonal (fun i => cA D (α i)) + (1 - ε) • d.jY)` using `⟨imXX d, imYY d hεε hεc hαε hc H2, imYX d hεε hεc hαε hαβ hb' hc H1, imOO d, imOX d, imOY d hεε hεc hb' hc H1⟩`. Establish `hjb : ε • (d.jX ⬝ b) = d.jX ⬝ b` using `by rw [← Matrix.mul_smul, hb']`. Establish `hE : d.jX ⬝ (b ⬝ Matrix.diagonal β + (1 - ε) • (1 : Mx D ρ ρ)) = (d.jX ⬝ b) ⬝ Matrix.diagonal β + (1 - ε) • d.jX`. Rewrite using `[Matrix.mul_add, Matrix.mul_smul, Matrix.mul_one, Matrix.mul_assoc]`. Use `⟨d.ofImages _ _ _ h, ?_, d.ofImages_jX h, fun i => ?_, fun i => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key` using `smul_sub_one d (ε := ε) (Formalism.L2.Theta.mt S (d.ofImages _ _ _ h)) (by rw [d.ofImages_jX h, hE]; exact smul_shift hεε (by rw [← Matrix.smul_mul, hjb]) _) (by rw [d.wittDecomp_ofImages_inclAnisotropic h, sub_sub_cancel_left, smul_neg, ← Matrix.smul_mul, hjb]) (by rw [d.ofImage …`. Use `(mem_congGrp_iff S _ _).2 fun i j => (hε _).2 ?_` and prove the remaining obligations. Conclude with `congrFun (congrFun key i) j`. Rewrite using `[mulVec_colMul, d.ofImages_jX h, hE]`. Use function extensionality and compare the values at `k`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.add_apply, Matrix.mul_diagonal, Matrix.smul_apply, smul_eq_mul]`. Conclude with `scalar_X (hαε i) (hαβ i) (congrFun (congrFun hjb k) i)`. Rewrite using `[mulVec_colMul, d.ofImages_jY h]`. Use function extensionality and compare the values at `k`. Rewrite using `[Matrix.add_apply, Matrix.mul_diagonal, Matrix.smul_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `scalar_X ?_ ?_ (congrFun (congrFun hc k) i)` and prove the remaining obligations. Rewrite using `[← hεc, ← map_mul, hβε]`. Rewrite using `[← map_mul, mul_comm, hαβ, hεc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.IwaPlace.exists_grpAt_of_dual_frames : ∀ (D : D7) (S S₀ : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ) (v : Pl D) (ε : AE D) (hεε : ε * ε = ε) (hεc : cA D ε = ε) (hεI : ε ∈ intAt D (· = v)) (hε : ∀ a, a ∈ idAt D (· = v) ↔ ε * a = a) (α β : Fin ρ → AE D) (b : Mx D ρ ρ) (c' : Mx D S.rank ρ), (∀ i, α i ∈ idAt D (· = v)) → (∀ i, β i ∈ idAt D (· = v)) → (∀ i, α i * β i = ε) → (∀ i j, b i j ∈ idAt D (· = v)) → (∀ i j, c' i j ∈ idAt D (· = v)) → adj c' ⬝ (gA S ⬝ (d.jX ⬝ b)) = ε • (1 : Mx D ρ ρ) → adj c' ⬝ (gA S ⬝ c') = 0 → ∃ q ∈ grpAt S (· = v), mt S q ⬝ d.jX = d.jX ⬝ (b ⬝ Matrix.diagonal β + (1 - ε) • (1 : Mx D ρ ρ)) ∧ (∀ i, mt S q *ᵥ colMul d.jX i (α i) = fun k => (d.jX ⬝ b) k i) ∧ (∀ i, mt S q *ᵥ colMul d.jY i (cA D (β i)) = fun k => c' k i) := by
   intro D S S₀ ρ d v ε hεε hεc _ hε α β b c' hα hβ hαβ hb hc' H1 H2

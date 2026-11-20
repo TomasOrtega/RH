@@ -11,11 +11,11 @@ open scoped TensorProduct NNReal ENNReal Topology
 namespace GlobalTheory.CompanionTheory.RapidDecay
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM n J hJ φ hleft hcont hcusp k Cc hk hC g e he`. Use `haveI := GlobalTheory.UAut.locallyCompact_unipRad hCM hJ hC`. Establish `hc : GlobalTheory.Cusp.Cocompact (ratPts σ J) (unipRad σ J Cc)` using `GlobalTheory.UAut.cocompact_unipRad hCM hJ hC`. Use `haveI hP := hc.isProbabilityMeasure`. Establish `hL : GlobalTheory.AutomorphicL2Unitary.LeftInv (ratPts σ J) φ` using `hleft`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : GlobalTheory.Cusp.constTermOn (ratPts σ J) (unipRad σ J Cc) φ g = 0` using `(hc.constTermOn_eq_zero_iff (GlobalTheory.AutomorphicL2Unitary.isFundamentalDomain_stdDom _ Measure.haar) hL g).2 (hcusp k Cc ⟨hk, hC.1, hC.2⟩ _ _ inferInstance (GlobalTheory.AutomorphicL2Unitary.isFundamentalDomain_stdDom _ _) g)`. Establish `hI` using `hc.integrable hL hcont g`. Establish `key : φ g = ∫ q, (φ g - φ ((q.out : unipRad σ J Cc) * g)) ∂GlobalTheory.Cusp.probMeasure (ratPts σ J) (unipRad σ J Cc)`. Rewrite using `[integral_sub (integrable_const _) hI]`. Establish `h0' : ∫ q, φ ((q.out : unipRad σ J Cc) * g) ∂GlobalTheory.Cusp.probMeasure (ratPts σ J) (unipRad σ J Cc) = 0` using `h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h0', integral_const]`. Simplify using the standard rewrite rules. Rewrite using `[key]`. Establish `hb` using `norm_integral_le_of_norm_le_const (μ := GlobalTheory.Cusp.probMeasure (ratPts σ J) (unipRad σ J Cc)) (f := fun q => φ g - φ ((q.out : unipRad σ J Cc) * g)) (C := e) (.of_forall fun q => by rw [norm_sub_rev]; exact he _ (q.out : unipRad σ J Cc).2)`. Simplify using `using hb`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem norm_le_of_unipRad_variation : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ φ : GAd σ J → ℂ, (∀ γ ∈ ratPts σ J, ∀ g, φ (γ * g) = φ g) → Continuous φ → IsCuspidal σ J φ → ∀ (k : ℕ) (Cc : Matrix (Fin n) (Fin k) E), 0 < k → GlobalTheory.UAut.IsIsoCols σ J Cc → ∀ (g : GAd σ J) (e : ℝ), (∀ m ∈ unipRad σ J Cc, ‖φ (m * g) - φ g‖ ≤ e) → ‖φ g‖ ≤ e := by
   intro F E _ _ _ _ _ σ hCM n J hJ φ hleft hcont hcusp k Cc hk hC g e he

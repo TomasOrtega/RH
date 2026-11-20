@@ -14,11 +14,9 @@ section Extend
 variable {K : Type*} [Field K] [Algebra K ℂ]
 
 /- English proof (translation)
-Establish `hint` using `hα.isIntegral`. Establish `hroot : Polynomial.aeval (φ (AdjoinSimple.gen K α)) (minpoly K α) = 0`. Rewrite using `[Polynomial.aeval_algHom_apply, aeval_gen_minpoly, map_zero]`. Establish `heq : minpoly K α = minpoly K (φ (AdjoinSimple.gen K α))` using `minpoly.eq_of_irreducible_of_monic (minpoly.irreducible hint) hroot (minpoly.monic hint)`. Take `⟨σ, hσ⟩` from `exists_algEquiv_apply_eq_of_minpoly_eq hα heq`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨σ, fun z ↦ ?_⟩` and prove the remaining obligations. Establish `e : (σ.toAlgHom.comp (K⟮α⟯).val) = φ`. Apply `adjoin_algHom_ext` to reduce the goal to its premises. Introduce and unpack `x rfl`. Conclude with `hσ`.
-
-Conclude with `DFunLike.congr_fun e z`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem exists_algEquiv_extend_adjoin {α : ℂ} (hα : IsAlgebraic K α) (φ : K⟮α⟯ →ₐ[K] ℂ) :
     ∃ σ : ℂ ≃ₐ[K] ℂ, ∀ z : K⟮α⟯, σ z = φ z := by
@@ -48,30 +46,30 @@ def galClassHom : (ℂ ≃ₐ[K] ℂ) →* ClassGroup (𝓞 K) where
     (fun k ↦ σ.commutes k) (fun k ↦ τ.commutes k)
 
 /- English proof (translation)
-The claim follows from `apply_j_eq_j_galClass_smul (algebraMap K ℂ) hK σ.toRingEquiv (fun k ↦ σ.commutes k) x`.
+A detailed English derivation is pending.
 -/
 theorem galClassHom_apply_j (σ : ℂ ≃ₐ[K] ℂ) (x : ELL K) :
     σ (ELL.j x) = ELL.j ((ellMulAction (algebraMap K ℂ) hK).smul (galClassHom hK σ) x) :=
   apply_j_eq_j_galClass_smul (algebraMap K ℂ) hK σ.toRingEquiv (fun k ↦ σ.commutes k) x
 
 /- English proof (translation)
-The claim follows from `galClass_eq_one_iff (algebraMap K ℂ) hK σ.toRingEquiv (fun k ↦ σ.commutes k) x`.
+A detailed English derivation is pending.
 -/
 theorem galClassHom_eq_one_iff (σ : ℂ ≃ₐ[K] ℂ) (x : ELL K) :
     galClassHom hK σ = 1 ↔ σ (ELL.j x) = ELL.j x :=
   galClass_eq_one_iff (algebraMap K ℂ) hK σ.toRingEquiv (fun k ↦ σ.commutes k) x
 
 /- English proof (translation)
-Establish `: IsScalarTower ℚ K ℂ` using `IsScalarTower.of_algebraMap_eq' (Subsingleton.elim _ _)`. Conclude with `IsAlgebraic.extendScalars (algebraMap ℚ K).injective (ELL.isAlgebraic_j hK x)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ELL.isAlgebraic_j_over (x : ELL K) : IsAlgebraic K (ELL.j x) := by
   have : IsScalarTower ℚ K ℂ := IsScalarTower.of_algebraMap_eq' (Subsingleton.elim _ _)
   exact IsAlgebraic.extendScalars (algebraMap ℚ K).injective (ELL.isAlgebraic_j hK x)
 
 /- English proof (translation)
-Establish `key : ∀ ρ : ℂ ≃ₐ[K⟮ELL.j x⟯] ℂ, ρ (ELL.j y) = ELL.j y`. Introduce `ρ`. Establish `h1 : (ρ.restrictScalars K) (ELL.j x) = ELL.j x` using `ρ.commutes (AdjoinSimple.gen K (ELL.j x))`. Rewrite `h1` using `[← galClassHom_eq_one_iff hK]`. Establish `h2` using `galClassHom_apply_j hK (ρ.restrictScalars K) y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[h1, ellMulAction_one_smul]`. Conclude with `h2`. Take `⟨w, hw⟩` from `IntermediateField.mem_bot.1 ((mem_bot_iff_forall_algEquiv_apply_eq (F := K⟮ELL.j x⟯)).2 key)`. Rewrite using `[← hw]`. Conclude with `w.2`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ELL.j_mem_adjoin (x y : ELL K) : ELL.j y ∈ K⟮ELL.j x⟯ := by
   have key : ∀ ρ : ℂ ≃ₐ[K⟮ELL.j x⟯] ℂ, ρ (ELL.j y) = ELL.j y := by
@@ -94,7 +92,7 @@ include hM
 
 omit [NumberField K] hK [IsTotallyComplex K] in
 /- English proof (translation)
-The claim follows from `adjoin_simple_le_iff.2 (hM x)`.
+A detailed English derivation is pending.
 -/
 theorem adjoin_j_le (x : ELL K) : K⟮ELL.j x⟯ ≤ M :=
   adjoin_simple_le_iff.2 (hM x)
@@ -107,7 +105,7 @@ def galClassOfFun (τ : M ≃ₐ[K] M) : ClassGroup (𝓞 K) :=
   galClassHom hK (extendOf hK M hM τ)
 
 /- English proof (translation)
-Use `set x₀ := ellEquiv (algebraMap K ℂ) hK 1`. Establish `hy : ELL.j y ∈ K⟮ELL.j x₀⟯` using `ELL.j_mem_adjoin hK x₀ y`. Establish `spec` using `(exists_algEquiv_extend_adjoin (ELL.isAlgebraic_j_over hK x₀) (M.val.comp (τ.toAlgHom.comp (inclusion (adjoin_j_le M hM x₀))))).choose_spec ⟨_, hy⟩`. Rewrite using `[galClassOfFun, ← galClassHom_apply_j]`. Conclude with `spec.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem galClassOfFun_apply_j (τ : M ≃ₐ[K] M) (y : ELL K) :
     (τ ⟨ELL.j y, hM y⟩ : ℂ) =
@@ -120,7 +118,7 @@ theorem galClassOfFun_apply_j (τ : M ≃ₐ[K] M) (y : ELL K) :
   exact spec.symm
 
 /- English proof (translation)
-Rewrite `h` using `[galClassOfFun_apply_j hK M hM]`. Conclude with `(existsUnique_smul_eq (algebraMap K ℂ) hK y _).unique (ELL.j_injective h) rfl`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem galClassOfFun_unique (τ : M ≃ₐ[K] M) (a : ClassGroup (𝓞 K)) (y : ELL K)
     (h : (τ ⟨ELL.j y, hM y⟩ : ℂ) = ELL.j ((ellMulAction (algebraMap K ℂ) hK).smul a y)) :
@@ -144,7 +142,7 @@ def galClassOf : (M ≃ₐ[K] M) →* ClassGroup (𝓞 K) where
     rfl
 
 /- English proof (translation)
-The claim follows from `galClassOfFun_apply_j hK M hM τ y`.
+A detailed English derivation is pending.
 -/
 theorem galClassOf_apply_j (τ : M ≃ₐ[K] M) (y : ELL K) :
     (τ ⟨ELL.j y, hM y⟩ : ℂ) =
@@ -154,7 +152,7 @@ theorem galClassOf_apply_j (τ : M ≃ₐ[K] M) (y : ELL K) :
 end Field
 
 /- English proof (translation)
-The claim follows from `mem_algebraicClosure_iff.2 (ELL.isAlgebraic_j_over hK y)`.
+A detailed English derivation is pending.
 -/
 theorem ELL.j_mem_algebraicClosure (y : ELL K) : ELL.j y ∈ algebraicClosure K ℂ :=
   mem_algebraicClosure_iff.2 (ELL.isAlgebraic_j_over hK y)

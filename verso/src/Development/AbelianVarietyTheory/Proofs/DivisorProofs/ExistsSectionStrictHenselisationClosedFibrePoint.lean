@@ -9,13 +9,13 @@ open scoped TensorProduct
 namespace GlobalTheory.LocAcyc
 
 /- English proof (translation)
-Introduce `hKey T E _ _ _ _ _ _ _ _ hT y _ hyT hyne q hq hqu DE _ _ actE htor`. Take `⟨S, _, _, _, _, _, _, _, _, hmax, hflat, hloc, φ, hφ, hsh⟩` from `GlobalTheory.T.strictHenselisation_etale_over_polynomial_alt T E y`. Establish `hKey'` using `hKey`. Unfold `GlobalTheory.LocAcyc.KeyClosedPts GlobalTheory.LocAcyc.KeyLocalWith at hKey'`. Establish `htriv : GlobalTheory.LocAcyc.TorsorsTrivial (GlobalTheory.LocAcyc.GenFib T S) q` using `hKey' T S hT (y.comap (algebraMap (Polynomial T) E)) φ hφ hsh hyT hyne q hq hqu`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hMN : Algebra.algebraMapSubmonoid E (nonZeroDivisors T) ≤ (Algebra.algebraMapSubmonoid S (nonZeroDivisors T)).comap (algebraMap E S)`. Introduce `x hx`. Take `⟨t, ht, rfl⟩` from `Submonoid.mem_map.mp hx`. Conclude with `Submonoid.mem_map.mpr ⟨t, ht, IsScalarTower.algebraMap_apply T E S t⟩`. Set `f : GlobalTheory.LocAcyc.GenFib T E →+* GlobalTheory.LocAcyc.GenFib T S` to `IsLocalization.map (S := GlobalTheory.LocAcyc.GenFib T E) (GlobalTheory.LocAcyc.GenFib T S) (algebraMap E S) hMN`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Equip the data with the indicated structure.
 
-Use `letI : Algebra (GlobalTheory.LocAcyc.GenFib T E) (GlobalTheory.LocAcyc.GenFib T S) := f.toAlgebra`. Take `⟨act', -, htor'⟩` from `GlobalTheory.T.isZModTorsorFiniteProjective_baseChange (GlobalTheory.LocAcyc.GenFib T E) (GlobalTheory.LocAcyc.GenFib T S) DE q hq actE htor`. Take `⟨σ⟩` from `(GlobalTheory.LocAcyc.torsorsTrivial_iff _ q).mp htriv _ act' htor'`. Use `⟨S, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, hmax, hflat, hloc, σ.toRingHom.comp (Algebra.TensorProduct.includeRight : DE →ₐ[GlobalTheory.LocAcyc.GenFib T E] GlobalTheory.LocAcyc.GenFib T S ⊗[GlobalTheory.LocAcyc.GenFib T E] DE).toRingHom, fun e …` and prove the remaining obligations. Simplify using `only [RingHom.coe_comp, Function.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, AlgHom.commutes, Algebra.TensorProduct.algebraMap_apply]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hσ` using `σ.commutes (algebraMap (GlobalTheory.LocAcyc.GenFib T E) (GlobalTheory.LocAcyc.GenFib T S) (algebraMap E (GlobalTheory.LocAcyc.GenFib T E) e))`. Simplify using `only [Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply] at hσ`. Rewrite using `[hσ, RingHom.algebraMap_toAlgebra]`. Conclude with `IsLocalization.map_eq hMN e`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_section_strictHenselisation_at_closed : GlobalTheory.LocAcyc.KeyClosedPts →
     ∀ (T E : Type) [CommRing T] [IsDomain T] [IsLocalRing T] [CommRing E]

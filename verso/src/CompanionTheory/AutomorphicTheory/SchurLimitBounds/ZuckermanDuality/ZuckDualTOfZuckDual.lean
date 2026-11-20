@@ -44,7 +44,7 @@ def ZuckDualT (t : ∀ n : ℕ, (Fin n → Bool) → ℝ) : Prop :=
       Nonempty (PI.ZuckTensor.TensorDSd n ε μ H σ)
 
 /- English proof (translation)
-Introduce `n ε μ H _ _ _ σ hμ hσ g hg hlt`. Take `⟨X, -⟩` from `h n ε μ H σ hμ hσ ⟨g, by simpa using hlt, hg⟩`. Conclude with `⟨X⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem zuckT_of_zuck (h : PI.ZuckTensor.Zuck) : ZuckT fun _ _ => 0 := by
   intro n ε μ H _ _ _ σ hμ hσ g hg hlt
@@ -52,7 +52,7 @@ theorem zuckT_of_zuck (h : PI.ZuckTensor.Zuck) : ZuckT fun _ _ => 0 := by
   exact ⟨X⟩
 
 /- English proof (translation)
-Introduce `n ε μ H _ _ _ σ hμ hσ g hg hlt`. Take `⟨X, -⟩` from `h n ε μ H σ hμ hσ ⟨g, by simpa using hlt, hg⟩`. Conclude with `⟨X⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem zuckDualT_of_zuckDual (h : PI.ZuckTensor.ZuckDual) : ZuckDualT fun _ _ => 0 := by
   intro n ε μ H _ _ _ σ hμ hσ g hg hlt

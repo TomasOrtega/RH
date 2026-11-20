@@ -20,26 +20,26 @@ def below (w : PlK K) : Pl := w.under (𝓞 ℚ)
 instance liesOver_below (w : PlK K) : w.asIdeal.LiesOver (below w).asIdeal := ⟨rfl⟩
 
 /- English proof (translation)
-The claim follows from `HeightOneSpectrum.ext h.over`.
+A detailed English derivation is pending.
 -/
 theorem eq_below (v : Pl) (w : PlK K) [h : w.asIdeal.LiesOver v.asIdeal] : v = below w :=
   HeightOneSpectrum.ext h.over
 
 /- English proof (translation)
-The claim follows from `continuous_normUnits (Qv v) (Kv K w)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_nrm (v : Pl) (w : PlK K) [w.asIdeal.LiesOver v.asIdeal] : Continuous (nrm v w) :=
   continuous_normUnits (Qv v) (Kv K w)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1.comp (continuous_nrm v w), fun x => h.2 _⟩`.
+Supply the required witnesses or components.
 -/
 theorem isUnit1_comp_nrm (v : Pl) (w : PlK K) [w.asIdeal.LiesOver v.asIdeal] {χ : (Qv v)ˣ →* ℂˣ}
     (h : IsUnit1 χ) : IsUnit1 (χ.comp (nrm v w)) :=
   ⟨h.1.comp (continuous_nrm v w), fun x => h.2 _⟩
 
 /- English proof (translation)
-Introduce `u hu`. Establish `h1 : nrm v w u ∈ unitFiltrationUnits (Qv v) 0` using `map_normUnits_unitFiltrationUnits_zero_le (K := Qv v) (L := Kv K w) (Subgroup.mem_map_of_mem _ hu)`. Conclude with `h h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isUnramifiedChar_comp_nrm (v : Pl) (w : PlK K) [w.asIdeal.LiesOver v.asIdeal] {χ : (Qv v)ˣ →* ℂˣ}
     (h : IsUnramifiedChar χ) : IsUnramifiedChar (χ.comp (nrm v w)) := by
@@ -51,7 +51,7 @@ theorem isUnramifiedChar_comp_nrm (v : Pl) (w : PlK K) [w.asIdeal.LiesOver v.asI
 attribute [local instance] FractionRing.liftAlgebra in
 
 /- English proof (translation)
-Establish `h` using `differentIdeal_eq_differentIdeal_mul_differentIdeal ℤ (𝓞 ℚ) (𝓞 K)`. Rewrite `h` using `[GlobalTheory.CompanionTheory.StdCharQ.differentIdeal_rat, Ideal.map_top, Ideal.mul_top]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem differentIdeal_eq : differentIdeal ℤ (𝓞 K) = differentIdeal (𝓞 ℚ) (𝓞 K) := by
   have h := differentIdeal_eq_differentIdeal_mul_differentIdeal ℤ (𝓞 ℚ) (𝓞 K)
@@ -61,7 +61,7 @@ theorem differentIdeal_eq : differentIdeal ℤ (𝓞 K) = differentIdeal (𝓞 �
 attribute [local instance] FractionRing.liftAlgebra in
 
 /- English proof (translation)
-Rewrite using `[differentIdeal_eq, dvd_differentIdeal_iff, ne_eq, Ideal.ramificationIdx'_eq_one_iff]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dvd_different_iff (w : PlK K) :
     w.asIdeal ∣ differentIdeal ℤ (𝓞 K) ↔ w.asIdeal.ramificationIdx (𝓞 ℚ) ≠ 1 := by
@@ -70,9 +70,9 @@ theorem dvd_different_iff (w : PlK K) :
 def badSet (D : Dat) : Set (PlK K) := {w | below w ∈ D.bad ∨ w.asIdeal.ramificationIdx (𝓞 ℚ) ≠ 1}
 
 /- English proof (translation)
-Establish `h1 : ({w : PlK K | w.asIdeal ∣ differentIdeal ℤ (𝓞 K)}).Finite` using `Ideal.finite_factors GroundTheory.Global.differentIdeal_ne_bot`. Establish `h2 : (⋃ v ∈ D.bad, {w : PlK K | w.asIdeal ∣ v.asIdeal.map (algebraMap (𝓞 ℚ) (𝓞 K))}).Finite` using `Set.Finite.biUnion D.bad.finite_toSet fun v _ => Ideal.finite_factors (Ideal.map_ne_bot_of_ne_bot v.ne_bot)`. Use `(h2.union h1).subset ?_` and prove the remaining obligations. Introduce and unpack `w (hw | hw)`. Use `Or.inl (Set.mem_biUnion (Finset.mem_coe.2 hw) ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Ideal.dvd_iff_le.2 (Ideal.map_le_iff_le_comap.2 (le_of_eq (liesOver_below w).over))`. Conclude with `Or.inr ((dvd_different_iff w).2 hw)`.
+Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem finite_badSet (D : Dat) : (badSet (K := K) D).Finite := by
   have h1 : ({w : PlK K | w.asIdeal ∣ differentIdeal ℤ (𝓞 K)}).Finite :=
@@ -87,7 +87,7 @@ theorem finite_badSet (D : Dat) : (badSet (K := K) D).Finite := by
   · exact Or.inr ((dvd_different_iff w).2 hw)
 
 /- English proof (translation)
-Use `⟨continuous_localAdelicChar w, localAdelicChar_ne_one w, ?_⟩` and prove the remaining obligations. Establish `hd : ¬ w.asIdeal ∣ differentIdeal ℤ (𝓞 K)` using `fun hd => (dvd_different_iff w).1 hd h`. Rewrite using `[addCharConductor_localAdelicChar, differentExp, count_coeIdeal_eq_multiplicity w GroundTheory.Global.differentIdeal_ne_bot, multiplicity_eq_zero.2 hd]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isStd_of_unramified (w : PlK K) (h : w.asIdeal.ramificationIdx (𝓞 ℚ) = 1) :
     IsStd (localAdelicChar K w) := by
@@ -111,7 +111,7 @@ def baseChange (K : Type) [Field K] [NumberField K] (D : Dat) : DatK K where
     exact isStd_of_unramified w (by_contra fun h => hw' (Or.inr h))
 
 /- English proof (translation)
-The claim follows from `rfl nu v w _ := by obtain rfl := eq_below v w rfl bad v w _ := by obtain rfl := eq_below v w simp [baseChange, badSet]`.
+A detailed English derivation is pending.
 -/
 theorem isBC_baseChange (D : Dat) : IsBC D (baseChange K D) where
   k := rfl
@@ -123,7 +123,7 @@ theorem isBC_baseChange (D : Dat) : IsBC D (baseChange K D) where
     simp [baseChange, badSet]
 
 /- English proof (translation)
-Introduce `K _ _ D` and use `⟨baseChange K D, isBC_baseChange D⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem bcex : ∀ (K : Type) [Field K] [NumberField K], Ad3.K.QuadraticBaseChangeGL3.BCEX K :=
   fun K _ _ D => ⟨baseChange K D, isBC_baseChange D⟩

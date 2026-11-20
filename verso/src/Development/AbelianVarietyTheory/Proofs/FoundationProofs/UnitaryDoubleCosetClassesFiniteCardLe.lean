@@ -10,11 +10,11 @@ open scoped BigOperators
 namespace GlobalTheory.NormSum
 
 /- English proof (translation)
-Introduce `c`. Take `⟨h, k, hh, hk, e⟩` from `DoubleCoset.mk_out_eq_mul H K c.out`. Use `⟨(DoubleCoset.mk H K c.out, QuotientGroup.mk (⟨k⁻¹, K.inv_mem hk⟩ : K)), ?_⟩` and prove the remaining obligations. Take `⟨j, hj⟩` from `QuotientGroup.mk_out_eq_mul (J.subgroupOf K) (⟨k⁻¹, K.inv_mem hk⟩ : K)`. Establish `hjJ : ((j : K) : G) ∈ J` using `Subgroup.mem_subgroupOf.mp j.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only`. Rewrite using `[hj, e]`. Use `conv_rhs => rw [← DoubleCoset.out_eq' H J c]`. Rewrite using `[eq_comm, DoubleCoset.eq]`. Use `⟨h, hh, _, hjJ, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem doubleCoset_surj_of_le {G : Type*} [Group G] (H K J : Subgroup G) :
     Function.Surjective (fun p : DoubleCoset.Quotient (H : Set G) (K : Set G) × (K ⧸ J.subgroupOf K) =>
@@ -32,7 +32,7 @@ theorem doubleCoset_surj_of_le {G : Type*} [Group G] (H K J : Subgroup G) :
   simp [mul_assoc]
 
 /- English proof (translation)
-Establish `: Finite (K ⧸ J.subgroupOf K)` using `Nat.finite_of_card_ne_zero hJ`. Use `⟨Finite.of_surjective _ (doubleCoset_surj_of_le H K J), ?_⟩` and prove the remaining obligations. Use `Nat.card_le_card_of_surjective _ (doubleCoset_surj_of_le H K J)` as an intermediate fact. Rewrite `this` using `[Nat.card_prod]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem doubleCoset_card_le {G : Type*} [Group G] (H K J : Subgroup G)
     [Finite (DoubleCoset.Quotient (H : Set G) (K : Set G))] (hJ : J.relIndex K ≠ 0) :
@@ -45,29 +45,27 @@ theorem doubleCoset_card_le {G : Type*} [Group G] (H K J : Subgroup G)
   rwa [Nat.card_prod] at this
 
 /- English proof (translation)
-Introduce `D N`. Establish `hcm : IsCMField D.host.E` using `D.host.isCMField_hostE`. Establish `hconj : ∀ x : D.host.E, IsCMField.complexConj D.host.E x = D.host.conj x`. Introduce `x`. Apply `D.host.φ₀.injective` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h1` using `IsCMField.complexEmbedding_complexConj D.host.E D.host.φ₀ x`. Establish `h2` using `D.host.conjE_apply D.host.φ₀ x`. Conclude with `h1.trans h2.symm`. Establish `hfr : Module.finrank ℚ D.host.E = 2 * fF D`. Rewrite using `[D.host.finrank_cmField, fF, Formalism.BasicNotions.Ranks.f, Formalism.BasicNotions.Ranks.n]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨R, hR, hcov⟩` from `GlobalTheory.exists_finset_selfDual_classes_rootDiscr D.host.E N`. Take `⟨hrat, -, hex, -, -⟩` from `GlobalTheory.NormSum.mem_ratG_intG D N`. Take `⟨Lt, hSD, -, hLt, hmv, -⟩` from `GlobalTheory.T.Lt_eq_iff_inv_mul_mem_intG_and_transport D N`. Establish `key : ∀ g : GA D N, ∃ L₀ ∈ R, ∃ h ∈ ratG D N, Lt (h⁻¹ * g) = L₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g`. Take `⟨h1, h2, h3⟩` from `(hSD g).2`. Take `⟨L₀, hL₀, γ, hγ, hx⟩` from `hcov (Lt g) h1 h2 (by`. Introduce `y`. Rewrite using `[h3 y]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `forall_congr' fun x => forall_congr' fun _ => ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz⟩`. Establish `hz' : (z : D.host.E) = ∑ i, IsCMField.complexConj D.host.E (x i) * y i` using `hz`. Rewrite using `[← hz']`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `z.isIntegral_coe`. Introduce `hz`. Conclude with `⟨⟨_, hz⟩, rfl⟩)`. Establish `hm : γ.map (IsCMField.complexConj D.host.E) = γ.map D.host.conj`. Use extensionality with `i j`.
+Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Matrix.map_apply, hconj]`. Rewrite `hγ` using `[hm]`. Take `⟨h, hh⟩` from `hex γ hγ`. Use `⟨L₀, hL₀, h, (hrat h).2 ⟨γ, hh⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `x`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the hypotheses and the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[hmv h (h⁻¹ * g) γ hh x, mul_inv_cancel_left, hx]`. Use `choose L₀ hL₀ h hh hL using key`. Set `f : Cls D N (intG D N) → R` to `fun c => ⟨L₀ c.out, hL₀ _⟩`. Establish `hf : Function.Injective f`. Introduce `c c' e`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e' : L₀ c.out = L₀ c'.out` using `congrArg Subtype.val e`. Rewrite `e'` using `[← hL, ← hL, hLt]`. Rewrite using `[← DoubleCoset.out_eq' _ _ c, ← DoubleCoset.out_eq' _ _ c', DoubleCoset.eq]`. Use `⟨h c'.out * (h c.out)⁻¹, Subgroup.mul_mem _ (hh _) (Subgroup.inv_mem _ (hh _)), _, e', ?_⟩` and prove the remaining obligations. Use `group`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin : Finite (Cls D N (intG D N))` using `Finite.of_injective f hf`. Use `⟨hfin, ?_, fun J _ hJ => doubleCoset_card_le _ _ J hJ⟩` and prove the remaining obligations. Establish `hc : Nat.card (Cls D N (intG D N)) ≤ R.card`. Use `Nat.card_le_card_of_injective f hf` as an intermediate fact. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `le_trans (by exact_mod_cast hc) (hR.trans (le_of_eq ?_))` and prove the remaining obligations. Establish `hrd : |(discr D.host.E : ℝ)| ^ ((1 : ℝ) / (Module.finrank ℚ D.host.E : ℝ)) = D.host.rdE` using `rfl`. Rewrite using `[hrd, hfr]`. Establish `: 3 * (2 * fF D) * N ^ 2 = 6 * fF D * N ^ 2` using `by ring`. Rewrite using `[this]`.
-
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem cls_finite_card_le : ∀ (D : D7) (N : ℕ), Finite (Cls D N (intG D N)) ∧ (Nat.card (Cls D N (intG D N)) : ℝ) ≤ (12 * (fF D : ℝ) ^ 2 * (N : ℝ) ^ 4 * D.host.rdE ^ 2) ^ (6 * fF D * N ^ 2) ∧ ∀ J : Subgroup (GA D N), J ≤ intG D N → J.relIndex (intG D N) ≠ 0 → Finite (Cls D N J) ∧ Nat.card (Cls D N J) ≤ Nat.card (Cls D N (intG D N)) * J.relIndex (intG D N) := by
   intro D N

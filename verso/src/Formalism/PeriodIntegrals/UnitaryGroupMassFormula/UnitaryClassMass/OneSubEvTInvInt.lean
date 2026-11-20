@@ -15,7 +15,7 @@ open Classical
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (funext h)`.
+A detailed English derivation is pending.
 -/
 theorem af_ext {a b : Af F} (h : ∀ w, a w = b w) : a = b := Subtype.ext (funext h)
 
@@ -46,7 +46,7 @@ theorem af_alg_apply (c : F) (w : HeightOneSpectrum (𝓞 F)) :
     (algebraMap F (Af F) c) w = algebraMap F (w.adicCompletion F) c := rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_intAf_iff (a : Af F) : a ∈ intAf F ↔ ∀ w, a w ∈ w.adicCompletionIntegers F := Iff.rfl
 
@@ -61,7 +61,7 @@ Both sides reduce to the same expression.
 theorem sgl_apply (x : Fv F v) (w : HeightOneSpectrum (𝓞 F)) : sgl v x w = Pi.single v x w := rfl
 
 /- English proof (translation)
-The claim follows from `af_ext fun w => by rw [af_mul_apply, sgl_apply, sgl_apply, sgl_apply] by_cases hw : w = v · subst hw; rw [Pi.single_eq_same, Pi.single_eq_same, Pi.single_eq_same] · rw [Pi.single_eq_of_ne hw, Pi.single_eq_of_ne hw, Pi.single_eq_of_ne hw, mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem sgl_mul (x y : Fv F v) : sgl v (x * y) = sgl v x * sgl v y := af_ext fun w => by
   rw [af_mul_apply, sgl_apply, sgl_apply, sgl_apply]
@@ -70,7 +70,7 @@ theorem sgl_mul (x y : Fv F v) : sgl v (x * y) = sgl v x * sgl v y := af_ext fun
   · rw [Pi.single_eq_of_ne hw, Pi.single_eq_of_ne hw, Pi.single_eq_of_ne hw, mul_zero]
 
 /- English proof (translation)
-The claim follows from `af_ext fun w => by rw [af_add_apply, sgl_apply, sgl_apply, sgl_apply] by_cases hw : w = v · subst hw; rw [Pi.single_eq_same, Pi.single_eq_same, Pi.single_eq_same] · rw [Pi.single_eq_of_ne hw, Pi.single_eq_of_ne hw, Pi.single_eq_of_ne hw, add_zero]`.
+A detailed English derivation is pending.
 -/
 theorem sgl_add (x y : Fv F v) : sgl v (x + y) = sgl v x + sgl v y := af_ext fun w => by
   rw [af_add_apply, sgl_apply, sgl_apply, sgl_apply]
@@ -79,7 +79,7 @@ theorem sgl_add (x y : Fv F v) : sgl v (x + y) = sgl v x + sgl v y := af_ext fun
   · rw [Pi.single_eq_of_ne hw, Pi.single_eq_of_ne hw, Pi.single_eq_of_ne hw, add_zero]
 
 /- English proof (translation)
-The claim follows from `af_ext fun w => by rw [Algebra.smul_def, Algebra.smul_def, af_mul_apply, af_alg_apply, sgl_apply, sgl_apply] by_cases hw : w = v · subst hw; rw [Pi.single_eq_same, Pi.single_eq_same] · rw [Pi.single_eq_of_ne hw, Pi.single_eq_of_ne hw, mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem sgl_smul (c : F) (x : Fv F v) : c • sgl v x = sgl v (c • x) := af_ext fun w => by
   rw [Algebra.smul_def, Algebra.smul_def, af_mul_apply, af_alg_apply, sgl_apply, sgl_apply]
@@ -88,9 +88,9 @@ theorem sgl_smul (c : F) (x : Fv F v) : c • sgl v x = sgl v (c • x) := af_ex
   · rw [Pi.single_eq_of_ne hw, Pi.single_eq_of_ne hw, mul_zero]
 
 /- English proof (translation)
-Introduce `w`. Use `show sgl v x w ∈ w.adicCompletionIntegers F`. Rewrite using `[sgl_apply]`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.single_eq_same]`. Conclude with `hx`. Rewrite using `[Pi.single_eq_of_ne hw]`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sgl_int {x : Fv F v} (hx : x ∈ v.adicCompletionIntegers F) : sgl v x ∈ intAf F := by
   intro w
@@ -101,7 +101,7 @@ theorem sgl_int {x : Fv F v} (hx : x ∈ v.adicCompletionIntegers F) : sgl v x �
   · rw [Pi.single_eq_of_ne hw]; exact zero_mem _
 
 /- English proof (translation)
-The claim follows from `af_ext fun w => by rw [af_mul_apply, sgl_apply, sgl_apply] by_cases hw : w = v · subst hw; rw [Pi.single_eq_same, Pi.single_eq_same, one_mul] · rw [Pi.single_eq_of_ne hw, Pi.single_eq_of_ne hw, zero_mul]`.
+A detailed English derivation is pending.
 -/
 theorem sgl_one_mul (a : Af F) : sgl v 1 * a = sgl v (a v) := af_ext fun w => by
   rw [af_mul_apply, sgl_apply, sgl_apply]
@@ -130,9 +130,7 @@ theorem evT_apply (T : Set (HeightOneSpectrum (𝓞 F))) (w : HeightOneSpectrum 
     evT T w = if w ∈ T then 1 else 0 := rfl
 
 /- English proof (translation)
-Introduce `w`. Use `show evT T w ∈ w.adicCompletionIntegers F`. Rewrite using `[evT_apply]`. Use `split_ifs`. Conclude with `one_mem _`.
-
-Conclude with `zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evT_int (T : Set (HeightOneSpectrum (𝓞 F))) : evT T ∈ intAf F := by
   intro w
@@ -142,9 +140,7 @@ theorem evT_int (T : Set (HeightOneSpectrum (𝓞 F))) : evT T ∈ intAf F := by
   · exact zero_mem _
 
 /- English proof (translation)
-Introduce `w`. Use `show (1 - evT T) w ∈ w.adicCompletionIntegers F`. Rewrite using `[af_sub_apply, evT_apply, af_one_apply]`. Use `split_ifs`. Rewrite using `[sub_self]`.
-
-Conclude with `zero_mem _`. Rewrite using `[sub_zero]`. Conclude with `one_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_sub_evT_int (T : Set (HeightOneSpectrum (𝓞 F))) : 1 - evT T ∈ intAf F := by
   intro w
@@ -154,11 +150,11 @@ theorem one_sub_evT_int (T : Set (HeightOneSpectrum (𝓞 F))) : 1 - evT T ∈ i
   · rw [sub_zero]; exact one_mem _
 
 /- English proof (translation)
-Apply `af_ext` to reduce the goal to its premises. Introduce `w`. Rewrite using `[evT_apply, show (∑ w' ∈ T, sgl w' 1) w = evalV F w (∑ w' ∈ T, sgl w' 1) from rfl, map_sum]`. Simplify using `only [show ∀ w', evalV F w (sgl w' 1) = Pi.single w' 1 w from fun _ => rfl]`. Distinguish the cases in `hw : w ∈ T`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos (by exact_mod_cast hw), Finset.sum_eq_single w]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Pi.single_apply, Ne.symm hb]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd hw h`. Rewrite using `[if_neg (by exact_mod_cast hw)]`. Use `(Finset.sum_eq_zero fun b hb => ?_).symm` and prove the remaining obligations. Establish `: w ≠ b` using `fun h => hw (h ▸ hb)`. Simplify using `[Pi.single_apply, this]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem evT_eq_sum (T : Finset (HeightOneSpectrum (𝓞 F))) : evT (T : Set _) = ∑ w ∈ T, sgl w 1 := by
   apply af_ext
@@ -176,9 +172,9 @@ theorem evT_eq_sum (T : Finset (HeightOneSpectrum (𝓞 F))) : evT (T : Set _) =
     simp [Pi.single_apply, this]
 
 /- English proof (translation)
-Introduce `w`. Use `show ((1 - evT T) * algebraMap F (Af F) ((algebraMap (𝓞 F) F t)⁻¹)) w ∈ w.adicCompletionIntegers F`. Rewrite using `[af_mul_apply, af_sub_apply, evT_apply, af_one_apply, af_alg_apply]`. Use `split_ifs with hw`. Rewrite using `[sub_self, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `zero_mem _`. Rewrite using `[sub_zero, one_mul, HeightOneSpectrum.mem_adicCompletionIntegers]`. Establish `e1 : algebraMap F (w.adicCompletion F) ((algebraMap (𝓞 F) F t)⁻¹) = (((algebraMap (𝓞 F) F t)⁻¹ : F) : w.adicCompletion F)` using `rfl`. Rewrite using `[e1, HeightOneSpectrum.valuedAdicCompletion_eq_valuation', map_inv₀, HeightOneSpectrum.valuation_of_algebraMap, (HeightOneSpectrum.intValuation_eq_one_iff_mem_primeCompl w t).2 (ht w hw), inv_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_sub_evT_inv_int (T : Set (HeightOneSpectrum (𝓞 F))) (t : 𝓞 F)
     (ht : ∀ w : HeightOneSpectrum (𝓞 F), w ∉ T → t ∉ w.asIdeal) :
@@ -207,7 +203,7 @@ def Psi : Af F ⊗[F] E →ₐ[F] E ⊗[F] Fv F v :=
     (Algebra.TensorProduct.map (evalV F v) (AlgHom.id F E))
 
 /- English proof (translation)
-Simplify using `[Psi]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem Psi_tmul (a : Af F) (e : E) : Psi (E := E) v (a ⊗ₜ[F] e) = e ⊗ₜ[F] a v := by
   simp [Psi]; rfl
@@ -216,13 +212,13 @@ def Phi : E ⊗[F] Fv F v →ₗ[F] Af F ⊗[F] E :=
   (TensorProduct.map (ivL v) LinearMap.id) ∘ₗ (TensorProduct.comm F E (Fv F v)).toLinearMap
 
 /- English proof (translation)
-Simplify using `[Phi]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem Phi_tmul (e : E) (x : Fv F v) : Phi v (e ⊗ₜ[F] x) = sgl v x ⊗ₜ[F] e := by
   simp [Phi]; rfl
 
 /- English proof (translation)
-Proceed by induction on `r using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e`. Rewrite using `[Psi_tmul, Phi_tmul, Algebra.TensorProduct.tmul_mul_tmul, sgl_one_mul, one_mul]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, mul_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem Phi_Psi (r : Af F ⊗[F] E) : Phi v (Psi v r) = (sgl v 1 ⊗ₜ[F] (1 : E)) * r := by
   induction r using TensorProduct.induction_on with
@@ -232,9 +228,9 @@ theorem Phi_Psi (r : Af F ⊗[F] E) : Phi v (Psi v r) = (sgl v 1 ⊗ₜ[F] (1 : 
   | add x y hx hy => rw [map_add, map_add, hx, hy, mul_add]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul e a`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul e' a'`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, Phi_tmul, Phi_tmul, Phi_tmul, Algebra.TensorProduct.tmul_mul_tmul, sgl_mul]`. Consider the case `add y y' hy hy' => rw [mul_add, map_add, hy, hy', map_add, mul_add]`. Consider the case `add x x' hx hx' => rw [add_mul, map_add, hx, hx', map_add, add_mul]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 -/
 theorem Phi_mul (x y : E ⊗[F] Fv F v) : Phi v (x * y) = Phi v x * Phi v y := by
   induction x using TensorProduct.induction_on with
@@ -249,20 +245,18 @@ theorem Phi_mul (x y : E ⊗[F] Fv F v) : Phi v (x * y) = Phi v x * Phi v y := b
   | add x x' hx hx' => rw [add_mul, map_add, hx, hx', map_add, add_mul]
 
 /- English proof (translation)
-Use `show Phi v (e ⊗ₜ[F] (1 : Fv F v)) = _`. Rewrite using `[Phi_tmul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Phi_inclE (e : E) : Phi v (PI.UnitaryApproxDefs.inclE (F := F) (Fv F v) e) = sgl v 1 ⊗ₜ[F] e := by
   show Phi v (e ⊗ₜ[F] (1 : Fv F v)) = _
   rw [Phi_tmul]
 
 /- English proof (translation)
-Proceed by induction on `hs using Subring.closure_induction with`. Consider the case `mem x hx`. Break down `hx with ⟨⟨e, he⟩, rfl⟩ | ⟨⟨y, hy⟩, rfl⟩` into its components or cases. Take `⟨o, rfl⟩` from `he`. Rewrite using `[Phi_tmul]`.
+Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `tmul_mem_Oh (sgl_int v (one_mem _)) o.isIntegral_coe`. Rewrite using `[Phi_tmul]`. Conclude with `tmul_mem_Oh (sgl_int v hy) isIntegral_one`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `one`. Rewrite using `[show (1 : E ⊗[F] Fv F v) = (1 : E) ⊗ₜ[F] (1 : Fv F v) from rfl, Phi_tmul]`. Conclude with `tmul_mem_Oh (sgl_int v (one_mem _)) isIntegral_one`. Consider the case `add x y _ _ h1 h2 => rw [map_add]`. Conclude with `add_mem h1 h2`.
-
-Consider the case `neg x _ h1 => rw [map_neg]`. Conclude with `neg_mem h1`. Consider the case `mul x y _ _ h1 h2 => rw [Phi_mul]`. Conclude with `Oh_mul h1 h2`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem Phi_int {s : E ⊗[F] Fv F v}
     (hs : s ∈ PI.UnitaryApproxDefs.tensInt (F := F) (Fv F v) (PI.UnitaryApproxDefs.intOE E) (v.adicCompletionIntegers F).toSubring) :

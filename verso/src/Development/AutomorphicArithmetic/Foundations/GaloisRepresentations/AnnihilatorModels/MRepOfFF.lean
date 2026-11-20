@@ -8,11 +8,11 @@ attribute [local instance] Ideal.Quotient.field
 open UpperTheory.Gal.crystallineComparison UpperTheory.Gal.crystallineComparison.Mod
 
 /- English proof (translation)
-Introduce and unpack `hA κ _ A P ⟨K, i, hm, hfin, hfl, hP⟩`. Take `⟨B, _, _, k, hf, hfr, pb⟩` from `hA (Sp κ) K.left K.hom hfin hfl κ (𝟙 _)`. Establish `hk : IsIso k` using `pb.isIso_fst_of_isIso`. Establish `hw : k ≫ K.hom = spMap (algebraMap κ B)`. Simplify using `using pb.w`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Set `e : algPt κ B ≅ K` to `Over.isoMk (asIso k) hw`. Use `⟨Module.finrank κ B, B, ‹_›, ‹_›, hf, hfr, rfl, e.hom ≫ i, inferInstance, fun T g => ?_⟩` and prove the remaining obligations. Rewrite using `[← hP T g]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy⟩`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨y ≫ e.hom, by simpa using hy⟩`. Introduce and unpack `⟨y, hy⟩`. Conclude with `⟨y ≫ e.inv, by simpa using hy⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem UpperTheory.Gal.crystallineComparison.Mod.repOfFF_of :
     AlgOf → RepOfFF := by

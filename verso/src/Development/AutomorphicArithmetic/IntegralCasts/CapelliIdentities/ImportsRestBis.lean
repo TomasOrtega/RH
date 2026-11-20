@@ -3,19 +3,17 @@ import Mathlib
 namespace CommutingFamilyCommonEigenvector
 
 /- English proof (translation)
-Use `haveI : Nontrivial W := Submodule.nontrivial_iff_ne_bot.mpr hW`. Set `f : Module.End ℂ W` to `(T i).restrict (fun x hx => hinv i x hx)`. Take `⟨μ, hμ⟩` from `Module.End.exists_eigenvalue f`. Take `⟨v, hv⟩` from `hμ.exists_hasEigenvector`. Use `⟨μ, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Set `W' : Submodule ℂ E` to `W ⊓ (T i).eigenspace μ`. Establish `hW'le : W' ≤ W` using `inf_le_left`. Establish `hvW' : (v : E) ∈ W'`. Use `Submodule.mem_inf.mpr ⟨v.2, ?_⟩` and prove the remaining obligations. Rewrite using `[Module.End.mem_eigenspace_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hv.apply_eq_smul` as an intermediate fact. Establish `h2` using `congrArg Subtype.val this`. Simplify `h2` using `[f]`. Establish `hvne : (v : E) ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hv.2` to reduce the goal to its premises. Conclude with `Subtype.ext h`. Establish `hW'ne : W' ≠ ⊥`. Introduce `h`. Rewrite `hvW'` using `[h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hvne ((Submodule.mem_bot ℂ).mp hvW')`. Establish `hW'inv : ∀ j, ∀ x ∈ W', T j x ∈ W'`. Introduce `j x hx`. Establish `hx'` using `Submodule.mem_inf.mp hx`. Use `Submodule.mem_inf.mpr ⟨hinv j x hx'.1, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hx2 : T i x = μ • x` using `Module.End.mem_eigenspace_iff.mp hx'.2`. Rewrite using `[Module.End.mem_eigenspace_iff]`. Establish `hcom : T i (T j x) = T j (T i x)`. Use `hc i j` as an intermediate fact. Conclude with `congrArg (fun g : Module.End ℂ E => g x) this.eq`.
-
-Rewrite using `[hcom, hx2, map_smul]`. Establish `heq : W' = W` using `Submodule.eq_of_le_of_finrank_le hW'le (hmin W' hW'ne hW'inv)`. Establish `: w ∈ W'` using `heq ▸ hw`. Conclude with `Module.End.mem_eigenspace_iff.mp (Submodule.mem_inf.mp this).2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private lemma key {E : Type} [AddCommGroup E] [Module ℂ E] [FiniteDimensional ℂ E] {I : Type}
     (T : I → Module.End ℂ E) (hc : ∀ (a b : I), Commute (T a) (T b))
@@ -58,13 +56,13 @@ private lemma key {E : Type} [AddCommGroup E] [Module ℂ E] [FiniteDimensional 
 end CommutingFamilyCommonEigenvector
 
 /- English proof (translation)
-Introduce `d E _ _ _ I T hc hd hpos`. Set `P : ℕ → Prop` to `fun n => ∃ W : Submodule ℂ E, W ≠ ⊥ ∧ (∀ i, ∀ x ∈ W, T i x ∈ W) ∧ Module.finrank ℂ W = n`. Establish `hex : ∃ n, P n`. Use `⟨Module.finrank ℂ (⊤ : Submodule ℂ E), ⊤, ?_, fun i x _ => Submodule.mem_top, rfl⟩` and prove the remaining obligations. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: Module.finrank ℂ (⊤ : Submodule ℂ E) = 0` using `by rw [h]; simp`. Rewrite `this` using `[finrank_top]`. Use linear arithmetic over natural numbers and integers. Take `⟨W, hW, hinv, hWr⟩` from `Nat.find_spec hex`. Establish `hmin : ∀ W' : Submodule ℂ E, W' ≠ ⊥ → (∀ i, ∀ x ∈ W', T i x ∈ W') → Module.finrank ℂ W ≤ Module.finrank ℂ W'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `W' h1 h2`. Rewrite using `[hWr]`. Conclude with `Nat.find_min' hex ⟨W', h1, h2, rfl⟩`. Take `⟨w, hwW, hw0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hW`. Use `⟨w, hw0, fun i => Classical.choose (CommutingFamilyCommonEigenvector.key T hc W hW hinv hmin i w hwW), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Conclude with `Classical.choose_spec (CommutingFamilyCommonEigenvector.key T hc W hW hinv hmin i w hwW)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Ygb8.main :
     ∀ (d : ℕ) (E : Type) [inst : AddCommGroup E] [inst_1 : _root_.Module ℂ E] [FiniteDimensional ℂ E] {I : Type}

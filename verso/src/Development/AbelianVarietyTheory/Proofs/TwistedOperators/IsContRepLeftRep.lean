@@ -42,9 +42,9 @@ def leftRep {K : Type} [Group K] (F : Submodule ℂ (K → ℂ)) (hF : ∀ φ �
     simp [mul_assoc]
 
 /- English proof (translation)
-Establish `h : (Submodule.span ℂ (Set.range fun y : K => ((LinearMap.proj y).comp F.subtype : Module.Dual ℂ F))) = ⊤`. Use `Submodule.span_eq_top_of_ne_zero fun z hz => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `hz (Subtype.ext (funext fun y => hc _ ⟨y, rfl⟩))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition.
 
-Rewrite using `[h]`. Discharge the goal by the elementary cases of `trivial`.
+A detailed English derivation is pending.
 -/
 theorem dual_mem_span {K : Type} (F : Submodule ℂ (K → ℂ)) [FiniteDimensional ℂ F] (ℓ : Module.Dual ℂ F) :
     ℓ ∈ Submodule.span ℂ (Set.range fun y : K => (LinearMap.proj y).comp F.subtype) := by
@@ -58,9 +58,9 @@ theorem dual_mem_span {K : Type} (F : Submodule ℂ (K → ℂ)) [FiniteDimensio
   trivial
 
 /- English proof (translation)
-Introduce `ℓ w`. Proceed by induction on `dual_mem_span F ℓ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨y, rfl⟩` from `hx`. Conclude with `(hc _ w.2).comp (continuous_inv.mul continuous_const)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `zero => exact continuous_const`. Consider the case `add x y _ _ hx hy => exact hx.add hy`. Consider the case `smul a x _ hx => exact hx.const_smul a`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isContRep_leftRep {K : Type} [Group K] [TopologicalSpace K] [IsTopologicalGroup K]
     (F : Submodule ℂ (K → ℂ)) [FiniteDimensional ℂ F] (hF : ∀ φ ∈ F, ∀ a : K, (fun k => φ (a * k)) ∈ F)
@@ -75,11 +75,9 @@ theorem isContRep_leftRep {K : Type} [Group K] [TopologicalSpace K] [IsTopologic
   | smul a x _ hx => exact hx.const_smul a
 
 /- English proof (translation)
-Establish `hi : ∀ φ : F, Integrable (fun k => φ.1 k * f k) μ` using `fun φ => ((hc _ φ.2).mul hf).integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`. Set `ℓ : Module.Dual ℂ F` to `{ toFun := fun φ => ∫ k, φ.1 k * f k ∂μ map_add' := fun a b => by`. Rewrite using `[← integral_add (hi a) (hi b)]`. Simplify using `only [Submodule.coe_add, Pi.add_apply, add_mul]`. Use the proof step `map_smul' := fun c a => by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, RingHom.id_apply, mul_assoc]`. Conclude with `integral_const_mul _ _ }`. Use `Submodule.subset_span ⟨ℓ, ⟨e, he⟩, funext fun a => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = ∫ k, e (a⁻¹ * k) * f k ∂μ`. Rewrite using `[← integral_mul_left_eq_self (fun k => e (a⁻¹ * k) * f k) a]`.
-
-Simplify using `only [inv_mul_cancel_left]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conv_mem {K : Type} [Group K] [TopologicalSpace K] [IsTopologicalGroup K] [CompactSpace K]
     [MeasurableSpace K] [BorelSpace K] (μ : Measure K) [μ.IsHaarMeasure]
@@ -102,15 +100,13 @@ theorem conv_mem {K : Type} [Group K] [TopologicalSpace K] [IsTopologicalGroup K
   simp only [inv_mul_cancel_left]
 
 /- English proof (translation)
-Introduce `D θ hθ N ψ hψ τ e he`. Take `⟨F, hfd, heF, hc, hF⟩` from `he`. Use `haveI : IsTopologicalGroup (GA D N.V) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Establish `hP` using `N.M.fr_unit τ`. Establish `hJ` using `N.M.fr_gram τ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem` using `GlobalTheory.Published.AutFin.conj_mem_UH hP hJ`. Establish `hd : IsUnit (N.M.fr τ).det` using `(Matrix.isUnit_iff_isUnit_det _).1 hP`. Establish `hK : Continuous fun k : Formalism.REAL.KG (N.M.ε τ) => Formalism.REAL.toMK k` using `Units.continuous_val.comp (continuous_subtype_val.comp continuous_subtype_val)`. Establish `hk : Continuous (GlobalTheory.Published.AutFin.kAt θ N.V τ (N.M.ε τ) (N.M.fr τ))` using `(GlobalTheory.PointAtPlaceHom.continuousOn_atTau hθ N.V τ).comp_continuous ((continuous_const.matrix_mul hK).matrix_mul continuous_const) hmem`. Establish `hmul : ∀ a b, GlobalTheory.Published.AutFin.kAt θ N.V τ (N.M.ε τ) (N.M.fr τ) (a * b) = GlobalTheory.Published.AutFin.kAt θ N.V τ (N.M.ε τ) (N.M.fr τ) a * GlobalTheory.Published.AutFin.kAt θ N.V τ (N.M.ε τ) (N.M.fr τ) b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b`. Unfold `GlobalTheory.Published.AutFin.kAt`. Rewrite using `[← GlobalTheory.PointAtPlaceHom.atTau_mul hθ N.V τ (hmem a) (hmem b)]`. Use `congr 1`. Establish `e1 : Formalism.REAL.toMK (a * b) = Formalism.REAL.toMK a * Formalism.REAL.toMK b` using `rfl`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1]`. Simplify using `only [Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ hd]`. Use `⟨F, inferInstance, inferInstance, hfd, leftRep F fun φ h a => (hF φ h a).1, isContRep_leftRep F _ hc, fun x => ?_⟩` and prove the remaining obligations. Establish `h` using `conv_mem (Formalism.REAL.muK (N.M.ε τ)) F (fun φ h a => (hF φ h a).1) hc heF (f := fun k => ψ (x * GlobalTheory.Published.AutFin.kAt θ N.V τ (N.M.ε τ) (N.M.fr τ) k)) (hψ.cont.comp (continuous_const.mul hk))`. Simplify using `only [hmul, ← mul_assoc] at h`.
-
-Conclude with `h`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem kFinAt_avg : ∀ (D : Formalism.BasicNotions.D7) (θ : Formalism.IndefR.Datum.InfFam D), Formalism.L2.Theta.IsInfFam θ → ∀ (N : GlobalTheory.Grid.Node D) (ψ : Formalism.L2.Theta.GA D (GlobalTheory.Grid.Node.V N) → ℂ), Formalism.L2.Theta.IsAutFunSm θ (GlobalTheory.Grid.Node.V N) ψ → ∀ (τ : Formalism.BasicNotions.Rows.Data.Tau (Formalism.BasicNotions.D7.what₂ D)) (e : ↥(Formalism.REAL.KG (Formalism.IndefR.Mult.DSModel.ε (GlobalTheory.Grid.Node.M N) τ)) → ℂ), GlobalTheory.TypeSum.KFinFun (Formalism.IndefR.Mult.DSModel.ε (GlobalTheory.Grid.Node.M N) τ) e → GlobalTheory.CuspKFin.KFinAt θ N τ (GlobalTheory.SeriesToClosure.avg θ (GlobalTheory.Grid.Node.V N) τ (Formalism.IndefR.Mult.DSModel.ε (GlobalTheory.Grid.Node.M N) τ) (Formalism.IndefR.Mult.DSModel.fr (GlobalTheory.Grid.Node.M N) τ) e ψ) := by
   intro D θ hθ N ψ hψ τ e he

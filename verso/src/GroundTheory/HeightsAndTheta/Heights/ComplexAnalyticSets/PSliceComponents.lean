@@ -21,7 +21,7 @@ attribute [local instance] MvPolynomial.gradedAlgebra
 variable {F : Type} [Field F] {n : ℕ}
 
 /- English proof (translation)
-Rewrite `hJ`, the goal using `[isHomogIdeal_iff_isHomogeneous_degree]`. Use `hJ.sup (Ideal.homogeneous_span _ _ fun x hx => ?_)` and prove the remaining obligations. Rewrite using `[Set.mem_singleton_iff.mp hx]`. Conclude with `⟨1, (mem_homogeneousSubmodule _ _).mpr (ChartLocDomain.linForm_isHomogeneous u)⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem isHomogIdeal_sup_linForm {J : Ideal (MvPolynomial (Fin n) F)} (hJ : IsHomogIdeal J) (u : Fin n → F) :
     IsHomogIdeal (J ⊔ Ideal.span {linForm u}) := by
@@ -31,7 +31,7 @@ theorem isHomogIdeal_sup_linForm {J : Ideal (MvPolynomial (Fin n) F)} (hJ : IsHo
   exact ⟨1, (mem_homogeneousSubmodule _ _).mpr (ChartLocDomain.linForm_isHomogeneous u)⟩
 
 /- English proof (translation)
-Introduce `g hg` and use `by rw [← sum_homogeneousComponent g] exact Ideal.sum_mem _ fun d _ => ChartDehomog.proof F n W t _ d hW hWh ht (homogeneousComponent_isHomogeneous d g) (h (hV g hg d))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem le_of_le_sup {V W : Ideal (MvPolynomial (Fin n) F)} {t : Fin n → F} (hV : IsHomogIdeal V)
     (hW : W.IsPrime) (hWh : IsHomogIdeal W) (ht : linForm t ∉ W) (h : V ≤ W ⊔ Ideal.span {linForm t - 1}) :
@@ -41,19 +41,19 @@ theorem le_of_le_sup {V W : Ideal (MvPolynomial (Fin n) F)} {t : Fin n → F} (h
     (homogeneousComponent_isHomogeneous d g) (h (hV g hg d))
 
 /- English proof (translation)
-Use `set a : MvPolynomial (Fin n) F ⧸ W := Ideal.Quotient.mk W (linForm t) with ha_def`. Establish `ha : a ≠ 0` using `fun h => ht (Ideal.Quotient.eq_zero_iff_mem.mp h)`. Set `A` to `Localization.Away a`. Establish `hM` using `powers_le_nonZeroDivisors_of_noZeroDivisors ha`. Establish `: IsDomain A` using `IsLocalization.isDomain_localization hM`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `v : A` to `IsLocalization.Away.invSelf a`. Set `φ : MvPolynomial (Fin n) F →ₐ[F] A` to `(IsScalarTower.toAlgHom F (MvPolynomial (Fin n) F ⧸ W) A).comp (Ideal.Quotient.mkₐ F W)`. Establish `hφ : ∀ g, aeval (fun m => φ (X m)) g = φ g` using `fun g => by`. Rewrite using `[← comp_aeval_apply]`. Simplify using the standard rewrite rules.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `ψ : MvPolynomial (Fin n) F →ₐ[F] A` to `aeval fun m => v * φ (X m)`. Establish `hhom : ∀ {g : MvPolynomial (Fin n) F} {k : ℕ}, g.IsHomogeneous k → ψ g = v ^ k * φ g` using `fun hg => by rw [← hφ]; exact ChartLocDomain.aeval_mul_of_isHomogeneous hg _ _`. Establish `hle : W ⊔ Ideal.span {linForm t - 1} ≤ RingHom.ker ψ`. Use `sup_le (fun g hg => ?_) ?_` and prove the remaining obligations. Rewrite using `[RingHom.mem_ker, ← sum_homogeneousComponent g, map_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hhom (homogeneousComponent_isHomogeneous k g)]`. Establish `: φ (homogeneousComponent k g) = 0`. Simplify using `[φ, Ideal.Quotient.eq_zero_iff_mem.mpr (hH g hg k)]`. Rewrite using `[this, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.span_le, Set.singleton_subset_iff, SetLike.mem_coe, RingHom.mem_ker, map_sub, map_one, hhom (ChartLocDomain.linForm_isHomogeneous t), pow_one]`. Establish `: φ (linForm t) = algebraMap _ A a` using `rfl`. Rewrite using `[this, mul_comm, IsLocalization.Away.mul_invSelf, sub_self]`. Establish `hv : IsUnit v` using `IsUnit.of_mul_eq_one_right _ (IsLocalization.Away.mul_invSelf a)`. Establish `hinj : Function.Injective (algebraMap (MvPolynomial (Fin n) F ⧸ W) A)` using `IsLocalization.injective A hM`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the argument to an intermediate assertion.
 
-It suffices to establish `e : RingHom.ker ψ = W ⊔ Ideal.span {linForm t - 1} by rw [← e]; exact RingHom.ker_isPrime _`. Use `le_antisymm (fun g hg => ?_) hle` and prove the remaining obligations. Take `⟨G, D, hG, hGg⟩` from `ChartHomogenise.exists_homogeneous_sub_mem_span (linForm t) g (ChartLocDomain.linForm_isHomogeneous t)`. Establish `h1` using `hle (Ideal.mem_sup_right hGg)`. Rewrite `h1` using `[RingHom.mem_ker, map_sub, (RingHom.mem_ker).mp hg, sub_zero, hhom hG]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : algebraMap _ A (Ideal.Quotient.mk W G) = 0` using `(hv.pow D).mul_right_eq_zero.mp h1`. Establish `hGW : G ∈ W` using `Ideal.Quotient.eq_zero_iff_mem.mp (hinj (h2.trans (map_zero _).symm))`. Rewrite using `[show g = G - (G - g) by ring]`. Conclude with `sub_mem (Ideal.mem_sup_left hGW) (Ideal.mem_sup_right hGg)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPrime_sup {W : Ideal (MvPolynomial (Fin n) F)} {t : Fin n → F} (hW : W.IsPrime)
     (hH : IsHomogIdeal W) (ht : linForm t ∉ W) : (W ⊔ Ideal.span {linForm t - 1}).IsPrime := by
@@ -96,7 +96,7 @@ theorem isPrime_sup {W : Ideal (MvPolynomial (Fin n) F)} {t : Fin n → F} (hW :
   exact sub_mem (Ideal.mem_sup_left hGW) (Ideal.mem_sup_right hGg)
 
 /- English proof (translation)
-Simplify using `only [divCycle, fundCycle, Finsupp.mem_support_iff, Finsupp.onFinset_apply]`. Apply the tactic sequence `split_ifs with h <;> simp [h]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mem_support_divCycle {J W : Ideal (MvPolynomial (Fin n) F)} {u : Fin n → F} :
     W ∈ (divCycle J u).support ↔
@@ -106,7 +106,7 @@ theorem mem_support_divCycle {J W : Ideal (MvPolynomial (Fin n) F)} {u : Fin n �
   split_ifs with h <;> simp [h]
 
 /- English proof (translation)
-Simplify using `only [divCycle, fundCycle, Finsupp.onFinset_apply]`. Rewrite using `[if_pos h]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem divCycle_apply {J W : Ideal (MvPolynomial (Fin n) F)} {u : Fin n → F}
     (h : W ∈ relComps (J ⊔ Ideal.span {linForm u})) :
@@ -116,9 +116,9 @@ theorem divCycle_apply {J W : Ideal (MvPolynomial (Fin n) F)} {u : Fin n → F}
   rw [if_pos h]
 
 /- English proof (translation)
-Use `hW.1.1` as an intermediate fact. Establish `hP : (W.map (Ideal.Quotient.mk J)).IsPrime` using `Ideal.map_isPrime_of_surjective Ideal.Quotient.mk_surjective (by rw [Ideal.mk_ker]; exact le_sup_left.trans hW.1.2)`. Introduce `h0`. Establish `e` using `LocalMultOrd.proof A J W x hW`. Rewrite `e` using `[h0, Nat.cast_zero, eq_comm, Ring.ord, Module.length_eq_zero_iff, Ideal.Quotient.subsingleton_iff, Ideal.span_singleton_eq_top]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hx : Ideal.Quotient.mk J x ∈ W.map (Ideal.Quotient.mk J)` using `Ideal.mem_map_of_mem _ (hW.1.2 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self x)))`. Conclude with `(IsLocalization.AtPrime.isUnit_to_map_iff _ _ _).mp e hx`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem localMult_ne_zero {A : Type} [CommRing A] [IsNoetherianRing A] {J W : Ideal A} {x : A}
     (hW : W ∈ (J ⊔ Ideal.span {x}).minimalPrimes) : localMult (J ⊔ Ideal.span {x}) W ≠ 0 := by
@@ -134,7 +134,7 @@ theorem localMult_ne_zero {A : Type} [CommRing A] [IsNoetherianRing A] {J W : Id
   exact (IsLocalization.AtPrime.isUnit_to_map_iff _ _ _).mp e hx
 
 /- English proof (translation)
-Use `⟨fun h => ⟨(mem_support_divCycle.mp h).1.1, hℓ W h⟩, fun ⟨hm, hW⟩ => ?_⟩` and prove the remaining obligations. Use `mem_support_divCycle.mpr ⟨⟨hm, ?_⟩, localMult_ne_zero hm⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hr`. Simplify using `only [IsRelevant, not_exists, not_not] at hr`. Conclude with `hW (Ideal.sum_mem _ fun j _ => Ideal.mul_mem_left _ _ (hr j))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_support_iff {J W : Ideal (MvPolynomial (Fin n) F)} {u ℓ : Fin n → F}
     (hℓ : ∀ W ∈ (divCycle J u).support, linForm ℓ ∉ W) :
@@ -150,25 +150,23 @@ end SliceComponents
 open SliceComponents in
 
 /- English proof (translation)
-Introduce `n J u ℓ hJ hℓ`. Use `hJ.isPrime` as an intermediate fact. Use `set K := J ⊔ Ideal.span {linForm u} with hKdef`. Use `set L : Ideal (MvPolynomial (Fin n) ℂ) := Ideal.span {linForm ℓ - 1} with hLdef`. Establish `hK : IsHomogIdeal K` using `isHomogIdeal_sup_linForm hJ.isHomog u`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK' : J ⊔ L ⊔ Ideal.span {linForm u} = K ⊔ L` using `sup_right_comm _ _ _`. Establish `hsupp` using `fun W => mem_support_iff (W := W) hℓ`. Establish `hhom : ∀ W ∈ K.minimalPrimes, IsHomogIdeal W` using `fun W hW => MinimalPrimeHomog.proof ℂ n K W hK hW`. Establish `hchart : ∀ Q : Ideal _, Q.IsPrime → K ⊔ L ≤ Q → ∃ V, IsProjPrime V ∧ linForm ℓ ∉ V ∧ V ⊔ L = Q ∧ K ≤ V` using `fun Q hQ hKQ => by`. Take `⟨V, hV, hℓV, hVQ, hVmax⟩` from `ChartHomogenise.proof ℂ n Q ℓ hQ (hKQ (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)))`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨V, hV, hℓV, hVQ, hVmax K hK (le_sup_left.trans hKQ)⟩`. Establish `hmin : ∀ W ∈ (divCycle J u).support, W ⊔ L ∈ (K ⊔ L).minimalPrimes` using `fun W hW => by`. Take `⟨hWm, hℓW⟩` from `(hsupp W).mp hW`. Use `hWm.1.1` as an intermediate fact. Use `⟨⟨isPrime_sup hWm.1.1 (hhom W hWm) hℓW, sup_le_sup_right hWm.1.2 _⟩, fun Q ⟨hQ, hKQ⟩ hQW => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨V, hV, -, hVQ, hKV⟩` from `hchart Q hQ hKQ`. Establish `hVW : V ≤ W` using `le_of_le_sup hV.isHomog hWm.1.1 (hhom W hWm) hℓW ((le_sup_left.trans hVQ.le).trans hQW)`. Rewrite using `[← hVQ]`. Conclude with `sup_le_sup_right (hWm.2 ⟨hV.isPrime, hKV⟩ hVW) _`. Use `⟨fun W₁ h₁ W₂ h₂ (e : W₁ ⊔ L = W₂ ⊔ L) => ?_, ?_, fun W hW => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨hm₁, hℓ₁⟩` from `(hsupp W₁).mp h₁`. Take `⟨hm₂, hℓ₂⟩` from `(hsupp W₂).mp h₂`. Conclude with `le_antisymm (le_of_le_sup (hhom W₁ hm₁) hm₂.1.1 (hhom W₂ hm₂) hℓ₂ (e ▸ le_sup_left)) (le_of_le_sup (hhom W₂ hm₂) hm₁.1.1 (hhom W₁ hm₁) hℓ₁ (e.symm ▸ le_sup_left))`. Rewrite using `[hK']`. Use extensionality with `Q`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨fun ⟨W, hW, hWQ⟩ => hWQ ▸ hmin W hW, fun hQ => ?_⟩` and prove the remaining obligations. Use `hQ.1.1` as an intermediate fact. Take `⟨V, hV, hℓV, hVQ, hKV⟩` from `hchart Q hQ.1.1 hQ.1.2`. Use `hV.isPrime` as an intermediate fact. Take `⟨W, hWm, hWV⟩` from `Ideal.exists_minimalPrimes_le hKV`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `hW : W ∈ (divCycle J u).support` using `(hsupp W).mpr ⟨hWm, fun h => hℓV (hWV h)⟩`. Establish `hle : W ⊔ L ≤ Q` using `hVQ ▸ sup_le_sup_right hWV _`. Conclude with `⟨W, hW, le_antisymm hle (hQ.2 (hmin W hW).1 hle)⟩`. Take `⟨hWm, hℓW⟩` from `(hsupp W).mp hW`. Use `hWm.1.1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hWL` using `isPrime_sup hWm.1.1 (hhom W hWm) hℓW`. Establish `hJW : J ≤ W` using `le_sup_left.trans hWm.1.2`. Establish `: (W.map (Ideal.Quotient.mk J)).IsPrime` using `Ideal.map_isPrime_of_surjective Ideal.Quotient.mk_surjective (by rw [Ideal.mk_ker]; exact hJW)`. Establish `hmapeq : (W ⊔ L).map (Ideal.Quotient.mk (J ⊔ L)) = W.map (Ideal.Quotient.mk (J ⊔ L))`. Establish `hL0 : L.map (Ideal.Quotient.mk (J ⊔ L)) = ⊥` using `(Ideal.map_eq_bot_iff_le_ker _).mpr (by rw [Ideal.mk_ker]; exact le_sup_right)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.map_sup, hL0, sup_bot_eq]`. Establish `hP' : ((W ⊔ L).map (Ideal.Quotient.mk (J ⊔ L))).IsPrime` using `Ideal.map_isPrime_of_surjective Ideal.Quotient.mk_surjective (by rw [Ideal.mk_ker]; exact sup_le_sup_right hJW _)`. Establish `: (W.map (Ideal.Quotient.mk (J ⊔ L))).IsPrime` using `hmapeq ▸ hP'`. Rewrite using `[divCycle_apply (mem_support_divCycle.mp hW).1]`. Establish `e₁` using `LocalMultOrd.proof _ J W (linForm u) hWm`.
-
-Establish `e₂` using `DehomogOrd.proof OrdPolynomialLocalization.proof ℂ n J W ℓ hJ.isHomog (hhom W hWm) hJW hℓW (linForm u) 1 (ChartLocDomain.linForm_isHomogeneous u)`. Establish `e₃` using `LocalMultOrd.proof _ (J ⊔ L) (W ⊔ L) (linForm u) (hK' ▸ hmin W hW)`. Establish `e₄` using `ord_atPrime_congr hmapeq (Ideal.Quotient.mk (J ⊔ L) (linForm u))`. Conclude with `e₃.trans (e₄.trans (e₂.symm.trans e₁.symm))` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem SliceComponents.proof : SliceComponents.Statement := by
   intro n J u ℓ hJ hℓ

@@ -4,7 +4,7 @@ import CompanionTheory.AutomorphicTheory.PadicCyclotomicFields.GcohEuler
 namespace CompanionTheory.LocalTateOrthogonality.Gcoh
 
 /- English proof (translation)
-The claim follows from `euler_of gcRep gc0 gc1 gc2 gcField`.
+A detailed English derivation is pending.
 -/
 theorem top_euler : Formalism.GaloisCohomology.LocalEulerCharK := euler_of gcRep gc0 gc1 gc2 gcField
 

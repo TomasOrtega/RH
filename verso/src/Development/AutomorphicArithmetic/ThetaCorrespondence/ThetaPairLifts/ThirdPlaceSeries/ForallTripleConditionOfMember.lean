@@ -20,7 +20,7 @@ end GlobalTheory.RowTriple
 namespace GlobalTheory.RowTriple
 open GlobalTheory.TwInputs Formalism.ConjugateSelfDual ReciprocityTheory.Gal
 /- English proof (translation)
-Introduce `hP hS hL`. Use `_root_.GlobalTheory.HeightCounting.Up.Model.AtMem.at_member_imp (_root_.GlobalTheory.T.compatibleSystem_tripleLayer_inputs_alt hP hS hL) fun K B f T w Z Wt p0 t nch n c h => ?_` and prove the remaining obligations. Take `⟨cf, Rw, low, Pq, S, hL', eig, θ, Bs, Sb, hSb, hKs, hT, hOcc, hcp, hall, hloc, hR⟩` from `h`. Conclude with `GlobalTheory.TwistedSelmerCompare.allTriples_of_tripAll _ (tripAll_of_sideB _ cf Rw low Pq S hL' eig θ Bs Sb hSb hKs hT hOcc hcp hall hloc hR)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem forall_triple_condition_of_member_alt : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → SerN → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root_.GlobalTheory.HeightCounting.Up.MemberAtLayerPoint hL fun _ _ _ _ w Z _ _ t nch n c => GlobalTheory.IndefiniteRowSideFullHecke.LatticeConditions.AllTriples (w.D Z) := by
   intro hP hS hL
@@ -36,7 +36,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeRec.factG
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.RowTriple.forall_triple_condition_of_member_alt | exact _root_.GlobalTheory.RowTriple.forall_triple_condition_of_member_alt | (intros; apply _root_.GlobalTheory.RowTriple.forall_triple_condition_of_member_alt <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.allTriples_at_members_of_third_layer : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → SerN → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root_.GlobalTheory.HeightCounting.Up.MemberAtLayerPoint hL fun _ _ _ _ w Z _ _ t nch n c => GlobalTheory.IndefiniteRowSideFullHecke.LatticeConditions.AllTriples (w.D Z) := by
   first | exact @_root_.GlobalTheory.RowTriple.forall_triple_condition_of_member_alt | exact _root_.GlobalTheory.RowTriple.forall_triple_condition_of_member_alt | (intros; apply _root_.GlobalTheory.RowTriple.forall_triple_condition_of_member_alt <;> assumption)

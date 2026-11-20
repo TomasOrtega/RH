@@ -17,11 +17,9 @@ section Gen
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {P J : Ideal (MRing ι)}
 
 /- English proof (translation)
-Establish `key : ∀ Ψ y w, sheetDensity P Ψ φ g y w = -sheetDensity P Ψ φ g' y w`. Introduce `Ψ y w`. Unfold `sheetDensity`. Use `split_ifs with hγ`. Rewrite using `[h _ hγ.choose_spec.2.self_of_nhds.2.1, neg_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Conclude with `neg_zero.symm`. Unfold `ptsIntegral`. Use `split_ifs with hΨ`. Unfold `ptsIntegralAt`. Simplify using `only [key, finsum_neg_distrib, MeasureTheory.integral_neg]`.
-
-Conclude with `neg_zero.symm`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pts_neg_congr (P : Ideal (MRing ι)) {e : ℕ}
     (φ : Fin e → ((Σ k, ι k) → ℂ) → ℝ) {g g' : ((Σ k, ι k) → ℂ) → ℝ} (h : ∀ z ∈ mcPts P, g z = -g' z) :
@@ -39,7 +37,7 @@ theorem pts_neg_congr (P : Ideal (MRing ι)) {e : ℕ}
   · exact neg_zero.symm
 
 /- English proof (translation)
-Rewrite using `[G.smul c z hc, hG]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem h_inv_of_deg {G : HermLine ι} (hG : G.a = 0) (c : K → ℂ) (z : (Σ k, ι k) → ℂ) (hc : ∀ k, c k ≠ 0) :
     G.h (fun p => c p.1 * z p) = G.h z := by
@@ -47,16 +45,16 @@ theorem h_inv_of_deg {G : HermLine ι} (hG : G.a = 0) (c : K → ℂ) (z : (Σ k
   simp
 
 /- English proof (translation)
-The claim follows from `ContDiffOn.log hG fun z hz => (G.pos z hz).ne'`.
+A detailed English derivation is pending.
 -/
 theorem smooth_log {G : HermLine ι} (hG : IsSmoothHerm G) :
     ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun z => Real.log (G.h z)) {z | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0} :=
   ContDiffOn.log hG fun z hz => (G.pos z hz).ne'
 
 /- English proof (translation)
-Use `continuous_iff_continuousAt.2 fun x => ?_` and prove the remaining obligations. Establish `h1 : ContinuousOn (fun y => Real.log (G.h (R.lift x y))) (R.U x)` using `(smooth_log hG).continuousOn.comp (continuousOn_pi.2 fun p => continuousOn_lift R x p) fun y hy => (R.mem x y hy).1`. Establish `hn : R.U x ∈ 𝓝 x` using `(R.isOpen_U x).mem_nhds (R.mem_U x)`. Use `(h1.continuousAt hn).congr ?_` and prove the remaining obligations. Use `filter_upwards [hn] with y hy`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc, hcz⟩` from `R.compat x y y ⟨hy, R.mem_U y⟩`. Rewrite using `[hcz, h_inv_of_deg h0 c _ hc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_log_lift {e : ℕ} (R : AnLogRes P J e) {G : HermLine ι} (hG : IsSmoothHerm G) (h0 : G.a = 0) :
     Continuous fun x => Real.log (G.h (R.lift x x)) := by
@@ -71,17 +69,15 @@ theorem continuous_log_lift {e : ℕ} (R : AnLogRes P J e) {G : HermLine ι} (hG
   rw [hcz, h_inv_of_deg h0 c _ hc]
 
 /- English proof (translation)
-Take `⟨n, rfl⟩ : ∃ n, e = n + 1` from `⟨e - 1, by have := j.2; omega⟩`. Establish `hg : (fun z => Real.log (G.h z)) = logNorm G.inv 1` using `funext fun z => (logNorm_inv_one G z).symm`. Establish `hL' : ∀ i, IsSmoothHerm (j.removeNth L i)` using `fun i => hL _`. Establish `key : ∀ E : HermLine ι, IsSmoothHerm E → ptsIntegral P (pot (Function.update L j E)) (fun z => Real.log (G.h z)) = mInt R.A (Fin.cons (potOf R E) fun i => potOf R (j.removeNth L i)) (fun x => Real.log (G.h (R.lift x x)))`. Introduce `E hEs`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hU : ∀ i, IsSmoothHerm (Function.update L j E i)`. Introduce `i`. Distinguish the cases in `hi : i = j`. Substitute `hi` using the available equality. Rewrite using `[Function.update_self]` and apply the resulting hypothesis.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[Function.update_of_ne hi]`. Conclude with `hL i`. Rewrite using `[hg, ptsIntegral_eq_mInt' hE resBridge R hP hU (isSmoothHerm_inv hG) (isSectionOn_inv_one hP.2.1.1 h0), ← potOf_cons, ← mIntSymm R.A (fun i => potOf R ((Fin.cons E (j.removeNth L) : Fin (n + 1) → HermLine ι) i)) j.cycleRange]`. Establish `hu : Function.update L j E = (Fin.cons E (j.removeNth L) : Fin (n + 1) → HermLine ι) ∘ j.cycleRange`. Rewrite using `[Fin.cons_comp_cycleRange, Fin.insertNth_removeNth]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu]`. Conclude with `mInt_congr _ (fun _ _ _ => rfl) fun x => logNorm_inv_one _ _`. Rewrite using `[key C hC, key A hA, key B hB]`. Establish `hΦ : ∀ i, IsPotential R.A (potOf R (j.removeNth L i))` using `fun i => isPotential_potOf R (hL' i)`. Establish `hPA` using `isPotential_potOf R hA`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPB` using `isPotential_potOf R hB`. Establish `hc` using `continuous_log_lift R hG h0`. Rewrite using `[← mIntAdd R.A _ _ _ hPA hPB hΦ _ (mIntegrableCont _ _ (fun i => Fin.cases hPA hΦ i) _ hc) (mIntegrableCont _ _ (fun i => Fin.cases hPB hΦ i) _ hc)]`. Use `mInt_congr _ (locDens_cons_congr _ _ fun j y hy => germ_of_eqOn R (fun x z hz => ?_) j y hy) fun _ => rfl` and prove the remaining obligations. Establish `hm` using `R.mem x z hz`.
-
-Use `show Real.log (C.h (R.lift x z)) = Real.log (A.h (R.lift x z)) + Real.log (B.h (R.lift x z))`. Rewrite using `[← h _ hm]`. Conclude with `Real.log_mul (A.pos _ hm.1).ne' (B.pos _ hm.1).ne'`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem add_update (hE : ResExistsStatement) {e : ℕ} (R : AnLogRes P J e) (hP : IsArithVar P (e + 1))
     {L : Fin e → HermLine ι} (hL : ∀ j, IsSmoothHerm (L j)) (j : Fin e) {A B C G : HermLine ι}
@@ -128,7 +124,7 @@ theorem add_update (hE : ResExistsStatement) {e : ℕ} (R : AnLogRes P J e) (hP 
   exact Real.log_mul (A.pos _ hm.1).ne' (B.pos _ hm.1).ne'
 
 /- English proof (translation)
-Establish `hs : IsSmoothHerm (GlobalTheory.CompanionTheory.Ar.Top.trivLine ι)` using `contDiffOn_const`. Use `add_update hE R hP hL j hs hs hs hG h0 fun z _ => mul_one _` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem triv_update (hE : ResExistsStatement) {e : ℕ} (R : AnLogRes P J e) (hP : IsArithVar P (e + 1))
     {L : Fin e → HermLine ι} (hL : ∀ j, IsSmoothHerm (L j)) (j : Fin e) {G : HermLine ι}
@@ -139,23 +135,21 @@ theorem triv_update (hE : ResExistsStatement) {e : ℕ} (R : AnLogRes P J e) (hP
   linarith
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `L _ h2`. Use `choose w hw' using fun j => h2 j (Finset.notMem_empty j)`. Establish `: L = fun t j => ℓ (w j) t` using `funext fun t => funext fun j => hw' j t`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `this` using the available equality. Conclude with `hw w`. Consider the case `insert j s hj ih`. Introduce `L h1 h2`. Take `⟨r, hr⟩` from `h1 j (Finset.mem_insert_self j s)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hup : ∀ a, Tendsto (fun t => ptsIntegral P (pot (Function.update (L t) j (ℓ a t))) (fun z => Real.log ((G t).h z))) (𝓝[>] 0) (𝓝 0)`. Introduce `a`. Use `ih (fun t => Function.update (L t) j (ℓ a t)) (fun i hi => ?_) fun i hi => ?_` and prove the remaining obligations. Establish `hij : i ≠ j` using `fun h => hj (h ▸ hi)`. Simplify using `only [Function.update_of_ne hij]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Conclude with `h1 i (Finset.mem_insert_of_mem hi)`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Conclude with `⟨a, fun t => Function.update_self _ _ _⟩`. Simplify using `only [Function.update_of_ne hij]`.
+Supply the required witnesses or components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Conclude with `h2 i fun h => (Finset.mem_insert.1 h).elim hij hi`. Establish `hLs : ∀ t, 0 < t → t ≤ t₀ → ∀ i, IsSmoothHerm (L t i)`. Introduce `t a b i`. Distinguish the cases in `hi : i ∈ insert j s`. Take `⟨r, hr⟩` from `h1 i hi`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hr]`. Conclude with `hx t r`. Take `⟨c, hc⟩` from `h2 i hi`. Rewrite using `[hc]`. Conclude with `hℓ c t a b`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hself : ∀ t, Function.update (L t) j (x t r) = L t` using `fun t => by`. Rewrite using `[← hr t, Function.update_eq_self]`. Take `⟨a, ⟨b, hb⟩ | hb⟩` from `hrel r`. Establish `h3` using `(hup b).sub (hup a)`. Rewrite `h3` using `[sub_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `h3.congr' ?_` and prove the remaining obligations. Use `filter_upwards [Ioc_mem_nhdsGT ht₀] with t ht`. Rewrite using `[add_update hE R hP (hLs t ht.1 ht.2) j (hx t r) (hℓ a t ht.1 ht.2) (hℓ b t ht.1 ht.2) (hG t) (h0 t) (hb t ht.1 ht.2), hself, add_sub_cancel_right]`. Establish `h3` using `(hup a).neg`. Rewrite `h3` using `[neg_zero]`.
-
-Use `h3.congr' ?_` and prove the remaining obligations. Use `filter_upwards [Ioc_mem_nhdsGT ht₀] with t ht`. Establish `h4` using `add_update hE R hP (hLs t ht.1 ht.2) j (C := GlobalTheory.CompanionTheory.Ar.Top.trivLine ι) (hx t r) (hℓ a t ht.1 ht.2) contDiffOn_const (hG t) (h0 t) (hb t ht.1 ht.2)`. Rewrite `h4` using `[triv_update hE R hP (hLs t ht.1 ht.2) j (hG t) (h0 t), hself]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem tendsto_words (hE : ResExistsStatement) {e : ℕ} (R : AnLogRes P J e) (hP : IsArithVar P (e + 1))
     {σ ρ : Type} {t₀ : ℝ} (ht₀ : 0 < t₀) (ℓ : σ → ℝ → HermLine ι) (x : ℝ → ρ → HermLine ι) (G : ℝ → HermLine ι)
@@ -218,7 +212,7 @@ theorem tendsto_words (hE : ResExistsStatement) {e : ℕ} (R : AnLogRes P J e) (
       linarith
 
 /- English proof (translation)
-Establish `h3` using `h'.neg`. Rewrite `h3` using `[neg_zero]`. Use `h3.congr' ?_` and prove the remaining obligations. Use `filter_upwards [Ioc_mem_nhdsGT ht₀] with t ht`. Conclude with `(pts_neg_congr P _ (h t ht.1 ht.2)).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tendsto_congr_pts (P : Ideal (MRing ι)) {e : ℕ} {t₀ : ℝ} (ht₀ : 0 < t₀)
     (φ : ℝ → Fin e → ((Σ k, ι k) → ℂ) → ℝ) {g g' : ℝ → ((Σ k, ι k) → ℂ) → ℝ}
@@ -234,11 +228,9 @@ theorem tendsto_congr_pts (P : Ideal (MRing ι)) {e : ℕ} {t₀ : ℝ} (ht₀ :
 end Gen
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero => exact i₀.elim0`. Consider the case `succ n ih`. Take `rfl : i₀ = Fin.last n` from `Fin.ext (by simp only [Fin.val_last]; omega)`. Rewrite using `[Fin.prod_univ_castSucc, mul_assoc, h]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with hn`. Simplify using `only [Fin.val_last] at hn`. Conclude with `ih (fun i => x i.castSucc) (fun i => y i.castSucc) (fun i => h i.castSucc) ⟨n - 1, by omega⟩ (by simp only []; omega)`. Simplify using `only [Fin.val_last] at hn`. Take `rfl : n = 0` from `by omega`.
-
-Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem telescope {G : Type} [CommMonoid G] {N : ℕ} (x y : Fin N → G)
     (h : ∀ i : Fin N, x i * y i = if h : 0 < (i : ℕ) then y ⟨i - 1, by omega⟩ else 1)
@@ -257,11 +249,9 @@ theorem telescope {G : Type} [CommMonoid G] {N : ℕ} (x y : Fin N → G)
       simp
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero => exact i₀.elim0`. Consider the case `succ n ih`. Take `rfl : i₀ = Fin.last n` from `Fin.ext (by simp only [Fin.val_last]; omega)`. Rewrite using `[Fin.sum_univ_castSucc, add_assoc, h]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with hn`. Simplify using `only [Fin.val_last] at hn`. Conclude with `ih (fun i => x i.castSucc) (fun i => y i.castSucc) (fun i => h i.castSucc) ⟨n - 1, by omega⟩ (by simp only []; omega)`. Simplify using `only [Fin.val_last] at hn`. Take `rfl : n = 0` from `by omega`.
-
-Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem telescope_add {G : Type} [AddCommMonoid G] {N : ℕ} (x y : Fin N → G)
     (h : ∀ i : Fin N, x i + y i = if h : 0 < (i : ℕ) then y ⟨i - 1, by omega⟩ else 0)
@@ -280,11 +270,11 @@ theorem telescope_add {G : Type} [AddCommMonoid G] {N : ℕ} (x y : Fin N → G)
       simp
 
 /- English proof (translation)
-Establish `hl : (j : ℕ) < (Finsupp.toMultiset (m.mapDomain (some : _ → Option (Ψ × Fin N)))).toList.length`. Rewrite using `[Multiset.length_toList, ← Finsupp.toMultiset_map, Multiset.card_map, Finsupp.card_toMultiset]`. Conclude with `lt_of_lt_of_eq j.2 hm.symm`. Establish `hall : ∀ o ∈ (Finsupp.toMultiset (m.mapDomain (some : _ → Option (Ψ × Fin N)))).toList, ∃ r, some r = o`. Introduce `o ho`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `ho` using `[Multiset.mem_toList, ← Finsupp.toMultiset_map]`. Take `⟨r, -, hr⟩` from `Multiset.mem_map.1 ho`. Conclude with `⟨r, hr⟩`. Take `⟨r, hr⟩` from `hall _ (List.get_mem _ ⟨j, hl⟩)`. Use `⟨r, fun t => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Unfold `GlobalTheory.CompanionTheory.Ar.Top.monoLines`. Rewrite using `[dif_pos hl, ← hr]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mono_roots {Ψ : Type} [Fintype Ψ] {N : ℕ} (M : GlobalTheory.CompanionTheory.Ar.Top.RootModel Ψ N) (m : Ψ × Fin N →₀ ℕ)
     (d : ℕ) (hm : m.degree = d) (j : Fin d) :
@@ -308,23 +298,23 @@ end PositivityTheory.Xgn.RealisationRoots
 
 open PositivityTheory.Xgn.RealisationRoots in
 /- English proof (translation)
-Introduce `hI Ψ _ _ N M S Re τ i₀ F _ _ φ A Sf hO hA hi ht₀ hdeg hxd hxh hph`. Set `T : ℝ → HermLine M.ι` to `fun t => GlobalTheory.CompanionTheory.Ar.PB.combLine (fun i : Fin N => M.x t (τ, i)) fun _ => 1`. Establish `hTh : ∀ t z, (T t).h z = ∏ i, (M.x t (τ, i)).h z` using `fun t z => by`. Simplify using `only [T, GlobalTheory.CompanionTheory.Ar.PB.combLine_h, zpow_one]`. Establish `hTs : ∀ t, IsSmoothHerm (T t)` using `fun t => by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Unfold `IsSmoothHerm`. Rewrite using `[show (T t).h = fun z => ∏ i, (M.x t (τ, i)).h z from funext (hTh t)]`. Conclude with `contDiffOn_prod fun i _ => M.x_smooth t (τ, i)`. Establish `hTa : ∀ t, (T t).a = A.a` using `fun t => by`. Use function extensionality and compare the values at `k`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [T, GlobalTheory.CompanionTheory.Ar.PB.combLine_a, one_mul, hdeg, Finset.sum_apply, M.x_deg]`. Set `G : ℝ → HermLine M.ι` to `fun t => A.tensor (T t).inv`. Establish `hGh : ∀ t z, (G t).h z = A.h z * ((T t).h z)⁻¹` using `fun t z => rfl`. Establish `hGs : ∀ t, IsSmoothHerm (G t)` using `fun t => isSmoothHerm_tensor hA (isSmoothHerm_inv (hTs t))`. Establish `hG0 : ∀ t, (G t).a = 0` using `fun t => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `A.a + -(T t).a = 0`. Rewrite using `[hTa, add_neg_cancel]`. Establish `hinv : A.inv.a = (Re.ref (some (τ, i₀))).a`. Use `telescope_add (fun i => M.xdeg (τ, i)) (fun i => (Re.ref (some (τ, i))).a) (hxd τ) i₀ hi` as an intermediate fact. Express the relevant statement in the definitionally equal form `-A.a = _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hdeg]`. Conclude with `neg_eq_of_add_eq_zero_right this`. Establish `hw : ∀ w : Fin (GlobalTheory.CompanionTheory.Ar.Top.dimFl Ψ N) → Option (Ψ × Fin N), Tendsto (fun t => ptsIntegral M.P (pot fun j => Re.line (w j) t) (fun z => Real.log ((G t).h z))) (𝓝[>] 0) (𝓝 0)`. Introduce `w`. Use `tendsto_congr_pts M.P ht₀ _ (fun t h0 h1 z hz => ?_) (PositivityTheory.Xgn.points_integral_small_limit hI M.K M.ι _ _ S M.P Re (some (τ, i₀)) A.inv w (isSmoothHerm_inv hA) hinv fun x hx => by` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hph x hx]`. Conclude with `Real.log_inv _)`. Establish `h2` using `telescope (fun i => (M.x t (τ, i)).h z) (fun i => (Re.line (some (τ, i)) t).h z) (fun i => hxh t h0 h1 τ i z hz) i₀ hi`. Rewrite `h2` using `[← hTh]`. Rewrite using `[hGh, inv_eq_of_mul_eq_one_right h2, Real.log_mul (A.pos z hz.1).ne' ((Re.line (some (τ, i₀)) t).pos z hz.1).ne']`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Express the relevant statement in the definitionally equal form `_ = -(Real.log (A.h z)⁻¹ - _)`. Rewrite using `[Real.log_inv]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨{ F := F, φ := φ, overInt := hO, A := A, A_smooth := hA, S := Sf, deg := hdeg.symm v := fun t z => Real.log ((G t).h z) v_inv := fun t c z hc => by rw [h_inv_of_deg (hG0 t) c z hc] v_smooth := fun t => smooth_log (hGs t) prod := fun t _ z hz => ?_ small := fun m hm => ?_ }, rfl⟩` and prove the remaining obligations. Rewrite using `[Real.exp_neg, Real.exp_log ((G t).pos z hz.1), hGh, ← hTh, mul_inv, inv_inv, mul_inv_cancel_left₀ (A.pos z hz.1).ne']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Prove the first alternative.
 
-Use `tendsto_words hI.resExists Re.R Re.arith ht₀ Re.line M.x G Re.line_smooth M.x_smooth hGs hG0 (fun r => ⟨some r, ?_⟩) hw Finset.univ _ (fun j _ => mono_roots M m _ hm j) fun j hj => (hj (Finset.mem_univ j)).elim` and prove the remaining obligations. Distinguish the cases in `h : 0 < (r.2 : ℕ)`. Conclude with `Or.inl ⟨_, fun t h0 h1 z hz => by`. Use `hxh t h0 h1 r.1 r.2 z hz` as an intermediate fact. Rewrite using `[dif_pos h] at this⟩` and apply the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Prove the second alternative. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `Or.inr fun t h0 h1 z hz => by`. Use `hxh t h0 h1 r.1 r.2 z hz` as an intermediate fact. Rewrite `this` using `[dif_neg h]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgn.root_of_realisation_telescoping : GlobalTheory.CompanionTheory.Ar.PB.Inputs → ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) (M : GlobalTheory.CompanionTheory.Ar.Top.RootModel Ψ N) (S : GlobalTheory.CompanionTheory.Ar.PB.AnSys (GlobalTheory.CompanionTheory.Ar.Top.dimFl Ψ N) (Option (Ψ × Fin N))) (Re : GlobalTheory.CompanionTheory.Ar.PB.Realis S M.P) (τ : Ψ) (i₀ : Fin N) (F : Type) [Field F] [NumberField F] (φ : F →+* M.Ω) (A : HermLine M.ι) (Sf : FlatHerm M.y φ A), OverInt M.y φ → IsSmoothHerm A → (i₀ : ℕ) + 1 = N → 0 < S.t₀ → A.a = ∑ i, M.xdeg (τ, i) → (∀ (σ : Ψ) (i : Fin N), M.xdeg (σ, i) + (Re.ref (some (σ, i))).a = if h : 0 < (i : ℕ) then (Re.ref (some (σ, ⟨i - 1, by omega⟩))).a else 0) → (∀ t, 0 < t → t ≤ S.t₀ → ∀ (σ : Ψ) (i : Fin N), ∀ z ∈ mcPts M.P, (M.x t (σ, i)).h z * (Re.line (some (σ, i)) t).h z = if h : 0 < (i : ℕ) then (Re.line (some (σ, ⟨i - 1, by omega⟩)) t).h z else 1) → (∀ x, Re.π x ∈ S.open' → -Real.log (A.h (Re.R.lift x x)) = Real.log ((Re.ref (some (τ, i₀))).h (Re.R.lift x x)) + S.ph (some (τ, i₀)) (Re.π x)) → ∃ R : RootFlat M τ, R.ht = Sf.ht := by
   intro hI Ψ _ _ N M S Re τ i₀ F _ _ φ A Sf hO hA hi ht₀ hdeg hxd hxh hph

@@ -13,7 +13,7 @@ section Fr
 variable {ι : Type} [Fintype ι] {n : ℕ} {E : Type} [Field E]
 
 /- English proof (translation)
-Simplify using `only [atInf]`. Rewrite using `[← Matrix.map_mul, Units.mul_inv]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem atInf_mul_inv' (emb : ι → E →+* ℂ) (γ : GL (Fin n) E) (τ : ι) :
     atInf emb (γ : Matrix (Fin n) (Fin n) E) τ * atInf emb ((γ⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) τ = 1 := by
@@ -22,7 +22,7 @@ theorem atInf_mul_inv' (emb : ι → E →+* ℂ) (γ : GL (Fin n) E) (τ : ι) 
   simp
 
 /- English proof (translation)
-Simplify using `only [atInf]`. Rewrite using `[← Matrix.map_mul, Units.inv_mul]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem atInf_inv_mul' (emb : ι → E →+* ℂ) (γ : GL (Fin n) E) (τ : ι) :
     atInf emb ((γ⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) τ * atInf emb (γ : Matrix (Fin n) (Fin n) E) τ = 1 := by
@@ -36,9 +36,9 @@ def trans (emb : ι → E →+* ℂ) (γ : GL (Fin n) E) {G : ι → Matrix (Fin
     exact (Matrix.isUnit_det_of_right_inverse (atInf_mul_inv' emb γ τ)).mul (y.2 τ)⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `τ`. Use `show y'.1 τ = _ * y.1 τ`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h τ, ← Matrix.mul_assoc, atInf_inv_mul', Matrix.one_mul]`. Introduce and unpack `rfl τ show y.1 τ = _ * (_ * y.1 τ)`. Rewrite using `[← Matrix.mul_assoc, atInf_mul_inv', Matrix.one_mul]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTr_iff (emb : ι → E →+* ℂ) (γ : GL (Fin n) E) {G : ι → Matrix (Fin n) (Fin n) ℂ} (y' y : Frames G) :
     IsTr (atInf emb (γ : Matrix (Fin n) (Fin n) E)) y' y ↔ y' = trans emb γ⁻¹ y := by
@@ -59,7 +59,7 @@ def twist (emb : ι → E →+* ℂ) (γ : GL (Fin n) E) (G : ι → Matrix (Fin
   map_add' a b := by funext y; simp [mul_add]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Establish `e : z = trans emb γ⁻¹ (trans emb γ z)` using `(isTr_iff emb γ _ _).1 fun _ => rfl`. Establish `h1 : c * h (trans emb γ⁻¹ (trans emb γ z)) = 0` using `congrFun h0 (trans emb γ z)`. Rewrite `h1` using `[← e]`. Conclude with `(mul_eq_zero.1 h1).resolve_left hc`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twist_eq_zero (emb : ι → E →+* ℂ) (γ : GL (Fin n) E) (G : ι → Matrix (Fin n) (Fin n) ℂ) (c : ℂ) (hc : c ≠ 0)
     (h : Frames G → ℂ) (h0 : twist emb γ G c h = 0) : h = 0 := by
@@ -76,7 +76,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {ι : Type} [Fintype ι]
 
 /- English proof (translation)
-Introduce `v' hv'`. Rewrite using `[Subgroup.coe_mul, Subgroup.coe_mul, Subgroup.coe_inv, map_mul, map_mul, map_inv, h v' hv', mul_one, mul_inv_cancel]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem atV_conj {v : HeightOneSpectrum (𝓞 F)} {η : GA σ J} (h : AtV v η) (κ : GA σ J) : AtV v (κ * η * κ⁻¹) := by
   intro v' hv'
@@ -86,7 +86,7 @@ variable (S : StepLevel F E σ J T f bad) (emb : ι → E →+* ℂ) (v : Height
   {k : Type} [Field k] (p : GA σ J → Pr (𝓞 E) (Fin n → E) k)
 
 /- English proof (translation)
-Apply `hp.1 γ hγ` to reduce the goal to its premises. Rewrite using `[Subgroup.coe_mul, Subgroup.coe_mul, Subgroup.coe_mul, hx, mul_assoc, mul_assoc]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem pair_move (hp : PMap S v hv p) (γ : GL (Fin n) E) (hγ : γ ∈ UJ (σ : E →+* E) J) (x x' κ : GA σ J)
     (hx : x'.1 = bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) γ * x.1 * κ.1) (η : GA σ J) :
@@ -95,29 +95,27 @@ theorem pair_move (hp : PMap S v hv p) (γ : GL (Fin n) E) (hγ : γ ∈ UJ (σ 
   rw [Subgroup.coe_mul, Subgroup.coe_mul, Subgroup.coe_mul, hx, mul_assoc, mul_assoc]
 
 /- English proof (translation)
-Establish `hκ` using `(S.U_eq κ.1).1 κ.2`. Set `c : GA σ J` to `⟨κ.1, hκ.1⟩`. Establish `hcv : p (x * c) = p x` using `(hp.2.1 x c).2 (hκ.2 v)`. Establish `hmv` using `pair_move S v hv p hp γ hγ x x' c hx`. Establish `hU : ∀ z : GA σ J, p (z * c) = p z` using `fun z => (hp.2.1 z c).2 (hκ.2 v)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `valAt`. Distinguish the cases in `h : ∃ η, AtV v η ∧ p (x * η) = q`. Establish `h' : ∃ η, AtV v η ∧ p (x' * η) = q.act (glE γ)`. Take `⟨η, h1, h2⟩` from `h`. Use `⟨c⁻¹ * η * c⁻¹⁻¹, atV_conj h1 _, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hmv, ← h2, ← hU (x * η)]`. Use `congr 2`. Use `group`. Rewrite using `[dif_pos h, dif_pos h']`. Take `⟨h1, h2⟩` from `h.choose_spec`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨h1', h2'⟩` from `h'.choose_spec`. Generalize the expression as in `h.choose = η at h1 h2`. Generalize the expression as in `h'.choose = η' at h1' h2'`. Rewrite `h2'` using `[hmv]`. Establish `h3` using `Pr.act_injective _ h2'`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : p (x * η * (η⁻¹ * c * η')) = p (x * η)`. Rewrite using `[h2, ← h3]`. Use `congr 1`. Use `group`. Establish `h5` using `(hp.2.1 _ _).1 h4`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hoff : ∀ v', v' ≠ v → bc (prV (E` using `E) v') (η⁻¹ * c * η' : GA σ J).1 = bc (prV (E := E) v') κ.1 := by`. Introduce `v' hv'`. Rewrite using `[Subgroup.coe_mul, Subgroup.coe_mul, Subgroup.coe_inv, map_mul, map_mul, map_inv, h1 v' hv', h1' v' hv', inv_one, one_mul, mul_one]`. Establish `hmem : (η⁻¹ * c * η' : GA σ J).1 ∈ S.U`. Use `(S.U_eq _).2 ⟨(η⁻¹ * c * η' : GA σ J).2, fun v' => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `e : v' = v`. Substitute `e` using the available equality. Conclude with `h5`. Rewrite using `[hoff v' e]`. Conclude with `hκ.2 v'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hchi : S.chi ⟨_, hmem⟩ = S.chi κ`. Use `S.chi_triv (κ⁻¹ * ⟨_, hmem⟩) fun v' hv' => by` as an intermediate fact. Rewrite using `[Subgroup.coe_mul, Subgroup.coe_inv, map_mul, map_inv]`. Use `show _ * bc (prV (E := E) v') (η⁻¹ * c * η' : GA σ J).1 = 1`. Rewrite using `[hoff v' (fun e => hb (e ▸ hv')), inv_mul_cancel]`.
+Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[map_mul, map_inv, inv_mul_eq_one]`. Conclude with `this.symm`. Use function extensionality and compare the values at `y`. Use `hg γ hγ (x * η) (x' * η') ⟨_, hmem⟩ (by show (x' * η').1 = _ * (x * η).1 * (η⁻¹ * c * η' : GA σ J).1` as an intermediate fact. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hx]`. Use `show _ = _ * _ * (_ * κ.1 * _)`. Use the proof step `group) y (trans emb γ⁻¹ y) ((isTr_iff emb γ _ _).2 rfl)`. Rewrite using `[this, hchi]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Establish `h' : ¬ ∃ η, AtV v η ∧ p (x' * η) = q.act (glE γ)`. Introduce and unpack `⟨η, h1, h2⟩`. Rewrite `h2` using `[hmv]`. Establish `h3` using `Pr.act_injective _ h2`. Use `h ⟨c * η * c⁻¹, atV_conj h1 _, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← h3, ← hU (x * (c * η * c⁻¹))]`. Use `congr 1`. Use `group`. Rewrite using `[dif_neg h, dif_neg h', map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem valAt_move (hb : v ∉ bad) (hp : PMap S v hv p) (g : GA σ J → Frames (gramC J emb) → ℂ) (hg : g ∈ AdFun S emb)
     (γ : GL (Fin n) E) (hγ : γ ∈ UJ (σ : E →+* E) J) (x x' : GA σ J) (κ : S.U)
@@ -182,19 +180,17 @@ theorem valAt_move (hb : v ∉ bad) (hp : PMap S v hv p) (g : GA σ J → Frames
     rw [dif_neg h, dif_neg h', map_zero]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J T f bad ι _ S emb v hv k _ p hb hp res t lam g hg`. Use `⟨?_, fun x _ => ?_⟩` and prove the remaining obligations. Introduce `γ hγ x x' κ hx y y' hy`. Establish `hκ` using `(S.U_eq κ.1).1 κ.2`. Establish `hpx : p x' = (p x).act (glE γ)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `pair_move S v hv p hp γ hγ x x' ⟨κ.1, hκ.1⟩ hx 1` as an intermediate fact. Rewrite `this` using `[mul_one, mul_one, (hp.2.1 x ⟨κ.1, hκ.1⟩).2 (hκ.2 v)]`. Then use the resulting hypothesis. Establish `key : upAd res t v p g x' = twist emb γ (gramC J emb) (S.chi κ : ℂ) (upAd res t v p g x)`. Establish `hz` using `twist_eq_zero emb γ (gramC J emb) (S.chi κ : ℂ) (Units.ne_zero _)`. Unfold `upAd`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[AddMonoidHom.map_finsum_of_preimage_zero _ hz]`. Simplify using `only [AddMonoidHom.map_finsum_of_preimage_zero _ hz]`. Use `symm`. Use `finsum_mem_eq_of_bijOn (Pr.act (glE γ)) ⟨fun q hq => ?_, (Pr.act_injective _).injOn, fun q hq => ?_⟩ fun q _ => ?_` and prove the remaining obligations. Rewrite using `[hpx]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Pr.Inc.act hq _`. Establish `e : (q.act (glE γ).symm).act (glE γ) = q`. Rewrite using `[Pr.act_act, LinearEquiv.symm_trans_self, Pr.act_refl]`. Use `⟨q.act (glE γ).symm, ?_, e⟩` and prove the remaining obligations. Rewrite `hq` using `[hpx, ← e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Pr.inc_act_iff _ _ _).1 hq`. Conclude with `(valAt_move S emb v hv p hb hp g hg.1 γ hγ x x' κ hx q).symm`. Rewrite using `[key, (isTr_iff emb γ _ _).1 hy]`. Both sides reduce to the same expression. Establish `hval : ∀ q, valAt v p g x q ∈ ValC (gramC J emb) lam`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
-Introduce `q`. Unfold `valAt`. Use `split_ifs with h`. Conclude with `hg.2 _ (Set.mem_univ _)`. Conclude with `zero_mem _`.
-
-Use `show upAd res t v p g x ∈ ValC (gramC J emb) lam`. Unfold `upAd`. Use `finsum_induction (· ∈ ValC (gramC J emb) lam) (zero_mem _) (fun _ _ => add_mem) fun q => ?_` and prove the remaining obligations. Conclude with `finsum_induction (· ∈ ValC (gramC J emb) lam) (zero_mem _) (fun _ _ => add_mem) fun _ => hval q`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem upAd_mem_adForms : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (T f : ℕ) (bad : Set (HeightOneSpectrum (𝓞 F))) (ι : Type) [Fintype ι] (S : StepLevel F E σ J T f bad) (emb : ι → E →+* ℂ) (v : HeightOneSpectrum (𝓞 F)) (hv : (T : 𝓞 F) ∈ v.asIdeal) (k : Type) [Field k] (p : GA σ J → Pr (𝓞 E) (Fin n → E) k), v ∉ bad → PMap S v hv p → ∀ (res : 𝓞 E →+* k) (t : 𝓞 E) (lam : ι → DomWeight n), ∀ g ∈ AdForms S emb lam, upAd res t v p g ∈ AdForms S emb lam := by
   intro F E _ _ _ _ _ σ n J T f bad ι _ S emb v hv k _ p hb hp res t lam g hg

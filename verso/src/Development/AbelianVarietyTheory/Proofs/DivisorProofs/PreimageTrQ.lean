@@ -23,7 +23,7 @@ section Pull
 variable {X Y Z : Scheme.{0}}
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.KS.pbT_of_le S h₁, GlobalTheory.KS.pbT_of_le T h₂, GlobalTheory.KS.pbT_of_le (T ≫ S) (h₂.trans (T.preimage_mono h₁))]`. Conclude with `congrArg (fun φ => φ.hom s) (Scheme.Hom.appLE_comp_appLE T S O₀ O₁ O₂ h₁ h₂)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pbT_pbT (T : Z ⟶ Y) (S : Y ⟶ X) {O₀ : X.Opens} {O₁ : Y.Opens} {O₂ : Z.Opens} (h₁ : O₁ ≤ S ⁻¹ᵁ O₀)
     (h₂ : O₂ ≤ T ⁻¹ᵁ O₁) (s : Γ(X, O₀)) : pbT T (pbT S s O₁) O₂ = pbT (T ≫ S) s O₂ := by
@@ -31,7 +31,7 @@ theorem pbT_pbT (T : Z ⟶ Y) (S : Y ⟶ X) {O₀ : X.Opens} {O₁ : Y.Opens} {O
   exact congrArg (fun φ => φ.hom s) (Scheme.Hom.appLE_comp_appLE T S O₀ O₁ O₂ h₁ h₂)
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.KS.pbT_of_le (𝟙 Z) h, GlobalTheory.KS.rsT_of_le h]`. Simplify using `[Scheme.Hom.appLE]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem pbT_id {O₀ O : Z.Opens} (h : O ≤ O₀) (s : Γ(Z, O₀)) : pbT (𝟙 Z) s O = rsT s O := by
   rw [GlobalTheory.KS.pbT_of_le (𝟙 Z) h, GlobalTheory.KS.rsT_of_le h]
@@ -39,7 +39,7 @@ theorem pbT_id {O₀ O : Z.Opens} (h : O ≤ O₀) (s : Γ(Z, O₀)) : pbT (𝟙
   rfl
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.KS.pbT_of_le f h, GlobalTheory.KS.pbT_of_le f h, map_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pbT_pow (f : Z ⟶ Y) {O₀ : Y.Opens} {O : Z.Opens} (h : O ≤ f ⁻¹ᵁ O₀) (s : Γ(Y, O₀)) (k : ℕ) :
     pbT f (s ^ k) O = pbT f s O ^ k := by
@@ -57,27 +57,27 @@ variable {R : Type} [CommRing R] (G : Over (Sp R)) [GrpObj G]
 def tr (x : 𝟙_ (Over (Sp R)) ⟶ G) : G.left ⟶ G.left := (𝟙 G * (toUnit G ≫ x)).left
 
 /- English proof (translation)
-Rewrite using `[MonObj.comp_mul, Category.comp_id, ← Category.assoc, toUnit_unique ((𝟙 G * (toUnit G ≫ x)) ≫ toUnit G) (toUnit G), _root_.mul_assoc, ← MonObj.comp_mul, _root_.mul_inv_cancel, MonObj.comp_one, _root_.mul_one]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem tr_over (x : 𝟙_ (Over (Sp R)) ⟶ G) : (𝟙 G * (toUnit G ≫ x)) ≫ (𝟙 G * (toUnit G ≫ x⁻¹)) = 𝟙 G := by
   rw [MonObj.comp_mul, Category.comp_id, ← Category.assoc, toUnit_unique ((𝟙 G * (toUnit G ≫ x)) ≫ toUnit G) (toUnit G),
     _root_.mul_assoc, ← MonObj.comp_mul, _root_.mul_inv_cancel, MonObj.comp_one, _root_.mul_one]
 
 /- English proof (translation)
-Rewrite using `[tr, tr, ← Over.comp_left, tr_over]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tr_tr_inv (x : 𝟙_ (Over (Sp R)) ⟶ G) : tr G x ≫ tr G x⁻¹ = 𝟙 _ := by
   rw [tr, tr, ← Over.comp_left, tr_over]; rfl
 
 /- English proof (translation)
-Use `tr_tr_inv G x⁻¹` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem tr_inv_tr (x : 𝟙_ (Over (Sp R)) ⟶ G) : tr G x⁻¹ ≫ tr G x = 𝟙 _ := by
   have := tr_tr_inv G x⁻¹
   rwa [inv_inv] at this
 
 /- English proof (translation)
-Rewrite using `[tr]`. Conclude with `(Over.w _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tr_hom (x : 𝟙_ (Over (Sp R)) ⟶ G) : tr G x ≫ G.hom = G.hom := by
   rw [tr]; exact (Over.w _)
@@ -89,28 +89,28 @@ section Field
 variable {Z : Scheme.{0}}
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.KS.rsT_of_le h, map_natCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rsT_natCast {O₀ O : Z.Opens} (h : O ≤ O₀) (m : ℕ) : rsT (m : Γ(Z, O₀)) O = m := by
   rw [GlobalTheory.KS.rsT_of_le h, map_natCast]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.KS.rsT_of_le h, map_ofNat]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rsT_ofNat {O₀ O : Z.Opens} (h : O ≤ O₀) (m : ℕ) [m.AtLeastTwo] :
     rsT (OfNat.ofNat m : Γ(Z, O₀)) O = OfNat.ofNat m := by
   rw [GlobalTheory.KS.rsT_of_le h, map_ofNat]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.KS.rsT_of_le h, GlobalTheory.KS.rsT_of_le h, map_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rsT_pow {O₀ O : Z.Opens} (h : O ≤ O₀) (s : Γ(Z, O₀)) (m : ℕ) : rsT (s ^ m) O = rsT s O ^ m := by
   rw [GlobalTheory.KS.rsT_of_le h, GlobalTheory.KS.rsT_of_le h, map_pow]
 
 /- English proof (translation)
-Establish `e1 : ∀ a (g : Γ(G.left, O)), dd a O' (rsT g O') = rsT (dd a O g) O'` using `fun a g => by`. Rewrite using `[GlobalTheory.KS.rsT_of_le h, GlobalTheory.KS.rsT_of_le h]`. Conclude with `(hdd a).2.2 O O' h le_top g`. Establish `e2 : ∀ g : Γ(G.left, O), d O' (rsT g O') = rsT (d O g) O'` using `fun g => by`. Rewrite using `[GlobalTheory.KS.rsT_of_le h, GlobalTheory.KS.rsT_of_le h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `hd.2.2 O O' h hO g`. Simplify using `only [op, GlobalTheory.KS.rsT_add, GlobalTheory.KS.rsT_sub, GlobalTheory.KS.rsT_mul, GlobalTheory.KS.rsT_sum, e1, e2, GlobalTheory.KS.rsT_constFn _ h, GlobalTheory.KS.rsT_rsT hO h, rsT_natCast h, rsT_ofNat h, rsT_pow h]`.
+A detailed English derivation is pending.
 -/
 theorem op_rsT {R : Type} [CommRing R] (G : Over (Sp R)) {n : ℕ} (dd : Fin n → Fld G.left)
     (hdd : ∀ a, IsField ⊤ (dd a)) (Θ : Matrix (Fin n) (Fin n) R) (u : Fin n → R) {W : G.left.Opens} (d : Fld G.left)
@@ -130,13 +130,13 @@ section Conj
 variable {R : Type} [CommRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G]
 
 /- English proof (translation)
-Establish `hpre : ∀ U : G.left.Opens, S ⁻¹ᵁ (T ⁻¹ᵁ U) = U` using `fun U => by`. Rewrite using `[← Scheme.Hom.comp_preimage, hST]`. Both sides reduce to the same expression. Establish `hpre' : ∀ U : G.left.Opens, T ⁻¹ᵁ (S ⁻¹ᵁ U) = U` using `fun U => by`. Rewrite using `[← Scheme.Hom.comp_preimage, hTS]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hSO : ∀ O, O ≤ T ⁻¹ᵁ W → S ⁻¹ᵁ O ≤ W` using `fun O hO => (S.preimage_mono hO).trans (hpre W).le`. Establish `back : ∀ (O : G.left.Opens) (f : Γ(G.left, O)), pbT T (pbT S f (S ⁻¹ᵁ O)) O = f` using `fun O f => by`. Rewrite using `[pbT_pbT T S le_rfl (hpre' O).ge, hTS, pbT_id le_rfl, GlobalTheory.KS.rsT_self]`. Use `⟨⟨fun O hO f f' => ?_, fun O hO f f' => ?_, fun O O' hle hO f => ?_⟩, fun O hO r => ?_⟩` and prove the remaining obligations.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [conjF]`. Rewrite using `[GlobalTheory.KS.pbT_add, hl.1.1 _ (hSO O hO), GlobalTheory.KS.pbT_add]`. Simplify using `only [conjF]`. Rewrite using `[GlobalTheory.KS.pbT_mul, hl.1.2.1 _ (hSO O hO), GlobalTheory.KS.pbT_add, GlobalTheory.KS.pbT_mul, GlobalTheory.KS.pbT_mul, back, back]`. Simplify using `only [conjF]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hS' : S ⁻¹ᵁ O' ≤ S ⁻¹ᵁ O` using `S.preimage_mono hle`. Rewrite using `[← GlobalTheory.KS.rsT_of_le hle, ← GlobalTheory.KS.rsT_of_le hle, GlobalTheory.KS.pbT_rsT S hle le_rfl, ← GlobalTheory.KS.rsT_pbT S le_rfl hS', GlobalTheory.KS.rsT_of_le hS', hl.1.2.2 _ _ hS' (hSO O hO), ← GlobalTheory.KS.rsT_of_le hS', GlobalTheory.KS.pbT_rsT T hS' (hpre' O').g …`. Simplify using `only [conjF]`. Rewrite using `[GlobalTheory.KS.pbT_constFn _ S le_rfl, hS, hl.2 _ (hSO O hO), GlobalTheory.KS.pbT_constFn _ T (hpre' O).ge, hT]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem isLift_conjF (D : R → R) {T S : G.left ⟶ G.left} (hTS : T ≫ S = 𝟙 _) (hST : S ≫ T = 𝟙 _)
     (hT : T ≫ G.hom = G.hom) (hS : S ≫ G.hom = G.hom) {W : G.left.Opens} {d : Fld G.left} (hl : IsLift G D W d) :
@@ -168,25 +168,25 @@ section OpConj
 variable {R : Type} [CommRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.KS.pbT_of_le f h, map_natCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pbT_natCast {Y Z : Scheme.{0}} (f : Z ⟶ Y) {O₀ : Y.Opens} {O : Z.Opens} (h : O ≤ f ⁻¹ᵁ O₀) (m : ℕ) :
     pbT f (m : Γ(Y, O₀)) O = m := by
   rw [GlobalTheory.KS.pbT_of_le f h, map_natCast]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.KS.pbT_of_le f h, map_ofNat]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pbT_ofNat {Y Z : Scheme.{0}} (f : Z ⟶ Y) {O₀ : Y.Opens} {O : Z.Opens} (h : O ≤ f ⁻¹ᵁ O₀) (m : ℕ)
     [m.AtLeastTwo] : pbT f (OfNat.ofNat m : Γ(Y, O₀)) O = OfNat.ofNat m := by
   rw [GlobalTheory.KS.pbT_of_le f h, map_ofNat]
 
 /- English proof (translation)
-Establish `hpre : ∀ U : G.left.Opens, S ⁻¹ᵁ (T ⁻¹ᵁ U) = U` using `fun U => by`. Rewrite using `[← Scheme.Hom.comp_preimage, hST]`. Both sides reduce to the same expression. Establish `hpre' : ∀ U : G.left.Opens, T ⁻¹ᵁ (S ⁻¹ᵁ U) = U` using `fun U => by`. Rewrite using `[← Scheme.Hom.comp_preimage, hTS]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hOO : O ≤ T ⁻¹ᵁ (S ⁻¹ᵁ O)` using `(hpre' O).ge`. Establish `hSO : S ⁻¹ᵁ O ≤ W` using `(S.preimage_mono hO).trans (hpre W).le`. Establish `back : pbT T (pbT S f (S ⁻¹ᵁ O)) O = f`. Rewrite using `[pbT_pbT T S le_rfl hOO, hTS, pbT_id le_rfl, GlobalTheory.KS.rsT_self]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ∀ a (X : Γ(G.left, S ⁻¹ᵁ O)), pbT T (dd a (S ⁻¹ᵁ O) X) O = dd a O (pbT T X O)` using `fun a X => (hdd a _ _ hOO X).symm`. Establish `ep : ∀ q : Γ(G.left, W), pbT T (rsT q (S ⁻¹ᵁ O)) O = rsT (pbT T q (T ⁻¹ᵁ W)) O` using `fun q => by`. Rewrite using `[GlobalTheory.KS.pbT_rsT T hSO hOO, GlobalTheory.KS.rsT_pbT T le_rfl hO]`. Simplify using `only [op, conjF, GlobalTheory.KS.pbT_add, GlobalTheory.KS.pbT_sub, GlobalTheory.KS.pbT_mul, GlobalTheory.KS.pbT_sum, e, ep, back, GlobalTheory.KS.pbT_constFn _ T hOO, hT, pbT_natCast T hOO, pbT_ofNat T hOO, pbT_pow T hOO]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem op_conjF {n : ℕ} (dd : Fin n → Fld G.left) {T S : G.left ⟶ G.left} (hTS : T ≫ S = 𝟙 _) (hST : S ≫ T = 𝟙 _)
     (hT : T ≫ G.hom = G.hom)
@@ -218,7 +218,7 @@ variable {R : Type} [CommRing R] [IsDomain R] {Q : DegPre R} {O : Type} [CommRin
   {oa : Q.OAct O} (Y : Ray oa)
 
 /- English proof (translation)
-Use `Y.q_linear.isMonHom` as an intermediate fact. Establish `e : (𝟙 Y.H * (toUnit Y.H ≫ x)) ≫ Y.q = Y.q ≫ (𝟙 Q.P.A * (toUnit Q.P.A ≫ x ≫ Y.q))`. Rewrite using `[MonObj.mul_comp, MonObj.comp_mul, Category.id_comp, Category.comp_id, ← Category.assoc, ← Category.assoc, toUnit_unique (Y.q ≫ toUnit Q.P.A) (toUnit Y.H), Category.assoc]`. Conclude with `congrArg CommaMorphism.left e`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tr_q (x : 𝟙_ (Over (Sp R)) ⟶ Y.H) : tr Y.H x ≫ Y.q.left = Y.q.left ≫ tr Q.P.A (x ≫ Y.q) := by
   have := Y.q_linear.isMonHom
@@ -228,7 +228,7 @@ theorem tr_q (x : 𝟙_ (Over (Sp R)) ⟶ Y.H) : tr Y.H x ≫ Y.q.left = Y.q.lef
   exact congrArg CommaMorphism.left e
 
 /- English proof (translation)
-Rewrite using `[← Scheme.Hom.comp_preimage, tr_q, Scheme.Hom.comp_preimage]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem preimage_tr_q (x : 𝟙_ (Over (Sp R)) ⟶ Y.H) (V : Q.P.A.left.Opens) :
     tr Y.H x ⁻¹ᵁ (Y.q.left ⁻¹ᵁ V) = Y.q.left ⁻¹ᵁ (tr Q.P.A (x ≫ Y.q) ⁻¹ᵁ V) := by

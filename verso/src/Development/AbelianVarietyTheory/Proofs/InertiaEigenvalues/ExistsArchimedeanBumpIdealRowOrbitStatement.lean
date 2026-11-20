@@ -10,7 +10,7 @@ open NumberField IsDedekindDomain Matrix MeasureTheory GlobalTheory.CuspRep Glob
 open scoped ENNReal nonZeroDivisors Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.BumpOrbit.exists_bump_ideal_rowGL) | (exact GlobalTheory.BumpOrbit.exists_bump_ideal_rowGL) | (intros; apply GlobalTheory.BumpOrbit.exists_bump_ideal_rowGL <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.exists_archimedeanBump_ideal_rowOrbit : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (ℓ : Fin a)
     (T : Finset (HeightOneSpectrum (𝓞 E))) (U : Subgroup (GL (Fin a) (Af E))), IsOpen (U : Set (GL (Fin a) (Af E))) →

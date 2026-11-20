@@ -11,7 +11,7 @@ open MvPolynomial GroundTheory.Heights₂.Heights.Bridge GroundTheory.Heights₂
 noncomputable section
 
 /- English proof (translation)
-Establish `h : ((ReciprocityTheory.ChartRestriction.G.Geo.charOf V : ℕ) : ℤ) ∈ V.comap (C : ℤ →+* ReciprocityTheory.ChartRestriction.G.Geo.MRing ι)`. Rewrite using `[← Submodule.IsPrincipal.span_singleton_generator (V.comap C), Ideal.mem_span_singleton]`. Conclude with `Int.dvd_natAbs.mpr dvd_rfl`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem C_charOf_mem {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
     (V : Ideal (ReciprocityTheory.ChartRestriction.G.Geo.MRing ι)) :
@@ -23,21 +23,19 @@ theorem C_charOf_mem {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (�
   exact h
 
 /- English proof (translation)
-Introduce `K _ ι _ V n a b t hV hp hdim ht htV`. Use `set p := ReciprocityTheory.ChartRestriction.G.Geo.charOf V with hp_def`. Establish `: Fact p.Prime` using `⟨hp⟩`. Establish `hpV : (C (p : ℤ) : ReciprocityTheory.ChartRestriction.G.Geo.MRing ι) ∈ V` using `C_charOf_mem V`. Establish `hker : RingHom.ker (red (ι` using `ι) p) ≤ V := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ker_red, Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `hpV`. Establish `hcm : (V.map (red p)).comap (red p) = V` using `comap_map_eq p hker`. Establish `: V.IsPrime` using `hV.1`. Establish `hQ : IsMultiProjPrime (V.map (red p))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Ideal.map_isPrime_of_surjective (red_surjective p) hker, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[isMultiHomogIdeal_iff]`. Take `⟨S, hS, hVS⟩` from `hV.2.1`. Use `⟨red p '' S, ?_, by rw [hVS, Ideal.map_span]⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, rfl⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨c, hc⟩` from `hS f hf`. Conclude with `⟨c, fun m hm k => hc m (MvPolynomial.support_map_subset _ _ hm) k⟩`. Rewrite using `[← isRelevant_comap_iff p, hcm]`. Conclude with `hV.2.2`. Establish `hd : relDim (V.map (red p)) = ((n + 1 : ℕ) : WithBot (WithTop ℤ))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[CutRegular.relDim_eq_natCast_iff, ← hdim]`. Use `ringKrullDim_eq_of_ringEquiv (quotEquiv p (V.map (red p)))` as an intermediate fact. Rewrite `this` using `[hcm]`. Conclude with `this.symm`. Establish `htr : IsMultiHomog (red p t) b`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[isMultiHomog_iff]`. Conclude with `fun m hm k => ht m (MvPolynomial.support_map_subset _ _ hm) k`. Establish `htrV : red p t ∉ V.map (red p)`. Introduce `h`. Apply `htV` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hcm]`. Conclude with `h`. Rewrite using `[← intNum_map_eq_geoNum p (n + 1) V hV hpV hdim, CutRegular.full (ZMod p) K ι (V.map (red p)) hQ n hd b (red p t) htr htrV a]`. Establish `hcut` using `cycEval_divCycle_eq p (V.map (red p)) t (fun W => intNum (ZMod p) W a) (fun W => ReciprocityTheory.ChartRestriction.G.Geo.geoNum n W a) (fun W' hW' => by`. Take `⟨hW'm, hW'd⟩` from `DivCycleSupport.full (ZMod p) K ι (V.map (red p)) hQ n hd b _ htr htrV W' hW'`.
-
-Conclude with `intNum_eq_geoNum_comap p n W' hW'm hW'd a)`. Rewrite `hcut` using `[hcm]`. Conclude with `hcut`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GeoNumCut.full : GeoNumCut.Statement := by
   intro K _ ι _ V n a b t hV hp hdim ht htV

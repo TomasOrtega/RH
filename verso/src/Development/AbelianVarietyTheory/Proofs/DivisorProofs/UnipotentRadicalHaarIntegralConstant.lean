@@ -10,15 +10,13 @@ open GlobalTheory.Doubling (absE)
 namespace GlobalTheory.EisMidConv
 
 /- English proof (translation)
-Introduce `hP F E _ _ _ _ _ σ n J r X Y L a h hS T hT μ 𝓕 _ _ h1 s hs g`. Establish `hn : (4 : ℝ) ≤ n` using `by exact_mod_cast hS.2.2.2.1`. Establish `hs0 : 0 ≤ s` using `by linarith`. Establish `hpos : ∀ g, 0 ≤ h g` using `fun g => by`. Take `⟨p, l, hp, k, hk, rfl⟩` from `hS.2.2.2.2.2.2.1 g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hS.2.2.2.2.2.2.2 p l hp k hk]`. Conclude with `NNReal.coe_nonneg _`. Take `⟨C, hC, hcov⟩` from `GlobalTheory.T.unipotent_radical_rational_translate F E σ n J r X Y L a h hS`. Take `⟨K, hK0, hK⟩` from `GlobalTheory.T.height_function_compact_right_translate F E σ n J r X Y L a h hS ((fun c => c * g) '' C) (hC.image (continuous_mul_right g))`. Establish `hsum` using `GlobalTheory.T.eisenstein_series_converges_right_half hP F E σ n J r X Y L a h hS T hT s hs`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : ∀ u : unipRad σ J (col0 X), ∑' t : GlobalTheory.EisCT.midSet σ J (col0 X) T, ENNReal.ofReal (h (t.1.1 * (u.1 * g)) ^ s) ≤ ENNReal.ofReal (K ^ s) * ∑' t : GlobalTheory.EisCT.midSet σ J (col0 X) T, ENNReal.ofReal (h t.1.1 ^ s)`. Introduce `u`. Take `⟨ν, hνr, hνN, hνC⟩` from `hcov u.1 u.2`. Rewrite using `[← GlobalTheory.T.eisenstein_transverse_term_formula F E σ n J r X Y L a h hS T hT ν hνr hνN s (u.1 * g), ← ENNReal.tsum_mul_left]`. Use `ENNReal.tsum_le_tsum fun t => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ENNReal.ofReal_mul (Real.rpow_nonneg hK0 s)]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Use `hK t.1.1 (ν * (u.1 * g)) ⟨ν * u.1, hνC, by simp [mul_assoc]⟩` as an intermediate fact. Rewrite using `[← Real.mul_rpow hK0 (hpos _)]`. Conclude with `Real.rpow_le_rpow (hpos _) this hs0`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem lintegral_midSet_lt_top : GlobalTheory.Published.EisensteinIsotropicLine → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (r : ℕ) (X Y : Matrix (Fin n) (Fin (r + 1)) E) (L : Submodule (𝓞 E) (Fin n → E))

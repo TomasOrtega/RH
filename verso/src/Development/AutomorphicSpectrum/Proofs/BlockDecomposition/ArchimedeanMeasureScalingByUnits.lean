@@ -13,7 +13,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.SW.Dil
 
 /- English proof (translation)
-Use `Measure.pi_eq (μ := fun i => c i • μ i) fun s hs => ?_` and prove the remaining obligations. Rewrite using `[Measure.smul_apply, Measure.pi_pi]`. Simplify using `only [Measure.smul_apply, ENNReal.smul_def, smul_eq_mul, ENNReal.coe_finset_prod, Finset.prod_mul_distrib]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pi_smul_nnreal {ι : Type} [Fintype ι] {X : ι → Type} [∀ i, MeasurableSpace (X i)]
     (μ : ∀ i, Measure (X i)) [∀ i, SigmaFinite (μ i)] (c : ι → ℝ≥0) :
@@ -25,17 +25,13 @@ theorem pi_smul_nnreal {ι : Type} [Fintype ι] {X : ι → Type} [∀ i, Measur
     Finset.prod_mul_distrib]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ n M d b lam hlam e he t ht`. Take `⟨j1, j2, j3, j4, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hσ (Ainf F)`. Use `haveI : BorelSpace (Ainf F ⊗[F] E) := ⟨rfl⟩`. Use `haveI : BorelSpace (Ainf F) := ⟨rfl⟩`. Take `⟨hK, -, -⟩` from `GlobalTheory.T.coordinate_haar_measure F E σ hσ (Ainf F) d b lam hlam`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := hK`. Establish `hfm : ∀ a, Measurable (fun y : Ainf F ⊗[F] E => algebraMap (Ainf F) (Ainf F ⊗[F] E) (t a) * y)` using `fun a => (continuous_const.mul continuous_id).measurable`. Establish `hrow : ∀ a, (Measure.pi fun _ : Fin M => GlobalTheory.CompanionTheory.SW.coordK (Ainf F) b lam).map (fun (x : Fin M → Ainf F ⊗[F] E) i => algebraMap (Ainf F) (Ainf F ⊗[F] E) (t a) * x i) = (((∏ w, ‖e (t a) w‖₊)⁻¹) ^ (d * M)) • Measure.pi fun _ : Fin M => GlobalTheory.CompanionThe …`. Introduce `a`. Take `⟨u, hu⟩` from `ht a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `GlobalTheory.CompanionTheory.HaarScale.unit_mul_map_haar F e he lam hlam (t a) (ht a)`. Rewrite `h` using `[← hu]`. Establish `hk` using `coordK_map_unit (Ainf F) σ hσ b lam u _ h`. Rewrite `hk` using `[hu]`. Establish `hk1` using `pi_map_scale (ι := Fin M) (GlobalTheory.CompanionTheory.SW.coordK (Ainf F) b lam) _ (hfm a) _ hk`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Fintype.card_fin, ← pow_mul] at hk1`. Conclude with `hk1`. Establish `hrm : ∀ a, Measurable (fun (x : Fin M → Ainf F ⊗[F] E) i => algebraMap (Ainf F) (Ainf F ⊗[F] E) (t a) * x i)` using `fun a => measurable_pi_iff.2 fun i => (hfm a).comp (measurable_pi_apply i)`. Use `haveI : ∀ a, SigmaFinite ((Measure.pi fun _ : Fin M => GlobalTheory.CompanionTheory.SW.coordK (Ainf F) b lam).map (fun (x : Fin M → Ainf F ⊗[F] E) i => algebraMap (Ainf F) (Ainf F ⊗[F] E) (t a) * x i)) := fun a => by`. Rewrite using `[hrow a]`.
-
-Use `infer_instance`. Establish `hmap` using `Measure.pi_map_pi (μ := fun _ : Fin n => Measure.pi fun _ : Fin M => GlobalTheory.CompanionTheory.SW.coordK (Ainf F) b lam) (f := fun a (x : Fin M → Ainf F ⊗[F] E) i => algebraMap (Ainf F) (Ainf F ⊗[F] E) (t a) * x i) (fun a => (hrm a).aemeasurable)`. Unfold `GlobalTheory.CompanionTheory.SW.coordW`. Use `hmap.trans ?_` and prove the remaining obligations. Simplify using `only [hrow]`.
-
-Conclude with `pi_smul_nnreal _ _`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coordW_map_units : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n M d : ℕ) (b : Module.Basis (Fin d) F E) (lam : Measure (Ainf F)), lam.IsAddHaarMeasure → ∀ e : Ainf F ≃+* (NumberField.InfinitePlace F → ℝ), IsHomeomorph e → ∀ t : Fin n → Ainf F, (∀ a, IsUnit (t a)) → (GlobalTheory.CompanionTheory.SW.coordW (Ainf F) b lam n M).map (fun X a i => algebraMap (Ainf F) (Ainf F ⊗[F] E) (t a) * X a i) = (∏ a, ((∏ w, ‖e (t a) w‖₊)⁻¹) ^ (d * M)) • GlobalTheory.CompanionTheory.SW.coordW (Ainf F) b lam n M := by
   intro F E _ _ _ _ _ σ hσ n M d b lam hlam e he t ht

@@ -13,17 +13,13 @@ section Abstract
 variable {G ι : Type*} [Group G] [MeasurableSpace G] [MeasurableMul G]
 
 /- English proof (translation)
-Use `haveI : Countable ι := Function.Injective.countable (f := fun i => e (1, i)) fun i j h => by simpa using congrArg Prod.snd (e.injective h)`. Use `haveI : Countable Δ := Function.Injective.countable (f := fun δ => e (δ, (e.symm 1).2)) fun i j h => by simpa using congrArg Prod.fst (e.injective h)`. Use `haveI : MeasurableConstSMul Γ G := ⟨fun γ => measurable_const_mul (γ : G)⟩`. Use `haveI : MeasurableConstSMul Δ G := ⟨fun γ => measurable_const_mul (γ : G)⟩`. Use `haveI : SMulInvariantMeasure Γ G μ := ⟨fun γ s _ => measure_preimage_mul μ (γ : G) s⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : SMulInvariantMeasure Δ G μ := ⟨fun γ s _ => measure_preimage_mul μ (γ : G) s⟩`. Establish `hset : ∀ (δ : Δ) (i : ι), (δ • (r i • 𝓕) ∩ 𝓕' : Set G) = 𝓕' ∩ e (δ, i) • 𝓕`. Introduce `δ i`. Use extensionality with `x`. Simplify using `only [Set.mem_inter_iff, Set.mem_smul_set_iff_inv_smul_mem, Subgroup.smul_def, smul_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[and_comm]`. Use `and_congr_right fun _ => ?_` and prove the remaining obligations. Rewrite using `[he]`. Simplify using `[mul_assoc]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `tsum_congr fun i => ?_` and prove the remaining obligations. Rewrite using `[(measurePreserving_mul_left μ (r i)).setLIntegral_comp_emb (measurableEmbedding_mulLeft (r i)) f 𝓕]`. Both sides reduce to the same expression. Use `_ = ∑' i, ∑' δ : Δ, ∫⁻ g in 𝓕' ∩ e (δ, i) • 𝓕, f g ∂μ := by`. Use `tsum_congr fun i => ?_` and prove the remaining obligations.
-
-Rewrite using `[h𝓕'.setLIntegral_eq_tsum' f (r i • 𝓕)]`. Use `tsum_congr fun δ => ?_` and prove the remaining obligations. Rewrite using `[hset]`. Use `congr 1`. Use function extensionality and compare the values at `g`.
-
-Conclude with `hf _ (δ⁻¹).2 g`. Use `_ = ∑' p : Δ × ι, ∫⁻ g in 𝓕' ∩ e p • 𝓕, f g ∂μ := by`. Rewrite using `[ENNReal.tsum_prod', ENNReal.tsum_comm]`. Use `_ = ∑' γ : Γ, ∫⁻ g in 𝓕' ∩ γ • 𝓕, f g ∂μ := e.tsum_eq (fun γ => ∫⁻ g in 𝓕' ∩ γ • 𝓕, f g ∂μ)`. Use `_ = ∫⁻ g in 𝓕', f g ∂μ := (h𝓕.setLIntegral_eq_tsum f 𝓕').symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_unfold (μ : Measure G) [μ.IsMulLeftInvariant] (Γ Δ : Subgroup G) [Countable Γ]
     (r : ι → G) (e : Δ × ι ≃ Γ) (he : ∀ p, (e p : G) = p.1 * r p.2)
@@ -68,11 +64,11 @@ theorem lintegral_unfold (μ : Measure G) [μ.IsMulLeftInvariant] (Γ Δ : Subgr
     _ = ∫⁻ g in 𝓕', f g ∂μ := (h𝓕.setLIntegral_eq_tsum f 𝓕').symm
 
 /- English proof (translation)
-Use `haveI : Countable ι := Function.Injective.countable (f := fun i => e (1, i)) fun i j h => by simpa using congrArg Prod.snd (e.injective h)`. Establish `hset : ∀ (δ : Δ) (i : ι), (δ • (r i • 𝓕) : Set G) = e (δ, i) • 𝓕`. Introduce `δ i`. Use extensionality with `x`. Simplify using `only [Set.mem_smul_set_iff_inv_smul_mem, Subgroup.smul_def, smul_eq_mul, Subgroup.coe_inv]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he]`. Simplify using `[mul_assoc]`. Use `⟨.iUnion fun i => h𝓕.nullMeasurableSet.smul (r i), h𝓕.ae_covers.mono ?_, fun δ δ' hδ => ?_⟩` and prove the remaining obligations. Introduce and unpack `x ⟨γ, hγ⟩`. Use `⟨(e.symm γ⁻¹).1⁻¹, Set.mem_iUnion.2 ⟨(e.symm γ⁻¹).2, ?_⟩⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Set.mem_smul_set_iff_inv_smul_mem, hset, Prod.mk.eta, e.apply_symm_apply, Set.mem_smul_set_iff_inv_smul_mem, inv_inv]`. Conclude with `hγ`. Simplify using `only [Function.onFun, Set.smul_set_iUnion, hset, AEDisjoint.iUnion_left_iff, AEDisjoint.iUnion_right_iff]`. Conclude with `fun i j => h𝓕.aedisjoint fun h => hδ (by simpa using congrArg Prod.fst (e.injective h))`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem isFundamentalDomain_iUnion (μ : Measure G) [μ.IsMulLeftInvariant] (Γ Δ : Subgroup G) [Countable Γ]
     (r : ι → G) (e : Δ × ι ≃ Γ) (he : ∀ p, (e p : G) = p.1 * r p.2)
@@ -95,15 +91,11 @@ theorem isFundamentalDomain_iUnion (μ : Measure G) [μ.IsMulLeftInvariant] (Γ 
     exact fun i j => h𝓕.aedisjoint fun h => hδ (by simpa using congrArg Prod.fst (e.injective h))
 
 /- English proof (translation)
-Use `haveI : Countable ι := Function.Injective.countable (f := fun i => e (1, i)) fun i j h => by simpa using congrArg Prod.snd (e.injective h)`. Use `haveI : Countable Δ := Function.Injective.countable (f := fun δ => e (δ, (e.symm 1).2)) fun i j h => by simpa using congrArg Prod.fst (e.injective h)`. Use `haveI : SMulInvariantMeasure Δ G μ := ⟨fun γ s _ => measure_preimage_mul μ (γ : G) s⟩`. Establish `hS` using `isFundamentalDomain_iUnion μ Γ Δ r e he h𝓕`. Establish `hf' : ∀ (δ : Δ) (g : G), f (δ • g) = f g` using `fun δ g => hf δ δ.2 g`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmi : ∀ i, AEStronglyMeasurable (fun g => f (r i * g)) (μ.restrict 𝓕)` using `fun i => (hm.comp_quasiMeasurePreserving (measurePreserving_mul_left μ (r i)).quasiMeasurePreserving).restrict`. Establish `hI : IntegrableOn f 𝓕' μ` using `⟨hm.restrict, by`. Use `lintegral_unfold μ Γ Δ r e he h𝓕 h𝓕' (fun g => ‖f g‖ₑ) (fun δ h g => by rw [hf δ h]) hm.enorm` as an intermediate fact. Conclude with `lt_top_iff_ne_top.2 (this ▸ hfin)⟩`. Establish `hr : ∀ i, (r i • 𝓕 : Set G) = e (1, i) • 𝓕` using `fun i => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Subgroup.smul_def, he]`. Simplify using the standard rewrite rules. Use `⟨?_, ⟨AEStronglyMeasurable.tsum hmi, ?_⟩, hI, ?_⟩` and prove the remaining obligations. Use `filter_upwards [ae_lt_top' (AEMeasurable.ennreal_tsum fun i => (hmi i).enorm) hfin] with g hg`. Use `ENNReal.summable_toReal hg.ne` as an intermediate fact.
-
-Simplify using `using this`. Conclude with `lt_of_le_of_lt (lintegral_mono fun x => enorm_tsum_le_tsum_enorm) hfin.lt_top`. Rewrite using `[integral_tsum hmi (by rwa [← lintegral_tsum fun i => (hmi i).enorm]), h𝓕'.setIntegral_eq hS hf', integral_iUnion_ae (fun i => h𝓕.nullMeasurableSet.smul (r i)) (fun i j hij => by`. Simplify using `only [Function.onFun, hr]`. Conclude with `h𝓕.aedisjoint fun h => hij (by simpa using congrArg Prod.snd (e.injective h)))`.
-
-Use the proof step `((h𝓕'.integrableOn_iff hS hf').1 hI)]`. Use `tsum_congr fun i => ?_` and prove the remaining obligations. Conclude with `((measurePreserving_mul_left μ (r i)).setIntegral_image_emb (measurableEmbedding_mulLeft (r i)) f 𝓕).symm`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem integral_unfold {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V] [CompleteSpace V]
     (μ : Measure G) [μ.IsMulLeftInvariant] (Γ Δ : Subgroup G) [Countable Γ]
@@ -150,11 +142,9 @@ open GlobalTheory.CuspRep
 variable {E : Type} [Field E] {a : ℕ}
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `Submodule.exists_linearEquiv_restrict_eq ((LinearEquiv.toSpanNonzeroSingleton E _ v hv).symm.trans (LinearEquiv.toSpanNonzeroSingleton E _ ξ hξ))`. Establish `h1` using `hg ⟨v, Submodule.mem_span_singleton_self v⟩`. Rewrite `h1` using `[← LinearEquiv.toSpanNonzeroSingleton_one E _ v hv, LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply, LinearEquiv.toSpanNonzeroSingleton_one, LinearEquiv.toSpanNonzeroSingleton_one]`. Use `set A := LinearMap.toMatrix' g.toLinearMap`. Use `set B := LinearMap.toMatrix' g.symm.toLinearMap`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAB : A * B = 1` using `by rw [← LinearMap.toMatrix'_comp]; simp`. Establish `hBA : B * A = 1` using `by rw [← LinearMap.toMatrix'_comp]; simp`. Use `⟨⟨Aᵀ, Bᵀ, by rw [← Matrix.transpose_mul, hBA, Matrix.transpose_one], by rw [← Matrix.transpose_mul, hAB, Matrix.transpose_one]⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `v ᵥ* Aᵀ = ξ`. Rewrite using `[Matrix.vecMul_transpose, LinearMap.toMatrix'_mulVec]`.
-
-Apply the tactic sequence `first | exact h1 | exact h1.symm`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_vecMul_eq {v ξ : Fin a → E} (hv : v ≠ 0) (hξ : ξ ≠ 0) :
     ∃ γ : GL (Fin a) E, v ᵥ* (γ : Matrix (Fin a) (Fin a) E) = ξ := by
@@ -177,7 +167,7 @@ theorem exists_vecMul_eq {v ξ : Fin a → E} (hv : v ≠ 0) (hξ : ξ ≠ 0) :
 variable [NumberField E]
 
 /- English proof (translation)
-Rewrite using `[Units.val_mul, ← Matrix.vecMul_vecMul]`. Use `congr 1`. Use extensionality with `j`. Simplify using `[ratGL, Matrix.vecMul, dotProduct, map_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem vecMul_ratGL_mul (ξ : Fin a → E) (γ : GL (Fin a) E) (g : GA E a) :
     (algebraMap E (Ad E) ∘ ξ) ᵥ* (ratGL E a γ * g).val = (algebraMap E (Ad E) ∘ (ξ ᵥ* γ.val)) ᵥ* g.val := by
@@ -187,7 +177,7 @@ theorem vecMul_ratGL_mul (ξ : Fin a → E) (γ : GL (Fin a) E) (g : GA E a) :
   simp [ratGL, Matrix.vecMul, dotProduct, map_sum]
 
 /- English proof (translation)
-Introduce `_ _ h` and use `by ext i j exact NumberField.AdeleRing.algebraMap_injective _ E (congrArg (fun z : GA E a => (z : Matrix (Fin a) (Fin a) (Ad E)) i j) h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ratGL_injective : Function.Injective (ratGL E a) := fun _ _ h => by
   ext i j
@@ -195,7 +185,7 @@ theorem ratGL_injective : Function.Injective (ratGL E a) := fun _ _ h => by
     (congrArg (fun z : GA E a => (z : Matrix (Fin a) (Fin a) (Ad E)) i j) h)
 
 /- English proof (translation)
-Use `haveI : Countable E := (Module.finBasis ℚ E).equivFun.injective.countable`. Use `haveI : Countable (Matrix (Fin a) (Fin a) E) := inferInstanceAs (Countable (Fin a → Fin a → E))`. Use `haveI : Countable (GL (Fin a) E) := Units.val_injective.countable`. Conclude with `(ratGL E a).rangeRestrict_surjective.countable`.
+A detailed English derivation is pending.
 -/
 theorem countable_range_ratGL : Countable (ratGL E a).range := by
   haveI : Countable E := (Module.finBasis ℚ E).equivFun.injective.countable
@@ -204,15 +194,15 @@ theorem countable_range_ratGL : Countable (ratGL E a).range := by
   exact (ratGL E a).rangeRestrict_surjective.countable
 
 /- English proof (translation)
-Use `choose γ hγ using fun ξ : {ξ : Fin a → E // ξ ≠ 0} => exists_vecMul_eq hv ξ.2`. Set `φ : P.map (ratGL E a) × {ξ : Fin a → E // ξ ≠ 0} → (ratGL E a).range` to `fun p => ⟨p.1 * ratGL E a (γ p.2), mul_mem (Subgroup.map_le_range _ _ p.1.2) ⟨_, rfl⟩⟩`. Use `⟨γ, Equiv.ofBijective φ ⟨?_, ?_⟩, hγ, fun _ => rfl⟩` and prove the remaining obligations. Introduce and unpack `⟨⟨_, δ, hδ, rfl⟩, ξ⟩ ⟨⟨_, δ', hδ', rfl⟩, ξ'⟩ h`. Establish `h1 : δ * γ ξ = δ' * γ ξ'` using `ratGL_injective (by simpa only [map_mul] using congrArg Subtype.val h)`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ξ = ξ'` using `Subtype.ext (by`. Use `congrArg (fun x : GL (Fin a) E => v ᵥ* x.val) h1` as an intermediate fact. Simplify `this)` using `only [Units.val_mul, ← Matrix.vecMul_vecMul, (hP _).1 hδ, (hP _).1 hδ', hγ]`. Substitute `h2` using the available equality. Take `rfl` from `mul_right_cancel h1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Substitute using the available equality. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Introduce and unpack `⟨_, x, rfl⟩`. Establish `h0 : v ᵥ* x.val ≠ 0` using `fun h => hv (by`. Use `congrArg (· ᵥ* (x⁻¹).val) h` as an intermediate fact. Simplify `this)` using `only [Matrix.vecMul_vecMul, Units.mul_inv, Matrix.vecMul_one, Matrix.zero_vecMul]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h1 : x * (γ ⟨_, h0⟩)⁻¹ ∈ P` using `(hP _).2 (by`. Establish `h2 : v ᵥ* (γ ⟨_, h0⟩).val = v ᵥ* x.val` using `hγ _`. Generalize the expression as in `γ ⟨_, h0⟩ = y at h2 ⊢`. Rewrite using `[Units.val_mul, ← Matrix.vecMul_vecMul, ← h2, Matrix.vecMul_vecMul, Units.mul_inv, Matrix.vecMul_one])`. Use `⟨⟨⟨_, _, h1, rfl⟩, ⟨_, h0⟩⟩, Subtype.ext ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `ratGL E a _ * ratGL E a _ = _`. Rewrite using `[← map_mul, inv_mul_cancel_right]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_transversal {v : Fin a → E} (hv : v ≠ 0) {P : Subgroup (GL (Fin a) E)}
     (hP : ∀ γ, γ ∈ P ↔ v ᵥ* γ.val = v) :
@@ -252,7 +242,7 @@ variable [MeasurableSpace (GA E a)] [MeasurableMul (GA E a)] (μ : Measure (GA E
 include hv hP h𝓕 h𝓕'
 
 /- English proof (translation)
-Use `haveI := countable_range_ratGL (E := E) (a := a)`. Take `⟨γ, e, hγ, he⟩` from `exists_transversal hv hP`. Use `lintegral_unfold μ _ _ (fun ξ => ratGL E a (γ ξ)) e he h𝓕 h𝓕' _ (by rintro _ ⟨δ, hδ, rfl⟩ g; simp only [vecMul_ratGL_mul, hF, (hP _).1 hδ]) hm` as an intermediate fact. Simplify `this` using `only [vecMul_ratGL_mul, hF, hγ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem lintegral_tsum_vecMul (F : GA E a → (Fin a → Ad E) → ℝ≥0∞) (hF : ∀ γ g y, F (ratGL E a γ * g) y = F g y)
     (hm : AEMeasurable (fun g : GA E a => F g ((algebraMap E (Ad E) ∘ v) ᵥ* g.val)) μ) :
@@ -265,7 +255,7 @@ theorem lintegral_tsum_vecMul (F : GA E a → (Fin a → Ad E) → ℝ≥0∞) (
   simpa only [vecMul_ratGL_mul, hF, hγ] using this
 
 /- English proof (translation)
-Use `haveI := countable_range_ratGL (E := E) (a := a)`. Take `⟨γ, e, hγ, he⟩` from `exists_transversal hv hP`. Use `integral_unfold μ _ _ (fun ξ => ratGL E a (γ ξ)) e he h𝓕 h𝓕' _ (by rintro _ ⟨δ, hδ, rfl⟩ g; simp only [vecMul_ratGL_mul, hF, (hP _).1 hδ]) hm (by simpa only [vecMul_ratGL_mul, hF, hγ] using hfin)` as an intermediate fact. Simplify `this` using `only [vecMul_ratGL_mul, hF, hγ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem integral_tsum_vecMul {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V] [CompleteSpace V]
     (F : GA E a → (Fin a → Ad E) → V) (hF : ∀ γ g y, F (ratGL E a γ * g) y = F g y)
@@ -286,7 +276,7 @@ theorem integral_tsum_vecMul {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ
 end Stabiliser
 
 /- English proof (translation)
-The claim follows from `continuous_const.matrix_vecMul Units.continuous_val`.
+A detailed English derivation is pending.
 -/
 theorem continuous_vecMul (y : Fin a → Ad E) : Continuous fun g : GA E a => y ᵥ* g.val :=
   continuous_const.matrix_vecMul Units.continuous_val

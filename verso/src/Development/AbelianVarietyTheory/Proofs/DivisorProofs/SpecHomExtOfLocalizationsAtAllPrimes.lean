@@ -8,9 +8,9 @@ open AlgebraicGeometry CategoryTheory TopologicalSpace Limits NumberField Recipr
 open GlobalTheory.FlagMod.LowRank (ECh Proj str)
 
 /- English proof (translation)
-Introduce `S _ W z z' h`. Use `GlobalTheory.hom_ext_of_fromSpecStalk fun x => ?_` and prove the remaining obligations. Set `q : PrimeSpectrum S` to `x`. Establish `e : (Sp S).fromSpecStalk q = Spec.map (Spec.stalkIso (CommRingCat.of S) q).inv ≫ spMap (algebraMap S (Localization.AtPrime q.asIdeal))`. Rewrite using `[Spec.fromSpecStalk_eq, spMap, ← Spec.map_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg Spec.map (Spec.algebraMap_stalkIso_inv (R := CommRingCat.of S) (x := q)).symm`. Express the relevant statement in the definitionally equal form `(Sp S).fromSpecStalk q ≫ z = (Sp S).fromSpecStalk q ≫ z'`. Rewrite using `[e, Category.assoc, Category.assoc, h q]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hom_ext_of_localization_atPrime : ∀ (S : Type) [CommRing S] (W : Scheme.{0}) (z z' : Sp S ⟶ W),
     (∀ q : PrimeSpectrum S, spMap (algebraMap S (Localization.AtPrime q.asIdeal)) ≫ z =

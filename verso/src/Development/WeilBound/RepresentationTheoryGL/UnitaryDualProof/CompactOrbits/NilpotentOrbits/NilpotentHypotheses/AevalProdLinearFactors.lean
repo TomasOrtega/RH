@@ -11,9 +11,9 @@ section
 variable {M : Type*} [AddCommGroup M] [Module ℂ M]
 
 /- English proof (translation)
-Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => intro m hm`. Simplify using `using hm`. Consider the case `succ j ih => intro m hm`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Rewrite using `[pow_succ', Module.End.mul_apply]`. Conclude with `hK _ (ih m hm)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_mem (K : Submodule ℂ M) (R : Module.End ℂ M) (hK : ∀ m ∈ K, R m ∈ K) :
     ∀ (j : ℕ), ∀ m ∈ K, (R ^ j) m ∈ K := by
@@ -23,9 +23,9 @@ theorem pow_mem (K : Submodule ℂ M) (R : Module.End ℂ M) (hK : ∀ m ∈ K, 
   | succ j ih => intro m hm; rw [pow_succ', Module.End.mul_apply]; exact hK _ (ih m hm)
 
 /- English proof (translation)
-Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq => intro m hm`. Rewrite using `[map_add, LinearMap.add_apply]`. Conclude with `K.add_mem (hp m hm) (hq m hm)`. Consider the case `monomial j a`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m hm`. Rewrite using `[aeval_monomial, Module.End.mul_apply, Algebra.algebraMap_eq_smul_one, LinearMap.smul_apply, Module.End.one_apply]`. Conclude with `K.smul_mem _ (pow_mem K R hK j m hm)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aeval_mem (K : Submodule ℂ M) (R : Module.End ℂ M) (hK : ∀ m ∈ K, R m ∈ K) (p : ℂ[X]) :
     ∀ m ∈ K, (aeval R p) m ∈ K := by
@@ -38,9 +38,9 @@ theorem aeval_mem (K : Submodule ℂ M) (R : Module.End ℂ M) (hK : ∀ m ∈ K
     exact K.smul_mem _ (pow_mem K R hK j m hm)
 
 /- English proof (translation)
-Introduce `l`. Proceed by induction on `l with`. Consider the case `nil => intro _`. Simplify using `using isCoprime_one_left`. Consider the case `cons x t ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Introduce `h`. Rewrite using `[List.map_cons, List.prod_cons]`. Conclude with `(h x (List.mem_cons_self)).mul_left (ih fun y hy => h y (List.mem_cons_of_mem _ hy))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCoprime_list_prod_left {R : Type*} [CommRing R] {ι : Type*} (f : ι → R) (z : R) :
     ∀ l : List ι, (∀ x ∈ l, IsCoprime (f x) z) → IsCoprime (l.map f).prod z := by
@@ -53,7 +53,7 @@ theorem isCoprime_list_prod_left {R : Type*} [CommRing R] {ι : Type*} (f : ι �
     exact (h x (List.mem_cons_self)).mul_left (ih fun y hy => h y (List.mem_cons_of_mem _ hy))
 
 /- English proof (translation)
-Introduce `l h`. Conclude with `(isCoprime_list_prod_left f z l fun x hx => (h x hx).symm).symm`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isCoprime_list_prod_right {R : Type*} [CommRing R] {ι : Type*} (f : ι → R) (z : R) :
     ∀ l : List ι, (∀ x ∈ l, IsCoprime z (f x)) → IsCoprime z (l.map f).prod := by
@@ -61,7 +61,7 @@ theorem isCoprime_list_prod_right {R : Type*} [CommRing R] {ι : Type*} (f : ι 
   exact (isCoprime_list_prod_left f z l fun x hx => (h x hx).symm).symm
 
 /- English proof (translation)
-Simplify using `only [C_add, C_mul, C_neg, C_sub]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem lin_comb (α β γ u0 v0 : ℂ) :
     C u0 * (X - C α) + C v0 * (C β - C γ * X) = C (u0 * (-α) + v0 * β) + C (u0 - v0 * γ) * X := by
@@ -69,9 +69,9 @@ theorem lin_comb (α β γ u0 v0 : ℂ) :
   ring
 
 /- English proof (translation)
-Use `⟨C (γ / (β - γ * α)), C (1 / (β - γ * α)), ?_⟩` and prove the remaining obligations. Rewrite using `[lin_comb]`. Establish `e1 : γ / (β - γ * α) - 1 / (β - γ * α) * γ = 0` using `by ring`. Rewrite using `[e1, map_zero, zero_mul, add_zero]`. Establish `e2 : (γ / (β - γ * α)) * (-α) + (1 / (β - γ * α)) * β = 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2, map_one]`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem isCoprime_lin (α β γ : ℂ) (h : β - γ * α ≠ 0) : IsCoprime (X - C α) (C β - C γ * X) := by
   refine ⟨C (γ / (β - γ * α)), C (1 / (β - γ * α)), ?_⟩
@@ -84,7 +84,7 @@ theorem isCoprime_lin (α β γ : ℂ) (h : β - γ * α ≠ 0) : IsCoprime (X -
   rw [e2, map_one]
 
 /- English proof (translation)
-Rewrite using `[map_list_prod, List.map_map]`. Use `congr 1`. Use `List.map_congr_left fun x _ => ?_` and prove the remaining obligations. Simplify using `[Algebra.algebraMap_eq_smul_one, Module.End.one_eq_id]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem aeval_prod_lin (R : Module.End ℂ M) (α : ℝ → ℂ) (a : List ℝ) :
     aeval R ((a.map fun x => X - C (α x)).prod) = ((a.map fun x => R - α x • LinearMap.id).prod : Module.End ℂ M) := by
@@ -94,9 +94,9 @@ theorem aeval_prod_lin (R : Module.End ℂ M) (α : ℝ → ℂ) (a : List ℝ) 
   simp [Algebra.algebraMap_eq_smul_one, Module.End.one_eq_id]
 
 /- English proof (translation)
-Rewrite using `[map_list_prod, List.map_map]`. Use `congr 1`. Use `List.map_congr_left fun x _ => ?_` and prove the remaining obligations. Use `show aeval R (C β - C (γ x) * X) = β • LinearMap.id - γ x • R`. Rewrite using `[map_sub, map_mul, aeval_C, aeval_C, aeval_X, Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, smul_mul_assoc, one_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem aeval_prod_linear_factors (R : Module.End ℂ M) (β : ℂ) (γ : ℝ → ℂ) (a : List ℝ) :
     aeval R ((a.map fun x => C β - C (γ x) * X).prod) =
@@ -110,9 +110,9 @@ theorem aeval_prod_linear_factors (R : Module.End ℂ M) (β : ℂ) (γ : ℝ �
   rfl
 
 /- English proof (translation)
-Establish `hc : Commute R R'` using `hRR.trans hR'R.symm`. Introduce `l`. Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons x t ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[List.map_cons, List.prod_cons, List.map_cons, List.prod_cons, List.length_cons, pow_succ', mul_assoc]`. Establish `hcm : Commute (R ^ t.length) (β • R' - γ x • (1 : Module.End ℂ M))` using `((hc.pow_left _).smul_right β).sub_right ((Commute.one_right _).smul_right _)`. Rewrite using `[← mul_assoc (R ^ t.length), hcm.eq, mul_assoc, ih, ← mul_assoc]`. Use `congr 1`. Rewrite using `[mul_sub, mul_smul_comm, hRR, mul_smul_comm, mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_mul_prod (R R' : Module.End ℂ M) (hRR : R * R' = 1) (hR'R : R' * R = 1) (β : ℂ) (γ : ℝ → ℂ) :
     ∀ l : List ℝ, R ^ l.length * ((l.map fun x => β • R' - γ x • (1 : Module.End ℂ M)).prod) =
@@ -132,19 +132,17 @@ theorem pow_mul_prod (R R' : Module.End ℂ M) (hRR : R * R' = 1) (hR'R : R' * R
 end
 
 /- English proof (translation)
-Use `set β : ℂ := ((c ^ (d : ℝ) : ℝ) : ℂ)`. Use `set γ : ℝ → ℂ := fun x => ((c ^ x : ℝ) : ℂ)`. Establish `hRR' : (R : Module.End ℂ M) * R' = 1` using `hRR`. Establish `hR'R' : (R' : Module.End ℂ M) * R = 1` using `hR'R`. Establish `hQ : ((a.map fun x => β • (1 : Module.End ℂ M) - γ x • R).prod : Module.End ℂ M) ζ ∈ K`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← pow_mul_prod R R' hRR' hR'R' β γ a, Module.End.mul_apply]`. Conclude with `pow_mem K R hK _ _ h2`. Establish `hc0 : 0 < c` using `by linarith`. Establish `hcop : IsCoprime ((a.map fun x => X - C (γ x)).prod) ((a.map fun x => C β - C (γ x) * X).prod)`. Use `isCoprime_list_prod_left _ _ a fun x hx => isCoprime_list_prod_right _ _ a fun y hy => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `isCoprime_lin (γ x) β (γ y) ?_` and prove the remaining obligations. Establish `hlt : c ^ y * c ^ x < c ^ (d : ℝ)`. Rewrite using `[← Real.rpow_add hc0]`. Conclude with `Real.rpow_lt_rpow_of_exponent_lt hc (by linarith [ha x hx, ha y hy])`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `: (c ^ (d : ℝ) : ℝ) = c ^ y * c ^ x`. Establish `h0' : β = γ y * γ x` using `sub_eq_zero.1 h0`. Simplify using `only [β, γ] at h0'`. Conclude with `h0'` after adjusting the coercions. Combine the linear equalities and inequalities to obtain the conclusion.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨u, v, huv⟩` from `hcop`. Establish `key` using `congrArg (fun p => (aeval (R : Module.End ℂ M) p) ζ) huv`. Simplify using `only [map_add, map_mul, map_one, LinearMap.add_apply, Module.End.mul_apply, Module.End.one_apply] at key`. Rewrite using `[← key]`. Use `K.add_mem (aeval_mem K R hK u _ ?_) (aeval_mem K R hK v _ ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression.
 
-Rewrite using `[aeval_prod_lin R γ a]`. Conclude with `h1`. Rewrite using `[aeval_prod_linear_factors R β γ a]`. Use `hQ using 3` and compare the differences between its conclusion and the goal. Use `List.map_congr_left fun x _ => ?_` and prove the remaining obligations.
-
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem bez' {M : Type*} [AddCommGroup M] [Module ℂ M] (K : Submodule ℂ M) (R R' : M →ₗ[ℂ] M)
     (hRR : R ∘ₗ R' = LinearMap.id) (hR'R : R' ∘ₗ R = LinearMap.id) (hK : ∀ m ∈ K, R m ∈ K) (c : ℝ) (hc : 1 < c)

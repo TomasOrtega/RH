@@ -38,9 +38,9 @@ lemma extMap_app (f : P.restrict O.ι ⟶ E) (S : Subobject E) (V : X.Opens) (x 
   rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, rfl⟩`. Express the relevant statement in the definitionally equal form `((kernelSubobject (extMap O f S)).arrow.app V ≫ (extMap O f S).app V) k = 0`. Rewrite using `[← Scheme.Modules.Hom.comp_app, kernelSubobject_arrow_comp, Scheme.Modules.Hom.zero_app]`. Both sides reduce to the same expression.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `hx`. Take `⟨k, hk⟩` from `kernel_ι_app_exact (extMap O f S) V x hx`. Use `⟨(kernelSubobjectIso (extMap O f S)).inv.app V k, ?_⟩` and prove the remaining obligations. Rewrite using `[← hk, ← kernelSubobject_arrow' (extMap O f S)]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma mem_secs_extSub (f : P.restrict O.ι ⟶ E) (S : Subobject E) (V : X.Opens) (x : Γ(P, V)) :
     x ∈ secs (extSub O f S) V ↔ (extMap O f S).app V x = 0 := by
@@ -62,7 +62,7 @@ end GlobalTheory.CompanionTheory.GE.Extend
 namespace GlobalTheory.CompanionTheory.GE.Extend
 
 /- English proof (translation)
-Use `haveI : IsLocallyNoetherian X := LocallyOfFiniteType.isLocallyNoetherian (X ↘ Spec (.of A))`. Use `haveI : CompactSpace X := QuasiCompact.compactSpace_of_compactSpace (X ↘ Spec (.of A))`. Apply the tactic sequence `first | infer_instance | exact {}`.
+A detailed English derivation is pending.
 -/
 lemma isNoetherian_of_proper {A : Type} [CommRing A] [IsNoetherianRing A] {X : Scheme.{0}}
     [X.Over (Spec (.of A))] [IsProper (X ↘ Spec (.of A))] : IsNoetherian X := by
@@ -71,11 +71,11 @@ lemma isNoetherian_of_proper {A : Type} [CommRing A] [IsNoetherianRing A] {X : S
   first | infer_instance | exact {}
 
 /- English proof (translation)
-Use `letI : (O : Scheme.{0}).Over (Spec (.of A)) := ⟨O.ι ≫ (X ↘ Spec (.of A))⟩`. Introduce `T hT`. Establish `e : T.subschemeι ≫ ((O : Scheme.{0}) ↘ Spec (.of A)) = (T.subschemeι ≫ O.ι) ≫ (X ↘ Spec (.of A))`. Rewrite using `[Category.assoc]`. Both sides reduce to the same expression.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `haveI : UniversallyClosed ((T.subschemeι ≫ O.ι) ≫ (X ↘ Spec (.of A))) := by`. Rewrite using `[← e]`. Use `infer_instance`. Use `haveI : UniversallyClosed (T.subschemeι ≫ O.ι) := UniversallyClosed.of_comp_of_isSeparated _ (X ↘ Spec (.of A))`. Establish `hc : IsClosed (Set.range (T.subschemeι ≫ O.ι))` using `(T.subschemeι ≫ O.ι).isClosedMap.isClosed_range`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hr : Set.range (T.subschemeι ≫ O.ι) = O.ι '' (T.support : Set (O : Scheme.{0}))`. Rewrite using `[← T.range_subschemeι, ← Set.range_comp]`. Both sides reduce to the same expression. Rewrite `hc` using `[hr]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 lemma isClosed_image {A : Type} [CommRing A] [IsNoetherianRing A] {X : Scheme.{0}}
     [X.Over (Spec (.of A))] [IsProper (X ↘ Spec (.of A))] (O : X.Opens) :
@@ -100,9 +100,9 @@ lemma isClosed_image {A : Type} [CommRing A] [IsNoetherianRing A] {X : Scheme.{0
   rwa [hr] at hc
 
 /- English proof (translation)
-Introduce `a b hab`. Establish `e : ∀ z, M.presheaf.map (homOfLE h').op (M.presheaf.map (homOfLE h).op z) = z`. Introduce `z`. Rewrite using `[← ConcreteCategory.comp_apply, ← Functor.map_comp]`. Rewrite using `[show (homOfLE h).op ≫ (homOfLE h').op = 𝟙 _ from rfl, CategoryTheory.Functor.map_id]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[← e a, hab, e b]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 lemma map_injective_of_le_of_le {Y : Scheme.{0}} (M : Y.Modules) {U U' : Y.Opens} (h : U ≤ U')
     (h' : U' ≤ U) : Function.Injective (M.presheaf.map (homOfLE h).op) := by
@@ -117,15 +117,15 @@ lemma map_injective_of_le_of_le {Y : Scheme.{0}} (M : Y.Modules) {U U' : Y.Opens
 variable {X : Scheme.{0}} (O : X.Opens) {P : X.Modules} {E : (O : Scheme.{0}).Modules}
 
 /- English proof (translation)
-Establish `h1 : W ≤ O.ι ⁻¹ᵁ (O.ι ''ᵁ W)` using `(O.ι.preimage_image_eq W).ge`. Establish `h2 : O.ι ⁻¹ᵁ (O.ι ''ᵁ W) ≤ W` using `(O.ι.preimage_image_eq W).le`. Use `set y := (P.restrictAppIso O.ι _).inv (P.presheaf.map (homOfLE (O.ι.image_preimage_le (O.ι ''ᵁ W))).op x) with hy`. Establish `hres : (P.restrict O.ι).presheaf.map (homOfLE h1).op y = (P.restrictAppIso O.ι W).inv x`. Rewrite using `[hy, Scheme.Modules.restrictAppIso_inv_map_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `P.presheaf.map _ (P.presheaf.map _ x) = x`. Rewrite using `[← ConcreteCategory.comp_apply, ← Functor.map_comp]`. Establish `hid : ∀ g : Opposite.op (O.ι ''ᵁ W) ⟶ Opposite.op (O.ι ''ᵁ W), P.presheaf.map g x = x`. Introduce `g`. Rewrite using `[show g = 𝟙 _ from rfl, CategoryTheory.Functor.map_id]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Conclude with `hid _`. Establish `key : (cokernel S.arrow).presheaf.map (homOfLE h1).op ((f ≫ cokernel.π S.arrow).app (O.ι ⁻¹ᵁ (O.ι ''ᵁ W)) y) = (cokernel.π S.arrow).app W (f.app W ((P.restrictAppIso O.ι W).inv x))`. Establish `nat` using `ConcreteCategory.congr_hom ((f ≫ cokernel.π S.arrow).mapPresheaf.naturality (homOfLE h1).op) y`. Use `nat.symm.trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(f ≫ cokernel.π S.arrow).app W ((P.restrict O.ι).presheaf.map (homOfLE h1).op y) = _`. Rewrite using `[hres, Scheme.Modules.Hom.comp_app]`. Both sides reduce to the same expression. Rewrite using `[extMap_app, ← key]`. Prove the components needed by the constructor for the conclusion.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Rewrite using `[h]`. Conclude with `AddMonoidHom.map_zero _`. Introduce `h`. Conclude with `map_injective_of_le_of_le _ h1 h2 (h.trans (map_zero _).symm)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma extMap_app_image (f : P.restrict O.ι ⟶ E) (S : Subobject E) (W : (O : Scheme.{0}).Opens)
     (x : Γ(P, O.ι ''ᵁ W)) :
@@ -162,7 +162,7 @@ lemma extMap_app_image (f : P.restrict O.ι ⟶ E) (S : Subobject E) (W : (O : S
     exact map_injective_of_le_of_le _ h1 h2 (h.trans (map_zero _).symm)
 
 /- English proof (translation)
-Rewrite using `[extMap_app]`. Use `hT _ ?_ _` and prove the remaining obligations. Rewrite using `[Set.disjoint_left]`. Introduce `y hy hyT`. Conclude with `Set.disjoint_left.1 hV hy ⟨y, hyT, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma extMap_app_eq_zero_of_disjoint (f : P.restrict O.ι ⟶ E) (S : Subobject E)
     {T : Set (O : Scheme.{0})} (hT : Scheme.Modules.SupportedIn (cokernel S.arrow) T) (V : X.Opens)
@@ -178,7 +178,7 @@ end GlobalTheory.CompanionTheory.GE.Extend
 namespace GlobalTheory.CompanionTheory.GE.Extend
 
 /- English proof (translation)
-Use `haveI := hS`. Use `haveI : IsNoetherian X := isNoetherian_of_proper (A := A)`. Use `haveI := (isCoherent_cokernel S.arrow hE).1`. Use `haveI := isQuasicoherent_pushforward_of_qcqs O.ι (cokernel S.arrow)`. Conclude with `(SheafOfModules.isQuasicoherent X.ringCatSheaf).prop_of_iso (kernelSubobjectIso (extMap O f S)).symm (isQuasicoherent_kernel _)`.
+A detailed English derivation is pending.
 -/
 lemma qc_extSub {A : Type} [CommRing A] [IsNoetherianRing A] {X : Scheme.{0}}
     [X.Over (Spec (.of A))] [IsProper (X ↘ Spec (.of A))] (O : X.Opens) {P : X.Modules}
@@ -193,21 +193,19 @@ lemma qc_extSub {A : Type} [CommRing A] [IsNoetherianRing A] {X : Scheme.{0}}
     (kernelSubobjectIso (extMap O f S)).symm (isQuasicoherent_kernel _)
 
 /- English proof (translation)
-Use `letI : (O : Scheme.{0}).Over (Spec (.of A)) := ⟨O.ι ≫ (X ↘ Spec (.of A))⟩`. Introduce `P E hP hE f hf n W hW y hy`. Use `haveI := hP`. Use `haveI := hE`. Use `haveI := hf`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `haveI : (P.restrict O.ι).IsQuasicoherent := Scheme.Modules.isQuasicoherent_restrictFunctor _ _`. Establish `hW' : IsAffineOpen (O.ι ''ᵁ W)` using `hW.image_of_isOpenImmersion O.ι`. Rewrite `hy` using `[secs_powSub I E hE n W hW]`. Simplify using `only [secs_powSub I P hP n _ hW']`. Establish `hmul : ∀ (a : Γ(X, O.ι ''ᵁ W)) (m : Γ(P, O.ι ''ᵁ W)), f.app W ((P.restrictAppIso O.ι W).inv (a • m)) = (O.ι.appIso W).hom a • f.app W ((P.restrictAppIso O.ι W).inv m)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Introduce `a m`. Rewrite using `[Scheme.Modules.smul_restrictAppIso_inv_apply, Scheme.Modules.Hom.app_smul]`. Set `JP : Submodule Γ(X, O.ι ''ᵁ W) Γ(P, O.ι ''ᵁ W)` to `Ideal.map (toFunctions (A := A) (O.ι ''ᵁ W)) (I ^ n) • ⊤`. Set `N : Submodule Γ((O : Scheme.{0}), W) Γ(E, W)` to `{ carrier := {y | ∃ t ∈ JP, f.app W ((P.restrictAppIso O.ι W).inv t) = y} add_mem' := by`. Introduce and unpack `_ _ ⟨t, ht, rfl⟩ ⟨t', ht', rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨t + t', JP.add_mem ht ht', by rw [map_add, map_add]⟩`. Use the proof step `zero_mem' := ⟨0, JP.zero_mem, by rw [map_zero, map_zero]⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `r _ ⟨t, ht, rfl⟩`. Use `⟨(O.ι.appIso W).inv r • t, JP.smul_mem _ ht, ?_⟩` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hmul]`. Use `congr 1`. Rewrite using `[← ConcreteCategory.comp_apply, Iso.inv_hom_id]`. Use `rfl }`. Establish `hJ : Ideal.map (toFunctions (A` using `A) W) (I ^ n) = Ideal.map (O.ι.appIso W).hom.hom (Ideal.map (toFunctions (A := A) (O.ι ''ᵁ W)) (I ^ n)) := by`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Ideal.map_map]`. Use `congr 1`. Use extensionality with `r`. Conclude with `(ImageOpen.toFunctions_open O W r).symm`. Establish `hsurj : Function.Surjective (O.ι.appIso W).hom.hom` using `(ConcreteCategory.bijective_of_isIso (O.ι.appIso W).hom).2`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hle : (Ideal.map (toFunctions (A` using `A) W) (I ^ n) • ⊤ : Submodule Γ((O : Scheme.{0}), W) Γ(E, W)) ≤ N := by`. Use `Submodule.smul_le.2 fun a ha m _ => ?_` and prove the remaining obligations. Rewrite `ha` using `[hJ]`. Take `⟨b, hb, rfl⟩` from `(Ideal.mem_map_iff_of_surjective _ hsurj).1 ha`. Take `⟨z, rfl⟩` from `GlobalTheory.QCoh.app_surjective_of_epi_of_isAffineOpen f hW m`.
-
-Take `⟨z', rfl⟩ : ∃ z', (P.restrictAppIso O.ι W).inv z' = z` from `⟨z, rfl⟩`. Conclude with `⟨b • z', Submodule.smul_mem_smul hb Submodule.mem_top, hmul b z'⟩`. Conclude with `hle hy`.
+A detailed English derivation is pending.
 -/
 lemma exists_powSub_lift {A : Type} [CommRing A] [IsNoetherianRing A] (I : Ideal A) {X : Scheme.{0}}
     [X.Over (Spec (.of A))] (O : X.Opens) :
@@ -264,13 +262,11 @@ lemma exists_powSub_lift {A : Type} [CommRing A] [IsNoetherianRing A] (I : Ideal
   exact hle hy
 
 /- English proof (translation)
-Set `V : (O : Scheme.{0}).affineOpens ⊕ {U : X.affineOpens // Disjoint ((U : X.Opens) : Set X) Z} → X.Opens` to `Sum.elim (fun W => O.ι ''ᵁ (W : (O : Scheme.{0}).Opens)) (fun U => (U.1 : X.Opens))`. Use `le_of_secs_subset_cover S S' hS hS' V ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `(W | U)`. Conclude with `W.2.image_of_isOpenImmersion O.ι`. Conclude with `U.1.2`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[eq_top_iff]`. Introduce `x _`. Distinguish the cases in `hx : x ∈ (O : Set X)`. Rewrite `hx` using `[← Scheme.Opens.range_ι]`. Take `⟨y, rfl⟩` from `hx`.
+Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨_, ⟨W, hW, rfl⟩, hyW, -⟩` from `(O : Scheme.{0}).isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ y) isOpen_univ`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨Sum.inl ⟨W, hW⟩, ⟨y, hyW, rfl⟩⟩`. Establish `hxZ : x ∈ Zᶜ` using `fun h => hx (hZO h)`. Take `⟨_, ⟨U, hU, rfl⟩, hxU, hUZ⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open hxZ hZ.isOpen_compl`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨Sum.inr ⟨⟨U, hU⟩, Set.subset_compl_iff_disjoint_right.1 hUZ⟩, hxU⟩`.
-
-Introduce and unpack `(W | U)`. Conclude with `h1 W.1 W.2`. Conclude with `h2 U.1.1 U.1.2 U.2`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 lemma le_of_cover {X : Scheme.{0}} (O : X.Opens) {Z : Set X} (hZ : IsClosed Z)
     (hZO : Z ⊆ (O : Set X)) {P : X.Modules} [P.IsQuasicoherent] (S S' : Subobject P)
@@ -306,25 +302,21 @@ end GlobalTheory.CompanionTheory.GE.Extend
 namespace GlobalTheory.CompanionTheory.GE.Extend
 
 /- English proof (translation)
-Introduce `A _ _ I X _ _ O`. Use `letI : (O : Scheme.{0}).Over (Spec (.of A)) := ⟨O.ι ≫ (X ↘ Spec (.of A))⟩`. Introduce `P E hP hE f hf S hS T hT hsupp`. Use `haveI := hP.1`. Use `haveI := hE.1`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hZ` using `isClosed_image (A := A) O T hT`. Use `set Z : Set X := O.ι '' (T.support : Set (O : Scheme.{0})) with hZdef`. Establish `hZO : Z ⊆ (O : Set X)`. Introduce and unpack `_ ⟨y, -, rfl⟩`. Rewrite using `[← Scheme.Opens.range_ι]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `⟨y, rfl⟩`. Establish `hsuppe : ∀ e, Scheme.Modules.SupportedIn (cokernel (S e).arrow) (T.support : Set (O : Scheme.{0}))` using `fun e => Comb.supportedIn_of_secs_eq_univ hE.1 (hS.qcoh e) fun U hU hd => Comb.secs_sys_univ hS hE.1 hU (Comb.secs_eq_univ_of_supportedIn hE.1 (hS.qcoh 0) hsupp hU hd) e`. Set `Sb : ℕ → Subobject P` to `fun e => extSub O f (S e)`. Establish `hq : ∀ e, ((Sb e : Subobject P) : X.Modules).IsQuasicoherent` using `fun e => qc_extSub (A := A) O hE f (S e) (hS.qcoh e)`. Establish `hchar : ∀ e (W : (O : Scheme.{0}).Opens), IsAffineOpen W → ∀ x : Γ(P, O.ι ''ᵁ W), x ∈ secs (Sb e) (O.ι ''ᵁ W) ↔ f.app W ((P.restrictAppIso O.ι W).inv x) ∈ secs (S e) W`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `e W hW x`. Use `haveI := hS.qcoh e`. Rewrite using `[mem_secs_extSub, extMap_app_image]`. Conclude with `(mem_range_app_iff (S e).arrow hW _).symm`. Establish `huniv : ∀ e (V : X.Opens), Disjoint (V : Set X) Z → secs (Sb e) V = Set.univ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `e V hV`. Use `Set.eq_univ_of_forall fun x => ?_` and prove the remaining obligations. Rewrite using `[mem_secs_extSub]`. Conclude with `extMap_app_eq_zero_of_disjoint O f (S e) (hsuppe e) V hV x`. Establish `hpowq : ∀ e, ((powSub I P (e + 1) : Subobject P) : X.Modules).IsQuasicoherent` using `fun e => (closedSys_pow I P).qcoh e`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hpow : ∀ e, powSub I P (e + 1) ≤ Sb e`. Introduce `e`. Use `le_of_cover O hZ hZO _ _ (hpowq e) (hq e) (fun W hW x hx => ?_) (fun U _ hU x _ => by rw [huniv e U hU]; trivial)` and prove the remaining obligations. Rewrite using `[hchar e W hW]`. Conclude with `Comb.secs_mono (hS.pow_le e) W (ImageOpen.map_mem_secs_powSub I O hP.1 hE.1 f (e + 1) W hW x hx)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hsup : ∀ e, (((Sb (e + 1) ⊔ powSub I P (e + 1)) : Subobject P) : X.Modules).IsQuasicoherent ∧ ∀ V : X.Opens, IsAffineOpen V → secs (Sb (e + 1) ⊔ powSub I P (e + 1)) V = {x | ∃ s ∈ secs (Sb (e + 1)) V, ∃ t ∈ secs (powSub I P (e + 1)) V, x = s + t}` using `fun e => supsecs hP.1 _ _ (hq (e + 1)) (hpowq e)`. Use `⟨hZ, Sb, ⟨hq, hpow, fun e => le_antisymm ?_ ?_⟩, hchar, huniv⟩` and prove the remaining obligations. Use `le_of_cover O hZ hZO _ _ (hq e) (hsup e).1 (fun W hW x hx => ?_) (fun U hU hd x _ => ?_)` and prove the remaining obligations. Establish `hW' : IsAffineOpen (O.ι ''ᵁ W)` using `hW.image_of_isOpenImmersion O.ι`. Rewrite `hx` using `[hchar e W hW, hS.succ e, (supsecs hE.1 _ _ (hS.qcoh (e + 1)) ((closedSys_pow I E).qcoh e)).2 W hW]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨s, hs, t, ht, hst⟩` from `hx`. Take `⟨t', ht', hft'⟩` from `exists_powSub_lift I O hP.1 hE.1 f hf (e + 1) W hW t ht`. Rewrite using `[(hsup e).2 _ hW']`. Use `⟨x - t', ?_, t', ht', by abel⟩` and prove the remaining obligations. Rewrite using `[hchar (e + 1) W hW, map_sub, map_sub, hft', hst, add_sub_cancel_right]`.
-
-Conclude with `hs`. Rewrite using `[(hsup e).2 U hU]`. Use `⟨x, by rw [huniv (e + 1) U hd]; trivial, 0, ⟨0, map_zero _⟩, (add_zero x).symm⟩` and prove the remaining obligations. Use `sup_le ?_ (hpow e)` and prove the remaining obligations. Use `le_of_cover O hZ hZO _ _ (hq (e + 1)) (hq e) (fun W hW x hx => ?_) (fun U _ hU x _ => by rw [huniv e U hU]; trivial)` and prove the remaining obligations.
-
-Rewrite using `[hchar e W hW]`. Rewrite `hx` using `[hchar (e + 1) W hW]`. Conclude with `Comb.secs_mono ((hS.succ e).symm ▸ le_sup_left) W hx`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extend : ∀ {A : Type} [CommRing A] [IsNoetherianRing A] (I : Ideal A) {X : Scheme.{0}} [X.Over (Spec (.of A))] [IsProper (X ↘ Spec (.of A))] (O : X.Opens), letI : (O : Scheme.{0}).Over (Spec (.of A)) := ⟨O.ι ≫ (X ↘ Spec (.of A))⟩; ∀ {P : X.Modules} {E : (O : Scheme.{0}).Modules}, IsCoherent P → IsCoherent E → ∀ f : P.restrict O.ι ⟶ E, Epi f → ∀ S : ℕ → Subobject E, ClosedSys I E S → ∀ T : (O : Scheme.{0}).IdealSheafData, IsProper (T.subschemeι ≫ ((O : Scheme.{0}) ↘ Spec (.of A))) → Scheme.Modules.SupportedIn (cokernel (S 0).arrow) (T.support : Set (O : Scheme.{0})) → IsClosed (O.ι '' (T.support : Set (O : Scheme.{0}))) ∧ ∃ Sb : ℕ → Subobject P, ClosedSys I P Sb ∧ (∀ e (W : (O : Scheme.{0}).Opens), IsAffineOpen W → ∀ x : Γ(P, O.ι ''ᵁ W), x ∈ secs (Sb e) (O.ι ''ᵁ W) ↔ f.app W ((P.restrictAppIso O.ι W).inv x) ∈ secs (S e) W) ∧ ∀ e (V : X.Opens), Disjoint (V : Set X) (O.ι '' (T.support : Set (O : Scheme.{0}))) → secs (Sb e) V = Set.univ := by
   intro A _ _ I X _ _ O

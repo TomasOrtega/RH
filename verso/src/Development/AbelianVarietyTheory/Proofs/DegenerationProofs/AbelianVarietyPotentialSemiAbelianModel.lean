@@ -18,11 +18,11 @@ open GlobalTheory.SS
 namespace GlobalTheory.SS
 
 /- English proof (translation)
-Introduce `V _ _ _ _ K _ _ _ _ A _ hA`. Take `⟨L, _, _, _, B, _, Q, g, m, i, r, i', r', hp, hs, hsB, hi, hr, hm, hri, hi', hr', hir, hS⟩` from `GlobalTheory.T.exists_isogenous_retract_polarised_finiteExt K A hA`. Take `⟨W, _, _, _, _, _, _, _, -, -, -, -, -, hup⟩` from `GlobalTheory.T.exists_complete_dvr_integral_closure_finite V K L`. Use `haveI : CharZero L := charZero_of_injective_algebraMap (algebraMap K L).injective`. Use `letI := Q.grp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hQ` using `GlobalTheory.T.potentialSemiAbelianModel_of_symmetryHyp W L Q hS`. Establish `hB` using `GlobalTheory.T.potentialSemiAbelianReduction_of_retract W L B Q.A i' r' hi' hr' hir hQ`. Establish `hAL : IsAbelianScheme ((Over.pullback (spMap (algebraMap K L))).obj A)`. Use `hA.comm` as an intermediate fact. Use `hA.smooth` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hA.proper` as an intermediate fact. Use `hA.geomConnected` as an intermediate fact. Conclude with `{ comm := Functor.isCommMonObj_obj smooth := by change Smooth (pullback.snd A.hom _); infer_instance proper := by change IsProper (pullback.snd A.hom _); infer_instance geomConnected := by change GeometricallyConnected (pullback.snd A.hom _); infer_instance }`. Conclude with `hup A _ (GlobalTheory.T.potentialSemiAbelianReduction_of_isogeny W L _ B g m hAL hp hs hsB i r hi hr hm hri hB)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem potModel_isSemiAbelian : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [IsAdicComplete (IsLocalRing.maximalIdeal V) V] (K : Type) [Field K] [CharZero K] [Algebra V K] [IsFractionRing V K] (A : Over (Spec (CommRingCat.of K))) [GrpObj A], IsAbelianScheme A → PotModel V K A (fun _ _ _ G _ => IsSemiAbelian G) := by
   intro V _ _ _ _ K _ _ _ _ A _ hA

@@ -10,7 +10,7 @@ namespace GlobalTheory.CompanionTheory.CovEx
 variable {O : Type} [CommRing O] {X : Scheme.{0}}
 
 /- English proof (translation)
-Rewrite using `[RingHom.algebraMap_toAlgebra]`. Simplify using `only [strV]`. Rewrite using `[← CommRingCat.hom_comp, Category.assoc, Scheme.Hom.appLE_map]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem strV_basicOpen (q : X ⟶ Spec (CommRingCat.of O)) (V : X.Opens) (f : Γ(X, V)) :
     strV q (X.basicOpen f) = (algebraMap Γ(X, V) Γ(X, X.basicOpen f)).comp (strV q V) := by
@@ -19,11 +19,11 @@ theorem strV_basicOpen (q : X ⟶ Spec (CommRingCat.of O)) (V : X.Opens) (f : Γ
   rw [← CommRingCat.hom_comp, Category.assoc, Scheme.Hom.appLE_map]
 
 /- English proof (translation)
-Use `hV.isLocalization_basicOpen f` as an intermediate fact. Set `e` to `IsLocalization.algEquiv (Submonoid.powers f) (Localization.Away f) Γ(X, X.basicOpen f)`. Set `G : MvPolynomial (Fin d) O →+* Γ(X, X.basicOpen f)` to `(e.toAlgHom.toRingHom).comp g`. Establish `hG : (MvPolynomial.eval₂Hom (strV q (X.basicOpen f)) fun k => G (MvPolynomial.X k)) = G`. Use `MvPolynomial.ringHom_ext (fun r => ?_) fun k => by simp` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `RingHom.congr_fun hg r`. Establish `h2 : G (MvPolynomial.C r) = e (g (MvPolynomial.C r))` using `rfl`. Rewrite using `[MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_C, h2, strV_basicOpen]`. Establish `h3 : g (MvPolynomial.C r) = algebraMap Γ(X, V) (Localization.Away f) (strV q V r)` using `h1`. Rewrite using `[h3, AlgEquiv.commutes]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `⟨⟨hV.basicOpen f, fun k => G (MvPolynomial.X k), ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hG]`. Conclude with `RingHom.Etale.stableUnderComposition _ _ he (RingHom.Etale.of_bijective e.bijective)`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coord_basicOpen (q : X ⟶ Spec (CommRingCat.of O)) {V : X.Opens} (hV : IsAffineOpen V) (f : Γ(X, V)) {d : ℕ}
     (g : MvPolynomial (Fin d) O →+* Localization.Away f)
@@ -45,7 +45,7 @@ theorem coord_basicOpen (q : X ⟶ Spec (CommRingCat.of O)) {V : X.Opens} (hV : 
   exact RingHom.Etale.stableUnderComposition _ _ he (RingHom.Etale.of_bijective e.bijective)
 
 /- English proof (translation)
-Take `⟨s, hs, hl⟩` from `h`. Establish `hc : ⨆ f : s, X.basicOpen (U` using `V) f.1 = V := (hV.iSup_basicOpen_eq_self_iff (s := s)).2 hs`. Take `⟨f, hf⟩` from `TopologicalSpace.Opens.mem_iSup.1 (hc.ge hx)`. Use `⟨f.1, hf, ?_⟩` and prove the remaining obligations. Conclude with `hQ.2 _ (Scheme.ΓSpecIso (CommRingCat.of O)).symm.commRingCatIsoToRingEquiv (hl f.1 f.2)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_basicOpen (Q : ∀ {R S : Type} [CommRing R] [CommRing S], (R →+* S) → Prop)
     (hQ : RingHom.RespectsIso Q) (q : X ⟶ Spec (CommRingCat.of O)) {V : X.Opens} (hV : IsAffineOpen V)
@@ -58,7 +58,7 @@ theorem exists_basicOpen (Q : ∀ {R S : Type} [CommRing R] [CommRing S], (R →
   exact hQ.2 _ (Scheme.ΓSpecIso (CommRingCat.of O)).symm.commRingCatIsoToRingEquiv (hl f.1 f.2)
 
 /- English proof (translation)
-The claim follows from `isAffineHom_diagonal_iff.1 (inferInstance : IsAffineHom (Limits.pullback.diagonal q)) ⊤ (isAffineOpen_top _) _ le_top _ le_top hU hV`.
+A detailed English derivation is pending.
 -/
 theorem inter_affine (q : X ⟶ Spec (CommRingCat.of O)) [IsSeparated q] {U V : X.Opens} (hU : IsAffineOpen U)
     (hV : IsAffineOpen V) : IsAffineOpen (U ⊓ V) :=
@@ -66,11 +66,11 @@ theorem inter_affine (q : X ⟶ Spec (CommRingCat.of O)) [IsSeparated q] {U V : 
     _ le_top _ le_top hU hV
 
 /- English proof (translation)
-Use `choose V d hx hP hc using h`. Establish `: CompactSpace X` using `QuasiCompact.compactSpace_of_compactSpace q`. Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover (fun x => (V x : Set X)) (fun x => (V x).2) fun x _ => Set.mem_iUnion.2 ⟨x, hx x⟩`. Use `⟨{ ι := t, U := fun a => V a.1, d := fun a => d a.1, c := fun a => (hc a.1).some, cover := ?_, inter := ?_ }, fun a => hP a.1⟩` and prove the remaining obligations. Use `eq_top_iff.2 fun x _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `Set.mem_iUnion.1 (ht (Set.mem_univ x))`. Take `⟨hy, hxy⟩` from `Set.mem_iUnion.1 hy`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨y, hy⟩, hxy⟩`. Introduce `S hS`. Proceed by induction on `hS using Finset.Nonempty.cons_induction with`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `singleton a => simpa using (hc a.1).some.affine`. Consider the case `cons a s ha hs ih`. Rewrite using `[Finset.cons_eq_insert, Finset.iInf_insert]`. Conclude with `inter_affine q (hc a.1).some.affine ih`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cov_of_local (P : ℕ → Prop) (q : X ⟶ Spec (CommRingCat.of O)) [IsSeparated q] [QuasiCompact q]
     (h : ∀ x : X, ∃ (V : X.Opens) (d : ℕ), x ∈ V ∧ P d ∧ Nonempty (Coord q V d)) :
@@ -94,11 +94,11 @@ theorem cov_of_local (P : ℕ → Prop) (q : X ⟶ Spec (CommRingCat.of O)) [IsS
       exact inter_affine q (hc a.1).some.affine ih
 
 /- English proof (translation)
-Introduce `O _ X q _ _`. Use `⟨fun hs => ?_, fun d hd => ?_⟩` and prove the remaining obligations. Take `⟨U, -⟩` from `cov_of_local (fun _ => True) q fun x => by`. Take `⟨V, hV, hx, -⟩` from `exists_isAffineOpen_mem_and_subset (X := X) (U := ⊤) (x := x) trivial`. Establish `h : RingHom.Locally RingHom.IsStandardSmooth (q.appLE ⊤ V le_top).hom` using `RingHom.smooth_iff_locally_isStandardSmooth.1 (q.smooth_appLE (isAffineOpen_top _) hV le_top)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨f, hf, hst⟩` from `exists_basicOpen RingHom.IsStandardSmooth RingHom.isStandardSmooth_respectsIso q hV h hx`. Take `⟨n, g, hg, he⟩` from `hst.exists_etale_mvPolynomial`. Conclude with `⟨_, n, hf, trivial, coord_basicOpen q hV f g hg he⟩`. Conclude with `⟨U⟩`. Use `cov_of_local (fun n => n = d) q fun x => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨V, hV, hx, -⟩` from `exists_isAffineOpen_mem_and_subset (X := X) (U := ⊤) (x := x) trivial`. Establish `h : RingHom.Locally (RingHom.IsStandardSmoothOfRelativeDimension d) (q.appLE ⊤ V le_top).hom` using `HasRingHomProperty.appLE (P := @SmoothOfRelativeDimension d) q hd ⟨⊤, isAffineOpen_top _⟩ ⟨V, hV⟩ le_top`. Take `⟨f, hf, hst⟩` from `exists_basicOpen (RingHom.IsStandardSmoothOfRelativeDimension d) RingHom.isStandardSmoothOfRelativeDimension_respectsIso q hV h hx`. Take `⟨g, hg, he⟩` from `hst.exists_etale_mvPolynomial`. Conclude with `⟨_, d, hf, rfl, coord_basicOpen q hV f g hg he⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_cov : ∀ {O : Type} [CommRing O] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of O)) [IsSeparated q]
     [QuasiCompact q], (Smooth q → Nonempty (Cov q)) ∧

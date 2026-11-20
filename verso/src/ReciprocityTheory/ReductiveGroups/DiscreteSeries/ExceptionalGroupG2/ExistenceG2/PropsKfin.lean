@@ -50,9 +50,7 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
   {E : Fin n → Fin n → Module.End ℂ D} {V : Submodule ℂ D}
 
 /- English proof (translation)
-Use `haveI := hSf`. Establish `hU` using `isInfUnitary_of_isDerivedOn hσ hD`. Establish `hfin` using `kfin_wts_finite hσ S`. Use `choose k hk using fun μ : Fin n → ℝ => khw_mem_layer hD.glRep hU hV hc hgap μ`. Use `le_trans (kfin_key hσ hD hV.1 hV.2.1 S hS hSK (hfin.toFinset.sup k) ?_) (Submodule.map_mono (layer_le_genSub _))` and prove the remaining obligations.
-
-Introduce `μ w hw hwμ hμS`. Conclude with `layer_mono (Finset.le_sup (hfin.mem_toFinset.2 hμS)) (hk μ w hw hwμ)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem data_kfin_le (hgap : StdGap ε lam) (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E)
     (hV : IsKIrrHW ε E (lowK ε lam) V) (hc : ∀ v ∈ V, casimir E v = (casVal lam : ℂ) • v)

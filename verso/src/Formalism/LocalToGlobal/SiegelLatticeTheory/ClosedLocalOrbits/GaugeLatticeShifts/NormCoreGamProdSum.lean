@@ -9,9 +9,9 @@ open Classical
 
 open Formalism.L2.SG.GGMirabolic in
 /- English proof (translation)
-Introduce `ι _ Fq _ _ k ψ x`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Unfold `gamProd gam`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_inv_distrib]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Finset.prod_univ_sum, Fintype.piFinset_univ]`. Both sides reduce to the same expression. Rewrite using `[Nat.card_congr (Equiv.subtypePiEquivPi), Nat.card_pi]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem Formalism.L2.SG.NormCut.gamma_product_sum_holds : Formalism.L2.SG.NormCut.GamProdSum := by
   intro ι _ Fq _ _ k ψ x

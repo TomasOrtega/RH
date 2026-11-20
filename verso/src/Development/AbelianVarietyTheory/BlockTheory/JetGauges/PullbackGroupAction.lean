@@ -16,7 +16,7 @@ abbrev pullGrp (f : S' ⟶ S) (G : Over S) : Over S' := (Over.pullback f).obj G
 abbrev pullFst (f : S' ⟶ S) (G : Over S) : (pullGrp f G).left ⟶ G.left := pullback.fst G.hom f
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem pullGrp_comm (f : S' ⟶ S) (G : Over S) [GrpObj G] [IsCommMonObj G] : IsCommMonObj (pullGrp f G) :=
   inferInstance
@@ -32,14 +32,14 @@ def pullAct {O : Type} [CommRing O] (f : S' ⟶ S) {G : Over S} [GrpObj G] (A : 
   add a b := by rw [A.add, CategoryTheory.Functor.map_mul]
 
 /- English proof (translation)
-Conclude with `pullback.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem pullAct_fst {O : Type} [CommRing O] (f : S' ⟶ S) {G : Over S} [GrpObj G] (A : OAct O G) (a : O) :
     ((pullAct f A).act a).left ≫ pullFst f G = pullFst f G ≫ (A.act a).left := by
   exact pullback.lift_fst _ _ _
 
 /- English proof (translation)
-Simplify using `[eSec, pullFst]`. Establish `h : pullback.fst (𝟙 S) f = pullback.snd (𝟙 S) f ≫ f` using `by simpa using pullback.condition (f := 𝟙 S) (g := f)`. Use `(pullback.lift_fst _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc]`. Conclude with `congrArg (· ≫ _) h`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eSec_pullFst (f : S' ⟶ S) (G : Over S) [GrpObj G] :
     eSec (pullGrp f G) ≫ pullFst f G = (show (𝟙_ (Over S')).left ⟶ (𝟙_ (Over S)).left from f) ≫ eSec G := by
@@ -84,20 +84,20 @@ def SABPullExists : Prop :=
     ∃ L' : RigLB (pullGrp f t.G), HasPullWith t f L'
 
 /- English proof (translation)
-Introduce `E _ _ _ H S S' f t L' ⟨w, hw, _⟩` and use `h E H S S' f t L' ⟨w, hw⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example (h : SABPull) : SABPullRig :=
   fun E _ _ _ H S S' f t L' ⟨w, hw, _⟩ => h E H S S' f t L' ⟨w, hw⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H S S' f t` and use `let ⟨L', hL⟩ := h' f t.G t.PP ⟨L', h E H S S' f t L' hL⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example (h : SABPullRig) (h' : RigPullExists) : SABPullExists := fun E _ _ _ H S S' f t =>
   let ⟨L', hL⟩ := h' f t.G t.PP
   ⟨L', h E H S S' f t L' hL⟩
 
 /- English proof (translation)
-Take `⟨_, _, _, _, _, m, hm⟩` from `h`. Take `⟨w, hw, _⟩` from `m.lin`. Rewrite using `[← hm]`. Conclude with `⟨w, hw⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 example {H : Host E} (t : SAB H S) (f : S' ⟶ S) (L' : RigLB (pullGrp f t.G)) (h : HasPullWith t f L') :
     LBIso L'.L (t.PP.L.pull (pullFst f t.G)) := by

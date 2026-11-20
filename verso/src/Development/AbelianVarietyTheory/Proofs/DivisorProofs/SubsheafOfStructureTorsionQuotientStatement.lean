@@ -12,7 +12,7 @@ open GlobalTheory.IndefiniteRowSideFullHecke.GenericFiniteMaps
 open GlobalTheory
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.exists_sub_mono_structure_of_genRank_pos` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSubsheafOfStructureTorsionQuotient.lean&line=16#L16)
 -/

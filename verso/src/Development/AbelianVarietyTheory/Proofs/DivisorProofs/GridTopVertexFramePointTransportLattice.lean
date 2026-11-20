@@ -26,17 +26,17 @@ def prj (d : HermitianOrthogonalExtensionData A B 1 1) : Matrix (Fin A.rank) (Fi
 def crd (d : HermitianOrthogonalExtensionData A B 1 1) : Matrix (Fin 1) (Fin B.rank) D.host.E := cT σ d.a * B.gram
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.AutFunCounterexample.gram_det_ne A).isUnit`.
+A detailed English derivation is pending.
 -/
 theorem gram_unit (A : HSp D) : IsUnit A.gram.det := (GlobalTheory.AutFunCounterexample.gram_det_ne A).isUnit
 
 /- English proof (translation)
-The claim follows from `gram_pull B A d.ι d.isom`.
+A detailed English derivation is pending.
 -/
 theorem emb_gram (d : HermitianOrthogonalExtensionData A B 1 1) : cT σ (emb d) * B.gram * emb d = A.gram := gram_pull B A d.ι d.isom
 
 /- English proof (translation)
-Rewrite using `[d.gram]`. Use extensionality with `i j`. Use `fin_cases i`. Use `fin_cases j`. Simplify using `[antiDiagonalSignGramMatrix]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem orthogonalExtension_conjTranspose_mul_gram_mul_eq_one (d : HermitianOrthogonalExtensionData A B 1 1) : cT σ d.a * B.gram * d.a = 1 := by
   rw [d.gram]
@@ -45,26 +45,26 @@ theorem orthogonalExtension_conjTranspose_mul_gram_mul_eq_one (d : HermitianOrth
   simp [antiDiagonalSignGramMatrix]
 
 /- English proof (translation)
-Rewrite using `[prj, Matrix.mul_assoc, emb_gram, Matrix.nonsing_inv_mul _ (gram_unit A)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem prj_emb (d : HermitianOrthogonalExtensionData A B 1 1) : prj d * emb d = 1 := by
   rw [prj, Matrix.mul_assoc, emb_gram, Matrix.nonsing_inv_mul _ (gram_unit A)]
 
 /- English proof (translation)
-Rewrite using `[prj, Matrix.mul_assoc, d.perp, Matrix.mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem orthogonalSumProjection_mul_auxiliary (d : HermitianOrthogonalExtensionData A B 1 1) : prj d * d.a = 0 := by
   rw [prj, Matrix.mul_assoc, d.perp, Matrix.mul_zero]
 
 /- English proof (translation)
-The claim follows from `orthogonalExtension_conjTranspose_mul_gram_mul_eq_one d`.
+A detailed English derivation is pending.
 -/
 theorem coefficient_mul_a_eq_one (d : HermitianOrthogonalExtensionData A B 1 1) : crd d * d.a = 1 := orthogonalExtension_conjTranspose_mul_gram_mul_eq_one d
 
 /- English proof (translation)
-Establish `h` using `congrArg (cT σ) d.perp`. Rewrite `h` using `[cT_mul, cT_mul, gram_herm, cT_cT]`. Establish `h0 : cT σ (0 : Matrix (Fin A.rank) (Fin 1) D.host.E) = 0`. Use extensionality with `i j`. Simplify using `[cT]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[h0, ← Matrix.mul_assoc]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem crd_emb (d : HermitianOrthogonalExtensionData A B 1 1) : crd d * emb d = 0 := by
   have h := congrArg (cT σ) d.perp
@@ -75,7 +75,7 @@ theorem crd_emb (d : HermitianOrthogonalExtensionData A B 1 1) : crd d * emb d =
   exact h
 
 /- English proof (translation)
-Establish `e : Fin A.rank ⊕ Fin 1 ≃ Fin B.rank` using `finSumFinEquiv.trans (finCongr d.rank)`. Establish `h : (Matrix.fromRows (prj d) (crd d)) * (Matrix.fromCols (emb d) d.a) = 1`. Rewrite using `[Matrix.fromRows_mul_fromCols, prj_emb, orthogonalSumProjection_mul_auxiliary, crd_emb, coefficient_mul_a_eq_one, Matrix.fromBlocks_one]`. Use `(Matrix.mul_eq_one_comm_of_equiv e).1 h` as an intermediate fact. Rewrite `this` using `[Matrix.fromCols_mul_fromRows]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem split (d : HermitianOrthogonalExtensionData A B 1 1) : emb d * prj d + d.a * crd d = 1 := by
   have e : Fin A.rank ⊕ Fin 1 ≃ Fin B.rank := finSumFinEquiv.trans (finCongr d.rank)
@@ -85,14 +85,14 @@ theorem split (d : HermitianOrthogonalExtensionData A B 1 1) : emb d * prj d + d
   rwa [Matrix.fromCols_mul_fromRows] at this
 
 /- English proof (translation)
-Rewrite using `[← Matrix.map_mul, ← Matrix.map_mul, ← Matrix.map_add _ (map_add φ), split, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem split_map {R : Type} [CommRing R] (φ : D.host.E →+* R) (d : HermitianOrthogonalExtensionData A B 1 1) :
     (emb d).map φ * (prj d).map φ + d.a.map φ * (crd d).map φ = 1 := by
   rw [← Matrix.map_mul, ← Matrix.map_mul, ← Matrix.map_add _ (map_add φ), split, Matrix.map_one _ (map_zero _) (map_one _)]
 
 /- English proof (translation)
-Rewrite using `[Matrix.map_add _ (map_add ρ), Matrix.map_mul, Matrix.map_mul, Matrix.map_sub _ (map_sub ρ), Matrix.map_one ρ (map_zero ρ) (map_one ρ), Matrix.map_one ρ (map_zero ρ) (map_one ρ)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_ext {R R' : Type} [CommRing R] [CommRing R'] (ρ : R →+* R') {n r : ℕ} (P : Matrix (Fin n) (Fin r) R)
     (Q : Matrix (Fin r) (Fin n) R) (h : Matrix (Fin r) (Fin r) R) :
@@ -104,9 +104,9 @@ def extM {R : Type} [CommRing R] {n r : ℕ} (P : Matrix (Fin n) (Fin r) R) (Q :
     (h : Matrix (Fin r) (Fin r) R) : Matrix (Fin n) (Fin n) R := 1 + P * (h - 1) * Q
 
 /- English proof (translation)
-Use `set φ : E →+* R ⊗[F] E := inclR (F := F) R`. Establish `m3 : Q.map φ * P.map φ = 1`. Rewrite using `[← Matrix.map_mul, q3, Matrix.map_one _ (map_zero _) (map_one _)]`. Use `⟨⟨⟨1 + P.map φ * (h.1.1 - 1) * Q.map φ, 1 + P.map φ * (h.1.inv - 1) * Q.map φ, ext_mul _ _ m3 _ _ h.1.val_inv, ext_mul _ _ m3 _ _ h.1.inv_val⟩, ?_⟩, rfl⟩` and prove the remaining obligations. Use `ext_unitary (sigR R σ') (J.map φ) (G.map φ) _ _ ?_ ?_ m3 _ h.2` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cT_map_gen, ← Matrix.map_mul, ← Matrix.map_mul, q1]`. Rewrite using `[cT_map_gen, ← Matrix.map_mul, ← Matrix.map_mul, q2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ext {F E R : Type} [Field F] [Field E] [Algebra F E] [CommRing R] [Algebra F R] (σ' : E →ₐ[F] E)
     {n r : ℕ} (J : Matrix (Fin n) (Fin n) E) (G : Matrix (Fin r) (Fin r) E) (P : Matrix (Fin n) (Fin r) E)
@@ -123,9 +123,9 @@ theorem exists_ext {F E R : Type} [Field F] [Field E] [Algebra F E] [CommRing R]
   · rw [cT_map_gen, ← Matrix.map_mul, ← Matrix.map_mul, q2]
 
 /- English proof (translation)
-Establish `q2 : cT σ (emb d) * B.gram = A.gram * prj d`. Rewrite using `[prj, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (gram_unit A), Matrix.one_mul]`. Establish `q1 : B.gram * emb d = cT σ (prj d) * A.gram`. Use `congrArg (cT σ) q2` as an intermediate fact. Rewrite `this` using `[cT_mul, cT_mul, gram_herm, cT_cT, gram_herm]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `exists_ext (R := AF D.host.F) D.sp.cm.sig B.gram A.gram (emb d) (prj d) q1 q2 (prj_emb d) h`.
+A detailed English derivation is pending.
 -/
 theorem exists_pt (d : HermitianOrthogonalExtensionData A B 1 1) (h : GA D A) :
     ∃ g : GA D B, (matHom B g).1 = extM ((emb d).map (incA D)) ((prj d).map (incA D)) (matHom A h).1 := by
@@ -142,52 +142,52 @@ variable {R : Type} [CommRing R] {n r : ℕ} (P : Matrix (Fin n) (Fin r) R) (Q :
   (h : Matrix (Fin r) (Fin r) R)
 
 /- English proof (translation)
-Rewrite using `[extM, add_sub_cancel_left]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem extM_sub_one : extM P Q h - 1 = P * (h - 1) * Q := by
   rw [extM, add_sub_cancel_left]
 
 /- English proof (translation)
-Rewrite using `[extM, Matrix.add_mul, Matrix.one_mul, Matrix.mul_assoc, hQ, Matrix.mul_one, Matrix.mul_sub, Matrix.mul_one, add_sub_cancel]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem extM_mul (hQ : Q * P = 1) : extM P Q h * P = P * h := by
   rw [extM, Matrix.add_mul, Matrix.one_mul, Matrix.mul_assoc, hQ, Matrix.mul_one, Matrix.mul_sub, Matrix.mul_one,
     add_sub_cancel]
 
 /- English proof (translation)
-Rewrite using `[extM, Matrix.add_mulVec, Matrix.one_mulVec, ← Matrix.mulVec_mulVec, hv, Matrix.mulVec_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem extM_mulVec {v : Fin n → R} (hv : Q *ᵥ v = 0) : extM P Q h *ᵥ v = v := by
   rw [extM, Matrix.add_mulVec, Matrix.one_mulVec, ← Matrix.mulVec_mulVec, hv, Matrix.mulVec_zero, add_zero]
 
 /- English proof (translation)
-Rewrite using `[extM, Matrix.mul_add, Matrix.mul_one, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hQ, Matrix.one_mul, Matrix.sub_mul, Matrix.one_mul, add_sub_cancel]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem prj_extM (hQ : Q * P = 1) : Q * extM P Q h = h * Q := by
   rw [extM, Matrix.mul_add, Matrix.mul_one, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hQ, Matrix.one_mul, Matrix.sub_mul,
     Matrix.one_mul, add_sub_cancel]
 
 /- English proof (translation)
-Rewrite using `[extM, Matrix.mul_add, Matrix.mul_one, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hC, Matrix.zero_mul, Matrix.zero_mul, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem crd_extM {c : ℕ} (C : Matrix (Fin c) (Fin n) R) (hC : C * P = 0) : C * extM P Q h = C := by
   rw [extM, Matrix.mul_add, Matrix.mul_one, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hC, Matrix.zero_mul, Matrix.zero_mul,
     add_zero]
 
 /- English proof (translation)
-Simplify using `[extM]`.
+Simplify using the standard rewrite rules.
 -/
 theorem extM_one : extM P Q 1 = 1 := by
   simp [extM]
 
 /- English proof (translation)
-The claim follows from `map_ext ρ P Q h`.
+A detailed English derivation is pending.
 -/
 theorem extM_map {R' : Type} [CommRing R'] (ρ : R →+* R') : (extM P Q h).map ρ = extM (P.map ρ) (Q.map ρ) (h.map ρ) :=
   map_ext ρ P Q h
 
 /- English proof (translation)
-Establish `e : ε • (h - 1) = h - 1` using `Matrix.ext fun i j => hs i j`. Establish `: ε • (extM P Q h - 1) = extM P Q h - 1`. Rewrite using `[extM_sub_one, ← Matrix.smul_mul, ← Matrix.mul_smul, e]`. Conclude with `congrFun (congrFun this i) j`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extM_supp (ε : R) (hs : ∀ i j, ε * (h - 1) i j = (h - 1) i j) (i j : Fin n) :
     ε * (extM P Q h - 1) i j = (extM P Q h - 1) i j := by
@@ -206,11 +206,11 @@ local notation "ιf" => inclE (F := F) (E := E) (Formalism.L2.Herm.Af F)
 local notation "hat" => Formalism.L2.Herm.hatL (F := F) (E := E)
 
 /- English proof (translation)
-Use `Submodule.span_induction (p := fun v _ => N.map ιf *ᵥ v ∈ hat Λ') ?_ ?_ ?_ ?_ hv` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Use `Submodule.subset_span ⟨N *ᵥ x, h x hx, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, map_sum]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.mulVec_zero]`. Conclude with `zero_mem _`. Introduce `x y _ _ hx hy`. Rewrite using `[Matrix.mulVec_add]`. Conclude with `add_mem hx hy`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `s x _ hx`. Establish `: N.map ιf *ᵥ (s • x) = s • (N.map ιf *ᵥ x)`. Rewrite using `[Subring.smul_def, Subring.smul_def, Matrix.mulVec_smul]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ s hx`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hat_mulVec {p q : ℕ} (N : Matrix (Fin p) (Fin q) E) {Λ : Submodule (𝓞 E) (Fin q → E)}
     {Λ' : Submodule (𝓞 E) (Fin p → E)} (h : ∀ y ∈ Λ, N *ᵥ y ∈ Λ') {v} (hv : v ∈ hat Λ) :
@@ -233,13 +233,13 @@ variable {n k c : ℕ} {M : Matrix (Fin n) (Fin k) E} {a : Matrix (Fin n) (Fin c
   {C : Matrix (Fin c) (Fin n) E}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hv`. Use `⟨hat_mulVec _ ?_ hv, hat_mulVec _ ?_ hv⟩` and prove the remaining obligations. Introduce `x hx`. Take `⟨y, hy, u, -, rfl⟩` from `(hs x).1 hx`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Matrix.mulVec_add, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, QM, Qa, Matrix.one_mulVec, Matrix.zero_mulVec, add_zero]`. Conclude with `hy`. Introduce `x hx`. Take `⟨y, -, u, hu, rfl⟩` from `(hs x).1 hx`. Rewrite using `[Matrix.mulVec_add, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, CM, Ca, Matrix.one_mulVec, Matrix.zero_mulVec, zero_add]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `hu`. Introduce and unpack `⟨h1, h2⟩`. Establish `e : v = M.map ιf *ᵥ (Q.map ιf *ᵥ v) + a.map ιf *ᵥ (C.map ιf *ᵥ v)`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Matrix.add_mulVec, sp, Matrix.one_mulVec]`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `add_mem (hat_mulVec _ ?_ h1) (hat_mulVec _ ?_ h2)` and prove the remaining obligations. Introduce `y hy`. Conclude with `(hs _).2 ⟨y, hy, 0, zero_mem _, by simp⟩`. Introduce `u hu`. Conclude with `(hs _).2 ⟨0, zero_mem _, u, hu, by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_hat_sum (QM : Q * M = 1) (Qa : Q * a = 0) (CM : C * M = 0) (Ca : C * a = 1)
     (sp : M.map ιf * Q.map ιf + a.map ιf * C.map ιf = 1) {Λ : Submodule (𝓞 E) (Fin k → E)}
@@ -270,9 +270,9 @@ theorem mem_hat_sum (QM : Q * M = 1) (Qa : Q * a = 0) (CM : C * M = 0) (Ca : C *
       exact (hs _).2 ⟨0, zero_mem _, u, hu, by simp⟩
 
 /- English proof (translation)
-Establish `qm : Q.map ιf * M.map ιf = 1`. Rewrite using `[← Matrix.map_mul, QM, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `cm : C.map ιf * M.map ιf = 0`. Rewrite using `[← Matrix.map_mul, CM]`. Use extensionality with `i j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Rewrite using `[mem_hat_sum QM Qa CM Ca sp hs₀, mem_hat_sum QM Qa CM Ca sp hs, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, prj_extM _ _ _ qm, crd_extM _ _ _ _ cm, ← Matrix.mulVec_mulVec, hT]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem hat_transport (QM : Q * M = 1) (Qa : Q * a = 0) (CM : C * M = 0) (Ca : C * a = 1)
     (sp : M.map ιf * Q.map ιf + a.map ιf * C.map ιf = 1) {Λ₀ Λ : Submodule (𝓞 E) (Fin k → E)}
@@ -297,7 +297,7 @@ def unitLat (D : D7) : Submodule (𝓞 D.host.E) (Fin 1 → D.host.E) where
   smul_mem' := fun c _ hu p => (1 : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E).val.smul_mem c (hu p)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_lat (d : HermitianOrthogonalExtensionData A B 1 1) (Λ : Submodule (𝓞 D.host.E) (Fin A.rank → D.host.E)) (x) :
     x ∈ d.lat Λ (fun _ => 1) ↔ ∃ y ∈ Λ, ∃ u ∈ unitLat D, x = emb d *ᵥ y + d.a *ᵥ u := Iff.rfl
@@ -305,13 +305,13 @@ theorem mem_lat (d : HermitianOrthogonalExtensionData A B 1 1) (Λ : Submodule (
 def ixE (d : HermitianOrthogonalExtensionData A B 1 1) : Fin A.rank ⊕ Fin 1 ≃ Fin B.rank := finSumFinEquiv.trans (finCongr d.rank)
 
 /- English proof (translation)
-The claim follows from `Fin.ext (by simp [ixE, Formalism.L2.Col.Br.iC])`.
+A detailed English derivation is pending.
 -/
 theorem ixE_inl (d : HermitianOrthogonalExtensionData A B 1 1) (k) : ixE d (Sum.inl k) = Formalism.L2.Col.Br.iC d.rank.symm k :=
   Fin.ext (by simp [ixE, Formalism.L2.Col.Br.iC])
 
 /- English proof (translation)
-Establish `: p = 0` using `Subsingleton.elim _ _`. Substitute `this` using the available equality. Conclude with `Fin.ext (by simp [ixE, Formalism.L2.Col.Br.iL])`.
+Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem ixE_inr (d : HermitianOrthogonalExtensionData A B 1 1) (p) : ixE d (Sum.inr p) = Formalism.L2.Col.Br.iL d.rank.symm := by
   have : p = 0 := Subsingleton.elim _ _
@@ -322,27 +322,25 @@ def frM (d : HermitianOrthogonalExtensionData A B 1 1) (f : Matrix (Fin A.rank) 
   (Matrix.fromCols (emb d * f) d.a).submatrix id (ixE d).symm
 
 /- English proof (translation)
-Rewrite using `[← ixE_inl, frM, Matrix.submatrix_apply, Equiv.symm_apply_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem frM_iC (d : HermitianOrthogonalExtensionData A B 1 1) (f) (i k) : frM d f i (Formalism.L2.Col.Br.iC d.rank.symm k) = (emb d * f) i k := by
   rw [← ixE_inl, frM, Matrix.submatrix_apply, Equiv.symm_apply_apply]; rfl
 
 /- English proof (translation)
-Rewrite using `[← ixE_inr d 0, frM, Matrix.submatrix_apply, Equiv.symm_apply_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem frM_iL (d : HermitianOrthogonalExtensionData A B 1 1) (f) (i) : frM d f i (Formalism.L2.Col.Br.iL d.rank.symm) = d.a i 0 := by
   rw [← ixE_inr d 0, frM, Matrix.submatrix_apply, Equiv.symm_apply_apply]; rfl
 
 /- English proof (translation)
-Use `set X := Matrix.fromCols (emb d * f) d.a with hX`. Establish `e1 : cT σ (frM d f) * B.gram * frM d f = (cT σ X * B.gram * X).submatrix (ixE d).symm (ixE d).symm` using `rfl`. Establish `e2 : cT σ X * B.gram * X = Matrix.fromBlocks 1 0 0 1`. Establish `a1 : cT σ (emb d * f) * B.gram * (emb d * f) = 1`. Rewrite using `[cT_mul, Matrix.mul_assoc (cT σ f), Matrix.mul_assoc (cT σ f), ← Matrix.mul_assoc _ (emb d), ← Matrix.mul_assoc _ _ f, emb_gram]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hf`. Establish `a2 : cT σ (emb d * f) * B.gram * d.a = 0`. Rewrite using `[cT_mul, Matrix.mul_assoc (cT σ f), Matrix.mul_assoc (cT σ f), d.perp, Matrix.mul_zero]`. Establish `a3 : cT σ d.a * B.gram * (emb d * f) = 0`. Rewrite using `[← Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `crd_emb d` as an intermediate fact. Rewrite `this` using `[crd]`. Rewrite using `[this, Matrix.zero_mul]`. Establish `a4` using `orthogonalExtension_conjTranspose_mul_gram_mul_eq_one d`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`. Conclude with `congrFun (congrFun a1 i) j`. Conclude with `congrFun (congrFun a2 i) j`. Conclude with `congrFun (congrFun a3 i) j`. Conclude with `congrFun (congrFun a4 i) j`.
-
-Rewrite using `[e1, e2, Matrix.fromBlocks_one, Matrix.submatrix_one_equiv]`.
+A detailed English derivation is pending.
 -/
 theorem frM_on (d : HermitianOrthogonalExtensionData A B 1 1) (f) (hf : cT σ f * A.gram * f = 1) : cT σ (frM d f) * B.gram * frM d f = 1 := by
   set X := Matrix.fromCols (emb d * f) d.a with hX
@@ -371,21 +369,19 @@ def frG (d : HermitianOrthogonalExtensionData A B 1 1) (f) (hf : cT σ f * A.gra
   ⟨frM d f, cT σ (frM d f) * B.gram, (Matrix.mul_eq_one_comm_of_equiv (Equiv.refl _)).1 (frM_on d f hf), frM_on d f hf⟩
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`. Take `⟨x, rfl⟩` from `(ixE d).surjective j`. Break down `x with k | p` into its components or cases.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Use `(mem_lat d _ _).2 ⟨fun a => f.1 a k, Submodule.subset_span ⟨k, rfl⟩, 0, zero_mem _, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Use `show frM d f.1 i _ = _`. Rewrite using `[ixE_inl, frM_iC, Matrix.mulVec_zero, add_zero]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `(mem_lat d _ _).2 ⟨0, zero_mem _, 1, fun _ => (FractionalIdeal.mem_one_iff _).2 ⟨1, map_one _⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Use `show frM d f.1 i _ = _`. Rewrite using `[ixE_inr, frM_iL, Matrix.mulVec_zero, zero_add]`. Simplify using `[Matrix.mulVec, dotProduct]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨y, hy, u, hu, rfl⟩`. Use `add_mem ?_ ?_` and prove the remaining obligations. Use `Submodule.span_induction (p := fun y _ => emb d *ᵥ y ∈ colLat (frG d f.1 hf)) ?_ ?_ ?_ ?_ hy` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Use `Submodule.subset_span ⟨Formalism.L2.Col.Br.iC d.rank.symm k, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Use `show frM d f.1 i _ = _`. Rewrite using `[frM_iC]`. Both sides reduce to the same expression. Rewrite using `[Matrix.mulVec_zero]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `zero_mem _`. Introduce `x y _ _ hx hy`. Rewrite using `[Matrix.mulVec_add]`. Conclude with `add_mem hx hy`. Introduce `s x _ hx`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mulVec_smul]`. Conclude with `Submodule.smul_mem _ s hx`. Take `⟨o, ho⟩` from `(FractionalIdeal.mem_one_iff _).1 (hu 0)`. Establish `: d.a *ᵥ u = o • (fun i => (frG d f.1 hf).1 i (Formalism.L2.Col.Br.iL d.rank.symm))`. Use function extensionality and compare the values at `i`.
-
-Use `show _ = o • frM d f.1 i _`. Rewrite using `[frM_iL, Algebra.smul_def, ho, mul_comm]`. Simplify using `[Matrix.mulVec, dotProduct]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ o (Submodule.subset_span ⟨_, rfl⟩)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colLat_frG (d : HermitianOrthogonalExtensionData A B 1 1) (f : GL (Fin A.rank) D.host.E) (hf : cT σ f.1 * A.gram * f.1 = 1) :
     colLat (frG d f.1 hf) = d.lat (colLat f) fun _ => 1 := by
@@ -444,13 +440,13 @@ Both sides reduce to the same expression.
 theorem finE_val (V : HSp D) (g : GA D V) : (Formalism.IndefR.Lev.finE V g).1 = ((matHom V g).1).map (rhoF D) := rfl
 
 /- English proof (translation)
-Simplify using `[rhoF, Formalism.IndefR.Lev.swapAE, inclR, inclE]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rhoF_incA (x : D.host.E) : rhoF D (incA D x) = inclE (F := D.host.F) (Formalism.L2.Herm.Af D.host.F) x := by
   simp [rhoF, Formalism.IndefR.Lev.swapAE, inclR, inclE]
 
 /- English proof (translation)
-The claim follows from `Matrix.ext fun i j => rhoF_incA (X i j)`.
+A detailed English derivation is pending.
 -/
 theorem map_incA_rhoF {p q : ℕ} (X : Matrix (Fin p) (Fin q) D.host.E) :
     (X.map (incA D)).map (rhoF D) = X.map (inclE (F := D.host.F) (Formalism.L2.Herm.Af D.host.F)) :=
@@ -459,15 +455,13 @@ theorem map_incA_rhoF {p q : ℕ} (X : Matrix (Fin p) (Fin q) D.host.E) :
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `exists_pt d u₀.1`. Establish `m3 : (prj d).map (incA D) * (emb d).map (incA D) = 1`. Rewrite using `[← Matrix.map_mul, prj_emb, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hgf : g ∈ GfC B`. Establish `h0 : ((matHom A u₀.1).1).map (rhoI D) = 1` using `congrArg Units.val (MonoidHom.mem_ker.1 u₀.2)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `MonoidHom.mem_ker.2 (Units.ext ?_)` and prove the remaining obligations. Use `show (infHom B g).1 = 1`. Rewrite using `[infHom_val, hg, extM_map, h0, extM_one]`. Establish `hfin : (Formalism.IndefR.Lev.finE B g).1 = extM ((emb d).map (inclE (F` using `D.host.F) (Formalism.L2.Herm.Af D.host.F))) ((prj d).map (inclE (F := D.host.F) (Formalism.L2.Herm.Af D.host.F))) (Formalism.IndefR.Lev.finE A u₀.1).1 := by`. Rewrite using `[finE_val, finE_val, hg, extM_map, map_incA_rhoF, map_incA_rhoF]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨frG d fr₀.1 hon, ⟨g, hgf⟩, frM_on d _ hon, ?_, fun v => ?_, frM_iC d _, frM_iL d _, ?_, ?_⟩` and prove the remaining obligations. Take `⟨P, e, he, hs, ho⟩` from `hsu`. Use `⟨P, e, he, fun i j => ?_, ho⟩` and prove the remaining obligations. Conclude with `(congrArg (fun X => (e + cA D e) * (X - 1) i j) hg).trans ((extM_supp _ _ _ _ hs i j).trans (congrArg (fun X => (X - 1) i j) hg.symm))`. Substitute `hΛ` using the available equality.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[colLat_frG d fr₀ hon]`. Use `show _ ↔ (Formalism.IndefR.Lev.finE B g).1 *ᵥ v ∈ _`. Rewrite using `[hfin]`. Conclude with `hat_transport (prj_emb d) (orthogonalSumProjection_mul_auxiliary d) (crd_emb d) (coefficient_mul_a_eq_one d) (split_map _ d) (mem_lat d _) (mem_lat d _) _ hl v`. Conclude with `Eq.trans (congrArg (fun X : Matrix (Fin B.rank) (Fin B.rank) (AF D.host.F ⊗[D.host.F] D.host.E) => HMul.hMul X ((emb d).map (incA D))) hg) (extM_mul _ _ _ m3)`.
-
-Establish `hq : (prj d).map (incA D) *ᵥ (fun i => incA D (d.a i 0)) = 0`. Use function extensionality and compare the values at `l`. Use `congrArg (incA D) (congrFun (congrFun (orthogonalSumProjection_mul_auxiliary d) l) 0)` as an intermediate fact. Simplify `this` using `[Matrix.mulVec, dotProduct, Matrix.mul_apply, map_sum]`. Conclude with `Eq.trans (congrArg (fun X : Matrix (Fin B.rank) (Fin B.rank) (AF D.host.F ⊗[D.host.F] D.host.E) => X *ᵥ (fun i => incA D (d.a i 0))) hg) (extM_mulVec _ _ _ hq)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem top_abs (d : HermitianOrthogonalExtensionData A B 1 1) (S : Finset ℕ) (Λ : Submodule (𝓞 D.host.E) (Fin A.rank → D.host.E))
     (Λs : Submodule (𝓞 D.host.E) (Fin B.rank → D.host.E)) (hΛ : Λs = d.lat Λ fun _ => 1)
@@ -519,7 +513,7 @@ end GlobalTheory.TopExt
 namespace GlobalTheory.FunObj
 
 /- English proof (translation)
-Introduce `D T L sc G S fr₀ u₀ hon hs hl`. Conclude with `GlobalTheory.TopExt.top_abs (A := G.V (.grid D.R.m D.R.m)) (B := G.V (.top D.R.m)) G.sp.topDec S (G.Λ (.grid D.R.m D.R.m)) (G.Λ (.top D.R.m)) G.sp.topLat fr₀ u₀ hon hs hl`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem top_transport : ∀ (D : D7) (T : Type) (L : LevCh D T) (sc : Consts) (G : GridData L sc) (S : Finset ℕ)
     (fr₀ : GL (Fin (G.V (.grid D.R.m D.R.m)).rank) D.host.E) (u₀ : FinPt G (.grid D.R.m D.R.m)),

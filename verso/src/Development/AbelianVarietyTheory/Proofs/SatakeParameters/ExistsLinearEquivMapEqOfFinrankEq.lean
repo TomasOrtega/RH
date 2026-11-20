@@ -7,15 +7,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.SplitHecke
 
 /- English proof (translation)
-Take `⟨U, hU⟩` from `W.exists_isCompl`. Take `⟨U', hU'⟩` from `W'.exists_isCompl`. Establish `h1` using `Submodule.finrank_add_eq_of_isCompl hU`. Establish `h2` using `Submodule.finrank_add_eq_of_isCompl hU'`. Establish `h3 : Module.finrank k U = Module.finrank k U'` using `by omega`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `a : W ≃ₗ[k] W'` to `LinearEquiv.ofFinrankEq _ _ h`. Set `b : U ≃ₗ[k] U'` to `LinearEquiv.ofFinrankEq _ _ h3`. Set `e : V ≃ₗ[k] V` to `(Submodule.prodEquivOfIsCompl W U hU).symm ≪≫ₗ (a.prodCongr b) ≪≫ₗ Submodule.prodEquivOfIsCompl W' U' hU'`. Establish `he : ∀ w : W, e w = a w`. Introduce `w`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[e]`. Use `⟨e, ?_⟩` and prove the remaining obligations. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Use `he ⟨w, hw⟩` as an intermediate fact.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `e w ∈ W'`. Simplify using `only at this`. Rewrite using `[this]`. Conclude with `(a ⟨w, hw⟩).2`. Introduce `w hw`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨a.symm ⟨w, hw⟩, (a.symm ⟨w, hw⟩).2, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `e _ = w`. Rewrite using `[he]`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_linearEquiv_map_eq_of_finrank_eq {k V : Type} [Field k] [AddCommGroup V]
     [Module k V] [FiniteDimensional k V] (W W' : Submodule k V)
@@ -48,13 +48,13 @@ theorem exists_linearEquiv_map_eq_of_finrank_eq {k V : Type} [Field k] [AddCommG
     simp
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `exists_linearEquiv_map_eq_of_finrank_eq W W' h`. Set `M : Matrix (Fin n) (Fin n) (IsLocalRing.ResidueField O)` to `LinearMap.toMatrix' e.toLinearMap`. Use `choose A hA using fun i j => IsLocalRing.residue_surjective (R := O) (M i j)`. Establish `hAM : (Matrix.of A).map (IsLocalRing.residue O) = M`. Use extensionality with `i j`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Conclude with `hA i j`. Establish `hM : M.det ≠ 0`. Establish `: M.det = LinearMap.det e.toLinearMap` using `LinearMap.det_toMatrix' _`. Rewrite using `[this]`. Conclude with `(LinearEquiv.isUnit_det' e).ne_zero`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hu : IsUnit (Matrix.of A).det`. Rewrite using `[← IsLocalRing.residue_ne_zero_iff_isUnit, RingHom.map_det]`. Express the relevant statement in the definitionally equal form `((Matrix.of A).map (IsLocalRing.residue O)).det ≠ 0`. Rewrite using `[hAM]`. Conclude with `hM`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Take `⟨g, hg⟩` from `(Matrix.isUnit_iff_isUnit_det _).2 hu`. Use `⟨g, ?_⟩` and prove the remaining obligations. Rewrite using `[hg, hAM, ← he]`. Use `congr 1`. Conclude with `Matrix.toLin'_toMatrix' e.toLinearMap`.
+A detailed English derivation is pending.
 -/
 theorem exists_gl_map_residue_eq (O : Type) [CommRing O] [IsLocalRing O] (n : ℕ)
     (W W' : Submodule (IsLocalRing.ResidueField O) (Fin n → IsLocalRing.ResidueField O))

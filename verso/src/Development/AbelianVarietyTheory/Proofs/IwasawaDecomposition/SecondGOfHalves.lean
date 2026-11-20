@@ -9,7 +9,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Fo
 namespace GlobalTheory.Mem.Top.GroupRetwisting
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite using `[eq_of_heq hf]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem secondG_congr {α : Type*} (g : ∀ P : Pre, Fr P → α) {P P' : Pre} {f : Fr P} {f' : Fr P'} (h : P = P') (hf : HEq f f') :
     g P f = g P' f' := by

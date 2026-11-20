@@ -11,7 +11,7 @@ namespace GlobalTheory.JR.NormInt
 variable {F E : Type} [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E]
 
 /- English proof (translation)
-Use `U.charZero` as an intermediate fact. Take `⟨b, d, hb0, hs, hd, hd0⟩` from `Unram.exists_basis_antifixed F E`. Establish `h2` using `(IsUnit.mk0 (2 : F) two_ne_zero)`. Conclude with `(quadratic_star_structure b d hb0 hs hd U.star_fix (IsUnit.mk0 d hd0) h2).2.2.1 z`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem traceE [U : Unram F E] (z : E) : algebraMap F E (Algebra.trace F E z) = z + star z := by
   have := U.charZero
@@ -20,21 +20,19 @@ theorem traceE [U : Unram F E] (z : E) : algebraMap F E (Algebra.trace F E z) = 
   exact (quadratic_star_structure b d hb0 hs hd U.star_fix (IsUnit.mk0 d hd0) h2).2.2.1 z
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ U A ψ hψ x r j hj y hy`. Use `U.charZero` as an intermediate fact. Use `U.ultraE` as an intermediate fact. Establish `hE2 : Module.Finite F E` using `Module.finite_of_finrank_pos (by rw [U.finrank_eq]; norm_num)`. Take `⟨⟨c⟩, hinj, hN, htr, -⟩` from `GlobalTheory.JR.Et.quadratic_structure F E A`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: Module.Free A.K A.L` using `Module.Free.of_basis c`. Establish `: Module.Finite A.K A.L` using `Module.Finite.of_basis c`. Establish `: Module.Free E A.L` using `Module.Free.of_basis (A.push.out.basis (Module.Free.chooseBasis F A.K))`. Establish `: Module.Finite E A.L` using `Module.Finite.of_basis (A.push.out.basis (Module.Free.chooseBasis F A.K))`. Use `set s : E := star (j y) ⬝ᵥ j y with hs_def`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs1 : ‖s‖ ≤ 1`. Rewrite using `[hs_def, dotProduct]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.star_apply, norm_mul, U.norm_star]`. Conclude with `mul_le_one₀ (hy i) (norm_nonneg _) (hy i)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hss : star s = s`. Rewrite using `[hs_def, dotProduct, star_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.star_apply, star_mul', star_star, mul_comm]`. Establish `hsL : s = Algebra.trace E A.L (algebraMap A.K A.L x * star y * y)` using `hj y y`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set T : F := Algebra.trace F A.K (x * A.NL y) with hT`. Establish `hz : algebraMap A.K A.L (x * A.NL y) = algebraMap A.K A.L x * star y * y`. Rewrite using `[map_mul, hN, mul_assoc, mul_comm y]`. Establish `htK : ∀ k : A.K, Algebra.trace A.K A.L (algebraMap A.K A.L k) = 2 • k`. Introduce `k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `hinj` to reduce the goal to its premises. Rewrite using `[htr, A.star_K, map_nsmul, two_nsmul]`. Establish `h1 : Algebra.trace F A.L (algebraMap A.K A.L (x * A.NL y)) = 2 • T`. Rewrite using `[← Algebra.trace_trace (S := A.K), htK, map_nsmul]`. Establish `h2 : Algebra.trace F A.L (algebraMap A.K A.L (x * A.NL y)) = Algebra.trace F E s`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Algebra.trace_trace (S := E), hz, hsL]`. Establish `h3 : algebraMap F E T = s`. Establish `e` using `congrArg (algebraMap F E) (h1.symm.trans h2)`. Rewrite `e` using `[traceE, hss, map_nsmul, two_nsmul, ← two_mul, ← two_mul]`. Establish `: CharZero E` using `charZero_of_injective_algebraMap (algebraMap F E).injective`.
-
-Establish `h20 : (2 : E) ≠ 0` using `two_ne_zero`. Conclude with `mul_left_cancel₀ h20 e`. Establish `hT1 : ‖T‖ ≤ 1` using `by rw [← norm_algebraMap' E T, h3]; exact hs1`. Conclude with `hψ.1 T hT1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem main : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] (A : Et F E) (ψ : AddChar F ℂ), IsStdChar ψ → ∀ (x : A.K) (r : ℕ) (j : A.L ≃ₗ[E] (Fin r → E)), A.IsIsom x j → ∀ y : A.L, (∀ i, ‖j y i‖ ≤ 1) → A.psiK ψ (x * A.NL y) = 1 := by
   intro F E _ _ _ _ U A ψ hψ x r j hj y hy

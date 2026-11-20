@@ -63,16 +63,14 @@ def SplitPlaceUnramifiedGalois : Prop :=
         GlobalTheory.RoadU.SphAt .unr π ι r w B
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, h.2.1, fun w hw hn => h.2.2 w hw fun hm => hn (hS hm)⟩`.
+Supply the required witnesses or components.
 -/
 theorem HasRepU.mono {ι : Qbar l ≃+* ℂ} {U : Submodule ℂ (UA E a → ℂ)} {S S' : Finset (HeightOneSpectrum (𝓞 E))} (hS : S ⊆ S')
     {r : G E Ω →* GL (Fin a) (Qbar l)} (h : HasRepU ι U S r) : HasRepU ι U S' r :=
   ⟨h.1, h.2.1, fun w hw hn => h.2.2 w hw fun hm => hn (hS hm)⟩
 
 /- English proof (translation)
-Use `set p := w₀.under (𝓞 (maximalRealSubfield E))`. Use `haveI := p.isMaximal`. Establish `hf : (p.asIdeal.primesOver (𝓞 E)).Finite` using `IsDedekindDomain.primesOver_finite p.asIdeal (𝓞 E)`. Use `(hf.preimage (f := fun w : HeightOneSpectrum (𝓞 E) => w.asIdeal) (fun x _ y _ e => HeightOneSpectrum.ext e)).subset fun w hw => ?_` and prove the remaining obligations. Establish `e : w.under (𝓞 (maximalRealSubfield E)) = p` using `not_not.1 hw`.
-
-Conclude with `⟨w.isPrime, ⟨by rw [← e]; rfl⟩⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem finite_not_apart (w₀ : HeightOneSpectrum (𝓞 E)) : {w : HeightOneSpectrum (𝓞 E) | ¬ Apart w w₀}.Finite := by
   set p := w₀.under (𝓞 (maximalRealSubfield E))
@@ -87,13 +85,13 @@ def nearPlaces (w₀ : HeightOneSpectrum (𝓞 E)) : Finset (HeightOneSpectrum (
   (finite_not_apart w₀).toFinset
 
 /- English proof (translation)
-The claim follows from `Set.Finite.mem_toFinset _`.
+A detailed English derivation is pending.
 -/
 theorem mem_nearPlaces {w w₀ : HeightOneSpectrum (𝓞 E)} : w ∈ nearPlaces w₀ ↔ ¬ Apart w w₀ :=
   Set.Finite.mem_toFinset _
 
 /- English proof (translation)
-Establish `e` using `not_not.1 h`. Distinguish the cases in `hw : w = w₀`. Conclude with `hw ▸ h₀`. Conclude with `⟨w₀, Ne.symm hw, e.symm⟩`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isSplitAt_of_not_apart {w w₀ : HeightOneSpectrum (𝓞 E)} (h₀ : IsSplitAt w₀) (h : ¬ Apart w w₀) : IsSplitAt w := by
   have e := not_not.1 h
@@ -102,7 +100,7 @@ theorem isSplitAt_of_not_apart {w w₀ : HeightOneSpectrum (𝓞 E)} (h₀ : IsS
   · exact ⟨w₀, Ne.symm hw, e.symm⟩
 
 /- English proof (translation)
-The claim follows from `h E Ω l ι a ha _ T hT (fun _ hw => isSplitAt_of_not_apart h₀ (mem_nearPlaces.1 hw)) w₀ hl h₀ (fun _ hw => mem_nearPlaces.2 hw) U hU hu`.
+A detailed English derivation is pending.
 -/
 theorem RowStarCoreAtU.near (h : RowStarCoreAtU) (ι : Qbar l ≃+* ℂ) (ha : 1 ≤ a) {T : Finset (HeightOneSpectrum (𝓞 E))}
     (hT : NonSplitSet T) {w₀ : HeightOneSpectrum (𝓞 E)} (hl : ((l : ℕ) : 𝓞 E) ∈ w₀.asIdeal) (h₀ : IsSplitAt w₀)
@@ -112,12 +110,12 @@ theorem RowStarCoreAtU.near (h : RowStarCoreAtU) (ι : Qbar l ≃+* ℂ) (ha : 1
     (fun _ hw => mem_nearPlaces.2 hw) U hU hu
 
 /- English proof (translation)
-The claim follows from `mem_nearPlaces.2 (not_apart_self w₀)`.
+A detailed English derivation is pending.
 -/
 example (w₀ : HeightOneSpectrum (𝓞 E)) : w₀ ∈ nearPlaces w₀ := mem_nearPlaces.2 (not_apart_self w₀)
 
 /- English proof (translation)
-The claim follows from `h E Ω l ι a ha ∅ ∅ nonSplitSet_empty (fun _ hw => absurd hw (Finset.notMem_empty _)) _ isAutRepU_const fun w _ _ => isUnramU_const w`.
+A detailed English derivation is pending.
 -/
 example (h : RowStarCoreU) (ι : Qbar l ≃+* ℂ) (ha : 1 ≤ a) : ∃ r : G E Ω →* GL (Fin a) (Qbar l),
     HasRepU ι (Submodule.span ℂ {(fun _ => 1 : UA E a → ℂ)}) ∅ r :=
@@ -125,7 +123,7 @@ example (h : RowStarCoreU) (ι : Qbar l ≃+* ℂ) (ha : 1 ≤ a) : ∃ r : G E 
     fun w _ _ => isUnramU_const w
 
 /- English proof (translation)
-The claim follows from `h.near ι ha nonSplitSet_empty hl h₀ isAutRepU_const fun w _ _ => isUnramU_const w`.
+A detailed English derivation is pending.
 -/
 example (h : RowStarCoreAtU) (ι : Qbar l ≃+* ℂ) (ha : 1 ≤ a) {w₀ : HeightOneSpectrum (𝓞 E)} (hl : ((l : ℕ) : 𝓞 E) ∈ w₀.asIdeal)
     (h₀ : IsSplitAt w₀) : ∃ r : G E Ω →* GL (Fin a) (Qbar l),

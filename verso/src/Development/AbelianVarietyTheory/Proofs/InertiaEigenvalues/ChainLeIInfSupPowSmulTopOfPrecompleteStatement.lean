@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ChainLeIInfSup
 import Mathlib
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.chain_le_iInf_sup_pow_smul_top` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FChainLeIInfSupPowSmulTopOfPrecomplete.lean&line=18#L18)
 -/

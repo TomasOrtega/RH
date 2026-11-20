@@ -15,13 +15,13 @@ noncomputable def unitFiltrationUnits (n : ℕ) : Subgroup Kˣ :=
 variable {K}
 
 /- English proof (translation)
-The claim follows from `fun _ _ hmn ↦ Subgroup.map_mono (unitFiltration_antitone K hmn)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem unitFiltrationUnits_antitone : Antitone (unitFiltrationUnits K) :=
   fun _ _ hmn ↦ Subgroup.map_mono (unitFiltration_antitone K hmn)
 
 /- English proof (translation)
-Rewrite using `[unitFiltrationUnits, unitFiltration_zero, ← MonoidHom.range_eq_map, mem_range_unitsIncl_iff, ← map_one (normalizedValuation K), normalizedValuation_eq_iff, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_unitFiltrationUnits_zero_iff {x : Kˣ} :
     x ∈ unitFiltrationUnits K 0 ↔ valuation K (x : K) = 1 := by
@@ -29,13 +29,13 @@ theorem mem_unitFiltrationUnits_zero_iff {x : Kˣ} :
     ← map_one (normalizedValuation K), normalizedValuation_eq_iff, map_one]
 
 /- English proof (translation)
-Establish `hset` using `hϖ.maximalIdeal_pow_eq_setOfPred_le_v_coe_pow (v := valuation K) n`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩`. Establish `: ((u : 𝒪[K]) - 1 : 𝒪[K]) ∈ ((𝓂[K] ^ n : Ideal 𝒪[K]) : Set 𝒪[K])` using `hu`. Rewrite `this` using `[hset]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using this`. Introduce `h`. Establish `hϖ1 : valuation K (ϖ : K) < 1` using `valuation_lt_one_of_mem_maximalIdeal (uniformizer_mem_maximalIdeal hϖ)`. Establish `hlt : valuation K ((x : K) - 1) < 1` using `h.trans_lt (pow_lt_one₀ zero_le hϖ1 (by omega))`. Establish `hx1 : valuation K (x : K) = 1`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(valuation K).map_one_add_of_lt hlt` as an intermediate fact. Simplify using `using this`. Take `⟨u, rfl⟩` from `mem_range_unitsIncl_iff.mpr (by`. Rewrite using `[← map_one (normalizedValuation K), normalizedValuation_eq_iff, map_one]`. Conclude with `hx1)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨u, ?_, rfl⟩` and prove the remaining obligations. Use `show ((u : 𝒪[K]) - 1 : 𝒪[K]) ∈ ((𝓂[K] ^ n : Ideal 𝒪[K]) : Set 𝒪[K])`. Rewrite using `[hset]`. Simplify using `using h`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_unitFiltrationUnits_iff {n : ℕ} (hn : 1 ≤ n) {ϖ : 𝒪[K]} (hϖ : Irreducible ϖ)
     {x : Kˣ} :
@@ -62,9 +62,9 @@ theorem mem_unitFiltrationUnits_iff {n : ℕ} (hn : 1 ≤ n) {ϖ : 𝒪[K]} (hϖ
     simpa using h
 
 /- English proof (translation)
-Rewrite using `[isOpen_iff_mem_nhds]`. Introduce `y hy`. Rewrite using `[IsValuativeTopology.mem_nhds_iff']`. Use `⟨Units.mk0 γ hγ, fun z hz ↦ ?_⟩` and prove the remaining obligations. Establish `: z - a = (z - y) + (y - a)` using `by ring`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [Set.mem_ofPred_eq, Units.val_mk0] at hz hy ⊢`. Rewrite using `[this]`. Conclude with `(valuation K).map_add_le hz.le hy`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_setOf_valuation_sub_le {a : K} {γ : ValueGroupWithZero K} (hγ : γ ≠ 0) :
     IsOpen {y : K | valuation K (y - a) ≤ γ} := by
@@ -78,9 +78,9 @@ theorem isOpen_setOf_valuation_sub_le {a : K} {γ : ValueGroupWithZero K} (hγ :
   exact (valuation K).map_add_le hz.le hy
 
 /- English proof (translation)
-Rewrite using `[isOpen_iff_mem_nhds]`. Introduce `y hy`. Rewrite using `[IsValuativeTopology.mem_nhds_iff']`. Establish `hγ : γ ≠ 0` using `ne_bot_of_gt hy`. Use `⟨Units.mk0 γ hγ, fun z hz ↦ ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: z = (z - y) + y` using `by ring`. Simplify using `only [Set.mem_ofPred_eq, Units.val_mk0] at hz hy ⊢`. Rewrite using `[this]`. Conclude with `(valuation K).map_add_lt hz hy`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_setOf_valuation_lt {γ : ValueGroupWithZero K} :
     IsOpen {y : K | valuation K y < γ} := by
@@ -95,9 +95,9 @@ theorem isOpen_setOf_valuation_lt {γ : ValueGroupWithZero K} :
   exact (valuation K).map_add_lt hz hy
 
 /- English proof (translation)
-Rewrite using `[isOpen_iff_mem_nhds]`. Introduce `y hy`. Rewrite using `[IsValuativeTopology.mem_nhds_iff']`. Use `⟨1, fun z hz ↦ ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_ofPred_eq, Units.val_one] at hz hy ⊢`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `: z = y + (z - y)` using `by ring`. Rewrite using `[this, (valuation K).map_add_eq_of_lt_left (by rw [hy]; exact hz), hy]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem isOpen_setOf_valuation_eq_one : IsOpen {y : K | valuation K y = 1} := by
   rw [isOpen_iff_mem_nhds]
@@ -109,9 +109,9 @@ theorem isOpen_setOf_valuation_eq_one : IsOpen {y : K | valuation K y = 1} := by
   rw [this, (valuation K).map_add_eq_of_lt_left (by rw [hy]; exact hz), hy]
 
 /- English proof (translation)
-Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `mem_unitFiltrationUnits_zero_iff.mp hx`. Introduce `hy`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hy0 : y ≠ 0` using `by rintro rfl; simp at hy`. Conclude with `⟨Units.mk0 y hy0, mem_unitFiltrationUnits_zero_iff.mpr hy, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem val_image_unitFiltrationUnits_zero :
     ((↑) : Kˣ → K) '' (unitFiltrationUnits K 0 : Set Kˣ) = {y : K | valuation K y = 1} := by
@@ -124,11 +124,11 @@ theorem val_image_unitFiltrationUnits_zero :
     exact ⟨Units.mk0 y hy0, mem_unitFiltrationUnits_zero_iff.mpr hy, rfl⟩
 
 /- English proof (translation)
-Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `(mem_unitFiltrationUnits_iff hn hϖ).mp hx`. Introduce `hy`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hϖ1 : valuation K (ϖ : K) < 1` using `valuation_lt_one_of_mem_maximalIdeal (uniformizer_mem_maximalIdeal hϖ)`. Establish `hy0 : y ≠ 0`. Introduce and unpack `rfl`. Establish `: valuation K ((0 : K) - 1) ≤ valuation K (ϖ : K) ^ n` using `hy`. Simplify using `only [zero_sub, Valuation.map_neg, map_one] at this`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Conclude with `(pow_lt_one₀ zero_le hϖ1 (by omega)).not_ge this`. Conclude with `⟨Units.mk0 y hy0, (mem_unitFiltrationUnits_iff hn hϖ).mpr hy, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem val_image_unitFiltrationUnits {n : ℕ} (hn : 1 ≤ n) {ϖ : 𝒪[K]} (hϖ : Irreducible ϖ) :
     ((↑) : Kˣ → K) '' (unitFiltrationUnits K n : Set Kˣ) =
@@ -148,7 +148,7 @@ theorem val_image_unitFiltrationUnits {n : ℕ} (hn : 1 ≤ n) {ϖ : 𝒪[K]} (h
     exact ⟨Units.mk0 y hy0, (mem_unitFiltrationUnits_iff hn hϖ).mpr hy, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[Ne, Valuation.zero_iff]`. Conclude with `hϖ.ne_zero` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valuation_uniformizer_ne_zero {ϖ : 𝒪[K]} (hϖ : Irreducible ϖ) :
     valuation K (ϖ : K) ≠ 0 := by
@@ -156,11 +156,9 @@ theorem valuation_uniformizer_ne_zero {ϖ : 𝒪[K]} (hϖ : Irreducible ϖ) :
   exact_mod_cast hϖ.ne_zero
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[K]`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Establish `: (unitFiltrationUnits K 0 : Set Kˣ) = (↑) ⁻¹' {y : K | valuation K y = 1}`. Use extensionality with `x`. Conclude with `mem_unitFiltrationUnits_zero_iff`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `isOpen_setOf_valuation_eq_one.preimage Units.continuous_val`. Establish `: (unitFiltrationUnits K n : Set Kˣ) = (↑) ⁻¹' {y : K | valuation K (y - 1) ≤ valuation K (ϖ : K) ^ n}`. Use extensionality with `x`. Conclude with `mem_unitFiltrationUnits_iff hn hϖ`.
-
-Rewrite using `[this]`. Conclude with `(isOpen_setOf_valuation_sub_le (pow_ne_zero _ (valuation_uniformizer_ne_zero hϖ))).preimage Units.continuous_val`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_unitFiltrationUnits (n : ℕ) : IsOpen (unitFiltrationUnits K n : Set Kˣ) := by
   obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible 𝒪[K]
@@ -177,13 +175,13 @@ theorem isOpen_unitFiltrationUnits (n : ℕ) : IsOpen (unitFiltrationUnits K n :
       (pow_ne_zero _ (valuation_uniformizer_ne_zero hϖ))).preimage Units.continuous_val
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[K]`. Rewrite using `[Units.isEmbedding_val₀.isCompact_iff]`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Rewrite using `[val_image_unitFiltrationUnits_zero]`. Establish `: {y : K | valuation K y = 1} = {y : K | valuation K y ≤ 1} \ {y : K | valuation K y < 1}`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `y`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_sdiff, not_lt]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨h.le, h.ge⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce `h`. Conclude with `le_antisymm h.1 h.2`. Rewrite using `[this]`. Conclude with `(IsNonarchimedeanLocalField.isCompact_closedBall K 1).diff isOpen_setOf_valuation_lt`. Rewrite using `[val_image_unitFiltrationUnits hn hϖ]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `: {y : K | valuation K (y - 1) ≤ valuation K (ϖ : K) ^ n} = (Homeomorph.subRight (1 : K)) ⁻¹' {y : K | valuation K y ≤ valuation K (ϖ : K) ^ n}`. Use extensionality with `y`. Both sides reduce to the same expression. Rewrite using `[this, Homeomorph.isCompact_preimage]`. Conclude with `IsNonarchimedeanLocalField.isCompact_closedBall K _`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_unitFiltrationUnits (n : ℕ) : IsCompact (unitFiltrationUnits K n : Set Kˣ) := by
   obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible 𝒪[K]
@@ -207,9 +205,9 @@ theorem isCompact_unitFiltrationUnits (n : ℕ) : IsCompact (unitFiltrationUnits
     exact IsNonarchimedeanLocalField.isCompact_closedBall K _
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `ValuativeRel.valuation_surjective γ`. Establish `hz : z ≠ 0` using `by rintro rfl; simp at hγ`. Use `⟨max 1 (ord z + 1).toNat, le_max_left _ _, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_pow, ← normalizedValuation_lt_iff, map_pow, normalizedValuation_uniformizer hϖ, normalizedValuation_eq_exp_ord hz, ← WithZero.exp_nsmul, WithZero.exp_lt_exp]`. Simplify using `only [nsmul_eq_mul, mul_neg, mul_one, neg_lt_neg_iff]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `le_max_right 1 (ord z + 1).toNat` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem exists_pow_lt {ϖ : 𝒪[K]} (hϖ : Irreducible ϖ) {γ : ValueGroupWithZero K} (hγ : γ ≠ 0) :
     ∃ n, 1 ≤ n ∧ valuation K (ϖ : K) ^ n < γ := by
@@ -223,11 +221,11 @@ theorem exists_pow_lt {ϖ : 𝒪[K]} (hϖ : Irreducible ϖ) {γ : ValueGroupWith
   omega
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[K]`. Rewrite using `[Filter.hasBasis_iff]`. Introduce `t`. Prove the components needed by the constructor for the conclusion. Introduce `ht`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `ht` using `[Units.isEmbedding_val₀.isInducing.nhds_eq_comap, Filter.mem_comap]`. Take `⟨t', ht', hsub⟩` from `ht`. Rewrite `ht'` using `[Units.val_one, IsValuativeTopology.mem_nhds_iff']`. Take `⟨γ, hγ⟩` from `ht'`. Take `⟨n, hn, hlt⟩` from `exists_pow_lt hϖ γ.ne_zero`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨n, trivial, fun x hx ↦ hsub (hγ ?_)⟩` and prove the remaining obligations. Conclude with `((mem_unitFiltrationUnits_iff hn hϖ).mp hx).trans_lt hlt`. Introduce and unpack `⟨n, -, hn⟩`. Conclude with `Filter.mem_of_superset ((isOpen_unitFiltrationUnits n).mem_nhds (Subgroup.one_mem _)) hn`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem hasBasis_nhds_one_unitFiltrationUnits :
     (𝓝 (1 : Kˣ)).HasBasis (fun _ ↦ True) (fun n ↦ (unitFiltrationUnits K n : Set Kˣ)) := by
@@ -248,7 +246,7 @@ theorem hasBasis_nhds_one_unitFiltrationUnits :
       ((isOpen_unitFiltrationUnits n).mem_nhds (Subgroup.one_mem _)) hn
 
 /- English proof (translation)
-Take `⟨n, -, hn⟩` from `hasBasis_nhds_one_unitFiltrationUnits.mem_iff.mp (hH.mem_nhds (Subgroup.one_mem H))`. Conclude with `⟨n, hn⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_unitFiltrationUnits_le {H : Subgroup Kˣ} (hH : IsOpen (H : Set Kˣ)) :
     ∃ n, unitFiltrationUnits K n ≤ H := by
@@ -257,7 +255,7 @@ theorem exists_unitFiltrationUnits_le {H : Subgroup Kˣ} (hH : IsOpen (H : Set K
   exact ⟨n, hn⟩
 
 /- English proof (translation)
-Use `⟨H.index, Subgroup.FiniteIndex.index_ne_zero, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `H.pow_index_mem x`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem exists_range_pow_le {H : Subgroup Kˣ} [H.FiniteIndex] :
     ∃ m, m ≠ 0 ∧ (powMonoidHom m : Kˣ →* Kˣ).range ≤ H := by
@@ -266,7 +264,7 @@ theorem exists_range_pow_le {H : Subgroup Kˣ} [H.FiniteIndex] :
   exact H.pow_index_mem x
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨exists_unitFiltrationUnits_le hH, exists_range_pow_le⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_unitFiltrationUnits_le_and_range_pow_le {H : Subgroup Kˣ} [H.FiniteIndex]
     (hH : IsOpen (H : Set Kˣ)) :
@@ -274,7 +272,7 @@ theorem exists_unitFiltrationUnits_le_and_range_pow_le {H : Subgroup Kˣ} [H.Fin
   ⟨exists_unitFiltrationUnits_le hH, exists_range_pow_le⟩
 
 /- English proof (translation)
-Take `⟨N, hN⟩` from `exists_unitFiltration_le_range_pow hm`. Use `Subgroup.isOpen_mono ?_ (isOpen_unitFiltrationUnits N)` and prove the remaining obligations. Introduce and unpack `_ ⟨u, hu, rfl⟩`. Take `⟨x, rfl⟩` from `hN hu`. Conclude with `⟨unitsIncl K x, by simp⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isOpen_range_pow {m : ℕ} (hm : (m : K) ≠ 0) :
     IsOpen ((powMonoidHom m : Kˣ →* Kˣ).range : Set Kˣ) := by

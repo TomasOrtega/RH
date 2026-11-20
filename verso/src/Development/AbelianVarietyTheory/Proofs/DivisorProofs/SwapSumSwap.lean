@@ -30,7 +30,7 @@ def fam5 {k : Type} [CommRing k] {B Y : Scheme.{0}} {q : B ⟶ Sp k} {p : Y ⟶ 
     (VMetric.grLB flB 1 H).pull π w]
 
 /- English proof (translation)
-Simplify using `only [swapSum, map_add, map_pow, lin, Fin.sum_univ_three, map_mul, aeval_C, aeval_X]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons, algebraMap_eq]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem swapSum_swap (d : ℕ) (a b : ℤ) : aeval ![X 1, X 0, X 2] (swapSum d a b) = swapSum d a b := by
   simp only [swapSum, map_add, map_pow, lin, Fin.sum_univ_three, map_mul, aeval_C, aeval_X]

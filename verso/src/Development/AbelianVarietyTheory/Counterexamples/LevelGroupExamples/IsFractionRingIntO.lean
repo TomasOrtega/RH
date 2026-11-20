@@ -25,11 +25,9 @@ Both sides reduce to the same expression.
 theorem embHom_apply (P : PtC Y C) (τ : E →+* ℂ) (a : 𝓞 E) : embHom P τ a = P.emb τ a := rfl
 
 /- English proof (translation)
-Establish `h` using `(Y.oF.geom ↥C.S P.y (P.fK.comp (IntermediateField.inclusion c.le).toRingHom) (by`. Rewrite using `[pullback.condition, ← Category.assoc, P.y_over]`. Conclude with `(Spec.map_comp _ _).symm)).1 (embHom P τ)`. Establish `key : embHom P τ H.rt = (P.fK.comp (IntermediateField.inclusion c.le).toRingHom) (baseKA l).ρ ↔ τ (H.rt : E) = H.rt0`. Rewrite using `[embHom_apply, PtC.emb, RingHom.comp_apply, P.fK.injective.eq_iff, Subtype.ext_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use `(GlobalTheory.LiePull.lieMult_pull _ _ _ _ _ _ _ Y.t.act Y.oF.t.act Y.m.cart Y.m.act _ P.y _ _).1 ?_` and prove the remaining obligations. Unfold `Datum.mult`. Use `split_ifs with e`. Conclude with `h.1 (key.2 e)`.
-
-Conclude with `h.2 (fun e' => e (key.1 e'))`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem lieMult (P : PtC Y C) (τ : E →+* ℂ) : LieMult Y.t.act P.x0 (embHom P τ) (D.mult τ) := by
   have h := (Y.oF.geom ↥C.S P.y (P.fK.comp (IntermediateField.inclusion c.le).toRingHom) (by
@@ -46,22 +44,20 @@ theorem lieMult (P : PtC Y C) (τ : E →+* ℂ) : LieMult Y.t.act P.x0 (embHom 
   · exact h.2 (fun e' => e (key.1 e'))
 
 /- English proof (translation)
-Use `choose v hv hb using lieMult P`. Conclude with `⟨⟨v, fun τ i => (hv τ i).1, fun τ i => (hv τ i).2, fun τ w h₁ h₂ => hb τ w ⟨h₁, h₂⟩⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonempty_flag (P : PtC Y C) : Nonempty P.Flag := by
   choose v hv hb using lieMult P
   exact ⟨⟨v, fun τ i => (hv τ i).1, fun τ i => (hv τ i).2, fun τ w h₁ h₂ => hb τ w ⟨h₁, h₂⟩⟩⟩
 
 /- English proof (translation)
-Establish `hf : P.fK = P'.fK`. Use `P.y_over.symm.trans (h ▸ P'.y_over)` as an intermediate fact. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective this)`. Establish `ha : P.alg = P'.alg`. Use `RingHom.ext fun a => Subtype.ext ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `RingHom.congr_fun P.compat a`. Establish `h2` using `RingHom.congr_fun P'.compat a`. Rewrite `h1` using `[hf]`. Conclude with `h1.trans h2.symm`. Establish `hpr` using `GlobalTheory.SchemeWords.isProper_of_isProjOver Y.proj`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht : P.yt = P'.yt`. Establish `: IsDominant (spMap (intO ↥C.S).subtype)`. Use `⟨?_⟩` and prove the remaining obligations. Conclude with `(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical _).2 (by`. Rewrite using `[(RingHom.injective_iff_ker_eq_bot _).1 Subtype.val_injective]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules.
 
-Conclude with `bot_le)`. Conclude with `ext_of_isDominant_of_isSeparated Y.s (by rw [P.yt_over, P'.yt_over, ha]) (spMap (intO ↥C.S).subtype) (by rw [P.ext, P'.ext, h])`. Consider the cases of `P`. Consider the cases of `P'`. Simplify using `only at h hf ha ht`.
-
-Substitute `h hf ha ht` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ext_of_generic (P P' : PtC Y C) (h : P.y = P'.y) : P = P' := by
   have hf : P.fK = P'.fK := by
@@ -87,13 +83,13 @@ theorem ext_of_generic (P P' : PtC Y C) (h : P.y = P'.y) : P = P' := by
   rfl
 
 /- English proof (translation)
-Use `@ValuationRing.mk _ _ _ ⟨fun a b => ?_⟩` and prove the remaining obligations. Break down `le_total ‖(a : K)‖ ‖(b : K)‖ with h | h` into its components or cases. Distinguish the cases in `hb : (b : K) = 0`. Use `⟨0, Or.inl (Subtype.ext ?_)⟩` and prove the remaining obligations. Simplify using `[hb]`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `⟨⟨a / b, ?_⟩, Or.inr (Subtype.ext ?_)⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `‖(a : K) / b‖ ≤ 1`. Rewrite using `[norm_div]`. Conclude with `div_le_one_of_le₀ h (norm_nonneg _)`. Express the relevant statement in the definitionally equal form `(b : K) * (a / b) = a`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Distinguish the cases in `ha : (a : K) = 0`. Use `⟨0, Or.inr (Subtype.ext ?_)⟩` and prove the remaining obligations. Simplify using `[ha]`. Use `⟨⟨b / a, ?_⟩, Or.inl (Subtype.ext ?_)⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `‖(b : K) / a‖ ≤ 1`. Rewrite using `[norm_div]`. Conclude with `div_le_one_of_le₀ h (norm_nonneg _)`. Express the relevant statement in the definitionally equal form `(a : K) * (b / a) = b`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem valuationRing_intO (K : Type) [NormedField K] [IsUltrametricDist K] : ValuationRing (intO K) := by
   refine @ValuationRing.mk _ _ _ ⟨fun a b => ?_⟩
@@ -116,9 +112,9 @@ theorem valuationRing_intO (K : Type) [NormedField K] [IsUltrametricDist K] : Va
         field_simp
 
 /- English proof (translation)
-Use `IsFractionRing.of_field _ _ fun z => ?_` and prove the remaining obligations. Break down `le_total ‖z‖ 1 with h | h` into its components or cases. Conclude with `⟨⟨z, h⟩, 1, by simp; rfl⟩`. Use `⟨1, ⟨z⁻¹, ?_⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `‖z⁻¹‖ ≤ 1`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[norm_inv]`. Conclude with `inv_le_one_of_one_le₀ h`. Express the relevant statement in the definitionally equal form `z = ((1 : intO K) : K) / z⁻¹`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isFractionRing_intO (K : Type) [NormedField K] [IsUltrametricDist K] : IsFractionRing (intO K) K := by
   refine IsFractionRing.of_field _ _ fun z => ?_
@@ -131,11 +127,11 @@ theorem isFractionRing_intO (K : Type) [NormedField K] [IsUltrametricDist K] : I
       simp
 
 /- English proof (translation)
-Use `⟨fun P => ?_⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `h.exists_right_inv`. Establish `h1 : (p : ↥C.S) * (P.alg b : ↥C.S) = 1`. Use `congrArg (fun z => ((P.alg z : intO ↥C.S) : ↥C.S)) hb` as an intermediate fact. Simplify using `using this`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2 : ‖(P.alg b : ↥C.S)‖ ≤ 1` using `(P.alg b).2`. Establish `h3` using `congrArg norm h1`. Rewrite `h3` using `[norm_mul, C.norm_p, norm_one]`. Establish `h4 : (2 : ℝ) ≤ p` using `by exact_mod_cast hp`. Establish `h5 : (p : ℝ)⁻¹ < 1` using `inv_lt_one_of_one_lt₀ (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h6 : 0 < (p : ℝ)⁻¹` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem isEmpty_of_isUnit (hp : 2 ≤ p) (h : IsUnit (p : O)) : IsEmpty (PtC Y C) := by
   refine ⟨fun P => ?_⟩
@@ -156,7 +152,7 @@ def toOne (C : SCF p) : SCF 1 where
   norm_p := by simp
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨nonempty_flag P, ext_of_generic P, fun hp h => (isEmpty_of_isUnit hp h).elim P⟩`.
+Supply the required witnesses or components.
 -/
 theorem main (P : PtC Y C) :
     Nonempty P.Flag ∧ (∀ P' : PtC Y C, P.y = P'.y → P = P') ∧ (2 ≤ p → ¬ IsUnit (p : O)) :=

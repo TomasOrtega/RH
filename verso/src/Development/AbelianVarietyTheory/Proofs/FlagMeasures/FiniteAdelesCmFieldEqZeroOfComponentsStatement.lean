@@ -7,7 +7,7 @@ open NumberField IsDedekindDomain ReciprocityTheory.Aut
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.AL_eq_zero_of_compAt` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FFiniteAdelesCmFieldEqZeroOfComponents.lean&line=22#L22)
 -/

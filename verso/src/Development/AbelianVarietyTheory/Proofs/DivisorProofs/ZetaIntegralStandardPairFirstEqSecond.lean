@@ -16,9 +16,9 @@ namespace GlobalTheory.StdZetaAgree
 open GlobalTheory.StdPairCone
 
 /- English proof (translation)
-Rewrite `e` using `[← Matrix.fromBlocks_toBlocks H, ← Matrix.fromBlocks_toBlocks G, Matrix.fromBlocks_multiply, ← Matrix.fromBlocks_one, Matrix.fromBlocks_inj]`. Take `⟨e1, -, e3, -⟩` from `e`. Use `⟨?_, e3⟩` and prove the remaining obligations. Establish `e4 : H * Matrix.fromBlocks G.toBlocks₁₁ 0 G.toBlocks₂₁ 1 = Matrix.fromBlocks 1 H.toBlocks₁₂ 0 H.toBlocks₂₂` using `by conv_lhs => rw [← Matrix.fromBlocks_toBlocks H]`. Rewrite using `[Matrix.fromBlocks_multiply, e1, e3]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Use `congrArg Matrix.det e4` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, Matrix.det_fromBlocks_zero₁₂, Matrix.det_fromBlocks_zero₂₁, Matrix.det_one, Matrix.det_one, mul_one, one_mul]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem jacobi_blocks {k m n : Type} [Field k] [Fintype m] [DecidableEq m] [Fintype n] [DecidableEq n]
     (H G : Matrix (m ⊕ n) (m ⊕ n) k) (e : H * G = 1) :
@@ -38,15 +38,11 @@ theorem jacobi_blocks {k m n : Type} [Field k] [Fintype m] [DecidableEq m] [Fint
     Matrix.det_one, mul_one, one_mul] at this
 
 /- English proof (translation)
-Use `set H : Matrix (Fin a ⊕ Fin a') (Fin a ⊕ Fin a') k := h.val.submatrix finSumFinEquiv finSumFinEquiv with hH`. Use `set G : Matrix (Fin a ⊕ Fin a') (Fin a ⊕ Fin a') k := (h⁻¹).val.submatrix finSumFinEquiv finSumFinEquiv with hG`. Establish `e : H * G = 1`. Rewrite using `[hH, hG, Matrix.submatrix_mul_equiv, Units.mul_inv, Matrix.submatrix_one_equiv]`. Take `⟨e1, e2⟩` from `jacobi_blocks H G e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `x1 : (blk₁ (X0 k (finSumFinEquiv : Fin a ⊕ Fin a' ≃ Fin (a + a')) * (invT h).val))ᵀ = G.toBlocks₁₁`. Use extensionality with `i j`. Conclude with `frameMatrixFirstColumnBlock_mul_apply (finSumFinEquiv : Fin a ⊕ Fin a' ≃ Fin (a + a')) (invT h).val j (Fin.castAdd a' i)`. Establish `x2 : (blk₂ (X0 k (finSumFinEquiv : Fin a ⊕ Fin a' ≃ Fin (a + a')) * (invT h).val))ᵀ = G.toBlocks₂₁`. Use extensionality with `i j`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Conclude with `frameMatrixFirstColumnBlock_mul_apply (finSumFinEquiv : Fin a ⊕ Fin a' ≃ Fin (a + a')) (invT h).val j (Fin.natAdd a i)`. Establish `y1 : blk₁ (Y0 k (finSumFinEquiv : Fin a ⊕ Fin a' ≃ Fin (a + a')) * h.val) = H.toBlocks₂₁`. Use extensionality with `i j`. Conclude with `frameMatrixSecondColumnBlock_mul_apply (finSumFinEquiv : Fin a ⊕ Fin a' ≃ Fin (a + a')) h.val i (Fin.castAdd a' j)`. Establish `y2 : blk₂ (Y0 k (finSumFinEquiv : Fin a ⊕ Fin a' ≃ Fin (a + a')) * h.val) = H.toBlocks₂₂`.
-
-Use extensionality with `i j`. Conclude with `frameMatrixSecondColumnBlock_mul_apply (finSumFinEquiv : Fin a ⊕ Fin a' ≃ Fin (a + a')) h.val i (Fin.natAdd a j)`. Establish `hd : H.det = h.val.det` using `Matrix.det_submatrix_equiv_self _ _`. Use `⟨?_, by rw [x1, x2, y1, y2]; exact e2⟩` and prove the remaining obligations. Rewrite using `[← Matrix.det_transpose (blk₁ _), x1, y2, ← hd]`.
-
-Conclude with `e1`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blocks_rel {k : Type} [Field k] {a a' : ℕ} (h : GL (Fin (a + a')) k) :
     h.val.det * (blk₁ (X0 k (finSumFinEquiv : Fin a ⊕ Fin a' ≃ Fin (a + a')) * (invT h).val)).det = (blk₂ (Y0 k (finSumFinEquiv : Fin a ⊕ Fin a' ≃ Fin (a + a')) * h.val)).det ∧
@@ -74,23 +70,21 @@ end GlobalTheory.StdZetaAgree
 open GlobalTheory.StdPairCone GlobalTheory.StdZetaAgree in
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ ν β ϖ c a a' hϖ`. Use function extensionality and compare the values at `h`. Take `⟨hA0, hA⟩` from `GlobalTheory.StdPairZeta.bigF_stdA ν ϖ c a a' hϖ`. Take `⟨hB0, hB⟩` from `GlobalTheory.StdPairZetaB.smallF_stdB ν ϖ c a a'`. Take `⟨e1, e2⟩` from `blocks_rel h`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[bigZetaIntegral_eq, smallP]`. Use `set X : Matrix (Fin a) (Fin (a + a')) k := X0 k (finSumFinEquiv : Fin a ⊕ Fin a' ≃ Fin (a + a')) * (invT h).val with hX`. Use `set Y : Matrix (Fin a') (Fin (a + a')) k := Y0 k (finSumFinEquiv : Fin a ⊕ Fin a' ≃ Fin (a + a')) * h.val with hY`. Distinguish the cases in `h0 : (blk₁ X).det = 0`. Rewrite using `[hA0 X h0, hB0 Y (by rw [← e1, h0, mul_zero]), mul_zero, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (blk₂ Y).det ≠ 0` using `by rw [← e1]; exact mul_ne_zero h.det_ne_zero h0`. Use `set g₁ : GL (Fin a) k := Matrix.GeneralLinearGroup.mkOfDetNeZero _ h0 with hg₁`. Use `set g₂ : GL (Fin a') k := Matrix.GeneralLinearGroup.mkOfDetNeZero _ h1 with hg₂`. Establish `v₁ : g₁.val = blk₁ X` using `rfl`. Establish `v₂ : g₂.val = blk₂ Y` using `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hA X g₁ v₁, hB Y g₂ v₂]`. Establish `hd : gdet g₂ = gdet h * gdet g₁` using `Units.ext (by`. Rewrite using `[Units.val_mul, GlobalTheory.StdPairZeta.val_gdet, GlobalTheory.StdPairZeta.val_gdet, GlobalTheory.StdPairZeta.val_gdet, v₁, v₂, e1])`. Establish `hm : (g₂⁻¹).val * blk₁ Y = -((g₁⁻¹).val * blk₂ X)ᵀ`. Rewrite `e2` using `[← v₁, ← v₂]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e3 : blk₁ Y = -(g₂.val * (blk₂ X)ᵀ * (g₁⁻¹).valᵀ)`. Rewrite using `[← Matrix.neg_mul, ← eq_neg_of_add_eq_zero_left e2, Matrix.mul_assoc, ← Matrix.transpose_mul, Units.inv_mul, Matrix.transpose_one, Matrix.mul_one]`. Rewrite using `[e3, Matrix.mul_neg, Matrix.mul_assoc g₂.val, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul, Matrix.transpose_mul]`. Establish `hi : Set.indicator {M : Matrix (Fin a') (Fin a) k | ∀ i j, M i j ∈ cball (ϖ ^ c)} (1 : Matrix (Fin a') (Fin a) k → ℂ) ((g₂⁻¹).val * blk₁ Y) = Set.indicator {M : Matrix (Fin a) (Fin a') k | ∀ i j, M i j ∈ cball (ϖ ^ c)} 1 ((g₁⁻¹).val * blk₂ X)`. Rewrite using `[hm]`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Generalize the expression as in `(g₁⁻¹).val * blk₂ X = Z`. Establish `hiff : (-Zᵀ) ∈ {M : Matrix (Fin a') (Fin a) k | ∀ i j, M i j ∈ cball (ϖ ^ c)} ↔ Z ∈ {M : Matrix (Fin a) (Fin a') k | ∀ i j, M i j ∈ cball (ϖ ^ c)}`. Simplify using `only [Set.mem_setOf_eq, GlobalTheory.SplitWeil.cball, Matrix.neg_apply, Matrix.transpose_apply, Valuation.map_neg]`. Conclude with `forall_comm`. Distinguish the cases in `hZ : Z ∈ {M : Matrix (Fin a) (Fin a') k | ∀ i j, M i j ∈ cball (ϖ ^ c)}`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_mem hZ, Set.indicator_of_mem (hiff.2 hZ)]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem hZ, Set.indicator_of_notMem (fun h => hZ (hiff.1 h))]`. Establish `hp : apow (gdet h) (-(a : ℂ) / 2) = apow (gdet h) ((Fintype.card (Fin a') : ℂ) / 2) * apow (gdet h) (-((Fintype.card (Fin (a + a')) : ℂ) / 2))`. Rewrite using `[← apow_add]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `only [Fintype.card_fin]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hi, hd, apow_mul, hp, map_mul, mul_inv, MonoidHom.mul_apply]`.
-
-Simplify using `only [Units.val_mul, Units.val_inv_eq_inv_val]`. Establish `h3` using `(ν (gdet h)).ne_zero`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.StdZetaAgree.bigZetaIntegral_stdA_eq_smallZetaIntegral_stdB : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (ν β : kˣ →* ℂˣ) (ϖ : kˣ) (c a a' : ℕ), IsUnif ϖ →
       bigP (haarVol (KO k (Fin a))) ϖ finSumFinEquiv ν β (GlobalTheory.StdPairCone.stdA ν ϖ c a a') =

@@ -11,19 +11,17 @@ open GlobalTheory.SignedHC
 namespace GlobalTheory.GridWtBound
 
 /- English proof (translation)
-Establish `hn : 0 < n` using `a.pos`. Establish `hrev : Fin.rev (⟨n - 1, by omega⟩ : Fin n) = ⟨0, hn⟩` using `by ext; simp; omega`. Establish `key : (wtOf n E).dual.natW a = ((wtOf n E).w ⟨0, hn⟩ - (wtOf n E).w a.rev).toNat`. Simplify using `only [DomWeight.natW, DomWeight.detShift, DomWeight.dual, dif_pos hn, hrev]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hd : (((wtOf n E).w ⟨0, hn⟩ - (wtOf n E).w a.rev : ℤ) : ℝ) ≤ 2 * M + 1`. Unfold `wtOf`. Use `split_ifs with h`. Establish `e0` using `hE _ (descEnum_mem E h.1 ⟨0, hn⟩)`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `hE _ (descEnum_mem E h.1 a.rev)`. Establish `f0 : ((⌊highestWeight E h.1 ⟨0, hn⟩⌋ : ℤ) : ℝ) ≤ ((highestWeight E h.1 ⟨0, hn⟩ : ℚ) : ℝ)`. Conclude with `Int.floor_le _` after adjusting the coercions. Establish `f1 : ((highestWeight E h.1 a.rev : ℚ) : ℝ) - 1 < ((⌊highestWeight E h.1 a.rev⌋ : ℤ) : ℝ)`. Conclude with `Int.sub_one_lt_floor _` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hr : (0 : ℝ) ≤ ((a.rev : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Establish `g0 : ((highestWeight E h.1 ⟨0, hn⟩ : ℚ) : ℝ) ≤ M - ((n : ℝ) - 1) / 2`. Simplify using `only [highestWeight]`. Use `push_cast`. Combine the linear relations using `[(abs_le.1 e0).2]`.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Establish `g1 : -M - ((n : ℝ) - 1) / 2 ≤ ((highestWeight E h.1 a.rev : ℚ) : ℝ)`. Simplify using `only [highestWeight]`. Use `push_cast`. Combine the linear relations using `[(abs_le.1 e1).1]`. Use `push_cast`.
+Combine the linear equalities and inequalities to obtain the conclusion. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[key]`. Establish `c : (((wtOf n E).w ⟨0, hn⟩ - (wtOf n E).w a.rev).toNat : ℝ) = (((((wtOf n E).w ⟨0, hn⟩ - (wtOf n E).w a.rev).toNat : ℤ)) : ℝ)` using `(Int.cast_natCast _).symm`.
-
-Rewrite using `[c, Int.toNat_eq_max]`. Use `push_cast`. Conclude with `max_le (by push_cast at hd; exact hd) (by linarith)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem natW_dual_wtOf_le (n : ℕ) (E : Finset ℚ) (M : ℝ) (hM : 0 ≤ M) (hE : ∀ x ∈ E, |(x : ℝ)| ≤ M) (a : Fin n) :
     (((wtOf n E).dual.natW a : ℕ) : ℝ) ≤ 2 * M + 1 := by
@@ -61,9 +59,9 @@ end GlobalTheory.GridWtBound
 namespace GlobalTheory.GridWtBound
 
 /- English proof (translation)
-Unfold `GridData.extend`. Use `split_ifs with hj`. Take `⟨h1, h2⟩` from `hf ⟨j - d, hj⟩`. Establish `a1 : (0 : ℚ) ≤ f ⟨j - d, hj⟩` using `by exact_mod_cast h1`. Use `⟨by exact_mod_cast Int.floor_nonneg.2 a1, le_trans ?_ h2⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `Int.floor_le _` after adjusting the coercions. Simplify using `[hh]`.
+A detailed English derivation is pending.
 -/
 theorem extend_bounds {n : ℕ} (d : ℕ) (f : Fin n → ℚ) (h : ℝ) (hh : 0 ≤ h)
     (hf : ∀ i, 0 ≤ ((f i : ℚ) : ℝ) ∧ ((f i : ℚ) : ℝ) ≤ h) (j : ℕ) :
@@ -79,39 +77,39 @@ theorem extend_bounds {n : ℕ} (d : ℕ) (f : Fin n → ℚ) (h : ℝ) (hh : 0 
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, -, -, -, -, -, -, hgap, hbe, -⟩` from `hs`. Establish `hSc` using `large₂.Sc_pos`. Establish `hsg : sLen D < gap D 1` using `sLen_lt_gap D 1`. Establish `hg1 : (1 : ℝ) ≤ (gap D 1 : ℝ)` using `by exact_mod_cast (by omega : 1 ≤ gap D 1)`. Establish `hsg' : (sLen D : ℝ) + 1 ≤ (gap D 1 : ℝ)` using `by exact_mod_cast hsg`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm0 : (0 : ℝ) ≤ (D.R.m : ℝ)` using `Nat.cast_nonneg _`. Establish `hgb : (gap D 1 : ℝ) ≤ large₂.sc.b` using `by nlinarith`. Establish `hb1 : (1 : ℝ) ≤ large₂.sc.b` using `by linarith`. Establish `hScb : large₂.Sc ≤ large₂.sc.b` using `by nlinarith`. Establish `hv : ∀ j, 0 ≤ ((GridData.extend 2 (D.hc τ).v j : ℤ) : ℝ) ∧ ((GridData.extend 2 (D.hc τ).v j : ℤ) : ℝ) ≤ large₂.Sc` using `extend_bounds 2 _ _ hSc.le fun l => large₂.cloud_v τ l`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbl : ∀ l : Fin D.R.m, 0 ≤ (((D.hc τ).b l : ℚ) : ℝ) ∧ (((D.hc τ).b l : ℚ) : ℝ) ≤ 4 * large₂.sc.b` using `fun l => by`. Take `⟨h1, h2⟩` from `hbe τ l`. Establish `h3` using `(D.hc τ).gap_be l`. Establish `ht : (0 : ℚ) ≤ D.R.t` using `Nat.cast_nonneg _`. Establish `h4 : (D.hc τ).b l ≤ (D.hc τ).e l` using `by linarith`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5 : (((D.hc τ).b l : ℚ) : ℝ) ≤ (((D.hc τ).e l : ℚ) : ℝ)` using `by exact_mod_cast h4`. Conclude with `⟨by exact_mod_cast h1.le, h5.trans h2⟩`. Establish `hel : ∀ l : Fin D.R.m, 0 ≤ (((D.hc τ).e l : ℚ) : ℝ) ∧ (((D.hc τ).e l : ℚ) : ℝ) ≤ 4 * large₂.sc.b` using `fun l => by`. Take `⟨h1, h2⟩` from `hbe τ l`. Establish `h3` using `(D.hc τ).gap_be l`.
+Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ht : (0 : ℚ) ≤ D.R.t` using `Nat.cast_nonneg _`. Establish `h4 : 0 ≤ (D.hc τ).e l` using `by linarith`. Conclude with `⟨by exact_mod_cast h4, h2⟩`. Establish `hb` using `extend_bounds 1 _ _ (by linarith) hbl`. Establish `he` using `extend_bounds 1 _ _ (by linarith) hel`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htb : (D.R.t : ℝ) ≤ 8 * large₂.sc.b`. Take `⟨h1, h2⟩` from `hbe τ ⟨0, by omega⟩`. Establish `h3` using `(D.hc τ).gap_be ⟨0, by omega⟩`. Establish `h3'` using `(Rat.cast_le (K := ℝ)).2 h3`. Move the coercions through the operations in `at h3'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Establish `h1' : (0 : ℝ) < (((D.hc τ).b ⟨0, by omega⟩ : ℚ) : ℝ)` using `by exact_mod_cast h1`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hcen : ∀ j, 1 ≤ j → j ≤ D.R.m → 0 ≤ ((cen D 1 τ j : ℤ) : ℝ) ∧ ((cen D 1 τ j : ℤ) : ℝ) ≤ large₂.sc.b`. Introduce `j hj1 hj2`. Establish `e` using `GridData.mid_eq (GridData.ofHCParam (D.hc τ) (sLen D) (gap D 1) 0) hj1`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hv2` using `hv 2`. Establish `hj1' : (1 : ℝ) ≤ (j : ℝ)` using `by exact_mod_cast hj1`. Establish `hj2' : (j : ℝ) ≤ (D.R.m : ℝ)` using `by exact_mod_cast hj2`. Establish `hmid : 0 ≤ (((GridData.ofHCParam (D.hc τ) (sLen D) (gap D 1) 0).mid j : ℚ) : ℝ) ∧ (((GridData.ofHCParam (D.hc τ) (sLen D) (gap D 1) 0).mid j : ℚ) : ℝ) ≤ large₂.sc.b`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [GridData.a, GridData.ofHCParam]`. Use `push_cast`. Apply the tactic sequence `constructor <;> nlinarith`. Unfold `cen`. Use `⟨by exact_mod_cast Int.floor_nonneg.2 (by exact_mod_cast hmid.1), le_trans ?_ hmid.2⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Int.floor_le _` after adjusting the coercions. Introduce `x hx`. Take `⟨sg, hsg⟩` from `mem_entries.1 hx`. Simplify using `only [parV, shift, Finset.mem_image] at hsg`. Take `⟨⟨y, sy⟩, hy, hxy⟩` from `hsg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hx'` using `(congrArg Prod.fst hxy).symm`. Simplify using `only at hx'`. Simplify using `only [GridData.parD, Finset.mem_union, plus, Finset.mem_image, Finset.mem_biUnion, GridData.cloud, GridData.blockM, GridData.blockC, mem_block, Finset.mem_Icc, Prod.mk.injEq] at hy`. Establish `hyb : |(y : ℝ)| ≤ 13 * large₂.sc.b`. Break down `hy with ((⟨a0, ⟨j, -, hj⟩, hay, -⟩ | ⟨j, -, hj, -⟩) | ⟨a0, ⟨j, -, a, ha, hae⟩, hay, -⟩) | ⟨a0, ⟨j, ⟨hj1, hj2⟩, a, ha, hae⟩, hay, -⟩` into its components or cases.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `h : 0 ≤ (((num D 1 τ).v j : ℤ) : ℝ) ∧ (((num D 1 τ).v j : ℤ) : ℝ) ≤ large₂.Sc` using `hv j`. Rewrite using `[← hay, ← hj]`. Use `push_cast`. Apply the tactic sequence `rw [abs_le]; constructor <;> linarith`. Establish `h : 0 ≤ (((num D 1 τ).b j : ℤ) : ℝ) ∧ (((num D 1 τ).b j : ℤ) : ℝ) ≤ 4 * large₂.sc.b` using `hb j`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hj]`. Use `push_cast`. Apply the tactic sequence `rw [abs_le]; constructor <;> linarith`. Establish `h : 0 ≤ (((num D 1 τ).e j : ℤ) : ℝ) ∧ (((num D 1 τ).e j : ℤ) : ℝ) ≤ 4 * large₂.sc.b` using `he j`. Establish `ht : ((num D 1 τ).t : ℝ) ≤ 8 * large₂.sc.b` using `htb`.
+Move the embeddings inside the algebraic operations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha' : (a : ℝ) + 1 ≤ ((num D 1 τ).t : ℝ)` using `by exact_mod_cast ha`. Establish `ha0 : (0 : ℝ) ≤ (a : ℝ)` using `Nat.cast_nonneg _`. Rewrite using `[← hay, hae]`. Use `push_cast`. Apply the tactic sequence `rw [abs_le]; constructor <;> linarith`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hj1' : 1 ≤ j`. Establish `: (num D 1 τ).m = D.R.m` using `rfl`. Use linear arithmetic over natural numbers and integers. Establish `h : 0 ≤ (((num D 1 τ).cen j : ℤ) : ℝ) ∧ (((num D 1 τ).cen j : ℤ) : ℝ) ≤ large₂.sc.b` using `hcen j hj1' hj2`. Establish `hs : ((num D 1 τ).s : ℝ) + 1 ≤ (gap D 1 : ℝ)` using `hsg'`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha' : (a : ℝ) + 1 ≤ ((num D 1 τ).s : ℝ)` using `by exact_mod_cast ha`. Establish `ha0 : (0 : ℝ) ≤ (a : ℝ)` using `Nat.cast_nonneg _`. Rewrite using `[← hay, hae]`. Use `push_cast`. Apply the tactic sequence `rw [abs_le]; constructor <;> linarith`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `have hsh : |(((if Odd (i + 1 + D.R.m) then -(1 / 2) else 0 : ℚ)) : ℝ)| ≤ 1 / 2 := by split_ifs <;> norm_num`. Rewrite using `[hx']`. Use `push_cast`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem abs_entry_le (large₂ : SizeData₂ D) (hs : GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.SizeRows large₂) (i : ℕ) (hi : i < D.R.m) (τ : D.what₂.Tau) :
     ∀ x ∈ entries (parV D 1 (i + 1) D.R.m τ), |(x : ℝ)| ≤ 14 * large₂.sc.b := by
@@ -210,7 +208,7 @@ end GlobalTheory.GridWtBound
 namespace GlobalTheory.GridWtBound
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, -, -, -, -, -, -, hgap, -, -⟩` from `hs`. Establish `hSc` using `large₂.Sc_pos`. Establish `hsg : sLen D < gap D 1` using `sLen_lt_gap D 1`. Establish `hg1 : (1 : ℝ) ≤ (gap D 1 : ℝ)` using `by exact_mod_cast (by omega : 1 ≤ gap D 1)`. Establish `hm0 : (0 : ℝ) ≤ (D.R.m : ℝ)` using `Nat.cast_nonneg _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
 Use the polynomial consequences of the given equalities and inequalities.
 -/

@@ -10,11 +10,11 @@ open GlobalTheory GlobalTheory.DI
 namespace GlobalTheory.DI
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Distinguish the cases in `ht : t.card = k + 1`. Establish `h1 : delta c t = 0`. Establish `h` using `congrFun hc t`. Simplify `h` using `[Dtot, hk t (by omega)]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[Pi.zero_apply, ← h1]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `: (t.erase i).card = k` using `by rw [Finset.card_erase_of_mem hi]; omega`. Simplify using `only [this, if_true]`. Use `Finset.sum_eq_zero fun i hi => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h0` using `Finset.card_erase_add_one hi`. Establish `: (t.erase i).card ≠ k` using `by omega`. Simplify using `only [this, if_false, smul_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem delta_topPart_eq_zero {ι : Type} [LinearOrder ι] {E : Type} [AddCommGroup E] (d : E →+ E)
     (c : Finset ι → E) (k : ℕ) (hc : Dtot d c = 0) (hk : ∀ s, k < s.card → c s = 0) :
@@ -34,27 +34,25 @@ theorem delta_topPart_eq_zero {ι : Type} [LinearOrder ι] {E : Type} [AddCommGr
     simp only [this, if_false, smul_zero]
 
 /- English proof (translation)
-Introduce `ι _ E _ d T hdd hmono hdT n hC`. Take `⟨-, -, hadd, hsub, -, hDD⟩` from `GlobalTheory.T.cech_and_total_differential_additive_square_zero (ι := ι) d`. Establish `key : ∀ k, k ≤ n + 1 → ∀ c, InTot T (n + 1) c → Dtot d c = 0 → (∀ s, k < s.card → c s = 0) → ∃ y, InTot T n y ∧ Dtot d y = c`. Introduce `k`. Proceed by induction on `k with`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero`. Introduce `_ c hc _ h0`. Use `⟨0, ⟨rfl, fun q s _ => (T q s).zero_mem, fun _ _ => rfl⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `s`. Establish `hs : c s = 0`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Break down `Nat.eq_zero_or_pos s.card with h | h` into its components or cases. Rewrite using `[Finset.card_eq_zero.1 h]`. Conclude with `hc.1`. Conclude with `h0 s h`. Simplify using `[Dtot, delta, hs]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `succ b ih`. Introduce `hb c hc hD h0`. Take `⟨q, hq⟩ : ∃ q, q + b = n` from `⟨n - b, by omega⟩`. Establish `hin : InCech (T q) (b + 1) (fun s => if s.card = b + 1 then c s else 0)`. Use `⟨by simp, fun s => ?_, fun s hs => by simp [hs]⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hs : s.card = b + 1`. Simplify using `only [hs, if_true]`. Conclude with `hc.2.1 q s (by omega)`. Simplify using `only [hs, if_false]`. Conclude with `(T q s).zero_mem`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Take `⟨y, hy, hyc⟩` from `hC q b hq _ hin (delta_topPart_eq_zero d c (b + 1) hD h0)`. Establish `hyT : InTot T n y`. Use `⟨hy.1, fun q' s hs => ?_, fun s hs => hy.2.2 s (by omega)⟩` and prove the remaining obligations. Distinguish the cases in `h : s.card = b`. Take `rfl : q' = q` from `by omega`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hy.2.1 s`. Rewrite using `[hy.2.2 s h]`. Conclude with `(T q' s).zero_mem`. Establish `hDy : InTot T (n + 1) (Dtot d y)` using `(GlobalTheory.T.isTotalCochainOfDegree_succ_of_differentials d T hmono n y hyT).2 hdT`. Establish `h1 : InTot T (n + 1) (c - Dtot d y)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨?_, fun q' s hs => (T q' s).sub_mem (hc.2.1 q' s hs) (hDy.2.1 q' s hs), fun s hs => ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.sub_apply, hc.1, hDy.1, sub_zero]`. Rewrite using `[Pi.sub_apply, hc.2.2 s hs, hDy.2.2 s hs, sub_zero]`. Establish `h2 : Dtot d (c - Dtot d y) = 0` using `by rw [hsub, hD, hDD hdd, sub_zero]`. Establish `h3 : ∀ s, b < s.card → (c - Dtot d y) s = 0`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Introduce `s hs`. Establish `hys : y s = 0` using `hy.2.2 s (by omega)`. Distinguish the cases in `h : s.card = b + 1`. Simplify using `[Dtot, hyc, hys, h]`. Simplify using `[Dtot, hyc, hys, h, h0 s (by omega)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨z, hz, hzc⟩` from `ih (by omega) _ h1 h2 h3`. Use `⟨z + y, ⟨?_, fun q' s hs => (T q' s).add_mem (hz.2.1 q' s hs) (hyT.2.1 q' s hs), fun s hs => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.add_apply, hz.1, hyT.1, add_zero]`. Rewrite using `[Pi.add_apply, hz.2.2 s hs, hyT.2.2 s hs, add_zero]`. Rewrite using `[hadd, hzc, sub_add_cancel]`.
-
-Introduce `c hc hD`. Conclude with `key (n + 1) le_rfl c hc hD hc.2.2`.
+A detailed English derivation is pending.
 -/
 theorem hypZero_of_cechZero : ∀ {ι : Type} [LinearOrder ι] {E : Type} [AddCommGroup E] (d : E →+ E) (T : ℕ → Finset ι → AddSubgroup E), (∀ x, d (d x) = 0) → (∀ q s t, s.Nonempty → s ⊆ t → T q s ≤ T q t) → (∀ q s x, x ∈ T q s → d x ∈ T (q + 1) s) → ∀ n, (∀ q b, q + b = n → CechZero (T q) b) → HypZero d T n := by
   intro ι _ E _ d T hdd hmono hdT n hC

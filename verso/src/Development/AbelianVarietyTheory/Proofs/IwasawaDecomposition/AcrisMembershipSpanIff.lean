@@ -11,25 +11,23 @@ open scoped Formalism.Per
 namespace GlobalTheory.MemLoc
 
 /- English proof (translation)
-Use `set S : Set A := {y : A | ∃ n : ℕ, ((n.factorial : ℕ) : A) * y = algebraMap R A ξ ^ n} with hS`. Establish `hγ : ∀ n : ℕ, ∃ g : A, ((n.factorial : ℕ) : A) * g = algebraMap R A ξ ^ n` using `fun n => by`. Take `⟨u, hu'⟩` from `(hu n).exists_right_inv`. Conclude with `⟨u * algebraMap R A ξ ^ n, by rw [← mul_assoc, hu', one_mul]⟩`. Establish `hone : (1 : A) ∈ Submodule.span R S` using `Submodule.subset_span ⟨0, by simp⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmul : ∀ x ∈ S, ∀ y ∈ S, x * y ∈ Submodule.span R S`. Introduce and unpack `x ⟨m, hm⟩ y ⟨n, hn⟩`. Take `⟨g, hg⟩` from `hγ (m + n)`. Establish `hf : (((m + n).factorial : ℕ) : A) = (((m + n).choose n : ℕ) : A) * (m.factorial : ℕ) * (n.factorial : ℕ)`. Rewrite using `[← Nat.add_choose_mul_factorial_mul_factorial m n]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `: x * y = ((m + n).choose n : R) • g`. Use `((hu m).mul (hu n)).mul_left_cancel ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, map_natCast]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hg` using `[hf, pow_add, ← hm, ← hn]`. Take the linear combination `-hg`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨m + n, hg⟩)`. Prove the components needed by the constructor for the conclusion.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `hs`. Proceed by induction on `hs using Algebra.adjoin_induction with`. Consider the case `mem y hy`. Take `⟨x, hx, n, hn⟩` from `hy`. Take `⟨a, rfl⟩` from `(hP x).1 hx`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨g, hg⟩` from `hγ n`. Establish `: y = (a ^ n) • g`. Use `(hu n).mul_left_cancel ?_` and prove the remaining obligations. Rewrite using `[hn, Algebra.smul_def, map_mul, mul_pow, ← hg, map_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨n, hg⟩)`. Consider the case `algebraMap r`. Rewrite using `[Algebra.algebraMap_eq_smul_one]`. Conclude with `Submodule.smul_mem _ _ hone`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Consider the case `add x y _ _ hx hy => exact Submodule.add_mem _ hx hy`. Consider the case `mul x y _ _ hx hy`. Use `Submodule.mul_mem_mul hx hy` as an intermediate fact. Rewrite `this` using `[Submodule.span_mul_span]`. Use `Submodule.span_le.2 ?_ this` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨a, ha, b, hb, rfl⟩`. Conclude with `hmul a ha b hb`. Introduce `hs`. Use `(Submodule.span_le (p := Subalgebra.toSubmodule (Algebra.adjoin R _))).2 ?_ hs` and prove the remaining obligations. Introduce and unpack `y ⟨n, hn⟩`.
-
-Conclude with `Algebra.subset_adjoin ⟨ξ, (hP ξ).2 dvd_rfl, n, hn⟩`.
+A detailed English derivation is pending.
 -/
 theorem adjoin_dividedPowers_iff_span {R A : Type} [CommRing R] [CommRing A] [Algebra R A]
     (hu : ∀ n : ℕ, IsUnit ((n.factorial : ℕ) : A)) (ξ : R) (P : R → Prop) (hP : ∀ a, P a ↔ ξ ∣ a) (s : A) :
@@ -82,11 +80,9 @@ theorem adjoin_dividedPowers_iff_span {R A : Type} [CommRing R] [CommRing A] [Al
     exact Algebra.subset_adjoin ⟨ξ, (hP ξ).2 dvd_rfl, n, hn⟩
 
 /- English proof (translation)
-Introduce `l _ e he s`. Use `Iff.trans ?_ (adjoin_dividedPowers_iff_span (fun n => GlobalTheory.RingBasics.isUnit_nat l _ n.factorial_ne_zero) (xi e) (fun a => Per.θ l a = 0) (GlobalTheory.T.fontaineTheta_eq_zero_iff_fontaineXiElement_dvd l e he) s)` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `hs`. Use `(?_ : Per.Acris0 l ≤ _) hs` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.RingIface.Acris0_le_of_dividedPowers l _ fun x n y hx hy => ?_` and prove the remaining obligations. Conclude with `Algebra.subset_adjoin ⟨x, hx, n, hy⟩`. Introduce `hs`. Use `Algebra.adjoin_le (S := Per.Acris0 l) ?_ hs` and prove the remaining obligations. Introduce and unpack `y ⟨x, hx, n, hy⟩`.
-
-Conclude with `GlobalTheory.RingIface.dividedPower_mem_Acris0 l x n y hx hy`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mem_Acris0_iff_span : ∀ (l : ℕ) [Fact l.Prime], ∀ e : Per.Fl l, IsEps e → ∀ s : Per.AinfP l,
     s ∈ Per.Acris0 l ↔ s ∈ Submodule.span (Per.Ainf l) {y : Per.AinfP l | ∃ n : ℕ,

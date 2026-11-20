@@ -29,7 +29,7 @@ open scoped TensorProduct
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Module
 
 /- English proof (translation)
-Establish `: (gram ℝ fun k => a k • v k) = diagonal a * gram ℝ v * diagonal a`. Use extensionality with `i j`. Simplify using `[gram_apply, inner_smul_left, inner_smul_right, mul_diagonal, diagonal_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, det_mul, det_mul, det_diagonal]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -40,55 +40,51 @@ theorem det_gram_smul {V κ : Type} [NormedAddCommGroup V] [InnerProductSpace �
   rw [this, det_mul, det_mul, det_diagonal]; ring
 
 /- English proof (translation)
-Use `haveI : Nontrivial R := Module.nontrivial_of_finrank_pos (R := ℝ) (hd ▸ finrank_pos)`. Set `ε` to `toEuclidean (E := Fin n → R)`. Set `κ` to `Σ _ : Fin n, Free.ChooseBasisIndex ℤ (𝓞 E)`. Establish `hκ : Fintype.card κ = finrank ℚ E * n`. Simplify using `[κ, ← finrank_eq_card_chooseBasisIndex, RingOfIntegers.rank, mul_comm]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `fam : Matrix (Fin n) (Fin n) R → κ → Fin n → R` to `fun c p => τ (integralBasis E p.2) • c p.1`. Set `G : Matrix (Fin n) (Fin n) R → ℝ` to `fun c => (gram ℝ fun p => ε (fam c p)).det`. Establish `hGc : Continuous G` using `Continuous.matrix_det (continuous_matrix fun p q => by`. Simplify using `only [gram_apply, fam]`. Use the proof step `fun_prop)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG1 : ∀ c, G c ≠ 0 → IsUnit c` using `fun c h => by`. Establish `h1 : LinearIndependent ℝ (fam c)` using `LinearIndependent.of_comp ε.toLinearEquiv.toLinearMap (det_gram_ne_zero_iff_linearIndependent.1 h)`. Establish `h2` using `h1.span_eq_top_of_card_eq_finrank' (by rw [hκ, finrank_pi_fintype, hd]; simp [mul_comm])`. Use `vecMul_surjective_iff_isUnit.1 fun x => ?_` and prove the remaining obligations. Establish `h3 : Submodule.span ℝ (Set.range (fam c)) ≤ (LinearMap.range (vecMulLinear c)).restrictScalars ℝ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨p, rfl⟩`. Conclude with `⟨Pi.single p.1 (τ (integralBasis E p.2)), by simp [fam, single_vecMul]; rfl⟩`. Conclude with `h3 (h2 ▸ Submodule.mem_top)`. Establish `hG2 : ∀ c : GL (Fin n) R, G c.1 ≠ 0` using `fun c => by`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `GlobalTheory.T.linearIndependent_vecMul_of_span_rat' E R τ hτ hd n κ (Pi.basis fun _ => integralBasis E) hκ (Basis.span_eq _) c`. Use `det_gram_ne_zero_iff_linearIndependent.2 ?_` and prove the remaining obligations. Establish `h2` using `h1.map' ε.toLinearEquiv.toLinearMap ε.toLinearEquiv.ker`. Use `(show _ = fun p => ε (fam c.1 p) from funext fun p => ?_) ▸ h2` and prove the remaining obligations. Establish `: (fun i => τ ((Pi.basis fun _ => integralBasis E) p i)) = Pi.single p.1 (τ (integralBasis E p.2))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use extensionality with `i`. Simplify using `[Pi.single_apply, apply_ite τ]`. Simplify using `only [Function.comp, this, single_vecMul]`. Both sides reduce to the same expression. Use `set c₀ : ℝ := (Fintype.card (Fin (finrank ℚ E * n)) : ℝ) ^ ((Fintype.card (Fin (finrank ℚ E * n)) : ℝ) / 2) with hc₀`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc₀' : 0 ≤ c₀` using `by positivity`. Use `set c₁ : ℝ := ((2 ^ finrank ℚ E) ^ n * c₀) ^ 2 + 1 with hc₁`. Establish `hc₁' : 0 < c₁` using `by positivity`. Take `⟨C, hC1, hC2⟩` from `GlobalTheory.T.exists_bound_inv_entries_of_bounded_entries R n G hGc hG1 ‖ε.symm.toContinuousLinearMap‖ c₁⁻¹ (inv_pos.2 hc₁')`. Use `⟨⌈c₁ * C⌉₊.factorial, max C ‖ε.symm.toContinuousLinearMap‖, Nat.factorial_pos _, fun Λ hΛ g => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu, hu'⟩` from `GlobalTheory.T.exists_int_span_generators_of_isLattice_pi E n Λ hΛ`. Set `φ : (Fin n → E) →ₗ[ℤ] EuclideanSpace ℝ (Fin (finrank ℝ (Fin n → R)))` to `AddMonoidHom.toIntLinearMap { toFun := fun x => ε ((fun i => τ (x i)) ᵥ* g.1) map_zero' := by simp [← Pi.zero_def] map_add' := fun x y => by rw [← map_add, ← add_vecMul]; simp [← Pi.add_def] }`. Establish `hφ : ∀ x, φ x = ε ((fun i => τ (x i)) ᵥ* g.1)` using `fun _ => rfl`. Establish `hφu : LinearIndependent ℝ fun k => φ (u k)` using `(GlobalTheory.T.linearIndependent_vecMul_of_span_rat' E R τ hτ hd n _ u (Fintype.card_fin _) hu' g).map' ε.toLinearEquiv.toLinearMap ε.toLinearEquiv.ker`. Take `⟨w, hw, hwu, hle⟩` from `GlobalTheory.SW.exists_linearIndependent_prod_norm_le (E := E) (N := n) (Fintype.card_fin _) φ u hφu`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hGu : 0 < (gram ℝ fun k => φ (u k)).det` using `(posDef_gram_of_linearIndependent hφu).det_pos`. Take `⟨δ, hδ⟩ : IsUnit (of w)` from `linearIndependent_rows_iff_isUnit.1 hw`. Establish `hw0 : ∀ i, 0 < ‖φ (w i)‖` using `fun i => norm_pos_iff.2 fun h => hw.ne_zero i (funext fun k => τ.injective (by`. Use `(vecMul_injective_of_isUnit g.isUnit) ((ε.map_eq_zero_iff.1 h).trans (zero_vecMul _).symm)` as an intermediate fact. Rewrite using `[Pi.zero_apply, map_zero]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrFun this k))`. Use `choose l hl using fun i => exists_mem_Ioc_zpow (hw0 i) one_lt_two`. Set `s : Rˣ` to `Units.map (algebraMap ℝ R).toMonoidHom (Units.mk0 2 two_ne_zero)`. Establish `hs : ∀ z : ℤ, (s ^ z).1 = algebraMap ℝ R (2 ^ z)` using `fun z => by`. Rewrite using `[← map_zpow]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `congrArg (algebraMap ℝ R) (Units.val_zpow_eq_zpow_val _ _)`. Use `set c : GL (Fin n) R := (dg s fun i => l i + 1)⁻¹ * (bc τ δ * g) with hc`. Establish `h1 : δ.1.map τ * g.1 = diagonal (fun i => algebraMap ℝ R (2 ^ (l i + 1))) * c.1`. Rewrite using `[← funext fun i => hs (l i + 1)]`. Conclude with `congrArg Units.val (mul_inv_cancel_left (dg s fun i => l i + 1) (bc τ δ * g)).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h2 : ∀ i, (fun k => τ (w i k)) ᵥ* g.1 = (2 : ℝ) ^ (l i + 1) • c.1 i` using `fun i => funext fun k => by`. Use `congrFun (congrFun h1 i) k` as an intermediate fact. Rewrite `this` using `[diagonal_mul, hδ, ← Algebra.smul_def]`. Conclude with `this`. Establish `h3 : ∀ i j, ‖c.1 i j‖ ≤ ‖ε.symm.toContinuousLinearMap‖` using `fun i j => by`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4` using `(hl i).2`. Rewrite `h4` using `[hφ, h2, map_smul, norm_smul, Real.norm_of_nonneg (by positivity), mul_le_iff_le_one_right (by positivity)]`. Use `(norm_le_pi_norm _ j).trans ?_` and prove the remaining obligations. Simplify using `using ε.symm.toContinuousLinearMap.le_of_opNorm_le_of_le le_rfl h4`. Set `v : κ → Fin n → E` to `fun p => integralBasis E p.2 • w p.1`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hv : ∀ p : κ, v p = RingOfIntegers.basis E p.2 • w p.1` using `fun p => by`. Simplify using `only [v, integralBasis_apply]`. Both sides reduce to the same expression. Take `⟨m, hm1, hm2⟩` from `GlobalTheory.T.gram_det_eq_sq_mul_gram_det_of_mem_span _ _ _ κ φ u v (by rw [hκ, Fintype.card_fin]) fun p => (hu _).1 (hv p ▸ Λ.smul_mem _ ((hu _).2 (hwu _)))`. Establish `h5 : ∀ p : κ, φ (v p) = (2 : ℝ) ^ (l p.1 + 1) • ε (fam c.1 p)` using `fun p => by`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hφ, ← map_smul, ← smul_comm, ← h2, ← smul_vecMul]`. Use `congr 2`. Use extensionality with `i`. Conclude with `map_mul τ _ _`. Simplify using `only [h5, det_gram_smul] at hm1`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h6 : ∏ p : κ, (2 : ℝ) ^ (l p.1 + 1) ≤ (2 ^ finrank ℚ E) ^ n * ∏ i, ‖φ (w i)‖ ^ finrank ℚ E`. Rewrite using `[Fintype.prod_sigma]`. Simplify using `only [Finset.prod_const, Finset.card_univ, ← finrank_eq_card_chooseBasisIndex, RingOfIntegers.rank]`. Combine the equalities or inequalities in the displayed calculation. Establish `h7 : (∏ p : κ, (2 : ℝ) ^ (l p.1 + 1)) ^ 2 ≤ c₁ * (gram ℝ fun k => φ (u k)).det`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(pow_le_pow_left₀ (by positivity) (h6.trans (mul_le_mul_of_nonneg_left hle (by positivity))) 2).trans ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, mul_pow, Real.sq_sqrt hGu.le]`. Conclude with `mul_le_mul_of_nonneg_right (by linarith) hGu.le`. Establish `hG0 : 0 ≤ G c.1` using `(posSemidef_gram ℝ _).det_nonneg`. Establish `hm0 : m ≠ 0`.
+Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Introduce and unpack `rfl`. Simplify using `only [Nat.cast_zero, ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, zero_mul] at hm1`. Conclude with `mul_ne_zero (by positivity) (hG2 c) hm1`. Establish `h8 : (m : ℝ) ^ 2 ≤ c₁ * G c.1`. Use `le_of_mul_le_mul_right ?_ hGu` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[← hm1, mul_right_comm]`. Conclude with `mul_le_mul_of_nonneg_right h7 hG0`. Establish `hm3 : (1 : ℝ) ≤ m` using `by exact_mod_cast Nat.pos_of_ne_zero hm0`. Establish `h9 : m ∣ ⌈c₁ * C⌉₊.factorial` using `Nat.dvd_factorial (Nat.pos_of_ne_zero hm0) (by`. Use `Nat.cast_le (α := ℝ).1 (le_trans ?_ (Nat.le_ceil _))` and prove the remaining obligations.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left (hC1 c.1 h3) hc₁'.le])`. Use `⟨δ, _, c, fun i => hδ ▸ (hu _).2 (hwu i), fun x hx => ?_, fun i j => ⟨(h3 i j).trans (le_max_right _ _), (hC2 c h3 ((inv_le_iff_one_le_mul₀' hc₁').2 (by nlinarith)) i j).trans (le_max_left _ _)⟩, h1⟩` and prove the remaining obligations. Establish `h10 : ∀ z ∈ Submodule.span ℤ (Set.range v), ∃ y : Fin n → 𝓞 E, z = (fun i => (y i : E)) ᵥ* δ.1` using `fun z hz => by`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem _ h`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨p, rfl⟩` from `h`. Use `⟨Pi.single p.1 (RingOfIntegers.basis E p.2), ?_⟩` and prove the remaining obligations. Establish `: (fun i => ((Pi.single p.1 (RingOfIntegers.basis E p.2) : Fin n → 𝓞 E) i : E)) = Pi.single p.1 (integralBasis E p.2)`. Use extensionality with `i`. Distinguish the cases in `h : i = p.1`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Substitute `h` using the available equality. Simplify using `[integralBasis_apply]`. Simplify using `[h]`. Rewrite using `[this, single_vecMul, hδ]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero => exact ⟨0, by simp [← Pi.zero_def]⟩`. Consider the case `add _ _ _ _ h h'`. Take `⟨y, rfl⟩` from `h`. Take `⟨y', rfl⟩` from `h'`. Conclude with `⟨y + y', by rw [← add_vecMul]; simp [← Pi.add_def]⟩`.
-
-Consider the case `smul a _ _ h`. Take `⟨y, rfl⟩` from `h`. Conclude with `⟨a • y, by rw [← smul_vecMul]; congr 1⟩`. Take `⟨r, hr⟩` from `h9`. Use `h10 _ ?_` and prove the remaining obligations.
-
-Establish `h11 : (m : ℤ) • x ∈ Submodule.span ℤ (Set.range v)` using `(Submodule.span_le (p := (Submodule.span ℤ (Set.range v)).comap (LinearMap.lsmul ℤ _ (m : ℤ)))).2 (by rintro _ ⟨i, rfl⟩; exact hm2 i) ((hu x).1 hx)`. Use `Submodule.smul_mem _ (r : ℤ) h11 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hr, smul_smul, ← Int.cast_smul_eq_zsmul E]`. Use `push_cast`. Rewrite using `[mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem red_inf (E : Type) [Field E] [NumberField E] (R : Type) [NormedCommRing R] [NormedAlgebra ℝ R]
     [FiniteDimensional ℝ R] (τ : E →+* R) (hτ : Submodule.span ℝ (Set.range τ) = ⊤) (hd : finrank ℝ R = finrank ℚ E)
@@ -226,23 +222,19 @@ theorem red_inf (E : Type) [Field E] [NumberField E] (R : Type) [NormedCommRing 
   push_cast; rw [mul_comm]
 
 /- English proof (translation)
-Use `haveI := hc.2.1`. Take `⟨e, he, he1, he2⟩` from `GlobalTheory.T.exists_cmAdele_split_complex_finiteAdeles F E σ hc`. Take `⟨M, C, hM, H⟩` from `red_inf E _ _ (GlobalTheory.T.span_range_embedding_and_finrank_of_isTotallyComplex E).1 (GlobalTheory.T.span_range_embedding_and_finrank_of_isTotallyComplex E).2 n`. Set `O : Set (FiniteAdeleRing (𝓞 E) E)` to `{a | ∀ v, a v ∈ v.adicCompletionIntegers E}`. Establish `hO : IsCompact O` using `GlobalTheory.AdeleCocompact.isCompact_integral E`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : ProperSpace (InfinitePlace E → ℂ) := inferInstance`. Use `⟨e.symm '' (Metric.closedBall 0 C ×ˢ (O ∪ (fun a => algebraMap E _ (M : E)⁻¹ * a) '' O)), ((isCompact_closedBall _ _).prod (hO.union (hO.image (continuous_const.mul continuous_id)))).image he, fun β => ?_⟩` and prove the remaining obligations. Set `p₁` to `(RingHom.fst _ _).comp e.toRingHom`. Set `p₂` to `(RingHom.snd _ _).comp e.toRingHom`. Take `⟨Λ, hΛ, H'⟩` from `GlobalTheory.T.exists_lattice_adelicMatrix_integral_translate E n (bc p₂ β)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨δ, l, c₁, h1, h2, h3, h4⟩` from `H Λ hΛ (bc p₁ β)`. Use `replace H' := H' M δ h1 h2`. Use `set c := (dg (halfE F E) fun i => -l i)⁻¹ * (bc (inclR (F := F) (AF F)) δ * β) with hc`. Establish `hd : ∀ {B : Type} [CommRing B] (p : AF F ⊗[F] E →+* B), bc p (dg (halfE F E) fun i => -l i) = dg (Units.map p.toMonoidHom (halfE F E)) fun i => -l i` using `fun p => Units.ext (by`. Express the relevant statement in the definitionally equal form `(diagonal _).map p = diagonal _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[diagonal_map (map_zero p)]`. Conclude with `congrArg diagonal (funext fun i => congrArg Units.val (map_zpow (Units.map p.toMonoidHom) _ _)))`. Establish `h5 : bc p₁ c = c₁`. Rewrite using `[hc, map_mul, map_mul, map_inv, inv_mul_eq_iff_eq_mul, hd]`. Use `Units.ext (Eq.trans ?_ (h4.trans ?_))` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `congrArg (· * (bc p₁ β).1) (Matrix.ext fun i j => congrArg Prod.fst (he1 _))`. Establish `: Units.map p₁.toMonoidHom (halfE F E) = (Units.map (algebraMap ℝ (InfinitePlace E → ℂ)).toMonoidHom (Units.mk0 2 two_ne_zero))⁻¹` using `Units.ext ((congrArg Prod.fst he2).trans (by ext; simp))`. Use `congrArg (· * c₁.1) (congrArg diagonal (funext fun i => ?_))` and prove the remaining obligations. Rewrite using `[this, _root_.inv_zpow', neg_neg, ← map_zpow]`. Conclude with `congrArg (algebraMap ℝ (InfinitePlace E → ℂ)) (Units.val_zpow_eq_zpow_val (Units.mk0 (2 : ℝ) two_ne_zero) _).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h6 : bc p₂ c = bc (algebraMap E _) δ * bc p₂ β`. Establish `: Units.map p₂.toMonoidHom (halfE F E) = 1` using `Units.ext (congrArg Prod.snd he2)`. Rewrite using `[hc, map_mul, map_mul, map_inv, hd, this, show (dg 1 fun i => -l i) = 1 from Units.ext (by simp [dg]), inv_one, one_mul]`. Conclude with `congrArg (· * bc p₂ β) (Units.ext (Matrix.ext fun i j => congrArg Prod.snd (he1 _)))`. Use `⟨δ, fun i => -l i, c, fun i j => ⟨⟨e _, ⟨mem_closedBall_zero_iff.2 ?_, .inl fun v => ?_⟩, e.symm_apply_apply _⟩, ⟨e _, ⟨mem_closedBall_zero_iff.2 ?_, .inr ⟨_, fun v => (H' i j v).2, ?_⟩⟩, e.symm_apply_apply _⟩⟩, congrArg Units.val (mul_inv_cancel_left (dg (halfE F E) fun i => -l …` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `‖(bc p₁ c).1 i j‖ ≤ C`. Rewrite using `[h5]`. Conclude with `(h3 i j).1`. Express the relevant statement in the definitionally equal form `(bc p₂ c).1 i j v ∈ _`. Rewrite using `[h6]`.
-
-Conclude with `(H' i j v).1`. Express the relevant statement in the definitionally equal form `‖(bc p₁ c⁻¹).1 i j‖ ≤ C`. Rewrite using `[map_inv, h5]`. Conclude with `(h3 i j).2`. Express the relevant statement in the definitionally equal form `_ = (bc p₂ c⁻¹).1 i j beta_reduce`.
-
-Rewrite using `[← mul_assoc, ← map_natCast (algebraMap E (FiniteAdeleRing (𝓞 E) E)), ← map_mul, inv_mul_cancel₀ (Nat.cast_ne_zero.2 hM.ne'), map_one, one_mul, map_inv, h6, _root_.mul_inv_rev, ← map_inv (bc _) δ]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem red_gl (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hc : IsCMExt F E σ) (n : ℕ) : ∃ Ω : Set (AF F ⊗[F] E), IsCompact Ω ∧ ∀ β : GL (Fin n) (AF F ⊗[F] E),
@@ -308,19 +300,13 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {J : Matrix (Fin n) (Fin n) E} {Q : Matrix (Fin (n + n)) (Fin (n + n)) E}
 
 /- English proof (translation)
-Use `haveI := hc.1`. Use `haveI := t2Space_adeleRing' (F := F)`. Use `haveI := isTopologicalRing_tens (F := F) (E := E) (R := AF F)`. Use `haveI := t2Space_tensorProduct_finiteExtension (F := F) (E := E) (R := AF F)`. Use `haveI : Nontrivial (AF F) := inferInstanceAs (Nontrivial (Ainf F × Af F))`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : Nontrivial (AF F ⊗[F] E) := inferInstance`. Use `letI : Invertible (2 : F) := invertibleOfNonzero two_ne_zero`. Use `letI : Invertible (2 : AF F ⊗[F] E) := (Invertible.map (algebraMap F (AF F ⊗[F] E)) 2).copy _ (map_ofNat _ 2).symm`. Use `choose p k hk e using fun q => hI (γ q)`. Take `⟨U, hU⟩` from `(isUnit_iff_isUnit_det _).2 (isUnit_det_JR (F := F) (R := AF F) hJ.2)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨Ω₀, C₀, hΩ₀, hcov⟩` from `GlobalTheory.T.exists_adele_cover_mod_field_shrunk_compact F`. Establish `hb : (1 : ℝ) < 4 ^ Fintype.card (InfinitePlace F)` using `one_lt_pow₀ (by norm_num) Fintype.card_ne_zero`. Establish `hsc : Continuous (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (AF F) σ)` using `haveI : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩ IsModuleTopology.continuous_of_linearMap (Algebra.TensorProduct.map (AlgHom.id (AF F) (AF F)) σ).toLinearMap`. Take `⟨C, m, h1, h2⟩` from `core (inclR (F := F) (AF F)) finSumFinEquiv hsc (sigR_invol hσ) (by rintro _ ⟨x, rfl⟩; exact ⟨σ x, rfl⟩) (sigR_halfE σ) continuous_absE (absE_conjUnit σ) (fun x ⟨y, hy⟩ => by`. Establish `h0 : y ≠ 0` using `by rintro rfl; exact x.ne_zero (hy.symm.trans (map_zero _))`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show x = Units.map (inclR (F := F) (AF F)).toMonoidHom (Units.mk0 y h0) from Units.ext hy.symm, absE_inclR])`. Use the proof step `(one_pos.trans hb) (by rw [GlobalTheory.T.tensorIdeleNormalizedAbs_ideleHalfAtInfinity F E σ hc]; simp) (GlobalTheory.T.compact_adeles_rational_points_finite_eventually_zero F E) (red_gl F E σ hc n)`. Use the proof step `(by simpa only [← pow_mul, mul_comm _ 2, Fintype.card_fin, show (4 : ℝ) = 2 ^ 2 by norm_num] using GlobalTheory.T.skewHermitian_adelic_cover_of_adele_cover F E σ hc _ _ _ hΩ₀ hcov n)`. Use the proof step `(U := U) (by rw [hU]; ext i j; exact congrArg (fun x => (1 : AF F) ⊗ₜ[F] x) (hJ.1 i j))`. Use the proof step `((mem_rat _).2 fun a b => hU ▸ ⟨J a b, rfl⟩) (p := fun q => matHom _ σ Q (p q)) (k := fun q => matHom _ σ Q (k q))`.
-
-Use the proof step `(fun q => by`. Rewrite using `[hU, ← JR_dblGram, ← h]`. Conclude with `(p q).1.2)`. Use the proof step `(fun q => mem_siegelOf.1 (p q).2)`. Use the proof step `(Bdd.map (f := k) ⟨_, hK, hk⟩ (isEmbedding_matHom _ σ Q).continuous)`.
-
-Use the proof step `(fun q => by`. Take `⟨x, -, hx⟩` from `hγ q`. Conclude with `⟨x, hx.trans (by rw [← map_mul, ← e]; rfl)⟩)`. Use `fun q q' hq => hi q q' (by`. Rewrite `hq` using `[← map_mul, ← map_mul, ← e, ← e, ← map_inv, ← map_mul]`.
-
-Conclude with `hq)`. Use `GlobalTheory.T.summable_rpow_of_fibre_card_le' X n _ C t m _ hb ht (fun q => ⟨NNReal.coe_nonneg _, ?_⟩) (by simpa only [Fintype.card_fin] using h2)` and prove the remaining obligations. Rewrite using `[e, hgtH_mul continuous_absE hK _ (hk q)]`. Conclude with `h1 q _ rfl`.
+A detailed English derivation is pending.
 -/
 theorem summable_hgt (hc : IsCMExt F E σ) (hσ : ∀ x, σ (σ x) = x) (h : Q = dblGram finSumFinEquiv J) (hJ : IsHermND σ J)
     {K : Subgroup (GAd σ Q)} (hK : IsCompact (K : Set (GAd σ Q))) (hI : HasIwasawa σ Q K) {X : Type} {γ : X → GAd σ Q}
@@ -377,9 +363,9 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.L2.Theta
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `D V a hI σ hσ`. Establish `hc` using `GlobalTheory.AdelicU.isCMExt_host D`. Establish `hs : ∀ x, D.sp.cm.sig (D.sp.cm.sig x) = x` using `fun x => by`. Take `⟨τ⟩ : Nonempty (D.host.E →+* ℂ)` from `inferInstance`. Conclude with `τ.injective (by rw [hc.2.2.2, hc.2.2.2, star_star])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Conv.summable_hgt hc hs (GlobalTheory.Doubling.gram_hdbl V) (GlobalTheory.Doubling.isHermND_gram V) (GlobalTheory.Doubling.isCompact_Khat V a) hI (fun q : SiegelCosets V => q.out.2) (fun q q' h => ?_) (by linarith)` and prove the remaining obligations. Rewrite using `[← q.out_eq, ← q'.out_eq]`. Conclude with `GlobalTheory.AutomorphicL2Unitary.mk_eq_iff.2 ⟨⟨q'.out * q.out⁻¹, h⟩, inv_mul_cancel_right _ _⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sphConv : ∀ (D : D7) (V : HSp D) (a : GL (Fin V.rank) (AE D)),
     GlobalTheory.Doubling.HasIwasawa D.sp.cm.sig (GlobalTheory.Doubling.dblSp V).gram (GlobalTheory.Doubling.Khat V a) → GlobalTheory.Eis.SphConv V a := by

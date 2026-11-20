@@ -29,7 +29,7 @@ def comp (e : ∀ i, Hl i →* Γ) (KH : ∀ i, Subgroup (Hl i)) (f : ∀ i, Hl 
   T.foldr (fun i g' x => hint (KH i) fun m => f i m * g' (x * e i m)) g
 
 /- English proof (translation)
-Unfold `fac`. Use `split_ifs with hj`. Conclude with `hfV j v hv h`. Simplify using `only [Set.indicator_apply, SetLike.mem_coe, Subgroup.mul_mem_cancel_right _ hv, Pi.one_apply]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fac_mul {V : ∀ i, Subgroup (Hl i)} {f : ∀ i, Hl i → ℂ}
     (hfV : ∀ i, ∀ u ∈ V i, ∀ x, f i (x * u) = f i x) (T : List ι) (j : ι) (h v : Hl j) (hv : v ∈ V j) :
@@ -40,9 +40,9 @@ theorem fac_mul {V : ∀ i, Subgroup (Hl i)} {f : ∀ i, Hl i → ℂ}
   · simp only [Set.indicator_apply, SetLike.mem_coe, Subgroup.mul_mem_cancel_right _ hv, Pi.one_apply]
 
 /- English proof (translation)
-Use `((Filter.eventually_cofinite.1 (hS x)).union (List.finite_toSet T)).subset ?_` and prove the remaining obligations. Introduce `j hj`. Assume the negation of the conclusion as `hc`. Simplify using `only [Set.mem_union, Set.mem_setOf_eq, not_or, not_not] at hc`. Apply `hj` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hjT : j ∉ T` using `hc.2`. Simplify using `[fac, hjT, hc.1]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem fac_finite {p : ∀ i, Γ →* Hl i} {V : ∀ i, Subgroup (Hl i)} (f : ∀ i, Hl i → ℂ)
     (hS : ∀ x, ∀ᶠ j in cofinite, p j x ∈ V j) (T : List ι) (x : Γ) :
@@ -56,7 +56,7 @@ theorem fac_finite {p : ∀ i, Γ →* Hl i} {V : ∀ i, Subgroup (Hl i)} (f : �
   simp [fac, hjT, hc.1]
 
 /- English proof (translation)
-Unfold `prodF`. Use `finprod_congr fun j => ?_` and prove the remaining obligations. Rewrite using `[map_mul, fac_mul hfV T j _ _ (hu j)]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem prodF_mul {p : ∀ i, Γ →* Hl i} {V : ∀ i, Subgroup (Hl i)} {f : ∀ i, Hl i → ℂ}
     (hfV : ∀ i, ∀ u ∈ V i, ∀ x, f i (x * u) = f i x) (T : List ι) (x u : Γ) (hu : ∀ j, p j u ∈ V j) :
@@ -66,7 +66,7 @@ theorem prodF_mul {p : ∀ i, Γ →* Hl i} {V : ∀ i, Subgroup (Hl i)} {f : �
   rw [map_mul, fac_mul hfV T j _ _ (hu j)]
 
 /- English proof (translation)
-Introduce `h0` and use `h (finprod_eq_zero _ j h0 (fac_finite f hS T x))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem fac_ne_zero {p : ∀ i, Γ →* Hl i} {V : ∀ i, Subgroup (Hl i)} {f : ∀ i, Hl i → ℂ}
     (hS : ∀ x, ∀ᶠ j in cofinite, p j x ∈ V j) (T : List ι) (x : Γ) (h : prodF p V f T x ≠ 0) (j : ι) :
@@ -74,13 +74,13 @@ theorem fac_ne_zero {p : ∀ i, Γ →* Hl i} {V : ∀ i, Subgroup (Hl i)} {f : 
   h (finprod_eq_zero _ j h0 (fac_finite f hS T x))
 
 /- English proof (translation)
-Establish `h1 : prodF p V f (i :: T) (e i m * q) = fac V f (i :: T) i (p i (e i m * q)) * ∏ᶠ (j) (_ : j ≠ i), fac V f (i :: T) j (p j (e i m * q))` using `(mul_finprod_cond_ne i (fac_finite f hS (i :: T) (e i m * q))).symm`. Establish `h2 : prodF p V f T q = fac V f T i (p i q) * ∏ᶠ (j) (_ : j ≠ i), fac V f T j (p j q)` using `(mul_finprod_cond_ne i (fac_finite f hS T q)).symm`. Establish `h3 : (∏ᶠ (j) (_ : j ≠ i), fac V f (i :: T) j (p j (e i m * q))) = ∏ᶠ (j) (_ : j ≠ i), fac V f T j (p j q)`. Use `finprod_congr fun j => finprod_congr fun hj => ?_` and prove the remaining obligations. Rewrite using `[map_mul, hpe' i j m (Ne.symm hj), one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[fac, hj]`. Establish `h4 : fac V f (i :: T) i (p i (e i m * q)) = f i (m * p i q)`. Rewrite using `[map_mul, hpe]`. Simplify using `[fac]`. Establish `h5 : fac V f T i (p i q) = (V i : Set (Hl i)).indicator (1 : Hl i → ℂ) (p i q)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[fac, hi]`. Rewrite using `[h1, h2, h3, h4, h5]`. Distinguish the cases in `hq : p i q ∈ V i`. Establish `: (V i : Set (Hl i)).indicator (1 : Hl i → ℂ) (p i q) = 1` using `by simp [hq]`. Rewrite using `[this, hfV i _ hq m]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `: (V i : Set (Hl i)).indicator (1 : Hl i → ℂ) (p i q) = 0` using `by simp [hq]`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem prodF_split {p : ∀ i, Γ →* Hl i} {e : ∀ i, Hl i →* Γ} {V : ∀ i, Subgroup (Hl i)} {f : ∀ i, Hl i → ℂ}
     (hpe : ∀ i m, p i (e i m) = m) (hpe' : ∀ i j m, i ≠ j → p j (e i m) = 1)
@@ -113,9 +113,9 @@ theorem prodF_split {p : ∀ i, Γ →* Hl i} {e : ∀ i, Hl i →* Γ} {V : ∀
     ring
 
 /- English proof (translation)
-Use `hsep _ _ fun k => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul]`. Distinguish the cases in `hki : i = k`. Substitute `hki` using the available equality. Rewrite using `[hpe' j i m hij.symm, hpe, mul_one, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hpe' i k v hki, one_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem e_comm {p : ∀ i, Γ →* Hl i} {e : ∀ i, Hl i →* Γ}
     (hpe : ∀ i m, p i (e i m) = m) (hpe' : ∀ i j m, i ≠ j → p j (e i m) = 1)
@@ -129,13 +129,11 @@ theorem e_comm {p : ∀ i, Γ →* Hl i} {e : ∀ i, Hl i →* Γ}
   · rw [hpe' i k v hki, one_mul, mul_one]
 
 /- English proof (translation)
-Proceed by induction on `T generalizing x with`. Consider the case `nil`. Use `hg (e i v) (fun j => ?_) x` and prove the remaining obligations. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[hpe]`. Conclude with `hv`. Rewrite using `[hpe' i j v hij]`. Conclude with `one_mem _`. Consider the case `cons j T ih`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hij : i ≠ j` using `fun h => hi (h ▸ List.mem_cons_self)`. Establish `hiT : i ∉ T` using `fun h => hi (List.mem_cons_of_mem _ h)`. Express the relevant statement in the definitionally equal form `hint (KH j) (fun m => f j m * comp e KH f g T (x * e i v * e j m)) = hint (KH j) (fun m => f j m * comp e KH f g T (x * e j m))`. Use `congr 1`. Use function extensionality and compare the values at `m`.
-
-Rewrite using `[mul_assoc x, e_comm hpe hpe' hsep hij, ← mul_assoc, ih hiT]`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_inv {p : ∀ i, Γ →* Hl i} {e : ∀ i, Hl i →* Γ} {KH V : ∀ i, Subgroup (Hl i)} {f : ∀ i, Hl i → ℂ}
     (hpe : ∀ i m, p i (e i m) = m) (hpe' : ∀ i j m, i ≠ j → p j (e i m) = 1)
@@ -162,9 +160,9 @@ theorem comp_inv {p : ∀ i, Γ →* Hl i} {e : ∀ i, Hl i →* Γ} {KH V : ∀
     rw [mul_assoc x, e_comm hpe hpe' hsep hij, ← mul_assoc, ih hiT]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Simplify using `using QuotientGroup.eq.1 (QuotientGroup.out_eq' ((1 : G) : G ⧸ L)).symm`. Introduce `h`. Rewrite using `[← QuotientGroup.out_eq' q]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `QuotientGroup.eq.2 (by simpa using L.inv_mem h)`.
+A detailed English derivation is pending.
 -/
 theorem coset_one {G : Type} [Group G] (L : Subgroup G) (q : G ⧸ L) :
     q = ((1 : G) : G ⧸ L) ↔ q.out ∈ L := by
@@ -176,13 +174,13 @@ theorem coset_one {G : Type} [Group G] (L : Subgroup G) (q : G ⧸ L) :
     exact QuotientGroup.eq.2 (by simpa using L.inv_mem h)
 
 /- English proof (translation)
-Establish `hmem : ∀ x : Γ, x ∈ (⨅ i, (V i).comap (p i)) ↔ ∀ j, p j x ∈ V j`. Introduce `x`. Simplify using `[Subgroup.mem_iInf]`. Rewrite using `[finsum_eq_single _ ((1 : Γ) : Γ ⧸ (⨅ i, (V i).comap (p i)))]`. Establish `ho` using `(coset_one _ _).1 (rfl : ((1 : Γ) : Γ ⧸ (⨅ i, (V i).comap (p i))) = _)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hoj` using `(hmem _).1 ho`. Establish `h1 : prodF p V f [] ((1 : Γ) : Γ ⧸ (⨅ i, (V i).comap (p i))).out = 1`. Use `finprod_eq_one_of_forall_eq_one fun j => ?_` and prove the remaining obligations. Simplify using `[fac, hoj j]`. Rewrite using `[h1, one_mul, hg _ hoj]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `q hq`. Establish `hq' : ¬ ∀ j, p j q.out ∈ V j`. Introduce `hall`. Conclude with `hq ((coset_one _ _).2 ((hmem _).2 hall))`. Take `⟨j, hj⟩` from `not_forall.1 hq'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h0 : prodF p V f [] q.out = 0` using `finprod_eq_zero _ j (by simp [fac, hj]) (fac_finite f hS [] q.out)`. Rewrite using `[h0, zero_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_nil {p : ∀ i, Γ →* Hl i} {V : ∀ i, Subgroup (Hl i)} (f : ∀ i, Hl i → ℂ)
     {g : Γ → ℂ} (hg : ∀ u, (∀ i, p i u ∈ V i) → ∀ x, g (x * u) = g x)
@@ -208,29 +206,27 @@ theorem sum_nil {p : ∀ i, Γ →* Hl i} {V : ∀ i, Subgroup (Hl i)} (f : ∀ 
     rw [h0, zero_mul]
 
 /- English proof (translation)
-Proceed by induction on `T generalizing y with`. Consider the case `nil`. Rewrite using `[sum_nil f hg hS y]`. Simplify using `[comp]`. Consider the case `cons i T ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Establish `hi : i ∉ T` using `(List.nodup_cons.1 hT).1`. Establish `hT' : T.Nodup` using `(List.nodup_cons.1 hT).2`. Establish `hmem : ∀ u ∈ (⨅ i, (V i).comap (p i)), ∀ j, p j u ∈ V j`. Introduce `u hu j`. Conclude with `(Subgroup.mem_iInf.1 hu) j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hφ : ∀ u ∈ (⨅ i, (V i).comap (p i)), ∀ x, (fun x => prodF p V f (i :: T) x * g (y * x)) (x * u) = (fun x => prodF p V f (i :: T) x * g (y * x)) x`. Introduce `u hu x`. Express the relevant statement in the definitionally equal form `prodF p V f (i :: T) (x * u) * g (y * (x * u)) = prodF p V f (i :: T) x * g (y * x)`. Rewrite using `[prodF_mul hfV _ _ _ (hmem u hu), ← mul_assoc, hg u (hmem u hu)]`. Establish `hfin : {q : Γ ⧸ (⨅ i, (V i).comap (p i)) | (fun x => prodF p V f (i :: T) x * g (y * x)) q.out ≠ 0}.Finite`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(GlobalTheory.T.finite_restricted_product_quotient p V (fun j => {h | fac V f (i :: T) j h ≠ 0}) ?_ ?_ ?_).subset ?_` and prove the remaining obligations. Introduce `j x hx u hu`. Express the relevant statement in the definitionally equal form `fac V f (i :: T) j (x * u) ≠ 0`. Rewrite using `[fac_mul hfV _ _ _ _ hu]`. Conclude with `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `j`. Distinguish the cases in `hj : j ∈ i :: T`. Use `(hfs j).subset fun q hq => ?_` and prove the remaining obligations. Establish `hq' : fac V f (i :: T) j q.out ≠ 0` using `hq`. Simplify `hq'` using `[fac, hj]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(Set.finite_singleton ((1 : Hl j) : Hl j ⧸ V j)).subset fun q hq => ?_` and prove the remaining obligations. Establish `hq' : fac V f (i :: T) j q.out ≠ 0` using `hq`. Establish `hm : q.out ∈ V j`. Assume the negation of the conclusion as `hc`. Conclude with `hq' (by simp [fac, hj, hc])`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `(coset_one _ _).2 hm`. Establish `: ∀ᶠ j in cofinite, j ∉ i :: T` using `(List.finite_toSet (i :: T)).compl_mem_cofinite`. Use `this.mono fun j hj h hh => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Conclude with `hh (by simp [fac, hj, show h ∉ V j from hc])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce `q hq j`. Conclude with `fac_ne_zero hS (i :: T) q.out (left_ne_zero_of_mul hq) j`. Establish `h1 : ∑ᶠ q : Γ ⧸ (⨅ i, (V i).comap (p i)), prodF p V f (i :: T) q.out * g (y * q.out) = ∑ᶠ m : Hl i ⧸ V i, ∑ᶠ q : Γ ⧸ (⨅ i, (V i).comap (p i)), (V i : Set (Hl i)).indicator (1 : Hl i → ℂ) (p i q.out) * (prodF p V f (i :: T) (e i m.out * q.out) * g (y * (e i m.out * q.out)))` using `GlobalTheory.T.finite_sum_fiber_decomposition (p i) (e i) (hpe i) (⨅ i, (V i).comap (p i)) (V i) (fun u hu => hmem u hu i) (fun x => prodF p V f (i :: T) x * g (y * x)) hφ hfin`. Establish `inner : ∀ m : Hl i ⧸ V i, ∑ᶠ q : Γ ⧸ (⨅ i, (V i).comap (p i)), (V i : Set (Hl i)).indicator (1 : Hl i → ℂ) (p i q.out) * (prodF p V f (i :: T) (e i m.out * q.out) * g (y * (e i m.out * q.out))) = f i m.out * ((T.map fun i => (((V i).relIndex (KH i) : ℕ) : ℂ)).prod * comp e KH f g …`. Introduce `m`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← ih hT' (y * e i m.out), ← smul_eq_mul, smul_finsum]`. Use `finsum_congr fun q => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_mul, ← mul_assoc, prodF_split hpe hpe' hfV hS hi, mul_assoc, mul_assoc y]`. Establish `hinv : V i ≤ rStab (fun m => f i m * comp e KH f g T (y * e i m))`. Introduce `v hv x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `f i (x * v) * comp e KH f g T (y * e i (x * v)) = f i x * comp e KH f g T (y * e i x)`. Rewrite using `[hfV i v hv x, map_mul, ← mul_assoc, comp_inv hpe hpe' hsep hg hv T hi]`. Establish `hlev` using `GlobalTheory.CompanionTheory.HintLevel.hint_eq_level (Hl i) (KH i) (V i) (fun m => f i m * comp e KH f g T (y * e i m)) (hVK i) hinv (hVi i)`. Establish `hr : (((V i).relIndex (KH i) : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (hVi i)`. Establish `hcomp : comp e KH f g (i :: T) y = hint (KH i) (fun m => f i m * comp e KH f g T (y * e i m))` using `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[h1, hcomp, hlev, List.map_cons, List.prod_cons, finsum_congr inner]`. Establish `hpull : ∑ᶠ m : Hl i ⧸ V i, f i m.out * ((T.map fun i => (((V i).relIndex (KH i) : ℕ) : ℂ)).prod * comp e KH f g T (y * e i m.out)) = (T.map fun i => (((V i).relIndex (KH i) : ℕ) : ℂ)).prod * ∑ᶠ m : Hl i ⧸ V i, f i m.out * comp e KH f g T (y * e i m.out)`. Rewrite using `[← smul_eq_mul, smul_finsum]`. Use `finsum_congr fun m => ?_` and prove the remaining obligations. Simplify using `only [smul_eq_mul]`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hpull]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem sum_comp {p : ∀ i, Γ →* Hl i} {e : ∀ i, Hl i →* Γ} {KH V : ∀ i, Subgroup (Hl i)} {f : ∀ i, Hl i → ℂ}
     (hpe : ∀ i m, p i (e i m) = m) (hpe' : ∀ i j m, i ≠ j → p j (e i m) = 1)
@@ -319,7 +315,7 @@ theorem sum_comp {p : ∀ i, Γ →* Hl i} {e : ∀ i, Hl i →* Γ} {KH V : ∀
     field_simp
 
 /- English proof (translation)
-Introduce `ι Γ _ Hl _ p e KH V f hpe hpe' hsep hev hVK hVi hVe hfV hfs T hT g hg y`. Establish `hS : ∀ x, ∀ᶠ j in cofinite, p j x ∈ V j` using `fun x => ((hev x).and hVe).mono fun j h => by rw [h.2]; exact h.1`. Conclude with `sum_comp hpe hpe' hsep hS hVK hVi hfV hfs T hT g hg y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sum_formula : ∀ {ι Γ : Type} [Group Γ] {Hl : ι → Type} [∀ i, Group (Hl i)] (p : ∀ i, Γ →* Hl i) (e : ∀ i, Hl i →* Γ) (KH V : ∀ i, Subgroup (Hl i)) (f : ∀ i, Hl i → ℂ)
     (hpe : ∀ i m, p i (e i m) = m) (hpe' : ∀ i j m, i ≠ j → p j (e i m) = 1)

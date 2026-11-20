@@ -15,9 +15,7 @@ variable {L M : Type} [Field L] [AddCommGroup M] [Module L M]
 open TensorProduct in
 variable {L M : Type} [Field L] [AddCommGroup M] [Module L M] in
 /- English proof (translation)
-Use `(Set.finite_Iic (k - m).toNat).subset fun j hj => ?_` and prove the remaining obligations. Simplify using `only [Function.mem_support] at hj`. Simplify using `only [Set.mem_Iic]`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`.
-
-Conclude with `hj (by rw [hm _ (by omega), smul_zero])`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.NL.Model.conv_finite (e : PowerSeries L) {u : ℤ → M} {m : ℤ}
     (hm : ∀ k < m, u k = 0) (k : ℤ) :
@@ -32,7 +30,7 @@ theorem _root_.GlobalTheory.NL.Model.conv_finite (e : PowerSeries L) {u : ℤ �
 open TensorProduct in
 variable {L M : Type} [Field L] [AddCommGroup M] [Module L M] in
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Rewrite using `[_root_.GlobalTheory.NL.conv, finsum_eq_single _ 0]`. Simplify using the standard rewrite rules. Introduce `j hj`. Simplify using `[PowerSeries.coeff_one, hj]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.NL.Model.conv_one (u : ℤ → M) :
     _root_.GlobalTheory.NL.conv (1 : PowerSeries L) u = u := by
@@ -43,7 +41,7 @@ theorem _root_.GlobalTheory.NL.Model.conv_one (u : ℤ → M) :
     simp [PowerSeries.coeff_one, hj]
 
 /- English proof (translation)
-Unfold `conv`. Rewrite using `[finsum_eq_single _ 1]`. Simplify using the standard rewrite rules. Introduce `j hj`. Simplify using `[PowerSeries.coeff_X, hj]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem conv_X (u : ℤ → M) (k : ℤ) : conv (PowerSeries.X : PowerSeries L) u k = u (k - 1) := by
   unfold conv
@@ -53,11 +51,11 @@ theorem conv_X (u : ℤ → M) (k : ℤ) : conv (PowerSeries.X : PowerSeries L) 
     simp [PowerSeries.coeff_X, hj]
 
 /- English proof (translation)
-Unfold `conv`. Use `split_ifs with h`. Rewrite using `[finsum_eq_single _ (k - a).toNat]`. Establish `: k - ((k - a).toNat : ℤ) = a` using `by omega`. Rewrite using `[this, Pi.single_eq_same]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j hj`. Establish `: k - (j : ℤ) ≠ a` using `by omega`. Rewrite using `[Pi.single_eq_of_ne this, smul_zero]`. Apply `finsum_eq_zero_of_forall_eq_zero` to reduce the goal to its premises. Introduce `j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: k - (j : ℤ) ≠ a` using `by omega`. Rewrite using `[Pi.single_eq_of_ne this, smul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conv_single (e : PowerSeries L) (a : ℤ) (d : M) (k : ℤ) :
     conv e (Pi.single a d : ℤ → M) k =
@@ -78,7 +76,7 @@ theorem conv_single (e : PowerSeries L) (a : ℤ) (d : M) (k : ℤ) :
 open TensorProduct in
 variable {L M : Type} [Field L] [AddCommGroup M] [Module L M] in
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨1, x, (_root_.GlobalTheory.NL.Model.conv_one _).symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.NL.Model.mem_latSpan {ι : Type} (ex : ι → ℤ → M) (x : ι) :
     ex x ∈ _root_.GlobalTheory.NL.latSpan (LL := L) ex :=
@@ -87,9 +85,9 @@ theorem _root_.GlobalTheory.NL.Model.mem_latSpan {ι : Type} (ex : ι → ℤ �
 open TensorProduct in
 variable {L M : Type} [Field L] [AddCommGroup M] [Module L M] in
 /- English proof (translation)
-Use `⟨fun k => ?_, fun k hk => ?_⟩` and prove the remaining obligations. Rewrite using `[_root_.GlobalTheory.NL.conv, finsum_eq_sum _ (_root_.GlobalTheory.NL.Model.conv_finite e hm k)]`. Conclude with `Submodule.sum_mem _ fun j _ => D.smul_mem _ (hu _)`. Rewrite using `[_root_.GlobalTheory.NL.conv]`. Use `finsum_eq_zero_of_forall_eq_zero fun j => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hm _ (by omega), smul_zero]`.
+A detailed English derivation is pending.
 -/
 private theorem conv_mem_and_vanish_below (e : PowerSeries L) (D : Submodule L M)
     {u : ℤ → M} (hu : ∀ k, u k ∈ D) {m : ℤ} (hm : ∀ k < m, u k = 0) :
@@ -107,11 +105,11 @@ open TensorProduct in
 variable {L M : Type} [Field L] [AddCommGroup M] [Module L M] in
 
 /- English proof (translation)
-Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem g hg`. Take `⟨e, x, rfl⟩` from `hg`. Take `⟨m, hm⟩` from `hs x`. Take `⟨h1, h2⟩` from `conv_mem_and_vanish_below e D (hD x) hm`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨h1, m, h2⟩`. Consider the case `zero => exact ⟨fun _ => D.zero_mem, 0, fun _ _ => rfl⟩`. Consider the case `add g g' _ _ hg hg'`. Take `⟨h1, m, hm⟩` from `hg`. Take `⟨h1', m', hm'⟩` from `hg'`.
+Supply the required witnesses or components. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨fun k => D.add_mem (h1 k) (h1' k), min m m', fun k hk => ?_⟩` and prove the remaining obligations. Simplify using `[hm k (lt_of_lt_of_le hk (min_le_left _ _)), hm' k (lt_of_lt_of_le hk (min_le_right _ _))]`. Consider the case `smul c g _ hg`. Take `⟨h1, m, hm⟩` from `hg`. Conclude with `⟨fun k => D.smul_mem c (h1 k), m, fun k hk => by simp [hm k hk]⟩`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem _root_.GlobalTheory.NL.Model.latSpan_coeff {ι : Type} (ex : ι → ℤ → M)
     (D : Submodule L M) (hD : ∀ x k, ex x k ∈ D) (hs : ∀ x, ∃ m : ℤ, ∀ k < m, ex x k = 0)
@@ -134,13 +132,13 @@ theorem _root_.GlobalTheory.NL.Model.latSpan_coeff {ι : Type} (ex : ι → ℤ 
     exact ⟨fun k => D.smul_mem c (h1 k), m, fun k hk => by simp [hm k hk]⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hf`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem f hf`. Take `⟨e, x, rfl⟩` from `hf`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Introduce `k hk`. Rewrite using `[conv_single, if_neg (by omega)]`. Consider the case `zero => exact fun _ _ => rfl`. Consider the case `add f g _ _ hf hg => intro k hk`. Simplify using `[hf k hk, hg k hk]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `smul c f _ hf => intro k hk`. Simplify using `[hf k hk]`. Introduce `hf`. Use `Submodule.subset_span ⟨PowerSeries.mk fun j => f (a + j), (), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `k`.
+Treat this case separately. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[conv_single]`. Use `split_ifs with h`. Establish `: a + ((k - a).toNat : ℤ) = k` using `by omega`. Rewrite using `[PowerSeries.coeff_mk, this, smul_eq_mul, mul_one]`. Conclude with `hf k (by omega)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_latSpan_single (a : ℤ) (f : ℤ → L) :
     f ∈ latSpan (LL := L) (fun _ : Unit => (Pi.single a 1 : ℤ → L)) ↔ ∀ k < a, f k = 0 := by
@@ -164,19 +162,19 @@ theorem mem_latSpan_single (a : ℤ) (f : ℤ → L) :
     · exact hf k (by omega)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, fun f h1 h2 => (h f).2 ⟨h1, by simpa using h2⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem Std.full {D : Submodule L M} {Λ : Submodule L (ℤ → M)} (h : Std D Λ) : Full D Λ :=
   ⟨0, fun f h1 h2 => (h f).2 ⟨h1, by simpa using h2⟩⟩
 
 /- English proof (translation)
-Introduce `f`. Prove the components needed by the constructor for the conclusion. Introduce `hf`. Take `⟨h1, h2⟩` from `(h f).1 hf`. Use `⟨⟨0, h2⟩, fun k => (h _).2 ⟨fun j => ?_, fun j hj => ?_⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hjk : j = k`. Substitute `hjk` using the available equality. Simplify using `using h1 j`. Simplify using `[Pi.single_eq_of_ne hjk]`. Distinguish the cases in `hjk : j = k`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Substitute `hjk` using the available equality. Simplify using `using h2 j hj`. Simplify using `[Pi.single_eq_of_ne hjk]`. Introduce and unpack `⟨-, hf⟩`. Use `(h f).2 ⟨fun k => ?_, fun k hk => ?_⟩` and prove the remaining obligations.
+Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using ((h _).1 (hf k)).1 k`. Simplify using `using ((h _).1 (hf k)).2 k hk`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Std.graded {D : Submodule L M} {Λ : Submodule L (ℤ → M)} (h : Std D Λ) : Graded Λ := by
   intro f
@@ -196,15 +194,15 @@ theorem Std.graded {D : Submodule L M} {Λ : Submodule L (ℤ → M)} (h : Std D
     · simpa using ((h _).1 (hf k)).2 k hk
 
 /- English proof (translation)
-Use `⟨⟨a.toNat, fun f _ hf => (mem_latSpan_single a f).2 fun k hk => hf k (by omega)⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `f`. Simplify using `only [mem_latSpan_single]`. Prove the components needed by the constructor for the conclusion. Introduce `hf`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨⟨a, hf⟩, fun k j hj => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hjk : j = k`. Substitute `hjk` using the available equality. Simplify using `using hf j hj`. Simplify using `[Pi.single_eq_of_ne hjk]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Introduce and unpack `⟨-, hf⟩ k hk`. Simplify using `using hf k k hk`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h1` using `((h _).1 (mem_latSpan (L := L) (fun _ : Unit => (Pi.single a 1 : ℤ → L)) ())).2`.
+Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `(mem_latSpan_single a _).1 ((h (Pi.single 0 1)).2 ⟨fun _ => trivial, fun k hk => Pi.single_eq_of_ne hk.ne _⟩)`. Assume the negation of the conclusion as `hne`. Break down `lt_or_gt_of_ne hne with h' | h'` into its components or cases. Simplify using `using h1 a h'`. Simplify using `using h2 0 h'`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce and unpack `rfl f`. Simplify using `[mem_latSpan_single]`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 -/
 theorem line_tests (a : ℤ) :
     Full (⊤ : Submodule L L) (latSpan (LL := L) (fun _ : Unit => (Pi.single a 1 : ℤ → L))) ∧
@@ -234,19 +232,19 @@ theorem line_tests (a : ℤ) :
       simp [mem_latSpan_single]
 
 /- English proof (translation)
-Introduce `h`. Establish `key : ∀ f ∈ latSpan (LL` using `L) (fun _ : Unit => (((Pi.single 0 (1, 0) : ℤ → L × L) + (Pi.single (-1) (0, 1) : ℤ → L × L)))), (f 0).1 = (f (-1)).2 := by`. Introduce `f hf`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Take `⟨e, x, rfl⟩` from `hf`. Establish `h1 : conv e (((Pi.single 0 (1, 0) : ℤ → L × L) + (Pi.single (-1) (0, 1) : ℤ → L × L))) (-1) = PowerSeries.coeff 0 e • ((0, 1) : L × L)`. Unfold `conv`. Rewrite using `[finsum_eq_single _ 0]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `j hj`. Establish `h1 : (-1 : ℤ) - (j : ℤ) ≠ 0` using `by omega`. Establish `h2 : (-1 : ℤ) - (j : ℤ) ≠ -1` using `by omega`. Simplify using `[Pi.single_eq_of_ne h1, Pi.single_eq_of_ne h2]`. Establish `h2 : conv e (((Pi.single 0 (1, 0) : ℤ → L × L) + (Pi.single (-1) (0, 1) : ℤ → L × L))) 0 = PowerSeries.coeff 0 e • ((1, 0) : L × L) + PowerSeries.coeff 1 e • ((0, 1) : L × L)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Unfold `conv`. Rewrite using `[finsum_eq_sum_of_support_subset (s := {0, 1})]`. Simplify using the standard rewrite rules. Introduce `j hj`. Assume the negation of the conclusion as `hc`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Apply `hj` to reduce the goal to its premises. Simplify using `only [Finset.coe_insert, Finset.coe_singleton, Set.mem_insert_iff, Set.mem_singleton_iff, not_or] at hc`. Establish `h1 : (0 : ℤ) - (j : ℤ) ≠ 0` using `by omega`. Establish `h2 : (0 : ℤ) - (j : ℤ) ≠ -1` using `by omega`. Simplify using `only [Pi.add_apply, Pi.single_eq_of_ne h1, Pi.single_eq_of_ne h2, add_zero, smul_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1, h2]`. Simplify using the standard rewrite rules. Consider the case `zero => rfl`. Consider the case `add f g _ _ hf hg => simp [hf, hg]`. Consider the case `smul c f _ hf => simp [hf]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `h1` using `((h _).1 (mem_latSpan (L := L) (fun _ : Unit => (((Pi.single 0 (1, 0) : ℤ → L × L) + (Pi.single (-1) (0, 1) : ℤ → L × L)))) ())).2 0`. Establish `h2` using `key _ h1`. Simplify using `at h2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem not_graded :
     ¬ Graded (latSpan (LL := L) (fun _ : Unit =>
@@ -311,7 +309,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {PD : _root_.Formalism.WeaklyAdmissibleFiltrations.PeriodData G Qp K₀ K B BdR} {LL O : Type} [Field LL] [Algebra Qp LL]
     [CommRing O] [Algebra O LL] [TopologicalSpace LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ} in
 /- English proof (translation)
-Rewrite using `[_root_.GlobalTheory.NL.van, Ideal.mem_comap, Ideal.mem_span_singleton, PowerSeries.X_pow_dvd_iff]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.NL.Model.mem_van (W : _root_.Formalism.BasicNotions.LocWach PD LL O v n) (i : ZMod n) (ζ : LL)
     (k : ℕ) (a : _root_.Formalism.BasicNotions.LetA O n) :
@@ -330,13 +328,13 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [CommRing O] [Algebra O LL] [TopologicalSpace LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ} in
 
 /- English proof (translation)
-Take `⟨E, h0, hd, hE⟩` from `W.lev_π i 1 ⟨0, by simp⟩`. Establish `hlev : W.lev i 1 _root_.Formalism.BasicNotions.letπ = E - 1`. Rewrite `hE` using `[map_one, one_mul]`. Rewrite using `[← hE]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h1 : PowerSeries.coeff 1 E = 1`. Use `congrArg (PowerSeries.coeff 0) hd` as an intermediate fact. Simplify using `only [PowerSeries.coeff_derivative] at this`. Rewrite `this` using `[PowerSeries.coeff_zero_eq_constantCoeff_apply, h0]`. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [_root_.GlobalTheory.NL.Model.mem_van, hlev]`. Use `⟨fun j hj => ?_, fun h => ?_⟩` and prove the remaining obligations. Take `rfl : j = 0` from `by omega`. Simplify using `[h0]`. Use `h 1 (by norm_num)` as an intermediate fact.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[h1] at this`.
+Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.NL.Model.pi_van_one (W : _root_.Formalism.BasicNotions.LocWach PD LL O v n) (i : ZMod n) :
     (_root_.Formalism.BasicNotions.letπ : _root_.Formalism.BasicNotions.LetA O n) ∈ _root_.GlobalTheory.NL.van W i 1 1 ∧
@@ -359,9 +357,9 @@ theorem _root_.GlobalTheory.NL.Model.pi_van_one (W : _root_.Formalism.BasicNotio
     simp [h1] at this
 
 /- English proof (translation)
-Take `⟨E, h0, -, h2⟩` from `W.lev_π i ζ ⟨j, hζ⟩`. Rewrite using `[mem_van]`. Introduce `h`. Establish `h3` using `h 0 (by omega)`. Establish `h4` using `congrArg (PowerSeries.coeff 0) h2`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h4` using `[map_add, h3]`. Simplify using `[h0] at h4`. Conclude with `h1 h4.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pi_not_van (W : LocWach PD LL O v n) (i : ZMod n) (ζ : LL) (j : ℕ)
     (hζ : IsPrimitiveRoot ζ (PD.p ^ j)) (h1 : ζ ≠ 1) : (letπ : LetA O n) ∉ van W i ζ 1 := by
@@ -383,9 +381,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {PD : _root_.Formalism.WeaklyAdmissibleFiltrations.PeriodData G Qp K₀ K B BdR} {LL O : Type} [Field LL] [Algebra Qp LL]
     [CommRing O] [Algebra O LL] [TopologicalSpace LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ} in
 /- English proof (translation)
-Use `sup_le_sup_right ?_ _` and prove the remaining obligations. Unfold `_root_.Formalism.WeaklyAdmissibleFiltrations.FildR _root_.Formalism.WeaklyAdmissibleFiltrations.FilV`. Use `inf_le_inf_left _ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, rfl⟩`. Proceed by induction on `y using TensorProduct.induction_on with`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Proceed by induction.
 
-Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `tmul w b => exact ⟨w ⊗ₜ ⟨b, PD.Fil_anti a b.2⟩, rfl⟩`. Consider the case `add y z hy hz`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ hy hz`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.NL.Model.FilAt_anti (T : _root_.Formalism.BasicNotions.LocLat G Qp LL O) (τ : K →ₐ[Qp] LL) (a : ℤ) :
     _root_.GlobalTheory.NL.FilAt PD T τ (a + 1) ≤ _root_.GlobalTheory.NL.FilAt PD T τ a := by
@@ -401,9 +399,9 @@ theorem _root_.GlobalTheory.NL.Model.FilAt_anti (T : _root_.Formalism.BasicNotio
     exact Submodule.add_mem _ hy hz
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (ιV PD (LL` using `LL) (V := T.V)) := Module.Flat.lTensor_preserves_injective_linearMap (M := T.V) (PD.ι.toLinearMap.restrictScalars Qp) PD.ι_inj`. Take `⟨m, hm⟩` from `hs x`. Use function extensionality and compare the values at `k`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[← he, W.levN_smul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Unfold `conv`. Rewrite using `[map_finsum _ (conv_finite (W.lev i ζ a) hm k)]`. Use `finsum_congr fun j => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smul, he]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem wachExpansion_smul_compatible (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (i : ZMod n) (ζ : LL)
     (e : ↥(W.N T) → ℤ → T.V ⊗[Qp] B) (hs : ∀ x, ∃ m : ℤ, ∀ k < m, e x k = 0)
@@ -422,7 +420,7 @@ theorem wachExpansion_smul_compatible (W : LocWach PD LL O v n) (T : LocLat G Qp
   rw [LinearMap.map_smul, he]
 
 /- English proof (translation)
-Use `letI : Algebra E E' := τ.toRingHom.toAlgebra`. Use `haveI : IsScalarTower k E E' := IsScalarTower.of_algebraMap_eq fun x => (τ.commutes x).symm`. Use `haveI : Algebra.IsAlgebraic E E' := Algebra.IsAlgebraic.tower_top (K := k) _`. Take `⟨φ, hφ⟩` from `IsAlgClosed.surjective_restrictDomain_of_isAlgebraic (K := k) (L := E) (M := Ω) (E := E') j`. Conclude with `⟨φ, fun x => DFunLike.congr_fun hφ x⟩`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ext_aux {k E E' Ω : Type} [Field k] [Field E] [Field E'] [Field Ω] [Algebra k E] [Algebra k E']
     [Algebra k Ω] [IsAlgClosed Ω] [Algebra.IsAlgebraic k E'] (τ : E →ₐ[k] E') (j : E →ₐ[k] Ω) :
@@ -445,7 +443,7 @@ open TensorProduct in
 variable {l : ℕ} [Fact l.Prime] {P : _root_.Formalism.BasicNotions.LocPrime l} {AI : _root_.Formalism.BasicNotions.LocAinf l P} {H : _root_.Formalism.BasicNotions.LocHW l P}
   {F : _root_.Formalism.BasicNotions.LocFon l P AI H} {K : _root_.Formalism.BasicNotions.Loc.FinExt l} {s : ℕ} {LL : _root_.Formalism.BasicNotions.Loc.FinExt l} in
 /- English proof (translation)
-The claim follows from `_root_.GlobalTheory.NL.Model.mem_latSpan _ x`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.NL.Model.ex_mem_Lat (C : _root_.Formalism.BasicNotions.LocCmpT l P AI H F) (h : _root_.Formalism.BasicNotions.Loc.Good K s LL)
     (T : _root_.GlobalTheory.NL.Lt K LL) (i : _root_.GlobalTheory.NL.Let K) (ζ : ↥LL.1)
@@ -458,7 +456,7 @@ variable {l : ℕ} [Fact l.Prime] {P : _root_.Formalism.BasicNotions.LocPrime l}
   {F : _root_.Formalism.BasicNotions.LocFon l P AI H} {K : _root_.Formalism.BasicNotions.Loc.FinExt l} {s : ℕ} {LL : _root_.Formalism.BasicNotions.Loc.FinExt l} in
 
 /- English proof (translation)
-The claim follows from `_root_.GlobalTheory.NL.Model.latSpan_coeff _ _ (fun x k => (C.C K s LL h).tie.levB_mem T i ζ x k) (fun x => (C.C K s LL h).tie.levB_supp T i ζ x) f hf`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.NL.Model.Lat_coeff (C : _root_.Formalism.BasicNotions.LocCmpT l P AI H F)
     (h : _root_.Formalism.BasicNotions.Loc.Good K s LL) (T : _root_.GlobalTheory.NL.Lt K LL) (i : _root_.GlobalTheory.NL.Let K)
@@ -477,7 +475,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {PD : _root_.Formalism.WeaklyAdmissibleFiltrations.PeriodData G Qp K₀ K B BdR} {LL O : Type} [Field LL] [Algebra Qp LL]
     [CommRing O] [Algebra O LL] [TopologicalSpace LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ} in
 /- English proof (translation)
-Establish `hf : Function.Injective ((PD.ι.toLinearMap).restrictScalars Qp)` using `PD.ι_inj`. Conclude with `Module.Flat.lTensor_preserves_injective_linearMap (M := T.V) _ hf`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem periodTensor_ιV_injective (T : _root_.Formalism.BasicNotions.LocLat G Qp LL O) :
     Function.Injective (_root_.Formalism.WeaklyAdmissibleFiltrations.ιV PD : T.V ⊗[Qp] B →ₗ[LL] T.V ⊗[Qp] BdR) := by
@@ -493,7 +491,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {PD : _root_.Formalism.WeaklyAdmissibleFiltrations.PeriodData G Qp K₀ K B BdR} {LL O : Type} [Field LL] [Algebra Qp LL]
     [CommRing O] [Algebra O LL] [TopologicalSpace LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ} in
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Use `periodTensor_ιV_injective (PD := PD) T ?_` and prove the remaining obligations. Take `⟨m, hm⟩` from `S.levB_supp T i ζ x`. Rewrite using `[← S.levN_eq, W.levN_smul, _root_.GlobalTheory.NL.conv, map_finsum _ (_root_.GlobalTheory.NL.Model.conv_finite _ hm k)]`. Simplify using `only [map_smul, S.levN_eq]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem levB_smul_eq_powerSeriesSmul_lemma_2 {Zl Ai : Type} [CommRing Zl] [CommRing Ai]
     [Algebra Zl O] [Algebra Zl Ai] {W : _root_.Formalism.BasicNotions.LocWach PD LL O v n} {RW : Type} [CommRing RW]
@@ -515,7 +513,7 @@ variable {l : ℕ} [Fact l.Prime] {P : _root_.Formalism.BasicNotions.LocPrime l}
   {F : _root_.Formalism.BasicNotions.LocFon l P AI H} {K : _root_.Formalism.BasicNotions.Loc.FinExt l} {s : ℕ} {LL : _root_.Formalism.BasicNotions.Loc.FinExt l} in
 
 /- English proof (translation)
-The claim follows from `levB_smul_eq_powerSeriesSmul_lemma_2 _ T i ζ a x`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.NL.Model.ex_smul (C : _root_.Formalism.BasicNotions.LocCmpT l P AI H F) (h : _root_.Formalism.BasicNotions.Loc.Good K s LL)
     (T : _root_.GlobalTheory.NL.Lt K LL) (i : _root_.GlobalTheory.NL.Let K) (ζ : ↥LL.1) (a : _root_.GlobalTheory.NL.AA K LL)
@@ -525,7 +523,7 @@ theorem _root_.GlobalTheory.NL.Model.ex_smul (C : _root_.Formalism.BasicNotions.
   levB_smul_eq_powerSeriesSmul_lemma_2 _ T i ζ a x
 
 /- English proof (translation)
-Proceed by induction on `s with`. Consider the case `zero => simp [P.ζQ_zero]`. Consider the case `succ m ih => rw [pow_succ', pow_mul, P.ζQ_succ, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem zetaQ_pow (P : LocPrime l) (s : ℕ) : P.ζQ s ^ (l ^ s) = 1 := by
   induction s with
@@ -533,24 +531,24 @@ theorem zetaQ_pow (P : LocPrime l) (s : ℕ) : P.ζQ s ^ (l ^ s) = 1 := by
   | succ m ih => rw [pow_succ', pow_mul, P.ζQ_succ, ih]
 
 /- English proof (translation)
-The claim follows from `(le_sup_right : _ ≤ Ks K s) (IntermediateField.subset_adjoin _ _ (zetaQ_pow P s))`.
+A detailed English derivation is pending.
 -/
 theorem zetaQ_mem (P : LocPrime l) (K : FinExt l) (s : ℕ) : P.ζQ s ∈ Ks K s :=
   (le_sup_right : _ ≤ Ks K s) (IntermediateField.subset_adjoin _ _ (zetaQ_pow P s))
 
 /- English proof (translation)
-The claim follows from `le_sup_left`.
+A detailed English derivation is pending.
 -/
 theorem unramifiedSubfield_le_cyclotomicExt (K : FinExt l) (s : ℕ) : K0 K ≤ Ks K s := le_sup_left
 
 /- English proof (translation)
-Take `⟨τs, ⟨h1, h2⟩, h3⟩` from `hp`. Use `haveI : FiniteDimensional ℚ_[l] ↥LL.1 := LL.2`. Take `⟨σ, hσ'⟩` from `ext_aux τs (Ks K s).val`. Establish `hσ : ∀ y : ↥(Ks K s), σ (τs y) = (y : Om l)` using `hσ'`. Use `⟨(IsScalarTower.toAlgHom ℚ_[l] (Om l) P.R.BdR).comp σ, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c`. Rewrite using `[← h1 c ⟨c, unramifiedSubfield_le_cyclotomicExt K s c.2⟩ rfl]`. Express the relevant statement in the definitionally equal form `algebraMap (Om l) P.R.BdR (σ (τs _)) = _`. Rewrite using `[hσ]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h2 ⟨_, zetaQ_mem P K s⟩ rfl]`. Express the relevant statement in the definitionally equal form `algebraMap (Om l) P.R.BdR (σ (τs _)) = _`. Rewrite using `[hσ]`. Introduce `c`. Rewrite using `[h3 c ⟨c, h.2.2.1 c.2⟩ rfl]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `algebraMap (Om l) P.R.BdR (σ (τs _)) = _`. Rewrite using `[hσ]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem comp_of_pt (h : Good K s LL) (i : Let K) (ζ : ↥LL.1) (τ : ↥K.1 →ₐ[ℚ_[l]] ↥LL.1)
     (hp : Pt H h i ζ τ) : ∃ ι : ↥LL.1 →ₐ[ℚ_[l]] P.R.BdR, Comp H h i ζ τ ι := by
@@ -572,13 +570,13 @@ theorem comp_of_pt (h : Good K s LL) (i : Let K) (ζ : ↥LL.1) (τ : ↥K.1 →
     rw [hσ]; rfl
 
 /- English proof (translation)
-Set `e : ↥(K0 K) →ₐ[ℚ_[l]] Om l` to `LL.1.val.comp ((H.W K s LL h).emb i)`. Choose the witnesses or unpack the hypotheses as in `⟨φ, hφ⟩ : ∃ φ : ↥(Ks K s) →ₐ[ℚ_[l]] Om l, ∀ x : ↥(K0 K), φ ⟨x, unramifiedSubfield_le_cyclotomicExt K s x.2⟩ = e x := by`. Use `letI : Algebra ↥(K0 K) ↥(Ks K s) := (IntermediateField.inclusion (unramifiedSubfield_le_cyclotomicExt K s)).toRingHom.toAlgebra`. Use `haveI : IsScalarTower ℚ_[l] ↥(K0 K) ↥(Ks K s) := IsScalarTower.of_algebraMap_eq fun x => rfl`. Use `haveI : Algebra.IsAlgebraic ↥(K0 K) ↥(Ks K s) := Algebra.IsAlgebraic.tower_top (K := ℚ_[l]) _`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨φ, hφ⟩` from `IsAlgClosed.surjective_restrictDomain_of_isAlgebraic (K := ℚ_[l]) (L := ↥(K0 K)) (M := Om l) (E := ↥(Ks K s)) e`. Conclude with `⟨φ, fun x => DFunLike.congr_fun hφ x⟩`. Set `τs : ↥(Ks K s) →ₐ[ℚ_[l]] ↥LL.1` to `φ.codRestrict LL.1.toSubalgebra (h.2.2.2 φ)`. Use `⟨τs ⟨_, zetaQ_mem P K s⟩, τs.comp (IntermediateField.inclusion h.2.2.1), τs, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `x y hy`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `rfl : y = ⟨x, unramifiedSubfield_le_cyclotomicExt K s x.2⟩` from `Subtype.ext hy`. Conclude with `Subtype.ext (hφ x)`. Introduce `y hy`. Take `rfl : y = ⟨_, zetaQ_mem P K s⟩` from `Subtype.ext hy`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 
-Introduce `x y hy`. Take `rfl : y = ⟨x, h.2.2.1 x.2⟩` from `Subtype.ext hy`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem exists_pt (h : Good K s LL) (i : Let K) :
     ∃ (ζ : ↥LL.1) (τ : ↥K.1 →ₐ[ℚ_[l]] ↥LL.1), Pt H h i ζ τ := by
@@ -603,11 +601,11 @@ theorem exists_pt (h : Good K s LL) (i : Let K) :
     rfl
 
 /- English proof (translation)
-Introduce and unpack `⟨τs, ⟨-, h2⟩, -⟩`. Establish `h3` using `h2 ⟨_, zetaQ_mem P K s⟩ rfl`. Rewrite `h3` using `[← map_one τs]`. Establish `h4 : P.ζQ s = 1` using `congrArg Subtype.val (τs.toRingHom.injective h3)`. Establish `key : ∀ m, P.ζQ (m + 1) ≠ 1`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => exact P.ζQ_one`. Consider the case `succ m ih => intro h`. Apply `ih` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← P.ζQ_succ (m + 1), h, one_pow]`. Take `⟨m, rfl⟩ : ∃ m, s = m + 1` from `⟨s - 1, by have := h.1; omega⟩`. Conclude with `key m h4`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem not_pt_one (h : Good K s LL) (i : Let K) (τ : ↥K.1 →ₐ[ℚ_[l]] ↥LL.1) : ¬ Pt H h i 1 τ := by
   rintro ⟨τs, ⟨-, h2⟩, -⟩
@@ -626,7 +624,7 @@ set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-The claim follows from `(C.C K s LL h).tie.levN_dR T hT i ζ ι hι.1 hι.2.1 x k y hy a ha`.
+A detailed English derivation is pending.
 -/
 theorem comp_tie (C : LocCmpT l P AI H F) (h : Good K s LL) (T : Lt K LL) (hT : IsCrys (P.PD K) T.ρ)
     (i : Let K) (ζ : ↥LL.1) (τ : ↥K.1 →ₐ[ℚ_[l]] ↥LL.1) (ι : ↥LL.1 →ₐ[ℚ_[l]] P.R.BdR)

@@ -13,7 +13,7 @@ def DlSize {eps : ℝ} (Fm : FamP eps) : Prop :=
   ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, |(Fm.L x i).logDerivativeAtOne| ≤ (Fm.L x i).sc.x ^ (Fm.L x i).sc.eps
 
 /- English proof (translation)
-The claim follows from `flipTwoThree.nums_wts_of_tuSize Fm hT hDl`.
+A detailed English derivation is pending.
 -/
 theorem numsL_wtsL_fam {eps : ℝ} (Fm : FamP eps) (hT : TuSize Fm) (hDl : DlSize Fm) :
     ∃ Cn₀ : ℝ, ∀ Cn ≥ Cn₀, ∀ cL ≥ (3 : ℝ), ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x,
@@ -21,9 +21,9 @@ theorem numsL_wtsL_fam {eps : ℝ} (Fm : FamP eps) (hT : TuSize Fm) (hDl : DlSiz
   flipTwoThree.nums_wts_of_tuSize Fm hT hDl
 
 /- English proof (translation)
-Introduce `u`. Use `(h u).trans ?_` and prove the remaining obligations. Establish `h1 : (0 : ℝ) ≤ Real.log ((D.R.f : ℝ) * D.R.N D.R.m)`. Establish `: ((D.R.f : ℝ) * D.R.N D.R.m) = ((D.R.f * D.R.N D.R.m : ℕ) : ℝ)` using `by push_cast; ring`. Rewrite using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Real.log_natCast_nonneg _`. Establish `h2 : (0 : ℝ) ≤ (D.R.f : ℝ) * D.R.N D.R.m * Real.log ((D.R.f : ℝ) * D.R.N D.R.m)` using `mul_nonneg (mul_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)) h1`. Use `mul_le_mul_of_nonneg_right hC h2` as an intermediate fact. Simplify using `only [mul_assoc] at this ⊢`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem factDGam_mono {D : D7} {C C' : ℝ} (h : FactDGam D C) (hC : C ≤ C') : FactDGam D C' := by
   intro u
@@ -39,9 +39,9 @@ theorem factDGam_mono {D : D7} {C C' : ℝ} (h : FactDGam D C) (hC : C ≤ C') :
   exact this
 
 /- English proof (translation)
-Take `⟨Cn, hN⟩` from `numsL_wtsL_fam Fm hT hDl`. Take `⟨x0, hN⟩` from `hN Cn le_rfl 3 le_rfl`. Take `⟨x1, hCV⟩` from `hCV`. Use `family_orderBound_of_fifth_sixth Fm Cn 3 h5 h6 (by norm_num) ⟨max x0 x1, fun x hx i => ?_⟩` and prove the remaining obligations. Establish `e0 : x ≥ x0` using `le_trans (le_max_left _ _) hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e1 : x ≥ x1` using `le_trans (le_max_right _ _) hx`. Conclude with `⟨by linarith [flipTwoThree.two_le_rdE (Fm.D x i).host], (hN x e0 i).1, (hN x e0 i).2, hCV x e1 i⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem slopes_family_of_column_values {eps : ℝ} (Fm : FamP eps) (hT : TuSize Fm) (hDl : DlSize Fm) (h5 : flipTwoThree.ConclusionF5 Fm)
     (h6 : flipTwoThree.ConclusionF6 Fm) (hCV : ∃ x0 : ℝ, ∀ x ≥ x0, ∀ (i : Fm.Ix x) u, Nonempty (flipTwoThree.ColVal (Fm.D x i) u)) :
@@ -55,7 +55,7 @@ theorem slopes_family_of_column_values {eps : ℝ} (Fm : FamP eps) (hT : TuSize 
   exact ⟨by linarith [flipTwoThree.two_le_rdE (Fm.D x i).host], (hN x e0 i).1, (hN x e0 i).2, hCV x e1 i⟩
 
 /- English proof (translation)
-The claim follows from `levelPrime_summary_of_fifth D L C C1 h2 h5 hNu hAtT (locSpan D) (lenAtT D L hAtT) hS hSet hC1`.
+A detailed English derivation is pending.
 -/
 theorem levelPrime_summary_of_fifth_without_span (D : D7) (L : SizeData₂ D) (C C1 : ℝ) (h2 : ∀ u, product_first_zeroth_parts.Conclusion2 D u)
     (h5 : ∀ u, product_first_zeroth_parts.Conclusion5 D u C) (hNu : DV.NuDef D L) (hAtT : NuAtTDef D L) (hS : LevelPrimeSizeBounds D L C1)
@@ -63,9 +63,9 @@ theorem levelPrime_summary_of_fifth_without_span (D : D7) (L : SizeData₂ D) (C
   levelPrime_summary_of_fifth D L C C1 h2 h5 hNu hAtT (locSpan D) (lenAtT D L hAtT) hS hSet hC1
 
 /- English proof (translation)
-Take `⟨x0, hE⟩` from `hE`. Use `family_levelPrime_summary Fm C C1 hC1 ⟨max x0 (Fm.x1 + 1), fun x hx i => ?_⟩` and prove the remaining obligations. Establish `e0 : x ≥ x0` using `le_trans (le_max_left _ _) hx`. Establish `e1 : Fm.x1 < x` using `lt_of_lt_of_le (by linarith) (le_trans (le_max_right _ _) hx)`. Take `⟨a, b, c, d⟩` from `hE x e0 i`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a, b, locSpan _, lenAtT _ _ (Fm.ex x e1 i).lat.atT, c, d⟩`.
+Supply the required witnesses or components.
 -/
 theorem family_levelPrime_summary_simple {eps : ℝ} (Fm : FamP eps) (C C1 : ℝ) (hC1 : 0 ≤ C1)
     (hE : ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x,

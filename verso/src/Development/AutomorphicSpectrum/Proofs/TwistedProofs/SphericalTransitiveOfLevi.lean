@@ -10,13 +10,13 @@ namespace GlobalTheory.CompanionTheory.InertTrans
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {σ : L →+* L} {N : ℕ}
 
 /- English proof (translation)
-Establish `hA : ∀ i j, β i ≠ β j → mat m i j = 0` using `hm`. Establish `hC : ∀ i j, β i ≠ β j → mat m⁻¹ i j = 0` using `inv_mem hm`. Establish `hB : ∀ i j, β j ≤ β i → mat u i j = (1 : Matrix (Fin n) (Fin n) L) i j` using `hu`. Use `show ∀ i j, β j ≤ β i → mat (m * u * m⁻¹) i j = (1 : Matrix (Fin n) (Fin n) L) i j`. Introduce `i j h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : (mat m * mat u * mat m⁻¹) i j = (mat m * mat m⁻¹) i j`. Rewrite using `[Matrix.mul_apply, Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Distinguish the cases in `hp : β p = β j`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_apply]`. Combine the equalities or inequalities in the displayed calculation. Distinguish the cases in `hl : β i = β l`. Rewrite using `[hB l p (by omega)]`. Rewrite using `[hA i l hl, zero_mul, zero_mul]`.
+Chain the equalities or inequalities of the calculation. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `_ = _ := by rw [← Matrix.mul_apply, Matrix.mul_one]`. Rewrite using `[hC p j hp, mul_zero, mul_zero]`. Rewrite using `[mat_mul, mat_mul, e, mat_mul_inv]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_mem_radU {n : ℕ} {β : Fin n → ℕ} {m u : GU σ n} (hm : m ∈ leviU σ β) (hu : u ∈ radU σ β) :
     m * u * m⁻¹ ∈ radU σ β := by
@@ -40,9 +40,9 @@ theorem conj_mem_radU {n : ℕ} {β : Fin n → ℕ} {m u : GU σ n} (hm : m ∈
   rw [mat_mul, mat_mul, e, mat_mul_inv]
 
 /- English proof (translation)
-Apply the tactic sequence `rcases idx_cases i with rfl | ⟨i, rfl⟩ | rfl <;> rcases idx_cases j with rfl | ⟨j, rfl⟩ | rfl`. Simplify using `at h`. Simplify using `at h`. Simplify using `at h`. Simplify using the standard rewrite rules.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Conclude with `absurd h (not_lt.2 (Fin.le_last _))`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem blk_mono {i j : Fin (N + 2)} (h : j < i) : blk N j ≤ blk N i := by
   rcases idx_cases i with rfl | ⟨i, rfl⟩ | rfl <;> rcases idx_cases j with rfl | ⟨j, rfl⟩ | rfl
@@ -57,7 +57,7 @@ theorem blk_mono {i j : Fin (N + 2)} (h : j < i) : blk N j ≤ blk N i := by
   · simp
 
 /- English proof (translation)
-Establish `hB : ∀ i j, blk N j ≤ blk N i → mat u i j = (1 : Matrix (Fin (N + 2)) (Fin (N + 2)) L) i j` using `hu`. Use `⟨fun i j h => ?_, fun i => ?_⟩` and prove the remaining obligations. Conclude with `(hB i j (blk_mono h)).trans (Matrix.one_apply_ne (ne_of_gt h))`. Conclude with `(hB i i le_rfl).trans (Matrix.one_apply_eq i)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isUnipU_of_radQ {u : GU σ (N + 2)} (hu : u ∈ radQ σ N) : IsUnipU u := by
   have hB : ∀ i j, blk N j ≤ blk N i → mat u i j = (1 : Matrix (Fin (N + 2)) (Fin (N + 2)) L) i j := hu
@@ -66,7 +66,7 @@ theorem isUnipU_of_radQ {u : GU σ (N + 2)} (hu : u ∈ radQ σ N) : IsUnipU u :
   · exact (hB i i le_rfl).trans (Matrix.one_apply_eq i)
 
 /- English proof (translation)
-Establish `hA : ∀ i j, blk N i ≠ blk N j → mat m i j = 0` using `h.1`. Conclude with `⟨fun l => hA _ _ (by simp), fun l => hA _ _ (by simp), hA _ _ (by simp), hA _ _ (by simp), fun l => hA _ _ (by simp), fun l => hA _ _ (by simp)⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem levi_off {ϖ : L} {a : ℤ} {g : GU σ N} {m : GU σ (N + 2)} (h : IsLeviElt ϖ a g m) :
     (∀ l, mat m 0 (mid l) = 0) ∧ (∀ l, mat m (mid l) 0 = 0) ∧ mat m 0 (Fin.last (N + 1)) = 0 ∧
@@ -77,11 +77,9 @@ theorem levi_off {ϖ : L} {a : ℤ} {g : GU σ N} {m : GU σ (N + 2)} (h : IsLev
     fun l => hA _ _ (by simp), fun l => hA _ _ (by simp)⟩
 
 /- English proof (translation)
-Take `⟨o1, o2, o3, o4, o5, o6⟩` from `levi_off h`. Introduce `i j hij`. Apply the tactic sequence `rcases idx_cases i with rfl | ⟨i, rfl⟩ | rfl <;> rcases idx_cases j with rfl | ⟨j, rfl⟩ | rfl`. Simplify using `at hij`. Simplify using `at hij`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `at hij`. Conclude with `o2 _`. Conclude with `(h.2.2.2 i j).trans (hg i j (by`. Establish `h' : j.val + 1 < i.val + 1` using `hij`. Conclude with `Fin.lt_def.2 (by omega)))`.
-
-Conclude with `absurd hij (not_lt.2 (Fin.le_last _))`. Conclude with `o4`. Conclude with `o6 _`. Conclude with `absurd hij (lt_irrefl _)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem levi_borel {ϖ : L} {a : ℤ} {g : GU σ N} {m : GU σ (N + 2)} (h : IsLeviElt ϖ a g m) (hg : IsBorelU g) :
     IsBorelU m := by
@@ -101,15 +99,11 @@ theorem levi_borel {ϖ : L} {a : ℤ} {g : GU σ N} {m : GU σ (N + 2)} (h : IsL
   · exact absurd hij (lt_irrefl _)
 
 /- English proof (translation)
-Take `⟨o1, o2, o3, o4, o5, o6⟩` from `levi_off h`. Rewrite using `[mem_KU_iff hσ]`. Introduce `i j`. Apply the tactic sequence `rcases idx_cases i with rfl | ⟨i, rfl⟩ | rfl <;> rcases idx_cases j with rfl | ⟨j, rfl⟩ | rfl`. Rewrite using `[h.2.1, zpow_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `one_mem _`. Rewrite using `[o1]`. Conclude with `zero_mem _`. Rewrite using `[o3]`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[o2]`. Conclude with `zero_mem _`. Rewrite using `[h.2.2.2]`. Conclude with `P.fSatake_K_int hg i j`. Rewrite using `[o5]`.
-
-Conclude with `zero_mem _`. Rewrite using `[o4]`. Conclude with `zero_mem _`. Rewrite using `[o6]`. Conclude with `zero_mem _`.
-
-Rewrite using `[h.2.2.1, neg_zero, zpow_zero]`. Conclude with `one_mem _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levi_mem_K {ϖ : L} {g : GU σ N} {m : GU σ (N + 2)} (hσ : ∀ x, Valued.v (σ x) = Valued.v x)
     (h : IsLeviElt ϖ 0 g m) (hg : g ∈ KU σ N) : m ∈ KU σ (N + 2) := by
@@ -128,9 +122,9 @@ theorem levi_mem_K {ϖ : L} {g : GU σ N} {m : GU σ (N + 2)} (hσ : ∀ x, Valu
   · rw [h.2.2.1, neg_zero, zpow_zero]; exact one_mem _
 
 /- English proof (translation)
-Take `⟨b1, b2, b3, b4, b5, b6⟩` from `levi_off hb`. Take `⟨k1, k2, k3, k4, k5, k6⟩` from `levi_off hk`. Take `⟨m1, m2, m3, m4, m5, m6⟩` from `levi_off hm`. Apply `mat_injective` to reduce the goal to its premises. Use extensionality with `i j`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Rewrite using `[mat_mul, Matrix.mul_apply, sum_idx]`. Apply the tactic sequence `rcases idx_cases i with rfl | ⟨i, rfl⟩ | rfl <;> rcases idx_cases j with rfl | ⟨j, rfl⟩ | rfl <;>`. Simplify using `only [b1, b2, b3, b4, b5, b6, k1, k2, k3, k4, k5, k6, m1, m2, m3, m4, m5, m6, hb.2.1, hb.2.2.1, hb.2.2.2, hk.2.1, hk.2.2.1, hk.2.2.2, hm.2.1, hm.2.2.1, hm.2.2.2, zero_mul, mul_zero, Finset.sum_const_zero, add_zero, zero_add, zpow_zero, neg_zero, mul_one, mat_mul, Matrix.mul_apply …`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem levi_eq_mul {ϖ : L} {a : ℤ} {b k : GU σ N} {mb mk m : GU σ (N + 2)} (hb : IsLeviElt ϖ a b mb)
     (hk : IsLeviElt ϖ 0 k mk) (hm : IsLeviElt ϖ a (b * k) m) : m = mb * mk := by
@@ -146,21 +140,21 @@ theorem levi_eq_mul {ϖ : L} {a : ℤ} {b k : GU σ N} {mb mk m : GU σ (N + 2)}
       zero_add, zpow_zero, neg_zero, mul_one, mat_mul, Matrix.mul_apply]
 
 /- English proof (translation)
-Introduce `hL L _ _ ϖ σ q N r hU hr α φ φ₀ hα hφ h1 hφ₀ h01 a g₀ m hm u hu`. Take `⟨b₀, k₀, hb₀, hk₀, rfl⟩` from `P.fIwasawa_iwasawa σ hU.1 hU.2.1 g₀`. Take `⟨mb, hmb⟩` from `hL L ϖ σ q N hU a b₀`. Take `⟨mk, hmk⟩` from `hL L ϖ σ q N hU 0 k₀`. Establish `e` using `levi_eq_mul hmb hmk hm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hkK : mk ∈ KU σ (N + 2)` using `levi_mem_K hU.2.1 hmk hk₀`. Establish `hmbB : IsBorelU mb` using `levi_borel hmb hb₀`. Establish `hu' : mk * u * mk⁻¹ ∈ radQ σ N` using `conj_mem_radU hmk.1 hu`. Establish `hu'B` using `isUnipU_of_radQ hu'`. Establish `e2 : m * u = (mb * (mk * u * mk⁻¹)) * 1 * mk` using `by rw [e]; group`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `d : ∀ (i : Fin (N + 2)) (x : L), mat mb i i = x → (((mb * (mk * u * mk⁻¹) : GU σ (N + 2)) : GL (Fin (N + 2)) L) : Matrix (Fin (N + 2)) (Fin (N + 2)) L) i i = x`. Introduce `i x hx`. Use `P.fSatake_borel_diag_mul hmbB hu'B.1 i` as an intermediate fact. Rewrite `this` using `[hu'B.2, mul_one]`. Conclude with `this.trans hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e3 : φ₀ (b₀ * k₀) = chiDeltaU q (Fin.tail α) b₀`. Use `hφ₀ b₀ 1 k₀ hb₀ hk₀` as an intermediate fact. Rewrite `this` using `[mul_one, h01, mul_one]`. Then use the resulting hypothesis. Rewrite using `[e2, hφ _ _ _ (P.fSatake_borel_mul hmbB hu'B.1) hkK, h1, mul_one, e3]`. Unfold `chiDeltaU`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fin.prod_univ_succ]`. Use `congr 1`. Establish `h0 : ((0 : Fin (r + 1)) : ℕ) < N + 2` using `by simp`. Rewrite using `[dif_pos h0]`. Establish `e0 : (⟨((0 : Fin (r + 1)) : ℕ), h0⟩ : Fin (N + 2)) = 0` using `rfl`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e0, d _ _ hmb.2.1, P.fSatake_ord_zpow hU.2.2.2.1]`. Use `push_cast`. Simplify using `only [Fin.val_zero]`. Use `congr 3`. Use `push_cast`.
+Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hi : i.val < N` using `by have := i.2; omega`. Establish `hi' : (i.succ : Fin (r + 1)).val < N + 2` using `by simp; omega`. Rewrite using `[dif_pos hi, dif_pos hi']`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ei : (⟨(i.succ : Fin (r + 1)).val, hi'⟩ : Fin (N + 2)) = mid ⟨i.val, hi⟩` using `by ext; simp`. Rewrite using `[ei, d _ _ (hmb.2.2.2 ⟨i.val, hi⟩ ⟨i.val, hi⟩)]`. Establish `ex : ((N + 2 : ℕ) : ℤ) - 1 - 2 * ((i.succ : Fin (r + 1)).val : ℤ) = (N : ℤ) - 1 - 2 * (i.val : ℤ)` using `by simp; ring`. Rewrite using `[ex]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sphTrans_of_leviExists : LeviExists → SphTrans := by
   intro hL L _ _ ϖ σ q N r hU hr α φ φ₀ hα hφ h1 hφ₀ h01 a g₀ m hm u hu

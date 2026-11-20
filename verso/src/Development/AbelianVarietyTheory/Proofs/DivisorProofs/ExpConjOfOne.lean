@@ -17,17 +17,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.BigOn.Exp
 
 /- English proof (translation)
-Set `L : (Rl.HW j (sg0 D A3.A)).H →ₗ[ℂ] (GA D (Wc D j) → ℂ)` to `{ toFun := fun x => (Rl.HW j (sg0 D A3.A)).e x (v₀ j _) map_add' := fun x y => by rw [map_add]; rfl map_smul' := fun c x => by rw [map_smul]; rfl }`. Establish `hL : LinearMap.ker L = ⊥` using `LinearMap.ker_eq_bot.2 fun x y h => GlobalTheory.LiftScalarCompare.eval_inj hW hv h`. Take `⟨m, bb, -, hKs, hspan, hLL, -⟩` from `hK`. Set `bK : Module.Basis (Fin m) S.Ks ↥(S.A ((j : ℕ) + 1)).WK` to `(Module.Basis.span hKs).map (LinearEquiv.ofEq _ _ hspan)`. Establish `hbK : ∀ k, ((bK k : ↥(S.A ((j : ℕ) + 1)).WK) : S.WL ((j : ℕ) + 1)) = bb k` using `fun k => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `[bK, Module.Basis.span_apply]`. Set `φ : Fin m → (GA D (Wc D j) → ℂ)` to `fun k => evW YS v₀ j (bb k)`. Establish `hφ : LinearIndependent ℂ φ`. Establish `h1 : LinearIndependent D.what₂.LL fun k => (YS.fi j).e (bb k)` using `hLL.map' (YS.fi j).e.toLinearMap (YS.fi j).e.ker`. Conclude with `((hU j (sg0 D A3.A)).1 m _ h1).map' L hL`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `σ : S.Ks → ℂ` to `fun r => D.what₂.embLL (algebraMap S.Ks D.what₂.LL r)`. Establish `hσ : ∀ r, τ (σ r) = σ r` using `fun r => by`. Use `hτ (S.kKs r)` as an intermediate fact. Simplify using `only [σ, ← S.kKs_spec]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hg : ∀ k, evW YS v₀ j (g k).val = ∑ a, σ (bK.repr (g k) a) • φ a` using `fun k => by conv_lhs => rw [← bK.sum_repr (g k)]`. Rewrite using `[Submodule.coe_sum, map_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Submodule.coe_smul, ← algebraMap_smul D.what₂.LL, evW_smul, hbK]`. Establish `hexp : ∀ d : Fin n → ℂ, ∑ k, d k • evW YS v₀ j (g k).val = ∑ a, (∑ k, d k * σ (bK.repr (g k) a)) • φ a` using `fun d => by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hg, Finset.smul_sum, smul_smul, Finset.sum_smul]`. Conclude with `Finset.sum_comm`. Establish `hz : ∀ a, ∑ k, c k * σ (bK.repr (g k) a) = 0` using `fun a => Fintype.linearIndependent_iff.1 hφ _ ((hexp c).symm.trans h0) a`. Rewrite using `[hexp]`. Use `Finset.sum_eq_zero fun a _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `: ∑ k, τ (c k) * σ (bK.repr (g k) a) = τ (∑ k, c k * σ (bK.repr (g k) a))`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [map_mul, hσ]`. Rewrite using `[this, hz a, map_zero, zero_smul]`.
+A detailed English derivation is pending.
 -/
 theorem conj_sum_zero (D : D7) (Γ : Type) [Group Γ] [Fintype Γ] (Pl0 I0 T : Type)
     (A3 : FamIn3 D.what₂.LL Γ Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
@@ -83,9 +83,9 @@ def ExpZero : Prop := AtTw fun Fm x _ i p _ j => ∀ τ : ℂ ≃+* ℂ,
     ∑ k, c k • evW p.nexp p.v₀ j (g k).val = 0 → ∑ k, τ (c k) • evW p.nexp p.v₀ j (g k).val = 0
 
 /- English proof (translation)
-Unfold `ExpZero AtTw AtPts`. Use `⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm CH _ _ => ⟨0, fun x hx _ i p hr hm w _ j τ hτ n c g h0 => ?_⟩⟩⟩` and prove the remaining obligations. Take `⟨Z⟩` from `hm.2.2.series`. Establish `hU : p.R.toRealDat.LUnif` using `hr.prim.unif`. Establish `hW : p.R.toRealDat.models_HW` using `p.charW.base.models.HW`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK : (p.Sx.A ((j : ℕ) + 1)).IsKsForm` using `GlobalTheory.isKsForm_of_formsIso _ _ (p.nexp.fi j) (p.fw.ks j)`. Conclude with `conj_sum_zero _ _ _ _ _ _ _ _ _ _ p.nexp p.v₀ j hU hW (Z.vec j) hK τ hτ n c g h0`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem expZero : ExpZero := by
   unfold ExpZero AtTw AtPts

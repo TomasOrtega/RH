@@ -19,9 +19,9 @@ variable (R) in
 def incl (f : Fin b ↪ Fin a) : Matrix (Fin a) (Fin b) R := Matrix.of fun i p => if f p = i then 1 else 0
 
 /- English proof (translation)
-Use extensionality with `p q`. Simplify using `only [Matrix.mul_apply, incl, Matrix.transpose_apply, Matrix.of_apply, Matrix.one_apply]`. Rewrite using `[Finset.sum_eq_single (f p)]`. Simplify using `[eq_comm]`. Introduce `i _ hi`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_neg (Ne.symm hi), zero_mul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem transpose_mul_incl (f : Fin b ↪ Fin a) : (incl R f)ᵀ * incl R f = 1 := by
   ext p q
@@ -49,30 +49,30 @@ theorem extN_apply (f : Fin b ↪ Fin a) (X : Matrix (Fin b) (Fin b) R) :
     extN R f X = incl R f * X * (incl R f)ᵀ := rfl
 
 /- English proof (translation)
-Simplify using `[extN_apply, Matrix.mul_apply, incl]`.
+Simplify using the standard rewrite rules.
 -/
 theorem extN_apply_apply (f : Fin b ↪ Fin a) (X : Matrix (Fin b) (Fin b) R) (p q : Fin b) :
     extN R f X (f p) (f q) = X p q := by
   simp [extN_apply, Matrix.mul_apply, incl]
 
 /- English proof (translation)
-Simplify using `[extN_apply, Matrix.mul_apply, incl, hi]`.
+Simplify using the standard rewrite rules.
 -/
 theorem extN_apply_left (f : Fin b ↪ Fin a) (X : Matrix (Fin b) (Fin b) R) {i : Fin a} (hi : ∀ p, f p ≠ i)
     (j : Fin a) : extN R f X i j = 0 := by
   simp [extN_apply, Matrix.mul_apply, incl, hi]
 
 /- English proof (translation)
-Simplify using `[extN_apply, Matrix.mul_apply, incl, hj]`.
+Simplify using the standard rewrite rules.
 -/
 theorem extN_apply_right (f : Fin b ↪ Fin a) (X : Matrix (Fin b) (Fin b) R) (i : Fin a) {j : Fin a}
     (hj : ∀ p, f p ≠ j) : extN R f X i j = 0 := by
   simp [extN_apply, Matrix.mul_apply, incl, hj]
 
 /- English proof (translation)
-Use extensionality with `i j`. Distinguish the cases in `hi : ∃ p', f p' = i`. Take `⟨p', rfl⟩` from `hi`. Distinguish the cases in `hj : ∃ q', f q' = j`. Take `⟨q', rfl⟩` from `hj`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Simplify using `[extN_apply_apply, Matrix.single_apply]`. Use `push Not at hj`. Rewrite using `[extN_apply_right f _ _ hj, Matrix.single_apply, if_neg fun h => hj q h.2]`. Use `push Not at hi`. Rewrite using `[extN_apply_left f _ hi, Matrix.single_apply, if_neg fun h => hi p h.1]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extN_single (f : Fin b ↪ Fin a) (p q : Fin b) (x : R) :
     extN R f (Matrix.single p q x) = Matrix.single (f p) (f q) x := by
@@ -88,7 +88,7 @@ theorem extN_single (f : Fin b ↪ Fin a) (p q : Fin b) (x : R) :
     rw [extN_apply_left f _ hi, Matrix.single_apply, if_neg fun h => hi p h.1]
 
 /- English proof (translation)
-Establish `h : (incl R f).map φ = incl S f`. Use extensionality with `i p`. Simplify using `[incl, apply_ite φ]`. Rewrite using `[extN_apply, extN_apply, Matrix.map_mul, Matrix.map_mul, Matrix.transpose_map, h]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_extN (f : Fin b ↪ Fin a) (φ : R →+* S) (X : Matrix (Fin b) (Fin b) R) :
     (extN R f X).map φ = extN S f (X.map φ) := by
@@ -105,7 +105,7 @@ theorem embGL_val (f : Fin b ↪ Fin a) (y : GL (Fin b) R) :
     (embGL f y : Matrix (Fin a) (Fin a) R) = 1 - extN R f 1 + extN R f y := rfl
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `φ.mapMatrix (1 - extN R f 1 + extN R f y) = 1 - extN S f 1 + extN S f ((y : Matrix _ _ R).map φ)`. Rewrite using `[map_add, map_sub, map_one, RingHom.mapMatrix_apply, RingHom.mapMatrix_apply, map_extN, map_extN, Matrix.map_one _ (map_zero φ) (map_one φ)]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_embGL (f : Fin b ↪ Fin a) (φ : R →+* S) (y : GL (Fin b) R) :
     GeneralLinearGroup.map φ (embGL f y) = embGL f (GeneralLinearGroup.map φ y) := by
@@ -115,7 +115,7 @@ theorem map_embGL (f : Fin b ↪ Fin a) (φ : R →+* S) (y : GL (Fin b) R) :
     Matrix.map_one _ (map_zero φ) (map_one φ)]
 
 /- English proof (translation)
-The claim follows from `Continuous.units_map _ (continuous_const.add ((continuous_const.matrix_mul continuous_id).matrix_mul continuous_const : Continuous fun X : Matrix (Fin b) (Fin b) R => incl R f * X * (incl R f)ᵀ))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_embGL [TopologicalSpace R] [IsTopologicalRing R] (f : Fin b ↪ Fin a) :
     Continuous (embGL f : GL (Fin b) R → GL (Fin a) R) :=
@@ -123,7 +123,7 @@ theorem continuous_embGL [TopologicalSpace R] [IsTopologicalRing R] (f : Fin b �
     Continuous fun X : Matrix (Fin b) (Fin b) R => incl R f * X * (incl R f)ᵀ))
 
 /- English proof (translation)
-Establish `h : (incl R f)ᴴ = (incl R f)ᵀ`. Use extensionality with `p i`. Simplify using `[incl, apply_ite star]`. Establish `h' : ((incl R f)ᵀ)ᴴ = incl R f` using `by rw [← h, Matrix.conjTranspose_conjTranspose]`. Simplify using `only [extN_apply, Matrix.star_eq_conjTranspose, Matrix.conjTranspose_mul, h, h', Matrix.mul_assoc]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem star_extN [StarRing R] (f : Fin b ↪ Fin a) (X : Matrix (Fin b) (Fin b) R) :
     star (extN R f X) = extN R f (star X) := by
@@ -149,13 +149,13 @@ Both sides reduce to the same expression.
 theorem sndIx_apply {r : ℕ} (h : r ≤ a) (p : Fin (a - r)) : sndIx h p = blkEquiv h (Sum.inr p) := rfl
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Take `⟨i, rfl⟩` from `(blkEquiv h).surjective i`. Take `⟨j, rfl⟩` from `(blkEquiv h).surjective j`. Establish `hn : ∀ (q : Fin (a - r)) p, fstIx h p ≠ blkEquiv h (Sum.inr q)` using `fun q p e => by`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify `e` using `[fstIx_apply]`. Rewrite using `[blkGL_apply, embGL_val, Matrix.add_apply, Matrix.sub_apply]`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`. Simplify using `only [← fstIx_apply, extN_apply_apply]`. Simplify using `[Matrix.one_apply]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [extN_apply_right _ _ _ (hn j)]`. Simplify using `[Matrix.one_apply]`. Simplify using `only [extN_apply_left _ _ (hn i)]`. Simplify using `[Matrix.one_apply]`. Simplify using `only [extN_apply_left _ _ (hn i)]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.one_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blkGL_fst {r : ℕ} (h : r ≤ a) (m : GL (Fin r) R) : blkGL h (m, 1) = embGL (fstIx h) m := by
   apply Units.ext
@@ -172,13 +172,13 @@ theorem blkGL_fst {r : ℕ} (h : r ≤ a) (m : GL (Fin r) R) : blkGL h (m, 1) = 
   · simp only [extN_apply_left _ _ (hn i)]; simp [Matrix.one_apply]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Take `⟨i, rfl⟩` from `(blkEquiv h).surjective i`. Take `⟨j, rfl⟩` from `(blkEquiv h).surjective j`. Establish `hn : ∀ (q : Fin r) p, sndIx h p ≠ blkEquiv h (Sum.inl q)` using `fun q p e => by`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify `e` using `[sndIx_apply]`. Rewrite using `[blkGL_apply, embGL_val, Matrix.add_apply, Matrix.sub_apply]`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`. Simplify using `only [extN_apply_left _ _ (hn i)]`. Simplify using `[Matrix.one_apply]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [extN_apply_left _ _ (hn i)]`. Simplify using `[Matrix.one_apply]`. Simplify using `only [extN_apply_right _ _ _ (hn j)]`. Simplify using `[Matrix.one_apply]`. Simplify using `only [← sndIx_apply, extN_apply_apply]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.one_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blkGL_snd {r : ℕ} (h : r ≤ a) (m : GL (Fin (a - r)) R) : blkGL h (1, m) = embGL (sndIx h) m := by
   apply Units.ext
@@ -195,29 +195,29 @@ theorem blkGL_snd {r : ℕ} (h : r ≤ a) (m : GL (Fin (a - r)) R) : blkGL h (1,
   · simp only [← sndIx_apply, extN_apply_apply]; simp [Matrix.one_apply]
 
 /- English proof (translation)
-Rewrite using `[← blkGL_fst, ← map_mul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem blkGL_eq_fst {r : ℕ} (h : r ≤ a) (m₁ : GL (Fin r) R) (m₂ : GL (Fin (a - r)) R) :
     blkGL h (m₁, m₂) = blkGL h (1, m₂) * embGL (fstIx h) m₁ := by
   rw [← blkGL_fst, ← map_mul]; simp
 
 /- English proof (translation)
-Rewrite using `[← blkGL_snd, ← map_mul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem blkGL_eq_snd {r : ℕ} (h : r ≤ a) (m₁ : GL (Fin r) R) (m₂ : GL (Fin (a - r)) R) :
     blkGL h (m₁, m₂) = blkGL h (m₁, 1) * embGL (sndIx h) m₂ := by
   rw [← blkGL_snd, ← map_mul]; simp
 
 /- English proof (translation)
-Set `Z : Matrix (Fin a) (Fin a) R` to `(blkGL h p).val * nilM y * (blkGL h p⁻¹).val`. Use `⟨fun q => Z q.1.1 q.1.2, ?_⟩` and prove the remaining obligations. Establish `hZ : nilM (fun q : BlockIx a r => Z q.1.1 q.1.2) = Z`. Use extensionality with `i j`. Simplify using `only [nilM, Matrix.of_apply]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `split_ifs with hij`. Both sides reduce to the same expression. Use `symm`. Simplify using `only [Z, Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations.
+Both sides reduce to the same expression. Use symmetry to reverse the relation. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `blkGL_block h p⁻¹ l j with h2 | h2` into its components or cases. Rewrite using `[Finset.sum_eq_zero, zero_mul]`. Introduce `k _`. Break down `blkGL_block h p i k with h1 | h1` into its components or cases. Simplify using `only [nilM, Matrix.of_apply]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_neg (fun hh => hij (by omega)), mul_zero]`. Rewrite using `[h1, zero_mul]`. Rewrite using `[h2, mul_zero]`. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(blkGL h p).val * (1 + nilM y) = (1 + nilM fun q : BlockIx a r => Z q.1.1 q.1.2) * (blkGL h p).val`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hZ, mul_add, add_mul, mul_one, one_mul, mul_assoc, ← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one, mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem blkGL_mul_unip {r : ℕ} (h : r ≤ a) (p : GL (Fin r) R × GL (Fin (a - r)) R) (y : BlockIx a r → R) :
     ∃ y' : BlockIx a r → R, blkGL h p * unip y = unip y' * blkGL h p := by
@@ -251,11 +251,11 @@ section Rel
 variable {M N : Type} [AddCommGroup M] [Module ℂ M] [AddCommGroup N] [Module ℂ N]
 
 /- English proof (translation)
-Set `T : Subalgebra ℂ (Module.End ℂ M × Module.End ℂ N)` to `{ carrier := {z | ∀ x ∈ Γ, (z.1 x.1, z.2 x.2) ∈ Γ} mul_mem' := fun hz hw x hx => hz _ (hw x hx) add_mem' := fun hz hw x hx => Γ.add_mem (hz x hx) (hw x hx) algebraMap_mem' := fun c x hx => Γ.smul_mem c hx }`. Establish `h1 : Formalism.REAL.qdet (fun i j => (A i j, B i j)) u ∈ T` using `GlobalTheory.LeviHC.MidBlock.qdet_mem T h u`. Establish `h2 : Polynomial.aeval (Formalism.REAL.qdet (fun i j => (A i j, B i j)) u) P ∈ T` using `Algebra.adjoin_le (Set.singleton_subset_iff.2 h1) (Polynomial.aeval_mem_adjoin_singleton ℂ _)`. Establish `e1` using `Polynomial.aeval_algHom_apply (AlgHom.fst ℂ (Module.End ℂ M) (Module.End ℂ N)) (Formalism.REAL.qdet (fun i j => (A i j, B i j)) u) P`. Establish `e2` using `Polynomial.aeval_algHom_apply (AlgHom.snd ℂ (Module.End ℂ M) (Module.End ℂ N)) (Formalism.REAL.qdet (fun i j => (A i j, B i j)) u) P`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e1`, `e2` using `[map_qdet]`. Introduce `x hx`. Establish `h3` using `h2 x hx`. Express the relevant statement in the definitionally equal form `((AlgHom.fst ℂ _ _ _ : Module.End ℂ M) x.1, (AlgHom.snd ℂ _ _ _ : Module.End ℂ N) x.2) ∈ Γ at h3`. Rewrite `h3` using `[← e1, ← e2]`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h3`.
+A detailed English derivation is pending.
 -/
 theorem rel_aeval_qdet (Γ : Submodule ℂ (M × N)) {n : ℕ} (A : Fin n → Fin n → Module.End ℂ M)
     (B : Fin n → Fin n → Module.End ℂ N) (h : ∀ i j, ∀ x ∈ Γ, (A i j x.1, B i j x.2) ∈ Γ) (u : ℂ)
@@ -285,13 +285,13 @@ end Rel
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a b : ℕ} (f : Fin b ↪ Fin a)
 
 /- English proof (translation)
-The claim follows from `ga_ext (by simp [map_embGL]) (by simp [map_embGL])`.
+A detailed English derivation is pending.
 -/
 theorem embGL_infGL (y : GL (Fin b) (Cinf E)) : embGL f (infGL E b y) = infGL E a (embGL f y) :=
   ga_ext (by simp [map_embGL]) (by simp [map_embGL])
 
 /- English proof (translation)
-The claim follows from `ga_ext (by simp [map_embGL]) (by simp [map_embGL])`.
+A detailed English derivation is pending.
 -/
 theorem embGL_finGL (k : GL (Fin b) (Af E)) : embGL f (finGL E b k) = finGL E a (embGL f k) :=
   ga_ext (by simp [map_embGL]) (by simp [map_embGL])
@@ -306,7 +306,7 @@ def embK (k : Kinf E b) : Kinf E a :=
 
 omit [NumberField E] [IsTotallyComplex E] in
 /- English proof (translation)
-The claim follows from `Units.ext rfl`.
+A detailed English derivation is pending.
 -/
 theorem toUnits_embK (k : Kinf E b) : Unitary.toUnits (embK f k) = embGL f (Unitary.toUnits k) := Units.ext rfl
 
@@ -330,9 +330,9 @@ theorem toL_embGL (y : GL (Fin b) (Cinf E)) :
 
 omit [IsTotallyComplex E] in
 /- English proof (translation)
-Use `⟨1 + 2 * ‖toL (1 - extN (Cinf E) f 1)‖ + ‖extL E f‖, by positivity, fun y => ?_⟩` and prove the remaining obligations. Unfold `height`. Rewrite using `[← map_inv, toL_embGL, toL_embGL]`. Establish `h1` using `(norm_add_le (toL (1 - extN (Cinf E) f 1)) _).trans (add_le_add_right ((extL E f).le_opNorm (toL y.val)) _)`. Establish `h2` using `(norm_add_le (toL (1 - extN (Cinf E) f 1)) _).trans (add_le_add_right ((extL E f).le_opNorm (toL (y⁻¹).val)) _)`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n1` using `norm_nonneg (toL y.val)`. Establish `n2` using `norm_nonneg (toL (y⁻¹).val)`. Establish `n3` using `norm_nonneg (toL (1 - extN (Cinf E) f 1))`. Establish `n4` using `norm_nonneg (extL E f)`. Use polynomial arithmetic with `[mul_nonneg n1 n3, mul_nonneg n2 n3]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem height_embGL : ∃ B : ℝ, 0 ≤ B ∧ ∀ y : GL (Fin b) (Cinf E), height (embGL f y) ≤ B * height y := by
   refine ⟨1 + 2 * ‖toL (1 - extN (Cinf E) f 1)‖ + ‖extL E f‖, by positivity, fun y => ?_⟩
@@ -348,7 +348,7 @@ theorem height_embGL : ∃ B : ℝ, 0 ≤ B ∧ ∀ y : GL (Fin b) (Cinf E), hei
   nlinarith [mul_nonneg n1 n3, mul_nonneg n2 n3]
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `id hx`. Establish `e : x = toL u.val` using `hu.symm`. Substitute `e` using the available equality. Rewrite using `[← toL_embGL, chart_val, chart_val, map_mul, embGL_infGL, mul_assoc]`. Conclude with `⟨val_mem_invSet _, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem chart_slice (ψ : GA E a → ℂ) (g : GA E a) (m : GA E b) {x : Lie E b} (hx : x ∈ invSet E b) :
     toL (1 - extN (Cinf E) f 1) + extL E f x ∈ invSet E a ∧
@@ -372,9 +372,9 @@ Both sides reduce to the same expression.
 @[simp] theorem slice_apply (g : GA E a) (ψ : Sm E a) (m : GA E b) : (slice f g ψ).1 m = ψ.1 (g * embGL f m) := rfl
 
 /- English proof (translation)
-Use `Subtype.ext (funext fun m => ?_)` and prove the remaining obligations. Establish `e : chart (slice f g ψ).1 m =ᶠ[𝓝 (oneL E b)] chart ψ.1 (g * embGL f m) ∘ fun x => toL (1 - extN (Cinf E) f 1) + extL E f x` using `Filter.eventually_of_mem (isOpen_invSet.mem_nhds isUnit_one) fun x hx => (chart_slice f ψ.1 g m hx).2`. Establish `e1 : toL (1 - extN (Cinf E) f 1) + extL E f (oneL E b) = oneL E a` using `sub_add_cancel _ _`. Establish `h1 : HasFDerivAt (chart ψ.1 (g * embGL f m)) (fderiv ℝ (chart ψ.1 (g * embGL f m)) (oneL E a)) (toL (1 - extN (Cinf E) f 1) + extL E f (oneL E b))`. Rewrite using `[e1]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(differentiableAt_chart ψ.2 _).hasFDerivAt`. Establish `h2` using `h1.comp (oneL E b) ((extL E f).hasFDerivAt.const_add (toL (1 - extN (Cinf E) f 1)))`. Express the relevant statement in the definitionally equal form `fderiv ℝ (chart (slice f g ψ).1 m) (oneL E b) X = _`. Rewrite using `[e.fderiv_eq, h2.fderiv]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem lie_slice (g : GA E a) (ψ : Sm E a) (X : Lie E b) :
     lie E b X (slice f g ψ) = slice f g (lie E a (extL E f X) ψ) := by
@@ -392,9 +392,9 @@ theorem lie_slice (g : GA E a) (ψ : Sm E a) (X : Lie E b) :
   rfl
 
 /- English proof (translation)
-Establish `e : ∀ x : Cinf E, extL E f (toL (Matrix.single p q x)) = toL (Matrix.single (f p) (f q) x)` using `fun x => congrArg toL (extN_single f p q x)`. Establish `h1` using `lie_slice f g ψ (toL (Matrix.single p q (atEmb τ 1)))`. Establish `h2` using `lie_slice f g ψ (toL (Matrix.single p q (atEmb τ Complex.I)))`. Rewrite `h1`, `h2` using `[e]`. Use `Subtype.ext (funext fun m => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrArg₂ (fun s t : ℂ => (1 / 2 : ℂ) * (s - Complex.I * t)) (congrFun (congrArg Subtype.val h1) m) (congrFun (congrArg Subtype.val h2) m)`.
+A detailed English derivation is pending.
 -/
 theorem Eop_slice (g : GA E a) (ψ : Sm E a) (τ : E →+* ℂ) (p q : Fin b) :
     Eop τ p q (slice f g ψ) = slice f g (Eop τ (f p) (f q) ψ) := by
@@ -408,7 +408,7 @@ theorem Eop_slice (g : GA E a) (ψ : Sm E a) (τ : E →+* ℂ) (p q : Fin b) :
     (congrFun (congrArg Subtype.val h2) m)
 
 /- English proof (translation)
-The claim follows from `rel_aeval_qdet (LinearMap.graph (slice f g)) (fun p q => Eop τ (f p) (f q)) (Eop τ) (fun p q x hx => by have hx' : x.2 = slice f g x.1 := hx change Eop τ p q x.2 = _ rw [hx', Eop_slice]) u P (ψ, slice f g ψ) rfl`.
+A detailed English derivation is pending.
 -/
 theorem aeval_qdet_slice (g : GA E a) (ψ : Sm E a) (τ : E →+* ℂ) (u : ℂ) (P : Polynomial ℂ) :
     Polynomial.aeval (Formalism.REAL.qdet (Eop (a := b) τ) u) P (slice f g ψ) =
@@ -420,9 +420,9 @@ theorem aeval_qdet_slice (g : GA E a) (ψ : Sm E a) (τ : E →+* ℂ) (u : ℂ)
       rw [hx', Eop_slice]) u P (ψ, slice f g ψ) rfl
 
 /- English proof (translation)
-Introduce `m`. Take `⟨C, N, hC⟩` from `h (g * embGL f m)`. Take `⟨B, -, hB⟩` from `height_embGL (E := E) f`. Use `⟨|C| * B ^ N, N, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[slice_apply, map_mul, embGL_infGL, ← mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : 0 ≤ height (embGL f y)` using `zero_le_one.trans (one_le_height _)`. Use `(hC _).trans ((mul_le_mul_of_nonneg_right (le_abs_self C) (pow_nonneg h0 N)).trans ?_)` and prove the remaining obligations. Rewrite using `[mul_assoc, ← mul_pow]`. Conclude with `mul_le_mul_of_nonneg_left (pow_le_pow_left₀ h0 (hB y) N) (abs_nonneg C)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem growth_slice (g : GA E a) (ψ : Sm E a)
     (h : ∀ g, ∃ (C : ℝ) (N : ℕ), ∀ y, ‖ψ.1 (g * infGL E a y)‖ ≤ C * height y ^ N) :

@@ -41,12 +41,12 @@ namespace Raw
 variable (D : Raw Ω c)
 
 /- English proof (translation)
-The claim follows from `Finset.mem_insert_self _ _`.
+A detailed English derivation is pending.
 -/
 theorem residueChar_mem_levelPrimes : l ∈ D.T := Finset.mem_insert_self _ _
 
 /- English proof (translation)
-The claim follows from `Finset.mem_insert_of_mem hp`.
+A detailed English derivation is pending.
 -/
 theorem mem_T {p : ℕ} (hp : p ∈ D.Sb) : p ∈ D.T := Finset.mem_insert_of_mem hp
 

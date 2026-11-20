@@ -22,7 +22,7 @@ def LeafPairExt : Prop := ∀ (q : ℕ) [NeZero q] (i : ℤ) L, IsAct q i L →
       ν.mul U 0 t t (zero_add t) (Sec.map (resι _ (tw q 0)) a) b = L U t a b
 
 /- English proof (translation)
-Introduce `q _ i`. Take `⟨L, hL, hLζ⟩` from `hact q i`. Take `⟨ν, hν⟩` from `hext q i L hL`. Use `⟨ν, fun U t ζ b => ?_⟩` and prove the remaining obligations. Conclude with `(hν U t (twGen 0 ζ) b).trans (hLζ U t ζ b)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem LeafUnitPairG_of (hact : LeafUnitAct) (hext : LeafPairExt) : LeafUnitPairG := by
   intro q _ i

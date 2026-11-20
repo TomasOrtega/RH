@@ -10,7 +10,7 @@ namespace GlobalTheory.TwistRenumber
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Use `ext`. Rewrite using `[GeneralLinearGroup.val_det_apply, val_torusElt, det_diagonal, Units.val_zpow_eq_zpow_val]`. Proceed by induction on `(Finset.univ : Finset n) using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert i t hi ih => rw [Finset.prod_insert hi, Finset.sum_insert hi, zpow_add₀ ϖ.ne_zero, ih]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem det_torusElt_eq {n : Type} [Fintype n] [DecidableEq n] (ϖ : kˣ) (e : n → ℤ) :
     GeneralLinearGroup.det (torusElt k n ϖ e) = ϖ ^ ∑ i, e i := by
@@ -21,13 +21,13 @@ theorem det_torusElt_eq {n : Type} [Fintype n] [DecidableEq n] (ϖ : kˣ) (e : n
   | insert i t hi ih => rw [Finset.prod_insert hi, Finset.sum_insert hi, zpow_add₀ ϖ.ne_zero, ih]
 
 /- English proof (translation)
-Simplify using `[indic, Finset.sum_ite_mem]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sum_indic {n : Type} [Fintype n] [DecidableEq n] (s : Finset n) : ∑ i, indic s i = (s.card : ℤ) := by
   simp [indic, Finset.sum_ite_mem]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[GlobalTheory.ChainStepSupp.val_reGL]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem reGL_symm_reGL {m n : Type} [Fintype m] [DecidableEq m] [Fintype n] [DecidableEq n] (e : m ≃ n)
     (g : GL m k) : GlobalTheory.ChainStepSupp.reGL k e.symm (GlobalTheory.ChainStepSupp.reGL k e g) = g := by
@@ -35,21 +35,21 @@ theorem reGL_symm_reGL {m n : Type} [Fintype m] [DecidableEq m] [Fintype n] [Dec
   simp [GlobalTheory.ChainStepSupp.val_reGL]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => reGL_symm_reGL e g ▸ GlobalTheory.ChainStepSupp.reGL_mem_KO e.symm h, GlobalTheory.ChainStepSupp.reGL_mem_KO e⟩`.
+Supply the required witnesses or components.
 -/
 theorem reGL_mem_KO_iff {m n : Type} [Fintype m] [DecidableEq m] [Fintype n] [DecidableEq n] (e : m ≃ n)
     {g : GL m k} : GlobalTheory.ChainStepSupp.reGL k e g ∈ KO k n ↔ g ∈ KO k m :=
   ⟨fun h => reGL_symm_reGL e g ▸ GlobalTheory.ChainStepSupp.reGL_mem_KO e.symm h, GlobalTheory.ChainStepSupp.reGL_mem_KO e⟩
 
 /- English proof (translation)
-The claim follows from `hμ _ ((nabs_eq_one_iff _).1 (nabs_det_of_mem_KO hκ))`.
+A detailed English derivation is pending.
 -/
 theorem unram_det_KO {μ₀ : kˣ →* ℂˣ} (hμ : IsUnram μ₀) {n : Type} [Fintype n] [DecidableEq n] {κ : GL n k}
     (hκ : κ ∈ KO k n) : μ₀ (GeneralLinearGroup.det κ) = 1 :=
   hμ _ ((nabs_eq_one_iff _).1 (nabs_det_of_mem_KO hκ))
 
 /- English proof (translation)
-Take `⟨κ, hκ, κ', hκ', rfl⟩` from `h`. Rewrite using `[map_mul, map_mul, map_mul, map_mul, unram_det_KO hμ hκ, unram_det_KO hμ hκ', det_torusElt_eq, sum_indic, map_zpow, one_mul, mul_one, zpow_natCast]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem unram_det_dcoset {μ₀ : kˣ →* ℂˣ} (hμ : IsUnram μ₀) {n : Type} [Fintype n] [DecidableEq n] {ϖ : kˣ}
     {s : Finset n} {g : GL n k}
@@ -62,11 +62,11 @@ theorem unram_det_dcoset {μ₀ : kˣ →* ℂˣ} (hμ : IsUnram μ₀) {n : Typ
 open Classical in
 
 /- English proof (translation)
-Use `⟨fun g' hg' => ?_, fun κ hκ => ?_⟩` and prove the remaining obligations. Take `⟨g, hg, rfl⟩` from `Finset.mem_image.1 hg'`. Take `⟨a, ha, b, hb, rfl⟩` from `hR.1 g hg`. Conclude with `⟨_, GlobalTheory.ChainStepSupp.reGL_mem_KO e ha, _, GlobalTheory.ChainStepSupp.reGL_mem_KO e hb, by simp only [map_mul]⟩`. Take `⟨g, ⟨hg, hgK⟩, huniq⟩` from `hR.2 (GlobalTheory.ChainStepSupp.reGL k e.symm κ) (GlobalTheory.ChainStepSupp.reGL_mem_KO e.symm hκ)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `key : ∀ x : GL m k, (GlobalTheory.ChainStepSupp.reGL k e x)⁻¹ * (κ * GlobalTheory.ChainStepSupp.reGL k e g₀) = GlobalTheory.ChainStepSupp.reGL k e (x⁻¹ * (GlobalTheory.ChainStepSupp.reGL k e.symm κ * g₀))`. Introduce `x`. Rewrite using `[map_mul, map_mul, map_inv, GlobalTheory.ChainStepSupp.reGL_reGL_symm]`. Use `⟨GlobalTheory.ChainStepSupp.reGL k e g, ⟨Finset.mem_image_of_mem _ hg, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[key]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.ChainStepSupp.reGL_mem_KO e hgK`. Introduce and unpack `y ⟨hy, hyK⟩`. Take `⟨x, hx, rfl⟩` from `Finset.mem_image.1 hy`. Rewrite `hyK` using `[key, reGL_mem_KO_iff]`. Rewrite using `[huniq x ⟨hx, hyK⟩]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isRepsK_image {m n : Type} [Fintype m] [DecidableEq m] [Fintype n] [DecidableEq n] (e : m ≃ n)
     {g₀ : GL m k} {R : Finset (GL m k)} (hR : IsRepsK g₀ R) :
@@ -88,13 +88,13 @@ theorem isRepsK_image {m n : Type} [Fintype m] [DecidableEq m] [Fintype n] [Deci
       rw [huniq x ⟨hx, hyK⟩]
 
 /- English proof (translation)
-Introduce `k _ _ _ _ D _ _ N ε ϖ hϖ μ₀ hμ β f hf hH f₂ hf₂`. Use `⟨fun κ hκ m => ?_, fun s R hR m => ?_⟩` and prove the remaining obligations. Establish `hk1` using `unram_det_KO hμ hκ`. Establish `hρ` using `hf (GlobalTheory.ChainStepSupp.reGL k ε κ) (GlobalTheory.ChainStepSupp.reGL_mem_KO ε hκ) (GlobalTheory.ChainStepSupp.reGL k ε m)`. Simplify using `only [hf₂, map_mul, hk1, one_mul, mul_one, hρ.1, hρ.2, and_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `set ρ := GlobalTheory.ChainStepSupp.reGL k ε with hρdef set s' := s.map ε.toEmbedding with hs'`. Establish `ht : ρ (torusElt k (Fin N) ϖ (indic s)) = torusElt k D ϖ (indic s')`. Rewrite using `[hρdef, GlobalTheory.ChainStepSupp.reGL_torusElt]`. Use `congr 1`. Use function extensionality and compare the values at `d`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[indic, hs', Finset.mem_map_equiv]`. Establish `hR' : IsRepsK (torusElt k D ϖ (indic s')) (R.image ρ)` using `ht ▸ isRepsK_image ε hR`. Establish `hcard : Fintype.card D = N` using `(Fintype.card_congr ε).symm.trans (Fintype.card_fin N)`. Establish `hH'` using `hH s' _ hR' (ρ m)`. Rewrite `hH'` using `[Finset.sum_image (fun x _ y _ h => ρ.injective h), hs', Finset.card_map, hcard]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hterm : ∀ g ∈ R, f₂ (m * g) = ((((μ₀ (GeneralLinearGroup.det m))⁻¹ : ℂˣ) : ℂ) * (((μ₀ ϖ)⁻¹ : ℂˣ) : ℂ) ^ s.card) * f (ρ m * ρ g)`. Introduce `g hg`. Rewrite using `[hf₂, map_mul, map_mul, map_mul, unram_det_dcoset hμ (hR.1 g hg), mul_inv, Units.val_mul, ← inv_pow, Units.val_pow_eq_pow_val]`. Rewrite using `[Finset.sum_congr rfl hterm, ← Finset.mul_sum, hH', hf₂]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem twist_renumber : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (D : Type) [Fintype D] [DecidableEq D] (N : ℕ) (ε : Fin N ≃ D) (ϖ : kˣ), valuation k (ϖ : k) = uniformizer k → ∀ (μ₀ : kˣ →* ℂˣ), IsUnram μ₀ → ∀ (β : Multiset ℂˣ) (f : GL D k → ℂ), (∀ κ ∈ KO k D, ∀ m, f (κ * m) = f m ∧ f (m * κ) = f m) → (∀ (s : Finset D) R, IsRepsK (torusElt k D ϖ (indic s)) R → ∀ m, ∑ g ∈ R, f (m * g) = genVal (resCard k) 0 (Fintype.card D) β s.card * f m) → ∀ f₂ : GL (Fin N) k → ℂ, (∀ m, f₂ m = (((μ₀ (GeneralLinearGroup.det m))⁻¹ : ℂˣ) : ℂ) * f (GlobalTheory.ChainStepSupp.reGL k ε m)) → (∀ κ ∈ KO k (Fin N), ∀ m, f₂ (κ * m) = f₂ m ∧ f₂ (m * κ) = f₂ m) ∧ ∀ (s : Finset (Fin N)) R, IsRepsK (torusElt k (Fin N) ϖ (indic s)) R → ∀ m, ∑ g ∈ R, f₂ (m * g) = (((μ₀ ϖ)⁻¹ : ℂˣ) : ℂ) ^ s.card * genVal (resCard k) 0 N β s.card * f₂ m := by
   intro k _ _ _ _ D _ _ N ε ϖ hϖ μ₀ hμ β f hf hH f₂ hf₂

@@ -8,9 +8,9 @@ open scoped TensorProduct
 namespace GlobalTheory.UTrans
 
 /- English proof (translation)
-Use extensionality with `a b`. Establish `h1` using `h (Pi.single a 1) (Pi.single b 1)`. Establish `h2 : hf σ G (Pi.single a 1) (Pi.single b 1) = G a b`. Simplify using `[hf, Pi.single_apply, apply_ite σ]`. Rewrite `h1` using `[h2]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← h1]`. Simplify using `only [hf, Matrix.mulVec_single_one, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Matrix.col_apply, Finset.sum_mul]`. Conclude with `Finset.sum_comm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem IsU.transpose_mul_mul_map {R : Type} [CommRing R] {n : ℕ} {σ : R →+* R}
     {G γ : Matrix (Fin n) (Fin n) R} (h : IsU σ G γ) : γᵀ * G * γ.map σ = G := by
@@ -25,9 +25,9 @@ theorem IsU.transpose_mul_mul_map {R : Type} [CommRing R] {n : ℕ} {σ : R →+
   exact Finset.sum_comm
 
 /- English proof (translation)
-Establish `h1` using `congrArg Matrix.det h.transpose_mul_mul_map`. Rewrite `h1` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose]`. Establish `h2 : (γ.map σ).det = σ γ.det`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite `h1` using `[h2]`. Apply `mul_left_cancel₀ hG` to reduce the goal to its premises. Take the linear combination `h1`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem IsU.det_mul_conj_det {E : Type} [Field E] {n : ℕ} {σ : E →+* E}
     {G γ : Matrix (Fin n) (Fin n) E} (hG : G.det ≠ 0) (h : IsU σ G γ) : γ.det * σ γ.det = 1 := by
@@ -40,7 +40,7 @@ theorem IsU.det_mul_conj_det {E : Type} [Field E] {n : ℕ} {σ : E →+* E}
   linear_combination h1
 
 /- English proof (translation)
-Establish `hu : IsUnit γ.det` using `IsUnit.of_mul_eq_one _ (h.det_mul_conj_det hG)`. Introduce `x y`. Rewrite using `[← h, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hu, Matrix.one_mulVec, Matrix.one_mulVec]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsU.nonsing_inv {E : Type} [Field E] {n : ℕ} {σ : E →+* E}
     {G γ : Matrix (Fin n) (Fin n) E} (hG : G.det ≠ 0) (h : IsU σ G γ) : IsU σ G γ⁻¹ := by
@@ -50,21 +50,21 @@ theorem IsU.nonsing_inv {E : Type} [Field E] {n : ℕ} {σ : E →+* E}
     Matrix.one_mulVec, Matrix.one_mulVec]
 
 /- English proof (translation)
-Introduce `E _ _ n σ G hG`. Take `⟨-, -, hmul, hdet, hU, hconj, -, hUmul⟩` from `GlobalTheory.T.transvection_identities_unitary E n σ G hG.invol hG.herm`. Use `⟨fun γ h => ⟨h.det_mul_conj_det hG.det_ne, h.nonsing_inv hG.det_ne⟩, ?_⟩` and prove the remaining obligations. Establish `key : ∀ m ∈ TvGen σ G, IsU σ G m ∧ m.det = 1 ∧ m⁻¹ ∈ TvGen σ G ∧ ∀ γ, IsU σ G γ → ∃ m' ∈ TvGen σ G, γ * m = m' * γ`. Introduce `m hm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `hm using Submonoid.closure_induction with`. Consider the case `mem m hm`. Take `⟨x, t, hx, ht, rfl⟩` from `hm`. Use `⟨hU x t (by rw [ht, hx]; simp), by rw [hdet, hx]; simp, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : tv σ G x t * tv σ G x (-t) = 1`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hmul, hx]`. Use extensionality with `a b`. Simplify using `[tv]`. Rewrite using `[Matrix.inv_eq_right_inv h1]`. Conclude with `Submonoid.subset_closure ⟨x, -t, hx, by rw [map_neg]; linear_combination -ht, rfl⟩`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `γ hγ`. Conclude with `⟨tv σ G (γ *ᵥ x) t, Submonoid.subset_closure ⟨_, t, by rw [hγ, hx], ht, rfl⟩, hconj γ x t hγ⟩`. Consider the case `one`. Use `⟨fun x y => by simp, by simp, by rw [inv_one]; exact one_mem _, fun γ _ => ⟨1, one_mem _, by simp⟩⟩` and prove the remaining obligations. Consider the case `mul a b _ _ ha hb`.
+Supply the required witnesses or components. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨ha1, ha2, ha3, ha4⟩` from `ha`. Take `⟨hb1, hb2, hb3, hb4⟩` from `hb`. Use `⟨hUmul _ _ ha1 hb1, by rw [Matrix.det_mul, ha2, hb2, one_mul], ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_inv_rev]`. Conclude with `mul_mem hb3 ha3`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `γ hγ`. Take `⟨a', ha', ea⟩` from `ha4 γ hγ`. Take `⟨b', hb', eb⟩` from `hb4 γ hγ`. Conclude with `⟨a' * b', mul_mem ha' hb', by rw [← mul_assoc, ea, mul_assoc, eb, mul_assoc]⟩`. Introduce `m hm`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨h1, h2, h3, h4⟩` from `key m hm`. Use `⟨h1, h2, h3, fun γ hγ => ?_⟩` and prove the remaining obligations. Take `⟨m', hm', e⟩` from `h4 γ hγ`. Take `⟨m'', hm'', e'⟩` from `h4 γ⁻¹ (hγ.nonsing_inv hG.det_ne)`. Establish `hu : IsUnit γ.det` using `IsUnit.of_mul_eq_one _ (hγ.det_mul_conj_det hG.det_ne)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Use `⟨m', hm', e, m'', hm'', ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, Matrix.mul_nonsing_inv _ hu, one_mul]`. Use `_ = γ * m'' := by`. Rewrite using `[e', mul_assoc, mul_assoc, Matrix.nonsing_inv_mul _ hu, mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tvGen_normal : ∀ (E : Type) [Field E] [CharZero E] (n : ℕ) (σ : E →+* E) (G : Matrix (Fin n) (Fin n) E), IsHerm σ G → (∀ γ, IsU σ G γ → γ.det * σ γ.det = 1 ∧ IsU σ G γ⁻¹) ∧ (∀ m ∈ TvGen σ G, IsU σ G m ∧ m.det = 1 ∧ m⁻¹ ∈ TvGen σ G ∧ ∀ γ, IsU σ G γ → ∃ m' ∈ TvGen σ G, γ * m = m' * γ ∧ ∃ m'' ∈ TvGen σ G, m * γ = γ * m'') := by
   intro E _ _ n σ G hG

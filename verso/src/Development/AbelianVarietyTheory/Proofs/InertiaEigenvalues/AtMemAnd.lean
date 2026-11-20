@@ -13,7 +13,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeR
 namespace GlobalTheory.GalLoc
 
 /- English proof (translation)
-Use `(hp.inter hq).imp fun K _ _ _ _ H => ?_` and prove the remaining obligations. Use `(H.1.inter H.2).imp fun B f T _ H => ?_` and prove the remaining obligations. Introduce `hK w Z Wt p0 t nch n xd c hE hX hC`. Conclude with `⟨H.1 hK w Z Wt p0 t nch n xd c hE hX hC, H.2 hK w Z Wt p0 t nch n xd c hE hX hC⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem atMem_and {hL : GlobalTheory.Published.LocalLanglandsGL} {p q : LayP hL} (hp : AtMem hL p) (hq : AtMem hL q) :
     AtMem hL fun K B f T w Z Wt p0 t nch n c => p K B f T w Z Wt p0 t nch n c ∧ q K B f T w Z Wt p0 t nch n c := by
@@ -23,7 +23,7 @@ theorem atMem_and {hL : GlobalTheory.Published.LocalLanglandsGL} {p q : LayP hL}
   exact ⟨H.1 hK w Z Wt p0 t nch n xd c hE hX hC, H.2 hK w Z Wt p0 t nch n xd c hE hX hC⟩
 
 /- English proof (translation)
-Use `hp.imp fun K _ _ _ _ H => ?_` and prove the remaining obligations. Use `H.imp fun B f T _ H => ?_` and prove the remaining obligations. Introduce `hK w Z Wt p0 t nch n xd c hE hX hC`. Conclude with `h K B f T w Z Wt p0 t nch n xd c hE (H hK w Z Wt p0 t nch n xd c hE hX hC)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem atMem_imp {hL : GlobalTheory.Published.LocalLanglandsGL} {p q : LayP hL} (hp : AtMem hL p)
     (h : ∀ K B f T w Z Wt p0 t nch n xd c, Nonempty (NE hL K B f T w Z Wt p0 t nch n xd c) →

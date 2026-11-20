@@ -30,7 +30,7 @@ variable [MeasurableSpace (GL (Fin n) F)] [BorelSpace (GL (Fin n) F)]
   (μ : Measure (GL (Fin n) F)) [μ.IsHaarMeasure]
 
 /- English proof (translation)
-The claim follows from `dual_heckeAct μ ha hf (LinearMap.proj g)`.
+A detailed English derivation is pending.
 -/
 theorem heckeAct_rightRep_apply {a : GL (Fin n) F → ℂ}
     (ha : a ∈ locallyConstantCompactSupport (GL (Fin n) F) ℂ ℂ) {f : GL (Fin n) F → ℂ}
@@ -41,25 +41,23 @@ theorem heckeAct_rightRep_apply {a : GL (Fin n) F → ℂ}
 include μ in
 
 /- English proof (translation)
-Establish `hKc` using `GLnLocal.isCompact_integralGL F n`. Establish `hKo` using `GLnLocal.isOpen_integralGL F n`. Use `set ρ := rightRep (GL (Fin n) F) with hρ`. Use `set φ : GL (Fin n) F → ℂ := Spherical.sphericalWhittaker ψ₀ z with hφdef`. Establish `hfix : φ ∈ fixedVectors ρ (GLnLocal.integralGL F n)` using `fun k hk =>`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `fun y => sphericalWhittaker_mul_right hψ₀ z y hk`. Establish `hφs : φ ∈ smoothVectors ρ` using `smooth_of_mem_fixedVectors hKo hfix`. Establish `heig : ∀ h : SphericalHecke μ (F` using `F) (n := n), heckeAct μ ρ (h : HeckeAlgebra μ) φ = evalAt z (satakeTransform μ h) • φ := fun h => funext fun y => by`. Rewrite using `[heckeAct_rightRep_apply μ (h : HeckeAlgebra μ).mem hφs y]`. Conclude with `integral_mul_sphericalWhittaker hψ₀ hψ₁ z h y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `key : ∀ u ∈ Submodule.span ℂ {f : GL (Fin n) F → ℂ | ∃ h : GL (Fin n) F, f = fun g => Spherical.sphericalWhittaker ψ₀ z (g * h)}, u ∈ smoothVectors ρ ∧ ∃ c : ℂ, heckeAct μ ρ (idem μ hKc hKo) u = c • φ`. Introduce `u hu`. Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨x₀, rfl⟩` from `hx`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : (fun g => Spherical.sphericalWhittaker ψ₀ z (g * x₀)) = ρ x₀ φ` using `rfl`. Rewrite using `[e]`. Use `⟨?_, evalAt z (satakeTransform μ (HeckeAlgebraLevel.corner hKc hKo (leftReg μ x₀ (idem μ hKc hKo)))), ?_⟩` and prove the remaining obligations. Set `H : Subgroup (GL (Fin n) F)` to `(GLnLocal.integralGL F n).comap (MulAut.conj x₀⁻¹).toMonoidHom`. Establish `hHo : IsOpen (H : Set (GL (Fin n) F))` using `hKo.preimage ((continuous_const.mul continuous_id).mul continuous_const)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Subgroup.isOpen_mono (H₁ := H) (fun w hw => ?_) hHo` and prove the remaining obligations. Rewrite using `[mem_stabilizerOf, ← Module.End.mul_apply, ← map_mul]`. Establish `: w * x₀ = x₀ * (x₀⁻¹ * w * x₀⁻¹⁻¹)` using `by group`. Rewrite using `[this, map_mul, Module.End.mul_apply, hfix (x₀⁻¹ * w * x₀⁻¹⁻¹) hw]`. Rewrite using `[heckeAct_idem_apply hKc hKo x₀ hfix, ← heckeAct_corner hKc hKo hfix]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Supply the required witnesses or components. Treat this case separately.
 
-Conclude with `heig (HeckeAlgebraLevel.corner hKc hKo _)`. Consider the case `zero`. Conclude with `⟨zero_mem _, 0, by rw [heckeAct_zero_right (idem μ hKc hKo).mem, zero_smul]⟩`. Consider the case `add x x' _ _ hx hx'`. Take `⟨hs, c, hc⟩` from `hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Take `⟨hs', c', hc'⟩` from `hx'`. Conclude with `⟨add_mem hs hs', c + c', by`. Rewrite using `[heckeAct_add_right (idem μ hKc hKo).mem hs hs', hc, hc', add_smul]⟩`. Consider the case `smul a x _ hx`. Take `⟨hs, c, hc⟩` from `hx`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨Submodule.smul_mem _ a hs, a * c, by`. Rewrite using `[heckeAct_smul_right (idem μ hKc hKo).mem a hs, hc, smul_smul]⟩`. Take `⟨-, c, hc⟩` from `key W hW`. Establish `hWfix : W ∈ fixedVectors ρ (GLnLocal.integralGL F n)` using `fun k hk =>`. Use function extensionality and compare the values at `fun y => hWK y k hk`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hc` using `[heckeAct_idem_of_mem hKc hKo hWfix]`. Establish `h1 : φ 1 = 1` using `sphericalWhittaker_one hψ₀ z`. Establish `hW1 : W 1 = c`. Rewrite using `[hc]`. Simplify using `[h1]`.
-
-Rewrite using `[hW1, hc]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem eq_mul_sphericalWhittaker_of_mem_span {ψ₀ : AddChar F ℂ} (hψ₀ : ∀ x ∈ 𝒪[F], ψ₀ x = 1)
     (hψ₁ : ∃ x : F, (GLnLocal.uniformizer F : F) * x ∈ 𝒪[F] ∧ ψ₀ x ≠ 1) (z : Fin n → ℂˣ)
@@ -128,7 +126,7 @@ end GlobalTheory.CompanionTheory.SphericalSpan
 open GlobalTheory.CompanionTheory.SphericalSpan in
 
 /- English proof (translation)
-Introduce `F _ _ _ _ n ψ₀ hψ₀ hψ₁ z W hW hWK g`. Use `borelize (GL (Fin n) F)`. Conclude with `eq_mul_sphericalWhittaker_of_mem_span (Measure.haar : Measure (GL (Fin n) F)) hψ₀ hψ₁ z hW hWK g`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.SphericalSpan.eq_mul_sphericalWhittaker :
     ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]

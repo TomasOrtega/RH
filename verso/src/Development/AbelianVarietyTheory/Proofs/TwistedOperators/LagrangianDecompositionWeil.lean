@@ -8,31 +8,29 @@ noncomputable section
 namespace GlobalTheory.SvNAnyChar
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ κ _ n d ψ0 hψ hne wT wM hT hM hTM hsurj`. Take `⟨c, hc0, hc⟩` from `GlobalTheory.CondRescale.exists_rescale_conductor_integers ψ0 hψ hne`. Set `ψ1 : AddChar k ℂ` to `ψ0.compAddMonoidHom (AddMonoidHom.mulLeft c)`. Establish `hψ1 : ∀ t, ψ1 t = ψ0 (c * t)` using `fun t => rfl`. Establish `hψ1c : Continuous ψ1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (ψ1 : k → ℂ) = fun t => ψ0 (c * t)` using `funext hψ1`. Rewrite using `[e]`. Conclude with `hψ.comp (continuous_const.mul continuous_id)`. Establish `hcond : ∀ x : k, (∀ y ∈ 𝒪[k], ψ1 (x * y) = 1) ↔ x ∈ 𝒪[k]` using `fun x => by`. Simplify using `only [hψ1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Conclude with `hc x`. Set `S : (κ → k) × (κ → k) →+ (κ → k) × (κ → k)` to `AddMonoidHom.prodMap (AddMonoidHom.id _) (DistribMulAction.toAddMonoidHom _ c⁻¹)`. Establish `hS : ∀ w, S w = (w.1, c⁻¹ • w.2)` using `fun w => rfl`. Set `mc : Matrix (Fin n) (Fin d) k →+ Matrix (Fin n) (Fin d) k` to `DistribMulAction.toAddMonoidHom _ c`. Set `wT'` to `S.comp wT`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `wM'` to `(S.comp wM).comp mc`. Establish `hT' : ∀ Y, wT' Y = ((wT Y).1, c⁻¹ • (wT Y).2)` using `fun Y => rfl`. Establish `hM' : ∀ z, wM' z = ((wM (c • z)).1, c⁻¹ • (wM (c • z)).2)` using `fun z => rfl`. Establish `hschr : ∀ w (φ : (κ → k) → ℂ), GlobalTheory.WeilM.schr ψ0 w φ = GlobalTheory.WeilM.schr ψ1 (S w) φ`. Introduce `w φ`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `x`. Simplify using `only [GlobalTheory.WeilM.schr, hS, hψ1, dotProduct_smul, smul_eq_mul]`. Use `congr 2`. Clear the denominators using the available nonvanishing facts. Take `⟨ι, hbij, htr, hmul⟩` from `GlobalTheory.T.stoneVonNeumann_schwartzBruhat_transverseLagrangians ψ1 hψ1c hcond wT' wM' (fun Y Y' => by`.
+Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e` using `hT Y Y'`. Simplify using `only [hT', dotProduct_smul, smul_eq_mul]`. Rewrite using `[← mul_sub, e, mul_zero])`. Use the proof step `(fun z z' => by`. Establish `e` using `hM (c • z) (c • z')`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [hM', dotProduct_smul, smul_eq_mul]`. Rewrite using `[← mul_sub, e, mul_zero])`. Use the proof step `(fun Y z => by`. Establish `e` using `hTM Y (c • z)`. Simplify using `only [hT', hM', dotProduct_smul, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← mul_sub, e, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.smul_apply, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use the proof step `field_simp)`. Use the proof step `(fun w => by`. Take `⟨Y, z, h⟩` from `hsurj (w.1, c • w.2)`. Use `⟨Y, c⁻¹ • z, ?_⟩` and prove the remaining obligations. Use `show S (wT Y) + S (wM (c • c⁻¹ • z)) = w`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_smul, mul_inv_cancel₀ hc0, one_smul, ← map_add, h, hS]`. Simplify using `[smul_smul, inv_mul_cancel₀ hc0])`. Use `⟨ι, hbij, fun Y φ hφ => ?_, fun z φ hφ => ?_⟩` and prove the remaining obligations. Rewrite using `[hschr]`. Conclude with `htr Y φ hφ`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Establish `e : S (wM z) = wM' (c⁻¹ • z)` using `by show S (wM z) = S (wM (c • c⁻¹ • z))`. Rewrite using `[smul_smul, mul_inv_cancel₀ hc0, one_smul]`. Rewrite using `[hschr, e, hmul _ φ hφ]`. Use function extensionality and compare the values at `Y'`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[hψ1]`. Use `congr 1`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`.
-
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.smul_apply, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [CharZero k]
     [Invertible (2 : k)] {κ : Type} [Fintype κ] {n d : ℕ} (ψ0 : AddChar k ℂ), Continuous ψ0 → ψ0 ≠ 1 →

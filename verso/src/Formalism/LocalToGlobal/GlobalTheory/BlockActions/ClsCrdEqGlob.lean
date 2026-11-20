@@ -11,7 +11,7 @@ open scoped TensorProduct
 open IsDedekindDomain
 
 /- English proof (translation)
-Establish `hL : Submodule.IsLattice D.host.E M` using `⟨Module.Finite.iff_fg.1 hM.1, hM.2⟩`. Take `⟨d, hd, hle⟩` from `Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.LocB.dual_le_bnd (sigD D : D.host.E →+* D.host.E) (gramN D i hi) (Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.bwB_gramN_det D i hi) M hL`. Conclude with `⟨Module.Finite.iff_fg.2 (Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.LocB.fg_of_le_bnd hd hle), Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.LocB.dual_span (sigD D : D.host.E →+* D.host.E) (gramN D i hi) M hL⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isLat_dlN (D : D7) (i : ℕ) (hi : i ≤ D.R.m) (M : Submodule (𝓞 D.host.E) (Fin (D.R.N i) → D.host.E)) (hM : Comp.IsLat M) :
     Comp.IsLat (Comp.dl (sigD D) (gramN D i hi) M) := by
@@ -24,7 +24,7 @@ theorem isLat_dlN (D : D7) (i : ℕ) (hi : i ≤ D.R.m) (M : Submodule (𝓞 D.h
 variable {D : D7} {u : D.what₂.Word}
 
 /- English proof (translation)
-Set `_` to `D.host.cmStar`. Rewrite using `[Module.Finite.iff_fg]`. Conclude with `(D.clsLat_lat u i c).fg.map _`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem clsCrd_finite (i : ℕ) (hi : i ≤ D.R.m) (c : (D.mem u).C.cls i) :
     Module.Finite (𝓞 D.host.E) (clsCrd D u i hi c) := by
@@ -33,9 +33,7 @@ theorem clsCrd_finite (i : ℕ) (hi : i ≤ D.R.m) (c : (D.mem u).C.cls i) :
   exact (D.clsLat_lat u i c).fg.map _
 
 /- English proof (translation)
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Conclude with `(K.y_lat c _).1 (latS_of_mem _ x hx)`. Introduce `hx`.
-
-Conclude with `latLocGlob _ _ _ _ (clsCrd_finite i hi c) x ((K.y_lat c _).2 hx)`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem clsCrd_eq_glob {i : ℕ} {hi : i ≤ D.R.m} (K : ClsTied u i hi) (c : (D.mem u).C.cls i) :
     clsCrd D u i hi c = Formalism.UG.CS.globLat (K.y c).1 K.lev.Lb := by
@@ -47,7 +45,7 @@ theorem clsCrd_eq_glob {i : ℕ} {hi : i ≤ D.R.m} (K : ClsTied u i hi) (c : (D
     exact latLocGlob _ _ _ _ (clsCrd_finite i hi c) x ((K.y_lat c _).2 hx)
 
 /- English proof (translation)
-Establish `hLb : Comp.IsLat K.lev.Lb` using `⟨K.lev.Lb_fin, K.lev.Lb_span⟩`. Use `show Comp.dl (sigD D) (gramN D i hi) (clsCrd D u i hi c) = _`. Rewrite using `[clsCrd_eq_glob K c, Comp.glob_dl (sigD D) (gramN D i hi) (isLat_dlN D i hi) hLb _ (K.y c).2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ld_eq_glob {i : ℕ} {hi : i ≤ D.R.m} (K : ClsTied u i hi) (c : (D.mem u).C.cls i) :
     Ld D u i hi c = Formalism.UG.CS.globLat (K.y c).1 (Comp.dl (sigD D) (gramN D i hi) K.lev.Lb) := by
@@ -65,7 +63,7 @@ theorem bc_val' {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) (g : GL 
     ((bc φ g : GL (Fin n) B) : Matrix (Fin n) (Fin n) B) = (g : Matrix (Fin n) (Fin n) A).map φ := rfl
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[bc_val', bc_val', bc_val', Matrix.map_map, ← RingHom.coe_comp, Formalism.L2.G.Cmp.prV_incl]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem bc_incl_w (w : HeightOneSpectrum (𝓞 F)) (γ : GL (Fin n) E) :
     bc (inclE (F := F) (w.adicCompletion F)) γ = bc (prV (E := E) w) (bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) γ) := by
@@ -73,11 +71,11 @@ theorem bc_incl_w (w : HeightOneSpectrum (𝓞 F)) (γ : GL (Fin n) E) :
   rw [bc_val', bc_val', bc_val', Matrix.map_map, ← RingHom.coe_comp, Formalism.L2.G.Cmp.prV_incl]
 
 /- English proof (translation)
-Establish `h1 : ((g⁻¹ : GL (Fin n) _) : Matrix _ _ _) *ᵥ (fun a => inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F) (z a)) ∈ latS (F := F) (FiniteAdeleRing (𝓞 F) F) (tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (intOE E) (intAd F)) Λ := hz`. Establish `h2` using `latS_prV w _ _ h1`. Establish `e : ((bc (prV (E` using `E) w) g)⁻¹ : GL (Fin n) (E ⊗[F] w.adicCompletion F)).1 *ᵥ (fun a => inclE (F := F) (w.adicCompletion F) (z a)) = fun j => prV (E := E) w ((((g⁻¹ : GL (Fin n) _) : Matrix _ _ _) *ᵥ (fun a => inclE (F := F) (FiniteAdeleRing (𝓞 F) F) (z a))) j) := by`. Rewrite using `[← map_inv, bc_val']`. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[RingHom.map_mulVec]`. Establish `hc : (⇑(prV (E` using `E) w) ∘ fun a => inclE (F := F) (FiniteAdeleRing (𝓞 F) F) (z a)) = fun a => inclE (F := F) (w.adicCompletion F) (z a) := by`. Use function extensionality and compare the values at `a`. Conclude with `RingHom.congr_fun (Formalism.L2.G.Cmp.prV_incl (E := E) w) (z a)`. Rewrite using `[hc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem locDual (w : HeightOneSpectrum (𝓞 F)) (g : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) (Λ : Submodule (𝓞 E) (Fin n → E))
     (z : Fin n → E) (hz : z ∈ Formalism.UG.CS.globLat g Λ) :
@@ -102,9 +100,9 @@ theorem locDual (w : HeightOneSpectrum (𝓞 F)) (g : GL (Fin n) (E ⊗[F] Finit
   exact h2
 
 /- English proof (translation)
-Establish `em : (fun a => inclE (F` using `F) (w.adicCompletion F) ((γ.val *ᵥ x) a)) = (bc (inclE (F := F) (w.adicCompletion F)) γ).val *ᵥ (fun a => inclE (F := F) (w.adicCompletion F) (x a)) := by`. Use function extensionality and compare the values at `a`. Rewrite using `[bc_val']`. Conclude with `RingHom.map_mulVec _ _ _ a`. Rewrite using `[em, h, mulVec_mulVec, mulVec_mulVec, ← Units.val_mul, ← Units.val_mul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Use `group`.
+A detailed English derivation is pending.
 -/
 theorem conj_step (w : HeightOneSpectrum (𝓞 F)) (Y κ : GL (Fin n) (E ⊗[F] w.adicCompletion F)) (γ : GL (Fin n) E)
     (h : bc (inclE (F := F) (w.adicCompletion F)) γ = Y * κ * Y⁻¹) (x : Fin n → E) :
@@ -121,7 +119,7 @@ theorem conj_step (w : HeightOneSpectrum (𝓞 F)) (Y κ : GL (Fin n) (E ⊗[F] 
   group
 
 /- English proof (translation)
-The claim follows from `conj_step w _ _ γ (by rw [bc_incl_w, h, map_mul, map_mul, map_inv]) x`.
+A detailed English derivation is pending.
 -/
 theorem conj_stepA (w : HeightOneSpectrum (𝓞 F)) (Y κ : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) (γ : GL (Fin n) E)
     (h : bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) γ = Y * κ * Y⁻¹) (x : Fin n → E) :
@@ -132,7 +130,7 @@ theorem conj_stepA (w : HeightOneSpectrum (𝓞 F)) (Y κ : GL (Fin n) (E ⊗[F]
 end Gen
 
 /- English proof (translation)
-Rewrite `hz` using `[ld_eq_glob K c]`. Conclude with `locDual w (K.y c).1 _ z hz`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dualLoc_of {i : ℕ} {hi : i ≤ D.R.m} (K : ClsTied u i hi) (w : HeightOneSpectrum (𝓞 D.host.F)) (c : (D.mem u).C.cls i)
     (z : Fin (D.R.N i) → D.host.E) (hz : z ∈ Ld D u i hi c) :

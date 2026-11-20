@@ -9,29 +9,23 @@ namespace GlobalTheory
 open KaehlerDifferential IsLocalRing Module
 
 /- English proof (translation)
-Introduce `k V _ _ _ _ _ α n t w hft ht hb₀ hw`. Take `⟨b₀⟩` from `hb₀`. Use `letI := α.toAlgebra`. Use `haveI : Algebra.EssFiniteType k V := hft`. Use `haveI : Algebra.FormallySmooth k V := formallySmooth_of_isRegularLocalRing_of_perfectField k V`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `κ` to `ResidueField V`. Set `wb : Fin n → κ` to `fun i => algebraMap V κ (w i)`. Establish `hai : AlgebraicIndependent k wb`. Rewrite using `[algebraicIndependent_iff]`. Introduce `P hP`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Establish `hu` using `hw P hne`. Establish `e : MvPolynomial.aeval wb P = algebraMap V κ (MvPolynomial.eval₂ α w P)`. Rewrite using `[show wb = algebraMap V κ ∘ w from rfl, MvPolynomial.aeval_algebraMap_apply]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hP` using `[e]`. Conclude with `(residue_ne_zero_iff_isUnit _).mpr hu hP`. Establish `hdli : LinearIndependent κ fun i => D k κ (wb i)`. Establish `hs : AlgebraicIndepOn k id (Set.range wb)`. Conclude with `(algebraicIndependent_subtype_range hai.injective).mpr hai`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨s, hsub, hs⟩` from `exists_isTranscendenceBasis_superset hs`. Use `haveI := hs.isAlgebraic_field`. Use `haveI : Algebra.IsSeparable (IntermediateField.adjoin k (Set.range ((↑) : s → κ))) κ := Algebra.IsAlgebraic.isSeparable_of_perfectField`. Take `⟨b, hb⟩` from `exists_basis_kaehler_of_algebraicIndependent hs.1`. Set `ι : Fin n → s` to `fun i => ⟨wb i, hsub (Set.mem_range_self i)⟩`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hι : Function.Injective ι` using `fun i j h => hai.injective (congrArg Subtype.val h)`. Use `b.linearIndependent.comp ι hι` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using `[ι, hb]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `ht₀ : algebraMap V κ t = 0` using `(residue_eq_zero_iff t).mpr (by`. Rewrite using `[ht.maximalIdeal_eq]`. Conclude with `Ideal.mem_span_singleton_self t)`. Set `z : Fin (n + 1) → V` to `Fin.cons t w`. Establish `hli : LinearIndependent κ (TensorProduct.mk V κ Ω[V⁄k] 1 ∘ fun i => D k V (z i))`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Rewrite `hg` using `[Fin.sum_univ_succ]`. Simplify using `only [Function.comp_apply, TensorProduct.mk_apply, z, Fin.cons_zero, Fin.cons_succ] at hg`. Establish `hφ` using `congrArg (mapBaseChange k V κ) hg`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [map_add, map_sum, map_smul, map_zero, mapBaseChange_tmul, one_smul, map_D, ht₀, Derivation.map_zero, smul_zero, zero_add] at hφ`. Establish `hs : ∀ i : Fin n, g i.succ = 0` using `Fintype.linearIndependent_iff.mp hdli (fun i => g i.succ) hφ`. Simplify using `only [hs, zero_smul, Finset.sum_const_zero, add_zero] at hg`. Establish `h0 : g 0 = 0`. Break down `smul_eq_zero.mp hg with h | h` into its components or cases.
-
-Conclude with `h`. Conclude with `absurd h (one_tmul_D_ne_zero k ht)`. Introduce `i`. Conclude with `Fin.cases h0 hs i`. Establish `hsp` using `hli.span_eq_top_of_card_eq_finrank' (by`.
-
-Rewrite using `[Fintype.card_fin, Module.finrank_eq_card_basis (b₀.baseChange κ), Fintype.card_fin])`. Use `haveI : Module.Free V Ω[V⁄k] := Module.Free.of_basis b₀`. Use `haveI : Module.Finite V Ω[V⁄k] := Module.Finite.of_basis b₀`. Use `haveI : Module.FinitePresentation V Ω[V⁄k] := Module.finitePresentation_of_finite V _`. Take `⟨b, hb⟩` from `Module.exists_basis_of_basis_baseChange (R := V) (fun i => D k V (z i)) hli hsp (Module.Flat.rTensor_preserves_injective_linearMap (maximalIdeal V).subtype Subtype.val_injective)`.
-
-Conclude with `isFreeGen_dForm z b hb`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isFreeGen_dForm_uniformiser_cons : ∀ (k V : Type) [Field k] [CharZero k] [CommRing V] [IsDomain V]
     [IsDiscreteValuationRing V] (α : k →+* V) (n : ℕ) (t : V) (w : Fin n → V), α.EssFiniteType →

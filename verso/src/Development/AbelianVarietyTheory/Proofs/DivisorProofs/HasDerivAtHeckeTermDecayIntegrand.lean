@@ -12,13 +12,13 @@ noncomputable section
 namespace GlobalTheory.HeckeTwo.TermDecay
 
 /- English proof (translation)
-Introduce `σ a b m y hy t`. Establish `hu` using `GlobalTheory.HeckeTwo.TermSmooth.u_ne hy t`. Establish `hQ : 0 < t ^ 2 + y ^ 2` using `by positivity`. Establish `h1 : HasDerivAt (fun t : ℝ => (t : ℂ) + (y : ℂ) * I) 1 t`. Simplify using `using (hasDerivAt_id t).ofReal_comp.add_const ((y : ℂ) * I)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2` using `(hasDerivAt_zpow (-a) ((t : ℂ) + (y : ℂ) * I) (Or.inl hu)).comp t h1`. Establish `h3 : HasDerivAt (fun t : ℝ => (((t ^ 2 + y ^ 2 : ℝ) : ℂ))) ((2 * t : ℝ) : ℂ) t`. Establish `: HasDerivAt (fun t : ℝ => t ^ 2 + y ^ 2) (2 * t) t`. Simplify using `using ((hasDerivAt_pow 2 t).add_const (y ^ 2))`. Conclude with `this.ofReal_comp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h4` using `(Complex.hasStrictDerivAt_cpow_const (c := -σ - (b : ℂ)) (Complex.ofReal_mem_slitPlane.2 hQ)).hasDerivAt.comp t h3`. Establish `h` using `(h2.mul h4).mul_const ((y : ℂ) ^ m)`. Use `h.congr_deriv ?_` and prove the remaining obligations. Simplify using `only [qZ, Function.comp_def]`. Rewrite using `[show -(a + 1) = -a - 1 by ring, show -(a - 1) = -a + 1 by ring, zpow_add_one₀ hu, show -σ - ((b + 1 : ℕ) : ℂ) = -σ - (b : ℂ) - 1 by push_cast; ring]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_qZ : ∀ (σ : ℂ) (a : ℤ) (b m : ℕ) (y : ℝ), y ≠ 0 → ∀ t : ℝ,
     HasDerivAt (qZ σ a b m y) (-(a : ℂ) * qZ σ (a + 1) b m y t

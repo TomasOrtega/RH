@@ -11,9 +11,9 @@ open GlobalTheory.CuspRep GlobalTheory.UnitaryBC PositivityTheory.Rg.BcB Positiv
 attribute [local instance] PositivityTheory.Rg.BcB.E.borelH
 
 /- English proof (translation)
-Unfold `kerH`. Rewrite using `[← finsum_comp_equiv (Equiv.mulLeft γ)]`. Use `finsum_congr fun δ => ?_` and prove the remaining obligations. Use `congr 1`. Simplify using `only [Equiv.coe_mulLeft, Subgroup.coe_mul, _root_.mul_inv_rev]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Use `group`.
+A detailed English derivation is pending.
 -/
 private theorem kerH_left {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
     (φ : H E n 0 → ℂ) (γ : ratH E n 0) (x y : H E n 0) :
@@ -26,13 +26,13 @@ private theorem kerH_left {E : Type} [Field E] [NumberField E] [IsCMField E] {n 
   group
 
 /- English proof (translation)
-Introduce `hA hK E _ _ _ n ι _ s Φ T hΦ hT h g hg x i`. Take `⟨k, k', hk⟩` from `vecsEx E n 0 s.D ι Φ Φ T T 0 hΦ hΦ hT hT`. Establish `hF : Continuous fun x => inner ℂ (s.k₁ x i) h` using `((s.vecs.cont i).1).inner continuous_const`. Establish `hG : Continuous fun x => inner ℂ (k x i) g` using `((hk.cont i).1).inner continuous_const`. Establish `hIF : Inv fun x => inner ℂ (s.k₁ x i) h` using `fun γ x => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [(hK E n ι s).1 γ x]`. Establish `hIG : Inv fun x => inner ℂ (k x i) g` using `fun γ x => by`. Simplify using `only [hk.rep₁, kerH_left]`. Establish `hae : ∀ᵐ x ∂s.D.ν, ldet x ∈ (Set.univ : Set ℝ) → inner ℂ (s.k₁ x i) h = inner ℂ (k x i) g`. Establish `h1` using `s.o₁ h i`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hT g i`. Rewrite `h1` using `[hg]`. Use `filter_upwards [h1, h2] with y a1 a2 _`. Rewrite using `[s.vecs.rep₁, hk.rep₁, ← a1, a2]`. Use `hA E n s.D _ _ Set.univ hF hG hIF hIG isOpen_univ hae x (Set.mem_univ _)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, hk.rep₁]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Tf.GlobalTraceComparison.Pi.pointRep_pf :
     AeEq → KInv → PointRep := by

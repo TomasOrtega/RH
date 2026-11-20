@@ -14,9 +14,9 @@ namespace GlobalTheory.BKGal.CoverRing
 variable {l : ℕ} [hl : Fact l.Prime]
 
 /- English proof (translation)
-Establish `h1` using `PadicInt.unitCoeff_spec hc`. Rewrite `h` using `[h1, Algebra.smul_def, map_mul, map_pow, map_natCast, mul_assoc]`. Establish `h2 : (l : Ainf l) ^ c.valuation * z = 0` using `((PadicInt.unitCoeff hc).isUnit.map (algebraMap ℤ_[l] (Ainf l))).mul_right_eq_zero.1 h`. Establish `key : ∀ n : ℕ, ∀ z : Ainf l, (l : Ainf l) ^ n * z = 0 → z = 0`. Introduce `n`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `n with`. Consider the case `zero => intro z h`. Simplify using `using h`. Consider the case `succ n ih => intro z h; exact ih z (ainf_torsionFree _ (by rw [← mul_assoc, ← pow_succ']; exact h))`. Conclude with `key _ z h2`.
+Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem smul_eq_zero_ainf {c : ℤ_[l]} (hc : c ≠ 0) {z : Ainf l} (h : c • z = 0) : z = 0 := by
   have h1 := PadicInt.unitCoeff_spec hc
@@ -31,9 +31,9 @@ theorem smul_eq_zero_ainf {c : ℤ_[l]} (hc : c ≠ 0) {z : Ainf l} (h : c • z
   exact key _ z h2
 
 /- English proof (translation)
-Use `set b := Module.Free.chooseBasis ℤ_[l] O`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, b.repr 1 i ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `one_ne_zero (b.repr.injective (by ext i; simp [hc i]))`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `congrArg (fun w => TensorProduct.lid ℤ_[l] (Ainf l) ((b.coord i).rTensor (Ainf l) w)) h`. Simplify using `only [LinearMap.rTensor_tmul, TensorProduct.lid_tmul, Module.Basis.coord_apply] at h1`. Rewrite `h1` using `[← sub_eq_zero, ← smul_sub]`. Conclude with `sub_eq_zero.1 (smul_eq_zero_ainf hi h1)`.
+A detailed English derivation is pending.
 -/
 theorem one_tmul_inj {O : Type} [CommRing O] [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Nontrivial O]
     {x y : Ainf l} (h : (1 : O) ⊗ₜ[ℤ_[l]] x = (1 : O) ⊗ₜ[ℤ_[l]] y) : x = y := by
@@ -50,15 +50,13 @@ theorem one_tmul_inj {O : Type} [CommRing O] [Algebra ℤ_[l] O] [Module.Free �
 variable {a : ℕ} [NeZero a]
 
 /- English proof (translation)
-Take `⟨z, ω, hω, hz, -⟩` from `exists_gen l a`. Establish `he : e = l ^ a - 1`. Use `TameDescentExponentData.succ_eq (K := ↥LL.1) (l := l) (e := e) (a := a)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `set w : ↥LL.1 := ((thetaW a LL (WittVector.teichmuller l z) : ↥(OL LL)) : ↥LL.1) with hwdef`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hw : (w : Om l) = ω`. Use `(algebraMap (Om l) ℂ_[l]).injective ?_` and prove the remaining obligations. Establish `h1` using `congrArg (fun y : OC l => (y : ℂ_[l])) (intToOC_thetaW a LL (WittVector.teichmuller l z))`. Simplify using `only [coe_intToOC, wA_teich, WittVector.fontaineTheta_teichmuller] at h1`. Conclude with `h1.trans (GlobalTheory.MemLoc.IsTiltOf.untilt_eq hz)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hwp : IsPrimitiveRoot w e`. Rewrite using `[he]`. Use `IsPrimitiveRoot.of_map_of_injective (f := (LL.1).val) ?_ Subtype.val_injective` and prove the remaining obligations. Simplify `hω` using `[hw]`. Establish `hpow : (((γ.left : (↥LL.1)ˣ) : ↥LL.1)) ^ e = 1` using `(mem_rootsOfUnity' _ _).1 γ.left.2`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨k, -, hk⟩` from `hwp.eq_pow_of_pow_eq_one hpow`. Use `⟨WittVector.teichmuller l z ^ k, fun τ => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((thetaW a LL ((sigma l a ^ (-τ).val) (WittVector.teichmuller l z ^ k)) : ↥(OL LL)) : ↥LL.1) = _`. Rewrite using `[map_pow, sigma_pow_teich, map_pow, map_pow, SubmonoidClass.coe_pow, SubmonoidClass.coe_pow, ← hwdef, TameGal.root, powL_apply]`. Simplify using `only [Subgroup.coe_pow, Units.val_pow_eq_pow_val, ← hk]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_root {e : ℕ} [NeZero e] (LL : FinExt l) [HasUnr a LL] [TameDescentExponentData ↥LL.1 l e a]
     (γ : TameGal ↥LL.1 l e a) :
@@ -90,9 +88,9 @@ end GlobalTheory.BKGal.CoverRing
 open GlobalTheory.BKGal.CoverRing GlobalTheory.BKGal.CoverBridge in
 
 /- English proof (translation)
-Introduce `l _ a e _ _ ϖ LL _ _ g γ hcov`. Take `⟨c, hc⟩` from `exists_root LL γ`. Use `⟨(rescale c).comp (PowerSeries.map ((sigma l a ^ γ.shift.val : Wq l a ≃ₐ[ℤ_[l]] Wq l a) : Wq l a →+* Wq l a)), fun x => ?_⟩` and prove the remaining obligations. Establish `h` using `hcov (toAc (thetaW a LL) ↥LL.1 x) (toAc (thetaW a LL) ↥LL.1 (rescale c (PowerSeries.map ((sigma l a ^ γ.shift.val : Wq l a ≃ₐ[ℤ_[l]] Wq l a) : Wq l a →+* Wq l a) x))) (fun τ => toAc_rescale (thetaW a LL) γ c hc x τ)`. Rewrite `h` using `[PiSys.iTot_toAc, PiSys.iTot_toAc, galOA_tmul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(one_tmul_inj h).symm`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.BKGal.covers_ringEndo : ∀ {l : ℕ} [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (ϖ : PiSys l e)
     (LL : FinExt l) [HasUnr a LL] [TameDescentExponentData ↥LL.1 l e a] (g : GQ l) (γ : TameGal ↥LL.1 l e a),

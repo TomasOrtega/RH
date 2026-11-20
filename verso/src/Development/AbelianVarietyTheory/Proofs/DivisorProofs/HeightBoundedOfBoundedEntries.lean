@@ -12,7 +12,7 @@ section L2
 open scoped Matrix.Norms.L2Operator
 
 /- English proof (translation)
-Establish `e : (opNorm y : ℝ) = ‖y‖` using `by rw [Matrix.l2_opNorm_def]; rfl`. Rewrite using `[e]`. Use `(GlobalTheory.MatrixBall.l2_opNorm_le_hilbertSchmidt y).trans (Real.sqrt_le_sqrt ?_)` and prove the remaining obligations. Conclude with `Finset.sum_le_sum fun i _ => Finset.sum_le_sum fun j _ => pow_le_pow_left₀ (norm_nonneg _) (h i j) 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem opNorm_le_of_entries {m : Type} [Fintype m] [DecidableEq m] (y : Matrix m m ℂ) {c : ℝ}
     (h : ∀ i j, ‖y i j‖ ≤ c) : (opNorm y : ℝ) ≤ Real.sqrt (∑ _i : m, ∑ _j : m, c ^ 2) := by
@@ -27,11 +27,9 @@ end L2
 variable {F : Type} [Field F] [NumberField F] {E : Type} [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Use `⟨fun v => ?_, fun w τ => (hz.2 w τ).trans hc⟩` and prove the remaining obligations. Establish `h` using `hz.1 v`. Distinguish the cases in `hv : v ∈ S`. Rewrite `h` using `[if_pos hv]`. Rewrite using `[if_pos (hS hv)]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h.trans hc`. Rewrite `h` using `[if_neg hv]`. Distinguish the cases in `hv' : v ∈ S'`. Rewrite using `[if_pos hv']`. Conclude with `h.trans h1`.
-
-Rewrite using `[if_neg hv']`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bddA_mono {S S' : Finset (Pl F)} {c c' : ℝ≥0} (hS : S ⊆ S') (hc : c ≤ c') (h1 : 1 ≤ c') {z : AE F E}
     (hz : z ∈ bddA E S c) : z ∈ bddA E S' c' := by
@@ -45,7 +43,7 @@ theorem bddA_mono {S S' : Finset (Pl F)} {c c' : ℝ≥0} (hS : S ⊆ S') (hc : 
     · rw [if_neg hv']; exact h
 
 /- English proof (translation)
-Establish `hf' : ∀ k, ∃ (S : Finset (Pl F)) (c : ℝ≥0), ∀ t, f k t ∈ bddA E S c` using `hf`. Use `choose S c h using hf'`. Conclude with `⟨Finset.univ.biUnion S, max 1 (Finset.univ.sup c), le_max_left _ _, fun k t => bddA_mono (Finset.subset_biUnion_of_mem S (Finset.mem_univ k)) ((Finset.le_sup (f := c) (Finset.mem_univ k)).trans (le_max_right _ _)) (le_max_left _ _) (h k t)⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_common {κ ι : Type} [Fintype κ] (f : κ → ι → AE F E) (hf : ∀ k, f k ∈ Bdd F E ι) :
     ∃ (S : Finset (Pl F)) (c : ℝ≥0), 1 ≤ c ∧ ∀ k t, f k t ∈ bddA E S c := by
@@ -57,7 +55,7 @@ theorem exists_common {κ ι : Type} [Fintype κ] (f : κ → ι → AE F E) (hf
       ((Finset.le_sup (f := c) (Finset.mem_univ k)).trans (le_max_right _ _)) (le_max_left _ _) (h k t)⟩
 
 /- English proof (translation)
-Establish `h` using `hz.1 v`. Distinguish the cases in `hv : v ∈ S`. Rewrite `h` using `[if_pos hv]`. Then use the resulting hypothesis. Rewrite `h` using `[if_neg hv]`. Conclude with `h.trans hc`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absFin_le_bd {S : Finset (Pl F)} {c : ℝ≥0} (hc : 1 ≤ c) {z : AE F E} (hz : z ∈ bddA E S c)
     (v : Pl F) : absFin F v (compFin F E v z) ≤ c := by
@@ -67,7 +65,7 @@ theorem absFin_le_bd {S : Finset (Pl F)} {c : ℝ≥0} (hc : 1 ≤ c) {z : AE F 
   · rw [if_neg hv] at h; exact h.trans hc
 
 /- English proof (translation)
-Establish `h` using `hz.1 v`. Rewrite `h` using `[if_neg hv]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem absFin_le_one_bd {S : Finset (Pl F)} {c : ℝ≥0} {z : AE F E} (hz : z ∈ bddA E S c) {v : Pl F}
     (hv : v ∉ S) : absFin F v (compFin F E v z) ≤ 1 := by
@@ -77,7 +75,7 @@ theorem absFin_le_one_bd {S : Finset (Pl F)} {c : ℝ≥0} {z : AE F E} (hz : z 
 variable {n : ℕ}
 
 /- English proof (translation)
-Use `max_le hc (max_le ((normFin_le_iff F v).2 fun i j => absFin_le_bd hc (hg i j) v) ((normFin_le_iff F v).2 fun i j => ?_))` and prove the remaining obligations. Rewrite using `[← map_inv]`. Conclude with `absFin_le_bd hc (hg' i j) v`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem htFin_le_bd {S : Finset (Pl F)} {c : ℝ≥0} (hc : 1 ≤ c) (g : GL (Fin n) (AE F E))
     (hg : ∀ i j, (g : Matrix (Fin n) (Fin n) (AE F E)) i j ∈ bddA E S c)
@@ -89,7 +87,7 @@ theorem htFin_le_bd {S : Finset (Pl F)} {c : ℝ≥0} (hc : 1 ≤ c) (g : GL (Fi
   exact absFin_le_bd hc (hg' i j) v
 
 /- English proof (translation)
-Use `htOf_eq_one.2 ⟨(normFin_le_iff F v).2 fun i j => absFin_le_one_bd (hg i j) hv, (normFin_le_iff F v).2 fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[← map_inv]`. Conclude with `absFin_le_one_bd (hg' i j) hv`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem htFin_eq_one_bd {S : Finset (Pl F)} {c : ℝ≥0} (g : GL (Fin n) (AE F E))
     (hg : ∀ i j, (g : Matrix (Fin n) (Fin n) (AE F E)) i j ∈ bddA E S c)
@@ -101,9 +99,9 @@ theorem htFin_eq_one_bd {S : Finset (Pl F)} {c : ℝ≥0} (g : GL (Fin n) (AE F 
   exact absFin_le_one_bd (hg' i j) hv
 
 /- English proof (translation)
-Establish `key : ∀ y : GL (Fin n) (AE F E), (∀ i j, (y : Matrix (Fin n) (Fin n) (AE F E)) i j ∈ bddA E S c) → normInf F w ((Formalism.UG.bc (compInf F E w) y : GL (Fin n) (w.Completion ⊗[F] E)) : Matrix (Fin n) (Fin n) (w.Completion ⊗[F] E)) ≤ Real.toNNReal (Real.sqrt (∑ _i : Fin n, ∑ _j : …`. Introduce `y hy`. Use `(normInf_le_iff F w).2 fun τ => ?_` and prove the remaining obligations. Rewrite using `[← NNReal.coe_le_coe, Real.coe_toNNReal _ (Real.sqrt_nonneg _)]`. Use `opNorm_le_of_entries _ fun i j => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hy i j).2 w τ` as an intermediate fact. Conclude with `this` after adjusting the coercions. Use `max_le_max le_rfl (max_le (key g hg) ?_)` and prove the remaining obligations. Rewrite using `[← map_inv]`. Conclude with `key g⁻¹ hg'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem htInf_le_bd {S : Finset (Pl F)} {c : ℝ≥0} (g : GL (Fin n) (AE F E))
     (hg : ∀ i j, (g : Matrix (Fin n) (Fin n) (AE F E)) i j ∈ bddA E S c)
@@ -126,11 +124,11 @@ theorem htInf_le_bd {S : Finset (Pl F)} {c : ℝ≥0} (g : GL (Fin n) (AE F E))
   exact key g⁻¹ hg'
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ n ι g hg hg'`. Take `⟨S, c, hc, h⟩` from `exists_common (F := F) (E := E) (κ := (Fin n × Fin n) ⊕ (Fin n × Fin n)) (fun k => Sum.elim (fun p t => (g t : Matrix (Fin n) (Fin n) (AE F E)) p.1 p.2) (fun p t => (((g t)⁻¹ : GL (Fin n) (AE F E)) : Matrix (Fin n) (Fin n) (AE F E)) p.1 p.2) k) (by rintro (⟨i, j⟩ | ⟨i, j⟩); exact …`. Use `⟨(∏ _w : InfinitePlace F, max 1 (Real.toNNReal (Real.sqrt (∑ _i : Fin n, ∑ _j : Fin n, (c : ℝ) ^ 2)))) * ∏ _v ∈ S, c, fun t => ?_⟩` and prove the remaining obligations. Establish `e1 : ∀ i j, (g t : Matrix (Fin n) (Fin n) (AE F E)) i j ∈ bddA E S c` using `fun i j => h (Sum.inl (i, j)) t`. Establish `e2 : ∀ i j, (((g t)⁻¹ : GL (Fin n) (AE F E)) : Matrix (Fin n) (Fin n) (AE F E)) i j ∈ bddA E S c` using `fun i j => h (Sum.inr (i, j)) t`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `heightGL`. Use `mul_le_mul' (Finset.prod_le_prod' fun w _ => htInf_le_bd (g t) e1 e2 w) ?_` and prove the remaining obligations. Rewrite using `[finprod_eq_prod_of_mulSupport_subset _ (s := S) ?_]`. Conclude with `Finset.prod_le_prod' fun v _ => htFin_le_bd hc (g t) e1 e2 v`. Introduce `v hv`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hvS`. Conclude with `hv (htFin_eq_one_bd (g t) e1 e2 (fun h' => hvS (Finset.mem_coe.2 h')))`.
+A detailed English derivation is pending.
 -/
 theorem heightGL_bdd : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n : ℕ) (ι : Type) (g : ι → GL (Fin n) (AE F E)),
     (∀ i j, (fun t => (g t : Matrix (Fin n) (Fin n) (AE F E)) i j) ∈ Bdd F E ι) →

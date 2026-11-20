@@ -21,7 +21,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarR
 local notation "𝒜" => E ⊗[F] FiniteAdeleRing (𝓞 F) F
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Simplify using `using hy`. Introduce `h`. Conclude with `⟨_, h, by simp⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem mem_crdLat (S : HSpace E) (L : Submodule (𝓞 E) S.V) (x : Fin S.rank → E) :
     x ∈ crdLat S L ↔ (crd S).symm x ∈ L := by
@@ -32,11 +32,11 @@ theorem mem_crdLat (S : HSpace E) (L : Submodule (𝓞 E) S.V) (x : Fin S.rank �
     exact ⟨_, h, by simp⟩
 
 /- English proof (translation)
-Use `⟨Module.Finite.iff_fg.2 (h.fg.map _), ?_⟩` and prove the remaining obligations. Establish `h1 : ((crdLat S L : Submodule (𝓞 E) (Fin S.rank → E)) : Set (Fin S.rank → E)) = (crd S) '' (L : Set S.V)`. Use extensionality with `x`. Rewrite using `[SetLike.mem_coe, mem_crdLat]`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hx; exact ⟨_, hx, by simp⟩`. Introduce and unpack `⟨y, hy, rfl⟩`. Simplify using `using hy`. Rewrite using `[h1]`. Use `show Submodule.span E ((crd S : S.V →ₗ[E] (Fin S.rank → E)) '' (L : Set S.V)) = ⊤`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.span_image, h.span_eq_top, Submodule.map_top, LinearMap.range_eq_top]`. Conclude with `(crd S).surjective`.
+A detailed English derivation is pending.
 -/
 theorem isLat_crd (S : HSpace E) (L : Submodule (𝓞 E) S.V) (h : Submodule.IsLattice E L) :
     IsLat (crdLat S L) := by
@@ -53,11 +53,9 @@ theorem isLat_crd (S : HSpace E) (L : Submodule (𝓞 E) S.V) (h : Submodule.IsL
   exact (crd S).surjective
 
 /- English proof (translation)
-Use `haveI : IsNoetherian (𝓞 E) L := isNoetherian_of_fg_of_noetherian _ hL.fg`. Set `φ : Formalism.HermitianLatticesTheory.dual S.hT L →ₗ[𝓞 E] L` to `{ toFun := fun x => ⟨(T : E) • (x : S.V), hTd x x.2⟩ map_add' := fun x y => by ext; simp [smul_add] map_smul' := fun a x => by ext; simp [smul_comm (T : E) a] }`. Establish `hinj : Function.Injective φ`. Introduce `x y hxy`. Establish `h1 : (T : E) • (x : S.V) = (T : E) • (y : S.V)` using `congrArg Subtype.val hxy`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT' : (T : E) ≠ 0` using `Nat.cast_ne_zero.2 hT`. Conclude with `Subtype.ext (smul_right_injective _ hT' h1)`. Use `haveI : IsNoetherian (𝓞 E) (Formalism.HermitianLatticesTheory.dual S.hT L) := isNoetherian_of_injective φ hinj`. Use `⟨(Submodule.fg_top _).1 (IsNoetherian.noetherian ⊤), ?_⟩` and prove the remaining obligations. Use `eq_top_iff.2 ?_` and prove the remaining obligations.
-
-Rewrite using `[← hL.span_eq_top]`. Conclude with `Submodule.span_mono hint`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLattice_dual (S : HSpace E) (L : Submodule (𝓞 E) S.V) (hL : Submodule.IsLattice E L)
     (hint : L ≤ Formalism.HermitianLatticesTheory.dual S.hT L) (T : ℕ) (hT : T ≠ 0)
@@ -84,7 +82,7 @@ def matOf (S : HSpace E) (γ : S.V ≃ₗ[E] S.V) : GL (Fin S.rank) E :=
       (((crd S).symm.trans γ).trans (crd S)))
 
 /- English proof (translation)
-Rewrite using `[← Matrix.mulVecLin_apply, ← Matrix.GeneralLinearGroup.coe_toLin, matOf, MulEquiv.apply_symm_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem matOf_mulVec (S : HSpace E) (γ : S.V ≃ₗ[E] S.V) (u : Fin S.rank → E) :
     (matOf S γ : Matrix (Fin S.rank) (Fin S.rank) E) *ᵥ u = crd S (γ ((crd S).symm u)) := by
@@ -92,14 +90,14 @@ theorem matOf_mulVec (S : HSpace E) (γ : S.V ≃ₗ[E] S.V) (u : Fin S.rank →
   rfl
 
 /- English proof (translation)
-Simplify using `[hform, Pi.single_apply, apply_ite σ, ite_mul, mul_ite, Finset.sum_ite_eq', Finset.sum_ite_eq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_single {n : Type} [Fintype n] [DecidableEq n] (σ : E →+* E) (A : Matrix n n E) (i j : n) :
     hform σ A (Pi.single i 1) (Pi.single j 1) = A i j := by
   simp [hform, Pi.single_apply, apply_ite σ, ite_mul, mul_ite, Finset.sum_ite_eq', Finset.sum_ite_eq]
 
 /- English proof (translation)
-Use `show cT σ (G : Matrix n n E) * J * (G : Matrix n n E) = J`. Use extensionality with `i j`. Use `h (Pi.single i 1) (Pi.single j 1)` as an intermediate fact. Rewrite `this` using `[hform_mulVec, hform_single, hform_single]`. Conclude with `this`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UJ_of_hform {n : Type} [Fintype n] [DecidableEq n] (σ : E →+* E) (J : Matrix n n E) (G : GL n E)
     (h : ∀ u w, hform σ J ((G : Matrix n n E) *ᵥ u) ((G : Matrix n n E) *ᵥ w) = hform σ J u w) : G ∈ UJ σ J := by
@@ -110,23 +108,19 @@ theorem UJ_of_hform {n : Type} [Fintype n] [DecidableEq n] (σ : E →+* E) (J :
   exact this
 
 /- English proof (translation)
-Take `⟨b, hb, hgen⟩` from `hgen`. Establish `hΔ' : ∀ c, IsLat (dl hc.sig S.gram (crdLat S (lat c)))`. Introduce `c`. Use `isLat_crd S _ (hΔ c)` as an intermediate fact. Rewrite `this` using `[crdLat_dual hc]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨e, he, hsep⟩` from `frames_core (F := F) hc.sig S.gram Lb hLbd (fun c => crdLat S (lat c)) hΔ' (fun c => (X.y c : GL (Fin S.rank) 𝒜)) (fun c => (X.y c).2) (fun c u => X.y_lat c u) M hM b hb hgen`. Establish `hmemd : ∀ (L : Submodule (𝓞 E) S.V) (x : Fin S.rank → E), x ∈ dl hc.sig S.gram (crdLat S L) ↔ (crd S).symm x ∈ Formalism.HermitianLatticesTheory.dual S.hT L`. Introduce `L x`. Rewrite using `[← mem_crdLat]`. Use `show x ∈ dualL hc S (crdLat S L) ↔ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← crdLat_dual hc]`. Use `⟨fun c a => (crd S).symm (e c a), fun c a => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[dualSub_eq]`. Conclude with `(hmemd _ _).1 (he c a)`. Introduce and unpack `c c' ⟨γ, hγ, hL, hz⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `set G := matOf S γ with hGdef`. Establish `hG : G ∈ UJ (hc.sig : E →+* E) S.gram`. Use `UJ_of_hform _ _ G fun u w => ?_` and prove the remaining obligations. Rewrite using `[matOf_mulVec, matOf_mulVec, ← hT_crd hc, hγ, hT_crd hc]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hΛ : ∀ x, x ∈ crdLat S (lat c) ↔ (G : Matrix (Fin S.rank) (Fin S.rank) E) *ᵥ x ∈ crdLat S (lat c')`. Introduce `x`. Rewrite using `[mem_crdLat, mem_crdLat, matOf_mulVec, LinearEquiv.symm_apply_apply]`. Conclude with `hL _`. Establish `hGe : ∀ a, ∃ w ∈ dl hc.sig S.gram (crdLat S (lat c')), (G : Matrix (Fin S.rank) (Fin S.rank) E) *ᵥ e c a - e c' a = (M : E) • w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `a`. Take `⟨z, hzm, hze⟩` from `hz a`. Use `⟨crd S z, (hmemd _ _).2 ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearEquiv.symm_apply_apply]`. Establish `h` using `hzm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[dualSub_eq]`. Conclude with `h`. Rewrite using `[matOf_mulVec]`. Use `congrArg (crd S) hze` as an intermediate fact. Rewrite `this` using `[map_sub, LinearEquiv.apply_symm_apply, map_smul]`.
-
-Conclude with `this`. Take `⟨k, hkU, hst, hcg, hyk⟩` from `hsep c c' G hG hΛ hGe`. Establish `hkUU` using `hU k hkU hst hcg`. Use `Formalism.L2.GlobalTheoryTheory.TraceIntegrality.ClassTie.eq_of_mul X ⟨bc (inclE (F := F) (Af F)) G, bc_mem_UPts hc.sig S.gram G hG⟩ ⟨k⁻¹, inv_mem hkU⟩ ?_ (inv_mem hkUU) ?_` and prove the remaining obligations. Conclude with `Subgroup.mem_subgroupOf.2 ⟨G, hG, rfl⟩`.
-
-Conclude with `Subtype.ext hyk`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem frames_of_tie {hc : CMData F E} {S : HSpace E} {Lb : Submodule (𝓞 E) (Fin S.rank → E)}
     {U : Subgroup (GL (Fin S.rank) (E ⊗[F] Af F))} {cls : Type} {stab : cls → Type} [∀ c, Group (stab c)]

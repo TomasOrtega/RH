@@ -10,9 +10,9 @@ open scoped Formalism.Per
 namespace GlobalTheory.PSerExist
 
 /- English proof (translation)
-Establish `h` using `PadicComplex.norm_extends' l (l : ℚ_[l])`. Establish `h2 : ‖(l : ℚ_[l])‖ < 1` using `Padic.norm_p_lt_one`. Establish `h3 : ((l : ℚ_[l]) : ℂ_[l]) = (l : ℂ_[l])` using `by push_cast; rfl`. Rewrite `h` using `[h3]`. Rewrite using `[h]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem norm_l_lt_one (l : ℕ) [Fact l.Prime] : ‖(l : ℂ_[l])‖ < 1 := by
   have h := PadicComplex.norm_extends' l (l : ℚ_[l])
@@ -22,15 +22,15 @@ theorem norm_l_lt_one (l : ℕ) [Fact l.Prime] : ‖(l : ℂ_[l])‖ < 1 := by
   rw [h]; exact h2
 
 /- English proof (translation)
-Establish `h1 : 1 ≤ h` using `le_trans (by norm_num) hh`. Take `⟨τ, hsurj, x, hxS, hxη, hxind⟩` from `GlobalTheory.T.untiltFrobeniusSeries_onto_and_independent_zeros l h μ h1 hμ`. Set `η : Fl l → Unit → ℂ_[l]` to `fun y _ => ∑ i : Fin h, μ i * lam h i y`. Set `S : Set (Fl l)` to `{y | ‖sh y‖ ≤ ‖(l : ℂ_[l])‖}`. Establish `hlift` using `GlobalTheory.T.lift_hasSum_zero_of_surjective_mod_prime l (Fl l) Unit η (fun _ => τ) S (fun t ht => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨y, hy, hyt⟩` from `hsurj (t ()) (ht ())`. Conclude with `⟨y, hy, fun i => by cases i; exact hyt⟩)`. Establish `hy : ∀ a : Fin h, ∃ z : ℕ → Fl l, z 0 = x a ∧ (∀ k, z k ∈ S) ∧ ∀ i, HasSum (fun k : ℕ => (l : ℂ_[l]) ^ k * η (z k) i) 0` using `fun a => hlift (x a) (hxS a) (fun _ => hxη a)`. Use `choose y hy0 hyS hysum using hy`. Establish `hr : ‖(l : ℂ_[l])‖ < 1` using `norm_l_lt_one l`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyS' : ∀ a k, ‖sh (y a k)‖ ≤ ‖(l : ℂ_[l])‖` using `fun a k => hyS a k`. Use `⟨y, hyS', ?_, ?_⟩` and prove the remaining obligations. Introduce `a`. Establish `hs : ∀ i : Fin h, HasSum (fun k : ℕ => μ i * ((l : ℂ_[l]) ^ k * lam h i (y a k))) (μ i * abelian₂ h i (y a))` using `fun i => ((GlobalTheory.T.untiltFrobeniusDoubleSeries_hasSum_and_norm_bounds l h i ‖(l : ℂ_[l])‖ (y a) h1 hr (hyS' a)).1).mul_left (μ i)`. Establish `hsum` using `hasSum_sum (s := Finset.univ) (fun i _ => hs i)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsum' : HasSum (fun k : ℕ => (l : ℂ_[l]) ^ k * η (y a k) ()) (∑ i : Fin h, μ i * abelian₂ h i (y a))`. Use `hsum using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`. Simplify using `only [η, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => by ring` and prove the remaining obligations.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hsum'.unique (hysum a ())`. Use `GlobalTheory.T.untiltFrobeniusSeries_linearIndependent_of_firstTerms l h h ‖(l : ℂ_[l])‖ y hh (norm_nonneg _) hr hyS' ?_` and prove the remaining obligations. Introduce `n hn a`. Simplify using `only [hy0] at hn`. Conclude with `hxind n hn a`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_zeros (l : ℕ) [Fact l.Prime] (h : ℕ) (μ : Fin h → ℂ_[l]) (hh : 2 ≤ h) (hμ : μ ≠ 0) :
     ∃ y : Fin h → ℕ → Fl l, (∀ a k, ‖sh (y a k)‖ ≤ ‖(l : ℂ_[l])‖) ∧

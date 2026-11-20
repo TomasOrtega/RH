@@ -15,7 +15,7 @@ import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.Unramified
 namespace GlobalTheory.TwV.Lt
 
 /- English proof (translation)
-Introduce `D cc δ B χ hc hd hχ p _ hcop h5 hIn lam`. Take `⟨g, hgl, hAt, hM, hLT⟩` from `GlobalTheory.InertGenusOne.datum_exists_coprime h2 h3 D cc δ hc hd p hcop h5 hIn lam`. Conclude with `⟨g, hLT, h5, hAt, hIn, hM, hc, hd, hχ, hgl.symm, hAt.2.2.2.1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem curveEx_of_cm (h2 : Formalism.L2.Th1.CM.CM2) (h3 : Formalism.L2.Th1.CM.CM3) : CurveEx := by
   intro D cc δ B χ hc hd hχ p _ hcop h5 hIn lam
@@ -24,7 +24,7 @@ theorem curveEx_of_cm (h2 : Formalism.L2.Th1.CM.CM2) (h3 : Formalism.L2.Th1.CM.C
   exact ⟨g, hLT, h5, hAt, hIn, hM, hc, hd, hχ, hgl.symm, hAt.2.2.2.1⟩
 
 /- English proof (translation)
-The claim follows from `curveEx_of_cm h GlobalTheory.HondaCM3.cm3`.
+A detailed English derivation is pending.
 -/
 theorem exists_genusOne_formal_iso_of_unramified_good_reduction (h : Formalism.L2.Th1.CM.CM2) : CurveEx :=
   curveEx_of_cm h GlobalTheory.HondaCM3.cm3

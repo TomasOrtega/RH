@@ -10,7 +10,7 @@ open scoped Formalism.Per
 namespace GlobalTheory.CrysPrism.Compl
 
 /- English proof (translation)
-Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton']`. Conclude with `⟨fun ⟨z, hz⟩ => ⟨z, by rw [← hz, mul_comm]⟩, fun ⟨z, hz⟩ => ⟨z, by rw [hz, mul_comm]⟩⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem smodEq_span_pow {R : Type} [CommRing R] (r x y : R) (n : ℕ) :
     x ≡ y [SMOD (Ideal.span {r} ^ n • ⊤ : Submodule R R)] ↔ ∃ z, x - y = r ^ n * z := by
@@ -18,7 +18,7 @@ theorem smodEq_span_pow {R : Type} [CommRing R] (r x y : R) (n : ℕ) :
   exact ⟨fun ⟨z, hz⟩ => ⟨z, by rw [← hz, mul_comm]⟩, fun ⟨z, hz⟩ => ⟨z, by rw [hz, mul_comm]⟩⟩
 
 /- English proof (translation)
-Rewrite using `[← map_natCast (algebraMap ℚ_[l] K) n]`. Conclude with `(map_ne_zero _).2 (Nat.cast_ne_zero.2 hn)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCast_ne_zero_K (l : ℕ) [Fact l.Prime] {K : Type} [NormedField K] [NormedAlgebra ℚ_[l] K] {n : ℕ}
     (hn : n ≠ 0) : (n : K) ≠ 0 := by
@@ -34,9 +34,9 @@ def iota (τ : ZMod a) : Wq l a →+* K := (algebraMap O K).comp (emb t τ).toRi
 variable {K}
 
 /- English proof (translation)
-Use `Fintype.ofFinite (Fq l a)` as an intermediate fact. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `w hw`. Assume the negation of the conclusion as `h0`. Take `⟨m, b, hb, rfl⟩` from `WittVector.exists_eq_pow_p_mul w h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Establish `hu : IsUnit b` using `WittVector.isUnit_of_coeff_zero_ne_zero b hb`. Rewrite `hw` using `[map_mul, map_pow, map_natCast]`. Conclude with `mul_ne_zero (pow_ne_zero _ (natCast_ne_zero_K l (K := K) hl.out.ne_zero)) (hu.map (iota t K τ)).ne_zero hw`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iota_injective (τ : ZMod a) : Function.Injective (iota t K τ) := by
   have := Fintype.ofFinite (Fq l a)
@@ -50,7 +50,7 @@ theorem iota_injective (τ : ZMod a) : Function.Injective (iota t K τ) := by
 
 include t K in
 /- English proof (translation)
-Introduce `h` and use `by have h1 := congrArg (iota t K 0) h rw [map_natCast, map_zero] at h1 exact natCast_ne_zero_K l (K := K) hl.out.ne_zero h1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem prime_natCast_ne_zero_wittOfTiltFiniteField : (l : Wq l a) ≠ 0 := fun h => by
   have h1 := congrArg (iota t K 0) h
@@ -65,13 +65,13 @@ def Rep (F : ZMod a → K⟦X⟧) (w : ℕ → Wq l a) : Prop :=
 variable {t e}
 
 /- English proof (translation)
-The claim follows from `funext fun n => iota_injective t 0 (by rw [← hw 0 n, ← hv 0 n])`.
+A detailed English derivation is pending.
 -/
 theorem rep_unique {F : ZMod a → K⟦X⟧} {w v : ℕ → Wq l a} (hw : Rep t K e F w) (hv : Rep t K e F v) : w = v :=
   funext fun n => iota_injective t 0 (by rw [← hw 0 n, ← hv 0 n])
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Use extensionality with `n`. Conclude with `mul_left_cancel₀ (natCast_ne_zero_K l (K := K) (Nat.factorial_ne_zero _)) ((hF τ n).trans (hG τ n).symm)`.
+Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem eq_of_rep {F G : ZMod a → K⟦X⟧} {w : ℕ → Wq l a} (hF : Rep t K e F w) (hG : Rep t K e G w) : F = G := by
   funext τ
@@ -79,14 +79,14 @@ theorem eq_of_rep {F G : ZMod a → K⟦X⟧} {w : ℕ → Wq l a} (hF : Rep t K
   exact mul_left_cancel₀ (natCast_ne_zero_K l (K := K) (Nat.factorial_ne_zero _)) ((hF τ n).trans (hG τ n).symm)
 
 /- English proof (translation)
-Introduce `τ n` and use `by simp only [Pi.sub_apply, map_sub, mul_sub, hF τ n, hG τ n]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem rep_sub {F G : ZMod a → K⟦X⟧} {w v : ℕ → Wq l a} (hF : Rep t K e F w) (hG : Rep t K e G v) :
     Rep t K e (F - G) (w - v) := fun τ n => by
   simp only [Pi.sub_apply, map_sub, mul_sub, hF τ n, hG τ n]
 
 /- English proof (translation)
-Introduce `τ n` and use `by have h1 : ((l : ZMod a → K⟦X⟧) ^ m * F) τ = C ((l : K) ^ m) * F τ := by simp only [Pi.mul_apply, Pi.pow_apply, Pi.natCast_apply, map_pow, map_natCast] rw [h1, coeff_C_mul, map_mul, map_pow, map_natCast, ← hF τ n] ring`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem rep_pow_mul (m : ℕ) {F : ZMod a → K⟦X⟧} {w : ℕ → Wq l a} (hF : Rep t K e F w) :
     Rep t K e ((l : ZMod a → K⟦X⟧) ^ m * F) (fun n => (l : Wq l a) ^ m * w n) := fun τ n => by
@@ -101,7 +101,7 @@ def ofRep (w : ℕ → Wq l a) : ZMod a → K⟦X⟧ :=
   fun τ => PowerSeries.mk fun n => iota t K τ (w n) / ((n / e).factorial : K)
 
 /- English proof (translation)
-Introduce `τ n` and use `by rw [ofRep, coeff_mk] exact mul_div_cancel₀ _ (natCast_ne_zero_K l (K := K) (Nat.factorial_ne_zero _))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem rep_ofRep (w : ℕ → Wq l a) : Rep t K e (ofRep (K := K) t e w) w := fun τ n => by
   rw [ofRep, coeff_mk]
@@ -109,13 +109,13 @@ theorem rep_ofRep (w : ℕ → Wq l a) : Rep t K e (ofRep (K := K) t e w) w := f
 
 variable (t e) in
 /- English proof (translation)
-Use `Fintype.ofFinite (Fq l a)` as an intermediate fact. Use `⟨fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨w, -, hw⟩` from `hsd x.1 x.2`. Establish `hdiv : ∀ m k, ∃ q, w k = (l : Wq l a) ^ m * q`. Introduce `m k`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨z, hz⟩` from `(smodEq_span_pow _ _ _ m).1 (hx m)`. Rewrite `hz` using `[sub_zero]`. Take `⟨v, -, hv⟩` from `hsd z.1 z.2`. Establish `h1 : x.1 = (l : ZMod a → K⟦X⟧) ^ m * z.1` using `by rw [hz]; push_cast; rfl`. Establish `h2` using `rep_pow_mul m hv`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[← h1]`. Conclude with `⟨v k, congrFun (rep_unique hw h2) k⟩`. Establish `hw0 : w = 0` using `funext fun k => IsHausdorff.haus' (I := Ideal.span {(l : Wq l a)}) (w k) fun m => by`. Take `⟨q, hq⟩` from `hdiv m k`. Conclude with `(smodEq_span_pow _ _ _ m).2 ⟨q, by rw [sub_zero, hq]⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `eq_of_rep (F := x.1) (G := 0) hw ?_` and prove the remaining obligations. Rewrite using `[hw0]`. Introduce `τ n`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isHausdorff_of (hsd : ∀ F ∈ Sd t K e, F ∈ SdSet t K e) :
     IsHausdorff (Ideal.span {(l : ↥(Sd t K e))}) ↥(Sd t K e) := by
@@ -142,21 +142,19 @@ theorem isHausdorff_of (hsd : ∀ F ∈ Sd t K e, F ∈ SdSet t K e) :
 
 variable (t e) in
 /- English proof (translation)
-Use `Fintype.ofFinite (Fq l a)` as an intermediate fact. Use `⟨fun f hf => ?_⟩` and prove the remaining obligations. Use `choose w hw0 hw using fun j => hsd (f j).1 (f j).2`. Establish `hc : ∀ {m j : ℕ}, m ≤ j → ∀ k, w m k ≡ w j k [SMOD (Ideal.span {(l : Wq l a)} ^ m • ⊤ : Submodule (Wq l a) (Wq l a))]`. Introduce `m j hmj k`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz⟩` from `(smodEq_span_pow _ _ _ m).1 (hf hmj)`. Take `⟨v, -, hv⟩` from `hsd z.1 z.2`. Establish `h1 : (f m).1 - (f j).1 = (l : ZMod a → K⟦X⟧) ^ m * z.1`. Establish `h0` using `congrArg Subtype.val hz`. Move the coercions through the operations in `at h0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Conclude with `h0`. Establish `h2` using `rep_pow_mul m hv`. Rewrite `h2` using `[← h1]`. Establish `h3` using `congrFun (rep_unique (rep_sub (hw m) (hw j)) h2) k`. Conclude with `(smodEq_span_pow _ _ _ m).2 ⟨v k, by simpa using h3⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose W hW using fun k => IsPrecomplete.prec' (I := Ideal.span {(l : Wq l a)}) (fun j => w j k) (fun {m j} h => hc h k)`. Establish `hW0 : LTo0 l W` using `fun r => (hw0 r r).mono fun k hk => by`. Take `⟨q, hq⟩` from `(smodEq_span_pow _ _ _ r).1 (hW k r)`. Establish `h1 : W k = w r k - (l : Wq l a) ^ r * q` using `by rw [← hq]; ring`. Rewrite using `[h1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `dvd_sub hk (dvd_mul_right _ _)`. Establish `hLmem : ofRep (K` using `K) t e W ∈ Sd t K e := Subring.subset_closure ⟨W, hW0, rep_ofRep W⟩`. Use `⟨⟨_, hLmem⟩, fun n => ?_⟩` and prove the remaining obligations. Use `choose v hv using fun k => (smodEq_span_pow _ _ _ n).1 (hW k n)`. Establish `hl0 : (l : Wq l a) ^ n ≠ 0` using `pow_ne_zero _ (prime_natCast_ne_zero_wittOfTiltFiniteField t (K := K))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hv0 : LTo0 l v` using `fun r => ((hw0 n (r + n)).and (hW0 (r + n))).mono fun k hk => by`. Establish `h1 : (l : Wq l a) ^ n * (l : Wq l a) ^ r ∣ (l : Wq l a) ^ n * v k`. Rewrite using `[← hv k, ← pow_add, add_comm]`. Conclude with `dvd_sub hk.1 hk.2`. Conclude with `(mul_dvd_mul_iff_left hl0).1 h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Establish `hymem : ofRep (K` using `K) t e v ∈ Sd t K e := Subring.subset_closure ⟨v, hv0, rep_ofRep v⟩`. Use `(smodEq_span_pow _ _ _ n).2 ⟨⟨_, hymem⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Establish `h1` using `rep_sub (hw n) (rep_ofRep (K := K) (t := t) (e := e) W)`. Establish `h2` using `rep_pow_mul n (rep_ofRep (K := K) (t := t) (e := e) v)`. Establish `h3 : (fun k => (l : Wq l a) ^ n * v k) = w n - W` using `funext fun k => by rw [Pi.sub_apply, hv k]`.
-
-Rewrite `h2` using `[h3]`. Establish `h4` using `eq_of_rep h1 h2`. Use `push_cast`. Conclude with `h4`.
+A detailed English derivation is pending.
 -/
 theorem isPrecomplete_of (hsd : ∀ F ∈ Sd t K e, F ∈ SdSet t K e) :
     IsPrecomplete (Ideal.span {(l : ↥(Sd t K e))}) ↥(Sd t K e) := by
@@ -205,7 +203,7 @@ theorem isPrecomplete_of (hsd : ∀ F ∈ Sd t K e, F ∈ SdSet t K e) :
 variable (t e) in
 
 /- English proof (translation)
-The claim follows from `{ toIsHausdorff := isHausdorff_of t e hsd, toIsPrecomplete := isPrecomplete_of t e hsd }`.
+A detailed English derivation is pending.
 -/
 theorem isAdicComplete_of (hsd : ∀ F ∈ Sd t K e, F ∈ SdSet t K e) :
     IsAdicComplete (Ideal.span {(l : ↥(Sd t K e))}) ↥(Sd t K e) :=

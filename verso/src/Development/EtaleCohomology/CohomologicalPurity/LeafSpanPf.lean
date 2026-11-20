@@ -6,19 +6,17 @@ open TensorProduct
 namespace LateralTheory.CohomologicalPurity.LeafSpanPf
 
 /- English proof (translation)
-Use `set T := Submodule.span B (Set.range fun i => KaehlerDifferential.D R B (algebraMap P B (z i)))`. Establish `hmap : ∀ m : Ω[P⁄R], KaehlerDifferential.map R R P B m ∈ T`. Introduce `m`. Establish `hm : m ∈ Submodule.span P (Set.range fun i => KaehlerDifferential.D R P (z i))`. Rewrite using `[hz]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition.
 
-Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hm using Submodule.span_induction with`. Consider the case `mem m hm`. Take `⟨i, rfl⟩` from `hm`. Rewrite using `[KaehlerDifferential.map_D]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `T.add_mem ha hb`. Consider the case `smul c m _ hm`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[LinearMap.map_smul, ← algebraMap_smul B c]`. Conclude with `T.smul_mem _ hm`. Rewrite using `[eq_top_iff]`. Introduce `ω _`. Establish `hk : ω ∈ LinearMap.ker (KaehlerDifferential.map R P B B)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Rewrite using `[LinearMap.mem_ker]`. Conclude with `Subsingleton.elim _ _`. Establish `hbc : ∀ t, KaehlerDifferential.mapBaseChange R P B t ∈ T`. Introduce `t`. Proceed by induction on `t using TensorProduct.induction_on with`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `zero => simp`. Consider the case `tmul b m`. Rewrite using `[KaehlerDifferential.mapBaseChange_tmul]`. Conclude with `T.smul_mem _ (hmap m)`. Consider the case `add a b ha hb => rw [map_add]`.
-
-Conclude with `T.add_mem ha hb`. Take `⟨t, rfl⟩` from `(KaehlerDifferential.exact_mapBaseChange_map R P B (ω)).mp hk`. Conclude with `hbc t`.
+A detailed English derivation is pending.
 -/
 theorem span_of_subsingleton {R P B ι : Type} [CommRing R] [CommRing P] [CommRing B] [Algebra R P]
     [Algebra R B] [Algebra P B] [IsScalarTower R P B] [Subsingleton Ω[B⁄P]] (z : ι → P)
@@ -55,15 +53,15 @@ theorem span_of_subsingleton {R P B ι : Type} [CommRing R] [CommRing P] [CommRi
   exact hbc t
 
 /- English proof (translation)
-Set `φ : Module.End A (M ⧸ S)` to `algebraMap A (Module.End A (M ⧸ S)) f`. Establish `hφ : LinearMap.range φ ≤ p • ⊤`. Introduce and unpack `_ ⟨n, rfl⟩`. Take `⟨ω, rfl⟩` from `S.mkQ_surjective n`. Take `⟨s, hs, t, ht, hst⟩` from `Submodule.mem_sup.mp (h ω)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e1 : φ (S.mkQ ω) = S.mkQ t`. Simplify using `only [φ, Module.algebraMap_end_apply, Submodule.mkQ_apply, ← Submodule.Quotient.mk_smul, ← hst, Submodule.Quotient.mk_add, (Submodule.Quotient.mk_eq_zero S).mpr hs, zero_add]`. Rewrite using `[e1]`. Conclude with `(Submodule.smul_mono (le_refl p) (le_top : Submodule.map S.mkQ ⊤ ≤ ⊤)) (by rw [← Submodule.map_smul'']; exact Submodule.mem_map_of_mem ht)`. Take `⟨q, hmon, -, hcoef, hq⟩` from `LinearMap.exists_monic_and_natDegree_eq_and_coeff_mem_pow_and_aeval_eq_zero _ φ p hφ`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Polynomial.aeval f q, ?_, ?_⟩` and prove the remaining obligations. Introduce `hmem`. Apply `hf` to reduce the goal to its premises. Apply `hp.mem_of_pow_mem q.natDegree` to reduce the goal to its premises. Establish `hsum : Polynomial.aeval f q = f ^ q.natDegree + ∑ k ∈ Finset.range q.natDegree, q.coeff k * f ^ k`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Polynomial.aeval_eq_sum_range, Finset.sum_range_succ, hmon.coeff_natDegree]`. Simplify using `[add_comm, smul_eq_mul]`. Establish `hlow : ∑ k ∈ Finset.range q.natDegree, q.coeff k * f ^ k ∈ p` using `Ideal.sum_mem _ fun k hk => Ideal.mul_mem_right _ _ (Ideal.pow_le_self (by have := Finset.mem_range.mp hk; omega) (hcoef k))`. Use `p.sub_mem hmem hlow` as an intermediate fact. Rewrite `this` using `[hsum, add_sub_cancel_right]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ω`. Establish `e2 : Polynomial.aeval φ q = algebraMap A (Module.End A (M ⧸ S)) (Polynomial.aeval f q)` using `Polynomial.aeval_algebraMap_apply _ _ _`. Use `LinearMap.congr_fun hq (S.mkQ ω)` as an intermediate fact. Rewrite `this` using `[e2, Module.algebraMap_end_apply, LinearMap.zero_apply, Submodule.mkQ_apply, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem annih {A M : Type} [CommRing A] [AddCommGroup M] [Module A M] [Module.Finite A M]
     (S : Submodule A M) (p : Ideal A) (hp : p.IsPrime) (f : A) (hf : f ∉ p)
@@ -103,25 +101,21 @@ theorem annih {A M : Type} [CommRing A] [AddCommGroup M] [Module A M] [Module.Fi
 open KaehlerDifferential in
 
 /- English proof (translation)
-Use `set S := Submodule.span A (Set.range fun k => D R A (Sum.elim x y k))`. Establish `hSx : ∀ j, D R A (x j) ∈ S` using `fun j => Submodule.subset_span ⟨Sum.inl j, rfl⟩`. Establish `hSy : ∀ k, D R A (y k) ∈ S` using `fun k => Submodule.subset_span ⟨Sum.inr k, rfl⟩`. Establish `hI : ∀ a ∈ I, ∀ m : Ω[A⁄R], a • m ∈ S ⊔ I • ⊤` using `fun a ha m => Submodule.mem_sup_right (Submodule.smul_mem_smul ha trivial)`. Establish `hDa : ∀ a ∈ I, f • D R A a ∈ S ⊔ I • ⊤`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha`. Take `⟨b, hb⟩` from `Ideal.mem_span_range_iff_exists_fun.mp (hfI a ha)`. Establish `e1 : D R A (f * a) = f • D R A a + a • D R A f` using `Derivation.leibniz _ _ _`. Establish `e2 : D R A (f * a) = ∑ j, (b j • D R A (x j) + x j • D R A (b j))`. Rewrite using `[← hb, map_sum]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Derivation.leibniz]`. Establish `e3 : f • D R A a = ∑ j, (b j • D R A (x j) + x j • D R A (b j)) - a • D R A f`. Rewrite using `[← e2, e1]`. Normalize the expressions using the abelian group laws. Rewrite using `[e3]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.sub_mem _ (Submodule.sum_mem _ fun j _ => Submodule.add_mem _ ?_ ?_) (hI a ha _)` and prove the remaining obligations. Conclude with `Submodule.mem_sup_left (S.smul_mem _ (hSx j))`. Conclude with `hI _ (hx j) _`. Establish `hω : map R R A (A ⧸ I) ω ∈ Submodule.span (A ⧸ I) (Set.range fun k => D R (A ⧸ I) (Ideal.Quotient.mk I (y k)))`. Rewrite using `[hspan]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Discharge the goal by the elementary cases of `trivial`. Take `⟨c, hc⟩` from `Submodule.mem_span_range_iff_exists_fun _ |>.mp hω`. Use `choose c' hc' using fun k => Ideal.Quotient.mk_surjective (c k)`. Use `set ω' := ω - ∑ k, c' k • D R A (y k) with hω'`. Establish `hck : ∀ k, c' k • D R (A ⧸ I) (algebraMap A (A ⧸ I) (y k)) = c k • D R (A ⧸ I) (Ideal.Quotient.mk I (y k))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `k`. Rewrite using `[← algebraMap_smul (A ⧸ I) (c' k), Ideal.Quotient.algebraMap_eq, hc']`. Establish `h0 : mapBaseChange R A (A ⧸ I) (1 ⊗ₜ ω') = 0`. Rewrite using `[mapBaseChange_tmul, one_smul, hω', map_sub, map_sum]`. Simplify using `only [LinearMap.map_smul_of_tower, map_D, hck, hc, sub_self]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨t, ht⟩` from `(exact_kerCotangentToTensor_mapBaseChange R A (A ⧸ I) Ideal.Quotient.mk_surjective (1 ⊗ₜ ω')).mp h0`. Take `⟨a, rfl⟩` from `Ideal.toCotangent_surjective _ t`. Rewrite `ht` using `[kerCotangentToTensor_toCotangent]`. Establish `haI : (a : A) ∈ I`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mp a.2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdiff : ω' - D R A a ∈ I • (⊤ : Submodule A Ω[A⁄R])`. Establish `h1 : (1 : A ⧸ I) ⊗ₜ[A] (ω' - D R A a) = 0` using `by rw [tmul_sub, ← ht, sub_self]`. Use `congrArg (TensorProduct.quotTensorEquivQuotSMul Ω[A⁄R] I) h1` as an intermediate fact. Rewrite `this` using `[TensorProduct.quotTensorEquivQuotSMul_mk_one_tmul, map_zero, Submodule.Quotient.mk_eq_zero]`. Then use the resulting hypothesis. Establish `e4 : f • ω = f • (ω' - D R A a) + f • ∑ k, c' k • D R A (y k) + f • D R A a`.
-
-Rewrite using `[← smul_add, ← smul_add, hω']`. Use `congr 1`. Normalize the expressions using the abelian group laws. Rewrite using `[e4]`. Use `Submodule.add_mem _ (Submodule.add_mem _ ?_ ?_) (hDa a haI)` and prove the remaining obligations.
-
-Conclude with `Submodule.mem_sup_right (Submodule.smul_mem _ f hdiff)`. Conclude with `Submodule.mem_sup_left (S.smul_mem _ (Submodule.sum_mem _ fun k _ => S.smul_mem _ (hSy k)))`.
+Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem key {R A : Type} [CommRing R] [CommRing A] [Algebra R A] (I : Ideal A) {e d : ℕ}
     (x : Fin d → A) (y : Fin e → A) (f : A) (hx : ∀ j, x j ∈ I)
@@ -177,13 +171,13 @@ theorem key {R A : Type} [CommRing R] [CommRing A] [Algebra R A] (I : Ideal A) {
   · exact Submodule.mem_sup_left (S.smul_mem _ (Submodule.sum_mem _ fun k _ => S.smul_mem _ (hSy k)))
 
 /- English proof (translation)
-Introduce `e d R A _ _ _ _ I p hp hIp hB x f hx hf hfI`. Take `⟨g, hg⟩` from `Algebra.IsStandardSmoothOfRelativeDimension.exists_etale_mvPolynomial (n := e) R (A ⧸ I)`. Use `choose y hy using fun k : Fin e => Ideal.Quotient.mk_surjective (g (MvPolynomial.X k))`. Establish `hspan : Submodule.span (A ⧸ I) (Set.range fun k => KaehlerDifferential.D R (A ⧸ I) (Ideal.Quotient.mk I (y k))) = ⊤`. Set `_ : Algebra (MvPolynomial (Fin e) R) (A ⧸ I)` to `g.toRingHom.toAlgebra`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: Algebra.Etale (MvPolynomial (Fin e) R) (A ⧸ I)` using `hg`. Establish `: IsScalarTower R (MvPolynomial (Fin e) R) (A ⧸ I)` using `IsScalarTower.of_algebraMap_eq' g.comp_algebraMap.symm`. Establish `h` using `span_of_subsingleton (R := R) (P := MvPolynomial (Fin e) R) (B := A ⧸ I) MvPolynomial.X (by`. Rewrite using `[← (KaehlerDifferential.mvPolynomialBasis R (Fin e)).span_eq]`. Use `congr 2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Simplify using `[KaehlerDifferential.mvPolynomialBasis_apply])`. Establish `e5 : (fun k => KaehlerDifferential.D R (A ⧸ I) (Ideal.Quotient.mk I (y k))) = fun k => KaehlerDifferential.D R (A ⧸ I) (algebraMap (MvPolynomial (Fin e) R) (A ⧸ I) (MvPolynomial.X k))`. Use function extensionality and compare the values at `k`. Rewrite using `[hy]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[e5]`. Conclude with `h`. Take `⟨g', hg'p, hg'⟩` from `annih (Submodule.span A (Set.range fun k => KaehlerDifferential.D R A (Sum.elim x y k))) p hp f hf (fun ω => (show _ ⊔ I • (⊤ : Submodule A Ω[A⁄R]) ≤ _ ⊔ p • ⊤ from sup_le_sup_left (Submodule.smul_mono_left hIp) _) (key I x y f hx hfI hspan ω))`. Conclude with `⟨y, g', hg'p, hg'⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem LeafSpan_of : LateralTheory.CohomologicalPurity.ChartCut.LeafSpan := by
   intro e d R A _ _ _ _ I p hp hIp hB x f hx hf hfI

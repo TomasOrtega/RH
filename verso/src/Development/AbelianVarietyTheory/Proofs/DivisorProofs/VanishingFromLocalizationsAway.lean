@@ -11,13 +11,11 @@ open GlobalTheory.DeRham (spOver spOver_comp)
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-Introduce `B _ s hs b hb`. Assume the negation of the conclusion as `hne`. Set `I : Ideal B` to `LinearMap.ker (LinearMap.toSpanSingleton B B b)`. Establish `hI : I ≠ ⊤`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : (1 : B) ∈ I` using `h ▸ Submodule.mem_top`. Establish `: (1 : B) • b = 0` using `h1`. Conclude with `hne (by simpa using this)`. Take `⟨M, hM, hIM⟩` from `Ideal.exists_le_maximal I hI`. Take `⟨f, hfs, hfM⟩` from `hs ⟨M, hM.isPrime⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h0` using `hb f hfs`. Rewrite `h0` using `[IsLocalization.map_eq_zero_iff (Submonoid.powers f)]`. Take `⟨⟨m, n, rfl⟩, hm⟩` from `h0`. Establish `hmI : f ^ n ∈ I` using `by show (f ^ n) • b = 0`. Simplify using `using hm`.
-
-Conclude with `hfM (hM.isPrime.mem_of_pow_mem n (hIM hmI))`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.PDiv.eq_zero_of_away_eq_zero_of_forall_prime :
     ∀ (B : Type) [CommRing B] (s : Set B), (∀ P : PrimeSpectrum B, ∃ f ∈ s, f ∉ P.asIdeal) → ∀ b : B, (∀ f ∈ s, algebraMap B (Localization.Away f) b = 0) → b = 0 := by

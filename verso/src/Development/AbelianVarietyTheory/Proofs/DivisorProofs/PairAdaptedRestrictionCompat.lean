@@ -16,19 +16,19 @@ noncomputable section
 namespace GlobalTheory.SiegelAvgNz
 
 /- English proof (translation)
-Introduce `hPr F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hH hP₁ d' hd' d₁' hd₁' dd hdd dd₁ hdd₁ ed hmap hheis hinv hadm hnz l₁ hl₁ hl₁inv hl₁0 μ hμ`. Take `⟨φ₀, hφ₀, hl0⟩` from `hl₁0`. Take `⟨Tm, hTm, hTh, hTi, hTa, hTv⟩` from `GlobalTheory.T.pair_adapted_plane_compatible hPr F E σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hH hP₁ d' hd' d₁' hd₁' dd hdd dd₁ hdd₁ μ hμ`. Take `⟨c, hc⟩` from `GlobalTheory.T.seesaw_pair_restriction_global_factor hPr F E σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hH hP₁ d' hd' d₁' hd₁' dd hdd dd₁ hdd₁ ed hmap hheis hinv hadm hnz Tm hTm hTh hTi hTa`. Take `⟨Φ, hΦ, g, ⟨hgi, hg0⟩, hgv⟩` from `hTv φ₀ hφ₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `letI : MeasurableSpace (Fin n → AE F E) := borel _`. Establish `hψ : IsStd B.ψ` using `hP.base.std`. Establish `hmem : ∀ y, GlobalTheory.SiegelAvg.starFam dd B.ψ (incV F H'.y) y Φ ∈ schA F ((Fin n × Fin d) ⊕ (Fin n × Fin d))` using `fun y => GlobalTheory.SchrKeepsSchA.schr_mem_schA F B.ψ hψ _ _ Φ hΦ`. Establish `hφne : φ₀ ≠ 0` using `by rintro rfl; exact hl0 (map_zero l₁)`. Choose the witnesses or unpack the hypotheses as in `⟨y₀, hy₀⟩ : ∃ y, g y ≠ 0 := by`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Apply `hg0` to reduce the goal to its premises. Rewrite using `[show g = fun _ => 0 from funext h]`. Conclude with `integral_zero _ _`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Use `hc _ (hmem y₀)` as an intermediate fact. Rewrite `this` using `[hgv, zero_smul]`. Conclude with `smul_ne_zero hy₀ hφne this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `key : ∀ y, (l₁ ∘ₗ ed) (GlobalTheory.SiegelAvg.starFam dd B.ψ (incV F H'.y) y Φ) = (c⁻¹ * l₁ φ₀) * g y` using `fun y => by`. Establish `h1` using `hc _ (hmem y)`. Rewrite `h1` using `[hgv]`. Establish `h2 : ed (GlobalTheory.SiegelAvg.starFam dd B.ψ (incV F H'.y) y Φ) = (c⁻¹ * g y) • φ₀`. Rewrite using `[mul_smul, h1, smul_smul, inv_mul_cancel₀ hc0, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[LinearMap.comp_apply, h2, map_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hconv : GlobalTheory.SiegelAvg.Conv μ (l₁ ∘ₗ ed) (GlobalTheory.SiegelAvg.starFam dd B.ψ (incV F H'.y)) Φ` using `by show Integrable (fun y => (l₁ ∘ₗ ed) (GlobalTheory.SiegelAvg.starFam dd B.ψ (incV F H'.y) y Φ)) μ`. Repeatedly rewrite using `[key]`. Conclude with `hgi.const_mul _`.
+Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Φ, hΦ, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.SiegelAvg.avgForm_apply _ _ _ hconv]`. Repeatedly rewrite using `[key]`. Rewrite using `[integral_const_mul]`. Conclude with `mul_ne_zero (mul_ne_zero (inv_ne_zero hc0) hl0) hg0`.
+A detailed English derivation is pending.
 -/
 theorem avg_ne_zero : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →

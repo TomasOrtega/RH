@@ -11,15 +11,15 @@ open scoped ENNReal NNReal
 namespace Formalism.L2.SG.Pf.WuBL
 
 /- English proof (translation)
-Introduce `k r z hz hT μG μS ν hG hS hq Vp _ W hWc hW0 hWS y hy`. Take `⟨hGg, hSg, hSG, hRG, hRS⟩` from `quotient_measure_unitary_group k r z hz hT`. Establish `hset : PI.QuotientSetting (Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)) (Formalism.QuantumDeterminants.Sset k r z) μG μS ν` using `⟨hGg, hSg, hSG, hG, hS, hRG μG hG, hRS μS hS, hq⟩`. Set `G : Set (Formalism.QuantumDeterminants.Mt k r)` to `{x | Matrix.of x ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)}`. Establish `hGc : IsClosed G` using `hGg.1.preimage continuous_id`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `F : Formalism.QuantumDeterminants.Mt k r → ℝ≥0∞` to `fun x => ((‖W (Matrix.of x)‖₊ : ℝ≥0∞)) ^ 2`. Establish `hFG : F = G.piecewise F (fun _ => 0)`. Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : x ∈ G`. Simplify using `[Set.piecewise, hx]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[Set.piecewise, hx, F, hW0 (Matrix.of x) hx]`. Establish `hcont : ContinuousOn F G`. Establish `hW' : ContinuousOn (fun x : Formalism.QuantumDeterminants.Mt k r => W (Matrix.of x)) G` using `hWc.comp continuous_id.continuousOn (fun x hx => hx)`. Conclude with `(ENNReal.continuous_pow 2).comp_continuousOn (ENNReal.continuous_coe.comp_continuousOn hW'.nnnorm)`. Establish `hmeas : Measurable F`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hFG]`. Conclude with `hcont.measurable_piecewise continuousOn_const hGc.measurableSet`. Establish `hinv : ∀ s ∈ Formalism.QuantumDeterminants.Sset k r z, ∀ x : Formalism.QuantumDeterminants.Mt k r, Matrix.of x ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r) → F (fun i j => (s * Matrix.of x) i j) = F x`. Introduce `s hs x hx`. Establish `h2 : ‖W (s * Matrix.of x)‖₊ = ‖W (Matrix.of x)‖₊` using `NNReal.eq (hWS s hs (Matrix.of x) hx)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `((‖W (s * Matrix.of x)‖₊ : ℝ≥0∞)) ^ 2 = _`. Rewrite using `[h2]`. Conclude with `quotient_invariant (2 * r + k + 1) _ _ μG μS ν hset F hmeas hinv y hy`.
+A detailed English derivation is pending.
 -/
 theorem l2RightTranslation_thm : L2RightTranslation := by
   classical

@@ -19,13 +19,13 @@ def fac (k : Fin 2) (t : Tup D k) (kv : Σ k : Fin 2, D.nd.PlG k) :
 variable {D}
 
 /- English proof (translation)
-Simplify using `[fac]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fac_self (k : Fin 2) (t : Tup D k) (v : D.nd.PlG k) : fac D k t ⟨k, v⟩ = D.ntypes.eSer k (t v) := by
   simp [fac]
 
 /- English proof (translation)
-Simplify using `[fac, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fac_ne (k : Fin 2) (t : Tup D k) (kv : Σ k : Fin 2, D.nd.PlG k) (h : kv.1 ≠ k) : fac D k t kv = 1 := by
   simp [fac, h]
@@ -33,19 +33,17 @@ theorem fac_ne (k : Fin 2) (t : Tup D k) (kv : Σ k : Fin 2, D.nd.PlG k) (h : kv
 open Classical in
 
 /- English proof (translation)
-Rewrite using `[Fintype.prod_sigma, Fintype.prod_eq_mul_prod_compl k]`. Simplify using `only [fac_self]`. Establish `h2 : ∏ k' ∈ ({k}ᶜ : Finset (Fin 2)), ∏ v : D.nd.PlG k', (fac D k t ⟨k', v⟩).coeff (g ⟨k', v⟩) = if ∀ kv : (Σ k : Fin 2, D.nd.PlG k), kv.1 ≠ k → g kv = 1 then 1 else 0`. Establish `e : ∀ k' ∈ ({k}ᶜ : Finset (Fin 2)), ∏ v : D.nd.PlG k', (fac D k t ⟨k', v⟩).coeff (g ⟨k', v⟩) = if ∀ v : D.nd.PlG k', g ⟨k', v⟩ = 1 then 1 else 0`. Introduce `k' hk'`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hk : k' ≠ k` using `by simpa using hk'`. Establish `hv : ∀ v : D.nd.PlG k', (fac D k t ⟨k', v⟩).coeff (g ⟨k', v⟩) = if g ⟨k', v⟩ = 1 then 1 else 0`. Introduce `v`. Rewrite using `[fac_ne k t ⟨k', v⟩ hk, MonoidAlgebra.one_def, MonoidAlgebra.coeff_single_apply]`. Distinguish the cases in `hg : g ⟨k', v⟩ = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos hg.symm, if_pos hg]`. Rewrite using `[if_neg (Ne.symm hg), if_neg hg]`. Simplify using `only [hv]`. Distinguish the cases in `hc : ∀ v : D.nd.PlG k', g ⟨k', v⟩ = 1`. Rewrite using `[if_pos hc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.prod_eq_one fun v _ => if_pos (hc v)`. Rewrite `hc` using `[if_neg hc] push_neg`. Take `⟨v, hv'⟩` from `hc`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ v) (if_neg hv')`. Rewrite using `[Finset.prod_congr rfl e, Finset.prod_boole]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hc : ∀ kv : (Σ k : Fin 2, D.nd.PlG k), kv.1 ≠ k → g kv = 1`. Rewrite using `[if_pos hc, if_pos]`. Introduce `k' hk' v`. Conclude with `hc ⟨k', v⟩ (by simpa using hk')`. Rewrite using `[if_neg hc, if_neg]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Introduce `h`. Apply `hc` to reduce the goal to its premises. Introduce and unpack `⟨k', v⟩ hk`. Conclude with `h k' (by simpa using hk) v`. Rewrite using `[h2]`.
-
-Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem prod_fac_coeff (k : Fin 2) (t : Tup D k) (g : G0g D.nd) :
     ∏ kv : (Σ k : Fin 2, D.nd.PlG k), (fac D k t kv).coeff (g kv) =
@@ -87,9 +85,9 @@ theorem prod_fac_coeff (k : Fin 2) (t : Tup D k) (g : G0g D.nd) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Apply `MonoidAlgebra.coeff_injective` to reduce the goal to its premises. Use extensionality with `g`. Rewrite using `[MonoidAlgebra.coeff_sum, Finsupp.finset_sum_apply]`. Simplify using `only [Formalism.BasicNotions.Examples₂.NZ.tens_coeff, prod_fac_coeff]`. Simplify using `only [badElt, MonoidAlgebra.coeff_ofCoeff, Finsupp.equivFunOnFinite_symm_apply_apply]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `split_ifs with hc`. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem badElt_eq_sum (k : Fin 2) (S : Finset (Tup D k)) :
     badElt D k S = ∑ t ∈ S, Formalism.BasicNotions.Examples₂.NZ.tens (fac D k t) := by
@@ -103,7 +101,7 @@ theorem badElt_eq_sum (k : Fin 2) (S : Finset (Tup D k)) :
   · simp
 
 /- English proof (translation)
-Break down `kv with ⟨k', v⟩` into its components or cases. Distinguish the cases in `h : k' = k`. Substitute `h` using the available equality. Rewrite using `[fac_self, D.ntypes.eSer_idem]`. Rewrite using `[fac_ne k t ⟨k', v⟩ h, one_mul]`.
+Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem fac_mul_self (k : Fin 2) (t : Tup D k) (kv : Σ k : Fin 2, D.nd.PlG k) :
     fac D k t kv * fac D k t kv = fac D k t kv := by
@@ -114,7 +112,7 @@ theorem fac_mul_self (k : Fin 2) (t : Tup D k) (kv : Σ k : Fin 2, D.nd.PlG k) :
   · rw [fac_ne k t ⟨k', v⟩ h, one_mul]
 
 /- English proof (translation)
-Break down `kv with ⟨k', v⟩` into its components or cases. Distinguish the cases in `h : k' = k`. Substitute `h` using the available equality. Rewrite using `[fac_self, D.ntypes.eSer_central]`. Rewrite using `[fac_ne k t ⟨k', v⟩ h, one_mul, mul_one]`.
+Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem fac_central (k : Fin 2) (t : Tup D k) (kv : Σ k : Fin 2, D.nd.PlG k) (a) :
     fac D k t kv * a = a * fac D k t kv := by
@@ -125,7 +123,7 @@ theorem fac_central (k : Fin 2) (t : Tup D k) (kv : Σ k : Fin 2, D.nd.PlG k) (a
   · rw [fac_ne k t ⟨k', v⟩ h, one_mul, mul_one]
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `Function.ne_iff.1 h`. Rewrite using `[Formalism.BasicNotions.Examples₂.NZ.tens_mul]`. Use `Formalism.BasicNotions.Examples₂.NZ.tens_eq_zero _ ⟨k, v⟩ ?_` and prove the remaining obligations. Simplify using `only [fac_self]`. Conclude with `D.ntypes.eSer_orth k _ _ hv`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tens_fac_mul_of_ne (k : Fin 2) {t t' : Tup D k} (h : t ≠ t') :
     Formalism.BasicNotions.Examples₂.NZ.tens (fac D k t) * Formalism.BasicNotions.Examples₂.NZ.tens (fac D k t') = 0 := by
@@ -136,9 +134,9 @@ theorem tens_fac_mul_of_ne (k : Fin 2) {t t' : Tup D k} (h : t ≠ t') :
   exact D.ntypes.eSer_orth k _ _ hv
 
 /- English proof (translation)
-Introduce `D k S`. Rewrite using `[badElt_eq_sum]`. Use `⟨?_, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_mul_sum]`. Use `Finset.sum_congr rfl fun t ht => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_eq_single_of_mem t ht fun t' _ hne => tens_fac_mul_of_ne k (Ne.symm hne), Formalism.BasicNotions.Examples₂.NZ.tens_mul]`. Conclude with `congrArg _ (funext fun kv => fac_mul_self k t kv)`. Rewrite using `[Finset.sum_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun t _ => Formalism.BasicNotions.Examples₂.NZ.tens_central _ (fun kv b => fac_central k t kv b) a`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem badElt_idem_central : ∀ (D : D7) (k : Fin 2) (S : Finset (Tup D k)),
     badElt D k S * badElt D k S = badElt D k S ∧ ∀ a, badElt D k S * a = a * badElt D k S := by

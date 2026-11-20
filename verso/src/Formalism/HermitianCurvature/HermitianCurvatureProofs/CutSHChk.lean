@@ -13,7 +13,7 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutSHSliceFamGood
 namespace Formalism.FourierDecayAlt.P
 
 /- English proof (translation)
-The claim follows from `CutSH.sliceStepHer_of CutSH.family_orbital_valid CutSH.family_algebraic CutSH.representation_linear cell_compatibility_identity h7 CutSH.slice_family_orbital operator_class_closed boundary_torus_adjoin unipotent_scalar_identity`.
+A detailed English derivation is pending.
 -/
 theorem cutSH_sliceStepHer_of_sfg (h7 : CutSH.SliceFamGood) : PTie.SliceStepHer :=
   CutSH.sliceStepHer_of CutSH.family_orbital_valid CutSH.family_algebraic CutSH.representation_linear
@@ -21,13 +21,13 @@ theorem cutSH_sliceStepHer_of_sfg (h7 : CutSH.SliceFamGood) : PTie.SliceStepHer 
     unipotent_scalar_identity
 
 /- English proof (translation)
-The claim follows from `ptie_levTransportHer_of_sliceStep (cutSH_sliceStepHer_of_sfg h7)`.
+A detailed English derivation is pending.
 -/
 theorem cutSH_levTransportHer_of_sfg (h7 : CutSH.SliceFamGood) : PTie.LevTransportHer :=
   ptie_levTransportHer_of_sliceStep (cutSH_sliceStepHer_of_sfg h7)
 
 /- English proof (translation)
-The claim follows from `cutSH_levTransportHer_of_sfg slice_family_good`.
+A detailed English derivation is pending.
 -/
 theorem level_transport_hermitian : PTie.LevTransportHer := cutSH_levTransportHer_of_sfg slice_family_good
 

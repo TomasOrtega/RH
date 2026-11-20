@@ -15,17 +15,17 @@ open Formalism.L2.SG.AdBridge Formalism.L2.SG.DataInst Formalism.L2.SG.SpectralT
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Establish `hr0 : (0 : ℝ) ≤ r` using `r.cast_nonneg`. Establish `hk0 : (0 : ℝ) ≤ k` using `k.cast_nonneg`. Establish `hn : ((2 * r + k + 1 : ℕ) : ℝ) = 2 * (r : ℝ) + k + 1` using `by push_cast; ring`. Rewrite using `[hn]`. Establish `hn1 : (1 : ℝ) ≤ 2 * (r : ℝ) + k + 1` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hrn : (r : ℝ) + 1 ≤ 2 * (r : ℝ) + k + 1` using `by linarith`. Establish `hCl0 : 0 ≤ Cl` using `by linarith [abs_nonneg c]`. Establish `hf' : (2 : ℝ) ≤ f` using `by exact_mod_cast hf`. Establish `hf5 : (32 : ℝ) ≤ (f : ℝ) ^ 5`. Use `pow_le_pow_left₀ (by norm_num : (0 : ℝ) ≤ 2) hf' 5` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Evaluate the numerical expressions using `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hP0 : 0 ≤ ((r : ℝ) + 1) ^ 2 * ((r : ℝ) * (2 * (r : ℝ) + k + 1) + 1)` using `by positivity`. Establish `hn19 : 0 ≤ (2 * (r : ℝ) + k + 1) ^ 19` using `by positivity`. Establish `hP : ((r : ℝ) + 1) ^ 2 * ((r : ℝ) * (2 * (r : ℝ) + k + 1) + 1) ≤ 2 * (2 * (r : ℝ) + k + 1) ^ 19`.
+Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ((r : ℝ) + 1) ^ 2 ≤ (2 * (r : ℝ) + k + 1) ^ 2` using `pow_le_pow_left₀ (by positivity) hrn 2`. Establish `h2 : (r : ℝ) * (2 * (r : ℝ) + k + 1) + 1 ≤ 2 * (2 * (r : ℝ) + k + 1) ^ 2`. Combine the linear relations using `[mul_nonneg hr0 hk0, mul_nonneg hr0 hr0, mul_nonneg hk0 hk0]`. Establish `h3 : (2 * (r : ℝ) + k + 1) ^ 4 ≤ (2 * (r : ℝ) + k + 1) ^ 19` using `pow_le_pow_right₀ hn1 (by norm_num)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hA : 0 ≤ Cl * (2 * (r : ℝ) + k + 1) ^ 19` using `mul_nonneg hCl0 hn19`. Establish `hRHS : 8 * (Cl * (2 * (r : ℝ) + k + 1) ^ 19) ≤ Cl * (2 * (r : ℝ) + k + 1) ^ 19 * (f : ℝ) ^ 5 * L / 2`. Establish `hfl : (32 : ℝ) * (1 / 2) ≤ (f : ℝ) ^ 5 * L` using `mul_le_mul hf5 hL (by norm_num) (by positivity)`. Use `mul_le_mul_of_nonneg_left hfl hA` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Apply `max_le` to reduce the goal to its premises. Establish `hcP : c * (((r : ℝ) + 1) ^ 2 * ((r : ℝ) * (2 * (r : ℝ) + k + 1) + 1)) ≤ |c| * (2 * (2 * (r : ℝ) + k + 1) ^ 19)` using `(mul_le_mul_of_nonneg_right (le_abs_self c) hP0).trans (mul_le_mul_of_nonneg_left hP (abs_nonneg c))`. Establish `hcl : |c| * (2 * (r : ℝ) + k + 1) ^ 19 ≤ Cl * (2 * (r : ℝ) + k + 1) ^ 19` using `mul_le_mul_of_nonneg_right (by linarith) hn19`. Establish `e : c * ((r : ℝ) + 1) ^ 2 * ((r : ℝ) * (2 * (r : ℝ) + k + 1) + 1) = c * (((r : ℝ) + 1) ^ 2 * ((r : ℝ) * (2 * (r : ℝ) + k + 1) + 1))` using `by ring`. Rewrite using `[e]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
 -/

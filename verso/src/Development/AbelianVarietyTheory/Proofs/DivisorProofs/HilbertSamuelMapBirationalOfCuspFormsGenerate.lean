@@ -25,13 +25,11 @@ noncomputable section
 namespace GlobalTheory.HSApp
 
 /- English proof (translation)
-Use `M.iso` as an intermediate fact. Establish `hne : (M.opn : Set M.X).Nonempty` using `M.dense.nonempty`. Establish `hmem : genericPoint M.X ∈ M.opn` using `((genericPoint_spec M.X).mem_open_set_iff M.opn.isOpen).2 (by simpa using hne)`. Take `⟨z, hz⟩` from `(M.σ ∣_ U).surjective ⟨η, hη⟩`. Establish `hz' : M.σ z.1 = η` using `by rw [← morphismRestrict_base_coe, hz]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsp : M.σ (genericPoint M.X) ⤳ η` using `hz' ▸ ((genericPoint_spec M.X).specializes (Set.mem_univ z.1)).map M.σ.continuous`. Establish `he : M.σ (genericPoint M.X) = η` using `(hsp.antisymm (hg.specializes (Set.mem_univ _))).eq`. Use `⟨he, hmem, ?_⟩` and prove the remaining obligations. Set `z0 : (M.σ ⁻¹ᵁ U).toScheme` to `⟨genericPoint M.X, hmem⟩`. Establish `h1 : IsIso ((M.σ ∣_ U ≫ U.ι).stalkMap z0)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[Scheme.Hom.stalkMap_comp]`. Establish `a` using `(IsOpenImmersion.iff_isIso_stalkMap.1 (inferInstance : IsOpenImmersion U.ι)).2 ((M.σ ∣_ U) z0)`. Establish `b` using `(IsOpenImmersion.iff_isIso_stalkMap.1 (inferInstance : IsOpenImmersion (M.σ ∣_ U))).2 z0`. Conclude with `@IsIso.comp_isIso _ _ _ _ _ _ _ a b`. Rewrite `h1` using `[morphismRestrict_ι, Scheme.Hom.stalkMap_comp]`.
-
-Conclude with `@IsIso.of_isIso_comp_right _ _ _ _ _ _ _ ((IsOpenImmersion.iff_isIso_stalkMap.1 (inferInstance : IsOpenImmersion (M.σ ⁻¹ᵁ U).ι)).2 z0) h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem modif_genericPoint {k : Type} [Field k] {Y : Scheme.{0}} {p : Y ⟶ Sp k} {U : Y.Opens} {D : ℕ}
     (M : Modif p U D) [IsIntegral M.X] {η : Y} (hη : η ∈ U) (hg : IsGenericPoint η Set.univ) :
@@ -60,33 +58,27 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Take `⟨η, hη, hgen, hrat⟩` from `hR`. Use `haveI : IsIntegral R.X := HilbertSamuel.Geo.isIntegral (h.geo f₁ f₂ th k)`. Take `⟨he, hmem, hiso⟩` from `modif_genericPoint R.toModif hη hgen`. Substitute `he` using the available equality. Use `set G := h.geo f₁ f₂ th k with hG`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `set η' := genericPoint R.X with hη'`. Use `⟨η', genericPoint_spec _, ?_⟩` and prove the remaining obligations. Use `set xp : Sp (R.X.residueField η') ⟶ G.Y := resPt η' with hxp`. Use `set cc := G.chartAt (ptOf xp) with hcc`. Establish `hc : η' ∈ R.Δ₁.moving.U cc` using `(ptOf_resPt η') ▸ G.mem_chartAt (ptOf xp)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Establish `hi0 : R.σ η' ∈ (L₀ X Z P.u₁).U (cc.1 PUnit.unit)` using `mem_pull.1 hc.1`. Use `set φ := (R.σ.residueFieldMap η').hom with hφdef`. Establish `hφ : ∀ a, φ (((Y₀ X Z).residue (R.σ η')).hom a) = (R.X.residue η').hom ((R.σ.stalkMap η').hom a)` using `fun a => by`. Use `congrArg (fun g => g.hom a) (Scheme.residue_residueFieldMap R.σ η')` as an intermediate fact. Simplify `this` using `only [CommRingCat.hom_comp, RingHom.comp_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Set `Vf : Cusp Z U P.u₁ → R.X.residueField η'` to `fun f => G.val xp (toSec (R.Δ₁.lift (h.ext₁.equiv f)))`. Establish `hA : ∀ f, Vf f = ∑ j, G.baseHom xp (f₁.b.equivFun f j) * G.coords xp j`. Introduce `f`. Establish `e` using `R.toModif.ofSec_comb R.Δ₁ h.ext₁.equiv f₁ k.abelian₂ (f₁.b.equivFun f)`. Rewrite `e` using `[LinearEquiv.symm_apply_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e2 : toSec (R.Δ₁.lift (h.ext₁.equiv f)) = G.comb (f₁.b.equivFun f)`. Apply `(bijective_ofSec_top (p := R.str) (B := R.Δ₁.moving)).1` to reduce the goal to its premises. Rewrite using `[ofSec_toSec]`. Conclude with `e.symm`. Conclude with `(congrArg (G.val xp) e2).trans (G.val_comb xp _)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hV : ∀ f, Vf f = (R.X.residue η').hom (germ cc η' (memTop η') hc (R.Δ₁.lift (h.ext₁.equiv f)))`. Introduce `f`. Use `show valR xp _ _ = _`. Use `(projSys.valR_resPt η' _ hc _).trans ?_` and prove the remaining obligations. Use `(congrArg (fun g => (ConcreteCategory.hom g) ((toSec (R.Δ₁.lift (h.ext₁.equiv f))).f cc)) (Scheme.germ_residue R.X η' hc).symm).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `congrArg (R.X.residue η').hom (ger_toSec _ cc η' hc)`. Use `set τ := (R.X.residue η').hom (ger η' hc.2 (R.Δ₁.t.f cc.2)) with hτdef`. Establish `hB : ∀ f, τ * Vf f = φ (((Y₀ X Z).residue (R.σ η')).hom (germ (cc.1 PUnit.unit) (R.σ η') hη hi0 (cuspSec X Z U P.u₁ f)))`. Introduce `f`. Establish `e1` using `R.Δ₁.germ_lift (h.ext₁.equiv f) cc η' hc`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e2` using `germ_pull R.σ le_top cc.1 η' (memTop η') hc.1 (h.ext₁.equiv f).1`. Establish `e3` using `hφ (germ (cc.1 PUnit.unit) (R.σ η') (memTop _) hi0 (h.ext₁.equiv f).1)`. Establish `e4 : germ (cc.1 PUnit.unit) (R.σ η') hη hi0 (cuspSec X Z U P.u₁ f) = germ (cc.1 PUnit.unit) (R.σ η') (memTop _) hi0 (h.ext₁.equiv f).1`. Rewrite using `[← h.ext₁.restr_equiv f, germ_restr]`. Rewrite using `[hV, e4, e3, ← e2, ← e1]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts.
 
-Conclude with `(map_mul _ _ _).symm`. Establish `hτ : τ ≠ 0`. Establish `hu : IsUnit (ger η' hc.2 (R.Δ₁.t.f cc.2))` using `(isUnit_ger_iff _ hc.2).2 ((R.Δ₁.mem_nonzeroLocus η').2 (R.notMem_support h.free₁ η' (R.off_eq.ge hmem)))`. Conclude with `(hu.map (R.X.residue η').hom).ne_zero`. Choose the witnesses or unpack the hypotheses as in `⟨j₀, hj₀⟩ : ∃ j, G.coords xp j ≠ 0 := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Assume the negation of the conclusion as `hn`. Use `push_neg at hn`. Conclude with `G.geom.alg.bpf.coords_ne_zero xp (funext hn)`. Establish `hmemV : ∀ f f', Vf f / Vf f' ∈ G.ratioField xp`. Introduce `f f'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `key : ∀ g, Vf g = G.coords xp j₀ * ∑ j, G.baseHom xp (f₁.b.equivFun g j) * (G.coords xp j / G.coords xp j₀)`. Introduce `g`. Rewrite using `[hA, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts.
-
-Establish `hs : ∀ g, ∑ j, G.baseHom xp (f₁.b.equivFun g j) * (G.coords xp j / G.coords xp j₀) ∈ G.ratioField xp` using `fun g => Subfield.sum_mem _ fun j _ => Subfield.mul_mem _ (Subfield.subset_closure (Or.inl ⟨_, rfl⟩)) (Subfield.subset_closure (Or.inr ⟨j, j₀, rfl⟩))`. Rewrite using `[key, key, mul_div_mul_left _ _ hj₀]`. Conclude with `Subfield.div_mem _ (hs f) (hs f')`. Establish `hgen' : ratField (Set.range (cuspSec X Z U P.u₁)) (R.σ η') hη ≤ (G.ratioField xp).comap φ`. Use `Subfield.closure_le.2 ?_` and prove the remaining obligations.
-
-Introduce and unpack `_ ⟨i, hi, _, _, ⟨f, rfl⟩, ⟨f', rfl⟩, rfl⟩`. Establish `htr : ((Y₀ X Z).residue (R.σ η')).hom (tr (L₀ X Z P.u₁) (R.σ η') i (cc.1 PUnit.unit) : _) ≠ 0` using `((Units.isUnit _).map _).ne_zero`. Use `show φ (_ / _) ∈ G.ratioField xp`. Rewrite using `[germ_change i (cc.1 PUnit.unit) _ hη hi hi0, germ_change i (cc.1 PUnit.unit) _ hη hi hi0, map_mul, map_mul, mul_div_mul_left _ _ htr, map_div₀, ← hB f, ← hB f', mul_div_mul_left _ _ hτ]`. Conclude with `hmemV f f'`.
-
-Use `eq_top_iff.2 fun y _ => ?_` and prove the remaining obligations. Take `⟨a', rfl⟩` from `R.X.residue_surjective η' y`. Take `⟨a, rfl⟩` from `((ConcreteCategory.isIso_iff_bijective _).1 hiso).2 a'`. Rewrite using `[← hφ]`. Conclude with `hgen' (hrat.ge trivial)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem birational_of_ratGen {Y : Model Xo c (RingHom.id c.F)} (X : FlagCover Y) (Z : Comp Xo c) {r : ℕ}
     (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (P : WtPar Dw) (R : Choice X Z U P) (ω : CanId R.toModif) (x : ℝ) {D : D7}
@@ -175,7 +167,7 @@ theorem birational_of_ratGen {Y : Model Xo c (RingHom.id c.F)} (X : FlagCover Y)
   exact hgen' (hrat.ge trivial)
 
 /- English proof (translation)
-The claim follows from `@birational_of_ratGen`.
+A detailed English derivation is pending.
 -/
 example : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {Y : Model Xo c (RingHom.id c.F)} (X : FlagCover Y) (Z : Comp Xo c) {r : ℕ} (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (P : WtPar Dw) (R : Choice X Z U P) (ω : CanId R.toModif) (x : ℝ) {D : D7} (V : (c.F →+* ℂ) → TH.HSp D) (dict : ∀ σ, Formalism.L2.Theta.GA D (V σ) → Σ k, FD.Frame ((U σ).X k).Ψ r) (h : Ready R ω x V dict) (f₁ : CuspFrame Z U x V dict P.u₁) (f₂ : CuspFrame Z U x V dict P.u₂) (th : R.L.Sec) (k : Consts), RatGen X Z U P.u₁ → (h.geo f₁ f₂ th k).Birational := @birational_of_ratGen
 

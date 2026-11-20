@@ -17,7 +17,7 @@ section Roots
 variable {K : Type*} [Field K] {N : ℕ} [NeZero N] {ζ : K}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hkj`. Conclude with `ZMod.val_injective N (hζ.pow_inj (ZMod.val_lt k) (ZMod.val_lt j) hkj)`. Introduce and unpack `rfl`. Both sides reduce to the same expression.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem pow_val_eq_iff (hζ : IsPrimitiveRoot ζ N) (k j : ZMod N) :
     ζ ^ k.val = ζ ^ j.val ↔ k = j := by
@@ -28,7 +28,7 @@ theorem pow_val_eq_iff (hζ : IsPrimitiveRoot ζ N) (k j : ZMod N) :
     rfl
 
 /- English proof (translation)
-Rewrite using `[← pow_add, hζ.pow_eq_one_iff_dvd, ← CharP.cast_eq_zero_iff (ZMod N) N, Nat.cast_add, ZMod.natCast_zmod_val, ZMod.natCast_zmod_val]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_val_mul_eq_one_iff (hζ : IsPrimitiveRoot ζ N) (k j : ZMod N) :
     ζ ^ k.val * ζ ^ j.val = 1 ↔ k + j = 0 := by
@@ -36,7 +36,7 @@ theorem pow_val_mul_eq_one_iff (hζ : IsPrimitiveRoot ζ N) (k j : ZMod N) :
     ZMod.natCast_zmod_val, ZMod.natCast_zmod_val]
 
 /- English proof (translation)
-Rewrite using `[inv_pow]`. Conclude with `eq_inv_of_mul_eq_one_left ((pow_val_mul_eq_one_iff hζ (-k) k).2 (by ring))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_val_neg (hζ : IsPrimitiveRoot ζ N) (k : ZMod N) :
     ζ ^ (-k).val = ζ⁻¹ ^ k.val := by
@@ -44,13 +44,13 @@ theorem pow_val_neg (hζ : IsPrimitiveRoot ζ N) (k : ZMod N) :
   exact eq_inv_of_mul_eq_one_left ((pow_val_mul_eq_one_iff hζ (-k) k).2 (by ring))
 
 /- English proof (translation)
-Establish `h0 : ζ ≠ 0` using `hζ.ne_zero (NeZero.ne N)`. Establish `key : ∀ x y : K, x ≠ 0 → y ≠ 0 → (x + x⁻¹ = y + y⁻¹ ↔ x = y ∨ x * y = 1)`. Introduce `x y hx hy`. Establish `hx' : x * x⁻¹ = 1` using `mul_inv_cancel₀ hx`. Establish `hy' : y * y⁻¹ = 1` using `mul_inv_cancel₀ hy`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (x - y) * (x * y - 1) = x * y * ((x + x⁻¹) - (y + y⁻¹))`. Take the linear combination `(-y) * hx' + x * hy'`. Prove the components needed by the constructor for the conclusion. Introduce `hxy`. Rewrite `e` using `[hxy, sub_self, mul_zero]`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `mul_eq_zero.1 e with h1 | h1` into its components or cases. Conclude with `Or.inl (sub_eq_zero.1 h1)`. Conclude with `Or.inr (sub_eq_zero.1 h1)`. Introduce and unpack `(h1 | h1)`. Rewrite using `[h1]`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_inv_of_mul_eq_one_right h1, inv_inv, add_comm]`. Rewrite using `[inv_pow, inv_pow, key _ _ (pow_ne_zero _ h0) (pow_ne_zero _ h0), pow_val_eq_iff hζ, pow_val_mul_eq_one_iff hζ, eq_neg_iff_add_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_eq_iff (hζ : IsPrimitiveRoot ζ N) (u c : ZMod N) :
     ζ ^ u.val + ζ⁻¹ ^ u.val = ζ ^ c.val + ζ⁻¹ ^ c.val ↔ u = c ∨ u = -c := by
@@ -75,7 +75,7 @@ theorem trace_eq_iff (hζ : IsPrimitiveRoot ζ N) (u c : ZMod N) :
     pow_val_mul_eq_one_iff hζ, eq_neg_iff_add_eq_zero]
 
 /- English proof (translation)
-Rewrite using `[trace_eq_iff hζ, Units.ext_iff, Units.ext_iff, Units.val_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_eq_iff_units (hζ : IsPrimitiveRoot ζ N) (u c : (ZMod N)ˣ) :
     ζ ^ (u : ZMod N).val + ζ⁻¹ ^ (u : ZMod N).val = ζ ^ (c : ZMod N).val + ζ⁻¹ ^ (c : ZMod N).val ↔
@@ -83,9 +83,9 @@ theorem trace_eq_iff_units (hζ : IsPrimitiveRoot ζ N) (u c : (ZMod N)ˣ) :
   rw [trace_eq_iff hζ, Units.ext_iff, Units.ext_iff, Units.val_neg]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨k, rfl⟩` from `Subgroup.mem_zpowers_iff.1 hx`. Break down `Int.even_or_odd k with hk | hk` into its components or cases. Conclude with `Or.inl hk.neg_one_zpow`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Conclude with `Or.inr hk.neg_one_zpow`. Introduce and unpack `(rfl | rfl)`. Conclude with `Subgroup.one_mem _`. Conclude with `Subgroup.mem_zpowers _`.
+Prove the second alternative. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mem_zpowers_neg_one (x : (ZMod N)ˣ) :
     x ∈ Subgroup.zpowers (-1 : (ZMod N)ˣ) ↔ x = 1 ∨ x = -1 := by
@@ -102,11 +102,11 @@ theorem mem_zpowers_neg_one (x : (ZMod N)ˣ) :
 end Roots
 
 /- English proof (translation)
-Unfold `hcl`. Express the relevant statement in the definitionally equal form `((u : (ZMod (2 ^ (e + 2)))ˣ ⧸ Subgroup.zpowers (-1)) = c) ↔ _`. Rewrite using `[QuotientGroup.eq, mem_zpowers_neg_one, inv_mul_eq_one, inv_mul_eq_iff_eq_mul, mul_neg_one]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(h | h)`.
+Replace the relevant objects with their definitions. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `Or.inl h`. Use `right`. Rewrite using `[h, neg_neg]`. Introduce and unpack `(h | h)`. Conclude with `Or.inl h`.
+Prove the first alternative. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Prove the first alternative. Rewrite the conclusion using the stated equalities.
 
-Use `right`. Rewrite using `[h, neg_neg]`.
+A detailed English derivation is pending.
 -/
 theorem hcl_eq_iff (e : ℕ) (u c : (ZMod (2 ^ (e + 2)))ˣ) :
     hcl e u = hcl e c ↔ u = c ∨ u = -c := by
@@ -128,7 +128,7 @@ section Layer
 variable {e q d : ℕ} {L : Type} [Field L] [NumberField L] {ζ a b : L}
 
 /- English proof (translation)
-The claim follows from `layerGalois (e + 2) q d (by omega) hqd L ζ a b h`.
+A detailed English derivation is pending.
 -/
 theorem layer_galois (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) :
     IsGalois ℚ L ∧ Module.finrank ℚ L = 2 ^ (e + 2 + 1) ∧
@@ -137,7 +137,7 @@ theorem layer_galois (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) :
   layerGalois (e + 2) q d (by omega) hqd L ζ a b h
 
 /- English proof (translation)
-Establish `hs : ∀ x : L, sgn (1 : Gal(L/ℚ)) x = 1` using `fun x => by`. Rewrite using `[sgn.eq_1, if_pos (AlgEquiv.one_apply x)]`. Rewrite using `[galMap.eq_1, map_one, hs, hs]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem galMap_one (h : IsLayer (e + 2) q d ζ a b) :
     galMap h.1 a b (1 : Gal(L/ℚ)) = 1 := by
@@ -147,7 +147,7 @@ theorem galMap_one (h : IsLayer (e + 2) q d ζ a b) :
   rfl
 
 /- English proof (translation)
-Rewrite `hs` using `[sgn.eq_1]`. Assume the negation of the conclusion as `hne`. Rewrite `hs` using `[if_neg hne]`. Conclude with `absurd (congrArg Units.val hs) (by norm_num)`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fix_of_sgn_one {K : Type*} [Field K] [Algebra ℚ K] {σ : Gal(K/ℚ)} {x : K}
     (hs : sgn σ x = 1) : σ x = x := by
@@ -157,7 +157,7 @@ theorem fix_of_sgn_one {K : Type*} [Field K] [Algebra ℚ K] {σ : Gal(K/ℚ)} {
   exact absurd (congrArg Units.val hs) (by norm_num)
 
 /- English proof (translation)
-Take `⟨-, -, hmul, hbij⟩` from `layer_galois hqd h`. Apply `hbij.1` to reduce the goal to its premises. Rewrite using `[hmul, hmul, mul_comm]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem gal_mul_comm_of_isLayer (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) (σ τ : Gal(L/ℚ)) :
     σ * τ = τ * σ := by
@@ -169,14 +169,14 @@ def tau0 (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) : Gal(L/ℚ) :=
   ((layer_galois hqd h).2.2.2.2 ((-1, 1, 1) : GalL (e + 2))).choose
 
 /- English proof (translation)
-Conclude with `((layer_galois hqd h).2.2.2.2 ((-1, 1, 1) : GalL (e + 2))).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem galMap_zeta_inversion (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) :
     galMap h.1 a b (tau0 hqd h) = ((-1, 1, 1) : GalL (e + 2)) := by
   exact ((layer_galois hqd h).2.2.2.2 ((-1, 1, 1) : GalL (e + 2))).choose_spec
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hτ`. Conclude with `(layer_galois hqd h).2.2.2.1 (hτ.trans (galMap_zeta_inversion hqd h).symm)`. Introduce and unpack `rfl`. Conclude with `galMap_zeta_inversion hqd h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem galMap_eq_neg_one_one_one_iff_eq_zeta_inversion (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) (τ : Gal(L/ℚ)) :
     galMap h.1 a b τ = ((-1, 1, 1) : GalL (e + 2)) ↔ τ = tau0 hqd h := by
@@ -187,14 +187,14 @@ theorem galMap_eq_neg_one_one_one_iff_eq_zeta_inversion (hqd : HypOdd q d) (h : 
     exact galMap_zeta_inversion hqd h
 
 /- English proof (translation)
-Rewrite using `[map_add, map_inv₀, ← hζ.autToPow_spec ℚ τ, inv_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem apply_theta {N : ℕ} [NeZero N] (hζ : IsPrimitiveRoot ζ N) (τ : Gal(L/ℚ)) :
     τ (ζ + ζ⁻¹) = ζ ^ (hζ.autToPow ℚ τ : ZMod N).val + ζ⁻¹ ^ (hζ.autToPow ℚ τ : ZMod N).val := by
   rw [map_add, map_inv₀, ← hζ.autToPow_spec ℚ τ, inv_pow]
 
 /- English proof (translation)
-Establish `h4 : 2 ^ 2 ≤ 2 ^ (e + 2)` using `Nat.pow_le_pow_right (by norm_num) (by omega)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem two_lt (e : ℕ) : 2 < 2 ^ (e + 2) := by
   have h4 : 2 ^ 2 ≤ 2 ^ (e + 2) := Nat.pow_le_pow_right (by norm_num) (by omega)
@@ -202,13 +202,13 @@ theorem two_lt (e : ℕ) : 2 < 2 ^ (e + 2) := by
     _ ≤ 2 ^ (e + 2) := h4
 
 /- English proof (translation)
-Rewrite using `[ZMod.val_one_eq_one_mod, Nat.mod_eq_of_lt (lt_trans one_lt_two (two_lt e))]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem one_val (e : ℕ) : (1 : ZMod (2 ^ (e + 2))).val = 1 := by
   rw [ZMod.val_one_eq_one_mod, Nat.mod_eq_of_lt (lt_trans one_lt_two (two_lt e))]
 
 /- English proof (translation)
-Establish `h1` using `galMap_zeta_inversion hqd h`. Rewrite `h1` using `[galMap.eq_1]`. Conclude with `congrArg Prod.fst h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem autToPow_tau0_eq_neg_one (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) :
     h.1.autToPow ℚ (tau0 hqd h) = -1 := by
@@ -217,7 +217,7 @@ private theorem autToPow_tau0_eq_neg_one (hqd : HypOdd q d) (h : IsLayer (e + 2)
   exact congrArg Prod.fst h1
 
 /- English proof (translation)
-Rewrite using `[apply_theta h.1, autToPow_tau0_eq_neg_one hqd h, Units.val_neg, Units.val_one, pow_val_neg h.1, pow_val_neg h.1.inv, inv_inv, one_val, pow_one, pow_one, add_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem zeta_inversion_fixes_zeta_add_inv (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) :
     tau0 hqd h (ζ + ζ⁻¹) = ζ + ζ⁻¹ := by
@@ -225,7 +225,7 @@ theorem zeta_inversion_fixes_zeta_add_inv (hqd : HypOdd q d) (h : IsLayer (e + 2
     pow_val_neg h.1.inv, inv_inv, one_val, pow_one, pow_one, add_comm]
 
 /- English proof (translation)
-Apply `fix_of_sgn_one` to reduce the goal to its premises. Establish `h1` using `galMap_zeta_inversion hqd h`. Rewrite `h1` using `[galMap.eq_1]`. Conclude with `congrArg (fun g => g.2.1) h1`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zeta_inversion_fixes_a (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) : tau0 hqd h a = a := by
   apply fix_of_sgn_one
@@ -234,7 +234,7 @@ theorem zeta_inversion_fixes_a (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a 
   exact congrArg (fun g => g.2.1) h1
 
 /- English proof (translation)
-Apply `fix_of_sgn_one` to reduce the goal to its premises. Establish `h1` using `galMap_zeta_inversion hqd h`. Rewrite `h1` using `[galMap.eq_1]`. Conclude with `congrArg (fun g => g.2.2) h1`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zeta_inversion_fixes_b (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) : tau0 hqd h b = b := by
   apply fix_of_sgn_one
@@ -243,9 +243,9 @@ theorem zeta_inversion_fixes_b (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a 
   exact congrArg (fun g => g.2.2) h1
 
 /- English proof (translation)
-Introduce `h1`. Use `haveI : Fact (2 < 2 ^ (e + 2)) := ⟨two_lt e⟩`. Establish `hz` using `h.1.autToPow_spec ℚ (tau0 hqd h)`. Rewrite `hz` using `[autToPow_tau0_eq_neg_one hqd h, h1, AlgEquiv.one_apply, Units.val_neg, Units.val_one]`. Establish `h2 : ζ ^ (-1 : ZMod (2 ^ (e + 2))).val = ζ ^ (1 : ZMod (2 ^ (e + 2))).val`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz, one_val, pow_one]`. Conclude with `ZMod.neg_one_ne_one ((pow_val_eq_iff h.1 _ _).1 h2)`.
+A detailed English derivation is pending.
 -/
 theorem zeta_inversion_ne_one (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) : tau0 hqd h ≠ 1 := by
   intro h1
@@ -257,9 +257,9 @@ theorem zeta_inversion_ne_one (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b
   exact ZMod.neg_one_ne_one ((pow_val_eq_iff h.1 _ _).1 h2)
 
 /- English proof (translation)
-Apply `(layer_galois hqd h).2.2.2.1` to reduce the goal to its premises. Establish `hA : (tau0 hqd h ^ 2) a = a` using `by rw [pow_two, AlgEquiv.mul_apply, zeta_inversion_fixes_a, zeta_inversion_fixes_a]`. Establish `hB : (tau0 hqd h ^ 2) b = b` using `by rw [pow_two, AlgEquiv.mul_apply, zeta_inversion_fixes_b, zeta_inversion_fixes_b]`. Establish `hU : h.1.autToPow ℚ (tau0 hqd h ^ 2) = h.1.autToPow ℚ 1`. Rewrite using `[map_pow, map_one, autToPow_tau0_eq_neg_one hqd h, neg_one_sq]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[galMap.eq_1, galMap.eq_1, hU, sgn.eq_1, sgn.eq_1, sgn.eq_1, sgn.eq_1, if_pos hA, if_pos hB, if_pos (AlgEquiv.one_apply a), if_pos (AlgEquiv.one_apply b)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem zeta_inversion_sq_eq_one (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) : tau0 hqd h ^ 2 = 1 := by
   apply (layer_galois hqd h).2.2.2.1
@@ -271,16 +271,16 @@ theorem zeta_inversion_sq_eq_one (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ 
     if_pos (AlgEquiv.one_apply a), if_pos (AlgEquiv.one_apply b)]
 
 /- English proof (translation)
-Conclude with `orderOf_eq_prime (zeta_inversion_sq_eq_one hqd h) (zeta_inversion_ne_one hqd h)`.
+A detailed English derivation is pending.
 -/
 theorem orderOf_zeta_inversion (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) :
     orderOf (tau0 hqd h) = 2 := by
   exact orderOf_eq_prime (zeta_inversion_sq_eq_one hqd h) (zeta_inversion_ne_one hqd h)
 
 /- English proof (translation)
-Rewrite using `[IntermediateField.mem_fixedField_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Conclude with `hx τ (Subgroup.mem_zpowers τ)`. Introduce `hx f hf`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hle : Subgroup.zpowers τ ≤ MulAction.stabilizer Gal(L/ℚ) x`. Rewrite using `[Subgroup.zpowers_le, MulAction.mem_stabilizer_iff]`. Conclude with `hx`. Conclude with `MulAction.mem_stabilizer_iff.1 (hle hf)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_fixedField_zpowers (τ : Gal(L/ℚ)) (x : L) :
     x ∈ fixedField (Subgroup.zpowers τ) ↔ τ x = x := by
@@ -301,7 +301,7 @@ section Host
 variable {e q d : ℕ} {L : Type} [Field L] [NumberField L] {ζ a b : L}
 
 /- English proof (translation)
-Rewrite using `[hostE.eq_1, E0.eq_1, F1.eq_1, ← IntermediateField.adjoin_union]`. Use `congr 1`. Use extensionality with `x`. Simplify using `only [Set.mem_union, Set.mem_insert_iff, Set.mem_singleton_iff]`. The claim follows by propositional logic.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. The claim follows by propositional logic.
 -/
 theorem hostE_eq_adjoin (ζ a b : L) : hostE ζ a b = ℚ⟮ζ + ζ⁻¹, a, b⟯ := by
   rw [hostE.eq_1, E0.eq_1, F1.eq_1, ← IntermediateField.adjoin_union]
@@ -311,9 +311,7 @@ theorem hostE_eq_adjoin (ζ a b : L) : hostE ζ a b = ℚ⟮ζ + ζ⁻¹, a, b�
   tauto
 
 /- English proof (translation)
-Rewrite using `[hostE_eq_adjoin, IntermediateField.adjoin_le_iff]`. Introduce `x hx`. Rewrite using `[SetLike.mem_coe, mem_fixedField_zpowers]`. Break down `hx with rfl | rfl | rfl` into its components or cases. Conclude with `zeta_inversion_fixes_zeta_add_inv hqd h`.
-
-Conclude with `zeta_inversion_fixes_a hqd h`. Conclude with `zeta_inversion_fixes_b hqd h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem hostE_le_fixedField (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) :
     hostE ζ a b ≤ fixedField (Subgroup.zpowers (tau0 hqd h)) := by
@@ -326,15 +324,15 @@ theorem hostE_le_fixedField (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) 
   · exact zeta_inversion_fixes_b hqd h
 
 /- English proof (translation)
-Introduce `σ hσ`. Rewrite `hσ` using `[IntermediateField.mem_fixingSubgroup_iff]`. Establish `mem : ∀ y ∈ ({ζ + ζ⁻¹, a, b} : Set L), y ∈ hostE ζ a b`. Introduce `y hy`. Rewrite using `[hostE_eq_adjoin]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `IntermediateField.subset_adjoin ℚ _ hy`. Establish `hθ` using `hσ _ (mem _ (Set.mem_insert _ _))`. Establish `ha` using `hσ _ (mem _ (Set.mem_insert_of_mem _ (Set.mem_insert _ _)))`. Establish `hb` using `hσ _ (mem _ (Set.mem_insert_of_mem _ (Set.mem_insert_of_mem _ (Set.mem_singleton _))))`. Rewrite `hθ` using `[apply_theta h.1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : h.1.autToPow ℚ σ = 1 ∨ h.1.autToPow ℚ σ = -1`. Rewrite using `[← trace_eq_iff_units h.1, hθ, Units.val_one, one_val, pow_one, pow_one]`. Establish `hsa : sgn σ a = 1` using `by rw [sgn.eq_1, if_pos ha]`. Establish `hsb : sgn σ b = 1` using `by rw [sgn.eq_1, if_pos hb]`. Establish `hbij` using `(layer_galois hqd h).2.2.2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hc with hc | hc` into its components or cases. Establish `h1 : σ = 1`. Apply `hbij.1` to reduce the goal to its premises. Rewrite using `[galMap.eq_1, galMap.eq_1, hc, hsa, hsb, map_one, sgn.eq_1, sgn.eq_1, if_pos (AlgEquiv.one_apply a), if_pos (AlgEquiv.one_apply b)]`. Rewrite using `[h1]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Subgroup.one_mem _`. Establish `h1 : σ = tau0 hqd h`. Rewrite using `[← galMap_eq_neg_one_one_one_iff_eq_zeta_inversion hqd h, galMap.eq_1, hc, hsa, hsb]`. Rewrite using `[h1]`. Conclude with `Subgroup.mem_zpowers _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fixingSubgroup_hostE_le (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) :
     (hostE ζ a b).fixingSubgroup ≤ Subgroup.zpowers (tau0 hqd h) := by
@@ -366,7 +364,7 @@ theorem fixingSubgroup_hostE_le (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a
     exact Subgroup.mem_zpowers _
 
 /- English proof (translation)
-Use `haveI := (layer_galois hqd h).1`. Establish `hfix : (hostE ζ a b).fixingSubgroup = Subgroup.zpowers (tau0 hqd h)` using `le_antisymm (fixingSubgroup_hostE_le hqd h) ((IntermediateField.le_iff_le _ _).1 (hostE_le_fixedField hqd h))`. Rewrite using `[← hfix, IsGalois.fixedField_fixingSubgroup]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hostE_eq_fixedField (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) :
     hostE ζ a b = fixedField (Subgroup.zpowers (tau0 hqd h)) := by
@@ -377,16 +375,16 @@ theorem hostE_eq_fixedField (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) 
   rw [← hfix, IsGalois.fixedField_fixingSubgroup]
 
 /- English proof (translation)
-Rewrite using `[hostE_eq_fixedField hqd h, mem_fixedField_zpowers]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_hostE_iff (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) (x : L) :
     x ∈ hostE ζ a b ↔ tau0 hqd h x = x := by
   rw [hostE_eq_fixedField hqd h, mem_fixedField_zpowers]
 
 /- English proof (translation)
-Use `haveI := (layer_galois hqd h).1`. Establish `hL` using `(layer_galois hqd h).2.1`. Rewrite using `[hostE_eq_fixedField hqd h]`. Establish `h1` using `Module.finrank_mul_finrank ℚ (fixedField (Subgroup.zpowers (tau0 hqd h))) L`. Rewrite `h1` using `[IntermediateField.finrank_fixedField_eq_card, hL]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Nat.card_zpowers, Fintype.card_zpowers, orderOf_zeta_inversion hqd h] at h1`. Rewrite `h1` using `[pow_succ]`. Conclude with `Nat.eq_of_mul_eq_mul_right (by norm_num) h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_cmField (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) :
     Module.finrank ℚ (hostE ζ a b) = 2 ^ (e + 2) := by
@@ -400,7 +398,7 @@ theorem finrank_cmField (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) :
   exact Nat.eq_of_mul_eq_mul_right (by norm_num) h1
 
 /- English proof (translation)
-Use `haveI := (layer_galois hqd h).1`. Use `haveI : (Subgroup.zpowers (tau0 hqd h)).Normal := ⟨fun n hn g => by rwa [gal_mul_comm_of_isLayer hqd h g n, mul_inv_cancel_right]⟩`. Rewrite using `[hostE_eq_fixedField hqd h]`. Conclude with `IsGalois.of_fixedField_normal_subgroup _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isGalois_hostE (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) :
     IsGalois ℚ (hostE ζ a b) := by
@@ -411,7 +409,7 @@ theorem isGalois_hostE (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) :
   exact IsGalois.of_fixedField_normal_subgroup _
 
 /- English proof (translation)
-Use `haveI := (layer_galois hqd h).1`. Conclude with `⟨σ.liftNormal L, fun x => (σ.liftNormal_commutes L x).symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_lift (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b)
     (σ : hostE ζ a b ≃ₐ[ℚ] hostE ζ a b) :
@@ -420,7 +418,7 @@ theorem exists_lift (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b)
   exact ⟨σ.liftNormal L, fun x => (σ.liftNormal_commutes L x).symm⟩
 
 /- English proof (translation)
-Use `haveI := (layer_galois hqd h).1`. Use `haveI := isGalois_hostE hqd h`. Conclude with `⟨τ.restrictNormal (hostE ζ a b), fun x => τ.restrictNormal_commutes (hostE ζ a b) x⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_restrict (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) (τ : Gal(L/ℚ)) :
     ∃ σ : hostE ζ a b ≃ₐ[ℚ] hostE ζ a b, ∀ x : hostE ζ a b, ((σ x : hostE ζ a b) : L) = τ x := by
@@ -429,9 +427,9 @@ theorem exists_restrict (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) (τ 
   exact ⟨τ.restrictNormal (hostE ζ a b), fun x => τ.restrictNormal_commutes (hostE ζ a b) x⟩
 
 /- English proof (translation)
-Establish `key : σ x = x ↔ τ (x : L) = x`. Rewrite using `[← hστ x]`. Conclude with `Subtype.ext_iff`. Rewrite using `[sgn.eq_1, sgn.eq_1]`. Distinguish the cases in `hx : σ x = x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos hx, if_pos (key.1 hx)]`. Rewrite using `[if_neg hx, if_neg (fun h' => hx (key.2 h'))]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sgn_lift {σ : hostE ζ a b ≃ₐ[ℚ] hostE ζ a b} {τ : Gal(L/ℚ)}
     (hστ : ∀ x : hostE ζ a b, ((σ x : hostE ζ a b) : L) = τ x) (x : hostE ζ a b) :
@@ -445,9 +443,9 @@ theorem sgn_lift {σ : hostE ζ a b ≃ₐ[ℚ] hostE ζ a b} {τ : Gal(L/ℚ)}
   · rw [if_neg hx, if_neg (fun h' => hx (key.2 h'))]
 
 /- English proof (translation)
-Establish `hθ : ((σ (thE ζ a b) : hostE ζ a b) : L) = ζ ^ (h.1.autToPow ℚ τ : ZMod (2 ^ (e + 2))).val + ζ⁻¹ ^ (h.1.autToPow ℚ τ : ZMod (2 ^ (e + 2))).val`. Rewrite using `[hστ]`. Conclude with `apply_theta h.1 τ`. Establish `hex : ∃ u : (ZMod (2 ^ (e + 2)))ˣ, ((σ (thE ζ a b) : hostE ζ a b) : L) = ζ ^ (u : ZMod (2 ^ (e + 2))).val + ζ⁻¹ ^ (u : ZMod (2 ^ (e + 2))).val` using `⟨_, hθ⟩`. Unfold `hPart`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos hex, hcl_eq_iff]`. Establish `hs` using `hθ.symm.trans hex.choose_spec`. Conclude with `(trace_eq_iff_units h.1 _ _).mp hs.symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hPart_lift (h : IsLayer (e + 2) q d ζ a b) {σ : hostE ζ a b ≃ₐ[ℚ] hostE ζ a b}
     {τ : Gal(L/ℚ)} (hστ : ∀ x : hostE ζ a b, ((σ x : hostE ζ a b) : L) = τ x) :
@@ -464,7 +462,7 @@ theorem hPart_lift (h : IsLayer (e + 2) q d ζ a b) {σ : hostE ζ a b ≃ₐ[�
   exact (trace_eq_iff_units h.1 _ _).mp hs.symm
 
 /- English proof (translation)
-Rewrite using `[galE.eq_1, hPart_lift h hστ, sgn_lift hστ (aE ζ a b), sgn_lift hστ (bE ζ a b), galMap.eq_1]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem galE_lift (h : IsLayer (e + 2) q d ζ a b) {σ : hostE ζ a b ≃ₐ[ℚ] hostE ζ a b}
     {τ : Gal(L/ℚ)} (hστ : ∀ x : hostE ζ a b, ((σ x : hostE ζ a b) : L) = τ x) :
@@ -480,9 +478,9 @@ end Galois
 open Galois
 
 /- English proof (translation)
-Unfold `HostFixed`. Introduce `e q d hqd L _ _ ζ a b h`. Use `⟨hostE_eq_adjoin ζ a b, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[mem_hostE_iff hqd h]`. Prove the components needed by the constructor for the conclusion.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hx τ hτ`. Rewrite using `[(galMap_eq_neg_one_one_one_iff_eq_zeta_inversion hqd h τ).1 hτ]`. Conclude with `hx`. Introduce `H`. Conclude with `H _ (galMap_zeta_inversion hqd h)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem hostFixed : HostFixed := by
   unfold HostFixed
@@ -497,21 +495,19 @@ theorem hostFixed : HostFixed := by
     exact H _ (galMap_zeta_inversion hqd h)
 
 /- English proof (translation)
-Unfold `HostGalois`. Introduce `e q d hqd L _ _ ζ a b h`. Use `haveI := (layer_galois hqd h).1`. Take `⟨-, -, hmul, hbij⟩` from `layer_galois hqd h`. Use `⟨isGalois_hostE hqd h, finrank_cmField hqd h, fun σ τ => ?_, ⟨fun σ σ' hss => ?_, fun y => ?_⟩⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨τ1, h1⟩` from `exists_lift hqd h σ`. Take `⟨τ2, h2⟩` from `exists_lift hqd h τ`. Establish `h12 : ∀ x : hostE ζ a b, (((σ * τ) x : hostE ζ a b) : L) = (τ1 * τ2) (x : L)`. Introduce `x`. Rewrite using `[AlgEquiv.mul_apply, h1, h2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[galE_lift h h12, galE_lift h h1, galE_lift h h2, hmul]`. Both sides reduce to the same expression. Take `⟨τ1, h1⟩` from `exists_lift hqd h σ`. Take `⟨τ2, h2⟩` from `exists_lift hqd h σ'`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hss` using `[galE_lift h h1, galE_lift h h2]`. Establish `ha : (galMap h.1 a b τ1).2.1 = (galMap h.1 a b τ2).2.1` using `congrArg (fun z => z.1.1) hss`. Establish `hb : (galMap h.1 a b τ1).2.2 = (galMap h.1 a b τ2).2.2` using `congrArg (fun z => z.1.2) hss`. Establish `hc` using `(hcl_eq_iff e _ _).1 (congrArg Prod.snd hss)`. Apply `AlgEquiv.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[h1, h2]`. Break down `hc with hc | hc` into its components or cases. Establish `h3 : τ1 = τ2` using `hbij.1 (Prod.ext hc (Prod.ext ha hb))`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h3]`. Establish `h3 : τ1 = τ2 * tau0 hqd h`. Apply `hbij.1` to reduce the goal to its premises. Rewrite using `[hmul, galMap_zeta_inversion hqd h]`. Conclude with `Prod.ext (by rw [hc]; exact (mul_neg_one _).symm) (Prod.ext (ha.trans (mul_one _).symm) (hb.trans (mul_one _).symm))`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h3, AlgEquiv.mul_apply, (mem_hostE_iff hqd h _).1 x.2]`. Take `⟨u, hu⟩` from `QuotientGroup.mk_surjective y.2`. Take `⟨τ, hτ⟩` from `hbij.2 ((u, y.1.1, y.1.2) : GalL (e + 2))`. Take `⟨σ, hσ⟩` from `exists_restrict hqd h τ`. Use `⟨σ, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[galE_lift h hσ, hτ]`. Conclude with `Prod.ext rfl hu`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hostGalois : HostGalois := by
   unfold HostGalois
@@ -554,9 +550,9 @@ theorem hostGalois : HostGalois := by
     exact Prod.ext rfl hu
 
 /- English proof (translation)
-Rewrite using `[sgn.eq_1]`. Distinguish the cases in `hs : σ x = x`. Rewrite using `[if_pos hs, Units.val_one, Int.cast_one, one_mul, hs]`. Rewrite using `[if_neg hs, Units.val_neg, Units.val_one, Int.cast_neg, Int.cast_one, neg_one_mul]`. Rewrite `hx` using `[map_pow]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : (σ x - x) * (σ x + x) = 0` using `by linear_combination hx`. Break down `mul_eq_zero.1 h2 with h1 | h1` into its components or cases. Conclude with `absurd (sub_eq_zero.1 h1) hs`. Conclude with `eq_neg_of_add_eq_zero_left h1`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 private theorem apply_eq_sgn_mul_of_apply_sq_eq_sq {K : Type*} [Field K] [Algebra ℚ K] (σ : Gal(K/ℚ)) (x : K)
     (hx : σ (x ^ 2) = x ^ 2) : σ x = ((sgn σ x : ℤ) : K) * x := by
@@ -571,11 +567,11 @@ private theorem apply_eq_sgn_mul_of_apply_sq_eq_sq {K : Type*} [Field K] [Algebr
     · exact eq_neg_of_add_eq_zero_left h1
 
 /- English proof (translation)
-Unfold `HostGalSpec`. Introduce `e q d hqd L _ _ ζ a b h σ`. Take `⟨τ, hστ⟩` from `exists_lift hqd h σ`. Establish `hsq : ∀ y : L, ∀ r : ℕ, y ^ 2 = -(r : L) → τ (y ^ 2) = y ^ 2`. Introduce `y r hy`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hy, map_neg, map_natCast]`. Use `⟨?_, ?_, fun u => ?_, fun τ' hτ' => galE_lift h hτ'⟩` and prove the remaining obligations. Rewrite using `[galE.eq_1, hστ (aE ζ a b), sgn_lift hστ (aE ζ a b)]`. Conclude with `apply_eq_sgn_mul_of_apply_sq_eq_sq τ a (hsq a q h.2.1)`. Rewrite using `[galE.eq_1, hστ (bE ζ a b), sgn_lift hστ (bE ζ a b)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `apply_eq_sgn_mul_of_apply_sq_eq_sq τ b (hsq b d h.2.2.1)`. Rewrite using `[galE.eq_1] show hPart e ζ a b σ = hcl e u ↔ _`. Rewrite using `[hPart_lift h hστ, hcl_eq_iff, ← trace_eq_iff_units h.1, hστ, ← apply_theta h.1 τ]`. Conclude with `Iff.rfl`.
+Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself. A detailed English derivation is pending.
 -/
 theorem hostGalSpec : HostGalSpec := by
   unfold HostGalSpec
@@ -595,7 +591,7 @@ theorem hostGalSpec : HostGalSpec := by
     exact Iff.rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hostFixed, hostGalois, hostGalSpec⟩`.
+Supply the required witnesses or components.
 -/
 theorem hostGaloisCore : HostFixed ∧ HostGalois ∧ HostGalSpec := ⟨hostFixed, hostGalois, hostGalSpec⟩
 

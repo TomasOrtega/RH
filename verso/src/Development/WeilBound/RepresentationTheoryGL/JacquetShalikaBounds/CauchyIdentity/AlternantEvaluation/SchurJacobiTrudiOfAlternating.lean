@@ -17,7 +17,7 @@ def hLZ (m : ℕ) (z : ℤ) : LaurentRing m := if z < 0 then 0 else hL m z.toNat
 def jL (m : ℕ) (l : Fin m → ℕ) : LaurentRing m := (Matrix.of fun i j : Fin m => hLZ m ((l j : ℤ) - j + i)).det
 
 /- English proof (translation)
-Rewrite using `[evalAt_apply]`. Simplify using `[monomialChar]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem evalAt_monomial_eq_prod_zpow (z : Fin m → ℂˣ) (v : Fin m → ℤ) :
     evalAt z (monomial v) = ∏ i, ((z i : ℂ) ^ v i) := by
@@ -25,7 +25,7 @@ private theorem evalAt_monomial_eq_prod_zpow (z : Fin m → ℂˣ) (v : Fin m �
   simp [monomialChar]
 
 /- English proof (translation)
-Rewrite using `[evalAt_monomial_eq_prod_zpow]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem evalAt_monomial_nat (z : Fin m → ℂˣ) (k : Fin m → ℕ) :
     evalAt z (monomial (fun i => (k i : ℤ))) = ∏ i, (z i : ℂ) ^ k i := by
@@ -33,7 +33,7 @@ theorem evalAt_monomial_nat (z : Fin m → ℂˣ) (k : Fin m → ℕ) :
   simp
 
 /- English proof (translation)
-Unfold `hL hN`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Conclude with `evalAt_monomial_nat z k`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem evalAt_hL (z : Fin m → ℂˣ) (p : ℕ) : evalAt z (hL m p) = hN p (fun i => (z i : ℂ)) := by
   unfold hL hN
@@ -42,7 +42,7 @@ theorem evalAt_hL (z : Fin m → ℂˣ) (p : ℕ) : evalAt z (hL m p) = hN p (fu
   exact evalAt_monomial_nat z k
 
 /- English proof (translation)
-Unfold `hLZ hZ`. Use `split_ifs`. Simplify using the standard rewrite rules. Conclude with `evalAt_hL z _`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem evalAt_hLZ (z : Fin m → ℂˣ) (w : ℤ) : evalAt z (hLZ m w) = hZ w (fun i => (z i : ℂ)) := by
   unfold hLZ hZ
@@ -51,7 +51,7 @@ theorem evalAt_hLZ (z : Fin m → ℂˣ) (w : ℤ) : evalAt z (hLZ m w) = hZ w (
   · exact evalAt_hL z _
 
 /- English proof (translation)
-Unfold `jL jt`. Rewrite using `[AlgHom.map_det]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `[evalAt_hLZ]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem evalAt_jL (z : Fin m → ℂˣ) (l : Fin m → ℕ) : evalAt z (jL m l) = jt (fun i => (z i : ℂ)) l := by
   unfold jL jt
@@ -61,9 +61,9 @@ theorem evalAt_jL (z : Fin m → ℂˣ) (l : Fin m → ℕ) : evalAt z (jL m l) 
   simp [evalAt_hLZ]
 
 /- English proof (translation)
-Rewrite using `[alternant_eq_det, AlgHom.map_det]`. Unfold `altN`. Use `congr 1`. Use extensionality with `a b`. Simplify using `only [AlgHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[evalAt_monomial_eq_prod_zpow, Fintype.prod_eq_single a]`. Simplify using the standard rewrite rules. Introduce `i hi`. Simplify using `[Pi.single_apply, hi]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem evalAt_alternant_nat (z : Fin m → ℂˣ) (μ : Fin m → ℕ) :
     evalAt z (alternant fun i => (μ i : ℤ)) = altN (fun i => (z i : ℂ)) μ := by
@@ -78,7 +78,7 @@ theorem evalAt_alternant_nat (z : Fin m → ℂˣ) (μ : Fin m → ℕ) :
     simp [Pi.single_apply, hi]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [staircase, stair]`. Use `i.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem staircase_eq : staircase m = fun i => ((stair m i : ℕ) : ℤ) := by
   funext i
@@ -90,11 +90,11 @@ end SchurJacobiTrudiEvaluation
 
 open SchurJacobiTrudiEvaluation in
 /- English proof (translation)
-Introduce `h m z l`. Establish `key : alternant (staircase m) * schur (fun i => (l i : ℤ)) = alternant (staircase m) * jL m l`. Rewrite using `[alternant_mul_schur]`. Apply `eq_of_forall_evalAt` to reduce the goal to its premises. Introduce `w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_mul, evalAt_jL, staircase_eq]`. Establish `e : (fun i => (l i : ℤ)) + (fun i => ((stair m i : ℕ) : ℤ)) = fun i => (((l + stair m) i : ℕ) : ℤ)`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Rewrite using `[e, evalAt_alternant_nat, evalAt_alternant_nat]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h m _ l`. Rewrite using `[mul_left_cancel₀ alternant_staircase_ne_zero key]`. Conclude with `evalAt_jL z l`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem schur_jacobi_trudi_of_alternating : AltJT → SchurJT := by
   intro h m z l

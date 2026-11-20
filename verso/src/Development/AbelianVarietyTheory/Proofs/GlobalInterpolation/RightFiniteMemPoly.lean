@@ -8,11 +8,9 @@ open NumberField IsDedekindDomain Matrix GlobalTheory.CuspRep GlobalTheory.Unita
 namespace GlobalTheory.UnitaryBC
 
 /- English proof (translation)
-Introduce `E _ _ _ n f hf hfin`. Use `haveI := GlobalTheory.T.compactSpace_definiteUnitaryInfinitePoints E n`. Take `⟨hc, hs, hsep, hinv, hcop⟩` from `GlobalTheory.T.unitary_coordinate_algebra_dense E n`. Use `haveI : T2Space (infU E n) := ⟨fun x y hxy => by`. Take `⟨p, hp, hne⟩` from `hsep x y hxy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `separated_by_continuous (hc p hp) hne⟩`. Use `GlobalTheory.T.mem_of_finiteDimensional_span_rightTranslates' (infU E n) (Algebra.adjoin ℂ _) hc hs hsep ?_ f hf hfin` and prove the remaining obligations. Introduce `p hp`. Take `⟨m, a, b, hab, heq⟩` from `hcop p hp`. Use `⟨m, fun i x => a i x⁻¹, b, fun i => ⟨hinv _ (hab i).1, hc _ (hab i).2⟩, ?_⟩` and prove the remaining obligations.
-
-Introduce `x k`. Conclude with `heq x⁻¹ k`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem rightFinite_mem_poly : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (f : infU E n → ℂ), Continuous f → FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun k : infU E n => fun x : infU E n => f (x * k))) → f ∈ Algebra.adjoin ℂ {f : infU E n → ℂ | ∃ (τ : E →+* ℂ) (i j : Fin n), f = fun x => (cEmb τ x.1).val i j} := by
   intro E _ _ _ n f hf hfin

@@ -26,7 +26,7 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 namespace GlobalTheory.CompanionTheory.Ar.Giv
 
 /- English proof (translation)
-Introduce `hAIS hHS hRes`. Establish `hDG : GroundTheory.Heights₂.Heights.Inter.DegreeGeneric.Statement` using `degreeGeneric_of_degree (degree_of_system hAIS)`. Establish `a0` using `GroundTheory.Heights₂.Heights.HilbertSamuel.TwistIntersectionAnyDegree.proof (GlobalTheory.T.embedding_pieces_of_intersection_and_resolution hAIS hRes) hDG`. Establish `a1` using `GroundTheory.Heights₂.Heights.HilbertSamuel.TwistMetric.proof GroundTheory.Heights₂.Heights.HilbertSamuel.EmbeddingWeight.proof a0`. Conclude with `GroundTheory.Heights₂.Heights.HilbertSamuel.ArithmeticVolumeNefDual.proof (GlobalTheory.T.hodge_index_implies_height_bound hHS) GlobalTheory.T.packing' GroundTheory.Heights₂.Heights.HilbertSamuel.UnitApprox.proof GroundTheory.Heights₂.Heights.HilbertSamuel.NonvanishingDense.full …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem smallSections_upper_of_moriwaki :
     ReciprocityTheory.ChartRestriction.G.Geo.ArithIntersectionSystemStatement → ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.MoriwakiHSStatement →

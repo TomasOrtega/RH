@@ -6,13 +6,13 @@ open Matrix Finset Real
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hc : Commute A (-1 : Matrix (Fin n) (Fin n) K)` using `(Commute.one_right A).neg_right`. Establish `hall : ∀ m ∈ Finset.range (k + 1), (A ^ m).trace = (n : K)`. Introduce `m hm`. Break down `Nat.eq_zero_or_pos m with rfl | hm0` into its components or cases. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Conclude with `h m hm0 (le_trans (Nat.lt_succ_iff.mp (Finset.mem_range.mp hm)) hkn)`. Rewrite using `[sub_eq_add_neg, hc.add_pow, Matrix.trace_sum]`. Establish `hterm : ∀ m ∈ Finset.range (k + 1), (A ^ m * (-1 : Matrix (Fin n) (Fin n) K) ^ (k - m) * (k.choose m : Matrix (Fin n) (Fin n) K)).trace = (n : K) * ((1 : K) ^ m * (-1 : K) ^ (k - m) * (k.choose m : K))`. Introduce `m hm`. Establish `e1 : (-1 : Matrix (Fin n) (Fin n) K) ^ (k - m) = ((-1 : K) ^ (k - m)) • (1 : Matrix (Fin n) (Fin n) K)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← neg_one_smul K (1 : Matrix (Fin n) (Fin n) K), smul_pow, one_pow]`. Establish `e2 : ((k.choose m : ℕ) : Matrix (Fin n) (Fin n) K) = (k.choose m : K) • (1 : Matrix (Fin n) (Fin n) K)`. Rewrite using `[Nat.cast_smul_eq_nsmul, nsmul_one]`. Rewrite using `[e1, e2, Matrix.mul_smul, mul_one, Matrix.mul_smul, mul_one, smul_smul, Matrix.trace_smul, hall m hm, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_congr rfl hterm, ← Finset.mul_sum, ← add_pow]`. Simplify using `[Nat.pos_iff_ne_zero.mp hk1]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem trace_sub_one_pow_eq_zero_of_trace_pow_eq (K : Type) [Field K] (n : ℕ)
     (A : Matrix (Fin n) (Fin n) K)
@@ -40,11 +40,11 @@ private theorem trace_sub_one_pow_eq_zero_of_trace_pow_eq (K : Type) [Field K] (
   simp [Nat.pos_iff_ne_zero.mp hk1]
 
 /- English proof (translation)
-Establish `htr : ∀ k, 1 ≤ k → k ≤ n → ((A - 1) ^ k).trace = 0` using `fun k hk1 hkn => trace_sub_one_pow_eq_zero_of_trace_pow_eq K n A h k hk1 hkn`. Establish `hB : IsNilpotent (A - 1)` using `ReciprocityTheory.L2DbarEstimates.Y.isNilpotent_of_trace_pow n (A - 1) htr`. Establish `hchar : (A - 1).charpoly = Polynomial.X ^ n`. Use `(Matrix.isNilpotent_charpoly_sub_pow_of_isNilpotent hB).eq_zero` as an intermediate fact. Simplify `this` using `[sub_eq_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `e : A - 1 - Matrix.scalar (Fin n) (-1 : K) = A`. Rewrite using `[map_neg, map_one, sub_neg_eq_add, sub_add_cancel]`. Establish `hs` using `Matrix.charpoly_sub_scalar (A - 1) (-1 : K)`. Rewrite `hs` using `[e, hchar]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hs, Polynomial.pow_comp, Polynomial.X_comp, map_neg, map_one, ← sub_eq_add_neg]`. Use `Matrix.aeval_self_charpoly (A - 1)` as an intermediate fact. Rewrite `this` using `[hchar, map_pow, Polynomial.aeval_X]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem unipotent_of_trace_pow_eq_size (K : Type) [Field K] [CharZero K] (n : ℕ)
     (A : Matrix (Fin n) (Fin n) K)

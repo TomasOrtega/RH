@@ -17,7 +17,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.CompanionTheory.SuppCent
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem comm_of_conj {G : Type} [Group G] (γ p₀ q : G)
     (h : q⁻¹ * (p₀⁻¹ * γ * p₀) * q = p₀⁻¹ * γ * p₀) :
@@ -27,7 +27,7 @@ theorem comm_of_conj {G : Type} [Group G] (γ p₀ q : G)
     _ = γ * (p₀ * q * p₀⁻¹) := by group
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem conj_comm {G : Type} [Group G] (γ p₀ t : G) (h : t * γ = γ * t) :
     (p₀⁻¹ * t * p₀)⁻¹ * (p₀⁻¹ * γ * p₀) * (p₀⁻¹ * t * p₀) = p₀⁻¹ * γ * p₀ := by
@@ -36,9 +36,9 @@ theorem conj_comm {G : Type} [Group G] (γ p₀ t : G) (h : t * γ = γ * t) :
     _ = _ := by group
 
 /- English proof (translation)
-Establish `hφ : Continuous fun x : G => c⁻¹ * x * c` using `by fun_prop`. Establish `hK` using `h.image hφ`. Use `hK.of_isClosed_subset isClosed_closure (closure_minimal ?_ hK.isClosed)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Use `⟨t ^ k, subset_closure (Subgroup.zpow_mem_zpowers t k), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : c⁻¹ * t * c = MulAut.conj c⁻¹ t` using `by simp [MulAut.conj_apply]`. Establish `e' : ∀ x : G, c⁻¹ * x * c = MulAut.conj c⁻¹ x` using `fun x => by simp [MulAut.conj_apply]`. Simplify using `only [e', map_zpow]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem isCompact_closure_zpowers_conj {G : Type} [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] [T2Space G] (c t : G)
@@ -54,27 +54,25 @@ theorem isCompact_closure_zpowers_conj {G : Type} [Group G] [TopologicalSpace G]
   simp only [e', map_zpow]
 
 /- English proof (translation)
-Introduce `E _ _ _ hU w hw n b hb ϖ hϖ l hl hyp γ ⟨p1, hp1⟩`. Take `⟨hW1, hW2, hWc, -⟩` from `GlobalTheory.CompanionTheory.UnitaryWitt.unitary_hyperbolic_basis E hU w hw n b hb`. Establish `hinj : Function.Injective (wexp n l)` using `(GlobalTheory.CompanionTheory.Wexp.wexp_strictAnti_rev n l hl).1.injective`. Establish `huc` using `GlobalTheory.CompanionTheory.UnitaryContraction.main E hU w hw n b hb ϖ hϖ l hl hyp`. Take `⟨m, hm, u, hu, hmu⟩` from `huc _ hp1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨p₀, hp₀⟩ : ∃ p₀ : UL n w, p₀ = p1 * m` from `⟨_, rfl⟩`. Establish `hγ0 : (p₀⁻¹ * γ * p₀).1 = b * GlobalTheory.SmGL.diagT (w.adicCompletion E) (Fin n) u * b⁻¹`. Rewrite using `[← hmu]`. Use `congr 1`. Rewrite using `[hp₀]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `group`. Establish `key : ∀ (q : UL n w) (u' : Fin n → (w.adicCompletion E)ˣ), (∀ i, ordL (u' i : w.adicCompletion E) = wexp n l i) → (q⁻¹ * (p₀⁻¹ * γ * p₀) * q).1 = b * GlobalTheory.SmGL.diagT (w.adicCompletion E) (Fin n) u' * b⁻¹ → u = u' ∧ ∃ s : Fin n → (w.adicCompletion E)ˣ, q.1 = b * GlobalTheo …`. Introduce `q u' hu' e`. Establish `e' : q.1⁻¹ * (b * GlobalTheory.SmGL.diagT (w.adicCompletion E) (Fin n) u * b⁻¹) * q.1 = b * GlobalTheory.SmGL.diagT (w.adicCompletion E) (Fin n) u' * b⁻¹`. Rewrite using `[← hγ0, ← e]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hh : (b⁻¹ * q.1 * b)⁻¹ * GlobalTheory.SmGL.diagT (w.adicCompletion E) (Fin n) u * (b⁻¹ * q.1 * b) = GlobalTheory.SmGL.diagT (w.adicCompletion E) (Fin n) u'`. Combine the equalities or inequalities in the displayed calculation. Take `⟨h1, s, hs⟩` from `GlobalTheory.CompanionTheory.DiagRigid.diag_rigid (w.adicCompletion E) n (wexp n l) hinj u u' hu hu' _ hh`. Use `⟨h1, s, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hs]`. Use `group`. Use `⟨p₀, u, hu, hγ0, fun p => ⟨fun hp => ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Take `⟨m', hm', u', hu', e⟩` from `huc _ hp`. Establish `e2 : (p₀⁻¹ * p * m')⁻¹ * (p₀⁻¹ * γ * p₀) * (p₀⁻¹ * p * m') = m'⁻¹ * (p⁻¹ * γ * p) * m'` using `by group`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨rfl, -⟩` from `key (p₀⁻¹ * p * m') u' hu' (by rw [e2]; exact e)`. Establish `hq : (p₀⁻¹ * p * m')⁻¹ * (p₀⁻¹ * γ * p₀) * (p₀⁻¹ * p * m') = p₀⁻¹ * γ * p₀`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[e2, e, hγ0]`. Use `⟨p₀ * (p₀⁻¹ * p * m') * p₀⁻¹, comm_of_conj γ p₀ _ hq, m'⁻¹, inv_mem hm', ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `group`. Introduce and unpack `⟨z, hz, i, hi, rfl⟩`. Establish `hz' : z * γ = γ * z` using `hz`. Establish `e : (z * p₀ * i)⁻¹ * γ * (z * p₀ * i) = i⁻¹ * (p₀⁻¹ * γ * p₀) * i`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, GlobalTheory.CompanionTheory.DiagCoset.fU_diag E hU w hw n b hb ϖ hϖ l hl _ u hu hγ0 _ (inv_mem hi) _ hi]`. Conclude with `one_ne_zero`. Use `GlobalTheory.CompanionTheory.CptGen.cptPart_eq_inf (UL n w) _ _ ?_ ?_` and prove the remaining obligations. Rewrite using `[Subgroup.coe_map]`. Use `hWc.image ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Express the relevant statement in the definitionally equal form `Continuous fun x : UL n w => p₀ * x * p₀⁻¹`. Use `fun_prop`. Introduce `t ht hc`. Establish `ht' : t * γ = γ * t` using `ht`. Take `⟨-, s, hs⟩` from `key (p₀⁻¹ * t * p₀) u hu (by rw [conj_comm γ p₀ t ht']; exact hγ0)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hv` using `GlobalTheory.CompanionTheory.DiagBd.valued_eq_one_of_isCompact_closure_zpowers E w n (UL n w) (p₀⁻¹ * t * p₀) b s hs (isCompact_closure_zpowers_conj p₀ t hc)`. Establish `hmem : p₀⁻¹ * t * p₀ ∈ iwU n w b`. Rewrite using `[hW2]`. Establish `: b⁻¹ * (p₀⁻¹ * t * p₀).1 * b = GlobalTheory.SmGL.diagT (w.adicCompletion E) (Fin n) s`. Rewrite using `[hs]`.
-
-Use `group`. Rewrite using `[this]`. Conclude with `GlobalTheory.CompanionTheory.DiagCoset.diagT_mem_iwGL w n s hv`. Use `Subgroup.mem_map.2 ⟨_, hmem, ?_⟩` and prove the remaining obligations. Simplify using `[MulAut.conj_apply, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (w : Pl E), ¬ IsSplitAt w → ∀ (n : ℕ) (b : GLw n w), IsWitt n w b → ∀ (ϖ : (w.adicCompletion E)ˣ), IsUnifAt ϖ → ∀ (l : Fin (n / 2) → ℤ), Cone l → (∀ (y : Fin n → ℤ), StrictAnti y → ∀ δ : GLw n w, dcos n w (tdiag ϖ y) δ ≠ 0 → ∃ m ∈ iwGL n w, ∃ τ : GLw n w, ((∀ i j : Fin n, i ≠ j → τ.val i j = 0) ∧ ∀ i, Valued.v (τ.val i i) = 1) ∧ m⁻¹ * δ * m = tdiag ϖ y * τ) → ∀ γ : UL n w, (∃ p : UL n w, fU n w b ϖ l (p⁻¹ * γ * p) ≠ 0) → ∃ (p₀ : UL n w) (u : Fin n → (w.adicCompletion E)ˣ), (∀ i, ordL (u i : w.adicCompletion E) = wexp n l i) ∧ (p₀⁻¹ * γ * p₀).1 = b * GlobalTheory.SmGL.diagT (w.adicCompletion E) (Fin n) u * b⁻¹ ∧ (∀ p : UL n w, fU n w b ϖ l (p⁻¹ * γ * p) ≠ 0 ↔ ∃ z ∈ twCent (MonoidHom.id (UL n w)) γ, ∃ i ∈ iwU n w b, p = z * p₀ * i) ∧ cptPart (twCent (MonoidHom.id (UL n w)) γ) = twCent (MonoidHom.id (UL n w)) γ ⊓ (iwU n w b).map (MulAut.conj p₀).toMonoidHom := by
   intro E _ _ _ hU w hw n b hb ϖ hϖ l hl hyp γ ⟨p1, hp1⟩

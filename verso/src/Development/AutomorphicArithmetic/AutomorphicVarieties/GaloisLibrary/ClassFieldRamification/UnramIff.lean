@@ -6,15 +6,15 @@ open NumberField IsDedekindDomain IntermediateField UpperTheory.V.Kum UpperTheor
 open scoped Pointwise
 
 /- English proof (translation)
-Establish `h2 : ∀ (L : Type) [Field L] [NumberField L] (p : ℕ), p.Prime → (UnramAt L p ↔ ¬ (p : ℤ) ∣ NumberField.discr L)`. Introduce `L _ _ p hp`. Establish `hpZ : Prime (p : ℤ)` using `Nat.prime_iff_prime_int.mp hp`. Rewrite using `[NumberField.not_dvd_discr_iff_forall_mem L (𝓞 L) hpZ]`. Unfold `UnramAt`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `forall_congr' fun P => forall_congr' fun hP => ?_` and prove the remaining obligations. Use `haveI := hP`. Rewrite using `[Int.cast_natCast, Ideal.ramificationIdx_eq_one_iff]`. Use `⟨?_, h2, ?_⟩` and prove the remaining obligations. Introduce `L _ _ _ p hp`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Unfold `UnramAt`. Prove the components needed by the constructor for the conclusion. Introduce `h w hw haveI := w.isPrime`. Rewrite using `[← Subgroup.card_eq_one, Ideal.card_inertia_eq_ramificationIdxIn (w.asIdeal.under ℤ) w.asIdeal, Ideal.ramificationIdxIn_eq_ramificationIdx (w.asIdeal.under ℤ) w.asIdeal Gal(L/ℚ)]`. Conclude with `h w.asIdeal w.isPrime hw`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h P hP hpP haveI := hP`. Establish `hne : P ≠ ⊥`. Introduce `hb`. Rewrite `hpP` using `[hb, Ideal.mem_bot]`. Conclude with `hp.ne_zero (by exact_mod_cast hpP)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hw` using `h ⟨P, hP, hne⟩ hpP`. Rewrite `hw` using `[← Subgroup.card_eq_one, Ideal.card_inertia_eq_ramificationIdxIn (P.under ℤ) P, Ideal.ramificationIdxIn_eq_ramificationIdx (P.under ℤ) P Gal(L/ℚ)]`. Conclude with `hw`. Introduce `K L _ _ _ _ _ p hp hL`. Conclude with `(h2 K p hp).2 fun hd => (h2 L p hp).1 hL (hd.trans (NumberField.discr_dvd_discr K L))`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.CF.unramIff :
     (∀ (L : Type) [Field L] [NumberField L] [IsGalois ℚ L] (p : ℕ), p.Prime → (UnramAt L p ↔ ∀ w : HeightOneSpectrum (𝓞 L), (p : 𝓞 L) ∈ w.asIdeal → w.asIdeal.inertia Gal(L/ℚ) = ⊥)) ∧ (∀ (L : Type) [Field L] [NumberField L] (p : ℕ), p.Prime → (UnramAt L p ↔ ¬ (p : ℤ) ∣ NumberField.discr L)) ∧ ∀ (K L : Type) [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L] (p : ℕ), p.Prime → UnramAt L p → UnramAt K p := by

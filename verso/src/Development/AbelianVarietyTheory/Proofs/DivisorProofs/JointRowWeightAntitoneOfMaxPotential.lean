@@ -15,9 +15,9 @@ def permMat {O : Type} [CommRing O] {N : ℕ} (σ : Equiv.Perm (Fin N)) : Matrix
   Matrix.of fun i j => if σ i = j then 1 else 0
 
 /- English proof (translation)
-Use extensionality with `i k`. Simplify using `only [permMat, Matrix.mul_apply, Matrix.of_apply, Equiv.trans_apply]`. Rewrite using `[Finset.sum_eq_single (σ i)]`. Apply the tactic sequence `by_cases h : ρ (σ i) = k <;> simp [h]`. Introduce `j _ hj`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Ne.symm hj]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem permMat_mul {O : Type} [CommRing O] {N : ℕ} (σ ρ : Equiv.Perm (Fin N)) :
     (permMat σ : Matrix (Fin N) (Fin N) O) * permMat ρ = permMat (σ.trans ρ) := by
@@ -30,7 +30,7 @@ theorem permMat_mul {O : Type} [CommRing O] {N : ℕ} (σ ρ : Equiv.Perm (Fin N
   · simp
 
 /- English proof (translation)
-Use extensionality with `i k`. Apply the tactic sequence `by_cases h : i = k <;> simp [permMat, Matrix.one_apply, h]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem permMat_refl {O : Type} [CommRing O] {N : ℕ} :
     (permMat (Equiv.refl (Fin N)) : Matrix (Fin N) (Fin N) O) = 1 := by
@@ -42,7 +42,7 @@ def permGL {O : Type} [CommRing O] {N : ℕ} (σ : Equiv.Perm (Fin N)) : GL (Fin
     by rw [permMat_mul, Equiv.symm_trans_self, permMat_refl]⟩
 
 /- English proof (translation)
-Establish `: Formalism.GradedWeylDivisibility.rowAct O (n` using `N) (permMat σ) = rename (fun v : Fin N × Fin N => (σ v.1, v.2)) := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Simplify using `[Formalism.GradedWeylDivisibility.rowAct, permMat, rename_X]`. Rewrite using `[this]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem rowAct_permMat {O : Type} [CommRing O] {N : ℕ} (σ : Equiv.Perm (Fin N)) (f : MvPolynomial (Fin N × Fin N) O) :
     Formalism.GradedWeylDivisibility.rowAct O (n := N) (permMat σ) f = rename (fun v : Fin N × Fin N => (σ v.1, v.2)) f := by
@@ -53,9 +53,9 @@ theorem rowAct_permMat {O : Type} [CommRing O] {N : ℕ} (σ : Equiv.Perm (Fin N
   rw [this]
 
 /- English proof (translation)
-Proceed by induction on `d using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add f g hf hg => rw [Finsupp.mapDomain_add, map_add, map_add, Pi.add_apply, Pi.add_apply, hf, hg]`. Consider the case `single v c`. Rewrite using `[Finsupp.mapDomain_single, Finsupp.weight_single, Finsupp.weight_single]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.smul_apply, Formalism.GradedWeylDivisibility.rowW, Pi.single_apply, σ.injective.eq_iff]`.
+Simplify using the standard rewrite rules.
 -/
 theorem weight_mapDomain_perm {N : ℕ} (σ : Equiv.Perm (Fin N)) (d : Fin N × Fin N →₀ ℕ) (a : Fin N) :
     Finsupp.weight (Formalism.GradedWeylDivisibility.rowW N N) (d.mapDomain (fun v : Fin N × Fin N => (σ v.1, v.2))) (σ a) =
@@ -72,13 +72,13 @@ end GlobalTheory.HighWt
 namespace GlobalTheory.HighWt
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on' with`. Consider the case `monomial d c`. Rewrite using `[rename_monomial]`. Establish `key : Finsupp.weight (Formalism.GradedWeylDivisibility.rowW N N) (d.mapDomain (fun v : Fin N × Fin N => (σ v.1, v.2))) = u ↔ Finsupp.weight (Formalism.GradedWeylDivisibility.rowW N N) d = u ∘ σ`. Prove the components needed by the constructor for the conclusion.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Use function extensionality and compare the values at `a`. Rewrite using `[Function.comp_apply, ← h, weight_mapDomain_perm]`. Introduce `h`. Use function extensionality and compare the values at `b`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Take `⟨a, rfl⟩` from `σ.surjective b`. Rewrite using `[weight_mapDomain_perm, h, Function.comp_apply]`. Rewrite using `[weightedHomogeneousComponent_of_mem (isWeightedHomogeneous_monomial _ _ _ rfl), weightedHomogeneousComponent_of_mem (isWeightedHomogeneous_monomial _ _ _ rfl)]`. Distinguish the cases in `h : Finsupp.weight (Formalism.GradedWeylDivisibility.rowW N N) d = u ∘ σ`. Rewrite using `[if_pos (Eq.symm (key.2 h)), if_pos h.symm, rename_monomial]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg (fun h' => h (key.1 h'.symm)), if_neg (fun h' => h h'.symm), map_zero]`. Consider the case `add p q hp hq => rw [map_add, map_add, hp, hq, map_add, map_add]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem rowComp_rename_perm {O : Type} [CommRing O] {N : ℕ} (σ : Equiv.Perm (Fin N)) (u : Fin N → ℕ)
     (f : MvPolynomial (Fin N × Fin N) O) :
@@ -108,7 +108,7 @@ theorem rowComp_rename_perm {O : Type} [CommRing O] {N : ℕ} (σ : Equiv.Perm (
 variable (O : Type) [CommRing O] (N : ℕ) {ι : Type} [DecidableEq ι] (lam : ι → ℕ → ℕ)
 
 /- English proof (translation)
-Simplify using `only [grp, Formalism.CohomologicalDescent.RealLocalDeltaNabla.nablaRep, MonoidHom.coe_comp, Function.comp_apply]`. Rewrite using `[PiTensorProduct.mapMonoidHom_apply, PiTensorProduct.map_tprod]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem grp_tprod (g : ι → GL (Fin N) O) (x : ∀ τ, Formalism.GradedWeylDivisibility.dualWeyl O N N (res N (lam τ))) :
     grp O N lam g (PiTensorProduct.tprod O x) =
@@ -118,25 +118,25 @@ theorem grp_tprod (g : ι → GL (Fin N) O) (x : ∀ τ, Formalism.GradedWeylDiv
   rfl
 
 /- English proof (translation)
-Simplify using `only [grp]`. Rewrite using `[← map_mul, inv_mul_cancel, map_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem grp_inv_mul (g : ι → GL (Fin N) O) : grp O N lam g⁻¹ * grp O N lam g = 1 := by
   simp only [grp]
   rw [← map_mul, inv_mul_cancel, map_one]
 
 /- English proof (translation)
-Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dualWeylRep_mul_inv (ν : Fin N → ℕ) (h : GL (Fin N) O) (v : Formalism.GradedWeylDivisibility.dualWeyl O N N ν) :
     Formalism.UG.dualWeylRep O N N ν h (Formalism.UG.dualWeylRep O N N ν h⁻¹ v) = v := by
   rw [← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]
 
 /- English proof (translation)
-Introduce `x y hy`. Use `set x'' : ∀ τ, Formalism.GradedWeylDivisibility.dualWeyl O N N (res N (lam τ)) := fun τ => Formalism.UG.dualWeylRep O N N (res N (lam τ)) (g τ)⁻¹ (x τ) with hx''`. Establish `h1 : grp O N lam g⁻¹ (PiTensorProduct.tprod O x) = PiTensorProduct.tprod O x''`. Rewrite using `[grp_tprod]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hy'' : ((Formalism.UG.dualWeylRep O N N (res N (lam τ')) (g τ')⁻¹ y : Formalism.GradedWeylDivisibility.dualWeyl O N N (res N (lam τ'))) : MvPolynomial (Fin N × Fin N) O) = weightedHomogeneousComponent (Formalism.GradedWeylDivisibility.rowW N N) u (x'' τ' : MvPolynomial (Fin N × F …`. Rewrite using `[Formalism.UG.dualWeylRep_apply, hy, ← h, hx'', Formalism.UG.dualWeylRep_apply]`. Establish `h2` using `hb x'' _ hy''`. Rewrite using `[Module.End.mul_apply, Module.End.mul_apply, h1, h2, grp_tprod]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i = τ'`. Substitute `hi` using the available equality. Rewrite using `[Function.update_self, Function.update_self, dualWeylRep_mul_inv]`. Rewrite using `[Function.update_of_ne hi, Function.update_of_ne hi, hx'', dualWeylRep_mul_inv]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isProj_conj (g : ι → GL (Fin N) O) (τ' : ι) (u u' : Fin N → ℕ)
     (h : ∀ f, weightedHomogeneousComponent (Formalism.GradedWeylDivisibility.rowW N N) u (Formalism.UG.dwAct O N N (g τ')⁻¹ f) =
@@ -164,24 +164,22 @@ end GlobalTheory.HighWt
 namespace GlobalTheory.HighWt
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (grp_inv_mul O N lam g)`.
+A detailed English derivation is pending.
 -/
 theorem grpA_inv_mul (O : Type) [CommRing O] (N : ℕ) {ι : Type} [DecidableEq ι] (lam : ι → ℕ → ℕ) (g : ι → GL (Fin N) O) :
     grpA O N lam g⁻¹ * grpA O N lam g = 1 :=
   Subtype.ext (grp_inv_mul O N lam g)
 
 /- English proof (translation)
-Take `⟨z, hz0, hz⟩` from `hw`. Use `set g : ι → GL (Fin N) O := Pi.mulSingle τ (permGL σ) with hg`. Use `⟨grpA O N lam g • z, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Apply `hz0` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `congrArg (fun t => grpA O N lam g⁻¹ • t) h0` as an intermediate fact. Simplify using `only [smul_smul, grpA_inv_mul, one_smul, smul_zero] at this`. Conclude with `this`. Introduce `τ' a ha`. Take `⟨b0, hb0, -⟩` from `GlobalTheory.ExpFrame.exists_unique_isProj O N ι lam τ' (w τ')`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c, -, huniq⟩` from `GlobalTheory.ExpFrame.exists_unique_isProj O N ι lam τ' (Function.update w τ (w τ ∘ σ) τ')`. Establish `hconj : IsProj O N lam τ' (Function.update w τ (w τ ∘ σ) τ') (grp O N lam g * b0 * grp O N lam g⁻¹)`. Apply `isProj_conj O N lam g τ' (w τ') _ _ b0 hb0` to reduce the goal to its premises. Introduce `f`. Distinguish the cases in `hτ : τ' = τ`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Substitute `hτ` using the available equality. Establish `hgt : g τ' = permGL σ` using `by rw [hg, Pi.mulSingle_eq_same]`. Rewrite using `[hgt, Function.update_self]`. Simplify using `only [Formalism.UG.dwAct, inv_inv]`. Use `show weightedHomogeneousComponent (Formalism.GradedWeylDivisibility.rowW N N) (w τ') (Formalism.GradedWeylDivisibility.rowAct O (n := N) (permMat σ) f) = Formalism.GradedWeylDivisibility.rowAct O (n := N) (permMat σ) (weightedHomogeneousComponent (Formalism.GradedWeylDivisibility …`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[rowAct_permMat, rowAct_permMat, rowComp_rename_perm]`. Establish `hgt : g τ' = 1` using `by rw [hg, Pi.mulSingle_eq_of_ne hτ]`. Rewrite using `[hgt, Function.update_of_ne hτ, inv_one, (Formalism.UG.P.dual_weyl_action_mul O N N 1 1).2]`. Both sides reduce to the same expression. Establish `haeq : (a : Module.End O (NablaT O N lam)) = grp O N lam g * b0 * grp O N lam g⁻¹` using `(huniq _ ha).trans (huniq _ hconj).symm`.
-
-Use `set b : alg O N lam := ⟨b0, Algebra.subset_adjoin (Or.inr ⟨τ', w τ', hb0⟩)⟩ with hbdef`. Establish `haeq' : a = grpA O N lam g * b * grpA O N lam g⁻¹` using `Subtype.ext haeq`. Rewrite using `[haeq', smul_smul, mul_assoc, grpA_inv_mul, mul_one, mul_smul, hz τ' b hb0]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jointWt_perm (O : Type) [CommRing O] (N : ℕ) {ι : Type} [Fintype ι] [DecidableEq ι] (lam : ι → ℕ → ℕ)
     (Gm : Type) [AddCommGroup Gm] [Module (alg O N lam) Gm] (w : ι → Fin N → ℕ) (hw : JointWt O N lam Gm w)
@@ -218,11 +216,11 @@ theorem jointWt_perm (O : Type) [CommRing O] (N : ℕ) {ι : Type} [Fintype ι] 
     rw [haeq', smul_smul, mul_assoc, grpA_inv_mul, mul_one, mul_smul, hz τ' b hb0]
 
 /- English proof (translation)
-Establish `hne : a ≠ b` using `fun e => by rw [e] at hab; omega`. Rewrite using `[← Finset.sum_add_sum_compl {a, b}, ← Finset.sum_add_sum_compl {a, b} (fun c : Fin N => (N - (c : ℕ)) * (v ∘ Equiv.swap a b) c)]`. Establish `hrest : ∑ c ∈ ({a, b} : Finset (Fin N))ᶜ, (N - (c : ℕ)) * v c = ∑ c ∈ ({a, b} : Finset (Fin N))ᶜ, (N - (c : ℕ)) * (v ∘ Equiv.swap a b) c`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `c hc`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Finset.mem_compl, Finset.mem_insert, Finset.mem_singleton, not_or] at hc`. Rewrite using `[Function.comp_apply, Equiv.swap_apply_of_ne_of_ne hc.1 hc.2]`. Rewrite using `[hrest, Finset.sum_pair hne, Finset.sum_pair hne]`. Simplify using `only [Function.comp_apply, Equiv.swap_apply_left, Equiv.swap_apply_right]`. Establish `hb : (b : ℕ) < N` using `b.isLt`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hk : N - (a : ℕ) = (N - (b : ℕ)) + 1` using `by omega`. Rewrite using `[hk]`. Establish `: (N - (b : ℕ) + 1) * v a + (N - b) * v b < (N - (b : ℕ) + 1) * v b + (N - b) * v a` using `by nlinarith`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem sum_lt_swap {N : ℕ} (v : Fin N → ℕ) (a b : Fin N) (hab : (b : ℕ) = a + 1) (h : v a < v b) :
     ∑ c : Fin N, (N - (c : ℕ)) * v c < ∑ c : Fin N, (N - (c : ℕ)) * (v ∘ Equiv.swap a b) c := by
@@ -244,9 +242,9 @@ theorem sum_lt_swap {N : ℕ} (v : Fin N → ℕ) (a b : Fin N) (hab : (b : ℕ)
   omega
 
 /- English proof (translation)
-Unfold `pot`. Apply `Finset.sum_lt_sum` to reduce the goal to its premises. Introduce `i _`. Distinguish the cases in `hi : i = τ`. Substitute `hi` using the available equality.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[Function.update_self]`. Conclude with `(sum_lt_swap _ a b hab h).le`. Rewrite using `[Function.update_of_ne hi]`. Conclude with `⟨τ, Finset.mem_univ _, by rw [Function.update_self]; exact sum_lt_swap _ a b hab h⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem pot_lt_swap {N : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι] (w : ι → Fin N → ℕ) (τ : ι) (a b : Fin N)
     (hab : (b : ℕ) = a + 1) (h : w τ a < w τ b) : pot N w < pot N (Function.update w τ (w τ ∘ Equiv.swap a b)) := by
@@ -261,7 +259,7 @@ theorem pot_lt_swap {N : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι] (w : ι 
   · exact ⟨τ, Finset.mem_univ _, by rw [Function.update_self]; exact sum_lt_swap _ a b hab h⟩
 
 /- English proof (translation)
-Consider the cases of `N with`. Consider the case `zero => intro a`. Conclude with `a.elim0`. Consider the case `succ n => exact Fin.antitone_iff_succ_le.2 fun i => h i.castSucc i.succ (by simp)`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem antitone_of_adj {N : ℕ} (v : Fin N → ℕ) (h : ∀ a b : Fin N, (b : ℕ) = a + 1 → v b ≤ v a) : Antitone v := by
   cases N with
@@ -269,9 +267,9 @@ theorem antitone_of_adj {N : ℕ} (v : Fin N → ℕ) (h : ∀ a b : Fin N, (b :
   | succ n => exact Fin.antitone_iff_succ_le.2 fun i => h i.castSucc i.succ (by simp)
 
 /- English proof (translation)
-Introduce `O _ _ _ _ N ι _ _ lam Gm _ _ w hw hmax τ`. Apply `antitone_of_adj` to reduce the goal to its premises. Introduce `a b hab`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h1` using `hmax _ (jointWt_perm O N lam Gm w hw τ (Equiv.swap a b))`. Establish `h2` using `pot_lt_swap w τ a b hab hlt`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem antitone_of_pot_max : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O] (N : ℕ) (ι : Type) [Fintype ι]
     [DecidableEq ι] (lam : ι → ℕ → ℕ) (Gm : Type) [AddCommGroup Gm] [Module (alg O N lam) Gm] (w : ι → Fin N → ℕ),

@@ -12,11 +12,11 @@ open Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N G
 namespace UpperTheory.V.Z.Kato.Nb
 
 /- English proof (translation)
-Introduce `Ω _ _ _ ε X l _ n N M₀ M w _ _ _ g hL hW x y hxy A _ π u u' h`. Take `⟨a, ha, hu⟩` from `h`. Take `⟨hE, hadd, -⟩` from `sApi Ω ε X l n`. Use `⟨fun t => Xi X l n N M₀ M w g x y (fun z => π z = t) a, fun t => sXiInv Ω ε X l n N M₀ M w g hL hW x y hxy _ a ha, fun s t => ?_⟩` and prove the remaining obligations. Establish `h1` using `(sXiMul Ω ε X l n N M₀ M w g hL x y hxy (fun z => π z = t)).1 (u s) (u' s) (tw X (l ^ n) M₀ s a) a (hu s)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2` using `sXiTw Ω ε X l n N M₀ M w g hL x y (fun z => π z = t) a s`. Establish `h3 : (fun z => π (z * cycM M s) = t) = fun z => π z = t * (π (cycM M s))⁻¹`. Use function extensionality and compare the values at `z`. Rewrite using `[map_mul, eq_mul_inv_iff_mul_eq]`. Rewrite `h2` using `[h3]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hE.trans h1 (hadd _ _ _ _ (hE.refl _) (hadd _ _ _ _ h2 (hE.refl _)).2).1`.
+A detailed English derivation is pending.
 -/
 theorem sXiCoh : SXiCoh := by
   intro Ω _ _ _ ε X l _ n N M₀ M w _ _ _ g hL hW x y hxy A _ π u u' h

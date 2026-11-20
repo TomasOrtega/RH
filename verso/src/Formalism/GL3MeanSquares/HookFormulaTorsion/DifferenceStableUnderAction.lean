@@ -13,21 +13,21 @@ section
 open Formalism.HermitianLattices.FiltrationBoundaryCriterion Formalism.FrobeniusOrbits
 
 /- English proof (translation)
-Introduce `e φ hφ`. Establish `hp : ∀ g : GG e, (placeOf g).2 = g.2 ∧ (placeOf g).1 = (g.1.1 * g.1.2, 1)`. Introduce `g`. Break down `Int.units_eq_one_or g.1.2 with hg | hg` into its components or cases. Use `⟨by simp [placeOf, hg], ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `ext <;> simp [placeOf, hg]`. Use `⟨by simp [placeOf, hg, cc], ?_⟩` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [placeOf, hg, cc, c0]`. Establish `hsq : ∀ x : ℤˣ, ∀ i : ℤ, x ^ i = if Even i then 1 else x`. Introduce `x i`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `Int.even_or_odd' i with ⟨k, rfl | rfl⟩` into its components or cases. Simplify using `[zpow_mul, Int.units_sq]`. Establish `: ¬ Even (2 * k + 1)` using `by simp`. Simplify using `[zpow_add, zpow_mul, Int.units_sq]`. Use `⟨⟨?_, rfl, ?_, orderOf_inv φ⟩, ?_⟩` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `rcases hφ with h | h <;> rw [Prod.fst_inv, h] <;> ext <;> simp [c0]`. Rewrite using `[Prod.snd_inv, orderOf_inv]`. Introduce `τ i`. Apply the tactic sequence `have h2 : φ.1.2 = -1 := by rcases hφ with h | h <;> simp [h, c0]`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mem_Psi_iff, mem_Psi_iff]`. Establish `: (φ ^ i * τ).1.2 = φ.1.2 ^ i * τ.1.2` using `by simp`. Rewrite using `[this, h2, hsq]`. Apply the tactic sequence `rcases Int.units_eq_one_or τ.1.2 with ht | ht <;> by_cases hi : Even i <;> simp [ht, hi]`. Rewrite using `[(hp _).1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `h`. Rewrite using `[(hp _).2, (hp _).2]`. Establish `a1 : (φ ^ i * τ).1.1 = φ.1.1 ^ i * τ.1.1` using `by simp`. Establish `a2 : (φ ^ i * τ).1.2 = φ.1.2 ^ i * τ.1.2` using `by simp`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[a1, a2, h, hsq, hsq]`. Apply the tactic sequence `by_cases hi : Even i <;> ext <;> simp [hi, c0]`. Introduce `h`. Rewrite using `[(hp _).2, (hp _).2]`. Establish `a1 : (φ ^ i * τ).1.1 = φ.1.1 ^ i * τ.1.1` using `by simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `a2 : (φ ^ i * τ).1.2 = φ.1.2 ^ i * τ.1.2` using `by simp`. Rewrite using `[a1, a2, h, hsq, hsq]`. Apply the tactic sequence `by_cases hi : Even i <;> ext <;> simp [hi, sg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem orbitsInt : OrbitsInt := by
   intro e φ hφ
@@ -74,23 +74,21 @@ section
 open Formalism.HermitianLattices.FiltrationBoundaryCriterion Formalism.FrobeniusOrbits NumberField Ideal
 
 /- English proof (translation)
-Introduce `R _ I g k hg A hA m`. Establish `hmul : ∀ (a b : ℕ) (X Y : Matrix (Fin k) (Fin k) R), (∀ i j, X i j ∈ I ^ a) → (∀ i j, Y i j ∈ I ^ b) → ∀ i j, (X * Y) i j ∈ I ^ (a + b)`. Introduce `a b X Y hX hY i j`. Rewrite using `[Matrix.mul_apply]`. Conclude with `Ideal.sum_mem _ fun l _ => by rw [pow_add]; exact Ideal.mul_mem_mul (hX i l) (hY l j)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Proceed by induction on `m with`. Consider the case `zero => simpa using hA`. Consider the case `succ m ih => set B := A ^ g ^ m with hB`. Establish `hBI : ∀ i j, (B - 1) i j ∈ I` using `fun i j => Ideal.pow_le_self (by omega) (ih i j)`. Establish `hpow : ∀ n : ℕ, ∀ i j, (B ^ n - 1) i j ∈ I`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro i j`. Simplify using the standard rewrite rules. Consider the case `succ n ihn`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j`. Establish `: B ^ (n + 1) - 1 = (B ^ n - 1) * (B - 1) + (B ^ n - 1) + (B - 1)`. Rewrite using `[pow_succ]`. Use `noncomm_ring`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `I.add_mem (I.add_mem ?_ (ihn i j)) (hBI i j)` and prove the remaining obligations. Use `hmul 1 1 _ _ (by simpa using ihn) (by simpa using hBI) i j` as an intermediate fact. Conclude with `Ideal.pow_le_self (by omega) this`. Establish `hgeom : B ^ g - 1 = (B - 1) * ∑ n ∈ Finset.range g, B ^ n`. Use `(Commute.one_right B).mul_geom_sum₂ g` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using this.symm`. Establish `hsum : ∀ i j, (∑ n ∈ Finset.range g, B ^ n) i j ∈ I ^ 1`. Introduce `i j`. Establish `: (∑ n ∈ Finset.range g, B ^ n) = (∑ n ∈ Finset.range g, (B ^ n - 1)) + (g : R) • 1`. Rewrite using `[Finset.sum_sub_distrib]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.smul_one_eq_diagonal, nsmul_eq_mul]`. Use extensionality with `i j`. Simplify using `[Matrix.natCast_apply, Matrix.diagonal_apply]`. Rewrite using `[this, pow_one, Matrix.add_apply, Matrix.sum_apply]`. Use `I.add_mem (Ideal.sum_mem _ fun n _ => hpow n i j) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Matrix.smul_apply]`. Conclude with `I.mul_mem_right _ hg`. Introduce `i j`. Establish `e1 : A ^ g ^ (m + 1) = B ^ g` using `by rw [hB, ← pow_mul, pow_succ]`. Rewrite using `[e1, hgeom]`.
-
-Conclude with `hmul (m + 1) 1 _ _ ih hsum i j`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem congruencePowers : CongruencePowers := by
   intro R _ I g k hg A hA m
@@ -145,7 +143,7 @@ section
 open Formalism.HermitianLattices.FiltrationBoundaryCriterion Formalism.FrobeniusOrbits
 
 /- English proof (translation)
-Rewrite using `[((orbitsInt e φ hφ).2 τ i).2.1, map_mul, map_zpow, toAdd_mul, toAdd_zpow, add_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coord {e : ℕ} (ι : HGrp e ≃* Multiplicative (ZMod (2 ^ e))) (φ τ : GG e)
     (hφ : φ.1 = c0 ∨ φ.1 = ((1 : ℤˣ), (-1 : ℤˣ))) (i : ℤ) :
@@ -170,7 +168,7 @@ open Formalism.HermitianLattices.FiltrationBoundaryCriterion Formalism.Frobenius
 open scoped TensorProduct
 
 /- English proof (translation)
-Use extensionality with `i l`. Simplify using `[Formalism.UG.bc, Formalism.UG.prV, Formalism.UG.inclE]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem bc_pr_incl {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] (k : ℕ)
     (w : HeightOneSpectrum (𝓞 F)) (γ₀ : Matrix.GeneralLinearGroup (Fin k) E) :
@@ -186,7 +184,7 @@ end PfM
 open Formalism.FrobeniusOrbits
 
 /- English proof (translation)
-The claim follows from `PfM.congruencePowers`.
+A detailed English derivation is pending.
 -/
 theorem congruence_powers : CongruencePowers := PfM.congruencePowers
 

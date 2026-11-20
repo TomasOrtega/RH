@@ -18,7 +18,7 @@ section PolynomialHeights
 variable {σ : Type*} [Finite σ]
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.ringKrullDim_of_isNoetherianRing, IsDiscreteValuationRing.ringKrullDim_eq_one]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ringKrullDim_mvPolynomial_dvr (O : Type*) [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] :
@@ -28,7 +28,7 @@ theorem ringKrullDim_mvPolynomial_dvr (O : Type*) [CommRing O] [IsDomain O]
   ring
 
 /- English proof (translation)
-Establish `h` using `DimF.height_eq_ringKrullDim_of_forall (DimF.height_eq_of_isMaximal_of_field (k := k)) M hM`. Rewrite using `[h, MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem height_mvPolynomial_field_of_isMaximal {k : Type*} [Field k]
     (M : Ideal (MvPolynomial σ k)) (hM : M.IsMaximal) :
@@ -39,15 +39,15 @@ theorem height_mvPolynomial_field_of_isMaximal {k : Type*} [Field k]
   simp
 
 /- English proof (translation)
-Use `set p0 : Ideal (MvPolynomial σ O) := Ideal.map C (IsLocalRing.maximalIdeal O) with hp0def`. Establish `hp0 : p0 = Ideal.span {C ϖ}`. Rewrite using `[hp0def, hϖ.maximalIdeal_eq, Ideal.map_span, Set.image_singleton]`. Set `e : (MvPolynomial σ O ⧸ p0) ≃+* MvPolynomial σ (IsLocalRing.ResidueField O)` to `(MvPolynomial.quotientEquivQuotientMvPolynomial (IsLocalRing.maximalIdeal O)).symm.toRingEquiv`. Establish `hdom : IsDomain (MvPolynomial σ O ⧸ p0)` using `Function.Injective.isDomain e.toRingHom (by exact e.injective)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp0p : p0.IsPrime` using `(Ideal.Quotient.isDomain_iff_prime p0).mp hdom`. Establish `hle : p0 ≤ m`. Rewrite using `[hp0]`. Conclude with `Ideal.span_le.mpr (Set.singleton_subset_iff.mpr hϖm)`. Establish `hmb : (m.map (Ideal.Quotient.mk p0)).IsMaximal` using `Ideal.IsMaximal.map_of_surjective_of_ker_le Ideal.Quotient.mk_surjective (by rw [Ideal.mk_ker]; exact hle)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (m.map (Ideal.Quotient.mk p0)).height = Nat.card σ`. Rewrite using `[← e.height_map]`. Use `height_mvPolynomial_field_of_isMaximal (k := IsLocalRing.ResidueField O) _ (Ideal.map_isMaximal_of_equiv e (p := m.map (Ideal.Quotient.mk p0)))` as an intermediate fact. Conclude with `this` after adjusting the coercions. Establish `h0 : 1 ≤ p0.height`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Order.one_le_iff_ne_zero, Ne, Ideal.height_eq_zero_iff_eq_bot, hp0, Ideal.span_singleton_eq_bot, C_eq_zero]`. Conclude with `hϖ.ne_zero`. Establish `hfin : FiniteRingKrullDim (MvPolynomial σ O)`. Rewrite using `[finiteRingKrullDim_iff_ne_bot_and_top, ringKrullDim_mvPolynomial_dvr]`. Conclude with `⟨by simp, by`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← WithBot.coe_natCast]`. Conclude with `ne_of_lt (WithBot.coe_lt_coe.mpr (ENat.natCast_lt_top _))⟩`. Establish `h2` using `DimF.height_add_height_map_le (q := p0) (M := m) hle`. Rewrite `h2` using `[h1]`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem le_height_of_isMaximal_of_uniformiser_mem {O : Type*} [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] {ϖ : O} (hϖ : Irreducible ϖ) (m : Ideal (MvPolynomial σ O))
@@ -87,11 +87,11 @@ theorem le_height_of_isMaximal_of_uniformiser_mem {O : Type*} [CommRing O] [IsDo
     _ ≤ m.height := h2
 
 /- English proof (translation)
-Use `(ringKrullDim_le_iff_isMaximal_height_le _).mpr fun M hM => ?_` and prove the remaining obligations. Establish `hc : (M.comap (Ideal.Quotient.mk P)).IsMaximal` using `Ideal.comap_isMaximal_of_surjective _ Ideal.Quotient.mk_surjective`. Establish `: (M.comap (Ideal.Quotient.mk P)).IsPrime` using `hc.isPrime`. Establish `hPle : P ≤ M.comap (Ideal.Quotient.mk P)` using `fun x hx => by`. Rewrite using `[Ideal.mem_comap, Ideal.Quotient.eq_zero_iff_mem.mpr hx]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `M.zero_mem`. Establish `e : (M.comap (Ideal.Quotient.mk P)).map (Ideal.Quotient.mk P) = M` using `Ideal.map_comap_of_surjective _ Ideal.Quotient.mk_surjective M`. Establish `h2` using `DimF.height_add_height_map_le (q := P) (M := M.comap (Ideal.Quotient.mk P)) hPle`. Rewrite `h2` using `[e, hP]`. Establish `h3` using `DimF.le_natSub_of_add_le (h2.trans (hmax _ hc))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem ringKrullDim_quotient_le_sub_height {A : Type*} [CommRing A] [IsNoetherianRing A]
     [FiniteRingKrullDim A] (P : Ideal A) [P.IsPrime] (N h : ℕ)
@@ -113,7 +113,7 @@ theorem ringKrullDim_quotient_le_sub_height {A : Type*} [CommRing A] [IsNoetheri
     _ = ((N - h : ℕ) : WithBot ℕ∞) := WithBot.coe_natCast _
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Ydd3.withBot_eq_of_le_of_add_one_le h1 h2`.
+A detailed English derivation is pending.
 -/
 theorem withBot_eq_of_le_of_add_one_le {x : WithBot ℕ∞} {c : ℕ} (h1 : (c : WithBot ℕ∞) ≤ x)
     (h2 : x + 1 ≤ ((c + 1 : ℕ) : WithBot ℕ∞)) : x = c :=
@@ -122,31 +122,27 @@ theorem withBot_eq_of_le_of_add_one_le {x : WithBot ℕ∞} {c : ℕ} (h1 : (c :
 end PolynomialHeights
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ hϖ K _ _ ι _ P d hP a f hfa hfP W hW hϖW`. Establish `hWmin : W ∈ (P ⊔ Ideal.span {f}).minimalPrimes`. Unfold `divCycle at hW`. Use `split_ifs at hW with h`. Conclude with `h.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `absurd rfl hW`. Establish `hWp : W.IsPrime` using `hWmin.1.1`. Establish `hPp : P.IsPrime` using `hP.multiProj.isPrime`. Establish `hPW : P ≤ W` using `le_sup_left.trans hWmin.1.2`. Establish `hfW : f ∈ W` using `hWmin.1.2 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self f))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hup` using `ReciprocityTheory.ChartRestriction.G.AI.I1.cyc_dim_add_one_le hPW hfW hfP`. Establish `hq : W.map (Ideal.Quotient.mk P) ∈ (Ideal.span {Ideal.Quotient.mk P f}).minimalPrimes`. Establish `e : Ideal.span {Ideal.Quotient.mk P f} = (Ideal.span {f}).map (Ideal.Quotient.mk P)`. Rewrite using `[Ideal.map_span, Set.image_singleton]`. Rewrite using `[e, Ideal.minimalPrimes_map_of_surjective Ideal.Quotient.mk_surjective, Ideal.mk_ker, sup_comm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨W, hWmin, rfl⟩`. Establish `: (W.map (Ideal.Quotient.mk P)).IsPrime` using `hq.1.1`. Establish `: (Ideal.span {Ideal.Quotient.mk P f}).IsPrincipal` using `⟨⟨_, rfl⟩⟩`. Establish `hk : (W.map (Ideal.Quotient.mk P)).height ≤ 1` using `Ideal.height_le_one_of_isPrincipal_of_mem_minimalPrimes _ _ hq`. Take `⟨m, hm, hWm⟩` from `Ideal.exists_le_maximal W hWp.ne_top`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: m.IsPrime` using `hm.isPrime`. Establish `hmge` using `le_height_of_isMaximal_of_uniformiser_mem hϖ m hm (hWm hϖW)`. Establish `hdimS` using `ringKrullDim_mvPolynomial_dvr (σ := Σ k, ι k) O`. Establish `hfin : FiniteRingKrullDim (MRing ι O)`. Rewrite using `[finiteRingKrullDim_iff_ne_bot_and_top, hdimS]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `⟨by rw [← WithBot.coe_natCast]; exact WithBot.coe_ne_bot, by`. Rewrite using `[← WithBot.coe_natCast]`. Conclude with `ne_of_lt (WithBot.coe_lt_coe.mpr (ENat.natCast_lt_top _))⟩`. Establish `hmax : ∀ m' : Ideal (MRing ι O), m'.IsMaximal → m'.height ≤ ((Nat.card (Σ k, ι k) + 1 : ℕ) : ℕ∞)`. Introduce `m' hm'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Ideal.height_le_ringKrullDim_of_ne_top hm'.ne_top` as an intermediate fact. Rewrite `this` using `[hdimS]`. Conclude with `this` after adjusting the coercions. Establish `hmeq : m.height = ((Nat.card (Σ k, ι k) + 1 : ℕ) : ℕ∞)` using `le_antisymm (hmax m hm) hmge`. Establish `hcat1` using `DimF.height_eq_height_add_of_isRegularRing P W hPW`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hcat2` using `DimF.height_eq_height_add_of_isRegularRing W m hWm`. Establish `hsum : P.height + (W.map (Ideal.Quotient.mk P)).height + (m.map (Ideal.Quotient.mk W)).height = ((Nat.card (Σ k, ι k) + 1 : ℕ) : ℕ∞)`. Rewrite using `[← hcat1, ← hcat2, hmeq]`. Establish `hPfin : P.height ≠ ⊤` using `fun h => by`. Simplify using `only [h, top_add] at hsum`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `ENat.top_ne_natCast _ hsum`. Establish `hafin : (W.map (Ideal.Quotient.mk P)).height ≠ ⊤` using `fun h => by`. Simplify using `only [h, top_add, add_top] at hsum`. Conclude with `ENat.top_ne_natCast _ hsum`. Establish `hbfin : (m.map (Ideal.Quotient.mk W)).height ≠ ⊤` using `fun h => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [h, add_top] at hsum`. Conclude with `ENat.top_ne_natCast _ hsum`. Take `⟨h0, hh0⟩ : ∃ h0 : ℕ, P.height = h0` from `⟨_, (ENat.natCast_toNat hPfin).symm⟩`. Take `⟨a0, ha0⟩ : ∃ a0 : ℕ, (W.map (Ideal.Quotient.mk P)).height = a0` from `⟨_, (ENat.natCast_toNat hafin).symm⟩`. Take `⟨b0, hb0⟩ : ∃ b0 : ℕ, (m.map (Ideal.Quotient.mk W)).height = b0` from `⟨_, (ENat.natCast_toNat hbfin).symm⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hsum` using `[hh0, ha0, hb0]`. Rewrite `hk` using `[ha0]`. Establish `hsum' : h0 + a0 + b0 = Nat.card (Σ k, ι k) + 1` using `by exact_mod_cast hsum`. Establish `hk' : a0 ≤ 1` using `by exact_mod_cast hk`. Establish `hPdim` using `ringKrullDim_quotient_le_sub_height P (Nat.card (Σ k, ι k) + 1) h0 hmax hh0`.
-
-Rewrite `hPdim` using `[hP.dim]`. Establish `hPdim' : d + 1 + Fintype.card K ≤ Nat.card (Σ k, ι k) + 1 - h0` using `by exact_mod_cast hPdim`. Establish `hlow` using `Ideal.height_le_ringKrullDim_of_ne_top (DimF.isPrime_map_mk (A := MRing ι O) (q := W) (M := m) hWm).ne_top`. Rewrite `hlow` using `[hb0]`. Establish `hb' : d + Fintype.card K ≤ b0` using `by omega`.
-
-Establish `hlow' : ((d + Fintype.card K : ℕ) : WithBot ℕ∞) ≤ ringKrullDim (MRing ι O ⧸ W)` using `le_trans (by exact_mod_cast hb') hlow`. Rewrite `hup` using `[hP.dim]`. Conclude with `withBot_eq_of_le_of_add_one_le hlow' (by rw [show d + Fintype.card K + 1 = d + 1 + Fintype.card K by ring]; exact hup)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ComponentDim.proof : ComponentDim.Statement := by
   intro O _ _ _ ϖ hϖ K _ _ ι _ P d hP a f hfa hfP W hW hϖW

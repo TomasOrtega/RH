@@ -17,13 +17,11 @@ def lev0Iso {C D : CommRingCat.{0}} (g : C ⟶ D) : D ≅ widePushout C (fun _ :
       convert WidePushout.arrow_ι (fun _ : Fin 1 => g) (0 : Fin 1) using 1
 
 /- English proof (translation)
-Introduce `q i A Y C D Y' φ c w φ' g hpo`. Establish `hp` using `h φ c w φ' g hpo (SimplexCategory.mk 0)`. Use `⟨_, w ≫ (coAug (pushout.inr g φ')).app (SimplexCategory.mk 0), (lev0Iso g).hom ≫ (Arrow.mapCechConerve (sqHom g φ')).app (SimplexCategory.mk 0), ?_, fun m hm => ?_⟩` and prove the remaining obligations. Use `hp.of_iso (Iso.refl _) (Iso.refl _) (lev0Iso g).symm (Iso.refl _) ?_ ?_ ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Iso.refl_hom, Category.comp_id, Category.id_comp, Iso.symm_hom, Category.assoc]`. Express the relevant statement in the definitionally equal form `c ≫ WidePushout.head _ ≫ (lev0Iso g).inv = c ≫ g`. Rewrite using `[← WidePushout.arrow_ι (fun _ : Fin 1 => g) 0]`. Express the relevant statement in the definitionally equal form `c ≫ (g ≫ (lev0Iso g).hom) ≫ (lev0Iso g).inv = c ≫ g`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Conclude with `(Category.comp_id _).trans (Iso.inv_hom_id_assoc (lev0Iso g) _).symm`. Establish `key : sch.map (Spec.map ((lev0Iso g).hom ≫ (Arrow.mapCechConerve (sqHom g φ')).app (SimplexCategory.mk 0))) ≫ sch.map (Spec.map (lev0Iso g).inv) = 𝟙 _ ≫ sch.map (Spec.map ((Arrow.mapCechConerve (sqHom g φ')).app (SimplexCategory.mk 0)))`. Establish `hring : (lev0Iso g).inv ≫ (lev0Iso g).hom ≫ (Arrow.mapCechConerve (sqHom g φ')).app (SimplexCategory.mk 0) = (Arrow.mapCechConerve (sqHom g φ')).app (SimplexCategory.mk 0)` using `Iso.inv_hom_id_assoc _ _`. Rewrite using `[← sch.map_comp, ← Spec.map_comp, Category.id_comp]`.
-
-Conclude with `congrArg (fun f => sch.map (Spec.map f)) hring`. Conclude with `RelZS.of_iso (ZMod q) (tw q i) _ _ (Iso.refl _) (sch.mapIso (asIso (Spec.map (lev0Iso g).inv))) key m hm`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Level0_of (h : LevelPush) : Level0 := by
   intro q i A Y C D Y' φ c w φ' g hpo
@@ -49,28 +47,24 @@ theorem Level0_of (h : LevelPush) : Level0 := by
     exact RelZS.of_iso (ZMod q) (tw q i) _ _ (Iso.refl _) (sch.mapIso (asIso (Spec.map (lev0Iso g).inv))) key m hm
 
 /- English proof (translation)
-The claim follows from `@WidePushout.arrow_ι _ _ _ C (fun _ => D) (fun _ => g) _ j`.
+A detailed English derivation is pending.
 -/
 theorem arrowι {C D : CommRingCat.{0}} (g : C ⟶ D) (n : SimplexCategory) (j : Fin (n.len + 1)) :
     g ≫ (WidePushout.ι (fun _ : Fin (n.len + 1) => g) j : D ⟶ (Arrow.mk g).cechConerve.obj n) = (coAug g).app n :=
   @WidePushout.arrow_ι _ _ _ C (fun _ => D) (fun _ => g) _ j
 
 /- English proof (translation)
-Establish `hw : φ' ≫ (coAug (pushout.inr g φ')).app n = (coAug g).app n ≫ (Arrow.mapCechConerve (sqHom g φ')).app n`. Simplify using `[coAug, sqHom]`. Use `symm`. Apply `WidePushout.head_desc` to reduce the goal to its premises. Use `IsPushout.of_isColimit' ⟨hw⟩ (PushoutCocone.IsColimit.mk _ (fun s => WidePushout.desc s.inl (fun j => pushout.desc ((WidePushout.ι (fun _ : Fin (n.len + 1) => g) j : D ⟶ (Arrow.mk g).cechConerve.obj n) ≫ s.inr) s.inl (by` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ s.inr) (arrowι g n j)).trans s.condition.symm)))`. Use the proof step `(fun j => pushout.inr_desc _ _ _)) ?_ ?_ ?_)`. Introduce `s`. Apply `WidePushout.head_desc` to reduce the goal to its premises. Introduce `s`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `WidePushout.hom_ext` to reduce the goal to its premises. Introduce `j`. Establish `key : (WidePushout.ι (fun _ : Fin (n.len + 1) => g) j : D ⟶ (Arrow.mk g).cechConerve.obj n) ≫ (Arrow.mapCechConerve (sqHom g φ')).app n = pushout.inl g φ' ≫ (WidePushout.ι (fun _ : Fin (n.len + 1) => pushout.inr g φ') j : _ ⟶ (Arrow.mk (pushout.inr g φ')).cechConerve.obj n)`. Apply `WidePushout.ι_desc` to reduce the goal to its premises. Use `(Category.assoc _ _ _).symm.trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(congrArg (· ≫ _) key).trans ?_` and prove the remaining obligations. Use `(Category.assoc _ _ _).trans ?_` and prove the remaining obligations. Use `erw [WidePushout.ι_desc]`. Conclude with `pushout.inl_desc _ _ _`. Use `(Category.assoc _ _ _).symm.trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `(congrArg (· ≫ _) hw.symm).trans ?_` and prove the remaining obligations. Use `(Category.assoc _ _ _).trans ?_` and prove the remaining obligations. Use `erw [WidePushout.head_desc]`. Conclude with `s.condition`. Introduce `s m h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `WidePushout.hom_ext` to reduce the goal to its premises. Introduce `j`. Apply `pushout.hom_ext` to reduce the goal to its premises. Use `erw [WidePushout.ι_desc, pushout.inl_desc]`. Rewrite using `[← h2]`.
-
-Establish `key : (WidePushout.ι (fun _ : Fin (n.len + 1) => g) j : D ⟶ (Arrow.mk g).cechConerve.obj n) ≫ (Arrow.mapCechConerve (sqHom g φ')).app n = pushout.inl g φ' ≫ (WidePushout.ι (fun _ : Fin (n.len + 1) => pushout.inr g φ') j : _ ⟶ (Arrow.mk (pushout.inr g φ')).cechConerve.obj n)`. Apply `WidePushout.ι_desc` to reduce the goal to its premises. Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ m) key.symm).trans (Category.assoc _ _ _))`. Use `erw [WidePushout.ι_desc, pushout.inr_desc]`. Rewrite using `[← h1]`.
-
-Conclude with `(Category.assoc _ _ _).symm.trans (congrArg (· ≫ m) (arrowι (pushout.inr g φ') n j))`. Use `erw [WidePushout.head_desc]`. Rewrite using `[← h1]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem basePush {C D Y' : CommRingCat.{0}} (g : C ⟶ D) (φ' : C ⟶ Y') (n : SimplexCategory) :
     IsPushout φ' ((coAug g).app n) ((coAug (pushout.inr g φ')).app n)
@@ -124,16 +118,16 @@ theorem basePush {C D Y' : CommRingCat.{0}} (g : C ⟶ D) (φ' : C ⟶ Y') (n : 
       rfl
 
 /- English proof (translation)
-Introduce `A Y C D Y' φ c w φ' g hpo n`. Conclude with `hpo.paste_vert (basePush g φ' n)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem LevelPush_of : LevelPush := by
   intro A Y C D Y' φ c w φ' g hpo n
   exact hpo.paste_vert (basePush g φ' n)
 
 /- English proof (translation)
-Introduce `hB4 q i C D g hgi hgs hq`. Use `haveI : IsIntegralHom (Spec.map g) := IsIntegralHom.SpecMap_iff.mpr hgi`. Use `haveI : Surjective (Spec.map g) := ⟨fun x => by`. Take `⟨Q, hQ, hQc⟩` from `hgs x.asIdeal x.isPrime`. Use `⟨⟨Q, hQ⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Spec.map_base]`. Conclude with `PrimeSpectrum.ext hQc⟩`. Establish `hq' : IsUnit (q : Γ(Spec C, ⊤))`. Simplify using `using hq.map (Scheme.ΓSpecIso C).inv.hom`. Conclude with `hB4 q (Spec.map g) hq' i`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem integral_surjective_ring_cech_augmentation_etale_eqv : IntegralSurjectiveRingCechAugmentationEtaleEqv := by
   intro hB4 q i C D g hgi hgs hq
@@ -148,13 +142,11 @@ theorem integral_surjective_ring_cech_augmentation_etale_eqv : IntegralSurjectiv
   exact hB4 q (Spec.map g) hq' i
 
 /- English proof (translation)
-Introduce `C D Y' g φ' hgi hgs`. Establish `hp` using `(isPullback_SpecMap_pushout g φ')`. Establish `hI : IsIntegralHom (Spec.map g)` using `IsIntegralHom.SpecMap_iff.mpr hgi`. Establish `hS : Surjective (Spec.map g)` using `⟨fun x => by`. Take `⟨Q, hQ, hQc⟩` from `hgs x.asIdeal x.isPrime`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨⟨Q, hQ⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Spec.map_base]`. Conclude with `PrimeSpectrum.ext hQc⟩`. Establish `hI' : IsIntegralHom (Spec.map (pushout.inr g φ'))` using `MorphismProperty.of_isPullback (P := @IsIntegralHom) hp hI`. Establish `hS' : Surjective (Spec.map (pushout.inr g φ'))` using `MorphismProperty.of_isPullback (P := @Surjective) hp hS`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨IsIntegralHom.SpecMap_iff.mp hI', fun r hr => ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `hS'.surj ⟨r, hr⟩`. Use `⟨y.asIdeal, y.isPrime, ?_⟩` and prove the remaining obligations. Use `congrArg PrimeSpectrum.asIdeal hy` as an intermediate fact. Rewrite `this` using `[Spec.map_base]`.
-
-Conclude with `this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem BaseChange_of : BaseChange := by
   intro C D Y' g φ' hgi hgs
@@ -178,34 +170,34 @@ section helpers
 variable {C D : CommRingCat.{0}} (g : C ⟶ D) {J : Type} [HasWidePushout C (fun _ : J => D) (fun _ => g)]
 
 /- English proof (translation)
-The claim follows from `WidePushout.ι_desc (arrows := fun _ => g) (f := f) (fs := fs) (w := w) j`.
+A detailed English derivation is pending.
 -/
 theorem ιd (j : J) {X : CommRingCat.{0}} (f : C ⟶ X) (fs : J → (D ⟶ X)) (w : ∀ j, g ≫ fs j = f) :
     WidePushout.ι (fun _ : J => g) j ≫ WidePushout.desc f fs w = fs j :=
   WidePushout.ι_desc (arrows := fun _ => g) (f := f) (fs := fs) (w := w) j
 
 /- English proof (translation)
-The claim follows from `WidePushout.head_desc (arrows := fun _ => g) (f := f) (fs := fs) (w := w)`.
+A detailed English derivation is pending.
 -/
 theorem hd {X : CommRingCat.{0}} (f : C ⟶ X) (fs : J → (D ⟶ X)) (w : ∀ j, g ≫ fs j = f) :
     WidePushout.head (fun _ : J => g) ≫ WidePushout.desc f fs w = f :=
   WidePushout.head_desc (arrows := fun _ => g) (f := f) (fs := fs) (w := w)
 
 /- English proof (translation)
-The claim follows from `WidePushout.arrow_ι (arrows := fun _ : J => g) j`.
+A detailed English derivation is pending.
 -/
 theorem ar (j : J) : g ≫ WidePushout.ι (fun _ : J => g) j = WidePushout.head (fun _ : J => g) :=
   WidePushout.arrow_ι (arrows := fun _ : J => g) j
 
 /- English proof (translation)
-Rewrite using `[← Category.assoc, ιd]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ιd_assoc (j : J) {X Y : CommRingCat.{0}} (f : C ⟶ X) (fs : J → (D ⟶ X)) (w : ∀ j, g ≫ fs j = f) (h : X ⟶ Y) :
     WidePushout.ι (fun _ : J => g) j ≫ WidePushout.desc f fs w ≫ h = fs j ≫ h := by
   rw [← Category.assoc, ιd]
 
 /- English proof (translation)
-Rewrite using `[← Category.assoc, hd]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hd_assoc {X Y : CommRingCat.{0}} (f : C ⟶ X) (fs : J → (D ⟶ X)) (w : ∀ j, g ≫ fs j = f) (h : X ⟶ Y) :
     WidePushout.head (fun _ : J => g) ≫ WidePushout.desc f fs w ≫ h = f ≫ h := by
@@ -219,17 +211,17 @@ abbrev up {C D : CommRingCat.{0}} (g : C ⟶ D) (k : ℕ) :
     (fun i => ar g i.castSucc)
 
 /- English proof (translation)
-Establish `hw : WidePushout.head (fun _ : Fin (k + 1) => g) ≫ up g k = g ≫ WidePushout.ι (fun _ : Fin (k + 2) => g) (Fin.last _)`. Simplify using `[up, hd, ar]`. Use `IsPushout.of_isColimit' ⟨hw⟩ (PushoutCocone.IsColimit.mk _ (fun s => WidePushout.desc (g ≫ s.inr) (fun i => Fin.lastCases s.inr (fun i => WidePushout.ι (fun _ : Fin (k + 1) => g) i ≫ s.inl) i) (fun i => by` and prove the remaining obligations. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last => simp`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Consider the case `cast i`. Simplify using `only [Fin.lastCases_castSucc]`. Rewrite using `[← Category.assoc, ar]`. Conclude with `s.condition)) ?_ ?_ ?_)`. Introduce `s`.
+Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `WidePushout.hom_ext` to reduce the goal to its premises. Introduce `j`. Simplify using `[up, ιd, ιd_assoc, hd, hd_assoc]`. Simplify using `[up, ιd, ιd_assoc, hd, hd_assoc]`. Conclude with `s.condition.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `s`. Simplify using `[ιd]`. Introduce `s m h1 h2`. Apply `WidePushout.hom_ext` to reduce the goal to its premises. Introduce `j`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => simpa [ιd] using h2`. Consider the case `cast i`. Simplify using `only [WidePushout.ι_desc, Fin.lastCases_castSucc]`. Rewrite using `[← h1]`.
+Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[up, ιd, ιd_assoc]`. Simplify using `only [WidePushout.head_desc]`. Rewrite using `[← h2, ← Category.assoc]`. Conclude with `congrArg (· ≫ m) (WidePushout.arrow_ι (fun _ : Fin (k + 2) => g) (Fin.last _)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wp {C D : CommRingCat.{0}} (g : C ⟶ D) (k : ℕ) :
     IsPushout (WidePushout.head (fun _ : Fin (k + 1) => g)) g (up g k)
@@ -269,13 +261,11 @@ theorem wp {C D : CommRingCat.{0}} (g : C ⟶ D) (k : ℕ) :
       exact congrArg (· ≫ m) (WidePushout.arrow_ι (fun _ : Fin (k + 2) => g) (Fin.last _)).symm
 
 /- English proof (translation)
-Introduce `A P hP C D c g hCc hDc`. Establish `Q : ∀ k : ℕ, P _ (c ≫ WidePushout.head (fun _ : Fin (k + 1) => g))`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Establish `hsq : IsPushout g (𝟙 C) (WidePushout.ι (fun _ : Fin 1 => g) 0) (WidePushout.head (fun _ : Fin 1 => g))`. Establish `: IsIso (WidePushout.ι (fun _ : Fin 1 => g) 0)` using `(lev0Iso g).isIso_hom`. Conclude with `IsPushout.of_vert_isIso ⟨(WidePushout.arrow_ι (fun _ : Fin 1 => g) 0).trans (Category.id_comp _).symm⟩`. Use `hP c g (𝟙 C) _ _ hsq hCc hDc (by simpa using hCc)` as an intermediate fact. Rewrite `this` using `[WidePushout.arrow_ι (fun _ : Fin 1 => g) 0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately.
 
-Conclude with `this`. Consider the case `succ k ih`. Use `hP c _ g _ _ (wp g k) hCc ih hDc` as an intermediate fact. Establish `e : WidePushout.head (fun _ : Fin (k + 1) => g) ≫ up g k = WidePushout.head (fun _ : Fin (k + 2) => g)` using `hd g _ _ _`. Rewrite `this` using `[e]`.
-
-Conclude with `this`. Introduce `n`. Conclude with `Q n.len`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem cechConerve_levelwise : LevelP := by
   intro A P hP C D c g hCc hDc
@@ -299,7 +289,7 @@ theorem cechConerve_levelwise : LevelP := by
   exact Q n.len
 
 /- English proof (translation)
-The claim follows from `CechSq_of integral_surjective_ring_cech_augmentation_etale_eqv BaseChange_of LevelPush_of cechConerve_levelwise (Level0_of LevelPush_of)`.
+A detailed English derivation is pending.
 -/
 theorem CechSq_full : CechSq :=
   CechSq_of integral_surjective_ring_cech_augmentation_etale_eqv BaseChange_of LevelPush_of cechConerve_levelwise (Level0_of LevelPush_of)
@@ -307,6 +297,6 @@ theorem CechSq_full : CechSq :=
 end LateralTheory.E.CechSqPf
 
 /- English proof (translation)
-The claim follows from `LateralTheory.E.CechSqPf.CechSq_full`.
+A detailed English derivation is pending.
 -/
 theorem LateralTheory.E.CechSqPf2.CechSq_of : LateralTheory.E.DescIntPf.CechSq := LateralTheory.E.CechSqPf.CechSq_full

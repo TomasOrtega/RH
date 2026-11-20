@@ -11,13 +11,13 @@ namespace GlobalTheory.BesProj
 variable {D : D7} {S S₀ A L : HSp D} {ρ : ℕ}
 
 /- English proof (translation)
-Rewrite using `[show ((1 : GA D A), (1 : GA D L)) = 1 from rfl, map_one, mt_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mt_emb_one (o : OrthDec S₀ A L) : mt S₀ (o.emb (1, 1)) = 1 := by
   rw [show ((1 : GA D A), (1 : GA D L)) = 1 from rfl, map_one, mt_one]
 
 /- English proof (translation)
-Rewrite using `[← mt_mul, ← map_mul, Prod.mk_mul_mk, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mt_emb_mul (o : OrthDec S₀ A L) (h h' : GA D A) :
     mt S₀ (o.emb (h * h', 1)) = mt S₀ (o.emb (h, 1)) ⬝ mt S₀ (o.emb (h', 1)) := by
@@ -32,16 +32,16 @@ section Good
 variable (d : HypDec S S₀ ρ) (o : OrthDec S₀ A L) (T : Subgroup (GA D A))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨1, by rw [mt_one, Matrix.one_mul, Units.val_one, Matrix.mul_one]⟩, 1, T.one_mem, 0, by rw [mt_one, Matrix.one_mul, mt_emb_one, Matrix.mul_one, Matrix.mul_zero, add_zero]⟩`.
+Supply the required witnesses or components.
 -/
 theorem good_one : Good d o T 1 :=
   ⟨⟨1, by rw [mt_one, Matrix.one_mul, Units.val_one, Matrix.mul_one]⟩,
     1, T.one_mem, 0, by rw [mt_one, Matrix.one_mul, mt_emb_one, Matrix.mul_one, Matrix.mul_zero, add_zero]⟩
 
 /- English proof (translation)
-Take `⟨⟨M, hM⟩, h, hT, B, hB⟩` from `hg`. Take `⟨⟨M', hM'⟩, h', hT', B', hB'⟩` from `hg'`. Use `⟨⟨M * M', ?_⟩, h * h', T.mul_mem hT hT', B ⬝ mt S₀ (o.emb (h', 1)) + M.1 ⬝ B', ?_⟩` and prove the remaining obligations. Rewrite using `[mt_mul, Matrix.mul_assoc, hM', ← Matrix.mul_assoc, hM, Matrix.mul_assoc, Units.val_mul]`. Rewrite using `[mt_mul, Matrix.mul_assoc, hB', Matrix.mul_add, ← Matrix.mul_assoc, hB, ← Matrix.mul_assoc, hM, mt_emb_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.mul_assoc, add_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem good_mul {g g' : GA D S} (hg : Good d o T g) (hg' : Good d o T g') : Good d o T (g * g') := by
   obtain ⟨⟨M, hM⟩, h, hT, B, hB⟩ := hg
@@ -52,13 +52,11 @@ theorem good_mul {g g' : GA D S} (hg : Good d o T g) (hg' : Good d o T g') : Goo
     simp only [Matrix.add_mul, Matrix.mul_add, Matrix.mul_assoc, add_assoc]
 
 /- English proof (translation)
-Take `⟨⟨M, hM⟩, h, hT, B, hB⟩` from `hg`. Establish `hI : mt S g⁻¹ ⬝ mt S g = 1` using `mt_inv_mul S g`. Establish `hMM : (M.1 : Mx D ρ ρ) ⬝ (M⁻¹).1 = 1` using `M.mul_inv`. Establish `hX : mt S g⁻¹ ⬝ d.jX = d.jX ⬝ (M⁻¹).1`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Matrix.mul_assoc (mt S g⁻¹), Matrix.mul_assoc d.jX, hMM, Matrix.mul_one]`. Use `_ = d.jX ⬝ (M⁻¹).1 := by rw [← hM, ← Matrix.mul_assoc, hI, Matrix.one_mul]`. Use `⟨⟨M⁻¹, hX⟩, h⁻¹, T.inv_mem hT, -((M⁻¹).1 ⬝ B ⬝ mt S₀ (o.emb (h⁻¹, 1))), ?_⟩` and prove the remaining obligations. Establish `hH : mt S₀ (o.emb (h, 1)) ⬝ mt S₀ (o.emb (h⁻¹, 1)) = 1`. Rewrite using `[← mt_emb_mul, mul_inv_cancel, mt_emb_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : mt S g⁻¹ ⬝ d.j0 ⬝ mt S₀ (o.emb (h, 1)) + d.jX ⬝ (M⁻¹).1 ⬝ B = d.j0`. Establish `h2 : mt S g⁻¹ ⬝ (mt S g ⬝ d.j0) = d.j0` using `by rw [← Matrix.mul_assoc, hI, Matrix.one_mul]`. Rewrite `h2` using `[hB, Matrix.mul_add, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hX]`. Conclude with `h2`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[Matrix.mul_assoc _ (mt S₀ _), hH, Matrix.mul_one]`. Use `_ = (d.j0 - d.jX ⬝ (M⁻¹).1 ⬝ B) ⬝ mt S₀ (o.emb (h⁻¹, 1)) := by rw [eq_sub_of_add_eq h1]`. Use `_ = _ := by simp only [Matrix.sub_mul, Matrix.add_mul, Matrix.neg_mul, Matrix.mul_neg, Matrix.mul_assoc, sub_eq_add_neg]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_inv {g : GA D S} (hg : Good d o T g) : Good d o T g⁻¹ := by
   obtain ⟨⟨M, hM⟩, h, hT, B, hB⟩ := hg
@@ -95,7 +93,7 @@ namespace GlobalTheory.BesProj
 variable {D : D7} {S S₀ A L : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (o : OrthDec S₀ A L)
 
 /- English proof (translation)
-Use `congrArg Matrix.conjTranspose d.i₀e` as an intermediate fact. Rewrite `this` using `[conjTranspose_mul, conjTranspose_mul, conjTranspose_conjTranspose, gram_conjTranspose, conjTranspose_zero, ← Matrix.mul_assoc]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem eH_gram_i₀ : d.eᴴ * S.gram * d.i₀ = 0 := by
   have := congrArg Matrix.conjTranspose d.i₀e
@@ -103,17 +101,15 @@ theorem eH_gram_i₀ : d.eᴴ * S.gram * d.i₀ = 0 := by
     ← Matrix.mul_assoc] at this
 
 /- English proof (translation)
-Use `show Subgroup.closure _ ≤ _`. Use `(Subgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `g ⟨h1, h2⟩`. Use `choose a ha1 ha2 using h1`. Establish `hz : ∀ k : Fin S₀.rank, (Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) d.e * S.gram).mulVec (fun l => d.i₀ l k) = 0`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `k`. Use function extensionality and compare the values at `j`. Conclude with `congrFun (congrFun (eH_gram_i₀ d) j) k`. Use `choose b hb using fun k => h2 _ (hz k)`. Set `U : Mx D ρ ρ` to `Matrix.of fun j i => a i j`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Set `B : Mx D ρ S₀.rank` to `Matrix.of fun i k => b k i`. Establish `hU : (mt S g - 1) ⬝ d.jX = d.jX ⬝ U`. Use extensionality with `k i`. Conclude with `congrFun (ha2 i) k`. Establish `hB : (mt S g - 1) ⬝ d.j0 = d.jX ⬝ B`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use extensionality with `k i`. Conclude with `congrFun (hb i) k`. Establish `hdet : (1 + U).det = 1`. Rewrite using `[Matrix.det_of_upperTriangular]`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Simplify using `[U, ha1 i i le_rfl]`. Introduce `i j hji`. Establish `hij : i ≠ j` using `ne_of_gt hji`. Simplify using `[U, ha1 j i hji.le, Matrix.one_apply_ne hij]`. Establish `hdu : IsUnit (1 + U).det` using `by rw [hdet]; exact isUnit_one`.
-
-Set `M : GL (Fin ρ) (AE D)` to `⟨1 + U, (1 + U)⁻¹, Matrix.mul_nonsing_inv _ hdu, Matrix.nonsing_inv_mul _ hdu⟩`. Use `⟨⟨M, ?_⟩, 1, T.one_mem, B, ?_⟩` and prove the remaining obligations. Use `show mt S g ⬝ d.jX = d.jX ⬝ (1 + U)`. Rewrite using `[Matrix.mul_add, Matrix.mul_one, ← hU, Matrix.sub_mul, Matrix.one_mul, add_sub_cancel]`. Rewrite using `[mt_emb_one, Matrix.mul_one, ← hB, Matrix.sub_mul, Matrix.one_mul, add_sub_cancel]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flagN_le_goodSub (T : Subgroup (GA D A)) : flagN d ≤ goodSub d o T := by
   show Subgroup.closure _ ≤ _
@@ -148,14 +144,14 @@ theorem flagN_le_goodSub (T : Subgroup (GA D A)) : flagN d ≤ goodSub d o T := 
   · rw [mt_emb_one, Matrix.mul_one, ← hB, Matrix.sub_mul, Matrix.one_mul, add_sub_cancel]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨1, by rw [embA_apply, d.wittDecomp_anisotropicEmbedding_inclX, Units.val_one, Matrix.mul_one]⟩, h, Subgroup.mem_top h, 0, by rw [embA_apply, d.wittDecomp_anisotropicEmbedding_inclAnisotropic, Matrix.mul_zero, add_zero]⟩`.
+Supply the required witnesses or components.
 -/
 theorem embA_mem_goodSub (h : GA D A) : embA d o h ∈ goodSub d o ⊤ :=
   ⟨⟨1, by rw [embA_apply, d.wittDecomp_anisotropicEmbedding_inclX, Units.val_one, Matrix.mul_one]⟩, h, Subgroup.mem_top h, 0,
     by rw [embA_apply, d.wittDecomp_anisotropicEmbedding_inclAnisotropic, Matrix.mul_zero, add_zero]⟩
 
 /- English proof (translation)
-The claim follows from `sup_le (flagN_le_goodSub d o ⊤) (by rintro _ ⟨h, rfl⟩; exact embA_mem_goodSub d o h)`.
+A detailed English derivation is pending.
 -/
 theorem besGrp_le_goodSub : (flagN d ⊔ (embA d o).range : Subgroup (GA D S)) ≤ goodSub d o ⊤ :=
   sup_le (flagN_le_goodSub d o ⊤) (by rintro _ ⟨h, rfl⟩; exact embA_mem_goodSub d o h)
@@ -163,7 +159,7 @@ theorem besGrp_le_goodSub : (flagN d ⊔ (embA d o).range : Subgroup (GA D S)) �
 def matP (g : GA D S) : Mx D A.rank A.rank := o.pA ⬝ (d.p0 ⬝ mt S g ⬝ d.j0) ⬝ o.jA
 
 /- English proof (translation)
-Take `⟨-, h, hT, B, hB⟩` from `hg`. Use `⟨h, hT, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc, hB, Matrix.mul_add, ← Matrix.mul_assoc, ← Matrix.mul_assoc, d.p0_j0, d.p0_jX, Matrix.one_mul, Matrix.zero_mul, add_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem bessel_flag_stabilizer_anisotropic_block_exists {T : Subgroup (GA D A)} {g : GA D S} (hg : g ∈ goodSub d o T) :
     ∃ h ∈ T, d.p0 ⬝ mt S g ⬝ d.j0 = mt S₀ (o.emb (h, 1)) := by
@@ -173,13 +169,13 @@ theorem bessel_flag_stabilizer_anisotropic_block_exists {T : Subgroup (GA D A)} 
     Matrix.zero_mul, add_zero]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_assoc, o.emb_jA, ← Matrix.mul_assoc, o.pA_jA, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pA_emb_jA (h : GA D A) : o.pA ⬝ mt S₀ (o.emb (h, 1)) ⬝ o.jA = mt A h := by
   rw [Matrix.mul_assoc, o.emb_jA, ← Matrix.mul_assoc, o.pA_jA, Matrix.one_mul]
 
 /- English proof (translation)
-Take `⟨h, -, hh⟩` from `bessel_flag_stabilizer_anisotropic_block_exists d o (besGrp_le_goodSub d o hg)`. Rewrite using `[matP, hh, pA_emb_jA]`. Conclude with `mt_unitary A h`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem anisotropicBlock_unitary {g : GA D S} (hg : g ∈ (flagN d ⊔ (embA d o).range : Subgroup (GA D S))) :
     adj (matP d o g) * (gA A * matP d o g) = gA A := by
@@ -188,9 +184,9 @@ theorem anisotropicBlock_unitary {g : GA D S} (hg : g ∈ (flagN d ⊔ (embA d o
   exact mt_unitary A h
 
 /- English proof (translation)
-Take `⟨h', hh', hn⟩` from `bessel_flag_stabilizer_anisotropic_block_exists d o (flagN_le_goodSub d o ⊥ n.2)`. Rewrite `hh'` using `[Subgroup.mem_bot]`. Rewrite `hn` using `[hh', mt_emb_one]`. Establish `: d.p0 ⬝ mt S (n.1 * embA d o h) ⬝ d.j0 = mt S₀ (o.emb (h, 1))`. Rewrite using `[mt_mul, Matrix.mul_assoc, Matrix.mul_assoc, embA_apply, d.wittDecomp_anisotropicEmbedding_inclAnisotropic, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hn, Matrix.one_mul]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[matP, this, pA_emb_jA]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem anisotropicBlock_mul_embA (n : flagN d) (h : GA D A) : matP d o (n.1 * embA d o h) = mt A h := by
   obtain ⟨h', hh', hn⟩ := bessel_flag_stabilizer_anisotropic_block_exists d o (flagN_le_goodSub d o ⊥ n.2)
@@ -202,7 +198,7 @@ theorem anisotropicBlock_mul_embA (n : flagN d) (h : GA D A) : matP d o (n.1 * e
   rw [matP, this, pA_emb_jA]
 
 /- English proof (translation)
-Introduce `D S S₀ A L ρ d o`. Use `⟨fun g => ofMat A (matP d o g.1) (anisotropicBlock_unitary d o g.2), ?_, fun h n => ?_⟩` and prove the remaining obligations. Use `continuous_of_mt A ?_ show Continuous fun g : (flagN d ⊔ (embA d o).range : Subgroup (GA D S)) => matP d o g.1` and prove the remaining obligations. Conclude with `(continuous_const.matrix_mul ((continuous_const.matrix_mul ((continuous_mt S).comp continuous_subtype_val)).matrix_mul continuous_const)).matrix_mul continuous_const`. Conclude with `mt_injective A (by rw [mt_ofMat]; exact anisotropicBlock_mul_embA d o n h)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_continuous_proj : ∀ (D : D7) (S S₀ A L : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ) (o : OrthDec S₀ A L),
     ∃ p : (flagN d ⊔ (embA d o).range : Subgroup (GA D S)) → GA D A, Continuous p ∧

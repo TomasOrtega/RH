@@ -9,7 +9,7 @@ open scoped TensorProduct
 namespace GlobalTheory.CompanionTheory.LeibOrd.PsiIso
 
 /- English proof (translation)
-Substitute `hf` using the available equality. Conclude with `Submodule.mapQ_id p h`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem mapQ_eq_id_of_eq_id {R M : Type*} [Ring R] [AddCommGroup M] [Module R M]
     (p : Submodule R M) {f : M →ₗ[R] M} (hf : f = LinearMap.id) (h : p ≤ p.comap f) :
@@ -18,7 +18,7 @@ private theorem mapQ_eq_id_of_eq_id {R M : Type*} [Ring R] [AddCommGroup M] [Mod
   exact Submodule.mapQ_id p h
 
 /- English proof (translation)
-Substitute `hfg` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem mapQ_congr {R M M₂ : Type*} [Ring R] [AddCommGroup M] [Module R M] [AddCommGroup M₂]
     [Module R M₂] (p : Submodule R M) (q : Submodule R M₂) {f g : M →ₗ[R] M₂} (hfg : f = g)
@@ -27,19 +27,19 @@ private theorem mapQ_congr {R M M₂ : Type*} [Ring R] [AddCommGroup M] [Module 
   rfl
 
 /- English proof (translation)
-Set `eL : V ≃ₗ[ℂ] W` to `{ e.toIntertwiningMap.toLinearMap with invFun := e.invFun left_inv := e.left_inv right_inv := e.right_inv }`. Establish `hf : ∀ (g : G) (v : V), (eL : V →ₗ[ℂ] W) (ρ g v) = σ g ((eL : V →ₗ[ℂ] W) v)` using `fun g v => Representation.IntertwiningMap.isIntertwining ρ σ e.toIntertwiningMap g v`. Establish `hg : ∀ (g : G) (w : W), (eL.symm : W →ₗ[ℂ] V) (σ g w) = ρ g ((eL.symm : W →ₗ[ℂ] V) w)`. Introduce `g w`. Apply `eL.injective` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `hf g (eL.symm w)` as an intermediate fact. Simplify using `only [LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply] at this ⊢`. Conclude with `this.symm`. Establish `hf' : ∀ (g : G) (v : V), eL (ρ g v) = σ g (eL v)` using `hf`. Establish `hfc : ∀ g : G, (eL : V →ₗ[ℂ] W) ∘ₗ ρ g = σ g ∘ₗ (eL : V →ₗ[ℂ] W)` using `fun g => LinearMap.ext fun v => hf g v`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `F` to `GlobalTheory.BZMir.twMap ρ σ N θ (eL : V →ₗ[ℂ] W) hf`. Set `F'` to `GlobalTheory.BZMir.twMap σ ρ N θ (eL.symm : W →ₗ[ℂ] V) hg`. Establish `hF'F : F' ∘ₗ F = LinearMap.id`. Simplify using `only [F, F', GlobalTheory.BZMir.twMap]`. Rewrite using `[← Submodule.mapQ_comp]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `mapQ_eq_id_of_eq_id _ ?_ _` and prove the remaining obligations. Use extensionality with `v`. Simplify using the standard rewrite rules. Establish `hFF' : F ∘ₗ F' = LinearMap.id`. Simplify using `only [F, F', GlobalTheory.BZMir.twMap]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Submodule.mapQ_comp]`. Use `mapQ_eq_id_of_eq_id _ ?_ _` and prove the remaining obligations. Use extensionality with `w`. Simplify using the standard rewrite rules. Establish `hcomm : ∀ m : M, F ∘ₗ GlobalTheory.BZMir.twAct ρ N θ s hs m = GlobalTheory.BZMir.twAct σ N θ s hs m ∘ₗ F`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m`. Use `first`. Consider the case `(simp only [F, GlobalTheory.BZMir.twMap, GlobalTheory.BZMir.twAct, MonoidHom.coe_mk, OneHom.coe_mk] erw [← Submodule.mapQ_comp, ← Submodule.mapQ_comp]`. Conclude with `mapQ_congr _ _ (hfc (s m)) _ _)`. Consider the case `(apply Submodule.linearMap_qext`.
+Treat this case separately. Treat this case separately. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Use extensionality with `v`. Simplify using `[F, GlobalTheory.BZMir.twMap, GlobalTheory.BZMir.twAct, hf, hf'])`. Conclude with `⟨⟨⟨F, hcomm⟩, F', fun x => LinearMap.congr_fun hF'F x, fun y => LinearMap.congr_fun hFF' y⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem twAct_equiv {G M V W : Type} [Group G] [Group M] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     {ρ : Representation ℂ G V} {σ : Representation ℂ G W} (e : ρ.Equiv σ) (N : Subgroup G) (θ : N →* ℂˣ) (s : M →* G)
@@ -89,7 +89,7 @@ theorem twAct_equiv {G M V W : Type} [Group G] [Group M] [AddCommGroup V] [Modul
   exact ⟨⟨⟨F, hcomm⟩, F', fun x => LinearMap.congr_fun hF'F x, fun y => LinearMap.congr_fun hFF' y⟩⟩
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n A B ⟨e⟩`. Conclude with `GlobalTheory.CompanionTheory.LeibOrd.giso_tw _ (GlobalTheory.CompanionTheory.LeibOrd.PsiIso.twAct_equiv e (GlobalTheory.BZMir.MirUin k n) 1 (GlobalTheory.BZMir.levi k n) (GlobalTheory.BZMir.levi_normalises n))`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem giso_psiN : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ)
     (A B : MRep k n), MIso A B → GIso (psiN A) (psiN B) := by

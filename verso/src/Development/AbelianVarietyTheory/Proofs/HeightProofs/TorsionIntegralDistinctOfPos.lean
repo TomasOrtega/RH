@@ -11,27 +11,27 @@ open GlobalTheory.TorsionIntegral
 open IsLocalRing in
 
 /- English proof (translation)
-Introduce `L W m h2 _ hg2 hg3 hΔ hpos hm`. Establish `hI : ∀ t, (m : ℂ) * t ∈ L.lattice → t ∉ L.lattice → L.weierstrassP t ∈ W` using `fun t a b => integral L W m h2 hg2 hg3 hpos.ne' hm a b`. Use `⟨hI, fun t t' a b a' b' hn => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Establish `hne : L.weierstrassP t ≠ L.weierstrassP t'` using `mt (GlobalTheory.weierstrassP_eq_iff L b b').1 hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite `hc` using `[not_or]`. Take `⟨hs, hp⟩` from `sum_prod L b b' hne`. Set `x1 : W` to `⟨_, hI t a b⟩`. Set `x2 : W` to `⟨_, hI t' a' b'⟩`. Set `x3 : W` to `⟨_, hI (t + t') (by rw [mul_add]; exact add_mem a a') hc.2⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `x4 : W` to `⟨_, hI (t - t') (by rw [mul_sub]; exact sub_mem a a') hc.1⟩`. Set `g2 : W` to `⟨L.g₂, hg2⟩`. Set `g3 : W` to `⟨L.g₃, hg3⟩`. Set `h : W` to `⟨2⁻¹, h2⟩`. Set `e : W` to `⟨_, hΔ⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `c2 : ((2 : W) : ℂ) = 2` using `rfl`. Establish `c27 : ((27 : W) : ℂ) = 27` using `rfl`. Establish `e1 : (x3 + x4) * (x1 - x2) ^ 2 = 2 * x1 * x2 * (x1 + x2) - g2 * h * (x1 + x2) - g3`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[x1, x2, x3, x4, g2, g3, h, c2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Take the linear combination `hs`. Establish `e2 : x3 * x4 * (x1 - x2) ^ 2 = (x1 * x2 + g2 * h ^ 2) ^ 2 + g3 * (x1 + x2)`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[x1, x2, x3, x4, g2, g3, h]`. Take the linear combination `hp`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `e3 : 2 * h = 1`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[h, c2]`. Establish `e4 : (g2 ^ 3 - 27 * g3 ^ 2) * e = 1`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `[g2, g3, e, c27, disc L]`. Establish `e5 : residue W (x1 - x2) = 0` using `(residue_eq_zero_iff _).2 (ValuationSubring.coe_mem_nonunits_iff.1 hn)`. Establish `f1` using `congrArg (residue W) e1`. Establish `f2` using `congrArg (residue W) e2`. Establish `f3` using `congrArg (residue W) e3`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `f4` using `congrArg (residue W) e4`. Simplify using `only [map_mul, map_add, map_sub, map_pow, map_ofNat, map_one] at f1 f2 f3 f4 e5`. Rewrite `e5` using `[sub_eq_zero]`. Rewrite `f1`, `f2` using `[← e5]`. Generalize the expression as in `residue W x1 = x at *`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `residue W g2 = A at *`. Generalize the expression as in `residue W g3 = B at *`. Generalize the expression as in `residue W h = u at *`. Establish `k1 : 4 * x ^ 3 - A * x - B = 0` using `by linear_combination (A * x) * f3 - f1`. Establish `k2 : (4 * x ^ 2 + A) ^ 2 + 32 * B * x = 0`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : 4 * (x * x + A * u ^ 2) = 4 * x ^ 2 + A`. Take the linear combination `A * (2 * u + 1) * f3`. Rewrite using `[← hA]`. Take the linear combination `-16 * f2`. Establish `k3 : A ^ 3 - 27 * B ^ 2 = 0`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Take the linear combination `(A - 3 * x ^ 2) * k2 + (12 * x ^ 3 + 5 * A * x + 27 * B) * k1`. Rewrite `f4` using `[k3, zero_mul]`. Conclude with `zero_ne_one f4`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem torsion_integral_distinct_of_pos : ∀ (L : PeriodPair) (W : ValuationSubring ℂ) (m : ℕ),
     (2 : ℂ)⁻¹ ∈ W → (3 : ℂ)⁻¹ ∈ W → L.g₂ ∈ W → L.g₃ ∈ W → (L.g₂ ^ 3 - 27 * L.g₃ ^ 2)⁻¹ ∈ W →

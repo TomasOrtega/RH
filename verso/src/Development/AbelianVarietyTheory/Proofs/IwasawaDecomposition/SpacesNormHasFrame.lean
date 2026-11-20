@@ -16,7 +16,7 @@ section General
 variable {E : Type} [Field E] [NumberField E] [StarRing E]
 
 /- English proof (translation)
-Substitute `hN hq` using the available equality. Rewrite using `[signSpace, card_cut_false N p hp, card_cut_true N p hp]`. Both sides reduce to the same expression.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem signSpace_cut_eq (hstar : ∀ x : E, IsIntegral ℤ x → IsIntegral ℤ (star x)) (N N' p q : ℕ)
     (hN : N = N') (hp : p ≤ N) (hq : N - p = q) :
@@ -26,7 +26,7 @@ theorem signSpace_cut_eq (hstar : ∀ x : E, IsIntegral ℤ x → IsIntegral ℤ
   rfl
 
 /- English proof (translation)
-Simplify using `[signSpace]`.
+Simplify using the standard rewrite rules.
 -/
 theorem signSpace_false_eq (hstar : ∀ x : E, IsIntegral ℤ x → IsIntegral ℤ (star x)) (N : ℕ) :
     signSpace hstar N (fun _ => false) = stdSpace hstar N (fun _ => false) N 0 := by
@@ -36,13 +36,13 @@ def planeVec (N n h : ℕ) (hN : n + 2 * h ≤ N) (a b : E) (i : Fin h) : Fin N 
   Pi.single (⟨n + i, by omega⟩ : Fin N) a + Pi.single (⟨n + h + i, by omega⟩ : Fin N) b
 
 /- English proof (translation)
-Substitute `hp` using the available equality. Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`. Establish `c1 : cut N (n + h) ⟨n + i, by omega⟩ = false` using `by simp [cut]`. Establish `c2 : cut N (n + h) ⟨n + h + i, by omega⟩ = true` using `by simp [cut]`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [planeVec, map_add, LinearMap.add_apply, diag_single_single, c1, c2]`. Establish `e1 : ¬ (n + (i : ℕ) = n + h + j)` using `by omega`. Establish `e2 : ¬ (n + h + (i : ℕ) = n + j)` using `by omega`. Rewrite using `[if_neg e1, if_neg e2]`. Distinguish the cases in `hij : i = j`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hij` using the available equality. Simplify using `[sgn, sub_eq_add_neg]`. Establish `h' : (i : ℕ) ≠ j` using `fun e => hij (Fin.ext e)`. Establish `e3 : ¬ (n + (i : ℕ) = n + j)` using `by omega`. Establish `e4 : ¬ (n + h + (i : ℕ) = n + h + j)` using `by omega`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[if_neg e3, if_neg e4, if_neg hij]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem planeVec_planeVec (N n h p : ℕ) (hN : n + 2 * h ≤ N) (hp : p = n + h) (a b c d : E) (i j : Fin h) :
     diagForm N (cut N p) (planeVec N n h hN a b i) (planeVec N n h hN c d j) =
@@ -66,7 +66,7 @@ theorem planeVec_planeVec (N n h p : ℕ) (hN : n + 2 * h ≤ N) (hp : p = n + h
     simp
 
 /- English proof (translation)
-Rewrite using `[planeVec, map_add, diag_ext_single, diag_ext_single, add_zero]`. Simplify using `only`. Use linear arithmetic over natural numbers and integers. Simplify using `only`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem ext_planeVec (N n h : ℕ) (hN : n + 2 * h ≤ N) (neg : Fin N → Bool) (x : Fin n → E) (a b : E)
     (i : Fin h) : diagForm N neg (extTo n N x) (planeVec N n h hN a b i) = 0 := by
@@ -75,7 +75,7 @@ theorem ext_planeVec (N n h : ℕ) (hN : n + 2 * h ≤ N) (neg : Fin N → Bool)
   · simp only; omega
 
 /- English proof (translation)
-Establish `hi` using `i.isLt`. Rewrite using `[planeVec, map_add, diag_single_single, diag_single_single, if_neg, if_neg, add_zero]`. Simplify using `only`. Use linear arithmetic over natural numbers and integers. Simplify using `only`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -94,14 +94,14 @@ section Main
 variable (R : Ranks)
 
 /- English proof (translation)
-Simplify using `only [Ranks.rankY, Ranks.r, Ranks.N, mul_add]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem rankY_eq_N_add (j : ℕ) (hj : j < R.m) : R.rankY j = R.N j + (R.m - 1 - j) := by
   simp only [Ranks.rankY, Ranks.r, Ranks.N, mul_add]
   omega
 
 /- English proof (translation)
-Use `rankY_eq_N_add R j hj` as an intermediate fact. Simplify using `only [pY]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem pY_eq_N_add (j : ℕ) (hj : j < R.m) : pY R j = R.N j + (R.m - 1 - j) / 2 := by
   have := rankY_eq_N_add R j hj
@@ -113,7 +113,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarR
 
 include hpz in
 /- English proof (translation)
-Use `(diag_single_single _ (fun _ => false) _ _ pz pz).trans ?_` and prove the remaining obligations. Rewrite using `[if_pos rfl, ← hpz]`. Simplify using `[sgn]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem top_line_norm :
     diagForm (R.N R.m) (fun _ => false)
@@ -130,7 +130,7 @@ def spacesNorm : Spaces R F E :=
     z_orth := fun x => diag_ext_single _ _ (fun _ => false) x _ pz le_rfl }
 
 /- English proof (translation)
-The claim follows from `top_line_norm R T pz hpz`.
+A detailed English derivation is pending.
 -/
 theorem spacesNorm_z_norm :
     ((spacesNorm R cm T hT pz hpz).X R.m).hT (spacesNorm R cm T hT pz hpz).z (spacesNorm R cm T hT pz hpz).z =
@@ -138,13 +138,13 @@ theorem spacesNorm_z_norm :
   top_line_norm R T pz hpz
 
 /- English proof (translation)
-Establish `h1` using `rankY_eq_N_add R j hj`. Establish `h2` using `pY_eq_N_add R j hj`. Establish `hN : R.N j + 2 * ((R.m - 1 - j) / 2) ≤ R.rankY j` using `by omega`. Use `⟨planeVec _ _ _ hN (1 : E) 1, planeVec _ _ _ hN (1 / 2 : E) (-(1 / 2)), fun i i' => (planeVec_planeVec _ _ _ _ hN h2 _ _ _ _ i i').trans (by simp), fun i i' => (planeVec_planeVec _ _ _ _ hN h2 _ _ _ _ i i').trans (by simp), fun i i' => (planeVec_planeVec _ _ _ _ hN h2 _ _ _ _ i i …` and prove the remaining obligations. Use `split_ifs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[star_one]`. Evaluate the numerical expressions. Both sides reduce to the same expression. Take `⟨a, ha⟩` from `he`. Take `⟨b, hb⟩` from `R.m_even`.
+Evaluate the numerical expressions. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hl : R.N j + 2 * ((R.m - 1 - j) / 2) < R.rankY j` using `by omega`. Use `⟨(Pi.single (⟨_, hl⟩ : Fin (R.rankY j)) pz : Fin (R.rankY j) → E), ?_, fun x => diag_ext_single _ _ (cut _ (pY R j)) x _ pz (Nat.le_add_right _ _), fun i => ⟨single_planeVec _ _ _ hN (cut _ (pY R j)) _ le_rfl _ _ _ i, single_planeVec _ _ _ hN (cut _ (pY R j)) _ le_rfl _ _ _ i⟩⟩` and prove the remaining obligations. Use `(diag_single_single _ (cut _ (pY R j)) _ _ pz pz).trans ?_` and prove the remaining obligations. Establish `c : cut (R.rankY j) (pY R j) ⟨_, hl⟩ = true`. Simplify using `only [cut, decide_eq_true_eq]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[if_pos rfl, c]`. Express the relevant statement in the definitionally equal form `_ = -(T : E)`. Rewrite using `[← hpz]`. Simplify using `[sgn]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem spacesNorm_hasFrame (j : ℕ) (hj : j < R.m) : HasHyperbolicAuxiliaryFrame (spacesNorm R cm T hT pz hpz) j := by
   have h1 := rankY_eq_N_add R j hj
@@ -175,7 +175,7 @@ theorem spacesNorm_hasFrame (j : ℕ) (hj : j < R.m) : HasHyperbolicAuxiliaryFra
     simp [sgn]
 
 /- English proof (translation)
-Use `⟨star_isIntegral, fun _ => rfl, rfl, fun j => ?_, fun j h1 h2 => ?_, fun j => ?_⟩` and prove the remaining obligations. Conclude with `signSpace_cut_eq _ _ _ _ _ rfl (Nat.sub_le _ _) (sub_pY R j)`. Establish `h : R.rankY 0 = R.k + R.m - 1` using `by simp [Ranks.rankY, Ranks.r]`. Apply the tactic sequence `refine signSpace_cut_eq _ (R.rankY 0) R.r (R.k + j - 1) (R.m - j) h ?_ ?_ <;> omega`. Conclude with `signSpace_false_eq _ _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem spacesNorm_coord :
     ∃ hstar : ∀ x : E, IsIntegral ℤ x → IsIntegral ℤ (star x),
@@ -206,7 +206,7 @@ Both sides reduce to the same expression.
 theorem spacesNorm_Vneg (j : ℕ) : (spacesNorm R cm T hT pz hpz).Vneg j = false := rfl
 
 /- English proof (translation)
-The claim follows from `spY_sig R j τ`.
+A detailed English derivation is pending.
 -/
 theorem spacesNorm_Y_sig (j : ℕ) (τ : E →+* ℂ) : ((spacesNorm R cm T hT pz hpz).Y j).sig τ = sigYD R j :=
   spY_sig R j τ

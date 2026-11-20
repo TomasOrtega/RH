@@ -11,7 +11,7 @@ namespace GlobalTheory.FormTopAut
 variable {D : D7}
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `hφ`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem aut_cast {Λ : Submodule (𝓞 D.host.E) (Fin D.sp.X'.rank → D.host.E)} (X : LSp D) (h : X = ⟨D.sp.X', Λ⟩)
     (φ : GA D D.sp.X' → ℂ) (hφ : IsAutFun D.sp.X' φ) :
@@ -20,9 +20,9 @@ theorem aut_cast {Λ : Submodule (𝓞 D.host.E) (Fin D.sp.X'.rank → D.host.E)
   exact hφ
 
 /- English proof (translation)
-Use `⟨0, fun ε CF _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F hS ch hch _ => ?_⟩⟩` and prove the remaining obligations. Introduce `t y`. Establish `hm` using `hS.core.models`. Take `⟨h1, -, -⟩` from `GlobalTheory.EndCusp.formX_props R hm.inf hm.cX hm.prX hm.HX ch.cv t y`. Establish `k` using `aut_cast (columnBlock R.toLevCh D.R.m) (colY_m R.toLevCh) (ch.cv.formX t y) h1.toIsAutFun`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨k.cont, k.left⟩`.
+Supply the required witnesses or components.
 -/
 theorem formTop_cont_left : Big fun {D} _ _ _ _ _ _ _ _ _ _ _ ch => ∀ t y, Continuous (formTop ch t y) ∧
     ∀ γ ∈ GQ (ch.G.V (.grid 0 D.R.m)), ∀ g, formTop ch t y (γ * g) = formTop ch t y g := by

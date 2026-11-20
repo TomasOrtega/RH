@@ -15,13 +15,13 @@ def Cl {N : ℕ} (E : Fin N → Fin N → Module.End ℂ V) (L : Fin N → Fin N
   sInf {P | M ≤ P ∧ ∀ a b, L a b → ∀ q ∈ P, E a b q ∈ P}
 
 /- English proof (translation)
-The claim follows from `le_sInf fun _ hP => hP.1`.
+A detailed English derivation is pending.
 -/
 theorem le_Cl {N : ℕ} (E : Fin N → Fin N → Module.End ℂ V) (L : Fin N → Fin N → Prop) (M : Submodule ℂ V) :
     M ≤ Cl E L M := le_sInf fun _ hP => hP.1
 
 /- English proof (translation)
-Unfold `Cl at hq ⊢`. Rewrite `hq`, the goal using `[Submodule.mem_sInf]`. Introduce `P hP`. Conclude with `hP.2 a b h q (hq P hP)`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Cl_closed {N : ℕ} {E : Fin N → Fin N → Module.End ℂ V} {L : Fin N → Fin N → Prop} {M : Submodule ℂ V}
     (a b : Fin N) (h : L a b) (q : V) (hq : q ∈ Cl E L M) : E a b q ∈ Cl E L M := by
@@ -31,26 +31,24 @@ theorem Cl_closed {N : ℕ} {E : Fin N → Fin N → Module.End ℂ V} {L : Fin 
   exact hP.2 a b h q (hq P hP)
 
 /- English proof (translation)
-The claim follows from `sInf_le ⟨h1, h2⟩`.
+A detailed English derivation is pending.
 -/
 theorem Cl_le {N : ℕ} {E : Fin N → Fin N → Module.End ℂ V} {L : Fin N → Fin N → Prop} {M : Submodule ℂ V}
     (P : Submodule ℂ V) (h1 : M ≤ P) (h2 : ∀ a b, L a b → ∀ q ∈ P, E a b q ∈ P) : Cl E L M ≤ P :=
   sInf_le ⟨h1, h2⟩
 
 /- English proof (translation)
-Establish `key : Cl E L M ≤ Cl E L M ⊓ ⨅ a, ⨅ b, ⨅ (_ : T a b), (Cl E L M).comap (E a b)`. Apply `Cl_le` to reduce the goal to its premises. Introduce `m hm`. Simplify using `only [Submodule.mem_inf, Submodule.mem_iInf, Submodule.mem_comap]`. Conclude with `⟨le_Cl E L M hm, fun a b hab => h0 a b hab m hm⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Introduce `c d hcd q hq`. Simplify using `only [Submodule.mem_inf, Submodule.mem_iInf, Submodule.mem_comap] at hq ⊢`. Take `⟨hq1, hq2⟩` from `hq`. Use `⟨Cl_closed c d hcd q hq1, fun a b hab => ?_⟩` and prove the remaining obligations. Establish `hc` using `hE a b c d`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : E a b (E c d q) = E c d (E a b q) + ((if b = c then E a d else 0) - (if d = a then E c b else 0)) q`. Rewrite using `[← hc]`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.add_mem _ (Cl_closed c d hcd _ (hq2 a b hab)) ?_` and prove the remaining obligations. Rewrite using `[LinearMap.sub_apply]`. Use `Submodule.sub_mem _ ?_ ?_` and prove the remaining obligations. Use `split_ifs with hbc`. Break down `h1 a b c d hab hcd hbc with h | h` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Conclude with `hq2 a d h`. Conclude with `Cl_closed a d h q hq1`. Simplify using the standard rewrite rules. Use `split_ifs with hda`. Break down `h2 a b c d hab hcd hda with h | h` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `hq2 c b h`. Conclude with `Cl_closed c b h q hq1`. Simplify using the standard rewrite rules. Introduce `a b hab q hq`. Establish `hk` using `key hq`.
-
-Simplify using `only [Submodule.mem_inf, Submodule.mem_iInf, Submodule.mem_comap] at hk`. Conclude with `hk.2 a b hab`.
+A detailed English derivation is pending.
 -/
 theorem gen {N : ℕ} {E : Fin N → Fin N → Module.End ℂ V} (hE : GlRel E) (T L : Fin N → Fin N → Prop)
     (M : Submodule ℂ V)
@@ -93,16 +91,16 @@ theorem gen {N : ℕ} {E : Fin N → Fin N → Module.End ℂ V} (hE : GlRel E) 
   exact hk.2 a b hab
 
 /- English proof (translation)
-Simplify using `only [mono, List.ofFn_succ, List.prod_cons]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mono_succ {n : ℕ} (f : Fin (n + 1) → Module.End ℂ V) (a : Fin (n + 1) → ℕ) :
     mono f a = f 0 ^ a 0 * mono (fun x => f x.succ) (fun x => a x.succ) := by
   simp only [mono, List.ofFn_succ, List.prod_cons]
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro f`. Simplify using `[mono]`. Consider the case `succ k ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `f`. Rewrite using `[mono_succ]`. Simplify using `only [pow_zero, one_mul]`. Conclude with `ih _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mono_zero : ∀ {n : ℕ} (f : Fin n → Module.End ℂ V), mono f (fun _ => 0) = 1 := by
   intro n
@@ -115,13 +113,13 @@ theorem mono_zero : ∀ {n : ℕ} (f : Fin n → Module.End ℂ V), mono f (fun 
     exact ih _
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro f _ a x`. Conclude with `x.elim0`. Consider the case `succ k ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `f hf a x`. Consider the cases of `x using Fin.cases with`. Consider the case `zero`. Use `⟨Fin.cons (a 0 + 1) (fun y => a y.succ), ?_⟩` and prove the remaining obligations. Rewrite using `[mono_succ, mono_succ]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.cons_zero, Fin.cons_succ]`. Rewrite using `[pow_succ', mul_assoc]`. Consider the case `succ y`. Take `⟨a'', h''⟩` from `ih (fun z => f z.succ) (fun p q => hf _ _) (fun z => a z.succ) y`. Use `⟨Fin.cons (a 0) a'', ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mono_succ, mono_succ]`. Simplify using `only [Fin.cons_zero, Fin.cons_succ]`. Rewrite using `[← mul_assoc, ((show Commute (f y.succ) (f 0) from hf _ _).pow_right (a 0)).eq, mul_assoc, h'']`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_mono : ∀ {n : ℕ} (f : Fin n → Module.End ℂ V), (∀ a b, f a * f b = f b * f a) →
     ∀ (a : Fin n → ℕ) (x : Fin n), ∃ a' : Fin n → ℕ, f x * mono f a = mono f a' := by
@@ -147,16 +145,16 @@ def MS {n : ℕ} (f : Fin n → Module.End ℂ V) (v : V) : Submodule ℂ V :=
   Submodule.span ℂ (Set.range fun a : Fin n → ℕ => mono f a v)
 
 /- English proof (translation)
-Apply `Submodule.subset_span` to reduce the goal to its premises. Conclude with `⟨fun _ => 0, by simp [mono_zero]⟩`.
+Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components.
 -/
 theorem mem_MS {n : ℕ} (f : Fin n → Module.End ℂ V) (v : V) : v ∈ MS f v := by
   apply Submodule.subset_span
   exact ⟨fun _ => 0, by simp [mono_zero]⟩
 
 /- English proof (translation)
-Introduce `p hp`. Establish `hle : MS f v ≤ (MS f v).comap (f x)`. Unfold `MS`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Take `⟨a', ha'⟩` from `mul_mono f hf a x`. Use `show f x (mono f a v) ∈ Submodule.span ℂ (Set.range fun a : Fin n → ℕ => mono f a v)`. Rewrite using `[show f x (mono f a v) = (f x * mono f a) v from rfl, ha']`. Conclude with `Submodule.subset_span ⟨a', rfl⟩`. Conclude with `hle hp`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem MS_closed {n : ℕ} (f : Fin n → Module.End ℂ V) (hf : ∀ a b, f a * f b = f b * f a) (v : V) (x : Fin n) :
     ∀ p ∈ MS f v, f x p ∈ MS f v := by
@@ -172,7 +170,7 @@ theorem MS_closed {n : ℕ} (f : Fin n → Module.End ℂ V) (hf : ∀ a b, f a 
   exact hle hp
 
 /- English proof (translation)
-Unfold `MS`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `LinearMap.mem_ker.mpr (h a)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem MS_le_ker {n : ℕ} (f : Fin n → Module.End ℂ V) (v : V) (ξ : Module.Dual ℂ V)
     (h : ∀ a : Fin n → ℕ, ξ (mono f a v) = 0) : MS f v ≤ LinearMap.ker ξ := by
@@ -182,7 +180,7 @@ theorem MS_le_ker {n : ℕ} (f : Fin n → Module.End ℂ V) (v : V) (ξ : Modul
   exact LinearMap.mem_ker.mpr (h a)
 
 /- English proof (translation)
-Establish `h` using `hE (Fin.last n) a.castSucc (Fin.last n) b.castSucc`. Rewrite `h` using `[if_neg (Fin.castSucc_lt_last a).ne, if_neg (Fin.castSucc_lt_last b).ne, sub_zero]`. Conclude with `sub_eq_zero.mp h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem yK_comm {n : ℕ} {E : Fin (n + 1) → Fin (n + 1) → Module.End ℂ V} (hE : GlRel E) (a b : Fin n) :
     yK E a * yK E b = yK E b * yK E a := by
@@ -191,7 +189,7 @@ theorem yK_comm {n : ℕ} {E : Fin (n + 1) → Fin (n + 1) → Module.End ℂ V}
   exact sub_eq_zero.mp h
 
 /- English proof (translation)
-Establish `h` using `hE a.castSucc (Fin.last n) b.castSucc (Fin.last n)`. Rewrite `h` using `[if_neg (Fin.castSucc_lt_last b).ne', if_neg (Fin.castSucc_lt_last a).ne', sub_zero]`. Conclude with `sub_eq_zero.mp h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem etaK_comm {n : ℕ} {E : Fin (n + 1) → Fin (n + 1) → Module.End ℂ V} (hE : GlRel E) (a b : Fin n) :
     etaK E a * etaK E b = etaK E b * etaK E a := by
@@ -200,7 +198,7 @@ theorem etaK_comm {n : ℕ} {E : Fin (n + 1) → Fin (n + 1) → Module.End ℂ 
   exact sub_eq_zero.mp h
 
 /- English proof (translation)
-Use `first`. Consider the case `exact ⟨a.castPred h, (Fin.castSucc_castPred a h).symm⟩`. Consider the case `(obtain ⟨j, hj⟩ := Fin.exists_castSucc_eq.mpr h; exact ⟨j, hj.symm⟩)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_castSucc {n : ℕ} (a : Fin (n + 1)) (h : a ≠ Fin.last n) : ∃ a' : Fin n, a = a'.castSucc := by
   first
@@ -208,7 +206,7 @@ theorem exists_castSucc {n : ℕ} (a : Fin (n + 1)) (h : a ≠ Fin.last n) : ∃
   | (obtain ⟨j, hj⟩ := Fin.exists_castSucc_eq.mpr h; exact ⟨j, hj.symm⟩)
 
 /- English proof (translation)
-Use `(hI.2 S hS).resolve_left (fun h => hv0 ?_)` and prove the remaining obligations. Rewrite `hv` using `[h]`. Conclude with `(Submodule.mem_bot ℂ).mp hv`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem top_of_stab {N : ℕ} {E : Fin N → Fin N → Module.End ℂ V} (hI : Irr E) (S : Submodule ℂ V) (hS : Stab E S)
     (v : V) (hv : v ∈ S) (hv0 : v ≠ 0) : S = ⊤ := by
@@ -217,7 +215,7 @@ theorem top_of_stab {N : ℕ} {E : Fin N → Fin N → Module.End ℂ V} (hI : I
   exact (Submodule.mem_bot ℂ).mp hv
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_mul, Finset.mul_sum, ← sub_eq_zero, ← Finset.sum_sub_distrib]`. Rewrite using `[Finset.sum_congr rfl (fun c _ => hE c c a b), Finset.sum_sub_distrib]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem trace_comm {N : ℕ} {E : Fin N → Fin N → Module.End ℂ V} (hE : GlRel E) (a b : Fin N) :
     (∑ c, E c c) * E a b = E a b * ∑ c, E c c := by
@@ -226,13 +224,13 @@ theorem trace_comm {N : ℕ} {E : Fin N → Fin N → Module.End ℂ V} (hE : Gl
   simp
 
 /- English proof (translation)
-Use `haveI := hI.1`. Take `⟨ζ, hζ⟩` from `Module.End.exists_eigenvalue (∑ c, E c c)`. Use `⟨ζ, fun v => ?_⟩` and prove the remaining obligations. Establish `hS : Stab E (LinearMap.ker ((∑ c, E c c) - ζ • 1))`. Introduce `a b w hw`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hw`, the goal using `[LinearMap.mem_ker]`. Establish `e` using `congrArg (fun g : Module.End ℂ V => g w) (trace_comm hE a b)`. Simplify using `only [Module.End.mul_apply] at e`. Rewrite `hw`, the goal using `[LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply]`. Rewrite using `[e, sub_eq_zero.mp hw, map_smul, sub_self]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `hζ.exists_hasEigenvector`. Establish `hmem : w ∈ LinearMap.ker ((∑ c, E c c) - ζ • 1)`. Rewrite using `[LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, sub_eq_zero]`. Conclude with `hw.apply_eq_smul`. Establish `htop` using `top_of_stab hI _ hS w hmem hw.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hv : v ∈ LinearMap.ker ((∑ c, E c c) - ζ • 1)` using `by rw [htop]; trivial`. Rewrite `hv` using `[LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, sub_eq_zero]`. Conclude with `hv`.
+A detailed English derivation is pending.
 -/
 theorem trace_scalar [FiniteDimensional ℂ V] {N : ℕ} {E : Fin N → Fin N → Module.End ℂ V} (hE : GlRel E)
     (hI : Irr E) : ∃ ζ : ℂ, ∀ v : V, (∑ c, E c c) v = ζ • v := by
@@ -262,15 +260,13 @@ namespace Formalism.FourierDecayAlt.P
 open Formalism.REAL Formalism.FourierDecayAlt Formalism.FourierDecayAlt.Qr ClosureOperators
 
 /- English proof (translation)
-Establish `key : ∀ (k : ℕ) (g : Fin k → Module.End ℂ V), (∀ x, ∀ q ∈ P, g x q ∈ P) → ∀ b : Fin k → ℕ, mono g b v ∈ P`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `g _ b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : mono g b = 1` using `by simp [mono]`. Rewrite using `[h1]`. Conclude with `hv`. Consider the case `succ k ih`. Introduce `g hg b`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mono_succ, Module.End.mul_apply]`. Establish `h2` using `ih (fun x => g x.succ) (fun x q hq => hg x.succ q hq) (fun x => b x.succ)`. Generalize the expression as in `b 0 = j`. Proceed by induction on `j with`. Consider the case `zero => rw [pow_zero, Module.End.one_apply]`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Conclude with `h2`. Consider the case `succ j ihj => rw [pow_succ', Module.End.mul_apply]`. Conclude with `hg 0 _ ihj`. Unfold `MS`. Rewrite using `[Submodule.span_le]`.
-
-Introduce and unpack `_ ⟨b, rfl⟩`. Conclude with `key n f hf b`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem MS_le_of_mem_of_invariant {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ} (f : Fin n → Module.End ℂ V)
     (v : V) (P : Submodule ℂ V) (hv : v ∈ P) (hf : ∀ x, ∀ q ∈ P, f x q ∈ P) : MS f v ≤ P := by
@@ -297,39 +293,31 @@ private theorem MS_le_of_mem_of_invariant {V : Type} [AddCommGroup V] [Module �
   exact key n f hf b
 
 /- English proof (translation)
-Introduce `V _ _ n E ν v₀ hE hI hW hv0 ξ hξ hm`. Set `L : Fin (n + 1) → Fin (n + 1) → Prop` to `fun a b => a ≠ Fin.last n ∧ b ≠ Fin.last n ∧ b < a`. Set `M : Submodule ℂ V` to `MS (yK E) v₀`. Establish `hyc : ∀ a b, yK E a * yK E b = yK E b * yK E a` using `yK_comm hE`. Establish `hMC : M ≤ Cl E L M` using `le_Cl E L M`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv₀M : v₀ ∈ M` using `mem_MS (yK E) v₀`. Establish `hNL : ∀ b, ¬ L (Fin.last n) b` using `fun b h => h.1 rfl`. Establish `hY : ∀ (x : Fin n), ∀ q ∈ Cl E L M, E (Fin.last n) x.castSucc q ∈ Cl E L M`. Introduce `x q hq`. Use `gen hE (fun a b => a = Fin.last n ∧ b ≠ Fin.last n) L M ?_ ?_ ?_ _ _ ⟨rfl, (Fin.castSucc_lt_last x).ne⟩ q hq` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `a b ⟨rfl, hb⟩ m hm'`. Take `⟨b', rfl⟩` from `exists_castSucc b hb`. Conclude with `hMC (MS_closed (yK E) hyc v₀ b' m hm')`. Introduce and unpack `a b c d ⟨ha, _⟩ ⟨_, hd, _⟩ _`. Conclude with `Or.inl ⟨ha, hd⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Prove the first alternative. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `a b c d ⟨ha, _⟩ ⟨_, hd, _⟩ hda`. Conclude with `absurd (hda.trans ha) hd`. Set `N : Submodule ℂ V` to `{ carrier := {m | m ∈ Cl E L M ∧ ∀ a b, ¬ L a b → E a b m ∈ Cl E L M} add_mem' := fun {x y} hx hy => ⟨add_mem hx.1 hy.1, fun a b h => by`. Rewrite using `[map_add]`. Conclude with `add_mem (hx.2 a b h) (hy.2 a b h)⟩`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `zero_mem' := ⟨zero_mem _, fun a b _ => by rw [map_zero]; exact zero_mem _⟩`. Use the proof step `smul_mem' := fun c x hx => ⟨Submodule.smul_mem _ c hx.1, fun a b h => by`. Rewrite using `[map_smul]`. Conclude with `Submodule.smul_mem _ c (hx.2 a b h)⟩ }`. Establish `hv₀N : v₀ ∈ N`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨hMC hv₀M, ?_⟩` and prove the remaining obligations. Introduce `a b hab`. Break down `lt_trichotomy a b with h | rfl | h` into its components or cases. Rewrite using `[hW.2 a b h]`. Conclude with `zero_mem _`.
+Assume the negation of the conclusion and derive a contradiction. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hW.1 a]`. Conclude with `Submodule.smul_mem _ _ (hMC hv₀M)`. Establish `ha : a = Fin.last n`. Assume the negation of the conclusion as `ha`. Conclude with `hab ⟨ha, ne_of_lt (lt_of_lt_of_le h (Fin.le_last a)), h⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Substitute `ha` using the available equality. Take `⟨b', rfl⟩` from `exists_castSucc b (ne_of_lt h)`. Conclude with `hMC (MS_closed (yK E) hyc v₀ b' v₀ hv₀M)`. Establish `hNy : ∀ (x : Fin n), ∀ m ∈ N, yK E x m ∈ N`. Introduce `x m hm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Take `⟨hm1, hm2⟩ : m ∈ Cl E L M ∧ ∀ a b, ¬ L a b → E a b m ∈ Cl E L M` from `hm`. Use `⟨hY x m hm1, ?_⟩` and prove the remaining obligations. Introduce `a b hab`. Establish `hrel` using `LinearMap.congr_fun (hE a b (Fin.last n) x.castSucc) m`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply] at hrel`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : E a b (yK E x m) = E (Fin.last n) x.castSucc (E a b m) + ((if b = Fin.last n then E a x.castSucc else 0) m - (if x.castSucc = a then E (Fin.last n) b else 0) m)` using `by show E a b (E (Fin.last n) x.castSucc m) = _`. Rewrite using `[sub_eq_iff_eq_add.mp hrel, add_comm]`. Rewrite using `[key]`. Use `add_mem (hY x _ (hm2 a b hab)) (sub_mem ?_ ?_)` and prove the remaining obligations. Use `split_ifs with hb`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hL : L a x.castSucc`. Conclude with `Cl_closed a x.castSucc hL m hm1`. Conclude with `hm2 a x.castSucc hL`. Rewrite using `[LinearMap.zero_apply]`. Conclude with `zero_mem _`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `split_ifs with hxa`. Conclude with `hm2 (Fin.last n) b (hNL b)`. Rewrite using `[LinearMap.zero_apply]`. Conclude with `zero_mem _`. Establish `hMN : M ≤ N` using `MS_le_of_mem_of_invariant (yK E) v₀ N hv₀N hNy`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hStab : Stab E (Cl E L M)`. Introduce `a b q hq`. Distinguish the cases in `hab : L a b`. Conclude with `Cl_closed a b hab q hq`. Use `gen hE (fun a b => ¬ L a b) L M ?_ (fun a b c d _ _ _ => (em (L a d)).symm) (fun a b c d _ _ _ => (em (L c b)).symm) a b hab q hq` and prove the remaining obligations.
-
-Introduce `a b h m hm'`. Establish `h' : m ∈ Cl E L M ∧ ∀ a b, ¬ L a b → E a b m ∈ Cl E L M` using `hMN hm'`. Conclude with `h'.2 a b h`. Establish `htop : Cl E L M = ⊤` using `top_of_stab hI _ hStab v₀ (hMC hv₀M) hv0`. Establish `hker : Cl E L M ≤ LinearMap.ker ξ`.
-
-Apply `Cl_le` to reduce the goal to its premises. Conclude with `MS_le_ker (yK E) v₀ ξ hm`. Introduce `a b hab q _`. Take `⟨ha, hb, hba⟩` from `hab`. Take `⟨a', rfl⟩` from `exists_castSucc a ha`.
-
-Take `⟨b', rfl⟩` from `exists_castSucc b hb`. Rewrite using `[LinearMap.mem_ker]`. Conclude with `hξ a' b' (Fin.castSucc_lt_castSucc_iff.mp hba) q`. Use extensionality with `v`. Establish `hv : v ∈ Cl E L M` using `by rw [htop]; exact Submodule.mem_top`.
-
-Rewrite using `[LinearMap.zero_apply]`. Conclude with `LinearMap.mem_ker.mp (hker hv)`.
+A detailed English derivation is pending.
 -/
 theorem span_top_vectors : Qr.SpanTop := by
   intro V _ _ n E ν v₀ hE hI hW hv0 ξ hξ hm
@@ -417,41 +405,33 @@ theorem span_top_vectors : Qr.SpanTop := by
   exact LinearMap.mem_ker.mp (hker hv)
 
 /- English proof (translation)
-Introduce `V _ _ _ n E ξ₀ μ w hE hI hξ0 hlow hW hm`. Assume the negation of the conclusion as `hw`. Take `⟨ζ, hζ⟩` from `trace_scalar hE hI`. Set `M : Submodule ℂ V` to `MS (etaK E) w`. Establish `hec : ∀ a b, etaK E a * etaK E b = etaK E b * etaK E a` using `etaK_comm hE`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hwM : w ∈ M` using `mem_MS (etaK E) w`. Establish `hMη : ∀ (x : Fin n), ∀ q ∈ M, E x.castSucc (Fin.last n) q ∈ M` using `fun x q hq => MS_closed (etaK E) hec w x q hq`. Establish `hw_up : ∀ a b : Fin (n + 1), a ≤ b → E a b w ∈ M`. Introduce `a b hab`. Distinguish the cases in `hb : b = Fin.last n`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Substitute `hb` using the available equality. Distinguish the cases in `ha : a = Fin.last n`. Substitute `ha` using the available equality. Establish `htr` using `hζ w`. Rewrite `htr` using `[LinearMap.sum_apply, Fin.sum_univ_castSucc]`.
+Substitute using the available equality. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hdiag : ∀ i : Fin n, E i.castSucc i.castSucc w = μ i • w` using `fun i => hW.1 i`. Establish `hE' : E (Fin.last n) (Fin.last n) w = ζ • w - ∑ i : Fin n, μ i • w`. Rewrite using `[← htr]`. Simplify using `only [hdiag]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[hE']`. Conclude with `sub_mem (Submodule.smul_mem _ _ hwM) (sum_mem fun i _ => Submodule.smul_mem _ _ hwM)`. Take `⟨a', rfl⟩` from `exists_castSucc a ha`. Conclude with `hMη a' w hwM`. Take `⟨b', rfl⟩` from `exists_castSucc b hb`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `ha : a ≠ Fin.last n`. Introduce and unpack `rfl`. Conclude with `absurd hab (not_le.mpr (Fin.castSucc_lt_last b'))`. Take `⟨a', rfl⟩` from `exists_castSucc a ha`. Break down `(Fin.castSucc_le_castSucc_iff.mp hab).lt_or_eq with h | h` into its components or cases.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show E a'.castSucc b'.castSucc w = subA E a' b' w from rfl, hW.2 a' b' h]`. Conclude with `zero_mem _`. Substitute `h` using the available equality. Rewrite using `[show E a'.castSucc a'.castSucc w = subA E a' a' w from rfl, hW.1 a']`. Conclude with `Submodule.smul_mem _ _ hwM`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `N : Submodule ℂ V` to `{ carrier := {m | m ∈ M ∧ ∀ a b : Fin (n + 1), a ≤ b → E a b m ∈ M} add_mem' := fun {x y} hx hy => ⟨add_mem hx.1 hy.1, fun a b h => by`. Rewrite using `[map_add]`. Conclude with `add_mem (hx.2 a b h) (hy.2 a b h)⟩`. Use the proof step `zero_mem' := ⟨zero_mem _, fun a b _ => by rw [map_zero]; exact zero_mem _⟩`. Use the proof step `smul_mem' := fun c x hx => ⟨Submodule.smul_mem _ c hx.1, fun a b h => by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_smul]`. Conclude with `Submodule.smul_mem _ c (hx.2 a b h)⟩ }`. Establish `hNη : ∀ (x : Fin n), ∀ m ∈ N, etaK E x m ∈ N`. Introduce `x m hm`. Take `⟨hm1, hm2⟩ : m ∈ M ∧ ∀ a b : Fin (n + 1), a ≤ b → E a b m ∈ M` from `hm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hMη x m hm1, ?_⟩` and prove the remaining obligations. Introduce `a b hab`. Establish `hrel` using `LinearMap.congr_fun (hE a b x.castSucc (Fin.last n)) m`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply] at hrel`. Establish `key : E a b (etaK E x m) = E x.castSucc (Fin.last n) (E a b m) + ((if b = x.castSucc then E a (Fin.last n) else 0) m - (if Fin.last n = a then E x.castSucc b else 0) m)` using `by show E a b (E x.castSucc (Fin.last n) m) = _`.
+Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[sub_eq_iff_eq_add.mp hrel, add_comm]`. Rewrite using `[key]`. Use `add_mem (hMη x _ (hm2 a b hab)) (sub_mem ?_ ?_)` and prove the remaining obligations. Use `split_ifs with hb`. Conclude with `hm2 a (Fin.last n) (Fin.le_last a)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[LinearMap.zero_apply]`. Conclude with `zero_mem _`. Use `split_ifs with ha`. Substitute `ha` using the available equality. Establish `hb : b = Fin.last n` using `le_antisymm (Fin.le_last b) hab`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Substitute `hb` using the available equality. Conclude with `hm2 x.castSucc (Fin.last n) (Fin.le_last _)`. Rewrite using `[LinearMap.zero_apply]`. Conclude with `zero_mem _`. Establish `hwN : w ∈ N` using `⟨hwM, hw_up⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Establish `hMN : M ≤ N` using `MS_le_of_mem_of_invariant (etaK E) w N hwN hNη`. Set `L : Fin (n + 1) → Fin (n + 1) → Prop` to `fun a b => b < a`. Establish `hStab : Stab E (Cl E L M)`. Introduce `a b q hq`. Break down `lt_or_ge b a with hab | hab` into its components or cases.
-
-Conclude with `Cl_closed a b hab q hq`. Use `gen hE (fun a b => a ≤ b) L M ?_ (fun a b c d _ _ _ => le_or_gt a d) (fun a b c d _ _ _ => le_or_gt c b) a b hab q hq` and prove the remaining obligations. Introduce `a b h m hm'`. Establish `h' : m ∈ M ∧ ∀ a b : Fin (n + 1), a ≤ b → E a b m ∈ M` using `hMN hm'`. Conclude with `le_Cl E L M (h'.2 a b h)`.
-
-Establish `htop` using `top_of_stab hI _ hStab w (le_Cl E L M hwM) hw`. Apply `hξ0` to reduce the goal to its premises. Establish `hker : Cl E L M ≤ LinearMap.ker ξ₀`. Apply `Cl_le` to reduce the goal to its premises. Conclude with `MS_le_ker (etaK E) w ξ₀ hm`.
-
-Introduce `a b hab q _`. Rewrite using `[LinearMap.mem_ker]`. Conclude with `hlow a b hab q`. Use extensionality with `v`. Establish `hv : v ∈ Cl E L M` using `by rw [htop]; exact Submodule.mem_top`.
-
-Rewrite using `[LinearMap.zero_apply]`. Conclude with `LinearMap.mem_ker.mp (hker hv)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_singular_vectors : Qr.SpanSing := by
   intro V _ _ _ n E ξ₀ μ w hE hI hξ0 hlow hW hm

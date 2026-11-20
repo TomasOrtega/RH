@@ -16,7 +16,7 @@ open Filter Topology
 namespace GlobalTheory.SiegelDense
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.prod_insert hi, Finset.prod_insert hi, Finset.prod_insert hi, ih]`. Take the linear combination `(a i * ∏ j ∈ s, a j - a i * ∏ j ∈ s, b j - b i * ∏ j ∈ s, a j + b i * ∏ j ∈ s, b j) * he`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem prod_idem {R : Type} [CommRing R] {e : R} (he : e * e = e) {ι : Type} (s : Finset ι) (a b : ι → R) :
     ∏ i ∈ s, (e * a i + (1 - e) * b i) = e * ∏ i ∈ s, a i + (1 - e) * ∏ i ∈ s, b i := by
@@ -28,7 +28,7 @@ theorem prod_idem {R : Type} [CommRing R] {e : R} (he : e * e = e) {ι : Type} (
     linear_combination (a i * ∏ j ∈ s, a j - a i * ∏ j ∈ s, b j - b i * ∏ j ∈ s, a j + b i * ∏ j ∈ s, b j) * he
 
 /- English proof (translation)
-Simplify using `only [Matrix.det_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`. Rewrite using `[Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[prod_idem he]`. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign τ) with h | h <;> simp [h] <;> ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem det_idem {R : Type} [CommRing R] {e : R} (he : e * e = e) {m : Type} [Fintype m] [DecidableEq m]
     (A B : Matrix m m R) : (e • A + (1 - e) • B).det = e * A.det + (1 - e) * B.det := by
@@ -39,9 +39,9 @@ theorem det_idem {R : Type} [CommRing R] {e : R} (he : e * e = e) {m : Type} [Fi
   rcases Int.units_eq_one_or (Equiv.Perm.sign τ) with h | h <;> simp [h] <;> ring
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `hb`. Establish `h1 : e * a + (1 - e) * (u : R) = (e * a + (1 - e)) * (e + (1 - e) * (u : R))`. Take the linear combination `(-a + a * (u : R) + 1 - (u : R)) * he`. Establish `h2 : IsUnit (e + (1 - e) * (u : R))`. Use `isUnit_iff_exists_inv.mpr ⟨e + (1 - e) * ((u⁻¹ : Rˣ) : R), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hu : (u : R) * ((u⁻¹ : Rˣ) : R) = 1` using `u.mul_inv`. Take the linear combination `(2 - (u : R) - ((u⁻¹ : Rˣ) : R)) * he + (1 - e) ^ 2 * hu`. Rewrite using `[h1]`. Conclude with `ha.mul h2`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_mix {R : Type} [CommRing R] {e : R} (he : e * e = e) {a b : R} (ha : IsUnit (e * a + (1 - e)))
     (hb : IsUnit b) : IsUnit (e * a + (1 - e) * b) := by
@@ -56,7 +56,7 @@ theorem isUnit_mix {R : Type} [CommRing R] {e : R} (he : e * e = e) {a b : R} (h
   exact ha.mul h2
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, hAB, hAD, Matrix.zero_mul, smul_zero, add_zero, smul_smul, he, smul_add]`. Simplify using `only [Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem mix_corner {R : Type} [CommRing R] {n : ℕ} (e : R) (he : e * e = e) (A : Matrix (Fin n) (Fin n ⊕ Fin n) R)
     (B D' : Matrix (Fin n ⊕ Fin n) (Fin n) R) (G : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) R) (y : Matrix (Fin n) (Fin n) R)
@@ -69,7 +69,7 @@ theorem mix_corner {R : Type} [CommRing R] {n : ℕ} (e : R) (he : e * e = e) (A
   abel
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_idempotentCutoff_tendsto_adelicUnitary`.
+A detailed English derivation is pending.
 -/
 theorem approx : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     {ι : Type} [Fintype ι] [DecidableEq ι] (J₀ : Matrix ι ι (AE F E)) (g : UG (cA σ) J₀),
@@ -81,7 +81,7 @@ theorem approx : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberFie
   GlobalTheory.T.exists_idempotentCutoff_tendsto_adelicUnitary
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.siegelUnipotent_antidiagonal_corner`.
+A detailed English derivation is pending.
 -/
 theorem unip : ∀ {R₀ R : Type} [CommRing R₀] [CommRing R] [Algebra R₀ R] [Invertible (2 : R)] (c : R →ₐ[R₀] R)
     {n : ℕ} (J₀ : Matrix (Fin n) (Fin n) R) (x : Matrix (Fin n) (Fin n) R), xᵀ * J₀ + J₀ * x.map c = 0 →
@@ -96,7 +96,7 @@ theorem unip : ∀ {R₀ R : Type} [CommRing R₀] [CommRing R] [Algebra R₀ R]
   GlobalTheory.T.siegelUnipotent_antidiagonal_corner
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_rationalPoint_polynomial_idempotentUnit_value`.
+A detailed English derivation is pending.
 -/
 theorem avoid : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (S : Finset (HeightOneSpectrum (𝓞 F))) (ψ : Polynomial (AE F E)),
@@ -107,7 +107,7 @@ theorem avoid : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberFiel
   GlobalTheory.T.exists_rationalPoint_polynomial_idempotentUnit_value
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_corner_unit_of_right_inverse'`.
+A detailed English derivation is pending.
 -/
 theorem exists_corner : ∀ {F R : Type} [Field F] [CommRing R] [Algebra F R] (e : R), e * e = e →
     (∀ ψ : Polynomial R, (∀ (Ω : Type) [Field Ω] (φ : R →+* Ω), φ e = 1 → ψ.map φ ≠ 0) →
@@ -117,7 +117,7 @@ theorem exists_corner : ∀ {F R : Type} [Field F] [CommRing R] [Algebra F R] (e
   GlobalTheory.T.exists_corner_unit_of_right_inverse'
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_conj_skew_det_unit_of_avoidance'`.
+A detailed English derivation is pending.
 -/
 theorem descend : ∀ {F R : Type} [Field F] [CommRing R] [Algebra F R] [Invertible (2 : R)] (c : R →+* R),
     (∀ r, c (c r) = r) → (∀ t : F, c (algebraMap F R t) = algebraMap F R t) → ∀ (e : R),
@@ -130,33 +130,31 @@ theorem descend : ∀ {F R : Type} [Field F] [CommRing R] [Algebra F R] [Inverti
   GlobalTheory.T.exists_conj_skew_det_unit_of_avoidance'
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ n J ε hJ hdet g`. Use `letI : Invertible (2 : F) := invertibleOfNonzero two_ne_zero`. Use `letI : Invertible (2 : AE F E) := (Invertible.map (algebraMap F (AE F E)) (2 : F)).copy 2 (map_ofNat (algebraMap F (AE F E)) 2).symm`. Take `⟨q, hq, hlim⟩` from `approx F E σ (dbl (incM F J)) g`. Use `mem_closure_of_tendsto hlim (Eventually.of_forall fun S => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `he : algebraMap (AF F) (AE F E) (GlobalTheory.LocalGlobalChar.eps S) * algebraMap (AF F) (AE F E) (GlobalTheory.LocalGlobalChar.eps S) = algebraMap (AF F) (AE F E) (GlobalTheory.LocalGlobalChar.eps S)`. Rewrite using `[← map_mul, GlobalTheory.LocalGlobalChar.eps_mul_self]`. Establish `hce : cA σ (algebraMap (AF F) (AE F E) (GlobalTheory.LocalGlobalChar.eps S)) = algebraMap (AF F) (AE F E) (GlobalTheory.LocalGlobalChar.eps S)` using `(cA σ).commutes _`. Establish `hav` using `avoid F E S`. Establish `hNtN : Matrix.fromCols (1 : Matrix (Fin n) (Fin n) (AE F E)) (-1 : Matrix (Fin n) (Fin n) (AE F E)) * Matrix.fromRows (1 : Matrix (Fin n) (Fin n) (AE F E)) (-1 : Matrix (Fin n) (Fin n) (AE F E)) = (2 : AE F E) • (1 : Matrix (Fin n) (Fin n) (AE F E))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.fromCols_mul_fromRows, two_smul]`. Simplify using the standard rewrite rules. Establish `hNtD : Matrix.fromCols (1 : Matrix (Fin n) (Fin n) (AE F E)) (-1 : Matrix (Fin n) (Fin n) (AE F E)) * (diagCols (Fin n) : Matrix (Fin n ⊕ Fin n) (Fin n) (AE F E)) = 0`. Rewrite using `[diagCols, Matrix.fromCols_mul_fromRows]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hNN : Matrix.fromRows (1 : Matrix (Fin n) (Fin n) (AE F E)) (-1 : Matrix (Fin n) (Fin n) (AE F E)) * Matrix.fromCols (1 : Matrix (Fin n) (Fin n) (AE F E)) (-1 : Matrix (Fin n) (Fin n) (AE F E)) + (diagCols (Fin n) : Matrix (Fin n ⊕ Fin n) (Fin n) (AE F E)) * Matrix.fromCols (1 : …`. Rewrite using `[diagCols, Matrix.fromRows_mul_fromCols, Matrix.fromRows_mul_fromCols, Matrix.fromBlocks_add, ← Matrix.fromBlocks_one, Matrix.fromBlocks_smul]`. Simplify using `[two_smul]`. Take `⟨x₀, hx₀⟩` from `exists_corner (F := F) _ he hav (Matrix.fromCols (1 : Matrix (Fin n) (Fin n) (AE F E)) (-1 : Matrix (Fin n) (Fin n) (AE F E)) * g.1.1 * Matrix.fromRows (1 : Matrix (Fin n) (Fin n) (AE F E)) (-1 : Matrix (Fin n) (Fin n) (AE F E))) (Matrix.fromCols (1 : Matrix (Fin n) (Fin n) (AE F …`. Establish `hg : (g.1.1 : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (AE F E)) * ((g.1⁻¹ : GL (Fin n ⊕ Fin n) (AE F E)) : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (AE F E)) = 1` using `g.1.mul_inv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[show ∀ (A : Matrix (Fin n) (Fin n ⊕ Fin n) (AE F E)) (B : Matrix (Fin n ⊕ Fin n) (Fin n) (AE F E)) (N₁ N₂ : Matrix (Fin n ⊕ Fin n) (Fin n) (AE F E)) (T₁ T₂ : Matrix (Fin n) (Fin n ⊕ Fin n) (AE F E)) (G H : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (AE F E)) (k : AE F E), A * G * N₁ …`. Rewrite using `[hNN, Matrix.smul_mul, Matrix.one_mul, Matrix.mul_smul, Matrix.mul_smul, ← Matrix.mul_assoc (g.1.1 : Matrix _ _ _), hg, Matrix.one_mul, hNtN, smul_smul, smul_smul, show ((⅟2 * ⅟2 : AE F E) * 2 * 2) = 1 by rw [mul_assoc (⅟2 : AE F E) (⅟2) 2, invOf_mul_self, mul_one, invOf_mul_self …`. Choose the witnesses or unpack the hypotheses as in `⟨y, hy⟩ : ∃ y : E, σ y ≠ y := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.HeckeObjectExamples.sigma_ne_id hσ (AlgHom.ext h)`. Establish `hinv : ∀ z, σ (σ z) = z` using `GlobalTheory.HeckeObjectExamples.sigma_invol hσ`. Establish `hcincl : ∀ z : E, cA σ (inclR (F` using `F) (AF F) z) = inclR (F := F) (AF F) (σ z) := fun z => by`. Express the relevant statement in the definitionally equal form `Algebra.TensorProduct.map (AlgHom.id (AF F) (AF F)) σ ((1 : AF F) ⊗ₜ[F] z) = (1 : AF F) ⊗ₜ[F] σ z`. Rewrite using `[Algebra.TensorProduct.map_tmul]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hρu : IsUnit (inclR (F` using `F) (AF F) (y - σ y)) := (isUnit_iff_ne_zero.mpr (sub_ne_zero.mpr (Ne.symm hy))).map _`. Establish `hcρ : (cA σ).toRingHom (inclR (F` using `F) (AF F) (y - σ y)) = -inclR (F := F) (AF F) (y - σ y) := by`. Express the relevant statement in the definitionally equal form `cA σ _ = _`. Rewrite using `[hcincl, map_sub, hinv, ← map_neg, neg_sub]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hc2 : ∀ r, (cA σ).toRingHom ((cA σ).toRingHom r) = r` using `fun r => by`. Express the relevant statement in the definitionally equal form `cA σ (cA σ r) = r`. Proceed by induction on `r using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a z => simp [cA, Algebra.TensorProduct.map_tmul, hinv]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Establish `hcF : ∀ t : F, (cA σ).toRingHom (algebraMap F (AE F E) t) = algebraMap F (AE F E) t` using `fun t => by`. Express the relevant statement in the definitionally equal form `cA σ _ = _`. Rewrite using `[IsScalarTower.algebraMap_apply F (AF F) (AE F E), AlgHom.commutes]`. Establish `hJm : ((incM F J).map (cA σ).toRingHom)ᵀ = ((ε : ℤ) : AE F E) • incM F J`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition.
 
-Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `cA σ (inclR (F := F) (AF F) (J j i)) = ((ε : ℤ) : AE F E) * inclR (F := F) (AF F) (J i j)`. Rewrite using `[hcincl, hJ, map_mul, map_intCast]`. Establish `hJdet : IsUnit (incM F J).det`. Establish `h` using `(isUnit_iff_ne_zero.mpr hdet).map (inclR (F := F) (AF F))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Rewrite `h` using `[RingHom.map_det]`. Then use the resulting hypothesis. Take `⟨x, hxV, hx⟩` from `descend (F := F) (cA σ).toRingHom hc2 hcF _ hav _ hρu hcρ (incM F J) ε hJm hJdet _ _ x₀ hx₀`. Establish `hxV' : (algebraMap (AF F) (AE F E) (GlobalTheory.LocalGlobalChar.eps S) • x)ᵀ * incM F J + incM F J * (algebraMap (AF F) (AE F E) (GlobalTheory.LocalGlobalChar.eps S) • x).map (cA σ) = 0`. Establish `h1 : (algebraMap (AF F) (AE F E) (GlobalTheory.LocalGlobalChar.eps S) • x).map (cA σ) = algebraMap (AF F) (AE F E) (GlobalTheory.LocalGlobalChar.eps S) • x.map (cA σ)`. Use extensionality with `i j`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul, hce]`. Rewrite using `[h1, Matrix.transpose_smul, Matrix.smul_mul, Matrix.mul_smul, ← smul_add]`. Rewrite using `[show x.map (cA σ) = x.map (cA σ).toRingHom from rfl, hxV, smul_zero]`. Take `⟨p, hpD, hcorner⟩` from `unip (cA σ) (incM F J) _ hxV'`. Use `⟨p, 1, hpD, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmul : ((q S * p).1.1 : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (AE F E)) = (q S).1.1 * p.1.1` using `rfl`. Rewrite using `[hmul, hcorner, hq S]`. Establish `hk` using `mix_corner (algebraMap (AF F) (AE F E) (GlobalTheory.LocalGlobalChar.eps S)) he (Matrix.fromCols (1 : Matrix (Fin n) (Fin n) (AE F E)) (-1 : Matrix (Fin n) (Fin n) (AE F E))) (Matrix.fromRows (1 : Matrix (Fin n) (Fin n) (AE F E)) (-1 : Matrix (Fin n) (Fin n) (AE F E))) (diagCols …`. Use `erw [hk]`. Rewrite using `[det_idem he, Matrix.det_smul, Matrix.det_one, mul_one]`.
-
-Conclude with `isUnit_mix he hx ((isUnit_of_invertible (2 : AE F E)).pow _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dense : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (ε : ℤˣ), (∀ i j, σ (J j i) = ((ε : ℤ) : E) * J i j) → J.det ≠ 0 → ∀ g : UG (cA σ) (dbl (incM F J)), g ∈ closure {h : UG (cA σ) (dbl (incM F J)) | ∃ (p : UG (cA σ) (dbl (incM F J))) (t : GL (Fin n) (AE F E)), (p.1.1 : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (AE F E)) * diagCols (Fin n) = diagCols (Fin n) * t.1 ∧ IsUnit (Matrix.fromCols (1 : Matrix (Fin n) (Fin n) (AE F E)) (-1 : Matrix (Fin n) (Fin n) (AE F E)) * ((h * p).1.1 : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (AE F E)) * Matrix.fromRows (1 : Matrix (Fin n) (Fin n) (AE F E)) (-1 : Matrix (Fin n) (Fin n) (AE F E))).det} := by
   intro F E _ _ _ _ _ σ hσ n J ε hJ hdet g

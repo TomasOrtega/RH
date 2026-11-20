@@ -7,11 +7,11 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 open GroundTheory.Heights₂.Heights.LowerBoundFree GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Top
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[Finset.prod_range_succ, ih]`. Distinguish the cases in `h : i < n`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Take `⟨t, rfl⟩ : ∃ t, n = i + 1 + t` from `⟨n - (i + 1), by omega⟩`. Establish `e1 : i + 1 + t - 1 - i = t` using `by omega`. Establish `e2 : i + 1 + t + 1 - 1 - i = t + 1` using `by omega`. Rewrite using `[if_pos h, e1, e2, Nat.factorial_succ]`. Use `push_cast`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `e1 : n - 1 - i = 0` using `by omega`. Establish `e2 : n + 1 - 1 - i = 0` using `by omega`. Rewrite using `[if_neg h, e1, e2]`. Simplify using the standard rewrite rules.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem prod_range_sub_eq_factorial (i n : ℕ) :
     ∏ k ∈ Finset.range n, (if i < k then ((k : ℝ) - (i : ℝ)) else 1) = (((n - 1 - i).factorial : ℕ) : ℝ) := by
@@ -32,9 +32,9 @@ theorem prod_range_sub_eq_factorial (i n : ℕ) :
       simp
 
 /- English proof (translation)
-Rewrite using `[Fintype.prod_prod_type]`. Use `Finset.prod_congr rfl fun τ _ => Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h` using `prod_range_sub_eq_factorial (i : ℕ) N`. Rewrite `h` using `[← Fin.prod_univ_eq_prod_range (fun k => if (i : ℕ) < k then ((k : ℝ) - ((i : ℕ) : ℝ)) else 1) N]`. Establish `hr : (rhoM Ψ N) (τ, i) = N - 1 - (i : ℕ)` using `rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hr, ← h]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [Fin.lt_def]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem prod_rhoM_factorial (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) :
     ∏ p, (((rhoM Ψ N) p).factorial : ℝ) =

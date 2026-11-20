@@ -9,7 +9,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.MtIn.GenOff
 
 /- English proof (translation)
-Rewrite using `[hc (algebraMap _ (𝓞 D.host.E) a) (algebraMap _ (𝓞 D.host.E) a) ?_, ← Ideal.mem_comap, s.w_under]`. Rewrite using `[GlobalTheory.SplitPlaceOver.host_conj_eq']`. Conclude with `(IsCMField.complexConj_apply_eq_self D.host.E (a : maximalRealSubfield D.host.E)).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_iff_of_conj (D : D7) (s : ReciprocityTheory.Aut.SplitPlace D.host.E) {v : PlE D.host}
     (hc : Formalism.BasicNotions.IsConjPl D.host v s.w) (a : 𝓞 (maximalRealSubfield D.host.E)) :
@@ -19,7 +19,7 @@ theorem mem_iff_of_conj (D : D7) (s : ReciprocityTheory.Aut.SplitPlace D.host.E)
   exact (IsCMField.complexConj_apply_eq_self D.host.E (a : maximalRealSubfield D.host.E)).symm
 
 /- English proof (translation)
-Use `HeightOneSpectrum.ext (Ideal.ext fun x => ?_)` and prove the remaining obligations. Establish `hy : ((IsCMField.ringOfIntegersComplexConj D.host.E x : 𝓞 D.host.E) : D.host.E) = D.host.conj (x : D.host.E)`. Rewrite using `[IsCMField.coe_ringOfIntegersComplexConj, GlobalTheory.SplitPlaceOver.host_conj_eq']`. Conclude with `(hw x _ hy).trans (hv x _ hy).symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_conj (D : D7) {w v u : PlE D.host} (hw : Formalism.BasicNotions.IsConjPl D.host w u) (hv : Formalism.BasicNotions.IsConjPl D.host v u) :
     w = v := by
@@ -29,9 +29,9 @@ theorem eq_of_conj (D : D7) {w v u : PlE D.host} (hw : Formalism.BasicNotions.Is
   exact (hw x _ hy).trans (hv x _ hy).symm
 
 /- English proof (translation)
-Use `HeightOneSpectrum.ext (Ideal.ext fun z => ?_)` and prove the remaining obligations. Use `set x := IsCMField.ringOfIntegersComplexConj D.host.E z`. Establish `hz : z = RingOfIntegers.mapRingEquiv GlobalTheory.CMVal.InvConj.conjE x`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Use `show (z : D.host.E) = IsCMField.complexConj D.host.E (x : D.host.E)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[IsCMField.coe_ringOfIntegersComplexConj, IsCMField.complexConj_apply_apply]`. Establish `hy : (z : D.host.E) = D.host.conj (x : D.host.E)`. Rewrite using `[GlobalTheory.SplitPlaceOver.host_conj_eq', IsCMField.coe_ringOfIntegersComplexConj, IsCMField.complexConj_apply_apply]`. Rewrite using `[← (hc x z hy), hz, Formalism.L2.Host.CT.mem_plMap]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_plMap_of_conj (D : D7) {v u : PlE D.host} (hc : Formalism.BasicNotions.IsConjPl D.host v u) :
     u = Formalism.L2.Host.CT.plMap GlobalTheory.CMVal.InvConj.conjE v := by
@@ -46,17 +46,15 @@ theorem eq_plMap_of_conj (D : D7) {v u : PlE D.host} (hc : Formalism.BasicNotion
   rw [← (hc x z hy), hz, Formalism.L2.Host.CT.mem_plMap]
 
 /- English proof (translation)
-Introduce `D cf l Q ψ hψ hT j v k s hg hc`. Take `⟨-, hvl, hvS, hvQ, -, -⟩` from `hg`. Establish `hvn : ∀ n : ℕ, ((n : ℕ) : 𝓞 (maximalRealSubfield D.host.E)) ∈ s.v.asIdeal → ((n : ℕ) : 𝓞 D.host.E) ∈ v.asIdeal` using `fun n h => by`. Use `(mem_iff_of_conj D s hc (n : 𝓞 (maximalRealSubfield D.host.E))).2 h` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hoff : ∀ w : PlE D.host, NG.OverPl w s.v → ∀ n : ℕ, ((n : ℕ) : 𝓞 D.host.E) ∈ w.asIdeal → ((n : ℕ) : 𝓞 D.host.E) ∈ v.asIdeal` using `fun w hw n h => hvn n (by rw [← hw, Ideal.mem_comap, map_natCast]; exact h)`. Establish `hg' : ∀ w : PlE D.host, NG.OverPl w s.v → ∀ k : Fin 2, w ∉ placesOver D.host.E (D.host.g k)`. Introduce `w hw k hk`. Establish `h` using `hoff w hw _ hk`. Apply `hvS` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨?_, hvl⟩` and prove the remaining obligations. Use `fin_cases k`. Conclude with `Or.inl h`. Conclude with `Or.inr (Or.inl h)`. Establish `hgPl : s.v ∉ gPl D`.
+Reduce the conclusion to the remaining proof obligations. Prove the first alternative. Prove the second alternative. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨w, hw, k, hk⟩`. Conclude with `hg' w hw k hk`. Use `⟨?_, fun hl => hvl (hvn l hl)⟩` and prove the remaining obligations. Introduce and unpack `(h | ⟨-, w, hw, hu⟩)`. Conclude with `hgPl h`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Apply `hu` to reduce the goal to its premises. Use `HChar.UnrAt.mul ((cf.isMu0 j).unr w fun k hk => hg' w hw k hk) (HChar.UnrAt.mul ?_ ?_)` and prove the remaining obligations. Use `split_ifs with hlp`. Conclude with `cf.isDel'.unr w fun hp => hvS ⟨Or.inr (Or.inr (by rw [if_pos hlp]; exact hoff w hw _ hp)), hvl⟩`. Conclude with `cf.isDel.unr w fun hp => hvS ⟨Or.inr (Or.inr (by rw [if_neg hlp]; exact hoff w hw _ hp)), hvl⟩`.
-
-Break down `GlobalTheory.SplitPlaceOver.eq_or_isConjPl D s w hw with e | e` into its components or cases. Rewrite using `[← e, eq_plMap_of_conj D hc]`. Conclude with `(GlobalTheory.CMVal.InvConj.unrAt_inv_iff ψ hT v).1 (HChar.UnrAt.inv (hψ v hvQ))`. Rewrite using `[eq_of_conj D e hc]`. Conclude with `hψ v hvQ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gen_off_level : ∀ (D : D7) (cf : CharFrame D) (l : ℕ) (Q : Finset (PlE D.host)) (ψ : HChar D.host.E), (∀ v, v ∉ Q → ψ.UnrAt v) → ψ.TrivOn D.host.F → ∀ (j : Fin D.R.m) (v : PlE D.host) (k : ℕ) (s : ReciprocityTheory.Aut.SplitPlace D.host.E), GenAt D l Q v k → Formalism.BasicNotions.IsConjPl D.host v s.w → s.v ∉ gPl D ∪ qPl D (cf.mu0 j * ((if l = D.host.pde then cf.del' else cf.del) * ψ)) ∧ ¬ s.Above l := by
   intro D cf l Q ψ hψ hT j v k s hg hc

@@ -7,19 +7,19 @@ namespace Formalism.L2.Forms
 open Formalism.BasicNotions Matrix
 
 /- English proof (translation)
-Substitute `hN` using the available equality. Apply `(Matrix.isUnit_iff_isUnit_det _).mp` to reduce the goal to its premises. Rewrite using `[← Matrix.mulVec_injective_iff_isUnit]`. Introduce `v1 v2 h12`. Establish `hv : (Matrix.of fun a (b : Fin (n + 1)) => if hb : (b : ℕ) < n then A a ⟨b, hb⟩ else z a) *ᵥ (v1 - v2) = 0`.
+Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mulVec_sub, h12, sub_self]`. Rewrite using `[← sub_eq_zero]`. Generalize the expression as in `v1 - v2 = v at hv ⊢`. Establish `hsplit : ∀ a, ((Matrix.of fun a (b : Fin (n + 1)) => if hb : (b : ℕ) < n then A a ⟨b, hb⟩ else z a) *ᵥ v) a = (A *ᵥ fun j => v j.castSucc) a + v (Fin.last n) * z a`. Introduce `a`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Matrix.mulVec, dotProduct, Fin.sum_univ_castSucc, mul_comm]`. Establish `hv' : ∀ a, (A *ᵥ fun j => v j.castSucc) a + v (Fin.last n) * z a = 0` using `fun a => by`. Rewrite using `[← hsplit]`. Conclude with `congrFun hv a`. Establish `hlast : v (Fin.last n) = 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Apply `hz (-(v (Fin.last n))⁻¹ • fun j : Fin n => v j.castSucc)` to reduce the goal to its premises. Use function extensionality and compare the values at `a`. Rewrite using `[Matrix.mulVec_smul, Pi.smul_apply, smul_eq_mul]`. Establish `e : (A *ᵥ fun j : Fin n => v j.castSucc) a = -(v (Fin.last n) * z a)` using `by linear_combination hv' a`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Clear the denominators using the available nonvanishing facts. Establish `hcs : (fun j : Fin n => v j.castSucc) = 0`. Apply `hA` to reduce the goal to its premises. Use function extensionality and compare the values at `a`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `hv' a` as an intermediate fact. Rewrite `this` using `[hlast, zero_mul, add_zero]`. Rewrite using `[this, Matrix.mulVec_zero]`. Both sides reduce to the same expression. Use function extensionality and compare the values at `j`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Use `Fin.lastCases ?_ (fun i => ?_) j` and prove the remaining obligations. Conclude with `hlast`. Conclude with `congrFun hcs i`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_det_cols {E : Type} [Field E] {N n : ℕ} (hN : n + 1 = N) (A : Matrix (Fin N) (Fin n) E) (z : Fin N → E)
     (hA : Function.Injective A.mulVec) (hz : ∀ x, A *ᵥ x ≠ z) :
@@ -59,9 +59,9 @@ theorem isUnit_det_cols {E : Type} [Field E] {N n : ℕ} (hN : n + 1 = N) (A : M
 variable (D : D7)
 
 /- English proof (translation)
-Use `letI := D.host.cmStar`. Introduce `x y h`. Rewrite using `[← sub_eq_zero]`. Establish `h0 : D.sp.iX' (x - y) = 0` using `by rw [map_sub, h, sub_self]`. Apply `D.sp.X'.nondeg.1 (x - y)` to reduce the goal to its premises.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `w`. Rewrite using `[← D.sp.iX'_isom (x - y) w, h0, map_zero, LinearMap.zero_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem iX'_injective : letI := D.host.cmStar; Function.Injective D.sp.iX' := by
   letI := D.host.cmStar
@@ -73,7 +73,7 @@ theorem iX'_injective : letI := D.host.cmStar; Function.Injective D.sp.iX' := by
   rw [← D.sp.iX'_isom (x - y) w, h0, map_zero, LinearMap.zero_apply]
 
 /- English proof (translation)
-Use `letI := D.host.cmStar`. Introduce `x y h`. Unfold `iXc at h`. Simplify using `only [LinearMap.coe_comp, Function.comp_apply, LinearEquiv.coe_coe, EmbeddingLike.apply_eq_iff_eq] at h`. Conclude with `(LinearEquiv.injective _) (iX'_injective D h)`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem iXc_injective : Function.Injective (iXc D) := by
   letI := D.host.cmStar
@@ -83,7 +83,7 @@ theorem iXc_injective : Function.Injective (iXc D) := by
   exact (LinearEquiv.injective _) (iX'_injective D h)
 
 /- English proof (translation)
-Introduce `x y h`. Simplify using `only [iXm, LinearMap.toMatrix'_mulVec] at h`. Conclude with `iXc_injective D h`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem iXm_mulVec_injective : Function.Injective (iXm D).mulVec := by
   intro x y h
@@ -93,15 +93,15 @@ theorem iXm_mulVec_injective : Function.Injective (iXm D).mulVec := by
 variable {D}
 
 /- English proof (translation)
-Use `letI := D.host.cmStar`. Take `⟨a, ha⟩` from `Tf.til.lastCoordinateUniformizerVector_spans_orthogonal_line`. Establish `hT : ((D.mem u).A.T : D.host.E) ≠ 0` using `Nat.cast_ne_zero.mpr (D.mem u).A.T_prime.ne_zero`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `h` using `Tf.til.hermitianForm_lastCoordinateUniformizerVector_self`. Rewrite `h` using `[ha, zero_smul]`. Simplify using `[Formalism.UG.hform] at h`. Conclude with `hT h.symm`. Introduce `hx`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [iXm, LinearMap.toMatrix'_mulVec] at hx`. Establish `hc : iXc D x = (a / ((D.mem u).A.T : D.host.E)) • zc D`. Rewrite using `[hx]`. Use function extensionality and compare the values at `i`. Rewrite using `[ha]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Unfold `iXc zc at hc`. Simplify using `only [LinearMap.coe_comp, Function.comp_apply, LinearEquiv.coe_coe, ← map_smul, EmbeddingLike.apply_eq_iff_eq] at hc`. Establish `h1` using `D.sp.z_orth ((D.sp.X'.frame.equivFun.trans (LinearEquiv.funCongrLeft D.host.E D.host.E (finCongr (rankP D)).symm)).symm x)`.
+Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hc, LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul]`. Break down `mul_eq_zero.mp h1 with h2 | h2` into its components or cases. Conclude with `div_ne_zero ha0 hT ((map_eq_zero _).mp h2)`. Conclude with `D.sp.z_anis h2`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem vector_quotient_not_in_range {u : D.what₂.Word} (Tf : FormsTied D u) (x : Fin (D.R.N D.R.m - 1) → D.host.E) :
     iXm D *ᵥ x ≠ fun i => Tf.til.z0 i / ((D.mem u).A.T : D.host.E) := by
@@ -129,7 +129,7 @@ theorem vector_quotient_not_in_range {u : D.what₂.Word} (Tf : FormsTied D u) (
   · exact D.sp.z_anis h2
 
 /- English proof (translation)
-The claim follows from `isUnit_det_cols (Formalism.MainNotions.product_first_zeroth_parts.Nm_succ D.R) (iXm D) (fun i => Tf.til.z0 i / ((D.mem u).A.T : D.host.E)) (iXm_mulVec_injective D) (vector_quotient_not_in_range Tf)`.
+A detailed English derivation is pending.
 -/
 theorem bZ_isUnit {u : D.what₂.Word} (Tf : FormsTied D u) : IsUnit (bZ u Tf.til.z0).det :=
   isUnit_det_cols (Formalism.MainNotions.product_first_zeroth_parts.Nm_succ D.R) (iXm D) (fun i => Tf.til.z0 i / ((D.mem u).A.T : D.host.E))

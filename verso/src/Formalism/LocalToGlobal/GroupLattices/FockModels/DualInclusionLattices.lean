@@ -9,7 +9,7 @@ namespace Formalism.L2.G.Model
 open Formalism.MainNotions.G Formalism.GradedWeylDivisibility Formalism.MainNotions.G.LatticeSystems
 
 /- English proof (translation)
-Introduce `p n' W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ j w h m r lam0 hd e he`. Conclude with `⟨lb_H_le_Re (mkG h m r lam0 hd) (0 : Fin 1) (lb_edgeLat_of_basis _ _ (restEdgeBasis _ _)) e he, lb_Hdual_le_Re' (mkG h m r lam0 hd) (0 : Fin 1) (lb_edgeLat_of_basis _ _ (restEdgeBasis _ _)) e he⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem dualInclusionLattices : DualHeightInclusion := by
   intro p n' W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ j w h m r lam0 hd e he
@@ -17,9 +17,9 @@ theorem dualInclusionLattices : DualHeightInclusion := by
     lb_Hdual_le_Re' (mkG h m r lam0 hd) (0 : Fin 1) (lb_edgeLat_of_basis _ _ (restEdgeBasis _ _)) e he⟩
 
 /- English proof (translation)
-Introduce `p n' W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ j w h m lam0 hd L hL`. Establish `h0 : ∃ (I : Type) (_ : Finite I) (b0 : Module.Basis I Kf (Vsp Kf lam0)), HL (O` using `O) ι σ lam0 L = Submodule.span O (Set.range b0) := jm_HL_basis (mkG h m 0 lam0 hd) (0 : Fin 1) L hL`. Take `⟨I, hI, x, hx⟩` from `h0`. Consider the cases of `nonempty_fintype I`. Establish `hcard : Fintype.card I = dimV Kf lam0` using `(Module.finrank_eq_card_basis x).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Establish an intermediate fact.
 
-Use `⟨x.reindex (Fintype.equivFinOfCardEq hcard), ?_⟩` and prove the remaining obligations. Rewrite using `[hx]`. Use `congr 1`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem hlSpans : HLSpans := by
   intro p n' W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ j w h m lam0 hd L hL
@@ -36,9 +36,9 @@ theorem hlSpans : HLSpans := by
   simp
 
 /- English proof (translation)
-Use `haveI := Fintype.ofFinite I`. Rewrite using `[← x.sum_repr F]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Take `⟨o, ho⟩` from `hF i`. Establish `e : x.repr F i • x i = o • (a i • x i)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← algebraMap_smul Kf o (a i • x i), ho, smul_smul, Module.Basis.coord_apply]`. Use `congr 1`. Clear denominators, using `[ha i]` for the nonvanishing conditions. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ o (Submodule.subset_span ⟨i, rfl⟩)`.
+Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_span_of_coord {O Kf V : Type} [CommRing O] [Field Kf] [Algebra O Kf] [AddCommGroup V] [Module Kf V]
     [Module O V] [IsScalarTower O Kf V] {I : Type} [Finite I] (x : Module.Basis I Kf V) (a : I → Kf)
@@ -56,23 +56,21 @@ theorem mem_span_of_coord {O Kf V : Type} [CommRing O] [Field Kf] [Algebra O Kf]
   exact Submodule.smul_mem _ o (Submodule.subset_span ⟨i, rfl⟩)
 
 /- English proof (translation)
-Introduce `p n' W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ j w h m r lam0 hd e he`. Establish `hw` using `w_ne h`. Establish `hp` using `p_eq h`. Use `set c : Kf := algebraMap O Kf w with hc`. Use `set A : ℤ := Ar r lam0 with hA`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hpA : (p : Kf) ^ A * c ^ (-A) = c ^ A`. Rewrite using `[hp, ← zpow_natCast c 2, ← zpow_mul, ← zpow_add₀ hw]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `first : ∀ G, G ∈ Re' p ι σ w r lam0 e ↔ ∀ F ∈ Re p ι σ w r lam0 e, be p r lam0 F G ∈ Set.range (algebraMap O Kf)`. Introduce `G`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨ψ, hψ, rfl⟩ F ⟨z, hz, rfl⟩`. Establish `e2 : be p r lam0 ((LinearMap.restrictScalars O ((LinearMap.lsmul Kf _) (c ^ (-A)))) z) ((LinearMap.restrictScalars O ((LinearMap.lsmul Kf _) (c ^ (-A)))) ψ) = ψ z` using `by show (c ^ (-A) • ψ) (((p : Kf) ^ A) • (c ^ (-A) • z)) = ψ z`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.smul_apply, map_smul, map_smul, smul_smul, smul_smul, mul_assoc, hpA, ← zpow_add₀ hw, neg_add_cancel, zpow_zero, one_smul]`. Rewrite using `[e2]`. Conclude with `hψ z hz`. Introduce `hG`. Use `⟨c ^ A • G, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `z hz`. Establish `h1` using `hG (c ^ (-A) • z) ⟨z, hz, rfl⟩`. Establish `e2 : be p r lam0 (c ^ (-A) • z) G = (c ^ A • G) z` using `by show G (((p : Kf) ^ A) • (c ^ (-A) • z)) = (c ^ A • G) z`. Rewrite using `[smul_smul, hpA, map_smul, LinearMap.smul_apply]`. Rewrite using `[← e2]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `h1`. Use `show c ^ (-A) • (c ^ A • G) = G`. Rewrite using `[smul_smul, ← zpow_add₀ hw, neg_add_cancel, zpow_zero, one_smul]`. Use `⟨first, fun F => ⟨fun hF G hG => (first G).1 hG F hF, fun hF => ?_⟩⟩` and prove the remaining obligations. Take `⟨I, hI, x, π, -, -, -, -, c5, c6⟩` from `elementary_divisor_basis h m r lam0 hd e he`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← c5]`. Apply `mem_span_of_coord x _ (fun i => zpow_ne_zero _ hw)` to reduce the goal to its premises. Introduce `i`. Establish `h1` using `hF ((c ^ (-order r lam0 (π i)) * (p : Kf) ^ (-π i)) • x.coord i) (by rw [← c6]; exact Submodule.subset_span ⟨i, rfl⟩)`. Establish `e2 : be p r lam0 F ((c ^ (-order r lam0 (π i)) * (p : Kf) ^ (-π i)) • x.coord i) = (c ^ (-order r lam0 (π i)))⁻¹ * x.coord i F` using `by show ((c ^ (-order r lam0 (π i)) * (p : Kf) ^ (-π i)) • x.coord i) (((p : Kf) ^ A) • F) = _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions.
 
-Rewrite using `[LinearMap.smul_apply, map_smul, smul_eq_mul, smul_eq_mul, ← mul_assoc]`. Use `congr 1`. Rewrite using `[hp, ← zpow_natCast c 2, ← zpow_mul, ← zpow_mul, ← zpow_add₀ hw, ← zpow_add₀ hw, ← zpow_neg]`. Use `congr 1`. Unfold `order`.
-
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← e2]`. Conclude with `h1`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bePerfect : BePerfect := by
   intro p n' W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ j w h m r lam0 hd e he

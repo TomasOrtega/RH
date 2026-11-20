@@ -17,35 +17,31 @@ def FgSl : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r s :
     ∀ W : Submodule ℂ (Sm E s), IsStable W → (↑S₂ : Set (Sm E s)) ⊆ W → RS U T ≤ W)
 
 /- English proof (translation)
-Introduce `E _ _ _ r s τ hr hs U hH hSI c T hT hpE`. Take `⟨hAS, hFG, hNP, hCI, -, hRA⟩` from `hH`. Use `choose mm hmmI hmmN using hRA`. Take `⟨hfgL, hfgR⟩` from `hfg E r s U c T hAS hT hFG`. Establish `hLle` using `LS_le_iSup hAS hT mm hmmN hmmI`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hRle` using `RS_le_iSup hAS hT mm hmmN hmmI`. Take `⟨z₁, hz₁c, hz₁E, hz₁s⟩` from `BlockLagrange.proj_exists (LS U T) (adm mm r) ((s : ℂ) / 2) hLle`. Take `⟨z₂, hz₂c, hz₂E, hz₂s⟩` from `BlockLagrange.proj_exists (RS U T) (adm mm s) (-(r : ℂ) / 2) hRle`. Establish `hMI` using `BlockSlices.memInd2 hAS hT`. Establish `hLst` using `BlockSlices.LS_stable hAS hT`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hRst` using `BlockSlices.RS_stable hAS hT`. Establish `hind` using `fun p : ((E →+* ℂ) → Multiset ℂ) × ((E →+* ℂ) → Multiset ℂ) => indMap_holds E r s U (LS U T) (RS U T) T (z₁ p.1) (z₂ p.2) hAS.1 hAS.2 hLst hRst hT.equiv hMI (fun o ψ _ => LinearMap.congr_fun (hz₁c p.1 o).eq ψ) (fun o ψ _ => LinearMap.congr_fun (hz₂c p.2 o).eq ψ)`. Use `choose T' hT'e hT'u hT'l using hind`. Establish `hvan : ∀ p, ∀ ψ ∈ U, T ψ = 0 → T' p ψ = 0`. Introduce `p ψ hψ h0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `eq_zero_of_levi (hT'u p ψ hψ) fun k g m => ?_` and prove the remaining obligations. Use `hT'l p ψ hψ k g 0 Fin.elim0 Fin.elim0 (fun i => i.elim0) (fun i => i.elim0) (fun m' => by` as an intermediate fact. Rewrite using `[h0]`. Use the proof step `simp) m`. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose P' hP' using fun p => factor U T (T' p) (hvan p)`. Use `set SS := adm mm r ×ˢ adm mm s with hSS`. Establish `hsum : ∀ ψ ∈ U, ∑ p ∈ SS, T' p ψ = T ψ`. Introduce `ψ hψ`. Use `eq_of_levi (fun x g => ?_) (hT.unipInv ψ hψ) fun k g m => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Submodule.coe_sum, Finset.sum_apply]`. Conclude with `Finset.sum_congr rfl fun p _ => hT'u p ψ hψ x g`. Take `⟨n, ψ₁, ψ₂, h₁, h₂, he⟩` from `ParabolicProjection.tensor_pair_finite_sum ((hMI ψ hψ).2 k g)`. Establish `he' : ∀ m', (T ψ).1 (lev (Ad E) r s m' * (infGL E (r + s) (Unitary.toUnits k) * finGL E (r + s) g)) = ∑ i, (ψ₁ i).1 m'.1 * (ψ₂ i).1 m'.2` using `fun m' => he m'`. Simplify using `only [Submodule.coe_sum, Finset.sum_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_congr rfl fun p _ => hT'l p ψ hψ k g n ψ₁ ψ₂ h₁ h₂ he' m, he' m, hSS, Finset.sum_product]`. Establish `e1 : ∀ i, ∑ σ ∈ adm mm r, (z₁ σ (ψ₁ i)).1 m.1 = (ψ₁ i).1 m.1` using `fun i => by`. Rewrite using `[← Finset.sum_apply, ← Submodule.coe_sum, hz₁s _ (h₁ i)]`. Establish `e2 : ∀ i, ∑ ρ ∈ adm mm s, (z₂ ρ (ψ₂ i)).1 m.2 = (ψ₂ i).1 m.2` using `fun i => by`. Rewrite using `[← Finset.sum_apply, ← Submodule.coe_sum, hz₂s _ (h₂ i)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `key : ∀ i, (ψ₁ i).1 m.1 * (ψ₂ i).1 m.2 = ∑ σ ∈ adm mm r, ∑ ρ ∈ adm mm s, (z₁ σ (ψ₁ i)).1 m.1 * (z₂ ρ (ψ₂ i)).1 m.2` using `fun i => by`. Rewrite using `[← e1 i, ← e2 i, Finset.sum_mul_sum]`. Rewrite using `[Finset.sum_congr rfl fun i _ => key i]`. Use `symm`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `Finset.sum_congr rfl fun σ _ => Finset.sum_comm`. Use `set N := SS.card`. Set `dec : ℕ → ((E →+* ℂ) → Multiset ℂ) × ((E →+* ℂ) → Multiset ℂ)` to `fun j => if h : j < N then (SS.equivFin.symm ⟨j, h⟩).1 else (fun _ => 0, fun _ => 0)`. Establish `hdec : ∀ j ∈ Finset.range N, dec j ∈ SS`. Introduce `j hj`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `Finset.mem_range.1 hj`. Simplify using `only [dec, dif_pos h]`. Conclude with `(SS.equivFin.symm ⟨j, h⟩).2`. Establish `hreidx : ∀ f : ((E →+* ℂ) → Multiset ℂ) × ((E →+* ℂ) → Multiset ℂ) → Sm E (r + s), ∑ j ∈ Finset.range N, f (dec j) = ∑ p ∈ SS, f p`. Introduce `f`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_range (fun j => f (dec j))]`. Establish `e : ∀ i : Fin N, f (dec i) = f (SS.equivFin.symm i).1` using `fun i => by simp only [dec, dif_pos i.2, Fin.eta]`. Simplify using `only [e]`. Rewrite using `[Equiv.sum_comp SS.equivFin.symm (fun x => f x.1), Finset.sum_coe_sort SS f]`. Use `⟨Finset.range N, fun j => P' (dec j), fun j => tw ((LS U T).map (z₁ (dec j).1)) (-(s : ℂ) / 2), fun j => tw ((RS U T).map (z₂ (dec j).2)) ((r : ℂ) / 2), fun j hj => ?_, fun j _ o ψ hψ => ?_, fun ψ hψ => ?_, fun j _ ψ hψ => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp` using `Finset.mem_product.1 (hdec j hj)`. Conclude with `⟨hyp_left hAS hNP hT hpE mm hmmN hp.1 (hz₁c _) (hz₁E _) hfgL τ, hyp_right hAS hNP hT hpE mm hmmN hp.2 (hz₂c _) (hz₂E _) hfgR τ⟩`. Rewrite using `[← hT.equiv o ψ hψ, hP' _ _ (hAS.1 o ψ hψ), hP' _ _ hψ, hT'e _ o ψ hψ]`. Rewrite using `[Finset.sum_congr rfl fun j _ => hP' (dec j) ψ hψ, hreidx (fun p => T' p ψ), hsum ψ hψ]`. Rewrite using `[hP' _ _ hψ]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e1 : tw (tw ((LS U T).map (z₁ (dec j).1)) (-(s : ℂ) / 2)) ((s : ℂ) / 2) = (LS U T).map (z₁ (dec j).1)`. Rewrite using `[show -(s : ℂ) / 2 = -((s : ℂ) / 2) by ring]`. Conclude with `BlockTwistCharacters.tw_tw_neg _ _`. Establish `e2 : tw (tw ((RS U T).map (z₂ (dec j).2)) ((r : ℂ) / 2)) (-(r : ℂ) / 2) = (RS U T).map (z₂ (dec j).2)`. Use `BlockTwistCharacters.tw_tw_neg ((RS U T).map (z₂ (dec j).2)) (-(r : ℂ) / 2)` as an intermediate fact.
-
-Rewrite `this` using `[show -(-(r : ℂ) / 2) = (r : ℂ) / 2 by ring]`. Then use the resulting hypothesis. Rewrite using `[e1, e2]`. Use `⟨hT'u _ ψ hψ, fun k g => ?_⟩` and prove the remaining obligations. Take `⟨n, ψ₁, ψ₂, h₁, h₂, he⟩` from `ParabolicProjection.tensor_pair_finite_sum ((hMI ψ hψ).2 k g)`. Establish `he' : ∀ m', (T ψ).1 (lev (Ad E) r s m' * (infGL E (r + s) (Unitary.toUnits k) * finGL E (r + s) g)) = ∑ i, (ψ₁ i).1 m'.1 * (ψ₂ i).1 m'.2` using `fun m' => he m'`.
-
-Rewrite using `[show (fun m => (T' (dec j) ψ).1 (lev (Ad E) r s m * (infGL E (r + s) (Unitary.toUnits k) * finGL E (r + s) g))) = fun m => ∑ i, (z₁ (dec j).1 (ψ₁ i)).1 m.1 * (z₂ (dec j).2 (ψ₂ i)).1 m.2 from`. Use function extensionality and compare the values at `(hT'l _ ψ hψ k g n ψ₁ ψ₂ h₁ h₂ he')]`. Conclude with `ParabolicProjection.sum_mem_tens2 (fun i => Submodule.mem_map_of_mem (h₁ i)) (fun i => Submodule.mem_map_of_mem (h₂ i))`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem blocks_of (hfg : FgSl) : Blocks := by
   intro E _ _ _ r s τ hr hs U hH hSI c T hT hpE

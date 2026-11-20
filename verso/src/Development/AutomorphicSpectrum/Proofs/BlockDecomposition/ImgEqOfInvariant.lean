@@ -15,45 +15,43 @@ section Comb
 variable {A : Type} [Finite A]
 
 /- English proof (translation)
-Take `⟨k, ⟨q⟩⟩` from `Finite.exists_equiv_fin A`. Use `letI : Fintype A := Fintype.ofEquiv _ q.symm`. Use `letI : LinearOrder A := LinearOrder.lift' q q.injective`. Set `R : Finset A` to `Finset.univ.filter fun a => a < ι a`. Set `r : Fin R.card → A` to `fun j => (R.equivFin.symm j : A)`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hr : ∀ j, r j < ι (r j)` using `fun j => (Finset.mem_filter.1 (R.equivFin.symm j).2).2`. Establish `hinj : Function.Injective r` using `fun i j h => R.equivFin.symm.injective (Subtype.ext h)`. Establish `hsurj : ∀ a, a < ι a → ∃ j, r j = a` using `fun a ha => ⟨R.equivFin ⟨a, Finset.mem_filter.2 ⟨Finset.mem_univ _, ha⟩⟩, by simp [r]⟩`. Establish `hne : ∀ i j, r i ≠ ι (r j)` using `fun i j h => by`. Establish `h1 : ι (r i) = r j` using `by rw [h, hι]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hr i`. Establish `h3` using `hr j`. Rewrite `h2` using `[h1]`. Rewrite `h3` using `[← h]`. Conclude with `lt_asymm h2 h3`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Set `T : (Fin R.card → SignType) → Set A` to `fun e => {a | ∃ j, (a = r j ∧ e j = 1) ∨ (a = ι (r j) ∧ e j = -1)}`. Establish `hpos : ∀ e j, r j ∈ T e ↔ e j = 1` using `fun e j => by`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, ⟨h, hi⟩ | ⟨h, _⟩⟩`. Rewrite using `[hinj h]` and apply the resulting hypothesis.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 
-Conclude with `absurd h (hne _ _)`. Conclude with `fun h => ⟨j, Or.inl ⟨rfl, h⟩⟩`. Establish `hneg : ∀ e j, ι (r j) ∈ T e ↔ e j = -1` using `fun e j => by`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, ⟨h, _⟩ | ⟨h, hi⟩⟩`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Conclude with `absurd h.symm (hne _ _)`. Establish `: r j = r i` using `by simpa [hι] using congrArg ι h`. Rewrite using `[hinj this]` and apply the resulting hypothesis. Conclude with `fun h => ⟨j, Or.inr ⟨rfl, h⟩⟩`. Establish `hext : ∀ e e', T e = T e' → e = e'` using `fun e e' h => by`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `j`. Establish `h1` using `hpos e j`. Establish `h2` using `hneg e j`. Rewrite `h1`, `h2` using `[h]`. Rewrite `h1` using `[hpos e' j]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h2` using `[hneg e' j]`. Apply the tactic sequence `cases he : e j <;> cases he' : e' j <;> simp_all`. Use `⟨R.card, T, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `e a ⟨j, ⟨rfl, h⟩ | ⟨rfl, h⟩⟩ hc`. Use `(hneg e j).1 hc` as an intermediate fact.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[h]`. Conclude with `absurd this (by decide)`. Rewrite `hc` using `[hι]`. Use `(hpos e j).1 hc` as an intermediate fact. Rewrite `this` using `[h]`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `absurd this (by decide)`. Introduce `I hI`. Set `e : Fin R.card → SignType` to `fun j => if r j ∈ I then 1 else if ι (r j) ∈ I then -1 else 0`. Establish `he : T e = I`. Use extensionality with `a`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨j, ⟨rfl, h⟩ | ⟨rfl, h⟩⟩`. Assume the negation of the conclusion as `hc`. Simplify using `only [e, hc, if_false] at h`. Apply the tactic sequence `split_ifs at h <;> exact absurd h (by decide)`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hc`. Simplify using `only [e, hc, if_false] at h`. Apply the tactic sequence `split_ifs at h <;> exact absurd h (by decide)`. Introduce `ha`. Establish `hna` using `hI a ha`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Break down `lt_trichotomy a (ι a) with h | h | h` into its components or cases. Take `⟨j, rfl⟩` from `hsurj a h`. Conclude with `⟨j, Or.inl ⟨rfl, by simp [e, ha]⟩⟩`. Rewrite `hna` using `[← h]`. Conclude with `absurd ha hna`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Take `⟨j, hj⟩` from `hsurj (ι a) (by rwa [hι])`. Use `⟨j, Or.inr ⟨by rw [hj, hι], ?_⟩⟩` and prove the remaining obligations. Establish `h2 : ι (r j) ∈ I` using `by rwa [hj, hι]`. Establish `h3 : r j ∉ I` using `by rwa [hj]`. Simplify using `[e, h2, h3]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `⟨e, he, fun e' h => hext _ _ (h.trans he.symm)⟩`. Use extensionality with `a`. Simplify using `[T]`. Introduce `e e'`. Use extensionality with `a`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨j, ⟨rfl, h⟩ | ⟨rfl, h⟩⟩`. Establish `h1 : e j = e' j ∧ e j = 1`. Distinguish the cases in `hc : e j = e' j`. Simplify `h` using `[sMeet, hc]`.
+Supply the required witnesses or components. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Simplify using `[sMeet, hc] at h`. Conclude with `⟨(hpos _ _).2 h1.2, (hpos _ _).2 (h1.1 ▸ h1.2)⟩`. Establish `h1 : e j = e' j ∧ e j = -1`. Distinguish the cases in `hc : e j = e' j`. Simplify `h` using `[sMeet, hc]`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
 
-Simplify using `[sMeet, hc] at h`. Conclude with `⟨(hneg _ _).2 h1.2, (hneg _ _).2 (h1.1 ▸ h1.2)⟩`. Introduce and unpack `⟨⟨j, ⟨rfl, h⟩ | ⟨rfl, h⟩⟩, h2⟩`. Establish `h3` using `(hpos _ _).1 h2`. Conclude with `⟨j, Or.inl ⟨rfl, by simp [sMeet, h, h3]⟩⟩`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Establish `h3` using `(hneg _ _).1 h2`. Conclude with `⟨j, Or.inr ⟨rfl, by simp [sMeet, h, h3]⟩⟩`. Introduce `e e' h a`. Introduce and unpack `⟨j, ⟨rfl, h1⟩ | ⟨rfl, h1⟩⟩`. Conclude with `⟨j, Or.inl ⟨rfl, by rw [h j (by rw [h1]; decide), h1]⟩⟩`.
-
-Conclude with `⟨j, Or.inr ⟨rfl, by rw [h j (by rw [h1]; decide), h1]⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_signs (ι : A → A) (hι : ∀ a, ι (ι a) = a) :
     ∃ (m : ℕ) (T : (Fin m → SignType) → Set A), (∀ e, ∀ a ∈ T e, ι a ∉ T e) ∧
@@ -162,23 +160,21 @@ theorem exists_signs (ι : A → A) (hι : ∀ a, ι (ι a) = a) :
 end Comb
 
 /- English proof (translation)
-Set `cd : Set A ≃o (Set A)ᵒᵈ` to `{ toFun := fun I => OrderDual.toDual (c I) invFun := fun I => c (OrderDual.ofDual I) left_inv := hinv right_inv := fun I => by simp [hinv] map_rel_iff' := by`. Introduce `I J`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `hanti (show c J ≤ c I from h)` as an intermediate fact.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[hinv, hinv]`. Then use the resulting hypothesis. Introduce `h`. Conclude with `hanti h }`. Establish `hcompl : ∀ I, c Iᶜ = (c I)ᶜ` using `fun I => by`. Establish `h` using `cd.isCompl (isCompl_compl (x := I))`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : IsCompl (c I) (c Iᶜ)` using `h.ofDual`. Conclude with `h2.compl_eq.symm`. Set `ψ : Set A ≃o Set A` to `{ toFun := fun I => (c I)ᶜ invFun := fun I => (c I)ᶜ left_inv := fun I => by simp [← hcompl, hinv] right_inv := fun I => by simp [← hcompl, hinv] map_rel_iff' := by`. Introduce `I J`. Prove the components needed by the constructor for the conclusion.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h`. Establish `h1 : c J ≤ c I` using `compl_le_compl_iff_le.1 h`. Use `hanti h1` as an intermediate fact. Rewrite `this` using `[hinv, hinv]`. Then use the resulting hypothesis. Introduce `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `compl_le_compl (hanti h) }`. Establish `hatom : ∀ a, ∃ b, ψ {a} = {b}` using `fun a => Set.isAtom_iff.1 ((ψ.isAtom_iff _).2 (Set.isAtom_singleton a))`. Use `choose ι hι using hatom`. Establish `hψψ : ∀ I, ψ (ψ I) = I` using `fun I => ψ.left_inv I`. Establish `hsub : ∀ I, ∀ a ∈ I, ι a ∈ ψ I` using `fun I a ha => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ψ {a} ≤ ψ I` using `ψ.monotone (Set.singleton_subset_iff.2 ha)`. Rewrite `h1` using `[hι]`. Conclude with `h1 rfl`. Establish `hιι : ∀ a, ι (ι a) = a` using `fun a => by`. Establish `h1` using `hψψ {a}`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Rewrite `h1` using `[hι, hι]`. Conclude with `Set.singleton_injective h1`. Use `⟨ι, hιι, fun I => ?_⟩` and prove the remaining obligations. Establish `h2 : ψ I = ι '' I`. Use extensionality with `b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hb`. Use `hsub _ _ hb` as an intermediate fact. Rewrite `this` using `[hψψ]`. Conclude with `⟨_, this, hιι b⟩`.
-
-Introduce and unpack `⟨a, ha, rfl⟩`. Conclude with `hsub _ _ ha`. Rewrite using `[← h2]`. Conclude with `(compl_compl _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_invol {A : Type} (c : Set A → Set A) (hanti : Antitone c) (hinv : ∀ I, c (c I) = I) :
     ∃ ι : A → A, (∀ a, ι (ι a) = a) ∧ ∀ I, c I = (ι '' I)ᶜ := by
@@ -245,7 +241,7 @@ section Lin
 variable {K V : Type} [Field K] [AddCommGroup V] [Module K V]
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.AevalIntertwining.aeval_intertwine φ f f' h p x`.
+A detailed English derivation is pending.
 -/
 theorem aeval_intertwine {M N : Type} [AddCommGroup M] [Module K M] [AddCommGroup N] [Module K N] (φ : M →ₗ[K] N)
     (f : Module.End K M) (f' : Module.End K N) (h : ∀ x, φ (f x) = f' (φ x)) (p : K[X]) (x : M) :
@@ -253,14 +249,14 @@ theorem aeval_intertwine {M N : Type} [AddCommGroup M] [Module K M] [AddCommGrou
   _root_.UpperTheory.Reformulated.B.AevalIntertwining.aeval_intertwine φ f f' h p x
 
 /- English proof (translation)
-The claim follows from `(aeval_intertwine W.subtype (f.restrict hW) f (fun _ => rfl) p w)`.
+A detailed English derivation is pending.
 -/
 theorem aeval_restrict_coe (f : Module.End K V) (W : Submodule K V) (hW : ∀ x ∈ W, f x ∈ W) (p : K[X]) (w : W) :
     ((aeval (f.restrict hW : Module.End K W) p) w : V) = aeval f p (w : V) :=
   (aeval_intertwine W.subtype (f.restrict hW) f (fun _ => rfl) p w)
 
 /- English proof (translation)
-Use `aeval_restrict_coe f W hW p ⟨w, hw⟩` as an intermediate fact. Rewrite using `[← show _ = aeval f p w from this]`. Conclude with `Subtype.property _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aeval_mem (f : Module.End K V) (W : Submodule K V) (hW : ∀ x ∈ W, f x ∈ W) (p : K[X]) {w : V} (hw : w ∈ W) :
     aeval f p w ∈ W := by
@@ -269,22 +265,20 @@ theorem aeval_mem (f : Module.End K V) (W : Submodule K V) (hW : ∀ x ∈ W, f 
   exact Subtype.property _
 
 /- English proof (translation)
-The claim follows from `(aeval_intertwine W.mkQ f (W.mapQ W f (fun x hx => hW x hx)) (fun _ => rfl) p v).symm`.
+A detailed English derivation is pending.
 -/
 theorem aeval_mapQ (f : Module.End K V) (W : Submodule K V) (hW : ∀ x ∈ W, f x ∈ W) (p : K[X]) (v : V) :
     aeval (W.mapQ W f (fun x hx => hW x hx) : Module.End K (V ⧸ W)) p (W.mkQ v) = W.mkQ (aeval f p v) :=
   (aeval_intertwine W.mkQ f (W.mapQ W f (fun x hx => hW x hx)) (fun _ => rfl) p v).symm
 
 /- English proof (translation)
-Establish `hab` using `GlobalTheory.CuspGL.charpoly_eq_restrict_mul_mapQ W f hW`. Use `set a := LinearMap.charpoly (f.restrict hW) with ha`. Use `set b := LinearMap.charpoly (W.mapQ W f (fun x hx => hW x hx)) with hb`. Use `⟨a, b, hab.symm, le_antisymm ?_ ?_⟩` and prove the remaining obligations. Introduce `w hw`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `aeval_restrict_coe f W hW a ⟨w, hw⟩`. Rewrite `h1` using `[ha, LinearMap.aeval_self_charpoly]`. Rewrite using `[LinearMap.mem_ker, ← show _ = aeval f _ w from h1]`. Both sides reduce to the same expression. Introduce `v hv`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hs` using `[hab]`. Establish `hco : IsCoprime a b` using `(squarefree_mul_iff.1 hs).1.isCoprime`. Take `⟨u, w, huw⟩` from `hco`. Establish `hbv : aeval f b v ∈ W`. Establish `h1` using `aeval_mapQ f W hW b v`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[hb, LinearMap.aeval_self_charpoly]`. Conclude with `(Submodule.Quotient.mk_eq_zero W).1 h1.symm`. Establish `h2 : v = aeval f w (aeval f b v)`. Establish `h3` using `congrArg (fun p => aeval f p v) huw`. Simplify using `only [map_add, map_mul, map_one, LinearMap.add_apply, Module.End.mul_apply, Module.End.one_apply] at h3`.
-
-Rewrite `h3` using `[LinearMap.mem_ker.1 hv, map_zero, zero_add]`. Conclude with `h3.symm`. Rewrite using `[h2]`. Conclude with `aeval_mem f W hW w hbv`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem invariant_eq_ker [FiniteDimensional K V] (f : Module.End K V) (hs : Squarefree f.charpoly) (W : Submodule K V)
     (hW : ∀ x ∈ W, f x ∈ W) : ∃ a b : K[X], a * b = f.charpoly ∧ W = LinearMap.ker (aeval f a) := by
@@ -314,7 +308,7 @@ theorem invariant_eq_ker [FiniteDimensional K V] (f : Module.End K V) (hs : Squa
     exact aeval_mem f W hW w hbv
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `h`. Introduce `x hx`. Rewrite `hx`, the goal using `[LinearMap.mem_ker]`. Rewrite using `[mul_comm, map_mul, Module.End.mul_apply, hx, map_zero]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem ker_le_of_dvd (f : Module.End K V) {P p : K[X]} (h : P ∣ p) :
     LinearMap.ker (aeval f P) ≤ LinearMap.ker (aeval f p) := by
@@ -324,37 +318,31 @@ theorem ker_le_of_dvd (f : Module.End K V) {P p : K[X]} (h : P ∣ p) :
   rw [mul_comm, map_mul, Module.End.mul_apply, hx, map_zero]
 
 /- English proof (translation)
-Establish `hm : f.charpoly.Monic` using `LinearMap.charpoly_monic f`. Set `F` to `(UniqueFactorizationMonoid.normalizedFactors f.charpoly).toFinset`. Set `Lk : K[X] → Submodule K V` to `fun P => LinearMap.ker (aeval f P)`. Establish `hnd` using `(UniqueFactorizationMonoid.squarefree_iff_nodup_normalizedFactors hm.ne_zero).1 hs`. Establish `hprod : ∏ P ∈ F, P = f.charpoly`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : F.val = UniqueFactorizationMonoid.normalizedFactors f.charpoly`. Simplify using `only [F, Multiset.toFinset_val, hnd.dedup]`. Rewrite using `[Finset.prod, h1, Multiset.map_id', UniqueFactorizationMonoid.prod_normalizedFactors_eq hm.ne_zero, hm.normalize_eq_self]`. Establish `hirr : ∀ P ∈ F, Irreducible P` using `fun P hP => UniqueFactorizationMonoid.irreducible_of_normalized_factor P (Multiset.mem_toFinset.1 hP)`. Establish `hnorm : ∀ P ∈ F, normalize P = P` using `fun P hP => UniqueFactorizationMonoid.normalize_normalized_factor P (Multiset.mem_toFinset.1 hP)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcop : ∀ P ∈ F, ∀ Q ∈ F, P ≠ Q → IsCoprime P Q` using `fun P hP Q hQ hne => by`. Use `((hirr P hP).coprime_iff_not_dvd).2 fun hd => hne ?_` and prove the remaining obligations. Conclude with `dvd_antisymm_of_normalize_eq (hnorm P hP) (hnorm Q hQ) hd ((hirr P hP).dvd_symm (hirr Q hQ) hd)`. Establish `hker : ∀ s : Finset K[X], s ⊆ F → LinearMap.ker (aeval f (∏ P ∈ s, P)) = ⨆ P ∈ s, Lk P`. Introduce `s`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `_`. Simplify using `only [Finset.prod_empty, map_one, Finset.notMem_empty, iSup_false, iSup_bot]`. Conclude with `LinearMap.ker_id`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `insert a s ha ih`. Introduce `hsF`. Establish `hs' : s ⊆ F` using `(Finset.subset_insert a s).trans hsF`. Establish `haF : a ∈ F` using `hsF (Finset.mem_insert_self a s)`. Rewrite using `[Finset.prod_insert ha, ← sup_ker_aeval_eq_ker_aeval_mul_of_coprime, ih hs', Finset.iSup_insert]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `IsCoprime.prod_right fun b hb => hcop a haF b (hs' hb) fun h => ha (h ▸ hb)`. Establish `htop : ⨆ P ∈ F, Lk P = ⊤`. Rewrite using `[← hker F subset_rfl, hprod, LinearMap.aeval_self_charpoly, LinearMap.ker_zero]`. Set `A` to `{P : K[X] // P ∈ F ∧ Lk P ≠ ⊥}`. Use `haveI : Finite A := Finite.of_injective (fun a : A => (⟨a.1, a.2.1⟩ : F)) (fun a b h => Subtype.ext (congrArg (fun z : {x // x ∈ F} => z.1) h))`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Set `L : A → Submodule K V` to `fun a => Lk a.1`. Use `⟨A, inferInstance, L, ?_, fun a => a.2.2, fun a x hx => ?_, fun W hW => ?_⟩` and prove the remaining obligations. Introduce `a`. Establish `hle : ⨆ j, ⨆ (_ : j ≠ a), L j ≤ LinearMap.ker (aeval f (∏ P ∈ F.erase a.1, P))`. Rewrite using `[hker _ (Finset.erase_subset _ _)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `iSup₂_le fun j hj => ?_` and prove the remaining obligations. Conclude with `le_iSup₂_of_le j.1 (Finset.mem_erase.2 ⟨fun h => hj (Subtype.ext h), j.2.1⟩) le_rfl`. Use `Disjoint.mono_right hle (disjoint_ker_aeval_of_isCoprime f ?_)` and prove the remaining obligations. Conclude with `IsCoprime.prod_right fun Q hQ => hcop _ a.2.1 _ (Finset.mem_of_mem_erase hQ) (Finset.ne_of_mem_erase hQ).symm`. Establish `h1 : aeval f a.1 (f x) = f (aeval f a.1 x)` using `(aeval_intertwine f f f (fun _ => rfl) a.1 x).symm`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : aeval f a.1 x = 0` using `hx`. Use `show aeval f a.1 (f x) = 0`. Rewrite using `[h1, h2, map_zero]`. Take `⟨p, q, hpq, hWe⟩` from `invariant_eq_ker f hs W hW`. Use `⟨{a | a.1 ∣ p}, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails.
 
-Establish `h1 : ⨆ i ∈ {a : A | a.1 ∣ p}, L i ≤ W`. Rewrite using `[hWe]`. Conclude with `iSup₂_le fun i hi => ker_le_of_dvd f hi`. Establish `h2 : (⊤ : Submodule K V) ≤ (⨆ i ∈ {a : A | a.1 ∣ p}, L i) ⊔ ⨆ P ∈ F.filter (fun P => ¬ P ∣ p), Lk P`. Rewrite using `[← htop]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `iSup₂_le fun P hP => ?_` and prove the remaining obligations. Distinguish the cases in `hd : P ∣ p`. Distinguish the cases in `hb : Lk P = ⊥`. Rewrite using `[hb]`. Conclude with `bot_le`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `le_sup_of_le_left (le_iSup₂_of_le (⟨P, hP, hb⟩ : A) hd le_rfl)`. Conclude with `le_sup_of_le_right (le_iSup₂_of_le P (Finset.mem_filter.2 ⟨hP, hd⟩) le_rfl)`. Establish `h3 : ⨆ P ∈ F.filter (fun P => ¬ P ∣ p), Lk P ≤ LinearMap.ker (aeval f q)`. Use `iSup₂_le fun P hP => ?_` and prove the remaining obligations. Take `⟨hPF, hPp⟩` from `Finset.mem_filter.1 hP`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hd : P ∣ p * q`. Rewrite using `[hpq, ← hprod]`. Conclude with `Finset.dvd_prod_of_mem _ hPF`. Conclude with `ker_le_of_dvd f (((hirr P hPF).prime.dvd_or_dvd hd).resolve_left hPp)`. Establish `hco : IsCoprime p q`.
-
-Rewrite `hs` using `[← hpq]`. Conclude with `(squarefree_mul_iff.1 hs).1.isCoprime`. Establish `hdis` using `disjoint_ker_aeval_of_isCoprime f hco`. Use `le_antisymm (fun x hx => ?_) h1` and prove the remaining obligations. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 (h2 (Submodule.mem_top (x := x)))`.
-
-Establish `hyW` using `h1 hy`. Establish `hzW : z ∈ W` using `by simpa using W.sub_mem hx hyW`. Establish `hz0 : z = 0`. Rewrite `hzW` using `[hWe]`. Conclude with `(Submodule.disjoint_def.1 hdis) z hzW (h3 hz)`.
-
-Rewrite using `[hz0, add_zero]`. Conclude with `hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_atoms [FiniteDimensional K V] (f : Module.End K V) (hs : Squarefree f.charpoly) :
     ∃ (A : Type) (_ : Finite A) (L : A → Submodule K V), iSupIndep L ∧ (∀ i, L i ≠ ⊥) ∧
@@ -450,22 +438,22 @@ section Main
 open PositivityTheory.Rg.BcB.D4
 
 /- English proof (translation)
-Introduce `_ hy x hx` and use `hy x (h hx)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem perp_anti {K : Type} [Field K] {n : ℕ} (σ : K →+* K) {W W' : Submodule K (Fin n → K)} (h : W ≤ W') :
     perp σ W' ≤ perp σ W := fun _ hy x hx => hy x (h hx)
 
 /- English proof (translation)
-The claim follows from `Submodule.map_mono (perp_anti σ h)`.
+A detailed English derivation is pending.
 -/
 theorem perpD_anti {K : Type} [Field K] {n : ℕ} (σ : K →+* K) (d : GL (Fin n) K) {W W' : Submodule K (Fin n → K)}
     (h : W ≤ W') : perpD σ d W' ≤ perpD σ d W :=
   Submodule.map_mono (perp_anti σ h)
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (Matrix.toLin' g.val)`. Introduce `a b hab`. Establish `h1` using `congrArg (fun z => (g⁻¹ : GL (Fin n) K).val *ᵥ z) hab`. Simplify `h1` using `[Matrix.toLin'_apply, Matrix.mulVec_mulVec, ← Units.val_mul]`. Use `Submodule.eq_of_le_of_finrank_eq ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `h x hx`. Conclude with `(Submodule.equivMapOfInjective _ hinj _).finrank_eq.symm`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem img_eq_of_invariant {K : Type} [Field K] {n : ℕ} (g : GL (Fin n) K) (W : Submodule K (Fin n → K))
     (h : ∀ x ∈ W, Matrix.toLin' g.val x ∈ W) : img g W = W := by
@@ -479,35 +467,31 @@ theorem img_eq_of_invariant {K : Type} [Field K] {n : ℕ} (g : GL (Fin n) K) (W
   · exact (Submodule.equivMapOfInjective _ hinj _).finrank_eq.symm
 
 /- English proof (translation)
-Introduce `E _ _ _ n d hd`. Set `f : Module.End E (Fin n → E)` to `Matrix.toLin' (nrm d).val`. Establish `hcp : LinearMap.charpoly f = (nrm d).val.charpoly`. Simplify using `[f, Matrix.charpoly_toLin']`. Establish `hs : Squarefree (LinearMap.charpoly f)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hcp]`. Conclude with `Polynomial.Separable.squarefree hd`. Take `⟨A, hA, L, hind, hne, hinv, hall⟩` from `exists_atoms f hs`. Set `S : Set A → Submodule E (Fin n → E)` to `fun I => ⨆ i ∈ I, L i`. Establish `hSinv : ∀ I, ∀ x ∈ S I, f x ∈ S I`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `I x hx`. Establish `h1 : S I ≤ (S I).comap f`. Use `iSup₂_le fun i hi x hx => ?_` and prove the remaining obligations. Conclude with `(le_iSup₂_of_le (f := fun i (_ : i ∈ I) => L i) i hi le_rfl : L i ≤ S I) (hinv i x hx)`. Conclude with `h1 hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Establish `hSle : ∀ I J, S I ≤ S J ↔ I ⊆ J`. Introduce `I J`. Prove the components needed by the constructor for the conclusion. Introduce `h a ha`. Assume the negation of the conclusion as `hc`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : L a ≤ S I` using `le_iSup₂_of_le (f := fun i (_ : i ∈ I) => L i) a ha le_rfl`. Establish `h2 : S J ≤ ⨆ j, ⨆ (_ : j ≠ a), L j` using `iSup₂_le fun j hj => le_iSup₂_of_le (f := fun j (_ : j ≠ a) => L j) j (fun e => hc (e ▸ hj)) le_rfl`. Conclude with `hne a ((hind a).eq_bot_of_le (h1.trans (h.trans h2)))`. Introduce `h`. Conclude with `biSup_mono h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hSinj : ∀ I J, S I = S J → I = J` using `fun I J h => Set.Subset.antisymm ((hSle _ _).1 h.le) ((hSle _ _).1 h.ge)`. Establish `hstab : ∀ I, img (nrm d) (S I) = S I` using `fun I => img_eq_of_invariant _ _ (hSinv I)`. Establish `hexists : ∀ W, img (nrm d) W = W → ∃ I, W = S I`. Introduce `W hW`. Use `hall W fun x hx => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hW]`. Conclude with `⟨x, hx, rfl⟩`. Establish `hφφ : ∀ W, perpD (conjE E) d (perpD (conjE E) d W) = img (nrm d) W` using `fun W => GlobalTheory.CompanionTheory.FlagCent.perpD_perpD (conjE E) (fun a => NumberField.IsCMField.complexConj_apply_apply E a) d W`. Establish `hφstab : ∀ W, img (nrm d) W = W → img (nrm d) (perpD (conjE E) d W) = perpD (conjE E) d W`. Introduce `W hW`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hφφ, hφφ W, hW]`. Establish `hcex : ∀ I, ∃ J, perpD (conjE E) d (S I) = S J` using `fun I => hexists _ (hφstab _ (hstab I))`. Use `choose c hc using hcex`. Establish `hanti : Antitone c`. Introduce `I J h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `(hSle _ _).1 ?_` and prove the remaining obligations. Rewrite using `[← hc, ← hc]`. Conclude with `perpD_anti _ _ ((hSle _ _).2 h)`. Establish `hcc : ∀ I, c (c I) = I` using `fun I => hSinj _ _ (by rw [← hc, ← hc, hφφ, hstab])`. Take `⟨ι, hι, hcι⟩` from `exists_invol c hanti hcc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨m, T, hT1, hT2, hT3, hT4, hT5⟩` from `exists_signs ι hι`. Establish `hSinf : ∀ I J, S (I ∩ J) = S I ⊓ S J`. Introduce `I J`. Take `⟨Q, hQ⟩` from `hall (S I ⊓ S J) fun x hx => ⟨hSinv I x hx.1, hSinv J x hx.2⟩`. Establish `h1 : Q ⊆ I` using `(hSle _ _).1 (hQ.symm.le.trans inf_le_left)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : Q ⊆ J` using `(hSle _ _).1 (hQ.symm.le.trans inf_le_right)`. Establish `h3 : I ∩ J ⊆ Q` using `(hSle _ _).1 (by`. Establish `: S (I ∩ J) ≤ S I ⊓ S J` using `le_inf ((hSle _ _).2 Set.inter_subset_left) ((hSle _ _).2 Set.inter_subset_right)`. Conclude with `this.trans hQ.le)`. Establish `h4 : I ∩ J = Q` using `Set.Subset.antisymm h3 (Set.subset_inter h1 h2)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h4]`. Conclude with `hQ.symm`. Use `⟨m, fun e => S (T e), fun e => ⟨hstab _, ?_⟩, fun W hW => ?_, ?_, fun e e' => ?_, fun e e' h => ?_, fun e => ?_⟩` and prove the remaining obligations. Rewrite using `[hc, hSle, hcι]`. Introduce and unpack `a ha ⟨b, hb, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hT1 _ _ hb ha`. Take `⟨I, rfl⟩` from `hexists W hW.1`. Establish `h2` using `hW.2`. Rewrite `h2` using `[hc, hSle, hcι]`. Establish `h3 : ∀ a ∈ I, ι a ∉ I` using `fun a ha hb => h2 ha ⟨ι a, hb, hι a⟩`.
-
-Take `⟨e, he, hu⟩` from `hT2 I h3`. Conclude with `⟨e, congrArg S he, fun e' h => hu e' (hSinj _ _ h)⟩`. Use `show S (T 0) = ⊥`. Rewrite using `[hT3]`. Simplify using `[S]`.
-
-Use `show S (T (sMeet e e')) = S (T e) ⊓ S (T e')`. Rewrite using `[hT4, hSinf]`. Conclude with `(hSle _ _).2 (hT5 e e' h)`. Use `show perpD (conjE E) d (perpD (conjE E) d (S (T e))) = S (T e)`. Rewrite using `[hφφ, hstab]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairParam : PairParam := by
   intro E _ _ _ n d hd

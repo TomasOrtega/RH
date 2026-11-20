@@ -8,13 +8,13 @@ open CategoryTheory AlgebraicGeometry Opposite CrystallineSemistableComparison C
 namespace GlobalTheory.CompanionTheory.EdgeStair
 
 /- English proof (translation)
-Introduce `hcol R _ C _ F T hG s`. Take `⟨hι, hdv, hinj, hex0, hex⟩` from `hcol R C F T hG`. Proceed by induction on `s with`. Consider the case `zero`. Introduce `k j hsk x hv hd`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hjk : j = k` using `by omega`. Substitute `hjk` using the available equality. Take `⟨z, hz⟩` from `(hex0 j x).1 hv`. Use `⟨z, ?_, ⟨rfl, hz⟩⟩` and prove the remaining obligations. Apply `hinj (j + 1)` to reduce the goal to its premises.
+Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← hι, hz, hd, map_zero]`. Consider the case `succ s ih`. Introduce `k j hsk x hv hd`. Take `⟨a, ha⟩` from `(hex s k x).1 hv`. Establish `h1 : T.dvC s (k + 1) ((-1 : ℤ) ^ k • d (T.K s) k a) = 0`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[map_zsmul, ← hdv, ha, hd, smul_zero]`. Establish `h2 : d (T.K s) (k + 1) ((-1 : ℤ) ^ k • d (T.K s) k a) = 0`. Rewrite using `[map_zsmul, d_d, smul_zero]`. Take `⟨z, hz, hst⟩` from `ih (k + 1) j (by omega) _ h1 h2`. Conclude with `⟨z, hz, ⟨a, ha, hst⟩⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem stEx_of_stCol : CrystallineSemistableComparison.E.StCol → CrystallineSemistableComparison.E.StEx := by
   intro hcol R _ C _ F T hG s

@@ -8,19 +8,17 @@ open Matrix
 namespace GlobalTheory.Hk3.GramSep
 
 /- English proof (translation)
-Introduce `L _ _ ϖ σ q δ ψ hU hδ hne r e Δ hΔ hψ j k`. Establish `hσ` using `hU.1`. Establish `hv` using `hU.2.1`. Establish `hw : δ * (Δ j k * ϖ ^ max (e j) (e k)) ∈ Formalism.UG.intL L`. Use `GlobalTheory.Hk3.int_of_psi hU ψ hne _ (fun b hb => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `set c : L := b * ϖ ^ max (e j) (e k) with hc`. Establish `hcv : Valued.v c ≤ Valued.v ϖ ^ max (e j) (e k)`. Rewrite using `[hc, map_mul, map_pow]`. Conclude with `mul_le_of_le_one_left' hb`. Establish `hmem : Matrix.single k j c + Matrix.single j k (-σ c) ∈ gam σ ϖ e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `⟨fun a a' => ?_, fun a a' => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `simp only [Matrix.add_apply, Matrix.single_apply, map_add, apply_ite σ, map_neg, hσ, map_zero, and_comm (a := k = a'), and_comm (a := j = a')] split_ifs <;> ring`. Rewrite using `[Matrix.add_apply]`. Use `(Valuation.map_add _ _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Rewrite using `[Matrix.single_apply] split_ifs with h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨rfl, rfl⟩` from `h`. Rewrite using `[max_comm]`. Conclude with `hcv`. Simplify using the standard rewrite rules. Rewrite using `[Matrix.single_apply] split_ifs with h`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨rfl, rfl⟩` from `h`. Rewrite using `[Valuation.map_neg, hv]`. Conclude with `hcv`. Simplify using the standard rewrite rules. Establish `h` using `hψ _ hmem`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : b * (δ * (Δ j k * ϖ ^ max (e j) (e k))) = δ * (c * Δ j k)` using `by rw [hc]; ring`. Rewrite using `[e1, map_mul, map_mul σ c, hδ.2, hΔ, ← h]`. Use `congr 1`. Rewrite using `[Matrix.add_mul, Matrix.trace_add, Matrix.trace_single_mul, Matrix.trace_single_mul]`. Simplify using `only [smul_eq_mul]`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite `hw` using `[GlobalTheory.Hk3.mem_intL_iff, map_mul, hδ.1, one_mul]`. Conclude with `hw`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem int_of_psi_trace_gam : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (ϖ : L) (σ : L →+* L) (q : ℕ) (δ : L) (ψ : AddChar L ℂ),
   Formalism.UG.IsUnramInv ϖ σ q → (Valued.v δ = 1 ∧ σ δ = -δ) →

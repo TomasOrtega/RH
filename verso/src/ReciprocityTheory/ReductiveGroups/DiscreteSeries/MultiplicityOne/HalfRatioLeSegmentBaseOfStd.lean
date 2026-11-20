@@ -14,9 +14,9 @@ open Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.Fourier
 variable {k r : ℕ} {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp]
 
 /- English proof (translation)
-Simplify using `[h.conc] left a ha := by rw [Measure.map_smul, h.left a ha] right a ha := by rw [Measure.map_smul, h.right a ha] finite_compact K hK := ENNReal.mul_lt_top ENNReal.coe_lt_top (h.finite_compact K hK) ne_zero := by`. Introduce `h0`. Establish `h1 : (c : ℝ≥0∞) * μ Set.univ = 0`. Rewrite using `[← smul_eq_mul, ← Measure.smul_apply, h0]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Break down `mul_eq_zero.1 h1 with h2 | h2` into its components or cases. Conclude with `absurd h2 (by exact_mod_cast hc.ne')`. Conclude with `h.ne_zero (Measure.measure_univ_eq_zero.1 h2)`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem isHaarOn_smul {U : Set (Mat k r)} {μ : Measure (Mt k r)} (h : IsHaarOn U μ) {c : ℝ≥0} (hc : 0 < c) :
     IsHaarOn U ((c : ℝ≥0∞) • μ) where
@@ -36,11 +36,11 @@ def rescale (D : RealPlaceData k r Wp Wp) {c : ℝ≥0} (hc : 0 < c) : RealPlace
   { D with μG := (c : ℝ≥0∞) • D.μG, haarG := isHaarOn_smul D.haarG hc }
 
 /- English proof (translation)
-Introduce `F c' _ hF`. Use `show (∫⁻ g : Mt k r, ‖F (Matrix.of g)‖ₑ ∂((c : ℝ≥0∞) • D.μG)) < ∞`. Rewrite using `[lintegral_smul_measure]`. Use `ENNReal.mul_lt_top ENNReal.coe_lt_top ?_` and prove the remaining obligations. Establish `hfin` using `hGN k r D.μG A D.haarG hA`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : ∀ᵐ g ∂D.μG, ‖F (Matrix.of g)‖ₑ ≤ ENNReal.ofReal (max c' 0) * ENNReal.ofReal (gN (Matrix.of g) ^ (-A))` using `by filter_upwards [ae_G D] with g hg`. Establish `hp : 0 < gN (Matrix.of g) ^ A` using `Real.rpow_pos_of_pos (gN_pos hg) A`. Establish `h1 : ‖F (Matrix.of g)‖ ≤ max c' 0 * gN (Matrix.of g) ^ (-A)`. Rewrite using `[Real.rpow_neg (gN_nonneg _), ← div_eq_mul_inv, le_div_iff₀ hp, mul_comm]`. Conclude with `(hF _ hg).trans (le_max_left _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← ENNReal.ofReal_mul (le_max_right _ _), ← ofReal_norm]`. Conclude with `ENNReal.ofReal_le_ofReal h1`. Use `lt_of_le_of_lt (lintegral_mono_ae hb) ?_` and prove the remaining obligations. Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Conclude with `ENNReal.mul_lt_top ENNReal.ofReal_lt_top hfin`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ccInt_of (D : RealPlaceData k r Wp Wp) (hGN : GNIntSharp) {A : ℝ} (hA : AB k r ≤ A) {c : ℝ≥0} (hc : 0 < c) :
     CCIntegrable (rescale D hc) A := by
@@ -63,7 +63,7 @@ theorem ccInt_of (D : RealPlaceData k r Wp Wp) (hGN : GNIntSharp) {A : ℝ} (hA 
   exact ENNReal.mul_lt_top ENNReal.ofReal_lt_top hfin
 
 /- English proof (translation)
-Take `⟨hB2, -, -, -, -, -, -, hJC, -, -, -, -, -, -, hINB, -⟩` from `hIn`. Take `⟨c, ⟨hc, hIF⟩, -⟩` from `hINB k r Wp Wp D`. Establish `hGN : GNIntSharp` using `hB2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1`. Conclude with `hJC k r Wp Wp (rescale D hc) A hIF (ccInt_of D hGN hA hc)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem jcont_of (hIn : UnitaryGroupStructuralFacts) (D : RealPlaceData k r Wp Wp) {A : ℝ} (hA : AB k r ≤ A) : JCont D A := by
   obtain ⟨hB2, -, -, -, -, -, -, hJC, -, -, -, -, -, -, hINB, -⟩ := hIn
@@ -72,7 +72,7 @@ theorem jcont_of (hIn : UnitaryGroupStructuralFacts) (D : RealPlaceData k r Wp W
   exact hJC k r Wp Wp (rescale D hc) A hIF (ccInt_of D hGN hA hc)
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, -, hLBX, -⟩` from `hIn`. Take `⟨c, hc, -, -, hB, -⟩` from `(hLBX hXi).2 k r Wp Wp D A hA`. Conclude with `⟨c, by exact_mod_cast hc, hB⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem lemB_of (hIn : UnitaryGroupStructuralFacts) (hXi : XiExists) (D : RealPlaceData k r Wp Wp) {A : ℝ} (hA : AB k r ≤ A) :
     ∃ c : ℝ, 0 < c ∧ ∀ F F' : Mat k r → (Wp →L[ℂ] Wp), InCC A 5 F → InCC A 5 F' →
@@ -82,11 +82,11 @@ theorem lemB_of (hIn : UnitaryGroupStructuralFacts) (hXi : XiExists) (D : RealPl
   exact ⟨c, by exact_mod_cast hc, hB⟩
 
 /- English proof (translation)
-Establish `hlin : hsVec (A - B) = hsVec A - hsVec B`. Use extensionality with `i`. Simplify using `[hsVec]`. Establish `h1 : inner ℂ (hsVec (A - B)) (hsVec (A - B)) = 0`. Use `h (A - B)` as an intermediate fact.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `hsInner at this`. Rewrite `this`, the goal using `[hlin]`. Rewrite using `[inner_sub_right, this, sub_self]`. Rewrite `h1` using `[inner_self_eq_zero]`. Rewrite using `[← sub_eq_zero]`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `ContinuousLinearMap.coe_injective` to reduce the goal to its premises. Use `(stdOrthonormalBasis ℂ Wp).toBasis.ext fun i => ?_` and prove the remaining obligations. Use `congrArg (fun v => v i) h1` as an intermediate fact. Simplify `this` using `[hsVec]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem hs_ext {A B : Wp →L[ℂ] Wp} (h : ∀ X₀ : Wp →L[ℂ] Wp, hsInner A X₀ = hsInner B X₀) : A = B := by
   have hlin : hsVec (A - B) = hsVec A - hsVec B := by
@@ -117,7 +117,7 @@ open Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.Fourier
 variable {k r : ℕ} {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp]
 
 /- English proof (translation)
-Unfold `nR`. Establish `: 2 ≤ 2 * r + k + 1` using `by omega`. Conclude with `this` after adjusting the coercions.
+Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nR_ge (hk : 1 ≤ k) : (2 : ℝ) ≤ nR k r := by
   unfold nR
@@ -125,9 +125,9 @@ theorem nR_ge (hk : 1 ≤ k) : (2 : ℝ) ≤ nR k r := by
   exact_mod_cast this
 
 /- English proof (translation)
-Establish `hn` using `nR_ge (r := r) hk`. Establish `e : nR k r = 2 * (r : ℝ) + k + 1` using `by unfold nR; push_cast; ring`. Establish `hr : (0 : ℝ) ≤ r` using `Nat.cast_nonneg r`. Establish `hk' : (1 : ℝ) ≤ k` using `by exact_mod_cast hk`. Establish `h1 : 2 * ((k : ℝ) + r) * ((r : ℝ) + 1) + 1 ≤ nR k r ^ 2` using `by rw [e]; nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : 2 * nR k r ^ 2 + 1 ≤ 4 * nR k r ^ 3` using `by nlinarith`. Unfold `AB AG`. Unfold `aM at ha`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem half_ratio_le_segment_base_of_std (hk : 1 ≤ k) {a : ℝ} (ha : aM k r ≤ a) : AB k r ≤ a - AG k r - 1 := by
   have hn := nR_ge (r := r) hk
@@ -140,7 +140,7 @@ theorem half_ratio_le_segment_base_of_std (hk : 1 ≤ k) {a : ℝ} (ha : aM k r 
   linarith
 
 /- English proof (translation)
-Establish `hn` using `nR_ge (r := r) hk`. Establish `h2 : nR k r ^ 3 + 2 * nR k r ^ 2 + 3 ≤ 4 * nR k r ^ 3` using `by nlinarith`. Unfold `AS AG`. Unfold `aM at ha`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem decay_exponent_ge_double_shift (hk : 1 ≤ k) {a : ℝ} (ha : aM k r ≤ a) : AS k r + 1 ≤ a - AG k r - 1 - AG k r - 1 := by
   have hn := nR_ge (r := r) hk
@@ -149,9 +149,9 @@ theorem decay_exponent_ge_double_shift (hk : 1 ≤ k) {a : ℝ} (ha : aM k r ≤
   linarith
 
 /- English proof (translation)
-Take `⟨d, hd⟩` from `h0 k r Wp D X hD hX`. Take `⟨C, hC⟩` from `h1 k r Wp D X hD hX d hd (X.a - AG k r - 1) X.a u hu v hv`. Establish `hAG : 0 ≤ AG k r` using `by unfold AG; positivity`. Establish `hmin : min (X.a - AG k r - 1) X.a = X.a - AG k r - 1` using `min_eq_left (by linarith)`. Rewrite `hC` using `[hmin]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1' k r Wp D X hD hX _ (decay_exponent_ge_double_shift D.k_pos ha) u v ⟨C, hC⟩`.
+A detailed English derivation is pending.
 -/
 theorem beInt_int_mixed (D : RealPlaceData k r Wp Wp) (X : SigData k r) (hD : IsDiag D) (hX : SqIntG D X)
     (ha : aM k r ≤ X.a) (h0 : StSchurG) (h1 : StPairs) (h1' : StBeConv) {u v : X.Hs}
@@ -164,11 +164,11 @@ theorem beInt_int_mixed (D : RealPlaceData k r Wp Wp) (X : SigData k r) (hD : Is
   exact h1' k r Wp D X hD hX _ (decay_exponent_ge_double_shift D.k_pos ha) u v ⟨C, hC⟩
 
 /- English proof (translation)
-Establish `h : ∀ a : Fin r, (if h : a.val + 1 < r then (1 : Mat k r) (eI k r a) (eI k r ⟨a.val + 1, h⟩) else ((1 : Mat k r) *ᵥ D.z) (eI k r a)) = 0`. Introduce `a`. Use `split_ifs with h`. Rewrite using `[Matrix.one_apply_ne]`. Introduce `he`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congrArg Fin.val he` as an intermediate fact. Simplify using `[eI] at this`. Rewrite using `[Matrix.one_mulVec]`. Conclude with `D.z_mem _ (Or.inl a.isLt)`. Unfold `psiD psi ell`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_eq_zero (fun a _ => h a)]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem psiD_one (D : RealPlaceData k r Wp Wp) : psiD D 1 = 1 := by
   have h : ∀ a : Fin r, (if h : a.val + 1 < r then (1 : Mat k r) (eI k r a) (eI k r ⟨a.val + 1, h⟩)
@@ -186,9 +186,9 @@ theorem psiD_one (D : RealPlaceData k r Wp Wp) : psiD D 1 = 1 := by
   simp
 
 /- English proof (translation)
-Establish `hgi` using `uw_inv_mem hg`. Use `symm`. Rewrite using `[ContinuousLinearMap.eq_adjoint_iff]`. Introduce `x y`. Set `L : Wp →ₗᵢ[ℂ] Wp` to `{ toLinearMap := (D.π g : Wp →ₗ[ℂ] Wp), norm_map' := D.π_unitary g hg }`.
+Establish an intermediate fact. Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Establish `h1 : D.π g (D.π g⁻¹ x) = x`. Rewrite using `[← ContinuousLinearMap.comp_apply, ← D.π_rep.2 g hg g⁻¹ hgi, gv_mul_inv (uw_gv hg), D.π_rep.1]`. Both sides reduce to the same expression. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 -/
 theorem pi_adj (D : RealPlaceData k r Wp Wp) {g : Mat k r} (hg : g ∈ UWset k r D.z) :
     ContinuousLinearMap.adjoint (D.π g) = D.π g⁻¹ := by
@@ -206,9 +206,9 @@ theorem pi_adj (D : RealPlaceData k r Wp Wp) {g : Mat k r} (hg : g ∈ UWset k r
         rw [h1]
 
 /- English proof (translation)
-Establish `: IsFiniteMeasureOnCompacts D.μW'` using `⟨fun K hK => D.haarW'.finite_compact K hK⟩`. Establish `: IsFiniteMeasureOnCompacts D.μN` using `⟨fun K hK => D.haarN.finite_compact K hK⟩`. Establish `h1 : ∀ᵐ x ∂D.μW', Matrix.of x ∈ UWset k r D.z'` using `ae_iff.2 D.haarW'.conc`. Establish `h2 : ∀ᵐ x ∂D.μN, Matrix.of x ∈ Nset k r` using `ae_iff.2 D.haarN.conc`. Use `filter_upwards [Measure.quasiMeasurePreserving_fst.ae h1, Measure.quasiMeasurePreserving_snd.ae h2] with p hp1 hp2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨hp1, hp2⟩`.
+A detailed English derivation is pending.
 -/
 theorem ae_UN' (D : RealPlaceData k r Wp Wp) :
     ∀ᵐ p ∂(D.μW'.prod D.μN), Matrix.of p.1 ∈ UWset k r D.z' ∧ Matrix.of p.2 ∈ Nset k r := by
@@ -221,7 +221,7 @@ theorem ae_UN' (D : RealPlaceData k r Wp Wp) :
   exact ⟨hp1, hp2⟩
 
 /- English proof (translation)
-Establish `: IsFiniteMeasureOnCompacts D.μW'` using `⟨fun K hK => D.haarW'.finite_compact K hK⟩`. Establish `: IsFiniteMeasureOnCompacts D.μW` using `⟨fun K hK => D.haarW.finite_compact K hK⟩`. Establish `: IsFiniteMeasureOnCompacts D.μN` using `⟨fun K hK => D.haarN.finite_compact K hK⟩`. Use `filter_upwards [Measure.quasiMeasurePreserving_fst.ae (ae_UN D), Measure.quasiMeasurePreserving_snd.ae (ae_UN' D)] with p h1 h2`. Conclude with `⟨h1.1, h1.2, h2.1, h2.2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ae_SS (D : RealPlaceData k r Wp Wp) : ∀ᵐ p ∂D.μSS, D.inSS p := by
   have : IsFiniteMeasureOnCompacts D.μW' := ⟨fun K hK => D.haarW'.finite_compact K hK⟩
@@ -232,7 +232,7 @@ theorem ae_SS (D : RealPlaceData k r Wp Wp) : ∀ᵐ p ∂D.μSS, D.inSS p := by
   exact ⟨h1.1, h1.2, h2.1, h2.2⟩
 
 /- English proof (translation)
-Take `⟨φ, hφ, rfl⟩` from `ha'`. Take `⟨φ', hφ', rfl⟩` from `hb`. Conclude with `hSm k r Wp D X hD hX ha φ φ' hφ hφ' 5`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem incc_dd (hSm : StSmooth) (D : RealPlaceData k r Wp Wp) (X : SigData k r) (hD : IsDiag D) (hX : SqIntG D X)
     (ha : aM k r ≤ X.a) {a b : X.Hs} (ha' : a ∈ DDinf D X) (hb : b ∈ DDinf D X) :
@@ -242,7 +242,7 @@ theorem incc_dd (hSm : StSmooth) (D : RealPlaceData k r Wp Wp) (X : SigData k r)
   exact hSm k r Wp D X hD hX ha φ φ' hφ hφ' 5
 
 /- English proof (translation)
-Take `⟨hI, hval⟩` from `h2 k r Wp D X hD d hd f x y a₂ b₂ X₀ hf hxa hyb`. Establish `i1 : InCC A 5 (scalF Wp f)` using `h1p k r Wp A 5 f (ContinuousLinearMap.id ℂ Wp) hfc`. Establish `i2 : InCC A 5 (fun g => mc X a₂ b₂ g • X₀)` using `h1p k r Wp A 5 _ X₀ hc2`. Rewrite using `[hcB _ _ i1 i2, hBI k r Wp Wp D A hXi hA _ _ i1 i2 hI, hval]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem beta_val (h1p : StCut1p) (h2 : StCut2) (hBI : StBetaInf) (hXi : XiExists)
     (D : RealPlaceData k r Wp Wp) (X : SigData k r) (hD : IsDiag D) {d : ℝ} (hd : IsFdegG D X d)
@@ -259,9 +259,9 @@ theorem beta_val (h1p : StCut1p) (h2 : StCut2) (hBI : StBetaInf) (hXi : XiExists
   rw [hcB _ _ i1 i2, hBI k r Wp Wp D A hXi hA _ _ i1 i2 hI, hval]
 
 /- English proof (translation)
-Establish `hPh : ∀ᵐ p ∂D.μSS, Ph D (scalF Wp (mc X a₁ b₁ ∘ th k r γ)) (fun g => mc X a₂ b₂ g • X₀) p = 0` using `by filter_upwards [ae_SS D] with p hp`. Conclude with `h3 hInv k r Wp D X hD hX γ hγ hZ a₁ b₁ a₂ b₂ X₀ p hp`. Establish `hI : Integrable (Ph D (scalF Wp (mc X a₁ b₁ ∘ th k r γ)) (fun g => mc X a₂ b₂ g • X₀)) D.μSS` using `(integrable_zero _ _ _).congr (hPh.mono fun p hp => hp.symm)`. Establish `i1 : InCC A 5 (scalF Wp (mc X a₁ b₁ ∘ th k r γ))` using `h1p k r Wp A 5 _ (ContinuousLinearMap.id ℂ Wp) hf`. Establish `i2 : InCC A 5 (fun g => mc X a₂ b₂ g • X₀)` using `h1p k r Wp A 5 _ X₀ hc2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcB _ _ i1 i2, hBI k r Wp Wp D A hXi hA _ _ i1 i2 hI, integral_eq_zero_of_ae (hPh.mono fun p hp => by simp [hp]), mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem beta_zero (h3 : StCut3) (hInv : StInvGroup) (h1p : StCut1p) (hBI : StBetaInf) (hXi : XiExists)
     (D : RealPlaceData k r Wp Wp) (X : SigData k r) (hD : IsDiag D) (hX : SqIntG D X)

@@ -29,7 +29,7 @@ theorem tChart_apply (I : ManIs M Y) {a : Fin (M.n + 1)} (c : AlgChart Y.str (I.
     tChart I c x = c.e (I.pt a x) := rfl
 
 /- English proof (translation)
-Simplify using `[tChart]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_tChart_source (I : ManIs M Y) {a : Fin (M.n + 1)} (c : AlgChart Y.str (I.ε a) e) {x : M.X a} :
     x ∈ (tChart I c).source ↔ I.pt a x ∈ c.e.source := by

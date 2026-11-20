@@ -5,13 +5,11 @@ open scoped MatrixGroups Matrix
 open GlobalTheory.KZ GlobalTheory.K4 GlobalTheory.Glue GlobalTheory.KummerEisensteinGalois UpperTheory.Kd.L
 
 /- English proof (translation)
-Introduce `Ω _ _ _ ε X M hM`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : Algebra.IsAlgebraic ℚ Ω := IsAlgClosure.isAlgebraic`. Establish `hζ` using `isPrimitiveRoot_eOm ε hM`. Establish `hS : fixMu Ω M = (IntermediateField.adjoin ℚ {eOm ε (1 / (M : ℚ))}).fixingSubgroup`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Unfold `fixMu`. Use `congr 1`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[IntermediateField.adjoin_le_iff]`. Introduce `z hz`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : NeZero M := ⟨hM⟩`. Take `⟨i, -, rfl⟩` from `hζ.eq_pow_of_pow_eq_one hz`. Conclude with `pow_mem (IntermediateField.subset_adjoin ℚ _ (Set.mem_singleton _)) i`. Rewrite using `[IntermediateField.adjoin_simple_le_iff]`. Conclude with `IntermediateField.subset_adjoin ℚ _ hζ.pow_eq_one`.
-
-Establish `h` using `GlobalTheory.K4.LevNormal.normal Ω ε X (CongruenceSubgroup.Gamma M) M _ (Nat.pos_of_ne_zero hM) hζ le_rfl`. Rewrite `h` using `[← hS]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.normal_modularTowerTop_algebraModel :
     ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] {ε : Ω →+* ℂ} (X : Tower Ω ε) (M : ℕ), M ≠ 0 → @Normal (topF X M) (topL X M) _ _ (algMdl X _ _) := by

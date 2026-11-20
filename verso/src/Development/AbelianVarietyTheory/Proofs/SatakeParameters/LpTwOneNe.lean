@@ -16,19 +16,17 @@ noncomputable section
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨n, a, rfl⟩` from `WD.exists_rep x`. Introduce `hn heq`. Rewrite `heq` using `[WD.lpTw_mk, WD.mk_eq_mk]`. Take `⟨e, he, -⟩` from `heq`. Rewrite `hn` using `[WD.lpDim_mk, Module.finrank_fin_fun]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set σ := frob h`. Use `set T := (a.tw 1).ρ σ`. Use `set B := a.ρ σ`. Establish `hconj : (e : (Fin n → ℂ) →ₗ[ℂ] (Fin n → ℂ)) ∘ₗ T ∘ₗ (e.symm : (Fin n → ℂ) →ₗ[ℂ] (Fin n → ℂ)) = B`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show e ((a.tw 1).ρ σ (e.symm v)) = a.ρ σ v`. Rewrite using `[he, LinearEquiv.apply_symm_apply]`. Establish `hdet : LinearMap.det T = LinearMap.det B`. Rewrite using `[← hconj, LinearMap.det_conj]`. Establish `hT : T = ((normV w : ℕ) : ℂ) • B` using `by show (a.tw 1).ρ σ = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[WDRep.tw_ρ, deg_frob]`. Simplify using `only [Complex.ofReal_one, Complex.cpow_one, zpow_one]`. Both sides reduce to the same expression. Rewrite `hdet` using `[hT, LinearMap.det_smul, Module.finrank_fin_fun]`. Establish `hB : LinearMap.det B ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `h0`. Establish `h1 : B * a.ρ σ⁻¹ = 1` using `by show a.ρ σ * a.ρ σ⁻¹ = 1`. Rewrite using `[← map_mul, mul_inv_cancel, map_one]`. Use `congrArg LinearMap.det h1` as an intermediate fact. Rewrite `this` using `[map_mul, h0, zero_mul, map_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `zero_ne_one this`. Establish `hq : ((normV w : ℕ) : ℂ) ^ n = 1`. Use `mul_right_cancel₀ hB (hdet.trans (one_mul _).symm)` as an intermediate fact. Conclude with `this`. Establish `hq' : (normV w : ℕ) ^ n = 1` using `by exact_mod_cast hq`.
-
-Establish `h1q` using `one_lt_normV w`. Establish `: 1 < (normV w : ℕ) ^ n` using `Nat.one_lt_pow hn.ne' h1q`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem WeilDeligne.WD.lpTw_one_ne {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω]
     [IsAlgClosure E Ω] {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}

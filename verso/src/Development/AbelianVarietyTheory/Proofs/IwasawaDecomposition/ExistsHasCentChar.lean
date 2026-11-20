@@ -9,17 +9,17 @@ open NumberField IsDedekindDomain Topology Matrix Neutral.B1 ReciprocityTheory.N
 namespace GlobalTheory.CuspRep.Central
 
 /- English proof (translation)
-Break down `n with _ | n` into its components or cases. Simplify using the standard rewrite rules. Assume the negation of the conclusion as `hc`. Take `⟨f, hf, hS⟩` from `Submodule.exists_dual_map_eq_bot_of_notMem hc inferInstance`. Establish `hf0 : ∀ x ∈ S, f x = 0` using `fun x hx => (Submodule.eq_bot_iff _).1 hS _ ⟨x, hx, rfl⟩`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `p : Finset (Fin (n + 1)) → Polynomial ℂ` to `fun T => ∏ k ∈ Tᶜ, (Polynomial.X - Polynomial.C (k : ℂ))`. Establish `hdeg : ∀ T, (p T).natDegree = n + 1 - T.card` using `fun T => by`. Rewrite using `[show (p T).natDegree = Tᶜ.card from Polynomial.natDegree_finsetProd_X_sub_C_eq_card _ _, Finset.card_compl, Fintype.card_fin]`. Establish `hP : ∑ T, f (CapelliTop.subdet X T) • p T = 0` using `Polynomial.funext fun u => by`. Establish `h2` using `hf0 _ (h u)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[CapelliTop.qdet_expand, map_sum]`. Rewrite using `[Polynomial.eval_zero, ← h2, Polynomial.eval_finsetSum]`. Use `Finset.sum_congr rfl fun T _ => ?_` and prove the remaining obligations. Simplify using `[p, Polynomial.eval_prod, mul_comm]`. Establish `h3` using `congrArg (fun q => Polynomial.coeff q n) hP`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Polynomial.finsetSum_coeff, Polynomial.coeff_smul, Polynomial.coeff_zero, smul_eq_mul] at h3`. Establish `hz : ∀ T : Finset (Fin (n + 1)), 2 ≤ T.card → (p T).coeff n = 0` using `fun T hT => Polynomial.coeff_eq_zero_of_natDegree_lt (by`. Establish `: T.card ≤ n + 1` using `by simpa using Finset.card_le_univ T`. Rewrite using `[hdeg]`. Use the proof step `omega)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ho : ∀ i, (p {i}).coeff n = 1` using `fun i => by`. Establish `h4 : (p {i}).Monic` using `Polynomial.monic_prod_of_monic _ _ fun k _ => Polynomial.monic_X_sub_C _`. Establish `h5` using `h4.coeff_natDegree`. Rewrite `h5` using `[hdeg, Finset.card_singleton, Nat.add_sub_cancel]`. Then use the resulting hypothesis. Rewrite using `[CapelliTop.sum_split, CapelliTop.subdet_empty, hf0 1 h1, zero_mul, zero_add, Finset.sum_eq_zero (s := Finset.univ.filter _) (fun T hT => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz T (by have := (Finset.mem_filter.1 hT).2; omega), mul_zero]), add_zero,`. Use the proof step `Finset.sum_eq_zero (f := fun i => ∑ j ∈ _, _) (fun i _ => Finset.sum_eq_zero fun j hj => by`. Rewrite `h3` using `[hz _ (Finset.card_pair (Finset.mem_filter.1 hj).2.ne).ge, mul_zero]), add_zero]`. Simplify using `only [ho, CapelliTop.subdet_single, mul_one] at h3`. Conclude with `hf ((map_sum f _ _).trans h3)`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem trace_mem {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ} (X : Fin n → Fin n → A) (S : Submodule ℂ A)
     (h1 : (1 : A) ∈ S) (h : ∀ u, Formalism.REAL.qdet X u ∈ S) : ∑ i, X i i ∈ S := by
@@ -61,17 +61,17 @@ variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 abbrev scL (a : ℕ) (z : Cinf E) : Lie E a := toL (Matrix.diagonal fun _ => z)
 
 /- English proof (translation)
-Establish `hE : ∀ τ : E →+* ℂ, ∑ i, Eop τ i i ∈ Zalg E a` using `fun τ => trace_mem (Eop τ) (Subalgebra.toSubmodule (Zalg E a)) (one_mem (Zalg E a)) fun u => Algebra.subset_adjoin (R := ℂ) (s := {z | ∃ τ u, z = cap (a := a) τ u}) ⟨τ, u - ((a : ℂ) - 1) / 2, by rw [cap, sub_add_cancel]⟩`. Establish `h1 : ∀ (τ : E →+* ℂ) (z : ℂ), ∑ i, lieS E a i i (atEmb τ z) ∈ Zalg E a` using `fun τ z => by`. Establish `e : atEmb τ (-Complex.I) = -atEmb τ Complex.I`. Rewrite using `[atEmb_eq]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e2 : ∀ i, lieS E a i i (atEmb τ z) = z • Eop τ i i + starRingEnd ℂ z • Eop (ComplexEmbedding.conjugate τ) i i` using `fun i => by`. Rewrite using `[atEmb_eq, map_add, map_smul, map_smul]`. Simplify using `only [Eop, atEmb_conj, map_one, Complex.conj_I, e, map_neg, ← Complex.coe_smul]`. Use `match_scalars`. Rewrite using `[Complex.re_eq_add_conj]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Complex.im_eq_sub_conj]`. Clear the denominators using the available nonvanishing facts. Put the polynomial expressions in normal form. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Put the polynomial expressions in normal form. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [e2, Finset.sum_add_distrib, ← Finset.smul_sum]`. Conclude with `add_mem (Subalgebra.smul_mem _ (hE _) _) (Subalgebra.smul_mem _ (hE _) _)`. Establish `e : x = ∑ w : InfinitePlace E, atEmb w.embedding (x w)`. Establish `: ∀ w : InfinitePlace E, atEmb w.embedding (x w) = Pi.single w (x w)` using `fun w => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Unfold `atEmb`. Simplify using `only [InfinitePlace.mk_embedding, if_true]`. Simplify using `[this, Finset.univ_sum_single]`. Establish `e2 : lie E a (scL a x) = ∑ i, lieS E a i i x`. Simplify using `only [lieS_apply, ← map_sum]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `congrArg (lie E a) (Matrix.sum_single_eq_diagonal (fun _ : Fin a => x)).symm`. Rewrite using `[e2, e]`. Simplify using `only [map_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `sum_mem fun w _ => h1 _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lie_mem_Zalg (x : Cinf E) : lie E a (scL a x) ∈ Zalg E a := by
   classical
@@ -107,11 +107,11 @@ theorem lie_mem_Zalg (x : Cinf E) : lie E a (scL a x) ∈ Zalg E a := by
 abbrev rs (a : ℕ) (z : Ideles E) : Module.End ℂ (Sm E a) := rt E a (GeneralLinearGroup.scalar (Fin a) z)
 
 /- English proof (translation)
-Establish `h : ∀ g, Commute (rs a z) (rt E a g)` using `fun g => by`. Express the relevant statement in the definitionally equal form `_ * _ = _ * _`. Rewrite using `[← map_mul, ← map_mul, scalar_comm]`. Consider the cases of `o with`. Consider the case `fin k => exact h _`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `cpt k => exact h _`. Consider the case `lie X`. Use `LinearMap.ext fun φ => Subtype.ext <| funext fun g => ?_` and prove the remaining obligations. Establish `e : chart (fun x => φ.1 (x * GeneralLinearGroup.scalar (Fin a) z)) g = chart φ.1 (g * GeneralLinearGroup.scalar (Fin a) z)`. Use function extensionality and compare the values at `x`.
+Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [chart, mul_assoc, scalar_comm z]`. Conclude with `(congrArg (fun f => fderiv ℝ f (oneL E a) X) e).symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rs_act (z : Ideles E) (o : Op E a) : Commute (rs a z) (act o) := by
   have h : ∀ g, Commute (rs a z) (rt E a g) := fun g => by
@@ -129,11 +129,11 @@ theorem rs_act (z : Ideles E) (o : Op E a) : Commute (rs a z) (act o) := by
     exact (congrArg (fun f => fderiv ℝ f (oneL E a) X) e).symm
 
 /- English proof (translation)
-Establish `hc : HasDerivAt (fun t : ℝ => toL (GeneralLinearGroup.scalar (Fin a) (expU (t • z))).val) (scL a z) 0`. Use `hasDerivAt_pi.2 fun i => hasDerivAt_pi.2 fun j => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `HasDerivAt (fun t : ℝ => Matrix.diagonal (fun _ => (expU (t • z)).val) i j) (Matrix.diagonal (fun _ => z) i j) 0`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `only [Matrix.diagonal_apply_eq]`. Use `hasDerivAt_pi.2 fun w => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `HasDerivAt (fun t : ℝ => Complex.exp (t * z w)) _ 0`. Simplify using `using ((Complex.ofRealCLM.hasDerivAt (x := 0)).mul_const (z w)).cexp`. Simplify using `only [Matrix.diagonal_apply_ne _ h]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Conclude with `hasDerivAt_const _ _`. Establish `h` using `hasDerivAt_curve ψ g (fun t => GeneralLinearGroup.scalar (Fin a) (expU (t • z))) _ (by simp [expU_zero]) hc`. Simplify `h` using `only [infGL, cornerGL_scalar, infId]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_scalar (z : Cinf E) (ψ : Sm E a) (g : GA E a) :
     HasDerivAt (fun t : ℝ => ψ.1 (g * GeneralLinearGroup.scalar (Fin a) (infId E (expU (t • z)))))
@@ -153,11 +153,11 @@ theorem hasDerivAt_scalar (z : Cinf E) (ψ : Sm E a) (g : GA E a) :
   simpa only [infGL, cornerGL_scalar, infId] using h
 
 /- English proof (translation)
-Establish `h : ∀ k, Commute (lie E a (scL a z)) (rt E a k)` using `fun k => LinearMap.ext fun φ => Subtype.ext <| funext fun g => by`. Establish `h1` using `hasDerivAt_scalar z (rt E a k φ) g`. Simplify using `only [rt_apply, mul_assoc, scalar_comm _ k] at h1`. Simplify using `only [← mul_assoc] at h1`. Conclude with `h1.unique (hasDerivAt_scalar z φ (g * k))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `o with`. Consider the case `fin k => exact h _`. Consider the case `cpt k => exact h _`. Consider the case `lie Y`. Establish `e : Matrix.of (scL a z) * Matrix.of Y = Matrix.of Y * Matrix.of (scL a z)` using `(Matrix.scalar_commute z (fun _ => Commute.all _ _) (Matrix.of Y)).eq`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `lie_comm (scL a z) Y`. Rewrite `h` using `[e, sub_self, sub_eq_zero]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lie_act (z : Cinf E) (o : Op E a) : Commute (lie E a (scL a z)) (act o) := by
   have h : ∀ k, Commute (lie E a (scL a z)) (rt E a k) := fun k =>
@@ -177,7 +177,7 @@ theorem lie_act (z : Cinf E) (o : Op E a) : Commute (lie E a (scL a z)) (act o) 
     exact h
 
 /- English proof (translation)
-Take `⟨φ, hφ, h0⟩` from `(Submodule.ne_bot_iff _).1 π.ne_bot`. Use `(π.cusp φ hφ).1.zfin` as an intermediate fact. Conclude with `RankOne.scalar_of_finite π _ (lie_act z) (π.stable (.lie _)) hφ h0 (Submodule.span ℂ ((fun z : Module.End ℂ (Sm E a) => z φ) '' Zalg E a)) fun i => Submodule.subset_span ⟨_, pow_mem (lie_mem_Zalg z) i, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lie_scalar (π : CuspSub E a) (z : Cinf E) : ∃ c : ℂ, ∀ ψ ∈ π.V, lie E a (scL a z) ψ = c • ψ := by
   obtain ⟨φ, hφ, h0⟩ := (Submodule.ne_bot_iff _).1 π.ne_bot
@@ -187,13 +187,13 @@ theorem lie_scalar (π : CuspSub E a) (z : Cinf E) : ∃ c : ℂ, ∀ ψ ∈ π.
       Submodule.subset_span ⟨_, pow_mem (lie_mem_Zalg z) i, rfl⟩
 
 /- English proof (translation)
-Use `Subtype.ext <| funext fun g => ?_` and prove the remaining obligations. Set `f : ℝ → ℂ` to `fun t => ψ.1 (g * GeneralLinearGroup.scalar (Fin a) (infId E (expU (t • z))))`. Establish `hf : ∀ s, HasDerivAt f (c * f s) s` using `fun s => by`. Establish `h1` using `hasDerivAt_scalar z ψ (g * GeneralLinearGroup.scalar (Fin a) (infId E (expU (s • z))))`. Establish `h2 : lieD (scL a z) ψ.1 (g * GeneralLinearGroup.scalar (Fin a) (infId E (expU (s • z)))) = c * f s` using `congrFun (congrArg Subtype.val h) _`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[h2]`. Establish `h3` using `HasDerivAt.comp_sub_const s s ((sub_self s).symm ▸ h1)`. Use `h3.congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Simplify using `only [f, mul_assoc, ← map_mul, ← expU_add, ← add_smul, add_sub_cancel]`. Establish `hg : ∀ s : ℝ, HasDerivAt (fun t : ℝ => Complex.exp (-(t * c)) * f t) 0 s` using `fun s => by`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1` using `(((Complex.ofRealCLM.hasDerivAt (x := s)).mul_const c).neg.cexp).mul (hf s)`. Use `h1.congr_deriv ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish `h2` using `is_const_of_deriv_eq_zero (fun s => (hg s).differentiableAt) (fun s => (hg s).deriv) 1 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Simplify using `only [f, zero_smul, expU_zero, one_smul, map_one, mul_one, Complex.ofReal_one, one_mul, Complex.ofReal_zero, zero_mul, neg_zero, Complex.exp_zero] at h2`. Express the relevant statement in the definitionally equal form `ψ.1 (g * _) = Complex.exp c * ψ.1 g`. Rewrite using `[← h2, ← mul_assoc, ← Complex.exp_add]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rs_exp (z : Cinf E) (c : ℂ) (ψ : Sm E a) (h : lie E a (scL a z) ψ = c • ψ) :
     rs a (infId E (expU z)) ψ = Complex.exp c • ψ := by
@@ -227,7 +227,7 @@ def scal (π : CuspSub E a) : Submonoid (Ideles E) where
       rw [rs, map_mul, map_mul, Module.End.mul_apply, hc' ψ hψ, map_smul, hc ψ hψ, smul_smul]⟩
 
 /- English proof (translation)
-Rewrite using `[← expU_log y]`. Take `⟨c, hc⟩` from `lie_scalar π fun i => Complex.log (y.val i)`. Conclude with `⟨_, fun ψ hψ => rs_exp _ c ψ (hc ψ hψ)⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem infId_mem (π : CuspSub E a) (y : (Cinf E)ˣ) : infId E y ∈ scal π := by
   rw [← expU_log y]
@@ -235,7 +235,7 @@ theorem infId_mem (π : CuspSub E a) (y : (Cinf E)ˣ) : infId E y ∈ scal π :=
   exact ⟨_, fun ψ hψ => rs_exp _ c ψ (hc ψ hψ)⟩
 
 /- English proof (translation)
-The claim follows from `Subtype.ext <| funext fun g => by have e : GeneralLinearGroup.scalar (Fin a) (diagUnits E γ) = ratGL E a (GeneralLinearGroup.scalar (Fin a) γ) := (map_scalar _ γ).symm rw [rt_apply, ← scalar_comm, e, (π.cusp ψ hψ).1.left]`.
+A detailed English derivation is pending.
 -/
 theorem rs_diag (π : CuspSub E a) (γ : Eˣ) {ψ : Sm E a} (hψ : ψ ∈ π.V) : rs a (diagUnits E γ) ψ = ψ :=
   Subtype.ext <| funext fun g => by
@@ -244,17 +244,17 @@ theorem rs_diag (π : CuspSub E a) (γ : Eˣ) {ψ : Sm E a} (hψ : ψ ∈ π.V) 
     rw [rt_apply, ← scalar_comm, e, (π.cusp ψ hψ).1.left]
 
 /- English proof (translation)
-The claim follows from `congrArg (rt E a) (cornerGL_scalar (sFin E) k).symm`.
+A detailed English derivation is pending.
 -/
 theorem rs_finId (k : (Af E)ˣ) : rs a (finId E k) = finRep E a (GeneralLinearGroup.scalar (Fin a) k) :=
   congrArg (rt E a) (cornerGL_scalar (sFin E) k).symm
 
 /- English proof (translation)
-Take `⟨φ, hφ, h0⟩` from `(Submodule.ne_bot_iff _).1 π.ne_bot`. Take `⟨c, hc⟩` from `h`. Establish `hV : ∀ ψ ∈ π.V, rs a (finId E k) ψ ∈ π.V` using `rs_finId (a := a) k ▸ π.stable (.fin _)`. Establish `hn' : (rs a (finId E k) ^ n) φ = c • φ` using `by rw [← map_pow, ← map_pow]; exact hc φ hφ`. Use `set T := rs a (finId E k)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun i : Fin n => (T ^ (i : ℕ)) φ))` using `FiniteDimensional.span_of_finite ℂ (Set.finite_range _)`. Use `RankOne.scalar_of_finite π T (rs_act _) hV hφ h0 (Submodule.span ℂ (Set.range fun i : Fin n => (T ^ (i : ℕ)) φ)) fun i => ?_` and prove the remaining obligations. Proceed by induction on `i using Nat.strong_induction_on with`. Consider the case `_ i ih`. Break down `lt_or_ge i n with hi | hi` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Conclude with `Submodule.subset_span ⟨⟨i, hi⟩, rfl⟩`. Take `⟨j, rfl⟩` from `Nat.exists_eq_add_of_le' hi`. Rewrite using `[pow_add, Module.End.mul_apply, hn', map_smul]`. Conclude with `Submodule.smul_mem _ _ (ih j (by omega))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finId_mem_of_pow (π : CuspSub E a) (k : (Af E)ˣ) {n : ℕ} (hn : 0 < n)
     (h : finId E k ^ n ∈ scal π) : finId E k ∈ scal π := by
@@ -276,16 +276,16 @@ theorem finId_mem_of_pow (π : CuspSub E a) (k : (Af E)ˣ) {n : ℕ} (hn : 0 < n
       exact Submodule.smul_mem _ _ (ih j (by omega))
 
 /- English proof (translation)
-The claim follows from `Continuous.units_map _ (continuous_pi fun _ => continuous_id).matrix_diagonal`.
+A detailed English derivation is pending.
 -/
 theorem continuous_scalar {R : Type} [CommRing R] [TopologicalSpace R] :
     Continuous (GeneralLinearGroup.scalar (Fin a) : Rˣ → GL (Fin a) R) :=
   Continuous.units_map _ (continuous_pi fun _ => continuous_id).matrix_diagonal
 
 /- English proof (translation)
-Take `⟨φ, hφ, h0⟩` from `(Submodule.ne_bot_iff _).1 π.ne_bot`. Use `⟨(π.finPart.comp (GeneralLinearGroup.scalar (Fin a))).ker, Subgroup.isOpen_of_mem_nhds _ (g := 1) (Filter.mem_of_superset (((π.cusp φ hφ).1.level.preimage continuous_scalar).mem_nhds (by simp)) fun k hk => ?_), fun k hk ψ hψ => ?_⟩` and prove the remaining obligations. Use `LinearMap.ext fun ψ => Subtype.ext ?_` and prove the remaining obligations. Establish `h1` using `RankOne.scalar_of_eigen π _ (rs_act (finId E k)) hφ h0 (c := 1) (by rw [rs_finId, one_smul]; exact hk) ψ.1 ψ.2`. Rewrite `h1` using `[rs_finId, one_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1`. Rewrite using `[rs_finId]`. Conclude with `congrArg Subtype.val (LinearMap.congr_fun hk ⟨ψ, hψ⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_open (π : CuspSub E a) : ∃ U : Subgroup (Af E)ˣ, IsOpen (U : Set (Af E)ˣ) ∧
     ∀ k ∈ U, ∀ ψ ∈ π.V, rs a (finId E k) ψ = ψ := by
@@ -302,11 +302,11 @@ theorem exists_open (π : CuspSub E a) : ∃ U : Subgroup (Af E)ˣ, IsOpen (U : 
     exact congrArg Subtype.val (LinearMap.congr_fun hk ⟨ψ, hψ⟩)
 
 /- English proof (translation)
-Take `⟨U₀, hU₀, h⟩` from `exists_open π`. Set `U : Subgroup (GL (Fin 1) (Af E))` to `U₀.comap GeneralLinearGroup.det`. Establish `hU : IsOpen (U : Set (GL (Fin 1) (Af E)))` using `hU₀.preimage GeneralLinearGroup.continuous_det`. Establish `: T2Space (Af E)` using `inferInstanceAs (T2Space (RestrictedProduct (fun v : HeightOneSpectrum (𝓞 E) => v.adicCompletion E) (fun v => (v.adicCompletionIntegers E : Set (v.adicCompletion E))) Filter.cofinite))`. Use `set K : Subgroup (GL (Fin 1) (Af E)) := GlobalTheory.GLIntegral.glSub (GlobalTheory.GLIntegral.intSubring E)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: CompactSpace K` using `isCompact_iff_compactSpace.1 (GlobalTheory.GLIntegral.isCompact_glSub _ (GlobalTheory.AdeleCocompact.isCompact_integral E))`. Establish `: Finite (K ⧸ U.subgroupOf K)` using `Subgroup.quotient_finite_of_isOpen _ (hU.preimage continuous_subtype_val)`. Establish `hi` using `(Subgroup.finiteIndex_of_finite_quotient (H := U.subgroupOf K)).index_ne_zero`. Take `⟨n, hn, -, h1⟩` from `Subgroup.exists_pow_mem_of_index_ne_zero hi ⟨k, hk⟩`. Use `finId_mem_of_pow π _ hn ⟨1, fun ψ hψ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_pow, ← map_pow, one_smul]`. Conclude with `h _ h1 ψ hψ`.
+A detailed English derivation is pending.
 -/
 theorem finId_mem_of_int (π : CuspSub E a) (k : GL (Fin 1) (Af E))
     (hk : k ∈ GlobalTheory.GLIntegral.glSub (GlobalTheory.GLIntegral.intSubring E)) : finId E (GeneralLinearGroup.det k) ∈ scal π := by
@@ -327,11 +327,11 @@ theorem finId_mem_of_int (π : CuspSub E a) (k : GL (Fin 1) (Af E))
   exact h _ h1 ψ hψ
 
 /- English proof (translation)
-Rewrite using `[← infId_mul_finId z]`. Use `mul_mem (infId_mem π _) ?_` and prove the remaining obligations. Use `set k := Units.map (pFin E).toMonoidHom z`. Take `⟨n, hn, -, h1⟩` from `Subgroup.exists_pow_mem_of_index_ne_zero (GlobalTheory.Mem.UnitIndex.finiteIndex_unitIdl_sup E).index_ne_zero (finId E k)`. Use `finId_mem_of_pow π k hn ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu, _, ⟨γ, rfl⟩, e⟩` from `Subgroup.mem_sup.1 h1`. Rewrite using `[← e]`. Use `mul_mem ?_ ⟨1, fun ψ hψ => (rs_diag π γ hψ).trans (one_smul _ _).symm⟩` and prove the remaining obligations. Rewrite using `[← infId_mul_finId u]`. Use `mul_mem (infId_mem π _) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `key : ∀ u ∈ GlobalTheory.Mem.Chr.unitIdl E, ∀ i j, (RankOne.obo _ (Units.map (pFin E).toMonoidHom u)).val i j ∈ GlobalTheory.GLIntegral.intSubring E` using `fun u hu i j v => by`. Rewrite using `[RankOne.obo_apply]`. Conclude with `(hu v).le`. Establish `h2` using `finId_mem_of_int π (RankOne.obo _ (Units.map (pFin E).toMonoidHom u)) ⟨key u hu, by rw [← map_inv, ← map_inv]; exact key _ (inv_mem hu)⟩`. Rewrite `h2` using `[show GeneralLinearGroup.det (RankOne.obo _ (Units.map (pFin E).toMonoidHom u)) = _ from CG.det_oneByOne _]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mem_scal (π : CuspSub E a) (z : Ideles E) : z ∈ scal π := by
   rw [← infId_mul_finId z]
@@ -354,15 +354,13 @@ theorem mem_scal (π : CuspSub E a) (z : Ideles E) : z ∈ scal π := by
   rwa [show GeneralLinearGroup.det (RankOne.obo _ (Units.map (pFin E).toMonoidHom u)) = _ from CG.det_oneByOne _] at h2
 
 /- English proof (translation)
-Take `⟨φ, hφ, h0⟩` from `(Submodule.ne_bot_iff _).1 π.ne_bot`. Choose the witnesses or unpack the hypotheses as in `⟨g₀, hg₀⟩ : ∃ g, φ.1 g ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `h0 (Subtype.ext (funext hc))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hinf : Continuous fun y => ω (infId E y)`. Use `Units.isEmbedding_val₀.continuous_iff.2 ?_` and prove the remaining obligations. Establish `e : (Units.val ∘ fun y => ω (infId E y)) = fun y => chart φ.1 g₀ (toL (GeneralLinearGroup.scalar (Fin a) y).val) / φ.1 g₀`. Use function extensionality and compare the values at `y`. Rewrite using `[chart_val, eq_div_iff hg₀, infGL, cornerGL_scalar]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(congrFun (congrArg Subtype.val (h (infId E y) φ hφ)) g₀).symm`. Rewrite using `[e]`. Conclude with `((φ.2 g₀).continuousOn.comp_continuous (f := fun y : (Cinf E)ˣ => toL (GeneralLinearGroup.scalar (Fin a) y).val) (continuous_pi fun _ => Units.continuous_val).matrix_diagonal fun y => val_mem_invSet _).div_const _`. Establish `hfin : Continuous fun k => ω (finId E k)`. Take `⟨U, hU, hU'⟩` from `exists_open π`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `continuous_of_continuousAt_one (ω.comp (finId E)) (ContinuousAt.congr (f := fun _ => 1) continuousAt_const ?_)` and prove the remaining obligations. Use `filter_upwards [hU.mem_nhds U.one_mem] with k hk`. Use `Units.ext (smul_left_injective ℂ h0 ?_)` and prove the remaining obligations. Conclude with `(one_smul _ _).trans ((hU' k hk φ hφ).symm.trans (h _ φ hφ))`. Establish `e : (ω : Ideles E → ℂˣ) = fun z => ω (infId E (Units.map (pInf E).toMonoidHom z)) * ω (finId E (Units.map (pFin E).toMonoidHom z))`.
-
-Use function extensionality and compare the values at `g`. Rewrite using `[← map_mul, infId_mul_finId]`. Rewrite using `[e]`. Conclude with `(hinf.comp (Continuous.units_map _ RankOne.continuous_pInf)).mul (hfin.comp (Continuous.units_map _ continuous_snd))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_char (π : CuspSub E a) (ω : Ideles E →* ℂˣ) (h : ∀ z, ∀ ψ ∈ π.V, rs a z ψ = ((ω z : ℂˣ) : ℂ) • ψ) :
     Continuous ω := by
@@ -397,9 +395,9 @@ theorem continuous_char (π : CuspSub E a) (ω : Ideles E →* ℂˣ) (h : ∀ z
     (hfin.comp (Continuous.units_map _ continuous_snd))
 
 /- English proof (translation)
-Introduce `E _ _ _ a π`. Take `⟨φ, hφ, h0⟩` from `(Submodule.ne_bot_iff _).1 π.ne_bot`. Use `choose c hc using mem_scal π`. Set `ω : Ideles E →* ℂ` to `{ toFun := c map_one' := smul_left_injective ℂ h0 (by beta_reduce; rw [← hc 1 φ hφ, rs, map_one, map_one, one_smul]; rfl) map_mul' := fun g h => smul_left_injective ℂ h0 (by beta_reduce`. Rewrite using `[← hc _ φ hφ, rs, map_mul, map_mul, Module.End.mul_apply, hc h φ hφ, map_smul, hc g φ hφ, smul_smul, mul_comm]) }`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨ω.toHomUnits, continuous_char π _ hc, fun γ => Units.ext (smul_left_injective ℂ h0 ?_)⟩, hc⟩` and prove the remaining obligations. Conclude with `(hc _ φ hφ).symm.trans ((rs_diag π γ hφ).trans (one_smul _ _).symm)`.
+A detailed English derivation is pending.
 -/
 theorem exists_hasCentral : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ)
     (π : GlobalTheory.CuspRep.CuspSub E a), ∃ ω : Formalism.L2.Host.HChar E, π.HasCentral ω := by
@@ -417,7 +415,7 @@ theorem exists_hasCentral : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyC
   exact (hc _ φ hφ).symm.trans ((rs_diag π γ hφ).trans (one_smul _ _).symm)
 
 /- English proof (translation)
-Proceed by induction on `π using Quotient.inductionOn with`. Consider the case `_ π => exact (exists_hasCentral E a π).imp fun _ h => CuspSub.hasCentral_iff.1 h`.
+Proceed by induction. Treat this case separately.
 -/
 theorem exists_hasCentChar (π : CG E a) : ∃ ω : HChar E, π.HasCentChar ω := by
   induction π using Quotient.inductionOn with

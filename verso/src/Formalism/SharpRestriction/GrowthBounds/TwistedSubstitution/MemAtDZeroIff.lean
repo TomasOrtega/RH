@@ -46,7 +46,7 @@ variable (p : ℕ) {n' r K m : ℕ} [NeZero n'] [NeZero r] [NeZero K] (O : Type)
   [IsDiscreteValuationRing O] (hk : m + 1 = r + K) (Fr : Frames n' r) (deg : Fin n' → ℕ) (Y : ℝ) (N₁ G' cP : ℕ)
 
 /- English proof (translation)
-Introduce `k hk`. Conclude with `h.trans (hx k hk)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem geZ_anti {x : WithTop ℤ} {t t' : ℝ} (h : t' ≤ t) (hx : geZ x t) : geZ x t' := by
   intro k hk
@@ -92,7 +92,7 @@ variable (p : ℕ) {n' r K m : ℕ} [NeZero n'] [NeZero r] [NeZero K] (O : Type)
   [IsDiscreteValuationRing O] (hk : m + 1 = r + K) (Fr : Frames n' r) (deg : Fin n' → ℕ) (Y : ℝ) (N₁ G' cP : ℕ)
 
 /- English proof (translation)
-Introduce `J _ Dt dPl dNo ka hT rho e he nu`. Take `⟨h1, h2, h3, h4, h5, h6, h7, h8, h9⟩` from `hT`. Conclude with `h J Dt dPl dNo ka ⟨h1, h2, h3, h4, h5, h6, h7, fun j i => by rw [h8 j i]; simp, fun j mm hmm => by rw [h9 j mm hmm]; simp⟩ rho e he nu`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem memAtG_of_le (sc sL : ℝ) (F : MvPolynomial (TV n' (m + 1)) (KK O))
     (h : MemAtLe sc sL (fun _ _ => 0) p O hk Fr deg Y N₁ G' cP F) : MemAtG sc sL p O hk Fr deg Y N₁ G' cP F := by
@@ -102,13 +102,13 @@ theorem memAtG_of_le (sc sL : ℝ) (F : MvPolynomial (TV n' (m + 1)) (KK O))
     fun j mm hmm => by rw [h9 j mm hmm]; simp⟩ rho e he nu
 
 /- English proof (translation)
-Introduce `J _ Dt dPl dNo ka hT rho e he nu`. Take `⟨h1, h2, h3, h4, h5, h6, h7, h8, h9⟩` from `hT`. Use `hF J Dt dPl dNo ka ⟨h1, h2, h3, h4, h5, h6, h7, fun j i => ?_, fun j mm hmm => ?_⟩ rho e he nu` and prove the remaining obligations. Establish `hi : i.val < Dt.nL j + 1`. Establish `h` using `i.isLt`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h6 j` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hc` using `hch (segZ j) i.val (by rw [← h2 j]; omega)`. Establish `e1 : slU Fr p deg Y (r + K) Dt.nL j i.val = (sl p Fr deg Y (r + K) (segZ j) (posU Fr (Fr.LLset (segZ j)).card (segZ j) i.val) : ℝ)`. Simplify using `only [slU, h2 j]`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `h8 j i` as an intermediate fact. Rewrite `this`, the goal using `[e1]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hc` using `hl (segZ j) (Dt.nL j + (r - 1 - mm.val)) (by rw [← h2 j]; omega) (by rw [← h2 j]; omega)`. Establish `e1 : slU Fr p deg Y (r + K) Dt.nL j (Dt.nL j + (r - 1 - mm.val)) = (sl p Fr deg Y (r + K) (segZ j) (posU Fr (Fr.LLset (segZ j)).card (segZ j) (Dt.nL j + (r - 1 - mm.val))) : ℝ)`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [slU, h2 j]`. Use `h9 j mm hmm` as an intermediate fact. Rewrite `this`, the goal using `[e1]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem memAtLe_mono (sc sL sc' sL' : ℝ) (loss loss' : ℤ → ℕ → ℝ)
     (hch : ∀ (jz : ℤ) (u : ℕ), u ≤ (Fr.LLset jz).card →

@@ -5,15 +5,15 @@ universe u_1 u_2 u_3
 namespace Bl.general_b_fact_alt_form
 
 /- English proof (translation)
-Introduce `R F X _ _ _ _ _ _ _ _ _ S x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact ⟨1, one_ne_zero, by rw [one_smul]; exact hy⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by rw [smul_zero]; exact S.zero_mem⟩`. Consider the case `add y z _ _ hy hz`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `⟨d1, hd1, h1⟩` from `hy`. Take `⟨d2, hd2, h2⟩` from `hz`. Use `⟨d1 * d2, mul_ne_zero hd1 hd2, ?_⟩` and prove the remaining obligations. Establish `e : (d1 * d2) • (y + z) = d2 • (d1 • y) + d1 • (d2 • z)`. Rewrite using `[smul_add, ← mul_smul, ← mul_smul, mul_comm d2 d1]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `S.add_mem (S.smul_mem d2 h1) (S.smul_mem d1 h2)`. Consider the case `smul a y _ hy`. Take `⟨d, hd, h⟩` from `hy`. Take `⟨⟨n, ⟨m, hm⟩⟩, rfl⟩` from `IsLocalization.mk'_surjective (nonZeroDivisors R) a`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨m * d, mul_ne_zero (nonZeroDivisors.ne_zero hm) hd, ?_⟩` and prove the remaining obligations. Establish `e1 : m • (IsLocalization.mk' F n (⟨m, hm⟩ : nonZeroDivisors R) • y) = n • y`. Rewrite using `[← smul_assoc, Algebra.smul_def, IsLocalization.mk'_spec' F n ⟨m, hm⟩, algebraMap_smul]`. Establish `e : (m * d) • (IsLocalization.mk' F n (⟨m, hm⟩ : nonZeroDivisors R) • y) = n • (d • y)`. Rewrite using `[mul_comm m d, mul_smul, e1, ← mul_smul, ← mul_smul, mul_comm d n]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `S.smul_mem n h`.
+A detailed English derivation is pending.
 -/
 theorem goal1 :
   ∀ {R : Type u_1} {F : Type u_2} {X : Type u_3} [inst : CommRing.{u_1} R] [IsDomain.{u_1} R] [inst_2 : Field.{u_2} F]

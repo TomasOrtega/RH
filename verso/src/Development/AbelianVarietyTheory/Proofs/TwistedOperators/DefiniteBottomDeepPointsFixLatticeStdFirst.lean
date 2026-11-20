@@ -37,9 +37,9 @@ namespace GlobalTheory.StdFstFix
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hx' : e • (x : Matrix (Fin T.rank) (Fin S.rank) (AE D)) = x` using `Matrix.ext fun i j => hx i j`. Establish `e1 : e • actO S T g h x = actO S T g h x`. Unfold `actO`. Use `conv_rhs => rw [← hx']`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j`. Conclude with `congrFun (congrFun e1 i) j`.
+A detailed English derivation is pending.
 -/
 theorem isHalf_actO {S T : HSp D} {e : AE D} (g : GA D S) (h : GA D T) {x : WO S T} (hx : IsHalf e x) :
     IsHalf e (actO S T g h x) := by
@@ -52,7 +52,7 @@ theorem isHalf_actO {S T : HSp D} {e : AE D} (g : GA D S) (h : GA D T) {x : WO S
   exact congrFun (congrFun e1 i) j
 
 /- English proof (translation)
-Unfold `actO`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem actO_nsmul {S T : HSp D} (g : GA D S) (h : GA D T) (k : ℕ) (x : WO S T) :
     actO S T g h (k • x) = k • actO S T g h x := by
@@ -60,7 +60,7 @@ theorem actO_nsmul {S T : HSp D} (g : GA D S) (h : GA D T) (k : ℕ) (x : WO S T
   rw [Matrix.mul_smul, Matrix.smul_mul]
 
 /- English proof (translation)
-Establish `h1 : finHom V k = finHom V 1` using `by rw [map_one]; exact hk`. Use `GlobalTheory.Member.PrincLevel.finCong_one V N` as an intermediate fact. Unfold `GlobalTheory.Member.FinCong at this ⊢`. Rewrite using `[h1]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finCong_of_mem_GinfC {V : HSp D} (N : ℕ) {k : GA D V} (hk : k ∈ GinfC V) : GlobalTheory.Member.FinCong V N k := by
   have h1 : finHom V k = finHom V 1 := by rw [map_one]; exact hk
@@ -76,29 +76,27 @@ namespace GlobalTheory.StdFstFix
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `D T L sc G W i j A A' WW X hX t`. Establish `hI` using `hX.is`. Establish `hν : Continuous (L.mu t (j + 1) * L.eta ^ (rankV D i j % 2) / (G.ch.chi (D.R.m - i) * L.eta ^ (rankV D i j % 2)))` using `(hI.weil' t).hecT.1`. Establish `he` using `hI.idem t`. Establish `hinf` using `GlobalTheory.PlaceDatum.infPart_idemSum he`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsdS : IsSelfDualC (GlobalTheory.Grid.neg A) X.rA.Λ` using `isSelfDualC_neg' hI.rigA.1`. Establish `hsdT : IsSelfDualC WW X.rW.Λ` using `hI.rigW.1`. Take `⟨M, hM, hB⟩` from `GlobalTheory.PlaceDatum.exists_den_frMapO (S := GlobalTheory.Grid.neg A) hsdS.1.fg hsdT.1.fg X.rA.β X.rW.β`. Take `⟨K, hK, hC⟩` from `GlobalTheory.PlaceDatum.exists_nsmul_of_frMapO (S := GlobalTheory.Grid.neg A) hsdS.1 hsdT.1 X.rA.β X.rW.β`. Take `⟨n, hn, hl, -⟩` from `GlobalTheory.CharFin.char_finUnit_finite_order D _ hν`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨n₀, hn₀, hnI⟩ : ∃ n₀ : ℕ, 0 < n₀ ∧ ((n₀ : ℕ) : 𝓞 D.host.E) ∈ X.ideal (locPl G) t` from `⟨_, Nat.pos_of_ne_zero fun h => GlobalTheory.ConstRatio.ideal_ne_bot X (locPl G) t (Ideal.absNorm_eq_zero_iff.1 h), Ideal.absNorm_mem _⟩`. Choose the witnesses or unpack the hypotheses as in `⟨c, hc, hcS⟩ : ∃ c : ℕ, 0 < c ∧ ∀ P ∈ locPl G t, ((c : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal := by`. Use `⟨∏ P ∈ locPl G t, Ideal.absNorm P.asIdeal, Finset.prod_pos fun P _ => Nat.pos_of_ne_zero fun h => P.ne_bot (Ideal.absNorm_eq_zero_iff.1 h), fun P hP => ?_⟩` and prove the remaining obligations. Take `⟨m, hm⟩` from `Finset.dvd_prod_of_mem (fun P : Pl D.host.E => Ideal.absNorm P.asIdeal) hP`. Rewrite using `[hm, Nat.cast_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mul_mem_right _ _ (Ideal.absNorm_mem P.asIdeal)`. Take `⟨m, hm⟩` from `GlobalTheory.VacTranslate.exists_finCong_mod (GlobalTheory.Grid.neg A) WW X.rA.Λ X.rW.Λ hsdS hsdT (K * (n₀ * (n * c) * M)) (Nat.mul_pos hK (Nat.mul_pos (Nat.mul_pos hn₀ (Nat.mul_pos hn hc)) hM))`. Establish `key : ∀ g ∈ GfC (GlobalTheory.Grid.neg A), GlobalTheory.Member.FinCong (GlobalTheory.Grid.neg A) m.factorial g → ∀ x : WO A WW, (IsHalf (X.e t) x ∧ IsIntM (frMapO A WW X.rA.β X.rW.β x) ∧ ∀ i j, A.rank ≤ i.1 → GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.InId (X.ideal …`. Introduce `g hg hgc x hx`. Take `⟨l, hl', e1⟩` from `hm g hg hgc (K • x) (hC x (GlobalTheory.PlaceDatum.infPart_of_half hinf hx.1) hx.2.1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e2 : actO (GlobalTheory.Grid.neg A) WW g 1 x = x + (n₀ * (n * c) * M) • l`. Establish `e3 : K • actO (GlobalTheory.Grid.neg A) WW g 1 x = K • (x + (n₀ * (n * c) * M) • l)`. Rewrite using `[← actO_nsmul, e1, smul_add, smul_smul]`. Rewrite using `[← GlobalTheory.PlaceModel.inv_smul_nsmul (GlobalTheory.Grid.neg A) WW hK (actO (GlobalTheory.Grid.neg A) WW g 1 x), e3, GlobalTheory.PlaceModel.inv_smul_nsmul (GlobalTheory.Grid.neg A) WW hK]`. Use `StandardFirstTheta.GlobalTheory.CompanionTheory.StdFstTheta.stdFst_shift he hnI hl hcS A WW X.rA.β X.rW.β (W := fun i j => (M : Lev.EAf D) * frMapO A WW X.rA.β X.rW.β l i j) ⟨fun _ => hx.1, fun _ => isHalf_actO g 1 hx.1⟩ (fun i j => hB l hl' i j) fun i j => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2, GlobalTheory.PlaceDatum.frMapO_add]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `⟨(GlobalTheory.VacFixTarget.congGroup (GlobalTheory.Grid.neg A) m.factorial).comap (GlobalTheory.Grid.ofSgn true A).symm.toMonoidHom, (GlobalTheory.Grid.continuous_ofSgn_symm true A).isOpen_preimage _ (GlobalTheory.VacFixTarget.isOpen_congGroup (GlobalTheory.Grid.neg A) m.factori …` and prove the remaining obligations. Use `show GlobalTheory.Member.FinCong (GlobalTheory.Grid.neg A) m.factorial ((GlobalTheory.Grid.ofSgn true A).symm k)`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `finCong_of_mem_GinfC _ ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.SgnIdent.mem_GinfC_sgn, MulEquiv.apply_symm_apply]`. Conclude with `hk`. Establish `hκf : (GlobalTheory.Grid.ofSgn true A).symm k ∈ GfC (GlobalTheory.Grid.neg A)`. Rewrite using `[GlobalTheory.SgnIdent.mem_GfC_sgn, MulEquiv.apply_symm_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `hkf`. Establish `hκc : GlobalTheory.Member.FinCong (GlobalTheory.Grid.neg A) m.factorial ((GlobalTheory.Grid.ofSgn true A).symm k)` using `hkU`. Use `⟨fun u => ⟨fun hu => ?_, fun hu => ?_⟩, fun x => ?_⟩` and prove the remaining obligations. Take `⟨l, hl', e⟩` from `hm _ hκf hκc u hu`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `add_mem hu (nsmul_mem hl' _)`. Take `⟨l, hl', e⟩` from `hm _ (inv_mem hκf) (GlobalTheory.Member.PrincLevel.finCong_inv hκc) _ hu`. Establish `e'` using `GlobalTheory.WeilVacMove.actO_inv_actO ((GlobalTheory.Grid.ofSgn true A).symm k) (1 : GA D WW) u`. Rewrite `e'` using `[inv_one]`. Rewrite `e` using `[e']`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[e]`. Conclude with `add_mem hu (nsmul_mem hl' _)`. Rewrite using `[inv_one] set g := ((GlobalTheory.Grid.ofSgn true A).symm k)⁻¹ with hgdef`. Establish `hg : g ∈ GfC (GlobalTheory.Grid.neg A)` using `inv_mem hκf`. Establish `hgc : GlobalTheory.Member.FinCong (GlobalTheory.Grid.neg A) m.factorial g` using `GlobalTheory.Member.PrincLevel.finCong_inv hκc`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Distinguish the cases in `hx : IsHalf (X.e t) x ∧ IsIntM (frMapO A WW X.rA.β X.rW.β x) ∧ ∀ i j, A.rank ≤ i.1 → GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.InId (X.ideal (locPl G) t) (frMapO A WW X.rA.β X.rW.β x i j)`. Conclude with `key g hg hgc x hx`. Distinguish the cases in `hx' : IsHalf (X.e t) (actO (GlobalTheory.Grid.neg A) WW g 1 x) ∧ IsIntM (frMapO A WW X.rA.β X.rW.β (actO (GlobalTheory.Grid.neg A) WW g 1 x)) ∧ ∀ i j, A.rank ≤ i.1 → GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.InId (X.ideal (locPl G) t) (frMapO A WW X.rA.β X.rW.β (ac …`. Establish `h2` using `key g⁻¹ (inv_mem hg) (GlobalTheory.Member.PrincLevel.finCong_inv hgc) _ hx'`. Establish `e'` using `GlobalTheory.WeilVacMove.actO_inv_actO g (1 : GA D WW) x`.
-
-Rewrite `e'` using `[inv_one]`. Rewrite `h2` using `[e']`. Conclude with `h2.symm`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.stdFst`. Rewrite using `[if_neg hx, if_neg hx']`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stdFst_fixed : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {i j : Fin D.R.m}
     {A A' WW : HSp D} {X : Tri T A A' WW}, IsBottomTri W i j X → ∀ t : T,

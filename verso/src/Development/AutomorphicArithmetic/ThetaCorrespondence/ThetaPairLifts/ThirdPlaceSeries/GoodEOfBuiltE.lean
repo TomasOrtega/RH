@@ -14,11 +14,11 @@ open GlobalTheory.HeightCounting.Up GlobalTheory.Mem.SRe GlobalTheory.Mem.R3.Rw 
 open Formalism.BasicNotions.TH Formalism.L2.Theta GlobalTheory.Mem.Th
 namespace GlobalTheory.Mem.Top.Closing
 /- English proof (translation)
-Introduce `K B f T w Z c hc`. Take `⟨b, hb⟩` from `hc`. Take `⟨⟨nx⟩, hg⟩` from `hN _ _ _ _ _ _ _ _ _ _ _ _ _ b.nx.2`. Establish `ch : GlobalTheory.HeightCounting.ChoiceC (w.D Z) c.O.nch` using `b.nx.1.a.all.choice`. Use `⟨⟨⟨{ b with nx := ⟨b.nx.1, nx⟩ }, hb⟩, hg⟩, fun v hv => ⟨ch.conj v hv, ch.sd_conj v hv⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨I, hI, hI1, -⟩` from `hg.tw`. Use `⟨I.N0, I.S, ?_⟩` and prove the remaining obligations. Break down `I with ⟨E, N0, S'⟩` into its components or cases. Simplify using `only at hI`. Substitute `hI` using the available equality.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify by unfolding definitions. Substitute using the available equality.
 
-Conclude with `hI1`.
+A detailed English derivation is pending.
 -/
 theorem goodE_of_builtE_alt (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (N Ng : _root_.GlobalTheory.Mem.Top.Bl.NormChoiceExtension hL) (S : SExt) (Γ : GeoP)
     (hN : ∀ K B f T w Z Wt p0 t nch n xd c, Ng K B f T w Z Wt p0 t nch n xd c →

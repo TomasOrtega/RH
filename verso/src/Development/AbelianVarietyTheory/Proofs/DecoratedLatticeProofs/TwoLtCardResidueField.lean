@@ -7,15 +7,15 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.FinPl
 
 /- English proof (translation)
-Establish `h1 : v.valuation F (2 : F) = 1`. Establish `h2 : ¬ v.valuation F (algebraMap (𝓞 F) F 2) < 1` using `fun h3 => h ((v.valuation_lt_one_iff_mem (K := F) 2).1 h3)`. Establish `h3` using `v.valuation_le_one (K := F) 2`. Establish `h4` using `le_antisymm h3 (not_lt.1 h2)`. Simplify `h4` using `[map_ofNat]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h5 : (algebraMap F (Fv F v) (2 : F)⁻¹) ≤ᵥ algebraMap F (Fv F v) 1`. Rewrite using `[GlobalTheory.LocalData.complRel_algebraMap v, map_inv₀, h1, map_one, inv_one]`. Rewrite `h5` using `[Valuation.Compatible.vle_iff_le (v := valuation (Fv F v)), map_one, map_one]`. Establish `h6 : IsUnit (2 : 𝒪[Fv F v])`. Use `IsUnit.of_mul_eq_one ⟨_, (Valuation.mem_integer_iff _ _).2 h5⟩ (Subtype.ext ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `(2 : Fv F v) * algebraMap F (Fv F v) (2 : F)⁻¹ = 1`. Rewrite using `[← map_ofNat (algebraMap F (Fv F v)) 2, ← map_mul, mul_inv_cancel₀ two_ne_zero, map_one]`. Establish `h7 : (2 : IsLocalRing.ResidueField 𝒪[Fv F v]) ≠ 0`. Use `(h6.map (IsLocalRing.residue 𝒪[Fv F v])).ne_zero` as an intermediate fact. Rewrite `this` using `[map_ofNat]`. Then use the resulting hypothesis.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `letI := Fintype.ofFinite (IsLocalRing.ResidueField 𝒪[Fv F v])`. Rewrite using `[Nat.card_eq_fintype_card]`. Assume the negation of the conclusion as `hc`. Establish `h8 : Fintype.card (IsLocalRing.ResidueField 𝒪[Fv F v]) = 2` using `le_antisymm (not_lt.1 hc) Fintype.one_lt_card`. Establish `h9` using `FiniteField.cast_card_eq_zero (IsLocalRing.ResidueField 𝒪[Fv F v])`.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h9` using `[h8]`. Conclude with `h7 (by exact_mod_cast h9)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem two_lt_card_residueField (F : Type) [Field F] [NumberField F]
     (v : IsDedekindDomain.HeightOneSpectrum (𝓞 F)) (h : (2 : 𝓞 F) ∉ v.asIdeal) :

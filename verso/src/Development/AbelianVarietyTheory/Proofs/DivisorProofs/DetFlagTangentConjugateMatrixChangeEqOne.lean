@@ -17,9 +17,9 @@ open scoped Classical
 namespace GlobalTheory.KSChgDet
 
 /- English proof (translation)
-Take `⟨τ, a, b⟩` from `k`. Take `⟨τ', a', b'⟩` from `l`. Rewrite using `[FlagTan.ksChg_apply]`. Distinguish the cases in `h : τ = τ'`. Substitute `h` using the available equality.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[Matrix.blockDiagonal'_apply_eq]`. Simplify using `[Matrix.kroneckerMap_apply, Pi.single_apply, Sigma.mk.inj_iff, ite_and]`. Rewrite using `[Matrix.blockDiagonal'_apply_ne _ _ _ h]`. Simplify using `[Pi.single_apply, Sigma.mk.inj_iff, h]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ksChg_single_eq_blockDiagonal' {E : Type} [Field E] [NumberField E] [IsCMField E]
     {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} (K : Type) [Field K] (Φ : Finset (E →+* ℂ))
@@ -38,9 +38,9 @@ theorem ksChg_single_eq_blockDiagonal' {E : Type} [Field E] [NumberField E] [IsC
     simp [Pi.single_apply, Sigma.mk.inj_iff, h]
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw K _ g hg o`. Establish `hM : (Matrix.of fun i j => FlagTan.ksChg (psiSet H) g ((Pi.single (o j) 1 : HIx Dw (psiSet H) → K)) (o i)) = (Matrix.blockDiagonal' (fun τ : psiSet H => Matrix.kroneckerMap (· * ·) (g (conjEmb τ.1)).transpose (g τ.1).transpose)).submatrix o o`. Use extensionality with `i j`. Conclude with `ksChg_single_eq_blockDiagonal' K (psiSet H) g (o i) (o j)`. Rewrite using `[hM, Matrix.det_submatrix_equiv_self, GlobalTheory.Div.BlockChangeDet.det_blockDiagonal'_eq_prod]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.det_kronecker, Matrix.det_transpose, hg]`.
+A detailed English derivation is pending.
 -/
 theorem det_ksChg_eq_one : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H} (K : Type) [Field K] (g : ∀ σ : E →+* ℂ, Matrix (Fin (Dw.mult σ)) (Fin (Dw.mult σ)) K),

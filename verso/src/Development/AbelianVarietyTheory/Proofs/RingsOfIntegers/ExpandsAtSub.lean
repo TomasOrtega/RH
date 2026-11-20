@@ -11,7 +11,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Substitute `h` using the available equality. Unfold `gs`. Apply the tactic sequence `split_ifs <;> simp [map_sub]`.
+Substitute using the available equality. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gs_of_eq_sub {X Z : Scheme.{0}} (r : Z ⟶ X) (z : Z) (V : X.Opens) {a b c : Γ(X, V)} (h : a = b - c) :
     gs r z V a = gs r z V b - gs r z V c := by
@@ -20,17 +20,15 @@ theorem gs_of_eq_sub {X Z : Scheme.{0}} (r : Z ⟶ X) (z : Z) (V : X.Opens) {a b
   split_ifs <;> simp [map_sub]
 
 /- English proof (translation)
-Introduce `R _ _ I D A G _ _ U e k σ₁ σ₂ σ f₁ f₂ f hσ hf h₁ h₂`. Take `⟨S₁, H₁⟩` from `ReciprocityTheory.ChartRestriction.G.DVR.expandsAt_val U e k σ₁ f₁ h₁`. Take `⟨S₂, H₂⟩` from `ReciprocityTheory.ChartRestriction.G.DVR.expandsAt_val U e k σ₂ f₂ h₂`. Use `ReciprocityTheory.ChartRestriction.G.DVR.expandsAt_of_val U e k σ f (S₁ ∪ S₂) ?_` and prove the remaining obligations. Introduce `y J hJ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨z1, e1⟩` from `H₁ _ (𝟙 _) y J hJ`. Take `⟨z2, e2⟩` from `H₂ _ (𝟙 _) y J hJ`. Simplify using `only [Category.id_comp] at z1 z2 e1 e2`. Establish `hs : ∀ α, sval (f α) (ReciprocityTheory.ChartRestriction.G.DVR.pGl U e) y J = sval (f₁ α) (ReciprocityTheory.ChartRestriction.G.DVR.pGl U e) y J - sval (f₂ α) (ReciprocityTheory.ChartRestriction.G.DVR.pGl U e) y J`. Introduce `α`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `first`. Consider the case `exact gs_of_eq_sub _ _ _ (hf α _)`. Consider the case `(unfold sval; exact gs_of_eq_sub _ _ _ (hf α _))`. Consider the case `(simp only [sval]; exact gs_of_eq_sub _ _ _ (hf α _))`. Use `⟨fun α hα => ?_, fun jL hjL => ?_⟩` and prove the remaining obligations.
+Treat this case separately. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs α, z1 α (fun h => hα (Finset.mem_union_left _ h)), z2 α (fun h => hα (Finset.mem_union_right _ h)), sub_zero]`. Establish `hsv : ReciprocityTheory.ChartRestriction.G.DVR.sv U k σ (ReciprocityTheory.ChartRestriction.G.DVR.fGl I G e) y jL = ReciprocityTheory.ChartRestriction.G.DVR.sv U k σ₁ (ReciprocityTheory.ChartRestriction.G.DVR.fGl I G e) y jL - ReciprocityTheory.ChartRestriction.G.DVR.sv U k σ₂ (R …`. Unfold `ReciprocityTheory.ChartRestriction.G.DVR.sv`. Conclude with `gs_of_eq_sub _ _ _ (hσ _)`. Establish `s1` using `Finset.sum_subset (Finset.subset_union_left (s₂ := S₂)) (fun α (_ : α ∈ S₁ ∪ S₂) (hα : α ∉ S₁) => show sval (f₁ α) (ReciprocityTheory.ChartRestriction.G.DVR.pGl U e) y J * (val (ReciprocityTheory.ChartRestriction.G.DVR.tG U e α) (𝟙 _) y J).val = 0 by`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[z1 α hα, zero_mul])`. Establish `s2` using `Finset.sum_subset (Finset.subset_union_right (s₁ := S₁)) (fun α (_ : α ∈ S₁ ∪ S₂) (hα : α ∉ S₂) => show sval (f₂ α) (ReciprocityTheory.ChartRestriction.G.DVR.pGl U e) y J * (val (ReciprocityTheory.ChartRestriction.G.DVR.tG U e α) (𝟙 _) y J).val = 0 by`. Rewrite using `[z2 α hα, zero_mul])`. Rewrite using `[hsv, mul_sub, e1 jL hjL, e2 jL hjL, s1, s2, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl (fun α _ => ?_)` and prove the remaining obligations.
-
-Rewrite using `[hs α, sub_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem expandsAt_sub : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D : DegData R I)
     (A : PolAV (Spec (CommRingCat.of (FractionRing R)))) (G : Over (Spec (CommRingCat.of R))) [GrpObj G]

@@ -19,9 +19,9 @@ def sys (L : LocAll (lay0 D)) (i : L.X.nd.Loc) (x : L.X.nd.X i) : PlE D.host →
   else 0
 
 /- English proof (translation)
-Take `⟨Sp, -, -⟩` from `hB`. Establish `hw : L.X.nd.w i = w` using `((L.X.nd.locs_mem j w i).1 hi).2`. Establish `hl : L.X.nd.l i = D.what₂.places.resChar w` using `by rw [← hw]; exact (L.X.nd.w_l i).symm`. Establish `hQ : L.X.nd.Q i = C.Q w` using `(Sp.Q_eq j w i hi).trans (Sp.Qc_eq j w)`. Establish `hS : v ∈ L.X.nd.S i ↔ v ∈ placesS D (L.X.nd.l i)` using `L.X.nd.S_def i v`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `SplitOut GenAt`. Rewrite using `[hS, ← hl, ← hQ]`. The claim follows by propositional logic.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. The claim follows by propositional logic.
 -/
 theorem splitOut_iff_genAt {cf : CharFrame D} {jE : D.host.E →+* Qb} {A : SideA D cf jE} {M : MtFam D} {C : NChoice D}
     {tup : D.what₂.Tup → Fin D.R.m → HChar D.host.E} {big : D.what₂.places.Pl → Finset ℂ} {L : LocAll (lay0 D)}
@@ -38,7 +38,7 @@ theorem splitOut_iff_genAt {cf : CharFrame D} {jE : D.host.E →+* Qb} {A : Side
   tauto
 
 /- English proof (translation)
-Unfold `sys`. Rewrite using `[if_pos ((splitOut_iff_genAt hB hi v k).2 h)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem sys_of_genAt {cf : CharFrame D} {jE : D.host.E →+* Qb} {A : SideA D cf jE} {M : MtFam D} {C : NChoice D}
     {tup : D.what₂.Tup → Fin D.R.m → HChar D.host.E} {big : D.what₂.places.Pl → Finset ℂ} {L : LocAll (lay0 D)}
@@ -50,7 +50,7 @@ theorem sys_of_genAt {cf : CharFrame D} {jE : D.host.E →+* Qb} {A : SideA D cf
   rw [if_pos ((splitOut_iff_genAt hB hi v k).2 h)]
 
 /- English proof (translation)
-Unfold `sys`. Rewrite using `[if_neg (fun h' => h ((splitOut_iff_genAt hB hi v k).1 h'))]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem sys_of_not_genAt {cf : CharFrame D} {jE : D.host.E →+* Qb} {A : SideA D cf jE} {M : MtFam D} {C : NChoice D}
     {tup : D.what₂.Tup → Fin D.R.m → HChar D.host.E} {big : D.what₂.places.Pl → Finset ℂ} {L : LocAll (lay0 D)}
@@ -61,11 +61,11 @@ theorem sys_of_not_genAt {cf : CharFrame D} {jE : D.host.E →+* Qb} {A : SideA 
   rw [if_neg (fun h' => h ((splitOut_iff_genAt hB hi v k).1 h'))]
 
 /- English proof (translation)
-Use `⟨fun v k h => sys_of_not_genAt hB hi x h, ?_⟩` and prove the remaining obligations. Establish `hB'` using `hB`. Take `⟨Sp, ⟨Au⟩, -⟩` from `hB'`. Take `⟨hj, hw⟩` from `(L.X.nd.locs_mem j w i).1 hi`. Substitute `hj hw` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Substitute using the available equality.
 
-Take `⟨P, hP⟩` from `L.Y.naut.pt_surj i x`. Establish `key : ∃ y : D.what₂.Mt (L.X.nd.mu i) (L.X.nd.j i), y ≠ 0 ∧ ∀ (v : PlE D.host) (k : ℕ) (s : SplitPlace D.host.E) (ϖ : s.v.adicCompletion (maximalRealSubfield D.host.E)), GenAt D (D.what₂.places.resChar (L.X.nd.w i)) (C.Q (L.X.nd.w i)) v k → IsConjPl D.host v s.w → IsUnif D.host.E …`. Take `⟨y, hy, hy0⟩` from `(Submodule.ne_bot_iff _).1 (L.Y.naut.typeV_ne i P)`. Use `⟨y, hy0, fun v k s ϖ hg hc hu => ?_⟩` and prove the remaining obligations. Take `⟨hso, k1, k2⟩` from `(splitOut_iff_genAt hB hi v k).2 hg`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[sys_of_genAt hB hi x hg]`. Conclude with `(Au.ptV i P x).1 hP v k s ϖ hso hc hu k1 k2 y hy`. Rewrite `key` using `[L.X.nd.mu_w i]`. Conclude with `key`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sys_mem {cf : CharFrame D} {jE : D.host.E →+* Qb} {A : SideA D cf jE} {M : MtFam D} {C : NChoice D}
     {tup : D.what₂.Tup → Fin D.R.m → HChar D.host.E} {big : D.what₂.places.Pl → Finset ℂ} {L : LocAll (lay0 D)}
@@ -93,7 +93,7 @@ theorem sys_mem {cf : CharFrame D} {jE : D.host.E →+* Qb} {A : SideA D cf jE} 
   exact key
 
 /- English proof (translation)
-Introduce `a b h`. Unfold `iotaO at h`. Simplify using `only [RingHom.coe_comp, Function.comp_apply] at h`. Conclude with `IsFractionRing.injective (L.X.nd.O i) (FractionRing (L.X.nd.O i)) ((L.Y.naut.iotaQ i).injective ((L.Y.naut.iotaQC i).injective h))`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem iotaO_injective (L : LocAll (lay0 D)) (i : L.X.nd.Loc) : Function.Injective (iotaO L.X.nd L.Y.naut i) := by
   intro a b h
@@ -103,11 +103,11 @@ theorem iotaO_injective (L : LocAll (lay0 D)) (i : L.X.nd.Loc) : Function.Inject
     ((L.Y.naut.iotaQ i).injective ((L.Y.naut.iotaQC i).injective h))
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Take `⟨f, hf, hfx⟩` from `L.X.nd.T_sep i x x' hne`. Apply `hfx` to reduce the goal to its premises. Set `E : Subalgebra (L.X.nd.O i) (L.X.nd.X i → L.X.nd.O i)` to `AlgHom.equalizer (Pi.evalAlgHom (L.X.nd.O i) (fun _ => L.X.nd.O i) x) (Pi.evalAlgHom (L.X.nd.O i) (fun _ => L.X.nd.O i) x')`. Establish `hle : L.X.nd.T i ≤ E`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← L.X.nd.T_gen i, Algebra.adjoin_le_iff]`. Introduce and unpack `g ⟨v, k, hs, hl, hS, hQ, k1, k2, rfl⟩`. Establish `hv : SplitOut L.X.nd i v ∧ 1 ≤ k ∧ k ≤ D.R.nV` using `⟨⟨hs, hl, hS, hQ⟩, k1, k2⟩`. Use `congrFun (congrFun h v) k` as an intermediate fact. Unfold `sys at this`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite `this` using `[if_pos hv, if_pos hv]`. Conclude with `iotaO_injective L i this`. Conclude with `hle hf`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sys_inj (L : LocAll (lay0 D)) (i : L.X.nd.Loc) {x x' : L.X.nd.X i} (h : sys L i x = sys L i x') : x = x' := by
   by_contra hne

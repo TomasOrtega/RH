@@ -10,9 +10,9 @@ noncomputable section
 namespace GlobalTheory.EtC
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `a b`. Use `Cochain.ext _ _ (fun p q hpq => ?_)` and prove the remaining obligations. Distinguish the cases in `hp : 0 < p`. Establish `hz : IsZero (((chains R).obj E).X p)` using `HomologicalComplex.isZero_extend_X ((chainsN R).obj E) ComplexShape.embeddingDownNat p (fun i hi => by`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `-(i : ℤ) = p at hi`. Use the proof step `omega)`. Conclude with `hz.eq_of_src _ _`. Establish `hz : IsZero (I.X q)` using `I.isZero_of_isStrictlyGE 0 q (by omega)`. Conclude with `hz.eq_of_tgt _ _`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cochain_chains_subsingleton {R : Type} [CommRing R] (E : Spc) (I : Cx R) (hI : I.IsStrictlyGE 0) (n : ℤ)
     (hn : n < 0) : Subsingleton (Cochain ((chains R).obj E) I n) := by
@@ -29,9 +29,9 @@ theorem cochain_chains_subsingleton {R : Type} [CommRing R] (E : Spc) (I : Cx R)
     exact hz.eq_of_tgt _ _
 
 /- English proof (translation)
-Rewrite using `[CochainComplex.isStrictlyGE_iff]`. Introduce `n hn`. Establish `hpre : IsZero (cotPre R q N I n)`. Use `Functor.isZero _ (fun U => ?_)` and prove the remaining obligations. Establish `h` using `cochain_chains_subsingleton (sch.obj U.unop ⨯ fibQ q N) I hI n hn`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `letI : Subsingleton ((cotPre R q N I n).obj U) := h`. Conclude with `ModuleCat.isZero_of_subsingleton _`. Conclude with `(presheafToSheaf Scheme.etaleTopology.{0} _).map_isZero hpre`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem Jcx_isStrictlyGE (R : Type) [CommRing R] (q N : ℕ) (I : Cx R) (hI : I.IsStrictlyGE 0) :
     (Jcx R q N I).IsStrictlyGE 0 := by

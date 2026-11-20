@@ -20,9 +20,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.EisRuleProof
 
 /- English proof (translation)
-Rewrite using `[← NumberField.Embeddings.card F ℂ]`. Use `Fintype.card_of_bijective (f := fun τ : F →+* ℝ ↦ (Complex.ofRealHom.comp τ : F →+* ℂ)) ⟨?_, ?_⟩` and prove the remaining obligations. Introduce `τ τ' hτ`. Use extensionality with `y`. Use `DFunLike.congr_fun hτ y` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `using this`. Introduce `φ`. Establish `hr : NumberField.ComplexEmbedding.IsReal φ` using `IsTotallyReal.complexEmbedding_isReal φ`. Conclude with `⟨hr.embedding, by ext y; simp⟩`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem card_emb (F : Type) [Field F] [NumberField F] [IsTotallyReal F] :
     Fintype.card (F →+* ℝ) = Module.finrank ℚ F := by
@@ -37,7 +37,7 @@ theorem card_emb (F : Type) [Field F] [NumberField F] [IsTotallyReal F] :
     exact ⟨hr.embedding, by ext y; simp⟩
 
 /- English proof (translation)
-Use `⟨h.1.const_mul K, fun a b c d hm z hz ↦ ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[h.2 a b c d hm z hz]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem isHolForm_mul {F : Type} [Field F] [NumberField F] {𝔞 𝔟 : FracId F} {k : ℕ}
     {g : ((F →+* ℝ) → ℂ) → ℂ} (h : IsHolForm 𝔞 𝔟 k g) (K : ℂ) : IsHolForm 𝔞 𝔟 k (fun z ↦ K * g z) := by
@@ -46,14 +46,14 @@ theorem isHolForm_mul {F : Type} [Field F] [NumberField F] {𝔞 𝔟 : FracId F
   rw [h.2 a b c d hm z hz]; ring
 
 /- English proof (translation)
-Unfold `GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.dF`. Conclude with `abs_pos.2 (by exact_mod_cast NumberField.discr_ne_zero F)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem dF_pos (F : Type) [Field F] [NumberField F] : (0 : ℝ) < GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.dF F := by
   unfold GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.dF
   exact abs_pos.2 (by exact_mod_cast NumberField.discr_ne_zero F)
 
 /- English proof (translation)
-Establish `hn : GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.nrm 𝔞 ≠ 0`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.nrm`. Conclude with `mt FractionalIdeal.absNorm_eq_zero_iff.1 𝔞.ne_zero` after adjusting the coercions. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.omegaFactor`. Conclude with `mul_ne_zero (Real.rpow_pos_of_pos (dF_pos F) _).ne' hn` after adjusting the coercions.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem omegaFactor_ne_zero {F : Type} [Field F] [NumberField F] (𝔞 : FracId F) :
     (GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.omegaFactor 𝔞 : ℂ) ≠ 0 := by
@@ -64,7 +64,7 @@ theorem omegaFactor_ne_zero {F : Type} [Field F] [NumberField F] (𝔞 : FracId 
   exact_mod_cast mul_ne_zero (Real.rpow_pos_of_pos (dF_pos F) _).ne' hn
 
 /- English proof (translation)
-Establish `: (0 : ℝ) < GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.cK F k`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.cK`. Conclude with `mul_pos (pow_pos (Nat.cast_pos.2 (Nat.factorial_pos _)) _) (Real.rpow_pos_of_pos (dF_pos F) _)`. Conclude with `this.ne'` after adjusting the coercions.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem cK_ne_zero (F : Type) [Field F] [NumberField F] (k : ℕ) : (GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.cK F k : ℂ) ≠ 0 := by
   have : (0 : ℝ) < GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.cK F k := by
@@ -77,57 +77,53 @@ def smulGen {F : Type} [Field F] [NumberField F] {𝔠 : FracId F} {X : Obj F �
   ⟨c • δ.1, by rw [Submodule.span_singleton_smul_eq (IsUnit.mk0 c hc)]; exact δ.2⟩
 
 /- English proof (translation)
-Apply the tactic sequence `rcases Int.units_eq_one_or x with h | h <;> simp [h, pow_mul]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sign_pow_even (x : ℤˣ) (s : ℕ) : ((x : ℤ) : ℂ) ^ (2 * s) = 1 := by
   rcases Int.units_eq_one_or x with h | h <;> simp [h, pow_mul]
 
 /- English proof (translation)
-Introduce `E _ _ _ hf 𝔠 s hs zv hzv R₀ m hm hmz`. Establish `key : ∀ 𝔞 𝔟 𝔠' : FracId (FR E), 𝔠' = 𝔞 * 𝔟⁻¹ → ∃ r : Rule (trivialObjectCondition 𝔠') R₀ (2 * s), ∀ (I : Type) [Fintype I] (φ : I → E →+* ℂ) (c : Ideal (OF E)) (y : (Af E)ˣ), IsCMType φ → c ≠ ⊥ → IsEisRule φ (lattice c y) m r`. Introduce `𝔞 𝔟 𝔠' h𝔠`. Substitute `h𝔠` using the available equality. Establish `e : Fin (Module.finrank ℚ (FR E)) ≃ (FR E →+* ℝ)` using `(Fintype.equivFinOfCardEq (card_emb (FR E))).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact.
 
-Take `⟨G, hG, hGd, hGexp⟩` from `hExp (FR E) hf 𝔞 𝔟 s hs`. Establish `hGmod` using `hMod (FR E) 𝔞 𝔟 s hs G hG hGd`. Take `⟨Z, a, hZ, hfo, ha0, hint⟩` from `hFour (FR E) 𝔞 𝔟 (2 * s) (by omega) G hGexp`. Establish `hω0` using `omegaFactor_ne_zero 𝔞`. Establish `hck0` using `cK_ne_zero (FR E) (2 * s)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set ω : ℂ := (GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.omegaFactor 𝔞 : ℂ) with hω`. Use `set ck : ℂ := (GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.cK (FR E) (2 * s) : ℂ) with hck`. Establish `hcw : (cWt E (2 * s) : ℂ) = ck` using `rfl`. Use `set gF : ((FR E →+* ℝ) → ℂ) → ℂ := fun z ↦ (m * ck / ω ^ (2 * s)) * G z with hgFdef`. Establish `hgF : IsHolForm 𝔞 𝔟 (2 * s) gF` using `isHolForm_mul hGmod _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hfoF : HasFourier 𝔞 𝔟 gF (fun ξ ↦ m * a ξ)`. Introduce `z hz`. Use `(hfo z hz).mul_left m` as an intermediate fact. Apply the tactic sequence `convert this using 1 <;> first | rfl | (funext ξ; ring) | (simp only [gF]; ring)`. Establish `hcoef : ∀ ξ, m * a ξ ∈ R₀`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Introduce `ξ`. Distinguish the cases in `hξ : ξ = 0`. Substitute `hξ` using the available equality. Rewrite using `[ha0]`. Take `⟨Z', hZ', hZ'v⟩` from `hzv (ClassGroup.mk (FR E) 𝔞)⁻¹`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hne : (1 - ((2 * s : ℕ) : ℂ)) ∈ ({1}ᶜ : Set ℂ)`. Establish `: ((2 * s : ℕ) : ℂ) ≠ 0` using `by exact_mod_cast (by omega : 2 * s ≠ 0)`. Simplify using `using this`. Establish `heq` using `GlobalTheory.IndefiniteRowSideFullHecke.ZetaValueIdeals.IsClassZeta.eqOn (F := FR E) ⟨hZ.1, hZ.2⟩ ⟨hZ'.1, hZ'.2⟩ hne`. Rewrite using `[heq, hZ'v]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h5 : m * ((2 : ℂ)⁻¹ ^ Module.finrank ℚ (FR E) * ((zv (ClassGroup.mk (FR E) 𝔞)⁻¹ : ℚ) : ℂ)) = m * (((zv (ClassGroup.mk (FR E) 𝔞)⁻¹ / 2 ^ Module.finrank ℚ (FR E) : ℚ)) : ℂ)`. Rewrite using `[Rat.cast_div, Rat.cast_pow, Rat.cast_ofNat, div_eq_mul_inv, inv_pow]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h5]`. Conclude with `hmz _`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨n, hn⟩` from `hint ξ hξ`. Rewrite using `[hn]`. Conclude with `R₀.mul_mem hm (intCast_mem R₀ n)`. Take `⟨r, hrv, -⟩` from `hQ (FR E) hf e 𝔞 𝔟 (2 * s) R₀ gF (fun ξ ↦ m * a ξ) hgF hfoF hcoef`. Use `⟨r, fun I _ φ c y hφ hc ↦ ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `g hg z hz X U δ C hdet`. Take `⟨e', τ, lam, he', hτ, hlam, hΛ, htp⟩` from `hTor E I 𝔞 𝔟 φ c y hφ hc z hz X U`. Establish `hgz` using `GlobalTheory.T.polydisc_cm_uniformization E I 𝔞 𝔟 φ c y hφ hc s hs z hz U.e e' τ lam he' hτ hlam (fun w ↦ (U.lat w).symm.trans (hΛ w)) G hG g hg`. Establish `hlamp : ∏ j, lam j ≠ 0` using `Finset.prod_ne_zero_iff.2 fun j _ ↦ hlam j`. Use `set K : ℂ := ω / ∏ j, lam j with hK`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hK0 : K ≠ 0` using `div_ne_zero hω0 hlamp`. Establish `hval : ∀ δ' : X.DetGen, U.IsDet δ'.1 K → r.val ℂ X trivial δ' = gF τ`. Introduce `δ' hδ'`. Establish `htp'` using `htp δ'.1 hδ'`. Set `π : Equiv.Perm (Fin (Module.finrank ℚ (FR E)))` to `e.trans e'.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hπ : π.trans e' = e` using `by ext j; simp [π]`. Establish `hA` using `GlobalTheory.T.torus_point_permutation_sign (FR E) e' π 𝔞 𝔟 τ X δ'.1 htp'`. Rewrite `hA` using `[hπ]`. Establish `hsg : (((Equiv.Perm.sign π : ℤˣ) : ℤ) : ℂ) ≠ 0`. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign π) with h | h <;> simp [h]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `hrv τ hτ X trivial (smulGen δ' _ hsg) hA`. Establish `h2` using `r.homog ℂ X trivial δ' (smulGen δ' _ hsg) _ rfl`. Rewrite `h2` using `[sign_pow_even, _root_.one_mul]`. Rewrite using `[← h2, h1]`. Distinguish the cases in `hdeg : ∃ (v : Fin (Module.finrank ℚ (FR E)) → X.Lie) (W : Matrix (Fin (Module.finrank ℚ (FR E))) (Fin (Module.finrank ℚ (FR E))) ℂ), (∀ j, U.u.IsDiff (W j) (v j).hom) ∧ W.det ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨v, W, hv, hW⟩` from `hdeg`. Establish `hδv` using `GlobalTheory.T.determinant_nonzero_differentials (FR E) _ X _ U.u δ v W hv hW`. Establish `hC : C ≠ 0`. Introduce `h0`. Apply `hδv` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Rewrite using `[hdet v W hv, h0, zero_mul]`. Establish `hδ' : U.IsDet (smulGen δ (K / C) (div_ne_zero hK0 hC)).1 K`. Introduce `v W hv`. Use `show ((K / C) • δ.1) v = K * W.det`. Rewrite using `[AlternatingMap.smul_apply, hdet v W hv, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Clear the denominators using the available nonvanishing facts. Establish `h1` using `hval _ hδ'`. Establish `h2` using `r.homog ℂ X trivial δ (smulGen δ (K / C) (div_ne_zero hK0 hC)) (K / C) rfl`. Rewrite `h2` using `[h1]`. Establish `hCK : C ^ (2 * s) * (K / C) ^ (2 * s) = K ^ (2 * s)`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[← mul_pow]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Rewrite using `[← h2, ← _root_.mul_assoc, hCK, hgz, hcw, hK, hgFdef]`. Simplify using `only`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[div_pow, inv_pow]`. Clear the denominators using the available nonvanishing facts. Use `push_neg at hdeg`. Establish `hδK : U.IsDet δ.1 K` using `fun v W hv ↦ by rw [hdet v W hv, hdeg v W hv]; simp`. Establish `hδ2 : U.IsDet (smulGen δ 2 two_ne_zero).1 K`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `v W hv`. Use `show ((2 : ℂ) • δ.1) v = K * W.det`. Rewrite using `[AlternatingMap.smul_apply, hdet v W hv, hdeg v W hv]`. Simplify using the standard rewrite rules. Establish `h1` using `hval _ hδK`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `hval _ hδ2`. Establish `h3` using `r.homog ℂ X trivial δ (smulGen δ 2 two_ne_zero) 2 rfl`. Rewrite `h3` using `[h1, h2]`. Establish `hg0 : gF τ = 0`. Establish `h4 : ((2 : ℂ) ^ (2 * s) - 1) * gF τ = 0` using `by rw [sub_mul, h3]; ring`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `(mul_eq_zero.1 h4).resolve_left ?_` and prove the remaining obligations. Establish `: (1 : ℝ) < 2 ^ (2 * s)` using `one_lt_pow₀ (by norm_num) (by omega)`. Introduce `h5`. Establish `h6 : (2 : ℂ) ^ (2 * s) = 1` using `sub_eq_zero.1 h5`. Establish `h7 : ((2 : ℝ) ^ (2 * s) : ℂ) = 1` using `by push_cast; exact h6`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h8 : (2 : ℝ) ^ (2 * s) = 1` using `by exact_mod_cast h7`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hmG : m * G τ = 0`. Simplify using `only [gF] at hg0`. Use `mul_eq_zero.1 hg0` as an intermediate fact.
-
-Break down `this with h | h` into its components or cases. Break down `mul_eq_zero.1 (div_eq_zero_iff.1 h |>.resolve_right (pow_ne_zero _ hω0)) with h' | h'` into its components or cases. Rewrite using `[h', zero_mul]`. Conclude with `absurd h' hck0`. Rewrite using `[h, mul_zero]`.
-
-Rewrite using `[h1, hgz, hg0, mul_zero]`. Take the linear combination `(-(cWt E (2 * s) : ℂ) * ((∏ j, lam j)⁻¹) ^ (2 * s)) * hmG`. Conclude with `key 𝔠 1 𝔠 (by simp)`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem eisRule_of (hQ : GlobalTheory.RealMult.QExpansionOnAll) (hExp : EisExp) (hMod : EisMod) (hFour : EisFourier)
     (hTor : TorusForm) : EisRule := by

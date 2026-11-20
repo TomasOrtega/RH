@@ -20,19 +20,19 @@ section FrobF
 attribute [local instance] Matrix.frobeniusNormedAddCommGroup Matrix.frobeniusNormedRing Matrix.frobeniusNormedAlgebra
 
 /- English proof (translation)
-The claim follows from `S7.sqrt_hs_frobVG a`.
+A detailed English derivation is pending.
 -/
 lemma frob_eq_norm {n : ℕ} (a : Matrix (Fin n) (Fin n) ℂ) : frob a = ‖a‖ := S7.sqrt_hs_frobVG a
 
 /- English proof (translation)
-Rewrite using `[frob_eq_norm, frob_eq_norm, frob_eq_norm]`. Conclude with `Matrix.frobenius_norm_mul a b`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frob_mul_le {n : ℕ} (a b : Matrix (Fin n) (Fin n) ℂ) : frob (a * b) ≤ frob a * frob b := by
   rw [frob_eq_norm, frob_eq_norm, frob_eq_norm]
   exact Matrix.frobenius_norm_mul a b
 
 /- English proof (translation)
-Use `show Real.sqrt (S7.hs _) ≤ _`. Rewrite using `[S7.hs_kmulVG, S7.sqrt_hs_frobVG, S7.sqrt_hs_frobVG]`. Conclude with `S7.norm_exp_frobVG X`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frob_kexp_le {n : ℕ} (ε : Fin n → Bool) (k : S7.KG ε) (X : Matrix (Fin n) (Fin n) ℂ)
     (hX : inP ε X) :
@@ -51,17 +51,17 @@ Both sides reduce to the same expression.
 lemma frob_eq_sqrt_hs {n : ℕ} (a : Matrix (Fin n) (Fin n) ℂ) : frob a = Real.sqrt (S7.hs a) := rfl
 
 /- English proof (translation)
-Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma norm_sgn {n : ℕ} (ε : Fin n → Bool) (a : Fin n) : ‖(if ε a then (1 : ℂ) else -1)‖ = 1 := by
   split_ifs <;> simp
 
 /- English proof (translation)
-Use `set i0 : Fin n := ⟨0, hn⟩`. Establish `hg' : gᴴ * Jm ε * g = Jm ε` using `hg`. Establish `h` using `congrFun (congrFun hg' i0) i0`. Rewrite `h` using `[Matrix.mul_apply]`. Simplify using `only [Jm, Matrix.mul_diagonal, Matrix.diagonal_apply_eq, Matrix.conjTranspose_apply] at h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : (1 : ℝ) ≤ ∑ x, ‖g x i0‖ ^ 2`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_mul, norm_sgn, norm_star]`. Expand and normalize the polynomial expressions, which then agree.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `h2 : ∑ x, ‖g x i0‖ ^ 2 ≤ ∑ i, ∑ j, ‖g i j‖ ^ 2` using `Finset.sum_le_sum fun x _ => Finset.single_le_sum (f := fun j => ‖g x j‖ ^ 2) (fun j _ => sq_nonneg _) (Finset.mem_univ i0)`. Unfold `frob`. Rewrite using `[show (1 : ℝ) = Real.sqrt 1 by simp]`. Conclude with `Real.sqrt_le_sqrt (h1.trans h2)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_le_frob {n : ℕ} (hn : 0 < n) (ε : Fin n → Bool) (g : Matrix (Fin n) (Fin n) ℂ)
     (hg : g ∈ UJset ε) : 1 ≤ frob g := by
@@ -86,9 +86,9 @@ theorem one_le_frob {n : ℕ} (hn : 0 < n) (ε : Fin n → Bool) (g : Matrix (Fi
   exact Real.sqrt_le_sqrt (h1.trans h2)
 
 /- English proof (translation)
-Establish `hl` using `S7.left_inv_of_inUJ ε g hg`. Rewrite using `[Matrix.inv_eq_left_inv hl]`. Unfold `frob`. Use `congr 1`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [Jm, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.conjTranspose_apply, norm_mul, norm_star, norm_sgn, one_mul, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem frob_inv {n : ℕ} (ε : Fin n → Bool) (g : Matrix (Fin n) (Fin n) ℂ) (hg : g ∈ UJset ε) :
     frob g⁻¹ = frob g := by
@@ -103,23 +103,21 @@ theorem frob_inv {n : ℕ} (ε : Fin n → Bool) (g : Matrix (Fin n) (Fin n) ℂ
     norm_sgn, one_mul, mul_one]
 
 /- English proof (translation)
-Establish `hn : 0 < n`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. It suffices to derive a contradiction. Simplify using `[S7.q0, pOf] at hq`. Conclude with `hn`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `set r := Real.sqrt (2 * (S7.q0 ε : ℝ)) with hr`. Use `set a := h / (8 * r) with ha`. Establish `hq1 : (1 : ℝ) ≤ S7.q0 ε` using `by exact_mod_cast hq`. Establish `hr1 : 1 ≤ r` using `by rw [hr, Real.one_le_sqrt]; linarith`. Establish `ha0 : 0 ≤ a` using `by rw [ha]; positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hsn : 0 < Real.sqrt n` using `Real.sqrt_pos.2 (by exact_mod_cast hn)`. Use `⟨Real.exp a * Real.sqrt n ^ a, fun g hg => ?_⟩` and prove the remaining obligations. Take `⟨k, X, hX, rfl⟩` from `S7.polar_exists hg`. Establish `hb` using `S7.psiM_dec T μ hμ hlam hgap hq k hX`. Use `set s := Real.sqrt (S7.hs X) with hsdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs0 : 0 ≤ S7.hs X` using `S7.hs_nonnegVG X`. Establish `hs0' : 0 ≤ s` using `Real.sqrt_nonneg _`. Establish `hss : S7.hs X = s ^ 2` using `(Real.sq_sqrt hs0).symm`. Use `set m := min (S7.hs X) (s / r) with hm`. Establish `hkey : a * s - a ≤ (h / 8) * m`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `has : a * s = (h / 8) * (s / r)` using `by rw [ha]; field_simp`. Distinguish the cases in `hc : 1 ≤ s * r`. Establish `hle : s / r ≤ S7.hs X`. Rewrite using `[hss, div_le_iff₀ (by linarith)]; nlinarith`. Rewrite using `[hm, min_eq_right hle, ← has]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `push_neg at hc`. Establish `hs1 : s < 1` using `by nlinarith`. Establish `hm0 : 0 ≤ m` using `le_min hs0 (div_nonneg hs0' (by linarith))`. Use polynomial arithmetic with `[mul_nonneg (by linarith : (0 : ℝ) ≤ h / 8) hm0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hF` using `frob_kexp_le ε k X hX`. Establish `hF1` using `one_le_frob hn ε _ hg`. Establish `h1 : (Real.sqrt n * Real.exp s) ^ (-a) ≤ frob (S7.toMK k * NormedSpace.exp X) ^ (-a)` using `Real.rpow_le_rpow_of_nonpos (by linarith) hF (by linarith)`. Establish `h2 : (Real.sqrt n * Real.exp s) ^ (-a) = (Real.sqrt n ^ a)⁻¹ * Real.exp (-(a * s))`. Rewrite using `[Real.mul_rpow hsn.le (Real.exp_pos _).le, ← Real.exp_mul, Real.rpow_neg hsn.le]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Establish `hpa : 0 < Real.sqrt n ^ a` using `Real.rpow_pos_of_pos hsn a`. Establish `hm' : -(h / 8) * m = -((h / 8) * m)` using `by ring`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[sub_eq_add_neg, Real.exp_add]`. Clear the denominators using the available nonvanishing facts. Use `_ ≤ Real.exp a * Real.sqrt n ^ a * frob (S7.toMK k * NormedSpace.exp X) ^ (-a) := by`. Rewrite using `[← h2]; exact mul_le_mul_of_nonneg_left h1 (by positivity)`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiM_frob_dec {n : ℕ} (ε : Fin n → Bool) (lam : Fin n → ℝ) (h : ℝ) (T : S7.KType ε (lowK ε lam))
     (μ : Fin n → ℤ) (hlam : S7.IsHCParam lam) (hgap : GapAtLeast ε lam h) (hh : 0 < h)
@@ -171,27 +169,25 @@ theorem psiM_frob_dec {n : ℕ} (ε : Fin n → Bool) (lam : Fin n → ℝ) (h :
         rw [← h2]; exact mul_le_mul_of_nonneg_left h1 (by positivity)
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨B, hB⟩ : ∃ B, ∀ x, ‖β x‖ ≤ B := by`. Take `⟨B, hB⟩` from `hβ.norm.bddAbove_range_of_hasCompactSupport hβc.norm`. Conclude with `⟨B, fun x => hB ⟨x, rfl⟩⟩`. Establish `hB0 : 0 ≤ B` using `(norm_nonneg _).trans (hB 0)`. Establish `hfc : Continuous (frob : Matrix (Fin n) (Fin n) ℂ → ℝ)` using `Real.continuous_sqrt.comp S7.hs_contVG`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `⟨R0, hR0⟩ : ∃ R0, ∀ x ∈ tsupport β, frob x ≤ R0 := by`. Take `⟨R0, hR0⟩` from `(hβc.isCompact.image_of_continuousOn hfc.continuousOn).bddAbove`. Conclude with `⟨R0, fun x hx => hR0 ⟨x, hx, rfl⟩⟩`. Use `set R := max R0 1 with hRdef`. Establish `hR1 : 1 ≤ R` using `le_max_right _ _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set C1 := max C0 0 with hC1`. Establish `hC10 : 0 ≤ C1` using `le_max_right _ _`. Use `set K := B * C1 * R ^ a with hK`. Establish `hK0 : 0 ≤ K` using `by positivity`. Use `set S : Set (S7.UJ ε) := {y | S7.hs (S7.toM y) ≤ R ^ 2} with hSdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hSm : MeasurableSet S` using `(isClosed_le (S7.hs_contVG.comp (S7.continuous_toM ε)) continuous_const).measurableSet`. Establish `hSf : ν S < ⊤` using `S7.ballFiniteVG ε ν _`. Use `⟨K * (ν S).toReal, fun g hg => ?_⟩` and prove the remaining obligations. Establish `hg1` using `one_le_frob hn ε g hg`. Establish `hpt : ∀ y, ‖β (S7.toM y) * φ (g * S7.toM y)‖ ≤ S.indicator (fun _ => K * frob g ^ (-a)) y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `y`. Distinguish the cases in `hy : S7.toM y ∈ tsupport β`. Establish `hyR : frob (S7.toM y) ≤ R` using `(hR0 _ hy).trans (le_max_left _ _)`. Establish `hyS : y ∈ S` using `by show S7.hs (S7.toM y) ≤ R ^ 2`. Establish `h0 : 0 ≤ frob (S7.toM y)` using `Real.sqrt_nonneg _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: S7.hs (S7.toM y) = frob (S7.toM y) ^ 2` using `(Real.sq_sqrt (S7.hs_nonnegVG _)).symm`. Rewrite using `[this]`. Conclude with `pow_le_pow_left₀ h0 hyR 2`. Rewrite using `[Set.indicator_of_mem hyS, norm_mul]`. Establish `hy1 : S7.toM y ∈ UJset ε` using `y.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgy : g * S7.toM y ∈ UJset ε` using `DecDerivA.inUJ_mul hg hy1`. Establish `hgy1` using `one_le_frob hn ε _ hgy`. Establish `hinvM : (S7.toM y)⁻¹ = S7.toM y⁻¹` using `Matrix.inv_eq_right_inv (S7.toM_mul_invVG y)`. Establish `hle : frob g ≤ frob (g * S7.toM y) * R`. Establish `hinv : g = g * S7.toM y * (S7.toM y)⁻¹`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hinvM, Matrix.mul_assoc, S7.toM_mul_invVG, Matrix.mul_one]`. Combine the equalities or inequalities in the displayed calculation. Establish `hpow : frob (g * S7.toM y) ^ (-a) ≤ R ^ a * frob g ^ (-a)`. Establish `h1 : frob g / R ≤ frob (g * S7.toM y)`. Rewrite using `[div_le_iff₀ (by linarith)]; exact hle`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.div_rpow (by linarith) (by linarith), Real.rpow_neg (by linarith : (0 : ℝ) ≤ R), div_inv_eq_mul, mul_comm]`. Establish `hφ' : ‖φ (g * S7.toM y)‖ ≤ C1 * (R ^ a * frob g ^ (-a))`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[image_eq_zero_of_notMem_tsupport hy, zero_mul, norm_zero]`. Conclude with `Set.indicator_nonneg (fun _ _ => mul_nonneg hK0 (Real.rpow_nonneg (by linarith) _)) y`. Establish `hint : Integrable (S.indicator fun _ => K * frob g ^ (-a)) ν` using `(integrable_indicator_iff hSm).2 (integrableOn_const hSf.ne)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[integral_indicator_const _ hSm, smul_eq_mul, Measure.real_def]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem conv_dec {n : ℕ} (hn : 0 < n) (ε : Fin n → Bool) (ν : Measure (S7.UJ ε)) [ν.IsHaarMeasure]
     (β : Matrix (Fin n) (Fin n) ℂ → ℂ) (hβ : Continuous β) (hβc : HasCompactSupport β)
@@ -267,7 +263,7 @@ theorem conv_dec {n : ℕ} (hn : 0 < n) (ε : Fin n → Bool) (ν : Measure (S7.
         rw [integral_indicator_const _ hSm, smul_eq_mul, Measure.real_def]; ring
 
 /- English proof (translation)
-Take `⟨hP, -⟩` from `Base.psiFor n ε lam h T μ hlam hμ hgap hq (DecDerivA.eight_lt_of hN)`. Conclude with `psi_funct (DecDerivA.stdGap_of hlam hgap hN) hP`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem psiM_funct {n : ℕ} (ε : Fin n → Bool) (lam : Fin n → ℝ) (h : ℝ) (T : S7.KType ε (lowK ε lam))
     (μ : Fin n → ℤ) (hlam : S7.IsHCParam lam) (hgap : GapAtLeast ε lam h) (hN : hNeed ε < h)
@@ -280,21 +276,21 @@ theorem psiM_funct {n : ℕ} (ε : Fin n → Bool) (lam : Fin n → ℝ) (h : �
   exact psi_funct (DecDerivA.stdGap_of hlam hgap hN) hP
 
 /- English proof (translation)
-Establish `hstd` using `DecDerivA.stdGap_of hlam hgap hN`. Establish `h8` using `DecDerivA.eight_lt_of hN`. Take `⟨hP, hcont⟩` from `Base.psiFor n ε lam h T μ hlam hμ hgap hq h8`. Establish `hh : 0 < h`. Establish `: 0 ≤ 8 * (n : ℝ) * S7.q0 ε` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨β, hβ, hβc, hrep⟩` from `DecDerivA.reproducing_smooth_compact_kernel hstd hP ν`. Use `⟨β, 1, hβ, hβc, fun g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_one]`. Establish `hb1 : ∀ x ∈ UJset ε, ‖S7.PsiM T μ x‖ ≤ 1`.
+Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `x hx`. Take `⟨k, X, hX, rfl⟩` from `S7.polar_exists hx`. Use `(S7.psiM_dec T μ hμ hlam hgap hq k hX).trans ?_` and prove the remaining obligations. Rewrite using `[Real.exp_le_one_iff]`. Establish `: 0 ≤ min (S7.hs X) (Real.sqrt (S7.hs X) / Real.sqrt (2 * S7.q0 ε))` using `le_min (S7.hs_nonnegVG X) (div_nonneg (Real.sqrt_nonneg _) (Real.sqrt_nonneg _))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hFc : Continuous (fun y : S7.UJ ε => β (S7.toM y) • S7.PsiM T μ (g * S7.toM y))` using `(hβ.continuous.comp (S7.continuous_toM ε)).smul (hcont.comp_continuous (continuous_const.mul (S7.continuous_toM ε)) (fun y => DecDerivA.inUJ_mul hg y.2))`. Choose the witnesses or unpack the hypotheses as in `⟨B, hB⟩ : ∃ B, ∀ x, ‖β x‖ ≤ B := by`. Take `⟨B, hB⟩` from `hβ.continuous.norm.bddAbove_range_of_hasCompactSupport hβc.norm`. Conclude with `⟨B, fun x => hB ⟨x, rfl⟩⟩`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hB0 : 0 ≤ B` using `(norm_nonneg _).trans (hB 0)`. Choose the witnesses or unpack the hypotheses as in `⟨R0, hR0⟩ : ∃ R0, ∀ x ∈ tsupport β, S7.hs x ≤ R0 := by`. Take `⟨R0, hR0⟩` from `(hβc.isCompact.image_of_continuousOn S7.hs_contVG.continuousOn).bddAbove`. Conclude with `⟨R0, fun x hx => hR0 ⟨x, hx, rfl⟩⟩`. Use `set S : Set (S7.UJ ε) := {y | S7.hs (S7.toM y) ≤ R0} with hSdef`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hSm : MeasurableSet S` using `(isClosed_le (S7.hs_contVG.comp (S7.continuous_toM ε)) continuous_const).measurableSet`. Establish `hSf : ν S < ⊤` using `S7.ballFiniteVG ε ν _`. Establish `hFi : Integrable (fun y : S7.UJ ε => β (S7.toM y) • S7.PsiM T μ (g * S7.toM y)) ν`. Use `Integrable.mono' ((integrable_indicator_iff hSm).2 (integrableOn_const (C := B) hSf.ne)) hFc.aestronglyMeasurable (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Distinguish the cases in `hy : S7.toM y ∈ tsupport β`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_mem (show y ∈ S from hR0 _ hy), norm_smul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[image_eq_zero_of_notMem_tsupport hy, zero_smul, norm_zero]`. Conclude with `Set.indicator_nonneg (fun _ _ => hB0) y`. Use `ContinuousLinearMap.ext fun v₁ => ext_inner_left ℂ fun v₂ => ?_` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hrep g hg v₁ v₂, ContinuousLinearMap.integral_apply hFi v₁, ← integral_inner (hFi.apply_continuousLinearMap v₁) v₂]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only [_root_.smul_apply, inner_smul_right]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem psiM_repro {n : ℕ} (ε : Fin n → Bool) (lam : Fin n → ℝ) (h : ℝ) (T : S7.KType ε (lowK ε lam))
     (μ : Fin n → ℤ) (hlam : S7.IsHCParam lam) (hgap : GapAtLeast ε lam h) (hN : hNeed ε < h)
@@ -351,7 +347,7 @@ theorem psiM_repro {n : ℕ} (ε : Fin n → Bool) (lam : Fin n → ℝ) (h : �
   simp only [_root_.smul_apply, inner_smul_right]
 
 /- English proof (translation)
-The claim follows from `DecRepro.eword_repro ε lam T μ ν hcont β M hβ hβc hrep w v₁ v₂`.
+A detailed English derivation is pending.
 -/
 theorem eword_repro {n : ℕ} (ε : Fin n → Bool) (lam : Fin n → ℝ) (T : S7.KType ε (lowK ε lam))
     (μ : Fin n → ℤ) (ν : Measure (S7.UJ ε)) [ν.IsHaarMeasure]
@@ -365,15 +361,13 @@ theorem eword_repro {n : ℕ} (ε : Fin n → Bool) (lam : Fin n → ℝ) (T : S
   DecRepro.eword_repro ε lam T μ ν hcont β M hβ hβc hrep w v₁ v₂
 
 /- English proof (translation)
-Introduce `n ε lam h T μ hlam hgap hN hq hμ w v₁ v₂`. Establish `hn : 0 < n`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. It suffices to derive a contradiction. Simplify using `[S7.q0, pOf] at hq`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Simplify using the standard rewrite rules.
 
-Conclude with `hn`. Establish `hstd` using `DecDerivA.stdGap_of hlam hgap hN`. Establish `h8` using `DecDerivA.eight_lt_of hN`. Take `⟨hP, hcont⟩` from `Base.psiFor n ε lam h T μ hlam hμ hgap hq h8`. Establish `hh : 0 < h`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: 0 ≤ 8 * (n : ℝ) * S7.q0 ε` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Use `haveI := S7.haar_isHaar ε`. Take `⟨β, hβ, hβc, hrep⟩` from `DecDerivA.reproducing_smooth_compact_kernel hstd hP (Measure.haar : Measure (S7.UJ ε))`. Establish `hφ : ContinuousOn (fun y => ⟪v₂, S7.PsiM T μ y v₁⟫_ℂ) (UJset ε)` using `continuousOn_const.inner (hcont.clm_apply continuousOn_const)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨βw, hβw, hβwc, hw⟩` from `DecRepro.eword_conv (Measure.haar : Measure (S7.UJ ε)) hβ hβc hφ (fun g hg => hrep g hg v₁ v₂) w`. Take `⟨C0, hC0⟩` from `psiM_frob_dec ε lam h T μ hlam hgap hh hq hμ`. Establish `ha : 0 ≤ h / (8 * Real.sqrt (2 * (S7.q0 ε : ℝ)))` using `by positivity`. Take `⟨C, hC⟩` from `conv_dec hn ε (Measure.haar : Measure (S7.UJ ε)) βw hβw.continuous hβwc (fun y => ⟪v₂, S7.PsiM T μ y v₁⟫_ℂ) (C0 := ‖v₂‖ * ‖v₁‖ * C0) ha (fun g hg => by`. Combine the equalities or inequalities in the displayed calculation.
-
-Conclude with `hC0 g hg`. Use `_ = _ := by ring)`. Conclude with `⟨C, fun g hg => by rw [hw g hg]; exact hC g hg⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem decDeriv : DecDerivStatement := by
   intro n ε lam h T μ hlam hgap hN hq hμ w v₁ v₂

@@ -16,13 +16,11 @@ open Formalism.IndefR.Cx GlobalTheory.BigOn
 namespace GlobalTheory.LowOff
 
 /- English proof (translation)
-Rewrite `hg` using `[inner_self_eq_norm_sq_to_K]`. Establish `hg' : ((‖w‖ ^ 2 : ℝ) : ℂ) = ((lam : ℝ) : ℂ) * m` using `by rw [Complex.ofReal_pow]; exact hg`. Establish `hre` using `congrArg Complex.re hg'`. Establish `him` using `congrArg Complex.im hg'`. Simplify using `only [Complex.mul_re, Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, zero_mul, sub_zero, add_zero] at hre him`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `him0 : m.im = 0`. Break down `mul_eq_zero.mp him.symm with h | h` into its components or cases. Conclude with `absurd h hlam.ne'`. Conclude with `h`. Establish `hre0 : m.re ≠ 0` using `fun h => hm (Complex.ext h him0)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpos : 0 < m.re`. Establish `: 0 ≤ lam * m.re` using `by rw [← hre]; positivity`. Conclude with `lt_of_le_of_ne (nonneg_of_mul_nonneg_right (by linarith) hlam) (Ne.symm hre0)`. Rewrite using `[Real.le_log_iff_exp_le hlam]`. Establish `: Real.exp B * m.re ≤ lam * m.re` using `by rw [← hre]; exact hl`.
-
-Conclude with `le_of_mul_le_mul_right this hpos`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem le_log_of_inner_eq {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℂ E] (w : E) (m : ℂ) (lam B : ℝ)
     (hlam : 0 < lam) (hm : m ≠ 0) (hg : ⟪w, w⟫_ℂ = ((lam : ℝ) : ℂ) * m) (hl : Real.exp B * m.re ≤ ‖w‖ ^ 2) :
@@ -45,7 +43,7 @@ theorem le_log_of_inner_eq {E : Type*} [NormedAddCommGroup E] [InnerProductSpace
   exact le_of_mul_le_mul_right this hpos
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem partAt_iff {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T0 : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T0 D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) (j p v) :
@@ -56,9 +54,9 @@ theorem partAt_iff {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T0 : Type} 
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 I0 T0 A3 Ks _ _ _ R F b hC hph hP hG hL hb j p v hv`. Distinguish the cases in `hPA : R.PartAt F j p v`. Rewrite `hPA` using `[partAt_iff, GlobalTheory.CharRealise.toCx3_eq_one R F hph]`. Rewrite `hG`, `hb`, the goal using `[GlobalTheory.CharRealise.toCx3_eq_one R F hph]`. Take `⟨x, hx, hne⟩` from `hPA`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `(hb j).trans (le_log_of_inner_eq _ _ _ _ (hP.2 j A3.A.μ0 p v) hne (hG j v hv p x hx x) (hL j v hv x))`. Rewrite using `[hC.scal.abs j p v hv hPA, Real.log_exp]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem l6m_le_log_lam3_other_places : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T0 : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T0 D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3), ∀ b : ℝ, R.WeakCharacterisation F → (∀ i, R.phs i = 1) → R.PPos → (R.toCx3 F).GalD F.cr false → LowForm R.toRealDat F.lv2 b → (∀ j, (F.Zsc (R.toCx3 F).zs).l6m j ≤ lowB D j b) → ∀ j p v, v ≠ A3.A.v0 → (F.Zsc (R.toCx3 F).zs).l6m j ≤ Real.log (R.lam3 j A3.A.μ0 p v) := by
   intro D G _ _ Pl0 I0 T0 A3 Ks _ _ _ R F b hC hph hP hG hL hb j p v hv

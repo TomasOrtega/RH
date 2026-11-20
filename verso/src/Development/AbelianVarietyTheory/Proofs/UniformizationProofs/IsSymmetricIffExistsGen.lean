@@ -21,21 +21,19 @@ namespace SymmetricBundle
 open Geo.Tor
 
 /- English proof (translation)
-Establish `oi : eSec G ≫ (ι[G]).left = eSec G`. Establish `: η[G] ≫ ι[G] = η[G]` using `by simp`. Conclude with `congrArg (fun q => q.left) this`. Establish `mem : ∀ (x : G.left) (a b : L.L.ι), (ι[G]).left x ∈ L.L.U a → x ∈ L.L.U b → x ∈ LB.wchart L.L (K` using `Fin 2) ![(ι[G]).left, 𝟙 G.left] ![a, b] := fun x a b ha hb => Set.mem_iInter.2 fun k => by fin_cases k exacts [ha, hb]`. Establish `le : ∀ p : (PUnit → L.L.ι) × L.L.ι, (L.L.pull (ι[G]).left).U p.1 ⊓ L.L.U p.2 ≤ LB.wchart L.L (K` using `Fin 2) ![(ι[G]).left, 𝟙 G.left] ![p.1 PUnit.unit, p.2] := fun p x hx => mem x _ _ (mem_pull.1 hx.1) hx.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `w : LB.Iso L.L (L.L.pull (ι[G]).left)` to `⟨fun p => res (le p) (sy.s ![p.1 PUnit.unit, p.2])⟩`. Establish `hw : ∀ (Y : Scheme.{0}) (f : Y ⟶ G.left) (y : Y) (a b : L.L.ι), (ι[G]).left (f y) ∈ L.L.U a → f y ∈ L.L.U b → gw w f y a b = gm f y (LB.wchart L.L (K` using `Fin 2) ![(ι[G]).left, 𝟙 G.left] ![a, b]) (sy.s ![a, b]) := fun Y f y a b ha hb => gm_res f y (le (fun _ => a, b)) ⟨mem_pull.2 ha, hb⟩ _`. Establish `pg : PGen w`. Introduce `Y f y j j' k k' hj hj' hk hk'`. Rewrite using `[hw Y f y j k hj hk, hw Y f y j' k' hj' hk', gen_trans hsy f y (mem _ _ _ hj hk) (mem _ _ _ hj' hk')]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Rewrite using `[trF, Fin.prod_univ_two]`. Use `show gm (f ≫ (ι[G]).left) y _ (L.L.g j j') ^ (1 : ℤ) * gm (f ≫ 𝟙 _) y _ (L.L.g k k') ^ (-1 : ℤ) = _`. Rewrite using `[Category.comp_id, zpow_one, zpow_neg_one]`. Use `⟨oi.trans (Category.id_comp _).symm, w, (isGen_iff w).2 pg, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(maps_iff w (K := PUnit) (fun _ => eSec G) (fun _ => eSec G) (fun _ => 1) L.rig L.rig (𝟙 _) _ (fun j => rigPull_le _ (𝟙 _) (oi.trans (Category.id_comp _).symm) L.L j) (fun _ => rfl)).2 ?_` and prove the remaining obligations. Introduce `Z r z p q hp hq`. Establish `hp₀ : (ι[G]).left ((r ≫ eSec G) z) ∈ L.L.U (p PUnit.unit)` using `hp PUnit.unit`. Establish `hq₀ : (r ≫ eSec G) z ∈ L.L.U (q PUnit.unit)` using `hq PUnit.unit`. Establish `ri : (r ≫ eSec G) ≫ (ι[G]).left = r ≫ eSec G` using `by rw [Category.assoc, oi]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp₁ : (r ≫ eSec G) z ∈ L.L.U (p PUnit.unit)` using `by rw [← ri]; exact hp₀`. Establish `hq₁ : (ι[G]).left ((r ≫ eSec G) z) ∈ L.L.U (q PUnit.unit)`. Use `hq₀` as an intermediate fact. Rewrite `this` using `[← ri]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `one : gw w (r ≫ eSec G) z (q PUnit.unit) (q PUnit.unit) = 1`. Take `⟨J, hJ, e⟩` from `exists_good L.L L.isLB z (K := PUnit) (fun _ => r ≫ eSec G) q (fun _ _ _ => rfl) (fun _ => hq₀)`. Establish `a` using `val_corr hJ hr r`. Rewrite using `[val_pull hJ, val_one, val_of sy (r ≫ eSec G) z J ![q PUnit.unit, q PUnit.unit] (fun k => by fin_cases k`. Conclude with `(congrArg J ri).trans (e PUnit.unit)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(congrArg J (Category.comp_id _)).trans (e PUnit.unit))] at a`. Conclude with `(hw _ _ _ _ _ hq₁ hq₀).trans a`. Rewrite using `[Category.comp_id, Fintype.prod_unique, zpow_one, gen_trans L.rigGen r z (j := p) (j' := q) (Set.mem_iInter.2 fun _ => hp₁) (Set.mem_iInter.2 fun _ => hq₀)]`. Use `congr 1`. Establish `b` using `pg _ (r ≫ eSec G) z (p PUnit.unit) (q PUnit.unit) (q PUnit.unit) (q PUnit.unit) hp₀ hq₁ hq₀ hq₀`.
-
-Rewrite `b` using `[one, gm_self L.isLB _ z hq₀, ri, inv_one, _root_.mul_one, _root_.mul_one]`. Rewrite using `[trF, Fintype.prod_unique, zpow_one]`. Conclude with `b.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSymmetric_of_gen {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] (L : RigLB G)
     (sy : LB.Gen (LB.LinComb L.L (K := Fin 2) ![(ι[G]).left, 𝟙 G.left] ![1, -1])) (hsy : sy.IsGen)
@@ -91,17 +89,15 @@ theorem isSymmetric_of_gen {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonOb
   exact b.symm
 
 /- English proof (translation)
-Take `⟨he, w, hw, hm⟩` from `h`. Establish `oi : eSec G ≫ (ι[G]).left = eSec G` using `he.trans (Category.id_comp _)`. Establish `pg` using `(isGen_iff w).1 hw`. Establish `pm` using `(maps_iff w (K := PUnit) (fun _ => eSec G) (fun _ => eSec G) (fun _ => 1) L.rig L.rig (𝟙 _) _ (fun j => rigPull_le _ (𝟙 _) he L.L j) (fun _ => rfl)).1 hm`. Establish `m₀ : ∀ (j : Fin 2 → L.L.ι) (x : G.left), x ∈ LB.wchart L.L (K` using `Fin 2) ![(ι[G]).left, 𝟙 G.left] j → (ι[G]).left x ∈ L.L.U (j 0) := fun j x hx => Set.mem_iInter.1 hx 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `m₁ : ∀ (j : Fin 2 → L.L.ι) (x : G.left), x ∈ LB.wchart L.L (K` using `Fin 2) ![(ι[G]).left, 𝟙 G.left] j → x ∈ L.L.U (j 1) := fun j x hx => Set.mem_iInter.1 hx 1`. Establish `le : ∀ j : Fin 2 → L.L.ι, LB.wchart L.L (K` using `Fin 2) ![(ι[G]).left, 𝟙 G.left] j ≤ (L.L.pull (ι[G]).left).U (fun _ => j 0) ⊓ L.L.U (j 1) := fun j x hx => ⟨mem_pull.2 (m₀ j x hx), m₁ j x hx⟩`. Set `s : LB.Gen (LB.LinComb L.L (K` to `Fin 2) ![(ι[G]).left, 𝟙 G.left] ![1, -1]) := ⟨fun j => res (le j) (w.s (fun _ => j 0, j 1))⟩`. Establish `hs : ∀ (Y : Scheme.{0}) (f : Y ⟶ G.left) (y : Y) (j : Fin 2 → L.L.ι), f y ∈ LB.wchart L.L (K` using `Fin 2) ![(ι[G]).left, 𝟙 G.left] j → gm f y (LB.wchart L.L (K := Fin 2) ![(ι[G]).left, 𝟙 G.left] j) (s.s j) = gw w f y (j 0) (j 1) := fun Y f y j hj => gm_res f y (le j) hj _`. Use `⟨s, fun j j' => unit_ext fun x hx => ?_, corr_of_val L.isLB fun y J hJ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `((gm_res (𝟙 G.left) x _ hx _).trans (hs _ (𝟙 G.left) x j hx.1)).trans (Eq.trans ?_ ((map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_linComb L.L _ _ (𝟙 _) x j j' hx.1 hx.2) ((gm_res (𝟙 G.left) x _ hx _).trans (hs _ (𝟙 G.left) x j' hx.2)))).symm)` and prove the remaining obligations. Rewrite using `[pg _ (𝟙 _) x (j 0) (j' 0) (j 1) (j' 1) (m₀ _ _ hx.1) (m₀ _ _ hx.2) (m₁ _ _ hx.1) (m₁ _ _ hx.2), Fin.prod_univ_two]`. Use `congr 1`. Use `show _ = gm (𝟙 _ ≫ (ι[G]).left) x _ (L.L.g (j 0) (j' 0)) ^ (1 : ℤ) * gm (𝟙 _ ≫ 𝟙 _) x _ (L.L.g (j 1) (j' 1)) ^ (-1 : ℤ)`. Rewrite using `[Category.comp_id, zpow_one, zpow_neg_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ri : (𝟙 _ ≫ eSec G) ≫ (ι[G]).left = 𝟙 _ ≫ eSec G` using `by rw [Category.assoc, oi]`. Establish `hq₀ : (𝟙 _ ≫ eSec G) y ∈ L.L.U (J (𝟙 _ ≫ eSec G))` using `hJ _`. Establish `hq₁ : (ι[G]).left ((𝟙 _ ≫ eSec G) y) ∈ L.L.U (J (𝟙 _ ≫ eSec G))`. Use `hJ ((𝟙 _ ≫ eSec G) ≫ (ι[G]).left)` as an intermediate fact. Rewrite `this` using `[congrArg J ri]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Rewrite using `[val_pull hJ, val_one, val_of s (𝟙 _ ≫ eSec G) y J ![J (𝟙 _ ≫ eSec G), J (𝟙 _ ≫ eSec G)] (fun k => by fin_cases k`. Conclude with `congrArg J ri`. Conclude with `congrArg J (Category.comp_id _)), hs _ _ _ _ (Set.mem_iInter.2 fun k => by`. Use `fin_cases k`.
-
-Use `exacts [hq₁, hq₀])]`. Establish `a` using `pm _ (𝟙 _) y (fun _ => J (𝟙 _ ≫ eSec G)) (fun _ => J (𝟙 _ ≫ eSec G)) (fun _ => hq₁) (fun _ => hq₀)`. Rewrite `a` using `[Category.comp_id, Fintype.prod_unique, zpow_one]`. Conclude with `mul_eq_right.1 a.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gen_of_isSymmetric {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] (L : RigLB G)
     (h : L.IsSymmetric) :
@@ -153,7 +149,7 @@ theorem gen_of_isSymmetric {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonOb
 end SymmetricBundle
 
 /- English proof (translation)
-Introduce `_ _ _ _ L` and use `⟨SymmetricBundle.gen_of_isSymmetric L, fun ⟨s, hs, hr⟩ => SymmetricBundle.isSymmetric_of_gen L s hs hr⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem isSymmetric_iff_exists_gen : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (L : RigLB G), L.IsSymmetric ↔ ∃ s : LB.Gen (LB.LinComb L.L (K := Fin 2) ![(ι[G]).left, 𝟙 G.left] ![1, -1]), s.IsGen ∧ LB.Gen.Corr L.L _ _ _ _ (LB.pullGen L.L _ _ s (eSec G)) (LB.oneGen L.L) :=
   fun _ _ _ _ L => ⟨SymmetricBundle.gen_of_isSymmetric L,

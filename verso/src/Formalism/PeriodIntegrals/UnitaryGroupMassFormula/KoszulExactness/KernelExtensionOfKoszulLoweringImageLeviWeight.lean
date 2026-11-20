@@ -14,7 +14,7 @@ section Lemmas
 variable {R : Type u} [CommRing R] {D : ℕ}
 
 /- English proof (translation)
-Simplify using `[form, Pi.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem form_single (s : Fin D → R) (k : Fin D) : form s (Pi.single k 1) = s k := by
   simp [form, Pi.single_apply]

@@ -34,16 +34,16 @@ section Signs
 variable {g : ℕ} {τ : Matrix (Fin g) (Fin g) ℂ} {a b : Fin g → ℂ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Apply the tactic sequence `rcases ha i with h | h <;> simp [ofRealVec, h]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ofRealVec_re (ha : ∀ i, a i = 0 ∨ a i = 1 / 2) : ofRealVec (fun i => (a i).re) = a := by
   funext i
   rcases ha i with h | h <;> simp [ofRealVec, h]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Unfold `thetaChar theta thetaTerm eC`. Use `tsum_congr fun n => ?_` and prove the remaining obligations. Establish `e1 : ((fun i => (n i : ℂ)) + ofRealVec a) = shiftVec a n` using `rfl`. Rewrite using `[e1]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem thetaChar_ofRealVec (τ : Matrix (Fin g) (Fin g) ℂ) (a b : Fin g → ℝ) :
     thetaChar τ (ofRealVec a) (ofRealVec b) = fun z => theta a b z τ := by
@@ -56,7 +56,7 @@ theorem thetaChar_ofRealVec (τ : Matrix (Fin g) (Fin g) ℂ) (a b : Fin g → �
   ring
 
 /- English proof (translation)
-Rewrite using `[← thetaChar_ofRealVec, ofRealVec_re ha, ofRealVec_re hb]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem thetaChar_eq_theta (τ : Matrix (Fin g) (Fin g) ℂ) (ha : ∀ i, a i = 0 ∨ a i = 1 / 2)
     (hb : ∀ i, b i = 0 ∨ b i = 1 / 2) :
@@ -64,7 +64,7 @@ theorem thetaChar_eq_theta (τ : Matrix (Fin g) (Fin g) ℂ) (ha : ∀ i, a i = 
   rw [← thetaChar_ofRealVec, ofRealVec_re ha, ofRealVec_re hb]
 
 /- English proof (translation)
-Rewrite using `[thetaChar_eq_theta τ ha hb]`. Use `⟨theta_ne_zero ⟨hs, hp⟩ _ _, thetaLevelChar_one ⟨hs, hp⟩, fun n hn => ?_⟩` and prove the remaining obligations. Rewrite using `[finrank_thetaLevelChar ⟨hs, hp⟩ hn, Fintype.card_fin]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem thetaChar_level (hs : τ.IsSymm) (hp : (τ.map Complex.im).PosDef) (ha : ∀ i, a i = 0 ∨ a i = 1 / 2)
     (hb : ∀ i, b i = 0 ∨ b i = 1 / 2) :
@@ -76,16 +76,16 @@ theorem thetaChar_level (hs : τ.IsSymm) (hp : (τ.map Complex.im).PosDef) (ha :
   rw [finrank_thetaLevelChar ⟨hs, hp⟩ hn, Fintype.card_fin]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨n, m, h⟩ => ⟨m, n, h.trans (add_comm _ _)⟩, fun ⟨m, n, h⟩ => ⟨n, m, h.trans (add_comm _ _)⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_periodLattice_iff (z : Fin g → ℂ) : z ∈ periodLattice τ ↔
     ∃ m n : Fin g → ℤ, z = (fun i => (m i : ℂ)) + τ.mulVec (fun i => (n i : ℂ)) :=
   ⟨fun ⟨n, m, h⟩ => ⟨m, n, h.trans (add_comm _ _)⟩, fun ⟨m, n, h⟩ => ⟨n, m, h.trans (add_comm _ _)⟩⟩
 
 /- English proof (translation)
-Establish `hl : u.ex (τ *ᵥ ofIntVec k + ofIntVec k') = 1` using `(u.ker _).2 ((hΛ _).2 ⟨k', k, add_comm _ _⟩)`. Establish `he : u.ex (z + τ *ᵥ ofIntVec k + ofIntVec k') = u.ex z`. Rewrite using `[add_assoc, u.ex_add, hl, _root_.mul_one]`. Establish `h1` using `hth i z hz`. Establish `h2` using `hth i (z + τ *ᵥ ofIntVec k + ofIntVec k') (by rw [he]; exact hz)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[he, h1]`. Rewrite `h2`, `h0` using `[thetaChar_eq_theta τ ha hb]`. Simplify using `only [thetaQuasiPeriod_holds _ _ _ z τ k k' hs] at h2 h0`. Apply `mul_left_cancel₀ h0` to reduce the goal to its premises. Rewrite using `[h2]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -112,9 +112,9 @@ end Signs
 section Hypotheses
 
 /- English proof (translation)
-Use `⟨fun g B hB => ⟨(Matrix.isSymm_one.smul _).add (hB.map _), ?_⟩, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `(Matrix.PosDef.one : (1 : Matrix (Fin g) (Fin g) ℝ).PosDef) using 1` and compare the differences between its conclusion and the goal. Use extensionality with `i j`. Apply the tactic sequence `by_cases h : i = j <;> simp [Matrix.one_apply, h]`. Apply the tactic sequence `ext i j fin_cases i <;> fin_cases j <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `(Matrix.PosDef.one : (1 : Matrix (Fin 2) (Fin 2) ℝ).PosDef) using 1` and compare the differences between its conclusion and the goal. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp`. Apply the tactic sequence `intro i; fin_cases i <;> simp`. Apply the tactic sequence `intro i; fin_cases i <;> simp`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hypotheses_inhabited :
     (∀ (g : ℕ) (B : Matrix (Fin g) (Fin g) ℝ), B.IsSymm →
@@ -143,7 +143,7 @@ section DimZero
 open Out Out.Inh
 
 /- English proof (translation)
-Rewrite using `[valAt', dif_pos (show (⊤ : (Sp ℂ).Opens) ≤ 𝟙 (Sp ℂ) ⁻¹ᵁ ⊤ from le_rfl), valAt]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem valAt'_id (f : Γ(Sp ℂ, ⊤)) :
     valAt' (𝟙 (Sp ℂ)) ⊤ f = (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom.hom f := by
@@ -151,7 +151,7 @@ theorem valAt'_id (f : Γ(Sp ℂ, ⊤)) :
   congr 1
 
 /- English proof (translation)
-Substitute `hU` using the available equality. Use `⟨?_, by rw [valAt'_id, map_one]⟩` and prove the remaining obligations. Rewrite using `[show valAt' (𝟙 (Sp ℂ)) ⊤ = _ from funext valAt'_id]`. Conclude with `ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valAt'_id_bijective (U : (Sp ℂ).Opens) (hU : U = ⊤) :
     Function.Bijective (valAt' (𝟙 (Sp ℂ)) U) ∧ valAt' (𝟙 (Sp ℂ)) U 1 = 1 := by
@@ -161,7 +161,7 @@ theorem valAt'_id_bijective (U : (Sp ℂ).Opens) (hU : U = ⊤) :
   exact ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom
 
 /- English proof (translation)
-The claim follows from `(Category.comp_id v.left).symm.trans (Over.w v)`.
+A detailed English derivation is pending.
 -/
 theorem unit_hom_left {X : Over (Sp ℂ)} (v : X ⟶ 𝟙_ (Over (Sp ℂ))) : v.left = X.hom :=
   (Category.comp_id v.left).symm.trans (Over.w v)
@@ -183,9 +183,9 @@ def zeroUnif : HolUnif (zeroPolAV (Sp ℂ)).A (zeroPolAV (Sp ℂ)).L 0 where
     exact (valAt'_id_bijective _ (inf_idem _)).2.symm
 
 /- English proof (translation)
-Establish `h1 : v.left = (epsR ℂ).hom` using `unit_hom_left v`. Establish `h2 : η[(zeroPolAV (Sp ℂ)).A].left = 𝟙 (Sp ℂ)` using `unit_hom_left (X := 𝟙_ _) _`. Rewrite using `[IsTangent, h1, h2]`. Express the relevant statement in the definitionally equal form `spMap _ ≫ spMap _ = _`. Rewrite using `[← Spec.map_comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `Eq.trans ?_ (Spec.map_id (CommRingCat.of ℂ))` and prove the remaining obligations. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem isTangent_zero (v : epsR ℂ ⟶ (zeroPolAV (Sp ℂ)).A) : IsTangent v := by
   have h1 : v.left = (epsR ℂ).hom := unit_hom_left v
@@ -197,9 +197,9 @@ theorem isTangent_zero (v : epsR ℂ ⟶ (zeroPolAV (Sp ℂ)).A) : IsTangent v :
   congr 1
 
 /- English proof (translation)
-Establish `hU : U = ⊤` using `top_unique fun x _ => by`. Take `⟨y⟩ : Nonempty (Sp (DualNumber ℂ))` from `inferInstanceAs (Nonempty (PrimeSpectrum (DualNumber ℂ)))`. Establish `hy : φ y ∈ U` using `h (show y ∈ (⊤ : (Sp (DualNumber ℂ)).Opens) from trivial)`. Rewrite using `[show x = φ y from Subsingleton.elim (α := PrimeSpectrum ℂ) _ _]` and apply the resulting hypothesis. Substitute `hU hφ` using the available equality.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Substitute using the available equality.
 
-Establish `e : (spMap (algebraMap ℂ (DualNumber ℂ))).appLE ⊤ ⊤ h = (spMap (algebraMap ℂ (DualNumber ℂ))).appTop` using `Scheme.Hom.appLE_eq_app _`. Establish `n` using `congrArg (fun k => k.hom f) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom (algebraMap ℂ (DualNumber ℂ))))`. Rewrite using `[e]`. Conclude with `(congrArg (TrivSqZeroExt.snd (R := ℂ) (M := ℂ)) n).trans rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem snd_pull_eq_zero (φ : Sp (DualNumber ℂ) ⟶ Sp ℂ) (hφ : φ = spMap (algebraMap ℂ (DualNumber ℂ)))
     (U : (Sp ℂ).Opens) (h : ⊤ ≤ φ ⁻¹ᵁ U) (f : Γ(Sp ℂ, U)) :
@@ -217,7 +217,7 @@ theorem snd_pull_eq_zero (φ : Sp (DualNumber ℂ) ⟶ Sp ℂ) (hφ : φ = spMap
   exact (congrArg (TrivSqZeroExt.snd (R := ℂ) (M := ℂ)) n).trans rfl
 
 /- English proof (translation)
-Introduce `U h f`. Rewrite using `[Subsingleton.elim w 0, map_zero]`. Conclude with `snd_pull_eq_zero v.left (unit_hom_left v) U h f`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isDiff_zero (w : Fin 0 → ℂ) (v : epsR ℂ ⟶ (zeroPolAV (Sp ℂ)).A) : zeroUnif.IsDiff w v := by
   intro U h f

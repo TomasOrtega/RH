@@ -29,7 +29,7 @@ open PositivityTheory.Rg.BcB.F.FA PositivityTheory.Rg.BcB.F.Tail
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n a b : ℕ}
 
 /- English proof (translation)
-Simplify using `only [Kg, Subgroup.mem_iInf, Subgroup.mem_inf, Subgroup.mem_comap]`. Use `forall₂_congr fun w _ => and_congr_right fun _ => ?_` and prove the remaining obligations. Use `split_ifs with hs`. Simplify using `[hs, Subgroup.mem_comap]`. Simplify using `[hs]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem mem_Kg {S : Set (Pl E)} {L : ∀ w : Pl E, Subgroup (GLw n w)} {u : GL (Fin n) (Af E)} :
     u ∈ Kg S L ↔ ∀ w ∈ S, GeneralLinearGroup.map (pLoc E w) u ∈ L w ∧
@@ -41,11 +41,9 @@ private theorem mem_Kg {S : Set (Pl E)} {L : ∀ w : Pl E, Subgroup (GLw n w)} {
   · simp [hs]
 
 /- English proof (translation)
-Establish `key : ∀ j : Slot S, Sl.cpH a b j (Sl.eH a b i m) ∈ (L.L₁ j.pl).prod (L.L₂ j.pl)`. Introduce `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Rewrite using `[Sl.cpH_eH_self hS]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hm`. Rewrite using `[Sl.cpH_eH_ne hS i j m hj]`. Conclude with `one_mem _`. Use `⟨mem_Kg.2 fun w hw => ⟨?_, fun hs => ?_⟩, mem_Kg.2 fun w hw => ⟨?_, fun hs => ?_⟩⟩` and prove the remaining obligations. Conclude with `(Subgroup.mem_prod.1 (key (.inl ⟨w, hw⟩))).1`.
-
-Conclude with `(Subgroup.mem_prod.1 (key (.inr ⟨w, hw, hs⟩))).1`. Conclude with `(Subgroup.mem_prod.1 (key (.inl ⟨w, hw⟩))).2`. Conclude with `(Subgroup.mem_prod.1 (key (.inr ⟨w, hw, hs⟩))).2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem eH_mem {S : Set (Pl E)} {Z : Finset (Pl E)} (hS : IsSection S) (L : Lv a b Z) (i : Slot S)
     (m : GLw a i.pl × GLw b i.pl) (hm : m ∈ (L.L₁ i.pl).prod (L.L₂ i.pl)) :
@@ -65,7 +63,7 @@ private theorem eH_mem {S : Set (Pl E)} {Z : Finset (Pl E)} (hS : IsSection S) (
   · exact (Subgroup.mem_prod.1 (key (.inr ⟨w, hw, hs⟩))).2
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.TwTrLin.mem_fixed_iff]`. Introduce `k hk`. Use function extensionality and compare the values at `z`. Establish `h` using `eH_mem hS L (.inl ⟨v, hv⟩) k hk`. Conclude with `hG _ h.1 _ h.2 z`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem fix_P {S : Set (Pl E)} {Z : Finset (Pl E)} (hS : IsSection S) (L : Lv a b Z) {G : H E a b → ℂ}
     (hG : ∀ u₁ ∈ Kg S L.L₁, ∀ u₂ ∈ Kg S L.L₂, ∀ x, G (x * (finGL E a u₁, finGL E b u₂)) = G x) {v : Pl E} (hv : v ∈ S) :
@@ -77,9 +75,9 @@ private theorem fix_P {S : Set (Pl E)} {Z : Finset (Pl E)} (hS : IsSection S) (L
   exact hG _ h.1 _ h.2 z
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.TwTrLin.mem_fixed_iff]`. Introduce `k hk`. Use function extensionality and compare the values at `z`. Establish `h` using `eH_mem hS L (.inr ⟨v, hv, hs⟩) k hk`. Establish `e` using `hG _ h.1 _ h.2 z`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `G (z * ((embT a v).prodMap (embT b v) k)) = G z`. Rewrite using `[← e]`. Use `congr 2`. Conclude with `Prod.ext (GlobalTheory.ThetaPull.thetaA_finGL _) (GlobalTheory.ThetaPull.thetaA_finGL _)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 private theorem heckeFixed_split_place {S : Set (Pl E)} {Z : Finset (Pl E)} (hS : IsSection S) (L : Lv a b Z) {G : H E a b → ℂ}
     (hG : ∀ u₁ ∈ Kg S L.L₁, ∀ u₂ ∈ Kg S L.L₂, ∀ x, G (x * (finGL E a u₁, finGL E b u₂)) = G x) {v : Pl E} (hv : v ∈ S)
@@ -95,9 +93,9 @@ private theorem heckeFixed_split_place {S : Set (Pl E)} {Z : Finset (Pl E)} (hS 
   exact Prod.ext (GlobalTheory.ThetaPull.thetaA_finGL _) (GlobalTheory.ThetaPull.thetaA_finGL _)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Establish `hI : v ∉ Z → L.ln v = (K2 a b v : Set _).indicator 1` using `(locAlg E a b Z L v).2.2.1`. Unfold `intersection_update_fsHerm_neg_one`. Distinguish the cases in `h1 : v ∈ Z`. Rewrite using `[if_pos h1]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `rw [if_neg h1, hI h1] split_ifs <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem position_one {Z : Finset (Pl E)} (T : Finset (Pl E)) (L : Lv a b Z) :
     intersection_update_fsHerm_neg_one Z T L.ln (fun _ => .one) = L.ln := by
@@ -110,7 +108,7 @@ private theorem position_one {Z : Finset (Pl E)} (T : Finset (Pl E)) (L : Lv a b
     split_ifs <;> rfl
 
 /- English proof (translation)
-Establish `hI : v ∉ Z → L.ln v = (K2 a b v : Set _).indicator 1` using `(locAlg E a b Z L v).2.2.1`. Unfold `intersection_update_fsHerm_neg_one`. Distinguish the cases in `h1 : v ∈ Z`. Rewrite using `[if_pos h1]`. Rewrite using `[if_neg h1, if_neg (by simpa using h), hI h1]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem position_ne {Z : Finset (Pl E)} (L : Lv a b Z) (e : Pl E → Ex (Fin (a + 1) × Fin (b + 1))) {v w : Pl E}
     (h : v ≠ w) : intersection_update_fsHerm_neg_one Z {w} L.ln e v = L.ln v := by
@@ -121,7 +119,7 @@ private theorem position_ne {Z : Finset (Pl E)} (L : Lv a b Z) (e : Pl E → Ex 
   · rw [if_neg h1, if_neg (by simpa using h), hI h1]
 
 /- English proof (translation)
-Unfold `intersection_update_fsHerm_neg_one`. Rewrite using `[if_neg h, if_pos (by simp)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem position_self {Z : Finset (Pl E)} (L : Lv a b Z) (e : Pl E → Ex (Fin (a + 1) × Fin (b + 1))) {w : Pl E}
     (h : w ∉ Z) : intersection_update_fsHerm_neg_one Z {w} L.ln e w = fn2 a b w (e w) := by
@@ -129,7 +127,7 @@ private theorem position_self {Z : Finset (Pl E)} (L : Lv a b Z) (e : Pl E → E
   rw [if_neg h, if_pos (by simp)]
 
 /- English proof (translation)
-Rewrite using `[Subgroup.coe_prod]`. Conclude with `(L.open₁ v).prod (L.open₂ v)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ln_open {Z : Finset (Pl E)} (L : Lv a b Z) (v : Pl E) :
     IsOpen (((L.L₁ v).prod (L.L₂ v) : Subgroup _) : Set (GLw a v × GLw b v)) := by
@@ -137,13 +135,13 @@ private theorem ln_open {Z : Finset (Pl E)} (L : Lv a b Z) (v : Pl E) :
   exact (L.open₁ v).prod (L.open₂ v)
 
 /- English proof (translation)
-The claim follows from `Subgroup.prod_mono (L.le₁ v) (L.le₂ v)`.
+A detailed English derivation is pending.
 -/
 private theorem ln_le {Z : Finset (Pl E)} (L : Lv a b Z) (v : Pl E) : (L.L₁ v).prod (L.L₂ v) ≤ K2 a b v :=
   Subgroup.prod_mono (L.le₁ v) (L.le₂ v)
 
 /- English proof (translation)
-The claim follows from `(actIdem_holds E a b v ((L.L₁ v).prod (L.L₂ v)) G (ln_open L v) (ln_le L v) hL).1.2 (fix_P hS L hG hv)`.
+A detailed English derivation is pending.
 -/
 private theorem actP_ln {S : Set (Pl E)} {Z : Finset (Pl E)} (hS : IsSection S) (L : Lv a b Z) {G : H E a b → ℂ}
     (hL : HasLev G)
@@ -152,7 +150,7 @@ private theorem actP_ln {S : Set (Pl E)} {Z : Finset (Pl E)} (hS : IsSection S) 
   (actIdem_holds E a b v ((L.L₁ v).prod (L.L₂ v)) G (ln_open L v) (ln_le L v) hL).1.2 (fix_P hS L hG hv)
 
 /- English proof (translation)
-The claim follows from `(actIdem_holds E a b v ((L.L₁ v).prod (L.L₂ v)) G (ln_open L v) (ln_le L v) hL).2.2 (heckeFixed_split_place hS L hG hv hs)`.
+A detailed English derivation is pending.
 -/
 private theorem actT_ln {S : Set (Pl E)} {Z : Finset (Pl E)} (hS : IsSection S) (L : Lv a b Z) {G : H E a b → ℂ}
     (hL : HasLev G)
@@ -161,17 +159,15 @@ private theorem actT_ln {S : Set (Pl E)} {Z : Finset (Pl E)} (hS : IsSection S) 
   (actIdem_holds E a b v ((L.L₁ v).prod (L.L₂ v)) G (ln_open L v) (ln_le L v) hL).2.2 (heckeFixed_split_place hS L hG hv hs)
 
 /- English proof (translation)
-The claim follows from `finAct_of PositivityTheory.Rg.BcB.F.intHint PositivityTheory.Rg.BcB.F.slots PositivityTheory.Rg.BcB.F.BlockFiniteConvolution.finConv'`.
+A detailed English derivation is pending.
 -/
 private theorem finAct' : FinAct :=
   finAct_of PositivityTheory.Rg.BcB.F.intHint PositivityTheory.Rg.BcB.F.slots PositivityTheory.Rg.BcB.F.BlockFiniteConvolution.finConv'
 
 /- English proof (translation)
-Establish `hvol : A.blk.vol ≠ 0` using `(PositivityTheory.Rg.BcB.F.BlockFiniteConvolution.finConv' E A.blk S hS).1`. Use function extensionality and compare the values at `x`. Establish `h` using `finAct' E A.blk S hS φ₁ φ₂ h₁ h₂ (f i) hL [i₀] (List.nodup_singleton _) (fun j hj => hq j (by simpa using hj)) x`. Use `show ∑ z : Unit, ∫ h, A.ff S φ₁ φ₂ i.2 z h * f (i.1, z) (x * PositivityTheory.Rg.BcB.SpectralAccumulation.finH h) ∂A.ν = _`. Rewrite using `[Fintype.sum_unique]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `show ∫ h, A.blk.vol⁻¹ * finFn S φ₁ φ₂ h * f i (x * PositivityTheory.Rg.BcB.SpectralAccumulation.finH h) ∂A.ν = _`. Simplify using `only [mul_assoc]`. Rewrite using `[MeasureTheory.integral_const_mul]`. Establish `h' : ∫ h, finFn S φ₁ φ₂ h * f i (x * PositivityTheory.Rg.BcB.SpectralAccumulation.finH h) ∂A.ν = A.blk.vol * actS φ₁ φ₂ i₀ (f i) x`. Simplify using `using h`.
-
-Rewrite using `[h', ← mul_assoc, inv_mul_cancel₀ hvol, one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem conv_one {a b : ℕ} {l₁ : InfinitePlace E → DomWeight a} {l₂ : InfinitePlace E → DomWeight b} {D : Dom E a b}
     (A : Ar l₁ l₂ D) {S : Set (Pl E)} (hS : IsSection S) {φ₁ φ₂ : ∀ w : Pl E, LF a b w} (h₁ : IsTestP φ₁) (h₂ : IsTestP φ₂)
@@ -194,27 +190,21 @@ private theorem conv_one {a b : ℕ} {l₁ : InfinitePlace E → DomWeight a} {l
 end UpperTheory.Zero.ConvolutionTheory.EB.HeckeActionLevel
 
 /- English proof (translation)
-Introduce `E _ _ _ a b l₁ l₂ D A S Z L hS hZ f hf w hw hwZ p i`. Establish `hG` using `hf i`. Establish `hLev : PositivityTheory.Rg.BcB.F.Tail.HasLev (f i)`. Use `⟨(Kg S L.L₁).prod (Kg S L.L₂), ?_, fun u hu x => hf i u.1 (Subgroup.mem_prod.1 hu).1 u.2 (Subgroup.mem_prod.1 hu).2 x⟩` and prove the remaining obligations. Rewrite using `[Subgroup.coe_prod]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(UpperTheory.Zero.ConvolutionTheory.EB.kgFacts E a S Z L.L₁ hS hZ (fun w => ⟨L.open₁ w, L.le₁ w⟩) fun w hw => (L.off w hw).1).1.prod (UpperTheory.Zero.ConvolutionTheory.EB.kgFacts E b S Z L.L₂ hS hZ (fun w => ⟨L.open₂ w, L.le₂ w⟩) fun w hw => (L.off w hw).2).1`. Establish `hK : (L.L₁ w).prod (L.L₂ w) = K2 a b w`. Rewrite using `[(L.off w hwZ).1, (L.off w hwZ).2]`. Establish `hst` using `UpperTheory.Zero.ConvolutionTheory.EB.positionTest E a b S Z L hZ`. Establish `hT : ∀ e, IsTestP (intersection_update_fsHerm_neg_one Z {w} L.ln e)` using `fun e => ((hst.2.2 L.ln hst.1).2 {w} e)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hH` using `UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.exHecke2 E a b w (.gen p)`. Establish `hc` using `hH.1`. Establish `hr : ∀ k ∈ K2 a b w, ∀ g, fn2 a b w (.gen p) (g * k) = fn2 a b w (.gen p) g` using `fun k hk g => (hH.2 k hk g).2`. Establish `hA` using `PositivityTheory.Rg.BcB.F.Tail.actHecke_holds E a b w _ (f i) hc hr`. Use `⟨⟨?_, ?_⟩, fun hs => ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hK]`. Conclude with `UpperTheory.Zero.ConvolutionTheory.EB.HeckeActionLevel.fix_P hS L hG hw`. Establish `p1 : f i ∈ fixed (pairRt a b w) (K2 a b w)`. Rewrite using `[← hK]`. Conclude with `UpperTheory.Zero.ConvolutionTheory.EB.HeckeActionLevel.fix_P hS L hG hw`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e0 : A.hk1 S L w p false = A.ff S (intersection_update_fsHerm_neg_one Z {w} L.ln fun _ => .gen p) (intersection_update_fsHerm_neg_one Z {w} L.ln fun _ => .one)`. Simplify using `[Ar.hk1, Ar.hk, Ar.fx]`. Rewrite using `[e0, UpperTheory.Zero.ConvolutionTheory.EB.HeckeActionLevel.conv_one A hS (hT _) (hT _) f i hLev (.inl ⟨w, hw⟩) ?_]`. Use `show PositivityTheory.Rg.BcB.F.Tail.actP w (intersection_update_fsHerm_neg_one Z {w} L.ln (fun _ => .gen p) w) (f i) = _`. Rewrite using `[UpperTheory.Zero.ConvolutionTheory.EB.HeckeActionLevel.position_self L _ hwZ]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hA.1 p1`. Introduce `j hj`. Break down `j with ⟨v, hv⟩ | ⟨v, hv, hs⟩` into its components or cases. Establish `hvw : v ≠ w` using `fun e => hj (by subst e; rfl) show PositivityTheory.Rg.BcB.F.Tail.actP v (intersection_update_fsHerm_neg_one Z {w} L.ln (fun _ => .gen p) v) (f i) = f i`. Rewrite using `[UpperTheory.Zero.ConvolutionTheory.EB.HeckeActionLevel.position_ne L _ hvw]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `UpperTheory.Zero.ConvolutionTheory.EB.HeckeActionLevel.actP_ln hS L hLev hG hv`. Use `show PositivityTheory.Rg.BcB.F.Tail.actT v (intersection_update_fsHerm_neg_one Z {w} L.ln (fun _ => .one) v) (f i) = f i`. Rewrite using `[UpperTheory.Zero.ConvolutionTheory.EB.HeckeActionLevel.position_one]`. Conclude with `UpperTheory.Zero.ConvolutionTheory.EB.HeckeActionLevel.actT_ln hS L hLev hG hv hs`. Rewrite using `[← hK]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `UpperTheory.Zero.ConvolutionTheory.EB.HeckeActionLevel.heckeFixed_split_place hS L hG hw hs`. Establish `p1 : f i ∈ fixed (pairRtT a b w) (K2 a b w)`. Rewrite using `[← hK]`. Conclude with `UpperTheory.Zero.ConvolutionTheory.EB.HeckeActionLevel.heckeFixed_split_place hS L hG hw hs`. Establish `e0 : A.hk1 S L w p true = A.ff S (intersection_update_fsHerm_neg_one Z {w} L.ln fun _ => .one) (intersection_update_fsHerm_neg_one Z {w} L.ln fun _ => .gen p)`.
-
-Simplify using `[Ar.hk1, Ar.hk, Ar.fx]`. Rewrite using `[e0, UpperTheory.Zero.ConvolutionTheory.EB.HeckeActionLevel.conv_one A hS (hT _) (hT _) f i hLev (.inr ⟨w, hw, hs⟩) ?_]`. Use `show PositivityTheory.Rg.BcB.F.Tail.actT w (intersection_update_fsHerm_neg_one Z {w} L.ln (fun _ => .gen p) w) (f i) = _`. Rewrite using `[UpperTheory.Zero.ConvolutionTheory.EB.HeckeActionLevel.position_self L _ hwZ]`. Conclude with `hA.2 p1`.
-
-Introduce `j hj`. Break down `j with ⟨v, hv⟩ | ⟨v, hv, hs'⟩` into its components or cases. Use `show PositivityTheory.Rg.BcB.F.Tail.actP v (intersection_update_fsHerm_neg_one Z {w} L.ln (fun _ => .one) v) (f i) = f i`. Rewrite using `[UpperTheory.Zero.ConvolutionTheory.EB.HeckeActionLevel.position_one]`. Conclude with `UpperTheory.Zero.ConvolutionTheory.EB.HeckeActionLevel.actP_ln hS L hLev hG hv`.
-
-Establish `hvw : v ≠ w` using `fun e => hj (by subst e; rfl) show PositivityTheory.Rg.BcB.F.Tail.actT v (intersection_update_fsHerm_neg_one Z {w} L.ln (fun _ => .gen p) v) (f i) = f i`. Rewrite using `[UpperTheory.Zero.ConvolutionTheory.EB.HeckeActionLevel.position_ne L _ hvw]`. Conclude with `UpperTheory.Zero.ConvolutionTheory.EB.HeckeActionLevel.actT_ln hS L hLev hG hv hs'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Zero.ConvolutionTheory.EB.hkAct :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (a b : ℕ) (l₁ : InfinitePlace E → DomWeight a) (l₂ : InfinitePlace E → DomWeight b)

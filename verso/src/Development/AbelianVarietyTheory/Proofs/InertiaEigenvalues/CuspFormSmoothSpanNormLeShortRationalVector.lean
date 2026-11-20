@@ -30,31 +30,31 @@ namespace GlobalTheory.MSpanDecay
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 /- English proof (translation)
-Apply the tactic sequence `funext x; by_cases h : IsUnit (Matrix.of x) <;> simp [chart, h]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem chart_add (F G : GA E a → ℂ) (g : GA E a) : chart (F + G) g = chart F g + chart G g := by
   funext x; by_cases h : IsUnit (Matrix.of x) <;> simp [chart, h]
 
 /- English proof (translation)
-Apply the tactic sequence `funext x; by_cases h : IsUnit (Matrix.of x) <;> simp [chart, h]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem chart_smul (z : ℂ) (F : GA E a → ℂ) (g : GA E a) : chart (z • F) g = z • chart F g := by
   funext x; by_cases h : IsUnit (Matrix.of x) <;> simp [chart, h]
 
 /- English proof (translation)
-Apply the tactic sequence `funext x; by_cases h : IsUnit (Matrix.of x) <;> simp [chart, h]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem chart_zero (g : GA E a) : chart (0 : GA E a → ℂ) g = 0 := by
   funext x; by_cases h : IsUnit (Matrix.of x) <;> simp [chart, h]
 
 /- English proof (translation)
-Introduce `F hF`. Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem F hF`. Take `⟨X, _, ν, _, k, γ, G, hk, hG, rfl⟩` from `hF`. Introduce `g x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨u, hu⟩` from `id hx`. Establish `e : x = toL u.val` using `hu.symm`. Substitute `e` using the available equality. Take `⟨L, hL, -⟩` from `GlobalTheory.T.hasFDerivAt_realChart_rapidKernelOperator E a G X ν k γ hk hG g u`. Conclude with `hL.differentiableAt.differentiableWithinAt`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `zero => intro g`. Rewrite using `[chart_zero]`. Conclude with `differentiableOn_const 0`. Consider the case `add F G _ _ hF hG => intro g`. Rewrite using `[chart_add]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hF g).add (hG g)`. Consider the case `smul z F _ hF => intro g`. Rewrite using `[chart_smul]`. Conclude with `(hF g).const_smul z`.
+A detailed English derivation is pending.
 -/
 theorem kSpan_diff : ∀ F ∈ kSpan E a, ∀ g : GA E a, DifferentiableOn ℝ (chart F g) (invSet E a) := by
   intro F hF
@@ -72,26 +72,26 @@ theorem kSpan_diff : ∀ F ∈ kSpan E a, ∀ g : GA E a, DifferentiableOn ℝ (
   | smul z F _ hF => intro g; rw [chart_smul]; exact (hF g).const_smul z
 
 /- English proof (translation)
-The claim follows from `(kSpan_diff F hF g).differentiableAt (isOpen_invSet.mem_nhds isUnit_one)`.
+A detailed English derivation is pending.
 -/
 theorem differentiableAt_one_of_mem {F : GA E a → ℂ} (hF : F ∈ kSpan E a) (g : GA E a) :
     DifferentiableAt ℝ (chart F g) (oneL E a) :=
   (kSpan_diff F hF g).differentiableAt (isOpen_invSet.mem_nhds isUnit_one)
 
 /- English proof (translation)
-Introduce `F hF Y`. Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem F hF`. Take `⟨X, _, ν, _, k, γ, G, hk, hG, rfl⟩` from `hF`. Establish `e : lieD Y (fun g : GA E a => ∫ x, k x * G (g * infGL E a (γ x)) ∂ν) = fun g : GA E a => ∫ x, k x * lieD (toL (((γ x)⁻¹).val * Matrix.of Y * (γ x).val)) G (g * infGL E a (γ x)) ∂ν`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `g`. Take `⟨L, hL, hZ⟩` from `GlobalTheory.T.hasFDerivAt_realChart_rapidKernelOperator E a G X ν k γ hk hG g 1`. Establish `e1 : toL (1 : GL (Fin a) (Cinf E)).val = oneL E a` using `rfl`. Rewrite using `[lieD, ← e1, hL.fderiv, hZ Y]`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Conclude with `GlobalTheory.T.rapidKernel_integral_conjLieDerivative_mem_span E a G X ν k γ Y hk hG`. Consider the case `zero`. Establish `e : lieD Y (0 : GA E a → ℂ) = 0`. Use function extensionality and compare the values at `g`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[lieD, chart_zero]`. Rewrite using `[e]`. Conclude with `zero_mem _`. Consider the case `add F G hF' hG' hF hG`. Establish `e : lieD Y (F + G) = lieD Y F + lieD Y G`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `g`. Simplify using `only [lieD, chart_add, Pi.add_apply]`. Rewrite using `[fderiv_add (differentiableAt_one_of_mem hF' g) (differentiableAt_one_of_mem hG' g)]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Conclude with `add_mem hF hG`. Consider the case `smul z F hF' hF`. Establish `e : lieD Y (z • F) = z • lieD Y F`. Use function extensionality and compare the values at `g`. Simplify using `only [lieD, chart_smul, Pi.smul_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[fderiv_const_smul (differentiableAt_one_of_mem hF' g)]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ z hF`.
+A detailed English derivation is pending.
 -/
 theorem kSpan_lie : ∀ F ∈ kSpan E a, ∀ Y : Lie E a, lieD Y F ∈ kSpan E a := by
   intro F hF Y
@@ -127,14 +127,14 @@ theorem kSpan_lie : ∀ F ∈ kSpan E a, ∀ Y : Lie E a, lieD Y F ∈ kSpan E a
     rw [e]; exact Submodule.smul_mem _ z hF
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.le_smooth_of_chartDifferentiable_lieDerivStable E a _ kSpan_diff kSpan_lie`.
+A detailed English derivation is pending.
 -/
 theorem kSpan_le_Sm : kSpan E a ≤ Sm E a := GlobalTheory.T.le_smooth_of_chartDifferentiable_lieDerivStable E a _ kSpan_diff kSpan_lie
 
 /- English proof (translation)
-Introduce `F hF`. Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem F hF`. Take `⟨X, _, ν, _, k, γ, G, hk, hG, rfl⟩` from `hF`. Conclude with `⟨GlobalTheory.T.decaysAtShortRationalVectors_rapidKernelOperator E a G X ν k γ hk hG.decays, GlobalTheory.T.moderateGrowth_rapidKernelOperator E a G X ν k γ hk hG.growth⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `zero => exact ⟨GlobalTheory.ShortVecDecay.Decays.zero, Growth.zero⟩`. Consider the case `add F G _ _ hF hG => exact ⟨hF.1.add hG.1, hF.2.add hG.2⟩`. Consider the case `smul z F _ hF => exact ⟨hF.1.smul z, hF.2.smul z⟩`.
+Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem kSpan_decays_growth : ∀ F ∈ kSpan E a, GlobalTheory.ShortVecDecay.Decays F ∧ Growth F := by
   intro F hF
@@ -147,7 +147,7 @@ theorem kSpan_decays_growth : ∀ F ∈ kSpan E a, GlobalTheory.ShortVecDecay.De
   | smul z F _ hF => exact ⟨hF.1.smul z, hF.2.smul z⟩
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simpa [GlobalTheory.GLFin.word] using hφ`. Consider the case `cons Y l ih => rw [word_cons]`. Conclude with `kSpan_lie _ ih Y`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem word_mem_kSpan (l : List (Lie E a)) (φ : Sm E a) (hφ : φ.1 ∈ kSpan E a) :
     (GlobalTheory.GLFin.word l φ).1 ∈ kSpan E a := by
@@ -156,7 +156,7 @@ theorem word_mem_kSpan (l : List (Lie E a)) (φ : Sm E a) (hφ : φ.1 ∈ kSpan 
   | cons Y l ih => rw [word_cons]; exact kSpan_lie _ ih Y
 
 /- English proof (translation)
-Establish `hm : (fun g : GA E a => ∫ x, k x * G (g * infGL E a (γ x)) ∂ν) ∈ kSpan E a` using `Submodule.subset_span ⟨X, inferInstance, ν, inferInstance, k, γ, G, hk, hG, rfl⟩`. Conclude with `⟨kSpan_le_Sm hm, fun l => kSpan_decays_growth _ (word_mem_kSpan l _ hm)⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem Good.kernel {G : GA E a → ℂ} (hG : Good G) {X : Type} [MeasurableSpace X] {ν : Measure X} [SFinite ν]
     {k : X → ℂ} {γ : X → GL (Fin a) (Cinf E)} (hk : GlobalTheory.JSW.IsRapidInf ν k γ) :
@@ -174,14 +174,14 @@ def goodSub : Submodule ℂ (GA E a → ℂ) where
   smul_mem' c _ h := h.smul c
 
 /- English proof (translation)
-The claim follows from `sInf_le ⟨fun φ hφ => good_of_mem hπ hφ, fun F hF h => GlobalTheory.T.goodSmoothDecayModerateGrowth_rightTranslate E a F h hF, fun F hF X _ ν _ k γ hk => Good.kernel (G := F) hF hk⟩`.
+A detailed English derivation is pending.
 -/
 theorem mspanR_le_goodSub {π : CuspSub E a} (hπ : π.IsUnitary) : GlobalTheory.JSW.mspanR π ≤ goodSub E a :=
   sInf_le ⟨fun φ hφ => good_of_mem hπ hφ, fun F hF h => GlobalTheory.T.goodSmoothDecayModerateGrowth_rightTranslate E a F h hF,
     fun F hF X _ ν _ k γ hk => Good.kernel (G := F) hF hk⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ a π hπ φ hφ l`. Establish `hg : Good φ.1` using `hφ.elim (good_of_mem hπ) fun h => mspanR_le_goodSub hπ h`. Take `⟨h, hl⟩` from `hg`. Conclude with `(hl l).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem norm_le_of_short_vector_mspanR : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ)
     (π : CuspSub E a), π.IsUnitary → ∀ φ : Sm E a, (φ ∈ π.V ∨ φ.1 ∈ GlobalTheory.JSW.mspanR π) → ∀ l : List (Lie E a),

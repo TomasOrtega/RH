@@ -14,7 +14,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Secon
   [MeasurableSpace G] [BorelSpace G] {Γ : Subgroup G} [DiscreteTopology Γ] {μ : Measure G}
 
 /- English proof (translation)
-Use `conv_lhs => rw [← mk_sec q]`. Conclude with `h.descend_mk _`.
+A detailed English derivation is pending.
 -/
 theorem descend_eq_sec {X : Type} {f : G → X} (h : LeftInv Γ f) (q : GlobalTheory.AutomorphicL2Unitary.Quot Γ) :
     descend Γ f q = f (sec Γ q) := by
@@ -22,7 +22,7 @@ theorem descend_eq_sec {X : Type} {f : G → X} (h : LeftInv Γ f) (q : GlobalTh
   exact h.descend_mk _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `q`. Establish `e : rmul Γ g q = mk Γ (sec Γ q * g)` using `by conv_lhs => rw [← mk_sec q]`. Both sides reduce to the same expression. Rewrite using `[Function.comp_apply, e, h.descend_mk]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem sec_mul_eq {X : Type} {f : G → X} (h : LeftInv Γ f) (g : G) :
     (fun q : GlobalTheory.AutomorphicL2Unitary.Quot Γ => f (sec Γ q * g)) = descend Γ f ∘ rmul Γ g := by
@@ -35,7 +35,7 @@ theorem sec_mul_eq {X : Type} {f : G → X} (h : LeftInv Γ f) (g : G) :
 variable [μ.IsMulLeftInvariant]
 
 /- English proof (translation)
-Rewrite using `[MeasureTheory.L2.inner_def]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hf.coeFn_toL2] with q e`. Rewrite using `[e, descend_eq_sec hf.1]`. Simplify using `[mul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inner_toL2_eq_integral {f : G → ℂ} (hf : MemL2Quotient Γ μ f) (u : GlobalTheory.AutomorphicL2Unitary.L2 Γ μ) :
     ⟪u, hf.toL2⟫_ℂ = ∫ q : GlobalTheory.AutomorphicL2Unitary.Quot Γ, conj (u q) * f (sec Γ q) ∂GlobalTheory.AutomorphicL2Unitary.quotMeasure Γ μ := by
@@ -46,9 +46,9 @@ theorem inner_toL2_eq_integral {f : G → ℂ} (hf : MemL2Quotient Γ μ f) (u :
   simp [mul_comm]
 
 /- English proof (translation)
-Establish `hs : ∀ s, HasDerivAt (fun r => φ (x * c r)) (ψ (x * c s)) s` using `fun s => by`. Establish `h2 : HasDerivAt (fun t => φ (x * c s * c t)) (ψ (x * c s)) (s - s)` using `by simpa using hd (x * c s)`. Establish `h3` using `h2.comp_sub_const s s`. Use `h3.congr_of_eventuallyEq (Filter.Eventually.of_forall fun r => ?_)` and prove the remaining obligations. Establish `: c r = c s * c (r - s)` using `by rw [← hadd]; congr 1; ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [this, mul_assoc]`. Rewrite using `[intervalIntegral.integral_eq_sub_of_hasDerivAt (fun s _ => hs s) (Continuous.intervalIntegrable (by fun_prop) _ _)]`. Simplify using `[h0]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sub_eq_integral {φ ψ : G → ℂ} {c : ℝ → G} (hψ : Continuous ψ) (hc : Continuous c) (h0 : c 0 = 1)
     (hadd : ∀ s t, c (s + t) = c s * c t) (hd : ∀ g, HasDerivAt (fun t => φ (g * c t)) (ψ g) 0) (x : G) (t : ℝ) :
@@ -64,15 +64,15 @@ theorem sub_eq_integral {φ ψ : G → ℂ} {c : ℝ → G} (hψ : Continuous ψ
   simp [h0]
 
 /- English proof (translation)
-Establish `hsec` using `(measurableEmbedding_sec (Γ := Γ)).measurable`. Establish `hm : Measurable (fun p : ℝ × GlobalTheory.AutomorphicL2Unitary.Quot Γ => ψ (sec Γ p.2 * c p.1))` using `hψc.measurable.comp ((hsec.comp measurable_snd).mul (hc.measurable.comp measurable_fst))`. Establish `hu : Measurable (fun p : ℝ × GlobalTheory.AutomorphicL2Unitary.Quot Γ => conj (u p.2))` using `Complex.continuous_conj.measurable.comp ((Lp.stronglyMeasurable u).measurable.comp measurable_snd)`. Establish `hF : Measurable (Function.uncurry fun (s : ℝ) (q : GlobalTheory.AutomorphicL2Unitary.Quot Γ) => conj (u q) * ψ (sec Γ q * c s))` using `hu.mul hm`. Use `⟨hF.aestronglyMeasurable, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hasFiniteIntegral_iff_enorm, lintegral_prod _ hF.enorm.aemeasurable]`. Use `set C : ENNReal := eLpNorm u 2 (GlobalTheory.AutomorphicL2Unitary.quotMeasure Γ μ) * eLpNorm (descend Γ ψ) 2 (GlobalTheory.AutomorphicL2Unitary.quotMeasure Γ μ) with hC`. Establish `hb : ∀ s, ∫⁻ q, ‖Function.uncurry (fun (s : ℝ) (q : GlobalTheory.AutomorphicL2Unitary.Quot Γ) => conj (u q) * ψ (sec Γ q * c s)) (s, q)‖ₑ ∂GlobalTheory.AutomorphicL2Unitary.quotMeasure Γ μ ≤ C` using `fun s => by`. Establish `h1` using `eLpNorm_le_eLpNorm_mul_eLpNorm_of_nnnorm (μ := GlobalTheory.AutomorphicL2Unitary.quotMeasure Γ μ) (p := 2) (q := 2) (r := 1) (Lp.aestronglyMeasurable u) (((hψ.mul_right (c s)).2).1) (fun a b => conj a * b) 1 (Filter.Eventually.of_forall fun q => by simp)`. Establish `h2 : eLpNorm (descend Γ fun x => ψ (x * c s)) 2 (GlobalTheory.AutomorphicL2Unitary.quotMeasure Γ μ) = eLpNorm (descend Γ ψ) 2 (GlobalTheory.AutomorphicL2Unitary.quotMeasure Γ μ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : descend Γ (fun x => ψ (x * c s)) = descend Γ ψ ∘ rmul Γ (c s)`. Use function extensionality and compare the values at `q`. Rewrite using `[descend_eq_sec (hψ.1.mul_right (c s)), ← sec_mul_eq hψ.1]`. Rewrite using `[e]`. Conclude with `eLpNorm_comp_measurePreserving hψ.2.1 (measurePreserving_rmul (c s))`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h1` using `[eLpNorm_one_eq_lintegral_enorm, h2]`. Simplify using `only [ENNReal.coe_one, one_mul] at h1`. Use `le_trans (le_of_eq ?_) h1` and prove the remaining obligations. Use `lintegral_congr fun q => ?_` and prove the remaining obligations. Simplify using `only [Function.uncurry, descend_eq_sec (hψ.1.mul_right (c s))]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `lt_of_le_of_lt (lintegral_mono hb) ?_` and prove the remaining obligations. Rewrite using `[lintegral_const, Measure.restrict_apply_univ]`. Use `ENNReal.mul_lt_top (ENNReal.mul_lt_top (Lp.memLp u).2 hψ.2.2) ?_` and prove the remaining obligations. Simplify using `[Set.uIoc, Real.volume_Ioc]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integrable_pair [μ.IsMulRightInvariant] [LocallyCompactSpace G] [IsFiniteMeasureOnCompacts μ] {ψ : G → ℂ}
     (hψ : MemL2Quotient Γ μ ψ) (hψc : Continuous ψ) {c : ℝ → G} (hc : Continuous c) (u : GlobalTheory.AutomorphicL2Unitary.L2 Γ μ) (t : ℝ) :
@@ -112,11 +112,11 @@ theorem integrable_pair [μ.IsMulRightInvariant] [LocallyCompactSpace G] [IsFini
 variable [μ.IsMulRightInvariant] [LocallyCompactSpace G] [IsFiniteMeasureOnCompacts μ]
 
 /- English proof (translation)
-Establish `hcont : Continuous fun s => R Γ μ (c s) hψ.toL2` using `(continuous_R _).comp hc`. Use `ext_inner_left ℂ fun u => ?_` and prove the remaining obligations. Establish `e1` using `(innerSL ℂ u).intervalIntegral_comp_comm (hcont.intervalIntegrable (μ := volume) 0 t)`. Simplify using `only [innerSL_apply_apply] at e1`. Rewrite using `[← e1, inner_sub_right]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [right_translate_toL2, inner_toL2_eq_integral]`. Establish `hi : ∀ {f : G → ℂ} (hf : MemL2Quotient Γ μ f), Integrable (fun q : GlobalTheory.AutomorphicL2Unitary.Quot Γ => conj (u q) * f (sec Γ q)) (GlobalTheory.AutomorphicL2Unitary.quotMeasure Γ μ)` using `fun {f} hf => by`. Establish `h` using `(Lp.memLp u).star.integrable_mul hf.2`. Use `h.congr (Filter.Eventually.of_forall fun q => ?_)` and prove the remaining obligations. Simplify using `[descend_eq_sec hf.1]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[← integral_sub (hi (hφ.mul_right (c t))) (hi hφ), intervalIntegral.intervalIntegral_eq_integral_uIoc, integral_integral_swap (integrable_pair hψ hψc hc u t), ← integral_smul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun q => ?_)` and prove the remaining obligations. Simplify using `only [integral_const_mul]`. Rewrite using `[← mul_sub, sub_eq_integral hψc hc h0 hadd hd, intervalIntegral.intervalIntegral_eq_integral_uIoc]`. Simplify using `only [mul_smul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem R_sub_eq_integral {φ ψ : G → ℂ} (hφ : MemL2Quotient Γ μ φ) (hψ : MemL2Quotient Γ μ ψ)
     (hψc : Continuous ψ) {c : ℝ → G} (hc : Continuous c) (h0 : c 0 = 1) (hadd : ∀ s t, c (s + t) = c s * c t)
@@ -141,9 +141,9 @@ theorem R_sub_eq_integral {φ ψ : G → ℂ} (hφ : MemL2Quotient Γ μ φ) (h�
   simp only [mul_smul_comm]
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ _ _ Γ _ μ _ _ _ φ ψ hφ hψ c _ hψc hc h0 hadd hd t`. Establish `hcont : Continuous fun s => R Γ μ (c s) hψ.toL2` using `(continuous_R _).comp hc`. Establish `e : (fun s => R Γ μ (c s) hφ.toL2) = fun s => hφ.toL2 + ∫ r in (0 : ℝ)..s, R Γ μ (c r) hψ.toL2`. Use function extensionality and compare the values at `s`. Rewrite using `[← R_sub_eq_integral hφ hψ hψc hc h0 hadd hd s]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `(hcont.integral_hasStrictDerivAt 0 t).hasDerivAt.const_add _`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_R : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] [LocallyCompactSpace G] [T2Space G] (Γ : Subgroup G) [DiscreteTopology Γ] (μ : Measure G) [μ.IsMulLeftInvariant] [μ.IsMulRightInvariant] [IsFiniteMeasureOnCompacts μ] (φ ψ : G → ℂ) (hφ : MemL2Quotient Γ μ φ) (hψ : MemL2Quotient Γ μ ψ) (c : ℝ → G), Continuous φ → Continuous ψ → Continuous c → c 0 = 1 → (∀ s t, c (s + t) = c s * c t) → (∀ g, HasDerivAt (fun t => φ (g * c t)) (ψ g) 0) → ∀ t, HasDerivAt (fun s => R Γ μ (c s) hφ.toL2) (R Γ μ (c t) hψ.toL2) t := by
   intro G _ _ _ _ _ _ _ _ Γ _ μ _ _ _ φ ψ hφ hψ c _ hψc hc h0 hadd hd t

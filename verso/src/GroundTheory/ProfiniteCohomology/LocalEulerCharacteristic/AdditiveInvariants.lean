@@ -18,16 +18,16 @@ variable {k Γ : Type*} [Field k] [Group Γ] [Fintype Γ]
 omit [Fintype Γ] in
 
 /- English proof (translation)
-Introduce `γ` and use `by rw [← hf.isIntertwining, hx γ]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mapsTo_invariants {f : X₁ →ₗ[k] X₂} (hf : ρ₁.IsIntertwiningMap ρ₂ f) (x : X₁)
     (hx : x ∈ ρ₁.invariants) : f x ∈ ρ₂.invariants := fun γ => by
   rw [← hf.isIntertwining, hx γ]
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `hs y`. Use `⟨(Fintype.card Γ : k)⁻¹ • ρ₂.norm x, fun γ => by rw [map_smul, self_norm_apply], ?_⟩` and prove the remaining obligations. Establish `hnorm : g (ρ₂.norm x) = ρ₃.norm (g x)`. Simplify using `[Representation.norm, LinearMap.sum_apply, map_sum, hg.isIntertwining]`. Establish `hinv : ρ₃.norm (g x) = (Fintype.card Γ : k) • g x`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hy' : ∀ γ, ρ₃ γ (g x) = g x` using `hy`. Simplify using `only [Representation.norm, LinearMap.sum_apply, hy', Finset.sum_const, Finset.card_univ]`. Conclude with `(Nat.cast_smul_eq_nsmul k _ _).symm`. Rewrite using `[map_smul, hnorm, hinv, smul_smul, inv_mul_cancel₀ hΓ, one_smul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_invariant_preimage (hΓ : (Fintype.card Γ : k) ≠ 0) {g : X₂ →ₗ[k] X₃}
     (hg : ρ₂.IsIntertwiningMap ρ₃ g) (hs : Function.Surjective g) (y : X₃)
@@ -43,13 +43,13 @@ theorem exists_invariant_preimage (hΓ : (Fintype.card Γ : k) ≠ 0) {g : X₂ 
   rw [map_smul, hnorm, hinv, smul_smul, inv_mul_cancel₀ hΓ, one_smul]
 
 /- English proof (translation)
-Set `f' : ρ₁.invariants →ₗ[k] ρ₂.invariants` to `f.restrict (mapsTo_invariants hf)`. Set `g' : ρ₂.invariants →ₗ[k] ρ₃.invariants` to `g.restrict (mapsTo_invariants hg)`. Establish `hf' : Function.Injective f'` using `fun a b hab => Subtype.ext (hinj (congrArg Subtype.val hab))`. Establish `hg' : Function.Surjective g'` using `fun y => by`. Take `⟨x, hx, hxy⟩` from `exists_invariant_preimage hΓ hg hs y y.2`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨⟨x, hx⟩, Subtype.ext hxy⟩`. Establish `hker : LinearMap.ker g' = LinearMap.range f'`. Use extensionality with `x`. Rewrite using `[LinearMap.mem_ker, LinearMap.mem_range]`. Prove the components needed by the constructor for the conclusion.
+Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hx`. Take `⟨a, ha⟩` from `(hfg (x : X₂)).1 (congrArg Subtype.val hx)`. Establish `ha' : a ∈ ρ₁.invariants` using `fun γ => hinj (by`. Rewrite using `[hf.isIntertwining, ha, x.2 γ])`. Conclude with `⟨⟨a, ha'⟩, Subtype.ext ha⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Introduce and unpack `⟨a, rfl⟩`. Conclude with `Subtype.ext ((hfg _).2 ⟨a, rfl⟩)`. Establish `h₁` using `LinearMap.finrank_range_add_finrank_ker g'`. Rewrite `h₁` using `[LinearMap.range_eq_top.2 hg', finrank_top, hker, LinearMap.finrank_range_of_inj hf']`. Use linear arithmetic over natural numbers and integers.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem finrank_invariants_additive [FiniteDimensional k X₂] (hΓ : (Fintype.card Γ : k) ≠ 0)
     (f : X₁ →ₗ[k] X₂) (g : X₂ →ₗ[k] X₃) (hf : ρ₁.IsIntertwiningMap ρ₂ f)
@@ -82,7 +82,7 @@ theorem finrank_invariants_additive [FiniteDimensional k X₂] (hΓ : (Fintype.c
 end Invariants
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun γ v => by induction v using TensorProduct.induction_on with | zero => simp | tmul x n => simp [hf.isIntertwining] | add v w hv hw => simp only [map_add, hv, hw]⟩`.
+Supply the required witnesses or components.
 -/
 theorem isIntertwiningMap_rTensor {k Γ X Y N : Type*} [CommRing k] [Monoid Γ] [AddCommGroup X]
     [Module k X] [AddCommGroup Y] [Module k Y] [AddCommGroup N] [Module k N]

@@ -19,7 +19,7 @@ namespace GlobalTheory.ZH.ToImm
 open GlobalTheory.ZH.CrdCalc GlobalTheory.ZH.ImmSep
 
 /- English proof (translation)
-The claim follows from `ReciprocityTheory.ChartRestriction.G.TB.JGPf.ext_of_fromSpecStalk f g fun t => @h (T.presheaf.stalk t) _ (T.toLocallyRingedSpace.isLocalRing t) (T.fromSpecStalk t)`.
+A detailed English derivation is pending.
 -/
 theorem ext_local {T X : Scheme.{0}} (f g : T ⟶ X)
     (h : ∀ (R : Type) [CommRing R] [IsLocalRing R] (y : Sp R ⟶ T), y ≫ f = y ≫ g) : f = g :=
@@ -27,15 +27,13 @@ theorem ext_local {T X : Scheme.{0}} (f g : T ⟶ X)
     @h (T.presheaf.stalk t) _ (T.toLocallyRingedSpace.isLocalRing t) (T.fromSpecStalk t)
 
 /- English proof (translation)
-Use `⟨V.toSpecΓ ≫ Spec.map (CommRingCat.ofHom φ) ≫ hU.fromSpec, fun R _ y h => ?_⟩` and prove the remaining obligations. Establish `h0 : ⊤ ≤ hU.fromSpec ⁻¹ᵁ U` using `hU.fromSpec_preimage_self.ge`. Establish `h' : ⊤ ≤ (y ≫ V.toSpecΓ ≫ Spec.map (CommRingCat.ofHom φ) ≫ hU.fromSpec) ⁻¹ᵁ U` using `fun z _ => h0 (Set.mem_univ ((y ≫ V.toSpecΓ ≫ Spec.map (CommRingCat.ofHom φ)) z))`. Use `⟨h', fun f => ?_⟩` and prove the remaining obligations. Establish `h1 : hU.fromSpec.appLE U ⊤ h0 = (Scheme.ΓSpecIso _).inv`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Scheme.Hom.appLE, IsAffineOpen.fromSpec_app_self, Category.assoc, ← Functor.map_comp]`. Conclude with `Category.comp_id _`. Establish `h2 : (y ≫ V.toSpecΓ ≫ Spec.map (CommRingCat.ofHom φ) ≫ hU.fromSpec).appLE U ⊤ h' = hU.fromSpec.appLE U ⊤ h0 ≫ (y ≫ V.toSpecΓ ≫ Spec.map (CommRingCat.ofHom φ)).appTop` using `(Scheme.Hom.appLE_comp_appLE (y ≫ V.toSpecΓ ≫ Spec.map (CommRingCat.ofHom φ)) hU.fromSpec U ⊤ ⊤ h0 le_rfl).symm`. Establish `h3 : (y ≫ V.ι).appLE V ⊤ h = V.topIso.inv ≫ y.appTop`. Rewrite using `[← Scheme.Hom.appLE_comp_appLE y V.ι V ⊤ ⊤ (fun x _ => x.2) le_rfl]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `erw [Scheme.Opens.ι_appLE]`. Simplify using `only [Scheme.Opens.topIso_inv]`. Use `congr 1`. Establish `h4 : (y ≫ V.toSpecΓ ≫ Spec.map (CommRingCat.ofHom φ) ≫ hU.fromSpec).appLE U ⊤ h' = CommRingCat.ofHom φ ≫ (y ≫ V.ι).appLE V ⊤ h`. Rewrite using `[h2, h1, h3, Scheme.Hom.comp_appTop, Scheme.Hom.comp_appTop, Scheme.Opens.toSpecΓ_appTop]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Category.assoc]`. Rewrite using `[Scheme.ΓSpecIso_naturality_assoc]`. Conclude with `Iso.inv_hom_id_assoc _ _`. Unfold `valHom`. Rewrite using `[h4]`.
-
-Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_hom_of_ringHom {X Y : Scheme.{0}} {U : X.Opens} (hU : IsAffineOpen U) (V : Y.Opens)
     (φ : Γ(X, U) →+* Γ(Y, V)) : ∃ g : V.toScheme ⟶ X, ∀ (R : Type) [CommRing R] (y : Sp R ⟶ V.toScheme)
@@ -78,11 +76,11 @@ theorem constHom_apply {k : Type} [CommRing k] {X : Scheme.{0}} (p : X ⟶ Sp k)
     constHom p U a = constFn p U a := rfl
 
 /- English proof (translation)
-Rewrite using `[← basicOpen_eq_bot_iff, eq_bot_iff]`. Introduce `z hz`. Take `⟨w, hw, hw'⟩` from `hd.inter_open_nonempty _ (Y.basicOpen f).isOpen ⟨z, hz⟩`. Take `⟨a, t, rfl⟩` from `Set.mem_iUnion.1 hw'`. Establish `h1 : ⊤ ≤ x a ⁻¹ᵁ Y.basicOpen f` using `fun t' _ => by`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: t' = t` using `Subsingleton.elim (α := PrimeSpectrum K) _ _`. Substitute `this` using the available equality. Conclude with `hw`. Establish `h2 : ⊤ ≤ x a ⁻¹ᵁ V` using `h1.trans ((x a).preimage_mono (Y.basicOpen_le f))`. Use `(isUnit_valR_iff (x a) V h2 f).2 h1` as an intermediate fact.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[valR_eq _ _ h2, hf a h2]`. Conclude with `(not_isUnit_zero this).elim`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_dense {Y : Scheme.{0}} [IsReduced Y] {K : Type} [Field K] {A : Type}
     (x : A → (Sp K ⟶ Y)) (hd : Dense (⋃ a, Set.range (x a))) (V : Y.Opens) (f : Γ(Y, V))
@@ -101,7 +99,7 @@ theorem eq_zero_of_dense {Y : Scheme.{0}} [IsReduced Y] {K : Type} [Field K] {A 
   exact (not_isUnit_zero this).elim
 
 /- English proof (translation)
-Use `eq_of_valHom_eq _ _ ⊤ (isAffineOpen_top _) le_top le_top (RingHom.ext fun f => ?_)` and prove the remaining obligations. Take `⟨a, rfl⟩` from `(Scheme.ΓSpecIso (CommRingCat.of k)).symm.commRingCatIsoToRingEquiv.surjective f`. Use `e a` as an intermediate fact. Rewrite `this` using `[valHom_constFn, valHom_constFn]`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_eq_of_const {k R : Type} [CommRing k] [CommRing R] {X Y : Scheme.{0}} (p : X ⟶ Sp k)
     (p' : Y ⟶ Sp k) (x : Sp R ⟶ X) (y : Sp R ⟶ Y) {U : X.Opens} {V : Y.Opens} (h : ⊤ ≤ x ⁻¹ᵁ U)
@@ -117,23 +115,23 @@ variable {k : Type} [CommRing k] {X Y : Scheme.{0}} {p : X ⟶ Sp k} {p' : Y ⟶
   {J : Type} {s : J → H.Sec} {s' : J → H'.Sec}
 
 /- English proof (translation)
-Take `⟨hA, r, hr, hc⟩` from `hI.2 i (Set.mem_univ i)`. Use `choose r' hr' using fun j => (GlobalTheory.SecRatio.existsUnique_isRatio hH' (s' j) (s' i) (nonzeroLocus (s' i)) le_rfl).exists`. Set `ev` to `MvPolynomial.eval₂Hom (constHom p (nonzeroLocus (s i))) r`. Set `ev'` to `MvPolynomial.eval₂Hom (constHom p' (nonzeroLocus (s' i))) r'`. Establish `hs : Function.Surjective ev`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← RingHom.range_eq_top, eq_top_iff, ← hc, Subring.closure_le]`. Introduce and unpack `_ (⟨a, rfl⟩ | ⟨j, rfl⟩)`. Conclude with `⟨MvPolynomial.C a, MvPolynomial.eval₂Hom_C _ _ _⟩`. Conclude with `⟨MvPolynomial.X j, MvPolynomial.eval₂Hom_X' _ _ _⟩`. Establish `hk : RingHom.ker ev ≤ RingHom.ker ev'`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `f hf`. Use `eq_zero_of_dense x hd _ _ fun a h => ?_` and prove the remaining obligations. Take `⟨e, v, hv', hv⟩` from `hx a`. Establish `hu : IsUnit (v i)` using `(crd_isUnit_iff i hv').2 h`. Establish `h'` using `(crd_isUnit_iff i hv).1 hu`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (valHom (x a) _ h).comp ev' = (valHom (x' a) _ h').comp ev`. Use `MvPolynomial.ringHom_ext (fun c => ?_) fun j => ?_` and prove the remaining obligations. Simplify using `only [ev, ev', RingHom.comp_apply, MvPolynomial.eval₂Hom_C, constHom_apply, valHom_constFn, e]`. Simplify using `only [ev, ev', RingHom.comp_apply, MvPolynomial.eval₂Hom_X']`. Establish `e` using `(crd_ratio hv' (hr' j) h).symm.trans (crd_ratio hv (hr j) h')`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[valR_eq _ _ h, valR_eq _ _ h']`. Conclude with `hu.mul_right_cancel e`. Use `congrArg (fun q => q f) this` as an intermediate fact. Simplify using `only [RingHom.comp_apply] at this`. Rewrite using `[this, (RingHom.mem_ker).1 hf, map_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `φ` to `RingHom.liftOfSurjective ev hs ⟨ev', hk⟩`. Establish `hφ : ∀ f, φ (ev f) = ev' f` using `fun f => RingHom.liftOfSurjective_comp_apply ev hs ⟨ev', hk⟩ f`. Establish `hφc : ∀ a, φ (constFn p _ a) = constFn p' _ a` using `fun a => by`. Use `hφ (MvPolynomial.C a)` as an intermediate fact. Simplify `this` using `only [ev, ev', MvPolynomial.eval₂Hom_C, constHom_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφr : ∀ j, φ (r j) = r' j` using `fun j => by`. Use `hφ (MvPolynomial.X j)` as an intermediate fact. Simplify `this` using `only [ev, ev', MvPolynomial.eval₂Hom_X']`. Take `⟨g, hg⟩` from `exists_hom_of_ringHom hA _ φ`. Use `⟨g, fun R _ _ y => ?_⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h : ⊤ ≤ (y ≫ (nonzeroLocus (s' i)).ι) ⁻¹ᵁ nonzeroLocus (s' i)` using `fun z _ => (y z).2`. Take `⟨h', hv⟩` from `hg R y h`. Use `⟨comp_eq_of_const p p' _ _ h' h fun a => by rw [hv, hφc], fun v hv' => ?_⟩` and prove the remaining obligations. Take `⟨w, hw⟩` from `crd_exists hH s (y ≫ g)`. Establish `hu : IsUnit (v i)` using `(crd_isUnit_iff i hv').2 h`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu' : IsUnit (w i)` using `(crd_isUnit_iff i hw).2 h'`. Use `crd_smul (hu.unit * hu'.unit⁻¹) hw` as an intermediate fact. Use `this using 2 with j` and compare the differences between its conclusion and the goal. Rewrite using `[crd_ratio hv' (hr' j) h, crd_ratio hw (hr j) h', valR_eq _ _ h, valR_eq _ _ h', hv, hφr, mul_left_comm, Units.val_mul, _root_.mul_assoc, IsUnit.val_inv_mul, _root_.mul_one, IsUnit.unit_spec]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_chart [IsReduced Y] (hH : H.IsLB) (hH' : H'.IsLB) (hI : ImmBy p H s Set.univ)
     {K : Type} [Field K] {A : Type} (x : A → (Sp K ⟶ Y)) (x' : A → (Sp K ⟶ X))
@@ -192,17 +190,17 @@ theorem exists_chart [IsReduced Y] (hH : H.IsLB) (hH' : H'.IsLB) (hI : ImmBy p H
     mul_left_comm, Units.val_mul, _root_.mul_assoc, IsUnit.val_inv_mul, _root_.mul_one, IsUnit.unit_spec]
 
 /- English proof (translation)
-Introduce `k _ X Y _ p p' H H' J _ s s' hH hH' hI hc K _ A x x' hd hx`. Use `choose g hg using exists_chart hH hH' hI x x' hd hx`. Set `𝒰` to `Y.openCoverOfIsOpenCover (fun j => nonzeroLocus (s' j)) hc`. Establish `hcomp : ∀ i j : J, pullback.fst (nonzeroLocus (s' i)).ι (nonzeroLocus (s' j)).ι ≫ g i = pullback.snd (nonzeroLocus (s' i)).ι (nonzeroLocus (s' j)).ι ≫ g j`. Introduce `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `ext_local _ _ fun R _ _ y => ?_` and prove the remaining obligations. Establish `e : (y ≫ pullback.fst _ _) ≫ (nonzeroLocus (s' i)).ι = (y ≫ pullback.snd _ _) ≫ (nonzeroLocus (s' j)).ι`. Rewrite using `[Category.assoc, Category.assoc, pullback.condition]`. Take `⟨a₁, b₁⟩` from `hg i R (y ≫ pullback.fst _ _)`. Take `⟨a₂, b₂⟩` from `hg j R (y ≫ pullback.snd _ _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv⟩` from `crd_exists hH' s' ((y ≫ pullback.fst _ _) ≫ (nonzeroLocus (s' i)).ι)`. Rewrite using `[← Category.assoc, ← Category.assoc]`. Conclude with `eq_of_crd_eq k X p H J s _ hH hI R _ _ v (by rw [a₁, a₂, e]) (b₁ v hv) (b₂ v (e ▸ hv))`. Establish `hG : ∀ i, (nonzeroLocus (s' i)).ι ≫ 𝒰.glueMorphisms g hcomp = g i` using `fun i => 𝒰.ι_glueMorphisms g hcomp i`. Establish `key : ∀ (R : Type) [CommRing R] [IsLocalRing R] (y : Sp R ⟶ Y), (y ≫ 𝒰.glueMorphisms g hcomp) ≫ p = y ≫ p' ∧ ∀ v, Crd H' s' y v → Crd H s (y ≫ 𝒰.glueMorphisms g hcomp) v`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `R _ _ y`. Establish `: y (IsLocalRing.closedPoint R) ∈ ⨆ j, nonzeroLocus (s' j)` using `by rw [hc]; trivial`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 this`. Establish `h` using `(top_le_iff y _).2 hi`. Establish `hr : Set.range y ⊆ Set.range (nonzeroLocus (s' i)).ι`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Scheme.Opens.range_ι]`. Introduce and unpack `_ ⟨z, rfl⟩`. Conclude with `h (Set.mem_univ z)`. Establish `e` using `IsOpenImmersion.lift_fac (nonzeroLocus (s' i)).ι y hr`. Use `hg i R (IsOpenImmersion.lift (nonzeroLocus (s' i)).ι y hr)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[← hG i, ← Category.assoc, e]`. Then use the resulting hypothesis. Use `⟨𝒰.glueMorphisms g hcomp, ext_local _ _ fun R _ _ y => ?_, fun a => ?_, fun R _ _ y => (key R y).2⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, (key R y).1]`. Take `⟨e, v, hv', hv⟩` from `hx a`. Conclude with `eq_of_crd_eq k X p H J s _ hH hI K _ _ v (by rw [(key K (x a)).1, e]) ((key K (x a)).2 v hv') hv`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_factor : ∀ (k : Type) [CommRing k] (X Y : Scheme.{0}) [IsReduced Y] (p : X ⟶ Sp k) (p' : Y ⟶ Sp k) (H : LB X) (H' : LB Y) (J : Type) [Fintype J] (s : J → H.Sec) (s' : J → H'.Sec), H.IsLB → H'.IsLB → ImmBy p H s Set.univ → ⨆ j, nonzeroLocus (s' j) = ⊤ → ∀ (K : Type) [Field K] (A : Type) (x : A → (Sp K ⟶ Y)) (x' : A → (Sp K ⟶ X)), Dense (⋃ a, Set.range (x a)) → (∀ a, x' a ≫ p = x a ≫ p' ∧ ∃ v, Crd H' s' (x a) v ∧ Crd H s (x' a) v) → ∃ g : Y ⟶ X, g ≫ p = p' ∧ (∀ a, x a ≫ g = x' a) ∧ ∀ (R : Type) [CommRing R] [IsLocalRing R] (y : Sp R ⟶ Y) (v : J → R), Crd H' s' y v → Crd H s (y ≫ g) v := by
   intro k _ X Y _ p p' H H' J _ s s' hH hH' hI hc K _ A x x' hd hx

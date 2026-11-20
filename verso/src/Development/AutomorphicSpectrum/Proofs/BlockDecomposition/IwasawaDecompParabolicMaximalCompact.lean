@@ -9,7 +9,7 @@ open scoped TensorProduct
 namespace GlobalTheory.CompanionTheory.BZPsiPG
 
 /- English proof (translation)
-Introduce `k _ _ _ _ i t g`. Take `⟨u, l, w, hw, hg⟩` from `GlobalTheory.SmGL.UnitInd.exists_iwasawa (GlobalTheory.SmGL.two (GlobalTheory.SmGL.stdSum (rfl : i + t = i + t))) g`. Use `⟨⟨(u : GL (Fin (i + t)) k) * GlobalTheory.SmGL.leviEmb k _ l, ?_⟩, w, hw, hg⟩` and prove the remaining obligations. Conclude with `Subgroup.mul_mem _ (GlobalTheory.SmGL.unipRad_le_parab k _ u.2) (GlobalTheory.SmGL.leviEmb_mem_parab k _ l)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_Qp_mul_KO : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (i t : ℕ) (g : GL (Fin (i + t)) k), ∃ q : Qp k i t, ∃ κ ∈ GlobalTheory.SplitWeil.KO k (Fin (i + t)), g = (q : GL (Fin (i + t)) k) * κ := by
   intro k _ _ _ _ i t g

@@ -23,21 +23,21 @@ theorem coe_integerUnit {a : 𝓞 F} (ha : a ≠ 0) : (integerUnit ha : F) = alg
   rfl
 
 /- English proof (translation)
-The claim follows from `Units.ext (by simp [coe_integerUnit])`.
+A detailed English derivation is pending.
 -/
 theorem integerUnit_mul {a b : 𝓞 F} (ha : a ≠ 0) (hb : b ≠ 0) (hab : a * b ≠ 0) :
     integerUnit hab = integerUnit ha * integerUnit hb :=
   Units.ext (by simp [coe_integerUnit])
 
 /- English proof (translation)
-The claim follows from `Units.ext (by simp [coe_integerUnit])`.
+A detailed English derivation is pending.
 -/
 theorem integerUnit_pow {a : 𝓞 F} (ha : a ≠ 0) (k : ℕ) (hak : a ^ k ≠ 0) :
     integerUnit hak = integerUnit ha ^ k :=
   Units.ext (by simp [coe_integerUnit])
 
 /- English proof (translation)
-Simplify using `only [ordAt, map_pow, toAdd_pow, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ordAt_pow (v : HeightOneSpectrum (𝓞 F)) (x : Fˣ) (k : ℕ) :
     ordAt v (x ^ k) = k * ordAt v x := by
@@ -45,7 +45,7 @@ theorem ordAt_pow (v : HeightOneSpectrum (𝓞 F)) (x : Fˣ) (k : ℕ) :
   ring
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `h`. Establish `hu : integerUnit hb = integerUnit ha * Units.map (algebraMap (𝓞 F) F : 𝓞 F →* F) u` using `Units.ext (by simp [coe_integerUnit])`. Rewrite using `[hu, ordAt_mul]`. Simplify using `[ordAt, valuation_of_unit_eq]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ordAt_integerUnit_eq_of_associated {a b : 𝓞 F} (ha : a ≠ 0) (hb : b ≠ 0)
     (h : Associated a b) (w : HeightOneSpectrum (𝓞 F)) :
@@ -59,7 +59,7 @@ theorem ordAt_integerUnit_eq_of_associated {a b : 𝓞 F} (ha : a ≠ 0) (hb : b
 open scoped Classical in
 
 /- English proof (translation)
-Rewrite using `[ordAt, GroundTheory.Global.SUnit.valuationOfNeZero_placeUnit]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ordAt_placeUnit (v w : HeightOneSpectrum (𝓞 F)) :
     ordAt w (GroundTheory.Global.SUnit.placeUnit v) = if w = v then (classNumber F : ℤ) else 0 := by
@@ -67,7 +67,7 @@ theorem ordAt_placeUnit (v w : HeightOneSpectrum (𝓞 F)) :
   split_ifs <;> simp
 
 /- English proof (translation)
-The claim follows from `Units.ext rfl`.
+A detailed English derivation is pending.
 -/
 theorem placeUnit_eq_integerUnit (v : HeightOneSpectrum (𝓞 F)) :
     GroundTheory.Global.SUnit.placeUnit v =
@@ -80,17 +80,17 @@ def primeNZD (v : HeightOneSpectrum (𝓞 F)) : (Ideal (𝓞 F))⁰ :=
 open scoped Classical in
 
 /- English proof (translation)
-Take `⟨a, b, ha, hb, hab⟩` from `ClassGroup.mk0_eq_mk0_iff.1 h`. Express the relevant statement in the definitionally equal form `Ideal.span {a} * v.asIdeal = Ideal.span {b} * p.asIdeal at hab`. Use `set hF := classNumber F with hhF`. Establish `hv` using `GroundTheory.Global.SUnit.exists_pow_classNumber_eq_span v`. Establish `hp` using `GroundTheory.Global.SUnit.exists_pow_classNumber_eq_span p`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set πv := hv.choose`. Use `set πp := hp.choose`. Establish `hπv : πv ≠ 0` using `hv.choose_spec.1`. Establish `hπp : πp ≠ 0` using `hp.choose_spec.1`. Establish `hav : a ^ hF * πv ≠ 0` using `mul_ne_zero (pow_ne_zero _ ha) hπv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbp : b ^ hF * πp ≠ 0` using `mul_ne_zero (pow_ne_zero _ hb) hπp`. Establish `hspan : Ideal.span {a ^ hF * πv} = Ideal.span {b ^ hF * πp}`. Use `congrArg (· ^ hF) hab` as an intermediate fact. Simplify using `only [mul_pow, Ideal.span_singleton_pow] at this`. Rewrite `this` using `[hv.choose_spec.2, hp.choose_spec.2, Ideal.span_singleton_mul_span_singleton, Ideal.span_singleton_mul_span_singleton]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `this`. Establish `hassoc` using `Ideal.span_singleton_eq_span_singleton.1 hspan`. Use `⟨integerUnit hb * (integerUnit ha)⁻¹, fun w => ?_⟩` and prove the remaining obligations. Establish `key` using `ordAt_integerUnit_eq_of_associated hav hbp hassoc w`. Rewrite `key` using `[integerUnit_mul (pow_ne_zero _ ha) hπv hav, integerUnit_mul (pow_ne_zero _ hb) hπp hbp, integerUnit_pow ha hF (pow_ne_zero _ ha), integerUnit_pow hb hF (pow_ne_zero _ hb), ordAt_mul, ordAt_mul, ordAt_pow, ordAt_pow]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hv' : ordAt w (integerUnit hπv) = if w = v then (hF : ℤ) else 0`. Rewrite using `[← ordAt_placeUnit v w, placeUnit_eq_integerUnit]`. Establish `hp' : ordAt w (integerUnit hπp) = if w = p then (hF : ℤ) else 0`. Rewrite using `[← ordAt_placeUnit p w, placeUnit_eq_integerUnit]`. Rewrite `key` using `[hv', hp']`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hh : (hF : ℤ) ≠ 0` using `by exact_mod_cast classNumber_ne_zero F`. Rewrite using `[ordAt_mul, ordAt_inv]`. Apply `mul_left_cancel₀ hh` to reduce the goal to its premises. Apply the tactic sequence `split_ifs at key ⊢ <;> linarith`.
+A detailed English derivation is pending.
 -/
 theorem exists_ordAt_eq_of_mk0_eq {v p : HeightOneSpectrum (𝓞 F)}
     (h : ClassGroup.mk0 (primeNZD v) = ClassGroup.mk0 (primeNZD p)) :
@@ -131,9 +131,9 @@ theorem exists_ordAt_eq_of_mk0_eq {v p : HeightOneSpectrum (𝓞 F)}
 variable (S : Set (HeightOneSpectrum (𝓞 F)))
 
 /- English proof (translation)
-Use extensionality with `w`. Rewrite using `[divS_apply, toMul_ofMul, ordAt_placeUnit, Finsupp.smul_apply, Finsupp.single_apply]`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `h' : w.1 ≠ v.1` using `fun e => h (Subtype.ext e)`. Simplify using `[h', Ne.symm h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem divS_placeUnit (v : {v : HeightOneSpectrum (𝓞 F) // v ∉ S}) :
     divS S (Additive.ofMul (GroundTheory.Global.SUnit.placeUnit v.1)) =
@@ -148,11 +148,11 @@ theorem divS_placeUnit (v : {v : HeightOneSpectrum (𝓞 F) // v ∉ S}) :
     simp [h', Ne.symm h]
 
 /- English proof (translation)
-Take `⟨D, rfl⟩` from `QuotientAddGroup.mk'_surjective (divS S).range c`. Rewrite using `[← map_nsmul]`. Use `(QuotientAddGroup.eq_zero_iff _).2 ?_` and prove the remaining obligations. Proceed by induction on `D using Finsupp.induction_linear with`. Consider the case `zero => rw [smul_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `add f g hf hg => rw [smul_add]`. Conclude with `add_mem hf hg`. Consider the case `single v m`. Use `⟨m • Additive.ofMul (GroundTheory.Global.SUnit.placeUnit v.1), ?_⟩` and prove the remaining obligations.
+Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[map_zsmul, divS_placeUnit]`. Use extensionality with `w`. Apply the tactic sequence `by_cases hw : v = w <;> simp [hw]`. Expand and normalize the polynomial expressions, which then agree.
+Apply the first step, then apply the next step to every resulting obligation. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem classNumber_nsmul_sPic (c : sPic S) : classNumber F • c = 0 := by
   obtain ⟨D, rfl⟩ := QuotientAddGroup.mk'_surjective (divS S).range c
@@ -176,9 +176,9 @@ noncomputable def sPicGen (c : ClassGroup (𝓞 F)) : sPic S :=
   else 0
 
 /- English proof (translation)
-Establish `hex : ∃ u : {v : HeightOneSpectrum (𝓞 F) // v ∉ S}, ClassGroup.mk0 (primeNZD u.1) = ClassGroup.mk0 (primeNZD v.1)` using `⟨v, rfl⟩`. Rewrite using `[sPicGen, dif_pos hex]`. Take `⟨x, hx⟩` from `exists_ordAt_eq_of_mk0_eq hex.choose_spec.symm`. Rewrite using `[← sub_eq_zero, ← map_sub]`. Use `(QuotientAddGroup.eq_zero_iff _).2 ⟨Additive.ofMul x, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `w`. Rewrite using `[divS_apply, toMul_ofMul, hx, Finsupp.sub_apply, Finsupp.single_apply, Finsupp.single_apply]`. Establish `e1 : (w.1 = v.1) ↔ (v = w)` using `⟨fun e => (Subtype.ext e).symm, fun e => by rw [e]⟩`. Establish `e2 : (w.1 = hex.choose.1) ↔ (hex.choose = w)` using `⟨fun e => (Subtype.ext e).symm, fun e => by rw [e]⟩`. Simplify using `only [e1, e2]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem sPicMk_single_eq_sPicGen (v : {v : HeightOneSpectrum (𝓞 F) // v ∉ S}) :
     sPicMk S (Finsupp.single v 1) = sPicGen S (ClassGroup.mk0 (primeNZD v.1)) := by
@@ -196,11 +196,11 @@ theorem sPicMk_single_eq_sPicGen (v : {v : HeightOneSpectrum (𝓞 F) // v ∉ S
   simp only [e1, e2]
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff]`. Introduce and unpack `c -`. Take `⟨D, rfl⟩` from `QuotientAddGroup.mk'_surjective (divS S).range c`. Proceed by induction on `D using Finsupp.induction_linear with`. Consider the case `zero => rw [map_zero]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `add f g hf hg => rw [map_add]`. Conclude with `add_mem hf hg`. Consider the case `single v m`. Rewrite using `[← Finsupp.smul_single_one, map_zsmul]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `AddSubgroup.zsmul_mem _ ?_ m` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `sPicMk S (Finsupp.single v 1) ∈ _`. Rewrite using `[sPicMk_single_eq_sPicGen]`. Conclude with `AddSubgroup.subset_closure ⟨_, rfl⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem closure_range_sPicGen : AddSubgroup.closure (Set.range (sPicGen S)) = ⊤ := by
   rw [eq_top_iff]

@@ -11,15 +11,13 @@ noncomputable section
 namespace GlobalTheory.JacLineFiltration
 
 /- English proof (translation)
-Take `⟨b, h1, h2⟩` from `b`. Establish `r0 : b false false + b false true = 1`. Use `h1 false` as an intermediate fact. Rewrite `this` using `[Fintype.sum_bool]`. Rewrite using `[add_comm]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this.trans (Fintype.card_fin 1)`. Establish `r1 : b true false + b true true = Fintype.card m`. Use `h1 true` as an intermediate fact. Rewrite `this` using `[Fintype.sum_bool]`. Rewrite using `[add_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this`. Establish `c0 : b false false + b true false = 1`. Use `h2 false` as an intermediate fact. Rewrite `this` using `[Fintype.sum_bool]`. Rewrite using `[add_comm]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this.trans (Fintype.card_fin 1)`. Establish `c1 : b false true + b true true = Fintype.card m`. Use `h2 true` as an intermediate fact. Rewrite `this` using `[Fintype.sum_bool]`. Rewrite using `[add_comm]`.
-
-Conclude with `this`. Express the relevant statement in the definitionally equal form `(b false false = 1 ∧ b false true = 0 ∧ b true false = 0 ∧ b true true = Fintype.card m) ∨ (b false false = 0 ∧ b false true = 1 ∧ b true false = 1 ∧ b true true + 1 = Fintype.card m)`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem sizeMatrix_cases {m : Type} [Fintype m] [DecidableEq m]
     (b : SizeMatrix (Two (Fin 1) m) (Two (Fin 1) m)) :
@@ -40,7 +38,7 @@ theorem sizeMatrix_cases {m : Type} [Fintype m] [DecidableEq m]
   omega
 
 /- English proof (translation)
-Proceed by induction on `q using Polynomial.induction_on' with`. Consider the case `add p q hp hq => simp only [map_add, LinearMap.comp_add, LinearMap.add_comp, hp, hq]`. Consider the case `monomial n a`. Simplify using `only [Polynomial.aeval_monomial, Algebra.algebraMap_eq_smul_one, smul_mul_assoc, one_mul, LinearMap.comp_smul, LinearMap.smul_comp]`. Rewrite using `[Module.End.commute_pow_left_of_commute h.symm n]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_aeval {R M N : Type} [CommRing R] [AddCommGroup M] [Module R M] [AddCommGroup N] [Module R N]
     (φ : M →ₗ[R] N) (A : Module.End R M) (B : Module.End R N) (h : φ ∘ₗ A = B ∘ₗ φ)
@@ -57,11 +55,11 @@ end GlobalTheory.JacLineFiltration
 namespace GlobalTheory.JacLineFiltration
 
 /- English proof (translation)
-Introduce `w hw`. Establish `h1` using `comp_aeval S.toSubmodule.subtype (S.toRepresentation g) (π g) rfl q`. Establish `h2` using `comp_aeval (T.toSubmodule.comap S.toSubmodule.subtype).mkQ (S.toRepresentation g) (subQuot S T g) rfl q`. Establish `h3` using `comp_aeval ψ.toLinearMap (subQuot S T g) (σ g) (ψ.isIntertwining' g) q`. Establish `e1` using `LinearMap.congr_fun h1 ⟨w, hw⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `LinearMap.congr_fun h2 ⟨w, hw⟩`. Establish `e3` using `LinearMap.congr_fun h3 ((T.toSubmodule.comap S.toSubmodule.subtype).mkQ ⟨w, hw⟩)`. Simplify using `only [LinearMap.comp_apply, Submodule.coe_subtype, hq, LinearMap.zero_apply] at e1 e2 e3`. Rewrite `e3` using `[← e2]`. Establish `e4 : (T.toSubmodule.comap S.toSubmodule.subtype).mkQ (Polynomial.aeval (S.toRepresentation g) q ⟨w, hw⟩) = 0` using `(map_eq_zero_iff ψ.toLinearEquiv ψ.toLinearEquiv.injective).1 e3`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e4` using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap]`. Rewrite using `[← e1]`. Conclude with `e4`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aeval_mem_of_subQuot {G V X : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup X]
     [Module ℂ X] {π : Representation ℂ G V} (S T : Subrepresentation π)
@@ -92,23 +90,21 @@ namespace GlobalTheory.JacLineFiltration
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `k _ _ _ _ hG n m _ _ _ _ e Y _ _ τ hτ ξ hξ ϖ hq`. Establish `h1 : JacquetOfInducedFiltration k` using `hG k`. Establish `h2` using `h1 Bool Bool n (Two (Fin 1) m) (Two (Fin 1) m) (two e) (two e)`. Take `⟨N, b, hb⟩` from `h2`. Establish `hρ : IsSmooth ((extTensor (detRep (Fin 1) ξ) τ).comp (leviTwo k (Fin 1) m).symm.toMonoidHom)` using `isSmooth_comp (isSmooth_extTensor ((isSmooth_ofChar_iff _).2 hξ.detChar) hτ) _ ((continuous_apply false).prodMk (continuous_apply true))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h3` using `hb (TensorProduct ℂ ℂ Y) ((extTensor (detRep (Fin 1) ξ) τ).comp (leviTwo k (Fin 1) m).symm.toMonoidHom) hρ`. Take `⟨S, hmono, h0, hN, hcell⟩` from `h3`. Set `S' : Fin (N + 1) → Subrepresentation (jac₂ e (ind₂ e (extTensor (detRep (Fin 1) ξ) τ)))` to `fun t => ⟨(S t).toSubmodule, fun g _ hv => (S t).apply_mem_toSubmodule (leviTwo k (Fin 1) m g) hv⟩`. Set `b₀ : SizeMatrix (Two (Fin 1) m) (Two (Fin 1) m)` to `⟨fun i j => if i = j then Fintype.card (Two (Fin 1) m i) else 0, fun i => by`. Apply the tactic sequence `rw [Fintype.sum_bool]; cases i <;> simp, fun j => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rw [Fintype.sum_bool]; cases j <;> simp⟩`. Use `⟨N, S', fun t u h => hmono h, ?_, ?_, b.symm b₀, ?_, ?_⟩` and prove the remaining obligations. Conclude with `SetLike.ext fun x => by show x ∈ (S 0).toSubmodule ↔ _`. Rewrite using `[h0]`. Both sides reduce to the same expression.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `SetLike.ext fun x => by show x ∈ (S (Fin.last N)).toSubmodule ↔ _`. Rewrite using `[hN]`. Both sides reduce to the same expression. Establish `hb0 : b (b.symm b₀) = b₀` using `b.apply_symm_apply b₀`. Establish `h01 : (b (b.symm b₀)).1 false true = 0` using `by rw [hb0]; rfl`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h10 : (b (b.symm b₀)).1 true false = 0` using `by rw [hb0]; rfl`. Establish `hc` using `GlobalTheory.T.levi_block_rep_equiv_first (k := k) (m := m) (b (b.symm b₀)) h01 h10 (W := TensorProduct ℂ ℂ Y) ((extTensor (detRep (Fin 1) ξ) τ).comp (leviTwo k (Fin 1) m).symm.toMonoidHom) hρ`. Take `⟨f, g, hfg⟩` from `hc`. Establish `hc3` using `hcell (b.symm b₀) f g`. Use `hc3.elim fun ψ => hfg.elim fun χ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨Representation.Equiv.mk (ψ.toLinearEquiv.trans χ.toLinearEquiv) fun x => (ψ.trans χ).isIntertwining' (leviTwo k (Fin 1) m x)⟩`. Introduce `t ht`. Establish `hff : (b t).1 false false = 0`. Break down `sizeMatrix_cases (b t) with h | h` into its components or cases. It suffices to derive a contradiction.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `ht` to reduce the goal to its premises. Rewrite using `[Equiv.eq_symm_apply]`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i j`. Apply the tactic sequence `cases i <;> cases j`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `h.1`. Conclude with `h.2.1`. Conclude with `h.2.2.1`. Conclude with `h.2.2.2`. Conclude with `h.1`.
-
-Establish `hc` using `GlobalTheory.T.jacquet_polynomial_scalar_eval (k := k) (m := m) (Y := Y) τ ξ ϖ hq (b t) hff`. Take `⟨f, g, q, hq0, hqA⟩` from `hc`. Establish `hc3` using `hcell t f g`. Conclude with `hc3.elim fun ψ => ⟨q, hq0, aeval_mem_of_subQuot (S t.succ) (S t.castSucc) ψ _ q hqA⟩`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem jacquet_line_filtration : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k],
     GlobalTheory.Published.GeometricLemmaFiltration → ∀ {n m : Type} [Fintype n] [DecidableEq n] [Fintype m] [DecidableEq m]

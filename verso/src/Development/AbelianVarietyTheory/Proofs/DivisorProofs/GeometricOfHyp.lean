@@ -26,9 +26,9 @@ noncomputable section
 namespace GlobalTheory.CovHt.GeomBound
 
 /- English proof (translation)
-Introduce and unpack `⟨a, ha⟩ ⟨b, hb⟩ hab`. Simplify using `only [Fin.mk_lt_mk] at hab`. Proceed by induction on `b with`. Consider the case `zero => omega`. Consider the case `succ n ih`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Break down `Nat.lt_succ_iff_lt_or_eq.1 hab with h' | h'` into its components or cases. Conclude with `(h ⟨n, by omega⟩ ⟨n + 1, hb⟩ rfl).trans (ih (by omega) h')`. Substitute `h'` using the available equality. Conclude with `h ⟨a, ha⟩ ⟨a + 1, hb⟩ rfl`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem strictAnti_of_step {N : ℕ} {f : Fin N → ℤ} (h : ∀ a b : Fin N, (b : ℕ) = a + 1 → f b < f a) : StrictAnti f := by
   rintro ⟨a, ha⟩ ⟨b, hb⟩ hab
@@ -47,27 +47,25 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
   {Y0 : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ} (p : PtAt ex Csz) (i : Fin D.R.m)
 
 /- English proof (translation)
-Take `⟨hsig1, hsig2, hsigr⟩` from `hw.sig`. Take `⟨h0, S, eta, -, -, -, h4T, -, hHyp⟩` from `hw.hyp hi`. Establish `hdiv` using `(quo_iff p i PP h0 S eta u1).1 hu`. Establish `G` using `GlobalTheory.MeanTop.divided_gaps _ _ _ (hHyp u1) hdiv`. Simplify using `only [wtsAt] at G`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hk` using `D.R.m_add_three_le_k`. Establish `hm` using `D.R.two_le_m`. Establish `hp1 : 1 ≤ (dat p i).p` using `by rw [hsig1]; simp only [Ranks.sigW]; omega`. Establish `hq1 : 1 ≤ (dat p i).q` using `by rw [hsig2]; simp only [Ranks.sigW]; omega`. Establish `hr2 : 2 ≤ D.R.r` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD1 : 1 ≤ dimFlag (dat p i)`. Rewrite using `[hw.dim]`. Conclude with `Nat.mul_pos (by have := hN.f8; omega) (Nat.choose_pos hr2)`. Establish `hz : (4 : ℝ) ≤ zBase L`. Unfold `zBase`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `c1 : (8 : ℝ) ≤ D.R.f` using `by exact_mod_cast hN.f8`. Establish `c2 : (2 : ℝ) ≤ D.R.r` using `by exact_mod_cast hr2`. Establish `c3 : (10 : ℝ) ≤ L.sc.L` using `hN.big.2.1`. Establish `: (8 : ℝ) * 2 * 10 ≤ D.R.f * D.R.r * L.sc.L` using `by gcongr`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hPP : (4 : ℝ) ≤ PP` using `hz.trans ((le_self_pow₀ (by linarith) (by norm_num)).trans hN.ppLow)`. Establish `hT : 16 * dimFlag (dat p i) ^ 2 ≤ lenT p i PP`. Establish `h1 : (16 * dimFlag (dat p i) ^ 2 : ℝ) ≤ PP ^ 2 * (dimFlag (dat p i) : ℝ) ^ 2 * (D.R.k : ℝ) / (D.R.m : ℝ)`. Establish `c3 : (0 : ℝ) < D.R.m` using `by exact_mod_cast (by omega : 0 < D.R.m)`. Establish `c4 : (D.R.m : ℝ) ≤ D.R.k` using `by exact_mod_cast (by omega : D.R.m ≤ D.R.k)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c5 : (16 : ℝ) ≤ PP ^ 2` using `by nlinarith`. Rewrite using `[le_div_iff₀ c3]`. Establish `c6 : (0 : ℝ) ≤ (dimFlag (dat p i) : ℝ) ^ 2` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Establish `h2` using `h1.trans (Nat.le_ceil _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `lenT`. Conclude with `h2` after adjusting the coercions. Introduce `τ a b hb`. Take `⟨g1, g2, -⟩` from `G τ a b hb`. Establish `hTz : (16 * (dimFlag (dat p i) : ℤ) ^ 2) ≤ (lenT p i PP : ℤ)` using `by exact_mod_cast hT`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD1z : (1 : ℤ) ≤ dimFlag (dat p i)` using `by exact_mod_cast hD1`. Establish `hsq : (dimFlag (dat p i) : ℤ) ≤ (dimFlag (dat p i) : ℤ) ^ 2` using `by nlinarith`. Move the coercions through the operations in `at G ⊢`. Distinguish the cases in `hbp : (b : ℕ) = (dat p i).p`. Establish `g` using `(g2 hbp).2`.
+Move the embeddings inside the algebraic operations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT0 : (0 : ℤ) < 4 * (lenT p i PP : ℤ)` using `by nlinarith`. Establish `hle : (lenT p i PP : ℤ) ≤ u1 τ a - u1 τ b - 3 * (((dat p i).p + (dat p i).q : ℕ) : ℤ)`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Use `mul_lt_mul_of_pos_left hc hT0` as an intermediate fact.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use the polynomial consequences of the given equalities and inequalities. Move the coercions through the operations in `at hle`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `g` using `g1 hbp`. Move the coercions through the operations in `at g`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem quo_gaps {PP A M : ℝ} (hN : HostNum D L PP A M) (hw : WtNum p i PP) (hi : (i : ℕ) + 1 < D.R.m)
     (u1 : AllWt.Weight (dat p i)) (hu : Quo p i PP u1) :
@@ -129,19 +127,19 @@ theorem quo_gaps {PP A M : ℝ} (hN : HostNum D L PP A M) (hw : WtNum p i PP) (h
     linarith
 
 /- English proof (translation)
-Take `⟨hsig1, hsig2, -⟩` from `hw.sig`. Establish `hk` using `D.R.m_add_three_le_k`. Establish `hp1 : 1 ≤ (dat p i).p` using `by rw [hsig1]; simp only [Ranks.sigW]; omega`. Establish `hq1 : 1 ≤ (dat p i).q` using `by rw [hsig2]; simp only [Ranks.sigW]; omega`. Establish `hf : 2 < Module.finrank ℚ D.host.E / 2` using `by rw [hN.deg]; have := hN.f8; omega`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hj : InR D ((i : ℕ) + 1)` using `⟨by omega, hi.le⟩`. Establish `hL : LawsJ p.T` using `p.fw.laws`. Establish `hYg` using `hY.1`. Take `⟨-, -, -, -, -, -, hq⟩` from `hsz`. Take `⟨-, hq⟩` from `hq hi`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, hρ1, -⟩` from `hq u1 hu`. Establish `hgap` using `quo_gaps p i hN hw hi u1 hu`. Establish `hsa : ∀ τ, StrictAnti (u1 τ)` using `fun τ => strictAnti_of_step fun a b hb => by`. Use `hgap τ a b hb` as an intermediate fact. Establish `: (0 : ℤ) ≤ (((dimFlag (dat p i) + 3) ^ 2 + 2 * ((dat p i).p + (dat p i).q) : ℕ) : ℤ)` using `by positivity`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hg1 : ∀ τ, 1 ≤ GlobalTheory.CompHS.gap (u1 τ) ((dat p i).p - 1)` using `fun τ => by`. Establish `e` using `GlobalTheory.CompHS.gap_eq (u1 τ) (i := ⟨(dat p i).p - 1, by omega⟩) (j := ⟨(dat p i).p, by omega⟩) (by simp only; omega)`. Simplify using `only at e`. Rewrite using `[e]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `hgap τ ⟨(dat p i).p - 1, by omega⟩ ⟨(dat p i).p, by omega⟩ (by simp only; omega)` as an intermediate fact. Establish `: (0 : ℤ) ≤ ((dimFlag (dat p i) + 3) ^ 2 + 2 * ((dat p i).p + (dat p i).q) : ℕ)` using `by positivity`. Move the coercions through the operations in `at *`. Use the polynomial consequences of the given equalities and inequalities. Establish `hgood` using `GlobalTheory.T.good_weight_antitone_gap hP _ p.T hL _ hp1 hq1 hf hj Y _ _ hYg u1 (fun τ => (hsa τ).antitone) hg1`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hbir` using `GlobalTheory.T.weight_principalisation_bound hX hG hQ hS1 (GlobalTheory.T.stronger_published_hypotheses_imply hP) hP.q15 hP.q16 _ p.T hL _ hp1 hq1 Y _ _ hYg u1 hgap`. Establish `hprop` using `(GlobalTheory.T.proportional_positive_volumes hP hS1 hS2 hS3 _ p.T hL _ hp1 hq1 hf hj Y _ _ hYg).1`. Introduce `Z`. Use `⟨hgood.2 Z, hbir Z, ?_⟩` and prove the remaining obligations. Establish `hv : vdm u1 ≠ 0` using `(GlobalTheory.CompHt.vdm_pos hsa).ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[delPrime_eq Y.U Z hv]`. Conclude with `mul_le_mul_of_nonneg_left (GlobalTheory.DegTop.compDeg_le hprop Z hsa) (by linarith)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem geomAt_of (hX : GlobalTheory.CovTop.HypothesesX) (hG : GlobalTheory.Published.GrothendieckDeformation) (hQ : GlobalTheory.HSCore.Quoted)
     (hP : Hypotheses2) (hS1 : GlobalTheory.Published.SiegelToroidalIntegral) (hS2 : GlobalTheory.Published.ToroidalForFanKS)
@@ -185,11 +183,11 @@ theorem geomAt_of (hX : GlobalTheory.CovTop.HypothesesX) (hG : GlobalTheory.Publ
 end Point
 
 /- English proof (translation)
-Introduce `hX hG hQ hP h1 h2 h3 _ hS`. Establish `hH` using `Sizes.hostN 0`. Establish `hW` using `WtShape.wtN`. Unfold `Geom Covers Lifts`. Unfold `Size Lifts at hS`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
-Unfold `HostN Lifts at hH`. Unfold `WtN Lifts at hW`. Use `((hS.and hH).and hW).imp fun Fm CH _ h => ?_` and prove the remaining obligations. Take `⟨⟨⟨C1, -, e1⟩, ⟨C2, -, e2⟩⟩, ⟨C3, -, e3⟩⟩` from `h`. Take `⟨x0, hx0⟩` from `(e1.and e2).and e3`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨0, le_rfl, x0, fun x hx hle ι p hp i hi Y hY u1 hu => ?_⟩` and prove the remaining obligations. Take `⟨⟨b1, b2⟩, b3⟩` from `hx0 x hx hle ι p hp`. Conclude with `geomAt_of p i hX hG hQ hP h1 h2 h3 (b1 i) (b2 i) (b3 i) hi Y hY u1 hu`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem geom : GlobalTheory.CovTop.HypothesesX → GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted → Hypotheses2 →
     GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalForFanKS →

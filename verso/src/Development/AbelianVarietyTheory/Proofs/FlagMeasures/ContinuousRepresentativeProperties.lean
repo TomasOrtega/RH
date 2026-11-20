@@ -8,7 +8,7 @@ open scoped InnerProductSpace ContDiff
 namespace GlobalTheory.ContRepUniq
 
 /- English proof (translation)
-Rewrite using `[Lp.norm_def, ENNReal.ofReal_pow ENNReal.toReal_nonneg, ENNReal.ofReal_toReal (Lp.eLpNorm_ne_top F), eLpNorm_eq_lintegral_rpow_enorm two_ne_zero ENNReal.ofNat_ne_top]`. Establish `h2 : ((2 : ENNReal).toReal) = 2` using `by norm_num`. Simplify using `only [h2, ← ENNReal.rpow_two]`. Rewrite using `[← ENNReal.rpow_mul]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem lintegral_enorm_sq_eq {X : Type} [MeasurableSpace X] (μ : Measure X) (F : Lp ℂ 2 μ) :
     ∫⁻ x, ‖F x‖ₑ ^ 2 ∂μ = ENNReal.ofReal (‖F‖ ^ 2) := by
@@ -21,13 +21,11 @@ theorem lintegral_enorm_sq_eq {X : Type} [MeasurableSpace X] (μ : Measure X) (F
   norm_num
 
 /- English proof (translation)
-Introduce `B`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `F f f' hf hf'`. Conclude with `((GlobalTheory.ExtContRep.ext_ae_eq_contRep B F f hf).2.1 f' hf').symm`. Introduce `F F' f f' c hf hf'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hf.1.add (continuous_const.mul hf'.1), ?_, ?_⟩` and prove the remaining obligations. Introduce `γ hγ x show f (γ * x) + c * f' (γ * x) = f x + c * f' x`. Rewrite using `[hf.2.1 γ hγ x, hf'.2.1 γ hγ x]`. Use `filter_upwards [Lp.coeFn_add F (c • F'), Lp.coeFn_smul c F', hf.2.2, hf'.2.2] with x h1 h2 h3 h4`. Rewrite using `[h1, Pi.add_apply, h2, Pi.smul_apply, smul_eq_mul, h3, h4]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `F f g hf`. Conclude with `(GlobalTheory.ExtContRep.ext_ae_eq_contRep B F f hf).2.2.1 g`. Introduce `F f hf`. Use `⟨(GlobalTheory.ExtContRep.ext_ae_eq_contRep B F f hf).1.symm, ?_⟩` and prove the remaining obligations. Use `Eq.trans ?_ (lintegral_enorm_sq_eq ((B.I.muA B.μf).restrict B.fund) F)` and prove the remaining obligations.
-
-Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hf.2.2] with x hx`. Rewrite using `[hx]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem contRep_unique_linear : ∀ (B : RowsAut), (∀ F f f', IsContRep B F f → IsContRep B F f' → f = f') ∧ (∀ F F' f f' (c : ℂ), IsContRep B F f → IsContRep B F' f' → IsContRep B (F + c • F') (fun x => f x + c * f' x)) ∧ (∀ F f g, IsContRep B F f → IsContRep B (B.R g F) (fun x => f (x * g))) ∧ ∀ F f, IsContRep B F f → f =ᵐ[B.I.muA B.μf] B.I.ext F ∧ ∫⁻ x in B.fund, ‖f x‖ₑ ^ 2 ∂(B.I.muA B.μf) = ENNReal.ofReal (‖F‖ ^ 2) := by
   intro B

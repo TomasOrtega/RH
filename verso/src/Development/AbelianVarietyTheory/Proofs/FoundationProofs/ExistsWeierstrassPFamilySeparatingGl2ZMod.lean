@@ -12,13 +12,13 @@ open ModularForm (E₄ E₆)
 namespace GlobalTheory.FNSep
 
 /- English proof (translation)
-Use `set P : Polynomial ℂ := Polynomial.C a + Polynomial.C b * Polynomial.X + Polynomial.C c * Polynomial.X ^ 2 with hPdef`. Establish `hP : P ≠ 0`. Introduce `h0`. Apply `h` to reduce the goal to its premises. Establish `e0` using `congrArg (fun q => q.coeff 0) h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `congrArg (fun q => q.coeff 1) h0`. Establish `e2` using `congrArg (fun q => q.coeff 2) h0`. Simplify using `[P, Polynomial.coeff_X_pow, Polynomial.coeff_C, Polynomial.coeff_X] at e0 e1 e2`. Conclude with `⟨e0, e1, e2⟩`. Establish `hf` using `(Polynomial.finite_setOf_isRoot hP).preimage (f := (Nat.cast : ℕ → ℂ)) Nat.cast_injective.injOn`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hf.subset ?_` and prove the remaining obligations. Introduce `n hn`. Simplify using `only [Set.mem_setOf_eq, Set.mem_preimage] at hn ⊢`. Rewrite using `[Polynomial.IsRoot.def]`. Simplify using `only [P, Polynomial.eval_add, Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_X, Polynomial.eval_pow]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `hn`.
+A detailed English derivation is pending.
 -/
 theorem finite_nat_roots (a b c : ℂ) (h : ¬ (a = 0 ∧ b = 0 ∧ c = 0)) :
     {n : ℕ | a + (n : ℂ) * b + (n : ℂ) ^ 2 * c = 0}.Finite := by
@@ -40,14 +40,14 @@ theorem finite_nat_roots (a b c : ℂ) (h : ¬ (a = 0 ∧ b = 0 ∧ c = 0)) :
   linear_combination hn
 
 /- English proof (translation)
-Simplify using `[vmul, Matrix.vecMul, dotProduct, Fin.sum_univ_two]`.
+Simplify using the standard rewrite rules.
 -/
 theorem vmul_apply {N : ℕ} (a b : ZMod N) (α : GL (Fin 2) (ZMod N)) (j : Fin 2) :
     vmul ![a, b] α j = a * (α : Matrix (Fin 2) (Fin 2) (ZMod N)) 0 j + b * (α : Matrix (Fin 2) (Fin 2) (ZMod N)) 1 j := by
   simp [vmul, Matrix.vecMul, dotProduct, Fin.sum_univ_two]
 
 /- English proof (translation)
-Introduce `h`. Apply `hx` to reduce the goal to its premises. Establish `: Matrix.vecMul (vmul x α) ((α⁻¹ : GL (Fin 2) (ZMod N)) : Matrix (Fin 2) (Fin 2) (ZMod N)) = x`. Rewrite using `[vmul, Matrix.vecMul_vecMul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.vecMul_one]`. Rewrite using `[← this, h, Matrix.zero_vecMul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem vmul_ne_zero {N : ℕ} (x : Fin 2 → ZMod N) (α : GL (Fin 2) (ZMod N)) (hx : x ≠ 0) : vmul x α ≠ 0 := by
   intro h
@@ -61,9 +61,9 @@ end GlobalTheory.FNSep
 namespace GlobalTheory.FNSep
 
 /- English proof (translation)
-Apply the tactic sequence `rcases h0 with h0 | h0 <;> rcases h1 with h1 | h1 <;> rcases h2 with h2 | h2 <;>`. Establish `E0 : ∀ j, _` using `fun j => congrFun h0 j`. Establish `E1 : ∀ j, _` using `fun j => congrFun h1 j`. Establish `E2 : ∀ j, _` using `fun j => congrFun h2 j`. Simplify using `only [Pi.neg_apply, vmul_apply] at E0 E1 E2`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `first`. Consider the case `(left; apply Units.ext; ext i j; fin_cases i <;> simp only [Fin.zero_eta, Fin.mk_one, Fin.isValue] <;> first | linear_combination E0 j | linear_combination E1 j | linear_combination E2 j - E0 j | linear_combination E2 j - E1 j)`. Consider the case `(right; apply Units.ext; ext i j; rw [Units.val_neg, Matrix.neg_apply]; fin_cases i <;> simp only [Fin.zero_eta, Fin.mk_one, Fin.isValue] <;> first | linear_combination E0 j | linear_combination E1 j | linear_combination E2 j - E0 j | linear_combination E2 j - E1 j)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem eq_or_eq_neg_of_rows {N : ℕ} (α β : GL (Fin 2) (ZMod N))
     (h0 : vmul ![1, 0] α = vmul ![1, 0] β ∨ vmul ![1, 0] α = -vmul ![1, 0] β)
@@ -80,23 +80,21 @@ theorem eq_or_eq_neg_of_rows {N : ℕ} (α β : GL (Fin 2) (ZMod N))
     | (right; apply Units.ext; ext i j; rw [Units.val_neg, Matrix.neg_apply]; fin_cases i <;> simp only [Fin.zero_eta, Fin.mk_one, Fin.isValue] <;> first | linear_combination E0 j | linear_combination E1 j | linear_combination E2 j - E0 j | linear_combination E2 j - E1 j)
 
 /- English proof (translation)
-Introduce `N _`. Set `u : GL (Fin 2) (ZMod N) × GL (Fin 2) (ZMod N) → (Fin 2 → ZMod N) → ℍ → ℂ` to `fun p e τ => wp N (vmul e p.1) τ - wp N (vmul e p.2) τ`. Set `S : Set ℕ` to `⋃ p : GL (Fin 2) (ZMod N) × GL (Fin 2) (ZMod N), {n : ℕ | ¬ (∀ τ, u p ![1, 0] τ = 0 ∧ u p ![0, 1] τ = 0 ∧ u p ![1, 1] τ = 0) ∧ ∀ τ, u p ![1, 0] τ + (n : ℂ) * u p ![0, 1] τ + (n : ℂ) ^ 2 * u p ![1, 1] τ = 0}`. Establish `hfin : Finite (GL (Fin 2) (ZMod N))` using `Finite.of_injective (fun a : GL (Fin 2) (ZMod N) => (a : Matrix (Fin 2) (Fin 2) (ZMod N))) fun a b h => Units.ext h`. Establish `hS : S.Finite`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Set.finite_iUnion fun p => ?_` and prove the remaining obligations. Distinguish the cases in `hz : ∀ τ, u p ![1, 0] τ = 0 ∧ u p ![0, 1] τ = 0 ∧ u p ![1, 1] τ = 0`. Conclude with `Set.finite_empty.subset fun n hn => absurd hz hn.1`. Take `⟨τ, hτ⟩` from `not_forall.mp hz`. Conclude with `(finite_nat_roots _ _ _ hτ).subset fun n hn => hn.2 τ`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨n, hn⟩` from `hS.infinite_compl.nonempty`. Use `⟨n, n ^ 2, fun α β hfun => ?_⟩` and prove the remaining obligations. Establish `hroot : ∀ τ, u (α, β) ![1, 0] τ + (n : ℂ) * u (α, β) ![0, 1] τ + (n : ℂ) ^ 2 * u (α, β) ![1, 1] τ = 0`. Introduce `τ`. Use `congrFun hfun τ` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules.
 
-Move the coercions through the operations in `at this`. Simplify using `only [u]`. Take the linear combination `this`. Establish `hz : ∀ τ, u (α, β) ![1, 0] τ = 0 ∧ u (α, β) ![0, 1] τ = 0 ∧ u (α, β) ![1, 1] τ = 0`. Assume the negation of the conclusion as `hz`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Conclude with `hn (Set.mem_iUnion.mpr ⟨(α, β), hz, hroot⟩)`. Break down `Nat.lt_or_ge 1 N with hN | hN` into its components or cases. Use `haveI : Fact (1 < N) := ⟨hN⟩`. Take `⟨z0, z1, z2⟩` from `hz UpperHalfPlane.I`. Establish `ne0 : (![1, 0] : Fin 2 → ZMod N) ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `h`. Use `congrFun h 0` as an intermediate fact. Simplify using `at this`. Establish `ne1 : (![0, 1] : Fin 2 → ZMod N) ≠ 0`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrFun h 1` as an intermediate fact. Simplify using `at this`. Establish `ne2 : (![1, 1] : Fin 2 → ZMod N) ≠ 0`. Introduce `h`. Use `congrFun h 0` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `at this`. Conclude with `eq_or_eq_neg_of_rows α β (GlobalTheory.T.eq_or_eq_neg_of_weierstrassP_torsion_eq N UpperHalfPlane.I _ _ (vmul_ne_zero _ α ne0) (vmul_ne_zero _ β ne0) (sub_eq_zero.mp z0)) (GlobalTheory.T.eq_or_eq_neg_of_weierstrassP_torsion_eq N UpperHalfPlane.I _ _ (vmul_ne_zero _ α ne1) (vmul_n …`. Establish `h1 : N = 1` using `le_antisymm hN (Nat.pos_of_ne_zero (NeZero.ne N))`. Substitute `h1` using the available equality. Use `left`.
-
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Conclude with `Subsingleton.elim _ _`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem sep_family : ∀ (N : ℕ) [NeZero N], ∃ c₁ c₂ : ℕ, ∀ α β : GL (Fin 2) (ZMod N), (fun τ => wp N (vmul ![1, 0] α) τ + (c₁ : ℂ) * wp N (vmul ![0, 1] α) τ + (c₂ : ℂ) * wp N (vmul ![1, 1] α) τ) = (fun τ => wp N (vmul ![1, 0] β) τ + (c₁ : ℂ) * wp N (vmul ![0, 1] β) τ + (c₂ : ℂ) * wp N (vmul ![1, 1] β) τ) → α = β ∨ α = -β := by
   intro N _

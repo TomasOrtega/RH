@@ -16,11 +16,11 @@ private def triG (A : Type) [CommRing A] : AddSubgroup (Matrix (Fin 3) (Fin 3) A
   neg_mem' := fun {a} ha i j h => by rw [Matrix.neg_apply, ha i j h, neg_zero]
 
 /- English proof (translation)
-Set `f : ({p : Fin 3 × Fin 3 // p.1 ≤ p.2} → A) → triG A` to `fun g => ⟨fun i j => if h : i ≤ j then g ⟨(i, j), h⟩ else 0, by show UpT _`. Introduce `i j hij`. Simplify using `[not_le.mpr hij]⟩`. Establish `hf : Function.Injective f`. Introduce `g g' hgg`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `p`. Use `congrArg (fun x : triG A => (x : Matrix (Fin 3) (Fin 3) A) p.1.1 p.1.2) hgg` as an intermediate fact. Simplify `this` using `[f, p.2]`. Establish `h1` using `Nat.card_le_card_of_injective f hf`. Rewrite `h1` using `[Nat.card_fun]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h6 : Nat.card {p : Fin 3 × Fin 3 // p.1 ≤ p.2} = 6`. Rewrite using `[Nat.card_eq_fintype_card]`. Evaluate the decidable proposition. Rewrite `h1` using `[h6]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the decidable proposition. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem triG_card (A : Type) [CommRing A] [Finite A] : Nat.card A ^ 6 ≤ Nat.card (triG A) := by
   classical
@@ -50,35 +50,29 @@ private def zcG {D N : Type} [Group D] [TopologicalSpace D] [AddCommGroup N] (ρ
     simp only [Pi.neg_apply, ha.2 s t, map_neg]; abel⟩
 
 /- English proof (translation)
-Establish `hAm : ∀ x : Matrix (Fin 3) (Fin 3) A, l ^ k • x = 0` using `fun x => by`. Use extensionality with `i j`. Simplify using `[hA]`. Establish `hWZ : W ⊆ Zc ρ` using `fun z hz => by`. Take `⟨h1, h2, -, -⟩` from `(hW z).1 hz`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨h1, fun s t => by rw [h2, hc]⟩`. Establish `hWfin : W.Finite` using `((hLE k hk _ ρ hAm ho).1).subset hWZ`. Use `⟨hWfin, ?_⟩` and prove the remaining obligations. Establish `hmem : ∀ s (x : triG A), ρ s x.1 ∈ triG A` using `fun s x => by show UpT _`. Rewrite using `[hc]`.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hT s x.1 x.2).1`. Set `f : D → (triG A →+ triG A)` to `fun s => { toFun := fun x => ⟨ρ s x.1, hmem s x⟩ map_zero' := Subtype.ext (map_zero (ρ s)) map_add' := fun x y => Subtype.ext (map_add (ρ s) x.1 y.1) }`. Set `ρ' : Representation ℤ D (triG A)` to `{ toFun := fun s => (f s).toIntLinearMap map_one' := LinearMap.ext fun x => Subtype.ext (by show ρ 1 x.1 = x.1`. Rewrite using `[map_one]`. Use the proof step `rfl)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use the proof step `map_mul' := fun s t => LinearMap.ext fun x => Subtype.ext (by show ρ (s * t) x.1 = ρ s (ρ t x.1)`. Rewrite using `[map_mul]`. Use the proof step `rfl) }`. Establish `hρ' : ∀ s (x : triG A), (ρ' s x).1 = ρ s x.1` using `fun s x => rfl`. Establish `hker' : IsOpen (ρ'.ker : Set D)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `Subgroup.isOpen_mono (fun s hs => ?_) ho` and prove the remaining obligations. Rewrite `hs`, the goal using `[MonoidHom.mem_ker]`. Conclude with `LinearMap.ext fun x => Subtype.ext (by rw [hρ', hs]; rfl)`. Establish `hNk : ∀ x : triG A, l ^ k • x = 0` using `fun x => Subtype.ext (by rw [AddSubgroup.coe_nsmul, hAm]; rfl)`. Take `⟨hZfin, hZcard⟩` from `hLE k hk (triG A) ρ' hNk hker'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0 : (0 : D → triG A) ∈ Zc ρ'` using `⟨IsLocallyConstant.const 0, fun s t => by simp⟩`. Establish `hpos : 0 < (Zc ρ').ncard` using `(Set.ncard_pos hZfin).mpr ⟨0, h0⟩`. Establish `hHom : 0 < (HomMu l k ε ρ').ncard`. Break down `Nat.eq_zero_or_pos (HomMu l k ε ρ').ncard with h | h` into its components or cases. Rewrite `hpos` using `[hZcard, h, mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `absurd hpos (lt_irrefl 0)`. Conclude with `h`. Establish `hbig : Nat.card A ^ (6 + 6 * d) ≤ (Zc ρ').ncard`. Rewrite using `[hZcard]`. Combine the equalities or inequalities in the displayed calculation.
+Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← pow_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ Nat.card (triG A) ^ (1 + d) := Nat.pow_le_pow_left (triG_card A) _`. Use `_ ≤ _ := Nat.le_mul_of_pos_right _ hHom`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `Z` to `zcG ρ'`. Use `haveI : Finite Z := hZfin.to_subtype`. Set `p : Fin 3 → (triG A →+ A)` to `fun j => { toFun := fun x => x.1 j j, map_zero' := rfl, map_add' := fun x y => rfl }`. Establish `hp : ∀ z ∈ Z, IsLocallyConstant z ∧ ∀ (j : Fin 3) (s s' : D), p j (z (s * s')) = p j (z s) + p j (z s')`. Introduce `z hz`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hz' : z ∈ Zc ρ'` using `hz`. Use `⟨hz'.1, fun j s s' => ?_⟩` and prove the remaining obligations. Use `show (z (s * s')).1 j j = (z s).1 j j + (z s').1 j j`. Rewrite using `[hz'.2 s s']`. Use `show (z s).1 j j + (ρ s (z s').1) j j = _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hc, (hT s _ (z s').2).2 j]`. Establish `hcut` using `wtCut l D I d k 3 A (triG A) hI hA Z inferInstance p hp`. Establish `hZc : Nat.card Z = (Zc ρ').ncard` using `Nat.card_coe_set_eq (Zc ρ')`. Establish `hSW : {z | z ∈ Z ∧ ∀ (j : Fin 3), ∀ s ∈ I, p j (z s) = 0}.ncard ≤ W.ncard`. Use `Set.ncard_le_ncard_of_injOn (fun z s => (z s).1) ?_ ?_ hWfin` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `z ⟨hz, hI0⟩`. Establish `hz' : z ∈ Zc ρ'` using `hz`. Rewrite using `[hW]`. Use `⟨hz'.1.comp _, fun s s' => ?_, fun s => (z s).2, fun s hs i => hI0 i s hs⟩` and prove the remaining obligations. Use `show (z (s * s')).1 = (z s).1 + c s (z s').1`.
-
-Rewrite using `[hz'.2 s s', ← hc]`. Both sides reduce to the same expression. Introduce `z _ z' _ h`. Use function extensionality and compare the values at `s`. Conclude with `Subtype.ext (congrFun h s)`.
-
-Establish `hApos : 0 < Nat.card A ^ (3 * d)` using `pow_pos Nat.card_pos _`. Use `Nat.le_of_mul_le_mul_right ?_ hApos` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← pow_add]`. Use `congr 1`.
-
-Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ (Zc ρ').ncard := hbig`. Use `_ = Nat.card Z := hZc.symm`. Use `_ ≤ _ := hcut`. Use `_ ≤ W.ncard * Nat.card A ^ (3 * d) := Nat.mul_le_mul_right _ hSW`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem local_lower_triangular_cohomology (l : ℕ) [Fact l.Prime] (A : Type) [CommRing A] [Finite A] (D : Type) [Group D]
     [TopologicalSpace D] [IsTopologicalGroup D] (I : Subgroup D) (ε : D →* ℤ_[l]ˣ) (d k : ℕ) (hk : 0 < k)
@@ -170,7 +164,7 @@ private theorem local_lower_triangular_cohomology (l : ℕ) [Fact l.Prime] (A : 
 end UpperTheory.V.Z.J
 
 /- English proof (translation)
-Introduce `l _ O _ _ _ _ _ D _ _ _ _ I ε d t hl hLE hI ht k hk`. Take `⟨hf, -, hA, -⟩` from `okFin l O hl`. Take `⟨⟨ρ, hc, ho⟩, -, hT, -⟩` from `cjFacts l O D t k hl ht`. Use `haveI := hf k`. Conclude with `local_lower_triangular_cohomology l (Ok l O k) D I ε d k hk (hA k) hLE hI (cj k t) ρ hc ho (fun s X hX => ⟨(hT s X hX).1, (hT s X hX).2.1⟩) _ (fun _ => Iff.rfl)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.J.locLow :
     ∀ (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O] (D : Type) [Group D] [TopologicalSpace D] [IsTopologicalGroup D] [CompactSpace D] (I : Subgroup D) (ε : D →* ℤ_[l]ˣ) (d : ℕ) (t : D →* GL (Fin 3) O), (l : O) ≠ 0 → LE l D ε d → GenI l I d → TriRep t → ∀ k, 0 < k → (ZF (l := l) I k t).Finite ∧ Nat.card (Ok l O k) ^ (6 + 3 * d) ≤ (ZF (l := l) I k t).ncard := by

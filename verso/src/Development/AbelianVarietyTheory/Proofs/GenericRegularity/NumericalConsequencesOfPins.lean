@@ -8,13 +8,13 @@ open NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G.Geo.Tor F
 namespace GlobalTheory.PinNum
 
 /- English proof (translation)
-Establish `hodd` using `l.odd`. Rewrite `hodd` using `[hM, Nat.odd_mul]`. Establish `ha3 : 3 ≤ a`. Use `ha.two_le` as an intermediate fact. Take `⟨k, hk⟩` from `hodd.1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use linear arithmetic over natural numbers and integers. Establish `hb3 : 3 ≤ b`. Use `hb.two_le` as an intermediate fact. Take `⟨k, hk⟩` from `hodd.2`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers.
 
-Unfold `Level.GoodAt`. Establish `hM0 : l.M ≠ 0` using `by have := l.three_le; omega`. Distinguish the cases in `hp : p.Prime`. Use `swap`. Simplify `l.three_le` using `[Nat.factorization_eq_zero_of_not_prime _ hp]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `key : ∀ c, 3 ≤ c → c ∣ l.M → ¬ p ∣ c → 3 ≤ l.M / p ^ l.M.factorization p` using `fun c hc hd hn => hc.trans (Nat.le_of_dvd (Nat.ordCompl_pos p hM0) (Nat.dvd_ordCompl_of_dvd_not_dvd hd hn))`. Distinguish the cases in `h : p ∣ a`. Use `key b hb3 (hM ▸ dvd_mul_left _ _) fun h' => hp.one_lt.ne' ?_` and prove the remaining obligations. Conclude with `Nat.eq_one_of_dvd_coprimes ((Nat.coprime_primes ha hb).2 hab) h h'`. Conclude with `key a ha3 (hM ▸ dvd_mul_right _ _) h`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem goodAt_of_two_primes {E : Type} [Field E] [NumberField E] [IsCMField E]
     {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} (l : Level H) {a b : ℕ} (ha : a.Prime) (hb : b.Prime) (hab : a ≠ b)
@@ -42,9 +42,9 @@ theorem goodAt_of_two_primes {E : Type} [Field E] [NumberField E] [IsCMField E]
   · exact key a ha3 (hM ▸ dvd_mul_right _ _) h
 
 /- English proof (translation)
-Establish `h : (Module.finrank ℚ D.host.E : ℝ) = 2 * (D.R.f : ℝ)`. Rewrite using `[D.host.finrank_cmField]`. Unfold `Ranks.f Ranks.n`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `h` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem finrank_host (D : D7) : Module.finrank ℚ D.host.E = 2 * D.R.f := by
   have h : (Module.finrank ℚ D.host.E : ℝ) = 2 * (D.R.f : ℝ) := by
@@ -55,13 +55,13 @@ theorem finrank_host (D : D7) : Module.finrank ℚ D.host.E = 2 * D.R.f := by
   exact_mod_cast h
 
 /- English proof (translation)
-Take `⟨-, -, h3, -⟩` from `h`. Establish `hsq` using `Q.H.sqrt_neg_disc_sq`. Rewrite `hsq` using `[h3]`. Establish `hd : (1 : ℝ) ≤ Q.H.d` using `by exact_mod_cast Q.H.d_prime.one_le`. Establish `hn : ‖D.host.φ₀ D.host.sqrtMinusD‖ ^ 2 = Q.H.d`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← norm_pow, hsq, norm_neg, Complex.norm_natCast]`. Establish `h1 : 1 ≤ ‖D.host.φ₀ D.host.sqrtMinusD‖`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Use polynomial arithmetic with `[norm_nonneg (D.host.φ₀ D.host.sqrtMinusD)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hN : (1 : ℝ) ≤ (Ideal.absNorm D.host.ccK : ℝ)`. Establish `: Ideal.absNorm D.host.ccK ≠ 0` using `fun h0 => D.host.ccK_ne_bot (Ideal.absNorm_eq_zero_iff.1 h0)`. Conclude with `Nat.one_le_iff_ne_zero.2 this` after adjusting the coercions. Establish `hx : xiR D = 1 / ((Ideal.absNorm D.host.ccK : ℝ) * ‖D.host.φ₀ D.host.sqrtMinusD‖)`. Unfold `xiR Formalism.BasicNotions.Host.xi0`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_div₀, map_mul, map_natCast, map_neg, map_one, norm_div, norm_neg, norm_one, norm_mul, Complex.norm_natCast]`. Establish `h2 : (1 : ℝ) ≤ (Ideal.absNorm D.host.ccK : ℝ) * ‖D.host.φ₀ D.host.sqrtMinusD‖` using `one_le_mul_of_one_le_of_one_le hN h1`. Rewrite using `[hx]`. Conclude with `⟨by positivity, (div_le_one (by positivity)).2 h2⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem xiR_pos_le_one (D : D7) (Q : Par D) (h : Q.PinHost) : 0 < xiR D ∧ xiR D ≤ 1 := by
   obtain ⟨-, -, h3, -⟩ := h
@@ -87,11 +87,11 @@ theorem xiR_pos_le_one (D : D7) (Q : Par D) (h : Q.PinHost) : 0 < xiR D ∧ xiR 
   exact ⟨by positivity, (div_le_one (by positivity)).2 h2⟩
 
 /- English proof (translation)
-Introduce `D Q ⟨hH, ⟨hM, hA⟩, _, hD⟩`. Establish `hx` using `xiR_pos_le_one D Q hH`. Use `⟨fun p _ => goodAt_of_two_primes Q.l (D.host.g_prime 0) (D.host.g_prime 1) D.host.g_ne hM p, hA, ?_, hx.1, hx.2, finrank_host D, fun j hj => ?_⟩` and prove the remaining obligations. Rewrite using `[Level.M', hA, Nat.lcm_one_right]`. Take `⟨hp, hq, -⟩` from `hD j hj`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hk` using `D.R.m_add_three_le_k`. Take `⟨hj1, hj2⟩` from `hj`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hp, hq]`. Simplify using `only [Ranks.sigW, Ranks.r]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers. Rewrite using `[GlobalTheory.FlagDim.dim_add_card_flagVar, finrank_host, Nat.mul_div_cancel_left _ two_pos, hp, hq]`. Both sides reduce to the same expression.
+Use linear arithmetic over natural numbers and integers. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem numerics_of_pins : ∀ (D : D7) (Q : Par D), Q.Pins → (∀ p : ℕ, p.Prime → Q.l.GoodAt p) ∧ Q.l.A = 1 ∧ Q.l.M' = Q.l.M ∧ 0 < xiR D ∧ xiR D ≤ 1 ∧ Module.finrank ℚ D.host.E = 2 * D.R.f ∧ ∀ j, InR D j → (Q.Dw j).p + (Q.Dw j).q = D.R.r ∧ 1 ≤ D.R.r ∧ (Q.Dw j).dim + Nat.card (FlagVar (Q.Dw j)) = WeightFamilies.dimY D j := by
   intro D Q ⟨hH, ⟨hM, hA⟩, _, hD⟩

@@ -6,9 +6,9 @@ open NumberField Ideal Formalism.HC Formalism.FrobeniusOrbits
 open scoped Pointwise
 
 /- English proof (translation)
-Rewrite using `[Nat.factorization_prod (fun l hl => pow_ne_zero _ (hS l hl).ne_zero), Finsupp.finset_sum_apply, Finset.sum_eq_single p]`. Rewrite using `[(hS p hp).factorization_pow]`. Simplify using the standard rewrite rules. Introduce `l hl hne`. Rewrite using `[(hS l hl).factorization_pow]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Finsupp.single_apply, hne]`. Introduce `h`. Conclude with `absurd hp h`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.HF.log_prime_indep_fact (S : Finset ℕ) (u : ℕ → ℕ) (hS : ∀ l ∈ S, l.Prime)
     (p : ℕ) (hp : p ∈ S) : (∏ l ∈ S, l ^ u l).factorization p = u p := by
@@ -20,11 +20,11 @@ private theorem UpperTheory.HF.log_prime_indep_fact (S : Finset ℕ) (u : ℕ �
   · intro h; exact absurd hp h
 
 /- English proof (translation)
-Establish `key : ∀ w : ℕ → ℕ, ∑ l ∈ S, (w l : ℝ) * Real.log l = Real.log ((∏ l ∈ S, l ^ w l : ℕ) : ℝ)`. Introduce `w`. Use `push_cast`. Rewrite using `[Real.log_prod (fun l hl => pow_ne_zero _ (by exact_mod_cast (hS l hl).ne_zero))]`. Conclude with `Finset.sum_congr rfl (fun l _ => (Real.log_pow _ _).symm)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `pos : ∀ w : ℕ → ℕ, (0 : ℝ) < ((∏ l ∈ S, l ^ w l : ℕ) : ℝ)`. Introduce `w`. Conclude with `Finset.prod_pos (fun l hl => pow_pos (hS l hl).pos _)` after adjusting the coercions. Rewrite `h` using `[key u, key v]`. Establish `h2` using `Real.log_injOn_pos (Set.mem_Ioi.2 (pos u)) (Set.mem_Ioi.2 (pos v)) h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h3 : (∏ l ∈ S, l ^ u l) = ∏ l ∈ S, l ^ v l` using `by exact_mod_cast h2`. Introduce `p hp`. Rewrite using `[← UpperTheory.HF.log_prime_indep_fact S u hS p hp, ← UpperTheory.HF.log_prime_indep_fact S v hS p hp, h3]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.HF.log_prime_indep_nat (S : Finset ℕ) (u v : ℕ → ℕ) (hS : ∀ l ∈ S, l.Prime)
     (h : ∑ l ∈ S, (u l : ℝ) * Real.log l = ∑ l ∈ S, (v l : ℝ) * Real.log l) :
@@ -45,9 +45,9 @@ private theorem UpperTheory.HF.log_prime_indep_nat (S : Finset ℕ) (u v : ℕ �
   rw [← UpperTheory.HF.log_prime_indep_fact S u hS p hp, ← UpperTheory.HF.log_prime_indep_fact S v hS p hp, h3]
 
 /- English proof (translation)
-Establish `h1` using `UpperTheory.HF.log_prime_indep_nat S (fun l => (m l).toNat) (fun l => (-m l).toNat) hS (by`. Rewrite using `[← sub_eq_zero, ← Finset.sum_sub_distrib, ← h]`. Use `Finset.sum_congr rfl (fun l _ => ?_)` and prove the remaining obligations. Rewrite using `[← sub_mul]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `: (((m l).toNat : ℤ)) - ((-m l).toNat : ℤ) = m l` using `Int.toNat_sub_toNat_neg _`. Conclude with `this)` after adjusting the coercions. Introduce `l hl`. Use `h1 l hl` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.HF.log_prime_indep_int (S : Finset ℕ) (m : ℕ → ℤ) (hS : ∀ l ∈ S, l.Prime)
     (h : ∑ l ∈ S, (m l : ℝ) * Real.log l = 0) : ∀ l ∈ S, m l = 0 := by
@@ -63,19 +63,17 @@ private theorem UpperTheory.HF.log_prime_indep_int (S : Finset ℕ) (m : ℕ →
   omega
 
 /- English proof (translation)
-Introduce `S a b hS h`. Use `set D : ℕ := ∏ l ∈ S, (a l - b l).den with hD`. Establish `hD0 : D ≠ 0` using `Finset.prod_ne_zero_iff.2 (fun l _ => (a l - b l).den_nz)`. Establish `hex : ∀ l, ∃ z : ℤ, l ∈ S → (z : ℚ) = (a l - b l) * D`. Introduce `l`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hl : l ∈ S`. Take `⟨k, hk⟩ : (a l - b l).den ∣ D` from `Finset.dvd_prod_of_mem (fun l => (a l - b l).den) hl`. Use `⟨(a l - b l).num * k, fun _ => ?_⟩` and prove the remaining obligations. Rewrite using `[hk]`. Use `push_cast`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_assoc, Rat.mul_den_eq_num]`. Conclude with `⟨0, fun h => absurd h hl⟩`. Use `choose m hm using hex`. Establish `h0` using `UpperTheory.HF.log_prime_indep_int S m hS (by`. Establish `: ∑ l ∈ S, (m l : ℝ) * Real.log l = (∑ l ∈ S, (a l : ℝ) * Real.log l - ∑ l ∈ S, (b l : ℝ) * Real.log l) * D`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Finset.sum_sub_distrib, Finset.sum_mul]`. Use `Finset.sum_congr rfl (fun l hl => ?_)` and prove the remaining obligations. Establish `h1 : ((m l : ℚ) : ℝ) = (((a l - b l) * D : ℚ) : ℝ)` using `by rw [hm l hl]`. Move the coercions through the operations in `at h1`. Rewrite using `[h1]`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, h, sub_self, zero_mul])`. Introduce `l hl`. Establish `h1` using `hm l hl`. Rewrite `h1` using `[h0 l hl]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hDq : (D : ℚ) ≠ 0` using `by exact_mod_cast hD0`. Establish `: a l - b l = 0`. Break down `mul_eq_zero.1 (by simpa using h1.symm : (a l - b l) * (D : ℚ) = 0) with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd h hDq`.
-
-Conclude with `sub_eq_zero.1 this`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem UpperTheory.HF.log_prime_indep :
     ∀ (S : Finset ℕ) (a b : ℕ → ℚ), (∀ l ∈ S, l.Prime) → ∑ l ∈ S, (a l : ℝ) * Real.log l = ∑ l ∈ S, (b l : ℝ) * Real.log l → ∀ l ∈ S, a l = b l := by

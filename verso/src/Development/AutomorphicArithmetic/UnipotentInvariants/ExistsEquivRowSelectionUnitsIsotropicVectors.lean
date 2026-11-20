@@ -10,68 +10,68 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Ff UpperT
 open scoped Classical ENNReal
 
 /- English proof (translation)
-The claim follows from `AdeleRing.algebraMap_injective (𝓞 ℚ) ℚ h`.
+A detailed English derivation is pending.
 -/
 private theorem rt_inj {c c' : ℚ} (h : (rt c : A ℚ) = rt c') : c = c' :=
   AdeleRing.algebraMap_injective (𝓞 ℚ) ℚ h
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Conclude with `rt_inj (congrFun h i)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 private theorem rp_inj {ξ ξ' : Fin 4 → ℚ} (h : rp ξ = rp ξ') : ξ = ξ' := by
   funext i
   exact rt_inj (congrFun h i)
 
 /- English proof (translation)
-Rewrite using `[map_mul, gl_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem gl_ratS_mul {E : Type} [Field E] [NumberField E] (a b : Matrix.SpecialLinearGroup (Fin 2) E) :
     gl (ratS E (a * b)) = gl (ratS E a) * gl (ratS E b) := by
   rw [map_mul, gl_mul]
 
 /- English proof (translation)
-Rewrite using `[map_inv, gl_inv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem gl_ratS_inv {E : Type} [Field E] [NumberField E] (a : Matrix.SpecialLinearGroup (Fin 2) E) :
     (gl (ratS E a))⁻¹ = gl (ratS E a⁻¹) := by
   rw [map_inv, gl_inv]
 
 /- English proof (translation)
-Introduce `E _ _ _ D σ Sel hO hσ hS`. Take `⟨h1, h2, h3, h4, -⟩` from `hO E D`. Take `⟨-, -, -, -, -, -, -, -, -, -, hq⟩` from `szLaws E D`. Establish `hpt : ∀ p : ↥Sel × ℚˣ, ∃ ξ : Fin 4 → ℚ, rp ξ = D.act (gl (ratS E (σ p.1.1)))⁻¹ (rp ![0, (p.2 : ℚ), 0, 0])`. Introduce and unpack `⟨r, s⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Take `⟨ρ, hρ⟩` from `h1 (σ r.1)⁻¹`. Conclude with `⟨ρ ![0, (s : ℚ), 0, 0], by rw [gl_ratS_inv, hρ]⟩`. Use `choose pt hpt using hpt`. Establish `hmem : ∀ p, pt p ∈ {ξ : Fin 4 → ℚ | ξ ≠ 0 ∧ qr D.δ ξ = 0}`. Introduce and unpack `⟨r, s⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun h0 => ?_, ?_⟩` and prove the remaining obligations. Establish `hp` using `congrArg (D.act (gl (ratS E (σ r.1)))) (hpt (r, s))`. Rewrite `hp` using `[D.act_act_inv, h0]`. Establish `hz : rp (0 : Fin 4 → ℚ) = 0`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `map_zero _`. Rewrite `hp` using `[hz]`. Establish `hz' : D.act (gl (ratS E (σ r.1))) (0 : V4 ℚ) = 0` using `(D.actL (gl (ratS E (σ r.1)))).map_zero`. Rewrite `hp` using `[hz']`. Establish `h1' : (rt (0 : ℚ) : A ℚ) = rt (s : ℚ)` using `(map_zero _).trans (congrFun hp 1)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `s.ne_zero (rt_inj h1').symm`. Apply `rt_inj` to reduce the goal to its premises. Rewrite using `[← hq, hpt (r, s), gl_ratS_inv, D.quadForm_act, nu_gl, hq]`. Simplify using `[qr]`. Establish `hinj : Function.Injective pt`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨r, s⟩ ⟨r', s'⟩ h`. Establish `hh : D.act (gl (ratS E (σ r.1)))⁻¹ (rp ![0, (s : ℚ), 0, 0]) = D.act (gl (ratS E (σ r'.1)))⁻¹ (rp ![0, (s' : ℚ), 0, 0])`. Rewrite using `[← hpt (r, s), ← hpt (r', s'), h]`. Take `⟨δ, hδ⟩ : ∃ δ, δ = σ r'.1 * (σ r.1)⁻¹` from `⟨_, rfl⟩`. Establish `hact : D.act (gl (ratS E δ)) (rp ![0, (s : ℚ), 0, 0]) = rp ![0, (s' : ℚ), 0, 0]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hδ, gl_ratS_mul, ← gl_ratS_inv, D.act_mul, hh, D.act_act_inv]`. Establish `h10` using `h3 δ s s' s.ne_zero hact`. Establish `e1 : σ r'.1 = δ * σ r.1` using `by simp [hδ]`. Establish `hrow : ∀ j, r'.1.1 j = δ 1 1 * r.1.1 j`. Introduce `j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a : (σ r'.1).1 1 j = r'.1.1 j` using `congrFun (hσ r'.1) j`. Establish `b : (σ r.1).1 1 j = r.1.1 j` using `congrFun (hσ r.1) j`. Establish `c : (σ r'.1).1 1 j = (δ * σ r.1).1 1 j` using `by rw [← e1]`. Rewrite using `[← a, c, Matrix.SpecialLinearGroup.coe_mul, Matrix.mul_apply, Fin.sum_univ_two, b]`. Establish `h10' : δ.1 1 0 = 0` using `h10`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h10', zero_mul, zero_add]`. Establish `ht0 : δ 1 1 ≠ 0`. Introduce `h`. Apply `r'.1.2` to reduce the goal to its premises. Use function extensionality and compare the values at `j`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[hrow, h, zero_mul]`. Both sides reduce to the same expression. Establish `ht : Units.mk0 _ ht0 = (1 : Eˣ)` using `(hS r.1).unique ⟨r'.1, r'.2, by funext j; exact hrow j⟩ ⟨r.1, r.2, by simp⟩`. Establish `ht1 : δ 1 1 = 1` using `by simpa using congrArg Units.val ht`. Establish `hr : r' = r`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `Subtype.ext (Subtype.ext ?_)` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Rewrite using `[hrow, ht1, one_mul]`. Substitute `hr` using the available equality. Establish `hss : rp ![0, (s : ℚ), 0, 0] = rp ![0, (s' : ℚ), 0, 0]`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `congrArg (D.act (gl (ratS E (σ r'.1)))) hh` as an intermediate fact. Simplify `this` using `only [D.act_act_inv]`. Establish `h1' : (s : ℚ) = s'` using `rt_inj (congrFun hss 1)`. Rewrite using `[Units.ext h1']`. Establish `hsurj : ∀ ξ ∈ {ξ : Fin 4 → ℚ | ξ ≠ 0 ∧ qr D.δ ξ = 0}, ∃ p, pt p = ξ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `ξ ⟨hξ0, hξq⟩`. Take `⟨γ, r0, hr0, hγ⟩` from `h2 ξ hξ0 hξq`. Establish `hrow : (γ⁻¹).1 1 ≠ 0`. Introduce `h`. Establish `hd` using `(γ⁻¹).det_coe`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `a : (γ⁻¹).1 1 0 = 0` using `congrFun h 0`. Establish `b : (γ⁻¹).1 1 1 = 0` using `congrFun h 1`. Rewrite `hd` using `[Matrix.det_fin_two, a, b]`. Simplify using `at hd`. Take `⟨t, ⟨r', hr', hrt⟩, -⟩` from `hS ⟨_, hrow⟩`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `ha : ∀ j, (σ r').1 1 j = (t : E) * (γ⁻¹).1 1 j`. Introduce `j`. Rewrite using `[hσ r', hrt]`. Both sides reduce to the same expression. Establish `h10 : (σ r' * γ) 1 0 = 0`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hI : (γ⁻¹ * γ).1 1 0 = 0` using `by simp`. Rewrite `hI` using `[Matrix.SpecialLinearGroup.coe_mul, Matrix.mul_apply, Fin.sum_univ_two]`. Express the relevant statement in the definitionally equal form `(σ r' * γ).1 1 0 = 0`. Rewrite using `[Matrix.SpecialLinearGroup.coe_mul, Matrix.mul_apply, Fin.sum_univ_two, ha, ha, mul_assoc, mul_assoc, ← mul_add, hI, mul_zero]`. Take `⟨c, hc, hcr⟩` from `h4 _ h10`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Use `⟨(⟨r', hr'⟩, Units.mk0 (c * r0) (mul_ne_zero hc hr0)), rp_inj ?_⟩` and prove the remaining obligations. Rewrite using `[hpt]`. Express the relevant statement in the definitionally equal form `D.act (gl (ratS E (σ r')))⁻¹ (rp ![0, c * r0, 0, 0]) = rp ξ`. Rewrite using `[← hcr, gl_ratS_mul, D.act_mul, D.act_inv_act, hγ]`. Use `⟨Equiv.ofBijective (fun p => ⟨pt p, hmem p⟩) ⟨?_, ?_⟩, fun r s => hpt (r, s)⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce `p p' h`. Conclude with `hinj (congrArg Subtype.val h)`. Introduce and unpack `⟨ξ, hξ⟩`. Take `⟨p, hp⟩` from `hsurj ξ hξ`. Conclude with `⟨p, Subtype.ext hp⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_equiv_rowSelection_units_isotropicVectors :
     ∀ {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] (D : Dat ℚ E) (σ : {r : Fin 2 → E // r ≠ 0} → Matrix.SpecialLinearGroup (Fin 2) E) (Sel : Set {r : Fin 2 → E // r ≠ 0}), Orb1 → M.RowSec σ → (∀ r : {r : Fin 2 → E // r ≠ 0}, ∃! t : Eˣ, ∃ r' ∈ Sel, r'.1 = (t : E) • r.1) → ∃ e : ↥Sel × ℚˣ ≃ ↥{ξ : Fin 4 → ℚ | ξ ≠ 0 ∧ qr D.δ ξ = 0}, ∀ r s, rp (e (r, s)).1 = D.act (gl (ratS E (σ r.1)))⁻¹ (rp ![0, (s : ℚ), 0, 0]) := by

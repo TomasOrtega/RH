@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EulerInversePo
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SchurEqJtDet
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.JSW.eulerInverse_eval_one | exact GlobalTheory.JSW.eulerInverse_eval_one | (intros; apply GlobalTheory.JSW.eulerInverse_eval_one <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.eulerInverse_powerSeries_eval_one : ∀ {ι : Type} [Fintype ι] (c : ℕ → ℂ), (Summable fun d => ‖c d‖) → ∀ (Q : ι → ℂ),
     PowerSeries.mk c * ∏ p, (1 - PowerSeries.C (Q p) * PowerSeries.X) = 1 →

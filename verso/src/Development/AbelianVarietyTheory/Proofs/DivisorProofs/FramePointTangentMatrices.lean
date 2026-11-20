@@ -19,7 +19,7 @@ open GlobalTheory.FlatModel
 namespace GlobalTheory.FrameChangePair
 
 /- English proof (translation)
-Take `⟨u₁, hu₁, hw₁⟩` from `h₁`. Take `⟨u₂, hu₂, hw₂⟩` from `h₂`. Establish `hu : u₁ = u₂` using `funext fun i => Over.OverMorphism.ext ((hu₁ i).trans (hu₂ i).symm)`. Rewrite using `[← hw₁, ← hw₂, hu]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem isCombAt_unique {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
     {l : Level H} {Xo : Moduli Dw l} {S : Type} [CommRing S] {x : Sp S ⟶ Xo.X} {m : ℕ}
@@ -32,9 +32,9 @@ theorem isCombAt_unique {E : Type} [Field E] [NumberField E] [IsCMField E] {H : 
   rw [← hw₁, ← hw₂, hu]
 
 /- English proof (translation)
-Introduce `h`. Establish `hτ : τ.1 (H.rt : E) = H.rt0` using `τ.2`. Establish `hc : (starRingEnd ℂ) H.rt0 = H.rt0`. Use `congrArg (fun σ : E →+* ℂ => σ (H.rt : E)) h` as an intermediate fact. Simplify using `only [conjEmb, RingHom.comp_apply, hτ] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `this.symm`. Establish `h1 : (H.rt0.re : ℂ) ^ 2 = -(H.d : ℂ)` using `by rw [Complex.conj_eq_iff_re.1 hc]; exact H.sqrt_neg_disc_sq`. Establish `h2 : H.rt0.re ^ 2 = -(H.d : ℝ)` using `by exact_mod_cast h1`. Establish `h3 : (2 : ℝ) ≤ H.d` using `by exact_mod_cast H.d_prime.two_le`. Use polynomial arithmetic with `[sq_nonneg H.rt0.re]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem psi_ne_conjEmb {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (τ : Psi H) :
     τ.1 ≠ conjEmb τ.1 := by
@@ -50,17 +50,15 @@ theorem psi_ne_conjEmb {E : Type} [Field E] [NumberField E] [IsCMField E] {H : H
   nlinarith [sq_nonneg H.rt0.re]
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c L _ _ z₀ τ g₁ g₂ v₁ v₂ hg₁ hg₂ hv₁ hv₂`. Establish `hne : τ.1 ≠ conjEmb τ.1` using `psi_ne_conjEmb τ`. Set `G : ∀ σ : E →+* ℂ, Matrix (Fin (Dw.mult σ)) (Fin (Dw.mult σ)) L` to `Function.update (Function.update (fun σ => (1 : Matrix (Fin (Dw.mult σ)) (Fin (Dw.mult σ)) L)) τ.1 g₁) (conjEmb τ.1) g₂`. Establish `hG₂ : G (conjEmb τ.1) = g₂` using `Function.update_self _ _ _`. Establish `hG₁ : G τ.1 = g₁` using `by dsimp only [G]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Function.update_of_ne hne, Function.update_self]`. Establish `hdet : ∀ σ, IsUnit (G σ).det`. Introduce `σ`. Distinguish the cases in `h1 : σ = conjEmb τ.1`. Substitute `h1` using the available equality.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hG₂]`. Conclude with `hg₂`. Distinguish the cases in `h2 : σ = τ.1`. Substitute `h2` using the available equality. Rewrite using `[hG₁]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hg₁`. Simplify using `only [G]`. Rewrite using `[Function.update_of_ne h1, Function.update_of_ne h2, Matrix.det_one]`. Conclude with `isUnit_one`. Take `⟨z, hz, -⟩` from `GlobalTheory.Frames.existsUnique_frChg E H Dw l Xo c L z₀ G 1 hdet`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hx, hc, -⟩` from `hz`. Use `⟨z, hx, fun i => ?_, fun i => ?_⟩` and prove the remaining obligations. Establish `h` using `hc τ.1 i`. Rewrite `h` using `[hG₁]`. Conclude with `isCombAt_unique h (hv₁ i)`.
-
-Establish `h` using `hc (conjEmb τ.1) i`. Rewrite `h` using `[hG₂]`. Conclude with `isCombAt_unique h (hv₂ i)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_frPt_comb_pair : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H)
     (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (L : Type) [CommRing L] [Algebra c.F L] (z₀ : FrPt Xo c L)

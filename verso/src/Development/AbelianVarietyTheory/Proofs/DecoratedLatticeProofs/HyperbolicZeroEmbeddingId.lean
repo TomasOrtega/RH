@@ -15,12 +15,12 @@ namespace GlobalTheory.HypZeroTriv
 variable {D : D7}
 
 /- English proof (translation)
-Simplify using `[HypDec.j0, hypZero, rat_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hyperbolic_zero_j0_one (V : HSp D) : (hypZero V).j0 = 1 := by simp [HypDec.j0, hypZero, rat_one]
 
 /- English proof (translation)
-Apply `mt_injective V` to reduce the goal to its premises. Establish `h` using `(hypZero V).wittDecomp_anisotropicEmbedding_inclAnisotropic g`. Rewrite `h` using `[hyperbolic_zero_j0_one, Matrix.mul_one, Matrix.one_mul]`. Then use the resulting hypothesis.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem hyperbolic_zero_embedding_id (V : HSp D) (g : GA D V) : (hypZero V).emb0 g = g := by
   apply mt_injective V
@@ -28,19 +28,17 @@ theorem hyperbolic_zero_embedding_id (V : HSp D) (g : GA D V) : (hypZero V).emb0
   rwa [hyperbolic_zero_j0_one, Matrix.mul_one, Matrix.one_mul] at h
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `n ∈ Formalism.L2.Theta.NFlag V (hypZero V).e at hn`. Establish `hle : Formalism.L2.Theta.NFlag V (hypZero V).e ≤ ⊥`. Unfold `Formalism.L2.Theta.NFlag`. Rewrite using `[Subgroup.closure_le]`. Introduce and unpack `g ⟨-, hg⟩`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[SetLike.mem_coe, Subgroup.mem_bot]`. Establish `hcol : ∀ j : Fin V.rank, (Formalism.L2.Theta.subOne V g).mulVec (Pi.single j 1) = 0`. Introduce `j`. Take `⟨a, ha⟩` from `hg (Pi.single j 1) (Subsingleton.elim _ _)`. Establish `hr : (Formalism.L2.Theta.ratV (D` using `D) (Pi.single j (1 : D.host.E))) = Pi.single j 1 := by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k = j`. Substitute `hk` using the available equality. Simplify using `[Formalism.L2.Theta.ratV]`. Simplify using `[Formalism.L2.Theta.ratV, Pi.single_apply, hk]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite `ha` using `[hr]`. Rewrite using `[ha]`. Use function extensionality and compare the values at `k`. Simplify using `[Matrix.mulVec, dotProduct]`. Establish `h0 : Formalism.L2.Theta.subOne V g = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `k j`. Use `congrFun (hcol j) k` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_single]`. Apply `mt_injective V` to reduce the goal to its premises. Establish `h1 : Formalism.L2.Theta.mt V g = 1`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `h0` as an intermediate fact. Unfold `Formalism.L2.Theta.subOne at this`. Conclude with `sub_eq_zero.1 this`. Rewrite using `[h1]`. Simplify using `[Formalism.L2.Theta.mt]`.
-
-Conclude with `Subgroup.mem_bot.1 (hle hn)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_flagN_hypZero (V : HSp D) {n : GA D V} (hn : n ∈ flagN (hypZero V)) : n = 1 := by
   change n ∈ Formalism.L2.Theta.NFlag V (hypZero V).e at hn
@@ -75,7 +73,7 @@ theorem mem_flagN_hypZero (V : HSp D) {n : GA D V} (hn : n ∈ flagN (hypZero V)
   exact Subgroup.mem_bot.1 (hle hn)
 
 /- English proof (translation)
-Introduce `D V`. Use `⟨hyperbolic_zero_embedding_id V, fun n hn => mem_flagN_hypZero V hn, fun A L o h => ?_⟩` and prove the remaining obligations. Rewrite using `[embA_apply, hyperbolic_zero_embedding_id]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem main : ∀ (D : D7) (V : HSp D), (∀ g, (hypZero V).emb0 g = g) ∧ (∀ n ∈ flagN (hypZero V), n = 1) ∧
     ∀ (A L : HSp D) (o : OrthDec V A L) h, embA (hypZero V) o h = o.emb (h, 1) := by

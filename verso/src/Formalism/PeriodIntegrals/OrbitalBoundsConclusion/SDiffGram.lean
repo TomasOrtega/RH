@@ -5,7 +5,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.GramDifferenceRenaming.
 namespace PI.Final.SDiffGram
 
 /- English proof (translation)
-The claim follows from `PI.UnitaryGroupMassFormula.SDiffGram.sDiffGram_main`.
+A detailed English derivation is pending.
 -/
 theorem s_difference_gram : PI.SDiffGram.SDiffGram := PI.UnitaryGroupMassFormula.SDiffGram.sDiffGram_main
 

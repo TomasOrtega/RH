@@ -54,7 +54,7 @@ def stdLat (O : Type) [CommRing O] (φ : O →+* ℂ) (a : ℕ) : Rows.OLat O φ
     exact (EuclideanSpace.basisFun (Fin a) ℂ).toBasis.span_eq
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `⟨fun x y => by ext i; exact i.elim0⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem subsingleton_std {k : ℕ} (h : k = 0) : Subsingleton (EuclideanSpace ℂ (Fin k)) := by
   subst h
@@ -75,7 +75,7 @@ def aMinusB (B : Base) (j : ℕ) (τ : Tau B.R) (c : ℕ) : ℚ :=
   (if h : j + c < B.R.m then (B.hc τ).b ⟨j + c, h⟩ else 0) - eQB B j τ - ((B.R.t : ℚ) + 1 + 2 * (c : ℚ)) / 2
 
 /- English proof (translation)
-Unfold `eQB`. Use `split_ifs`. Conclude with `(B.hc τ).e_int _`. Conclude with `⟨0, by simp⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem eQB_int (B : Base) (j : ℕ) (τ : Tau B.R) : ∃ z : ℤ, eQB B j τ = z := by
   unfold eQB
@@ -84,9 +84,7 @@ theorem eQB_int (B : Base) (j : ℕ) (τ : Tau B.R) : ∃ z : ℤ, eQB B j τ = 
   · exact ⟨0, by simp⟩
 
 /- English proof (translation)
-Unfold `sigParB`. Use `split_ifs`. Conclude with `(B.hc τ).v_int _`. Take `⟨z, hz⟩` from `(B.hc τ).b_int ⟨i - (B.R.k - 1), by assumption⟩`. Conclude with `⟨-z, by rw [hz]; simp⟩`.
-
-Conclude with `⟨0, by simp⟩`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem sigParB_int (B : Base) (τ : Tau B.R) (i : ℕ) : ∃ z : ℤ, sigParB B τ i = z := by
   unfold sigParB
@@ -97,9 +95,9 @@ theorem sigParB_int (B : Base) (τ : Tau B.R) (i : ℕ) : ∃ z : ℤ, sigParB B
   · exact ⟨0, by simp⟩
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `sigParB_int B τ i`. Take `⟨b, hb⟩` from `eQB_int B j τ`. Take `⟨s, hs⟩` from `B.R.t_odd`. Use `⟨a + b - ((B.R.k : ℤ) + j - 1 - 1 - i) - (s + 1), ?_⟩` and prove the remaining obligations. Unfold `aPlusB`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Rewrite using `[DV.nV_cast, ha, hb, hs]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem aPlusB_int (B : Base) (j : ℕ) (τ : Tau B.R) (i : ℕ) : ∃ z : ℤ, aPlusB B j τ i = z := by
   obtain ⟨a, ha⟩ := sigParB_int B τ i
@@ -112,11 +110,11 @@ theorem aPlusB_int (B : Base) (j : ℕ) (τ : Tau B.R) (i : ℕ) : ∃ z : ℤ, 
   ring
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `eQB_int B j τ`. Take `⟨s, hs⟩` from `B.R.t_odd`. Establish `h1 : ∃ a : ℤ, (if h : j + c < B.R.m then (B.hc τ).b ⟨j + c, h⟩ else 0) = (a : ℚ)` using `by split_ifs`. Conclude with `(B.hc τ).b_int _`. Conclude with `⟨0, by simp⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `h1`. Use `⟨a - b - (s + 1 + c), ?_⟩` and prove the remaining obligations. Unfold `aMinusB`. Rewrite using `[ha, hb, hs]`. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem aMinusB_int (B : Base) (j : ℕ) (τ : Tau B.R) (c : ℕ) : ∃ z : ℤ, aMinusB B j τ c = z := by
   obtain ⟨b, hb⟩ := eQB_int B j τ
@@ -216,7 +214,7 @@ def rowsStd (B : Base) (C : Cols B) (hC : SpectralModel.ColsPos C) (n : C.Tup �
     eMu_isom := fun _ _ _ => rfl }
 
 /- English proof (translation)
-The claim follows from `rfl d0 := rfl dall := rfl delp := rfl ft := inferInstanceAs (IsEmpty Empty) mult := fun a j hj => subsingleton_std (if_neg hj) io := fun _ _ => rfl mj := fun _ => subsingleton_std rfl mt := fun _ _ => subsingleton_std rfl eMt := fun _ _ => rfl bu := fun _ _ _ => rfl ij := fun _ _ …`.
+A detailed English derivation is pending.
 -/
 theorem standIn_rowsStd (B : Base) (C : Cols B) (hC : SpectralModel.ColsPos C) (n : C.Tup → ℕ)
     (e0 : ∀ u, (C.mem u).P.Mt ≃ₗ[ℂ] EuclideanSpace ℂ (Fin (n C.mu0)))
@@ -246,7 +244,7 @@ theorem standIn_rowsStd (B : Base) (C : Cols B) (hC : SpectralModel.ColsPos C) (
        rw [← (aMinusB_int B j τ c).choose_spec]⟩
 
 /- English proof (translation)
-Introduce `B C n e0 eT L mt hmt hC`. Conclude with `⟨rowsStd B C hC n e0 eT L mt hmt, fun a => LinearIsometryEquiv.refl ℂ _, standIn_rowsStd B C hC n e0 eT L mt hmt, fun _ => rfl, fun _ => rfl, fun _ _ => rfl, fun _ _ _ => rfl, fun _ _ => Iff.rfl, fun _ _ => Iff.rfl, fun _ => rfl, fun _ _ => rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem exists_rowsRest_std : ∀ (B : Base) (C : Cols B) (n : C.Tup → ℕ) (e0 : ∀ u, (C.mem u).P.Mt ≃ₗ[ℂ] EuclideanSpace ℂ (Fin (n C.mu0))) (eT : ∀ u a, (C.PTw u a).Mt ≃ₗ[ℂ] EuclideanSpace ℂ (Fin (n a))) (L : ∀ a, Rows.OLat B.O (B.embLL.comp B.OtoLL) (EuclideanSpace ℂ (Fin (n a)))) (mt : B.places.Pl → C.Tup), (∀ w, mt (B.places.conj w) = mt w) → SpectralModel.ColsPos C → ∃ (W : RowsRest B C) (g : ∀ a, EuclideanSpace ℂ (Fin (n a)) ≃ₗᵢ[ℂ] W.Amb a), StandIn W ∧ (∀ w, W.muAt w = C.mu0) ∧ (∀ w, W.muTw w = mt w) ∧ (∀ u F, W.eMt0 u F = g C.mu0 (e0 u F)) ∧ (∀ u a F, W.eMtTw u a F = g a (eT u a F)) ∧ (∀ a y, g a y ∈ (W.Mtilde a).carrier ↔ y ∈ (L a).carrier) ∧ (∀ a y, g a y ∈ (W.Mtilde a).gen ↔ y ∈ (L a).gen) ∧ (∀ a, W.eOp a = LinearMap.id) ∧ ∀ u a, W.ze u a = 1 := by
   intro B C n e0 eT L mt hmt hC

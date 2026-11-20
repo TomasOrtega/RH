@@ -10,9 +10,7 @@ open scoped ComplexConjugate Matrix
 noncomputable section
 
 /- English proof (translation)
-Use `symm`. Apply `Finset.orderEmbOfFin_unique` to reduce the goal to its premises. Introduce `x`. Conclude with `Finset.mem_map.mpr ⟨x, mem_univ x, rfl⟩`. Introduce `a b hab`.
-
-Conclude with `hab`.
+Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem orderEmbOfFin_map_castLEEmb {l N : ℕ} (hl : l ≤ N)
     (h : ((univ : Finset (Fin l)).map (Fin.castLEEmb hl)).card = l) :
@@ -26,19 +24,19 @@ theorem orderEmbOfFin_map_castLEEmb {l N : ℕ} (hl : l ≤ N)
     exact hab
 
 /- English proof (translation)
-Distinguish the cases in `hl : l ≤ N`. Set `g : Matrix (Fin N) (Fin N) ℂ` to `Matrix.of fun k j => if h : j.val < l then star (V ⟨j.val, h⟩ k) else 0`. Set `I0 : Finset (Fin N)` to `(univ : Finset (Fin l)).map (Fin.castLEEmb hl)`. Establish `hI0 : I0.card = l` using `by simp [I0]`. Establish `hemb` using `orderEmbOfFin_map_castLEEmb hl hI0`.
+Consider separately whether the proposition holds or fails. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `h0 ℂ l N V g I0 hI0`. Establish `lhs : pluckerCoord (V * g) I0 = (V * Vᴴ).det`. Unfold `pluckerCoord`. Rewrite using `[dif_pos hI0]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `i j`. Simplify using `[I0, Matrix.mul_apply, hemb, g, Matrix.conjTranspose_apply]`. Establish `rhs : ∀ J ∈ powersetCard l (univ : Finset (Fin N)), pluckerCoord V J * minorOn g l J I0 = ((‖pluckerCoord V J‖ ^ 2 : ℝ) : ℂ)`. Introduce `J hJ`. Establish `hJc : J.card = l` using `(mem_powersetCard.mp hJ).2`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hm : minorOn g l J I0 = star (pluckerCoord V J)`. Unfold `minorOn pluckerCoord`. Rewrite using `[dif_pos ⟨hJc, hI0⟩, dif_pos hJc, ← Matrix.det_conjTranspose]`. Use `congr 1`. Use extensionality with `i j`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `[I0, hemb, g, Matrix.conjTranspose_apply]`. Rewrite using `[hm, Complex.star_def, RCLike.mul_conj]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[← lhs, key, Complex.ofReal_sum]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(sum_congr rfl rhs).symm`. Rewrite `hl` using `[not_le]`. Establish `hE : powersetCard l (univ : Finset (Fin N)) = ∅` using `Finset.powersetCard_eq_empty.mpr (by simpa using hl)`. Rewrite using `[hE, sum_empty, Complex.ofReal_zero, eq_comm]`. Assume the negation of the conclusion as `hd`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hu : IsUnit (V * Vᴴ)` using `(Matrix.isUnit_iff_isUnit_det _).mpr (isUnit_iff_ne_zero.mpr hd)`. Establish `h1` using `Matrix.rank_of_isUnit _ hu`. Establish `h2` using `(Matrix.rank_mul_le_left V Vᴴ).trans (Matrix.rank_le_width V)`. Simplify using `only [Fintype.card_fin] at h1`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem sum_sq_norm_pluckerCoord_eq_det_mul_conjTranspose (h0 : PluckerFrameChange.Statement)
     {l N : ℕ} (V : Matrix (Fin l) (Fin N) ℂ) :
@@ -84,9 +82,9 @@ theorem sum_sq_norm_pluckerCoord_eq_det_mul_conjTranspose (h0 : PluckerFrameChan
     omega
 
 /- English proof (translation)
-Introduce `l N V`. Establish `hg` using `sum_sq_norm_pluckerCoord_eq_det_mul_conjTranspose h0 V`. Use `⟨hg, fun hd => ?_⟩` and prove the remaining obligations. Establish `hS : (0 : ℝ) ≤ ∑ I ∈ powersetCard l (univ : Finset (Fin N)), ‖pluckerCoord V I‖ ^ 2` using `sum_nonneg fun _ _ => by positivity`. Rewrite using `[← Finset.sum_div, ← hg, Complex.norm_real, Real.norm_of_nonneg hS]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `div_self` to reduce the goal to its premises. Introduce `hz`. Apply `hd` to reduce the goal to its premises. Rewrite using `[← hg, hz, Complex.ofReal_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem GramSumOfMinors.proof (h0 : PluckerFrameChange.Statement) : GramSumOfMinors.Statement := by
   intro l N V

@@ -16,11 +16,9 @@ noncomputable section
 namespace GlobalTheory.LocMod
 
 /- English proof (translation)
-Introduce `D hFL hFLs hOm k _ _ _ _ _ _ p ν hν ψ ψk hχ σ J B st s hs n n' _ _ _ _ c G₀ FW FA F₀ FV hJF hCF hBF Tm hTm`. Establish `hstd : IsStdChar D ψ (-1)` using `st.weil.std`. Take `⟨hcont, hne⟩` from `(GlobalTheory.T.weilCharacter_splitPlace_exists_continuous_nontrivial D k p ψ hstd).2.1 ψk hχ`. Establish `hc : c = 2 * σ + 1` using `hBF.1`. Set `L : SB (Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k) →ₗ[ℂ] (WO J.W₀ B.V₀ → ℂ)` to `{ toFun := fun Φ => flatFB st (Tm Φ) map_add' := fun Φ Φ' => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Simplify using `only [map_add]`. Conclude with `(GlobalTheory.T.jacobiToBesselFlatSchwartz_add_smul D hFL ψ hstd σ J B st _ _ (hTm.theta Φ) (hTm.theta Φ')).1`. Use the proof step `map_smul' := fun a Φ => by`. Simplify using `only [map_smul, RingHom.id_apply]`. Conclude with `(GlobalTheory.T.jacobiToBesselFlatSchwartz_add_smul D hFL ψ hstd σ J B st _ _ (hTm.theta Φ) (hTm.theta Φ)).2 a }`.
-
-Take `⟨L₀, hL₀⟩` from `GlobalTheory.T.flatMap_laws_factor_fourierJacobi_source k ψk ν hcont hne hν n n' c σ (WO J.W₀ B.V₀ → ℂ) L hc (GlobalTheory.T.flat_fourierJacobi_to_bessel_column_mul_laws D hFLs hOm k p ψ ψk hχ σ J B st s hs n n' c G₀ FW FA F₀ FV hJF hCF hBF Tm hTm) (GlobalTheory.T.fourierJacobi_b …`. Conclude with `⟨L₀, GlobalTheory.T.fourierJacobi_bessel_flatMap_factor_isLocalModel D hFLs hOm k p ν hν ψ ψk hχ σ J B st s hs n n' c G₀ FW FA F₀ FV hJF hCF hBF Tm hTm L₀ hL₀, hL₀⟩`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem flatFB_holds : ∀ (D : D7), FlatLaw D → GlobalTheory.FinPl.FlatLaws D → OmLoc D → FlatFB D := by
   intro D hFL hFLs hOm k _ _ _ _ _ _ p ν hν ψ ψk hχ σ J B st s hs n n' _ _ _ _ c G₀ FW FA F₀ FV hJF hCF hBF Tm hTm

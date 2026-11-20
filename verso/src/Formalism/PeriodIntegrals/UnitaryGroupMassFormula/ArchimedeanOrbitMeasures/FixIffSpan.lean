@@ -25,15 +25,15 @@ def WittBlock : Prop := ∀ {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) (
         Submodule.span ℂ ((fun i => (Pi.single i 1 : Fin X.B.I.n → ℂ)) '' (↑S)ᶜ)
 
 /- English proof (translation)
-Establish `hker : ∀ x, A *ᵥ x = x ↔ x ∈ LinearMap.ker (Matrix.toLin' (A - 1))`. Introduce `x`. Rewrite using `[LinearMap.mem_ker, Matrix.toLin'_apply, Matrix.sub_mulVec, Matrix.one_mulVec, sub_eq_zero]`. Establish `e1 : (∀ b, A *ᵥ u b = u b) ↔ Submodule.span ℂ (Set.range u) ≤ LinearMap.ker (Matrix.toLin' (A - 1))`. Rewrite using `[Submodule.span_le]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `h _ ⟨b, rfl⟩`. Conclude with `(hker _).1 (h b)`. Introduce `h b`. Conclude with `(hker _).2 (h ⟨b, rfl⟩)`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[e1, hspan, Submodule.span_le]`. Prove the components needed by the constructor for the conclusion. Introduce `h i hi j`. Establish `h1` using `(hker _).2 (h ⟨i, hi, rfl⟩)`. Rewrite `h1` using `[Matrix.mulVec_single_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congrFun h1 j` as an intermediate fact. Simplify using `only [Matrix.col_apply, Pi.single_apply] at this`. Conclude with `this`. Introduce and unpack `h _ ⟨i, hi, rfl⟩`. Use `(hker _).1 ?_` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.mulVec_single_one]`. Use function extensionality and compare the values at `j`. Simplify using `only [Matrix.col_apply, Pi.single_apply]`. Conclude with `h i hi j`.
+A detailed English derivation is pending.
 -/
 theorem fix_iff_span {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) {ι : Type} (u : ι → Fin n → ℂ) (S : Finset (Fin n))
     (hspan : Submodule.span ℂ (Set.range u) =
@@ -64,15 +64,15 @@ theorem fix_iff_span {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) {ι : Type} (u :
     exact h i hi j
 
 /- English proof (translation)
-Introduce `D X u' ψ hT μinf νinf fibInf hP hb`. Establish `h2'` using `h2 X u' ψ hT μinf νinf fibInf hP`. Use `choose S c hS hspan using h2'`. Use `⟨c, S, fun v => hS v, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[h1 X u' hb (c * g * c⁻¹)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `forall_congr' fun v => ?_` and prove the remaining obligations. Use `Iff.trans ?_ (fix_iff_span (uMat (g v)) (fun b => uMat (c v)⁻¹ *ᵥ wV X u' v b) (S v) (hspan v))` and prove the remaining obligations. Use `forall_congr' fun b => ?_` and prove the remaining obligations. Establish `hm : uMat ((c * g * c⁻¹) v) = uMat (c v) * uMat (g v) * uMat (c v)⁻¹`. Simplify using `[uMat]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hci : uMat (c v)⁻¹ * uMat (c v) = 1` using `by simp [uMat]`. Establish `hci' : uMat (c v) * uMat (c v)⁻¹ = 1` using `by simp [uMat]`. Rewrite using `[hm]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h'` using `congrArg (fun y => uMat (c v)⁻¹ *ᵥ y) h`. Simplify using `only [Matrix.mulVec_mulVec, ← Matrix.mul_assoc, hci, Matrix.one_mul] at h'`. Rewrite using `[Matrix.mulVec_mulVec]`. Conclude with `h'`. Introduce `h`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mulVec_mulVec, Matrix.mul_assoc]`. Use `_ = uMat (c v) *ᵥ (uMat (c v)⁻¹ *ᵥ wV X u' v b) := by rw [h]`. Use `_ = wV X u' v b := by rw [Matrix.mulVec_mulVec, hci', Matrix.one_mulVec]`.
+A detailed English derivation is pending.
 -/
 theorem stdConjEx_of (h1 : StabInfV) (h2 : WittBlock) : StdConjEx := by
   intro D X u' ψ hT μinf νinf fibInf hP hb

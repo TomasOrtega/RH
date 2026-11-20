@@ -20,7 +20,7 @@ set_option maxHeartbeats 1600000
 namespace GlobalTheory.HeightCounting.HeckeLaw
 
 /- English proof (translation)
-Establish `h : ¬ OverP D.host (if D.ntw.l i = D.host.pde then D.host.pde' else D.host.pde) P` using `fun hk => hP (D.ntw.primes_subset_exceptional i (by rw [← Finset.mem_coe, D.ntw.pD_eq]; exact hk))`. Unfold `CharFrame.delAt`. Use `split_ifs at h ⊢`. Conclude with `C.isDel'.unr P h`. Conclude with `C.isDel.unr P h`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem delAt_unr {D : D7} (C : CharFrame D) (i : D.ntw.Tw) {P : PlE D.host} (hP : P ∉ D.ntw.S0 i) :
     (C.delAt (D.ntw.l i)).UnrAt P := by
@@ -32,7 +32,7 @@ theorem delAt_unr {D : D7} (C : CharFrame D) (i : D.ntw.Tw) {P : PlE D.host} (hP
   · exact C.isDel.unr P h
 
 /- English proof (translation)
-Establish `h1 : Fld.charField f ≤ B.KsC` using `((Fld.listField_le_iff δ f).1 (le_of_eq (Eq.symm h))).2.2.2.2.1`. Rewrite using `[Fld.valuesIn_iff, Fld.valuesIn_iff, B.imField_KstoC]`. Conclude with `⟨((le_sup_right.trans le_sup_left).trans le_sup_left).trans h1, (le_sup_right.trans le_sup_left).trans h1⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem del_values {B : Base} {δ : Fld.FieldDat B.toPre} {f : Fr B.toPre} (h : B.KsExact δ f) :
     f.del.ValuesIn 0 B.KstoC ∧ f.del'.ValuesIn 0 B.KstoC := by
@@ -41,11 +41,11 @@ theorem del_values {B : Base} {δ : Fld.FieldDat B.toPre} {f : Fr B.toPre} (h : 
   exact ⟨((le_sup_right.trans le_sup_left).trans le_sup_left).trans h1, (le_sup_right.trans le_sup_left).trans h1⟩
 
 /- English proof (translation)
-Establish `hC : z.R.C = Fr.at (w.st Z) f` using `z.lev.C.trans (congrArg _ w.C_eq)`. Establish `hu` using `delAt_unr z.R.C i hP`. Establish `hv : (z.R.C.delAt ((w.st Z).toD7.ntw.l i)).ValuesIn 0 B.KstoC`. Rewrite using `[hC]`. Unfold `CharFrame.delAt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `split_ifs`. Conclude with `(del_values w.exact).2`. Conclude with `(del_values w.exact).1`. Take `⟨y, hy⟩` from `hv P hu`. Take `⟨s, hs⟩` from `z.Ks_le y.1 y.2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨s, ?_⟩` and prove the remaining obligations. Rewrite using `[hs]`. Use `Eq.trans (show _ = B.KstoC y from rfl) (hy.trans ?_)` and prove the remaining obligations. Simplify using `[HChar.valTw]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem delAt_mem {B : Base} {f : Fr B.toPre} {T : TwDat B} (w : ColW B f T) (Z : w.Lt) {hX : B.fields.Ok} {Wt : Set B.places.Pl}
     (z : Dat (w.st Z) w.I hX T Wt) (i : (w.st Z).toD7.ntw.Tw) (P : PlE (w.st Z).toD7.host) (hP : P ∉ (w.st Z).toD7.ntw.S0 i) :
@@ -67,13 +67,11 @@ theorem delAt_mem {B : Base} {f : Fr B.toPre} {T : TwDat B} (w : ColW B f T) (Z 
   simp [HChar.valTw]
 
 /- English proof (translation)
-Introduce `hP hS hL`. Establish `ev : ∀ {Q : Ctx → Prop}, Ev Q → StepW Start fun K _ _ _ _ => Q K` using `fun h => Step.of_evG ((evG_of_ev h).imp fun _ _ _ _ _ H _ _ _ _ _ _ _ _ _ => H)`. Use `((ev GlobalTheory.Mem.HostFrames.hostHyp_frames_ev).and (ev GlobalTheory.Mem.StdSize.vstd_size_ev)).trans (StepW.of_all fun K B f T w hO _ H => ?_)` and prove the remaining obligations. Introduce `P x l i b j`. Take `⟨hHo, -⟩` from `H.1 (w.st x.o.Z) hO`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨hStd, hSize⟩` from `H.2 (w.st x.o.Z) hO`. Establish `hfin : Finite (TupU w.I (usedOf w.I T P.Wt))`. Establish `hs : ({τ | τ = (Formalism.L2.DIV.mu0F (X` using `B.fields) (tuOf w.I (usedOf w.I T P.Wt))).1 ∨ τ ∈ tuOf w.I (usedOf w.I T P.Wt)} : Set _).Finite := (Set.finite_singleton _).union (tuOf w.I (usedOf w.I T P.Wt)).finite_toSet`. Conclude with `hs.to_subtype`. Set `X` to `GlobalTheory.TwInputs.RealSide.ofPins x.m.z.geo x.m.z.pins x.m.intersectionNumber_baseChange x.m.inGeo hfin hHo hStd hSize`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hC` using `X.char`. Establish `hSb : ∀ Q ∈ x.m.z.R.Sb, Q ∈ (Dof x).ntw.S0 i`. Introduce `Q hQ`. Establish `hA : x.m.z.R.Sb = x.m.z.R.Pg` using `x.m.z.pins.char.allPl`. Take `⟨k, hk⟩` from `l.b.ser.ex.good.Pg i j b Q (by rw [l.b.ser.ex.pin.Pg]; exact hA ▸ hQ)`.
-
-Conclude with `(Dof x).ntw.placesOver_subset_exceptional i k hk`. Conclude with `GlobalTheory.GeoTie.CuspLev.heckeGeo_of_levels l.b.YS x.m.z.geo.fw ((Dof x).nth.iC i) b j l.b.ser.ex (x.m.z.geo.fw.evaluates_of_lUnif x.m.intersectionNumber_baseChange.prim.unif) hC.lev hC.models.HW x.m.intersectionNumber_baseChange.prim.unif (l.rat.In.ks _ (Nat.le_add_left _ _) …`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem hecke_geometric_of_lb1 : PrN → SerN → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, AllSt fun _ _ _ _ _ P x => ∀ (l : SeriesLevel hL x) (i : (Dof x).ntw.Tw) (b : Bool) (j : Fin (Dof x).R.m), GlobalTheory.GeoTie.HeckeGeo l.b.YS x.m.z.geo.fw ((Dof x).nth.iC i) b j := by
   intro hP hS hL

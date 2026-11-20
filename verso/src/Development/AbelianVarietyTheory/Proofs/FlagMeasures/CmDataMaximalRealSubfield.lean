@@ -12,13 +12,11 @@ namespace GlobalTheory.StdDefinite
 open GlobalTheory.AutInhab
 
 /- English proof (translation)
-Take `⟨σ⟩ : Nonempty (K →+* ℂ)` from `inferInstance`. Establish `hne : ∃ z : K, star z ≠ z`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Use `haveI := hK.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `IsTotallyComplex.complexEmbedding_not_isReal σ ?_` and prove the remaining obligations. Rewrite using `[ComplexEmbedding.isReal_iff]`. Use extensionality with `z`. Rewrite using `[ComplexEmbedding.conjugate_coe_eq, ← hK.2.1, hcon]`. Use `haveI : IsCMField K := GlobalTheory.LeastExponentCompare.isCMField_of_conj K star hK.2.1 hne`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨hK, inferInstance, Algebra.IsQuadraticExtension.finrank_eq_two _ _, fun a => ⟨fun h => ?_, ?_⟩⟩` and prove the remaining obligations. Use `⟨⟨a, fun φ => ?_⟩, rfl⟩` and prove the remaining obligations. Use `hK.2.1 φ a` as an intermediate fact. Rewrite `this` using `[h]`. Conclude with `this.symm`.
-
-Introduce and unpack `⟨b, rfl⟩`. Apply `σ.injective` to reduce the goal to its premises. Rewrite using `[hK.2.1]`. Conclude with `b.2 σ`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cmData_maximalRealSubfield {K : Type} [Field K] [NumberField K] [StarRing K]
     (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) : Formalism.BasicNotions.CMData (maximalRealSubfield K) K := by

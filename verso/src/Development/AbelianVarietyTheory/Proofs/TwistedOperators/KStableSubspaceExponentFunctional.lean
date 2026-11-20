@@ -16,9 +16,9 @@ open PI.DSInfCharCap (actU Egl)
 namespace GlobalTheory.IndFunctional
 
 /- English proof (translation)
-Establish `hle : LinearMap.ker ι ≤ LinearMap.ker L` using `fun a ha => hL a ha`. Take `⟨ℓ, hℓ⟩` from `LinearMap.exists_extend (((LinearMap.ker ι).liftQ L hle).comp ι.quotKerEquivRange.symm.toLinearMap)`. Use `⟨ℓ, fun a => ?_⟩` and prove the remaining obligations. Use `LinearMap.congr_fun hℓ ⟨ι a, LinearMap.mem_range_self ι a⟩` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply, LinearEquiv.coe_coe, LinearMap.quotKerEquivRange_symm_apply_image] at this`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_factor {A H : Type} [AddCommGroup A] [Module ℂ A] [AddCommGroup H] [Module ℂ H]
     (ι : A →ₗ[ℂ] H) (L : A →ₗ[ℂ] ℂ) (hL : ∀ a, ι a = 0 → L a = 0) :
@@ -34,9 +34,9 @@ theorem exists_factor {A H : Type} [AddCommGroup A] [Module ℂ A] [AddCommGroup
   rfl
 
 /- English proof (translation)
-Establish `hc : Continuous f.1` using `(mem_indFun_top.1 f.2).1`. Establish `hck : Continuous fun k : KG ε => ‖f.1 k‖ ^ 2` using `(hc.comp continuous_subtype_val).norm.pow 2`. Establish `hint : Integrable (fun k : KG ε => ‖f.1 k‖ ^ 2) (muK ε)` using `hck.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`. Establish `h0 : ∫ k : KG ε, ‖f.1 k‖ ^ 2 ∂muK ε = 0`. Rewrite using `[← I.model.norm_sq f, hf, norm_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Evaluate the numerical expressions. Establish `hae` using `(integral_eq_zero_iff_of_nonneg (fun k => by positivity) hint).1 h0`. Establish `heq : (fun k : KG ε => ‖f.1 k‖ ^ 2) = fun _ => 0` using `(Continuous.ae_eq_iff_eq (muK ε) hck continuous_const).1 hae`. Use `congrFun heq ⟨1, (KG ε).one_mem⟩` as an intermediate fact. Simplify using `using this`.
+Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem apply_one_eq_zero {n : ℕ} {ε : Fin n → Bool} (I : IndModule ε) (f : I.fns) (hf : I.ι f = 0) :
     f.1 1 = 0 := by
@@ -53,49 +53,47 @@ theorem apply_one_eq_zero {n : ℕ} {ε : Fin n → Bool} (I : IndModule ε) (f 
   simpa using this
 
 /- English proof (translation)
-Introduce `hInd n ε I h hj H₀ T hH₀ hT hsp hTθ Y hYk hY0 hYs`. Take `⟨-, -, -, hkf, hder, -⟩` from `hInd n ε I`. Take `⟨hσ, -⟩` from `I.temp.2.2`. Establish `huM1 : uMat (1 : UJ ε) = 1` using `rfl`. Establish `hσ1 : I.σ 1 = 1` using `hσ.1.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hσmul : ∀ a ∈ I.M, ∀ b ∈ I.M, I.σ (uMat (a * b)) = (I.σ (uMat a)).comp (I.σ (uMat b))` using `fun a ha b hb => hσ.1.2 _ ⟨a, ha, rfl⟩ _ ⟨b, hb, rfl⟩`. Establish `hσiso : ∀ m ∈ I.M, ∀ x, ‖I.σ (uMat m) x‖ = ‖x‖` using `fun m hm x => hσ.2.1 _ ⟨m, hm, rfl⟩ x`. Establish `hinner : ∀ m ∈ I.M, ∀ a b, ⟪I.σ (uMat m) a, I.σ (uMat m) b⟫_ℂ = ⟪a, b⟫_ℂ` using `fun m hm a b => (⟨(I.σ (uMat m)).toLinearMap, hσiso m hm⟩ : I.V →ₗᵢ[ℂ] I.V).inner_map_map a b`. Establish `hN1 : (1 : UJ ε) ∈ flagN ε I.W` using `⟨fun i y _ => by simp [huM1], fun y _ => by simp [huM1]⟩`. Establish `law : ∀ f : I.fns, ∀ u ∈ flagN ε I.W, ∀ m ∈ I.M, ∀ x t, IsSplit ε I.W x t → f.1 (u * m * t) = Complex.exp (pairing I.j (I.s + rho n I.j) x) • I.σ (uMat m) (f.1 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `f u hu m hm x t ht`. Simplify using `using (mem_indFun_top.1 f.2).2 u hu m hm x t ht 1`. Establish `law0 : ∀ f : I.fns, ∀ u ∈ flagN ε I.W, ∀ m ∈ I.M, f.1 (u * m) = I.σ (uMat m) (f.1 1)`. Introduce `f u hu m hm`. Simplify `law f u hu m hm 0 1 isSplit_one` using `[pairing]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `kf : ∀ w ∈ kFinVec ε I.ρ, ∃ f : I.fns, IsKFinFun f.1 ∧ I.ι f = w` using `fun w hw => (hkf w).1 hw`. Establish `dat1 : ∀ X ∈ lieSet ε, ∀ w ∈ kFinVec ε I.ρ, ∃ f f' : I.fns, I.ι f = w ∧ I.ι f' = dRep I.ρ X w ∧ HasDerivAt (fun t : ℝ => f.1 (expG ε X t)) (f'.1 1) 0`. Introduce `X hX w hw`. Take `⟨f, hfk, rfl⟩` from `kf w hw`. Take `⟨f', hd, he⟩` from `hder f hfk X hX`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨f, f', rfl, he.symm, by simpa using hd 1⟩`. Take `⟨y, hyY, hy0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hY0`. Take `⟨f, hfk, rfl⟩` from `kf y (hYk hyY)`. Establish `hf0 : f.1 ≠ 0` using `fun e => hy0 (by rw [show f = 0 from Subtype.ext e, map_zero])`. Take `⟨k₀, hk₀, hfk₀⟩` from `(GlobalTheory.T.induced_k_finite_restriction n ε I.toDatum f.1 f.2 hfk).2.2 hf0`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `f₁ : I.fns` to `⟨fun g => f.1 (g * k₀), indFun_mul_right f.2 trivial⟩`. Establish `hf₁k : IsKFinFun f₁.1`. Establish `hle : Submodule.span ℂ {φ : UJ ε → I.V | ∃ k ∈ KG ε, φ = fun g => f₁.1 (g * k)} ≤ Submodule.span ℂ {φ : UJ ε → I.V | ∃ k ∈ KG ε, φ = fun g => f.1 (g * k)}`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `φ ⟨k, hk, rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨k * k₀, mul_mem hk hk₀, by funext g; simp [f₁, mul_assoc]⟩`. Use `haveI : FiniteDimensional ℂ (Submodule.span ℂ {φ : UJ ε → I.V | ∃ k ∈ KG ε, φ = fun g => f.1 (g * k)}) := hfk`. Conclude with `Submodule.finiteDimensional_of_le hle`. Establish `hy₁ : I.ρ (uMat k₀) (I.ι f) = I.ι f₁` using `I.model.transl k₀ trivial f f₁ fun g => rfl`. Establish `hy₁Y : I.ι f₁ ∈ Y` using `hy₁ ▸ hYs (uMat k₀) hk₀ _ hyY`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hx₀ : f₁.1 1 ≠ 0` using `by simpa [f₁] using hfk₀`. Take `⟨U, hUfd, hx₀U, hUst⟩` from `(GlobalTheory.T.induced_k_finite_restriction n ε I.toDatum f₁.1 f₁.2 hf₁k).2.1`. Establish `hum : ∀ θ, (expG ε T θ)⁻¹ ∈ KG ε ⊓ I.M` using `fun θ => inv_mem (hTθ θ).1`. Take `⟨v, -, hvx, hv⟩` from `GlobalTheory.T.commuting_isometries_common_eigenvector U hUfd (fun θ => I.σ (uMat (expG ε T θ)⁻¹)) (f₁.1 1) hx₀U hx₀ (fun θ x hx => hUst _ (hum θ) x hx) (fun θ x => hσiso _ (hum θ).2 x) (fun θ θ' x => by`. Rewrite using `[← ContinuousLinearMap.comp_apply, ← hσmul _ (hum θ).2 _ (hum θ').2, ← ContinuousLinearMap.comp_apply, ← hσmul _ (hum θ').2 _ (hum θ).2, (Commute.inv_left ((hTθ θ).2 _ (hum θ').2)).eq])`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose c hc using hv`. Establish `key : ∀ θ x, ⟪v, I.σ (uMat (expG ε T θ)) x⟫_ℂ = starRingEnd ℂ (c θ) * ⟪v, x⟫_ℂ`. Introduce `θ x`. Establish `h1 : I.σ (uMat (expG ε T θ)⁻¹) (I.σ (uMat (expG ε T θ)) x) = x`. Rewrite using `[← ContinuousLinearMap.comp_apply, ← hσmul _ (hum θ).2 _ (hTθ θ).1.2, inv_mul_cancel, huM1, hσ1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Both sides reduce to the same expression. Rewrite using `[← hinner _ (hum θ).2, h1, hc θ, inner_smul_left]`. Take `⟨ℓ, hℓ⟩` from `exists_factor I.ι ((innerSL ℂ v).toLinearMap ∘ₗ (LinearMap.proj 1) ∘ₗ I.fns.subtype) (fun a ha => by simp [apply_one_eq_zero I a ha])`. Establish `hℓ' : ∀ a : I.fns, ℓ (I.ι a) = ⟪v, a.1 1⟫_ℂ` using `fun a => by rw [hℓ]; rfl`. Establish `hinD : ∀ {F : ℝ → I.V} {F' : I.V}, HasDerivAt F F' 0 → HasDerivAt (fun t => ⟪v, F t⟫_ℂ) ⟪v, F'⟫_ℂ 0` using `fun hF => (((innerSL ℂ v).restrictScalars ℝ).hasFDerivAt).comp_hasDerivAt (0 : ℝ) hF`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `lawT : ∀ (g : I.fns) θ, ⟪v, g.1 (expG ε T θ)⟫_ℂ = starRingEnd ℂ (c θ) * ⟪v, g.1 1⟫_ℂ`. Introduce `g θ`. Use `law0 g 1 hN1 _ (hTθ θ).1.2` as an intermediate fact. Rewrite `this` using `[one_mul]`. Rewrite using `[this, key]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨f₁', hd₁, -⟩` from `hder f₁ hf₁k T hT`. Use `set γ := ⟪v, f₁'.1 1⟫_ℂ / ⟪v, f₁.1 1⟫_ℂ`. Establish `hg : HasDerivAt (fun θ : ℝ => starRingEnd ℂ (c θ)) γ 0`. Use `(hinD (by simpa using hd₁ 1)).div_const ⟪v, f₁.1 1⟫_ℂ` as an intermediate fact. Establish `e : (fun θ : ℝ => starRingEnd ℂ (c θ)) = fun θ => ⟪v, f₁.1 (expG ε T θ)⟫_ℂ / ⟪v, f₁.1 1⟫_ℂ`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `θ`. Rewrite using `[lawT, mul_div_assoc, div_self hvx, mul_one]`. Rewrite using `[e]`. Conclude with `this`. Use `⟨ℓ, γ, ⟨I.ι f₁, hy₁Y, by rw [hℓ']; exact hvx⟩, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `X hX hXN w hw`. Take `⟨g, g', rfl, he, hd⟩` from `dat1 X hX w hw`. Rewrite using `[← he, hℓ']`. Establish `hconst : (fun t : ℝ => g.1 (expG ε X t)) = fun _ => g.1 1` using `funext fun t => by`. Simplify `law0 g _ (hXN t) 1 (one_mem _)` using `[huM1, hσ1]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hd` using `[hconst]`. Rewrite using `[hd.unique (hasDerivAt_const _ _), inner_zero_right]`. Introduce `w hw`. Take `⟨g, g', rfl, he, hd⟩` from `dat1 H₀ hH₀ w hw`. Rewrite using `[← he, hℓ', hℓ']`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hIio : Finset.Iio (⟨0, h⟩ : Fin I.a) = ∅`. Use extensionality with `l`. Simplify using `[Fin.lt_iff_val_lt_val]`. Establish `hpair : ∀ t : ℝ, pairing I.j (I.s + rho n I.j) (Pi.single ⟨0, h⟩ t) = (I.s ⟨0, h⟩ + n - 1) * t`. Introduce `t`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[pairing, Finset.sum_eq_single ⟨0, h⟩]`. Simplify using `[hj, rho, hIio] left`. Expand and normalize the polynomial expressions, which then agree. Introduce `b _ hb`. Simplify using `[Pi.single_apply, hb]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hfun : (fun t : ℝ => g.1 (expG ε H₀ t)) = fun t : ℝ => Complex.exp ((I.s ⟨0, h⟩ + n - 1) * t) • g.1 1`. Use function extensionality and compare the values at `fun t => by`. Use `law g 1 hN1 1 (one_mem _) _ _ (hsp t)` as an intermediate fact. Rewrite `this` using `[one_mul, one_mul, hpair, huM1, hσ1]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Rewrite `hd` using `[hfun]`. Establish `hd' : HasDerivAt (fun t : ℝ => Complex.exp ((I.s ⟨0, h⟩ + n - 1) * t) • g.1 1) ((I.s ⟨0, h⟩ + n - 1) • g.1 1) 0`. Use `(((hasDerivAt_id (0 : ℝ)).ofReal_comp.const_mul (I.s ⟨0, h⟩ + n - 1)).cexp).smul_const (g.1 1)` as an intermediate fact. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hd.unique hd', inner_smul_right]`. Introduce `w hw`. Take `⟨g, g', rfl, he, hd⟩` from `dat1 T hT w hw`. Rewrite using `[← he, hℓ', hℓ']`. Establish `h2` using `hinD hd`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : HasDerivAt (fun θ : ℝ => ⟪v, g.1 (expG ε T θ)⟫_ℂ) (γ * ⟪v, g.1 1⟫_ℂ) 0`. Establish `e : (fun θ : ℝ => ⟪v, g.1 (expG ε T θ)⟫_ℂ) = fun θ => starRingEnd ℂ (c θ) * ⟪v, g.1 1⟫_ℂ`. Use function extensionality and compare the values at `θ`. Rewrite using `[lawT]`. Rewrite using `[e]`.
-
-Conclude with `hg.mul_const ⟪v, g.1 1⟫_ℂ`. Conclude with `h2.unique h3`.
+A detailed English derivation is pending.
 -/
 theorem functional : GlobalTheory.Published.Langlands.Induced → ∀ (n : ℕ) (ε : Fin n → Bool) (I : IndModule ε) (h : 0 < I.a), I.j ⟨0, h⟩ = 1 → ∀ H₀ T : Matrix (Fin n) (Fin n) ℂ, H₀ ∈ lieSet ε → T ∈ lieSet ε → (∀ x : ℝ, IsSplit ε I.W (Pi.single ⟨0, h⟩ x) (expG ε H₀ x)) → (∀ θ : ℝ, expG ε T θ ∈ KG ε ⊓ I.M ∧ ∀ m ∈ I.M, expG ε T θ * m = m * expG ε T θ) → ∀ Y : Submodule ℂ I.H, Y ≤ kFinVec ε I.ρ → Y ≠ ⊥ → IsKStableOn ε I.ρ Y → ∃ (ℓ : I.H →ₗ[ℂ] ℂ) (γ : ℂ), (∃ y ∈ Y, ℓ y ≠ 0) ∧ (∀ X ∈ lieSet ε, (∀ t, expG ε X t ∈ flagN ε I.W) → ∀ w ∈ kFinVec ε I.ρ, ℓ (dRep I.ρ X w) = 0) ∧ (∀ w ∈ kFinVec ε I.ρ, ℓ (dRep I.ρ H₀ w) = (I.s ⟨0, h⟩ + n - 1) * ℓ w) ∧ ∀ w ∈ kFinVec ε I.ρ, ℓ (dRep I.ρ T w) = γ * ℓ w := by
   intro hInd n ε I h hj H₀ T hH₀ hT hsp hTθ Y hYk hY0 hYs

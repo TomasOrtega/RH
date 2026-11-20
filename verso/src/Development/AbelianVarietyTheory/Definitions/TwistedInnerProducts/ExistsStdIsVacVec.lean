@@ -16,7 +16,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7}
 
 /- English proof (translation)
-The claim follows from `VacVec.exists_isVacVec ψ θ M M' hψ hθ`.
+A detailed English derivation is pending.
 -/
 theorem exists_isVacVec {V W : HSp D} {S S' : D.what₂.Tau → SPar} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D)
     (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (M : DSModel V S) (M' : DSModel W S') :
@@ -24,38 +24,38 @@ theorem exists_isVacVec {V W : HSp D} {S S' : D.what₂.Tau → SPar} (ψ : AddC
   VacVec.exists_isVacVec ψ θ M M' hψ hθ
 
 /- English proof (translation)
-The claim follows from `VacVec.exists_char_fam_isVacVec M M'`.
+A detailed English derivation is pending.
 -/
 theorem exists_std_isVacVec {V W : HSp D} {S S' : D.what₂.Tau → SPar} (M : DSModel V S) (M' : DSModel W S') :
     ∃ ψ θ f, IsStdChar D ψ (-1) ∧ IsInfFam θ ∧ IsVacVec ψ θ M M' f :=
   VacVec.exists_char_fam_isVacVec M M'
 
 /- English proof (translation)
-Introduce `h` and use `h.ne rfl`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_isVacVec_zero {V W : HSp D} {S S' : D.what₂.Tau → SPar} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D)
     (M : DSModel V S) (M' : DSModel W S') : ¬ IsVacVec ψ θ M M' 0 := fun h => h.ne rfl
 
 /- English proof (translation)
-Simplify using `[expS, expT, hk]`.
+Simplify using the standard rewrite rules.
 -/
 theorem exp_of_even {k : Fin D.R.m} (hk : Even (k : ℕ)) (τ : D.what₂.Tau) :
     expS D k τ = -(D.hc τ).e k - 1 / 2 ∧ expT D k τ = -(D.hc τ).e k := by
   simp [expS, expT, hk]
 
 /- English proof (translation)
-Simplify using `[expS, expT, hk]`.
+Simplify using the standard rewrite rules.
 -/
 theorem exp_of_odd {k : Fin D.R.m} (hk : ¬ Even (k : ℕ)) (τ : D.what₂.Tau) :
     expS D k τ = -(D.hc τ).e k ∧ expT D k τ = -(D.hc τ).e k - 1 / 2 := by
   simp [expS, expT, hk]
 
 /- English proof (translation)
-Take `⟨n, hn, h1, h2⟩` from `hχ`. Take `⟨m, hm, -, h3⟩` from `hη`. Use `⟨n - m, by push_cast; rw [hn, hm]; ring, h1, fun θ hθ x hx hτ => ?_⟩` and prove the remaining obligations. Establish `e1` using `h2 θ hθ x hx hτ`. Establish `e2` using `h3 θ hθ x hx hτ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set z : ℂ := θ τ (infPart D (x : AE D)) / (‖θ τ (infPart D (x : AE D))‖ : ℂ) with hz`. Rewrite using `[MonoidHom.mul_apply, MonoidHom.inv_apply, Circle.coe_mul, Circle.coe_inv, e1, e2]`. Distinguish the cases in `h0 : z = 0`. Establish `a1 : n = 0`. Assume the negation of the conclusion as `h; exact (χ x).coe_ne_zero (by rw [e1, h0, zero_zpow _ h])`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `a2 : m = 0`. Assume the negation of the conclusion as `h; exact (η x).coe_ne_zero (by rw [e2, h0, zero_zpow _ h])`. Simplify using `[a1, a2]`. Rewrite using `[zpow_sub₀ h0, div_eq_mul_inv]`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasInfExp_div {χ η : (AE D)ˣ →* Circle} {τ : D.what₂.Tau} {a b : ℚ} (hχ : HasInfExp D χ τ a)
     (hη : HasInfExp D η τ b) : HasInfExp D (χ * η⁻¹) τ (a - b) := by
@@ -75,18 +75,18 @@ theorem hasInfExp_div {χ η : (AE D)ˣ →* Circle} {τ : D.what₂.Tau} {a b :
   · rw [zpow_sub₀ h0, div_eq_mul_inv]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hχ.1.mul hη.1.inv, fun x => by rw [MonoidHom.mul_apply, MonoidHom.inv_apply, hχ.2, hη.2]; simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem isHeckeChar_div {χ η : (AE D)ˣ →* Circle} (hχ : IsHeckeChar D χ) (hη : IsHeckeChar D η) :
     IsHeckeChar D (χ * η⁻¹) :=
   ⟨hχ.1.mul hη.1.inv, fun x => by rw [MonoidHom.mul_apply, MonoidHom.inv_apply, hχ.2, hη.2]; simp⟩
 
 /- English proof (translation)
-Establish `hq` using `isHeckeChar_div hμ hη`. Establish `hqr : ResEta D (μ * η⁻¹) (0 + 1)` using `resEta_mul hμr (resEta_inv hηr)`. Distinguish the cases in `hk : Even (k : ℕ)`. Establish `hk'` using `Nat.even_iff.1 hk`. Take `⟨ω, hω⟩` from `hW D ψ V W (μ * η⁻¹) μ hψ hq hμ (resEta_parity hqr (by omega)) (resEta_parity hμr (by omega))`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨ω, _, _, hω, fun τ => ?_⟩` and prove the remaining obligations. Rewrite using `[(exp_of_even hk τ).1, (exp_of_even hk τ).2]`. Conclude with `⟨hasInfExp_div (hμe τ) (hηe τ), hμe τ⟩`. Establish `hk'` using `Nat.odd_iff.1 (Nat.not_even_iff_odd.1 hk)`. Take `⟨ω, hω⟩` from `hW D ψ V W μ (μ * η⁻¹) hψ hμ hq (resEta_parity hμr (by omega)) (resEta_parity hqr (by omega))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨ω, _, _, hω, fun τ => ?_⟩` and prove the remaining obligations. Rewrite using `[(exp_of_odd hk τ).1, (exp_of_odd hk τ).2]`. Conclude with `⟨hμe τ, hasInfExp_div (hμe τ) (hηe τ)⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_isStepWeil (hW : GlobalTheory.Published.WeilRepresentationUnitaryPair) (k : Fin D.R.m)
     (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdChar D ψ (-1)) (V W : HSp D)
@@ -109,7 +109,7 @@ theorem exists_isStepWeil (hW : GlobalTheory.Published.WeilRepresentationUnitary
     exact ⟨hμe τ, hasInfExp_div (hμe τ) (hηe τ)⟩
 
 /- English proof (translation)
-Establish `h1` using `Nat.odd_iff.1 (r_odd D)`. Establish `h2` using `Nat.odd_iff.1 D.R.t_odd`. Apply the tactic sequence `constructor <;> rcases Nat.mod_two_eq_zero_or_one k with h | h <;> simp [Nat.add_mod, Nat.mul_mod, h, h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rank_parity (D : D7) (k : ℕ) :
     (D.R.r + k * D.R.t) % 2 = (k + 1) % 2 ∧ (D.R.r + (k + 1) * D.R.t) % 2 = k % 2 := by
@@ -118,7 +118,7 @@ theorem rank_parity (D : D7) (k : ℕ) :
   constructor <;> rcases Nat.mod_two_eq_zero_or_one k with h | h <;> simp [Nat.add_mod, Nat.mul_mod, h, h1, h2]
 
 /- English proof (translation)
-Simplify using `[signed]`. Evaluate the numerical expressions.
+Simplify using the standard rewrite rules. Evaluate the numerical expressions.
 -/
 example : signed [1] [2] (1 / 2) = {(3 / 2, true), (5 / 2, false)} := by
   simp [signed]; norm_num

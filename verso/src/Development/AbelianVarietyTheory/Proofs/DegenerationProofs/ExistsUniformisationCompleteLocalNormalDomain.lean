@@ -28,9 +28,9 @@ noncomputable section
 namespace GlobalTheory.UnifNormal
 
 /- English proof (translation)
-Take `⟨θ, x, hx, hc⟩` from `h`. Use `⟨θ, fun y => ?_⟩` and prove the remaining obligations. Establish `ho : IsOpen (G.hom '' (nonzeroLocus θ : Set G.left))` using `G.hom.isOpenMap _ (nonzeroLocus θ).isOpen`. Establish `hy : y ∈ G.hom '' (nonzeroLocus θ : Set G.left)` using `(IsLocalRing.specializes_closedPoint (R := R) y).mem_open ho ⟨x, hx, hc⟩`. Take `⟨g, hg, e⟩` from `hy`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hg`. Conclude with `⟨g, i, e, hi⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem thetaNZ_of_closedPoint {R : Type} [CommRing R] [IsLocalRing R] (G : Over (Sp R)) [Smooth G.hom] (L : LB G.left)
     (h : ∃ θ : LB.Sec L, ∃ x ∈ nonzeroLocus θ, G.hom x = IsLocalRing.closedPoint R) : ThetaNZ G L := by
@@ -44,13 +44,13 @@ theorem thetaNZ_of_closedPoint {R : Type} [CommRing R] [IsLocalRing R] (G : Over
   exact ⟨g, i, e, hi⟩
 
 /- English proof (translation)
-Establish `hx' : Set.range x ⊆ Set.range W.ι` using `by rwa [Scheme.Opens.range_ι]`. Set `x' : Sp K ⟶ W.toScheme` to `IsOpenImmersion.lift W.ι x hx'`. Establish `ex : x' ≫ W.ι = x` using `IsOpenImmersion.lift_fac _ _ _`. Set `φ : ((Over.pullback x).obj G).left ⟶ ((Over.pullback W.ι).obj G).left` to `pullback.lift (pullback.fst G.hom x) (pullback.snd G.hom x ≫ x') (by`. Rewrite using `[Category.assoc, ex]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pullback.condition)`. Establish `eφ : φ ≫ pullback.fst G.hom W.ι = pullback.fst G.hom x` using `pullback.lift_fst _ _ _`. Establish `h` using `isGrpPullback_pullback G x`. Establish `hφ : IsGrpPullback ((Over.pullback x).obj G) ((Over.pullback W.ι).obj G) x' φ` using `(isGrpPullback_pullback G W.ι).cancel (h.congr ex.symm eφ.symm) (pullback.lift_snd _ _ _)`. Establish `hW` using `IsSemiAbelian.pullback W.ι G hG`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hab : IsAbelianScheme ((Over.pullback W.ι).obj G)` using `⟨hW.comm, hW.smooth, hp, hW.geomConnected⟩`. Establish `hL` using `pull_isLB L.isLB (pullback.fst G.hom x)`. Establish `hiso : LBIso (L.L.pull (pullback.fst G.hom x)) ((L.L.pull (pullback.fst G.hom W.ι)).pull φ)` using `LBIso.chartPull (chartPullSame L.L _ _ _ φ fun _ => eφ.symm) (Geo.Tor.chartPullPull _ φ φ rfl) (PolBaseChange.lbIso_refl (pull_isLB L.isLB (pullback.fst G.hom W.ι)))`. Take `⟨h₁, h₂, h₃⟩` from `GlobalTheory.pol_pull _ _ _ _ x' φ _ _ (pull_isLB L.isLB _) hL hab hφ hiso`. Take `⟨g, hg⟩` from `AbelianDim.exists_relDim K _ h₁`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hL', hr, -, hs'⟩` from `Out.CubePf.cubePull _ _ G _ (cubeMapOf h) L c`. Take `⟨-, w, hw, -⟩` from `hs' hs`. Use `⟨⟨(Over.pullback x).obj G, h₁, g, hg, L.L.pull (pullback.fst G.hom x), hL, ⟨_, hr⟩, fun _ => ⟨⊤, trivial, gen_of_iso ((isGen_iff w).1 hw) _⟩, h₂ ha, h₃ hk⟩, Iso.refl _, inferInstanceAs (IsMonHom (𝟙 _)), ?_⟩` and prove the remaining obligations. Conclude with `LBIso.chartPull (Geo.Tor.chartPullPull _ (𝟙 _) (𝟙 _) rfl) (chartPullId _) (PolBaseChange.lbIso_refl hL)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_polAV_fibre {S : Scheme.{0}} (G : Over S) [GrpObj G] [IsCommMonObj G] (L : RigLB G) (c : CubicalStr G L)
     (W : S.Opens) (hG : IsSemiAbelian G) (hs : L.IsSymmetric) (hp : IsProper (pullback.snd G.hom W.ι))
@@ -85,13 +85,13 @@ theorem exists_polAV_fibre {S : Scheme.{0}} (G : Over S) [GrpObj G] [IsCommMonOb
   exact LBIso.chartPull (Geo.Tor.chartPullPull _ (𝟙 _) (𝟙 _) rfl) (chartPullId _) (PolBaseChange.lbIso_refl hL)
 
 /- English proof (translation)
-Introduce `h₁ h₂ h₃ h₄ h₅ R _ _ _ hz hn hi hc G _ _ L c W hG hs hS hE hθ hW hab hp ha hk`. Establish `: (IsLocalRing.maximalIdeal R).IsMaximal` using `inferInstance`. Establish `hadm : admitted R (IsLocalRing.maximalIdeal R)` using `⟨⟨hn, inferInstance, hi, hc⟩, hc, hz, inferInstance, inferInstanceAs (IsIntegrallyClosed (IsLocalRing.ResidueField R))⟩`. Establish `hgen : Set.range (jK R) ⊆ W`. Introduce and unpack `_ ⟨z, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Take `⟨y, hy⟩` from `hW`. Use `Specializes.mem_open (y := y) ?_ W.isOpen hy` and prove the remaining obligations. Use `(PrimeSpectrum.le_iff_specializes (R := R) _ _).1 fun r hr => ?_` and prove the remaining obligations. Establish `hz0 : z.asIdeal = ⊥` using `@Ideal.eq_bot_of_prime _ _ _ z.2`. Establish `hr' : algebraMap R (FractionRing R) r ∈ z.asIdeal` using `hr`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hr'` using `[hz0, Ideal.mem_bot, map_eq_zero_iff _ (IsFractionRing.injective R (FractionRing R))]`. Rewrite using `[hr']`. Conclude with `Ideal.zero_mem _`. Take `⟨A, gen, hm, hL⟩` from `exists_polAV_fibre G L c W hG hs hp ha hk (jK R) hgen`. Take `⟨P, rfl, -⟩` from `GlobalTheory.UU.exists_cp_of_isSymmetric h₁ R A G hG gen hm L c hs`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hG.smooth` as an intermediate fact. Take `⟨D, U, hU, -⟩` from `GlobalTheory.T.exists_uniformisation_completeLocalDomain_prime h₁ h₂ h₃ (GlobalTheory.LN.ega_of_laws h₁ h₂) (GlobalTheory.LN.uniformisation_dvr h₁ h₂ h₃ h₄ h₅) R _ hadm (inferInstanceAs (IsPrincipalIdealRing (IsLocalRing.ResidueField R))) G P hG hS hE (thetaNZ_of_closedPoint G _ …`. Use `⟨D, A, U, hU, ?_⟩` and prove the remaining obligations. Rewrite using `[hab]`. Conclude with `GlobalTheory.T.psiUnitOn_abelian_locus_uniformisation h₁ h₂ h₃ h₄ h₅ R _ hadm D A G hG U (hab ▸ W.isOpen)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unif_psiUnitOn : Laws → Laws2 → Laws3 → Laws4 → Laws5 → (∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [CharZero R], IsNoetherianRing R → IsIntegrallyClosed R → IsAdicComplete (IsLocalRing.maximalIdeal R) R → ∀ (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (L : RigLB G) (_ : CubicalStr G L) (W : (Sp R).Opens), IsSemiAbelian G → L.IsSymmetric → HypS G L.L → (∃ E : SplitExt (Sp (IsLocalRing.ResidueField R)), E.IsGt ((Over.pullback (spMap (IsLocalRing.residue R))).obj G)) → (∃ θ : LB.Sec L.L, ∃ x ∈ nonzeroLocus θ, G.hom x = IsLocalRing.closedPoint R) → (W : Set (Sp R)).Nonempty → (W : Set (Sp R)) = abLocus G → IsProper (pullback.snd G.hom W.ι) → RelAmple ((Over.pullback W.ι).obj G) (L.L.pull (pullback.fst G.hom W.ι)) → KTriv ((Over.pullback W.ι).obj G) (L.L.pull (pullback.fst G.hom W.ι)) → ∃ (D : DegData R (IsLocalRing.maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (U : Unif (IsLocalRing.maximalIdeal R) D A G), U.LG = L ∧ ∀ y, PsiUnitOn D.toPre y W) := by
   intro h₁ h₂ h₃ h₄ h₅ R _ _ _ hz hn hi hc G _ _ L c W hG hs hS hE hθ hW hab hp ha hk

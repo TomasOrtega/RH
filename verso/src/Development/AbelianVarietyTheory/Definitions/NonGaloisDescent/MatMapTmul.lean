@@ -52,7 +52,7 @@ def matMap (n : ℕ) (A B : Type) [CommRing A] [CommRing B] [Algebra A B] :
     (fun b _ => Algebra.commutes b _)
 
 /- English proof (translation)
-Establish `h : matMap n A B (b ⊗ₜ M) = algebraMap B (Matrix (Fin n) (Fin n) B) b * M.map (algebraMap A B)` using `Algebra.TensorProduct.lift_tmul (Algebra.ofId B _) ((Algebra.ofId A B).mapMatrix) (fun b _ => Algebra.commutes b _) b M`. Rewrite using `[h, ← Algebra.smul_def]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem matMap_tmul (n : ℕ) (A B : Type) [CommRing A] [CommRing B] [Algebra A B] (b : B)
     (M : Matrix (Fin n) (Fin n) A) : matMap n A B (b ⊗ₜ M) = b • M.map (algebraMap A B) := by

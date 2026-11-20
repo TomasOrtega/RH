@@ -22,7 +22,7 @@ variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedSpace ℝ
   (K : E → Matrix (m ⊕ l) (m ⊕ l) ℂ) (z : E)
 
 /- English proof (translation)
-Rewrite using `[kappa]`. Conclude with `div_ne_zero Complex.I_ne_zero (mul_ne_zero two_ne_zero (Complex.ofReal_ne_zero.2 Real.pi_ne_zero))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kappa_ne_zero : kappa ≠ 0 := by
   rw [kappa]
@@ -35,9 +35,9 @@ def secondFormL : E →ₗ[ℂ] Matrix l m ℂ where
   map_smul' c ξ := by ext; simp [secondForm_eq, conn_smul_vec, toBlocks₂₁]
 
 /- English proof (translation)
-Establish `e (w : ι → ℂ) : secondForm K z (∑ a, w a • u a) = ∑ a, w a • secondForm K z (u a)`. Express the relevant statement in the definitionally equal form `secondFormL K z _ = ∑ a, w a • secondFormL K z (u a)`. Rewrite using `[map_sum]`. Simplify using `only [map_smul]`. Simplify using `only [secondFormAdj, adj, e, conjTranspose_sum, conjTranspose_smul, Matrix.mul_sum, Matrix.sum_mul, Matrix.mul_smul, Matrix.smul_mul, trace_sum, trace_smul, smul_eq_mul]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem trace_secondForm_sum {ι : Type} [Fintype ι] (x y : ι → ℂ) (u : ι → E) :
     (secondForm K z (∑ a, x a • u a) * secondFormAdj K z (∑ b, y b • u b)).trace =
@@ -53,9 +53,9 @@ theorem trace_secondForm_sum {ι : Type} [Fintype ι] (x y : ι → ℂ) (u : ι
   ring
 
 /- English proof (translation)
-Establish `hS` using `(isHermitian_subGram hK).transpose.inv`. Establish `hQ` using `(isHermitian_quotGram hK).transpose`. Rewrite using `[← trace_conjTranspose]`. Simplify using `only [secondFormAdj, adj, conjTranspose_mul, conjTranspose_conjTranspose, hS.eq, hQ.eq, Matrix.mul_assoc]`. Rewrite using `[trace_mul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem star_trace_secondForm (hK : (K z).IsHermitian) (ξ η : E) :
     star (secondForm K z ξ * secondFormAdj K z η).trace =
@@ -71,16 +71,16 @@ theorem star_trace_secondForm (hK : (K z).IsHermitian) (ξ η : E) :
 variable {K z}
 
 /- English proof (translation)
-Rewrite using `[extTrace_eq h hp, mul_div_cancel_left₀ _ kappa_ne_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem extTrace_div (h : MContDiffAt 1 K z) (hp : ∀ᶠ x in 𝓝 z, (K x).PosDef) (ξ η : E) :
     extTrace K z ξ η / kappa = (secondForm K z ξ * secondFormAdj K z η).trace := by
   rw [extTrace_eq h hp, mul_div_cancel_left₀ _ kappa_ne_zero]
 
 /- English proof (translation)
-Establish `hsu : IsUnit (subGram (K z)).det` using `(posDef_subGram hp).det_pos.ne'.isUnit`. Establish `hu : IsUnit (K z).det` using `hp.det_pos.ne'.isUnit`. Establish `h0 : MContDiffAt 0 K z` using `hK.of_le (by simp)`. Establish `hs (ζ : E) : MContDiffAt 0 (fun w => secondForm K w ζ) z` using `fun a b => by`. Simplify using `only [secondForm_eq]; exact hK.conn hu (by simp) ζ (Sum.inr a) (Sum.inl b)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `ha : MContDiffAt 0 (fun w => secondFormAdj K w η) z` using `((h0.subGram.transpose.inv (by rwa [det_transpose])).mul (hs η).conjTranspose).mul (h0.quotGram hsu).transpose`. Establish `hM` using `(hs ξ).mul ha`. Simplify using `only [Matrix.trace, Matrix.diag]`. Conclude with `(ContDiffAt.sum fun i _ => hM i i).continuousAt`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuousAt_trace (hK : MContDiffAt ∞ K z) (hp : (K z).PosDef) (ξ η : E) :
     ContinuousAt (fun w => (secondForm K w ξ * secondFormAdj K w η).trace) z := by
@@ -105,7 +105,7 @@ variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+*
   (h₁ : IsVB S.X₁ r) (h₃ : IsVB S.X₃ s)
 
 /- English proof (translation)
-Rewrite using `[bcMat, formMat, of_apply, Met.bcForm_eq hS a _ c H hy ha (Met.exists_adapted hS h₁ h₃ y).choose_spec, Met.bcForm, extTrace_div (((H.gram a.frame ha).mContDiffAt c hy).of_le (by norm_cast)) (h.eventually_posDef hS a c hy ha)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem bcMat_apply (H : h.IsCInf) (a : VBExt.AdaptedChart S r s) (c : AlgChart p σ D) {y : CxPts p σ}
     (hy : y ∈ c.e.source) (ha : y ∈ ptsIn p σ a.U) (j l : Fin D) :
@@ -118,13 +118,13 @@ theorem bcMat_apply (H : h.IsCInf) (a : VBExt.AdaptedChart S r s) (c : AlgChart 
       (h.eventually_posDef hS a c hy ha)]
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `Met.exists_adapted hS h₁ h₃ y`. Establish `ho` using `ChartGlue.isOpen_over c.e c'.e.open_source`. Establish `hm` using `ho.mem_nhds (ChartGlue.mem_over c.e hy hy')`. Establish `e₂ : (c'.e ∘ c.e.symm) (c.e y) = c'.e y` using `congrArg c'.e (c.e.left_inv hy)`. Establish `hd` using `((H.gram a.frame ha).mContDiffAt c' hy').of_le (j := 1) (by norm_cast)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp` using `h.eventually_posDef hS _ c' hy' ha`. Establish `hl (j : Fin D) : fderiv ℂ (c'.e ∘ c.e.symm) (c.e y) (EuclideanSpace.single j 1) = ∑ b, transMat c c' y b j • (EuclideanSpace.single b 1 : V D)`. Use extensionality with `i`. Simplify using `[transMat, Finset.sum_apply, Pi.single_apply]`. Use extensionality with `j l`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Establish `e₁ : bcMat h hS h₁ h₃ c y j l = ∑ b, ∑ b', transMat c c' y b j * star (transMat c c' y b' l) * bcMat h hS h₁ h₃ c' y b b'`. Simplify using `only [bcMat_apply hS h₁ h₃ H a c' hy' ha]`. Rewrite using `[← trace_secondForm_sum, ← hl, ← hl, ← extTrace_div hd hp, bcMat, formMat, of_apply, Met.bcForm_eq hS a _ c H hy ha (Met.exists_adapted hS h₁ h₃ y).choose_spec, Met.bcForm, extTrace_congr (K' := fun v => h.gram a.frame (c'.e.symm ((c'.e ∘ c.e.symm) v))) (eventually_of_mem hm fun …`. Rewrite using `[e₁, Finset.sum_comm]`. Simplify using `only [chg, mul_apply, transpose_apply, conjTranspose_apply, Finset.sum_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun b' _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem bcMat_trans (H : h.IsCInf) (c c' : AlgChart p σ D) {y : CxPts p σ}
     (hy : y ∈ c.e.source) (hy' : y ∈ c'.e.source) :
@@ -156,11 +156,11 @@ theorem bcMat_trans (H : h.IsCInf) (c c' : AlgChart p σ D) {y : CxPts p σ}
   ring
 
 /- English proof (translation)
-Introduce `v hv`. Take `⟨a, ha⟩` from `Met.exists_adapted hS h₁ h₃ (c.e.symm v)`. Establish `hWo` using `ChartGlue.isOpen_over c.e (isOpen_ptsIn (p := p) (σ := σ) a.U)`. Establish `hK : MContDiffAt ∞ (fun v => h.gram a.frame (c.e.symm v)) v`. Use `(H.gram a.frame ha).mContDiffAt c (c.e.map_target hv)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[c.e.right_inv hv]`. Then use the resulting hypothesis. Establish `hm` using `hWo.mem_nhds (show v ∈ _ from ⟨hv, ha⟩)`. Use `ContinuousAt.continuousWithinAt (continuousAt_pi.2 fun j => continuousAt_pi.2 fun l => ?_)` and prove the remaining obligations. Use `(continuousAt_trace hK (h.posDef_gram_frame hS a ha) (EuclideanSpace.single j 1) (EuclideanSpace.single l 1)).congr ?_` and prove the remaining obligations. Use `filter_upwards [hm] with w hw`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[bcMat_apply hS h₁ h₃ H a c (c.e.map_target hw.1) hw.2, c.e.right_inv hw.1]`.
+A detailed English derivation is pending.
 -/
 theorem continuousOn_bcMat (H : h.IsCInf) (c : AlgChart p σ D) :
     ContinuousOn (fun v => bcMat h hS h₁ h₃ c (c.e.symm v)) c.e.target := by
@@ -179,7 +179,7 @@ theorem continuousOn_bcMat (H : h.IsCInf) (c : AlgChart p σ D) :
   rw [bcMat_apply hS h₁ h₃ H a c (c.e.map_target hw.1) hw.2, c.e.right_inv hw.1]
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `Met.exists_adapted hS h₁ h₃ y`. Use extensionality with `j l`. Rewrite using `[conjTranspose_apply, bcMat_apply hS h₁ h₃ H a c hy ha, bcMat_apply hS h₁ h₃ H a c hy ha]`. Conclude with `star_trace_secondForm (fun v => h.gram a.frame (c.e.symm v)) (c.e y) (h.eventually_posDef hS a c hy ha).self_of_nhds.isHermitian _ _`.
+Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHermitian_bcMat (H : h.IsCInf) (c : AlgChart p σ D) {y : CxPts p σ}
     (hy : y ∈ c.e.source) : (bcMat h hS h₁ h₃ c y).IsHermitian := by
@@ -192,7 +192,7 @@ theorem isHermitian_bcMat (H : h.IsCInf) (c : AlgChart p σ D) {y : CxPts p σ}
 end Main
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ _ hS h₁ h₃ H` and use `⟨fun c c' _ hy hy' => bcMat_trans hS h₁ h₃ H c c' hy hy', continuousOn_bcMat hS h₁ h₃ H, fun c _ hy => isHermitian_bcMat hS h₁ h₃ H c hy⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem isForm_bcMat : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (σ : k →+* ℂ) (D : ℕ)
     (S : ShortComplex X.Modules) (r s : ℕ) (h : Met p σ S.X₂ (r + s)) (hS : S.ShortExact)

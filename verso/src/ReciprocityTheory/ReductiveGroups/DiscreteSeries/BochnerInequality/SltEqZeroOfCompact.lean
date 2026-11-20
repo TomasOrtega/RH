@@ -21,14 +21,14 @@ def slt {k : ℕ} (i : Fin k) (r : {j // j ≠ i} → Fin n × Fin n) (A : Big n
   WithLp.toLp 2 (fun ι : Fin 1 → Fin n × Fin n => A ((slRest i).symm (ι 0, r)))
 
 /- English proof (translation)
-Simplify using `[slRest, Equiv.funSplitAt_symm_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem slRest_symm_self {k : ℕ} (i : Fin k) (p : Fin n × Fin n) (r : {j // j ≠ i} → Fin n × Fin n) :
     (slRest i).symm (p, r) i = p := by
   simp [slRest, Equiv.funSplitAt_symm_apply]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Break down `eq_or_ne j i with rfl | h` into its components or cases. Simplify using `[slRest, Equiv.funSplitAt_symm_apply]`. Simplify using `[slRest, Equiv.funSplitAt_symm_apply, h]`.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem update_slRest_symm {k : ℕ} (i : Fin k) (p q : Fin n × Fin n)
     (r : {j // j ≠ i} → Fin n × Fin n) :
@@ -39,7 +39,7 @@ theorem update_slRest_symm {k : ℕ} (i : Fin k) (p q : Fin n × Fin n)
   · simp [slRest, Equiv.funSplitAt_symm_apply, h]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Break down `eq_or_ne j i with rfl | h` into its components or cases. Simplify using `[slRest, Equiv.funSplitAt_symm_apply]`. Simplify using `[slRest, Equiv.funSplitAt_symm_apply, Equiv.funSplitAt_apply, h]`.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem update_eq_slRest {k : ℕ} (i : Fin k) (κ : Fin k → Fin n × Fin n) (q : Fin n × Fin n) :
     Function.update κ i q = (slRest i).symm (q, (slRest i κ).2) := by
@@ -49,21 +49,21 @@ theorem update_eq_slRest {k : ℕ} (i : Fin k) (κ : Fin k → Fin n × Fin n) (
   · simp [slRest, Equiv.funSplitAt_symm_apply, Equiv.funSplitAt_apply, h]
 
 /- English proof (translation)
-Simplify using `only [slice, slt, update_eq_slRest]`.
+Simplify using the standard rewrite rules.
 -/
 theorem slice_eq_slt {k : ℕ} (i : Fin k) (κ : Fin k → Fin n × Fin n) (A : Big n k M) :
     slice i κ A = slt i (slRest i κ).2 A := by
   simp only [slice, slt, update_eq_slRest]
 
 /- English proof (translation)
-Conclude with `Fintype.sum_equiv (Equiv.funUnique (Fin 1) (Fin n × Fin n)) _ _ (fun ι => by simp)`.
+A detailed English derivation is pending.
 -/
 theorem slt_sum_fin_one_fun {β : Type*} [AddCommMonoid β] (f : (Fin n × Fin n) → β) :
     ∑ ι : Fin 1 → Fin n × Fin n, f (ι 0) = ∑ p, f p := by
   exact Fintype.sum_equiv (Equiv.funUnique (Fin 1) (Fin n × Fin n)) _ _ (fun ι => by simp)
 
 /- English proof (translation)
-Rewrite using `[PiLp.inner_apply, ← (slRest i).symm.sum_comp, Fintype.sum_prod_type, Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun r _ => ?_)` and prove the remaining obligations. Rewrite using `[PiLp.inner_apply]`. Conclude with `(slt_sum_fin_one_fun (fun p => inner ℂ (A ((slRest i).symm (p, r))) (B ((slRest i).symm (p, r))))).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem slt_inner_eq_sum {k : ℕ} (i : Fin k) (A B : Big n k M) :
     inner ℂ A B = ∑ r, inner ℂ (slt i r A) (slt i r B) := by
@@ -93,7 +93,7 @@ theorem slt_mAct_apply (k : ℕ) (a b : Fin n) (F : Big n k M) (κ : Fin k → F
     mAct E k a b F κ = E a b (F κ) := rfl
 
 /- English proof (translation)
-Rewrite using `[factorAd, slt_ofCoords_apply, LinearMap.sub_apply]`. Apply the tactic sequence `split_ifs <;> simp [slt_coord_apply]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem slt_positionAd_apply (k : ℕ) (i : Fin k) (a b : Fin n) (F : Big n k M) (κ : Fin k → Fin n × Fin n) :
     factorAd k i a b F κ =
@@ -103,9 +103,9 @@ theorem slt_positionAd_apply (k : ℕ) (i : Fin k) (a b : Fin n) (F : Big n k M)
   split_ifs <;> simp [slt_coord_apply]
 
 /- English proof (translation)
-Rewrite using `[← slt_coord_apply k κ (crossOp ε E k i F)]`. Simplify using `only [crossOp, LinearMap.sum_apply, map_sum]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[slt_coord_apply]`. Express the relevant statement in the definitionally equal form `factorAd k i a b (mAct E k b a F) κ = _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[slt_positionAd_apply, slt_mAct_apply, slt_mAct_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem slt_crossOp_apply (k : ℕ) (i : Fin k) (F : Big n k M) (κ : Fin k → Fin n × Fin n) :
     crossOp ε E k i F κ = ∑ a, ∑ b ∈ univ.filter (fun b => ε b = ε a),
@@ -126,7 +126,7 @@ private theorem slt_apply {k : ℕ} (i : Fin k) (r : {j // j ≠ i} → Fin n ×
   rfl
 
 /- English proof (translation)
-Use `PiLp.ext fun ι => ?_` and prove the remaining obligations. Rewrite using `[slt_apply, slt_crossOp_apply, slt_crossOp_apply, slRest_symm_self]`. Simplify using `only [update_slRest_symm, slt_apply, Function.update_self]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem slt_crossOp {k : ℕ} (i : Fin k) (r : {j // j ≠ i} → Fin n × Fin n) (A : Big n k M) :
     slt i r (crossOp ε E k i A) = crossOp ε E 1 0 (slt i r A) := by
@@ -142,7 +142,7 @@ variable {M : Type*} [NormedAddCommGroup M] [InnerProductSpace ℂ M] {ε : Fin 
   {E : Fin n → Fin n → Module.End ℂ M} {V : Submodule ℂ M} {lam : Fin n → ℝ}
 
 /- English proof (translation)
-Simplify using `only [ncV, Submodule.mem_iInf, Submodule.mem_comap, slt_coord_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem slt_mem_ncV_iff {k : ℕ} {F : Big n k M} :
     F ∈ ncV ε V k ↔ ∀ κ : Fin k → Fin n × Fin n,
@@ -150,33 +150,33 @@ theorem slt_mem_ncV_iff {k : ℕ} {F : Big n k M} :
   simp only [ncV, Submodule.mem_iInf, Submodule.mem_comap, slt_coord_apply]
 
 /- English proof (translation)
-Simplify using `[slRest, Equiv.funSplitAt_symm_apply, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem slRest_symm_ne {k : ℕ} (i : Fin k) (p : Fin n × Fin n) (r : {j // j ≠ i} → Fin n × Fin n)
     {j : Fin k} (h : j ≠ i) : (slRest i).symm (p, r) j = r ⟨j, h⟩ := by
   simp [slRest, Equiv.funSplitAt_symm_apply, h]
 
 /- English proof (translation)
-Simplify using `only [slice_eq_slt, Equiv.apply_symm_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem slt_eq_slice {k : ℕ} (i : Fin k) (r : {j // j ≠ i} → Fin n × Fin n) (p : Fin n × Fin n)
     (A : Big n k M) : slt i r A = slice i ((slRest i).symm (p, r)) A := by
   simp only [slice_eq_slt, Equiv.apply_symm_apply]
 
 /- English proof (translation)
-Conclude with `PiLp.ext fun ι => (he.false (ι 0)).elim`.
+A detailed English derivation is pending.
 -/
 theorem slt_big_one_eq_zero (he : IsEmpty (Fin n × Fin n)) (x : Big n 1 M) : x = 0 := by
   exact PiLp.ext fun ι => (he.false (ι 0)).elim
 
 /- English proof (translation)
-Rewrite `hF`, the goal using `[slt_mem_ncV_iff]`. Introduce `ι`. Establish `h` using `hF (Function.update κ i (ι 0))`. Express the relevant statement in the definitionally equal form `F (Function.update κ i (ι 0)) ∈ _`. Distinguish the cases in `c : ∀ j : Fin 1, ε (ι j).1 ≠ ε (ι j).2`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails.
 
-Rewrite `h`, `with`, `c'` using `[if_pos c] split_ifs`. Conclude with `h`. Rewrite `h` using `[Submodule.mem_bot]`. Rewrite using `[h]`. Conclude with `V.zero_mem`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[if_neg c]`. Establish `c' : ¬ ∀ j, ε ((Function.update κ i (ι 0)) j).1 ≠ ε ((Function.update κ i (ι 0)) j).2`. Introduce `hall`. Apply `c` to reduce the goal to its premises. Introduce `j`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hj` using `hall i`. Rewrite `hj` using `[Function.update_self]`. Rewrite using `[Subsingleton.elim j 0]` and apply the resulting hypothesis. Rewrite `h` using `[if_neg c']`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem slt_slice_mem_ncV {k : ℕ} (i : Fin k) (κ : Fin k → Fin n × Fin n) {F : Big n k M}
     (hF : F ∈ ncV ε V k) : slice i κ F ∈ ncV ε V 1 := by
@@ -202,9 +202,9 @@ theorem slt_slice_mem_ncV {k : ℕ} (i : Fin k) (κ : Fin k → Fin n × Fin n) 
     rwa [if_neg c'] at h
 
 /- English proof (translation)
-Distinguish the cases in `he : IsEmpty (Fin n × Fin n)`. Rewrite using `[slt_big_one_eq_zero he (slt i r F)]`. Conclude with `Submodule.zero_mem _`. Rewrite `he` using `[not_isEmpty_iff]`. Take `⟨p⟩` from `he`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[slt_eq_slice i r p]`. Conclude with `slt_slice_mem_ncV i _ hF`.
+A detailed English derivation is pending.
 -/
 theorem slt_mem_ncV {k : ℕ} (i : Fin k) (r : {j // j ≠ i} → Fin n × Fin n) {F : Big n k M}
     (hF : F ∈ ncV ε V k) : slt i r F ∈ ncV ε V 1 := by

@@ -65,9 +65,9 @@ def FrobMatch {K : Type} [CommRing K] (φ : K →+* ℂ) (M : G D.host.E D.nd.Om
 variable {D T ι π s r}
 
 /- English proof (translation)
-Use `⟨h.toIsAttachedAway, fun w hw O _ _ _ Bw hj => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `h.above w hw O Bw hj`. Establish `hp` using `hB.isPstAt (D.locT l) Bw (resDec D.nd.plOm.1 r w) (h.cont.comp continuous_subtype_val) h1.deRham`. Use `⟨h1, fun hu => ?_, fun hm => ?_⟩` and prove the remaining obligations. Rewrite using `[← GlobalTheory.PstLaws.unr_wdAt_iff Bw (D.nd.plOm.2 w) hj (D.loc l) ι _ hp, h2, ← T.unr, D.naut.unr_tw]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hu`. Rewrite using `[← GlobalTheory.PstLaws.wdParameterAt_monodromy_zero_iff_potCrystalline Bw (D.nd.plOm.2 w) hj (D.loc l) ι _ hp, h2, ← T.mono0, D.naut.monomial_twist_iff]`. Conclude with `hm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsAttachedAll.hodge (hB : GlobalTheory.Published.DeRhamPotSemistable) (h : IsAttachedAll D T ι π s r) :
     IsAttachedHodge D T ι π s r := by
@@ -81,13 +81,13 @@ theorem IsAttachedAll.hodge (hB : GlobalTheory.Published.DeRhamPotSemistable) (h
     exact hm
 
 /- English proof (translation)
-Introduce `l _ ι π s hc hr` and use `(h l ι π s hc hr).imp fun _ H => H.hodge hB`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem GalAll.hodge (hB : GlobalTheory.Published.DeRhamPotSemistable) (h : GalAll D T) : GalHodge D T :=
   fun l _ ι π s hc hr => (h l ι π s hc hr).imp fun _ H => H.hodge hB
 
 /- English proof (translation)
-Establish `h1` using `(D.naut.unr_tw _ (s + (1 - (a : ℝ)) / 2)).2 hu`. Establish `h2 : (GlobalTheory.WeilDeligne.wdOf (D.nd.plOm.2 w) hl ι r).unr` using `by rw [h.away w hl, ← T.unr]; exact h1`. Use `⟨(GlobalTheory.WeilDeligne.unr_wdOf_iff hl ι h.cont).1 h2, fun B σ hB hσ => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.WeilDeligne.frobEig_wdOf hl ι h.cont h2 hB hσ, h.away w hl, T.frobEig w _ h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsAttachedAway.frob (h : IsAttachedAway D T ι π s r) {w : PlE D.host}
     (hl : ((l : ℕ) : 𝓞 D.host.E) ∉ w.asIdeal) (hu : D.naut.unr (D.naut.locG π w)) :
@@ -102,7 +102,7 @@ theorem IsAttachedAway.frob (h : IsAttachedAway D T ι π s r) {w : PlE D.host}
   rw [GlobalTheory.WeilDeligne.frobEig_wdOf hl ι h.cont h2 hB hσ, h.away w hl, T.frobEig w _ h1]
 
 /- English proof (translation)
-Use `⟨h.cont, h.ss, fun w hw => ⟨fun σ hσ => ?_, ?_, fun hu B σ hB hσ => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.WeilDeligne.inePol_wdOf hw ι h.cont hσ, h.away w hw, zero_add, T.inePol w _ σ hσ]`. Rewrite using `[← GlobalTheory.WeilDeligne.weilDeligneParam_monodromy_eq_zero_iff hw ι h.cont, h.away w hw, zero_add, T.mono0]`. Simplify `(h.frob hw hu).2 B σ hB hσ` using `only [zero_add, galPol]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem IsAttachedAway.isGaloisRepOf (h : IsAttachedAway D T ι π 0 r) : GlobalTheory.IndefiniteRowSideFullHecke.RayClassPrimeCounting.IsGaloisRepOf D π l ι r := by
   refine ⟨h.cont, h.ss, fun w hw => ⟨fun σ hσ => ?_, ?_, fun hu B σ hB hσ => ?_⟩⟩

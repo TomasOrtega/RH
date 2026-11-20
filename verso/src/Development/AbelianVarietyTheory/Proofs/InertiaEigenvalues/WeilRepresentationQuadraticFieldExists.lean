@@ -27,7 +27,7 @@ def testSub (X : Type) [TopologicalSpace X] : Submodule ℂ (X → ℂ) where
   smul_mem' := fun c f hf => ⟨hf.1.comp (fun z => c • z), hf.2.smul_left (f := fun _ => c)⟩
 
 /- English proof (translation)
-Unfold `Et.absK`. Rewrite using `[dif_pos s.isUnit]`. Use `congr 2`. Use `ext`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem absK_unit (A : Et F E) (s : A.Kˣ) : A.absK (s : A.K) = distribHaarChar A.K s := by
   unfold Et.absK
@@ -37,7 +37,7 @@ theorem absK_unit (A : Et F E) (s : A.Kˣ) : A.absK (s : A.K) = distribHaarChar 
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Simplify using `only [fOp, fourB, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `z`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -51,7 +51,7 @@ theorem fOp_smul (A : Et F E) (ψ : AddChar F ℂ) (x : A.K) (μ : Measure A.L) 
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Simplify using `only [nOp, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem nOp_smul (A : Et F E) (ψ : AddChar F ℂ) (x z : A.K) (c : ℂ) (φ : A.L → ℂ) :
     nOp A ψ x z (c • φ) = c • nOp A ψ x z φ := by
@@ -66,9 +66,9 @@ namespace GlobalTheory.JR.WeilQuad
 variable {F E : Type} [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E]
 
 /- English proof (translation)
-Rewrite using `[absK_unit]`. Establish `h : distribHaarChar A.K (-1 : A.Kˣ) ^ 2 = 1`. Rewrite using `[← map_pow]`. Simplify using the standard rewrite rules. Establish `h0` using `(distribHaarChar_pos (A := A.K) (g := (-1 : A.Kˣ))).le`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `: distribHaarChar A.K (-1 : A.Kˣ) = 1` using `(pow_eq_one_iff_of_nonneg h0 two_ne_zero).1 h`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem absK_neg_one (A : Et F E) : A.absK ((-1 : A.Kˣ) : A.K) = 1 := by
   rw [absK_unit]
@@ -85,7 +85,7 @@ namespace GlobalTheory.JR.WeilQuad
 variable {F E : Type} [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E]
 
 /- English proof (translation)
-Distinguish the cases in `h : ∃ y, A.NL y = s`. Conclude with `Or.inl ((H.2.2.2.2 s).1 h)`. Conclude with `Or.inr ((H.2.2.2.2 s).2 h)`.
+Consider separately whether the proposition holds or fails. Prove the first alternative. Prove the second alternative.
 -/
 theorem omega_sq (A : Et F E) {ψ : AddChar F ℂ} {x : A.Kˣ} {μ : Measure A.L} {ω : A.K → ℂ}
     (H : Hyp A ψ x μ ω) (s : A.Kˣ) : ω s = 1 ∨ ω s = -1 := by
@@ -94,14 +94,14 @@ theorem omega_sq (A : Et F E) {ψ : AddChar F ℂ} {x : A.Kˣ} {μ : Measure A.L
   · exact Or.inr ((H.2.2.2.2 s).2 h)
 
 /- English proof (translation)
-The claim follows from `(H.2.2.2.2 1).1 ⟨1, by simp [Et.NL]⟩`.
+A detailed English derivation is pending.
 -/
 theorem omega_one (A : Et F E) {ψ : AddChar F ℂ} {x : A.Kˣ} {μ : Measure A.L} {ω : A.K → ℂ}
     (H : Hyp A ψ x μ ω) : ω ((1 : A.Kˣ) : A.K) = 1 :=
   (H.2.2.2.2 1).1 ⟨1, by simp [Et.NL]⟩
 
 /- English proof (translation)
-Establish `h1` using `hm s s⁻¹`. Rewrite `h1` using `[mul_inv_cancel, omega_one A H]`. Apply the tactic sequence `rcases omega_sq A H s with h | h <;> rw [h] at h1 ⊢`. Take the linear combination `-h1`. Take the linear combination `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem omega_inv (A : Et F E) {ψ : AddChar F ℂ} {x : A.Kˣ} {μ : Measure A.L} {ω : A.K → ℂ}
     (H : Hyp A ψ x μ ω) (hm : ∀ s t : A.Kˣ, ω ((s * t : A.Kˣ) : A.K) = ω s * ω t) (s : A.Kˣ) :
@@ -119,13 +119,13 @@ namespace GlobalTheory.JR.WeilQuad
 variable {F E : Type} [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Simplify using `[nOp, Et.psiK]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem nOp_zero (A : Et F E) (ψ : AddChar F ℂ) (x : A.K) (φ : A.L → ℂ) : nOp A ψ x 0 φ = φ := by
   funext y; simp [nOp, Et.psiK]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Simplify using `only [nOp, Et.psiK, add_mul, map_add, AddChar.map_add_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem nOp_add (A : Et F E) (ψ : AddChar F ℂ) (x a b : A.K) (φ : A.L → ℂ) :
     nOp A ψ x (a + b) φ = nOp A ψ x a (nOp A ψ x b φ) := by
@@ -133,25 +133,25 @@ theorem nOp_add (A : Et F E) (ψ : AddChar F ℂ) (x a b : A.K) (φ : A.L → �
   simp only [nOp, Et.psiK, add_mul, map_add, AddChar.map_add_eq_mul]; ring
 
 /- English proof (translation)
-Simplify using `only [absK_unit, map_mul, NNReal.coe_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem absK_mul (A : Et F E) (a b : A.Kˣ) : A.absK ((a * b : A.Kˣ) : A.K) = A.absK a * A.absK b := by
   simp only [absK_unit, map_mul, NNReal.coe_mul]
 
 /- English proof (translation)
-Simplify using `only [absK_unit, map_inv, NNReal.coe_inv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem absK_inv (A : Et F E) (a : A.Kˣ) : A.absK ((a⁻¹ : A.Kˣ) : A.K) = (A.absK a)⁻¹ := by
   simp only [absK_unit, map_inv, NNReal.coe_inv]
 
 /- English proof (translation)
-Rewrite using `[absK_unit]`. Conclude with `(distribHaarChar_pos (A := A.K) (g := a)).ne'` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absK_ne (A : Et F E) (a : A.Kˣ) : (A.absK a : ℂ) ≠ 0 := by
   rw [absK_unit]; exact_mod_cast (distribHaarChar_pos (A := A.K) (g := a)).ne'
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Simplify using `only [mOp]`. Rewrite using `[omega_one A H, absK_unit, map_one]`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mOp_one (A : Et F E) {ψ : AddChar F ℂ} {x : A.Kˣ} {μ : Measure A.L} {ω : A.K → ℂ}
     (H : Hyp A ψ x μ ω) (φ : A.L → ℂ) : mOp A ω 1 φ = φ := by
@@ -161,7 +161,7 @@ theorem mOp_one (A : Et F E) {ψ : AddChar F ℂ} {x : A.Kˣ} {μ : Measure A.L}
   simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Simplify using `only [mOp]`. Rewrite using `[hmul, absK_mul, smul_smul, Units.val_mul, mul_comm (b : A.K) (a : A.K)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem mOp_mul (A : Et F E) {ω : A.K → ℂ}
     (hmul : ∀ s t : A.Kˣ, ω ((s * t : A.Kˣ) : A.K) = ω s * ω t) (a b : A.Kˣ) (φ : A.L → ℂ) :
@@ -172,9 +172,9 @@ theorem mOp_mul (A : Et F E) {ω : A.K → ℂ}
   push_cast; ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Rewrite using `[fOp_smul]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, mOp]`. Rewrite using `[hneg, absK_neg_one, Units.val_neg, Units.val_one, neg_one_smul]`. Establish `h` using `H.2.2.2.1.2 φ hφ y`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [fOp] at h ⊢`. Rewrite using `[h]`. Establish `: G₁⁻¹ * G₁⁻¹ = 1` using `by rw [← mul_inv, ← sq, hsq, inv_one]`. Rewrite using `[← mul_assoc, this]`. Use `push_cast`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -198,9 +198,9 @@ namespace GlobalTheory.JR.WeilQuad
 variable {F E : Type} [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Establish `hm : mOp A ω s φ = (ω s * (A.absK s : ℂ)) • (fun y' => φ ((s : A.K) • y'))`. Use function extensionality and compare the values at `y'`. Simplify using `[mOp]`. Rewrite using `[hm, fOp_smul]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul, mOp]`. Rewrite using `[h5 y, omega_inv A H hmul, absK_inv]`. Use `absK_ne A s` as an intermediate fact. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 -/
 theorem rel_wm (A : Et F E) {ψ : AddChar F ℂ} {x : A.Kˣ} {μ : Measure A.L} {ω : A.K → ℂ}
     (H : Hyp A ψ x μ ω) (hmul : ∀ s t : A.Kˣ, ω ((s * t : A.Kˣ) : A.K) = ω s * ω t) (G₁ : ℂ) (s : A.Kˣ)
@@ -219,9 +219,9 @@ theorem rel_wm (A : Et F E) {ψ : AddChar F ℂ} {x : A.Kˣ} {μ : Measure A.L} 
   field_simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Rewrite using `[nOp_smul, fOp_smul]`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Rewrite using `[h8 z, hGv]`. Establish `hw : (-u⁻¹ : A.Kˣ) = (-1) * u⁻¹` using `by rw [neg_one_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [nOp, mOp]`. Rewrite using `[hw, hmul, absK_mul, hneg, absK_neg_one, omega_inv A H hmul, absK_inv, ← hw, Units.val_neg]`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Use `absK_ne A u` as an intermediate fact. Use `push_cast`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
 Clear the denominators using the available nonvanishing facts.
 -/
@@ -252,31 +252,29 @@ namespace GlobalTheory.JR.WeilQuad
 open Classical in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ A hK hL ψ hψ x μ hμ ω hω`. Establish `H : Hyp A ψ x μ ω` using `⟨hK, hL, hψ, hμ, hω⟩`. Establish `h2a` using `GlobalTheory.T.quadraticWeil_unipotent_torus_preserve_test F E A ψ x μ ω H`. Establish `h2b` using `GlobalTheory.T.quadraticWeilFourier_preserves_test_additive F E A ψ x μ ω H`. Take `⟨hmul, hneg⟩` from `GlobalTheory.T.normGroupSign_mul_and_neg_one F E A ψ x μ ω H`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨G₁, hG₁⟩` from `GlobalTheory.T.exists_stable_quadraticGaussIntegral F E A ψ x μ ω H 1`. Establish `hsq` using `GlobalTheory.T.stableQuadraticGaussIntegral_sq_eq_one F E A ψ x μ ω H G₁ hG₁`. Establish `hG0 : G₁ ≠ 0` using `by rintro rfl; norm_num at hsq`. Set `S` to `testSub A.L`. Set `Nz : A.K → Module.End ℂ S` to `fun z => { toFun := fun f => ⟨nOp A ψ x z f, (h2a f f.2).1 z⟩ map_add' := fun f g => Subtype.ext (funext fun y => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Express the relevant statement in the definitionally equal form `nOp A ψ x z ((f : A.L → ℂ) + g) y = nOp A ψ x z f y + nOp A ψ x z g y`. Simplify using `[nOp, mul_add])`. Use the proof step `map_smul' := fun c f => Subtype.ext (by`. Express the relevant statement in the definitionally equal form `nOp A ψ x z (c • (f : A.L → ℂ)) = c • nOp A ψ x z f`. Conclude with `nOp_smul A ψ x z c f) }`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition.
 
-Set `Ms : A.Kˣ → Module.End ℂ S` to `fun s => { toFun := fun f => ⟨mOp A ω s f, (h2a f f.2).2 s⟩ map_add' := fun f g => Subtype.ext (funext fun y => by`. Express the relevant statement in the definitionally equal form `mOp A ω s ((f : A.L → ℂ) + g) y = mOp A ω s f y + mOp A ω s g y`. Simplify using `[mOp, mul_add])`. Use the proof step `map_smul' := fun c f => Subtype.ext (funext fun y => by`. Express the relevant statement in the definitionally equal form `mOp A ω s (c • (f : A.L → ℂ)) y = c • mOp A ω s f y`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `[mOp]`. Use the proof step `ring) }`. Set `Tw : Module.End ℂ S` to `{ toFun := fun f => ⟨G₁⁻¹ • fOp A ψ x μ f, S.smul_mem _ (h2b f f.2).1⟩ map_add' := fun f g => Subtype.ext (by`. Express the relevant statement in the definitionally equal form `G₁⁻¹ • fOp A ψ x μ ((f : A.L → ℂ) + g) = G₁⁻¹ • fOp A ψ x μ f + G₁⁻¹ • fOp A ψ x μ g`. Rewrite using `[(h2b f f.2).2 g g.2, smul_add])`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `map_smul' := fun c f => Subtype.ext (by`. Express the relevant statement in the definitionally equal form `G₁⁻¹ • fOp A ψ x μ (c • (f : A.L → ℂ)) = c • (G₁⁻¹ • fOp A ψ x μ f)`. Rewrite using `[fOp_smul, smul_smul, smul_smul, mul_comm]) }`. Establish `e1 : Nz 0 = 1` using `LinearMap.ext fun f => Subtype.ext (nOp_zero A ψ x f)`. Establish `e2 : ∀ a b, Nz (a + b) = Nz a * Nz b` using `fun a b => LinearMap.ext fun f => Subtype.ext (nOp_add A ψ x a b f)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : Ms 1 = 1` using `LinearMap.ext fun f => Subtype.ext (mOp_one A H f)`. Establish `e4 : ∀ a b, Ms (a * b) = Ms a * Ms b` using `fun a b => LinearMap.ext fun f => Subtype.ext (mOp_mul A hmul a b f)`. Establish `e5 : ∀ s z, Ms s * Nz z = Nz ((s : A.K) ^ 2 * z) * Ms s` using `fun s z => LinearMap.ext fun f => Subtype.ext (GlobalTheory.T.quadraticWeilTorus_mul_unipotent_commute F E A ψ x μ ω H s z f)`. Establish `e6 : Tw * Tw = Ms (-1)` using `LinearMap.ext fun f => Subtype.ext (rel_ww A H hneg hsq f f.2)`. Establish `e7 : ∀ s, Tw * Ms s = Ms s⁻¹ * Tw` using `fun s => LinearMap.ext fun f => Subtype.ext (rel_wm A H hmul G₁ s f (GlobalTheory.T.quadraticWeilFourier_comp_smul F E A ψ x μ ω H s f f.2))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e8 : ∀ u : A.Kˣ, Tw * Nz u * Tw = Nz (-((u⁻¹ : A.Kˣ) : A.K)) * Ms (-u⁻¹) * Tw * Nz (-((u⁻¹ : A.Kˣ) : A.K))` using `fun u => LinearMap.ext fun f => Subtype.ext (by`. Take `⟨G, hG⟩` from `GlobalTheory.T.exists_stable_quadraticGaussIntegral F E A ψ x μ ω H u`. Conclude with `rel_wnw A H hmul hneg hG0 u G (GlobalTheory.T.stableQuadraticGaussIntegral_transform_weil F E A ψ x μ ω H u G G₁ hG hG₁) f (GlobalTheory.T.quadraticWeil_fOp_nOp_fOp_gauss F E A ψ x μ ω H u G hG f f.2))`. Take `⟨ρ, hρn, hρm, hρw⟩` from `GlobalTheory.T.exists_hom_specialLinearGroup_of_relations A.K hK (Module.End ℂ S) Nz Ms Tw e1 e2 e3 e4 e5 e6 e7 e8`. Use `⟨G₁⁻¹, fun g φ => if h : IsTest φ then ((ρ g ⟨φ, h⟩ : S) : A.L → ℂ) else 0, ⟨?_, ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `g f hf`. Simplify using `only [dif_pos hf]`. Conclude with `(ρ g ⟨f, hf⟩).2`. Introduce `f hf`. Simplify using `[dif_pos hf]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `g h f hf`. Establish `hh : IsTest ((ρ h ⟨f, hf⟩ : S) : A.L → ℂ)` using `(ρ h ⟨f, hf⟩).2`. Simplify using `only [dif_pos hf, dif_pos hh, map_mul, Module.End.mul_apply]`. Introduce `g c f f' hf hf'`. Establish `hc : IsTest (c • f + f')` using `S.add_mem (S.smul_mem c hf) hf'`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [dif_pos hf, dif_pos hf', dif_pos hc]`. Establish `: (⟨c • f + f', hc⟩ : S) = c • ⟨f, hf⟩ + ⟨f', hf'⟩` using `rfl`. Rewrite using `[this, map_add, map_smul]`. Both sides reduce to the same expression. Introduce `φ hφ`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Use `⟨fun z y => ?_, fun s y => ?_, fun y => ?_⟩` and prove the remaining obligations. Simplify using `only [dif_pos hφ, hρn]`. Both sides reduce to the same expression. Simplify using `only [dif_pos hφ, hρm]`. Both sides reduce to the same expression.
-
-Simplify using `only [dif_pos hφ, hρw]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem weilField_main : WeilField := by
   intro F E _ _ _ _ _ A hK hL ψ hψ x μ hμ ω hω

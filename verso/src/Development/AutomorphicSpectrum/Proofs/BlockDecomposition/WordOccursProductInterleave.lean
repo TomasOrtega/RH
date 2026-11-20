@@ -21,7 +21,7 @@ namespace GlobalTheory.CompanionTheory.WordProd
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.jacquet_multiplicity_order_embedding π hπ zz σ c hc hc0 hz f h`.
+A detailed English derivation is pending.
 -/
 theorem row_ne_zero {n p N : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (π : Representation ℂ (GL (Fin N) k) V) (hπ : IsSmooth π) (zz : Fin n → IrrGL k) (σ : Fin p ↪o Fin n)
@@ -31,7 +31,7 @@ theorem row_ne_zero {n p N : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
   GlobalTheory.T.jacquet_multiplicity_order_embedding π hπ zz σ c hc hc0 hz f h
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.multi_product_single_factor_equiv a b i₀ hb hb0 g`.
+A detailed English derivation is pending.
 -/
 theorem col_equiv (a : IrrGL k) {α : Type} [Fintype α] [LinearOrder α] (b : α → ℕ) (i₀ : α)
     (hb : b i₀ = a.1) (hb0 : ∀ i, i ≠ i₀ → b i = 0) (g : (Σ i, Fin (b i)) ≃ Fin a.1) :
@@ -41,7 +41,7 @@ theorem col_equiv (a : IrrGL k) {α : Type} [Fintype α] [LinearOrder α] (b : �
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.interleaving_two_colour_embedding h`.
+A detailed English derivation is pending.
 -/
 theorem interleave_embed {T : Type 1} {u v w : List T} (h : Zc.Comb.Interleave u v w) :
     ∃ (r : Fin w.length → Fin 2) (σ₀ : Fin u.length ↪o Fin w.length) (σ₁ : Fin v.length ↪o Fin w.length),
@@ -50,7 +50,7 @@ theorem interleave_embed {T : Type 1} {u v w : List T} (h : Zc.Comb.Interleave u
   GlobalTheory.T.interleaving_two_colour_embedding h
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem jm_congr' {h N : ℕ} {x x' : Fin h → IrrGL k} (e : x = x') (hd : ∑ a, (x a).1 = N)
     (hd' : ∑ a, (x' a).1 = N) {V : Type} [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin N) k) V) :
@@ -58,7 +58,7 @@ theorem jm_congr' {h N : ℕ} {x x' : Fin h → IrrGL k} (e : x = x') (hd : ∑ 
   subst e; rfl
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_filter]`. Use `symm`. Use `Finset.sum_bij (fun a _ => σ a) (fun a _ => by simp [hP]) (fun a _ b _ h => σ.injective h) (fun j hj => ?_) (fun a _ => rfl)` and prove the remaining obligations. Take `⟨a, rfl⟩` from `(hP j).1 (Finset.mem_filter.1 hj).2`. Conclude with `⟨a, Finset.mem_univ _, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem sum_ite_range {n p : ℕ} (σ : Fin p ↪o Fin n) (P : Fin n → Prop) [DecidablePred P]
     (hP : ∀ j, P j ↔ j ∈ Set.range σ) (F : Fin n → ℕ) :
@@ -71,11 +71,11 @@ theorem sum_ite_range {n p : ℕ} (σ : Fin p ↪o Fin n) (P : Fin n → Prop) [
   exact ⟨a, Finset.mem_univ _, rfl⟩
 
 /- English proof (translation)
-Use `haveI : Fintype (SizeMatrix m m') := Fintype.ofFinite _`. Establish `hG` using `GlobalTheory.CompanionTheory.GeoLink.geometricLemma k`. Set `f : ∀ (b : SizeMatrix m m') i, (Σ j, Fin (b.1 i j)) ≃ m i` to `fun b => b.nonempty_rows.some`. Set `g : ∀ (b : SizeMatrix m m') j, (Σ i, Fin (b.1 i j)) ≃ m' j` to `fun b => b.nonempty_cols.some`. Rewrite using `[multiProd, hG.1.jhMult_eq E E' (isSmooth_piTensor hs) f g hτ]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Use `absurd ((Finset.sum_eq_zero_iff.1 h0) b₀ (Finset.mem_univ _)) ?_` and prove the remaining obligations. Take `⟨T, hTout, hT⟩` from `hG.2 α β m m' (fun i j => Fin (b₀.1 i j)) (f b₀) (g b₀) X ρ hs hl`. Rewrite using `[show jhMult τ (cellFunctor (f b₀) (g b₀) (piTensor ρ)) = _ from hT ⟨Y, τ, hτs, hτ⟩]`. Establish `hmem : s₀ ∈ T`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hn`. Take `⟨i, hi⟩` from `hTout s₀ hn`. Conclude with `hrow (f b₀) i hi`. Introduce `hsum`. Conclude with `mul_ne_zero (Finset.prod_ne_zero_iff.2 fun i _ => hrow (f b₀) i) (hcol (g b₀)) ((Finset.sum_eq_zero_iff.1 hsum) s₀ hmem)`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem jhMult_jac_multiProd_ne_zero {α β n : Type} [Fintype α] [LinearOrder α] [Fintype β] [LinearOrder β]
     [Fintype n] [DecidableEq n] {m : α → Type} [∀ i, Fintype (m i)] [∀ i, DecidableEq (m i)]
@@ -110,29 +110,27 @@ theorem jhMult_jac_multiProd_ne_zero {α β n : Type} [Fintype α] [LinearOrder 
     ((Finset.sum_eq_zero_iff.1 hsum) s₀ hmem)
 
 /- English proof (translation)
-Take `⟨hdu, hju⟩` from `hxu`. Take `⟨hdv, hjv⟩` from `hyv`. Establish `hE` using `interleave_embed (T := IrrGL k) hw`. Take `⟨r, σ₀, σ₁, hE⟩` from `hE`. Take `⟨hr0, hr1, hw0, hw1⟩` from `hE`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `n` to `w.length`. Set `m : Fin 2 → Type` to `fun i => Fin (X i).1`. Set `m' : Fin n → Type` to `fun j => Fin (w.get j).1`. Establish `hdeg0 : ∑ a, (w.get (σ₀ a)).1 = (X 0).1`. Rewrite using `[← hdu]; exact Finset.sum_congr rfl fun a _ => by rw [hw0]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdeg1 : ∑ a, (w.get (σ₁ a)).1 = (X 1).1`. Rewrite using `[← hdv]; exact Finset.sum_congr rfl fun a _ => by rw [hw1]`. Establish `hrow : ∀ i : Fin 2, ∑ j, (if r j = i then (w.get j).1 else 0) = (X i).1`. Use `Fin.forall_fin_two.2 ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `(sum_ite_range σ₀ _ hr0 _).trans hdeg0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(sum_ite_range σ₁ _ hr1 _).trans hdeg1`. Establish `hsplit : ∀ j, (w.get j).1 = (if r j = 0 then (w.get j).1 else 0) + (if r j = 1 then (w.get j).1 else 0)`. Introduce `j`. Apply the tactic sequence `rcases Fin.exists_fin_two.1 ⟨r j, rfl⟩ with h | h <;> simp [h]`. Establish `hd' : ∑ j, (w.get j).1 = (X 0).1 + (X 1).1`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_congr rfl fun j _ => hsplit j, Finset.sum_add_distrib]`. Conclude with `congrArg₂ (· + ·) (hrow 0) (hrow 1)`. Establish `hd : ∑ a, (X a).1 = (X 0).1 + (X 1).1` using `Fin.sum_univ_two _`. Set `b₀ : SizeMatrix m m'` to `⟨fun i j => if r j = i then (w.get j).1 else 0, fun i => by`. Simplify `hrow i, fun j => by` using `[m]`.
+Introduce a local definition for the expression. Simplify to obtain the desired conclusion from the available facts. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Apply the tactic sequence `rcases Fin.exists_fin_two.1 ⟨r j, rfl⟩ with h | h <;> simp [m', h]⟩`. Set `ρ : ∀ i, Representation ℂ (GL (m i) k) (X i).2.rep.V` to `fun i => (X i).rep`. Establish `hs : ∀ i, IsSmooth (ρ i)` using `fun i => (X i).2.rep.smooth`. Establish `hl : ∀ i, HasFiniteLength (ρ i)` using `fun i => hasFiniteLength_of_isIrreducible (X i).2.rep.irr`. Set `τ` to `piTensor fun j : Fin n => (w.get j).rep`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hτ : τ.IsIrreducible` using `GlobalTheory.CompanionTheory.SocleJm.isIrreducible_piTensor hA w.get`. Establish `hτs : IsSmooth τ` using `isSmooth_piTensor fun j => (w.get j).2.rep.smooth`. Set `s₀ : ∀ i j, IrrCl (GL (Fin (b₀.1 i j)) k)` to `fun i j => clOf (w.get j) (b₀.1 i j)`. Establish `hrowf : ∀ (f : ∀ i, (Σ j, Fin (b₀.1 i j)) ≃ m i) i, jhMult (piTensor fun j => (s₀ i j).rep.ρ) (jac (f i) (ρ i)) ≠ 0`. Introduce `f`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Fin.forall_fin_two.2 ⟨?_, ?_⟩` and prove the remaining obligations. Use `row_ne_zero (X 0).rep (hs 0) w.get σ₀ (fun j => b₀.1 0 j) (fun a => ?_) (fun j hj => ?_) hdeg0 (f 0) ?_` and prove the remaining obligations. Simplify using `[b₀, (hr0 (σ₀ a)).2 ⟨a, rfl⟩]`. Simplify using `[b₀, mt (hr0 j).1 hj]`. Rewrite using `[jm_congr' (funext hw0) hdeg0 hdu]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `hju`. Use `row_ne_zero (X 1).rep (hs 1) w.get σ₁ (fun j => b₀.1 1 j) (fun a => ?_) (fun j hj => ?_) hdeg1 (f 1) ?_` and prove the remaining obligations. Simplify using `[b₀, (hr1 (σ₁ a)).2 ⟨a, rfl⟩]`. Simplify using `[b₀, mt (hr1 j).1 hj]`. Rewrite using `[jm_congr' (funext hw1) hdeg1 hdv]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hjv`. Establish `hcolf : ∀ g : ∀ j, (Σ i, Fin (b₀.1 i j)) ≃ m' j, jhMult τ (piTensor fun j => multiProd (g j) fun i => (s₀ i j).rep.ρ) ≠ 0`. Introduce `g`. Establish `hcol : ∀ j, Nonempty ((multiProd (g j) fun i => (s₀ i j).rep.ρ).Equiv (w.get j).rep)` using `fun j => col_equiv (w.get j) (fun i => b₀.1 i j) (r j) (by simp [b₀]) (fun i hi => by simp [b₀, Ne.symm hi]) (g j)`. Rewrite using `[jhMult_congr_right τ (piTensorEquiv fun j => (hcol j).some), jhMult_self hτ]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `one_ne_zero`. Use `⟨hd', ?_⟩` and prove the remaining obligations. Establish `hφ : Nonempty ((prod₂ (X 0).rep (X 1).rep).Equiv (prodIrr X hd))` using `nonempty_prod₂_equiv_prodIrr_rep X hd`. Set `E'` to `stdBlocks (fun a => (w.get a).1) hd'`. Establish `e1 : jm w.get hd' (prod₂ (X 0).rep (X 1).rep) = jhMult τ (jac E' (prodIrr X hd))` using `jhMult_congr_right τ (GlobalTheory.SmGL.Exponents.jacEquiv E' hφ.some)`.
-
-Rewrite using `[e1]`. Conclude with `jhMult_jac_multiProd_ne_zero (stdBlocks (fun a => (X a).1) hd) E' ρ hs hl τ hτ hτs b₀ s₀ hrowf hcolf`.
+A detailed English derivation is pending.
 -/
 theorem wd_prod₂_of_interleave_fin (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (X : Fin 2 → IrrGL k)
     (u v w : List (IrrGL k)) (hxu : Wd (X 0).rep u) (hyv : Wd (X 1).rep v) (hw : Zc.Comb.Interleave u v w) :
@@ -204,7 +202,7 @@ theorem wd_prod₂_of_interleave_fin (hA : GlobalTheory.Published.IrreducibleAdm
   exact jhMult_jac_multiProd_ne_zero (stdBlocks (fun a => (X a).1) hd) E' ρ hs hl τ hτ hτs b₀ s₀ hrowf hcolf
 
 /- English proof (translation)
-Take `⟨X, rfl, rfl⟩ : ∃ X : Fin 2 → IrrGL k, X 0 = x ∧ X 1 = y` from `⟨![x, y], rfl, rfl⟩`. Conclude with `wd_prod₂_of_interleave_fin hA X u v w hxu hyv hw`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem wd_prod₂_of_interleave (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (x y : IrrGL k)
     (u v w : List (IrrGL k)) (_hu : ∀ c ∈ u, c.IsCusp) (_hv : ∀ c ∈ v, c.IsCusp) (hxu : Wd x.rep u)

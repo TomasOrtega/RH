@@ -6,7 +6,7 @@ noncomputable section
 namespace PI.PoleLengthCount
 
 /- English proof (translation)
-The claim follows from `ball_quotient_length`.
+A detailed English derivation is pending.
 -/
 theorem pole_ballQuot : BallQuot := ball_quotient_length
 

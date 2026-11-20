@@ -10,7 +10,7 @@ variable (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `h N x hd j hj M hd2 hd2' hd' C`. Establish `key` using `GlobalTheory.CompanionTheory.ReorderRev.prodIrr_swap_adj (k := k) x ⟨j, by omega⟩ ⟨j + 1, hj⟩ rfl (fun q hq hq' => by`. Take `rfl : q = M` from `hq.symm.trans hd2`. Conclude with `C) hd hd'`. Conclude with `key`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem swapProd : GlobalTheory.BZSeg.SwapProd k := by
   intro h N x hd j hj M hd2 hd2' hd' C

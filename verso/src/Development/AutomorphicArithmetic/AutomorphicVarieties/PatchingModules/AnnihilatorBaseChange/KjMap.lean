@@ -4,7 +4,7 @@ open IsLocalRing Matrix Filter UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.A
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `Λ R σ _ _ _ _ s k j`. Rewrite using `[kjIdeal, Ideal.map_sup, Ideal.map_pow, Ideal.map_span, ← Set.range_comp, Ideal.map_map, Ideal.map_pow]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem UpperTheory.V.Pa.Core.kjMap :
     ∀ (Λ R σ : Type) [CommRing Λ] [IsLocalRing Λ] [CommRing R] [Fintype σ] (s : MvPowerSeries σ Λ →+* R) (k j : ℕ), (kjIdeal Λ σ k j).map s = Ideal.span (Set.range (fun a => s (MvPowerSeries.X a))) ^ k ⊔ ((maximalIdeal Λ).map (s.comp MvPowerSeries.C)) ^ j := by

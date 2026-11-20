@@ -9,11 +9,11 @@ open CategoryTheory GlobalTheory.CatCoh GlobalTheory.AnPer GlobalTheory.AnPer.Ch
 namespace GlobalTheory.AnPer.Charts
 
 /- English proof (translation)
-Establish `key : ∀ k₁ k₂ q, q ∈ K.W k₁ → q ∈ K.W k₂ → (a k₁).fn q = (a k₂).fn q`. Introduce `k₁ k₂ q h₁ h₂`. Take `⟨k, hk, e₁, e₂⟩` from `hK.2 0 k₁ k₂ q h₁ (by rw [F.shift_zero]; exact h₂)`. Establish `r₁` using `fn_sh e₁ (a k₁) hk`. Establish `r₂` using `fn_sh e₂ (a k₂) hk`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `r₁`, `r₂` using `[ha, F.shift_zero]`. Rewrite using `[← r₁, ← r₂]`. Use `⟨fun q ↦ if h : ∃ k, q ∈ K.W k then (a h.choose).fn q else 0, fun k q hq ↦ ?_⟩` and prove the remaining obligations. Establish `h : ∃ k, q ∈ K.W k` using `⟨k, hq⟩`. Simplify using `only [dif_pos h]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `key _ _ q h.choose_spec hq`.
+A detailed English derivation is pending.
 -/
 theorem exists_glue_fn {I : Type} [Fintype I] {g : ℕ} {Λ : Type} [AddCommGroup Λ] {F : Fam I g Λ} (K : Charts F)
     (hK : K.Rich) (a : ∀ k, Hol (K.W k)) (ha : ∀ k k' (e : K.le 0 k' k), sh e (a k) = a k') :
@@ -32,17 +32,15 @@ theorem exists_glue_fn {I : Type} [Fintype I] {g : ℕ} {Λ : Type} [AddCommGrou
   exact key _ _ q h.choose_spec hq
 
 /- English proof (translation)
-Introduce `I _ g Λ _ F K hK a ha hd`. Take `⟨G, hG⟩` from `exists_glue_fn K hK a ha`. Establish `ev : ∀ k, ∀ q ∈ K.W k, G =ᶠ[𝓝 q] (a k).fn` using `fun k q hq ↦ by filter_upwards [(K.W k).isOpen.mem_nhds hq] with r hr using hG k r hr`. Establish `an : ∀ q : Tot I g, q.1 ∈ F.V → AnalyticAt ℂ G q` using `fun q hq ↦ by`. Take `⟨k, hk⟩` from `hK.1 q hq`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `((a k).analytic q hk).congr (ev k q hk).symm`. Establish `d0 : ∀ q : Tot I g, q.1 ∈ F.V → ∀ i, fderiv ℂ G q ((0, Pi.single i 1) : Tot I g) = 0` using `fun q hq i ↦ by`. Take `⟨k, hk⟩` from `hK.1 q hq`. Rewrite using `[(ev k q hk).fderiv_eq, ← Hol.fn_der _ _ hk]`. Express the relevant statement in the definitionally equal form `(dw i (a k)).fn q = 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hd, ← Hol.ev_apply q hk, map_zero]`. Establish `cs : ∀ z ∈ F.V, ∀ w, G (z, w) = G (z, 0)` using `fun z hz w ↦ by`. Establish `hf : ∀ w : Fin g → ℂ, HasFDerivAt (fun w ↦ G (z, w)) ((fderiv ℂ G (z, w)).comp (ContinuousLinearMap.inr ℂ (I → ℂ) (Fin g → ℂ))) w` using `fun w ↦ (an (z, w) hz).differentiableAt.hasFDerivAt.comp w (hasFDerivAt_prodMk_right z w)`. Use `is_const_of_fderiv_eq_zero (𝕜 := ℂ) (f := fun w ↦ G (z, w)) (fun w ↦ (hf w).differentiableAt) (fun w ↦ ?_) w 0` and prove the remaining obligations. Rewrite using `[(hf w).fderiv]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `v`. Establish `hv : ((0, v) : Tot I g) = ∑ i, v i • ((0, Pi.single i 1) : Tot I g)`. Use extensionality with `j`. Simplify using `[Prod.fst_sum]`. Simplify using `[Prod.snd_sum, Finset.sum_apply, Pi.single_apply]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `fderiv ℂ G (z, w) (0, v) = 0`. Rewrite using `[hv, map_sum]`. Conclude with `Finset.sum_eq_zero fun i _ ↦ by rw [map_smul, d0 (z, w) hz i, smul_zero]`. Use `⟨Hol.mk (fun z ↦ G (z, 0)) fun z hz ↦ AnalyticAt.comp (g := G) (f := fun z ↦ ((z, 0) : Tot I g)) (an (z, 0) hz) (analyticAt_id.prod analyticAt_const), fun k ↦ Hol.ext_fn fun q hq ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[fn_cst _ _ _ hq, ← hG k q hq]`.
-
-Conclude with `(cs q.1 (K.base k q hq) q.2).trans (Hol.fn_mk (fun z ↦ G (z, 0)) _ (K.base k q hq)).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_cst_of_dw_eq_zero : ∀ {I : Type} [Fintype I] {g : ℕ} {Λ : Type} [AddCommGroup Λ] {F : Fam I g Λ}
     (K : Charts F), K.Rich → ∀ (a : ∀ k, Hol (K.W k)), (∀ k k' (e : K.le 0 k' k), sh e (a k) = a k') →

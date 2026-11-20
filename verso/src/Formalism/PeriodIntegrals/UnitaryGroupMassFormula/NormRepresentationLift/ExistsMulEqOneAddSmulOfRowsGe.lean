@@ -13,33 +13,31 @@ def rowMat (a : Fin (r + 1)) (w : Fin (r + 1) → R) : Matrix (Fin (r + 1)) (Fin
   fun d c => if d = a then w c else 0
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `_ ξ _ hid`. Use `⟨1, h1, 0, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.one_mul, smul_zero, add_zero]`. Use extensionality with `d c`. Rewrite using `[hid d c (Nat.zero_le _), Matrix.one_apply]`. Consider the case `succ k ih`. Introduce `hk ξ hξ hid`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `a : Fin (r + 1)` to `⟨k, by omega⟩`. Establish `hak : a.val < r` using `by show k < r; omega`. Take `⟨w, hw0, hw1, hP⟩` from `hrow a hak (fun c => -ξ a c)`. Use `choose! q hq using hw1`. Set `ξ₀ : Matrix (Fin (r + 1)) (Fin (r + 1)) R` to `fun d c => if d = a then (if d = c then 1 else 0) else ξ d c`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `Q₁ : Matrix (Fin (r + 1)) (Fin (r + 1)) R` to `fun d c => if d = a then (if a < c then q c else 0) else 0`. Establish `hsum : ∀ c, ∑ e, w e * ξ e c = w c`. Introduce `c`. Establish `he' : ∀ e, w e * ξ e c = w e * (if e = c then 1 else 0)`. Introduce `e`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `he : e ≤ a`. Rewrite using `[hw0 e he, zero_mul, zero_mul]`. Rewrite using `[hid e c (Fin.lt_iff_val_lt_val.mp (not_le.mp he))]`. Rewrite using `[Finset.sum_congr rfl (fun e _ => he' e)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hE : (1 + rowMat a w) * ξ = ξ₀ + g • Q₁`. Use extensionality with `d c`. Establish `hrm : ∑ e, rowMat a w d e * ξ e c = if d = a then w c else 0`. Simplify using `only [rowMat]`. Use `split_ifs with hd`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hsum c`. Simplify using the standard rewrite rules. Rewrite using `[Matrix.add_mul, Matrix.one_mul, Matrix.add_apply, Matrix.mul_apply, hrm]`. Use `show ξ d c + (if d = a then w c else 0) = (if d = a then (if d = c then 1 else 0) else ξ d c) + g * (if d = a then (if a < c then q c else 0) else 0)`. Distinguish the cases in `hd : d = a`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hd, if_pos rfl, if_pos rfl, if_pos rfl]`. Break down `lt_trichotomy c a with hca | hca | hca` into its components or cases. Rewrite using `[hξ.1 a c hca, hw0 c hca.le, if_neg (ne_of_lt hca).symm, if_neg (not_lt.mpr hca.le)]`. Simplify using the standard rewrite rules. Rewrite using `[hca, hξ.2 a, hw0 a le_rfl, if_pos rfl, if_neg (lt_irrefl a)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[hq c hca, if_neg (ne_of_lt hca), if_pos hca]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg hd, if_neg hd, if_neg hd]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `hξ₀ : UniUp ξ₀`. Use `⟨fun d c hcd => ?_, fun d => ?_⟩` and prove the remaining obligations. Use `show (if d = a then (if d = c then 1 else 0) else ξ d c) = 0`. Distinguish the cases in `h1' : d = a`. Rewrite using `[if_pos h1', if_neg (ne_of_lt hcd).symm]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[if_neg h1']`. Conclude with `hξ.1 d c hcd`. Use `show (if d = a then (if d = d then 1 else 0) else ξ d d) = 1`. Distinguish the cases in `h1' : d = a`. Rewrite using `[if_pos h1', if_pos rfl]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[if_neg h1']`. Conclude with `hξ.2 d`. Establish `hid₀ : ∀ d c : Fin (r + 1), k ≤ d.val → ξ₀ d c = if d = c then 1 else 0`. Introduce `d c hdk`. Use `show (if d = a then (if d = c then 1 else 0) else ξ d c) = _`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h1' : d = a`. Rewrite using `[if_pos h1']`. Rewrite using `[if_neg h1']`. Apply `hid d c` to reduce the goal to its premises. Establish `hne : d.val ≠ k` using `fun h' => h1' (Fin.ext h')`.
-
-Use linear arithmetic over natural numbers and integers. Take `⟨M, hM, Q, hMQ⟩` from `ih (by omega) ξ₀ hξ₀ hid₀`. Use `⟨M * (1 + rowMat a w), hmul _ _ hM hP, Q + M * Q₁, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc, hE, Matrix.mul_add, hMQ, Matrix.mul_smul, smul_add, add_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem exists_mul_eq_one_add_smul_of_rows_ge (g : R) (P : Matrix (Fin (r + 1)) (Fin (r + 1)) R → Prop)
     (h1 : P 1) (hmul : ∀ M N, P M → P N → P (M * N))
@@ -122,9 +120,7 @@ theorem exists_mul_eq_one_add_smul_of_rows_ge (g : R) (P : Matrix (Fin (r + 1)) 
     rw [Matrix.mul_assoc, hE, Matrix.mul_add, hMQ, Matrix.mul_smul, smul_add, add_assoc]
 
 /- English proof (translation)
-Use `exists_mul_eq_one_add_smul_of_rows_ge g P h1 hmul hrow r le_rfl ξ hξ fun d c hd => ?_` and prove the remaining obligations. Establish `hdl : d = Fin.last r` using `Fin.ext (by have := d.isLt; simp only [Fin.val_last]; omega)`. Substitute `hdl` using the available equality. Use `split_ifs with hc`. Substitute `hc` using the available equality.
-
-Conclude with `hξ.2 _`. Conclude with `hξ.1 _ _ (lt_of_le_of_ne (Fin.le_last c) (fun h' => hc h'.symm))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Substitute using the available equality. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem row_elim (g : R) (P : Matrix (Fin (r + 1)) (Fin (r + 1)) R → Prop)
     (h1 : P 1) (hmul : ∀ M N, P M → P N → P (M * N))

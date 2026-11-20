@@ -7,9 +7,9 @@ open TensorProduct
 namespace GlobalTheory.FinProjComplete
 
 /- English proof (translation)
-Rewrite using `[Ideal.span_singleton_pow, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, -, rfl⟩`. Conclude with `⟨m, by rw [← Nat.cast_pow, Nat.cast_smul_eq_nsmul]⟩`. Introduce and unpack `⟨m, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨m, Submodule.mem_top, by rw [← Nat.cast_pow, Nat.cast_smul_eq_nsmul]⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_span_pow_smul_top_iff (p : ℕ) {R M : Type} [CommRing R] [AddCommGroup M] [Module R M]
     (n : ℕ) (x : M) :
@@ -23,7 +23,7 @@ theorem mem_span_pow_smul_top_iff (p : ℕ) {R M : Type} [CommRing R] [AddCommGr
     exact ⟨m, Submodule.mem_top, by rw [← Nat.cast_pow, Nat.cast_smul_eq_nsmul]⟩
 
 /- English proof (translation)
-Rewrite using `[SModEq.sub_mem, mem_span_pow_smul_top_iff]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smodEq_iff (p : ℕ) {R M : Type} [CommRing R] [AddCommGroup M] [Module R M]
     (n : ℕ) (x y : M) :
@@ -35,19 +35,19 @@ end GlobalTheory.FinProjComplete
 
 open GlobalTheory.FinProjComplete in
 /- English proof (translation)
-Introduce `p O A _ _ _ _ _ hO`. Take `⟨k, π, hπ⟩` from `Module.Finite.exists_fin' O A`. Take `⟨s, hs⟩` from `Module.projective_lifting_property π (LinearMap.id) hπ`. Establish `hπs : ∀ a, π (s a) = a` using `fun a => by simpa using LinearMap.congr_fun hs a`. Use `{ haus' := ?_, prec' := ?_ }` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x hx`. Establish `hc : ∀ i, s x i = 0`. Introduce `i`. Apply `hO.toIsHausdorff.haus'` to reduce the goal to its premises. Introduce `n`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨m, hm⟩` from `(smodEq_iff p n x 0).1 (hx n)`. Rewrite using `[smodEq_iff]`. Use `⟨s m i, ?_⟩` and prove the remaining obligations. Rewrite `hm`, the goal using `[sub_zero]`. Rewrite using `[hm, map_nsmul, Pi.smul_apply]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `: s x = 0` using `funext hc`. Rewrite using `[← hπs x, this, map_zero]`. Introduce `f hf`. Establish `hcoord : ∀ i, ∃ L : O, ∀ n, s (f n) i ≡ L [SMOD ((Ideal.span {(p : O)}) ^ n • (⊤ : Submodule O O))]`. Introduce `i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hO.toIsPrecomplete.prec'` to reduce the goal to its premises. Introduce `m n hmn`. Take `⟨c, hc⟩` from `(smodEq_iff p m (f m) (f n)).1 (hf hmn)`. Rewrite using `[smodEq_iff]`. Use `⟨s c i, ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Pi.sub_apply, ← map_sub, hc, map_nsmul, Pi.smul_apply]`. Use `choose L hL using hcoord`. Use `⟨π L, fun n => ?_⟩` and prove the remaining obligations. Establish `hd : ∀ i, ∃ c : O, s (f n) i - L i = (p ^ n : ℕ) • c` using `fun i => (smodEq_iff p n _ _).1 (hL i n)`. Use `choose c hc using hd`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[smodEq_iff]`. Use `⟨π c, ?_⟩` and prove the remaining obligations. Establish `hv : s (f n) - L = (p ^ n : ℕ) • c` using `funext fun i => by simpa using hc i`. Rewrite using `[← map_nsmul, ← hv, map_sub, hπs]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FinProjComplete.isAdicComplete_span_natCast : ∀ (p : ℕ) (O A : Type) [CommRing O] [CommRing A] [Algebra O A] [Module.Finite O A] [Module.Projective O A] [IsAdicComplete (Ideal.span {(p : O)}) O], IsAdicComplete (Ideal.span {(p : A)}) A := by
   intro p O A _ _ _ _ _ hO

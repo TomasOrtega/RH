@@ -12,9 +12,9 @@ section Desc
 variable {LL K : Type} [Field LL] [Field K] (e : LL →+* K)
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on'`. Use `next u a =>`. Establish `h1 : MvPolynomial.map e (MvPolynomial.monomial u a) = e a • MvPolynomial.basisMonomials σ K u`. Simplify using `only [MvPolynomial.map_monomial, MvPolynomial.coe_basisMonomials, MvPolynomial.smul_monomial, smul_eq_mul, mul_one]`. Establish `h2 : MvPolynomial.monomial u a = a • MvPolynomial.monomial u (1 : LL)`.
+Proceed by induction. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MvPolynomial.smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[h1, map_smul, Basis.constr_basis, h2, map_smul, smul_eq_mul, smul_eq_mul, map_mul]`. Use `next p q hp hq =>`. Simplify using `only [map_add, hp, hq]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lin_ext_map {σ : Type} (φ : MvPolynomial σ LL →ₗ[LL] LL) (P : MvPolynomial σ LL) :
     (MvPolynomial.basisMonomials σ K).constr K (fun m : σ →₀ ℕ => e (φ (MvPolynomial.monomial m 1)))
@@ -30,11 +30,11 @@ theorem lin_ext_map {σ : Type} (φ : MvPolynomial σ LL →ₗ[LL] LL) (P : MvP
     simp only [map_add, hp, hq]
 
 /- English proof (translation)
-Rewrite using `[← Subspace.forall_mem_dualAnnihilator_apply_eq_zero_iff]`. Introduce `φ hφ`. Set `φK : MvPolynomial σ K →ₗ[K] K` to `(MvPolynomial.basisMonomials σ K).constr K (fun m : σ →₀ ℕ => e (φ (MvPolynomial.monomial m 1)))`. Establish `h1 : Submodule.span K (MvPolynomial.map e '' (V : Set (MvPolynomial σ LL))) ≤ LinearMap.ker φK`. Rewrite using `[Submodule.span_le]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨v, hv, rfl⟩`. Express the relevant statement in the definitionally equal form `φK (MvPolynomial.map e v) = 0`. Rewrite using `[lin_ext_map e φ v, (Submodule.mem_dualAnnihilator φ).1 hφ v hv, map_zero]`. Establish `h2 : φK (MvPolynomial.map e Q) = 0` using `h1 hQ`. Rewrite `h2` using `[lin_ext_map e φ Q]`.
+Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(map_eq_zero_iff e e.injective).1 h2`.
+A detailed English derivation is pending.
 -/
 theorem desc_span {σ : Type} (V : Submodule LL (MvPolynomial σ LL)) {Q : MvPolynomial σ LL}
     (hQ : MvPolynomial.map e Q ∈ Submodule.span K (MvPolynomial.map e '' (V : Set (MvPolynomial σ LL)))) : Q ∈ V := by
@@ -52,7 +52,7 @@ theorem desc_span {σ : Type} (V : Submodule LL (MvPolynomial σ LL)) {Q : MvPol
   exact (map_eq_zero_iff e e.injective).1 h2
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[Formalism.GradedWeylDivisibility.mem_dualWeyl_iff, isWH_iff]`. Use `⟨MvPolynomial.map_injective e e.injective ?_, fun l j hlj => MvPolynomial.map_injective e e.injective ?_⟩` and prove the remaining obligations. Rewrite using `[whc_map, h.1]`. Rewrite using `[colAddGen_map, MvPolynomial.map_rename, h.2 l j hlj]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem dw_desc {r n : ℕ} (ν : Fin n → ℕ) {f : MvPolynomial (Fin r × Fin n) LL}
     (h : MvPolynomial.map e f ∈ Formalism.GradedWeylDivisibility.dualWeyl K r n ν) : f ∈ Formalism.GradedWeylDivisibility.dualWeyl LL r n ν := by
@@ -62,7 +62,7 @@ theorem dw_desc {r n : ℕ} (ν : Fin n → ℕ) {f : MvPolynomial (Fin r × Fin
   · rw [colAddGen_map, MvPolynomial.map_rename, h.2 l j hlj]
 
 /- English proof (translation)
-Use `(dualWeyl_desc e ν).trans (Submodule.span_mono ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨Q, hQ, rfl⟩`. Conclude with `⟨Q, dw_desc e ν hQ, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem dw_span {r n : ℕ} (ν : Fin n → ℕ) :
     Formalism.GradedWeylDivisibility.dualWeyl K r n ν ≤
@@ -72,13 +72,13 @@ theorem dw_span {r n : ℕ} (ν : Fin n → ℕ) :
   exact ⟨Q, dw_desc e ν hQ, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨F, hF, rfl⟩`. Set `A : S → Set (MvPolynomial τ K)` to `fun s => {y | ∃ Q : MvPolynomial (σ s) LL, Q ∈ Ns s ∧ y = MvPolynomial.rename (f s) (MvPolynomial.map e Q)}`. Establish `hx : ∀ s ∈ Finset.univ, MvPolynomial.rename (f s) (F s) ∈ Submodule.span K (A s)`. Introduce `s _`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `Submodule.mem_map_of_mem (f := (MvPolynomial.rename (R := K) (f s)).toLinearMap) (hM s (hF s))`. Rewrite `h1` using `[Submodule.map_span]`. Use `Submodule.span_mono ?_ h1` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨Q, hQ, rfl⟩, rfl⟩`. Conclude with `⟨Q, hQ, rfl⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Establish `h` using `prod_mem_span Finset.univ A _ hx`. Use `Submodule.span_mono ?_ h` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Use `choose Q hQ hQe using fun s => ha s (Finset.mem_univ s)`. Use `⟨∏ s, MvPolynomial.rename (f s) (Q s), Submodule.subset_span ⟨Q, hQ, rfl⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[hQe s, MvPolynomial.map_rename]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_prod_le {S : Type} [Fintype S] {σ : S → Type} {τ : Type} (f : ∀ s, σ s → τ)
     (Ms : ∀ s, Submodule K (MvPolynomial (σ s) K)) (Ns : ∀ s, Submodule LL (MvPolynomial (σ s) LL))
@@ -108,9 +108,7 @@ theorem span_prod_le {S : Type} [Fintype S] {σ : S → Type} {τ : Type} (f : �
   rw [hQe s, MvPolynomial.map_rename]
 
 /- English proof (translation)
-Establish `hM : ∀ s : Fin n', (if Antitone (lamAt lam0 s) then Formalism.GradedWeylDivisibility.dualWeyl K (m + 1) (m + 1) (nuOf (lamAt lam0 s)) else ⊥) ≤ Submodule.span K (MvPolynomial.map e '' (((if Antitone (lamAt lam0 s) then Formalism.GradedWeylDivisibility.dualWeyl LL (m + 1) (m + 1) …`. Introduce `s`. Use `split_ifs`. Conclude with `dw_span e _`. Conclude with `bot_le`.
-
-Conclude with `span_prod_le e (σ := fun _ => Fin (m + 1) × Fin (m + 1)) (fun s v => (s, v)) _ _ hM`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem vsp_span {n' m : ℕ} (lam0 : Fin n' → Fin (m + 1) → ℤ) :
     Vsp K lam0 ≤ Submodule.span K (MvPolynomial.map e '' (Vsp LL lam0 : Set (MvPolynomial (Fin n' × (Fin (m + 1) × Fin (m + 1))) LL))) := by
@@ -124,7 +122,7 @@ theorem vsp_span {n' m : ℕ} (lam0 : Fin n' → Fin (m + 1) → ℤ) :
   exact span_prod_le e (σ := fun _ => Fin (m + 1) × Fin (m + 1)) (fun s v => (s, v)) _ _ hM
 
 /- English proof (translation)
-The claim follows from `span_prod_le e (σ := fun v => Fin (P.n' v) × (Fin (P.m + 1) × Fin (P.m + 1))) (fun v x => (⟨v, x⟩ : Var P)) _ _ fun v => vsp_span e (P.lam0 v)`.
+A detailed English derivation is pending.
 -/
 theorem vtup_span {p : ℕ} {O Kf : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field Kf] [Algebra O Kf]
     (P : Places p O Kf) : VtupR P K ≤ Submodule.span K (MvPolynomial.map e '' (VtupR P LL : Set (XR P LL))) :=
@@ -132,11 +130,9 @@ theorem vtup_span {p : ℕ} {O Kf : Type} [CommRing O] [IsDomain O] [IsDiscreteV
     fun v => vsp_span e (P.lam0 v)
 
 /- English proof (translation)
-Proceed by induction on `hZ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨F, hF, rfl⟩` from `hx`. Use `Submodule.subset_span ⟨fun s => MvPolynomial.map e (F s), fun s => h s _ (hF s), ?_⟩` and prove the remaining obligations. Simplify using `only [map_prod, MvPolynomial.map_rename]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx => rw [mapE_smul]`.
-
-Conclude with `Submodule.smul_mem _ _ hx`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem span_prod_map {S : Type} [Fintype S] {σ : S → Type} {τ : Type} (f : ∀ s, σ s → τ)
     (Ns : ∀ s, Submodule LL (MvPolynomial (σ s) LL)) (Ms : ∀ s, Submodule K (MvPolynomial (σ s) K))
@@ -154,7 +150,7 @@ theorem span_prod_map {S : Type} [Fintype S] {σ : S → Type} {τ : Type} (f : 
   | smul a x _ hx => rw [mapE_smul]; exact Submodule.smul_mem _ _ hx
 
 /- English proof (translation)
-Use `span_prod_map e (σ := fun _ => Fin (m + 1) × Fin (m + 1)) (fun s v => (s, v)) _ _ (fun s y hy => ?_) hx` and prove the remaining obligations. Use `split_ifs at hy ⊢`. Conclude with `Formalism.GradedWeylDivisibility.dualWeylMap LL K e _ _ _ y hy`. Rewrite using `[(Submodule.mem_bot _).1 hy, map_zero]`. Conclude with `Submodule.zero_mem _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vsp_map {n' m : ℕ} (lam0 : Fin n' → Fin (m + 1) → ℤ) {x : MvPolynomial (Fin n' × (Fin (m + 1) × Fin (m + 1))) LL}
     (hx : x ∈ Vsp LL lam0) : MvPolynomial.map e x ∈ Vsp K lam0 := by
@@ -165,7 +161,7 @@ theorem vsp_map {n' m : ℕ} (lam0 : Fin n' → Fin (m + 1) → ℤ) {x : MvPoly
     exact Submodule.zero_mem _
 
 /- English proof (translation)
-The claim follows from `span_prod_map e (σ := fun v => Fin (P.n' v) × (Fin (P.m + 1) × Fin (P.m + 1))) (fun v x => (⟨v, x⟩ : Var P)) _ _ (fun v _ hy => vsp_map e (P.lam0 v) hy) hQ`.
+A detailed English derivation is pending.
 -/
 theorem vtup_map {p : ℕ} {O Kf : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field Kf] [Algebra O Kf]
     (P : Places p O Kf) {Q : XR P LL} (hQ : Q ∈ VtupR P LL) : MvPolynomial.map e Q ∈ VtupR P K :=
@@ -180,14 +176,14 @@ variable {D : D7} {u : D.what₂.Word} {C : ColumnChain D.R D.what₂.Tau (D.hcW
   {M : MemberForms D.what₂.LL D.what₂.embLL D.what₂.places D.what₂.Tau (D.hcW u) C A P} {p : ℕ} {i : ℕ} {hi : i ≤ D.R.m} {G : GAtP p}
 
 /- English proof (translation)
-Introduce `β Q hQ`. Conclude with `vtup_map D.what₂.embLL _ (desc_span e (VtupR (Hc S β).P D.what₂.LL) (vtup_span e (Hc S β).P hQ))`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem vtupDesc_holds (S : StepIn M i hi G) (e : D.what₂.LL →+* G.Kf) : VtupDesc S e := by
   intro β Q hQ
   exact vtup_map D.what₂.embLL _ (desc_span e (VtupR (Hc S β).P D.what₂.LL) (vtup_span e (Hc S β).P hQ))
 
 /- English proof (translation)
-The claim follows from `cmpLiftOf_of S e (vtupDesc_holds S e) hV hI`.
+A detailed English derivation is pending.
 -/
 theorem cmpLiftOf_of_two (S : StepIn M i hi G) (e : D.what₂.LL →+* G.Kf) (hV : ∀ β, EvValLe S β) (hI : CmpInvOf S e) :
     CmpLiftOf S e :=

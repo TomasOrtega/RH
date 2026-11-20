@@ -36,9 +36,9 @@ def lineStab (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (x : 
     rw [h2, ← Units.smul_def, inv_smul_smul]
 
 /- English proof (translation)
-Set `R` to `QuotientGroup.rightRel (lineStab σ J x)`. Use `⟨Set.range (fun q : Quotient R => q.out), fun γ => ⟨(Quotient.mk R γ).out, ⟨⟨_, rfl⟩, ?_⟩, ?_⟩⟩` and prove the remaining obligations. Use `Quotient.mk_out (s := R) γ` as an intermediate fact. Conclude with `(QuotientGroup.rightRel_apply.1 this)`. Introduce and unpack `t ⟨⟨q, rfl⟩, ht⟩`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h1 : R q.out γ` using `QuotientGroup.rightRel_apply.2 ht`. Establish `h2 : Quotient.mk R q.out = Quotient.mk R γ` using `Quotient.sound h1`. Rewrite `h2` using `[Quotient.out_eq]`. Rewrite using `[h2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_reps (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (x : Matrix (Fin n) (Fin 1) E) :
     ∃ T : Set (ratPts σ J), ∀ γ : ratPts σ J, ∃! t, t ∈ T ∧ ∃ l : (AF F ⊗[F] E)ˣ,
@@ -58,19 +58,17 @@ end GlobalTheory.EisRes
 namespace GlobalTheory.EisRes
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J r X Y L a h Eis c hS hP k₀ U₀ H₀ hU₀ hH hsm hhol`. Use `set ρ : ℂ := ((n : ℂ) - 1) / 2 with hρ`. Establish `hρre : ρ.re = ((n : ℝ) - 1) / 2` using `by simp [hρ]`. Establish `hI : IsIwaHtG σ J (col0 X) L a h` using `hS.2.2.2.2.2.2`. Establish `hinv : ∀ g, ∀ k ∈ levelAll σ J L a, h (g * k) = h g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g k hk`. Take `⟨p, l, hpl, k', hk', rfl⟩` from `hI.1 g`. Rewrite using `[mul_assoc, hI.2 p l hpl _ (Subgroup.mul_mem _ hk' hk), hI.2 p l hpl k' hk']`. Take `⟨T, hT⟩` from `exists_reps σ J (col0 X)`. Establish `Heisenberg₂ : ∀ s : ℂ, ρ.re < s.re → ∀ g, ∀ k ∈ levelAll σ J L a, Eis s (g * k) = Eis s g`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s hs g k hk`. Rewrite `hs` using `[hρre]`. Establish `h1` using `hP.1 T hT s hs (g * k)`. Establish `h2` using `hP.1 T hT s hs g`. Simplify using `only [← mul_assoc, hinv _ k hk] at h1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `h1.unique h2`. Take `⟨ε, hε, hball⟩` from `Metric.mem_nhds_iff.1 hU₀`. Use `⟨Metric.ball ρ ε, Metric.ball_mem_nhds ρ hε, fun s hs k hk g => ?_⟩` and prove the remaining obligations. Establish `hd : ∀ g', DifferentiableOn ℂ (fun s => H₀ s g') (Metric.ball ρ ε)` using `fun g' => (hhol _ (GlobalTheory.EisLine.isModerateForm_proj σ J g')).mono hball`. Establish `a1` using `(hd (g * k)).analyticOnNhd Metric.isOpen_ball`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a2` using `(hd g).analyticOnNhd Metric.isOpen_ball`. Use `set z₀ : ℂ := ρ + ((ε / 2 : ℝ) : ℂ) with hz₀`. Establish `hz₀b : z₀ ∈ Metric.ball ρ ε`. Rewrite using `[Metric.mem_ball, hz₀, dist_eq_norm, add_sub_cancel_left, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (half_pos hε)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz₀re : ρ.re < z₀.re` using `by simp [hz₀, hε]`. Establish `hopen : IsOpen (Metric.ball ρ ε ∩ {s : ℂ | ρ.re < s.re})` using `Metric.isOpen_ball.inter (isOpen_lt continuous_const Complex.continuous_re)`. Establish `hev : (fun s => H₀ s (g * k)) =ᶠ[𝓝 z₀] fun s => H₀ s g` using `by filter_upwards [hopen.mem_nhds ⟨hz₀b, hz₀re⟩] with s hs'`. Establish `hsU : s ∈ U₀` using `hball hs'.1`. Establish `hne : s ≠ ρ` using `by rintro rfl; exact lt_irrefl ρ.re hs'.2`.
-
-Rewrite using `[hH s hsU hne, hH s hsU hne, Heisenberg₂ s hs'.2 g k hk]`. Conclude with `a1.eqOn_of_preconnected_of_eventuallyEq a2 (convex_ball ρ ε).isPreconnected hz₀b hev hs`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levelAll_inv_near_rho : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (r : ℕ) (X Y : Matrix (Fin n) (Fin (r + 1)) E) (L : Submodule (𝓞 E) (Fin n → E))

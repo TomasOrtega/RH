@@ -7,7 +7,7 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions Formalism.MainNoti
 open Formalism.DworkPowerSeriesWeights (JetsIntegral)
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.EntryHomComb.entry_comb` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FMatrixUnitIntegralCombEmbeddedHoms.lean&line=78#L78)
 -/

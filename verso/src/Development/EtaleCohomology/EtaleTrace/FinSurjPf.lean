@@ -19,9 +19,9 @@ def FSDense : Prop := ∀ (k : Type) [Field k] {X : Scheme.{0}} [IsIntegral X] (
   IsDominant π
 
 /- English proof (translation)
-Introduce `k _ X _ p hp N d ι π v w hι hπ cv cw hlin hx hind`. Establish `hsep : IsSeparated (PNto k d)` using `(h1 k d).2.1`. Establish `: IsProper (π ≫ PNto k d)` using `by rw [hπ]; exact hp`. Establish `: IsProper π` using `IsProper.of_comp π (PNto k d)`. Establish `: IsAffineHom π` using `hA k p N d ι π v w hι cv cw hlin hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsDominant π` using `hD k p d π w cw hind`. Use `⟨IsFinite.iff_isProper_and_isAffineHom.mpr ⟨inferInstance, inferInstance⟩, ?_⟩` and prove the remaining obligations. Conclude with `surjective_of_isDominant_of_isClosed_range π (π.isClosedMap.isClosed_range)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem FinSurj_of (h1 : PNBasic) (hA : FSAffine) (hD : FSDense) : FinSurj := by
   intro k _ X _ p hp N d ι π v w hι hπ cv cw hlin hx hind

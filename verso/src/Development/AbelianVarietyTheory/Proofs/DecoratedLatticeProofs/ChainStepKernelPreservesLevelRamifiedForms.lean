@@ -27,7 +27,7 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE
 variable {B : Base} {X : PreX B.toPre}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Simplify using `only [GStep.tr, map_one, trFr_apply, inv_one, Units.val_one, map_one, one_mul]`. Conclude with `congrArg F (frMul_one emb σ y)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tr_one {E K ι : Type} [Field E] [NumberField E] [Field K] [Fintype ι] {n : ℕ} (S : GStep E K n)
     (emb : ι → E →+* K) (σ : K →+* ℂ) (b : S.β) (F : Fr emb σ n → ℂ) : S.tr emb σ b 1 F = F := by
@@ -36,7 +36,7 @@ theorem tr_one {E K ι : Type} [Field E] [NumberField E] [Field K] [Fintype ι] 
   exact congrArg F (frMul_one emb σ y)
 
 /- English proof (translation)
-Unfold `ent`. Rewrite using `[(GlobalTheory.KerDia.RhoDia.rho_dia I l u a i b p b' p' P s).1, (GlobalTheory.KerDia.RhoDia.rho_dia I l u a i b p b' p' P s).2, GlobalTheory.DiaTheta.th_dia I l u a i b b' p p' P s]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem ent_dia (I : TC B X) (l : I.Laws) (u : B.Word) (a : I.ι) (i : ℕ) {b : (I.stp u a i).β}
     {b' : (I.stp u a (i + 1)).β} (p : (I.stp u a i).D b) (p' : (I.stp u a (i + 1)).D b') (P : (I.atIn u a).ST) (s : (Res P.1)ˣ) :
@@ -46,9 +46,9 @@ theorem ent_dia (I : TC B X) (l : I.Laws) (u : B.Word) (a : I.ι) (i : ℕ) {b :
     GlobalTheory.DiaTheta.th_dia I l u a i b b' p p' P s]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.KerDia.Kmap_eq]`. Establish `e3` using `GlobalTheory.T.kernelEntry_rationalEquivariance_transports I l hI u a i ((I.stp u a i).rep c) ((I.stp u a (i + 1)).rep c') 1 g.1 f (GlobalTheory.KerDia.sharp_mem_range I l u a i hi f hf)`. Establish `hg : (I.stp u a (i + 1)).act c'.1 g.1 ((I.stp u a (i + 1)).rep c') = (I.stp u a (i + 1)).rep c'` using `g.2`. Establish `h1 : (I.stp u a i).act c.1 1 ((I.stp u a i).rep c) = (I.stp u a i).rep c` using `@one_smul _ _ _ (GStep.actD _ c.1) _`. Rewrite `e3` using `[h1, hg, tr_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `e3.symm`.
+A detailed English derivation is pending.
 -/
 theorem Kmap_stab (I : TC B X) (l : I.Laws) (hI : I.Ok) (u : B.Word) (a : I.ι) (i : ℕ) (hi : i < B.R.m)
     (c : (I.stp u a i).Cl) (c' : (I.stp u a (i + 1)).Cl) (g : (I.stp u a (i + 1)).Stab c')
@@ -64,9 +64,9 @@ theorem Kmap_stab (I : TC B X) (l : I.Laws) (hI : I.Ok) (u : B.Word) (a : I.ι) 
   exact e3.symm
 
 /- English proof (translation)
-Introduce `φ hφ c'`. Set `_` to `(I.chain l u a).clsFin i`. Establish `hK : (I.chain l u a).K i φ c' = ∑ c, (I.chain l u a).wt i c • (I.chain l u a).Kmap i c c' (φ c)` using `rfl`. Rewrite using `[hK]`. Use `⟨Submodule.sum_mem _ fun c _ => Submodule.smul_mem _ _ (GlobalTheory.AdForm.Keep.kmap_val I l u a i hi c c' _ (hφ c).1), fun g => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Kmap_stab I l hI u a i hi c c' g _ (hφ c).1]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem K_mem_Fi (I : TC B X) (l : I.Laws) (hI : I.Ok) (u : B.Word) (a : I.ι) (i : ℕ) (hi : i < B.R.m) :
     ∀ φ ∈ (I.stp u a i).Fi B.fields.emb B.embLL (lamT (B.hcW u) i),
@@ -94,11 +94,11 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE
 variable {B : Base} {X : PreX B.toPre}
 
 /- English proof (translation)
-Establish `hφ' : φ ∈ (I.stp u a i).Fi B.fields.emb B.embLL (lamT (B.hcW u) i)` using `hφ`. Express the relevant statement in the definitionally equal form `(I.atIn u a).dilT B.fields.emb B.embLL (i + 1) v s c' ((I.chain l u a).Kmap i ((I.atIn u a).dil i v s L) ((I.atIn u a).dil (i + 1) v s c') (φ ((I.atIn u a).dil i v s L))) = (I.chain l u a).Kmap i L c' ((I.atIn u a).dilT B.fields.emb B.embLL i v s L (φ ((I.atIn u a).dil i v s L)))`. Establish `hx : φ ((I.atIn u a).dil i v s L) ∈ ValC (Gr B.fields.emb B.embLL (B.R.N i)) (lamT (B.hcW u) i)` using `(hφ' ((I.atIn u a).dil i v s L)).1`. Rewrite using `[Kmap_eq I l u a i _ _, Kmap_eq I l u a i L c']`. Unfold `AtIn.dilT AtIn.dil GStep.trTo`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Establish `e1` using `(I.stp u a i).mv_smul L.1 (((I.atIn u a).A i).diaPt v s L)`. Establish `e2` using `(I.stp u a (i + 1)).mv_smul c'.1 (((I.atIn u a).A (i + 1)).diaPt v s c')`. Establish `e3` using `GlobalTheory.T.kernelEntry_rationalEquivariance_transports I l hI u a i ((I.stp u a i).rep ((I.stp u a i).cl L.1 (((I.atIn u a).A i).diaPt v s L))) ((I.stp u a (i + 1)).rep ((I.stp u a (i + 1)).cl c'.1 (((I.atIn u a).A (i + 1)).diaPt v s c'))) ((I.stp u a i).mv L.1 (((I.atIn u a) …`. Unfold `GStep.act at e3`. Rewrite `e3` using `[e1, e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Eq.trans e3.symm ?_` and prove the remaining obligations. Conclude with `LinearMap.congr_fun (ent_dia I l u a i ((I.stp u a i).rep L) ((I.stp u a (i + 1)).rep c') v s) _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem entry_dia (I : TC B X) (l : I.Laws) (hI : I.Ok) (u : B.Word) (a : I.ι) (i : ℕ) (hi : i < B.R.m)
     (φ : ColT I l u a i) (hφ : φ ∈ (I.fm l u a).Fi i) (v : (I.atT l u a).vT) (s : ((I.atT l u a).Fv v)ˣ)
@@ -136,9 +136,9 @@ def dilEquiv (I : TC B X) (l : I.Laws) (u : B.Word) (a : I.ι) (i : ℕ) (v : (I
   right_inv c := by rw [← (I.fm l u a).dil_mul, mul_inv_cancel, (I.fm l u a).dil_one]
 
 /- English proof (translation)
-Use `letI := (I.chain l u a).clsFin i`. Simplify using `only [ColumnChain.K, Formalism.ThetaLiftIndependence.kerOpM, map_sum, map_smul]`. Use `(Equiv.sum_comp (dilEquiv I l u a i v s) _).symm.trans (Finset.sum_congr rfl fun L _ => ?_)` and prove the remaining obligations. Establish `h : (I.chain l u a).wt i ((I.fm l u a).dil i v s L) = (I.chain l u a).wt i L`. Unfold `ColumnChain.wt`.
+Equip the data with the indicated structure. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[(I.fm l u a).dil_stab]`. Use `show (I.chain l u a).wt i ((I.fm l u a).dil i v s L) • _ = _`. Rewrite using `[h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem dia_K_eq (I : TC B X) (l : I.Laws) (u : B.Word) (a : I.ι) (i : ℕ) (v : (I.atT l u a).vT) (s : ((I.atT l u a).Fv v)ˣ)
     (φ : ColT I l u a i) (c' : (I.chain l u a).cls (i + 1)) :
@@ -158,13 +158,13 @@ theorem dia_K_eq (I : TC B X) (l : I.Laws) (u : B.Word) (a : I.ι) (i : ℕ) (v 
 end Dia
 
 /- English proof (translation)
-Introduce `B X I hI _ l _ u a i hi φ hR`. Use `letI := (I.chain l u a).clsFin i`. Use `⟨K_mem_Fi I l hI u a i hi φ hR.1, fun v c' => ?_⟩` and prove the remaining obligations. Use `letI := (I.atT l u a).FvFin v`. Use `letI := (I.atT l u a).FvDec v`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Establish `hsum : ∑ s : ((I.atT l u a).Fv v)ˣ, (fun L => (I.fm l u a).dilT i v s L (φ ((I.fm l u a).dil i v s L))) = 0`. Use function extensionality and compare the values at `L`. Rewrite using `[Finset.sum_apply, ← finsum_eq_sum_of_fintype]`. Conclude with `hR.2 v L`. Establish `hterm : ∀ s : ((I.atT l u a).Fv v)ˣ, (I.fm l u a).dilT (i + 1) v s c' ((I.chain l u a).K i φ ((I.fm l u a).dil (i + 1) v s c')) = (I.chain l u a).Klin i (fun L => (I.fm l u a).dilT i v s L (φ ((I.fm l u a).dil i v s L))) c'`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s`. Use `(dia_K_eq I l u a i v s φ c').trans ?_` and prove the remaining obligations. Use `show _ = ∑ L, (I.chain l u a).wt i L • (I.chain l u a).Kmap i L c' ((I.fm l u a).dilT i v s L (φ ((I.fm l u a).dil i v s L)))`. Conclude with `Finset.sum_congr rfl fun L _ => congrArg ((I.chain l u a).wt i L • ·) (entry_dia I l hI u a i hi φ hR.1 v s L c')`. Rewrite using `[finsum_eq_sum_of_fintype]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using `only [hterm]`. Rewrite using `[← Finset.sum_apply, ← map_sum, hsum, map_zero]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem kernel_keeps_ramT : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)),
     ∀ (u : B.Word) (a : I.ι) (i : ℕ), i < B.R.m → ∀ φ : ColT I l u a i, RamT i φ → RamT (i + 1) ((I.chain l u a).K i φ) := by

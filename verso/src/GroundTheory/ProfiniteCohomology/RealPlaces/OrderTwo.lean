@@ -16,7 +16,7 @@ section Group
 variable {G : Type} [Group G] {c : G}
 
 /- English proof (translation)
-Break down `hG (c * c) with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd (mul_eq_left.1 h) hc`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem mul_self_eq_one (hG : ∀ g : G, g = 1 ∨ g = c) (hc : c ≠ 1) : c * c = 1 := by
   rcases hG (c * c) with h | h
@@ -24,7 +24,7 @@ theorem mul_self_eq_one (hG : ∀ g : G, g = 1 ∨ g = c) (hc : c ≠ 1) : c * c
   · exact absurd (mul_eq_left.1 h) hc
 
 /- English proof (translation)
-The claim follows from `inv_eq_of_mul_eq_one_right (mul_self_eq_one hG hc)`.
+A detailed English derivation is pending.
 -/
 theorem inv_eq_self (hG : ∀ g : G, g = 1 ∨ g = c) (hc : c ≠ 1) : c⁻¹ = c :=
   inv_eq_of_mul_eq_one_right (mul_self_eq_one hG hc)
@@ -36,7 +36,7 @@ section Differentials
 variable {k G : Type} [CommRing k] [Group G] (A : Rep.{0} k G)
 
 /- English proof (translation)
-Establish `h : ∀ x : Fin 0 → G, f x = f Fin.elim0` using `fun x => by rw [Subsingleton.elim x Fin.elim0]`. Simplify using `[inhomogeneousCochains.d_hom_apply, h]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem d_zero_apply (f : (Fin 0 → G) → A) (g : G) :
     (inhomogeneousCochains.d A 0).hom f ![g] = A.ρ g (f Fin.elim0) - f Fin.elim0 := by
@@ -45,11 +45,11 @@ theorem d_zero_apply (f : (Fin 0 → G) → A) (g : G) :
   abel
 
 /- English proof (translation)
-Use `(inhomogeneousCochains_d_one_apply A _ ![g, h]).trans ?_` and prove the remaining obligations. Establish `e1 : (fun _ : Fin 1 => (![g, h] : Fin 2 → G) 1) = ![h]`. Use function extensionality and compare the values at `i`. Use `fin_cases i`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `e2 : (fun _ : Fin 1 => (![g, h] : Fin 2 → G) 0 * (![g, h] : Fin 2 → G) 1) = ![g * h]`. Use function extensionality and compare the values at `i`. Use `fin_cases i`. Both sides reduce to the same expression. Establish `e3 : (fun _ : Fin 1 => (![g, h] : Fin 2 → G) 0) = ![g]`.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 
-Use function extensionality and compare the values at `i`. Use `fin_cases i`. Both sides reduce to the same expression. Rewrite using `[e1, e2, e3]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem d_one_apply (w : (Fin 1 → G) → A) (g h : G) :
     (inhomogeneousCochains.d A 1).hom w ![g, h] = A.ρ g (w ![h]) - w ![g * h] + w ![g] := by
@@ -64,15 +64,15 @@ theorem d_one_apply (w : (Fin 1 → G) → A) (g h : G) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[inhomogeneousCochains.d_hom_apply, Fin.sum_univ_three]`. Establish `h0 : Fin.contractNth (0 : Fin 3) (· * ·) ![g, h, j] = ![g * h, j]`. Use function extensionality and compare the values at `i`. Use `fin_cases i`. Rewrite using `[Fin.contractNth_apply_of_eq _ _ _ _ (by simp)]; rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fin.contractNth_apply_of_gt _ _ _ _ (by simp)]; rfl`. Establish `h1 : Fin.contractNth (1 : Fin 3) (· * ·) ![g, h, j] = ![g, h * j]`. Use function extensionality and compare the values at `i`. Use `fin_cases i`. Rewrite using `[Fin.contractNth_apply_of_lt _ _ _ _ (by simp)]; rfl`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Fin.contractNth_apply_of_eq _ _ _ _ (by simp)]; rfl`. Establish `h2 : Fin.contractNth (2 : Fin 3) (· * ·) ![g, h, j] = ![g, h]`. Use function extensionality and compare the values at `i`. Use `fin_cases i`. Rewrite using `[Fin.contractNth_apply_of_lt _ _ _ _ (by simp)]; rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Fin.contractNth_apply_of_lt _ _ _ _ (by simp)]; rfl`. Establish `h3 : (fun i : Fin 2 => (![g, h, j] : Fin 3 → G) i.succ) = ![h, j]`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> rfl`. Rewrite using `[h0, h1, h2, h3]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Fin.val_zero, Fin.val_one, Fin.val_two, zero_add, pow_one, neg_smul, one_smul, Nat.reduceAdd, even_two, Even.neg_pow, one_pow]`. Establish `: ((-1 : k) ^ 3) = -1` using `by norm_num`. Rewrite using `[this, neg_smul, one_smul]`. Use `show A.ρ g (f ![h, j]) + (-f ![g * h, j] + f ![g, h * j] + -f ![g, h]) = _`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem d_two_apply (f : (Fin 2 → G) → A) (g h j : G) :
     (inhomogeneousCochains.d A 2).hom f ![g, h, j] =
@@ -112,7 +112,7 @@ variable {k G : Type} [CommRing k] [Group G] [TopologicalSpace G] [IsTopological
   (A : Rep.{0} k G) [IsDiscreteRep A]
 
 /- English proof (translation)
-The claim follows from `(congrFun (cochainOf_d (A := A) w) ![g]).trans (d_zero_apply A _ g)`.
+A detailed English derivation is pending.
 -/
 theorem cochainOf_d_zero (w : (cochainsComplex A).X 0) (g : G) :
     cochainOf A (((cochainsComplex A).d 0 1).hom w) ![g] =
@@ -120,7 +120,7 @@ theorem cochainOf_d_zero (w : (cochainsComplex A).X 0) (g : G) :
   (congrFun (cochainOf_d (A := A) w) ![g]).trans (d_zero_apply A _ g)
 
 /- English proof (translation)
-The claim follows from `(congrFun (cochainOf_d (A := A) w) ![g, h]).trans (d_one_apply A _ g h)`.
+A detailed English derivation is pending.
 -/
 theorem cochainOf_d_one (w : (cochainsComplex A).X 1) (g h : G) :
     cochainOf A (((cochainsComplex A).d 1 2).hom w) ![g, h] =
@@ -128,7 +128,7 @@ theorem cochainOf_d_one (w : (cochainsComplex A).X 1) (g h : G) :
   (congrFun (cochainOf_d (A := A) w) ![g, h]).trans (d_one_apply A _ g h)
 
 /- English proof (translation)
-The claim follows from `(congrFun (cochainOf_d (A := A) w) ![g, h, j]).trans (d_two_apply A _ g h j)`.
+A detailed English derivation is pending.
 -/
 theorem cochainOf_d_two (w : (cochainsComplex A).X 2) (g h j : G) :
     cochainOf A (((cochainsComplex A).d 2 3).hom w) ![g, h, j] =
@@ -144,7 +144,7 @@ theorem cochainOf_sub {i : ℕ} (a b : (cochainsComplex A).X i) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[← d_one_apply]`. Conclude with `congrFun (d_cocycleι z) ![g, h]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cocycle_one (z : cocycles A 1) (g h : G) :
     A.ρ g (cochainOf A (cocycleι A 1 z) ![h]) - cochainOf A (cocycleι A 1 z) ![g * h] +
@@ -153,7 +153,7 @@ theorem cocycle_one (z : cocycles A 1) (g h : G) :
   exact congrFun (d_cocycleι z) ![g, h]
 
 /- English proof (translation)
-Rewrite using `[← d_two_apply]`. Conclude with `congrFun (d_cocycleι z) ![g, h, j]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cocycle_two (z : cocycles A 2) (g h j : G) :
     A.ρ g (cochainOf A (cocycleι A 2 z) ![h, j]) - cochainOf A (cocycleι A 2 z) ![g * h, j] +
@@ -164,11 +164,11 @@ theorem cocycle_two (z : cocycles A 2) (g h j : G) :
 variable [DiscreteTopology G]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `((cochainsComplex A).homologyπ 1).hom z = 0 ↔ _`. Rewrite using `[homologyπ_eq_zero_iff, CochainComplex.prev_nat_succ]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw⟩`. Use `⟨cochainOf A w Fin.elim0, fun g => ?_⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e` using `congrArg (fun c => cochainOf A c ![g]) hw`. Rewrite `e` using `[cochainOf_d_zero]`. Conclude with `e.symm`. Introduce and unpack `⟨m, hm⟩`. Use `⟨mkCochain A (fun _ => m) (IsLocallyConstant.of_discrete _), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `cochainOf_injective` to reduce the goal to its premises. Use function extensionality and compare the values at `v`. Establish `hv : v = ![v 0]` using `by funext i; fin_cases i; rfl`. Rewrite using `[hv, cochainOf_d_zero]`. Conclude with `(hm (v 0)).symm`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cohomologyπ_one_eq_zero_iff (z : cocycles A 1) :
     cohomologyπ A 1 z = 0 ↔
@@ -190,11 +190,11 @@ theorem cohomologyπ_one_eq_zero_iff (z : cocycles A 1) :
     exact (hm (v 0)).symm
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `((cochainsComplex A).homologyπ 2).hom z = 0 ↔ _`. Rewrite using `[homologyπ_eq_zero_iff, CochainComplex.prev_nat_succ]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw⟩`. Use `⟨fun g => cochainOf A w ![g], fun g h => ?_⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e` using `congrArg (fun c => cochainOf A c ![g, h]) hw`. Rewrite `e` using `[cochainOf_d_one]`. Conclude with `e.symm`. Introduce and unpack `⟨f, hfz⟩`. Use `⟨mkCochain A (fun v : Fin 1 → G => f (v 0)) ((IsLocallyConstant.of_discrete f).comp_continuous (continuous_apply 0)), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `cochainOf_injective` to reduce the goal to its premises. Use function extensionality and compare the values at `v`. Apply the tactic sequence `have hv : v = ![v 0, v 1] := by funext i; fin_cases i <;> rfl`. Rewrite using `[hv, cochainOf_d_one]`. Conclude with `(hfz (v 0) (v 1)).symm`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cohomologyπ_two_eq_zero_iff (z : cocycles A 2) :
     cohomologyπ A 2 z = 0 ↔ ∃ f : G → A, ∀ g h : G,
@@ -230,7 +230,7 @@ def cochainOne (α : A) : (Fin 1 → G) → A := fun v => if v 0 = 1 then 0 else
 
 omit [TopologicalSpace G] [IsTopologicalGroup G] [DiscreteTopology G] in
 /- English proof (translation)
-Simplify using `[cochainOne]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cochainOne_one (α : A) : cochainOne A α ![1] = 0 := by
   simp [cochainOne]
@@ -238,7 +238,7 @@ theorem cochainOne_one (α : A) : cochainOne A α ![1] = 0 := by
 include hc in
 omit [TopologicalSpace G] [IsTopologicalGroup G] [DiscreteTopology G] in
 /- English proof (translation)
-Simplify using `[cochainOne, hc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cochainOne_c (α : A) : cochainOne A α ![c] = α := by
   simp [cochainOne, hc]
@@ -246,9 +246,9 @@ theorem cochainOne_c (α : A) : cochainOne A α ![c] = α := by
 include hG hc in
 
 /- English proof (translation)
-Apply `cochainOf_injective` to reduce the goal to its premises. Use function extensionality and compare the values at `v`. Apply the tactic sequence `have hv : v = ![v 0, v 1] := by funext i; fin_cases i <;> rfl`. Rewrite using `[hv, cochainOf_d_one, cochainOf_mkCochain, cochainOf_zero, Pi.zero_apply]`. Establish `hcc` using `mul_self_eq_one hG hc`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply the tactic sequence `rcases hG (v 0) with h0 | h0 <;> rcases hG (v 1) with h1 | h1 <;>`. Simplify using `[h0, h1, hcc, cochainOne_one, cochainOne_c A hc]`. Rewrite using `[add_comm]`. Conclude with `hα`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem d_cochainOne (α : A) (hα : α + A.ρ c α = 0) :
     (cochainsComplex A).d 1 2 (mkCochain A (cochainOne A α) (IsLocallyConstant.of_discrete _)) =
@@ -268,7 +268,7 @@ def cocycleOne (α : A) (hα : α + A.ρ c α = 0) : cocycles A 1 :=
     (by simp) (d_cochainOne A hG hc α hα)
 
 /- English proof (translation)
-The claim follows from `congrArg (cochainOf A) ((cochainsComplex A).i_cyclesMk _ _ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem cochainOf_cocycleOne (α : A) (hα : α + A.ρ c α = 0) :
     cochainOf A (cocycleι A 1 (cocycleOne A hG hc α hα)) = cochainOne A α :=
@@ -285,13 +285,13 @@ variable {k G : Type} [CommRing k] [Group G] [TopologicalSpace G] [IsTopological
 include hG hc in
 
 /- English proof (translation)
-Establish `h11` using `cocycle_one A z 1 1`. Establish `hcc` using `cocycle_one A z c c`. Rewrite `hcc` using `[mul_self_eq_one hG hc]`. Simplify using `only [one_mul, map_one, Module.End.one_apply] at h11`. Establish `hw1 : cochainOf A (cocycleι A 1 z) ![1] = 0` using `by simpa using h11`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hα : cochainOf A (cocycleι A 1 z) ![c] + A.ρ c (cochainOf A (cocycleι A 1 z) ![c]) = 0`. Rewrite `hcc` using `[hw1, sub_zero]`. Rewrite using `[add_comm]`. Conclude with `hcc`. Use `⟨_, hα, cocycles_ext ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cochainOf_cocycleOne]`. Use function extensionality and compare the values at `v`. Establish `hv : v = ![v 0]` using `by funext i; fin_cases i; rfl`. Rewrite using `[hv]`. Break down `hG (v 0) with h0 | h0` into its components or cases.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using `only [h0]`. Rewrite using `[cochainOne_one]`. Conclude with `hw1`. Simplify using `only [h0]`. Rewrite using `[cochainOne_c A hc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_eq_cocycleOne (z : cocycles A 1) :
     ∃ (α : A) (hα : α + A.ρ c α = 0), z = cocycleOne A hG hc α hα := by
@@ -319,9 +319,9 @@ theorem exists_eq_cocycleOne (z : cocycles A 1) :
 include hG in
 
 /- English proof (translation)
-Rewrite using `[cohomologyπ_one_eq_zero_iff, cochainOf_cocycleOne]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, hm⟩`. Conclude with `⟨m, (cochainOne_c A hc α).symm.trans (hm c)⟩`. Introduce and unpack `⟨m, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use `⟨m, fun g => ?_⟩` and prove the remaining obligations. Break down `hG g with rfl | rfl` into its components or cases. Rewrite using `[cochainOne_one, map_one, Module.End.one_apply, sub_self]`. Conclude with `cochainOne_c A hc _`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cohomologyπ_cocycleOne_eq_zero_iff (α : A) (hα : α + A.ρ c α = 0) :
     cohomologyπ A 1 (cocycleOne A hG hc α hα) = 0 ↔ ∃ m : A, α = A.ρ c m - m := by
@@ -349,7 +349,7 @@ def cochainTwo (c : G) (a : A) : (Fin 2 → G) → A := fun v => if v 0 = c ∧ 
 
 omit [TopologicalSpace G] [IsTopologicalGroup G] [DiscreteTopology G] in
 /- English proof (translation)
-Simplify using `[cochainTwo]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cochainTwo_cc (a : A) : cochainTwo A c a ![c, c] = a := by
   simp [cochainTwo]
@@ -357,7 +357,7 @@ theorem cochainTwo_cc (a : A) : cochainTwo A c a ![c, c] = a := by
 include hc in
 omit [TopologicalSpace G] [IsTopologicalGroup G] [DiscreteTopology G] in
 /- English proof (translation)
-Simplify using `[cochainTwo, hc.symm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cochainTwo_one_left (a : A) (g : G) : cochainTwo A c a ![1, g] = 0 := by
   simp [cochainTwo, hc.symm]
@@ -365,7 +365,7 @@ theorem cochainTwo_one_left (a : A) (g : G) : cochainTwo A c a ![1, g] = 0 := by
 include hc in
 omit [TopologicalSpace G] [IsTopologicalGroup G] [DiscreteTopology G] in
 /- English proof (translation)
-Simplify using `[cochainTwo, hc.symm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cochainTwo_one_right (a : A) (g : G) : cochainTwo A c a ![g, 1] = 0 := by
   simp [cochainTwo, hc.symm]
@@ -373,9 +373,9 @@ theorem cochainTwo_one_right (a : A) (g : G) : cochainTwo A c a ![g, 1] = 0 := b
 include hG hc in
 
 /- English proof (translation)
-Apply `cochainOf_injective` to reduce the goal to its premises. Use function extensionality and compare the values at `v`. Apply the tactic sequence `have hv : v = ![v 0, v 1, v 2] := by funext i; fin_cases i <;> rfl`. Rewrite using `[hv, cochainOf_d_two, cochainOf_mkCochain, cochainOf_zero, Pi.zero_apply]`. Establish `hcc` using `mul_self_eq_one hG hc`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply the tactic sequence `rcases hG (v 0) with h0 | h0 <;> rcases hG (v 1) with h1 | h1 <;> rcases hG (v 2) with h2 | h2 <;>`. Simplify using `[h0, h1, h2, hcc, cochainTwo_cc, cochainTwo_one_left A hc, cochainTwo_one_right A hc, ha]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem d_cochainTwo (a : A) (ha : A.ρ c a = a) :
     (cochainsComplex A).d 2 3 (mkCochain A (cochainTwo A c a) (IsLocallyConstant.of_discrete _)) =
@@ -393,7 +393,7 @@ def cocycleTwo (a : A) (ha : A.ρ c a = a) : cocycles A 2 :=
     (by simp) (d_cochainTwo A hG hc a ha)
 
 /- English proof (translation)
-The claim follows from `congrArg (cochainOf A) ((cochainsComplex A).i_cyclesMk _ _ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem cochainOf_cocycleTwo (a : A) (ha : A.ρ c a = a) :
     cochainOf A (cocycleι A 2 (cocycleTwo A hG hc a ha)) = cochainTwo A c a :=
@@ -402,11 +402,11 @@ theorem cochainOf_cocycleTwo (a : A) (ha : A.ρ c a = a) :
 include hG in
 
 /- English proof (translation)
-Rewrite using `[cohomologyπ_two_eq_zero_iff, cochainOf_cocycleTwo]`. Establish `hcc` using `mul_self_eq_one hG hc`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨f, hf⟩`. Establish `h11` using `hf 1 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hcc'` using `hf c c`. Rewrite `h11` using `[cochainTwo_one_left A hc]`. Simplify using `only [one_mul, map_one, Module.End.one_apply, sub_self, zero_add] at h11`. Rewrite `hcc'` using `[cochainTwo_cc, hcc, ← h11, sub_zero]`. Conclude with `⟨f c, hcc'.trans (add_comm _ _)⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Introduce and unpack `⟨m, rfl⟩ classical`. Use `⟨fun g => if g = 1 then 0 else m, fun g h => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rcases hG g with hg | hg <;> rcases hG h with hh | hh <;>`. Simplify using `[hg, hh, hcc, hc, cochainTwo_cc, cochainTwo_one_left A hc, cochainTwo_one_right A hc, add_comm]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem cohomologyπ_cocycleTwo_eq_zero_iff (a : A) (ha : A.ρ c a = a) :
     cohomologyπ A 2 (cocycleTwo A hG hc a ha) = 0 ↔ ∃ m : A, a = m + A.ρ c m := by
@@ -430,11 +430,11 @@ theorem cohomologyπ_cocycleTwo_eq_zero_iff (a : A) (ha : A.ρ c a = a) :
 include hG hc in
 
 /- English proof (translation)
-Establish `hcc` using `mul_self_eq_one hG hc`. Establish `e` using `cocycle_two A z c c c`. Rewrite `e` using `[hcc, h1, h2, sub_zero, add_zero, sub_eq_zero]`. Use `⟨e, cocycles_ext ?_⟩` and prove the remaining obligations. Rewrite using `[cochainOf_cocycleTwo]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `v`. Apply the tactic sequence `have hv : v = ![v 0, v 1] := by funext i; fin_cases i <;> rfl`. Rewrite using `[hv]`. Apply the tactic sequence `rcases hG (v 0) with h0 | h0 <;> rcases hG (v 1) with h1' | h1' <;> rw [h0, h1']`. Rewrite using `[h1, cochainTwo_one_left A hc]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, cochainTwo_one_left A hc]`. Rewrite using `[h2, cochainTwo_one_right A hc]`. Rewrite using `[cochainTwo_cc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_eq_cocycleTwo_of_normalized (z : cocycles A 2)
     (h1 : ∀ g, cochainOf A (cocycleι A 2 z) ![1, g] = 0)
@@ -466,19 +466,19 @@ variable {k G : Type} [CommRing k] [Group G] [TopologicalSpace G] [IsTopological
 include hG hc in
 
 /- English proof (translation)
-Establish `hcc` using `mul_self_eq_one hG hc`. Use `set w := cochainOf A (cocycleι A 2 z) with hw`. Establish `e1 : ∀ g, w ![1, g] = w ![1, 1]` using `fun g => by`. Establish `e` using `cocycle_two A z 1 1 g`. Simplify using `only [one_mul, map_one, Module.End.one_apply] at e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[← hw]`. Rewrite using `[← sub_eq_zero, ← e]`. Normalize the expressions using the abelian group laws. Establish `e2 : ∀ g, w ![g, 1] = A.ρ g (w ![1, 1])` using `fun g => by`. Establish `e` using `cocycle_two A z g 1 1`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [mul_one] at e`. Rewrite `e` using `[← hw]`. Rewrite using `[eq_comm, ← sub_eq_zero, ← e]`. Normalize the expressions using the abelian group laws. Establish `e3` using `cocycle_two A z c c c`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e3` using `[← hw, hcc, e1 c, e2 c]`. Use `set a := w ![c, c] - A.ρ c (w ![1, 1]) with ha_def`. Establish `ha : A.ρ c a = a`. Establish `hρ : A.ρ c (A.ρ c (w ![1, 1])) = w ![1, 1]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, hcc, map_one, Module.End.one_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[ha_def, map_sub, hρ, ← sub_eq_zero, ← e3]`. Normalize the expressions using the abelian group laws. Use `⟨a, ha, ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_zero, ← map_sub, cohomologyπ_two_eq_zero_iff]`. Use `⟨fun _ => w ![1, 1], fun g h => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[map_sub, cochainOf_sub, Pi.sub_apply, cochainOf_cocycleTwo, ← hw]`. Apply the tactic sequence `rcases hG g with hg | hg <;> rcases hG h with hh | hh <;> rw [hg, hh]`. Rewrite using `[cochainTwo_one_left A hc, e1, map_one, Module.End.one_apply]`. Normalize the expressions using the abelian group laws. Rewrite using `[cochainTwo_one_left A hc, e1, map_one, Module.End.one_apply]`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[cochainTwo_one_right A hc, e2]`. Normalize the expressions using the abelian group laws. Rewrite using `[cochainTwo_cc, ha_def]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem exists_cohomologyπ_eq_cocycleTwo (z : cocycles A 2) :
     ∃ (a : A) (ha : A.ρ c a = a), cohomologyπ A 2 z = cohomologyπ A 2 (cocycleTwo A hG hc a ha) := by
@@ -518,7 +518,7 @@ omit [TopologicalSpace G] [IsTopologicalGroup G] [DiscreteTopology G] [IsDiscret
 include hG hc in
 
 /- English proof (translation)
-Establish `huniv : (Finset.univ : Finset G) = {1, c}`. Use extensionality with `g`. Simplify using `only [Finset.mem_univ, Finset.mem_insert, Finset.mem_singleton, true_iff]`. Conclude with `hG g`. Rewrite using `[Representation.norm, LinearMap.sum_apply, huniv, Finset.sum_pair hc.symm, map_one, Module.End.one_apply]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_apply [Fintype G] (m : A) : A.ρ.norm m = m + A.ρ c m := by
   classical

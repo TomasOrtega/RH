@@ -25,9 +25,9 @@ noncomputable section
 namespace GlobalTheory.FrameBlockTriangular
 
 /- English proof (translation)
-Introduce `hL`. Use `GlobalTheory.HeightCounting.Up.Model.AtMem.imp (GlobalTheory.HeightCounting.Up.Model.AtMem.and (GlobalTheory.T.central_frame_split_nontrivial_at hL) (GlobalTheory.T.exists_residue_ne_zero_one hL)) ?_` and prove the remaining obligations. Introduce `K B f T w Z Wt p0 t nch n c h ad i s k hs hN s' φ b hP hres hfr`. Take `⟨F, J, χ, ψ₀, ξ, hF, hψ, hJ, hFJ, hS⟩` from `h.1 ad i s k hs hN s' φ b hP hres hfr`. Establish `hr : 2 ≤ (w.st Z).toD7.R.r`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `(w.st Z).toD7.R.two_le_m`. Establish `h2` using `(w.st Z).toD7.R.m_add_three_le_k`. Unfold `Formalism.BasicNotions.Ranks.r`. Use linear arithmetic over natural numbers and integers. Conclude with `GlobalTheory.T.conjugate_blockUpper_of_eigenfunction_unipotentType (t := (w.st Z).toD7.R.t) rfl hr s' φ hres (h.2 _ hP) F hF J χ ψ₀ ξ hψ hJ hFJ b hS`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem blockTri_at : ∀ hL : GlobalTheory.Published.LocalLanglandsGL, AtMem hL fun _ _ _ _ w Z _ _ t _ _ c =>
   ∀ (ad : MtAd t.r.Y c.a.all.gal.mt) (i : (w.st Z).toD7.nd.Loc) s (k : Fin (w.st Z).toD7.R.m), t.r.Y.tup s = (w.st Z).toD7.nd.mu i →

@@ -20,7 +20,7 @@ namespace GlobalTheory.WeightProbe
 variable {S : Scheme.{0}}
 
 /- English proof (translation)
-Use `congrArg (v ≫ ·) h` as an intermediate fact. Simplify using `only [MonObj.comp_pow, MonObj.comp_one] at this`. Rewrite `this` using `[← Category.assoc, e, Category.id_comp]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem pow_eq_one_of_section {A : Over S} [GrpObj A] {T T' : Over S} (u : T' ⟶ T) (v : T ⟶ T')
     (e : v ≫ u = 𝟙 T) (x : T ⟶ A) (N : ℕ) (h : (u ≫ x) ^ N = 1) : x ^ N = 1 := by
@@ -29,7 +29,7 @@ theorem pow_eq_one_of_section {A : Over S} [GrpObj A] {T T' : Over S} (u : T' �
   rwa [← Category.assoc, e, Category.id_comp] at this
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Over.homMk T.left.topIso.inv (by show T.left.topIso.inv ≫ (⊤ : T.left.Opens).ι ≫ T.hom = T.hom rw [← Category.assoc, Scheme.toIso_inv_ι, Category.id_comp]), Over.OverMorphism.ext T.left.toIso_inv_ι⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_section_top (T : Over S) : ∃ v : T ⟶ overRes (⊤ : T.left.Opens), v ≫ overResι ⊤ = 𝟙 T :=
   ⟨Over.homMk T.left.topIso.inv (by
@@ -37,7 +37,7 @@ theorem exists_section_top (T : Over S) : ∃ v : T ⟶ overRes (⊤ : T.left.Op
     rw [← Category.assoc, Scheme.toIso_inv_ι, Category.id_comp]), Over.OverMorphism.ext T.left.toIso_inv_ι⟩
 
 /- English proof (translation)
-Use `⟨fun H => ⟨H.1, H.2.1, H.2.2.1⟩, fun ⟨a, b, c⟩ => ⟨a, b, c, fun p => ⟨⊤, trivial, _, VVRank.isPullSec_pullS P.A N (overResι ⊤) s, fun i U s' hU _ => ?_⟩⟩⟩` and prove the remaining obligations. Take `⟨v, e⟩` from `exists_section_top T`. Conclude with `absurd (pow_eq_one_of_section _ v e (h i) N (hU.pt_eq ▸ PairingLawsCompare.theta_pt_pow P N U)) (hh i)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem inVVw_iff_of_not_torsion (P : PolAV S) (N m : ℕ) {T : Over S} {I : Type} (h : I → (T ⟶ P.A))
     (hh : ∀ i, h i ^ N ≠ 1) (χ : I → Γ(T.left, ⊤)ˣ) (s : LB.Sec (LPow P.A P.L N T)) :
@@ -49,19 +49,19 @@ theorem inVVw_iff_of_not_torsion (P : PolAV S) (N m : ℕ) {T : Over S} {I : Typ
     (hU.pt_eq ▸ PairingLawsCompare.theta_pt_pow P N U)) (hh i)
 
 /- English proof (translation)
-Take `⟨P, hP⟩` from `MulLawTest.exists_dim_one`. Establish `hc` using `(MulLawTest.mulN _ P 2 (by norm_num)).2.2.2.2 ℂ (𝟙 _) (by norm_num)`. Rewrite `hc` using `[hP]`. Establish `hf : Finite {x : Over.mk (𝟙 (Spec (CommRingCat.of ℂ))) ⟶ P.A // x ^ 2 = 1}` using `Nat.finite_of_card_ne_zero (by rw [hc]; norm_num)`. Establish `hn : Nontrivial {x : Over.mk (𝟙 (Spec (CommRingCat.of ℂ))) ⟶ P.A // x ^ 2 = 1}` using `Finite.one_lt_card_iff_nontrivial.1 (by rw [hc]; norm_num)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨⟨x, hx⟩, hne⟩` from `exists_ne (⟨1, one_pow 2⟩ : {x : Over.mk (𝟙 (Spec (CommRingCat.of ℂ))) ⟶ P.A // x ^ 2 = 1})`. Establish `hx9 : x ^ (3 ^ 2) ≠ 1` using `fun e => hne (Subtype.ext (by`. Establish `: x ^ (3 ^ 2) = (x ^ 2) ^ 4 * x` using `by rw [← pow_mul, ← pow_succ]; rfl`. Rewrite using `[this, hx, one_pow, _root_.one_mul] at e))` and apply the resulting hypothesis. Establish `hz` using `Complex.isPrimitiveRoot_exp (3 ^ 2) (by norm_num)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hlev` using `GlobalTheory.nonempty_level_of_isAlgClosed ℂ P (3 ^ 2) (hz.isUnit (by norm_num)).unit (by norm_num) (hz.isUnit_unit (by norm_num))`. Establish `hu : ∀ n : ℕ, n ≠ 0 → IsUnit ((n : Γ(Spec (CommRingCat.of ℂ), ⊤)))` using `fun n h0 => by`. Use `(IsUnit.mk0 (n : ℂ) (by exact_mod_cast h0)).map (Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Set `p : (baseOver (Spec (CommRingCat.of ℂ))).left` to `(⊥ : PrimeSpectrum ℂ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression.
 
-Take `⟨V, hp, -, -, hr⟩` from `GlobalTheory.abelianSchemeLaws_all.1.vvRank _ P 3 _ (by decide) (hu 3 (by norm_num)) hlev (baseOver _) p`. Establish `hsub : Subsingleton (baseOver (Spec (CommRingCat.of ℂ))).left` using `inferInstanceAs (Subsingleton (PrimeSpectrum ℂ))`. Take `⟨v, e⟩` from `GlobalLift.exists_section hp`. Establish `hy : (overResι V ≫ x) ^ (3 ^ 2) ≠ 1` using `fun h => hx9 (pow_eq_one_of_section _ v e x _ h)`. Establish `hb : VVsub P (3 ^ 2) 3 (overRes V) ≠ ⊥` using `fun h => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : Nonempty (⊤ : V.toScheme.Opens)` using `⟨⟨⟨p, hp⟩, trivial⟩⟩`. Establish `hnt : Nontrivial Γ((overRes V).left, ⊤)` using `Scheme.component_nontrivial V.toScheme ⊤`. Rewrite `hr` using `[h, finrank_bot, hP]`. Evaluate the numerical expressions using `at hr`. Establish `: ∃ f, (∃ h : f ∈ SecM P.A P.L (3 ^ 2 : ℕ) (overRes V), InVV P (3 ^ 2) 3 (SecM.toSec P.A ⟨f, h⟩)) ∧ f ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `H`. Use `push Not at H`. Conclude with `hb (Submodule.span_eq_bot.2 H)`. Take `⟨f, ⟨hf, hs⟩, h0⟩` from `this`. Use `⟨P, overRes V, overResι V ≫ x, SecM.toSec P.A ⟨f, hf⟩, hP, ⟨⟨p, hp⟩⟩, h0, fun χ => ?_, fun χ H => hy (H.2.2.1 ())⟩` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(inVVw_iff_of_not_torsion P _ _ _ (fun _ => hy) _ _).2 ⟨by decide, ?_, hs⟩` and prove the remaining obligations. Use `(hu (3 ^ 2) (by norm_num)).map (overRes V).hom.appTop.hom` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_every_weight : ∃ (P : PolAV (Spec (CommRingCat.of ℂ))) (T : Over (Spec (CommRingCat.of ℂ)))
     (x : T ⟶ P.A) (s : LB.Sec (LPow P.A P.L (3 ^ 2 : ℕ) T)), P.g = 1 ∧ Nonempty T.left ∧ s.f ≠ 0 ∧
@@ -108,9 +108,9 @@ theorem exists_every_weight : ∃ (P : PolAV (Spec (CommRingCat.of ℂ))) (T : O
   rwa [map_natCast] at this
 
 /- English proof (translation)
-Establish `g` using `GlobalTheory.abelianSchemeLaws_all.1.globalFns`. Establish `lft` using `(GlobalTheory.kerPow_of_square (GlobalTheory.AbSquare.square_of_cube GlobalTheory.AbLaw.CubeAssembly.cube_and_sections.1).1).2.2`. Establish `neg` using `GlobalTheory.exists_gen_negLB g`. Take `⟨θ, hθ⟩` from `SymLiftGlobal.exists_lift_of_local g P.isAb P.isLB hN ((GlobalTheory.symLift_odd g lft neg).1 S P N hN T x hx).1`. Take `⟨nu, hnu⟩` from `neg S P N T`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `SymLiftOdd.exists_symLift g P.isAb P.isLB hN hx θ hθ hnu`.
+A detailed English derivation is pending.
 -/
 theorem exists_symLift_top (P : PolAV S) {N : ℕ} (hN : Odd N) {T : Over S} (x : T ⟶ P.A) (hx : x ^ N = 1) :
     ∃ U : ThetaGrp P.A P.L N T, SymLift P.A P.L N N x U := by
@@ -126,9 +126,9 @@ theorem exists_symLift_top (P : PolAV S) {N : ℕ} (hN : Odd N) {T : Over S} (x 
 open GlobalTheory.IndefiniteRowSideFullHecke.SectionsGroupRank VVCompare CommPairing in
 
 /- English proof (translation)
-Take `⟨ξ, Hξ, v⟩` from `SymLiftGlobal.exists_symLift_pull_val P.isLB u H`. Establish `c` using `SymLiftOdd.symLift_unique GlobalTheory.abelianSchemeLaws_all.1.globalFns P.isAb P.isLB hN θ' ξ H' Hξ`. Use `VVCompare.isTwistPull_of_sv P.A P.isLB θ'.isGen fun y J hJ => ?_` and prove the remaining obligations. Establish `e : tval θ' (𝟙 _) y J = tval θ (𝟙 _ ≫ (u ▷ P.A).left) y J` using `(val_corr hJ c _).trans (v _ _ y J hJ)`. Establish `e' : (𝟙 _ ≫ (translT P.A θ'.pt).left) ≫ (u ▷ P.A).left = (𝟙 _ ≫ (u ▷ P.A).left) ≫ (translT P.A θ.pt).left`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[H'.pt_eq, H.pt_eq, Category.assoc, Category.assoc, ← Over.comp_left, ← Over.comp_left, whisker_translT]`. Rewrite using `[VVCompare.sv_pullS P.A _ u t _ y hJ, VVCompare.sv_pullS P.A _ u s _ y hJ, e']`. Conclude with `(VVCompare.sv_of_isTwistPull P.A a _ y hJ).trans (congrArg (fun q => Units.val q * _) e.symm)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem act_pull (P : PolAV S) {N : ℕ} (hN : Odd N) {T T' : Over S} (u : T' ⟶ T) {x : T ⟶ P.A}
     {θ : ThetaGrp P.A P.L N T} {θ' : ThetaGrp P.A P.L N T'} (H : SymLift P.A P.L N N x θ)

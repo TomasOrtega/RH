@@ -78,36 +78,36 @@ def LargeBaseConditionG (KP : BaseP) (Q R : V4.Slot) : Prop :=
     (G : GJStage B C) (c : V4.Core K ⟨B, C, W, V, S, N, G⟩ f T), Q K ⟨B, C, W, V, S, N, G⟩ f T c → R K ⟨B, C, W, V, S, N, G⟩ f T c
 
 /- English proof (translation)
-The claim follows from `evG_good.imp fun K _ _ _ _ _ => h K`.
+A detailed English derivation is pending.
 -/
 theorem evG_all {p : Ctx → Prop} (h : ∀ K, p K) : EvG p := evG_good.imp fun K _ _ _ _ _ => h K
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem fromCore_iff (Q : V4.Slot) (D : D7) (Y : Lay D) : V4.FromCore Q D Y ↔ ∃ K, FromCoreAt Q K D Y := Iff.rfl
 
 /- English proof (translation)
-The claim follows from `evG_of_ev h`.
+A detailed English derivation is pending.
 -/
 theorem exTrueG_of {KP : BaseP} {Q : V4.Slot} (h : V4.ExTrue KP Q) : ExTrueG KP Q := evG_of_ev h
 /- English proof (translation)
-The claim follows from `evG_of_ev h`.
+A detailed English derivation is pending.
 -/
 theorem exportG_of {Q : V4.Slot} (h : V4.Export Q) : ExportG Q := evG_of_ev h
 /- English proof (translation)
-The claim follows from `evG_of_ev h`.
+A detailed English derivation is pending.
 -/
 theorem retwistG_of {Q Q' : V4.Slot} (h : V4.Retwist Q Q') : RetwistG Q Q' := evG_of_ev h
 
 /- English proof (translation)
-Use `⟨((evG_of_ev h.ex).inter hP).imp ?_, fun B B' f f' e hf hk => ⟨h.enl B B' f f' e hf hk.1, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `K _ _ _ _ ⟨hk, P, f₀, hO, hp⟩`. Take `⟨B₀, rfl, -⟩` from `BaseExt.exists_base P ∅ ∅ ∅ (by simp) (by simp) (by simp)`. Use `⟨_, f₀, hO, fun S₁ S₂ a₁ a₂ => ?_⟩` and prove the remaining obligations. Take `⟨B, f, e, hf, k, H⟩` from `hk B₀ f₀ S₁ S₂ hO a₁ a₂`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨B, f, e, hf, ⟨k, ?_⟩, H⟩` and prove the remaining obligations. Generalize the expression as in `B₀.toPre = P₀ at *`. Substitute `e` using the available equality. Consider the cases of `hf`. Conclude with `hp`.
+Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable. Substitute using the available equality. Split into cases according to the possible forms of the given data. Establish an intermediate fact.
 
-Establish `e1` using `e.1`. Establish `h2` using `hk.2`. Use `clear hk e`. Generalize the expression as in `B.toPre = P at *`. Generalize the expression as in `B'.toPre = P' at *`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Substitute using the available equality. Split into cases according to the possible forms of the given data.
 
-Substitute `e1` using the available equality. Consider the cases of `hf`. Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem baseCond_of {KP : BaseP} (h : V4.KsCond KP) {PP : ∀ P : Pre, Fr P → Prop}
     (hP : EvG fun K => ∃ (P : Pre) (f : Fr P), K.Over P ∧ PP P f) : BaseCond fun B f => KP B f ∧ PP B.toPre f := by
@@ -131,9 +131,9 @@ theorem baseCond_of {KP : BaseP} (h : V4.KsCond KP) {PP : ∀ P : Pre, Fr P → 
     exact h2
 
 /- English proof (translation)
-Establish `h : ∀ P : Pre, ∃ S : Finset ℕ, ∀ p : ℕ, p.Prime → ((∃ i, p = P.host.g i) ∨ p = P.host.d ∨ (p : ℝ) ≤ K.s.X'' P.R.n) → p ∈ S` using `fun P => by`. Use `⟨{P.host.g 0, P.host.g 1, P.host.d} ∪ Finset.range (⌊K.s.X'' P.R.n⌋₊ + 1), ?_⟩` and prove the remaining obligations. Introduce and unpack `p - (⟨i, rfl⟩ | rfl | h)`. Apply the tactic sequence `fin_cases i <;> simp`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.mem_union_right _ (Finset.mem_range.2 (Nat.lt_succ_of_le (Nat.le_floor h)))`. Use `choose S hS using h`. Conclude with `⟨fun _ _ _ => ∅, fun P _ _ _ => S P, fun _ _ _ _ _ => ∅, fun _ _ _ _ _ => ∅, by simp, by simp, fun B _ _ _ _ h _ p hp h' => h (hS _ p hp h')⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lg_forced (K : Ctx) : large₂ K fun B _ T => Forced K B T := by
   have h : ∀ P : Pre, ∃ S : Finset ℕ,
@@ -148,7 +148,7 @@ theorem lg_forced (K : Ctx) : large₂ K fun B _ T => Forced K B T := by
     fun B _ _ _ _ h _ p hp h' => h (hS _ p hp h')⟩
 
 /- English proof (translation)
-The claim follows from `(lg_forced K).imp fun B f T hO _ => h B f T hO`.
+A detailed English derivation is pending.
 -/
 theorem lg_all (K : Ctx) {p : ∀ B : Base, Fr B.toPre → TwDat B → Prop} (h : ∀ B f T, K.Over B.toPre → p B f T) : large₂ K p :=
   (lg_forced K).imp fun B f T hO _ => h B f T hO
@@ -157,55 +157,55 @@ section Steps
 variable {KP : BaseP} {p q r : AtP}
 
 /- English proof (translation)
-The claim follows from `EvG.imp h fun K _ _ _ _ H => lg_all K H`.
+A detailed English derivation is pending.
 -/
 theorem Step.of_evG (h : EvG fun K => ∀ B f T, K.Over B.toPre → KP B f → Forced K B T → p K B f T → q K B f T) : Step KP p q :=
   EvG.imp h fun K _ _ _ _ H => lg_all K H
 
 /- English proof (translation)
-The claim follows from `Step.of_evG (evG_all h)`.
+A detailed English derivation is pending.
 -/
 theorem Step.of_all (h : ∀ K B f T, K.Over B.toPre → KP B f → Forced K B T → p K B f T → q K B f T) : Step KP p q :=
   Step.of_evG (evG_all h)
 
 /- English proof (translation)
-The claim follows from `(EvG.inter h h').imp fun _ _ _ _ _ H => (H.1.inter H.2).imp fun _ _ _ _ G a b c => G.2 a b (G.1 a b c)`.
+A detailed English derivation is pending.
 -/
 theorem Step.trans (h : Step KP p q) (h' : Step KP q r) : Step KP p r :=
   (EvG.inter h h').imp fun _ _ _ _ _ H => (H.1.inter H.2).imp fun _ _ _ _ G a b c => G.2 a b (G.1 a b c)
 
 /- English proof (translation)
-The claim follows from `(EvG.inter h h').imp fun _ _ _ _ _ H => (H.1.inter H.2).imp fun _ _ _ _ G a b c => ⟨G.1 a b c, G.2 a b c⟩`.
+A detailed English derivation is pending.
 -/
 theorem Step.and (h : Step KP p q) (h' : Step KP p r) : Step KP p fun K B f T => q K B f T ∧ r K B f T :=
   (EvG.inter h h').imp fun _ _ _ _ _ H => (H.1.inter H.2).imp fun _ _ _ _ G a b c => ⟨G.1 a b c, G.2 a b c⟩
 
 /- English proof (translation)
-The claim follows from `EvG.imp h fun _ _ _ _ _ H => H.imp fun _ _ _ _ G _ _ _ => G`.
+A detailed English derivation is pending.
 -/
 theorem Step.of_evLgG (h : EvLgG q) : Step KP p q := EvG.imp h fun _ _ _ _ _ H => H.imp fun _ _ _ _ G _ _ _ => G
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => EvG.imp h fun _ _ _ _ _ H => H.imp fun _ _ _ _ G a _ _ => G a, fun h => EvG.imp h fun K _ _ _ _ H => (H.inter (lg_forced K)).imp fun _ _ _ _ G a => G.1 a G.2 trivial⟩`.
+Supply the required witnesses or components.
 -/
 theorem exTrueG_iff_step {Q : V4.Slot} : ExTrueG KP Q ↔ Step KP (fun _ _ _ _ => True) (HasCore Q) :=
   ⟨fun h => EvG.imp h fun _ _ _ _ _ H => H.imp fun _ _ _ _ G a _ _ => G a,
     fun h => EvG.imp h fun K _ _ _ _ H => (H.inter (lg_forced K)).imp fun _ _ _ _ G a => G.1 a G.2 trivial⟩
 
 /- English proof (translation)
-The claim follows from `(Step.of_all fun _ _ _ _ _ _ _ _ => trivial).trans (exTrueG_iff_step.1 h)`.
+A detailed English derivation is pending.
 -/
 theorem firstG_of {Q : V4.Slot} (h : ExTrueG KP Q) : FirstG KP Q :=
   (Step.of_all fun _ _ _ _ _ _ _ _ => trivial).trans (exTrueG_iff_step.1 h)
 
 /- English proof (translation)
-The claim follows from `EvG.imp h fun K _ _ _ _ H => lg_all K fun B f T _ _ _ C W V S N G c q => H ⟨B, C, W, V, S, N, G⟩ f T c q`.
+A detailed English derivation is pending.
 -/
 theorem exportF_of {Q : V4.Slot} (h : ExportG Q) : ExportF KP Q :=
   EvG.imp h fun K _ _ _ _ H => lg_all K fun B f T _ _ _ C W V S N G c q => H ⟨B, C, W, V, S, N, G⟩ f T c q
 
 /- English proof (translation)
-The claim follows from `EvG.imp h fun K _ _ _ _ H => lg_all K fun B f T _ _ _ C W V S N G c q e A S₂ a => let ⟨B', f', T', a1, a2, a3, a4, a5, a6⟩ := H ⟨B, C, W, V, S, N, G⟩ f T c q e A S₂ a ⟨B', f', T', a1, a2, a3, a4, a5, trivial, a6⟩`.
+A detailed English derivation is pending.
 -/
 theorem retwistA_of {Q Q' : V4.Slot} (h : RetwistG Q Q') : RetwistA KP (fun _ _ _ _ => True) Q Q' :=
   EvG.imp h fun K _ _ _ _ H => lg_all K fun B f T _ _ _ C W V S N G c q e A S₂ a =>
@@ -215,11 +215,11 @@ theorem retwistA_of {Q Q' : V4.Slot} (h : RetwistG Q Q') : RetwistA KP (fun _ _ 
 end Steps
 
 /- English proof (translation)
-Take `⟨a, b, c, d, h1, h2, h3⟩` from `h`. Use `⟨fun B f F => if h : ∃ δ, Sm B f δ F then a B f h.choose F else ∅, fun B f F G => if h : ∃ δ, Sm B f δ F then b B f h.choose F G else ∅, fun B f F G l => if h : ∃ δ, Sm B f δ F then c B f h.choose F G l else ∅, fun B f F G X => if h : ∃ δ, Sm B f δ F then d B f h.choose F G X els …` and prove the remaining obligations. Introduce `B f F z hz`. Distinguish the cases in `h : ∃ δ, Sm B f δ F`. Simplify using `only [dif_pos h] at hz`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Conclude with `h1 _ _ _ _ z hz`. Simplify using `[dif_neg h] at hz`. Introduce `B f F G X z hz`. Distinguish the cases in `h : ∃ δ, Sm B f δ F`. Simplify using `only [dif_pos h] at hz`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `h2 _ _ _ _ _ _ z hz`. Simplify using `[dif_neg h] at hz`. Introduce `B f T hO hH hP hA h`. Simplify using `only [dif_pos h] at hH hP hA`. Conclude with `⟨h.choose, h.choose_spec, h3 B f _ T hO h.choose_spec hH hP hA⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lg_of_lgOn {Δ : Pre → Type} {Sm : ∀ B : Pre, Fr B → Δ B → IntermediateField ℚ ℂ → Prop} {K : Ctx}
     {p : ∀ B : Base, Fr B.toPre → Δ B.toPre → TwDat B → Prop} (h : LgOn Sm K p) :
@@ -245,7 +245,7 @@ theorem lg_of_lgOn {Δ : Pre → Type} {Sm : ∀ B : Pre, Fr B → Δ B → Inte
     exact ⟨h.choose, h.choose_spec, h3 B f _ T hO h.choose_spec hH hP hA⟩
 
 /- English proof (translation)
-The claim follows from `EvG.imp hE fun _ _ _ _ _ hK => hK.imp fun _ _ _ _ H hp => let ⟨C, W, V, S, N, G, c, q⟩ := H hp ⟨C, W, V, S, N, G, c, h _ _ _ _ _ q⟩`.
+A detailed English derivation is pending.
 -/
 theorem ExTrueG.mono {KP : BaseP} {Q Q' : V4.Slot} (hE : ExTrueG KP Q) (h : ∀ K X f T c, Q K X f T c → Q' K X f T c) : ExTrueG KP Q' :=
   EvG.imp hE fun _ _ _ _ _ hK => hK.imp fun _ _ _ _ H hp =>
@@ -253,13 +253,13 @@ theorem ExTrueG.mono {KP : BaseP} {Q Q' : V4.Slot} (hE : ExTrueG KP Q) (h : ∀ 
     ⟨C, W, V, S, N, G, c, h _ _ _ _ _ q⟩
 
 /- English proof (translation)
-The claim follows from `EvG.imp hE fun _ _ _ _ _ H X f T c q => H X f T c (h _ _ _ _ _ q)`.
+A detailed English derivation is pending.
 -/
 theorem ExportG.anti {Q Q' : V4.Slot} (hE : ExportG Q) (h : ∀ K X f T c, Q' K X f T c → Q K X f T c) : ExportG Q' :=
   EvG.imp hE fun _ _ _ _ _ H X f T c q => H X f T c (h _ _ _ _ _ q)
 
 /- English proof (translation)
-The claim follows from `EvG.imp hR fun _ _ _ _ _ H X f T c q e A S₂ hS => let ⟨B', f', T', a1, a2, a3, a4, a5, a6⟩ := H X f T c (h _ _ _ _ _ q) e A S₂ hS ⟨B', f', T', a1, a2, a3, a4, a5, fun C W V S N G c' q' => (a6 C W V S N G c' (h _ _ _ _ _ q')).imp_right fun t => ⟨t, q'⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem RetwistG.strengthen {Q Q₁ Q' : V4.Slot} (hR : RetwistG Q Q') (h : ∀ K X f T c, Q₁ K X f T c → Q K X f T c) :
     RetwistG Q₁ fun K X f T c => Q' K X f T c ∧ Q₁ K X f T c :=
@@ -269,7 +269,7 @@ theorem RetwistG.strengthen {Q Q₁ Q' : V4.Slot} (hR : RetwistG Q Q') (h : ∀ 
       (a6 C W V S N G c' (h _ _ _ _ _ q')).imp_right fun t => ⟨t, q'⟩⟩
 
 /- English proof (translation)
-Use `⟨(EvG.inter h h1).imp fun K _ _ _ _ H => (H.1.inter H.2).imp fun B f T _ t k => ?_, h2.anti fun _ _ _ _ _ q => q.1, EvG.imp (h3.strengthen (Q₁ := fun K X f T c => Q K X f T c ∧ R K X f T c) fun _ _ _ _ _ q => q.1) fun K _ _ _ _ H X f T c q e A S₂ a => ?_⟩` and prove the remaining obligations. Take `⟨C, W, V, S, N, G, c, q⟩` from `t.2 k`. Conclude with `⟨C, W, V, S, N, G, c, q, t.1 k C W V S N G c q⟩`. Take `⟨B', f', T', a1, a2, a3, a4, a5, a6⟩` from `H X f T c q e A S₂ a`. Conclude with `⟨B', f', T', a1, a2, a3, a4, a5, fun C W V S N G c' q' => (a6 C W V S N G c' q').imp_right fun t => ⟨t.1, t.2.2⟩⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem LargeBaseConditionG.passes {KP : BaseP} {Q Q' R : V4.Slot} (h : LargeBaseConditionG KP Q R) (h1 : ExTrueG KP Q) (h2 : ExportG Q) (h3 : RetwistG Q Q') :
     ExTrueG KP (fun K X f T c => Q K X f T c ∧ R K X f T c) ∧ ExportG (fun K X f T c => Q K X f T c ∧ R K X f T c) ∧
@@ -283,11 +283,11 @@ theorem LargeBaseConditionG.passes {KP : BaseP} {Q Q' R : V4.Slot} (h : LargeBas
       (a6 C W V S N G c' q').imp_right fun t => ⟨t.1, t.2.2⟩⟩
 
 /- English proof (translation)
-Use `⟨(evG_of_ev (ev_preX_frame h2b)).imp fun K _ _ _ _ hfr => ?_, fun _ _ _ _ _ _ _ => trivial⟩` and prove the remaining obligations. Take `⟨P, hP⟩` from `Inh.exists_over K`. Take `⟨f₀⟩` from `(hfr _ hP).2`. Use `⟨P, f₀, hP, fun S₁ S₂ h₁ h₂ => ?_⟩` and prove the remaining obligations. Take `⟨B₀, rfl, -⟩` from `BaseExt.exists_base P ∅ ∅ ∅ (by simp) (by simp) (by simp)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨B₁, e₁, k₁, l₁⟩` from `Inh.exists_fixed B₀ (S₁ B₀.KsC) (h₁ _)`. Take `⟨B, e, l₂⟩` from `BaseEnl.exists_enl B₁ (S₂ B₀.KsC B₁.fixedCoefficientFieldInComplex) (h₂ _ _)`. Establish `hk : B.KsC = B₀.KsC` using `e.KsC_eq.trans k₁`. Establish `e' : B.toPre = B₀.toPre` using `e.1.trans e₁`. Use `⟨B, e' ▸ f₀, e', by simp, trivial, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hk, Has₂, e.fixedCoefficientField_eq]`. Conclude with `⟨l₁, l₂⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem baseCond_true (h2b : StandardLattice.SiegelMassRatioCM) : BaseCond fun _ _ => True := by
   refine ⟨(evG_of_ev (ev_preX_frame h2b)).imp fun K _ _ _ _ hfr => ?_, fun _ _ _ _ _ _ _ => trivial⟩
@@ -308,14 +308,14 @@ variable (hH : DC.HostExQ) (hLP : LevelPrime) (h2b : StandardLattice.SiegelMassR
 include hH hLP h2b
 
 /- English proof (translation)
-Introduce `h` and use `Inh.not_evG_false hH hLP h2b (h.ex.imp fun _ _ _ _ _ ⟨_, _, _, H⟩ => let ⟨_, _, _, _, t, _⟩ := H (fun _ => ∅) (fun _ _ => ∅) (by simp) (by simp); t)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_baseCond_false : ¬ BaseCond fun _ _ => False := fun h =>
   Inh.not_evG_false hH hLP h2b (h.ex.imp fun _ _ _ _ _ ⟨_, _, _, H⟩ =>
     let ⟨_, _, _, _, t, _⟩ := H (fun _ => ∅) (fun _ _ => ∅) (by simp) (by simp); t)
 
 /- English proof (translation)
-Introduce `hE` and use `by refine Inh.not_evG_false hH hLP h2b ((hK.ex.inter hE).imp ?_) rintro K _ _ _ _ ⟨⟨P, f₀, hP, hks⟩, S₁, P₁, A, S₂, a₁, a₂, hlg⟩ obtain ⟨B, f, hB, hf, hKP, hH₁, hH₂⟩ := hks (S₁ P f₀) (fun F F₀ => S₂ P f₀ F F₀ {1, f₀.del, f₀.del'}) (a₁ _ _) (fun F F₀ => a₂ _ _ F F₀ _) subst hB obt …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_exTrueG_false {KP : BaseP} (hK : BaseCond KP) : ¬ ExTrueG KP fun _ _ _ _ _ => False := fun hE => by
   refine Inh.not_evG_false hH hLP h2b ((hK.ex.inter hE).imp ?_)
@@ -337,7 +337,7 @@ theorem not_exTrueG_false {KP : BaseP} (hK : BaseCond KP) : ¬ ExTrueG KP fun _ 
   exact h
 
 /- English proof (translation)
-Introduce `hE` and use `by refine Inh.not_evG_false hH hLP h2b ((hK.ex.inter (EvG.imp hE fun K _ _ _ _ H => (H.inter (lg_forced K)).imp fun _ _ _ _ G a b => G.1 a G.2 b)).imp ?_) rintro K _ _ _ _ ⟨⟨P, f₀, hP, hks⟩, S₁, P₁, A, S₂, a₁, a₂, hlg⟩ obtain ⟨B, f, hB, hf, hKP, hH₁, hH₂⟩ := hks (S₁ P f₀) (fun F …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_firstG_false {KP : BaseP} (hK : BaseCond KP) : ¬ FirstG KP fun _ _ _ _ _ => False := fun hE => by
   refine Inh.not_evG_false hH hLP h2b ((hK.ex.inter (EvG.imp hE fun K _ _ _ _ H => (H.inter (lg_forced K)).imp fun _ _ _ _ G a b => G.1 a G.2 b)).imp ?_)

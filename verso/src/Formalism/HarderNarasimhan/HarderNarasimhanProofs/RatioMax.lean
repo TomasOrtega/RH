@@ -10,9 +10,9 @@ noncomputable section
 namespace Formalism.HN
 
 /- English proof (translation)
-Introduce `x hx`. Establish `hx' : ρ x ∈ zl ρ N₂` using `h ((satR_mem_zl ρ N₁ (ρ x)).2 ⟨x, hx, rfl⟩)`. Take `⟨y, hy, hyx⟩` from `(satR_mem_zl ρ N₂ (ρ x)).1 hx'`. Establish `hxy : y = x` using `hinj (h₂ hy) (h₁ hx) hyx`. Rewrite using `[← hxy]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hy`.
+A detailed English derivation is pending.
 -/
 theorem le_of_imageLattice_le {R V E : Type*} [Ring R] [AddCommGroup V] [Module R V]
     [NormedAddCommGroup E] [InnerProductSpace ℝ E] (ρ : V →+ E) (L N₁ N₂ : Submodule R V)
@@ -28,37 +28,33 @@ theorem le_of_imageLattice_le {R V E : Type*} [Ring R] [AddCommGroup V] [Module 
 
 universe u v w in
 /- English proof (translation)
-Unfold `RatioMax`. Introduce `R V E _ _ _ _ _ _ ρ L S hL hS hSL`. Take `⟨hsub, hmono, hsat, -, -, -, hLsat, -⟩` from `h2 R V E ρ L hL`. Establish `hinj : Set.InjOn ρ (L : Set V)` using `hL.1`. Establish `hdL : DiscreteTopology (zl ρ L)` using `hL.2`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSle : S ≤ L` using `hS.1`. Establish `hSL' : S < L` using `lt_of_le_of_ne hSle hSL`. Establish `hgap : ∀ N : Submodule R V, S < N → N ≤ L → (rk ρ S : ℝ) < rk ρ N`. Introduce `N hSN hNL`. Establish `hle` using `(hmono S N hSN.le hNL).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hne : rk ρ N ≠ rk ρ S` using `fun he => hSN.ne (hsat S N hS hSN.le hNL he).symm`. Conclude with `lt_of_le_of_ne hle (Ne.symm hne)` after adjusting the coercions. Take `⟨f, hf⟩ : ∃ f : Submodule R V → ℝ, ∀ N, f N = (deg ρ N - deg ρ S) / ((rk ρ N : ℝ) - rk ρ S)` from `⟨_, fun _ => rfl⟩`. Establish `hdeg : ∀ N : Submodule R V, S < N → N ≤ L → f L ≤ f N → deg ρ S - |f L| * (rk ρ L : ℝ) ≤ deg ρ N`. Introduce `N hSN hNL hc`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hpos : 0 < (rk ρ N : ℝ) - rk ρ S` using `sub_pos.2 (hgap N hSN hNL)`. Establish `hrN : (rk ρ N : ℝ) - rk ρ S ≤ rk ρ L`. Establish `h3 : (rk ρ N : ℝ) ≤ rk ρ L` using `by exact_mod_cast (hmono N L hNL le_rfl).1`. Establish `h4 : (0 : ℝ) ≤ rk ρ S` using `Nat.cast_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hc` using `[hf N, le_div_iff₀ hpos]`. Establish `h3 : -|f L| * (rk ρ L : ℝ) ≤ f L * ((rk ρ N : ℝ) - rk ρ S)`. Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨T, hTdef⟩ : ∃ T : Set (Submodule R V), T = {N | IsSat ρ L N ∧ S < N ∧ f L ≤ f N}` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmemT : ∀ N, N ∈ T ↔ IsSat ρ L N ∧ S < N ∧ f L ≤ f N`. Introduce `N`. Substitute `hTdef` using the available equality. Conclude with `Iff.rfl`. Establish `hfinE` using `Formalism.F.finiteSaturated E (zl ρ L) hdL (Real.exp (-(deg ρ S - |f L| * (rk ρ L : ℝ))))`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Unfold both sides to obtain the same proposition, which implies itself. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT : T.Finite`. Use `Set.Finite.of_finite_image (f := zl ρ) (hfinE.subset ?_) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨N, hN, rfl⟩`. Take `⟨hNs, hSN, hc⟩` from `(hmemT N).1 hN`. Use `show _ ∧ _`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨hNs.2, ?_⟩` and prove the remaining obligations. Establish `hlat` using `hsub N hNs.1`. Establish `: DiscreteTopology (zl ρ N)` using `hlat.2`. Establish `hcpos : 0 < Formalism.F.covol (zl ρ N)` using `Formalism.F.covol_pos _`. Establish `hd` using `hdeg N hSN hNs.1 hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdN : deg ρ N = -Real.log (Formalism.F.covol (zl ρ N))` using `rfl`. Rewrite using `[← Real.log_le_iff_le_exp hcpos]`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `A hA B hB hAB`. Establish `hA'` using `((hmemT A).1 hA).1.1`.
+Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB'` using `((hmemT B).1 hB).1.1`. Conclude with `le_antisymm (le_of_imageLattice_le ρ L A B hinj hA' hB' hAB.le) (le_of_imageLattice_le ρ L B A hinj hB' hA' hAB.ge)`. Establish `hLT : L ∈ T` using `(hmemT L).2 ⟨hLsat, hSL', le_rfl⟩`. Take `⟨N, hNT, hNmax⟩` from `Set.exists_max_image T f hT ⟨L, hLT⟩`. Take `⟨hNsat, hSN, -⟩` from `(hmemT N).1 hNT`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨N, hSN, hNsat, ?_⟩` and prove the remaining obligations. Introduce `N' hSN' hN'L`. Establish `hpos' : 0 < (rk ρ N' : ℝ) - rk ρ S` using `sub_pos.2 (hgap N' hSN' hN'L)`. Establish `hposN : 0 < (rk ρ N : ℝ) - rk ρ S` using `sub_pos.2 (hgap N hSN hNsat.1)`. Establish `key : f N' ≤ f N`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Distinguish the cases in `hc : f L ≤ f N'`. Take `⟨N'', hle, hN''L, himg⟩` from `h1 R V E ρ L N' hL hN'L`. Establish `hmon : zl ρ N' ≤ zl ρ L` using `satBasic_zl_mono ρ hN'L`. Establish `hsp` using `Formalism.F.saturProps E (zl ρ L) (zl ρ N') hdL hmon`. Establish `hsat'' : IsSat ρ L N''`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `And.intro hN''L ?_` and prove the remaining obligations. Rewrite using `[himg]`. Conclude with `hsp.1`. Establish `hrk : rk ρ N'' = rk ρ N'` using `by show Formalism.F.rk (zl ρ N'') = Formalism.F.rk (zl ρ N')`. Rewrite using `[himg]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hsp.2.2`. Establish `hdg : deg ρ N' ≤ deg ρ N''` using `(hmono N' N'' hle hN''L).2 hrk.symm`. Establish `hff : f N' ≤ f N''`. Rewrite using `[hf N', hf N'', hrk, div_le_div_iff₀ hpos' hpos']`. Conclude with `mul_le_mul_of_nonneg_right (by linarith) hpos'.le`.
-
-Establish `hN''T : N'' ∈ T` using `(hmemT N'').2 ⟨hsat'', lt_of_lt_of_le hSN' hle, hc.trans hff⟩`. Conclude with `hff.trans (hNmax N'' hN''T)`. Establish `hlt : f N' < f L` using `not_le.1 hc`. Conclude with `hlt.le.trans ((hmemT N).1 hNT).2.2`. Rewrite `key` using `[hf N', hf N, div_le_div_iff₀ hpos' hposN]`.
-
-Conclude with `key`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratioMax_of (h1 : SatR.{u, v, w}) (h2 : SatBasic.{u, v, w}) : RatioMax.{u, v, w} := by
   unfold RatioMax
@@ -151,7 +147,7 @@ theorem ratioMax_of (h1 : SatR.{u, v, w}) (h2 : SatBasic.{u, v, w}) : RatioMax.{
   exact key
 
 /- English proof (translation)
-The claim follows from `ratioMax_of real_saturation_property saturation_basic_properties`.
+A detailed English derivation is pending.
 -/
 theorem maximal_slope_ratio : RatioMax :=
   ratioMax_of real_saturation_property saturation_basic_properties

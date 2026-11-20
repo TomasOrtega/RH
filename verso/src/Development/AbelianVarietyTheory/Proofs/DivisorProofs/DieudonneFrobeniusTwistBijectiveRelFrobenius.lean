@@ -14,9 +14,9 @@ open CategoryTheory TensorProduct Coalgebra Bialgebra GlobalTheory GlobalTheory.
 namespace GlobalTheory.Dieu
 
 /- English proof (translation)
-Establish `hb : Function.Bijective (frobRing (p_eq_zero p k))`. Establish `e : ⇑(frobRing (p_eq_zero p k)) = ⇑(frobenius k p)`. Use function extensionality and compare the values at `fun r => by rw [frobRing_apply, frobenius_def]`. Rewrite using `[e]`. Conclude with `bijective_frobenius k p`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨WittVector.map_injective _ hb.1, WittVector.map_surjective _ hb.2⟩`.
+A detailed English derivation is pending.
 -/
 theorem wittMap_frobRing_bijective (p : ℕ) [Fact p.Prime] (k : Type) [Field k] [CharP k p]
     [PerfectRing k p] : Function.Bijective (WittVector.map (p := p) (frobRing (p_eq_zero p k))) := by
@@ -28,11 +28,11 @@ theorem wittMap_frobRing_bijective (p : ℕ) [Fact p.Prime] (k : Type) [Field k]
   exact ⟨WittVector.map_injective _ hb.1, WittVector.map_surjective _ hb.2⟩
 
 /- English proof (translation)
-Establish `key : ∀ c : ι → R, f (∑ i, c i • b i) = ∑ i, σ (c i) • b' i` using `fun c => by`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [hf, hb]`. Use `⟨(injective_iff_map_eq_zero f).2 fun m hm => ?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite `hm` using `[← b.sum_repr m, key]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: ∀ i, b.repr m i = 0` using `fun i => by`. Use `Fintype.linearIndependent_iff.1 b'.linearIndependent _ hm i` as an intermediate fact. Conclude with `hσ.1 (this.trans (map_zero σ).symm)`. Rewrite using `[← b.sum_repr m]`. Simplify using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c, hc⟩ : ∃ c : ι → R, ∀ i, σ (c i) = b'.repr x i` from `⟨fun i => Function.surjInv hσ.2 (b'.repr x i), fun i => Function.surjInv_eq hσ.2 _⟩`. Use `⟨∑ i, c i • b i, ?_⟩` and prove the remaining obligations. Rewrite using `[key]`. Simplify using `only [hc]`. Conclude with `b'.sum_repr x`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem bijective_of_basis {R R' M M' : Type} [CommRing R] [CommRing R'] [AddCommGroup M] [Module R M]
     [AddCommGroup M'] [Module R' M'] (σ : R →+* R') (hσ : Function.Bijective σ) (f : M →+ M')
@@ -58,9 +58,9 @@ theorem bijective_of_basis {R R' M M' : Type} [CommRing R] [CommRing R'] [AddCom
 end GlobalTheory.Dieu
 
 /- English proof (translation)
-Introduce `p _ B k _ _ _ G`. Establish `h2 : ∀ m, B.map trivial trivial (relFrob (p_eq_zero p k) G) (B.smap trivial trivial (frobProj (p_eq_zero p k) G) m) = B.F G trivial m` using `fun m => (B.smap_comp trivial trivial trivial (frobProj (p_eq_zero p k) G) (SemiHom.ofHom (relFrob (p_eq_zero p k) G)) (absFrob (p_eq_zero p k) G) (fun n a => by rw [SemiHom.ofHom_app, relFrob_app_frobProj, absFrob_app]) m).symm`. Use `⟨?_, h2, fun m n e => ?_⟩` and prove the remaining obligations. Use `haveI := B.free G trivial haveI := B.finite G trivial`. Use `letI := (frobRing (p_eq_zero p k)).toAlgebra`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Take `⟨b', hb'⟩` from `GlobalTheory.T.dieudonne_baseChange_basis p (fun _ _ _ => True) B k k G trivial trivial _ (Module.Free.chooseBasis (WittVector p k) (B.M G trivial))`. Conclude with `bijective_of_basis _ (wittMap_frobRing_bijective p k) _ (fun a m => B.smap_smul trivial trivial _ a m) _ b' hb'`. Take `⟨-, hc, -⟩` from `GlobalTheory.T.dieudonneFunctorBase_functor_properties p (fun _ _ _ => True) B k G (frobTwist (p_eq_zero p k) G) G trivial trivial trivial`. Take `⟨hid, -, -, -, hp, -⟩` from `GlobalTheory.T.dieudonneFunctorBase_functor_properties p (fun _ _ _ => True) B k G G G trivial trivial trivial`. Rewrite using `[← h2, e, ← LinearMap.comp_apply, ← hc, relFrob_comp_verschiebung, ← pow_one (p : ℤ_[p]), hp, pow_one, hid, LinearMap.id_apply]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Dieu.frobTwist_module : ∀ (p : ℕ) [Fact p.Prime] (B : Base p fun _ _ _ => True) (k : Type) [Field k] [CharP k p] [PerfectRing k p] (G : PDivGroup p k), Function.Bijective (B.smap trivial trivial (frobProj (p_eq_zero p k) G)) ∧ (∀ m, B.map trivial trivial (relFrob (p_eq_zero p k) G) (B.smap trivial trivial (frobProj (p_eq_zero p k) G) m) = B.F G trivial m) ∧ ∀ m n, B.smap trivial trivial (frobProj (p_eq_zero p k) G) n = B.map trivial trivial (verschiebung (p_eq_zero p k) G) m → B.F G trivial n = p • m := by
   intro p _ B k _ _ _ G

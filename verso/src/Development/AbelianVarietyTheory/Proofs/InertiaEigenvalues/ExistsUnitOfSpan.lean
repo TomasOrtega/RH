@@ -11,15 +11,13 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 namespace GlobalTheory.TwistDR
 
 /- English proof (translation)
-Use `haveI : IsArtinianRing R := IsArtinianRing.of_finite F R`. Use `haveI : Fintype (MaximalSpectrum R) := Fintype.ofFinite _`. Set `S : MaximalSpectrum R → Submodule k U` to `fun m => { carrier := {x | (x : R) ∈ m.asIdeal} add_mem' := fun ha hb => m.asIdeal.add_mem ha hb zero_mem' := m.asIdeal.zero_mem smul_mem' := fun c x hx => by`. Take `⟨r, hr⟩` from `hk c x`. Express the relevant statement in the definitionally equal form `c • (x : R) ∈ m.asIdeal`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hr]`. Conclude with `m.asIdeal.mul_mem_left r hx }`. Establish `hS : ⊤ ∉ Finset.univ.image S`. Introduce `h`. Take `⟨m, -, hm⟩` from `Finset.mem_image.1 h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `m.isMaximal.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one]`. Establish `h1 : Submodule.span F (U : Set R) ≤ m.asIdeal.restrictScalars F` using `Submodule.span_le.2 fun x hx => (hm ▸ Submodule.mem_top : (⟨x, hx⟩ : U) ∈ S m)`. Conclude with `h1 (hU ▸ Submodule.mem_top)`. Establish `h2` using `Subspace.biUnion_ne_univ_of_top_notMem hS`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx⟩` from `(Set.ne_univ_iff_exists_notMem _).1 h2`. Use `⟨x, x.2, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Take `⟨m, hm, hxm⟩` from `exists_max_ideal_of_mem_nonunits hn`. Apply `hx` to reduce the goal to its premises.
-
-Conclude with `Set.mem_biUnion (x := S ⟨m, hm⟩) (by simp) hxm`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem exists_unit_of_span {k F R : Type} [Field k] [Infinite k] [Field F] [CommRing R] [Algebra F R]
     [Module k R] [Module.Finite F R] (hk : ∀ (c : k) (x : R), ∃ r : R, c • x = r * x)
@@ -64,7 +62,7 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V]
 
 /- English proof (translation)
-Simplify using `[DdR, sub_eq_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_DdR (ρ : Representation LL G V) (x : V ⊗[Qp] BdR) :
     x ∈ DdR PD ρ ↔ ∀ g, actVdR PD ρ g x = x := by
@@ -80,7 +78,7 @@ theorem tw_tmul (χ : G → LL) (g : G) (b : BdR) (c : LL) :
     tw PD χ g (b ⊗ₜ[Qp] c) = PD.actdR g b ⊗ₜ[Qp] (χ g * c) := rfl
 
 /- English proof (translation)
-Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul c v => simp [tw_tmul, TensorProduct.smul_tmul']`. Consider the case `add x y hx hy => simp only [smul_add, map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem tw_smul (χ : G → LL) (g : G) (b : BdR) (w : BdR ⊗[Qp] LL) :
     tw PD χ g (b • w) = PD.actdR g b • tw PD χ g w := by
@@ -97,13 +95,13 @@ def twInv (χ : G → LL) : Submodule K (BdR ⊗[Qp] LL) where
     rw [← algebraMap_smul BdR c x, tw_smul, AlgEquiv.commutes, hx g]
 
 /- English proof (translation)
-Use `haveI := PD.finK`. Set `e : (Fin 1 → LL) ⊗[Qp] BdR ≃ₗ[Qp] BdR ⊗[Qp] LL` to `((LinearEquiv.funUnique (Fin 1) Qp LL).rTensor BdR).trans (TensorProduct.comm Qp LL BdR)`. Establish `he : ∀ g x, e (actVdR PD ν g x) = tw PD χ g (e x)`. Introduce `g x`. Proceed by induction on `x using TensorProduct.induction_on with`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `tmul v b => simp [e, actVdR, tw_tmul, hν]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Establish `hm : ((DdR PD ν).restrictScalars Qp).map (e : _ →ₗ[Qp] _) = (twInv PD χ).restrictScalars Qp`. Use extensionality with `y`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Take `⟨x, rfl⟩` from `e.surjective y`. Rewrite using `[Submodule.mem_map_equiv, LinearEquiv.symm_apply_apply, Submodule.restrictScalars_mem, mem_DdR]`. Use `forall_congr' fun g => ?_` and prove the remaining obligations. Rewrite using `[← he, e.injective.eq_iff]`. Establish `h1 : finrank Qp ↥(twInv PD χ) = finrank Qp ↥(DdR PD ν)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `LinearEquiv.finrank_map_eq e ((DdR PD ν).restrictScalars Qp)` as an intermediate fact. Rewrite `this` using `[hm]`. Conclude with `this`. Rewrite `h1` using `[← Module.finrank_mul_finrank Qp K ↥(twInv PD χ), ← Module.finrank_mul_finrank Qp LL ↥(DdR PD ν), h, finrank_fintype_fun_eq_card, Fintype.card_fin, mul_one, mul_comm (finrank Qp LL)]`. Conclude with `Nat.eq_of_mul_eq_mul_left finrank_pos h1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_twInv [FiniteDimensional Qp LL] (ν : Representation LL G (Fin 1 → LL)) (χ : G → LL)
     (hν : ∀ g x, ν g x = χ g • x) (h : finrank LL ↥(DdR PD ν) = finrank Qp K * finrank LL (Fin 1 → LL)) :
@@ -132,15 +130,13 @@ theorem finrank_twInv [FiniteDimensional Qp LL] (ν : Representation LL G (Fin 1
   exact Nat.eq_of_mul_eq_mul_left finrank_pos h1
 
 /- English proof (translation)
-Use `letI : Field BdR := hB.toField`. Use `haveI : Infinite K := Infinite.of_injective _ (algebraMap Qp K).injective`. Establish `hpos : 0 < finrank Qp LL` using `finrank_pos`. Use `haveI : Module.Finite K ↥(twInv PD χ) := Module.finite_of_finrank_pos (h ▸ hpos)`. Use `exists_unit_of_span (F := BdR) (fun c x => ⟨algebraMap K _ c, Algebra.smul_def c x⟩) _ ?_` and prove the remaining obligations.
+Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `v` to `Module.finBasisOfFinrankEq K _ h`. Establish `h1 : LinearIndependent K fun i => (v i : BdR ⊗[Qp] LL)` using `v.linearIndependent.map' (twInv PD χ).subtype (twInv PD χ).ker_subtype`. Establish `h2 : LinearIndependent BdR fun i => (v i : BdR ⊗[Qp] LL)`. Rewrite using `[linearIndependent_iff_finset_linearIndependent]`. Introduce `s`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `GlobalTheory.RegularRing.linearIndepOn_of_invariant (fun g b => PD.actdR g b) (fun g => (tw PD χ g).toAddMonoidHom) (tw_smul PD χ) ?_ _ (fun g i => (v i).2 g) s (h1.linearIndepOn _)` and prove the remaining obligations. Introduce `b b' hb hg`. Take `⟨c, hc⟩` from `PD.invdR (b' / b) fun g => by`. Establish `h3 : PD.actdR g b ≠ 0` using `(map_ne_zero _).2 hb`. Rewrite using `[map_div₀, div_eq_div_iff h3 hb]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Supply the required witnesses or components.
 
-Take the linear combination `hg g`. Conclude with `⟨c, by rw [hc, div_mul_cancel₀ _ hb]⟩`. Use `haveI : Nonempty (Fin (finrank Qp LL)) := ⟨⟨0, hpos⟩⟩`. Rewrite using `[eq_top_iff, ← h2.span_eq_top_of_card_eq_finrank (by simp)]`. Use `Submodule.span_mono ?_` and prove the remaining obligations.
-
-Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `(v i).2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem exists_unit [Infinite Qp] [FiniteDimensional Qp LL] (hB : IsField BdR) (χ : G → LL)
     (h : finrank K ↥(twInv PD χ) = finrank Qp LL) : ∃ d ∈ twInv PD χ, IsUnit d := by
@@ -181,14 +177,14 @@ def mulR : BdR ⊗[Qp] LL →ₗ[Qp] (V ⊗[Qp] BdR →ₗ[LL] V ⊗[Qp] BdR) :=
     (fun q b c => smul_assoc _ _ _))
 
 /- English proof (translation)
-Simplify using `[mulR, smul_tmul']`.
+Simplify using the standard rewrite rules.
 -/
 theorem mulR_tmul (b : BdR) (c : LL) (v : V) (b' : BdR) :
     mulR V (b ⊗ₜ[Qp] c) (v ⊗ₜ[Qp] b') = (c • v) ⊗ₜ[Qp] (b * b') := by
   simp [mulR, smul_tmul']
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => rw [Algebra.TensorProduct.one_def, mulR_tmul, one_smul, one_mul]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem mulR_one (x : V ⊗[Qp] BdR) : mulR V (1 : BdR ⊗[Qp] LL) x = x := by
   induction x using TensorProduct.induction_on with
@@ -197,11 +193,11 @@ theorem mulR_one (x : V ⊗[Qp] BdR) : mulR V (1 : BdR ⊗[Qp] LL) x = x := by
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul v b`. Proceed by induction on `d using TensorProduct.induction_on with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [add_mul, map_add, LinearMap.add_apply, hx, hy]`. Consider the case `tmul b₁ c₁`. Proceed by induction on `d' using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `add x y hx hy => simp only [mul_add, map_add, LinearMap.add_apply, hx, hy]`. Consider the case `tmul b₂ c₂ => simp only [Algebra.TensorProduct.tmul_mul_tmul, mulR_tmul, mul_smul, mul_assoc]`.
+Treat this case separately. Treat this case separately.
 -/
 theorem mulR_mul (d d' : BdR ⊗[Qp] LL) (x : V ⊗[Qp] BdR) :
     mulR V (d * d') x = mulR V d (mulR V d' x) := by
@@ -219,9 +215,9 @@ theorem mulR_mul (d d' : BdR ⊗[Qp] LL) (x : V ⊗[Qp] BdR) :
       | tmul b₂ c₂ => simp only [Algebra.TensorProduct.tmul_mul_tmul, mulR_tmul, mul_smul, mul_assoc]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul v b`. Proceed by induction on `d using TensorProduct.induction_on with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, LinearMap.add_apply, hx, hy]`. Consider the case `tmul b₁ c₁ => simp [mulR_tmul, tw_tmul, actVdR, hρ, mul_smul]`.
+Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem act_mulR (ρ ρ' : Representation LL G V) (χ : G → LL) (hρ : ∀ g x, ρ' g x = χ g • ρ g x)
     (g : G) (d : BdR ⊗[Qp] LL) (x : V ⊗[Qp] BdR) :
@@ -236,11 +232,11 @@ theorem act_mulR (ρ ρ' : Representation LL G V) (χ : G → LL) (hρ : ∀ g x
     | tmul b₁ c₁ => simp [mulR_tmul, tw_tmul, actVdR, hρ, mul_smul]
 
 /- English proof (translation)
-Take `⟨_, hd, d, rfl⟩` from `exists_unit PD hB χ (finrank_twInv PD ν χ hν h)`. Set `e : V ⊗[Qp] BdR ≃ₗ[LL] V ⊗[Qp] BdR` to `LinearEquiv.ofLinear (mulR V d.1) (mulR V d⁻¹.1) (LinearMap.ext fun x => by`. Rewrite using `[LinearMap.comp_apply, ← mulR_mul, Units.mul_inv, mulR_one, LinearMap.id_apply])`. Use the proof step `(LinearMap.ext fun x => by`. Rewrite using `[LinearMap.comp_apply, ← mulR_mul, Units.inv_mul, mulR_one, LinearMap.id_apply])`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `he : ∀ g x, actVdR PD ρ' g (e x) = e (actVdR PD ρ g x)` using `fun g x => by`. Express the relevant statement in the definitionally equal form `actVdR PD ρ' g (mulR V d.1 x) = mulR V d.1 _`. Rewrite using `[act_mulR PD ρ ρ' χ hρ, hd g]`. Establish `hm : (DdR PD ρ).map (e : _ →ₗ[LL] _) = DdR PD ρ'`. Use extensionality with `y`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Take `⟨x, rfl⟩` from `e.surjective y`. Rewrite using `[Submodule.mem_map_equiv, LinearEquiv.symm_apply_apply, mem_DdR, mem_DdR]`. Use `forall_congr' fun g => ?_` and prove the remaining obligations. Rewrite using `[he, e.injective.eq_iff]`. Rewrite using `[← hm, LinearEquiv.finrank_map_eq]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_DdR_twist [Infinite Qp] [FiniteDimensional Qp LL] (hB : IsField BdR)
     (ρ ρ' : Representation LL G V) (ν : Representation LL G (Fin 1 → LL)) (χ : G → LL)
@@ -267,7 +263,7 @@ theorem finrank_DdR_twist [Infinite Qp] [FiniteDimensional Qp LL] (hB : IsField 
 end Generic
 
 /- English proof (translation)
-Introduce `l _ P AI T K LL V _ _ _ _ _ ρ ρ' ν χ hν hρ h`. Use `haveI := LL.2`. Unfold `IsDR`. Rewrite using `[finrank_DdR_twist (P.PD K) (GlobalTheory.RegularRing.isField_of_tied T) ρ ρ' ν χ hν hρ h]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isDR_twist_iff : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI → ∀ (K LL : FinExt l) (V : Type) [AddCommGroup V] [Module ↥LL.1 V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] ↥LL.1 V] [FiniteDimensional ↥LL.1 V] (ρ ρ' : Representation ↥LL.1 ↥(GK K) V) (ν : Representation ↥LL.1 ↥(GK K) (Fin 1 → ↥LL.1)) (χ : ↥(GK K) → ↥LL.1), (∀ g x, ν g x = χ g • x) → (∀ g x, ρ' g x = χ g • ρ g x) → IsDR (P.PD K) ν → (IsDR (P.PD K) ρ ↔ IsDR (P.PD K) ρ') := by
   intro l _ P AI T K LL V _ _ _ _ _ ρ ρ' ν χ hν hρ h

@@ -7,7 +7,7 @@ open Matrix GlobalTheory.KZ
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `h1`. Take `⟨c, hc⟩` from `h2`. Use `⟨!![m 0 0, a; m 1 0, c], ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two] <;> first | linear_combination -ha | linear_combination ha | linear_combination -hc`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem exists_right_div_upperTriangular_prime_det (q : ℕ) (m : Matrix (Fin 2) (Fin 2) ℤ) (k : ℕ)
     (h1 : (q : ℤ) ∣ m 0 1 - m 0 0 * k) (h2 : (q : ℤ) ∣ m 1 1 - m 1 0 * k) :
@@ -20,23 +20,21 @@ theorem exists_right_div_upperTriangular_prime_det (q : ℕ) (m : Matrix (Fin 2)
     first | linear_combination -ha | linear_combination ha | linear_combination -hc
 
 /- English proof (translation)
-Introduce `q hq m hdet`. Use `Fact.mk hq` as an intermediate fact. Establish `: NeZero q` using `⟨hq.ne_zero⟩`. Rewrite `hdet` using `[Matrix.det_fin_two]`. Establish `hd : ((m 0 0 : ℤ) : ZMod q) * (m 1 1 : ℤ) - ((m 0 1 : ℤ) : ZMod q) * (m 1 0 : ℤ) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: ((m 0 0 * m 1 1 - m 0 1 * m 1 0 : ℤ) : ZMod q) = 0`. Rewrite using `[hdet]`. Simplify using the standard rewrite rules. Move the coercions through the operations in `at this`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Establish `dv : ∀ x : ℤ, (x : ZMod q) = 0 → (q : ℤ) ∣ x` using `fun x hx => (ZMod.intCast_zmod_eq_zero_iff_dvd x q).mp hx`. Establish `fin : ∀ t : ZMod q, ((m 0 1 : ℤ) : ZMod q) - (m 0 0 : ℤ) * t = 0 → ((m 1 1 : ℤ) : ZMod q) - (m 1 0 : ℤ) * t = 0 → ∃ k : ℕ, k < q ∧ ∃ g : Matrix (Fin 2) (Fin 2) ℤ, g * !![1, (k : ℤ); 0, (q : ℤ)] = m`. Introduce `t ht1 ht2`. Use `⟨t.val, ZMod.val_lt t, exists_right_div_upperTriangular_prime_det q m t.val (dv _ ?_) (dv _ ?_)⟩` and prove the remaining obligations. Use `push_cast`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ZMod.natCast_zmod_val]`. Conclude with `ht1`. Use `push_cast`. Rewrite using `[ZMod.natCast_zmod_val]`. Conclude with `ht2`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `ha : ((m 0 0 : ℤ) : ZMod q) = 0`. Distinguish the cases in `hc : ((m 1 0 : ℤ) : ZMod q) = 0`. Use `left`. Take `⟨x, hx⟩` from `dv _ ha`. Take `⟨y, hy⟩` from `dv _ hc`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Use `⟨!![x, m 0 1; y, m 1 1], ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two] <;> first | linear_combination -hx | linear_combination hx | linear_combination -hy`. Use `right`. Establish `h01 : ((m 0 1 : ℤ) : ZMod q) = 0`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `: ((m 0 1 : ℤ) : ZMod q) * (m 1 0 : ℤ) = 0`. Take the linear combination `-hd + ((m 1 1 : ℤ) : ZMod q) * ha`. Conclude with `(mul_eq_zero.mp this).resolve_right hc`. Establish `hinv` using `mul_inv_cancel₀ hc`. Use `fin (((m 1 1 : ℤ) : ZMod q) * ((m 1 0 : ℤ) : ZMod q)⁻¹) ?_ ?_` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[ha, h01]`. Expand and normalize the polynomial expressions, which then agree. Take the linear combination `-((m 1 1 : ℤ) : ZMod q) * hinv`. Use `right`. Establish `hinv` using `mul_inv_cancel₀ ha`.
-
-Use `fin (((m 0 1 : ℤ) : ZMod q) * ((m 0 0 : ℤ) : ZMod q)⁻¹) ?_ ?_` and prove the remaining obligations. Take the linear combination `-((m 0 1 : ℤ) : ZMod q) * hinv`. Take the linear combination `((m 0 0 : ℤ) : ZMod q)⁻¹ * hd - ((m 1 1 : ℤ) : ZMod q) * hinv`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem cosetPrimeDet : ∀ (q : ℕ), q.Prime → ∀ m : Matrix (Fin 2) (Fin 2) ℤ, m.det = q →
     (∃ g : Matrix (Fin 2) (Fin 2) ℤ, g * !![(q : ℤ), 0; 0, 1] = m) ∨

@@ -16,9 +16,9 @@ noncomputable section
 open GlobalTheory.LieMet GlobalTheory.LocM.FrameBC in
 
 /- English proof (translation)
-Introduce `E _ _ _ H X t R _ x g e he hb`. Set `v : Fin g → ReciprocityTheory.ChartRestriction.G.PullbackSections.TanM x t.G` to `fun i => tanOf (he i)`. Establish `hv : Full v` using `fun n => (existsUnique_congr fun a => GlobalTheory.LieMet.isComb_iff v a n).1 (hb _ (isTan_tv n))`. Use `⟨he, fun S _ φ w hw => ?_⟩` and prove the remaining obligations. Establish `h` using `full_bc φ hv (tanOf hw)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(existsUnique_congr fun a => GlobalTheory.LieMet.isComb_iff (fun i => resM φ (v i)) a (tanOf hw)).2 h`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LineNorm.isTanBasis_of_basis : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X : Scheme.{0}) (t : SAB H X) (R : Type) [CommRing R] (x : Sp R ⟶ X) (g : ℕ) (e : Fin g → (Sp (DualNumber R) ⟶ t.G.left)), (∀ i, IsTanAtG t x (e i)) → (∀ u, IsTanAtG t x u → ∃! cf, IsCombAtG t x e cf u) → GlobalTheory.LineNorm.IsTanBasis t x e := by
   intro E _ _ _ H X t R _ x g e he hb

@@ -19,7 +19,7 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E] {N n : ℕ} (hN : N =
   {ST SG Q : Finset (HeightOneSpectrum (𝓞 E))}
 
 /- English proof (translation)
-Introduce `x` and use `by let y : Sp E N := fun l => if hl : l.1 < n then x ⟨l.1, hl⟩ else 0 have y1 : prH E hN y = x := funext fun i => dif_pos i.2 have y2 : y (Br.iL hN) = 0 := dif_neg (lt_irrefl _) have h2 := h y rw [TopStep.mem_stdAt_succ hN, TopStep.mem_stdAt_succ hN, TopStep.prH_sumE, TopStep.sum …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem glint_of_sumE {P : HeightOneSpectrum (𝓞 E)} {g : Sp E n ≃ₗ[E] Sp E n} (h : sumE hN g 1 ∈ GLint E N P) :
     g ∈ GLint E n P := fun x => by
@@ -31,7 +31,7 @@ theorem glint_of_sumE {P : HeightOneSpectrum (𝓞 E)} {g : Sp E n ≃ₗ[E] Sp 
   exact (and_congr_left_iff.1 h2) TopStep.intAt_zero
 
 /- English proof (translation)
-Rewrite using `[mul_assoc, inv_mul_eq_iff_eq_mul, ← TopStep.sumE_mul, ← TopStep.sumE_mul, one_mul, mul_one, mul_assoc, mul_inv_cancel_left]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sumE_pass (f f' γ : Sp E n ≃ₗ[E] Sp E n) (t : Eˣ) :
     (sumE hN f' t)⁻¹ * sumE hN γ 1 * sumE hN f t = sumE hN (f'⁻¹ * γ * f) 1 := by
@@ -44,17 +44,15 @@ variable (hconj : ∀ (τ : E →+* ℂ) (a : E), τ (star a) = starRingEnd ℂ 
 include hconj hbig hT hG
 
 /- English proof (translation)
-Establish `H0 : (DecoSet.tilH (ST` using `ST) hN pi d₁).1.act γ.1 k = (DecoSet.tilH (ST := ST) hN pi d₂).1 := congrArg Subtype.val H`. Choose the witnesses or unpack the hypotheses as in `⟨γ', rfl⟩ : ∃ γ' : UF E n, γ = extUH hN γ' := by`. Substitute `hN` using the available equality. Establish `H1 : (DecoSet.til (ST` using `ST) pi d₁).1.act γ.1 k = (DecoSet.til (ST := ST) pi d₂).1 := H0`. Rewrite `H1` using `[DecoSet.til_val _ hT hG, DecoSet.til_val _ hT hG]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `exists_extU_of_fix γ (til_fix_eLast hconj hbig hT γ.2 H1)`. Establish `key : ∀ w : SG, ∃ h, k w = diagEmb _ (by omega : n ≤ N) h` using `fun w => by`. Establish `h1` using `TopStep.isLiftFr_tilH hN d₁ hT hG w (TopStep.liftFr_spec d₁.2 w) _ (unitOf_val (hG w))`. Establish `h2` using `TopStep.isLiftFr_tilH hN d₂ hT hG w (TopStep.liftFr_spec d₂.2 w) _ (unitOf_val (hG w))`. Rewrite `h2` using `[← H0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (TopStep.passFr _ k h1 h2).1 = sumE hN ((d₂.1.liftFr w)⁻¹ * γ'.1 * d₁.1.liftFr w) 1`. Rewrite using `[← sumE_pass hN _ _ _ (unitOf pi), ← TopStep.extUH_val]`. Both sides reduce to the same expression. Establish `hi` using `glint_of_sumE hN (e ▸ (TopStep.passFr _ k h1 h2).2)`. Use `⟨redGL n w.1 ⟨_, hi⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← TopStep.redGL_extI hN, ← TopStep.redGL_passFr _ k h1 h2]`. Conclude with `congrArg _ (Subtype.ext e)`. Use `choose h hh using key`. Take `rfl : k = extGH hN h` from `funext fun w => (hh w).trans (TopStep.extGH_apply hN h w).symm`. Use `⟨γ', h, rfl, rfl, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Substitute `hN` using the available equality. Take `⟨γ'', e, h'⟩` from `DecoSet.til_class_inj hconj hbig hT hG d₁ d₂ _ h H`. Take `rfl : γ' = γ''` from `Subtype.ext (sumE_inj rfl (t := 1) (by`. Rewrite using `[← TopStep.extUH_val, ← TopStep.extUH_val]`. Conclude with `congrArg Subtype.val e))`.
-
-Conclude with `h'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ext_deco (d₁ d₂ : DecoSet E n ∅ SG) (γ : UF E N) (k : GLG E N SG)
     (H : (γ, k) • DecoSet.tilH (ST := ST) hN pi d₁ = DecoSet.tilH (ST := ST) hN pi d₂) :
@@ -87,11 +85,11 @@ theorem exists_ext_deco (d₁ d₂ : DecoSet E n ∅ SG) (γ : UF E N) (k : GLG 
   exact h'
 
 /- English proof (translation)
-Take `⟨γ, k, c⟩` from `a`. Establish `H1 : (γ, k) • (tilFr (ST` using `ST) hN pi p).deco = (tilFr (ST := ST) hN pi q).deco := congrArg DecoF.deco H`. Rewrite `H1` using `[tilFr_deco hN hT hG hQ, tilFr_deco hN hT hG hQ]`. Take `⟨γ', h, rfl, rfl, -⟩` from `exists_ext_deco hN hconj hbig hT hG _ _ γ k H1`. Establish `e : ∀ P, (c P).1 = sumE hN ((q.fr P)⁻¹ * γ'.1 * p.fr P) 1` using `fun P => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : (extUH hN γ').1 * (tilFr (ST` using `ST) hN pi p).fr P * ((c P).1)⁻¹ = (tilFr (ST := ST) hN pi q).fr P := congrArg (fun x => DecoF.fr x P) H`. Rewrite `h1` using `[tilFr_fr hN hT hG hQ, tilFr_fr hN hT hG hQ, TopStep.extUH_val, mul_inv_eq_iff_eq_mul]`. Rewrite using `[← sumE_pass hN _ _ _ (unitOf pi), mul_assoc, h1, inv_mul_cancel_left]`. Establish `hi : ∀ P : Q, (q.fr P)⁻¹ * γ'.1 * p.fr P ∈ GLint E n P.1` using `fun P => glint_of_sumE hN (e P ▸ (c P).2)`. Take `rfl : c = extQ E hN Q fun P => ⟨_, hi P⟩` from `funext fun P => Subtype.ext (e P)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨(γ', h, _), rfl, tilFr_injective (ST := ST) hN hT hG hQ ?_⟩` and prove the remaining obligations. Rewrite using `[tilFr_smul hN hT hG hQ]`. Conclude with `H`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ext_frame (hQ : ∀ P : Q, pi ∉ P.1.asIdeal) (a : UF E N × GLG E N SG × GLQ E N Q) (p q : DecoF E n ∅ SG Q)
     (H : a • tilFr (ST := ST) hN pi p = tilFr (ST := ST) hN pi q) :
@@ -118,15 +116,13 @@ section Size
 variable {X : Fields} {Pr : Primes X}
 
 /- English proof (translation)
-Use `set M := Pr.cond * (Pr.g 0 * Pr.g 1) ^ 2 with hM`. Take `⟨z, hz⟩` from `hPr.piT_cong u`. Establish `h1 : X.conjO (Pr.piT u) - 1 = (M : 𝓞 X.E) * X.conjO z`. Use `congrArg X.conjO hz` as an intermediate fact. Rewrite `this` using `[map_sub, map_one, map_mul, map_natCast]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `h2 : ((M : ℤ) : 𝓞 X.E) ∣ (((Pr.T u : ℤ) - 1 : ℤ) : 𝓞 X.E)`. Use `⟨z * X.conjO (Pr.piT u) + X.conjO z, ?_⟩` and prove the remaining obligations. Use `push_cast`. Rewrite using `[← hPr.piT_norm u]`. Take the linear combination `X.conjO (Pr.piT u) * hz + h1`.
+Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h3` using `map_dvd (Algebra.norm ℤ) h2`. Rewrite `h3` using `[← eq_intCast (algebraMap ℤ (𝓞 X.E)), ← eq_intCast (algebraMap ℤ (𝓞 X.E)), Algebra.norm_algebraMap, Algebra.norm_algebraMap, Int.pow_dvd_pow_iff Module.finrank_pos.ne']`. Establish `hT` using `(hPr.T_prime u).two_le`. Establish `h4 : ((Pr.g 0 * Pr.g 1) ^ 2 : ℕ) ∣ Pr.T u - 1`. Establish `h5 : M ∣ Pr.T u - 1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Int.natCast_dvd_natCast, Nat.cast_sub (by omega)]`. Conclude with `h3`. Conclude with `(Dvd.intro_left _ hM.symm).trans h5`. Establish `h6` using `Nat.le_of_dvd (by omega) h4`. Establish `h7 : 2 * 2 ≤ Pr.g 0 * Pr.g 1` using `Nat.mul_le_mul (hPr.g_prime 0).two_le (hPr.g_prime 1).two_le`.
-
-Establish `h8` using `Nat.pow_le_pow_left h7 2`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem four_lt_level_prime (hPr : Pr.Ok) (u : Pr.Word) : 4 < Pr.T u := by
   set M := Pr.cond * (Pr.g 0 * Pr.g 1) ^ 2 with hM
@@ -154,7 +150,7 @@ theorem four_lt_level_prime (hPr : Pr.Ok) (u : Pr.Word) : 4 < Pr.T u := by
   omega
 
 /- English proof (translation)
-Establish `hf : X.f ≠ 0`. Rewrite using `[Fields.f, hX.card_Tau]`. Conclude with `(Module.finrank_pos).ne'`. Rewrite using `[hX.rankQ, Finset.prod_congr rfl fun Q hQ => hPr.vT_norm u Q hQ, Finset.prod_const, hPr.vT_card, pow_mul]`. Conclude with `Nat.pow_lt_pow_left (four_lt_level_prime hPr u) hf`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem two_pow_lt (hX : X.Ok) (hPr : Pr.Ok) (u : Pr.Word) :
     2 ^ Module.finrank ℚ X.E < ∏ P ∈ Pr.vT u, Ideal.absNorm P.asIdeal := by
@@ -169,13 +165,11 @@ end Size
 section Branch
 
 /- English proof (translation)
-Establish `hne : ∀ a : Fin n, Br.iC hN a ≠ Br.iL hN` using `fun a h => absurd (congrArg Fin.val h) a.2.ne`. Establish `hinj : Function.Injective (Br.iC hN)` using `fun a b h => Fin.ext (congrArg Fin.val h :)`. Use `⟨fun a b => ?_, fun a => ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `h` using `congrFun (h1 (Pi.single (Br.iC hN b) 1)) a`. Establish `e : iniH hN (Pi.single (Br.iC hN b) (1 : E)) = Pi.single b 1` using `funext fun i => by`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [iniH, Pi.single_apply, hinj.eq_iff]`. Rewrite `h` using `[e, Matrix.mulVec_single_one, Matrix.mulVec_single_one]`. Conclude with `h`. Establish `h` using `congrFun (h1 (Pi.single (Br.iL hN) 1)) a`. Establish `e : iniH hN (Pi.single (Br.iL hN) (1 : E)) = 0` using `funext fun i => Pi.single_eq_of_ne (hne i) _`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[e, Matrix.mulVec_single_one, Matrix.mulVec_zero]`. Conclude with `h`. Establish `h` using `h2 (Pi.single (Br.iC hN a) 1)`. Rewrite `h` using `[Matrix.mulVec_single_one, Pi.single_eq_of_ne (hne a).symm]`. Conclude with `h`.
-
-Establish `h` using `h2 (Pi.single (Br.iL hN) 1)`. Rewrite `h` using `[Matrix.mulVec_single_one, Pi.single_eq_same]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isBlock_of_mulVec {E : Type} [Field E] {N n : ℕ} (hN : N = n + 1) {A' : Matrix (Fin N) (Fin N) E}
     {A : Matrix (Fin n) (Fin n) E} (h1 : ∀ x, iniH hN (A'.mulVec x) = A.mulVec (iniH hN x))
@@ -200,7 +194,7 @@ theorem isBlock_of_mulVec {E : Type} [Field E] {N n : ℕ} (hN : N = n + 1) {A' 
     exact h
 
 /- English proof (translation)
-Use `BranchFormula.equivariance K ι N n hN lam sg hI hS (invTrK (embGL e γ)) (invTrK (embGL e γ')) (fun τ => ?_) G` and prove the remaining obligations. Establish `e1 : ∀ {m : ℕ} (g : GL (Fin m) E) (a b : Fin m), ((invTrK (embGL e g) τ : GL (Fin m) K) : Matrix (Fin m) (Fin m) K) a b = e τ (((g⁻¹ : GL (Fin m) E) : Matrix (Fin m) (Fin m) E) b a)` using `fun g a b => rfl`. Simplify using `only [e1]`. Use `⟨fun a b => by rw [h.1], fun a => ⟨by rw [(h.2.1 a).2, map_zero], by rw [(h.2.1 a).1, map_zero]⟩, by rw [h.2.2, map_one]⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem brStd_rhoVr {E K ι : Type} [Field E] [Field K] [CharZero K] [Fintype ι] {N n : ℕ} (hN : N = n + 1) (e : ι → E →+* K)
     {lam : ι → DomWeight N} {sg : ι → DomWeight n} (hI : ∀ τ, Br.Interlace hN (lam τ) (sg τ))
@@ -217,11 +211,11 @@ theorem brStd_rhoVr {E K ι : Type} [Field E] [Field K] [CharZero K] [Fintype ι
 variable {E K ι : Type} [Field E] [Field K] [Fintype ι] (emb : ι → E →+* K) (σ : K →+* ℂ) {n : ℕ} (lam : ι → DomWeight n)
 
 /- English proof (translation)
-Establish `e : ∀ F : VV ℂ lam, evV (embAt σ emb) (1 : Matrix (Fin n) (Fin n) E) lam (RingHom.id ℂ) F = fnOf (Gr emb σ n) (shiftOf lam) 1 F.1` using `fun F => by`. Rewrite using `[evV_apply, MvPolynomial.map_id]`. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Introduce `hf`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h : f ∈ Submodule.span ℂ (Set.range (evV (embAt σ emb) (1 : Matrix (Fin n) (Fin n) E) lam (RingHom.id ℂ)))`. Rewrite using `[span_evV]`. Conclude with `hf`. Rewrite `h` using `[← LinearMap.coe_range, Submodule.span_eq]`. Take `⟨F, rfl⟩` from `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨F, (e F).symm⟩`. Introduce and unpack `⟨F, rfl⟩`. Rewrite using `[← e]`. Conclude with `evV_mem_ValC _ _ _ _ F`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_ValC_iff (f : Fr emb σ n → ℂ) :
     f ∈ ValC (Gr emb σ n) lam ↔ ∃ F : VV ℂ lam, fnOf (Gr emb σ n) (shiftOf lam) 1 F.1 = f := by
@@ -242,9 +236,9 @@ theorem mem_ValC_iff (f : Fr emb σ n → ℂ) :
     exact evV_mem_ValC _ _ _ _ F
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Rewrite using `[trFr_apply, Pi.smul_apply, smul_eq_mul]`. Use `congr 1`. Establish `h` using `evV_rhoVr_tr (embAt σ emb) (1 : Matrix (Fin n) (Fin n) E) lam (RingHom.id ℂ) γ F y (frMul emb σ γ⁻¹ y) fun τ => (congrFun (congrArg Subtype.val ((frEquiv emb σ γ).apply_symm_apply y)) τ).symm`. Rewrite `h` using `[evV_apply, evV_apply, MvPolynomial.map_id, MvPolynomial.map_id]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h.symm`.
+A detailed English derivation is pending.
 -/
 theorem trFr_fnOf (γ : GL (Fin n) E) (c : Kˣ) (F : VV ℂ lam) :
     trFr emb σ γ c (fnOf (Gr emb σ n) (shiftOf lam) 1 F.1) =
@@ -258,7 +252,7 @@ theorem trFr_fnOf (γ : GL (Fin n) E) (c : Kˣ) (F : VV ℂ lam) :
   exact h.symm
 
 /- English proof (translation)
-Establish `e : (fun τ => ((fr0 emb σ n).1 τ)⁻¹) = 1` using `funext fun τ => inv_one`. Establish `h` using `polOf_fnOf (Gr emb σ n) sh (fr0 emb σ n) F`. Rewrite `h` using `[e]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem polOf_fnOf_one (sh : ι → ℤ) (F : Pol ℂ ι n) :
     polOf (Gr emb σ n) sh (fr0 emb σ n) (fnOf (Gr emb σ n) sh 1 F) = F := by
@@ -289,7 +283,7 @@ variable {X : Fields} {Pr : Primes X} (hX : X.Ok) (hPr : Pr.Ok) (u : Pr.Word) {N
 include hX hPr hQ
 
 /- English proof (translation)
-Take `⟨⟨γ, h, c⟩, e, hg⟩` from `exists_ext_frame hN hX.conjE (two_pow_lt hX hPr u) (conj_piT_notMem hPr u) (piT_notMem_vGs hPr u) hQ (FrmG.incl Λ Θ a) p q H`. Establish `e1 : a.2.1.1 = extGH hN h` using `congrArg (fun x => x.2.1) e`. Establish `e2 : a.2.2.1 = extQ X.E hN Q c` using `congrArg (fun x => x.2.2) e`. Conclude with `⟨(γ, ⟨h, hΛ h (e1 ▸ a.2.1.2)⟩, ⟨c, hΘ c (e2 ▸ a.2.2.2)⟩), e, hg⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_ext_level (hΛ : ∀ h, extGH hN h ∈ Λ.grp → h ∈ Λ'.grp) (hΘ : ∀ c, extQ X.E hN Q c ∈ Θ.grp → c ∈ Θ'.grp)
     (a : FrmG Λ Θ) (p q : DecoF X.E n ∅ Pr.vGs Q)
@@ -305,9 +299,9 @@ variable (hΛ : ∀ h, extGH hN h ∈ Λ.grp ↔ h ∈ Λ'.grp) (hΘ : ∀ c, ex
 include hΛ hΘ
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `ha`. Take `⟨g, e, hg⟩` from `exists_ext_level hX hPr u hN hQ (fun h => (hΛ h).1) (fun c => (hΘ c).1) a p p ha`. Conclude with `⟨g, hg, e⟩`. Introduce and unpack `⟨g, hg, e⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Establish `h` using `tilFr_smul (ST := Pr.vT u) hN (conj_piT_notMem hPr u) (piT_notMem_vGs hPr u) hQ (FrmG.incl Λ' Θ' g) p`. Rewrite `h` using `[show FrmG.incl Λ' Θ' g • p = p from hg]`. Use `show FrmG.incl Λ Θ a • tilFr (ST := Pr.vT u) hN (Pr.piT u) p = tilFr (ST := Pr.vT u) hN (Pr.piT u) p`. Rewrite using `[e]`. Conclude with `h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_stabilizer_iff (p : DecoF X.E n ∅ Pr.vGs Q) (a : FrmG Λ Θ) :
     a ∈ MulAction.stabilizer (FrmG Λ Θ) (tilFr (ST := Pr.vT u) hN (Pr.piT u) p) ↔
@@ -363,9 +357,9 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) {Ch : Ch
   {P : LevFam X.E X.K R.r Pr.vGs} {u : Pr.Word}
 
 /- English proof (translation)
-Establish `h` using `brStd_rhoVr (N_m_succ R) X.emb (fun τ => (BranchMembers.members X _ R W hW u τ).1) (fun τ => (BranchMembers.members X _ R W hW u τ).2) (γ' := ufGL X.E _ (extUH (N_m_succ R) γ)) (γ := ufGL X.E _ γ) (by`. Establish `e : ∀ y, ((ufGL X.E _ (extUH (N_m_succ R) γ⁻¹) : GL _ _) : Matrix _ _ X.E).mulVec y = sumE (N_m_succ R) (γ⁻¹).1 1 y` using `fun y => by`. Rewrite using `[← TopStep.extUH_val]`. Conclude with `toGLm_mulVec _ y`. Rewrite using `[← map_inv, ← map_inv, ← map_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `isBlock_of_mulVec _ (fun y => ?_) fun y => ?_` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `(TopStep.prH_sumE _ _ _ y).trans (toGLm_mulVec _ _).symm`. Rewrite using `[e, TopStep.sumE_last, Units.val_one, one_mul]) x`. Rewrite using `[brC, Br.brAt, LinearMap.smul_apply, LinearMap.smul_apply, h, map_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem brC_rho (hW : W.Ok) (γ : UF X.E (R.N R.m - 1)) (x : VV X.K (W.lamTrue u R.m)) :
     brC W u (rhoVr X.emb (W.lamTrue u R.m) (ufGL X.E _ (extUH (N_m_succ R) γ)) x) =

@@ -22,9 +22,9 @@ noncomputable section
 namespace GlobalTheory.InnerTwist
 
 /- English proof (translation)
-Set `e` to `LinearEquiv.ofBijective (Matrix.mulVecLin j) h`. Use `⟨LinearMap.toMatrix' (e.symm : (Fin m → R) →ₗ[R] (Fin n → R)), ?_, ?_⟩` and prove the remaining obligations. Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Rewrite using `[Matrix.toLin'_mul, Matrix.toLin'_one, Matrix.toLin'_toMatrix']`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `e.apply_symm_apply x`. Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Rewrite using `[Matrix.toLin'_mul, Matrix.toLin'_one, Matrix.toLin'_toMatrix']`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Conclude with `e.symm_apply_apply x`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_inv {R : Type} [CommRing R] {m n : ℕ} (j : Matrix (Fin m) (Fin n) R)
     (h : Function.Bijective j.mulVec) : ∃ j' : Matrix (Fin n) (Fin m) R, j * j' = 1 ∧ j' * j = 1 := by
@@ -42,7 +42,7 @@ theorem exists_inv {R : Type} [CommRing R] {m n : ℕ} (j : Matrix (Fin m) (Fin 
 variable {D : D7}
 
 /- English proof (translation)
-Use extensionality with `i i'`. Conclude with `GlobalTheory.FinIsoGrp.proj_inj D _ _ (congrFun (congrFun h1 i) i') (congrFun (congrFun h2 i) i')`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem mat_ext {k l : Type} (X Y : Matrix k l (AF D.host.F ⊗[D.host.F] D.host.E))
     (h1 : X.map (GlobalTheory.FinIsoGrp.pInf D) = Y.map (GlobalTheory.FinIsoGrp.pInf D))
@@ -51,7 +51,7 @@ theorem mat_ext {k l : Type} (X Y : Matrix k l (AF D.host.F ⊗[D.host.F] D.host
   exact GlobalTheory.FinIsoGrp.proj_inj D _ _ (congrFun (congrFun h1 i) i') (congrFun (congrFun h2 i) i')
 
 /- English proof (translation)
-Use `Matrix.ext fun i k => ?_` and prove the remaining obligations. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression.
 -/
 theorem infHom_val (V : HSp D) (g : GA D V) :
     (infHom V g).val = (matHom V g).val.map (GlobalTheory.FinIsoGrp.pInf D) := by
@@ -59,9 +59,9 @@ theorem infHom_val (V : HSp D) (g : GA D V) :
   rfl
 
 /- English proof (translation)
-Establish `hx : infHom V (x : GA D V) = 1` using `x.2`. Establish `hy : infHom V (y : GA D V) = 1` using `y.2`. Establish `hm : (matHom V (x : GA D V)).val = (matHom V (y : GA D V)).val`. Apply `mat_ext` to reduce the goal to its premises. Rewrite using `[← infHom_val, ← infHom_val, hx, hy]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← GlobalTheory.FinIsoGrp.finE_val, ← GlobalTheory.FinIsoGrp.finE_val, h]`. Establish `inj : Function.Injective (matHom V)` using `Subgroup.subtype_injective _`. Conclude with `Subtype.ext (inj (Units.ext hm))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gfc_ext (V : HSp D) (x y : GfC V)
     (h : (finE V (x : GA D V)).val = (finE V (y : GA D V)).val) : x = y := by
@@ -81,26 +81,24 @@ namespace GlobalTheory.InnerTwist
 variable {D : D7}
 
 /- English proof (translation)
-The claim follows from `Matrix.map_one _ (RingHom.map_zero f) (RingHom.map_one f)`.
+A detailed English derivation is pending.
 -/
 theorem map_one' {R S : Type} [CommRing R] [CommRing S] {n : Type} [Fintype n] [DecidableEq n] (f : R →+* S) :
     (1 : Matrix n n R).map f = 1 :=
   Matrix.map_one _ (RingHom.map_zero f) (RingHom.map_one f)
 
 /- English proof (translation)
-Establish `ext : ∀ {k l : Type} (A B : Matrix k l R), A.map p = B.map p → A.map q = B.map q → A = B`. Introduce `k l A B ha hb`. Use extensionality with `i i'`. Conclude with `hinj _ _ (congrFun (congrFun ha i) i') (congrFun (congrFun hb i) i')`. Set `lift : Matrix n n R₂ → Matrix n n R` to `fun Z => (1 - s 1) • (1 : Matrix n n R) + Z.map s`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `lp : ∀ Z, (lift Z).map p = 1`. Introduce `Z`. Use extensionality with `i k`. Apply the tactic sequence `by_cases h : i = k <;> simp [lift, Matrix.one_apply, h, hs1]`. Establish `lq : ∀ Z, (lift Z).map q = Z`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `Z`. Use extensionality with `i k`. Apply the tactic sequence `by_cases h : i = k <;> simp [lift, Matrix.one_apply, h, hs2]`. Establish `hmul : ∀ Z W : Matrix n n R₂, Z * W = 1 → lift Z * lift W = 1`. Introduce `Z W hZW`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `ext` to reduce the goal to its premises. Rewrite using `[Matrix.map_mul, lp, lp, Matrix.one_mul, map_one']`. Rewrite using `[Matrix.map_mul, lq, lq, hZW, map_one']`. Establish `cp : ∀ A : Matrix n n R, (Formalism.UG.cT σ A).map p = Formalism.UG.cT σ₁ (A.map p)`. Introduce `A`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use extensionality with `i k`. Conclude with `hp _`. Establish `cq : ∀ A : Matrix n n R, (Formalism.UG.cT σ A).map q = Formalism.UG.cT σ₂ (A.map q)`. Introduce `A`. Use extensionality with `i k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `hq _`. Use `⟨⟨lift X, lift Y, hmul X Y hXY, hmul Y X hYX⟩, ?_, lp X, lq X⟩` and prove the remaining obligations. Use `show Formalism.UG.cT σ (lift X) * J * lift X = J`. Apply `ext` to reduce the goal to its premises. Rewrite using `[Matrix.map_mul, Matrix.map_mul, cp, lp, Formalism.UG.cT_one, Matrix.one_mul, Matrix.mul_one]`.
-
-Rewrite using `[Matrix.map_mul, Matrix.map_mul, cq, lq]`. Conclude with `hX`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_abs {R R₁ R₂ : Type} [CommRing R] [CommRing R₁] [CommRing R₂] {n : Type} [Fintype n] [DecidableEq n]
     (σ : R →+* R) (σ₁ : R₁ →+* R₁) (σ₂ : R₂ →+* R₂) (p : R →+* R₁) (q : R →+* R₂)
@@ -137,9 +135,9 @@ theorem lift_abs {R R₁ R₂ : Type} [CommRing R] [CommRing R₁] [CommRing R�
     exact hX
 
 /- English proof (translation)
-Use `choose s hs1 hs2 using GlobalTheory.FinIsoGrp.proj_surj D`. Rewrite `hX` using `[← GlobalTheory.FinIsoGrp.gram_map]`. Take `⟨u, hu, hup, huq⟩` from `lift_abs (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (AF D.host.F) D.sp.cm.sig) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (Ainf D.host.F) D.sp.cm.sig) (Formalism.UG.sigR D.sp.cm.sig (Formalism.L2.Herm.Af D.host.F)) (GlobalTheory.FinIsoGrp …`. Set `b0 : GA D V` to `(⟨u, hu⟩ : HR (AF D.host.F) D.sp.cm.sig V.gram)`. Establish `hb : infHom V b0 = 1`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Units.ext` to reduce the goal to its premises. Conclude with `(infHom_val V b0).trans hup`. Use `⟨⟨b0, hb⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.FinIsoGrp.finE_val]`. Conclude with `huq`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_fin (V : HSp D) (X Y : Matrix (Fin V.rank) (Fin V.rank) (Formalism.IndefR.Lev.EAf D)) (hXY : X * Y = 1) (hYX : Y * X = 1)
     (hX : Formalism.UG.cT (Formalism.UG.sigR D.sp.cm.sig (Formalism.L2.Herm.Af D.host.F)) X *
@@ -162,11 +160,11 @@ theorem exists_fin (V : HSp D) (X Y : Matrix (Fin V.rank) (Fin V.rank) (Formalis
   exact huq
 
 /- English proof (translation)
-Establish `hk : Formalism.UG.cT σ k' * G * k' = G'`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hJ₀, Formalism.UG.cT_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = G' := by rw [k1, Formalism.UG.cT_one, Matrix.one_mul, Matrix.mul_one]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Formalism.UG.cT_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = G := by rw [hk, hJ]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem alg {R : Type} [CommRing R] {m n : Type} [Fintype m] [DecidableEq m] [Fintype n] [DecidableEq n]
     (σ : R →+* R) (j j₀ : Matrix m n R) (j' k' : Matrix n m R) (G : Matrix n n R) (G' : Matrix m m R)
@@ -187,9 +185,9 @@ theorem alg {R : Type} [CommRing R] {m n : Type} [Fintype m] [DecidableEq m] [Fi
       _ = 1 := by rw [k1, Matrix.mul_one, h2]
 
 /- English proof (translation)
-Establish `e1 : P = j * A * j'`. Combine the equalities or inequalities in the displayed calculation. Establish `e2 : Q = j * A * j'`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Matrix.mul_assoc, c2]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = j * A * j' := by rw [k1, Matrix.one_mul, Matrix.mul_one]`. Rewrite using `[e1, e2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem alg2 {R : Type} [CommRing R] {m n : Type} [Fintype m] [DecidableEq m] [Fintype n] [DecidableEq n]
     (j j₀ : Matrix m n R) (j' k' : Matrix n m R) (h1 : j * j' = 1) (k1 : j₀ * k' = 1)
@@ -206,7 +204,7 @@ theorem alg2 {R : Type} [CommRing R] {m n : Type} [Fintype m] [DecidableEq m] [F
   rw [e1, e2]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem inv_val {R : Type} [CommRing R] {n : Type} [Fintype n] [DecidableEq n] (u : GL n R) (X Y : Matrix n n R)
     (hu : u.val = X) (hYX : Y * X = 1) : (u⁻¹).val = Y := by
@@ -215,11 +213,11 @@ theorem inv_val {R : Type} [CommRing R] {n : Type} [Fintype n] [DecidableEq n] (
     _ = Y := by rw [Units.mul_inv, Matrix.mul_one]
 
 /- English proof (translation)
-Introduce `D V V' j j₀ Φ Φ₀ hj hj₀ hΦ hΦ₀`. Take `⟨j', h1, h2⟩` from `exists_inv j hj.1`. Take `⟨k', k1, k2⟩` from `exists_inv j₀ hj₀.1`. Take `⟨hX, hXY, hYX⟩` from `alg _ j j₀ j' k' _ _ h1 h2 k1 k2 hj.2 hj₀.2`. Take `⟨b, hb⟩` from `exists_fin V _ _ hXY hYX hX`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨b, fun g => gfc_ext V' _ _ ?_⟩` and prove the remaining obligations. Establish `hbinv` using `inv_val (finE V (b : GA D V)) _ _ hb hYX`. Establish `e0 : (finE V ((b * g * b⁻¹ : GfC V) : GA D V)).val = HMul.hMul (HMul.hMul (HMul.hMul k' j) (finE V (g : GA D V)).val) (HMul.hMul j' j₀)`. Rewrite using `[Subgroup.coe_mul, Subgroup.coe_mul, Subgroup.coe_inv, map_mul, map_mul, map_inv, Units.val_mul, Units.val_mul, hbinv, hb]`. Establish `c2` using `hΦ₀ (b * g * b⁻¹)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `GlobalTheory.IndefiniteRowSideFullHecke.IsometryCarriesCharacter.mmul at c2`. Rewrite `c2` using `[e0]`. Conclude with `alg2 j j₀ j' k' h1 k1 _ _ _ (hΦ g) c2`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_inner : ∀ (D : D7) (V V' : HSp D) (j j₀ : Matrix (Fin V'.rank) (Fin V.rank) (Formalism.IndefR.Lev.EAf D)) (Φ Φ₀ : GfC V ≃ₜ* GfC V'), GlobalTheory.IndefiniteRowSideFullHecke.IsometryCarriesCharacter.IsIsom V V' (Formalism.L2.Herm.Af D.host.F) j → GlobalTheory.IndefiniteRowSideFullHecke.IsometryCarriesCharacter.IsIsom V V' (Formalism.L2.Herm.Af D.host.F) j₀ → GlobalTheory.IndefiniteRowSideFullHecke.IsometryCarriesCharacter.IsConjBy V V' j Φ → GlobalTheory.IndefiniteRowSideFullHecke.IsometryCarriesCharacter.IsConjBy V V' j₀ Φ₀ → ∃ b : GfC V, ∀ g, Φ g = Φ₀ (b * g * b⁻¹) := by
   intro D V V' j j₀ Φ Φ₀ hj hj₀ hΦ hΦ₀

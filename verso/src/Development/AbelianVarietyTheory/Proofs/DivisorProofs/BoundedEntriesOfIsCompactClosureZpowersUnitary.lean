@@ -8,13 +8,13 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.BddCpt
 
 /- English proof (translation)
-Introduce `E _ _ _ n w t hK`. Establish `hO : IsOpen ((Ov E w : Set (w.adicCompletion E)))` using `Valued.isOpen_valuationSubring _`. Establish `hNe : (nhdsWithin (0 : w.adicCompletion E) {0}ᶜ).NeBot`. Use `letI : NontriviallyNormedField (w.adicCompletion E) := Valued.toNontriviallyNormedField _ _`. Conclude with `NormedField.nhdsNE_neBot 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hev : ∀ᶠ a in nhds (0 : w.adicCompletion E), ∀ s ∈ closure (Subgroup.zpowers t : Set (UL n w)), ∀ i j, a * s.1.1 i j ∈ Ov E w`. Use `hK.eventually_forall_of_forall_eventually fun s _ => ?_` and prove the remaining obligations. Rewrite using `[Filter.eventually_all]`. Introduce `i`. Rewrite using `[Filter.eventually_all]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Establish `hc : Continuous (fun z : w.adicCompletion E × UL n w => z.1 * z.2.1.1 i j)` using `by fun_prop`. Establish `h0 : (fun z : w.adicCompletion E × UL n w => z.1 * z.2.1.1 i j) (0, s) ∈ (Ov E w : Set _)`. Simplify using `only [zero_mul]`. Conclude with `(Ov E w).zero_mem`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `hc.continuousAt.preimage_mem_nhds (hO.mem_nhds h0)`. Take `⟨a, ha, ha0⟩` from `((hev.filter_mono (nhdsWithin_le_nhds (s := ({0}ᶜ : Set (w.adicCompletion E))))).and (self_mem_nhdsWithin (s := ({0}ᶜ : Set (w.adicCompletion E))))).exists`. Conclude with `⟨a, ha0, fun k i j => ha _ (subset_closure ⟨k, rfl⟩) i j⟩`.
+A detailed English derivation is pending.
 -/
 theorem bdd_entries_of_isCompact_closure_zpowers : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (w : Pl E) (t : UL n w),
     IsCompact (closure (Subgroup.zpowers t : Set (UL n w))) →

@@ -10,14 +10,14 @@ open scoped InnerProductSpace ComplexOrder ENNReal
 open Formalism.MainNotions.S Formalism.MainNotions.PlaceDegreeData Formalism.MainNotions.BridgeLemma
 
 /- English proof (translation)
-Rewrite using `[ENNReal.ofReal_pow (by norm_num)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cn_two_pow (q : ℕ) : (2 : ℝ≥0∞) ^ q = ENNReal.ofReal ((2 : ℝ) ^ q) := by
   rw [ENNReal.ofReal_pow (by norm_num)]
   simp
 
 /- English proof (translation)
-Rewrite using `[cn_two_pow, ← ENNReal.ofReal_mul (by positivity)]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts.
 -/
 theorem cn_two_pow_mul (q : ℕ) {B : ℝ} : (2 : ℝ≥0∞) ^ q * ENNReal.ofReal (B / 2 ^ q) = ENNReal.ofReal B := by
   rw [cn_two_pow, ← ENNReal.ofReal_mul (by positivity)]
@@ -25,7 +25,7 @@ theorem cn_two_pow_mul (q : ℕ) {B : ℝ} : (2 : ℝ≥0∞) ^ q * ENNReal.ofRe
   field_simp
 
 /- English proof (translation)
-Take `⟨-, hq2⟩` from `X.qq_spec hX`. Distinguish the cases in `h : X.qq ≤ 2`. Use linear arithmetic over natural numbers and integers. Use the polynomial consequences of the given equalities and inequalities.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Use linear arithmetic over natural numbers and integers. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem cn_two_qq (X : CData) {n₀ : ℕ} {A : ℝ} (hX : X.HypB n₀ A) (hn : 5 ≤ X.I.n) : 2 * X.qq + 1 ≤ X.I.n := by
   obtain ⟨-, hq2⟩ := X.qq_spec hX
@@ -34,19 +34,17 @@ theorem cn_two_qq (X : CData) {n₀ : ℕ} {A : ℝ} (hX : X.HypB n₀ A) (hn : 
   · nlinarith
 
 /- English proof (translation)
-Take `⟨c₂, hc₂, n₂, hP⟩` from `Formalism.HermitianLatticeCounting.Final.S7.probINonzero (1 / 8) (by norm_num)`. Use `⟨c₂, hc₂, fun Cv Cres hCv => ?_⟩` and prove the remaining obligations. Take `⟨n₁, hκ⟩` from `cn_kappa_le Cv Cres hCv`. Use `⟨max (max n₁ n₂) 5, fun X S n₀ A C₁ hn hX hts hV hS hD hK hR => ?_⟩` and prove the remaining obligations. Establish `hn1 : n₁ ≤ X.I.n` using `le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hn`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hn2 : n₂ ≤ X.I.n` using `le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hn`. Establish `hn5 : 5 ≤ X.I.n` using `le_trans (le_max_right _ _) hn`. Take `⟨-, hq2⟩` from `X.qq_spec hX`. Use `set E : ℝ := Real.exp (-(c₂ * (X.I.n : ℝ) * (X.I.f : ℝ) * Real.log (X.I.n : ℝ))) with hE`. Use `set vol : ℝ := X.I.vol X.μf X.fund with hvol`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvol0 : 0 ≤ vol` using `ENNReal.toReal_nonneg`. Establish `hle : X.μ (S.Mod C₁)ᶜ ≤ ENNReal.ofReal (vol * E)`. Use `le_trans (S.compl_Mod_le hS hD hts (cn_two_qq X hX hn5)) ?_` and prove the remaining obligations. Use `le_trans (cn_sum_types_le X.qq _ (ENNReal.ofReal (vol * E / 2 ^ X.qq)) fun J hJ c => ?_) (cn_two_pow_mul _).le` and prove the remaining obligations. Take `⟨h1, h2⟩` from `Finset.mem_Icc.1 hJ`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Establish `a1` using `hκ X S n₀ A hn1 hX hK hR J c h1 h2`. Establish `a2` using `hP X.I.n X.qq J X.I.f hn2 hq2 h1 (one_le_autInst_f X.I)`. Establish `a3 : S.kap J c ≤ E / 2 ^ X.qq`. Rewrite using `[le_div_iff₀ (by positivity)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Establish `: IsFiniteMeasure X.μ` using `⟨by`. Unfold `CData.μ`. Rewrite using `[Measure.restrict_apply_univ]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `lt_top_iff_ne_top.2 hV⟩`. Establish `hadd` using `measureReal_add_measureReal_compl (μ := X.μ) (S.measurableSet_Mod hS C₁)`. Establish `hc : X.μ.real (S.Mod C₁)ᶜ ≤ vol * E` using `ENNReal.toReal_le_of_le_ofReal (mul_nonneg hvol0 (Real.exp_pos _).le) hle`. Unfold `CData.ProbMod`. Rewrite using `[← hE, ← hvol]`.
-
-Establish `hv : vol = X.μ.real Set.univ` using `X.vol_eq`. Use the polynomial consequences of the given equalities and inequalities.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem cn_prob : ∃ c₂ : ℝ, 0 < c₂ ∧ ∀ Cv Cres : ℝ, 1 ≤ Cv → ∃ n₁ : ℕ, ∀ (X : CData) (S : CSize X) (n₀ : ℕ) (A C₁ : ℝ),
     n₁ ≤ X.I.n → X.HypB n₀ A → cn_tauS X C₁ ≤ 1 / 2 → X.FinVol → S.Strata → S.Density → S.KappaVol Cv →
@@ -90,29 +88,27 @@ theorem cn_prob : ∃ c₂ : ℝ, 0 < c₂ ∧ ∀ Cv Cres : ℝ, 1 ≤ Cv → �
   nlinarith
 
 /- English proof (translation)
-Take `⟨cb, c₂, hcb, hc₂, hT⟩` from `Formalism.HermitianLatticeCounting.Final.CuspThresholdCounts.nearTotalAbs (1 / 8) (by norm_num)`. Use `⟨cb, c₂, hcb, hc₂, fun Cv Cres A C₁ hCv hA hC₁ => ?_⟩` and prove the remaining obligations. Take `⟨n₁, hκ⟩` from `cn_kappa_le Cv Cres hCv`. Take `⟨n₂, hT⟩` from `hT (2 * C₁) A (by linarith) hA`. Use `⟨max (max n₁ n₂) 5, fun X S n₀ C cε hn hn₀ hXC hq1 hcε hcε2 hS hD hK hR hN => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hX` using `hXC.1`. Establish `hn1 : n₁ ≤ X.I.n` using `le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hn`. Establish `hn2 : n₂ ≤ X.I.n` using `le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hn`. Establish `hn5 : 5 ≤ X.I.n` using `le_trans (le_max_right _ _) hn`. Take `⟨-, hq2⟩` from `X.qq_spec hX`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hY : 2 ≤ cn_Y X` using `cnd_two_le_Y X hn₀ hX`. Establish `hf` using `one_le_autInst_f X.I`. Take `⟨d1, -, -, -⟩` from `Formalism.HermitianLatticeCounting.Final.S7.deltaSmall X.I.n X.qq X.I.f cε (by omega) hf hq2 hcε hcε2`. Establish `hp : X.I.IsPosType X.e` using `hX.1.2.2.2.2.2.2.1.2.2.2.1`. Use `set M : ℝ := fdegAll X.I X.σ X.w * (X.e 1).re with hM`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM0 : 0 ≤ M` using `mul_nonneg X.fdegAll_nonneg (X.e_one_nonneg hp)`. Use `set E : ℝ := Real.exp (-(c₂ * (X.I.n : ℝ) * (X.I.f : ℝ) * Real.log (X.I.n : ℝ))) with hE`. Use `set vol : ℝ := X.I.vol X.μf X.fund with hvol`. Establish `hvol0 : 0 ≤ vol` using `ENNReal.toReal_nonneg`. Establish `hts0 : 0 < cn_tauS X C₁` using `cnd_tauS_pos X C₁ hY`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hts : cn_tauS X C₁ ≤ 1 / 2` using `cnd_tauS_le_half X hC₁ hq1 hY`. Establish `hmain` using `S.near_le hS hD hN hX hts0 hts (cn_two_qq X hX hn5) (by positivity) d1`. Unfold `CData.NearStep`. Use `le_trans hmain ?_` and prove the remaining obligations. Establish `hDs : 1 * E * X.Ds = M * vol * E`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Unfold `CData.Ds AutInst.Dstar`. Rewrite using `[hM, hvol]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← hE, hDs]`. Use `le_trans (cn_sum_types_le X.qq _ (ENNReal.ofReal (M * vol * E / 2 ^ X.qq)) fun J hJ c => ?_) (cn_two_pow_mul _).le` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨h1, h2⟩` from `Finset.mem_Icc.1 hJ`. Establish `a1` using `hκ X S n₀ A hn1 hX hK hR J c h1 h2`. Establish `hjq : ∀ x, c.blocksFun x ≤ X.qq` using `fun x => by`. Establish `: c.blocksFun x ≤ ∑ y, c.blocksFun y` using `Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ x)`. Rewrite `this` using `[c.sum_blocksFun]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `le_trans this h2`. Take `⟨-, -, a2⟩` from `Formalism.HermitianLatticeCounting.Final.NearFarVolumeBounds.logVolumeBound c.length X.qq X.I.f c.blocksFun C₁ (cn_Y X) hC₁ hY hq1 hjq`. Establish `hg1 : (1 : ℝ) ≤ (X.g : ℝ)` using `by exact_mod_cast hX.1.2.2.2.2.2.2.2.1`. Establish `a3` using `hT X.I.n X.qq J c.length X.I.f X.I.rd X.g X.b hn2 hq2 (c.length_pos_of_pos h1) c.length_le h2 hf hXC.2.2.1 hX.1.2.2.1 hg1 hX.1.2.2.2.2.2.2.2.2.1 (one_le_discriminant_root X.I) hX.1.2.2.2.1 hXC.2.2.2`. Use `set k' : ℝ := Real.exp (-(1 / 8 * (J : ℝ) * (X.I.n : ℝ) * (X.I.f : ℝ) * Real.log (X.I.n : ℝ))) with hk'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Use `set P : ℝ := ∏ a, (2 * (X.I.f : ℝ) * c.blocksFun a * Real.log (1 / (2 * cn_tauS X C₁))) with hP`. Use `set P' : ℝ := (2 * C₁ * (X.I.f : ℝ) * (X.qq : ℝ) ^ 2 * Real.log (cn_Y X)) ^ c.length with hP'`. Establish `hP0 : 0 ≤ P` using `Finset.prod_nonneg fun a _ => by`. Establish `: 0 ≤ Real.log (1 / (2 * cn_tauS X C₁))` using `Real.log_nonneg (by`. Rewrite using `[le_div_iff₀ (by positivity)]; linarith)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Check the signs of the components of the expression. Establish `hPP : P ≤ P'` using `a2`. Establish `hk0 : 0 ≤ k'` using `(Real.exp_pos _).le`. Combine the equalities or inequalities in the displayed calculation. Establish `e2 : (2 : ℝ≥0∞) = ENNReal.ofReal 2` using `by simp`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← e2]`. Use `gcongr`. Use `_ = ENNReal.ofReal (M * (vol * k' * (2 * P'))) := by`. Rewrite using `[← ENNReal.ofReal_mul (by norm_num), ← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_mul hM0]`. Use `_ ≤ ENNReal.ofReal (M * vol * E / 2 ^ X.qq) := by`.
-
-Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Establish `a4 : k' * (2 * P') ≤ E / 2 ^ X.qq`. Rewrite using `[le_div_iff₀ (by positivity)]`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem cn_near : ∃ cb c₂ : ℝ, 0 < cb ∧ 0 < c₂ ∧ ∀ Cv Cres A C₁ : ℝ, 1 ≤ Cv → 1 ≤ A → 1 ≤ C₁ → ∃ n₁ : ℕ,
     ∀ (X : CData) (S : CSize X) (n₀ : ℕ) (C cε : ℝ), n₁ ≤ X.I.n → 1 ≤ n₀ → X.HypC n₀ A C cb → 1 ≤ X.qq → 0 < cε →

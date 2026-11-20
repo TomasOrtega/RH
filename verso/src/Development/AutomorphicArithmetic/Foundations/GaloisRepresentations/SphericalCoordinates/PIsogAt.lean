@@ -9,11 +9,9 @@ open scoped Matrix TensorProduct Classical
 open UpperTheory.Gal.W2
 
 /- English proof (translation)
-Establish `hd : ∀ z, M z - M' z ∈ A`. Introduce `z`. Rewrite using `[← hker]`. Use `hadd (M z - M' z) (M' z)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel, h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mul_eq_right.mp this.symm`. Use `LinearMap.ext fun z => ?_` and prove the remaining obligations. Establish `key : ∀ r : ℝ, (r : ℂ) • (M z - M' z) ∈ A` using `fun r => by`. Use `hd ((r : ℂ) • z)` as an intermediate fact. Rewrite `this` using `[map_smul, map_smul, ← smul_sub]`. Then use the resulting hypothesis.
-
-Conclude with `sub_eq_zero.mp (GlobalTheory.HeckeUnif.eq_zero_of_real_smul_mem A hA _ key)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem lin_eq_of_exp {g : ℕ} {Q : Type*} [Group Q] (e : (Fin g → ℂ) → Q) (A : AddSubgroup (Fin g → ℂ))
     (hA : DiscreteTopology A) (hadd : ∀ z w, e (z + w) = e z * e w) (hker : ∀ z, e z = 1 ↔ z ∈ A)
@@ -31,17 +29,15 @@ private theorem lin_eq_of_exp {g : ℕ} {Q : Type*} [Group Q] (e : (Fin g → �
   exact sub_eq_zero.mp (GlobalTheory.HeckeUnif.eq_zero_of_real_smul_mem A hA _ key)
 
 /- English proof (translation)
-Establish `hol : ∀ {C C' : Over X} (u : (Fin g → ℂ) → (Over.mk y ⟶ C)) (f : C ⟶ C'), IsHolTo Set.univ (fun z => (u z).left) → IsHolTo Set.univ (fun z => (u z ≫ f).left)`. Introduce `C C' u f hu`. Establish `: (fun z => (u z ≫ f).left) = fun z => (u z).left ≫ f.left` using `funext fun z => by simp only [Over.comp_left]`. Rewrite using `[this]`. Conclude with `ReciprocityTheory.ChartRestriction.G.PullbackSections.isHolTo_comp hu _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨M₀, hM₀, -⟩` from `GlobalTheory.HeckeUnif.existsUnique_linear_lift_of_hom X B g hB hBs y E (fun z => e z ≫ ψ) hE (fun z w => by rw [he.1, MonObj.mul_comp]) (hol e ψ he.2.2.1)`. Take `⟨M₁, hM₁, -⟩` from `GlobalTheory.HeckeUnif.existsUnique_linear_lift_of_hom X A g hA hAs y e (fun z => E z ≫ ψ') he (fun z w => by rw [hE.1, MonObj.mul_comp]) (hol E ψ' hE.2.2.1)`. Establish `hpe : ∀ z, e ((d : ℂ) • z) = e z ^ d` using `fun z => by`. Rewrite using `[Nat.cast_smul_eq_nsmul]`. Conclude with `GlobalTheory.UPel.HT.unifCls_exp_nsmul e he.1 d z`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hpE : ∀ z, E ((d : ℂ) • z) = E z ^ d` using `fun z => by`. Rewrite using `[Nat.cast_smul_eq_nsmul]`. Conclude with `GlobalTheory.UPel.HT.unifCls_exp_nsmul E hE.1 d z`. Establish `h10 : M₁ ∘ₗ M₀ = (d : ℂ) • LinearMap.id` using `lin_eq_of_exp e Ae hAe he.1 hke _ _ fun z => by show e (M₁ (M₀ z)) = e ((d : ℂ) • z)`. Rewrite using `[hM₁, hM₀, hpe, Category.assoc, h1, MonObj.comp_pow, Category.comp_id]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h01 : M₀ ∘ₗ M₁ = (d : ℂ) • LinearMap.id` using `lin_eq_of_exp E Be hBe hE.1 hkE _ _ fun z => by show E (M₀ (M₁ z)) = E ((d : ℂ) • z)`. Rewrite using `[hM₀, hM₁, hpE, Category.assoc, h2, MonObj.comp_pow, Category.comp_id]`. Establish `hd' : (d : ℂ) ≠ 0` using `by exact_mod_cast hd`. Set `H : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ)` to `LinearEquiv.ofLinear M₀ ((d : ℂ)⁻¹ • M₁) (by`. Rewrite using `[LinearMap.comp_smul, h01, smul_smul, inv_mul_cancel₀ hd', one_smul])`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(by`. Rewrite using `[LinearMap.smul_comp, h10, smul_smul, inv_mul_cancel₀ hd', one_smul])`. Use `⟨H, fun z => hM₀ z, fun z hz => ?_, fun z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[← hkE] show E (M₀ z) = 1`. Rewrite using `[hM₀, (hke z).2 hz, MonObj.one_comp]`.
-
-Establish `: (d : ℂ) • H.symm z = M₁ z` using `by show (d : ℂ) • ((d : ℂ)⁻¹ • M₁ z) = M₁ z`. Rewrite using `[smul_smul, mul_inv_cancel₀ hd', one_smul]`. Rewrite using `[this, ← hke, hM₁, (hkE z).2 hz, MonObj.one_comp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_linearEquiv_of_isog {X : Scheme.{0}} {A B : Over X} [GrpObj A] [IsCommMonObj A] [GrpObj B]
     [IsCommMonObj B] (g : ℕ) (hA : IsAbelianScheme A) (hAs : SmoothOfRelativeDimension g A.hom)
@@ -91,35 +87,31 @@ private theorem exists_linearEquiv_of_isog {X : Scheme.{0}} {A B : Over X} [GrpO
     rw [this, ← hke, hM₁, (hkE z).2 hz, MonObj.one_comp]
 
 /- English proof (translation)
-Introduce `hTW hPL p _ D G L gb N N' h hLev X X' c hX hL hX' hL' ρ hF D' t P x e hU`. Take `⟨hN3, hNp, hN'3, hN'p, -, -⟩` from `hLev`. Establish `hN : 0 < N` using `by omega`. Establish `hN' : 0 < N'` using `by omega`. Take `⟨hmon, hact, ⟨ψ', d, hmon', -, hψψ', hψ'ψ, hdp⟩, hTate⟩` from `c.tr`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI := hmon`. Use `haveI := hmon'`. Establish `hd : d ≠ 0`. Introduce and unpack `rfl`. Use `(Fact.out : p.Prime).one_lt` as an intermediate fact.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `only [Nat.coprime_zero_left] at hdp`. Use linear arithmetic over natural numbers and integers. Establish `hys : (x ≫ c.q) ≫ X.s = spMap (RingHom.id ℂ)`. Rewrite using `[Category.assoc, c.ov]`. Conclude with `hU.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hpts : ∃ (D'' : PLat D.O D.inv) (t'' : D.La → D''.La) (P₁ : D''.La →+ (Fin D.g → ℂ)) (E : (Fin D.g → ℂ) → (Over.mk (x ≫ c.q) ⟶ X.univ.A)), D.Cls N D'' t'' ∧ UnifAt (gfam X.univ hX hL) (RingHom.id ℂ) ρ N D'' t'' P₁ (x ≫ c.q) E` using `hF.pts (x ≫ c.q) hys`. Take `⟨D'', t'', P₁, E, hC, hE⟩` from `hpts`. Establish `hO : SmoothOfRelativeDimension D.g c.o.A.hom` using `(smoothOfRelativeDimension_isStableUnderBaseChange D.g).of_isPullback c.φ.cart.1 hX`. Establish `hPo' : c.o.P.IsLB` using `c.o.isLB`. Establish `hPM : X.univ.P.IsLB` using `X.univ.isLB`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hLo : (c.o.P.pull (lift (𝟙 c.o.A) (𝟙 c.o.A)).left).IsLB` using `pull_isLB hPo' _`. Establish `isoB : LBIso (c.o.P.pull (lift (𝟙 c.o.A) (𝟙 c.o.A)).left) ((X.univ.P.pull (lift (𝟙 X.univ.A) (𝟙 X.univ.A)).left).pull c.φ.φ)`. Use `(GlobalTheory.CechPic.cls_eq_iff (pull_isLB hPo' _) (pull_isLB (pull_isLB hPM _) _)).1 ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.CechPic.cls_pull hPo', (GlobalTheory.CechPic.cls_eq_iff hPo' (pull_isLB hPM _)).2 c.φ.pol, GlobalTheory.CechPic.cls_pull hPM, ← GlobalTheory.CechPic.pull_comp, GlobalTheory.DiagAmpleBC.diag_comp X.univ.A c.o.A c.φ.φ c.φ.φ₂ c.φ.sq, GlobalTheory.CechPic.pull_comp, Glo …`. Take `⟨E', hE', hEE'⟩` from `(GlobalTheory.unifAt_correspond_of_cartesian D.O D.inv D.g ρ ℂ ℂ (RingHom.id ℂ) (RingHom.id ℂ) D.La (gfam X.univ hX hL) (gfam c.o hO hLo) N c.q c.φ.φ c.φ.cart c.φ.act isoB c.φ.eta D'' t'' P₁ x hU.1 hys).2 E hE`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨H, hEH, hHmem, hHmem'⟩` from `exists_linearEquiv_of_isog D.g X'.univ.ab hX' c.o.ab hO x e E' hU.2.2.1 hE'.2.2.1 P.range P₁.range hU.2.1.2.2.1 hE'.2.1.2.2.1 hU.2.2.2.1 hE'.2.2.2.1 c.ψ ψ' d hd hψψ' hψ'ψ`. Establish `hHρ : ∀ (a : D.O) z, H (ρ a *ᵥ z) = ρ a *ᵥ H z`. Introduce `a z`. Use `lin_eq_of_exp E' P₁.range hE'.2.1.2.2.1 hE'.2.2.1.1 hE'.2.2.2.1 ((H : (Fin D.g → ℂ) →ₗ[ℂ] (Fin D.g → ℂ)) ∘ₗ Matrix.mulVecLin (ρ a)) (Matrix.mulVecLin (ρ a) ∘ₗ (H : (Fin D.g → ℂ) →ₗ[ℂ] (Fin D.g → ℂ))) (fun z => by show E' (H (ρ a *ᵥ z)) = E' (ρ a *ᵥ H z)` as an intermediate fact. Establish `e1 : E' (ρ a *ᵥ H z) = E' (H z) ≫ c.o.act.act a` using `hE'.2.2.2.2.1 a (H z)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : e (ρ a *ᵥ z) = e z ≫ X'.univ.act.act a` using `hU.2.2.2.2.1 a z`. Rewrite using `[hEH, e1, hEH, e2]`. Conclude with `(Category.assoc _ _ _).trans ((congrArg (fun u => e z ≫ u) (hact a)).trans (Category.assoc _ _ _).symm))`. Conclude with `LinearMap.congr_fun this z`. Establish `hHρ' : ∀ (a : D.O) z, H.symm (ρ a *ᵥ z) = ρ a *ᵥ H.symm z`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `a z`. Apply `H.injective` to reduce the goal to its premises. Rewrite using `[hHρ, H.apply_symm_apply, H.apply_symm_apply]`. Set `P'' : D''.La →+ (Fin D.g → ℂ)` to `(H.symm : (Fin D.g → ℂ) →ₗ[ℂ] (Fin D.g → ℂ)).toAddMonoidHom.comp P₁`. Establish `hP'' : ∀ u, P'' u = H.symm (P₁ u)` using `fun u => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmat : ∀ z, LinearMap.toMatrix' (H.symm : (Fin D.g → ℂ) →ₗ[ℂ] (Fin D.g → ℂ)) *ᵥ z = H.symm z` using `fun z => LinearMap.toMatrix'_mulVec _ z`. Establish `hper'' : IsPeriod D'' ρ P''` using `hPL D.O D.inv D.g ρ D'' P₁ P'' (LinearMap.toMatrix' (H.symm : (Fin D.g → ℂ) →ₗ[ℂ] (Fin D.g → ℂ))) hE'.2.1 (by`. Rewrite using `[LinearMap.det_toMatrix']`. Conclude with `(LinearEquiv.isUnit_det' H.symm).ne_zero)`. Use the proof step `(fun a => Matrix.toLin'.injective (LinearMap.ext fun z => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Matrix.toLin'_apply, Matrix.toLin'_apply, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hmat, hmat, hHρ']))`. Use the proof step `(fun u => (hmat _).symm)`. Establish `hmark : IsMarkedIsom N D'' D'' t'' t'' (LinearEquiv.refl D.O D''.La)` using `⟨fun _ _ => rfl, fun a => ⟨0, by simp⟩⟩`. Apply the tactic sequence `have hE2 : UnifAt (gfam X.univ hX hL) (RingHom.id ℂ) ρ N D'' t'' P'' (x ≫ c.q) (fun z => E (H z)) := GlobalTheory.T.uniformisationAt_transport_isometry D.O D.inv D.g ρ ℂ (RingHom.id ℂ) D.La (gfam X.univ hX hL) N D'' D'' t'' t'' P₁ P'' (x ≫ c.q) E (LinearEquiv.refl D.O D''.La) H.s …`. Apply the tactic sequence `have hE3 : UnifAt (gfam c.o hO hLo) (RingHom.id ℂ) ρ N D'' t'' P'' x (fun z => E' (H z)) := GlobalTheory.T.uniformisationAt_transport_isometry D.O D.inv D.g ρ ℂ (RingHom.id ℂ) D.La (gfam c.o hO hLo) N D'' D'' t'' t'' P₁ P'' x E' (LinearEquiv.refl D.O D''.La) H.symm hN hE' hmark ( …`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hι : ∀ u, ∃ v, P₁ v = H (P u)`. Introduce `u`. Conclude with `hHmem (P u) ⟨u, rfl⟩`. Use `choose fι hfι using hι`. Establish `hPf : ∀ u, P'' (fι u) = P u` using `fun u => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hP'', hfι, H.symm_apply_apply]`. Establish `hinj'' : Function.Injective P''` using `hper''.2.1`. Set `inc : D'.La →ₗ[D.O] D''.La` to `{ toFun := fι map_add' := fun u v => hinj'' (by rw [map_add, hPf, hPf, hPf, map_add]) map_smul' := fun a u => hinj'' (by rw [RingHom.id_apply, hper''.1, hPf, hPf]; exact hU.2.1.1 a u) }`. Establish `hPinc : ∀ u, P'' (inc u) = P u` using `hPf`. Take `⟨I', I'', hI', hI'', hT⟩` from `hTate ℂ x (RingHom.id ℂ) hU.1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨f, nu, hw, hfN, hfe⟩` from `hTW p D gb N' X'.X X'.s X'.univ hX' hL' ρ D' t P x e hN' hN'p hU I' hI'`. Take `⟨f'', nu'', hw'', hfN'', hfe''⟩` from `hTW p D gb N X'.X X'.s c.o hO hLo ρ D'' t'' P'' x _ hN hNp hE3 I'' hI''`. Use `⟨D'', t'', P'', fun z => E (H z), inc, d, hC, hE2, hPinc, fun z => ?_, hdp, fun u'' => ?_, f, nu, f'', nu'', hw, hw'', hfN, hfN'', fun n hn hnp a b => ?_⟩` and prove the remaining obligations. Use `show (E (H z)).left = (e z).left ≫ c.ψ.left ≫ c.φ.φ`. Rewrite using `[hEE' (H z), hEH z]`.
-
-Conclude with `Category.assoc _ _ _`. Take `⟨u, hu⟩` from `hHmem' (P₁ u'') ⟨u'', rfl⟩`. Use `⟨u, hinj'' ?_⟩` and prove the remaining obligations. Rewrite using `[hPinc, hu, map_nsmul, ← Nat.cast_smul_eq_nsmul ℂ]`. Both sides reduce to the same expression.
-
-Rewrite using `[← hT n hn hnp a b]`. Establish `h1 : I'.ev n a ≫ c.ψ = E' (H ((n : ℂ)⁻¹ • P'' (inc (f n a))))`. Rewrite using `[hfe n hn hnp a, hPinc, hEH]`. Rewrite using `[h1, hfe'' n hn hnp b]`. Conclude with `(GlobalTheory.UPel.HT.unifCls_eq_iff (fun z => E' (H z)) P'' hE3.2.2.1.1 hE3.2.2.2.1 hinj'' hn _ _).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.isogAt_of :
     UpperTheory.Gal.W2.TateWit → UpperTheory.Gal.W2.PerLin → UpperTheory.Gal.W2.IsogAt := by

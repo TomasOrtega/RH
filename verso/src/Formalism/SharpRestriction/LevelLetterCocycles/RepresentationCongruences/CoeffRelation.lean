@@ -5,9 +5,9 @@ namespace Formalism.MainNotions.N.FrobeniusPowerSeries.ArcLengthTwo
 open PowerSeries
 
 /- English proof (translation)
-Introduce `j`. Take `⟨R, hR⟩` from `heq j`. Establish `h1 : coeff k (C p ^ K * (∑ m, F m * C (μ m j) - (if j = k₀ then C p ^ s * X ^ S * Q else 0))) = 0`. Rewrite using `[hR, coeff_X_pow_mul', if_neg (by omega)]`. Simplify using `only [← map_pow, coeff_C_mul, map_sub, map_sum, coeff_mul_C] at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h2` using `sub_eq_zero.mp ((mul_eq_zero.mp h1).resolve_left (pow_ne_zero _ hp))`. Rewrite using `[h2]`. Use `split_ifs with hj`. Simplify using `[← map_pow, mul_assoc, coeff_C_mul, coeff_X_pow_mul', hkS]`. Conclude with `map_zero _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coeff_relation {O : Type*} [CommRing O] [IsDomain O] {d₁ d : ℕ} (p : O) (hp : p ≠ 0)
     (F : Fin d₁ → O⟦X⟧) (μ : Fin d₁ → Fin d → O) (k₀ : Fin d) (K s S h k : ℕ) (Q : O⟦X⟧)

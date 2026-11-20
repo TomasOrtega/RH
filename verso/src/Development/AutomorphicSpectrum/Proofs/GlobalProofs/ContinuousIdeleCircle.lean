@@ -20,7 +20,7 @@ def ideleCircle (χ : HChar E) (hu : IsUnitary χ) : GroundTheory.Global.IdeleGr
     rfl
 
 /- English proof (translation)
-The claim follows from `Continuous.subtype_mk (Units.continuous_val.comp χ.2.1) _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_ideleCircle (χ : HChar E) (hu : IsUnitary χ) : Continuous (ideleCircle χ hu) :=
   Continuous.subtype_mk (Units.continuous_val.comp χ.2.1) _
@@ -49,7 +49,7 @@ theorem coe_localComponent (χ : HChar E) (hu : IsUnitary χ) (v : HeightOneSpec
     (((toHecke χ hu).localComponent v x : Circle) : ℂ) = ((χ.loc v x : ℂˣ) : ℂ) := rfl
 
 /- English proof (translation)
-Use extensionality with `c`. Take `⟨x, rfl⟩` from `QuotientGroup.mk_surjective c`. Use `show (((toHecke χ⁻¹ hu').toIdele x : Circle) : ℂ) = ((((toHecke χ hu).toIdele x)⁻¹ : Circle) : ℂ)`. Rewrite using `[coe_toIdele, Circle.coe_inv, coe_toIdele]`. Conclude with `Units.val_inv_eq_inv_val (χ.1 x)`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toHecke_inv (χ : HChar E) (hu : IsUnitary χ) (hu' : IsUnitary χ⁻¹) : toHecke χ⁻¹ hu' = (toHecke χ hu)⁻¹ := by
   ext c

@@ -97,7 +97,7 @@ theorem hol_apply (τ : E →+* ℂ) (L : Lie E a →ₗ[ℝ] N) (x : Matrix (Fi
 
 omit [NumberField E] [IsScalarTower ℝ ℂ N] in
 /- English proof (translation)
-Simplify using `[hol_apply, Matrix.single_apply, ite_and]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hol_single (τ : E →+* ℂ) (L : Lie E a →ₗ[ℝ] N) (i j : Fin a) : hol τ L (Matrix.single i j 1) = eL L τ i j := by
   simp [hol_apply, Matrix.single_apply, ite_and]
@@ -110,7 +110,7 @@ Both sides reduce to the same expression.
 theorem eL_dmat (Ξ : AlgRep E a) (τ : E →+* ℂ) : eL Ξ.dmat τ = WeylC.eOf Ξ.mat τ := rfl
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.WignerGL.dualE, GlobalTheory.WignerGL.dualS, eL, Matrix.transpose_smul, Matrix.transpose_sub]`. Use `module`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dualE_eq (Ξ : AlgRep E a) (τ : E →+* ℂ) (i j : Fin a) :
     GlobalTheory.WignerGL.dualE Ξ τ i j = -(eL Ξ.dmat τ i j)ᵀ := by
@@ -214,7 +214,7 @@ Both sides reduce to the same expression.
 theorem tensorLie_eq (π : CuspSub E a) (Ξ : AlgRep E a) : tensorLie π Ξ = lieA π Ξ + lieB π Ξ := rfl
 
 /- English proof (translation)
-The claim follows from `TensorProduct.ext' fun _ _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem lieA_commute (π : CuspSub E a) (Ξ : AlgRep E a) (X Y : Lie E a) : Commute (lieA π Ξ X) (lieB π Ξ Y) :=
   TensorProduct.ext' fun _ _ => rfl
@@ -227,7 +227,7 @@ def IsAlgIso (Ξ Ξ' : AlgRep E a) (T : (Fin Ξ.d → ℂ) ≃ₗ[ℂ] (Fin Ξ'.
   (∀ y v, T (Ξ.mat y *ᵥ v) = Ξ'.mat y *ᵥ T v) ∧ ∀ X v, T (Ξ.dmat X *ᵥ v) = Ξ'.dmat X *ᵥ T v
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ => rfl, fun _ _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem isAlgIso_refl (Ξ : AlgRep E a) : IsAlgIso Ξ Ξ (LinearEquiv.refl _ _) := ⟨fun _ _ => rfl, fun _ _ => rfl⟩
 

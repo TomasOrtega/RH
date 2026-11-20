@@ -3,7 +3,7 @@ import Mathlib
 namespace GlobalTheory.MaximalIdealMembership
 
 /- English proof (translation)
-Rewrite using `[IsLocalRing.mem_maximalIdeal, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, mem_nonunits_iff, MvPowerSeries.isUnit_iff_constantCoeff]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_maximalIdeal_iff {O : Type} [CommRing O] [IsLocalRing O] {a : ℕ}
     (f : MvPowerSeries (Fin a) O) :

@@ -3,11 +3,11 @@ import Mathlib
 namespace GlobalTheory.CompanionTheory.Inequalities
 
 /- English proof (translation)
-Introduce `h d e hh hd he hs`. Take `⟨n, rfl⟩ : ∃ n, h = n + 2` from `⟨h - 2, by omega⟩`. Use `⟨Fin.last (n + 1), by simp, ?_⟩` and prove the remaining obligations. Establish `hf : Finset.univ.filter (fun i : Fin (n + 2) => Fin.last (n + 1) ≤ i) = {Fin.last (n + 1)}`. Use extensionality with `i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[Fin.last_le_iff]`. Rewrite using `[hf, Finset.sum_singleton]`. Establish `hle : (∑ i, d i) * e (Fin.last (n + 1)) ≤ 0`. Rewrite using `[Finset.sum_mul, ← hs]`. Conclude with `Finset.sum_le_sum fun i _ => mul_le_mul_of_nonneg_left (he (Fin.le_last i)) (hd i).le`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpos : 0 < ∑ i, d i` using `Finset.sum_pos (fun i _ => hd i) ⟨Fin.last _, Finset.mem_univ _⟩`. Establish `hel : e (Fin.last (n + 1)) ≤ 0`. Assume the negation of the conclusion as `hc`. Conclude with `absurd (mul_pos hpos (not_le.mp hc)) (not_lt.mpr hle)`. Conclude with `mul_nonpos_of_nonneg_of_nonpos (hd _).le hel`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem weighted_antitone_last_nonpos : ∀ (h : ℕ) (d e : Fin h → ℝ), 2 ≤ h → (∀ i, 0 < d i) →
     Antitone e → ∑ i, d i * e i = 0 →

@@ -7,7 +7,7 @@ open scoped TensorProduct
 namespace GlobalTheory.TorusExp
 
 /- English proof (translation)
-Rewrite using `[← Real.exp_nat_mul, Finset.mul_sum, ← Finset.sum_neg_distrib, Finset.mul_sum, Real.exp_sum, modulus]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Real.rpow_intCast, ← Real.exp_mul]`. Use `congr 1`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -22,7 +22,7 @@ theorem modulus_exp_eq {F : Type} [Field F] [NumberField F] {n r : ℕ} (v : Fin
   ring
 
 /- English proof (translation)
-Rewrite using `[expChar, modulus_exp_eq, Real.sqrt_sq (Real.exp_pos _).le, norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (Real.exp_pos _), Complex.norm_exp, ← Real.exp_add]`. Use `congr 1`. Simplify using `only [Pi.single_apply, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Simplify using `[negRho, Complex.mul_re]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem norm_expChar_single {F : Type} [Field F] [NumberField F] {n r : ℕ} (s : Fin r → ℂ) (k : Fin r) (c : ℝ) :
     ‖expChar F n s (Pi.single k c)‖ = Real.exp (2 * Module.finrank ℚ F * c * ((s k).re - (negRho n r k).re)) := by

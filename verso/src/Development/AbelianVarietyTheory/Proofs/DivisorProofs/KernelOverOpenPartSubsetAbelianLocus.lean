@@ -15,9 +15,9 @@ open Classical
 namespace GlobalTheory.UPoinc.KerAb
 
 /- English proof (translation)
-Introduce `z hz`. Rewrite using `[Zh.ab]`. Use `show S.TT M z = ⊥`. Establish `hpp` using `(GlobalTheory.thetaSys_FF_mem_finite_perp_proj o Ω S).2.2.1`. Establish `h1 : S.perp ⊥ = ⊤`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `top_unique fun a _ h hh => ?_` and prove the remaining obligations. Rewrite using `[AddSubgroup.mem_bot.mp hh]`. Simplify using `[ZH.eStd]`. Rewrite using `[ZH.ThetaSys.TT, ZH.ThetaSys.HH, hO.supI_eq hz, S.supp, ← h1, hpp]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subset_abLocus {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] {S : ThetaSys o Ω} {ρ : S.Real}
     {M : RatModel o Ω} {U₀ : M.Z.Opens} {EE : M.Lat S.J} (Zh : ZHOut ρ M U₀ EE) (hO : S.Over₀ M U₀) :
@@ -33,13 +33,11 @@ theorem subset_abLocus {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] [Ari
   rw [ZH.ThetaSys.TT, ZH.ThetaSys.HH, hO.supI_eq hz, S.supp, ← h1, hpp]
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c C X₁ M U₀ EE out hAdm T ξ hξ R _ q V' _ _ h g' hh hq`. Use `⟨?_, subset_abLocus out hAdm.1⟩` and prove the remaining obligations. Take `⟨ξ₀, h₀, -⟩` from `hξ`. Set `w : Sp V'` to `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum V')`. Set `v : Sp (FractionRing T.V)` to `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum (FractionRing T.V))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `e₁ : spMap g' w = (⟨RingHom.ker g', RingHom.ker_isPrime g'⟩ : PrimeSpectrum R)` using `PrimeSpectrum.ext (RingHom.ker_eq_comap_bot g').symm`. Establish `e₂ : spMap h w = jK T.V v`. Use `PrimeSpectrum.ext ?_` and prove the remaining obligations. Use `show Ideal.comap h ⊥ = Ideal.comap (algebraMap T.V (FractionRing T.V)) ⊥`. Rewrite using `[← RingHom.ker_eq_comap_bot, ← RingHom.ker_eq_comap_bot, (RingHom.injective_iff_ker_eq_bot _).1 hh, (RingHom.injective_iff_ker_eq_bot _).1 (IsFractionRing.injective T.V (FractionRing T.V))]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e₃ : q (spMap g' w) = U₀.ι (ξ₀ v)`. Rewrite using `[← Scheme.Hom.comp_apply, hq, Scheme.Hom.comp_apply, e₂, ← Scheme.Hom.comp_apply, ← h₀, Scheme.Hom.comp_apply]`. Rewrite using `[← e₁]`. Use `show q (spMap g' w) ∈ U₀`. Rewrite using `[e₃]`.
-
-Conclude with `(ξ₀ v).2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_mem_and_subset_abLocus : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (C : UCompact Xo c) (X₁ : USetup C) (M : RatModel X₁.o₁ X₁.Ω₁) (U₀ : M.Z.Opens) (EE : M.Lat X₁.S.J) (out : ZHOut X₁.ρ M U₀ EE), X₁.S.admitted M U₀ → ∀ (T : UTrait Xo c) (ξ : Sp T.V ⟶ M.Z), (∃ ξ₀ : Sp (FractionRing T.V) ⟶ U₀.toScheme, ξ₀ ≫ U₀.ι = jK T.V ≫ ξ ∧ X₁.Lies (ξ₀ ≫ out.u₀) T.y) → ∀ (R : Type) [CommRing R] (q : Sp R ⟶ M.Z) (V' : Type) [CommRing V'] [IsDomain V'] (h : T.V →+* V') (g' : R →+* V'), Function.Injective h → spMap g' ≫ q = spMap h ≫ ξ → (⟨RingHom.ker g', RingHom.ker_isPrime g'⟩ : PrimeSpectrum R) ∈ q ⁻¹' (U₀ : Set M.Z) ∧ (U₀ : Set M.Z) ⊆ abLocus out.G := by
   intro E _ _ _ H Dw l Xo c C X₁ M U₀ EE out hAdm T ξ hξ R _ q V' _ _ h g' hh hq

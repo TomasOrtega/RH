@@ -16,7 +16,7 @@ noncomputable def seq (x : Matrix (Fin n) (Fin n) E) : ℕ → Matrix (Fin n) (F
   | k + 1 => step (seq x k)
 
 /- English proof (translation)
-Unfold `step`. Use `noncomm_ring`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem step_sq (y : Matrix (Fin n) (Fin n) E) :
     step y * step y - step y = (y * y - y) * (y * y - y) *
@@ -24,14 +24,14 @@ theorem step_sq (y : Matrix (Fin n) (Fin n) E) :
   unfold step; noncomm_ring
 
 /- English proof (translation)
-Unfold `step`. Use `noncomm_ring`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem step_sub (y : Matrix (Fin n) (Fin n) E) :
     step y - y = (y * y - y) * (1 - (y + y)) := by
   unfold step; noncomm_ring
 
 /- English proof (translation)
-Establish `h2` using `integ_mul hy hy`. Establish `h3` using `integ_mul h2 hy`. Conclude with `integ_sub (integ_add (integ_add h2 h2) h2) (integ_add h3 h3)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem step_integ {y : Matrix (Fin n) (Fin n) E} (hy : ∀ i j, ‖y i j‖ ≤ 1) :
     ∀ i j, ‖step y i j‖ ≤ 1 := by
@@ -40,7 +40,7 @@ theorem step_integ {y : Matrix (Fin n) (Fin n) E} (hy : ∀ i j, ‖y i j‖ ≤
   exact integ_sub (integ_add (integ_add h2 h2) h2) (integ_add h3 h3)
 
 /- English proof (translation)
-Establish `hc : Commute y N` using `h`. Establish `h2` using `hc.mul_left hc`. Establish `h3` using `h2.mul_left hc`. Conclude with `((h2.add_left h2).add_left h2).sub_left (h3.add_left h3)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem step_comm {y N : Matrix (Fin n) (Fin n) E} (h : y * N = N * y) :
     step y * N = N * step y := by
@@ -50,9 +50,9 @@ theorem step_comm {y N : Matrix (Fin n) (Fin n) E} (h : y * N = N * y) :
   exact ((h2.add_left h2).add_left h2).sub_left (h3.add_left h3)
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => exact ⟨hx, hxN, a, ha, by simpa [seq] using hxa⟩`. Consider the case `succ k ih`. Take `⟨hi, hc, b, hb, hd⟩` from `ih`. Use `⟨step_integ hi, step_comm hc, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `set y := seq x k`. Establish `hdi : ∀ i j, ‖(y * y - y) i j‖ ≤ 1` using `integ_sub (integ_mul hi hi) hi`. Use `⟨b * b * ((y * y - y) + (y * y - y) + (y * y - y) + (y * y - y) - (1 + 1 + 1)), integ_mul (integ_mul hb hb) (integ_sub (integ_add (integ_add (integ_add hdi hdi) hdi) hdi) (integ_add (integ_add integ_one integ_one) integ_one)), ?_⟩` and prove the remaining obligations. Use `show step y * step y - step y = _`. Rewrite using `[step_sq, hd, smul_mul_smul_comm, smul_mul_assoc, ← pow_add, pow_succ, mul_two]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem seq_inv (x N a : Matrix (Fin n) (Fin n) E) (ϖ : E) (hxN : x * N = N * x)
     (hx : ∀ i j, ‖x i j‖ ≤ 1) (ha : ∀ i j, ‖a i j‖ ≤ 1) (hxa : x * x - x = ϖ • a) (k : ℕ) :
@@ -73,9 +73,7 @@ theorem seq_inv (x N a : Matrix (Fin n) (Fin n) E) (ϖ : E) (hxN : x * N = N * x
     rw [step_sq, hd, smul_mul_smul_comm, smul_mul_assoc, ← pow_add, pow_succ, mul_two]
 
 /- English proof (translation)
-Take `⟨hi, -, b, hb, hd⟩` from `seq_inv x N a ϖ hxN hx ha hxa k`. Introduce `i j`. Establish `hc : ∀ i j, ‖(b * (1 - (seq x k + seq x k))) i j‖ ≤ 1` using `integ_mul hb (integ_sub integ_one (integ_add hi hi))`. Use `show ‖(step (seq x k) - seq x k) i j‖ ≤ _`. Rewrite using `[step_sub, hd, smul_mul_assoc, Matrix.smul_apply, smul_eq_mul, norm_mul, norm_pow]`.
-
-Conclude with `mul_le_of_le_one_right (by positivity) (hc i j)`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem seq_succ_sub (x N a : Matrix (Fin n) (Fin n) E) (ϖ : E) (hxN : x * N = N * x)
     (hx : ∀ i j, ‖x i j‖ ≤ 1) (ha : ∀ i j, ‖a i j‖ ≤ 1) (hxa : x * x - x = ϖ • a) (k : ℕ) :
@@ -89,11 +87,11 @@ theorem seq_succ_sub (x N a : Matrix (Fin n) (Fin n) E) (ϖ : E) (hxN : x * N = 
   exact mul_le_of_le_one_right (by positivity) (hc i j)
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => intro i j`. Simplify using `[seq]`. Consider the case `succ k ih`. Introduce `i j`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `seq_succ_sub x N a ϖ hxN hx ha hxa k i j`. Establish `h2 : ‖ϖ‖ ^ (2 ^ k) ≤ ‖ϖ‖`. Combine the equalities or inequalities in the displayed calculation. Establish `: (seq x (k + 1) - x) i j = (seq x (k + 1) - seq x k) i j + (seq x k - x) i j`. Simplify using `[Matrix.sub_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (h1.trans h2) (ih i j))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem seq_sub_le (x N a : Matrix (Fin n) (Fin n) E) (ϖ : E) (hϖ : ‖ϖ‖ < 1) (hxN : x * N = N * x)
     (hx : ∀ i j, ‖x i j‖ ≤ 1) (ha : ∀ i j, ‖a i j‖ ≤ 1) (hxa : x * x - x = ϖ • a) (k : ℕ) :
@@ -113,23 +111,21 @@ theorem seq_sub_le (x N a : Matrix (Fin n) (Fin n) E) (ϖ : E) (hϖ : ‖ϖ‖ <
     exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le (h1.trans h2) (ih i j))
 
 /- English proof (translation)
-Introduce `hϖ hxN hx ha hxa`. Establish `hinv` using `seq_inv x N a ϖ hxN hx ha hxa`. Establish `hpow : ∀ k : ℕ, ‖ϖ‖ ^ (2 ^ k) ≤ ‖ϖ‖ ^ k` using `fun k => pow_le_pow_of_le_one (norm_nonneg _) hϖ.le (Nat.lt_two_pow_self).le`. Establish `hcs : ∀ i j, CauchySeq (fun k => seq x k i j)`. Introduce `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `cauchySeq_of_le_geometric ‖ϖ‖ 1 hϖ (fun k => ?_)` and prove the remaining obligations. Rewrite using `[dist_comm, dist_eq_norm, one_mul]`. Conclude with `(seq_succ_sub x N a ϖ hxN hx ha hxa k i j).trans (hpow k)`. Use `choose e he using fun i j => cauchySeq_tendsto_of_complete (hcs i j)`. Establish `hT : Tendsto (seq x) atTop (𝓝 (Matrix.of e))` using `tendsto_pi_nhds.2 fun i => tendsto_pi_nhds.2 fun j => he i j`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heN : Matrix.of e * N = N * Matrix.of e`. Establish `hcl : IsClosed {M : Matrix (Fin n) (Fin n) E | M * N = N * M}` using `isClosed_eq (continuous_id.mul continuous_const) (continuous_const.mul continuous_id)`. Conclude with `hcl.mem_of_tendsto hT (Eventually.of_forall fun k => (hinv k).2.1)`. Establish `heI : ∀ i j, ‖Matrix.of e i j‖ ≤ 1` using `fun i j => le_of_tendsto' (he i j).norm fun k => (hinv k).1 i j`. Establish `hee : Matrix.of e * Matrix.of e = Matrix.of e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Establish `hD : Tendsto (fun k => seq x k * seq x k - seq x k) atTop (𝓝 (Matrix.of e * Matrix.of e - Matrix.of e))` using `(hT.mul hT).sub hT`. Rewrite using `[← sub_eq_zero]`. Use extensionality with `i j`. Establish `h1 : Tendsto (fun k => (seq x k * seq x k - seq x k) i j) atTop (𝓝 ((Matrix.of e * Matrix.of e - Matrix.of e) i j))` using `tendsto_pi_nhds.1 (tendsto_pi_nhds.1 hD i) j`. Establish `h0 : Tendsto (fun k => (seq x k * seq x k - seq x k) i j) atTop (𝓝 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `squeeze_zero_norm (fun k => ?_) (tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg ϖ) hϖ)` and prove the remaining obligations. Take `⟨-, -, b, hb, hd⟩` from `hinv k`. Rewrite using `[hd, Matrix.smul_apply, smul_eq_mul, norm_mul, norm_pow]`. Conclude with `(mul_le_of_le_one_right (by positivity) (hb i j)).trans (hpow k)`. Simplify using `using tendsto_nhds_unique h1 h0`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hex : ∀ i j, ‖(Matrix.of e - x) i j‖ ≤ ‖ϖ‖`. Introduce `i j`. Establish `h1 : Tendsto (fun k => (seq x k - x) i j) atTop (𝓝 ((Matrix.of e - x) i j))`. Simplify `(he i j).sub_const (x i j)` using `[Matrix.sub_apply]`. Conclude with `le_of_tendsto' h1.norm fun k => seq_sub_le x N a ϖ hϖ hxN hx ha hxa k i j`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Distinguish the cases in `h0 : ϖ = 0`. Establish `hz : Matrix.of e - x = 0`. Use extensionality with `i j`. Use `hex i j` as an intermediate fact. Rewrite `this` using `[h0, norm_zero]`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using norm_le_zero_iff.1 this`. Use `⟨Matrix.of e, 0, heN, by simp, hee, heI, integ_zero, ?_⟩` and prove the remaining obligations. Rewrite using `[hz, smul_zero]`. Use `⟨Matrix.of e, ϖ⁻¹ • (Matrix.of e - x), heN, ?_, hee, heI, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_mul_assoc, mul_smul_comm, sub_mul, mul_sub, heN, hxN]`.
-
-Introduce `i j`. Rewrite using `[Matrix.smul_apply, smul_eq_mul, norm_mul, norm_inv]`. Conclude with `inv_mul_le_one_of_le₀ (hex i j) (norm_nonneg _)`. Rewrite using `[smul_inv_smul₀ h0]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idem_lift (E : Type) [NontriviallyNormedField E] [IsUltrametricDist E] [CompleteSpace E]
     (n : ℕ) (N x a : Matrix (Fin n) (Fin n) E) (ϖ : E) :

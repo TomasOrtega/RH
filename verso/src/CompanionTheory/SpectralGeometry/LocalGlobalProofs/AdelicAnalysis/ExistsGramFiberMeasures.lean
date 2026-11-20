@@ -11,21 +11,19 @@ open scoped TensorProduct ENNReal NNReal Matrix
 namespace GlobalTheory.CompanionTheory.SW.GramExist
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M J hJ R _ _ _ _ _ hR n μ ν hμ hν`. Establish `hR'` using `hR`. Take `⟨htr, hlc, hsc, ht2, -, -, -, -⟩` from `hR'`. Take `⟨hKtr, hKlc, hKsc, hKt2, -, -, -, hKb, -, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hCM R`. Establish `hKu` using `GlobalTheory.T.units_open_embedding_local_tensor F E σ hCM R hR`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hXlc, hXsc, hXt2, hXb, hlift⟩` from `GlobalTheory.CompanionTheory.SW.HermTop.herm_top F E σ hCM R n`. Take `⟨g, hg, hgf⟩` from `hlift M J hJ`. Use `haveI := hKb n M`. Establish `hinj : Function.Injective (Subtype.val : HermR R σ n → Matrix (Fin n) (Fin n) (R ⊗[F] E))` using `Subtype.val_injective`. Establish `hBo : IsOpen {S : HermR R σ n | IsUnit (S : Matrix (Fin n) (Fin n) (R ⊗[F] E)).det}`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : Continuous fun S : HermR R σ n => (S : Matrix (Fin n) (Fin n) (R ⊗[F] E)).det` using `Continuous.matrix_det continuous_subtype_val`. Establish `: {S : HermR R σ n | IsUnit (S : Matrix (Fin n) (Fin n) (R ⊗[F] E)).det} = (fun S : HermR R σ n => (S : Matrix (Fin n) (Fin n) (R ⊗[F] E)).det) ⁻¹' Set.range (Units.val : (R ⊗[F] E)ˣ → R ⊗[F] E)`. Use extensionality with `S`. Simplify using `only [Set.mem_setOf_eq, Set.mem_preimage, Set.mem_range]`. Both sides reduce to the same expression.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `hKu.isOpen_range.preimage hc`. Establish `hpre : ∀ B' : Set (HermR R σ n), gramR R σ J ⁻¹' (Subtype.val '' B') = g ⁻¹' B'`. Introduce `B'`. Use extensionality with `X`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Set.mem_preimage, Set.mem_image, hgf X]`. Conclude with `hinj.mem_set_image`. Establish `hglue` using `GlobalTheory.CompanionTheory.SW.FibreGlue.glue (Fin n → Fin M → R ⊗[F] E) (HermR R σ n) (Matrix (Fin n) (Fin n) (R ⊗[F] E)) μ ν (gramR R σ J) g Subtype.val hinj hg hgf {S | IsUnit (S : Matrix (Fin n) (Fin n) (R ⊗[F] E)).det} hBo ?_`. Take `⟨fib, hfib⟩` from `hglue`. Use `⟨fib, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hU : {X | IsUnit (gramR R σ J X).det} = g ⁻¹' {S | IsUnit (S : Matrix (Fin n) (Fin n) (R ⊗[F] E)).det}`. Use extensionality with `X`. Simplify using `only [Set.mem_setOf_eq, Set.mem_preimage, hgf X]`. Unfold `IsGramFib`. Rewrite using `[hU]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hfib`. Introduce `S hS`. Take `⟨B, hB, hSB, hBu, fib, hfib⟩` from `GlobalTheory.T.gram_fiber_measure_disintegration_formula F E σ hCM M J hJ R hR n μ ν hμ hν S hS`. Use `⟨B, hB, hSB, fun S' hS' => hBu S' hS', fib, ?_⟩` and prove the remaining obligations. Rewrite using `[← hpre]`.
-
-Conclude with `hfib`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_gramFib : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [MeasurableSpace R] [BorelSpace R], IsLocR R → ∀ (n : ℕ) (μ : Measure (Fin n → Fin M → R ⊗[F] E)) (ν : Measure (HermR R σ n)), μ.IsAddHaarMeasure → ν.IsAddHaarMeasure → ∃ m, IsGramFib R σ J n μ ν m := by
   intro F E _ _ _ _ _ σ hCM M J hJ R _ _ _ _ _ hR n μ ν hμ hν

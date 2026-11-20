@@ -3,9 +3,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open UpperTheory.V.Alg
 
 /- English proof (translation)
-Take `⟨t, rfl⟩` from `h`. Take `⟨s, rfl⟩` from `h'`. Use `⟨s * t, ?_⟩` and prove the remaining obligations. Use extensionality with `a`. Proceed by induction on `a using DirectSum.Decomposition.inductionOn 𝒜 with`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `homogeneous a`. Rewrite using `[act_of_mem 𝒜 _ _ a.2, act_of_mem 𝒜 _ _ a.2, act_of_mem 𝒜 _ _ a.2]`. Simplify using `only [zpowersHom_apply, toAdd_ofAdd, mul_zpow, Units.val_mul, mul_assoc]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem sameOrbit_trans {O A K : Type} [CommRing O] [CommRing A] [Algebra O A] (𝒜 : ℤ → Submodule O A)
     [GradedAlgebra 𝒜] [Field K] [Algebra O K] {ξ ξ' ξ'' : A →ₐ[O] K}
@@ -22,11 +22,11 @@ private theorem sameOrbit_trans {O A K : Type} [CommRing O] [CommRing A] [Algebr
     simp only [zpowersHom_apply, toAdd_ofAdd, mul_zpow, Units.val_mul, mul_assoc]
 
 /- English proof (translation)
-Introduce `O A K _ _ _ 𝒜 _ _ _ I T hT`. Proceed by induction on `T using Finset.strongInduction with`. Consider the case `H T ih`. Distinguish the cases in `hx : ∃ ξ ∈ T, ∃ ξ' ∈ T, SameOrbit 𝒜 ξ ξ' ∧ ξ ≠ ξ'`. Take `⟨ξ, hξ, ξ', hξ', hs, hne⟩` from `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Apply `ih (T.erase ξ') (Finset.erase_ssubset hξ')` to reduce the goal to its premises. Use `⟨fun η hη => hT.1 η (Finset.mem_of_mem_erase hη), fun η h1 h2 => ?_⟩` and prove the remaining obligations. Take `⟨ζ, hζ, hζs⟩` from `hT.2 η h1 h2`. Distinguish the cases in `hz : ζ = ξ'`. Rewrite `hζs` using `[hz]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨ξ, Finset.mem_erase.2 ⟨hne, hξ⟩, sameOrbit_trans 𝒜 hs hζs⟩`. Conclude with `⟨ζ, Finset.mem_erase.2 ⟨hz, hζ⟩, hζs⟩`. Use `push_neg at hx`. Conclude with `⟨T, hT, fun ξ h ξ' h' hs => hx ξ h ξ' h' hs⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_cover_with_distinct_orbit_representatives :
     ∀ (O A K : Type) [CommRing O] [CommRing A] [Algebra O A] (𝒜 : ℤ → Submodule O A) [GradedAlgebra 𝒜] [Field K] [Algebra O K] (I : Ideal A) (T : Finset (A →ₐ[O] K)),

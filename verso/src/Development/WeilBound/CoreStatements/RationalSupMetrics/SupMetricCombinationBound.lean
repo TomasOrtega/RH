@@ -6,9 +6,9 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 namespace MultiProjectiveCoordinates
 
 /- English proof (translation)
-Establish `hN : ∀ k, 0 < ‖fun i : ι k => z ⟨k, i⟩‖`. Introduce `k`. Take `⟨i, hi⟩` from `hz k`. Use `norm_pos_iff.2 fun h => hi ?_` and prove the remaining obligations. Conclude with `congrFun h i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Finset.prod_pos fun k _ => zpow_pos (hN k) _, ?_⟩` and prove the remaining obligations. Unfold `supMet`. Rewrite using `[Real.log_prod fun k _ => (zpow_pos (hN k) _).ne']`. Conclude with `Finset.sum_congr rfl fun k _ => Real.log_zpow _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem supMet_pos_log {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {𝕜 : Type} [NormedField 𝕜]
     (z : (Σ k, ι k) → 𝕜) (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) (a : K → ℤ) :
@@ -24,21 +24,19 @@ theorem supMet_pos_log {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype 
   exact Finset.sum_congr rfl fun k _ => Real.log_zpow _ _
 
 /- English proof (translation)
-Introduce `Ψ _ N R lam n' p _ z rc θ hz hn hrc hθ`. Establish `hp : (0 : ℝ) < p` using `Nat.cast_pos.2 (Fact.out : p.Prime).pos`. Establish `h0 : n' none = 0`. Use `hn none` as an intermediate fact. Simplify using `only [RootModel.coef, zero_div] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `this` after adjusting the coercions. Establish `h1 : ∀ r, (n' (some r) : ℝ) = -lam r.1 r.2` using `fun r => hn (some r)`. Establish `ha : ∀ k, (((combLine (R.line 1) n').a k : ℤ) : ℝ) = ∑ r, (n' (some r) : ℝ) * (R.xdeg r k : ℝ)`. Introduce `k`. Establish `: (combLine (R.line 1) n').a k = ∑ r, n' (some r) * R.xdeg r k` using `by show (∑ j, n' j • (R.line 1 j).a) k = _`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_apply, Fintype.sum_option, h0]`. Simplify using `[RootModel.line, R.x_deg]`. Rewrite using `[this]`. Use `push_cast`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Take `⟨hpos, hlog⟩` from `supMet_pos_log z hz (combLine (R.line 1) n').a`. Establish `hlog2 : Real.log (supMet (combLine (R.line 1) n').a z) = ∑ r, (n' (some r) : ℝ) * Real.log (supMet (R.xdeg r) z)`. Rewrite using `[hlog]`. Simplify using `only [ha, (supMet_pos_log z hz _).2, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Finset.sum_congr rfl fun r _ => Finset.sum_congr rfl fun k _ => by ring`. Establish `hprod : 0 < ∏ r, rc r ^ n' (some r)` using `Finset.prod_pos fun r _ => zpow_pos (hrc r) _`. Establish `hpw : 0 < (p : ℝ) ^ (θ * l1 lam)` using `Real.rpow_pos_of_pos hp _`. Rewrite using `[← Real.log_le_log_iff hpos (mul_pos hpw hprod), Real.log_mul hpw.ne' hprod.ne', Real.log_rpow hp, Real.log_prod fun r _ => (zpow_pos (hrc r) _).ne', hlog2]`. Establish `hl : l1 lam = ∑ r : Ψ × Fin N, |lam r.1 r.2|`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `l1`. Rewrite using `[Fintype.sum_prod_type]`. Rewrite using `[hl, Finset.mul_sum, Finset.sum_mul, ← Finset.sum_add_distrib]`. Use `Finset.sum_le_sum fun r _ => ?_` and prove the remaining obligations. Rewrite using `[Real.log_zpow, h1 r]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hθ r`. Establish `h3 : -lam r.1 r.2 * (Real.log (supMet (R.xdeg r) z) - Real.log (rc r)) ≤ |lam r.1 r.2| * (θ * Real.log p)`. Use `(le_abs_self _).trans ?_` and prove the remaining obligations. Rewrite using `[abs_mul, abs_neg]`. Conclude with `mul_le_mul_of_nonneg_left h2 (abs_nonneg _)`.
-
-Use polynomial arithmetic with `[h3]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem supMet_combLine_le_pow_mul_prod : ∀ (Ψ : Type) [Fintype Ψ] (N : ℕ) (R : RootModel Ψ N) (lam : Wt Ψ N) (n' : Option (Ψ × Fin N) → ℤ) (p : ℕ) [Fact p.Prime] (z : (Σ k, R.ι k) → PadicAlgCl p) (rec : Ψ × Fin N → ℝ) (θ : ℝ), (∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) → (∀ j, (n' j : ℝ) = R.coef lam 0 j) → (∀ r, 0 < rec r) → (∀ r, |Real.log (supMet (R.xdeg r) z) - Real.log (rec r)| ≤ θ * Real.log p) → supMet (combLine (R.line 1) n').a z ≤ (p : ℝ) ^ (θ * l1 lam) * ∏ r, rec r ^ n' (some r) := by
   intro Ψ _ N R lam n' p _ z rc θ hz hn hrc hθ

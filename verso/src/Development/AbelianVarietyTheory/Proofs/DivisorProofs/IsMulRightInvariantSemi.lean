@@ -16,11 +16,11 @@ variable {G K : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Loc
   [SecondCountableTopology K] [T2Space K] [MeasurableSpace K] [BorelSpace K]
 
 /- English proof (translation)
-Take `⟨C, hC, hs⟩` from `hc`. Use `haveI : DiscreteTopology (Γ ⊓ N : Subgroup G) := DiscreteTopology.of_continuous_injective (f := Subgroup.inclusion (inf_le_left : Γ ⊓ N ≤ Γ)) (Continuous.subtype_mk continuous_subtype_val _) (Subgroup.inclusion_injective _)`. Establish `h1 : IsClosed ((Γ ⊓ N : Subgroup G) : Set G)` using `Subgroup.isClosed_of_discrete`. Establish `h2 : (N : Set G) = ((Γ ⊓ N : Subgroup G) : Set G) * (Subtype.val '' C)`. Use extensionality with `x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨γ, hγ, hk⟩` from `hs ⟨x, hx⟩`. Use `⟨γ.1⁻¹, inv_mem (Subgroup.mem_inf.2 ⟨Subgroup.mem_subgroupOf.1 hγ, γ.2⟩), _, ⟨_, hk, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨γ, hγ, _, ⟨k, -, rfl⟩, rfl⟩`. Conclude with `mul_mem (Subgroup.mem_inf.1 hγ).2 k.2`. Rewrite using `[h2]`. Conclude with `h1.mul_right_of_isCompact (hC.image continuous_subtype_val)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_of_cocompact (Γ N : Subgroup G) [DiscreteTopology Γ]
     (hc : ∃ C : Set N, IsCompact C ∧ ∀ n : N, ∃ γ ∈ Γ.subgroupOf N, γ * n ∈ C) : IsClosed (N : Set G) := by
@@ -42,9 +42,9 @@ theorem isClosed_of_cocompact (Γ N : Subgroup G) [DiscreteTopology Γ]
   exact h1.mul_right_of_isCompact (hC.image continuous_subtype_val)
 
 /- English proof (translation)
-Use `haveI : LocallyCompactSpace N := (isClosed_of_cocompact Γ N hc).locallyCompactSpace`. Use `haveI : SecondCountableTopology N := TopologicalSpace.Subtype.secondCountableTopology _`. Set `j : Γ.subgroupOf N → Γ` to `fun g => ⟨g.1.1, g.2⟩`. Establish `hj : Function.Injective j` using `fun g h hgh => Subtype.ext (Subtype.ext (congrArg Subtype.val hgh :))`. Use `haveI : Countable (Γ.subgroupOf N) := hj.countable`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `haveI : DiscreteTopology (Γ.subgroupOf N) := DiscreteTopology.of_continuous_injective (f := j) (Continuous.subtype_mk (continuous_subtype_val.comp continuous_subtype_val) _) hj`. Take `⟨C, hC, hs⟩` from `hc`. Use `GlobalTheory.HaarFundDom.exists_haar_fundDom_mass_one N (Γ.subgroupOf N) C hC fun g => ?_` and prove the remaining obligations. Take `⟨γ, hγ, hk⟩` from `hs g`. Conclude with `⟨⟨γ, hγ⟩, hk⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_mass_one (Γ N : Subgroup G) [DiscreteTopology Γ] [Countable Γ]
     (hc : ∃ C : Set N, IsCompact C ∧ ∀ n : N, ∃ γ ∈ Γ.subgroupOf N, γ * n ∈ C) :
@@ -62,11 +62,11 @@ theorem exists_mass_one (Γ N : Subgroup G) [DiscreteTopology Γ] [Countable Γ]
   exact ⟨⟨γ, hγ⟩, hk⟩
 
 /- English proof (translation)
-Use `haveI : SecondCountableTopology N := TopologicalSpace.Subtype.secondCountableTopology _`. Establish `hcont : Continuous (semiMap N s)` using `Continuous.subtype_mk ((continuous_subtype_val.comp continuous_snd).mul (hs.comp continuous_fst)) _`. Use `⟨fun x => ?_⟩` and prove the remaining obligations. Take `⟨n₀, hn₀, h₀, hx⟩` from `mem_sup_decomp N s hc x.2`. Set `T : K × N → K × N` to `fun p => (p.1 * h₀, p.2 * ⟨_, hc n₀ hn₀ p.1⟩)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hg : Continuous fun p : K × N => p.2 * (⟨_, hc n₀ hn₀ p.1⟩ : N)` using `continuous_snd.mul (Continuous.subtype_mk (((hs.comp continuous_fst).mul continuous_const).mul (hs.comp continuous_fst).inv) _)`. Establish `hT : MeasurePreserving T (μ.prod ν) (μ.prod ν)` using `(measurePreserving_mul_right μ h₀).skew_product (g := fun h (n : N) => n * (⟨_, hc n₀ hn₀ h⟩ : N)) hg.measurable (Filter.Eventually.of_forall fun h => map_mul_right_eq_self ν _)`. Establish `e : (· * x) ∘ semiMap N s = semiMap N s ∘ T`. Use function extensionality and compare the values at `p`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.comp_apply, semiMap, T, Subgroup.coe_mul, hx, map_mul]`. Use `group`. Rewrite using `[Measure.map_map (measurable_mul_const x) hcont.measurable, e, ← Measure.map_map hcont.measurable hT.measurable, hT.map_eq]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMulRightInvariant_semi (N : Subgroup G) (s : K →* G) (hN : IsClosed (N : Set G)) (hs : Continuous s)
     (hc : ∀ n ∈ N, ∀ h, s h * n * (s h)⁻¹ ∈ N) (μ : Measure K) (ν : Measure N) [SFinite μ] [SFinite ν]
@@ -92,11 +92,11 @@ theorem isMulRightInvariant_semi (N : Subgroup G) (s : K →* G) (hN : IsClosed 
     hT.map_eq]
 
 /- English proof (translation)
-Use `haveI : ν.IsMulRightInvariant := GlobalTheory.UnitU.isMulRightInvariant_of_fundamentalDomain Γ ν h2 (by rw [h3]; exact one_ne_zero) (by rw [h3]; exact ENNReal.one_ne_top)`. Establish `hinv : ν.inv 𝓝⁻¹ = 1` using `by rw [Measure.inv_apply, inv_inv, h3]`. Establish `e1` using `measure_eq_div_smul m.inv ν.inv (s := 𝓝⁻¹) (by rw [hinv]; exact one_ne_zero) (by rw [hinv]; exact ENNReal.one_ne_top)`. Rewrite `e1` using `[hinv, div_one, Measure.inv_apply, inv_inv]`. Use `set κ := m 𝓝 with hκ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `e2 : m = κ • ν`. Use extensionality with `s -`. Use `congrArg (fun μ : Measure G => μ s⁻¹) e1` as an intermediate fact. Simplify `this` using `only [Measure.inv_apply, inv_inv, Measure.smul_apply]`. Use `haveI : m.IsMulLeftInvariant := by rw [e2]; infer_instance`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2' : IsFundamentalDomain Γ 𝓝 m` using `h2.mono (by rw [e2]; exact Measure.smul_absolutelyContinuous)`. Establish `h4 : m 𝓝 = 1` using `(h2'.measure_eq k2).trans k3`. Establish `hk1 : κ = 1` using `by rw [hκ]; exact h4`. Rewrite using `[e2, hk1, one_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_rightInvariant {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G]
     [LocallyCompactSpace G] [SecondCountableTopology G] (Γ : Subgroup G) [Countable Γ] (ν m : Measure G) (𝓝 𝓕 : Set G)

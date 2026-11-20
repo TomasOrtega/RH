@@ -12,13 +12,9 @@ namespace GlobalTheory.CompanionTheory.FiniteFourier
 open GlobalTheory.CompanionTheory.TwistedAverage
 
 /- English proof (translation)
-Use `haveI : CompactSpace L := isCompact_iff_compactSpace.mp hL`. Establish `hle : L₁ ≤ θ.ker` using `fun x hx => hθ x hx`. Establish `hopen : IsOpen (θ.ker : Set L)` using `Subgroup.isOpen_mono hle hL₁`. Take `⟨M, hM, hsum⟩` from `exists_sum_eq_zero hρ hL θ hopen hk`. Use `haveI : L₁.FiniteIndex := Subgroup.finiteIndex_of_finite_quotient`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set C : Subgroup L := (M ⊓ L₁).normalCore with hC`. Use `haveI : C.Normal := Subgroup.normalCore_normal _`. Use `haveI : C.FiniteIndex := inferInstance`. Use `haveI : Fintype (L ⧸ C) := Fintype.ofFinite _`. Establish `hCM : C ≤ M ⊓ L₁` using `Subgroup.normalCore_le _`.
-
-Use `haveI : Finite (L₁ ⧸ C.subgroupOf L₁) := inferInstance`. Use `haveI : Fintype (L₁ ⧸ C.subgroupOf L₁) := Fintype.ofFinite _`. Establish `h0` using `hsum C (hCM.trans inf_le_left)`. Rewrite `h0` using `[sum_out_refine (hCM.trans inf_le_right) (twOrbit ρ L θ v) (fun x k hk => twOrbit_mul_right ρ L θ v x k ⟨hv k hk, hθ k hk⟩)]`. Rewrite `h0` using `[← Nat.cast_smul_eq_nsmul ℂ, smul_eq_zero]`.
-
-Break down `h0 with h0 | h0` into its components or cases. Conclude with `absurd h0 (Nat.cast_ne_zero.2 Fintype.card_ne_zero)`. Conclude with `h0`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem sum_twOrbit_eq_zero {G V : Type} [CommGroup G] [TopologicalSpace G] [IsTopologicalGroup G]
     [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V) (hρ : IsSmooth ρ) (L : Subgroup G)
@@ -48,19 +44,15 @@ theorem sum_twOrbit_eq_zero {G V : Type} [CommGroup G] [TopologicalSpace G] [IsT
   · exact h0
 
 /- English proof (translation)
-Introduce `G V _ _ _ _ _ ρ hρ L hL L₁ hL₁ v hv ι R hR χ hχ hker hsum`. Use `haveI : CompactSpace L := isCompact_iff_compactSpace.mp hL`. Use `haveI : Finite (L ⧸ L₁) := Subgroup.quotient_finite_of_isOpen _ hL₁`. Use `haveI : L₁.Normal := Subgroup.normal_of_comm L₁`. Use `haveI : Fintype (L ⧸ L₁) := Fintype.ofFinite _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : ∀ a ∈ R, ∑ q : L ⧸ L₁, twOrbit ρ L (χ a) v q.out = 0` using `fun a ha => sum_twOrbit_eq_zero ρ hρ L hL L₁ hL₁ v hv (χ a) (hχ a ha) (hker a ha)`. Establish `h0 : ∑ q : L ⧸ L₁, ∑ a ∈ R, twOrbit ρ L (χ a) v q.out = 0`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_eq_zero key`. Establish `hoff : ∀ q : L ⧸ L₁, q ≠ 1 → ∑ a ∈ R, twOrbit ρ L (χ a) v q.out = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `q hq`. Establish `hnot : q.out ∉ L₁`. Introduce `hmem`. Apply `hq` to reduce the goal to its premises. Rewrite using `[← QuotientGroup.out_eq' q]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(QuotientGroup.eq_one_iff _).2 hmem`. Simplify using `only [twOrbit]`. Rewrite using `[← Finset.sum_smul, hsum _ hnot, zero_smul]`. Establish `hone : ((1 : L ⧸ L₁).out : L) ∈ L₁`. Rewrite using `[← QuotientGroup.eq_one_iff, QuotientGroup.out_eq']`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hmain : ∑ a ∈ R, twOrbit ρ L (χ a) v (1 : L ⧸ L₁).out = R.card • v`. Rewrite using `[Finset.card_eq_sum_ones, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun a ha => ?_` and prove the remaining obligations. Simplify using `only [twOrbit]`. Rewrite using `[hχ a ha _ hone, hv _ hone]`.
-
-Simplify using the standard rewrite rules. Rewrite `h0` using `[Finset.sum_eq_single (1 : L ⧸ L₁) (fun q _ hq => hoff q hq) (fun h => absurd (Finset.mem_univ _) h), hmain]`. Rewrite `h0` using `[← Nat.cast_smul_eq_nsmul ℂ, smul_eq_zero]`. Break down `h0 with h0 | h0` into its components or cases. Conclude with `absurd h0 (Nat.cast_ne_zero.2 hR.card_pos.ne')`.
-
-Conclude with `h0`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_twKer :
     ∀ {G V : Type} [CommGroup G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V), IsSmooth ρ → ∀ (L : Subgroup G), IsCompact (L : Set G) → ∀ (L₁ : Subgroup L), IsOpen (L₁ : Set L) → ∀ (v : V), (∀ x ∈ L₁, ρ (x : G) v = v) → ∀ {ι : Type} (R : Finset ι), R.Nonempty → ∀ (χ : ι → (L →* ℂˣ)), (∀ a ∈ R, ∀ x ∈ L₁, χ a x = 1) → (∀ a ∈ R, v ∈ twKer ρ L (χ a)) → (∀ x : L, x ∉ L₁ → ∑ a ∈ R, (((χ a x)⁻¹ : ℂˣ) : ℂ) = 0) → v = 0 := by

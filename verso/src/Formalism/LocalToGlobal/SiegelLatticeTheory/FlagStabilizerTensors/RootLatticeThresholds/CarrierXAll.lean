@@ -43,37 +43,35 @@ namespace Formalism.L2.SG.Pf.CarrierXAll
 open Formalism.FourierDecayAlt
 
 /- English proof (translation)
-Use `set M0 : ℝ := 4 * |Cq| + 5 with hM0`. Use `⟨⌈Real.exp (M0 / Cb)⌉₊ + 2, ?_⟩` and prove the remaining obligations. Introduce `ι _ G bb hk hH`. Establish `hm : G.m = 2 * G.r + 2` using `rfl`. Establish `hfm : G.m ≤ G.f` using `hH.hmf`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf2 : 2 ≤ G.f` using `by omega`. Establish `hne : Nonempty ι`. Establish `: 0 < Fintype.card ι`. Establish `: G.f = Fintype.card ι` using `rfl`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Conclude with `Fintype.card_pos_iff.mp this`. Take `⟨w⟩` from `hne`. Establish `hbb1 : 1 < bb` using `hH.hbb`. Establish `hk2 : 2 ≤ G.k` using `by omega`. Establish `hkR : (2 : ℝ) ≤ (G.k : ℝ)` using `by exact_mod_cast hk2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hkpos : (0 : ℝ) < (G.k : ℝ)` using `by linarith`. Establish `hkexp : Real.exp (M0 / Cb) ≤ (G.k : ℝ)`. Establish `h1 : Real.exp (M0 / Cb) ≤ (⌈Real.exp (M0 / Cb)⌉₊ : ℝ)` using `Nat.le_ceil _`. Establish `h2 : ((⌈Real.exp (M0 / Cb)⌉₊ : ℕ) : ℝ) ≤ (G.k : ℝ)` using `by exact_mod_cast (by omega : ⌈Real.exp (M0 / Cb)⌉₊ ≤ G.k)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hlogk : M0 / Cb ≤ Real.log (G.k : ℝ)`. Rewrite using `[← Real.exp_le_exp, Real.exp_log hkpos]`. Conclude with `hkexp`. Establish `hCblog : M0 ≤ Cb * Real.log (G.k : ℝ)`. Use `mul_le_mul_of_nonneg_left hlogk hCb.le` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[mul_div_cancel₀ _ hCb.ne']`. Then use the resulting hypothesis. Establish `hb1 : (G.k : ℝ) ^ Cb ≤ G.b w 1` using `hH.hnode w 1 le_rfl (by omega)`. Establish `hb2 : G.b w 1 ≤ bb ^ 2` using `(hH.hsmall w).hbj 1 le_rfl (by show 1 ≤ 2 * G.r + 2; omega)`. Establish `hkb : (G.k : ℝ) ^ Cb ≤ bb ^ 2` using `hb1.trans hb2`. Establish `hlog : Cb * Real.log (G.k : ℝ) ≤ 2 * Real.log bb`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hp : (0 : ℝ) < (G.k : ℝ) ^ Cb` using `Real.rpow_pos_of_pos hkpos _`. Use `Real.log_le_log hp hkb` as an intermediate fact. Rewrite `this` using `[Real.log_rpow hkpos, Real.log_pow, Nat.cast_ofNat]`. Then use the resulting hypothesis. Establish `hLb : M0 / 2 ≤ Real.log bb` using `by linarith`. Use `set X : ℝ := (G.k : ℝ) * ((G.r : ℝ) + 1) with hX`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hr0 : (0 : ℝ) ≤ (G.r : ℝ)` using `Nat.cast_nonneg _`. Establish `hX1 : 1 ≤ X`. Establish `: (1 : ℝ) ≤ (G.r : ℝ) + 1` using `by linarith`. Use the polynomial consequences of the given equalities and inequalities. Establish `hfR : 2 * (G.r : ℝ) + 2 ≤ (G.f : ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: 2 * G.r + 2 ≤ G.f` using `by omega`. Conclude with `this` after adjusting the coercions. Establish `hM05 : 5 ≤ M0` using `by rw [hM0]; have := abs_nonneg Cq; linarith`. Establish `hbase : X * M0 ≤ (G.k : ℝ) * G.f * Real.log bb`. Establish `e1 : X * M0 = (G.k : ℝ) * (2 * ((G.r : ℝ) + 1)) * (M0 / 2)` using `by rw [hX]; ring`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e1]`. Apply `mul_le_mul _ hLb (by linarith) (by positivity)` to reduce the goal to its premises. Conclude with `mul_le_mul_of_nonneg_left (by linarith) hkpos.le`. Use `set base : ℝ := (G.k : ℝ) * G.f * Real.log bb with hbdef`. Establish `hbase1 : 1 ≤ base` using `by nlinarith`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hDel : base ^ CDel ≤ G.Del` using `hH.hDel`. Establish `h4 : base ^ (4 : ℕ) ≤ base ^ CDel`. Rewrite using `[← Real.rpow_natCast]`. Conclude with `Real.rpow_le_rpow_of_exponent_le hbase1 (by norm_num; linarith)`. Establish `hXM : (X * M0) ^ 4 ≤ base ^ 4` using `pow_le_pow_left₀ (by positivity) hbase 4`.
+Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hXM' : X ^ 4 * M0 ≤ (X * M0) ^ 4`. Establish `: M0 ≤ M0 ^ 4`. Establish `: (1 : ℝ) ≤ M0` using `by linarith`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hDX : X ^ 4 * M0 ≤ G.Del` using `by linarith`. Establish `hp1 : (G.k : ℝ) * ((G.r : ℝ) + 1) ^ 3 ≤ X ^ 4`. Establish `hr1 : (1 : ℝ) ≤ (G.r : ℝ) + 1` using `by linarith`. Establish `a : (G.k : ℝ) ≤ (G.k : ℝ) ^ 4`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `b : ((G.r : ℝ) + 1) ^ 3 ≤ ((G.r : ℝ) + 1) ^ 4` using `pow_le_pow_right₀ hr1 (by norm_num)`. Rewrite using `[hX, mul_pow]; exact mul_le_mul a b (by positivity) (by positivity)`. Establish `hp2 : ((G.r : ℝ) + 1) ^ 4 ≤ X ^ 4`. Establish `: (G.r : ℝ) + 1 ≤ X` using `by rw [hX]; nlinarith`. Conclude with `pow_le_pow_left₀ (by linarith) this 4`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hP0 : 0 ≤ (G.k : ℝ) * ((G.r : ℝ) + 1) ^ 3 + ((G.r : ℝ) + 1) ^ 4` using `by positivity`. Establish `hCq : Cq * ((G.k : ℝ) * ((G.r : ℝ) + 1) ^ 3 + ((G.r : ℝ) + 1) ^ 4) ≤ |Cq| * (2 * X ^ 4)`. Combine the equalities or inequalities in the displayed calculation. Establish `hX4 : 1 ≤ X ^ 4` using `one_le_pow₀ hX1`. Unfold `Sz.Glob.lenI`.
-
-Establish `: |Cq| * (2 * X ^ 4) ≤ G.Del / 2 - 5 / 2`. Establish `e : X ^ 4 * M0 = 4 * |Cq| * X ^ 4 + 5 * X ^ 4` using `by rw [hM0]; ring`. Use polynomial arithmetic with `[abs_nonneg Cq]`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem lenI_big (CDel Cb Cq : ℝ) (hCDel : 4 < CDel) (hCb : 0 < Cb) :
     ∃ k0 : ℕ, ∀ {ι : Type} [Fintype ι] (G : Sz.Glob ι) (bb : ℝ), k0 ≤ G.k → G.Hyp bb CDel Cb →
@@ -177,7 +175,7 @@ open Formalism.FourierDecayAlt Formalism.QuantumDeterminants
 open scoped Matrix
 
 /- English proof (translation)
-Unfold `herm`. Rewrite using `[Matrix.star_mulVec, Matrix.mulVec_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, ← Matrix.mul_assoc, hg]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_mulVec {n : ℕ} {H g : Matrix (Fin n) (Fin n) ℂ} (hg : gᴴ * H * g = H) (v w : Fin n → ℂ) :
     herm H (g *ᵥ v) (g *ᵥ w) = herm H v w := by
@@ -185,13 +183,11 @@ theorem herm_mulVec {n : ℕ} {H g : Matrix (Fin n) (Fin n) ℂ} (hg : gᴴ * H 
   rw [Matrix.star_mulVec, Matrix.mulVec_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, ← Matrix.mul_assoc, hg]
 
 /- English proof (translation)
-Take `⟨hw, hz, hn, hm, hmz⟩` from `hF`. Establish `hU : m₀ᴴ * Hpk k r * m₀ = Hpk k r` using `hm.1`. Use `⟨Formalism.FourierDecayAlt.P.Qx8.inWb_mulVec hm hw, ?_, by rw [herm_mulVec hU]; exact hn⟩` and prove the remaining obligations. Establish `h0 : herm (Hpk k r) (m₀ *ᵥ ν') (m₀ *ᵥ Bs.z') = 0` using `by rw [herm_mulVec hU]; exact hz`. Rewrite `h0` using `[hmz]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set c : ℂ := ((√(Tz k r Bs.z' / Tz k r Bs.z) : ℝ) : ℂ) with hc`. Establish `hc0 : c ≠ 0`. Rewrite using `[hc]`. Conclude with `(Real.sqrt_pos.mpr (div_pos hT' hT)).ne'` after adjusting the coercions. Establish `e : herm (Hpk k r) (m₀ *ᵥ ν') (c • Bs.z) = star c * herm (Hpk k r) (m₀ *ᵥ ν') Bs.z`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `herm`. Rewrite using `[star_smul, smul_dotProduct, smul_eq_mul]`. Rewrite `h0` using `[e]`. Break down `mul_eq_zero.mp h0 with h | h` into its components or cases. Conclude with `absurd (star_eq_zero.mp h) hc0`.
-
-Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem frameVec_facts {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] (Bs : B.RealPlaceData k r Wp Wq) (ν' : Fin (2 * r + k + 1) → ℂ) (m₀ : B.Mat k r)
@@ -214,7 +210,7 @@ theorem frameVec_facts {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [Inner
   · exact h
 
 /- English proof (translation)
-Take `⟨hOK, hz, hz', hTz, hTz', hty, hty'⟩` from `hP`. Establish `hT : 0 < Tz P.k P.r Bs.z` using `by rw [hTz]; exact hOK.T_pos`. Establish `hT' : 0 < Tz P.k P.r Bs.z'` using `by rw [hTz']; exact hOK.T'_pos`. Take `⟨h1, h2, h3⟩` from `frameVec_facts Bs ν' m₀ hF hT hT'`. Conclude with `hTP Wp Wq P Bs.z Bs.z' Bs.π Bs.π' (m₀ *ᵥ ν') ⟨hOK, hz, hz', hTz, hTz', hty, hty'⟩ h1 h2 h3`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem typeProj_nonempty (hTP : Top.TypeProjExists) {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P : M.Par)
@@ -248,29 +244,29 @@ def ParNumsE (u u' : D.what₂.Word) (e : InfinitePlace D.host.E ≃ D.what₂.T
     ∀ i ∈ Finset.Icc 1 ((parE e u u' de de' v).k - 1), (parE e u u' de de' v).lo i ≤ (parE e u u' de de' v).hi i
 
 /- English proof (translation)
-Introduce `v`. Use `set τ := e (plE D v) with hτ`. Establish `hu : ∀ (w : D.what₂.Word) (dw : ℕ → ℝ), dw = Formalism.MainNotions.BridgeLemma.deOf D w → ∀ i, 1 ≤ i → i ≤ D.R.k → ((Formalism.L2.SG.SpectralTiesReal.gOf D e).place (plE D v)).u dw i = uOne D w τ i`. Introduce `w dw hdw i h1 h2`. Rewrite using `[Formalism.L2.SG.Pf.SzHypOf.gOf_place, hdw]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Formalism.MainNotions.BridgeLemma.cfg_u D w τ (h5 w τ) i h1 h2`. Establish `hsucc : ∀ (w : D.what₂.Word) (j : ℕ) (hj : j < D.R.k), uOne D w τ (j + 1) = (((D.hcW w τ).u ⟨j, hj⟩ : ℚ) : ℝ)` using `fun w j hj => Formalism.MainNotions.BridgeLemma.uOne_succ D w τ j hj`. Establish `hk : (parE e u u' de de' v).k = D.R.k` using `rfl`. Establish `hpu : ∀ i, 1 ≤ i → i ≤ D.R.k → (parE e u u' de de' v).u i = uOne D u τ i` using `fun i h1 h2 => hu u de hde i h1 h2`. Establish `hpu' : ∀ i, 1 ≤ i → i ≤ D.R.k → (parE e u u' de de' v).u' i = uOne D u' τ i` using `fun i h1 h2 => hu u' de' hde' i h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hint : ∀ (w : D.what₂.Word) (i : ℕ), 1 ≤ i → i ≤ D.R.k → ∃ n : ℤ, uOne D w τ i - uOne D u τ 1 = n`. Introduce `w i h1 h2`. Take `⟨j, rfl⟩ : ∃ j, i = j + 1` from `⟨i - 1, by omega⟩`. Rewrite using `[hsucc w j (by omega), show (1 : ℕ) = 0 + 1 from rfl, hsucc u 0 (by omega)]`. Take `⟨z1, hz1⟩` from `(D.hcW w τ).u_half ⟨j, by omega⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨z2, hz2⟩` from `(D.hcW u τ).u_half ⟨0, by omega⟩`. Use `⟨z1 - z2, ?_⟩` and prove the remaining obligations. Rewrite using `[hz1, hz2]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨fun i hi => ?_, fun i hi => ?_, fun i hi => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `Finset.mem_Icc.mp hi`. Rewrite using `[hpu i h1 h2, hpu 1 le_rfl (by omega)]`. Conclude with `hint u i h1 h2`. Take `⟨h1, h2⟩` from `Finset.mem_Icc.mp hi`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hpu' i h1 h2, hpu 1 le_rfl (by omega)]`. Conclude with `hint u' i h1 h2`. Take `⟨h1, h2⟩` from `Finset.mem_Icc.mp hi`. Establish `hk1 : i + 1 ≤ D.R.k` using `by omega`. Unfold `Formalism.FourierDecayAlt.M.Par.lo Formalism.FourierDecayAlt.M.Par.hi`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hpu (i + 1) (by omega) hk1, hpu i h1 (by omega), hpu' (i + 1) (by omega) hk1, hpu' i h1 (by omega)]`. Take `⟨j, rfl⟩ : ∃ j, i = j + 1` from `⟨i - 1, by omega⟩`. Rewrite using `[hsucc u (j + 1) (by omega), hsucc u j (by omega), hsucc u' (j + 1) (by omega), hsucc u' j (by omega)]`. Establish `hvj : j < D.R.k - 1` using `by omega`. Use `set vv := (D.hcW u τ).v ⟨j, hvj⟩ with hvv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvv' : (D.hcW u' τ).v ⟨j, hvj⟩ = vv` using `by rw [hvv, D.hcW_v, D.hcW_v]`. Establish `hvi : ∃ z : ℤ, vv = z` using `(D.hcW u τ).v_int ⟨j, hvj⟩`. Establish `a1 : (D.hcW u τ).u ⟨j + 1, by omega⟩ + 1 / 2 ≤ vv` using `half_lt_int ((D.hcW u τ).u_half _) hvi ((D.hcW u τ).v_gt_u ⟨j, hvj⟩)`. Establish `a2 : vv + 1 / 2 ≤ (D.hcW u τ).u ⟨j, by omega⟩` using `int_lt_half ((D.hcW u τ).u_half _) hvi ((D.hcW u τ).u_gt_v ⟨j, hvj⟩)`. Establish `b1 : (D.hcW u' τ).u ⟨j + 1, by omega⟩ + 1 / 2 ≤ vv` using `half_lt_int ((D.hcW u' τ).u_half _) hvi (hvv' ▸ (D.hcW u' τ).v_gt_u ⟨j, hvj⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `b2 : vv + 1 / 2 ≤ (D.hcW u' τ).u ⟨j, by omega⟩` using `int_lt_half ((D.hcW u' τ).u_half _) hvi (hvv' ▸ (D.hcW u' τ).u_gt_v ⟨j, hvj⟩)`. Establish `c1 : (((D.hcW u τ).u ⟨j + 1, by omega⟩ : ℚ) : ℝ) + 1 / 2 ≤ (vv : ℝ)`. Establish `h` using `(Rat.cast_le (K := ℝ)).mpr a1`. Move the coercions through the operations in `at h`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `c2 : (vv : ℝ) + 1 / 2 ≤ (((D.hcW u τ).u ⟨j, by omega⟩ : ℚ) : ℝ)`. Establish `h` using `(Rat.cast_le (K := ℝ)).mpr a2`. Move the coercions through the operations in `at h`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `c3 : (((D.hcW u' τ).u ⟨j + 1, by omega⟩ : ℚ) : ℝ) + 1 / 2 ≤ (vv : ℝ)`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `(Rat.cast_le (K := ℝ)).mpr b1`. Move the coercions through the operations in `at h`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `c4 : (vv : ℝ) + 1 / 2 ≤ (((D.hcW u' τ).u ⟨j, by omega⟩ : ℚ) : ℝ)`. Establish `h` using `(Rat.cast_le (K := ℝ)).mpr b2`.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Move the coercions through the operations in `at h`. Combine the linear equalities and inequalities to obtain the conclusion. Use `max_le (by linarith : (((D.hcW u τ).u ⟨j + 1, by omega⟩ : ℚ) : ℝ) ≤ (vv : ℝ) - 1 / 2) (by linarith : (((D.hcW u' τ).u ⟨j + 1, by omega⟩ : ℚ) : ℝ) ≤ (vv : ℝ) - 1 / 2)` as an intermediate fact. Use `le_min (by linarith : (vv : ℝ) + 1 / 2 ≤ (((D.hcW u τ).u ⟨j, by omega⟩ : ℚ) : ℝ)) (by linarith : (vv : ℝ) + 1 / 2 ≤ (((D.hcW u' τ).u ⟨j, by omega⟩ : ℚ) : ℝ))` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem parNumsE_of (u u' : D.what₂.Word) (e : InfinitePlace D.host.E ≃ D.what₂.Tau) (de de' : ℕ → ℝ)
     (h5 : ∀ (w : D.what₂.Word) τ, ¬ IsTop D τ → uOne D w τ D.R.k = vOne D τ (D.R.k - 1) - 1 / 2)
@@ -346,13 +342,11 @@ def TypesE (u u' : D.what₂.Word) (e : InfinitePlace D.host.E ≃ D.what₂.Tau
       (parE e u u' de de' v).u'
 
 /- English proof (translation)
-Introduce `v`. Use `set τ := e (plE D v) with hτ`. Establish `hpl : X.pl (tauE X e v) = τ` using `by show X.pl (X.pl.symm (e (plE D v))) = _`. Rewrite using `[Equiv.apply_symm_apply]`. Establish `hu : ∀ (w : D.what₂.Word) (dw : ℕ → ℝ), dw = Formalism.MainNotions.BridgeLemma.deOf D w → ∀ i ∈ Finset.Icc 1 D.R.k, ((Formalism.L2.SG.SpectralTiesReal.gOf D e).place (plE D v)).u dw i = if h : i - 1 < D.R.k then (((D.hcW w (X.pl (tauE X e v))).u ⟨i - 1, h⟩ : ℚ) : ℝ) else 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w dw hdw i hi`. Take `⟨h1, h2⟩` from `Finset.mem_Icc.mp hi`. Rewrite using `[Formalism.L2.SG.Pf.SzHypOf.gOf_place, hdw, Formalism.MainNotions.BridgeLemma.cfg_u D w τ (h5 w τ) i h1 h2, dif_pos (by omega : i - 1 < D.R.k), hpl]`. Take `⟨j, rfl⟩ : ∃ j, i = j + 1` from `⟨i - 1, by omega⟩`. Rewrite using `[Formalism.MainNotions.BridgeLemma.uOne_succ D w τ j (by omega)]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hb` using `towersOf_base X C u u' e v`. Prove the components needed by the constructor for the conclusion. Use `show Formalism.FourierDecayAlt.Q.IsType D.R.k D.R.rS (towersOf X C u u' e v).base.z (towersOf X C u u' e v).base.π _`. Rewrite using `[hb]`.
-
-Conclude with `isType_of_hc hcap (zc_spec X C u _).1 (zc_pos X C u _) (πc_type X C u _) (πc_rep X C u _) _ (hu u de hde)`. Use `show Formalism.FourierDecayAlt.Q.IsType D.R.k D.R.rS (towersOf X C u u' e v).base.z' (towersOf X C u u' e v).base.π' _`. Rewrite using `[hb]`. Conclude with `isType_of_hc hcap (zc_spec X C u' _).1 (zc_pos X C u' _) (πc_type X C u' _) (πc_rep X C u' _) _ (hu u' de' hde')`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem typesE_of (hcap : CapFromHC) (u u' : D.what₂.Word) (e : InfinitePlace D.host.E ≃ D.what₂.Tau) (de de' : ℕ → ℝ)
     (h5 : ∀ (w : D.what₂.Word) τ, ¬ IsTop D τ → uOne D w τ D.R.k = vOne D τ (D.R.k - 1) - 1 / 2)
@@ -385,9 +379,9 @@ theorem typesE_of (hcap : CapFromHC) (u u' : D.what₂.Word) (e : InfinitePlace 
       (hu u' de' hde')
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `hN j`. Establish `hT` using `Tz_towersOf_base_eq_T X C u u' e j`. Use `⟨⟨(towersOf X C u u' e j).base.k_pos, ?_, ?_, h1, h2, h3⟩, (towersOf X C u u' e j).base.z_mem, (towersOf X C u u' e j).base.z'_mem, hT.1, hT.2, (hty j).1, (hty j).2⟩` and prove the remaining obligations. Use `show (0 : ℝ) < (D.mem u).A.T`. Rewrite using `[← hT.1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(towersOf X C u u' e j).base.T_pos`. Use `show (0 : ℝ) < (D.mem u').A.T`. Rewrite using `[← hT.2]`. Conclude with `(towersOf X C u u' e j).base.T'_pos`.
+A detailed English derivation is pending.
 -/
 theorem isPlaceE (u u' : D.what₂.Word) (e : InfinitePlace D.host.E ≃ D.what₂.Tau) (de de' : ℕ → ℝ)
     (hN : ParNumsE (D := D) u u' e de de') (hty : TypesE X C u u' e de de') (j : Fin (nfE D)) :
@@ -403,7 +397,7 @@ theorem isPlaceE (u u' : D.what₂.Word) (e : InfinitePlace D.host.E ≃ D.what�
     rw [← hT.2]; exact (towersOf X C u u' e j).base.T'_pos
 
 /- English proof (translation)
-Rewrite using `[towersOf_base]`. Conclude with `Formalism.L2.SG.Pf.CarrierBase.isBaseFrame_of X u u' (tauE X e j) rfl (isTransp_Qcs X C (tauE X e j)) _ rfl rfl _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem framesE (u u' : D.what₂.Word) (e : InfinitePlace D.host.E ≃ D.what₂.Tau) (i0' : ∀ _ : InfinitePlace X.B.I.F, Fin D.R.k)
     (j : Fin (nfE D)) :
@@ -420,7 +414,7 @@ def tpOf (hTP : Formalism.FourierDecayAlt.Top.TypeProjExists) (u u' : D.what₂.
     (m0E X C u u' e j) (isPlaceE X C u u' e de de' hN hty j) (framesE X C u u' e i0' j))
 
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem parNums_ITc (u u' : D.what₂.Word) (e : InfinitePlace D.host.E ≃ D.what₂.Tau) (he : PlaceTie X e)
     (hv : D.host.v = Formalism.FourierDecayAlt.S6.rd D.host.E / 2) (CA : ℝ) (de de' : ℕ → ℝ) (l : ℕ)
@@ -433,7 +427,7 @@ theorem parNums_ITc (u u' : D.what₂.Word) (e : InfinitePlace D.host.E ≃ D.wh
     (h : ParNumsE (D := D) u u' e de de') : ParNums (ITc X C u u' e he hv CA de de' l grid grid1 fc c i0' Θ TP A₀) := h
 
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem types_ITc (u u' : D.what₂.Word) (e : InfinitePlace D.host.E ≃ D.what₂.Tau) (he : PlaceTie X e)
     (hv : D.host.v = Formalism.FourierDecayAlt.S6.rd D.host.E / 2) (CA : ℝ) (de de' : ℕ → ℝ) (l : ℕ)
@@ -460,7 +454,7 @@ open Formalism.L2.SG.Pf.Carrier.CarPinVt
 attribute [local instance] Formalism.BasicNotions.Host.cmStar instCM
 
 /- English proof (translation)
-Unfold `Formalism.FourierDecayAlt.C.HidaSetting.cutHi Formalism.FourierDecayAlt.C.HidaSetting.cutLo`. Establish `: ((sOf I).G.place ((sOf I).pl v)).Del = I.G.Del` using `rfl`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cut_len {D : D7} {X : Formalism.L2.SG.HidaSetting.HidaSetting D} {u u' : D.what₂.Word} (I : CarrierIn X u u') (v : Fin I.nf) :
     (sOf I).cutHi v - (sOf I).cutLo v = I.G.Del / 2 - 5 / 2 := by
@@ -476,15 +470,15 @@ def fourierDecayLevelZeroConst : ℝ := (Formalism.FourierDecayAlt.P.lemma_E_of_
   Formalism.FourierDecayAlt.P.good_of_admissible Formalism.FourierDecayAlt.P.lemma_model).choose
 
 /- English proof (translation)
-Establish `hN'` using `parNums_ITc X C u u' e he hv CA de de' l (gridT e l) (grid1T e l) (fcT X C e u u' a b ξ ξ' cc) cutStd i0' Θ TP A₀ hN`. Establish `hty'` using `types_ITc X C u u' e he hv CA de de' l (gridT e l) (grid1T e l) (fcT X C e u u' a b ξ ξ' cc) cutStd i0' Θ TP A₀ hty`. Establish `hcc : CoefCC (ITc X C u u' e he hv CA de de' l (gridT e l) (grid1T e l) (fcT X C e u u' a b ξ ξ' cc) cutStd i0' Θ TP A₀)` using `Formalism.L2.SG.Pf.CoefCCT.coefCC_carrierInTc C u u' e he hv CA de de' l (gridT e l) (grid1T e l) a b ξ ξ' cc cutStd (nuE X C u' e i0') (m0E X C u u' e) Θ TP A₀ (fun _ => h) (fun j => Formalism.MainNotions.S.Inh.amp_isHCParam_lamD D _) hgap (fun _ => hok) hA0 (fun _ => hAh) hka h …`. Establish `hG` using `gridsOK_ITc X C u u' e he hv CA de de' l (fcT X C e u u' a b ξ ξ' cc) cutStd i0' Θ TP A₀ hlen hOk hl2`. Establish `hR` using `gridsRich_ITc X C u u' e he hv CA de de' l (fcT X C e u u' a b ξ ξ' cc) cutStd i0' Θ TP A₀ hlen`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL : Formalism.FourierDecayAlt.JCT.LongCut Cc (sOf (ITc X C u u' e he hv CA de de' l (gridT e l) (grid1T e l) (fcT X C e u u' a b ξ ξ' cc) cutStd i0' Θ TP A₀))` using `fun v => le_of_le_of_eq hLc (cut_len (ITc X C u u' e he hv CA de de' l (gridT e l) (grid1T e l) (fcT X C e u u' a b ξ ξ' cc) cutStd i0' Θ TP A₀) v).symm`. Establish `hB` using `isBuiltPlace_of_compact_test X C Cb Cc u u' e he hv CA de de' l (gridT e l) (grid1T e l) (fcT X C e u u' a b ξ ξ' cc) cutStd i0' Θ TP A₀ hN' hty' hcc hcap hΘ hDD hOk hw hw' hl1 hl2 hne hG hR hL hCA hsm hA`. Establish `hcut : ∀ v, C₆ * ((D.R.k : ℝ) * (sOf (ITc X C u u' e he hv CA de de' l (gridT e l) (grid1T e l) (fcT X C e u u' a b ξ ξ' cc) cutStd i0' Θ TP A₀)).Ntop * ((D.R.rS : ℝ) + 1) ^ 2 + ((sOf (ITc X C u u' e he hv CA de de' l (gridT e l) (grid1T e l) (fcT X C e u u' a b ξ ξ' cc) cutStd i …` using `fun v => le_of_le_of_eq hC6 (cut_len (ITc X C u u' e he hv CA de de' l (gridT e l) (grid1T e l) (fcT X C e u u' a b ξ ξ' cc) cutStd i0' Θ TP A₀) v).symm`. Establish `hVJ` using `vJoint_of_tensorAt X u u' (sOf (ITc X C u u' e he hv CA de de' l (gridT e l) (grid1T e l) (fcT X C e u u' a b ξ ξ' cc) cutStd i0' Θ TP A₀)) (ITc X C u u' e he hv CA de de' l (gridT e l) (grid1T e l) (fcT X C e u u' a b ξ ξ' cc) cutStd i0' Θ TP A₀).T (ITc X C u u' e he hv CA de de …`. Establish `hVt` using `vtTensor_of_steps X (sOf (ITc X C u u' e he hv CA de de' l (gridT e l) (grid1T e l) (fcT X C e u u' a b ξ ξ' cc) cutStd i0' Θ TP A₀)) u u' sc i0 i0' FdN FdN' νq (ITc X C u u' e he hv CA de de' l (gridT e l) (grid1T e l) (fcT X C e u u' a b ξ ξ' cc) cutStd i0' Θ TP A₀).T (ITc X C …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPG` using `propGram_of_vtTensor (sOf (ITc X C u u' e he hv CA de de' l (gridT e l) (grid1T e l) (fcT X C e u u' a b ξ ξ' cc) cutStd i0' Θ TP A₀)) _ _ _ _ _ _ A₀ (Formalism.L2.SG.Pf.CarrierSz.g_pos D).1 (Formalism.L2.SG.Pf.CarrierSz.g_pos D).2 (isBuilt_of_builtPlace hB) _ hVt`. Establish `hLe' : Formalism.FourierDecayAlt.JCT.LongCut Ce (sOf (ITc X C u u' e he hv CA de de' l (gridT e l) (grid1T e l) (fcT X C e u u' a b ξ ξ' cc) cutStd i0' Θ TP A₀))` using `fun v => le_of_le_of_eq hLe (cut_len (ITc X C u u' e he hv CA de de' l (gridT e l) (grid1T e l) (fcT X C e u u' a b ξ ξ' cc) cutStd i0' Θ TP A₀) v).symm`. Establish `hIBP` using `isBuiltPlace_carrierInT X C Ce u u' e he hv CA de de' l (gridT e l) (grid1T e l) (fcT X C e u u' a b ξ ξ' cc) cutStd (nuE X C u' e i0') (m0E X C u u' e) Θ TP A₀ hN' hty' (frames_carrierInT X C u u' e he hv CA de de' l (gridT e l) (grid1T e l) (fcT X C e u u' a b ξ ξ' cc) cutStd i …`. Establish `hC6e' : ∀ v, fourierDecayLevelZeroConst * (((sOf (ITc X C u u' e he hv CA de de' l (gridT e l) (grid1T e l) (fcT X C e u u' a b ξ ξ' cc) cutStd i0' Θ TP A₀)).G.k : ℝ) * (sOf (ITc X C u u' e he hv CA de de' l (gridT e l) (grid1T e l) (fcT X C e u u' a b ξ ξ' cc) cutStd i0' Θ TP A₀ …` using `fun v => le_of_le_of_eq hC6e (cut_len (ITc X C u u' e he hv CA de de' l (gridT e l) (grid1T e l) (fcT X C e u u' a b ξ ξ' cc) cutStd i0' Θ TP A₀) v).symm`. Establish `hcutsm : ∀ v ε, 0 < ε → Formalism.FourierDecayAlt.B.CkOn ⊤ (Formalism.FourierDecayAlt.B.GV D.R.k D.R.rS) (Formalism.FourierDecayAlt.D.cutF ((ITc X C u u' e he hv CA de de' l (gridT e l) (grid1T e l) (fcT X C e u u' a b ξ ξ' cc) cutStd i0' Θ TP A₀).T v).base (ITc X C u u' e he hv …` using `fun v ε hε => Formalism.FourierDecayAlt.P.cutoff_smooth _ _ _ _ _ _ _ ε (isCut0_cut cutStd) (hsm v) hε`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE : ∀ (L : ∀ v : Fin (nfE D), Formalism.FourierDecayAlt.R.LevelData (Formalism.FourierDecayAlt.MA.A (parE e u u' de de' v) (Formalism.FourierDecayAlt.MA.DQ (parE e u u' de de' v))) D.R.rS) (j : ∀ v : Fin (nfE D), Formalism.FourierDecayAlt.M.Ty (parE e u u' de de' v) → Formalism. …`. Introduce `L j lam Cm σ hM`. Establish `hLE` using `(Formalism.FourierDecayAlt.P.lemma_E_of_model Formalism.FourierDecayAlt.P.lemma_E_of_residue Formalism.FourierDecayAlt.P.level_zero_holds Formalism.FourierDecayAlt.P.good_of_admissible Formalism.FourierDecayAlt.P.lemma_model).choose_spec.2 D.host.E _ _ (sOf (ITc X C u u' e he hv …`. Establish `hjv` using `(Formalism.FourierDecayAlt.P.energy_of_built_setting Formalism.FourierDecayAlt.P.beta_cutoff_limit).choose_spec D.host.E _ _ (sOf (ITc X C u u' e he hv CA de de' l (gridT e l) (grid1T e l) (fcT X C e u u' a b ξ ξ' cc) cutStd i0' Θ TP A₀)) (ITc X C u u' e he hv CA de de' l (gridT …`. Rewrite using `[← hE2 (isBuilt_of_builtPlace hB)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.prod_congr rfl (fun v _ => hjv v)`. Conclude with `carrierDataBuilt_of_compact_test X C Cb Cc C₆ u u' e he hv CA de de' l (gridT e l) (grid1T e l) (fcT X C e u u' a b ξ ξ' cc) cutStd i0 i0' Θ TP A₀ sc FdN FdN' νq jn hN' hty' hl2 hΘ hB hSB hcut hVt hPG hVJ hE hi`.
+A detailed English derivation is pending.
 -/
 theorem carrierDataBuilt_of_towers (Cb Cc C₆ : ℝ) (u u' : D.what₂.Word) (e : InfinitePlace D.host.E ≃ D.what₂.Tau) (he : PlaceTie X e)
     (hv : D.host.v = Formalism.FourierDecayAlt.S6.rd D.host.E / 2) (CA : ℝ) (de de' : ℕ → ℝ) (l : ℕ)
@@ -612,15 +606,13 @@ open Formalism.L2.SG.Pf.Carrier Formalism.L2.SG.LocWSOf Formalism.L2.SG.Pf.Carri
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Establish `hsmv : Formalism.MainNotions.S.IsSmoothVec (k` using `D.R.k) (r := D.R.rS) (sigB X (C.Q (e (plE D j))) (C.Qi (e (plE D j))) (e (plE D j))) (b j) := Formalism.L2.SG.LitS.kFinSmooth_pi Formalism.L2.SG.Pf.k_finite_smooth D.R.k D.R.rS (epsSH D.R) (lamD D (e (plE D j))) _ (sigB X (C.Q (e (plE D j))) (C.Qi (e (plE D j))) (e (plE D j))) (F …`. Establish `hcf` using `Formalism.L2.SG.Pf.CoefDecay.ss_cf hsmv (a j) (Formalism.L2.SG.Pf.CoefDecay.rk1 (ξ j) (ξ' j))`. Establish `hμ` using `Formalism.L2.SG.Pf.muT_ne D`. Use `set t := torS (muT D) D.R.k D.R.rS with ht`. Use `set t' := torS (muT D)⁻¹ D.R.k D.R.rS with ht'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hfun : ∀ g, fcT X C e u u' a b ξ ξ' cc j g = cc j • Formalism.L2.SG.Pf.CoefDecay.cf (sigB X (C.Q (e (plE D j))) (C.Qi (e (plE D j))) (e (plE D j))) (a j) (b j) (Formalism.L2.SG.Pf.CoefDecay.rk1 (ξ j) (ξ' j)) (t * g * t')`. Introduce `g`. Use `show cc j • Formalism.MainNotions.S.Pv.BetaCut.coefM _ (a j) (b j) (ξ j) (ξ' j) (t * g * t') = _`. Use `congr 1`. Use extensionality with `x`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `only [Formalism.MainNotions.S.Pv.BetaCut.coefM, Formalism.L2.SG.Pf.CoefDecay.cf, Formalism.L2.SG.Pf.CoefDecay.rk1, ContinuousLinearMap.smulRight_apply, _root_.smul_apply]`. Conclude with `smul_comm _ _ _`. Set `Lφ : Formalism.FourierDecayAlt.B.Mat D.R.k D.R.rS →ₗ[ℝ] Formalism.FourierDecayAlt.B.Mat D.R.k D.R.rS` to `{ toFun := fun g => t * g * t' map_add' := fun x y => by simp only [Matrix.mul_add, Matrix.add_mul] map_smul' := fun c x => by simp only [RingHom.id_apply, Matrix.mul_smul, Matrix.smul_mul] }`. Establish `hφ : ContDiff ℝ ⊤ (fun g : Formalism.FourierDecayAlt.B.Mat D.R.k D.R.rS => t * g * t')` using `(LinearMap.toContinuousLinearMap Lφ).contDiff`. Introduce `g₀ hg₀`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmem : ∀ g ∈ Formalism.FourierDecayAlt.B.GV D.R.k D.R.rS, t * g * t' ∈ Formalism.FourierDecayAlt.B.GV D.R.k D.R.rS` using `fun g hg => Formalism.L2.SG.RealObj.EnergyIntTor.UH_mul (Formalism.L2.SG.RealObj.EnergyIntTor.UH_mul (Formalism.L2.SG.RealObj.EnergyIntTor.tor_mem_UH hμ) hg) (Formalism.L2.SG.RealObj.EnergyIntTor.tor_mem_UH (inv_ne_zero hμ))`. Take `⟨U, F, hU, h0, hF, hE⟩` from `hcf _ (hmem g₀ hg₀)`. Use `⟨(fun g => t * g * t') ⁻¹' U, fun g => cc j • F (t * g * t'), hU.preimage hφ.continuous, h0, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(hF.comp (hφ.of_le le_top).contDiffOn (fun g hg => hg)).const_smul (cc j)`. Introduce `g hgU hgG`.
-
-Rewrite using `[hfun g, hE _ hgU (hmem g hgG)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fcT_smooth {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) {θ : ℝ} (C : Choice X θ)
     (e : InfinitePlace D.host.E ≃ D.what₂.Tau) (u u' : D.what₂.Word)
@@ -674,14 +666,14 @@ open Formalism.L2.SG.Pf.Carrier.CarPinVt
 attribute [local instance] Formalism.BasicNotions.Host.cmStar instCM
 
 /- English proof (translation)
-Unfold `Formalism.BasicNotions.Host.v Formalism.BasicNotions.Host.rdE Formalism.FourierDecayAlt.S6.rd`. Rewrite using `[Int.cast_abs, one_div]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem host_v (D : D7) : D.host.v = Formalism.FourierDecayAlt.S6.rd D.host.E / 2 := by
   unfold Formalism.BasicNotions.Host.v Formalism.BasicNotions.Host.rdE Formalism.FourierDecayAlt.S6.rd
   rw [Int.cast_abs, one_div]
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4⟩` from `hg`. Establish `ha : Formalism.FourierDecayAlt.ThreeDimData.aOf r h ≤ Formalism.FourierDecayAlt.ThreeDimData.aOf r h'`. Unfold `Formalism.FourierDecayAlt.ThreeDimData.aOf`. Conclude with `div_le_div_of_nonneg_right hh (by positivity)`. Conclude with `⟨h1, by linarith, by linarith, by linarith⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem gapOK_mono {k r : ℕ} {h h' : ℝ} (hg : Formalism.FourierDecayAlt.ThreeDimData.GapOK k r h) (hh : h ≤ h') : Formalism.FourierDecayAlt.ThreeDimData.GapOK k r h' := by
   obtain ⟨h1, h2, h3, h4⟩ := hg
@@ -732,9 +724,9 @@ def LiftAt3 (Cb : ℝ) : Prop :=
       ∃ Θ : Formalism.FourierDecayAlt.Top.TopLift P.k P.r Wp Wq, Formalism.FourierDecayAlt.KB.IsTopLift2 P l0 Bs L st Θ ∧ Formalism.FourierDecayAlt.KB.InDDplus2 P l0 Bs Cb Θ
 
 /- English proof (translation)
-Establish `key : ∀ j : Fin (nfE D), ∃ Θj : Formalism.FourierDecayAlt.Top.TopLift D.R.k D.R.rS (X.Vloc u (tauE X e j)) (X.Vloc u' (tauE X e j)), (∃ (Xo : Formalism.FourierDecayAlt.Q.ActualOps D.R.k D.R.rS (towersOf X C u u' e j).base.z (towersOf X C u u' e j).base.z' (towersOf X C u u' e j). …`. Introduce `j`. Take `⟨Xo, μ, L, st, hD⟩` from `hdat j`. Take `⟨Θj, h1, h2⟩` from `hL _ _ (parE e u u' de de' j) (towersOf X C u u' e j).base Xo μ L st (l + 1) (by omega) (show l + 1 ≤ D.R.k by omega) hD`. Conclude with `⟨Θj, ⟨Xo, μ, L, st, hD, h1⟩, h2⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `choose Θ hΘ using key`. Conclude with `⟨Θ, fun j => (hΘ j).1, fun j => (hΘ j).2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lift_compact_test_towers (Cb : ℝ) (hL : LiftAt3 Cb) {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) {θ : ℝ} (C : Choice X θ)
     (u u' : D.what₂.Word) (e : InfinitePlace D.host.E ≃ D.what₂.Tau) (de de' : ℕ → ℝ) (l : ℕ) (hl2 : l + 2 ≤ D.R.k)
@@ -783,7 +775,7 @@ theorem lift_compact_test_towers (Cb : ℝ) (hL : LiftAt3 Cb) {D : D7} (X : Form
   exact ⟨Θ, fun j => (hΘ j).1, fun j => (hΘ j).2⟩
 
 /- English proof (translation)
-Take `⟨Cb, -, h⟩` from `Formalism.FourierDecayAlt.P.top_lift_exists`. Conclude with `⟨Cb, h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem liftAt3_exists : ∃ Cb : ℝ, LiftAt3 Cb := by
   obtain ⟨Cb, -, h⟩ := Formalism.FourierDecayAlt.P.top_lift_exists
@@ -799,19 +791,19 @@ variable {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) {θ : ℝ} (C 
 variable [Fact Formalism.L2.SG.Pf.CarrierT.CoefCapAll] in
 
 /- English proof (translation)
-Take `⟨hka, hkb, hrest⟩` from `hleaf`. Establish `hsm` using `fun j => fcT_smooth X C e u u' a b ξ ξ' cc j (hkb j)`. Establish `hN` using `parNumsE_of (D := D) u u' e de de' h5 hde hde'`. Establish `hty` using `typesE_of X C hCap u u' e de de' h5 hde hde'`. Use `set TP := tpOf X C Formalism.FourierDecayAlt.P.type_projectors_exist u u' e de de' i0' hN hty with hTPdef`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Θ0 : ∀ j : Fin (nfE D), Formalism.FourierDecayAlt.Top.TopLift D.R.k D.R.rS (X.Vloc u (tauE X e j)) (X.Vloc u' (tauE X e j)) := fun _ => liftId with hΘ0`. Use `set A₀ := decayThreshold (|Cc| + |Cd| + |Ce|) D.R.k D.R.rS with hA₀`. Establish `hA0 : 0 ≤ A₀`. Rewrite using `[hA₀]`. Unfold `decayThreshold`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Check the signs of the components of the expression. Establish `hCC : |Cc| ≤ |Cc| + |Cd| + |Ce|` using `by have := abs_nonneg Cd; have := abs_nonneg Ce; linarith`. Establish `hCD : |Cd| ≤ |Cc| + |Cd| + |Ce|` using `by have := abs_nonneg Cc; have := abs_nonneg Ce; linarith`. Establish `hCE : |Ce| ≤ |Cc| + |Cd| + |Ce|` using `by have := abs_nonneg Cc; have := abs_nonneg Cd; linarith`. Establish `thr : ∀ c : ℝ, |c| ≤ |Cc| + |Cd| + |Ce| → c * ((D.R.rS : ℝ) + 1) ^ 4 * (((4 * Formalism.FourierDecayAlt.C.Kst * (D.R.rS + 1) : ℕ) : ℝ) * (2 * (D.R.rS : ℝ) + D.R.k + 1) ^ 2 + (2 * (D.R.rS : ℝ) + D.R.k + 1) ^ 3) ≤ A₀`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `c hc`. Establish `h1` using `poly_le_decayThreshold (sOf (ITc X C u u' e he (host_v D) CA de de' l (gridT e l) (grid1T e l) (fcT X C e u u' a b ξ ξ' cc) cutStd i0' Θ0 TP (decayThreshold (|Cc| + |Cd| + |Ce|) D.R.k D.R.rS))) (|Cc| + |Cd| + |Ce|)`. Establish `hP : 0 ≤ ((D.R.rS : ℝ) + 1) ^ 4 * (((4 * Formalism.FourierDecayAlt.C.Kst * (D.R.rS + 1) : ℕ) : ℝ) * (2 * (D.R.rS : ℝ) + D.R.k + 1) ^ 2 + (2 * (D.R.rS : ℝ) + D.R.k + 1) ^ 3)`. Check the signs of the components of the expression. Establish `h2 : c * ((D.R.rS : ℝ) + 1) ^ 4 * (((4 * Formalism.FourierDecayAlt.C.Kst * (D.R.rS + 1) : ℕ) : ℝ) * (2 * (D.R.rS : ℝ) + D.R.k + 1) ^ 2 + (2 * (D.R.rS : ℝ) + D.R.k + 1) ^ 3) ≤ (|Cc| + |Cd| + |Ce|) * ((D.R.rS : ℝ) + 1) ^ 4 * (((4 * Formalism.FourierDecayAlt.C.Kst * (D.R.rS + 1) : ℕ …`.
+Check the signs of the components of the expression. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `h2.trans h1`. Establish `hcc0 : CoefCC (ITc X C u u' e he (host_v D) CA de de' l (gridT e l) (grid1T e l) (fcT X C e u u' a b ξ ξ' cc) cutStd i0' Θ0 TP (decayThreshold (|Cc| + |Cd| + |Ce|) D.R.k D.R.rS))` using `Formalism.L2.SG.Pf.CoefCCT.coefCC_carrierInTc C u u' e he (host_v D) CA de de' l (gridT e l) (grid1T e l) a b ξ ξ' cc cutStd (nuE X C u' e i0') (m0E X C u u' e) Θ0 TP A₀ (fun _ => h) (fun _ => Formalism.MainNotions.S.Inh.amp_isHCParam_lamD D _) hgap (fun _ => hok) hA0 (fun _ => h …`. Establish `hLd' : Formalism.FourierDecayAlt.JCT.LongCut Cd (sOf (ITc X C u u' e he (host_v D) CA de de' l (gridT e l) (grid1T e l) (fcT X C e u u' a b ξ ξ' cc) cutStd i0' Θ0 TP (decayThreshold (|Cc| + |Cd| + |Ce|) D.R.k D.R.rS)))` using `fun v => le_of_le_of_eq hLd (cut_len (ITc X C u u' e he (host_v D) CA de de' l (gridT e l) (grid1T e l) (fcT X C e u u' a b ξ ξ' cc) cutStd i0' Θ0 TP (decayThreshold (|Cc| + |Cd| + |Ce|) D.R.k D.R.rS)) v).symm`. Establish `hBold` using `isBuiltPlace_carrierInT X C Cd u u' e he (host_v D) CA de de' l (gridT e l) (grid1T e l) (fcT X C e u u' a b ξ ξ' cc) cutStd (nuE X C u' e i0') (m0E X C u u' e) Θ0 TP A₀ hN hty (frames_carrierInT X C u u' e he (host_v D) CA de de' l (gridT e l) (grid1T e l) (fcT X C e u u' a b ξ …`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdata` using `exists_Cc_data.choose_spec X C u u' e he (host_v D) CA de de' l (gridT e l) (grid1T e l) (fcT X C e u u' a b ξ ξ' cc) cutStd (nuE X C u' e i0') (m0E X C u u' e) Θ0 TP A₀ hBold`. Take `⟨Θ, hΘ, hDD⟩` from `lift_compact_test_towers Cb hLift X C u u' e de de' l hl2 hdata`. Establish `hpin` using `hrest Θ TP A₀`. Establish `hcap` using `coefCap_ITc X C hS0 hCl1000 hk18 u u' e he (host_v D) CA de de' l (gridT e l) (grid1T e l) a b ξ ξ' cc cutStd i0' Θ TP A₀ hkb`. Establish `hW` using `wtTie_carrierInT X C u u' e he (host_v D) CA de de' l (gridT e l) (grid1T e l) (fcT X C e u u' a b ξ ξ' cc) cutStd (nuE X C u' e i0') (m0E X C u u' e) Θ TP A₀`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJT` using `fun hBuilt => jointTensor_compact_test X C u u' e he (host_v D) CA de de' l (gridT e l) (grid1T e l) (fcT X C e u u' a b ξ ξ' cc) cutStd i0 i0' hi Θ TP A₀ sc νq hNu hpin hsc hBuilt`. Establish `hLz` using `lZero_of_choice X C u u' sc i0 i0' FdN FdN' νq`. Establish `hPt` using `ptSome_of (sOf (ITc X C u u' e he (host_v D) CA de de' l (gridT e l) (grid1T e l) (fcT X C e u u' a b ξ ξ' cc) cutStd i0' Θ TP (decayThreshold (|Cc| + |Cd| + |Ce|) D.R.k D.R.rS))) rfl`. Establish `hRz` using `rZero_carrierInT X C u u' e he (host_v D) CA de de' l (gridT e l) (grid1T e l) (fcT X C e u u' a b ξ ξ' cc) cutStd (nuE X C u' e i0') (m0E X C u u' e) Θ TP A₀ sc i0 i0' hPRE`. Conclude with `carrierDataBuilt_of_towers X C Cb Cc C₆ u u' e he (host_v D) CA de de' l i0 i0' sc FdN FdN' νq jn a b ξ ξ' cc Θ TP A₀ hN hty hl2 hΘ hDD hOk hw hw' hl1 hne hlen hLc hC6 hCA (thr Cc hCC) (sliceBudget_decayThreshold _ _) h hgap hok hA0 hAh hka hkb hsm hcap hJT hsc hPt hW hLz hRz (hE …`.
+A detailed English derivation is pending.
 -/
 theorem carrierDataBuilt_of_hyp (Cb : ℝ) (hLift : LiftAt3 Cb) (hCap : CapFromHC) {large₂ : SizeData₂ D} {C' Cl Cg cb Cu cT CT : ℝ}
     (hS0 : StandingHypotheses D large₂ C' Cl Cg cb Cu cT CT) (hCl1000 : 1000 ≤ Cl) (hk18 : 1801 ≤ D.R.k) (Cc C₆ : ℝ) (u u' : D.what₂.Word)
@@ -921,15 +913,15 @@ open Formalism.L2.SG.AdBridge Formalism.L2.SG.DataInst Formalism.L2.SG.SpectralT
 attribute [local instance] Formalism.BasicNotions.Host.cmStar instCM
 
 /- English proof (translation)
-Establish `hN : ((4 * Formalism.FourierDecayAlt.C.Kst * (r + 1) : ℕ) : ℝ) = 20 * ((r : ℝ) + 1)`. Unfold `Formalism.FourierDecayAlt.C.Kst`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hN]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `set x : ℝ := (r : ℝ) + 1 with hx`. Establish `hx1 : 1 ≤ x` using `by rw [hx]; have := (Nat.cast_nonneg r : (0 : ℝ) ≤ r); linarith`. Establish `hk : (0 : ℝ) ≤ k` using `Nat.cast_nonneg _`. Establish `h34 : x ^ 3 ≤ x ^ 4` using `pow_le_pow_right₀ hx1 (by norm_num)`. Establish `h14 : x ≤ x ^ 4`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hkx : 0 ≤ (k : ℝ) * x ^ 3` using `by positivity`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Establish `e : (k : ℝ) * (20 * x) * x ^ 2 + (20 * x) ^ 2 * x ^ 2 + (20 * x) ^ 3 = 20 * ((k : ℝ) * x ^ 3) + 400 * x ^ 4 + 8000 * x ^ 3` using `by ring`. Rewrite using `[e]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `e : (k : ℝ) * (20 * x) * x ^ 2 + (20 * x) ^ 2 * x ^ 2 = 20 * ((k : ℝ) * x ^ 3) + 400 * x ^ 4` using `by ring`. Rewrite using `[e]`. Use the polynomial consequences of the given equalities and inequalities. Establish `e : 6 * (20 * x) ^ 3 + 6 * (20 * x) = 48000 * x ^ 3 + 120 * x` using `by ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem polys (k r : ℕ) :
     (k : ℝ) * ((4 * Formalism.FourierDecayAlt.C.Kst * (r + 1) : ℕ) : ℝ) * ((r : ℝ) + 1) ^ 2 + ((4 * Formalism.FourierDecayAlt.C.Kst * (r + 1) : ℕ) : ℝ) ^ 2 * ((r : ℝ) + 1) ^ 2 +
@@ -957,7 +949,7 @@ theorem polys (k r : ℕ) :
     rw [e]; nlinarith
 
 /- English proof (translation)
-Establish `h1 : c * P ≤ |c| * P` using `mul_le_mul_of_nonneg_right (le_abs_self c) hP0`. Establish `h2 : |c| * P ≤ |c| * (8400 * Q)` using `mul_le_mul_of_nonneg_left hP (abs_nonneg c)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem scale_le {c P Q B : ℝ} (hP0 : 0 ≤ P) (hP : P ≤ 8400 * Q) (hB : 8400 * |c| * Q ≤ B) : c * P ≤ B := by
   have h1 : c * P ≤ |c| * P := mul_le_mul_of_nonneg_right (le_abs_self c) hP0

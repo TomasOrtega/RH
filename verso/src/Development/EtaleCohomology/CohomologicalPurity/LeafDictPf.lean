@@ -45,7 +45,7 @@ variable {R : Type} [CommRing R] (hE : LeafEv) (hP : LeafPair)
 include hE
 
 /- English proof (translation)
-Establish `h` using `(hE R G X).2.1 0 0`. Rewrite `h` using `[add_zero]`. Simplify using `using h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ev_zero {G : Shv R} {X : Scheme.{0}} : ev (0 : (free R).obj (yoneda.obj X) ⟶ G) = 0 := by
   have h := (hE R G X).2.1 0 0
@@ -53,7 +53,7 @@ theorem ev_zero {G : Shv R} {X : Scheme.{0}} : ev (0 : (free R).obj (yoneda.obj 
   simpa using h
 
 /- English proof (translation)
-The claim follows from `(hE R G X).1 (h.trans (ev_zero hE).symm)`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_ev {G : Shv R} {X : Scheme.{0}} (m : (free R).obj (yoneda.obj X) ⟶ G) (h : ev m = 0) : m = 0 :=
   (hE R G X).1 (h.trans (ev_zero hE).symm)
@@ -61,7 +61,7 @@ theorem eq_zero_of_ev {G : Shv R} {X : Scheme.{0}} (m : (free R).obj (yoneda.obj
 include hP
 
 /- English proof (translation)
-The claim follows from `(hP R G X U).2 m m' ((hE R G X).1 h1) ((hE R G X).1 h2)`.
+A detailed English derivation is pending.
 -/
 theorem ext_ev {G : Shv R} {X : Scheme.{0}} {U : X.Opens} (m m' : (free R).obj (Qp U) ⟶ G)
     (h1 : ev ((free R).map (pushout.inl _ _) ≫ m) = ev ((free R).map (pushout.inl _ _) ≫ m'))
@@ -71,7 +71,7 @@ theorem ext_ev {G : Shv R} {X : Scheme.{0}} {U : X.Opens} (m m' : (free R).obj (
 end
 
 /- English proof (translation)
-Rewrite using `[← (hE R G X).2.2, ← (hE R G X).2.2, ← Category.assoc, ← Category.assoc, ← Functor.map_comp, ← Functor.map_comp, pushout.condition]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem res_pair {R : Type} [CommRing R] (hE : LeafEv) {G : Shv R} {X : Scheme.{0}} {U : X.Opens}
     (m : (free R).obj (Qp U) ⟶ G) :
@@ -80,25 +80,25 @@ theorem res_pair {R : Type} [CommRing R] (hE : LeafEv) {G : Shv R} {X : Scheme.{
     pushout.condition]
 
 /- English proof (translation)
-The claim follows from `map_zero (G.obj.map f.op).hom`.
+A detailed English derivation is pending.
 -/
 theorem sres_zero {R : Type} [CommRing R] {G : Shv R} {X Y : Scheme.{0}} (f : Y ⟶ X) : Sec.res f (0 : Sec G X) = 0 :=
   map_zero (G.obj.map f.op).hom
 
 /- English proof (translation)
-The claim follows from `map_sub (G.obj.map f.op).hom a b`.
+A detailed English derivation is pending.
 -/
 theorem sres_sub {R : Type} [CommRing R] {G : Shv R} {X Y : Scheme.{0}} (f : Y ⟶ X) (a b : Sec G X) :
     Sec.res f (a - b) = Sec.res f a - Sec.res f b := map_sub (G.obj.map f.op).hom a b
 
 /- English proof (translation)
-The claim follows from `map_sub (g.hom.app (op X)).hom a b`.
+A detailed English derivation is pending.
 -/
 theorem smap_sub {R : Type} [CommRing R] {G G' : Shv R} (g : G ⟶ G') {X : Scheme.{0}} (a b : Sec G X) :
     Sec.map g (a - b) = Sec.map g a - Sec.map g b := map_sub (g.hom.app (op X)).hom a b
 
 /- English proof (translation)
-The claim follows from `map_zero (g.hom.app (op X)).hom`.
+A detailed English derivation is pending.
 -/
 theorem smap_zero {R : Type} [CommRing R] {G G' : Shv R} (g : G ⟶ G') {X : Scheme.{0}} :
     Sec.map g (0 : Sec G X) = 0 := map_zero (g.hom.app (op X)).hom
@@ -107,14 +107,14 @@ def mk (hP : LeafPair) {R : Type} [CommRing R] {G : Shv R} {X : Scheme.{0}} (U :
     (h : Sec.res U.ι s = Sec.res U.ι s') : (free R).obj (Qp U) ⟶ G := ((hP R G X U).1 s s' h).choose
 
 /- English proof (translation)
-The claim follows from `((hP R G X U).1 s s' h).choose_spec.1`.
+A detailed English derivation is pending.
 -/
 theorem mk_l (hP : LeafPair) {R : Type} [CommRing R] {G : Shv R} {X : Scheme.{0}} (U : X.Opens) (s s' : Sec G X)
     (h : Sec.res U.ι s = Sec.res U.ι s') : ev ((free R).map (pushout.inl _ _) ≫ mk hP U s s' h) = s :=
   ((hP R G X U).1 s s' h).choose_spec.1
 
 /- English proof (translation)
-The claim follows from `((hP R G X U).1 s s' h).choose_spec.2`.
+A detailed English derivation is pending.
 -/
 theorem mk_r (hP : LeafPair) {R : Type} [CommRing R] {G : Shv R} {X : Scheme.{0}} (U : X.Opens) (s s' : Sec G X)
     (h : Sec.res U.ι s = Sec.res U.ι s') : ev ((free R).map (pushout.inr _ _) ≫ mk hP U s s' h) = s' :=
@@ -128,21 +128,21 @@ variable (hD : Cl.LeafDisc) (hE : LeafEv) (hP : LeafPair) (hB : LeafDbl) (q : �
 def clD := (hD (ZMod q) (KK q i) n).choose
 
 /- English proof (translation)
-The claim follows from `(hD (ZMod q) (KK q i) n).choose_spec.1 P a b ha hb`.
+A detailed English derivation is pending.
 -/
 theorem clD_add (P : PSh) (a b : (free (ZMod q)).obj P ⟶ (KK q i).X n) (ha : a ≫ (KK q i).d n (n + 1) = 0)
     (hb : b ≫ (KK q i).d n (n + 1) = 0) : clD hD q n i P (a + b) = clD hD q n i P a + clD hD q n i P b :=
   (hD (ZMod q) (KK q i) n).choose_spec.1 P a b ha hb
 
 /- English proof (translation)
-The claim follows from `(hD (ZMod q) (KK q i) n).choose_spec.2.1 P x`.
+A detailed English derivation is pending.
 -/
 theorem clD_surj (P : PSh) (x : CohomologyClass ((chains (ZMod q)).obj (disc.obj P)) (KK q i) n) :
     ∃ a, a ≫ (KK q i).d n (n + 1) = 0 ∧ clD hD q n i P a = x :=
   (hD (ZMod q) (KK q i) n).choose_spec.2.1 P x
 
 /- English proof (translation)
-The claim follows from `(hD (ZMod q) (KK q i) n).choose_spec.2.2.1 P a ha`.
+A detailed English derivation is pending.
 -/
 theorem clD_ker (P : PSh) (a : (free (ZMod q)).obj P ⟶ (KK q i).X n) (ha : a ≫ (KK q i).d n (n + 1) = 0) :
     clD hD q n i P a = 0 ↔ ∃ b, b ≫ (KK q i).d (n - 1) n = a :=
@@ -151,20 +151,20 @@ theorem clD_ker (P : PSh) (a : (free (ZMod q)).obj P ⟶ (KK q i).X n) (ha : a �
 def eD : ∀ {X : Scheme.{0}} (U : X.Opens), disc.obj (Qp U) ≅ dbl (opn U) := hB.choose
 
 /- English proof (translation)
-The claim follows from `hB.choose_spec.2.1 U`.
+A detailed English derivation is pending.
 -/
 theorem eD_r {X : Scheme.{0}} (U : X.Opens) : disc.map (pushout.inr _ _) ≫ (eD hB U).hom = dbl.inr (opn U) :=
   hB.choose_spec.2.1 U
 
 /- English proof (translation)
-The claim follows from `hB.choose_spec.2.2 f U' U h`.
+A detailed English derivation is pending.
 -/
 theorem eD_n {X' X : Scheme.{0}} (f : X' ⟶ X) (U' : X'.Opens) (U : X.Opens) (h : U' ≤ f ⁻¹ᵁ U) :
     disc.map (Qmap f U' U h) ≫ (eD hB U).hom = (eD hB U').hom ≫ dbl.map (opnMap f U' U h) :=
   hB.choose_spec.2.2 f U' U h
 
 /- English proof (translation)
-Rewrite using `[((Cl.mem_Zc _).1 a.2).1, sres_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem zc_res {X : Scheme.{0}} {U : X.Opens} (a : Cl.Zc (KK q i) U n) : Sec.res U.ι a.1 = Sec.res U.ι 0 := by
   rw [((Cl.mem_Zc _).1 a.2).1, sres_zero]
@@ -173,7 +173,7 @@ def Mz {X : Scheme.{0}} (U : X.Opens) (a : Cl.Zc (KK q i) U n) : (free (ZMod q))
   mk hP U a.1 0 (zc_res q n i a)
 
 /- English proof (translation)
-Establish `h` using `clD_add hD q n i P 0 0 zero_comp zero_comp`. Rewrite `h` using `[add_zero]`. Simplify using `using h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem cl_zero (P : PSh) : clD hD q n i P 0 = 0 := by
   have h := clD_add hD q n i P 0 0 zero_comp zero_comp
@@ -182,7 +182,7 @@ theorem cl_zero (P : PSh) : clD hD q n i P 0 = 0 := by
 
 include hE hP in
 /- English proof (translation)
-Apply `ext_ev hE hP` to reduce the goal to its premises. Rewrite using `[comp_zero, ev_zero hE, ← Category.assoc, ev_comp, h1]`. Rewrite using `[comp_zero, ev_zero hE, ← Category.assoc, ev_comp, h2]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem coc {X : Scheme.{0}} {U : X.Opens} {k : ℤ} (m : (free (ZMod q)).obj (Qp U) ⟶ (KK q i).X k)
     (h1 : Sec.map ((KK q i).d k (k + 1)) (ev ((free _).map (pushout.inl _ _) ≫ m)) = 0)
@@ -194,13 +194,13 @@ theorem coc {X : Scheme.{0}} {U : X.Opens} {k : ℤ} (m : (free (ZMod q)).obj (Q
 
 include hE in
 /- English proof (translation)
-The claim follows from `coc hE hP q i _ (by unfold Mz; rw [mk_l]; exact ((Cl.mem_Zc _).1 a.2).2) (by unfold Mz; rw [mk_r, smap_zero])`.
+A detailed English derivation is pending.
 -/
 theorem Mz_coc {X : Scheme.{0}} {U : X.Opens} (a : Cl.Zc (KK q i) U n) : Mz hP q n i U a ≫ (KK q i).d n (n + 1) = 0 :=
   coc hE hP q i _ (by unfold Mz; rw [mk_l]; exact ((Cl.mem_Zc _).1 a.2).2) (by unfold Mz; rw [mk_r, smap_zero])
 
 /- English proof (translation)
-The claim follows from `(hD (ZMod q) (KK q i) n).choose_spec.2.2.2 P' P f m hm`.
+A detailed English derivation is pending.
 -/
 theorem pull_cl (P' P : PSh) (f : P' ⟶ P) (m : (free (ZMod q)).obj P ⟶ (KK q i).X n) (hm : m ≫ (KK q i).d n (n + 1) = 0) :
     pull _ (disc.map f) (tw q i) n (clD hD q n i P m) = clD hD q n i P' ((free _).map f ≫ m) :=
@@ -210,16 +210,16 @@ def clsV {X : Scheme.{0}} (U : X.Opens) (a : Cl.Zc (KK q i) U n) : Ht q (dbl (op
   pull _ (eD hB U).inv (tw q i) n (clD hD q n i (Qp U) (Mz hP q n i U a))
 
 /- English proof (translation)
-Conclude with `(Iso.comp_inv_eq _).2 (eD_r hB U).symm`.
+A detailed English derivation is pending.
 -/
 theorem inr_inv {X : Scheme.{0}} (U : X.Opens) : dbl.inr (opn U) ≫ (eD hB U).inv = disc.map (pushout.inr _ _) := by
   exact (Iso.comp_inv_eq _).2 (eD_r hB U).symm
 
 include hE in
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `pull _ (dbl.inr (opn U)) (tw q i) n (pull _ (eD hB U).inv (tw q i) n _) = 0`. Rewrite using `[← pull_comp, inr_inv]`. Use `erw [pull_cl hD q n i (yoneda.obj X) (Qp U) (pushout.inr _ _) _ (Mz_coc hE hP q n i a)]`. Establish `: (free (ZMod q)).map (pushout.inr _ _) ≫ Mz hP q n i U a = 0`. Apply `eq_zero_of_ev hE` to reduce the goal to its premises.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions.
 
-Unfold `Mz`. Rewrite using `[mk_r]`. Rewrite using `[this, cl_zero]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem clsV_mem {X : Scheme.{0}} (U : X.Opens) (a : Cl.Zc (KK q i) U n) : clsV hD hP hB q n i U a ∈ Hs q (opn U) n i := by
   change pull _ (dbl.inr (opn U)) (tw q i) n (pull _ (eD hB U).inv (tw q i) n _) = 0
@@ -233,9 +233,9 @@ theorem clsV_mem {X : Scheme.{0}} (U : X.Opens) (a : Cl.Zc (KK q i) U n) : clsV 
 
 include hE in
 /- English proof (translation)
-Apply `ext_ev hE hP` to reduce the goal to its premises. Rewrite using `[Preadditive.comp_add, (hE _ _ _).2.1]`. Unfold `Mz`. Rewrite using `[mk_l, mk_l, mk_l]`. Apply the tactic sequence `try rfl`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Preadditive.comp_add, (hE _ _ _).2.1]`. Unfold `Mz`. Rewrite using `[mk_r, mk_r, mk_r, add_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Mz_add {X : Scheme.{0}} {U : X.Opens} (a b : Cl.Zc (KK q i) U n) :
     Mz hP q n i U (a + b) = Mz hP q n i U a + Mz hP q n i U b := by
@@ -244,9 +244,9 @@ theorem Mz_add {X : Scheme.{0}} {U : X.Opens} (a b : Cl.Zc (KK q i) U n) :
   · rw [Preadditive.comp_add, (hE _ _ _).2.1]; unfold Mz; rw [mk_r, mk_r, mk_r, add_zero]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h2` using `congrArg (pull _ (eD hB U).hom (tw q i) n) h`. Rewrite `h2` using `[← pull_comp, Iso.hom_inv_id, pull_id, map_zero]`. Then use the resulting hypothesis. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pinv_eq_zero {X : Scheme.{0}} (U : X.Opens) (c : H (ZMod q) (disc.obj (Qp U)) (tw q i) n) :
     pull _ (eD hB U).inv (tw q i) n c = 0 ↔ c = 0 := by
@@ -266,21 +266,19 @@ def cls {X : Scheme.{0}} (U : X.Opens) : Cl.Zc (KK q i) U n →+ Hs q (opn U) n 
     rw [Mz_add hE hP q n i a b, clD_add hD q n i _ _ _ (Mz_coc hE hP q n i a) (Mz_coc hE hP q n i b), map_add])
 
 /- English proof (translation)
-Introduce `x`. Take `⟨m, hm, hmx⟩` from `clD_surj hD q n i (Qp U) (pull _ (eD hB U).hom (tw q i) n x.1)`. Establish `h0 : clD hD q n i (yoneda.obj X) ((free _).map (pushout.inr _ _) ≫ m) = 0` using `by erw [← pull_cl hD q n i (yoneda.obj X) (Qp U) (pushout.inr _ _) m hm]`. Rewrite using `[hmx, ← pull_comp, eD_r]`. Conclude with `x.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc' : ((free _).map (pushout.inr _ _) ≫ m) ≫ (KK q i).d n (n + 1) = 0`. Rewrite using `[Category.assoc, hm, comp_zero]`. Take `⟨b, hb⟩` from `(clD_ker hD q n i _ _ hc').1 h0`. Establish `ht : Sec.map ((KK q i).d (n - 1) n) (ev b) = ev ((free _).map (pushout.inr _ _) ≫ m)`. Rewrite using `[← ev_comp, hb]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `mem : ev ((free _).map (pushout.inl _ _) ≫ m) - ev ((free _).map (pushout.inr _ _) ≫ m) ∈ Cl.Zc (KK q i) U n`. Use `(Cl.mem_Zc _).2 ⟨by rw [sres_sub, res_pair hE m, sub_self], ?_⟩` and prove the remaining obligations. Simplify using `only [smap_sub, ← ev_comp, Category.assoc, hm, comp_zero, ev_zero hE, sub_zero]`. Set `a : Cl.Zc (KK q i) U n` to `⟨_, mem⟩`. Set `N` to `mk hP U (ev b) (ev b) rfl`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `N_l : ev ((free _).map (pushout.inl _ _) ≫ N) = ev b` using `mk_l hP U (ev b) (ev b) rfl`. Establish `N_r : ev ((free _).map (pushout.inr _ _) ≫ N) = ev b` using `mk_r hP U (ev b) (ev b) rfl`. Establish `hM : m = Mz hP q n i U a + N ≫ (KK q i).d (n - 1) n`. Apply `ext_ev hE hP` to reduce the goal to its premises. Rewrite using `[Preadditive.comp_add, (hE _ _ _).2.1, ← Category.assoc ((free _).map (pushout.inl _ _)) N, ev_comp ((free _).map (pushout.inl _ _) ≫ N), N_l, ht]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `Mz`. Rewrite using `[mk_l]`. Conclude with `(sub_add_cancel _ _).symm`. Rewrite using `[Preadditive.comp_add, (hE _ _ _).2.1, ← Category.assoc ((free _).map (pushout.inr _ _)) N, ev_comp ((free _).map (pushout.inr _ _) ≫ N), N_r, ht]`. Unfold `Mz`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mk_r, zero_add]`. Establish `hNc : (N ≫ (KK q i).d (n - 1) n) ≫ (KK q i).d n (n + 1) = 0`. Rewrite using `[Category.assoc, HomologicalComplex.d_comp_d, comp_zero]`. Establish `hN : clD hD q n i (Qp U) (N ≫ (KK q i).d (n - 1) n) = 0` using `(clD_ker hD q n i _ _ hNc).2 ⟨N, rfl⟩`. Use `⟨a, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show clsV hD hP hB q n i U a = x.1`. Unfold `clsV`. Establish `key : clD hD q n i (Qp U) (Mz hP q n i U a) = pull _ (eD hB U).hom (tw q i) n x.1`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[clD_add hD q n i _ _ _ (Mz_coc hE hP q n i a) hNc, hN, add_zero]`. Use `_ = clD hD q n i (Qp U) m := by rw [← hM]`. Use `_ = _ := hmx`. Rewrite using `[key, ← pull_comp, Iso.inv_hom_id, pull_id]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cls_surj {X : Scheme.{0}} (U : X.Opens) : Function.Surjective (cls hD hE hP hB q n i U) := by
   intro x
@@ -325,13 +323,13 @@ theorem cls_surj {X : Scheme.{0}} (U : X.Opens) : Function.Surjective (cls hD hE
   rw [key, ← pull_comp, Iso.inv_hom_id, pull_id]
 
 /- English proof (translation)
-Rewrite using `[Subtype.ext_iff]`. Express the relevant statement in the definitionally equal form `clsV hD hP hB q n i U a = 0 ↔ _`. Unfold `clsV`. Rewrite using `[pinv_eq_zero hB q n i U, clD_ker hD q n i _ _ (Mz_coc hE hP q n i a)]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨b, hb⟩`. Use `⟨ev ((free _).map (pushout.inl _ _) ≫ b) - ev ((free _).map (pushout.inr _ _) ≫ b), by rw [sres_sub, res_pair hE b, sub_self], ?_⟩` and prove the remaining obligations. Rewrite using `[smap_sub, ← ev_comp, ← ev_comp, Category.assoc, Category.assoc, hb]`. Unfold `Mz`. Rewrite using `[mk_l, mk_r, sub_zero]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨c, hc0, hc⟩`. Use `⟨mk hP U c 0 (by rw [hc0, sres_zero]), ?_⟩` and prove the remaining obligations. Apply `ext_ev hE hP` to reduce the goal to its premises. Rewrite using `[← Category.assoc, ev_comp, mk_l, hc]`. Unfold `Mz`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[mk_l]`. Rewrite using `[← Category.assoc, ev_comp, mk_r, smap_zero]`. Unfold `Mz`. Rewrite using `[mk_r]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem cls_ker {X : Scheme.{0}} (U : X.Opens) (a : Cl.Zc (KK q i) U n) :
     cls hD hE hP hB q n i U a = 0 ↔ Cl.Bd (KK q i) U n a.1 := by
@@ -352,13 +350,13 @@ theorem cls_ker {X : Scheme.{0}} (U : X.Opens) (a : Cl.Zc (KK q i) U n) :
     · rw [← Category.assoc, ev_comp, mk_r, smap_zero]; unfold Mz; rw [mk_r]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show pull _ (dbl.map (opnMap f U' U h)) (tw q i) n (clsV hD hP hB q n i U a) = clsV hD hP hB q n i U' a'`. Unfold `clsV`. Rewrite using `[← pull_comp]`. Establish `e1 : dbl.map (opnMap f U' U h) ≫ (eD hB U).inv = (eD hB U').inv ≫ disc.map (Qmap f U' U h)`.
+Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Iso.comp_inv_eq, Category.assoc, eD_n, Iso.inv_hom_id_assoc]`. Rewrite using `[e1, pull_comp]`. Use `erw [pull_cl hD q n i _ _ (Qmap f U' U h) _ (Mz_coc hE hP q n i a)]`. Establish `il : pushout.inl _ _ ≫ Qmap f U' U h = yoneda.map f ≫ pushout.inl _ _` using `pushout.inl_desc _ _ _`. Establish `ir : pushout.inr _ _ ≫ Qmap f U' U h = yoneda.map f ≫ pushout.inr _ _` using `pushout.inr_desc _ _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hm : (free _).map (Qmap f U' U h) ≫ Mz hP q n i U a = Mz hP q n i U' a'`. Apply `ext_ev hE hP` to reduce the goal to its premises. Rewrite using `[← Category.assoc, ← Functor.map_comp, il, Functor.map_comp, Category.assoc, (hE _ _ _).2.2]`. Unfold `Mz`. Rewrite using `[mk_l, mk_l, ha]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[← Category.assoc, ← Functor.map_comp, ir, Functor.map_comp, Category.assoc, (hE _ _ _).2.2]`. Unfold `Mz`. Rewrite using `[mk_r, mk_r, sres_zero]`. Rewrite using `[hm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cls_nat {X' X : Scheme.{0}} (f : X' ⟶ X) (U' : X'.Opens) (U : X.Opens) (h : U' ≤ f ⁻¹ᵁ U)
     (a : Cl.Zc (KK q i) U n) (a' : Cl.Zc (KK q i) U' n) (ha : a'.1 = Sec.res f a.1) :
@@ -384,7 +382,7 @@ theorem cls_nat {X' X : Scheme.{0}} (f : X' ⟶ X) (U' : X'.Opens) (U : X.Opens)
 end
 
 /- English proof (translation)
-Introduce `q n i` and use `⟨fun U => cls hD hE hP hB q n i U, fun U => cls_surj hD hE hP hB q n i U, fun U a => cls_ker hD hE hP hB q n i U a, fun f U' U h a a' ha => cls_nat hD hE hP hB q n i f U' U h a a' ha⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem LeafDict_of (hD : Cl.LeafDisc) (hE : LeafEv) (hP : LeafPair) (hB : LeafDbl) : Cl.LeafDict := fun q n i =>
   ⟨fun U => cls hD hE hP hB q n i U, fun U => cls_surj hD hE hP hB q n i U, fun U a => cls_ker hD hE hP hB q n i U a,

@@ -12,11 +12,11 @@ variable {Z₁ Z₂ : Matrix (Fin (r + 1)) (Fin (r + 1)) O}
 include hcj
 
 /- English proof (translation)
-Establish `hl : ∀ y : Fin (r + 1) → O, (Submodule.Quotient.mk (liftOf O p.1.1.toLinearMap y) : MbMod Z₂) = p.1.1.toLinearMap (Submodule.Quotient.mk y)` using `fun y => liftOf_spec O _ y`. Establish `hr : ∀ y : Fin (r + 1) → O, (Submodule.Quotient.mk (liftOf O p.1.2.toLinearMap y) : MbMod (cjT O cj hO Z₂)) = p.1.2.toLinearMap (Submodule.Quotient.mk y)` using `fun y => liftOf_spec O _ y`. Establish `hb : ∀ y y' : Fin (r + 1) → O, bRaw O cj Z₂ (liftOf O p.1.1.toLinearMap y) (liftOf O p.1.2.toLinearMap y') - bRaw O cj Z₁ y y' ∈ O` using `fun y y' => p.2.2.2 y y' _ _ (hl y).symm (hr y').symm`. Establish `hL : ∀ y : Fin (r + 1) → O, lamC (Z₂.map O.subtype) (fun j => ((liftOf O p.1.1.toLinearMap y j : O) : E)) = lamC (Z₁.map O.subtype) (fun j => ((y j : O) : E))`. Introduce `y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key` using `lam_keep O hu₁ hu₂ p.1.1.toLinearMap p.2.1.1 y _ (hl y).symm`. Simplify `key` using `[lamL_apply]`. Establish `hS : ∀ y : Fin (r + 1) → O, lamStarC cj (Z₂.map O.subtype) (fun j => ((liftOf O p.1.2.toLinearMap y j : O) : E)) = lamStarC cj (Z₁.map O.subtype) (fun j => ((y j : O) : E))` using `fun y => p.2.2.1 y _ (hr y).symm`. Rewrite using `[formC_eq O cj hcj Z₂ hu₂ hκ₂ _ _ hG₂, formC_eq O cj hcj Z₁ hu₁ hκ₁ _ _ hG₁]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hL, hL, hS, hS]`. Establish `key` using `O.add_mem (hb (fun j => Y (Sum.inl j)) (fun j => W (Sum.inr j))) (hO _ (hb (fun j => W (Sum.inl j)) (fun j => Y (Sum.inr j))))`. Rewrite `key` using `[map_sub]`. Use `key using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem form_pair (ht : cj (t : E) = t) (ht' : cj (t' : E) = t')
     (hu₁ : IsUnit (Z₁.map O.subtype).det) (hu₂ : IsUnit (Z₂.map O.subtype).det)

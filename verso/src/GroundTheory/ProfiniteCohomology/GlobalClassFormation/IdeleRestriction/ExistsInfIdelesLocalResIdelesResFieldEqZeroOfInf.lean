@@ -45,13 +45,13 @@ variable {K E : FiniteSubfield} [Fact (K ≤ E)]
 include hι hf in
 
 /- English proof (translation)
-Establish `h : idelesResField K E n ≫ cohomologyMapAlong (globalDecomp Ew ιE) (continuous_globalDecomp Ew ιE) fE n = cohomologyMapAlong (globalDecomp Kv ιK) (continuous_globalDecomp Kv ιK) fK n ≫ unitsScalarsRes Kv Ωv L n ≫ cohomologyMapAlong (fieldConjHom Kv L e hL) (continuous_fieldConjHo …`. Rewrite using `[idelesResField, unitsScalarsRes, ← cohomologyMapAlong_comp, ← cohomologyMapAlong_comp, ← cohomologyMapAlong_comp]`. Use `cohomologyMapAlong_congr _ _ _ _ (MonoidHom.ext fun σ => ?_) (fun (a : Additive IdeleLimit) => ?_) n` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Apply `AlgEquiv.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `t`. Apply `ιK.injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `ιK ((globalDecomp Ew ιE σ : ℚ̄ ≃ₐ[ℚ] ℚ̄) t) = ιK ((globalDecomp Kv ιK (AlgEquiv.restrictScalarsHom Kv (fieldConjHom Kv L e hL σ)) : ℚ̄ ≃ₐ[ℚ] ℚ̄) t)`. Rewrite using `[globalDecomp_apply, ← hι, ← hι, globalDecomp_apply]`. Express the relevant statement in the definitionally equal form `e (σ (ιE t)) = e (σ (e.symm (e (ιE t))))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[RingEquiv.symm_apply_apply]`. Apply `Additive.toMul.injective` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `((Additive.toMul (fE.hom (Additive.ofMul a.toMul)) : Ωwˣ) : Ωw) = e.symm ((Additive.toMul (fK.hom (Additive.ofMul a.toMul)) : Ωvˣ) : Ωv)`. Rewrite using `[← hf, RingEquiv.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (fun φ => φ.hom y) h`.
+A detailed English derivation is pending.
 -/
 theorem cohomologyMapAlong_globalDecomp_idelesResField (n : ℕ) (y : cohomology (limitRep K) n) :
     (cohomologyMapAlong (globalDecomp Ew ιE) (continuous_globalDecomp Ew ιE) fE n).hom
@@ -95,13 +95,11 @@ variable {v : HeightOneSpectrum (𝓞 K.1)}
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Take `⟨F, x, rfl⟩` from `exists_of z`. Rewrite using `[← of_ideleMap (le_joinField_right E F) x]`. Generalize the expression as in `ideleMap (le_joinField_right E F) x = x'`. Establish `: Fact (K ≤ joinField E F)` using `⟨(Fact.out : K ≤ E).trans (le_joinField_left E F)⟩`. Rewrite using `[coe_idelesProj_of ιE (joinField E F), coe_idelesProj_of ι (joinField E F)]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set u := placeOfEmbedding ιE (joinField E F)`. Establish `hu : u.1.asIdeal.LiesOver v.asIdeal` using `Ideal.LiesOver.trans u.1.asIdeal w.1.asIdeal v.asIdeal`. Set `j : u.1.adicCompletion (joinField E F).1 →ₐ[v.adicCompletion K.1] AlgebraicClosure (v.adicCompletion K.1)` to `{ e.toRingHom.comp (completionEmbedding ιE (joinField E F)).toRingHom with commutes' := fun a => by`. Express the relevant statement in the definitionally equal form `e (completionEmbedding ιE (joinField E F) (completionMap v u.1 a)) = _`. Rewrite using `[← AdeleBaseChange.completionMap_completionMap v w.1 u.1 a]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `e (completionEmbedding ιE (joinField E F) (algebraMap (w.1.adicCompletion E.1) _ (completionMap v w.1 a))) = _`. Rewrite using `[AlgHom.commutes]`. Conclude with `he a }`. Establish `hj : ∀ t : (joinField E F).1, j (algebraMap _ _ t) = ι t` using `fun t => by`. Express the relevant statement in the definitionally equal form `e (completionEmbedding ιE (joinField E F) (algebraMap _ _ t)) = ι t`.
-
-Rewrite using `[completionEmbedding_algebraMap, hι]`. Conclude with `completionEmbedding_eq_of_algebraMap ι (joinField E F) ⟨u.1, hu⟩ j hj (x' : 𝔸[(joinField E F).1])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idelesProj_eq_of_algebraMap (w : PlacesOver E.1 v) (ι : ℚ̄ →ₐ[K.1] AlgebraicClosure (v.adicCompletion K.1))
     (ιE : ℚ̄ →ₐ[E.1] AlgebraicClosure (w.1.adicCompletion E.1))
@@ -143,15 +141,13 @@ variable {v : InfinitePlace K.1}
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Take `⟨F, x, rfl⟩` from `exists_of z`. Rewrite using `[← of_ideleMap (le_joinField_right E F) x]`. Generalize the expression as in `ideleMap (le_joinField_right E F) x = x'`. Establish `: Fact (K ≤ joinField E F)` using `⟨(Fact.out : K ≤ E).trans (le_joinField_left E F)⟩`. Rewrite using `[coe_infIdelesProj_of ιE (joinField E F), coe_infIdelesProj_of ι (joinField E F)]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set u := infPlaceOfEmbedding ιE (joinField E F)`. Establish `hw : (w : InfinitePlace E.1).LiesOver v` using `w.2`. Establish `huw : (u : InfinitePlace (joinField E F).1).LiesOver (w : InfinitePlace E.1)` using `u.2`. Establish `hu : (u : InfinitePlace (joinField E F).1).LiesOver v`. Rewrite using `[GroundTheory.Global.InfinitePlace.liesOver_iff_comap_eq, IsScalarTower.algebraMap_eq K.1 E.1 (joinField E F).1, NumberField.InfinitePlace.comap_comp, InfinitePlace.LiesOver.comap_eq (u : InfinitePlace (joinField E F).1) (w : InfinitePlace E.1), ← GroundTheory.Global.InfinitePlac …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `hw`. Set `j : (u : InfinitePlace (joinField E F).1).Completion →ₐ[v.Completion] AlgebraicClosure v.Completion` to `{ e.toRingHom.comp (infCompletionEmbedding ιE (joinField E F)).toRingHom with commutes' := fun a => by`. Express the relevant statement in the definitionally equal form `e (infCompletionEmbedding ιE (joinField E F) (algebraMap v.Completion _ a)) = _`. Rewrite using `[← completionMap_algebraMap_completion (F := E) (E := joinField E F) (w : InfinitePlace E.1) (u : InfinitePlace (joinField E F).1) a]`. Express the relevant statement in the definitionally equal form `e (infCompletionEmbedding ιE (joinField E F) (algebraMap (w : InfinitePlace E.1).Completion _ (algebraMap v.Completion _ a))) = _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[AlgHom.commutes]`. Conclude with `he a }`. Establish `hj : ∀ t : (joinField E F).1, j (algebraMap _ _ t) = ι t` using `fun t => by`. Express the relevant statement in the definitionally equal form `e (infCompletionEmbedding ιE (joinField E F) (algebraMap _ _ t)) = ι t`. Rewrite using `[infCompletionEmbedding_algebraMap, hι]`.
-
-Conclude with `infCompletionEmbedding_eq_of_algebraMap ι (joinField E F) ⟨_, hu⟩ j hj (x' : 𝔸[(joinField E F).1])`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem infIdelesProj_eq_of_algebraMap (w : v.placesOver E.1) (ι : ℚ̄ →ₐ[K.1] AlgebraicClosure v.Completion)
     (ιE : ℚ̄ →ₐ[E.1] AlgebraicClosure (w : InfinitePlace E.1).Completion)
@@ -199,17 +195,17 @@ set_option maxHeartbeats 4000000 in
 variable (v) in
 
 /- English proof (translation)
-Use `finiteDimensional_adicCompletion_placesOver (E := E) (placeOfEmbedding ι E)` as an intermediate fact. Set `c` to `completionEmbedding ι E`. Set `L` to `c.fieldRange`. Set `: Algebra ((placeOfEmbedding ι E).1.adicCompletion E.1) (AlgebraicClosure (v.adicCompletion K.1))` to `c.toRingHom.toAlgebra`. Establish `: IsScalarTower (v.adicCompletion K.1) ((placeOfEmbedding ι E).1.adicCompletion E.1) (AlgebraicClosure (v.adicCompletion K.1))` using `IsScalarTower.of_algebraMap_eq fun a => (c.commutes a).symm`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: Algebra.IsAlgebraic ((placeOfEmbedding ι E).1.adicCompletion E.1) (AlgebraicClosure (v.adicCompletion K.1))` using `Algebra.IsAlgebraic.tower_top (K := v.adicCompletion K.1) _`. Establish `: IsAlgClosure ((placeOfEmbedding ι E).1.adicCompletion E.1) (AlgebraicClosure (v.adicCompletion K.1))` using `⟨inferInstance, inferInstance⟩`. Set `θ : AlgebraicClosure ((placeOfEmbedding ι E).1.adicCompletion E.1) ≃ₐ[(placeOfEmbedding ι E).1.adicCompletion E.1] AlgebraicClosure (v.adicCompletion K.1)` to `IsAlgClosure.equiv _ _ _`. Set `: Algebra E.1 (AlgebraicClosure (v.adicCompletion K.1))` to `((algebraMap ((placeOfEmbedding ι E).1.adicCompletion E.1) (AlgebraicClosure (v.adicCompletion K.1))).comp (algebraMap E.1 ((placeOfEmbedding ι E).1.adicCompletion E.1))).toAlgebra`. Establish `: IsScalarTower E.1 ((placeOfEmbedding ι E).1.adicCompletion E.1) (AlgebraicClosure (v.adicCompletion K.1))` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ιE' : ℚ̄ →ₐ[E.1] AlgebraicClosure (v.adicCompletion K.1)` to `{ ι.toRingHom with commutes' := fun t => (completionEmbedding_algebraMap ι E t).symm }`. Set `ιE : ℚ̄ →ₐ[E.1] AlgebraicClosure ((placeOfEmbedding ι E).1.adicCompletion E.1)` to `(θ.symm.toAlgHom.restrictScalars E.1).comp ιE'`. Establish `hι : ∀ t, θ.toRingEquiv (ιE t) = ι t` using `fun t => θ.apply_symm_apply (ι t)`. Establish `hL : ∀ l ∈ L, ∃ t : (placeOfEmbedding ι E).1.adicCompletion E.1, θ.toRingEquiv (algebraMap _ (AlgebraicClosure ((placeOfEmbedding ι E).1.adicCompletion E.1)) t) = l`. Introduce `l hl`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨t, rfl⟩` from `(AlgHom.mem_fieldRange).1 hl`. Conclude with `⟨t, θ.commutes t⟩`. Establish `: FiniteDimensional (v.adicCompletion K.1) L` using `LinearEquiv.finiteDimensional c.equivFieldRange.toLinearEquiv`. Establish `: Algebra.IsIntegral L (AlgebraicClosure (v.adicCompletion K.1))` using `Algebra.IsIntegral.tower_top (v.adicCompletion K.1)`. Establish `hfin : Module.finrank (v.adicCompletion K.1) L = Module.finrank (v.adicCompletion K.1) ((placeOfEmbedding ι E).1.adicCompletion E.1)` using `c.equivFieldRange.toLinearEquiv.finrank_eq.symm`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hproj : ∀ z : IdeleLimit, θ.toRingEquiv (idelesProj ιE z : AlgebraicClosure _) = (idelesProj ι z : AlgebraicClosure (v.adicCompletion K.1))` using `idelesProj_eq_of_algebraMap (placeOfEmbedding ι E) ι ιE θ.toRingEquiv hι fun a => by`. Express the relevant statement in the definitionally equal form `θ (algebraMap _ (AlgebraicClosure ((placeOfEmbedding ι E).1.adicCompletion E.1)) (algebraMap (v.adicCompletion K.1) _ a)) = _`. Rewrite using `[θ.commutes]`. Conclude with `c.commutes a`. Establish `h0 : (unitsScalarsRes (v.adicCompletion K.1) (AlgebraicClosure (v.adicCompletion K.1)) L 2).hom ((idelesLocalRes ι 2).hom y) = 0` using `brauerResZ_eq_zero_of_finrank_smul (v.adicCompletion K.1) (AlgebraicClosure (v.adicCompletion K.1)) L _ (by rw [hfin]; exact hy)`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨ιE, ?_⟩` and prove the remaining obligations. Establish `key` using `cohomologyMapAlong_globalDecomp_idelesResField (v.adicCompletion K.1) ((placeOfEmbedding ι E).1.adicCompletion E.1) L θ.toRingEquiv hL ι ιE hι (idelesLocalMor ι) (idelesLocalMor ιE) hproj 2 y`. Rewrite using `[idelesLocalRes, key]`. Express the relevant statement in the definitionally equal form `(cohomologyMapAlong _ _ _ 2).hom ((unitsScalarsRes (v.adicCompletion K.1) (AlgebraicClosure (v.adicCompletion K.1)) L 2).hom ((idelesLocalRes ι 2).hom y)) = 0`. Rewrite using `[h0, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_idelesLocalRes_idelesResField_eq_zero_of_placeOfEmbedding (v : HeightOneSpectrum (𝓞 K.1))
     (ι : ℚ̄ →ₐ[K.1] AlgebraicClosure (v.adicCompletion K.1)) (y : cohomology (limitRep K) 2)
@@ -277,17 +273,17 @@ theorem exists_idelesLocalRes_idelesResField_eq_zero_of_placeOfEmbedding (v : He
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Establish `: (infPlaceOfEmbedding ι E : InfinitePlace E.1).LiesOver v` using `(infPlaceOfEmbedding ι E).2`. Set `c` to `infCompletionEmbedding ι E`. Set `L` to `c.fieldRange`. Set `: Algebra (infPlaceOfEmbedding ι E : InfinitePlace E.1).Completion (AlgebraicClosure v.Completion)` to `c.toRingHom.toAlgebra`. Establish `: IsScalarTower v.Completion (infPlaceOfEmbedding ι E : InfinitePlace E.1).Completion (AlgebraicClosure v.Completion)` using `IsScalarTower.of_algebraMap_eq fun a => (c.commutes a).symm`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: Algebra.IsAlgebraic (infPlaceOfEmbedding ι E : InfinitePlace E.1).Completion (AlgebraicClosure v.Completion)` using `Algebra.IsAlgebraic.tower_top (K := v.Completion) _`. Establish `: IsAlgClosure (infPlaceOfEmbedding ι E : InfinitePlace E.1).Completion (AlgebraicClosure v.Completion)` using `⟨inferInstance, inferInstance⟩`. Set `θ : AlgebraicClosure (infPlaceOfEmbedding ι E : InfinitePlace E.1).Completion ≃ₐ[(infPlaceOfEmbedding ι E : InfinitePlace E.1).Completion] AlgebraicClosure v.Completion` to `IsAlgClosure.equiv _ _ _`. Set `: Algebra E.1 (AlgebraicClosure v.Completion)` to `((algebraMap (infPlaceOfEmbedding ι E : InfinitePlace E.1).Completion (AlgebraicClosure v.Completion)).comp (algebraMap E.1 (infPlaceOfEmbedding ι E : InfinitePlace E.1).Completion)).toAlgebra`. Establish `: IsScalarTower E.1 (infPlaceOfEmbedding ι E : InfinitePlace E.1).Completion (AlgebraicClosure v.Completion)` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ιE' : ℚ̄ →ₐ[E.1] AlgebraicClosure v.Completion` to `{ ι.toRingHom with commutes' := fun t => (infCompletionEmbedding_algebraMap ι E t).symm }`. Set `ιE : ℚ̄ →ₐ[E.1] AlgebraicClosure (infPlaceOfEmbedding ι E : InfinitePlace E.1).Completion` to `(θ.symm.toAlgHom.restrictScalars E.1).comp ιE'`. Establish `hι : ∀ t, θ.toRingEquiv (ιE t) = ι t` using `fun t => θ.apply_symm_apply (ι t)`. Establish `hL : ∀ l ∈ L, ∃ t : (infPlaceOfEmbedding ι E : InfinitePlace E.1).Completion, θ.toRingEquiv (algebraMap _ (AlgebraicClosure (infPlaceOfEmbedding ι E : InfinitePlace E.1).Completion) t) = l`. Introduce `l hl`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨t, rfl⟩` from `(AlgHom.mem_fieldRange).1 hl`. Conclude with `⟨t, θ.commutes t⟩`. Establish `: Algebra.IsIntegral L (AlgebraicClosure v.Completion)` using `Algebra.IsIntegral.tower_top v.Completion`. Establish `hproj : ∀ z : IdeleLimit, θ.toRingEquiv (infIdelesProj ιE z : AlgebraicClosure _) = (infIdelesProj ι z : AlgebraicClosure v.Completion)` using `infIdelesProj_eq_of_algebraMap (infPlaceOfEmbedding ι E) ι ιE θ.toRingEquiv hι fun a => by`. Express the relevant statement in the definitionally equal form `θ (algebraMap _ (AlgebraicClosure (infPlaceOfEmbedding ι E : InfinitePlace E.1).Completion) (algebraMap v.Completion _ a)) = _`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[θ.commutes]`. Conclude with `c.commutes a`. Use `⟨ιE, ?_⟩` and prove the remaining obligations. Establish `key` using `cohomologyMapAlong_globalDecomp_idelesResField v.Completion (infPlaceOfEmbedding ι E : InfinitePlace E.1).Completion L θ.toRingEquiv hL ι ιE hι (infIdelesLocalMor ι) (infIdelesLocalMor ιE) hproj 2 y`. Rewrite using `[infIdelesLocalRes, key]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(cohomologyMapAlong _ _ _ 2).hom ((unitsScalarsRes v.Completion (AlgebraicClosure v.Completion) L 2).hom ((infIdelesLocalRes ι 2).hom y)) = 0`. Rewrite using `[hy, map_zero, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_infIdelesLocalRes_idelesResField_eq_zero_of_infPlaceOfEmbedding {v : InfinitePlace K.1}
     (ι : ℚ̄ →ₐ[K.1] AlgebraicClosure v.Completion) (y : cohomology (limitRep K) 2)
@@ -347,19 +343,17 @@ section Main
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Establish `Hfin : ∀ w : HeightOneSpectrum (𝓞 E.1), ∃ ιE : ℚ̄ →ₐ[E.1] AlgebraicClosure (w.adicCompletion E.1), (idelesLocalRes ιE 2).hom ((idelesResField K E 2).hom y) = 0`. Introduce `w`. Set `v : HeightOneSpectrum (𝓞 K.1)` to `AdeleBaseChange.below K.1 w`. Set `w' : PlacesOver E.1 v` to `⟨w, AdeleBaseChange.liesOver_below w⟩`. Take `⟨ι', hι'⟩` from `exists_placeOfEmbedding_eq w'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Establish `key : ∀ u : PlacesOver E.1 v, placeOfEmbedding ι' E = u → ∃ ιE : ℚ̄ →ₐ[E.1] AlgebraicClosure (u.1.adicCompletion E.1), (idelesLocalRes ιE 2).hom ((idelesResField K E 2).hom y) = 0`. Introduce and unpack `u rfl`. Apply `exists_idelesLocalRes_idelesResField_eq_zero_of_placeOfEmbedding v ι' y` to reduce the goal to its premises. Rewrite using `[idelesLocalRes_eq_of_algHom (ι.fin v) ι' 2, ← idelesLimitCohomologyEquiv_apply_inr ι (by norm_num) v y]`. Conclude with `hfin v (placeOfEmbedding ι' E)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `key w' hι'`. Establish `Hinf : ∀ w : InfinitePlace E.1, ∃ ιE : ℚ̄ →ₐ[E.1] AlgebraicClosure w.Completion, (infIdelesLocalRes ιE 2).hom ((idelesResField K E 2).hom y) = 0`. Introduce `w`. Set `v : InfinitePlace K.1` to `w.comap (algebraMap K.1 E.1)`. Set `w' : v.placesOver E.1` to `⟨w, ⟨rfl⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨ι', hι'⟩` from `exists_infPlaceOfEmbedding_eq w'`. Establish `key : ∀ u : v.placesOver E.1, infPlaceOfEmbedding ι' E = u → ∃ ιE : ℚ̄ →ₐ[E.1] AlgebraicClosure (u : InfinitePlace E.1).Completion, (infIdelesLocalRes ιE 2).hom ((idelesResField K E 2).hom y) = 0`. Introduce and unpack `u rfl`. Apply `exists_infIdelesLocalRes_idelesResField_eq_zero_of_infPlaceOfEmbedding ι' y` to reduce the goal to its premises. Rewrite using `[infIdelesLocalRes_eq_of_algHom (ι.inf v) ι' 2, ← idelesLimitCohomologyEquiv_apply_inl ι (by norm_num) v y]`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `hinf v`. Conclude with `key w' hι'`. Set `ιE : LocalEmbeddings E` to `⟨fun w => (Hfin w).choose, fun w => (Hinf w).choose⟩`. Apply `(idelesLimitCohomologyEquiv ιE (n := 2) (by norm_num)).injective` to reduce the goal to its premises. Rewrite using `[map_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Use `DFinsupp.ext fun u => ?_` and prove the remaining obligations. Rewrite using `[DirectSum.zero_apply]`. Break down `u with w | w` into its components or cases. Rewrite using `[idelesLimitCohomologyEquiv_apply_inl]`. Conclude with `(Hinf w).choose_spec`.
-
-Rewrite using `[idelesLimitCohomologyEquiv_apply_inr]`. Conclude with `(Hfin w).choose_spec`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idelesResField_eq_zero (ι : LocalEmbeddings K) (y : cohomology (limitRep K) 2)
     (hinf : ∀ v : InfinitePlace K.1, idelesLimitCohomologyEquiv ι (by norm_num) y (.inl v) = 0)

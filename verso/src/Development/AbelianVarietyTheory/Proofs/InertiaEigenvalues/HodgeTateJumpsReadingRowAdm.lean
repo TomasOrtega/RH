@@ -13,13 +13,13 @@ namespace GlobalTheory.AdmReadBridge
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D i r hr w hw C τ`. Establish `hτ : ∀ x : D.host.E, AdmissibleParameterJ.gEmb C τ x = ((τ (Br.cEw D.nbr i w hw x) : ↥C.LL.1) : Om (D.nd.l i))` using `fun x => rfl`. Establish `emb` using `GlobalTheory.LocalEmbedding.inducesW_and_exists_emb D i w hw C.LL τ (AdmissibleParameterJ.gEmb C τ) hτ`. Use `⟨emb.1, emb.2, ?_⟩` and prove the remaining obligations. Introduce `x dr dχ c hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hχ : ∀ g, ((PairedCharacterCondition.chiGL i g : GL (Fin 1) (D.nd.O i)) : Matrix (Fin 1) (Fin 1) (D.nd.O i)) 0 0 = ((D.nd.chi i 1 g : (D.nd.O i)ˣ) : D.nd.O i)`. Introduce `g`. Simplify using `[PairedCharacterCondition.chiGL]`. Establish `tw` using `GlobalTheory.TwistRead.twist_dual_mult D i w hw (D.locT _) C.LL C.le τ (AdmissibleParameterJ.gEmb C τ) hτ r x (PairedCharacterCondition.chiGL i) c ((hr x).1) hχ dr dχ hc`. Establish `jm : ∀ {k : ℕ} (M : GE D.nd →* Matrix (Fin k) (Fin k) (D.nd.O i)) (a : ℤ), (IsJumpV (Br.PD D.loc D.nbr i w hw) (matRep (TruncatedSeriesCountingIdentities.locC C M)) τ a ↔ multV (Br.PD D.loc D.nbr i w hw) (matRep (TruncatedSeriesCountingIdentities.locC C M)) τ a ≠ 0)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `k M a`. Conclude with `(GlobalTheory.Per.JumpMult.jump_iff_mult_ne_zero (D.nd.l i) (D.loc (D.nd.l i)) (D.locA (D.nd.l i)) (D.locT _) (D.nbr i w hw).Kw C.LL (Fin k → ↥C.LL.1) (matRep (TruncatedSeriesCountingIdentities.locC C M)) τ a).2.2`. Use `⟨fun a => ⟨(tw.2.2 a).1, ?_⟩, fun M _ a => jm M a, ?_⟩` and prove the remaining obligations. Establish `h` using `(tw.2.2 a).2`. Rewrite `h` using `[show c - a - 1 = c - 1 - a by ring]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h`. Introduce `ρπ _ hd a`. Establish `hd'` using `(GlobalTheory.T.admDecomp_iff_decomp D i r ρπ x).1 hd`. Establish `hw'` using `((GlobalTheory.SummandJumps.main D i w hw (D.locT _) C.LL C.le r ρπ x hd').2 tw.1).2.2 τ a`. Conclude with `⟨hw'.1, hw'.2, jm _ a, jm _ a⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem main : ∀ D : D7, AdmissibleParameterJ.AdmRead D := by
   intro D i r hr w hw C τ

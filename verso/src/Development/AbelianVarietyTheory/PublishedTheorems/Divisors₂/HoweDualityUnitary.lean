@@ -26,7 +26,7 @@ def IsBigTheta (om : G × H →* Module.End ℂ (Y → ℂ)) (π : Representatio
   IsPairHom om π Θ p ∧ Function.Surjective p ∧ ∀ φ, p φ = 0 ↔ ∀ f, IsLeftHom om π f → f φ = 0
 
 /- English proof (translation)
-Establish `e : ∀ (x : G × H) (φ φ₁ : SB Y), (φ₁ : Y → ℂ) = (1 : G × H →* Module.End ℂ (Y → ℂ)) x φ → φ₁ = φ` using `fun _ _ _ h => Subtype.ext h`. Use `⟨fun g h φ φ₁ hφ => by simp [e _ _ _ hφ], (TensorProduct.lid ℂ (SB Y)).symm.surjective, fun φ => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearEquiv.coe_coe, LinearEquiv.map_eq_zero_iff]`. Conclude with `⟨fun h f _ => by rw [h, map_zero], fun h => (Module.forall_dual_apply_eq_zero_iff ℂ φ).1 fun f => h f fun g φ φ₁ hφ => by simp [e _ _ _ hφ]⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 example : IsBigTheta (1 : G × H →* Module.End ℂ (Y → ℂ)) (Representation.trivial ℂ G ℂ) (Representation.trivial ℂ H (SB Y))
     (TensorProduct.lid ℂ (SB Y)).symm.toLinearMap := by

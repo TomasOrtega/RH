@@ -35,14 +35,14 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
 include hp hW hL
 
 /- English proof (translation)
-The claim follows from `LatChart.isTr_tr (LatChart.existsUnique_isTr E H Dw Xo p W hp hW Y i₀ Z B L hL.1 q q' e).exists`.
+A detailed English derivation is pending.
 -/
 theorem HasLatFlags.isTr_tr (q q' : LatChart Z L) (e : ∀ σ : E →+* ℂ, Fin (Dw.mult σ) → ℤ) :
     q.IsTr q' e (q.tr q' e).val :=
   LatChart.isTr_tr (LatChart.existsUnique_isTr E H Dw Xo p W hp hW Y i₀ Z B L hL.1 q q' e).exists
 
 /- English proof (translation)
-The claim follows from `(LatGr.isLB_latLB_and_tr_add E H Dw Xo p W hp hW Y i₀ Z B L hL fun q q' e => ⟨_, hL.isTr_tr hp hW q q' e⟩).1 e`.
+A detailed English derivation is pending.
 -/
 theorem HasLatFlags.isLB (e : ∀ σ : E →+* ℂ, Fin (Dw.mult σ) → ℤ) : (latLB Z L e).IsLB :=
   (LatGr.isLB_latLB_and_tr_add E H Dw Xo p W hp hW Y i₀ Z B L hL fun q q' e => ⟨_, hL.isTr_tr hp hW q q' e⟩).1 e
@@ -67,7 +67,7 @@ theorem HasLatFlags.degHom_apply {k : Type} [Field k] (c : Curve k Z.X) (e : ∀
 omit hL in
 
 /- English proof (translation)
-The claim follows from `LatCover.hasLatFlags_of_allSteps E H Dw Xo p W hp hW Y i₀ Z' Z L (fun σ => by rw [h.2.1, hty, stepTy_allSteps, Finset.empty_union]) h.2.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem IsFlagCl.hasLatFlags {Z' : Mdl Y i₀} {L : Lat Z} (h : IsFlagCl Z (allSteps L) Z') (hty : ∀ σ, Z.ty σ = ∅) :
     HasLatFlags Z' L :=
@@ -89,9 +89,9 @@ abbrev htLat (Z : ct.Mdl) : Lat Z := FlagFam.lat (htFam ct Z)
 variable {ct} {Z : ct.Mdl} {n : ℕ}
 
 /- English proof (translation)
-Take `⟨h, H'⟩` from `(isHTBlowup_iff ct).1 H`. Establish `e : Z.ty = (ct.Xn n).ty`. Rewrite using `[H'.2.2]`. Distinguish the cases in `h' : ∃ Z', IsNBlow (ct.Xn n) (htIdl ct h) Z'`. Conclude with `(blowUp_spec h').2.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (·.ty) (dif_neg h' : blowUp (ct.Xn n) (htIdl ct h) = ct.Xn n)`. Rewrite using `[e]`. Conclude with `ct.B.ty (some n) σ`.
+A detailed English derivation is pending.
 -/
 theorem IsHTBlowup.ty_eq (H : IsHTBlowup ct Z (ct.Xn n)) (σ : D.host.E →+* ℂ) : Z.ty σ = ∅ := by
   obtain ⟨h, H'⟩ := (isHTBlowup_iff ct).1 H
@@ -104,7 +104,7 @@ theorem IsHTBlowup.ty_eq (H : IsHTBlowup ct Z (ct.Xn n)) (σ : D.host.E →+* �
   exact ct.B.ty (some n) σ
 
 /- English proof (translation)
-Establish `e : htFam ct Z = FlagFam.full h.choose (.inr h.choose_spec)` using `dif_pos h`. Rewrite using `[htLat, e, FlagFam.lat_full]`. Conclude with `⟨h.choose_spec, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem htFam_spec (h : ∃ L : Lat Z, IsHTLatOf (htmTrue ct) Z L) :
     IsHTLatOf (htmTrue ct) Z (htLat ct Z) ∧ (htFam ct Z).1 = allSteps (htLat ct Z) := by
@@ -113,7 +113,7 @@ theorem htFam_spec (h : ∃ L : Lat Z, IsHTLatOf (htmTrue ct) Z L) :
   exact ⟨h.choose_spec, rfl⟩
 
 /- English proof (translation)
-Take `⟨n, H⟩` from `(isHTLatOf_iff.1 h.choose_spec).1`. Establish `h₁ : IsFlagCl Z (htFam ct Z).1 (flagMdl ct Z)` using `isFlagCl_flgTrue ct Z (htFam ct Z)`. Conclude with `IsFlagCl.hasLatFlags ct.hp ct.hW ((htFam_spec h).2 ▸ h₁) H.ty_eq`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasLatFlags (h : ∃ L : Lat Z, IsHTLatOf (htmTrue ct) Z L) : HasLatFlags (flagMdl ct Z) (htLat ct Z) := by
   obtain ⟨n, H⟩ := (isHTLatOf_iff.1 h.choose_spec).1
@@ -125,7 +125,7 @@ variable (ct Z) in
 def wtLB (l : PsiT D → ℕ → ℤ) : LB (flagMdl ct Z).X := latLB (flagMdl ct Z) (htLat ct Z) (ct.expo l)
 
 /- English proof (translation)
-Rewrite using `[wtLB, Curve.degLat]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem degOf_wtLB {k : Type} [Field k] (c : Curve k (flagMdl ct Z).X) (l : PsiT D → ℕ → ℤ) :
     c.degOf (wtLB ct Z l) = c.degLat (htLat ct Z) (ct.expo l) := by rw [wtLB, Curve.degLat]
@@ -141,9 +141,9 @@ end HTm
 namespace At
 
 /- English proof (translation)
-Establish `k (P : Submodule ct.kbar ct.LaBar) : Module.finrank ct.kbar (P.submoduleOf (ct.eigBar τ)) = Module.finrank ct.kbar ↥(P ⊓ ct.eigBar τ)`. Rewrite using `[← Submodule.finrank_map_subtype_eq, Submodule.submoduleOf, Submodule.map_comap_subtype, inf_comm]`. Rewrite using `[k, k]`. Use `And.imp_right (fun h => Eq.trans h (finrank_eigBar D A N j S κ p ct τ)) ?_` and prove the remaining obligations. Take `⟨ε, hε0, hεe, hE⟩` from `RedEig.exists_eigBar_eq_range D A N j S κ p ct τ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨M', n₀, hc, hM, hM', hsp, hinj⟩` from `LineSummand.sum1_bar_line D A N j S κ p ct l`. Take `⟨hbb, hadj, hnd⟩` from `RedForm.psiBar_props D A N j S κ p ct`. Rewrite using `[hE]`. Conclude with `@EigenLine.line_hyperplane_cut ct.kbar _ (𝓞 D.host.E) _ ct.LaBar _ _ inferInstance (baseChangeAction ct.kbar (Module.toModuleEnd ℤ S.Dw.La : 𝓞 D.host.E →+* Module.End ℤ S.Dw.La)) (A.H.bar : 𝓞 D.host.E →+* 𝓞 D.host.E) ct.psiBar (ct.ρ₀.comp (embV κ.c ct.W (embOf D τ))) ε l.bar M' n …`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_line_hyperplane (l : ct.Sum1) (τ : PsiT D) :
     Module.finrank ct.kbar (l.bar.submoduleOf (ct.eigBar τ)) = 1 ∧
@@ -165,20 +165,20 @@ theorem finrank_line_hyperplane (l : ct.Sum1) (τ : PsiT D) :
 end At
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨ct.nonempty_spPt _, ct.nonempty_curve _, inferInstanceAs (Nonempty ct.FlP), nonempty_sum1 D A N j S κ p ct⟩`.
+Supply the required witnesses or components.
 -/
 example (Z : ct.Mdl) : Nonempty ((crhTrue ct).YsP Z) ∧ Nonempty ((crhTrue ct).CrvS Z) ∧ Nonempty (crhTrue ct).FlP ∧
     Nonempty (crhTrue ct).Sum1 :=
   ⟨ct.nonempty_spPt _, ct.nonempty_curve _, inferInstanceAs (Nonempty ct.FlP), nonempty_sum1 D A N j S κ p ct⟩
 
 /- English proof (translation)
-The claim follows from `IsFlagCl.hasLatFlags ct.hp ct.hW (ct.flagCl_allSteps ▸ isFlagCl_flgTrue ct ct.Xm (flgTrue ct).allFlags) (ct.B.ty none)`.
+A detailed English derivation is pending.
 -/
 example : HasLatFlags ct.YY (Lat.top ct.Xm) :=
   IsFlagCl.hasLatFlags ct.hp ct.hW (ct.flagCl_allSteps ▸ isFlagCl_flgTrue ct ct.Xm (flgTrue ct).allFlags) (ct.B.ty none)
 
 /- English proof (translation)
-The claim follows from `have ⟨x⟩ := ct.nonempty_spPt ct.YY have ⟨q, _⟩ := (IsFlagCl.hasLatFlags ct.hp ct.hW (ct.flagCl_allSteps ▸ isFlagCl_flgTrue ct ct.Xm (flgTrue ct).allFlags) (ct.B.ty none)).2 (x.1 (Classical.arbitrary _)) ⟨q⟩`.
+A detailed English derivation is pending.
 -/
 example : Nonempty (LatChart ct.YY (Lat.top ct.Xm)) :=
   have ⟨x⟩ := ct.nonempty_spPt ct.YY
@@ -187,7 +187,7 @@ example : Nonempty (LatChart ct.YY (Lat.top ct.Xm)) :=
   ⟨q⟩
 
 /- English proof (translation)
-Rewrite using `[HTm.degOf_wtLB, HTm.degGr_eq, ← (HTm.hasLatFlags h).degHom_apply ct.hp ct.hW c, ← (HTm.hasLatFlags h).degHom_apply ct.hp ct.hW c, map_neg, neg_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 example (Z : ct.Mdl) (h : ∃ L : Lat Z, IsHTLatOf (htmTrue ct) Z L) (c : Curve ct.Fbar (HTm.flagMdl ct Z).X) (τ : PsiT D)
     (i : ℕ) : c.degOf (HTm.wtLB ct Z (At.indWt τ i)) = -(crhTrue ct).degGr (Z := Z) c τ i := by
@@ -195,7 +195,7 @@ example (Z : ct.Mdl) (h : ∃ L : Lat Z, IsHTLatOf (htmTrue ct) Z L) (c : Curve 
     ← (HTm.hasLatFlags h).degHom_apply ct.hp ct.hW c, map_neg, neg_neg]
 
 /- English proof (translation)
-Introduce `hF` and use `by have h₁ := Submodule.finrank_mono (show _ ≤ F.step τ j from (hF τ).1) have h₂ := h₁.trans_eq (finrank_step F τ j) rw [(ct.finrank_line_hyperplane l τ).1] at h₂ omega`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example (h : j = 0) (l : ct.Sum1) (F : ct.FlP) (τ : PsiT D) : F ∉ ct.locus l := fun hF => by
   have h₁ := Submodule.finrank_mono (show _ ≤ F.step τ j from (hF τ).1)

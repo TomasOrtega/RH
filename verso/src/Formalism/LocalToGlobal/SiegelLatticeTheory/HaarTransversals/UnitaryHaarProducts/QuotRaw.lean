@@ -19,9 +19,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7}
 
 /- English proof (translation)
-Use `conv_rhs => rw [← A.bas.sum_repr v, ← A.bas.sum_repr w]`. Simplify using `only [map_sum, LinearMap.map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, Formalism.UG.hform, map_mul, crdOf, starRingEnd_apply, A.ιE_conj, RingEquiv.apply_symm_apply, A.J_eq, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [← Formalism.BasicNotions.bridge_star_holds D.R D.host, RingHom.id_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem hform_crdA (A : UnitaryGroupInstance D) (v w : (VS D).V) :
     A.ιE (Formalism.UG.hform (starRingEnd A.I.E) A.I.J (crdOf A.I A.ιE A.bas v) (crdOf A.I A.ιE A.bas w)) =
@@ -36,7 +36,7 @@ theorem hform_crdA (A : UnitaryGroupInstance D) (v w : (VS D).V) :
   ring
 
 /- English proof (translation)
-Rewrite using `[Formalism.L2.SG.Pf.hJ_rv_sc, ← hform_crdA A p q, RingEquiv.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hJ_crdA (A : UnitaryGroupInstance D) (v : InfinitePlace A.I.F) (p q : (VS D).V) :
     hJ (A.I.ε v) (rv A.I v (crdOf A.I A.ιE A.bas p)) (rv A.I v (crdOf A.I A.ιE A.bas q)) =
@@ -49,24 +49,24 @@ section FrameOf
 variable {ε : Fin (2 * r + k + 1) → Bool}
 
 /- English proof (translation)
-Unfold `hJ`. Rewrite using `[Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem hJ_smul_right {n : ℕ} (ε : Fin n → Bool) (x y : Fin n → ℂ) (c : ℂ) : hJ ε x (c • y) = c * hJ ε x y := by
   unfold hJ; rw [Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]
 
 /- English proof (translation)
-Unfold `hJ`. Rewrite using `[star_smul, smul_dotProduct, smul_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem hJ_smul_left {n : ℕ} (ε : Fin n → Bool) (x y : Fin n → ℂ) (c : ℂ) :
     hJ ε (c • x) y = star c * hJ ε x y := by
   unfold hJ; rw [star_smul, smul_dotProduct, smul_eq_mul]
 
 /- English proof (translation)
-Establish `hs : Real.sqrt T ≠ 0` using `(Real.sqrt_pos.mpr hT).ne'`. Use `⟨hee, hff, hef, fun a => ?_, fun a => ?_, ?_, hww, hew, hfw, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[z0v, hJ_smul_right, hez, mul_zero]`. Rewrite using `[z0v, hJ_smul_right, hfz, mul_zero]`. Rewrite using `[z0v, hJ_smul_right, hJ_smul_left, hzz, Complex.star_def, Complex.conj_ofReal]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ((Real.sqrt T)⁻¹ : ℝ) * (Real.sqrt T)⁻¹ * T = 1`. Rewrite using `[← mul_inv, Real.mul_self_sqrt hT.le, inv_mul_cancel₀ hT.ne']`. Establish `h2 : (((Real.sqrt T)⁻¹ : ℝ) : ℂ) * (((Real.sqrt T)⁻¹ : ℝ) * -(T : ℂ)) = -((((Real.sqrt T)⁻¹ * (Real.sqrt T)⁻¹ * T : ℝ)) : ℂ)` using `by push_cast; ring`. Rewrite using `[h2, h1]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[z0v, hJ_smul_left, hzw, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isFrameJ_of (e f : Fin r → Fin (2 * r + k + 1) → ℂ) (z : Fin (2 * r + k + 1) → ℂ)
     (wf : Fin k → Fin (2 * r + k + 1) → ℂ) {T : ℝ} (hT : 0 < T)
@@ -93,7 +93,7 @@ end FrameOf
 section QuotRaw
 
 /- English proof (translation)
-Apply the tactic sequence `refine ⟨fun a => ?_, fun a => ?_, ?_⟩ <;> simp [uMat]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem fix_one {n : ℕ} {ε : Fin n → Bool} {e f : Fin r → Fin n → ℂ} {z : Fin n → ℂ} :
     (∀ a, uMat (1 : Formalism.REAL.UJ ε) *ᵥ e a = e a) ∧ (∀ a, uMat (1 : Formalism.REAL.UJ ε) *ᵥ f a = f a) ∧
@@ -101,7 +101,7 @@ theorem fix_one {n : ℕ} {ε : Fin n → Bool} {e f : Fin r → Fin n → ℂ} 
   refine ⟨fun a => ?_, fun a => ?_, ?_⟩ <;> simp [uMat]
 
 /- English proof (translation)
-Use `⟨fun c => ?_, fun c => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[show uMat (a * b) = uMat a * uMat b from rfl, ← Matrix.mulVec_mulVec, hb.1 c, ha.1 c]`. Rewrite using `[show uMat (a * b) = uMat a * uMat b from rfl, ← Matrix.mulVec_mulVec, hb.2.1 c, ha.2.1 c]`. Rewrite using `[show uMat (a * b) = uMat a * uMat b from rfl, ← Matrix.mulVec_mulVec, hb.2.2, ha.2.2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem fix_mul {n : ℕ} {ε : Fin n → Bool} {e f : Fin r → Fin n → ℂ} {z : Fin n → ℂ} {a b : Formalism.REAL.UJ ε}
     (ha : (∀ c, uMat a *ᵥ e c = e c) ∧ (∀ c, uMat a *ᵥ f c = f c) ∧ uMat a *ᵥ z = z)
@@ -113,9 +113,9 @@ theorem fix_mul {n : ℕ} {ε : Fin n → Bool} {e f : Fin r → Fin n → ℂ} 
   · rw [show uMat (a * b) = uMat a * uMat b from rfl, ← Matrix.mulVec_mulVec, hb.2.2, ha.2.2]
 
 /- English proof (translation)
-Establish `hinv : uMat a⁻¹ * uMat a = 1` using `by show ((a⁻¹ : Formalism.REAL.UJ ε) : (Matrix (Fin n) (Fin n) ℂ)ˣ).val * (a : (Matrix (Fin n) (Fin n) ℂ)ˣ).val = 1`. Rewrite using `[← Units.val_mul, ← Subgroup.coe_mul, inv_mul_cancel]`. Both sides reduce to the same expression. Establish `key : ∀ y, uMat a *ᵥ y = y → uMat a⁻¹ *ᵥ y = y` using `fun y hy => by conv_lhs => rw [← hy]`. Rewrite using `[Matrix.mulVec_mulVec, hinv, Matrix.one_mulVec]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨fun c => key _ (ha.1 c), fun c => key _ (ha.2.1 c), key _ ha.2.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem fix_inv {n : ℕ} {ε : Fin n → Bool} {e f : Fin r → Fin n → ℂ} {z : Fin n → ℂ} {a : Formalism.REAL.UJ ε}
     (ha : (∀ c, uMat a *ᵥ e c = e c) ∧ (∀ c, uMat a *ᵥ f c = f c) ∧ uMat a *ᵥ z = z) :
@@ -132,11 +132,11 @@ variable {ε : Fin (2 * r + k + 1) → Bool} {e f : Fin r → Fin (2 * r + k + 1
   {wf : Fin k → Fin (2 * r + k + 1) → ℂ}
 
 /- English proof (translation)
-Establish `hc : (((Real.sqrt T)⁻¹ : ℝ) : ℂ) ≠ 0`. Establish `: (Real.sqrt T)⁻¹ ≠ 0` using `inv_ne_zero (Real.sqrt_pos.mpr hT).ne'`. Conclude with `this` after adjusting the coercions. Take `⟨-, -, -, hnorm⟩` from `hHN k r ε e f wf (z0v T z) z _ hF hc rfl`. Establish `hz` using `Qm_zB (e := e) (f := f) (wf := wf) hT z`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzB : ∀ i : Fin (2 * r + k + 1), i.val < r ∨ r + k < i.val → zBv k r T i = 0` using `inWb_zB T`. Establish `hz0 : ∃ t : ℂ, z0v T z = t • z` using `⟨_, rfl⟩`. Rewrite using `[HNset_iff hF hz hzB hz0]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, n, rfl, he, hf, hzz, hn⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨h * n * h⁻¹, hnorm h ⟨he, hf, hzz⟩ n hn, h, ⟨he, hf, hzz⟩, by group⟩` and prove the remaining obligations. Introduce and unpack `⟨m, hm, h, hh, rfl⟩`. Use `⟨h, h⁻¹ * m * h, by group, hh.1, hh.2.1, hh.2.2, ?_⟩` and prove the remaining obligations. Use `hnorm h⁻¹ (fix_inv hh) m hm` as an intermediate fact. Simplify using `using this`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem HNset_eq_NH (hHN : LocHNProps) {T : ℝ} (hT : 0 < T) {z : Fin (2 * r + k + 1) → ℂ}
     (hF : IsFrameJ ε e f wf (z0v T z)) (s : Formalism.REAL.UJ ε) :
@@ -165,17 +165,15 @@ end QuotRaw
 section QuotRaw2
 
 /- English proof (translation)
-Establish `hc : (((Real.sqrt T)⁻¹ : ℝ) : ℂ) ≠ 0`. Establish `: (Real.sqrt T)⁻¹ ≠ 0` using `inv_ne_zero (Real.sqrt_pos.mpr hT).ne'`. Conclude with `this` after adjusting the coercions. Use `set N : ∀ v, Set (Formalism.REAL.UJ (ε v)) := fun v => {g | InN (ε v) (e v) (z v) (uMat g)} with hNdef`. Use `set H : ∀ v, Set (Formalism.REAL.UJ (ε v)) := fun v => {g | (∀ a, uMat g *ᵥ e v a = e v a) ∧ (∀ a, uMat g *ᵥ f v a = f v a) ∧ uMat g *ᵥ z v = z v} with hHdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hP` using `fun v => hHN k r (ε v) (e v) (f v) (wf v) (z0v T (z v)) (z v) _ (hF v) hc rfl`. Establish `hpiN : Set.pi Set.univ N = {s : ∀ v, Formalism.REAL.UJ (ε v) | ∀ v, InN (ε v) (e v) (z v) (uMat (s v))}`. Use extensionality with `s`. Simplify using `[Set.mem_pi, hNdef]`. Establish `hpiH : Set.pi Set.univ H = {s : ∀ v, Formalism.REAL.UJ (ε v) | ∀ v, (∀ a, uMat (s v) *ᵥ e v a = e v a) ∧ (∀ a, uMat (s v) *ᵥ f v a = f v a) ∧ uMat (s v) *ᵥ z v = z v}`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `s`. Simplify using `[Set.mem_pi, hHdef]`. Establish `hN'` using `hN`. Rewrite `hN'` using `[← hpiN]`. Establish `hH'` using `hH`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hH'` using `[← hpiH]`. Take `⟨μS, νl, C, hC0, hCt, hloc, hK⟩` from `hQK ι (fun _ => 2 * r + k + 1) ε N H (fun v => (hP v).1) (fun v => (hP v).2.1) (fun v => (hP v).2.2.1) (fun v => ⟨fix_one, fun a ha b hb => fix_mul ha hb, fun a ha => fix_inv ha⟩) (fun v h hh m hm => (hP v).2.2.2 h hh m hm) (fun v μ h1 h2 h3 h4 => hNU k r (ε v) (e v) (f v) (wf v) …`. Establish `hset : ∀ v, {s : Formalism.REAL.UJ (ε v) | ∃ m ∈ N v, ∃ h ∈ H v, s = m * h} = HNset (ε v) (e v) (f v) (wf v) (z0v T (z v)) (zBv k r T)`. Introduce `v`. Use extensionality with `s`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(HNset_eq_NH hHN hT (hF v) s).symm`. Use `⟨μS, νl, C, hC0, hCt, fun v => ?_, fun F hFm hFi => hK F hFm fun v m hm h hh x => ?_⟩` and prove the remaining obligations. Take `⟨⟨h1, h2, h3, h4⟩, hq⟩` from `hloc v`. Rewrite `h3`, `h4` using `[hset v]`. Conclude with `⟨⟨h1, h2, h3, h4⟩, hq⟩`.
-
-Use `hFi v (m * h) ?_ x` and prove the remaining obligations. Rewrite using `[← hset v]`. Conclude with `⟨m, hm, h, hh, rfl⟩`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem quotRaw (hQK : QuotProdK) (hHN : LocHNProps) (hNU : NUnimodLoc) {ι : Type} [Fintype ι]
     {ε : ι → Fin (2 * r + k + 1) → Bool} (e f : ι → Fin r → Fin (2 * r + k + 1) → ℂ)

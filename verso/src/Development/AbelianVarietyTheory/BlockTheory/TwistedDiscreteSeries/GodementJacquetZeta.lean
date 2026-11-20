@@ -46,7 +46,7 @@ def TwistPlace (σ : Representation ℂ (GL n k) V) (μ : kˣ →* ℂˣ) : Prop
 abbrev blockSizes (r t j : ℕ) : Fin (j + 1) → ℕ := Fin.cons r fun _ => t
 
 /- English proof (translation)
-Simplify using `[Fin.sum_univ_succ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sum_blockSizes (r t j : ℕ) : ∑ a, blockSizes r t j a = r + j * t := by
   simp [Fin.sum_univ_succ]
@@ -129,13 +129,13 @@ section Examples
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Introduce `h` and use `h _ (isUnram_absPow k _) (inSupport_detRep μ 0)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example {N : ℕ} (μ : kˣ →* ℂˣ) : ¬ NoUnramTwist (detRep (Fin (N + 1)) μ) μ := fun h =>
   h _ (isUnram_absPow k _) (inSupport_detRep μ 0)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isSpherical_detRep fun _ _ => rfl, h⟩`.
+Supply the required witnesses or components.
 -/
 example {N : ℕ} {μ : kˣ →* ℂˣ} (h : ¬ IsUnram μ) : TwistPlace (detRep (Fin N) (1 : kˣ →* ℂˣ)) μ :=
   ⟨isSpherical_detRep fun _ _ => rfl, h⟩

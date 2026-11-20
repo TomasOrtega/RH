@@ -16,7 +16,7 @@ theorem rel_posL_val (k r : ℕ) (i : Fin (r + 1)) (l : Fin (mdim k r i)) :
     (posL k r i l).val = l.val + i.val := rfl
 
 /- English proof (translation)
-Introduce `a b h`. Apply `Fin.ext` to reduce the goal to its premises. Establish `h'` using `congrArg Fin.val h`. Rewrite `h'` using `[rel_posL_val, rel_posL_val]`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem rel_posL_injective (k r : ℕ) (i : Fin (r + 1)) : Function.Injective (posL k r i) := by
   intro a b h
@@ -26,7 +26,7 @@ theorem rel_posL_injective (k r : ℕ) (i : Fin (r + 1)) : Function.Injective (p
   omega
 
 /- English proof (translation)
-Rewrite using `[rel_posL_val]`. Establish `hl : l.val < 2 * (r - i.val) + k + 1` using `l.isLt`. Establish `hi` using `i.isLt`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem rel_posL_bound (k r : ℕ) (i : Fin (r + 1)) (l : Fin (mdim k r i)) :
     i.val ≤ (posL k r i l).val ∧ (posL k r i l).val + i.val ≤ 2 * r + k := by
@@ -36,7 +36,7 @@ theorem rel_posL_bound (k r : ℕ) (i : Fin (r + 1)) (l : Fin (mdim k r i)) :
   omega
 
 /- English proof (translation)
-Simplify using `only [Hpk, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rel_hpk_off_left (k r : ℕ) (p q : Fin (2 * r + k + 1)) (j : ℕ)
     (hp : j ≤ p.val ∧ p.val + j ≤ 2 * r + k) (hq : q.val < j ∨ 2 * r + k < q.val + j) :
@@ -45,7 +45,7 @@ theorem rel_hpk_off_left (k r : ℕ) (p q : Fin (2 * r + k + 1)) (j : ℕ)
   split_ifs <;> first | rfl | (exfalso; omega)
 
 /- English proof (translation)
-Simplify using `only [Hpk, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rel_hpk_off_right (k r : ℕ) (p q : Fin (2 * r + k + 1)) (j : ℕ)
     (hp : j ≤ p.val ∧ p.val + j ≤ 2 * r + k) (hq : q.val < j ∨ 2 * r + k < q.val + j) :
@@ -54,11 +54,11 @@ theorem rel_hpk_off_right (k r : ℕ) (p q : Fin (2 * r + k + 1)) (j : ℕ)
   split_ifs <;> first | rfl | (exfalso; omega)
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_image (s := Finset.univ) (g := posL k r i) (fun x _ y _ h => rel_posL_injective k r i h)]`. Use `(Finset.sum_subset (Finset.subset_univ _) ?_).symm` and prove the remaining obligations. Introduce `a _ ha`. Apply `hF` to reduce the goal to its premises. Assume the negation of the conclusion as `hc`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at hc`. Apply `ha` to reduce the goal to its premises. Establish `hi` using `i.isLt`. Use `Finset.mem_image.2 ⟨⟨a.val - i.val, ?_⟩, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Use `show a.val - i.val < 2 * (r - i.val) + k + 1`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Use linear arithmetic over natural numbers and integers. Reduce the claim to the hypotheses of an applicable result.
 
-Use linear arithmetic over natural numbers and integers. Apply `Fin.ext show a.val - i.val + i.val = a.val` to reduce the goal to its premises. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem rel_sum_posL (k r : ℕ) (i : Fin (r + 1)) (F : Fin (2 * r + k + 1) → ℂ)
     (hF : ∀ a : Fin (2 * r + k + 1), (a.val < i.val ∨ 2 * r + k < a.val + i.val) → F a = 0) :
@@ -80,7 +80,7 @@ theorem rel_sum_posL (k r : ℕ) (i : Fin (r + 1)) (F : Fin (2 * r + k + 1) → 
     omega
 
 /- English proof (translation)
-Unfold `herm`. Rewrite using `[Matrix.star_mulVec, Matrix.mulVec_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, ← Matrix.mul_assoc, hU]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem rel_herm_unitary {n : ℕ} (H g : Matrix (Fin n) (Fin n) ℂ) (hU : gᴴ * H * g = H) (v w : Fin n → ℂ) :
     herm H (g *ᵥ v) (g *ᵥ w) = herm H v w := by
@@ -89,7 +89,7 @@ theorem rel_herm_unitary {n : ℕ} (H g : Matrix (Fin n) (Fin n) ℂ) (hU : gᴴ
     ← Matrix.mul_assoc, hU]
 
 /- English proof (translation)
-Unfold `herm bvec`. Simplify using `[dotProduct, Matrix.mulVec, Pi.single_apply]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem rel_herm_bvec {n : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) (p : Fin n) (y : Fin n → ℂ) :
     herm H (bvec p) y = ∑ a, star (y a) * H a p := by
@@ -97,13 +97,13 @@ theorem rel_herm_bvec {n : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) (p : Fin n) (y 
   simp [dotProduct, Matrix.mulVec, Pi.single_apply]
 
 /- English proof (translation)
-Introduce `k r z i _ g hg c`. Establish `hU : gᴴ * Hpk k r * g = Hpk k r` using `hg.1`. Take `⟨_, hI, -⟩` from `hpkFacts k r`. Establish `hleft : (Hpk k r * gᴴ * Hpk k r) * g = 1`. Rewrite using `[Matrix.mul_assoc (Hpk k r * gᴴ), Matrix.mul_assoc (Hpk k r), ← Matrix.mul_assoc gᴴ, hU, hI]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hdet : IsUnit g.det` using `Matrix.isUnit_det_of_left_inverse hleft`. Establish `hf : fvec k r z i = g *ᵥ (g⁻¹ *ᵥ fvec k r z i)`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hdet, Matrix.one_mulVec]`. Establish `key : herm (Hpk k r) (g *ᵥ bvec (posL k r i c)) (fvec k r z i) = herm (Hpk k r) (bvec (posL k r i c)) (g⁻¹ *ᵥ fvec k r z i)` using `by conv_lhs => rw [hf]`. Conclude with `rel_herm_unitary _ _ hU _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsum` using `rel_sum_posL k r i (fun a => star ((g⁻¹ *ᵥ fvec k r z i) a) * Hpk k r a (posL k r i c)) (by`. Introduce `a ha`. Use `show star ((g⁻¹ *ᵥ fvec k r z i) a) * Hpk k r a (posL k r i c) = 0`. Rewrite using `[rel_hpk_off_left k r (posL k r i c) a i.val (rel_posL_bound k r i c) ha, mul_zero])`. Use `show herm (Hpk k r) (g *ᵥ bvec (posL k r i c)) (fvec k r z i) = ∑ l, Hm k r i l c * star ((g⁻¹ *ᵥ fvec k r z i) (posL k r i l))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key, rel_herm_bvec]`. Use `hsum.trans (Finset.sum_congr rfl fun l _ => ?_)` and prove the remaining obligations. Use `show star ((g⁻¹ *ᵥ fvec k r z i) (posL k r i l)) * Hpk k r (posL k r i l) (posL k r i c) = Hm k r i l c * star ((g⁻¹ *ᵥ fvec k r z i) (posL k r i l))`. Rewrite using `[mul_comm]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem conjugate_y_relation : YbRel := by
   intro k r z i _ g hg c
@@ -133,11 +133,9 @@ theorem conjugate_y_relation : YbRel := by
   rfl
 
 /- English proof (translation)
-Introduce `k r z' i _ c`. Establish `hsum` using `rel_sum_posL k r i (fun a => star (fvec k r z' i a) * Hpk k r a (posL k r i c)) (by`. Introduce `a ha`. Use `show star (fvec k r z' i a) * Hpk k r a (posL k r i c) = 0`. Rewrite using `[rel_hpk_off_left k r (posL k r i c) a i.val (rel_posL_bound k r i c) ha, mul_zero])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show herm (Hpk k r) (bvec (posL k r i c)) (fvec k r z' i) = ∑ l, Hm k r i l c * star (fvec k r z' i (posL k r i l))`. Rewrite using `[rel_herm_bvec]`. Use `hsum.trans (Finset.sum_congr rfl fun l _ => ?_)` and prove the remaining obligations. Use `show star (fvec k r z' i (posL k r i l)) * Hpk k r (posL k r i l) (posL k r i c) = Hm k r i l c * star (fvec k r z' i (posL k r i l))`. Rewrite using `[mul_comm]`.
-
-Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem conjugate_x_relation : XbRel := by
   intro k r z' i _ c
@@ -156,13 +154,13 @@ theorem conjugate_x_relation : XbRel := by
   rfl
 
 /- English proof (translation)
-Introduce `k r i`. Take `⟨hH, hI, -⟩` from `hpkFacts k r`. Prove the components needed by the constructor for the conclusion. Use extensionality with `a b show star (Hpk k r (posL k r i b) (posL k r i a)) = Hpk k r (posL k r i a) (posL k r i b)`. Rewrite using `[← Matrix.conjTranspose_apply (Hpk k r), hH]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `a b`. Establish `h1 : (Hm k r i * Hm k r i) a b = (Hpk k r * Hpk k r) (posL k r i a) (posL k r i b)`. Rewrite using `[Matrix.mul_apply, Matrix.mul_apply]`. Use `symm`. Use `rel_sum_posL k r i (fun q => Hpk k r (posL k r i a) q * Hpk k r q (posL k r i b)) ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `q hq`. Use `show Hpk k r (posL k r i a) q * Hpk k r q (posL k r i b) = 0`. Rewrite using `[rel_hpk_off_right k r (posL k r i a) q i.val (rel_posL_bound k r i a) hq, zero_mul]`. Rewrite using `[h1, hI, Matrix.one_apply, Matrix.one_apply]`. Distinguish the cases in `h : a = b`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg h, if_neg (fun e => h (rel_posL_injective k r i e))]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restricted_gram_hermitian_involution : HmFacts := by
   intro k r i

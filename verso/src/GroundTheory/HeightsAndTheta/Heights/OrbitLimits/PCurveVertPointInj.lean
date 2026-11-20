@@ -15,7 +15,7 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Introduce `h0`. Apply `hp` to reduce the goal to its premises. Simplify using `[mCoordIdeal, mConeMap, RingHom.mem_ker, h0]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem coord_ne_zero (y : (Σ k, ι k) → Ω) (p : Σ k, ι k)
     (hp : (X p : MRing ι) ∉ mCoordIdeal y) : y p ≠ 0 := by
@@ -24,7 +24,7 @@ theorem coord_ne_zero (y : (Σ k, ι k) → Ω) (p : Σ k, ι k)
   simp [mCoordIdeal, mConeMap, RingHom.mem_ker, h0]
 
 /- English proof (translation)
-Establish `hP : NumbersDVR.IsMultiHomogIdeal (mCoordIdeal y)` using `(Bridge.isMultiHomogIdeal_iff _).2 hA.2.1.2.1`. Establish `hJ` using `NumbersDVR.SupSpanMultiHomog.full.{0} ℤ K ι (mCoordIdeal y) s d hP ((Bridge.isMultiHomog_iff s _).2 hs)`. Conclude with `(Bridge.isMultiHomogIdeal_iff _).1 (NumbersDVR.MinimalPrimeMultiHomog.full.{0} ℤ K ι _ W hJ hW.1)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isMultiHomogIdeal_of_mem_divSupp (y : (Σ k, ι k) → Ω) (s : MRing ι) (d : K → ℕ)
     (hA : IsArithVar (mCoordIdeal y) 1) (hs : IsMultiHomog s d) {W : Ideal (MRing ι)}
@@ -42,19 +42,15 @@ end CurveVerticalPointInjective
 open CurveVerticalPointInjective in
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ y s d hA hs hsP W hW W' hW' hWW'`. Use `choose c hc using hW.2`. Use `choose c' hc' using hW'.2`. Take `⟨hmax, hrat, hform⟩` from `hCh K ι Ω y s d hA hs hsP W hW c hc`. Take `⟨-, -, hform'⟩` from `hCh K ι Ω y s d hA hs hsP W' hW' c' hc'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyc : ∀ k, y ⟨k, c k⟩ ≠ 0` using `fun k => coord_ne_zero y _ fun h => hc k (le_sup_left.trans hW.1.1.2 h)`. Use `choose a' b' hb' hab' using fun k => hrat ⟨k, c' k⟩`. Establish `hab'' : ∀ k, (b' k : Ω) * y ⟨k, c' k⟩ = a' k * y ⟨k, c k⟩` using `fun k => by`. Rewrite using `[← hab' k]`. Clear denominators, using `[hyc k]` for the nonvanishing conditions.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hle : W' ≤ W`. Take `⟨S, hS, hSeq⟩` from `isMultiHomogIdeal_of_mem_divSupp y s d hA hs hW'`. Rewrite using `[hSeq, Ideal.span_le]`. Introduce `g hg`. Take `⟨e, he⟩` from `hS g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, b, ha, hb, habg⟩` from `(hform' e g he).1 (hSeq ▸ Ideal.subset_span hg)`. Rewrite `ha`, `hb` using `[← hWW']`. Use `(hform e g he).2 ⟨a * ∏ k, a' k ^ e k, (∏ k, b' k ^ e k) * b, Ideal.mul_mem_right _ _ ha, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Break down `hmax.isPrime.mem_or_mem h with h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Move the embeddings inside the algebraic operations. Chain the equalities or inequalities of the calculation.
 
-Take `⟨k, -, hk⟩` from `(hmax.isPrime.prod_mem_iff (s := Finset.univ)).1 h`. Conclude with `hb' k (hmax.isPrime.mem_of_pow_mem _ hk)`. Conclude with `hb h`. Use `push_cast`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[mul_assoc, habg, Finset.prod_congr rfl fun k _ => mul_pow (b' k : Ω) _ (e k), Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = (a * ∏ k, (a' k : Ω) ^ e k) * ∏ k, y ⟨k, c k⟩ ^ e k := by`. Repeatedly rewrite using `[hab'', mul_pow, Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree.
-
-Conclude with `le_antisymm (hW.1.2 ⟨hW'.1.1.1, hW'.1.1.2⟩ hle) hle`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion repeatedly using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem CurveVertPointInj.proof (hCh : CurveVertPointChart.Statement) : CurveVertPointInj.Statement := by
   intro K _ ι _ Ω _ y s d hA hs hsP W hW W' hW' hWW'

@@ -13,14 +13,14 @@ namespace GlobalTheory.SeeSaw.Scale
 variable {D : D7}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Simplify using `only [heisO, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem heisO_smul (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (w₀ : WO S T) (c : ℂ) (f : WO S T → ℂ) :
     heisO ψ S T w₀ (c • f) = c • heisO ψ S T w₀ f := by
   funext w; simp only [heisO, Pi.smul_apply, smul_eq_mul]; ring
 
 /- English proof (translation)
-Simplify using `only [comb, heisO_smul, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations. Rewrite using `[smul_comm]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem comb_smul (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (a : WO S T →₀ ℂ) (c : ℂ) (f : WO S T → ℂ) :
     comb ψ S T a (c • f) = c • comb ψ S T a f := by
@@ -29,9 +29,9 @@ theorem comb_smul (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (a : WO S T →
   rw [smul_comm]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `u v`. Simplify using `only [biComb]`. Establish `h1 : (fun u' => comb ψ S A' a' ((c • C) u') v) = c • fun u' => comb ψ S A' a' (C u') v`. Use function extensionality and compare the values at `u'`. Use `show comb ψ S A' a' (c • C u') v = c * comb ψ S A' a' (C u') v`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[comb_smul]`. Both sides reduce to the same expression. Rewrite using `[h1, comb_smul]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem biComb_smul (ψ : AddChar (AF D.host.F) ℂ) (A S A' : HSp D) (a : WO A S →₀ ℂ) (a' : WO S A' →₀ ℂ) (c : ℂ)
     (C : WO A S → WO S A' → ℂ) : biComb ψ A S A' a a' (c • C) = c • biComb ψ A S A' a a' C := by
@@ -44,7 +44,7 @@ theorem biComb_smul (ψ : AddChar (AF D.host.F) ℂ) (A S A' : HSp D) (a : WO A 
   rw [h1, comb_smul]; rfl
 
 /- English proof (translation)
-Simplify using `only [Pi.smul_apply, smul_eq_mul]; rw [hf.quasi]; ring level := by`. Take `⟨U, hUo, hU⟩` from `hf.level`. Conclude with `⟨U, hUo, fun u hu hi => by rw [heisO_smul, hU u hu hi]⟩`. Use `cont := continuous_const.mul hf.cont`. Use `smooth k L hL hfin w := contDiff_const.mul (hf.smooth k L hL hfin w)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isThetaFunO_smul {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} (c : ℂ) {f : WO S T → ℂ}
     (hf : IsThetaFunO ψ S T f) : IsThetaFunO ψ S T (c • f) where
@@ -56,14 +56,14 @@ theorem isThetaFunO_smul {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} (c : ℂ
   smooth k L hL hfin w := contDiff_const.mul (hf.smooth k L hL hfin w)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun u hu => by rw [heisO_smul, hf.1 u hu], fun e' he u hu hh => by rw [heisO_smul, hf.2 e' he u hu hh]⟩`.
+Supply the required witnesses or components.
 -/
 theorem isLatVac_smul {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} (c : ℂ) {Λ : AddSubgroup (WO S T)} {f : WO S T → ℂ}
     (hf : IsLatVac (heisO ψ S T) Λ f) : IsLatVac (heisO ψ S T) Λ (c • f) :=
   ⟨fun u hu => by rw [heisO_smul, hf.1 u hu], fun e' he u hu hh => by rw [heisO_smul, hf.2 e' he u hu hh]⟩
 
 /- English proof (translation)
-The claim follows from `continuous_const.mul h.cont left v := by have e : (fun u => (c • C) u v) = c • fun u => C u v := rfl rw [e]; exact ⟨isThetaFunO_smul c (h.left v).1, isLatVac_smul c (h.left v).2⟩ right u := by have e : (c • C) u = c • C u := rfl rw [e]; exact ⟨isThetaFunO_smul c (h.right u).1, is …`.
+A detailed English derivation is pending.
 -/
 theorem isBiVac_smul {ψ : AddChar (AF D.host.F) ℂ} {A S A' : HSp D} {LA : Set (Fin A.rank → D.host.E)}
     {LS : Set (Fin S.rank → D.host.E)} {LA' : Set (Fin A'.rank → D.host.E)} (c : ℂ) {C : WO A S → WO S A' → ℂ}
@@ -77,7 +77,7 @@ theorem isBiVac_smul {ψ : AddChar (AF D.host.F) ℂ} {A S A' : HSp D} {LA : Set
     rw [e]; exact ⟨isThetaFunO_smul c (h.right u).1, isLatVac_smul c (h.right u).2⟩
 
 /- English proof (translation)
-Introduce `n L L' hL hL' h0 h0' u v` and use `by show ContDiff ℝ _ fun t => c * C (u + L t) (v + L' t) exact ContDiff.mul contDiff_const (h n L L' hL hL' h0 h0' u v)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isBiSmooth_smul {A S A' : HSp D} (c : ℂ) {C : WO A S → WO S A' → ℂ} (h : IsBiSmooth C) :
     IsBiSmooth (c • C) :=

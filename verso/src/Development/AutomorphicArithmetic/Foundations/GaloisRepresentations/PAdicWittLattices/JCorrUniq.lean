@@ -3,9 +3,9 @@ open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC GlobalTheory.Et Gl
 universe u v
 
 /- English proof (translation)
-Establish `hq : ∀ n : ℤ, Subsingleton (HQ l E n 0)` using `fun n => by`. Use `h n` as an intermediate fact. Use `⟨fun a b => ?_⟩` and prove the remaining obligations. Establish `z : ∀ c : HQ l E n 0, c = 0` using `fun c => by`. Proceed by induction on `c using TensorProduct.induction_on with`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `zero => rfl`. Consider the case `tmul q y => rw [Subsingleton.elim y 0, TensorProduct.tmul_zero]`. Consider the case `add c d hc hd => rw [hc, hd, add_zero]`. Rewrite using `[z a, z b]`. Conclude with `⟨fun a b => DFinsupp.ext fun n => (hq n).elim _ _⟩`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 private theorem htot_subsingleton (l : ℕ) [Fact l.Prime] (E : Spc)
     (h : ∀ n : ℤ, Subsingleton (Hl l E n 0)) : Subsingleton (Htot l E) := by
@@ -21,9 +21,9 @@ private theorem htot_subsingleton (l : ℕ) [Fact l.Prime] (E : Spc)
   exact ⟨fun a b => DFinsupp.ext fun n => (hq n).elim _ _⟩
 
 /- English proof (translation)
-Take `⟨W, c, G, _, _, a, J, _, σ, hgal, hsp, hx⟩` from `hA`. Establish `hσ : ∀ j, σ j ≫ s ≫ p = c ≫ p` using `fun j => by`. Rewrite using `[← Category.assoc, hsp.choose j]`. Establish `hinj` using `hT.inj p (c ≫ p) c rfl G a hgal`. Apply `hinj` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `e` using `htr W (c ≫ p) c rfl J σ hσ hsp (pullTot l (sch.map t) x)`. Use `Eq.trans ?_ e.symm` and prove the remaining obligations. Use `(hx x).trans (Finset.sum_congr rfl fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[Functor.map_comp, pullTot_comp]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem op_eq (l : ℕ) [Fact l.Prime] (k : Type) [Field k] {Z Y Z' : Scheme.{0}} (p : Z ⟶ sp k)
     (s : Y ⟶ Z) (t : Y ⟶ Z') (hT : (et l (sp k)).Good)
@@ -42,11 +42,11 @@ private theorem op_eq (l : ℕ) [Fact l.Prime] (k : Type) [Field k] {Z Y Z' : Sc
   rfl
 
 /- English proof (translation)
-Introduce `hG hD hV l _ k _ Z Y Z' p s t A A' hA hA'`. Distinguish the cases in `hl : (l : k) = 0`. Use `htot_subsingleton l (sch.obj Z) fun n => hV l k hl p n 0` as an intermediate fact. Conclude with `LinearMap.ext fun x => Subsingleton.elim _ _`. Establish `hu : IsUnit (l : Γ(sp k, ⊤))`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h : IsUnit ((Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom (l : k))` using `(IsUnit.mk0 _ hl).map _`. Rewrite `h` using `[map_natCast]`. Then use the resulting hypothesis. Establish `hT` using `hG l (sp k) hu`. Take `⟨W, c, G, _, _, a, J, _, σ, hgal, hsp, -⟩` from `id hA`. Take `⟨hf, he, hs, -, -, -⟩` from `hgal`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨_, _⟩` from `@hD Z Y W s c hf he hs J _ σ hsp`. Take `⟨tr, htr⟩` from `hT.tr p (s ≫ p) s rfl`. Conclude with `LinearMap.ext fun x => (op_eq l k p s t hT tr htr A hA x).trans (op_eq l k p s t hT tr htr A' hA' x).symm`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.G3.jCorrUniq :
     EtGood → SplitDesc → CharVan → CorrUniq := by

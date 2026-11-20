@@ -30,7 +30,7 @@ theorem charL_val (χ : ↥(GK K) →* (↥(OL LL))ˣ) (g : ↥(GK K)) :
       algebraMap ↥(OL LL) ↥LL.1 ((χ g : (↥(OL LL))ˣ) : ↥(OL LL)) := rfl
 
 /- English proof (translation)
-Introduce `he`. Apply `h` to reduce the goal to its premises. Unfold `multV`. Rewrite using `[he]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isJumpV_of_multV_ne {V : Type} [AddCommGroup V] [Module ↥LL.1 V] [Module ℚ_[l] V]
     [IsScalarTower ℚ_[l] ↥LL.1 V] (ρ : Representation ↥LL.1 ↥(GK K) V)
@@ -43,7 +43,7 @@ theorem isJumpV_of_multV_ne {V : Type} [AddCommGroup V] [Module ↥LL.1 V] [Modu
   simp
 
 /- English proof (translation)
-Establish `hc : Continuous (fun g => ((Formalism.MainNotions.tableLineDegreeTwo.charL (LL` using `↥LL.1) (1 : ↥(GK K) →* (↥(OL LL))ˣ) g : (↥LL.1)ˣ) : ↥LL.1)) := by`. Simplify using `only [charL_val, MonoidHom.one_apply, Units.val_one, map_one]`. Conclude with `continuous_const`. Take `⟨h1, h2⟩` from `GlobalTheory.T.unramifiedChar_isCrystalline_hodgeTate_zero l P AI hT K LL (Formalism.MainNotions.tableLineDegreeTwo.charL (LL := ↥LL.1) 1) hc (fun g _ => by ext; simp [charL_val])`. Conclude with `⟨hc, h1, fun τ b => by rw [h2]; rfl⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem hasJumps_one (hT : LocTied l P AI) : HasJumps P K LL 1 0 := by
   have hc : Continuous (fun g => ((Formalism.MainNotions.tableLineDegreeTwo.charL (LL := ↥LL.1) (1 : ↥(GK K) →* (↥(OL LL))ˣ) g : (↥LL.1)ˣ) : ↥LL.1)) := by
@@ -54,13 +54,13 @@ theorem hasJumps_one (hT : LocTied l P AI) : HasJumps P K LL 1 0 := by
   exact ⟨hc, h1, fun τ b => by rw [h2]; rfl⟩
 
 /- English proof (translation)
-Establish `htw : IsTwistRep (Formalism.MainNotions.tableLineDegreeTwo.charL (LL` using `↥LL.1) χ) (charRep (Formalism.MainNotions.tableLineDegreeTwo.charL (LL := ↥LL.1) ψ)) (charRep (Formalism.MainNotions.tableLineDegreeTwo.charL (LL := ↥LL.1) (χ * ψ))) := by`. Use `⟨LinearEquiv.refl _ _, fun x y => ?_⟩` and prove the remaining obligations. Simplify using `[charRep, charL_val, mul_smul]`. Take `⟨hc, hm⟩` from `GlobalTheory.TwistRepCrys.isCrys_and_multV_twist l P AI hT K LL ↥LL.1 (charRep (Formalism.MainNotions.tableLineDegreeTwo.charL (LL := ↥LL.1) ψ)) ↥LL.1 (charRep (Formalism.MainNotions.tableLineDegreeTwo.charL (LL := ↥LL.1) (χ * ψ))) (Formalism.MainNotions.tableLineDegreeTwo.charL …`. Use `⟨?_, hc, fun τ b => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: (fun x => ((Formalism.MainNotions.tableLineDegreeTwo.charL (LL` using `↥LL.1) (χ * ψ) x : (↥LL.1)ˣ) : ↥LL.1)) = fun x => ((Formalism.MainNotions.tableLineDegreeTwo.charL (LL := ↥LL.1) χ x : (↥LL.1)ˣ) : ↥LL.1) * ((Formalism.MainNotions.tableLineDegreeTwo.charL (LL := ↥LL.1) ψ x : (↥LL.1)ˣ) : ↥LL.1) := by`. Use function extensionality and compare the values at `x`. Simplify using `[charL_val]`. Rewrite using `[this]`. Conclude with `hχ.1.mul hψ.1`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hj : IsJumpV (P.PD K) (charRep (Formalism.MainNotions.tableLineDegreeTwo.charL (LL` using `↥LL.1) χ)) τ (f τ) := isJumpV_of_multV_ne _ τ (f τ) (by rw [hχ.2.2]; simp)`. Use `hm τ (b - f τ) (f τ) hj` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Rewrite using `[this, hψ.2.2]`. Simplify using `only [Pi.add_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> omega`.
+A detailed English derivation is pending.
 -/
 theorem hasJumps_mul (hT : LocTied l P AI) {χ ψ : ↥(GK K) →* (↥(OL LL))ˣ}
     {f g : (↥K.1 →ₐ[ℚ_[l]] ↥LL.1) → ℤ} (hχ : HasJumps P K LL χ f) (hψ : HasJumps P K LL ψ g) :
@@ -89,9 +89,9 @@ theorem hasJumps_mul (hT : LocTied l P AI) {χ ψ : ↥(GK K) →* (↥(OL LL))�
     split_ifs <;> omega
 
 /- English proof (translation)
-Establish `he : Formalism.MainNotions.tableLineDegreeTwo.charL (LL` using `↥LL.1) χ⁻¹ = (Formalism.MainNotions.tableLineDegreeTwo.charL (LL := ↥LL.1) χ)⁻¹ := by`. Use `MonoidHom.ext fun x => ?_` and prove the remaining obligations. Simplify using `only [Formalism.MainNotions.tableLineDegreeTwo.charL, MonoidHom.comp_apply, MonoidHom.inv_apply, map_inv]`. Take `⟨h1, h2⟩` from `GlobalTheory.T.isCrys_inv_and_hodgeTate_jumps_neg l P AI hT K LL (Formalism.MainNotions.tableLineDegreeTwo.charL (LL := ↥LL.1) χ) f hχ.2.1 hχ.2.2`. Use `⟨?_, he ▸ h1, fun τ b => by rw [he, h2]; rfl⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: (fun x => ((Formalism.MainNotions.tableLineDegreeTwo.charL (LL` using `↥LL.1) χ⁻¹ x : (↥LL.1)ˣ) : ↥LL.1)) = (fun x => ((Formalism.MainNotions.tableLineDegreeTwo.charL (LL := ↥LL.1) χ x : (↥LL.1)ˣ) : ↥LL.1)) ∘ (fun x => x⁻¹) := by`. Use function extensionality and compare the values at `x`. Simplify using `only [Function.comp_apply, charL_val, MonoidHom.inv_apply, map_inv]`. Rewrite using `[this]`. Conclude with `hχ.1.comp continuous_inv`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasJumps_inv (hT : LocTied l P AI) {χ : ↥(GK K) →* (↥(OL LL))ˣ}
     {f : (↥K.1 →ₐ[ℚ_[l]] ↥LL.1) → ℤ} (hχ : HasJumps P K LL χ f) :
@@ -109,9 +109,9 @@ theorem hasJumps_inv (hT : LocTied l P AI) {χ : ↥(GK K) →* (↥(OL LL))ˣ}
   exact hχ.1.comp continuous_inv
 
 /- English proof (translation)
-Proceed by induction on `k using Int.induction_on with`. Consider the case `zero`. Rewrite using `[zpow_zero, zero_smul]`. Conclude with `hasJumps_one AI hT`. Consider the case `succ k ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[zpow_add_one, add_smul, one_smul]`. Conclude with `hasJumps_mul AI hT ih hχ`. Consider the case `pred k ih`. Rewrite using `[zpow_sub_one, sub_smul, one_smul, sub_eq_add_neg]`. Conclude with `hasJumps_mul AI hT ih (hasJumps_inv AI hT hχ)`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasJumps_zpow (hT : LocTied l P AI) {χ : ↥(GK K) →* (↥(OL LL))ˣ}
     {f : (↥K.1 →ₐ[ℚ_[l]] ↥LL.1) → ℤ} (hχ : HasJumps P K LL χ f) (k : ℤ) :
@@ -128,11 +128,11 @@ theorem hasJumps_zpow (hT : LocTied l P AI) {χ : ↥(GK K) →* (↥(OL LL))ˣ}
     exact hasJumps_mul AI hT ih (hasJumps_inv AI hT hχ)
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Rewrite using `[Finset.prod_empty]`. Use `hasJumps_one AI hT using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `τ`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using the standard rewrite rules. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha]`. Use `hasJumps_mul AI hT (hasJumps_zpow AI hT (hψ a) (c a)) ih using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `τ`.
+Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `h : τ = a`. Substitute `h` using the available equality. Simplify using `[ha]`. Simplify using `[h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem hasJumps_prod (hT : LocTied l P AI)
     (ψ : (↥K.1 →ₐ[ℚ_[l]] ↥LL.1) → (↥(GK K) →* (↥(OL LL))ˣ))
@@ -160,15 +160,15 @@ end GlobalTheory.CrysCharJumps
 open GlobalTheory.CrysCharJumps Classical in
 
 /- English proof (translation)
-Introduce `D HW F l _ K LL hA`. Use `⟨fun a => ?_, ?_⟩` and prove the remaining obligations. Set `c : (↥K.1 →ₐ[ℚ_[l]] ↥LL.1) → ℤ` to `fun τ => if h : ∃ i, Formalism.MainNotions.tableLineDegreeTwo.Over ((HW l).W K 1 LL hA.2.2).emb i τ then a h.choose else 0`. Establish `hp` using `hasJumps_prod (D.locA l) (D.locT l) ψ (fun τ₀ => hψ τ₀) c Finset.univ`. Use `⟨∏ τ, ψ τ ^ c τ, hp.1, hp.2.1, fun i τ hi b => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hp.2.2]`. Establish `hex : ∃ i, Formalism.MainNotions.tableLineDegreeTwo.Over ((HW l).W K 1 LL hA.2.2).emb i τ` using `⟨i, hi⟩`. Establish `hc : c τ = a i`. Simplify using `only [c, dif_pos hex]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Apply `((HW l).W K 1 LL hA.2.2).emb_bij.1` to reduce the goal to its premises. Establish `h1` using `hex.choose_spec`. Unfold `Formalism.MainNotions.tableLineDegreeTwo.Over at h1 hi`. Conclude with `h1.symm.trans hi`. Simplify using `[hc]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `V _ _ _ _ _ _ _ ρ ρ' μ hρc hρ hμc hμI hρ'`. Take `⟨hμcr, hμm⟩` from `GlobalTheory.T.unramifiedChar_isCrystalline_hodgeTate_zero l (D.loc l) (D.locA l) (D.locT l) K LL μ hμc hμI`. Establish `htw : IsTwistRep μ ρ ρ'` using `⟨LinearEquiv.refl _ _, fun g x => by simp [hρ' g]⟩`. Take `⟨h1, h2⟩` from `GlobalTheory.TwistRepCrys.isCrys_and_multV_twist l (D.loc l) (D.locA l) (D.locT l) K LL V ρ V ρ' μ htw hμcr hρ`. Use `⟨h1, fun τ x => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hj : IsJumpV ((D.loc l).PD K) (charRep μ) τ 0` using `isJumpV_of_multV_ne _ τ 0 (by rw [hμm]; simp)`. Simplify using `using h2 τ x 0 hj`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CrysCharJumps.adm20_of_fonOf :
     ∀ (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW), Formalism.MainNotions.tableLineDegreeTwo.adm20 D HW F := by

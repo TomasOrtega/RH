@@ -10,9 +10,7 @@ open Formalism.MainNotions.G Formalism.MainNotions.flipOneThree Formalism.MainNo
 variable {n' : ℕ}
 
 /- English proof (translation)
-Establish `ha` using `a.isLt`. Establish `hb` using `b.isLt`. Unfold `cdist`. Use `split_ifs with h`. Rewrite using `[show b.val + n' - a.val = (b.val - a.val) + n' by omega, Nat.add_mod_right, Nat.mod_eq_of_lt (by omega)]`.
-
-Conclude with `Nat.mod_eq_of_lt (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sg_cdist (a b : Fin n') :
     cdist a b = if a.val ≤ b.val then b.val - a.val else b.val + n' - a.val := by
@@ -25,7 +23,7 @@ theorem sg_cdist (a b : Fin n') :
   · exact Nat.mod_eq_of_lt (by omega)
 
 /- English proof (translation)
-Establish `hx` using `x.isLt`. Establish `hy` using `y.isLt`. Apply `Fin.ext` to reduce the goal to its premises. Use `show (x.val + (y.val + n' - x.val) % n') % n' = y.val`. Rewrite using `[Nat.add_mod_mod, show x.val + (y.val + n' - x.val) = y.val + n' by omega, Nat.add_mod_right, Nat.mod_eq_of_lt hy]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma posAdd_cdist_eq_self (x y : Fin n') : posAdd x (cdist x y) = y := by
   have hx := x.isLt
@@ -36,9 +34,9 @@ private lemma posAdd_cdist_eq_self (x y : Fin n') : posAdd x (cdist x y) = y := 
     Nat.mod_eq_of_lt hy]
 
 /- English proof (translation)
-Take `⟨s, hs, hsd⟩` from `Finset.mem_image.1 ((Finset.mem_sort _).1 (List.get_mem (segDists TT j) i))`. Take `⟨hsT, hodd, hpos, hlt⟩` from `Finset.mem_filter.1 hs`. Establish `hp : segPos TT j i = s`. Unfold `segPos`. Rewrite using `[← hsd]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `posAdd_cdist_eq_self _ _`. Rewrite using `[hp]`. Conclude with `⟨hsT, hodd, hsd, hpos, hlt⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem sg_pos_spec (TT : Finset (Fin n')) (j : Fin (numSeg TT)) (i : Fin (segS TT j)) :
     segPos TT j i ∈ TT ∧ ¬ Even (segPos TT j i).val ∧
@@ -54,20 +52,20 @@ theorem sg_pos_spec (TT : Finset (Fin n')) (j : Fin (numSeg TT)) (i : Fin (segS 
   exact ⟨hsT, hodd, hsd, hpos, hlt⟩
 
 /- English proof (translation)
-The claim follows from `(bs_mem TT (segNext TT j)).1 (List.get_mem _ _)`.
+A detailed English derivation is pending.
 -/
 theorem sg_next_mem (TT : Finset (Fin n')) (j : Fin (numSeg TT)) :
     segNext TT j ∈ TT ∧ Even (segNext TT j).val :=
   (bs_mem TT (segNext TT j)).1 (List.get_mem _ _)
 
 /- English proof (translation)
-The claim follows from `List.nodup_iff_injective_get.1 (by unfold segDists; apply Finset.sort_nodup)`.
+A detailed English derivation is pending.
 -/
 theorem sg_dists_inj (TT : Finset (Fin n')) (j : Fin (numSeg TT)) : Function.Injective (segDists TT j).get :=
   List.nodup_iff_injective_get.1 (by unfold segDists; apply Finset.sort_nodup)
 
 /- English proof (translation)
-Introduce `i i' h`. Establish `e1` using `(sg_pos_spec TT j i).2.2.1`. Establish `e2` using `(sg_pos_spec TT j i').2.2.1`. Rewrite `e1` using `[h]`. Conclude with `sg_dists_inj TT j (e1.symm.trans e2)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sg_pos_inj (TT : Finset (Fin n')) (j : Fin (numSeg TT)) : Function.Injective (segPos TT j) := by
   intro i i' h
@@ -81,11 +79,11 @@ def sgTop (TT : Finset (Fin n')) (j : Fin (numSeg TT)) : Option (Fin (segS TT j)
   | some i => ⟨segPos TT j i, (sg_pos_spec TT j i).1⟩
 
 /- English proof (translation)
-Introduce and unpack `(_ | i) (_ | i') h`. Both sides reduce to the same expression. It suffices to derive a contradiction. Establish `h' : segNext TT j = segPos TT j i'` using `congrArg Subtype.val h`. Establish `e` using `(sg_next_mem TT j).2`.
+Assume the hypotheses and unpack their components. Both sides reduce to the same expression. It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e` using `[h']`. Conclude with `(sg_pos_spec TT j i').2.1 e`. It suffices to derive a contradiction. Establish `h' : segPos TT j i = segNext TT j` using `congrArg Subtype.val h`. Establish `e` using `(sg_next_mem TT j).2`.
+Rewrite the indicated hypotheses using the stated equalities. It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[← h']`. Conclude with `(sg_pos_spec TT j i).2.1 e`. Conclude with `congrArg some (sg_pos_inj TT j (congrArg Subtype.val h))`.
+A detailed English derivation is pending.
 -/
 theorem sgTop_inj (TT : Finset (Fin n')) (j : Fin (numSeg TT)) : Function.Injective (sgTop TT j) := by
   rintro (_ | i) (_ | i') h
@@ -107,15 +105,15 @@ def sgAll (TT : Finset (Fin n')) : (Σ j : Fin (numSeg TT), Option (Fin (segS TT
   | ⟨j, some i⟩ => ⟨segPos TT j i, (sg_pos_spec TT j i).1⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hs : segStart TT j ≠ segStart TT j'` using `fun e => hne ((bs_mono TT).injective e)`. Establish `m1` using `bs_min TT h2 j (segStart TT j') (bs_start_mem TT j').1 (bs_start_mem TT j').2 hs.symm`. Establish `m2` using `bs_min TT h2 j' (segStart TT j) (bs_start_mem TT j).1 (bs_start_mem TT j).2 hs`. Establish `hG1 : segG TT j = cdist (segStart TT j) (segNext TT j)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `segG`. Rewrite using `[if_neg (by omega)]`. Establish `hG2 : segG TT j' = cdist (segStart TT j') (segNext TT j')`. Unfold `segG`. Rewrite using `[if_neg (by omega)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `A` using `(sg_pos_spec TT j i).2.2.2.2`. Establish `B` using `(sg_pos_spec TT j' i').2.2.2.2`. Rewrite `A` using `[h, hG1]`. Rewrite `B` using `[hG2]`. Establish `X1` using `lt_of_lt_of_le A m1.2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `X2` using `lt_of_lt_of_le B m2.2`. Establish `ha` using `(segStart TT j).isLt`. Establish `hb` using `(segStart TT j').isLt`. Establish `hp` using `(segPos TT j' i').isLt`. Rewrite `X1`, `X2` using `[sg_cdist, sg_cdist]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply the tactic sequence `split_ifs at X1 X2 <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sg_seg_unique (TT : Finset (Fin n')) (h2 : 2 ≤ numSeg TT) (j j' : Fin (numSeg TT)) (i : Fin (segS TT j))
     (i' : Fin (segS TT j')) (h : segPos TT j i = segPos TT j' i') : j = j' := by
@@ -142,13 +140,13 @@ theorem sg_seg_unique (TT : Finset (Fin n')) (h2 : 2 ≤ numSeg TT) (j j' : Fin 
   split_ifs at X1 X2 <;> omega
 
 /- English proof (translation)
-Introduce and unpack `⟨j, _ | i⟩ ⟨j', _ | i'⟩ h`. Establish `h' : segStart TT j = segStart TT j'` using `congrArg Subtype.val h`. Take `rfl` from `(bs_mono TT).injective h'`. Both sides reduce to the same expression. It suffices to derive a contradiction.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Both sides reduce to the same expression. It suffices to derive a contradiction.
 
-Establish `h' : segStart TT j = segPos TT j' i'` using `congrArg Subtype.val h`. Establish `e` using `(bs_start_mem TT j).2`. Rewrite `e` using `[h']`. Conclude with `(sg_pos_spec TT j' i').2.1 e`. It suffices to derive a contradiction.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Establish `h' : segPos TT j i = segStart TT j'` using `congrArg Subtype.val h`. Establish `e` using `(bs_start_mem TT j').2`. Rewrite `e` using `[← h']`. Conclude with `(sg_pos_spec TT j i).2.1 e`. Establish `h' : segPos TT j i = segPos TT j' i'` using `congrArg Subtype.val h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `rfl` from `sg_seg_unique TT h2 j j' i i' h'`. Rewrite using `[sg_pos_inj TT j h']`.
+A detailed English derivation is pending.
 -/
 theorem sgAll_inj (TT : Finset (Fin n')) (h2 : 2 ≤ numSeg TT) : Function.Injective (sgAll TT) := by
   rintro ⟨j, _ | i⟩ ⟨j', _ | i'⟩ h
@@ -170,7 +168,7 @@ theorem sgAll_inj (TT : Finset (Fin n')) (h2 : 2 ≤ numSeg TT) : Function.Injec
     rw [sg_pos_inj TT j h']
 
 /- English proof (translation)
-Establish `hc` using `Fintype.card_le_of_injective _ (sgAll_inj TT h2)`. Simplify `hc` using `[Fintype.card_sigma]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sg_count (TT : Finset (Fin n')) (h2 : 2 ≤ numSeg TT) :
     ∑ j : Fin (numSeg TT), (segS TT j + 1) ≤ TT.card := by

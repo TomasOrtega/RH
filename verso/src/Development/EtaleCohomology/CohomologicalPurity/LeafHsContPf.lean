@@ -33,7 +33,7 @@ def LeafHsFive : Prop := A1 → B1 → LeafBd → ∀ (q : ℕ) {A B : Type} [Co
       (off (D.obj j) (I.map (s.app j).hom)) h') n i y = 0)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Mono (sch.map U.ι)`. Unfold `sch`. Use `infer_instance`.
+Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem opn_mono {X : Scheme.{0}} (U : X.Opens) : Mono (opn U).hom := by
   change Mono (sch.map U.ι)
@@ -41,7 +41,7 @@ theorem opn_mono {X : Scheme.{0}} (U : X.Opens) : Mono (opn U).hom := by
   infer_instance
 
 /- English proof (translation)
-Establish `h` using `b1 q D _ hc n i`. Conclude with `⟨fun x => h.1 x hq, fun j y hy => h.2 j y (hqj j) hy⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem spec_cont (b1 : B1) (q : ℕ) {B : Type} [CommRing B] {J : Type} [SmallCategory J] [IsFiltered J]
     (D : J ⥤ CommRingCat.{0}) (t : D ⟶ (Functor.const J).obj (CommRingCat.of B)) (hc : IsColimit (Cocone.mk _ t))
@@ -53,7 +53,7 @@ theorem spec_cont (b1 : B1) (q : ℕ) {B : Type} [CommRing B] {J : Type} [SmallC
   exact ⟨fun x => h.1 x hq, fun j y hy => h.2 j y (hqj j) hy⟩
 
 /- English proof (translation)
-Introduce `a1 a4 b1 q A B _ _ φ I hI hq J _ _ D s t hc he n i`. Conclude with `hF a1 b1 hB q φ I hq J D s t hc he i (fun m => hO a1 a4 b1 hB hE q φ I hI hq J D s t hc he m i) n`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem leafHsCont_of (hB : LeafBd) (hE : LeafExc) (hO : LeafOffCont) (hF : LeafHsFive) : LeafHsCont := by
   intro a1 a4 b1 q A B _ _ φ I hI hq J _ _ D s t hc he n i

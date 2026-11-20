@@ -9,13 +9,11 @@ open scoped InnerProductSpace ComplexOrder ContDiff
 namespace GlobalTheory.Dec
 
 /- English proof (translation)
-Take `⟨hd, hint⟩` from `h`. Rewrite using `[Submodule.dense_iff_topologicalClosure_eq_top, Submodule.topologicalClosure_eq_top_iff, Submodule.eq_bot_iff]`. Introduce `u hu`. Rewrite `hu` using `[Submodule.mem_orthogonal]`. Establish `hzero : ∀ g, ⟪u, σ g w⟫_ℂ = 0` using `fun g => inner_eq_zero_symm.mp (hu (σ g w) (Submodule.subset_span ⟨g, rfl⟩))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `key` using `(hint w u w u).2`. Establish `hfun : (fun g => ⟪u, σ g w⟫_ℂ * star ⟪u, σ g w⟫_ℂ) = fun _ => (0 : ℂ)`. Use function extensionality and compare the values at `g`. Simplify using `[hzero g]`. Rewrite `key` using `[hfun, integral_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hd' : (d : ℂ) ≠ 0` using `by exact_mod_cast hd.ne'`. Establish `hw' : ⟪w, w⟫_ℂ ≠ 0` using `inner_self_ne_zero.mpr hw`. Establish `huu : ⟪u, u⟫_ℂ = 0`. Break down `div_eq_zero_iff.mp key.symm with h1 | h1` into its components or cases. Conclude with `(mul_eq_zero.mp h1).resolve_left hw'`.
-
-Conclude with `absurd h1 hd'`. Conclude with `inner_self_eq_zero.mp huu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem IsFdegG.dense_span_orbit {G : Type} [MeasurableSpace G] {μ : Measure G} {H : Type} [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] [CompleteSpace H] {σ : G → (H →L[ℂ] H)} {d : ℝ} (h : IsFdegG μ σ d)
@@ -43,11 +41,11 @@ theorem IsFdegG.dense_span_orbit {G : Type} [MeasurableSpace G] {μ : Measure G}
   exact inner_self_eq_zero.mp huu
 
 /- English proof (translation)
-Introduce `G _ μ H _ _ _ σ d h`. Use `⟨?_, fun w hw => IsFdegG.dense_span_orbit h w hw⟩` and prove the remaining obligations. Introduce `S hS hinv`. Distinguish the cases in `hbot : S = ⊥`. Conclude with `Or.inl hbot`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Prove the first alternative.
 
-Use `right`. Take `⟨w, hwS, hw⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hbot`. Establish `hsub : Submodule.span ℂ (Set.range fun g => σ g w) ≤ S`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨g, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `hinv g w hwS`. Establish `hcl : closure ((Submodule.span ℂ (Set.range fun g => σ g w) : Submodule ℂ H) : Set H) ⊆ (S : Set H)` using `closure_minimal (fun y hy => hsub hy) hS`. Rewrite using `[Submodule.eq_top_iff']`. Introduce `x`. Conclude with `hcl (by rw [(IsFdegG.dense_span_orbit h w hw).closure_eq]; exact Set.mem_univ x)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isIrr_and_dense_of_isFdegG : ∀ (G : Type) [MeasurableSpace G] (μ : Measure G) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (σ : G → (H →L[ℂ] H)) (d : ℝ), IsFdegG μ σ d → IsIrr σ ∧ ∀ w : H, w ≠ 0 → Dense (Submodule.span ℂ (Set.range fun g => σ g w) : Set H) := by
   intro G _ μ H _ _ _ σ d h

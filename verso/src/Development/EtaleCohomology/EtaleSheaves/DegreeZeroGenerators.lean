@@ -17,11 +17,11 @@ def gen {B : Scheme.{0}} {q : ℕ} (U : B.Etale) : ((F0 B q).obj U).obj.obj (op 
   (toSheafify (EtTop B) (P0 B q U)).app (op U) (ModuleCat.freeMk (ULift.up (𝟙 U)))
 
 /- English proof (translation)
-Establish `h1` using `ConcreteCategory.congr_hom (NatTrans.congr_app (toSheafify_naturality (EtTop B) (((Functor.whiskeringRight B.Etaleᵒᵖ (Type 0) (ModuleCat.{1} (Rq q))).obj (Gq q)).map (yoneda.map a))) (op U')) (ModuleCat.freeMk (ULift.up (𝟙 U')))`. Establish `h2` using `ConcreteCategory.congr_hom ((toSheafify (EtTop B) (P0 B q U)).naturality a.op) (ModuleCat.freeMk (ULift.up (𝟙 U)))`. Simplify using `only [NatTrans.comp_app, ConcreteCategory.comp_apply] at h1 h2`. Unfold `gen`. Use `Eq.trans ?_ (h1.symm.trans ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Use `Eq.trans ?_ h2` and prove the remaining obligations. Use `congr 1`. Simplify using `only [Gq, Functor.comp_map]`. Use `erw [ModuleCat.free_map_apply, ModuleCat.free_map_apply]`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `show ModuleCat.freeMk (ULift.up (𝟙 U' ≫ a)) = ModuleCat.freeMk (ULift.up (a ≫ 𝟙 U))`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem gen_nat {B : Scheme.{0}} {q : ℕ} {U U' : B.Etale} (a : U' ⟶ U) :
     ((F0 B q).map a).hom.app (op U') (gen U') = ((F0 B q).obj U).obj.map a.op (gen U) := by
@@ -42,13 +42,13 @@ theorem gen_nat {B : Scheme.{0}} {q : ℕ} {U U' : B.Etale} (a : U' ⟶ U) :
     simp
 
 /- English proof (translation)
-Set `φ : P0 B q U ⟶ H.obj` to `{ app := fun W => ModuleCat.freeDesc (TypeCat.ofHom (fun f : ULift.{1} (W.unop ⟶ U) => H.obj.map f.down.op x)) naturality := by`. Introduce `W W' f`. Apply `ModuleCat.free_hom_ext` to reduce the goal to its premises. Introduce `y`. Simplify using `only [Gq, ConcreteCategory.comp_apply, Functor.comp_map]`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `erw [ModuleCat.free_map_apply, ModuleCat.freeDesc_apply, ModuleCat.freeDesc_apply]`. Use `show H.obj.map (f.unop ≫ y.down).op x = H.obj.map f (H.obj.map y.down.op x)`. Simplify using `}`. Use `⟨((sheafificationAdjunction (EtTop B) _).homEquiv (P0 B q U) H).symm φ, ?_⟩` and prove the remaining obligations. Establish `e` using `((sheafificationAdjunction (EtTop B) _).homEquiv (P0 B q U) H).apply_symm_apply φ`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e` using `[Adjunction.homEquiv_unit]`. Establish `e2` using `ConcreteCategory.congr_hom (NatTrans.congr_app e (op U)) (ModuleCat.freeMk (ULift.up (𝟙 U)))`. Simplify using `only [NatTrans.comp_app, ConcreteCategory.comp_apply] at e2`. Unfold `gen`. Use `Eq.trans ?_ (e2.trans ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Simplify using `only [φ] erw [ModuleCat.freeDesc_apply] show H.obj.map (𝟙 U).op x = x`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem free_etale_sheaf_zmod_exists_hom_sending_generator {B : Scheme.{0}} {q : ℕ} (H : SShv B q) (U : B.Etale) (x : H.obj.obj (op U)) :
     ∃ t : (F0 B q).obj U ⟶ H, t.hom.app (op U) (gen U) = x := by
@@ -76,17 +76,15 @@ theorem free_etale_sheaf_zmod_exists_hom_sending_generator {B : Scheme.{0}} {q :
     simp
 
 /- English proof (translation)
-Introduce `B q H H' g h`. Apply `(sheafToPresheaf (EtTop B) (ModuleCat.{1} (Rq q))).map_injective` to reduce the goal to its premises. Rewrite using `[Functor.map_zero]`. Apply `NatTrans.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `U`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Proceed by induction on `U with | op U => ?_`. Apply `ModuleCat.hom_ext` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Take `⟨t, ht⟩` from `free_etale_sheaf_zmod_exists_hom_sending_generator H U x`.
+Proceed by induction. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨S, hS, hP⟩` from `h U t`. Establish `key : ∀ (U' : B.Etale) (a : U' ⟶ U), S a → H'.obj.map a.op (g.hom.app (op U) x) = H'.obj.map a.op 0`. Introduce `U' a ha`. Establish `h3` using `congrArg (fun m : (F0 B q).obj U' ⟶ H' => ((sheafToPresheaf (EtTop B) (ModuleCat.{1} (Rq q))).map m).app (op U') (gen U')) (hP U' a ha)`. Simplify using `only [Functor.map_comp, Functor.map_zero, NatTrans.comp_app, NatTrans.app_zero, ConcreteCategory.comp_apply] at h3`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_zero, ← ht]`. Establish `n` using `ConcreteCategory.congr_hom (g.hom.naturality a.op) (t.hom.app (op U) (gen U))`. Simplify using `only [ConcreteCategory.comp_apply] at n`. Rewrite using `[← n]`. Establish `n2` using `ConcreteCategory.congr_hom (t.hom.naturality a.op) (gen U)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [ConcreteCategory.comp_apply] at n2`. Rewrite using `[← n2, ← gen_nat a]`. Conclude with `h3`. Use `Sheaf.isSeparated H' U S hS _ 0 key` as an intermediate fact. Simplify using `only [NatTrans.app_zero]`.
-
-Conclude with `this`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem free_etale_sheaf_zmod_representable_generates : EtaleSheafMapZeroOfLocallyZeroOnFreeSheafGenerators := by
   intro B q H H' g h

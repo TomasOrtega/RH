@@ -3,9 +3,9 @@ import Mathlib
 namespace GlobalTheory.NormPowerTwoUnity
 
 /- English proof (translation)
-Establish `e : w ^ 2 - 1 = (w + 1) * (w - 1)` using `by ring`. Establish `h2 : ‖(2 : ℂ)‖ ≤ ‖w + 1‖ + ‖w - 1‖`. Establish `: (2 : ℂ) = (w + 1) - (w - 1)` using `by ring`. Rewrite using `[this]`. Conclude with `norm_sub_le _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : ‖(2 : ℂ)‖ = 2` using `by simp`. Rewrite using `[e, norm_mul]`. Apply `mul_le_mul_of_nonneg_right _ (norm_nonneg _)` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma norm_sq_sub_one_ge (w : ℂ) (h : ‖w - 1‖ < (1 / 2 : ℝ)) :
     (3 / 2 : ℝ) * ‖w - 1‖ ≤ ‖w ^ 2 - 1‖ := by
@@ -20,11 +20,11 @@ lemma norm_sq_sub_one_ge (w : ℂ) (h : ‖w - 1‖ < (1 / 2 : ℝ)) :
   linarith
 
 /- English proof (translation)
-Establish `key : ∀ m : ℕ, (3 / 2 : ℝ) ^ m * ‖z - 1‖ ≤ ‖z ^ (2 : ℕ) ^ m - (1 : ℂ)‖`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ n ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `h1` using `norm_sq_sub_one_ge _ (h n)`. Rewrite `h1` using `[← pow_mul, ← pow_succ]`. Combine the equalities or inequalities in the displayed calculation. Assume the negation of the conclusion as `hz`. Establish `hpos : 0 < ‖z - 1‖` using `norm_pos_iff.mpr (sub_ne_zero.mpr hz)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Take `⟨m, hm⟩` from `pow_unbounded_of_one_lt ((1 / 2 : ℝ) / ‖z - 1‖) (show (1 : ℝ) < 3 / 2 by norm_num)`. Rewrite `hm` using `[div_lt_iff₀ hpos]`. Use `key m` as an intermediate fact. Use `h m` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem eq_one_of_norm_pow_two_pow_sub_one_lt (z : ℂ)
     (h : ∀ (m : ℕ), ‖z ^ (2 : ℕ) ^ m - (1 : ℂ)‖ < (1 / 2 : ℝ)) : z = (1 : ℂ) := by

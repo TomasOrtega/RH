@@ -10,9 +10,9 @@ open scoped ComplexConjugate Real
 namespace GlobalTheory.Phase
 
 /- English proof (translation)
-Take `⟨hd, hs, -⟩` from `GlobalTheory.T.symplecticSiegelAction_mem_upperHalfSpace_and_cocycle ι σ hσ _ I_mem_siegel`. Use `GlobalTheory.T.eq_of_siegelThetaSeriesRational_eq κ ι ψ ψ' hψ hψ' _ hs fun ζ => ?_` and prove the remaining obligations. Establish `e1` using `h _ I_mem_siegel fun k => ζ k ᵥ* spDen σ (I • 1)`. Establish `e2` using `h' _ I_mem_siegel fun k => ζ k ᵥ* spDen σ (I • 1)`. Establish `e` using `e1.trans e2.symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `e` using `only [Matrix.vecMul_vecMul, Matrix.mul_nonsing_inv _ (Ne.isUnit hd), Matrix.vecMul_one]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem transS_unique {κ ι : Type} [Fintype κ] [Fintype ι] [DecidableEq ι]
     {σ : Matrix (ι ⊕ ι) (ι ⊕ ι) ℚ} (hσ : σ ∈ Matrix.symplecticGroup ι ℚ)
@@ -27,9 +27,9 @@ theorem transS_unique {κ ι : Type} [Fintype κ] [Fintype ι] [DecidableEq ι]
     Matrix.vecMul_one] using e
 
 /- English proof (translation)
-Introduce `κ ι _ _ _ ⟨p, hp⟩ φ ψ ⟨R, hR, h⟩ hψ ht y`. Establish `e` using `transS_unique (SymplecticGroup.J_mem ι ℚ) hψ ⟨R, hR, FourierJ.ft_level hR h _⟩ ht (FourierJ.trans_J hp hR h)`. Use `⟨I ^ (Fintype.card ι * p), y, ⟨4, by norm_num, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← pow_mul, mul_comm, pow_mul]`. Simplify using `[Complex.I_pow_four]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Simplify using `only [FourierJ.ft, FourierJ.pr, FourierJ.ech, chr]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem val_trans_J : ∀ (κ ι : Type) [Fintype κ] [Fintype ι] [DecidableEq ι],
     Even (Fintype.card κ) → ∀ φ ψ : Matrix κ ι ℚ → ℂ, IsSB φ → IsSB ψ →

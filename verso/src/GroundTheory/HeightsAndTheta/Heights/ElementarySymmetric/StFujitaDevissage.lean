@@ -24,9 +24,9 @@ def FujitaDevissage.Statement : Prop :=
 namespace FujitaDevissage
 
 /- English proof (translation)
-Establish `hempty : IsEmpty (KH.Cell Unit pointIdx i)`. Use `⟨fun I => ?_⟩` and prove the remaining obligations. Establish `h : ∑ k, ((I.1 k).card - 1) = 0` using `Finset.sum_eq_zero fun k _ => Nat.sub_eq_zero_of_le (Finset.card_le_one_of_subsingleton _)`. Use `I.2.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `: Subsingleton (KH.CechC ℚ pointIdx M i)` using `⟨fun f g => funext fun I => (IsEmpty.false I).elim⟩`. Use `⟨fun x y => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Rewrite using `[Subsingleton.elim x y]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem cechHc_point_subsingleton {M : Type} [AddCommGroup M] [Module (MRingOver ℚ pointIdx) M] [Module ℚ M]
     [IsScalarTower ℚ (MRingOver ℚ pointIdx) M] (𝓜 : (Unit → ℤ) → Submodule ℚ M) (d : Unit → ℤ) (i : ℕ)
@@ -46,7 +46,7 @@ theorem cechHc_point_subsingleton {M : Type} [AddCommGroup M] [Module (MRingOver
 end FujitaDevissage
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨inferInstance, fun _ _ _ _ => ⟨0, fun _ _ _ _ i hi => FujitaDevissage.cechHc_point_subsingleton _ _ i hi⟩, bot_isMultiProjPrime_point, inferInstance, QuotPartGraded.proof ℚ Unit pointIdx ⊥ bot_isMultiProjPrime_point.2.1, le_annihilator_quotient _⟩`.
+Supply the required witnesses or components.
 -/
 theorem FujitaDevissage.hyps_inhabited :
     IsNoetherianRing ℚ ∧

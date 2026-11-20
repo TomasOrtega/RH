@@ -14,21 +14,21 @@ open GlobalTheory GlobalTheory.CechPic GlobalTheory.CxPts GlobalTheory.Cartier G
 namespace GlobalTheory.MixHt
 
 /- English proof (translation)
-Introduce `hI hR k _ Y _ _ q hq e hd T hT N L r hr r' hr'`. Use `haveI : IsNoetherian Y := hq.isNoetherian`. Establish `step1 : ∀ (P : HermLB q) (t t' : P.B.Sec) (ht : genericPoint Y ∈ nonzeroLocus t) (ht' : genericPoint Y ∈ nonzeroLocus t'), recVal (T (e + 1) L) L P (isRatSec_ratOfSec t ht) = recVal (T (e + 1) L) L P (isRatSec_ratOfSec t' ht')`. Introduce `P t t' ht ht'`. Establish `hS` using `(GlobalTheory.ZH.finite_notMem_coheight_le_one (nonzeroLocus t) ⟨_, ht⟩).union (GlobalTheory.ZH.finite_notMem_coheight_le_one (nonzeroLocus t') ⟨_, ht'⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨A, s, u, hs, hu⟩` from `GlobalTheory.T.exists_tensor_sections_nonvanishing_finite_set k Y q hq (L 0) _ (hS.insert (genericPoint Y))`. Establish `hgs : genericPoint Y ∈ nonzeroLocus s` using `hs (Set.mem_insert _ _)`. Establish `hgu : genericPoint Y ∈ nonzeroLocus u` using `hu (Set.mem_insert _ _)`. Establish `cs : ∀ z : Y, Order.coheight z = 1 → z ∈ nonzeroLocus t ∨ z ∈ nonzeroLocus s` using `fun z hz => by`. Distinguish the cases in `h : z ∈ nonzeroLocus t`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Prove the first alternative.
 
-Conclude with `Or.inl h`. Conclude with `Or.inr (hs (Set.mem_insert_of_mem _ (Or.inl ⟨h, hz.le⟩)))`. Establish `cs' : ∀ z : Y, Order.coheight z = 1 → z ∈ nonzeroLocus t' ∨ z ∈ nonzeroLocus s` using `fun z hz => by`. Distinguish the cases in `h : z ∈ nonzeroLocus t'`. Conclude with `Or.inl h`.
+Prove the second alternative. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Prove the first alternative. Prove the second alternative.
 
-Conclude with `Or.inr (hs (Set.mem_insert_of_mem _ (Or.inr ⟨h, hz.le⟩)))`. Establish `cu : ∀ z : Y, Order.coheight z = 1 → z ∈ nonzeroLocus t ∨ z ∈ nonzeroLocus u` using `fun z hz => by`. Distinguish the cases in `h : z ∈ nonzeroLocus t`. Conclude with `Or.inl h`. Conclude with `Or.inr (hu (Set.mem_insert_of_mem _ (Or.inl ⟨h, hz.le⟩)))`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Prove the first alternative. Prove the second alternative. Establish an intermediate fact.
 
-Establish `cu' : ∀ z : Y, Order.coheight z = 1 → z ∈ nonzeroLocus t' ∨ z ∈ nonzeroLocus u` using `fun z hz => by`. Distinguish the cases in `h : z ∈ nonzeroLocus t'`. Conclude with `Or.inl h`. Conclude with `Or.inr (hu (Set.mem_insert_of_mem _ (Or.inr ⟨h, hz.le⟩)))`. Establish `r1` using `GlobalTheory.T.inductiveMixedHeight_reciprocity_two_sections hR k Y q hq e hd T hT P ((L 0).tens A) (Fin.tail L) t s ht hgs cs`.
+Consider separately whether the proposition holds or fails. Prove the first alternative. Prove the second alternative. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `r1'` using `GlobalTheory.T.inductiveMixedHeight_reciprocity_two_sections hR k Y q hq e hd T hT P ((L 0).tens A) (Fin.tail L) t' s ht' hgs cs'`. Establish `r2` using `GlobalTheory.T.inductiveMixedHeight_reciprocity_two_sections hR k Y q hq e hd T hT P A (Fin.tail L) t u ht hgu cu`. Establish `r2'` using `GlobalTheory.T.inductiveMixedHeight_reciprocity_two_sections hR k Y q hq e hd T hT P A (Fin.tail L) t' u ht' hgu cu'`. Establish `a1` using `GlobalTheory.T.inductiveMixedHeight_tensor_additive hI k Y q hq e hd T hT P _ (isRatSec_ratOfSec t ht) (L 0) A (Fin.tail L)`. Establish `a1'` using `GlobalTheory.T.inductiveMixedHeight_tensor_additive hI k Y q hq e hd T hT P _ (isRatSec_ratOfSec t' ht') (L 0) A (Fin.tail L)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Fin.cons_self_tail L]`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨A, u, t, t', hu, ht, ht', hrel⟩` from `GlobalTheory.T.exists_common_denominator_rational_sections k Y q hq N r r' hr hr'`. Establish `v1` using `GlobalTheory.T.inductiveArakelovFormula_rhs_tensor_additive hI k Y q hq (e + 1) hd (T (e + 1) L) L N A r hr _ (isRatSec_ratOfSec u hu) _ (isRatSec_ratOfSec t ht) fun i j hi hj => (hrel i j hi hj).1`. Establish `v2` using `GlobalTheory.T.inductiveArakelovFormula_rhs_tensor_additive hI k Y q hq (e + 1) hd (T (e + 1) L) L N A r' hr' _ (isRatSec_ratOfSec u hu) _ (isRatSec_ratOfSec t' ht') fun i j hi hj => (hrel i j hi hj).2`.
+Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s1` using `step1 (N.tens A) t t' ht ht'`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem recVal_indep_sec : ArchInteg → ArchRecip → ∀ (k : Type) [CommRing k] (Y : Scheme.{0}) [IsIntegral Y]
     [IsLocallyNoetherian Y] (q : Y ⟶ Sp k), IsAmb q → ∀ e : ℕ, topologicalKrullDim Y = (e + 1 + 1 : ℕ) → ∀ T,

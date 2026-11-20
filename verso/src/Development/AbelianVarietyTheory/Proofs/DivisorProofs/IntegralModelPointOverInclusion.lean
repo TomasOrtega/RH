@@ -18,19 +18,19 @@ open GlobalTheory.FlatModel
 namespace GlobalTheory.GenChartAlg
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l l' Xo Xo' c c' W Y r hle hr A _ ξ β hβ L _ io yL hyL`. Take `⟨f', hf'⟩ : ∃ f' : c'.F →+* L, yL ≫ pullback.snd _ _ = spMap f'` from `⟨(Spec.preimage (yL ≫ pullback.snd _ _)).hom, by simp [spMap]⟩`. Use `letI alg : Algebra c.F L := (f'.comp (IntermediateField.inclusion hle).toRingHom).toAlgebra`. Establish `hsnd : yL ≫ r ≫ pullback.snd _ _ = spMap (algebraMap c.F L)`. Rewrite using `[hr, ← Category.assoc, hf']`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression. Establish `e1 : yL ≫ Y.j ≫ Y.s = spMap (io.comp β)`. Rewrite using `[← Category.assoc, hyL, Category.assoc, hβ]`. Simplify using `only [spMap, ← Spec.map_comp]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Establish `e2 : yL ≫ Y.j ≫ Y.s = spMap (f'.comp (c'.V W).subtype)`. Simplify using `only [Model.j, Category.assoc]`. Rewrite using `[pullback.condition, ← Category.assoc Y.jQ, Y.jQ_over, ← Category.assoc, hf']`. Simplify using `only [spMap, ← Spec.map_comp]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Establish `key : f'.comp (c'.V W).subtype = io.comp β`. Establish `h` using `e2.symm.trans e1`. Simplify using `only [spMap] at h`. Establish `h2` using `Spec.map_injective h`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `congrArg CommRingCat.Hom.hom h2`. Use `⟨alg, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Category.assoc, pullback.condition]`. Rewrite using `[← Category.assoc r, ← Category.assoc yL, hsnd]`. Simplify using `only [sOf, spMap, ← Spec.map_comp]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Introduce `z hz`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[GlobalTheory.AllWt.ptF, pullback.lift_fst, hz, Category.assoc]`. Rewrite using `[GlobalTheory.AllWt.ptF, pullback.lift_snd, Category.assoc, hsnd]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `σ a`. Conclude with `RingHom.congr_fun key (embV c' W σ a)`.
+A detailed English derivation is pending.
 -/
 theorem exists_algebra_of_genPt : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H)
     (l l' : Level H) (Xo : Moduli Dw l) (Xo' : Moduli Dw l') (c : Coeff l) (c' : Coeff l') (W : ValuationSubring ℂ)

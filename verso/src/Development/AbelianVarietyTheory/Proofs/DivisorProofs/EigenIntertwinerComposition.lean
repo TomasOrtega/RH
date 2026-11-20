@@ -15,21 +15,19 @@ noncomputable section
 namespace GlobalTheory.ThKEvAdm
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d n₁ d₁ X W X₁ W₁ M M₁ ι ι' I e hM hM₁ hev l hl g hg`. Take `⟨ei, ev, -, hvac, hpure⟩` from `hev.loc`. Take `⟨Bx, hBo, hBs, hBe, hinv⟩` from `GlobalTheory.T.exists_open_subgroups_integers F _ g hg`. Take `⟨R, hR⟩` from `GlobalTheory.T.scaling_open_subgroups_finite F _ Bx hBo hBs hBe g hg.2 hinv`. Set `φ : (Fin n × Fin d → FiniteAdeleRing (𝓞 F) F) → ∀ v : HeightOneSpectrum (𝓞 F), (Fin n × Fin d → v.adicCompletion F) → ℂ` to `fun r v => Set.indicator {x : Fin n × Fin d → v.adicCompletion F | ∀ i, x i - evalV F v (r i) ∈ Bx v} 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hφSB : ∀ r v, φ r v ∈ SB _` using `fun r => (GlobalTheory.T.translate_open_subgroups_finite F _ Bx hBo hBs hBe r).1`. Establish `hφvac : ∀ r, ∀ᶠ v in cofinite, φ r v = M.vac v` using `fun r => by filter_upwards [(GlobalTheory.T.translate_open_subgroups_finite F _ Bx hBo hBs hBe r).2, hM.std] with v h1 h2`. Conclude with `h1.trans h2.symm`. Set `ψ : (Fin n × Fin d → FiniteAdeleRing (𝓞 F) F) → ∀ v : HeightOneSpectrum (𝓞 F), (Fin n₁ × Fin d₁ → v.adicCompletion F) → ℂ` to `fun r v => ev v (φ r v)`. Establish `hψSB : ∀ r v, ψ r v ∈ SB _` using `fun r v => by`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← (hvac v).2]`. Conclude with `Submodule.mem_map_of_mem (hφSB r v)`. Establish `hψint : ∀ r, ∀ᶠ v in cofinite, ψ r v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1` using `fun r => by filter_upwards [hφvac r, hM₁.std] with v h1 h2 show ev v (φ r v) = _`. Rewrite using `[h1, (hvac v).1, h2]`. Set `g' : (Fin n × Fin d → FiniteAdeleRing (𝓞 F) F) → (Fin n₁ × Fin d₁ → FiniteAdeleRing (𝓞 F) F) → ℂ` to `fun r y => ∏ᶠ v, ψ r v fun i => evalV F v (y i)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg'SB : ∀ r, g' r ∈ SB _` using `fun r => GlobalTheory.T.restricted_product_mem_schwartz F _ (ψ r) (hψSB r) (hψint r)`. Establish `hT : ∀ r, ∃ T : SchwartzMap (Fin n₁ × Fin d₁ → mixedEmbedding.mixedSpace F) ℂ →L[ℂ] ℂ, ∀ f : SchwartzMap (Fin n₁ × Fin d₁ → mixedEmbedding.mixedSpace F) ℂ, l (pureA F f (g' r)) = T f` using `fun r => hl (g' r) (hg'SB r)`. Use `choose T hT using hT`. Establish `key : ∀ f : SInf F (Fin n × Fin d), pureA F f g = ∑ r ∈ R, g r • pure f (φ r)`. Introduce `f`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `x`. Rewrite using `[Finset.sum_apply]`. Use `conv_lhs => rw [hR]`. Simplify using `only [pureA, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_left_comm]`. Both sides reduce to the same expression. Establish `key2 : ∀ (f : SInf F (Fin n₁ × Fin d₁)) r, pure f (ψ r) = pureA F f (g' r)` using `fun f r => rfl`. Use `⟨∑ r ∈ R, g r • (T r).comp ei, fun f => ?_⟩` and prove the remaining obligations. Establish `hL : l (e (pureA F (⇑f) g)) = ∑ r ∈ R, g r * T r (ei f)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, map_smul, hpure f (φ r) (hφSB r) (hφvac r), key2, hT, smul_eq_mul]`. Rewrite using `[LinearMap.comp_apply, hL, ContinuousLinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations.
-
-Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem comp_mem_adm : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d n₁ d₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (X₁ : Spc F E n₁) (W₁ : Spc F E d₁) (M : Model σ X W) (M₁ : Model σ X₁ W₁) (ι : Matrix (Fin n) (Fin n₁) E) (ι' : Matrix (Fin d) (Fin d₁) E) (I : Set (Matrix (Fin n) (Fin d) (AE F E))) (e : Fn F n d →ₗ[ℂ] Fn F n₁ d₁), M.IsGood B.ψ → M₁.IsGood B.ψ → IsEv B M M₁ ι ι' I e → ∀ l ∈ (adeleClass F).adm (Fin n₁ × Fin d₁), l ∘ₗ e ∈ (adeleClass F).adm (Fin n × Fin d) := by
   intro F E _ _ _ _ _ σ B n d n₁ d₁ X W X₁ W₁ M M₁ ι ι' I e hM hM₁ hev l hl g hg

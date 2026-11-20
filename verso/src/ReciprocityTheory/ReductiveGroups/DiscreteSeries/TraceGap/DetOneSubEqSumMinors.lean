@@ -11,11 +11,11 @@ namespace ReciprocityTheory.ChartRestriction.DS.TRGap
 variable {n : ℕ} {ε : Fin n → Bool}
 
 /- English proof (translation)
-Establish `e : Matrix.det (1 - A) = Matrix.detRowAlternating ((fun i => (-A) i) + (fun i => (1 : Matrix ι ι ℂ) i))`. Use `congrArg Matrix.detRowAlternating ?_` and prove the remaining obligations. Use function extensionality and compare the values at `i j`. Simplify using `[sub_eq_neg_add]`. Rewrite using `[e, AlternatingMap.map_add_univ]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Use `(Matrix.det_piecewise_one_eq_submatrix_det (-A) s).trans ?_` and prove the remaining obligations. Establish `hn : (-A).submatrix (Subtype.val : s → ι) (Subtype.val : s → ι) = -(A.submatrix (Subtype.val : s → ι) (Subtype.val : s → ι))`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[hn, Matrix.det_neg, Fintype.card_coe]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem det_one_sub_eq_sum_minors {ι : Type*} [Fintype ι] [DecidableEq ι] (A : Matrix ι ι ℂ) :
     (1 - A).det =
@@ -35,7 +35,7 @@ theorem det_one_sub_eq_sum_minors {ι : Type*} [Fintype ι] [DecidableEq ι] (A 
   rw [hn, Matrix.det_neg, Fintype.card_coe]
 
 /- English proof (translation)
-Establish `h1 : (fockBasis n).repr (ExteriorAlgebra.ιMulti ℂ S.card v) S = (((Pi.basisFun ℂ (Fin n × Fin n)).reindex finProdFinEquiv).exteriorPower S.card).repr (exteriorPower.ιMulti ℂ S.card v) (Set.powersetCard.ofCard (rfl : S.card = S.card))`. Rewrite using `[fockBasis, Module.Basis.ExteriorAlgebra, Module.Basis.repr_reindex_apply, Set.powersetCard.prodEquiv_symm_apply]`. Conclude with `DirectSum.IsInternal.collectedBasis_repr_of_mem _ _ (exteriorPower.ιMulti ℂ S.card v).2`. Rewrite using `[h1, exteriorPower.basis_repr_apply, exteriorPower.ιMultiDual_apply_ιMulti]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem fock_repr_ιMulti (S : Finset (Fin (n * n))) (v : Fin S.card → (Fin n × Fin n → ℂ)) :
     (fockBasis n).repr (ExteriorAlgebra.ιMulti ℂ S.card v) S =
@@ -50,7 +50,7 @@ theorem fock_repr_ιMulti (S : Finset (Fin (n * n))) (v : Fin S.card → (Fin n 
   congr 1
 
 /- English proof (translation)
-Rewrite using `[ffMat, LinearMap.toMatrix_apply, AlgHom.toLinearMap_apply, fockBasis_eq, ff, ExteriorAlgebra.map_apply_ιMulti, fock_repr_ιMulti, ← Matrix.det_transpose]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `[adPhys, Matrix.mulVec, dotProduct, Pi.single_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem ffMat_diag_det (k : Matrix (Fin n) (Fin n) ℂ) (S : Finset (Fin (n * n))) :
     ffMat ε k S S = (Matrix.of fun i j : Fin S.card =>
@@ -66,15 +66,13 @@ def physEmb (ε : Fin n → Bool) : {x : Fin n × Fin n // IsPhys ε x} ↪ Fin 
   ⟨fun x => finProdFinEquiv x.1, fun _ _ h => Subtype.ext (finProdFinEquiv.injective h)⟩
 
 /- English proof (translation)
-Use `set S := s.map (physEmb ε) with hS`. Rewrite using `[ffMat_diag_det]`. Establish `hmem : ∀ i, ∃ x ∈ s, physEmb ε x = S.orderEmbOfFin rfl i` using `fun i => Finset.mem_map.1 (S.orderEmbOfFin_mem rfl i)`. Set `e : Fin S.card → s` to `fun i => ⟨(hmem i).choose, (hmem i).choose_spec.1⟩`. Establish `he : ∀ i, (((e i : {x : Fin n × Fin n // IsPhys ε x}) : Fin n × Fin n)) = finProdFinEquiv.symm (S.orderEmbOfFin rfl i)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Rewrite using `[← (hmem i).choose_spec.2]`. Conclude with `(finProdFinEquiv.symm_apply_apply _).symm`. Establish `hp : ∀ i, IsPhys ε (finProdFinEquiv.symm (S.orderEmbOfFin rfl i))` using `fun i => he i ▸ (e i : {x : Fin n × Fin n // IsPhys ε x}).2`. Establish `hinj : Function.Injective e`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i j hij`. Establish `h1` using `he i`. Rewrite `h1` using `[hij, he j]`. Conclude with `(S.orderEmbOfFin rfl).injective (finProdFinEquiv.symm.injective h1.symm)`. Establish `hcard : Fintype.card (Fin S.card) = Fintype.card s` using `by simp [S]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Rewrite using `[← Matrix.det_submatrix_equiv_self (Equiv.ofBijective e ((Fintype.bijective_iff_injective_and_card e).2 ⟨hinj, hcard⟩))]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `only [Matrix.submatrix_apply, Matrix.of_apply, Equiv.ofBijective_apply]`. Rewrite using `[he i, he j]`.
-
-Simplify using `only [adMat, if_pos (hp i), if_pos (hp j)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ffMat_map_physEmb (k : Matrix (Fin n) (Fin n) ℂ) (s : Finset {x : Fin n × Fin n // IsPhys ε x}) :
     ffMat ε k (s.map (physEmb ε)) (s.map (physEmb ε)) =
@@ -108,17 +106,15 @@ theorem ffMat_map_physEmb (k : Matrix (Fin n) (Fin n) ℂ) (s : Finset {x : Fin 
   simp only [adMat, if_pos (hp i), if_pos (hp j)]
 
 /- English proof (translation)
-Establish `h1 : physDet ε k = (1 - Matrix.of fun x y : {x : Fin n × Fin n // IsPhys ε x} => k x.1.1 y.1.1 * star (k x.1.2 y.1.2)).det`. Rewrite using `[physDet]`. Use `congr 1`. Rewrite using `[h1, det_one_sub_eq_sum_minors, strPhys]`. Use `symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation.
 
-Use `Finset.sum_bij (fun s _ => s.map (physEmb ε)) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `s _`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, IsPhysSet]`. Introduce `m hm`. Take `⟨x, _, rfl⟩` from `Finset.mem_map.1 hm`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `show IsPhys ε (finProdFinEquiv.symm (finProdFinEquiv x.1))`. Rewrite using `[Equiv.symm_apply_apply]`. Conclude with `x.2`. Introduce `s _ t _ h`. Conclude with `Finset.map_injective _ h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `S hS`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hS`. Use `⟨Finset.univ.filter (fun x => physEmb ε x ∈ S), Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Use extensionality with `m`. Simplify using `only [Finset.mem_map, Finset.mem_filter, Finset.mem_univ, true_and]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `hx`. Introduce `hm`. Use `⟨⟨finProdFinEquiv.symm m, hS m hm⟩, ?_, finProdFinEquiv.apply_symm_apply m⟩` and prove the remaining obligations.
-
-Use `show finProdFinEquiv (finProdFinEquiv.symm m) ∈ S`. Rewrite using `[Equiv.apply_symm_apply]`. Conclude with `hm`. Introduce `s _`. Rewrite using `[ffMat_map_physEmb, Finset.card_map]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem strPhys_eq_physDet (k : Matrix (Fin n) (Fin n) ℂ) : strPhys ε k = physDet ε k := by
   classical

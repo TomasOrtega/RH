@@ -15,13 +15,11 @@ variable {V V' : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module
   {S : Type} [Fintype S] [DecidableEq S]
 
 /- English proof (translation)
-Establish `e1 : a.1 * b.1 = 1` using `congrArg Prod.fst hab`. Establish `e2 : b'.1 * a'.1 = 1` using `congrArg Prod.fst hba'`. Establish `e3 : a.2.unop * b.2.unop = 1` using `congrArg (fun x : Pr V => x.2.unop) hba`. Establish `e4 : b'.2.unop * a'.2.unop = 1` using `congrArg (fun x : Pr V' => x.2.unop) hab'`. Use `⟨LinearMap.ext fun v => ?_, LinearMap.ext fun v => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `i1 : a.1 (b.1 v) = v` using `by simpa using LinearMap.congr_fun e1 v`. Establish `i2 : b'.1 (a'.1 (T (b.1 v))) = T (b.1 v)` using `by simpa using LinearMap.congr_fun e2 (T (b.1 v))`. Establish `i3 : a'.1 (T (b.1 v)) = T (a.1 (b.1 v))` using `LinearMap.congr_fun h.1 (b.1 v)`. Use `show b'.1 (T v) = T (b.1 v)`. Rewrite using `[← i2, i3, i1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `i1 : a.2.unop (b.2.unop v) = v` using `by simpa using LinearMap.congr_fun e3 v`. Establish `i2 : b'.2.unop (a'.2.unop (T (b.2.unop v))) = T (b.2.unop v)`. Simplify using `using LinearMap.congr_fun e4 (T (b.2.unop v))`. Establish `i3 : a'.2.unop (T (b.2.unop v)) = T (a.2.unop (b.2.unop v))` using `LinearMap.congr_fun h.2 (b.2.unop v)`. Use `show b'.2.unop (T v) = T (b.2.unop v)`.
-
-Rewrite using `[← i2, i3, i1]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rel_inv {a b : Pr V} {a' b' : Pr V'} (h : Rel T a a') (hab : a * b = 1) (hba : b * a = 1)
     (hab' : a' * b' = 1) (hba' : b' * a' = 1) : Rel T b b' := by
@@ -43,7 +41,7 @@ theorem rel_inv {a b : Pr V} {a' b' : Pr V'} (h : Rel T a a') (hab : a * b = 1) 
     rw [← i2, i3, i1]
 
 /- English proof (translation)
-Introduce `x y` and use `by rw [Matrix.star_apply, Matrix.star_apply] exact rel_star (h y x)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem arel_star' {M : SlopeTestRemainingChoices S (Pr V)} {M' : SlopeTestRemainingChoices S (Pr V')} (h : ARel T M M') : ARel T (star M) (star M') :=
   fun x y => by
@@ -51,16 +49,14 @@ theorem arel_star' {M : SlopeTestRemainingChoices S (Pr V)} {M' : SlopeTestRemai
     exact rel_star (h y x)
 
 /- English proof (translation)
-The claim follows from `| 0 => by rw [pow_zero, pow_zero]; exact arel_one | n + 1 => by rw [pow_succ, pow_succ]; exact arel_mul (arel_pow' h n) h`.
+A detailed English derivation is pending.
 -/
 theorem arel_pow' {M : SlopeTestRemainingChoices S (Pr V)} {M' : SlopeTestRemainingChoices S (Pr V')} (h : ARel T M M') : ∀ n : ℕ, ARel T (M ^ n) (M' ^ n)
   | 0 => by rw [pow_zero, pow_zero]; exact arel_one
   | n + 1 => by rw [pow_succ, pow_succ]; exact arel_mul (arel_pow' h n) h
 
 /- English proof (translation)
-Introduce `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j`. Conclude with `h1`. Conclude with `h2`. Conclude with `h3`.
-
-Conclude with `h4`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem brel_of {a b c d : SlopeTestRemainingChoices S (Pr V)} {a' b' c' d' : SlopeTestRemainingChoices S (Pr V')} (h1 : ARel T a a') (h2 : ARel T b b')
     (h3 : ARel T c c') (h4 : ARel T d d') : BRel T !![a, b; c, d] !![a', b'; c', d'] := by
@@ -88,9 +84,9 @@ abbrev Corr (T : V →ₗ[ℂ] V') (inv0 : Set ℂ) (f₀ : FrameData S (Pr V)) 
 variable {r₀ r₁ : ℕ} {L₀ : LevelData (Pr V) r₀} {L : LevelData (Pr V') r₁}
 
 /- English proof (translation)
-Establish `h` using `hf.frame_l Y hY hY1`. Establish `hio : (io L.GGi : SlopeTestRemainingChoices S A) * io L.GG = 1` using `by simp only [io, ← map_mul, L.GGi_GG, map_one]`. Establish `hx` using `(hf.x_xi Y hY).2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hio]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [one_mul, mul_assoc]`. Use `_ = f.xi Y * io L.GGi * (io L.GG * f.x Y * f.l L Y * f.F) * f.Fi := by simp only [mul_assoc]`. Use `_ = f.xi Y * io L.GGi * f.F * f.TT Y 1 0 * f.Fi := by rw [← h]; simp only [mul_assoc]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem l_eq {r : ℕ} {A : Type} [Ring A] [StarRing A] [Algebra ℂ A] (L : LevelData A r) (f : FrameData S A)
     (hf : IsFrame L f) (Y : ℂ) (hY : Y ∈ f.inv) (hY1 : Y + 1 ∈ f.inv) :
@@ -105,7 +101,7 @@ theorem l_eq {r : ℕ} {A : Type} [Ring A] [StarRing A] [Algebra ℂ A] (L : Lev
     _ = f.xi Y * io L.GGi * f.F * f.TT Y 1 0 * f.Fi := by rw [← h]; simp only [mul_assoc]
 
 /- English proof (translation)
-Take `⟨hF, hFi, -, -, -, hxi, hTT, -, -, hinv, hsub⟩` from `hc`. Rewrite using `[l_eq L₀ f₀ hf₀ Y hY hY1, l_eq L f hf Y (hinv ▸ hY) (hinv ▸ hY1)]`. Conclude with `arel_mul (arel_mul (arel_mul (arel_mul (hxi Y (hsub hY)) (arel_io G.GGi)) hF) (hTT Y 1 0)) hFi`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem l_rel (G : Gen T L₀ L) {inv0 : Set ℂ} {f₀ : FrameData S (Pr V)} {f : FrameData S (Pr V')}
     (hc : Corr T inv0 f₀ f) (hf₀ : IsFrame L₀ f₀) (hf : IsFrame L f) (Y : ℂ) (hY : Y ∈ f₀.inv)
@@ -115,9 +111,9 @@ theorem l_rel (G : Gen T L₀ L) {inv0 : Set ℂ} {f₀ : FrameData S (Pr V)} {f
   exact arel_mul (arel_mul (arel_mul (arel_mul (hxi Y (hsub hY)) (arel_io G.GGi)) hF) (hTT Y 1 0)) hFi
 
 /- English proof (translation)
-Establish `hl` using `l_rel G hc hf₀ hf (Y - 1) hY (by rw [sub_add_cancel]; exact hY1)`. Take `⟨-, -, hc', hci, -, -, -, hN, -, -, -⟩` from `hc`. Establish `hwt : ARel T (wt (S` using `S) L₀) (wt L) := arel_io (rel_mul (rel_mul G.ζ G.ζb) G.GGi)`. Establish `hwti : ARel T (wti (S` using `S) L₀) (wti L) := arel_io (rel_mul (rel_mul G.GG G.ζi) G.ζbi)`. Unfold `FrameData.m FrameData.d FrameData.di`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[hN]`. Conclude with `arel_mul (arel_mul (arel_mul hci (arel_pow' hwti _)) (arel_star' hl)) (arel_mul (arel_pow' hwt _) hc')`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem m_rel (G : Gen T L₀ L) {inv0 : Set ℂ} {f₀ : FrameData S (Pr V)} {f : FrameData S (Pr V')}
     (hc : Corr T inv0 f₀ f) (hf₀ : IsFrame L₀ f₀) (hf : IsFrame L f) (Y : ℂ) (hY : Y - 1 ∈ f₀.inv)
@@ -131,11 +127,9 @@ theorem m_rel (G : Gen T L₀ L) {inv0 : Set ℂ} {f₀ : FrameData S (Pr V)} {f
   exact arel_mul (arel_mul (arel_mul hci (arel_pow' hwti _)) (arel_star' hl)) (arel_mul (arel_pow' hwt _) hc')
 
 /- English proof (translation)
-Establish `hl` using `l_rel G hc hf₀ hf Ya h1 h2`. Take `⟨hF, hFi, hc', hci, hx, hxi, hTT, hN, hq, hinv, hsub⟩` from `hc`. Simplify using `only [FrameData.plus]`. Use `⟨?_, ?_, ?_, ?_, fun Y => ?_, fun Y hY => ?_, fun Y => ?_, by rw [hN], by rw [hq], by rw [hinv], Set.inter_subset_left.trans hsub⟩` and prove the remaining obligations. Conclude with `arel_mul (arel_ins a (brel_mul (brel_of (arel_io G.ζi) arel_zero arel_zero (arel_io G.ζbi)) (brel_of arel_one arel_zero (arel_mul (arel_io G.GG) hl) (arel_io G.GG)))) hF`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `arel_mul hFi (arel_ins a (brel_mul (brel_of arel_one arel_zero (arel_neg hl) (arel_io G.GGi)) (brel_of (arel_io G.ζ) arel_zero arel_zero (arel_io G.ζb))))`. Rewrite using `[hq]`. Conclude with `arel_mul hc' (arel_ins a (brel_of (arel_smul _ (hxi _ (hsub h2))) arel_zero arel_zero (hx Ya)))`. Rewrite using `[hq]`. Conclude with `arel_mul hci (arel_ins a (brel_of (arel_smul _ (hx _)) arel_zero arel_zero (hxi _ (hsub h1))))`.
-
-Conclude with `arel_mul (hx Y) (arel_ins a (brel_of (arel_smul _ arel_one) arel_zero arel_zero arel_one))`. Conclude with `arel_mul (hxi Y hY) (arel_ins a (brel_of (arel_smul _ arel_one) arel_zero arel_zero arel_one))`. Conclude with `brel_mul (hTT Y) (block_relation_height a _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem corr_plus (G : Gen T L₀ L) {inv0 : Set ℂ} {f₀ : FrameData S (Pr V)} {f : FrameData S (Pr V')}
     (hc : Corr T inv0 f₀ f) (hf₀ : IsFrame L₀ f₀) (hf : IsFrame L f) (a : S) (Ya : ℂ) (h1 : Ya ∈ f₀.inv)
@@ -158,11 +152,9 @@ theorem corr_plus (G : Gen T L₀ L) {inv0 : Set ℂ} {f₀ : FrameData S (Pr V)
   · exact brel_mul (hTT Y) (block_relation_height a _)
 
 /- English proof (translation)
-Establish `hm` using `m_rel G hc hf₀ hf Yb h0 h1`. Take `⟨hF, hFi, hc', hci, hx, hxi, hTT, hN, hq, hinv, hsub⟩` from `hc`. Simplify using `only [FrameData.minus]`. Use `⟨?_, ?_, ?_, ?_, fun Y => ?_, fun Y hY => ?_, fun Y => ?_, by rw [hN], by rw [hq], by rw [hinv], Set.inter_subset_left.trans hsub⟩` and prove the remaining obligations. Conclude with `arel_mul (arel_ins b (brel_mul (brel_of (arel_io G.ζbi) arel_zero arel_zero (arel_io G.ζi)) (brel_of arel_one arel_zero (arel_mul (arel_io G.GG) hm) (arel_io G.GG)))) hF`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `arel_mul hFi (arel_ins b (brel_mul (brel_of arel_one arel_zero (arel_neg hm) (arel_io G.GGi)) (brel_of (arel_io G.ζb) arel_zero arel_zero (arel_io G.ζ))))`. Rewrite using `[hq]`. Conclude with `arel_mul hc' (arel_ins b (brel_of (arel_smul _ (hxi _ (hsub h0))) arel_zero arel_zero (hx Yb)))`. Rewrite using `[hq]`. Conclude with `arel_mul hci (arel_ins b (brel_of (arel_smul _ (hx _)) arel_zero arel_zero (hxi _ (hsub h1))))`.
-
-Conclude with `arel_mul (hx Y) (arel_ins b (brel_of (arel_smul _ arel_one) arel_zero arel_zero arel_one))`. Conclude with `arel_mul (hxi Y hY) (arel_ins b (brel_of (arel_smul _ arel_one) arel_zero arel_zero arel_one))`. Conclude with `brel_mul (block_relation_twisted_height b _) (hTT Y)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem corr_minus (G : Gen T L₀ L) {inv0 : Set ℂ} {f₀ : FrameData S (Pr V)} {f : FrameData S (Pr V')}
     (hc : Corr T inv0 f₀ f) (hf₀ : IsFrame L₀ f₀) (hf : IsFrame L f) (b : S) (Yb : ℂ) (h1 : Yb ∈ f₀.inv)
@@ -187,7 +179,7 @@ theorem corr_minus (G : Gen T L₀ L) {inv0 : Set ℂ} {f₀ : FrameData S (Pr V
 variable {st₀ : Start (Pr V)} {st : Start (Pr V')}
 
 /- English proof (translation)
-Establish `e₀ : st₀.x Y = L₀.GGi * st₀.QQ Y 1 1` using `by rw [hs₀.tau, ← mul_assoc, L₀.GGi_GG, one_mul]`. Establish `e : st.x Y = L.GGi * st.QQ Y 1 1` using `by rw [hs.tau, ← mul_assoc, L.GGi_GG, one_mul]`. Rewrite using `[e₀, e]`. Conclude with `rel_mul G.GGi (hQ Y 1 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem x_rel (G : Gen T L₀ L) (hQ : ∀ Y, MRel T (st₀.QQ Y) (st.QQ Y)) (hs₀ : IsLevelStart L₀ st₀)
     (hs : IsLevelStart L st) (Y : ℂ) : Rel T (st₀.x Y) (st.x Y) := by
@@ -197,7 +189,7 @@ theorem x_rel (G : Gen T L₀ L) (hQ : ∀ Y, MRel T (st₀.QQ Y) (st.QQ Y)) (hs
   exact rel_mul G.GGi (hQ Y 1 1)
 
 /- English proof (translation)
-The claim follows from `| [], _, _ => by refine ⟨arel_one, arel_one, arel_one, arel_one, fun Y => arel_io (x_rel G hQ hs₀ hs Y), fun Y hY => ?_, fun Y => brel_lift0 (hQ Y), rfl, hq, hinv, subset_rfl⟩ exact arel_io (rel_inv (x_rel G hQ hs₀ hs Y) (hs₀.x_xi Y hY).1 (hs₀.x_xi Y hY).2 (hs.x_xi Y (hinv ▸ hY)) …`.
+A detailed English derivation is pending.
 -/
 theorem corr_word (G : Gen T L₀ L) (hQ : ∀ Y, MRel T (st₀.QQ Y) (st.QQ Y)) (hq : st₀.q = st.q)
     (hinv : st₀.inv = st.inv) (hL₀ : IsStarLevel L₀) (hL : IsStarLevel L) (hs₀ : IsLevelStart L₀ st₀)
@@ -223,7 +215,7 @@ theorem corr_word (G : Gen T L₀ L) (hQ : ∀ Y, MRel T (st₀.QQ Y) (st.QQ Y))
     · exact corr_plus G ih hf₀ hf a Ya hp0 hp1
 
 /- English proof (translation)
-The claim follows from `act_tr (corr_word G hQ hq hinv hL₀ hL hs₀ hs w (Formalism.FourierDecayAlt.P.admissible_rec_of_admissible (Pr V) S r₀ L₀ st₀ w h₀) (Formalism.FourierDecayAlt.P.admissible_rec_of_admissible (Pr V') S r₁ L st w h)).1 Ψ e`.
+A detailed English derivation is pending.
 -/
 theorem act_frame (G : Gen T L₀ L) (hQ : ∀ Y, MRel T (st₀.QQ Y) (st.QQ Y)) (hq : st₀.q = st.q)
     (hinv : st₀.inv = st.inv) (hL₀ : IsStarLevel L₀) (hL : IsStarLevel L) (hs₀ : IsLevelStart L₀ st₀)

@@ -15,7 +15,7 @@ section BlowUpLocRingInj
 variable {R : Type*} [CommRing R] {K : Type} [DecidableEq K] {ι : K → Type} {J : Type}
 
 /- English proof (translation)
-Take `⟨(_ | k), i⟩` from `v`. Simplify using `[blowUpSubst, blowUpEval, blockWeight]`. Simplify using `[blowUpSubst, blowUpEval, blockWeight]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem blowUpSubst_eq_C_mul_X_pow (P : Ideal (MRing ι R)) (u : J → MRing ι R) (v : Σ o, extIdx ι J o) :
     blowUpSubst P u v =
@@ -25,13 +25,13 @@ theorem blowUpSubst_eq_C_mul_X_pow (P : Ideal (MRing ι R)) (u : J → MRing ι 
   · simp [blowUpSubst, blowUpEval, blockWeight]
 
 /- English proof (translation)
-Establish `key : ∃ q, aeval (blowUpSubst P u) (monomial d c) = Polynomial.C q * Polynomial.X ^ (Finsupp.weight (blockWeight (extIdx ι J)) d none)`. Use `⟨algebraMap R _ c * ∏ v ∈ d.support, blowUpEval P u (X v) ^ d v, ?_⟩` and prove the remaining obligations. Establish `hp : ∀ (y : MRing ι R ⧸ P) (e k : ℕ), (Polynomial.C y * Polynomial.X ^ e) ^ k = Polynomial.C (y ^ k) * Polynomial.X ^ (e * k)`. Introduce `y e k`. Rewrite using `[map_pow, pow_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[aeval_monomial, Polynomial.algebraMap_apply, Finsupp.prod]`. Repeatedly rewrite using `[blowUpSubst_eq_C_mul_X_pow, hp]`. Rewrite using `[Finset.prod_mul_distrib, ← map_prod, Finset.prod_pow_eq_pow_sum, ← mul_assoc, ← map_mul]`. Use `congrArg₂ (· * ·) rfl (congrArg _ ?_)` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finsupp.weight_apply, Finsupp.sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Simplify using `[mul_comm]`. Take `⟨q, hq⟩` from `key`. Rewrite using `[hq]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Express the relevant statement in the definitionally equal form `q = Polynomial.eval 1 (aeval (blowUpSubst P u) (monomial d c))`. Rewrite using `[hq]`. Simplify using the standard rewrite rules.
+Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem aeval_blowUpSubst_monomial (P : Ideal (MRing ι R)) (u : J → MRing ι R)
     (d : (Σ o, extIdx ι J o) →₀ ℕ) (c : R) :
@@ -61,7 +61,7 @@ theorem aeval_blowUpSubst_monomial (P : Ideal (MRing ι R)) (u : J → MRing ι 
   simp
 
 /- English proof (translation)
-Use `conv_lhs => rw [G.as_sum]`. Use `conv_rhs => rw [G.as_sum]`. Rewrite using `[map_sum, map_sum, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations. Rewrite using `[aeval_blowUpSubst_monomial, hG (mem_support_iff.mp hd)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aeval_blowUpSubst_eq_C_blowUpEval_mul_X_pow (P : Ideal (MRing ι R)) (u : J → MRing ι R)
     {G : MRing (extIdx ι J) R} {b : Option K → ℕ} (hG : IsMultiHomog G b) :
@@ -73,7 +73,7 @@ theorem aeval_blowUpSubst_eq_C_blowUpEval_mul_X_pow (P : Ideal (MRing ι R)) (u 
   rw [aeval_blowUpSubst_monomial, hG (mem_support_iff.mp hd)]
 
 /- English proof (translation)
-Rewrite using `[blowUpOf, RingHom.mem_ker, aeval_blowUpSubst_eq_C_blowUpEval_mul_X_pow P u hG, h, map_zero, zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_blowUpOf_of_isMultiHomog {P : Ideal (MRing ι R)} {u : J → MRing ι R}
     {G : MRing (extIdx ι J) R} {b : Option K → ℕ} (hG : IsMultiHomog G b) (h : blowUpEval P u G = 0) :
@@ -81,7 +81,7 @@ theorem mem_blowUpOf_of_isMultiHomog {P : Ideal (MRing ι R)} {u : J → MRing �
   rw [blowUpOf, RingHom.mem_ker, aeval_blowUpSubst_eq_C_blowUpEval_mul_X_pow P u hG, h, map_zero, zero_mul]
 
 /- English proof (translation)
-Rewrite using `[ne_eq, map_eq_zero_iff _ (IsFractionRing.injective _ _)]`. Conclude with `fun h => hGQ (hle (mem_blowUpOf_of_isMultiHomog hG h))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem algebraMap_blowUpEval_ne_zero {P : Ideal (MRing ι R)} [P.IsPrime] {u : J → MRing ι R}
     {Q : Ideal (MRing (extIdx ι J) R)} (hle : blowUpOf P u ≤ Q) {G : MRing (extIdx ι J) R}
@@ -91,15 +91,15 @@ theorem algebraMap_blowUpEval_ne_zero {P : Ideal (MRing ι R)} [P.IsPrime] {u : 
   exact fun h => hGQ (hle (mem_blowUpOf_of_isMultiHomog hG h))
 
 /- English proof (translation)
-Establish `h1 : (1 : MRing (extIdx ι J) R) ∉ Q` using `fun h => hQ.ne_top ((Ideal.eq_top_iff_one Q).mpr h)`. Proceed by induction on `hz using Subring.closure_induction with`. Consider the case `mem x hx => exact hx`. Consider the case `zero`. Conclude with `⟨0, 0, 1, isWeightedHomogeneous_zero R _ _, isWeightedHomogeneous_one R _, h1, by simp⟩`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Supply the required witnesses or components.
 
-Consider the case `one`. Conclude with `⟨0, 1, 1, isWeightedHomogeneous_one R _, isWeightedHomogeneous_one R _, h1, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨b₁, F₁, G₁, hF₁, hG₁, hG₁Q, rfl⟩` from `hx`. Take `⟨b₂, F₂, G₂, hF₂, hG₂, hG₂Q, rfl⟩` from `hy`.
+Treat this case separately. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨b₁ + b₂, F₁ * G₂ + G₁ * F₂, G₁ * G₂, IsWeightedHomogeneous.add (IsWeightedHomogeneous.mul hF₁ hG₂) (IsWeightedHomogeneous.mul hG₁ hF₂), IsWeightedHomogeneous.mul hG₁ hG₂, fun h => (hQ.mem_or_mem h).elim hG₁Q hG₂Q, ?_⟩` and prove the remaining obligations. Rewrite using `[div_add_div _ _ (algebraMap_blowUpEval_ne_zero hle hG₁ hG₁Q) (algebraMap_blowUpEval_ne_zero hle hG₂ hG₂Q)]`. Simplify using `only [map_add, map_mul]`. Consider the case `neg x _ hx`. Take `⟨b, F, G, hF, hG, hGQ, rfl⟩` from `hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨b, -F, G, fun d hd => hF (by rwa [coeff_neg, neg_ne_zero] at hd), hG, hGQ, ?_⟩` and prove the remaining obligations. Rewrite using `[map_neg, map_neg, neg_div]`. Consider the case `mul x y _ _ hx hy`. Take `⟨b₁, F₁, G₁, hF₁, hG₁, hG₁Q, rfl⟩` from `hx`. Take `⟨b₂, F₂, G₂, hF₂, hG₂, hG₂Q, rfl⟩` from `hy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨b₁ + b₂, F₁ * F₂, G₁ * G₂, IsWeightedHomogeneous.mul hF₁ hF₂, IsWeightedHomogeneous.mul hG₁ hG₂, fun h => (hQ.mem_or_mem h).elim hG₁Q hG₂Q, ?_⟩` and prove the remaining obligations. Rewrite using `[div_mul_div_comm]`. Simplify using `only [map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_eq_div_of_mem_blowUpLocRing {P : Ideal (MRing ι R)} [P.IsPrime] {u : J → MRing ι R}
     {Q : Ideal (MRing (extIdx ι J) R)} (hQ : Q.IsPrime) (hle : blowUpOf P u ≤ Q)
@@ -136,11 +136,11 @@ theorem exists_eq_div_of_mem_blowUpLocRing {P : Ideal (MRing ι R)} [P.IsPrime] 
     simp only [map_mul]
 
 /- English proof (translation)
-Take `⟨d, hd⟩` from `exists_coeff_ne_zero hF0`. Use `choose i hi using hrel`. Set `e` to `Finsupp.mapDomain (fun v : Σ o, extIdx ι J o => (⟨v.1, i v.1⟩ : Σ o, extIdx ι J o)) d`. Use `⟨monomial e 1, isWeightedHomogeneous_monomial _ _ _ ?_, fun hmem => ?_⟩` and prove the remaining obligations. Rewrite using `[← hF hd]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `Finsupp.linearCombination ℕ _ e = Finsupp.linearCombination ℕ _ d`. Rewrite using `[Finsupp.linearCombination_mapDomain]`. Both sides reduce to the same expression. Establish `hmon : (monomial e 1 : MRing (extIdx ι J) R) ∈ Q.primeCompl`. Rewrite using `[monomial_eq, map_one, one_mul, Finsupp.prod]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `prod_mem fun v hv => pow_mem ?_ _` and prove the remaining obligations. Take `⟨w, -, rfl⟩` from `Finset.mem_image.mp (Finsupp.mapDomain_support hv)`. Conclude with `hi w.1`. Conclude with `hmon hmem`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_monomial_not_mem_of_isMultiHomog {Q : Ideal (MRing (extIdx ι J) R)} (hQ : Q.IsPrime)
     (hrel : IsRelevant Q) {F : MRing (extIdx ι J) R} {b : Option K → ℕ} (hF : IsMultiHomog F b)
@@ -162,11 +162,11 @@ theorem exists_monomial_not_mem_of_isMultiHomog {Q : Ideal (MRing (extIdx ι J) 
     exact hmon hmem
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hFQ'`. Establish `hF0 : F ≠ 0` using `fun h => hFQ' (h ▸ Q'.zero_mem)`. Take `⟨M, hM, hMQ⟩` from `exists_monomial_not_mem_of_isMultiHomog hQ hrel hF hF0`. Establish `hz : algebraMap (MRing ι R ⧸ P) (FractionRing (MRing ι R ⧸ P)) (blowUpEval P u M) / algebraMap (MRing ι R ⧸ P) (FractionRing (MRing ι R ⧸ P)) (blowUpEval P u F) ∈ blowUpLocRing P u Q` using `hsub (Subring.subset_closure ⟨b, M, F, hM, hF, hFQ', rfl⟩)`. Take `⟨b₁, F₁, G₁, hF₁, hG₁, hG₁Q, heq⟩` from `exists_eq_div_of_mem_blowUpLocRing hQ hle hz`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `heq` using `[div_eq_div_iff (algebraMap_blowUpEval_ne_zero hle' hF hFQ') (algebraMap_blowUpEval_ne_zero hle hG₁ hG₁Q)]`. Establish `hinj : blowUpEval P u M * blowUpEval P u G₁ = blowUpEval P u F₁ * blowUpEval P u F` using `IsFractionRing.injective (MRing ι R ⧸ P) (FractionRing (MRing ι R ⧸ P)) (by`. Rewrite using `[map_mul, map_mul]`. Conclude with `heq)`. Establish `h0 : blowUpEval P u (M * G₁ - F * F₁) = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, map_mul, map_mul, hinj]`. Expand and normalize the polynomial expressions, which then agree. Establish `hmem : M * G₁ - F * F₁ ∈ Q` using `hle (mem_blowUpOf_of_isMultiHomog (IsWeightedHomogeneous.sub (IsWeightedHomogeneous.mul hM hG₁) (IsWeightedHomogeneous.mul hF hF₁)) h0)`. Rewrite `hmem` using `[Submodule.sub_mem_iff_left _ (Q.mul_mem_right F₁ hFQ)]`. Conclude with `(hQ.mem_or_mem hmem).elim hMQ hG₁Q`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_blowUpLocRing_le {P : Ideal (MRing ι R)} [P.IsPrime] {u : J → MRing ι R}
     {Q Q' : Ideal (MRing (extIdx ι J) R)} (hQ : Q.IsPrime) (hrel : IsRelevant Q)
@@ -197,7 +197,7 @@ theorem mem_of_blowUpLocRing_le {P : Ideal (MRing ι R)} [P.IsPrime] {u : J → 
   exact (hQ.mem_or_mem hmem).elim hMQ hG₁Q
 
 /- English proof (translation)
-Introduce `f hf`. Rewrite using `[← sum_weightedHomogeneousComponent (blockWeight (extIdx ι J)) f, finsum_eq_sum _ (weightedHomogeneousComponent_finsupp f)]`. Conclude with `Q'.sum_mem fun b _ => mem_of_blowUpLocRing_le hQ hrel hle hle' hsub (weightedHomogeneousComponent_isWeightedHomogeneous (n := b) (φ := f)) (hQh f hf b)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_of_blowUpLocRing_le {P : Ideal (MRing ι R)} [P.IsPrime] {u : J → MRing ι R}
     {Q Q' : Ideal (MRing (extIdx ι J) R)} (hQ : Q.IsPrime) (hQh : IsMultiHomogIdeal Q)
@@ -210,7 +210,7 @@ theorem le_of_blowUpLocRing_le {P : Ideal (MRing ι R)} [P.IsPrime] {u : J → M
     (weightedHomogeneousComponent_isWeightedHomogeneous (n := b) (φ := f)) (hQh f hf b)
 
 /- English proof (translation)
-Introduce `R _ K _ ι J P _ u Q Q' hQ hQh hQr hQle hQ' hQ'h hQ'r hQ'le heq`. Conclude with `le_antisymm (le_of_blowUpLocRing_le hQ hQh hQr hQle hQ'le heq.ge) (le_of_blowUpLocRing_le hQ' hQ'h hQ'r hQ'le hQle heq.le)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem BlowUpLocRingInj.proof : BlowUpLocRingInj.Statement.{u} := by
   intro R _ K _ ι J P _ u Q Q' hQ hQh hQr hQle hQ' hQ'h hQ'r hQ'le heq

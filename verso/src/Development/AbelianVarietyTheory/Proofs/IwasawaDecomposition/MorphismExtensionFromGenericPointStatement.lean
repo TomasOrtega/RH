@@ -6,7 +6,7 @@ open AlgebraicGeometry CategoryTheory Limits IsLocalRing TopologicalSpace
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Out
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.extension_descends_of_flat` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FMorphismExtensionFromGenericPoint.lean&line=21#L21)
 -/

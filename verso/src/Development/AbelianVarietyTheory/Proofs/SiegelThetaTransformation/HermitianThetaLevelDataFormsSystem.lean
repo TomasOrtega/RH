@@ -22,18 +22,18 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r g n : ℕ} {X : D
   {bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ}
 
 /- English proof (translation)
-Rewrite using `[EF_crd hs u v, EF_crd hs v u, neg_neg, ← Finset.sum_neg_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem EF_swap (hs : IsSympl X bas) (u v : Fin r → E) : EF X u v = -EF X v u := by
   rw [EF_crd hs u v, EF_crd hs v u, neg_neg, ← Finset.sum_neg_distrib]
   exact Finset.sum_congr rfl fun i _ => by ring
 
 /- English proof (translation)
-Establish `hc : crd X bas u = 0`. Use function extensionality and compare the values at `j`. Break down `j with i | i` into its components or cases. Establish `h1` using `h (vecQ X bas (Pi.single (Sum.inr i) 1))`. Rewrite `h1` using `[EF_crd hs, crd_vecQ hs]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify `h1` using `[Pi.single_apply]`. Establish `h1` using `h (vecQ X bas (Pi.single (Sum.inl i) 1))`. Rewrite `h1` using `[EF_crd hs, crd_vecQ hs]`. Simplify `h1` using `[Pi.single_apply]`. Rewrite using `[← vecQ_crd X bas u, hc]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Conclude with `vecQ_zero X bas`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_EF (hs : IsSympl X bas) (u : Fin r → E) (h : ∀ v, EF X u v = 0) : u = 0 := by
   have hc : crd X bas u = 0 := by
@@ -49,7 +49,7 @@ theorem eq_zero_of_EF (hs : IsSympl X bas) (u : Fin r → E) (h : ∀ v, EF X u 
   exact vecQ_zero X bas
 
 /- English proof (translation)
-Use `⟨fun u hu => eq_zero_of_EF hs u fun v => hu v, fun u hu => eq_zero_of_EF hs u fun v => ?_⟩` and prove the remaining obligations. Establish `h0 : EF X v u = 0` using `hu v`. Rewrite using `[EF_swap hs, h0, neg_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem EFBil_nondegenerate (hs : IsSympl X bas) :
     LinearMap.BilinForm.Nondegenerate (EFBil X) := by
@@ -58,9 +58,9 @@ theorem EFBil_nondegenerate (hs : IsSympl X bas) :
   rw [EF_swap hs, h0, neg_zero]
 
 /- English proof (translation)
-Use `⟨h.1.restrictScalars, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Rewrite using `[LinearMap.BilinForm.mem_dualSubmodule, Submodule.restrictScalars_mem, h.2 x]`. Prove the components needed by the constructor for the conclusion. Introduce `H y hy`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨k, hk⟩` from `Submodule.mem_one.1 (H y hy)`. Conclude with `⟨k, hk.symm.trans (eq_intCast _ k)⟩`. Introduce `H y hy`. Take `⟨k, hk⟩` from `H y hy`. Conclude with `Submodule.mem_one.2 ⟨k, (eq_intCast _ k).trans hk.symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem selfD_int {L : Lt E r} (h : SelfD X L) : (L.restrictScalars ℤ).FG ∧
     LinearMap.BilinForm.dualSubmodule (EFBil X) (L.restrictScalars ℤ) = L.restrictScalars ℤ := by
@@ -76,21 +76,21 @@ theorem selfD_int {L : Lt E r} (h : SelfD X L) : (L.restrictScalars ℤ).FG ∧
     exact Submodule.mem_one.2 ⟨k, (eq_intCast _ k).trans hk.symm⟩
 
 /- English proof (translation)
-Establish `hρ : Module.finrank ℚ (Fin r → E) = Module.finrank ℚ E * r`. Rewrite using `[Module.finrank_pi_fintype]`. Simplify using `[mul_comm]`. Establish `hsw` using `EF_swap (X := X) hs`. Establish `hB` using `EFBil_nondegenerate hs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrefl : (EFBil X).IsRefl` using `fun x y hxy => by`. Establish `h0 : EF X x y = 0` using `hxy`. Use `show EF X y x = 0`. Rewrite using `[hsw, h0, neg_zero]`. Establish `hlr : ∀ x y, EFBil X x y = EFBil X y x ∨ EFBil X x y = -EFBil X y x` using `fun x y => Or.inr (show EF X x y = -EF X y x from hsw x y)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hLfg, hLd⟩` from `selfD_int (h𝓛 L hL)`. Establish `key` using `card_selfDual_le (EFBil X) hB hrefl hlr _ hLfg hLd`. Set `f : {L' // L' ∈ 𝓛 ∧ L' ≠ L} → ℕ` to `fun L' => L'.1.toAddSubgroup.relIndex L.toAddSubgroup`. Set `G : {L' // L' ∈ 𝓛 ∧ L' ≠ L} → Submodule ℤ (Fin r → E)` to `fun L' => L'.1.restrictScalars ℤ`. Establish `hGinj : Function.Injective G` using `fun a b hab => Subtype.ext (Submodule.restrictScalars_injective ℤ _ _ hab)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGmem : ∀ i, (G i).FG ∧ LinearMap.BilinForm.dualSubmodule (EFBil X) (G i) = G i ∧ (G i).toAddSubgroup.relIndex (L.restrictScalars ℤ).toAddSubgroup = f i` using `fun i => ⟨(selfD_int (h𝓛 i.1 i.2.1)).1, (selfD_int (h𝓛 i.1 i.2.1)).2, rfl⟩`. Establish `h2 : ∀ i, 2 ≤ f i`. Introduce `i`. Take `⟨hne, h1⟩` from `(key 1 le_rfl).2.2 (G i) (hGmem i).1 (hGmem i).2.1`. Establish `hfi : f i ≠ 1` using `fun h1' => i.2.2 (Submodule.restrictScalars_injective ℤ _ _ (h1 h1'))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: f i ≠ 0` using `hne`. Use linear arithmetic over natural numbers and integers. Establish `hc : ∀ m, {i | f i = m}.Finite ∧ {i | f i = m}.ncard ≤ m ^ (2 * Module.finrank ℚ (Fin r → E))`. Introduce `m`. Break down `Nat.eq_zero_or_pos m with rfl | hm` into its components or cases.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `he : {i | f i = 0} = ∅` using `Set.eq_empty_of_forall_notMem fun i hi => by`. Use `h2 i` as an intermediate fact. Simplify using `only [Set.mem_ofPred_eq] at hi`. Use linear arithmetic over natural numbers and integers. Simplify using `[he]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hsub : ∀ i ∈ {i | f i = m}, G i ∈ {L' : Submodule ℤ (Fin r → E) | L'.FG ∧ LinearMap.BilinForm.dualSubmodule (EFBil X) L' = L' ∧ L'.toAddSubgroup.relIndex (L.restrictScalars ℤ).toAddSubgroup = m}` using `fun i hi => ⟨(hGmem i).1, (hGmem i).2.1, (hGmem i).2.2.trans hi⟩`. Establish `hfin'` using `(key m hm).1`. Use `⟨(hfin'.preimage hGinj.injOn).subset fun i hi => hsub i hi, ?_⟩` and prove the remaining obligations. Conclude with `(Set.ncard_le_ncard_of_injOn G hsub hGinj.injOn hfin').trans (key m hm).2.1`. Establish `hρn : 4 * Module.finrank ℚ (Fin r → E) + 4 ≤ n` using `by rw [hρ]; exact hn`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `c : {L' // L' ∈ 𝓛 ∧ L' ≠ L} → ℂ` to `fun i => (((f i : ℝ) ^ (-(n : ℝ) / 2) : ℝ) : ℂ)`. Establish `hnorm : ∀ i, ‖c i‖ = (f i : ℝ) ^ (-(n : ℝ) / 2)` using `fun i => Complex.norm_of_nonneg (Real.rpow_nonneg (Nat.cast_nonneg _) _)`. Establish `res` using `tail_sum_lt_one f _ n hρn h2 hc c fun i => (hnorm i).le`. Simplify using `only [hnorm] at res`. Conclude with `res`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tail_le (hs : IsSympl X bas) (hn : 4 * (Module.finrank ℚ E * r) + 4 ≤ n)
     (𝓛 : Set (Lt E r)) (h𝓛 : ∀ L ∈ 𝓛, SelfD X L) {L : Lt E r} (hL : L ∈ 𝓛) :
@@ -148,11 +148,11 @@ theorem tail_le (hs : IsSympl X bas) (hn : 4 * (Module.finrank ℚ E * r) + 4 �
   exact res
 
 /- English proof (translation)
-Establish `hc` using `(isSB_algebra_haar_linear ℚ (Fin n) (Fin g) φ φ hφ hφ).2.2.2.1`. Establish `hF` using `(isSB_algebra_haar_linear ℚ (Fin n) (Fin g) φ _ hφ hc).2.2.1`. Establish `hsm` using `(isSB_algebra_haar_linear ℚ (Fin n) (Fin g) _ _ hF hF).2.2.2.2.2.1 (c * conj c)`. Establish `e : (fun x => (c • φ) x * conj ((c • φ) x)) = (c * conj c) • (φ * fun x => conj (φ x))`. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Pi.smul_apply, Pi.mul_apply, smul_eq_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1' : haar (φ * fun x => conj (φ x)) = 1` using `h1`. Unfold `SW.ip at h`. Rewrite `h` using `[e, hsm, h1', mul_one, Complex.mul_conj]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : ‖c‖ ^ 2 = 1`. Rewrite using `[← Complex.normSq_eq_norm_sq]`. Conclude with `h` after adjusting the coercions. Use polynomial arithmetic with `[norm_nonneg c]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem norm_eq_one_of_ip {φ : TF n g} (hφ : IsSB φ) (h1 : SW.ip φ φ = 1) {c : ℂ}
     (h : SW.ip (c • φ) (c • φ) = 1) : ‖c‖ = 1 := by
@@ -178,15 +178,15 @@ namespace GlobalTheory.SW
 open RecSys
 
 /- English proof (translation)
-Introduce `E _ _ _ r X g bas idx n hs hn2 hnE D hn M hM0 hMm v₀ hv₀ μ hμ`. Take `⟨-, -, hgrp, hlats, hlam, -, -⟩` from `GlobalTheory.T.level_structure_properties E r X g bas idx n hs hn2 D hn`. Establish `T4` using `GlobalTheory.T.levelTestFunction_finite_sum_equivariant E r X g bas idx n hs hn2 D hn M hM0 hMm v₀ hv₀`. Establish `T5` using `GlobalTheory.T.thetaTestFunction_norm_and_overlap_bound E r X g bas idx n hs hn2 D hn M hM0 hMm v₀ hv₀`. Establish `hfinQ : Finite (𝓞 E ⧸ D.𝔪)` using `D.𝔪.finiteQuotientOfFreeOfNeBot D.ne_bot`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfinM : Finite (Matrix (Fin r) (Fin r) (𝓞 E ⧸ D.𝔪))` using `inferInstanceAs (Finite (Fin r → Fin r → 𝓞 E ⧸ D.𝔪))`. Establish `hcard : 0 < Nat.card D.J` using `Nat.card_pos`. Use `{ un := fun γ hγ => ((hgrp γ).1 hγ).1 lat := fun L hL => ⟨hL.1.1, (hlats L hL).2.1⟩ stab := fun γ hγ L hL => ((hlats L hL).2.2.2 γ hγ).1 sb := fun L hL Λ hΛ => (T4 L hL Λ hΛ).1 norm := ⟨(Nat.card D.J : ℝ), by exact_mod_cast hcard, fun L hL Λ hΛ => by rw [(T5 L hL Λ hΛ).1, Complex …` and prove the remaining obligations. Take `⟨hun, k, hkJ, hred⟩` from `(hgrp γ).1 hγ`. Establish `hmem` using `((hlats L hL).2.2.2 γ hγ).1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hrel` using `hμ γ hγ L hL ⟨k, hkJ⟩ hred`. Establish `hvac` using `hv₀ L hL`. Establish `hvac'` using `hv₀ _ hmem`. Establish `hip : SW.ip ((μ γ L * ((D.lam ⟨k, hkJ⟩ : ℂˣ) : ℂ)) • v₀ (mapL γ L)) ((μ γ L * ((D.lam ⟨k, hkJ⟩ : ℂˣ) : ℂ)) • v₀ (mapL γ L)) = 1`. Rewrite using `[← hrel, ((wG_laws E r X g bas idx n hs hn2 γ hun (v₀ L) hvac.1).2.2.1 (v₀ L) hvac.1).1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hvac.2.1`. Establish `htn` using `RecSys.norm_eq_one_of_ip hvac'.1 hvac'.2.1 hip`. Establish `hl` using `hlam ⟨k, hkJ⟩`. Use `⟨?_, fun Λ hΛ => ?_⟩` and prove the remaining obligations. Rewrite `htn` using `[norm_mul, hl, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `htn`. Rewrite using `[(T4 L hL Λ hΛ).2.2.2 γ hγ ⟨k, hkJ⟩ hred _ htn hrel, mul_inv_cancel_right₀ (Units.ne_zero _)]`.
+A detailed English derivation is pending.
 -/
 theorem isSystem_level : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (g : ℕ) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (n : ℕ), IsSympl X bas → Even n → 4 * (Module.finrank ℚ E * r) + 4 ≤ n → ∀ (D : Level X) (hn : r ≤ n) (M : ℕ), 0 < M → (M : 𝓞 E) ∈ D.𝔪 → ∀ v₀ : Lt E r → TF n g, (∀ L ∈ D.lats, IsVac X bas D.w (tens (stdL E n) (D.sh L)) (v₀ L)) → ∀ μ : GL (Fin r) E → Lt E r → ℂ, (∀ γ ∈ D.grp, ∀ L ∈ D.lats, ∀ k : D.J, D.Red (fun i => (γ : Matrix (Fin r) (Fin r) E) *ᵥ D.β i) k → wG X bas idx γ (v₀ L) = (μ γ L * (D.lam k : ℂˣ)) • v₀ (mapL γ L)) → IsSystem X bas idx M D.grp D.lats (D.phi bas hn v₀) μ := by
   intro E _ _ _ r X g bas idx n hs hn2 hnE D hn M hM0 hMm v₀ hv₀ μ hμ

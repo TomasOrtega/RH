@@ -4,7 +4,7 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Trans
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Gal.TranscendenceTraces
 
 /- English proof (translation)
-Introduce `hC hN Z S p _ U hU hD hI`. Take `⟨B, _, _, v, hfin, hpb⟩` from `hC p Γ(S, U) hU.fromSpec`. Take `⟨w, hw⟩` from `hN Γ(S, U) B`. Conclude with `⟨⟨_, _, hU.fromSpec, v, _, hpb⟩, w, inferInstance, hU.range_fromSpec, hw⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.Gal.TranscendenceTraces.normAff_of :
     Chart → NormSpec → NormAff := by

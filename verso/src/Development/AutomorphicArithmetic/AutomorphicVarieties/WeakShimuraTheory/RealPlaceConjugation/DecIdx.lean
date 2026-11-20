@@ -8,15 +8,15 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC Recip
 open scoped Classical
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ p A hp hA`. Use `haveI : IsGalois ℚ Ω := IsAlgClosure.isGalois ℚ Ω`. Establish `hg : ∃ g ∈ Dec (F` using `ℚ) A, ¬ IsOfFinOrder (cycZ ℚ Ω l g) := by`. Distinguish the cases in `hlp : l = p`. Substitute `hlp` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg, hf⟩` from `UpperTheory.V.Base.decInf ℚ Ω l ⊤ isOpen_univ A hA`. Conclude with `⟨g, hg.2, hf⟩`. Take `⟨-, -, γ, hγ, -, hc⟩` from `UpperTheory.V.Chr.decCyc Ω p A hp hA`. Use `⟨γ, hγ, fun hf => ?_⟩` and prove the remaining obligations. Take `⟨n, hn, e⟩` from `isOfFinOrder_iff_pow_eq_one.1 hf`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h3` using `congrArg (Units.val : ℤ_[l]ˣ → ℤ_[l]) e`. Rewrite `h3` using `[Units.val_pow_eq_pow_val, hc l hlp, Units.val_one]`. Establish `h4 : p ^ n = 1` using `by exact_mod_cast h3`. Conclude with `(Nat.one_lt_pow hn.ne' hp.one_lt).ne' h4`. Take `⟨g, hg, hf⟩` from `hg`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcl : IsClosed (((Dec (F` using `ℚ) A).map (cycZ ℚ Ω l) : Subgroup ℤ_[l]ˣ) : Set ℤ_[l]ˣ) := ((isClosed_Dec (F := ℚ) A).isCompact.image (continuous_cycZ ℚ Ω l)).isClosed`. Establish `h0` using `UpperTheory.V.Ws.index_ne_zero_of_isClosed_of_not_isOfFinOrder l _ hcl ⟨_, ⟨g, hg, rfl⟩, hf⟩`. Establish `e : (cycZ ℚ Ω l).ker ⊔ Dec (F` using `ℚ) A = ((Dec (F := ℚ) A).map (cycZ ℚ Ω l)).comap (cycZ ℚ Ω l) := by`. Rewrite using `[Subgroup.comap_map_eq, sup_comm]`. Rewrite using `[e, Subgroup.index_comap]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Establish `hrel0 : ((Dec (F` using `ℚ) A).map (cycZ ℚ Ω l)).relIndex ⊤ ≠ 0 := by rwa [Subgroup.relIndex_top_right]`. Conclude with `fun h => hrel0 (Subgroup.relIndex_eq_zero_of_le_right le_top h)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.index_cyclotomicKer_sup_decompositionGroup_ne_zero :
     ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime] (p : ℕ) (A : ValuationSubring Ω), p.Prime → A.valuation (p : Ω) < 1 → ((cycZ ℚ Ω l).ker ⊔ Dec (F := ℚ) A).index ≠ 0 := by

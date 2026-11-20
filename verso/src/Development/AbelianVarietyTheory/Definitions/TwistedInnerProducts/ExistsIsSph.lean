@@ -59,13 +59,13 @@ def Growth : Prop :=
         ‖kCoef f' f t‖ ≤ C * Real.exp (∑ l, (reExt D b l - (rho n (fun _ : Fin b => 1) l).re) * x l) * (1 + ‖x‖) ^ d
 
 /- English proof (translation)
-Apply the tactic sequence `constructor <;> simp [blockExt]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 example (x : ℝ) : blockExt ![2] ![x] 1 = x ∧ blockExt ![2] ![x] 2 = 0 := by
   constructor <;> simp [blockExt]
 
 /- English proof (translation)
-Take `⟨f, hf, h1, hK⟩` from `exists_spherical h.1 (fun _ => le_rfl) (fun l => (lam l : ℂ))`. Conclude with `⟨f, hf, fun k hk => by simpa [h1] using hK 1 k hk.1⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isSph {ε : Fin n → Bool} {b : ℕ} {W₀ : Flag n b} (h : IsMinimalFlag ε W₀) (lam : Fin b → ℝ) :
     ∃ φ, IsSph (ε := ε) ⊤ W₀ lam φ := by

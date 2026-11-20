@@ -6,7 +6,7 @@ open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 namespace GlobalTheory.JR.WeilMix
 
 /- English proof (translation)
-Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Use `filter_upwards [Metric.ball_mem_nhds x one_pos] with y hy`. Establish `h1 : ψ (y - x) = 1` using `hψ.1 _ (by rw [← dist_eq_norm]; exact (Metric.mem_ball.1 hy).le)`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem psi_isLocallyConstant {F : Type} [NontriviallyNormedField F] (ψ : AddChar F ℂ) (hψ : IsStdChar ψ) :
     IsLocallyConstant (fun x => ψ x) := by
@@ -18,9 +18,7 @@ theorem psi_isLocallyConstant {F : Type} [NontriviallyNormedField F] (ψ : AddCh
     _ = ψ x := by rw [AddChar.map_add_eq_mul, h1, mul_one]
 
 /- English proof (translation)
-Rewrite using `[isOpen_iff_mem_nhds]`. Introduce `p hp`. Use `filter_upwards [(IsLocallyConstant.iff_eventually_eq g).1 hg p, (IsLocallyConstant.iff_eventually_eq h).1 hh p] with q h1 h2`. Use `show g q = h q`. Rewrite using `[h1, h2]`.
-
-Conclude with `hp`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_setOf_eq_of_isLocallyConstant {Y : Type} [TopologicalSpace Y] {g h : Y → ℂ}
     (hg : IsLocallyConstant g) (hh : IsLocallyConstant h) : IsOpen {p | g p = h p} := by
@@ -32,35 +30,31 @@ theorem isOpen_setOf_eq_of_isLocallyConstant {Y : Type} [TopologicalSpace Y] {g 
   rw [h1, h2]; exact hp
 
 /- English proof (translation)
-Take `⟨hfl, hfc⟩` from `hf`. Establish `hK : IsCompact (tsupport f)` using `hfc`. Establish `hψl` using `psi_isLocallyConstant ψ hψ`. Establish `hn1 : IsOpen {q : (X × (Fin r → F)) × (Fin r → F) | f (q.1.1, q.1.2 + q.2) = f q.1}` using `isOpen_setOf_eq_of_isLocallyConstant (hfl.comp_continuous (by fun_prop)) (hfl.comp_continuous continuous_fst)`. Take `⟨u1, v1, -, hv1, hKu, h0v, huv⟩` from `generalized_tube_lemma hK (isCompact_singleton (x := (0 : Fin r → F))) hn1 (by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `⟨p, w⟩ ⟨-, hw⟩`. Simplify using `only [Set.mem_singleton_iff] at hw`. Substitute `hw` using the available equality. Use the proof step `simp)`. Take `⟨δ, hδ, hball⟩` from `Metric.isOpen_iff.1 hv1 0 (h0v rfl)`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `inv1 : ∀ x b (w : Fin r → F), ‖w‖ < δ → f (x, b + w) = f (x, b)`. Introduce `x b w hw`. Establish `hwv : w ∈ v1` using `hball (by simpa using hw)`. Distinguish the cases in `hxb : (x, b) ∈ tsupport f`. Conclude with `huv (⟨hKu hxb, hwv⟩ : ((x, b), w) ∈ u1 ×ˢ v1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `hxbw : (x, b + w) ∈ tsupport f`. Establish `hmw : -w ∈ v1` using `hball (by simpa using hw)`. Use `huv (⟨hKu hxbw, hmw⟩ : ((x, b + w), -w) ∈ u1 ×ˢ v1)` as an intermediate fact. Simplify using `only [Set.mem_setOf_eq, add_neg_cancel_right] at this`. Conclude with `this.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[image_eq_zero_of_notMem_tsupport hxb, image_eq_zero_of_notMem_tsupport hxbw]`. Establish `hzero : ∀ x b, b ∉ Prod.snd '' tsupport f → f (x, b) = 0` using `fun x b hb => image_eq_zero_of_notMem_tsupport (fun h => hb ⟨_, h, rfl⟩)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce and unpack `⟨x0, u0⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hdot : Continuous fun q : (X × (Fin r → F)) × (Fin r → F) => q.2 ⬝ᵥ q.1.2`. Unfold `dotProduct`. Use `fun_prop`. Establish `hdot0 : Continuous fun q : (X × (Fin r → F)) × (Fin r → F) => q.2 ⬝ᵥ u0`. Unfold `dotProduct`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Use `fun_prop`. Establish `hn2 : IsOpen {q : (X × (Fin r → F)) × (Fin r → F) | f (q.1.1, q.2) * ψ (q.2 ⬝ᵥ q.1.2) = f (x0, q.2) * ψ (q.2 ⬝ᵥ u0)}` using `isOpen_setOf_eq_of_isLocallyConstant ((hfl.comp_continuous (by fun_prop)).comp₂ (hψl.comp_continuous hdot) (· * ·)) ((hfl.comp_continuous (by fun_prop)).comp₂ (hψl.comp_continuous hdot0) (· * ·))`. Take `⟨u2, v2, hu2, -, hxu, hKv, hu2n⟩` from `generalized_tube_lemma (isCompact_singleton (x := (x0, u0))) (hK.image continuous_snd) hn2 (by`. Introduce and unpack `⟨p, b⟩ ⟨hp, -⟩`. Simplify using `only [Set.mem_singleton_iff] at hp`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Substitute `hp` using the available equality. Use the proof step `simp)`. Use `filter_upwards [hu2.mem_nhds (hxu rfl)] with p hp`. Use `integral_congr_ae (Eventually.of_forall fun b => ?_)` and prove the remaining obligations. Distinguish the cases in `hb : b ∈ Prod.snd '' tsupport f`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `hu2n (⟨hp, hKv hb⟩ : (p, b) ∈ u2 ×ˢ v2)`. Simplify using `only [hzero _ _ hb, zero_mul]`. Take `⟨a, ha, -⟩` from `hψ.2`. Use `HasCompactSupport.intro ((hK.image continuous_fst).prod (isCompact_closedBall (0 : Fin r → F) (‖a‖ / δ))) ?_` and prove the remaining obligations. Introduce and unpack `⟨x, u⟩ hxu`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite `hxu` using `[Set.mem_prod, not_and_or]`. Break down `hxu with hx | hu` into its components or cases. Establish `h0 : ∀ b, f (x, b) = 0` using `fun b => image_eq_zero_of_notMem_tsupport (fun h => hx ⟨_, h, rfl⟩)`. Simplify using `[h0]`. Rewrite `hu` using `[mem_closedBall_zero_iff, not_le]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, ‖a‖ / δ < ‖u i‖ := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `(not_le.2 hu) ((pi_norm_le_iff_of_nonneg (by positivity)).2 h)`. Establish `hui : u i ≠ 0`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Introduce `h`. Rewrite `hi` using `[h, norm_zero]`. Conclude with `(not_lt.2 (by positivity)) hi`. Establish `hw : ‖(Pi.single i (a / u i) : Fin r → F)‖ < δ`. Rewrite using `[Pi.norm_single, norm_div, div_lt_iff₀ (norm_pos_iff.2 hui)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Rewrite `hi` using `[div_lt_iff₀ hδ]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hwu : (Pi.single i (a / u i) : Fin r → F) ⬝ᵥ u = a`. Rewrite using `[single_dotProduct]`. Clear the denominators using the available nonvanishing facts.
-
-Establish `key` using `hμ (fun b => f (x, b) * ψ (b ⬝ᵥ u)) (Pi.single i (a / u i))`. Establish `hsh : ∀ b, f (x, b + Pi.single i (a / u i)) * ψ ((b + Pi.single i (a / u i)) ⬝ᵥ u) = (f (x, b) * ψ (b ⬝ᵥ u)) * ψ a`. Introduce `b`. Rewrite using `[inv1 x b _ hw, add_dotProduct, AddChar.map_add_eq_mul, hwu]`. Expand and normalize the polynomial expressions, which then agree.
-
-Simplify using `only [hsh, integral_mul_const] at key`. Use `show ∫ b, f (x, b) * ψ (b ⬝ᵥ u) ∂μ = 0`. Assume the negation of the conclusion as `hI`. Conclude with `ha (mul_left_cancel₀ hI (key.trans (mul_one _).symm))`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem isTest_partialFourier {X F : Type} [TopologicalSpace X] [T2Space X] [NontriviallyNormedField F]
     [ProperSpace F] {r : ℕ} [MeasurableSpace (Fin r → F)] (μ : Measure (Fin r → F))
@@ -158,11 +152,9 @@ end GlobalTheory.JR.WeilMix
 namespace GlobalTheory.JR.WeilMix
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ hU r M ψ hψ f hf`. Use `letI := M.mF`. Use `haveI := M.bF`. Use `haveI := M.haarF`. Use `haveI : LocallyCompactSpace F := hU.lcF`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : ProperSpace F := ProperSpace.of_locallyCompactSpace F`. Set `eH : Gl r F ≃ₜ (Matrix (Fin r) (Fin r) F × (Fin r → F) × F) × (Fin r → F)` to `{ toFun := fun Y => ((Y.1, Y.2.2.1, Y.2.2.2), Y.2.1) invFun := fun p => (p.1.1, p.2, p.1.2.1, p.1.2.2) left_inv := fun _ => rfl right_inv := fun _ => rfl continuous_toFun := by fun_prop continuous_invFun := by fun_prop }`. Establish `hμ : ∀ (g : (Fin r → F) → ℂ) (w : Fin r → F), ∫ b, g (b + w) ∂(Measure.pi fun _ : Fin r => M.μF) = ∫ b, g b ∂(Measure.pi fun _ : Fin r => M.μF)` using `fun g w => integral_add_right_eq_self g w`. Establish `hg : IsTest (f ∘ eH.symm)` using `⟨hf.1.comp_continuous eH.symm.continuous, hf.2.comp_homeomorph eH.symm⟩`. Establish `h1` using `isTest_partialFourier (Measure.pi fun _ : Fin r => M.μF) hμ ψ hψ (f ∘ eH.symm) hg`.
-
-Conclude with `⟨h1.1.comp_continuous eH.continuous, h1.2.comp_homeomorph eH⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ptrB_isTest : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E]
     [StarRing E] [Unram F E] (r : ℕ) (M : Meas r F E) (ψ : AddChar F ℂ), IsStdChar ψ → ∀ f : Gl r F → ℂ,

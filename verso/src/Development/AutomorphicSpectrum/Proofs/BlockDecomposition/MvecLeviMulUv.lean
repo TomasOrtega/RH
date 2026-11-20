@@ -27,7 +27,7 @@ def mvec {n : ℕ} (g : Mir k n) : Fin n → k :=
   (((mirabolicProjection k n g)⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k).mulVec (colv g)
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Use `show GlobalTheory.BZMir.glEmbMat k n (m : Matrix (Fin n) (Fin n) k) (Fin.castSucc i) (Fin.castSucc j) = _`. Simplify using `[GlobalTheory.BZMir.glEmbMat]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mirProj_levi (n : ℕ) (m : GL (Fin n) k) : mirabolicProjection k n (levi k n m) = m := by
   apply Units.ext
@@ -36,7 +36,7 @@ theorem mirProj_levi (n : ℕ) (m : GL (Fin n) k) : mirabolicProjection k n (lev
   simp [GlobalTheory.BZMir.glEmbMat]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Use `show (1 + GlobalTheory.BZMir.colMat k n v) (Fin.castSucc i) (Fin.castSucc j) = (1 : Matrix (Fin n) (Fin n) k) i j`. Simplify using `[GlobalTheory.BZMir.colMat, Matrix.one_apply, Fin.castSucc_ne_last]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mirProj_uv (n : ℕ) (v : Fin n → k) : mirabolicProjection k n (uv n v) = 1 := by
   apply Units.ext
@@ -45,7 +45,7 @@ theorem mirProj_uv (n : ℕ) (v : Fin n → k) : mirabolicProjection k n (uv n v
   simp [GlobalTheory.BZMir.colMat, Matrix.one_apply, Fin.castSucc_ne_last]
 
 /- English proof (translation)
-Use `show GlobalTheory.BZMir.glEmbMat k n (m : Matrix (Fin n) (Fin n) k) * (1 + GlobalTheory.BZMir.colMat k n v) = _`. Rewrite using `[mul_add, mul_one, GlobalTheory.BZMir.glEmbMat_mul_colMat]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coe_levi_mul_uv (n : ℕ) (m : GL (Fin n) k) (v : Fin n → k) :
     (((levi k n m * uv n v : Mir k n) : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) =
@@ -54,7 +54,7 @@ theorem coe_levi_mul_uv (n : ℕ) (m : GL (Fin n) k) (v : Fin n → k) :
   rw [mul_add, mul_one, GlobalTheory.BZMir.glEmbMat_mul_colMat]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [GlobalTheory.CompanionTheory.MirLevi.colv]`. Rewrite using `[GlobalTheory.CompanionTheory.MirLevi.coe_levi_mul_uv]`. Simplify using `[GlobalTheory.BZMir.glEmbMat, GlobalTheory.BZMir.colMat]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem colv_levi_mul_uv (n : ℕ) (m : GL (Fin n) k) (v : Fin n → k) :
     colv (levi k n m * uv n v) = (m : Matrix (Fin n) (Fin n) k).mulVec v := by
@@ -64,7 +64,7 @@ theorem colv_levi_mul_uv (n : ℕ) (m : GL (Fin n) k) (v : Fin n → k) :
   simp [GlobalTheory.BZMir.glEmbMat, GlobalTheory.BZMir.colMat]
 
 /- English proof (translation)
-Unfold `GlobalTheory.CompanionTheory.MirLevi.mvec`. Rewrite using `[GlobalTheory.CompanionTheory.MirLevi.colv_levi_mul_uv, map_mul, GlobalTheory.CompanionTheory.MirLevi.mirProj_levi, GlobalTheory.CompanionTheory.MirLevi.mirProj_uv, mul_one, Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem mvec_levi_mul_uv (n : ℕ) (m : GL (Fin n) k) (v : Fin n → k) :
     mvec (levi k n m * uv n v) = v := by
@@ -74,13 +74,13 @@ theorem mvec_levi_mul_uv (n : ℕ) (m : GL (Fin n) k) (v : Fin n → k) :
     inv_mul_cancel, Units.val_one, Matrix.one_mulVec]
 
 /- English proof (translation)
-Establish `hA : ((GlobalTheory.BZMir.mirabolicProjection k n g : GL (Fin n) k) : Matrix (Fin n) (Fin n) k).mulVec (GlobalTheory.CompanionTheory.MirLevi.mvec g) = GlobalTheory.CompanionTheory.MirLevi.colv g`. Unfold `GlobalTheory.CompanionTheory.MirLevi.mvec`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`. Establish `hP : ∀ i j, ((GlobalTheory.BZMir.mirabolicProjection k n g : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) i j = ((g : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) (Fin.castSucc i) (Fin.castSucc j)` using `fun _ _ => rfl`. Establish `hlast` using `(GlobalTheory.BZMir.mem_Mir_iff k (g : GL (Fin (n + 1)) k)).1 g.2`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[GlobalTheory.CompanionTheory.MirLevi.coe_levi_mul_uv, hA]`. Use extensionality with `i j`. Use `Fin.lastCases ?_ (fun i => ?_) i` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[congrFun hlast j]`. Use `Fin.lastCases ?_ (fun j => ?_) j` and prove the remaining obligations. Simplify using `[GlobalTheory.BZMir.glEmbMat, GlobalTheory.BZMir.colMat, GlobalTheory.BZMir.eLast]`. Simplify using `[GlobalTheory.BZMir.glEmbMat, GlobalTheory.BZMir.colMat, GlobalTheory.BZMir.eLast, Pi.single_apply, Fin.castSucc_ne_last]`. Use `Fin.lastCases ?_ (fun j => ?_) j` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[GlobalTheory.BZMir.glEmbMat, GlobalTheory.BZMir.colMat, GlobalTheory.CompanionTheory.MirLevi.colv]`. Simplify using `[GlobalTheory.BZMir.glEmbMat, GlobalTheory.BZMir.colMat, hP, Fin.castSucc_ne_last]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem decomp {n : ℕ} (g : Mir k n) : g = levi k n (mirabolicProjection k n g) * uv n (mvec g) := by
   have hA : ((GlobalTheory.BZMir.mirabolicProjection k n g : GL (Fin n) k) : Matrix (Fin n) (Fin n) k).mulVec
@@ -106,33 +106,33 @@ theorem decomp {n : ℕ} (g : Mir k n) : g = levi k n (mirabolicProjection k n g
     · simp [GlobalTheory.BZMir.glEmbMat, GlobalTheory.BZMir.colMat, hP, Fin.castSucc_ne_last]
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.CompanionTheory.MirLevi.mvec_levi_mul_uv n (1 : GL (Fin n) k) v`. Rewrite `h` using `[map_one, one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mvec_uv (n : ℕ) (v : Fin n → k) : mvec (uv n v) = v := by
   have h := GlobalTheory.CompanionTheory.MirLevi.mvec_levi_mul_uv n (1 : GL (Fin n) k) v
   rwa [map_one, one_mul] at h
 
 /- English proof (translation)
-Use `conv_lhs => rw [GlobalTheory.CompanionTheory.MirLevi.decomp g, ← mul_assoc, ← map_mul]`. Rewrite using `[GlobalTheory.CompanionTheory.MirLevi.mvec_levi_mul_uv]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mvec_levi_mul (n : ℕ) (m : GL (Fin n) k) (g : Mir k n) : mvec (levi k n m * g) = mvec g := by
   conv_lhs => rw [GlobalTheory.CompanionTheory.MirLevi.decomp g, ← mul_assoc, ← map_mul]
   rw [GlobalTheory.CompanionTheory.MirLevi.mvec_levi_mul_uv]
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.CompanionTheory.MirLevi.uv, ofAdd_add, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem uv_add (n : ℕ) (v w : Fin n → k) : uv n (v + w) = uv n v * uv n w := by
   simp only [GlobalTheory.CompanionTheory.MirLevi.uv, ofAdd_add, map_mul]
 
 /- English proof (translation)
-Simplify using `[GlobalTheory.CompanionTheory.MirLevi.uv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem uv_zero (n : ℕ) : uv n (0 : Fin n → k) = 1 := by
   simp [GlobalTheory.CompanionTheory.MirLevi.uv]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Establish `h` using `GlobalTheory.BZMir.glEmb_mul_unip' k n m (Multiplicative.ofAdd (((m⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k).mulVec v))`. Rewrite `h` using `[toAdd_ofAdd, Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`. Conclude with `h.symm`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uv_mul_levi (n : ℕ) (m : GL (Fin n) k) (v : Fin n → k) :
     uv n v * levi k n m = levi k n m * uv n (((m⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k).mulVec v) := by
@@ -154,13 +154,11 @@ def restr : cIndSpace (LH k n) ρ →ₗ[ℂ] (Fin n → k) → E where
   map_smul' _ _ := rfl
 
 /- English proof (translation)
-Introduce `f f' h`. Establish `key : ∀ (F : GlobalTheory.PRep.cIndSpace (GlobalTheory.CompanionTheory.MirLevi.LH k n) ρ) (x : GlobalTheory.CompanionTheory.MirLevi.LH k n) (g : GlobalTheory.BZMir.Mir k n), F.1.1.1 ((x : GlobalTheory.BZMir.Mir k n) * g) = ρ x (F.1.1.1 g)`. Introduce `F x g`. Use `first`. Consider the case `exact F.1.1.2 x g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately.
 
-Consider the case `exact F.1.2 x g`. Consider the case `exact F.2 x g`. Consider the case `simpa using F.1.1.2 x g`. Establish `hv : ∀ v, f.1.1.1 (GlobalTheory.CompanionTheory.MirLevi.uv n v) = f'.1.1.1 (GlobalTheory.CompanionTheory.MirLevi.uv n v)` using `fun v => congrFun h v`. Establish `hall : ∀ g, f.1.1.1 g = f'.1.1.1 g`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g`. Establish `e : GlobalTheory.BZMir.levi k n (GlobalTheory.BZMir.mirabolicProjection k n g) = ((GlobalTheory.CompanionTheory.MirLevi.lv k n (GlobalTheory.BZMir.mirabolicProjection k n g) : GlobalTheory.CompanionTheory.MirLevi.LH k n) : GlobalTheory.BZMir.Mir k n)` using `rfl`. Rewrite using `[GlobalTheory.CompanionTheory.MirLevi.decomp g, e, key f, key f', hv]`. Use `first`. Consider the case `exact Subtype.ext (Subtype.ext (Subtype.ext (funext hall)))`.
-
-Consider the case `exact Subtype.ext (Subtype.ext (Subtype.ext (by ext g; exact hall g)))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem restr_injective : Function.Injective (restr ρ) := by
   intro f f' h
@@ -186,7 +184,7 @@ theorem restr_injective : Function.Injective (restr ρ) := by
   | exact Subtype.ext (Subtype.ext (Subtype.ext (by ext g; exact hall g)))
 
 /- English proof (translation)
-Use `show f.1.1.1 (GlobalTheory.CompanionTheory.MirLevi.uv n v * GlobalTheory.CompanionTheory.MirLevi.uv n a) = _`. Conclude with `congrArg (fun g => f.1.1.1 g) (GlobalTheory.CompanionTheory.MirLevi.uv_add n v a).symm`.
+A detailed English derivation is pending.
 -/
 theorem restr_uv (a : Fin n → k) (f : cIndSpace (LH k n) ρ) (v : Fin n → k) :
     restr ρ (cInd (LH k n) ρ (uv n a) f) v = restr ρ f (v + a) := by
@@ -194,11 +192,9 @@ theorem restr_uv (a : Fin n → k) (f : cIndSpace (LH k n) ρ) (v : Fin n → k)
   exact congrArg (fun g => f.1.1.1 g) (GlobalTheory.CompanionTheory.MirLevi.uv_add n v a).symm
 
 /- English proof (translation)
-Establish `key : ∀ (x : GlobalTheory.CompanionTheory.MirLevi.LH k n) (g : GlobalTheory.BZMir.Mir k n), f.1.1.1 ((x : GlobalTheory.BZMir.Mir k n) * g) = ρ x (f.1.1.1 g)`. Introduce `x g`. Use `first`. Consider the case `exact f.1.1.2 x g`. Consider the case `exact f.1.2 x g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact f.2 x g`. Consider the case `simpa using f.1.1.2 x g`. Establish `e : GlobalTheory.BZMir.levi k n m = ((GlobalTheory.CompanionTheory.MirLevi.lv k n m : GlobalTheory.CompanionTheory.MirLevi.LH k n) : GlobalTheory.BZMir.Mir k n)` using `rfl`. Use `show f.1.1.1 (GlobalTheory.CompanionTheory.MirLevi.uv n v * GlobalTheory.BZMir.levi k n m) = _`. Rewrite using `[GlobalTheory.CompanionTheory.MirLevi.uv_mul_levi, e, key]`.
-
-Both sides reduce to the same expression.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem restr_levi (m : GL (Fin n) k) (f : cIndSpace (LH k n) ρ) (v : Fin n → k) :
     restr ρ (cInd (LH k n) ρ (levi k n m) f) v =

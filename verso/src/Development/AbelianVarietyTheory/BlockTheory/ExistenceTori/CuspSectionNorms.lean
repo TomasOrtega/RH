@@ -32,7 +32,7 @@ def ZeroOff {X : ι → Data E r} (F : Fn X) : Prop :=
   ∀ c, ∀ x, x ∉ (X c).dom → F c x = 0
 
 /- English proof (translation)
-Unfold `ptNorm Data.pnorm`. Rewrite using `[← add_mul]`. Conclude with `mul_le_mul_of_nonneg_right (norm_add_le _ _) (Finset.prod_nonneg fun _ _ => Finset.prod_nonneg fun _ _ => Real.rpow_nonneg (norm_nonneg _) _)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ptNorm_add_le {X : ι → Data E r} (la : FamWt X) (F G : Fn X) (p : FramePt X) :
     ptNorm la (F + G) p ≤ ptNorm la F p + ptNorm la G p := by
@@ -43,7 +43,7 @@ theorem ptNorm_add_le {X : ι → Data E r} (la : FamWt X) (F G : Fn X) (p : Fra
       Real.rpow_nonneg (norm_nonneg _) _)
 
 /- English proof (translation)
-Unfold `ptNorm Data.pnorm`. Simplify using `only [Pi.smul_apply, smul_eq_mul, norm_mul, mul_assoc]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem ptNorm_smul {X : ι → Data E r} (la : FamWt X) (a : ℂ) (F : Fn X) (p : FramePt X) :
     ptNorm la (a • F) p = ‖a‖ * ptNorm la F p := by
@@ -75,7 +75,7 @@ def supN {X : ι → Data E r} (la : FamWt X) (F : cuspSpace la) : ℝ :=
   (supE la (F : Fn X)).toReal
 
 /- English proof (translation)
-Use `⟨fun h => h.1, fun h => ⟨h, ?_⟩⟩` and prove the remaining obligations. Use `choose C hC using fun c => (h c).1.2`. Take `⟨M, hM⟩` from `(Set.finite_range C).bddAbove`. Conclude with `⟨M, fun p => (hC p.1 p.2.1 p.2.2).trans (hM ⟨p.1, rfl⟩)⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isCuspSec_iff_of_finite [Finite ι] {X : ι → Data E r} (la : FamWt X) (F : Fn X) :
     IsCuspSec la F ↔ ∀ c, F c ∈ (X c).SS (la c) := by

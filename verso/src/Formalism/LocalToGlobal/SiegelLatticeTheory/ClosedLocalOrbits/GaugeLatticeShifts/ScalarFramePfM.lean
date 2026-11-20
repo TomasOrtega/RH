@@ -18,39 +18,33 @@ variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableS
 variable {M : Loc.Model F E} {V : Type} [AddCommGroup V] [Module E V] (H : Loc.HermSp M V)
 
 /- English proof (translation)
-Use `⟨⟨?_, ?_, ?_, ?_, ?_, hrat⟩, ⟨?_, ?_, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Introduce `x y x₂ y₂ hx hy`. Conclude with `h_eq_of_sub_mem H _ hX0 x.2 y.2 ((mk_eq_iff H _ x x₂).1 hx) ((mk_eq_iff H _ y y₂).1 hy)`. Introduce `x y x₂ y₂ hx hy`. Establish `hx' : e x - x₂ ∈ H.X f₂` using `(mk_eq_iff H _ _ x₂).1 hx`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy' : e y - y₂ ∈ H.X f₂` using `(mk_eq_iff H _ _ y₂).1 hy`. Rewrite using `[h_eq_of_sub_mem H _ hX2 (perp_map H e hiso _ _ h21 x.2) (perp_map H e hiso _ _ h21 y.2) hx' hy', hiso]`. Introduce `w hw`. Take `⟨w₂, hw₂, h1, h2⟩` from `hW0 w hw`. Use `⟨w₂, hw₂, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x x₂ hx hx₂`. Apply `smul_mk_eq H` to reduce the goal to its premises. Rewrite using `[one_smul, one_smul, hx, hx₂]`. Conclude with `h1`. Introduce `x x₂ hx hx₂`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `smul_mk_eq H` to reduce the goal to its premises. Use `show (1 : E) • e x - (1 : E) • (x₂ : V) ∈ H.X f₂`. Rewrite using `[one_smul, one_smul, hx, hx₂]`. Conclude with `h2`. Introduce `x x₂ hx hx₂`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `smul_mk_eq H` to reduce the goal to its premises. Rewrite using `[hx, hx₂]`. Conclude with `homp`. Introduce `x x₂ hx hx₂`. Apply `smul_mk_eq H` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `show M.L.cj (H.Dl f₀ f₂ (r + 1)) • e x - M.L.cj (H.Dl f₀ f₁ (r + 1)) • (x₂ : V) ∈ H.X f₂`. Rewrite using `[hx, hx₂]`. Conclude with `hom`. Use extensionality with `w`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce `x x₂ hx hx₂`. Establish `: x = x₂` using `Subtype.ext (hx.trans hx₂.symm)`. Rewrite using `[this]`. Both sides reduce to the same expression. Use extensionality with `w`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨x, hxΛ, rfl⟩, rfl⟩`. Conclude with `⟨perpEquiv H e hiso _ _ h12 h21 x, hL _ hxΛ, rfl⟩`. Introduce and unpack `⟨x₂, hx₂Λ, rfl⟩`. Use `⟨H.mkW _ ⟨e.symm x₂, perp_map_symm H e hiso _ _ h12 x₂.2⟩, ⟨⟨e.symm x₂, perp_map_symm H e hiso _ _ h12 x₂.2⟩, hL' _ hx₂Λ, rfl⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `show qEquiv H e hiso (H.X f₁) (H.X f₂) h12 h21 (Submodule.Quotient.mk _) = Submodule.Quotient.mk x₂`. Rewrite using `[qEquiv_mk]`. Use `congr 1`. Conclude with `Subtype.ext (e.apply_symm_apply x₂)`. Introduce `x x₂ hx hx₂`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `smul_mk_eq H` to reduce the goal to its premises. Use `show (1 : E) • e x - (1 : E) • (x₂ : V) ∈ H.X f₂`. Rewrite using `[one_smul, one_smul, hx, hx₂]`. Conclude with `hz`. Introduce `g hg`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨hA, hB⟩` from `hI g hg`. Use extensionality with `⟨a, b⟩`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨a0, b0⟩, ⟨x', x, hx'Λ, hxΛ, hq, heq⟩, hmap⟩`. Take `⟨y, y'', hyΛ, hy''Λ, hyp, hy''p, hxy, hxy'', hyq⟩` from `hA x x' hxΛ hx'Λ x.2 x'.2 hq`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `⟨⟨y'', hy''p⟩, ⟨y, hyp⟩, hy''Λ, hyΛ, hyq, ?_⟩` and prove the remaining obligations. Simplify using `only [Prod.map, Prod.mk.injEq] at hmap heq`. Take `⟨rfl, rfl⟩` from `heq`. Take `⟨rfl, rfl⟩` from `hmap`. Use `Prod.ext ?_ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `show qEquiv H e hiso (H.X f₁) (H.X f₂) h12 h21 (Submodule.Quotient.mk x') = Submodule.Quotient.mk _`. Rewrite using `[qEquiv_mk, mk_eq_iff]`. Conclude with `hxy''`. Use `show Submodule.Quotient.mk x = Submodule.Quotient.mk _`. Rewrite using `[mk_eq_iff]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `hxy`. Introduce and unpack `⟨x'', x, hx''Λ, hxΛ, hq, heq⟩`. Take `⟨y, y', hyΛ, hy'Λ, hyp, hy'p, hxy, hxy', hyq⟩` from `hB x x'' hxΛ hx''Λ x.2 x''.2 hq`. Use `⟨(H.mkW _ ⟨y', hy'p⟩, H.mkW _ ⟨y, hyp⟩), ⟨⟨y', hy'p⟩, ⟨y, hyp⟩, hy'Λ, hyΛ, hyq, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [Prod.mk.injEq] at heq`.
-
-Take `⟨rfl, rfl⟩` from `heq`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show qEquiv H e hiso (H.X f₁) (H.X f₂) h12 h21 (Submodule.Quotient.mk _) = Submodule.Quotient.mk x''`. Rewrite using `[qEquiv_mk, mk_eq_iff]`. Establish `h` using `h12 _ hxy'`.
-
-Rewrite `h` using `[map_sub, LinearEquiv.apply_symm_apply]`. Establish `h'` using `Submodule.neg_mem _ h`. Rewrite `h'` using `[neg_sub]`. Then use the resulting hypothesis. Use `show Submodule.Quotient.mk _ = Submodule.Quotient.mk x`. Rewrite using `[mk_eq_iff]`.
-
-Establish `h'` using `Submodule.neg_mem _ hxy`. Rewrite `h'` using `[neg_sub]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem identResp_generic {r : ℕ} (abelian₂ : Submodule M.L.O V) (f₀ f₁ f₂ : Fin (r + 1) → V) (T T' : F)
     (e : V ≃ₗ[E] V) (hiso : ∀ v w, H.h (e v) (e w) = H.h v w)
@@ -167,15 +161,13 @@ def phiP (Λ : Submodule (𝓞 D.host.E) (VS D).V) (f g1 g2 : Fin (D.R.rS + 1) �
     (fun y hy => betaP_symm_mem_X Z p β g1 g2 (sF' Z p) (isUnit_sF' Z p) hG.xmap' hy)
 
 /- English proof (translation)
-Establish `hiso : ∀ v w, (locH Z p).h (betaP p β v) (betaP p β w) = (locH Z p).h v w` using `betaP_iso Z p β hG.iso`. Use `identResp_generic (locH Z p) (lattice₂ D Z.M p Λ) (fun a => sF Z p a • baseChange₂ D p (f a)) (fun b => sF' Z p b • baseChange₂ D p (g1 b)) (fun b => sF' Z p b • baseChange₂ D p (g2 b)) _ _ (betaP p β) hiso (fun x hx => betaP_mem_X Z p β g1 g2 (sF' Z p) (isUnit_sF' Z p) hG.xmap h …` and prove the remaining obligations. Apply `iso_span` to reduce the goal to its premises. Introduce `i j`. Rewrite using `[h_bcP, brS, hG.fiso j i, map_zero, mul_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply `iso_span` to reduce the goal to its premises. Introduce `i j`. Rewrite using `[h_bcP, brS, hG.g2iso j i, map_zero, mul_zero]`. Rewrite using `[om'_loc, om'_loc, dl_loc Z p f g2 (sF Z p) (sF' Z p) _ le_rfl, dl_loc Z p f g1 (sF Z p) (sF' Z p) _ le_rfl]`. Rewrite using `[omp_combine]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ _ (bcP_mem_X Z p f (sF Z p) (isUnit_sF Z p) hG.omp)`. Rewrite using `[om_loc, om_loc, dl_loc Z p f g2 (sF Z p) (sF' Z p) _ le_rfl, dl_loc Z p f g1 (sF Z p) (sF' Z p) _ le_rfl, map_smul, betaP_bc]`. Rewrite using `[om_combine]`. Conclude with `Submodule.smul_mem _ _ (bcP_mem_X Z p g2 (sF' Z p) (isUnit_sF' Z p) hG.om)`. Rewrite using `[dl_loc Z p f g1 (sF Z p) (sF' Z p) _ (Nat.le_succ _), dl_loc Z p f g2 (sF Z p) (sF' Z p) _ le_rfl, dl_loc Z p f g2 (sF Z p) (sF' Z p) _ (Nat.le_succ _), dl_loc Z p f g1 (sF Z p) (sF' Z p) _ le_rfl]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `congrArg (D.s.atP p).ιE hG.ratio`. Rewrite `h` using `[map_mul, map_mul]`. Take the linear combination `((∏ i : Fin D.R.rS, (Z.M p).L.cj (sF Z p (Fin.castLE (Nat.le_succ _) i))) * (∏ i : Fin D.R.rS, sF' Z p (Fin.castLE (Nat.le_succ _) i)) * ((∏ i : Fin (D.R.rS + 1), (Z.M p).L.cj (sF Z p (Fin.castLE le_rfl i))) * (∏ i : Fin (D.R.rS + 1), sF' Z p (Fin.castLE le_rfl i)))) * h`. Use `show betaP p β (sF' Z p (Fin.last _) • baseChange₂ D p (g1 (Fin.last _))) - sF' Z p (Fin.last _) • baseChange₂ D p (g2 (Fin.last _)) ∈ _`. Rewrite using `[map_smul, betaP_bc, ← smul_sub, ← map_sub]`.
-
-Conclude with `Submodule.smul_mem _ _ (bcP_mem_X Z p g2 (sF' Z p) (isUnit_sF' Z p) hG.zmap)`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem identResp_lt (Λ : Submodule (𝓞 D.host.E) (VS D).V) (f g1 g2 : Fin (D.R.rS + 1) → (VS D).V)
     (β : (VS D).V ≃ₗ[D.host.E] (VS D).V) (Tn T'n : ℕ) (hG : GFacts Λ f g1 g2 β)
@@ -231,7 +223,7 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions.S
   Formalism.L2.SG.Pf.ScalarFramePf
 
 /- English proof (translation)
-The claim follows from `identResp_lt Z p Λ (frame F) (frameAct (frame F') (admXi D Λ F F')⁻¹) (frameAct (frame F'') (admXi D Λ F F'')⁻¹) β Tn T'n (gfacts_of Λ F F' F'' β hF hl' hl'' hc' hc'' hP hs hsc hG' hG'' hT hT') (hI D Z Λ F F' F'' β hF hl' hl'' hc' hc'' ha' ha'' hP hg' hg'' hs hsc hG' hG'' hT hT' …`.
+A detailed English derivation is pending.
 -/
 theorem scalarFrameCT_explicit (hI : IotaStep) (D : D7) (Z : LocDat D) (Λ : Submodule (𝓞 D.host.E) (VS D).V)
     {T T' : D.host.E} (F : LFlag (VS D) D.R.rS T) (F' F'' : LFlag (VS D) D.R.rS T')

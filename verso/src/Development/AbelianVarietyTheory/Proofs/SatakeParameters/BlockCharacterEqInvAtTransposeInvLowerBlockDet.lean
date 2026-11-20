@@ -15,21 +15,21 @@ section
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `hh.1`. Establish `hi` using `((blockGrp k r t).inv_mem hh).2`. Establish `hinv : (h⁻¹ : GL (Fin (r + t)) k) = Matrix.GeneralLinearGroup.map (algebraMap 𝒪[k] k) g⁻¹`. Rewrite using `[← hg, map_inv]`. Establish `hC : ∀ (i : Fin t) (j : Fin r), (g⁻¹ : GL (Fin (r + t)) 𝒪[k]).val (Fin.natAdd r i) (Fin.castAdd t j) ∈ 𝓂[k]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `i j`. Use `hi (Fin.natAdd r i) j` as an intermediate fact. Establish `hne : Fin.natAdd r i ≠ Fin.castAdd t j`. Introduce `e`. Use `congrArg Fin.val e` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Rewrite `this` using `[hinv, Matrix.sub_apply, Matrix.one_apply_ne hne, sub_zero]`. Express the relevant statement in the definitionally equal form `valuation k (algebraMap 𝒪[k] k ((g⁻¹ : GL (Fin (r + t)) 𝒪[k]).val (Fin.natAdd r i) (Fin.castAdd t j))) < 1 at this`. Conclude with `(IsLocalRing.mem_maximalIdeal _).2 (Valuation.Integer.not_isUnit_iff_valuation_lt_one.mpr this)`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Establish `hres : (((g⁻¹ : GL (Fin (r + t)) 𝒪[k]).val.submatrix (Fin.natAdd r) (Fin.natAdd r)) * (g.val.submatrix (Fin.natAdd r) (Fin.natAdd r))).map (IsLocalRing.residue 𝒪[k]) = 1`. Use extensionality with `i j`. Establish `e1 : ((g⁻¹ : GL (Fin (r + t)) 𝒪[k]).val * g.val) (Fin.natAdd r i) (Fin.natAdd r j) = (1 : Matrix (Fin (r + t)) (Fin (r + t)) 𝒪[k]) (Fin.natAdd r i) (Fin.natAdd r j)`. Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one]`. Rewrite `e1` using `[Matrix.mul_apply, Fin.sum_univ_add]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hm : ∑ x : Fin r, (g⁻¹ : GL (Fin (r + t)) 𝒪[k]).val (Fin.natAdd r i) (Fin.castAdd t x) * g.val (Fin.castAdd t x) (Fin.natAdd r j) ∈ 𝓂[k]` using `Ideal.sum_mem _ fun x _ => Ideal.mul_mem_right _ _ (hC i x)`. Establish `e2 : (((g⁻¹ : GL (Fin (r + t)) 𝒪[k]).val.submatrix (Fin.natAdd r) (Fin.natAdd r)) * (g.val.submatrix (Fin.natAdd r) (Fin.natAdd r))) i j = (1 : Matrix (Fin (r + t)) (Fin (r + t)) 𝒪[k]) (Fin.natAdd r i) (Fin.natAdd r j) - ∑ x : Fin r, (g⁻¹ : GL (Fin (r + t)) 𝒪[k]).val (Fin.natAdd …`. Simplify using `only [Matrix.mul_apply, Matrix.submatrix_apply]`. Rewrite using `[← e1]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.map_apply, e2, map_sub, (IsLocalRing.residue_eq_zero_iff _).2 hm, sub_zero]`. Apply the tactic sequence `by_cases e : i = j <;> simp [Matrix.one_apply, e]`. Establish `hm : ((g⁻¹ : GL (Fin (r + t)) 𝒪[k]).val.submatrix (Fin.natAdd r) (Fin.natAdd r)).det * (g.val.submatrix (Fin.natAdd r) (Fin.natAdd r)).det - 1 ∈ 𝓂[k]`. Rewrite using `[← IsLocalRing.residue_eq_zero_iff, map_sub, ← Matrix.det_mul, RingHom.map_det, RingHom.mapMatrix_apply, hres, Matrix.det_one, map_one, sub_self]`. Establish `hv` using `Valuation.Integer.not_isUnit_iff_valuation_lt_one.mp ((IsLocalRing.mem_maximalIdeal _).1 hm)`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : ∀ G : GL (Fin (r + t)) 𝒪[k], ((Matrix.GeneralLinearGroup.map (algebraMap 𝒪[k] k) G).val.submatrix (Fin.natAdd r) (Fin.natAdd r)).det = (((G.val.submatrix (Fin.natAdd r) (Fin.natAdd r)).det : 𝒪[k]) : k)`. Introduce `G`. Rewrite using `[show (((G.val.submatrix (Fin.natAdd r) (Fin.natAdd r)).det : 𝒪[k]) : k) = algebraMap 𝒪[k] k (G.val.submatrix (Fin.natAdd r) (Fin.natAdd r)).det from rfl, RingHom.map_det]`. Both sides reduce to the same expression. Rewrite using `[hinv, ← hg, e, e]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hv` using `only [AddSubgroupClass.coe_sub, MulMemClass.coe_mul, OneMemClass.coe_one]`.
+A detailed English derivation is pending.
 -/
 theorem val_det_mul_sub_one_lt {r t : ℕ} {h : GL (Fin (r + t)) k} (hh : h ∈ blockGrp k r t) :
     valuation k (((h⁻¹ : GL (Fin (r + t)) k).val.submatrix (Fin.natAdd r) (Fin.natAdd r)).det *
@@ -87,19 +87,19 @@ end GlobalTheory.BlockConjDet
 namespace GlobalTheory.BlockConjDet
 
 /- English proof (translation)
-Introduce `L _ _ _ s r t c _ a b hb ha ϖ hϖ d hd`. Establish `hϖ0 : ϖ ≠ 0`. Introduce `h0`. Rewrite `hϖ` using `[h0, map_zero]`. Conclude with `(WithZero.exp_ne_zero hϖ.symm).elim`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hdinv : (d⁻¹ : GL (Fin (r + t)) (s.v.adicCompletion (maximalRealSubfield L))).val = Matrix.diagonal (fun i : Fin (r + t) => if (i : ℕ) < r then (1 : s.v.adicCompletion (maximalRealSubfield L)) else ϖ⁻¹)`. Establish `h1 : d.val * Matrix.diagonal (fun i : Fin (r + t) => if (i : ℕ) < r then (1 : s.v.adicCompletion (maximalRealSubfield L)) else ϖ⁻¹) = 1`. Rewrite using `[hd, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Apply the tactic sequence `congr 1; ext i; split_ifs <;> simp [hϖ0]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hDD : NG.detDD s r (d * b * d⁻¹) = ((a⁻¹ : GL (Fin (r + t)) (s.v.adicCompletion (maximalRealSubfield L))).val.submatrix (Fin.natAdd r) (Fin.natAdd r)).det`. Set `e : Fin t ≃ {x : Fin (r + t) // r ≤ x.val}` to `{ toFun := fun i => ⟨Fin.natAdd r i, by simp⟩ invFun := fun x => ⟨x.1.val - r, by omega⟩ left_inv := fun i => by ext; simp right_inv := fun x => by ext; simp; omega }`. Rewrite using `[NG.detDD, ← Matrix.det_submatrix_equiv_self e, ← Matrix.det_transpose]`. Use `congr 1`. Use extensionality with `i j`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `hn : ∀ x : Fin t, ¬ ((Fin.natAdd r x : Fin (r + t)) : ℕ) < r` using `by intro x; simp`. Simplify using `only [e, Matrix.transpose_apply, Matrix.submatrix_apply, Matrix.of_apply, Equiv.coe_fn_mk, Units.val_mul, hdinv, hd, Matrix.mul_diagonal, Matrix.diagonal_mul, hb]`. Rewrite using `[if_neg (hn _), if_neg (hn _), mul_comm ϖ, mul_inv_cancel_right₀ hϖ0]`. Establish `hc : c (NG.detDD s r (d * b * d⁻¹)) = (((Matrix.GeneralLinearGroup.map c.toRingHom a)⁻¹ : GL (Fin (r + t)) (s.w.adicCompletion L)).val.submatrix (Fin.natAdd r) (Fin.natAdd r)).det`. Rewrite using `[hDD, ← map_inv]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `RingHom.map_det c.toRingHom _`. Establish `hv` using `val_det_mul_sub_one_lt ha`. Establish `hne : ∀ x y : s.w.adicCompletion L, ValuativeRel.valuation _ (x * y - 1) < 1 → x ≠ 0 ∧ y ≠ 0`. Introduce `x y h`. Apply the tactic sequence `constructor <;> rintro rfl <;> simp at h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨h1, h2⟩` from `hne _ _ hv`. Establish `hF : NG.detDD s r (d * b * d⁻¹) ≠ 0` using `fun h0 => h1 (by rw [← hc, h0, map_zero])`. Use `⟨Units.mk0 _ hF, rfl, fun μ hμ => ?_⟩` and prove the remaining obligations. Rewrite using `[blockChar_eq μ _ (Units.mk0 _ h2) rfl]`. Establish `ht` using `hμ (Units.map c.toMonoidHom (Units.mk0 _ hF) * Units.mk0 _ h2) (by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `only [Units.val_mul, Units.coe_map, Units.val_mk0]`. Rewrite using `[show (c.toMonoidHom : _ →* _) (NG.detDD s r (d * b * d⁻¹)) = c (NG.detDD s r (d * b * d⁻¹)) from rfl, hc]`. Conclude with `hv)`. Rewrite `ht` using `[map_mul]`. Rewrite using `[eq_inv_of_mul_eq_one_right ht]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blockChar_eq_inv_detDD : ∀ {L : Type} [Field L] [NumberField L] [IsCMField L] (s : SplitPlace L) (r t : ℕ) (c : s.v.adicCompletion (maximalRealSubfield L) ≃+* s.w.adicCompletion L), (∀ x, Valued.v (c x) = Valued.v x) → ∀ (a b : GL (Fin (r + t)) (s.v.adicCompletion (maximalRealSubfield L))), b.val = (a⁻¹ : GL (Fin (r + t)) (s.v.adicCompletion (maximalRealSubfield L))).val.transpose → Matrix.GeneralLinearGroup.map c.toRingHom a ∈ blockGrp (s.w.adicCompletion L) r t → ∀ ϖ : s.v.adicCompletion (maximalRealSubfield L), Valued.v ϖ = WithZero.exp (-1) → ∀ d : GL (Fin (r + t)) (s.v.adicCompletion (maximalRealSubfield L)), d.val = Matrix.diagonal (fun i : Fin (r + t) => if (i : ℕ) < r then (1 : s.v.adicCompletion (maximalRealSubfield L)) else ϖ) → ∃ u : (s.v.adicCompletion (maximalRealSubfield L))ˣ, (u : s.v.adicCompletion (maximalRealSubfield L)) = NG.detDD s r (d * b * d⁻¹) ∧ ∀ μ : (s.w.adicCompletion L)ˣ →* ℂˣ, IsTame μ → blockChar μ (Matrix.GeneralLinearGroup.map c.toRingHom a) = (((μ (Units.map c.toMonoidHom u))⁻¹ : ℂˣ) : ℂ) := by
   intro L _ _ _ s r t c _ a b hb ha ϖ hϖ d hd

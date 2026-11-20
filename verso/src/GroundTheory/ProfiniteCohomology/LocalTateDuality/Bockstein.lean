@@ -23,11 +23,11 @@ variable {k G : Type u} [CommRing k] [Group G] [TopologicalSpace G] [IsTopologic
 omit [TopologicalSpace G] [IsTopologicalGroup G] in
 
 /- English proof (translation)
-Use `(inhomogeneousCochains_d_one_apply A _ ![g, h]).trans ?_` and prove the remaining obligations. Establish `e1 : (fun _ : Fin 1 => (![g, h] : Fin 2 → G) 1) = ![h]`. Use function extensionality and compare the values at `i`. Use `fin_cases i`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `e2 : (fun _ : Fin 1 => (![g, h] : Fin 2 → G) 0 * (![g, h] : Fin 2 → G) 1) = ![g * h]`. Use function extensionality and compare the values at `i`. Use `fin_cases i`. Both sides reduce to the same expression. Establish `e3 : (fun _ : Fin 1 => (![g, h] : Fin 2 → G) 0) = ![g]`.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 
-Use function extensionality and compare the values at `i`. Use `fin_cases i`. Both sides reduce to the same expression. Rewrite using `[e1, e2, e3]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem inhomogeneousCochains_d_one_apply_vec (A : Rep.{u} k G) (w : (Fin 1 → G) → A) (g h : G) :
     (inhomogeneousCochains.d A 1).hom w ![g, h] = A.ρ g (w ![h]) - w ![g * h] + w ![g] := by
@@ -42,7 +42,7 @@ theorem inhomogeneousCochains_d_one_apply_vec (A : Rep.{u} k G) (w : (Fin 1 → 
   rfl
 
 /- English proof (translation)
-The claim follows from `(congrFun (cochainOf_d (A := A) w) ![g, h]).trans (inhomogeneousCochains_d_one_apply_vec A _ g h)`.
+A detailed English derivation is pending.
 -/
 theorem cochainOf_d_one_apply (A : Rep.{u} k G) [IsDiscreteRep A] (w : (cochainsComplex A).X 1)
     (g h : G) :
@@ -51,11 +51,11 @@ theorem cochainOf_d_one_apply (A : Rep.{u} k G) [IsDiscreteRep A] (w : (cochains
   (congrFun (cochainOf_d (A := A) w) ![g, h]).trans (inhomogeneousCochains_d_one_apply_vec A _ g h)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `((cochainsComplex A).homologyπ 2).hom z = 0 ↔ _`. Rewrite using `[homologyπ_eq_zero_iff, CochainComplex.prev_nat_succ]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw⟩`. Use `⟨fun g => cochainOf A w ![g], (isLocallyConstant_cochainOf w).comp_continuous (continuous_pi fun i => by fin_cases i; exact continuous_id), fun g h => ?_⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e` using `congrArg (fun c => cochainOf A c ![g, h]) hw`. Rewrite `e` using `[cochainOf_d_one_apply]`. Conclude with `e.symm`. Introduce and unpack `⟨f, hf, hfz⟩`. Use `⟨mkCochain A (fun v : Fin 1 → G => f (v 0)) (hf.comp_continuous (continuous_apply 0)), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `cochainOf_injective` to reduce the goal to its premises. Use function extensionality and compare the values at `v`. Apply the tactic sequence `have hv : v = ![v 0, v 1] := by funext i; fin_cases i <;> rfl`. Rewrite using `[hv, cochainOf_d_one_apply]`. Conclude with `(hfz (v 0) (v 1)).symm`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cohomologyπ_two_eq_zero_iff (A : Rep.{u} k G) [IsDiscreteRep A] (z : cocycles A 2) :
     cohomologyπ A 2 z = 0 ↔ ∃ f : G → A, IsLocallyConstant f ∧ ∀ g h : G,
@@ -79,9 +79,9 @@ theorem cohomologyπ_two_eq_zero_iff (A : Rep.{u} k G) [IsDiscreteRep A] (z : co
     exact (hfz (v 0) (v 1)).symm
 
 /- English proof (translation)
-Rewrite using `[cochainsComplex_d_zero_one]`. Use extensionality with `f : 2`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Rewrite using `[dLocallyConstant_hom_apply]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `h : ∀ x : Fin 0 → G, (f : (Fin 0 → G) → A) x = (f : (Fin 0 → G) → A) Fin.elim0` using `fun x => by rw [Subsingleton.elim x Fin.elim0]`. Simplify using `[inhomogeneousCochains.d_hom_apply, h, hA]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem cochainsComplex_d_zero_one_eq_zero_of_trivial (A : Rep.{u} k G) [IsDiscreteRep A]
     (hA : ∀ (g : G) (a : A), A.ρ g a = a) : (cochainsComplex A).d 0 1 = 0 := by
@@ -96,11 +96,11 @@ theorem cochainsComplex_d_zero_one_eq_zero_of_trivial (A : Rep.{u} k G) [IsDiscr
   rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `((cochainsComplex A).homologyπ 1).hom z = 0 ↔ _`. Rewrite using `[homologyπ_eq_zero_iff, CochainComplex.prev_nat_succ, cochainsComplex_d_zero_one_eq_zero_of_trivial A hA]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw⟩ g`. Establish `e` using `congrArg (fun c => cochainOf A c ![g]) hw`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `e.symm`. Introduce `h`. Use `⟨0, ?_⟩` and prove the remaining obligations. Apply `cochainOf_injective` to reduce the goal to its premises. Use function extensionality and compare the values at `v`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hv : v = ![v 0]` using `by funext i; fin_cases i; rfl`. Rewrite using `[hv]`. Conclude with `(h (v 0)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cohomologyπ_one_eq_zero_iff_of_trivial (A : Rep.{u} k G) [IsDiscreteRep A]
     (hA : ∀ (g : G) (a : A), A.ρ g a = a) (z : cocycles A 1) :
@@ -121,7 +121,7 @@ theorem cohomologyπ_one_eq_zero_iff_of_trivial (A : Rep.{u} k G) [IsDiscreteRep
     exact (h (v 0)).symm
 
 /- English proof (translation)
-Establish `e` using `congrFun (d_cocycleι z) ![g, h]`. Rewrite `e` using `[inhomogeneousCochains_d_one_apply_vec, hA, Pi.zero_apply]`. Rewrite using `[← sub_eq_zero, ← neg_eq_zero, ← e]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem cochainOf_cocycleι_one_mul_of_trivial (A : Rep.{u} k G) [IsDiscreteRep A]
     (hA : ∀ (g : G) (a : A), A.ρ g a = a) (z : cocycles A 1) (g h : G) :
@@ -148,7 +148,7 @@ def cocyclesOneOfHom (A : Rep.{u} k G) [IsDiscreteRep A] (hA : ∀ (g : G) (a : 
       abel)
 
 /- English proof (translation)
-Establish `e : cocycleι A 1 (cocyclesOneOfHom A hA f hf hmul) = mkCochain A (fun v : Fin 1 → G => f (v 0)) (hf.comp_continuous (continuous_apply 0))` using `(cochainsComplex A).i_cyclesMk _ _ _ _`. Rewrite using `[e, cochainOf_mkCochain]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem cochainOf_cocyclesOneOfHom (A : Rep.{u} k G) [IsDiscreteRep A]
     (hA : ∀ (g : G) (a : A), A.ρ g a = a) (f : G → A) (hf : IsLocallyConstant f)
@@ -177,7 +177,7 @@ def zmodReduction : intRepTriv G ⟶ zmodRep.{0} G n :=
 
 omit [TopologicalSpace G] [IsTopologicalGroup G] in
 /- English proof (translation)
-Simplify using `[zmodReduction, zmodReductionAdd]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem zmodReduction_hom_apply (m : ℤ) :
     (zmodReduction G n).hom (ULift.up m : intRepTriv G) = (ULift.up (m : ZMod n) : zmodRep.{0} G n) := by
@@ -203,17 +203,17 @@ abbrev bockSeq : ShortComplex (Rep.{0} (ULift.{0} ℤ) G) where
 omit [TopologicalSpace G] [IsTopologicalGroup G] in
 
 /- English proof (translation)
-Use `shortComplex_exact_of_forall_exists _ fun x hx => ?_` and prove the remaining obligations. Take `⟨m⟩` from `x`. Establish `h0 : ((m : ℤ) : ZMod n) = 0`. Use `congrArg ULift.down ((zmodReduction_hom_apply G n m).symm.trans hx)` as an intermediate fact. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `(ZMod.intCast_zmod_eq_zero_iff_dvd m n).1 h0`. Use `⟨(ULift.up c : intRepTriv G), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(n • 𝟙 (intRepTriv G)).hom (ULift.up c) = ULift.up m`. Rewrite using `[nsmul_id_hom_apply]`. Apply `ULift.ext` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `n • c = m`. Rewrite using `[hc, nsmul_eq_mul]`. Use `mono_f := by`. Use `(Rep.mono_iff_injective _).2 fun x y hxy => ?_` and prove the remaining obligations. Take `⟨a⟩` from `x`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨b⟩` from `y`. Express the relevant statement in the definitionally equal form `(n • 𝟙 (intRepTriv G)).hom (ULift.up a) = (n • 𝟙 (intRepTriv G)).hom (ULift.up b) at hxy`. Rewrite `hxy` using `[nsmul_id_hom_apply, nsmul_id_hom_apply]`. Establish `h : n • a = n • b` using `congrArg ULift.down hxy`. Rewrite `h` using `[nsmul_eq_mul, nsmul_eq_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrArg ULift.up (mul_left_cancel₀ (by exact_mod_cast hn) h)`. Use `epi_g := by`. Establish `: NeZero n` using `⟨hn⟩`. Use `(Rep.epi_iff_surjective _).2 fun y => ?_` and prove the remaining obligations. Take `⟨z⟩` from `y`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Use `⟨(ULift.up (z.val : ℤ) : intRepTriv G), ?_⟩` and prove the remaining obligations. Rewrite using `[zmodReduction_hom_apply]`. Apply `ULift.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(((z.val : ℕ) : ℤ) : ZMod n) = z`. Rewrite using `[Int.cast_natCast, ZMod.natCast_zmod_val]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bockSeq_shortExact (hn : n ≠ 0) : (bockSeq G n).ShortExact where
   exact := by
@@ -253,7 +253,7 @@ def intMulPairing (A : Rep.{0} (ULift.{0} ℤ) G) : intRepTriv G ⊗ A ⟶ A :=
 
 omit [TopologicalSpace G] [IsTopologicalGroup G] in
 /- English proof (translation)
-Establish `h : (ULift.up m : ULift.{0} ℤ) = ((m : ℤ) : ULift.{0} ℤ)`. Use `ext`. Simplify using the standard rewrite rules. Use `(pairingHom_tmul (A := intRepTriv G) (B := A) (LinearMap.lsmul (ULift.{0} ℤ) A) _ _ _).trans ?_` and prove the remaining obligations. Conclude with `(LinearMap.lsmul_apply _ _).trans (by rw [h]; exact Int.cast_smul_eq_zsmul (ULift.{0} ℤ) m a)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem intMulPairing_tmul (A : Rep.{0} (ULift.{0} ℤ) G) (m : ℤ) (a : A) :
     (intMulPairing G A).hom ((ULift.up m : intRepTriv G) ⊗ₜ[ULift.{0} ℤ] a :
@@ -270,7 +270,7 @@ def zmodCocycleHom (z : cocycles (zmodRep.{0} G n) 1) : G → ZMod n :=
   fun g => (cochainOf _ (cocycleι _ 1 z) ![g]).down
 
 /- English proof (translation)
-The claim follows from `congrArg ULift.down (cochainOf_cocycleι_one_mul_of_trivial (zmodRep.{0} G n) (fun _ _ => rfl) z g h)`.
+A detailed English derivation is pending.
 -/
 theorem zmodCocycleHom_mul (z : cocycles (zmodRep.{0} G n) 1) (g h : G) :
     zmodCocycleHom z (g * h) = zmodCocycleHom z g + zmodCocycleHom z h :=
@@ -278,7 +278,7 @@ theorem zmodCocycleHom_mul (z : cocycles (zmodRep.{0} G n) 1) (g h : G) :
     (cochainOf_cocycleι_one_mul_of_trivial (zmodRep.{0} G n) (fun _ _ => rfl) z g h)
 
 /- English proof (translation)
-The claim follows from `((isLocallyConstant_cochainOf (cocycleι _ 1 z)).comp_continuous (continuous_pi fun i => by fin_cases i; exact continuous_id)).comp ULift.down`.
+A detailed English derivation is pending.
 -/
 theorem isLocallyConstant_zmodCocycleHom (z : cocycles (zmodRep.{0} G n) 1) :
     IsLocallyConstant (zmodCocycleHom z) :=
@@ -290,9 +290,9 @@ def bockInt (χ : G → ZMod n) (g h : G) : ℤ :=
 
 omit [TopologicalSpace G] [IsTopologicalGroup G] in
 /- English proof (translation)
-Rewrite using `[hχ, ZMod.val_add, bockInt]`. Establish `e` using `Nat.div_add_mod ((χ g).val + (χ h).val) n`. Generalize the expression as in `((χ g).val + (χ h).val) / n = q at e ⊢`. Generalize the expression as in `((χ g).val + (χ h).val) % n = r at e ⊢`. Establish `e' : ((n * q + r : ℕ) : ℤ) = (((χ g).val + (χ h).val : ℕ) : ℤ)` using `by rw [e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Move the coercions through the operations in `at e'`. Combine the linear equalities and inequalities to obtain the conclusion.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem natCast_mul_bockInt [NeZero n] (χ : G → ZMod n)
     (hχ : ∀ g h : G, χ (g * h) = χ g + χ h) (g h : G) :
@@ -308,19 +308,19 @@ theorem natCast_mul_bockInt [NeZero n] (χ : G → ZMod n)
 omit [TopologicalSpace G] [IsTopologicalGroup G] in
 
 /- English proof (translation)
-Establish `hn : (0 : ℚ) < n` using `by exact_mod_cast Nat.pos_of_ne_zero (NeZero.ne n)`. Establish `hr : ∀ x : G, reprIco (ψ (Additive.ofMul x)) = ((χ x).val : ℚ) / n`. Introduce `x`. Establish `hz : zmodToQZ n (χ x) = QZ.mk ((((χ x).val : ℤ) : ℚ) / n)` using `by conv_lhs => rw [← ZMod.natCast_zmod_val (χ x), ← Int.cast_natCast]`. Conclude with `zmodToQZ_intCast _`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hψ, hz]`. Establish `hmem : (((((χ x).val : ℕ) : ℤ) : ℚ) / n) ∈ Set.Ico (0 : ℚ) 1`. Prove the components needed by the constructor for the conclusion. Check the signs of the components of the expression. Rewrite using `[div_lt_one hn]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Check the signs of the components of the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ZMod.val_lt (χ x)` after adjusting the coercions. Rewrite using `[QZ.mk, AddEquiv.apply_symm_apply, reprIco_coe hmem]`. Use `push_cast`. Both sides reduce to the same expression. Unfold `charCocycle bockInt`.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only`. Rewrite using `[hr, hr, ← add_div]`. Establish `e` using `Nat.div_add_mod ((χ g).val + (χ h).val) n`. Establish `hlt` using `Nat.mod_lt ((χ g).val + (χ h).val) (Nat.pos_of_ne_zero (NeZero.ne n))`. Generalize the expression as in `((χ g).val + (χ h).val) / n = q at e ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Generalize the expression as in `((χ g).val + (χ h).val) % n = r at e hlt`. Establish `e' : ((χ g).val : ℚ) + (χ h).val = n * q + r`. Use `congrArg (fun t : ℕ => (t : ℚ)) e` as an intermediate fact. Move the coercions through the operations in `at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[Int.floor_eq_iff, e']`. Use `push_cast`. Prove the components needed by the constructor for the conclusion. Rewrite using `[le_div_iff₀ hn]`. Establish `: (0 : ℚ) ≤ r` using `by positivity`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[div_lt_iff₀ hn]`. Establish `: (r : ℚ) < n` using `by exact_mod_cast hlt`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem charCocycle_eq_bockInt [NeZero n] (χ : G → ZMod n) (ψ : Additive G →+ AddCircle (1 : ℚ))
     (hψ : ∀ g : G, ψ (Additive.ofMul g) = QZ.toAddCircle (zmodToQZ n (χ g))) (g h : G) :
@@ -362,21 +362,21 @@ theorem charCocycle_eq_bockInt [NeZero n] (χ : G → ZMod n) (ψ : Additive G �
     nlinarith
 
 /- English proof (translation)
-Establish `: NeZero n` using `⟨hn⟩`. Establish `hS` using `bockSeq_shortExact G n hn`. Establish `hχ : ∀ g h : G, zmodCocycleHom z (g * h) = zmodCocycleHom z g + zmodCocycleHom z h` using `zmodCocycleHom_mul z`. Establish `hlc : IsLocallyConstant fun v : Fin 1 → G => (ULift.up ((zmodCocycleHom z (v 0)).val : ℤ) : intRepTriv G)` using `IsLocallyConstant.comp ((isLocallyConstant_zmodCocycleHom z).comp_continuous (continuous_apply 0)) (fun c : ZMod n => (ULift.up (c.val : ℤ) : ULift.{0} ℤ))`. Set `x₂ : (cochainsComplex (bockSeq G n).X₂).X 1` to `mkCochain (bockSeq G n).X₂ (fun v : Fin 1 → G => (ULift.up ((zmodCocycleHom z (v 0)).val : ℤ) : intRepTriv G)) hlc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hx₂ : (cochainsMap (bockSeq G n).g).f 1 x₂ = cocycleι (bockSeq G n).X₃ 1 z`. Apply `cochainOf_injective` to reduce the goal to its premises. Rewrite using `[cochainOf_cochainsMap_f]`. Use function extensionality and compare the values at `v`. Establish `hv : v = ![v 0]` using `by funext i; fin_cases i; rfl`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(zmodReduction G n).hom (ULift.up ((zmodCocycleHom z (v 0)).val : ℤ)) = cochainOf _ (cocycleι _ 1 z) v`. Rewrite using `[zmodReduction_hom_apply]`. Apply `ULift.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(((zmodCocycleHom z (v 0)).val : ℤ) : ZMod n) = (cochainOf _ (cocycleι _ 1 z) v).down`. Rewrite using `[Int.cast_natCast, ZMod.natCast_zmod_val]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `conv_rhs => rw [hv]`. Both sides reduce to the same expression. Take `⟨x₁, hx₁⟩` from `exists_cocycle_map_f_eq_d hS 2 z x₂ hx₂`. Establish `hδ` using `δ_cohomologyπ_of_lift hS rfl z x₂ hx₂ x₁ hx₁`. Establish `hx₁v : ∀ g h : G, (cochainOf _ (cocycleι _ 2 x₁) ![g, h]).down = bockInt (zmodCocycleHom z) g h`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g h`. Establish `e : cochainOf (bockSeq G n).X₂ ((cochainsMap (bockSeq G n).f).f 2 (cocycleι _ 2 x₁)) ![g, h] = cochainOf (bockSeq G n).X₂ (((cochainsComplex (bockSeq G n).X₂).d 1 2).hom x₂) ![g, h]` using `congrArg (fun c => cochainOf (bockSeq G n).X₂ c ![g, h]) hx₁`. Rewrite `e` using `[cochainOf_cochainsMap_f, cochainOf_d_one_apply]`. Establish `e2` using `congrArg ULift.down e`. Express the relevant statement in the definitionally equal form `n • (cochainOf _ (cocycleι _ 2 x₁) ![g, h]).down = ((zmodCocycleHom z h).val : ℤ) - ((zmodCocycleHom z (g * h)).val : ℤ) + ((zmodCocycleHom z g).val : ℤ) at e2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Establish `e3` using `natCast_mul_bockInt (zmodCocycleHom z) hχ g h`. Rewrite `e2` using `[nsmul_eq_mul]`. Apply `mul_left_cancel₀ (show (n : ℤ) ≠ 0 by exact_mod_cast hn)` to reduce the goal to its premises. Rewrite using `[e2, e3]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Take `⟨z0, hz0, hz0c⟩` from `exists_cocycle_H0Iso_inv A a`. Use `⟨HomologicalComplex.cyclesMap (cochainsMap (intMulPairing G A)) 2 (cupCocycles (show 2 + 0 = 2 from rfl) x₁ z0), ?_, fun g h => ?_⟩` and prove the remaining obligations. Rewrite using `[← hz0, hδ, cupPairing_cohomologyπ]`. Rewrite using `[cochainOf_cocycleι_cyclesMap_cupCocycles, hz0c]`. Establish `e1 : cochainOf _ (cocycleι _ 2 x₁) (fun i : Fin 2 => (![g, h] : Fin 2 → G) ⟨i, by omega⟩) = (ULift.up (bockInt (zmodCocycleHom z) g h) : intRepTriv G)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hx₁v]`. Establish `e2 : A.ρ (Fin.partialProd (![g, h] : Fin 2 → G) ⟨2, by omega⟩) (a : A) = a` using `(Representation.mem_invariants _ _).1 a.2 _`. Rewrite using `[e1, e2]`. Conclude with `intMulPairing_tmul G A _ a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_cocycle_cupPairing_δ_bockSeq (hn : n ≠ 0) (A : Rep.{0} (ULift.{0} ℤ) G)
     [IsDiscreteRep A] (z : cocycles (zmodRep.{0} G n) 1) (a : A.ρ.invariants) :

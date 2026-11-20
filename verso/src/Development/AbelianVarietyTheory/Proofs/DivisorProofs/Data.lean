@@ -28,19 +28,19 @@ open GlobalTheory.IndefiniteRowSideFullHecke.SiegelFamilyZetaUnit GlobalTheory.S
 namespace GlobalTheory.SiegFGData
 
 /- English proof (translation)
-Introduce `g n hn _ R _ β c hc`. Establish `h0 : n ≠ 0` using `by omega`. Take `⟨R₁, β₁, A₁, _, P₁, lv₁, hfg, hβ, hA₁, hd₁, hP₁, htr⟩` from `GlobalTheory.T.siegelObject_data_descends_finiteType_subring g n hn R β c`. Establish `htr'` using `htr`. Take `⟨φ, φ₂, hφ, sq₁, sq₂, iso, hl⟩` from `htr`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: IsNoetherianRing R₁` using `Algebra.FiniteType.isNoetherianRing ℤ R₁`. Establish `hsym : IsSymmetricPair g c.A c.P` using `isSymmetricPair (ζ := (cycBase h0).ζ) (by omega) (isUnit_natCast h0) c`. Establish `hlev : IsLevel c.A (lvOf c)` using `isLevel_lvOf (ζ := (cycBase h0).ζ) c`. Take `⟨hAb, hdim, hPlb, hr1, hr2, hsy⟩` from `hsym`. Take `⟨F₅, H₅⟩` from `GlobalTheory.T.rigidSymmetricBundle_descends_to_subring_finset R R₁ c.A c.P A₁ P₁ φ φ₂ hA₁ hPlb hP₁ hφ ⟨sq₁, sq₂⟩ iso hr1 hr2 hsy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨F₂, H₂⟩` from `GlobalTheory.T.relAmple_diagonal_bundle_descends_subring R R₁ c.A c.P A₁ P₁ φ φ₂ hA₁ hPlb hP₁ hφ ⟨sq₁, sq₂⟩ iso hc.1`. Set `S : Subalgebra R₁ R` to `Algebra.adjoin R₁ ((F₅ ∪ F₂ : Finset R) : Set R)`. Set `R₂ : Subring R` to `S.toSubring`. Establish `h12 : R₁ ≤ R₂` using `fun x hx => S.algebraMap_mem ⟨x, hx⟩`. Establish `hF : ((F₅ ∪ F₂ : Finset R) : Set R) ⊆ R₂` using `Algebra.subset_adjoin`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfg₂ : Algebra.FiniteType ℤ R₂` using `GlobalTheory.SpreadGroup.finiteType_of_fg hfg (Subalgebra.fg_adjoin_finset _)`. Take `⟨A₂, _, lv₂, π, π₂, hA₂, hd₂, hπ, sqπ, htr₂⟩` from `GlobalTheory.T.pullbackPolarizedLevelTriple_of_subring_le R R₁ R₂ h12 g n c.A c.P (lvOf c) A₁ P₁ lv₁ hA₁ hd₁ hPlb hP₁ htr'`. Take `⟨t1, t2, t3⟩` from `H₅ R₂ h12 (fun x hx => hF (by simp [hx])) A₂ π π₂ hπ sqπ`. Establish `am` using `H₂ R₂ h12 (fun x hx => hF (by simp [hx])) A₂ π π₂ hπ sqπ`. Use `⟨R₂, (Subring.inclusion h12).comp β₁, A₂, inferInstance, P₁.pull π₂, lv₂, hfg₂, ?_, ⟨hA₂, hd₂, pull_isLB hP₁ _, t1, t2, t3⟩, ?_, am, htr₂⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hβ]`. Both sides reduce to the same expression. Introduce `a b`. Take `⟨ψ, ψ₂, hψ, -, -, -, hl₂⟩` from `htr₂`. Establish `: IsSeparated A₂.hom` using `by have := hA₂.proper; infer_instance`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `Over.OverMorphism.ext (GlobalTheory.T.eq_of_spMap_subtype_comp_eq_of_isSeparated R R₂ A₂.left A₂.hom _ _ ?_ ?_)` and prove the remaining obligations. Conclude with `(Over.w (lv₂ (a + b))).trans (Over.w (lv₂ a * lv₂ b)).symm`. Set `f` to `spMap R₂.subtype`. Set `u : Over.mk ((𝟙_ (Over (Sp R))).hom ≫ f) ⟶ 𝟙_ (Over (Sp R₂))` to `toUnit _`. Establish `hu : u.left = (𝟙_ (Over (Sp R))).hom ≫ f` using `Over.toUnit_left`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hid : (𝟙_ (Over (Sp R))).hom = 𝟙 _` using `rfl`. Establish `m` using `hψ.2 (𝟙_ (Over (Sp R))) (lvOf c a) (lvOf c b) (u ≫ lv₂ a) (u ≫ lv₂ b) (by rw [Over.comp_left, hu, hid, Category.id_comp]; exact (hl₂ a).symm) (by rw [Over.comp_left, hu, hid, Category.id_comp]; exact (hl₂ b).symm)`. Rewrite `m` using `[← MonObj.comp_mul, Over.comp_left, hu, hid, Category.id_comp, ← hlev.1]`. Conclude with `(hl₂ (a + b)).symm.trans m.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem data : ∀ (g n : ℕ), 3 ≤ n → Odd n → ∀ (R : Type) [CommRing R] (β : cycAway n →+* R) (c : SiegPre g n (zetaAway n) (spMap β)), c.Principal → ∃ (R₀ : Subring R) (β₀ : cycAway n →+* R₀) (A₀ : Over (Sp R₀)) (_ : GrpObj A₀) (P₀ : LB (A₀ ⊗ A₀).left) (lv₀ : Std g n → (𝟙_ (Over (Sp R₀)) ⟶ A₀)), Algebra.FiniteType ℤ R₀ ∧ R₀.subtype.comp β₀ = β ∧ IsSymmetricPair g A₀ P₀ ∧ (∀ a b, lv₀ (a + b) = lv₀ a * lv₀ b) ∧ Out.RelAmple A₀ (diagPull A₀ P₀) ∧ IsPullbackTriple c.A c.P (lvOf c) A₀ P₀ lv₀ (spMap R₀.subtype) := by
   intro g n hn _ R _ β c hc

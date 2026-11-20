@@ -15,15 +15,13 @@ open scoped FourierTransform ContDiff
 namespace GlobalTheory.JSW.MirCinf
 
 /- English proof (translation)
-Introduce `E _ _ n Z _ _ _ σ₀ L χ α hχ hχc hσ hα hαc hαs T hT`. Establish `hdet : ∀ w : InfinitePlace E, ContDiff ℝ ∞ fun p : Z × (Fin n → Fin n → Cinf E) => (Matrix.of (σ₀ + L p.1)).det w`. Introduce `w`. Simplify using `only [Matrix.det_apply', Matrix.of_apply, Finset.sum_apply, Pi.mul_apply, Finset.prod_apply]`. Use `ContDiff.sum fun s _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `ContDiff.mul ?_ (contDiff_prod fun i _ => ?_)` and prove the remaining obligations. Conclude with `contDiff_const`. Establish `: ContDiff ℝ ∞ fun p : Z × (Fin n → Fin n → Cinf E) => σ₀ + L p.1` using `contDiff_const.add (L.contDiff.comp contDiff_fst)`. Conclude with `contDiff_pi.1 (contDiff_pi.1 (contDiff_pi.1 this (s i)) i) w`. Establish `hJ : ContDiff ℝ ∞ fun p : Z × (Fin n → Fin n → Cinf E) => ((jacInf (Matrix.of (σ₀ + L p.1)) : ℝ) : ℂ)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [jacInf, Complex.ofReal_prod, Complex.ofReal_pow, Complex.normSq_eq_conj_mul_self]`. Conclude with `contDiff_prod fun w _ => ((Complex.conjCLE.contDiff.comp (hdet w)).mul (hdet w)).pow n`. Establish `hΦ : ContDiff ℝ ∞ fun p : Z × (Fin n → Fin n → Cinf E) => χ p.1 * ((jacInf (Matrix.of (σ₀ + L p.1)) : ℝ) : ℂ) * α p.2` using `((hχ.comp contDiff_fst).mul hJ).mul (hα.comp contDiff_snd)`. Establish `hΦc : HasCompactSupport fun p : Z × (Fin n → Fin n → Cinf E) => χ p.1 * ((jacInf (Matrix.of (σ₀ + L p.1)) : ℝ) : ℂ) * α p.2`. Use `HasCompactSupport.intro (hχc.isCompact.prod hαc.isCompact) fun p hp => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Break down `not_and_or.1 hp with h | h` into its components or cases. Simplify using `[image_eq_zero_of_notMem_tsupport h]`. Simplify using `[image_eq_zero_of_notMem_tsupport h]`. Take `⟨X, _, ν, _, κ, τ, h1, h2, h3, h4⟩` from `GlobalTheory.T.exists_rapid_superposition_characters' _ _ hΦ hΦc`. Take `⟨R, hR⟩` from `GlobalTheory.T.smoothing_affine_family_eq_integral_kernel E n Z σ₀ L χ α hχc hσ hαc hαs X ν κ τ h1 h2 h3 (fun z a => h4 (z, a))`.
-
-Conclude with `GlobalTheory.T.archimedeanRapidKernelOperator_comp_rapidFamily E n Z T hT _ _ _ _ _ (GlobalTheory.T.schwartz_integral_bound_smooth E n Z X ν κ τ h1 h2 h3 R σ₀ L) (smoothMatInf α) _ χ (GlobalTheory.T.archimedeanMatrixSmoothing_moderateGrowth E n α hα.continuous hαc hαs) hR`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem kerOpInf_section : ∀ (E : Type) [Field E] [NumberField E] (n : ℕ) (Z : Type) [NormedAddCommGroup Z] [NormedSpace ℝ Z] [FiniteDimensional ℝ Z] (σ₀ : Fin n → Fin n → Cinf E) (L : Z →L[ℝ] (Fin n → Fin n → Cinf E)) (χ : Z → ℂ) (α : (Fin n → Fin n → Cinf E) → ℂ), ContDiff ℝ ∞ χ → HasCompactSupport χ → (∀ z ∈ tsupport χ, IsUnit (Matrix.of (σ₀ + L z))) → ContDiff ℝ ∞ α → HasCompactSupport α → tsupport α ⊆ {x | IsUnit (Matrix.of x)} → ∀ T : (GL (Fin n) (Cinf E) → ℂ) → Z → GL (Fin n) (Cinf E) → ℂ, IsKerOpInf T → IsKerOpInf (fun W z g => χ z * T (smoothMatInf α W) z (g * (toGLInf (Matrix.of (σ₀ + L z)))⁻¹)) := by
   intro E _ _ n Z _ _ _ σ₀ L χ α hχ hχc hσ hα hαc hαs T hT

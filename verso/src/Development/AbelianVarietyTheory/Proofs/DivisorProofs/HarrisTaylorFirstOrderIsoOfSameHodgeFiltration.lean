@@ -21,9 +21,9 @@ noncomputable section
 namespace GlobalTheory.HTFirstOrderIso
 
 /- English proof (translation)
-Establish `: IsIso e.hom.left` using `by change IsIso ((Over.forget S).map e.hom); infer_instance`. Use `⟨IsPullback.of_horiz_isIso ⟨by simp⟩, fun T x y x₀ y₀ hx hy => ?_⟩` and prove the remaining obligations. Set `j : Over.mk (T.hom ≫ 𝟙 S) ⟶ T` to `Over.homMk (𝟙 T.left) (by simp)`. Establish `e₁ : x₀ = j ≫ x ≫ e.hom` using `Over.OverMorphism.ext (by simp [hx, j])`. Establish `e₂ : y₀ = j ≫ y ≫ e.hom` using `Over.OverMorphism.ext (by simp [hy, j])`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e₁, e₂, ← MonObj.comp_mul, ← MonObj.mul_comp]`. Simplify using `[j]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isGrpPullback_of_iso {S : Scheme.{0}} {A B : Over S} [GrpObj A] [GrpObj B] (e : A ≅ B) [IsMonHom e.hom] :
     IsGrpPullback A B (𝟙 S) e.hom.left := by
@@ -36,26 +36,26 @@ theorem isGrpPullback_of_iso {S : Scheme.{0}} {A B : Over S} [GrpObj A] [GrpObj 
   simp [j]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.Published.grothendieckDeformation_of_lifting GlobalTheory.T.abelianScheme_firstDeRham_structure GlobalTheory.T.print_abelianLifting`.
+A detailed English derivation is pending.
 -/
 theorem gd : GlobalTheory.Published.GrothendieckDeformation :=
   GlobalTheory.Published.grothendieckDeformation_of_lifting GlobalTheory.T.abelianScheme_firstDeRham_structure GlobalTheory.T.print_abelianLifting
 
 /- English proof (translation)
-The claim follows from `(gd.at_dualNumber k).2.2`.
+A detailed English derivation is pending.
 -/
 theorem liftHom_eps (k : Type) [Field k] :
     GlobalTheory.Published.GrothendieckMessing.LiftHom (epsDP k) (TrivSqZeroExt.fstHom k k k).toRingHom :=
   (gd.at_dualNumber k).2.2
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨n, hn⟩ : IsNilpotent (IsLocalRing.maximalIdeal C) := by`. Use `IsArtinianRing.isNilpotent_jacobson_bot (R := C)` as an intermediate fact. Rewrite `this` using `[IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top]`. Then use the resulting hypothesis. Establish `hz : ∀ k, n ≤ k → (IsLocalRing.maximalIdeal C) ^ k = ⊥` using `fun k hk => by`. Rewrite using `[← Nat.add_sub_cancel' hk, pow_add, hn, zero_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `haveI : IsAdicComplete (IsLocalRing.maximalIdeal C) C := by`. Use `{ haus' := fun x hx => ?_, prec' := fun f hf => ⟨f n, fun k => ?_⟩ }` and prove the remaining obligations. Use `SModEq.zero.1 (hx n)` as an intermediate fact. Rewrite `this` using `[hz n le_rfl, Submodule.bot_smul]`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Break down `le_total k n with h | h` into its components or cases. Conclude with `hf h`. Establish `e` using `SModEq.sub_mem.1 (hf h)`. Rewrite `e` using `[hz n le_rfl, Submodule.bot_smul, Submodule.mem_bot, sub_eq_zero]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e]`. Use `{ is_henselian := ?_ }` and prove the remaining obligations. Introduce `f hf a₀ h₁ h₂`. Conclude with `HenselianRing.is_henselian f hf a₀ h₁ (h₂.map _)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem henselian_of_artinian (C : Type) [CommRing C] [IsLocalRing C] [IsArtinianRing C] :
     HenselianLocalRing C := by
@@ -87,9 +87,9 @@ end GlobalTheory.HTFirstOrderIso
 namespace GlobalTheory.HTFirstOrderIso
 
 /- English proof (translation)
-Establish `h0 : o.eta 0 = 1`. Use `o.eta_add 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `(mul_eq_left.1 this.symm)`. Proceed by induction on `n with`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => rw [zero_smul, h0, pow_zero]`. Consider the case `succ n ih => rw [succ_nsmul, o.eta_add, ih, pow_succ]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem eta_pow {p : ℕ} [Fact p.Prime] {D : GlobalTheory.UPel.HT.Datum p} {R : Type} [CommRing R] {b : GlobalTheory.UPel.HT.Base D R}
     {N : ℕ} {S : Scheme.{0}} {s : S ⟶ Sp R} (o : GlobalTheory.UPel.HT.Obj b N s) (a : D.La) (n : ℕ) :
@@ -103,7 +103,7 @@ theorem eta_pow {p : ℕ} [Fact p.Prime] {D : GlobalTheory.UPel.HT.Datum p} {R :
   | succ n ih => rw [succ_nsmul, o.eta_add, ih, pow_succ]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp [MonObj.comp_one]`. Consider the case `succ n ih => rw [pow_succ, pow_succ, MonObj.comp_mul, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem comp_pow {S : Scheme.{0}} {T T' G : Over S} [GrpObj G] (ρ : T' ⟶ T) (x : T ⟶ G) (n : ℕ) :
     ρ ≫ x ^ n = (ρ ≫ x) ^ n := by
@@ -112,7 +112,7 @@ theorem comp_pow {S : Scheme.{0}} {T T' G : Over S} [GrpObj G] (ρ : T' ⟶ T) (
   | succ n ih => rw [pow_succ, pow_succ, MonObj.comp_mul, ih]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp [MonObj.one_comp]`. Consider the case `succ n ih => rw [pow_succ, pow_succ, MonObj.mul_comp, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem pow_comp {S : Scheme.{0}} {G H Z : Over S} [GrpObj G] [GrpObj H] (φ : G ⟶ H) [IsMonHom φ]
     (x : Z ⟶ G) (n : ℕ) : (x ^ n) ≫ φ = (x ≫ φ) ^ n := by
@@ -121,31 +121,29 @@ theorem pow_comp {S : Scheme.{0}} {G H Z : Over S} [GrpObj G] [GrpObj H] (φ : G
   | succ n ih => rw [pow_succ, pow_succ, MonObj.mul_comp, ih]
 
 /- English proof (translation)
-Introduce `p _ D R _ b N hN3 hNp k _ _ t o₀ s₁ s₂ o₁ o₂ m₁ m₂ g hg₁ hg₂`. Establish `hF` using `GlobalTheory.T.liftedHodgeFiltration_eq_of_same_lifts k o₀.A o₁.A o₂.A m₁.φ m₂.φ m₁.cart m₂.cart o₁.ab o₂.ab g hg₁ hg₂`. Take `⟨d₁, hd₁⟩` from `GlobalTheory.AbelianDim.exists_relDim (DualNumber k) o₁.A o₁.ab`. Take `⟨d₂, hd₂⟩` from `GlobalTheory.AbelianDim.exists_relDim (DualNumber k) o₂.A o₂.ab`. Take `⟨e, he, em⟩` from `((liftHom_eps k).exists_iso_iff m₁.cart o₁.ab hd₁ m₂.cart o₂.ab hd₂).2 hF`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hact : ∀ c : D.O, (o₁.act.act c).left ≫ e.hom.left = e.hom.left ≫ (o₂.act.act c).left`. Introduce `c`. Use `haveI := o₁.act.hom c`. Use `haveI := o₂.act.hom c`. Use `haveI := o₀.act.hom c`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(liftHom_eps k).unique m₁.cart o₁.ab hd₁ m₂.cart o₂.ab hd₂ (o₀.act.act c) (f := o₁.act.act c ≫ e.hom) (f' := e.hom ≫ o₂.act.act c) (by rw [Over.comp_left, ← Category.assoc, ← m₁.act c, Category.assoc, em]) (by rw [Over.comp_left, ← Category.assoc, em, m₂.act c])` as an intermediate fact. Rewrite using `[← Over.comp_left, this, Over.comp_left]`. Establish `hNu : IsUnit (N : DualNumber k)` using `by simpa using (b.unit N hNp).map (Spec.preimage s₂).hom`. Establish `heta : ∀ y : D.La, (o₁.eta y).left ≫ e.hom.left = 𝟙 _ ≫ (o₂.eta y).left`. Introduce `a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := henselian_of_artinian (DualNumber k)`. Set `π : DualNumber k →+* k` to `(TrivSqZeroExt.fstHom k k k).toRingHom`. Establish `hπ : Function.Surjective π` using `fun r => ⟨TrivSqZeroExt.inl r, rfl⟩`. Establish `h2 : RingHom.ker π ^ 2 = 0` using `GlobalTheory.FODef.sqZero k k`. Establish `hk : RingHom.ker π ≤ IsLocalRing.maximalIdeal (DualNumber k)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `x hx`. Assume the negation of the conclusion as `hc`. Establish `hu : IsUnit x`. Rewrite `hc` using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, not_not]`. Then use the resulting hypothesis. Establish `: x * x ∈ RingHom.ker π ^ 2` using `by rw [pow_two]; exact Ideal.mul_mem_mul hx hx`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[h2]`. Conclude with `(hu.mul hu).ne_zero (by simpa using this)`. Take `⟨ρ, hρ⟩ : ∃ ρ : k →+* IsLocalRing.ResidueField (DualNumber k), ρ.comp π = IsLocalRing.residue (DualNumber k)` from `⟨π.liftOfRightInverse (Function.surjInv hπ) (Function.rightInverse_surjInv hπ) ⟨IsLocalRing.residue (DualNumber k), fun x hx => by`. Rewrite using `[RingHom.mem_ker, IsLocalRing.residue_eq_zero_iff]`. Conclude with `hk hx⟩,`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `RingHom.liftOfRightInverse_comp _ _ _ _⟩`. Establish `hs : IsSemiAbelian o₂.A` using `GlobalTheory.isSemiAbelian_of_isAbelianScheme _ o₂.ab`. Set `y₁ : Over.mk (𝟙 (Sp (DualNumber k))) ⟶ o₂.A` to `o₁.eta a ≫ e.hom`. Set `y₂ : Over.mk (𝟙 (Sp (DualNumber k))) ⟶ o₂.A` to `o₂.eta a`. Establish `t₁ : y₁ ^ N = 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [y₁]`. Rewrite using `[← pow_comp, ← eta_pow, o₁.eta_ker, MonObj.one_comp]`. Establish `t₂ : y₂ ^ N = 1`. Simplify using `only [y₂]`. Rewrite using `[← eta_pow, o₂.eta_ker]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `r : spMap π ≫ y₁.left = spMap π ≫ y₂.left`. Simplify using `only [y₁, y₂, Over.comp_left]`. Rewrite using `[← Category.assoc, ← m₁.eta a, Category.assoc, em, m₂.eta a]`. Establish `r' : spMap (IsLocalRing.residue (DualNumber k)) ≫ y₁.left = spMap (IsLocalRing.residue (DualNumber k)) ≫ y₂.left`. Rewrite using `[← hρ, Cris.spMap_comp, Category.assoc, r, ← Category.assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Set `x₀ : Over.mk (spMap (IsLocalRing.residue (DualNumber k)) ≫ 𝟙 (Sp (DualNumber k))) ⟶ o₂.A` to `toUnit _ ≫ y₂`. Establish `hx₀ : x₀ ^ N = 1`. Simplify using `only [x₀]`. Rewrite using `[← comp_pow, t₂, MonObj.comp_one]`. Establish `hl : x₀.left = spMap (IsLocalRing.residue (DualNumber k)) ≫ y₂.left`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `only [x₀, Over.comp_left]`. Use `congr 1`. Take `⟨x, -, hu⟩` from `GlobalTheory.existsUnique_torsion_lift_of_henselian (DualNumber k) (Sp (DualNumber k)) o₂.A hs (𝟙 _) N hNu x₀ hx₀`. Use `(hu y₁ ⟨t₁, r'.trans hl.symm⟩).trans (hu y₂ ⟨t₂, hl.symm⟩).symm` as an intermediate fact. Rewrite using `[Category.id_comp, ← Over.comp_left]`.
+Prove the components needed by the constructor for the conclusion. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg Over.Hom.left this`. Set `φ₂ : (G2 o₁.A).left ⟶ (G2 o₂.A).left` to `(lift (fst o₁.A o₁.A ≫ e.hom) (snd o₁.A o₁.A ≫ e.hom)).left`. Establish `hsq : IsSquare e.hom.left φ₂`. Prove the components needed by the constructor for the conclusion. Simplify using `only [φ₂]`.
-
-Rewrite using `[← Over.comp_left, lift_fst, Over.comp_left]`. Simplify using `only [φ₂]`. Rewrite using `[← Over.comp_left, lift_snd, Over.comp_left]`. Establish `hpol` using `GlobalTheory.T.harrisTaylor_polarisation_bundles_correspond_deformations p D R b N k t o₀ s₁ s₂ o₁ o₂ m₁ m₂ e he em φ₂ hsq`. Conclude with `⟨{ φ := e.hom.left φ₂ := φ₂ cart := isGrpPullback_of_iso e sq := hsq act := hact pol := hpol eta := heta }⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem objMap_of_filLift : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (R : Type) [CommRing R] (b : GlobalTheory.UPel.HT.Base D R) (N : ℕ), 3 ≤ N → N.Coprime p → ∀ (k : Type) [Field k] [IsAlgClosed k] (t : Sp k ⟶ Sp R) (o₀ : GlobalTheory.UPel.HT.Obj b N t), ∀ (s₁ s₂ : Sp (DualNumber k) ⟶ Sp R) (o₁ : GlobalTheory.UPel.HT.Obj b N s₁) (o₂ : GlobalTheory.UPel.HT.Obj b N s₂) (m₁ : GlobalTheory.UPel.HT.ObjMap o₀ o₁ (spMap (TrivSqZeroExt.fstHom k k k).toRingHom)) (m₂ : GlobalTheory.UPel.HT.ObjMap o₀ o₂ (spMap (TrivSqZeroExt.fstHom k k k).toRingHom)) (g : HdR o₀.A → HdR o₀.A), (∀ x ∈ Fil o₀.A, IsFilLift m₁.cart x (g x)) → (∀ x ∈ Fil o₀.A, IsFilLift m₂.cart x (g x)) → Nonempty (GlobalTheory.UPel.HT.ObjMap o₁ o₂ (𝟙 _)) := by
   intro p _ D R _ b N hN3 hNp k _ _ t o₀ s₁ s₂ o₁ o₂ m₁ m₂ g hg₁ hg₂

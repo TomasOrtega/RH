@@ -12,7 +12,7 @@ namespace CommutatorAdjointLower
 variable {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Simplify using `only [Mm, Md, Matrix.sub_apply, Matrix.mul_apply, Matrix.of_apply, mul_smul_comm, smul_mul_assoc, sub_smul, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem comm_eq (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ V) (a b : Fin n) :
     (Mm E * Md ε E - Md ε E * Mm E) a b = ∑ c, (adjSign ε c b - adjSign ε a c) • (E a c * E c b) := by
@@ -20,11 +20,11 @@ theorem comm_eq (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ V)
     sub_smul, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Unfold `IsGlRep at hE`. Rewrite using `[← sub_eq_zero]`. Unfold `Z casimirK`. Repeatedly rewrite using `[Finset.sum_filter]`. Rewrite using `[Finset.sum_mul, Finset.mul_sum, ← Finset.sum_sub_distrib]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[Finset.sum_mul, Finset.mul_sum, ← Finset.sum_sub_distrib, ite_mul_sub_mul_ite, mul_mul_sub_mul_mul_eq_add, hE]`. Simplify using `only [sub_mul, mul_sub, ite_mul, mul_ite, zero_mul, mul_zero]`. Simplify using `only [ite_sub_add_sub_eq, ← ite_and, Finset.sum_add_distrib, Finset.sum_sub_distrib]`. Simplify using `only [and_comm (b := _ = a), and_comm (b := b = _), Finset.sum_ite_eq', Finset.sum_ite_eq, ite_and, Finset.mem_univ, if_true]`. Simplify using `only [Finset.sum_ite_irrel, Finset.sum_const_zero, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [@eq_comm _ (ε a), @eq_comm _ (ε b), ← Finset.sum_sub_distrib, ← Finset.sum_add_distrib]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `x _`. Apply the tactic sequence `split_ifs <;> abel`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Z_eq (ε : Fin n → Bool) {E : Fin n → Fin n → Module.End ℂ V} (hE : IsGlRep E) (a b : Fin n) :
     Z ε E a b = ∑ c, ((if ε c = ε a then E a c * E c b + E c b * E a c else 0) -
@@ -48,9 +48,9 @@ theorem Z_eq (ε : Fin n → Bool) {E : Fin n → Fin n → Module.End ℂ V} (h
 end CommutatorAdjointLower
 
 /- English proof (translation)
-Introduce `hA n ε V _ _ E h a b`. Take `⟨-, -, hE1, -, hcomm, -, -⟩` from `hA n ε V E h`. Rewrite using `[CommutatorAdjointLower.comm_eq, CommutatorAdjointLower.Z_eq ε h.gl, ← Finset.sum_add_distrib]`. Establish `key : ∀ c, (adjSign ε c b - adjSign ε a c) • (E a c * E c b) + ((if ε c = ε a then E a c * E c b + E c b * E a c else 0) - (if ε c = ε b then E a c * E c b + E c b * E a c else 0)) = ((if ε c = ε a then (1 : ℂ) else 0) - (if ε c = ε b then 1 else 0)) • (E c b * E a c - E a c * E …`. Introduce `c`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [adjSign, @eq_comm _ (ε a) (ε c)]`. Apply the tactic sequence `split_ifs <;> module`. Rewrite using `[Finset.sum_congr rfl fun c _ => key c]`. Conclude with `Submodule.sum_mem _ fun c _ => Submodule.smul_mem _ _ (hcomm 1 1 _ (hE1 c b) _ (hE1 a c))`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem commutator_adjoint_holds : A1 → CommutatorAdjointModLower := by
   intro hA n ε V _ _ E h a b

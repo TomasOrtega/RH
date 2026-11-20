@@ -5,7 +5,7 @@ import CompanionTheory.HarishChandraModules.LowKTypeMultiplicity.EigenspaceCycli
 namespace GlobalTheory.CompanionTheory.KModOfStep
 
 /- English proof (translation)
-Introduce `n ε H _ _ _ σ hU hI`. Conclude with `CompanionTheory.D.LK.hKModExists n ε H σ hU hI`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem kModOf : CompanionTheory.RgExh.Fin.KModOf := by
   intro n ε H _ _ _ σ hU hI

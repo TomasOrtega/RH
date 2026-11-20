@@ -21,7 +21,7 @@ namespace GlobalTheory.PrimitiveRegular
 variable {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => h (show (default : PrimeSpectrum ℂ) ∈ (⊤ : (Sp ℂ).Opens) from trivial), fun h q _ => by rw [Subsingleton.elim q (default : PrimeSpectrum ℂ)]; exact h⟩`.
+Supply the required witnesses or components.
 -/
 private theorem top_le_preimage_iff_mem' {X : Scheme.{0}} (x : Sp ℂ ⟶ X) (V : X.Opens) :
     ⊤ ≤ x ⁻¹ᵁ V ↔ x (default : PrimeSpectrum ℂ) ∈ V :=
@@ -29,7 +29,7 @@ private theorem top_le_preimage_iff_mem' {X : Scheme.{0}} (x : Sp ℂ ⟶ X) (V 
     fun h q _ => by rw [Subsingleton.elim q (default : PrimeSpectrum ℂ)]; exact h⟩
 
 /- English proof (translation)
-Simplify using `only [top_le_preimage_iff_mem']`. Conclude with `TopologicalSpace.Opens.mem_iSup`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem top_le_preimage_iSup {X : Scheme.{0}} (x : Sp ℂ ⟶ X) {κ : Type} (U : κ → X.Opens) :
     ⊤ ≤ x ⁻¹ᵁ (⨆ k, U k) ↔ ∃ k, ⊤ ≤ x ⁻¹ᵁ U k := by
@@ -37,9 +37,9 @@ theorem top_le_preimage_iSup {X : Scheme.{0}} (x : Sp ℂ ⟶ X) {κ : Type} (U 
   exact TopologicalSpace.Opens.mem_iSup
 
 /- English proof (translation)
-Rewrite using `[hθ k z hk]`. Use `mul_ne_zero hz (pow_ne_zero _ (u.11 _ z ?_))` and prove the remaining obligations. Establish `hU : (lbPow L n).U k ≤ L.U (k PUnit.unit)`. Introduce `p hp`. Establish `hp'` using `Set.mem_iInter.mp hp PUnit.unit`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `using hp'`. Conclude with `fun q hq => hU (hk hq)`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_basicOpen (u : HolUnif A L g) {n : ℕ} {σ : (lbPow L n).Sec} {θ : (Fin g → ℂ) → ℂ}
     (hθ : u.IsFnPow n σ θ) (k : (lbPow L n).ι) (z : Fin g → ℂ) (hk : ⊤ ≤ (u.ex z).left ⁻¹ᵁ (lbPow L n).U k)
@@ -53,7 +53,7 @@ theorem mem_basicOpen (u : HolUnif A L g) {n : ℕ} {σ : (lbPow L n).Sec} {θ :
   exact fun q hq => hU (hk hq)
 
 /- English proof (translation)
-Unfold `valAt' valAt`. Rewrite using `[dif_pos hW]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem valAt'_eq_ΓSpecIso_appLE {Y : Scheme.{0}} (y : Sp ℂ ⟶ Y) {W : Y.Opens} (hW : ⊤ ≤ y ⁻¹ᵁ W) (f : Γ(Y, W)) :
     valAt' y W f = (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom.hom ((y.appLE W ⊤ hW).hom f) := by
@@ -61,7 +61,7 @@ private theorem valAt'_eq_ΓSpecIso_appLE {Y : Scheme.{0}} (y : Sp ℂ ⟶ Y) {W
   rw [dif_pos hW]
 
 /- English proof (translation)
-Rewrite using `[valAt'_eq_ΓSpecIso_appLE y hV, valAt'_eq_ΓSpecIso_appLE y (hV.trans fun q hq => hVW hq)]`. Use `congr 1`. Rewrite using `[← CommRingCat.comp_apply, Scheme.Hom.map_appLE]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 private theorem valAt'_presheaf_map_of_le_of_whole_le_preimage {Y : Scheme.{0}} (y : Sp ℂ ⟶ Y) {V W : Y.Opens} (hVW : V ≤ W)
     (hV : ⊤ ≤ y ⁻¹ᵁ V) (f : Γ(Y, W)) :
@@ -71,23 +71,23 @@ private theorem valAt'_presheaf_map_of_le_of_whole_le_preimage {Y : Scheme.{0}} 
   rw [← CommRingCat.comp_apply, Scheme.Hom.map_appLE]
 
 /- English proof (translation)
-Simplify using `only [valAt'_eq_ΓSpecIso_appLE y hW, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem valAt'_mul_of_whole_le_preimage {Y : Scheme.{0}} (y : Sp ℂ ⟶ Y) {W : Y.Opens} (hW : ⊤ ≤ y ⁻¹ᵁ W)
     (f f' : Γ(Y, W)) : valAt' y W (f * f') = valAt' y W f * valAt' y W f' := by
   simp only [valAt'_eq_ΓSpecIso_appLE y hW, map_mul]
 
 /- English proof (translation)
-Simplify using `only [valAt'_eq_ΓSpecIso_appLE y hW, map_pow]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem valAt'_pow_of_whole_le_preimage {Y : Scheme.{0}} (y : Sp ℂ ⟶ Y) {W : Y.Opens} (hW : ⊤ ≤ y ⁻¹ᵁ W)
     (f : Γ(Y, W)) (m : ℕ) : valAt' y W (f ^ m) = valAt' y W f ^ m := by
   simp only [valAt'_eq_ΓSpecIso_appLE y hW, map_pow]
 
 /- English proof (translation)
-Rewrite `hf` using `[valAt'_eq_ΓSpecIso_appLE y hW]`. Establish `hu : IsUnit ((y.appLE W ⊤ hW).hom f)`. Establish `h2` using `(IsUnit.mk0 _ hf).map (Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom`. Simplify using `using h2`. Establish `h3 : (Sp ℂ).basicOpen ((y.appLE W ⊤ hW).hom f) = ⊤` using `Scheme.basicOpen_of_isUnit _ hu`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h4 : (Sp ℂ).basicOpen ((y.appLE W ⊤ hW).hom f) ≤ y ⁻¹ᵁ Y.basicOpen f`. Rewrite using `[Scheme.preimage_basicOpen]`. Rewrite using `[Scheme.Hom.appLE, CommRingCat.comp_apply, Scheme.basicOpen_res]`. Conclude with `inf_le_right`. Conclude with `h3.symm.le.trans h4`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem top_le_comap_basicOpen_of_valAt'_ne_zero {Y : Scheme.{0}} (y : Sp ℂ ⟶ Y) {W : Y.Opens} (hW : ⊤ ≤ y ⁻¹ᵁ W)
     (f : Γ(Y, W)) (hf : valAt' y W f ≠ 0) : ⊤ ≤ y ⁻¹ᵁ Y.basicOpen f := by
@@ -103,23 +103,21 @@ private theorem top_le_comap_basicOpen_of_valAt'_ne_zero {Y : Scheme.{0}} (y : S
   exact h3.symm.le.trans h4
 
 /- English proof (translation)
-Take `⟨i', hxi'⟩` from `TopologicalSpace.Opens.mem_iSup.mp (show x ∈ ⨆ i, O i from hO ▸ trivial)`. Take `⟨j, hxj⟩` from `TopologicalSpace.Opens.mem_iSup.mp (show x ∈ ⨆ j, L.U j from hL.1 ▸ trivial)`. Set `k : (lbPow L n).ι` to `fun _ => j`. Establish `hUk : (lbPow L n).U k ≤ L.U j` using `fun p hp => by simpa using Set.mem_iInter.mp hp PUnit.unit`. Establish `hxk : x ∈ (lbPow L n).U k` using `Set.mem_iInter.mpr fun _ => by simpa using hxj`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB : TopologicalSpace.Opens.IsBasis A.left.affineOpens` using `by first`. Consider the case `exact AlgebraicGeometry.isBasis_affineOpens A.left`. Consider the case `exact AlgebraicGeometry.Scheme.isBasis_affineOpens A.left`. Take `⟨V, hVa, hxV, hVle⟩` from `(TopologicalSpace.Opens.isBasis_iff_nbhd.mp hB) (show x ∈ O i' ⊓ (lbPow L n).U k from ⟨hxi', hxk⟩)`. Establish `hV1 : V ≤ O i'` using `hVle.trans inf_le_left`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hV2 : V ≤ (lbPow L n).U k` using `hVle.trans inf_le_right`. Use `set sV := (A.left.presheaf.map (homOfLE hV2).op).hom (σ.f k) with hsV`. Establish `hD : A.left.basicOpen sV ≤ O i ⊓ O i'`. Use `le_inf ?_ ((A.left.basicOpen_le sV).trans hV1)` and prove the remaining obligations. Use `le_trans ?_ hσ` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsV, Scheme.basicOpen_res]`. Use `inf_le_right.trans ?_` and prove the remaining obligations. Unfold `ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus`. Conclude with `le_iSup (fun k => A.left.basicOpen (σ.f k)) k`. Take `⟨N, a, ha⟩` from `exists_eq_pow_mul_of_isAffineOpen A.left V hVa sV ((A.left.presheaf.map (homOfLE hD).op).hom (c i i'))`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS1 : {z | ⊤ ≤ (u.ex z).left ⁻¹ᵁ V} ⊆ {z | ⊤ ≤ (u.ex z).left ⁻¹ᵁ O i'}` using `fun z hz q hq => hV1 (hz hq)`. Establish `hS2 : {z | ⊤ ≤ (u.ex z).left ⁻¹ᵁ V} ⊆ {z | ⊤ ≤ (u.ex z).left ⁻¹ᵁ L.U j}` using `fun z hz q hq => hUk (hV2 (hz hq))`. Use `⟨V, N, fun z => θ z ^ N * h i' z - valAt' (u.ex z).left V a * (u.fr j z ^ (n * N))⁻¹, hxV, ?_, ?_⟩` and prove the remaining obligations. Establish `hfrd : DifferentiableOn ℂ (fun z => u.fr j z ^ (n * N)) {z | ⊤ ≤ (u.ex z).left ⁻¹ᵁ V}` using `((u.10 j).mono hS2).pow _`. Conclude with `((hd.pow N).differentiableOn.mul ((hh i').mono hS1)).sub ((u.8 V a).2.mul (hfrd.inv fun z hz => pow_ne_zero _ (u.11 j z (hS2 hz))))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `z hz hz0`. Establish `hzk : ⊤ ≤ (u.ex z).left ⁻¹ᵁ (lbPow L n).U k` using `hz.trans fun q hq => hV2 hq`. Establish `hfr : u.fr j z ≠ 0` using `u.11 j z (hS2 hz)`. Establish `hs : valAt' (u.ex z).left V sV = θ z * u.fr j z ^ n`. Rewrite using `[hsV, valAt'_presheaf_map_of_le_of_whole_le_preimage _ hV2 hz]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hθ k z hzk`. Establish `hzD : ⊤ ≤ (u.ex z).left ⁻¹ᵁ A.left.basicOpen sV` using `top_le_comap_basicOpen_of_valAt'_ne_zero _ hz sV (by rw [hs]; exact mul_ne_zero hz0 (pow_ne_zero _ hfr))`. Establish `hc'` using `hc i i' z (hzD.trans fun q hq => hD hq)`. Establish `key` using `congrArg (valAt' (u.ex z).left (A.left.basicOpen sV)) ha`. Rewrite `key` using `[valAt'_mul_of_whole_le_preimage _ hzD, valAt'_pow_of_whole_le_preimage _ hzD]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Simplify using `only [TopCat.Presheaf.restrictOpen, TopCat.Presheaf.restrict] at key`. Rewrite `key` using `[valAt'_presheaf_map_of_le_of_whole_le_preimage _ _ hzD, valAt'_presheaf_map_of_le_of_whole_le_preimage _ _ hzD, valAt'_presheaf_map_of_le_of_whole_le_preimage _ _ hzD, hs, hc']`. Use `beta_reduce`. Rewrite using `[key]`. Clear the denominators using the available nonvanishing facts.
-
-Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem local_extension (u : HolUnif A L g) (hL : L.IsLB) {I : Type} (O : I → A.left.Opens)
     (c : ∀ i i', Γ(A.left, O i ⊓ O i')) (h : I → (Fin g → ℂ) → ℂ) (hO : ⨆ i, O i = ⊤)
@@ -182,7 +180,7 @@ theorem local_extension (u : HolUnif A L g) (hL : L.IsLB) {I : Type} (O : I → 
     ring
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => h (show (default : PrimeSpectrum ℂ) ∈ (⊤ : (Sp ℂ).Opens) from trivial), fun h q _ => by rw [Subsingleton.elim q (default : PrimeSpectrum ℂ)]; exact h⟩`.
+Supply the required witnesses or components.
 -/
 private theorem top_le_preimage_iff_point_mem {X : Scheme.{0}} (x : Sp ℂ ⟶ X) (V : X.Opens) :
     ⊤ ≤ x ⁻¹ᵁ V ↔ x (default : PrimeSpectrum ℂ) ∈ V :=
@@ -190,11 +188,11 @@ private theorem top_le_preimage_iff_point_mem {X : Scheme.{0}} (x : Sp ℂ ⟶ X
     fun h q _ => by rw [Subsingleton.elim q (default : PrimeSpectrum ℂ)]; exact h⟩
 
 /- English proof (translation)
-Use `choose Q N F hxQ hF hQ using hloc`. Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover (fun x => (Q x : Set A.left)) (fun x => (Q x).isOpen) (fun p _ => Set.mem_iUnion.mpr ⟨p, hxQ p⟩)`. Use `⟨t.sup N + 1, Nat.succ_pos _, fun z => ?_⟩` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨x, hxt, hx⟩ : ∃ x ∈ t, (u.ex z).left (default : PrimeSpectrum ℂ) ∈ Q x := by`. Simplify using `using ht (Set.mem_univ ((u.ex z).left (default : PrimeSpectrum ℂ)))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hS : IsOpen {w | ⊤ ≤ (u.ex w).left ⁻¹ᵁ Q x}` using `(u.8 (Q x) 0).1`. Establish `hz : z ∈ {w | ⊤ ≤ (u.ex w).left ⁻¹ᵁ Q x}` using `(top_le_preimage_iff_point_mem _ _).2 hx`. Establish `hN : N x < t.sup N + 1` using `Nat.lt_succ_of_le (Finset.le_sup hxt)`. Establish `hD : DifferentiableAt ℂ (fun w => θ w ^ (t.sup N + 1 - N x) * F x w) z` using `((hd z).pow _).mul ((hF x).differentiableAt (hS.mem_nhds hz))`. Use `hD.congr_of_eventuallyEq ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `filter_upwards [hS.mem_nhds hz] with w hw`. Distinguish the cases in `h0 : θ w = 0`. Rewrite using `[h0, zero_pow (Nat.succ_ne_zero _), zero_pow (Nat.sub_ne_zero_of_lt hN), zero_mul, zero_mul]`. Rewrite using `[← hQ x w hw h0, ← _root_.mul_assoc, ← _root_.pow_add, Nat.sub_add_cancel hN.le]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem entire_extension (u : HolUnif A L g) [CompactSpace A.left] (f θ : (Fin g → ℂ) → ℂ)
     (hd : Differentiable ℂ θ)
@@ -220,7 +218,7 @@ theorem entire_extension (u : HolUnif A L g) [CompactSpace A.left] (f θ : (Fin 
   · rw [← hQ x w hw h0, ← _root_.mul_assoc, ← _root_.pow_add, Nat.sub_add_cancel hN.le]
 
 /- English proof (translation)
-Unfold `valAt' valAt`. Rewrite using `[dif_pos hW]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem valAt'_eq_ΓSpecIso_appLE_of_whole_le_preimage {Y : Scheme.{0}} (y : Sp ℂ ⟶ Y) {W : Y.Opens} (hW : ⊤ ≤ y ⁻¹ᵁ W) (f : Γ(Y, W)) :
     valAt' y W f = (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom.hom ((y.appLE W ⊤ hW).hom f) := by
@@ -228,7 +226,7 @@ private theorem valAt'_eq_ΓSpecIso_appLE_of_whole_le_preimage {Y : Scheme.{0}} 
   rw [dif_pos hW]
 
 /- English proof (translation)
-Rewrite using `[valAt'_eq_ΓSpecIso_appLE_of_whole_le_preimage y hV, valAt'_eq_ΓSpecIso_appLE_of_whole_le_preimage y (hV.trans fun q hq => hVW hq)]`. Use `congr 1`. Rewrite using `[← CommRingCat.comp_apply, Scheme.Hom.map_appLE]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 private theorem valAt'_presheaf_map_of_le_of_whole_le_preimage' {Y : Scheme.{0}} (y : Sp ℂ ⟶ Y) {V W : Y.Opens} (hVW : V ≤ W)
     (hV : ⊤ ≤ y ⁻¹ᵁ V) (f : Γ(Y, W)) :
@@ -238,23 +236,23 @@ private theorem valAt'_presheaf_map_of_le_of_whole_le_preimage' {Y : Scheme.{0}}
   rw [← CommRingCat.comp_apply, Scheme.Hom.map_appLE]
 
 /- English proof (translation)
-Simplify using `only [valAt'_eq_ΓSpecIso_appLE_of_whole_le_preimage y hW, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem valAt'_mul_of_top_le_preimage_open {Y : Scheme.{0}} (y : Sp ℂ ⟶ Y) {W : Y.Opens} (hW : ⊤ ≤ y ⁻¹ᵁ W)
     (f f' : Γ(Y, W)) : valAt' y W (f * f') = valAt' y W f * valAt' y W f' := by
   simp only [valAt'_eq_ΓSpecIso_appLE_of_whole_le_preimage y hW, map_mul]
 
 /- English proof (translation)
-Simplify using `only [valAt'_eq_ΓSpecIso_appLE_of_whole_le_preimage y hW, map_pow]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem valAt'_pow_of_whole_le_preimage' {Y : Scheme.{0}} (y : Sp ℂ ⟶ Y) {W : Y.Opens} (hW : ⊤ ≤ y ⁻¹ᵁ W)
     (f : Γ(Y, W)) (m : ℕ) : valAt' y W (f ^ m) = valAt' y W f ^ m := by
   simp only [valAt'_eq_ΓSpecIso_appLE_of_whole_le_preimage y hW, map_pow]
 
 /- English proof (translation)
-Rewrite `hf` using `[valAt'_eq_ΓSpecIso_appLE_of_whole_le_preimage y hW]`. Establish `hu : IsUnit ((y.appLE W ⊤ hW).hom f)`. Establish `h2` using `(IsUnit.mk0 _ hf).map (Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom`. Simplify using `using h2`. Establish `h3 : (Sp ℂ).basicOpen ((y.appLE W ⊤ hW).hom f) = ⊤` using `Scheme.basicOpen_of_isUnit _ hu`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h4 : (Sp ℂ).basicOpen ((y.appLE W ⊤ hW).hom f) ≤ y ⁻¹ᵁ Y.basicOpen f`. Rewrite using `[Scheme.preimage_basicOpen]`. Rewrite using `[Scheme.Hom.appLE, CommRingCat.comp_apply, Scheme.basicOpen_res]`. Conclude with `inf_le_right`. Conclude with `h3.symm.le.trans h4`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem point_mem_basicOpen_of_valAt'_ne_zero {Y : Scheme.{0}} (y : Sp ℂ ⟶ Y) {W : Y.Opens} (hW : ⊤ ≤ y ⁻¹ᵁ W)
     (f : Γ(Y, W)) (hf : valAt' y W f ≠ 0) : ⊤ ≤ y ⁻¹ᵁ Y.basicOpen f := by
@@ -270,7 +268,7 @@ private theorem point_mem_basicOpen_of_valAt'_ne_zero {Y : Scheme.{0}} (y : Sp �
   exact h3.symm.le.trans h4
 
 /- English proof (translation)
-Simplify using `only [valAt'_eq_ΓSpecIso_appLE_of_whole_le_preimage y hW, map_one]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem valAt'_one_of_whole_le_preimage {Y : Scheme.{0}} (y : Sp ℂ ⟶ Y) {W : Y.Opens} (hW : ⊤ ≤ y ⁻¹ᵁ W) :
     valAt' y W 1 = 1 := by
@@ -283,31 +281,27 @@ namespace GlobalTheory
 open PrimitiveRegular
 
 /- English proof (translation)
-Introduce `P₀ u Hm χ hG I O c h hO hh hc i n σ hσ`. Establish `hL : P₀.L.IsLB` using `P₀.7`. Establish `: CompactSpace P₀.A.left`. Establish `: IsProper P₀.A.hom`. Conclude with `P₀.3.3`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc0` using `QuasiCompact.isCompact_preimage (f := P₀.A.hom) Set.univ isOpen_univ isCompact_univ`. Conclude with `⟨by simpa using hc0⟩`. Take `⟨θ, hθd, hθ, -, hθper⟩` from `GlobalTheory.ThetaBundleSec.exists_fn u hL n σ`. Establish `hOi : ∀ z, θ z ≠ 0 → ⊤ ≤ (u.ex z).left ⁻¹ᵁ O i`. Introduce `z hz`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨j, hj⟩` from `(PrimitiveRegular.top_le_preimage_iSup (u.ex z).left P₀.L.U).mp (by rw [hL.1]; exact fun q _ => trivial)`. Set `k : (lbPow P₀.L n).ι` to `fun _ => j`. Establish `hk : ⊤ ≤ (u.ex z).left ⁻¹ᵁ (lbPow P₀.L n).U k` using `fun q hq => Set.mem_iInter.mpr fun _ => by simpa using hj hq`. Establish `hb` using `point_mem_basicOpen_of_valAt'_ne_zero _ hk (σ.f k) (PrimitiveRegular.mem_basicOpen u hθ k z hk hz)`. Use `hb.trans fun q hq => hσ ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Unfold `ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus`. Conclude with `(le_iSup (fun k => P₀.A.left.basicOpen (σ.f k)) k) hq`. Take `⟨M, hM, hdiff⟩` from `PrimitiveRegular.entire_extension u (h i) θ hθd (PrimitiveRegular.local_extension u hL O c h hO (fun i => (hh i).1) hc i σ hσ hθd hθ)`. Establish `hTh : u.IsThetaFn Hm χ (n * M) (fun z => θ z ^ M * h i z)`. Use `⟨hdiff, fun l z => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Use `beta_reduce`. Establish `hw` using `hθper z (z + l) (χ l * Complex.exp (Real.pi * hermForm Hm z l + Real.pi / 2 * hermForm Hm l l)) (GlobalTheory.SectionTheta.ex_add_lattice u z l) (fun j hj => hG.ah.2.2.2 l j z hj)`. Distinguish the cases in `h0 : θ z = 0`. Establish `h0' : θ (z + l) = 0` using `by rw [hw, h0, mul_zero]`. Simplify using `only [h0, h0', zero_pow hM.ne', zero_mul, mul_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hw, (hh i).2 l z (hOi z h0), pow_mul, mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨s, hs⟩` from `hG.sec (n * M) _ hTh`. Use `(existsUnique_section_of_locally_regular P₀ u Hm χ hG (Out.nonzeroLocus σ) (h i) ?_).exists` and prove the remaining obligations. Introduce `z hz`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Establish `hz'` using `hz`. Unfold `ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus at hz'`. Take `⟨k, hk⟩` from `(PrimitiveRegular.top_le_preimage_iSup (u.ex z).left _).mp hz'`. Establish `hle : P₀.A.left.basicOpen (σ.f k) ≤ Out.nonzeroLocus σ`. Unfold `ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `le_iSup (fun k => P₀.A.left.basicOpen (σ.f k)) k`. Establish `hUk` using `P₀.A.left.basicOpen_le (σ.f k)`. Establish `hu : IsUnit ((P₀.A.left.presheaf.map (homOfLE hUk).op).hom (σ.f k))`. Conclude with `RingedSpace.isUnit_res_basicOpen _ (σ.f k)`. Use `⟨P₀.A.left.basicOpen (σ.f k), (P₀.A.left.presheaf.map (homOfLE hUk).op).hom (s.f k) * ((hu.unit⁻¹ : _ˣ) : Γ(P₀.A.left, P₀.A.left.basicOpen (σ.f k))) ^ M, hle, hk, fun z' hz'' => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hzk : ⊤ ≤ (u.ex z').left ⁻¹ᵁ (lbPow P₀.L n).U k` using `hz''.trans fun q hq => hUk hq`. Establish `hr : valAt' (u.ex z').left _ (hu.unit : Γ(P₀.A.left, P₀.A.left.basicOpen (σ.f k))) = θ z' * u.fr (k PUnit.unit) z' ^ n`. Rewrite using `[IsUnit.unit_spec, valAt'_presheaf_map_of_le_of_whole_le_preimage' _ _ hz'']`. Conclude with `hθ k z' hzk`. Establish `hinv : valAt' (u.ex z').left _ (hu.unit : Γ(P₀.A.left, P₀.A.left.basicOpen (σ.f k))) * valAt' (u.ex z').left _ ((hu.unit⁻¹ : _ˣ) : Γ(P₀.A.left, P₀.A.left.basicOpen (σ.f k))) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← valAt'_mul_of_top_le_preimage_open _ hz'', Units.mul_inv, valAt'_one_of_whole_le_preimage _ hz'']`. Establish `hne : θ z' * u.fr (k PUnit.unit) z' ^ n ≠ 0`. Rewrite using `[← hr]`. Conclude with `left_ne_zero_of_mul_eq_one hinv`. Establish `hθ0 : θ z' ≠ 0` using `left_ne_zero_of_mul hne`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hfr0 : u.fr (k PUnit.unit) z' ^ n ≠ 0` using `right_ne_zero_of_mul hne`. Rewrite `hinv` using `[hr]`. Rewrite using `[valAt'_mul_of_top_le_preimage_open _ hz'', valAt'_pow_of_whole_le_preimage' _ hz'']`. Use `erw [valAt'_presheaf_map_of_le_of_whole_le_preimage' (W := (lbPow P₀.L (n * M)).U k) _ hUk hz'']`. Rewrite using `[eq_inv_of_mul_eq_one_right hinv, hs k z' (show ⊤ ≤ (u.ex z').left ⁻¹ᵁ (lbPow P₀.L (n * M)).U k from hzk)]`.
-
-Establish `hθM : θ z' ^ M ≠ 0` using `pow_ne_zero _ hθ0`. Establish `hfrM : u.fr (k PUnit.unit) z' ^ (n * M) ≠ 0`. Rewrite using `[pow_mul]`. Conclude with `pow_ne_zero _ hfr0`. Use `beta_reduce`.
-
-Rewrite using `[inv_pow, mul_pow, ← pow_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem primitive_regular_on_nonzeroLocus : ∀ (P₀ : Out.PolAV (Sp ℂ)) (u : HolUnif P₀.A P₀.L P₀.g) (Hm : Matrix (Fin P₀.g) (Fin P₀.g) ℂ) (χ : u.Λ → ℂ), GoodU u Hm χ → ∀ (I : Type) (O : I → P₀.A.left.Opens) (c : ∀ i i', Γ(P₀.A.left, O i ⊓ O i')) (h : I → (Fin P₀.g → ℂ) → ℂ), ⨆ i, O i = ⊤ → (∀ i, DifferentiableOn ℂ (h i) {z | ⊤ ≤ (u.ex z).left ⁻¹ᵁ O i} ∧ ∀ (l : u.Λ) z, ⊤ ≤ (u.ex z).left ⁻¹ᵁ O i → h i (z + l) = h i z) → (∀ i i' z, ⊤ ≤ (u.ex z).left ⁻¹ᵁ (O i ⊓ O i') → valAt' (u.ex z).left (O i ⊓ O i') (c i i') = h i' z - h i z) → ∀ i (n : ℕ) (σ : (lbPow P₀.L n).Sec), Out.nonzeroLocus σ ≤ O i → ∃ a : Γ(P₀.A.left, Out.nonzeroLocus σ), ∀ z, ⊤ ≤ (u.ex z).left ⁻¹ᵁ Out.nonzeroLocus σ → valAt' (u.ex z).left (Out.nonzeroLocus σ) a = h i z := by
   intro P₀ u Hm χ hG I O c h hO hh hc i n σ hσ

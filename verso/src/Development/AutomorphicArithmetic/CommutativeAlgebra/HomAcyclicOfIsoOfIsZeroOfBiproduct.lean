@@ -9,9 +9,9 @@ namespace UpperTheory.AdditiveHomTwist
 universe v₁ v₂ u₁ u₂
 
 /- English proof (translation)
-Use `⟨{ hom := F.map biprod.fst ≫ s₁ + F.map biprod.snd ≫ s₂ inv := p₁ ≫ F.map biprod.inl + p₂ ≫ F.map biprod.inr hom_inv_id := ?_ inv_hom_id := ?_ }⟩` and prove the remaining obligations. Simplify using `only [Preadditive.add_comp, Preadditive.comp_add, Category.assoc, reassoc_of% h₁, reassoc_of% h₂, reassoc_of% h₁₂, reassoc_of% h₂₁, zero_comp, comp_zero, add_zero, zero_add]`. Rewrite using `[← F.map_comp, ← F.map_comp, ← F.map_add, biprod.total, F.map_id]`. Simplify using `only [Preadditive.add_comp, Preadditive.comp_add, Category.assoc]`. Rewrite using `[← F.map_comp_assoc, ← F.map_comp_assoc, ← F.map_comp_assoc, ← F.map_comp_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [biprod.inl_fst, biprod.inl_snd, biprod.inr_fst, biprod.inr_snd, F.map_id, F.map_zero, Category.id_comp, zero_comp, comp_zero, add_zero, zero_add]`. Conclude with `ht`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem biprod_iso {C : Type u₁} [Category.{v₁} C] [Preadditive C] {D : Type u₂} [Category.{v₂} D] [Preadditive D]
     (F : C ⥤ D) [F.Additive] (S₁ S₂ : C) [HasBinaryBiproduct S₁ S₂] (T : D)
@@ -44,7 +44,7 @@ private theorem hm_apply {P P' : B.Etale ⥤ Shv (ZMod q)} (φ : P ⟶ P') (J : 
     (x : P'.obj U.unop ⟶ J) : ((hm φ J).app U).hom x = φ.app U.unop ≫ x := rfl
 
 /- English proof (translation)
-Unfold `hm`. Rewrite using `[NatTrans.op_id]`. Conclude with `Functor.whiskerRight_id' _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hm_id (P : B.Etale ⥤ Shv (ZMod q)) (J : Shv (ZMod q)) : hm (𝟙 P) J = 𝟙 _ := by
   unfold hm
@@ -52,7 +52,7 @@ private theorem hm_id (P : B.Etale ⥤ Shv (ZMod q)) (J : Shv (ZMod q)) : hm (�
   exact Functor.whiskerRight_id' _
 
 /- English proof (translation)
-Use `NatTrans.ext (funext fun U => ModuleCat.hom_ext (LinearMap.ext fun x => ?_))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ.app U.unop ≫ ψ.app U.unop ≫ (x : P''.obj U.unop ⟶ J) = (φ.app U.unop ≫ ψ.app U.unop) ≫ x`. Conclude with `(Category.assoc _ _ _).symm`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 private theorem hm_comp {P P' P'' : B.Etale ⥤ Shv (ZMod q)} (φ : P ⟶ P') (ψ : P' ⟶ P'') (J : Shv (ZMod q)) :
     hm ψ J ≫ hm φ J = hm (φ ≫ ψ) J := by
@@ -61,7 +61,7 @@ private theorem hm_comp {P P' P'' : B.Etale ⥤ Shv (ZMod q)} (φ : P ⟶ P') (�
   exact (Category.assoc _ _ _).symm
 
 /- English proof (translation)
-Use `NatTrans.ext (funext fun U => ModuleCat.hom_ext (LinearMap.ext fun x => ?_))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(0 : P.obj U.unop ⟶ P'.obj U.unop) ≫ (x : P'.obj U.unop ⟶ J) = 0`. Conclude with `zero_comp`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 private theorem hm_zero (P P' : B.Etale ⥤ Shv (ZMod q)) (J : Shv (ZMod q)) : hm (0 : P ⟶ P') J = 0 := by
   refine NatTrans.ext (funext fun U => ModuleCat.hom_ext (LinearMap.ext fun x => ?_))
@@ -69,7 +69,7 @@ private theorem hm_zero (P P' : B.Etale ⥤ Shv (ZMod q)) (J : Shv (ZMod q)) : h
   exact zero_comp
 
 /- English proof (translation)
-Use `NatTrans.ext (funext fun U => ModuleCat.hom_ext (LinearMap.ext fun x => ?_))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(φ.app U.unop + ψ.app U.unop) ≫ (x : P'.obj U.unop ⟶ J) = φ.app U.unop ≫ x + ψ.app U.unop ≫ x`. Conclude with `Preadditive.add_comp _ _ _ _ _ _`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 private theorem hm_add {P P' : B.Etale ⥤ Shv (ZMod q)} (φ ψ : P ⟶ P') (J : Shv (ZMod q)) :
     hm (φ + ψ) J = hm φ J + hm ψ J := by
@@ -78,7 +78,7 @@ private theorem hm_add {P P' : B.Etale ⥤ Shv (ZMod q)} (φ ψ : P ⟶ P') (J :
   exact Preadditive.add_comp _ _ _ _ _ _
 
 /- English proof (translation)
-Establish `h : Presheaf.IsSheaf (EtTop B) G` using `(Presheaf.isSheaf_of_iso_iff e).1 S.cond`. Use `⟨h, ?_⟩` and prove the remaining obligations. Establish `i : S ≅ (⟨G, h⟩ : SShv B q)` using `(fullyFaithfulSheafToPresheaf (EtTop B) (ModuleCat.{1} (ULift.{1} (ZMod q)))).preimageIso e`. Conclude with `Injective.of_iso i inferInstance`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem transfer (S : SShv B q) [Injective S] {G : B.Etaleᵒᵖ ⥤ ModuleCat.{1} (ULift.{1} (ZMod q))} (e : S.obj ≅ G) :
     ∃ h : Presheaf.IsSheaf (EtTop B) G, Injective (⟨G, h⟩ : SShv B q) := by
@@ -92,17 +92,15 @@ end UpperTheory.AdditiveHomTwist
 
 open UpperTheory.AdditiveHomTwist ZeroObject in
 /- English proof (translation)
-Introduce `q B`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `P P' hPP hP`. Take `⟨e⟩` from `hPP`. Unfold `Good at hP ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Introduce `J hJ`. Take `⟨h, hi⟩` from `hP J hJ`. Establish `e' : HP P J ≅ HP P' J` using `{ hom := hm e.inv J inv := hm e.hom J hom_inv_id := by rw [hm_comp, e.hom_inv_id, hm_id] inv_hom_id := by rw [hm_comp, e.inv_hom_id, hm_id] }`. Conclude with `transfer (⟨HP P J, h⟩ : SShv B q) e'`. Introduce `P hP`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Unfold `Good`. Introduce `J hJ`. Establish `hz : IsZero (HP P J)`. Rewrite using `[IsZero.iff_id_eq_zero]`. Establish `h0 : (𝟙 P : P ⟶ P) = 0` using `NatTrans.ext (funext fun U => (hP U).eq_of_src _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hm_id, h0, hm_zero]`. Establish `hz0 : IsZero ((sheafToPresheaf (EtTop B) (ModuleCat.{1} (ULift.{1} (ZMod q)))).obj (0 : SShv B q))` using `Functor.map_isZero _ (isZero_zero _)`. Conclude with `transfer (0 : SShv B q) (hz0.iso hz)`. Introduce `P P₁ P₂ i₁ r₁ i₂ r₂ h1 h2 h12 h21 ht hP₁ hP₂`. Unfold `Good at hP₁ hP₂ ⊢`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `J hJ`. Take `⟨g₁, hi₁⟩` from `hP₁ J hJ`. Take `⟨g₂, hi₂⟩` from `hP₂ J hJ`. Set `S₁ : SShv B q` to `⟨HP P₁ J, g₁⟩`. Set `S₂ : SShv B q` to `⟨HP P₂ J, g₂⟩`.
-
-Use `haveI : Injective S₁ := hi₁`. Use `haveI : Injective S₂ := hi₂`. Take `⟨e⟩` from `biprod_iso (sheafToPresheaf (EtTop B) (ModuleCat.{1} (ULift.{1} (ZMod q)))) S₁ S₂ (HP P J) (hm r₁ J) (hm i₁ J) (hm r₂ J) (hm i₂ J) (by rw [hm_comp, h1, hm_id]; rfl) (by rw [hm_comp, h2, hm_id]; rfl) (by rw [hm_comp, h21, hm_zero]) (by rw [hm_comp, h12, hm_zero]) (by rw [hm_comp, …`. Conclude with `transfer (S₁ ⊞ S₂) e`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.homAcyclic_of_iso_of_isZero_of_biproduct :
     ∀ (q : ℕ) (B : Scheme.{0}), (∀ P P' : B.Etale ⥤ Shv (ZMod q), Nonempty (P ≅ P') → Good P → Good P') ∧ (∀ P : B.Etale ⥤ Shv (ZMod q), (∀ U, IsZero (P.obj U)) → Good P) ∧ ∀ (P P₁ P₂ : B.Etale ⥤ Shv (ZMod q)) (i₁ : P₁ ⟶ P) (r₁ : P ⟶ P₁) (i₂ : P₂ ⟶ P) (r₂ : P ⟶ P₂), i₁ ≫ r₁ = 𝟙 _ → i₂ ≫ r₂ = 𝟙 _ → i₁ ≫ r₂ = 0 → i₂ ≫ r₁ = 0 → r₁ ≫ i₁ + r₂ ≫ i₂ = 𝟙 _ → Good P₁ → Good P₂ → Good P := by

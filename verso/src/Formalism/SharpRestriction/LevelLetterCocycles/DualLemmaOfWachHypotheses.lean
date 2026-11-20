@@ -19,7 +19,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [CommRing O] [Algebra O LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ} [NeZero n]
 
 /- English proof (translation)
-The claim follows from `Formalism.MainNotions.RamifiedCoefficientChains.S9.DetS.lemmaDN_of_S1E W hZ hA (Formalism.MainNotions.RamifiedCoefficientChains.S9.GM.gMem_of W hE hC hQ h5 h9 hRu hEC) (Formalism.MainNotions.RamifiedCoefficientChains.S9.DetA.detAlg_of W hE hC hQ h5 h9 (Formalism.MainNotions.Ramif …`.
+A detailed English derivation is pending.
 -/
 theorem dual_lemma_of_wach_hypotheses [IsDomain O] [IsFractionRing O LL] (W : LocWach PD LL O v n)
     (hE : Formalism.MainNotions.RamifiedCoefficientChains.DcrisExactStrict PD LL) (hC : Formalism.MainNotions.RamifiedCoefficientChains.CrysSubQuot PD LL)

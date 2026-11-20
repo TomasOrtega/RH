@@ -7,7 +7,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 namespace GlobalTheory.CompanionTheory.Ar.FF
 
 /- English proof (translation)
-The claim follows from `@PositivityTheory.HtPt.Cc.inh_ff`.
+A detailed English derivation is pending.
 -/
 theorem places_form_curve : ∀ (k K : Type) [Field k] [Field K] [Algebra k K] [GroundTheory.FunctionField.IsFunctionField k K], ∃ C : ACurve K, IsFFCurve k C ∧ Nonempty C.I ∧ ∀ i (x : K), IsAlgebraic k x → C.v i x ≤ 1 :=
   @PositivityTheory.HtPt.Cc.inh_ff

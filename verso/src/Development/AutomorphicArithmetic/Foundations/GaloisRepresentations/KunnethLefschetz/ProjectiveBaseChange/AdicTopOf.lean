@@ -64,7 +64,7 @@ variable (h1 : ProjBC) (h2 : SumCl) (h5 : SumHl) (h6 : PiBC) (hQ : QDual) (hS : 
 
 include h5 h6 hS in
 /- English proof (translation)
-The claim follows from `h6 l r _ _ (fun s => pullHl l (sch.map (j s)) n 0) (h5 hS l j hj n)`.
+A detailed English derivation is pending.
 -/
 theorem sumQ {X : Scheme.{0}} {r : ℕ} {Y : Fin r → Scheme.{0}} (j : ∀ s, Y s ⟶ X) (hj : IsSum j) (n : ℤ) :
     Function.Bijective fun (x : V l X n) (s : Fin r) => pb l (j s) n x :=
@@ -72,11 +72,11 @@ theorem sumQ {X : Scheme.{0}} {r : ℕ} {Y : Fin r → Scheme.{0}} (j : ∀ s, Y
 
 include h1 h2 hQ in
 /- English proof (translation)
-Establish `hp : IsProjOver (pullback.snd M.q (Spec.map (CommRingCat.ofHom (algebraMap K (PadicAlgCl l)))))` using `h1.1 _ _ _ _ (h1.1 _ _ _ _ hM.1)`. Use `h1.2 _ _ hp` as an intermediate fact. Use `h2 j hj s` as an intermediate fact. Use `hj.1 s` as an intermediate fact. Use `hc.2` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : SmoothOfRelativeDimension d (pullback.snd M.q (Spec.map (CommRingCat.ofHom (algebraMap K (PadicAlgCl l)))))` using `(smoothOfRelativeDimension_isStableUnderBaseChange d).of_isPullback (IsPullback.of_hasPullback _ _) hc.2`. Use `hQ l (PadicAlgCl l) (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero) d (j s ≫ pullback.snd M.q (Spec.map (CommRingCat.ofHom (algebraMap K (PadicAlgCl l))))) ⟨inferInstance, ?_⟩ ?_ (hY s)` and prove the remaining obligations. Establish `h : SmoothOfRelativeDimension (0 + d) (j s ≫ pullback.snd M.q (Spec.map (CommRingCat.ofHom (algebraMap K (PadicAlgCl l)))))` using `inferInstance`. Rewrite `h` using `[Nat.zero_add]`. Then use the resulting hypothesis. Take `⟨N, i, hi, e⟩` from `hp`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨N, j s ≫ i, inferInstance, by rw [Category.assoc]; exact congrArg (j s ≫ ·) e⟩`.
+Supply the required witnesses or components.
 -/
 theorem dual_comp (M : Model l K) (hM : M.Good) (d : ℕ) (hc : M.Conn d) {r : ℕ} {Y : Fin r → Scheme.{0}}
     (j : ∀ s, Y s ⟶ GlobalTheory.Et.geom (PadicAlgCl l) M.q) (hj : IsSum j) (hY : ∀ s, IsIntegral (Y s)) (s : Fin r) : Dual l d (Y s) := by
@@ -99,19 +99,17 @@ theorem dual_comp (M : Model l K) (hM : M.Good) (d : ℕ) (hc : M.Conn d) {r : �
 end
 
 /- English proof (translation)
-Introduce `hI hQ hS l _ K G hG hC hGeo`. Establish `hcomp : ∀ M, G M → ∃ (r : ℕ) (P : Fin r → Model l K) (d : Fin r → ℕ) (u : ∀ a, (P a).X ⟶ M.X) (hu : ∀ a, u a ≫ M.p = (P a).p), (∀ a, G (P a) ∧ (P a).Conn (d a)) ∧ ∀ (j : ℕ) (v : M.V j), (∀ a, Model.pullV (u a) (hu a) j v = 0) → v = 0` using `fun M hM => by`. Take `⟨r, P, d, u, hu, hs, hP⟩` from `hC M hM`. Use `⟨r, P, d, u, hu, hP, fun j v hv => ?_⟩` and prove the remaining obligations. Establish `hb` using `sumQ (l := l) h5 h6 hS _ (h3 _ u _ _ (fun a => h4 l K (P a) M (u a) (hu a)) hs) (j : ℤ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hb.1 (funext fun a => (hv a).trans (map_zero _).symm)`. Establish `hfin : ∀ M, G M → ∀ d, M.Conn d → ∀ n : ℕ, FiniteDimensional ℚ_[l] (M.V n)` using `fun M hM d hd n => by`. Take `⟨r, Y, j, hj, hY, -⟩` from `hGeo M hM d hd`. Use `fun s => (dual_comp h1 h2 hQ M (hG M hM) d hd j hj hY s).1 (n : ℤ)` as an intermediate fact. Conclude with `FiniteDimensional.of_injective (LinearMap.pi fun s => pb l (j s) (n : ℤ)) (sumQ h5 h6 hS j hj n).1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨fun M _ _ x y => h10 hI.a11 l K M x y, fun M hM n => ?_, fun M hM d hd => ?_, hcomp⟩` and prove the remaining obligations. Take `⟨r, P, d, u, hu, hP, h⟩` from `hcomp M hM`. Use `fun a => hfin (P a) (hP a).1 (d a) (hP a).2 n` as an intermediate fact. Conclude with `FiniteDimensional.of_injective (LinearMap.pi fun a => Model.pullV (u a) (hu a) n) ((injective_iff_map_eq_zero _).2 fun v hv => h n v fun a => congrFun hv a)`. Take `⟨r, Y, j, hj, hY, hπ, ht⟩` from `hGeo M hM d hd`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hD` using `dual_comp h1 h2 hQ M (hG M hM) d hd j hj hY`. Establish `hb` using `sumQ (l := l) h5 h6 hS j hj`. Use `⟨fun i hi => ⟨fun x y => (hb i).1 (funext fun s => ((hD s).2.1 i (by omega)).elim _ _)⟩, fun a b hab => ?_⟩` and prove the remaining obligations. Establish `hw : (a : ℤ) + (b : ℤ) = ((a + b : ℕ) : ℤ)` using `by push_cast; rfl`. Take `⟨g, hg, hsp, hf⟩` from `h7 l (hR hI l) j d hb hD a b _ hw (by omega)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨r, g, hsp, fun s s' => ?_, h9 hI.a11 l K M (hR hI l) a b r g hw hf⟩` and prove the remaining obligations. Take `⟨σ, θ, e⟩` from `ht s' s`. Take `⟨π, θ', e'⟩` from `hπ σ`. Establish `hs : π s' = s`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `hY s'` as an intermediate fact. Take `⟨y⟩ : Nonempty (Y s')` from `inferInstance`. Use `Set.disjoint_left.1 (hj.2.2 _ _ hne) ⟨(θ' s').hom y, rfl⟩ ⟨θ y, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, ← e, e' s']`. Take `⟨z, hz, h⟩` from `h8 l j _ (hb _).1 g hg _ π θ' e' s'`.
-
-Rewrite `h` using `[hs]`. Conclude with `⟨σ, z, hz, h⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem adicTop_of (hR : RingL) (h1 : ProjBC) (h2 : SumCl) (h3 : SumBC) (h4 : GeomPb) (h5 : SumHl) (h6 : PiBC) (h7 : DualSum)
     (h8 : Perm) (h9 : IntFun) (h10 : CupEx) : AdicTop := by

@@ -17,7 +17,7 @@ def SHigh : Ideal (S O K e) :=
 
 variable {O K l e} in
 /- English proof (translation)
-Rewrite using `[SHigh, Ideal.mem_comap, Ideal.mem_span_singleton]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_SHigh {f : S O K e} : f ∈ SHigh O K l e ↔ (X : K⟦X⟧) ^ (l * e) ∣ (f : K⟦X⟧) := by
   rw [SHigh, Ideal.mem_comap, Ideal.mem_span_singleton]
@@ -71,7 +71,7 @@ def mulL (P : PhiMod O K l e a ι) (f : K⟦X⟧) : Submodule O (Vec K a ι) :=
   (P.L.restrictScalars O).map ((mulV K a ι f).restrictScalars O)
 
 /- English proof (translation)
-Simplify using `only [mulL, Submodule.mem_map, Submodule.restrictScalars_mem, LinearMap.restrictScalars_apply, mulV_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_mulL {P : PhiMod O K l e a ι} {f : K⟦X⟧} {x : Vec K a ι} :
     x ∈ mulL P f ↔ ∃ y ∈ P.L, f • y = x := by
@@ -152,7 +152,7 @@ example : D₁ ({0, 1, 3} : Finset (ZMod 8)) 1 1 = {0, 1, 6} ∧
     D₂ ({0, 1, 3} : Finset (ZMod 8)) 1 1 = {8, 9, 14} := by decide
 
 /- English proof (translation)
-Use `⟨mem_SHigh.2 (by simp), fun h => ?_⟩` and prove the remaining obligations. Establish `h1` using `X_pow_dvd_iff.1 (mem_SHigh.1 h) 0 (Nat.mul_pos (Fact.out : l.Prime).pos (NeZero.pos e))`. Simplify using `at h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 example (O K : Type) [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebra O K]
     [IsUnitBall O K] (l e : ℕ) [Fact l.Prime] [NeZero e] :

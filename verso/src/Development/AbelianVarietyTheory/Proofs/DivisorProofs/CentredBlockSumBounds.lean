@@ -7,23 +7,23 @@ open MvPolynomial Formalism.DegreeFormula GlobalTheory.FlagPoly
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `set F := Finset.univ.filter (fun i : Fin N => (i : ℕ) < j) with hF`. Use `set G := Finset.univ.filter (fun i : Fin N => ¬ (i : ℕ) < j) with hG`. Establish `hNr : (0 : ℝ) < N` using `by exact_mod_cast hN`. Establish `hjr : (j : ℝ) ≤ N` using `by exact_mod_cast hj`. Establish `hj0 : (0 : ℝ) ≤ j` using `Nat.cast_nonneg j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcF : F.card = j`. Rewrite using `[hF, Fin.card_filter_val_lt]`. Use linear arithmetic over natural numbers and integers. Establish `hcFG : F.card + G.card = N`. Rewrite using `[hF, hG, Finset.card_filter_add_card_filter_not]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hcG : (G.card : ℝ) = N - j`. Establish `: (F.card : ℝ) + G.card = N` using `by exact_mod_cast hcFG`. Rewrite `this` using `[hcF]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS : ∑ i, u i = ∑ i ∈ F, u i + ∑ i ∈ G, u i` using `(Finset.sum_filter_add_sum_filter_not _ _ _).symm`. Establish `hA : ∑ i, |u i| = ∑ i ∈ F, |u i| + ∑ i ∈ G, |u i|` using `(Finset.sum_filter_add_sum_filter_not _ _ _).symm`. Establish `hp : 0 ≤ ∑ a ∈ F, ∑ b ∈ G, (u a - u b)`. Use `Finset.sum_nonneg fun a ha => Finset.sum_nonneg fun b hb => sub_nonneg.2 (hu a b ?_)` and prove the remaining obligations. Simplify using `only [hF, hG, Finset.mem_filter, Finset.mem_univ, true_and] at ha hb`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[Fin.le_def]`. Use linear arithmetic over natural numbers and integers. Establish `hp' : 0 ≤ (N - j) * ∑ i ∈ F, u i - j * ∑ i ∈ G, u i`. Simplify using `only [Finset.sum_sub_distrib, Finset.sum_const, nsmul_eq_mul, hcF, hcG, ← Finset.mul_sum] at hp`. Conclude with `hp`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : |∑ i ∈ F, u i| ≤ ∑ i ∈ F, |u i|` using `Finset.abs_sum_le_sum_abs _ _`. Establish `h2 : |∑ i ∈ G, u i| ≤ ∑ i ∈ G, |u i|` using `Finset.abs_sum_le_sum_abs _ _`. Establish `h3 : |∑ i, u i| ≤ ∑ i, |u i|` using `Finset.abs_sum_le_sum_abs _ _`. Establish `key : ∑ i ∈ F, u i - j * ((∑ i, u i) / N) = ((N - j) * ∑ i ∈ F, u i - j * ∑ i ∈ G, u i) / N`. Rewrite using `[hS]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[key]`. Conclude with `div_nonneg hp' hNr.le`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[key, div_le_iff₀ hNr, hA]`. Establish `a1` using `le_abs_self (∑ i ∈ F, u i)`. Establish `a2` using `neg_abs_le (∑ i ∈ G, u i)`. Establish `b1 : 0 ≤ ∑ i ∈ F, |u i|` using `le_trans (abs_nonneg _) h1`. Establish `b2 : 0 ≤ ∑ i ∈ G, |u i|` using `le_trans (abs_nonneg _) h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities.
 
-Establish `c1 : (N - j) * ∑ i ∈ F, u i ≤ (N - j) * ∑ i ∈ F, |u i|` using `mul_le_mul_of_nonneg_left (a1.trans h1) (by linarith)`. Establish `c2 : j * (-∑ i ∈ G, u i) ≤ j * ∑ i ∈ G, |u i|` using `mul_le_mul_of_nonneg_left (by linarith) hj0`. Use polynomial arithmetic with `[mul_nonneg hj0 b1, mul_nonneg (sub_nonneg.2 hjr) b2]`. Rewrite using `[abs_div, abs_of_pos hNr, mul_div_cancel₀ _ hNr.ne']`. Conclude with `h3`.
+A detailed English derivation is pending.
 -/
 theorem centred_block_sum_bounds (N j : ℕ) (u : Fin N → ℝ) (hj : j ≤ N) (hN : 0 < N)
     (hu : ∀ a b : Fin N, a ≤ b → u b ≤ u a) :

@@ -8,7 +8,7 @@ open MeasureTheory Metric Filter Topology
 open scoped ENNReal ContDiff
 
 /- English proof (translation)
-The claim follows from `|(f'.restrictScalars ℝ : V n →L[ℝ] V n).det| = ‖LinearMap.det (f' : V n →ₗ[ℂ] V n)‖ ^ 2 := by rw [ContinuousLinearMap.det, ContinuousLinearMap.coe_restrictScalars, LinearMap.det_restrictScalars, Algebra.norm_complex_apply, Complex.normSq_eq_norm_sq, abs_of_nonneg (by positivity)]`.
+A detailed English derivation is pending.
 -/
 theorem covDet (n : ℕ) (f' : V n →L[ℂ] V n) :
     |(f'.restrictScalars ℝ : V n →L[ℝ] V n).det| =
@@ -17,7 +17,7 @@ theorem covDet (n : ℕ) (f' : V n →L[ℂ] V n) :
     Algebra.norm_complex_apply, Complex.normSq_eq_norm_sq, abs_of_nonneg (by positivity)]
 
 /- English proof (translation)
-Introduce `W G f hW hG hinj _`. Establish `hd : ∀ y ∈ W, HasFDerivWithinAt G ((fderiv ℂ G y).restrictScalars ℝ) W y` using `fun y hy => (((hG y hy).differentiableAt (hW.mem_nhds hy)).hasFDerivAt.restrictScalars ℝ).hasFDerivWithinAt`. Rewrite using `[lintegral_image_eq_lintegral_abs_det_fderiv_mul volume hW.measurableSet hd hinj f]`. Simplify using `only [covDet]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cov (n : ℕ) : CovStatement n := by
   intro W G f hW hG hinj _

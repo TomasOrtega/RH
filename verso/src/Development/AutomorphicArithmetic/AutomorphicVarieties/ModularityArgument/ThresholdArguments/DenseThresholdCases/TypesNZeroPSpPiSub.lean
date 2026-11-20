@@ -16,15 +16,15 @@ namespace UpperTheory.TNZ.Grp
 open P_spPiSub
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 /- English proof (translation)
-Introduce `hOrd hL Y _ _ τ _ _ ν hν hc hI`. Set `χ : Fin G.s → kˣ →* ℂˣ` to `fun a => absPow k (-((modExp (fun b : Fin G.s => Fin (G.d b)) a : ℂ) / 2))`. Establish `hχ : ∀ a, IsSmoothChar (χ a)` using `fun a => isSmoothChar_absPow _`. Establish `hsupp : ∀ a, HasSupport (G.twD τ a) (Finset.univ.val.map fun j => IrrGL.ofChar (ν a j * χ a) ((hν a j).mul (hχ a)))`. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `(hasSupport_of_isCuspSupport (hc a)).tw (χ a) (hχ a)`. Rewrite `h1` using `[Multiset.map_map]`. Use `h1 using 2` and compare the differences between its conclusion and the goal. Both sides reduce to the same expression. Name the introduced variables `j _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Conclude with `(IrrGL.tw_ofChar (ν a j) (χ a) (hν a j) (hχ a)).symm`. Establish `hcOf : ∀ i, IsSmoothChar (G.cOf ν i)` using `fun i => (hν _ _).mul (isSmoothChar_absPow _)`. Establish `hS` using `SupportRing.hasSupport_multiProd hL.loc.zel G.hd (G.twD τ) (fun a => (hsupp a).isSmooth) (fun a => (hsupp a).isIrreducible) hsupp hI`. Establish `hsum : (∑ a, Finset.univ.val.map fun j => IrrGL.ofChar (ν a j * χ a) ((hν a j).mul (hχ a))) = Finset.univ.val.map fun i => IrrGL.ofChar (G.cOf ν i) (hcOf i)` using `sum_map_univ G.e (fun a j => IrrGL.ofChar (ν a j * χ a) ((hν a j).mul (hχ a)))`. Take `⟨h, x, hx, -, -, e', he⟩` from `hS`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hx` using `[hsum]`. Take `⟨σ, hσ⟩` from `exists_equiv_of_map_eq x (fun i => IrrGL.ofChar (G.cOf ν i) (hcOf i)) hx`. Take `rfl : x = fun b => IrrGL.ofChar (G.cOf ν (σ b)) (hcOf _)` from `funext fun b => (hσ b).symm`. Establish `hn : h = n` using `by simpa using Fintype.card_congr σ`. Substitute `hn` using the available equality.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `φ` to `multiProdEquiv e' fun b => (equivRep (IrrRep.det (Fin 1) (G.cOf ν (σ b)) (hcOf _))).symm`. Establish `hsq : IsSubquotient (multiProd G.e (G.twD τ)) (prinSeries fun b => G.cOf ν (σ b))` using `(he.trans (.of_injective φ.toIntertwiningMap φ.toLinearEquiv.injective)).trans (GlobalTheory.PermPrin.isSubquotient_multiProd_prinSeries e' _)`. Conclude with `hOrd hL _ _ (isSmooth_parInd _ _) hI _ hcOf σ hsq`.
+A detailed English derivation is pending.
 -/
 theorem step_spPiSub_alt {n : ℕ} (G : Grp k n) : G.Step_spPiSub_alt := by
   intro hOrd hL Y _ _ τ _ _ ν hν hc hI

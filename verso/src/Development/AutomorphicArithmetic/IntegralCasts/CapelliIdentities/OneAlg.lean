@@ -2,31 +2,29 @@ import Mathlib
 
 open Polynomial in
 /- English proof (translation)
-Introduce `R S _ _ _ _ _ hinj x hsurj halg c hc`. Establish `hcalg : IsAlgebraic R c`. Take `⟨g, rfl⟩` from `hsurj c`. Conclude with `Algebra.isAlgebraic_adjoin_singleton_iff.mpr halg _ (Polynomial.aeval_mem_adjoin_singleton R x)`. Take `⟨b', hb', w, hw⟩` from `hcalg.exists_nonzero_dvd (mem_nonZeroDivisors_of_ne_zero hc)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨q0, hq0, hq0x⟩` from `halg`. Establish `hex : ∃ n, ∃ p : R[X], p ≠ 0 ∧ aeval x p = 0 ∧ p.natDegree = n` using `⟨_, q0, hq0, hq0x, rfl⟩`. Take `⟨p, hp0, hpx, hpn⟩` from `Nat.find_spec hex`. Establish `hmin : ∀ f : R[X], f ≠ 0 → aeval x f = 0 → p.natDegree ≤ f.natDegree` using `fun f hf hfx => by`. Rewrite using `[hpn]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Nat.find_min' hex ⟨f, hf, hfx, rfl⟩`. Establish `hpos : 0 < p.natDegree`. Assume the negation of the conclusion as `h`. Establish `h0 : p.natDegree = 0` using `by omega`. Rewrite `h0` using `[natDegree_eq_zero]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨r, rfl⟩` from `h0`. Rewrite `hpx` using `[aeval_C]`. Establish `hr : r = 0` using `hinj (by simpa using hpx)`. Conclude with `hp0 (by simp [hr])`. Use `⟨p.leadingCoeff * b', mul_ne_zero (leadingCoeff_ne_zero.mpr hp0) hb', ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `K _ _ y hy`. Rewrite `hy` using `[map_mul]`. Establish `hya : y p.leadingCoeff ≠ 0` using `left_ne_zero_of_mul hy`. Establish `hyb : y b' ≠ 0` using `right_ne_zero_of_mul hy`. Establish `hdeg : (p.map y).degree ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[degree_map_eq_of_leadingCoeff_ne_zero y hya]`. Conclude with `(natDegree_pos_iff_degree_pos.mp hpos).ne'`. Take `⟨t, ht⟩` from `IsAlgClosed.exists_root (p.map y) hdeg`. Establish `htp : eval₂ y t p = 0` using `by rwa [IsRoot.def, eval_map] at ht`. Establish `hker : ∀ n, ∀ f : R[X], f.natDegree ≤ n → aeval x f = 0 → eval₂ y t f = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `f hf hfx`. Distinguish the cases in `h0 : f = 0`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Treat this case separately.
 
-Simplify using `[h0]`. Use `hmin f h0 hfx` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Consider the case `succ n ih`. Introduce `f hf hfx`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `h0 : f = 0`. Simplify using `[h0]`. Establish `hle` using `hmin f h0 hfx`. Establish `hfpos : 0 < f.natDegree` using `by omega`. Establish `hlt` using `natDegree_cancelLeads_lt_of_natDegree_le_natDegree hle hfpos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Establish `hcx : aeval x (p.cancelLeads f) = 0` using `by simp [cancelLeads, hpx, hfx]`. Establish `h1` using `ih _ (by omega) hcx`. Simplify using `only [cancelLeads, eval₂_sub, eval₂_mul, eval₂_C, eval₂_pow, eval₂_X, htp, mul_zero, sub_zero, Nat.sub_eq_zero_of_le hle, pow_zero, mul_one] at h1`. Conclude with `(mul_eq_zero.mp h1).resolve_left hya`. Set `φ : R[X] →+* S` to `(aeval x : R[X] →ₐ[R] S).toRingHom`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ψ : R[X] →+* K` to `eval₂RingHom y t`. Establish `hφ : Function.Surjective φ` using `hsurj`. Establish `hk : RingHom.ker φ ≤ RingHom.ker ψ` using `fun f hf => hker _ f le_rfl hf`. Set `ξ : S →+* K` to `RingHom.liftOfSurjective φ hφ ⟨ψ, hk⟩`. Establish `hξ : ∀ f, ξ (φ f) = ψ f` using `fun f => RingHom.liftOfRightInverse_comp_apply φ _ _ ⟨ψ, hk⟩ f`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `halgm : ∀ r : R, ξ (Algebra.algebraMap R S r) = y r` using `fun r => by`. Establish `h2 : φ (C r) = Algebra.algebraMap R S r` using `aeval_C x r`. Rewrite using `[← h2, hξ]`. Simplify using `[ψ]`. Use `⟨ξ, RingHom.ext halgm, fun h => hyb ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← halgm b']`. Establish `h3 : Algebra.algebraMap R S b' = c * w` using `hw`. Rewrite using `[h3, map_mul, h, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Ra3.one_alg :
     ∀ (R S : Type) [inst : CommRing R] [IsDomain R]

@@ -18,15 +18,15 @@ set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 800000
 namespace GlobalTheory.BigOn.Exp
 /- English proof (translation)
-Introduce `h1 h2 h3 h4`. Establish `hO` using `_root_.GlobalTheory.T.real_datum_normalized_rational_base_alt h1 h2 h3 h4`. Establish `hZ` using `_root_.GlobalTheory.BigOn.Exp.bigOn_expZero`. Unfold `_root_.GlobalTheory.BigOn.Exp.ExpZeroAlt at hZ`. Use `(_root_.GlobalTheory.BigOn.Exp.TwistConditions.and hO hZ).imp fun Fm x hx i p _ _ w _ j H => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `ρ hρ ν hpin hL hN hR0 s h P hd hP f hf n a g hfe τ hfix`. Take `⟨a1, a2⟩` from `H`. Take `⟨c, hc, n', b, g', hb, hbc⟩` from `a1 ρ hρ ν hpin hL hN hR0 s h P hd hP τ hfix`. Establish `hν : ν ≠ 0` using `hN.1`. Establish `hsum : ∑ k, ρ.e ((Fm.ex x hx i).nch.twI w) ((Fm.ex x hx i).nch.sd w) (a k) • evW p.nexp p.v₀ j (g k).val = ν • ρ.theta ((Fm.ex x hx i).nch.twI w) j ((Fm.ex x hx i).nch.sd w) h P`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hf]`. Express the relevant statement in the definitionally equal form `_ = ν • ν⁻¹ • evK p.nexp p.v₀ hρ _ j _ (p.nexp.eF _ _ _ (Nat.le_add_left _ _) j.2 f)`. Rewrite using `[smul_inv_smul₀ hν, hfe, map_sum]`. Both sides reduce to the same expression. Establish `h0` using `a2 τ hfix (n + n') (Fin.append (fun k => ρ.e ((Fm.ex x hx i).nch.twI w) ((Fm.ex x hx i).nch.sd w) (a k)) (fun k => -b k)) (Fin.append g g') (by`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[Fin.sum_univ_add]`. Simplify using `only [Fin.append_left, Fin.append_right, neg_smul, Finset.sum_neg_distrib]`. Rewrite using `[hsum, hb, add_neg_cancel])`. Rewrite `h0` using `[Fin.sum_univ_add]`. Simplify using `only [Fin.append_left, Fin.append_right, map_neg, neg_smul, Finset.sum_neg_distrib] at h0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨c, hc, ?_⟩` and prove the remaining obligations. Rewrite using `[hsum, ← hbc]`. Conclude with `add_neg_eq_zero.1 h0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem expConj_alt : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.Published.RayClassFieldSt → GlobalTheory.SerStd.SeriesRatS → _root_.GlobalTheory.BigOn.Exp.TwistConditions fun Fm x hx i p w j => ∀ (ρ : Setup (Fm.D x i).ntw) (hρ : ρ.Good) (ν : ℂ),
   RealPin p.R p.cG ρ → ρ.LevelOf (Fm.D x i).nexp →

@@ -49,14 +49,14 @@ noncomputable def brauerInvZ : cohomology (galUnitsZ K Ω) 2 →+ QZ :=
   (brauerInv K Ω).comp (cohomologyULiftIntAddEquiv (galUnits.{0} K Ω) 2).symm.toAddMonoidHom
 
 /- English proof (translation)
-The claim follows from `congrArg (brauerInv K Ω) ((cohomologyULiftIntAddEquiv (galUnits.{0} K Ω) 2).symm_apply_apply x)`.
+A detailed English derivation is pending.
 -/
 theorem brauerInvZ_cohomologyULiftIntAddEquiv (x : galoisBrauerGroup K Ω) :
     brauerInvZ K Ω (cohomologyULiftIntAddEquiv (galUnits.{0} K Ω) 2 x) = brauerInv K Ω x :=
   congrArg (brauerInv K Ω) ((cohomologyULiftIntAddEquiv (galUnits.{0} K Ω) 2).symm_apply_apply x)
 
 /- English proof (translation)
-The claim follows from `(brauerInv_bijective K Ω).comp (cohomologyULiftIntAddEquiv (galUnits.{0} K Ω) 2).symm.bijective`.
+A detailed English derivation is pending.
 -/
 theorem brauerInvZ_bijective : Function.Bijective (brauerInvZ K Ω) :=
   (brauerInv_bijective K Ω).comp (cohomologyULiftIntAddEquiv (galUnits.{0} K Ω) 2).symm.bijective

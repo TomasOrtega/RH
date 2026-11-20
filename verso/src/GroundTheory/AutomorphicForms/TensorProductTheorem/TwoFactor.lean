@@ -42,7 +42,7 @@ def tensorForm {V₁ V₂ : Type*} [AddCommGroup V₁] [Module ℂ V₁] [AddCom
   TensorProduct.lid ℂ ℂ ∘ₗ TensorProduct.map φ ψ
 
 /- English proof (translation)
-Simplify using `[tensorForm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tensorForm_tmul {V₁ V₂ : Type*} [AddCommGroup V₁] [Module ℂ V₁] [AddCommGroup V₂]
     [Module ℂ V₂] (φ : Dual ℂ V₁) (ψ : Dual ℂ V₂) (x : V₁) (y : V₂) :
@@ -50,111 +50,89 @@ theorem tensorForm_tmul {V₁ V₂ : Type*} [AddCommGroup V₁] [Module ℂ V₁
   simp [tensorForm]
 
 /- English proof (translation)
-Use `haveI := hirr`. Use `set P := prodRep ρ₁ ρ₂ hcomm`. Use `set W := LinearMap.range (e₁ * e₂)`. Establish `hE1 : ∀ w ∈ W, e₁ w = w`. Introduce and unpack `_ ⟨x, rfl⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Use `show e₁ (e₁ (e₂ x)) = e₁ (e₂ x)`. Conclude with `he₁.idem _`. Establish `hE2 : ∀ w ∈ W, e₂ w = w`. Introduce and unpack `_ ⟨x, rfl⟩`. Use `show e₂ (e₁ (e₂ x)) = e₁ (e₂ x)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← Module.End.mul_apply e₂ e₁, ← hee, Module.End.mul_apply, he₂.idem]`. Establish `hEw : ∀ w ∈ W, (e₁ * e₂) w = w` using `fun w hw => by show e₁ (e₂ w) = w`. Rewrite using `[hE2 w hw, hE1 w hw]`. Establish `hEidem : ∀ v, (e₁ * e₂) ((e₁ * e₂) v) = (e₁ * e₂) v` using `fun v => hEw _ ⟨v, rfl⟩`. Set `sub₁ : Subrepresentation P → Subrepresentation ρ₁` to `fun Y => ⟨Y.toSubmodule, fun a y hy => by`.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `Y.apply_mem_toSubmodule (a, 1) hy` as an intermediate fact. Simplify `this⟩` using `[P, prodRep_apply]`. Set `sub₂ : Subrepresentation P → Subrepresentation ρ₂` to `fun Y => ⟨Y.toSubmodule, fun b y hy => by`. Use `Y.apply_mem_toSubmodule (1, b) hy` as an intermediate fact. Simplify `this⟩` using `[P, prodRep_apply]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hE : IsWinProj P (e₁ * e₂)` using `⟨hEidem, fun Y y hy => he₁.mem (sub₁ Y) _ (he₂.mem (sub₂ Y) _ hy)⟩`. Set `T₁ : M₁ → End ℂ W` to `fun a => winOp P (e₁ * e₂) (a, 1)`. Set `T₂ : M₂ → End ℂ W` to `fun b => winOp P (e₁ * e₂) (1, b)`. Establish `hT₁ : ∀ a (w : W), (T₁ a w : V) = e₁ (ρ₁ a w)` using `fun a w => by show e₁ (e₂ (ρ₁ a (ρ₂ 1 w))) = _`. Rewrite using `[map_one, Module.End.one_apply, ← Module.End.mul_apply e₂, he₂₁, Module.End.mul_apply, hE2 _ w.2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hT₂ : ∀ b (w : W), (T₂ b w : V) = e₂ (ρ₂ b w)` using `fun b w => by show e₁ (e₂ (ρ₁ 1 (ρ₂ b w))) = _`. Rewrite using `[map_one, Module.End.one_apply, ← Module.End.mul_apply e₁ e₂, hee, Module.End.mul_apply, ← Module.End.mul_apply e₁ (ρ₂ b), he₁₂, Module.End.mul_apply, hE1 _ w.2]`. Establish `hT₁₂ : ∀ a b, T₁ a * T₂ b = winOp P (e₁ * e₂) (a, b)` using `fun a b => by`. Use extensionality with `w`. Use `show (T₁ a (T₂ b w) : V) = e₁ (e₂ (ρ₁ a (ρ₂ b w)))`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hT₁, hT₂, ← Module.End.mul_apply e₂ (ρ₁ a), he₂₁, Module.End.mul_apply]`. Establish `hT₂₁ : ∀ a b, T₂ b * T₁ a = winOp P (e₁ * e₂) (a, b)` using `fun a b => by`. Use extensionality with `w`. Use `show (T₂ b (T₁ a w) : V) = e₁ (e₂ (ρ₁ a (ρ₂ b w)))`. Rewrite using `[hT₂, hT₁]`.
+Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `show e₂ (ρ₂ b (e₁ (ρ₁ a w))) = e₁ (e₂ (ρ₁ a (ρ₂ b w)))`. Rewrite using `[← Module.End.mul_apply (ρ₂ b) e₁, ← he₁₂, Module.End.mul_apply, ← Module.End.mul_apply e₂ e₁, ← hee, Module.End.mul_apply, ← Module.End.mul_apply (ρ₂ b) (ρ₁ a), ← hcomm, Module.End.mul_apply]`. Use `set Tp : Bool → Set (End ℂ W) := fun i => if i then range T₁ else range T₂`. Establish `hcommTp : ∀ i j, i ≠ j → ∀ s ∈ Tp i, ∀ t ∈ Tp j, Commute s t`. Introduce `i j hij s hs t ht`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Apply the tactic sequence `cases i <;> cases j <;> simp only [Tp, if_true, if_false] at hs ht`. Conclude with `absurd rfl hij`. Take `⟨b, rfl⟩` from `hs`. Take `⟨a, rfl⟩` from `ht`. Conclude with `(hT₂₁ a b).trans (hT₁₂ a b).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨a, rfl⟩` from `hs`. Take `⟨b, rfl⟩` from `ht`. Conclude with `(hT₁₂ a b).trans (hT₂₁ a b).symm`. Conclude with `absurd rfl hij`. Establish `hsimple : IsSimpleUnder (⋃ i, Tp i)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `h0` using `isSimpleUnder_winOps hE hne`. Use `⟨h0.1, fun p hp => h0.2 p ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨a, b⟩, rfl⟩`. Establish `hmem : winOp P (e₁ * e₂) (a, b) ∈ Algebra.adjoin ℂ (⋃ i, Tp i)`. Rewrite using `[← hT₁₂]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `Subalgebra.mul_mem _ (Algebra.subset_adjoin ?_) (Algebra.subset_adjoin ?_)` and prove the remaining obligations. Conclude with `mem_iUnion.2 ⟨true, by simp [Tp]⟩`. Conclude with `mem_iUnion.2 ⟨false, by simp [Tp]⟩`. Conclude with `IsStable.adjoin hp _ hmem`. Establish `hvanish` using `fun i (N : Submodule ℂ W) (hN : N ≠ ⊥) (hNs : IsStable (Tp i) N) (a : End ℂ W) (ha : a ∈ Algebra.adjoin ℂ (Tp i)) (h0 : ∀ x ∈ N, a x = 0) => eq_zero_of_place hsimple hcommTp i hN hNs ha h0`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Nontrivial W` using `Submodule.nontrivial_iff_ne_bot.2 hne`. Establish `hdata` using `fun i => exists_rankOne_simple (Tp i)`. Use `choose N hNst hN0 hNsimple p hp n hnN hn0 hpn hpN using hdata`. Establish `hpp : ∀ i, p i * p i = p i`. Introduce `i`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← sub_eq_zero]`. Use `hvanish i (N i) (hN0 i) (hNst i) _ (Subalgebra.sub_mem _ (Subalgebra.mul_mem _ (hp i) (hp i)) (hp i)) fun x hx => ?_` and prove the remaining obligations. Take `⟨d, hd⟩` from `hpN i x hx`. Rewrite using `[LinearMap.sub_apply, Module.End.mul_apply, hd, map_smul, hpn i, sub_self]`. Establish `hcex : ∀ i, ∀ t ∈ Tp i, ∃ c : ℂ, p i (t (n i)) = c • n i` using `fun i t ht => hpN i _ (hNst i t ht (n i) (hnN i))`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hTpT : ∀ i, ∀ t ∈ Tp i, ∀ c : ℂ, p i (t (n i)) = c • n i → p i * t * p i = c • p i`. Introduce `i t ht c hc`. Rewrite using `[← sub_eq_zero]`. Use `hvanish i (N i) (hN0 i) (hNst i) _ (Subalgebra.sub_mem _ (Subalgebra.mul_mem _ (Subalgebra.mul_mem _ (hp i) (Algebra.subset_adjoin ht)) (hp i)) (Subalgebra.smul_mem _ (hp i) _)) fun y hy => ?_` and prove the remaining obligations. Take `⟨d, hd⟩` from `hpN i y hy`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Rewrite using `[LinearMap.sub_apply, Module.End.mul_apply, Module.End.mul_apply, hd, map_smul, map_smul, hc, LinearMap.smul_apply, hd, smul_comm, sub_self]`. Establish `hcommp : Commute (p true) (p false)` using `commute_adjoin hcommTp (by decide) (hp true) (hp false)`. Establish `hT₁mem : ∀ a, T₁ a ∈ Tp true` using `fun a => by simp [Tp]`. Establish `hT₂mem : ∀ b, T₂ b ∈ Tp false` using `fun b => by simp [Tp]`. Use `choose c₁ hc₁ using fun a => hcex true (T₁ a) (hT₁mem a)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Use `choose c₂ hc₂ using fun b => hcex false (T₂ b) (hT₂mem b)`. Establish `hT₁one : T₁ 1 = 1`. Use extensionality with `w`. Rewrite using `[hT₁, map_one, Module.End.one_apply, hE1 _ w.2]`. Both sides reduce to the same expression.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hT₂one : T₂ 1 = 1`. Use extensionality with `w`. Rewrite using `[hT₂, map_one, Module.End.one_apply, hE2 _ w.2]`. Both sides reduce to the same expression. Establish `hc₁one : c₁ 1 = 1`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `hc₁ 1`. Rewrite `h1` using `[hT₁one, Module.End.one_apply, hpn]`. Establish `h2 : (c₁ 1 - 1) • n true = 0` using `by rw [sub_smul, ← h1, one_smul, sub_self]`. Break down `smul_eq_zero.1 h2 with h | h` into its components or cases. Conclude with `sub_eq_zero.1 h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `absurd h (hn0 true)`. Establish `hc₂one : c₂ 1 = 1`. Establish `h1` using `hc₂ 1`. Rewrite `h1` using `[hT₂one, Module.End.one_apply, hpn]`. Establish `h2 : (c₂ 1 - 1) • n false = 0` using `by rw [sub_smul, ← h1, one_smul, sub_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Break down `smul_eq_zero.1 h2 with h | h` into its components or cases. Conclude with `sub_eq_zero.1 h`. Conclude with `absurd h (hn0 false)`. Choose the witnesses or unpack the hypotheses as in `⟨x₁, hx₁⟩ : ∃ y ∈ (⊤ : Submodule ℂ W), p true y ≠ 0 := by`. Assume the negation of the conclusion as `hcon`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push Not at hcon`. Use `hvanish true ⊤ top_ne_bot (fun _ _ _ _ => trivial) (p true) (hp true) fun x _ => hcon x trivial` as an intermediate fact. Apply `hn0 true` to reduce the goal to its premises. Rewrite using `[← hpn true, this, LinearMap.zero_apply]`. Use `set y₁ := p true x₁`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hy₁ : p true y₁ = y₁` using `by show p true (p true x₁) = p true x₁`. Rewrite using `[← Module.End.mul_apply, hpp]`. Set `Y : Submodule ℂ W` to `LinearMap.ker (p true - 1)`. Establish `hY : y₁ ∈ Y`. Rewrite using `[LinearMap.mem_ker, LinearMap.sub_apply, hy₁, Module.End.one_apply, sub_self]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hY0 : Y ≠ ⊥` using `fun h => hx₁.2 (by`. Establish `: y₁ ∈ (⊥ : Submodule ℂ W)` using `h ▸ hY`. Simplify using `using this)`. Establish `hYs : IsStable (Tp false) Y`. Introduce `t ht y hy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hy`, the goal using `[LinearMap.mem_ker, LinearMap.sub_apply, Module.End.one_apply, sub_eq_zero]`. Establish `hct : Commute (p true) t` using `commute_adjoin hcommTp (by decide) (hp true) (Algebra.subset_adjoin ht)`. Rewrite using `[← Module.End.mul_apply, hct.eq, Module.End.mul_apply, hy]`. Choose the witnesses or unpack the hypotheses as in `⟨y₂, hy₂Y, hy₂⟩ : ∃ y ∈ Y, p false y ≠ 0 := by`. Assume the negation of the conclusion as `hcon`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push Not at hcon`. Use `hvanish false Y hY0 hYs (p false) (hp false) hcon` as an intermediate fact. Apply `hn0 false` to reduce the goal to its premises. Rewrite using `[← hpn false, this, LinearMap.zero_apply]`. Use `set xs := p false y₂`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hxs0 : xs ≠ 0` using `hy₂`. Establish `hxs2 : p false xs = xs` using `by show p false (p false y₂) = p false y₂`. Rewrite using `[← Module.End.mul_apply, hpp]`. Establish `hxs1 : p true xs = xs`. Establish `h` using `hy₂Y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[LinearMap.mem_ker, LinearMap.sub_apply, Module.End.one_apply, sub_eq_zero]`. Use `show p true (p false y₂) = p false y₂`. Rewrite using `[← Module.End.mul_apply, hcommp.eq, Module.End.mul_apply, h]`. Choose the witnesses or unpack the hypotheses as in `⟨φ₀, hφ₀⟩ : ∃ φ : Dual ℂ W, φ xs ≠ 0 := by`. Assume the negation of the conclusion as `hcon`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push Not at hcon`. Conclude with `hxs0 ((Module.forall_dual_apply_eq_zero_iff ℂ xs).1 hcon)`. Use `set φ : Dual ℂ W := (φ₀ xs)⁻¹ • (φ₀ ∘ₗ p true ∘ₗ p false)`. Establish `hφ1 : φ xs = 1`. Simplify using `[φ, hxs2, hxs1, hφ₀]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hφp1 : ∀ w, φ (p true w) = φ w` using `fun w => by`. Simplify using `only [φ, LinearMap.smul_apply, LinearMap.comp_apply]`. Rewrite using `[← Module.End.mul_apply (p false), ← hcommp.eq, Module.End.mul_apply, ← Module.End.mul_apply (p true) (p true), hpp]`. Establish `hφp2 : ∀ w, φ (p false w) = φ w` using `fun w => by`. Simplify using `only [φ, LinearMap.smul_apply, LinearMap.comp_apply]`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Module.End.mul_apply (p false) (p false), hpp]`. Establish `hcoefV : ∀ a b, φ (winOp P (e₁ * e₂) (a, b) xs) = c₁ a * c₂ b`. Introduce `a b`. Rewrite using `[← hT₁₂, Module.End.mul_apply]`. Use `set z := T₂ b xs`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hz1 : p true z = z`. Establish `hct : Commute (p true) (T₂ b)` using `commute_adjoin hcommTp (by decide) (hp true) (Algebra.subset_adjoin (hT₂mem b))`. Use `show p true (T₂ b xs) = T₂ b xs`. Rewrite using `[← Module.End.mul_apply, hct.eq, Module.End.mul_apply, hxs1]`. Establish `h1 : φ (T₁ a z) = c₁ a * φ z`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hφp1, ← hz1]`. Use `congrArg (fun F : End ℂ W => φ (F z)) (hTpT true (T₁ a) (hT₁mem a) (c₁ a) (hc₁ a))` as an intermediate fact. Simplify using `only [Module.End.mul_apply, LinearMap.smul_apply, map_smul, smul_eq_mul] at this`. Rewrite using `[this, hz1]`. Establish `h2 : φ z = c₂ b`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hφp2]`. Use `congrArg (fun F : End ℂ W => φ (F xs)) (hTpT false (T₂ b) (hT₂mem b) (c₂ b) (hc₂ b))` as an intermediate fact. Simplify using `only [Module.End.mul_apply, LinearMap.smul_apply, map_smul, smul_eq_mul, hxs2] at this`. Rewrite using `[this, hφ1, mul_one]`. Rewrite using `[h1, h2]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `set N₁ : Submodule ℂ V := (N true).map W.subtype`. Use `set N₂ : Submodule ℂ V := (N false).map W.subtype`. Establish `hN₁W : N₁ ≤ W` using `by rintro _ ⟨w, -, rfl⟩; exact w.2`. Establish `hN₂W : N₂ ≤ W` using `by rintro _ ⟨w, -, rfl⟩; exact w.2`. Establish `hN₁e : N₁ ≤ LinearMap.range e₁` using `fun x hx => ⟨x, hE1 x (hN₁W hx)⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hN₂e : N₂ ≤ LinearMap.range e₂` using `fun x hx => ⟨x, hE2 x (hN₂W hx)⟩`. Establish `hN₁st : ∀ a, ∀ x ∈ N₁, e₁ (ρ₁ a x) ∈ N₁`. Introduce and unpack `a _ ⟨w, hw, rfl⟩`. Conclude with `⟨T₁ a w, hNst true _ (hT₁mem a) w hw, hT₁ a w⟩`. Establish `hN₂st : ∀ b, ∀ x ∈ N₂, e₂ (ρ₂ b x) ∈ N₂`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `b _ ⟨w, hw, rfl⟩`. Conclude with `⟨T₂ b w, hNst false _ (hT₂mem b) w hw, hT₂ b w⟩`. Establish `hN₁0 : N₁ ≠ ⊥` using `fun h => hn0 true (by`. Establish `: ((n true : W) : V) ∈ N₁` using `⟨n true, hnN true, rfl⟩`. Rewrite `this` using `[h, Submodule.mem_bot]`.
+Assume the negation of the conclusion and derive a contradiction. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `Subtype.ext this)`. Establish `hN₂0 : N₂ ≠ ⊥` using `fun h => hn0 false (by`. Establish `: ((n false : W) : V) ∈ N₂` using `⟨n false, hnN false, rfl⟩`. Rewrite `this` using `[h, Submodule.mem_bot]`. Conclude with `Subtype.ext this)`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hmin : ∀ i (M' : Submodule ℂ V), (∀ t ∈ Tp i, ∀ w : W, (w : V) ∈ M' → (t w : V) ∈ M') → M' ≤ (N i).map W.subtype → M' ≠ ⊥ → M' = (N i).map W.subtype`. Introduce `i M' hst hle hne'`. Use `set q : Submodule ℂ (N i) := (M'.comap W.subtype).comap (N i).subtype`. Establish `hq : IsStable (restrictSet (Tp i) (N i) (hNst i)) q`. Introduce and unpack `_ ⟨⟨t, ht⟩, rfl⟩ y hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hst t ht y hy`. Establish `hq0 : q ≠ ⊥`. Take `⟨u, hu, hu0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne'`. Take `⟨m, hm, rfl⟩` from `hle hu`. Introduce `h`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `: (⟨m, hm⟩ : N i) ∈ q` using `hu`. Rewrite `this` using `[h, Submodule.mem_bot]`. Establish `hm0 : m = 0` using `congrArg Subtype.val this`. Conclude with `hu0 (by simp [hm0])`. Establish `hqt` using `((hNsimple i).2 q hq).resolve_left hq0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_antisymm hle ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨m, hm, rfl⟩`. Establish `: (⟨m, hm⟩ : N i) ∈ q` using `hqt ▸ Submodule.mem_top`. Conclude with `this`. Establish `hN₁min : ∀ N' : Submodule ℂ V, N' ≤ N₁ → N' ≠ ⊥ → (∀ a, ∀ x ∈ N', e₁ (ρ₁ a x) ∈ N') → N' = N₁` using `fun N' hle hne' hst => hmin true N' (fun t ht w hw => by`.
-
-Simplify using `only [Tp, if_true] at ht`. Take `⟨a, rfl⟩` from `ht`. Rewrite using `[hT₁]`. Conclude with `hst a w hw) hle hne'`. Establish `hN₂min : ∀ N' : Submodule ℂ V, N' ≤ N₂ → N' ≠ ⊥ → (∀ b, ∀ x ∈ N', e₂ (ρ₂ b x) ∈ N') → N' = N₂` using `fun N' hle hne' hst => hmin false N' (fun t ht w hw => by`.
-
-Simplify using `only [Tp, if_false, Bool.false_eq_true] at ht`. Take `⟨b, rfl⟩` from `ht`. Rewrite using `[hT₂]`. Conclude with `hst b w hw) hle hne'`. Establish `hπ₁` using `isIrreducible_mGenQuotRep he₁ hN₁e hN₁st hN₁0 hN₁min`.
-
-Establish `hπ₂` using `isIrreducible_mGenQuotRep he₂ hN₂e hN₂st hN₂0 hN₂min`. Use `⟨N₁, N₂, hN₁W, hN₂W, hN₁0, hN₂0, hN₁st, hN₂st, hπ₁, hπ₂, fun hschur => ?_⟩` and prove the remaining obligations. Use `haveI := hπ₁`. Use `haveI := hπ₂`. Use `haveI := isIrreducible_outerTensor hπ₁ hπ₂ hschur`.
-
-Choose the witnesses or unpack the hypotheses as in `⟨ψ₁, hψ₁⟩ : ∃ ψ : Dual ℂ W, ψ (n true) = 1 := by`. Choose the witnesses or unpack the hypotheses as in `⟨f, hf⟩ : ∃ f : Dual ℂ W, f (n true) ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Conclude with `hn0 true ((Module.forall_dual_apply_eq_zero_iff ℂ _).1 hcon)`.
-
-Conclude with `⟨(f (n true))⁻¹ • f, by simp [hf]⟩`. Choose the witnesses or unpack the hypotheses as in `⟨ψ₂, hψ₂⟩ : ∃ ψ : Dual ℂ W, ψ (n false) = 1 := by`. Choose the witnesses or unpack the hypotheses as in `⟨f, hf⟩ : ∃ f : Dual ℂ W, f (n false) ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`.
-
-Conclude with `hn0 false ((Module.forall_dual_apply_eq_zero_iff ℂ _).1 hcon)`. Conclude with `⟨(f (n false))⁻¹ • f, by simp [hf]⟩`. Set `E' : V →ₗ[ℂ] W` to `LinearMap.codRestrict W (e₁ * e₂) fun v => ⟨v, rfl⟩`. Establish `hE' : ∀ w : W, E' w = w` using `fun w => Subtype.ext (hEw _ w.2)`. Use `set l₁ : Dual ℂ V := ψ₁ ∘ₗ p true ∘ₗ E'`.
-
-Use `set l₂ : Dual ℂ V := ψ₂ ∘ₗ p false ∘ₗ E'`. Set `n₁ : N₁` to `⟨(n true : V), ⟨n true, hnN true, rfl⟩⟩`. Set `n₂ : N₂` to `⟨(n false : V), ⟨n false, hnN false, rfl⟩⟩`. Establish `hloc₁ : ∀ a, mGenQuotForm ρ₁ e₁ N₁ l₁ (mGenQuotRep ρ₁ e₁ N₁ a (mGenQuotMk ρ₁ e₁ N₁ n₁)) = c₁ a`. Introduce `a`.
-
-Rewrite using `[mGenQuotForm_apply]`. Establish `: E' (e₁ (ρ₁ a n₁)) = T₁ a (n true)`. Rewrite using `[← hT₁]`. Conclude with `hE' (T₁ a (n true))`. Simplify using `only [l₁, LinearMap.comp_apply]`.
-
-Rewrite using `[this, hc₁, map_smul, hψ₁, smul_eq_mul, mul_one]`. Establish `hloc₂ : ∀ b, mGenQuotForm ρ₂ e₂ N₂ l₂ (mGenQuotRep ρ₂ e₂ N₂ b (mGenQuotMk ρ₂ e₂ N₂ n₂)) = c₂ b`. Introduce `b`. Rewrite using `[mGenQuotForm_apply]`. Establish `: E' (e₂ (ρ₂ b n₂)) = T₂ b (n false)`.
-
-Rewrite using `[← hT₂]`. Conclude with `hE' (T₂ b (n false))`. Simplify using `only [l₂, LinearMap.comp_apply]`. Rewrite using `[this, hc₂, map_smul, hψ₂, smul_eq_mul, mul_one]`. Use `nonempty_equiv_of_matrixCoeff_eq' (v := (xs : V)) (l := φ ∘ₗ E') (w := mGenQuotMk ρ₁ e₁ N₁ n₁ ⊗ₜ mGenQuotMk ρ₂ e₂ N₂ n₂) (m := tensorForm (mGenQuotForm ρ₁ e₁ N₁ l₁) (mGenQuotForm ρ₂ e₂ N₂ l₂)) (fun ⟨a, b⟩ => ?_) ⟨1, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[outerTensor_tmul, tensorForm_tmul, hloc₁, hloc₂, LinearMap.comp_apply]`. Rewrite using `[← hcoefV a b]`. Both sides reduce to the same expression. Rewrite using `[LinearMap.comp_apply, map_one, Module.End.one_apply, hE', hφ1]`. Conclude with `one_ne_zero`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_equiv_outerTensor (hirr : (prodRep ρ₁ ρ₂ hcomm).IsIrreducible)
     (he₁ : IsWinProj ρ₁ e₁) (he₂ : IsWinProj ρ₂ e₂) (he₁₂ : ∀ b, e₁ * ρ₂ b = ρ₂ b * e₁)

@@ -23,9 +23,9 @@ namespace GlobalTheory.AbLaw
 set_option backward.isDefEq.respectTransparency false in
 
 /- English proof (translation)
-Establish `: QuasiIso (0 : C ⟶ C)` using `⟨fun p => (quasiIsoAt_iff_exactAt _ p (hC p)).2 (hC p)⟩`. Establish `h` using `GlobalTheory.quasiIso_extendScalars_of_flat (0 : C ⟶ C) hflat hflat n hn hn g`. Rewrite `h` using `[Functor.map_zero]`. Introduce `p`. Establish `h'` using `(quasiIsoAt_iff_isIso_homologyMap _ p).1 (h.1 p)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h'` using `[HomologicalComplex.homologyMap_zero]`. Rewrite using `[HomologicalComplex.exactAt_iff_isZero_homology]`. Conclude with `(isIsoZero_iff_source_target_isZero _ _).1 h' |>.1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem acyclic_extendScalars_of_flat {R S : Type} [CommRing R] [CommRing S] (g : R →+* S)
     (C : CochainComplex (ModuleCat.{0} R) ℕ) (n : ℕ) (hn : ∀ p, n < p → IsZero (C.X p))
@@ -41,7 +41,7 @@ theorem acyclic_extendScalars_of_flat {R S : Type} [CommRing R] [CommRing S] (g 
   exact (isIsoZero_iff_source_target_isZero _ _).1 h' |>.1
 
 /- English proof (translation)
-Rewrite using `[← Module.annihilator_eq_top_iff (R := R)]`. Assume the negation of the conclusion as `hne`. Take `⟨P, hP, hle⟩` from `Ideal.exists_le_maximal _ hne`. Take `⟨r, hr, hz⟩` from `h P hP`. Conclude with `hr (hle (Module.mem_annihilator.2 hz))`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem subsingleton_of_forall_isMaximal_smul_eq_zero {R M : Type} [CommRing R] [AddCommGroup M]
     [Module R M] (h : ∀ P : Ideal R, P.IsMaximal → ∃ r, r ∉ P ∧ ∀ z : M, r • z = 0) :
@@ -53,15 +53,13 @@ theorem subsingleton_of_forall_isMaximal_smul_eq_zero {R M : Type} [CommRing R] 
   exact hr (hle (Module.mem_annihilator.2 hz))
 
 /- English proof (translation)
-Introduce `R _ _ Y f hf hproj F hF`. Use `isProper_of_isProjBy R Y f hproj` as an intermediate fact. Establish `: Y.IsSeparated`. Rewrite using `[Scheme.isSeparated_iff, ← terminal.comp_from f]`. Use `infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hI : ∀ {κ : Type} {D : κ → Y.Opens}, (∀ i, IsAffineOpen (D i)) → ∀ s : Finset κ, s.Nonempty → IsAffineOpen (⨅ i ∈ s, D i)` using `fun hD s hs => IsAffineOpen.biInf _ (Finset.finite_toSet _) (by exact_mod_cast hs) fun i _ => hD i`. Use `⟨fun H κ _ _ D hD hc p => ?_, fun H K _ χ Y₀ π f₀ h κ _ _ D hD hc p => ?_⟩` and prove the remaining obligations. Rewrite using `[HomologicalComplex.exactAt_iff_isZero_homology, ModuleCat.isZero_iff_subsingleton]`. Use `subsingleton_of_forall_isMaximal_smul_eq_zero (R := R) fun P hP => ?_` and prove the remaining obligations. Take `⟨K, _, χ, rfl, HK⟩` from `H P hP`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h'` using `IsPullback.of_hasPullback f (Spec.map (CommRingCat.ofHom χ))`. Establish `hac` using `HK _ _ _ h' κ (fun i => pullback.fst f (Spec.map (CommRingCat.ofHom χ)) ⁻¹ᵁ D i) (fun i => isAffineOpen_preimage_of_isPullback h' (hD i)) (by rw [← Scheme.Hom.preimage_iSup, hc]; rfl)`. Conclude with `GlobalTheory.exists_smul_homology_eq_zero_of_acyclic_fibre R K χ _ (Fintype.card κ) (fun p hp => isZero_cechLB_X _ _ _ hp.le) (flat_cechLB_X f hF (hI hD)) (cechLB_homology_finite_of_affine_cover R Y f F κ D hF inferInstance hproj hD hc) (fun q => (hac q).of_iso (cechLBBaseChangeI …`. Take `⟨L, -, m, s, hc', hs⟩` from `hproj`. Establish `hD' : ∀ i, IsAffineOpen (nonzeroLocus (s i))` using `fun i => (hs i).1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hac` using `acyclic_extendScalars_of_flat χ _ (Fintype.card (Fin (m + 1))) (fun p hp => isZero_cechLB_X _ _ _ hp.le) (flat_cechLB_X f hF (hI hD')) (H _ _ hD' hc')`. Establish `h₁` using `(hac p).of_iso (cechLBBaseChangeIso hF h (hI hD'))`. Establish `: IsSeparated f₀` using `MorphismProperty.of_isPullback (P := @IsSeparated) h inferInstance`. Take `⟨e⟩` from `cechLB_homology_equiv_of_affine_covers K Y₀ f₀ (F.pull π) κ D _ (fun i => π ⁻¹ᵁ nonzeroLocus (s i)) (LB.isLB_pull hF π) inferInstance hD hc (fun i => isAffineOpen_preimage_of_isPullback h (hD' i)) (by rw [← Scheme.Hom.preimage_iSup, hc']; rfl) p`. Rewrite `h₁`, the goal using `[HomologicalComplex.exactAt_iff_isZero_homology, ModuleCat.isZero_iff_subsingleton]`.
-
-Conclude with `e.subsingleton`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cechLB_acyclic_iff_fibres : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (Y : Scheme.{0}) (f : Y ⟶ Spec (CommRingCat.of R)), Flat f → IsProjBy f → ∀ F : LB Y, F.IsLB → ((∀ P : Ideal R, P.IsMaximal → ∃ (K : Type) (_ : Field K) (χ : R →+* K), RingHom.ker χ = P ∧ ∀ (Y₀ : Scheme.{0}) (π : Y₀ ⟶ Y) (f₀ : Y₀ ⟶ Spec (CommRingCat.of K)), IsPullback π f₀ f (Spec.map (CommRingCat.ofHom χ)) → (∀ (κ : Type) [LinearOrder κ] [Fintype κ] (D : κ → (Y₀).Opens), (∀ i, IsAffineOpen (D i)) → ⨆ i, D i = ⊤ → (cechLB (f₀) (F.pull π) D).Acyclic)) → (∀ (κ : Type) [LinearOrder κ] [Fintype κ] (D : κ → (Y).Opens), (∀ i, IsAffineOpen (D i)) → ⨆ i, D i = ⊤ → (cechLB (f) (F) D).Acyclic)) ∧ ((∀ (κ : Type) [LinearOrder κ] [Fintype κ] (D : κ → (Y).Opens), (∀ i, IsAffineOpen (D i)) → ⨆ i, D i = ⊤ → (cechLB (f) (F) D).Acyclic) → ∀ (K : Type) [Field K] (χ : R →+* K), ∀ (Y₀ : Scheme.{0}) (π : Y₀ ⟶ Y) (f₀ : Y₀ ⟶ Spec (CommRingCat.of K)), IsPullback π f₀ f (Spec.map (CommRingCat.ofHom χ)) → (∀ (κ : Type) [LinearOrder κ] [Fintype κ] (D : κ → (Y₀).Opens), (∀ i, IsAffineOpen (D i)) → ⨆ i, D i = ⊤ → (cechLB (f₀) (F.pull π) D).Acyclic)) := by
   intro R _ _ Y f hf hproj F hF

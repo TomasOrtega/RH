@@ -39,7 +39,7 @@ def HessRel {e : ℕ} {M : Man e} {k : Type} [CommRing k] {X : Scheme.{0}} {p : 
       ReciprocityTheory.L2DbarEstimates.cHess e (fun v => ((2 * (P (ε σ)).φ (π σ y) (π σ (c.e.symm v)) : ℝ) : ℂ)) (c.e y)
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 theorem hessRel_fnB {e : ℕ} {M : Man e} {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k}
     (ε : (k →+* ℂ) → Fin (M.n + 1)) (π : ∀ σ, CxPts p σ → M.X (ε σ)) (u : M.Fun) (hu hc) :

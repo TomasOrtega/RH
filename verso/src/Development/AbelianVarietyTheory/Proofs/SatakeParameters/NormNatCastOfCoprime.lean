@@ -11,15 +11,15 @@ open NumberField
 namespace GlobalTheory.CoprimeUnitMultipliers
 
 /- English proof (translation)
-Take `⟨S, rfl⟩` from `hM`. Establish `key : ∀ T : Finset V, (∀ x ∈ T, ∃ s, U s ∧ s • x ∈ N) → ∃ s, U s ∧ ∀ x ∈ T, s • x ∈ N`. Introduce `T`. Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => intro _; exact ⟨1, h1, by simp⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `insert a T _ ih`. Introduce `hT`. Take `⟨s, hs, hsT⟩` from `ih fun x hx => hT x (Finset.mem_insert_of_mem hx)`. Take `⟨t, ht, hta⟩` from `hT a (Finset.mem_insert_self a T)`. Use `⟨s * t, hm _ _ hs ht, fun x hx => ?_⟩` and prove the remaining obligations.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Break down `Finset.mem_insert.1 hx with rfl | hx` into its components or cases. Rewrite using `[mul_smul]`. Conclude with `N.smul_mem _ hta`. Rewrite using `[mul_comm, mul_smul]`. Conclude with `N.smul_mem _ (hsT x hx)`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨s, hs, hS⟩` from `key S fun x hx => h x (Submodule.subset_span hx)`. Use `⟨s, hs, fun x hx => ?_⟩` and prove the remaining obligations. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact hS x hx`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `N.add_mem hx hy`. Consider the case `smul a x _ hx => rw [smul_comm]`. Conclude with `N.smul_mem _ hx`.
+A detailed English derivation is pending.
 -/
 theorem exists_common_smul {R V : Type*} [CommRing R] [AddCommGroup V] [Module R V]
     (U : R → Prop) (h1 : U 1) (hm : ∀ a b, U a → U b → U (a * b))
@@ -48,7 +48,7 @@ theorem exists_common_smul {R V : Type*} [CommRing R] [AddCommGroup V] [Module R
   | smul a x _ hx => rw [smul_comm]; exact N.smul_mem _ hx
 
 /- English proof (translation)
-Establish `h1 : (s : ℂ_[p]) = algebraMap ℚ_[p] ℂ_[p] (s : ℚ_[p])` using `by simp`. Rewrite using `[h1, norm_algebraMap']`. Conclude with `Padic.norm_natCast_eq_one_iff.2 h.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_natCast_of_coprime {p : ℕ} [Fact p.Prime] {s : ℕ} (h : Nat.Coprime s p) :
     ‖(s : ℂ_[p])‖ = 1 := by
@@ -57,29 +57,27 @@ theorem norm_natCast_of_coprime {p : ℕ} [Fact p.Prime] {s : ℕ} (h : Nat.Copr
   exact Padic.norm_natCast_eq_one_iff.2 h.symm
 
 /- English proof (translation)
-Establish `h1 : ‖ρ ((1 : 𝓞 E) : E)‖ = 1` using `by simp`. Establish `hm : ∀ a b : 𝓞 E, ‖ρ (a : E)‖ = 1 → ‖ρ (b : E)‖ = 1 → ‖ρ ((a * b : 𝓞 E) : E)‖ = 1`. Introduce `a b ha hb`. Rewrite `ha`, `hb`, the goal using `[RingOfIntegers.coe_eq_algebraMap]`. Rewrite using `[map_mul, map_mul, norm_mul, ha, hb, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hn : ∀ n : ℕ, Nat.Coprime n p → ‖ρ (((n : 𝓞 E)) : E)‖ = 1`. Introduce `n hn`. Rewrite using `[RingOfIntegers.coe_eq_algebraMap, map_natCast, map_natCast]`. Conclude with `norm_natCast_of_coprime hn`. Establish `hsm : ∀ {k : ℕ} (n : ℕ) (x : Fin k → E), (n : 𝓞 E) • x = (n : E) • x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k n x`. Rewrite using `[Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul]`. Take `⟨σ, hσ, hσL⟩` from `exists_common_smul (fun t : 𝓞 E => ‖ρ (t : E)‖ = 1) h1 hm L₁ (Submodule.span (𝓞 E) (Set.range P.transpose)) hfg (by`. Introduce `x hx`. Take `⟨t, ht, c, hc⟩` from `hP _ (hL x hx)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨t * s, hm _ _ ht (hn s hs), ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul, hsm, hc]`. Conclude with `Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩))`. Take `⟨σ', hσ', hσL'⟩` from `exists_common_smul (fun t : 𝓞 E => ‖ρ (t : E)‖ = 1) h1 hm (Submodule.span (𝓞 E) (Set.range P'.transpose)) L₁' (Submodule.fg_span (Set.finite_range _)) (by`. Introduce `x hx`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨a, rfl⟩` from `hx`. Take `⟨t, ht, hta⟩` from `hP' a`. Use `⟨s' * t, hm _ _ (hn s' hs') ht, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[mul_smul, hsm]`. Conclude with `hL' _ hta`. Consider the case `zero => exact ⟨1, h1, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨t, ht, htx⟩` from `hx`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨u, hu, huy⟩` from `hy`. Use `⟨t * u, hm _ _ ht hu, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Use `L₁'.add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `L₁'.smul_mem _ htx`. Rewrite using `[mul_smul]`. Conclude with `L₁'.smul_mem _ huy`. Consider the case `smul a x _ hx`. Take `⟨t, ht, htx⟩` from `hx`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `⟨t, ht, by rw [smul_comm]; exact L₁'.smul_mem _ htx⟩)`. Use `⟨σ, σ', hσ, hσ', fun a x hx => ?_, fun b => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun (𝓞 E)).1 (hσL x hx)`. Use `⟨c a, ?_⟩` and prove the remaining obligations. Establish `e1 : P.mulVec (fun i => (c i : E)) = (σ : E) • x`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Use `congrFun hc i` as an intermediate fact. Simplify using `only [Finset.sum_apply, Pi.smul_apply, Matrix.transpose_apply, Algebra.smul_def] at this`. Simplify using `only [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[RingOfIntegers.coe_eq_algebraMap σ, ← this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`. Establish `e2 : (fun i => (c i : E)) = (σ : E) • P⁻¹.mulVec x`. Rewrite using `[← Matrix.mulVec_smul, ← e1, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.2 hdet), Matrix.one_mulVec]`. Use `congrFun e2 a` as an intermediate fact. Simplify `this` using `[Matrix.mulVec, dotProduct]`.
-
-Use `hσL' _ (Submodule.subset_span ⟨b, rfl⟩)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, Matrix.transpose_apply, Algebra.smul_def]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem general {E : Type*} [Field E] {p : ℕ} [Fact p.Prime] (ρ : E →+* ℂ_[p]) {N N' : ℕ}
     (L L₁ : Submodule (𝓞 E) (Fin N → E)) (L' L₁' : Submodule (𝓞 E) (Fin N' → E))
@@ -156,7 +154,7 @@ theorem general {E : Type*} [Field E] {p : ℕ} [Fact p.Prime] (ρ : E →+* ℂ
     simp only [Pi.smul_apply, Matrix.transpose_apply, Algebra.smul_def]
 
 /- English proof (translation)
-Introduce `D p inst ρ N N' L L₁ L' L₁' P P' hfg h h' hP hP'`. Take `⟨s, hs, -, hL⟩` from `h`. Take `⟨s', hs', hL', -⟩` from `h'`. Conclude with `general ρ L L₁ L' L₁' P P' hfg s hs hL s' hs' hL' hP.1 hP.2.2 hP'.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_unit_multipliers : ∀ (D : Formalism.BasicNotions.D7) (p : ℕ) [inst : Fact (Nat.Prime p)] (ρ : (Formalism.BasicNotions.D7.host D).E →+* ℂ_[p]) (N N' : ℕ) (L L₁ : Submodule (NumberField.RingOfIntegers ((Formalism.BasicNotions.D7.host D).E)) (Fin N → (Formalism.BasicNotions.D7.host D).E)) (L' L₁' : Submodule (NumberField.RingOfIntegers ((Formalism.BasicNotions.D7.host D).E)) (Fin N' → (Formalism.BasicNotions.D7.host D).E)) (P : Matrix (Fin N) (Fin N) ((Formalism.BasicNotions.D7.host D).E)) (P' : Matrix (Fin N') (Fin N') ((Formalism.BasicNotions.D7.host D).E)), Submodule.FG L₁ → Formalism.MainNotions.TaylorLogMetric.EqAt D p L L₁ → Formalism.MainNotions.TaylorLogMetric.EqAt D p L' L₁' → Formalism.MainNotions.TaylorLogMetric.LocBasisW D (⇑ρ : (Formalism.BasicNotions.D7.host D).E → ℂ_[p]) L P → Formalism.MainNotions.TaylorLogMetric.LocBasisW D (⇑ρ : (Formalism.BasicNotions.D7.host D).E → ℂ_[p]) L' P' → ∃ (σ : NumberField.RingOfIntegers ((Formalism.BasicNotions.D7.host D).E)) (σ' : NumberField.RingOfIntegers ((Formalism.BasicNotions.D7.host D).E)), ‖(ρ : (Formalism.BasicNotions.D7.host D).E → ℂ_[p]) (↑σ : (Formalism.BasicNotions.D7.host D).E)‖ = (1 : ℝ) ∧ ‖(ρ : (Formalism.BasicNotions.D7.host D).E → ℂ_[p]) (↑σ' : (Formalism.BasicNotions.D7.host D).E)‖ = (1 : ℝ) ∧ (∀ (a : Fin N), ∀ x ∈ L₁, ∃ (o : NumberField.RingOfIntegers ((Formalism.BasicNotions.D7.host D).E)), (↑o : (Formalism.BasicNotions.D7.host D).E) = (↑σ : (Formalism.BasicNotions.D7.host D).E) * ∑ j : Fin N, P⁻¹ a j * x j) ∧ ∀ (b : Fin N'), (fun (i : Fin N') ↦ (↑σ' : (Formalism.BasicNotions.D7.host D).E) * P' i b) ∈ L₁' := by
   intro D p inst ρ N N' L L₁ L' L₁' P P' hfg h h' hP hP'

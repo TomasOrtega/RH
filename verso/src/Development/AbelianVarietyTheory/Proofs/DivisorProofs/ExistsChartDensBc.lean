@@ -16,15 +16,15 @@ set_option autoImplicit false
 namespace GlobalTheory.Mix
 
 /- English proof (translation)
-Introduce `k K _ _ ρ X G p q j hp τ D c z hz`. Establish `hm : ∀ w, (bcPt hp.w τ w).1 = w.1 ≫ j` using `fun _ => rfl`. Take `⟨c₀, hz₀, h, hx⟩` from `c.exists_baseChange hp hm hz`. Set `c'` to `c₀.restr (bcPt hp.w τ ⁻¹' c.e.source) (c.e.open_source.preimage (continuous_bcPt hp.w τ))`. Establish `H : ∀ w ∈ c'.e.source, bcPt hp.w τ w ∈ c.e.source ∧ c'.e w = c.e (bcPt hp.w τ w)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `w hw`. Rewrite `hw` using `[AlgChart.restr_source]`. Use `⟨hw.2, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `c₀.e w = _`. Use extensionality with `a`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. By extensionality, compare the relevant components.
 
-Rewrite using `[c.apply_eq _ hw.2, c₀.apply_eq _ hw.1, hx, ev_appLE_of_comp hm h _ (c₀.source_subset hw.1)]`. Use `⟨c', by rw [AlgChart.restr_source]; exact ⟨hz₀, hz⟩, fun w hw => ⟨(H w hw).1, (H w hw).2, fun L => ?_⟩⟩` and prove the remaining obligations. Establish `hw'` using `(H w hw).1`. Establish `key (N : MLine p (τ.comp ρ)) : c'.hess (N.bc hp.w τ).φ (pick (N.bc hp.w τ).φ.isLB w) w = c.hess N.φ (pick N.φ.isLB (bcPt hp.w τ w)) (bcPt hp.w τ w)`. Establish `hj` using `mem_of_mem_linComb (m := fun _ => bcPt hp.w τ w) (fun _ => rfl) (mem_pick (N.bc hp.w τ).φ.isLB w) PUnit.unit`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[c.hess_eq N.cInf hw' hj (mem_pick _ _), AlgChart.hess, AlgChart.hess, ← (H w hw).2, ReciprocityTheory.L2DbarEstimates.Y.cmpb_cHess_congr]`. Use `filter_upwards [c'.e.open_target.mem_nhds (c'.e.map_source hw)] with v hv`. Take `⟨h₁, h₂⟩` from `H _ (c'.e.map_target hv)`. Rewrite `h₂` using `[c'.e.right_inv hv]`. Establish `e₁ : c.e.symm v = bcPt hp.w τ (c'.e.symm v)` using `(congrArg c.e.symm h₂).trans (c.e.left_inv h₁)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e₁]`. Simplify using `[MLine.bc, Weight.linComb]`. Simplify using `only [dens, key]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_chart_dens_bc : ∀ (k K : Type) [CommRing k] [CommRing K] (ρ : k →+* K) (X G : Scheme.{0}) (p : X ⟶ Sp k) (q : G ⟶ Sp K) (j : G ⟶ X) (hp : IsPullback j q p (spMap ρ)) (τ : K →+* ℂ) (D : ℕ) (c : AlgChart p (τ.comp ρ) D) (z : CxPts q τ), bcPt hp.w τ z ∈ c.e.source → ∃ c' : AlgChart q τ D, z ∈ c'.e.source ∧ ∀ w ∈ c'.e.source, bcPt hp.w τ w ∈ c.e.source ∧ c'.e w = c.e (bcPt hp.w τ w) ∧ ∀ L : Fin D → MLine p (τ.comp ρ), dens (fun i => (L i).bc hp.w τ) c' w = dens L c (bcPt hp.w τ w) := by
   intro k K _ _ ρ X G p q j hp τ D c z hz

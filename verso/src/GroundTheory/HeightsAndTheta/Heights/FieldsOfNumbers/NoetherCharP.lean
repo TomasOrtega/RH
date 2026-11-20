@@ -13,59 +13,51 @@ set_option maxHeartbeats 800000 in
 set_option synthInstance.maxHeartbeats 200000 in
 
 /- English proof (translation)
-Use `set B := MvPolynomial (Fin s) k`. Use `set F := FractionRing B`. Establish `hp : p.Prime` using `Fact.out`. Establish `hinjBL : Function.Injective (algebraMap B L)`. Rewrite using `[IsScalarTower.algebraMap_eq B F L]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(algebraMap F L).injective.comp (IsFractionRing.injective B F)`. Establish `: CharP L p` using `charP_of_injective_ringHom (f := (algebraMap B L).comp MvPolynomial.C) (hinjBL.comp (MvPolynomial.C_injective (Fin s) k)) p`. Establish `: ExpChar (separableClosure F L) p` using `ExpChar.prime hp`. Establish `: IsPurelyInseparable (separableClosure F L) L` using `separableClosure.isPurelyInseparable F L`. Use `set e := IsPurelyInseparable.exponent (separableClosure F L) L`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `set q := p ^ e with hqdef`. Establish `hq : 0 < q` using `pow_pos hp.pos e`. Establish `hsepq : ∀ y : L, IsSeparable F (y ^ q)`. Introduce `y`. Rewrite using `[← IsPurelyInseparable.algebraMap_iterateFrobenius (separableClosure F L) p (le_refl e) y]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `mem_separableClosure_iff.mp (IsPurelyInseparable.iterateFrobenius (separableClosure F L) L p (le_refl e) y).2`. Set `: Algebra k L` to `((algebraMap B L).comp (algebraMap k B)).toAlgebra`. Establish `: IsScalarTower k B L` using `IsScalarTower.of_algebraMap_eq' rfl`. Use `set Ω := AlgebraicClosure L`. Establish `hinjBΩ : Function.Injective (algebraMap B Ω)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[IsScalarTower.algebraMap_eq B L Ω]`. Conclude with `(algebraMap L Ω).injective.comp hinjBL`. Set `b` to `Module.finBasis F L`. Set `g : Fin (Module.finrank F L) → F[X]` to `fun j => minpoly F (b j ^ q)`. Use `choose num den hden hnd using fun c : F => IsFractionRing.div_surjective (A := B) c`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Set `Tk : Finset k` to `Finset.univ.biUnion fun j => (Finset.range ((g j).natDegree + 1)).biUnion fun i => (num ((g j).coeff i)).support.image (num ((g j).coeff i)).coeff ∪ (den ((g j).coeff i)).support.image (den ((g j).coeff i)).coeff`. Use `choose r hr using fun a : k => IsAlgClosed.exists_pow_nat_eq (algebraMap k Ω a) hq`. Use `choose t ht using fun i : Fin s => IsAlgClosed.exists_pow_nat_eq (algebraMap B Ω (MvPolynomial.X i)) hq`. Set `k' : IntermediateField k Ω` to `IntermediateField.adjoin k (r '' (Tk : Set k))`. Establish `: FiniteDimensional k k'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `: Finite (r '' (Tk : Set k))` using `((Tk.finite_toSet).image r).to_subtype`. Use `IntermediateField.finiteDimensional_adjoin ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, -, rfl⟩`. Use `⟨X ^ q - C a, monic_X_pow_sub_C a hq.ne', ?_⟩` and prove the remaining obligations. Simplify using `[eval₂_sub, hr a, Algebra.algebraMap_eq_smul_one]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk'root : ∀ a ∈ Tk, ∃ z : k', z ^ q = algebraMap k k' a`. Introduce `a ha`. Use `⟨⟨r a, IntermediateField.subset_adjoin k _ ⟨a, ha, rfl⟩⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[hr a]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: CharP k' p` using `charP_of_injective_algebraMap (algebraMap k k').injective p`. Use `set B' := MvPolynomial (Fin s) k'`. Set `θ : B →ₐ[k] B'` to `(MvPolynomial.mapAlgHom (Algebra.ofId k k')).comp (MvPolynomial.expand q)`. Establish `hθ : ∀ N : B, θ N = MvPolynomial.map (algebraMap k k') (MvPolynomial.expand q N)` using `fun N => rfl`. Set `: Algebra B B'` to `θ.toRingHom.toAlgebra`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: Module.Finite B B'` using `finite_mapExpand k k' (Fin s) q hq`. Establish `: Algebra.IsIntegral B B'` using `Algebra.IsIntegral.of_finite B B'`. Set `ψ : B' →ₐ[k'] Ω` to `MvPolynomial.aeval t`. Establish `hψθ : ∀ N : B, ψ (θ N) = algebraMap B Ω N`. Establish `h : (ψ.restrictScalars k).comp θ = IsScalarTower.toAlgHom k B Ω`.
+Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `i`. Simplify using `only [AlgHom.comp_apply, AlgHom.restrictScalars_apply, θ, ψ, MvPolynomial.mapAlgHom_apply, MvPolynomial.expand_X, map_pow, MvPolynomial.map_X]`. Use `erw [MvPolynomial.aeval_X]`. Rewrite using `[ht]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Introduce `N`. Conclude with `DFunLike.congr_fun h N`. Establish `hψinj : Function.Injective ψ`. Use `injective_of_isIntegral (B := B) ψ.toRingHom ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hinjBΩ using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `N`. Conclude with `hψθ N`. Set `: Algebra B' Ω` to `ψ.toRingHom.toAlgebra`. Establish `: IsScalarTower B B' Ω` using `IsScalarTower.of_algebraMap_eq fun N => (hψθ N).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `: FaithfulSMul B' Ω` using `(faithfulSMul_iff_algebraMap_injective B' Ω).mpr hψinj`. Use `set F' := FractionRing B'`. Set `: Algebra F' Ω` to `FractionRing.liftAlgebra B' Ω`. Establish `hFF' : ∀ c : F, ∃ c' : F', algebraMap F' Ω c' = algebraMap F Ω c`. Introduce `c`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Use `⟨algebraMap B' F' (θ (num c)) / algebraMap B' F' (θ (den c)), ?_⟩` and prove the remaining obligations. Rewrite using `[map_div₀, ← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`. Express the relevant statement in the definitionally equal form `ψ (θ (num c)) / ψ (θ (den c)) = _`. Rewrite using `[hψθ, hψθ]`. Use `conv_rhs => rw [← hnd c]`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_div₀, ← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`. Establish `hrootB : ∀ N : B, (∀ m ∈ N.support, N.coeff m ∈ Tk) → ∃ N' : B', ψ N' ^ q = algebraMap B Ω N`. Introduce `N hN`. Take `⟨N', hN'⟩` from `exists_pow_eq_map_expand (k' := k') p e N fun m => by`. Distinguish the cases in `hm : m ∈ N.support`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `hk'root _ (hN m hm)`. Rewrite using `[MvPolynomial.notMem_support_iff.mp hm, map_zero]`. Conclude with `⟨0, zero_pow hq.ne'⟩`. Use `⟨N', ?_⟩` and prove the remaining obligations. Rewrite using `[← map_pow, hN', ← hθ, hψθ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hcoeff : ∀ j i, ∃ d : F', algebraMap F' Ω d ^ q = algebraMap F Ω ((g j).coeff i)`. Introduce `j i`. Distinguish the cases in `hc : (g j).coeff i = 0`. Conclude with `⟨0, by rw [hc, map_zero, map_zero, zero_pow hq.ne']⟩`. Establish `hi : i ∈ Finset.range ((g j).natDegree + 1)` using `Finset.mem_range.mpr (Nat.lt_succ_of_le (le_natDegree_of_ne_zero hc))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set c := (g j).coeff i`. Take `⟨N', hN'⟩` from `hrootB (num c) fun m hm => Finset.mem_biUnion.mpr ⟨j, Finset.mem_univ _, Finset.mem_biUnion.mpr ⟨i, hi, Finset.mem_union_left _ (Finset.mem_image_of_mem _ hm)⟩⟩`. Take `⟨D', hD'⟩` from `hrootB (den c) fun m hm => Finset.mem_biUnion.mpr ⟨j, Finset.mem_univ _, Finset.mem_biUnion.mpr ⟨i, hi, Finset.mem_union_right _ (Finset.mem_image_of_mem _ hm)⟩⟩`. Use `⟨algebraMap B' F' N' / algebraMap B' F' D', ?_⟩` and prove the remaining obligations. Rewrite using `[map_div₀, ← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply, div_pow]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `ψ N' ^ q / ψ D' ^ q = _`. Rewrite using `[hN', hD']`. Use `conv_rhs => rw [← hnd c]`. Rewrite using `[map_div₀, ← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`. Set `ω : Fin (Module.finrank F L) → Ω` to `fun j => algebraMap L Ω (b j)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hωsep : ∀ j, IsSeparable F' (ω j)`. Introduce `j`. Use `isSeparable_of_pow_coeff p e (g j) (hsepq (b j)) (ω j) ?_ (hcoeff j)` and prove the remaining obligations. Rewrite using `[← map_pow, aeval_algebraMap_apply, minpoly.aeval, map_zero]`. Set `E : IntermediateField F' Ω` to `IntermediateField.adjoin F' (Set.range ω)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `: FiniteDimensional F' E`. Establish `: Finite (Set.range ω)` using `Set.finite_range ω`. Conclude with `IntermediateField.finiteDimensional_adjoin fun x ⟨j, hj⟩ => hj ▸ (hωsep j).isIntegral`. Establish `: Algebra.IsSeparable F' E` using `(IntermediateField.isSeparable_adjoin_iff_isSeparable (F := F') (E := Ω)).mpr fun x ⟨j, hj⟩ => hj ▸ hωsep j`. Establish `hLE : ∀ y : L, algebraMap L Ω y ∈ E`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `y`. Rewrite using `[← b.sum_repr y, map_sum]`. Use `sum_mem fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, map_mul, ← IsScalarTower.algebraMap_apply]`. Take `⟨c', hc'⟩` from `hFF' (b.repr y j)`.
-
-Rewrite using `[← hc']`. Conclude with `mul_mem (IntermediateField.algebraMap_mem _ _) (IntermediateField.subset_adjoin F' _ ⟨j, rfl⟩)`. Establish `: IsScalarTower B' F' Ω` using `FractionRing.isScalarTower_liftAlgebra B' Ω`. Set `: Algebra B' E` to `E.algebra'`. Establish `: IsScalarTower B' F' E` using `IntermediateField.isScalarTower E`.
-
-Establish `: IsScalarTower B' E Ω` using `IsScalarTower.of_algebraMap_eq fun x => rfl`. Establish `hC' : Module.Finite B' (integralClosure B' E)` using `IsIntegralClosure.finite B' F' E (integralClosure B' E)`. Set `S : Submodule B' Ω` to `(integralClosure B' E).toSubmodule.map (IsScalarTower.toAlgHom B' E Ω).toLinearMap`. Establish `hSfg : S.FG` using `(Module.Finite.iff_fg.mp hC').map _`. Establish `: Module.Finite B (S.restrictScalars B)` using `Module.Finite.iff_fg.mpr hSfg.restrictScalars`.
-
-Establish `: IsNoetherian B (S.restrictScalars B)` using `isNoetherian_of_isNoetherianRing_of_finite B (S.restrictScalars B)`. Set `φ : L →ₗ[B] Ω` to `(IsScalarTower.toAlgHom B L Ω).toLinearMap`. Establish `hle : (integralClosure B L).toSubmodule.map φ ≤ S.restrictScalars B`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Establish `hint : IsIntegral B' (algebraMap L Ω y)` using `((hy : IsIntegral B y).map (IsScalarTower.toAlgHom B L Ω)).tower_top`.
-
-Use `⟨⟨algebraMap L Ω y, hLE y⟩, ?_, rfl⟩` and prove the remaining obligations. Conclude with `(isIntegral_algHom_iff (IsScalarTower.toAlgHom B' E Ω) (algebraMap E Ω).injective).mp hint`. Establish `: IsNoetherian B ((integralClosure B L).toSubmodule.map φ)` using `isNoetherian_of_le hle`. Establish `hfg : ((integralClosure B L).toSubmodule.map φ).FG` using `Module.Finite.iff_fg.mp (Module.IsNoetherian.finite B _)`. Conclude with `Module.Finite.iff_fg.mpr (Submodule.fg_of_fg_map_injective φ (algebraMap L Ω).injective hfg)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_integralClosure_mvPolynomial_of_charP (k : Type u) [Field k] (p : ℕ) [Fact p.Prime]
     [CharP k p] (s : ℕ) (L : Type u) [Field L] [Algebra (FractionRing (MvPolynomial (Fin s) k)) L]

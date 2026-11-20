@@ -10,33 +10,29 @@ namespace GlobalTheory.MomN
 open NumberField Formalism.BasicNotions Classical Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric Formalism.L2.Ker Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity Formalism.L2.KerInert Formalism.L2.KerInert.ISd
 
 /- English proof (translation)
-Introduce `D cc δ B hcc hδ χ hχ p _ lam N N' M M' hAdm hM hM' t ht`. Take `⟨s, hs, hsM, hMs⟩` from `hM`. Take `⟨s', hs', hsM', hMs'⟩` from `hM'`. Establish `hp : p.Prime` using `Fact.out`. Establish `spos : 0 < s` using `Nat.pos_of_ne_zero (by rintro rfl; exact hp.one_lt.ne' (Nat.coprime_zero_left p |>.mp hs))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `spos' : 0 < s'` using `Nat.pos_of_ne_zero (by rintro rfl; exact hp.one_lt.ne' (Nat.coprime_zero_left p |>.mp hs'))`. Use `set La0 := La D (tor0 D cc δ) (Formalism.MainNotions.StandardLatticesGL3.stdL D N) (Formalism.MainNotions.StandardLatticesGL3.stdL D N') with hLa0`. Use `set La1 := La D (tor0 D cc δ) M (Formalism.MainNotions.StandardLatticesGL3.stdL D N') with hLa1`. Use `set La2 := La D (tor0 D cc δ) M M' with hLa2`. Establish `one_std : ∀ y ∈ Formalism.MainNotions.StandardLatticesGL3.stdL D N', ((1 : ℕ) : D.host.E) • y ∈ Formalism.MainNotions.StandardLatticesGL3.stdL D N'`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `y hy`. Simplify using `using hy`. Establish `one_M : ∀ y ∈ M, ((1 : ℕ) : D.host.E) • y ∈ M`. Introduce `y hy`. Simplify using `using hy`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k10 : ∀ z ∈ La1, (s * 1) • z ∈ La0` using `fun z hz => La_smul cc δ s 1 hsM one_std hz`. Establish `k21 : ∀ z ∈ La2, (1 * s') • z ∈ La1` using `fun z hz => La_smul cc δ 1 s' one_M hMs' hz`. Establish `k20 : ∀ z ∈ La2, (s * s') • z ∈ La0` using `fun z hz => La_smul cc δ s s' hsM hMs' hz`. Establish `k12 : ∀ z ∈ La1, (1 * s') • z ∈ La2` using `fun z hz => La_smul cc δ 1 s' one_M hsM' hz`. Establish `hδ0 : δ ≠ 0` using `delta_nonzero_link D cc hcc δ hδ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hI : IO.HfInt (tor0 D cc δ) La2` using `hermitian_form_integral_values D cc hcc δ hδ hδ0 N N' M M' hAdm`. Set `Q2 : VC D N N' → Prop` to `fun y => ∃ n : ℕ, 0 < n ∧ n • y ∈ La2`. Establish `q2_add : ∀ x y, Q2 x → Q2 y → Q2 (x + y)`. Introduce and unpack `x y ⟨n, hn, hx⟩ ⟨m, hm, hy⟩`. Use `⟨n * m, Nat.mul_pos hn hm, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (n * m) • (x + y) = m • (n • x) + n • (m • y)`. Rewrite using `[smul_add, smul_smul, smul_smul, mul_comm m n]`. Rewrite using `[e]`. Conclude with `add_mem (AddSubgroup.nsmul_mem _ hx m) (AddSubgroup.nsmul_mem _ hy n)`. Establish `q2_2 : ∀ x ∈ La2, Q2 x` using `fun x hx => ⟨1, one_pos, by simpa using hx⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `q2_1 : ∀ x ∈ La1, Q2 x` using `fun x hx => ⟨1 * s', by omega, k12 x hx⟩`. Establish `cf_good : ∀ x y, Q2 x → Q2 y → Good lam (IO.cf (tor0 D cc δ) x y)`. Introduce and unpack `x y ⟨n, hn, hx⟩ ⟨m, hm, hy⟩`. Take `⟨q, hq⟩` from `im_rat (tor0 D cc δ) hI hn hm hx hy`. Conclude with `good_cf lam _ x y q hq`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `R1 : Rep lam B.tor (fun y => y ∈ La1) (B.thHalf N N' M) (B.thZero N N')` using `by show Rep lam B.tor (fun y => y ∈ La1) (Iop D B.tor La0 La1 (B.thZero N N')) (B.thZero N N')`. Use `rep_Iop (Pt := fun y => y = 0) (rep_self rfl) ?_ ?_` and prove the remaining obligations. Introduce and unpack `x hx y rfl`. Conclude with `⟨cf_good x 0 (q2_1 x hx) (q2_2 0 (zero_mem _)), by simpa using hx⟩`. Conclude with `idx_coprime La0 La1 (s * 1) (by simpa using hs) k10`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `R2 : Rep lam B.tor (fun y => ∃ a ∈ La2, ∃ b ∈ La1, y = a + b) (B.thMoved N N' M M') (B.thZero N N')` using `by show Rep lam B.tor _ (Iop D B.tor La1 La2 (B.thHalf N N' M)) (B.thZero N N')`. Use `rep_Iop R1 ?_ ?_` and prove the remaining obligations. Introduce `x hx y hy`. Conclude with `⟨cf_good x y (q2_2 x hx) (q2_1 y hy), x, hx, y, hy, rfl⟩`. Conclude with `idx_coprime La1 La2 (1 * s') (by simpa using hs') k21`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨n, hn, hnp, hnt⟩` from `ht`. Establish `R3 : Rep lam B.tor (TorsPrime D p La0) (U D B.tor t (B.thMoved N N' M M')) (B.thZero N N')`. Use `rep_U t R2 ?_` and prove the remaining obligations. Introduce and unpack `y ⟨a, ha, b, hb, rfl⟩`. Use `⟨cf_good t _ ⟨n, hn, hnt⟩ (q2_add a b (q2_2 a ha) (q2_1 b hb)), ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `⟨n * (s * s'), Nat.mul_pos hn (Nat.mul_pos spos spos'), Nat.Coprime.mul hnp (Nat.Coprime.mul hs hs'), ?_⟩` and prove the remaining obligations. Establish `e : (n * (s * s')) • (t + (a + b)) = (s * s') • (n • t) + (n • ((s * s') • a) + (n * s') • ((s * 1) • b))`. Simplify using `only [smul_add, smul_smul]`. Use `congr 1`. Rewrite using `[mul_comm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congr 1`. Rewrite using `[mul_one, mul_assoc, mul_comm s' s]`. Rewrite using `[e]`. Conclude with `add_mem (k20 _ hnt) (add_mem (AddSubgroup.nsmul_mem _ (k20 a ha) n) (AddSubgroup.nsmul_mem _ (k10 b hb) (n * s')))`. Establish `hchi` using `RestC.chiFacUnit (D := D) χ hχ p lam N N' M M' hAdm ⟨s, hs, hsM, hMs⟩ ⟨s', hs', hsM', hMs'⟩`.
-
-Establish `hgood : Good lam (Base.chiFac χ N N' M M')` using `⟨hchi.1, le_of_eq hchi.2⟩`. Establish `R4` using `rep_smul hgood R3`. Establish `e : U D B.tor t (B.eNat χ N N' M M') = fun z => Base.chiFac χ N N' M M' * U D B.tor t (B.thMoved N N' M M') z`. Use function extensionality and compare the values at `z`. Conclude with `IO.U_smul _ t _ _ z`.
-
-Rewrite using `[e]`. Take `⟨m, c, s₀, hc, hs₀, hF⟩` from `R4`. Conclude with `⟨m, c, s₀, hc, hs₀, hF⟩`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem transl_normVec_int : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (B : Base D cc δ), IsCurveIdeal D cc → IsDiscriminantTwelfthRootOfIdealLattice D cc δ → ∀ χ : IdE D → ℂ, IsChi D χ → ∀ (p : ℕ) [Fact p.Prime] (lam : Qbar →+* ℂ_[p]) (N N' : ℕ) (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)) (L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)), admitted D N N' L L' → EqAt D p (StandardLatticesGL3.stdL D N) L → EqAt D p (StandardLatticesGL3.stdL D N') L' → ∀ t : VC D N N', TorsPrime D p (La D B.tor L L') t → ∃ (m : ℕ) (c : Fin m → ℂ) (s : Fin m → VC D N N'), (∀ k, c k ∈ Qbar ∧ IsIntP (lamC lam (c k))) ∧ (∀ k, TorsPrime D p (La D B.tor (StandardLatticesGL3.stdL D N) (StandardLatticesGL3.stdL D N')) (s k)) ∧ U D B.tor t (B.eNat χ N N' L L') = fun z => ∑ k, c k * U D B.tor (s k) (B.thZero N N') z := by
   intro D cc δ B hcc hδ χ hχ p _ lam N N' M M' hAdm hM hM' t ht

@@ -7,7 +7,7 @@ private def ebS {K : Type} [CommRing K] {n : ℕ} (X : Matrix (Fin n) (Fin n) (D
     Matrix (Fin n) (Fin n) K := Matrix.of fun i j => (X i j).snd
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [ebS, Matrix.of_apply, Matrix.mul_apply, Matrix.map_apply, Matrix.add_apply, TrivSqZeroExt.snd_sum, TrivSqZeroExt.snd_mul, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `[dF, smul_eq_mul, MulOpposite.smul_eq_mul_unop, mul_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private theorem ebS_mul {K : Type} [CommRing K] {n : ℕ} (X Y : Matrix (Fin n) (Fin n) (DualNumber K)) :
     ebS (X * Y) = X.map (dF K) * ebS Y + ebS X * Y.map (dF K) := by
@@ -17,13 +17,13 @@ private theorem ebS_mul {K : Type} [CommRing K] {n : ℕ} (X Y : Matrix (Fin n) 
   simp [dF, smul_eq_mul, MulOpposite.smul_eq_mul_unop, mul_comm]
 
 /- English proof (translation)
-Introduce `K G _ _ _ _ _ _ n ρ' hρ'`. Use `set ρ := W.pushRep (dF K) ρ' with hρ`. Establish `hdF : Continuous (dF K)` using `TrivSqZeroExt.continuous_fst`. Establish `hv : Continuous fun g => (↑(ρ' g) : Matrix (Fin n) (Fin n) (DualNumber K))` using `Units.continuous_val.comp hρ'`. Establish `hi : Continuous fun g => (↑((ρ' g)⁻¹) : Matrix (Fin n) (Fin n) (DualNumber K))` using `Units.continuous_coe_inv.comp hρ'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : Continuous ρ`. Rewrite using `[Units.continuous_iff]`. Conclude with `⟨hv.matrix_map hdF, hi.matrix_map hdF⟩`. Establish `hci : Continuous fun g => (↑((ρ g)⁻¹) : Matrix (Fin n) (Fin n) K)` using `Units.continuous_coe_inv.comp hc`. Establish `e : ∀ g, (↑(ρ' g) : Matrix (Fin n) (Fin n) (DualNumber K)).map (dF K) = (↑(ρ g) : Matrix (Fin n) (Fin n) K)` using `fun g => rfl`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS : Continuous fun g => ebS (↑(ρ' g) : Matrix (Fin n) (Fin n) (DualNumber K))` using `continuous_matrix fun i j => TrivSqZeroExt.continuous_snd.comp (hv.matrix_elem i j)`. Use `⟨hc, fun g => ebS (↑(ρ' g) : Matrix (Fin n) (Fin n) (DualNumber K)) * (↑((ρ g)⁻¹) : Matrix (Fin n) (Fin n) K), ⟨hS.matrix_mul hci, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `g h show ebS (↑(ρ' (g * h)) : Matrix (Fin n) (Fin n) (DualNumber K)) * (↑((ρ (g * h))⁻¹) : Matrix (Fin n) (Fin n) K) = ebS (↑(ρ' g) : Matrix (Fin n) (Fin n) (DualNumber K)) * (↑((ρ g)⁻¹) : Matrix (Fin n) (Fin n) K) + (↑(ρ g) : Matrix (Fin n) (Fin n) K) * (ebS (↑(ρ' h) : Matrix (F …`. Rewrite using `[map_mul, map_mul, Units.val_mul, ebS_mul, e, e, _root_.mul_inv_rev, Units.val_mul, add_mul]`. Simplify using `only [Matrix.mul_assoc, Units.mul_inv_cancel_left]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `add_comm _ _`. Introduce `g i j show _ = (_, (ebS (↑(ρ' g) : Matrix (Fin n) (Fin n) (DualNumber K)) * (↑((ρ g)⁻¹) : Matrix (Fin n) (Fin n) K) * (↑(ρ g) : Matrix (Fin n) (Fin n) K)) i j)`. Rewrite using `[Units.inv_mul_cancel_right]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Eb.tanOf :
     ∀ {K G : Type} [CommRing K] [TopologicalSpace K] [IsTopologicalRing K] [Group G] [TopologicalSpace G] [IsTopologicalGroup G] {n : ℕ} (ρ' : G →* GL (Fin n) (DualNumber K)), Continuous ρ' →

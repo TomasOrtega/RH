@@ -4,12 +4,12 @@ import Formalism.LocalToGlobal.GroupLattices.FockModels.TransposeWords.FormCoreS
 namespace Formalism.L2.G.Model
 
 /- English proof (translation)
-The claim follows from `TS.Top.formCoreSK`.
+A detailed English derivation is pending.
 -/
 theorem formCore : FormCore := TS.Top.formCoreSK
 
 /- English proof (translation)
-The claim follows from `testSide_of_core formCore`.
+A detailed English derivation is pending.
 -/
 theorem testSide : Formalism.MainNotions.G.TestSide := testSide_of_core formCore
 

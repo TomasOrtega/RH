@@ -7,7 +7,7 @@ namespace UpperTheory.V.Z.Tf.GlobalTraceComparison.Th
 open GlobalTheory.BCT UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm
 
 /- English proof (translation)
-Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul K x`. Rewrite using `[hh, hu _ h.2]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 private theorem out_val {G : Type} [Group G] (K : Subgroup G) (u : G → ℂ)
     (hu : ∀ k ∈ K, ∀ x, u (x * k) = u x) (x : G) : u (x : G ⧸ K).out = u x := by
@@ -15,7 +15,7 @@ private theorem out_val {G : Type} [Group G] (K : Subgroup G) (u : G → ℂ)
   rw [hh, hu _ h.2]
 
 /- English proof (translation)
-Use `hintSph G K (fun z => f z * g (z⁻¹ * y)) ?_` and prove the remaining obligations. Introduce `k hk x`. Establish `e : (x * k)⁻¹ * y = k⁻¹ * (x⁻¹ * y)` using `by group`. Simplify using `only [e, hf k hk x, hg k⁻¹ (K.inv_mem hk)]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 private theorem cv_sum {G : Type} [Group G] (K : Subgroup G) (f g : G → ℂ)
     (hf : ∀ k ∈ K, ∀ x, f (x * k) = f x) (hg : ∀ k ∈ K, ∀ x, g (k * x) = g x) (y : G) :
@@ -26,9 +26,9 @@ private theorem cv_sum {G : Type} [Group G] (K : Subgroup G) (f g : G → ℂ)
   simp only [e, hf k hk x, hg k⁻¹ (K.inv_mem hk)]
 
 /- English proof (translation)
-Establish `hterm : ∀ q : G ⧸ K, A (x * q.out) = (fun p : G ⧸ K => A p.out) (MulAction.toPerm x q)`. Introduce `q`. Establish `e1 : MulAction.toPerm x q = ((x * q.out : G) : G ⧸ K)` using `by conv_lhs => rw [← QuotientGroup.out_eq' q]`. Both sides reduce to the same expression. Simplify using `only [e1]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Rewrite using `[out_val K A hA]`. Rewrite using `[finsum_congr hterm]`. Conclude with `finsum_comp_equiv (f := fun p : G ⧸ K => A p.out) (MulAction.toPerm x : Equiv.Perm (G ⧸ K))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sum_translate {G : Type} [Group G] (K : Subgroup G) (A : G → ℂ)
     (hA : ∀ k ∈ K, ∀ x, A (x * k) = A x) (x : G) :
@@ -46,13 +46,11 @@ private theorem sum_translate {G : Type} [Group G] (K : Subgroup G) (A : G → �
     (MulAction.toPerm x : Equiv.Perm (G ⧸ K))
 
 /- English proof (translation)
-Establish `e1 : ∀ a, ∑ᶠ b, Φ a b = ∑ b ∈ hT.toFinset, Φ a b` using `fun a => finsum_eq_sum_of_support_subset _ (fun b hb => by simpa using h2 a b hb)`. Establish `e2 : ∀ b, ∑ᶠ a, Φ a b = ∑ a ∈ hS.toFinset, Φ a b` using `fun b => finsum_eq_sum_of_support_subset _ (fun a ha => by simpa using h1 a b ha)`. Simplify using `only [e1, e2]`. Rewrite using `[finsum_eq_sum_of_support_subset (s := hS.toFinset), finsum_eq_sum_of_support_subset (s := hT.toFinset), Finset.sum_comm]`. Introduce `b hb`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hbT`. Apply `hb` to reduce the goal to its premises. Use `Finset.sum_eq_zero fun a _ => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `hbT (by simpa using h2 a b h)`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha`. Assume the negation of the conclusion as `haS`. Apply `ha` to reduce the goal to its premises. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`.
-
-Conclude with `haS (by simpa using h1 a b h)`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 private theorem exch {A B : Type} (Φ : A → B → ℂ) (S : Set A) (T : Set B)
     (hS : S.Finite) (hT : T.Finite)
@@ -79,37 +77,35 @@ private theorem exch {A B : Type} (Φ : A → B → ℂ) (S : Set A) (T : Set B)
     exact haS (by simpa using h1 a b h)
 
 /- English proof (translation)
-Introduce `G _ _ _ K hKo hKc f g h hf hg hh`. Establish `hfl : ∀ k ∈ K, ∀ x, f (k * x) = f x` using `fun k hk x => (hf.2 k hk x).1`. Establish `hfr : ∀ k ∈ K, ∀ x, f (x * k) = f x` using `fun k hk x => (hf.2 k hk x).2`. Establish `hgl : ∀ k ∈ K, ∀ x, g (k * x) = g x` using `fun k hk x => (hg.2 k hk x).1`. Establish `hgr : ∀ k ∈ K, ∀ x, g (x * k) = g x` using `fun k hk x => (hg.2 k hk x).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hhl : ∀ k ∈ K, ∀ x, h (k * x) = h x` using `fun k hk x => (hh.2 k hk x).1`. Establish `hhr : ∀ k ∈ K, ∀ x, h (x * k) = h x` using `fun k hk x => (hh.2 k hk x).2`. Establish `finf : {q : G ⧸ K | f q.out ≠ 0}.Finite` using `LevOpTmul.finite_supp hKo hf.1`. Establish `hir : ∀ k ∈ K, ∀ x, ((K : Set G).indicator (1 : G → ℂ)) (x * k) = (K : Set G).indicator (1 : G → ℂ) x`. Introduce `k hk x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Set.indicator_apply, SetLike.mem_coe, K.mul_mem_cancel_right hk, Pi.one_apply]`. Establish `hil : ∀ k ∈ K, ∀ x, ((K : Set G).indicator (1 : G → ℂ)) (k * x) = (K : Set G).indicator (1 : G → ℂ) x`. Introduce `k hk x`. Simplify using `only [Set.indicator_apply, SetLike.mem_coe, K.mul_mem_cancel_left hk, Pi.one_apply]`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `y`. Establish `hfg` using `cvHecke G K hKo hKc f g hf hg`. Establish `hgh` using `cvHecke G K hKo hKc g h hg hh`. Establish `hy : HasCompactSupport fun z : G => h (z⁻¹ * y)` using `hh.1.comp_homeomorph ((Homeomorph.inv G).trans (Homeomorph.mulRight y))`. Establish `finh : {q : G ⧸ K | h (q.out⁻¹ * y) ≠ 0}.Finite` using `LevOpTmul.finite_supp hKo hy`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `A₁ : cv K (cv K f g) h y = ∑ᶠ q : G ⧸ K, cv K f g q.out * h (q.out⁻¹ * y)` using `cv_sum K _ h (fun k hk x => (hfg.2 k hk x).2) hhl y`. Establish `A₂ : cv K f (cv K g h) y = ∑ᶠ p : G ⧸ K, f p.out * cv K g h (p.out⁻¹ * y)` using `cv_sum K f _ hfr (fun k hk x => (hgh.2 k hk x).1) y`. Establish `B₁ : ∀ q : G ⧸ K, cv K f g q.out * h (q.out⁻¹ * y) = ∑ᶠ p : G ⧸ K, f p.out * g (p.out⁻¹ * q.out) * h (q.out⁻¹ * y)`. Introduce `q`. Rewrite using `[cv_sum K f g hfr hgl, finsum_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `B₂ : ∀ p : G ⧸ K, f p.out * cv K g h (p.out⁻¹ * y) = ∑ᶠ q : G ⧸ K, f p.out * g (p.out⁻¹ * q.out) * h (q.out⁻¹ * y)`. Introduce `p`. Establish `hA : ∀ k ∈ K, ∀ x, (fun z => g z * h (z⁻¹ * (p.out⁻¹ * y))) (x * k) = (fun z => g z * h (z⁻¹ * (p.out⁻¹ * y))) x`. Introduce `k hk x`. Establish `e : (x * k)⁻¹ * (p.out⁻¹ * y) = k⁻¹ * (x⁻¹ * (p.out⁻¹ * y))` using `by group`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [e, hgr k hk x, hhl k⁻¹ (K.inv_mem hk)]`. Establish `T : ∑ᶠ r : G ⧸ K, g r.out * h (r.out⁻¹ * (p.out⁻¹ * y)) = ∑ᶠ q : G ⧸ K, g (p.out⁻¹ * q.out) * h (q.out⁻¹ * y)`. Use `(sum_translate K (fun z => g z * h (z⁻¹ * (p.out⁻¹ * y))) hA p.out⁻¹).symm.trans (finsum_congr fun q => ?_)` and prove the remaining obligations. Establish `e : (p.out⁻¹ * q.out)⁻¹ * (p.out⁻¹ * y) = q.out⁻¹ * y` using `by group`. Use `show g (p.out⁻¹ * q.out) * h ((p.out⁻¹ * q.out)⁻¹ * (p.out⁻¹ * y)) = _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Rewrite using `[cv_sum K g h hgr hhl, T, mul_finsum]`. Conclude with `finsum_congr fun q => (mul_assoc _ _ _).symm`. Rewrite using `[A₁, A₂, finsum_congr B₁, finsum_congr B₂]`. Use `exch (fun (q p : G ⧸ K) => f p.out * g (p.out⁻¹ * q.out) * h (q.out⁻¹ * y)) _ _ finh finf ?_ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `q p hne`. Conclude with `right_ne_zero_of_mul hne`. Introduce `q p hne`. Conclude with `left_ne_zero_of_mul (left_ne_zero_of_mul hne)`. Use function extensionality and compare the values at `y`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[cv_sum K f _ hfr hil y, finsum_eq_single _ (y : G ⧸ K)]`. Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul K y`. Establish `hm : (y : G ⧸ K).out⁻¹ * y ∈ K`. Establish `e : (y : G ⧸ K).out⁻¹ * y = (k : G)⁻¹` using `by rw [hk]; group`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `K.inv_mem k.2`. Rewrite using `[out_val K f hfr, Set.indicator_of_mem (SetLike.mem_coe.2 hm)]`. Simplify using the standard rewrite rules. Introduce `q hq`. Establish `hm : q.out⁻¹ * y ∉ K` using `fun hm => hq ((QuotientGroup.out_eq' q).symm.trans (QuotientGroup.eq.2 hm))`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Set.indicator_of_notMem (fun h' => hm (SetLike.mem_coe.1 h')), mul_zero]`. Use function extensionality and compare the values at `y`. Rewrite using `[cv_sum K _ f hir hfl y, finsum_eq_single _ ((1 : G) : G ⧸ K)]`. Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul K (1 : G)`. Establish `hm : ((1 : G) : G ⧸ K).out ∈ K`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hk, one_mul]`. Conclude with `k.2`. Rewrite using `[Set.indicator_of_mem (SetLike.mem_coe.2 hm), Pi.one_apply, one_mul, hfl _ (K.inv_mem hm)]`. Introduce `q hq`. Establish `hm : q.out ∉ K` using `fun hm => hq ((QuotientGroup.out_eq' q).symm.trans (QuotientGroup.eq.2 (by simpa using K.inv_mem hm)))`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[Set.indicator_of_notMem (fun h' => hm (SetLike.mem_coe.1 h')), zero_mul]`. Introduce `c d`. Use function extensionality and compare the values at `y`. Establish `hl : ∀ k ∈ K, ∀ x, (fun y => c * g y + d * h y) (k * x) = (fun y => c * g y + d * h y) x`. Introduce `k hk x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hgl k hk x, hhl k hk x]`. Use `show cv K f (fun y => c * g y + d * h y) y = c * cv K f g y + d * cv K f h y`. Establish `s₁ : (Function.support fun q : G ⧸ K => f q.out * g (q.out⁻¹ * y)).Finite` using `finf.subset fun q hq => left_ne_zero_of_mul hq`. Establish `s₂ : (Function.support fun q : G ⧸ K => f q.out * h (q.out⁻¹ * y)).Finite` using `finf.subset fun q hq => left_ne_zero_of_mul hq`. Establish `t₁ : (Function.support fun q : G ⧸ K => c * (f q.out * g (q.out⁻¹ * y))).Finite` using `s₁.subset fun q hq => right_ne_zero_of_mul hq`.
-
-Establish `t₂ : (Function.support fun q : G ⧸ K => d * (f q.out * h (q.out⁻¹ * y))).Finite` using `s₂.subset fun q hq => right_ne_zero_of_mul hq`. Rewrite using `[cv_sum K f _ hfr hl y, cv_sum K f g hfr hgl y, cv_sum K f h hfr hhl y, mul_finsum, mul_finsum, ← finsum_add_distrib t₁ t₂]`. Use `finsum_congr fun q => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem cvRing : CvRing := by
   intro G _ _ _ K hKo hKc f g h hf hg hh

@@ -16,9 +16,9 @@ noncomputable section
 namespace GlobalTheory.AdelicHaarPure
 
 /- English proof (translation)
-Establish `: {y : κ → Af F | ∀ v ∉ S, ∀ i, evalV F v (y i) ∈ v.adicCompletionIntegers F} = ⋂ v, ⋂ (_ : v ∉ S), ⋂ i, (fun y : κ → Af F => evalV F v (y i)) ⁻¹' (v.adicCompletionIntegers F : Set (Fv F v))`. Use extensionality with `y`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Use `IsClosed.measurableSet (isClosed_iInter fun v => isClosed_iInter fun _ => isClosed_iInter fun i => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(Valued.isClosed_integer (v.adicCompletion F)).preimage ((GlobalTheory.GaugeGlue.continuous_evalV v).comp (continuous_apply i))`.
+A detailed English derivation is pending.
 -/
 theorem measurableSet_box (F : Type) [Field F] [NumberField F] (κ : Type) [MeasurableSpace (κ → Af F)] [BorelSpace (κ → Af F)]
     (S : Finset (HeightOneSpectrum (𝓞 F))) :
@@ -31,36 +31,36 @@ theorem measurableSet_box (F : Type) [Field F] [NumberField F] (κ : Type) [Meas
   exact (Valued.isClosed_integer (v.adicCompletion F)).preimage ((GlobalTheory.GaugeGlue.continuous_evalV v).comp (continuous_apply i))
 
 /- English proof (translation)
-Rewrite using `[map_add, evalV_singleFin_ne h, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem evalV_add_singleFin_ne {F : Type} [Field F] [NumberField F] {v w : HeightOneSpectrum (𝓞 F)} (h : v ≠ w)
     (a : Af F) (t : Fv F w) : evalV F v (a + singleFin w t) = evalV F v a := by
   rw [map_add, evalV_singleFin_ne h, add_zero]
 
 /- English proof (translation)
-Establish `hcw : ∀ v, Measurable fun y : κ → Af F => fun i => evalV F v (y i)` using `fun v => (continuous_pi fun i => (GlobalTheory.GaugeGlue.continuous_evalV v).comp (continuous_apply i)).measurable`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.prod_empty, mul_one]`. Rewrite using `[lintegral_indicator_one (measurableSet_box F κ ∅), ← hμf]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `y`. Simplify using `only [Finset.notMem_empty, not_false_eq_true, forall_const, Set.mem_setOf_eq]`. Conclude with `forall_comm`. Consider the case `insert w S hw ih => set K : (κ → Af F) → ℝ≥0∞ := fun y => {y : κ → Af F | ∀ v ∉ insert w S, ∀ i, evalV F v (y i) ∈ v.adicCompletionIntegers F}.indicator 1 y * ∏ v ∈ S, f v (fun i => evalV F v (y i)) with hK`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
 
-Establish `hKm : Measurable K` using `(measurable_one.indicator (measurableSet_box F κ _)).mul (Finset.measurable_prod _ fun v _ => (hf v).comp (hcw v))`. Establish `hKi : ∀ (y : κ → Af F) (t : κ → Fv F w), K (fun i => y i + singleFin w (t i)) = K y`. Introduce `y t`. Establish `h1 : ∀ v ∈ S, (fun i => evalV F v (y i + singleFin w (t i))) = fun i => evalV F v (y i)` using `fun v hv =>`. Use function extensionality and compare the values at `fun i => evalV_add_singleFin_ne (by rintro rfl; exact hw hv) _ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `h2 : ({y : κ → Af F | ∀ v ∉ insert w S, ∀ i, evalV F v (y i) ∈ v.adicCompletionIntegers F}.indicator 1 (fun i => y i + singleFin w (t i)) : ℝ≥0∞) = {y : κ → Af F | ∀ v ∉ insert w S, ∀ i, evalV F v (y i) ∈ v.adicCompletionIntegers F}.indicator 1 y`. Establish `: ((fun i => y i + singleFin w (t i)) ∈ {y : κ → Af F | ∀ v ∉ insert w S, ∀ i, evalV F v (y i) ∈ v.adicCompletionIntegers F}) ↔ (y ∈ {y : κ → Af F | ∀ v ∉ insert w S, ∀ i, evalV F v (y i) ∈ v.adicCompletionIntegers F})`. Simplify using `only [Set.mem_setOf_eq]`. Use `forall_congr' fun v => imp_congr_right fun hv => forall_congr' fun i => ?_` and prove the remaining obligations. Rewrite using `[evalV_add_singleFin_ne (by rintro rfl; exact hv (Finset.mem_insert_self _ S))]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hy : y ∈ {y : κ → Af F | ∀ v ∉ insert w S, ∀ i, evalV F v (y i) ∈ v.adicCompletionIntegers F}`. Rewrite using `[Set.indicator_of_mem hy, Set.indicator_of_mem (this.2 hy)]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem hy, Set.indicator_of_notMem (fun h => hy (this.1 h))]`. Simplify using `only [hK, h2]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Conclude with `Finset.prod_congr rfl fun v hv => by rw [h1 v hv]`. Establish `hstep` using `GlobalTheory.T.lintegral_finiteAdelic_factor_offPlace F κ w μf (μv w) (hμv w) K hKm hKi (f w) (hf w)`. Establish `e1 : ∀ y : κ → Af F, {y : κ → Af F | ∀ v ∉ insert w S, ∀ i, evalV F v (y i) ∈ v.adicCompletionIntegers F}.indicator 1 y * ∏ v ∈ insert w S, f v (fun i => evalV F v (y i)) = f w (fun i => evalV F w (y i)) * K y`. Introduce `y`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Finset.prod_insert hw, hK]`. Expand and normalize the polynomial expressions, which then agree. Establish `hiff : ∀ y : κ → Af F, (∀ v ∉ S, ∀ i, evalV F v (y i) ∈ v.adicCompletionIntegers F) ↔ (∀ i, evalV F w (y i) ∈ w.adicCompletionIntegers F) ∧ ∀ v ∉ insert w S, ∀ i, evalV F v (y i) ∈ v.adicCompletionIntegers F`. Introduce `y`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce `h`. Conclude with `⟨h w hw, fun v hv => h v fun h' => hv (Finset.mem_insert_of_mem h')⟩`. Introduce and unpack `⟨h1, h2⟩ v hv`. Distinguish the cases in `hvw : v = w`. Substitute `hvw` using the available equality.
+Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h1`. Conclude with `h2 v (by simp [hvw, hv])`. Establish `e2 : ∀ y : κ → Af F, {t : κ → Fv F w | ∀ i, t i ∈ w.adicCompletionIntegers F}.indicator 1 (fun i => evalV F w (y i)) * K y = {y : κ → Af F | ∀ v ∉ S, ∀ i, evalV F v (y i) ∈ v.adicCompletionIntegers F}.indicator 1 y * ∏ v ∈ S, f v (fun i => evalV F v (y i))`. Introduce `y`. Rewrite using `[hK, ← mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Distinguish the cases in `h : y ∈ {y : κ → Af F | ∀ v ∉ S, ∀ i, evalV F v (y i) ∈ v.adicCompletionIntegers F}`. Establish `h'` using `(hiff y).1 h`. Rewrite using `[Set.indicator_of_mem h, Set.indicator_of_mem (show (fun i => evalV F w (y i)) ∈ {t : κ → Fv F w | ∀ i, t i ∈ w.adicCompletionIntegers F} from h'.1), Set.indicator_of_mem (show y ∈ {y : κ → Af F | ∀ v ∉ insert w S, ∀ i, evalV F v (y i) ∈ v.adicCompletionIntegers F} from h'.2)]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_notMem h]`. Distinguish the cases in `h1 : ∀ i, evalV F w (y i) ∈ w.adicCompletionIntegers F`. Establish `h2 : y ∉ {y : κ → Af F | ∀ v ∉ insert w S, ∀ i, evalV F v (y i) ∈ v.adicCompletionIntegers F}` using `fun h2 => h ((hiff y).2 ⟨h1, h2⟩)`. Rewrite using `[Set.indicator_of_notMem h2, mul_zero]`. Rewrite using `[Set.indicator_of_notMem (show (fun i => evalV F w (y i)) ∉ {t : κ → Fv F w | ∀ i, t i ∈ w.adicCompletionIntegers F} from h1), zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[e1]`. Rewrite using `[hstep, Finset.prod_insert hw]`. Repeatedly rewrite using `[e2]`. Rewrite using `[ih]`.
+A detailed English derivation is pending.
 -/
 theorem finPart (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] [MeasurableSpace (κ → Af F)] [BorelSpace (κ → Af F)]
     [∀ v : HeightOneSpectrum (𝓞 F), MeasurableSpace (κ → Fv F v)] [∀ v : HeightOneSpectrum (𝓞 F), BorelSpace (κ → Fv F v)]
@@ -154,35 +154,31 @@ theorem finPart (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] [M
     rw [ih]
 
 /- English proof (translation)
-Introduce `F _ _ κ _ _ _ _ _ _ _ μ _ μi _ μv _ hμv`. Use `letI : MeasurableSpace (κ → Af F) := borel _`. Use `haveI : BorelSpace (κ → Af F) := ⟨rfl⟩`. Use `haveI : ∀ v : Pl F, ProperSpace (Fv F v) := fun v => GlobalTheory.AdelicUnitaryTop.properSpace_adicCompletion F v`. Take `⟨μf, hμfH, hμf1⟩` from `GlobalTheory.T.exists_finiteAdelicHaar_integralPoints_one F κ`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c, hc0, hctop, hc⟩` from `GlobalTheory.T.lintegral_adelicHaar_split_archimedean_finite F κ μ μi μf`. Use `⟨(c.toReal : ℂ), Complex.ofReal_ne_zero.2 (ENNReal.toReal_ne_zero.2 ⟨hc0, hctop⟩), fun f φ hfc hfi hφ => ?_⟩` and prove the remaining obligations. Establish `hfinS` using `Filter.eventually_cofinite.1 hφ.2`. Use `set S := hfinS.toFinset with hS`. Establish `hout : ∀ v ∉ S, φ v = ind κ v`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Introduce `v hv`. Assume the negation of the conclusion as `hne`. Conclude with `hv (by simpa [hS] using hne)`. Establish `hpi : Continuous fun x : κ → AF F => fun i => evI F (x i)` using `continuous_pi fun i => (GlobalTheory.Core.Rk.RapidInt.continuous_toMixed F).comp (continuous_fst.comp (continuous_apply i))`. Establish `hpv : ∀ v : Pl F, Continuous fun x : κ → AF F => fun i => evFin F v (x i)` using `fun v => continuous_pi fun i => (GlobalTheory.GaugeGlue.continuous_evalV v).comp (continuous_snd.comp (continuous_apply i))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set B : Set (κ → AF F) := {x | ∀ v ∉ S, ∀ i, evFin F v (x i) ∈ v.adicCompletionIntegers F} with hB`. Establish `hBm : MeasurableSet B`. Establish `: B = (fun x : κ → AF F => fun i => sndA F (x i)) ⁻¹' {y : κ → Af F | ∀ v ∉ S, ∀ i, evalV F v (y i) ∈ v.adicCompletionIntegers F}` using `rfl`. Rewrite using `[this]`. Establish `hsnd : Continuous (fun x : κ → AF F => fun i => sndA F (x i))` using `continuous_pi fun i => continuous_snd.comp (continuous_apply i)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hsnd.measurable (measurableSet_box F κ S)`. Establish `hlin : ∀ (fi : (κ → mixedEmbedding.mixedSpace F) → ℝ≥0∞) (fv : ∀ v : Pl F, (κ → Fv F v) → ℝ≥0∞), Measurable fi → (∀ v, Measurable (fv v)) → ∫⁻ x, fi (fun i => evI F (x i)) * ∏ v ∈ S, fv v (fun i => evFin F v (x i)) ∂(μ.restrict B) = (∫⁻ z, fi z ∂μi) * (∏ v ∈ S, ∫⁻ t, fv v t ∂(μv …`. Introduce `fi fv hfi hfv`. Rewrite using `[← lintegral_indicator hBm]`. Establish `e : ∀ x : κ → AF F, B.indicator (fun x => fi (fun i => evI F (x i)) * ∏ v ∈ S, fv v (fun i => evFin F v (x i))) x = fi (fun i => evI F (x i)) * ({y : κ → Af F | ∀ v ∉ S, ∀ i, evalV F v (y i) ∈ v.adicCompletionIntegers F}.indicator 1 (fun i => sndA F (x i)) * ∏ v ∈ S, fv v (fun i …`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Introduce `x`. Distinguish the cases in `hx : x ∈ B`. Rewrite using `[Set.indicator_of_mem hx, Set.indicator_of_mem (show (fun i => sndA F (x i)) ∈ {y : κ → Af F | ∀ v ∉ S, ∀ i, evalV F v (y i) ∈ v.adicCompletionIntegers F} from hx)]`. Simplify using `only [Pi.one_apply, one_mul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_notMem hx, Set.indicator_of_notMem (show (fun i => sndA F (x i)) ∉ {y : κ → Af F | ∀ v ∉ S, ∀ i, evalV F v (y i) ∈ v.adicCompletionIntegers F} from hx)]`. Simplify using the standard rewrite rules. Repeatedly rewrite using `[e]`. Establish `hcw : ∀ v, Measurable fun y : κ → Af F => fun i => evalV F v (y i)` using `fun v => (continuous_pi fun i => (GlobalTheory.GaugeGlue.continuous_evalV v).comp (continuous_apply i)).measurable`. Establish `hgm : Measurable fun y : κ → Af F => {y : κ → Af F | ∀ v ∉ S, ∀ i, evalV F v (y i) ∈ v.adicCompletionIntegers F}.indicator 1 y * ∏ v ∈ S, fv v (fun i => evalV F v (y i))` using `(measurable_one.indicator (measurableSet_box F κ S)).mul (Finset.measurable_prod _ fun v _ => (hfv v).comp (hcw v))`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hc fi _ hfi hgm, finPart F κ μf hμf1 μv hμv S fv hfv]`. Expand and normalize the polynomial expressions, which then agree. Establish `hint : ∀ v, Integrable (φ v) (μv v)` using `fun v => (hφ.1 v).1.continuous.integrable_of_hasCompactSupport (hφ.1 v).2`. Take `⟨h1, h2⟩` from `GlobalTheory.GaugeEx.ProdInt.integral_tensor (μ.restrict B) μi μv (fun x : κ → AF F => fun i => evI F (x i)) (fun v x i => evFin F v (x i)) hpi.measurable (fun v => (hpv v).measurable) S c hctop hlin f φ hfi hint`. Establish `hΦB : (fun x : κ → AF F => f (fun i => evI F (x i)) * ∏ᶠ v, φ v fun i => evFin F v (x i)) = B.indicator fun x => f (fun i => evI F (x i)) * ∏ v ∈ S, φ v (fun i => evFin F v (x i))`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : x ∈ B`. Rewrite using `[Set.indicator_of_mem hx, finprod_eq_prod_of_mulSupport_subset (s := S)]`. Introduce `v hv`. Assume the negation of the conclusion as `hvS`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply `hv` to reduce the goal to its premises. Simplify using `only [hout v hvS, ind]`. Conclude with `Set.indicator_of_mem (show (fun i => evFin F v (x i)) ∈ {x | ∀ i, x i ∈ v.adicCompletionIntegers F} from hx v hvS) _`. Rewrite using `[Set.indicator_of_notMem hx]`. Simplify using `only [hB, Set.mem_setOf_eq, not_forall] at hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨v, hvS, i, hv⟩` from `hx`. Establish `hev : ∀ᶠ v in Filter.cofinite, φ v (fun i => evFin F v (x i)) = 1`. Establish `h1 : ∀ᶠ v in Filter.cofinite, ∀ i, evFin F v (x i) ∈ v.adicCompletionIntegers F` using `Filter.eventually_all.2 fun i => (sndA F (x i)).2`. Use `filter_upwards [hφ.2, h1] with w h2 h3`. Rewrite using `[h2]`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Set.indicator_of_mem (show (fun i => evFin F w (x i)) ∈ {x | ∀ i, x i ∈ w.adicCompletionIntegers F} from h3) _`. Rewrite using `[finprod_eq_zero _ v (by rw [hout v hvS]; exact Set.indicator_of_notMem (show (fun i => evFin F v (x i)) ∉ {x : κ → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} from fun h => hv (h i)) _) (Filter.eventually_cofinite.1 hev), mul_zero]`. Establish `hprod : ∏ᶠ v, ∫ x, φ v x ∂(μv v) = ∏ v ∈ S, ∫ x, φ v x ∂(μv v)`. Rewrite using `[finprod_eq_prod_of_mulSupport_subset (s := S)]`. Introduce `v hv`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `hvS`. Apply `hv` to reduce the goal to its premises. Establish `hm : MeasurableSet {x : κ → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F}`. Establish `: {x : κ → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} = ⋂ i, (fun x : κ → Fv F v => x i) ⁻¹' (v.adicCompletionIntegers F : Set (Fv F v))` using `by ext; simp`. Rewrite using `[this]`.
-
-Conclude with `(isClosed_iInter fun i => (Valued.isClosed_integer (v.adicCompletion F)).preimage (continuous_apply i)).measurableSet`. Use `integral_indicator_const (μ := μv v) (1 : ℂ) hm` as an intermediate fact. Simplify using `only [hout v hvS, ind]`. Simplify `this` using `[Measure.real, Pi.one_def, hμv v]`. Rewrite using `[hΦB, hprod]`.
-
-Use `⟨(integrable_indicator_iff hBm).2 h1, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_indicator hBm, h2]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem integral_pure_haar : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] [MeasurableSpace (κ → AF F)] [BorelSpace (κ → AF F)]
     [MeasurableSpace (κ → mixedEmbedding.mixedSpace F)] [BorelSpace (κ → mixedEmbedding.mixedSpace F)]

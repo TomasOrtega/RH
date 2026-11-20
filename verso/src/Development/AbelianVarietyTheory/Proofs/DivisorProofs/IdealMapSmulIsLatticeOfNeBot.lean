@@ -15,13 +15,11 @@ open scoped Pointwise
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hI hL`. Establish `hle : I.map (algebraMap (𝓞 F) (𝓞 E)) • L ≤ L` using `Submodule.smul_le_right`. Take `⟨d, hdI, hd0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hI`. Establish `hdE : ((algebraMap (𝓞 F) (𝓞 E) d : 𝓞 E) : E) ≠ 0`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hd0` to reduce the goal to its premises. Establish `h1 : algebraMap (𝓞 F) (𝓞 E) d = 0` using `by exact_mod_cast h`. Conclude with `(FaithfulSMul.algebraMap_injective (𝓞 F) (𝓞 E)) (by simpa using h1)`. Use `set u : Eˣ := Units.mk0 _ hdE`. Establish `hsub : (u • L : Submodule (𝓞 E) (Fin n → E)) ≤ I.map (algebraMap (𝓞 F) (𝓞 E)) • L`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `x hx`. Take `⟨y, hy, rfl⟩` from `(Submodule.mem_smul_pointwise_iff_exists _ _ _).mp hx`. Establish `: (u • y : Fin n → E) = (algebraMap (𝓞 F) (𝓞 E) d) • y`. Rewrite using `[Units.smul_def, Units.val_mk0, ← algebraMap_smul E (algebraMap (𝓞 F) (𝓞 E) d) y]`. Rewrite using `[this]`.
-
-Conclude with `Submodule.smul_mem_smul (Ideal.mem_map_of_mem _ hdI) hy`. Conclude with `Submodule.IsLattice.of_le_of_isLattice_of_fg E hsub (Submodule.FG.of_le hL.fg hle)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ideal_map_smul_isLattice (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] (n : ℕ) (L : Submodule (𝓞 E) (Fin n → E)) (I : Ideal (𝓞 F)) :

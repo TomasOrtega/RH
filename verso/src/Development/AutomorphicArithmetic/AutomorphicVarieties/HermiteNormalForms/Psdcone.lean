@@ -4,27 +4,23 @@ open NumberField Matrix UpperTheory.V UpperTheory.V.KT
 open scoped ComplexOrder
 
 /- English proof (translation)
-Introduce `L _ _ N`. Establish `hc : ∀ (w : InfinitePlace L) (i j : Fin N), Continuous (fun h : HS L N => mat h w i j)`. Introduce `w i j`. Conclude with `(continuous_apply j).comp ((continuous_apply i).comp ((continuous_apply w).comp continuous_subtype_val))`. Establish `htr : ∀ k ∈ Psd L N, ∀ w, 0 ≤ (mat k w).trace`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k hk w`. Conclude with `Finset.sum_nonneg fun i _ => (hk w).diag_nonneg`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hP : Psd L N = ⋂ w : InfinitePlace L, ⋂ x : Fin N →₀ ℂ, {h : HS L N | 0 ≤ x.sum fun i xi => x.sum fun j xj => star xi * mat h w i j * xj}`. Use extensionality with `h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Simplify using `only [Psd, Set.mem_setOf_eq, Set.mem_iInter]`. Prove the components needed by the constructor for the conclusion. Introduce `hh w x`. Conclude with `(hh w).2 x`. Introduce `hh w`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨mat_herm h w, hh w⟩`. Rewrite using `[hP]`. Use `isClosed_iInter fun w => isClosed_iInter fun x => ?_` and prove the remaining obligations. Use `isClosed_le continuous_const ?_` and prove the remaining obligations. Unfold `Finsupp.sum`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => ?_` and prove the remaining obligations. Conclude with `(continuous_const.mul (hc w i j)).mul continuous_const`. Introduce `c hc k hk w show (mat (c • k) w).PosSemidef`. Rewrite using `[mat_smul]`. Conclude with `(hk w).smul hc.le`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Introduce `k hk w`. Conclude with `(hk w).posSemidef`. Set `f : HS L N →ₗ[ℝ] ℝ` to `{ toFun := fun h => ∑ w, ((mat h w).trace).re map_add' := by`. Introduce `h k`. Simplify using `only [← Finset.sum_add_distrib, ← Complex.add_re, ← Matrix.trace_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Use the proof step `map_smul' := by`. Introduce `c h`. Simplify using `only [mat_smul, Matrix.trace_smul, RingHom.id_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Simplify using `}`. Establish `hf : Continuous f` using `by show Continuous (fun h : HS L N => ∑ w, ((mat h w).trace).re)`. Use `continuous_finset_sum _ fun w _ => Complex.continuous_re.comp ?_` and prove the remaining obligations. Conclude with `continuous_finset_sum _ fun i _ => hc w i i`. Use `⟨⟨f, hf⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `k hk hk0`. Establish `hw : ∃ w, mat k w ≠ 0`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Conclude with `hk0 (HS_ext fun w => by rw [hne w, mat_zero])`.
-
-Take `⟨w, hw⟩` from `hw`. Use `show 0 < ∑ w, ((mat k w).trace).re`. Establish `hpos : 0 < ((mat k w).trace).re`. Establish `h1 : 0 ≤ (mat k w).trace` using `htr k hk w`. Establish `h2 : (mat k w).trace ≠ 0` using `fun h0 => hw (((hk w).trace_eq_zero_iff).mp h0)`.
-
-Conclude with `(Complex.lt_def.mp (lt_of_le_of_ne h1 (Ne.symm h2))).1`. Use `lt_of_lt_of_le hpos ?_` and prove the remaining obligations. Use `Finset.single_le_sum (f := fun w => ((mat k w).trace).re) (fun v _ => ?_) (Finset.mem_univ w)` and prove the remaining obligations. Conclude with `(Complex.le_def.mp (htr k hk v)).1`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.KT.psdcone :
     ∀ (L : Type) [Field L] [NumberField L] (N : ℕ), IsClosed (Psd L N) ∧ (∀ c : ℝ, 0 < c → ∀ k ∈ Psd L N, c • k ∈ Psd L N) ∧

@@ -28,7 +28,7 @@ def IsChart (N : TrueGeo.Model Y) (Δ : Y.Dv) (t : Y.X → Y.Fnˣ) (φ : PtFn Y)
 variable {Δ : Y.Dv} {t : Y.X → Y.Fnˣ} {φ : PtFn Y}
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(y.1 ≫ N.j) _ ∈ W`. Rewrite using `[← h]`. Conclude with `hW (x := spMap e.O.subtype _) trivial`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem below_mem (N : TrueGeo.Model Y) {v : HeightOneSpectrum (𝓞 F)} {e : Ext v} {y : AlgPt Y}
     {yt : Sp e.O ⟶ N.X} (h : spMap e.O.subtype ≫ yt = y.1 ≫ N.j) {W : N.X.Opens} (hW : ⊤ ≤ yt ⁻¹ᵁ W) :
@@ -38,14 +38,14 @@ theorem below_mem (N : TrueGeo.Model Y) {v : HeightOneSpectrum (𝓞 F)} {e : Ex
   exact hW (x := spMap e.O.subtype _) trivial
 
 /- English proof (translation)
-Rewrite using `[((ht y).nsmul D).iff_unitAt, inv_pow, Units.val_mul, Units.val_inv_eq_inv_val, div_eq_inv_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem unitAt_of_isEqn (ht : ∀ y, Δ.IsEqn y (t y)) {D : ℕ} {y : Y.X} {r : Y.Fnˣ} :
     (D • Δ).IsEqn y r ↔ UnitAt y (((t y)⁻¹ ^ D * r : Y.Fnˣ) : Y.Fn) := by
   rw [((ht y).nsmul D).iff_unitAt, inv_pow, Units.val_mul, Units.val_inv_eq_inv_val, div_eq_inv_mul]
 
 /- English proof (translation)
-Use `⟨fun y hy => h.1 y ?_, fun v e y yt hc hW => h.2 v e y (yt ≫ π) ?_ hW⟩` and prove the remaining obligations. Rewrite using `[← hπ]`. Conclude with `hy`. Rewrite using `[← Category.assoc, hc, Category.assoc, hπ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsChart.pull {N N' : TrueGeo.Model Y} {D : ℕ} {W : N.X.Opens} {r : Y.Fnˣ} (h : IsChart N Δ t φ D W r)
     (π : N'.X ⟶ N.X) (hπ : N'.j ≫ π = N.j) : IsChart N' Δ t φ D (π ⁻¹ᵁ W) r := by
@@ -54,9 +54,9 @@ theorem IsChart.pull {N N' : TrueGeo.Model Y} {D : ℕ} {W : N.X.Opens} {r : Y.F
   · rw [← Category.assoc, hc, Category.assoc, hπ]
 
 /- English proof (translation)
-Use `⟨fun y hy => ?_, fun v e y yt hc hW => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_nsmul]`. Conclude with `(h.1 y hy).nsmul k`. Establish `hu` using `(unitAt_of_isEqn ht).1 (h.1 _ (below_mem N hc hW))`. Rewrite using `[pow_mul, ← mul_pow, Units.val_pow_eq_pow_val, valAt_pow hu.regAt, map_pow, Real.log_pow, ← h.2 v e y yt hc hW]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem IsChart.pow (ht : ∀ y, Δ.IsEqn y (t y)) {N : TrueGeo.Model Y} {D : ℕ} {W : N.X.Opens} {r : Y.Fnˣ}
     (h : IsChart N Δ t φ D W r) (k : ℕ) : IsChart N Δ t φ (D * k) W (r ^ k) := by
@@ -69,7 +69,7 @@ theorem IsChart.pow (ht : ∀ y, Δ.IsEqn y (t y)) {N : TrueGeo.Model Y} {D : �
     ring
 
 /- English proof (translation)
-Use `N.ar.isIntegral` as an intermediate fact. Establish `: IsProper M.p` using `CommonModel.isProper_of_isProjOver M.ar.isProjOver`. Establish `: IsDominant N.j` using `⟨(dense_iff_closure_eq.2 (genericPoint_spec N.X)).mono (Set.singleton_subset_iff.2 ⟨_, ((j_gen_specializes N).antisymm (genericPoint_specializes _)).eq⟩)⟩`. Use `ext_of_isDominant_of_isSeparated M.p (ext_of_isDominant N.j ?_) N.j (hf.trans hg.symm)` and prove the remaining obligations. Rewrite using `[← Category.assoc, ← Category.assoc, hf, hg]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem hom_unique {N M : TrueGeo.Model Y} {f g : N.X ⟶ M.X} (hf : N.j ≫ f = M.j) (hg : N.j ≫ g = M.j) : f = g := by
   have := N.ar.isIntegral
@@ -80,11 +80,11 @@ theorem hom_unique {N M : TrueGeo.Model Y} {f g : N.X ⟶ M.X} (hf : N.j ≫ f =
   rw [← Category.assoc, ← Category.assoc, hf, hg]
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Take `⟨P, π, -, hP, -, -, h, -⟩` from `ModelDom.exists_normal_dominating F Y M M`. Conclude with `⟨P, π, hP, h, by simp⟩`. Consider the case `insert a S _ ih`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Take `⟨P, π, -, h, hS⟩` from `ih`. Take `⟨Q, σ, τ, hQ, -, -, h₁, h₂, -⟩` from `ModelDom.exists_normal_dominating F Y P (N a)`. Use `⟨Q, σ ≫ π, hQ, by rw [← Category.assoc, h₁, h], fun b hb => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hb with rfl | hb` into its components or cases. Conclude with `⟨τ, h₂⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Take `⟨ρ, hρ⟩` from `hS b hb`. Conclude with `⟨σ ≫ ρ, by rw [← Category.assoc, h₁, hρ]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_normal_dominating_finset {ι : Type} (M : TrueGeo.Model Y) (N : ι → TrueGeo.Model Y) (S : Finset ι) :
     ∃ (P : TrueGeo.Model Y) (π : P.X ⟶ M.X), ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme P.X ∧ P.j ≫ π = M.j ∧
@@ -104,9 +104,9 @@ theorem exists_normal_dominating_finset {ι : Type} (M : TrueGeo.Model Y) (N : �
       exact ⟨σ ≫ ρ, by rw [← Category.assoc, h₁, hρ]⟩
 
 /- English proof (translation)
-Establish `hb : below y.1 ∈ N.j ⁻¹ᵁ W` using `below_mem N h hW`. Establish `ht : ⊤ ≤ y.1 ⁻¹ᵁ (N.j ⁻¹ᵁ W)` using `fun p _ => by`. Express the relevant statement in the definitionally equal form `(y.1 ≫ N.j) p ∈ W`. Rewrite using `[← h]`. Conclude with `hW (x := spMap e.O.subtype p) trivial`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hev` using `OfModel.eval_pull e.O.subtype N.j y.1 yt h (U := W) (W := N.j ⁻¹ᵁ W) le_rfl ht hW g`. Rewrite using `[OfModel.valAt_fnOf _ hb ht, Scheme.Hom.app_eq_appLE, hev, ← e.mem_O]`. Conclude with `Subtype.prop _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem w_le_one (N : TrueGeo.Model Y) {v : HeightOneSpectrum (𝓞 F)} {e : Ext v} {y : AlgPt Y}
     {yt : Sp e.O ⟶ N.X} (h : spMap e.O.subtype ≫ yt = y.1 ≫ N.j) {W : N.X.Opens} (hW : ⊤ ≤ yt ⁻¹ᵁ W)
@@ -122,15 +122,15 @@ theorem w_le_one (N : TrueGeo.Model Y) {v : HeightOneSpectrum (𝓞 F)} {e : Ext
   exact Subtype.prop _
 
 /- English proof (translation)
-Establish `hV (y : Y.X) (hy : N.j y ∈ W ⊓ π ⁻¹ᵁ V) : M.j y ∈ V` using `by rw [← hπ]; exact hy.2`. Establish `e₀ (y : Y.X) : (((t y)⁻¹ ^ d * Units.mk0 (s i) hi : Y.Fnˣ) : Y.Fn) = s i * (((t y)⁻¹ ^ d : Y.Fnˣ) : Y.Fn)` using `by rw [Units.val_mul, mul_comm]; rfl`. Use `⟨fun y hy => (unitAt_of_isEqn ht).2 ?_, fun v e y yt hc hW => ?_⟩` and prove the remaining obligations. Take `⟨h₁, k, hk⟩` from `hs y (hV y hy)`. Take `⟨g, hg⟩` from `hg k`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hy' : y ∈ N.j ⁻¹ᵁ W` using `hy.1`. Take `⟨a, ha⟩` from `regAt_fnOf hy' (gen_mem hy') (N.j.app W g)`. Take `⟨b, hb⟩` from `h₁ i`. Take `⟨c, hu, hc⟩` from `hk`. Rewrite `hc` using `[← hg (gen_mem hy'), mul_assoc, ← ha, ← hb, ← map_mul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `rfl` from `IsFractionRing.injective (Y.X.presheaf.stalk y) Y.X.functionField hc`. Rewrite using `[e₀]`. Conclude with `⟨b, isUnit_of_mul_isUnit_right hu, hb⟩`. Establish `hb` using `below_mem N hc hW`. Establish `hb' : below y.1 ∈ N.j ⁻¹ᵁ W` using `hb.1`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hφ v e y (yt ≫ π) (by rw [← Category.assoc, hc, Category.assoc, hπ]) (fun p hp => (hW hp).2), e₀]`. Use `congr 1`. Establish `: Nonempty (Fin n)` using `⟨i⟩`. Use `le_antisymm (ciSup_le fun k => ?_) (le_ciSup (f := fun k => e.w (valAt y.1 (s k * (((t (below y.1))⁻¹ ^ d : Y.Fnˣ) : Y.Fn)))) (Finite.bddAbove_range _) i)` and prove the remaining obligations. Take `⟨g, hg⟩` from `hg k`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hg (gen_mem hb'), mul_assoc, valAt_mul (regAt_fnOf hb' _ _) ((hs _ (hV _ hb)).1 i), map_mul]`. Conclude with `mul_le_of_le_one_left (e.w.nonneg _) (w_le_one N hc (fun p hp => (hW hp).1) g _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isChart_of_dvd (ht : ∀ y, Δ.IsEqn y (t y)) {M N : TrueGeo.Model Y} (π : N.X ⟶ M.X) (hπ : N.j ≫ π = M.j)
     {V : M.X.Opens} {d n : ℕ} {s : Fin n → Y.Fn} (hs : Generates M t V d s)
@@ -167,11 +167,11 @@ theorem isChart_of_dvd (ht : ∀ y, Δ.IsEqn y (t y)) {M N : TrueGeo.Model Y} (�
     exact mul_le_of_le_one_left (e.w.nonneg _) (w_le_one N hc (fun p hp => (hW hp).1) g _)
 
 /- English proof (translation)
-Establish `hb` using `below_mem N hc hW`. Establish `e₁` using `h.1 _ hb.1`. Establish `e₂` using `h'.1 _ hb.2`. Establish `u₁` using `(unitAt_of_isEqn ht).1 e₁`. Establish `u₂` using `(unitAt_of_isEqn ht).1 e₂`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `u₃` using `e₂.iff_unitAt.1 e₁`. Establish `p₁` using `e.w.pos (valAt_ne_zero u₁)`. Establish `p₂` using `e.w.pos (valAt_ne_zero u₂)`. Establish `q` using `Real.log_injOn_pos p₁ p₂ ((h.2 v e y yt hc fun p hp => (hW hp).1).symm.trans (h'.2 v e y yt hc fun p hp => (hW hp).2))`. Establish `e₃ : (((t (below y.1))⁻¹ ^ D * r : Y.Fnˣ) : Y.Fn) = (r : Y.Fn) / (r' : Y.Fn) * (((t (below y.1))⁻¹ ^ D * r' : Y.Fnˣ) : Y.Fn)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Units.val_mul, Units.val_mul, mul_left_comm, div_mul_cancel₀ _ r'.ne_zero]`. Rewrite `q` using `[e₃, valAt_mul u₃.regAt u₂.regAt, map_mul]`. Conclude with `((mul_eq_right₀ p₂.ne').1 q).le`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsChart.w_div_le (ht : ∀ y, Δ.IsEqn y (t y)) {N : TrueGeo.Model Y} {D : ℕ} {W W' : N.X.Opens}
     {r r' : Y.Fnˣ} (h : IsChart N Δ t φ D W r) (h' : IsChart N Δ t φ D W' r')
@@ -195,19 +195,17 @@ theorem IsChart.w_div_le (ht : ∀ y, Δ.IsEqn y (t y)) {N : TrueGeo.Model Y} {D
   exact ((mul_eq_right₀ p₂.ne').1 q).le
 
 /- English proof (translation)
-Use `N.ar.isIntegral` as an intermediate fact. Use `choose W r hx hch using h`. Take `⟨ρ, hρ₁, hρ₂, -, hρ₄, -⟩` from `ModelFn.main F Y N`. Establish `hreg (a b : N.X) : ∀ x ∈ W a ⊓ W b, RegAt x (ρ.symm ((r a : Y.Fn) / (r b : Y.Fn)))` using `GlobalTheory.T.regular_of_valuation_bounded_at_points F Y N hN _ _ fun v e y yt hc hW => by`. Rewrite using `[hρ₄, RingEquiv.apply_symm_apply]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(hch a).w_div_le ht (hch b) hc hW`. Establish `hne (a b : N.X) : ρ.symm ((r a : Y.Fn) / (r b : Y.Fn)) ≠ 0` using `(map_ne_zero _).2 (div_ne_zero (r a).ne_zero (r b).ne_zero)`. Establish `hunit (a b : N.X) : ∀ x ∈ W a ⊓ W b, UnitAt x (ρ.symm ((r a : Y.Fn) / (r b : Y.Fn)))` using `fun x hx => (unitAt_iff (hne a b)).2 ⟨hreg a b x hx, by`. Rewrite using `[← map_inv₀, inv_div]`. Conclude with `hreg b a x ⟨hx.2, hx.1⟩⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose g hg using fun a b => exists_unit_fnOf_eq (hunit a b)`. Set `L : LB N.X` to `{ ι := N.X, U := W, g := g }`. Establish `hL : L.IsLB`. Use `⟨eq_top_iff.2 fun x _ => Opens.mem_iSup.2 ⟨x, hx x⟩, fun i => Units.ext (Cartier.fn_ext fun h => ?_), fun i j k => Units.ext (Cartier.fn_ext fun h => ?_)⟩` and prove the remaining obligations. Rewrite using `[LB.val_res, fnOf_resG, Units.val_one, map_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hg i i _).trans ?_` and prove the remaining obligations. Rewrite using `[div_self (Units.ne_zero _), map_one]`. Simplify using `only [Units.val_mul, map_mul, LB.val_res, fnOf_resG]`. Use `(congrArg₂ (· * ·) (hg i j _) (hg j k _)).trans (Eq.trans ?_ (hg i k _).symm)` and prove the remaining obligations. Rewrite using `[← map_mul, div_mul_div_cancel₀ (Units.ne_zero _)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨N, L, D, fun i => r (i PUnit.unit), hL, ⟨LB.isLB_pull hL N.j, fun i i' hii => ?_, fun i y hy => (hch _).1 y (Set.mem_iInter.1 hy PUnit.unit)⟩, fun v e y yt i hc hW => (hch _).2 v e y yt hc hW⟩` and prove the remaining obligations. Establish `l : (L.pull N.j).U i ⊓ (L.pull N.j).U i' ≤ N.j ⁻¹ᵁ (L.U (i PUnit.unit) ⊓ L.U (i' PUnit.unit))` using `fun x hx => ⟨Set.mem_iInter.1 hx.1 PUnit.unit, Set.mem_iInter.1 hx.2 PUnit.unit⟩`. Establish `hp : ((L.pull N.j).g i i').val = resG Y.X l (N.j.app _ (L.g (i PUnit.unit) (i' PUnit.unit)).val)`. Establish `: (L.pull N.j).g i i' = res l (pullU N.j _ (L.g (i PUnit.unit) (i' PUnit.unit)))`. Express the relevant statement in the definitionally equal form `∏ _k : PUnit, _ = _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Fintype.prod_unique _).trans (zpow_one _)`. Rewrite using `[this]`. Both sides reduce to the same expression. Establish `hU : genericPoint N.X ∈ L.U (i PUnit.unit) ⊓ L.U (i' PUnit.unit)` using `hρ₂ ▸ l hii`. Rewrite using `[hp, fnOf_resG, ← hρ₁ _ hU]`.
-
-Use `congrArg ρ (hg (i PUnit.unit) (i' PUnit.unit) hU)` as an intermediate fact. Rewrite `this` using `[RingEquiv.apply_symm_apply]`. Conclude with `((congrArg (· * _) this).trans (div_mul_cancel₀ _ (Units.ne_zero _))).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fromModel_of_charts (ht : ∀ y, Δ.IsEqn y (t y)) (N : TrueGeo.Model Y)
     (hN : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme N.X) (D : ℕ+)
@@ -254,11 +252,11 @@ theorem fromModel_of_charts (ht : ∀ y, Δ.IsEqn y (t y)) (N : TrueGeo.Model Y)
   exact ((congrArg (· * _) this).trans (div_mul_cancel₀ _ (Units.ne_zero _))).symm
 
 /- English proof (translation)
-Introduce `F _ _ Y M Δ t φ ht h`. Use `choose V d n s hz hs hφ using h`. Use `choose N π V' hπ _ hz' hle hN using fun z => GlobalTheory.T.exists_model_refinement_generating F Y M Δ t (V z) (d z) (n z) (s z) z ht (hz z) (hs z)`. Establish `: IsProper M.p` using `CommonModel.isProper_of_isProjOver M.ar.isProjOver`. Establish `: CompactSpace M.X` using `QuasiCompact.compactSpace_of_compactSpace M.p`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨S, hS⟩` from `CompactSpace.elim_nhds_subcover (fun z => (V' z : Set M.X)) fun z => (V' z).isOpen.mem_nhds (hz' z)`. Take `⟨P, σ, hP, hσ, hdom⟩` from `exists_normal_dominating_finset M N S`. Use `fromModel_of_charts ht P hP (∏ a ∈ S, d a) fun x => ?_` and prove the remaining obligations. Take `⟨a, ha, hxa⟩` from `Set.mem_iUnion₂.1 (hS.ge (Set.mem_univ (σ x)))`. Take `⟨τ, hτ⟩` from `hdom a ha`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `rfl : σ = τ ≫ π a` from `hom_unique hσ (by rw [← Category.assoc, hτ, hπ])`. Take `⟨i, W, hxW, hi, hg⟩` from `hN a (τ x) hxa`. Establish `hc` using `((isChart_of_dvd ht (π a) (hπ a) (hs a) (hφ a) hi hg).pow ht ((∏ b ∈ S.erase a, d b : ℕ+) : ℕ)).pull τ hτ`. Rewrite `hc` using `[← PNat.mul_coe, Finset.mul_prod_erase S d ha]`. Conclude with `⟨_, _, show τ x ∈ W ⊓ π a ⁻¹ᵁ V a from ⟨hxW, hle a hxa⟩, hc⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem fromModel_of_locMax : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (M : GlobalTheory.TrueGeo.Model Y) (Δ : Y.Dv)
     (t : Y.X → Y.Fnˣ) (φ : PtFn Y), (∀ y, Δ.IsEqn y (t y)) → (∀ z, LocMax M t φ z) → FromModel Y Δ t φ := by

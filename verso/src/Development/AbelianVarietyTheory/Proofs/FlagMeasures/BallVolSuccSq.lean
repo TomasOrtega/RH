@@ -16,9 +16,9 @@ noncomputable section
 namespace GlobalTheory.GaugeQuot.BallProd
 
 /- English proof (translation)
-Substitute `hd` using the available equality. Unfold `ballVol`. Establish `h` using `(stdOrthonormalBasis ℝ F).measurePreserving_repr`. Rewrite using `[← h.measure_preimage measurableSet_ball.nullMeasurableSet]`. Use `congr 1`.
+Substitute using the available equality. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `x`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem volume_ball_eq_ballVol {F : Type*} [NormedAddCommGroup F] [InnerProductSpace ℝ F]
     [FiniteDimensional ℝ F] [MeasurableSpace F] [BorelSpace F] {d : ℕ}
@@ -33,11 +33,11 @@ theorem volume_ball_eq_ballVol {F : Type*} [NormedAddCommGroup F] [InnerProductS
   simp
 
 /- English proof (translation)
-Establish `h0` using `GlobalTheory.volume_preserving_ofLp_complex (Fin P ⊕ Fin Q)`. Establish `h1` using `((MeasurePreserving.id (volume : Measure ℝ)).prod h0).comp (WithLp.volume_preserving_ofLp ℝ (EuclideanSpace ℂ (Fin P ⊕ Fin Q)))`. Establish `h2` using `(h1.prod (MeasurePreserving.id (volume : Measure (EuclideanSpace ℝ (Fin ((P + Q) ^ 2)))))).comp (WithLp.volume_preserving_ofLp (WithLp 2 (ℝ × EuclideanSpace ℂ (Fin P ⊕ Fin Q))) (EuclideanSpace ℝ (Fin ((P + Q) ^ 2))))`. Establish `hm : MeasurableSet {p : (ℝ × Sp P Q) × EuclideanSpace ℝ (Fin ((P + Q) ^ 2)) | p.1.1 ^ 2 + ∑ i, ‖p.1.2 i‖ ^ 2 + ‖p.2‖ ^ 2 < r ^ 2}` using `(isOpen_lt (by fun_prop) continuous_const).measurableSet`. Rewrite using `[Measure.volume_eq_prod, ← h2.measure_preimage hm.nullMeasurableSet, ← volume_ball_eq_ballVol (F := WithLp 2 (WithLp 2 (ℝ × EuclideanSpace ℂ (Fin P ⊕ Fin Q)) × EuclideanSpace ℝ (Fin ((P + Q) ^ 2))))]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `x`. Rewrite using `[mem_ball_zero_iff, ← sq_lt_sq₀ (norm_nonneg _) hr.le, WithLp.prod_norm_sq_eq_of_L2, WithLp.prod_norm_sq_eq_of_L2, EuclideanSpace.norm_sq_eq]`. Simplify using the standard rewrite rules. Rewrite using `[(WithLp.linearEquiv 2 ℝ _).finrank_eq, Module.finrank_prod, (WithLp.linearEquiv 2 ℝ _).finrank_eq, Module.finrank_prod, (WithLp.linearEquiv 2 ℝ (Fin P ⊕ Fin Q → ℂ)).finrank_eq, Module.finrank_pi_fintype]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Complex.finrank_real_complex]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem prod_region_eq_ballVol (P Q : ℕ) (r : ℝ) (hr : 0 < r) :
     ((volume : Measure (ℝ × Sp P Q)).prod
@@ -68,13 +68,13 @@ theorem prod_region_eq_ballVol (P Q : ℕ) (r : ℝ) (hr : 0 < r) :
     ring
 
 /- English proof (translation)
-Establish `hs : (√2 : ℝ) ≠ 0` using `by positivity`. Establish `hfin : Module.finrank ℝ (Sp P Q) = 2 * (P + Q)`. Rewrite using `[Module.finrank_pi_fintype]`. Simplify using `[Complex.finrank_real_complex]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h0 : MeasurePreserving (fun y : Sp P Q => (√2 : ℝ) • y) volume (((2 : ℝ≥0∞) ^ (P + Q))⁻¹ • volume)`. Use `⟨by fun_prop, ?_⟩` and prove the remaining obligations. Rewrite using `[Measure.map_addHaar_smul _ hs, hfin, pow_mul, Real.sq_sqrt (by norm_num), abs_of_pos (by positivity), ENNReal.ofReal_inv_of_pos (by positivity), ENNReal.ofReal_pow (by norm_num)]`. Simplify using the standard rewrite rules. Establish `hne : ((2 : ℝ≥0∞) ^ (P + Q)) ≠ 0` using `by simp`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hnt : ((2 : ℝ≥0∞) ^ (P + Q)) ≠ ⊤` using `by simp`. Use `haveI : SFinite (((2 : ℝ≥0∞) ^ (P + Q))⁻¹ • (volume : Measure (Sp P Q))) := inferInstance`. Establish `h1` using `((MeasurePreserving.id (volume : Measure ℝ)).prod h0).prod (MeasurePreserving.id (volume : Measure (EuclideanSpace ℝ (Fin ((P + Q) ^ 2)))))`. Establish `hm : MeasurableSet {p : (ℝ × Sp P Q) × EuclideanSpace ℝ (Fin ((P + Q) ^ 2)) | p.1.1 ^ 2 + ∑ i, ‖p.1.2 i‖ ^ 2 + ‖p.2‖ ^ 2 < r ^ 2}` using `(isOpen_lt (by fun_prop) continuous_const).measurableSet`. Establish `h2` using `h1.measure_preimage hm.nullMeasurableSet`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[Measure.prod_smul_right, Measure.prod_smul_left, Measure.smul_apply, ← Measure.volume_eq_prod, prod_region_eq_ballVol P Q r hr, smul_eq_mul]`. Establish `h3 : {p : (ℝ × Sp P Q) × EuclideanSpace ℝ (Fin ((P + Q) ^ 2)) | tanSq p.1 + ‖p.2‖ ^ 2 < r ^ 2} = Prod.map (Prod.map id fun y : Sp P Q => (√2 : ℝ) • y) id ⁻¹' {p | p.1.1 ^ 2 + ∑ i, ‖p.1.2 i‖ ^ 2 + ‖p.2‖ ^ 2 < r ^ 2}`. Use extensionality with `p`. Simplify using `[tanSq, norm_smul, mul_pow, Finset.mul_sum, mul_add]`. Rewrite using `[h3, h2, ← mul_assoc, ENNReal.mul_inv_cancel hne hnt, one_mul]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ballVol_succ_sq (P Q : ℕ) (r : ℝ) (hr : 0 < r) :
     ballVol ((P + Q + 1) ^ 2) r = (2 : ℝ≥0∞) ^ (P + Q) *

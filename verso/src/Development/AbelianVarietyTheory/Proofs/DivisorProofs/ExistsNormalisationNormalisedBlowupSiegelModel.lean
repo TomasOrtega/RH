@@ -22,13 +22,11 @@ noncomputable section
 namespace GlobalTheory.PoincCov
 
 /- English proof (translation)
-Use `haveI : Algebra.FiniteType ℤ (cycAway n) := finiteType_cycAway n`. Use `haveI : IsNoetherianRing (cycAway n) := Algebra.FiniteType.isNoetherianRing ℤ _`. Take `⟨X', b, hb, hbs, -⟩` from `GlobalTheory.ProjBlowup.exists_blowup z hz J`. Take `⟨f, hf, -⟩` from `hb.2 S₀ π₀ hB.1`. Take `⟨f', hf', -⟩` from `hB.2 X' b hb.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : f ≫ f' = 𝟙 S₀` using `(hB.2 S₀ π₀ hB.1).unique (by simp [hf', hf]) (by simp)`. Establish `e2 : f' ≫ f = 𝟙 X'` using `(hb.2 X' b hb.1).unique (by simp [hf, hf']) (by simp)`. Use `haveI : IsIso f := ⟨f', e1, e2⟩`. Use `haveI : IsSeparated z := by`. Take `⟨m, e, he, rfl⟩` from `hz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `isProper_str (cycAway n) m` as an intermediate fact. Use `infer_instance`. Use `haveI : IsProper (b ≫ z) := by`. Take `⟨m, e, he, he'⟩` from `hbs`. Use `isProper_str (cycAway n) m` as an intermediate fact.
-
-Rewrite using `[← he']`. Use `infer_instance`. Use `haveI : IsProper b := IsProper.of_comp b z`. Rewrite using `[← hf]`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isProper_of_blowup {n : ℕ} {Z : Scheme.{0}} (z : Z ⟶ Sp (cycAway n)) (hz : IsProjOver z)
     {J : Z.IdealSheafData} {S₀ : Scheme.{0}} {π₀ : S₀ ⟶ Z} (hB : FinalTheorems.Blowup π₀ J) : IsProper π₀ := by
@@ -54,7 +52,7 @@ theorem isProper_of_blowup {n : ℕ} {Z : Scheme.{0}} (z : Z ⟶ Sp (cycAway n))
   infer_instance
 
 /- English proof (translation)
-Take `⟨-, S₀, π₀, ν, U, hB, rfl, hfin, -, -, -⟩` from `h`. Use `haveI := isProper_of_blowup z hz hB`. Use `infer_instance`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isProper_of_isNormBl {n : ℕ} {Z : Scheme.{0}} (z : Z ⟶ Sp (cycAway n)) (hz : IsProjOver z)
     {J : Z.IdealSheafData} {S : Scheme.{0}} {π : S ⟶ Z} (h : IsNormBl π J) : IsProper π := by
@@ -63,13 +61,9 @@ theorem isProper_of_isNormBl {n : ℕ} {Z : Scheme.{0}} (z : Z ⟶ Sp (cycAway n
   infer_instance
 
 /- English proof (translation)
-Use `haveI : Algebra.FiniteType ℤ (cycAway n) := finiteType_cycAway n`. Use `haveI : IsNoetherianRing (cycAway n) := Algebra.FiniteType.isNoetherianRing ℤ _`. Take `⟨hS, S₀, π₀, ν, U, hB, rfl, hfin, hUd, hνd, hνU⟩` from `h`. Use `haveI hπ₀V : IsIso (π₀ ∣_ V) := GlobalTheory.Principalise.isIso_restrict_of_blowup hB V hV`. Use `haveI := isProper_of_blowup z hz hB`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : LocallyOfFiniteType z := by`. Take `⟨m, e, he, rfl⟩` from `hz`. Use `isProper_str (cycAway n) m` as an intermediate fact. Use `infer_instance`. Use `haveI : IsLocallyNoetherian S₀ := LocallyOfFiniteType.isLocallyNoetherian (π₀ ≫ z)`.
-
-Use `haveI : GlobalTheory.IsNormalScheme Z := .of_pred hZ`. Use `haveI hoi : IsOpenImmersion ((π₀ ⁻¹ᵁ V).ι ≫ π₀) := by`. Rewrite using `[← morphismRestrict_ι]`. Use `infer_instance`. Use `haveI : GlobalTheory.IsNormalScheme (π₀ ⁻¹ᵁ V).toScheme := .of_isOpenImmersion ((π₀ ⁻¹ᵁ V).ι ≫ π₀)`.
-
-Use `haveI : IsIso (ν ∣_ (π₀ ⁻¹ᵁ V)) := GlobalTheory.T.isIso_morphismRestrict_finite_of_isNormal_dense ν U (π₀ ⁻¹ᵁ V) ((GlobalTheory.isNormalScheme_iff_pred S).mp hS) (GlobalTheory.IsNormalScheme.pred _) hUd hνd hνU`. Rewrite using `[morphismRestrict_comp]`. Conclude with `IsIso.comp_isIso' (by assumption) hπ₀V`.
+A detailed English derivation is pending.
 -/
 theorem isIso_restrict_of_isNormBl {n : ℕ} {Z : Scheme.{0}} (z : Z ⟶ Sp (cycAway n)) (hz : IsProjOver z)
     (hZ : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme Z) {J : Z.IdealSheafData} {S : Scheme.{0}} {π : S ⟶ Z} (h : IsNormBl π J)
@@ -98,63 +92,47 @@ end GlobalTheory.PoincCov
 namespace GlobalTheory.PoincCov
 
 /- English proof (translation)
-Introduce `g _ n _ _ F Z z i _ hz hZ hiz hdense W J S π hJi hNB X₁`. Use `haveI : Algebra.FiniteType ℤ (cycAway n) := finiteType_cycAway n`. Use `haveI : Algebra.FiniteType ℤ (CommRingCat.of (cycAway n)) := ‹Algebra.FiniteType ℤ (cycAway n)›`. Use `haveI : IsNoetherianRing (cycAway n) := Algebra.FiniteType.isNoetherianRing ℤ _`. Use `haveI : LocallyOfFiniteType z := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨m, e, he, rfl⟩` from `hz`. Use `isProper_str (cycAway n) m` as an intermediate fact. Use `infer_instance`. Use `haveI : IsLocallyNoetherian Z := LocallyOfFiniteType.isLocallyNoetherian z`. Use `haveI hπP : IsProper π := isProper_of_isNormBl z hz hNB`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Set `Vi : Z.Opens` to `i.opensRange`. Use `haveI hπV : IsIso (π ∣_ Vi) := isIso_restrict_of_isNormBl z hz hZ hNB Vi (fun x hx hJ => hJi x hJ hx)`. Establish `monoV : ∀ {T : Scheme.{0}} (u v : T ⟶ S), u ≫ π = v ≫ π → Set.range (u ≫ π) ⊆ (Vi : Set Z) → u = v`. Introduce `T u v huv hr`. Establish `hu : Set.range u ⊆ ((π ⁻¹ᵁ Vi : S.Opens) : Set S)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `_ ⟨w, rfl⟩`. Conclude with `hr ⟨w, rfl⟩`. Establish `hv : Set.range v ⊆ ((π ⁻¹ᵁ Vi : S.Opens) : Set S)`. Introduce and unpack `_ ⟨w, rfl⟩`. Use `hr ⟨w, rfl⟩` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Rewrite `this` using `[huv]`. Conclude with `this`. Establish `hm : Mono ((π ⁻¹ᵁ Vi).ι ≫ π)`. Rewrite using `[← morphismRestrict_ι]`. Use `infer_instance`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Rewrite `hu`, `hv` using `[← Scheme.Opens.range_ι]`. Rewrite using `[← IsOpenImmersion.lift_fac _ u hu, ← IsOpenImmersion.lift_fac _ v hv]`. Use `congr 1`. Rewrite using `[← cancel_mono ((π ⁻¹ᵁ Vi).ι ≫ π)]`. Simplify using `only [← Category.assoc, IsOpenImmersion.lift_fac]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `huv`. Set `U : X₁.M.Z.Opens` to `X₁.π ⁻¹ᵁ Vi`. Establish `hUne : (U : Set X₁.M.Z).Nonempty`. Use `⟨X₁.M.pt (show Sp X₁.Ω₁ from IsLocalRing.closedPoint X₁.Ω₁), ?_⟩` and prove the remaining obligations. Use `show X₁.π (X₁.M.pt _) ∈ Vi`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Scheme.Hom.comp_apply, X₁.comp]`. Conclude with `⟨_, rfl⟩`. Use `haveI : Nonempty U := hUne.to_subtype`. Set `c : (U : Scheme.{0}) ⟶ S` to `X₁.π ∣_ Vi ≫ inv (π ∣_ Vi) ≫ (π ⁻¹ᵁ Vi).ι`. Establish `hc : c ≫ π = U.ι ≫ X₁.π`.
+Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [c, Category.assoc]`. Rewrite using `[← morphismRestrict_ι, IsIso.inv_hom_id_assoc, morphismRestrict_ι]`. Set `j : (U : Scheme.{0}) ⟶ pullback π X₁.π` to `pullback.lift c U.ι hc`. Use `haveI := X₁.fin`. Use `haveI : LocallyOfFiniteType (X₁.π ≫ z) := inferInstance`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : IsLocallyNoetherian X₁.M.Z := LocallyOfFiniteType.isLocallyNoetherian (X₁.π ≫ z)`. Use `haveI : IsLocallyNoetherian (pullback π X₁.π) := LocallyOfFiniteType.isLocallyNoetherian (pullback.fst π X₁.π ≫ π ≫ z)`. Establish `hjs : j ≫ pullback.snd π X₁.π = U.ι` using `pullback.lift_snd _ _ _`. Use `haveI : QuasiCompact (j ≫ pullback.snd π X₁.π) := by rw [hjs]; infer_instance`. Use `haveI : QuasiCompact j := QuasiCompact.of_comp j (pullback.snd π X₁.π)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : QuasiSeparated (j ≫ pullback.snd π X₁.π) := by rw [hjs]; infer_instance`. Use `haveI : QuasiSeparated j := QuasiSeparated.of_comp j (pullback.snd π X₁.π)`. Use `haveI : LocallyOfFiniteType (j ≫ pullback.snd π X₁.π) := by rw [hjs]; infer_instance`. Use `haveI : LocallyOfFiniteType j := locallyOfFiniteType_of_comp j (pullback.snd π X₁.π)`. Use `haveI hfin : IsFinite j.fromNormalization := GlobalTheory.NormBlowupInt.isFinite_fromNormalization_int_of_isReduced (o := CommRingCat.of (cycAway n)) j (pullback.fst π X₁.π ≫ π ≫ z) fun x _ => (LocallyOfFiniteType.stalkMap j x).residueFieldMap`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : GlobalTheory.IsNormalScheme X₁.M.Z := X₁.normal`. Use `haveI : GlobalTheory.IsNormalScheme (U : Scheme.{0}) := .of_isOpenImmersion U.ι`. Set `p₁ : j.normalization ⟶ X₁.M.Z` to `j.fromNormalization ≫ pullback.snd π X₁.π`. Set `ν : j.normalization ⟶ S` to `j.fromNormalization ≫ pullback.fst π X₁.π`. Establish `hp₁ : j.toNormalization ≫ p₁ = U.ι` using `by show j.toNormalization ≫ j.fromNormalization ≫ pullback.snd π X₁.π = U.ι`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Scheme.Hom.toNormalization_fromNormalization_assoc, pullback.lift_snd]`. Establish `hcomm : ν ≫ π = p₁ ≫ X₁.π` using `by simp [ν, p₁, pullback.condition]`. Use `⟨j.normalization, inferInstance, p₁, ν, GlobalTheory.IsNormalScheme.pred _, ?_, ?_, ?_, hcomm, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show IsProper (j.fromNormalization ≫ pullback.snd π X₁.π) infer_instance`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hUd : Dense (U : Set X₁.M.Z)` using `U.isOpen.dense hUne`. Use `hUd.mono ?_` and prove the remaining obligations. Introduce `x hx`. Use `⟨j.toNormalization ⟨x, hx⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[show p₁ (j.toNormalization ⟨x, hx⟩) = (j.toNormalization ≫ p₁) ⟨x, hx⟩ from rfl, hp₁]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Use `show IsFinite (j.fromNormalization ≫ pullback.fst π X₁.π) infer_instance`. Set `O : (pullback π X₁.π).Opens` to `pullback.snd π X₁.π ⁻¹ᵁ U`. Establish `hjO : Set.range j ⊆ Set.range O.ι`. Rewrite using `[Scheme.Opens.range_ι]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `_ ⟨x, rfl⟩`. Use `show pullback.snd π X₁.π (j x) ∈ U`. Rewrite using `[← Scheme.Hom.comp_apply, hjs]`. Conclude with `x.2`. Set `f0 : (U : Scheme.{0}) ⟶ O` to `IsOpenImmersion.lift O.ι j hjO`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hf0 : f0 ≫ O.ι = j` using `IsOpenImmersion.lift_fac _ _ _`. Set `s'` to `pullback.snd π X₁.π ∣_ U`. Establish `hs' : s' ≫ U.ι = O.ι ≫ pullback.snd π X₁.π` using `morphismRestrict_ι _ _`. Establish `e1 : f0 ≫ s' = 𝟙 _`. Rewrite using `[← cancel_mono U.ι, Category.assoc, hs', ← Category.assoc, hf0, hjs, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : s' ≫ f0 = 𝟙 _`. Rewrite using `[← cancel_mono O.ι, Category.assoc, hf0, Category.id_comp]`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, pullback.lift_fst]`. Apply `monoV` to reduce the goal to its premises.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, hc, ← Category.assoc, hs', Category.assoc, Category.assoc, pullback.condition]`. Rewrite using `[Category.assoc, hc, ← Category.assoc]`. Introduce and unpack `_ ⟨w, rfl⟩`. Rewrite using `[Scheme.Hom.comp_apply]`. Conclude with `(s' w).2`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, pullback.lift_snd, hs']`. Use `haveI : IsIso s' := ⟨f0, e2, e1⟩`. Use `haveI : IsIso f0 := ⟨s', e1, e2⟩`. Establish `H` using `GlobalTheory.isPullback_toNormalization_of_mono f0 O.ι j hf0.symm`. Establish `e` using `IsPullback.isoIsPullback_hom_fst _ _ (isPullback_morphismRestrict j.fromNormalization O) H.flip`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : IsIso (j.fromNormalization ∣_ O) := by rw [← e]; infer_instance`. Use `show IsIso ((j.fromNormalization ≫ pullback.snd π X₁.π) ∣_ U)`. Rewrite using `[morphismRestrict_comp]`. Conclude with `IsIso.comp_isIso' (by assumption) (by assumption)`. Take `⟨-, S₀, π₀, ν₀, U₀, hB, hνπ, -, -, -, -⟩` from `hNB`.
-
-Take `⟨D, hD⟩` from `GlobalTheory.EffCartierData.exists_idealSheaf_eq hB.1`. Establish `hpe : p₁ ≫ X₁.π = (ν ≫ ν₀) ≫ π₀` using `by rw [← hcomm, Category.assoc ν ν₀ π₀, hνπ]`. Establish `hK : D.KeepsRegular (ν ≫ ν₀)`. Use `D.keepsRegular_of_dense _ (fun y => inferInstance) ((j.toNormalization.denseRange).mono ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`.
-
-Use `show (ν ≫ ν₀) (j.toNormalization x) ∉ D.idealSheaf.support`. Rewrite using `[hD, GlobalTheory.ProjBlowup.mem_support_comap]`. Introduce `h`. Apply `hJi _ h` to reduce the goal to its premises. Establish `: j.toNormalization ≫ (ν ≫ ν₀) ≫ π₀ = U.ι ≫ X₁.π` using `by rw [← hpe, ← Category.assoc, hp₁]`.
-
-Rewrite using `[← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, this]`. Conclude with `x.2`. Establish `e : J.comap (p₁ ≫ X₁.π) = (D.pull (ν ≫ ν₀) hK).idealSheaf`. Rewrite using `[GlobalTheory.EffCartierData.idealSheaf_pull, hD, hpe, Scheme.IdealSheafData.comap_comp]`. Rewrite using `[e]`.
-
-Conclude with `GlobalTheory.EffCartierData.effCartier_idealSheaf _`. Introduce `R _ _ _ _ a b hab hgen`. Set `d : Sp R ⟶ pullback π X₁.π` to `pullback.lift a b hab`. Establish `hr : Set.range (jK R ≫ b) ⊆ Set.range U.ι`. Rewrite using `[Scheme.Opens.range_ι]`.
-
-Introduce and unpack `_ ⟨w, rfl⟩`. Use `show X₁.π ((jK R ≫ b) w) ∈ Vi`. Rewrite using `[← Scheme.Hom.comp_apply, Category.assoc]`. Conclude with `hgen ⟨w, rfl⟩`. Set `y` to `IsOpenImmersion.lift U.ι (jK R ≫ b) hr`.
-
-Establish `hy : y ≫ U.ι = jK R ≫ b` using `IsOpenImmersion.lift_fac _ _ _`. Establish `hyj : y ≫ j = jK R ≫ d`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, pullback.lift_fst, Category.assoc, pullback.lift_fst]`. Apply `monoV` to reduce the goal to its premises.
-
-Rewrite using `[Category.assoc, hc, ← Category.assoc, hy, Category.assoc, Category.assoc, hab]`. Rewrite using `[Category.assoc, hc, ← Category.assoc, hy, Category.assoc]`. Conclude with `hgen`. Rewrite using `[Category.assoc, pullback.lift_snd, Category.assoc, pullback.lift_snd, hy]`. Take `⟨ξ, ⟨-, hξ⟩, -⟩` from `GlobalTheory.existsUnique_lift_spec_of_isLocalization (R := R) (R' := FractionRing R) (nonZeroDivisors R) le_rfl j.fromNormalization (y ≫ j.toNormalization) d (by rw [Category.assoc, Scheme.Hom.toNormalization_fromNormalization, hyj])`.
-
-Use `⟨ξ, ?_, ?_⟩` and prove the remaining obligations. Use `show ξ ≫ j.fromNormalization ≫ pullback.fst π X₁.π = a`. Rewrite using `[← Category.assoc, hξ, pullback.lift_fst]`. Use `show ξ ≫ j.fromNormalization ≫ pullback.snd π X₁.π = b`. Rewrite using `[← Category.assoc, hξ, pullback.lift_snd]`.
+A detailed English derivation is pending.
 -/
 theorem exists_normalisation_cover : ∀ g : ℕ, 1 ≤ g → ∀ n : ℕ, 3 ≤ n → Odd n → ∀ (F : SFam g n (zetaAway n)) (Z : Scheme.{0}) (z : Z ⟶ Sp (cycAway n)) (i : F.X ⟶ Z) [IsOpenImmersion i], IsProjOver z → ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme Z → i ≫ z = F.s → Dense (Set.range i) → ∀ W : Matrix (Fin 8) (Fin 8) ℤ, ∀ (J : Z.IdealSheafData) (S : Scheme.{0}) (π : S ⟶ Z), (∀ x ∈ J.support, x ∉ Set.range i) → IsNormBl π J → ∀ X₁ : Setup F W i, ∃ (S₁ : Scheme.{0}) (_ : IsIntegral S₁) (p₁ : S₁ ⟶ X₁.M.Z) (ν : S₁ ⟶ S), ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme S₁ ∧ IsProper p₁ ∧ IsDominant p₁ ∧ IsFinite ν ∧ ν ≫ π = p₁ ≫ X₁.π ∧ IsIso (p₁ ∣_ (X₁.π ⁻¹ᵁ i.opensRange)) ∧ FinalTheorems.EffCartier (J.comap (p₁ ≫ X₁.π)) ∧ ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsIntegrallyClosed R] (a : Sp R ⟶ S) (b : Sp R ⟶ X₁.M.Z), a ≫ π = b ≫ X₁.π → Set.range (jK R ≫ b ≫ X₁.π) ⊆ Set.range i → ∃ ξ₁ : Sp R ⟶ S₁, ξ₁ ≫ ν = a ∧ ξ₁ ≫ p₁ = b := by
   intro g _ n _ _ F Z z i _ hz hZ hiz hdense W J S π hJi hNB X₁

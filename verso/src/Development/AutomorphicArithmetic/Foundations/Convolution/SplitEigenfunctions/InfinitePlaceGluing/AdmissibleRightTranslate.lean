@@ -19,9 +19,9 @@ section SlopeTestRemainingChoices
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
 
 /- English proof (translation)
-Take `⟨hadd, hsmul, -⟩` from `UpperTheory.whittakerPeriod_add_smul_and_norm_le E D`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [Wo]`. Consider the case `insert i s hi ih`. Establish `hc : Continuous (∑ x ∈ s, a x • F x)`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_fn]`. Conclude with `continuous_finset_sum _ fun j _ => (hF j).const_smul _`. Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi, hadd _ _ ((hF i).const_smul _) hc, hsmul, ih]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem wo_sum (D : Dat ℚ E) {ι : Type} (s : Finset ι) (a : ι → ℂ) (F : ι → GL (Fin 2) (A E) → ℂ)
     (hF : ∀ i, Continuous (F i)) (h : GL (Fin 2) (A E)) :
@@ -36,9 +36,9 @@ private theorem wo_sum (D : Dat ℚ E) {ι : Type} (s : Finset ι) (a : ι → �
     rw [Finset.sum_insert hi, Finset.sum_insert hi, hadd _ _ ((hF i).const_smul _) hc, hsmul, ih]
 
 /- English proof (translation)
-Establish `h : lie E 2 X = ∑ i, (b.repr X i) • lie E 2 (b i)` using `by conv_lhs => rw [← b.sum_repr X]`. Rewrite using `[map_sum]`. Simplify using `only [map_smul]`. Rewrite using `[h]`. Use function extensionality and compare the values at `g`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, AddSubmonoidClass.coe_finset_sum, Finset.sum_apply, Submodule.coe_smul_of_tower, Pi.smul_apply, Complex.real_smul, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem lie_expand {ι : Type} [Fintype ι] (b : Module.Basis ι ℝ (Lie E 2)) (X : Lie E 2) (f : Sm E 2) :
     (lie E 2 X f).1 = ∑ i, ((b.repr X i : ℝ) : ℂ) • (lie E 2 (b i) f).1 := by
@@ -51,7 +51,7 @@ private theorem lie_expand {ι : Type} [Fintype ι] (b : Module.Basis ι ℝ (Li
   simp only [LinearMap.sum_apply, LinearMap.smul_apply, AddSubmonoidClass.coe_finset_sum, Finset.sum_apply, Submodule.coe_smul_of_tower, Pi.smul_apply, Complex.real_smul, smul_eq_mul]
 
 /- English proof (translation)
-The claim follows from `|re (y : A ℚ)| ^ r * ‖Wo D f.1 (em E (aE y) * k)‖ ≤ B := by obtain ⟨-, -, hnorm⟩ := UpperTheory.whittakerPeriod_add_smul_and_norm_le E D induction r with | zero => intro f hf C _ obtain ⟨B, hB'⟩ := hB f hf exact ⟨B, fun y k _ => by simpa using hnorm f.1 B _ hB'⟩ | succ r ih => in …`.
+A detailed English derivation is pending.
 -/
 private theorem pow_bound (D : Dat ℚ E) (P : CuspSub E 2) (hL : ∀ f ∈ P.V, Pp.Lf f.1)
     (hB : ∀ f ∈ P.V, ∃ B : ℝ, ∀ g, ‖f.1 g‖ ≤ B) (r : ℕ) :
@@ -105,7 +105,7 @@ section Main
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
 
 /- English proof (translation)
-Break down `le_total x 1 with h | h` into its components or cases. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Separate the alternatives or extract the components of the hypothesis. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 -/
 private theorem one_add_pow_le (x : ℝ) (hx : 0 ≤ x) (r : ℕ) : (1 + x) ^ r ≤ 2 ^ r * (1 + x ^ r) := by
   rcases le_total x 1 with h | h
@@ -116,11 +116,11 @@ private theorem one_add_pow_le (x : ℝ) (hx : 0 ≤ x) (r : ℕ) : (1 + x) ^ r 
       _ ≤ 2 ^ r * (1 + x ^ r) := by gcongr; linarith
 
 /- English proof (translation)
-Take `⟨K, hK, hs⟩` from `UpperTheory.whittakerCoeff_ne_zero_finiteAdele_mem_compact E D f (P.cusp f hf).1 (hL f hf) C hC`. Use `⟨K, hK, fun r => ?_⟩` and prove the remaining obligations. Take `⟨B₀, h₀⟩` from `pow_bound D P hL hB 0 f hf C hC`. Take `⟨B₁, h₁⟩` from `pow_bound D P hL hB r f hf C hC`. Use `⟨2 ^ r * (B₀ + B₁), fun y k hk => ⟨?_, hs y k hk⟩⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h0` using `h₀ y k hk`. Establish `h1` using `h₁ y k hk`. Rewrite `h0` using `[pow_zero, one_mul]`. Establish `hp : 0 < (1 + |re (y : A ℚ)|) ^ r` using `by positivity`. Rewrite using `[← div_eq_mul_inv, le_div_iff₀ hp]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `one_add_pow_le _ (abs_nonneg _) r`. Use `_ = 2 ^ r * (‖Wo D f.1 (em E (aE y) * k)‖ + |re (y : A ℚ)| ^ r * ‖Wo D f.1 (em E (aE y) * k)‖) := by ring`. Use `_ ≤ 2 ^ r * (B₀ + B₁) := by gcongr`.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem wdec_of (D : Dat ℚ E) (P : CuspSub E 2) (hL : ∀ f ∈ P.V, Pp.Lf f.1)
     (hB : ∀ f ∈ P.V, ∃ B : ℝ, ∀ g, ‖f.1 g‖ ≤ B) (f : Sm E 2) (hf : f ∈ P.V) (C : Set (GL (Fin 2) (A E))) (hC : IsCompact C) :
@@ -148,7 +148,7 @@ private def Adm' (D : Dat ℚ E) (ω : HChar ℚ) (φ : GL (Fin 2) (A E) → ℂ
   admitted D ω φ ∧ ∀ g, ∫ b in fundamentalSet E, φ (gl (nU b) * g) ∂(adeleMeasure E) = 0
 
 /- English proof (translation)
-Use `⟨⟨continuous_const, fun _ _ => rfl, fun _ _ => by simp, fun _ => by simp, ⟨0, fun _ => by simp⟩, fun _ _ _ _ _ => ⟨0, fun _ _ _ _ _ => by simp⟩, fun _ _ => ⟨∅, isCompact_empty, fun _ => ⟨0, fun y k _ => ?_⟩⟩⟩, fun _ => by simp⟩` and prove the remaining obligations. Establish `: Wo D (0 : GL (Fin 2) (A E) → ℂ) (em E (aE y) * k) = 0` using `by simp [Wo]`. Simplify using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 private theorem Adm'.zero' (D : Dat ℚ E) (ω : HChar ℚ) : Adm' D ω (0 : GL (Fin 2) (A E) → ℂ) := by
   refine ⟨⟨continuous_const, fun _ _ => rfl, fun _ _ => by simp, fun _ => by simp, ⟨0, fun _ => by simp⟩,
@@ -157,19 +157,19 @@ private theorem Adm'.zero' (D : Dat ℚ E) (ω : HChar ℚ) : Adm' D ω (0 : GL 
   simp [this]
 
 /- English proof (translation)
-Take `⟨a, a0⟩` from `h`. Take `⟨b, b0⟩` from `h'`. Establish `hc : Continuous (φ + φ')` using `a.cont.add b.cont`. Establish `hl : ∀ γ g, (φ + φ') (ratGL E 2 γ * g) = (φ + φ') g` using `fun γ g => by simp [a.left, b.left]`. Establish `hz : ∀ g, ∫ x in fundamentalSet E, (φ + φ') (gl (nU x) * g) ∂(adeleMeasure E) = 0` using `fun g => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi : ∀ {u : GL (Fin 2) (A E) → ℂ}, Continuous u → IntegrableOn (fun x => u (gl (nU x) * g)) (fundamentalSet E) (adeleMeasure E)` using `fun hu => Pp.intOn (hu.comp (Pp.cont_n.mul continuous_const))`. Simplify using `only [Pi.add_apply]`. Rewrite using `[integral_add (hi a.cont) (hi b.cont), a0, b0, add_zero]`. Use `⟨⟨hc, hl, fun z g => by simp [a.cen, b.cen, mul_add], UpperTheory.integral_unipotentCoordinates_eq_zero_of_cuspidal E D _ ⟨hc, hl⟩ hz, ?_, ?_, ?_⟩, hz⟩` and prove the remaining obligations. Take `⟨B, hB⟩` from `a.bdd`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨B', hB'⟩` from `b.bdd`. Conclude with `⟨B + B', fun g => (norm_add_le _ _).trans (add_le_add (hB g) (hB' g))⟩`. Introduce `C hC c hc r`. Take `⟨B, hB⟩` from `a.decay C hC c hc r`. Take `⟨B', hB'⟩` from `b.decay C hC c hc r`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨B + B', fun x y k hk hy => ?_⟩` and prove the remaining obligations. Rewrite using `[add_mul]`. Conclude with `(norm_add_le _ _).trans (add_le_add (hB x y k hk hy) (hB' x y k hk hy))`. Introduce `C hC`. Take `⟨K, hK, h⟩` from `a.wdec C hC`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨K', hK', h'⟩` from `b.wdec C hC`. Use `⟨K ∪ K', hK.union hK', fun r => ?_⟩` and prove the remaining obligations. Take `⟨B, hB⟩` from `h r`. Take `⟨B', hB'⟩` from `h' r`. Use `⟨B + B', fun y k hk => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e` using `(UpperTheory.whittakerPeriod_add_smul_and_norm_le E D).1 φ φ' a.cont b.cont (em E (aE y) * k)`. Take `⟨u, v⟩` from `hB y k hk`. Take `⟨u', v'⟩` from `hB' y k hk`. Rewrite using `[e, add_mul]`. Use `⟨(norm_add_le _ _).trans (add_le_add u u'), fun hne => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h0 : Wo D φ (em E (aE y) * k) = 0`. Conclude with `Or.inr (v' fun h1 => hne (by rw [h0, h1, add_zero]))`. Conclude with `Or.inl (v h0)`.
+Prove the second alternative. Prove the first alternative. A detailed English derivation is pending.
 -/
 private theorem Adm'.add {D : Dat ℚ E} {ω : HChar ℚ} {φ φ' : GL (Fin 2) (A E) → ℂ} (h : Adm' D ω φ) (h' : Adm' D ω φ') :
     Adm' D ω (φ + φ') := by
@@ -209,15 +209,15 @@ private theorem Adm'.add {D : Dat ℚ E} {ω : HChar ℚ} {φ φ' : GL (Fin 2) (
     · exact Or.inl (v h0)
 
 /- English proof (translation)
-Take `⟨a, a0⟩` from `h`. Establish `hc : Continuous (c • φ)` using `a.cont.const_smul c`. Establish `hl : ∀ γ g, (c • φ) (ratGL E 2 γ * g) = (c • φ) g` using `fun γ g => by simp [a.left]`. Establish `hz : ∀ g, ∫ x in fundamentalSet E, (c • φ) (gl (nU x) * g) ∂(adeleMeasure E) = 0` using `fun g => by`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[integral_const_mul, a0, mul_zero]`. Use `⟨⟨hc, hl, fun z g => by simp [a.cen, mul_left_comm], UpperTheory.integral_unipotentCoordinates_eq_zero_of_cuspidal E D _ ⟨hc, hl⟩ hz, ?_, ?_, ?_⟩, hz⟩` and prove the remaining obligations. Take `⟨B, hB⟩` from `a.bdd`. Use `⟨‖c‖ * B, fun g => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul, norm_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `mul_le_mul_of_nonneg_left (hB g) (norm_nonneg _)`. Introduce `C hC c' hc' r`. Take `⟨B, hB⟩` from `a.decay C hC c' hc' r`. Use `⟨‖c‖ * B, fun x y k hk hy => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul, norm_mul, mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `mul_le_mul_of_nonneg_left (hB x y k hk hy) (norm_nonneg _)`. Introduce `C hC`. Take `⟨K, hK, h⟩` from `a.wdec C hC`. Use `⟨K, hK, fun r => ?_⟩` and prove the remaining obligations. Take `⟨B, hB⟩` from `h r`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨‖c‖ * B, fun y k hk => ?_⟩` and prove the remaining obligations. Take `⟨u, v⟩` from `hB y k hk`. Establish `e` using `(UpperTheory.whittakerPeriod_add_smul_and_norm_le E D).2.1 c φ (em E (aE y) * k)`. Rewrite using `[e, norm_mul, mul_assoc]`. Conclude with `⟨mul_le_mul_of_nonneg_left u (norm_nonneg _), fun hne => v (right_ne_zero_of_mul hne)⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem Adm'.smul {D : Dat ℚ E} {ω : HChar ℚ} {φ : GL (Fin 2) (A E) → ℂ} (c : ℂ) (h : Adm' D ω φ) :
     Adm' D ω (c • φ) := by
@@ -248,22 +248,22 @@ private theorem Adm'.smul {D : Dat ℚ E} {ω : HChar ℚ} {φ : GL (Fin 2) (A E
     exact ⟨mul_le_mul_of_nonneg_left u (norm_nonneg _), fun hne => v (right_ne_zero_of_mul hne)⟩
 
 /- English proof (translation)
-Simplify using `only [Wo, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem wo_translate (D : Dat ℚ E) (f : GL (Fin 2) (A E) → ℂ) (h g : GL (Fin 2) (A E)) :
     Wo D (fun x => f (x * h)) g = Wo D f (g * h) := by
   simp only [Wo, mul_assoc]
 
 /- English proof (translation)
-Establish `hL : ∀ f ∈ P.V, Pp.Lf f.1` using `fun f hf => (hD E P f hf).1`. Establish `hB : ∀ f ∈ P.V, ∃ B : ℝ, ∀ g, ‖f.1 g‖ ≤ B` using `UpperTheory.exists_bound_cuspForm_of_unitary_centralCharacter E P ω hc hu`. Take `⟨hl, h0, hd⟩` from `hD E P f hf`. Establish `hcp : ∀ {C : Set (GL (Fin 2) (A E))}, IsCompact C → IsCompact ((· * h) '' C)` using `fun hC => hC.image (continuous_mul_right h)`. Establish `hz : ∀ g, ∫ b in fundamentalSet E, f.1 (gl (nU b) * g * h) ∂(adeleMeasure E) = 0` using `fun g => by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [mul_assoc]`. Conclude with `h0 _`. Establish `hc' : Continuous fun g => f.1 (g * h)` using `hl.1.comp (continuous_mul_right h)`. Establish `hl' : ∀ γ g, f.1 (ratGL E 2 γ * g * h) = f.1 (g * h)` using `fun γ g => by rw [mul_assoc, hl.2]`. Use `⟨⟨hc', hl', fun z g => ?_, UpperTheory.integral_unipotentCoordinates_eq_zero_of_cuspidal E D _ ⟨hc', hl'⟩ hz, ?_, ?_, ?_⟩, hz⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_assoc, hc f hf]`. Take `⟨B, hB'⟩` from `hB f hf`. Conclude with `⟨B, fun g => hB' _⟩`. Introduce `C hC c hc r`. Take `⟨B, hB'⟩` from `hd _ (hcp hC) c hc r`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨B, fun b a k hk ha => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Conclude with `hB' b a _ ⟨k, hk, rfl⟩ ha`. Introduce `C hC`. Take `⟨K, hK, hr⟩` from `wdec_of D P hL hB f hf _ (hcp hC)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨K, hK, fun r => ?_⟩` and prove the remaining obligations. Take `⟨B, hB'⟩` from `hr r`. Use `⟨B, fun y k hk => ?_⟩` and prove the remaining obligations. Simplify using `only [wo_translate, mul_assoc]`. Simplify `hB' y (k * h) ⟨k, hk, rfl⟩` using `only [mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem admissible_two_sided_translate (hD : DecE) (D : Dat ℚ E) (P : CuspSub E 2) (ω : HChar ℚ) (hc : CenN P ω) (hu : Unit1 ω)
     (f : Sm E 2) (hf : f ∈ P.V) (h : GL (Fin 2) (A E)) : Adm' D ω fun g => f.1 (g * h) := by
@@ -296,7 +296,7 @@ private theorem admissible_two_sided_translate (hD : DecE) (D : Dat ℚ E) (P : 
 end Main
 
 /- English proof (translation)
-Introduce `hD E _ _ _ D P ω χ hc hu _ φ hφ`. Use `(Submodule.span_induction (p := fun φ _ => Adm' D ω φ) ?_ (Adm'.zero' D ω) (fun _ _ _ _ a b => a.add b) (fun c _ _ a => a.smul c) hφ).1` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, h, rfl⟩`. Conclude with `admissible_two_sided_translate hD D P ω hc hu f hf h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.RankTwoDescent.trAdm_of :
     DecE → TrAdm := by

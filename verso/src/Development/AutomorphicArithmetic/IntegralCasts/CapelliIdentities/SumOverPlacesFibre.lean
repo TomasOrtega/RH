@@ -3,13 +3,13 @@ import Mathlib
 open scoped Classical
 
 /- English proof (translation)
-Introduce `F _ _ _ x v`. Establish `hc : v.IsComplex` using `NumberField.IsTotallyComplex.isComplex v`. Establish `hne : v.embedding ≠ NumberField.ComplexEmbedding.conjugate v.embedding`. Introduce `h`. Conclude with `(NumberField.InfinitePlace.isComplex_iff.mp hc) (NumberField.ComplexEmbedding.isReal_iff.mpr h.symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hset : (Finset.univ.filter fun φ : F →+* ℂ => NumberField.InfinitePlace.mk φ = v) = {v.embedding, NumberField.ComplexEmbedding.conjugate v.embedding}`. Use extensionality with `φ`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_insert, Finset.mem_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h' : NumberField.InfinitePlace.mk v.embedding = NumberField.InfinitePlace.mk φ`. Rewrite using `[NumberField.InfinitePlace.mk_embedding, h]`. Break down `NumberField.InfinitePlace.mk_eq_iff.mp h' with h1 | h1` into its components or cases. Conclude with `Or.inl h1.symm`. Conclude with `Or.inr h1.symm`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `(h | h)`. Rewrite using `[h, NumberField.InfinitePlace.mk_embedding]`. Rewrite using `[h, NumberField.InfinitePlace.mk_conjugate_eq, NumberField.InfinitePlace.mk_embedding]`. Rewrite using `[hset, Finset.sum_pair hne, NumberField.ComplexEmbedding.conjugate_coe_eq, Complex.add_conj]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.SumOverPlacesFibre.sum_fibre_place :
     ∀ (F : Type) [inst : Field F]

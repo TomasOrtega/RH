@@ -27,9 +27,9 @@ section
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Rewrite using `[deltaHalf_apply, Fin.prod_univ_two]`. Establish `h0 : modExp (fun a => Fin (![n, j + 1] a)) (0 : Fin 2) = (j : ℤ) + 1`. Establish `e1 : (Finset.univ.filter fun b : Fin 2 => (0 : Fin 2) < b) = {1}` using `by decide`. Establish `e2 : (Finset.univ.filter fun b : Fin 2 => b < (0 : Fin 2)) = ∅` using `by decide`. Simplify using `[modExp, e1, e2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `f0 : firstEmb ![n, j + 1] g (0 : Fin 2) = g` using `Pi.mulSingle_eq_same (M := fun a => GL (Fin (![n, j + 1] a)) k) (0 : Fin 2) g`. Establish `f1 : firstEmb ![n, j + 1] g (1 : Fin 2) = 1` using `Pi.mulSingle_eq_of_ne (M := fun a => GL (Fin (![n, j + 1] a)) k) (by decide : (1 : Fin 2) ≠ 0) g`. Rewrite using `[h0, f0, f1, map_one, map_one, mul_one]`. Simplify using `[detChar]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem deltaHalf_firstEmb (n j : ℕ) (g : GL (Fin n) k) :
     deltaHalf k (fun a => Fin (![n, j + 1] a)) (firstEmb ![n, j + 1] g) =
@@ -48,11 +48,11 @@ theorem deltaHalf_firstEmb (n j : ℕ) (g : GL (Fin n) k) :
   rfl
 
 /- English proof (translation)
-Set `E` to `(q.quotKerEquivOfSurjective hqs).symm.trans ((Submodule.quotEquivOfEq _ _ hk.symm).trans (r.quotKerEquivOfSurjective hrs))`. Establish `hE : ∀ v, E (q v) = r v`. Introduce `v`. Establish `: (q.quotKerEquivOfSurjective hqs).symm (q v) = Submodule.Quotient.mk v`. Rewrite using `[LinearEquiv.symm_apply_eq]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Simplify using `only [E, LinearEquiv.trans_apply, this]`. Both sides reduce to the same expression. Use `⟨.mk E fun g => ?_⟩` and prove the remaining obligations. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨v, rfl⟩` from `hqs x`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe]`. Rewrite using `[← hq, hE, hE, twist_apply, hr, smul_smul]`. Rewrite using `[show ((χ g : ℂˣ) : ℂ) * ((((χ g)⁻¹ : ℂˣ) : ℂˣ) : ℂ) = 1 by rw [← Units.val_mul, mul_inv_cancel, Units.val_one], one_smul]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem equiv_of_ker {G V D Q : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup D] [Module ℂ D]
     [AddCommGroup Q] [Module ℂ Q] (ρ : Representation ℂ G D) (σ : Representation ℂ G Q) (χ : G →* ℂˣ)
@@ -77,9 +77,9 @@ theorem equiv_of_ker {G V D Q : Type} [Group G] [AddCommGroup V] [Module ℂ V] 
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Take `⟨q, hqs, hqk, hqg⟩` from `GlobalTheory.T.derivative_jacquet_twisted_quotient k ψ n j V π hd`. Establish `hcm` using `GlobalTheory.T.whittaker_kernel_pullback_jacquet k ψ n j V π hd`. Use `equiv_of_ker _ _ _ q ((whitKer ψ ![n, j + 1] (jac (stdBlocks ![n, j + 1] hd) π)).mkQ ∘ₗ (twKer π (unipRad k (stdBlocks ![n, j + 1] hd)) 1).mkQ) hqs ((Submodule.mkQ_surjective _).comp (Submodule.mkQ_surjective _)) ?_ (fun g v => π (leviEmb k (stdBlocks ![n, j + 1] hd) (firstEmb ![ …` and prove the remaining obligations. Rewrite using `[hqk, ← hcm, LinearMap.ker_comp, Submodule.ker_mkQ]`. Introduce `g v show Submodule.Quotient.mk (jac (stdBlocks ![n, j + 1] hd) π (firstEmb ![n, j + 1] g) (Submodule.Quotient.mk v)) = _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[jac_mk, ← deltaHalf_firstEmb]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem deriv_equiv (ψ : AddChar k Circle) (n j : ℕ) {V : Type} [AddCommGroup V] [Module ℂ V]
     (π : Representation ℂ (GL (Fin (n + j + 1)) k) V) (hd : ∑ a, (![n, j + 1] a) = n + j + 1) :
@@ -98,9 +98,9 @@ theorem deriv_equiv (ψ : AddChar k Circle) (n j : ℕ) {V : Type} [AddCommGroup
     rfl
 
 /- English proof (translation)
-Take `⟨T, f, hf⟩` from `h`. Set `T' : Subrepresentation ρ` to `⟨T.toSubmodule, fun g v hv => by`. Take `⟨c, rfl⟩` from `hθ g`. Conclude with `T.apply_mem_toSubmodule c hv⟩`. Use `⟨T', .mk f.toLinearMap fun g => ?_, hf⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨c, rfl⟩` from `hθ g`. Use extensionality with `v`. Conclude with `f.isIntertwining _ _ c v`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem isSubquotient_of_comp {G H V W : Type} [Group G] [Group H] [AddCommGroup V] [Module ℂ V] [AddCommGroup W]
     [Module ℂ W] {σ : Representation ℂ G W} {ρ : Representation ℂ G V} (θ : H →* G) (hθ : Function.Surjective θ)
@@ -115,9 +115,9 @@ theorem isSubquotient_of_comp {G H V W : Type} [Group G] [Group H] [AddCommGroup
   exact f.isIntertwining _ _ c v
 
 /- English proof (translation)
-Introduce `m`. Set `φ : ∀ a, GL (Fin (d a)) k` to `fun a => Eq.rec (motive := fun x _ => GL (Fin (d x)) k) (m (Fin.rev a)) (Fin.rev_rev a)`. Use `⟨fun a => thetaW k (d a) (φ a), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a`. Use `show thetaW k (d (Fin.rev a)) (thetaW k (d (Fin.rev a)) (φ (Fin.rev a))) = m a`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.CompanionTheory.ThetaInv.thetaW_thetaW]`. Establish `key : ∀ (b : Fin h) (_ : b = a) (e : Fin.rev b = Fin.rev a), (Eq.rec (motive` using `fun x _ => GL (Fin (d x)) k) (m b) e : GL (Fin (d (Fin.rev a))) k) = m a := by`. Introduce and unpack `b rfl e`. Both sides reduce to the same expression. Conclude with `key _ (Fin.rev_rev a) _`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem thetaL_surjective {h : ℕ} (d : Fin h → ℕ) : Function.Surjective (thetaL (A := k) d) := by
   intro m
@@ -136,11 +136,11 @@ theorem thetaL_surjective {h : ℕ} (d : Fin h → ℕ) : Function.Surjective (t
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hGK` using `GlobalTheory.CompanionTheory.GKLocalProof.gkLocal (k := k) hA`. Take `⟨E1⟩` from `GlobalTheory.CompanionTheory.ThetaW.comp_thetaW_equiv_contra hGK N π hs hi`. Establish `h1 : jm u hd (π.comp (thetaW k N)) ≠ 0`. Rewrite using `[GlobalTheory.CompanionTheory.JacquetCongr.jm_congr_of_equiv u hd _ _ ⟨E1⟩]` and apply the resulting hypothesis. Establish `h2` using `jhMult_ne_zero_iff.1 h1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hd' : ∑ a, (u (Fin.rev a)).1 = N` using `sum_dualRev hA u hd`. Take `⟨E2⟩` from `GlobalTheory.T.jacquet_theta_reverse_blocks k h N (fun a => (u a).1) hd hd' V π`. Establish `h3` using `h2.trans (IsSubquotient.of_injective E2.toIntertwiningMap E2.injective)`. Establish `T1` using `piTensorRevEquiv (fun a => (u a).rep)`. Establish `T2` using `compEquiv (piTensorEquiv fun a => blockEquiv hA hGK u a) (revPi fun a => GL (Fin (u a).1) k)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `T3` using `equivOfEq (piTensor_comp_thetaL (k := k) (fun a => (u a).1) fun a => (dualRev hA u a).rep)`. Establish `TT` using `(T1.trans T2).trans T3`. Establish `h4` using `(IsSubquotient.of_surjective TT.toIntertwiningMap TT.surjective).trans h3`. Conclude with `jhMult_ne_zero_iff.2 (isSubquotient_of_comp _ (thetaL_surjective _) h4)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem jm_contra_gen (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) {h N : ℕ} (u : Fin h → IrrGL k)
     (hd : ∑ a, (u a).1 = N) {V : Type} [AddCommGroup V] [Module ℂ V]
@@ -162,9 +162,9 @@ theorem jm_contra_gen (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) {h N
   exact jhMult_ne_zero_iff.2 (isSubquotient_of_comp _ (thetaL_surjective _) h4)
 
 /- English proof (translation)
-Establish `h6` using `jm_contra_gen hA ![x, y] hd π hs hi (ENat.one_le_iff_ne_zero.1 h)`. Establish `key : ∀ (u w : Fin 2 → IrrGL k), u = w → ∀ hu : ∑ a, (u a).1 = N, jm u hu π ≠ 0 → ∃ hw : ∑ a, (w a).1 = N, 1 ≤ jm w hw π`. Introduce and unpack `u _ rfl hu h`. Conclude with `⟨hu, ENat.one_le_iff_ne_zero.2 h⟩`. Use `key _ _ ?_ _ h6` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[dualRev_eq]`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `fin_cases a <;> rfl`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem jm_contra (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (N : ℕ) {V : Type} [AddCommGroup V] [Module ℂ V]
     (π : Representation ℂ (GL (Fin N) k) V) (hs : IsSmooth π) (hi : π.IsIrreducible) (x y : IrrGL k)
@@ -181,11 +181,11 @@ theorem jm_contra (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (N : ℕ
   fin_cases a <;> rfl
 
 /- English proof (translation)
-Take `⟨T, f, hf⟩` from `h`. Set `T' : Subrepresentation (twist ρ χ)` to `⟨T.toSubmodule, fun g v hv => by`. Rewrite using `[twist_apply]`. Conclude with `T.toSubmodule.smul_mem _ (T.apply_mem_toSubmodule g hv)⟩`. Use `⟨T', .mk f.toLinearMap fun g => ?_, hf⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use extensionality with `v`. Establish `e : T'.toRepresentation g v = ((χ g : ℂˣ) : ℂ) • T.toRepresentation g v` using `Subtype.ext (by simp [twist_apply]; rfl)`. Establish `h2` using `f.isIntertwining _ _ g v`. Simplify using `only [LinearMap.comp_apply, twist_apply, LinearMap.smul_apply]`. Use `erw [e]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[map_smul]`. Use `erw [h2]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem isSubquotient_twist {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     {σ : Representation ℂ G W} {ρ : Representation ℂ G V} (h : IsSubquotient σ ρ) (χ : G →* ℂˣ) :
@@ -206,9 +206,9 @@ theorem isSubquotient_twist {G V W : Type} [Group G] [AddCommGroup V] [Module �
   rfl
 
 /- English proof (translation)
-Establish `h2` using `isSubquotient_twist h χ'`. Establish `e : twist (twist ρ χ) χ' = ρ`. Use extensionality with `g v`. Establish `: ((χ' g : ℂˣ) : ℂ) * ((χ g : ℂˣ) : ℂ) = 1`. Use `congrArg (fun f : G →* ℂˣ => ((f g : ℂˣ) : ℂ)) hm` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Simplify using `[twist_apply, smul_smul, this]`. Rewrite `h2` using `[e]`. Then use the resulting hypothesis.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isSubquotient_untwist {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     {σ : Representation ℂ G W} {ρ : Representation ℂ G V} {χ χ' : G →* ℂˣ} (h : IsSubquotient σ (twist ρ χ))
@@ -223,15 +223,15 @@ theorem isSubquotient_untwist {G V W : Type} [Group G] [AddCommGroup V] [Module 
   rwa [e] at h2
 
 /- English proof (translation)
-Simplify using `[Fin.sum_univ_two]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem sumTwo (n j : ℕ) : ∑ a, (![n, j + 1] a) = n + j + 1 := by
   simp [Fin.sum_univ_two]; omega
 
 /- English proof (translation)
-Establish `hd` using `sumTwo n j`. Take `⟨E⟩` from `deriv_equiv ψ n j π hd`. Establish `hJs` using `isSmooth_jac (stdBlocks ![n, j + 1] hd) hs`. Establish `hJf : HasFiniteLength (jac (stdBlocks ![n, j + 1] hd) π)` using `(GlobalTheory.CompanionTheory.Published.bernsteinZelevinskyFiniteness k).2.1 (Fin 2) (Fin (n + j + 1)) (fun a => Fin (![n, j + 1] a)) (stdBlocks ![n, j + 1] hd) V π hs (hasFiniteLength_of_isIrreducible hi)`. Establish `hnt' : Nontrivial (_ ⧸ whitKer ψ ![n, j + 1] (jac (stdBlocks ![n, j + 1] hd) π))` using `E.toLinearEquiv.symm.toEquiv.nontrivial`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨S, f, hf⟩` from `GlobalTheory.T.whittaker_two_block_injective_irreducible k ψ hc ![n, j + 1] _ _ hJs hJf hnt'`. Set `χ` to `detChar (Fin n) (absPow k (((j : ℂ) + 1) / 2))`. Establish `hχ : IsSmoothChar χ` using `(isSmoothChar_absPow _).detChar`. Use `⟨irrTwist S χ hχ, E.symm.toIntertwiningMap.comp (twistMap f χ), ?_⟩` and prove the remaining obligations. Conclude with `E.symm.injective.comp hf`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem deriv_irr_sub (ψ : AddChar k Circle) (hc : Continuous ψ) (n j : ℕ) {V : Type} [AddCommGroup V] [Module ℂ V]
     (π : Representation ℂ (GL (Fin (n + j + 1)) k) V) (hs : IsSmooth π) (hi : π.IsIrreducible)
@@ -252,17 +252,15 @@ theorem deriv_irr_sub (ψ : AddChar k Circle) (hc : Continuous ψ) (n j : ℕ) {
   exact E.symm.injective.comp hf
 
 /- English proof (translation)
-Establish `hd` using `sumTwo n j`. Take `⟨E⟩` from `deriv_equiv ψ n j π hd`. Establish `hJs` using `isSmooth_jac (stdBlocks ![n, j + 1] hd) hs`. Establish `hJf : HasFiniteLength (jac (stdBlocks ![n, j + 1] hd) π)` using `(GlobalTheory.CompanionTheory.Published.bernsteinZelevinskyFiniteness k).2.1 (Fin 2) (Fin (n + j + 1)) (fun a => Fin (![n, j + 1] a)) (stdBlocks ![n, j + 1] hd) V π hs (hasFiniteLength_of_isIrreducible hi)`. Set `χ` to `detChar (Fin n) (absPow k (((j : ℂ) + 1) / 2))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `χ'` to `detChar (Fin n) (absPow k (-(((j : ℂ) + 1) / 2)))`. Establish `hχ' : IsSmoothChar χ'` using `(isSmoothChar_absPow _).detChar`. Establish `hmul : χ' * χ = 1`. Use extensionality with `g`. Simplify using `[χ, χ', detChar, absPow_neg]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `h1 : IsSubquotient S.ρ (twist (whit2 ψ ![n, j + 1] (jac (stdBlocks ![n, j + 1] hd) π)) χ)` using `hS.trans (IsSubquotient.of_injective E.toIntertwiningMap E.injective)`. Establish `h2` using `isSubquotient_untwist h1 hmul`. Take `⟨s, hsub, ⟨e0⟩⟩` from `GlobalTheory.T.whittaker_two_block_subquotient_tensor k ψ hc ![n, j + 1] _ _ hJs hJf (irrTwist S χ' hχ') h2`. Set `x : Fin 2 → IrrGL k` to `fun a => IrrGL.of (N := ![n, j + 1] a) (s a).ρ (s a).smooth (s a).irr`. Establish `hx0 : x 0 = (IrrGL.of S.ρ S.smooth S.irr).nu (-(((j : ℂ) + 1) / 2))`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[IrrGL.nu, IrrGL.tw_of]`. Conclude with `IrrGL.of_eq_of.2 ⟨e0⟩`. Establish `hjm : jm x hd π ≠ 0`. Use `jhMult_ne_zero_iff.2 ?_` and prove the remaining obligations. Establish `Ψ : (piTensor fun a => (s a).ρ).Equiv (piTensor fun a => (x a).rep)` using `piTensorEquiv fun a => IrrGL.equivOf (N := ![n, j + 1] a) (s a).ρ (s a).smooth (s a).irr`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(IsSubquotient.of_surjective Ψ.toIntertwiningMap Ψ.surjective).trans hsub`. Establish `key : ∀ (u w : Fin 2 → IrrGL k), u = w → ∀ hu : ∑ a, (u a).1 = n + j + 1, jm u hu π ≠ 0 → ∃ hw : ∑ a, (w a).1 = n + j + 1, 1 ≤ jm w hw π`. Introduce and unpack `u _ rfl hu h`. Conclude with `⟨hu, ENat.one_le_iff_ne_zero.2 h⟩`. Take `⟨hw, hjw⟩` from `key x ![(IrrGL.of S.ρ S.smooth S.irr).nu (-(((j : ℂ) + 1) / 2)), x 1] (by funext a; fin_cases a; exacts [hx0, rfl]) hd hjm`.
-
-Conclude with `⟨x 1, hw, rfl, hjw⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem deriv_jm (ψ : AddChar k Circle) (hc : Continuous ψ) (n j : ℕ) {V : Type} [AddCommGroup V] [Module ℂ V]
     (π : Representation ℂ (GL (Fin (n + j + 1)) k) V) (hs : IsSmooth π) (hi : π.IsIrreducible)
@@ -303,7 +301,7 @@ theorem deriv_jm (ψ : AddChar k Circle) (hc : Continuous ψ) (n j : ℕ) {V : T
   exact ⟨x 1, hw, rfl, hjw⟩
 
 /- English proof (translation)
-Rewrite using `[IrrGL.nu_nu, GlobalTheory.CompanionTheory.ZcDual.dualCl_nu hA, GlobalTheory.CompanionTheory.Zcore.dualCl_dualCl hA, IrrGL.nu_nu]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cls_arith' (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (u : IrrGL k) (j : ℕ) :
     dualCl (((dualCl u).nu (j : ℂ)).nu (-(((j : ℂ) + 1) / 2))) = (u.nu (-(((j : ℂ) + 1) / 2))).nu 1 := by
@@ -314,23 +312,23 @@ theorem cls_arith' (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (u : Ir
 end
 
 /- English proof (translation)
-Introduce `k _ _ _ _ hA N V _ _ ω hs hi hgen`. Take `⟨ψ, hc, hψ⟩` from `exists_continuous_addChar_ne_one k`. Establish `hg : ¬ IsGenericFor ψ ω` using `fun h => hgen ⟨ψ, hc, hψ, h⟩`. Set `τ : IrrRep (GL (Fin N) k)` to `⟨V, ω, hs, hi⟩`. Establish `hne : Nontrivial V` using `GlobalTheory.CompanionTheory.BZCuspPair.nontrivial_of_irr τ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨n, hn0, hnN, hnt2, hlow⟩` from `GlobalTheory.CompanionTheory.BZCuspPair.exists_highest ψ hc hψ N ω hs hne hg`. Take `⟨n, rfl⟩ : ∃ n', n = n' + 1` from `⟨n - 1, by omega⟩`. Take `⟨j, rfl⟩ : ∃ j, N = n + 1 + j + 1` from `⟨N - (n + 1) - 1, by omega⟩`. Establish `hc'` using `GlobalTheory.CompanionTheory.BZCuspPair.continuous_inv_addChar ψ hc`. Establish `hψ' : ψ⁻¹ ≠ 1` using `inv_ne_one.2 hψ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `B : V →ₗ[ℂ] smoothPart ω.dual →ₗ[ℂ] ℂ` to `LinearMap.flip (smoothPart ω.dual).subtype`. Establish `hBa : ∀ a b, B a b = (b : Module.Dual ℂ V) a` using `fun _ _ => rfl`. Establish `hB : ∀ g a b, B (ω g a) (contra ω g b) = B a b`. Introduce `g a b`. Simplify using `only [hBa, contra_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Establish `hnd : ∀ v, v ≠ 0 → ∃ v', B v v' ≠ 0` using `fun v hv => GlobalTheory.ContraRefl.exists_smooth_form_ne hs (GlobalTheory.SqIntUnit.compactOpen_basis k _) hv`. Take `⟨B', hB', hn'⟩` from `GlobalTheory.CompanionTheory.BZCuspPair.pair_deriv ψ hc hψ n j ω (contra ω) hs (isSmooth_contra _) B hB hnd (GlobalTheory.CompanionTheory.BZCuspPair.phi_vanish ψ hc hψ n j ω hs hlow)`. Establish `hD` using `GlobalTheory.CompanionTheory.BZCuspPair.deriv_nontrivial ψ n j ω hnt2`. Establish `hci : (contra ω).IsIrreducible` using `GlobalTheory.CompanionTheory.ZcDual.isIrreducible_contra hA ω hs hi`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨S, f, hf⟩` from `deriv_irr_sub ψ hc (n + 1) j ω hs hi hD`. Use `haveI := GlobalTheory.CompanionTheory.BZCuspPair.nontrivial_of_irr S`. Take `⟨w₀, hw₀⟩` from `exists_ne (0 : S.V)`. Establish `hw1 : f w₀ ≠ 0` using `fun h => hw₀ (hf (by rw [h, map_zero]))`. Take `⟨w', hw'⟩` from `hn' (f w₀) hw1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Q, hQ, hQcl⟩` from `GlobalTheory.T.pairing_twisted_determinant_subquotient k (n + 1) j _ S (GlobalTheory.BZMir.deriv k ψ⁻¹ j (contra ω)) (GlobalTheory.CompanionTheory.BZCuspPair.isSmooth_deriv ψ⁻¹ j (isSmooth_contra _)) (B'.comp f.toLinearMap) (fun g w v => by`. Use `hB' g (f w) v` as an intermediate fact. Simplify `this)` using `[f.isIntertwining]`. Use the proof step `(fun h0 => hw' (by simpa using LinearMap.congr_fun (LinearMap.congr_fun h0 w₀) w'))`. Establish `hSq` using `IsSubquotient.of_injective f hf`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨β, hd, hβ, hjm⟩` from `deriv_jm ψ hc (n + 1) j ω hs hi S hSq`. Take `⟨β₂, hd₂, hβ₂, hjm₂⟩` from `deriv_jm ψ⁻¹ hc' (n + 1) j (contra ω) (isSmooth_contra _) hci Q hQ`. Take `⟨hd₃, hjm₃⟩` from `jm_contra hA _ ω hs hi _ _ hd₂ hjm₂`. Establish `hcl : dualCl (((IrrGL.of Q.ρ Q.smooth Q.irr)).nu (-(((j : ℂ) + 1) / 2))) = ((IrrGL.of S.ρ S.smooth S.irr).nu (-(((j : ℂ) + 1) / 2))).nu 1`. Rewrite using `[hQcl]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `cls_arith' hA _ j`. Establish `key : ∀ (z w : IrrGL k), z = w → ∀ hz : ∑ a, (![dualCl β₂, z] a).1 = n + 1 + j + 1, 1 ≤ jm ![dualCl β₂, z] hz ω → ∃ hw : ∑ a, (![dualCl β₂, w] a).1 = n + 1 + j + 1, 1 ≤ jm ![dualCl β₂, w] hw ω`. Introduce and unpack `z _ rfl hz h`. Conclude with `⟨hz, h⟩`. Take `⟨hd₄, hjm₄⟩` from `key _ _ hcl hd₃ hjm₃`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hdeg : (dualCl β₂).1 = β₂.1`. Unfold `dualCl`. Apply the tactic sequence `split_ifs <;> rfl`. Conclude with `⟨_, β, dualCl β₂, hd, hd₄, Nat.succ_pos n, by omega, by omega, hjm, hjm₄⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nuPair : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k],
     GlobalTheory.Published.IrreducibleAdmissibleGL → GlobalTheory.BZSeg.NuPair k := by

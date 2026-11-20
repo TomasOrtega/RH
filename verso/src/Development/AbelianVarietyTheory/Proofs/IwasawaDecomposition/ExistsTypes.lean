@@ -16,9 +16,9 @@ set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `hray _ D hE jE Pl hg`. Take `⟨h, hf, hgal, hab, hunr, hsplit⟩` from `GlobalTheory.T.rayClassFieldHostConductor_isRayClassField hray D jE`. Use `letI := algK D jE h`. Use `nfOf hf` as an intermediate fact. Set `X : NTypes D.naut` to `{ D.ntypes with Mray := MrayC D jE instMray := inferInstance nfMray := nfOf hf algKM := algK D jE h Mray_gal := hgal Mray_ab := hab Mray_unr := hunr g_Mray := fun k => hsplit _ (hg k) iota := fun k _ w => haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩ redHom (Pl.plB w) (Pl …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `⟨X, D.nStage_trivialCharacter_compat, D.nStage_trivialCharacter_coeff_eq, rfl, rfl, rfl, rfl, rfl, ⟨?_⟩, fun _ => ?_⟩` and prove the remaining obligations. Conclude with `{ eM := RingEquiv.refl _ eM_K := fun _ => rfl eP := Equiv.refl _ locPar_def := fun _ _ => rfl }`. Introduce `lam k v x`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_types : GlobalTheory.Published.RayClassFieldSt → GlobalTheory.Published.ChebotarevDegreeOne → ∀ (D : D7) (hE : IsEmpty D.nd.Loc)
     (jE : D.host.E →+* Qb) (Pl : PlSide D), (∀ k, IsRayPrime (KQbar D jE) (D.host.QS * D.host.q * D.host.d) (D.host.g k)) →

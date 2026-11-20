@@ -7,9 +7,9 @@ open scoped ENNReal
 namespace GlobalTheory.CompanionTheory.LocVan
 
 /- English proof (translation)
-Establish `hnil : IsNilpotent (-M)` using `⟨2, by rw [pow_two, neg_mul_neg, hM]⟩`. Establish `hc` using `hnil.charpoly_eq_X_pow_finrank`. Set `b` to `Module.finBasis ℝ E`. Establish `h1 : (LinearMap.toMatrix b b (-M)).charpoly.eval 1 = 1`. Rewrite using `[LinearMap.charpoly_toMatrix, hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite `h1` using `[Matrix.eval_charpoly]`. Rewrite using `[← LinearMap.det_toMatrix b, ← h1]`. Use `congr 1`. Simplify using `[map_add, LinearMap.toMatrix_one]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem det_one_add_sqZero {E : Type*} [AddCommGroup E] [Module ℝ E] [FiniteDimensional ℝ E]
     (M : E →ₗ[ℝ] E) (hM : M * M = 0) : LinearMap.det (1 + M) = 1 := by
@@ -24,9 +24,9 @@ theorem det_one_add_sqZero {E : Type*} [AddCommGroup E] [Module ℝ E] [FiniteDi
   simp [map_add, LinearMap.toMatrix_one]
 
 /- English proof (translation)
-Establish `hdet` using `det_one_add_sqZero M hM`. Establish `hL : MeasurePreserving (fun X => (1 + M : E →ₗ[ℝ] E) X) ν ν`. Use `⟨(LinearMap.continuous_of_finiteDimensional _).measurable, ?_⟩` and prove the remaining obligations. Use `Measure.map_linearMap_addHaar_eq_smul_addHaar (μ := ν) (f := (1 + M : E →ₗ[ℝ] E)) (by rw [hdet]; exact one_ne_zero)` as an intermediate fact. Rewrite using `[this, hdet]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Conclude with `(measurePreserving_add_left ν Y).comp hL`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem measurePreserving_add_one_add {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [FiniteDimensional ℝ E] [MeasurableSpace E] [BorelSpace E] (ν : Measure E)
@@ -41,13 +41,13 @@ theorem measurePreserving_add_one_add {E : Type*} [NormedAddCommGroup E] [Normed
   exact (measurePreserving_add_left ν Y).comp hL
 
 /- English proof (translation)
-Introduce `n W₁ W₂ hW mS bS ν hν Y`. Use `letI : NormedAddCommGroup (Matrix (Fin n) (Fin n) ℂ) := Matrix.normedAddCommGroup`. Use `letI : NormedSpace ℝ (Matrix (Fin n) (Fin n) ℂ) := Matrix.normedSpace`. Set `M : nilrad W₁ W₂ →ₗ[ℝ] nilrad W₁ W₂` to `{ toFun := fun X => ⟨Y.1 * X.1, nil_mul_mem hW Y.2 X.2⟩ map_add' := fun A B => Subtype.ext (by simp [mul_add]) map_smul' := fun c A => Subtype.ext (by simp) }`. Establish `hM : M * M = 0` using `by ext1 X`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Y.1 * (Y.1 * X.1) = 0`. Establish `h : ∀ y, (Y.1 * (Y.1 * X.1)) *ᵥ y = 0` using `fun y => by`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]`. Conclude with `Y.2.2.2 _ (Y.2.2.1 _ (X.2.1 y))`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Use `congrFun (h (Pi.single j 1)) i` as an intermediate fact. Simplify using `using this`. Use `haveI : FiniteDimensional ℝ (nilrad W₁ W₂) := FiniteDimensional.complexToReal _`. Establish `key` using `@measurePreserving_add_one_add (nilrad W₁ W₂) (Submodule.normedAddCommGroup _) (Submodule.normedSpace _) _ mS bS ν hν M hM Y`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `key using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `X`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Y.1 + X.1 + Y.1 * X.1 = Y.1 + (X.1 + Y.1 * X.1)`. Normalize the expressions using the abelian group laws.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem nmul_measurePreserving : ∀ (n : ℕ) (W₁ W₂ : Submodule ℂ (Fin n → ℂ)) (hW : W₁ ≤ W₂) [MeasurableSpace (nilrad W₁ W₂)]
   [BorelSpace (nilrad W₁ W₂)] (ν : Measure (nilrad W₁ W₂)) [ν.IsAddHaarMeasure] (Y : nilrad W₁ W₂),

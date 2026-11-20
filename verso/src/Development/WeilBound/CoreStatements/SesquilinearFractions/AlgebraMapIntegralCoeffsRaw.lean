@@ -12,7 +12,7 @@ namespace GlobalTheory.CompanionTheory.Ar.Fl
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-The claim follows from `H.bar_eq a`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_bar_eq_conj (a : 𝓞 E) :
     algebraMap (𝓞 E) E (H.bar a) = IsCMField.complexConj E (algebraMap (𝓞 E) E a) := H.bar_eq a
@@ -30,7 +30,7 @@ variable (D : Datum H) {p : ℕ} (x' : Fin p → D.La) (m : ℕ)
 def integralCoeffsRaw (y : D.La) (a : Fin p) : 𝓞 E := Classical.choose (hm y a)
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (hm y a)`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_integralCoeffsRaw (y : D.La) (a : Fin p) :
     algebraMap (𝓞 E) E (integralCoeffsRaw D x' m hm y a) = m * projectionCoeffs D x' y a := Classical.choose_spec (hm y a)
@@ -53,7 +53,7 @@ def integralCoeffs : D.La →ₗ[𝓞 E] (Fin p → 𝓞 E) where
     ring
 
 /- English proof (translation)
-Use `show IsCMField.complexConj E (algebraMap (𝓞 E) E (H.bar (integralCoeffsRaw D x' m hm y a))) = _`. Rewrite using `[algebraMap_bar_eq_conj, IsCMField.complexConj_apply_apply, algebraMap_integralCoeffsRaw]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_integralCoeffs (y : D.La) (a : Fin p) :
     IsCMField.complexConj E (algebraMap (𝓞 E) E (integralCoeffs D x' m hm y a)) = m * projectionCoeffs D x' y a := by
@@ -63,15 +63,15 @@ theorem conj_integralCoeffs (y : D.La) (a : Fin p) :
 def orthogonalComponent : D.La →ₗ[𝓞 E] D.La := (m : 𝓞 E) • LinearMap.id - familyCombination D x' ∘ₗ integralCoeffs D x' m hm
 
 /- English proof (translation)
-Use `show ∀ a, sesq D (x' a) (orthogonalComponent D x' m hm y) = 0`. Introduce `b`. Establish `hsub : ∀ u v w : D.La, sesq D u (v - w) = sesq D u v - sesq D u w`. Introduce `u v w`. Simplify using `only [sesq, map_sub, Int.cast_sub, sub_mul, Finset.sum_sub_distrib]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hsm : ∀ u v : D.La, sesq D u ((m : 𝓞 E) • v) = m * sesq D u v`. Introduce `u v`. Rewrite using `[Nat.cast_smul_eq_nsmul]`. Simplify using `only [sesq, map_nsmul, nsmul_eq_mul, Int.cast_mul, Int.cast_natCast, Finset.mul_sum, _root_.mul_assoc]`. Establish `hcomb : familyCombination D x' (integralCoeffs D x' m hm y) = ∑ a, integralCoeffs D x' m hm y a • x' a` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG` using `congrFun (gram_mulVec_projection_coeffs D x' hdet y) b`. Simplify using `only [Matrix.mulVec, dotProduct, pairingVector] at hG`. Establish `hd : ∀ a, IsCMField.complexConj E ((integralCoeffs D x' m hm y a : 𝓞 E) : E) = m * projectionCoeffs D x' y a` using `fun a => conj_integralCoeffs D x' m hm y a`. Simplify using `only [orthogonalComponent, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, LinearMap.comp_apply]`. Rewrite using `[hsub, hsm, hcomb, sesq_integral_combination]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hd]`. Rewrite using `[← hG, Finset.mul_sum]`. Apply `sub_eq_zero.mpr` to reduce the goal to its premises. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `a _`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem orthogonalComponent_mem (hdet : (gramE D x').det ≠ 0) (y : D.La) : orthogonalComponent D x' m hm y ∈ orthogonalFamilyAlt D x' := by
   show ∀ a, sesq D (x' a) (orthogonalComponent D x' m hm y) = 0

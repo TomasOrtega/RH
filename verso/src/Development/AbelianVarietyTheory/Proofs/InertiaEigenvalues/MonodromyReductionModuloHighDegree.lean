@@ -12,13 +12,13 @@ variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebr
   [IsUnitBall O K] {l e a : ℕ} {ι κ : Type} [Fintype ι] [DecidableEq ι] [Fintype κ] [DecidableEq κ]
 
 /- English proof (translation)
-Simplify using `[part]`.
+Simplify using the standard rewrite rules.
 -/
 theorem part_top (V : Submodule O (Vec K a ι)) : part (⊤ : Submodule K (Vec K a ι)) V = V := by
   simp [part]
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[coeff_N, coeff_X_pow, ← map_natCast (C (R := K)) i, coeff_C_mul, coeff_X_pow]`. Apply the tactic sequence `split_ifs with h <;> simp [h]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem N_X_pow (i : ℕ) : N K ((X : K⟦X⟧) ^ i) = (i : K⟦X⟧) * X ^ i := by
   ext n
@@ -26,7 +26,7 @@ theorem N_X_pow (i : ℕ) : N K ((X : K⟦X⟧) ^ i) = (i : K⟦X⟧) * X ^ i :=
   split_ifs with h <;> simp [h]
 
 /- English proof (translation)
-Introduce `n` and use `by rw [coeff_C] split_ifs · exact hk · simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem C_mem_A {k : K} (hk : ‖k‖ ≤ 1) : C k ∈ A O K := fun n => by
   rw [coeff_C]
@@ -39,17 +39,17 @@ section Top
 variable [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero a]
 
 /- English proof (translation)
-The claim follows from `Submodule.smul_le_right hv`.
+A detailed English derivation is pending.
 -/
 theorem MMHigh_le_MM (P : PhiMod O K l e a ι) {v : Vec K a ι} (hv : v ∈ MMHigh P) : v ∈ P.MM :=
   Submodule.smul_le_right hv
 
 /- English proof (translation)
-Establish `h1 : f • m = ∑ τ, (⟨f τ, (hf τ).1⟩ : S O K e) • ((Pi.single τ (1 : K⟦X⟧) : ZMod a → K⟦X⟧) • m)`. Use function extensionality and compare the values at `τ' i`. Rewrite using `[Finset.sum_apply, Finset.sum_apply, Finset.sum_eq_single τ']`. Simplify using `[Subalgebra.smul_def]`. Introduce `b _ hb`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Subalgebra.smul_def, Pi.single_apply, Ne.symm hb]`. Simplify using the standard rewrite rules. Rewrite using `[h1]`. Express the relevant statement in the definitionally equal form `_ ∈ SHigh O K l e • P.MM`. Use `Submodule.sum_mem _ fun τ _ => Submodule.smul_mem_smul (mem_SHigh.2 (hf τ).2) ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `P.smul_tot_mem_ext (fun τ' => by`. Rewrite using `[Pi.single_apply]`. Use `split_ifs`. Use `exacts [one_mem _, zero_mem _]) hm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_mem_MMHigh (P : PhiMod O K l e a ι) {f : ZMod a → K⟦X⟧}
     (hf : ∀ τ, f τ ∈ S O K e ∧ (X : K⟦X⟧) ^ (l * e) ∣ f τ) {m : Vec K a ι} (hm : m ∈ P.MM) :
@@ -71,9 +71,9 @@ theorem smul_mem_MMHigh (P : PhiMod O K l e a ι) {f : ZMod a → K⟦X⟧}
     exacts [one_mem _, zero_mem _]) hm
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `v ∈ SHigh O K l e • P.MM at hv`. Use `Submodule.smul_induction_on (p := fun v => ∀ τ i, (X : K⟦X⟧) ^ (l * e) ∣ (P.mxInv τ *ᵥ v τ) i) hv ?_ ?_ τ i` and prove the remaining obligations. Introduce `s hs m _ τ i`. Establish `h1 : (s • m) τ = (s : K⟦X⟧) • m τ` using `rfl`. Rewrite using `[h1, Matrix.mulVec_smul, Pi.smul_apply, smul_eq_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `dvd_mul_of_dvd_left (mem_SHigh.1 hs) _`. Introduce `x y hx hy τ i`. Rewrite using `[Pi.add_apply, Matrix.mulVec_add, Pi.add_apply]`. Conclude with `dvd_add (hx τ i) (hy τ i)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coord_dvd_of_mem_MMHigh (P : PhiMod O K l e a ι) {v : Vec K a ι} (hv : v ∈ MMHigh P)
     (τ : ZMod a) (i : ι) : (X : K⟦X⟧) ^ (l * e) ∣ (P.mxInv τ *ᵥ v τ) i := by
@@ -89,7 +89,7 @@ theorem coord_dvd_of_mem_MMHigh (P : PhiMod O K l e a ι) {v : Vec K a ι} (hv :
     exact dvd_add (hx τ i) (hy τ i)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `v ∈ SHigh O K l e • P.MM at hv`. Express the relevant statement in the definitionally equal form `_ ∈ SHigh O K l e • P.MM`. Establish `h1` using `(SHigh O K l e • P.MM).smul_mem (⟨X ^ i, pow_mem HasU.X_mem i⟩ : S O K e) hv`. Rewrite `h1` using `[Subalgebra.smul_def]`. Conclude with `h1`.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem X_pow_smul_mem_MMHigh (P : PhiMod O K l e a ι) (i : ℕ) {v : Vec K a ι} (hv : v ∈ MMHigh P) :
     (X : K⟦X⟧) ^ i • v ∈ MMHigh P := by
@@ -102,17 +102,17 @@ theorem X_pow_smul_mem_MMHigh (P : PhiMod O K l e a ι) (i : ℕ) {v : Vec K a �
 variable [NeZero e]
 
 /- English proof (translation)
-The claim follows from `P.ext_mono (A_le_S l e) hv`.
+A detailed English derivation is pending.
 -/
 theorem L_le_MM (P : PhiMod O K l e a ι) {v : Vec K a ι} (hv : v ∈ P.L) : v ∈ P.MM :=
   P.ext_mono (A_le_S l e) hv
 
 /- English proof (translation)
-Establish `hc : ∀ τ i, (P.mxInv τ *ᵥ v τ) i ∈ S O K e` using `fun τ i => P.mem_extc_iff.1 (mem_tot.1 hv τ) i`. Use `choose g hg h hh hgh using fun p : ZMod a × ι => (hR.eq_add _).1 (hc p.1 p.2)`. Rewrite using `[P.eq_sum_phi_bas v]`. Establish `h1 : (∑ i, (fun τ => (P.mxInv τ *ᵥ v τ) i) • P.phi (bas i)) = (∑ i, (fun τ => g (τ, i)) • P.phi (bas i)) + ∑ i, (fun τ => (h (τ, i) : K⟦X⟧)) • P.phi (bas i)`. Rewrite using `[← Finset.sum_add_distrib]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← add_smul]`. Use `congr 1`. Use function extensionality and compare the values at `τ`. Conclude with `hgh (τ, i)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h1]`. Use `Submodule.add_mem_sup ?_ ?_` and prove the remaining obligations. Conclude with `Submodule.sum_mem _ fun i _ => P.smul_tot_mem_ext (fun τ => hg (τ, i)) (P.phi_mem_L (P.bas_mem_M i))`. Conclude with `Submodule.sum_mem _ fun i _ => smul_mem_MMHigh P (fun τ => ⟨(h (τ, i)).2, mem_SHigh.1 (hh (τ, i))⟩) (L_le_MM P (P.phi_mem_L (P.bas_mem_M i)))`.
+A detailed English derivation is pending.
 -/
 theorem MM_le_sup (hR : RingModHigh O K l e) (P : PhiMod O K l e a ι) {v : Vec K a ι}
     (hv : v ∈ P.MM) : v ∈ P.L.restrictScalars O ⊔ MMHigh P := by
@@ -138,7 +138,7 @@ theorem MM_le_sup (hR : RingModHigh O K l e) (P : PhiMod O K l e a ι) {v : Vec 
       (L_le_MM P (P.phi_mem_L (P.bas_mem_M i)))
 
 /- English proof (translation)
-The claim follows from `le_antisymm (fun _ hv => MM_le_sup hR P hv) (sup_le (fun _ hv => L_le_MM P hv) (fun _ hv => MMHigh_le_MM P hv))`.
+A detailed English derivation is pending.
 -/
 theorem MM_eq_sup (hR : RingModHigh O K l e) (P : PhiMod O K l e a ι) :
     P.MM.restrictScalars O = P.L.restrictScalars O ⊔ MMHigh P :=
@@ -146,13 +146,13 @@ theorem MM_eq_sup (hR : RingModHigh O K l e) (P : PhiMod O K l e a ι) :
     (sup_le (fun _ hv => L_le_MM P hv) (fun _ hv => MMHigh_le_MM P hv))
 
 /- English proof (translation)
-Use extensionality with `v`. Simplify using `only [Submodule.mem_inf, Submodule.restrictScalars_mem]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hL, hH⟩`. Establish `hc : ∀ τ i, ∃ g ∈ A O K, (P.mxInv τ *ᵥ v τ) i = ((X : K⟦X⟧) ^ e) ^ l * g` using `fun τ i => (hR.inter_eq _).1 ⟨P.mem_extc_iff.1 (mem_tot.1 hL τ) i, ⟨⟨_, P.mem_extc_iff.1 (mem_tot.1 (MMHigh_le_MM P hH) τ) i⟩, mem_SHigh.2 (coord_dvd_of_mem_MMHigh P hH τ i), rfl⟩⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `choose g hg hgv using fun p : ZMod a × ι => hc p.1 p.2`. Use `mem_mulL.2 ⟨∑ i, (fun τ => g (τ, i)) • P.phi (bas i), Submodule.sum_mem _ fun i _ => P.smul_tot_mem_ext (fun τ => hg (τ, i)) (P.phi_mem_L (P.bas_mem_M i)), ?_⟩` and prove the remaining obligations. Use `conv_rhs => rw [P.eq_sum_phi_bas v]`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `τ j`. Simplify using `only [Pi.smul_apply', Pi.smul_apply, smul_eq_mul]`. Rewrite using `[hgv (τ, i), mul_assoc]`. Introduce and unpack `h`. Take `⟨y, hy, rfl⟩` from `mem_mulL.1 h`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `P.L.smul_mem (⟨_, pow_mem (pow_mem HasU.X_mem e) l⟩ : A O K) hy`. Establish `h2` using `Submodule.smul_mem_smul (r := (⟨_, pow_mem (pow_mem HasU.X_mem e) l⟩ : S O K e)) (mem_SHigh.2 (show (X : K⟦X⟧) ^ (l * e) ∣ (X ^ e) ^ l by rw [← pow_mul, mul_comm])) (L_le_MM P hy)`. Rewrite `h1`, `h2` using `[Subalgebra.smul_def]`. Conclude with `⟨h1, h2⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem inter_eq_vL (hR : RingModHigh O K l e) (P : PhiMod O K l e a ι) :
     P.L.restrictScalars O ⊓ MMHigh P = vL P l := by
@@ -188,11 +188,11 @@ section TopConn
 variable [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero a] [NeZero e]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `v ∈ SHigh O K l e • P.MM at hv`. Express the relevant statement in the definitionally equal form `_ ∈ SHigh O K l e • P.MM`. Use `Submodule.smul_induction_on (p := fun v => P.conn v ∈ SHigh O K l e • P.MM) hv ?_ ?_` and prove the remaining obligations. Introduce `s hs m hm`. Take `⟨g, hg, hgN⟩` from `hR.N_stable s hs`.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h1 : P.conn (s • m) = g • m + s • P.conn m`. Simplify using `only [Subalgebra.smul_def, P.conn_smul, hgN]`. Rewrite using `[h1]`. Conclude with `add_mem (Submodule.smul_mem_smul hg hm) (Submodule.smul_mem_smul hs (hMM m hm))`. Introduce `x y hx hy`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add]`. Conclude with `add_mem hx hy`.
+A detailed English derivation is pending.
 -/
 theorem conn_mem_MMHigh (hR : RingModHigh O K l e) (P : PhiMod O K l e a ι)
     (hMM : ∀ m ∈ P.MM, P.conn m ∈ P.MM) {v : Vec K a ι} (hv : v ∈ MMHigh P) :
@@ -211,9 +211,9 @@ theorem conn_mem_MMHigh (hR : RingModHigh O K l e) (P : PhiMod O K l e a ι)
     exact add_mem hx hy
 
 /- English proof (translation)
-Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 hx`. Take `⟨y', hy', rfl⟩` from `mem_mulL.1 hy`. Take `⟨p, hp, q, hq, hpq⟩` from `Submodule.mem_sup.1 (MM_le_sup hR P (hMM y' (L_le_MM P hy')))`. Establish `h1 : P.conn ((X : K⟦X⟧) ^ i • y' + z) = (X : K⟦X⟧) ^ i • (i • y' + p) + ((X : K⟦X⟧) ^ i • q + P.conn z)`. Rewrite using `[map_add, P.conn_smul, N_X_pow, ← hpq, mul_comm, mul_smul, Nat.cast_smul_eq_nsmul, smul_add, smul_add]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[h1]`. Conclude with `Submodule.add_mem_sup (mem_mulL.2 ⟨_, add_mem (nsmul_mem hy' i) hp, rfl⟩) (add_mem (X_pow_smul_mem_MMHigh P i hq) (conn_mem_MMHigh hR P hMM hz))`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conn_mem_uL_sup (hR : RingModHigh O K l e) (P : PhiMod O K l e a ι)
     (hMM : ∀ m ∈ P.MM, P.conn m ∈ P.MM) (i : ℕ) {x : Vec K a ι} (hx : x ∈ uL P i ⊔ MMHigh P) :
@@ -231,9 +231,9 @@ theorem conn_mem_uL_sup (hR : RingModHigh O K l e) (P : PhiMod O K l e a ι)
     (add_mem (X_pow_smul_mem_MMHigh P i hq) (conn_mem_MMHigh hR P hMM hz))
 
 /- English proof (translation)
-Take `⟨y', hy', rfl⟩` from `mem_mulL.1 hx`. Take `⟨w, hw, hcw⟩` from `hX y' (L_le_MM P hy')`. Take `⟨p, hp, q, hq, hpq⟩` from `Submodule.mem_sup.1 (MM_le_sup hR P hw)`. Establish `h1 : P.conn ((X : K⟦X⟧) ^ i • y') - i • ((X : K⟦X⟧) ^ i • y') = (X : K⟦X⟧) ^ (i + 1) • p + (X : K⟦X⟧) ^ (i + 1) • q`. Rewrite using `[P.conn_smul, N_X_pow, hcw, ← hpq, mul_smul, Nat.cast_smul_eq_nsmul, add_sub_cancel_left, ← mul_smul, ← pow_succ, smul_add]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Conclude with `Submodule.add_mem_sup (mem_mulL.2 ⟨p, hp, rfl⟩) (X_pow_smul_mem_MMHigh P _ hq)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conn_graded_top (hR : RingModHigh O K l e) (P : PhiMod O K l e a ι)
     (hX : ∀ m ∈ P.MM, ∃ w ∈ P.MM, P.conn m = (X : K⟦X⟧) • w) (i : ℕ) {x : Vec K a ι}
@@ -249,11 +249,9 @@ theorem conn_graded_top (hR : RingModHigh O K l e) (P : PhiMod O K l e a ι)
   exact Submodule.add_mem_sup (mem_mulL.2 ⟨p, hp, rfl⟩) (X_pow_smul_mem_MMHigh P _ hq)
 
 /- English proof (translation)
-Establish `hMM : ∀ m ∈ P.MM, P.conn m ∈ P.MM` using `fun m hm => by`. Take `⟨w, hw, h⟩` from `hX m hm`. Rewrite using `[h]`. Conclude with `P.MM.smul_mem (uIn (S O K e)) hw`. Apply the tactic sequence `refine ⟨?_, ?_, ?_, ?_, ?_, ?_⟩ <;> simp only [part_top]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `MM_eq_sup hR P`. Conclude with `inter_eq_vL hR P`. Conclude with `fun x hx => hMM x hx`. Conclude with `fun x hx => conn_mem_MMHigh hR P hMM hx`. Conclude with `fun i x hx => conn_mem_uL_sup hR P hMM i hx`.
-
-Conclude with `fun i _ x hx => conn_graded_top hR P hX i hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem modHigh_top (hR : RingModHigh O K l e) (P : PhiMod O K l e a ι)
     (hX : ∀ m ∈ P.MM, ∃ w ∈ P.MM, P.conn m = (X : K⟦X⟧) • w) : ModHigh P ⊤ := by
@@ -270,9 +268,9 @@ theorem modHigh_top (hR : RingModHigh O K l e) (P : PhiMod O K l e a ι)
   · exact fun i _ x hx => conn_graded_top hR P hX i hx
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `v ∈ SHigh O K l e • P.MM at hv`. Express the relevant statement in the definitionally equal form `_ ∈ SHigh O K l e • Q.MM`. Use `Submodule.smul_induction_on (p := fun v => F.app v ∈ SHigh O K l e • Q.MM) hv ?_ ?_` and prove the remaining obligations. Introduce `s hs m hm`. Establish `h1 : F.app (s • m) = s • F.app m` using `by simp only [Subalgebra.smul_def, map_smul]`.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[h1]`. Conclude with `Submodule.smul_mem_smul hs (F.app_mem_ext (A_le_S l e) hm)`. Introduce `x y hx hy`. Rewrite using `[map_add]`. Conclude with `add_mem hx hy`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem app_mem_MMHigh {P : PhiMod O K l e a ι} {Q : PhiMod O K l e a κ} (F : Hom P Q)
     {v : Vec K a ι} (hv : v ∈ MMHigh P) : F.app v ∈ MMHigh Q := by
@@ -288,18 +286,18 @@ theorem app_mem_MMHigh {P : PhiMod O K l e a ι} {Q : PhiMod O K l e a κ} (F : 
     exact add_mem hx hy
 
 /- English proof (translation)
-The claim follows from `(Submodule.restrictScalars_mem O _ _).2 (Submodule.mem_map.2 ⟨y, hy, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem mem_imL {P : PhiMod O K l e a ι} {Q : PhiMod O K l e a κ} (F : Hom P Q) {y : Vec K a ι}
     (hy : y ∈ P.L) : F.app y ∈ F.imL.restrictScalars O :=
   (Submodule.restrictScalars_mem O _ _).2 (Submodule.mem_map.2 ⟨y, hy, rfl⟩)
 
 /- English proof (translation)
-Introduce `x hx`. Simplify using `only [part_top] at hx ⊢`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 hx`. Take `⟨y', hy', hyy⟩` from `Submodule.mem_map.1 ((Submodule.restrictScalars_mem O _ _).1 hy)`. Simplify using `only [LinearMap.coe_restrictScalars] at hyy`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Substitute `hyy` using the available equality. Take `⟨p, hp, q, hq, hpq⟩` from `Submodule.mem_sup.1 (MM_le_sup hR P (hMM₁ y' (L_le_MM P hy')))`. Establish `h1 : Q.conn (F.app y' + z) = F.app p + (F.app q + Q.conn z)`. Rewrite using `[map_add, ← F.app_conn, ← hpq, map_add, add_assoc]`. Rewrite using `[h1]`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.add_mem_sup (mem_imL F hp) (add_mem (app_mem_MMHigh F hq) (conn_mem_MMHigh hR Q hMM₂ hz))`.
+A detailed English derivation is pending.
 -/
 theorem imageStable_top (hR : RingModHigh O K l e) {P : PhiMod O K l e a ι}
     {Q : PhiMod O K l e a κ} (F : Hom P Q) (hMM₁ : ∀ m ∈ P.MM, P.conn m ∈ P.MM)
@@ -322,7 +320,7 @@ end TopConn
 section Proj
 
 /- English proof (translation)
-Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 hx`. Rewrite using `[← hπ _ hxW, map_add]`. Conclude with `Submodule.add_mem_sup (Submodule.mem_inf.2 ⟨h₁ y hy, hπW y⟩) (Submodule.mem_inf.2 ⟨h₂ z hz, hπW z⟩)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_part_sup {W : Submodule K (Vec K a ι)} (π : Vec K a ι →ₗ[K] Vec K a ι)
     (hπW : ∀ v, π v ∈ W) (hπ : ∀ v ∈ W, π v = v) {V₁ V₂ : Submodule O (Vec K a ι)}
@@ -336,15 +334,13 @@ theorem mem_part_sup {W : Submodule K (Vec K a ι)} (π : Vec K a ι →ₗ[K] V
 variable [Fact l.Prime]
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, h5, h6⟩` from `h`. Simplify using `only [part_top] at h1 h2 h3 h4 h5 h6`. Use `⟨le_antisymm ?_ ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Take `⟨hx, hxW⟩` from `Submodule.mem_inf.1 hx`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite `hx` using `[h1]`. Conclude with `mem_part_sup π hπW hπ hL hH hx hxW`. Apply the tactic sequence `refine sup_le (inf_le_inf_right _ ?_) (inf_le_inf_right _ ?_) <;> rw [h1] exacts [le_sup_left, le_sup_right]`. Rewrite using `[← h2]`. Conclude with `(inf_inf_distrib_right _ _ _).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `x hx`. Take `⟨hx, hxW⟩` from `Submodule.mem_inf.1 hx`. Conclude with `Submodule.mem_inf.2 ⟨h3 x hx, hW x hxW⟩`. Introduce `x hx`. Take `⟨hx, hxW⟩` from `Submodule.mem_inf.1 hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Submodule.mem_inf.2 ⟨h4 x hx, hW x hxW⟩`. Introduce `i x hx`. Establish `hxW : x ∈ W` using `(sup_le inf_le_right inf_le_right : part W (uL P i) ⊔ part W (MMHigh P) ≤ W.restrictScalars O) hx`. Establish `hx'` using `(sup_le_sup inf_le_left inf_le_left : part W (uL P i) ⊔ part W (MMHigh P) ≤ uL P i ⊔ MMHigh P) hx`. Conclude with `mem_part_sup π hπW hπ (hu i) hH (h5 i x hx') (hW x hxW)`.
-
-Introduce `i hi x hx`. Take `⟨hx, hxW⟩` from `Submodule.mem_inf.1 hx`. Conclude with `mem_part_sup π hπW hπ (hu (i + 1)) hH (h6 i hi x hx) (sub_mem (hW x hxW) (nsmul_mem (show x ∈ W from hxW) i))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem modHigh_of_proj {P : PhiMod O K l e a ι} {W : Submodule K (Vec K a ι)}
     (π : Vec K a ι →ₗ[K] Vec K a ι) (hπW : ∀ v, π v ∈ W) (hπ : ∀ v ∈ W, π v = v)
@@ -380,9 +376,9 @@ theorem modHigh_of_proj {P : PhiMod O K l e a ι} {W : Submodule K (Vec K a ι)}
       (sub_mem (hW x hxW) (nsmul_mem (show x ∈ W from hxW) i))
 
 /- English proof (translation)
-Introduce `x hx`. Establish `hxW : x ∈ W` using `(sup_le inf_le_right inf_le_right : part W (F.imL.restrictScalars O) ⊔ part W (MMHigh Q) ≤ W.restrictScalars O) hx`. Establish `hx'` using `(sup_le_sup inf_le_left inf_le_left : part W (F.imL.restrictScalars O) ⊔ part W (MMHigh Q) ≤ F.imL.restrictScalars O ⊔ MMHigh Q) hx`. Establish `h1` using `h x (by simpa only [part_top] using hx')`. Simplify using `only [part_top] at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `mem_part_sup π hπW hπ hI hH h1 (hW x hxW)`.
+A detailed English derivation is pending.
 -/
 theorem imageStable_of_proj {P : PhiMod O K l e a ι} {Q : PhiMod O K l e a κ} (F : Hom P Q)
     {W : Submodule K (Vec K a κ)} (π : Vec K a κ →ₗ[K] Vec K a κ) (hπW : ∀ v, π v ∈ W)
@@ -407,7 +403,7 @@ variable [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero e] [NeZero a] [TameDes
 local instance : Fintype (rootsOfUnity e K) := Fintype.ofFinite _
 
 /- English proof (translation)
-Simplify using `[TameGal.root]`.
+Simplify using the standard rewrite rules.
 -/
 theorem root_inertia_mul (ζ ξ : rootsOfUnity e K) (τ : ZMod a) :
     (TameGal.inertia (ζ * ξ) : TameGal K l e a).root τ =
@@ -415,21 +411,21 @@ theorem root_inertia_mul (ζ ξ : rootsOfUnity e K) (τ : ZMod a) :
   simp [TameGal.root]
 
 /- English proof (translation)
-Simplify using `[TameGal.root]`.
+Simplify using the standard rewrite rules.
 -/
 theorem root_inertia_one (τ : ZMod a) : (TameGal.inertia 1 : TameGal K l e a).root τ = 1 := by
   simp [TameGal.root]
 
 /- English proof (translation)
-Simplify using `[TameGal.shift]`.
+Simplify using the standard rewrite rules.
 -/
 theorem shift_inertia (ζ : rootsOfUnity e K) : (TameGal.inertia ζ : TameGal K l e a).shift = 0 := by
   simp [TameGal.shift]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Rewrite using `[ringAct_apply, shift_inertia, sub_zero]`. Use extensionality with `n`. Simplify using `only [coeff_rescale, coeff_C]`. Use `split_ifs with h`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[h]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ringAct_inertia_C (ζ : rootsOfUnity e K) (k : ZMod a → K) :
     ringAct (TameGal.inertia ζ : TameGal K l e a) (fun τ => C (k τ)) = fun τ => C (k τ) := by
@@ -443,9 +439,7 @@ theorem ringAct_inertia_C (ζ : rootsOfUnity e K) (k : ZMod a → K) :
 
 omit [NeZero e] [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero a] [TameDescentExponentData K l e a] in
 /- English proof (translation)
-Rewrite using `[norm_natCast_eq l, Padic.norm_natCast_eq_one_iff]`. Use `(Nat.Prime.coprime_iff_not_dvd Fact.out).2 fun h => ?_` and prove the remaining obligations. Establish `h1 : l ∣ e + 1`. Rewrite using `[TameDescentExponentData.succ_eq K (l := l) (e := e) (a := a)]`. Conclude with `dvd_pow_self l (NeZero.ne a)`.
-
-Conclude with `(Fact.out : l.Prime).one_lt.ne' (Nat.dvd_one.1 ((Nat.dvd_add_right h).1 h1))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_e (l a : ℕ) [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero a] [TameDescentExponentData K l e a] :
     ‖(e : K)‖ = 1 := by
@@ -462,7 +456,7 @@ def isoCoef (c : ZMod e) (ζ : rootsOfUnity e K) : ZMod a → K⟦X⟧ :=
   fun τ => C ((e : K)⁻¹ * (TameGal.inertia ζ⁻¹ : TameGal K l e a).root τ ^ c.val)
 
 /- English proof (translation)
-Use `C_mem_A (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, norm_inv, norm_e l a, norm_pow, TameGal.norm_root, one_pow, inv_one, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isoCoef_mem_A (c : ZMod e) (ζ : rootsOfUnity e K) (τ : ZMod a) :
     isoCoef l a c ζ τ ∈ A O K := by
@@ -470,7 +464,7 @@ theorem isoCoef_mem_A (c : ZMod e) (ζ : rootsOfUnity e K) (τ : ZMod a) :
   rw [norm_mul, norm_inv, norm_e l a, norm_pow, TameGal.norm_root, one_pow, inv_one, one_mul]
 
 /- English proof (translation)
-The claim follows from `ringAct_inertia_C ξ _`.
+A detailed English derivation is pending.
 -/
 theorem ringAct_isoCoef (c : ZMod e) (ζ ξ : rootsOfUnity e K) :
     ringAct (TameGal.inertia ξ : TameGal K l e a) (isoCoef l a c ζ) = isoCoef l a c ζ :=
@@ -493,11 +487,11 @@ theorem isoProj_def {P : PhiMod O K l e a ι} (Δ : Descent P) (c : ZMod e) (v :
     isoProj Δ c v = ∑ ζ : rootsOfUnity e K, isoCoef l a c ζ • Δ.act (TameGal.inertia ζ) v := rfl
 
 /- English proof (translation)
-Introduce `ξ τ`. Establish `h1 : Δ.act (TameGal.inertia ξ) (isoProj Δ c v) = ∑ ζ, isoCoef l a c (ξ⁻¹ * ζ) • Δ.act (TameGal.inertia ζ) v`. Rewrite using `[isoProj_def, map_sum]`. Use `Fintype.sum_equiv (Equiv.mulLeft ξ) _ _ fun ζ => ?_` and prove the remaining obligations. Rewrite using `[Δ.act_smul_tot, ringAct_isoCoef, Equiv.coe_mulLeft, inv_mul_cancel_left]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_mul, Module.End.mul_apply]`. Rewrite using `[h1, isoProj_def, Finset.sum_apply, Finset.sum_apply, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun ζ _ => ?_` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply', Pi.smul_apply, isoCoef, smul_eq_mul, smul_eq_C_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[_root_.mul_inv_rev, inv_inv, root_inertia_mul, mul_pow]`. Simplify using `only [map_mul, map_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem isoProj_mem {P : PhiMod O K l e a ι} (Δ : Descent P) (c : ZMod e) (v : Vec K a ι) :
     isoProj Δ c v ∈ Δ.isotypic c := by
@@ -518,7 +512,7 @@ theorem isoProj_mem {P : PhiMod O K l e a ι} (Δ : Descent P) (c : ZMod e) (v :
 
 omit [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero a] [TameDescentExponentData K l e a] in
 /- English proof (translation)
-Take `⟨ζ, hζ⟩` from `TameDescentExponentData.prim (K := K) (l := l) (e := e) (a := a)`. Conclude with `hζ.card_rootsOfUnity`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem card_roots (l a : ℕ) [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero a] [TameDescentExponentData K l e a] :
     Nat.card (rootsOfUnity e K) = e := by
@@ -526,9 +520,9 @@ theorem card_roots (l a : ℕ) [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero 
   exact hζ.card_rootsOfUnity
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ i`. Rewrite using `[isoProj_def, Finset.sum_apply, Finset.sum_apply]`. Establish `h1 : ∀ ζ : rootsOfUnity e K, (isoCoef l a c ζ • Δ.act (TameGal.inertia ζ) v) τ i = C ((e : K)⁻¹) * v τ i`. Introduce `ζ`. Rewrite using `[Pi.smul_apply', hv ζ τ]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.smul_apply, isoCoef, smul_eq_mul, smul_eq_C_mul]`. Rewrite using `[← mul_assoc, ← map_mul, mul_assoc, ← mul_pow, ← root_inertia_mul, inv_mul_cancel, root_inertia_one, one_pow, mul_one]`. Establish `he : (e : K) ≠ 0` using `norm_ne_zero_iff.1 (by rw [norm_e l a]; exact one_ne_zero)`. Simplify using `only [h1, Finset.sum_const, Finset.card_univ, ← Nat.card_eq_fintype_card, card_roots l a, nsmul_eq_mul]`. Rewrite using `[← mul_assoc, ← map_natCast (C (R := K)), ← map_mul, mul_inv_cancel₀ he, map_one, one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem isoProj_of_mem {P : PhiMod O K l e a ι} (Δ : Descent P) (c : ZMod e) {v : Vec K a ι}
     (hv : v ∈ Δ.isotypic c) : isoProj Δ c v = v := by
@@ -554,11 +548,11 @@ variable [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero e] [NeZero a] [TameDes
 local instance : Fintype (rootsOfUnity e K) := Fintype.ofFinite _
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `v ∈ SHigh O K l e • P.MM at hv`. Express the relevant statement in the definitionally equal form `_ ∈ SHigh O K l e • P.MM`. Use `Submodule.smul_induction_on (p := fun v => f • v ∈ SHigh O K l e • P.MM) hv ?_ ?_` and prove the remaining obligations. Introduce `s hs m hm`. Establish `h1 : f • (s • m) = s • (f • m)`.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `τ i`. Simplify using `only [Pi.smul_apply', Pi.smul_apply, Subalgebra.smul_def, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1]`. Conclude with `Submodule.smul_mem_smul hs (P.smul_tot_mem_ext (fun τ => A_le_S l e (hf τ)) hm)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x y hx hy`. Rewrite using `[smul_add]`. Conclude with `add_mem hx hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smulTot_mem_MMHigh (P : PhiMod O K l e a ι) {f : ZMod a → K⟦X⟧} (hf : ∀ τ, f τ ∈ A O K)
     {v : Vec K a ι} (hv : v ∈ MMHigh P) : f • v ∈ MMHigh P := by
@@ -577,11 +571,11 @@ theorem smulTot_mem_MMHigh (P : PhiMod O K l e a ι) {f : ZMod a → K⟦X⟧} (
     exact add_mem hx hy
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `v ∈ SHigh O K l e • P.MM at hv`. Use `Submodule.smul_induction_on (p := fun v => Δ.act g v ∈ MMHigh P) hv ?_ ?_` and prove the remaining obligations. Introduce `s hs m hm`. Establish `h0 : (s • m : Vec K a ι) = (fun _ : ZMod a => (s : K⟦X⟧)) • m`. Use function extensionality and compare the values at `τ i`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Both sides reduce to the same expression. Rewrite using `[h0, Δ.act_smul_tot]`. Use `smul_mem_MMHigh P (fun τ => ⟨rot_S.ringAct_mem g (fun _ => s.2) τ, ?_⟩) (Δ.act_mem_ext g (A_le_S l e) rot_S hm)` and prove the remaining obligations. Use `show (X : K⟦X⟧) ^ (l * e) ∣ rescale (g.root τ) (s : K⟦X⟧)`. Take `⟨t, ht⟩` from `mem_SHigh.1 hs`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ht, map_mul, map_pow, rescale_X, mul_pow]`. Conclude with `Dvd.dvd.mul_right (dvd_mul_left _ _) _`. Introduce `x y hx hy`. Rewrite using `[map_add]`. Conclude with `add_mem hx hy`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem act_mem_MMHigh {P : PhiMod O K l e a ι} (Δ : Descent P) (g : TameGal K l e a)
     {v : Vec K a ι} (hv : v ∈ MMHigh P) : Δ.act g v ∈ MMHigh P := by
@@ -603,11 +597,11 @@ theorem act_mem_MMHigh {P : PhiMod O K l e a ι} (Δ : Descent P) (g : TameGal K
     exact add_mem hx hy
 
 /- English proof (translation)
-Take `⟨y, hy, rfl⟩` from `mem_mulL.1 hv`. Establish `h1 : Δ.act g ((X : K⟦X⟧) ^ i • y) = (X : K⟦X⟧) ^ i • ((fun τ => C (g.root τ ^ i)) • Δ.act g y)`. Establish `h0 : ((X : K⟦X⟧) ^ i • y : Vec K a ι) = (fun _ : ZMod a => (X : K⟦X⟧) ^ i) • y`. Use function extensionality and compare the values at `τ j`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 
-Rewrite using `[h0, Δ.act_smul_tot]`. Use function extensionality and compare the values at `τ j`. Simplify using `only [Pi.smul_apply', Pi.smul_apply, ringAct_apply, smul_eq_mul, map_pow, rescale_X, mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `mem_mulL.2 ⟨_, P.smul_tot_mem_ext (fun τ => C_mem_A (le_of_eq ?_)) (Δ.act_mem_ext g le_rfl rot_A hy), rfl⟩` and prove the remaining obligations. Rewrite using `[norm_pow, TameGal.norm_root, one_pow]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem act_mem_uL {P : PhiMod O K l e a ι} (Δ : Descent P) (g : TameGal K l e a) (i : ℕ)
     {v : Vec K a ι} (hv : v ∈ uL P i) : Δ.act g v ∈ uL P i := by
@@ -627,7 +621,7 @@ theorem act_mem_uL {P : PhiMod O K l e a ι} (Δ : Descent P) (g : TameGal K l e
   rw [norm_pow, TameGal.norm_root, one_pow]
 
 /- English proof (translation)
-Take `⟨y, hy, rfl⟩` from `mem_mulL.1 hv`. Use `mem_mulL.2 ⟨f • y, P.smul_tot_mem_ext hf hy, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `τ j`. Simplify using `only [Pi.smul_apply', Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem smulTot_mem_uL (P : PhiMod O K l e a ι) {f : ZMod a → K⟦X⟧} (hf : ∀ τ, f τ ∈ A O K)
     (i : ℕ) {v : Vec K a ι} (hv : v ∈ uL P i) : f • v ∈ uL P i := by
@@ -638,7 +632,7 @@ theorem smulTot_mem_uL (P : PhiMod O K l e a ι) {f : ZMod a → K⟦X⟧} (hf :
   ring
 
 /- English proof (translation)
-The claim follows from `Submodule.sum_mem _ fun ζ _ => P.smul_tot_mem_ext (isoCoef_mem_A c ζ) (Δ.act_mem_ext _ le_rfl rot_A hv)`.
+A detailed English derivation is pending.
 -/
 theorem isoProj_mem_L {P : PhiMod O K l e a ι} (Δ : Descent P) (c : ZMod e) {v : Vec K a ι}
     (hv : v ∈ P.L) : isoProj Δ c v ∈ P.L :=
@@ -646,21 +640,21 @@ theorem isoProj_mem_L {P : PhiMod O K l e a ι} (Δ : Descent P) (c : ZMod e) {v
     P.smul_tot_mem_ext (isoCoef_mem_A c ζ) (Δ.act_mem_ext _ le_rfl rot_A hv)
 
 /- English proof (translation)
-The claim follows from `Submodule.sum_mem _ fun ζ _ => smulTot_mem_MMHigh P (isoCoef_mem_A c ζ) (act_mem_MMHigh Δ _ hv)`.
+A detailed English derivation is pending.
 -/
 theorem isoProj_mem_MMHigh {P : PhiMod O K l e a ι} (Δ : Descent P) (c : ZMod e)
     {v : Vec K a ι} (hv : v ∈ MMHigh P) : isoProj Δ c v ∈ MMHigh P :=
   Submodule.sum_mem _ fun ζ _ => smulTot_mem_MMHigh P (isoCoef_mem_A c ζ) (act_mem_MMHigh Δ _ hv)
 
 /- English proof (translation)
-The claim follows from `Submodule.sum_mem _ fun ζ _ => smulTot_mem_uL P (isoCoef_mem_A c ζ) i (act_mem_uL Δ _ i hv)`.
+A detailed English derivation is pending.
 -/
 theorem isoProj_mem_uL {P : PhiMod O K l e a ι} (Δ : Descent P) (c : ZMod e) (i : ℕ)
     {v : Vec K a ι} (hv : v ∈ uL P i) : isoProj Δ c v ∈ uL P i :=
   Submodule.sum_mem _ fun ζ _ => smulTot_mem_uL P (isoCoef_mem_A c ζ) i (act_mem_uL Δ _ i hv)
 
 /- English proof (translation)
-Simplify using `only [isoProj_def, map_sum, BK.Hom.app_smul_tot, F.app_act]`.
+Simplify using the standard rewrite rules.
 -/
 theorem isoProj_app {P : PhiMod O K l e a ι} {Q : PhiMod O K l e a κ} {Δ₁ : Descent P}
     {Δ₂ : Descent Q} (F : Descent.Hom Δ₁ Δ₂) (c : ZMod e) (y : Vec K a ι) :
@@ -668,11 +662,11 @@ theorem isoProj_app {P : PhiMod O K l e a ι} {Q : PhiMod O K l e a κ} {Δ₁ :
   simp only [isoProj_def, map_sum, BK.Hom.app_smul_tot, F.app_act]
 
 /- English proof (translation)
-Introduce `ζ τ`. Establish `h1 : Δ.act (TameGal.inertia ζ) v = (fun τ => C ((TameGal.inertia ζ : TameGal K l e a).root τ ^ c.val)) • v`. Use function extensionality and compare the values at `τ' j`. Rewrite using `[hv ζ τ']`. Simplify using `[smul_eq_C_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h2 : NTot (fun τ => C ((TameGal.inertia ζ : TameGal K l e a).root τ ^ c.val)) = 0`. Use function extensionality and compare the values at `τ'`. Simplify using `[NTot, N_apply]`. Rewrite using `[Δ.act_conn, h1, P.conn_smul_tot, h2, zero_smul, zero_add]`. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[smul_eq_C_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem conn_mem_isotypic {P : PhiMod O K l e a ι} (Δ : Descent P) (c : ZMod e) {v : Vec K a ι}
     (hv : v ∈ Δ.isotypic c) : P.conn v ∈ Δ.isotypic c := by
@@ -697,14 +691,14 @@ variable [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero e] [NeZero a] [TameDes
   {η H : ℕ}
 
 /- English proof (translation)
-The claim follows from `modHigh_top hR D.toPhiMod fun _ hm => D.exists_conn_eq hm`.
+A detailed English derivation is pending.
 -/
 theorem modHigh_top_dat (hR : RingModHigh O K l e) (D : BKDat O K l e a ι η H) :
     ModHigh D.toPhiMod ⊤ :=
   modHigh_top hR D.toPhiMod fun _ hm => D.exists_conn_eq hm
 
 /- English proof (translation)
-The claim follows from `modHigh_of_proj (isoProj D.desc c) (isoProj_mem D.desc c) (fun _ hv => isoProj_of_mem D.desc c hv) (fun _ hv => isoProj_mem_L D.desc c hv) (fun _ hv => isoProj_mem_MMHigh D.desc c hv) (fun i _ hv => isoProj_mem_uL D.desc c i hv) (fun _ hv => conn_mem_isotypic D.desc c hv) (modHig …`.
+A detailed English derivation is pending.
 -/
 theorem modHigh_isotypic (hR : RingModHigh O K l e) (D : BKDat O K l e a ι η H) (c : ZMod e) :
     ModHigh D.toPhiMod (D.desc.isotypic c) :=
@@ -714,16 +708,16 @@ theorem modHigh_isotypic (hR : RingModHigh O K l e) (D : BKDat O K l e a ι η H
     (modHigh_top_dat hR D)
 
 /- English proof (translation)
-The claim follows from `imageStable_top hR F.toHom (fun _ hm => B₁.conn_mem_MM hm) (fun _ hm => B₂.conn_mem_MM hm)`.
+A detailed English derivation is pending.
 -/
 theorem imageStable_top_hom (hR : RingModHigh O K l e) {B₁ : BKDat O K l e a ι η H}
     {B₂ : BKDat O K l e a κ η H} (F : BKHom B₁ B₂) : ImageStable F.toHom ⊤ :=
   imageStable_top hR F.toHom (fun _ hm => B₁.conn_mem_MM hm) (fun _ hm => B₂.conn_mem_MM hm)
 
 /- English proof (translation)
-Use `imageStable_of_proj F.toHom (isoProj B₂.desc c) (isoProj_mem _ c) (fun _ hv => isoProj_of_mem _ c hv) (fun v hv => ?_) (fun _ hv => isoProj_mem_MMHigh _ c hv) (fun _ hv => conn_mem_isotypic _ c hv) (imageStable_top_hom hR F)` and prove the remaining obligations. Take `⟨y, hy, hyv⟩` from `Submodule.mem_map.1 ((Submodule.restrictScalars_mem O _ _).1 hv)`. Simplify using `only [LinearMap.coe_restrictScalars] at hyv`. Substitute `hyv` using the available equality. Rewrite using `[isoProj_app F c y]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mem_imL F.toHom (isoProj_mem_L B₁.desc c hy)`.
+A detailed English derivation is pending.
 -/
 theorem imageStable_isotypic (hR : RingModHigh O K l e) {B₁ : BKDat O K l e a ι η H}
     {B₂ : BKDat O K l e a κ η H} (F : BKHom B₁ B₂) (c : ZMod e) :
@@ -740,7 +734,7 @@ theorem imageStable_isotypic (hR : RingModHigh O K l e) {B₁ : BKDat O K l e a 
 end Main
 
 /- English proof (translation)
-Introduce `O K _ _ _ _ _ _ l e a _ _ _ _ _`. Establish `hR : RingModHigh O K l e` using `GlobalTheory.T.breuilRing_mod_high_degree_property O K l e a`. Use `⟨hR, fun ι _ _ η H D => ⟨modHigh_top_dat hR D, fun ζ x => D.desc.act_conn _ x, fun c => modHigh_isotypic hR D c⟩, fun ι κ _ _ _ _ η H B₁ B₂ F => ⟨fun x hx => ⟨F.app_mem_ext (A_le_S l e) hx, F.app_conn x⟩, imageStable_top_hom hR F, fun c => imageStable_isotypic hR F c⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem reduction : ∀ (O K : Type) [CommRing O] [NormedField K] [IsUltrametricDist K] [CompleteSpace K]
     [Algebra O K] [IsUnitBall O K] (l e a : ℕ) [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero e]

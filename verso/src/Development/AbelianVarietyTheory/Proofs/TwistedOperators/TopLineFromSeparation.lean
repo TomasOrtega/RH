@@ -15,9 +15,9 @@ noncomputable section
 namespace GlobalTheory.TopLineProof
 
 /- English proof (translation)
-Establish `hl₀ : l₀ ≠ 0`. Introduce and unpack `rfl`. Use `hne (LinearMap.ext_on_range hx fun i => LinearMap.ext_on_range hy fun j => ?_)` and prove the remaining obligations. Simplify using `[hb₀]`. Use `LinearMap.ext_on_range hx fun i => LinearMap.ext_on_range hy fun j => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[LinearMap.smul_apply, LinearMap.smul_apply, hb, hb₀, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem bilin_prop {X Y ι κ : Type*} [AddCommGroup X] [Module ℂ X] [AddCommGroup Y] [Module ℂ Y] (fx : ι → X) (fy : κ → Y)
     (hx : Submodule.span ℂ (Set.range fx) = ⊤) (hy : Submodule.span ℂ (Set.range fy) = ⊤) (b b₀ : X →ₗ[ℂ] Y →ₗ[ℂ] ℂ)
@@ -34,13 +34,11 @@ theorem bilin_prop {X Y ι κ : Type*} [AddCommGroup X] [Module ℂ X] [AddCommG
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts}
 
 /- English proof (translation)
-Take `⟨hc, hs⟩` from `GlobalTheory.CoefModel.realGL_laws hθ (G.V (.top 0))`. Take `⟨_, _, _, _, _, _, _⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D (G.V (.top 0))`. Use `GlobalTheory.CoefModel.coefOf_is _ _ _ (fun h hh => ?_) (fun h τ => ?_) (fun τ => ?_) (fun g hg => ?_)` and prove the remaining obligations. Establish `: GlobalTheory.CoefModel.realGL θ (G.V (.top 0)) h = 1` using `funext fun τ => by show Formalism.UG.bc (θ τ) (infHom (G.V (.top 0)) h) = 1`. Rewrite using `[show infHom (G.V (.top 0)) h = 1 from hh, map_one]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MonoidHom.comp_apply, this, map_one]`. Conclude with `GlobalTheory.CoefModel.invTr_unitary (g := GlobalTheory.CoefModel.realGL θ (G.V (.top 0)) h τ) (GlobalTheory.RecDictModel.archM_unitary (G.V (.top 0)) (hθ τ) h)`. Use `((hc τ).comp continuous_inv).matrix_transpose.congr fun h => ?_ show Matrix.transpose (GlobalTheory.CoefModel.realGL θ (G.V (.top 0)) h⁻¹ τ : Matrix (Fin (G.V (.top 0)).rank) (Fin (G.V (.top 0)).rank) ℂ) = _` and prove the remaining obligations. Rewrite using `[map_inv]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Take `⟨h, e⟩` from `hs (invTrK g) fun τ => by`. Use `GlobalTheory.CoefModel.invTr_unitary (hg τ)` as an intermediate fact. Rewrite `this` using `[← Matrix.transpose_nonsing_inv, Matrix.nonsing_inv_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 (GlobalTheory.FunObj.posDef_Xp G (tauE D τ)).isUnit), Matrix.transpose_transpose]`. Then use the resulting hypothesis. Use `⟨h, ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.comp_apply, e]`.
-
-Conclude with `funext fun τ => GlobalTheory.CoefModel.invTr_invTr _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coefPlus_is (G : GridData L sc) {θ : InfFam D} (hθ : IsInfFam θ) : (coefPlus G θ).Is := by
   obtain ⟨hc, hs⟩ := GlobalTheory.CoefModel.realGL_laws hθ (G.V (.top 0))

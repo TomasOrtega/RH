@@ -12,7 +12,7 @@ open ReciprocityTheory.L2DbarEstimates ReciprocityTheory.ChartRestriction.G.AR.U
 variable {f p q N' : ℕ}
 
 /- English proof (translation)
-Use `first`. Consider the case `exact_mod_cast (le_top : (2 : ℕ∞) ≤ ⊤)`. Consider the case `exact WithTop.coe_le_coe.mpr le_top`. Consider the case `simp`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem two_le_infty : (2 : WithTop ℕ∞) ≤ ∞ := by
   first
@@ -21,7 +21,7 @@ theorem two_le_infty : (2 : WithTop ℕ∞) ≤ ∞ := by
   | simp
 
 /- English proof (translation)
-The claim follows from `Finset.sum_nonneg fun i _ => Complex.normSq_nonneg _`.
+A detailed English derivation is pending.
 -/
 theorem sqNorm_nonneg' {m : ℕ} (g : Fin m → ℂ) : 0 ≤ sqNorm g :=
   Finset.sum_nonneg fun i _ => Complex.normSq_nonneg _

@@ -8,9 +8,9 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G.Geo.T
 open ReciprocityTheory.ChartRestriction.G.DVR.FlatBC (algX) in
 open GlobalTheory.TopForm ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi in
 /- English proof (translation)
-Establish `h` using `congrArg (fun φ => φ a) (GlobalTheory.TopForm.resG_comp_algX p (le_top : V ≤ ⊤))`. Simplify using `only [RingHom.comp_apply] at h`. Rewrite using `[← h]`. Simplify using `only [ReciprocityTheory.ChartRestriction.G.Geo.Tor.resG, TopCat.Presheaf.germ_res_apply]`. Simplify using `only [algX, GlobalTheory.PD.ffAlg, RingHom.algebraMap_toAlgebra, RingHom.comp_apply, Scheme.Hom.appLE]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [CommRingCat.comp_apply, TopCat.Presheaf.germ_res_apply]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 private theorem germ_algX {X : Scheme.{0}} [IsIntegral X] (p : X ⟶ Sp ℂ) (V : X.Opens) (hg : genericPoint X ∈ V) (a : ℂ) :
     (X.presheaf.germ V (genericPoint X) hg).hom (algX p V a) = @algebraMap ℂ X.functionField _ _ (ffAlg p) a := by
@@ -25,27 +25,27 @@ private theorem germ_algX {X : Scheme.{0}} [IsIntegral X] (p : X ⟶ Sp ℂ) (V 
 open ReciprocityTheory.ChartRestriction.G.DVR.FlatBC (algX) in
 open GlobalTheory.Points GlobalTheory.TopForm GlobalTheory.ChartGlue in
 /- English proof (translation)
-Introduce `X _ p inst hinst V hV hg B hB`. Substitute `hinst` using the available equality. Use `set g := (X.presheaf.germ V (genericPoint X) hg).hom with hgdef`. Establish `ginj : Function.Injective g` using `germ_injective_of_isIntegral X (genericPoint X) hg`. Establish `gB : ∀ f, g f ∈ B` using `fun f => (hB _).2 ⟨f, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `gr : Γ(X, V) →+* B` to `g.codRestrict B gB`. Establish `grbij : Function.Bijective gr`. Use `⟨fun x y hxy => ginj (congrArg Subtype.val hxy), fun b => ?_⟩` and prove the remaining obligations. Take `⟨f, hf⟩` from `(hB b.1).1 b.2`. Conclude with `⟨f, Subtype.ext hf⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Set `eqv : Γ(X, V) ≃+* B` to `RingEquiv.ofBijective gr grbij`. Establish `eqv_apply : ∀ f, eqv f = ⟨g f, gB f⟩` using `fun f => rfl`. Establish `alg_eq : ∀ a : ℂ, (algebraMap ℂ B a) = eqv (algX p V a)`. Introduce `a`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eqv_apply]`. Conclude with `(germ_algX p V hg a).symm`. Prove the components needed by the constructor for the conclusion. Introduce `e`. Set `φ : Γ(X, V) →+* ℂ` to `(e : B →+* ℂ).comp (eqv : Γ(X, V) →+* B)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hφ : ∀ a : ℂ, φ (algX p V a) = RingHom.id ℂ a`. Introduce `a`. Express the relevant statement in the definitionally equal form `e (eqv (algX p V a)) = a`. Rewrite using `[← alg_eq]`. Conclude with `e.commutes a`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `⟨CxPts.ofHom hV φ hφ, ⟨CxPts.ofHom_mem hV φ hφ, fun f hf => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[CxPts.ev_ofHom]`. Both sides reduce to the same expression. Introduce and unpack `y ⟨hy, hye⟩`. Apply `Subtype.ext` to reduce the goal to its premises.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Apply `GlobalTheory.Points.ext_of_valR hV hy (CxPts.ofHom_mem hV φ hφ)` to reduce the goal to its premises. Introduce `f`. Express the relevant statement in the definitionally equal form `CxPts.ev p (RingHom.id ℂ) V f y = CxPts.ev p (RingHom.id ℂ) V f (CxPts.ofHom hV φ hφ)`. Rewrite using `[CxPts.ev_ofHom, ← hye f (gB f)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `y hy`. Set `e0 : B →+* ℂ` to `(CxPts.evHom hy).comp (eqv.symm : B →+* Γ(X, V))`. Establish `he0 : ∀ a : ℂ, e0 (algebraMap ℂ B a) = algebraMap ℂ ℂ a`. Introduce `a`. Express the relevant statement in the definitionally equal form `CxPts.evHom hy (eqv.symm (algebraMap ℂ B a)) = a`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Rewrite using `[alg_eq, RingEquiv.symm_apply_apply, ← CxPts.ev_eq hy, CxPts.ev_algX hy]`. Both sides reduce to the same expression. Set `e : B →ₐ[ℂ] ℂ` to `{ e0 with commutes' := he0 }`. Use `⟨e, ⟨hy, fun f hf => ?_⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `CxPts.evHom hy (eqv.symm ⟨g f, hf⟩) = _`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[show (⟨g f, hf⟩ : B) = eqv f from rfl, RingEquiv.symm_apply_apply, CxPts.ev_eq hy]`. Introduce and unpack `e' ⟨_, he'⟩`. Apply `AlgHom.ext` to reduce the goal to its premises. Introduce `b`. Take `⟨f, hf⟩` from `(hB b.1).1 b.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Establish `hb : b = ⟨g f, gB f⟩` using `Subtype.ext hf.symm`. Substitute `hb` using the available equality. Rewrite using `[he' f (gB f)]`. Express the relevant statement in the definitionally equal form `_ = CxPts.evHom hy (eqv.symm (eqv f))`. Rewrite using `[RingEquiv.symm_apply_apply, CxPts.ev_eq hy]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.complexPoints_bijective_algHom_affineOpen :
     ∀ (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp ℂ) [inst : Algebra ℂ X.functionField], inst = ffAlg p → ∀ (V : X.Opens), IsAffineOpen V → ∀ (hg : genericPoint X ∈ V) (B : Subalgebra ℂ X.functionField), (∀ y, y ∈ B ↔ ∃ f : Γ(X, V), (X.presheaf.germ V (genericPoint X) hg).hom f = y) → (∀ e : B →ₐ[ℂ] ℂ, ∃! y : CxPts p (RingHom.id ℂ), UpperTheory.A.Mt p V hg B e y) ∧ (∀ y ∈ CxPts.ptsIn p (RingHom.id ℂ) V, ∃! e : B →ₐ[ℂ] ℂ, UpperTheory.A.Mt p V hg B e y) := by

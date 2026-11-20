@@ -10,7 +10,7 @@ namespace Place
 variable {k K : Type*} [Field k] [Field K] [Algebra k K]
 
 /- English proof (translation)
-Establish `hx' : IsIntegral v.ring x` using `hx.tower_top`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hx'`. Rewrite using `[← hy]`. Conclude with `y.2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_ring_of_isIntegral (v : Place k K) {x : K} (hx : IsIntegral k x) : x ∈ v.ring := by
   have hx' : IsIntegral v.ring x := hx.tower_top
@@ -19,13 +19,13 @@ theorem mem_ring_of_isIntegral (v : Place k K) {x : K} (hx : IsIntegral k x) : x
   exact y.2
 
 /- English proof (translation)
-The claim follows from `v.mem_ring_of_isIntegral hx.isIntegral`.
+A detailed English derivation is pending.
 -/
 theorem mem_ring_of_isAlgebraic (v : Place k K) {x : K} (hx : IsAlgebraic k x) : x ∈ v.ring :=
   v.mem_ring_of_isIntegral hx.isIntegral
 
 /- English proof (translation)
-Establish `h1` using `(v.ring.valuation_le_one_iff x).2 (v.mem_ring_of_isAlgebraic hx)`. Establish `h2` using `(v.ring.valuation_le_one_iff x⁻¹).2 (v.mem_ring_of_isAlgebraic (IsAlgebraic.inv_iff.2 hx))`. Rewrite `h2` using `[map_inv₀, inv_le_one₀ (zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 hx0))]`. Conclude with `le_antisymm h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valuation_eq_one_of_isAlgebraic (v : Place k K) {x : K} (hx : IsAlgebraic k x)
     (hx0 : x ≠ 0) : v.ring.valuation x = 1 := by
@@ -36,7 +36,7 @@ theorem valuation_eq_one_of_isAlgebraic (v : Place k K) {x : K} (hx : IsAlgebrai
   exact le_antisymm h1 h2
 
 /- English proof (translation)
-Establish `h` using `v.valuation_eq_one_of_isAlgebraic hx hx0`. Rewrite `h` using `[← v.valuation_isEquiv.eq_one_iff_eq_one]`. Rewrite using `[ord, h, WithZero.log_one, neg_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem ord_eq_zero_of_isAlgebraic [IsFunctionField k K] (v : Place k K) {x : K}
     (hx : IsAlgebraic k x) (hx0 : x ≠ 0) : v.ord x = 0 := by
@@ -45,17 +45,15 @@ theorem ord_eq_zero_of_isAlgebraic [IsFunctionField k K] (v : Place k K) {x : K}
   rw [ord, h, WithZero.log_one, neg_zero]
 
 /- English proof (translation)
-Set `A : Subring K` to `(Algebra.adjoin k {x}).toSubring`. Establish `hxA : x ∈ A` using `Algebra.self_mem_adjoin_singleton k x`. Set `I : Ideal A` to `Ideal.span {⟨x, hxA⟩}`. Establish `hI : I ≠ ⊤`. Introduce `htop`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `htop` using `[Ideal.span_singleton_eq_top]`. Take `⟨y, hy⟩` from `htop.exists_right_inv`. Establish `hyA : (y : K) ∈ Algebra.adjoin k {x}` using `y.2`. Rewrite `hyA` using `[Algebra.adjoin_singleton_eq_range_aeval]`. Take `⟨p, hp⟩` from `hyA`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hxy : x * (y : K) = 1` using `congrArg Subtype.val hy`. Apply `hx` to reduce the goal to its premises. Use `⟨X * p - 1, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Establish `h0` using `congrArg (fun q : k[X] => q.coeff 0) h`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `at h0`. Establish `hp' : aeval x p = (y : K)` using `hp`. Rewrite using `[map_sub, map_mul, aeval_X, map_one, hp', hxy, sub_self]`. Take `⟨B, hAB, hIB⟩` from `Ideal.image_subset_nonunits_valuationSubring I hI`. Establish `hxB : x ∈ B.nonunits` using `hIB ⟨⟨x, hxA⟩, Ideal.subset_span rfl, rfl⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨⟨B, ?_, ?_⟩, B.mem_nonunits_iff.1 hxB⟩` and prove the remaining obligations. Introduce `htop`. Break down `B.mem_nonunits_iff_or.1 hxB with h | h` into its components or cases. Conclude with `hx (h ▸ isAlgebraic_zero)`. Conclude with `h (htop ▸ ValuationSubring.mem_top x⁻¹)`.
-
-Introduce `c`. Conclude with `hAB (Subalgebra.algebraMap_mem (Algebra.adjoin k {x}) c)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_valuation_lt_one_of_transcendental {x : K} (hx : Transcendental k x) :
     ∃ v : Place k K, v.ring.valuation x < 1 := by
@@ -88,9 +86,9 @@ theorem exists_valuation_lt_one_of_transcendental {x : K} (hx : Transcendental k
     exact hAB (Subalgebra.algebraMap_mem (Algebra.adjoin k {x}) c)
 
 /- English proof (translation)
-Establish `hx' : Transcendental k x⁻¹` using `fun h => hx (by simpa using IsAlgebraic.inv_iff.2 h)`. Take `⟨v, hv⟩` from `exists_valuation_lt_one_of_transcendental hx'`. Use `⟨v, fun hmem => ?_⟩` and prove the remaining obligations. Establish `hx0 : x ≠ 0` using `fun h => hx (h ▸ isAlgebraic_zero)`. Establish `h1` using `(v.ring.valuation_le_one_iff x).2 hmem`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hv` using `[map_inv₀, inv_lt_one₀ (zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 hx0))]`. Conclude with `absurd h1 (not_le.2 hv)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_not_mem_of_transcendental {x : K} (hx : Transcendental k x) :
     ∃ v : Place k K, x ∉ v.ring := by
@@ -103,7 +101,7 @@ theorem exists_not_mem_of_transcendental {x : K} (hx : Transcendental k x) :
   exact absurd h1 (not_le.2 hv)
 
 /- English proof (translation)
-Use `⟨fun hx v => v.mem_ring_of_isAlgebraic hx, fun h => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hx`. Take `⟨v, hv⟩` from `exists_not_mem_of_transcendental hx`. Conclude with `hv (h v)`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isAlgebraic_iff_forall_mem {x : K} : IsAlgebraic k x ↔ ∀ v : Place k K, x ∈ v.ring := by
   refine ⟨fun hx v => v.mem_ring_of_isAlgebraic hx, fun h => ?_⟩
@@ -112,7 +110,7 @@ theorem isAlgebraic_iff_forall_mem {x : K} : IsAlgebraic k x ↔ ∀ v : Place k
   exact hv (h v)
 
 /- English proof (translation)
-Take `⟨x, hx, -⟩` from `IsFunctionField.exists_transcendental_finiteDimensional (k := k) (K := K)`. Take `⟨v, -⟩` from `exists_valuation_lt_one_of_transcendental hx`. Conclude with `⟨v⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nonempty [IsFunctionField k K] : Nonempty (Place k K) := by
   obtain ⟨x, hx, -⟩ := IsFunctionField.exists_transcendental_finiteDimensional (k := k) (K := K)
@@ -120,11 +118,9 @@ theorem nonempty [IsFunctionField k K] : Nonempty (Place k K) := by
   exact ⟨v⟩
 
 /- English proof (translation)
-Use `ext1`. Establish `key : ∀ (P : Ideal v.ring) [P.IsPrime], v.ring.ofPrime P = w.ring → v.ring = w.ring`. Introduce `P hP hPw`. Break down `eq_or_ne P ⊥ with h0 | h0` into its components or cases. Substitute `h0` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hPw` using `[ValuationSubring.ofPrime_bot]`. Conclude with `absurd hPw.symm w.ne_top`. Establish `hmax : P.IsMaximal` using `Ideal.IsPrime.isMaximal hP h0`. Establish `hm` using `IsLocalRing.eq_maximalIdeal hmax`. Substitute `hm` using the available equality.
-
-Rewrite `hPw` using `[ValuationSubring.ofPrime_top]`. Conclude with `hPw`. Conclude with `key _ (v.ring.ofPrime_idealOfLE w.ring h)`.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_le [IsFunctionField k K] {v w : Place k K} (h : v.ring ≤ w.ring) : v = w := by
   ext1
@@ -149,7 +145,7 @@ noncomputable def algebraicClosureToResidueField (v : Place k K) :
   commutes' _ := rfl
 
 /- English proof (translation)
-The claim follows from `v.algebraicClosureToResidueField.toRingHom.injective`.
+A detailed English derivation is pending.
 -/
 theorem algebraicClosureToResidueField_injective (v : Place k K) :
     Function.Injective v.algebraicClosureToResidueField :=

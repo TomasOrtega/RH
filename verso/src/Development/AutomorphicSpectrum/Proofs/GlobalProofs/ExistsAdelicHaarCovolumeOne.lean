@@ -7,9 +7,9 @@ open scoped TensorProduct ENNReal
 namespace GlobalTheory.CompanionTheory.Hypotheses₂.OneV
 
 /- English proof (translation)
-Introduce `F _ _`. Establish `e : (measAF : MeasurableSpace (AF F)) = GroundTheory.Global.measurableSpace_adeleRing F` using `(GroundTheory.Global.borelSpace_adeleRing F).measurable_eq.symm`. Unfold `IsCovolOne`. Rewrite using `[e]`. Use `⟨GroundTheory.Global.adeleMeasure F, inferInstance, GroundTheory.Global.fundamentalSet F, ?_, GroundTheory.Global.adeleMeasure_fundamentalSet F⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `GroundTheory.Global.isAddFundamentalDomain_fundamentalSet F`.
+A detailed English derivation is pending.
 -/
 theorem exists_isCovolOne : ∀ (F : Type) [Field F] [NumberField F], ∃ db : Measure (AF F), IsCovolOne db := by
   intro F _ _

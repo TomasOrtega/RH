@@ -14,9 +14,9 @@ set_option autoImplicit false
 namespace GlobalTheory.HSNef
 
 /- English proof (translation)
-Introduce `hC hA hS k _ X _ p D hX L N a hL ha`. Use `⟨Eventually.of_forall fun m => GlobalTheory.T.finite_smallSec_hermitian_line_bundle_arith_variety k X p D hX _, ?_⟩` and prove the remaining obligations. Use `Asymptotics.isLittleO_iff.2 fun c hc => ?_` and prove the remaining obligations. Use `filter_upwards [GlobalTheory.T.arith_nef_volume_upper_bound hC hA hS k X p D hX L N a hL ha c hc, GlobalTheory.T.arithHilbertSamuel_lowerBound_semiPos_nefOnFibres hC hA k X p D hX L N a (nefFib_of_isNef hL) hL.semiPos ha c hc] with m h1 h2`. Establish `hm : ‖(m : ℝ) ^ (D + 1)‖ = (m : ℝ) ^ (D + 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (by positivity)]`. Rewrite using `[Real.norm_eq_abs, hm, abs_le]`. Apply the tactic sequence `constructor <;> linarith`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem arithHilbertSamuel_of_ampleHS :
     GlobalTheory.Published.ArCalc → AmpleHS → SemiPull → GlobalTheory.Published.ArithHilbertSamuel := by

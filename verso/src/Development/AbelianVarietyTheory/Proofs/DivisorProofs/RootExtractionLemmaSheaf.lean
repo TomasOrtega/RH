@@ -9,11 +9,11 @@ namespace GlobalTheory.RootTrick
 open MvPowerSeries ReciprocityTheory.PGsh ReciprocityTheory.ChartRestriction.G.Sh GlobalTheory.FGDepth
 
 /- English proof (translation)
-Introduce `C _ _ _ v p hp hv d h m ty i G γ hγ hty n j _hn V _ _ La hdim`. Take `⟨x, hxi, hxd, hxk⟩` from `GlobalTheory.T.exists_integral_unimodular_matrix_for_depth C v V (p ^ n) (pow_pos hp.pos n) j m (fun u => La (G.lc p (γ u) n)) hdim`. Use `⟨x, hxi, hxd, ?_⟩` and prove the remaining obligations. Establish `h6` using `fun w => pt6' C v p hp hv d m G γ (x w) hγ (hxi w)`. Simplify using `only at h6 ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify by unfolding definitions.
 
-Use `⟨fun w => (h6 w).2.1, fun w => ⟨(h6 w).2.2.2 (fun u => (hty u).1), fun k a hk => ?_⟩, fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[(h6 w).2.2.1 k]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, (hty _).2 k a hk, mul_zero, Finset.sum_const_zero]`. Rewrite using `[(h6 w).2.2.1 n, map_sum]`. Simplify using `only [map_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `hxk w hw`.
+A detailed English derivation is pending.
 -/
 theorem root_statement : RootStatement := by
   intro C _ _ _ v p hp hv d h m ty i G γ hγ hty n j _hn V _ _ La hdim

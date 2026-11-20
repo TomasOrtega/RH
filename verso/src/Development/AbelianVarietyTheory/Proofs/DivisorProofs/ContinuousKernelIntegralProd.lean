@@ -10,19 +10,17 @@ open Classical
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `α β _ _ _ _ _ _ _ _ μa μb _ _ _ _ _ _ F hF C hC h0 c hpos a₀ b₀ h₀`. Use `set G : α × β → ℂ := Function.uncurry F with hG`. Establish `hsub : Function.support G ⊆ C`. Introduce `p hp`. Assume the negation of the conclusion as `hpC`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Conclude with `hp (h0 p hpC)`. Take `⟨M, hM⟩` from `hC.exists_bound_of_continuousOn hF.continuousOn`. Establish `hbound : ∀ p, ‖G p‖ ≤ max M 0`. Introduce `p`. Distinguish the cases in `hp : p ∈ C`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hM p hp).trans (le_max_left _ _)`. Establish `: G p = 0` using `h0 p hp`. Rewrite using `[this, norm_zero]`. Conclude with `le_max_right _ _`. Establish `hintC : IntegrableOn G C (μa.prod μb)` using `Measure.integrableOn_of_bounded (M := max M 0) hC.measure_lt_top.ne hF.aestronglyMeasurable (Filter.Eventually.of_forall hbound)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hint : Integrable G (μa.prod μb)` using `(integrableOn_iff_integrable_of_support_subset hsub).1 hintC`. Establish `hprod : ∫ p, G p ∂(μa.prod μb) = ∫ a, ∫ b, F a b ∂μb ∂μa` using `integral_prod G hint`. Introduce `hzero`. Establish `hint2 : Integrable (fun p => starRingEnd ℂ c * G p) (μa.prod μb)` using `hint.const_mul _`. Establish `hre : ∫ p, (starRingEnd ℂ c * G p).re ∂(μa.prod μb) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `integral_re hint2` as an intermediate fact. Rewrite `this` using `[integral_const_mul, hprod, hzero, mul_zero]`. Simplify using `using this`. Establish `hcont : Continuous (fun p : α × β => (starRingEnd ℂ c * G p).re)` using `Complex.continuous_re.comp (continuous_const.mul hF)`. Establish `hnn : 0 ≤ fun p : α × β => (starRingEnd ℂ c * G p).re` using `fun p => hpos p.1 p.2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hpos2 : 0 < ∫ p, (starRingEnd ℂ c * G p).re ∂(μa.prod μb)`. Rewrite using `[integral_pos_iff_support_of_nonneg hnn (Complex.reCLM.integrable_comp hint2)]`. Establish `hopen : IsOpen (Function.support fun p : α × β => (starRingEnd ℂ c * G p).re)` using `hcont.isOpen_support`. Use `hopen.measure_pos _ ⟨(a₀, b₀), ?_⟩` and prove the remaining obligations. Conclude with `ne_of_gt h₀`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem bump_iterated_integral_ne_zero : ∀ {α β : Type} [TopologicalSpace α] [MeasurableSpace α] [BorelSpace α] [SecondCountableTopology α]
     [TopologicalSpace β] [MeasurableSpace β] [BorelSpace β] [SecondCountableTopology β]

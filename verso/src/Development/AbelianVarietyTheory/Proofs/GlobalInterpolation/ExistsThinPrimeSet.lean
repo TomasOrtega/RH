@@ -15,9 +15,9 @@ open Formalism.BasicNotions Formalism.BasicNotions.LevelStarExponents Formalism.
 namespace GlobalTheory.EX
 
 /- English proof (translation)
-Establish `he` using `s.eps_pos`. Establish `h1 : (⌈(405 : ℝ) * Real.log s.x⌉₊ : ℝ) < 405 * Real.log s.x + 1` using `Nat.ceil_lt_add_one (by linarith)`. Establish `h2 : (⌈30 / s.eps⌉₊ : ℝ) < 30 / s.eps + 1` using `Nat.ceil_lt_add_one (by positivity)`. Establish `h3 : 60 / s.eps = 2 * (30 / s.eps)` using `by ring`. Establish `h4 : 0 < 30 / s.eps` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Lwv`. Use `push_cast`. Rewrite using `[h3]`. Use polynomial arithmetic with `[mul_nonneg h4.le (sub_nonneg.mpr hy)]`.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem Lwv_le_mul_log (s : Scale) (hy : 1 ≤ Real.log s.x) :
     (Lwv s : ℝ) ≤ (4084 + 60 / s.eps) * Real.log s.x := by
@@ -33,13 +33,13 @@ theorem Lwv_le_mul_log (s : Scale) (hy : 1 ≤ Real.log s.x) :
   nlinarith [mul_nonneg h4.le (sub_nonneg.mpr hy)]
 
 /- English proof (translation)
-Take `⟨C, -, hT⟩` from `UpperTheory.BernoulliSumsFrobeniusOrbits.thickFrame2`. Use `⟨C, fun eps Co he he' => ?_⟩` and prove the remaining obligations. Take `⟨x0, hT⟩` from `hT eps (max Co 2) (4084 + 60 / eps) he he'`. Use `⟨max x0 (Real.exp 1), fun s R hs hx hR ho => ?_⟩` and prove the remaining obligations. Establish `hx0 : 0 < s.x` using `lt_trans one_pos s.one_lt_alt`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hy1 : 1 ≤ Real.log s.x` using `(Real.le_log_iff_exp_le hx0).mpr ((le_max_right _ _).trans hx)`. Establish `hL : 2 ≤ Lwv s` using `by unfold Lwv; omega`. Establish `hLK` using `Lwv_le_mul_log s hy1`. Establish `hn1` using `hR.n_lo`. Establish `hn2` using `hR.n_up`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hLK`, `hn1`, `hn2` using `[hs]`. Establish `hp0 : 0 < s.x ^ (2 + 8 * eps)` using `Real.rpow_pos_of_pos hx0 _`. Establish `hlo : s.x ^ UpperTheory.BernoulliSumsFrobeniusOrbits.hE eps / 2 ≤ (R.n : ℝ)`. Unfold `UpperTheory.BernoulliSumsFrobeniusOrbits.hE`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hup : (R.n : ℝ) ≤ max Co 2 * s.x ^ UpperTheory.BernoulliSumsFrobeniusOrbits.hE eps` using `hn2.trans (mul_le_mul_of_nonneg_right (le_max_right _ _) hp0.le)`. Take `⟨T, t1, t2, t3, t4, t5⟩` from `hT s.x ((le_max_left _ _).trans hx) R.toFrame (Lwv s) hL hLK (ho.trans (le_max_left _ _)) hlo hup`. Conclude with `⟨T, t1, t2, t3, hs ▸ t4, t5, hL⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_thick_set_sizes :
     ∃ CT2 : ℝ, ∀ eps Co : ℝ, 0 < eps → eps < 1 / 52 → ∃ x0 : ℝ, ∀ (s : Scale) (R : Ranks), s.eps = eps → x0 ≤ s.x → RankVal s R → (R.o : ℝ) ≤ Co → ∃ T : Finset ℕ, (∀ a ∈ T, 4 * Lwv s * a < R.n0) ∧ Formalism.FrobeniusOrbits.NoRel T (Lwv s) ∧ (R.n0 : ℝ) * Real.exp (-(CT2 * Real.sqrt (Real.log (R.n0 : ℝ) * Real.log (Lwv s)))) / (Lwv s) ≤ T.card ∧ s.x ^ (-s.eps) * R.n ≤ (T.card : ℝ) ∧ 4 * Lwv s * T.card ≤ R.n0 ∧ 2 ≤ Lwv s := by

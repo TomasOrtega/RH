@@ -18,13 +18,13 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarR
 local notation "𝒜" => E ⊗[F] FiniteAdeleRing (𝓞 F) F
 
 /- English proof (translation)
-Take `⟨b, hb, -⟩` from `hS`. Use `⟨b.equivFun.trans (LinearEquiv.funCongrLeft E E (finCongr hN).symm), fun x y => ?_⟩` and prove the remaining obligations. Establish `h1 : S.hT x y = ∑ a, star (b.repr x a) * b.repr y a` using `by conv_lhs => rw [← b.sum_repr x, ← b.sum_repr y]`. Simplify using `only [map_sum, LinearMap.sum_apply, map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, hb]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_eq_single a]`. Simplify using `only [if_true, mul_one]`. Rewrite using `[mul_comm]`. Both sides reduce to the same expression. Introduce `a' _ ha'`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_neg ha', mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ a) h`. Rewrite using `[h1]`. Unfold `stdH`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `Fintype.sum_equiv (finCongr hN).symm _ _ (fun j => ?_)` and prove the remaining obligations. Simplify using `[LinearEquiv.funCongrLeft_apply, LinearMap.funLeft]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem std_coords (S : HSpace E) (hS : IsStd S) (N : ℕ) (hN : S.rank = N) :
     ∃ co : S.V ≃ₗ[E] (Fin N → E), ∀ x y, stdH E N (co x) (co y) = S.hT x y := by
@@ -48,7 +48,7 @@ theorem std_coords (S : HSpace E) (hS : IsStd S) (N : ℕ) (hN : S.rank = N) :
 variable {hc : CMData F E} {S : HSpace E}
 
 /- English proof (translation)
-Use `⟨K.StandardHermitianLattice co hco, fun z => K.mem_mapQ_lat co S.L0 z, fun c => ?_⟩` and prove the remaining obligations. Take `⟨Ln, hmem, g', hg', hcar, hdet⟩` from `K.main co hco (hlat c) hΛb (y c) (hy c) (hyl c) ha hbase`. Take `⟨x, hx, hxd⟩` from `exists_unitary_one_det_eq hc.sig g' hg'`. Conclude with `⟨Ln, hmem, g', hg', hcar, ⟨x, hx⟩, hxd, hxd.trans hdet⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem step_of (K : Coord hc S n) {N : ℕ} (co : S.V ≃ₗ[E] (Fin N → E))
     (hco : ∀ x y, stdH E N (co x) (co y) = S.hT x y) {cls : Type} (lat : cls → Submodule (𝓞 E) S.V)
@@ -79,7 +79,7 @@ def conjInt (D : D7) (x : 𝓞 D.host.E) : 𝓞 D.host.E :=
   ⟨D.host.conj (x : D.host.E), (RingOfIntegers.isIntegral_coe x).map (D.host.conj.toAlgHom.restrictScalars ℤ)⟩
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `(aT u).piU_norm`. Establish `h2 : D.host.conj ((aT u).piU : D.host.E) = 0` using `congrArg Subtype.val h`. Rewrite `h1` using `[h2, mul_zero]`. Conclude with `(Nat.cast_ne_zero.2 (D.mem u).A.T_prime.ne_zero) h1.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem piU_ne_zero {D : D7} {H : HermCols D} (aT : ∀ u, AtT D u (H.vT u) (H.Fv u)) (u : D.what₂.Word) :
     conjInt D (aT u).piU ≠ 0 := by
@@ -92,17 +92,17 @@ theorem piU_ne_zero {D : D7} {H : HermCols D} (aT : ∀ u, AtT D u (H.vT u) (H.F
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `i hi`. Use `set pb := conjInt D (X.atT u).piU with hpb`. Establish `hpb0 : pb ≠ 0` using `piU_ne_zero X.atT u`. Establish `hpbE : (pb : D.host.E) = D.host.conj ((X.atT u).piU : D.host.E)` using `rfl`. Take `⟨co, hco⟩` from `std_coords (D.sp.X i) (X.std.1 i hi) (D.R.N i) (D.sp.X_rank i hi)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Nat.eq_zero_or_pos i with rfl | h1` into its components or cases. Set `K : Coord D.sp.cm (D.sp.X 0) (Fin D.R.k)` to `⟨D.sp.crd0, D.sp.gram0, D.sp.hermitianForm_base_coordinates⟩`. Establish `hΛ : IsLat (X.base.lev0 u).Lb` using `⟨(X.base.lev0 u).Lb_fin, (X.base.lev0 u).Lb_span⟩`. Establish `hy : ∀ c, ((X.base.lev0 u).y c : GL (Fin D.R.k) (D.host.E ⊗[D.host.F] FiniteAdeleRing (𝓞 D.host.F) D.host.F)) ∈ Formalism.UG.UPts D.sp.cm.sig K.J (FiniteAdeleRing (𝓞 D.host.F) D.host.F)` using `fun c => ((X.base.lev0 u).y c).2`. Establish `hyl : ∀ c (v : Fin D.R.k → D.host.E ⊗[D.host.F] FiniteAdeleRing (𝓞 D.host.F) D.host.F), v ∈ hat D.host.F (K.lat (D.clsLat u 0 c)) ↔ (((X.base.lev0 u).y c : GL (Fin D.R.k) (D.host.E ⊗[D.host.F] FiniteAdeleRing (𝓞 D.host.F) D.host.F))⁻¹ : GL (Fin D.R.k) (D.host.E ⊗[D.host.F] Finite …` using `fun c v => (X.base.lev0 u).y_lat c v`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : (X.base.lev0 u).Lb ⊔ Ideal.span {pb} • dl D.sp.cm.sig K.J (X.base.lev0 u).Lb = K.lat (D.sp.X 0).L0` using `(X.baseL u pb hpbE).1`. Take `⟨L0, hL0, hc⟩` from `step_of K co hco (D.clsLat u 0) (D.clsLat_lat u 0) hΛ (fun c => ((X.base.lev0 u).y c : GL (Fin D.R.k) _)) (fun c => by exact hy c) (fun c v => by exact hyl c v) hpb0 (by exact hb)`. Use `⟨co, L0, hco, hL0, fun c => ?_⟩` and prove the remaining obligations. Take `⟨Ln, hmem, g', hg', hcar, x, hx, hxd⟩` from `hc c`. Use `⟨Ln, fun z => by rw [hmem z, hpbE], ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[X.base.det0 u c x hxd, X.relDet _ L0 Ln g' hg' hcar x hx]`. Set `K : Coord D.sp.cm (D.sp.X i) (Fin (D.sp.X i).rank)` to `⟨crd (D.sp.X i), (D.sp.X i).gram, hT_crd D.sp.cm (D.sp.X i)⟩`. Establish `hΛ : IsLat (X.base.lev u i h1 hi).Lb` using `⟨(X.base.lev u i h1 hi).Lb_fin, (X.base.lev u i h1 hi).Lb_span⟩`. Establish `hy : ∀ c, ((X.base.cls u i h1 hi).y c : GL (Fin (D.sp.X i).rank) (D.host.E ⊗[D.host.F] FiniteAdeleRing (𝓞 D.host.F) D.host.F)) ∈ Formalism.UG.UPts D.sp.cm.sig K.J (FiniteAdeleRing (𝓞 D.host.F) D.host.F)` using `fun c => ((X.base.cls u i h1 hi).y c).2`. Establish `hyl : ∀ c (v : Fin (D.sp.X i).rank → D.host.E ⊗[D.host.F] FiniteAdeleRing (𝓞 D.host.F) D.host.F), v ∈ hat D.host.F (K.lat (D.clsLat u i c)) ↔ (((X.base.cls u i h1 hi).y c : GL (Fin (D.sp.X i).rank) (D.host.E ⊗[D.host.F] FiniteAdeleRing (𝓞 D.host.F) D.host.F))⁻¹ : GL (Fin (D.sp.X …` using `fun c v => (X.base.cls u i h1 hi).y_lat c v`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : (X.base.lev u i h1 hi).Lb ⊔ Ideal.span {pb} • dl D.sp.cm.sig K.J (X.base.lev u i h1 hi).Lb = K.lat (D.sp.X i).L0` using `(X.baseL u pb hpbE).2 i h1 hi`. Take `⟨L0, hL0, hc⟩` from `step_of K co hco (D.clsLat u i) (D.clsLat_lat u i) hΛ (fun c => ((X.base.cls u i h1 hi).y c : GL (Fin (D.sp.X i).rank) _)) (fun c => by exact hy c) (fun c v => by exact hyl c v) hpb0 (by exact hb)`. Use `⟨co, L0, hco, hL0, fun c => ?_⟩` and prove the remaining obligations. Take `⟨Ln, hmem, g', hg', hcar, x, hx, hxd⟩` from `hc c`. Use `⟨Ln, fun z => by rw [hmem z, hpbE], ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[X.base.detI u i h1 hi c x hxd, X.relDet _ L0 Ln g' hg' hcar x hx]`.
+A detailed English derivation is pending.
 -/
 theorem base_lattice_convention_of_hermitian {D : D7} (X : FullTied D) (u : D.what₂.Word) : AdmBRest D u (X.atT u).piU := by
   intro i hi

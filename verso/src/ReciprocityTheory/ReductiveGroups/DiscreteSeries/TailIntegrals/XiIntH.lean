@@ -12,11 +12,11 @@ open Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.Fourier
 namespace XI
 
 /- English proof (translation)
-Take `⟨g, hgm, hgle, hgeq⟩` from `exists_measurable_le_lintegral_eq (μ.prod ν) f`. Rewrite using `[hgeq]`. Establish `e : μ.prod ν = Measure.bind μ (fun x => Measure.map (Prod.mk x) ν)` using `by first`. Consider the case `exact Measure.prod_def μ ν`. Consider the case `rw [Measure.prod_def]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `rw [Measure.prod]`. Rewrite using `[e]`. Use `first`. Consider the case `rw [Measure.bind, Measure.lintegral_join hgm.aemeasurable]`. Consider the case `(unfold Measure.bind; rw [Measure.lintegral_join hgm.aemeasurable])`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `rw [Measure.bind, Measure.lintegral_join hgm]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem lintegral_prod_le_lintegral_lintegral {α β : Type*} [MeasurableSpace α] [MeasurableSpace β]
     (μ : Measure α) (ν : Measure β) (f : α × β → ℝ≥0∞) :
@@ -41,35 +41,29 @@ private theorem lintegral_prod_le_lintegral_lintegral {α β : Type*} [Measurabl
         lintegral_mono fun x => lintegral_mono fun y => hgle (x, y)
 
 /- English proof (translation)
-Take `⟨K₀, hK₀⟩` from `hcomp.exists_bound_of_continuousOn (cont_gN (k := k) (r := r)).continuousOn`. Choose the witnesses or unpack the hypotheses as in `⟨K, hK1, hKb⟩ : ∃ K : ℝ, 1 ≤ K ∧ ∀ g ∈ UWset k r z, gN g ≤ K := by`. Use `⟨max K₀ 1, le_max_right _ _, fun g hg => ?_⟩` and prove the remaining obligations. Establish `h1` using `hK₀ g hg`. Rewrite `h1` using `[Real.norm_eq_abs]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(le_abs_self _).trans (h1.trans (le_max_left _ _))`. Take `⟨C, hC0, hCeq⟩ : ∃ C : ℝ, 0 ≤ C ∧ C = ∏ l : Fin (r + 1), (K ^ (l.val + 1)) ^ s l` from `⟨_, Finset.prod_nonneg fun l _ => Real.rpow_nonneg (pow_nonneg (by linarith) _) _, rfl⟩`. Establish `hlam : Continuous (fun m : Mt k r => lam k r z (Matrix.of m))`. Unfold `lam ell`. Use `Complex.continuous_re.comp (continuous_const.mul (continuous_finset_sum _ fun a _ => ?_))` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Treat this case separately.
 
-Use `split_ifs with ha`. Use `first`. Consider the case `(simp only [Matrix.of_apply]; fun_prop)`. Consider the case `fun_prop`. Consider the case `exact (continuous_apply _).comp (continuous_apply _)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use `first`. Consider the case `(simp only [Matrix.mulVec, dotProduct, Matrix.of_apply]; fun_prop)`. Consider the case `(simp only [Matrix.mulVec, Matrix.dotProduct, Matrix.of_apply]; fun_prop)`. Consider the case `exact (continuous_apply _).comp (Continuous.matrix_mulVec continuous_id continuous_const)`. Establish `hWfin : μW Set.univ < ∞`.
+Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : μW Set.univ ≤ μW (UWset k r z) + μW (UWset k r z)ᶜ` using `by first`. Consider the case `exact measure_univ_le_add_compl _`. Consider the case `(rw [← Set.union_compl_self (UWset k r z)]; exact measure_union_le _ _)`. Rewrite `h2` using `[hW.conc, add_zero]`. Conclude with `lt_of_le_of_lt h2 (hW.finite_compact _ hcomp)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hae : ∀ᵐ x ∂μW, Matrix.of x ∈ UWset k r z`. Rewrite using `[ae_iff]`. Use `first`. Consider the case `exact hW.conc`. Consider the case `exact measure_mono_null (fun a ha => ha) hW.conc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinner : ∀ h ∈ UWset k r z, (∫⁻ n : Mt k r, (xiN k r s (Matrix.of n * h) : ℝ≥0∞) * ENNReal.ofReal ((1 + |lam k r z (Matrix.of n)|) ^ (-(2 : ℝ))) ∂μN) ≤ ENNReal.ofReal C * IInt μN z s (1 / 2)`. Introduce `h hh`. Establish `hu : IsUnit h.det` using `hcl.unit h hh`. Establish `hinv : h⁻¹ ∈ UWset k r z` using `hcl.inv_mem h hh`. Establish `hu' : IsUnit h⁻¹.det` using `hcl.unit _ hinv`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Establish `hii : h⁻¹⁻¹ = h` using `Matrix.nonsing_inv_nonsing_inv h hu`. Establish `hcm : Measurable (conjM (k` using `k) (r := r) h⁻¹) := by`. Apply `Continuous.measurable` to reduce the goal to its premises. Use `first`. Consider the case `exact continuous_pi fun i => continuous_pi fun j => by`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [conjM, Matrix.mul_apply, Matrix.of_apply]`. Use `fun_prop`. Consider the case `(unfold conjM; fun_prop)`. Consider the case `(unfold conjM; exact (continuous_const.matrix_mul continuous_id).matrix_mul continuous_const)`. Establish `hG : Measurable (fun m : Mt k r => ENNReal.ofReal (xiR k r s (Matrix.of m)) * ENNReal.ofReal ((1 + |lam k r z (Matrix.of m)|) ^ (-(1 / 2 : ℝ))))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm1 : Measurable (fun m : Mt k r => ENNReal.ofReal (xiR k r s (Matrix.of m)))` using `(meas_xi k r s).coe_nnreal_ennreal`. Establish `hm2 : Measurable (fun m : Mt k r => ENNReal.ofReal ((1 + |lam k r z (Matrix.of m)|) ^ (-(1 / 2 : ℝ))))` using `ENNReal.measurable_ofReal.comp ((continuous_const.add hlam.abs).measurable.pow_const _)`. Conclude with `hm1.mul hm2`. Establish `hpt : ∀ n : Mt k r, (xiN k r s (Matrix.of n * h) : ℝ≥0∞) * ENNReal.ofReal ((1 + |lam k r z (Matrix.of n)|) ^ (-(2 : ℝ))) ≤ ENNReal.ofReal C * (ENNReal.ofReal (xiR k r s (Matrix.of (conjM h⁻¹ n))) * ENNReal.ofReal ((1 + |lam k r z (Matrix.of (conjM h⁻¹ n))|) ^ (-(1 / 2 : ℝ))))`. Introduce `n`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e : Matrix.of (conjM h⁻¹ n) = h⁻¹ * Matrix.of n * h` using `by show h⁻¹ * Matrix.of n * h⁻¹⁻¹ = _`. Rewrite using `[hii]`. Establish `hl : lam k r z (h⁻¹ * Matrix.of n * h) = lam k r z (Matrix.of n)`. Use `lam_conj hinv hu' (Matrix.of n)` as an intermediate fact. Rewrite `this` using `[hii]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hxi : xiR k r s (Matrix.of n * h) ≤ C * xiR k r s (h⁻¹ * Matrix.of n * h)`. Use `xi_bd s hs h hu K hK1 (hKb h hh) (hKb h⁻¹ hinv) (h⁻¹ * Matrix.of n * h)` as an intermediate fact. Rewrite `this` using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu, Matrix.one_mul]`. Rewrite using `[hCeq]`. Conclude with `this`.
-
-Establish `hw : (1 + |lam k r z (Matrix.of n)|) ^ (-(2 : ℝ)) ≤ (1 + |lam k r z (Matrix.of n)|) ^ (-(1 / 2 : ℝ))` using `Real.rpow_le_rpow_of_exponent_le (by linarith [abs_nonneg (lam k r z (Matrix.of n))]) (by norm_num)`. Rewrite using `[e, hl, ← mul_assoc, ← ENNReal.ofReal_mul hC0]`. Conclude with `mul_le_mul' (ENNReal.ofReal_le_ofReal hxi) (ENNReal.ofReal_le_ofReal hw)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[lintegral_map hG hcm]`.
-
-Use `_ = ENNReal.ofReal C * IInt μN z s (1 / 2) := by`. Rewrite using `[hconj h⁻¹ hinv]`. Apply the tactic sequence `try rfl`. Combine the equalities or inequalities in the displayed calculation. Consider the case `exact ENNReal.mul_lt_top (ENNReal.mul_lt_top ENNReal.ofReal_lt_top hI) hWfin`.
-
-Consider the case `exact ENNReal.mul_lt_top (ENNReal.mul_lt_top ENNReal.ofReal_ne_top hI.ne) hWfin.ne`.
+Chain the equalities or inequalities of the calculation. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem side {k r : ℕ} (s : Fin (r + 1) → ℝ) (hs : ∀ l, 0 ≤ s l) (z : Fin (2 * r + k + 1) → ℂ)
     (μW μN : Measure (Mt k r)) (hW : IsHaarOn (UWset k r z) μW)
@@ -185,11 +179,11 @@ private theorem side {k r : ℕ} (s : Fin (r + 1) → ℝ) (hs : ∀ l, 0 ≤ s 
 end XI
 
 /- English proof (translation)
-Unfold `InductiveHeisenbergInputs at hB2`. Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, hCI, hCW, -, -, -, -, -, -, -, hClW, -, -, -, -, -⟩` from `hB2`. Introduce `k r Wp Wq _ _ _ _ _ _ D s hs hI hI'`. Establish `hk : (1 : ℝ) ≤ k` using `by exact_mod_cast D.k_pos`. Establish `hs0 : ∀ l, 0 ≤ s l`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `l`. Establish `h1` using `(hs l).2`. Establish `h2 : (1 : ℝ) ≤ s0 k r l`. Unfold `s0`. Apply the tactic sequence `split_ifs <;> linarith`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Unfold `XiInt`. Use `⟨XI.meas_xi k r s, ?_, ?_⟩` and prove the remaining obligations. Conclude with `XI.side s hs0 D.z D.μW D.μN D.haarW (fun h₀ hh => hCI k r Wp Wq D h₀ (Set.mem_union_left _ hh)) (hCW k r D.z D.z_mem D.T_pos) (hClW k r D.z) hI`. Conclude with `XI.side s hs0 D.z' D.μW' D.μN D.haarW' (fun h₀ hh => hCI k r Wp Wq D h₀ (Set.mem_union_right _ hh)) (hCW k r D.z' D.z'_mem D.T'_pos) (hClW k r D.z') hI'`.
+Combine the linear equalities and inequalities to obtain the conclusion. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem xiIntH (hB2 : InductiveHeisenbergInputs) : XiIntStep := by
   unfold InductiveHeisenbergInputs at hB2

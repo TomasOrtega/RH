@@ -6,13 +6,13 @@ open CategoryTheory GroundTheory.ProfCoh ReciprocityTheory.Gal ValuativeRel Form
 namespace PositivityTheory.LocalTateOrthogonality.Gcoh
 
 /- English proof (translation)
-Introduce `l _ K hK r M _ _ _ _ _ rho hr hrho`. Take `⟨hsep, _, _, hloc, -⟩` from `hF l K hK`. Establish `: CharZero K` using `algebraRat.charZero K`. Take `⟨A, _, e, he⟩` from `gcRep (GK l K) (ZMod (l ^ r)) M rho hrho`. Establish `: Finite A` using `Finite.of_equiv _ e.toEquiv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hn : ((Nat.card A : ℕ) : K) ≠ 0` using `Nat.cast_ne_zero.2 Nat.card_pos.ne'`. Take `⟨e0, -⟩` from `gc0 (GK l K) (ZMod (l ^ r)) M rho A e he`. Take `⟨e1, -⟩` from `gc1 (GK l K) (ZMod (l ^ r)) M rho A e he`. Take `⟨e2, -⟩` from `gc2 (GK l K) (ZMod (l ^ r)) M rho A e he`. Use `finite_cohomology_localField A hn 0` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `finite_cohomology_localField A hn 1` as an intermediate fact. Use `finite_cohomology_localField A hn 2` as an intermediate fact. Use `⟨Finite.of_equiv _ e0.symm.toEquiv, Finite.of_equiv _ e1.symm.toEquiv, Finite.of_equiv _ e2.symm.toEquiv, fun n h => ?_⟩` and prove the remaining obligations. Take `⟨en⟩` from `gcn (GK l K) (ZMod (l ^ r)) M rho A e he n`. Use `subsingleton_cohomology_localField A hn n h` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `en.toEquiv.subsingleton`.
+A detailed English derivation is pending.
 -/
 theorem locfin_of (hF : SgcField) : Formalism.GaloisCohomology.LocalFinitenessK := by
   intro l _ K hK r M _ _ _ _ _ rho hr hrho

@@ -16,23 +16,21 @@ namespace PSmo
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `hB.exists_vec`. Use `set u : (w.adicCompletion E)ˣ := atFin w (unif w) with hu_def`. Establish `hu : IsUnifV E w (u : w.adicCompletion E)` using `unif_spec w`. Establish `h0 : (u : w.adicCompletion E) ≠ 0` using `u.ne_zero`. Establish `hTn : Tj ℂ a (Ov E w) (u : w.adicCompletion E) a = dosetInd ℂ (KGL w a) (GlobalTheory.WeylGL.tor h0 fun _ => 1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.WeylGL.Tj_eq h0]`. Simplify using the standard rewrite rules. Establish `h1` using `hx.2.2.2 _ hu a le_rfl`. Rewrite `h1` using `[hTn, heckeVec_dosetInd (R := {GlobalTheory.WeylGL.tor h0 fun _ => 1}) hx.2.1, Finset.sum_singleton]`. Use `rotate_left`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `γ hγ`. Conclude with `GlobalTheory.WeylGL.mem_doset.2 ⟨1, one_mem _, 1, one_mem _, by simpa using hγ⟩`. Introduce `g hg`. Take `⟨c, hc, d, hd, rfl⟩` from `GlobalTheory.WeylGL.mem_doset.1 hg`. Use `⟨_, ⟨Finset.mem_singleton_self _, ?_⟩, fun γ hγ => Finset.mem_singleton.1 hγ.1⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[← GlobalTheory.WeylGL.tor_const_comm, mul_assoc, inv_mul_cancel_left]`. Conclude with `mul_mem hc hd`. Establish `ht : GlobalTheory.WeylGL.tor h0 (fun _ : Fin a => (1 : ℤ)) = GeneralLinearGroup.scalar (Fin a) u`. Use extensionality with `i j`. Simplify using `[GlobalTheory.WeylGL.tor_val, Matrix.diagonal_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hz : locGL E a w (GeneralLinearGroup.scalar (Fin a) u) = GeneralLinearGroup.scalar (Fin a) (Units.map (corner (sLoc E w)) u)` using `cornerGL_scalar _ u`. Establish `e1` using `finId_det_locGL (E := E) (a := 1) w (GeneralLinearGroup.scalar (Fin 1) u)`. Establish `e2 : GeneralLinearGroup.det (locGL E 1 w (GeneralLinearGroup.scalar (Fin 1) u)) = Units.map (corner (sLoc E w)) u`. Rewrite using `[locGL, cornerGL_scalar]`. Use `ext`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `e3 : GeneralLinearGroup.det (GeneralLinearGroup.scalar (Fin 1) u) = u` using `by ext; simp`. Rewrite `e1` using `[e2, e3]`. Establish `hf : ω.1 (finId E (Units.map (corner (sLoc E w)) u)) = ω.val w` using `by rw [e1]; rfl`. Establish `h2 : π.locRep w (GeneralLinearGroup.scalar (Fin a) u) x = ((ω.val w : ℂˣ) : ℂ) • x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[CuspSub.locRep_eq, hz]`. Use `hω (Units.map (corner (sLoc E w)) u) x` as an intermediate fact. Express the relevant statement in the definitionally equal form `_ = ((ω.1 (finId E (Units.map (corner (sLoc E w)) u)) : ℂˣ) : ℂ) • x at this`. Rewrite `this` using `[hf]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[ht, h2]`. Establish `h3 : satEig (qV E w) a B a = ((B.prod : ℂˣ) : ℂ)`. Establish `hc : (B.map fun b : ℂˣ => (b : ℂ)).card = a` using `by rw [Multiset.card_map]; exact hx.2.2.1`. Rewrite using `[satEig, sub_self, mul_zero, zero_div, Complex.cpow_zero, one_mul]`. Use `conv_lhs => rw [← hc]`.
-
-Rewrite using `[Multiset.esymm, Multiset.powersetCard_self, Multiset.map_singleton, Multiset.sum_singleton]`. Conclude with `(map_multiset_prod (Units.coeHom ℂ) B).symm`. Rewrite `h1` using `[h3]`. Conclude with `Units.ext (smul_left_injective ℂ hx.1 h1)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_eq_prod {π : CuspSub E a} {ω : HChar E} (hω : π.HasCentChar ω) {w : HeightOneSpectrum (𝓞 E)}
     {B : Multiset ℂˣ} (hB : HasSatGL w (π.locRep w) B) : ω.val w = B.prod := by
@@ -84,14 +82,14 @@ theorem val_eq_prod {π : CuspSub E a} {ω : HChar E} (hω : π.HasCentChar ω) 
   exact Units.ext (smul_left_injective ℂ hx.1 h1)
 
 /- English proof (translation)
-The claim follows from `hG E ω ω' (h.mono fun _ ⟨_, h1, h2⟩ => (val_eq_prod hω h1).trans (val_eq_prod hω' h2).symm)`.
+A detailed English derivation is pending.
 -/
 theorem central_eq (hG : HeckeCharacterRigidity) {π π' : CuspSub E a} (h : SameSat π π') {ω ω' : HChar E} (hω : π.HasCentChar ω)
     (hω' : π'.HasCentChar ω') : ω = ω' :=
   hG E ω ω' (h.mono fun _ ⟨_, h1, h2⟩ => (val_eq_prod hω h1).trans (val_eq_prod hω' h2).symm)
 
 /- English proof (translation)
-Use `filter_upwards [h, Filter.eventually_cofinite.2 (GlobalTheory.Mem.UnrAe.finite_ramified ν)] with w ⟨B, h1, h2⟩ hν`. Conclude with `⟨B.map (· * ν.val w), GlobalTheory.SphGal.hasSatGL_twist E a π ν w B hν h1, GlobalTheory.SphGal.hasSatGL_twist E a π' ν w B hν h2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem sameSat_twist {π π' : CuspSub E a} (h : SameSat π π') (ν : HChar E) : SameSat (π.twist ν) (π'.twist ν) := by
   filter_upwards [h, Filter.eventually_cofinite.2 (GlobalTheory.Mem.UnrAe.finite_ramified ν)] with w ⟨B, h1, h2⟩ hν
@@ -101,9 +99,9 @@ theorem sameSat_twist {π π' : CuspSub E a} (h : SameSat π π') (ν : HChar E)
 end PSmo
 
 /- English proof (translation)
-Introduce `hS hG E _ _ _ a π π' h`. Break down `Nat.eq_zero_or_pos a with rfl | ha` into its components or cases. Conclude with `hS E 0 π π' (GlobalTheory.CompanionTheory.TwistNorm.isNormalised_rank_zero π) (GlobalTheory.CompanionTheory.TwistNorm.isNormalised_rank_zero π') h`. Take `⟨ω, hω⟩` from `Central.exists_hasCentral E a π`. Take `⟨ω', hω'⟩` from `Central.exists_hasCentral E a π'`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `rfl : ω = ω'` from `PSmo.central_eq hG h (CuspSub.hasCentral_iff.1 hω) (CuspSub.hasCentral_iff.1 hω')`. Take `⟨ν, hν⟩` from `GlobalTheory.SplitCentreChar.exists_hChar_splitCentre E a ha (dchi ω 1)`. Establish `e` using `hS E a _ _ (GlobalTheory.CompanionTheory.TwistNorm.isNormalised_twist hω hν) (GlobalTheory.CompanionTheory.TwistNorm.isNormalised_twist hω' hν) (PSmo.sameSat_twist h ν)`. Establish `e'` using `congrArg (fun σ : CuspSub E a => σ.twist ν⁻¹) e`. Simplify `e'` using `only [← CuspSub.twist_mul, mul_inv_cancel, CuspSub.twist_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem smo_of : SmoNorm → HeckeCharacterRigidity → Smo := by
   intro hS hG E _ _ _ a π π' h

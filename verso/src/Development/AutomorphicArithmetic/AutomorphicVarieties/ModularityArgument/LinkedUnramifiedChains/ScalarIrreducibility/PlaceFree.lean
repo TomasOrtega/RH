@@ -11,15 +11,15 @@ section SlopeTestRemainingChoices
 open IsDedekindDomain GlobalTheory.LocLanglands GlobalTheory.WeilDeligne UpperTheory.V.W
 
 /- English proof (translation)
-Introduce `i j hij m hm hαm`. Take `⟨Ni, hNi, hbi⟩` from `hβ i`. Take `⟨Nj, hNj, hbj⟩` from `hβ j`. Establish `key : ∀ k : Fin 3, ∀ n : ℕ, β k ^ n = 1 → α k ^ n = T ^ (-((k : ℕ) : ℤ) * (n : ℤ))`. Introduce `k n hn`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hk : α k = T ^ (-((k : ℕ) : ℤ)) * (β k)⁻¹` using `eq_mul_inv_of_mul_eq (heq k)`. Rewrite using `[hk, mul_pow, inv_pow, hn, inv_one, mul_one, ← zpow_natCast, ← zpow_mul]`. Establish `hM : α i ^ (m * (Ni * Nj)) = α j ^ (m * (Ni * Nj))`. Rewrite using `[pow_mul (α i), pow_mul (α j), hαm]`. Rewrite `hM` using `[key i _ (by rw [show m * (Ni * Nj) = Ni * (m * Nj) by ring, pow_mul, hbi, one_pow]), key j _ (by rw [show m * (Ni * Nj) = Nj * (m * Ni) by ring, pow_mul, hbj, one_pow])]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hfin : IsOfFinOrder T`. Rewrite using `[isOfFinOrder_iff_zpow_eq_one]`. Use `⟨-((i : ℕ) : ℤ) * ((m * (Ni * Nj) : ℕ) : ℤ) - -((j : ℕ) : ℤ) * ((m * (Ni * Nj) : ℕ) : ℤ), ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Apply `hij` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hMpos : (0 : ℤ) < ((m * (Ni * Nj) : ℕ) : ℤ)` using `by positivity`. Establish `hz : (((j : ℕ) : ℤ) - ((i : ℕ) : ℤ)) * ((m * (Ni * Nj) : ℕ) : ℤ) = 0` using `by linarith`. Break down `mul_eq_zero.1 hz with h | h` into its components or cases. Conclude with `Fin.ext (by omega)`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[zpow_sub, hM, mul_inv_cancel]`. Take `⟨n, hn, hTn⟩` from `isOfFinOrder_iff_pow_eq_one.1 hfin`. Conclude with `hT n hn hTn`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem free_of {K : Type} [Field K] (α β : Fin 3 → Kˣ) (T : Kˣ) (hT : ∀ m : ℕ, 0 < m → T ^ m ≠ 1)
     (hβ : ∀ i, ∃ N : ℕ, 0 < N ∧ β i ^ N = 1) (heq : ∀ i : Fin 3, α i * β i = T ^ (-((i : ℕ) : ℤ))) :
@@ -50,11 +50,11 @@ private theorem free_of {K : Type} [Field K] (α β : Fin 3 → Kˣ) (T : Kˣ) (
   exact hT n hn hTn
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.HeckeGal.finite_contEmb (l := l) w`. Use `letI := Fintype.ofFinite (Emb l w)`. Establish `hy : ∀ τ : Emb l w, τ.1 (y : w.adicCompletion F) ≠ 0` using `fun τ => (map_ne_zero τ.1).2 y.ne_zero`. Establish `e : ∀ τ : Emb l w, τ.1 (y : w.adicCompletion F) ^ (-hh τ) = τ.1 (y : w.adicCompletion F) ^ (-j) * (if τ = τ₀ then τ₀.1 (y : w.adicCompletion F) ^ (-j) else 1)` using `fun τ => by`. Distinguish the cases in `hτ : τ = τ₀`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hτ` using the available equality. Rewrite using `[if_pos rfl, h0, ← zpow_add₀ (hy τ)]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg hτ, h1 τ hτ, mul_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hP`, the goal using `[finprod_eq_prod_of_fintype]`. Simplify using `only [e]`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_zpow, hP, one_zpow, one_mul, Finset.prod_ite_eq', if_pos (Finset.mem_univ _)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem prod_wt {l : ℕ} [Fact l.Prime] {F : Type} [Field F] [NumberField F] {w : Plc F} (τ₀ : Emb l w)
     (y : (w.adicCompletion F)ˣ) (hP : ∏ᶠ τ : Emb l w, τ.1 (y : w.adicCompletion F) = 1) (hh : Emb l w → ℤ) (j : ℤ)
@@ -79,9 +79,9 @@ private theorem prod_wt {l : ℕ} [Fact l.Prime] {F : Type} [Field F] [NumberFie
 
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField in
 /- English proof (translation)
-Take `⟨a, ha⟩` from `UpperTheory.V.Loc.laArtin hG h`. Establish `hv' : ValuativeRel.valuation (w.adicCompletion L) (y : w.adicCompletion L) = 1` using `by haveI : (Valued.v : Valuation (w.adicCompletion L) _).Compatible := .ofValuation _`. Conclude with `(ValuativeRel.isEquiv (ValuativeRel.valuation (w.adicCompletion L)) Valued.v).eq_one_iff_eq_one.2 hv`. Take `⟨σ, hσ⟩` from `(GlobalTheory.PsType.ineIncl_onto_units L Ω A w h a ha).1 y hv'`. Use `⟨σ, a, ha, hσ, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hc` using `(UpperTheory.V.Loc.laCyc hG h hl).2 a ha σ`. Simplify using `only [hσ, neg_neg, zpow_one, hP, MonoidHom.one_apply, mul_one] at hc`. Use `ext`. Conclude with `hc`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 private theorem art_elt (hG : GlobalTheory.Published.GlobalArtinReciprocity) {L Ω : Type} [Field L] [NumberField L] [Field Ω]
     [Algebra L Ω] [IsAlgClosure L Ω] {l : ℕ} [Fact l.Prime] {A : ValuationSubring Ω} {w : Plc L}
@@ -101,13 +101,13 @@ private theorem art_elt (hG : GlobalTheory.Published.GlobalArtinReciprocity) {L 
   exact hc
 
 /- English proof (translation)
-Take `⟨y, hyv, hyP, hyT⟩` from `UpperTheory.V.J.Wu.exists_unit hl b τ₁ τ₂ hne`. Take `⟨σ, a, ha, hσ, hcyc⟩` from `art_elt hG h hl y hyv hyP`. Use `⟨Subgroup.inclusion (GlobalTheory.WeilDeligne.Weil_le_Dec h) (GlobalTheory.WeilDeligne.ineIncl h σ), hcyc, ?_⟩` and prove the remaining obligations. Establish `hz : τ₀.1 (y : w.adicCompletion L) ≠ 0` using `(map_ne_zero τ₀.1).2 y.ne_zero`. Use `haveI : CompactSpace (Ine (F := L) A) := isCompact_iff_compactSpace.1 (ReciprocityTheory.Gal.isClosed_Ine A).isCompact`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `free_of (fun i => ψ i (Subgroup.inclusion (GlobalTheory.WeilDeligne.Weil_le_Dec h) (GlobalTheory.WeilDeligne.ineIncl h σ))) (fun i => ph i σ) (Units.mk0 _ hz)` to reduce the goal to its premises. Introduce `m hm h1`. Apply `hyT τ₀ m hm` to reduce the goal to its premises. Establish `h2` using `congrArg Units.val h1`. Simplify using `using h2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i haveI := Subgroup.quotient_finite_of_isOpen _ (hp i).1`. Use `⟨(ph i).ker.index, Nat.pos_of_ne_zero Subgroup.index_ne_zero_of_finite, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_pow]`. Conclude with `(ph i).mem_ker.1 (Subgroup.pow_index_mem _ σ)`. Introduce `i`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use `ext`. Establish `hw` using `(hp i).2 a ha σ`. Rewrite `hw` using `[hσ, prod_wt τ₀ y hyP (hh i) ((i : ℕ) : ℤ) (h0 i) (h1 i)]`. Simplify using `using hw`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem place_free (hG : GlobalTheory.Published.GlobalArtinReciprocity) {L Ω : Type} [Field L] [NumberField L] [Field Ω]
     [CharZero Ω] [Algebra L Ω] [IsAlgClosure L Ω] {l : ℕ} [Fact l.Prime] {A : ValuationSubring Ω} {w : Plc L}
@@ -141,11 +141,11 @@ private theorem place_free (hG : GlobalTheory.Published.GlobalArtinReciprocity) 
     simpa using hw
 
 /- English proof (translation)
-Rewrite using `[UpperTheory.V.W.GFrame.G', MonoidHom.mem_ker]`. Express the relevant statement in the definitionally equal form `V.ε ((toGS Ω V.S') (resP L Ω (g : G L Ω))) = 1`. Establish `h1 : V.ε ((toGS Ω V.S') (resP L Ω (g : G L Ω))) = cycZ L Ω l (g : G L Ω)`. Rewrite using `[← MonoidHom.comp_apply, V.hε]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[h1]`. Establish `hv` using `congrArg Units.val hc`. Simplify using `only [GlobalTheory.GalOfCusp.cycBar, MonoidHom.comp_apply, Units.coe_map, Units.val_one] at hv`. Establish `hinj : Function.Injective ((algebraMap ℚ_[l] (Qbar l)).comp PadicInt.Coe.ringHom)` using `(algebraMap ℚ_[l] (Qbar l)).injective.comp Subtype.val_injective`. Use `ext`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Apply `hinj` to reduce the goal to its premises. Rewrite using `[Units.val_one, map_one]`. Conclude with `hv`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_G' {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω]
     [IsAlgClosure L Ω] {s : HidaSetting l L Ω} (V : s.Lev) (v : Vl l L) (g : Dec (F := L) (s.A v))
@@ -168,19 +168,17 @@ private theorem mem_G' {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberF
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `hG Ω _ _ _ l _ ι c _ N _ e ψ η σ g₁ B M hlink L _ _ _ _ _ Φ k c₁ _ f ka R hlarge hka`. Use `⟨fun v j τ => if τ = Classical.choice ⟨τ⟩ then 2 * ((j : ℕ) : ℤ) else ((j : ℕ) : ℤ), ?_, ?_⟩` and prove the remaining obligations. Introduce `v τ a b hab`. Establish `hab' : (a : ℕ) < b` using `hab`. Simplify using `only`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify by unfolding definitions.
 
-Apply the tactic sequence `split_ifs <;> omega`. Introduce `x hx v`. Express the relevant statement in the definitionally equal form `UpperTheory.V.W.Vl l L at v`. Take `⟨ph, hp, -⟩` from `hx.2 v`. Use `haveI := k.ab`.
+Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hlw : ((l : ℕ) : 𝓞 L) ∈ (R.s.w v.1).asIdeal`. Apply `(R.s.hw v.1 _).1` to reduce the goal to its premises. Establish `hA` using `(R.s.hA v.1 _).2 v.2`. Simplify using `using hA`. Establish `hbig : 5 < Φ.dv (R.K.e v)` using `R.big.2 (R.K.e v)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hbig` using `[k.dv (R.K.e v)]`. Take `⟨g, hgD, hgU⟩ : ∃ g ∈ Dec (F` from `ℚ) (k.pl (R.K.e v)), g ∉ upl Ω L := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `h1` using `Subgroup.relIndex_eq_one.2 hcon`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hgD' : g ∈ Dec (F` using `ℚ) (R.s.A v.1) := by`. Rewrite using `[R.A_pl v]`. Conclude with `hgD`. Choose the witnesses or unpack the hypotheses as in `⟨y, -, hgy⟩ : ∃ y ∈ maximalRealSubfield L, g (algebraMap L Ω y) ≠ algebraMap L Ω y := by`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Conclude with `hgU hcon`. Take `⟨b, τ₁, τ₂, hne⟩` from `UpperTheory.V.J.Wu.exists_sep (R.s.hw v.1) hlw g hgD' y hgy`. Take `⟨g', hc, hfree⟩` from `place_free hG (R.s.hw v.1) hlw (Classical.choice ⟨τ₁⟩) b τ₁ τ₂ hne (x.psi v) ph (fun j τ => if τ = Classical.choice ⟨τ⟩ then 2 * ((j : ℕ) : ℤ) else ((j : ℕ) : ℤ)) (fun j => if_pos rfl) (fun j τ hτ => if_neg hτ) hp`.
-
-Conclude with `⟨g', mem_G' R.V v g' hc, hfree⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.J.wtEx :
     GlobalTheory.Published.GlobalArtinReciprocity → WtEx := by

@@ -56,7 +56,7 @@ variable {k G V W : Type*} [CommRing k] [Group G] [AddCommGroup V] [Module k V] 
   [Module k W]
 
 /- English proof (translation)
-Rewrite using `[cycSubOne_apply, cycSubOne_apply, cycSubOne_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cycSubOne_prod_apply (ρ : Representation k G V) (ρ' : Representation k G W) (σ : G)
     (x : V × W) : cycSubOne (ρ.prod ρ') σ x = (cycSubOne ρ σ x.1, cycSubOne ρ' σ x.2) := by
@@ -66,7 +66,7 @@ theorem cycSubOne_prod_apply (ρ : Representation k G V) (ρ' : Representation k
 variable [Fintype G]
 
 /- English proof (translation)
-Rewrite using `[cycNorm_apply, cycNorm_apply, cycNorm_apply]`. Conclude with `Prod.ext (by rw [Prod.fst_sum]; rfl) (by rw [Prod.snd_sum]; rfl)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cycNorm_prod_apply (ρ : Representation k G V) (ρ' : Representation k G W)
     (x : V × W) : cycNorm (ρ.prod ρ') x = (cycNorm ρ x.1, cycNorm ρ' x.2) := by
@@ -82,7 +82,7 @@ def cycTateNegOneProdEquiv (ρ : Representation k G V) (ρ' : Representation k G
   kerModRangeProdEquiv _ _ _ _ _ _ (cycNorm_prod_apply ρ ρ') (cycSubOne_prod_apply ρ ρ' σ)
 
 /- English proof (translation)
-Simplify using `only [cycHerbrand_eq]`. Rewrite using `[Nat.card_congr (cycTateZeroProdEquiv ρ ρ' σ).toEquiv, Nat.card_congr (cycTateNegOneProdEquiv ρ ρ' σ).toEquiv, Nat.card_prod, Nat.card_prod, Nat.cast_mul, Nat.cast_mul, mul_div_mul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem cycHerbrand_prod_eq_mul (ρ : Representation k G V) (ρ' : Representation k G W) (σ : G) :
     cycHerbrand (ρ.prod ρ') σ = cycHerbrand ρ σ * cycHerbrand ρ' σ := by
@@ -135,7 +135,7 @@ def cycTateNegOneMulProdEquiv (σ : G) :
     (cycTateNegOneProdEquiv _ _ σ)
 
 /- English proof (translation)
-Rewrite using `[cycHerbrand_congr (ρ' := (Representation.ofMulDistribMulAction G M).prod (Representation.ofMulDistribMulAction G N)) (additiveProdEquiv M N) (fun _ _ ↦ rfl) σ, cycHerbrand_prod_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cycHerbrand_mulProd (σ : G) :
     cycHerbrand (Representation.ofMulDistribMulAction G (M × N)) σ =
@@ -165,7 +165,7 @@ def cycTateNegOneMulPiEquiv (σ : G) :
       (additivePiEquiv M) (fun _ _ ↦ rfl) σ).trans (cycTateNegOnePiEquiv _ σ)
 
 /- English proof (translation)
-Rewrite using `[cycHerbrand_congr (ρ' := piRep fun i ↦ Representation.ofMulDistribMulAction G (M i)) (additivePiEquiv M) (fun _ _ ↦ rfl) σ, cycHerbrand_pi]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cycHerbrand_mulPi [Fintype ι] (σ : G) :
     cycHerbrand (Representation.ofMulDistribMulAction G (∀ i, M i)) σ =
@@ -193,7 +193,7 @@ def mulPiRep : Representation ℤ G (∀ x, Additive (U x)) where
 variable [MulAction G X]
 
 /- English proof (translation)
-The claim follows from `fun g f x hf ↦ congrArg Additive.ofMul (h g (fun x ↦ (f x).toMul) x hf)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem permutesFactors_mulPiRep
     (h : ∀ (g : G) (f : ∀ x, U x) (x : X), f x = 1 → (g • f) (g • x) = 1) :
@@ -227,7 +227,7 @@ def cycTateNegOneMulOrbitEquiv
       (fun d f ↦ congrArg Additive.ofMul (hU₀ d fun x ↦ (f x).toMul)) σ hσ τ hτ)
 
 /- English proof (translation)
-Rewrite using `[cycHerbrand_eq, cycHerbrand_eq, Nat.card_congr (cycTateZeroMulOrbitEquiv hU x₀ D hD hU₀ σ hσ τ hτ).toEquiv, Nat.card_congr (cycTateNegOneMulOrbitEquiv hU x₀ D hD hU₀ σ hσ τ hτ).toEquiv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cycHerbrand_mulOrbit
     (hU : ∀ (g : G) (f : ∀ x, U x) (x : X), f x = 1 → (g • f) (g • x) = 1) (x₀ : X)

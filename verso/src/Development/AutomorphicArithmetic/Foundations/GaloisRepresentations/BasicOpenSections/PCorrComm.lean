@@ -8,13 +8,13 @@ open GlobalTheory.SS.FrobField (absFrob)
 open UpperTheory.Gal UpperTheory.Gal.Mod
 
 /- English proof (translation)
-Introduce `l _ p Y S S' B B' O g s bS β hS i bS' γ hcomm hl T w c c' hc hc' k j`. Take `⟨v, hv, hf, hb, hw⟩` from `hc`. Take `⟨v', hv', hf', hb', hw'⟩` from `hc'`. Establish `hsq : v' ≫ T.p = (c'.p ≫ i) ≫ s`. Rewrite using `[Category.assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hv'.w`. Take `⟨u, huv, hup⟩ : ∃ u, u ≫ v = v' ∧ u ≫ c.p = c'.p ≫ i` from `⟨hv.lift v' (c'.p ≫ i) hsq, hv.lift_fst _ _ _, hv.lift_snd _ _ _⟩`. Substitute `huv` using the available equality. Establish `hpb : IsPullback u c'.p c.p i` using `IsPullback.of_right hv' hup hv`. Establish `hfu : c'.f ≫ i = u ≫ c.f`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hS.hom_ext` to reduce the goal to its premises. Simplify using `only [Category.assoc]`. Rewrite using `[hf', hf, Category.assoc]`. Combine the equalities or inequalities in the displayed calculation. Establish `hwu : c'.w = Wt.comap u c.w`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hw', hw]`. Use function extensionality and compare the values at `Ω _ _ z`. Simplify using `only [Wt.comap, Category.assoc]`. Conclude with `TranscendenceTraces.corrBCQ_holds a8 l k j c' c i i u hpb hfu hwu hl`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Mod.corrComm :
     CorrComm := by

@@ -21,7 +21,7 @@ def LeafThomRel : Prop := E8.Base → ∀ (q : ℕ) [NeZero q] (k : Type) [Field
           (tw q d) (2 * d) θ
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `x.mk_surjective`. Use `congrArg CohomologyClass.mk (Cocycle.ext ?_)` and prove the remaining obligations. Simplify using `[zcomp, Cochain.ofHom_comp]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem hkPull_comp {R : Type} [CommRing R] {K L M : Cx R} (a : K ⟶ L) (b : L ⟶ M) (F : Shv R) (n : ℤ) (x : HK R M F n) :
     HK.pull R (a ≫ b) F n x = HK.pull R a F n (HK.pull R b F n x) := by
@@ -30,13 +30,13 @@ theorem hkPull_comp {R : Type} [CommRing R] {K L M : Cx R} (a : K ⟶ L) (b : L 
   simp [zcomp, Cochain.ofHom_comp]
 
 /- English proof (translation)
-Introduce `B q _ k _ _ hq X p _ d _`. Establish `hcl : IsClosed (Set.range (pullback.diagonal p))` using `(pullback.diagonal p).isClosedEmbedding.isClosed_range`. Set `W0 : (pullback p p).Opens` to `⟨(Set.range (pullback.diagonal p))ᶜ, hcl.isOpen_compl⟩`. Take `⟨θ, hθ⟩` from `h2 B q k hq p d W0 rfl`. Use `⟨HK.pull (ZMod q) (mappingCone.inr ((chains _).map (sch.map W0.ι))) (tw q d) (2 * d) θ, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `W hW`. Establish `hWW : W = W0` using `TopologicalSpace.Opens.ext hW`. Substitute `hWW` using the available equality. Conclude with `(h1 _ _ _ _ _).mpr ⟨θ, rfl⟩`. Introduce `x hx U hU c hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg, hr⟩` from `hθ x hx U hU`. Take `⟨r, rfl⟩` from `(h1 _ _ _ _ c).mp hc`. Take `⟨m, rfl⟩` from `hr r`. Use `⟨m, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zsmul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `show _ = HK.pull _ _ _ _ (HK.pull _ _ _ _ θ)`. Rewrite using `[← hkPull_comp, ← hkPull_comp]`. Use `congr 1`. Simplify using `[mappingCone.map]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem goal_of (h1 : LeafConeExact) (h2 : LeafThomRel) : E8.LeafDiag := by
   intro B q _ k _ _ hq X p _ d _

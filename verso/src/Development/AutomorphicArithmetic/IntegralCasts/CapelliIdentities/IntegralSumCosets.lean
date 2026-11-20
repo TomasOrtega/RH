@@ -1,23 +1,21 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ μ _ _ K hKo hKc ι R S f hR hf hsupp`. Establish `hmeas : ∀ a : ι, MeasurableSet ((fun g : G => g * (R a)⁻¹) ⁻¹' (K : Set G))` using `fun a => (hKo.preimage (continuous_id.mul continuous_const)).measurableSet`. Establish `hμ : ∀ a : ι, μ ((fun g : G => g * (R a)⁻¹) ⁻¹' (K : Set G)) = μ (K : Set G)` using `fun a => MeasureTheory.measure_preimage_mul_right μ _ _`. Establish `hval : ∀ (a : ι) (g : G), g * (R a)⁻¹ ∈ K → f g = f (R a)`. Introduce `a g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `hf _ hg (R a)`. Rewrite `h` using `[inv_mul_cancel_right]`. Then use the resulting hypothesis. Establish `hdec : f = fun g => ∑ a ∈ S, ((fun g : G => g * (R a)⁻¹) ⁻¹' (K : Set G)).indicator (fun _ => f (R a)) g`. Use function extensionality and compare the values at `g`. Distinguish the cases in `hex : ∃ a ∈ S, g * (R a)⁻¹ ∈ K`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Take `⟨a, haS, ha⟩` from `hex`. Rewrite using `[Finset.sum_eq_single a]`. Rewrite using `[Set.indicator_of_mem (by exact ha)]`. Conclude with `hval a g ha`. Introduce `b _ hba`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Set.indicator_of_notMem` to reduce the goal to its premises. Introduce `hb`. Apply `hba` to reduce the goal to its premises. Apply `hR` to reduce the goal to its premises. Establish `hb' : g * (R b)⁻¹ ∈ K` using `hb`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `K.mul_mem (K.inv_mem hb') ha`. Establish `e : (g * (R b)⁻¹)⁻¹ * (g * (R a)⁻¹) = R b * (R a)⁻¹` using `by group`. Rewrite `h` using `[e]`. Then use the resulting hypothesis. Introduce `h`. Conclude with `absurd haS h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h0 : f g = 0`. Assume the negation of the conclusion as `h`. Conclude with `hex (hsupp g h)`. Rewrite using `[h0]`. Use `symm`.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `a haS`. Apply `Set.indicator_of_notMem` to reduce the goal to its premises. Introduce `ha`. Conclude with `hex ⟨a, haS, ha⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hint : ∀ a ∈ S, MeasureTheory.Integrable (((fun g : G => g * (R a)⁻¹) ⁻¹' (K : Set G)).indicator (fun _ => f (R a))) μ`. Introduce `a _`. Rewrite using `[MeasureTheory.integrable_indicator_iff (hmeas a)]`. Conclude with `MeasureTheory.integrableOn_const (by rw [hμ a]; exact hKc.measure_lt_top.ne)`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[MeasureTheory.integral_indicator_const _ (hmeas a), MeasureTheory.measureReal_def, hμ a, MeasureTheory.measureReal_def, Complex.real_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.IntegralSumCosets.integral_eq_measure_mul_sum_cosets :
     ∀ (G : Type) [inst : Group G] [inst_1 : TopologicalSpace G]

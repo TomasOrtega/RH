@@ -14,7 +14,7 @@ open MeasureTheory ValuativeRel Matrix GlobalTheory.SplitWeil GlobalTheory.Split
 open scoped Topology
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.SplitWeil.FourierPi.map_eq_zero_of_translation_invariant_of_fibre_integral_eq_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FSchwartzBruhatFunctionalZeroOfFibreIntegralZero.lean&line=17#L17)
 -/

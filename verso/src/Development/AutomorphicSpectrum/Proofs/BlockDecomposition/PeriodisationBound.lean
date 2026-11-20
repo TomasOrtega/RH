@@ -21,17 +21,15 @@ namespace GlobalTheory.CompanionTheory.FJE
 variable {D : D7} {ρ p : ℕ}
 
 /- English proof (translation)
-Distinguish the cases in `hb : GlobalTheory.Unf.InBox K (g + w)`. Establish `hb' : GlobalTheory.Unf.InBox (K + (-K₀)) g`. Take `⟨k, hk, h0⟩` from `hb`. Use `⟨k + -w, Set.add_mem_add hk (Set.neg_mem_neg.2 hw), ?_⟩` and prove the remaining obligations. Establish `e : g - (k + -w) = g + w - k` using `by abel`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `h0`. Unfold `GlobalTheory.Unf.maj`. Rewrite using `[if_pos hb, if_pos hb']`. Establish `h0` using `GlobalTheory.Unf.realSize_nonneg θ g`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `GlobalTheory.Unf.realSize_nonneg θ (g + w)`. Establish `h2 : 1 + GlobalTheory.Unf.realSize θ g ≤ (1 + R) * (1 + GlobalTheory.Unf.realSize θ (g + w))`. Establish `h3` using `GlobalTheory.MajSum.realSize_add_le θ (g + w) (-w)`. Rewrite `h3` using `[add_neg_cancel_right]`. Establish `h4` using `hR w hw`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hp : (0:ℝ) < (1 + GlobalTheory.Unf.realSize θ (g + w)) ^ N` using `by positivity`. Establish `hq : (0:ℝ) < (1 + GlobalTheory.Unf.realSize θ g) ^ N` using `by positivity`. Establish `h5 : (1 + GlobalTheory.Unf.realSize θ g) ^ N ≤ (1 + R) ^ N * (1 + GlobalTheory.Unf.realSize θ (g + w)) ^ N`. Rewrite using `[← mul_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pow_le_pow_left₀ (by linarith) h2 N`. Rewrite using `[← div_eq_mul_inv, inv_eq_one_div, div_le_div_iff₀ hp hq, one_mul]`. Conclude with `h5`. Establish `h0 : GlobalTheory.Unf.maj θ K N (g + w) = 0` using `by unfold GlobalTheory.Unf.maj; rw [if_neg hb]`. Rewrite using `[h0]`.
-
-Conclude with `mul_nonneg (by positivity) (GlobalTheory.Unf.maj_nonneg θ _ N g)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem maj_add_le (θ : InfFam D) (K K₀ : Set (Mx D ρ p)) (N : ℕ) (R : ℝ) (hR0 : 0 ≤ R)
     (hR : ∀ w ∈ K₀, GlobalTheory.Unf.realSize θ (-w) ≤ R) (g w : Mx D ρ p) (hw : w ∈ K₀) :
@@ -63,7 +61,7 @@ theorem maj_add_le (θ : InfFam D) (K K₀ : Set (Mx D ρ p)) (N : ℕ) (R : ℝ
     exact mul_nonneg (by positivity) (GlobalTheory.Unf.maj_nonneg θ _ N g)
 
 /- English proof (translation)
-Unfold `GlobalTheory.Unf.realSize`. Use `continuous_finset_sum _ fun τ _ => continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => ?_` and prove the remaining obligations. Conclude with `((GlobalTheory.RealWeil.continuous_compAt hθ τ ρ p).matrix_elem i j).norm`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_realSize {θ : InfFam D} (hθ : IsInfFam θ) :
     Continuous (GlobalTheory.Unf.realSize θ : Mx D ρ p → ℝ) := by
@@ -73,21 +71,21 @@ theorem continuous_realSize {θ : InfFam D} (hθ : IsInfFam θ) :
   exact ((GlobalTheory.RealWeil.continuous_compAt hθ τ ρ p).matrix_elem i j).norm
 
 /- English proof (translation)
-Introduce `D ρ p θ hθ φ hφ`. Take `⟨-, K, hK, hbd⟩` from `GlobalTheory.SchwartzMaj.hasMaj_of_mem hθ hφ`. Take `⟨N, hN⟩` from `GlobalTheory.MajSum.tsum_maj_ne_top D θ hθ ρ p`. Take `⟨i1, -, -, -, -, K₀, hK₀, hcov⟩` from `lattice_Mx D ρ p`. Take `⟨C, hC⟩` from `hbd N`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hK' : IsCompact (K + (-K₀))` using `hK.add hK₀.neg`. Take `⟨R₀, hR₀⟩` from `hK₀.exists_bound_of_continuousOn (f := fun w => GlobalTheory.Unf.realSize θ (-w)) ((continuous_realSize hθ).comp continuous_neg).continuousOn`. Establish `hR : ∀ w ∈ K₀, GlobalTheory.Unf.realSize θ (-w) ≤ |R₀|` using `fun w hw => (le_abs_self _).trans ((hR₀ w hw).trans (le_abs_self _))`. Establish `hg : Summable fun γ : ratMx D ρ p => GlobalTheory.Unf.maj θ (K + (-K₀)) N (γ : Mx D ρ p)`. Establish `h` using `ENNReal.summable_toReal (hN _ hK')`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h.congr fun γ => ?_` and prove the remaining obligations. Conclude with `ENNReal.toReal_ofReal (GlobalTheory.Unf.maj_nonneg θ _ N _)`. Use `set c : ℝ := |C| * (1 + |R₀|) ^ N with hc`. Establish `hc0 : 0 ≤ c` using `by positivity`. Use `⟨c * ∑' γ : ratMx D ρ p, GlobalTheory.Unf.maj θ (K + (-K₀)) N (γ : Mx D ρ p), fun y => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨γ, hγ, hy⟩` from `hcov y`. Take `⟨ξ₀, rfl⟩` from `mem_ratMx.1 hγ`. Set `e : Matrix (Fin ρ) (Fin p) D.host.E → ratMx D ρ p` to `fun ξ => ⟨rat (ξ - ξ₀), rat_mem _⟩`. Establish `he : Function.Injective e` using `fun a b h => by`. Use `rat_injective (congrArg Subtype.val h)` as an intermediate fact.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `sub_left_injective this`. Establish `key : ∀ ξ, ‖φ (rt ξ + y)‖ ≤ c * GlobalTheory.Unf.maj θ (K + (-K₀)) N (e ξ : Mx D ρ p)`. Introduce `ξ`. Establish `e1 : rt ξ + y = rat (ξ - ξ₀) + (rat ξ₀ + y)`. Establish `: rat (ξ - ξ₀) = rt ξ - rat ξ₀`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Simplify using `[rat, rt]`. Rewrite using `[this]`. Normalize the expressions using the abelian group laws. Rewrite using `[e1]`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `(hC _).trans ?_` and prove the remaining obligations. Establish `h1` using `maj_add_le θ K K₀ N |R₀| (abs_nonneg _) hR (rat (ξ - ξ₀)) (rat ξ₀ + y) hy`. Combine the equalities or inequalities in the displayed calculation. Establish `hs' : Summable fun ξ => c * GlobalTheory.Unf.maj θ (K + (-K₀)) N (e ξ : Mx D ρ p)` using `(hg.comp_injective he).mul_left c`. Establish `hs : Summable fun ξ => ‖φ (rt ξ + y)‖` using `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) key hs'`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hs, (hs.tsum_le_tsum key hs').trans ?_⟩` and prove the remaining obligations. Rewrite using `[tsum_mul_left]`. Use `mul_le_mul_of_nonneg_left ?_ hc0` and prove the remaining obligations. Conclude with `tsum_comp_le_tsum_of_inj hg (fun _ => GlobalTheory.Unf.maj_nonneg θ _ N _) he`.
+A detailed English derivation is pending.
 -/
 theorem periodisation_bound : ∀ {D : D7} {ρ p : ℕ} (θ : InfFam D), IsInfFam θ → ∀ φ ∈ schwartzA θ ρ p,
     ∃ B : ℝ, ∀ y : Mx D ρ p,

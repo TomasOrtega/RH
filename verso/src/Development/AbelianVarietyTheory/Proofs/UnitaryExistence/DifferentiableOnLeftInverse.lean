@@ -15,7 +15,7 @@ open scoped nonZeroDivisors in
 variable {g : ℕ} in
 
 /- English proof (translation)
-Establish `hstar : star (B *ᵥ w) = B.map (starRingEnd ℂ) *ᵥ star w`. Use extensionality with `i`. Simplify using `[mulVec, dotProduct, star_sum]`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm`. Rewrite using `[hstar, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec v Aᵀ, Matrix.vecMul_transpose, Matrix.mulVec_mulVec]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.RiemannRel.hermForm_mulVec (G A B : Matrix (Fin g) (Fin g) ℂ) (v w : Fin g → ℂ) :
     _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm G (A *ᵥ v) (B *ᵥ w) = v ⬝ᵥ (Aᵀ * G * B.map (starRingEnd ℂ)) *ᵥ star w := by
@@ -29,7 +29,7 @@ open NumberField Matrix in
 open scoped nonZeroDivisors in
 variable {g : ℕ} in
 /- English proof (translation)
-Rewrite using `[_root_.GlobalTheory.RiemannRel.hermForm_mulVec]`. Simplify using `[Pi.star_single]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.RiemannRel.hermForm_col (G A B : Matrix (Fin g) (Fin g) ℂ) (j k : Fin g) :
     _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm G (A *ᵥ Pi.single j 1) (B *ᵥ Pi.single k 1) = (Aᵀ * G * B.map (starRingEnd ℂ)) j k := by
@@ -40,23 +40,21 @@ open scoped nonZeroDivisors in
 variable {g : ℕ} in
 
 /- English proof (translation)
-Introduce `hA0`. Take `⟨v, hv0, hAv⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr hA0`. Establish `hreal : ∀ r s : Fin g → ℝ, (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm G (A *ᵥ fun j => (r j : ℂ)) (A *ᵥ fun j => (s j : ℂ))).im = 0`. Introduce `r s`. Rewrite using `[_root_.GlobalTheory.RiemannRel.hermForm_mulVec]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[dotProduct, mulVec, Complex.im_sum, Complex.mul_im, hM]`. Establish `hcross : ∀ (r : Fin g → ℝ) (k : Fin g), (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm G (A *ᵥ fun j => (r j : ℂ)) (B *ᵥ Pi.single k 1)).im = -r k`. Introduce `r k`. Rewrite using `[_root_.GlobalTheory.RiemannRel.hermForm_mulVec, Pi.star_single, star_one, Matrix.mulVec_single_one]`. Simplify using `[dotProduct, Complex.im_sum, Complex.mul_im, hN, Matrix.one_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `set x : Fin g → ℂ := fun j => ((v j).re : ℂ) with hx`. Use `set y : Fin g → ℂ := fun j => ((v j).im : ℂ) with hy`. Establish `hv : v = x + Complex.I • y`. Use extensionality with `j`. Simplify using `only [x, y, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mul_comm]`. Conclude with `(Complex.re_add_im _).symm`. Establish `hAx : A *ᵥ x = -(Complex.I • A *ᵥ y)`. Rewrite `hAv` using `[hv, Matrix.mulVec_add, Matrix.mulVec_smul]`. Conclude with `eq_neg_of_add_eq_zero_left hAv`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hform : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm G (A *ᵥ x) (A *ᵥ x) = Complex.I * _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm G (A *ᵥ x) (A *ᵥ y)` using `by conv_lhs => arg 3; rw [hAx]`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm`. Simplify using `[star_neg, star_smul, Matrix.mulVec_neg, Matrix.mulVec_smul, dotProduct_smul]`. Establish `hx0 : A *ᵥ x = 0`. Assume the negation of the conclusion as `hne`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1` using `hpos _ hne`. Rewrite `h1` using `[hform, Complex.mul_re, Complex.I_re, Complex.I_im, hreal]`. Simplify using `at h1`. Establish `hy0 : A *ᵥ y = 0`. Rewrite `hAx` using `[hx0, eq_comm, neg_eq_zero, smul_eq_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hAx.resolve_left Complex.I_ne_zero`. Apply `hv0` to reduce the goal to its premises. Use extensionality with `k`. Establish `h1` using `hcross (fun j => (v j).re) k`. Establish `h2` using `hcross (fun j => (v j).im) k`.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `(_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm G (A *ᵥ x) _).im = _ at h1`. Express the relevant statement in the definitionally equal form `(_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm G (A *ᵥ y) _).im = _ at h2`. Rewrite `h1` using `[hx0]`. Rewrite `h2` using `[hy0]`. Simplify using `only [_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm, zero_dotProduct, Complex.zero_im, zero_eq_neg] at h1 h2`.
-
-Apply `Complex.ext` to reduce the goal to its premises. Simplify using `using h1`. Simplify using `using h2`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.RiemannRel.det_ne_zero (G A B : Matrix (Fin g) (Fin g) ℂ)
     (hpos : ∀ z : Fin g → ℂ, z ≠ 0 → 0 < (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm G z z).re)
@@ -113,31 +111,29 @@ open scoped nonZeroDivisors in
 variable {g : ℕ} in
 
 /- English proof (translation)
-Use `set M := Aᵀ * G * A.map (starRingEnd ℂ) with hMdef`. Use `set S : Matrix (Fin g) (Fin g) ℝ := M.map Complex.re with hSdef`. Use `set X : Matrix (Fin g) (Fin g) ℝ := τ.map Complex.re with hXdef`. Use `set Y : Matrix (Fin g) (Fin g) ℝ := τ.map Complex.im with hYdef`. Establish `hMh : Mᴴ = M`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : (A.map (starRingEnd ℂ))ᴴ = Aᵀ` using `by ext i j; simp`. Establish `h2 : (Aᵀ)ᴴ = A.map (starRingEnd ℂ)` using `by ext i j; simp`. Rewrite using `[hMdef, Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, h1, h2, hG.eq, Matrix.mul_assoc]`. Establish `hSsymm : ∀ j k, S k j = S j k`. Introduce `j k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `congrFun (congrFun hMh j) k` as an intermediate fact. Rewrite `this` using `[Matrix.conjTranspose_apply]`. Simplify using `only [S, Matrix.map_apply, ← this, Complex.star_def, Complex.conj_re]`. Establish `hSh : S.IsHermitian`. Use extensionality with `j k`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[hSsymm]`. Establish `hN' : Aᵀ * G * (A * τ).map (starRingEnd ℂ) = M * τ.map (starRingEnd ℂ)`. Rewrite using `[Matrix.map_mul, hMdef]`. Simplify using `only [Matrix.mul_assoc]`. Establish `hSY : S * Y = 1`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use extensionality with `j k`. Use `hN j k` as an intermediate fact. Rewrite `this` using `[hN']`. Simplify using `only [Matrix.mul_apply, Complex.im_sum, Complex.mul_im, hM, Matrix.map_apply, Complex.conj_re, Complex.conj_im, zero_mul, add_zero] at this`. Simplify using `only [Matrix.mul_apply, S, Y, Matrix.map_apply]`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Combine the linear relations using `[show ∑ x, (M j x).re * -(τ x k).im = -∑ x, (M j x).re * (τ x k).im by`. Simplify using `[Finset.sum_neg_distrib]]`. Establish `hSpos : S.PosDef`. Use `Matrix.posDef_iff_dotProduct_mulVec.mpr ⟨hSh, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hAx : A *ᵥ (fun j => (x j : ℂ)) ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Introduce `h0`. Apply `hx` to reduce the goal to its premises. Use extensionality with `j`. Use `congrFun (Matrix.eq_zero_of_mulVec_eq_zero hA h0) j` as an intermediate fact. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h` using `hpos _ hAx`. Rewrite `h` using `[_root_.GlobalTheory.RiemannRel.hermForm_mulVec]`. Simplify `h` using `[dotProduct, mulVec, Complex.re_sum, Complex.mul_re, hM, S]`. Establish `hYinv : Y = S⁻¹` using `(Matrix.inv_eq_right_inv hSY).symm`. Establish `hYpos : Y.PosDef` using `hYinv ▸ hSpos.inv`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hK' : (A * τ)ᵀ * G * (A * τ).map (starRingEnd ℂ) = τᵀ * M * τ.map (starRingEnd ℂ)`. Rewrite using `[Matrix.transpose_mul, Matrix.map_mul, hMdef]`. Simplify using `only [Matrix.mul_assoc]`. Establish `hKim : ∀ j k, ((τᵀ * M * τ.map (starRingEnd ℂ)) j k).im = (Yᵀ * S * X - Xᵀ * S * Y) j k`. Introduce `j k`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mul_apply, Matrix.sub_apply, Complex.im_sum, Complex.re_sum, Complex.mul_im, Complex.mul_re, hM, Matrix.map_apply, Matrix.transpose_apply, Complex.conj_re, Complex.conj_im, Finset.sum_mul, ← Finset.sum_sub_distrib, S, X, Y]`. Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hYS : Yᵀ * S = 1`. Establish `hSt : Sᵀ = S` using `by ext j k; exact hSsymm j k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← hSt, ← Matrix.transpose_mul, hSY, Matrix.transpose_one]`. Establish `hXs : ∀ j k, X j k = X k j`. Introduce `j k`. Establish `h` using `hK j k`. Rewrite `h` using `[hK', hKim, Matrix.mul_assoc Xᵀ, hSY, hYS, Matrix.one_mul, Matrix.mul_one, Matrix.sub_apply, Matrix.transpose_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hYs : ∀ j k, Y j k = Y k j`. Introduce `j k`. Use `congrFun (congrFun hYpos.1 k) j` as an intermediate fact. Simplify using `using this`.
-
-Use `⟨Matrix.IsSymm.ext fun i j => Complex.ext ?_ ?_, hYpos⟩` and prove the remaining obligations. Conclude with `hXs j i`. Conclude with `hYs j i`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.RiemannRel.symm_posDef (G A τ : Matrix (Fin g) (Fin g) ℂ) (hG : G.IsHermitian)
     (hA : A.det ≠ 0)
@@ -215,9 +211,9 @@ open NumberField Matrix in
 open scoped nonZeroDivisors in
 variable {g : ℕ} in
 /- English proof (translation)
-Simplify using `only [Matrix.det_apply]`. Use `DifferentiableOn.fun_sum fun σ _ => ?_` and prove the remaining obligations. Simplify using `only [Units.smul_def, zsmul_eq_mul]`. Use `(differentiableOn_const _).mul ?_` and prove the remaining obligations. Establish `hprod : (fun b => ∏ i, A b (σ i) i) = ∏ i, (fun b => A b (σ i) i)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use extensionality with `b`. Simplify using `[Finset.prod_apply]`. Rewrite using `[hprod]`. Conclude with `Finset.prod_induction _ (fun f => DifferentiableOn ℂ f B) (fun f f' hf hf' => hf.mul hf') (differentiableOn_const 1) fun i _ => hA (σ i) i`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.RiemannRel.differentiableOn_det {V : Type*} [NormedAddCommGroup V] [NormedSpace ℂ V]
     {B : Set V} (A : V → Matrix (Fin g) (Fin g) ℂ)
@@ -237,13 +233,11 @@ open NumberField Matrix in
 open scoped nonZeroDivisors in
 variable {g : ℕ} in
 /- English proof (translation)
-Establish `hdet : ∀ b ∈ B, (A b).det ≠ 0` using `fun b hb hz => by`. Use `congrArg Matrix.det (hh b hb)` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, hz, mul_zero, Matrix.det_one]`. Conclude with `zero_ne_one this`. Establish `hinv : ∀ b ∈ B, h b i j = ((A b).det)⁻¹ * (A b).adjugate i j` using `fun b hb => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(Matrix.inv_eq_left_inv (hh b hb)).symm, Matrix.inv_def, Matrix.smul_apply, smul_eq_mul, Ring.inverse_eq_inv']`. Use `DifferentiableOn.congr ?_ hinv` and prove the remaining obligations. Use `((_root_.GlobalTheory.RiemannRel.differentiableOn_det A hA).inv hdet).mul ?_` and prove the remaining obligations. Simplify using `only [Matrix.adjugate_apply]`. Use `_root_.GlobalTheory.RiemannRel.differentiableOn_det _ fun k l => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hk : k = j`. Substitute `hk` using the available equality. Simplify using `only [Matrix.updateRow_self]`. Conclude with `differentiableOn_const _`. Simplify using `only [Matrix.updateRow_ne hk]`.
-
-Conclude with `hA k l`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.RiemannRel.differentiableOn_left_inverse {V : Type*} [NormedAddCommGroup V]
     [NormedSpace ℂ V] {B : Set V}
@@ -269,20 +263,20 @@ open scoped nonZeroDivisors in
 variable {g : ℕ} in
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[mulVec, dotProduct, Pi.single_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.RiemannRel.of_cols_mulVec (c : Fin g → Fin g → ℂ) (k : Fin g) :
     (Matrix.of fun i j => c j i) *ᵥ Pi.single k 1 = c k := by
   ext i; simp [mulVec, dotProduct, Pi.single_apply]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `H`. Prove the components needed by the constructor for the conclusion. Use extensionality with `i j`. Use `congrFun (H j).1 i` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `only [mulVec, dotProduct] at this`. Simplify using `[mul_apply, this, one_apply, Pi.single_apply]`. Use extensionality with `i j`. Use `congrFun (H j).2 i` as an intermediate fact. Rewrite `this` using `[mulVec_single_one]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [mulVec, dotProduct] at this`. Simplify using `[mul_apply, this]`. Introduce and unpack `⟨h1, rfl⟩ k`. Prove the components needed by the constructor for the conclusion. Rewrite using `[← of_cols_mulVec a k, mulVec_mulVec, h1, one_mulVec]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mulVec_mulVec, of_cols_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cols_iff (h τ : Matrix (Fin g) (Fin g) ℂ) (a b : Fin g → Fin g → ℂ) :
     (∀ k, h *ᵥ a k = Pi.single k 1 ∧ h *ᵥ b k = τ *ᵥ Pi.single k 1) ↔
@@ -309,21 +303,21 @@ open scoped nonZeroDivisors in
 variable {g : ℕ} in
 
 /- English proof (translation)
-Introduce `E _ _ _ H D g ty bas hEF`. Establish `hnorm : ∀ (Q : D.La →+ (Fin g → ℂ)) (h τ : Matrix (Fin g) (Fin g) ℂ), (∀ k, h *ᵥ Q (bas (Pi.single (Sum.inl k) 1)) = Pi.single k 1 ∧ h *ᵥ Q (bas (Pi.single (Sum.inr k) 1)) = τ *ᵥ Pi.single k 1) → h * Matrix.of (fun i j => Q (bas (Pi.single (Sum.inl j) 1)) i) = 1 ∧ τ = h * Matrix. …`. Introduce `Q h τ hQ`. Use `⟨Matrix.ext_of_mulVec_single fun k => ?_, Matrix.ext_of_mulVec_single fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_mulVec, _root_.GlobalTheory.RiemannRel.of_cols_mulVec (fun j => Q (bas (Pi.single (Sum.inl j) 1))), (hQ k).1, Matrix.one_mulVec]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.mulVec_mulVec, _root_.GlobalTheory.RiemannRel.of_cols_mulVec (fun j => Q (bas (Pi.single (Sum.inr j) 1))), (hQ k).2]`. Use `⟨fun P hP => ?_, fun m B P h τ hP hh i j => ?_⟩` and prove the remaining obligations. Take `⟨-, -, -, -, G, hG, hpos, hIm⟩` from `hP set A := Matrix.of (fun i j => P (bas (Pi.single (Sum.inl j) 1)) i) with hAdef set C := Matrix.of (fun i j => P (bas (Pi.single (Sum.inr j) 1)) i) with hCdef`. Establish `hAcol : ∀ k, A *ᵥ Pi.single k 1 = P (bas (Pi.single (Sum.inl k) 1))` using `fun k => _root_.GlobalTheory.RiemannRel.of_cols_mulVec (fun j => P (bas (Pi.single (Sum.inl j) 1))) k`. Establish `hCcol : ∀ k, C *ᵥ Pi.single k 1 = P (bas (Pi.single (Sum.inr k) 1))` using `fun k => _root_.GlobalTheory.RiemannRel.of_cols_mulVec (fun j => P (bas (Pi.single (Sum.inr j) 1))) k`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM : ∀ j k, ((Aᵀ * G * A.map (starRingEnd ℂ)) j k).im = 0`. Introduce `j k`. Rewrite using `[← _root_.GlobalTheory.RiemannRel.hermForm_col, hAcol, hAcol, hIm, hEF]`. Simplify using `[_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.omegaStd, Pi.single_apply]`. Establish `hN : ∀ j k, ((Aᵀ * G * C.map (starRingEnd ℂ)) j k).im = -(1 : Matrix (Fin g) (Fin g) ℝ) j k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `j k`. Rewrite using `[← _root_.GlobalTheory.RiemannRel.hermForm_col, hAcol, hCcol, hIm, hEF]`. Simplify using `[_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.omegaStd, Pi.single_apply, Matrix.one_apply, @eq_comm _ k j]`. Establish `hK : ∀ j k, ((Cᵀ * G * C.map (starRingEnd ℂ)) j k).im = 0`. Introduce `j k`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← _root_.GlobalTheory.RiemannRel.hermForm_col, hCcol, hCcol, hIm, hEF]`. Simplify using `[_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.omegaStd, Pi.single_apply]`. Establish `hdet : A.det ≠ 0` using `_root_.GlobalTheory.RiemannRel.det_ne_zero G A C hpos hM hN`. Establish `hu : IsUnit A.det` using `isUnit_iff_ne_zero.mpr hdet`. Establish `hAC : A * (A⁻¹ * C) = C` using `Matrix.mul_nonsing_inv_cancel_left A C hu`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsp` using `_root_.GlobalTheory.RiemannRel.symm_posDef G A (A⁻¹ * C) hG hdet hpos hM (by rw [hAC]; exact hN) (by rw [hAC]; exact hK)`. Use `⟨A⁻¹, A⁻¹ * C, fun k => ⟨?_, ?_⟩, Matrix.isUnit_nonsing_inv_det A hu, hsp.1, hsp.2, ?_⟩` and prove the remaining obligations. Rewrite using `[← hAcol, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul A hu, Matrix.one_mulVec]`. Rewrite using `[← hCcol, Matrix.mulVec_mulVec]`. Introduce `h' τ' hh'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨h1, h2⟩` from `hnorm P h' τ' hh'`. Establish `hinv : h' = A⁻¹` using `(Matrix.inv_eq_left_inv h1).symm`. Conclude with `⟨hinv, by rw [h2, hinv]⟩`. Establish `hent : ∀ (s : Fin g ⊕ Fin g) (i : Fin g), DifferentiableOn ℂ (fun b => P b (bas (Pi.single s 1)) i) B` using `fun s i => differentiableOn_pi.mp (hP.2 _) i`. Establish `hdh : ∀ i j, DifferentiableOn ℂ (fun b => h b i j) B` using `_root_.GlobalTheory.RiemannRel.differentiableOn_left_inverse (fun b => Matrix.of fun i j => P b (bas (Pi.single (Sum.inl j) 1)) i) h (fun i j => hent _ i) (fun b hb => (hnorm (P b) (h b) (τ b) (hh b hb)).1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hdh i j, DifferentiableOn.congr (f := fun b => ∑ l, h b i l * P b (bas (Pi.single (Sum.inr j) 1)) l) (DifferentiableOn.fun_sum fun l _ => (hdh i l).mul (hent _ l)) fun b hb => ?_⟩` and prove the remaining obligations. Rewrite using `[(hnorm (P b) (h b) (τ b) (hh b hb)).2]`. Simplify using `[Matrix.mul_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.RiemannRel.riemann_relations : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (D : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] D.La), (∀ a b, D.EF (bas a) (bas b) = -_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.omegaStd a b) → (∀ P, _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsPeriod D ty P → ∃ h τ : Matrix (Fin g) (Fin g) ℂ, (∀ k, h *ᵥ P (bas (Pi.single (Sum.inl k) 1)) = Pi.single k 1 ∧ h *ᵥ P (bas (Pi.single (Sum.inr k) 1)) = τ *ᵥ Pi.single k 1) ∧ IsUnit h.det ∧ τ.IsSymm ∧ (τ.map Complex.im).PosDef ∧ ∀ h' τ' : Matrix (Fin g) (Fin g) ℂ, (∀ k, h' *ᵥ P (bas (Pi.single (Sum.inl k) 1)) = Pi.single k 1 ∧ h' *ᵥ P (bas (Pi.single (Sum.inr k) 1)) = τ' *ᵥ Pi.single k 1) → h' = h ∧ τ' = τ) ∧ ∀ (m : ℕ) (B : Set (Fin m → ℂ)) (P : (Fin m → ℂ) → (D.La →+ (Fin g → ℂ))) (h τ : (Fin m → ℂ) → Matrix (Fin g) (Fin g) ℂ), _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsHolPeriods D ty B P → (∀ b ∈ B, (∀ k, h b *ᵥ P b (bas (Pi.single (Sum.inl k) 1)) = Pi.single k 1 ∧ h b *ᵥ P b (bas (Pi.single (Sum.inr k) 1)) = τ b *ᵥ Pi.single k 1)) → ∀ i j, DifferentiableOn ℂ (fun b => h b i j) B ∧ DifferentiableOn ℂ (fun b => τ b i j) B := by
   intro E _ _ _ H D g ty bas hEF

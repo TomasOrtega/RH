@@ -15,39 +15,35 @@ variable {D : D7} (X : HidaSetting D) (p : TypX X) (θ : TpX X p ≃ₐ[FpX X p]
   (Q : GL (IdxD D) (FpX X p))
 
 /- English proof (translation)
-Establish `: Fact (gOf p).Prime` using `⟨gOf_prime X p⟩`. Take `⟨hE1, hZ1, hB1, hE2, hZ2, hB2⟩` from `hA`. Use `set O := OvA X p`. Use `set M := ((HA.mat (FpX X p) X.B.I.cm.sig X.B.I.J x : GL (Fin X.B.I.n) (TpX X p)) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (TpX X p))`. Use `set Ym := (Y : Matrix (IdxD D) (IdxD D) (Op X p))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set Yi := ((Y⁻¹ : GL (IdxD D) (Op X p)) : Matrix (IdxD D) (IdxD D) (Op X p))`. Establish `hYm : ((Q⁻¹ : GL (IdxD D) (FpX X p)) : Matrix (IdxD D) (IdxD D) (FpX X p)) * Matrix.reindex (idxEquiv X) (idxEquiv X) (M.map fun t => (θ t).1) * (Q : Matrix (IdxD D) (IdxD D) (FpX X p)) = Ym.map ((↑) : O → FpX X p)` using `hY.symm`. Establish `hZ : Yi.map ((↑) : O → FpX X p) * (((Q⁻¹ : GL (IdxD D) (FpX X p)) : Matrix (IdxD D) (IdxD D) (FpX X p)) * Matrix.reindex (idxEquiv X) (idxEquiv X) (cmp1 X.B.I.cm.sig X.B.I.J θ x) * (Q : Matrix (IdxD D) (IdxD D) (FpX X p))) = 1`. Rewrite using `[← hY]`. Establish `h1 : Yi * Ym = 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Yi, Ym]`. Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one]`. Establish `h2` using `congrArg (fun A => A.map (algebraMap (Op X p) (FpX X p))) h1`. Simplify using `only [Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)] at h2`. Conclude with `h2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `c1 : ∀ u, crd1 X p θ Q ((M - 1) *ᵥ u) = (Ym.map ((↑) : O → FpX X p) - 1) *ᵥ crd1 X p θ Q u`. Introduce `u`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, firstCoords_sub, firstCoords_mulVec, hYm, Matrix.sub_mulVec, Matrix.one_mulVec]`. Establish `c2 : ∀ u, crd2 X p θ Q ((M - 1) *ᵥ u) = (Yiᵀ.map ((↑) : O → FpX X p) - 1) *ᵥ crd2 X p θ Q u`. Introduce `u`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, secondCoords_sub, secondCoords_mulVec X p θ Q hθ x _ hZ, Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.transpose_map]`. Establish `hsplit : ∀ S y, InModP X p X.B.g S y ↔ CongSpan O (gA X p) (crd1 X p θ Q '' S) (crd1 X p θ Q y) ∧ CongSpan O (gA X p) (crd2 X p θ Q '' S) (crd2 X p θ Q y)` using `fun S y => (imA_inModP_Bg X p S y).trans (hS S y)`. Establish `ce : ∀ a : Fin D.R.rS, InModP X p X.B.g ((fun b => PI.FinKW.vecV X.B.I p.1 (X.e0 b)) '' {b | b.1 < a.1}) ((M - 1) *ᵥ PI.FinKW.vecV X.B.I p.1 (X.e0 a)) ↔ (∀ i, i ∉ (Sum.inl '' {b : Fin D.R.rS | b.1 < a.1} : Set (IdxD D)) → π (Ym i (Sum.inl a)) = if i = Sum.inl a then 1 else 0) ∧ ( …` using `D) '' {b : Fin D.R.rS | b.1 < a.1}) → π (Yi (fposA a) i) = if i = fposA a then 1 else 0) := by`. Introduce `a`. Rewrite using `[hsplit, Set.image_image, Set.image_image, c1, c2]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `and_congr ?_ ?_` and prove the remaining obligations. Conclude with `clause_iff O π (gA X p) hker Ym _ (fun b => (Sum.inl b : IdxD D)) (fun b => hE1 b) _ _ _ (hE1 a)`. Use `clause_iff O π (gA X p) hker Yiᵀ _ (fposA (D := D)) (fun b => hE2 b) {b : Fin D.R.rS | b.1 < a.1} _ (fposA a) (hE2 a)` as an intermediate fact. Simplify `this` using `only [Matrix.transpose_apply]`. Establish `cz : InModP X p X.B.g (Set.range fun b => PI.FinKW.vecV X.B.I p.1 (X.e0 b)) ((M - 1) *ᵥ PI.FinKW.vecV X.B.I p.1 X.z0) ↔ (∀ i, i ∉ (Sum.inl '' Set.univ : Set (IdxD D)) → π (Ym i zI) = if i = zI then 1 else 0) ∧ (∀ i, i ∉ (fposA (D` using `D) '' Set.univ) → π (Yi zI i) = if i = zI then 1 else 0) := by`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsplit, ← Set.image_univ, Set.image_image, Set.image_image, c1, c2]`. Use `and_congr ?_ ?_` and prove the remaining obligations. Conclude with `clause_iff O π (gA X p) hker Ym _ (fun b => (Sum.inl b : IdxD D)) (fun b => hE1 b) _ _ _ hZ1`. Take `⟨z, hz, hz'⟩` from `hZ2`. Establish `hw : ∃ z', IntVec O z' ∧ -crd2 X p θ Q (PI.FinKW.vecV X.B.I p.1 X.z0) = Pi.single zI 1 + ((gA X p : O) : FpX X p) • z'` using `⟨-z, fun i => by simpa using neg_mem (hz i), by rw [hz', neg_add, neg_neg, smul_neg]⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hneg : (Yiᵀ.map ((↑) : O → FpX X p) - 1) *ᵥ crd2 X p θ Q (PI.FinKW.vecV X.B.I p.1 X.z0) = -((Yiᵀ.map ((↑) : O → FpX X p) - 1) *ᵥ -crd2 X p θ Q (PI.FinKW.vecV X.B.I p.1 X.z0))`. Rewrite using `[Matrix.mulVec_neg, neg_neg]`. Rewrite using `[hneg, congSpan_neg]`. Use `clause_iff O π (gA X p) hker Yiᵀ _ (fposA (D := D)) (fun b => hE2 b) Set.univ _ zI hw` as an intermediate fact. Simplify `this` using `only [Matrix.transpose_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `cw : ∀ j : Fin D.R.k, InModP X p X.B.g ((Set.range fun b => PI.FinKW.vecV X.B.I p.1 (X.e0 b)) ∪ (fun j => PI.FinKW.vecV X.B.I p.1 (X.bw j)) '' {j' | j'.1 < j.1}) ((M - 1) *ᵥ PI.FinKW.vecV X.B.I p.1 (X.bw j)) ↔ (∀ i, i ∉ (posW (r` using `D.R.rS) j : Set (IdxD D)) → π (Ym i (wI j)) = if i = wI j then 1 else 0) := by`. Introduce `j`. Establish `h0 : crd2 X p θ Q ((M - 1) *ᵥ PI.FinKW.vecV X.B.I p.1 (X.bw j)) = 0`. Rewrite using `[c2]`. Establish `: crd2 X p θ Q (PI.FinKW.vecV X.B.I p.1 (X.bw j)) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Unfold `crd2`. Rewrite using `[hB2 j]`. Establish `: ((0 : Fin X.B.I.n → FpX X p) ∘ (idxEquiv X).symm) = 0` using `rfl`. Rewrite using `[this, Matrix.mulVec_zero, Matrix.mulVec_zero]`. Rewrite using `[this, Matrix.mulVec_zero]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[hsplit, h0, c1]`. Simplify using `only [congSpan_zero, and_true]`. Set `u : Fin D.R.rS ⊕ Fin D.R.k → IdxD D → FpX X p` to `Sum.elim (fun b => crd1 X p θ Q (PI.FinKW.vecV X.B.I p.1 (X.e0 b))) (fun j' => crd1 X p θ Q (PI.FinKW.vecV X.B.I p.1 (X.bw j')))`. Set `pos : Fin D.R.rS ⊕ Fin D.R.k → IdxD D` to `Sum.elim Sum.inl wI`. Set `s : Set (Fin D.R.rS ⊕ Fin D.R.k)` to `Set.range Sum.inl ∪ Sum.inr '' {j' | j'.1 < j.1}`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Establish `hset : crd1 X p θ Q '' ((Set.range fun b => PI.FinKW.vecV X.B.I p.1 (X.e0 b)) ∪ (fun j => PI.FinKW.vecV X.B.I p.1 (X.bw j)) '' {j' | j'.1 < j.1}) = u '' s`. Use extensionality with `v`. Simplify using `only [u, s, Set.mem_image, Set.mem_union, Set.mem_range, Set.mem_ofPred_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, (⟨y, rfl⟩ | ⟨b, hb, rfl⟩), rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `⟨Sum.inl y, Or.inl ⟨y, rfl⟩, rfl⟩`. Conclude with `⟨Sum.inr b, Or.inr ⟨b, hb, rfl⟩, rfl⟩`. Introduce and unpack `⟨c, (⟨y, rfl⟩ | ⟨b, hb, rfl⟩), rfl⟩`. Conclude with `⟨_, Or.inl ⟨y, rfl⟩, rfl⟩`. Conclude with `⟨_, Or.inr ⟨b, hb, rfl⟩, rfl⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hpos : pos '' s = posW (r` using `D.R.rS) j := by`. Use extensionality with `v`. Simplify using `[pos, s, posW]`. Rewrite using `[hset]`. Establish `hu : ∀ b, ∃ z, IntVec O z ∧ u b = Pi.single (pos b) 1 + ((gA X p : O) : FpX X p) • z`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `(b | j')`. Conclude with `hE1 b`. Conclude with `hB1 j'`. Use `clause_iff O π (gA X p) hker Ym u pos hu s _ (wI j) (hB1 j)` as an intermediate fact. Rewrite `this` using `[hpos]`.
-
-Conclude with `this`. Unfold `LocCong EntA`. Rewrite using `[forall_congr' ce, cz, forall_congr' cw, forall_and]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨hP, hQ⟩, ⟨hR, hS'⟩, hT⟩`.
-
-Conclude with `⟨hP, hR, hT, hQ, hS'⟩`. Introduce and unpack `⟨hP, hR, hT, hQ, hS'⟩`. Conclude with `⟨⟨hP, hQ⟩, ⟨hR, hS'⟩, hT⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem locCong_iff_ent (hθ : IsSplitEquiv X p θ) (π : Op X p →+* ZMod (gOf p))
     (hker : RingHom.ker π = Ideal.span {((gOf p : ℕ) : Op X p)}) (hS : SplitA X p θ Q) (hA : AdaptA X p θ Q)

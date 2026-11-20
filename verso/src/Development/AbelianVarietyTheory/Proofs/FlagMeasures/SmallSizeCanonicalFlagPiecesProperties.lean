@@ -12,9 +12,9 @@ open scoped InnerProductSpace ContDiff
 namespace GlobalTheory.FlagPieces
 
 /- English proof (translation)
-Introduce `N _ hN hne`. Establish `hle : stepLe I x t ≤ lamX I x` using `GlobalTheory.PointFlag.stepLe_le I x t`. Establish `hne0 : stepLe I x t ≠ ⊥`. Introduce `h0`. Apply `hne` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `hN`, the goal using `[h0]`. Conclude with `le_bot_iff.mp hN.1`. Conclude with `(GlobalTheory.PointFlag.sizeQ_le I x hle hN hne).trans ((GlobalTheory.T.canonicalLatticeFiltration_size_properties I x t ht).2.2.2.2.1 hne0)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sizesLe_stepLe (I : AutInst) (x : I.GA) {t : ℝ} (ht : 0 < t)
     (A' : Submodule (𝓞 I.E) (Fin I.n → I.E)) : SizesLe I x (stepLe I x t) A' t := by
@@ -28,9 +28,9 @@ theorem sizesLe_stepLe (I : AutInst) (x : I.GA) {t : ℝ} (ht : 0 < t)
   exact (GlobalTheory.PointFlag.sizeQ_le I x hle hN hne).trans ((GlobalTheory.T.canonicalLatticeFiltration_size_properties I x t ht).2.2.2.2.1 hne0)
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Conclude with `Submodule.span_le.mpr fun y hy => hy.1`. Introduce `y hy`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨hy, fun s hs => ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(Submodule.mem_bot _).mp hs]`. Simplify using `[Formalism.UG.hform]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem perpIn_bot (I : AutInst) (x : I.GA) : perpIn I x ⊥ = lamX I x := by
   apply le_antisymm
@@ -42,25 +42,21 @@ theorem perpIn_bot (I : AutInst) (x : I.GA) : perpIn I x ⊥ = lamX I x := by
     simp [Formalism.UG.hform]
 
 /- English proof (translation)
-Introduce `I x a S τ hF`. Establish `h35` using `GlobalTheory.T.orthogonal_canonicalFiltration_steps_autPoint I x`. Establish `h34` using `(GlobalTheory.T.canonicalFlag_exists_unique_semistable I x).2.2 a S τ hF`. Establish `hsat : ∀ m, SatX I x (S m)` using `fun m => GlobalTheory.PointFlag.flag_sat hF m`. Establish `hperpLast : perpIn I x (S (Fin.last a)) = stepLe I x 2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hF.2.2.1, (h35.2.2.1 (1 / 2) (by norm_num)).2]`. Evaluate the numerical expressions. Establish `hle_last : ∀ i, S i ≤ S (Fin.last a)` using `fun i => hF.2.1.monotone (Fin.le_last i)`. Establish `hlast_le : S (Fin.last a) ≤ stepLe I x 2`. Rewrite using `[hF.2.2.1]`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(GlobalTheory.PointFlag.stepLt_le_stepLe I x _).trans (GlobalTheory.PointFlag.stepLe_mono I x (by norm_num))`. Use `⟨fun i => ?_, ?_, ?_, fun i => ?_⟩` and prove the remaining obligations. Establish `hp` using `h35.2.2.2 (S i) (S i) (hsat i) (hsat i) le_rfl`. Establish `hp'` using `h35.2.2.2 (S i) (S (Fin.last a)) (hsat i) (hsat _) (hle_last i)`. Use `⟨hsat i, hp.1, ?_, hp'.2.2.2.1, hp.2.1⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hperpLast]`. Conclude with `(hle_last i).trans hlast_le`. Rewrite using `[hF.1]`. Conclude with `GlobalTheory.FlagPieces.perpIn_bot I x`. Rewrite using `[hperpLast]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.FlagPieces.sizesLe_stepLe I x (by norm_num) _`. Take `⟨hcs, _, hlarge, hge, hlei⟩` from `h34.1 i`. Take `⟨hτpos, _, hsucc, _⟩` from `hF.2.2.2.2.1 i`. Establish `hsuccle : S i.succ ≤ lamX I x`. Rewrite using `[hsucc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `GlobalTheory.PointFlag.stepLe_le I x _`. Use `⟨?_, hlei, ?_, ?_, hlarge.le, ?_⟩` and prove the remaining obligations. Introduce `N hlt hle`. Conclude with `hge N hlt (hle.trans hsuccle)`. Rewrite using `[hcs, hsucc, (h35.2.2.1 _ hτpos).1, (h35.2.2.1 _ hτpos).2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `GlobalTheory.FlagPieces.sizesLe_stepLe I x (inv_pos.mpr hτpos) _`. Introduce `h`. Establish `hlt : S i.castSucc < S i.succ` using `hF.2.1 (Fin.castSucc_lt_succ ..)`. Rewrite `hlt` using `[h]`. Conclude with `not_lt_bot hlt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `split_ifs with h`. Establish `e : (⟨(i : ℕ) + 1, h⟩ : Fin a).castSucc = i.succ` using `Fin.ext (by simp)`. Establish `hn` using `(h34.1 ⟨(i : ℕ) + 1, h⟩).2.2.2.1`. Rewrite `hn` using `[e]`. Introduce `N hlt hle`.
-
-Conclude with `hn N hlt hle`. Establish `hi` using `i.isLt`. Establish `e : i.succ = Fin.last a` using `Fin.ext (by simp; omega)`. Rewrite using `[e, hF.2.2.1]`. Introduce `N hlt hle`.
-
-Conclude with `(GlobalTheory.T.canonicalLatticeFiltration_size_properties I x (1 / 2) (by norm_num)).2.2.2.2.2.2.2.1 N hlt hle`.
+A detailed English derivation is pending.
 -/
 theorem flag_pieces : ∀ (I : AutInst) (x : I.GA) (a : ℕ) (S : Fin (a + 1) → Submodule (𝓞 I.E) (Fin I.n → I.E)) (τ : Fin a → ℝ), HasFlag I x S τ → (∀ i, SatX I x (S i) ∧ SatX I x (perpIn I x (S i)) ∧ S i ≤ perpIn I x (S (Fin.last a)) ∧ perpIn I x (S (Fin.last a)) ≤ perpIn I x (S i) ∧ rkK (perpIn I x (S i)) + rkK (S i) = I.n) ∧ perpIn I x (S 0) = lamX I x ∧ SizesLe I x (perpIn I x (S (Fin.last a))) (S (Fin.last a)) 2 ∧ ∀ i : Fin a, SizesGe I x (S i.succ) (S i.castSucc) (τ i) ∧ SizesLe I x (S i.succ) (S i.castSucc) (τ i) ∧ SizesLe I x (perpIn I x (S i.castSucc)) (perpIn I x (S i.succ)) (τ i)⁻¹ ∧ S i.succ ≠ ⊥ ∧ largestSize (bas I) (frm I x) (S i.succ) ≤ τ i ∧ SizesGe I x (lamX I x) (S i.succ) (if h : (i : ℕ) + 1 < a then τ ⟨i + 1, h⟩ else 1 / 2) := by
   intro I x a S τ hF

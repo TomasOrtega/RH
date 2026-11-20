@@ -14,34 +14,34 @@ private abbrev MS : Type := Matrix (Fin 2 ⊕ Fin 2) (Fin 2 ⊕ Fin 2) ℂ
 private noncomputable def rx (M : MS) : M4 := reindex finSumFinEquiv finSumFinEquiv M
 
 /- English proof (translation)
-Simplify using `[rx, reindex_apply, submatrix_mul_equiv]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem rx_mul (M N : MS) : rx M * rx N = rx (M * N) := by
   simp [rx, reindex_apply, submatrix_mul_equiv]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[rx, reindex_apply, star_eq_conjTranspose]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem rx_star (M : MS) : star (rx M) = rx (star M) := by
   ext i j
   simp [rx, reindex_apply, star_eq_conjTranspose]
 
 /- English proof (translation)
-Simplify using `[rx, reindex_apply]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem rx_one : rx (1 : MS) = 1 := by
   simp [rx, reindex_apply]
 
 /- English proof (translation)
-Rewrite using `[mem_unitaryGroup_iff, rx_star, rx_mul, h, rx_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem rx_mem {M : MS} (h : M * star M = 1) : rx M ∈ unitaryGroup (Fin (2 + 2)) ℂ := by
   rw [mem_unitaryGroup_iff, rx_star, rx_mul, h, rx_one]
 
 /- English proof (translation)
-Apply `rx_mem` to reduce the goal to its premises. Rewrite using `[star_eq_conjTranspose, fromBlocks_conjTranspose, fromBlocks_multiply]`. Establish `ha` using `mem_unitaryGroup_iff.1 a.2`. Establish `hb` using `mem_unitaryGroup_iff.1 b.2`. Rewrite `ha`, `hb` using `[star_eq_conjTranspose]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[ha, hb, fromBlocks_one]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem blk_mem (a b : U2) :
     rx (fromBlocks (a : Matrix (Fin 2) (Fin 2) ℂ) 0 0 (b : Matrix (Fin 2) (Fin 2) ℂ)) ∈
@@ -54,7 +54,7 @@ private theorem blk_mem (a b : U2) :
   simp [ha, hb, fromBlocks_one]
 
 /- English proof (translation)
-The claim follows from `Classical.epsilon_spec (p := fun k : U4 => (k : M4) = reindex finSumFinEquiv finSumFinEquiv (fromBlocks (a : Matrix (Fin 2) (Fin 2) ℂ) 0 0 (b : Matrix (Fin 2) (Fin 2) ℂ))) ⟨⟨_, blk_mem a b⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 private theorem bd_val (a b : U2) : (bd a b : M4) =
     rx (fromBlocks (a : Matrix (Fin 2) (Fin 2) ℂ) 0 0 (b : Matrix (Fin 2) (Fin 2) ℂ)) :=
@@ -63,7 +63,7 @@ private theorem bd_val (a b : U2) : (bd a b : M4) =
     ⟨⟨_, blk_mem a b⟩, rfl⟩
 
 /- English proof (translation)
-Apply `rx_mem` to reduce the goal to its premises. Rewrite using `[star_eq_conjTranspose, fromBlocks_conjTranspose, fromBlocks_multiply]`. Simplify using `[fromBlocks_one]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem sw_mem : rx (fromBlocks 0 (1 : Matrix (Fin 2) (Fin 2) ℂ) 1 0) ∈
     unitaryGroup (Fin (2 + 2)) ℂ := by
@@ -72,7 +72,7 @@ private theorem sw_mem : rx (fromBlocks 0 (1 : Matrix (Fin 2) (Fin 2) ℂ) 1 0) 
   simp [fromBlocks_one]
 
 /- English proof (translation)
-The claim follows from `Classical.epsilon_spec (p := fun k : U4 => (k : M4) = reindex finSumFinEquiv finSumFinEquiv (fromBlocks 0 (1 : Matrix (Fin 2) (Fin 2) ℂ) 1 0)) ⟨⟨_, sw_mem⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 private theorem long_weyl_element_val : (w4 : M4) = rx (fromBlocks 0 (1 : Matrix (Fin 2) (Fin 2) ℂ) 1 0) :=
   Classical.epsilon_spec (p := fun k : U4 => (k : M4) =
@@ -80,9 +80,9 @@ private theorem long_weyl_element_val : (w4 : M4) = rx (fromBlocks 0 (1 : Matrix
     ⟨⟨_, sw_mem⟩, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[mem_unitaryGroup_iff, star_eq_conjTranspose, diagonal_conjTranspose, diagonal_mul_diagonal]`. Rewrite using `[← diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.star_apply, RCLike.star_def]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Complex.exp_conj, ← Complex.exp_add]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem dg_mem (θ : Fin (2 + 2) → ℝ) :
     (diagonal fun i => Complex.exp (Complex.I * θ i) : M4) ∈ unitaryGroup (Fin (2 + 2)) ℂ := by
@@ -95,7 +95,7 @@ private theorem dg_mem (θ : Fin (2 + 2) → ℝ) :
   simp
 
 /- English proof (translation)
-The claim follows from `Classical.epsilon_spec (p := fun k : U4 => (k : M4) = diagonal fun i => Complex.exp (Complex.I * θ i)) ⟨⟨_, dg_mem θ⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 private theorem dg_val (θ : Fin (2 + 2) → ℝ) :
     (dg θ : M4) = diagonal fun i => Complex.exp (Complex.I * θ i) :=
@@ -103,7 +103,7 @@ private theorem dg_val (θ : Fin (2 + 2) → ℝ) :
     ⟨⟨_, dg_mem θ⟩, rfl⟩
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show (bd a b : M4) * (bd a' b' : M4) = (bd (a * a') (b * b') : M4)`. Rewrite using `[bd_val, bd_val, bd_val, rx_mul, fromBlocks_multiply]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem bd_mul (a b a' b' : U2) : bd a b * bd a' b' = bd (a * a') (b * b') := by
   apply Subtype.ext
@@ -112,7 +112,7 @@ private theorem bd_mul (a b a' b' : U2) : bd a b * bd a' b' = bd (a * a') (b * b
   simp
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show (bd 1 1 : M4) = 1`. Rewrite using `[bd_val]`. Simplify using `[fromBlocks_one, rx_one]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem bd_one : bd 1 1 = 1 := by
   apply Subtype.ext
@@ -121,9 +121,9 @@ private theorem bd_one : bd 1 1 = 1 := by
   simp [fromBlocks_one, rx_one]
 
 /- English proof (translation)
-Use `continuous_induced_rng.2 ?_` and prove the remaining obligations. Establish `: (fun p : U2 × U2 => ((bd p.1 p.2 : U4) : M4)) = fun p : U2 × U2 => rx (fromBlocks (p.1 : Matrix (Fin 2) (Fin 2) ℂ) 0 0 (p.2 : Matrix (Fin 2) (Fin 2) ℂ))`. Use function extensionality and compare the values at `p`. Conclude with `bd_val _ _`. Use `show Continuous (fun p : U2 × U2 => ((bd p.1 p.2 : U4) : M4))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Simplify using `only [rx, reindex_apply]`. Use `Continuous.matrix_submatrix ?_ _ _` and prove the remaining obligations. Conclude with `Continuous.matrix_fromBlocks (continuous_subtype_val.comp continuous_fst) continuous_const continuous_const (continuous_subtype_val.comp continuous_snd)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem bd_cont : Continuous (fun p : U2 × U2 => bd p.1 p.2) := by
   refine continuous_induced_rng.2 ?_
@@ -138,7 +138,7 @@ private theorem bd_cont : Continuous (fun p : U2 × U2 => bd p.1 p.2) := by
     continuous_const (continuous_subtype_val.comp continuous_snd)
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show (w4 : M4) * (w4 : M4) = 1`. Rewrite using `[long_weyl_element_val, rx_mul, fromBlocks_multiply]`. Simplify using `[fromBlocks_one, rx_one]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem long_weyl_element_sq : w4 * w4 = 1 := by
   apply Subtype.ext
@@ -147,7 +147,7 @@ private theorem long_weyl_element_sq : w4 * w4 = 1 := by
   simp [fromBlocks_one, rx_one]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show (w4 : M4) * (bd a b : M4) = (bd b a : M4) * (w4 : M4)`. Rewrite using `[long_weyl_element_val, bd_val, bd_val, rx_mul, rx_mul, fromBlocks_multiply, fromBlocks_multiply]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem long_weyl_swaps_block_diagonal (a b : U2) : w4 * bd a b = bd b a * w4 := by
   apply Subtype.ext
@@ -156,9 +156,9 @@ private theorem long_weyl_swaps_block_diagonal (a b : U2) : w4 * bd a b = bd b a
   simp
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show (dg θ : M4) * (dg (-θ) : M4) = 1`. Rewrite using `[dg_val, dg_val, diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Complex.exp_add]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem dg_neg (θ : Fin (2 + 2) → ℝ) : dg θ * dg (-θ) = 1 := by
   apply Subtype.ext
@@ -170,13 +170,13 @@ private theorem dg_neg (θ : Fin (2 + 2) → ℝ) : dg θ * dg (-θ) = 1 := by
   simp
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show (dg ![a, b, c, d] : M4) = (bd (tC a b) (tC c d) : M4)`. Rewrite using `[dg_val, bd_val]`. Establish `e0 : (finSumFinEquiv (m` using `2) (n := 2)).symm 0 = Sum.inl 0 := by`. Rewrite using `[Equiv.symm_apply_eq]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `e1 : (finSumFinEquiv (m` using `2) (n := 2)).symm 1 = Sum.inl 1 := by`. Rewrite using `[Equiv.symm_apply_eq]`. Both sides reduce to the same expression. Establish `e2 : (finSumFinEquiv (m` using `2) (n := 2)).symm 2 = Sum.inr 0 := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Equiv.symm_apply_eq]`. Both sides reduce to the same expression. Establish `e3 : (finSumFinEquiv (m` using `2) (n := 2)).symm 3 = Sum.inr 1 := by`. Rewrite using `[Equiv.symm_apply_eq]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [rx, reindex_apply, mul_comm, e0, e1, e2, e3]`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private theorem dg_bd (a b c d : ℝ) : dg ![a, b, c, d] = bd (tC a b) (tC c d) := by
   apply Subtype.ext
@@ -194,19 +194,17 @@ private theorem dg_bd (a b c d : ℝ) : dg ![a, b, c, d] = bd (tC a b) (tC c d) 
   fin_cases i <;> fin_cases j <;> simp [rx, reindex_apply, mul_comm, e0, e1, e2, e3]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Assume the negation of the conclusion as `hne`. Establish `hd : ((ν i - ν' i : ℤ) : ℝ) ≠ 0`. Conclude with `sub_ne_zero.2 hne` after adjusting the coercions. Use `set t : ℝ := Real.pi / ((ν i - ν' i : ℤ) : ℝ) with ht`.
+Apply function extensionality and compare values at an arbitrary argument. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1` using `h (Pi.single i t)`. Simplify using `only [chi] at h1`. Take `⟨n, hn⟩` from `Complex.exp_eq_exp_iff_exists_int.1 h1`. Establish `s : ∀ μ : Fin (2 + 2) → ℤ, ∑ j, (μ j : ℂ) * ((Pi.single i t : Fin (2 + 2) → ℝ) j : ℂ) = (μ i : ℂ) * t`. Introduce `μ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_eq_single i]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Simplify using `[Pi.single_eq_of_ne hj]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hn` using `[s, s]`. Establish `hdC : ((ν i : ℂ) - (ν' i : ℂ)) ≠ 0`. Conclude with `sub_ne_zero.2 hne` after adjusting the coercions. Establish `htC : (t : ℂ) = (Real.pi : ℂ) / ((ν i : ℂ) - (ν' i : ℂ))`. Simplify using `[ht]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpi : (Real.pi : ℂ) ≠ 0` using `by exact_mod_cast Real.pi_ne_zero`. Establish `key : ((ν i : ℂ) - (ν' i : ℂ)) * t = 2 * n * Real.pi`. Establish `: Complex.I * (((ν i : ℂ) - (ν' i : ℂ)) * t) = Complex.I * (2 * n * Real.pi)`. Take the linear combination `hn`. Conclude with `mul_left_cancel₀ Complex.I_ne_zero this`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite `key` using `[htC, mul_div_cancel₀ _ hdC]`. Establish `k2 : (1 : ℂ) = 2 * n`. Apply `mul_right_cancel₀ hpi` to reduce the goal to its premises. Take the linear combination `key`. Establish `k3 : (1 : ℤ) = 2 * n` using `by exact_mod_cast k2`.
-
-Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem chi_inj (ν ν' : Fin (2 + 2) → ℤ) (h : ∀ θ, chi ν θ = chi ν' θ) : ν = ν' := by
   funext i
@@ -243,13 +241,9 @@ private theorem chi_inj (ν ν' : Fin (2 + 2) → ℤ) (h : ∀ θ, chi ν θ = 
 private noncomputable def hm : Measure U4 := Measure.haarMeasure ⊤
 
 /- English proof (translation)
-Use `haveI : hm.IsHaarMeasure := Measure.isHaarMeasure_haarMeasure _`. Use `haveI : IsProbabilityMeasure hm := ⟨by`. Simplify `Measure.haarMeasure_self (G := U4) (K₀ := ⊤)⟩` using `[hm]`. Use `haveI : hm.IsMulRightInvariant := by`. Use `⟨fun g => ?_⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : (Measure.map (· * g) hm).IsHaarMeasure := Measure.isHaarMeasure_map_mul_right hm g`. Use `haveI : IsProbabilityMeasure (Measure.map (· * g) hm) := Measure.isProbabilityMeasure_map (continuous_mul_right g).measurable.aemeasurable`. Conclude with `Measure.isHaarMeasure_eq_of_isProbabilityMeasure _ _`. Use `haveI : hm.IsInvInvariant := by`. Use `⟨?_⟩` and prove the remaining obligations.
-
-Use `haveI : hm.inv.IsHaarMeasure := { lt_top_of_isCompact := fun K hK => by`. Rewrite using `[Measure.inv_apply]`. Conclude with `hK.inv.measure_lt_top`. Use `toIsOpenPosMeasure := ⟨fun U hU hne => by`. Rewrite using `[Measure.inv_apply]; exact hU.inv.measure_ne_zero hm (by simpa using hne)⟩ }`.
-
-Use `haveI : IsProbabilityMeasure hm.inv := by`. Rewrite using `[Measure.inv]`. Conclude with `Measure.isProbabilityMeasure_map measurable_inv.aemeasurable`. Conclude with `Measure.isHaarMeasure_eq_of_isProbabilityMeasure _ _`. Conclude with `⟨⟨inferInstance, fun k => measurePreserving_mul_left hm k, fun k => measurePreserving_mul_right hm k, Measure.measurePreserving_inv hm⟩, inferInstance⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem hm_haar : Haar4 hm ∧ hm.IsOpenPosMeasure := by
   haveI : hm.IsHaarMeasure := Measure.isHaarMeasure_haarMeasure _
@@ -277,7 +271,7 @@ private theorem hm_haar : Haar4 hm ∧ hm.IsOpenPosMeasure := by
 end UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.EA
 
 /- English proof (translation)
-Use `⟨bd_val, bd_mul, bd_one, fun a b => ?_, bd_cont, long_weyl_element_sq, long_weyl_swaps_block_diagonal, dg_val, dg_bd, fun θ => inv_eq_of_mul_eq_one_right (dg_neg θ), chi_inj, inferInstance, hm, hm_haar.1, hm_haar.2⟩` and prove the remaining obligations. Apply `inv_eq_of_mul_eq_one_right` to reduce the goal to its premises. Rewrite using `[bd_mul, mul_inv_cancel, mul_inv_cancel, bd_one]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.EA.u4 :
     (∀ a b : U2, (bd a b : Matrix (Fin (2 + 2)) (Fin (2 + 2)) ℂ) = reindex finSumFinEquiv finSumFinEquiv (fromBlocks (a : Matrix (Fin 2) (Fin 2) ℂ) 0 0 (b : Matrix (Fin 2) (Fin 2) ℂ))) ∧

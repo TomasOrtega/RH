@@ -25,11 +25,11 @@ def DensePart {X X₀ : Scheme.{0}} (j : X₀ ⟶ X) : Prop :=
     IsDominant j ∧ QuasiCompact j
 
 /- English proof (translation)
-Take `⟨⟨hn, z, hz₁, hz₂⟩, h₁, h₂, h₃, h₄⟩` from `h`. Establish `sq : IsPullback (𝟙 X₀) k j i` using `IsPullback.of_horiz_isIso_mono ⟨by rw [hk, Category.id_comp]⟩`. Use `⟨⟨fun y => ?_, i ≫ z, inferInstance, inferInstance⟩, MorphismProperty.of_isPullback sq h₁, MorphismProperty.of_isPullback sq h₂, ⟨?_⟩, MorphismProperty.of_isPullback sq h₄⟩` and prove the remaining obligations. Take `⟨_, _⟩` from `hn (i y)`. Establish `e` using `(asIso (i.stalkMap y)).commRingCatIsoToRingEquiv`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨e.symm.toMulEquiv.isDomain _, IsIntegrallyClosed.of_equiv e⟩`. Establish `e : Set.range k = i ⁻¹' Set.range j`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨x, by rw [← hk, Scheme.Hom.comp_apply]⟩`. Introduce and unpack `⟨x, hx⟩`. Conclude with `⟨x, i.isOpenEmbedding.injective (by rw [← hx, ← hk, Scheme.Hom.comp_apply])⟩`. Rewrite using `[DenseRange, e]`. Conclude with `j.denseRange.preimage i.isOpenEmbedding.isOpenMap`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem DensePart.restrict {X X₀ Y : Scheme.{0}} {j : X₀ ⟶ X} (h : DensePart j) (i : Y ⟶ X) [IsOpenImmersion i]
     {k : X₀ ⟶ Y} (hk : k ≫ i = j) : DensePart k := by
@@ -53,7 +53,7 @@ theorem DensePart.restrict {X X₀ Y : Scheme.{0}} {j : X₀ ⟶ X} (h : DensePa
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `⟨m, rfl⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem exists_cast {S S' : Scheme.{0}} {t : SAB H S} {t' : SAB H S'} {f g : S' ⟶ S} (m : SABMap t' t f) (h : f = g) :
     ∃ n : SABMap t' t g, n.φ = m.φ := by
@@ -61,7 +61,7 @@ theorem exists_cast {S S' : Scheme.{0}} {t : SAB H S} {t' : SAB H S'} {f g : S' 
   exact ⟨m, rfl⟩
 
 /- English proof (translation)
-Take `⟨_, _, _, _, _, m, -⟩` from `sabPull Out.CubePf.cubePull i t`. Take `⟨a', ha'⟩` from `exists_cast a hk.symm`. Take `⟨b, hb⟩` from `ObjMaps.exists_sab_cancel m a'`. Conclude with `⟨_, b, m, hb.symm.trans ha'⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_fac {X X₀ Y : Scheme.{0}} {j : X₀ ⟶ X} {t₀ : SAB H X₀} {t : SAB H X} (a : SABMap t₀ t j) (i : Y ⟶ X)
     {k : X₀ ⟶ Y} (hk : k ≫ i = j) :
@@ -72,7 +72,7 @@ theorem exists_fac {X X₀ Y : Scheme.{0}} {j : X₀ ⟶ X} {t₀ : SAB H X₀} 
   exact ⟨_, b, m, hb.symm.trans ha'⟩
 
 /- English proof (translation)
-Take `⟨hX, h₁, h₂, h₃, h₄⟩` from `h`. Establish `: ∀ x : X, _root_.IsReduced (X.presheaf.stalk x)` using `fun x => by`. Use `(hX.1 x).1` as an intermediate fact. Use `infer_instance`. Conclude with `⟨isReduced_of_isReduced_stalk X, (densePart_basic X X₀ j h₁ h₂ h₃ h₄).1.trans (range_subset_abLocus_of_isProper t.semi a.cart.1)⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem DensePart.generic {X X₀ : Scheme.{0}} {j : X₀ ⟶ X} (h : DensePart j) {t₀ : SAB H X₀} {t : SAB H X}
     (a : SABMap t₀ t j) (hp : IsProper t₀.G.hom) : IsReduced X ∧ genericPoints X ⊆ abLocus t.G := by
@@ -89,7 +89,7 @@ variable (hdvr : ∀ (T K : Type) [CommRing T] [IsDomain T] [IsDiscreteValuation
 include hdvr
 
 /- English proof (translation)
-Take `⟨s', b', m, hm⟩` from `exists_fac a i hk`. Take `⟨c, hc⟩` from `exists_sabMap_id_of_common_generic hdvr E H Y X₀ k h.1 h.2.1 h.2.2.1 h.2.2.2.1 h.2.2.2.2 t₀ s s' b b' hp`. Take `⟨n, hn⟩` from `ObjMaps.exists_sab_comp m c`. Take `⟨n', hn'⟩` from `exists_cast n (Category.id_comp i)`. Conclude with `⟨n', by rw [hn', hn, ← Category.assoc, hc, hm]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem DensePart.exists_map {X X₀ Y : Scheme.{0}} {j : X₀ ⟶ X} {k : X₀ ⟶ Y} (h : DensePart k) {i : Y ⟶ X}
     (hk : k ≫ i = j) {t₀ : SAB H X₀} {t : SAB H X} {s : SAB H Y} (a : SABMap t₀ t j) (b : SABMap t₀ s k)
@@ -102,11 +102,11 @@ theorem DensePart.exists_map {X X₀ Y : Scheme.{0}} {j : X₀ ⟶ X} {k : X₀ 
   exact ⟨n', by rw [hn', hn, ← Category.assoc, hc, hm]⟩
 
 /- English proof (translation)
-Establish `hr : Set.range j ⊆ Set.range (U ⊓ V).ι`. Rewrite using `[Scheme.Opens.range_ι]`. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `⟨by rw [← hU]; exact (jU x).2, by rw [← hV]; exact (jV x).2⟩`. Take `⟨k, hk⟩ : ∃ k : X₀ ⟶ (U ⊓ V).toScheme, k ≫ (U ⊓ V).ι = j` from `⟨_, IsOpenImmersion.lift_fac _ j hr⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `hkU : k ≫ X.homOfLE inf_le_left = jU`. Rewrite using `[← cancel_mono U.ι, Category.assoc, Scheme.homOfLE_ι, hk, hU]`. Establish `hkV : k ≫ X.homOfLE inf_le_right = jV`. Rewrite using `[← cancel_mono V.ι, Category.assoc, Scheme.homOfLE_ι, hk, hV]`. Take `⟨s, b, m₁, -⟩` from `exists_fac a₁ _ hkU`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨m₂, -⟩` from `(h.restrict _ hk).exists_map hdvr hkV a₂ b hp`. Take `⟨t, n₁, -, -⟩` from `GlobalTheory.T.exists_triple_glue_two_opens E H X U V t₁ t₂ s m₁ m₂ hUV ((h.restrict _ hU).generic a₁ hp) ((h.restrict _ hV).generic a₂ hp)`. Take `⟨n, -⟩` from `ObjMaps.exists_sab_comp n₁ a₁`. Take `⟨n', -⟩` from `exists_cast n hU`. Conclude with `⟨t, ⟨n'⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem DensePart.glue_top {X X₀ : Scheme.{0}} {j : X₀ ⟶ X} (h : DensePart j) {U V : X.Opens} (hUV : U ⊔ V = ⊤)
     {jU : X₀ ⟶ U.toScheme} {jV : X₀ ⟶ V.toScheme} (hU : jU ≫ U.ι = j) (hV : jV ≫ V.ι = j) {t₀ : SAB H X₀}
@@ -132,11 +132,9 @@ theorem DensePart.glue_top {X X₀ : Scheme.{0}} {j : X₀ ⟶ X} (h : DensePart
 omit hdvr in
 
 /- English proof (translation)
-Establish `hr : Set.range k ⊆ Set.range (i ⁻¹ᵁ U).ι`. Rewrite using `[Scheme.Opens.range_ι]`. Introduce and unpack `_ ⟨x, rfl⟩`. Use `show i (k x) ∈ U`. Rewrite using `[← Scheme.Hom.comp_apply, hk, ← hU]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `(jU x).2`. Take `⟨k', hk'⟩ : ∃ k' : X₀ ⟶ (i ⁻¹ᵁ U).toScheme, k' ≫ (i ⁻¹ᵁ U).ι = k` from `⟨_, IsOpenImmersion.lift_fac _ k hr⟩`. Establish `e : k' ≫ (i ∣_ U) = jU`. Rewrite using `[← cancel_mono U.ι, Category.assoc, morphismRestrict_ι, ← Category.assoc, hk', hk, hU]`. Take `⟨s, b, -, -⟩` from `exists_fac a _ e`.
-
-Conclude with `⟨k', s, hk', ⟨b⟩⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_trace {X X₀ Y : Scheme.{0}} {j : X₀ ⟶ X} (i : Y ⟶ X) {k : X₀ ⟶ Y} (hk : k ≫ i = j) {U : X.Opens}
     {jU : X₀ ⟶ U.toScheme} (hU : jU ≫ U.ι = j) {t₀ : SAB H X₀} {t : SAB H U.toScheme} (a : SABMap t₀ t jU) :
@@ -155,9 +153,9 @@ theorem exists_trace {X X₀ Y : Scheme.{0}} {j : X₀ ⟶ X} (i : Y ⟶ X) {k :
   exact ⟨k', s, hk', ⟨b⟩⟩
 
 /- English proof (translation)
-Take `⟨jU, t₁, hU, ⟨a₁⟩⟩` from `hU`. Take `⟨jV, t₂, hV, ⟨a₂⟩⟩` from `hV`. Establish `hk : (jU ≫ X.homOfLE le_sup_left) ≫ (U ⊔ V).ι = j` using `by rw [Category.assoc, Scheme.homOfLE_ι, hU]`. Take `⟨k₁, s₁, hk₁, ⟨b₁⟩⟩` from `exists_trace _ hk hU a₁`. Take `⟨k₂, s₂, hk₂, ⟨b₂⟩⟩` from `exists_trace _ hk hV a₂`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hc : (U ⊔ V).ι ⁻¹ᵁ U ⊔ (U ⊔ V).ι ⁻¹ᵁ V = ⊤`. Rewrite using `[← Scheme.Hom.preimage_sup, Scheme.Opens.ι_preimage_self]`. Take `⟨t, ha⟩` from `(h.restrict _ hk).glue_top hdvr hc hk₁ hk₂ b₁ b₂ hp`. Conclude with `⟨_, t, hk, ha⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem DensePart.glue_sup {X X₀ : Scheme.{0}} {j : X₀ ⟶ X} (h : DensePart j) {t₀ : SAB H X₀} (hp : IsProper t₀.G.hom)
     {U V : X.Opens}
@@ -179,11 +177,11 @@ end
 end GlobalTheory.TripleGlue
 
 /- English proof (translation)
-Introduce `hdvr E _ _ _ H X X₀ j t₀ I _ U jU t a hI hX h₁ h₂ h₃ h₄ hp hcov hj`. Establish `h : TripleGlue.DensePart j` using `⟨hX, h₁, h₂, h₃, h₄⟩`. Use `Fintype.ofFinite I` as an intermediate fact. Establish `key : ∃ (k : X₀ ⟶ (Finset.univ.sup' Finset.univ_nonempty U).toScheme) (s : SAB H _), k ≫ (Finset.univ.sup' Finset.univ_nonempty U).ι = j ∧ Nonempty (SABMap t₀ s k)` using `Finset.sup'_induction (p := fun W : X.Opens => ∃ (k : X₀ ⟶ W.toScheme) (s : SAB H W.toScheme), k ≫ W.ι = j ∧ Nonempty (SABMap t₀ s k)) _ _ (fun _ hU _ hV => h.glue_sup hdvr hp hU hV) (fun i _ => ⟨jU i, t i, hj i, ⟨a i⟩⟩)`. Rewrite `key` using `[Finset.sup'_univ_eq_ciSup, hcov]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨k, s, hk, ⟨b⟩⟩` from `key`. Establish `e : j ≫ X.topIso.inv = k`. Rewrite using `[← hk, Category.assoc]`. Conclude with `(congrArg (k ≫ ·) X.topIso.hom_inv_id).trans (Category.comp_id _)`. Take `⟨t', a', -, -⟩` from `TripleGlue.exists_fac b _ e`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `choose n hn using fun i => (h.restrict _ (hj i)).exists_map hdvr (hj i) a' (a i) hp`. Conclude with `⟨t', a', n, hn⟩`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.exists_sab_glue_of_common_generic : (∀ (T K : Type) [CommRing T] [IsDomain T] [IsDiscreteValuationRing T] [Field K] [Algebra T K] [IsFractionRing T K] (G G' : Over (Sp T)) [GrpObj G] [GrpObj G'], IsSemiAbelian G → IsSemiAbelian G' → ∀ f : (Over.pullback (spMap (algebraMap T K))).obj G ⟶ (Over.pullback (spMap (algebraMap T K))).obj G', IsMonHom f → ∃! F : G ⟶ G', IsMonHom F ∧ (Over.pullback (spMap (algebraMap T K))).map F = f) → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X X₀ : Scheme.{0}) (j : X₀ ⟶ X) (t₀ : SAB H X₀) (I : Type) [Finite I] (U : I → X.Opens) (jU : ∀ i, X₀ ⟶ (U i).toScheme) (t : ∀ i, SAB H (U i).toScheme) (a : ∀ i, SABMap t₀ (t i) (jU i)), Nonempty I → (Geo.Tor.IsNormalScheme X ∧ ∃ z : X ⟶ Sp ℤ, LocallyOfFiniteType z ∧ Flat z) → IsPreimmersion j → Flat j → IsDominant j → QuasiCompact j → IsProper t₀.G.hom → ⨆ i, U i = ⊤ → (∀ i, jU i ≫ (U i).ι = j) → ∃ (t' : SAB H X) (a' : SABMap t₀ t' j) (n : ∀ i, SABMap (t i) t' (U i).ι), ∀ i, (a i).φ ≫ (n i).φ = a'.φ := by
   intro hdvr E _ _ _ H X X₀ j t₀ I _ U jU t a hI hX h₁ h₂ h₃ h₄ hp hcov hj

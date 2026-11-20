@@ -14,9 +14,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.ColProd
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[← Equiv.tsum_eq (Fin.consEquiv (fun _ : Fin (n + 1) => α))]`. Simplify using `only [Fin.consEquiv_apply, Fin.prod_univ_succ, Fin.cons_zero, Fin.cons_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[ENNReal.tsum_prod (f := fun a (g : Fin n → α) => f a * ∏ i, f (g i))]`. Repeatedly rewrite using `[ENNReal.tsum_mul_left]`. Rewrite using `[ENNReal.tsum_mul_right, ih, pow_succ']`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem tsum_pow_fin {α : Type*} (f : α → ℝ≥0∞) (n : ℕ) :
     ∑' g : Fin n → α, ∏ j, f (g j) = (∑' v, f v) ^ n := by
@@ -30,15 +30,13 @@ theorem tsum_pow_fin {α : Type*} (f : α → ℝ≥0∞) (n : ℕ) :
     rw [ENNReal.tsum_mul_right, ih, pow_succ']
 
 /- English proof (translation)
-Introduce `D V n φ ρ C y hφ a`. Establish `hstep : ∀ ξ : Matrix (Fin V.rank) (Fin n) D.host.E, ‖φ (invPt V (a * y) ξ)‖ₑ ≤ C * ∏ j : Fin n, ρ (invPt V a (fun i (_ : Fin 1) => ξ i j))`. Introduce `ξ`. Establish `h1 : invPt V (a * y) ξ = (HMul.hMul (mt V y⁻¹) (invPt V a ξ) : Matrix (Fin V.rank) (Fin n) (AE D))`. Simplify using `only [invPt, mul_inv_rev, Formalism.L2.Theta.mt, map_mul, Units.val_mul, Matrix.mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1]`. Use `(hφ (invPt V a ξ)).trans (le_of_eq ?_)` and prove the remaining obligations. Use `congr 1`. Set `e : (Fin n → Matrix (Fin V.rank) (Fin 1) D.host.E) ≃ Matrix (Fin V.rank) (Fin n) D.host.E` to `{ toFun := fun g i j => g j i 0 invFun := fun ξ j i _ => ξ i j left_inv := fun g => by`. Use function extensionality and compare the values at `j i u`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Introduce a local definition for the expression. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show g j i 0 = g j i u`. Rewrite using `[Fin.fin_one_eq_zero u]`. Use `right_inv := fun ξ => by rfl }`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.tsum_mul_left, ← Equiv.tsum_eq e]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Use `tsum_congr (fun g => Finset.prod_congr rfl (fun j _ => ?_))` and prove the remaining obligations. Use `congr 2`. Use function extensionality and compare the values at `i u`. Use `show g j i 0 = g j i u`.
-
-Rewrite using `[Fin.fin_one_eq_zero u]`. Use `_ = C * (∑' ξ : Matrix (Fin V.rank) (Fin 1) D.host.E, ρ (invPt V a ξ)) ^ n := by`. Rewrite using `[tsum_pow_fin (fun v => ρ (invPt V a v)) n]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absTheta_le_pow_of_colProd : ∀ (D : D7) (V : HSp D) {n : ℕ} (φ : Mx D V.rank n → ℂ) (ρ : Mx D V.rank 1 → ℝ≥0∞) (C : ℝ≥0∞) (y : GA D V), (∀ x : Mx D V.rank n, ‖φ (HMul.hMul (mt V y⁻¹) x : Matrix (Fin V.rank) (Fin n) (AE D))‖ₑ ≤ C * ∏ j : Fin n, ρ (fun i (_ : Fin 1) => x i j)) → ∀ a : GA D V, absTheta V φ (a * y) ≤ C * (∑' ξ : Matrix (Fin V.rank) (Fin 1) D.host.E, ρ (invPt V a ξ)) ^ n := by
   intro D V n φ ρ C y hφ a

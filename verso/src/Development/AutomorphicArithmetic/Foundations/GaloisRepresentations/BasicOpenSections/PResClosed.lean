@@ -6,15 +6,13 @@ open Polynomial
 namespace UpperTheory.Gal.Mod
 
 /- English proof (translation)
-Introduce `V _ _ _ _`. Use `IsAlgClosed.of_exists_root _ ?_` and prove the remaining obligations. Introduce `P hmon hirr`. Establish `hl : P ∈ Polynomial.lifts (IsLocalRing.residue V)`. Rewrite using `[Polynomial.mem_lifts]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Polynomial.map_surjective _ IsLocalRing.residue_surjective P`. Take `⟨Q, hQ, hdeg, hQm⟩` from `Polynomial.lifts_and_degree_eq_and_monic hl hmon`. Establish `hpos : 0 < P.degree` using `Polynomial.degree_pos_of_irreducible hirr`. Establish `hdeg' : (Q.map (algebraMap V (FractionRing V))).degree ≠ 0`. Rewrite using `[hQm.degree_map, hdeg]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hpos.ne'`. Take `⟨x, hx⟩` from `IsAlgClosed.exists_root (Q.map (algebraMap V (FractionRing V))) hdeg'`. Establish `hint : IsIntegral V x` using `⟨Q, hQm, by`. Rewrite `hx` using `[Polynomial.IsRoot.def, Polynomial.eval_map]`. Conclude with `hx⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨y, rfl⟩` from `(IsIntegrallyClosed.isIntegral_iff (K := FractionRing V)).1 hint`. Establish `hy : Q.eval y = 0`. Apply `IsFractionRing.injective V (FractionRing V)` to reduce the goal to its premises. Rewrite using `[map_zero, ← hx.eq_zero, Polynomial.eval_map, Polynomial.eval₂_hom]`. Use `⟨IsLocalRing.residue V y, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← hQ, Polynomial.eval_map, Polynomial.eval₂_hom, hy, map_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resClosed : ResClosed := by
   intro V _ _ _ _

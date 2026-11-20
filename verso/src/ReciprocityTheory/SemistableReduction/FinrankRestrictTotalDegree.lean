@@ -37,7 +37,7 @@ noncomputable def degreeLeEquivAntidiag (D e : ℕ) :
     · simp [Fin.tail]
 
 /- English proof (translation)
-Rewrite using `[Nat.card_congr (degreeLeEquivAntidiag D e), Nat.card_eq_fintype_card, Fintype.card_coe, Finset.card_finsuppAntidiag_nat_eq_choose, Finset.card_univ, Fintype.card_fin, show D + 1 + e - 1 = D + e by omega, ← Nat.choose_symm_add, add_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem card_degree_le (D e : ℕ) :
     Nat.card {α : Fin D →₀ ℕ // α.degree ≤ e} = (e + D).choose D := by

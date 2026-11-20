@@ -20,9 +20,9 @@ variable {n : ℕ} {ε : Fin n → Bool}
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
 /- English proof (translation)
-Introduce `g₀ hg₀`. Take `⟨U, F, hU, hgU, hF, hfF⟩` from `hf g₀ hg₀`. Take `⟨U', G, hU', hgU', hG, hgG⟩` from `hg g₀ hg₀`. Use `⟨U ∩ U', fun x => F x + c * G x, hU.inter hU', ⟨hgU, hgU'⟩, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(hF.mono Set.inter_subset_left).add (contDiffOn_const.mul (hG.mono Set.inter_subset_right))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx hxJ show f x + c * g x = F x + c * G x`. Rewrite using `[hfF x hx.1 hxJ, hgG x hx.2 hxJ]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smooth_comb {f g : Matrix (Fin n) (Fin n) ℂ → ℂ} (c : ℂ)
     (hf : SmoothOnG ε f) (hg : SmoothOnG ε g) : SmoothOnG ε (fun x => f x + c * g x) := by
@@ -37,7 +37,7 @@ theorem smooth_comb {f g : Matrix (Fin n) (Fin n) ℂ → ℂ} (c : ℂ)
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
 /- English proof (translation)
-Introduce `_ _` and use `⟨Set.univ, fun _ => 0, isOpen_univ, Set.mem_univ _, contDiffOn_const, fun _ _ _ => rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem smooth_zero : SmoothOnG ε (fun _ : Matrix (Fin n) (Fin n) ℂ => 0) := fun _ _ => ⟨Set.univ, fun _ => 0, isOpen_univ, Set.mem_univ _, contDiffOn_const, fun _ _ _ => rfl⟩
 
@@ -54,7 +54,7 @@ def smSub (ε : Fin n → Bool) : Submodule ℂ (Matrix (Fin n) (Fin n) ℂ → 
     exact this
 
 /- English proof (translation)
-Establish `A` using `cpartMem n ε (Matrix.single a b 1)`. Conclude with `smooth_comb Complex.I (rdSmooth n ε f _ hf A.1) (rdSmooth n ε f _ hf A.2.1)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eab_smooth {f : Matrix (Fin n) (Fin n) ℂ → ℂ} (hf : SmoothOnG ε f) (a b : Fin n) :
     SmoothOnG ε (Eab ε a b f) := by
@@ -62,7 +62,7 @@ theorem eab_smooth {f : Matrix (Fin n) (Fin n) ℂ → ℂ} (hf : SmoothOnG ε f
   exact smooth_comb Complex.I (rdSmooth n ε f _ hf A.1) (rdSmooth n ε f _ hf A.2.1)
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => exact hf`. Consider the case `cons p w ih => exact eab_smooth ih p.1 p.2`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem eword_smooth {f : Matrix (Fin n) (Fin n) ℂ → ℂ} (hf : SmoothOnG ε f) (w : List (Fin n × Fin n)) :
     SmoothOnG ε (Eword ε w f) := by
@@ -72,11 +72,9 @@ theorem eword_smooth {f : Matrix (Fin n) (Fin n) ℂ → ℂ} (hf : SmoothOnG ε
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
 /- English proof (translation)
-Establish `he : Continuous (NormedSpace.exp : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin n) (Fin n) ℂ)`. Use `letI R : NormedRing (Matrix (Fin n) (Fin n) ℂ) := Matrix.linftyOpNormedRing`. Use `letI A : NormedAlgebra ℂ (Matrix (Fin n) (Fin n) ℂ) := Matrix.linftyOpNormedAlgebra`. Use `letI G : NormedAddCommGroup (Matrix (Fin n) (Fin n) ℂ) := NonUnitalNormedRing.toNormedAddCommGroup`. Use `letI S : NormedSpace ℂ (Matrix (Fin n) (Fin n) ℂ) := NormedAlgebra.toNormedSpace _`.
+Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Establish `C` using `FiniteDimensional.complete ℂ (Matrix (Fin n) (Fin n) ℂ)`. Conclude with `continuous_iff_continuousAt.2 fun x => (@NormedSpace.exp_analytic ℂ _ _ _ _ R A C x).continuousAt`. Establish `hc : Continuous (fun t : ℝ => g * NormedSpace.exp ((t : ℂ) • X))` using `continuous_const.mul (he.comp (Complex.continuous_ofReal.smul continuous_const))`. Establish `h0 : g * NormedSpace.exp (((0 : ℝ) : ℂ) • X) ∈ U` using `by simpa using hg`. Establish `hev : (fun t : ℝ => f (g * NormedSpace.exp ((t : ℂ) • X))) =ᶠ[nhds 0] (fun t : ℝ => f' (g * NormedSpace.exp ((t : ℂ) • X)))` using `by filter_upwards [hc.continuousAt.preimage_mem_nhds (hU.mem_nhds h0)] with t ht`.
-
-Conclude with `h _ ht (Coef.uj_mul hgJ (expUJ n ε X hX t))`. Conclude with `hev.deriv_eq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rd_local {f f' : Matrix (Fin n) (Fin n) ℂ → ℂ} {U : Set (Matrix (Fin n) (Fin n) ℂ)} (hU : IsOpen U)
     (h : ∀ x ∈ U, inUJ ε x → f x = f' x) {X : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X)
@@ -98,7 +96,7 @@ theorem rd_local {f f' : Matrix (Fin n) (Fin n) ℂ → ℂ} {U : Set (Matrix (F
   exact hev.deriv_eq
 
 /- English proof (translation)
-Introduce `g hg hgJ`. Establish `A` using `cpartMem n ε (Matrix.single a b 1)`. Use `show Rd _ f g + Complex.I * Rd _ f g = Rd _ f' g + Complex.I * Rd _ f' g`. Rewrite using `[rd_local hU h A.1 hg hgJ, rd_local hU h A.2.1 hg hgJ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eab_local {f f' : Matrix (Fin n) (Fin n) ℂ → ℂ} {U : Set (Matrix (Fin n) (Fin n) ℂ)} (hU : IsOpen U)
     (h : ∀ x ∈ U, inUJ ε x → f x = f' x) (a b : Fin n) :
@@ -109,7 +107,7 @@ theorem eab_local {f f' : Matrix (Fin n) (Fin n) ℂ → ℂ} {U : Set (Matrix (
   rw [rd_local hU h A.1 hg hgJ, rd_local hU h A.2.1 hg hgJ]
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => exact h`. Consider the case `cons p w ih => exact eab_local hU ih p.1 p.2`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem eword_local {f f' : Matrix (Fin n) (Fin n) ℂ → ℂ} {U : Set (Matrix (Fin n) (Fin n) ℂ)} (hU : IsOpen U)
     (h : ∀ x ∈ U, inUJ ε x → f x = f' x) (w : List (Fin n × Fin n)) :
@@ -119,13 +117,11 @@ theorem eword_local {f f' : Matrix (Fin n) (Fin n) ℂ → ℂ} {U : Set (Matrix
   | cons p w ih => exact eab_local hU ih p.1 p.2
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => intro g _`. Both sides reduce to the same expression. Consider the case `cons p w ih`. Introduce `g hg`.
+Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hE` using `eab_local (ε := ε) isOpen_univ (fun x _ hx => ih x hx) p.1 p.2 g trivial hg`. Use `show Eab ε p.1 p.2 (Eword ε w _) g = Eab ε p.1 p.2 (Eword ε w f) g + c * Eab ε p.1 p.2 (Eword ε w f') g`. Rewrite using `[hE]`. Establish `hs1` using `eword_smooth hf w`. Establish `hs2` using `eword_smooth hf' w`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `A` using `cpartMem n ε (Matrix.single p.1 p.2 1)`. Establish `r1` using `(rdLin n ε _ _ _ _ 0 c g hs1 hs2 A.1 A.1 hg).2.2`. Establish `r2` using `(rdLin n ε _ _ _ _ 0 c g hs1 hs2 A.2.1 A.2.1 hg).2.2`. Use `show Rd _ (fun x => Eword ε w f x + c * Eword ε w f' x) g + Complex.I * Rd _ (fun x => Eword ε w f x + c * Eword ε w f' x) g = (Rd _ (Eword ε w f) g + Complex.I * Rd _ (Eword ε w f) g) + c * (Rd _ (Eword ε w f') g + Complex.I * Rd _ (Eword ε w f') g)`. Rewrite using `[r1, r2]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem eword_comb {f f' : Matrix (Fin n) (Fin n) ℂ → ℂ} (hf : SmoothOnG ε f) (hf' : SmoothOnG ε f') (c : ℂ)
     (w : List (Fin n × Fin n)) :
@@ -150,16 +146,16 @@ theorem eword_comb {f f' : Matrix (Fin n) (Fin n) ℂ → ℂ} (hf : SmoothOnG �
     ring
 
 /- English proof (translation)
-Use `show (1 : Matrix (Fin n) (Fin n) ℂ)ᴴ * Jm ε * 1 = Jm ε`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inUJ_one : inUJ ε (1 : Matrix (Fin n) (Fin n) ℂ) := by
   show (1 : Matrix (Fin n) (Fin n) ℂ)ᴴ * Jm ε * 1 = Jm ε
   simp
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => rfl`. Consider the case `cons p w ih`. Use function extensionality and compare the values at `g`. Use `show Eab ε p.1 p.2 (Eword ε w fun _ => 0) g = 0`.
+Proceed by induction. Treat this case separately. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ih]`. Simplify using `[Eab, Ec, Rd]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eword_zero (w : List (Fin n × Fin n)) :
     Eword ε w (fun _ : Matrix (Fin n) (Fin n) ℂ => 0) = fun _ => 0 := by
@@ -183,7 +179,7 @@ def dw (ε : Fin n → Bool) (w : List (Fin n × Fin n)) : smSub ε →ₗ[ℂ] 
     exact this
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => rfl`. Consider the case `cons p w ih => show Eab ε p.1 p.2 (Eword ε (w ++ w') f) = Eab ε p.1 p.2 (Eword ε w (Eword ε w' f))`. Rewrite using `[ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem eword_append (w w' : List (Fin n × Fin n)) (f : Matrix (Fin n) (Fin n) ℂ → ℂ) :
     Eword ε (w ++ w') f = Eword ε w (Eword ε w' f) := by
@@ -194,9 +190,9 @@ theorem eword_append (w w' : List (Fin n × Fin n)) (f : Matrix (Fin n) (Fin n) 
     rw [ih]
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => rfl`. Consider the case `cons p w ih`. Use function extensionality and compare the values at `g`. Use `show Eab ε p.1 p.2 (Eword ε w fun x => f (h * x)) g = Eab ε p.1 p.2 (Eword ε w f) (h * g)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ih]`. Use `show Rd _ (fun x => Eword ε w f (h * x)) g + Complex.I * Rd _ (fun x => Eword ε w f (h * x)) g = Rd _ (Eword ε w f) (h * g) + Complex.I * Rd _ (Eword ε w f) (h * g)`. Rewrite using `[rdLeft n (Eword ε w f) _ h g, rdLeft n (Eword ε w f) _ h g]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eword_left (w : List (Fin n × Fin n)) (f : Matrix (Fin n) (Fin n) ℂ → ℂ) (h : Matrix (Fin n) (Fin n) ℂ) :
     Eword ε w (fun x => f (h * x)) = fun g => Eword ε w f (h * g) := by
@@ -211,11 +207,11 @@ theorem eword_left (w : List (Fin n × Fin n)) (f : Matrix (Fin n) (Fin n) ℂ �
     rw [rdLeft n (Eword ε w f) _ h g, rdLeft n (Eword ε w f) _ h g]
 
 /- English proof (translation)
-Establish `hF : SmoothOnG ε (Eword ε w' f)` using `eword_smooth hf w'`. Establish `hQ : SmoothOnG ε (Eab ε c d (Eab ε a b (Eword ε w' f)))` using `eab_smooth (eab_smooth hF a b) c d`. Establish `hR1 : SmoothOnG ε (Eab ε a d (Eword ε w' f))` using `eab_smooth hF a d`. Establish `hR2 : SmoothOnG ε (Eab ε c b (Eword ε w' f))` using `eab_smooth hF c b`. Simplify using `only [eword_append]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `show Eword ε w (Eab ε a b (Eab ε c d (Eword ε w' f))) 1 - Eword ε w (Eab ε c d (Eab ε a b (Eword ε w' f))) 1 = (if b = c then Eword ε w (Eab ε a d (Eword ε w' f)) 1 else 0) - (if d = a then Eword ε w (Eab ε c b (Eword ε w' f)) 1 else 0)`. Establish `key : ∀ x, inUJ ε x → Eab ε a b (Eab ε c d (Eword ε w' f)) x = (Eab ε c d (Eab ε a b (Eword ε w' f)) x + (if b = c then (1 : ℂ) else 0) * Eab ε a d (Eword ε w' f) x) + (-(if d = a then (1 : ℂ) else 0)) * Eab ε c b (Eword ε w' f) x`. Introduce `x hx`. Establish `e` using `eabGl n ε (Eword ε w' f) a b c d x hF hx`. Apply the tactic sequence `split_ifs at e ⊢ <;> linear_combination e`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eword_local isOpen_univ (fun x _ hx => key x hx) w 1 trivial inUJ_one, eword_comb (smooth_comb _ hQ hR1) hR2 _ w 1 inUJ_one, eword_comb hQ hR1 _ w 1 inUJ_one]`. Apply the tactic sequence `split_ifs <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem eword_gl {f : Matrix (Fin n) (Fin n) ℂ → ℂ} (hf : SmoothOnG ε f) (w w' : List (Fin n × Fin n))
     (a b c d : Fin n) :
@@ -282,9 +278,9 @@ theorem shift_apply (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End �
     (j : jets ε E u) (w : List (Fin n × Fin n)) : (shift ε E u a b j).1 w = j.1 (w ++ [(a, b)]) := rfl
 
 /- English proof (translation)
-Introduce `a b c d`. Use extensionality with `j w`. Establish `h` using `j.2.2.2 w [] a b c d`. Apply the tactic sequence `split_ifs at h ⊢ <;>`. Apply the tactic sequence `simp only [LinearMap.sub_apply, Module.End.mul_apply, LinearMap.zero_apply, Submodule.coe_sub, ZeroMemClass.coe_zero, Pi.sub_apply, Pi.zero_apply, shift_apply, List.append_assoc, List.cons_append, List.nil_append] <;>`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem shift_gl (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ V) (u : V) : GlRel (shift ε E u) := by
   intro a b c d
@@ -297,9 +293,9 @@ theorem shift_gl (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ V
     exact h
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => intro w'`. Simplify using `[ew]`. Consider the case `cons p w ih`. Introduce `w'`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [ew, Module.End.mul_apply, shift_apply, ih]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem ew_shift (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ V) (u : V) (w : List (Fin n × Fin n))
     (j : jets ε E u) : ∀ w', (ew (shift ε E u) w j).1 w' = j.1 (w' ++ w) := by
@@ -311,25 +307,21 @@ theorem ew_shift (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ V
     simp
 
 /- English proof (translation)
-The claim follows from `admissibleArrays_apply_mem (isotypicPart_le ε (arrE E 1) _ _ (admissibleArrays_invariant ε E u 1) hG) (fun _ => (a, b))`.
+A detailed English derivation is pending.
 -/
 theorem vminus_mem {ε : Fin n → Bool} {E : Fin n → Fin n → Module.End ℂ V} {Λ : Fin n → ℝ} {u : V}
     {G : Arr V n 1} (hG : G ∈ Vminus ε E Λ u) (a b : Fin n) : at1 G a b ∈ kSpan ε E u := admissibleArrays_apply_mem (isotypicPart_le ε (arrE E 1) _ _ (admissibleArrays_invariant ε E u 1) hG) (fun _ => (a, b))
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `LinearMap.exists_leftInverse_of_injective (kSpan ε E u).subtype (Submodule.ker_subtype _)`. Establish `hp' : ∀ (x : V) (hx : x ∈ kSpan ε E u), p x = ⟨x, hx⟩` using `fun x hx => LinearMap.congr_fun hp ⟨x, hx⟩`. Set `ι : V →ₗ[ℂ] jets ε E u` to `(LinearMap.codRestrict (jets ε E u) J hmem) ∘ₗ p`. Set `ev : jets ε E u →ₗ[ℂ] V` to `(LinearMap.proj (R := ℂ) (φ := fun _ : List (Fin n × Fin n) => V) []) ∘ₗ (jets ε E u).subtype`. Establish `hι : ∀ (x : V) (hx : x ∈ kSpan ε E u) w, (ι x).1 w = J ⟨x, hx⟩ w`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `x hx w`. Simplify using `only [ι, LinearMap.comp_apply, hp' x hx, LinearMap.codRestrict_apply]`. Establish `hev : ∀ y : jets ε E u, ev y = y.1 []` using `fun y => rfl`. Establish `key` using `GlobalTheory.T.jet_uniqueness_algebraic V n ε E lam g u h1 h2 h3 h4 h5 h6 (jets ε E u) (shift ε E u) ι ev (shift_gl ε E u) (by`. Introduce `c d h x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `w`. Rewrite using `[shift_apply, hι x hx, hι _ (compactSpan_isCompactInvariant ε E u c d h x hx)]`. Conclude with `hr c d h ⟨x, hx⟩ w)`. Use the proof step `(fun y => y.2.1 [])`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(by`. Introduce `c d h y`. Rewrite using `[hev, hev, shift_apply]`. Conclude with `y.2.2.1 [] c d h)`. Use the proof step `(by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Introduce `G hG`. Establish `hι' : ∀ a b w, (ι (at1 G a b)).1 w = J ⟨at1 G a b, vminus_mem hG a b⟩ w` using `fun a b w => hι _ _ w`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `w`. Simplify using `only [Submodule.coe_sum, Finset.sum_apply, shift_apply, hι', ZeroMemClass.coe_zero, Pi.zero_apply]`.
-
-Conclude with `hm G hG w)`. Use the proof step `(fun x hx => by rw [hev, hι x hx]; exact h0 _)`. Introduce `x w`. Use `key w x.1 x.2` as an intermediate fact. Rewrite `this` using `[hev, ew_shift, List.nil_append, hι x.1 x.2]`.
-
-Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jets_vanish {ε : Fin n → Bool} {E : Fin n → Fin n → Module.End ℂ V} {lam : Fin n → ℝ} {g : ℝ} {u : V}
     (h1 : GlRel E) (h2 : IsUnitary ε E) (h3 : KHighest ε E (LamOf ε lam) u)
@@ -381,11 +373,9 @@ variable {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [Inne
   {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {V : Submodule ℂ H} {E : Fin n → Fin n → Module.End ℂ V}
 
 /- English proof (translation)
-Take `⟨hA, hB⟩` from `Coef.cpart_inK (ε := ε) (Coef.single_comm (ε := ε) h)`. Establish `hRd : ∀ X, inK ε X → Rd X f g = L (Coef.act E X v : V)`. Introduce `X hX`. Establish `hfun : (fun t : ℝ => f (g * NormedSpace.exp ((t : ℂ) • X))) = fun t : ℝ => L (σ (NormedSpace.exp ((t : ℂ) • X)) (v : H))`. Use function extensionality and compare the values at `fun t => hf _ ((kFacts n ε).2.2.2.1 _ (Coef.inK_smul hX t))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hL : HasDerivAt (fun t : ℝ => L (σ (NormedSpace.exp ((t : ℂ) • X)) (v : H))) (L ((∑ a, ∑ b, X a b • E a b v : V) : H)) 0` using `(L.restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) (hD.2.2.1 X hX.1 v)`. Use `show deriv (fun t : ℝ => f (g * NormedSpace.exp ((t : ℂ) • X))) 0 = _`. Rewrite using `[hfun, hL.deriv, Coef.act_apply]`. Use `show Rd _ f g + Complex.I * Rd _ f g = _`. Rewrite using `[hRd _ hA, hRd _ hB, ← Coef.act_cpart ε c d v]`.
-
-Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eab_compact (hD : IsDer ε σ V E) {c d : Fin n} (h : ε c = ε d) (L : H →L[ℂ] ℂ) (v : V)
     (f : Matrix (Fin n) (Fin n) ℂ → ℂ) (g : Matrix (Fin n) (Fin n) ℂ)
@@ -406,7 +396,7 @@ theorem eab_compact (hD : IsDer ε σ V E) {c d : Fin n} (h : ε c = ε d) (L : 
   simp
 
 /- English proof (translation)
-Take `⟨L, hL, -⟩` from `exists_extension_norm_eq S (LinearMap.toContinuousLinearMap (ℓ.comp S.subtype))`. Conclude with `⟨L, fun z hz => by simpa using hL ⟨z, hz⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_clm (S : Submodule ℂ H) [FiniteDimensional ℂ S] (ℓ : H →ₗ[ℂ] ℂ) :
     ∃ L : H →L[ℂ] ℂ, ∀ z ∈ S, L z = ℓ z := by
@@ -414,9 +404,9 @@ theorem exists_clm (S : Submodule ℂ H) [FiniteDimensional ℂ S] (ℓ : H →�
   exact ⟨L, fun z hz => by simpa using hL ⟨z, hz⟩⟩
 
 /- English proof (translation)
-Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Simplify using `only [Finset.sum_empty]`. Conclude with `⟨smooth_zero, by rw [eword_zero]⟩`. Introduce `j s hj ih`. Establish `e : (fun x => ∑ i ∈ insert j s, c i * φ i x) = fun x => (∑ i ∈ s, c i * φ i x) + c j * φ j x`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `x`. Rewrite using `[Finset.sum_insert hj, add_comm]`. Rewrite using `[e, Finset.sum_insert hj]`. Use `⟨smooth_comb _ ih.1 (hφ j), ?_⟩` and prove the remaining obligations. Rewrite using `[eword_comb ih.1 (hφ j) _ w 1 inUJ_one, ih.2, add_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem smoothOnG_sum_and_Eword_sum {ι : Type} (s : Finset ι) (c : ι → ℂ)
     (φ : ι → Matrix (Fin n) (Fin n) ℂ → ℂ) (hφ : ∀ i, SmoothOnG ε (φ i)) (w : List (Fin n × Fin n)) :
@@ -434,23 +424,21 @@ private theorem smoothOnG_sum_and_Eword_sum {ι : Type} (s : Finset ι) (c : ι 
     rw [eword_comb ih.1 (hφ j) _ w 1 inUJ_one, ih.2, add_comm]
 
 /- English proof (translation)
-Set `b` to `stdOrthonormalBasis ℂ W`. Set `φ : W → Fin (Module.finrank ℂ W) → Matrix (Fin n) (Fin n) ℂ → ℂ` to `fun x i g => ⟪(((b i : W) : V) : H), F g (((x : W) : V) : H)⟫_ℂ`. Establish `hmem : ∀ x : W, (((x : W) : V) : H) ∈ W.map V.subtype` using `fun x => Submodule.mem_map_of_mem x.2`. Establish `hsm : ∀ x i, SmoothOnG ε (φ x i)` using `fun x i => hs _ (hmem x) _`. Establish `hadd : ∀ (x x' : W) i, φ (x + x') i = fun g => φ x i g + 1 * φ x' i g`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x x' i`. Use function extensionality and compare the values at `g`. Simplify using `[φ, inner_add_right]`. Establish `hsmul : ∀ (c : ℂ) (x : W) i, φ (c • x) i = fun g => 0 + c * φ x i g`. Introduce `c x i`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `g`. Simplify using `[φ, inner_smul_right]`. Set `J : W →ₗ[ℂ] (List (Fin n × Fin n) → V)` to `{ toFun := fun x w => ∑ i, Eword ε w (φ x i) 1 • ((b i : W) : V) map_add' := by`. Introduce `x x'`. Use function extensionality and compare the values at `w`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Pi.add_apply, ← Finset.sum_add_distrib, ← add_smul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hadd, eword_comb (hsm x i) (hsm x' i) 1 w 1 inUJ_one, one_mul]`. Use the proof step `map_smul' := by`. Introduce `c x`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `w`. Simplify using `only [Pi.smul_apply, RingHom.id_apply, Finset.smul_sum, smul_smul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hsmul, eword_comb smooth_zero (hsm x i) c w 1 inUJ_one, eword_zero, zero_add] }`. Use `⟨J, fun x w => ⟨?_, fun y => ?_⟩⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `show ∑ i, Eword ε w (φ x i) 1 • ((b i : W) : V) ∈ W`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (b i).2`. Establish `key : ∀ g, inUJ ε g → ⟪y, F g (((x : W) : V) : H)⟫_ℂ = ∑ i ∈ Finset.univ, ⟪y, (((b i : W) : V) : H)⟫_ℂ * φ x i g`. Introduce `g hg`. Take `⟨z, hz, hzx⟩` from `Submodule.mem_map.1 (hF g hg _ (hmem x))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e2` using `congrArg (fun t : W => ((t : V) : H)) (b.sum_repr' ⟨z, hz⟩)`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, Submodule.coe_mk] at e2`. Rewrite using `[← hzx, Submodule.subtype_apply, ← e2, inner_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[inner_smul_right, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `congr 1`. Simplify using `only [φ, Submodule.coe_inner, ← hzx, Submodule.subtype_apply]`. Establish `hsum` using `(smoothOnG_sum_and_Eword_sum Finset.univ (fun i => ⟪y, (((b i : W) : V) : H)⟫_ℂ) (φ x) (hsm x) w).2`. Rewrite using `[eword_local isOpen_univ (fun g _ hg => key g hg) w 1 trivial inUJ_one, hsum]`. Use `show ⟪y, ((∑ i, Eword ε w (φ x i) 1 • ((b i : W) : V) : V) : H)⟫_ℂ = _`.
-
-Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, inner_sum, inner_smul_right]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_jet (W : Submodule ℂ V) [FiniteDimensional ℂ W] (F : Matrix (Fin n) (Fin n) ℂ → (H →ₗ[ℂ] H))
     (hF : ∀ g, inUJ ε g → ∀ x ∈ W.map V.subtype, F g x ∈ W.map V.subtype)
@@ -500,9 +488,9 @@ theorem exists_jet (W : Submodule ℂ V) [FiniteDimensional ℂ W] (F : Matrix (
     exact Finset.sum_congr rfl fun i _ => mul_comm _ _
 
 /- English proof (translation)
-Establish `hemb` using `(uJEmb n ε).1`. Rewrite `h` using `[hemb.toIsEmbedding.toIsInducing.nhds_eq_comap, Filter.eventually_comap]`. Take `⟨U, hsub, hU, h1⟩` from `mem_nhds_iff.1 h`. Use `⟨U, hU, by simpa using h1, fun x hx hxJ => ?_⟩` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨g, rfl⟩ : x ∈ Set.range (fun g : UJ ε => ((g : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ)) := by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[(uJEmb n ε).2]`. Conclude with `hxJ`. Conclude with `hsub hx g rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_open {p : Matrix (Fin n) (Fin n) ℂ → Prop} (h : ∀ᶠ g : UJ ε in nhds 1, p (umat g)) :
     ∃ U : Set (Matrix (Fin n) (Fin n) ℂ), IsOpen U ∧ (1 : Matrix (Fin n) (Fin n) ℂ) ∈ U ∧
@@ -518,37 +506,33 @@ theorem exists_open {p : Matrix (Fin n) (Fin n) ℂ → Prop} (h : ∀ᶠ g : UJ
 end Main
 
 /- English proof (translation)
-Introduce `n ε H _ _ _ σ V E lam g₀ u hσ hD hK hfd hgap hg F hF hs hmin h1`. Use `haveI : FiniteDimensional ℂ (kSpan ε E u) := hfd`. Establish `hK1 : (1 : Matrix (Fin n) (Fin n) ℂ) ∈ Kset ε` using `by show (1 : Matrix (Fin n) (Fin n) ℂ) ∈ Matrix.unitaryGroup (Fin n) ℂ ∧ 1 * Jm ε = Jm ε * 1`. Conclude with `⟨one_mem _, by simp⟩`. Establish `hmemS : ∀ x : kSpan ε E u, ((x : V) : H) ∈ (kSpan ε E u).map V.subtype` using `fun x => Submodule.mem_map_of_mem x.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFW : ∀ g, inUJ ε g → ∀ x ∈ (kSpan ε E u).map V.subtype, F g x ∈ (kSpan ε E u).map V.subtype` using `fun g hg x hx => (hF g hg x hx).1`. Take `⟨J, hJ⟩` from `GlobalTheory.Jet.Germ.exists_jet (kSpan ε E u) F hFW hs`. Establish `hrep : ∀ (x : kSpan ε E u) w (y : H), ⟪y, ((J x w : V) : H)⟫_ℂ = Eword ε w (fun g => ⟪y, F g ((x : V) : H)⟫_ℂ) 1` using `fun x w y => (hJ x w).2 y`. Establish `hext : ∀ v v' : V, (∀ y : H, ⟪y, (v : H)⟫_ℂ = ⟪y, (v' : H)⟫_ℂ) → v = v'` using `fun v v' h => Subtype.ext (ext_inner_left ℂ h)`. Establish `hsm : ∀ (y : H) (x : kSpan ε E u), SmoothOnG ε (fun g => ⟪y, F g ((x : V) : H)⟫_ℂ)` using `fun y x => hs _ (hmemS x) y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hKst` using `(Coef.kStable_iff hσ hD (kSpan ε E u)).1 (compactSpan_isCompactInvariant ε E u)`. Establish `hB : ∀ (x : kSpan ε E u) w c d, ε c = ε d → J x ((c, d) :: w) = E c d (J x w)`. Introduce `x w c d h`. Apply `hext` to reduce the goal to its premises. Introduce `y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hrep]`. Use `show Eab ε c d (Eword ε w (fun g => ⟪y, F g ((x : V) : H)⟫_ℂ)) 1 = _`. Use `(eab_compact hD h (innerSL ℂ y) (J x w) (Eword ε w (fun g => ⟪y, F g ((x : V) : H)⟫_ℂ)) 1 ?_).trans (by rfl)` and prove the remaining obligations. Introduce `k hk`. Establish `e` using `congrFun (eword_left (ε := ε) w (fun g => ⟪y, F g ((x : V) : H)⟫_ℂ) k) 1`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the argument to an intermediate assertion.
 
-Simplify using `only [mul_one] at e`. It suffices to establish `hloc : ∀ z, inUJ ε z → ⟪y, F (k * z) ((x : V) : H)⟫_ℂ = ⟪(σ k).adjoint y, F z ((x : V) : H)⟫_ℂ by`. Apply the tactic sequence `rw [one_mul, ← e, eword_local isOpen_univ (fun z _ hz => hloc z hz) w 1 trivial inUJ_one, ← hrep, ContinuousLinearMap.adjoint_inner_left] <;> rfl`. Introduce `z hz`. Use `(hF z hz _ (hmemS x)).2 k hk 1 hK1` as an intermediate fact.
+Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[mul_one, Coef.rep_one hσ]`. Rewrite using `[this, ContinuousLinearMap.adjoint_inner_left]`. Establish `hC : ∀ (x : kSpan ε E u) w w' a b c d, J x (w ++ (a, b) :: (c, d) :: w') - J x (w ++ (c, d) :: (a, b) :: w') = (if b = c then J x (w ++ (a, d) :: w') else 0) - (if d = a then J x (w ++ (c, b) :: w') else 0)`. Introduce `x w w' a b c d`. Apply `hext` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `y`. Use `eword_gl (hsm y x) w w' a b c d` as an intermediate fact. Apply the tactic sequence `split_ifs at this ⊢ <;>`. Apply the tactic sequence `simp only [Submodule.coe_sub, ZeroMemClass.coe_zero, inner_sub_right, inner_zero_right, hrep] <;>`. Conclude with `this`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hz` using `jets_vanish hD.1 hD.2.1 hK hfd hgap hg J (fun x => ⟨fun w => (hJ x w).1, fun w c d h => hB x w c d h, fun w w' a b c d => hC x w w' a b c d⟩) (by`. Introduce `c d h x w`. Apply `hext` to reduce the goal to its premises. Introduce `y`. Rewrite using `[hrep, hrep, eword_append]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `show Eword ε w (fun g => ⟪y, F g ((E c d x : V) : H)⟫_ℂ) 1 = Eword ε w (Eab ε c d (fun g => ⟪y, F g ((x : V) : H)⟫_ℂ)) 1`. It suffices to establish `hloc : ∀ z, inUJ ε z → Eab ε c d (fun g => ⟪y, F g ((x : V) : H)⟫_ℂ) z = ⟪y, F z ((E c d x : V) : H)⟫_ℂ by`. Conclude with `(eword_local isOpen_univ (fun z _ hz => hloc z hz) w 1 trivial inUJ_one).symm`. Introduce `z hz`. Take `⟨L, hL⟩` from `exists_clm ((kSpan ε E u).map V.subtype) ((innerSL ℂ y).toLinearMap ∘ₗ F z)`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eab_compact hD h L (x : V) _ z (fun k hk => ?_)]`. Simplify using `using hL _ (Submodule.mem_map_of_mem (compactSpan_isCompactInvariant ε E u c d h x x.2))`. Use `(hF z hz _ (hmemS x)).2 1 hK1 k hk` as an intermediate fact. Rewrite `this` using `[one_mul, Coef.rep_one hσ]`. Rewrite using `[hL _ (hKst k hk _ (hmemS x))]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[this])`. Use the proof step `(by`. Introduce `G hG w`. Apply `hext` to reduce the goal to its premises. Introduce `y`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hsm' : ∀ p : Fin n × Fin n, SmoothOnG ε (Eab ε p.1 p.2 (fun g => ⟪y, F g ((at1 G p.1 p.2 : V) : H)⟫_ℂ))` using `fun p => eab_smooth (hsm y ⟨at1 G p.1 p.2, vminus_mem hG p.1 p.2⟩) p.1 p.2`. Establish `hsum` using `(smoothOnG_sum_and_Eword_sum Finset.univ (fun _ => (1 : ℂ)) (fun p : Fin n × Fin n => Eab ε p.1 p.2 (fun g => ⟪y, F g ((at1 G p.1 p.2 : V) : H)⟫_ℂ)) hsm' w).2`. Simplify using `only [one_mul] at hsum`. Take `⟨U, hU, h1U, hUp⟩` from `exists_open (ε := ε) (p := fun x => ∑ a, ∑ b, Eab ε a b (fun z => ⟪y, F z ((at1 G a b : V) : H)⟫_ℂ) x = 0) (hmin G hG y)`. Simplify using `only [Submodule.coe_sum, inner_sum, ZeroMemClass.coe_zero, inner_zero_right, hrep, eword_append]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show ∑ a, ∑ b, Eword ε w (Eab ε a b (fun g => ⟪y, F g ((at1 G a b : V) : H)⟫_ℂ)) 1 = 0`. Rewrite using `[← Fintype.sum_prod_type', ← hsum, eword_local hU (f' := fun _ => 0) (fun z hz hzJ => by`. Use `hUp z hz hzJ` as an intermediate fact. Rewrite `this` using `[← Fintype.sum_prod_type']`. Conclude with `this) w 1 h1U inUJ_one, eword_zero])`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use the proof step `(by`. Introduce `x`. Apply `hext` to reduce the goal to its premises. Introduce `y`. Rewrite using `[hrep]`.
-
-Use `show ⟪y, F 1 ((x : V) : H)⟫_ℂ = _`. Rewrite using `[h1 _ (hmemS x)]`. Use the proof step `simp)`. Introduce `w x hx y`. Take `⟨v, hv, rfl⟩` from `Submodule.mem_map.1 hx`.
-
-Use `hrep ⟨v, hv⟩ w y` as an intermediate fact. Rewrite `this` using `[hz, ZeroMemClass.coe_zero, inner_zero_right]`. Conclude with `this.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem germ_jet_zero : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (V : Submodule ℂ H) (E : Fin n → Fin n → Module.End ℂ V) (lam : Fin n → ℝ) (g₀ : ℝ) (u : V), IsURepOn (UJset ε) σ → IsDer ε σ V E → KHighest ε E (LamOf ε lam) u → FiniteDimensional ℂ (kSpan ε E u) → (∀ a b : Fin n, a < b → ε a ≠ ε b → g₀ ≤ lam a - lam b) → 2 * (n : ℝ) < g₀ → ∀ F : Matrix (Fin n) (Fin n) ℂ → (H →ₗ[ℂ] H), (∀ g ∈ UJset ε, ∀ x ∈ (kSpan ε E u).map V.subtype, F g x ∈ (kSpan ε E u).map V.subtype ∧ ∀ k₁ ∈ Kset ε, ∀ k₂ ∈ Kset ε, F (k₁ * g * k₂) x = σ k₁ (F g (σ k₂ x))) → (∀ x ∈ (kSpan ε E u).map V.subtype, ∀ y : H, SmoothOnG ε (fun g => ⟪y, F g x⟫_ℂ)) → (∀ G ∈ Vminus ε E (LamOf ε lam) u, ∀ y : H, ∀ᶠ g : UJ ε in nhds 1, ∑ a, ∑ b, Eab ε a b (fun z => ⟪y, F z (at1 G a b : V)⟫_ℂ) (umat g) = 0) → (∀ x ∈ (kSpan ε E u).map V.subtype, F 1 x = 0) → ∀ (w : List (Fin n × Fin n)), ∀ x ∈ (kSpan ε E u).map V.subtype, ∀ y : H, Eword ε w (fun g => ⟪y, F g x⟫_ℂ) 1 = 0 := by
   intro n ε H _ _ _ σ V E lam g₀ u hσ hD hK hfd hgap hg F hF hs hmin h1

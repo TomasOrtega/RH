@@ -12,7 +12,7 @@ namespace GlobalTheory.CompanionTheory.GE
 attribute [local instance] algebraOfOver
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(X.presheaf.map (homOfLE le_top : (⊤ : X.Opens) ⟶ ⊤).op).hom _ = _`. Rewrite using `[show (homOfLE le_top : (⊤ : X.Opens) ⟶ ⊤) = 𝟙 _ from rfl, op_id, X.presheaf.map_id]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma toFunctions_top_eq {A : Type} [CommRing A] [IsNoetherianRing A] {X : Scheme.{0}}
     [X.Over (Spec (.of A))] (a : A) :
@@ -22,7 +22,7 @@ lemma toFunctions_top_eq {A : Type} [CommRing A] [IsNoetherianRing A] {X : Schem
   rfl
 
 /- English proof (translation)
-Apply `GlobalTheory.Twist.sec_ext` to reduce the goal to its premises. Introduce `i`. Rewrite using `[GlobalTheory.Twist.coord_map_app, GroundTheory.Arith.SchemeCoh.smulHom_app_apply, GlobalTheory.Twist.coord_smul]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 lemma twist_map_smulHom_app {X : Scheme.{0}} (L : ReciprocityTheory.ChartRestriction.G.Semi.LB X) (P : X.Modules)
     (r : Γ(X, ⊤)) (c : Γ(GlobalTheory.twist P L, ⊤)) :
@@ -32,9 +32,9 @@ lemma twist_map_smulHom_app {X : Scheme.{0}} (L : ReciprocityTheory.ChartRestric
   rw [GlobalTheory.Twist.coord_map_app, GroundTheory.Arith.SchemeCoh.smulHom_app_apply, GlobalTheory.Twist.coord_smul]
 
 /- English proof (translation)
-Set `g : P ⟶ (powSub I P m : X.Modules)` to `idealPowOfMem I P a ha ≫ (Subobject.underlyingIso (idealPowι I P m)).inv`. Establish `hg : g ≫ (powSub I P m).arrow = GroundTheory.Arith.SchemeCoh.smulHom P (algebraMap A Γ(X, ⊤) a)`. Simplify using `only [g, powSub, Category.assoc]`. Rewrite using `[← Subobject.underlyingIso_hom_comp_eq_mk, Iso.inv_hom_id_assoc, idealPowOfMem_ι]`. Use `⟨(GlobalTheory.Twist.map (GlobalTheory.lbZPow H n) g).app ⊤ c, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← ConcreteCategory.comp_apply, ← Scheme.Modules.Hom.comp_app, ← GlobalTheory.Twist.map_comp, hg, twist_map_smulHom_app, toFunctions_top_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma smul_mem_twSecs {A : Type} [CommRing A] [IsNoetherianRing A] (I : Ideal A) {X : Scheme.{0}}
     [X.Over (Spec (.of A))] (H : ReciprocityTheory.ChartRestriction.G.Semi.LB X) (n : ℤ) (P : X.Modules) (m : ℕ)
@@ -61,11 +61,11 @@ def twSecsSub {X : Scheme.{0}} (H : ReciprocityTheory.ChartRestriction.G.Semi.LB
     exact ⟨r • x, Scheme.Modules.Hom.app_smul _ _ _⟩
 
 /- English proof (translation)
-Introduce `A _ _ I X _ H _ P _ n m`. Establish `key : (Ideal.map (toFunctions (X` using `X) (A := A) ⊤) (I ^ m) • ⊤ : Submodule Γ(X, ⊤) Γ(GlobalTheory.twistZ P H n, ⊤)) ≤ twSecsSub H n (powSub I P m) := by`. Rewrite using `[Submodule.smul_le]`. Introduce `r hr c _`. Proceed by induction on `hr using Submodule.span_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `mem x hx`. Take `⟨a, ha, rfl⟩` from `hx`. Conclude with `smul_mem_twSecs I H n P m ha c`. Consider the case `zero => rw [zero_smul]`. Conclude with `Submodule.zero_mem _`.
+Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [add_smul]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul x y _ hy => rw [smul_eq_mul, mul_smul]`. Conclude with `Submodule.smul_mem _ _ hy`. Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem twPow_subset_twSecs : ∀ {A : Type} [CommRing A] [IsNoetherianRing A] (I : Ideal A)
     {X : Scheme.{0}} [X.Over (Spec (.of A))] (H : ReciprocityTheory.ChartRestriction.G.Semi.LB X), GlobalTheory.IsAmpleLB H →

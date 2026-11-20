@@ -10,9 +10,7 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry ReciprocityTheory.Ch
 namespace GlobalTheory.CompanionTheory.SpreadingModels
 
 /- English proof (translation)
-Introduce `R _ Y f hs hp M hM`. Take `⟨R₀, _, _, φ, Y₀, f₀, π, hp₀, hf₀, hsq, M₀, hM₀, w, hw⟩` from `hModel R Y f hs hp M hM`. Use `haveI := hp₀`. Use `haveI := hf₀`. Take `⟨P₀⟩` from `GlobalTheory.ProperFinite.nonempty_perf_of_isProper f₀ hM₀`.
-
-Take `⟨P⟩` from `hBase φ f₀ f π hsq M₀ hM₀ P₀`. Conclude with `hIso f hM (Geo.Tor.pull_isLB hM₀ π) w hw P`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem perfAll_of_models
     (hBase : ∀ {R₀ R : Type} [CommRing R₀] [CommRing R] (φ : R₀ →+* R) {Y₀ Y : Scheme.{0}}

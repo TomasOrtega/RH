@@ -30,13 +30,13 @@ variable {A K L Γ M} (T : TateModel A K L Γ M)
 include T in
 
 /- English proof (translation)
-The claim follows from `T.ker_hom ▸ T.hom.normal_ker`.
+A detailed English derivation is pending.
 -/
 theorem normal : (L.subgroupOf K).Normal :=
   T.ker_hom ▸ T.hom.normal_ker
 
 /- English proof (translation)
-Rewrite using `[← T.equiv.apply_symm_apply (T.hom σ • T.equiv a)]`. Use `congr 1`. Conclude with `Subtype.ext (T.coe_equiv_symm_smul σ a).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem equiv_smul (σ : K) (a : fixedModule A L) (h : (σ : G) • (a : A) ∈ fixedModule A L) :
     T.equiv ⟨(σ : G) • (a : A), h⟩ = T.hom σ • T.equiv a := by
@@ -45,9 +45,9 @@ theorem equiv_smul (σ : K) (a : fixedModule A L) (h : (σ : G) • (a : A) ∈ 
   exact Subtype.ext (T.coe_equiv_symm_smul σ a).symm
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `ha γ`. Take `⟨σ, rfl⟩` from `T.surjective_hom γ`. Establish `h : T.equiv.symm (T.hom σ • T.equiv a) = a` using `Subtype.ext ((T.coe_equiv_symm_smul σ a).trans (ha σ σ.2))`. Rewrite using `[← T.equiv.apply_symm_apply (T.hom σ • T.equiv a), h]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `ha σ hσ`. Rewrite using `[← T.coe_equiv_symm_smul ⟨σ, hσ⟩ a, ha, MulEquiv.symm_apply_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_fixedModule_iff (a : fixedModule A L) :
     (a : A) ∈ fixedModule A K ↔ T.equiv a ∈ invariants Γ M := by
@@ -96,13 +96,13 @@ theorem quotientEquiv_mk (σ : K) : T.quotientEquiv (σ : K ⧸ L.subgroupOf K) 
 include T in
 
 /- English proof (translation)
-The claim follows from `Nat.card_congr T.quotientEquiv.toEquiv`.
+A detailed English derivation is pending.
 -/
 theorem relIndex_eq_natCard : L.relIndex K = Nat.card Γ :=
   Nat.card_congr T.quotientEquiv.toEquiv
 
 /- English proof (translation)
-Proceed by induction on `q using QuotientGroup.induction_on with`. Consider the case `H σ`. Establish `h` using `smul_mem_fixedModule_of_normal T.le σ.2 a.2`. Conclude with `⟨h, T.equiv_smul σ a h⟩`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_cosetSMul (a : fixedModule A L) (q : K ⧸ L.subgroupOf K) :
     ∃ h : cosetSMul A K L a q ∈ fixedModule A L,
@@ -113,9 +113,9 @@ theorem exists_cosetSMul (a : fixedModule A L) (q : K ⧸ L.subgroupOf K) :
     exact ⟨h, T.equiv_smul σ a h⟩
 
 /- English proof (translation)
-Set `_` to `Fintype.ofFinite (K ⧸ L.subgroupOf K)`. Use `choose hmem hval using T.exists_cosetSMul a`. Establish `hprod : (⟨norm A K L a, fixedModule_anti T.le (norm A K L a).2⟩ : fixedModule A L) = ∏ q, (⟨cosetSMul A K L a q, hmem q⟩ : fixedModule A L)`. Use `ext`. Rewrite using `[coe_norm, finprod_eq_prod_of_fintype, Subgroup.val_finsetProd]`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hprod, map_prod, GroundTheory.LocalField.tateNorm_apply]`. Repeatedly rewrite using `[hval]`. Conclude with `Fintype.prod_equiv T.quotientEquiv.toEquiv _ _ fun _ => rfl`.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_eq [Fintype Γ] [(L.subgroupOf K).FiniteIndex] (a : fixedModule A L) :
     T.equiv ⟨norm A K L a, fixedModule_anti T.le (norm A K L a).2⟩ = tateNorm Γ M (T.equiv a) := by
@@ -131,9 +131,9 @@ theorem norm_eq [Fintype Γ] [(L.subgroupOf K).FiniteIndex] (a : fixedModule A L
   exact Fintype.prod_equiv T.quotientEquiv.toEquiv _ _ fun _ => rfl
 
 /- English proof (translation)
-Use extensionality with `m`. Simplify using `only [Subgroup.mem_map, MonoidHom.mem_range, MulEquiv.coe_toMonoidHom, Subgroup.mem_subgroupOf]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨a, rfl⟩, rfl⟩`. Conclude with `⟨T.equiv a, by rw [coe_fixedModuleEquiv, T.norm_eq]⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨x, hx⟩`. Use `⟨_, ⟨T.equiv.symm x, rfl⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[coe_fixedModuleEquiv, T.norm_eq, MulEquiv.apply_symm_apply, hx]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_range_norm [Fintype Γ] [(L.subgroupOf K).FiniteIndex] :
     (norm A K L).range.map T.fixedModuleEquiv.toMonoidHom =
@@ -154,16 +154,16 @@ noncomputable def tateZeroEquiv [Fintype Γ] [(L.subgroupOf K).FiniteIndex] :
 
 include T in
 /- English proof (translation)
-The claim follows from `Nat.card_congr T.tateZeroEquiv.toEquiv`.
+A detailed English derivation is pending.
 -/
 theorem natCard_tateZero [Fintype Γ] [(L.subgroupOf K).FiniteIndex] :
     Nat.card (tateZero A K L) = Nat.card (TateZero Γ M) :=
   Nat.card_congr T.tateZeroEquiv.toEquiv
 
 /- English proof (translation)
-Rewrite using `[← T.norm_eq, MulEquiv.map_eq_one_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `ext`. Simplify using `[h]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Introduce `h`. Conclude with `Subtype.ext (by simpa using congrArg Subtype.val h)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem norm_eq_one_iff [Fintype Γ] [(L.subgroupOf K).FiniteIndex] (a : fixedModule A L) :
     norm A K L a = 1 ↔ tateNorm Γ M (T.equiv a) = 1 := by
@@ -176,9 +176,9 @@ theorem norm_eq_one_iff [Fintype Γ] [(L.subgroupOf K).FiniteIndex] (a : fixedMo
     exact Subtype.ext (by simpa using congrArg Subtype.val h)
 
 /- English proof (translation)
-Use extensionality with `m`. Simplify using `only [Subgroup.mem_map, MonoidHom.mem_ker, MulEquiv.coe_toMonoidHom]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, rfl⟩`. Conclude with `(T.norm_eq_one_iff a).1 ha`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hm`. Conclude with `⟨T.equiv.symm m, (T.norm_eq_one_iff _).2 (by simpa using hm), by simp⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem map_ker_norm [Fintype Γ] [(L.subgroupOf K).FiniteIndex] :
     (norm A K L).ker.map T.equiv.toMonoidHom = (tateNorm Γ M).ker := by
@@ -193,11 +193,11 @@ theorem map_ker_norm [Fintype Γ] [(L.subgroupOf K).FiniteIndex] :
 omit [(L.subgroupOf K).Normal] in
 
 /- English proof (translation)
-Rewrite using `[augmentation, GroundTheory.LocalField.augmentation, MonoidHom.map_closure]`. Use `congr 1`. Use extensionality with `x`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_image, MonoidHom.coe_comp, Subgroup.coe_subtype, MulEquiv.coe_toMonoidHom, Function.comp_apply]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨g, hg, a, ha, rfl⟩`. Use `⟨T.hom ⟨g, hg⟩ • T.equiv ⟨a, ha⟩ / T.equiv ⟨a, ha⟩, ⟨_, _, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[map_div, Subgroup.coe_div, T.coe_equiv_symm_smul, MulEquiv.symm_apply_apply]`. Introduce and unpack `⟨_, ⟨γ, m, rfl⟩, rfl⟩`. Take `⟨σ, rfl⟩` from `T.surjective_hom γ`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `⟨σ, σ.2, T.equiv.symm m, (T.equiv.symm m).2, ?_⟩` and prove the remaining obligations. Establish `h` using `T.coe_equiv_symm_smul σ (T.equiv.symm m)`. Rewrite `h` using `[MulEquiv.apply_symm_apply]`. Rewrite using `[map_div, Subgroup.coe_div, h]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem augmentation_eq_map :
     augmentation A K L =
@@ -222,9 +222,9 @@ theorem augmentation_eq_map :
 omit [(L.subgroupOf K).Normal] in
 
 /- English proof (translation)
-Rewrite using `[T.augmentation_eq_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, hm, h⟩`. Establish `: T.equiv.symm m = a` using `Subtype.ext h`. Rewrite using `[← this, MulEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hm`. Introduce `h`. Conclude with `⟨T.equiv a, h, by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_augmentation_iff (a : fixedModule A L) :
     (a : A) ∈ augmentation A K L ↔ T.equiv a ∈ GroundTheory.LocalField.augmentation Γ M := by
@@ -265,7 +265,7 @@ noncomputable def tateNegOneEquiv [Fintype Γ] [(L.subgroupOf K).FiniteIndex] :
 
 include T in
 /- English proof (translation)
-The claim follows from `Nat.card_congr T.tateNegOneEquiv.toEquiv`.
+A detailed English derivation is pending.
 -/
 theorem natCard_tateNegOne [Fintype Γ] [(L.subgroupOf K).FiniteIndex] :
     Nat.card (tateNegOne A K L) = Nat.card (TateNegOne Γ M) :=

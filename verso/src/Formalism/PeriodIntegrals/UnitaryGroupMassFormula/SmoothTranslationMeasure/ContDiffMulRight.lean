@@ -10,9 +10,7 @@ namespace PI.PhMeasCore.UnitaryGroupMassFormula
 open PI.PhMeasCore
 
 /- English proof (translation)
-Establish `ha' : aᴴ * Hm * a = Hm` using `ha`. Establish `hb' : bᴴ * Hm * b = Hm` using `hb`. Use `show (a * b)ᴴ * Hm * (a * b) = Hm`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`.
-
-Use `_ = Hm := by rw [ha', hb']`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mul_mem_UH {n : ℕ} {Hm a b : Matrix (Fin n) (Fin n) ℂ} (ha : a ∈ UH Hm) (hb : b ∈ UH Hm) :
     a * b ∈ UH Hm := by
@@ -28,9 +26,9 @@ section Smooth
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Set `L : Matrix (Fin n) (Fin n) ℂ →L[ℝ] Matrix (Fin n) (Fin n) ℂ →L[ℝ] Matrix (Fin n) (Fin n) ℂ` to `LinearMap.toContinuousLinearMap { toFun := fun a => LinearMap.toContinuousLinearMap { toFun := fun b => a * b map_add' := fun b c => Matrix.mul_add a b c map_smul' := fun r b => by simp } map_add' := fun a b => by`. Use extensionality with `c : 1`. Simplify using `[Matrix.add_mul]`. Use the proof step `map_smul' := fun r a => by`. Use extensionality with `c : 1`.
+Introduce a local definition for the expression. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `}`. Establish `h : ContDiff ℝ ∞ (fun p : Matrix (Fin n) (Fin n) ℂ × Matrix (Fin n) (Fin n) ℂ => L p.1 p.2)` using `L.isBoundedBilinearMap.contDiff`. Conclude with `h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem contDiff_matMul {n : ℕ} :
     ContDiff ℝ ∞ (fun p : Matrix (Fin n) (Fin n) ℂ × Matrix (Fin n) (Fin n) ℂ => p.1 * p.2) := by
@@ -51,7 +49,7 @@ theorem contDiff_matMul {n : ℕ} :
   exact h
 
 /- English proof (translation)
-The claim follows from `(@contDiff_matMul n).comp (contDiff_id.prodMk contDiff_const)`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_mulRight {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) :
     ContDiff ℝ ∞ (fun x : Matrix (Fin n) (Fin n) ℂ => x * g) :=

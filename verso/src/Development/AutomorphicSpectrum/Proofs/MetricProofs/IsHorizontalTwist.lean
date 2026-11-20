@@ -42,9 +42,9 @@ def ret : MRing (Tb ι) →+* MRing ι :=
     | ⟨some k, i⟩ => X ⟨k, i⟩) : MRing (Tb ι) →ₐ[ℤ] MRing ι).toRingHom
 
 /- English proof (translation)
-Establish `: (ret.comp inc : MRing ι →+* MRing ι) = RingHom.id _`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Simplify using `[ret, inc]`. Introduce `i`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[ret, inc, oldIdx]`. Conclude with `congrArg (fun g => g f) this`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ret_inc (f : MRing ι) : ret (inc f) = f := by
   have : (ret.comp inc : MRing ι →+* MRing ι) = RingHom.id _ := by
@@ -54,15 +54,13 @@ theorem ret_inc (f : MRing ι) : ret (inc f) = f := by
   exact congrArg (fun g => g f) this
 
 /- English proof (translation)
-Simplify using `[ret, quad, xN, yN]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ret_quad (p : ℕ) : ret (quad p : MRing (Tb ι)) = 0 := by
   simp [ret, quad, xN, yN]
 
 /- English proof (translation)
-Use `sup_le (Ideal.map_le_iff_le_comap.mpr fun f hf => ?_) ?_` and prove the remaining obligations. Rewrite using `[Ideal.mem_comap, Ideal.mem_comap, ret_inc]`. Conclude with `hf`. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff] show quad p ∈ W.comap ret`. Rewrite using `[Ideal.mem_comap, ret_quad]`.
-
-Conclude with `W.zero_mem`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twist_le_comap_ret (p : ℕ) (W : Ideal (MRing ι)) : twist p W ≤ W.comap ret := by
   refine sup_le (Ideal.map_le_iff_le_comap.mpr fun f hf => ?_) ?_
@@ -72,7 +70,7 @@ theorem twist_le_comap_ret (p : ℕ) (W : Ideal (MRing ι)) : twist p W ≤ W.co
     rw [Ideal.mem_comap, ret_quad]; exact W.zero_mem
 
 /- English proof (translation)
-Use `le_antisymm (fun f hf => ?_) (fun f hf => ?_)` and prove the remaining obligations. Use `twist_le_comap_ret p W hf` as an intermediate fact. Simplify `this` using `[ret_inc]`. Conclude with `Ideal.mem_sup_left (Ideal.mem_map_of_mem _ hf)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem comap_inc_twist (p : ℕ) (W : Ideal (MRing ι)) : (twist p W).comap inc = W := by
   refine le_antisymm (fun f hf => ?_) (fun f hf => ?_)
@@ -81,7 +79,7 @@ theorem comap_inc_twist (p : ℕ) (W : Ideal (MRing ι)) : (twist p W).comap inc
   · exact Ideal.mem_sup_left (Ideal.mem_map_of_mem _ hf)
 
 /- English proof (translation)
-Introduce `W W' h` and use `by rw [← comap_inc_twist p W, h, comap_inc_twist]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem twist_injective (p : ℕ) : Function.Injective (twist p : Ideal (MRing ι) → _) := fun W W' h => by
   rw [← comap_inc_twist p W, h, comap_inc_twist]
@@ -113,9 +111,9 @@ def chi (p : ℕ) (u : (Σ o, Tb ι o) → ℂ) : ℝ :=
       (‖u ⟨none, (0 : Fin 2)⟩‖ ^ 2 + ‖u ⟨none, (1 : Fin 2)⟩‖ ^ 2))
 
 /- English proof (translation)
-Establish `hn : (0 : ℝ) < ‖c none‖ ^ 2` using `by positivity`. Establish `hm : (c none * u ⟨none, (0 : Fin 2)⟩ * (starRingEnd ℂ) (c none * u ⟨none, (1 : Fin 2)⟩)).im = ‖c none‖ ^ 2 * (u ⟨none, (0 : Fin 2)⟩ * (starRingEnd ℂ) (u ⟨none, (1 : Fin 2)⟩)).im`. Establish `: c none * u ⟨none, (0 : Fin 2)⟩ * (starRingEnd ℂ) (c none * u ⟨none, (1 : Fin 2)⟩) = ((‖c none‖ ^ 2 : ℝ) : ℂ) * (u ⟨none, (0 : Fin 2)⟩ * (starRingEnd ℂ) (u ⟨none, (1 : Fin 2)⟩))`. Rewrite using `[map_mul, Complex.ofReal_pow, ← Complex.mul_conj']`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[this, Complex.im_ofReal_mul]`. Simplify using `only [chi, norm_mul, mul_pow, hm, ← mul_add]`. Rewrite using `[mul_div_mul_left _ _ hn.ne']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem chi_smul (p : ℕ) (c : Option K → ℂ) (hc : c none ≠ 0) (u : (Σ o, Tb ι o) → ℂ) :
     chi p (fun q => c q.1 * u q) = chi p u := by
@@ -131,7 +129,7 @@ theorem chi_smul (p : ℕ) (c : Option K → ℂ) (hc : c none ≠ 0) (u : (Σ o
   rw [mul_div_mul_left _ _ hn.ne']
 
 /- English proof (translation)
-The claim follows from `hu (some k)`.
+A detailed English derivation is pending.
 -/
 theorem oldPart_ne {u : (Σ o, Tb ι o) → ℂ} (hu : ∀ o, ∃ i, u ⟨o, i⟩ ≠ 0) (k : K) :
     ∃ i, basePart₂ u ⟨k, i⟩ ≠ 0 := hu (some k)
@@ -171,7 +169,7 @@ def twDeg (a : K → ℤ) : Option K → ℤ
   | some k => a k
 
 /- English proof (translation)
-Rewrite using `[A.smul c z hc, Real.log_mul (Finset.prod_ne_zero_iff.mpr fun k _ => zpow_ne_zero _ (norm_ne_zero_iff.mpr (hc k))) (A.pos z hz).ne', Real.log_prod (fun k _ => zpow_ne_zero _ (norm_ne_zero_iff.mpr (hc k)))]`. Simplify using `only [Real.log_zpow]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem log_smul_old (A : HermLine ι) (c : K → ℂ) (hc : ∀ k, c k ≠ 0) {z : (Σ k, ι k) → ℂ}
     (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) :
@@ -218,7 +216,7 @@ def twLine (p : ℕ) (A : HermLine ι) : HermLine (Tb ι) where
     · rw [twH, twH, if_neg (fun h => hz (hsame.mp h)), if_neg hz, mul_zero]
 
 /- English proof (translation)
-Simplify using `only [inc, RingHom.coe_coe, AlgHom.toRingHom_eq_coe]`. Rewrite using `[map_rename, eval_rename]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem eval_inc (z : (Σ k, ι k) → ℂ) (v : Fin 2 → ℂ) (f : MRing ι) :
     eval (glue z v) (map (Int.castRingHom ℂ) (inc f)) = eval z (map (Int.castRingHom ℂ) f) := by
@@ -227,7 +225,7 @@ theorem eval_inc (z : (Σ k, ι k) → ℂ) (v : Fin 2 → ℂ) (f : MRing ι) :
   rfl
 
 /- English proof (translation)
-Simplify using `[quad, xN, yN]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eval_quad (z : (Σ o, Tb ι o) → ℂ) (p : ℕ) :
     eval z (map (Int.castRingHom ℂ) (quad p : MRing (Tb ι))) =
@@ -235,7 +233,7 @@ theorem eval_quad (z : (Σ o, Tb ι o) → ℂ) (p : ℕ) :
   simp [quad, xN, yN]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `J`. Use `show ∏ o, glue z v ⟨o, J o⟩ = (∏ k, z ⟨k, J (some k)⟩) * v (J none)`. Rewrite using `[Fintype.prod_option, mul_comm]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem segre_glue (z : (Σ k, ι k) → ℂ) (v : Fin 2 → ℂ) :
     segre (glue z v) = embL v (segre z) := by
@@ -245,11 +243,9 @@ theorem segre_glue (z : (Σ k, ι k) → ℂ) (v : Fin 2 → ℂ) :
   rfl
 
 /- English proof (translation)
-Use `⟨fun o => ?_, fun f hf => ?_⟩` and prove the remaining obligations. Consider the cases of `o with`. Consider the case `none => exact ⟨(1 : Fin 2), hv1⟩`. Consider the case `some k => exact hz.1 k`. Establish `hle : twist p Q ≤ RingHom.ker ((eval (glue z v)).comp (map (Int.castRingHom ℂ)))`.
+Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Use `sup_le (Ideal.map_le_iff_le_comap.mpr fun g hg => ?_) ?_` and prove the remaining obligations. Use `show eval (glue z v) (map (Int.castRingHom ℂ) (inc g)) = 0`. Rewrite using `[eval_inc]`. Conclude with `hz.2 g hg`. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff] show eval (glue z v) (map (Int.castRingHom ℂ) (quad p)) = 0`.
-
-Rewrite using `[eval_quad]`. Conclude with `hv`. Conclude with `hle hf`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glue_mem_mcPts {p : ℕ} {Q : Ideal (MRing ι)} {z : (Σ k, ι k) → ℂ} (hz : z ∈ mcPts Q)
     {v : Fin 2 → ℂ} (hv : v 0 ^ 2 + (p : ℂ) * v 1 ^ 2 = 0) (hv1 : v 1 ≠ 0) :
@@ -268,38 +264,36 @@ theorem glue_mem_mcPts {p : ℕ} {Q : Ideal (MRing ι)} {z : (Σ k, ι k) → �
     exact hle hf
 
 /- English proof (translation)
-Rewrite using `[cRoot, mul_pow, Complex.I_sq, ← Complex.ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg p)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cRoot_sq (p : ℕ) : cRoot p ^ 2 = -(p : ℂ) := by
   rw [cRoot, mul_pow, Complex.I_sq, ← Complex.ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg p)]
   simp
 
 /- English proof (translation)
-Simplify using `[vPlus, cRoot_sq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem vPlus_root (p : ℕ) : vPlus p 0 ^ 2 + (p : ℂ) * vPlus p 1 ^ 2 = 0 := by
   simp [vPlus, cRoot_sq]
 
 /- English proof (translation)
-Simplify using `[vMinus, cRoot_sq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem vMinus_root (p : ℕ) : vMinus p 0 ^ 2 + (p : ℂ) * vMinus p 1 ^ 2 = 0 := by
   simp [vMinus, cRoot_sq]
 
 /- English proof (translation)
-Use `haveI : Nontrivial (MRing ι ⧸ W) := Ideal.Quotient.nontrivial_iff.mpr hW`. Set `θ : MRing (Tb ι) →+* Polynomial (MRing ι ⧸ W)` to `(aeval (fun q : Σ o, Tb ι o => match q with`. Consider the case `⟨none, j⟩ => if j = (0 : Fin 2) then Polynomial.X else 0`. Consider the case `⟨some k, i⟩ => Polynomial.C (Ideal.Quotient.mk W (X ⟨k, i⟩))) : MRing (Tb ι) →ₐ[ℤ] Polynomial (MRing ι ⧸ W)).toRingHom`. Establish `hinc : ∀ f : MRing ι, θ (inc f) = Polynomial.C (Ideal.Quotient.mk W f)`.
+Introduce a local definition for the expression. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `f`. Establish `: (θ.comp inc) = (Polynomial.C.comp (Ideal.Quotient.mk W))`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Simplify using `[θ, inc]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Simplify using `[θ, inc, oldIdx]`. Conclude with `congrArg (fun g => g f) this`. Establish `h1 : θ (xN) = Polynomial.X`. Simplify using `only [θ, xN, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, aeval_X]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `if_pos rfl`. Establish `h2 : θ (yN) = 0`. Simplify using `only [θ, yN, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, aeval_X]`. Conclude with `if_neg (show ¬ ((1 : Fin 2) = 0) by decide)`. Establish `hle : twist p W ≤ (Ideal.span {(Polynomial.X : Polynomial (MRing ι ⧸ W)) ^ 2}).comap θ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `sup_le (Ideal.map_le_iff_le_comap.mpr fun f hf => ?_) ?_` and prove the remaining obligations. Rewrite using `[Ideal.mem_comap, Ideal.mem_comap, hinc, Ideal.Quotient.eq_zero_iff_mem.mpr hf]`. Simplify using the standard rewrite rules. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff] show quad p ∈ (Ideal.span {(Polynomial.X : Polynomial (MRing ι ⧸ W)) ^ 2}).comap θ`. Rewrite using `[Ideal.mem_comap]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [quad, map_add, map_mul, map_pow, h1, h2]`. Simplify using `only [ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, mul_zero, add_zero]`. Conclude with `Ideal.mem_span_singleton_self _`. Introduce `hx`. Establish `h3` using `hle hx`.
-
-Rewrite `h3` using `[Ideal.mem_comap, Ideal.mem_span_singleton]`. Rewrite `h3` using `[h1, Polynomial.X_pow_dvd_iff]`. Use `h3 1 (by norm_num)` as an intermediate fact. Simplify using `at this`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem xN_not_mem_twist (p : ℕ) {W : Ideal (MRing ι)} (hW : W ≠ ⊤) :
     (xN : MRing (Tb ι)) ∉ twist p W := by
@@ -341,9 +335,9 @@ theorem xN_not_mem_twist (p : ℕ) {W : Ideal (MRing ι)} (hW : W ≠ ⊤) :
   simp at this
 
 /- English proof (translation)
-Introduce `o`. Consider the cases of `o with`. Consider the case `none => exact ⟨(0 : Fin 2), xN_not_mem_twist p hW⟩`. Consider the case `some k`. Take `⟨i, hi⟩` from `hr k`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨i, fun h => hi ?_⟩` and prove the remaining obligations. Establish `: inc (X ⟨k, i⟩ : MRing ι) ∈ twist p W`. Simplify `h` using `[inc, oldIdx]`. Rewrite using `[← comap_inc_twist p W]`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isRelevant_twist (p : ℕ) {W : Ideal (MRing ι)} (hW : W ≠ ⊤) (hr : IsRelevant W) :
     IsRelevant (twist p W) := by
@@ -359,7 +353,7 @@ theorem isRelevant_twist (p : ℕ) {W : Ideal (MRing ι)} (hW : W ≠ ⊤) (hr :
     exact this
 
 /- English proof (translation)
-Rewrite `hW`, the goal using `[IsHorizontal, eq_bot_iff]`. Introduce `n hn`. Use `hW ?_` and prove the remaining obligations. Use `twist_le_comap_ret p W hn` as an intermediate fact. Simplify `this` using `[ret]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isHorizontal_twist (p : ℕ) {W : Ideal (MRing ι)} (hW : IsHorizontal W) :
     IsHorizontal (twist p W) := by

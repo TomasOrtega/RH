@@ -4,15 +4,13 @@ import Formalism.PeriodIntegrals.RTTIndependence
 namespace PI.QmLemDWork
 
 /- English proof (translation)
-Introduce `A _ _ DD h0 hstep A' hmul hfrac n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `D hD _`. Rewrite `hD` using `[h0]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hD`. Consider the case `succ n ih`. Introduce `D hD hkill`. Establish `hcomm : ∀ a ∈ A', ∀ b : A, D (a * b) = a * D b`. Introduce `a ha b`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨D', hD', hD'eq⟩` from `hstep n D hD a`. Establish `hz : D' = 0` using `ih D' hD' (fun x hx => by`. Rewrite using `[hD'eq, hkill _ (hmul a ha x hx), hkill x hx, mul_zero, sub_zero])`. Use `hD'eq b` as an intermediate fact. Rewrite `this` using `[hz, AddMonoidHom.zero_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components.
 
-Conclude with `(sub_eq_zero.mp this.symm)`. Use extensionality with `b`. Take `⟨a₁, ha₁, a₂, ha₂, hne, hb⟩` from `hfrac b`. Establish `h1 : a₂ * D b = 0`. Rewrite using `[← hcomm a₂ ha₂ b, hb, hkill a₁ ha₁]`.
-
-Rewrite using `[AddMonoidHom.zero_apply]`. Conclude with `(mul_eq_zero.mp h1).resolve_left hne`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : PI.LemmaD := by
   intro A _ _ DD h0 hstep A' hmul hfrac n

@@ -48,11 +48,9 @@ noncomputable def chartPullTw {X Y : Scheme.{0}} (L : LB X) {K : Type} [Fintype 
         exact Finset.prod_congr rfl fun k _ => (zpow_neg _ _).symm }
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `GlobalTheory.AbSquare.exists_gen_of_mem_chart hL _ ![-1, 1] i hi`. Take `⟨u, hu, -⟩` from `exists_gen hL (φ' := Sum.elim ![(a * b).left, b.left] (Sum.elim ![(a * c).left, c.left] ![(a * b * c).left, (b * c).left])) (ε' := fun k => - Sum.elim ![1, -1] (Sum.elim ![1, -1] fun k => - (![1, -1] : Fin 2 → ℤ) k) k) (fun U _ h => by`. Use `((Fintype.prod_sum_type _).trans (congrArg₂ (· * ·) rfl (prod_cub a b c h))).trans ?_` and prove the remaining obligations. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `[Fintype.prod_sum_type, Fin.prod_univ_succ, ofMul_mul, ofMul_inv]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Use the proof step `abel)`. Use the proof step `(LB.mulGen L _ _ _ _ w (LB.pullGen L (thφ G (x3 G)) thε t (lift a (lift b c)).left))`. Use the proof step `(DVR.mulGen_isGen _ _ _ _ _ _ _ hw (DVR.pullGen_isGen _ _ _ _ ht _))`. Take `⟨v, hv, -⟩` from `exists_gen hL (φ' := _) (ε' := _) (fun U _ h => Finset.prod_congr rfl fun k _ => by`. Rewrite using `[neg_neg]) (LB.invGen L _ _ u) (DVR.invGen_isGen _ _ _ _ hu)`.
-
-Conclude with `⟨v, hv⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_gen_additive {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] {L : LB G.left}
     (hL : L.IsLB) (t : LB.Gen (Theta G L)) (ht : t.IsGen) {T : Over S} (a b c : T ⟶ G) (i : Fin 2 → L.ι)
@@ -75,15 +73,13 @@ theorem exists_gen_additive {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonO
   exact ⟨v, hv⟩
 
 /- English proof (translation)
-Set `χ : Fin 2 → ((𝟙_ (Over S)).left ⟶ G.left)` to `![x.left, (1 : 𝟙_ (Over S) ⟶ G).left]`. Use `choose i hi using fun k => exists_chart hL (χ k (default : S))`. Establish `e : ∀ k, (![(toUnit (G ⊗ G) ≫ x).left, (1 : G ⊗ G ⟶ G).left] k) = (toUnit (G ⊗ G)).left ≫ χ k`. Introduce `k`. Use `fin_cases k`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `show _ = (toUnit (G ⊗ G) ≫ (1 : 𝟙_ (Over S) ⟶ G)).left`. Rewrite using `[MonObj.comp_one]`. Both sides reduce to the same expression. Take `⟨u, hu⟩` from `exists_gen_additive hL t ht (toUnit (G ⊗ G) ≫ x) (fst G G) (snd G G) i (fun k z => by`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e k]`. Establish `h : (toUnit (G ⊗ G)).left z = (default : S)` using `Subsingleton.elim (α := S) _ _`. Conclude with `(congrArg (fun s => χ k s ∈ L.U (i k)) h).mpr (hi k))`. Establish `key : ∀ b : G ⊗ G ⟶ G, ∀ k, (![((toUnit (G ⊗ G) ≫ x) * b).left, b.left] k) = b.left ≫ ![(lift (toUnit G ≫ x) (𝟙 G) ≫ μ[G]).left, 𝟙 G.left] k`. Introduce `b k`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `fin_cases k`. Use `show _ = (b ≫ ((toUnit G ≫ x) * 𝟙 G)).left`. Rewrite using `[MonObj.comp_mul, Category.comp_id, ← Category.assoc, comp_toUnit]`. Both sides reduce to the same expression. Conclude with `(Category.comp_id _).symm`.
-
-Establish `hμ : fst G G * snd G G = μ[G]`. Rewrite using `[Hom.mul_def, lift_fst_snd, Category.id_comp]`. Use `gen_chartPull (chartPullTw L _ (chartPullOut L _ _ _ _ fun k => ?_) (chartPullOut L _ _ _ _ (key _)) (chartPullOut L _ _ _ _ (key _))) u hu` and prove the remaining obligations. Rewrite using `[_root_.mul_assoc, hμ]`. Conclude with `key _ k`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_iso_of_cube {S : Scheme.{0}} [Unique S] {G : Over S} [GrpObj G] [IsCommMonObj G] {L : LB G.left}
     (hL : L.IsLB) (t : LB.Gen (Theta G L)) (ht : t.IsGen) (x : 𝟙_ (Over S) ⟶ G) :
@@ -120,7 +116,7 @@ theorem exists_iso_of_cube {S : Scheme.{0}} [Unique S] {G : Over S} [GrpObj G] [
   exact key _ k
 
 /- English proof (translation)
-Introduce `K _ _ P x`. Take `⟨t, ht⟩` from `GlobalTheory.AbLaw.CubeAssembly.cube_gen _ P P.L P.isLB`. Use `letI : Unique (Spec (CommRingCat.of K)) := inferInstanceAs (Unique (PrimeSpectrum K))`. Conclude with `exists_iso_of_cube P.isLB t ht x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem translate_div_additive :
     ∀ (K : Type) [Field K] [IsAlgClosed K] (P : PolAV (Spec (CommRingCat.of K))) (x : 𝟙_ (Over (Spec (CommRingCat.of K))) ⟶ P.A), ∃ w : LB.Iso ((LB.LinComb P.L (K := Fin 2) ![(lift (toUnit P.A ≫ x) (𝟙 P.A) ≫ μ[P.A]).left, 𝟙 P.A.left] ![1, -1]).pull μ[P.A].left) (tw ((LB.LinComb P.L (K := Fin 2) ![(lift (toUnit P.A ≫ x) (𝟙 P.A) ≫ μ[P.A]).left, 𝟙 P.A.left] ![1, -1]).pull (fst P.A P.A).left) ((LB.LinComb P.L (K := Fin 2) ![(lift (toUnit P.A ≫ x) (𝟙 P.A) ≫ μ[P.A]).left, 𝟙 P.A.left] ![1, -1]).pull (snd P.A P.A).left) 1), w.IsGen := by

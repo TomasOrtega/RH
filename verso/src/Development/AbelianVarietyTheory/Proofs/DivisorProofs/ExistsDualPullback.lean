@@ -19,24 +19,24 @@ variable {X Y : Scheme.{0}}
 abbrev cutO (T W : Y.Opens) : Y.Opens := T.ι ''ᵁ T.ι ⁻¹ᵁ W
 
 /- English proof (translation)
-The claim follows from `T.ι.image_preimage_le W`.
+A detailed English derivation is pending.
 -/
 theorem cutO_le (T W : Y.Opens) : cutO T W ≤ W := T.ι.image_preimage_le W
 
 /- English proof (translation)
-The claim follows from `T.ι_image_le _`.
+A detailed English derivation is pending.
 -/
 theorem cutO_le' (T W : Y.Opens) : cutO T W ≤ T := T.ι_image_le _
 
 /- English proof (translation)
-Rewrite using `[cutO, Scheme.Hom.image_preimage_eq_opensRange_inf, Scheme.Opens.opensRange_ι]`. Conclude with `le_inf h h'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_cutO {T W S : Y.Opens} (h : S ≤ T) (h' : S ≤ W) : S ≤ cutO T W := by
   rw [cutO, Scheme.Hom.image_preimage_eq_opensRange_inf, Scheme.Opens.opensRange_ι]
   exact le_inf h h'
 
 /- English proof (translation)
-The claim follows from `le_cutO (cutO_le' _ _) ((cutO_le _ _).trans h)`.
+A detailed English derivation is pending.
 -/
 theorem cutO_mono (T : Y.Opens) {W W' : Y.Opens} (h : W' ≤ W) : cutO T W' ≤ cutO T W :=
   le_cutO (cutO_le' _ _) ((cutO_le _ _).trans h)
@@ -47,7 +47,7 @@ def cut (T : Y.Opens) : Y.Modules :=
 def cutEquiv (T W : Y.Opens) : Γ(cut T, W) ≃+ Γ(Y, cutO T W) := AddEquiv.refl _
 
 /- English proof (translation)
-The claim follows from `congrArg (· * cutEquiv T W s) congr($(T.ι.app_appIso_inv W) a)`.
+A detailed English derivation is pending.
 -/
 theorem cutEquiv_smul (T W : Y.Opens) (a : Γ(Y, W)) (s : Γ(cut T, W)) :
     cutEquiv T W (a • s) = resG Y (cutO_le T W) a * cutEquiv T W s :=
@@ -79,7 +79,7 @@ theorem toCut_app (l : Γ(dual P, T)) (W : Y.Opens) (s : Γ(P, W)) :
     cutEquiv T W ((toCut l).app W s) = dualApp l (cutO_le' T W) (resM P (cutO_le T W) s) := rfl
 
 /- English proof (translation)
-The claim follows from `dual_ext fun W hW s => by have := congrArg (resG Y (le_cutO hW le_rfl)) ((toCut_app l W s).symm.trans (h ▸ toCut_app l' W s)) rwa [← dualApp_resM, ← dualApp_resM, resM_resM, resM_self] at this`.
+A detailed English derivation is pending.
 -/
 theorem toCut_injective {l l' : Γ(dual P, T)} (h : toCut l = toCut l') : l = l' :=
   dual_ext fun W hW s => by
@@ -109,7 +109,7 @@ def adj {F : X.Modules} {G : Y.Modules} (ψ : F ⟶ (Scheme.Modules.pushforward 
   ((Scheme.Modules.pullbackPushforwardAdjunction f).homEquiv F G).symm ψ
 
 /- English proof (translation)
-Use `(QCoh.hom_app_res (adj f ψ) e _).trans (congrArg (resM G e) ?_)` and prove the remaining obligations. Use `((Scheme.Modules.pullbackPushforwardAdjunction f).homEquiv F G).apply_symm_apply ψ` as an intermediate fact. Rewrite `this` using `[Adjunction.homEquiv_unit]`. Conclude with `congr(($this).app V s)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adj_app {F : X.Modules} {G : Y.Modules} (ψ : F ⟶ (Scheme.Modules.pushforward f).obj G)
     {V : X.Opens} (e : T ≤ f ⁻¹ᵁ V) (s : Γ(F, V)) :
@@ -120,9 +120,9 @@ theorem adj_app {F : X.Modules} {G : Y.Modules} (ψ : F ⟶ (Scheme.Modules.push
   exact congr(($this).app V s)
 
 /- English proof (translation)
-Use `((Scheme.Modules.pullbackPushforwardAdjunction f).homEquiv F G).injective ?_` and prove the remaining obligations. Rewrite using `[Adjunction.homEquiv_unit, Adjunction.homEquiv_unit]`. Use `Scheme.Modules.hom_ext _ _ fun V => ?_` and prove the remaining obligations. Use extensionality with `s`. Establish `e : pullbackSections f F (le_refl (f ⁻¹ᵁ V)) s = _` using `QCoh.res_self _ _ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Conclude with `(congrArg (φ.app _) e).symm.trans ((h V s).trans (congrArg (φ'.app _) e))`.
+A detailed English derivation is pending.
 -/
 theorem pull_ext {F : X.Modules} {G : Y.Modules} {φ φ' : (Scheme.Modules.pullback f).obj F ⟶ G}
     (h : ∀ (V : X.Opens) (s : Γ(F, V)), φ.app _ (pullbackSections f F (le_refl (f ⁻¹ᵁ V)) s) =
@@ -137,7 +137,7 @@ theorem pull_ext {F : X.Modules} {G : Y.Modules} {φ φ' : (Scheme.Modules.pullb
 variable {F G : X.Modules} {V : X.Opens}
 
 /- English proof (translation)
-Use `toCut_injective (pull_ext f fun W s => (cutEquiv T _).injective ?_)` and prove the remaining obligations. Establish `e' : cutO T (f ⁻¹ᵁ W) ≤ f ⁻¹ᵁ (W ⊓ V)` using `le_inf (cutO_le T (f ⁻¹ᵁ W)) ((cutO_le' T (f ⁻¹ᵁ W)).trans e)`. Establish `: resM _ (cutO_le T (f ⁻¹ᵁ W)) (pullbackSections f F (le_refl (f ⁻¹ᵁ W)) s) = pullbackSections f F e' (resM F inf_le_left s)` using `(QCoh.res_pullbackSections f F _ _ _).trans (QCoh.pullbackSections_res f F e' _ _).symm`. Rewrite using `[toCut_app, toCut_app, this]`. Conclude with `h _ inf_le_right _ _ _ _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dual_pull_ext (e : T ≤ f ⁻¹ᵁ V) {l l' : Γ(dual ((Scheme.Modules.pullback f).obj F), T)}
     (h : ∀ (W : X.Opens) (_ : W ≤ V) (S : Y.Opens) (hS : S ≤ T) (e' : S ≤ f ⁻¹ᵁ W) (s : Γ(F, W)),
@@ -153,20 +153,20 @@ theorem dual_pull_ext (e : T ≤ f ⁻¹ᵁ V) {l l' : Γ(dual ((Scheme.Modules.
   exact h _ inf_le_right _ _ _ _
 
 /- English proof (translation)
-The claim follows from `le_inf (cutO_le (f ⁻¹ᵁ V) (f ⁻¹ᵁ W)) (cutO_le' (f ⁻¹ᵁ V) (f ⁻¹ᵁ W))`.
+A detailed English derivation is pending.
 -/
 theorem cutO_le_inf (V W : X.Opens) : cutO (f ⁻¹ᵁ V) (f ⁻¹ᵁ W) ≤ f ⁻¹ᵁ (W ⊓ V) :=
   le_inf (cutO_le (f ⁻¹ᵁ V) (f ⁻¹ᵁ W)) (cutO_le' (f ⁻¹ᵁ V) (f ⁻¹ᵁ W))
 
 /- English proof (translation)
-The claim follows from `congr($(f.map_appLE e (homOfLE h).op) a)`.
+A detailed English derivation is pending.
 -/
 theorem appLE_resG {W : X.Opens} (h : W ≤ V) (e : T ≤ f ⁻¹ᵁ W) (a : Γ(X, V)) :
     f.appLE W T e (resG X h a) = f.appLE V T (e.trans (f.preimage_mono h)) a :=
   congr($(f.map_appLE e (homOfLE h).op) a)
 
 /- English proof (translation)
-The claim follows from `congr($(f.appLE_map e (homOfLE h).op) a)`.
+A detailed English derivation is pending.
 -/
 theorem resG_appLE {S : Y.Opens} (h : S ≤ T) (e : T ≤ f ⁻¹ᵁ V) (a : Γ(X, V)) :
     resG Y h (f.appLE V T e a) = f.appLE V S (h.trans e) a :=
@@ -192,7 +192,7 @@ def pullForm (l : Γ(dual F, V)) : Γ(dual ((Scheme.Modules.pullback f).obj F), 
   ofCut (adj f (formPush f l))
 
 /- English proof (translation)
-Rewrite using `[pullForm, dualApp_ofCut, adj_app]`. Express the relevant statement in the definitionally equal form `resG Y _ (resG Y (cutO_mono _ e) (f.appLE (W ⊓ V) _ (cutO_le_inf f V W) (dualApp l inf_le_right (resM F inf_le_left s)))) = _`. Rewrite using `[resG_appLE, resG_appLE, dualApp_resM l h, appLE_resG]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem dualApp_pullForm (l : Γ(dual F, V)) {W : X.Opens} (h : W ≤ V) (hT : T ≤ f ⁻¹ᵁ V)
     (e : T ≤ f ⁻¹ᵁ W) (s : Γ(F, W)) :
@@ -228,7 +228,7 @@ def theta : (Scheme.Modules.pullback f).obj (dual F) ⟶ dual ((Scheme.Modules.p
   adj f (pullFormHom f F)
 
 /- English proof (translation)
-Rewrite using `[theta, adj_app]`. Conclude with `dualApp_pullForm f l h (hS.trans e) e' s`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dualApp_theta (l : Γ(dual F, V)) {W : X.Opens} (h : W ≤ V) (e : T ≤ f ⁻¹ᵁ V)
     {S : Y.Opens} (hS : S ≤ T) (e' : S ≤ f ⁻¹ᵁ W) (s : Γ(F, W)) :
@@ -238,7 +238,7 @@ theorem dualApp_theta (l : Γ(dual F, V)) {W : X.Opens} (h : W ≤ V) (e : T ≤
   exact dualApp_pullForm f l h (hS.trans e) e' s
 
 /- English proof (translation)
-The claim follows from `pull_ext f fun V l => dual_pull_ext f le_rfl fun W h S hS e s => by change dualApp ((theta f F).app _ (((Scheme.Modules.pullback f).map (dualMap φ)).app _ _)) hS _ = dualApp ((theta f G).app _ _) hS (((Scheme.Modules.pullback f).map φ).app _ _) rw [QCoh.pullback_map_app_pullbackS …`.
+A detailed English derivation is pending.
 -/
 theorem theta_naturality (φ : F ⟶ G) :
     (Scheme.Modules.pullback f).map (dualMap φ) ≫ theta f F =
@@ -250,9 +250,9 @@ theorem theta_naturality (φ : F ⟶ G) :
       dualApp_theta f _ h, dualApp_theta f _ h, dualApp_dualMap]
 
 /- English proof (translation)
-Use `h.isQuasicoherent` as an intermediate fact. Use `h.dual.isQuasicoherent` as an intermediate fact. Use `isIso_of_frames (ι := Fin r) _ fun y => ?_` and prove the remaining obligations. Take `⟨U, e, hx, he⟩` from `h (f y)`. Use `⟨f ⁻¹ᵁ U, _, hx, he.dual.pullback f, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `H (i : Fin r) : (theta f F).app _ (pullbackSections f (dual F) (le_refl (f ⁻¹ᵁ U)) (he.coord i)) = (he.pullback f).coord i` using `dual_pull_ext f le_rfl fun W hW S hS e' s => by`. Rewrite using `[dualApp_theta f _ hW, IsFrame.dualApp_coord, IsFrame.dualApp_coord]`. Conclude with `(he.pullback_basis_repr f hW e' s i).symm`. Rewrite using `[funext H]`. Conclude with `(he.pullback f).dual`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIso_theta {r : ℕ} (h : IsVB F r) : IsIso (theta f F) := by
   have := h.isQuasicoherent
@@ -269,7 +269,7 @@ theorem isIso_theta {r : ℕ} (h : IsVB F r) : IsIso (theta f F) := by
   exact (he.pullback f).dual
 
 /- English proof (translation)
-Introduce `_ _ f` and use `⟨theta f, fun _ _ φ => theta_naturality f φ, fun _ _ _ e l s => dualApp_theta f l le_rfl e le_rfl e s, fun _ _ h => isIso_theta f h⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem exists_dual_pullback : ∀ (X Y : Scheme.{0}) (f : Y ⟶ X), ∃ θ : ∀ F : X.Modules, (Scheme.Modules.pullback f).obj (dual F) ⟶ dual ((Scheme.Modules.pullback f).obj F), (∀ (F G : X.Modules) (φ : F ⟶ G), (Scheme.Modules.pullback f).map (dualMap φ) ≫ θ F = θ G ≫ dualMap ((Scheme.Modules.pullback f).map φ)) ∧ (∀ (F : X.Modules) (V : X.Opens) (T : Y.Opens) (e : T ≤ f ⁻¹ᵁ V) (l : Γ(dual F, V)) (s : Γ(F, V)), dualApp ((θ F).app T (GlobalTheory.QCoh.pullbackSections f (dual F) e l)) le_rfl (GlobalTheory.QCoh.pullbackSections f F e s) = f.appLE V T e (dualApp l le_rfl s)) ∧ ∀ (F : X.Modules) (r : ℕ), IsVB F r → IsIso (θ F) :=
   fun _ _ f => ⟨theta f, fun _ _ φ => theta_naturality f φ,

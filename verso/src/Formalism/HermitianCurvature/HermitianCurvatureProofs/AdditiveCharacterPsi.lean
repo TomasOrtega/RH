@@ -10,52 +10,52 @@ namespace Formalism.FourierDecayAlt.P.G2
 open Formalism.FourierDecayAlt.G
 
 /- English proof (translation)
-The claim follows from `finSumFinEquiv_symm_apply_castAdd (n := 1) i`.
+A detailed English derivation is pending.
 -/
 theorem symm_castSucc {n : ℕ} (i : Fin n) :
     finSumFinEquiv.symm (i.castSucc : Fin (n + 1)) = Sum.inl i :=
   finSumFinEquiv_symm_apply_castAdd (n := 1) i
 
 /- English proof (translation)
-The claim follows from `finSumFinEquiv_symm_apply_natAdd (m := n) (0 : Fin 1)`.
+A detailed English derivation is pending.
 -/
 theorem symm_last (n : ℕ) : finSumFinEquiv.symm (Fin.last n : Fin (n + 1)) = Sum.inr (0 : Fin 1) :=
   finSumFinEquiv_symm_apply_natAdd (m := n) (0 : Fin 1)
 
 /- English proof (translation)
-Simplify using `[blk, symm_castSucc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blk_cc {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (b a : Fin n → ℂ) (e : ℂ) (i j : Fin n) :
     blk A b a e i.castSucc j.castSucc = A i j := by
   simp [blk, symm_castSucc]
 
 /- English proof (translation)
-Simplify using `[blk, symm_castSucc, symm_last]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blk_cl {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (b a : Fin n → ℂ) (e : ℂ) (i : Fin n) :
     blk A b a e i.castSucc (Fin.last n) = b i := by
   simp [blk, symm_castSucc, symm_last]
 
 /- English proof (translation)
-Simplify using `[blk, symm_castSucc, symm_last]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blk_lc {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (b a : Fin n → ℂ) (e : ℂ) (j : Fin n) :
     blk A b a e (Fin.last n) j.castSucc = a j := by
   simp [blk, symm_castSucc, symm_last]
 
 /- English proof (translation)
-Simplify using `[blk, symm_last]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blk_ll {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (b a : Fin n → ℂ) (e : ℂ) :
     blk A b a e (Fin.last n) (Fin.last n) = e := by
   simp [blk, symm_last]
 
 /- English proof (translation)
-Unfold `blk`. Rewrite using `[Matrix.reindex_apply, Matrix.reindex_apply, Matrix.reindex_apply, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]`. Use `congr 2`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Matrix.vecMulVec_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Matrix.mulVec, dotProduct, mul_comm]`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Matrix.vecMul, dotProduct]`. Use extensionality with `i j`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Simplify using `[Matrix.mul_apply, dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blk_mul {n : ℕ} (A A' : Matrix (Fin n) (Fin n) ℂ) (b a b' a' : Fin n → ℂ) (e e' : ℂ) :
     blk A b a e * blk A' b' a' e' =
@@ -70,9 +70,9 @@ theorem blk_mul {n : ℕ} (A A' : Matrix (Fin n) (Fin n) ℂ) (b a b' a' : Fin n
   · ext i j; simp [Matrix.mul_apply, dotProduct]
 
 /- English proof (translation)
-Unfold `blk`. Rewrite using `[Matrix.det_reindex_self]`. Establish `h : (Matrix.of fun i (_ : Fin 1) => (0 : Fin n → ℂ) i) = (0 : Matrix (Fin n) (Fin 1) ℂ)`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[h, Matrix.det_fromBlocks_zero₁₂]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_blk_col_zero {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (a : Fin n → ℂ) (e : ℂ) :
     (blk A 0 a e).det = A.det * e := by
@@ -84,9 +84,9 @@ theorem det_blk_col_zero {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (a : Fin n �
   simp
 
 /- English proof (translation)
-Unfold `blk`. Rewrite using `[Matrix.det_reindex_self]`. Establish `h : (Matrix.of fun (_ : Fin 1) j => (0 : Fin n → ℂ) j) = (0 : Matrix (Fin 1) (Fin n) ℂ)`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[h, Matrix.det_fromBlocks_zero₂₁]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_blk_row_zero {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (b : Fin n → ℂ) (e : ℂ) :
     (blk A b 0 e).det = A.det * e := by
@@ -98,9 +98,9 @@ theorem det_blk_row_zero {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (b : Fin n �
   simp
 
 /- English proof (translation)
-Establish `h : (upper v).BlockTriangular id`. Introduce `i j hij`. Establish `hij' : j < i` using `hij`. Simplify using `[upper, strictUpper, Matrix.one_apply, hij'.ne', not_lt.2 hij'.le]`. Rewrite using `[Matrix.det_of_isUpperTriangular h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[upper, strictUpper]`.
+Simplify using the standard rewrite rules.
 -/
 theorem det_upper {d : ℕ} (v : UT d → ℂ) : (upper v).det = 1 := by
   have h : (upper v).BlockTriangular id := by
@@ -111,22 +111,22 @@ theorem det_upper {d : ℕ} (v : UT d → ℂ) : (upper v).det = 1 := by
   simp [upper, strictUpper]
 
 /- English proof (translation)
-Simplify using `[wMat, Matrix.mul_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem wMat_mul_apply {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) :
     (wMat n * A) i j = A i.rev j := by
   simp [wMat, Matrix.mul_apply]
 
 /- English proof (translation)
-Simplify using `[wMat, Matrix.mulVec, dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem wMat_mulVec_apply {n : ℕ} (B : Fin n → ℂ) (i : Fin n) : (wMat n *ᵥ B) i = B i.rev := by
   simp [wMat, Matrix.mulVec, dotProduct]
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_succ_row_zero]`. Rewrite using `[Finset.sum_eq_single (Fin.last n)]`. Establish `h : (wMat (n + 1)).submatrix Fin.succ (Fin.last n).succAbove = wMat n`. Use extensionality with `i j`. Simplify using `[wMat, Fin.rev_succ]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[h]`. Simplify using `[wMat]`. Introduce `j _ hj`. Simplify using `[wMat, hj]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem det_wMat_succ (n : ℕ) : (wMat (n + 1)).det = (-1) ^ n * (wMat n).det := by
   rw [Matrix.det_succ_row_zero]
@@ -141,7 +141,7 @@ theorem det_wMat_succ (n : ℕ) : (wMat (n + 1)).det = (-1) ^ n * (wMat n).det :
   · simp
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[det_wMat_succ]`. Conclude with `mul_ne_zero (pow_ne_zero _ (by norm_num)) ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_wMat_ne_zero (n : ℕ) : (wMat n).det ≠ 0 := by
   induction n with
@@ -157,9 +157,9 @@ namespace Formalism.FourierDecayAlt.P
 open Formalism.FourierDecayAlt.G Formalism.FourierDecayAlt.P.G2
 
 /- English proof (translation)
-Introduce `β x y`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `[psi, mul_add, Complex.exp_add]`. Simplify using `only [psi]`. Rewrite using `[mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Complex.norm_exp_ofReal_mul_I _`. Simplify using `[psi]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem additive_character_psi : Formalism.FourierDecayAlt.G.PsiChar := by
   intro β x y
@@ -169,17 +169,17 @@ theorem additive_character_psi : Formalism.FourierDecayAlt.G.PsiChar := by
   · simp [psi]
 
 /- English proof (translation)
-Introduce `n p q`. Establish `key : ∀ p q : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ, IsUpperUni p → IsUpperUni q → superSum (p * q) = superSum p + superSum q`. Introduce `p q hp hq`. Simplify using `only [superSum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.mul_apply]`. Establish `hne : i.castSucc ≠ i.succ` using `(Fin.castSucc_lt_succ).ne`. Rewrite using `[Finset.sum_eq_add i.castSucc i.succ hne]`. Rewrite using `[hp.1, hq.1]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Introduce `k _ hk`. Break down `lt_trichotomy k i.castSucc with h | h | h` into its components or cases. Rewrite using `[hp.2 _ _ h]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `absurd h hk.1`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `: i.succ < k`. Break down `lt_or_eq_of_le (Fin.castSucc_lt_iff_succ_le.1 h) with h' | h'` into its components or cases. Conclude with `h'`. Conclude with `absurd h'.symm hk.2`. Rewrite using `[hq.2 _ _ this]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use `⟨key p q, fun hp hq => ?_⟩` and prove the remaining obligations. Use `key qᵀ pᵀ hq hp` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e : ∀ l : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ, subSum l = superSum lᵀ` using `fun l => rfl`. Rewrite using `[e, e, e, Matrix.transpose_mul, this]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem character_additive : Formalism.FourierDecayAlt.G.CharAdditive := by
   intro n p q
@@ -209,13 +209,13 @@ theorem character_additive : Formalism.FourierDecayAlt.G.CharAdditive := by
   rw [e, e, e, Matrix.transpose_mul, this]; ring
 
 /- English proof (translation)
-Introduce `n` and use `⟨det_wMat_succ n, det_wMat_ne_zero n⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem det_weyl_matrix : Formalism.FourierDecayAlt.G.DetMatch :=
   fun n => ⟨det_wMat_succ n, det_wMat_ne_zero n⟩
 
 /- English proof (translation)
-Use `⟨fun n t c p => ?_, fun d z v => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_mul, Matrix.det_mul, lowRow, ptBlock, det_blk_col_zero, det_blk_col_zero, det_blk_row_zero, det_upper, Matrix.det_smul] simp`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Matrix.det_mul, det_upper, ptLong, Matrix.det_smul] simp`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem det_orbit : Formalism.FourierDecayAlt.G.DetOrbit := by
   refine ⟨fun n t c p => ?_, fun d z v => ?_⟩
@@ -226,9 +226,9 @@ theorem det_orbit : Formalism.FourierDecayAlt.G.DetOrbit := by
     simp; ring
 
 /- English proof (translation)
-Introduce `n t c p`. Take `⟨a, v, b⟩` from `p`. Simplify using `only [lowRow, ptBlock, Mcoord, blk_mul, Xof, rhoOf, upper]`. Use `congr 1`. Simplify using `[Matrix.mul_add, Matrix.mul_smul, Matrix.smul_mul, smul_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Use extensionality with `i`. Simplify using `[Matrix.mulVec_smul, Matrix.smul_mulVec]`. Simplify using `[Matrix.vecMul_smul, Matrix.mul_add, Matrix.vecMul_add, smul_add, Matrix.smul_vecMul, ← Matrix.vecMul_vecMul]`. Simplify using `[Matrix.mulVec_smul, Matrix.vecMul_smul, Matrix.dotProduct_mulVec, add_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem matrix_entries : Formalism.FourierDecayAlt.G.EntriesM := by
   intro n t c p
@@ -242,17 +242,17 @@ theorem matrix_entries : Formalism.FourierDecayAlt.G.EntriesM := by
   · simp [Matrix.mulVec_smul, Matrix.vecMul_smul, Matrix.dotProduct_mulVec, add_comm]
 
 /- English proof (translation)
-Introduce `m t σ X B ρ hX`. Use `⟨fun i j hij => ?_, fun i j hij => ?_, fun k => ?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨i', rfl⟩ : ∃ i' : Fin (m + 1), i = i'.castSucc` from `⟨⟨i, by omega⟩, Fin.ext rfl⟩`. Take `⟨j', rfl⟩ : ∃ j' : Fin (m + 1), j = j'.castSucc` from `⟨⟨j, by omega⟩, Fin.ext rfl⟩`. Establish `hlt : j' < i'.rev`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Fin.lt_def, Fin.val_rev]`. Simplify using `only [Fin.val_castSucc] at hij`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Mcoord, blk_cc, wMat_mul_apply]`. Simplify using `[Matrix.one_apply, hlt.ne', hX _ _ hlt.le]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨i', rfl⟩ : ∃ i' : Fin (m + 1), i = i'.castSucc` from `⟨⟨i, by omega⟩, Fin.ext rfl⟩`. Take `⟨j', rfl⟩ : ∃ j' : Fin (m + 1), j = j'.castSucc` from `⟨⟨j, by omega⟩, Fin.ext rfl⟩`. Establish `heq : i'.rev = j'`. Apply `Fin.ext` to reduce the goal to its premises. Rewrite using `[Fin.val_rev]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Fin.val_castSucc] at hij`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Mcoord, blk_cc, wMat_mul_apply, heq]`. Simplify using `[hX _ _ le_rfl]`. Rewrite using `[Mcoord, xOf]`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Fin.lastCases ?_ (fun k' => ?_) k` and prove the remaining obligations. Rewrite using `[Fin.succ_last, blk_cl, blk_cl, wMat_mulVec_apply, Fin.rev_rev]`. Rewrite using `[Fin.succ_castSucc, blk_cc, blk_cc, wMat_mul_apply, Fin.rev_rev]`. Establish `hne : k'.castSucc ≠ k'.succ` using `(Fin.castSucc_lt_succ).ne`. Simplify using `[Matrix.one_apply, hne]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h0 : (0 : Fin (m + 1 + 1)) = (0 : Fin (m + 1)).castSucc` using `rfl`. Rewrite using `[Mcoord, h0, blk_lc]`. Rewrite using `[Mcoord, blk_ll]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem shape_of_matrix : Formalism.FourierDecayAlt.G.ShapeM := by
   intro m t σ X B ρ hX
@@ -289,19 +289,19 @@ theorem shape_of_matrix : Formalism.FourierDecayAlt.G.ShapeM := by
   · rw [Mcoord, blk_ll]
 
 /- English proof (translation)
-Introduce `m t ht p`. Take `⟨a, v, b⟩` from `p`. Establish `h1 : subSum (lowRow a) = a (Fin.last m)`. Rewrite using `[subSum, Fin.sum_univ_castSucc, Finset.sum_eq_zero, zero_add, Fin.succ_last, lowRow, blk_lc]`. Introduce `i _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hne : i.succ ≠ i.castSucc` using `(Fin.castSucc_lt_succ).ne'`. Rewrite using `[Fin.succ_castSucc, lowRow, blk_cc, Matrix.one_apply_ne hne]`. Establish `h2 : rhoOf t a v 0 = t * a (Fin.last m)`. Simplify using `only [rhoOf, Pi.smul_apply, smul_eq_mul, Matrix.vecMul, dotProduct, wMat_mul_apply]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Finset.sum_eq_single (Fin.last m)]`. Simplify using `[upper, strictUpper]`. Introduce `i _ hi`. Establish `hne : i.rev ≠ 0`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hi` to reduce the goal to its premises. Rewrite using `[← Fin.rev_rev i, h, Fin.rev_zero]`. Establish `hnl : ¬ i.rev < 0` using `by simp`. Simplify using `[upper, strictUpper, Matrix.one_apply_ne hne]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `h3 : ∀ k : Fin (m + 1), xOf (Xof t v) (t • b) k = t * blk (upper v) b 0 1 k.castSucc k.succ`. Introduce `k`. Rewrite using `[xOf]`. Use `Fin.lastCases ?_ (fun k' => ?_) k` and prove the remaining obligations. Rewrite using `[Fin.succ_last, blk_cl, blk_cl]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[Fin.succ_castSucc, blk_cc, blk_cc]`. Establish `hne : k'.castSucc ≠ k'.succ` using `(Fin.castSucc_lt_succ).ne`. Simplify using `[Xof, upper, Matrix.one_apply_ne hne]`. Use `show subSum (lowRow a) + superSum (blk (upper v) b 0 1) = (rhoOf t a v 0 + ∑ k, xOf (Xof t v) (t • b) k) / t`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, h2, superSum, Finset.sum_congr rfl (fun k _ => h3 k), ← Finset.mul_sum]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem phase_formula : Formalism.FourierDecayAlt.G.PhaseFormula := by
   intro m t ht p

@@ -15,9 +15,9 @@ open ReciprocityTheory.ChartRestriction.DS ReciprocityTheory.ChartRestriction.DS
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `h1` using `congrFun (congrFun hX.2 a) b`. Simplify using `only [Matrix.mul_apply, Matrix.neg_apply, Jm, Matrix.diagonal_apply, mul_ite, mul_zero, ite_mul, zero_mul, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true] at h1`. Rewrite `h1` using `[h]`. Use `split_ifs at h1 with hb`. Establish `: (2 : ℂ) * X a b = 0` using `by linear_combination h1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Establish `: (2 : ℂ) * X a b = 0` using `by linear_combination -h1`. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem inP_entry_zero {ε : Fin n → Bool} {X : Matrix (Fin n) (Fin n) ℂ} (hX : inP ε X) {a b : Fin n}
     (h : ε a = ε b) : X a b = 0 := by
@@ -32,15 +32,13 @@ theorem inP_entry_zero {ε : Fin n → Bool} {X : Matrix (Fin n) (Fin n) ℂ} (h
     simpa using this
 
 /- English proof (translation)
-Use `⟨fun ab => X ab.1.1 ab.1.2, ?_⟩` and prove the remaining obligations. Establish `hH` using `isHermitian_of_mem_noncompactPart' hX`. Use extensionality with `a b`. Simplify using `only [pmat]`. Distinguish the cases in `h1 : b < a ∧ ε a ≠ ε b`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[dif_pos h1]`. Rewrite using `[dif_neg h1]`. Distinguish the cases in `h2 : a < b ∧ ε b ≠ ε a`. Rewrite using `[dif_pos h2]`. Use `congrFun (congrFun hH a) b` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Matrix.conjTranspose_apply] at this`. Conclude with `this`. Rewrite using `[dif_neg h2]`. Distinguish the cases in `he : ε a = ε b`. Conclude with `(inP_entry_zero hX he).symm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hab : a = b`. Assume the negation of the conclusion as `hne`. Break down `lt_or_gt_of_ne hne with h | h` into its components or cases. Conclude with `h2 ⟨h, Ne.symm he⟩`. Conclude with `h1 ⟨h, he⟩`.
-
-Substitute `hab` using the available equality. Conclude with `absurd rfl he`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem exists_pmat {ε : Fin n → Bool} {X : Matrix (Fin n) (Fin n) ℂ} (hX : inP ε X) :
     ∃ z : PCoord ε → ℂ, pmat z = X := by
@@ -68,9 +66,9 @@ theorem exists_pmat {ε : Fin n → Bool} {X : Matrix (Fin n) (Fin n) ℂ} (hX :
         exact absurd rfl he
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `exists_pmat hX`. Establish `h0` using `fi_nonneg z i`. Establish `hp` using `(lead_posDef (exp_noncompactPart_posDef hX) i hi).1`. Unfold `Fi at h0`. Establish `e : Del (NormedSpace.exp (pmat z)) i = lead i (NormedSpace.exp (pmat z))` using `rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Rewrite `h0` using `[e]`. Conclude with `(Real.log_nonneg_iff hp).1 h0`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_le_lead_exp {ε : Fin n → Bool} {X : Matrix (Fin n) (Fin n) ℂ} (hX : inP ε X) (i : ℕ) (hi : i ≤ n) :
     1 ≤ (lead i (NormedSpace.exp X)).re := by
@@ -83,9 +81,9 @@ theorem one_le_lead_exp {ε : Fin n → Bool} {X : Matrix (Fin n) (Fin n) ℂ} (
   exact (Real.log_nonneg_iff hp).1 h0
 
 /- English proof (translation)
-Unfold `muNext Dz`. Use `split_ifs with h`. Simplify using `only`. Use linear arithmetic over natural numbers and integers. Establish `: (i : ℕ) + 1 = n` using `by omega`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem dz_sub_muNext_nonneg (i : Fin n) : 0 ≤ Dz n i - muNext (Dz n) i := by
   unfold muNext Dz
@@ -96,13 +94,11 @@ theorem dz_sub_muNext_nonneg (i : Fin n) : 0 ≤ Dz n i - muNext (Dz n) i := by
     omega
 
 /- English proof (translation)
-Introduce `n ε X hX k`. Take `⟨hP, hE⟩` from `inP_conj k⁻¹ hX`. Rewrite `hP`, `hE` using `[inv_inv]`. Unfold `phiK`. Rewrite using `[← hE]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `set Y := toMK k⁻¹ * X * toMK k with hY`. Establish `hpd` using `exp_noncompactPart_posDef hP`. Establish `hr : ∀ i : Fin n, lead ((i : ℕ) + 1) (NormedSpace.exp Y) = ((lead ((i : ℕ) + 1) (NormedSpace.exp Y)).re : ℂ)` using `fun i => Complex.ext (by simp) (by simp [(lead_posDef hpd _ i.isLt).2])`. Establish `hphi : PhiM (Dz n) (NormedSpace.exp Y) = ((∏ i : Fin n, (lead ((i : ℕ) + 1) (NormedSpace.exp Y)).re ^ (-(Dz n i - muNext (Dz n) i)) : ℝ) : ℂ)`. Unfold `PhiM`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Complex.ofReal_prod]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hr i, Complex.ofReal_zpow, Complex.ofReal_re]`. Rewrite using `[hphi, Complex.ofReal_re]`. Use `Finset.prod_le_one (fun i _ => zpow_nonneg (zero_le_one.trans (one_le_lead_exp hP _ i.isLt)) _) fun i _ => ?_` and prove the remaining obligations.
-
-Conclude with `zpow_le_one_of_nonpos₀ (one_le_lead_exp hP _ i.isLt) (neg_nonpos.2 (dz_sub_muNext_nonneg i))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem phiLe : PhiLe := by
   intro n ε X hX k

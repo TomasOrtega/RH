@@ -15,11 +15,11 @@ open Filter Topology MeasureTheory GlobalTheory.PRep GlobalTheory.SplitWeil Glob
 namespace GlobalTheory.CompanionTheory.CoeffBound
 
 /- English proof (translation)
-Establish `hfin : Set.Finite (T.HasEigenvalue : Set ℂ)` using `Module.End.finite_hasEigenvalue T`. Set `s : Finset ℝ` to `insert 0 (hfin.toFinset.image fun μ => ‖μ‖)`. Establish `hs : s.Nonempty` using `Finset.insert_nonempty _ _`. Establish `hM : s.max' hs < b`. Rewrite using `[Finset.max'_lt_iff]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `y hy`. Break down `Finset.mem_insert.1 hy with rfl | hy` into its components or cases. Conclude with `hb0`. Take `⟨μ, hμ, rfl⟩` from `Finset.mem_image.1 hy`. Conclude with `hb μ (hfin.mem_toFinset.1 hμ)`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h0 : 0 ≤ s.max' hs` using `Finset.le_max' _ _ (Finset.mem_insert_self _ _)`. Use `⟨(s.max' hs + b) / 2, by linarith, by linarith, fun μ hμ => ?_⟩` and prove the remaining obligations. Establish `h1 : ‖μ‖ ≤ s.max' hs` using `Finset.le_max' _ _ (Finset.mem_insert_of_mem (Finset.mem_image_of_mem _ (hfin.mem_toFinset.2 hμ)))`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_radius {W : Type} [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W]
     (T : Module.End ℂ W) (b : ℝ) (hb0 : 0 < b)
@@ -43,11 +43,11 @@ theorem exists_radius {W : Type} [AddCommGroup W] [Module ℂ W] [FiniteDimensio
   linarith
 
 /- English proof (translation)
-Set `e : W ≃ₗ[ℂ] (Fin (Module.finrank ℂ W) → ℂ)` to `(Module.finBasis ℂ W).equivFun`. Set `φ : Module.End ℂ W →ₐ[ℂ] ((Fin (Module.finrank ℂ W) → ℂ) →L[ℂ] (Fin (Module.finrank ℂ W) → ℂ))` to `(Module.End.toContinuousLinearMap (𝕜 := ℂ) (Fin (Module.finrank ℂ W) → ℂ)).toAlgHom.comp (e.conjAlgEquiv ℂ).toAlgHom`. Establish `hφ : ∀ (S : Module.End ℂ W) (x : Fin (Module.finrank ℂ W) → ℂ), φ S x = e (S (e.symm x))`. Introduce `S x`. Simplify using `[φ, LinearEquiv.conjAlgEquiv_apply]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Use `⟨_, e, φ, fun S x => by rw [hφ]; simp, fun S μ h => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `h.exists_hasEigenvector`. Establish `hx1 : φ S x = μ • x` using `Module.End.mem_eigenspace_iff.1 hx.1`. Rewrite `hx1` using `[hφ]`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Module.End.hasEigenvalue_of_hasEigenvector (x := e.symm x) ⟨Module.End.mem_eigenspace_iff.2 ?_, fun h0 => hx.2 (by simpa using h0)⟩` and prove the remaining obligations. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[hx1]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_coordinates (W : Type) [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W] :
     ∃ (d : ℕ) (e : W ≃ₗ[ℂ] (Fin d → ℂ))
@@ -75,7 +75,7 @@ theorem exists_coordinates (W : Type) [AddCommGroup W] [Module ℂ W] [FiniteDim
   simp
 
 /- English proof (translation)
-Use `Units.ext ?_` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `[Zls.diagPow, Matrix.one_apply, Matrix.diagonal_apply]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem diagPow_zero (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (N : ℕ) : Zls.diagPow k N 0 = 1 := by
@@ -84,18 +84,18 @@ theorem diagPow_zero (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
   simp [Zls.diagPow, Matrix.one_apply, Matrix.diagonal_apply]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[Zls.lamOf]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem lamOf_zero (N : ℕ) : Zls.lamOf (0 : Fin (N - 1) → ℕ) = 0 := by
   funext i
   simp [Zls.lamOf]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Rewrite using `[Pi.single_zero, lamOf_zero, diagPow_zero, pow_zero]`. Introduce `v l _`. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Consider the case `succ n ih`. Establish `hs : (Pi.single j (n + 1) : Fin (N - 1) → ℕ) = Pi.single j n + Pi.single j 1`. Rewrite using `[← Pi.single_add]`. Rewrite using `[hs, ((GlobalTheory.CompanionTheory.LamOf.lamOf_add_and_single N).1 _ _), pow_succ]`. Use `GlobalTheory.CompanionTheory.HeckeOpMul.isHeckeOp_mul k N V π hsm m hm _ _ ((GlobalTheory.CompanionTheory.LamGap.lamOf_antitone_gap_sum N _).1) ((GlobalTheory.CompanionTheory.LamGap.lamOf_antitone_gap_sum N _).1) _ _ ih ?_` and prove the remaining obligations.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[(GlobalTheory.CompanionTheory.LamOf.lamOf_add_and_single N).2 j]`. Conclude with `hT`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hecke_pow {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {N : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
@@ -117,9 +117,9 @@ theorem hecke_pow {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     exact hT
 
 /- English proof (translation)
-Establish `h1 : ρ ^ 2 < (q ^ (-((a : ℝ) / 2))) ^ 2` using `pow_lt_pow_left₀ h h0 (by norm_num)`. Establish `h2 : (q ^ (-((a : ℝ) / 2))) ^ 2 = (q ^ a)⁻¹`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hq.le, ← Real.rpow_natCast q a, ← Real.rpow_neg hq.le]`. Use `congr 1`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `h1` using `[h2]`. Establish `h3 : 0 < q ^ a` using `pow_pos hq a`. Combine the equalities or inequalities in the displayed calculation.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem radius_sq_lt {q ρ : ℝ} (hq : 0 < q) (a : ℕ) (h0 : 0 ≤ ρ)
     (h : ρ < q ^ (-((a : ℝ) / 2))) : q ^ a * ρ ^ 2 < 1 := by
@@ -135,25 +135,23 @@ theorem radius_sq_lt {q ρ : ℝ} (hq : 0 < q) (a : ℕ) (h0 : 0 ≤ ρ)
     _ = 1 := mul_inv_cancel₀ h3.ne'
 
 /- English proof (translation)
-Introduce `k _ _ _ _ N V _ _ π hsm hadm hsp m hm v hv l hl`. Establish `hfd : FiniteDimensional ℂ (fixed π (Zls.Km k N m))` using `hadm.2 _ (GlobalTheory.CompanionTheory.KmTop.isOpen_Km N m) (GlobalTheory.CompanionTheory.KmTop.isCompact_Km N m)`. Establish `hq : (0 : ℝ) < (Nat.card 𝓀[k] : ℝ)`. Conclude with `Nat.card_pos` after adjusting the coercions. Take `⟨d, e, φ, hφ, hev⟩` from `exists_coordinates (fixed π (Zls.Km k N m))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose T hT using fun j : Fin (N - 1) => GlobalTheory.CompanionTheory.HeckeKm.exists_isHeckeOp k N V π hsm m (Zls.diagPow k N (Zls.omegaVec N ((j : ℕ) + 1)))`. Establish `hrad` using `fun j : Fin (N - 1) => exists_radius (T j) _ (Real.rpow_pos_of_pos hq (-(((((((j : ℕ) + 1) * (N - ((j : ℕ) + 1))) : ℕ) : ℝ)) / 2))) (fun μ hμ => hsp m hm ((j : ℕ) + 1) (by omega) (by omega) (T j) (hT j) μ hμ)`. Use `choose ρ hρ0 hρb hρe using hrad`. Establish `hC` using `fun j : Fin (N - 1) => GlobalTheory.CompanionTheory.SpecBound.norm_pow_le_of_eigenvalues_lt (Fin d → ℂ) (φ (T j)) (ρ j) (fun μ hμ => hρe j μ (hev _ _ hμ))`. Use `choose C hC using hC`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Establish `hprod : ∀ (g : Fin (N - 1) → ℕ) (s : Finset (Fin (N - 1))), ∃ S : Module.End ℂ (fixed π (Zls.Km k N m)), Zls.IsHeckeOp π m (Zls.diagPow k N (Zls.lamOf fun j => if j ∈ s then g j else 0)) S ∧ ‖φ S‖ ≤ ∏ j ∈ s, C j * ρ j ^ g j` using `by classical`. Introduce `g s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Use `⟨1, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : (fun j : Fin (N - 1) => if j ∈ (∅ : Finset (Fin (N - 1))) then g j else 0) = 0`. Use function extensionality and compare the values at `j`. Simplify using the standard rewrite rules. Rewrite using `[h0, lamOf_zero, diagPow_zero]`. Introduce `v l _`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Simplify using the standard rewrite rules. Rewrite using `[map_one, Finset.prod_empty]`. Conclude with `ContinuousLinearMap.norm_id_le`. Consider the case `insert a s ha ih`. Take `⟨S, hS, hn⟩` from `ih`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Use `⟨T a ^ g a * S, ?_, ?_⟩` and prove the remaining obligations. Establish `hsplit : (fun j : Fin (N - 1) => if j ∈ insert a s then g j else 0) = (Pi.single a (g a) : Fin (N - 1) → ℕ) + fun j => if j ∈ s then g j else 0`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = a`. Substitute `hj` using the available equality.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Simplify using `[ha]`. Simplify using `[hj]`. Rewrite using `[hsplit, (GlobalTheory.CompanionTheory.LamOf.lamOf_add_and_single N).1]`. Conclude with `GlobalTheory.CompanionTheory.HeckeOpMul.isHeckeOp_mul k N V π hsm m hm _ _ ((GlobalTheory.CompanionTheory.LamGap.lamOf_antitone_gap_sum N _).1) ((GlobalTheory.CompanionTheory.LamGap.lamOf_antitone_gap_sum N _).1) _ _ (hecke_pow π hsm hm a (T a) (hT a) (g a)) hS`. Rewrite using `[map_mul, map_pow, Finset.prod_insert ha]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `(norm_mul_le _ _).trans (mul_le_mul (hC a (g a)) hn (norm_nonneg _) ((norm_nonneg _).trans (hC a (g a))))`. Set `L : (Fin d → ℂ) →L[ℂ] ℂ` to `LinearMap.toContinuousLinearMap (l ∘ₗ (fixed π (Zls.Km k N m)).subtype ∘ₗ (e.symm : (Fin d → ℂ) →ₗ[ℂ] _))`. Set `w : Fin d → ℂ` to `e ⟨v, hv⟩`. Use `⟨‖L‖ * ‖w‖ * ∏ j, C j, ρ, hρ0, fun j => ?_, fun g => ?_⟩` and prove the remaining obligations. Conclude with `radius_sq_lt hq _ (hρ0 j) (hρb j)`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨S, hS, hn⟩` from `hprod g Finset.univ`. Establish `hg : (fun j : Fin (N - 1) => if j ∈ (Finset.univ : Finset (Fin (N - 1))) then g j else 0) = g`. Use function extensionality and compare the values at `j`. Simplify using the standard rewrite rules. Rewrite `hS` using `[hg]`.
-
-Establish `h1 : l (π (Zls.diagPow k N (Zls.lamOf g)) v) = L (φ S w)`. Rewrite using `[show π (Zls.diagPow k N (Zls.lamOf g)) v = π (Zls.diagPow k N (Zls.lamOf g)) ((⟨v, hv⟩ : fixed π (Zls.Km k N m)) : V) from rfl, hS ⟨v, hv⟩ l hl, hφ]`. Simplify using `[L]`. Rewrite `*` using `[h1, Finset.prod_mul_distrib]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the hypotheses and the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem coeff_bound : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (N : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin N) k) V), IsSmooth π → IsAdmissible π → Zls.HeckeSpectral π → ∀ m : ℕ, 1 ≤ m → ∀ v ∈ fixed π (Zls.Km k N m), ∀ l : Module.Dual ℂ V, (∀ x ∈ Zls.Km k N m, l ∘ₗ π x = l) → ∃ (C : ℝ) (ρ : Fin (N - 1) → ℝ), (∀ j, 0 ≤ ρ j) ∧ (∀ j : Fin (N - 1), (Nat.card 𝓀[k] : ℝ) ^ (((j : ℕ) + 1) * (N - ((j : ℕ) + 1))) * ρ j ^ 2 < 1) ∧ ∀ g : Fin (N - 1) → ℕ, ‖l (π (Zls.diagPow k N (Zls.lamOf g)) v)‖ ≤ C * ∏ j, ρ j ^ g j := by
   intro k _ _ _ _ N V _ _ π hsm hadm hsp m hm v hv l hl

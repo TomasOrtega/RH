@@ -8,7 +8,7 @@ open scoped TensorProduct
 namespace GlobalTheory.CompanionTheory.AdelicChar
 
 /- English proof (translation)
-Introduce `h F _ _ hF`. Take `⟨ψ, h1, h2, h3, h4, -⟩` from `h F hF`. Conclude with `⟨ψ, h1, h2, h3, h4⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isCharAF_of_std :
     HeckeCharacterZeroLocus.StdAdditiveCharExists → ∀ (F : Type) [Field F] [NumberField F], NumberField.IsTotallyReal F →
@@ -18,7 +18,7 @@ theorem exists_isCharAF_of_std :
   exact ⟨ψ, h1, h2, h3, h4⟩
 
 /- English proof (translation)
-The claim follows from `exists_isCharAF_of_std PI.Bridge.bridge_stdAddChar F hF`.
+A detailed English derivation is pending.
 -/
 theorem exists_isCharAF (F : Type) [Field F] [NumberField F] (hF : NumberField.IsTotallyReal F) :
     ∃ ψ, IsCharAF F ψ :=

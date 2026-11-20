@@ -25,21 +25,21 @@ variable {K L L' : Type*} [Field K] [Field L] [Field L'] [Algebra K L] [Algebra 
   [Algebra L L'] [IsScalarTower K L L'] [Normal K L]
 
 /- English proof (translation)
-The claim follows from `AlgEquiv.restrictNormal_commutes σ L x`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_restrictNormalHom (σ : L' ≃ₐ[K] L') (x : L) :
     algebraMap L L' (AlgEquiv.restrictNormalHom L σ x) = σ (algebraMap L L' x) :=
   AlgEquiv.restrictNormal_commutes σ L x
 
 /- English proof (translation)
-Rewrite using `[Algebra.smul_def, Algebra.smul_def, map_mul, algebraMap_restrictNormalHom]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_smul_restrictNormalHom (σ : L' ≃ₐ[K] L') (c : L) (y : L') :
     σ (c • y) = AlgEquiv.restrictNormalHom L σ c • σ y := by
   rw [Algebra.smul_def, Algebra.smul_def, map_mul, algebraMap_restrictNormalHom]
 
 /- English proof (translation)
-Use `ext`. Conclude with `algebraMap_restrictNormalHom σ (m : L)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem unitsMap_smul (σ : L' ≃ₐ[K] L') (m : Lˣ) :
     Units.map (algebraMap L L' : L →* L') (AlgEquiv.restrictNormalHom L σ • m) =
@@ -64,7 +64,7 @@ theorem val_inflate (f : (L ≃ₐ[K] L) × (L ≃ₐ[K] L) → Lˣ) (p : (L' �
 variable (L') in
 
 /- English proof (translation)
-The claim follows from `(H2mul.mapCocycles₂ (AlgEquiv.restrictNormalHom L) (Units.map (algebraMap L L' : L →* L')) unitsMap_smul ⟨f, hf⟩).2`.
+A detailed English derivation is pending.
 -/
 theorem isMulCocycle₂_inflate {f : (L ≃ₐ[K] L) × (L ≃ₐ[K] L) → Lˣ} (hf : IsMulCocycle₂ f) :
     IsMulCocycle₂ (inflate L' f) :=
@@ -81,7 +81,7 @@ def galMatrix (σ : L' ≃ₐ[K] L') : Matrix ι ι L :=
 omit [DecidableEq ι] in
 
 /- English proof (translation)
-Use `conv_lhs => rw [← b.sum_repr x]`. Simplify using `only [map_sum, map_smul_restrictNormalHom, map_smul, Finsupp.coe_finsetSum, Finset.sum_apply, Finsupp.smul_apply, smul_eq_mul, galMatrix]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem repr_apply_algEquiv (σ : L' ≃ₐ[K] L') (x : L') (i : ι) :
     b.repr (σ x) i = ∑ j, galMatrix b σ i j * AlgEquiv.restrictNormalHom L σ (b.repr x j) := by
@@ -93,7 +93,7 @@ theorem repr_apply_algEquiv (σ : L' ≃ₐ[K] L') (x : L') (i : ι) :
 omit [DecidableEq ι] in
 
 /- English proof (translation)
-Use extensionality with `i k`. Express the relevant statement in the definitionally equal form `b.repr ((σ * τ) (b k)) i = _`. Rewrite using `[AlgEquiv.mul_apply, repr_apply_algEquiv, Matrix.mul_apply]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem galMatrix_mul (σ τ : L' ≃ₐ[K] L') :
     galMatrix b (σ * τ) = galMatrix b σ * (galMatrix b τ).map (AlgEquiv.restrictNormalHom L σ) := by
@@ -105,7 +105,7 @@ theorem galMatrix_mul (σ τ : L' ≃ₐ[K] L') :
 omit [Algebra K L] [IsScalarTower K L L'] [Normal K L] [Fintype ι] in
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [galMatrix, AlgEquiv.one_apply, Module.Basis.repr_self, Finsupp.single_apply, Matrix.one_apply]`. Conclude with `if_congr eq_comm rfl rfl`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem galMatrix_one : galMatrix b (1 : L' ≃ₐ[K] L') = 1 := by
   ext i j
@@ -114,9 +114,9 @@ theorem galMatrix_one : galMatrix b (1 : L' ≃ₐ[K] L') = 1 := by
   exact if_congr eq_comm rfl rfl
 
 /- English proof (translation)
-Use extensionality with `i k`. Establish `h : b.repr (σ (a * b k)) i = ∑ j, galMatrix b σ i j * AlgEquiv.restrictNormalHom L σ (Algebra.leftMulMatrix b a j k)`. Rewrite using `[repr_apply_algEquiv]`. Simplify using `only [Algebra.leftMulMatrix_eq_repr_mul]`. Rewrite using `[Matrix.mul_apply, Matrix.mul_apply]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.map_apply]`. Rewrite using `[← h, map_mul, ← Algebra.leftMulMatrix_mulVec_repr]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem galMatrix_mul_leftMulMatrix (σ : L' ≃ₐ[K] L') (a : L') :
     galMatrix b σ * (Algebra.leftMulMatrix b a).map (AlgEquiv.restrictNormalHom L σ) =
@@ -155,7 +155,7 @@ theorem inflateIncl_apply (a : L') :
 omit [IsScalarTower K L L'] [Normal K L] in
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.diagonal_mul, Matrix.mul_diagonal, Matrix.map_apply, u_mul_incl]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem diagonal_u_mul_map_incl (τ : L ≃ₐ[K] L) (M : Matrix ι ι L) :
     (Matrix.diagonal fun _ => (u τ : CrossedProduct hf)) * M.map incl =
@@ -166,7 +166,7 @@ theorem diagonal_u_mul_map_incl (τ : L ≃ₐ[K] L) (M : Matrix ι ι L) :
 omit [IsScalarTower K L L'] [Normal K L] in
 
 /- English proof (translation)
-Rewrite using `[Matrix.diagonal_mul_diagonal, Matrix.algebraMap_eq_diagonal, Matrix.diagonal_map (map_zero _), Matrix.diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `_`. Simplify using `only [Pi.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply]`. Conclude with `u_mul_u σ τ`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem diagonal_u_mul_diagonal_u (σ τ : L ≃ₐ[K] L) :
     (Matrix.diagonal fun _ => (u σ : CrossedProduct hf)) * Matrix.diagonal (fun _ => u τ) =
@@ -180,7 +180,7 @@ theorem diagonal_u_mul_diagonal_u (σ τ : L ≃ₐ[K] L) :
   exact u_mul_u σ τ
 
 /- English proof (translation)
-Rewrite using `[inflateU, inflateIncl_apply, inflateIncl_apply, mul_assoc, diagonal_u_mul_map_incl, ← mul_assoc, ← Matrix.map_mul, galMatrix_mul_leftMulMatrix, Matrix.map_mul, mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inflateU_mul_inflateIncl (σ : L' ≃ₐ[K] L') (a : L') :
     inflateU b hf σ * inflateIncl b hf a = inflateIncl b hf (σ a) * inflateU b hf σ := by
@@ -188,7 +188,7 @@ theorem inflateU_mul_inflateIncl (σ : L' ≃ₐ[K] L') (a : L') :
     ← mul_assoc, ← Matrix.map_mul, galMatrix_mul_leftMulMatrix, Matrix.map_mul, mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[inflateU, inflateU, inflateU, inflateIncl_apply, val_inflate, mul_assoc, ← mul_assoc (Matrix.diagonal _), diagonal_u_mul_map_incl, mul_assoc, diagonal_u_mul_diagonal_u, ← mul_assoc, ← mul_assoc, ← Matrix.map_mul, ← Matrix.map_mul, ← galMatrix_mul, ← map_mul, AlgHom.commutes, ← m …`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inflateU_mul_inflateU (σ τ : L' ≃ₐ[K] L') :
     inflateU b hf σ * inflateU b hf τ =
@@ -200,7 +200,7 @@ theorem inflateU_mul_inflateU (σ τ : L' ≃ₐ[K] L') :
     Algebra.commutes]
 
 /- English proof (translation)
-Rewrite using `[inflateU, inflateIncl_apply, val_inflate, map_one, galMatrix_one, AlgHom.commutes, Matrix.map_one _ (map_zero _) (map_one _), one_mul, u_one, Matrix.algebraMap_eq_diagonal, Matrix.diagonal_map (map_zero _)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem inflateU_one :
     inflateU b hf 1 = inflateIncl b hf (inflate L' f (1, 1) : L') := by
@@ -218,9 +218,9 @@ variable [FiniteDimensional K L] [IsGalois K L] [FiniteDimensional K L'] [IsGalo
   [Nonempty ι]
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (inflateHom b hf)` using `RingHom.injective (inflateHom b hf).toRingHom`. Use `⟨hinj, ?_⟩` and prove the remaining obligations. Establish `hdim : Module.finrank K (CrossedProduct (isMulCocycle₂_inflate L' hf)) = Module.finrank K (Matrix ι ι (CrossedProduct hf))`. Rewrite using `[finrank_eq_sq, Module.finrank_matrix, finrank_eq_sq, ← Module.finrank_eq_card_basis b, ← Module.finrank_mul_finrank K L L']`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank hdim (f := (inflateHom b hf).toLinearMap)).1 hinj`.
+A detailed English derivation is pending.
 -/
 theorem inflateHom_bijective : Function.Bijective (inflateHom b hf) := by
   have hinj : Function.Injective (inflateHom b hf) :=
@@ -251,7 +251,7 @@ variable {K L L' : Type u} [Field K] [Field L] [Field L'] [Algebra K L] [Algebra
 variable (L') in
 
 /- English proof (translation)
-Establish `: FiniteDimensional L L'` using `Module.Finite.of_restrictScalars_finite K L L'`. Establish `: Nonempty (Fin (Module.finrank L L'))` using `⟨⟨0, Module.finrank_pos⟩⟩`. Conclude with `isBrauerEquivalent_of_algEquiv_matrix (C := CrossedProduct hf) (inflateAlgEquiv (Module.finBasis L L') hf) (matrixFinOneAlgEquiv (CrossedProduct hf)).symm`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isBrauerEquivalent_inflate {f : (L ≃ₐ[K] L) × (L ≃ₐ[K] L) → Lˣ} (hf : IsMulCocycle₂ f) :
     IsBrauerEquivalent (csaOf K (CrossedProduct (isMulCocycle₂_inflate L' hf)))
@@ -271,7 +271,7 @@ variable (K L L' : Type u) [Field K] [Field L] [Field L'] [Algebra K L] [Algebra
   [Algebra L L'] [IsScalarTower K L L']
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite `hx`, the goal using `[mem_relBrauer_iff]`. Rewrite using `[← baseChange_baseChange K L L', hx, map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem relBrauer_le_relBrauer : relBrauer K L ≤ relBrauer K L' := by
   intro x hx
@@ -311,7 +311,7 @@ variable {K L L' : Type u} [Field K] [Field L] [Field L'] [Algebra K L] [Algebra
   [FiniteDimensional K L'] [IsGalois K L']
 
 /- English proof (translation)
-Proceed by induction on `x using H2mul.induction_on with`. Consider the case `h c`. Rewrite using `[inflation_mk, toBrauer_mk, toBrauer_mk]`. Conclude with `Quotient.sound (CrossedProduct.isBrauerEquivalent_inflate L' c.2)`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toBrauer_inflation (x : H2mul (L ≃ₐ[K] L) Lˣ) :
     toBrauer K L' (inflation K L L' x) = toBrauer K L x := by
@@ -321,7 +321,7 @@ theorem toBrauer_inflation (x : H2mul (L ≃ₐ[K] L) Lˣ) :
   exact Quotient.sound (CrossedProduct.isBrauerEquivalent_inflate L' c.2)
 
 /- English proof (translation)
-Introduce `x y h`. Apply `toBrauer_injective (K := K) (L := L)` to reduce the goal to its premises. Establish `h'` using `congrArg (toBrauer K L') h`. Rewrite `h'` using `[toBrauer_inflation, toBrauer_inflation]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem inflation_injective : Function.Injective (inflation K L L') := by
   intro x y h

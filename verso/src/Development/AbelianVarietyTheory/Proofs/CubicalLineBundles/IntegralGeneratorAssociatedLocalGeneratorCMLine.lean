@@ -24,11 +24,11 @@ open GlobalTheory GlobalTheory.CM GlobalTheory.Frames GlobalTheory.LamT
 namespace GlobalTheory.LamT.LocGen
 
 /- English proof (translation)
-Establish `hT : Out.SecTwistSt` using `GlobalTheory.lawsFieldsSeparately.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1`. Establish `hp : IsPullback (𝟙 P.A.left) P.A.hom P.A.hom (𝟙 _)` using `IsPullback.of_horiz_isIso ⟨by simp⟩`. Take `⟨th, hth⟩` from `KeyPow.exists_sec_fibre_ne_zero hT P hp`. Take `⟨q, hq, hz⟩` from `hth s`. Take `⟨k, hk, u⟩` from `(mem_nonzeroLocus _ _).1 hz`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `h ⟨fun j => (P.A.left.presheaf.map (homOfLE (fun y hy => mem_pull.2 hy : P.L.U j ≤ (P.L.pull (𝟙 P.A.left)).U (fun _ => j))).op).hom (th.f fun _ => j), fun j j' => fn_ext fun y hy => by`. Establish `h₁ : y ∈ (P.L.pull (𝟙 P.A.left)).U (fun _ => j)` using `mem_pull.2 hy.1`. Establish `h₂ : y ∈ (P.L.pull (𝟙 P.A.left)).U (fun _ => j')` using `mem_pull.2 hy.2`. Use `(gs_res _ y _ hy _).trans ((gs_res _ y _ hy.1 _).trans ((gs_compat th (𝟙 _) y h₁ h₂).trans (Eq.symm ((gs_mul _ y _ hy _ _).trans (congrArg₂ (· * ·) ((gs_unit _ y _ hy _).trans ?_) ((gs_res _ y _ hy _).trans (gs_res _ y _ hy.2 _)))))))` and prove the remaining obligations. Rewrite using `[gm_pull_g P.L (𝟙 _) (𝟙 _) y _ _ h₁ h₂, Category.comp_id]⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hk' : q ∈ P.L.U (k PUnit.unit)` using `mem_pull.1 hk`. Use `⟨q, hq, (mem_nonzeroLocus _ _).2 ⟨_, hk', ?_⟩⟩` and prove the remaining obligations. Establish `e` using `congrArg (gs (𝟙 _) q _) (hc (k PUnit.unit))`. Rewrite `e` using `[gs_mul _ q _ hk']`. Conclude with `isUnit_of_mul_isUnit_right ((congrArg IsUnit ((gs_res (𝟙 _) q _ hk' _).symm.trans e)).mp u)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fibre_ne_of_generates {R : Type} [CommRing R] [IsLocalRing R] (P : Out.PolAV (Sp R)) (θ : P.L.Sec)
     (h : ∀ σ : P.L.Sec, ∃ c : ∀ i, Γ(P.A.left, P.L.U i), ∀ i, σ.f i = c i * θ.f i) (s : Sp R) :
@@ -53,14 +53,14 @@ theorem fibre_ne_of_generates {R : Type} [CommRing R] [IsLocalRing R] (P : Out.P
   exact isUnit_of_mul_isUnit_right ((congrArg IsUnit ((gs_res (𝟙 _) q _ hk' _).symm.trans e)).mp u)
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `h`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem isLieBasis_cast {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] {n k : ℕ} (e : n = k)
     {v : Fin k → (epsR R ⟶ G)} (h : IsLieBasis v) : IsLieBasis fun i : Fin n => v (i.cast e) := by
   subst e; exact h
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `h i`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem isLieComb_cast {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] {n k : ℕ} (e : n = k)
     (B : Matrix (Fin k) (Fin k) R) {v w : Fin k → (epsR R ⟶ G)} (h : ∀ i, IsLieComb (B i) v (w i)) (i : Fin n) :
@@ -69,14 +69,14 @@ theorem isLieComb_cast {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] {n k
   subst e; exact h i
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem det_cast {R : Type} [CommRing R] {n k : ℕ} (e : n = k) (B : Matrix (Fin k) (Fin k) R) :
     (Matrix.of fun i j : Fin n => B (i.cast e) (j.cast e)).det = B.det := by
   subst e; rfl
 
 /- English proof (translation)
-Use `show Spec.map _ ≫ Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Apply the tactic sequence `ext a <;> simp [Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem eps_sq {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') :
     spMap (Chart.dualMapR f) ≫ (epsR R).hom = (epsR R').hom ≫ spMap f := by
@@ -86,7 +86,7 @@ theorem eps_sq {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') :
   ext a <;> simp [Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]
 
 /- English proof (translation)
-Establish `le : (L.pull F).U (fun _ => j) ≤ F ⁻¹ᵁ L.U j` using `fun q hq => mem_pull.1 hq`. Rewrite using `[← (TieCalc.isoMaps_iff w σ θ').1 h Z r z j k hj hk, hθ (fun _ => j) le, gs_appLE F _ _ le r z (mem_pull.2 hj)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem stalk_of_isoMaps {X X' : Scheme.{0}} {L : LB X} {L' : LB X'} {F : X' ⟶ X} {w : LB.Iso L' (L.pull F)}
     {θ : L.Sec} {θ' : (L.pull F).Sec} {σ : L'.Sec} (h : IsoMaps w σ θ') (hθ : PullSec F θ θ')
@@ -98,9 +98,9 @@ theorem stalk_of_isoMaps {X X' : Scheme.{0}} {L : LB X} {L' : LB X'} {F : X' ⟶
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-Establish `he : eSec T'.t.G ≫ m.φ = spMap f ≫ eSec T.t.G` using `PolBaseChange.eSec_comm m.cart`. Establish `hr` using `(maps_iff w _ (fun _ => eSec T.t.G) _ T'.t.PP.rig T.t.PP.rig m.cm.e _ (rigPull_le m.cm.F m.cm.e m.cm.e_comm T.t.PP.L) (fun _ => rfl)).1 hw.2`. Rewrite `hr` using `[m.base]`. Use `⟨m.φ, he, w, hg, Chart.dualMapR f, m.cart, hw.1, (maps_iff w _ (fun _ => eSec T.t.G) _ T'.t.PP.rig T.t.PP.rig _ _ (rigPull_le m.φ _ he T.t.PP.L) (fun _ => rfl)).2 hr, KeyPow.appLE_eq_of_stalk _ th th' (hs _ (𝟙 _)), fun a => ?_, ?_, hl⟩` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `ext <;> simp [Chart.dualMapR]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem keyPB_of_sabMap {R R' : Type} [CommRing R] [CommRing R'] {f : R →+* R'} {T : PAT H (Sp R)} {T' : PAT H (Sp R')}
     (m : SABMap T'.t T.t (spMap f)) {w : LB.Iso T'.t.PP.L (T.t.PP.L.pull m.φ)} (hw : RigIso m w) (hg : T'.g = T.g)
@@ -123,7 +123,7 @@ theorem keyPB_of_sabMap {R R' : Type} [CommRing R] [CommRing R'] {f : R →+* R'
 variable {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l}
 
 /- English proof (translation)
-Substitute `e₀ e₁` using the available equality. Establish `h₁ : SecTie m' th' s₁` using `(TieCalc.secTie_baseChange m h₀ φ m' n s₁ w (thfPull _ n.φ th) th' rfl hφ b₁ hw (fun _ _ => rfl)).2 ((TieCalc.isoMaps_iff w _ _).2 fun Z r z j k hj hk => (gs_appLE n.φ _ _ _ r z (mem_pull.2 hj) _).trans (hs Z r z j k hj hk))`. Conclude with `((TieCalc.secTie_calc E H Dw l Xo S' _ t' m' th' s₁ h₁).1 a x₂ s₂ σ e₂ b₂).1 h₂`.
+Substitute using the available equality. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_mul_of_secTie {S S' : Type} [CommRing S] [CommRing S'] (φ : S →+* S') {x x₀ : Sp S ⟶ Xo.X}
     {x₁ x₂ : Sp S' ⟶ Xo.X} {t : SAB H (Sp S)} {t' : SAB H (Sp S')} {m : SABMap t Xo.univ.t x}
@@ -143,19 +143,19 @@ theorem eq_mul_of_secTie {S S' : Type} [CommRing S] [CommRing S'] (φ : S →+* 
   exact ((TieCalc.secTie_calc E H Dw l Xo S' _ t' m' th' s₁ h₁).1 a x₂ s₂ σ e₂ b₂).1 h₂
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c _ z f La hz p T iK M hT φ yT y' g a hφ hmap hchg hint ca hca`. Take `⟨hobj, -, -, hx, htie, -⟩` from `hz`. Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, hloc, -, hmod⟩` from `hobj`. Take `⟨A, hA, hdet⟩` from `hmod p`. Take `⟨θ, hθ, w2, σ, θ2, r2, i2, p2, hσ⟩` from `hint`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨vV, bV, hV⟩` from `exists_isLieBasis_locMod E H Dw l Xo c z p T iK M hT A hA`. Take `⟨g1, -, w1, r1⟩` from `(pat_pullback E H _ _ iK z.Φ.T).2 M.t' M.n' inferInstance`. Take `⟨g2, -⟩` from `(pat_pullback E H _ _ (algebraMap T.V T.Fr) M.G).2 M.t' M.m2 inferInstance`. Establish `g3 : M.G.g = z.Φ.T.g` using `g2.symm.trans g1`. Take `⟨th', hth'⟩` from `sec_pull_down ((isGen_iff _).1 r1.1) z.Φ.T.t.PP.isLB M.t'.t.PP.isLB z.Φ.th`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `nz'` using `SectionBaseChange.fibre_nonzero_of_pull M.t'.t.PP.isLB hth' M.n'.cart.1 z.Φ.th_ne`. Establish `nzθ` using `fibre_ne_of_generates M.G.pol θ fun τ => (hθ τ).exists.elim fun b hb => ⟨_, hb⟩`. Establish `hσθ` using `stalk_of_isoMaps i2 p2`. Establish `nzσ` using `SectionBaseChange.fibre_nonzero_of_pull M.t'.t.PP.isLB hσθ M.m2.cart.1 nzθ`. Take `⟨v0, b0, h0⟩` from `GlobalTheory.exists_isLieBasis_baseChange _ _ iK _ _ _ M.n'.cart z.Φ.T.ab.smooth _ z.Φ.v z.Φ.basis`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨v1, b1, h1⟩` from `GlobalTheory.exists_isLieBasis_baseChange _ _ (algebraMap T.V T.Fr) _ _ _ M.m2.cart M.G.ab.smooth _ vV bV`. Establish `hc : ∀ k, IsLieComb (iK.mapMatrix A k) v0 (v1 k)` using `fun k => by show IsLieComb (fun j => iK (A k j)) v0 (v1 k)`. Take `⟨wK, hw, hw'⟩` from `hV k`. Use `Chart.comb_baseChange iK M.n'.cart hw h0 (z.m'.cart.1.hom_ext ?_ ?_)` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, ← M.h2, ← Category.assoc, h1, Category.assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hw'`. Rewrite using `[Category.assoc, Category.assoc, M.n'.cart.1.w, ← Category.assoc, Over.w, Over.w, eps_sq]`. Establish `hσa : ∀ i, σ.f i = constFn M.t'.t.G.hom _ a * th'.f i`. Take `⟨e₁, -, pm, ps, pf, hp⟩` from `hmap`. Rewrite `e₁`, `pf` using `[hφ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `eq_mul_of_secTie iK M.h1 hx e₁ hchg.1 htie ⟨pm, ps, pf, fun i h => ?_⟩ hchg.2.2 r1 hth' hσ` and prove the remaining obligations. Rewrite using `[SecCalc.scal_one' z.y.x i, _root_.one_mul]`. Conclude with `hp i h`. Establish `gp : 1 ≤ M.t'.g` using `g1 ▸ z.Φ.g_pos`. Set `x' : KeyIn T.Fr` to `⟨M.t'.pol, gp, M.t'.t.PP.rig, M.t'.t.PP.rigGen, th', nz', _, isLieBasis_cast g1 b0⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `xR : KeyIn T.V` to `⟨M.G.pol, gp.trans g2.le, M.G.t.PP.rig, M.G.t.PP.rigGen, θ, nzθ, _, isLieBasis_cast g3 bV⟩`. Establish `k1 : KeyPB x' z.Φ.key iK` using `keyPB_of_sabMap M.n' r1 g1 hth' fun i => h0 _`. Establish `k2 : KeyPB ⟨M.t'.pol, gp, M.t'.t.PP.rig, M.t'.t.PP.rigGen, σ, nzσ, _, isLieBasis_cast g1 b1⟩ xR (algebraMap T.V T.Fr)` using `keyPB_of_sabMap M.m2 r2 g2 hσθ fun i => h1 _`. Establish `k3 : KeyIntegral T.V x' a (iK A.det)` using `⟨σ, nzσ, _, isLieBasis_cast g1 b1, Matrix.of fun i j => iK.mapMatrix A (i.cast g1) (j.cast g1), xR, hσa, isLieComb_cast g1 (iK.mapMatrix A) hc, (det_cast g1 _).trans (RingHom.map_det iK A).symm, k2⟩`. Conclude with `KeyVal.integral_section_unit z.K z.Φ.key z.Tl z.LamL p (hloc p) T.V T.Fr iK x' a (iK A.det) ca A.det 1 hT k1 k3 hdet (by rw [Units.val_one, map_one, _root_.mul_one]) hca`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integral_generator_unit : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)] (z : CMPt Xo c) (f : ℕ) (La : ℝ), z.Good f La → ∀ (p : HeightOneSpectrum (𝓞 z.K)) (T : CDVR) (iK : z.K →+* T.Fr) (M : LocMod z T iK), (∀ y : z.K, iK y ∈ Set.range (algebraMap T.V T.Fr) ↔ p.valuation z.K y ≤ 1) → letI := (iK.comp (algebraMap c.F z.K)).toAlgebra; ∀ (φ : z.K →ₐ[c.F] T.Fr) (yT y' : FrPt Xo c T.Fr) (g : (∀ b : E →+* ℂ, Matrix (Fin (Dw.mult b)) (Fin (Dw.mult b)) T.Fr)) (a : T.Fr), φ.toRingHom = iK → FrMap φ z.y yT → FrChg g a yT y' → SecInt T M.m1 M.m2 y'.s → ∀ ca : z.K, IsLocGen p ca z.Tl.I → ∃ u : T.Vˣ, a = iK ca * algebraMap T.V T.Fr u := by
   intro E _ _ _ H Dw l Xo c _ z f La hz p T iK M hT φ yT y' g a hφ hmap hchg hint ca hca

@@ -13,7 +13,7 @@ section Gen
 variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂) (A : NAut N)
 
 /- English proof (translation)
-Rewrite using `[A.lpSum_comm, A.lpSum_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lpSum_zero_left {w : PlE H} (a : A.LP w) : A.lpSum (A.lpZero w) a = a := by
   rw [A.lpSum_comm, A.lpSum_zero]
@@ -30,7 +30,7 @@ Both sides reduce to the same expression.
 theorem isoLoc_nil (w : PlE H) : isoLoc N A [] w = A.lpZero w := rfl
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => rw [List.nil_append, isoLoc_nil, lpSum_zero_left]`. Consider the case `cons p L ih => rw [List.cons_append, isoLoc_cons, isoLoc_cons, ih, A.lpSum_assoc]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem isoLoc_append (L L' : List (Part A.CG)) (w : PlE H) :
     isoLoc N A (L ++ L') w = A.lpSum (isoLoc N A L w) (isoLoc N A L' w) := by
@@ -39,9 +39,9 @@ theorem isoLoc_append (L L' : List (Part A.CG)) (w : PlE H) :
   | cons p L ih => rw [List.cons_append, isoLoc_cons, isoLoc_cons, ih, A.lpSum_assoc]
 
 /- English proof (translation)
-Proceed by induction on `h with`. Consider the case `nil => rfl`. Consider the case `cons p _ ih => rw [isoLoc_cons, isoLoc_cons, ih]`. Consider the case `swap p q L`. Rewrite using `[isoLoc_cons, isoLoc_cons, isoLoc_cons, isoLoc_cons, ← A.lpSum_assoc, ← A.lpSum_assoc, A.lpSum_comm (spehLoc N A q w)]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `trans _ _ ih1 ih2 => rw [ih1, ih2]`.
+Treat this case separately.
 -/
 theorem isoLoc_perm {L L' : List (Part A.CG)} (h : L.Perm L') (w : PlE H) :
     isoLoc N A L w = isoLoc N A L' w := by
@@ -54,7 +54,7 @@ theorem isoLoc_perm {L L' : List (Part A.CG)} (h : L.Perm L') (w : PlE H) :
   | trans _ _ ih1 ih2 => rw [ih1, ih2]
 
 /- English proof (translation)
-Establish `h1` using `(hLP w (A.lpZero w) (A.lpZero w) χ χ 0 hχ hχ).1`. Rewrite `h1` using `[A.lpSum_zero]`. Use `symm`. Apply `hC w _ _ (A.lpChar (A.lpZero w) χ)` to reduce the goal to its premises. Rewrite using `[lpSum_zero_left, ← h1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem lpChar_zero (hLP : SumRepresentations.At.TieLP N A)
     (hC : ∀ w (a b c : A.LP w), A.lpSum a c = A.lpSum b c → a = b) {w : PlE H} (χ : A.LP w)
@@ -66,9 +66,9 @@ theorem lpChar_zero (hLP : SumRepresentations.At.TieLP N A)
   rw [lpSum_zero_left, ← h1]
 
 /- English proof (translation)
-Establish `hd : A.lpDim (A.locG χ w) = 1` using `A.locG_dim χ w`. Proceed by induction on `l with`. Consider the case `nil => exact (lpChar_zero N A hLP hC _ hd).symm`. Consider the case `cons k l ih`. Simplify using `only [List.foldr_cons]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Rewrite using `[ih, A.locG_tw, (hLP w _ _ _ _ (c k) hd hd).1, (hLP w (A.locG π w) (A.locG π w) _ _ (c k) hd hd).2.1]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem foldr_tw (hLP : SumRepresentations.At.TieLP N A)
     (hC : ∀ w (a b c : A.LP w), A.lpSum a c = A.lpSum b c → a = b) {a : ℕ} (π : A.CG a) (χ : A.CG 1)
@@ -84,7 +84,7 @@ theorem foldr_tw (hLP : SumRepresentations.At.TieLP N A)
     rw [ih, A.locG_tw, (hLP w _ _ _ _ (c k) hd hd).1, (hLP w (A.locG π w) (A.locG π w) _ _ (c k) hd hd).2.1]
 
 /- English proof (translation)
-Unfold `spehLoc`. Conclude with `foldr_tw N A hLP hC p.π χ w (fun k => ((p.d : ℝ) - 1) / 2 - k) _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem spehLoc_tw (hLP : SumRepresentations.At.TieLP N A)
     (hC : ∀ w (a b c : A.LP w), A.lpSum a c = A.lpSum b c → a = b) (p : Part A.CG) (χ : A.CG 1)
@@ -94,7 +94,7 @@ theorem spehLoc_tw (hLP : SumRepresentations.At.TieLP N A)
   exact foldr_tw N A hLP hC p.π χ w (fun k => ((p.d : ℝ) - 1) / 2 - k) _
 
 /- English proof (translation)
-Establish `hd : A.lpDim (A.locG χ w) = 1` using `A.locG_dim χ w`. Proceed by induction on `L with`. Consider the case `nil => exact (lpChar_zero N A hLP hC _ hd).symm`. Consider the case `cons p L ih => show A.lpSum (spehLoc N A ⟨p.a, A.tw p.π χ, p.d⟩ w) (isoLoc N A (twistIso N A L χ) w) = _`. Rewrite using `[ih, spehLoc_tw N A hLP hC, isoLoc_cons, (hLP w _ _ _ _ 0 hd hd).1]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem isoLoc_twistIso (hLP : SumRepresentations.At.TieLP N A)
     (hC : ∀ w (a b c : A.LP w), A.lpSum a c = A.lpSum b c → a = b) (L : List (Part A.CG)) (χ : A.CG 1)
@@ -108,13 +108,13 @@ theorem isoLoc_twistIso (hLP : SumRepresentations.At.TieLP N A)
     rw [ih, spehLoc_tw N A hLP hC, isoLoc_cons, (hLP w _ _ _ _ 0 hd hd).1]
 
 /- English proof (translation)
-Establish `hu` using `A.etaT_unr w`. Take `⟨hu', hf'⟩` from `A.etaTinv_def w`. Establish `hcard` using `A.frobEig_card _ hu`. Rewrite `hcard` using `[A.locG_dim]`. Take `⟨b, hb⟩` from `Multiset.card_eq_one.1 hcard`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hb0 : b ≠ 0`. Introduce `h`. Apply `A.frobEig_ne_zero _ hu` to reduce the goal to its premises. Rewrite using `[hb, h]`. Conclude with `Multiset.mem_singleton_self 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hf'` using `[hb, Multiset.map_singleton]`. Establish `d1` using `A.locG_dim A.etaT w`. Establish `d2` using `A.locG_dim A.etaTinv w`. Prove the components needed by the constructor for the conclusion. Establish `hun` using `A.unr_char _ _ d2 hu hu'`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[A.unr_eq_lpUnr _ hun, A.frobEig_char _ _ b⁻¹ hu hu' d2 hf', hb, Multiset.map_singleton, mul_inv_cancel₀ hb0]`. Establish `hun` using `A.unr_char _ _ d1 hu' hu`. Rewrite using `[A.unr_eq_lpUnr _ hun, A.frobEig_char _ _ b hu' hu d1 hb, hf', Multiset.map_singleton, inv_mul_cancel₀ hb0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eta_pair (w : PlE H) :
     A.lpChar (A.locG A.etaT w) (A.locG A.etaTinv w) = A.lpUnr w {1} ∧
@@ -141,7 +141,7 @@ theorem eta_pair (w : PlE H) :
       inv_mul_cancel₀ hb0]
 
 /- English proof (translation)
-Establish `d1` using `A.locG_dim A.etaT w`. Establish `d2` using `A.locG_dim A.etaTinv w`. Prove the components needed by the constructor for the conclusion. Rewrite using `[(hLP w a a _ _ 0 d1 d2).2.2.2.1, (eta_pair N A w).1, (hLP w a a _ _ 0 d1 d2).2.2.2.2.1]`. Rewrite using `[(hLP w a a _ _ 0 d2 d1).2.2.2.1, (eta_pair N A w).2, (hLP w a a _ _ 0 d2 d1).2.2.2.2.1]`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem lpChar_eta_inv (hLP : SumRepresentations.At.TieLP N A) {w : PlE H} (a : A.LP w) :
     A.lpChar (A.lpChar a (A.locG A.etaT w)) (A.locG A.etaTinv w) = a ∧
@@ -153,7 +153,7 @@ theorem lpChar_eta_inv (hLP : SumRepresentations.At.TieLP N A) {w : PlE H} (a : 
   · rw [(hLP w a a _ _ 0 d2 d1).2.2.2.1, (eta_pair N A w).2, (hLP w a a _ _ 0 d2 d1).2.2.2.2.1]
 
 /- English proof (translation)
-Establish `h` using `hAN [⟨a, A.tw (A.tw π A.etaT) A.etaTinv, 1⟩] [⟨a, π, 1⟩] (by simp [ha]) (by simp [ha]) (Filter.Eventually.of_forall fun w => by show isoLoc N A (twistIso N A (twistIso N A [⟨a, π, 1⟩] A.etaT) A.etaTinv) w = _`. Rewrite using `[isoLoc_twistIso N A hLP hC, isoLoc_twistIso N A hLP hC, (lpChar_eta_inv N A hLP _).1])`. Rewrite `h` using `[List.singleton_perm_singleton]`. Use `injection h with _ h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tw_eta_inv (hLP : SumRepresentations.At.TieLP N A)
     (hC : ∀ w (a b c : A.LP w), A.lpSum a c = A.lpSum b c → a = b)
@@ -168,7 +168,7 @@ theorem tw_eta_inv (hLP : SumRepresentations.At.TieLP N A)
   injection h with _ h2
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => rfl`. Consider the case `cons p L ih => show (⟨p.a, A.tw (A.tw p.π A.etaT) A.etaTinv, p.d⟩ : Part A.CG) :: twistIso N A (twistIso N A L A.etaT) A.etaTinv = p :: L`. Rewrite using `[ih (fun q hq => hL q (List.mem_cons_of_mem _ hq)), tw_eta_inv N A hLP hC hAN (hL p List.mem_cons_self)]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem twistIso_eta_inv (hLP : SumRepresentations.At.TieLP N A)
     (hC : ∀ w (a b c : A.LP w), A.lpSum a c = A.lpSum b c → a = b)
@@ -184,11 +184,9 @@ theorem twistIso_eta_inv (hLP : SumRepresentations.At.TieLP N A)
       tw_eta_inv N A hLP hC hAN (hL p List.mem_cons_self)]
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, h5, h6⟩` from `hB`. Use `⟨fun p hp => h1 p (h.mem_iff.2 hp), (h.map _).nodup_iff.1 h2, ?_, fun w hw => ?_, fun w hw => ?_, fun τ => ?_⟩` and prove the remaining obligations. Unfold `rankIso at h3 ⊢`. Rewrite using `[← (h.map _).sum_eq]`. Conclude with `h3`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← isoLoc_perm N A h]`. Conclude with `h4 w hw`. Rewrite using `[← isoLoc_perm N A h]`. Conclude with `h5 w hw`. Rewrite using `[← h6 τ]`.
-
-Unfold `isoInf`. Conclude with `((h.map _).sum_eq).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem isBCV_of_perm {i : N.Loc} {P : A.AV i} {Pa Pa' : List (Part A.CG)} (h : Pa.Perm Pa')
     (hB : IsBCV N A i P Pa) : IsBCV N A i P Pa' := by
@@ -209,23 +207,21 @@ theorem isBCV_of_perm {i : N.Loc} {P : A.AV i} {Pa Pa' : List (Part A.CG)} (h : 
 end Gen
 
 /- English proof (translation)
-Establish `hLP : SumRepresentations.At.TieLP D.nd D.naut` using `h0.1`. Establish `hC` using `h4.2.2`. Establish `hAN` using `h5.1`. Take `⟨l₁, l₂, rfl⟩` from `List.append_of_mem hm`. Use `set m : Part D.naut.CG := ⟨1, D.naut.tw (D.naut.muC i) D.naut.etaTinv, D.R.t⟩ with hmdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set L := l₁ ++ l₂ with hLdef`. Establish `hperm : (l₁ ++ m :: l₂).Perm (L ++ [m])` using `List.perm_middle.trans (List.perm_append_singleton _ _).symm`. Establish `hLmem : ∀ p ∈ L, p ∈ l₁ ++ m :: l₂` using `fun p hp => by`. Break down `List.mem_append.1 hp with h | h` into its components or cases. Conclude with `List.mem_append_left _ h`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `List.mem_append_right _ (List.mem_cons_of_mem _ h)`. Establish `hL : ∀ p ∈ L, 1 ≤ p.a ∧ 1 ≤ p.d` using `fun p hp => ⟨(hB.1 p (hLmem p hp)).1, (hB.1 p (hLmem p hp)).2.1⟩`. Establish `hB'` using `isBCV_of_perm D.nd D.naut hperm hB`. Use `⟨twistIso D.nd D.naut L D.naut.etaT, ⟨?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `p hp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Take `⟨q, hq, rfl⟩` from `List.mem_map.1 hp`. Conclude with `hL q hq`. Establish `hr` using `hB'.2.2.1`. Establish `e1 : rankIso D.nd D.naut (twistIso D.nd D.naut L D.naut.etaT) = rankIso D.nd D.naut L`. Unfold `rankIso twistIso`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[List.map_map]`. Both sides reduce to the same expression. Rewrite using `[e1]`. Unfold `rankIso at hr ⊢`. Rewrite `hr` using `[List.map_append, List.sum_append]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [hmdef, List.map_cons, List.map_nil, List.sum_cons, List.sum_nil, one_mul, add_zero] at hr`. Establish `: D.R.nV = D.R.r + D.R.t` using `rfl`. Use linear arithmetic over natural numbers and integers. Introduce `w hw`. Establish `e1` using `h3 i σ P hθ w hw`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e1` using `[← hB'.2.2.2.1 w hw, isoLoc_append, (hLP w (D.naut.locW i σ w) (spehLoc D.nd D.naut (muPart D.nd D.naut i) w) (D.naut.locG D.naut.etaTinv w) (D.naut.locG D.naut.etaTinv w) 0 (D.naut.locG_dim _ w) (D.naut.locG_dim _ w)).1]`. Establish `e2 : isoLoc D.nd D.naut [m] w = D.naut.lpChar (spehLoc D.nd D.naut (muPart D.nd D.naut i) w) (D.naut.locG D.naut.etaTinv w)`. Rewrite using `[isoLoc_cons, isoLoc_nil, D.naut.lpSum_zero]`. Conclude with `spehLoc_tw D.nd D.naut hLP hC (muPart D.nd D.naut i) D.naut.etaTinv w`. Rewrite `e1` using `[e2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `e3` using `hC w _ _ _ e1`. Rewrite using `[isoLoc_twistIso D.nd D.naut hLP hC, e3, (lpChar_eta_inv D.nd D.naut hLP _).2]`. Establish `e : twistIso D.nd D.naut (twistIso D.nd D.naut L D.naut.etaT ++ [muPart D.nd D.naut i]) D.naut.etaTinv = L ++ [m]`. Rewrite using `[show twistIso D.nd D.naut (twistIso D.nd D.naut L D.naut.etaT ++ [muPart D.nd D.naut i]) D.naut.etaTinv = twistIso D.nd D.naut (twistIso D.nd D.naut L D.naut.etaT) D.naut.etaTinv ++ twistIso D.nd D.naut [muPart D.nd D.naut i] D.naut.etaTinv from List.map_append .., twistIso_eta_ …`. Both sides reduce to the same expression.
-
-Rewrite using `[e]`. Conclude with `hB'`.
+A detailed English derivation is pending.
 -/
 theorem param_of_theta (D : D7) (h0 : SumRepresentations.tie0 D) (h3 : SumRepresentations.adm3 D) (h4 : SumRepresentations.ArchimedeanSignatureMatching D) (h5 : SumRepresentations.adm5 D)
     (i : D.nd.Loc) (σ : D.what₂.FT) (P : D.naut.AV i) (Pa : List (Part D.naut.CG))

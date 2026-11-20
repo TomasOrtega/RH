@@ -9,14 +9,14 @@ variable {k : Type} [Field k] [TopologicalSpace k] [IsTopologicalRing k] [Contin
   [NonarchimedeanAddGroup k] [LocallyCompactSpace k] {c : k → ℂ} {ϖ : k}
 
 /- English proof (translation)
-The claim follows from `haveI := nonarch_pi (Fin d) k nonarch_pi (Fin n) (Fin d → k)`.
+A detailed English derivation is pending.
 -/
 theorem nonarch_mat (n d : ℕ) : NonarchimedeanAddGroup (Matrix (Fin n) (Fin d) k) :=
   haveI := nonarch_pi (Fin d) k
   nonarch_pi (Fin n) (Fin d → k)
 
 /- English proof (translation)
-The claim follows from `inferInstanceAs (LocallyCompactSpace (Fin n → Fin d → k))`.
+A detailed English derivation is pending.
 -/
 theorem lc_mat (n d : ℕ) : LocallyCompactSpace (Matrix (Fin n) (Fin d) k) :=
   inferInstanceAs (LocallyCompactSpace (Fin n → Fin d → k))
@@ -25,23 +25,23 @@ def Claim (c : k → ℂ) (n d : ℕ) : Prop :=
   ∀ l : (Matrix (Fin n) (Fin d) k → ℂ) →ₗ[ℂ] ℂ, Eqv c l → (∀ φ ∈ SB _, (∀ X, Deg X → φ X = 0) → l φ = 0) → ∀ φ ∈ SB _, l φ = 0
 
 /- English proof (translation)
-Use `nonarch_pi (Fin d) k` as an intermediate fact. Use `nonarch_mat (k := k) n d` as an intermediate fact. Use `lc_mat (k := k) n d` as an intermediate fact. Introduce `φ hφ hz`. Set `L` to `l ∘ₗ LinearMap.funLeft ℂ ℂ (chE (k := k) (n := n) (d := d))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Establish `hL : ∀ F, L F = l fun X => F (chE X)` using `fun _ => rfl`. Establish `e : φ = fun X => φ (chR (chE X))`. Use extensionality with `X`. Distinguish the cases in `hX : X 0 0 = 0`. Rewrite using `[hz X hX, hz _ (by simpa [chR, chE] using hX)]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[chR_chE X hX]`. Rewrite using `[e, ← hL fun y => φ (chR y)]`. Use `kill_tens {z | z.1 0 ≠ 0} L (fun F hF hF0 ψ hψ => ?_) (sb_chR hφ hz) fun z h => hz _ (by simpa [chR] using h)` and prove the remaining obligations. Set `T : ∀ ψ : Matrix (Fin n) (Fin d) k → ℂ, ((Fin (n + 1) → k) × (Fin d → k) → ℂ) →ₗ[ℂ] ℂ` to `fun ψ => { toFun := fun F => L fun z => F z.1 * ψ z.2 map_add' := fun F F' => by rw [← map_add]; congr 1; ext z; simp [add_mul] map_smul' := fun a F => by rw [← map_smul]; congr 1; ext z; simp [mul_assoc] }`. Use `kill_tens {x : Fin (n + 1) → k | x 0 ≠ 0} (T ψ) (fun f hf hf0 => ?_) hF fun z h => hF0 z h` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `replace hf0 : ∀ x, x 0 = 0 → f x = 0 := fun x hx => hf0 x (not_not.2 hx)`. Set `m : ∀ ψ : Matrix (Fin n) (Fin d) k → ℂ, ((Fin d → k) → ℂ) →ₗ[ℂ] ℂ` to `fun ψ => { toFun := fun g => T ψ fun z => f z.1 * g z.2 map_add' := fun F F' => by rw [← map_add]; congr 1; ext z; simp [mul_add] map_smul' := fun a F => by rw [← map_smul]; congr 1; ext z; simp [mul_left_comm] }`. Establish `hm : ∀ ψ g, m ψ g = l fun X => f (chE X).1.1 * g (chE X).1.2 * ψ (chE X).2` using `fun _ _ => rfl`. Establish `sb : ∀ ψ ∈ SB _, ∀ g ∈ SB (Fin d → k), (fun X => f (chE X).1.1 * g (chE X).1.2 * ψ (chE X).2) ∈ SB _` using `fun ψ hψ g hg => sb_chE (sb_tens (sb_tens hf hg) hψ) fun y hy => by simp [hf0 _ hy]`. Establish `inv : ∀ ψ ∈ SB _, ∀ g ∈ SB _, ∀ a, m ψ (fun x => g (x + a)) = m ψ g` using `fun ψ hψ g hg a => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hm, hm, ← hl.unip hc h0 h1 a _ (sb ψ hψ g hg)]`. Use `congr 1`. Use extensionality with `X`. Distinguish the cases in `hX : X 0 0 = 0`. Rewrite using `[hf0 _ (by simpa [chE] using hX), hf0 _ (by simpa [chE, mul_blk_zero] using hX)]; simp`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[chE_unip X hX]`. Take `⟨g₀, hg₀⟩` from `exists_bump (Fin d → k)`. Take `⟨_, -, hs⟩` from `bump_ratio hg₀ hg₀`. Use `(hs _ (inv ψ hψ)).2 ?_` and prove the remaining obligations. Set `l₁ : (Matrix (Fin n) (Fin d) k → ℂ) →ₗ[ℂ] ℂ` to `{ toFun := fun ψ => l fun X => f (chE X).1.1 * g₀ (chE X).1.2 * ψ (chE X).2 map_add' := fun F F' => by rw [← map_add]; congr 1; ext z; simp [mul_add] map_smul' := fun a F => by rw [← map_smul]; congr 1; ext z; simp [mul_left_comm] }`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `ih l₁ (fun h hh => ?_) (fun ψ hψ hψ0 => hd _ (sb ψ hψ _ hg₀.1) fun X hX => ?_) ψ hψ` and prove the remaining obligations. Establish `hg₁ : Bump fun u => g₀ (u ᵥ* h)` using `⟨sb_comp (· ᵥ* h) (· ᵥ* h⁻¹) (by fun_prop) (by fun_prop) (fun x => by simp [mul_nonsing_inv h hh.isUnit]) hg₀.1, fun _ => hg₀.2.1 _, by simpa using hg₀.2.2⟩`. Take `⟨s, ps, hs⟩` from `bump_ratio hg₀ hg₁`. Take `⟨t, pt, ht⟩` from `hl (blk 1 0 h) (by simpa [det_blk] using hh)`. Use `⟨t * s, mul_pos pt ps, fun ψ hψ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `a` using `ht _ (sb ψ hψ _ hg₀.1)`. Simplify using `only [chE_levi, det_blk, one_mul] at a`. Establish `b` using `(hs _ (inv _ (sb_right hψ hh))).1`. Use `b.trans ((congrArg ((s : ℂ) * ·) a).trans ?_)` and prove the remaining obligations. Use `show _ * (_ * l₁ ψ) = _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Distinguish the cases in `hX0 : X 0 0 = 0`. Rewrite using `[hf0 _ (by simpa [chE] using hX0)]; simp`. Rewrite using `[hψ0 _ (hX.chE hX0), mul_zero]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem step_chart (hc : ∀ a ≠ 0, c a ≠ 0) (h0 : ϖ ≠ 0) (h1 : ϖ ≠ 1) {n d : ℕ} (ih : Claim c n d)
     {l : (Matrix (Fin (n + 1)) (Fin (d + 1)) k → ℂ) →ₗ[ℂ] ℂ} (hl : Eqv c l)
@@ -104,9 +104,9 @@ theorem step_chart (hc : ∀ a ≠ 0, c a ≠ 0) (h0 : ϖ ≠ 0) (h1 : ϖ ≠ 1)
     · rw [hψ0 _ (hX.chE hX0), mul_zero]
 
 /- English proof (translation)
-Use `nonarch_mat (k := k) (n + 1) (d + 1)` as an intermediate fact. Introduce `φ hφ h0`. Use `kill_loc l hφ fun x hx => ?_` and prove the remaining obligations. Take `⟨j, hj⟩` from `Function.ne_iff.1 (fun h => hx (h0 x h) : x 0 ≠ 0)`. Use `⟨{X | X 0 j ≠ 0}, (isOpen_ne_fun (by fun_prop) continuous_const).mem_nhds hj, fun ψ hψ hψ0 => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hh : (swap k 0 j).det ≠ 0` using `(isUnit_det_of_left_inverse (swap_mul_self 0 j)).ne_zero`. Take `⟨t, pt, ht⟩` from `hl _ hh`. Establish `a` using `ht ψ hψ`. Rewrite `a` using `[hz _ (sb_right hψ hh) fun X hX => hψ0 _ (by simpa [mul_swap_apply_right] using hX)]`. Conclude with `(mul_eq_zero.1 a.symm).resolve_left (mul_ne_zero (hc _ hh) (by exact_mod_cast pt.ne'))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem step_row (hc : ∀ a ≠ 0, c a ≠ 0) {n d : ℕ} {l : (Matrix (Fin (n + 1)) (Fin (d + 1)) k → ℂ) →ₗ[ℂ] ℂ} (hl : Eqv c l)
     (hz : ∀ φ ∈ SB _, (∀ X, X 0 0 = 0 → φ X = 0) → l φ = 0) : ∀ φ ∈ SB _, (∀ X, X 0 = 0 → φ X = 0) → l φ = 0 := by
@@ -122,17 +122,17 @@ theorem step_row (hc : ∀ a ≠ 0, c a ≠ 0) {n d : ℕ} {l : (Matrix (Fin (n 
   exact (mul_eq_zero.1 a.symm).resolve_left (mul_ne_zero (hc _ hh) (by exact_mod_cast pt.ne'))
 
 /- English proof (translation)
-Use `nonarch_pi (Fin d) k` as an intermediate fact. Take `⟨g₀, hg₀⟩` from `exists_bump (Fin d → k)`. Set `cn : (Fin d → k) → Matrix (Fin n) (Fin d) k → Matrix (Fin (n + 1)) (Fin d) k` to `fun y Y => Matrix.of (Fin.cons y Y)`. Set `tl : Matrix (Fin (n + 1)) (Fin d) k → Matrix (Fin n) (Fin d) k` to `fun X => X.submatrix Fin.succ id`. Establish `ccn : Continuous fun z : (Fin d → k) × Matrix (Fin n) (Fin d) k => cn z.1 z.2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Apply the tactic sequence `refine Fin.cases ?_ (fun i => ?_) i <;> simp [cn] <;> fun_prop`. Establish `ctl : Continuous tl` using `by fun_prop`. Establish `hcn : ∀ X, cn (X 0) (tl X) = X` using `fun X => by`. Apply the tactic sequence `ext i j; refine Fin.cases ?_ (fun i => ?_) i <;> rfl`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `sb : ∀ ψ ∈ SB _, (fun X => g₀ (X 0) * ψ (tl X)) ∈ SB (Matrix (Fin (n + 1)) (Fin d) k)` using `fun ψ hψ => sb_comp (fun X => (X 0, tl X)) (fun z => cn z.1 z.2) (by fun_prop) ccn hcn (sb_tens hg₀.1 hψ)`. Set `l₂ : (Matrix (Fin n) (Fin d) k → ℂ) →ₗ[ℂ] ℂ` to `{ toFun := fun ψ => l fun X => g₀ (X 0) * ψ (tl X) map_add' := fun F F' => by rw [← map_add]; congr 1; ext z; simp [mul_add] map_smul' := fun a F => by rw [← map_smul]; congr 1; ext z; simp [mul_left_comm] }`. Establish `eq : ∀ φ ∈ SB _, ∀ φ' ∈ SB _, (∀ X, X 0 = 0 → φ X = φ' X) → l φ = l φ'` using `fun φ hφ φ' hφ' h => by`. Rewrite using `[← sub_eq_zero, ← map_sub]`. Conclude with `hz _ (sub_mem hφ hφ') fun X hX => sub_eq_zero.2 (h X hX)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `z` using `ih l₂ (fun h hh => ?_) fun ψ hψ hψ0 => hd _ (sb ψ hψ) fun X hX => ?_`. Introduce `φ hφ`. Establish `hr : (fun Y => φ (cn 0 Y)) ∈ SB _` using `sb_comp (cn 0) tl (ccn.comp (Continuous.prodMk_right 0)) ctl (fun Y => rfl) hφ`. Use `(eq φ hφ _ (sb _ hr) fun X hX => ?_).trans (z _ hr)` and prove the remaining obligations. Use `hcn X` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hX]`. Rewrite using `[this, hX, hg₀.2.2, one_mul]`. Take `⟨t, pt, ht⟩` from `hl h hh`. Use `⟨t, pt, fun ψ hψ => (eq _ (sb _ (sb_right hψ hh)) _ (sb_right (sb ψ hψ) hh) fun X hX => ?_).trans (ht _ (sb ψ hψ))⟩` and prove the remaining obligations. Establish `: (X * h) 0 = 0` using `by ext j; simp [mul_apply, hX]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hX, this]`. Both sides reduce to the same expression. Take `⟨v, hv, h⟩` from `hX`. Rewrite using `[hψ0 (tl X) ⟨v, hv, funext fun i => congrFun h i.succ⟩, mul_zero]`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem step_closed {n d : ℕ} (ih : Claim c n d) {l : (Matrix (Fin (n + 1)) (Fin d) k → ℂ) →ₗ[ℂ] ℂ} (hl : Eqv c l)
     (hd : ∀ φ ∈ SB _, (∀ X, Deg X → φ X = 0) → l φ = 0) (hz : ∀ φ ∈ SB _, (∀ X, X 0 = 0 → φ X = 0) → l φ = 0) :
@@ -172,13 +172,11 @@ theorem step_closed {n d : ℕ} (ih : Claim c n d) {l : (Matrix (Fin (n + 1)) (F
     rw [hψ0 (tl X) ⟨v, hv, funext fun i => congrFun h i.succ⟩, mul_zero]
 
 /- English proof (translation)
-Establish `zero : ∀ n, Claim c n 0` using `fun n l _ h φ hφ => h φ hφ fun X ⟨v, hv, _⟩ => absurd (Subsingleton.elim _ _) hv`. Proceed by induction on `n with`. Consider the case `zero`. Introduce and unpack `(_ | d)`. Conclude with `zero _`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `l hl _ φ hφ`. Take `⟨t, pt, ht⟩` from `hl (blk ϖ 0 1) (by simp [det_blk, h0])`. Establish `a` using `ht φ hφ`. Establish `e : ∀ y : Matrix (Fin 0) (Fin (d + 1)) k, y * blk ϖ (0 : Fin d → k) 1 = y` using `fun y => by ext i; exact i.elim0`. Simplify using `only [e, det_blk, det_one, mul_one] at a`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Conclude with `hϖ t pt (mul_right_cancel₀ h (by rw [← a, one_mul]))`. Consider the case `succ n ih`. Introduce and unpack `(_ | d)`. Conclude with `zero _`.
-
-Conclude with `fun l hl hd => step_closed (ih _) hl hd (step_row hc hl (step_chart hc h0 h1 (ih d) hl hd))`.
+Treat this case separately. Assume the hypotheses and unpack their components. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem claim (hc : ∀ a ≠ 0, c a ≠ 0) (h0 : ϖ ≠ 0) (h1 : ϖ ≠ 1) (hϖ : ∀ t : ℝ, 0 < t → c ϖ * t ≠ 1) (n : ℕ) :
     ∀ d, Claim c n d := by

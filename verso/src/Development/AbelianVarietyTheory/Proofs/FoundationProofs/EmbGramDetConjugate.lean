@@ -24,9 +24,9 @@ def embGramDet {d j : ℕ} (H : Matrix (Fin d) (Fin d) K) (E : Matrix (Fin d) (F
 
 omit [NumberField K] [StarRing K] in
 /- English proof (translation)
-Establish `hm : ∀ {a b : ℕ} (M : Matrix (Fin a) (Fin b) K), M.map (ComplexEmbedding.conjugate φ) = (M.map φ).map (starRingEnd ℂ)`. Introduce `a b M`. Use extensionality with `i k`. Simplify using `[ComplexEmbedding.conjugate_coe_eq]`. Unfold `embGramDet`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Rewrite using `[hm E, hm H, RingHom.map_det, RingHom.mapMatrix_apply, Matrix.map_mul, Matrix.map_mul]`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem embGramDet_conjugate {d j : ℕ} (H : Matrix (Fin d) (Fin d) K)
     (E : Matrix (Fin d) (Fin j) K) (φ : K →+* ℂ) :
@@ -42,7 +42,7 @@ theorem embGramDet_conjugate {d j : ℕ} (H : Matrix (Fin d) (Fin d) K)
 
 omit [NumberField K] [StarRing K] in
 /- English proof (translation)
-Break down `InfinitePlace.embedding_mk_eq φ with h | h` into its components or cases. Rewrite using `[h]`. Rewrite using `[h, embGramDet_conjugate, Complex.conj_re]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem embGramDet_re_mk {d j : ℕ} (H : Matrix (Fin d) (Fin d) K)
     (E : Matrix (Fin d) (Fin j) K) (φ : K →+* ℂ) :
@@ -52,7 +52,7 @@ theorem embGramDet_re_mk {d j : ℕ} (H : Matrix (Fin d) (Fin d) K)
   · rw [h, embGramDet_conjugate, Complex.conj_re]
 
 /- English proof (translation)
-Use extensionality with `a c`. Simplify using `only [gram, Formalism.HN.gramPl, Matrix.of_apply, majAt_eq, metMat, cv, Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.map_apply, Matrix.transpose_apply, dotProduct, Matrix.mulVec, Pi.star_apply, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -70,9 +70,9 @@ theorem gram_eq_mul {d j : ℕ} (X : InfinitePlace K → Matrix (Fin d) (Fin d) 
   ring
 
 /- English proof (translation)
-Unfold `gramR`. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply]`. Use `congr 1`. Use extensionality with `a b`. Simplify using `only [Matrix.map_apply, Matrix.of_apply, Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.transpose_apply, dotProduct, Matrix.mulVec, Pi.star_apply, map_sum, map_mul, Rb.tw_apply, Finset.mul_sum, Finset.sum_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [Complex.star_def, Complex.conj_conj]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem map_gramR {d j : ℕ} (H : Matrix (Fin d) (Fin d) K) (e : Fin j → Fin d → K)
     (φ : K →+* ℂ) :
@@ -91,7 +91,7 @@ theorem map_gramR {d j : ℕ} (H : Matrix (Fin d) (Fin d) K) (e : Fin j → Fin 
   ring
 
 /- English proof (translation)
-Rewrite using `[gram_eq_mul, hX v]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem det_gram_eq_embGramDet {K : Type} [Field K] [NumberField K] [StarRing K] {d j : ℕ}
     (H : Matrix (Fin d) (Fin d) K) (X : InfinitePlace K → Matrix (Fin d) (Fin d) ℂ)
@@ -102,7 +102,7 @@ private theorem det_gram_eq_embGramDet {K : Type} [Field K] [NumberField K] [Sta
   rfl
 
 /- English proof (translation)
-Establish `hP : (((X v)⁻¹)ᴴ * (X v)⁻¹).PosDef` using `Rb.metMat_posDef X v (hX v)`. Establish `hS` using `hP.posSemidef.conjTranspose_mul_mul_same (((Matrix.of e)ᵀ).map v.embedding)`. Rewrite `hS` using `[← gram_eq_mul]`. Conclude with `(Complex.le_def.mp hS.det_nonneg).1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem det_gram_re_nonneg' {K : Type} [Field K] [NumberField K] [StarRing K] {d j : ℕ}
     (X : InfinitePlace K → Matrix (Fin d) (Fin d) ℂ) (hX : ∀ v : InfinitePlace K, IsUnit (X v).det)
@@ -113,19 +113,17 @@ private theorem det_gram_re_nonneg' {K : Type} [Field K] [NumberField K] [StarRi
   exact (Complex.le_def.mp hS.det_nonneg).1
 
 /- English proof (translation)
-Establish `hU : ∀ v : InfinitePlace K, IsUnit (X v).det` using `fun v => (hR.2 v).1`. Establish `hX : ∀ v : InfinitePlace K, ((X v)⁻¹)ᴴ * (X v)⁻¹ = H.map v.embedding` using `fun v => (hR.2 v).2`. Establish `hK0 : IsCMSub (cmMax K)` using `fun σ a ha => ha σ`. Use `set E : Matrix (Fin d) (Fin j) K := (Matrix.of e)ᵀ with hE`. Use `set g : InfinitePlace K → ℝ := fun v => (gram X v e).det.re with hg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg0 : ∀ v, 0 ≤ g v` using `fun v => det_gram_re_nonneg' X hU e v`. Establish `hloc : ∀ v : InfinitePlace K, ‖v.embedding (gramR H e)‖ ^ 2 ≤ g (Rb.plc v) * g v`. Introduce `v`. Establish `hPD : (H.map v.embedding).PosDef`. Rewrite using `[← hX v]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Rb.metMat_posDef X v (hU v)`. Establish `hcs` using `determinant_cauchy_schwarz d j (H.map v.embedding) hPD ((E.map (Rb.tw v.embedding))ᴴ) ((E.map v.embedding)ᴴ)`. Rewrite `hcs` using `[Matrix.conjTranspose_conjTranspose, Matrix.conjTranspose_conjTranspose]`. Rewrite using `[map_gramR]`. Establish `h1 : g (Rb.plc v) = (embGramDet H E (Rb.tw v.embedding)).re`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [hg]`. Rewrite using `[det_gram_eq_embGramDet H X hX e, Rb.plc, embGramDet_re_mk]`. Establish `h2 : g v = (embGramDet H E v.embedding).re`. Simplify using `only [hg]`. Rewrite using `[det_gram_eq_embGramDet H X hX e]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, h2]`. Unfold `embGramDet`. Rewrite using `[Rb.Hmap_tw (cmMax K) hK0 H hR.1]`. Conclude with `hcs`. Establish `hperm : ∏ v : InfinitePlace K, g (Rb.plc v) = ∏ v : InfinitePlace K, g v` using `Equiv.prod_comp (Function.Involutive.toPerm _ (fun v => Rb.plc_plc v)) g`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hsq : (∏ v : InfinitePlace K, ‖v.embedding (gramR H e)‖) ^ 2 ≤ (∏ v : InfinitePlace K, g v) ^ 2`. Establish `hsq2 : (∏ v : InfinitePlace K, g v) ^ 2 = ∏ v : InfinitePlace K, (g (Rb.plc v) * g v)`. Rewrite using `[Finset.prod_mul_distrib, hperm, sq]`. Rewrite using `[← Finset.prod_pow, hsq2]`. Conclude with `Finset.prod_le_prod (fun v _ => by positivity) (fun v _ => hloc v)`.
-
-Establish `ha : 0 ≤ ∏ v : InfinitePlace K, ‖v.embedding (gramR H e)‖` using `Finset.prod_nonneg fun v _ => norm_nonneg _`. Establish `hb : 0 ≤ ∏ v : InfinitePlace K, g v` using `Finset.prod_nonneg fun v _ => hg0 v`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem prod_norm_gramR_le (K : Type) [Field K] [NumberField K] [StarRing K] [IsTotallyComplex K]
     (d j : ℕ) (H : Matrix (Fin d) (Fin d) K) (X : InfinitePlace K → Matrix (Fin d) (Fin d) ℂ)

@@ -12,9 +12,9 @@ namespace Formalism.EigenvalueLevelCeiling
 open Formalism.DivisionValues
 
 /- English proof (translation)
-Introduce `K _ _ _ Z _ _ _ _ _ w M Th1 Th hM h1 hT h1T hTM E r h W`. Establish `a` using `(idxCutLe K Z w ⊤ W M Th hM hT hTM le_top).1`. Establish `b` using `(idxCutLe K Z w ⊤ W Th Th1 hT h1 h1T le_top).1`. Establish `c` using `(idxCutLe K Z w ⊤ W Th1 Th1 h1 h1 le_rfl le_top).1`. Establish `d : cut W Th1 ≤ cut W Th` using `inf_le_inf_right _ h1T`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `idxMono K Z w W (cut W M) (cut W Th1) (cut W Th) a c b d`. Establish `e' : (lix w (cut W M) (cut W Th) : ℝ) ≤ (lix w (cut W M) (cut W Th1) : ℝ)` using `by exact_mod_cast e`. Conclude with `le_trans e' (h W)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem enlarge_initial_lattice : EnlargeInitialLattice := by
   intro K _ _ _ Z _ _ _ _ _ w M Th1 Th hM h1 hT h1T hTM E r h W
@@ -27,7 +27,7 @@ theorem enlarge_initial_lattice : EnlargeInitialLattice := by
   exact le_trans e' (h W)
 
 /- English proof (translation)
-Introduce `K _ _ _ Z _ _ _ _ _ w W e A Th0 ThJ X₃ hA h0 hJ hle ε h`. Establish `a` using `idxMono K Z w W A _ _ hA h0 hJ (Submodule.map_mono hle)`. Establish `a' : (lix w A (ThJ.map (e.restrictScalars (𝓞 K))) : ℝ) ≤ (lix w A (Th0.map (e.restrictScalars (𝓞 K))) : ℝ)` using `by exact_mod_cast a`. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem twist_chain : TwChain := by
   intro K _ _ _ Z _ _ _ _ _ w W e A Th0 ThJ X₃ hA h0 hJ hle ε h
@@ -37,7 +37,7 @@ theorem twist_chain : TwChain := by
   linarith
 
 /- English proof (translation)
-Introduce `K _ _ _ Z _ _ _ _ _ w P _ _ ρ U ψ hMk V₀ e he hr M Th ThK Th0 ThJ X₃ X₄ hM hTh hThK hle hFG hEig hMs hTs σ hσ hsc hdata a E r ha hE hT0 h0 hJ h0J h3 h4 h34 ε hTW d φ hinj hrng Mj Tj hMj hTj`. Conclude with `onLocal K Z w P ρ U ψ hMk V₀ e he hr M Th ThK Th0 X₃ X₄ hM hTh hThK hle hFG hEig hMs hTs σ hσ hsc hdata a E r ha hE hT0 h0 h3 h4 h34 ε (twist_chain K Z w _ e _ Th0 ThJ X₃ (idxCutLe K Z w ⊤ _ M Th hM hTh hle le_top).1 h0 hJ h0J ε hTW) d φ hinj hrng Mj Tj hMj hTj`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem local_conditions_family : OnLocalJ := by
   intro K _ _ _ Z _ _ _ _ _ w P _ _ ρ U ψ hMk V₀ e he hr M Th ThK Th0 ThJ X₃ X₄ hM hTh hThK hle hFG hEig hMs hTs
@@ -48,7 +48,7 @@ theorem local_conditions_family : OnLocalJ := by
     d φ hinj hrng Mj Tj hMj hTj
 
 /- English proof (translation)
-Conclude with `fun K _ _ _ Z _ _ _ _ _ w P _ _ ρ U ψ hMk V₀ e he hr M Th ThK Th0 X₃ X₄ hM hTh hThK hle hFG hEig hMs hTs σ hσ hsc hdata a E r ha hE hT0 h0 h3 h4 h34 ε hTW => h K Z w P ρ U ψ hMk V₀ e he hr M Th ThK Th0 Th0 X₃ X₄ hM hTh hThK hle hFG hEig hMs hTs σ hσ hsc hdata a E r ha hE hT0 h0 h …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem onLocal_of_onLocalJ (h : OnLocalJ) : OnLocal := by
   exact fun K _ _ _ Z _ _ _ _ _ w P _ _ ρ U ψ hMk V₀ e he hr M Th ThK Th0 X₃ X₄ hM hTh hThK hle hFG hEig hMs hTs
@@ -57,11 +57,11 @@ theorem onLocal_of_onLocalJ (h : OnLocalJ) : OnLocal := by
       σ hσ hsc hdata a E r ha hE hT0 h0 h0 le_rfl h3 h4 h34 ε hTW
 
 /- English proof (translation)
-Introduce `R X Y _ _ _ _ _ θ eX pr e hc hk Mt`. Establish `key : ∀ m, θ (pr (eX m)) = e (θ m)`. Introduce `m`. Establish `h1` using `hk (eX m) (LinearMap.mem_range_self eX m)`. Rewrite `h1` using `[LinearMap.mem_ker, map_sub, sub_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← h1, ← LinearMap.comp_apply θ eX, hc, LinearMap.comp_apply]`. Use extensionality with `y`. Simplify using `only [Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, ⟨x, ⟨m, hm, rfl⟩, rfl⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨θ m, ⟨m, hm, rfl⟩, (key m).symm⟩`. Introduce and unpack `⟨z, ⟨m, hm, rfl⟩, rfl⟩`. Conclude with `⟨pr (eX m), ⟨eX m, ⟨m, hm, rfl⟩, rfl⟩, key m⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem theta_identity : ThetaIdentity := by
   intro R X Y _ _ _ _ _ θ eX pr e hc hk Mt
@@ -79,25 +79,23 @@ theorem theta_identity : ThetaIdentity := by
     exact ⟨pr (eX m), ⟨eX m, ⟨m, hm, rfl⟩, rfl⟩, key m⟩
 
 /- English proof (translation)
-Introduce `R X Y A _ _ _ _ _ _ θ eX p e h hc hsym hp hker hrange`. Establish `hkerθ : ∀ k ∈ LinearMap.ker θ, eX k ∈ LinearMap.ker θ`. Introduce `k hk`. Rewrite `hk`, the goal using `[LinearMap.mem_ker]`. Rewrite using `[← LinearMap.comp_apply θ eX, hc, LinearMap.comp_apply, hk, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hpp : ∀ x, p (p x) = p x` using `fun x => by rw [← LinearMap.comp_apply p p, hp]`. Establish `hrp : ∀ x, p x ∈ LinearMap.range p` using `fun x => LinearMap.mem_range_self p x`. Establish `hsub : ∀ x, x - p x ∈ LinearMap.ker θ` using `fun x => by`. Rewrite using `[← hker, LinearMap.mem_ker, map_sub, hpp, sub_self]`. Establish `hEr : ∀ x ∈ LinearMap.range p, eX x ∈ LinearMap.range p`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `x hx`. Rewrite `hx`, the goal using `[hrange]`. Introduce `k hk`. Rewrite using `[← hsym]`. Conclude with `hx _ (hkerθ k hk)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfix : ∀ y ∈ LinearMap.range p, p y = y`. Introduce and unpack `y ⟨z, rfl⟩`. Conclude with `hpp z`. Establish `hcomm : ∀ x, p (eX x) = eX (p x)`. Introduce `x`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : eX x = eX (p x) + eX (x - p x)`. Rewrite using `[← map_add]`. Use `congr 1`. Normalize the expressions using the abelian group laws. Establish `h2 : p (eX (x - p x)) = 0`.
+Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← LinearMap.mem_ker, hker]`. Conclude with `hkerθ _ (hsub x)`. Rewrite using `[h1, map_add, h2, add_zero, hfix _ (hEr _ (hrp x))]`. Use `⟨LinearMap.ext hcomm, fun x hx => ⟨?_, hsub x, fun k hk => (hrange (p x)).1 (hrp x) k hk⟩, fun Mt => ?_⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `hx`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hcomm]`. Conclude with `LinearMap.mem_range_self eX (p y)`. Establish `key : ∀ m, θ (eX (p m)) = e (θ m)`. Introduce `m`. Establish `hm : θ (p m) = θ m`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use `hsub m` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker, map_sub, sub_eq_zero]`. Conclude with `this.symm`. Rewrite using `[← LinearMap.comp_apply θ eX, hc, LinearMap.comp_apply, hm]`. Use extensionality with `y`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Simplify using `only [Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, ⟨x, ⟨m, hm, rfl⟩, rfl⟩, rfl⟩`. Conclude with `⟨θ m, ⟨m, hm, rfl⟩, (key m).symm⟩`. Introduce and unpack `⟨z, ⟨m, hm, rfl⟩, rfl⟩`.
-
-Conclude with `⟨eX (p m), ⟨p m, ⟨m, hm, rfl⟩, rfl⟩, key m⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem theta_identity_orthogonal : ThetaIdentityOrth := by
   intro R X Y A _ _ _ _ _ _ θ eX p e h hc hsym hp hker hrange
@@ -148,15 +146,13 @@ theorem theta_identity_orthogonal : ThetaIdentityOrth := by
       exact ⟨eX (p m), ⟨p m, ⟨m, hm, rfl⟩, rfl⟩, key m⟩
 
 /- English proof (translation)
-Introduce `R N Y Γ _ _ _ _ _ _ _ ρ lam θ hθ P`. Use `⟨fun γ' => ?_, ?_, fun N0 hρ hl hP => ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum, Finset.smul_sum]`. Simplify using `only [map_smul]`. Apply `Fintype.sum_equiv (Equiv.mulLeft γ')` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `γ`. Establish `hl1 : lam γ'⁻¹ * lam γ' = 1` using `by first`. Consider the case `rw [← map_mul, inv_mul_cancel, map_one]`. Consider the case `rw [← map_mul, mul_left_inv, map_one]`. Consider the case `simp [← map_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Simplify using `only [Equiv.coe_mulLeft, map_mul, smul_smul]`. Rewrite using `[← mul_assoc, hl1, one_mul]`. Use `first`. Consider the case `rfl`. Consider the case `simp [Module.End.mul_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sum]`. Simplify using `only [map_smul]`. Rewrite using `[Finset.sum_congr rfl (fun γ _ => (hθ γ P).symm), Finset.sum_const, Finset.card_univ]`. Use `first`. Consider the case `rw [Nat.cast_smul_eq_nsmul]`.
-
-Consider the case `simp`. Conclude with `AddSubgroup.sum_mem N0 (fun γ _ => hl γ _ (hρ γ P hP))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem trace_class : TraceClass := by
   intro R N Y Γ _ _ _ _ _ _ _ ρ lam θ hθ P
@@ -184,11 +180,11 @@ theorem trace_class : TraceClass := by
   · exact AddSubgroup.sum_mem N0 (fun γ _ => hl γ _ (hρ γ P hP))
 
 /- English proof (translation)
-Introduce `ρ vS T ν β hρ`. Establish `hρ' : (ρ : ℝ) ≠ 0` using `by exact_mod_cast hρ.ne'`. Establish `hq : (ρ : ℝ) * ((vS : ℝ) / (ρ : ℝ)) = vS` using `by first`. Consider the case `field_simp`. Consider the case `exact mul_div_cancel₀ _ hρ'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Establish `e : (ρ : ℝ) * ((T : ℝ) * (ν - (vS : ℝ) / (ρ : ℝ) + β)) = (ρ : ℝ) * ((T : ℝ) * (ν + β)) - (((T : ℤ) * vS : ℤ) : ℝ)`. Use `push_cast`. Take the linear combination `(-(T : ℝ)) * hq`. Rewrite using `[e]`. Use `first`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `rw [Int.ceil_sub_intCast]`. Consider the case `rw [Int.ceil_sub_int]`. Consider the case `simp`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem ceiling_shift : CeilShift := by
   intro ρ vS T ν β hρ
@@ -208,11 +204,11 @@ theorem ceiling_shift : CeilShift := by
     | simp
 
 /- English proof (translation)
-Introduce `ρ T DL Dk g hρ hDL hTD hg`. Establish `hDk : 0 ≤ Dk` using `le_trans (mul_nonneg (Nat.cast_nonneg T) hDL) hTD`. Establish `hg1 : 0 < g - 1` using `by linarith`. Establish `hx : (T : ℝ) * (DL / (g - 1) + 1) ≤ (T : ℝ) + 1`. Establish `e1 : (T : ℝ) * (DL / (g - 1) + 1) = (T : ℝ) * DL / (g - 1) + T` using `by ring`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : (T : ℝ) * DL / (g - 1) ≤ 1` using `by first`. Consider the case `(rw [div_le_one hg1]; linarith)`. Consider the case `(rw [div_le_one₀ hg1]; linarith)`. Consider the case `(rw [div_le_iff₀ hg1]; linarith)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[Int.ceil_le]`. Use `push_cast`. Conclude with `mul_le_mul_of_nonneg_left hx (by exact_mod_cast hρ)`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem level_ceiling : LevelCeil := by
   intro ρ T DL Dk g hρ hDL hTD hg
@@ -231,7 +227,7 @@ theorem level_ceiling : LevelCeil := by
   exact mul_le_mul_of_nonneg_left hx (by exact_mod_cast hρ)
 
 /- English proof (translation)
-Unfold `vw`. Rewrite using `[← FractionalIdeal.spanSingleton_pow, FractionalIdeal.count_pow]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem valuation_pow_alt (K : Type) [Field K] [NumberField K] [StarRing K] (w : HeightOneSpectrum (𝓞 K))
     (a : K) (ha : a ≠ 0) (n : ℕ) : vw w (a ^ n) = (n : ℤ) * vw w a := by
@@ -239,7 +235,7 @@ theorem valuation_pow_alt (K : Type) [Field K] [NumberField K] [StarRing K] (w :
   rw [← FractionalIdeal.spanSingleton_pow, FractionalIdeal.count_pow]
 
 /- English proof (translation)
-Unfold `vw`. Rewrite using `[← FractionalIdeal.spanSingleton_mul_spanSingleton]`. Apply the tactic sequence `apply FractionalIdeal.count_mul <;> rwa [Ne, FractionalIdeal.spanSingleton_eq_zero_iff]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem vw_mul_lemma (K : Type) [Field K] [NumberField K] [StarRing K] (w : HeightOneSpectrum (𝓞 K))
     (a b : K) (ha : a ≠ 0) (hb : b ≠ 0) : vw w (a * b) = vw w a + vw w b := by
@@ -248,7 +244,7 @@ private theorem vw_mul_lemma (K : Type) [Field K] [NumberField K] [StarRing K] (
   apply FractionalIdeal.count_mul <;> rwa [Ne, FractionalIdeal.spanSingleton_eq_zero_iff]
 
 /- English proof (translation)
-Introduce `K _ _ _ w nnL nnF q Z1 Z2 T c h1 h2 h3 h4 h5 z1 z2`. Rewrite using `[vw_mul_lemma K w _ _ (pow_ne_zero _ (mul_ne_zero h1 h4)) (mul_ne_zero (mul_ne_zero h2 (pow_ne_zero _ h3)) h5), valuation_pow_alt K w _ (mul_ne_zero h1 h4), vw_mul_lemma K w _ _ h1 h4, vw_mul_lemma K w _ _ (mul_ne_zero h2 (pow_ne_zero _ h3)) h5, vw_mul_lemma K w _ _ h2 (pow_ne_ze …`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem scalar_level : ScalarLevel := by
   intro K _ _ _ w nnL nnF q Z1 Z2 T c h1 h2 h3 h4 h5 z1 z2
@@ -259,7 +255,7 @@ theorem scalar_level : ScalarLevel := by
   ring
 
 /- English proof (translation)
-Unfold `ramw vw`. Establish `e : ((plc w : ℕ) : K) = algebraMap (𝓞 K) K ((plc w : ℕ) : 𝓞 K)` using `by simp`. Rewrite using `[e, ← FractionalIdeal.coeIdeal_span_singleton]`. Apply `FractionalIdeal.count_coe_nonneg` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 -/
 private theorem ramw_nonneg_lemma_2 (K : Type) [Field K] [NumberField K] [StarRing K]
     (w : HeightOneSpectrum (𝓞 K)) : 0 ≤ ramw w := by
@@ -269,9 +265,9 @@ private theorem ramw_nonneg_lemma_2 (K : Type) [Field K] [NumberField K] [StarRi
   apply FractionalIdeal.count_coe_nonneg
 
 /- English proof (translation)
-Introduce `K _ _ _ w nnL nnF q Z1 Z2 T c DL Dk g h1 h2 h3 h4 h5 z1 z2 hq hT h0 hTD hg`. Rewrite using `[scalar_level K w nnL nnF q Z1 Z2 T c h1 h2 h3 h4 h5 z1 z2]`. Establish `hR` using `ramw_nonneg_lemma_2 K w`. Establish `hc` using `level_ceiling (ramw w) T DL Dk g hR h0 hTD hg`. Establish `hA : 0 ≤ ramw w * ((T : ℤ) - 1)` using `mul_nonneg hR (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB : 0 ≤ (c : ℤ) * vw w q` using `mul_nonneg (by omega) hq`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem level_at_place_alt : LevelPlace := by
   intro K _ _ _ w nnL nnF q Z1 Z2 T c DL Dk g h1 h2 h3 h4 h5 z1 z2 hq hT h0 hTD hg
@@ -283,15 +279,13 @@ theorem level_at_place_alt : LevelPlace := by
   linarith
 
 /- English proof (translation)
-Introduce `RR PP DF d' n1 nW g' qmin hRR hDF hd hn1 hn hq hqg hPP`. Establish `hg : 0 < g'` using `lt_of_lt_of_le hq hqg`. Establish `hnW : 0 ≤ nW` using `le_trans hn1 hn`. Establish `hd3 : 0 ≤ d' ^ 3` using `pow_nonneg hd 3`. Establish `hd4 : 0 ≤ d' ^ 4` using `pow_nonneg hd 4`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPP0 : 0 ≤ PP` using `by nlinarith [mul_nonneg hd4 hnW]`. Establish `hDF2 : 1 ≤ DF ^ 2` using `by nlinarith`. Establish `k1 : 0 ≤ RR * DF ^ 2 * (PP - (d' ^ 4 * nW + 2 * d' ^ 3))` using `mul_nonneg (mul_nonneg hRR (sq_nonneg DF)) (by linarith)`. Establish `k2 : 0 ≤ RR * d' ^ 4 * (nW * DF ^ 2 - n1 / 4)` using `mul_nonneg (mul_nonneg hRR hd4) (by nlinarith)`. Establish `hC : n1 * d' * (RR * d' ^ 3) / 4 + 2 * (RR * d' ^ 3) * DF ^ 2 ≤ RR * PP * DF ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[k1, k2]`. Establish `hN : 0 ≤ RR * PP * DF ^ 2` using `mul_nonneg (mul_nonneg hRR hPP0) (sq_nonneg DF)`. Establish `hinv : g'⁻¹ ≤ qmin⁻¹` using `by first`. Consider the case `exact inv_anti₀ hq hqg`. Consider the case `exact inv_le_inv_of_le hq hqg`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `exact (inv_le_inv hg hq).2 hqg`. Combine the equalities or inequalities in the displayed calculation. Consider the case `ring`. Consider the case `(field_simp; ring)`. Use `_ ≤ RR * PP * DF ^ 2 * g'⁻¹ := mul_le_mul_of_nonneg_right hC (inv_nonneg.mpr hg.le)`.
-
-Use `_ ≤ RR * PP * DF ^ 2 * qmin⁻¹ := mul_le_mul_of_nonneg_left hinv hN`. Use `_ = RR * PP * DF ^ 2 / qmin := by rw [div_eq_mul_inv]`.
+Treat this case separately. Chain the equalities or inequalities of the calculation. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem constant_b_bound : ConstB := by
   intro RR PP DF d' n1 nW g' qmin hRR hDF hd hn1 hn hq hqg hPP
@@ -323,9 +317,9 @@ theorem constant_b_bound : ConstB := by
     _ = RR * PP * DF ^ 2 / qmin := by rw [div_eq_mul_inv]
 
 /- English proof (translation)
-Introduce `K _ _ _ J _ ε0 w h`. Establish `hp : 0 ≤ 1 / (plc w : ℝ) ^ 2` using `by positivity`. Establish `e2 : (2 : ℝ) / (plc w : ℝ) ^ 2 = 1 / (plc w : ℝ) ^ 2 + 1 / (plc w : ℝ) ^ 2` using `by ring`. Rewrite using `[e2]`. Distinguish the cases in `hc : conjPl w = w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [if_pos hc, add_zero] at h`. Rewrite using `[hc, Finset.sum_add_distrib]`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [if_neg hc] at h`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem twist_set_double : TwistSetDouble := by
   intro K _ _ _ J _ ε0 w h
@@ -340,21 +334,21 @@ theorem twist_set_double : TwistSetDouble := by
     linarith
 
 /- English proof (translation)
-Introduce `K _ _ _ D hD Tup μ J _ d hd M T θ S e0 r0 ε0 F0 errl Jx vU0 gq dK EA Rb EJ δq E3 hδ h1 h2 hsh hv hdep htw0 hEA hRb hEJ hE3`. Establish `hR : RamBasic` using `ramBasic`. Establish `hDr : (0 : ℝ) < D` using `by exact_mod_cast hD`. Establish `htw : ∀ w ∈ S, ∑ j, (ε0 w j + ε0 (conjPl w) j) ≤ 2 / (plc w : ℝ) ^ 2` using `fun w hw => twist_set_double K J ε0 w (by convert htw0 w hw)`. Take `⟨c1, c2, c3⟩` from `local_conditions_global_form K D hD Tup μ J d hd M T θ S e0 r0 ε0 F0 errl Jx vU0 gq dK EA Rb EJ δq E3 hδ h1 h2 hsh hv hdep htw hEA hRb hEJ hE3`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨?_, c1, c2, c3⟩` and prove the remaining obligations. Introduce `w hw`. Take `⟨hp, hr1, hpc, hrc, hell⟩` from `hR K w`. Establish `hρ : (1 : ℝ) ≤ (ramw w : ℝ)` using `by exact_mod_cast hr1`. Take `⟨hv0, hvc, hvg⟩` from `hv w hw`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `key : ∀ j, ((idx w (M j) (matLat (θ j (μ w)) (T j (μ w))) : ℝ) + (idx (conjPl w) (M j) (matLat (θ j (μ w)) (T j (μ w))) : ℝ)) ≤ (2 * ((ramw w : ℝ) * F0 w j) + (ramw w : ℝ) * (errl w j + (r0 w j + r0 (conjPl w) j) / (δq * (D : ℝ)))) * D + (ramw w : ℝ) * (ε0 w j + ε0 (conjPl w) j)`. Introduce `j`. Establish `a1` using `h1 w hw j`. Establish `a2` using `h2 w hw j`. Rewrite `a2` using `[hrc, hvc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hdj : (d j : ℝ) = D` using `by exact_mod_cast hd j`. Rewrite `a1`, `a2` using `[hdj]`. Establish `a3` using `hdep w hw j`. Establish `a4` using `hsh j`. Establish `e1 : (r0 w j + dK j * vU0 w) / δq = r0 w j / δq + dK j / δq * vU0 w`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Establish `e2 : (r0 (conjPl w) j + dK j * vU0 w) / δq = r0 (conjPl w) j / δq + dK j / δq * vU0 w`. Clear the denominators using the available nonvanishing facts. Establish `e3 : (r0 w j + r0 (conjPl w) j) / (δq * (D : ℝ)) * D = r0 w j / δq + r0 (conjPl w) j / δq`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Rewrite `a1` using `[e1]`. Rewrite `a2` using `[e2]`. Establish `b1 : dK j / δq * vU0 w ≤ 3 * (D : ℝ) * vU0 w` using `mul_le_mul_of_nonneg_right a4 hv0`. Establish `b2 : (e0 w j + e0 (conjPl w) j + 8 * vU0 w) * (D : ℝ) ≤ (2 * F0 w j + errl w j) * D` using `mul_le_mul_of_nonneg_right (by linarith) hDr.le`. Establish `b3 : ((e0 w j + vU0 w) * (D : ℝ) + (r0 w j / δq + dK j / δq * vU0 w) + ε0 w j) + ((e0 (conjPl w) j + vU0 w) * (D : ℝ) + (r0 (conjPl w) j / δq + dK j / δq * vU0 w) + ε0 (conjPl w) j) ≤ (2 * F0 w j + errl w j) * D + (r0 w j + r0 (conjPl w) j) / (δq * (D : ℝ)) * D + (ε0 w j + ε0 (co …`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e3]`. Use the polynomial consequences of the given equalities and inequalities. Establish `b4` using `mul_le_mul_of_nonneg_left b3 (by linarith : (0 : ℝ) ≤ (ramw w : ℝ))`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Finset.sum_add_distrib, Finset.sum_mul, Finset.mul_sum]`. Use `_ ≤ _ := by`. Rewrite using `[hell]`. Establish `c1` using `mul_le_mul_of_nonneg_left (htw w hw) (by linarith : (0 : ℝ) ≤ (ramw w : ℝ))`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem local_conditions_global_set : OnExportSet := by
   classical
@@ -419,9 +413,9 @@ theorem local_conditions_global_set : OnExportSet := by
       linarith
 
 /- English proof (translation)
-Introduce `K _ _ _ Z _ _ _ _ _ w P _ _ ρ U ψ hMk V₀ e he hr M Th1 Th ThK Th0 ThJ X₃ hM hTh1 hTh hThK h1le hle hFG hEig hMs hTs σ hσ hsc hdata a E r ha hE hT0 h0 hJ h0J h3 X _ _ _ _ θ' eX pr Mt hc hk h4 h34 ε hTW d φ hinj hrng Mj Tj hMj hTj`. Establish `hT0'` using `enlarge_initial_lattice K Z w M Th1 Th hM hTh1 hTh h1le hle (E : ℝ) r hT0`. Establish `hc' : (θ'.restrictScalars (𝓞 K)) ∘ₗ (eX.restrictScalars (𝓞 K)) = (e.restrictScalars (𝓞 K)) ∘ₗ (θ'.restrictScalars (𝓞 K))` using `LinearMap.ext fun x => LinearMap.congr_fun hc x`. Establish `hk' : ∀ x ∈ LinearMap.range (eX.restrictScalars (𝓞 K)), x - (pr.restrictScalars (𝓞 K)) x ∈ LinearMap.ker (θ'.restrictScalars (𝓞 K))`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨y, rfl⟩` from `LinearMap.mem_range.1 hx`. Conclude with `LinearMap.mem_ker.2 (LinearMap.mem_ker.1 (hk _ (LinearMap.mem_range_self eX y)))`. Establish `hid` using `theta_identity (𝓞 K) X Z (θ'.restrictScalars (𝓞 K)) (eX.restrictScalars (𝓞 K)) (pr.restrictScalars (𝓞 K)) (e.restrictScalars (𝓞 K)) hc' hk' Mt`. Conclude with `local_conditions_family K Z w P ρ U ψ hMk V₀ e he hr M Th ThK Th0 ThJ X₃ ((Mt.map (θ'.restrictScalars (𝓞 K))).map (e.restrictScalars (𝓞 K))) hM hTh hThK hle hFG hEig hMs hTs σ hσ hsc hdata a E r ha hE hT0' h0 hJ h0J h3 h4 h34 ε hTW d φ hinj hrng Mj Tj hMj (hTj.trans hid)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem local_conditions_weighted : LocalConditionsWeighted := by
   intro K _ _ _ Z _ _ _ _ _ w P _ _ ρ U ψ hMk V₀ e he hr M Th1 Th ThK Th0 ThJ X₃ hM hTh1 hTh hThK h1le hle hFG hEig
@@ -443,15 +437,15 @@ theorem local_conditions_weighted : LocalConditionsWeighted := by
     σ hσ hsc hdata a E r ha hE hT0' h0 hJ h0J h3 h4 h34 ε hTW d φ hinj hrng Mj Tj hMj (hTj.trans hid)
 
 /- English proof (translation)
-Establish `hfix : X₄.map (e.restrictScalars (𝓞 K)) = X₄`. Establish `h4c` using `h4`. Take `⟨-, h4s⟩` from `h4c`. Establish `hsub : ∀ x ∈ X₄, e x = x`. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hx1 : x ∈ Submodule.span K (X₄ : Set Z)` using `Submodule.subset_span hx`. Rewrite `hx1` using `[h4s]`. Establish `hx2 : x ∈ LinearMap.range e`. Rewrite using `[hr]`. Conclude with `(Submodule.mem_inf.1 hx1).2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨y, rfl⟩` from `LinearMap.mem_range.1 hx2`. Rewrite using `[← LinearMap.comp_apply e e, he]`. Use extensionality with `x`. Simplify using `only [Submodule.mem_map, LinearMap.coe_restrictScalars]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨y, hy, rfl⟩`. Rewrite using `[hsub y hy]`. Conclude with `hy`. Introduce `hx`. Conclude with `⟨x, hx, hsub x hx⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hid : X₄.map ((LinearMap.id : Z →ₗ[K] Z).restrictScalars (𝓞 K)) = X₄`. Use extensionality with `x`. Simplify using the standard rewrite rules. Conclude with `h K Z w P ρ U ψ hMk V₀ e he hr M Th Th ThK Th0 ThJ X₃ hM hTh hTh hThK le_rfl hle hFG hEig hMs hTs σ hσ hsc hdata a E r ha hE hT0 h0 hJ h0J h3 Z LinearMap.id e LinearMap.id X₄ (by rw [LinearMap.id_comp, LinearMap.comp_id]) (fun x _ => by simp) (by rw [hid, hfix]; exact h4) (by rw …`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem localConditionsFamily_of_weighted (h : LocalConditionsWeighted)
     (K : Type) [Field K] [NumberField K] [StarRing K] (Z : Type) [AddCommGroup Z] [Module K Z]
@@ -512,19 +506,17 @@ theorem localConditionsFamily_of_weighted (h : LocalConditionsWeighted)
     (by rw [hTj, hfix, hid, hid])
 
 /- English proof (translation)
-Introduce `R _ I r t A A' B B' C C' D D' hM hB`. Rewrite `hM` using `[Matrix.fromBlocks_multiply, ← Matrix.fromBlocks_one, Matrix.fromBlocks_inj]`. Take `⟨hTL, hTR, -, -⟩` from `hM`. Establish `hB0 : B.map (Ideal.Quotient.mk I) = 0`. Use extensionality with `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (hB i j)`. Establish `hTL' : A.map (Ideal.Quotient.mk I) * A'.map (Ideal.Quotient.mk I) = 1`. Establish `h1` using `congrArg (fun X => X.map (Ideal.Quotient.mk I)) hTL`. Simplify using `only [Matrix.map_add _ (map_add (Ideal.Quotient.mk I)), Matrix.map_mul, hB0, Matrix.zero_mul, add_zero, Matrix.map_one _ (map_zero (Ideal.Quotient.mk I)) (map_one (Ideal.Quotient.mk I))] at h1`. Conclude with `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTR' : A.map (Ideal.Quotient.mk I) * B'.map (Ideal.Quotient.mk I) = 0`. Establish `h1` using `congrArg (fun X => X.map (Ideal.Quotient.mk I)) hTR`. Simplify using `only [Matrix.map_add _ (map_add (Ideal.Quotient.mk I)), Matrix.map_mul, hB0, Matrix.zero_mul, add_zero, Matrix.map_zero _ (map_zero (Ideal.Quotient.mk I))] at h1`. Conclude with `h1`. Establish `hA'A : A'.map (Ideal.Quotient.mk I) * A.map (Ideal.Quotient.mk I) = 1` using `by first`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact mul_eq_one_comm.1 hTL'`. Consider the case `exact Matrix.mul_eq_one_comm.mp hTL'`. Consider the case `exact (Matrix.mul_eq_one_comm_of_equiv (Equiv.refl _)).1 hTL'`. Establish `hB'0 : B'.map (Ideal.Quotient.mk I) = 0`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hA'A, Matrix.one_mul]`. Use `_ = A'.map (Ideal.Quotient.mk I) * (A.map (Ideal.Quotient.mk I) * B'.map (Ideal.Quotient.mk I)) := Matrix.mul_assoc _ _ _`. Use `_ = 0 := by rw [hTR', Matrix.mul_zero]`. Establish `hent : ∀ {m n : Type} (X : Matrix m n R), X.map (Ideal.Quotient.mk I) = 0 → ∀ i j, X i j ∈ I`. Introduce `m n X hX i j`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 (congrFun (congrFun hX i) j)`. Use `⟨?_, hent _ ?_, hent _ ?_, hent _ hB'0⟩` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq]`. Simplify using `only [RingHom.map_det, map_mul, RingHom.mapMatrix_apply, Matrix.fromBlocks_map, hB0, Matrix.det_fromBlocks_zero₁₂]`. Rewrite using `[Matrix.map_sub _ (map_sub (Ideal.Quotient.mk I)), Matrix.map_mul, Matrix.map_one _ (map_zero (Ideal.Quotient.mk I)) (map_one (Ideal.Quotient.mk I)), hTL', sub_self]`.
-
-Rewrite using `[Matrix.map_sub _ (map_sub (Ideal.Quotient.mk I)), Matrix.map_mul, Matrix.map_one _ (map_zero (Ideal.Quotient.mk I)) (map_one (Ideal.Quotient.mk I)), hA'A, sub_self]`.
+A detailed English derivation is pending.
 -/
 theorem block_type : BlockType := by
   intro R _ I r t A A' B B' C C' D D' hM hB
@@ -568,9 +560,9 @@ theorem block_type : BlockType := by
       Matrix.map_one _ (map_zero (Ideal.Quotient.mk I)) (map_one (Ideal.Quotient.mk I)), hA'A, sub_self]
 
 /- English proof (translation)
-Introduce `T D nW r t h0 c hD hr ht hnW hT`. Establish `h2 : 2 * (D + 2) ≤ (D + 2) * nW` using `by nlinarith`. Establish `hb : 0 ≤ T + D + 2 + r` using `by linarith`. Establish `hle : T + D + 2 + r ≤ 3 / 2 * T` using `by linarith`. Establish `hsq` using `mul_self_le_mul_self hb hle`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : (T + D + 2) * (T + D + 2 + 2 * r) ≤ 9 / 4 * T ^ 2` using `by nlinarith [sq_nonneg r]`. Establish `e : (3.75 : ℝ) = 15 / 4` using `by norm_num`. Rewrite using `[e]`. Conclude with `⟨by nlinarith [sq_nonneg T], fun hh hc => by nlinarith [sq_nonneg T]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem gapConditions_of_largeGaps : GapNum := by
   intro T D nW r t h0 c hD hr ht hnW hT
@@ -584,11 +576,9 @@ theorem gapConditions_of_largeGaps : GapNum := by
   exact ⟨by nlinarith [sq_nonneg T], fun hh hc => by nlinarith [sq_nonneg T]⟩
 
 /- English proof (translation)
-Introduce `R K σ _ _ _ hinj Del Q m c hD hc`. Establish `hcoef : c = algebraMap R K (Q.coeff m)`. Establish `h1` using `congrArg (MvPolynomial.coeff m) hc`. Rewrite `h1` using `[MvPolynomial.coeff_smul, MvPolynomial.coeff_map, MvPolynomial.coeff_map, hD, map_one, smul_eq_mul, mul_one]`. Conclude with `h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Q.coeff m, hcoef.symm, ?_⟩` and prove the remaining obligations. Establish `hmap : MvPolynomial.map (algebraMap R K) Q = MvPolynomial.map (algebraMap R K) (Q.coeff m • Del)`. Rewrite using `[← hc, hcoef, MvPolynomial.smul_eq_C_mul, MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C]`. Use `first`. Consider the case `exact MvPolynomial.map_injective _ hinj hmap`.
-
-Consider the case `exact MvPolynomial.map_injective hinj hmap`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem primitive_line : PrimitiveLine := by
   intro R K σ _ _ _ hinj Del Q m c hD hc
@@ -605,26 +595,26 @@ theorem primitive_line : PrimitiveLine := by
     | exact MvPolynomial.map_injective hinj hmap
 
 /- English proof (translation)
-Apply the tactic sequence `rw [Int.ceil_eq_iff]; constructor <;> norm_num`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 example : ⌈((1 : ℤ) : ℝ) * (((3 : ℕ) : ℝ) * ((2 : ℝ) / (15 - 1) + 1))⌉ = (1 : ℤ) * (((3 : ℕ) : ℤ) + 1) := by
   rw [Int.ceil_eq_iff]; constructor <;> norm_num
 
 /- English proof (translation)
-Rewrite using `[Int.ceil_le]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 example : ¬ (⌈((1 : ℤ) : ℝ) * (((3 : ℕ) : ℝ) * ((2 : ℝ) / (2 - 1) + 1))⌉ ≤ (1 : ℤ) * (((3 : ℕ) : ℤ) + 1)) := by
   rw [Int.ceil_le]; norm_num
 
 /- English proof (translation)
-The claim follows from `constant_b_bound 1 3 1 1 1 1 1 1 (by norm_num) (by norm_num) (by norm_num) (by norm_num) (by norm_num) (by norm_num) (by norm_num) (by norm_num)`.
+A detailed English derivation is pending.
 -/
 example : (1 : ℝ) * 1 * (1 * 1 ^ 3) / (4 * 1) + 2 * (1 * 1 ^ 3) * 1 ^ 2 / 1 ≤ 1 * 3 * 1 ^ 2 / 1 :=
   constant_b_bound 1 3 1 1 1 1 1 1 (by norm_num) (by norm_num) (by norm_num) (by norm_num) (by norm_num) (by norm_num)
     (by norm_num) (by norm_num)
 
 /- English proof (translation)
-The claim follows from `theta_identity ℤ (ℤ × ℤ) ℤ (LinearMap.fst ℤ ℤ ℤ) LinearMap.id _ LinearMap.id rfl (by intro x _; simp [LinearMap.mem_ker]) Mt`.
+A detailed English derivation is pending.
 -/
 example (Mt : Submodule ℤ (ℤ × ℤ)) :
     ((Mt.map (LinearMap.id : ℤ × ℤ →ₗ[ℤ] ℤ × ℤ)).map
@@ -634,7 +624,7 @@ example (Mt : Submodule ℤ (ℤ × ℤ)) :
     (by intro x _; simp [LinearMap.mem_ker]) Mt
 
 /- English proof (translation)
-The claim follows from `(theta_identity_orthogonal ℤ (ℤ × ℤ) ℤ ℤ (LinearMap.fst ℤ ℤ ℤ) LinearMap.id (LinearMap.inl ℤ ℤ ℤ ∘ₗ LinearMap.fst ℤ ℤ ℤ) LinearMap.id (fun x y => x.1 * y.1 + x.2 * y.2) rfl (fun _ _ => rfl) (by ext <;> simp) (by ext x; simp [LinearMap.mem_ker]) (by intro x constructor · rintro ⟨y …`.
+A detailed English derivation is pending.
 -/
 example : (LinearMap.inl ℤ ℤ ℤ ∘ₗ LinearMap.fst ℤ ℤ ℤ) ∘ₗ (LinearMap.id : ℤ × ℤ →ₗ[ℤ] ℤ × ℤ) =
     (LinearMap.id : ℤ × ℤ →ₗ[ℤ] ℤ × ℤ) ∘ₗ (LinearMap.inl ℤ ℤ ℤ ∘ₗ LinearMap.fst ℤ ℤ ℤ) :=
@@ -655,17 +645,17 @@ example : (LinearMap.inl ℤ ℤ ℤ ∘ₗ LinearMap.fst ℤ ℤ ℤ) ∘ₗ (L
         exact this.symm)).1
 
 /- English proof (translation)
-The claim follows from `(gapConditions_of_largeGaps 8 0 2 2 0 0 0 (by norm_num) (by norm_num) (by norm_num) (by norm_num) (by norm_num)).1`.
+A detailed English derivation is pending.
 -/
 example : ((8 : ℝ) + 0 + 2) * (8 + 0 + 2 + 2 * 2) ≤ 3.75 * 8 ^ 2 :=
   (gapConditions_of_largeGaps 8 0 2 2 0 0 0 (by norm_num) (by norm_num) (by norm_num) (by norm_num) (by norm_num)).1
 
 /- English proof (translation)
-Introduce `K _ _ _ D hD Tup μ J _ d hd M T θ S e0 r0 ε0 F0 errl Jx vU0 gq dK EA Rb EJ δq E3 hδ h1 h2 h3 h4 h5 h6 h7 h8 h9 h10`. Take `⟨-, hA, hB, hC⟩` from `h K D hD Tup μ J d hd M T θ S e0 r0 ε0 F0 errl Jx vU0 gq dK EA Rb EJ δq E3 hδ h1 h2 h3 h4 h5 (fun w hw => by`. Establish `hw6` using `h6 w hw`. Establish `hp : 0 ≤ 1 / (plc w : ℝ) ^ 2` using `by positivity`. Distinguish the cases in `hc : conjPl w = w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [if_pos hc, add_zero]`. Rewrite `hw6` using `[hc, Finset.sum_add_distrib]`. Distinguish the cases in `hs : 0 ≤ ∑ j, ε0 w j`. Combine the linear equalities and inequalities to obtain the conclusion. Use `push_neg at hs`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [if_neg hc]`. Conclude with `hw6) h7 h8 h9 h10`. Conclude with `⟨hA, hB, hC⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem onExport_of_onExportSet (h : OnExportSet) : OnExport := by
   intro K _ _ _ D hD Tup μ J _ d hd M T θ S e0 r0 ε0 F0 errl Jx vU0 gq dK EA Rb EJ δq E3 hδ h1 h2 h3 h4 h5 h6 h7 h8
@@ -688,7 +678,7 @@ theorem onExport_of_onExportSet (h : OnExportSet) : OnExport := by
 open Classical in
 
 /- English proof (translation)
-Introduce `w hw`. Conclude with `twist_set_double K J ε0 w (h w hw)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem twistSetDouble_finset (K : Type) [Field K] [NumberField K] [StarRing K] (J : Type) [Fintype J]
     (ε0 : HeightOneSpectrum (𝓞 K) → J → ℝ) (S : Finset (HeightOneSpectrum (𝓞 K)))
@@ -698,7 +688,7 @@ theorem twistSetDouble_finset (K : Type) [Field K] [NumberField K] [StarRing K] 
   exact twist_set_double K J ε0 w (h w hw)
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem levelCeil_tower (ρ1 ρ2 : ℤ) (T : ℕ) (DL Dk g : ℝ) (h1 : 0 ≤ ρ1) (h2 : 0 ≤ ρ2) (h3 : 0 ≤ DL)
     (h4 : (T : ℝ) * DL ≤ Dk) (h5 : 2 * Dk + 2 < g) :
@@ -708,7 +698,7 @@ theorem levelCeil_tower (ρ1 ρ2 : ℤ) (T : ℕ) (DL Dk g : ℝ) (h1 : 0 ≤ ρ
     _ = (ρ1 * ρ2) * ((T : ℤ) + 1) := by ring
 
 /- English proof (translation)
-Establish `a : ⌈((2 : ℤ) : ℝ) * (1.25 : ℝ)⌉ = 3` using `by rw [Int.ceil_eq_iff]; norm_num`. Establish `b : ⌈((1 : ℤ) : ℝ) * (1.25 : ℝ)⌉ = 2` using `by rw [Int.ceil_eq_iff]; norm_num`. Rewrite using `[a, b]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 example : ⌈((2 : ℤ) : ℝ) * (1.25 : ℝ)⌉ < 2 * ⌈((1 : ℤ) : ℝ) * (1.25 : ℝ)⌉ := by
   have a : ⌈((2 : ℤ) : ℝ) * (1.25 : ℝ)⌉ = 3 := by rw [Int.ceil_eq_iff]; norm_num
@@ -716,7 +706,7 @@ example : ⌈((2 : ℤ) : ℝ) * (1.25 : ℝ)⌉ < 2 * ⌈((1 : ℤ) : ℝ) * (1
   rw [a, b]; norm_num
 
 /- English proof (translation)
-Rewrite using `[scalar_level K w nnL nnF q Z1 Z2 T c h1 h2 h3 h4 h5 z1 z2]`. Establish `hR` using `ramw_nonneg_lemma_2 K w`. Establish `hA : 0 ≤ ramw w * ((T : ℤ) - 1)` using `mul_nonneg hR (by omega)`. Establish `hB : 0 ≤ (c : ℤ) * vw w q` using `mul_nonneg (by omega) hq`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem levelPlace_any (K : Type) [Field K] [NumberField K] [StarRing K] (w : HeightOneSpectrum (𝓞 K))
     (nnL nnF q Z1 Z2 : K) (T c : ℕ) (E : ℤ) (h1 : nnL ≠ 0) (h2 : nnF ≠ 0) (h3 : q ≠ 0) (h4 : Z1 ≠ 0) (h5 : Z2 ≠ 0)
@@ -729,7 +719,7 @@ theorem levelPlace_any (K : Type) [Field K] [NumberField K] [StarRing K] (w : He
   linarith
 
 /- English proof (translation)
-Conclude with `levelPlace_any K w nnL nnF q Z1 Z2 T c _ h1 h2 h3 h4 h5 z1 z2 hq hT (by rw [hρ]; exact levelCeil_tower ρ1 ρ2 T DL Dk g r1 r2 h0 hTD hg)`.
+A detailed English derivation is pending.
 -/
 theorem levelPlace_tower (K : Type) [Field K] [NumberField K] [StarRing K] (w : HeightOneSpectrum (𝓞 K))
     (nnL nnF q Z1 Z2 : K) (T c : ℕ) (DL Dk g : ℝ) (ρ1 ρ2 : ℤ) (h1 : nnL ≠ 0) (h2 : nnF ≠ 0) (h3 : q ≠ 0)
@@ -747,9 +737,9 @@ variable (K : Type) [Field K] [NumberField K] [StarRing K]
 def unitLat : Submodule (𝓞 K) K := Submodule.span (𝓞 K) {(1 : K)}
 
 /- English proof (translation)
-Unfold `IsLatIn unitLat`. Use `⟨Submodule.fg_span_singleton _, ?_⟩` and prove the remaining obligations. Use `first`. Consider the case `(rw [Submodule.span_span_of_tower]`. Conclude with `eq_top_iff.2 fun x _ => Submodule.mem_span_singleton.2 ⟨x, by simp⟩)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `(refine eq_top_iff.2 fun x _ => ?_`. Establish `h1 : (1 : K) ∈ (Submodule.span (𝓞 K) {(1 : K)} : Set K)` using `Submodule.subset_span rfl`. Establish `h2` using `Submodule.smul_mem (Submodule.span K (Submodule.span (𝓞 K) {(1 : K)} : Set K)) x (Submodule.subset_span h1)`. Simplify using `using h2)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem unitLat_isLatIn : IsLatIn (⊤ : Submodule K K) (unitLat K) := by
   unfold IsLatIn unitLat
@@ -764,9 +754,9 @@ theorem unitLat_isLatIn : IsLatIn (⊤ : Submodule K K) (unitLat K) := by
        simpa using h2)
 
 /- English proof (translation)
-Apply `eq_top_iff.2` to reduce the goal to its premises. Introduce `x _`. Unfold `eig`. Rewrite using `[Submodule.mem_iInf]`. Introduce `u`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[LinearMap.mem_ker]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem eig_trivial : eig (1 : Representation K Unit K) ⊤ (fun _ => (1 : 𝓞 K)) = ⊤ := by
   apply eq_top_iff.2
@@ -778,7 +768,7 @@ theorem eig_trivial : eig (1 : Representation K Unit K) ⊤ (fun _ => (1 : 𝓞 
   simp
 
 /- English proof (translation)
-Use `first`. Consider the case `(ext x; simp)`. Consider the case `exact Submodule.map_id A`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem map_id_restrict (A : Submodule (𝓞 K) K) :
     A.map ((LinearMap.id : K →ₗ[K] K).restrictScalars (𝓞 K)) = A := by
@@ -787,15 +777,15 @@ theorem map_id_restrict (A : Submodule (𝓞 K) K) :
     | exact Submodule.map_id A
 
 /- English proof (translation)
-Introduce `d φ hinj hrng Mj Tj hMj hTj`. Establish `hv1 : vw w (1 : K) = 0`. Unfold `vw`. Rewrite using `[FractionalIdeal.spanSingleton_one, FractionalIdeal.count_one]`. Establish `hc : ((Nat.card (⊤ : Subgroup Unit) : ℕ) : K) = 1` using `by first`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Consider the case `simp`. Consider the case `(rw [Subgroup.card_top, Nat.card_unique, Nat.cast_one])`. Establish `hidx : (((⊤ : Subgroup Unit).index : ℕ) : ℝ) = 1`. Rewrite using `[Subgroup.index_top, Nat.cast_one]`. Establish `hcut : cut (eig (1 : Representation K Unit K) ⊤ (fun _ => (1 : 𝓞 K)) ⊓ ⊤) (unitLat K) = unitLat K`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `cut`. Rewrite using `[eig_trivial K]`. Simplify using the standard rewrite rules. Establish `hMT : Mj = Tj`. Apply `Submodule.map_injective_of_injective (f := φ.restrictScalars (𝓞 K)) hinj` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hMj, hTj, hcut, map_id_restrict K, map_id_restrict K, map_id_restrict K]`. Substitute `hMT` using the available equality. Establish `h0 : idx w Mj Mj = 0`. Unfold `idx Formalism.HermitianLatticesTheory.lidx`. Conclude with `sub_self _`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0, hc, hv1, hidx]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem localConditionsWeighted_trivial_instance (w : HeightOneSpectrum (𝓞 K)) :
     ∀ (d : ℕ) (φ : (Fin d → K) →ₗ[K] K), Function.Injective φ →
@@ -835,11 +825,11 @@ theorem localConditionsWeighted_trivial_instance (w : HeightOneSpectrum (𝓞 K)
   simp
 
 /- English proof (translation)
-Establish `hcut : cut (eig (1 : Representation K Unit K) ⊤ (fun _ => (1 : 𝓞 K)) ⊓ ⊤) (unitLat K) = unitLat K`. Unfold `cut`. Rewrite using `[eig_trivial K]`. Simplify using the standard rewrite rules. Use `⟨(LinearEquiv.funUnique (Fin 1) K K).toLinearMap, (unitLat K).comap ((LinearEquiv.funUnique (Fin 1) K K).toLinearMap.restrictScalars (𝓞 K)), (LinearEquiv.funUnique (Fin 1) K K).injective, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[eig_trivial K, inf_top_eq]`. Conclude with `LinearEquiv.range _`. Rewrite using `[Submodule.map_comap_eq_of_surjective (f := (LinearEquiv.funUnique (Fin 1) K K).toLinearMap.restrictScalars (𝓞 K)) (LinearEquiv.funUnique (Fin 1) K K).surjective, hcut]`. Rewrite using `[Submodule.map_comap_eq_of_surjective (f := (LinearEquiv.funUnique (Fin 1) K K).toLinearMap.restrictScalars (𝓞 K)) (LinearEquiv.funUnique (Fin 1) K K).surjective, map_id_restrict K, map_id_restrict K, map_id_restrict K]`. Unfold `idx Formalism.HermitianLatticesTheory.lidx`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem localConditionsWeighted_trivial_coords (w : HeightOneSpectrum (𝓞 K)) :
     ∃ (φ : (Fin 1 → K) →ₗ[K] K) (Mj : Submodule (𝓞 K) (Fin 1 → K)), Function.Injective φ ∧

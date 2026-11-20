@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Definitions.Degenerations.RigGen
 open AlgebraicGeometry CategoryTheory GlobalTheory.ZH
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.ZH.EvRoot.ev_eq_root_mul_th` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FThetaSystemValueEqRootMulThetaConstant.lean&line=154#L154)
 -/

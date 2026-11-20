@@ -18,7 +18,7 @@ namespace GlobalTheory.CompanionTheory.WeilSiegel.Frame
 variable {D : D7}
 
 /- English proof (translation)
-Use extensionality with `i a`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem trM_actW_ratTup (V : HSp D) {r : ℕ} (h : GA D V) (X : Fin r → Fin V.rank → D.host.E) :
     trM (GlobalTheory.CompanionTheory.SW.actW (AF D.host.F) D.sp.cm.sig V.gram h⁻¹ (HeckeCharacterZeroLocus.SiegelWeilU.ratTup (AF D.host.F) X)) =
@@ -35,23 +35,21 @@ def framesEquiv (V : HSp D) {r : ℕ} (T : Matrix (Fin r) (Fin r) D.host.E) :
   right_inv _ := rfl
 
 /- English proof (translation)
-Introduce `D r V θ hθ ν hν 𝓕 h𝓕 φ hφ habs β`. Establish `: BorelSpace (GA D V)` using `⟨rfl⟩`. Use `haveI := hν`. Establish `hcm : HeckeCharacterZeroLocus.SiegelWeilU.IsCMExt D.host.F D.host.E D.sp.cm.sig` using `isCMExt_host D`. Establish `hJ : HeckeCharacterZeroLocus.SiegelWeilU.IsHermND D.sp.cm.sig V.gram` using `isHermND_gram V`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hν' : HeckeCharacterZeroLocus.SiegelWeilU.IsHaarH D.host.F D.host.E D.sp.cm.sig V.rank V.gram ν` using `hν`. Establish `h𝓕' : HeckeCharacterZeroLocus.SiegelWeilU.IsFDH D.host.F D.host.E D.sp.cm.sig V.rank V.gram ν 𝓕` using `h𝓕`. Take `⟨⟨_, _, _⟩, -⟩` from `GlobalTheory.T.adeles_locally_compact_second_countable D.host.F`. Take `⟨_, _, _, _, -, -, -, hB, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring _ _ D.sp.cm.sig hcm (AF D.host.F)`. Use `hB r V.rank` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcont : Continuous φ` using `(GlobalTheory.CompanionTheory.WeilTheta.schwartzA_continuous_and_dominated D θ hθ _ _ φ hφ).1`. Establish `htr : Continuous (trM : (Fin r → Fin V.rank → AF D.host.F ⊗[D.host.F] D.host.E) → Mx D V.rank r)` using `continuous_pi fun i => continuous_pi fun a => (show Continuous fun X : Fin r → Fin V.rank → AF D.host.F ⊗[D.host.F] D.host.E => X a i from (continuous_apply i).comp (continuous_apply a))`. Use `set S := framesE D.sp.cm.sig V.gram β.1 with hS`. Use `set Φ : (Fin r → Fin V.rank → AF D.host.F ⊗[D.host.F] D.host.E) → ℂ := fun X => φ (trM X) with hΦdef`. Establish `hΦ : Measurable Φ` using `(hcont.comp htr).measurable`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hν0 : ν 𝓕 ≠ 0` using `h𝓕.measure_ne_zero (NeZero.ne ν)`. Establish `hinvtop : (ν 𝓕)⁻¹ ≠ ⊤` using `ENNReal.inv_ne_top.2 hν0`. Establish `hL` using `GlobalTheory.SiegelFormula.leftInv_absTheta V φ`. Establish `habs' : ∫⁻ g in 𝓕, GlobalTheory.SiegelFormula.absTheta V φ g ∂ν < ⊤`. Establish `e` using `GlobalTheory.AutomorphicL2Unitary.lintegral_quotMeasure h𝓕 (descend (GQ V) (GlobalTheory.SiegelFormula.absTheta V φ))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [hL.descend_mk] at e`. Rewrite using `[← e]`. Conclude with `habs`. Establish `hle : ∀ g : GA D V, ∑' X : S, ‖Φ (GlobalTheory.CompanionTheory.SW.actW (AF D.host.F) D.sp.cm.sig V.gram g⁻¹ (HeckeCharacterZeroLocus.SiegelWeilU.ratTup (AF D.host.F) (X : Fin r → Fin V.rank → D.host.E)))‖ₑ ≤ GlobalTheory.SiegelFormula.absTheta V φ g` using `fun g => by`. Establish `hinj : Function.Injective fun X : S => trM (X : Fin r → Fin V.rank → D.host.E)` using `fun X Y h => (framesEquiv V β.1).injective (Subtype.ext h)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_trans (le_of_eq (tsum_congr fun X => ?_)) (ENNReal.tsum_comp_le_tsum_of_injective hinj (fun ξ => ‖φ (GlobalTheory.SiegelFormula.invPt V g ξ)‖ₑ))` and prove the remaining obligations. Simplify using `only [hΦdef, trM_actW_ratTup, GlobalTheory.SiegelFormula.invPt]`. Establish `hint : Integrable Φ (GlobalTheory.CompanionTheory.SW.thetaMeas D.sp.cm.sig V.gram ν 𝓕 S)`. Use `⟨hΦ.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Rewrite using `[hasFiniteIntegral_iff_enorm, PositivityTheory.PlacePermOperatorBicommutantSpan.theta_lint D.host.F D.host.E D.sp.cm.sig hcm V.rank V.gram hJ ν 𝓕 hν' h𝓕' r S _ hΦ.enorm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `ENNReal.mul_lt_top hinvtop.lt_top ((lintegral_mono hle).trans_lt habs')`. Use `⟨hint, ?_⟩` and prove the remaining obligations. Rewrite using `[← PositivityTheory.PlacePermOperatorBicommutantSpan.theta_int D.host.F D.host.E D.sp.cm.sig hcm V.rank V.gram hJ ν 𝓕 hν' h𝓕' r S Φ hΦ hint]`. Establish `hInv` using `GlobalTheory.CompanionTheory.SplitGram.leftInv_subtypeSum V φ (fun x : Matrix (Fin V.rank) (Fin r) D.host.E => x.rank = r ∧ gramQ V x = β.1) (fun δ hδ ξ h => ⟨(Matrix.rank_mul_eq_right_of_isUnit_det _ _ ((Matrix.isUnit_iff_isUnit_det _).1 δ.isUnit)).trans h.1, (GlobalTheory.Compa …`. Establish `hth : ∀ g : GA D V, HeckeCharacterZeroLocus.SiegelWeilU.thetaS _ _ D.sp.cm.sig V.rank V.gram Φ S g = ∑' x : {x : Matrix (Fin V.rank) (Fin r) D.host.E // x.rank = r ∧ gramQ V x = β.1}, φ (GlobalTheory.SiegelFormula.invPt V g x.1)` using `fun g => by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Use `(tsum_congr fun X => ?_).trans ((framesEquiv V β.1).tsum_eq fun x => φ (GlobalTheory.SiegelFormula.invPt V g x.1))` and prove the remaining obligations. Conclude with `congrArg φ (trM_actW_ratTup V g X.1)`. Rewrite using `[IfrB, average_eq, GlobalTheory.AutomorphicL2Unitary.autMeasure, Measure.real, GlobalTheory.AutomorphicL2Unitary.quotMeasure_univ h𝓕, GlobalTheory.AutomorphicL2Unitary.integral_quotMeasure h𝓕]`. Establish `e1 : ∀ g : GA D V, descend (GQ V) (fun h => ∑' x : {x : Matrix (Fin V.rank) (Fin r) D.host.E // x.rank = r ∧ gramQ V x = β.1}, φ (HMul.hMul (Formalism.L2.Theta.mt V h⁻¹) (x.1.map (incA D)))) (GlobalTheory.AutomorphicL2Unitary.mk (GQ V) g) = HeckeCharacterZeroLocus.SiegelWeilU.the …` using `fun g => (hInv.descend_mk g).trans (hth g).symm`. Simplify using `only [e1]`.
-
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem glue : ∀ (D : D7) (r : ℕ) (V : HSp D) (θ : InfFam D), IsInfFam θ → ∀ (ν : Measure (GA D V)), ν.IsHaarMeasure → ∀ 𝓕 : Set (GA D V), IsFundamentalDomain (GQ V) 𝓕 ν → ∀ φ : Mx D V.rank r → ℂ, φ ∈ schwartzA θ V.rank r → GlobalTheory.SiegelFormula.absThetaInt V ν φ < ⊤ → ∀ β : HermE D r, Integrable (fun X => φ (trM X)) (GlobalTheory.CompanionTheory.SW.thetaMeas D.sp.cm.sig V.gram ν 𝓕 (framesE D.sp.cm.sig V.gram β.1)) ∧ IfrB V ν φ β = ∫ X, φ (trM X) ∂(GlobalTheory.CompanionTheory.SW.thetaMeas D.sp.cm.sig V.gram ν 𝓕 (framesE D.sp.cm.sig V.gram β.1)) := by
   intro D r V θ hθ ν hν 𝓕 h𝓕 φ hφ habs β

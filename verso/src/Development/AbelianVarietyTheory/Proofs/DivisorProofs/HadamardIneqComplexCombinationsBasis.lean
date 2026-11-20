@@ -15,17 +15,17 @@ open scoped ComplexOrder ComplexConjugate
 namespace GlobalTheory.HSShort
 
 /- English proof (translation)
-Introduce `F V _ _ _ nm d b σ P`. Establish `hG : (nm.gram σ b).PosDef` using `nm.posDef σ d b b.linearIndependent`. Take `⟨hre, him⟩` from `Complex.pos_iff.mp hG.det_pos`. Use `⟨hre, ?_⟩` and prove the remaining obligations. Use `set G := nm.gram σ b with hGdef`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hM : (Pᴴ * G * P).PosSemidef` using `hG.posSemidef.conjTranspose_mul_mul_same P`. Establish `h1` using `ReciprocityTheory.ChartRestriction.G.T0.psd_det_re_le_prod_diag d _ hM`. Establish `hdet : (Pᴴ * G * P).det.re = ‖P.det‖ ^ 2 * G.det.re`. Rewrite using `[det_mul, det_mul, det_conjTranspose]`. Establish `: star P.det * G.det * P.det = ((Complex.normSq P.det : ℝ) : ℂ) * G.det`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Complex.normSq_eq_conj_mul_self, Complex.star_def]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, Complex.re_ofReal_mul, Complex.normSq_eq_norm_sq]`. Establish `hdiag : ∀ k, ((Pᴴ * G * P) k k).re = csq nm σ (fun i => P i k) b`. Introduce `k`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [csq, Matrix.mul_apply, Matrix.conjTranspose_apply, hGdef, HermFam.gram, Matrix.of_apply, Finset.sum_mul, Complex.star_def]`. Use `congr 1`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hdet]`. Simplify using `only [hdiag] at h1`. Establish `hnn : ∀ k ∈ Finset.univ, 0 ≤ csq nm σ (fun i => P i k) b` using `fun k _ => csq_nonneg nm σ _ _`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq (norm_nonneg _)]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `_ ≤ Real.sqrt (∏ k, csq nm σ (fun i => P i k) b) := Real.sqrt_le_sqrt h1`. Use `_ = ∏ k, cnrm nm σ (fun i => P i k) b := by`. Rewrite using `[Real.sqrt_prod _ hnn]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem hadamard_basis_comb : ∀ (F V : Type) [Field F] [AddCommGroup V] [Module F V] (nm : HermFam F V)
     (d : ℕ) (b : Module.Basis (Fin d) F V) (σ : F →+* ℂ) (P : Matrix (Fin d) (Fin d) ℂ),

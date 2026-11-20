@@ -16,11 +16,11 @@ def lineSubst {K : Type} [Field K] {N : ℕ} (a b : Fin N → K) : MvPolynomial 
   aeval fun p : Fin 1 × Fin N => Polynomial.C (a p.2) + Polynomial.C (b p.2) * Polynomial.X
 
 /- English proof (translation)
-Simplify using `only [line, spec]`. Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C c`. Simplify using `only [aeval_C, lineSubst]`. Rewrite using `[IsScalarTower.algebraMap_apply F K (MvPolynomial (Fin 1 × Fin N) K), IsScalarTower.algebraMap_apply F K (Polynomial K), AlgHom.commutes]`.
+Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p n ih`. Simplify using `only [map_mul, ih, aeval_X]`. Use `congr 1`. Take `⟨i, j⟩` from `n`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result.
 
-Apply the tactic sequence `induction i using Fin.lastCases <;> simp [join, lineSubst]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem line_eq_lineSubst {F K : Type} [Field F] [Field K] [Algebra F K] {D N : ℕ}
     (s : Fin D → Fin N → K) (a b : Fin N → K) (f : MvPolynomial (Fin (D + 1) × Fin N) F) :
@@ -39,11 +39,11 @@ theorem line_eq_lineSubst {F K : Type} [Field F] [Field K] [Algebra F K] {D N : 
     induction i using Fin.lastCases <;> simp [join, lineSubst]
 
 /- English proof (translation)
-Simplify using `only [spec]`. Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C c`. Simplify using `only [aeval_C]`. Rewrite using `[IsScalarTower.algebraMap_apply F K (MvPolynomial (Fin 1 × Fin N) K)]`.
+Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p n ih`. Simplify using `only [map_mul, ih, aeval_X]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Take `⟨i, j⟩` from `n`. Apply the tactic sequence `induction i using Fin.lastCases <;> simp [join]`.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eval_spec {F K : Type} [Field F] [Field K] [Algebra F K] {D N : ℕ}
     (s : Fin D → Fin N → K) (b : Fin N → K) (f : MvPolynomial (Fin (D + 1) × Fin N) F) :
@@ -62,7 +62,7 @@ theorem eval_spec {F K : Type} [Field F] [Field K] [Algebra F K] {D N : ℕ}
     induction i using Fin.lastCases <;> simp [join]
 
 /- English proof (translation)
-Simplify using `only [lin, lineSubst, map_sum, map_mul, aeval_X, aeval_C, Polynomial.algebraMap_eq, add_mul, Finset.sum_add_distrib, Polynomial.C_mul, Finset.sum_mul, map_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem lineSubst_lin {K : Type} [Field K] {N : ℕ} (a b y : Fin N → K) :
     lineSubst a b (lin y) = Polynomial.C (∑ j, a j * y j) + Polynomial.C (∑ j, b j * y j) * Polynomial.X := by
@@ -73,20 +73,20 @@ theorem lineSubst_lin {K : Type} [Field K] {N : ℕ} (a b y : Fin N → K) :
   ring
 
 /- English proof (translation)
-Simplify using `[lin]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eval_lin {K : Type} [Field K] {N : ℕ} (b y : Fin N → K) :
     eval (fun p : Fin 1 × Fin N => b p.2) (lin y) = ∑ j, b j * y j := by
   simp [lin]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Apply `h` to reduce the goal to its premises. Establish `hlt : P.natDegree < δ`. Break down `hP.lt_or_eq with h1 | h1` into its components or cases. Conclude with `h1`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-It suffices to derive a contradiction. Distinguish the cases in `hP0 : P = 0`. Rewrite `h1` using `[hP0, Polynomial.natDegree_zero]`. Use linear arithmetic over natural numbers and integers. Conclude with `hP0 (Polynomial.leadingCoeff_eq_zero.mp (by rw [Polynomial.leadingCoeff, h1]; exact hc))`.
+Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Break down `Nat.lt_or_ge δ 2 with h2 | h2` into its components or cases. Take `rfl : δ = 1` from `by omega`. Establish `hd : Polynomial.derivative P = 0`. Rewrite using `[Polynomial.eq_C_of_natDegree_eq_zero (by omega : P.natDegree = 0), Polynomial.derivative_C]`. Simplify using `[hd]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 
-Apply `Polynomial.resultant_eq_zero_of_lt_lt _ _ _ _ hlt` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem coeff_ne_zero_of_resultant_ne_zero {K : Type} [Field K] {δ : ℕ} (hδ : 1 ≤ δ) (P : Polynomial K)
     (hP : P.natDegree ≤ δ) (h : Polynomial.resultant P (Polynomial.derivative P) δ (δ - 1) ≠ 0) : P.coeff δ ≠ 0 := by
@@ -110,19 +110,19 @@ theorem coeff_ne_zero_of_resultant_ne_zero {K : Type} [Field K] {δ : ℕ} (hδ 
       _ < δ - 1 := by omega
 
 /- English proof (translation)
-Introduce `F K _ _ _ D N δ f s a b hδ hdeg hcoeff hdisc`. Establish `hres : (line s a b f).resultant (Polynomial.derivative (line s a b f)) δ (δ - 1) ≠ 0` using `hdisc`. Establish `hc : (line s a b f).coeff δ ≠ 0` using `coeff_ne_zero_of_resultant_ne_zero hδ _ hdeg hres`. Establish `hspec0 : eval (fun p : Fin 1 × Fin N => b p.2) (spec s f) ≠ 0`. Rewrite using `[eval_spec, ← hcoeff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hc`. Use `⟨fun h0 => hspec0 (by rw [h0, map_zero]), fun y _ hdvd => ?_⟩` and prove the remaining obligations. Take `⟨q, hq⟩` from `hdvd`. Distinguish the cases in `hβ : ∑ j, b j * y j = 0`. Apply `hspec0` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hq, map_mul, map_pow, eval_lin, hβ]`. Simplify using the standard rewrite rules. Establish `hnat : (line s a b f).natDegree = δ` using `Polynomial.natDegree_eq_of_le_of_coeff_ne_zero hdeg hc`. Establish `hP0 : line s a b f ≠ 0` using `fun h0 => hc (by rw [h0, Polynomial.coeff_zero])`. Establish `hcop : IsCoprime (line s a b f) (Polynomial.derivative (line s a b f))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hnc`. Apply `hres` to reduce the goal to its premises. Establish `hd' : (Polynomial.derivative (line s a b f)).natDegree ≤ δ - 1`. Rewrite using `[← hnat]`. Conclude with `Polynomial.natDegree_derivative_le _`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨k, hk⟩` from `Nat.exists_eq_add_of_le hd'`. Rewrite using `[hk, Polynomial.resultant_add_right_deg _ _ _ _ _ le_rfl, ← hnat, Polynomial.resultant_eq_zero_iff.mpr ⟨Or.inl hP0, hnc⟩, mul_zero]`. Establish `hQ : line s a b f = lineSubst a b (lin y) * lineSubst a b (lin y) * lineSubst a b q`. Rewrite using `[line_eq_lineSubst, hq, map_mul, map_pow, sq]`. Establish `h1 : lineSubst a b (lin y) ∣ line s a b f` using `⟨lineSubst a b (lin y) * lineSubst a b q, by rw [hQ]; ring⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : lineSubst a b (lin y) ∣ Polynomial.derivative (line s a b f)`. Use `⟨Polynomial.derivative (lineSubst a b (lin y)) * lineSubst a b q + Polynomial.derivative (lineSubst a b (lin y)) * lineSubst a b q + lineSubst a b (lin y) * Polynomial.derivative (lineSubst a b q), ?_⟩` and prove the remaining obligations. Rewrite using `[hQ, Polynomial.derivative_mul, Polynomial.derivative_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hu` using `hcop.isUnit_of_dvd' h1 h2`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hu` using `[lineSubst_lin]`. Establish `hdeg0` using `Polynomial.natDegree_eq_zero_of_isUnit hu`. Rewrite `hdeg0` using `[add_comm, Polynomial.natDegree_linear hβ]`. Conclude with `one_ne_zero hdeg0`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem noSquare_spec_of_disc_ne_zero : ∀ (F K : Type) [Field F] [Field K] [Algebra F K] (D N δ : ℕ) (f : MvPolynomial (Fin (D + 1) × Fin N) F) (s : Fin D → Fin N → K) (a b : Fin N → K), 1 ≤ δ → (GlobalTheory.PencilDisc.line s a b f).natDegree ≤ δ → (GlobalTheory.PencilDisc.line s a b f).coeff δ = MvPolynomial.aeval (GlobalTheory.HSChoice.join s b) f → GlobalTheory.PencilDisc.disc δ s a b f ≠ 0 → GlobalTheory.HSChoice.NoSquare (GlobalTheory.HSChoice.spec s f) := by
   intro F K _ _ _ D N δ f s a b hδ hdeg hcoeff hdisc

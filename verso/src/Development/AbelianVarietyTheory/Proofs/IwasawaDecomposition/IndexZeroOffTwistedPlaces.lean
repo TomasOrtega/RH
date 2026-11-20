@@ -18,15 +18,13 @@ open GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Me
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `K B f T w hO hF hP P x hη hW v hv j hj1 hj2`. Set `Zr : ReadL x.m.z.R x.m.z.F x.s.p0 x.r.Y` to `(x.rowsAre hη).Z`. Take `⟨G, Y, -⟩` from `GlobalTheory.PointGeometry.exists_geo (w.st x.o.Z).toD7.what₂.LL`. Set `Fm : ∀ k, GlobalTheory.ProvisionalDivX.MjForm (w.st x.o.Z).toD7 k` to `fun k => ⟨mjH Zr k, jM Zr k, mjH_good Zr x.m.intersectionNumber_baseChange k, jM_basis Zr x.m.intersectionNumber_baseChange k, jM_lat Zr x.m.z.pins x.m.intersectionNumber_baseChange k, mjLat_sub Zr x.m.z.pins x.m.intersectionNumber_baseChange k, MjModel.jM_metric_all Zr x.m.inter …`. Set `Xd : DivX (w.st x.o.Z).toD7` to `GlobalTheory.provisionalDivX (w.st x.o.Z).toD7 G Y (fun p _ => (GlobalTheory.WittFracComplex.nonempty_ringHom_complex p).some) (fun p _ r => (GlobalTheory.nonempty_admissibleModel _ p _ (max r 2) 1 (by omega)).some) Fm`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hMj` using `mjHTie_of_eq Zr Xd rfl (HEq.refl (jM Zr))`. Establish `hIdx : IdxDefs (w.st x.o.Z).toD7 Xd` using `(P.q.num x.o.η x.o.hη x.o.V x.o.S x.o.N x.o.G).idx Xd`. Establish `hT` using `GlobalTheory.T.numbers_eq_concreteNumbers_at_baseLevel _ _ _ _ _ _ _ x.m.z.R x.m.z.F x.m.z.cG x.s.p0 x.r.Y Zr Xd _ x.m.z.pins x.m.intersectionNumber_baseChange hMj hIdx`. Establish `hv' : v ∉ x.m.z.W1 (F0K K.s (w.D x.o.Z))` using `hW ▸ hv`. Establish `h0 : x.r.Y.tup (famR (w.st x.o.Z) w.I P.hX (usedOf w.I T P.Wt) x.m.z.Xg x.m.z.tr).A.μ0 = (w.D x.o.Z).what₂.mu0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[x.r.tup]`. Conclude with `x.m.y.tup0`. Establish `hIj` using `hT.Ij`. Establish `hjw` using `hT.jw`. Establish `hv2` using `fun (i : Fin (w.st x.o.Z).toD7.R.m) (w' : HeightOneSpectrum (𝓞 (w.st x.o.Z).toD7.what₂.LL)) (hw' : w' ∈ ({(w.st x.o.Z).toD7.plEq v, Formalism.DivisionValues.conjPl ((w.st x.o.Z).toD7.plEq v)} : Set _)) => not_or.1 (fun h => hv' ⟨i, w', hw', h⟩)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : (w.st x.o.Z).toD7.R.m = B.R.m` using `rfl`. Take `⟨i, rfl⟩ : ∃ i : Fin (w.st x.o.Z).toD7.R.m, j = (i : ℕ) + 1` from `⟨⟨j - 1, by omega⟩, by simp; omega⟩`. Rewrite using `[← h0]`. Establish `hp : (w.st x.o.Z).toD7.plEq v ∈ ({(w.st x.o.Z).toD7.plEq v, Formalism.DivisionValues.conjPl ((w.st x.o.Z).toD7.plEq v)} : Set _)` using `Set.mem_insert _ _`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
-
-Conclude with `(hIj i _ v).trans (not_not.1 (hv2 i _ hp).1)`. Conclude with `(hjw i _ v).trans (not_not.1 (not_or.1 (hv2 i _ hp).2).1)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Mem.R3.Rw.St.idx_zero_off_twisted : ∀ (K : Ctx) (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T), K.Over B.toPre → Forced K B T →
     pinAnd HasPk K B f T w → ∀ (P : Pre2 K w) (x : St P) (hη : ∀ j v, 1 ≤ j → j ≤ B.R.m → x.o.η j v = P.q.eta j v), P.Wt = x.m.z.W1 (F0K K.s (w.D x.o.Z)) → ∀ v, v ∉ P.Wt → ∀ j, 1 ≤ j → j ≤ B.R.m →

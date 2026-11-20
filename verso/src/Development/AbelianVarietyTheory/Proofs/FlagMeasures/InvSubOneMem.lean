@@ -21,27 +21,25 @@ Both sides reduce to the same expression.
 theorem uMat_one : uMat (1 : Formalism.REAL.UJ ε) = 1 := rfl
 
 /- English proof (translation)
-Rewrite using `[← uMat_mul, mul_inv_cancel, uMat_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem uMat_mul_inv (g : Formalism.REAL.UJ ε) : uMat g * uMat g⁻¹ = 1 := by
   rw [← uMat_mul, mul_inv_cancel, uMat_one]
 
 /- English proof (translation)
-Rewrite using `[← uMat_mul, inv_mul_cancel, uMat_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem uMat_inv_mul (g : Formalism.REAL.UJ ε) : uMat g⁻¹ * uMat g = 1 := by
   rw [← uMat_mul, inv_mul_cancel, uMat_one]
 
 /- English proof (translation)
-Establish `hmap : ∀ W : A, uMat g * (W : Matrix (Fin n) (Fin n) ℂ) ∈ A`. Introduce `W`. Establish `: uMat g * (W : Matrix (Fin n) (Fin n) ℂ) = (uMat g - 1) * W + W` using `by noncomm_ring`. Rewrite using `[this]`. Conclude with `A.add_mem (hA _ hg _ W.2) W.2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `T : A →ₗ[ℝ] A` to `LinearMap.codRestrict A ((LinearMap.mulLeft ℝ (uMat g)).comp A.subtype) hmap`. Establish `hinj : Function.Injective T`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `W hW`. Establish `h0 : uMat g * (W : Matrix (Fin n) (Fin n) ℂ) = 0` using `congrArg Subtype.val hW`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Matrix.mul_assoc, uMat_inv_mul, Matrix.one_mul]`. Use `_ = 0 := by rw [h0, Matrix.mul_zero]`. Take `⟨W, hW⟩` from `(LinearMap.injective_iff_surjective (f := T)).mp hinj ⟨-(uMat g - 1), A.neg_mem hg⟩`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hW' : uMat g * (W : Matrix (Fin n) (Fin n) ℂ) = -(uMat g - 1)` using `congrArg Subtype.val hW`. Establish `hinv : uMat g⁻¹ = 1 + (W : Matrix (Fin n) (Fin n) ℂ)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_add, Matrix.mul_one, hW', show uMat g + -(uMat g - 1) = 1 by abel, Matrix.mul_one]`. Use `_ = 1 + (W : Matrix (Fin n) (Fin n) ℂ) := by`.
-
-Rewrite using `[← Matrix.mul_assoc, uMat_inv_mul, Matrix.one_mul]`. Rewrite using `[hinv, add_sub_cancel_left]`. Conclude with `W.2`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_sub_one_mem (A : Submodule ℝ (Matrix (Fin n) (Fin n) ℂ)) (hA : ∀ X ∈ A, ∀ Y ∈ A, X * Y ∈ A)
     (g : Formalism.REAL.UJ ε) (hg : uMat g - 1 ∈ A) : uMat g⁻¹ - 1 ∈ A := by
@@ -86,7 +84,7 @@ def algSub (ε : Fin n → Bool) (A : Submodule ℝ (Matrix (Fin n) (Fin n) ℂ)
   inv_mem' := fun {g} hg => inv_sub_one_mem A hA g hg
 
 /- English proof (translation)
-Establish `hc : Continuous (fun g : Formalism.REAL.UJ ε => uMat g - 1)` using `(Units.continuous_val.comp continuous_subtype_val).sub continuous_const`. Conclude with `A.closed_of_finiteDimensional.preimage hc`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isClosed_algSub (A : Submodule ℝ (Matrix (Fin n) (Fin n) ℂ))
     (hA : ∀ X ∈ A, ∀ Y ∈ A, X * Y ∈ A) : IsClosed (algSub ε A hA : Set (Formalism.REAL.UJ ε)) := by

@@ -13,7 +13,7 @@ namespace GlobalTheory.SeriesTie.LevKProof
 variable {D : D7}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Use `a.2` as an intermediate fact. Simplify using `only [blkOf]`. Rewrite using `[if_pos (by omega)]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem blkOf_zero_of_le {n r t : ℕ} (h : n ≤ r) : (blkOf r t : Fin n → ℕ) = fun _ => 0 := by
   funext a
@@ -22,7 +22,7 @@ theorem blkOf_zero_of_le {n r t : ℕ} (h : n ≤ r) : (blkOf r t : Fin n → �
   rw [if_pos (by omega)]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Use `a.2` as an intermediate fact. Simplify using `only [blk2]`. Rewrite using `[if_pos (by omega)]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem secondBlockIndex_eq_zero_of_dim_le {n r : ℕ} (h : n ≤ r) : (blk2 r : Fin n → ℕ) = fun _ => 0 := by
   funext a
@@ -31,7 +31,7 @@ theorem secondBlockIndex_eq_zero_of_dim_le {n r : ℕ} (h : n ≤ r) : (blk2 r :
   rw [if_pos (by omega)]
 
 /- English proof (translation)
-Introduce `i k hik`. Rewrite `hik` using `[secondBlockIndex_eq_zero_of_dim_le h]`. Conclude with `absurd hik (lt_irrefl _)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_blockTriangular_singleBlock_of_le {n r : ℕ} {κ : Type} [CommRing κ] (h : n ≤ r) (g : GL (Fin n) κ) :
     g ∈ blockTri (blk2 r) := by
@@ -46,27 +46,25 @@ namespace GlobalTheory.SeriesTie
 open LevKProof in
 
 /- English proof (translation)
-Introduce `D Γ _ _ Pl0 I0 T A3 Ks _ _ _ Rl cG ρ hp i j b`. Unfold `Setup.levK levG`. Rewrite using `[hp.frT]`. Use `congr 1`. Establish `hr : (Wc D j).rank ≤ D.R.r` using `(FWT.rank_Wc j).le`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `hpar : parLev D.sp.cm (Wc D j).gram (Rl.βW j) (flag1L (ρ.B i j b).G.levT) = parLev D.sp.cm (Wc D j).gram (Rl.βW j) (Rl.datWp j Rl.triv)`. Unfold `parLev`. Establish `hP : (flag1L (ρ.B i j b).G.levT).Pg = (Rl.datWp j Rl.triv).Pg` using `hp.Pg i j b`. Establish `hb : (blkOf (flag1L (ρ.B i j b).G.levT).r (flag1L (ρ.B i j b).G.levT).t : Fin (Wc D j).rank → ℕ) = blkOf (Rl.datWp j Rl.triv).r (Rl.datWp j Rl.triv).t` using `(blkOf_zero_of_le le_rfl).trans (blkOf_zero_of_le hr).symm`. Establish `hb2 : (blk2 (flag1L (ρ.B i j b).G.levT).r : Fin (Wc D j).rank → ℕ) = blk2 (Rl.datWp j Rl.triv).r` using `(secondBlockIndex_eq_zero_of_dim_le le_rfl).trans (secondBlockIndex_eq_zero_of_dim_le hr).symm`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hP, hb, hb2]`. Both sides reduce to the same expression. Establish `h1 : (flag1L (ρ.B i j b).G.levT).P.H = ⊥` using `rfl`. Establish `h2 : (Rl.datWp j Rl.triv).P.H = ⊥` using `rfl`. Establish `key : ∀ (x : GL (Fin (Wc D j).rank) (Lev.EAf D)) (PP : Pl D.host.E) (e1 : PP ∈ (flag1L (ρ.B i j b).G.levT).Pg) (e2 : PP ∈ (Rl.datWp j Rl.triv).Pg) (a c : Fin (Wc D j).rank), (rTup (Rl.βW j) (flag1L (ρ.B i j b).G.levT) x ⟨PP, e1⟩).val a c = (rTup (Rl.βW j) (Rl.datWp j Rl.triv) x ⟨ …`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x PP e1 e2 a c`. Unfold `rTup`. Use `erw [upper_block_val_submatrix _ (mem_blockTriangular_singleBlock_of_le hr _), upper_block_val_submatrix _ (mem_blockTriangular_singleBlock_of_le le_rfl _)]`. Both sides reduce to the same expression. Establish `hiff : ∀ x : GL (Fin (Wc D j).rank) (Lev.EAf D), rTup (Rl.βW j) (flag1L (ρ.B i j b).G.levT) x = 1 ↔ rTup (Rl.βW j) (Rl.datWp j Rl.triv) x = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use function extensionality and compare the values at `PP`. Apply `Units.ext` to reduce the goal to its premises.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Use extensionality with `a c`. Establish `e1 : PP.1 ∈ (flag1L (ρ.B i j b).G.levT).Pg` using `by show PP.1 ∈ (ρ.B i j b).G.Pg`. Rewrite using `[hp.Pg i j b]`. Conclude with `PP.2`. Establish `hk` using `key x PP.1 e1 PP.2 (Fin.cast (FWT.rank_Wc j).symm a) (Fin.cast (FWT.rank_Wc j).symm c)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hk` using `[h]`. Use `hk.symm.trans ?_` and prove the remaining obligations. Simplify using `[Matrix.one_apply, Fin.ext_iff]`. Use `erw [Matrix.one_apply]`. Simplify using `[Fin.ext_iff]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Both sides reduce to the same expression. Introduce `h`. Use function extensionality and compare the values at `PP`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `a c`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : PP.1 ∈ (Rl.datWp j Rl.triv).Pg` using `by show PP.1 ∈ Rl.Pg`. Rewrite using `[← hp.Pg i j b]`. Conclude with `PP.2`. Establish `hk` using `key x PP.1 PP.2 e2 a c`. Rewrite `hk` using `[h]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. By extensionality, compare the relevant components.
 
-Use `hk.trans ?_` and prove the remaining obligations. Simplify using `[Matrix.one_apply, Fin.ext_iff]`. Both sides reduce to the same expression. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `(x ∈ parLev _ _ _ _ ∧ rTup _ _ x ∈ _) ↔ (x ∈ parLev _ _ _ _ ∧ rTup _ _ x ∈ _)`.
-
-Rewrite using `[hpar, h1, h2, Subgroup.mem_bot, Subgroup.mem_bot, hiff]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levK_eq_levG_triv : ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL Γ Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (Rl : RealDat3 D A3 Ks) {cG : G0 Rl.Pg D.R.r ≃* G0g D.nd} {ρ : Setup D.ntw}, RealPin Rl cG ρ → ∀ (i : D.ntw.Tw) (j : Fin D.R.m) (b : Bool), ρ.levK i j b = levG (Wc D j) (Rl.βW j) (Rl.datWp j Rl.triv) := by
   intro D Γ _ _ Pl0 I0 T A3 Ks _ _ _ Rl cG ρ hp i j b

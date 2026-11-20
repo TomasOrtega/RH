@@ -13,7 +13,7 @@ section Abstract
 variable {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℂ E] [FiniteDimensional ℂ E]
 
 /- English proof (translation)
-Use `haveI : CompleteSpace E := FiniteDimensional.complete ℂ E`. Use `⟨(InnerProductSpace.toDual ℂ E).symm (LinearMap.toContinuousLinearMap l), fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[InnerProductSpace.toDual_symm_apply]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_riesz (l : E →ₗ[ℂ] ℂ) : ∃ η : E, ∀ x, l x = ⟪η, x⟫_ℂ := by
   haveI : CompleteSpace E := FiniteDimensional.complete ℂ E
@@ -22,7 +22,7 @@ theorem exists_riesz (l : E →ₗ[ℂ] ℂ) : ∃ η : E, ∀ x, l x = ⟪η, x
   rfl
 
 /- English proof (translation)
-Take `⟨η, hη⟩` from `exists_riesz l`. Simplify using `only [hη]`. Rewrite using `[b.sum_sq_norm_inner_left, c.sum_sq_norm_inner_left]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_sq_eq_of_basis {ι κ : Type*} [Fintype ι] [Fintype κ] (l : E →ₗ[ℂ] ℂ)
     (b : OrthonormalBasis ι ℂ E) (c : OrthonormalBasis κ ℂ E) :
@@ -32,7 +32,7 @@ theorem sum_sq_eq_of_basis {ι κ : Type*} [Fintype ι] [Fintype κ] (l : E →�
   rw [b.sum_sq_norm_inner_left, c.sum_sq_norm_inner_left]
 
 /- English proof (translation)
-Take `⟨η, hη⟩` from `exists_riesz l`. Simplify using `only [hη]`. Rewrite using `[b.sum_sq_norm_inner_left, ← mul_pow, mul_comm ‖x‖]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) (norm_inner_le_norm η x) 2`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sq_le_of_basis {ι : Type*} [Fintype ι] (l : E →ₗ[ℂ] ℂ)
     (b : OrthonormalBasis ι ℂ E) (x : E) :
@@ -45,7 +45,7 @@ theorem sq_le_of_basis {ι : Type*} [Fintype ι] (l : E →ₗ[ℂ] ℂ)
 end Abstract
 
 /- English proof (translation)
-Rewrite using `[ENNReal.ofReal_sum_of_nonneg (fun i _ => by positivity)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm_eq_enorm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_enorm_sq {ι : Type*} [Fintype ι] (z : ι → ℂ) :
     ∑ i, ‖z i‖ₑ ^ 2 = ENNReal.ofReal (∑ i, ‖z i‖ ^ 2) := by
@@ -54,7 +54,7 @@ theorem sum_enorm_sq {ι : Type*} [Fintype ι] (z : ι → ℂ) :
   rw [ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm_eq_enorm]
 
 /- English proof (translation)
-Establish `h1` using `h.eLpNorm_lt_top`. Establish `h2` using `eLpNorm_nnreal_pow_eq_lintegral (f := f) (μ := μ) (p := 2) two_ne_zero`. Simplify using `only [ENNReal.coe_ofNat, NNReal.coe_ofNat, ENNReal.rpow_ofNat] at h2`. Rewrite using `[← h2]`. Conclude with `ENNReal.pow_lt_top h1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_enorm_sq_lt_top {X : Type*} [MeasurableSpace X] {μ : Measure X} {f : X → ℂ}
     (h : MemLp f 2 μ) : (∫⁻ x, ‖f x‖ₑ ^ 2 ∂μ) < ⊤ := by
@@ -67,13 +67,13 @@ theorem lintegral_enorm_sq_lt_top {X : Type*} [MeasurableSpace X] {μ : Measure 
 variable {n : ℕ} {ε : Fin n → Bool}
 
 /- English proof (translation)
-The claim follows from `Units.continuous_val.comp continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem continuous_uMat : Continuous (fun g : Formalism.REAL.UJ ε => Formalism.MainNotions.S.umat g) :=
   Units.continuous_val.comp continuous_subtype_val
 
 /- English proof (translation)
-Establish `h : Continuous (fun g : Formalism.REAL.UJ ε => σ (Formalism.MainNotions.S.umat g) v)` using `(hU.2.2 v).comp_continuous continuous_uMat (fun g => g.2)`. Conclude with `continuous_const.inner h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_coef {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hU : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset ε) σ) (ξ v : H) :
@@ -83,11 +83,11 @@ theorem continuous_coef {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ
   exact continuous_const.inner h
 
 /- English proof (translation)
-Establish `hkK : Formalism.MainNotions.S.umat k ∈ Formalism.REAL.Kset ε` using `hk`. Set `T : S →ₗᵢ[ℂ] S` to `{ toLinearMap := ((σ (Formalism.MainNotions.S.umat k) : H →ₗ[ℂ] H).comp S.subtype).codRestrict S (fun x => hst _ hkK _ x.2) norm_map' := fun x => hU.2.1 _ k.2 _ }`. Set `Te : S ≃ₗᵢ[ℂ] S` to `T.toLinearIsometryEquiv rfl`. Set `l : S →ₗ[ℂ] ℂ` to `{ toFun := fun x => ⟪ξ, σ (Formalism.MainNotions.S.umat g) (x : H)⟫_ℂ map_add' := fun x y => by simp [inner_add_right] map_smul' := fun c x => by simp [inner_smul_right] }`. Establish `hmul : ∀ x : H, σ (Formalism.MainNotions.S.umat (g * k)) x = σ (Formalism.MainNotions.S.umat g) (σ (Formalism.MainNotions.S.umat k) x)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `x`. Establish `: Formalism.MainNotions.S.umat (g * k) = Formalism.MainNotions.S.umat g * Formalism.MainNotions.S.umat k` using `rfl`. Rewrite using `[this, hU.1.2 _ g.2 _ k.2]`. Both sides reduce to the same expression. Establish `h` using `sum_sq_eq_of_basis l (b.map Te) b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `Eq.trans (Finset.sum_congr rfl fun i _ => ?_) h` and prove the remaining obligations. Rewrite using `[hmul, OrthonormalBasis.map_apply]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sum_sq_translate {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hU : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset ε) σ)
@@ -117,15 +117,13 @@ theorem sum_sq_translate {H : Type} [NormedAddCommGroup H] [InnerProductSpace �
   rfl
 
 /- English proof (translation)
-Introduce `n ε H _ _ _ σ D E hK hU hS u ξ`. Take `⟨S, hfd, huS, hst⟩` from `(hK.mem u).1 u.2`. Use `haveI := hfd`. Set `b` to `stdOrthonormalBasis ℂ S`. Set `c : Formalism.REAL.UJ ε → Fin (Module.finrank ℂ S) → ℂ` to `fun g i => ⟪ξ, σ (Formalism.MainNotions.S.umat g) (b i : H)⟫_ℂ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hcm : ∀ i, Measurable fun g => ‖c g i‖ₑ ^ 2` using `fun i => (continuous_coef hU ξ (b i : H)).measurable.enorm.pow_const 2`. Use `⟨fun g => ENNReal.ofReal (‖(u : H)‖ ^ 2) * ∑ i, ‖c g i‖ₑ ^ 2, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(Finset.measurable_sum _ fun i _ => hcm i).const_mul _`. Introduce `g k hk`. Simplify using `only [sum_enorm_sq]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Conclude with `sum_sq_translate hU hst b ξ g k hk`. Rewrite using `[lintegral_const_mul _ (Finset.measurable_sum _ fun i _ => hcm i), lintegral_finset_sum _ fun i _ => hcm i]`. Use `ENNReal.mul_lt_top ENNReal.ofReal_lt_top (ENNReal.sum_lt_top.2 fun i _ => ?_)` and prove the remaining obligations. Conclude with `lintegral_enorm_sq_lt_top (hS (b i : H) ξ)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `g`. Set `l : S →ₗ[ℂ] ℂ` to `{ toFun := fun x => ⟪ξ, σ (Formalism.MainNotions.S.umat g) (x : H)⟫_ℂ map_add' := fun x y => by simp [inner_add_right] map_smul' := fun c x => by simp [inner_smul_right] }`. Establish `h` using `sq_le_of_basis l b ⟨(u : H), huS⟩`. Use `show ‖l ⟨(u : H), huS⟩‖ₑ ^ 2 ≤ ENNReal.ofReal (‖(u : H)‖ ^ 2) * ∑ i, ‖l (b i)‖ₑ ^ 2`. Rewrite using `[sum_enorm_sq, ← ENNReal.ofReal_mul (by positivity), ← ofReal_norm_eq_enorm, ← ENNReal.ofReal_pow (norm_nonneg _)]`.
-
-Conclude with `ENNReal.ofReal_le_ofReal h`.
+A detailed English derivation is pending.
 -/
 theorem kMaj : CompanionTheory.RgExh.Dec.N.S.KMaj := by
   intro n ε H _ _ _ σ D E hK hU hS u ξ

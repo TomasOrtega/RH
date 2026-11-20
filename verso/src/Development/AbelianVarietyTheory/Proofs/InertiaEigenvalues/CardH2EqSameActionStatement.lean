@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BijectiveOfRet
 open ReciprocityTheory.Gal Formalism.RepresentationBoundsCohomology.LOC ReciprocityTheory.ChartRestriction.T2 GlobalTheory.FunctorialityH2
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.H2CardScalars.card_H2_eq_of_same_action` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FCardH2EqSameAction.lean&line=7#L7)
 -/

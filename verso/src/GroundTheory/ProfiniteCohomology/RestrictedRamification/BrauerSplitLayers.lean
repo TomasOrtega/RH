@@ -16,9 +16,9 @@ noncomputable section
 namespace CyclotomicLayer
 
 /- English proof (translation)
-Establish `hq : Fact (q : ℕ).Prime` using `⟨q.2⟩`. Establish `: NeZero ((q : ℕ) ^ (a + unitsLevel (q : ℕ)))` using `⟨pow_ne_zero _ q.2.ne_zero⟩`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot ℚ̄ ((q : ℕ) ^ (a + unitsLevel (q : ℕ)))`. Establish `hζmem : ζ ∈ rootsOfUnityField ((q : ℕ) ^ (a + unitsLevel (q : ℕ)))` using `subset_adjoin ℚ _ hζ.pow_eq_one`. Establish `h1` using `modCharacter_eq_one hζ ((mem_fixingSubgroup_iff _ _).1 hσ ζ hζmem)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : redUnits (q : ℕ) (a + unitsLevel (q : ℕ)) (Units.map (toPadicInt (q : ℕ)).toMonoidHom (character σ)) = 1`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[redUnits_character, h1]`. Apply `Multiplicative.toAdd.injective` to reduce the goal to its premises. Rewrite using `[toAdd_degreeMod, toAdd_one, ← toZModPow_toPadicInt, toPadicInt_degree, degreeComponent_apply, toZModPow_padicUnitsLog, h2, map_one, toAdd_one]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -41,9 +41,9 @@ theorem degreeMod_eq_one_of_mem_fixingSubgroup (q : Nat.Primes) (a : ℕ) {σ : 
   rfl
 
 /- English proof (translation)
-Establish `: IsGalois ℚ ℚ̄` using `IsAlgClosure.isGalois ℚ ℚ̄`. Introduce `x hx`. Rewrite `hx` using `[zhatLayerField, mem_fixedField_iff]`. Rewrite using `[← InfiniteGalois.fixedField_fixingSubgroup (rootsOfUnityField _), mem_fixedField_iff]`. Introduce `σ hσ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hx σ (MonoidHom.mem_ker.2 (degreeMod_eq_one_of_mem_fixingSubgroup q a hσ))`.
+A detailed English derivation is pending.
 -/
 theorem zhatLayerField_le_rootsOfUnityField (q : Nat.Primes) (a : ℕ) :
     zhatLayerField (primePowPNat (q : ℕ) a) ≤ rootsOfUnityField ((q : ℕ) ^ (a + unitsLevel (q : ℕ))) := by
@@ -55,15 +55,13 @@ theorem zhatLayerField_le_rootsOfUnityField (q : Nat.Primes) (a : ℕ) :
   exact hx σ (MonoidHom.mem_ker.2 (degreeMod_eq_one_of_mem_fixingSubgroup q a hσ))
 
 /- English proof (translation)
-Use `choose n hn using fun (v : HeightOneSpectrum (𝓞 K.1)) (q : Nat.Primes) => exists_mem_stabilizer_toZModPow_degreeComponent_ne_zero (K := K) v q`. Set `N : ℕ` to `S.sup fun v => m.primeFactors.attach.sup fun q => n v ⟨q.1, Nat.prime_of_mem_primeFactors q.2⟩`. Take `⟨r, hr⟩ : ∃ r : ℕ+, (r : ℕ) = m ^ (N + 1)` from `⟨⟨m ^ (N + 1), pow_pos (Nat.pos_of_ne_zero hm) _⟩, rfl⟩`. Use `⟨r, ⟨N, hr⟩, fun v hv w => ?_⟩` and prove the remaining obligations. Rewrite using `[SemiLocal.finrank_eq_ramificationIdx_mul_inertiaDeg _ v w.1, ← card_decompositionGroup v w.1]`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `dvd_trans ?_ (Subgroup.card_map_dvd _ (layerDegree K _))` and prove the remaining obligations. Use `dvd_natCard_of_forall_pow_dvd_orderOf _ hm fun q hq hqm => ?_` and prove the remaining obligations. Take `⟨P, hP, hPw⟩` from `exists_prime_comap_eq (cyclotomicLayer K _) w.1`. Establish `hPv : P.comap (ringOfIntegersIncl K.1) = v.asIdeal` using `comap_eq_of_liesOver w.1 hPw`. Take `⟨σ, hσP, hσK, hσ⟩` from `hn v ⟨q, hq⟩ P hP hPv`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨degreeMod _ σ, Subgroup.mem_map.2 ⟨restrictHom (E := cyclotomicLayer K _) ⟨σ, hσK⟩, ?_, layerDegree_restrictHom K _ _⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← hPw]`. Conclude with `restrictHom_mem_stabilizer K _ P ⟨σ, hσK⟩ hσP`. Establish `hnN : n v ⟨q, hq⟩ ≤ N`. Establish `hqmem : q ∈ m.primeFactors` using `Nat.mem_primeFactors.2 ⟨hq, hqm, hm⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `le_trans ?_ (Finset.le_sup (f := fun v => m.primeFactors.attach.sup fun q => n v ⟨q.1, Nat.prime_of_mem_primeFactors q.2⟩) hv)` and prove the remaining obligations. Conclude with `Finset.le_sup (f := fun q : m.primeFactors => n v ⟨q.1, Nat.prime_of_mem_primeFactors q.2⟩) (Finset.mem_attach _ ⟨q, hqmem⟩)`. Establish `he : 1 ≤ m.factorization q` using `(hq.dvd_iff_one_le_factorization hm).1 hqm`. Establish `hqr : q ^ (N + m.factorization q) ∣ m ^ (N + 1)`. Combine the equalities or inequalities in the displayed calculation.
-
-Conclude with `pow_dvd_orderOf_degreeMod r ⟨q, hq⟩ (hr ▸ hqr) (by omega) hσ`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_pow_dvd_finrank_cyclotomicLayer (K : FiniteSubfield)
     (S : Finset (HeightOneSpectrum (𝓞 K.1))) {m : ℕ} (hm : m ≠ 0) :

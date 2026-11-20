@@ -4,15 +4,15 @@ import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.Ex
 open NumberField IsDedekindDomain Polynomial Neutral.B1 ReciprocityTheory.Neutral.Bridge.HCFR Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.L2.Host GlobalTheory.HeckeGal GlobalTheory.WeilDeligne GlobalTheory.LocGL GlobalTheory.LocLanglands GlobalTheory.GLq GlobalTheory.SmGL Formalism.L2.NT
 
 /- English proof (translation)
-Introduce `E' Ω _ _ _ _ g _ A w' h' κ`. Establish `hmem : ∀ x : 𝓞 E', algebraMap E' Ω (x : E') ∈ A`. Introduce `x`. Establish `hi : IsIntegral ℤ (algebraMap E' Ω (x : E'))` using `(RingOfIntegers.isIntegral_coe x).map (IsScalarTower.toAlgHom ℤ E' Ω)`. Establish `h2 : IsIntegral A.valuation.integer (algebraMap E' Ω (x : E'))` using `hi.tower_top`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `(Valuation.integer.integers A.valuation).mem_of_integral h2`. Take `⟨y, hy⟩` from `h3`. Rewrite using `[← hy]`. Conclude with `(A.valuation_le_one_iff _).1 (by simpa [Algebra.smul_def] using y.2)`. Set `φ : 𝓞 E' →+* A` to `{ toFun := fun x => ⟨algebraMap E' Ω (x : E'), hmem x⟩ map_one' := by ext; simp map_mul' := by intro x y; ext; simp map_zero' := by ext; simp map_add' := by intro x y; ext; simp }`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `ψ : 𝓞 E' →+* Formalism.CyclotomicNorms.Fbar g` to `κ.toRingHom.comp ((IsLocalRing.residue A).comp φ)`. Establish `hker : ∀ x ∈ w'.asIdeal, ψ x = 0`. Introduce `x hx`. Establish `hlt : A.valuation (algebraMap E' Ω (x : E')) < 1` using `(h' x).2 hx`. Establish `hm : φ x ∈ IsLocalRing.maximalIdeal A` using `(A.valuation_lt_one_iff (φ x)).2 hlt`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [ψ, RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom]`. Rewrite using `[(IsLocalRing.residue_eq_zero_iff (φ x)).2 hm, map_zero]`. Use `⟨Ideal.Quotient.lift _ ψ hker, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.Quotient.lift_mk]`. Unfold `redThrough`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos (hmem x)]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.residue_ringOfIntegers_to_place : ∀ (E' Ω : Type) [Field E'] [NumberField E'] [Field Ω] [Algebra E' Ω] (g : ℕ) [Fact g.Prime]
     (A : ValuationSubring Ω) (w' : HeightOneSpectrum (𝓞 E')) (h' : IsPlaceOver A w')

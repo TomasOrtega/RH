@@ -7,7 +7,7 @@ open MeasureTheory Complex MvPolynomial
 namespace PositivityTheory.SiegelWeilFormula.KLI
 
 /- English proof (translation)
-Rewrite using `[Complex.measurableEquivRealProd_symm_apply]`. Apply the tactic sequence `apply Complex.ext <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mer_symm (p : ℝ × ℝ) : Complex.measurableEquivRealProd.symm p = p.1 + p.2 * I := by
   rw [Complex.measurableEquivRealProd_symm_apply]
@@ -20,11 +20,11 @@ def phi1 (sg : ℤˣ) (t z ξ : ℂ) (α β : ℕ) (w : ℂ) : ℂ :=
 def Rab (α β : ℕ) : MvPolynomial (Fin 2) ℂ := (X 0 + C I * X 1) ^ α * (X 0 - C I * X 1) ^ β
 
 /- English proof (translation)
-Establish `h1 : (X 0 + C I * X 1 : MvPolynomial (Fin 2) ℂ).totalDegree ≤ 1`. Use `(totalDegree_add _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Simplify using `only [totalDegree_X, le_refl]`. Use `(totalDegree_mul _ _).trans ?_` and prove the remaining obligations. Simplify using `only [totalDegree_C, totalDegree_X, zero_add, le_refl]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `h2 : (X 0 - C I * X 1 : MvPolynomial (Fin 2) ℂ).totalDegree ≤ 1`. Use `(totalDegree_sub _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Simplify using `only [totalDegree_X, le_refl]`. Use `(totalDegree_mul _ _).trans ?_` and prove the remaining obligations. Simplify using `only [totalDegree_C, totalDegree_X, zero_add, le_refl]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Unfold `PositivityTheory.SiegelWeilFormula.KLI.Rab`. Use `(totalDegree_mul _ _).trans (add_le_add ?_ ?_)` and prove the remaining obligations. Conclude with `(totalDegree_pow _ _).trans ((Nat.mul_le_mul le_rfl h1).trans_eq (mul_one _))`. Conclude with `(totalDegree_pow _ _).trans ((Nat.mul_le_mul le_rfl h2).trans_eq (mul_one _))`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem deg_Rab (α β : ℕ) : (Rab α β).totalDegree ≤ α + β := by
   have h1 : (X 0 + C I * X 1 : MvPolynomial (Fin 2) ℂ).totalDegree ≤ 1 := by
@@ -47,11 +47,11 @@ def lamF (t ξ : ℂ) : ℂ := 2 * Real.pi * I * ((t * star ξ).re : ℂ)
 def muF (t ξ : ℂ) : ℂ := -(2 * Real.pi * I * ((t * star ξ).im : ℂ))
 
 /- English proof (translation)
-Establish `hs : star ((p.1 : ℂ) + p.2 * I) = p.1 - p.2 * I`. Apply the tactic sequence `apply Complex.ext <;> simp`. Establish `hn : normSq ((p.1 : ℂ) + p.2 * I) = p.1 ^ 2 + p.2 ^ 2` using `Complex.normSq_add_mul_I _ _`. Establish `hre : (t * (star ξ * ((p.1 : ℂ) + p.2 * I))).re = p.1 * (t * star ξ).re - p.2 * (t * star ξ).im`. Simplify using `only [Complex.add_re, Complex.add_im, Complex.mul_re, Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, Complex.I_re, Complex.I_im]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h0 : (![(p.1 : ℂ), (p.2 : ℂ)] : Fin 2 → ℂ) 0 = p.1` using `rfl`. Establish `h1 : (![(p.1 : ℂ), (p.2 : ℂ)] : Fin 2 → ℂ) 1 = p.2` using `rfl`. Simplify using `only [PositivityTheory.SiegelWeilFormula.KLI.phi1, PositivityTheory.SiegelWeilFormula.KLI.Rab, PositivityTheory.SiegelWeilFormula.KLI.G2, PositivityTheory.SiegelWeilFormula.KLI.lamF, PositivityTheory.SiegelWeilFormula.KLI.muF, hs, hn, hre, map_mul, map_pow, map_add, map_sub, MvPo …`. Rewrite using `[← Complex.exp_add, ← Complex.exp_add]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Apply the tactic sequence `congr 1 <;> congr 1 <;> ring`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gaussian_moment_real_coords (sg : ℤˣ) (t z ξ : ℂ) (α β : ℕ) (p : ℝ × ℝ) :
     phi1 sg t z ξ α β (p.1 + p.2 * I) =
@@ -77,11 +77,11 @@ theorem gaussian_moment_real_coords (sg : ℤˣ) (t z ξ : ℂ) (α β : ℕ) (p
     ring
 
 /- English proof (translation)
-Establish `hB : (2 * Real.pi * I * ((sg : ℤ) : ℂ) * z).re < 0`. Establish `hBeq : 2 * (Real.pi : ℂ) * I * ((sg : ℤ) : ℂ) * z = ((2 * Real.pi * ((sg : ℤ) : ℝ) : ℝ) : ℂ) * (I * z)`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hBeq, Complex.re_ofReal_mul, Complex.I_mul_re]`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `mul_pos Real.pi_pos hz` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `h` using `PositivityTheory.SiegelWeilFormula.KLI.intg_poly2 hB (PositivityTheory.SiegelWeilFormula.KLI.lamF t ξ) (PositivityTheory.SiegelWeilFormula.KLI.muF t ξ) (PositivityTheory.SiegelWeilFormula.KLI.Rab α β)`. Rewrite using `[← (MeasurePreserving.symm Complex.measurableEquivRealProd Complex.volume_preserving_equiv_real_prod).integrable_comp_emb Complex.measurableEquivRealProd.symm.measurableEmbedding]`. Use `h.congr (ae_of_all _ fun p => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Function.comp_apply, PositivityTheory.SiegelWeilFormula.KLI.mer_symm, PositivityTheory.SiegelWeilFormula.KLI.gaussian_moment_real_coords]`.
+Simplify using the standard rewrite rules.
 -/
 theorem integrable_gaussian_moment (sg : ℤˣ) (t z ξ : ℂ) (hz : 0 < ((sg : ℤ) : ℝ) * z.im) (α β : ℕ) :
     Integrable (phi1 sg t z ξ α β) := by
@@ -101,31 +101,29 @@ theorem integrable_gaussian_moment (sg : ℤˣ) (t z ξ : ℂ) (hz : 0 < ((sg : 
     PositivityTheory.SiegelWeilFormula.KLI.gaussian_moment_real_coords]
 
 /- English proof (translation)
-Establish `hB : (2 * Real.pi * I * ((sg : ℤ) : ℂ) * z).re < 0`. Establish `hBeq : 2 * (Real.pi : ℂ) * I * ((sg : ℤ) : ℂ) * z = ((2 * Real.pi * ((sg : ℤ) : ℝ) : ℝ) : ℂ) * (I * z)`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hBeq, Complex.re_ofReal_mul, Complex.I_mul_re]`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `mul_pos Real.pi_pos hz` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `hS2 : ((sg : ℤ) : ℂ) ^ 2 = 1`. Apply the tactic sequence `rcases Int.units_eq_one_or sg with h | h <;> simp [h]`. Establish `hs0 : ((sg : ℤ) : ℂ) ≠ 0`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Introduce `h`. Rewrite `hS2` using `[h]`. Evaluate the numerical expressions using `at hS2`. Establish `hS : ((sg : ℤ) : ℂ) * ((sg : ℤ) : ℂ)⁻¹ = 1` using `mul_inv_cancel₀ hs0`. Establish `hP : (Real.pi : ℂ) * (Real.pi : ℂ)⁻¹ = 1` using `mul_inv_cancel₀ (Complex.ofReal_ne_zero.mpr Real.pi_ne_zero)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQ : I * I⁻¹ = 1` using `mul_inv_cancel₀ Complex.I_ne_zero`. Take `⟨R, hRdeg, hR⟩` from `PositivityTheory.SiegelWeilFormula.KLI.mom2 hB (PositivityTheory.SiegelWeilFormula.KLI.Rab α β)`. Take `⟨F, hF0, hF1⟩ : ∃ F : Fin 2 → MvPolynomial Bool ℂ, F 0 = C (2 * (Real.pi : ℂ) * I / 2) * (C t * X true + C (star t) * X false) ∧ F 1 = C (-(2 * (Real.pi : ℂ) * I) / (2 * I)) * (C t * X true - C (star t) * X false)` from `⟨![C (2 * (Real.pi : ℂ) * I / 2) * (C t * X true + C (star t) * X false), C (-(2 * (Real.pi : ℂ) * I) / (2 * I)) * (C t * X true - C (star t) * X false)], rfl, rfl⟩`. Establish `hF : ∀ i, (F i).totalDegree ≤ 1`. Use `Fin.forall_fin_two.mpr ⟨?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hF0]`. Use `(totalDegree_mul _ _).trans ?_` and prove the remaining obligations. Rewrite using `[totalDegree_C, zero_add]`. Apply the tactic sequence `refine (totalDegree_add _ _).trans (max_le ?_ ?_) <;>`. Apply the tactic sequence `refine (totalDegree_mul _ _).trans ?_ <;>`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [totalDegree_C, totalDegree_X, zero_add, le_refl]`. Rewrite using `[hF1]`. Use `(totalDegree_mul _ _).trans ?_` and prove the remaining obligations. Rewrite using `[totalDegree_C, zero_add]`. Apply the tactic sequence `refine (totalDegree_sub _ _).trans (max_le ?_ ?_) <;>`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `refine (totalDegree_mul _ _).trans ?_ <;>`. Simplify using `only [totalDegree_C, totalDegree_X, zero_add, le_refl]`. Use `⟨C (((Real.pi : ℂ) / -(2 * Real.pi * I * ((sg : ℤ) : ℂ) * z)) ^ (1 / 2 : ℂ) * ((Real.pi : ℂ) / -(2 * Real.pi * I * ((sg : ℤ) : ℂ) * z)) ^ (1 / 2 : ℂ)) * bind₁ F R, ?_, fun ξ => ?_⟩` and prove the remaining obligations. Use `(totalDegree_mul _ _).trans ?_` and prove the remaining obligations. Rewrite using `[totalDegree_C, zero_add]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((PositivityTheory.SiegelWeilFormula.KLI.deg_bind_le F hF R).trans hRdeg).trans (PositivityTheory.SiegelWeilFormula.KLI.deg_Rab α β)`. Establish `hfun : (fun i => eval (fun b : Bool => if b then star ξ else ξ) (F i)) = ![PositivityTheory.SiegelWeilFormula.KLI.lamF t ξ, PositivityTheory.SiegelWeilFormula.KLI.muF t ξ]`. Use `funext (Fin.forall_fin_two.mpr ⟨?_, ?_⟩)` and prove the remaining obligations. Use `show eval (fun b : Bool => if b then star ξ else ξ) (F 0) = PositivityTheory.SiegelWeilFormula.KLI.lamF t ξ`. Rewrite using `[hF0]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [map_mul, map_add, MvPolynomial.eval_C, MvPolynomial.eval_X, PositivityTheory.SiegelWeilFormula.KLI.lamF, Complex.re_eq_add_conj, Complex.star_def, Complex.conj_conj, ↓reduceIte, Bool.false_eq_true]`. Expand and normalize the polynomial expressions, which then agree. Use `show eval (fun b : Bool => if b then star ξ else ξ) (F 1) = PositivityTheory.SiegelWeilFormula.KLI.muF t ξ`. Rewrite using `[hF1]`. Simplify using `only [map_mul, map_sub, MvPolynomial.eval_C, MvPolynomial.eval_X, PositivityTheory.SiegelWeilFormula.KLI.muF, Complex.im_eq_sub_conj, Complex.star_def, Complex.conj_conj, ↓reduceIte, Bool.false_eq_true]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `heval : eval (fun b : Bool => if b then star ξ else ξ) (bind₁ F R) = eval ![PositivityTheory.SiegelWeilFormula.KLI.lamF t ξ, PositivityTheory.SiegelWeilFormula.KLI.muF t ξ] R`. Rewrite using `[← hfun]`. Conclude with `MvPolynomial.eval₂Hom_bind₁ (RingHom.id ℂ) (fun b : Bool => if b then star ξ else ξ) F R`. Establish `hn : (((t * star ξ).re : ℝ) : ℂ) ^ 2 + (((t * star ξ).im : ℝ) : ℂ) ^ 2 = (normSq t : ℂ) * (normSq ξ : ℂ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h2 : normSq (star ξ) = normSq ξ` using `by rw [Complex.star_def, Complex.normSq_conj]`. Establish `h1 : (t * star ξ).re ^ 2 + (t * star ξ).im ^ 2 = normSq t * normSq ξ`. Rewrite using `[← h2, ← Complex.normSq_mul, Complex.normSq_apply]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `h1` after adjusting the coercions.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hexp : -(PositivityTheory.SiegelWeilFormula.KLI.lamF t ξ ^ 2 / (4 * (2 * Real.pi * I * ((sg : ℤ) : ℂ) * z))) + -(PositivityTheory.SiegelWeilFormula.KLI.muF t ξ ^ 2 / (4 * (2 * Real.pi * I * ((sg : ℤ) : ℂ) * z))) = 2 * Real.pi * I * ((sg : ℤ) : ℂ) * (-((normSq t : ℂ) / 4) * z⁻¹) * …`. Unfold `PositivityTheory.SiegelWeilFormula.KLI.lamF PositivityTheory.SiegelWeilFormula.KLI.muF`. Take the linear combination `(-(1 / 2) * ((Real.pi : ℂ) * I * ((sg : ℤ) : ℂ)⁻¹ * z⁻¹ * ((((t * star ξ).re : ℝ) : ℂ) ^ 2 + (((t * star ξ).im : ℝ) : ℂ) ^ 2)) * I * I⁻¹) * hP + (-(1 / 2) * ((Real.pi : ℂ) * I * ((sg : ℤ) : ℂ)⁻¹ * z⁻¹ * ((((t * star ξ).re : ℝ) : ℂ) ^ 2 + (((t * star ξ).im : ℝ) : ℂ) ^ 2))) * hQ + …`. Establish `hchg : ∫ w : ℂ, PositivityTheory.SiegelWeilFormula.KLI.phi1 sg t z ξ α β w = ∫ p : ℝ × ℝ, PositivityTheory.SiegelWeilFormula.KLI.phi1 sg t z ξ α β (Complex.measurableEquivRealProd.symm p)` using `((MeasurePreserving.symm Complex.measurableEquivRealProd Complex.volume_preserving_equiv_real_prod).integral_comp Complex.measurableEquivRealProd.symm.measurableEmbedding _).symm`. Rewrite using `[hchg]`.
-
-Simplify using `only [PositivityTheory.SiegelWeilFormula.KLI.mer_symm, PositivityTheory.SiegelWeilFormula.KLI.gaussian_moment_real_coords]`. Rewrite using `[hR, PositivityTheory.SiegelWeilFormula.KLI.J_zero hB, PositivityTheory.SiegelWeilFormula.KLI.J_zero hB, map_mul, MvPolynomial.eval_C, heval, ← hexp, Complex.exp_add]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem mom1 (sg : ℤˣ) (t : ℂ) (z : ℂ) (hz : 0 < ((sg : ℤ) : ℝ) * z.im) (α β : ℕ) :
     ∃ q : MvPolynomial Bool ℂ, q.totalDegree ≤ α + β ∧ ∀ ξ : ℂ,

@@ -14,9 +14,9 @@ abbrev constTh (c : ∀ i, Finset (HeightOneSpectrum (𝓞 D.host.E)) → Fracti
   { X with th := fun i Q _ _ => c i Q }
 
 /- English proof (translation)
-Apply `H.φ₀.injective` to reduce the goal to its premises. Establish `h1` using `H.conjE_apply H.φ₀ (H.conj x)`. Establish `h2` using `H.conjE_apply H.φ₀ x`. Use `h1.trans ?_` and prove the remaining obligations. Use `show starRingEnd ℂ (H.φ₀ (H.conj x)) = _`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, Complex.conj_conj]`.
+A detailed English derivation is pending.
 -/
 theorem conj_conj' {R : Ranks} (H : Host R) (x : H.E) : H.conj (H.conj x) = x := by
   apply H.φ₀.injective
@@ -27,7 +27,7 @@ theorem conj_conj' {R : Ranks} (H : Host R) (x : H.E) : H.conj (H.conj x) = x :=
   rw [h2, Complex.conj_conj]
 
 /- English proof (translation)
-Introduce `x y hy` and use `(h y x (by rw [hy, conj_conj'])).symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isConj_symm {R : Ranks} {H : Host R} {P P' : HeightOneSpectrum (𝓞 H.E)} (h : IsConjPl H P P') : IsConjPl H P' P :=
   fun x y hy => (h y x (by rw [hy, conj_conj'])).symm

@@ -13,9 +13,9 @@ section Div
 variable {LL : Type} [Field LL] {V : Type} [AddCommGroup V] [Module LL V]
 
 /- English proof (translation)
-Use `set e' : ℤ → V := fun k => e (k + K) with he'`. Establish `hLB' : LB (m - K) e'` using `fun k hk => he _ (by omega)`. Establish `huK : constantCoeff (u ^ K) ≠ 0` using `by rw [map_pow]; exact pow_ne_zero _ hu`. Use `⟨smulS (u ^ K)⁻¹ e', LB_smulS hLB' _, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_pow, smulS_mul (LB_smulS hLB' _), ← smulS_mul hLB', PowerSeries.mul_inv_cancel _ huK, smulS_one hLB', smulS_X_pow hLB']`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `k`. Simplify using `[he']`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem div_exists {m : ℤ} {e : ℤ → V} (he : LB m e) (u : PowerSeries LL)
     (hu : constantCoeff u ≠ 0) (K : ℕ) :
@@ -30,11 +30,11 @@ theorem div_exists {m : ℤ} {e : ℤ → V} (he : LB m e) (u : PowerSeries LL)
   simp [he']
 
 /- English proof (translation)
-Establish `huK : constantCoeff (u ^ K) ≠ 0` using `by rw [map_pow]; exact pow_ne_zero _ hu`. Establish `h0 : smulS ((X * u) ^ K) (d - d') = 0`. Rewrite using `[smulS_sub hd hd', h, sub_self]`. Rewrite `h0` using `[mul_pow, smulS_mul (LB_sub hd hd'), smulS_X_pow (LB_smulS (LB_sub hd hd') _)]`. Establish `h1 : smulS (u ^ K) (d - d') = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `k`. Use `congrFun h0 (k + K)` as an intermediate fact. Simplify using `using this`. Establish `h2` using `smulS_inv (LB_sub hd hd') (u ^ K) huK`. Rewrite `h2` using `[h1]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : smulS (u ^ K)⁻¹ (0 : ℤ → V) = 0`. Use function extensionality and compare the values at `k`. Simplify using `[smulS]`. Rewrite `h2` using `[h3]`. Conclude with `sub_eq_zero.1 h2.symm`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem div_unique {m : ℤ} {d d' : ℤ → V} (hd : LB m d) (hd' : LB m d') (u : PowerSeries LL)
     (hu : constantCoeff u ≠ 0) (K : ℕ) (h : smulS ((X * u) ^ K) d = smulS ((X * u) ^ K) d') :
@@ -62,15 +62,15 @@ section Zero
 variable {LL : Type} [Field LL]
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨E₁, hE₁⟩ : ∃ E₁, E = 1 + X * E₁ := by`. Use `⟨PowerSeries.mk fun j => coeff (j + 1) E, ?_⟩` and prove the remaining obligations. Use `PowerSeries.eq_X_mul_shift_add_const E` as an intermediate fact. Rewrite `this` using `[h0, map_one, add_comm]`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hc1 : constantCoeff E₁ = 1`. Establish `h1` using `congrArg (coeff 0) hd`. Rewrite `h1` using `[PowerSeries.coeff_derivative]`. Establish `h2 : coeff 1 E = constantCoeff E₁`. Rewrite using `[hE₁]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `only [zero_add, Nat.cast_zero, mul_one, coeff_zero_eq_constantCoeff_apply, h0] at h1`. Rewrite using `[← h2]`. Simplify using `using h1`. Use `⟨E₁ * ∑ j ∈ Finset.range p, (1 + X * E₁) ^ j, ?_, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hE₁, ← mul_assoc]`. Establish `g` using `geom_sum_mul (1 + X * E₁) p`. Rewrite `g` using `[add_sub_cancel_left]`. Rewrite using `[← g, mul_comm]`. Rewrite using `[map_mul, map_sum, hc1, one_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[map_pow]`.
+A detailed English derivation is pending.
 -/
 theorem exp_pow_sub_one (E : PowerSeries LL) (h0 : constantCoeff E = 1)
     (hd : PowerSeries.derivative LL E = E) (p : ℕ) :
@@ -111,15 +111,15 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 variable (W : LocWach PD LL O v n)
 
 /- English proof (translation)
-Establish `hp0 : (PD.p : LL) ≠ 0` using `Formalism.MainNotions.UnusedSlot80.ArcF.p_ne_zero W`. Take `⟨E, hE0, hEd, hE⟩` from `W.lev_π c ζ ⟨1, by simpa using hζ⟩`. Establish `hζ1 : ζ ≠ 1` using `hζ.ne_one PD.hp.one_lt`. Establish `hπq : (letπ : LetA O n) * W.q = (1 + letπ) ^ PD.p - 1`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [letπ, LocWach.q, Pi.mul_apply, Pi.sub_apply, Pi.pow_apply, Pi.add_apply, Pi.one_apply]`. Conclude with `W.q₀_def`. Establish `hl` using `congrArg (W.lev c ζ) hπq`. Rewrite `hl` using `[map_mul, map_sub, map_pow, map_add, map_one]`. Rewrite `hl` using `[hE, mul_pow, ← map_pow, hζ.pow_eq_one, map_one, one_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw, hw0⟩` from `exp_pow_sub_one E hE0 hEd PD.p`. Rewrite `hl` using `[hw]`. Establish `hπc : constantCoeff (W.lev c ζ letπ) ≠ 0`. Use `congrArg constantCoeff hE` as an intermediate fact. Rewrite `this` using `[map_add, map_one, map_mul, constantCoeff_C, hE0, mul_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Rewrite `this` using `[h0, add_zero]`. Conclude with `hζ1 this.symm`. Use `⟨w * (W.lev c ζ letπ)⁻¹, ?_, ?_⟩` and prove the remaining obligations. Establish `h2 : W.lev c ζ letπ * W.lev c ζ W.q * (W.lev c ζ letπ)⁻¹ = X * w * (W.lev c ζ letπ)⁻¹` using `by rw [hl]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h2` using `[mul_comm (W.lev c ζ letπ), mul_assoc, PowerSeries.mul_inv_cancel _ hπc, mul_one]`. Rewrite using `[h2, mul_assoc]`. Rewrite using `[map_mul, hw0, PowerSeries.constantCoeff_inv]`. Conclude with `mul_ne_zero hp0 (inv_ne_zero hπc)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lev_q_simple (c : ZMod n) (ζ : LL) (hζ : IsPrimitiveRoot ζ PD.p) :
     ∃ u : PowerSeries LL, W.lev c ζ W.q = X * u ∧ constantCoeff u ≠ 0 := by

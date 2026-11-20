@@ -30,12 +30,12 @@ def baseLevelSubgroup (a : _root_.GlobalTheory.Fam.GeometricFamily W u) (j : ℕ
     _root_.GlobalTheory.PenLev.relaxedLevelSubgroup h.choose_spec.choose j hj h.choose_spec.choose_spec.2.some
   else ⊥
 /- English proof (translation)
-Introduce `_ hg` and use `(Subgroup.mem_inf.1 (Subgroup.mem_inf.1 hg).1).2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem relax_le_gfc (J : _root_.GlobalTheory.Fam.QuadraticExtensionData a t) (j : ℕ) (hj : j + 1 = B.R.m) (α : J.Ch j) : _root_.GlobalTheory.PenLev.relaxedLevelSubgroup J j hj α ≤ GfC _ :=
   fun _ hg => (Subgroup.mem_inf.1 (Subgroup.mem_inf.1 hg).1).2
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.PenLev.baseLevelSubgroup`. Use `split_ifs`. Conclude with `_root_.GlobalTheory.PenLev.relax_le_gfc _ _ _ _`. Conclude with `bot_le`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem base_level_subgroup_le_gfc (a : _root_.GlobalTheory.Fam.GeometricFamily W u) (j : ℕ) (hj : j + 1 = B.R.m) : _root_.GlobalTheory.PenLev.baseLevelSubgroup a j hj ≤ GfC _ := by
   unfold _root_.GlobalTheory.PenLev.baseLevelSubgroup
@@ -43,14 +43,14 @@ theorem base_level_subgroup_le_gfc (a : _root_.GlobalTheory.Fam.GeometricFamily 
   · exact _root_.GlobalTheory.PenLev.relax_le_gfc _ _ _ _
   · exact bot_le
 /- English proof (translation)
-Simplify using `only [_root_.GlobalTheory.PenLev.relaxedLevelSubgroup, Subgroup.mem_inf, Subgroup.mem_comap, Subgroup.mem_pi, Set.mem_univ, true_implies, and_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_relax_iff' (J : _root_.GlobalTheory.Fam.QuadraticExtensionData a t) (j : ℕ) (hj : j + 1 = B.R.m) (α : J.Ch j) (g : GA (I.rec7 l Z) ((I.rec7 l Z).sp.X j)) :
     g ∈ _root_.GlobalTheory.PenLev.relaxedLevelSubgroup J j hj α ↔ g ∈ J.A.U j (J.ι j α) ⊔ GlobalTheory.FinPl.grpAt _ (_root_.GlobalTheory.PenBridge.finitePlaceCondition J) ∧ g ∈ GfC _ ∧
       ∀ i, _root_.GlobalTheory.PenBridge.reductionHomAtLastLevel J j hj g i ∈ KO (J.G i).k _ := by
   simp only [_root_.GlobalTheory.PenLev.relaxedLevelSubgroup, Subgroup.mem_inf, Subgroup.mem_comap, Subgroup.mem_pi, Set.mem_univ, true_implies, and_assoc]
 /- English proof (translation)
-Establish `h : ∃ t, ∃ J : _root_.GlobalTheory.Fam.QuadraticExtensionData a t, J.Reads ∧ Nonempty (J.Ch j)` using `⟨t, J, hJ, ⟨α⟩⟩`. Use `⟨h.choose, h.choose_spec.choose, h.choose_spec.choose_spec.2.some, h.choose_spec.choose_spec.1, ?_⟩` and prove the remaining obligations. Unfold `_root_.GlobalTheory.PenLev.baseLevelSubgroup`. Rewrite using `[dif_pos h]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem base_level_subgroup_eq_relax (J : _root_.GlobalTheory.Fam.QuadraticExtensionData a t) (j : ℕ) (hj : j + 1 = B.R.m) (hJ : J.Reads) (α : J.Ch j) :
     ∃ (t₀ : W.P.T) (J₀ : _root_.GlobalTheory.Fam.QuadraticExtensionData a t₀) (α₀ : J₀.Ch j), J₀.Reads ∧ _root_.GlobalTheory.PenLev.baseLevelSubgroup a j hj = _root_.GlobalTheory.PenLev.relaxedLevelSubgroup J₀ j hj α₀ := by

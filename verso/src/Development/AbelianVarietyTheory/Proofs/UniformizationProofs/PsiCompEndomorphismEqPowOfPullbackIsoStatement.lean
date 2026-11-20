@@ -19,7 +19,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.UT
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.UT.PsiPull.psi_pull` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUniformizationProofs%2FPsiCompEndomorphismEqPowOfPullbackIso.lean&line=381#L381)
 -/

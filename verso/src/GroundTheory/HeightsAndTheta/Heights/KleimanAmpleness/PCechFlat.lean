@@ -15,14 +15,14 @@ namespace FlatBC
 variable {S S' : Type*} [CommRing S] [CommRing S'] [Algebra S S']
 
 /- English proof (translation)
-Rewrite using `[smul_tmul', smul_eq_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tmul_eq_smul_one_tmul {X : Type*} [AddCommGroup X] [Module S X] (s : S') (x : X) :
     s ⊗ₜ[S] x = s • ((1 : S') ⊗ₜ[S] x) := by
   rw [smul_tmul', smul_eq_mul, mul_one]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul s x => rw [tmul_eq_smul_one_tmul, map_smul, map_smul, h]`. Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem ext_one_tmul {X Y : Type*} [AddCommGroup X] [Module S X] [AddCommGroup Y] [Module S' Y]
     {u v : S' ⊗[S] X →ₗ[S'] Y} (h : ∀ x, u (1 ⊗ₜ x) = v (1 ⊗ₜ x)) (z : S' ⊗[S] X) : u z = v z := by
@@ -134,9 +134,9 @@ def aflat (a : X →ₗ[R] Y) (b : Y →ₗ[R] Z) : LinearMap.ker (b ∘ₗ a) �
     exact LinearMap.mem_ker.mp x.2)
 
 /- English proof (translation)
-Use extensionality with `z`. Simplify using `only [Submodule.mem_comap, Submodule.coe_subtype, LinearMap.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx⟩`. Use `⟨⟨x, ?_⟩, Subtype.ext hx⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[LinearMap.mem_ker, LinearMap.comp_apply, hx]`. Conclude with `z.2`. Introduce and unpack `⟨x, hx⟩`. Conclude with `⟨x.1, congrArg Subtype.val hx⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem comap_range_eq (a : X →ₗ[R] Y) (b : Y →ₗ[R] Z) :
     (LinearMap.range a).comap (LinearMap.ker b).subtype = LinearMap.range (aflat a b) := by
@@ -186,7 +186,7 @@ variable {n : ℕ} {U : Finset (Fin n)} {R : Type*} [CommRing R] {G : Cell U →
   {ρ : ∀ I J : Cell U, I.1 ⊆ J.1 → G I →ₗ[R] G J}
 
 /- English proof (translation)
-Rewrite `hs`, the goal using `[Cdeg, Submodule.mem_pi]`. Introduce `J _`. Rewrite using `[d_apply]`. Conclude with `Submodule.sum_mem _ fun j _ => zsmul_mem (hρ _ _ _ _ (hs _ (Set.mem_univ _))) _`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem d_mem_Cdeg (hρ : ∀ I J h x, x ∈ deg I → ρ I J h x ∈ deg J) (i : ℕ) (s : Cochain G i)
     (hs : s ∈ Cdeg G deg i) : d G ρ i s ∈ Cdeg G deg (i + 1) := by
@@ -243,7 +243,7 @@ abbrev pmap : Poly S N →+* Poly S' N := MvPolynomial.map (algebraMap S S')
 variable {S S' N}
 
 /- English proof (translation)
-Rewrite using `[monos, monos, MonoidHom.map_mclosure, Set.image_image]`. Simplify using `only [pmap, MvPolynomial.map_X]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem map_monos (I : Finset (Fin (N + 1))) :
     (monos (S := S) I).map (pmap S S' N) = monos (S := S') I := by
@@ -251,7 +251,7 @@ theorem map_monos (I : Finset (Fin (N + 1))) :
   simp only [pmap, MvPolynomial.map_X]
 
 /- English proof (translation)
-Rewrite using `[← map_monos (S := S)]`. Conclude with `Submonoid.mem_map_of_mem _ ht`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pmap_mem_monos {I : Finset (Fin (N + 1))} {t : Poly S N} (ht : t ∈ monos I) :
     pmap S S' N t ∈ monos (S := S') I := by
@@ -259,7 +259,7 @@ theorem pmap_mem_monos {I : Finset (Fin (N + 1))} {t : Poly S N} (ht : t ∈ mon
   exact Submonoid.mem_map_of_mem _ ht
 
 /- English proof (translation)
-Rewrite `hs` using `[← map_monos (S := S)]`. Conclude with `Submonoid.mem_map.mp hs`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_of_mem_monos {I : Finset (Fin (N + 1))} {s : Poly S' N} (hs : s ∈ monos (S := S') I) :
     ∃ t ∈ monos (S := S) I, pmap S S' N t = s := by
@@ -267,9 +267,9 @@ theorem exists_of_mem_monos {I : Finset (Fin (N + 1))} {s : Poly S' N} (hs : s �
   exact Submonoid.mem_map.mp hs
 
 /- English proof (translation)
-Proceed by induction on `hs using Submonoid.closure_induction with`. Consider the case `mem x hx`. Take `⟨i, -, rfl⟩` from `hx`. Conclude with `⟨Finsupp.single i 1, rfl⟩`. Consider the case `one => exact ⟨0, by simp⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `mul x y _ _ hx hy`. Take `⟨a, rfl⟩` from `hx`. Take `⟨b, rfl⟩` from `hy`. Conclude with `⟨a + b, by rw [monomial_mul, one_mul]⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem monos_eq_monomial {R : Type u} [CommRing R] {I : Finset (Fin (N + 1))} {s : Poly R N}
     (hs : s ∈ monos I) : ∃ α, s = monomial α 1 := by
@@ -284,9 +284,9 @@ theorem monos_eq_monomial {R : Type u} [CommRing R] {I : Finset (Fin (N + 1))} {
     exact ⟨a + b, by rw [monomial_mul, one_mul]⟩
 
 /- English proof (translation)
-Take `⟨α, hα⟩` from `monos_eq_monomial (pmap_mem_monos (S' := S') ht)`. Use `(h₀.map (algebraMap S S')).inj_right h ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `pmap S S' N t ≠ 0`. Rewrite using `[hα]`. Introduce `h0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `one_ne_zero (monomial_eq_zero.mp h0)`.
+A detailed English derivation is pending.
 -/
 theorem deg_eq_of_monos [Nontrivial S'] {I : Finset (Fin (N + 1))} {t : Poly S N} (ht : t ∈ monos I)
     {e₀ e : ℕ} (h₀ : t.IsHomogeneous e₀) (h : (pmap S S' N t).IsHomogeneous e) : e₀ = e := by
@@ -316,14 +316,14 @@ variable {M : Type v} [AddCommGroup M] [Module (Poly S N) M] [Module S M]
   [IsScalarTower S (Poly S N) M]
 
 /- English proof (translation)
-The claim follows from `LocalizedModule.smul'_mk p m s`.
+A detailed English derivation is pending.
 -/
 theorem lmk_psmul (I : Finset (Fin (N + 1))) (p : Poly S N) (m : M) (s : monos (S := S) I) :
     p • lmk I m s = lmk I (p • m) s :=
   LocalizedModule.smul'_mk p m s
 
 /- English proof (translation)
-Use `show (algebraMap S (Poly S N) a) • lmk I m s = _`. Rewrite using `[lmk_psmul, algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lmk_smul (I : Finset (Fin (N + 1))) (a : S) (m : M) (s : monos (S := S) I) :
     a • lmk I m s = lmk I (a • m) s := by
@@ -331,7 +331,7 @@ theorem lmk_smul (I : Finset (Fin (N + 1))) (a : S) (m : M) (s : monos (S := S) 
   rw [lmk_psmul, algebraMap_smul]
 
 /- English proof (translation)
-Use `show (LocalizedModule.mk m s + LocalizedModule.mk m' s : LocalizedModule _ M) = LocalizedModule.mk _ _`. Rewrite using `[LocalizedModule.mk_add_mk, ← smul_add, LocalizedModule.mk_cancel_common_left]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lmk_add (I : Finset (Fin (N + 1))) (m m' : M) (s : monos (S := S) I) :
     lmk I m s + lmk I m' s = lmk I (m + m') s := by
@@ -340,14 +340,14 @@ theorem lmk_add (I : Finset (Fin (N + 1))) (m m' : M) (s : monos (S := S) I) :
   rw [LocalizedModule.mk_add_mk, ← smul_add, LocalizedModule.mk_cancel_common_left]
 
 /- English proof (translation)
-The claim follows from `LocalizedModule.zero_mk s @[elab_as_elim]`.
+A detailed English derivation is pending.
 -/
 theorem lmk_zero (I : Finset (Fin (N + 1))) (s : monos (S := S) I) : lmk I (0 : M) s = 0 :=
   LocalizedModule.zero_mk s
 
 @[elab_as_elim]
 /- English proof (translation)
-The claim follows from `LocalizedModule.induction_on h x`.
+A detailed English derivation is pending.
 -/
 theorem lmk_induction {I : Finset (Fin (N + 1))} {P : LocMod S N M I → Prop}
     (h : ∀ m s, P (lmk I m s)) (x : LocMod S N M I) : P x :=
@@ -361,11 +361,9 @@ variable {S' : Type u} [CommRing S'] [Algebra S S']
 
 include hX in
 /- English proof (translation)
-Use `revert m`. Use `MvPolynomial.induction_on (motive := fun p => ∀ m : M, f (p • m) = pmap S S' N p • f m) p (fun a m => ?_) (fun p q hp hq m => ?_) (fun p i hp m => ?_)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← algebraMap_smul (Poly S N) a m, MvPolynomial.algebraMap_eq]`. Use `_ = a • f m := map_smul f a m`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `_ = algebraMap S S' a • f m := (algebraMap_smul S' a (f m)).symm`. Use `_ = (C (algebraMap S S' a) : Poly S' N) • f m := by`. Rewrite using `[← algebraMap_smul (Poly S' N) (algebraMap S S' a) (f m), MvPolynomial.algebraMap_eq]`. Use `_ = pmap S S' N (C a) • f m := by rw [MvPolynomial.map_C]`. Rewrite using `[add_smul, map_add, hp, hq, map_add, add_smul]`.
-
-Rewrite using `[mul_smul, hp, hX, map_mul, MvPolynomial.map_X, mul_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_poly_smul (p : Poly S N) (m : M) : f (p • m) = pmap S S' N p • f m := by
   revert m
@@ -383,7 +381,7 @@ theorem map_poly_smul (p : Poly S N) (m : M) : f (p • m) = pmap S S' N p • f
 
 omit [Module S M'] [IsScalarTower S S' M'] in
 /- English proof (translation)
-Rewrite using `[← algebraMap_smul (Poly S' N) a (p • y), ← algebraMap_smul (Poly S' N) a y, smul_smul, smul_smul, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_comm' {Y : Type*} [AddCommGroup Y] [Module (Poly S' N) Y] [Module S' Y]
     [IsScalarTower S' (Poly S' N) Y] (a : S') (p : Poly S' N) (y : Y) : a • p • y = p • a • y := by
@@ -401,7 +399,7 @@ def gRaw (I : Finset (Fin (N + 1))) (x : LocalizedModule (monos (S := S) I) M) :
       exact h1)
 
 /- English proof (translation)
-The claim follows from `LocalizedModule.liftOn_mk _ m s`.
+A detailed English derivation is pending.
 -/
 theorem gRaw_mk (I : Finset (Fin (N + 1))) (m : M) (s : monos (S := S) I) :
     gRaw f hX I (LocalizedModule.mk m s) =
@@ -423,14 +421,14 @@ def gLoc (I : Finset (Fin (N + 1))) : LocMod S N M I →+ LocMod S' N M' I :=
       · exact Subtype.ext (by simp only [Submonoid.coe_mul, map_mul]))
 
 /- English proof (translation)
-The claim follows from `gRaw_mk f hX I m s`.
+A detailed English derivation is pending.
 -/
 theorem gLoc_mk (I : Finset (Fin (N + 1))) (m : M) (s : monos (S := S) I) :
     gLoc f hX I (lmk I m s) = lmk I (f m) ⟨pmap S S' N s, pmap_mem_monos s.2⟩ :=
   gRaw_mk f hX I m s
 
 /- English proof (translation)
-Use `lmk_induction (fun m s => ?_) x` and prove the remaining obligations. Rewrite using `[lmk_psmul, gLoc_mk, gLoc_mk, lmk_psmul, map_poly_smul f hX]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem gLoc_psmul (I : Finset (Fin (N + 1))) (p : Poly S N) (x : LocMod S N M I) :
     gLoc f hX I (p • x) = pmap S S' N p • gLoc f hX I x := by
@@ -438,7 +436,7 @@ theorem gLoc_psmul (I : Finset (Fin (N + 1))) (p : Poly S N) (x : LocMod S N M I
   rw [lmk_psmul, gLoc_mk, gLoc_mk, lmk_psmul, map_poly_smul f hX]
 
 /- English proof (translation)
-Use `lmk_induction (fun m s => ?_) x` and prove the remaining obligations. Rewrite using `[lmk_smul I a m s, gLoc_mk, gLoc_mk, lmk_smul I (algebraMap S S' a) (f m), algebraMap_smul, map_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem gLoc_smul (I : Finset (Fin (N + 1))) (a : S) (x : LocMod S N M I) :
     gLoc f hX I (a • x) = algebraMap S S' a • gLoc f hX I x := by
@@ -447,7 +445,7 @@ theorem gLoc_smul (I : Finset (Fin (N + 1))) (a : S) (x : LocMod S N M I) :
     map_smul]
 
 /- English proof (translation)
-Use `lmk_induction (fun m s => ?_) x` and prove the remaining obligations. Rewrite using `[gLoc_mk]`. Use `erw [locRes_mk, locRes_mk]`. Conclude with `gLoc_mk f hX J m _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gLoc_locRes {I J : Finset (Fin (N + 1))} (h : I ⊆ J) (x : LocMod S N M I) :
     gLoc f hX J (locRes h x) = locRes h (gLoc f hX I x) := by
@@ -457,45 +455,43 @@ theorem gLoc_locRes {I J : Finset (Fin (N + 1))} (h : I ⊆ J) (x : LocMod S N M
   exact gLoc_mk f hX J m _
 
 /- English proof (translation)
-Set `tsm : Poly S N → (LocMod S N M I →ₗ[S] LocMod S N M I)` to `fun t => (LinearMap.lsmul (Poly S N) (LocMod S N M I) t).restrictScalars S`. Set `msm : Poly S N → (M →ₗ[S] M)` to `fun t => (LinearMap.lsmul (Poly S N) M t).restrictScalars S`. Set `lm : M →ₗ[S] LocMod S N M I` to `(locMk M I).restrictScalars S`. Establish `tsm_apply : ∀ t x, tsm t x = t • x` using `fun _ _ => rfl`. Establish `msm_apply : ∀ t m, msm t m = t • m` using `fun _ _ => rfl`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `lm_apply : ∀ m, lm m = lmk I m 1` using `fun _ => rfl`. Establish `F3 : ∀ t, tsm t ∘ₗ lm = lm ∘ₗ msm t` using `fun t => LinearMap.ext fun m => by`. Simplify using `only [LinearMap.comp_apply, tsm_apply, msm_apply, lm_apply, lmk_psmul]`. Establish `F4 : ∀ t z, L (LinearMap.lTensor S' (tsm t) z) = pmap S S' N t • L z`. Introduce `t z`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => rw [LinearMap.lTensor_tmul, hL, hL, tsm_apply, gLoc_psmul, smul_comm']`. Consider the case `add z₁ z₂ h₁ h₂ => rw [map_add, map_add, h₁, h₂, map_add, smul_add]`. Establish `F5 : ∀ w, L (LinearMap.lTensor S' lm w) = lmk I (hf.equiv w) 1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Introduce `w`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero, map_zero, lmk_zero]`. Consider the case `tmul a m`. Rewrite using `[LinearMap.lTensor_tmul, hL, lm_apply, gLoc_mk, IsBaseChange.equiv_tmul, lmk_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Conclude with `Subtype.ext (map_one _)`. Consider the case `add w₁ w₂ h₁ h₂ => rw [map_add, map_add, h₁, h₂, map_add, lmk_add]`. Establish `F6 : ∀ u w, hf.equiv (LinearMap.lTensor S' (msm u) w) = pmap S S' N u • hf.equiv w`. Introduce `u w`.
+Reduce the equality to equality of the corresponding arguments. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a m`. Rewrite using `[LinearMap.lTensor_tmul, IsBaseChange.equiv_tmul, IsBaseChange.equiv_tmul, msm_apply, map_poly_smul f hX, smul_comm']`. Consider the case `add w₁ w₂ h₁ h₂ => rw [map_add, map_add, h₁, h₂, map_add, smul_add]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Establish `F7 : ∀ t ∈ monos (S` using `S) I, Function.Injective (LinearMap.lTensor S' (tsm t)) := by`. Introduce `t ht`. Establish `hb : Function.Bijective (tsm t)`. Establish `hu` using `IsLocalizedModule.map_units (LocalizedModule.mkLinearMap (monos (S := S) I) M) ⟨t, ht⟩`. Rewrite `hu` using `[Module.End.isUnit_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `hu`. Set `e` to `LinearEquiv.ofBijective (tsm t) hb`. Introduce `a b hab`. Establish `h2` using `congrArg (LinearMap.lTensor S' e.symm.toLinearMap) hab`. Rewrite `h2` using `[← LinearMap.lTensor_comp_apply, ← LinearMap.lTensor_comp_apply, show e.symm.toLinearMap ∘ₗ tsm t = LinearMap.id from LinearMap.ext fun x => e.symm_apply_apply x, LinearMap.lTensor_id_apply, LinearMap.lTensor_id_apply]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `cd : ∀ z, ∃ t ∈ monos (S` using `S) I, ∃ w, LinearMap.lTensor S' (tsm t) z = LinearMap.lTensor S' lm w := by`. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨1, one_mem _, 0, by simp⟩`. Consider the case `tmul a x`.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `lmk_induction (fun m s => ?_) x` and prove the remaining obligations. Use `⟨s, s.2, a ⊗ₜ m, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.lTensor_tmul, LinearMap.lTensor_tmul, tsm_apply, lmk_psmul, lm_apply]`. Use `congr 1`. Rewrite using `[← Submonoid.smul_def]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `LocalizedModule.mk_cancel s m`. Consider the case `add z₁ z₂ h₁ h₂`. Take `⟨t₁, ht₁, w₁, hw₁⟩` from `h₁`. Take `⟨t₂, ht₂, w₂, hw₂⟩` from `h₂`. Use `⟨t₁ * t₂, mul_mem ht₁ ht₂, LinearMap.lTensor S' (msm t₂) w₁ + LinearMap.lTensor S' (msm t₁) w₂, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e1 : tsm (t₁ * t₂) = tsm t₂ ∘ₗ tsm t₁` using `LinearMap.ext fun x => by`. Simplify using `only [LinearMap.comp_apply, tsm_apply, mul_comm t₁ t₂, mul_smul]`. Establish `e2 : tsm (t₁ * t₂) = tsm t₁ ∘ₗ tsm t₂` using `LinearMap.ext fun x => by`. Simplify using `only [LinearMap.comp_apply, tsm_apply, mul_smul]`. Rewrite using `[map_add, map_add]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[e1, LinearMap.lTensor_comp_apply, hw₁, ← LinearMap.lTensor_comp_apply, F3, LinearMap.lTensor_comp_apply]`. Rewrite using `[e2, LinearMap.lTensor_comp_apply, hw₂, ← LinearMap.lTensor_comp_apply, F3, LinearMap.lTensor_comp_apply]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `z hz`. Take `⟨t, ht, w, hw⟩` from `cd z`. Establish `h1 : lmk (S` using `S') I (hf.equiv w) 1 = 0 := by rw [← F5, ← hw, F4, hz, smul_zero]`. Take `⟨u, hu⟩` from `LocalizedModule.mk_eq.mp (h1.trans (lmk_zero (S := S') (M := M') I 1).symm)`. Simplify using `only [one_smul, smul_zero] at hu`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨u₀, hu₀, hu₀u⟩` from `exists_of_mem_monos (S := S) u.2`. Establish `h2 : LinearMap.lTensor S' (msm u₀) w = 0`. Apply `hf.equiv.injective` to reduce the goal to its premises. Rewrite using `[F6, map_zero, hu₀u, ← Submonoid.smul_def, hu]`. Establish `h3 : LinearMap.lTensor S' (tsm u₀) (LinearMap.lTensor S' (tsm t) z) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hw, ← LinearMap.lTensor_comp_apply, F3, LinearMap.lTensor_comp_apply, h2, map_zero]`. Establish `h4 : LinearMap.lTensor S' (tsm t) z = 0` using `F7 u₀ hu₀ (by rw [h3, map_zero])`. Conclude with `F7 t ht (by rw [h4, map_zero])`. Introduce `y`. Use `lmk_induction (fun m' s' => ?_) y` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Take `⟨t, ht, hts⟩` from `exists_of_mem_monos (S := S) s'.2`. Establish `key : ∀ z : S' ⊗[S] M, ∃ w, L w = lmk I (hf.equiv z) s'`. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, by rw [map_zero, map_zero, lmk_zero]⟩`.
+Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Consider the case `tmul a m`. Use `⟨a ⊗ₜ lmk I m ⟨t, ht⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hL, gLoc_mk, IsBaseChange.equiv_tmul, lmk_smul]`. Use `congr 1`. Conclude with `Subtype.ext hts`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Consider the case `add z₁ z₂ h₁ h₂`. Take `⟨w₁, hw₁⟩` from `h₁`. Take `⟨w₂, hw₂⟩` from `h₂`. Conclude with `⟨w₁ + w₂, by rw [map_add, hw₁, hw₂, map_add, lmk_add]⟩`. Take `⟨w, hw⟩` from `key (hf.equiv.symm m')`.
-
-Conclude with `⟨w, by rw [hw, LinearEquiv.apply_symm_apply]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem bij_of_tmul (hf : IsBaseChange S' f) (I : Finset (Fin (N + 1)))
     (L : S' ⊗[S] LocMod S N M I →+ LocMod S' N M' I) (hL : ∀ a x, L (a ⊗ₜ x) = a • gLoc f hX I x) :
@@ -628,7 +624,7 @@ theorem locBC_tmul (hf : IsBaseChange S' f) (I : Finset (Fin (N + 1))) (a : S')
   rfl
 
 /- English proof (translation)
-Rewrite using `[locBC_tmul, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem locBC_one_tmul (hf : IsBaseChange S' f) (I : Finset (Fin (N + 1))) (x : LocMod S N M I) :
     locBC f hX hf I (1 ⊗ₜ x) = gLoc f hX I x := by
@@ -641,9 +637,9 @@ end FlatBC
 namespace FlatBC
 
 /- English proof (translation)
-Introduce `I J h x hx`. Establish `hle : (degLoc 𝓜 c I).map (locResS (M` using `M) I J h) ≤ degLoc 𝓜 c J := by`. Rewrite using `[degLoc, Submodule.map_span_le]`. Introduce and unpack `_ ⟨m, s, a, e, hm, hs, hae, rfl⟩`. Use `Submodule.subset_span ⟨m, ⟨s, monos_mono h s.2⟩, a, e, hm, hs, hae, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `locRes_mk h m s`. Conclude with `hle ⟨x, hx, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem locResS_degLoc {S : Type u} [CommRing S] {N : ℕ} {M : Type v} [AddCommGroup M]
     [Module (Poly S N) M] [Module S M] [IsScalarTower S (Poly S N) M] (𝓜 : GradedPMod S N M) (c : ℤ) :
@@ -673,21 +669,19 @@ omit [IsScalarTower S (Poly S N) M] [IsScalarTower S' (Poly S' N) M'] in
 include hf hdeg in
 
 /- English proof (translation)
-Set `W : ℤ → Submodule S' M'` to `fun b => Submodule.span S' (f '' (𝓜.piece b : Set M))`. Establish `hWle : ∀ b, W b ≤ 𝓜'.piece b` using `fun b => Submodule.span_le.mpr (by`. Introduce and unpack `_ ⟨m, hm, rfl⟩`. Conclude with `hdeg b m hm)`. Establish `htop : ⨆ b, W b = ⊤`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_top_iff]`. Introduce and unpack `y -`. Take `⟨z, rfl⟩` from `hf.equiv.surjective y`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul s m`. Rewrite using `[IsBaseChange.equiv_tmul]`. Use `Submodule.smul_mem _ s ?_` and prove the remaining obligations. Establish `h1 : (⨆ b, 𝓜.piece b).map f ≤ (⨆ b, W b).restrictScalars S`. Rewrite using `[Submodule.map_iSup]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `iSup_le fun b => ?_` and prove the remaining obligations. Rewrite using `[Submodule.map_le_iff_le_comap]`. Introduce `m hm`. Conclude with `(Submodule.mem_iSup_of_mem b (Submodule.subset_span ⟨m, hm, rfl⟩) : f m ∈ ⨆ b, W b)`. Conclude with `h1 ⟨m, by rw [𝓜.isInternal.submodule_iSup_eq_top]; trivial, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Consider the case `add z₁ z₂ h₁ h₂ => rw [map_add]`. Conclude with `Submodule.add_mem _ h₁ h₂`. Introduce `y hy`. Establish `hy' : y ∈ W a ⊔ ⨆ b, ⨆ (_ : b ≠ a), W b`. Rewrite using `[← iSup_split_single, htop]`.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Discharge the goal by the elementary cases of `trivial`. Take `⟨w, hw, w', hw', rfl⟩` from `Submodule.mem_sup.mp hy'`. Establish `hind` using `𝓜'.isInternal.submodule_iSupIndep a`. Establish `hw'0 : w' = 0`. Establish `h1 : w' ∈ 𝓜'.piece a`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.sub_mem _ hy (hWle a hw)` as an intermediate fact. Simplify using `using this`. Establish `h2 : w' ∈ ⨆ b, ⨆ (_ : b ≠ a), 𝓜'.piece b` using `(iSup_mono fun b => iSup_mono fun _ => hWle b) hw'`. Conclude with `(Submodule.disjoint_def.mp hind) w' h1 h2`. Rewrite using `[hw'0, add_zero]`.
-
-Conclude with `hw`.
+A detailed English derivation is pending.
 -/
 theorem piece_le_span (a : ℤ) : 𝓜'.piece a ≤ Submodule.span S' (f '' (𝓜.piece a : Set M)) := by
   classical
@@ -730,11 +724,9 @@ theorem piece_le_span (a : ℤ) : 𝓜'.piece a ≤ Submodule.span S' (f '' (�
 
 include hdeg in
 /- English proof (translation)
-Use `Submodule.span_induction (p := fun x _ => gLoc f hX I.1 x ∈ degLoc 𝓜' c I) ?_ ?_ ?_ ?_ hx` and prove the remaining obligations. Introduce and unpack `_ ⟨m, s, a, e, hm, hs, hae, rfl⟩ show gLoc f hX I.1 (lmk I.1 m s) ∈ _`. Rewrite using `[gLoc_mk]`. Conclude with `Submodule.subset_span ⟨f m, ⟨pmap S S' N s, pmap_mem_monos s.2⟩, a, e, hdeg a m hm, hs.map _, hae, rfl⟩`. Rewrite using `[map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Submodule.zero_mem _`. Introduce `x y _ _ hx hy`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Introduce `r x _ hx`.
-
-Rewrite using `[gLoc_smul]`. Conclude with `Submodule.smul_mem _ _ hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gLoc_mem_degLoc (c : ℤ) (I : StdCell N) (x : LocMod S N M I.1) (hx : x ∈ degLoc 𝓜 c I) :
     gLoc f hX I.1 x ∈ degLoc 𝓜' c I := by
@@ -751,17 +743,15 @@ theorem gLoc_mem_degLoc (c : ℤ) (I : StdCell N) (x : LocMod S N M I.1) (hx : x
 
 include hf hdeg in
 /- English proof (translation)
-Break down `subsingleton_or_nontrivial S' with hS | hS` into its components or cases. Introduce `z _`. Establish `: Subsingleton (LocMod S' N M' I.1)` using `Module.subsingleton S' _`. Rewrite using `[Subsingleton.elim z 0]`. Conclude with `Submodule.zero_mem _`.
+Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[degLoc, Submodule.span_le]`. Introduce and unpack `_ ⟨m', s', a, e, hm', hs', hae, rfl⟩`. Take `⟨t, ht, hts⟩` from `exists_of_mem_monos (S := S) s'.2`. Take `⟨e₀, he₀⟩` from `monos_isHomogeneous ht`. Establish `hee : e₀ = e` using `deg_eq_of_monos ht he₀ (by rw [hts]; exact hs')`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `hee` using the available equality. Express the relevant statement in the definitionally equal form `lmk (S := S') I.1 m' s' ∈ _`. Use `Submodule.span_induction (p := fun y _ => lmk (S := S') I.1 y s' ∈ Submodule.span S' ((fun x => gLoc f hX I.1 x) '' (degLoc 𝓜 c I : Set (LocMod S N M I.1)))) ?_ ?_ ?_ ?_ (piece_le_span f hf 𝓜 𝓜' hdeg a hm')` and prove the remaining obligations. Introduce and unpack `_ ⟨m, hm, rfl⟩`. Use `Submodule.subset_span ⟨lmk I.1 m ⟨t, ht⟩, Submodule.subset_span ⟨m, ⟨t, ht⟩, a, e₀, hm, he₀, hae, rfl⟩, ?_⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show gLoc f hX I.1 (lmk I.1 m ⟨t, ht⟩) = _`. Rewrite using `[gLoc_mk]`. Use `congr 1`. Conclude with `Subtype.ext hts`. Rewrite using `[lmk_zero]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Submodule.zero_mem _`. Introduce `y₁ y₂ _ _ h₁ h₂`. Rewrite using `[← lmk_add]`. Conclude with `Submodule.add_mem _ h₁ h₂`. Introduce `r y _ h`.
-
-Rewrite using `[← lmk_smul]`. Conclude with `Submodule.smul_mem _ r h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem degLoc_le_span (c : ℤ) (I : StdCell N) :
     degLoc 𝓜' c I ≤ Submodule.span S'
@@ -800,7 +790,7 @@ def cochBC (i : ℕ) :
     (LinearEquiv.piCongrRight fun I => locBC f hX hf I.1.1)
 
 /- English proof (translation)
-Simplify using `[cochBC, locBC_one_tmul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cochBC_one_tmul (i : ℕ) (x : Cech.Cochain (locSys S N M) i)
     (I : Cech.Idx (Finset.univ : Finset (Fin (N + 1))) i) :
@@ -808,9 +798,9 @@ theorem cochBC_one_tmul (i : ℕ) (x : Cech.Cochain (locSys S N M) i)
   simp [cochBC, locBC_one_tmul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `J`. Rewrite using `[Cech.d_apply, cochBC_one_tmul, Cech.d_apply, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[cochBC_one_tmul, map_zsmul]`. Use `congr 1`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `(gLoc_locRes f hX (Cech.face_subset J j) _).symm`.
+A detailed English derivation is pending.
 -/
 theorem cochBC_d (i : ℕ) (x : Cech.Cochain (locSys S N M) i) :
     Cech.d (locSys S' N M') locResS i (cochBC f hX hf i (1 ⊗ₜ x)) =
@@ -889,7 +879,7 @@ theorem cdegBC_one_tmul (i : ℕ) (x : Cech.Cdeg (locSys S N M) (degLoc 𝓜 c) 
   rfl
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Cech.d _ _ i (cdegBC f hX hf 𝓜 𝓜' hdeg c i (1 ⊗ₜ x) : Cech.Cochain (locSys S' N M') i) = (cdegBC f hX hf 𝓜 𝓜' hdeg c (i + 1) (1 ⊗ₜ dd (locResS_degLoc 𝓜 c) i x) : Cech.Cochain (locSys S' N M') (i + 1))`. Rewrite using `[cdegBC_one_tmul, cdegBC_one_tmul]`. Conclude with `cochBC_d f hX hf i x.1`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ddcomm (i : ℕ) (x : Cech.Cdeg (locSys S N M) (degLoc 𝓜 c) i) :
     dd (locResS_degLoc 𝓜' c) i (cdegBC f hX hf 𝓜 𝓜' hdeg c i (1 ⊗ₜ x)) =
@@ -928,7 +918,7 @@ end Final
 end FlatBC
 
 /- English proof (translation)
-Introduce `S _ _ N S' _ _ _ M M' _ _ _ _ _ _ _ _ _ _ 𝓜 𝓜' f hf hX hdeg i c`. Conclude with `⟨FlatBC.cohomBC f hX hf 𝓜 𝓜' hdeg c i⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem CechFlat.proof : CechFlat.Statement.{u, v} := by
   intro S _ _ N S' _ _ _ M M' _ _ _ _ _ _ _ _ _ _ 𝓜 𝓜' f hf hX hdeg i c

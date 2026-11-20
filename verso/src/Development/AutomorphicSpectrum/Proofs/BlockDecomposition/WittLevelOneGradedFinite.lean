@@ -34,7 +34,7 @@ section Abs
 variable {R : Type} [CommRing R] {C : Type 1} [Category.{0} C]
 
 /- English proof (translation)
-The claim follows from `vb_fin z U hU ha (CrystallineSemistableComparison.Pb.cechH F P m) V a`.
+A detailed English derivation is pending.
 -/
 theorem fin_vb [IsNoetherianRing R] {Z : Scheme.{0}} (z : Z ⟶ Spec (CommRingCat.of R)) [IsProper z] (F : C ⥤ ModuleCat.{0} R)
     {ι : Type} [Fintype ι] (U : ι → Z.Opens) (P : ι → ObjectProperty C) (m : ℕ) (hU : (⨆ α, U α) = ⊤)
@@ -44,9 +44,7 @@ theorem fin_vb [IsNoetherianRing R] {Z : Scheme.{0}} (z : Z ⟶ Spec (CommRingCa
   vb_fin z U hU ha (CrystallineSemistableComparison.Pb.cechH F P m) V a
 
 /- English proof (translation)
-Use `haveI : Subsingleton ((CrystallineSemistableComparison.Pb.cechH F P b).X a) := ⟨fun x y => funext fun i => (h i).elim _ _⟩`. Use `haveI : Subsingleton ((CrystallineSemistableComparison.Pb.cechH F P b).cx.H a) := ⟨fun x y => by`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Conclude with `congrArg _ (Subtype.ext (Subsingleton.elim _ _))⟩`.
-
-Use `infer_instance`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem fin_zero (F : C ⥤ ModuleCat.{0} R) {ι : Type} (P : ι → ObjectProperty C) (b a : ℕ)
     (h : ∀ i : Fin (a + 1) → ι, Subsingleton (HU F (capT P i) b)) :
@@ -66,7 +64,7 @@ variable {O R : Type} [CommRing O] [CommRing R] {I : Ideal R} (hI : I = ⊥) {X 
   {q : X ⟶ Spec (CommRingCat.of O)} {κ : O →+* R ⧸ I} {γ : DividedPowers I} {p : ℕ}
 
 /- English proof (translation)
-Take `⟨𝒮, h𝒮⟩` from `serre_fg R`. Conclude with `(h𝒮 _).1 (GlobalTheory.CompanionTheory.GlobSt.glob_st.2.1 F Q U 𝒮 j fun a b hab => (h𝒮 _).2 (h a b hab))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem serre_red [IsNoetherianRing R] (F : Thick (nlFun γ p X q κ) ⥤ ModuleCat.{0} R) (Q : ObjectProperty (Thick (nlFun γ p X q κ)))
     {ι : Type} (U : ι → X.Opens) (j : ℕ)
@@ -78,13 +76,11 @@ theorem serre_red [IsNoetherianRing R] (F : Thick (nlFun γ p X q κ) ⥤ Module
 include hI in
 
 /- English proof (translation)
-Use `serre_red (GF (nlFun γ p X q κ) r) ⊤ U.U j fun a b _ => ?_` and prove the remaining obligations. Distinguish the cases in `hb : b = r`. Substitute `hb` using the available equality. Establish `: IsProper (qF hI q κ)` using `MorphismProperty.pullback_snd (P := @IsProper) _ _ inferInstance`. Take `⟨V⟩` from `vb_cech (γ := γ) (p := p) (κ := κ) hI hp hn U b`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `ha : ∀ n (i : Fin (n + 1) → U.ι), IsAffineOpen (capO (fun α => jF hI q κ ⁻¹ᵁ U.U α) i)` using `fun n i => by`. Rewrite using `[capO_pre]`. Conclude with `aff_pre hI (GlobalTheory.CompanionTheory.GrCech.capO_affine U n i)`. Establish `e : (fun α => St (⊤ : ObjectProperty (Thick (nlFun γ p X q κ))) {U.U α}) = fun α => SQ q κ γ p (U.U α)` using `rfl`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `fin_vb (qF hI q κ) _ _ _ b (cover_pre hI U) ha V a`. Use `fin_zero _ _ b a fun i => ?_` and prove the remaining obligations. Establish `e` using `GlobalTheory.CompanionTheory.GrCech.capT_eq (⊤ : ObjectProperty (Thick (nlFun γ p X q κ))) U.U i`. Take `⟨c', -⟩` from `GlobalTheory.T.coordinates_restrict_affine_open (U.c (i 0)) (capO_le U.U i 0) (GlobalTheory.CompanionTheory.GrCech.capO_affine U a i)`. Establish `h` using `off_at (γ := γ) (p := p) (κ := κ) hI hp hn c' r b hb`.
-
-Rewrite using `[show capT (fun α => St (⊤ : ObjectProperty (Thick (nlFun γ p X q κ))) {U.U α}) i = SQ q κ γ p (capO U.U i) from e]`. Conclude with `h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fin_gen [IsNoetherianRing R] (hp : p ≠ 0) (hn : IsNilpotent (p : R)) [IsProper q] (U : Cov q) (r j : ℕ) :
     Module.Finite R (HU (GF (nlFun γ p X q κ) r) (St ⊤ (Set.range U.U)) j) := by
@@ -109,11 +105,9 @@ theorem fin_gen [IsNoetherianRing R] (hp : p ≠ 0) (hn : IsNilpotent (p : R)) [
 end Main
 
 /- English proof (translation)
-Introduce `l _ k _ _ _ O _ X q _ ρ U r j`. Establish `hI : Wc.Im l k 1 = ⊥` using `(Ideal.map_eq_bot_iff_le_ker _).2 (by`. Rewrite using `[Ideal.mk_ker, pow_one])`. Establish `hl : ((l : ℕ) : Wc.Wm l k 1) = 0`. Rewrite using `[← map_natCast (Ideal.Quotient.mk (Ideal.span {(l : WittVector l k) ^ 1}))]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (by rw [pow_one]; exact Ideal.mem_span_singleton_self _)`. Establish `hn : IsNilpotent ((l : ℕ) : Wc.Wm l k 1)`. Rewrite using `[hl]`. Conclude with `IsNilpotent.zero`. Use `haveI := GlobalTheory.CompanionTheory.WittLevel.isNoetherianRing_Wm_one (l := l) (k := k)`.
-
-Establish `h` using `fin_gen (γ := Wc.pd l k 1) (p := l) (κ := (Wc.res l k 1).comp ρ) hI (Fact.out : l.Prime).ne_zero hn U r j`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem level_one_gr_finite : ∀ {l : ℕ} [Fact l.Prime] {k : Type} [Field k] [CharP k l] [PerfectRing k l] {O : Type} [CommRing O] {X : Scheme.{0}}
     (q : X ⟶ Spec (CommRingCat.of O)) [IsProper q] (ρ : O →+* k) (U : Cov q) (r j : ℕ),

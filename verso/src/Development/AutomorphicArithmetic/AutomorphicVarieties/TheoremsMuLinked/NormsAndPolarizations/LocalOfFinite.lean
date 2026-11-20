@@ -9,11 +9,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.Pa
 open IsLocalRing Matrix NumberField Formalism.ConjugateSelfDual ReciprocityTheory.Gal UpperTheory.V UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa UpperTheory.V.HV UpperTheory.V.Th UpperTheory.V.Th.Nm GlobalTheory.GalOfCusp
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `a ha`. Assume the negation of the conclusion as `hna`. Establish `hm : a ∈ maximalIdeal R` using `hna`. Set `g : R →+* ResidueField S` to `(residue S).comp f`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hker : RingHom.ker g = maximalIdeal R` using `by haveI : (RingHom.ker g).IsPrime := RingHom.ker_isPrime g haveI : Finite (R ⧸ RingHom.ker g) := Finite.of_injective _ (RingHom.kerLift_injective g)`. Establish `hmax : (RingHom.ker g).IsMaximal` using `Ideal.Quotient.maximal_of_isField _ (Finite.isField_of_domain _)`. Conclude with `IsLocalRing.eq_maximalIdeal hmax`. Establish `hg : g a = 0`. Rewrite using `[← RingHom.mem_ker, hker]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hm`. Establish `hfa : f a ∈ maximalIdeal S`. Simplify `hg` using `[g, residue_eq_zero_iff]`. Conclude with `hfa ha`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem local_of_finite {R S : Type} [CommRing R] [IsLocalRing R] [CommRing S] [IsLocalRing S]
     [Finite (ResidueField S)] (f : R →+* S) : IsLocalHom f := by
@@ -37,39 +37,35 @@ private theorem local_of_finite {R S : Type} [CommRing R] [IsLocalRing R] [CommR
   exact hfa ha
 
 /- English proof (translation)
-Introduce `l _ n F c c' h r r' R _ _ _ p x ρ₀ ψ₀ hpush hx hD hψ`. Use `haveI : Module.Finite ℤ_[l] c'.O := c'.fin`. Use `haveI : Finite (ResidueField c'.O) := (abelian₂.dvr_finite l c'.O).2.1`. Take `⟨f, hf, hchi, hpsi, hth⟩` from `hpush`. Set `ι : c'.O →+* Qbar l` to `algebraMap c'.O (Qbar l)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hι : Function.Injective ι` using `Subtype.val_injective`. Set `y : R →+* c'.O` to `(x : R →+* Qbar l).codRestrict c'.O hx`. Establish `hy : ι.comp y = (x : R →+* Qbar l)`. Use extensionality with `z`. Both sides reduce to the same expression.
+Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : IsLocalHom y := local_of_finite y`. Establish `hyalg : ∀ a : c.O, y (algebraMap c.O R a) = inc h a`. Introduce `a`. Apply `hι` to reduce the goal to its premises. Use `show x (algebraMap c.O R a) = ι (inc h a)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[x.commutes]`. Both sides reduce to the same expression. Establish `hym : ∀ z ∈ maximalIdeal R, y z ∈ maximalIdeal c'.O`. Introduce `z hz`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `hu`. Conclude with `hz ((isUnit_map_iff y _).1 hu)`. Establish `hres : ∀ z, residue c'.O (y z) = f (res c.O R z)`. Introduce `z`. Take `⟨a, ha⟩` from `IsCO.res_surj (O := c.O) z`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hz : z = algebraMap c.O R a + (z - algebraMap c.O R a)` using `by ring`. Establish `hm0 : res c.O R (z - algebraMap c.O R a) = 0`. Simplify using `[UpperTheory.V.Alg.res, (IsLocalRing.residue_eq_zero_iff _).2 ha]`. Establish `hm1 : residue c'.O (y (z - algebraMap c.O R a)) = 0` using `(IsLocalRing.residue_eq_zero_iff _).2 (hym _ ha)`. Rewrite using `[hz, map_add, map_add, map_add, hm1, hm0, hyalg, AlgHom.commutes, ← hf]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `[ResidueField.algebraMap_eq]`. Establish `hresid : ∀ w : c'.O, res c'.O c'.O w = residue c'.O w`. Introduce `w`. Use `(res c'.O c'.O).commutes w` as an intermediate fact. Simplify `this` using `[ResidueField.algebraMap_eq]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hresring : (res c'.O c'.O : c'.O →+* ResidueField c'.O) = residue c'.O`. Use extensionality with `w`. Conclude with `hresid w`. Establish `hmapeq : (GDet.ofRep (mat ρ₀)).map ι = (p.D.map y).map ι`. Rewrite using `[(CA.d_gmap (p.D)).2.1 y ι, hy, hD, (CA.d_gmap (GDet.ofRep (mat ρ₀))).2.2.2 ι (mat ρ₀)]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `congr 1`. Establish `hρ : GDet.ofRep (mat ρ₀) = p.D.map y`. Apply `CA.d_gext` to reduce the goal to its premises. Introduce `g i _ _`. Apply `hι` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `e1` using `((CA.d_gmap (GDet.ofRep (mat ρ₀))).2.2.1 ι (MonoidAlgebra.single g 1)).2 i`. Establish `e2` using `((CA.d_gmap (p.D.map y)).2.2.1 ι (MonoidAlgebra.single g 1)).2 i`. Rewrite using `[← e1, ← e2, hmapeq]`. Establish `hψy : ∀ v i g, ((ψ₀ v i g : c'.Oˣ) : c'.O) = y (p.ψ v i g : R)`. Introduce `v i g`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Apply `hι` to reduce the goal to its premises. Use `congrArg (fun φ : F.Gv v →* (Qbar l)ˣ => ((φ g : (Qbar l)ˣ) : Qbar l)) (hψ v i)` as an intermediate fact. Conclude with `this`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hρ, (CA.d_gmap p.D).2.1, hresring]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hcomp : (residue c'.O).comp y = f.comp (res c.O R : R →+* ResidueField c.O)`. Use extensionality with `z`. Conclude with `hres z`. Rewrite using `[hcomp, ← (CA.d_gmap p.D).2.1, p.red]`. Use `show (GDet.ofRep (diagRep r.chib)).map f = GDet.ofRep (diagRep r'.chib)`.
+Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[(CA.d_gmap (GDet.ofRep (diagRep r.chib))).2.2.2 f (diagRep r.chib)]`. Use `congr 1`. Use extensionality with `g i j`. Simplify using `only [MonoidHom.coe_comp, Function.comp_apply, diagRep, MonoidHom.coe_mk, OneHom.coe_mk, RingHom.coe_coe, RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.diagonal_apply, hchi]`. Apply the tactic sequence `split_ifs with hij <;> simp [hij, Matrix.diagonal_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Introduce `v i`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `N`. Establish `hle : maximalIdeal R ^ N ≤ (maximalIdeal c'.O ^ N).comap y`. Rewrite using `[← Ideal.map_le_iff_le_comap, Ideal.map_pow]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Ideal.pow_right_mono (Ideal.map_le_iff_le_comap.2 hym) N`. Establish `hc` using `(p.psi v i).cont N`. Establish `: (fun g => Ideal.Quotient.mk (maximalIdeal c'.O ^ N) ((ψ₀ v i g : c'.Oˣ) : c'.O)) = (Ideal.quotientMap (maximalIdeal c'.O ^ N) y hle) ∘ (fun g => Ideal.Quotient.mk (maximalIdeal R ^ N) ((p.ψ v i g : Rˣ) : R))`. Use function extensionality and compare the values at `g`. Simplify using `[hψy, Ideal.quotientMap_mk]`.
-
-Rewrite using `[this]`. Conclude with `hc.comp _`. Introduce `g`. Rewrite using `[hresid, hψy, hres, (p.psi v i).red, hpsi]`. Both sides reduce to the same expression.
-
-Introduce `g`. Rewrite using `[hψy, (p.psi v i).mu, hyalg, hth]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Th.Nm.redOf :
     ∀ {l : ℕ} [Fact l.Prime] {n : ℕ} (F : GFrame l) (c c' : Coef l) (h : c.O ≤ c'.O) (r : Resid F c.O n) (r' : Resid F c'.O n) (R : Type) [CommRing R] [Algebra c.O R] [IsCO c.O R] (p : Pair r R) (x : R →ₐ[c.O] Qbar l) (ρ₀ : F.G₀ →* GL (Fin n) c'.O) (ψ₀ : ∀ v, Fin n → F.Gv v →* c'.Oˣ), RPush h r r' → (∀ b, x b ∈ c'.O) → p.D.map (x : R →+* Qbar l) = GDet.ofRep (mat (pushRep (algebraMap c'.O (Qbar l)) ρ₀)) → (∀ v i, pushCh (algebraMap c'.O (Qbar l)) (ψ₀ v i) = pushCh (x : R →+* Qbar l) (p.ψ v i)) → (GDet.ofRep (mat ρ₀)).map (res c'.O c'.O : c'.O →+* ResidueField c'.O) = r'.Dbar ∧ ∀ v i, r'.IsPsi v i (ψ₀ v i) := by

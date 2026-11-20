@@ -8,15 +8,15 @@ open UpperTheory.Gal.Int.Geo
 open UpperTheory.Gal.FiniteEtaleModels
 
 /- English proof (translation)
-Introduce `q _ D R _ b N 𝔟₁ 𝔟₂ β hle hR S s o lv h`. Take `⟨h1, h2, h3, h4⟩` from `id h`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x y dsimp only`. Rewrite using `[h.congr (hR.add x y), h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions.
 
-Introduce `c x dsimp only`. Rewrite using `[h.congr (hR.lin c x), h2]`. Introduce `x hx`. Conclude with `h3 _ ((hR.ker x).mpr hx)`. Introduce `k _ _ x`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨fun y hy => (hR.ker y).mp ((h4 k x).1 _ hy), ?_⟩` and prove the remaining obligations. Introduce `g hg`. Establish `hg₁ : ∀ c ∈ 𝔟₁ ^ 1, g ≫ o.act.act ((algebraMap (𝓞 D.F) D.O) c) = 1`. Introduce `c hc`. Rewrite `hc` using `[pow_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hg c (by rw [pow_one]; exact hle hc)`. Take `⟨y0, hy0⟩` from `(h4 k x).2 g hg₁`. Take `⟨y, hy⟩` from `hR.onto y0 (by`. Introduce `c hc`. Apply `(h4 k x).1` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[h2, ← Category.assoc, hy0]`. Conclude with `hg c (by rw [pow_one]; exact hc))`. Conclude with `⟨y, by dsimp only; rw [← h.congr hy, hy0]⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.FiniteEtaleModels.levRe_holds :
     LevRe := by

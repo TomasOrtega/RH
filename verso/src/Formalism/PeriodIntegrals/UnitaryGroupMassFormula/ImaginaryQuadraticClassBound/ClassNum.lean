@@ -16,11 +16,11 @@ def HData (I : Ideal R) (e1 e2 : R) (a c b : ℕ) : Prop :=
     (∀ n : ℕ, 0 < n → n < c → ∀ x : ℤ, (x : R) * e1 + ((n : ℤ) : R) * e2 ∉ I)
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, hamin, -⟩` from `hP`. Assume the negation of the conclusion as `hne`. Break down `lt_or_gt_of_ne hne with hneg | hpos` into its components or cases. Use `hamin (-x).toNat (by omega) (by omega) ?_` and prove the remaining obligations. Establish `e : ((((-x).toNat : ℕ) : ℤ) : R) = -(x : R)`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Int.toNat_of_nonneg (by omega)]; push_cast; ring`. Rewrite using `[e]`. Use `I.neg_mem hx using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Use `hamin x.toNat (by omega) (by omega) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Int.toNat_of_nonneg hpos.le]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem HData.minA {I : Ideal R} {e1 e2 : R} {a c b : ℕ} (hP : HData I e1 e2 a c b)
     (x : ℤ) (hx : (x : R) * e1 ∈ I) (h1 : -(a : ℤ) < x) (h2 : x < a) : x = 0 := by
@@ -36,11 +36,11 @@ theorem HData.minA {I : Ideal R} {e1 e2 : R} {a c b : ℕ} (hP : HData I e1 e2 a
     rwa [Int.toNat_of_nonneg hpos.le]
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, -, hcmin⟩` from `hP`. Assume the negation of the conclusion as `hne`. Break down `lt_or_gt_of_ne hne with hneg | hpos` into its components or cases. Use `hcmin (-y).toNat (by omega) (by omega) (-x) ?_` and prove the remaining obligations. Establish `e : ((((-y).toNat : ℕ) : ℤ) : R) = -(y : R)`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Int.toNat_of_nonneg (by omega)]; push_cast; ring`. Rewrite using `[e]`. Use `I.neg_mem hx using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `hcmin y.toNat (by omega) (by omega) x ?_` and prove the remaining obligations. Rewrite using `[Int.toNat_of_nonneg hpos.le]` and apply the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem HData.minC {I : Ideal R} {e1 e2 : R} {a c b : ℕ} (hP : HData I e1 e2 a c b)
     (x y : ℤ) (hx : (x : R) * e1 + (y : R) * e2 ∈ I) (h1 : -(c : ℤ) < y) (h2 : y < c) :
@@ -57,17 +57,17 @@ theorem HData.minC {I : Ideal R} {e1 e2 : R} {a c b : ℕ} (hP : HData I e1 e2 a
     rwa [Int.toNat_of_nonneg hpos.le]
 
 /- English proof (translation)
-Introduce `z hz`. Take `⟨x, y, rfl⟩` from `hspan z`. Establish `hc0 : (0 : ℤ) < c` using `by exact_mod_cast hP.2.1`. Establish `ha0 : (0 : ℤ) < a` using `by exact_mod_cast hP.1`. Take `⟨q, r, hr0, hrc, rfl⟩ : ∃ q r : ℤ, 0 ≤ r ∧ r < c ∧ y = c * q + r` from `⟨y / c, y % c, Int.emod_nonneg _ hc0.ne', Int.emod_lt_of_pos _ hc0, (Int.mul_ediv_add_emod y c).symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hz1 : ((x - q * b : ℤ) : R) * e1 + (r : R) * e2 ∈ I`. Use `I.sub_mem hz (I.mul_mem_left (q : R) hP.2.2.2.2.1)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hr : r = 0` using `hP.minC _ _ hz1 (by omega) hrc`. Substitute `hr` using the available equality. Take `⟨q', t, ht0, hta, hs⟩ : ∃ q' t : ℤ, 0 ≤ t ∧ t < a ∧ x - q * b = a * q' + t` from `⟨(x - q * b) / a, (x - q * b) % a, Int.emod_nonneg _ ha0.ne', Int.emod_lt_of_pos _ ha0, (Int.mul_ediv_add_emod _ _).symm⟩`. Establish `hz2 : (t : R) * e1 ∈ I`. Use `I.sub_mem hz1 (I.mul_mem_left (q' : R) hP.2.2.2.1)` as an intermediate fact.
+Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hs]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `ht : t = 0` using `hP.minA _ hz2 (by omega) hta`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Substitute `ht` using the available equality. Establish `hx : x = a * q' + q * b` using `by linarith`. Substitute `hx` using the available equality. Use `J.add_mem (J.mul_mem_left (q' : R) haJ) (J.mul_mem_left (q : R) hbJ)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem HData.le {I J : Ideal R} {e1 e2 : R} {a c b : ℕ}
     (hspan : ∀ z : R, ∃ x y : ℤ, z = (x : R) * e1 + (y : R) * e2)

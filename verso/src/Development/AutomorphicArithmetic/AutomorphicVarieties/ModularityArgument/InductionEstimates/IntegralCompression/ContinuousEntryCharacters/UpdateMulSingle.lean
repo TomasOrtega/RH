@@ -15,7 +15,7 @@ variable {ι : Type} [Fintype ι] {G : Type} [Group G] [TopologicalSpace G] [IsT
   [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [IsProbabilityMeasure μ]
 
 /- English proof (translation)
-The claim follows from `hf.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace f)`.
+A detailed English derivation is pending.
 -/
 private theorem integ_of_cont {X : Type} [TopologicalSpace X] [CompactSpace X] [MeasurableSpace X]
     [OpensMeasurableSpace X] (ν : Measure X) [IsFiniteMeasure ν] {f : X → ℂ} (hf : Continuous f) : Integrable f ν :=
@@ -24,7 +24,7 @@ private theorem integ_of_cont {X : Type} [TopologicalSpace X] [CompactSpace X] [
 omit [Fintype ι] [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G]
   [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] in
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hj]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem single_mul_eq (i : ι) (h : G) (k : ι → G) :
     (Pi.mulSingle i h : ι → G) * k = Function.update k i (h * k i) := by
@@ -36,7 +36,7 @@ private theorem single_mul_eq (i : ι) (h : G) (k : ι → G) :
 omit [Fintype ι] [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G]
   [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] in
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hj]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem update_mul_single (i : ι) (y h : G) (k : ι → G) :
     Function.update k i y * (Pi.mulSingle i h : ι → G) = Function.update k i (y * h) := by
@@ -46,9 +46,9 @@ private theorem update_mul_single (i : ι) (y h : G) (k : ι → G) :
   · simp [hj]
 
 /- English proof (translation)
-Establish `h1 : ∀ k : ι → G, ∫ h, F (Function.update k i h) ∂μ = ∫ h, F ((Pi.mulSingle i h : ι → G) * k) ∂μ`. Introduce `k`. Simplify using `only [single_mul_eq]`. Conclude with `(integral_mul_right_eq_self (fun h => F (Function.update k i h)) (k i)).symm`. Simplify using `only [h1]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[integral_integral_swap]`. Establish `h2 : ∀ h : G, ∫ k, F ((Pi.mulSingle i h : ι → G) * k) ∂(Measure.pi fun _ : ι => μ) = ∫ k, F k ∂(Measure.pi fun _ : ι => μ)` using `fun h => integral_mul_left_eq_self F _`. Simplify using `[h2]`. Apply `integ_of_cont` to reduce the goal to its premises. Conclude with `hF.comp (((continuous_mulSingle i).comp continuous_snd).mul continuous_fst)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 private theorem integral_update [μ.IsMulLeftInvariant] [μ.IsMulRightInvariant] (i : ι) {F : (ι → G) → ℂ}
     (hF : Continuous F) :
@@ -67,17 +67,15 @@ private theorem integral_update [μ.IsMulLeftInvariant] [μ.IsMulRightInvariant]
     exact hF.comp (((continuous_mulSingle i).comp continuous_snd).mul continuous_fst)
 
 /- English proof (translation)
-Establish `key : ∀ s : Finset ι, ∫ m : ι → G, (∏ i ∈ s, t i (m i)) * Ψ (g * fun i => if i ∈ s then j (m i) else 1) ∂(Measure.pi fun _ : ι => μ) = Ψ g`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Establish `: (fun _ : ι => (1 : M)) = 1` using `rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Simplify using `[this]`. Consider the case `insert a s ha ih`. Rewrite using `[integral_update μ a, ← ih]`. Use `integral_congr_ae (Eventually.of_forall fun m => ?_) beta_reduce` and prove the remaining obligations. Rewrite using `[← h a, ← integral_const_mul]`.
+Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `integral_congr_ae (Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Use `beta_reduce`. Establish `e1 : ∏ i ∈ s, t i (Function.update m a y i) = ∏ i ∈ s, t i (m i)` using `Finset.prod_congr rfl fun i hi => by`. Rewrite using `[Function.update_of_ne (show i ≠ a from fun hh => ha (by rwa [← hh]))]`. Establish `e2 : (g * fun i => if i ∈ insert a s then j (Function.update m a y i) else 1) = (g * fun i => if i ∈ s then j (m i) else 1) * (Pi.mulSingle a (j y) : ι → M)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i = a`. Substitute `hi` using the available equality. Simplify using `[ha]`. Simplify using `[hi]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_insert ha, e1, e2, Function.update_self]`. Expand and normalize the polynomial expressions, which then agree. Use `(continuous_finset_prod _ fun i _ => (ht i).comp (continuous_apply i)).mul (hΨ.comp (continuous_const.mul (continuous_pi fun i => ?_))) split_ifs` and prove the remaining obligations. Conclude with `hj.comp (continuous_apply i)`. Conclude with `continuous_const`.
-
-Simplify using `using key Finset.univ`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem fix_prod [μ.IsMulLeftInvariant] [μ.IsMulRightInvariant] {M : Type} [Group M] [TopologicalSpace M]
     [IsTopologicalGroup M] (j : G → M) (hj : Continuous j) (t : ι → G → ℂ) (ht : ∀ i, Continuous (t i))
@@ -117,15 +115,15 @@ private theorem fix_prod [μ.IsMulLeftInvariant] [μ.IsMulRightInvariant] {M : T
   simpa using key Finset.univ
 
 /- English proof (translation)
-Introduce `y`. Simplify using `only [← update_mul_single]`. Generalize the expression as in `Function.update g₀ i y = g`. Establish `h1 : ∀ h : G, Φ (g * (Pi.mulSingle i h : ι → G)) = ∫ k, e i (h⁻¹ * k i) * ((∏ j ∈ Finset.univ.erase i, e j (k j)) * Φ (g * k)) ∂(Measure.pi fun _ : ι => μ)`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hf (g * (Pi.mulSingle i h : ι → G)), ← integral_mul_left_eq_self _ (Pi.mulSingle i h⁻¹ : ι → G)]`. Use `integral_congr_ae (Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Use `beta_reduce`. Establish `e1 : ∏ j ∈ Finset.univ.erase i, e j (((Pi.mulSingle i h⁻¹ : ι → G) * k) j) = ∏ j ∈ Finset.univ.erase i, e j (k j)` using `Finset.prod_congr rfl fun j hj => by simp [Finset.ne_of_mem_erase hj]`. Establish `e2 : g * (Pi.mulSingle i h : ι → G) * ((Pi.mulSingle i h⁻¹ : ι → G) * k) = g * k`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_assoc, ← mul_assoc (Pi.mulSingle i h : ι → G), ← Pi.mulSingle_mul]`. Simplify using the standard rewrite rules. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ i), e1, e2]`. Simplify using `[mul_assoc]`. Simplify using `only [h1, ← integral_const_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[integral_integral_swap]`. Rewrite using `[← hf g]`. Use `integral_congr_ae (Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Use `beta_reduce`. Simplify using `only [← mul_assoc (e i _), mul_assoc (e i _ * _)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[integral_mul_const, (he i).idem, ← Finset.mul_prod_erase _ _ (Finset.mem_univ i), mul_assoc]`. Apply `integ_of_cont` to reduce the goal to its premises. Use `((he i).cont.comp continuous_fst).mul (((he i).cont.comp (continuous_fst.inv.mul ((continuous_apply i).comp continuous_snd))).mul ((continuous_finset_prod _ fun j _ => (he j).cont.comp ((continuous_apply j).comp continuous_snd)).mul (hΦ.comp (continuous_const.mul continuous_snd)) …` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem fix_slice [μ.IsMulLeftInvariant] (e : ι → G → ℂ) (he : ∀ i, Idem μ (e i)) (Φ : (ι → G) → ℂ)
     (hΦ : Continuous Φ) (hf : RFix (Measure.pi fun _ : ι => μ) (fun k => ∏ i, e i (k i)) Φ) (i : ι) (g₀ : ι → G) :
@@ -161,7 +159,7 @@ private theorem fix_slice [μ.IsMulLeftInvariant] (e : ι → G → ℂ) (he : �
         (hΦ.comp (continuous_const.mul continuous_snd))))
 
 /- English proof (translation)
-Introduce `n' q' hn l y`. Use `h n' q' hn l (Function.update k c y)` as an intermediate fact. Simplify `this` using `only [single_mul_eq, Function.update_self, Function.update_idem]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem aboveSlice {ι : Type} {j : U2 → U4} {n : ℕ} {q : ℤ} {Φ : (ι → U4) → ℂ} (c : ι) (k : ι → U4)
     (h : LAbove (fun m => (Pi.mulSingle c (j m) : ι → U4)) n q Φ) :
@@ -173,7 +171,7 @@ private theorem aboveSlice {ι : Type} {j : U2 → U4} {n : ℕ} {q : ℤ} {Φ :
 end Gen
 
 /- English proof (translation)
-Unfold `T`. Conclude with `continuous_const.mul (Complex.continuous_conj.comp (KT.continuous_psi n q n))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem continuous_alt (n : ℕ) (q : ℤ) : Continuous (T n q) := by
   unfold T
@@ -182,41 +180,35 @@ private theorem continuous_alt (n : ℕ) (q : ℤ) : Continuous (T n q) := by
 end UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.EA
 
 /- English proof (translation)
-Introduce `ι _ μ e n q n' q' x hμ hE`. Use `haveI : IsProbabilityMeasure μ := hμ.prob`. Use `haveI : μ.IsMulLeftInvariant := ⟨fun g => (hμ.left g).map_eq⟩`. Use `haveI : μ.IsMulRightInvariant := ⟨fun g => (hμ.right g).map_eq⟩`. Take `⟨-, -, -, -, hbd, -, -, -, -, -, -, hcpt, -⟩` from `u4`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : CompactSpace U4 := hcpt`. Establish `hb1 : Continuous fun m : U2 => bd m 1` using `hbd.comp (continuous_id.prodMk continuous_const)`. Establish `hb2 : Continuous fun m : U2 => bd 1 m` using `hbd.comp (continuous_const.prodMk continuous_id)`. Establish `hcontS : ∀ (Φ : (ι → U4) → ℂ), Continuous Φ → ∀ (i : ι) (k : ι → U4), Continuous fun y => Φ (Function.update k i y)` using `fun Φ hΦ i k => hΦ.comp (continuous_const.update i continuous_id)`. Establish `hsl : ∀ (Φ : (ι → U4) → ℂ) (i : ι) (g : ι → U4) (h : U4), Φ (g * (Pi.mulSingle i h : ι → U4) * x) = (fun y => Φ (Function.update (g * x) i y)) (g i * h * x i)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Introduce `Φ i g h`. Use `beta_reduce`. Use `congr 1`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hj]`. Establish `hsl0 : ∀ (Φ : (ι → U4) → ℂ) (i : ι) (g : ι → U4), Φ (g * x) = (fun y => Φ (Function.update (g * x) i y)) (g i * x i)`. Introduce `Φ i g`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Use `beta_reduce`. Use `congr 1`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `[hj]`. Establish `hidem : ∀ i, Idem μ (e i)` using `fun i => (hE i).idem`. Use `⟨⟨continuous_finset_prod _ fun i _ => (hE i).idem.cont.comp (continuous_apply i), ?_, ?_⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.inv_apply, (hE _).idem.star, map_prod]`. Introduce `k`. Establish `h1 : ∀ h : ι → U4, (∏ i, e i (h i)) * ∏ i, e i ((h⁻¹ * k) i) = ∏ i, e i (h i) * e i ((h i)⁻¹ * k i)`. Introduce `h`. Simplify using `only [Pi.mul_apply, Pi.inv_apply, Finset.prod_mul_distrib]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [h1]`. Rewrite using `[integral_fintype_prod_eq_prod (fun i h => e i h * e i (h⁻¹ * k i))]`. Conclude with `Finset.prod_congr rfl fun i _ => (hE i).idem.idem (k i)`. Introduce `Φ hΦ hR g`. Prove the components needed by the constructor for the conclusion.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `fix_prod μK (fun m => bd m 1) hb1 (fun i => T (n i) (q i)) (fun i => continuous_alt _ _) (fun y => Φ (y * x)) (hΦ.comp (continuous_id.mul continuous_const)) ?_ g` and prove the remaining obligations. Introduce `i g`. Use `beta_reduce`. Simplify using `only [hsl Φ i g]`. Rewrite using `[hsl0 Φ i g]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Conclude with `((hE i).fix _ (hcontS Φ hΦ i _) (fix_slice μ e hidem Φ hΦ hR i _) (g i)).1`. Use `fix_prod μK (fun m => bd 1 m) hb2 (fun i => T (n' i) (q' i)) (fun i => continuous_alt _ _) (fun y => Φ (y * x)) (hΦ.comp (continuous_id.mul continuous_const)) ?_ g` and prove the remaining obligations. Introduce `i g`. Use `beta_reduce`. Simplify using `only [hsl Φ i g]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[hsl0 Φ i g]`. Conclude with `((hE i).fix _ (hcontS Φ hΦ i _) (fix_slice μ e hidem Φ hΦ hR i _) (g i)).2`. Introduce `Φ hΦ hR hL hL' h0`. Establish `key : ∀ s : Finset ι, ∀ k : ι → U4, (∀ i, i ∉ s → ∃ a b, k i = bd a b * x i) → Φ k = 0`. Introduce `s`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `k hk`. Use `choose a b hab using fun i => hk i (Finset.notMem_empty i)`. Establish `: k = (fun i => bd (a i) (b i)) * x` using `funext hab`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `h0 a b`. Consider the case `insert c s hc ih`. Introduce `k hk`. Establish `hz` using `(hE c).inj (fun y => Φ (Function.update k c y)) (hcontS Φ hΦ c k) (fix_slice μ e hidem Φ hΦ hR c k) (aboveSlice c k (hL c)) (aboveSlice c k (hL' c)) ?_`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrFun hz (k c)` as an intermediate fact. Simplify using `using this`. Introduce `a b`. Use `ih _ fun i hi => ?_` and prove the remaining obligations. Distinguish the cases in `hic : i = c`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Substitute `hic` using the available equality. Conclude with `⟨a, b, Function.update_self ..⟩`. Rewrite using `[Function.update_of_ne hic]`. Conclude with `hk i (by simp [hic, hi])`. Use function extensionality and compare the values at `k`.
-
-Conclude with `key Finset.univ k fun i hi => absurd (Finset.mem_univ i) hi`. Use `choose ψ hc hfix hval using fun i => (hE i).ex`. Use `⟨fun k => ∏ i, ψ i (k i), continuous_finset_prod _ fun i _ => (hc i).comp (continuous_apply i), ?_, ?_⟩` and prove the remaining obligations. Introduce `g`. Establish `h1 : ∀ k : ι → U4, (∏ i, e i (k i)) * ∏ i, ψ i ((g * k) i) = ∏ i, e i (k i) * ψ i (g i * k i)`.
-
-Introduce `k`. Simplify using `only [Pi.mul_apply, Finset.prod_mul_distrib]`. Simplify using `only [h1]`. Rewrite using `[integral_fintype_prod_eq_prod (fun i h => e i h * ψ i (g i * h))]`. Conclude with `Finset.prod_congr rfl fun i _ => hfix i (g i)`.
-
-Introduce `a b`. Simplify using `only [Pi.mul_apply, hval, map_prod, Finset.prod_mul_distrib]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.EA.extPi :
     ∀ (ι : Type) [Fintype ι] (μ : Measure U4) (e : ι → U4 → ℂ) n q n' q' (x : ι → U4), Haar4 μ →

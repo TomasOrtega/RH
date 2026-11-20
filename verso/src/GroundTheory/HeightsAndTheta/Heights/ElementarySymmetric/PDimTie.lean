@@ -19,7 +19,7 @@ abbrev ratioRing (y : Fin (N + 1) → Ω) : Subalgebra k Ω :=
   Algebra.adjoin k {a | ∃ i j, y i ≠ 0 ∧ a = y j / y i}
 
 /- English proof (translation)
-The claim follows from `Algebra.subset_adjoin ⟨i, j, hi, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem ratio_mem (y : Fin (N + 1) → Ω) {i : Fin (N + 1)} (hi : y i ≠ 0) (j : Fin (N + 1)) :
     y j / y i ∈ ratioRing (k := k) y :=
@@ -28,7 +28,7 @@ theorem ratio_mem (y : Fin (N + 1) → Ω) {i : Fin (N + 1)} (hi : y i ≠ 0) (j
 open scoped IntermediateField.algebraAdjoinAdjoin in
 
 /- English proof (translation)
-Establish `: FaithfulSMul k (ratioRing (k` using `k) y) := (faithfulSMul_iff_algebraMap_injective _ _).2 (algebraMap k _).injective`. Use `show trdeg k (IntermediateField.adjoin k {a | ∃ i j, y i ≠ 0 ∧ a = y j / y i}) = _`. Rewrite using `[← trdeg_add_eq k (ratioRing (k := k) y) (A := IntermediateField.adjoin k {a | ∃ i j, y i ≠ 0 ∧ a = y j / y i}), trdeg_eq_zero (R := ratioRing (k := k) y) (A := IntermediateField.adjoin k {a | ∃ i j, y i ≠ 0 ∧ a = y j / y i}), add_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trdeg_funField (y : Fin (N + 1) → Ω) :
     trdeg k (funField (k := k) y) = trdeg k (ratioRing (k := k) y) := by
@@ -41,7 +41,7 @@ theorem trdeg_funField (y : Fin (N + 1) → Ω) :
       (A := IntermediateField.adjoin k {a | ∃ i j, y i ≠ 0 ∧ a = y j / y i}), add_zero]
 
 /- English proof (translation)
-Establish `: FaithfulSMul D (Polynomial D)` using `(faithfulSMul_iff_algebraMap_injective _ _).2 Polynomial.C_injective`. Rewrite using `[← trdeg_add_eq k D (A := Polynomial D), Polynomial.trdeg_of_isDomain]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem trdeg_polynomial (D : Type w) [CommRing D] [IsDomain D] [Algebra k D] [FaithfulSMul k D] :
     trdeg k (Polynomial D) = trdeg k D + 1 := by
@@ -50,7 +50,7 @@ theorem trdeg_polynomial (D : Type w) [CommRing D] [IsDomain D] [Algebra k D] [F
   rw [← trdeg_add_eq k D (A := Polynomial D), Polynomial.trdeg_of_isDomain]
 
 /- English proof (translation)
-Establish `h : (Polynomial.aeval (R` using `Ω) (Polynomial.C c⁻¹ * Polynomial.X)).comp (Polynomial.aeval (Polynomial.C c * Polynomial.X)) = AlgHom.id Ω (Polynomial Ω) := by`. Use `Polynomial.algHom_ext ?_` and prove the remaining obligations. Simplify using `only [AlgHom.comp_apply, Polynomial.aeval_X, map_mul, Polynomial.aeval_C, Polynomial.algebraMap_eq, AlgHom.id_apply]`. Rewrite using `[← mul_assoc, ← Polynomial.C_mul, mul_inv_cancel₀ hc, Polynomial.C_1, one_mul]`. Conclude with `Function.LeftInverse.injective (g := Polynomial.aeval (Polynomial.C c⁻¹ * Polynomial.X)) fun p => by rw [← AlgHom.comp_apply, h, AlgHom.id_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aeval_C_mul_X_injective {c : Ω} (hc : c ≠ 0) :
     Function.Injective (Polynomial.aeval (R := Ω) (Polynomial.C c * Polynomial.X)) := by
@@ -80,16 +80,16 @@ def rehom : Polynomial (ratioRing (k := k) y) →ₐ[k] Polynomial Ω :=
 
 include hi₀ in
 /- English proof (translation)
-Rewrite using `[rehom, AlgHom.coe_comp]`. Conclude with `(aeval_C_mul_X_injective hi₀).comp (Polynomial.map_injective _ Subtype.val_injective)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rehom_injective : Function.Injective (rehom (k := k) y i₀) := by
   rw [rehom, AlgHom.coe_comp]
   exact (aeval_C_mul_X_injective hi₀).comp (Polynomial.map_injective _ Subtype.val_injective)
 
 /- English proof (translation)
-Use `MvPolynomial.algHom_ext fun j => ?_` and prove the remaining obligations. Establish `hc : (cone (S` using `k) y) (X j) = Polynomial.C (y j) * Polynomial.X := by`. Simplify using `[cone, ReciprocityTheory.ChartRestriction.G.Geo.coneMap]`. Rewrite using `[hc]`. Simplify using `[rehom, dehom, ratio]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← mul_assoc, ← Polynomial.C_mul, div_mul_cancel₀ _ hi₀]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rehom_comp_dehom : (rehom (k := k) y i₀).comp (dehom y hi₀) = cone (S := k) y := by
   refine MvPolynomial.algHom_ext fun j => ?_
@@ -100,7 +100,7 @@ theorem rehom_comp_dehom : (rehom (k := k) y i₀).comp (dehom y hi₀) = cone (
   rw [← mul_assoc, ← Polynomial.C_mul, div_mul_cancel₀ _ hi₀]
 
 /- English proof (translation)
-Use extensionality with `f`. Rewrite using `[primeOf_eq, RingHom.mem_ker, RingHom.mem_ker, ← rehom_comp_dehom (k := k) y hi₀, AlgHom.comp_apply, map_eq_zero_iff _ (rehom_injective (k := k) y hi₀)]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem primeOf_eq_ker : primeOf (S := k) y = RingHom.ker (dehom (k := k) y hi₀) := by
   ext f
@@ -108,19 +108,17 @@ theorem primeOf_eq_ker : primeOf (S := k) y = RingHom.ker (dehom (k := k) y hi�
     map_eq_zero_iff _ (rehom_injective (k := k) y hi₀)]
 
 /- English proof (translation)
-Use `set R := (dehom (k := k) y hi₀).range`. Establish `hmem : ∀ j, Polynomial.C (ratio (k` using `k) y hi₀ j) * Polynomial.X ∈ R := fun j => ⟨X j, by simp [dehom]⟩`. Establish `h1 : ratio (k` using `k) y hi₀ i₀ = 1 := Subtype.ext (div_self hi₀)`. Establish `hX : IsAlgebraic R (Polynomial.X : Polynomial (ratioRing (k` using `k) y)) := by`. Establish `h` using `hmem i₀`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[h1, Polynomial.C_1, one_mul]`. Conclude with `isAlgebraic_algebraMap (⟨_, h⟩ : R)`. Establish `hb : ∀ j, IsAlgebraic R (Polynomial.C (ratio (k` using `k) y hi₀ j)) := fun j => IsAlgebraic.of_mul (mem_nonZeroDivisors_of_ne_zero Polynomial.X_ne_zero) hX (by rw [mul_comm]; exact isAlgebraic_algebraMap (⟨_, hmem j⟩ : R))`. Establish `hgen : ∀ i j (hi : y i ≠ 0), IsAlgebraic R (Polynomial.C (⟨y j / y i, ratio_mem y hi j⟩ : ratioRing (k` using `k) y)) := by`. Introduce `i j hi`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hne : ratio (k` using `k) y hi₀ i ≠ 0 := fun h => div_ne_zero hi hi₀ (congrArg Subtype.val h)`. Use `IsAlgebraic.of_mul (mem_nonZeroDivisors_of_ne_zero (Polynomial.C_ne_zero.mpr hne)) (hb i) ?_` and prove the remaining obligations. Establish `he : ratio (k` using `k) y hi₀ i * ⟨y j / y i, ratio_mem y hi j⟩ = ratio (k := k) y hi₀ j := by`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `y i / y i₀ * (y j / y i) = y j / y i₀`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[← Polynomial.C_mul, he]`. Conclude with `hb j`. Establish `hCD : ∀ d : ratioRing (k` using `k) y, IsAlgebraic R (Polynomial.C d) := by`. Set `M : Subalgebra k (ratioRing (k` to `k) y) := ((Subalgebra.algebraicClosure R (Polynomial (ratioRing (k := k) y))).restrictScalars k).comap (Polynomial.CAlgHom (R := k) (A := ratioRing (k := k) y))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Establish `hM : ratioRing (k` using `k) y ≤ M.map (ratioRing (k := k) y).val := Algebra.adjoin_le (by`. Introduce and unpack `_ ⟨i, j, hi, rfl⟩`. Conclude with `⟨⟨y j / y i, ratio_mem y hi j⟩, hgen i j hi, rfl⟩)`. Introduce `d`. Take `⟨d', hd', he⟩` from `hM d.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Proceed by induction.
 
-Rewrite using `[show d = d' from Subtype.ext he.symm]`. Conclude with `hd'`. Use `⟨fun p => ?_⟩` and prove the remaining obligations. Proceed by induction on `p using Polynomial.induction_on with`. Consider the case `C a => exact hCD a`.
-
-Consider the case `add p q hp hq => exact hp.add hq`. Consider the case `monomial n a h => rw [pow_succ, ← mul_assoc]`. Conclude with `h.mul hX`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isAlgebraic_range :
     Algebra.IsAlgebraic (dehom (k := k) y hi₀).range (Polynomial (ratioRing (k := k) y)) := by
@@ -166,7 +164,7 @@ theorem isAlgebraic_range :
   | monomial n a h => rw [pow_succ, ← mul_assoc]; exact h.mul hX
 
 /- English proof (translation)
-Use `isAlgebraic_range (k := k) y hi₀` as an intermediate fact. Establish `: FaithfulSMul k (dehom (k` using `k) y hi₀).range := (faithfulSMul_iff_algebraMap_injective _ _).2 (algebraMap k _).injective`. Use `(faithfulSMul_iff_algebraMap_injective (dehom (k := k) y hi₀).range (Polynomial (ratioRing (k := k) y))).2 Subtype.val_injective` as an intermediate fact. Establish `: FaithfulSMul k (ratioRing (k` using `k) y) := (faithfulSMul_iff_algebraMap_injective _ _).2 (algebraMap k _).injective`. Rewrite using `[← trdeg_polynomial (k := k) (ratioRing (k := k) y), ← trdeg_add_eq k (dehom (k := k) y hi₀).range (A := Polynomial (ratioRing (k := k) y)), trdeg_eq_zero (R := (dehom (k := k) y hi₀).range) (A := Polynomial (ratioRing (k := k) y)), add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem trdeg_range :
     trdeg k (dehom (k := k) y hi₀).range = trdeg k (ratioRing (k := k) y) + 1 := by
@@ -185,11 +183,11 @@ theorem trdeg_range :
 end Cone
 
 /- English proof (translation)
-Take `⟨i₀, hi₀⟩` from `Function.ne_iff.mp hy`. Establish `hi₀ : y i₀ ≠ 0` using `hi₀`. Establish `: Algebra.FiniteType k (Poly k N ⧸ primeOf (S` using `k) y) := Algebra.FiniteType.of_surjective (Ideal.Quotient.mkₐ k _) (Ideal.Quotient.mkₐ_surjective k _)`. Rewrite using `[GroundTheory.Arith.Abelian.Jacobian.ringKrullDim_eq_trdeg k]`. Establish `hk : primeOf (S` using `k) y = RingHom.ker (dehom (k := k) y hi₀).rangeRestrict := by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[primeOf_eq_ker (k := k) y hi₀]`. Use extensionality with `f`. Simplify using `only [RingHom.mem_ker]`. Conclude with `⟨fun h => Subtype.ext h, fun h => congrArg Subtype.val h⟩`. Set `e : (Poly k N ⧸ primeOf (S` to `k) y) ≃ₐ[k] (dehom (k := k) y hi₀).range := (Ideal.quotientEquivAlgOfEq k hk).trans (Ideal.quotientKerAlgEquivOfSurjective (dehom (k := k) y hi₀).rangeRestrict_surjective)`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Establish `h` using `AlgEquiv.lift_trdeg_eq (R := k) (A := Poly k N ⧸ primeOf (S := k) y) (A' := (dehom (k := k) y hi₀).range) e`. Rewrite `h` using `[trdeg_range (k := k) y hi₀, ← trdeg_funField]`. Establish `h2` using `congrArg Cardinal.toENat h`. Simplify using `only [toENat_lift, map_add, map_one] at h2`. Rewrite using `[h2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem ringKrullDim_eq (y : Fin (N + 1) → Ω) (hy : y ≠ 0) :
     ringKrullDim (Poly k N ⧸ primeOf (S := k) y) =
@@ -218,13 +216,13 @@ theorem ringKrullDim_eq (y : Fin (N + 1) → Ω) (hy : y ≠ 0) :
 end DimTie
 
 /- English proof (translation)
-Introduce `k _ Ω _ _ N y hy e`. Take `⟨i₀, hi₀⟩` from `Function.ne_iff.mp hy`. Establish `hi₀ : y i₀ ≠ 0` using `hi₀`. Establish `hdim` using `DimTie.ringKrullDim_eq (k := k) y hy`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Establish `h'` using `h.dim`. Rewrite `h'` using `[hdim]`. Establish `h3 : (trdeg k (funField (k` using `k) y)).toENat + 1 = (e : ℕ∞) + 1 := by exact_mod_cast h'`. Conclude with `Cardinal.toENat_eq_natCast.mp ((ENat.add_left_injective_of_ne_top ENat.one_ne_top) h3)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Establish `h' : trdeg k (funField (k` using `k) y) = e := h`. Use `⟨inferInstance, fun p hp d => homogeneousComponent_mem_primeOf y hp d, le_rfl, ⟨i₀, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_primeOf_of_isHomogeneous y (isHomogeneous_X k i₀), aeval_X]`. Conclude with `hi₀`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[hdim, Cardinal.toENat_eq_natCast.mpr h']`. Use `push_cast`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem DimTie.proof : DimTie.Statement := by
   intro k _ Ω _ _ N y hy e

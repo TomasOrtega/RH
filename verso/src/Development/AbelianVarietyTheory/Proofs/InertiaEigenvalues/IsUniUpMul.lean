@@ -8,13 +8,13 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.UnitaryHaarP
 namespace GlobalTheory.UnipotentUpperMul
 
 /- English proof (translation)
-Introduce `R _ N M M' hM hM' a b`. Prove the components needed by the constructor for the conclusion. Introduce `hba`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Break down `lt_or_ge k a with hka | hak` into its components or cases. Rewrite using `[(hM a k).1 hka, zero_mul]`. Rewrite using `[(hM' k b).1 (lt_of_lt_of_le hba hak), mul_zero]`. Introduce `hab`. Substitute `hab` using the available equality.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single a]`. Rewrite using `[(hM a a).2 rfl, (hM' a a).2 rfl, mul_one]`. Introduce `k _ hka`. Break down `lt_or_gt_of_ne hka with h | h` into its components or cases. Rewrite using `[(hM a k).1 h, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hM' k a).1 h, mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ a) h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isUniUp_mul : ∀ {R : Type} [inst : CommRing R] {N : ℕ} {M M' : Matrix (Fin N) (Fin N) R},
     Formalism.MainNotions.ArithmeticCylinders.IsUniUp M → Formalism.MainNotions.ArithmeticCylinders.IsUniUp M' → Formalism.MainNotions.ArithmeticCylinders.IsUniUp (M * M') := by

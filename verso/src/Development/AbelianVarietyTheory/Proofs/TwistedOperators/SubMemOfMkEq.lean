@@ -18,18 +18,18 @@ abbrev Qm (m : ℕ) (Λ : AddSubgroup V) : Type := Λ ⧸ (mLat m Λ).addSubgrou
 def repm {m : ℕ} {Λ : AddSubgroup V} (q : Qm m Λ) : V := ((Quotient.out q : Λ) : V)
 
 /- English proof (translation)
-Simplify using `[mLat]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_mLat {m : ℕ} {Λ : AddSubgroup V} {x : V} : x ∈ mLat m Λ ↔ ∃ l ∈ Λ, m • l = x := by
   simp [mLat]
 
 /- English proof (translation)
-The claim follows from `(Quotient.out q : Λ).2`.
+A detailed English derivation is pending.
 -/
 theorem repm_mem {m : ℕ} {Λ : AddSubgroup V} (q : Qm m Λ) : repm q ∈ Λ := (Quotient.out q : Λ).2
 
 /- English proof (translation)
-Establish `: (⟨repm q, repm_mem q⟩ : Λ) = Quotient.out q` using `rfl`. Rewrite using `[this]`. Conclude with `QuotientAddGroup.out_eq' q`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mk_repm {m : ℕ} {Λ : AddSubgroup V} (q : Qm m Λ) :
     (QuotientAddGroup.mk (⟨repm q, repm_mem q⟩ : Λ) : Qm m Λ) = q := by
@@ -38,7 +38,7 @@ theorem mk_repm {m : ℕ} {Λ : AddSubgroup V} (q : Qm m Λ) :
   exact QuotientAddGroup.out_eq' q
 
 /- English proof (translation)
-Rewrite `h` using `[QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf]`. Simplify `h` using `[sub_eq_neg_add]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sub_mem_of_mk_eq {m : ℕ} {Λ : AddSubgroup V} {a b : V} (ha : a ∈ Λ) (hb : b ∈ Λ)
     (h : (QuotientAddGroup.mk (⟨a, ha⟩ : Λ) : Qm m Λ) = QuotientAddGroup.mk (⟨b, hb⟩ : Λ)) : b - a ∈ mLat m Λ := by
@@ -46,14 +46,14 @@ theorem sub_mem_of_mk_eq {m : ℕ} {Λ : AddSubgroup V} {a b : V} (ha : a ∈ Λ
   simpa [sub_eq_neg_add] using h
 
 /- English proof (translation)
-The claim follows from `sub_mem_of_mk_eq (m := m) ha (repm_mem _) (mk_repm _).symm`.
+A detailed English derivation is pending.
 -/
 theorem repm_mk_sub {m : ℕ} {Λ : AddSubgroup V} {a : V} (ha : a ∈ Λ) :
     repm (QuotientAddGroup.mk (⟨a, ha⟩ : Λ) : Qm m Λ) - a ∈ mLat m Λ :=
   sub_mem_of_mk_eq (m := m) ha (repm_mem _) (mk_repm _).symm
 
 /- English proof (translation)
-Use `sub_mem_of_mk_eq (m := m) (Λ.add_mem (repm_mem q) (repm_mem q')) (repm_mem (q + q')) ?_` and prove the remaining obligations. Rewrite using `[mk_repm]`. Use `conv_rhs => rw [← mk_repm q, ← mk_repm q']`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem repm_add_sub {m : ℕ} {Λ : AddSubgroup V} (q q' : Qm m Λ) :
     repm (q + q') - (repm q + repm q') ∈ mLat m Λ := by
@@ -63,7 +63,7 @@ theorem repm_add_sub {m : ℕ} {Λ : AddSubgroup V} (q q' : Qm m Λ) :
   rfl
 
 /- English proof (translation)
-Establish `h` using `repm_mk_sub (m := m) (Λ := Λ) Λ.zero_mem`. Establish `h0 : (QuotientAddGroup.mk (⟨0, Λ.zero_mem⟩ : Λ) : Qm m Λ) = 0` using `rfl`. Rewrite `h` using `[h0, sub_zero]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem repm_zero_mem {m : ℕ} {Λ : AddSubgroup V} : repm (0 : Qm m Λ) ∈ mLat m Λ := by
   have h := repm_mk_sub (m := m) (Λ := Λ) Λ.zero_mem

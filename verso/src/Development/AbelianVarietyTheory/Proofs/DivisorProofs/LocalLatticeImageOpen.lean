@@ -22,41 +22,35 @@ noncomputable section
 namespace GlobalTheory.LatOpenCptAny
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d X Y r s r' s' hX hY co v`. Take `⟨sX, hsX⟩` from `exists_gen X.L hX.lat`. Take `⟨sY, hsY⟩` from `exists_gen Y.L hY.lat`. Set `ι` to `↥sX × ↥sY`. Set `t : ι → Matrix (Fin n) (Fin d) E` to `fun i => vecMulVec ((i.1 : X.L) : Fin n → E) ((i.2 : Y.L) : Fin d → E)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `ρ : ι → (Fin n × Fin d → Fv F v) × (Fin n × Fin d → Fv F v)` to `fun i => GlobalTheory.LatVac.locCo co v (incM F (t i))`. Set `φ : (ι → Fv F v) →ₗ[Fv F v] (Fin n × Fin d → Fv F v) × (Fin n × Fin d → Fv F v)` to `{ toFun := fun f => ∑ i, f i • ρ i map_add' := fun f g => by simp [add_smul, Finset.sum_add_distrib] map_smul' := fun c f => by simp [Finset.smul_sum, smul_smul] }`. Establish `hφ : ∀ f, φ f = ∑ i, f i • ρ i` using `fun f => rfl`. Set `Opi : AddSubgroup (ι → Fv F v)` to `AddSubgroup.pi Set.univ fun _ => (v.adicCompletionIntegers F).toSubring.toAddSubgroup`. Establish `hO : ∀ f, f ∈ Opi ↔ ∀ i, f i ∈ v.adicCompletionIntegers F` using `fun f => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `only [Opi, AddSubgroup.mem_pi, Set.mem_univ, true_implies]`. Both sides reduce to the same expression. Use `set Λ := (latAtV X Y v).map (GlobalTheory.LatVac.locCo co v) with hΛdef`. Establish `hgen : ∀ x ∈ X.L, ∀ y ∈ Y.L, ∀ a : Fv F v, a ∈ v.adicCompletionIntegers F → a • GlobalTheory.LatVac.locCo co v (incM F (vecMulVec x y)) ∈ Λ`. Introduce `x hx y hy a ha`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨GlobalTheory.LatVac.liftV v a • incM F (vecMulVec x y), AddSubgroup.subset_closure ⟨GlobalTheory.LatVac.liftV v a, GlobalTheory.LatVac.at_liftV v a, by rw [GlobalTheory.LatVac.evFin_liftV]; exact ha, x, hx, y, hy, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[locCo_smul, GlobalTheory.LatVac.evFin_liftV]`. Establish `hle1 : Opi.map φ.toAddMonoidHom ≤ Λ`. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Use `replace hf := (hO _).1 hf`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `show ∑ i, f i • ρ i ∈ Λ`. Conclude with `Λ.sum_mem fun i _ => hgen _ (i.1 : X.L).2 _ (i.2 : Y.L).2 _ (hf i)`. Establish `hsmul : ∀ a ∈ v.adicCompletionIntegers F, ∀ w ∈ Opi.map φ.toAddMonoidHom, a • w ∈ Opi.map φ.toAddMonoidHom`. Introduce and unpack `a ha _ ⟨f, hf, rfl⟩`. Use `replace hf := (hO _).1 hf`.
+Supply the required witnesses or components. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨a • f, (hO _).2 fun i => mul_mem ha (hf i), (φ.map_smul a f)⟩`. Establish `hρ : ∀ x ∈ X.L, ∀ y ∈ Y.L, GlobalTheory.LatVac.locCo co v (incM F (vecMulVec x y)) ∈ Opi.map φ.toAddMonoidHom`. Set `rA : Matrix (Fin n) (Fin d) E →+ (Fin n × Fin d → Fv F v) × (Fin n × Fin d → Fv F v)` to `(GlobalTheory.LatVac.locCo co v).comp (AddMonoidHom.mapMatrix (inclR (F := F) (AF F)).toAddMonoidHom)`. Use `vecMulVec_mem sX hsX sY hsY ((Opi.map φ.toAddMonoidHom).comap rA) ?_` and prove the remaining obligations. Introduce `x hx y hy`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `⟨Pi.single (⟨x, hx⟩, ⟨y, hy⟩) 1, (hO _).2 fun i => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : i = (⟨x, hx⟩, ⟨y, hy⟩)`. Rewrite using `[h]`. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, h]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show ∑ i, (Pi.single ((⟨x, hx⟩, ⟨y, hy⟩) : ι) (1 : Fv F v) : ι → Fv F v) i • ρ i = _`. Rewrite using `[Finset.sum_eq_single ((⟨x, hx⟩, ⟨y, hy⟩) : ι) (fun b _ hb => by simp [Pi.single_apply, hb]) (by simp)]`. Simplify using `only [Pi.single_eq_same, one_smul]`. Both sides reduce to the same expression. Establish `hle2 : Λ ≤ Opi.map φ.toAddMonoidHom`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hΛdef, AddSubgroup.map_le_iff_le_comap, latAtV, AddSubgroup.closure_le]`. Introduce and unpack `_ ⟨a, -, ha, x, hx, y, hy, rfl⟩`. Rewrite using `[SetLike.mem_coe, AddSubgroup.mem_comap, locCo_smul]`. Conclude with `hsmul _ ha _ (hρ x hx y hy)`. Establish `hΛ : Λ = Opi.map φ.toAddMonoidHom` using `le_antisymm hle2 hle1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsurj : ∀ u, ∃ f, φ f = u`. Introduce `u`. Set `U : (Fin n × Fin d → AF F) × (Fin n × Fin d → AF F)` to `(fun k => GlobalTheory.LatVac.liftV v (u.1 k), fun k => GlobalTheory.LatVac.liftV v (u.2 k))`. Establish `ht : ∀ x ∈ X.L, ∀ y ∈ Y.L, incM F (vecMulVec x y) ∈ Submodule.span (AF F) (Set.range fun i => incM F (t i))` using `vecMulVec_mem sX hsX sY hsY ((Submodule.span (AF F) (Set.range fun i => incM F (t i))).toAddSubgroup.comap (AddMonoidHom.mapMatrix (inclR (F := F) (AF F)).toAddMonoidHom)) (fun x hx y hy => Submodule.subset_span ⟨(⟨x, hx⟩, ⟨y, hy⟩), rfl⟩)`. Establish `hZ` using `span_top hX.lat hY.lat t ht (co.e.symm U)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 hZ`. Use `⟨fun i => GlobalTheory.AdelicU.evFin F v (c i), ?_⟩` and prove the remaining obligations. Rewrite using `[hφ]`. Establish `hu : GlobalTheory.LatVac.locCo co v (co.e.symm U) = u`. Apply the tactic sequence `ext k <;> simp [GlobalTheory.LatVac.locCo, U, GlobalTheory.LatVac.evFin_liftV]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[← hu, ← hc, map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => (locCo_smul _ _ _ _).symm`. Establish `hOc : IsCompact (v.adicCompletionIntegers F : Set (Fv F v))` using `PI.AdicCompletionValuation.isCompact_adicCompletionIntegers F v`. Establish `hOo : IsOpen (v.adicCompletionIntegers F : Set (Fv F v))` using `Valued.isOpen_valuationSubring _`. Establish `hφc : Continuous φ`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[show (φ : (ι → Fv F v) → _) = fun f => ∑ i, f i • ρ i from rfl]`. Conclude with `continuous_finset_sum _ fun i _ => (continuous_apply i).smul continuous_const`. Establish `hset : ((Opi.map φ.toAddMonoidHom : AddSubgroup _) : Set _) = φ '' Set.pi Set.univ fun _ => (v.adicCompletionIntegers F : Set (Fv F v))`. Use extensionality with `w`. Simplify using `only [AddSubgroup.coe_map, Set.mem_image, SetLike.mem_coe, hO, Set.mem_pi, Set.mem_univ, true_implies]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Reduce the claim to the hypotheses of an applicable result.
 
-Both sides reduce to the same expression. Use `choose f1 hf1 using fun k : Fin n × Fin d => hsurj (Pi.single k 1, 0)`. Use `choose f2 hf2 using fun k : Fin n × Fin d => hsurj (0, Pi.single k 1)`. Set `sec : (Fin n × Fin d → Fv F v) × (Fin n × Fin d → Fv F v) → ι → Fv F v` to `fun u => ∑ k, u.1 k • f1 k + ∑ k, u.2 k • f2 k`. Establish `hsec : ∀ u, φ (sec u) = u`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `u`. Simplify using `only [sec, map_add, map_sum, map_smul, hf1, hf2]`. Apply the tactic sequence `ext k <;> simp [Prod.fst_sum, Prod.snd_sum, Finset.sum_apply, Pi.single_apply]`. Establish `hsc : Continuous sec` using `(continuous_finset_sum _ fun k _ => ((continuous_apply k).comp continuous_fst).smul continuous_const).add (continuous_finset_sum _ fun k _ => ((continuous_apply k).comp continuous_snd).smul continuous_const)`. Prove the components needed by the constructor for the conclusion.
-
-Apply `AddSubgroup.isOpen_of_mem_nhds (g := 0)` to reduce the goal to its premises. Establish `hU : IsOpen (sec ⁻¹' Set.pi Set.univ fun _ => (v.adicCompletionIntegers F : Set (Fv F v)))` using `(isOpen_set_pi Set.finite_univ fun _ _ => hOo).preimage hsc`. Establish `h0 : (0 : (Fin n × Fin d → Fv F v) × (Fin n × Fin d → Fv F v)) ∈ sec ⁻¹' Set.pi Set.univ fun _ => (v.adicCompletionIntegers F : Set (Fv F v))`. Introduce `i _`. Simplify using `[sec]`.
-
-Use `Filter.mem_of_superset (hU.mem_nhds h0) ?_` and prove the remaining obligations. Introduce `u hu`. Rewrite using `[SetLike.mem_coe, hΛ]`. Conclude with `⟨sec u, (hO _).2 fun i => hu i (Set.mem_univ _), hsec u⟩`. Rewrite using `[hΛ, hset]`.
-
-Conclude with `(isCompact_univ_pi fun _ => hOc).image hφc`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) {n d : ℕ}
     (X : Spc F E n) (W : Spc F E d) (r s r' s' : ℕ), X.IsHerm σ B r s → W.IsSkew σ B r' s' →

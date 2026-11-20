@@ -24,7 +24,7 @@ variable {y : FrPt Xo c K} {B : Over (Sp K)} [GrpObj B] [IsCommMonObj B] {ρ : B
   (hρ : IsGrpPullback B Xo.univ.t.G y.x ρ)
 end Frame
 /- English proof (translation)
-Introduce `Pr _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ h h'` and use `IsKS.unique Pr.p5 h h'`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem kodaira_spencer_map_unique : _root_.GlobalTheory.CovTop.Hypotheses'' → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
     (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (K : Type) [Field K]
@@ -41,7 +41,7 @@ open NumberField ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRes
 open AlgebraicGeometry CategoryTheory
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.FlagTan.kodaira_spencer_map_unique | exact _root_.GlobalTheory.FlagTan.kodaira_spencer_map_unique | (intros; apply _root_.GlobalTheory.FlagTan.kodaira_spencer_map_unique <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.flag_tangent_kodaira_spencer_unique : _root_.GlobalTheory.CovTop.Hypotheses'' → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (K : Type) [Field K] [Algebra c.F K] (y : FrPt Xo c K) (x' : Sp (DualNumber K) ⟶ Xo.X), 1 ≤ Dw.p + Dw.q → GlobalTheory.FlagTan.IsTanX y x' → ∀ M M' : GlobalTheory.FlagTan.HIx Dw (GlobalTheory.FlagTan.psiSet H) → K, GlobalTheory.FlagTan.IsKS (GlobalTheory.FlagTan.psiSet H) y x' M → GlobalTheory.FlagTan.IsKS (GlobalTheory.FlagTan.psiSet H) y x' M' → M = M' := by
   first | exact @_root_.GlobalTheory.FlagTan.kodaira_spencer_map_unique | exact _root_.GlobalTheory.FlagTan.kodaira_spencer_map_unique | (intros; apply _root_.GlobalTheory.FlagTan.kodaira_spencer_map_unique <;> assumption)

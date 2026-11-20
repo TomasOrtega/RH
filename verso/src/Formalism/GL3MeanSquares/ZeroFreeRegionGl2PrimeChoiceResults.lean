@@ -8,7 +8,7 @@ import Formalism.GL3MeanSquares.HookFormulaTorsion.WeightedVonMangoldtSumIdentit
 namespace Formalism.HermitianLattices.Final
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Formalism.HermitianLattices.ZeroFreeRegionGL2.weighted_sum_identity, Formalism.HermitianLattices.ZeroFreeRegionGL2.weighted_sum_lipschitz, Formalism.HermitianLattices.ZeroFreeRegionGL2.weight_one_sum_lipschitz, Formalism.HermitianLattices.ZeroFreeRegionGL2.character_sum_of_hypot …`.
+Supply the required witnesses or components.
 -/
 theorem zero_free_region_gl2_prime_choice_results :
     Formalism.HermitianLattices.ZeroFreeRegionGL2.WGIdentity ∧

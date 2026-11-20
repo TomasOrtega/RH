@@ -17,7 +17,7 @@ section CompLinear
 variable {n : ℕ} {R : Type*} [CommRing R]
 
 /- English proof (translation)
-The claim follows from `bijective_of_bijective_comp hF hα (γ := γ.toAddMonoidHom) hγ hF'`.
+A detailed English derivation is pending.
 -/
 theorem bijective_of_bijective_comp_linear {X X' Y Y' : Type*} {_ : AddCommGroup Y} {_ : AddCommGroup Y'}
     {_ : Module R Y} {_ : Module R Y'} {F : X → (Y →+ ZMod n)} (hF : Function.Bijective F) {α : X' → X}
@@ -26,7 +26,7 @@ theorem bijective_of_bijective_comp_linear {X X' Y Y' : Type*} {_ : AddCommGroup
   bijective_of_bijective_comp hF hα (γ := γ.toAddMonoidHom) hγ hF'
 
 /- English proof (translation)
-Rewrite using `[AddMonoidHom.comp_apply, bilinAddHom_apply, map_neg, map_neg, LinearMap.neg_apply, map_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem neg_apply_bilin_eq {X X₀ Y Z : Type*} [AddCommGroup X] [AddCommGroup X₀] [AddCommGroup Y] [AddCommGroup Z]
     {_ : Module R X} {_ : Module R Y} {_ : Module R Z} {_ : Module R X₀} (t : Z →+ ZMod n)
@@ -43,9 +43,9 @@ variable {H : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [Compa
   (Hd : DualityHypotheses m Dl) (hDl : ∀ d : Dl, m • d = 0)
 
 /- English proof (translation)
-Establish `hM : ∀ a : zmodRep.{0} H m, m • a = 0` using `nsmul_zmodRep_eq_zero H m`. Establish `: Finite (zmodRep.{0} H m)` using `inferInstanceAs (Finite (ULift.{0} (ZMod m)))`. Establish `: IsDiscreteRep (dualRep Dl (zmodRep.{0} H m))` using `isDiscreteRep_dualRep _ _`. Use `bijective_of_bijective_comp (Hd.bijective_dualityMap_of_group (zmodRep.{0} H m) hM h) Function.bijective_id (γ := (cohomologyMap (zmodDualIso m Dl hDl).inv s).hom.toAddMonoidHom) (bijective_cohomologyMap_of_comp_eq_id _ _ (zmodDualIso m Dl hDl).inv_hom_id (zmodDualIso m Dl hDl).h …` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Hd.tTop (cupPairing (zmodMulPairing m Dl hDl) h x ω) = Hd.tTop (cupPairing (evalPairing Dl (zmodRep.{0} H m)) h x ((cohomologyMap (zmodDualIso m Dl hDl).inv s).hom ω))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `congr 1`. Establish `e` using `cupPairing_cohomologyMap (evalPairing Dl (zmodRep.{0} H m)) (𝟙 _) (zmodDualIso m Dl hDl).inv h x ω`. Rewrite `e` using `[cohomologyMap_id]`. Use `Eq.trans ?_ e.symm` and prove the remaining obligations. Rewrite using `[← tensorHom_zmodDualIso_zmodMulPairing m Dl hDl, ← Category.assoc, MonoidalCategory.tensorHom_comp_tensorHom, Category.id_comp, Iso.inv_hom_id, MonoidalCategory.id_tensorHom_id, Category.id_comp]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem bijective_zmodMulPairing_tTop {r s : ℕ} (h : r + s = 2) :
     Function.Bijective fun x : cohomology (zmodRep.{0} H m) r =>
@@ -70,7 +70,7 @@ omit [TopologicalSpace H] [IsTopologicalGroup H] [CompactSpace H] [TotallyDiscon
   [NeZero m] in
 
 /- English proof (translation)
-Use `Rep.hom_ext (Representation.IntertwiningMap.ext (TensorProduct.ext' fun a d => ?_))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ρ.hom (μ.hom (a ⊗ₜ[ULift.{0} ℤ] d)) = (zmodMulPairing m Dl hDl).hom (ι.hom a ⊗ₜ[ULift.{0} ℤ] ρ.hom d)`. Rewrite using `[hμ, map_zsmul]`. Take `⟨b⟩` from `ι.hom a`. Rewrite using `[zmodMulPairing_tmul]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_eq_tensorHom_zmodMulPairing {M Dm : Rep.{0} (ULift.{0} ℤ) H} (μ : M ⊗ Dm ⟶ Dm) (ρ : Dm ⟶ Dl)
     (ι : M ⟶ zmodRep.{0} H m)
@@ -85,7 +85,7 @@ theorem comp_eq_tensorHom_zmodMulPairing {M Dm : Rep.{0} (ULift.{0} ℤ) H} (μ 
 omit [CompactSpace H] [TotallyDisconnectedSpace H] [NeZero m] in
 
 /- English proof (translation)
-Rewrite using `[cupPairing_cohomologyMap, ← hμ, ← cohomologyMap_cupPairing]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cohomologyMap_cupPairing_of_comp_eq {M Dm M' : Rep.{0} (ULift.{0} ℤ) H} [IsDiscreteRep M]
     [IsDiscreteRep Dm] [IsDiscreteRep M'] (μ : M ⊗ Dm ⟶ Dm) (μ' : M' ⊗ Dl ⟶ Dl) (ρ : Dm ⟶ Dl) (ι : M ⟶ M')
@@ -103,7 +103,7 @@ variable {K : FiniteSubfield} (S : Set (HeightOneSpectrum (𝓞 K.1)))
 omit [NeZero n] in
 
 /- English proof (translation)
-Apply `Additive.toMul.injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `((Additive.toMul ω : rootsOfUnity n (AlgebraicClosure ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1))) : (AlgebraicClosure ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1))ˣ) ^ n = 1`. Conclude with `(mem_rootsOfUnity n _).1 (Additive.toMul ω).2`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem nsmul_galRootsOfUnity_local (v : S)
     (ω : galRootsOfUnity.{0} ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1)
@@ -124,7 +124,7 @@ def zmodResToLocal (v : S) :
 
 omit [NeZero n] in
 /- English proof (translation)
-The claim follows from `Function.bijective_id`.
+A detailed English derivation is pending.
 -/
 theorem bijective_zmodResToLocal (v : S) : Function.Bijective (zmodResToLocal S ιs n v).hom :=
   Function.bijective_id
@@ -132,7 +132,7 @@ theorem bijective_zmodResToLocal (v : S) : Function.Bijective (zmodResToLocal S 
 omit [NeZero n] in
 
 /- English proof (translation)
-Use `comp_eq_tensorHom_zmodMulPairing (nsmul_galRootsOfUnity_local S n v) _ _ _ fun a d => ?_` and prove the remaining obligations. Take `⟨a⟩` from `a`. Conclude with `zmodMulPairing_tmul n (gsRoots S n) (nsmul_gsRoots S n) a d`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem pairingRes_zmodMulPairing_comp_gsRootsLocalMor (v : S) :
     pairingRes (gsFinFamily S ιs v).toMonoidHom (zmodMulPairing n (gsRoots S n) (nsmul_gsRoots S n)) ≫
@@ -147,7 +147,7 @@ theorem pairingRes_zmodMulPairing_comp_gsRootsLocalMor (v : S) :
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Use `(gsLocalInvRoots_eq S ιs n v _).trans (congrArg (localDualityHypotheses (Ksep := AlgebraicClosure ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1)) (natCast_ne_zero_adicCompletion S n v)).tTop ?_)` and prove the remaining obligations. Conclude with `cohomologyMap_cupPairing_of_comp_eq _ _ _ _ (pairingRes_zmodMulPairing_comp_gsRootsLocalMor S ιs n v) h ξ η`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gsLocalInvRoots_cupPairing (v : S) {r s : ℕ} (h : r + s = 2)
     (ξ : cohomology (Rep.res (gsFinFamily S ιs v).toMonoidHom (zmodRep.{0} (galUnramifiedOutside K.1 ℚ̄ S) n)) r)
@@ -169,7 +169,7 @@ variable (hμ : ∀ ζ : ℚ̄, ζ ^ n = 1 → ζ ∈ K.1)
 include hμ
 
 /- English proof (translation)
-Use `bijective_of_bijective_comp_linear (bijective_zmodMulPairing_tTop (localDualityHypotheses (Ksep := AlgebraicClosure ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1)) (natCast_ne_zero_adicCompletion S n v)) (nsmul_galRootsOfUnity_local S n v) (show 2 + 0 = 2 from rfl)) (biject …` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `gsLocalInvRoots S ιs n v (cupPairing (pairingRes (gsFinFamily S ιs v).toMonoidHom (zmodMulPairingRight n (gsRoots S n) (nsmul_gsRoots S n))) (show 0 + 2 = 2 from rfl) η ξ) = _`. Use `(congrArg (gsLocalInvRoots S ιs n v) (cupPairing_pairingRes_zmodMulPairing_two_zero (gsFinFamily S ιs v).toMonoidHom (gsRoots S n) (nsmul_gsRoots S n) (show 2 + 0 = 2 from rfl) (show 0 + 2 = 2 from rfl) ξ η).symm).trans ?_` and prove the remaining obligations. Conclude with `gsLocalInvRoots_cupPairing S ιs n v _ ξ η`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem bijective_gsLocalPairing_two (v : S) :
     Function.Bijective fun ξ : cohomology (Rep.res (gsFinFamily S ιs v).toMonoidHom
@@ -190,9 +190,9 @@ theorem bijective_gsLocalPairing_two (v : S) :
   exact gsLocalInvRoots_cupPairing S ιs n v _ ξ η
 
 /- English proof (translation)
-Use `bijective_of_bijective_comp_linear (bijective_zmodMulPairing_tTop (localDualityHypotheses (Ksep := AlgebraicClosure ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1)) (natCast_ne_zero_adicCompletion S n v)) (nsmul_galRootsOfUnity_local S n v) (show 1 + 1 = 2 from rfl)) ((bijec …` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `gsLocalInvRoots S ιs n v (cupPairing (pairingRes (gsFinFamily S ιs v).toMonoidHom (zmodMulPairingRight n (gsRoots S n) (nsmul_gsRoots S n))) (show 1 + 1 = 2 from rfl) η ξ) = _`. Establish `e` using `cupPairing_pairingRes_zmodMulPairing_one (gsFinFamily S ιs v).toMonoidHom (gsRoots S n) (nsmul_gsRoots S n) (show 1 + 1 = 2 from rfl) ξ η`. Use `(congrArg (gsLocalInvRoots S ιs n v) (neg_eq_iff_eq_neg.2 e).symm).trans ?_` and prove the remaining obligations. Use `(map_neg _ _).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(congrArg Neg.neg (gsLocalInvRoots_cupPairing S ιs n v _ ξ η)).trans ?_` and prove the remaining obligations. Conclude with `neg_apply_bilin_eq _ _ _ _ _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem bijective_gsLocalPairing_one (v : S) :
     Function.Bijective fun ξ : cohomology (Rep.res (gsFinFamily S ιs v).toMonoidHom

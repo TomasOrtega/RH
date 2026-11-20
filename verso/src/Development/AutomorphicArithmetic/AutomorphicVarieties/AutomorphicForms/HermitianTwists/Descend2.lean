@@ -10,21 +10,21 @@ section
 variable {V : Type} [AddCommGroup V] [Module ℂ V] {W R L : Module.End ℂ V} {H : V →ₗ⋆[ℂ] V →ₗ[ℂ] ℂ}
 
 /- English proof (translation)
-Establish `hC' : (4 : ℂ) • (R * L) = (((0 : ℕ) : ℂ) * (((0 : ℕ) : ℂ) - 2)) • 1 - (W * W - (2 : ℂ) • W)`. Simplify using `using hC`. Proceed by induction on `j using Nat.strong_induction_on with`. Consider the case `_ j ih`. Introduce `x hx hWx`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hRL` using `cas hC' hWx`. Establish `hLz : (((0 : ℕ) : ℤ) * (((0 : ℕ) : ℤ) - 2) - (j : ℤ) * ((j : ℤ) - 2) = 0) → L x = 0`. Introduce `hz`. Rewrite `hRL` using `[hz]`. Simplify using `only [Int.cast_zero, zero_div, zero_smul] at hRL`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply `h0` to reduce the goal to its premises. Rewrite using `[hH, hRL, map_zero, neg_zero]`. Distinguish the cases in `hLx : L x = 0`. Use `⟨x, hx, ?_, hLx⟩` and prove the remaining obligations. Rewrite `hRL` using `[hLx, map_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hc` using `(smul_eq_zero.1 hRL.symm).resolve_right hx`. Establish `hz : (j : ℤ) * ((j : ℤ) - 2) = 0`. Establish `: (((0 * (0 - 2) - (j : ℤ) * ((j : ℤ) - 2) : ℤ) : ℂ)) = 0`. Simplify using `using hc`. Use `Int.cast_eq_zero.1 this` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Break down `mul_eq_zero.1 hz with h | h` into its components or cases. Use `right`. Rewrite using `[hWx, h]`. Simplify using the standard rewrite rules.
+Combine the linear equalities and inequalities to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `left`. Rewrite using `[hWx]`. Establish `: (j : ℤ) = 2` using `by linarith`. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Break down `j with _ | _ | _ | j` into its components or cases. Conclude with `absurd (hLz (by norm_num)) hLx`. Use `bound hL hC' h0 hW hH hx hWx` as an intermediate fact. Evaluate the numerical expressions using `at this`. Conclude with `absurd (hLz (by norm_num)) hLx`.
+Evaluate the numerical expressions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `hw` using `wt_low hL hWx`. Use `ih (j + 1) (by omega) (L x) hLx ?_` and prove the remaining obligations. Rewrite using `[hw]`. Use `push_cast`. Put the polynomial expressions in normal form.
+Put the polynomial expressions in normal form. A detailed English derivation is pending.
 -/
 private theorem descend2 (hL : W * L - L * W = (-2 : ℂ) • L)
     (hC : (4 : ℂ) • (R * L) = -(W * W - (2 : ℂ) • W))
@@ -77,17 +77,17 @@ end
 end UpperTheory.V.Af.Rn
 
 /- English proof (translation)
-Introduce `V _ _ W R L H hWR hWL hRL hLR h0 hW hHR hHL hex`. Take `⟨x, hx, n, hn⟩` from `hex`. Break down `le_or_gt 0 n with hn0 | hn0` into its components or cases. Take `⟨y, hy, hWy, hLy⟩` from `descend2 hWL hRL h0 hW hHL n.toNat x hx (by rw [hn, Int.toNat_of_nonneg hn0])`. Break down `hWy with h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `⟨y, hy, Or.inl ⟨h, hLy⟩⟩`. Conclude with `⟨y, hy, Or.inr (Or.inr ⟨h, hLy⟩)⟩`. Establish `hL' : (-W) * R - R * (-W) = (-2 : ℂ) • R`. Rewrite using `[neg_mul, mul_neg, sub_neg_eq_add, neg_add_eq_sub, ← neg_sub, hWR, neg_smul]`. Establish `hC' : (4 : ℂ) • (L * R) = -((-W) * (-W) - (2 : ℂ) • (-W))`.
+Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hLR, neg_mul_neg, smul_neg, sub_neg_eq_add]`. Establish `hW' : ∀ a b, H ((-W) a) b = H a ((-W) b)`. Introduce `a b`. Simplify using `only [LinearMap.neg_apply, map_neg, LinearMap.neg_apply, hW]`. Take `⟨y, hy, hWy, hRy⟩` from `descend2 hL' hC' h0 hW' hHR (-n).toNat x hx (by rw [LinearMap.neg_apply, hn, Int.toNat_of_nonneg (by omega)]; push_cast; rw [neg_smul])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Break down `hWy with h | h` into its components or cases. Use `⟨y, hy, Or.inr (Or.inl ⟨?_, hRy⟩)⟩` and prove the remaining obligations. Rewrite `h` using `[LinearMap.neg_apply, neg_eq_iff_eq_neg]`. Rewrite using `[h, neg_smul]`. Use `⟨y, hy, Or.inr (Or.inr ⟨?_, ?_⟩)⟩` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h` using `[LinearMap.neg_apply, neg_eq_zero]`. Conclude with `h`. Rewrite `h` using `[LinearMap.neg_apply, neg_eq_zero]`. Establish `hR : R (L y) = 0`. Use `congrArg (fun T : Module.End ℂ V => T y) hRL` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.smul_apply, Module.End.mul_apply, LinearMap.neg_apply, LinearMap.sub_apply, h, map_zero, smul_zero, sub_zero, neg_zero] at this`. Conclude with `(smul_eq_zero.1 this).resolve_left (by norm_num)`. Apply `h0` to reduce the goal to its premises. Rewrite using `[hHL, hR, map_zero, neg_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.Rn.sl2Two :
     UpperTheory.V.Af.Rn.Sl2Two := by

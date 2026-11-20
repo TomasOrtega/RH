@@ -13,21 +13,19 @@ namespace GlobalTheory.Vert.Model.Hom
 set_option backward.isDefEq.respectTransparency false in
 
 /- English proof (translation)
-Introduce `O _ _ _ B B' f V hne hV hV'`. Use `letI := (f.f.app V).hom.toAlgebra`. Introduce `hfree _`. Establish `hη : genericPoint B.X ∈ V` using `((genericPoint_spec B.X).mem_open_set_iff V.isOpen).2 (by simpa using hne)`. Establish `sq` using `f.isPullback_genFibre`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : (⊤ : (Spec (B.X.residueField (genericPoint B.X))).Opens) ≤ (B.X.fromSpecResidueField (genericPoint B.X)) ⁻¹ᵁ V` using `fun x _ => by`. Establish `hx : B.X.fromSpecResidueField (genericPoint B.X) x ∈ Set.range (B.X.fromSpecResidueField (genericPoint B.X))` using `⟨x, rfl⟩`. Rewrite `hx` using `[Scheme.range_fromSpecResidueField]`. Use `show B.X.fromSpecResidueField (genericPoint B.X) x ∈ V`. Rewrite using `[Set.mem_singleton_iff.1 hx]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hη`. Establish `hleG : f.genFibreStr ⁻¹ᵁ ⊤ ≤ f.genFibreι ⁻¹ᵁ f.f ⁻¹ᵁ V` using `fun x _ => by`. Establish `hx : f.f (f.genFibreι x) ∈ ({genericPoint B.X} : Set B.X)` using `(f.f.range_fiberι (genericPoint B.X)).le ⟨x, rfl⟩`. Use `show f.f (f.genFibreι x) ∈ V`. Rewrite using `[Set.mem_singleton_iff.1 hx]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hη`. Establish `: IsAffine V.toScheme` using `hV`. Establish `: IsAffine (⊤ : (Spec (B.X.residueField (genericPoint B.X))).Opens).toScheme` using `isAffineOpen_top _`. Establish `: IsAffine (f.f ⁻¹ᵁ V).toScheme` using `hV'`. Establish `P` using `isPushout_appTop_of_isPullback (GtBCPf.isPullback_resLE sq V ⊤ hle hleG)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Establish `P2 : IsPushout (f.f.app V) ((B.X.fromSpecResidueField (genericPoint B.X)).appLE V ⊤ hle) (f.genFibreι.appLE (f.f ⁻¹ᵁ V) (f.genFibreStr ⁻¹ᵁ ⊤) hleG) (f.genFibreStr.app ⊤)`. Rewrite using `[← Scheme.Hom.appLE_eq_app, ← Scheme.Hom.appLE_eq_app]`. Apply the tactic sequence `refine P.of_iso V.topIso (f.f ⁻¹ᵁ V).topIso (⊤ : (Spec _).Opens).topIso (f.genFibreStr ⁻¹ᵁ ⊤).topIso ?_ ?_ ?_ ?_ <;>`. Simplify using `only [Scheme.Hom.appTop, Scheme.Hom.resLE_app_top, Category.assoc, Iso.inv_hom_id, Category.comp_id]`. Set `K` to `f.fnField`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `F` to `Γ(f.genFibre, ⊤)`. Set `A` to `Γ(B.X, V)`. Set `M` to `Γ(B'.X, f.f ⁻¹ᵁ V)`. Establish `P3 : IsPushout (f.f.app V) ((B.X.fromSpecResidueField (genericPoint B.X)).appLE V ⊤ hle ≫ (Scheme.ΓSpecIso (CommRingCat.of K)).hom) (f.genFibreι.appLE (f.f ⁻¹ᵁ V) ⊤ hleG) ((Scheme.ΓSpecIso (CommRingCat.of K)).inv ≫ f.genFibreStr.appTop)`. Apply the tactic sequence `refine P2.of_iso (Iso.refl _) (Iso.refl _) (Scheme.ΓSpecIso (CommRingCat.of K)) (Iso.refl _) ?_ ?_ ?_ ?_ <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Use `letI : Algebra A K := ((B.X.fromSpecResidueField (genericPoint B.X)).appLE V ⊤ hle ≫ (Scheme.ΓSpecIso (CommRingCat.of K)).hom).hom.toAlgebra`. Use `letI : Algebra M F := (f.genFibreι.appLE (f.f ⁻¹ᵁ V) ⊤ hleG).hom.toAlgebra`. Use `letI : Algebra A F := (f.f.app V ≫ f.genFibreι.appLE (f.f ⁻¹ᵁ V) ⊤ hleG).hom.toAlgebra`. Use `haveI : IsScalarTower A M F := .of_algebraMap_eq' rfl`. Use `haveI : IsScalarTower A K F := .of_algebraMap_eq' (congrArg CommRingCat.Hom.hom P3.w)`.
-
-Use `haveI : Algebra.IsPushout A K M F := CommRingCat.isPushout_iff_isPushout.mp P3.flip`. Use `haveI : Nontrivial A := (algebraMap A K).domain_nontrivial`. Set `e` to `Algebra.IsPushout.equiv A K M F`. Rewrite using `[← e.toLinearEquiv.finrank_eq]`. Conclude with `Module.finrank_baseChange.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_sections_eq_finrank_genFibre : ∀ (O : Type) [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] (B B' : GlobalTheory.Vert.Model O) (f : GlobalTheory.Vert.Model.Hom B' B)

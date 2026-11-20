@@ -5,13 +5,13 @@ open scoped InnerProductSpace ContDiff Classical
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `set e : Option ι ≃ ι ⊕ PUnit.{1} := Equiv.optionEquivSumPUnit.{0} ι`. Use `set A : Matrix (ι ⊕ PUnit.{1}) (ι ⊕ PUnit.{1}) ℝ := Matrix.fromBlocks (Matrix.diagonal κ) (Matrix.of fun i _ => t i) 0 1 with hA`. Use `set G : Matrix (ι ⊕ PUnit.{1}) (ι ⊕ PUnit.{1}) ℝ := Matrix.fromBlocks (Matrix.gram ℝ y) 0 0 (Matrix.of fun _ _ => ‖w0‖ ^ 2) with hG`. Establish `h' : ∀ i, ⟪w0, y i⟫_ℝ = 0` using `fun i => by rw [real_inner_comm]; exact h i`. Establish `key : Matrix.reindex e e (Matrix.gram ℝ (fun o : Option ι => o.elim w0 fun i => κ i • y i + t i • w0)) = A * G * A.transpose`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[hA, hG, Matrix.fromBlocks_transpose, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`. Apply the tactic sequence `ext (i | i) (j | j) <;>`. Apply the tactic sequence `simp [e, Matrix.gram_apply, inner_add_left, inner_add_right, real_inner_smul_left, real_inner_smul_right, h, h', Matrix.mul_apply, Matrix.diagonal, real_inner_self_eq_norm_sq] <;>`. Expand and normalize the polynomial expressions, which then agree. Establish `hdA : A.det = ∏ i, κ i`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hA, Matrix.det_fromBlocks_zero₂₁, Matrix.det_diagonal, Matrix.det_one, mul_one]`. Establish `hdG : G.det = (Matrix.gram ℝ y).det * ‖w0‖ ^ 2`. Rewrite using `[hG, Matrix.det_fromBlocks_zero₂₁]`. Use `congr 1`. Rewrite using `[Matrix.det_unique]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Both sides reduce to the same expression. Rewrite using `[← Matrix.det_reindex_self e, key, Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, hdA, hdG, Finset.prod_pow]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem gram_det_option_orth {k : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι] (w0 : A0 k) (y : ι → A0 k)
     (κ t : ι → ℝ) (h : ∀ i, ⟪y i, w0⟫_ℝ = 0) :

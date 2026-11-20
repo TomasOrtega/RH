@@ -13,19 +13,19 @@ open GlobalTheory.Mem.R3.MKExt Formalism.L2.Pj ReciprocityTheory.ChartRestrictio
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Consider the cases of `B with | mk P => ?_`. Consider the cases of `B' with | mk P' => ?_`. Simplify using `only at hB`. Substitute `hB` using the available equality. Establish `hH : z'.core.Q.H = z.core.Q.H` using `eq_of_heq hN.H`.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Simplify by unfolding definitions. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hκ` using `hN.κ j j' hj`. Establish `ha : wtA (z'.geo.κ j') = wtA (z.geo.κ j)`. Use function extensionality and compare the values at `x`. Unfold `wtA`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e1 : ext0 ((z'.geo.κ j').aP t) = ext0 ((z.geo.κ j).aP t)` using `extendByZero_eq_of_heq_families (fun i => ((w.st Z).toD7.R.sigW (i + 1)).1) hj.symm hκ.1 t`. Establish `e2 : ext0 ((z'.geo.κ j').aM t) = ext0 ((z.geo.κ j).aM t)` using `extendByZero_eq_of_heq_families (fun i => ((w.st Z).toD7.R.sigW (i + 1)).2) hj.symm hκ.2.1 t`. Rewrite using `[e1, e2]`. Both sides reduce to the same expression. Establish `hj1 : (j' : ℕ) + 1 = (j : ℕ) + 1` using `by rw [hj]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hn : z'.R.nW j' = z.R.nW j` using `(congrFun (eq_of_heq hN.nW) j').trans (congrArg z.R.nW (Fin.ext hj.symm))`. Establish `hinj : Function.Injective (w'.st Z').toD7.what₂.embLL` using `RingHom.injective _`. Take `⟨g, he⟩ : ∃ g, z.geo.fw.e j g = ⟨y, hy⟩` from `⟨_, LinearEquiv.apply_symm_apply _ _⟩`. Take `⟨g', hgg, hP⟩` from `cusp_match' hH hN.Dw hN.l hN.Xo hN.c hN.U hj1 ha hκ.2.2 g`. Establish `hx : ((z.geo.fw.e j g : (z.R.FW j).WK) : Fin (z.R.nW j) → (w.st Z).toD7.what₂.LL) = y` using `congrArg Subtype.val he`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hx' : y' = ((z'.geo.fw.e j' g' : (z'.R.FW j').WK) : Fin (z'.R.nW j') → (w'.st Z').toD7.what₂.LL)`. Use function extensionality and compare the values at `k'`. Establish `hk : ((Fin.cast hn k' : Fin (z.R.nW j)) : ℕ) = k'` using `rfl`. Establish `h3` using `hN.forms j j' hj g g' hgg (Fin.cast hn k') k' hk`. Establish `h4` using `hyy (Fin.cast hn k') k' hk`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `hinj` to reduce the goal to its premises. Rewrite using `[h4]`. Conclude with `(hφ _).trans ((congrArg (fun v => (w.st Z).toD7.what₂.embLL (v (Fin.cast hn k'))) hx).symm.trans h3.symm)`. Substitute `hx'` using the available equality. Substitute `hx` using the available equality.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Substitute using the available equality. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, h2⟩`. Conclude with `⟨(z'.geo.fw.e j' g').2, (nrm_le_one_iff z'.geo.fw j' g').2 (hP.2 ((nrm_le_one_iff z.geo.fw j g).1 h2))⟩`. Introduce and unpack `⟨_, h2⟩`. Conclude with `⟨(z.geo.fw.e j g).2, (nrm_le_one_iff z.geo.fw j g).2 (hP.1 ((nrm_le_one_iff z'.geo.fw j' g').1 h2))⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mk_iff_of_extN {B B' : Base} {f : Fr B.toPre} {f' : Fr B'.toPre} {T : TwDat B} {T' : TwDat B'} {w : ColW B f T}
     {w' : ColW B' f' T'} {Z : w.Lt} {Z' : w'.Lt} {hX : B.fields.Ok} {hX' : B'.fields.Ok} {Wt : Set B.places.Pl}
@@ -84,7 +84,7 @@ open GlobalTheory.Mem.R3.Tr
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `K B B' f f' T T' w w' P P' x x' ι e g g' l hg hg' a a' j j' hj y y' hyy hy`. Conclude with `MKLink.mk_iff_of_extN (datAt x g) (datAt x' g') l.enl.1 l.extN j j' hj ι (fun t => l.cp.embLL t) y y' hyy hy`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mk_iff_of_link : ∀ {K : Ctx} {B B' : Base} {f : Top.Fr B.toPre} {f' : Top.Fr B'.toPre} {T : TwDat B} {T' : TwDat B'} {w : ColW B f T} {w' : ColW B' f' T'} {P : Pre2 K w} {P' : Pre2 K w'} (x : St P) (x' : St P') (ι : (Dof x).what₂.LL →+* (Dof x').what₂.LL) (e : ↥(Dof x').LL0 ≃+* ↥(Dof x).LL0) (g : Geo x) (g' : Geo x'), Link x x' ι e g g' → ∀ (hg : GlobalTheory.RealGeo.InGeo g) (hg' : GlobalTheory.RealGeo.InGeo g') (a : BigHost (Dof x)) (a' : BigHost (Dof x')), ∀ (j : Fin (Dof x).R.m) (j' : Fin (Dof x').R.m), (j : ℕ) = j' → ∀ (y : Fin ((sideAt x g hg a).R.nW j) → (Dof x).what₂.LL) (y' : Fin ((sideAt x' g' hg' a').R.nW j') → (Dof x').what₂.LL), (∀ (k : Fin ((sideAt x g hg a).R.nW j)) (k' : Fin ((sideAt x' g' hg' a').R.nW j')), (k : ℕ) = k' → y' k' = ι (y k)) → y ∈ ((sideAt x g hg a).R.FW j).WK → (y ∈ ((sideAt x g hg a).R.FW j).MK ↔ y' ∈ ((sideAt x' g' hg' a').R.FW j').MK) := by
   intro K B B' f f' T T' w w' P P' x x' ι e g g' l hg hg' a a' j j' hj y y' hyy hy

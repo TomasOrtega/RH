@@ -12,7 +12,7 @@ namespace GlobalTheory
 namespace PDiv
 
 /- English proof (translation)
-Establish `hp : IsPrimitiveElem R a` using `(CartierDual.isPrimitiveElem_iff_mul a).2 h`. Rewrite using `[LinearMap.mem_ker, cobOne_apply, sub_sub, sub_eq_zero]`. Conclude with `hp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_ker_cobOne_of_mul {R A : Type} [CommRing R] [CommRing A] [Bialgebra R A]
     [Module.Finite R A] [Module.Projective R A] {a : A}
@@ -23,13 +23,13 @@ theorem mem_ker_cobOne_of_mul {R A : Type} [CommRing R] [CommRing A] [Bialgebra 
   exact hp
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `b b' hbb`. Use `Subtype.ext (CartierDual.eq_of_forall_apply (R := R) fun φ => ?_)` and prove the remaining obligations. Rewrite using `[← primTangent_d b φ, ← primTangent_d b' φ, hbb]`. Introduce `l`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `δ : CartierDual R A →ₗ[R] R` to `l ∘ₗ AugCot.d (counitAlgHom R (CartierDual R A))`. Take `⟨a, ha⟩` from `(CartierDual.toBidual_bijective (R := R) (M := A)).2 (toConv δ)`. Establish `hδ : ∀ φ : CartierDual R A, φ a = δ φ` using `fun φ => by`. Use `congrArg (fun x => x φ) ha` as an intermediate fact. Simplify using `using this`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hmem : a ∈ LinearMap.ker (cobOne R A)` using `mem_ker_cobOne_of_mul fun φ ψ => by`. Rewrite using `[hδ, hδ, hδ]`. Simplify using `only [δ, LinearMap.comp_apply, AugCot.d_mul, map_add, map_smul, smul_eq_mul]`. Both sides reduce to the same expression. Use `⟨⟨a, hmem⟩, AugCot.hom_ext fun φ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[primTangent_d]`. Conclude with `hδ φ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem primTangent_bijective {R A : Type} [CommRing R] [CommRing A] [Bialgebra R A]
     [Module.Finite R A] [Module.Projective R A] [IsCocomm R A] :

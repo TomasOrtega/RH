@@ -7,7 +7,7 @@ open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheor
 namespace GlobalTheory.RadFullFlag
 
 /- English proof (translation)
-Establish `h : (uMat g)ᴴ * Formalism.REAL.Jm ε * uMat g = Formalism.REAL.Jm ε` using `g.2`. Rewrite using `[star_mulVec, ← dotProduct_mulVec]`. Simplify using `only [mulVec_mulVec, ← Matrix.mul_assoc, h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem form_uMat {n : ℕ} {ε : Fin n → Bool} (g : Formalism.REAL.UJ ε) (x y : Fin n → ℂ) :
     star (uMat g *ᵥ x) ⬝ᵥ (Formalism.REAL.Jm ε *ᵥ (uMat g *ᵥ y)) = star x ⬝ᵥ (Formalism.REAL.Jm ε *ᵥ y) := by
@@ -16,7 +16,7 @@ theorem form_uMat {n : ℕ} {ε : Fin n → Bool} (g : Formalism.REAL.UJ ε) (x 
   simp only [mulVec_mulVec, ← Matrix.mul_assoc, h]
 
 /- English proof (translation)
-Establish `h` using `form_uMat g x y`. Simplify using `only [sub_mulVec, one_mulVec, star_sub, mulVec_sub, dotProduct_sub, sub_dotProduct] at h ⊢`. Take the linear combination `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem dotProduct_Jm_uMat_sub_one {n : ℕ} {ε : Fin n → Bool} (g : Formalism.REAL.UJ ε) (x y : Fin n → ℂ) :
     star x ⬝ᵥ (Formalism.REAL.Jm ε *ᵥ ((uMat g - 1) *ᵥ y)) =
@@ -27,33 +27,29 @@ private theorem dotProduct_Jm_uMat_sub_one {n : ℕ} {ε : Fin n → Bool} (g : 
   linear_combination h
 
 /- English proof (translation)
-Introduce `n a ε W W' hF htop hW'`. Take `⟨hmono, -, hstab, hdual⟩` from `hF`. Establish `hmem : ∀ y, y ∈ W (2 * a + 1)` using `fun y => by rw [htop]; exact Submodule.mem_top`. Establish `horth : ∀ b, b ≤ 2 * a + 1 → ∀ y, y ∈ W (2 * a + 1 - b) ↔ ∀ x ∈ W b, star x ⬝ᵥ (Formalism.REAL.Jm ε *ᵥ y) = 0` using `fun b hb y => (hdual b hb y).trans ⟨fun h => h.2, fun h => ⟨hmem y, h⟩⟩`. Use extensionality with `g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hsub : ∀ y, (uMat g - 1) *ᵥ y = uMat g *ᵥ y - y` using `fun y => by`. Rewrite using `[sub_mulVec, one_mulVec]`. Unfold `GlobalTheory.FlagMeas.flagN`. Simplify using `only [Set.mem_setOf_eq, mem_lowers, add_zero]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨h1, h2⟩`. Establish `hlow : ∀ b, b < a → ∀ y ∈ W (b + 1), (uMat g - 1) *ᵥ y ∈ W b`. Introduce `b hb y hy`. Use `h1 ⟨b, hb⟩ y (by rw [hW']; exact hy)` as an intermediate fact. Rewrite `this` using `[hW']`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hsub]`. Conclude with `this`. Establish `hmid : ∀ y ∈ W (a + 1), (uMat g - 1) *ᵥ y ∈ W a`. Introduce `y hy`. Establish `hy' : ∀ x ∈ W' (Fin.last a), star x ⬝ᵥ (Formalism.REAL.Jm ε *ᵥ y) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hW']`. Establish `e : 2 * a + 1 - a = a + 1` using `by omega`. Conclude with `(horth a (by omega) y).1 (by rw [e]; exact hy)`. Use `h2 y hy'` as an intermediate fact. Rewrite `this` using `[hW']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hsub]`. Conclude with `this`. Establish `hup : ∀ k, k ≤ a → ∀ y ∈ W (2 * a + 1 - k + 1), (uMat g - 1) *ᵥ y ∈ W (2 * a + 1 - k)`. Introduce `k`. Proceed by induction on `k with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `zero`. Introduce `_ y _`. Simplify using `using hmem ((uMat g - 1) *ᵥ y)`. Consider the case `succ k ih`. Introduce `hk y hy`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[horth (k + 1) (by omega)]`. Introduce `x hx`. Establish `hx' : (uMat g - 1) *ᵥ x ∈ W k` using `hlow k (by omega) x hx`. Establish `hyk : y ∈ W (2 * a + 1 - k)`. Establish `e : 2 * a + 1 - (k + 1) + 1 = 2 * a + 1 - k` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hy` using `[e]`. Conclude with `hy`. Establish `hgy : (uMat g - 1) *ᵥ y ∈ W (2 * a + 1 - k)` using `ih (by omega) y (hmono (by omega : 2 * a + 1 - k ≤ 2 * a + 1 - k + 1) hyk)`. Rewrite using `[dotProduct_Jm_uMat_sub_one, (horth k (by omega) y).1 hyk _ hx', (horth k (by omega) _).1 hgy _ hx']`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Consider separately whether the proposition holds or fails.
 
-Introduce `b y hy`. Break down `lt_trichotomy b a with hb | hb | hb` into its components or cases. Conclude with `hlow b hb y hy`. Substitute `hb` using the available equality. Conclude with `hmid y hy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hbm : 2 * a + 1 ≤ b`. Rewrite using `[hstab b hbm]`. Conclude with `hmem _`. Establish `hk : b = 2 * a + 1 - (2 * a + 1 - b)` using `by omega`. Use `hup (2 * a + 1 - b) (by omega) y (by rw [← hk]; exact hy)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[← hk]`. Conclude with `this`. Introduce `h`. Use `⟨fun i y hy => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite `hy`, the goal using `[hW']`.
-
-Rewrite using `[← hsub]`. Conclude with `h i y hy`. Rewrite `hy`, the goal using `[hW']`. Establish `hy' : y ∈ W (a + 1)`. Establish `e : 2 * a + 1 - a = a + 1` using `by omega`.
-
-Rewrite using `[← e]; exact (horth a (by omega) y).2 hy`. Rewrite using `[← hsub]`. Conclude with `h a y hy'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flagN_eq_lowers : ∀ (n a : ℕ) (ε : Fin n → Bool) (W : ℕ → Submodule ℂ (Fin n → ℂ)) (W' : Fin (a + 1) → Submodule ℂ (Fin n → ℂ)), IsDualFlag (Formalism.REAL.Jm ε) W (2 * a + 1) → W (2 * a + 1) = ⊤ → (∀ i : Fin (a + 1), W' i = W i) → flagN ε W' = {g | uMat g - 1 ∈ lowers W 0} := by
   intro n a ε W W' hF htop hW'

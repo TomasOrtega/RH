@@ -35,13 +35,13 @@ namespace GlobalTheory.DetLine
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Geo.Tor.Host E} {D : Datum H} {l : Level H}
 
 /- English proof (translation)
-Use `set z := (e.comp (IntermediateField.inclusion c.le).toRingHom) (baseKA l).ρ with hz`. Establish `h1 : z ^ 2 = H.rt0 ^ 2` using `by rw [hz, ← map_pow, (baseKA l).ρ_sq, H.sqrt_neg_disc_sq]; simp`. Break down `sq_eq_sq_iff_eq_or_eq_neg.1 h1 with h | h` into its components or cases. Conclude with `.inl h`. Use `.inr (show starRingEnd ℂ z = H.rt0 from ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `H.sqrt_neg_disc_sq`. Establish `h5` using `congrArg Complex.im h4`. Establish `h6` using `congrArg Complex.re h4`. Establish `h7 : (0 : ℝ) < H.d` using `Nat.cast_pos.2 H.d_prime.pos`. Simplify using `[pow_two] at h5 h6`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h8 : H.rt0.re = 0`. Assume the negation of the conclusion as `h0`. Establish `: H.rt0.im = 0`. Establish `: H.rt0.re * H.rt0.im = 0` using `by linarith`. Conclude with `(mul_eq_zero.1 this).resolve_left h0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h6` using `[this]`. Use polynomial arithmetic with `[mul_self_nonneg H.rt0.re]`. Rewrite using `[h]`. Conclude with `Complex.ext (by simp [h8]) (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem good_or (c : Coeff l) (e : c.F →+* ℂ) :
     Formalism.L2.PjFree.GoodEmb c e ∨ Formalism.L2.PjFree.GoodEmb c ((starRingEnd ℂ).comp e) := by
@@ -70,9 +70,9 @@ section Unique
 variable {S X : Scheme.{0}} {c : Coeff l} {t : SAB H S} {π : X ⟶ S} {s : X ⟶ Sp c.F} {τ : E →+* ℂ} {p q : ℕ}
 
 /- English proof (translation)
-Establish `h1 : IsMultiple t π s V (HermitianCompactForm.chi c τ) σ' a σ` using `fun R _ j x v w hf => by`. Rewrite using `[h R j x v w hf, GlobalTheory.Points.valR_constFn_of_over s j x hf.1 V (fun z _ => hf.2.1 ⟨z, rfl⟩)]`. Use `⟨a, h1, fun b hb => ?_⟩` and prove the remaining obligations. Take `⟨z, hzV⟩` from `hne`. Take `⟨W, hW, j, v, w, hzW, hf⟩` from `hc z hzV`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `: Nonempty W` using `⟨⟨z, hzW⟩⟩`. Establish `: Nontrivial Γ(X, W)` using `Scheme.component_nontrivial X W`. Conclude with `j.injective ((hz _ j _ v w hf).mul_right_cancel ((hb _ j _ v w hf).symm.trans (h1 _ j _ v w hf)))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem existsUnique_multiple {V : X.Opens} (hne : (V : Set X).Nonempty)
     (hc : FrameCover t π s V (HermitianCompactForm.chi c τ) p q) {σ σ' : Rule t π p q} (hz : NowhereZero t π s V (HermitianCompactForm.chi c τ) σ)
@@ -93,7 +93,7 @@ end Unique
 variable {Xo : Moduli D l} {c : Coeff l}
 
 /- English proof (translation)
-Use `GlobalTheory.T.isIntegral_geometricallyConnected_open_moduli E H D l Xo c U hG` as an intermediate fact. Conclude with `⟨_, (genericPoint U.toScheme).2⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem nonempty_of_geomConn {U : (Xo.XF c).Opens} (hG : GeometricallyConnected (U.ι ≫ toF Xo c)) :
     (U : Set (Xo.XF c)).Nonempty := by
@@ -101,15 +101,15 @@ theorem nonempty_of_geomConn {U : (Xo.XF c).Opens} (hG : GeometricallyConnected 
   exact ⟨_, (genericPoint U.toScheme).2⟩
 
 /- English proof (translation)
-Establish `hc` using `GlobalTheory.T.moduliScheme_affineFrameCover_two_eigenParts E H D l Xo c U τ hτ`. Take `⟨f, hr⟩` from `GlobalTheory.T.exists_lieDeterminantLine_ratio_function E H l c _ _ _ _ _ τ _ _ U σ σ' hc hs hz hs'`. Establish `fr : ∀ y : Sp ℂ ⟶ Xo.XF c, y ≫ toF Xo c = spMap e → Set.range y ⊆ U → ∃ v w, FrU Xo c U τ e y v w` using `fun y hy hU => by`. Take `⟨W, hW, j, v, w, hzW, h⟩` from `hc _ (hU ⟨IsLocalRing.closedPoint ℂ, rfl⟩)`. Establish `hle : ⊤ ≤ y ⁻¹ᵁ W` using `(GlobalTheory.Points.le_preimage_iff y W).2 hzW`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hy'` using `(GlobalTheory.Points.specMap_valMap_fromSpec hW y hle).symm`. Take `⟨v', w', h', -⟩` from `exists_pull (GlobalTheory.Points.valMap y W hle).hom h hy'`. Take `rfl : e = (GlobalTheory.Points.valMap y W hle).hom.comp j` from `congrArg CommRingCat.Hom.hom (Spec.map_injective (hy.symm.trans h'.1))`. Conclude with `⟨v', w', h'⟩`. Take `⟨a, rfl⟩` from `GlobalTheory.T.exists_constant_component_function_complexValues E H D l Xo c U e f hG fun y y' hy hy' hU hU' => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨v, w, h⟩` from `fr y hy hU`. Take `⟨v', w', h'⟩` from `fr y' hy' hU'`. Take `⟨o, m, g, u, Hm, κ, V, W, hA, hV, hW, iV, iW⟩` from `GlobalTheory.T.exists_uniformised_fibre_of_framed_complex_point E H D l Xo c U τ e y v w h`. Take `⟨o', m', g', u', Hm', κ', V', W', hA', hV', hW', -⟩` from `GlobalTheory.T.exists_uniformised_fibre_of_framed_complex_point E H D l Xo c U τ e y' v' w' h'`. Take `⟨φ, hφ⟩` from `hT y y' hy hy' hU hU' o o' ⟨m⟩ ⟨m'⟩ g g' u u' Hm Hm' κ κ' hA hA'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x, Δ, hΔ, hx⟩` from `(GlobalTheory.T.exists_homologyWedgeCoordinate_nonzero g _ _ Hm V W hA.1 hA.2.1).2 iV iW`. Take `⟨Δ', hx'⟩` from `(GlobalTheory.T.exists_homologyWedgeCoordinate_nonzero g' _ _ Hm' V' W' hA'.1 hA'.2.1).1 fun k => φ (x k)`. Establish `e1` using `hf y y' v w v' w' h h' o o' m m' g g' u u' Hm Hm' κ κ' φ V W V' W' x Δ Δ' hA hA' hφ hV hW hV' hW' hx hx'`. Establish `e2` using `hf' y y' v w v' w' h h' o o' m m' g g' u u' Hm Hm' κ κ' φ V W V' W' x Δ Δ' hA hA' hφ hV hW hV' hW' hx hx'`. Rewrite `e2` using `[hr ℂ e y v w h, hr ℂ e y' v' w' h', _root_.mul_assoc, _root_.mul_assoc, e1]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mul_right_cancel₀ (mul_ne_zero (hz ℂ e y' v' w' h').ne_zero hΔ) e2`. Conclude with `existsUnique_multiple (nonempty_of_geomConn hG) hc hz a hr`.
+A detailed English derivation is pending.
 -/
 theorem flat_unique {U : (Xo.XF c).Opens} (hG : GeometricallyConnected (U.ι ≫ toF Xo c)) {τ : E →+* ℂ}
     (hτ : τ (H.rt : E) = H.rt0) (e : c.F →+* ℂ) (hT : HasTransport Xo c U e) {σ σ' : RuleU Xo c}
@@ -142,9 +142,9 @@ theorem flat_unique {U : (Xo.XF c).Opens} (hG : GeometricallyConnected (U.ι ≫
   exact existsUnique_multiple (nonempty_of_geomConn hG) hc hz a hr
 
 /- English proof (translation)
-Take `⟨V, hV, -⟩` from `GlobalTheory.T.genericFibre_componentClosure_open_isIntegral E H D l Xo c O β Y U hN hU hG`. Establish `hne : (V : Set (gen Y)).Nonempty` using `hV ▸ ((nonempty_of_geomConn hG).image _).closure`. Establish `hk` using `GlobalTheory.T.exists_constant_function_normal_compactification E H D l Xo c O β Y U V hN hU hG hV`. Rewrite `hs`, `hz`, `hs'`, the goal using `[← hV]`. Establish `hc` using `GlobalTheory.T.toroidalGenericFibre_affineFrameCover E H D l Xo c O β Y V τ hτ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨f, hr⟩` from `GlobalTheory.T.exists_lieDeterminantLine_ratio_function E H l c _ _ _ _ _ τ _ _ V σ σ' hc hs hz hs'`. Take `⟨a, rfl⟩` from `hk f`. Conclude with `existsUnique_multiple hne hc hz a hr`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cpt_unique {O : Type} [CommRing O] {β : O →+* c.F} (Y : Model Xo c β) {U : (Xo.XF c).Opens}
     (hN : Geo.Tor.IsNormalScheme (gen Y)) (hU : IsClosed (U : Set (Xo.XF c)))
@@ -167,7 +167,7 @@ def HasFlatSection (Xo : Moduli D l) (c : Coeff l) (U : (Xo.XF c).Opens) (τ : E
       ∃ σb : RuleY Y, SecY Y (compactOf Y U) τ σb ∧ NzY Y (compactOf Y U) τ σb ∧ Restricts Y U τ σb σ
 
 /- English proof (translation)
-Establish `: IsEmpty (Fin D.p)` using `⟨fun i => by have := i.2; omega⟩`. Establish `: IsEmpty (Fin D.q)` using `⟨fun i => by have := i.2; omega⟩`. Use `⟨fun e => GlobalTheory.T.hasMarkingPreservingTransport_of_rank_zero E H D l Xo c U e h, fun _ _ _ _ _ => 1, isSection_of_chg fun _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ => by simp [Matrix.det_isEmpty], fun _ _ _ _ _ _ _ => isUnit_one, fun e => ?_, fun O _ β Y _ => ⟨fun _ _ _ _ _ => 1 …` and prove the remaining obligations. Introduce `y y' v w v' w' _ _ o o' m m' g g' u u' Hm Hm' κ κ' φ V W V' W' x Δ Δ' _ _ _ _ _ _ _ ⟨a, _, ha⟩ ⟨a', _, ha'⟩`. Rewrite using `[ha, ha', Matrix.det_isEmpty, Matrix.det_isEmpty]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_of_rank_zero (U : (Xo.XF c).Opens) (τ : E →+* ℂ) (h : D.p + D.q = 0) : HasFlatSection Xo c U τ := by
   have : IsEmpty (Fin D.p) := ⟨fun i => by have := i.2; omega⟩
@@ -181,15 +181,15 @@ theorem exists_of_rank_zero (U : (Xo.XF c).Opens) (τ : E →+* ℂ) (h : D.p + 
   rw [ha, ha', Matrix.det_isEmpty, Matrix.det_isEmpty]
 
 /- English proof (translation)
-Take `⟨B, io, h1, h2, h3⟩` from `GlobalTheory.T.exists_variety_compactifying_connected_component E H D l Xo c O β Z U hsm hU hG`. Establish `fam : ∀ e : c.F →+* ℂ, Formalism.L2.PjFree.GoodEmb c e → ∃ (g : ℕ) (en : Fin g ≃ Pad.Letter D) (Fu : Fam Xo c e en) (x : ∀ i, Idx D τ → (Fu.Di i).La) (hm : Fin Fu.n → Matrix (Idx D τ) (Idx D τ) E), ∀ i, IsPerBasis (Fu.Di i) (x i) (hm i)` using `fun e he => by`. Set `en : Fin (Fintype.card (Pad.Letter D)) ≃ Pad.Letter D` to `(Fintype.equivFin _).symm`. Take `⟨Fu⟩` from `GlobalTheory.closing_of_abelianSchemeLaws E H D l Xo (e.comp (IntermediateField.inclusion c.le).toRingHom) _ (fun j => Formalism.L2.PjFree.relab c e (en j).1) hr he ((GlobalTheory.Relab.relab_good E H l c e he).2.2.2 D _ en)`. Use `choose x hm hx using fun i : Fin Fu.n => GlobalTheory.T.exists_hermitianPeriodLatticeBasis_same_signature _ H D (Fu.Di i) τ (Fu.sig i)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨_, en, Fu, x, hm, hx⟩`. Take `⟨e₀, he₀⟩ : ∃ e₀, Formalism.L2.PjFree.GoodEmb c e₀` from `(good_or c c.F.val.toRingHom).elim (⟨_, ·⟩) (⟨_, ·⟩)`. Take `⟨g₀, en₀, Fu₀, x₀, hm₀, hx₀⟩` from `fam e₀ he₀`. Take `⟨σZ, hsZ, hzZ⟩` from `GlobalTheory.T.exists_nonvanishing_detLine_section_of_horizontal E H D l Xo c O β Z τ e₀ _ B io _ h1 h2 h3 hτ (horFn_horOf_snc hsm hsnc he₀ hr hx₀)`. Take `⟨σ, hs, hres, hz⟩` from `GlobalTheory.T.exists_determinantLine_section_restriction E H D l Xo c O β Z U τ σZ hsZ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hflat : ∀ e, Formalism.L2.PjFree.GoodEmb c e → IsFlatAt Xo c U τ σ e` using `fun e he => by`. Take `⟨g, en, Fu, x, hm, hx⟩` from `fam e he`. Take `⟨κ, hκ⟩` from `GlobalTheory.T.exists_const_mul_horizontalDetLieCoordinate E H D l Xo c O β Z τ e _ B io _ h1 h2 h3 hτ (horFn_horOf_snc hsm hsnc he hr hx) σZ hsZ`. Use `GlobalTheory.T.isFlat_of_const_mul_periodDeterminant E H D l Xo c O β Z U τ e g en Fu x hm σZ σ κ B io hU h1 h2 h3 hτ hx hres fun a v w i Q hP hf hM => ?_` and prove the remaining obligations. Rewrite using `[← horOf_eq_perVal hx a i Q hP]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `hκ a v w ?_ hf hM` and prove the remaining obligations. Take `⟨P, W, y, -, -, hy, -⟩` from `hP`. Conclude with `fun h => h ⟨y (IsLocalRing.closedPoint ℂ), by rw [← hy]; exact (Scheme.Hom.comp_apply _ _ _).symm⟩`. Use `⟨fun e => ?_, σ, hs, hz hzZ, fun e => ?_, fun O' _ β' Y hN => GlobalTheory.T.exists_nonvanishing_extension_normal_compactification E H D l Xo c O' β' Y O β Z U τ σZ σ hN hU hG hτ hsZ hzZ hs hres⟩` and prove the remaining obligations. Break down `good_or c e with he | he` into its components or cases.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `GlobalTheory.T.hasMarkingTransport_of_cmType_embedding E H D l Xo c O β Z U e B io hU h1 h2 h3 hr he`. Conclude with `GlobalTheory.T.hasMarkingPreservingTransport_of_conj_embedding E H D l Xo c U e (GlobalTheory.T.hasMarkingTransport_of_cmType_embedding E H D l Xo c O β Z U _ B io hU h1 h2 h3 hr he)`. Break down `good_or c e with he | he` into its components or cases. Conclude with `hflat e he`. Conclude with `GlobalTheory.T.isHorizontalLieDeterminantSection_of_conj E H D l Xo c U τ σ e hs (hflat _ he)`.
+A detailed English derivation is pending.
 -/
 theorem exists_of_snc {O : Type} [CommRing O] {β : O →+* c.F} (Z : Model Xo c β)
     (hsm : SmoothOfRelativeDimension D.dim (genStr Z)) (hsnc : ReciprocityTheory.AnForm.R.FinalTheorems.Snc (genBdIdeal Z))
@@ -227,11 +227,9 @@ theorem exists_of_snc {O : Type} [CommRing O] {β : O →+* c.F} (Z : Model Xo c
     · exact GlobalTheory.T.isHorizontalLieDeterminantSection_of_conj E H D l Xo c U τ σ e hs (hflat _ he)
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c U hU hG τ hτ`. Establish `hex : HasFlatSection Xo c U τ`. Break down `Nat.eq_zero_or_pos (D.p + D.q) with h | h` into its components or cases. Conclude with `exists_of_rank_zero U τ h`. Take `⟨Z, hsm, hsnc, -⟩` from `hT E H D h l Xo c`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `exists_of_snc Z ((smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback (IsPullback.of_hasPullback _ _) hsm) (GlobalTheory.VarFlag.snc_genBdIdeal_of_snc_boundary hsnc) hU hG hτ h`. Take `⟨htr, σ, hs, hz, hf, hY⟩` from `hex`. Use `⟨htr, σ, hs, hz, hf, fun σ' hs' hf' => ?_, fun O _ β Y hN => ?_⟩` and prove the remaining obligations. Conclude with `flat_unique hG hτ c.F.val.toRingHom (htr _) hs hz (hf _) hs' (hf' _)`. Take `⟨σb, h1, h2, h3⟩` from `hY O β Y hN`.
-
-Conclude with `⟨σb, h1, h2, h3, fun σ' h' => cpt_unique Y hN hU hG hτ h1 h2 h'⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem detLineTrivial_of_toroidal (hT : GlobalTheory.Published.ToroidalCompactification) : DetLineTrivial := by
   intro E _ _ _ H D l Xo c U hU hG τ hτ

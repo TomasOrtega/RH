@@ -9,7 +9,7 @@ open scoped BigOperators ComplexConjugate Real Classical
 namespace GlobalTheory.UnitaryTheta
 
 /- English proof (translation)
-Use `conv_lhs => rw [← e.sum_repr z, ← e.sum_repr w]`. Simplify using `only [map_sum, map_smul, LinearMap.map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, he, smul_eq_mul, RingHom.id_apply, mul_ite, mul_one, mul_zero]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[mul_comm]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sesq_eq_sum_repr {V : Type} [AddCommGroup V] [Module ℂ V] (H : Sesq V) {n : ℕ}
     (e : Module.Basis (Fin n) ℂ V) (he : ∀ i j, H (e i) (e j) = if i = j then 1 else 0) (z w : V) :
@@ -21,7 +21,7 @@ theorem sesq_eq_sum_repr {V : Type} [AddCommGroup V] [Module ℂ V] (H : Sesq V)
   simp [mul_comm]
 
 /- English proof (translation)
-Use `conv_lhs => rw [← e.sum_repr z]`. Simplify using `only [map_sum, map_smul, hl]`. Simplify using `[Finsupp.single_apply, mul_comm]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem repr_apply_of_eigen {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ}
     (e : Module.Basis (Fin n) ℂ V) (b : V →ₗ[ℂ] V) (l : Fin n → ℂ) (hl : ∀ i, b (e i) = l i • e i) (z : V)
@@ -31,9 +31,9 @@ theorem repr_apply_of_eigen {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ}
   simp [Finsupp.single_apply, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.det_toMatrix e, ← Matrix.det_diagonal]`. Use `congr 1`. Use extensionality with `i j`. Rewrite using `[LinearMap.toMatrix_apply, hl]`. Simplify using `[Matrix.diagonal_apply, Finsupp.single_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs with h1 h2 h2 <;> simp_all`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem det_of_eigen {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ}
     (e : Module.Basis (Fin n) ℂ V) (b : V →ₗ[ℂ] V) (l : Fin n → ℂ) (hl : ∀ i, b (e i) = l i • e i) :
@@ -46,27 +46,25 @@ theorem det_of_eigen {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ}
   split_ifs with h1 h2 h2 <;> simp_all
 
 /- English proof (translation)
-Introduce `V _ _ _ _ _ μ _ H hH a ha hdet`. Take `⟨n, e, l, he, hl⟩` from `GlobalTheory.UnitaryTheta.unitary_exists_orthonormal_eigenbasis V H hH a ha`. Establish `hb : ∀ i, (1 - (a : V →ₗ[ℂ] V)) (e i) = (1 - l i) • e i` using `fun i => by`. Simplify using `[(hl i).2, sub_smul]`. Establish `hd` using `det_of_eigen e _ _ hb`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hr : ∀ z i, e.repr (z - a z) i = (1 - l i) * e.repr z i` using `fun z i => by`. Simplify using `using repr_apply_of_eigen e _ _ hb z i`. Establish `hne : ∀ i, 1 - l i ≠ 0` using `fun i => by`. Rewrite `hdet` using `[hd]`. Conclude with `Finset.prod_ne_zero_iff.1 hdet i (Finset.mem_univ _)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hre : ∀ i, 0 < (1 - l i).re` using `fun i => by`. Establish `h1 : (l i).re ≤ 1` using `(hl i).1 ▸ re_le_norm (l i)`. Establish `h2 : (l i).re ≠ 1`. Introduce `h`. Apply `hne i` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h3 : (l i).re * (l i).re + (l i).im * (l i).im = 1`. Rewrite using `[← normSq_apply, normSq_eq_norm_sq, (hl i).1]`. Evaluate the numerical expressions. Establish `h4 : (l i).im = 0`. Rewrite `h3` using `[h]`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `mul_self_eq_zero.1 (by linarith)`. Apply the tactic sequence `apply Complex.ext <;> simp [h, h4]`. Simplify using `only [sub_re, one_re]`. Conclude with `sub_pos.2 (lt_of_le_of_ne h1 h2)`. Set `T : V ≃L[ℂ] (Fin n → ℂ)` to `e.equivFun.toContinuousLinearEquiv`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `Tm : V ≃ᵐ (Fin n → ℂ)` to `T.toHomeomorph.toMeasurableEquiv`. Establish `hT : ∀ z i, Tm z i = e.repr z i` using `fun z i => rfl`. Use `haveI : (μ.map Tm).IsAddHaarMeasure := T.isAddHaarMeasure_map μ`. Establish `hν` using `Measure.isAddLeftInvariant_eq_smul (μ.map Tm) (volume : Measure (Fin n → ℂ))`. Establish `hpos` using `Measure.addHaarScalarFactor_pos_of_isAddHaarMeasure (μ.map Tm) (volume : Measure (Fin n → ℂ))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set c := Measure.addHaarScalarFactor (μ.map Tm) (volume : Measure (Fin n → ℂ)) with hc`. Use `⟨(c : ℝ), by exact_mod_cast hpos.ne', fun y v => ?_⟩` and prove the remaining obligations. Set `g : Fin n → ℂ → ℂ` to `fun i z => cexp (-(π : ℂ) * (1 - l i) * (z * conj z) + π * (((1 - l i) * e.repr y i) * conj z) + π * (z * conj (e.repr v i)))`. Establish `hg` using `fun i => GlobalTheory.T.integral_cexp_complex_gaussian_linear (1 - l i) ((1 - l i) * e.repr y i) (e.repr v i) (hre i)`. Establish `hF : (fun z => cexp (-(π : ℂ) * H (z - a z) z + π * H (y - a y) z + π * H z v)) = (fun x : Fin n → ℂ => ∏ i, g i (x i)) ∘ Tm`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Use function extensionality and compare the values at `z`. Simplify using `only [Function.comp, g, hT, ← Complex.exp_sum, sesq_eq_sum_repr H e he, hr, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hint : Integrable (fun x : Fin n → ℂ => ∏ i, g i (x i)) volume` using `Integrable.fintype_prod (f := g) fun i => (hg i).1`. Rewrite using `[hF]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← integrable_map_equiv, hν]`. Conclude with `hint.smul_measure_nnreal`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h1` using `integral_map_equiv (μ := μ) Tm (fun x : Fin n → ℂ => ∏ i, g i (x i))`. Simplify using `only [Function.comp_def]`. Rewrite using `[← h1, hν, integral_smul_nnreal_measure, integral_fintype_prod_volume_eq_prod, hd, sesq_eq_sum_repr H e he, Finset.mul_sum, Complex.exp_sum]`. Establish `h2 : ∀ i, ∫ z, g i z = (1 - l i)⁻¹ * cexp (π * (e.repr y i * conj (e.repr v i)))` using `fun i => by`. Rewrite using `[show ∫ z, g i z = _ from (hg i).2]`.
-
-Use `congr 2`. Clear denominators, using `[hne i]` for the nonvanishing conditions. Simplify using `only [h2, Finset.prod_mul_distrib, Finset.prod_inv_distrib, NNReal.smul_def, real_smul]`. Expand and normalize the polynomial expressions, which then agree.
+Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem integral_gaussian_unitary : ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℂ V] [FiniteDimensional ℂ V] [MeasurableSpace V] [BorelSpace V] (μ : Measure V) [μ.IsAddHaarMeasure] (H : Sesq V), IsPosHerm H → ∀ a : V ≃ₗ[ℂ] V, (∀ z w, H (a z) (a w) = H z w) → LinearMap.det (1 - (a : V →ₗ[ℂ] V)) ≠ 0 → ∃ κ : ℝ, κ ≠ 0 ∧ ∀ y v : V, Integrable (fun z => cexp (-(π : ℂ) * H (z - a z) z + π * H (y - a y) z + π * H z v)) μ ∧ ∫ z, cexp (-(π : ℂ) * H (z - a z) z + π * H (y - a y) z + π * H z v) ∂μ = κ / LinearMap.det (1 - (a : V →ₗ[ℂ] V)) * cexp (π * H y v) := by
   intro V _ _ _ _ _ μ _ H hH a ha hdet

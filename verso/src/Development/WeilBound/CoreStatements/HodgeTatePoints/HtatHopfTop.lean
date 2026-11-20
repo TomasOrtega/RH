@@ -17,17 +17,15 @@ open GlobalTheory.CompanionTheory.Ar.BT GroundTheory.PAdicHodge
 namespace PositivityTheory.HtPt.Htat.HopfOrderEqTop
 
 /- English proof (translation)
-Use extensionality with `f`. Rewrite using `[PositivityTheory.HtPt.Twhopf.mem_order, PositivityTheory.HtPt.Twhopf.mem_order]`. Use `⟨fun hf t g _ => ?_, fun hf t g _ => hf t g trivial⟩` and prove the remaining obligations. Take `⟨R', _, _, _, _, hN, hflat, hP⟩` from `@hHenselian R _ _ _ (Γ.G.hom g).asIdeal (Γ.G.hom g).isPrime`. Establish `hinj : Function.Injective (algebraMap R R')` using `FaithfulSMul.algebraMap_injective R R'`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨Γ', F, hF⟩` from `hBaseChange R T Γ R' (algebraMap R R') hinj`. Establish `hinj' : Function.Injective ((algebraMap R' (FractionRing R')).comp (algebraMap R R'))` using `(IsFractionRing.injective R' (FractionRing R')).comp hinj`. Set `κ : FractionRing R →+* FractionRing R'` to `IsFractionRing.lift hinj'`. Establish `hκa : ∀ r, κ (algebraMap R _ r) = algebraMap R' _ (algebraMap R R' r)` using `fun r => IsFractionRing.lift_algebraMap hinj' r`. Establish `hκ : κ.comp (algebraMap R _) = (algebraMap R' _).comp (algebraMap R R')` using `RingHom.ext hκa`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨g', hg1, hg2⟩` from `Scheme.exists_preimage_of_isPullback hF.cart g (IsLocalRing.closedPoint R') (by`. Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Conclude with `hP.symm)`. Use `haveI := Γ'.quasiFinite`. Use `haveI := Γ'.finPres`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := Γ'.separated`. Use `haveI := Γ'.quasiCompact`. Take `⟨U', hU'fin, hU'cl⟩` from `PositivityTheory.HtPt.Twhopf.finite_part R' Γ'.G.left Γ'.G.hom`. Establish `hU'` using `PositivityTheory.HtPt.Twhopf.finite_sub R' T Γ' U' hU'fin hU'cl`. Establish `hFU` using `GlobalTheory.T.isFinOpenSub_base_change R T Γ R' Γ' F hF U hU`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hle : F ⁻¹ᵁ U ≤ U'` using `PositivityTheory.HtPt.Twhopf.finite_le R' _ Γ'.G.hom _ _ hFU.finite hU'cl`. Establish `h1 : (fun h => algebraMap R R' (f h)) ∈ Γ'.btSet (F ⁻¹ᵁ U)`. Introduce `s x hx`. Use `hRegular R T Γ R' Γ' F hF κ hκ _ x (hf s (F x) hx)` as an intermediate fact. Simplify `this` using `only [hκa]`.
-
-Rewrite `h1` using `[← PositivityTheory.HtPt.Twhopf.mem_order, ← GlobalTheory.T.btOrder_eq_of_le_of_isFinOpenSub R' T Γ' U' _ hU' hFU hle, PositivityTheory.HtPt.Twhopf.mem_order]`. Rewrite using `[← hg1]`. Use `PositivityTheory.HtPt.Htat.bt_reg_descent R T Γ R' Γ' F hF hflat κ hκ _ g' ?_` and prove the remaining obligations. Simplify `h1 t g' (hU'cl g' hg2)` using `only [hκa]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem btOrder_eq_top (hHenselian : type_of% @GlobalTheory.T.exists_henselian_flat_over_prime) (hBaseChange : type_of% @GlobalTheory.T.exists_base_change_group) (hRegular : type_of% @GlobalTheory.T.regular_at_base_change) (R : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] (T : Type) [CommGroup T]
     [Finite T] (Γ : QFGroup R T) (U : Γ.G.left.Opens) (hU : Γ.IsFinOpenSub U) :
@@ -68,7 +66,7 @@ theorem btOrder_eq_top (hHenselian : type_of% @GlobalTheory.T.exists_henselian_f
 end PositivityTheory.HtPt.Htat.HopfOrderEqTop
 
 /- English proof (translation)
-The claim follows from `@PositivityTheory.HtPt.Htat.HopfOrderEqTop.btOrder_eq_top hHenselian hBaseChange hRegular`.
+A detailed English derivation is pending.
 -/
 theorem PositivityTheory.HtPt.Htat.bt_sub_eq_top_of (hHenselian : type_of% @GlobalTheory.T.exists_henselian_flat_over_prime) (hBaseChange : type_of% @GlobalTheory.T.exists_base_change_group) (hRegular : type_of% @GlobalTheory.T.regular_at_base_change) : ∀ (R : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] (T : Type) [CommGroup T] [Finite T] (Γ : QFGroup R T) (U : Γ.G.left.Opens), Γ.IsFinOpenSub U → Γ.btOrder U = Γ.btOrder ⊤ :=
   @PositivityTheory.HtPt.Htat.HopfOrderEqTop.btOrder_eq_top hHenselian hBaseChange hRegular

@@ -27,7 +27,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.CompanionTheory.PerfVB
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `h`. Use `⟨Module.Finite.equiv E, Module.Projective.of_equiv E, fun p => ?_⟩` and prove the remaining obligations. Rewrite using `[← Module.rankAtStalk_eq_of_equiv E]`. Conclude with `h3 p`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vb_of_equiv {R M N : Type} [CommRing R] [AddCommGroup M] [Module R M] [AddCommGroup N]
     [Module R N] (E : M ≃ₗ[R] N) {g : ℕ} (h : VB R M g) : VB R N g := by
@@ -37,11 +37,11 @@ theorem vb_of_equiv {R M N : Type} [CommRing R] [AddCommGroup M] [Module R M] [A
   exact h3 p
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `GlobalTheory.T.exists_generalized_inverse_of_unit_kernel R P₀ P₁ a₀ e he hE`. Take `⟨s, hs⟩` from `GlobalTheory.T.local_splitting_global_generalized_inverse R P₁ P₂ a₁ (fun m _ => by haveI : Module.Free (Localization.AtPrime m) (TensorProduct R (Localization.AtPrime m) P₁) := Module.free_of_flat_of_isLocalRing haveI : Module.Free (Localization.AtPrime m) (TensorProduct R (Loca …`. Conclude with `GlobalTheory.T.generalized_inverse_of_lift_local _ _ _ _ (GlobalTheory.T.small_lift_base_change_local R P₀ P₁ P₂ _ a₀ a₁ hc hL))`. Take `⟨j, π, h, h', hπj, haj, hπa, hsum⟩` from `GlobalTheory.T.split_complex_homotopy_data R P₀ P₁ P₂ a₀ a₁ t s hc ht hs`. Establish `hP` using `Module.Projective.of_split j π hπj`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsurj : Function.Surjective π` using `fun x => ⟨j x, by simpa using LinearMap.congr_fun hπj x⟩`. Establish `hF` using `Module.Finite.of_surjective π hsurj`. Take `⟨eR⟩` from `GlobalTheory.T.homotopy_data_cohomology_base_change R P₀ P₁ P₂ _ R a₀ a₁ j π h h' hc hπj haj hπa hsum`. Use `vb_of_equiv (eR.trans (TensorProduct.lid R _)).symm ⟨hF, hP, GlobalTheory.T.constant_fibre_rank_stalk_rank R _ g ?_⟩` and prove the remaining obligations. Introduce `k _ _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨ek⟩` from `GlobalTheory.T.homotopy_data_cohomology_base_change R P₀ P₁ P₂ _ k a₀ a₁ j π h h' hc hπj haj hπa hsum`. Rewrite using `[← ek.finrank_eq]`. Conclude with `hG k`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vb_pure {R P₀ P₁ P₂ : Type} [CommRing R] [AddCommGroup P₀] [AddCommGroup P₁]
     [AddCommGroup P₂] [Module R P₀] [Module R P₁] [Module R P₂] [Module.Finite R P₀]
@@ -72,21 +72,21 @@ theorem vb_pure {R P₀ P₁ P₂ : Type} [CommRing R] [AddCommGroup P₀] [AddC
   exact hG k
 
 /- English proof (translation)
-Introduce `B _ _ _ t ht z hz`. Take `⟨F', m0, F'', m, hsurj⟩` from `hs B t ht`. Take `⟨l, hl⟩` from `GlobalTheory.T.base_change_map_composition R B (B ⧸ Ideal.span {t}) C F F' F'' m0 m`. Take `⟨b0', b1', b2'⟩` from `hbij B F F' m0`. Take `⟨b0'', b1'', b2''⟩` from `hbij (B ⧸ Ideal.span {t}) F F'' l`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨e', he'⟩` from `GlobalTheory.T.model_comparison_degree_one_bijective R B C P₀ P₁ P₂ F F' a₀ a₁ ψ₀ ψ₁ ψ₂ m0 hM b0' b1' b2'`. Take `⟨e'', he''⟩` from `GlobalTheory.T.model_comparison_degree_one_bijective R (B ⧸ Ideal.span {t}) C P₀ P₁ P₂ F F'' a₀ a₁ ψ₀ ψ₁ ψ₂ l hM b0'' b1'' b2''`. Establish `hmk : (Ideal.Quotient.mkₐ R (Ideal.span {t})) = IsScalarTower.toAlgHom R B (B ⧸ Ideal.span {t})`. Use extensionality with `b`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Establish `hzk : z ∈ (LinearMap.baseChange (B ⧸ Ideal.span {t}) a₁).ker` using `LinearMap.mem_ker.2 hz`. Take `⟨w, hw⟩` from `hsurj (e'' (Submodule.Quotient.mk ⟨z, hzk⟩))`. Take `⟨q, rfl⟩` from `e'.surjective w`. Take `⟨⟨x, hx⟩, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Establish `hxk : LinearMap.lTensor B a₁ x = 0` using `LinearMap.mem_ker.1 hx`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hxbk : LinearMap.rTensor P₁ (IsScalarTower.toAlgHom R B (B ⧸ Ideal.span {t})).toLinearMap x ∈ (LinearMap.baseChange (B ⧸ Ideal.span {t}) a₁).ker`. Rewrite using `[LinearMap.mem_ker]`. Express the relevant statement in the definitionally equal form `LinearMap.lTensor (B ⧸ Ideal.span {t}) a₁ _ = 0`. Rewrite using `[GlobalTheory.CompanionTheory.PerfVB.lTensor_rTensor_apply, hxk, map_zero]`. Establish `key : e'' (Submodule.Quotient.mk ⟨_, hxbk⟩) = e'' (Submodule.Quotient.mk ⟨z, hzk⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hw]`. Take `⟨hw1, h1⟩` from `he'' _ hxbk`. Take `⟨hw2, h2⟩` from `he' x hx`. Rewrite using `[h1, h2]`. Establish `hp : ∀ c, m.coef.pull1 (GlobalTheory.CatCoh.H1.mk F' c) = GlobalTheory.CatCoh.H1.mk F'' (m.coef.pullbackOneCocycle c)` using `fun c => rfl`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hp]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show th1 l _ = c1 m (th1 m0 _)`. Rewrite using `[← GlobalTheory.T.comparison_degree_one_tower_formula R B (B ⧸ Ideal.span {t}) C F F' F'' m0 m l hl]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Conclude with `GlobalTheory.CompanionTheory.PerfVB.lTensor_rTensor_apply _ _ _`. Establish `hq` using `(Submodule.Quotient.eq _).1 (e''.injective key)`. Rewrite `hq` using `[Submodule.mem_comap]`. Take `⟨y, hy⟩` from `LinearMap.mem_range.1 hq`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨x, y, hxk, ?_⟩` and prove the remaining obligations. Rewrite using `[hmk]`. Rewrite `hy` using `[map_sub, Submodule.subtype_apply, Submodule.subtype_apply]`. Conclude with `hy.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem small_lift {R C P₀ P₁ P₂ : Type} [CommRing R] [Category.{0} C]
     (hbij : ∀ (S : Type) [CommRing S] [Algebra R S] (F : C ⥤ CommAlgCat.{0} R)
@@ -143,19 +143,15 @@ theorem small_lift {R C P₀ P₁ P₂ : Type} [CommRing R] [Category.{0} C]
   exact hy.symm
 
 /- English proof (translation)
-Unfold `MainStatements.Hodge.PerfVBSt MainStatements.Hodge.AllFin`. Introduce `R _ P _ _ F g hPerf hSt hfib hsm`. Take `⟨P₀, P₁, P₂, P₃, a₀, a₁, a₂, ψ₀, ψ₁, ψ₂, ⟨f0, p0⟩, ⟨f1, p1⟩, ⟨f2, p2⟩, ⟨f3, p3⟩, h10, h21, hψ1, hψ2, ⟨ψ₃, hψ3⟩, hQ⟩` from `hPerf`. Establish `hMod : IsModel F a₀ a₁ ψ₀ ψ₁ ψ₂` using `⟨h10, hψ1, hψ2, fun M => ⟨(hQ M).1, (hQ M).2.1⟩⟩`. Take `⟨e, he, hψe⟩` from `GlobalTheory.T.model_complex_unit_element R Pᵒᵖ P₀ P₁ P₂ F a₀ a₁ ψ₀ ψ₁ ψ₂ hMod`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hbij : ∀ (S : Type) [CommRing S] [Algebra R S] (F : Pᵒᵖ ⥤ CommAlgCat.{0} R) (F' : Pᵒᵖ ⥤ CommAlgCat.{0} S) (m : BC F F'), Function.Bijective (th0 m) ∧ Function.Bijective (th1 m) ∧ Function.Bijective (th2 m)`. Introduce `S _ _ F F' m`. Conclude with `GlobalTheory.T.comparison_maps_bijective_finite R S P F F' m`. Establish `hE : ∀ (k : Type) [Field k] [Algebra R k] (x : k ⊗[R] P₀), a₀.lTensor k x = 0 → ∃ c : k, x = c • ((1 : k) ⊗ₜ[R] e)`. Introduce `k _ _ x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨F', m, hS⟩` from `hSt k`. Conclude with `GlobalTheory.T.model_stein_of_comparison R k Pᵒᵖ P₀ P₁ P₂ F F' a₀ a₁ ψ₀ ψ₁ ψ₂ m e hMod (hbij k F F' m).1 hS he hψe x hx`. Establish `hG : ∀ (k : Type) [Field k] [Algebra R k], Module.finrank k (Hc (a₀.baseChange k) (a₁.baseChange k)) = g`. Introduce `k _ _`. Take `⟨F', m, hm⟩` from `hfib k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b0, b1, b2⟩` from `hbij k F F' m`. Take `⟨ek, -⟩` from `GlobalTheory.T.model_comparison_degree_one_bijective R k Pᵒᵖ P₀ P₁ P₂ F F' a₀ a₁ ψ₀ ψ₁ ψ₂ m hMod b0 b1 b2`. Rewrite using `[ek.finrank_eq]`. Conclude with `hm`. Establish `hL : SmallLift a₀ a₁` using `small_lift hbij F a₀ a₁ ψ₀ ψ₁ ψ₂ hMod (fun B _ _ _ t ht => hsm B t ht)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := f0`. Use `haveI := p0`. Use `haveI := f1`. Use `haveI := p1`. Use `haveI := f2`.
-
-Use `haveI := p2`. Establish `hv` using `vb_pure a₀ a₁ h10 g e he hE hG hL`. Take `⟨l, -⟩` from `GlobalTheory.T.base_change_map_identity R Pᵒᵖ F`. Take `⟨c0, c1, c2⟩` from `hbij R F F l`. Take `⟨eR, -⟩` from `GlobalTheory.T.model_comparison_degree_one_bijective R R Pᵒᵖ P₀ P₁ P₂ F F a₀ a₁ ψ₀ ψ₁ ψ₂ l hMod c0 c1 c2`.
-
-Conclude with `vb_of_equiv eR hv`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem perfVB : PerfVBSt := by
   unfold MainStatements.Hodge.PerfVBSt MainStatements.Hodge.AllFin

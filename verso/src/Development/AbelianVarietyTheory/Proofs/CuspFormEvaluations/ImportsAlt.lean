@@ -3,15 +3,15 @@ import Mathlib
 namespace GlobalTheory.CuspFormEvaluationComplement
 
 /- English proof (translation)
-Introduce `s t ht hs`. Proceed by induction on `s using Multiset.induction_on with`. Consider the case `empty => simp`. Consider the case `cons a s ih`. Establish `ha : ‖a - 1‖ ≤ t` using `hs a (Multiset.mem_cons_self a s)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `ih'` using `ih (fun μ hμ => hs μ (Multiset.mem_cons_of_mem hμ))`. Rewrite using `[Multiset.prod_cons, Multiset.card_cons]`. Establish `hna : ‖a‖ ≤ 1 + t`. Establish `h0 : a = (a - 1) + 1` using `by ring`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `key : a * s.prod - 1 = a * (s.prod - 1) + (a - 1)` using `by ring`. Establish `h1 : ‖a * s.prod - 1‖ ≤ (1 + t) * (Real.exp ((Multiset.card s : ℝ) * t) - 1) + t`. Rewrite using `[key]`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : 1 + t ≤ Real.exp t` using `by linarith [Real.add_one_le_exp t]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hE` using `Real.exp_pos ((Multiset.card s : ℝ) * t)`. Establish `h3` using `mul_le_mul_of_nonneg_right h2 hE.le`. Establish `hexp : Real.exp (((Multiset.card s + 1 : ℕ) : ℝ) * t) = Real.exp t * Real.exp ((Multiset.card s : ℝ) * t)`. Rewrite using `[← Real.exp_add]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Put the polynomial expressions in normal form. Rewrite using `[hexp]`. Use polynomial arithmetic with `[h1, h3]`.
+Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem main : ∀ (s : Multiset ℂ) {t : ℝ}, (0 : ℝ) ≤ t → (∀ μ ∈ s, ‖μ - (1 : ℂ)‖ ≤ t) →
     ‖Multiset.prod s - (1 : ℂ)‖ ≤ Real.exp ((↑(Multiset.card s) : ℝ) * t) - (1 : ℝ) := by

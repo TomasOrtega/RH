@@ -7,9 +7,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `T p`. Use `⟨AlgebraicClosure (T.residueField p), inferInstance, inferInstance, Spec.map (CommRingCat.ofHom (algebraMap (T.residueField p) (AlgebraicClosure (T.residueField p)))) ≫ T.fromSpecResidueField p, ?_⟩` and prove the remaining obligations. Take `⟨x⟩ : Nonempty (Sp (AlgebraicClosure (T.residueField p)))` from `inferInstance`. Use `⟨x, ?_⟩` and prove the remaining obligations. Use `show (T.fromSpecResidueField p).base _ = p`.
-
-Conclude with `Scheme.fromSpecResidueField_apply p _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_geomPoint_through : ∀ (T : Scheme.{0}) (p : T), ∃ (K : Type) (_ : Field K) (_ : IsAlgClosed K) (s : Sp K ⟶ T), p ∈ Set.range s := by
   intro T p

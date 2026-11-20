@@ -12,15 +12,15 @@ open scoped ENNReal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Establish `hH1 : 1 ≤ HH` using `hG1.trans hG`. Establish `hH0 : 0 < HH` using `by linarith`. Establish `hNT0 : 0 ≤ NT` using `by linarith`. Establish `hG0 : 0 ≤ G` using `by linarith`. Establish `hNTle : NT ≤ HH` using `by nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : NT ^ (2 * r) ≤ HH ^ r`. Rewrite using `[pow_mul]; exact pow_le_pow_left₀ (by positivity) hNT2 r`. Establish `h2 : G ^ r ≤ HH ^ r` using `pow_le_pow_left₀ hG0 hG r`. Establish `h3 : G ^ cf ≤ HH ^ cf` using `Real.rpow_le_rpow hG0 hG hcf`. Establish `h4 : w0 * 9 ^ (1 * f) ≤ HH` using `by simpa using hw`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5 : 0 ≤ w0 * 9 ^ (1 * f)` using `by positivity`. Establish `hGc : 0 ≤ G ^ cf` using `Real.rpow_nonneg hG0 cf`. Unfold `positionCount`. Use `set N : ℕ := 9 * 1 + 9 * 1 * r + 16 * r ^ 2 with hN`. Establish `hNr : (N : ℝ) = 9 + 9 * (r : ℝ) + 16 * (r : ℝ) ^ 2` using `by rw [hN]; push_cast; ring`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP : 0 ≤ HH ^ (11 + 3 * lf)` using `Real.rpow_nonneg hH0.le _`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Real.rpow_add hH0, Real.rpow_natCast, Real.rpow_one]`. Use `_ ≤ HH ^ (C * (r : ℝ) ^ 2) := by`. Apply `Real.rpow_le_rpow_of_exponent_le hH1` to reduce the goal to its premises.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[hNr]`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem weak_numerical_bound (r f : ℕ) (NT G HH w0 cf lf C : ℝ) (hNT : 1 ≤ NT) (hNT2 : NT ^ 2 ≤ HH) (hG1 : 1 ≤ G)
     (hG : G ≤ HH) (hw0 : 0 ≤ w0) (hw : w0 * 9 ^ f ≤ HH) (hcf : 0 ≤ cf)
@@ -88,7 +88,7 @@ def SameTermEquivalence : Prop :=
     Equivalence (TEqv D Λ (lf D F0) : FlagU D u' → FlagU D u' → Prop)
 
 /- English proof (translation)
-Use `⟨1, 1, fun a b h => Matrix.one_apply_ne h.ne, fun a => Matrix.one_apply_eq a, fun a b h => Matrix.one_apply_ne h.ne', fun a => Matrix.one_apply_eq a, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.map_one _ (by simp) (by simp)]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gram_equiv_refl {n : ℕ} (Z : Matrix (Fin n) (Fin n) D.host.E) : ZEquiv Z Z := by
   refine ⟨1, 1, fun a b h => Matrix.one_apply_ne h.ne, fun a => Matrix.one_apply_eq a,
@@ -97,7 +97,7 @@ theorem gram_equiv_refl {n : ℕ} (Z : Matrix (Fin n) (Fin n) D.host.E) : ZEquiv
   simp
 
 /- English proof (translation)
-Introduce `hH F0 he hz Λ hΛ F' hT hg hR`. Take `⟨a, b, c, _, d⟩` from `h hH F0 he hz Λ hΛ _ hR F' hT hg (gram_equiv_refl D _)`. Conclude with `⟨a, b, (le_of_eq c).trans d⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem generic_theta_of_weak {C' Cl Cg cb Cu cT CT C0 A C : ℝ}
     (h : GenericThetaWeak D large₂ u u' C' Cl Cg cb Cu cT CT C0 A C) : GenericThetaSublattice D large₂ u u' C' Cl Cg cb Cu cT CT C0 A C := by
@@ -106,11 +106,11 @@ theorem generic_theta_of_weak {C' Cl Cg cb Cu cT CT C0 A C : ℝ}
   exact ⟨a, b, (le_of_eq c).trans d⟩
 
 /- English proof (translation)
-Take `⟨⟨hS, -, -⟩, -, -, -, -, -, hl, -⟩` from `hH`. Take `⟨-, -, hmf, -⟩` from `hS`. Establish `hm` using `D.R.two_le_m`. Establish `hf1 : 1 ≤ D.R.f`. Establish `: 1 ≤ D.R.m ^ 4` using `Nat.one_le_pow _ _ (by omega)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hf : (1 : ℝ) ≤ D.R.f` using `by exact_mod_cast hf1`. Establish `h2` using `Real.log_two_gt_d9`. Establish `hlf` using `Real.log_nonneg hf`. Establish `hb : Real.logb 2 D.R.f ≤ 3 / 2 * Real.log D.R.f`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Real.logb, div_le_iff₀ (by linarith)]`. Use the polynomial consequences of the given equalities and inequalities. Use `⟨Real.logb_nonneg one_lt_two hf, by linarith, ?_⟩` and prove the remaining obligations. Unfold `cF lg2f`. Rewrite using `[Real.logb_mul (by norm_num) (ne_of_gt (by linarith)), Real.logb_self_eq_one one_lt_two]`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -135,31 +135,29 @@ theorem log_degree_bounds {C' Cl Cg cb Cu cT CT C0 A : ℝ} (hH : Hyp D large₂
   ring
 
 /- English proof (translation)
-Introduce `hH F0 he hz what₂ hrows Z hZ`. Use `set XX : LatV D → Set (FlagU D u') := fun Λ => {F' | IsTerm Λ (gS D) (lf D F0) F' ∧ FrameOK D Λ F' ∧ IsGeneric Λ (gS D) (lf D F0) F' ∧ ZEquiv (ZhatL (lf D F0) F') Z} with hXX`. Establish `hcnt : ∀ Λ, cntSW D ((Tu D u' : ℕ) : D.host.E) (lf D F0) Λ Z = cntCl (XX Λ) (TEqv D Λ (lf D F0))` using `fun Λ => Formalism.MainNotions.S.Lem.Cnt.cntSW_eq D _ _ Λ Z`. Distinguish the cases in `hex : ∃ Λ ∈ what₂, (XX Λ).Nonempty`. Take `⟨Λ₀, hΛ₀, F₀, hF₀⟩` from `hex`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨_, _, _, hG1, hGH⟩` from `hG hH F0 he hz Λ₀ (hrows.1 Λ₀ hΛ₀) Z hZ F₀ ⟨hF₀.1, hF₀.2.1⟩ hF₀.2.2.1 hF₀.2.2.2`. Use `set G := localGramProduct D u u' Z with hGdef`. Use `set HH := HHZ D large₂.sc.b C Z with hHH`. Establish `hH1 : 1 ≤ HH` using `one_le_gram_height D large₂ C Z`. Establish `hNT1` using `norm_T_pos D u`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNT2 : NT D u ^ 2 ≤ HH` using `norm_T_sq_le_gram_height D large₂ hH.1 u hCT Z`. Establish `hNT : NT D u ≤ HH` using `by nlinarith`. Establish `hk : 1 ≤ D.R.k` using `by have := D.R.m_add_three_le_k; omega`. Establish `hv : 1 ≤ D.host.v`. Take `⟨_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, h19, _⟩` from `hH.1.1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Conclude with `h19`. Establish `hn0 : 0 ≤ LatticeSumBounds.nTot D.R.k D.R.f D.host.v G (NT D u)`. Unfold `LatticeSumBounds.nTot`. Establish `: (0 : ℝ) ≤ D.R.k` using `Nat.cast_nonneg _`. Establish `hpi` using `Real.pi_pos`.
+Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Check the signs of the components of the expression. Establish `hw0 : 0 ≤ classWeightAlt D`. Unfold `classWeightAlt`. Establish `hrd : 0 ≤ D.host.rdE ^ ((1 : ℝ) / 2)` using `Real.rpow_nonneg (d_rdE_pos hH.1).le _`. Check the signs of the components of the expression.
+Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hG3 : G ≤ HH ^ 3`. Establish `: HH ≤ HH ^ 3`. Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨hl0, hl1, hcF⟩` from `log_degree_bounds D large₂ u u' hH`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr : (1 : ℝ) ≤ D.R.rS` using `by exact_mod_cast hH.2.1.1`. Use `mean_le_of_mul D F0 what₂ _ (fun Λ => (sublatticesOfDet D (L0X D Λ (lf D F0)) (D.R.k - 1) G).encard) (K := positionCount D.R.rS D.R.f 1 (NT D u) G HH) ?_ (hS hH F0 he hz what₂ hrows G HH hG1 hGH hNT) ?_ ?_` and prove the remaining obligations. Establish `: 0 ≤ HH ^ (11 + 3 * Real.logb 2 D.R.f)` using `Real.rpow_nonneg (by linarith) _`. Establish `h2 : 0 ≤ G ^ cF D.R.f` using `Real.rpow_nonneg (by linarith) _`. Establish `h3 : 0 ≤ G` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h4 : 0 ≤ NT D u` using `by linarith`. Check the signs of the components of the expression. Introduce `Λ hΛ`. Establish `hrow` using `hrows.1 Λ hΛ`. Rewrite using `[hcnt Λ]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `class_count_fibres (XX Λ) _ (hE F0 Λ) (fun F' => latticeTraceOnW D (lf D F0) (Thp Λ (lf D F0) F')) _ ?_ _ ?_` and prove the remaining obligations. Introduce `F' hF'`. Take `⟨a, b, c, _, _⟩` from `hG hH F0 he hz Λ hrow Z hZ F' ⟨hF'.1, hF'.2.1⟩ hF'.2.2.1 hF'.2.2.2`. Conclude with `⟨a, b, c⟩`. Introduce `P hP`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsub : {a | a ∈ XX Λ ∧ latticeTraceOnW D (lf D F0) (Thp Λ (lf D F0) a) = P} ⊆ termsOverSublattice D Λ ((Tu D u' : ℕ) : D.host.E) (lf D F0) Z P`. Introduce and unpack `F' ⟨hF', hP'⟩`. Conclude with `⟨⟨hF'.1, hF'.2.1⟩, hF'.2.2.2, hP'.ge⟩`. Use `le_trans (ENat.toENNReal_le.2 (class_count_mono _ hsub)) ?_` and prove the remaining obligations. Conclude with `h23 hH F0 he hz Λ hrow Z hZ 1 le_rfl hk P hP.1 hP.2.1 G HH hG1 hP.2.2.le le_rfl hG3`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[d_nProduct (u := u) (u' := u') hH.1 Z]`. Establish `hnum` using `weak_numerical_bound D.R.rS D.R.f (NT D u) G HH (classWeightAlt D) (cF D.R.f) (Real.logb 2 D.R.f) C hNT1 hNT2 hG1 hGH hw0 (hW Z) (by rw [hcF]; linarith) (by rw [hcF]; nlinarith)`. Combine the equalities or inequalities in the displayed calculation. Use `mean_le_of_zero D F0 what₂ _ _ fun Λ hΛ => ?_` and prove the remaining obligations. Rewrite using `[hcnt Λ]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `hemp : XX Λ = ∅`. Assume the negation of the conclusion as `hne`. Conclude with `hex ⟨Λ, hΛ, Set.nonempty_iff_ne_empty.2 hne⟩`. Unfold `cntCl`. Rewrite using `[Set.encard_eq_zero, Set.eq_empty_iff_forall_notMem]`.
-
-Introduce and unpack `O ⟨a, ha, _⟩`. Rewrite `ha` using `[hemp]`. Conclude with `ha`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stSW_of {C' Cl Cg cb Cu cT CT C0 A C : ℝ} (hC : 52 + 6 * A ≤ C) (hCT : 2 * CT ≤ C ^ 2)
     (hW : ∀ Z : GramM D, classWeightAlt D * 9 ^ D.R.f ≤ HHZ D large₂.sc.b C Z)
@@ -249,7 +247,7 @@ theorem stSW_of {C' Cl Cg cb Cu cT CT C0 A C : ℝ} (hC : 52 + 6 * A ≤ C) (hCT
 end SW
 
 /- English proof (translation)
-Use `⟨Real.logb_nonneg one_lt_two hx, ?_⟩` and prove the remaining obligations. Establish `h2` using `Real.log_two_gt_d9`. Establish `hl` using `Real.log_nonneg hx`. Rewrite using `[Real.logb, div_le_iff₀ (by linarith)]`. Use the polynomial consequences of the given equalities and inequalities.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem logb_two_le_alt (x : ℝ) (hx : 1 ≤ x) : 0 ≤ Real.logb 2 x ∧ Real.logb 2 x ≤ 3 / 2 * Real.log x := by
   refine ⟨Real.logb_nonneg one_lt_two hx, ?_⟩
@@ -259,13 +257,13 @@ theorem logb_two_le_alt (x : ℝ) (hx : 1 ≤ x) : 0 ≤ Real.logb 2 x ∧ Real.
   nlinarith
 
 /- English proof (translation)
-Use polynomial arithmetic with `[Real.sq_sqrt hr, Real.sqrt_nonneg r, sq_nonneg (Real.sqrt r - 1)]`.
+Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem sqrt_le_add_one (r : ℝ) (hr : 0 ≤ r) : Real.sqrt r ≤ r + 1 := by
   nlinarith [Real.sq_sqrt hr, Real.sqrt_nonneg r, sq_nonneg (Real.sqrt r - 1)]
 
 /- English proof (translation)
-Unfold `cF lg2f`. Rewrite using `[Real.logb_mul (by norm_num) (ne_of_gt (by linarith)), Real.logb_self_eq_one one_lt_two]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem log_factor_eq (f : ℕ) (hf : (1 : ℝ) ≤ f) : cF f = 2 + Real.logb 2 f := by
   unfold cF lg2f
@@ -273,9 +271,9 @@ theorem log_factor_eq (f : ℕ) (hf : (1 : ℝ) ≤ f) : cF f = 2 + Real.logb 2 
   ring
 
 /- English proof (translation)
-Establish `hB : 0 ≤ B` using `hk0.trans hkB`. Establish `h64 : (2 : ℝ) ^ 6 ≤ b ^ 6` using `pow_le_pow_left₀ (by norm_num) hb2 6`. Establish `hks : k * s ≤ B * b` using `mul_le_mul hkB hs hs0 hB`. Establish `hBb : 0 ≤ B * b` using `mul_nonneg hB (by linarith)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Apply `mul_le_mul_of_nonneg_right _ hBb` to reduce the goal to its premises. Evaluate the numerical expressions using `at h64`. Combine the linear equalities and inequalities to obtain the conclusion. Use `_ = b ^ 7 * B := by ring`.
+Reduce the claim to the hypotheses of an applicable result. Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem base_numerical_le (k s b B : ℝ) (hb2 : 2 ≤ b) (hk0 : 0 ≤ k) (hkB : k ≤ B) (hs0 : 0 ≤ s) (hs : s ≤ b) :
     2 * k * s * 2 * 9 ≤ b ^ 7 * B := by
@@ -295,37 +293,33 @@ section W0
 variable (D : D7) (large₂ : SizeData₂ D)
 
 /- English proof (translation)
-Take `⟨_, _, h3, _, h5, _, _, _, _, _, h11, h12, h13, _, _, _, _, _, h19, _⟩` from `h.1`. Establish `h3' : D.R.m ^ 4 ≤ D.R.f` using `h3`. Establish `h5' : Real.log (D.R.f : ℝ) ≤ Real.sqrt (D.R.rS : ℝ)` using `h5`. Establish `h11' : Real.log D.host.rdE ≤ large₂.sc.L / Cl` using `h11`. Establish `h12' : ((D.R.k : ℝ) * large₂.sc.b) ^ 8 ≤ (D.host.g 0 : ℝ)` using `h12`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h13' : (D.host.g 0 : ℝ) ≤ large₂.sc.b ^ Cg` using `h13`. Establish `h19' : 1 ≤ D.host.v` using `h19`. Establish `hL` using `d_one_le_L D large₂`. Establish `hb2` using `d_two_le_b D large₂`. Establish `hb1 : (1 : ℝ) ≤ large₂.sc.b` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb0 : (0 : ℝ) < large₂.sc.b` using `by linarith`. Establish `hm1` using `one_le_m_alt D`. Establish `hmeq : (D.R.m : ℝ) = 2 * (D.R.rS : ℝ) + 2` using `by have := d_m_eq D; exact_mod_cast this`. Establish `hf1 : (1 : ℝ) ≤ D.R.f`. Establish `hm : 1 ≤ D.R.m` using `by have := d_m_eq D; omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: 1 ≤ D.R.m ^ 4` using `Nat.one_le_pow _ _ hm`. Conclude with `le_trans this h3'` after adjusting the coercions. Establish `hk1 : (1 : ℝ) ≤ D.R.k`. Use `D.R.m_add_three_le_k` as an intermediate fact. Conclude with `(by omega : 1 ≤ D.R.k)` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrd : D.host.rdE = 2 * D.host.v` using `by unfold Host.v; ring`. Establish `hrd1 : 1 ≤ D.host.rdE` using `by rw [hrd]; linarith`. Establish `hrd0 : 0 < D.host.rdE` using `by linarith`. Establish `hrdb : D.host.rdE ≤ large₂.sc.b`. Establish `h1 : Real.log D.host.rdE ≤ large₂.sc.L` using `h11'.trans (div_le_self (by linarith) hCl)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `Scale.b`. Rewrite using `[← Real.exp_log hrd0]`. Conclude with `Real.exp_le_exp.2 h1`. Use `set B := large₂.sc.b ^ |Cg| with hB`. Establish `hB1 : 1 ≤ B` using `Real.one_le_rpow hb1 (abs_nonneg _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hkB : (D.R.k : ℝ) ≤ B`. Establish `hkb : (1 : ℝ) ≤ (D.R.k : ℝ) * large₂.sc.b` using `one_le_mul_of_one_le_of_one_le hk1 hb1`. Combine the equalities or inequalities in the displayed calculation. Establish `hs : D.host.rdE ^ ((1 : ℝ) / 2) ≤ large₂.sc.b`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hs0 : 0 ≤ D.host.rdE ^ ((1 : ℝ) / 2)` using `Real.rpow_nonneg hrd0.le _`. Establish `hbase : 2 * (D.R.k : ℝ) * D.host.rdE ^ ((1 : ℝ) / 2) * 2 * 9 ≤ large₂.sc.b ^ ((7 : ℝ) + |Cg|)`. Rewrite using `[Real.rpow_add hb0]`. Establish `e7 : large₂.sc.b ^ (7 : ℝ) = large₂.sc.b ^ 7` using `by exact_mod_cast Real.rpow_natCast large₂.sc.b 7`. Rewrite using `[e7]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `base_numerical_le _ _ _ _ hb2 (by linarith) hkB hs0 hs`. Establish `hfr : ((finrank ℚ D.host.E : ℕ) : ℝ) = 2 * (D.R.f : ℝ)`. Rewrite using `[Formalism.MainNotions.StandardLattice.finrank_host D]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hdisc : |(discr D.host.E : ℝ)| = D.host.rdE ^ (2 * (D.R.f : ℝ))`. Unfold `Host.rdE`. Rewrite using `[hfr, ← Real.rpow_mul (abs_nonneg _), one_div, inv_mul_cancel₀ (by positivity), Real.rpow_one]`. Establish `hcFeq` using `log_factor_eq D.R.f hf1`. Take `⟨hcF0, hlb⟩` from `logb_two_le_alt (D.R.f : ℝ) hf1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hsq` using `sqrt_le_add_one (D.R.rS : ℝ) (Nat.cast_nonneg _)`. Establish `hcF : cF D.R.f ≤ 3 * (D.R.m : ℝ)`. Rewrite using `[hcFeq]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hh : (classNumber D.host.E : ℝ) ≤ large₂.sc.b ^ (3 * (D.R.m : ℝ) * D.R.f)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hc` using `Formalism.HermitianLatticeCounting.Final.LatticeSumBounds.classNumberBound D.host.E`. Rewrite `hc` using `[hdisc, hfr, ← Real.rpow_mul hrd0.le]`. Establish `e : 2 * (D.R.f : ℝ) * ((1 + Real.logb 2 (2 * (D.R.f : ℝ))) / 2) = cF D.R.f * D.R.f`. Unfold `cF lg2f`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite `hc` using `[e]`. Establish `hcF1 : 0 ≤ cF D.R.f` using `by rw [hcFeq]; linarith`. Combine the equalities or inequalities in the displayed calculation. Establish `hh0 : (0 : ℝ) ≤ (classNumber D.host.E : ℝ)` using `Nat.cast_nonneg _`. Unfold `classWeightAlt`.
+Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow (2 * (D.R.k : ℝ) * D.host.rdE ^ ((1 : ℝ) / 2) * 2) 9, mul_pow (2 * (D.R.k : ℝ) * D.host.rdE ^ ((1 : ℝ) / 2)) 2]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ (large₂.sc.b ^ ((7 : ℝ) + |Cg|)) ^ D.R.f * large₂.sc.b ^ (3 * (D.R.m : ℝ) * D.R.f) := by gcongr`. Use `_ = large₂.sc.b ^ (((7 : ℝ) + |Cg|) * D.R.f + 3 * (D.R.m : ℝ) * D.R.f) := by`.
-
-Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hb0.le, ← Real.rpow_add hb0]`. Use `_ ≤ _ := by`. Use `Real.rpow_le_rpow_of_exponent_le hb1 ?_` and prove the remaining obligations. Establish `: 0 ≤ |Cg|` using `abs_nonneg _`. Establish `hf0 : (0 : ℝ) ≤ D.R.f` using `by linarith`.
-
-Establish `h7 : ((7 : ℝ) + |Cg|) * D.R.f ≤ ((7 : ℝ) + |Cg|) * ((D.R.m : ℝ) * D.R.f)` using `mul_le_mul_of_nonneg_left (le_mul_of_one_le_left hf0 hm1) (by positivity)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem class_weight_le_pow {C' Cl Cg cb Cu cT CT C0 : ℝ} (h : Cnt.Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0) (hCl : 1 ≤ Cl) :
     classWeightAlt D * 9 ^ D.R.f ≤ large₂.sc.b ^ ((10 + |Cg|) * (D.R.m : ℝ) * D.R.f) := by
@@ -428,7 +422,7 @@ def GenericThetaWeakFamily (Cg cb Cu cT CT C0 A : ℝ) : Prop :=
     GenericThetaWeak (Fm.D x i) (Fm.L x i) u u' C' Cl Cg cb Cu cT CT C0 A C
 
 /- English proof (translation)
-Take `⟨C₀, hC⟩` from `h`. Use `⟨C₀, fun C hCC => ?_⟩` and prove the remaining obligations. Take `⟨x0, hx⟩` from `hC C hCC`. Conclude with `⟨x0, fun x hx' i u u' => generic_theta_of_weak (Fm.D x i) (Fm.L x i) u u' (hx x hx' i u u')⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem generic_theta_family_of (Cg cb Cu cT CT C0 A : ℝ) (h : GenericThetaWeakFamily Fm Cg cb Cu cT CT C0 A) :
     GenericThetaFamily Fm Cg cb Cu cT CT C0 A := by
@@ -438,13 +432,13 @@ theorem generic_theta_family_of (Cg cb Cu cT CT C0 A : ℝ) (h : GenericThetaWea
   exact ⟨x0, fun x hx' i u u' => generic_theta_of_weak (Fm.D x i) (Fm.L x i) u u' (hx x hx' i u u')⟩
 
 /- English proof (translation)
-Take `⟨C1, H1⟩` from `h23`. Take `⟨C2, H2⟩` from `hG`. Use `⟨max (max C1 C2) (max (max 1 (52 + 6 * A)) (max CT (10 + |Cg|))), fun C hC => ?_⟩` and prove the remaining obligations. Establish `hC1 : C1 ≤ C` using `le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hC`. Establish `hC2 : C2 ≤ C` using `le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hC`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC3 : 1 ≤ C` using `le_trans (le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) (le_max_right _ _)) hC`. Establish `hC4 : 52 + 6 * A ≤ C` using `le_trans (le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) (le_max_right _ _)) hC`. Establish `hC5 : CT ≤ C` using `le_trans (le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) (le_max_right _ _)) hC`. Establish `hC6 : 10 + |Cg| ≤ C` using `le_trans (le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) (le_max_right _ _)) hC`. Establish `hC7 : 10 ≤ C` using `by linarith [abs_nonneg Cg]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨x0, H⟩` from `((H1 C hC1).and hS).and (H2 C hC2)`. Use `⟨x0, fun x hx i u u' => ?_⟩` and prove the remaining obligations. Take `⟨⟨a, b⟩, c⟩` from `H x hx i`. Introduce `hH`. Use `stSW_of _ _ u u' hC4 (by nlinarith) (fun Z => ?_) (hE x i u u') (a u u') (b u u') (c u u') hH` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(class_weight_le_pow _ _ hH.1 hCl).trans (scale_pow_le_gram_height _ _ (by nlinarith) Z)`.
+A detailed English derivation is pending.
 -/
 theorem generic_admissible_all_constants (hCl : 1 ≤ sCl Fm) (Cg cb Cu cT CT C0 A : ℝ)
     (hE : ∀ x (i : Fm.Ix x) u u', SameTermEquivalence (Fm.D x i) u u')
@@ -470,7 +464,7 @@ theorem generic_admissible_all_constants (hCl : 1 ≤ sCl Fm) (Cg cb Cu cT CT C0
   exact (class_weight_le_pow _ _ hH.1 hCl).trans (scale_pow_le_gram_height _ _ (by nlinarith) Z)
 
 /- English proof (translation)
-Take `⟨C₀, hC⟩` from `generic_admissible_all_constants Fm hCl Cg cb Cu cT CT C0 A hE h23 hS hG`. Conclude with `⟨C₀, hC C₀ le_rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem generic_admissible_family_of (hCl : 1 ≤ sCl Fm) (Cg cb Cu cT CT C0 A : ℝ)
     (hE : ∀ x (i : Fm.Ix x) u u', SameTermEquivalence (Fm.D x i) u u')

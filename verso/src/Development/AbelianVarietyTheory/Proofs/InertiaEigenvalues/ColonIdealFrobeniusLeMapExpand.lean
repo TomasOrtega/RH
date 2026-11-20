@@ -8,7 +8,7 @@ noncomputable section
 namespace GlobalTheory.LiftCoker
 
 /- English proof (translation)
-Rewrite using `[h, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, map_X, map_expand]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem map_decomp_frob {O K : Type} [CommRing O] [NormedField K] [Algebra O K] (l : ℕ) [Fact l.Prime]
     {f : O⟦X⟧} {g : Fin l → O⟦X⟧}
@@ -21,21 +21,19 @@ theorem map_decomp_frob {O K : Type} [CommRing O] [NormedField K] [Algebra O K] 
   rfl
 
 /- English proof (translation)
-Introduce `O K _ _ _ _ _ l _ ι κ _ _ G β hβ`. Establish `hl2 : 2 ≤ l` using `(Fact.out : l.Prime).two_le`. Establish `decO : ∀ f : O⟦X⟧, ∃! g : Fin l → O⟦X⟧, f = ∑ j : Fin l, X ^ j.val * PowerSeries.expand l (Fact.out : l.Prime).ne_zero (g j)` using `GlobalTheory.T.powerSeries_existsUnique_decomp_over_frobeniusLike_endo l hl2 _ (fun f m => coeff_expand _ _ f)`. Establish `uniqK : ∀ f : K⟦X⟧, ∃! g : Fin l → K⟦X⟧, f = ∑ j : Fin l, X ^ j.val * frob K l (g j)` using `GlobalTheory.T.powerSeries_existsUnique_decomp_over_frobeniusLike_endo l hl2 (frob K l) (fun f m => coeff_frob l f m)`. Take `⟨b, hb, -⟩` from `decO β`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hbK` using `map_decomp_frob (K := K) l hb`. Establish `key : ∀ j, b j ∈ colon O K G`. Introduce `j w hw`. Take `⟨M, hM, hMeq⟩` from `hβ (frobV l w) (fun i => frob_mem_A l (hw i))`. Establish `lift : ∀ k, ∃ μ : O⟦X⟧, PowerSeries.map (algebraMap O K) μ = M k` using `fun k => by`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨μ, hμ⟩` from `(equivA O K).surjective ⟨M k, hM k⟩`. Conclude with `⟨μ, by rw [← coe_equivA, hμ]⟩`. Use `choose μ hμ using lift`. Use `choose c hc using fun k => (decO (μ k)).exists`. Establish `hMk : ∀ k, M k = ∑ j : Fin l, X ^ j.val * frob K l (PowerSeries.map (algebraMap O K) (c k j))` using `fun k => by rw [← hμ k]; exact map_decomp_frob l (hc k)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `⟨fun k => PowerSeries.map (algebraMap O K) (c k j), fun k => map_mem_A _, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Establish `e1` using `congrFun hMeq i`. Simplify using `only [Pi.smul_apply, smul_eq_mul, frobV_apply] at e1`. Take `⟨g, -, hg⟩` from `uniqK (PowerSeries.map (algebraMap O K) β * frob K l (w i))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `E1 : PowerSeries.map (algebraMap O K) β * frob K l (w i) = ∑ j : Fin l, X ^ j.val * frob K l (PowerSeries.map (algebraMap O K) (b j) * w i)`. Rewrite using `[hbK, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, mul_assoc]`. Establish `E2 : PowerSeries.map (algebraMap O K) β * frob K l (w i) = ∑ j : Fin l, X ^ j.val * frob K l ((G *ᵥ fun k => PowerSeries.map (algebraMap O K) (c k j)) i)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e1]`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, hMk, Finset.mul_sum, map_sum, map_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hg _ E1`. Establish `h2` using `hg _ E2`. Rewrite using `[Pi.smul_apply, smul_eq_mul]`. Conclude with `(congrFun h1 j).trans (congrFun h2 j).symm`. Rewrite using `[hb]`.
-
-Conclude with `Ideal.sum_mem _ fun j _ => Ideal.mul_mem_left _ _ (Ideal.mem_map_of_mem _ (key j))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colon_map_frob_le : ∀ (O K : Type) [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebra O K]
     [IsUnitBall O K] (l : ℕ) [Fact l.Prime] (ι κ : Type) [Fintype ι] [Fintype κ] (G : Matrix κ ι K⟦X⟧),

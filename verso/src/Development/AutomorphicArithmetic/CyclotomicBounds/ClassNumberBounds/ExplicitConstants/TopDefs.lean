@@ -33,12 +33,12 @@ noncomputable def B0 : ℝ := 2 * T.CK * T.Ct / T.eps
 noncomputable def KW : ℝ := T.la ^ (T.R + 2) * T.B0 ^ T.R
 
 /- English proof (translation)
-The claim follows from `(one_le_div T.eps_pos).2 T.eps_le`.
+A detailed English derivation is pending.
 -/
 theorem one_le_B0 : 1 ≤ T.B0 := (one_le_div T.eps_pos).2 T.eps_le
 
 /- English proof (translation)
-The claim follows from `one_le_mul_of_one_le_of_one_le (one_le_pow₀ T.one_lt_la.le) (one_le_pow₀ T.one_le_B0)`.
+A detailed English derivation is pending.
 -/
 theorem one_le_KW : 1 ≤ T.KW :=
   one_le_mul_of_one_le_of_one_le (one_le_pow₀ T.one_lt_la.le) (one_le_pow₀ T.one_le_B0)

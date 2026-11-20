@@ -9,9 +9,9 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets
 open MvPolynomial Topology
 
 /- English proof (translation)
-Rewrite using `[mul_add, Finset.mul_sum, div_pow, mul_div_cancel₀ _ (pow_ne_zero _ hG)]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `hj : (j : ℕ) ≤ d` using `j.isLt.le`. Establish `hGd : G ^ d = G ^ (j : ℕ) * G ^ (d - (j : ℕ))` using `by rw [← pow_add, Nat.add_sub_cancel' hj]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hGd, div_pow]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem monic_eval_div_mul_pow {d : ℕ} (a : Fin d → ℂ) {F G : ℂ} (hG : G ≠ 0) :
     F ^ d + ∑ j : Fin d, a j * F ^ (j : ℕ) * G ^ (d - (j : ℕ)) =
@@ -25,11 +25,11 @@ theorem monic_eval_div_mul_pow {d : ℕ} (a : Fin d → ℂ) {F G : ℂ} (hG : G
   field_simp
 
 /- English proof (translation)
-Introduce `σ _ I w N F G hI hIc hw hN hwN hF hG hnv hb`. Establish `hhol : HolomorphicOnSubset (fun z => F z / G z) ((zeroSetIn I ∩ N) \ {z | G z = 0})`. Introduce `z hz`. Use `⟨N ∩ G ⁻¹' {0}ᶜ, hG.continuousOn.isOpen_inter_preimage hN isOpen_compl_singleton, ⟨hz.1.2, hz.2⟩, fun z => F z / G z, ?_, fun _ _ => rfl⟩` and prove the remaining obligations. Establish `hsub : N ∩ G ⁻¹' {0}ᶜ ⊆ N` using `Set.inter_subset_left`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [div_eq_mul_inv]`. Conclude with `(hF.mono hsub).mul ((hG.mono hsub).inv fun y (hy : y ∈ N ∩ G ⁻¹' {0}ᶜ) => hy.2)`. Take `⟨V, hVo, hwV, hVN, d, a, ha, heq⟩` from `hwi σ I w N G (fun z => F z / G z) hI hIc hw hN hwN hG hnv hhol hb`. Use `hic σ I w V F G d a hI hIc hw hVo hwV (hF.mono hVN) (hG.mono hVN) ha hnv ?_` and prove the remaining obligations. Introduce `z hz`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[monic_eval_div_mul_pow (fun j => a j z) (show G z ≠ 0 from hz.2), heq z hz, mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem NormalBoundedQuotient.proof (hwi : WeaklyHolomorphicIntegral.Statement)
     (hic : NormalGermIntegrallyClosed.Statement) : NormalBoundedQuotient.Statement := by

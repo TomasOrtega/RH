@@ -7,11 +7,9 @@ noncomputable section
 namespace Formalism.ExponentWindows
 
 /- English proof (translation)
-Use `⟨hm, hd, fun i hi => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.mem_span_singleton]`. Conclude with `dvd_trans hℓe.symm.dvd (hc i hi)`. Rewrite using `[Ideal.mem_span_singleton]`. Introduce `hdiv`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : ϖ ^ (e + 1) ∣ ϖ ^ e` using `dvd_trans hdiv (h0.trans hℓe).dvd`. Establish `hne : ϖ ^ e ≠ 0` using `pow_ne_zero _ hϖ.ne_zero`. Rewrite `h1` using `[pow_succ]`. Establish `h2 : ϖ ^ e * ϖ ∣ ϖ ^ e * 1` using `by rwa [mul_one]`. Establish `h3` using `(mul_dvd_mul_iff_left hne).1 h2`.
-
-Conclude with `hϖ.not_isUnit (isUnit_of_dvd_one h3)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eisE_of_assoc {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {ϖ : O}
     (hϖ : Irreducible ϖ) {ℓ e N : ℕ} (hℓe : Associated (ℓ : O) (ϖ ^ e)) (E : Polynomial O)
@@ -30,13 +28,13 @@ theorem eisE_of_assoc {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationR
     exact hϖ.not_isUnit (isUnit_of_dvd_one h3)
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ hϖ ℓ e hℓ he hℓe E u hmon hdeg hcoef h0 hu ell g a b₀ b₁ s₀ s₁ k hs h1 h2 hmem`. Establish `hEis : ∀ s, Formalism.ZetaNonvanishing.EisensteinGaussValuationBounds.EisE ϖ e (E s) (ℓ ^ s)` using `fun s => eisE_of_assoc hϖ hℓe (E s) (hmon s) (hdeg s) (hcoef s) (h0 s)`. Take `⟨w, hw⟩` from `hℓe`. Establish `hmem' : PowerSeries.C (ϖ ^ (e * a)) * (∏ s ∈ Finset.range ell, (u s * (E s : PowerSeries O)) ^ g) ^ 2 * (u s₀ * (E s₀ : PowerSeries O)) ^ b₀ ∈ Ideal.span {PowerSeries.C (ϖ ^ k), (u s₁ * (E s₁ : PowerSeries O)) ^ b₁}`. Establish `hpow : ϖ ^ (e * a) = (ℓ : O) ^ a * ((w : O) ^ a)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[pow_mul, ← hw, mul_pow]`. Use `Ideal.mul_mem_left _ (PowerSeries.C ((w : O) ^ a)) hmem` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hpow, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hepos : (0 : ℝ) < e` using `by exact_mod_cast (by omega : 0 < e)`. Establish `h1' : 2 * (((e * a : ℕ) : ℝ) + 2 * e * g * ell) < e * b₁`. Use `push_cast`. Use the polynomial consequences of the given equalities and inequalities. Take `⟨k1, k2⟩` from `Formalism.ZetaNonvanishing.EisensteinGaussValuationBounds.lemmaCValRam_proof O ϖ hϖ e he ℓ hℓ E u hEis hu ell g (e * a) b₀ b₁ s₀ s₁ k hs h1' h2 hmem'`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result.
 
-Move the coercions through the operations in `at k1 k2`. Prove the components needed by the constructor for the conclusion. Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion.
+Move the embeddings inside the algebraic operations. Prove the components needed by the constructor for the conclusion. Chain the equalities or inequalities of the calculation. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem lemma_C_valuation_real : LemmaCValR := by
   intro O _ _ _ ϖ hϖ ℓ e hℓ he hℓe E u hmon hdeg hcoef h0 hu ell g a b₀ b₁ s₀ s₁ k hs h1 h2 hmem

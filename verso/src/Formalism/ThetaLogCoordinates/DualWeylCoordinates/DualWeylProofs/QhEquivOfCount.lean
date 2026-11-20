@@ -9,15 +9,15 @@ namespace Formalism.InvariantFactorPaths.ColumnFamilies
 variable {n : ℕ} {R : Type} [CommRing R]
 
 /- English proof (translation)
-Unfold `colH`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hsub : (univ.filter fun m : Fin n => c ≤ mu m) ⊆ Finset.Iio t`. Introduce `m hm`. Rewrite `hm` using `[Finset.mem_filter]`. Rewrite using `[Finset.mem_Iio]`. Assume the negation of the conclusion as `hmt`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `push_neg at hmt`. Conclude with `(not_le.mpr hc) (hm.2.trans (hmu hmt))`. Establish `hcard` using `Finset.card_le_card hsub`. Rewrite `hcard` using `[Fin.card_Iio]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Establish `hsub : Finset.Iic t ⊆ (univ.filter fun m : Fin n => c ≤ mu m)`. Introduce `m hm`. Rewrite `hm` using `[Finset.mem_Iic]`. Rewrite using `[Finset.mem_filter]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨Finset.mem_univ m, h.trans (hmu hm)⟩`. Establish `hcard` using `Finset.card_le_card hsub`. Rewrite `hcard` using `[Fin.card_Iic]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 lemma qh_lt_colH_iff {mu : Fin n → ℤ} (hmu : Dominant mu) (t : Fin n) (c : ℤ) :
     t.val < colH mu c ↔ c ≤ mu t := by
@@ -47,7 +47,7 @@ lemma qh_lt_colH_iff {mu : Fin n → ℤ} (hmu : Dominant mu) (t : Fin n) (c : �
     omega
 
 /- English proof (translation)
-Rewrite using `[Fin.le_iff_val_le_val]`. Use `show a.val ≤ n - 1`. Use `a.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 lemma qh_le_last [NeZero n] (a : Fin n) : a ≤ lastIdx n := by
   rw [Fin.le_iff_val_le_val]
@@ -56,9 +56,9 @@ lemma qh_le_last [NeZero n] (a : Fin n) : a ≤ lastIdx n := by
   omega
 
 /- English proof (translation)
-Apply the tactic sequence `have h0 : mu t ≤ mu 0 := hmu (by first | exact Fin.zero_le _ | (rw [Fin.le_iff_val_le_val]; simp))`. Establish `hset : (TCols mu).filter (fun c => t.val < colH mu c) = Finset.Ioc (mu (lastIdx n)) (mu t)`. Use extensionality with `c`. Simplify using `only [Finset.mem_filter, qh_lt_colH_iff hmu, TCols, Finset.mem_Ioc]`. Conclude with `⟨fun hh => ⟨hh.1.1, hh.2⟩, fun hh => ⟨⟨hh.1, hh.2.trans h0⟩, hh.2⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Rewrite using `[hset, Int.card_Ioc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma qh_count [NeZero n] {mu : Fin n → ℤ} (hmu : Dominant mu) (t : Fin n) :
     ((TCols mu).filter (fun c => t.val < colH mu c)).card = (mu t - mu (lastIdx n)).toNat := by
@@ -71,7 +71,7 @@ lemma qh_count [NeZero n] {mu : Fin n → ℤ} (hmu : Dominant mu) (t : Fin n) :
   rw [hset, Int.card_Ioc]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Simplify using `only [Pi.add_apply, Finset.sum_apply]`. Rewrite using `[Finset.sum_coe_sort (TCols mu) (fun c => if a.val < colH mu c then (1 : ℤ) else 0), Finset.sum_boole, qh_count hmu a, Int.toNat_of_nonneg (sub_nonneg.mpr (hmu (qh_le_last a)))]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma qh_weight_sum [NeZero n] {mu : Fin n → ℤ} (hmu : Dominant mu) :
     (fun _ : Fin n => mu (lastIdx n)) +
@@ -84,7 +84,7 @@ lemma qh_weight_sum [NeZero n] {mu : Fin n → ℤ} (hmu : Dominant mu) :
   ring
 
 /- English proof (translation)
-Use `first`. Consider the case `(rw [mapCoord, IsLocalization.Away.AwayMap.lift_eq]; try rfl; done)`. Consider the case `(rw [mapCoord, IsLocalization.Away.lift_eq]; try rfl; done)`. Consider the case `(simp [mapCoord]; done)`. Consider the case `(unfold mapCoord; exact IsLocalization.lift_eq _ _)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma qh_mapCoord_alg (P : MvPolynomial (Fin n × Fin n) ℤ) :
     mapCoord (n := n) R (algebraMap _ _ P) = algebraMap _ _ (MvPolynomial.map (Int.castRingHom R) P) := by
@@ -95,9 +95,9 @@ lemma qh_mapCoord_alg (P : MvPolynomial (Fin n × Fin n) ℤ) :
     | (unfold mapCoord; exact IsLocalization.lift_eq _ _)
 
 /- English proof (translation)
-Establish `h1 : Units.map (mapCoord (n` using `n) R).toMonoidHom (detU n) = qhDet R n := by`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.coe_map, qhDet_val]`. Use `show mapCoord (n := n) R (algebraMap _ _ (genMat ℤ n).det) = _`. Rewrite using `[qh_mapCoord_alg, RingHom.map_det (MvPolynomial.map (Int.castRingHom R)) (genMat ℤ n), genMat_map_coord]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h1, ← map_zpow (Units.map (mapCoord (n := n) R).toMonoidHom) (detU n) z, Units.coe_map]`. Apply the tactic sequence `try rfl`.
+A detailed English derivation is pending.
 -/
 lemma qh_mapCoord_detU (z : ℤ) :
     mapCoord R ((detU n ^ z : (GLCoord ℤ n)ˣ) : GLCoord ℤ n) = ((qhDet R n ^ z : (GLCoord R n)ˣ) : GLCoord R n) := by
@@ -111,9 +111,9 @@ lemma qh_mapCoord_detU (z : ℤ) :
   try rfl
 
 /- English proof (translation)
-Establish `hmem : ∀ x : Fin (colH mu c), Fin.castLE (colH_le mu c) x ∈ (canT mu c).1`. Introduce `x`. Use `first`. Consider the case `(simp only [canT, Finset.mem_map, Finset.mem_univ, true_and]; exact ⟨x, rfl⟩)`. Consider the case `simp [canT]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hmono : StrictMono (Fin.castLE (colH_le mu c))`. Introduce `x y hxy`. Rewrite `hxy`, the goal using `[Fin.lt_iff_val_lt_val]`. Conclude with `hxy`. Conclude with `(congrFun (Finset.orderEmbOfFin_unique (canT mu c).2 hmem hmono) a).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma qh_can_emb [NeZero n] (mu : Fin n → ℤ) (c : ↥(TCols mu)) (a : Fin (colH mu c)) :
     (canT mu c).1.orderEmbOfFin (canT mu c).2 a = Fin.castLE (colH_le mu c) a := by
@@ -129,9 +129,9 @@ lemma qh_can_emb [NeZero n] (mu : Fin n → ℤ) (c : ↥(TCols mu)) (a : Fin (c
   exact (congrFun (Finset.orderEmbOfFin_unique (canT mu c).2 hmem hmono) a).symm
 
 /- English proof (translation)
-Unfold `minorC qhN`. Rewrite using `[qh_mapCoord_alg, RingHom.map_det (MvPolynomial.map (Int.castRingHom R))]`. Use `congr 2`. Use extensionality with `p q`. Use `first`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Treat this case separately.
 
-Consider the case `(simp only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, genMat, MvPolynomial.map_X, qh_can_emb]; done)`. Consider the case `simp [genMat, qh_can_emb]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 lemma qh_mapCoord_minor [NeZero n] (mu : Fin n → ℤ) (c : ↥(TCols mu)) (S : Finset (Fin n))
     (hS : S.card = colH mu c) :
@@ -147,9 +147,9 @@ lemma qh_mapCoord_minor [NeZero n] (mu : Fin n → ℤ) (c : ↥(TCols mu)) (S :
     | simp [genMat, qh_can_emb]
 
 /- English proof (translation)
-Use `first`. Consider the case `(simp only [brk, TMat]`. Rewrite using `[map_mul, map_prod, qh_mapCoord_detU]`. Use `congr 1`. Use `Finset.prod_congr rfl (fun c _ => ?_)` and prove the remaining obligations.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Treat this case separately.
 
-Conclude with `qh_mapCoord_minor mu c _ _)`. Consider the case `(simp only [brk, TMat, map_mul, map_prod, qh_mapCoord_detU, qh_mapCoord_minor])`.
+A detailed English derivation is pending.
 -/
 lemma qh_mapCoord_brk [NeZero n] (mu : Fin n → ℤ) (I : TIdx mu) :
     mapCoord R (brk mu I) = ((qhDet R n ^ mu (lastIdx n) : (GLCoord R n)ˣ) : GLCoord R n) *
@@ -164,7 +164,7 @@ lemma qh_mapCoord_brk [NeZero n] (mu : Fin n → ℤ) (I : TIdx mu) :
         qh_mapCoord_minor])
 
 /- English proof (translation)
-Rewrite using `[qh_mapCoord_brk]`. Establish `h` using `qh_mul_mem (qh_det_zpow_mem (R := R) (n := n) (mu (lastIdx n))) (qh_prod_mem (R := R) (Finset.univ : Finset ↥(TCols mu)) (fun c => qhN R (colH mu c) (colH_le mu c) (fun q => (I c).1.orderEmbOfFin (I c).2 q)) (fun c => fun a : Fin n => if a.val < colH mu c then (1 : ℤ) else 0) (fu …`. Use `first`. Consider the case `(rw [qh_weight_sum hmu] at h; exact h)`. Consider the case `(convert h using 2; exact (qh_weight_sum hmu).symm)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma qh_brk_mem [NeZero n] {mu : Fin n → ℤ} (hmu : Dominant mu) (I : TIdx mu) :
     mapCoord R (brk mu I) ∈ inducedSections R mu := by
@@ -179,19 +179,19 @@ lemma qh_brk_mem [NeZero n] {mu : Fin n → ℤ} (hmu : Dominant mu) (I : TIdx m
     | (convert h using 2; exact (qh_weight_sum hmu).symm)
 
 /- English proof (translation)
-Establish `hfib : ∀ k : ℕ, (univ.filter fun a => f a = k).card = (univ.filter fun b => g b = k).card`. Introduce `k`. Break down `Nat.eq_zero_or_pos k with rfl | hk` into its components or cases. Establish `h1 : (univ.filter fun a => f a = 0) = ∅`. Use extensionality with `a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[(hf a).ne']`. Establish `h2 : (univ.filter fun b => g b = 0) = ∅`. Use extensionality with `b`. Simplify using `[(hg b).ne']`. Rewrite using `[h1, h2, Finset.card_empty, Finset.card_empty]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ {γ : Type} [Fintype γ] (u : γ → ℕ), (univ.filter fun x => u x = k).card = (univ.filter fun x => k - 1 < u x).card - (univ.filter fun x => k < u x).card`. Introduce `γ _ u`. Establish `hsplit : (univ.filter fun x => k - 1 < u x) = (univ.filter fun x => u x = k) ∪ (univ.filter fun x => k < u x)`. Use extensionality with `x`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_union]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use linear arithmetic over natural numbers and integers. Introduce `hx`. Use linear arithmetic over natural numbers and integers.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Use linear arithmetic over natural numbers and integers.
 
-Establish `hdisj : Disjoint (univ.filter fun x => u x = k) (univ.filter fun x => k < u x)`. Rewrite using `[Finset.disjoint_filter]`. Introduce `x _ hx`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hsplit, Finset.card_union_of_disjoint hdisj]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[key f, key g, h (k - 1), h k]`. Establish `hcard : ∀ k : ℕ, Fintype.card {a // f a = k} = Fintype.card {b // g b = k}`. Introduce `k`. Use `first`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Consider the case `(rw [Fintype.card_subtype, Fintype.card_subtype]; exact hfib k)`. Consider the case `simpa [Fintype.card_subtype] using hfib k`. Set `e : α ≃ β` to `(Equiv.sigmaFiberEquiv f).symm.trans ((Equiv.sigmaCongrRight fun k => Fintype.equivOfCardEq (hcard k)).trans (Equiv.sigmaFiberEquiv g))`. Use `⟨e, fun a => ?_⟩` and prove the remaining obligations. Conclude with `(Fintype.equivOfCardEq (hcard (f a)) ⟨a, rfl⟩).2`.
+Treat this case separately. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma qh_equiv_of_count {α β : Type} [Fintype α] [Fintype β] (f : α → ℕ) (g : β → ℕ)
     (hf : ∀ a, 0 < f a) (hg : ∀ b, 0 < g b)
@@ -238,25 +238,21 @@ lemma qh_equiv_of_count {α β : Type} [Fintype α] [Fintype β] (f : α → ℕ
   exact (Fintype.equivOfCardEq (hcard (f a)) ⟨a, rfl⟩).2
 
 /- English proof (translation)
-Distinguish the cases in `hJ : Function.Injective J`. Take `⟨S, hSdef⟩ : ∃ S : Finset (Fin n), S = Finset.univ.image J` from `⟨_, rfl⟩`. Establish `hS : S.card = s`. Rewrite using `[hSdef, Finset.card_image_of_injective _ hJ, Finset.card_univ, Fintype.card_fin]`. Establish `hmem : ∀ q, J q ∈ S`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `q`. Rewrite using `[hSdef]`. Conclude with `Finset.mem_image_of_mem J (Finset.mem_univ q)`. Set `τ : Fin s → Fin s` to `fun q => (S.orderIsoOfFin hS).symm ⟨J q, hmem q⟩`. Establish `hτ : ∀ q, S.orderEmbOfFin hS (τ q) = J q`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `q`. Rewrite using `[← Finset.coe_orderIsoOfFin_apply]`. Use `show (((S.orderIsoOfFin hS) ((S.orderIsoOfFin hS).symm ⟨J q, hmem q⟩)) : Fin n) = J q`. Rewrite using `[OrderIso.apply_symm_apply]`. Establish `hτinj : Function.Injective τ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `a b hab`. Apply `hJ` to reduce the goal to its premises. Rewrite using `[← hτ a, ← hτ b, hab]`. Set `σ : Equiv.Perm (Fin s)` to `Equiv.ofBijective τ (Finite.injective_iff_bijective.mp hτinj)`. Establish `hσ : ∀ q, S.orderEmbOfFin hS (σ q) = J q` using `fun q => hτ q`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨((Equiv.Perm.sign σ : ℤ) : R), ⟨S, hS⟩, ?_⟩` and prove the remaining obligations. Establish `hM : (Matrix.of fun p q : Fin s => genMat R n (Fin.castLE hs p) (J q)) = (Matrix.of fun p q : Fin s => genMat R n (Fin.castLE hs p) (S.orderEmbOfFin hS q)).submatrix id σ`. Use extensionality with `p q`. Simplify using `only [Matrix.submatrix_apply, Matrix.of_apply, id, hσ]`. Establish `hdet : (Matrix.of fun p q : Fin s => genMat R n (Fin.castLE hs p) (J q)).det = ((Equiv.Perm.sign σ : ℤ) : MvPolynomial (Fin n × Fin n) R) * (Matrix.of fun p q : Fin s => genMat R n (Fin.castLE hs p) (S.orderEmbOfFin hS q)).det`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[hM]`. Use `first`. Consider the case `exact Matrix.det_permute' σ _`. Consider the case `rw [← Matrix.det_transpose, Matrix.transpose_submatrix, Matrix.det_permute, Matrix.det_transpose]`. Unfold `qhN`.
+Treat this case separately. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Rewrite using `[hdet]`. Use `first`. Consider the case `(simp only [map_mul, map_intCast, Algebra.smul_def]; done)`. Consider the case `(simp only [map_mul, map_intCast, Algebra.smul_def]; rfl)`. Consider the case `(rw [map_mul, map_intCast, Int.cast_smul_eq_zsmul, zsmul_eq_mul]; try rfl; done)`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Consider the case `simp [Algebra.smul_def]`. Establish `hex : ∃ a b, J a = J b ∧ a ≠ b`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Conclude with `hJ (fun a b h => hcon a b h)`.
-
-Take `⟨a, b, hab, hne⟩` from `hex`. Use `⟨0, ⟨(Finset.univ : Finset (Fin s)).map (Fin.castLEEmb hs), by simp⟩, ?_⟩` and prove the remaining obligations. Establish `h0 : (Matrix.of fun p q : Fin s => genMat R n (Fin.castLE hs p) (J q)).det = 0` using `Matrix.det_zero_of_column_eq hne (fun k => by simp only [Matrix.of_apply, hab])`. Use `first`. Consider the case `(rw [zero_smul]; unfold qhN; rw [h0, map_zero])`.
-
-Consider the case `(simp only [zero_smul]; unfold qhN; rw [h0, map_zero])`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma qh_N_normal (s : ℕ) (hs : s ≤ n) (J : Fin s → Fin n) :
     ∃ (ε : R) (S : {S : Finset (Fin n) // S.card = s}),
@@ -314,11 +310,11 @@ lemma qh_N_normal (s : ℕ) (hs : s ≤ n) (J : Fin s → Fin n) :
       | (simp only [zero_smul]; unfold qhN; rw [h0, map_zero])
 
 /- English proof (translation)
-Establish `hSu : S = Finset.univ` using `Finset.eq_univ_of_card S (by rw [hS, Fintype.card_fin])`. Establish `hid : ∀ q, S.orderEmbOfFin hS q = q`. Introduce `q`. Establish `hu` using `Finset.orderEmbOfFin_unique hS (f := id) (fun x => by rw [hSu]; exact Finset.mem_univ _) strictMono_id`. Conclude with `(congrFun hu q).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : ∀ p : Fin n, Fin.castLE (le_refl n) p = p` using `fun p => Fin.ext rfl`. Unfold `qhN`. Rewrite using `[qhDet_val]`. Use `congr 2`. Use extensionality with `p q`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Treat this case separately.
 
-Use `first`. Consider the case `(simp only [Matrix.of_apply, hid, hc]; done)`. Consider the case `simp [genMat, hid, hc]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 lemma qh_N_full (S : Finset (Fin n)) (hS : S.card = n) :
     qhN R n le_rfl (fun q => S.orderEmbOfFin hS q) = ((qhDet R n : (GLCoord R n)ˣ) : GLCoord R n) := by

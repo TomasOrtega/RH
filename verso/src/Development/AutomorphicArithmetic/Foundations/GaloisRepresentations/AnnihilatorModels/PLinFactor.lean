@@ -4,15 +4,13 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Annih
 namespace UpperTheory.Gal.crystallineComparison
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp at hs`. Consider the case `insert a s ha ih`. Distinguish the cases in `hs' : s.Nonempty`. Take `⟨k₁, hk₁, hmin⟩` from `ih hs' (fun k hk => hw k (Finset.mem_insert_of_mem hk))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Break down `hd a k₁ (hw a (Finset.mem_insert_self a s)) with h | h` into its components or cases. Use `⟨a, Finset.mem_insert_self a s, ?_⟩` and prove the remaining obligations. Introduce `k hk`. Break down `Finset.mem_insert.mp hk with rfl | hk` into its components or cases. Conclude with `dvd_refl _`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h.trans (hmin k hk)`. Use `⟨k₁, Finset.mem_insert_of_mem hk₁, ?_⟩` and prove the remaining obligations. Introduce `k hk`. Break down `Finset.mem_insert.mp hk with rfl | hk` into its components or cases. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hmin k hk`. Rewrite `hs'` using `[Finset.not_nonempty_iff_eq_empty]`. Substitute `hs'` using the available equality. Use `⟨a, by simp, fun k hk => ?_⟩` and prove the remaining obligations. Simplify using `at hk`.
-
-Substitute `hk` using the available equality. Conclude with `dvd_refl _`.
+Simplify using the standard rewrite rules. Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem exists_min_dvd {B ι : Type} [CommRing B] (w : B) (d : ι → B)
     (hd : ∀ k k', d k ∣ w → d k ∣ d k' ∨ d k' ∣ d k) (s : Finset ι) (hs : s.Nonempty)
@@ -42,11 +40,11 @@ private theorem exists_min_dvd {B ι : Type} [CommRing B] (w : B) (d : ι → B)
       exact dvd_refl _
 
 /- English proof (translation)
-Introduce `B ι _ _ w d hex hd`. Take `⟨k₀, hk₀, hmin⟩` from `exists_min_dvd w d hd (Finset.univ.filter fun k => d k ∣ w) (by obtain ⟨k, hk⟩ := hex; exact ⟨k, by simpa using hk⟩) (fun k hk => (Finset.mem_filter.mp hk).2)`. Establish `hk₀w : d k₀ ∣ w` using `(Finset.mem_filter.mp hk₀).2`. Establish `hall : ∀ k, d k₀ ∣ d k`. Introduce `k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `hd k₀ k hk₀w with h | h` into its components or cases. Conclude with `h`. Conclude with `hmin k (Finset.mem_filter.mpr ⟨Finset.mem_univ _, h.trans hk₀w⟩)`. Use `⟨d k₀, fun k => if k = k₀ then 1 else (hall k).choose, k₀, hk₀w, by simp, ?_⟩` and prove the remaining obligations. Introduce `k`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hk : k = k₀`. Substitute `hk` using the available equality. Simplify using the standard rewrite rules. Simplify using `only [hk, if_false]`. Conclude with `(hall k).choose_spec`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem linFactor_of : LinFactor := by
   intro B ι _ _ w d hex hd

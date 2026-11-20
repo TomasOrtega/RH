@@ -17,13 +17,11 @@ noncomputable section
 namespace GlobalTheory.QValPull
 
 /- English proof (translation)
-Apply `fn_ext` to reduce the goal to its premises. Introduce `x hx`. Take `⟨J, hJ, hJj⟩` from `exists_good L hL x φ' j (fun a b _ => by cases a; cases b; rfl) (fun k => LB.wchart_le L φ' j k hx)`. Establish `h1 : ∀ k, J (𝟙 _ ≫ φ' k) = j k` using `fun k => by rw [Category.id_comp]; exact hJj k`. Establish `h2 : ∀ k, J ((𝟙 _ ≫ jK V) ≫ φ k) = j k` using `fun k => by rw [Category.id_comp, ← hφ]; exact hJj k`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eL : gs (𝟙 _) x _ (t.s j).val = (val t (𝟙 _) x J).val` using `(gs_unit _ x _ hx _).trans (congrArg Units.val (val_of t (𝟙 _) x J j h1).symm)`. Rewrite using `[eL, h x J hJ]`. Use `Eq.trans ?_ (gs_mul _ x _ hx _ _).symm` and prove the remaining obligations. Use `congr 1`. Conclude with `(gs_res _ x _ hx _).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `hx' : x ∈ LB.wchart L φ' j` using `hx`. Establish `hxe : x ∈ jK V ⁻¹ᵁ LB.wchart L φ j` using `wchart_le_preimage L (jK V) φ φ' hφ j hx'`. Unfold `res pullU`. Simplify using `only [Units.coe_map, MonoidHom.coe_coe]`. Use `Eq.symm ((gs_res _ x _ hx _).trans ((gs_pull (𝟙 _) (jK V) x _ hxe _).trans ((gs_unit (𝟙 _ ≫ jK V) x _ hxe _).trans ?_)))` and prove the remaining obligations.
-
-Conclude with `congrArg Units.val (val_of e _ x J j h2).symm`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem chart_eq_of_val {V : Type} [CommRing V] [IsDomain V] {X : Scheme.{0}} {L : LB X} (hL : L.IsLB)
     {φ : PUnit → (Spec (CommRingCat.of V) ⟶ X)} {φ' : PUnit → (Spec (CommRingCat.of (FractionRing V)) ⟶ X)}
@@ -56,11 +54,11 @@ theorem chart_eq_of_val {V : Type} [CommRing V] [IsDomain V] {X : Scheme.{0}} {L
     exact congrArg Units.val (val_of e _ x J j h2).symm
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `hc`. Take `⟨v, hv⟩` from `ha`. Use `⟨v⁻¹ ^ n * Units.map (g : V →* V') u, ?_⟩` and prove the remaining obligations. Establish `hϖ : g ϖ = ϖ' ^ e * ((v⁻¹ : V'ˣ) : V')`. Rewrite using `[← hv, _root_.mul_assoc, Units.mul_inv, _root_.mul_one]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ (w : V'ˣ) (m : ℤ), algebraMap V' (FractionRing V') ((w ^ m : V'ˣ) : V') = algebraMap V' (FractionRing V') (w : V') ^ m`. Introduce `w m`. Establish `h1` using `Units.coe_map (algebraMap V' (FractionRing V') : V' →* FractionRing V') (w ^ m)`. Rewrite `h1` using `[map_zpow, Units.val_zpow_eq_zpow_val, Units.coe_map]`. Simplify `h1.symm` using `only [MonoidHom.coe_coe]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[map_mul, map_zpow₀, ArcPull.fracMap_algebraMap, ArcPull.fracMap_algebraMap, hϖ, Units.val_mul, map_mul, map_mul, map_pow, key, mul_zpow, ← zpow_natCast, ← zpow_mul]`. Simplify using `only [Units.coe_map, MonoidHom.coe_coe]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hasVal_fracMap {V V' : Type} [CommRing V] [IsDomain V] [CommRing V'] [IsDomain V'] {g : V →+* V'}
     (hg : Function.Injective g) {ϖ : V} {ϖ' : V'} {e : ℕ} (ha : Associated (g ϖ) (ϖ' ^ e))
@@ -82,7 +80,7 @@ theorem hasVal_fracMap {V V' : Type} [CommRing V] [IsDomain V] [CommRing V'] [Is
   ring
 
 /- English proof (translation)
-Unfold `gs scal spMap`. Simplify using `only [TopologicalSpace.Opens.mem_top, ↓reduceDIte]`. Establish `hn` using `congrArg (fun φ => CommRingCat.Hom.hom φ c) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom f))`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at hn`. Rewrite using `[hn]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -97,15 +95,15 @@ theorem gs_scal_spMap {K K' : Type} [CommRing K] [CommRing K'] (f : K →+* K') 
   rfl
 
 /- English proof (translation)
-Take `⟨e0, he0, c0, hc0, hch⟩` from `h`. Take `⟨e', he', hdown⟩` from `ArcPull.exists_down_om hD.w_gen D.P.isLB D'.P.isLB (spMap g) (fun _ : PUnit => hD.c_pr y) e0 he0`. Use `⟨e', he', ArcPull.fracMap hg c0, hasVal_fracMap hg ha hc0, ?_⟩` and prove the remaining obligations. Use `chart_eq_of_val D'.P.isLB (fun _ => DVR.QForm.ptK_eq D' y) ?_` and prove the remaining obligations. Introduce `z J' hJ'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨J, hJ, -⟩` from `exists_good D.P.L D.P.isLB z (fun k : Empty => k.elim) (fun k : Empty => k.elim) (fun a => a.elim) (fun k => k.elim)`. Establish `hv` using `DVR.SectionScalarValuation.val_genHasVal (hφ := fun _ => DVR.QForm.ptK_eq D (hD.xe y)) hch (ArcPull.genMap hg) z hJ`. Establish `hp` using `ArcPull.psi_val hD (ArcPull.genMap hg) (𝟙 (Spec (CommRingCat.of (FractionRing V')))) (ArcPull.fracMap_sq hg) hJ hJ' y`. Establish `hd` using `hdown _ (𝟙 (Spec (CommRingCat.of (FractionRing V'))) ≫ jK V') z J J' hJ hJ'`. Establish `hr : ArcPull.genMap hg ≫ jK V = (𝟙 (Spec (CommRingCat.of (FractionRing V'))) ≫ jK V') ≫ spMap g`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← ArcPull.fracMap_sq hg, Category.assoc]`. Both sides reduce to the same expression. Establish `hxk : (𝟙 (Spec (CommRingCat.of (FractionRing V'))) ≫ D'.xK y) = (𝟙 (Spec (CommRingCat.of (FractionRing V'))) ≫ jK V') ≫ (D'.c y).left`. Rewrite using `[Category.assoc]`. Conclude with `congrArg _ (DVR.QForm.ptK_eq D' y)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hv` using `[hp, hr, hd]`. Simplify using `only [Fintype.prod_unique, zpow_neg, zpow_one] at hv`. Rewrite `hv` using `[← hxk, show ArcPull.genMap hg = spMap (ArcPull.fracMap hg) from rfl, gs_scal_spMap]`. Generalize the expression as in `ArcPull.om hD.w z J J' (𝟙 (Spec (CommRingCat.of (FractionRing V'))) ≫ D'.xK y) = o at hv`. Generalize the expression as in `val (D'.psi y) (𝟙 (Spec (CommRingCat.of (FractionRing V')))) z J' = A at hv ⊢`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `val e' (𝟙 (Spec (CommRingCat.of (FractionRing V'))) ≫ jK V') z J' = E at hv ⊢`. Generalize the expression as in `gs (𝟙 (Spec (CommRingCat.of (FractionRing V')))) z ⊤ (scal (𝟙 _) (ArcPull.fracMap hg c0)) = G at hv ⊢`. Rewrite `hv` using `[Units.val_mul, Units.val_mul]`. Take the linear combination `o.val * hv + (G * E.val - A.val) * Units.mul_inv o`.
+Replace the chosen expression with an arbitrary variable. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem qVal_pull {V V' : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [CommRing V'] [IsDomain V']
     {g : V →+* V'} {D : DegPre V} {D' : DegPre V'} (hD : IsPullDeg g D D') {ϖ : V} {ϖ' : V'} {e : ℕ}
@@ -139,7 +137,7 @@ theorem qVal_pull {V V' : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRi
   linear_combination o.val * hv + (G * E.val - A.val) * Units.mul_inv o
 
 /- English proof (translation)
-Introduce `T T' g D D' hD ϖ ϖ' e hg _ _ ha y n h`. Conclude with `qVal_pull hD hg ha y n h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem main : ∀ (T T' : Formalism.L2.Pj.CDVR) (g : T.V →+* T'.V) (D : DegPre T.V) (D' : DegPre T'.V) (hD : IsPullDeg g D D')
     (ϖ : T.V) (ϖ' : T'.V) (e : ℕ), Function.Injective g → Irreducible ϖ → Irreducible ϖ' →

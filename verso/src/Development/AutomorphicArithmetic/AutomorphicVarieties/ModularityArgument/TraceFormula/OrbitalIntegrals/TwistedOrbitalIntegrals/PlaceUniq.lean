@@ -4,11 +4,9 @@ open NumberField IsDedekindDomain ValuativeRel PositivityTheory.Rg.Tf.Loc Ground
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ hp v hs`. Take `⟨w, hw⟩` from `not_forall.1 hs`. Establish `hd : ∀ w' : PlacesOver E v, Module.finrank (v.adicCompletion F) (w'.1.adicCompletion E) = Module.finrank (v.adicCompletion F) (w.1.adicCompletion E)` using `fun w' => by`. Take `⟨σ, hσ⟩` from `MulAction.exists_smul_eq (E ≃ₐ[F] E) w w'`. Conclude with `(galEquiv v σ w.1 w'.1 (by rw [← hσ]; rfl)).toLinearEquiv.finrank_eq.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h` using `sum_finrank_eq E v`. Rewrite `h` using `[Finset.sum_congr rfl fun w' _ => hd w', Finset.sum_const, smul_eq_mul, Finset.card_univ]`. Break down `(Nat.prime_mul_iff.1 (h ▸ hp)) with ⟨-, h1⟩ | ⟨-, h1⟩` into its components or cases. Conclude with `absurd (Algebra.finrank_eq_one_iff_bijective_algebraMap.1 h1).2 hw`. Take `⟨u, hu⟩` from `Fintype.card_eq_one_iff.1 h1`.
-
-Conclude with `⟨u, hu⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Tf.Orb.placeUniq :
     UpperTheory.V.Z.Tf.Orb.PlaceUniq := by

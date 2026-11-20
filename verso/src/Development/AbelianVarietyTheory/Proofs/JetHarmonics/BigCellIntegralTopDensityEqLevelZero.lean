@@ -18,11 +18,11 @@ open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants Filt
 namespace GlobalTheory.TopVec
 
 /- English proof (translation)
-Unfold `B.AB`. Establish `hr : (0 : ℝ) ≤ r` using `Nat.cast_nonneg r`. Establish `hk : (0 : ℝ) ≤ k` using `Nat.cast_nonneg k`. Establish `hN : (0 : ℝ) ≤ N` using `Nat.cast_nonneg N`. Use `set D : ℝ := 2 * (r : ℝ) + k + 1 with hD`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD1 : 1 ≤ D` using `by rw [hD]; linarith`. Establish `h1 : ((k : ℝ) + r) * ((r : ℝ) + 1) ≤ D * D` using `mul_le_mul (by rw [hD]; linarith) (by rw [hD]; linarith) (by linarith) (by linarith)`. Establish `h2 : D * D ≤ D ^ 3` using `by nlinarith [mul_nonneg (mul_self_nonneg D) (sub_nonneg.2 hD1)]`. Establish `h3 : 1 ≤ D ^ 3` using `one_le_pow₀ hD1`. Establish `h4 : (1 : ℝ) ≤ ((r : ℝ) + 1) ^ 4` using `one_le_pow₀ (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5 : 0 ≤ (N : ℝ) * D ^ 2` using `by positivity`. Establish `h6 : (N : ℝ) * D ^ 2 + D ^ 3 ≤ ((r : ℝ) + 1) ^ 4 * ((N : ℝ) * D ^ 2 + D ^ 3)` using `le_mul_of_one_le_left (by linarith) h4`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem threshold_le_cut (k r N : ℕ) :
     B.AB k r ≤ 3 * ((r : ℝ) + 1) ^ 4 * ((N : ℝ) * (2 * (r : ℝ) + k + 1) ^ 2 + (2 * (r : ℝ) + k + 1) ^ 3) := by
@@ -43,27 +43,23 @@ theorem threshold_le_cut (k r N : ℕ) :
   nlinarith
 
 /- English proof (translation)
-Introduce `hXi hA Cb`. Take `⟨Cc, hCc⟩` from `GlobalTheory.T.levelZeroPairing_eq_integral_inner_topVectors hA Cb`. Use `⟨max Cc 3, ?_⟩` and prove the remaining obligations. Introduce `Wp Wq _ _ _ _ _ _ P p f χ A N w hDD hχ hf hCC hthr hw hN hdom`. Take `⟨-, h, hint, hb⟩` from `hdom`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hX : (0 : ℝ) ≤ ((P.r : ℝ) + 1) ^ 4 * ((N : ℝ) * (2 * (P.r : ℝ) + P.k + 1) ^ 2 + (2 * (P.r : ℝ) + P.k + 1) ^ 3)` using `by positivity`. Establish `hthr1 : Cc * ((P.r : ℝ) + 1) ^ 4 * ((N : ℝ) * (2 * (P.r : ℝ) + P.k + 1) ^ 2 + (2 * (P.r : ℝ) + P.k + 1) ^ 3) ≤ A`. Use `le_trans ?_ hthr` and prove the remaining obligations. Rewrite using `[mul_assoc Cc, mul_assoc (max Cc 3)]`. Conclude with `mul_le_mul_of_nonneg_right (le_max_left _ _) hX`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hAB : B.AB P.k P.r ≤ A`. Use `le_trans (threshold_le_cut P.k P.r N) (le_trans ?_ hthr)` and prove the remaining obligations. Rewrite using `[mul_assoc (3 : ℝ), mul_assoc (max Cc 3)]`. Conclude with `mul_le_mul_of_nonneg_right (le_max_right _ _) hX`. Establish `hpol` using `hCc Wp Wq P p f χ A N w hDD hχ hf hCC hthr1 hw hN`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨δ, hδ, hδχ⟩` from `hχ.2.1`. Establish `hcut` using `fun (ε : ℝ) (hε : 0 < ε) (c : Fin (P.r + 1) → ℂ) => GlobalTheory.T.topVector_cutoff_eq_and_vanish Wp Wq P p Cb χ δ ε f w c hDD hw hχ hδχ hε hf`. Use `set X := List.foldr (fun (a : Bool × ℝ) G => M.sgn P p.l0 • Q.CV P.k P.r (a.2 : ℂ) G) f w with hXdef`. Establish `hXCC : B.InCC A 5 X`. Take `⟨K, -, hK⟩` from `GlobalTheory.capelli_fold_ccle P.k P.r Wp Wq (M.sgn P p.l0) w 5`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `hCC (5 + List.length w * (2 * P.r + P.k + 1))`. Conclude with `⟨K * c, hK A c f hf hc⟩`. Establish `hlimL` using `GlobalTheory.beta_cutF_tendsto hXi P.k P.r Wp Wq p.T.base χ A X f hχ hAB hXCC (hCC 5)`. Establish `hlimR` using `(GlobalTheory.memLp_and_tendsto_integral_inner_of_eventually_eq (Fin (P.r + 1) → ℂ) volume _ (fun ε => tv p (D.cutF p.T.base χ f ε) w) (tv p f w) h hint (Eventually.of_forall fun ε => GlobalTheory.T.aestronglyMeasurable_topVector_smoothCoefficient Wp Wq P p Cb _ w hDD hw (Formali …`. Rewrite `hc` using `[Ew_eq_norm_tv_sq]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `le_trans (le_abs_self _) hc)`. Use the proof step `(Eventually.of_forall fun c => by`. Distinguish the cases in `hG : 0 < TBB.Gp p (TBB.bigPt P.r c)`. Use `filter_upwards [Ioo_mem_nhdsGT hG] with ε hε`. Conclude with `(hcut ε hε.1 c).1 hε.2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `filter_upwards [self_mem_nhdsWithin] with ε hε`. Establish `hε' : 0 < ε` using `hε`. Establish `hG'` using `not_lt.1 hG`. Rewrite using `[(hcut ε hε' c).2.2 hG', (hcut ε hε' c).2.1 (lt_of_le_of_lt hG' (mul_pos hδ hε'))])).2`. Establish `heq : (fun ε : ℝ => B.beta p.T.base X (D.cutF p.T.base χ f ε)) =ᶠ[𝓝[>] 0] fun ε : ℝ => ∫ c, inner ℂ (tv p (D.cutF p.T.base χ f ε) w c) (tv p f w c)` using `by filter_upwards [self_mem_nhdsWithin] with ε hε`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Establish `hε' : 0 < ε` using `hε`. Establish `hδε : 0 < δ * ε` using `mul_pos hδ hε'`. Establish `h1 : 0 < δ * ε / 2` using `by linarith`. Establish `h2 : δ * ε / 2 < δ * ε` using `by linarith`. Rewrite using `[hXdef, ← GlobalTheory.T.levelZeroPairing_cutoff_locality Wp Wq P p (M.sgn P p.l0) w χ δ ε (δ * ε / 2) f hχ hδχ hε' h1 h2 hf, hpol _ _ h1 hε']`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `integral_congr_ae (Eventually.of_forall fun c => ?_)` and prove the remaining obligations. Distinguish the cases in `hG : TBB.Gp p (TBB.bigPt P.r c) < δ * ε`. Simplify using `only [(hcut ε hε' c).2.1 hG, inner_zero_left]`. Simplify using `only [(hcut _ h1 c).1 (lt_of_lt_of_le h2 (not_lt.1 hG))]`. Establish `hfin` using `tendsto_nhds_unique (hlimL.congr' heq) hlimR`.
-
-Establish `hRR : p.RR f 0 w [] [] = B.beta p.T.base X f`. Unfold `KB.Pl.RR`. Rewrite using `[Formalism.FourierDecayAlt.P.level_zero_holds _ _ _ _ _ _ _ _ _ _ _ hf (Formalism.FourierDecayAlt.P.CutBP.good_positioned_of_cut hw)]`. Both sides reduce to the same expression. Rewrite using `[hRR, hfin, Complex.ofReal_re]`.
-
-Conclude with `integral_congr_ae (Eventually.of_forall fun c => Ew_eq_norm_tv_sq Wp Wq P p f w c)`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_topDensity_eq_levelZero : GlobalTheory.HCXi.BesselXiIntegrable → P5.ThmPActualCpt → ∀ Cb : ℝ, ∃ Cc : ℝ, ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P : M.Par) (p : KB.Pl P Wp Wq) (f : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (χ : ℝ → ℝ) (A : ℝ) (N : ℕ) (w : List C.Letter), KB.InDDplus2 P p.l0 p.T.base Cb p.Θ → C6.IsCut0 χ → B.CkOn ⊤ (B.GV P.k P.r) f → (∀ m : ℕ, B.InCC A m f) → Cc * ((P.r : ℝ) + 1) ^ 4 * ((N : ℝ) * (2 * (P.r : ℝ) + P.k + 1) ^ 2 + (2 * (P.r : ℝ) + P.k + 1) ^ 3) ≤ A → KB.CutWord P p.l0 w → w.length ≤ N → ((∀ᶠ ε in 𝓝[>] (0 : ℝ), AEStronglyMeasurable (fun c : Fin (P.r + 1) → ℂ => TBB.Ew p (fun _ => 1) (D.cutF p.T.base χ f ε) (P.r + 1) w (TBB.bigPt P.r c)) volume) ∧ ∃ h : (Fin (P.r + 1) → ℂ) → ℝ, Integrable h ∧ ∀ᶠ ε in 𝓝[>] (0 : ℝ), ∀ᵐ c : Fin (P.r + 1) → ℂ, ‖TBB.Ew p (fun _ => 1) (D.cutF p.T.base χ f ε) (P.r + 1) w (TBB.bigPt P.r c)‖ ≤ h c) → ∫ c : Fin (P.r + 1) → ℂ, TBB.Ew p (fun _ => 1) f (P.r + 1) w (TBB.bigPt P.r c) = (p.RR f 0 w [] []).re := by
   intro hXi hA Cb

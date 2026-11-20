@@ -25,7 +25,7 @@ Both sides reduce to the same expression.
     mapV (E := E) φ x i = tensMap (E := E) φ (x i) := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[map_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem mapV_smul (c : R ⊗[F] E) (x : Fin n → R ⊗[F] E) :
     mapV (E := E) φ (c • x) = tensMap (E := E) φ c • mapV (E := E) φ x := by
@@ -33,7 +33,7 @@ theorem mapV_smul (c : R ⊗[F] E) (x : Fin n → R ⊗[F] E) :
   simp [map_mul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[ratV, tensMap_inclR]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem mapV_ratV (v : Fin n → E) : mapV (E := E) φ (ratV (F := F) R v) = ratV (F := F) R' v := by
   funext i
@@ -42,7 +42,7 @@ theorem mapV_ratV (v : Fin n → E) : mapV (E := E) φ (ratV (F := F) R v) = rat
 variable (σ : E →ₐ[F] E) (J : Matrix (Fin n) (Fin n) E)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `Matrix.mulVec (((HA.mat R σ J g : GL (Fin n) (R ⊗[F] E)) : Matrix (Fin n) (Fin n) (R ⊗[F] E)).map (tensMap (E := E) φ)) (fun j => tensMap (E := E) φ (x j)) i = tensMap (E := E) φ (Matrix.mulVec ((HA.mat R σ J g : GL (Fin n) (R ⊗[F] E)) : Matrix (Fin n) (Fin n) (R ⊗[F] E)) x i)`. Rewrite using `[RingHom.map_mulVec]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lin_haMap (g : HA R σ J) (x : Fin n → R ⊗[F] E) :
     lin R' σ J (haMap σ J φ g) (mapV (E := E) φ x) = mapV (E := E) φ (lin R σ J g x) := by
@@ -55,11 +55,9 @@ theorem lin_haMap (g : HA R σ J) (x : Fin n → R ⊗[F] E) :
   rfl
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨a, ha, rfl⟩` from `hy`. Rewrite using `[mapV_ratV]`. Conclude with `Submodule.subset_span ⟨a, ha, rfl⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx => rw [mapV_smul]`.
-
-Conclude with `Submodule.smul_mem _ _ hx`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mapV_mem_spanR {m : ℕ} (Y : Fin m → Fin n → E) (s : Set (Fin m)) (x : Fin n → R ⊗[F] E)
     (hx : x ∈ spanR (F := F) R Y s) : mapV (E := E) φ x ∈ spanR (F := F) R' Y s := by
@@ -73,9 +71,9 @@ theorem mapV_mem_spanR {m : ℕ} (Y : Fin m → Fin n → E) (s : Set (Fin m)) (
   | smul c x _ hx => rw [mapV_smul]; exact Submodule.smul_mem _ _ hx
 
 /- English proof (translation)
-Simplify using `only [hR, Formalism.UG.hform, map_sum, map_mul, mapV_apply]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `h1 : tensMap (E` using `E) φ (sigR R σ (x i)) = sigR R' σ (tensMap (E := E) φ (x i)) := by`. Use `congrArg (fun f : R ⊗[F] E →+* R' ⊗[F] E => f (x i)) (tensMap_sigR (E := E) φ σ)` as an intermediate fact. Simplify using `using this`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[h1]`. Simplify using `[JR, tensMap_inclR]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hR_mapV (x y : Fin n → R ⊗[F] E) :
     hR R' σ J (mapV (E := E) φ x) (mapV (E := E) φ y) = tensMap (E := E) φ (hR R σ J x y) := by
@@ -88,7 +86,7 @@ theorem hR_mapV (x y : Fin n → R ⊗[F] E) :
   simp [JR, tensMap_inclR]
 
 /- English proof (translation)
-Simplify using `[hR, Formalism.UG.hform]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hR_zero_right (x : Fin n → R ⊗[F] E) : hR R σ J x 0 = 0 := by
   simp [hR, Formalism.UG.hform]
@@ -100,9 +98,9 @@ section Split
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {n : ℕ}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Conclude with `⟨rfl, rfl⟩`. Introduce and unpack `⟨h1, h2⟩`. Use function extensionality and compare the values at `i`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply `hinj` to reduce the goal to its premises. Rewrite using `[splT_apply, splT_apply]`. Conclude with `Prod.ext (congrFun h1 i) (congrFun h2 i)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_iff_split (hinj : Function.Injective (splT (F := F) (E := E)))
     (w u : Fin n → AF F ⊗[F] E) :
@@ -118,7 +116,7 @@ theorem eq_iff_split (hinj : Function.Injective (splT (F := F) (E := E)))
     exact Prod.ext (congrFun h1 i) (congrFun h2 i)
 
 /- English proof (translation)
-Use `choose v hv using fun i => hsurj (y₁ i, y₂ i)`. Use `⟨v, funext fun i => ?_, funext fun i => ?_⟩` and prove the remaining obligations. Conclude with `congrArg Prod.fst (hv i)`. Conclude with `congrArg Prod.snd (hv i)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_split (hsurj : Function.Surjective (splT (F := F) (E := E)))
     (y₁ : Fin n → Ainf F ⊗[F] E) (y₂ : Fin n → Af F ⊗[F] E) :
@@ -129,13 +127,13 @@ theorem exists_split (hsurj : Function.Surjective (splT (F := F) (E := E)))
   · exact congrArg Prod.snd (hv i)
 
 /- English proof (translation)
-Simplify using `only [spanR, Set.image_eq_range] at h1 h2 ⊢`. Rewrite `h1`, `h2` using `[Submodule.mem_span_range_iff_exists_fun]`. Take `⟨c1, hc1⟩` from `h1`. Take `⟨c2, hc2⟩` from `h2`. Use `choose c hc using fun a => hbij.2 (c1 a, c2 a)`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hw : w = ∑ a, c a • ratV (F` using `F) (AF F) (Y a) := by`. Rewrite using `[eq_iff_split hbij.1]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[← hc1, map_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mapV_smul, mapV_ratV]`. Use `congr 1`. Conclude with `(congrArg Prod.fst (hc a)).symm`. Rewrite using `[← hc2, map_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[mapV_smul, mapV_ratV]`. Use `congr 1`. Conclude with `(congrArg Prod.snd (hc a)).symm`. Rewrite using `[hw, Submodule.mem_span_range_iff_exists_fun]`. Conclude with `⟨c, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_spanR_of_split (hbij : Function.Bijective (splT (F := F) (E := E))) {m : ℕ}
     (Y : Fin m → Fin n → E) (s : Set (Fin m)) (w : Fin n → AF F ⊗[F] E)
@@ -165,7 +163,7 @@ theorem mem_spanR_of_split (hbij : Function.Bijective (splT (F := F) (E := E))) 
   exact ⟨c, rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨mapV_mem_spanR _ Y s w h, mapV_mem_spanR _ Y s w h⟩, fun h => mem_spanR_of_split hbij Y s w h.1 h.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_spanR_iff_split (hbij : Function.Bijective (splT (F := F) (E := E))) {m : ℕ}
     (Y : Fin m → Fin n → E) (s : Set (Fin m)) (w : Fin n → AF F ⊗[F] E) :
@@ -184,11 +182,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] (σ : E 
   (J : Matrix (Fin n) (Fin n) E)
 
 /- English proof (translation)
-Introduce `g g' h`. Establish `h1 : haMap σ J (fstA F) g = haMap σ J (fstA F) g'` using `congrArg Prod.fst h`. Establish `h2 : haMap σ J (sndA F) g = haMap σ J (sndA F) g'` using `congrArg Prod.snd h`. Establish `hm : HA.mat (AF F) σ J g = HA.mat (AF F) σ J g'`. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Apply `hinj` to reduce the goal to its premises. Rewrite using `[splT_apply, splT_apply]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Conclude with `congrArg (fun k => ((HA.mat (Ainf F) σ J k : GL (Fin n) (Ainf F ⊗[F] E)) : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)) i j) h1`. Conclude with `congrArg (fun k => ((HA.mat (Af F) σ J k : GL (Fin n) (Af F ⊗[F] E)) : Matrix (Fin n) (Fin n) (Af F ⊗[F] E)) i j) h2`.
-
-Conclude with `Subtype.ext hm`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem splitA_injective (hinj : Function.Injective (splT (F := F) (E := E))) :
     Function.Injective (splitA σ J) := by
@@ -207,11 +203,11 @@ theorem splitA_injective (hinj : Function.Injective (splT (F := F) (E := E))) :
   exact Subtype.ext hm
 
 /- English proof (translation)
-Unfold `Hsub`. Rewrite using `[mem_stabT, mem_stabT, mem_stabT]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun b => ?_, fun b => ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← mapV_ratV (fstA F), lin_haMap, h b]`. Rewrite using `[← mapV_ratV (sndA F), lin_haMap, h b]`. Introduce and unpack `⟨h1, h2⟩ b`. Rewrite using `[eq_iff_split hinj]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[← lin_haMap, mapV_ratV]`. Conclude with `h1 b`. Rewrite using `[← lin_haMap, mapV_ratV]`. Conclude with `h2 b`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_Hsub_iff (hinj : Function.Injective (splT (F := F) (E := E))) {r : ℕ} (P : Frame E n r)
     (g : HA (AF F) σ J) :
@@ -233,23 +229,23 @@ theorem mem_Hsub_iff (hinj : Function.Injective (splT (F := F) (E := E))) {r : �
       exact h2 b
 
 /- English proof (translation)
-Establish `hdiff : ∀ {R' : Type} [CommRing R'] [Algebra F R'] (φ : AF F →ₐ[F] R') (v : Fin n → AF F ⊗[F] E), mapV (E` using `E) φ (lin (AF F) σ J g v - v) = lin R' σ J (haMap σ J φ g) (mapV (E := E) φ v) - mapV (E := E) φ v := by`. Introduce `R' _ _ φ v`. Rewrite using `[map_sub, lin_haMap]`. Establish `hperp : ∀ {R' : Type} [CommRing R'] [Algebra F R'] (φ : AF F →ₐ[F] R') (v : Fin n → AF F ⊗[F] E), InXperp (AF F) σ J P v → InXperp R' σ J P (mapV (E` using `E) φ v) := by`. Introduce `R' _ _ φ v hv a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← mapV_ratV φ, hR_mapV, hv a, map_zero]`. Express the relevant statement in the definitionally equal form `(UniC (AF F) σ J P.e g ∧ ∀ v, InXperp (AF F) σ J P v → lin (AF F) σ J g v - v ∈ spanR (F := F) (AF F) P.e Set.univ) ↔ (UniC (Ainf F) σ J P.e (haMap σ J (fstA F) g) ∧ ∀ v, InXperp (Ainf F) σ J P v → lin (Ainf F) σ J (haMap σ J (fstA F) g) v - v ∈ spanR (F := F) (Ainf F) P.e Set.un …`. Establish `huni : UniC (AF F) σ J P.e g ↔ UniC (Ainf F) σ J P.e (haMap σ J (fstA F) g) ∧ UniC (Af F) σ J P.e (haMap σ J (sndA F) g)`. Unfold `UniC`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Use `⟨fun b => ?_, fun b => ?_⟩` and prove the remaining obligations. Use `mapV_mem_spanR (E := E) (fstA F) P.e _ _ (h b)` as an intermediate fact. Rewrite `this` using `[hdiff, mapV_ratV]`. Then use the resulting hypothesis. Use `mapV_mem_spanR (E := E) (sndA F) P.e _ _ (h b)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `this` using `[hdiff, mapV_ratV]`. Then use the resulting hypothesis. Introduce and unpack `⟨h1, h2⟩ b`. Rewrite using `[mem_spanR_iff_split hbij, hdiff, hdiff, mapV_ratV, mapV_ratV]`. Conclude with `⟨h1 b, h2 b⟩`. Rewrite using `[huni]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨hu1, hu2⟩, hX⟩`. Use `⟨⟨hu1, fun v₁ hv₁ => ?_⟩, ⟨hu2, fun v₂ hv₂ => ?_⟩⟩` and prove the remaining obligations. Take `⟨v, hv1, hv2⟩` from `exists_split hbij.2 v₁ 0`. Establish `hv : InXperp (AF F) σ J P v`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `a`. Apply `hbij.1` to reduce the goal to its premises. Rewrite using `[map_zero, splT_apply, ← hR_mapV, ← hR_mapV, mapV_ratV, mapV_ratV, hv1, hv2, hR_zero_right, hv₁ a]`. Both sides reduce to the same expression. Use `mapV_mem_spanR (E := E) (fstA F) P.e _ _ (hX v hv)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite `this` using `[hdiff, hv1]`. Then use the resulting hypothesis. Take `⟨v, hv1, hv2⟩` from `exists_split hbij.2 0 v₂`. Establish `hv : InXperp (AF F) σ J P v`. Introduce `a`. Apply `hbij.1` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[map_zero, splT_apply, ← hR_mapV, ← hR_mapV, mapV_ratV, mapV_ratV, hv1, hv2, hR_zero_right, hv₂ a]`. Both sides reduce to the same expression. Use `mapV_mem_spanR (E := E) (sndA F) P.e _ _ (hX v hv)` as an intermediate fact. Rewrite `this` using `[hdiff, hv2]`. Then use the resulting hypothesis. Introduce and unpack `⟨⟨hu1, hX1⟩, ⟨hu2, hX2⟩⟩`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components.
 
-Use `⟨⟨hu1, hu2⟩, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[mem_spanR_iff_split hbij, hdiff, hdiff]`. Conclude with `⟨hX1 _ (hperp _ v hv), hX2 _ (hperp _ v hv)⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mem_Nsub_iff (hbij : Function.Bijective (splT (F := F) (E := E))) {r : ℕ} (P : Frame E n r)
     (g : HA (AF F) σ J) :

@@ -33,7 +33,7 @@ def AdmE (V W : HSp D) (χ χ' : IdC D) : Prop :=
   V.rank = W.rank ∧ IsHC D χ ∧ IsHC D χ' ∧ ResEta D χ V.rank ∧ ResEta D χ' W.rank
 
 /- English proof (translation)
-Establish `h0 : ResEta D 1 0` using `⟨GlobalTheory.VolHeckeCompare.exists_isEta D, fun _ _ _ => by simp⟩`. Establish `h1` using `resEta_parity (m := V.rank) h0 (by rw [Nat.even_iff] at hV; omega)`. Conclude with `⟨h, isHC_one D, isHC_one D, h1, h ▸ h1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem admissibleEven_trivial {V W : HSp D} (h : V.rank = W.rank) (hV : Even V.rank) : AdmE V W 1 1 := by
   have h0 : ResEta D 1 0 := ⟨GlobalTheory.VolHeckeCompare.exists_isEta D, fun _ _ _ => by simp⟩
@@ -41,7 +41,7 @@ theorem admissibleEven_trivial {V W : HSp D} (h : V.rank = W.rank) (hV : Even V.
   exact ⟨h, isHC_one D, isHC_one D, h1, h ▸ h1⟩
 
 /- English proof (translation)
-Take `⟨η, h1, h2, h3, -⟩` from `GlobalTheory.Mem.EtaTilde.exists_etaTilde D`. Break down `Nat.even_or_odd V.rank with h | h` into its components or cases. Conclude with `⟨1, admissibleEven_trivial e h⟩`. Use `resEta_parity (m := V.rank) h3 (by rw [Nat.odd_iff] at h; omega)` as an intermediate fact. Conclude with `⟨η, e, ⟨h1, fun τ => ⟨_, h2 τ⟩⟩, ⟨h1, fun τ => ⟨_, h2 τ⟩⟩, this, e ▸ this⟩`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_splittingCharacter_self {V W : HSp D} (e : V.rank = W.rank) : ∃ χ : IdC D, AdmE V W χ χ := by
   obtain ⟨η, h1, h2, h3, -⟩ := GlobalTheory.Mem.EtaTilde.exists_etaTilde D
@@ -51,20 +51,20 @@ theorem exists_splittingCharacter_self {V W : HSp D} (e : V.rank = W.rank) : ∃
     exact ⟨η, e, ⟨h1, fun τ => ⟨_, h2 τ⟩⟩, ⟨h1, fun τ => ⟨_, h2 τ⟩⟩, this, e ▸ this⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨h.1.1.mul k.1.1, fun x => by rw [MonoidHom.mul_apply, h.1.2, k.1.2, mul_one]⟩, fun τ => (h.2 τ).elim fun _ ha => (k.2 τ).elim fun _ hb => ⟨_, GlobalTheory.Chain.StepVac.hasInfExp_mul ha hb⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsHC.mul {χ ν : IdC D} (h : IsHC D χ) (k : IsHC D ν) : IsHC D (χ * ν) :=
   ⟨⟨h.1.1.mul k.1.1, fun x => by rw [MonoidHom.mul_apply, h.1.2, k.1.2, mul_one]⟩, fun τ =>
     (h.2 τ).elim fun _ ha => (k.2 τ).elim fun _ hb => ⟨_, GlobalTheory.Chain.StepVac.hasInfExp_mul ha hb⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, h.2.1, h.2.2.1.mul h1, h.2.2.2.1, resEta_mul h.2.2.2.2 h2⟩`.
+Supply the required witnesses or components.
 -/
 theorem AdmE.mul_right {V W : HSp D} {χ χ' ν : IdC D} (h : AdmE V W χ χ') (h1 : IsHC D ν) (h2 : ResEta D ν 0) :
     AdmE V W χ (χ' * ν) := ⟨h.1, h.2.1, h.2.2.1.mul h1, h.2.2.2.1, resEta_mul h.2.2.2.2 h2⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, h.2.1.mul h1, h.2.2.1, resEta_mul h.2.2.2.1 h2, h.2.2.2.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem AdmE.mul_left {V W : HSp D} {χ χ' ν : IdC D} (h : AdmE V W χ χ') (h1 : IsHC D ν) (h2 : ResEta D ν 0) :
     AdmE V W (χ * ν) χ' := ⟨h.1, h.2.1.mul h1, h.2.2.1, resEta_mul h.2.2.2.1 h2, h.2.2.2.2⟩
@@ -101,21 +101,19 @@ def WeilFun.patch {ψ : AddChar (AF D.host.F) ℂ} (Wf : WeilFun D ψ)
     om_unr := fun V W χ χ' ha => by rw [e ha.1]; exact Wf.om_unr V W χ χ' ha }
 
 /- English proof (translation)
-The claim follows from `if_pos h`.
+A detailed English derivation is pending.
 -/
 theorem WeilFun.patch_om_eq {ψ : AddChar (AF D.host.F) ℂ} (Wf : WeilFun D ψ) (o) {V W : HSp D} (h : V.rank = W.rank) (χ χ') :
     (Wf.patch o).om V W χ χ' = o V W χ χ' := if_pos h
 
 /- English proof (translation)
-The claim follows from `if_neg h`.
+A detailed English derivation is pending.
 -/
 theorem WeilFun.patch_om_ne {ψ : AddChar (AF D.host.F) ℂ} (Wf : WeilFun D ψ) (o) {V W : HSp D} (h : V.rank ≠ W.rank) (χ χ') :
     (Wf.patch o).om V W χ χ' = Wf.om V W χ χ' := if_neg h
 
 /- English proof (translation)
-Use `choose o ho using he ψ hψ`. Use `⟨Wf.patch fun V W χ χ' => if k : AdmE V W χ χ' then o V W χ χ' k else 1, ⟨fun V W χ χ' k => ?_, fun V W χ χ' ν k h1 h2 g x y hy => ?_, fun V W χ χ' ν k h1 h2 g x y hy => ?_⟩, fun V W χ χ' h => WeilFun.patch_om_ne _ _ h _ _⟩` and prove the remaining obligations. Rewrite using `[WeilFun.patch_om_eq _ _ k.1, dif_pos k]`. Conclude with `ho _ _ _ _ k`. Rewrite using `[WeilFun.patch_om_eq _ _ k.1, WeilFun.patch_om_eq _ _ k.1, dif_pos k, dif_pos (k.mul_right h1 h2)]`.
-
-Conclude with `(ht ψ hψ V W χ χ' ν k h1 h2 _ (ho _ _ _ _ k)).1 _ (ho _ _ _ _ _) g x y hy`. Rewrite using `[WeilFun.patch_om_eq _ _ k.1, WeilFun.patch_om_eq _ _ k.1, dif_pos k, dif_pos (k.mul_left h1 h2)]`. Conclude with `(ht ψ hψ V W χ χ' ν k h1 h2 _ (ho _ _ _ _ k)).2 _ (ho _ _ _ _ _) g x y hy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem WeilFun.exists_eqRank (he : WeilOnEqEx D) (ht : WeilTwEq D) {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1))
     (Wf : WeilFun D ψ) : ∃ Wf' : WeilFun D ψ, Wf'.EqRank ∧
@@ -132,9 +130,9 @@ theorem WeilFun.exists_eqRank (he : WeilOnEqEx D) (ht : WeilTwEq D) {ψ : AddCha
     exact (ht ψ hψ V W χ χ' ν k h1 h2 _ (ho _ _ _ _ k)).2 _ (ho _ _ _ _ _) g x y hy
 
 /- English proof (translation)
-Use `haveI : IsEmpty (Fin W.rank) := by rw [hW]; infer_instance`. Use `haveI : IsEmpty (Fin V.rank) := by rw [hV]; infer_instance`. Establish `hs : ∀ x y : WA V W, x = y` using `fun x y => Matrix.ext fun _ j => isEmptyElim j`. Use `⟨fun g h w₀ Φ Φ' e => ?_, fun _ _ _ _ _ => rfl, fun Φ w => (continuous_const : Continuous fun _ : GA D V × GA D W => Φ.1 w), fun _ _ _ _ _ _ => rfl, fun e _ g h _ _ x y hx hy => ⟨1, one_pos, fun ℓ _ Φ => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hs (actHom V W g h w₀) w₀]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `e`. Establish `hy1 : y = 1` using `Units.ext (by rw [hy, Matrix.det_isEmpty]; simp)`. Establish `hx1 : x = 1` using `Units.ext (by rw [hx, Matrix.det_isEmpty]; simp)`. Simplify using `[splitFac, hy1, hx1]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isWeilOn_both_zero (ψ : AddChar (AF D.host.F) ℂ) {V W : HSp D} (hV : V.rank = 0) (hW : W.rank = 0) (χ χ' : IdC D) :
     IsWeilOn ψ V W χ χ' 1 := by
@@ -150,7 +148,7 @@ theorem isWeilOn_both_zero (ψ : AddChar (AF D.host.F) ℂ) {V W : HSp D} (hV : 
     simp [splitFac, hy1, hx1]
 
 /- English proof (translation)
-Unfold `splitFac`. Simplify using `only [if_pos h.le, MonoidHom.mul_apply]`. Conclude with `⟨by rw [_root_.mul_inv_rev, mul_assoc], by rw [mul_comm (χ y), mul_left_comm]⟩`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem splitFac_twist_eq {V W : HSp D} (h : V.rank = W.rank) (χ χ' ν : IdC D) (x y : (AE D)ˣ) :
     splitFac V W χ (χ' * ν) x y = (ν x)⁻¹ * splitFac V W χ χ' x y ∧
@@ -229,25 +227,23 @@ variable {θ : InfF D} {X : ThetaX D} {T : ThetaTied D X} {W : WeilTied D X T} {
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Distinguish the cases in `ha : AdmE V V' (T.eChr χ) (T.eChr χ') ∧ V.SigOK`. Use `swap`. Conclude with `⟨_, fun _ => rfl, fun h1 h2 => absurd ⟨h1, h2⟩ ha⟩`. Take `⟨i1, i2, i3, i4, i5, -, i7⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V`. Take `⟨μ, hμ, hu⟩` from `GlobalTheory.Mem.VolMeasure.existsUnique_isVolMeasG D V ha.2`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, 𝓕, h𝓕⟩` from `GlobalTheory.Mem.AdelicGroupFund.rightInvariant_and_exists_fundamentalDomain D V μ hμ.1`. Establish `hw` using `hE.weil _ _ _ _ ha.1`. Establish `hth : ∀ Φ : X.Sch V V', W.evS V V' Φ ∈ ThS W.ψ V V'` using `fun Φ => by`. Establish `hf : W.evS V V' Φ ∈ Set.range (W.evS V V')` using `⟨Φ, rfl⟩`. Rewrite `hf` using `[h.sch]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mem_ThS.2 hf`. Establish `hom` using `fun p Φ => h.om V V' χ χ' p Φ ⟨_, hth Φ⟩ rfl`. Establish `hc : ∀ F : X.cusp V, IsCuspForm θ V (T.ev V F)` using `fun F => by`. Establish `hf : T.ev V F ∈ Set.range (T.ev V)` using `⟨F, rfl⟩`. Rewrite `hf` using `[h.forms]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨hf, (T.cusp V F).1 F.2⟩`. Establish `k` using `fun Φ (F : X.cusp V) => hL θ h.inf W.ψ W.ψ_std V V' _ _ ha.1 _ hw μ 𝓕 ⟨hμ.1, h𝓕⟩ ⟨_, hth Φ⟩ _ (hc F)`. Simplify using `only [← hom] at k`. Establish `k2 : ∀ Φ (F : X.cusp V), ∃ G : X.AF V', T.ev V' G = fun x => ∫ g in 𝓕, W.evS V V' (W.om V V' χ χ' (g, x) Φ) 0 * T.ev V (F : X.AF V) g ∂μ` using `fun Φ F => by`. Use `(k Φ F).2` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[← Set.mem_setOf_eq (p := fun φ => IsAutFunSm θ V' φ), ← h.forms]`. Conclude with `this`. Use `choose G hG using k2`. Use `⟨(T.petC V : ℂ) • LinearMap.mk₂ ℂ G ?_ ?_ ?_ ?_, fun h' => absurd ha h', fun _ _ μ' 𝓕' hμ' Φ F x => ?_⟩` and prove the remaining obligations. Introduce `Φ Φ' F`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `T.ev_inj V' (funext fun x => ?_)` and prove the remaining obligations. Rewrite using `[map_add, Pi.add_apply, hG, hG, hG, ← integral_add ((k Φ F).1 x) ((k Φ' F).1 x)]`. Simplify using `[add_mul]`. Introduce `c Φ F`. Use `T.ev_inj V' (funext fun x => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_smul, Pi.smul_apply, hG, hG, ← integral_smul]`. Simplify using `[mul_assoc]`. Introduce `Φ F F'`. Use `T.ev_inj V' (funext fun x => ?_)` and prove the remaining obligations. Rewrite using `[map_add, Pi.add_apply, hG, hG, hG, ← integral_add ((k Φ F).1 x) ((k Φ F').1 x)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[mul_add]`. Introduce `c Φ F`. Use `T.ev_inj V' (funext fun x => ?_)` and prove the remaining obligations. Rewrite using `[map_smul, Pi.smul_apply, hG, hG, ← integral_smul]`. Simplify using `only [Submodule.coe_smul, map_smul, Pi.smul_apply, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `integral_congr_ae (Filter.Eventually.of_forall fun g => mul_left_comm _ _ _)`. Take `rfl : μ' = μ` from `hu _ hμ'.1 haveI := hμ.1`. Rewrite using `[LinearMap.smul_apply, LinearMap.smul_apply, map_smul, Pi.smul_apply, LinearMap.mk₂_apply, hG, smul_eq_mul]`. Use `congr 1`. Use `h𝓕.setIntegral_eq hμ'.2 fun γ g => ?_` and prove the remaining obligations.
-
-Establish `e : Wf.om V V' (T.eChr χ) (T.eChr χ') ((γ : GA D V) * g, x) = Wf.om V V' (T.eChr χ) (T.eChr χ') (γ, 1) * Wf.om V V' (T.eChr χ) (T.eChr χ') (g, x)`. Rewrite using `[← map_mul, Prod.mk_mul_mk, one_mul]`. Use `show W.evS V V' (W.om V V' χ χ' ((γ : GA D V) * g, x) Φ) 0 * T.ev V F ((γ : GA D V) * g) = _`. Rewrite using `[hom, hom, e, Module.End.mul_apply, hw.aut γ γ.2 1 (one_mem _), (hc F).1.left γ γ.2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Realises.exists_liftEq (h : Realises B Wf Tw Rc) (hE : Wf.EqRank) (hL : LiftAutEq D) (V V' : HSp D) (χ χ' : X.Chr) :
     ∃ t : X.Sch V V' →ₗ[ℂ] X.cusp V →ₗ[ℂ] X.AF V',
@@ -311,9 +307,9 @@ abbrev withLifts (X : ThetaX D) (t : ∀ V V', X.Chr → X.Chr → X.Sch V V' �
   { X with th := t }
 
 /- English proof (translation)
-Use `choose t t1 t2 using h.exists_liftEq hE hL`. Set `T' : ThetaTied D (withLifts X t)` to `{ T with }`. Set `W' : WeilTied D (withLifts X t) T'` to `{ W with om_tw := ⟨W.om_tw.1, W.om_tw.2, W.om_tw.3, W.om_tw.4⟩ th := fun V V' χ χ' hr h1 h2 hV μ 𝓕 hμ Φ F x => by show T.ev V' (t V V' χ χ' Φ F) x = _`. Rewrite using `[t1 V V' χ χ' fun k => hr k.1.1]`. Conclude with `W.th V V' χ χ' hr h1 h2 hV μ 𝓕 hμ Φ F x }`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `B' : BesselTied D (withLifts X t) T' W'` to `{ B with }`. Take `⟨K, k1, k2⟩` from `h.kfin`. Use `⟨withLifts X t, T', W', B', rfl, { h with eqRank := hE thOff := fun V V' χ χ' k => ?_ thEq := t2 kfin := ⟨{ K with }, k1, k2⟩ besOnly := h.besOnly }⟩` and prove the remaining obligations. Conclude with `(t1 V V' χ χ' fun k' => k ⟨Or.inr k'.1, k'.2⟩).trans (h.thOff V V' χ χ' fun k' => k ⟨Or.inl k'.1, k'.2⟩)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem Realises.exists_realisesE (h : Realises B Wf Tw Rc) (hE : Wf.EqRank) (hL : LiftAutEq D) :
     ∃ (X' : ThetaX D) (T' : ThetaTied D X') (W' : WeilTied D X' T') (B' : BesselTied D X' T' W') (e : W'.ψ = W.ψ),
@@ -341,7 +337,7 @@ theorem Realises.exists_realisesE (h : Realises B Wf Tw Rc) (hE : Wf.EqRank) (hL
 end Lift
 
 /- English proof (translation)
-Introduce `θ hθ ψ hψ Wf hE Tw Rc` and use `by obtain ⟨X, T, W, B, rfl, k⟩ := h θ hθ ψ hψ Wf Tw Rc exact Realises.exists_realisesE k hE hL`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem realisedExE_of (h : RealisedEx D) (hL : LiftAutEq D) : RealisedExE D := fun θ hθ ψ hψ Wf hE Tw Rc => by
   obtain ⟨X, T, W, B, rfl, k⟩ := h θ hθ ψ hψ Wf Tw Rc
@@ -385,18 +381,18 @@ variable {θ : InfF D} {X : ThetaX D} {T : ThetaTied D X} {W : WeilTied D X T} {
 include h
 
 /- English proof (translation)
-The claim follows from `((GlobalTheory.AutFunCompare.isInfFam_iff θ').1 h').trans ((GlobalTheory.AutFunCompare.isInfFam_iff θ).1 h.inf).symm`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_isInfFam {θ' : InfF D} (h' : IsInfFam θ') : θ' = θ :=
   ((GlobalTheory.AutFunCompare.isInfFam_iff θ').1 h').trans ((GlobalTheory.AutFunCompare.isInfFam_iff θ).1 h.inf).symm
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨θ, h.inf⟩, fun _ h' V _ => by rw [h.eq_of_isInfFam h']; exact h.forms V⟩`.
+Supply the required witnesses or components.
 -/
 theorem afTiedSm : ThetaSmoothnessCondition T := ⟨⟨θ, h.inf⟩, fun _ h' V _ => by rw [h.eq_of_isInfFam h']; exact h.forms V⟩
 
 /- English proof (translation)
-Introduce `θ' h' V φ` and use `by rw [h.eq_of_isInfFam h'] refine ⟨fun hφ => ?_, fun hφ => Submodule.subset_span hφ⟩ have : AFs θ V ≤ LinearMap.range (T.ev V) := Submodule.span_le.2 (by rw [LinearMap.coe_range, h.forms V]) have h2 : φ ∈ Set.range (T.ev V) := this hφ rwa [h.forms V] at h2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem formSub : FormSub D := fun θ' h' V φ => by
   rw [h.eq_of_isInfFam h']
@@ -406,7 +402,7 @@ theorem formSub : FormSub D := fun θ' h' V φ => by
   rwa [h.forms V] at h2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨θ, h.inf⟩, fun _ h' V hV P hP => by intros rename_i F rw [h.eq_of_isInfFam h', h.typ, mem_TypS h.formSub ht h.inf hV hP] have : T.ev V F ∈ Set.range (T.ev V) := ⟨F, rfl⟩ rw [h.forms V] at this exact ⟨fun k => k.2, fun k => ⟨this, k⟩⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem typTied (ht : TypAdd D) : TypTied T := ⟨⟨θ, h.inf⟩, fun _ h' V hV P hP => by
   intros
@@ -417,7 +413,7 @@ theorem typTied (ht : TypAdd D) : TypTied T := ⟨⟨θ, h.inf⟩, fun _ h' V hV
   exact ⟨fun k => k.2, fun k => ⟨this, k⟩⟩⟩
 
 /- English proof (translation)
-Introduce `V V' χ χ' hr h1 h2 S u1 u2 k hk k' hk' Φ hΦ` and use `by have hc : ∀ χ, IsHC D (T.eChr χ) := fun χ => by have : T.eChr χ ∈ Set.range T.eChr := ⟨χ, rfl⟩ rwa [T.eChr_range] at this have hf : W.evS V V' Φ ∈ Set.range (W.evS V V') := ⟨Φ, rfl⟩ rw [h.sch] at hf refine W.evS_inj V V' ?_ rw [h.om V V' χ χ' (k, k') Φ ⟨_, mem_ThS.2 hf⟩ rfl, W …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem weilUnrTied : WeilUnramifiedCondition W := fun V V' χ χ' hr h1 h2 S u1 u2 k hk k' hk' Φ hΦ => by
   have hc : ∀ χ, IsHC D (T.eChr χ) := fun χ => by
@@ -438,24 +434,22 @@ def schEquiv (V V' : HSp D) : X.Sch V V' ≃ₗ[ℂ] ThS W.ψ V V' :=
       exact hf.imp fun _ e => Subtype.ext e⟩
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (h.om V V' χ χ' p Φ _ rfl)`.
+A detailed English derivation is pending.
 -/
 theorem schEquiv_om (V V' : HSp D) (χ χ') (p) (Φ : X.Sch V V') :
     h.schEquiv V V' (W.om V V' χ χ' p Φ) = Wf.om V V' (T.eChr χ) (T.eChr χ') p (h.schEquiv V V' Φ) :=
   Subtype.ext (h.om V V' χ χ' p Φ _ rfl)
 
 /- English proof (translation)
-Establish `hc : ∀ χ, IsHC D (T.eChr χ)` using `fun χ => by`. Establish `: T.eChr χ ∈ Set.range T.eChr` using `⟨χ, rfl⟩`. Rewrite `this` using `[T.eChr_range]`. Then use the resulting hypothesis. Establish `ha : ∀ {V V' : HSp D} {χ χ'}, V.rank = V'.rank → ResEta D (T.eChr χ) V.rank → ResEta D (T.eChr χ') V'.rank → AdmE V V' (T.eChr χ) (T.eChr χ')` using `fun hr h1 h2 => ⟨hr, hc _, hc _, h1, h2⟩`. Establish `ho` using `fun V V' χ χ' p Φ => h.om V V' χ χ' p Φ (h.schEquiv V V' Φ) rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun V V' _ => h.sch V V', fun V V' χ χ' hr h1 h2 g x w₀ Φ Φ' e => ?_, fun V V' χ χ' hr h1 h2 γ hγ γ' hγ' Φ => ?_, fun V V' χ χ' hr h1 h2 Φ w => ?_, fun V V' χ χ' hr h1 h2 μ 𝓕 hμ h𝓕 p Φ => ?_, fun V V' χ χ' hr h1 h2 e he g x hg hx a b k1 k2 => ?_, fun V V' χ χ' ν hr h1 h2 h3 g x …` and prove the remaining obligations. Rewrite using `[ho, ho]`. Conclude with `(h.eqRank.weil _ _ _ _ (ha hr h1 h2)).Heisenberg₂ g x w₀ _ _ e`. Rewrite using `[ho]`. Conclude with `(h.eqRank.weil _ _ _ _ (ha hr h1 h2)).aut γ hγ γ' hγ' _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [ho]`. Conclude with `(h.eqRank.weil _ _ _ _ (ha hr h1 h2)).cont _ w`. Rewrite using `[ho]`. Conclude with `(h.eqRank.weil _ _ _ _ (ha hr h1 h2)).unit μ 𝓕 hμ h𝓕 p _`. Take `⟨r, hr0, k⟩` from `(h.eqRank.weil _ _ _ _ (ha hr h1 h2)).split e he g x hg hx a b k1 k2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨r, hr0, fun ℓ hℓ Φ => ?_⟩` and prove the remaining obligations. Use `k (ℓ ∘ₗ (h.schEquiv V V').symm.toLinearMap) (fun u hu f f' e' => by` as an intermediate fact. Take `⟨Ψ, rfl⟩` from `(h.schEquiv V V').surjective f`. Take `⟨Ψ', rfl⟩` from `(h.schEquiv V V').surjective f'`. Simplify using `using hℓ u hu Ψ Ψ' e') (h.schEquiv V V' Φ)`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[← h.schEquiv_om]`. Simplify using `using this`. Use `LinearMap.ext fun Φ => (h.schEquiv V V').injective ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, map_smul, h.schEquiv_om, h.schEquiv_om, map_mul, h.eqRank.twW _ _ _ _ _ (ha hr h1 h2) (hc ν) h3 g x a k, LinearMap.smul_apply]`. Use `LinearMap.ext fun Φ => (h.schEquiv V V').injective ?_` and prove the remaining obligations.
-
-Rewrite using `[LinearMap.smul_apply, map_smul, h.schEquiv_om, h.schEquiv_om, map_mul, h.eqRank.twV _ _ _ _ _ (ha hr h1 h2) (hc ν) h3 g x a k, LinearMap.smul_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eqTied : WeilThetaCompatibility W := by
   have hc : ∀ χ, IsHC D (T.eChr χ) := fun χ => by
@@ -488,20 +482,20 @@ theorem eqTied : WeilThetaCompatibility W := by
       h.eqRank.twV _ _ _ _ _ (ha hr h1 h2) (hc ν) h3 g x a k, LinearMap.smul_apply]
 
 /- English proof (translation)
-Take `⟨K, -⟩` from `h.kfin`. Conclude with `⟨⟨T, h.afTiedSm, h.typTied ht, W, h.weilUnrTied, K, h.phiUp, B, hr, hp⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem allTied (ht : TypAdd D) {A : ProvA} (hr : RealTied D) (hp : ProvisionCompatibility D A) : Nonempty (AllTied D X A) := by
   obtain ⟨K, -⟩ := h.kfin
   exact ⟨⟨T, h.afTiedSm, h.typTied ht, W, h.weilUnrTied, K, h.phiUp, B, hr, hp⟩⟩
 
 /- English proof (translation)
-Unfold `ThetaTied.petC RecFun.petC`. Rewrite using `[h.petF, h.petR]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem petC_eq (V : HSp D) : T.petC V = Rc.petC V := by
   unfold ThetaTied.petC RecFun.petC; rw [h.petF, h.petR]
 
 /- English proof (translation)
-Introduce `μ j hj x y` and use `by obtain ⟨⟨m, hm⟩, h2⟩ := hi μ j hj x y have e := T.pet _ (D.sp.Y_sig j) m.1 m.2 hm (X.rowAF μ j x) (X.rowAF μ j y) unfold ThetaX.petY rw [e, (h2 m hm).2, h.row, h.row, h.mY, ← h.petC_eq] simp only [ThetaTied.petC, Complex.ofReal_mul, mul_assoc]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem tieRowIsom (hi : Rc.RowIsom) : X.TieRowIsom := fun μ j hj x y => by
   obtain ⟨⟨m, hm⟩, h2⟩ := hi μ j hj x y
@@ -511,7 +505,7 @@ theorem tieRowIsom (hi : Rc.RowIsom) : X.TieRowIsom := fun μ j hj x y => by
   simp only [ThetaTied.petC, Complex.ofReal_mul, mul_assoc]
 
 /- English proof (translation)
-Introduce `u μ φ F` and use `by have hι : HSpace.IsIsomEmb (D.sp.Y D.R.m) (D.sp.X D.R.m) (D.sp.iX'.comp D.sp.eYm.symm.toLinearMap) := fun x y => by have h1 := D.sp.iX'_isom (D.sp.eYm.symm x) (D.sp.eYm.symm y) have h2 := D.sp.eYm_isom (D.sp.eYm.symm x) (D.sp.eYm.symm y) simp only [LinearEquiv.coe_coe, LinearE …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem tieBm (hi : Rc.TopTie) : X.TieBm := fun u μ φ F => by
   have hι : HSpace.IsIsomEmb (D.sp.Y D.R.m) (D.sp.X D.R.m) (D.sp.iX'.comp D.sp.eYm.symm.toLinearMap) := fun x y => by
@@ -525,7 +519,7 @@ theorem tieBm (hi : Rc.TopTie) : X.TieBm := fun u μ φ F => by
   simp only [T.conj, star_star, h.col, h.row, h.mY, ← h.petC_eq, ThetaTied.petC, Complex.ofReal_mul, mul_assoc]
 
 /- English proof (translation)
-Unfold `ThetaX.carY RecFun.carY`. Use `split_ifs`. Rewrite using `[map_mul, map_inv, h.chr, h.eta]`. Conclude with `h.chr _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem carY_eq (μ s i) : T.eChr (X.carY μ s i) = Rc.carY μ s i := by
   unfold ThetaX.carY RecFun.carY
@@ -534,7 +528,7 @@ theorem carY_eq (μ s i) : T.eChr (X.carY μ s i) = Rc.carY μ s i := by
   · exact h.chr _ _
 
 /- English proof (translation)
-Introduce `μ j hj y x` and use `by obtain ⟨L, hL, hx⟩ := hi μ j hj y obtain ⟨⟨m, hm⟩, h2⟩ := hx x have e : T.ev _ (X.dnY μ j (X.rowAF μ (j + 1) y)) = L := by funext g obtain ⟨⟨n, hn⟩, h3⟩ := hL g have k := W.th _ _ _ _ (rank_Y_ne X j hj) (row_lift_ok T μ (j + 1) (by omega) hj (j + 1) hj) (row_lift_ok T μ (j + 1 …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem tieIo (hi : Rc.IoTie Wf) : X.TieIo := fun μ j hj y x => by
   obtain ⟨L, hL, hx⟩ := hi μ j hj y
@@ -567,17 +561,13 @@ structure RecFun.ChrIs {θ : InfF D} {ψ : AddChar (AF D.host.F) ℂ} (Rc : RecF
 open Formalism.IndefR.Links in
 
 /- English proof (translation)
-Use `choose n hn ho using hf`. Use `choose m hm using fun j => GlobalTheory.CharTransport.exists_chrEq D (C.mu0 j) (C.isMu0 j).unitary`. Use `choose x hx using fun μ => GlobalTheory.CharTransport.exists_chrEq D (xi μ) (Formalism.L2.Host.HChar.isUnitary_of_order (hn μ) (ho μ))`. Take `⟨η, hη⟩` from `GlobalTheory.CharTransport.exists_chrEq D C.eta C.isEta.unitary`. Take `⟨θ₀, hθ⟩` from `GlobalTheory.Member.exists_isInfFam_family D`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hres` using `GlobalTheory.Mem.EtaTilde.isEta_res D η C.eta hη C.isEta`. Take `⟨P⟩` from `GlobalTheory.PosOneData.nonempty_besselPeriodPositionOneData D`. Take `⟨Dc⟩` from `GlobalTheory.Mem.ThModel.nonempty_orthDec D`. Take `⟨R⟩` from `nonempty_recFun θ ψ (GlobalTheory.Mem.AntiChar.exists_char D) (GlobalTheory.Mem.EtaTilde.exists_etaTilde D) (GlobalTheory.Mem.ThetaNonzero.exists_thetaFun_ne_zero D ψ) Dc P`. Establish `h2` using `D.R.two_le_m`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hexp : ∀ μ (j : Fin D.R.m) τ, HasInfExp D (m j * x μ) τ (-(D.hc τ).e j)` using `fun μ j τ => by`. Use `GlobalTheory.Chain.StepVac.hasInfExp_mul (GlobalTheory.HeckeInfExp.hasInfExp_of_chrEq D _ _ _ (hm j) (GlobalTheory.Chain.StepVac.hasInfQ_tau (C.isMu0 j).inf) τ) (GlobalTheory.Chain.StepVac.hasInfExp_of_order hθ (hx μ) (hn μ) (ho μ) τ)` as an intermediate fact. Rewrite `this` using `[add_zero, Formalism.L2.Host.eExp, Equiv.symm_apply_apply]`. Then use the resulting hypothesis. Establish `heq : ∀ μ j, ChrEq (m j * x μ) (C.mu0 j * xi μ)` using `fun μ j => ⟨⟨(hm j).1.1.mul (hx μ).1.1, fun y => by rw [MonoidHom.mul_apply, (hm j).1.2, (hx μ).1.2, mul_one]⟩, fun P e he k y hy => by`. Rewrite using `[MonoidHom.mul_apply, Circle.coe_mul, (hm j).2 P e he k y hy, (hx μ).2 P e he k y hy, ← Units.val_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `rfl⟩`. Establish `e : ∀ j : Fin D.R.m, (⟨(j.1 + 1 - 1) % D.R.m, Nat.mod_lt _ (by omega)⟩ : Fin D.R.m) = j` using `fun j => Fin.ext (by simp [Nat.mod_eq_of_lt j.2])`. Use `⟨{ R with chr := fun μ j => m ⟨(j - 1) % D.R.m, Nat.mod_lt _ (by omega)⟩ * x μ chr_hc := fun μ _ => ⟨(heq μ _).1, fun τ => ⟨_, hexp μ _ τ⟩⟩ chr_inf := fun μ j τ => by rw [e]; exact hexp μ j τ chr_res := fun μ _ _ _ => ⟨⟨_, hres⟩, fun η' _ a => by` and prove the remaining obligations. Rewrite using `[pow_zero, MonoidHom.mul_apply, GlobalTheory.GridWeil.triv_base (hm _) (C.isMu0 _).triv a, GlobalTheory.GridWeil.triv_base (hx μ) (ht μ) a, mul_one]⟩`. Use `eta := η, eta_hc := hη.1`.
-
-Use `eta_inf := GlobalTheory.HeckeInfExp.hasInfExp_of_chrEq D _ _ _ hη (GlobalTheory.Chain.StepVac.hasInfQ_tau (a := fun _ => 1 / 2) ⟨_, fun _ => by norm_num, C.isEta.inf⟩)`. Use `eta_res := ⟨⟨_, hres⟩, fun η' hη' a => by`. Rewrite using `[(GlobalTheory.IdeleNormChar.existsUnique_isEta D).unique hη' hres, pow_one, MonoidHom.comp_apply]⟩`. Use `eta_unr := GlobalTheory.EtaConjExist.unram_of_chrEq hη C.isEta.unr }, fun μ j => ?_, hη⟩`. Use `show ChrEq (m _ * x μ) _`.
-
-Rewrite using `[e]`. Conclude with `heq μ j`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem RecFun.exists_chrIs (C : Formalism.L2.Host.CharFrame D) (xi : D.what₂.Tup → Formalism.L2.Host.HChar D.host.E)
     (hf : ∀ μ, ∃ n : ℕ, 0 < n ∧ (xi μ).OrderDvd n) (ht : ∀ μ, (xi μ).TrivOn D.host.F) (θ : InfF D)
@@ -629,14 +619,14 @@ def RecordIsForms (D : D7) (C : Formalism.L2.Host.CharFrame D) (xi : D.what₂.T
     ∃ Rc : RecFun D θ ψ, Rc.ChrIs C xi ∧ Rc.OfRecord Wf
 
 /- English proof (translation)
-Introduce `θ hθ ψ hψ Wf` and use `(h θ hθ ψ hψ Wf).imp fun _ k => ⟨k.1, k.2.rowIsom, k.2.io⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem RecordIsForms.what₂ {C : Formalism.L2.Host.CharFrame D} {xi : D.what₂.Tup → Formalism.L2.Host.HChar D.host.E}
     (h : RecordIsForms D C xi) : RowsAreForms D C xi := fun θ hθ ψ hψ Wf =>
   (h θ hθ ψ hψ Wf).imp fun _ k => ⟨k.1, k.2.rowIsom, k.2.io⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun μ j => by rw [h.chr]; exact k.chr μ j, by rw [h.eta]; exact k.eta⟩`.
+Supply the required witnesses or components.
 -/
 theorem RealisesE.chrRead {θ : InfF D} {X : ThetaX D} {T : ThetaTied D X} {W : WeilTied D X T} {B : BesselTied D X T W}
     {Wf : WeilFun D W.ψ} {Tw : Tow D} {Rc : RecFun D θ W.ψ} (h : RealisesE B Wf Tw Rc) {C : Formalism.L2.Host.CharFrame D}
@@ -644,9 +634,9 @@ theorem RealisesE.chrRead {θ : InfF D} {X : ThetaX D} {T : ThetaTied D X} {W : 
   ⟨fun μ j => by rw [h.chr]; exact k.chr μ j, by rw [h.eta]; exact k.eta⟩
 
 /- English proof (translation)
-Take `⟨θ, hθ⟩` from `GlobalTheory.Member.exists_isInfFam_family D`. Take `⟨Wf₀⟩` from `hW ψ hψ`. Take `⟨Wf, hE, -⟩` from `Wf₀.exists_eqRank he htw hψ`. Take `⟨Rc, hR⟩` from `RecFun.exists_chrIs C xi hf ht θ ψ`. Take `⟨X, T, W, B, rfl, k⟩` from `hX θ hθ ψ hψ Wf hE Tw Rc`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨X, T, W, k.eqTied, k.chrRead hR⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_chrRead (hX : RealisedExE D) (hW : WeilEx D) (he : WeilOnEqEx D) (htw : WeilTwEq D) (Tw : Tow D)
     {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) (C : Formalism.L2.Host.CharFrame D)
@@ -661,7 +651,7 @@ theorem exists_chrRead (hX : RealisedExE D) (hW : WeilEx D) (he : WeilOnEqEx D) 
   exact ⟨X, T, W, k.eqTied, k.chrRead hR⟩
 
 /- English proof (translation)
-The claim follows from `RecFun.exists_chrIs C _ (fun _ => ⟨1, one_pos, one_pow _⟩) (fun _ => ⟨fun _ _ => by rw [Formalism.L2.Host.HChar.resFin, MonoidHom.finset_prod_apply]; exact Finset.prod_eq_one fun _ _ => rfl, fun _ _ => by rw [Formalism.L2.Host.HChar.resInf, MonoidHom.finset_prod_apply]; exact Fin …`.
+A detailed English derivation is pending.
 -/
 example (C : Formalism.L2.Host.CharFrame D) (θ : InfF D) (ψ : AddChar (AF D.host.F) ℂ) :
     ∃ Rc : RecFun D θ ψ, Rc.ChrIs C fun _ => 1 :=
@@ -670,20 +660,20 @@ example (C : Formalism.L2.Host.CharFrame D) (θ : InfF D) (ψ : AddChar (AF D.ho
     rw [Formalism.L2.Host.HChar.resInf, MonoidHom.finset_prod_apply]; exact Finset.prod_eq_one fun _ _ => rfl⟩) θ ψ
 
 /- English proof (translation)
-The claim follows from `RecFun.exists_chrIs C _ Tp.xi_fin Tp.xi_triv θ ψ`.
+A detailed English derivation is pending.
 -/
 example {C : Formalism.L2.Host.CharFrame D} {nch} (Tp : Formalism.L2.Host.TupTied D C nch) (θ : InfF D) (ψ : AddChar (AF D.host.F) ℂ) :
     ∃ Rc : RecFun D θ ψ, Rc.ChrIs C Tp.xi := RecFun.exists_chrIs C _ Tp.xi_fin Tp.xi_triv θ ψ
 
 /- English proof (translation)
-Establish `h0 : ResEta D 1 0` using `⟨GlobalTheory.VolHeckeCompare.exists_isEta D, fun _ _ _ => by simp⟩`. Conclude with `⟨hV.trans hW.symm, isHC_one D, isHC_one D, hV ▸ h0, hW ▸ h0⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 example {V W : HSp D} (hV : V.rank = 0) (hW : W.rank = 0) : AdmE V W 1 1 := by
   have h0 : ResEta D 1 0 := ⟨GlobalTheory.VolHeckeCompare.exists_isEta D, fun _ _ _ => by simp⟩
   exact ⟨hV.trans hW.symm, isHC_one D, isHC_one D, hV ▸ h0, hW ▸ h0⟩
 
 /- English proof (translation)
-Introduce `k` and use `h.1 k.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example {V W : HSp D} {χ χ' : IdC D} (h : admitted V W χ χ') : ¬ AdmE V W χ χ' := fun k => h.1 k.1
 

@@ -13,7 +13,7 @@ variable {p : ℕ} [Fact p.Prime]
 variable {σ τ υ : Type*}
 
 /- English proof (translation)
-Rewrite using `[rename_eq_subst, subst_comp_subst_apply ha (HasSubst.X_comp e)]`. Simplify using `only [rename_eq_subst]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rename_subst' (e : σ ↪ τ) {a : υ → MvPowerSeries σ ℂ_[p]} (ha : HasSubst a)
     (f : MvPowerSeries υ ℂ_[p]) :
@@ -22,7 +22,7 @@ theorem rename_subst' (e : σ ↪ τ) {a : υ → MvPowerSeries σ ℂ_[p]} (ha 
   simp only [rename_eq_subst]
 
 /- English proof (translation)
-Rewrite using `[rename_eq_subst, subst_comp_subst_apply (HasSubst.X_comp e) hb]`. Simplify using `only [Function.comp_apply, subst_X hb]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem subst_rename' (e : σ ↪ τ) {b : τ → MvPowerSeries υ ℂ_[p]} (hb : HasSubst b)
     (f : MvPowerSeries σ ℂ_[p]) :
@@ -31,7 +31,7 @@ theorem subst_rename' (e : σ ↪ τ) {b : τ → MvPowerSeries υ ℂ_[p]} (hb 
   simp only [Function.comp_apply, subst_X hb]
 
 /- English proof (translation)
-Rewrite using `[PowerSeries.subst, rename_subst' e hg.const]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rename_psubst (e : σ ↪ τ) {g : MvPowerSeries σ ℂ_[p]} (hg : PowerSeries.HasSubst g)
     (f : PowerSeries ℂ_[p]) :
@@ -40,14 +40,14 @@ theorem rename_psubst (e : σ ↪ τ) {g : MvPowerSeries σ ℂ_[p]} (hg : Power
   rfl
 
 /- English proof (translation)
-Rewrite using `[phiA, phiA, map_mul, rename_C, rename_psubst e (PowerSeries.HasSubst.X w), rename_X]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rename_phiA [Finite σ] [Finite τ] (e : σ ↪ τ) (c : ℂ_[p]) (w : σ) :
     rename e (phiA p c w) = phiA p c (e w) := by
   rw [phiA, phiA, map_mul, rename_C, rename_psubst e (PowerSeries.HasSubst.X w), rename_X]
 
 /- English proof (translation)
-Rewrite using `[subst_rename' e (hs_phiA p c), rename_subst' e (hs_phiA p c)]`. Simplify using `only [rename_phiA]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem phi_rename [Finite σ] [Finite τ] (e : σ ↪ τ) (c : ℂ_[p]) (f : MvPowerSeries σ ℂ_[p]) :
     subst (phiA p c) (rename e f) = rename e (subst (phiA p c) f) := by
@@ -55,7 +55,7 @@ theorem phi_rename [Finite σ] [Finite τ] (e : σ ↪ τ) (c : ℂ_[p]) (f : Mv
   simp only [rename_phiA]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [monomial_zero_one]`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha, ih, monomial_mul_monomial, one_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_monomial_one {ι : Type*} (s : Finset ι) (d : ι → τ →₀ ℕ) :
     ∏ i ∈ s, monomial (d i) (1 : ℂ_[p]) = monomial (∑ i ∈ s, d i) 1 := by

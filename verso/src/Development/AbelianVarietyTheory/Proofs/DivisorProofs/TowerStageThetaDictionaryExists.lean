@@ -25,7 +25,7 @@ noncomputable section
 namespace GlobalTheory.StageDict
 
 /- English proof (translation)
-Take `⟨CF1, h1⟩` from `hP`. Use `⟨CF1, fun ε CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨C1, x1, g1⟩` from `h1 ε CF hCF`. Conclude with `⟨C1, x1, fun C hC D large₂ he hx hr T Lc μ₀ hμ G => h G μ₀ _ _ _ hμ (g1 C hC D large₂ he hx hr T Lc μ₀ hμ G)⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem gBig_mono {P Q : GP} (hP : GBig P)
     (h : ∀ {D : D7} {T : Type} {Lc : LevCh D T} {sc : Consts} (G : GridData Lc sc) (μ₀ : T) (C x b : ℝ),
@@ -36,7 +36,7 @@ theorem gBig_mono {P Q : GP} (hP : GBig P)
   exact ⟨C1, x1, fun C hC D large₂ he hx hr T Lc μ₀ hμ G => h G μ₀ _ _ _ hμ (g1 C hC D large₂ he hx hr T Lc μ₀ hμ G)⟩
 
 /- English proof (translation)
-Use `gBig_mono GlobalTheory.T.towerStage_seesawDictionary_framesSignatures ?_` and prove the remaining obligations. Introduce `D T Lc sc G μ₀ C x b _ H W _ _ _ i j p q A A' WW X hX`. Take `⟨FA, FA', FW, a, b, -, -, -, h⟩` from `H W i j p q A A' WW X hX`. Conclude with `⟨FA, FA', FW, a, b, h⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem stage_dictionary : GBig fun {D} {T} {Lc} {sc} G μ₀ _ _ _ => ∀ (W : G.Weil) (S : GridChoice W Set.univ), IsStdChar D W.ψ (-1) →
     NumbersIn D.what₂.embLL S μ₀ → ∀ (i j : Fin D.R.m) (p q : ℕ) (A A' WW : HSp D) (X : Tri T A A' WW), GlobalTheory.SqTower.IsStageC W i j p q X →

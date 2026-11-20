@@ -15,41 +15,39 @@ open Formalism.FourierDecayAlt.P.CutMP
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Use `⟨3, ?_⟩` and prove the remaining obligations. Introduce `E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top Cb A₀ hB v Bg A ε J e hFr hBg hε hA hJ π`. Establish `hPl : Q.IsPlace (D.parOf S v) (T v).base.z (T v).base.z' (T v).base.π (T v).base.π'` using `(hB.1.2.2.2.1.2 v).2.2.2.1`. Use `set Db := (T v).base with hDb`. Establish `hT : Tz S.G.k S.G.r Db.z = S.T` using `hPl.2.2.2.1`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT' : Tz S.G.k S.G.r Db.z' = S.T'` using `hPl.2.2.2.2.1`. Establish `hTT : Tz S.G.k S.G.r Db.z * Tz S.G.k S.G.r Db.z' = (D.parOf S v).TT` using `by rw [hT, hT']; rfl`. Establish `hQm : MeasurableSet (MA.Qset (D.parOf S v).r (D.parOf S v).TT)` using `(MA.Qset_open _ _).measurableSet`. Take `⟨F, -, hCC, hFJ⟩` from `hJ.2 ε hε`. Use `set A' := A - 5 * Bg with hA'`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hC5 : ∀ m, m ≤ 5 → B.InCC A' m F`. Introduce `m hm`. Use `inCC_antiA ?_ (hCC m)` and prove the remaining obligations. Establish `: (m : ℝ) ≤ 5` using `by exact_mod_cast hm`. Rewrite using `[hA']`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hAB : B.AB S.G.k S.G.r ≤ A'`. Use `jd_AB_le S.G.k S.G.r` as an intermediate fact. Rewrite using `[hA']`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c0, -, -, hB1, -⟩` from `Formalism.FourierDecayAlt.P.b_any_of_xi S.G.k S.G.r (Wp (S.pl v)) (Wq (S.pl v)) Db A' hAB`. Take `⟨C, hC⟩` from `hB1`. Take `⟨c4, hc4⟩` from `hC5 4 (by norm_num)`. Establish `hN : B.normSq Db F ≠ ⊤` using `(hC F F c4 c4 (hC5 5 le_rfl) (hC5 5 le_rfl) hc4 hc4).1`. Unfold `B.normSq jNormSq at hN`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsm` using `Formalism.FourierDecayAlt.P.CutMP.En.trace_smoothness E Wp Wq S T v hPl e hFr J hJ.1 π`. Establish `hval` using `Formalism.FourierDecayAlt.P.CutMP.En.toSm_val_of_mem (D.parOf S v) hsm`. Establish `hGm : Measurable (fun q : MA.Qp (D.parOf S v).r (D.parOf S v).TT => MA.Gq (D.parOf S v) q)`. Unfold `MA.Gq`. Use `fun_prop`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hs : MeasurableSet {q : MA.Qp (D.parOf S v).r (D.parOf S v).TT | ε ≤ MA.Gq (D.parOf S v) q}` using `measurableSet_le measurable_const hGm`. Use `⟨(((jd_evQ_meas _ _).norm).pow 2).restrict, ?_⟩` and prove the remaining obligations. Use `(hasFiniteIntegral_iff_ofReal (ae_of_all _ fun q => by positivity)).2 ?_` and prove the remaining obligations. Use `set H : MA.E S.G.r → ENNReal := fun x => ENNReal.ofReal (MA.wq S.G.k x (D.parOf S v).TT * ‖B.hsVec (B.JF Db F (B.gq Db x))‖ ^ 2) with hH`. Establish `p1 : ∀ q ∈ {q : MA.Qp (D.parOf S v).r (D.parOf S v).TT | ε ≤ MA.Gq (D.parOf S v) q}, ENNReal.ofReal (‖MA.evQ (D.parOf S v) (trJ S T v e J π) q‖ ^ 2) ≤ H q.1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `q hqs`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Establish `hGg : ε ≤ GfP S T v (B.gq (T v).base q.1)`. Establish `h1` using `Formalism.FourierDecayAlt.P.CutMP.cutTr_Gf_gq (T v).base q.2.1 (by rw [hTT]; exact q.2.2)`. Establish `h2 : GfP S T v (B.gq (T v).base q.1) = MA.Gq (D.parOf S v) q`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `GfP MA.Gq`. Rewrite using `[h1, hTT]`. Rewrite using `[h2]`. Conclude with `hqs`. Establish `hJF : J (B.gq Db q.1) = B.JF Db F (B.gq Db q.1)` using `hFJ q.1 q.2 hGg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hq : MA.evQ (D.parOf S v) (trJ S T v e J π) q = ((Real.sqrt (MA.wq S.G.k q.1 (D.parOf S v).TT) : ℝ) : ℂ) * inner ℂ (B.hsVec (e π q.1.2)) (B.hsVec (B.JF Db F (B.gq Db q.1)))`. Rewrite using `[← hJF]`. Conclude with `congrFun hval q`. Rewrite using `[hq, norm_mul, mul_pow, Complex.norm_real, Real.norm_eq_abs, sq_abs]`. Establish `hw` using `Formalism.FourierDecayAlt.P.CutMP.En.wq_pos (k := S.G.k) q.2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Real.sq_sqrt hw.le]`. Use `mul_le_mul_of_nonneg_left ?_ hw.le` and prove the remaining obligations. Establish `he1 : ‖B.hsVec (e π q.1.2)‖ ≤ 1`. Establish `h1 : inner ℂ (B.hsVec (e π q.1.2)) (B.hsVec (e π q.1.2)) = (1 : ℂ)`. Simplify using `using (hFr.2 q.1.2 q.2.2).2.1 π π`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[inner_self_eq_norm_sq_to_K]`. Establish `h2' : ((‖B.hsVec (e π q.1.2)‖ ^ 2 : ℝ) : ℂ) = ((1 : ℝ) : ℂ)`. Rewrite using `[Complex.ofReal_pow, Complex.ofReal_one]`. Conclude with `h1`. Establish `h2 : ‖B.hsVec (e π q.1.2)‖ ^ 2 = 1` using `Complex.ofReal_injective h2'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use polynomial arithmetic with `[norm_nonneg (B.hsVec (e π q.1.2))]`. Establish `hi : ‖inner ℂ (B.hsVec (e π q.1.2)) (B.hsVec (B.JF Db F (B.gq Db q.1)))‖ ≤ ‖B.hsVec (B.JF Db F (B.gq Db q.1))‖` using `(norm_inner_le_norm _ _).trans (by nlinarith [norm_nonneg (B.hsVec (B.JF Db F (B.gq Db q.1)))])`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) hi 2`. Establish `p2 : ∀ x ∈ MA.Qset (D.parOf S v).r (D.parOf S v).TT, MA.dens0 x * H x ≤ ENNReal.ofReal (bcWeight S.G.k S.G.r (Tz S.G.k S.G.r Db.z) (Tz S.G.k S.G.r Db.z') x * ‖B.hsVec (B.JF Db F (B.gq Db x))‖ ^ 2)`. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Establish `hd : MA.dens0 x = ENNReal.ofReal (Formalism.FourierDecayAlt.P.MAx2.Adj.dR x)`. Unfold `MA.dens0 Formalism.FourierDecayAlt.P.MAx2.Adj.dR`. Rewrite using `[ENNReal.ofReal_prod_of_nonneg (fun l _ => inv_nonneg.2 (Complex.normSq_nonneg _))]`. Establish `hd0 : 0 ≤ Formalism.FourierDecayAlt.P.MAx2.Adj.dR x` using `Finset.prod_nonneg fun l _ => inv_nonneg.2 (Complex.normSq_nonneg _)`. Establish `hW : bcWeight S.G.k S.G.r (Tz S.G.k S.G.r Db.z) (Tz S.G.k S.G.r Db.z') x = Formalism.FourierDecayAlt.P.MAx2.Adj.dR x * MA.wq S.G.k x (D.parOf S v).TT`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hle : Tz S.G.k S.G.r Db.z * Tz S.G.k S.G.r Db.z' ≤ Complex.normSq x.2`. Rewrite using `[hTT]`. Conclude with `le_of_lt hx.2`. Unfold `bcWeight`. Rewrite using `[if_pos hle]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Unfold `Formalism.FourierDecayAlt.P.MAx2.Adj.dR MA.wq`. Rewrite using `[hTT, ← mul_assoc, ← Finset.prod_mul_distrib]`. Use `congr 1`. Use `Finset.prod_congr rfl fun l _ => ?_` and prove the remaining obligations. Establish `hM : 2 ≤ MA.Mdim S.G.k S.G.r l`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use `l.isLt` as an intermediate fact. Simplify using `only [MA.Mdim]`. Use linear arithmetic over natural numbers and integers. Establish `hn : Complex.normSq (x.1 l) ≠ 0` using `(Complex.normSq_pos.2 (hx.1 l)).ne'`. Establish `e1 : Formalism.QuantumDeterminants.Mdim S.G.k S.G.r l = MA.Mdim S.G.k S.G.r l` using `rfl`.
-
-Rewrite using `[e1, pow_mul, Complex.sq_norm, show MA.Mdim S.G.k S.G.r l - 1 = (MA.Mdim S.G.k S.G.r l - 2) + 1 by omega, pow_succ]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hd, hH, ← ENNReal.ofReal_mul hd0, hW, mul_assoc]`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem local_square_integrable_transfer : LocalSquareIntegrableTransfer := by
   refine ⟨3, ?_⟩

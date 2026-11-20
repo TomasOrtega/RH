@@ -8,7 +8,7 @@ open GlobalTheory.IndefiniteRowSideFullHecke.MinorOrderedEntries
 namespace GlobalTheory.RowReal
 
 /- English proof (translation)
-Take `⟨i, hi, rfl⟩` from `List.mem_map.1 h`. Establish `hi' : (i : ℚ) + 1 ≤ n` using `by exact_mod_cast (List.mem_range.1 hi)`. Establish `h0 : (0 : ℚ) ≤ i` using `by positivity`. Apply the tactic sequence `constructor <;> linarith`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem block_bounds {x y : ℚ} {n : ℕ} (h : y ∈ GlobalTheory.IndefiniteRowSideFullHecke.MinorOrderedEntries.block x n) :
     x - ((n : ℚ) - 1) / 2 ≤ y ∧ y ≤ x + ((n : ℚ) - 1) / 2 := by
@@ -18,9 +18,9 @@ theorem block_bounds {x y : ℚ} {n : ℕ} (h : y ∈ GlobalTheory.IndefiniteRow
   constructor <;> linarith
 
 /- English proof (translation)
-Unfold `GlobalTheory.IndefiniteRowSideFullHecke.MinorOrderedEntries.block`. Rewrite using `[List.pairwise_map]`. Use `List.pairwise_lt_range.imp fun {i j} h => ?_` and prove the remaining obligations. Establish `: (i : ℚ) < j` using `by exact_mod_cast h`. Use `show _ < _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem block_pairwise (x : ℚ) (n : ℕ) : (GlobalTheory.IndefiniteRowSideFullHecke.MinorOrderedEntries.block x n).Pairwise (· > ·) := by
   unfold GlobalTheory.IndefiniteRowSideFullHecke.MinorOrderedEntries.block
@@ -31,7 +31,7 @@ theorem block_pairwise (x : ℚ) (n : ℕ) : (GlobalTheory.IndefiniteRowSideFull
   linarith
 
 /- English proof (translation)
-Rewrite using `[List.pairwise_flatMap]`. Use `⟨fun i _ => hp i, (List.pairwise_lt_finRange n).imp fun {i j} hij x hx y hy => ?_⟩` and prove the remaining obligations. Combine the linear relations using `[(hb i x hx).1, (hb j y hy).2, hs i j hij]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem pairwise_flatMap_band {n : ℕ} (f : Fin n → List ℚ) (lo hi : Fin n → ℚ)
     (hp : ∀ i, (f i).Pairwise (· > ·)) (hb : ∀ i, ∀ x ∈ f i, lo i ≤ x ∧ x ≤ hi i)
@@ -41,83 +41,75 @@ theorem pairwise_flatMap_band {n : ℕ} (f : Fin n → List ℚ) (lo hi : Fin n 
   linarith [(hb i x hx).1, (hb j y hy).2, hs i j hij]
 
 /- English proof (translation)
-Use `set G := num D C τ with hG`. Use `set P := rowEntries D C τ with hPdef`. Establish `hGm : G.m = D.R.m` using `rfl`. Establish `hGk : G.k = D.R.k` using `rfl`. Establish `hGs : G.s = sLen D` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGt : G.t = D.R.t` using `rfl`. Establish `hGg : G.ga = gap D C` using `rfl`. Establish `hSm : (rowSizes D).m = D.R.m` using `rfl`. Establish `hSk : (rowSizes D).k = D.R.k` using `rfl`. Establish `hSs : (rowSizes D).s = sLen D` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSt : (rowSizes D).t = D.R.t` using `rfl`. Establish `hPa : ∀ l, P.a l = G.a l` using `fun _ => rfl`. Establish `hPc : ∀ i, P.c i = G.cen (i + 1)` using `fun _ => rfl`. Establish `hPv : ∀ i, P.v i = G.v (i + 2)` using `fun _ => rfl`. Establish `hPu : ∀ i, P.u i = G.vHalf (i + 2)` using `fun _ => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPb : ∀ j, P.b j = G.b (j + 1)` using `fun _ => rfl`. Establish `hPe : ∀ j, P.e j = G.e (j + 1)` using `fun _ => rfl`. Establish `hm2` using `D.R.two_le_m`. Establish `hk3` using `D.R.m_add_three_le_k`. Establish `hgap : sLen D + 2 < gap D C` using `by have := (isLeast_gap D C).1.2.1; omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgQ : (sLen D : ℚ) + 2 < G.ga` using `by rw [hGg]; exact_mod_cast hgap`. Establish `ht1 : (1 : ℚ) ≤ D.R.t` using `by exact_mod_cast D.R.t_odd.pos`. Establish `hle : ∀ {i j : ℕ}, i ≤ j → G.a j ≤ G.a i` using `fun h => by`. Break down `h.eq_or_lt with rfl | h` into its components or cases. Conclude with `le_rfl`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the linear relations using `[a_add_le (G := G) h]`. Establish `hcen : ∀ i : ℕ, 1 ≤ i → i ≤ D.R.m → |(G.cen i : ℚ) - (G.a i + G.ga / 2)| ≤ 1` using `fun i h1 h2 => by`. Rewrite using `[← G.mid_eq h1]`. Conclude with `num_nearMid D C τ i (Finset.mem_Icc.2 ⟨h1, h2⟩)`. Establish `hC : ∀ i : ℕ, 1 ≤ i → i ≤ D.R.m → ∀ x ∈ GlobalTheory.IndefiniteRowSideFullHecke.MinorOrderedEntries.block (G.cen i : ℚ) (sLen D), G.a i + G.ga / 2 - ((sLen D : ℚ) + 1) / 2 ≤ x ∧ x ≤ G.a i + G.ga / 2 + ((sLen D : ℚ) + 1) / 2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Introduce `i h1 h2 x hx`. Establish `e1` using `block_bounds hx`. Establish `e2` using `abs_le.1 (hcen i h1 h2)`. Apply the tactic sequence `constructor <;> linarith [e1.1, e1.2, e2.1, e2.2]`. Establish `hspec` using `GlobalTheory.SignedHC.GridData.ofHCParam_spec (D.hc τ) (sLen D) (gap D C) (cen D C τ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hbe : ∀ j (h : j < D.R.m), ((D.R.t : ℚ) + 3) / 2 ≤ G.e (j + 1) - G.b (j + 1)` using `fun j h => by`. Use `(D.hc τ).gap_be ⟨j, h⟩` as an intermediate fact. Rewrite `this` using `[hspec.2.1 ⟨j, h⟩, hspec.2.2 ⟨j, h⟩]`. Conclude with `this`. Establish `heb : ∀ j (h : j + 1 < D.R.m), ((D.R.t : ℚ) + 3) / 2 ≤ G.b (j + 2) - G.e (j + 1)` using `fun j h => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Use `(D.hc τ).gap_eb ⟨j, by omega⟩ h` as an intermediate fact. Rewrite `this` using `[hspec.2.1 ⟨j + 1, h⟩, hspec.2.2 ⟨j, by omega⟩]`. Conclude with `this`. Establish `hvle : ∀ i j, 2 ≤ i → i ≤ j → j ≤ D.R.k → G.v j ≤ G.v i` using `fun i j h1 h2 h3 => by`. Break down `h2.eq_or_lt with rfl | h` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `le_rfl`. Conclude with `(G.v_anti i j h1 h h3).le`. Establish `hble : ∀ i j, 1 ≤ i → i ≤ j → j ≤ D.R.m → G.b i ≤ G.b j` using `fun i j h1 h2 h3 => by`. Break down `h2.eq_or_lt with rfl | h` into its components or cases. Conclude with `le_rfl`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Conclude with `(G.b_mono i j h1 h h3).le`. Establish `hvk : (-(G.b 1 : ℚ)) < G.v D.R.k - 1 / 2`. Establish `h1` using `(D.hc τ).v_gt_u ⟨D.R.k - 2, by omega⟩`. Establish `h2` using `(D.hc τ).u_last_gt (by omega) (by omega)`. Establish `h3 : -(D.hc τ).b ⟨0, by omega⟩ < (D.hc τ).v ⟨D.R.k - 2, by omega⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Use `h2.trans (lt_of_eq_of_lt ?_ h1)` and prove the remaining obligations. Use `congr 1`. Use `ext`. Simplify using `only`. Use linear arithmetic over natural numbers and integers.
+Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations.
 
-Rewrite `h3` using `[hspec.2.1 ⟨0, by omega⟩, hspec.1 ⟨D.R.k - 2, by omega⟩]`. Establish `h4 : -(G.b 1) < G.v D.R.k`. Rewrite `h3` using `[show D.R.k - 2 + 2 = D.R.k by omega]`. Conclude with `h3` after adjusting the coercions. Establish `h5 : ((-(G.b 1) + 1 : ℤ) : ℚ) ≤ G.v D.R.k` using `by exact_mod_cast h4`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Move the coercions through the operations in `at h5`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨fun l => ⟨G.v 2 + ((G.m : ℤ) + 1 - ((l : ℕ) : ℤ)) * G.ga, ?_⟩, fun i => ⟨G.v (i + 2) - 1, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hPa]`. Unfold `GlobalTheory.SignedHC.GridData.a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hPu]`. Unfold `GlobalTheory.SignedHC.GridData.vHalf`. Use `push_cast`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `bX : ∀ (i : Fin (rowSizes D).m), ∀ x ∈ GlobalTheory.IndefiniteRowSideFullHecke.MinorOrderedEntries.block (P.c i) (rowSizes D).s ++ [P.a i.succ], G.a (i + 1) ≤ x ∧ x ≤ G.a (i + 1) + G.ga / 2 + ((sLen D : ℚ) + 1) / 2`. Introduce `i x hx`. Establish `hi` using `i.2`. Rewrite `hx` using `[List.mem_append, List.mem_singleton, hPc, hPa, hSs, Fin.val_succ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Break down `hx with hx | rfl` into its components or cases. Use `hC (i + 1) (by omega) (by omega) x hx` as an intermediate fact. Apply the tactic sequence `constructor <;> linarith [this.1, this.2]`. Prove the components needed by the constructor for the conclusion. Conclude with `le_rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: (0 : ℚ) ≤ G.ga` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `pX : (P.a 0 :: (List.finRange (rowSizes D).m).flatMap fun i => GlobalTheory.IndefiniteRowSideFullHecke.MinorOrderedEntries.block (P.c i) (rowSizes D).s ++ [P.a i.succ]).Pairwise (· > ·)`. Rewrite using `[List.pairwise_cons]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `x hx`. Take `⟨i, -, hx⟩` from `List.mem_flatMap.1 hx`. Establish `h1` using `(bX i x hx).2`. Establish `h2` using `a_add_le (G := G) (show 0 < (i : ℕ) + 1 by omega)`. Rewrite using `[hPa]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `show x < G.a 0`. Combine the linear equalities and inequalities to obtain the conclusion. Use `pairwise_flatMap_band _ (fun i => G.a (i + 1)) (fun i => G.a (i + 1) + G.ga / 2 + ((sLen D : ℚ) + 1) / 2) (fun i => ?_) bX (fun i j hij => ?_)` and prove the remaining obligations. Rewrite using `[List.pairwise_append]`. Use `⟨block_pairwise _ _, List.pairwise_singleton _ _, fun x hx y hy => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hy` using `[List.mem_singleton]`. Substitute `hy` using the available equality. Rewrite `hx` using `[hPc, hSs]`. Use `hC (i + 1) (by omega) (by omega) x hx` as an intermediate fact. Rewrite using `[hPa, Fin.val_succ]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `show _ < _`. Combine the linear relations using `[this.1]`. Establish `h` using `a_add_le (G := G) (show (i : ℕ) + 1 < j + 1 by have : (i : ℕ) < j := hij; omega) show _ < _`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `tX : ∀ x ∈ (P.a 0 :: (List.finRange (rowSizes D).m).flatMap fun i => GlobalTheory.IndefiniteRowSideFullHecke.MinorOrderedEntries.block (P.c i) (rowSizes D).s ++ [P.a i.succ]), G.a G.m ≤ x`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x hx`. Break down `List.mem_cons.1 hx with rfl | hx` into its components or cases. Rewrite using `[hPa]; exact hle (by simp)`. Take `⟨i, -, hx⟩` from `List.mem_flatMap.1 hx`. Use `i.2` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Conclude with `(hle (show (i : ℕ) + 1 ≤ G.m by rw [hGm]; omega)).trans (bX i x hx).1`. Establish `bY : ∀ (i : Fin ((rowSizes D).k - 1)), ∀ y ∈ [(P.v i : ℚ), P.u i], (G.v (i + 2) : ℚ) - 1 / 2 ≤ y ∧ y ≤ G.v (i + 2)`. Introduce `i y hy`. Rewrite `hy` using `[hPv, hPu]`. Unfold `GlobalTheory.SignedHC.GridData.vHalf at hy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Simplify using `only [List.mem_cons, List.not_mem_nil, or_false] at hy`. Apply the tactic sequence `rcases hy with rfl | rfl <;> constructor <;> linarith`. Establish `pY : ((List.finRange ((rowSizes D).k - 1)).flatMap fun i => [(P.v i : ℚ), P.u i]).Pairwise (· > ·)`. Use `pairwise_flatMap_band _ (fun i => (G.v (i + 2) : ℚ) - 1 / 2) (fun i => (G.v (i + 2) : ℚ)) (fun i => ?_) bY (fun i j hij => ?_)` and prove the remaining obligations. Use `List.Pairwise.cons (fun y hy => ?_) (List.pairwise_singleton _ _)` and prove the remaining obligations.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hy` using `[List.mem_singleton]`. Substitute `hy` using the available equality. Rewrite using `[hPv, hPu]`. Unfold `GlobalTheory.SignedHC.GridData.vHalf`. Use `show _ < _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hj : (j : ℕ) < D.R.k - 1` using `j.2`. Establish `hij' : (i : ℕ) < j` using `hij`. Establish `h` using `G.v_anti (i + 2) (j + 2) (by omega) (by omega) (by rw [hGk]; omega)`. Establish `h' : ((G.v (j + 2) + 1 : ℤ) : ℚ) ≤ G.v (i + 2)` using `by exact_mod_cast h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Move the coercions through the operations in `at h'`. Use `show _ < _`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `tY : ∀ y ∈ ((List.finRange ((rowSizes D).k - 1)).flatMap fun i => [(P.v i : ℚ), P.u i]), (G.v D.R.k : ℚ) - 1 / 2 ≤ y ∧ y ≤ G.v 2`. Introduce `y hy`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨i, -, hy⟩` from `List.mem_flatMap.1 hy`. Establish `hi : (i : ℕ) < D.R.k - 1` using `i.2`. Establish `h1 : ((G.v D.R.k : ℤ) : ℚ) ≤ G.v (i + 2)` using `by exact_mod_cast hvle (i + 2) D.R.k (by omega) (by omega) le_rfl`. Establish `h2 : ((G.v (i + 2) : ℤ) : ℚ) ≤ G.v 2` using `by exact_mod_cast hvle 2 (i + 2) le_rfl (by omega) (by omega)`. Use `bY i y hy` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Apply the tactic sequence `constructor <;> linarith [this.1, this.2]`. Establish `bZ : ∀ (j : Fin (rowSizes D).m), ∀ z ∈ ((-P.b j : ℚ) :: GlobalTheory.IndefiniteRowSideFullHecke.MinorOrderedEntries.block (-P.e j) (rowSizes D).t), -(G.e (j + 1) : ℚ) - ((D.R.t : ℚ) - 1) / 2 ≤ z ∧ z ≤ -(G.b (j + 1) : ℚ)`. Introduce `j z hz`. Establish `hj : (j : ℕ) < D.R.m` using `j.2`. Establish `h1` using `hbe j hj`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hz` using `[List.mem_cons, hPb, hPe, hSt]`. Break down `hz with rfl | hz` into its components or cases. Apply the tactic sequence `constructor <;> linarith`. Use `block_bounds hz` as an intermediate fact. Apply the tactic sequence `constructor <;> linarith [this.1, this.2]`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `pZ : ((List.finRange (rowSizes D).m).flatMap fun j => (-P.b j : ℚ) :: GlobalTheory.IndefiniteRowSideFullHecke.MinorOrderedEntries.block (-P.e j) (rowSizes D).t).Pairwise (· > ·)`. Use `pairwise_flatMap_band _ (fun j => -(G.e (j + 1) : ℚ) - ((D.R.t : ℚ) - 1) / 2) (fun j => -(G.b (j + 1) : ℚ)) (fun j => ?_) bZ (fun i j hij => ?_)` and prove the remaining obligations. Establish `hj : (j : ℕ) < D.R.m` using `j.2`. Establish `h1` using `hbe j hj`. Rewrite using `[List.pairwise_cons]`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun z hz => ?_, block_pairwise _ _⟩` and prove the remaining obligations. Rewrite `*` using `[hPb, hPe, hSt]`. Use `block_bounds hz` as an intermediate fact. Use `show _ < _`. Combine the linear relations using `[this.2]`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hj : (j : ℕ) < D.R.m` using `j.2`. Establish `hij' : (i : ℕ) < j` using `hij`. Establish `h1` using `heb i (by omega)`. Establish `h2 : ((G.b (i + 2) : ℤ) : ℚ) ≤ G.b (j + 1)` using `by exact_mod_cast hble (i + 2) (j + 1) (by omega) (by omega) (by omega)`. Use `show _ < _`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `tZ : ∀ z ∈ ((List.finRange (rowSizes D).m).flatMap fun j => (-P.b j : ℚ) :: GlobalTheory.IndefiniteRowSideFullHecke.MinorOrderedEntries.block (-P.e j) (rowSizes D).t), z ≤ -(G.b 1 : ℚ)`. Introduce `z hz`. Take `⟨j, -, hz⟩` from `List.mem_flatMap.1 hz`. Establish `hj : (j : ℕ) < D.R.m` using `j.2`.
-
-Establish `h1 : ((G.b 1 : ℤ) : ℚ) ≤ G.b (j + 1)` using `by exact_mod_cast hble 1 (j + 1) le_rfl (by omega) (by omega)`. Combine the linear relations using `[(bZ j z hz).2]`. Establish `hv2 : (G.v 2 : ℚ) < G.a G.m`. Rewrite using `[G.a_m]`. Establish `: (0 : ℚ) ≤ G.ga` using `by positivity`.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Use `show (Entries.orderList P).Pairwise (· > ·)`. Rewrite using `[Entries.orderList, List.pairwise_append, List.pairwise_append]`. Use `⟨⟨pX, pY, fun x hx y hy => ?_⟩, pZ, fun x hx z hz => ?_⟩` and prove the remaining obligations. Establish `h1` using `tX x hx`.
-
-Establish `h2` using `(tY y hy).2`. Use `show _ < _`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3` using `tZ z hz show _ < _`. Break down `List.mem_append.1 hx with hx | hx` into its components or cases.
-
-Establish `h1` using `tX x hx`. Establish `h2` using `tY _ (List.mem_flatMap.2 ⟨⟨0, by rw [hSk]; omega⟩, List.mem_finRange _, List.mem_cons_self⟩)`. Combine the linear relations using `[h2.1, h2.2]`. Establish `h1` using `(tY x hx).1`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem rowEntries_good (D : D7) (C : ℝ) (τ : D.what₂.Tau) : (rowEntries D C τ).Good := by
   set G := num D C τ with hG

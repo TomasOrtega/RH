@@ -6,15 +6,13 @@ open scoped Classical
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Establish `hg : 0 < Nat.gcd m c` using `Nat.gcd_pos_of_pos_left _ hm`. Take `⟨m₁, c₁, hco, hm₁, hc₁⟩` from `Nat.exists_coprime m c`. Establish `hmm : m₁ = m'`. Apply `Nat.eq_of_mul_eq_mul_right hg` to reduce the goal to its premises. Rewrite using `[← hm₁, h]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Substitute `hmm` using the available equality. Use `set g := Nat.gcd m c with hgdef`. Establish `hgcd : Nat.gcd m (c * l) = Nat.gcd m₁ l * g`. Establish `e : c * l = (c₁ * l) * g`. Rewrite using `[hc₁]`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `conv_lhs => rw [hm₁]`. Rewrite using `[Nat.gcd_mul_right, Nat.Coprime.gcd_mul_left_cancel_right l hco.symm]`. Rewrite using `[hgcd]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `split_ifs with hd`. Rewrite using `[Nat.gcd_eq_right hd, ← mul_assoc, Nat.div_mul_cancel hd]`. Conclude with `h`. Establish `: Nat.gcd m₁ l = 1` using `((Nat.Prime.coprime_iff_not_dvd hl).2 hd).symm`. Rewrite using `[this, one_mul]`.
-
-Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem gcd_step {m m' c l : ℕ} (hm : 0 < m) (hl : l.Prime) (h : m' * Nat.gcd m c = m) :
     (if l ∣ m' then m' / l else m') * Nat.gcd m (c * l) = m := by
@@ -40,17 +38,17 @@ private theorem gcd_step {m m' c l : ℕ} (hm : 0 < m) (hl : l.Prime) (h : m' * 
     exact h
 
 /- English proof (translation)
-Introduce `hOk a b ha hab`. Establish `key : b.Ok ∧ ∃ c : ℕ, 0 < c ∧ b.q = a.q ^ c ∧ ∀ p ∈ b.L, ∃ r ∈ a.L, p.1 * Nat.gcd r.1 c = r.1`. Proceed by induction on `hab with`. Consider the case `refl`. Use `⟨ha, 1, Nat.one_pos, (pow_one _).symm, fun p hp => ⟨p, hp, ?_⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Nat.gcd_one_right, mul_one]`. Consider the case `@tail b' b'' _ hs ih`. Take `⟨hb, c, hc, hq, hL⟩` from `ih`. Take `⟨l, hl, rfl⟩` from `hs`. Use `⟨(hOk b' l hl hb).1, c * l, Nat.mul_pos hc hl.pos, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `b'.q ^ l = _`. Rewrite using `[hq, pow_mul]`. Introduce `p hp`. Establish `hp' : p ∈ liftAll b'.q l b'.L` using `hp`. Unfold `liftAll at hp'`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Take `⟨s, hs, hps⟩` from `List.mem_flatMap.1 hp'`. Take `⟨r, hr, hsr⟩` from `hL s hs`. Use `⟨r, hr, ?_⟩` and prove the remaining obligations. Establish `hm : 0 < r.1` using `(ha.2.2 r hr).1`. Establish `hstep` using `gcd_step (l := l) hm hl hsr`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp1 : p.1 = if l ∣ s.1 then s.1 / l else s.1` using `by split_ifs at hps ⊢ with hd`. Simplify using `only [liftL, List.flatMap_cons, List.flatMap_nil, List.append_nil, List.mem_map] at hps`. Take `⟨i, -, rfl⟩` from `hps`. Both sides reduce to the same expression. Simplify using `only [List.mem_singleton] at hps`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Rewrite using `[hps]`. Rewrite using `[hp1]`. Conclude with `hstep`. Conclude with `key.2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.InertialTypesAlt.leRank :
     LiftOk → LeRank := by

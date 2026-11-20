@@ -18,15 +18,15 @@ section gen
 variable (P : M.Par)
 
 /- English proof (translation)
-Distinguish the cases in `hu : u ∈ MA.smSub P.r P.TT`. Establish `hcu : (fun q => c * u q) ∈ MA.smSub P.r P.TT`. Use `Subalgebra.smul_mem (MA.smSub P.r P.TT) hu c` as an intermediate fact. Conclude with `this`. Unfold `MA.toSm`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos hcu, dif_pos hu]`. Both sides reduce to the same expression. Distinguish the cases in `hc : c = 0`. Substitute `hc` using the available equality. Establish `h0 : (fun q : MA.Qp P.r P.TT => (0 : ℂ) * u q) = 0` using `by funext q; simp`.
+Both sides reduce to the same expression. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0, zero_smul]`. Unfold `MA.toSm`. Rewrite using `[dif_pos (Subalgebra.zero_mem _)]`. Both sides reduce to the same expression. Establish `hcu : (fun q => c * u q) ∉ MA.smSub P.r P.TT`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Apply `hu` to reduce the goal to its premises. Use `Subalgebra.smul_mem (MA.smSub P.r P.TT) h c⁻¹` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `q`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `show u q = c⁻¹ * (c * u q)`. Rewrite using `[← mul_assoc, inv_mul_cancel₀ hc, one_mul]`. Unfold `MA.toSm`. Rewrite using `[dif_neg hcu, dif_neg hu, smul_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kap_toSm_smul (c : ℂ) (u : MA.Qp P.r P.TT → ℂ) :
     MA.toSm P (fun q => c * u q) = c • MA.toSm P u := by
@@ -56,9 +56,9 @@ theorem kap_toSm_smul (c : ℂ) (u : MA.Qp P.r P.TT → ℂ) :
       rw [dif_neg hcu, dif_neg hu, smul_zero]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `ρ`. Use `show ∑ π', ((MA.kap P (MA.DQ P) κ) ρ π').1 (f π') = κ ρ • f ρ`. Rewrite using `[Finset.sum_eq_single ρ (fun π' _ h => ?_) (fun h => absurd (Finset.mem_univ ρ) h)]`. Use `show ((Matrix.diagonal fun π => algebraMap ℂ (MA.DQ P).Pr (κ π)) ρ ρ).1 (f ρ) = κ ρ • f ρ`. Rewrite using `[Matrix.diagonal_apply_eq]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `show ((Matrix.diagonal fun π => algebraMap ℂ (MA.DQ P).Pr (κ π)) ρ π').1 (f π') = 0`. Rewrite using `[Matrix.diagonal_apply_ne _ (Ne.symm h)]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem actA_kap (κ : M.Ty P → ℂ) (f : M.Ty P → MA.SmQ P.r P.TT) :
     MA.actA P (MA.kap P (MA.DQ P) κ) f = fun ρ => κ ρ • f ρ := by
@@ -87,9 +87,9 @@ def KapBigCell (S : C.HidaSetting E Wp Wq) (T : ∀ v : Fin S.f, D.LevTower S.G.
     inner ℂ (B.hsVec (e ρ x.2)) (B.hsVec (c (B.gq (T v).base x) A)) = κ ρ * inner ℂ (B.hsVec (e ρ x.2)) (B.hsVec A)
 
 /- English proof (translation)
-Rewrite using `[actA_kap]`. Use function extensionality and compare the values at `ρ`. Unfold `trJ`. Rewrite using `[← kap_toSm_smul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `q`. Rewrite using `[hc q.1 q.2 ρ]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem trJ_kap_of_bigCell (S : C.HidaSetting E Wp Wq)
     (T : ∀ v : Fin S.f, D.LevTower S.G.k S.G.r (Wp (S.pl v)) (Wq (S.pl v)))
@@ -197,13 +197,13 @@ def DatumCompose : Prop :=
       ∀ g ∈ B.GPos (T v).base, c g = Φ (a g) (a' g) (ι g)
 
 /- English proof (translation)
-Take `⟨K1, hK1, hG⟩` from `hG`. Take `⟨K2, hK2, hR⟩` from `hR`. Use `⟨max K1 K2, le_max_of_le_left hK1, ?_⟩` and prove the remaining obligations. Introduce `Cc Cb hCc hCb E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hB v e hFr hGa hQQ κ`. Take `⟨a, a', ι, hD⟩` from `hG Cc Cb (le_trans (le_max_left _ _) hCc) (le_trans (le_max_left _ _) hCb) E Wp Wq S T f χ ν' m₀ top A₀ hB v`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨Φ, Φa, hΦ, hK⟩` from `hR Cc (le_trans (le_max_right _ _) hCc) E Wp Wq S T f χ ν' m₀ top A₀ hB v e hFr hGa hQQ κ`. Establish `hBg : 0 ≤ Cb * ((S.G.r : ℝ) + 1)` using `mul_nonneg (le_trans (le_trans hK1 (le_max_left _ _)) hCb) (by positivity)`. Take `⟨c, ca, h1, h2, h3, h4, h5, h6, h7, hval⟩` from `hC E Wp Wq S T v _ a a' ι Φ Φa hBg hD hΦ`. Use `⟨c, ca, h1, h2, h3, h4, h5, h6, h7, ?_⟩` and prove the remaining obligations. Introduce `x hx ρ A`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hPl : Q.IsPlace (D.parOf S v) (T v).base.z (T v).base.z' (T v).base.π (T v).base.π'` using `(hB.1.2.2.2.1.2 v).2.2.2.1`. Establish `hTT : (D.parOf S v).TT = Tz S.G.k S.G.r (T v).base.z * Tz S.G.k S.G.r (T v).base.z'`. Rewrite using `[hPl.2.2.2.1, hPl.2.2.2.2.1]`. Both sides reduce to the same expression. Establish `hxq : x ∈ Formalism.FourierDecayAlt.JF.QDom S.G.k S.G.r (T v).base.z (T v).base.z'` using `⟨hx.1, hTT ▸ hx.2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hgq` using `Formalism.FourierDecayAlt.P.BigCellHermitian.gqDom (T v).base hxq`. Establish `hpos : B.gq (T v).base x ∈ B.GPos (T v).base` using `⟨hgq.1, hgq.2.2⟩`. Take `⟨e1, e2, e3⟩` from `hD.2.2.2.2.2.2.2 x hx`. Rewrite using `[hval _ hpos, e1, e2, e3]`. Conclude with `hK x hx ρ A`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kapRealiser_of (hC : DatumCompose) (hG : SSn.SSnGeom) (hR : KapRep) : KapRealiser := by
   obtain ⟨K1, hK1, hG⟩ := hG
@@ -249,27 +249,27 @@ variable (S : C.HidaSetting E Wp Wq) (T : ∀ v : Fin S.f, D.LevTower S.G.k S.G.
   (ι : B.Mat S.G.k S.G.r → B.Mat S.G.k S.G.r)
 
 /- English proof (translation)
-Unfold `datumCoef`. Rewrite using `[if_pos hg]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem datumCoef_pos (Φ : FMap S v) {g : B.Mat S.G.k S.G.r} (hg : g ∈ B.GPos (T v).base) :
     datumCoef S T v Φ a a' ι g = Φ (a g) (a' g) (ι g) := by
   unfold datumCoef; rw [if_pos hg]
 
 /- English proof (translation)
-Unfold `datumCoef`. Rewrite using `[if_neg hg]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem datumCoef_neg (Φ : FMap S v) {g : B.Mat S.G.k S.G.r} (hg : g ∉ B.GPos (T v).base) :
     datumCoef S T v Φ a a' ι g = 0 := by
   unfold datumCoef; rw [if_neg hg]
 
 /- English proof (translation)
-Unfold `B.hsVec`. Use extensionality with `i`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem kap_hsVec_zero : B.hsVec (0 : Wq (S.pl v) →L[ℂ] Wp (S.pl v)) = 0 := by
   unfold B.hsVec; ext i; simp
 
 /- English proof (translation)
-Distinguish the cases in `hx : x ∈ B.GPos (T v).base`. Rewrite using `[datumCoef_pos S T v a a' ι Φ hx, datumCoef_pos S T v a a' ι Φa hx]`. Conclude with `hΦ.2.2.1 _ _ _ _ _`. Rewrite using `[datumCoef_neg S T v a a' ι Φ hx, datumCoef_neg S T v a a' ι Φa hx]`. Simplify using `[B.hsInner, kap_hsVec_zero]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem datumCoef_adj (Φ Φa : FMap S v) (hΦ : FibreMapOK S T v Φ Φa) (x : B.Mat S.G.k S.G.r)
     (A B' : Wq (S.pl v) →L[ℂ] Wp (S.pl v)) :
@@ -281,9 +281,9 @@ theorem datumCoef_adj (Φ Φa : FMap S v) (hΦ : FibreMapOK S T v Φ Φa) (x : B
     simp [B.hsInner, kap_hsVec_zero]
 
 /- English proof (translation)
-Establish `e` using `Formalism.FourierDecayAlt.P.CutMP.JA.FFS.AC.gf_sgs (T v).base hp g`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨hg, e ▸ h.2⟩`. Introduce `h`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨Formalism.FourierDecayAlt.P.CutMP.JA.FFS.AC.sgs_mem (T v).base hp hg, e.symm ▸ h.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem kap_gpos_sgs {p : B.SS S.G.k S.G.r} (hp : (T v).base.inSS p) {g : B.Mat S.G.k S.G.r}
     (hg : g ∈ B.GV S.G.k S.G.r) : B.sgs p g ∈ B.GPos (T v).base ↔ g ∈ B.GPos (T v).base := by
@@ -293,9 +293,9 @@ theorem kap_gpos_sgs {p : B.SS S.G.k S.G.r} (hp : (T v).base.inSS p) {g : B.Mat 
   · intro h; exact ⟨Formalism.FourierDecayAlt.P.CutMP.JA.FFS.AC.sgs_mem (T v).base hp hg, e.symm ▸ h.2⟩
 
 /- English proof (translation)
-Introduce `p hp g hg X`. Distinguish the cases in `hpos : g ∈ B.GPos (T v).base`. Establish `hpos' : B.sgs p g ∈ B.GPos (T v).base` using `(kap_gpos_sgs S T v hp hg).2 hpos`. Rewrite using `[datumCoef_pos S T v a a' ι Ψ hpos, datumCoef_pos S T v a a' ι Ψ hpos']`. Take `⟨e1, e2, e3⟩` from `hD.2.2.2.1 p hp g hpos`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e1, e2, e3]`. Conclude with `hΨ _ hp.1 _ hp.2.2.1 _ _ _ X`. Establish `hpos' : B.sgs p g ∉ B.GPos (T v).base` using `fun h => hpos ((kap_gpos_sgs S T v hp hg).1 h)`. Rewrite using `[datumCoef_neg S T v a a' ι Ψ hpos, datumCoef_neg S T v a a' ι Ψ hpos']`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem datumCoef_eqv {Bg : ℝ} (hD : SSn.IsDatum S T v Bg a a' ι) (Ψ : FMap S v)
     (hΨ : ∀ h ∈ Formalism.QuantumDeterminants.UWset S.G.k S.G.r (T v).base.z, ∀ h' ∈ Formalism.QuantumDeterminants.UWset S.G.k S.G.r (T v).base.z', ∀ a0 a0' ι0 X,
@@ -314,9 +314,9 @@ theorem datumCoef_eqv {Bg : ℝ} (hD : SSn.IsDatum S T v Bg a a' ι) (Ψ : FMap 
     simp
 
 /- English proof (translation)
-Introduce `g₀ hg₀`. Take `⟨U1, f1, hU1, h1, hf1, e1⟩` from `hD.1 g₀ hg₀`. Take `⟨U2, f2, hU2, h2, hf2, e2⟩` from `hD.2.1 g₀ hg₀`. Take `⟨U3, f3, hU3, h3, hf3, e3⟩` from `hD.2.2.1 g₀ hg₀`. Establish `hGc : Continuous (fun g : B.Mat S.G.k S.G.r => Formalism.QuantumDeterminants.Gf S.G.k S.G.r (T v).base.z (T v).base.z' g)` using `(Formalism.FourierDecayAlt.P.JCx1.contDiff_Gf _ _).continuous`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨U1 ∩ U2 ∩ U3 ∩ {g | 0 < Formalism.QuantumDeterminants.Gf S.G.k S.G.r (T v).base.z (T v).base.z' g}, fun g => Ψ (f1 g) (f2 g) (f3 g), ((hU1.inter hU2).inter hU3).inter (isOpen_lt continuous_const hGc), ⟨⟨⟨h1, h2⟩, h3⟩, hg₀.2⟩, ?_, ?_⟩` and prove the remaining obligations. Establish `hp : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun g => (f1 g, f2 g, f3 g)) (U1 ∩ U2 ∩ U3 ∩ {g | 0 < Formalism.QuantumDeterminants.Gf S.G.k S.G.r (T v).base.z (T v).base.z' g})` using `(hf1.mono fun g hg => hg.1.1.1).prodMk ((hf2.mono fun g hg => hg.1.1.2).prodMk (hf3.mono fun g hg => hg.1.2))`. Conclude with `hΨ.comp_contDiffOn hp`. Introduce `g hg hgv`. Rewrite using `[datumCoef_pos S T v a a' ι Ψ ⟨hgv, hg.2⟩, e1 g hg.1.1.1 hgv, e2 g hg.1.1.2 hgv, e3 g hg.1.2 hgv]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem datumCoef_ckOn {Bg : ℝ} (hD : SSn.IsDatum S T v Bg a a' ι) (Ψ : FMap S v)
     (hΨ : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞)
@@ -358,7 +358,7 @@ def DatumBd : Prop :=
     SSn.CoefBd S T v (datumCoef S T v Ψ a a' ι) Bg
 
 /- English proof (translation)
-Introduce `E _ _ _ Wp Wq _ _ _ _ _ _ S T v Bg a a' ι Φ Φa hBg hD hΦ`. Use `⟨datumCoef S T v Φ a a' ι, datumCoef S T v Φa a a' ι, datumCoef_adj S T v a a' ι Φ Φa hΦ, datumCoef_ckOn S T v a a' ι hD Φ hΦ.1, datumCoef_ckOn S T v a a' ι hD Φa hΦ.2.1, datumCoef_eqv S T v a a' ι hD Φ (fun h hh h' hh' a0 a0' ι0 X => (hΦ.2.2.2 h hh h' hh' a0 a0' ι0 X).1), datumC …` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem datumCompose_of (h : DatumBd) : DatumCompose := by
   intro E _ _ _ Wp Wq _ _ _ _ _ _ S T v Bg a a' ι Φ Φa hBg hD hΦ
@@ -370,7 +370,7 @@ theorem datumCompose_of (h : DatumBd) : DatumCompose := by
     fun g hg => datumCoef_pos S T v a a' ι Φ hg⟩
 
 /- English proof (translation)
-The claim follows from `kapRealiser_of (datumCompose_of hB) hG hR`.
+A detailed English derivation is pending.
 -/
 theorem kapRealiser_of_bd (hB : DatumBd) (hG : SSn.SSnGeom) (hR : KapRep) : KapRealiser :=
   kapRealiser_of (datumCompose_of hB) hG hR
@@ -405,13 +405,13 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Unfold `B.hsVec`. Use extensionality with `i`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem kap_hsVec_add (A A' : Wq →L[ℂ] Wp) : B.hsVec (A + A') = B.hsVec A + B.hsVec A' := by
   unfold B.hsVec; ext i; simp
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => unfold B.hsVec`. Use extensionality with `i`. Simplify using the standard rewrite rules. Consider the case `insert j s hj ih => rw [Finset.sum_insert hj, Finset.sum_insert hj, kap_hsVec_add, ih]`.
+Proceed by induction. Treat this case separately. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Treat this case separately.
 -/
 theorem kap_hsVec_sum {ι : Type*} (s : Finset ι) (A : ι → (Wq →L[ℂ] Wp)) :
     B.hsVec (∑ i ∈ s, A i) = ∑ i ∈ s, B.hsVec (A i) := by
@@ -421,27 +421,27 @@ theorem kap_hsVec_sum {ι : Type*} (s : Finset ι) (A : ι → (Wq →L[ℂ] Wp)
   | insert j s hj ih => rw [Finset.sum_insert hj, Finset.sum_insert hj, kap_hsVec_add, ih]
 
 /- English proof (translation)
-Unfold `B.hsInner`. Rewrite using `[kap_hsVec_sum, inner_sum]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem kap_hsInner_sum_left {ι : Type*} (s : Finset ι) (A : ι → (Wq →L[ℂ] Wp)) (B' : Wq →L[ℂ] Wp) :
     B.hsInner (∑ i ∈ s, A i) B' = ∑ i ∈ s, B.hsInner (A i) B' := by
   unfold B.hsInner; rw [kap_hsVec_sum, inner_sum]
 
 /- English proof (translation)
-Unfold `B.hsInner`. Rewrite using `[kap_hsVec_sum, sum_inner]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem kap_hsInner_sum_right {ι : Type*} (s : Finset ι) (A : Wq →L[ℂ] Wp) (B' : ι → (Wq →L[ℂ] Wp)) :
     B.hsInner A (∑ i ∈ s, B' i) = ∑ i ∈ s, B.hsInner A (B' i) := by
   unfold B.hsInner; rw [kap_hsVec_sum, sum_inner]
 
 /- English proof (translation)
-Unfold `B.hsInner`. Rewrite using `[Formalism.FourierDecayAlt.P.JCTx2.hsVec_smul', inner_smul_right]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem kap_hsInner_smul_left (c : ℂ) (A B' : Wq →L[ℂ] Wp) : B.hsInner (c • A) B' = c * B.hsInner A B' := by
   unfold B.hsInner; rw [Formalism.FourierDecayAlt.P.JCTx2.hsVec_smul', inner_smul_right]
 
 /- English proof (translation)
-Unfold `B.hsInner`. Rewrite using `[Formalism.FourierDecayAlt.P.JCTx2.hsVec_smul', inner_smul_left]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem kap_hsInner_smul_right (c : ℂ) (A B' : Wq →L[ℂ] Wp) :
     B.hsInner A (c • B') = (starRingEnd ℂ) c * B.hsInner A B' := by
@@ -450,21 +450,19 @@ theorem kap_hsInner_smul_right (c : ℂ) (A B' : Wq →L[ℂ] Wp) :
 end tp
 
 /- English proof (translation)
-Take `⟨K, hK, h⟩` from `h`. Use `⟨K, hK, ?_⟩` and prove the remaining obligations. Introduce `Cc hCc E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hB v e hFr hGa hQQ κ`. Take `⟨Pr, hs, hadj, heq, hline⟩` from `h Cc hCc E Wp Wq S T f χ ν' m₀ top A₀ hB v e hFr hGa hQQ`. Use `⟨fun a _ _ => ∑ σ, κ σ • Pr σ a, fun a _ _ => ∑ σ, (starRingEnd ℂ) (κ σ) • Pr σ a, ⟨?_, ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : ∀ σ, ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun x : (Fin (2 * S.G.r + S.G.k + 1) → ℂ) × (Fin (2 * S.G.r + S.G.k + 1) → ℂ) × B.Mat S.G.k S.G.r => κ σ • Pr σ x.1)` using `fun σ => ((hs σ).comp contDiff_fst).const_smul _`. Conclude with `ContDiff.sum fun σ _ => h1 σ`. Establish `h1 : ∀ σ, ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun x : (Fin (2 * S.G.r + S.G.k + 1) → ℂ) × (Fin (2 * S.G.r + S.G.k + 1) → ℂ) × B.Mat S.G.k S.G.r => (starRingEnd ℂ) (κ σ) • Pr σ x.1)` using `fun σ => ((hs σ).comp contDiff_fst).const_smul _`. Conclude with `ContDiff.sum fun σ _ => h1 σ`. Introduce `a a' ι A B'`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [ContinuousLinearMap.sum_apply, ContinuousLinearMap.smul_apply]`. Rewrite using `[kap_hsInner_sum_left, kap_hsInner_sum_right]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[kap_hsInner_smul_left, kap_hsInner_smul_right, hadj, Complex.conj_conj]`. Introduce `h hh h' hh' a a' ι X`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Simplify using `only [ContinuousLinearMap.sum_apply, ContinuousLinearMap.smul_apply, heq _ h hh h' hh']`. Use extensionality with `w`. Simplify using `[map_sum, map_smul]`. Simplify using `only [ContinuousLinearMap.sum_apply, ContinuousLinearMap.smul_apply, heq _ h hh h' hh']`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `w`. Simplify using `[map_sum, map_smul]`. Introduce `x hx ρ A`. Simplify using `only [ContinuousLinearMap.sum_apply, ContinuousLinearMap.smul_apply]`. Rewrite using `[kap_hsVec_sum, inner_sum, Finset.sum_eq_single ρ]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Formalism.FourierDecayAlt.P.JCTx2.hsVec_smul', inner_smul_right]`. Use `congr 1`. Use `hadj ρ (SSn.phD x.1 • SSn.nu0 S.G.k S.G.r (T v).base.z (T v).base.z' (T v).base.μsec x.2) A (e ρ x.2)` as an intermediate fact. Unfold `B.hsInner at this`. Rewrite using `[this, hline x hx ρ ρ, if_pos rfl]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `σ _ hσ`. Rewrite using `[Formalism.FourierDecayAlt.P.JCTx2.hsVec_smul', inner_smul_right]`. Use `hadj σ (SSn.phD x.1 • SSn.nu0 S.G.k S.G.r (T v).base.z (T v).base.z' (T v).base.μsec x.2) A (e ρ x.2)` as an intermediate fact. Unfold `B.hsInner at this`. Rewrite using `[this, hline x hx σ ρ, if_neg hσ, kap_hsVec_zero, inner_zero_left, mul_zero]`.
-
-Introduce `h`. Conclude with `absurd (Finset.mem_univ ρ) h`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem kapRep_of_typeProj (h : TypeProj) : KapRep := by
   obtain ⟨K, hK, h⟩ := h
@@ -509,7 +507,7 @@ theorem kapRep_of_typeProj (h : TypeProj) : KapRep := by
     · intro h; exact absurd (Finset.mem_univ ρ) h
 
 /- English proof (translation)
-The claim follows from `kapRealiser_of_bd hB hG (kapRep_of_typeProj hP)`.
+A detailed English derivation is pending.
 -/
 theorem kapRealiser_of_typeProj (hB : DatumBd) (hG : SSn.SSnGeom) (hP : TypeProj) : KapRealiser :=
   kapRealiser_of_bd hB hG (kapRep_of_typeProj hP)

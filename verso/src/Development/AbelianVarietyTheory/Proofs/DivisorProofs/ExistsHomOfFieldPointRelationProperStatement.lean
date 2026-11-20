@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsIsoOfIsPro
 open CategoryTheory AlgebraicGeometry TopologicalSpace Limits ReciprocityTheory.ChartRestriction.G.Geo.Tor
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.FieldPointGraph.exists_hom_of_rel` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsHomOfFieldPointRelationProper.lean&line=161#L161)
 -/

@@ -15,7 +15,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.Poinc.Sep
 
 /- English proof (translation)
-The claim follows from `abelianSchemeLaws_all.1.goodPt k P N hN hNk θ hθ a`.
+A detailed English derivation is pending.
 -/
 theorem theta_nonvanish_coset (k : Type) [Field k] [IsAlgClosed k]
     (P : PolAV (Spec (CommRingCat.of k))) (N : ℕ) (hN : 2 ≤ N) (hNk : (N : k) ≠ 0)
@@ -28,7 +28,7 @@ theorem theta_nonvanish_coset (k : Type) [Field k] [IsAlgClosed k]
   abelianSchemeLaws_all.1.goodPt k P N hN hNk θ hθ a
 
 /- English proof (translation)
-Take `⟨x, hx, rest⟩` from `theta_nonvanish_coset k P N hN hNk θ hθ 1`. Conclude with `⟨1 * x, by rw [_root_.one_mul]; exact hx, rest⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem theta_nonvanish_torsion (k : Type) [Field k] [IsAlgClosed k]
     (P : PolAV (Spec (CommRingCat.of k))) (N : ℕ) (hN : 2 ≤ N) (hNk : (N : k) ≠ 0)

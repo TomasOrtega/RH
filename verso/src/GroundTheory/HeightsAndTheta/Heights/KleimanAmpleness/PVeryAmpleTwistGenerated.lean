@@ -18,15 +18,15 @@ variable {k : Type u} [Field k] {Ω : Type w} [Field Ω] [Algebra k Ω] {N : ℕ
   {x : Fin (N + 1) → Ω}
 
 /- English proof (translation)
-The claim follows from `Finset.prod_ne_zero_iff.mpr fun _ hi => (mem_support x).mp (I.2.2 hi)`.
+A detailed English derivation is pending.
 -/
 theorem xProd_ne_zero (I : Chart x) : xProd I ≠ 0 :=
   Finset.prod_ne_zero_iff.mpr fun _ hi => (mem_support x).mp (I.2.2 hi)
 
 /- English proof (translation)
-Proceed by induction on `hs using Submonoid.closure_induction with`. Consider the case `mem a ha`. Take `⟨i, hi, rfl⟩` from `ha`. Use `⟨∏ i' ∈ J.erase i, X i', 1, ∑ _i' ∈ J.erase i, 1, IsHomogeneous.prod _ _ _ fun i' _ => isHomogeneous_X k i', ?_⟩` and prove the remaining obligations. Rewrite using `[pow_one, Finset.mul_prod_erase J (fun i' => (X i' : Poly k N)) (Finset.mem_coe.mp hi)]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Consider the case `one => exact ⟨1, 0, 0, isHomogeneous_one _ _, by simp⟩`. Consider the case `mul a b _ _ ha hb`. Take `⟨t₁, m₁, d₁, ht₁, h₁⟩` from `ha`. Take `⟨t₂, m₂, d₂, ht₂, h₂⟩` from `hb`. Conclude with `⟨t₁ * t₂, m₁ + m₂, d₁ + d₂, ht₁.mul ht₂, by rw [pow_add, ← h₁, ← h₂]; ring⟩`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_mul_eq_prod_pow {J : Finset (Fin (N + 1))} {s : Poly k N} (hs : s ∈ monos J) :
     ∃ (t : Poly k N) (m d : ℕ), t.IsHomogeneous d ∧ s * t = (∏ i ∈ J, X i) ^ m := by
@@ -44,19 +44,17 @@ theorem exists_mul_eq_prod_pow {J : Finset (Fin (N + 1))} {s : Poly k N} (hs : s
     exact ⟨t₁ * t₂, m₁ + m₂, d₁ + d₂, ht₁.mul ht₂, by rw [pow_add, ← h₁, ← h₂]; ring⟩
 
 /- English proof (translation)
-Take `⟨f, s, e, hs, hf, hse, rfl⟩` from `hc`. Take `⟨t, m, d, ht, hst⟩` from `exists_mul_eq_prod_pow (k := k) hs`. Establish `hs0` using `eval_ne_zero_of_mem_monos J hs`. Establish `hJ0 : xProd J ≠ 0` using `xProd_ne_zero J`. Establish `hI0 : xProd I ≠ 0` using `xProd_ne_zero I`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hevJ : aeval x (∏ i ∈ J.1, (X i : Poly k N)) = xProd J` using `by simp [xProd, map_prod]`. Establish `hevI : aeval x (∏ i ∈ I.1, (X i : Poly k N)) = xProd I` using `by simp [xProd, map_prod]`. Establish `hst' : aeval x s * aeval x t = xProd J ^ m` using `by rw [← map_mul, hst, map_pow, hevJ]`. Establish `ht0 : aeval x t ≠ 0` using `right_ne_zero_of_mul (hst' ▸ pow_ne_zero m hJ0)`. Establish `hpJ : (∏ i ∈ J.1, (X i : Poly k N)).IsHomogeneous J.1.card`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using IsHomogeneous.prod J.1 (fun i => (X i : Poly k N)) (fun _ => 1) fun i _ => isHomogeneous_X k i`. Establish `hpI : (∏ i ∈ I.1, (X i : Poly k N)).IsHomogeneous I.1.card`. Simplify using `using IsHomogeneous.prod I.1 (fun i => (X i : Poly k N)) (fun _ => 1) fun i _ => isHomogeneous_X k i`. Establish `hdeg : e + d = J.1.card * m`. Establish `h2 : (s * t).IsHomogeneous (J.1.card * m)` using `by rw [hst]; exact hpJ.pow m`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : s * t ≠ 0`. Rewrite using `[hst]`. Conclude with `pow_ne_zero _ fun h0 => hJ0 (by rw [← hevJ, h0, map_zero])`. Conclude with `(hse.mul ht).inj_right h2 hne`. Take `⟨i', hi'⟩ : ∃ i', I.1.card = i' + 1` from `⟨I.1.card - 1, (Nat.succ_pred_eq_of_pos I.2.1.card_pos).symm⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨aeval x (f * t * (∏ i ∈ J.1, X i) ^ (m * i')) / aeval x ((∏ i ∈ I.1, X i) ^ (m * J.1.card)), m, ⟨f * t * (∏ i ∈ J.1, X i) ^ (m * i'), (∏ i ∈ I.1, X i) ^ (m * J.1.card), I.1.card * (m * J.1.card), pow_mem (Submonoid.prod_mem _ fun i hi => X_mem_monos hi) _, ?_, hpI.pow _, rfl⟩, ? …` and prove the remaining obligations. Establish `h3` using `(hf.mul ht).mul (hpJ.pow (m * i'))`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hdeg, hi']`. Expand and normalize the polynomial expressions, which then agree.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : aeval x f / aeval x s = aeval x f * aeval x t / xProd J ^ m`. Rewrite using `[← hst', mul_div_mul_right _ _ ht0]`. Rewrite using `[key]`. Simplify using `only [map_mul, map_pow, hevJ, hevI]`. Rewrite using `[hi', div_pow, ← pow_mul, ← pow_mul, div_mul_div_comm, div_eq_div_iff (pow_ne_zero _ hJ0) (mul_ne_zero (pow_ne_zero _ hI0) (pow_ne_zero _ hJ0))]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_mem_chartRing_mul_pow (I J : Chart x) {c : Ω} (hc : c ∈ chartRing k x J) :
     ∃ (c' : Ω) (m : ℕ), c' ∈ chartRing k x I ∧
@@ -103,9 +101,9 @@ theorem exists_mem_chartRing_mul_pow (I J : Chart x) {c : Ω} (hc : c ∈ chartR
     ring
 
 /- English proof (translation)
-Take `⟨n₁, hn₁⟩` from `h₁`. Take `⟨n₂, hn₂⟩` from `h₂`. Use `⟨n₁ + n₂, ?_⟩` and prove the remaining obligations. Rewrite `hn₁`, `hn₂`, the goal using `[SubSystem.pow_sub_eq_pow]`. Rewrite using `[mul_add, pow_add]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `Submodule.mul_mem_mul hn₁ hn₂`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ampleChart_mul {H : SubSystem k x Ω} {m : ℕ} {hh : Ω} {I : Chart x} {z₁ z₂ : Ω}
     (h₁ : z₁ ∈ ampleChart H m hh I) (h₂ : z₂ ∈ ampleChart H m hh I) :
@@ -120,7 +118,7 @@ theorem ampleChart_mul {H : SubSystem k x Ω} {m : ℕ} {hh : Ω} {I : Chart x} 
   ring
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, by rw [pow_zero, mul_one, mul_zero, SubSystem.pow_sub_eq_pow, pow_zero] exact Submodule.mem_one.mpr ⟨⟨c, hc⟩, rfl⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_ampleChart_of_mem_chartRing {H : SubSystem k x Ω} {m : ℕ} {hh : Ω} {I : Chart x}
     {c : Ω} (hc : c ∈ chartRing k x I) : c ∈ ampleChart H m hh I :=
@@ -129,7 +127,7 @@ theorem mem_ampleChart_of_mem_chartRing {H : SubSystem k x Ω} {m : ℕ} {hh : �
     exact Submodule.mem_one.mpr ⟨⟨c, hc⟩, rfl⟩⟩
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero]`. Conclude with `mem_ampleChart_of_mem_chartRing (one_mem _)`. Consider the case `succ n ih => rw [pow_succ]`. Conclude with `ampleChart_mul ih hz`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem ampleChart_pow {H : SubSystem k x Ω} {m : ℕ} {hh : Ω} {I : Chart x} {z : Ω}
     (hz : z ∈ ampleChart H m hh I) (n : ℕ) : z ^ n ∈ ampleChart H m hh I := by
@@ -138,11 +136,11 @@ theorem ampleChart_pow {H : SubSystem k x Ω} {m : ℕ} {hh : Ω} {I : Chart x} 
   | succ n ih => rw [pow_succ]; exact ampleChart_mul ih hz
 
 /- English proof (translation)
-Establish `hI : ∀ I : Chart x, ∃ E₀ : ℕ, ∀ E, E₀ ≤ E → b ^ E * c ∈ ampleChart L 1 hl I`. Introduce `I`. Take `⟨e, he⟩` from `hbJ I`. Take `⟨c', m, hc', hcc⟩` from `exists_mem_chartRing_mul_pow I J hc`. Establish `hbI : b ∈ ampleChart L 1 hl I` using `Set.mem_iInter.mp hb I`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨e * m, fun E hE => ?_⟩` and prove the remaining obligations. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hE`. Establish `h4 : b ^ (e * m + d) * c = b ^ d * (c' * (b ^ e * (xProd I ^ J.1.card / xProd J ^ I.1.card)) ^ m)`. Rewrite using `[hcc]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[h4]`. Conclude with `ampleChart_mul (ampleChart_pow hbI d) (ampleChart_mul (mem_ampleChart_of_mem_chartRing hc') (ampleChart_pow he m))`. Use `choose E₀ hE₀ using hI`. Conclude with `⟨∑ I, E₀ I, Set.mem_iInter.mpr fun I => hE₀ I _ (Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ I))⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_pow_mul_mem_ampleRing {L : SubSystem k x Ω} {hl b c : Ω} {J : Chart x}
     (hb : b ∈ ampleRing L 1 hl)
@@ -168,13 +166,13 @@ theorem exists_pow_mul_mem_ampleRing {L : SubSystem k x Ω} {hl b c : Ω} {J : C
     hE₀ I _ (Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ I))⟩
 
 /- English proof (translation)
-Use `choose E hE using hz`. Establish `htop : Ideal.span (Set.range fun i => (⟨b i, hb i⟩ : B)) = ⊤`. Rewrite using `[Ideal.eq_top_iff_one, Ideal.mem_span_range_iff_exists_fun]`. Use `⟨fun i => ⟨a i, ha i⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Simplify using `using hab`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h2` using `Ideal.span_pow_eq_top _ htop (∑ j, E j)`. Rewrite `h2` using `[← Set.range_comp, Ideal.eq_top_iff_one, Ideal.mem_span_range_iff_exists_fun]`. Take `⟨c, hc⟩` from `h2`. Establish `hcoe : ∑ i, (c i : Ω) * b i ^ (∑ j, E j) = 1`. Establish `h5` using `congrArg (fun y : B => (y : Ω)) hc`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h5`. Establish `hsum : z = ∑ i, (c i : Ω) * (b i ^ (∑ j, E j) * z)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hsum]`. Use `sum_mem fun i _ => mul_mem (c i).2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨d, hd⟩` from `Nat.exists_eq_add_of_le (Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ i) : E i ≤ ∑ j, E j)`. Establish `h6 : b i ^ (∑ j, E j) * z = b i ^ d * (b i ^ E i * z)` using `by rw [hd]; ring`. Rewrite using `[h6]`. Conclude with `mul_mem (pow_mem (hb i) _) (hE i)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_pow_mul_mem {B : Subalgebra k Ω} {n : ℕ} {a b : Fin n → Ω} {z : Ω}
     (ha : ∀ i, a i ∈ B) (hb : ∀ i, b i ∈ B) (hab : ∑ i, a i * b i = 1)
@@ -202,11 +200,11 @@ theorem mem_of_pow_mul_mem {B : Subalgebra k Ω} {n : ℕ} {a b : Fin n → Ω} 
   exact mul_mem (pow_mem (hb i) _) (hE i)
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `y hy`. Rewrite `hy` using `[pow_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Set.mem_one.mp hy, pow_zero, div_one]`. Conclude with `one_mem B`. Consider the case `succ n ih`. Introduce `y hy`. Rewrite `hy` using `[pow_succ]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu, v, hv, rfl⟩` from `Set.mem_mul.mp hy`. Rewrite using `[pow_succ, mul_div_mul_comm]`. Conclude with `mul_mem (ih u hu) (hT v hv)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem div_pow_mem_of_mem_pow {B : Subalgebra k Ω} {T : Set Ω} {s : Ω}
     (hT : ∀ y ∈ T, y / s ∈ B) : ∀ n : ℕ, ∀ y ∈ T ^ n, y / s ^ n ∈ B := by
@@ -225,17 +223,15 @@ theorem div_pow_mem_of_mem_pow {B : Subalgebra k Ω} {T : Set Ω} {s : Ω}
     exact mul_mem (ih u hu) (hT v hv)
 
 /- English proof (translation)
-Establish `key : ∀ y ∈ Submodule.span (chartRing k x J) T, ∃ E : ℕ, b ^ E * y / s ^ n ∈ B`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy => exact ⟨0, by rw [pow_zero, one_mul]; exact hT y hy⟩`. Consider the case `zero => exact ⟨0, by simp⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add y₁ y₂ _ _ h₁ h₂`. Take `⟨E₁, h₁⟩` from `h₁`. Take `⟨E₂, h₂⟩` from `h₂`. Use `⟨E₁ + E₂, ?_⟩` and prove the remaining obligations. Establish `h7 : b ^ (E₁ + E₂) * (y₁ + y₂) / s ^ n = b ^ E₂ * (b ^ E₁ * y₁ / s ^ n) + b ^ E₁ * (b ^ E₂ * y₂ / s ^ n)` using `by ring`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[h7]`. Conclude with `add_mem (mul_mem (pow_mem hb _) h₁) (mul_mem (pow_mem hb _) h₂)`. Consider the case `smul c y _ h`. Take `⟨E, h⟩` from `h`. Take `⟨E', hE'⟩` from `hcoef c c.2`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨E' + E, ?_⟩` and prove the remaining obligations. Rewrite using `[chartRing_smul_def]`. Establish `h8 : b ^ (E' + E) * ((c : Ω) * y) / s ^ n = b ^ E' * (c : Ω) * (b ^ E * y / s ^ n)`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h8]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `mul_mem hE' h`. Take `⟨E, hE⟩` from `key _ hz`. Use `⟨E, ?_⟩` and prove the remaining obligations. Establish `h9 : b ^ E * (z * s ^ n) / s ^ n = b ^ E * z`. Clear the denominators using the available nonvanishing facts.
-
-Rewrite `hE` using `[h9]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_pow_mul_mem_of_mem_span {B : Subalgebra k Ω} {J : Chart x} {T : Set Ω}
     {s b z : Ω} {n : ℕ} (hs : s ≠ 0) (hb : b ∈ B) (hT : ∀ y ∈ T, y / s ^ n ∈ B)
@@ -272,13 +268,11 @@ theorem exists_pow_mul_mem_of_mem_span {B : Subalgebra k Ω} {J : Chart x} {T : 
 variable {L G : SubSystem k x Ω} {r₁ s₁ : ℕ} {h : Fin (r₁ + 1) → Ω} {g : Fin (s₁ + 1) → Ω}
 
 /- English proof (translation)
-Take `⟨n, A, Bv, JJ, hA, hBv, hsum, hcov⟩` from `hL.affine l hl`. Establish `hK : ∀ y ∈ ampleRing L 1 (h l), y ∈ B`. Introduce `y hy`. Use `Algebra.adjoin_le ?_ (hL.closed l hl hy)` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `show h a / h l ∈ B`. Establish `h10 : h a / h l = h a * g j / (h l * g j)` using `(mul_div_mul_right _ _ hj).symm`. Rewrite using `[h10]`. Conclude with `hB a j`. Use `mem_of_pow_mul_mem (fun i => hK _ (hA i)) (fun i => hK _ (hBv i)) hsum fun i => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨m, hm⟩` from `Set.mem_iInter.mp hz (JJ i)`. Rewrite `hm` using `[one_mul, SubSystem.pow_sub_eq_pow, SubSystem.twist_sub_eq_mul, ← hL.generates (JJ i), ← hgg (JJ i), Submodule.span_mul_span, Submodule.span_pow]`. Use `exists_pow_mul_mem_of_mem_span (mul_ne_zero hl hj) (hK _ (hBv i)) (div_pow_mem_of_mem_pow (fun y hy => ?_) m) (fun c hc => ?_) hm` and prove the remaining obligations. Take `⟨_, ⟨a, rfl⟩, _, ⟨b, rfl⟩, rfl⟩` from `Set.mem_mul.mp hy`. Conclude with `hB a b`.
-
-Take `⟨E, hE⟩` from `exists_pow_mul_mem_ampleRing (hBv i) (hcov i) hc`. Conclude with `⟨E, hK _ hE⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_of_mem_ampleRing_twist (hL : IsVeryAmpleBy L h)
     (hgg : ∀ I, Submodule.span (chartRing k x I) (Set.range g) = G.sub I) {l : Fin (r₁ + 1)}
@@ -306,19 +300,17 @@ theorem mem_of_mem_ampleRing_twist (hL : IsVeryAmpleBy L h)
     exact ⟨E, hK _ hE⟩
 
 /- English proof (translation)
-Establish `hgI : ∀ j I, g j ∈ G.sub I` using `fun j I => (Submodule.mem_iInf _).mp (hgs j) I`. Establish `hmono : ∀ (l : Fin (r₁ + 1)) (j : Fin (s₁ + 1)) (I : Chart x) (z : Ω), z ∈ ampleChart L 1 (h l) I → z ∈ ampleChart (L.twist G) 1 (h l * g j) I`. Introduce `l j I z hz`. Take `⟨n, hn⟩` from `hz`. Use `⟨n, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hn`, the goal using `[one_mul, SubSystem.pow_sub_eq_pow]`. Rewrite using `[SubSystem.twist_sub_eq_mul, mul_pow (L.sub I) (G.sub I), mul_pow (h l) (g j), ← mul_assoc]`. Conclude with `Submodule.mul_mem_mul hn (Submodule.pow_mem_pow _ (hgI j I) n)`. Establish `hmonoR : ∀ (l : Fin (r₁ + 1)) (j : Fin (s₁ + 1)) (z : Ω), z ∈ ampleRing L 1 (h l) → z ∈ ampleRing (L.twist G) 1 (h l * g j)` using `fun l j z hz => Set.mem_iInter.mpr fun I => hmono l j I z (Set.mem_iInter.mp hz I)`. Use `⟨fun p => ?_, fun I => ?_, fun p hp => ?_, fun p hp => ?_⟩` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Submodule.mem_iInf _).mpr fun I => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `h (e p).1 * g (e p).2 ∈ (L.twist G).sub I`. Rewrite using `[SubSystem.twist_sub_eq_mul]`. Conclude with `Submodule.mul_mem_mul ((Submodule.mem_iInf _).mp (hL.mem_secs _) I) (hgI _ I)`. Rewrite using `[SubSystem.twist_sub_eq_mul, ← hL.generates I, ← hgg I, Submodule.span_mul_span]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use `congr 1`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨p, rfl⟩`. Conclude with `Set.mul_mem_mul ⟨_, rfl⟩ ⟨_, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `hz`. Take `⟨_, ⟨a, rfl⟩, _, ⟨b, rfl⟩, rfl⟩` from `Set.mem_mul.mp hz`. Conclude with `⟨e.symm (a, b), by simp⟩`. Introduce `a ha`. Use `mem_of_mem_ampleRing_twist (B := ampleBase (S := k) (fun q => h (e q).1 * g (e q).2) p) hL hgg (left_ne_zero_of_mul hp) (right_ne_zero_of_mul hp) (fun a' b' => ?_) ha` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components.
 
-Unfold `ampleBase`. Apply `Algebra.subset_adjoin` to reduce the goal to its premises. Conclude with `⟨e.symm (a', b'), by simp⟩`. Take `⟨n, A, Bv, JJ, hA, hBv, hsum, hcov⟩` from `hL.affine (e p).1 (left_ne_zero_of_mul hp)`. Use `⟨n, A, Bv, JJ, fun i => hmonoR _ _ _ (hA i), fun i => hmonoR _ _ _ (hBv i), hsum, fun i I => ?_⟩` and prove the remaining obligations.
-
-Take `⟨e', he'⟩` from `hcov i I`. Conclude with `⟨e', hmono _ _ _ _ he'⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isVeryAmpleBy_twist {R : ℕ} (hL : IsVeryAmpleBy L h) (hgs : ∀ j, g j ∈ G.secs)
     (hgg : ∀ I, Submodule.span (chartRing k x I) (Set.range g) = G.sub I)
@@ -365,21 +357,17 @@ theorem isVeryAmpleBy_twist {R : ℕ} (hL : IsVeryAmpleBy L h) (hgs : ∀ j, g j
 end Lemmas
 
 /- English proof (translation)
-Introduce and unpack `k _ Ω _ _ N x L G - hG ⟨r, h, hL⟩ hGg`. Establish `hfin : ∀ I : Chart x, ∃ T : Finset Ω, (T : Set Ω) ⊆ G.secs ∧ G.sub I ≤ Submodule.span (chartRing k x I) (T : Set Ω)`. Introduce `I`. Take `⟨G', hG'⟩` from `hG I`. Take `⟨F, hF⟩` from `Submodule.fg_of_isUnit (IsUnit.of_mul_eq_one _ hG')`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hsp : ∀ f ∈ F, ∃ T : Finset Ω, (T : Set Ω) ⊆ G.secs ∧ f ∈ Submodule.span (chartRing k x I) (T : Set Ω)` using `fun f hf => Submodule.mem_span_finite_of_mem_span (by rw [hGg I, ← hF]; exact Submodule.subset_span hf)`. Use `choose! Tf hTf using hsp`. Use `⟨F.biUnion Tf, fun z hz => ?_, ?_⟩` and prove the remaining obligations. Take `⟨f, hf, hz⟩` from `Finset.mem_biUnion.mp hz`. Conclude with `(hTf f hf).1 hz`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hF, Submodule.span_le]`. Introduce `f hf`. Use `Submodule.span_mono (fun z hz => ?_) (hTf f hf).2` and prove the remaining obligations. Conclude with `Finset.mem_coe.mpr (Finset.mem_biUnion.mpr ⟨f, hf, hz⟩)`. Use `choose T hTs hTg using hfin`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `set U : Finset Ω := Finset.univ.biUnion T with hU`. Establish `hUs : (U : Set Ω) ⊆ G.secs` using `fun z hz => by`. Take `⟨I, -, hz⟩` from `Finset.mem_biUnion.mp hz`. Conclude with `hTs I hz`. Set `g : Fin (U.card + 1) → Ω` to `Fin.cons 0 fun i => (U.equivFin.symm i : Ω)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hgs : ∀ j, g j ∈ G.secs`. Introduce `j`. Use `Fin.cases ?_ (fun i => ?_) j` and prove the remaining obligations. Simplify using `only [g, Fin.cons_zero]`. Conclude with `zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components.
 
-Simplify using `only [g, Fin.cons_succ]`. Conclude with `hUs (U.equivFin.symm i).2`. Establish `hgg : ∀ I, Submodule.span (chartRing k x I) (Set.range g) = G.sub I`. Introduce `I`. Apply `le_antisymm` to reduce the goal to its premises.
-
-Conclude with `(Submodule.span_mono (by rintro _ ⟨j, rfl⟩; exact hgs j)).trans (SubSystem.span_secs_le G I)`. Use `(hTg I).trans (Submodule.span_mono (s := (T I : Set Ω)) (t := Set.range g) fun z hz => ?_)` and prove the remaining obligations. Establish `hzU : z ∈ U` using `Finset.mem_biUnion.mpr ⟨I, Finset.mem_univ I, hz⟩`. Conclude with `⟨(U.equivFin ⟨z, hzU⟩).succ, by simp [g]⟩`. Establish `hR : (r + 1) * (U.card + 1) - 1 + 1 = (r + 1) * (U.card + 1)` using `Nat.sub_add_cancel (Nat.one_le_iff_ne_zero.mpr (by positivity))`.
-
-Conclude with `⟨_, _, isVeryAmpleBy_twist hL hgs hgg ((finCongr hR).trans finProdFinEquiv.symm)⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem VeryAmpleTwistGenerated.proof : VeryAmpleTwistGenerated.Statement.{u, w} := by
   rintro k _ Ω _ _ N x L G - hG ⟨r, h, hL⟩ hGg

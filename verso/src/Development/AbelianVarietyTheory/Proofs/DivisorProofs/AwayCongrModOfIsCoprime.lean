@@ -1,17 +1,17 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `A C _ _ _ f g hfg hC c'`. Take `⟨u, v, huv⟩` from `hfg`. Take `⟨⟨c, s⟩, rfl⟩` from `IsLocalization.mk'_surjective (Submonoid.powers (algebraMap A C f)) c'`. Take `⟨k, hk⟩` from `s.2`. Take `⟨a, ha⟩` from `hC c`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨algebraMap A (Localization.Away f) (a * u ^ k), ?_⟩` and prove the remaining obligations. Establish `hmap : ∀ x : A, Localization.awayMap (algebraMap A C) f (algebraMap A (Localization.Away f) x) = algebraMap C (Localization.Away (algebraMap A C f)) (algebraMap A C x)` using `fun x => IsLocalization.map_eq _ _`. Rewrite using `[hmap, hmap]`. Rewrite `ha`, the goal using `[Ideal.mem_span_singleton]`. Establish `hunit : IsUnit (algebraMap C (Localization.Away (algebraMap A C f)) (s : C))` using `IsLocalization.map_units _ s`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hunit.dvd_mul_right]`. Establish `key : (IsLocalization.mk' (Localization.Away (algebraMap A C f)) c s - algebraMap C (Localization.Away (algebraMap A C f)) (algebraMap A C (a * u ^ k))) * algebraMap C (Localization.Away (algebraMap A C f)) (s : C) = algebraMap C (Localization.Away (algebraMap A C f)) (c - algebr …`. Rewrite using `[sub_mul, IsLocalization.mk'_spec, ← hk]`. Simplify using `only [map_sub, map_mul, map_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[key]`. Apply `map_dvd` to reduce the goal to its premises. Establish `h1 : g ∣ a * (1 - (u * f) ^ k)`. Establish `h2 : g ∣ 1 - u * f` using `⟨v, by rw [← huv]; ring⟩`. Establish `h3 : 1 - u * f ∣ 1 ^ k - (u * f) ^ k` using `sub_dvd_pow_sub_pow 1 (u * f) k`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h3` using `[one_pow]`. Conclude with `Dvd.dvd.mul_left (h2.trans h3) a`. Establish `h4` using `map_dvd (algebraMap A C) h1`. Establish `: c - algebraMap A C (a * (u * f) ^ k) = (c - algebraMap A C a) + algebraMap A C (a * (1 - (u * f) ^ k))`. Simplify using `only [map_sub, map_mul, map_pow, map_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `dvd_add ha h4`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.away_congr_of_isCoprime : ∀ (A C : Type) [CommRing A] [CommRing C] [Algebra A C] (f g : A), IsCoprime f g → (∀ c : C, ∃ a : A, c - algebraMap A C a ∈ Ideal.span {algebraMap A C g}) → ∀ c' : Localization.Away (algebraMap A C f), ∃ b : Localization.Away f, c' - Localization.awayMap (algebraMap A C) f b ∈ Ideal.span {Localization.awayMap (algebraMap A C) f (algebraMap A (Localization.Away f) g)} := by
   intro A C _ _ _ f g hfg hC c'

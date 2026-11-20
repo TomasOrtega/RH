@@ -23,11 +23,11 @@ section Matrices
 variable {N j : ℕ} {ca cb : Fin N}
 
 /- English proof (translation)
-Establish `e : (Matrix.single cb ca s : Matrix (Fin N) (Fin N) ℂ) * Matrix.single cb ca t = 0`. Use extensionality with `r c`. Rewrite using `[Matrix.mul_apply, Matrix.zero_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.single_apply, Matrix.single_apply]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with h1 h2`. Conclude with `absurd (h1.2.trans h2.1.symm) hne`. Rewrite using `[mul_zero]`. Rewrite using `[zero_mul]`. Rewrite using `[zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[mul_add, add_mul, add_mul, e, one_mul, one_mul, mul_one, Matrix.single_add]`. Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem one_add_single_mul (hne : ca ≠ cb) (s t : ℂ) :
     (1 + Matrix.single cb ca s : Matrix (Fin N) (Fin N) ℂ) * (1 + Matrix.single cb ca t) =
@@ -46,7 +46,7 @@ theorem one_add_single_mul (hne : ca ≠ cb) (s t : ℂ) :
   abel
 
 /- English proof (translation)
-Introduce `h`. Establish `e` using `congrArg Matrix.det (one_add_single_mul hne t (-t))`. Rewrite `e` using `[det_mul, h, zero_mul, add_neg_cancel, Matrix.single_zero, add_zero, det_one]`. Conclude with `zero_ne_one e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_transvection_ne (hne : ca ≠ cb) (t : ℂ) :
     (1 + Matrix.single cb ca t : Matrix (Fin N) (Fin N) ℂ).det ≠ 0 := by
@@ -56,7 +56,7 @@ theorem det_transvection_ne (hne : ca ≠ cb) (t : ℂ) :
   exact zero_ne_one e
 
 /- English proof (translation)
-Introduce `r s h`. Establish `hrs : r ≠ s` using `fun e => h (by rw [e])`. Rewrite using `[Matrix.add_apply, Matrix.one_apply_ne hrs, zero_add, Matrix.single_apply, if_neg]`. Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `h hb`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem blockDiag_transvection (hb : ((cb : ℕ) < N - j ↔ (ca : ℕ) < N - j)) (t : ℂ) :
     IsBlockDiag j (1 + Matrix.single cb ca t : Matrix (Fin N) (Fin N) ℂ) := by
@@ -67,7 +67,7 @@ theorem blockDiag_transvection (hb : ((cb : ℕ) < N - j ↔ (ca : ℕ) < N - j)
   exact h hb
 
 /- English proof (translation)
-Establish `h1` using `a.2`. Establish `h2` using `b.2`. Establish `h3` using `cb.2`. Unfold `lastCol at hca`. Apply the tactic sequence `split_ifs at hca <;> omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem same_block (hj : j ≤ N) {a b : Fin N} (hba : (b : ℕ) = a + 1) (hab : (b : ℕ) < j ∨ j ≤ (a : ℕ))
     (hca : (ca : ℕ) = lastCol N j a) (hcb : (cb : ℕ) = ca + 1) : ((cb : ℕ) < N - j ↔ (ca : ℕ) < N - j) := by
@@ -78,9 +78,9 @@ theorem same_block (hj : j ≤ N) {a b : Fin N} (hba : (b : ℕ) = a + 1) (hab :
   split_ifs at hca <;> omega
 
 /- English proof (translation)
-Distinguish the cases in `e : τ' = τ`. Substitute `e` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `⟨(hh _).1.mul (blockDiag_transvection hb t), by rw [det_mul]; exact mul_ne_zero (hh _).2 (det_transvection_ne hne t)⟩`. Rewrite using `[Function.update_of_ne e]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hh τ'`.
+A detailed English derivation is pending.
 -/
 theorem flags_ok {Ψ : Type} [DecidableEq Ψ] {h : Ψ → Matrix (Fin N) (Fin N) ℂ}
     (hh : ∀ τ', IsBlockDiag j (h τ') ∧ (h τ').det ≠ 0) (τ : Ψ)
@@ -100,7 +100,7 @@ def hfam {Ψ : Type} [DecidableEq Ψ] {d : ℕ} (H : Ψ → (Fin d → ℂ) → 
   Function.update (fun τ' => H τ' w) τ (H τ w * (1 + Matrix.single cb ca t))
 
 /- English proof (translation)
-Unfold `hfam`. Rewrite using `[Function.update_self, Function.update_idem, mul_assoc, one_add_single_mul hne]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem hfam_update {Ψ : Type} [DecidableEq Ψ] {d : ℕ} (H : Ψ → (Fin d → ℂ) → Matrix (Fin N) (Fin N) ℂ) (τ : Ψ)
     (hne : ca ≠ cb) (w : Fin d → ℂ) (s t : ℂ) :
@@ -116,7 +116,7 @@ section Analytic
 variable {N : ℕ} {e : ℕ} {V : Set (Fin e → ℂ)}
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using analyticOnNhd_const`. Consider the case `insert a s ha ih`. Simplify using `only [Finset.sum_insert ha]`. Conclude with `(h a (Finset.mem_insert_self _ _)).add (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem an_sum {α : Type} {s : Finset α} {f : α → (Fin e → ℂ) → ℂ} (h : ∀ i ∈ s, AnalyticOnNhd ℂ (f i) V) :
     AnalyticOnNhd ℂ (fun u => ∑ i ∈ s, f i u) V := by
@@ -128,7 +128,7 @@ theorem an_sum {α : Type} {s : Finset α} {f : α → (Fin e → ℂ) → ℂ} 
     exact (h a (Finset.mem_insert_self _ _)).add (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using analyticOnNhd_const`. Consider the case `insert a s ha ih`. Simplify using `only [Finset.prod_insert ha]`. Conclude with `(h a (Finset.mem_insert_self _ _)).mul (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem an_prod {α : Type} {s : Finset α} {f : α → (Fin e → ℂ) → ℂ} (h : ∀ i ∈ s, AnalyticOnNhd ℂ (f i) V) :
     AnalyticOnNhd ℂ (fun u => ∏ i ∈ s, f i u) V := by
@@ -140,7 +140,7 @@ theorem an_prod {α : Type} {s : Finset α} {f : α → (Fin e → ℂ) → ℂ}
     exact (h a (Finset.mem_insert_self _ _)).mul (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
 /- English proof (translation)
-Simplify using `only [Matrix.det_apply']`. Conclude with `an_sum fun σ _ => analyticOnNhd_const.mul (an_prod fun i _ => hA _ _)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem an_det {m : ℕ} {A : (Fin e → ℂ) → Matrix (Fin m) (Fin m) ℂ}
     (hA : ∀ r s, AnalyticOnNhd ℂ (fun u => A u r s) V) : AnalyticOnNhd ℂ (fun u => (A u).det) V := by
@@ -148,9 +148,7 @@ theorem an_det {m : ℕ} {A : (Fin e → ℂ) → Matrix (Fin m) (Fin m) ℂ}
   exact an_sum fun σ _ => analyticOnNhd_const.mul (an_prod fun i _ => hA _ _)
 
 /- English proof (translation)
-Unfold `minorIJ`. Distinguish the cases in `c : I.card = J.card`. Simplify using `only [dif_pos c]`. Conclude with `an_det fun r s => hh _ _`. Simplify using `only [dif_neg c]`.
-
-Conclude with `analyticOnNhd_const`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem an_minorIJ {h : (Fin e → ℂ) → Matrix (Fin N) (Fin N) ℂ}
     (hh : ∀ r s, AnalyticOnNhd ℂ (fun u => h u r s) V) (I J : Finset (Fin N)) :
@@ -163,9 +161,7 @@ theorem an_minorIJ {h : (Fin e → ℂ) → Matrix (Fin N) (Fin N) ℂ}
     exact analyticOnNhd_const
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply]`. Use `an_sum fun c _ => (hh _ _).mul ?_` and prove the remaining obligations. Simplify using `only [Matrix.add_apply, Matrix.single_apply]`. Use `analyticOnNhd_const.add ?_` and prove the remaining obligations. Use `split_ifs`.
-
-Conclude with `ht`. Conclude with `analyticOnNhd_const`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem an_mul_transvection {h : (Fin e → ℂ) → Matrix (Fin N) (Fin N) ℂ}
     (hh : ∀ r s, AnalyticOnNhd ℂ (fun u => h u r s) V) (ca cb : Fin N) {t : (Fin e → ℂ) → ℂ}
@@ -180,9 +176,7 @@ theorem an_mul_transvection {h : (Fin e → ℂ) → Matrix (Fin N) (Fin N) ℂ}
   · exact analyticOnNhd_const
 
 /- English proof (translation)
-Distinguish the cases in `c : τ' = τ`. Substitute `c` using the available equality. Simplify using `only [hfam, Function.update_self]`. Conclude with `an_mul_transvection (hH _) ca cb ht r s`. Simplify using `only [hfam, Function.update_of_ne c]`.
-
-Conclude with `hH _ _ _`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem an_hfam {Ψ : Type} [DecidableEq Ψ] {d : ℕ} {H : Ψ → (Fin d → ℂ) → Matrix (Fin N) (Fin N) ℂ} {τ : Ψ}
     {ca cb : Fin N} {w : (Fin e → ℂ) → Fin d → ℂ} {t : (Fin e → ℂ) → ℂ}
@@ -196,11 +190,9 @@ theorem an_hfam {Ψ : Type} [DecidableEq Ψ] {d : ℕ} {H : Ψ → (Fin d → �
     exact hH _ _ _
 
 /- English proof (translation)
-Introduce and unpack `u ⟨huV, hus⟩`. Take `⟨i, hi⟩` from `B.cover (g u)`. Establish `h1 : AnalyticAt ℂ (B.chart i ∘ g) u` using `hga i u ⟨huV, hi⟩`. Establish `h2 : AnalyticAt ℂ (A.chart k ∘ f ∘ (B.chart i).symm) ((B.chart i ∘ g) u)` using `hf.2 i k _ ⟨(B.chart i).map_source hi, by show f ((B.chart i).symm (B.chart i (g u))) ∈ (A.chart k).source`. Rewrite using `[(B.chart i).left_inv hi]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hus⟩`. Use `(h2.comp h1).congr ?_` and prove the remaining obligations. Establish `h3 : ∀ᶠ z in 𝓝 u, g z ∈ (B.chart i).source` using `(hg.continuousAt (hV.mem_nhds huV)).eventually ((B.chart i).open_source.mem_nhds hi)`. Use `filter_upwards [h3] with z hz`. Use `show A.chart k (f ((B.chart i).symm (B.chart i (g z)))) = A.chart k (f (g z))`.
-
-Rewrite using `[(B.chart i).left_inv hz]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem an_chart_comp {D D' : ℕ} {Y X : Type} [TopologicalSpace Y] [TopologicalSpace X] (B : FinHolAtlas D Y)
     (A : FinHolAtlas D' X) {f : Y → X} (hf : HoloMap B A f) (hV : IsOpen V) {g : (Fin e → ℂ) → Y}
@@ -222,14 +214,14 @@ theorem an_chart_comp {D D' : ℕ} {Y X : Type} [TopologicalSpace Y] [Topologica
   rw [(B.chart i).left_inv hz]
 
 /- English proof (translation)
-Introduce `z _` and use `(ContinuousLinearMap.pi fun i : Fin e => ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin (e + 1) => ℂ) i.succ).analyticAt z`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem an_tail {e : ℕ} : AnalyticOnNhd ℂ (Fin.tail : (Fin (e + 1) → ℂ) → Fin e → ℂ) Set.univ := fun z _ =>
   (ContinuousLinearMap.pi fun i : Fin e =>
     ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin (e + 1) => ℂ) i.succ).analyticAt z
 
 /- English proof (translation)
-Introduce `z _` and use `(ContinuousLinearMap.pi fun i : Fin e => ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin (e + 2) => ℂ) i.succ.succ).analyticAt z`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem an_tail_tail {e : ℕ} :
     AnalyticOnNhd ℂ (fun z : Fin (e + 2) → ℂ => Fin.tail (Fin.tail z)) Set.univ := fun z _ =>
@@ -237,7 +229,7 @@ theorem an_tail_tail {e : ℕ} :
     ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin (e + 2) => ℂ) i.succ.succ).analyticAt z
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hc.comp hwc.continuousOn fun _ h => h, fun k u hu => AnalyticAt.comp (g := A.chart k ∘ bp) (f := w) (ha k (w u) hu) (hwa u trivial)⟩`.
+Supply the required witnesses or components.
 -/
 theorem pull_base {e' D : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas D X) {Un : Set (Fin e' → ℂ)}
     {w : (Fin e → ℂ) → Fin e' → ℂ} (hwc : Continuous w) (hwa : AnalyticOnNhd ℂ w Set.univ) {bp : (Fin e' → ℂ) → X}
@@ -255,18 +247,16 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Φ : 
   {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N j : ℕ}
 
 /- English proof (translation)
-Introduce `b hb` and use `((FC.bvec_good K ι Φ y Ψ N j M n BM l b hb).2.1.2.1 q I).1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem reg_u {M : FlagModel y Ψ N j} {n : ℕ} (BM : BaseMetric M n) (l : Fin BM.q) (q : Σ k, ι k)
     (I : Finset (Fin N)) : ∀ b ∈ BM.O l, RegAt M.x (mCoordIdeal (FC.bvec BM l b)) ((BM.F l).u q I) := fun b hb =>
   ((FC.bvec_good K ι Φ y Ψ N j M n BM l b hb).2.1.2.1 q I).1
 
 /- English proof (translation)
-Take `⟨k, m⟩` from `q`. Establish `va` using `GlobalTheory.T.base_chart_holomorphic_composition K ι Φ y Ψ N j M n BM l e V bp hV hc ha hO`. Distinguish the cases in `hk : ∀ p, M.blk p ≠ some k`. Establish `e1 : (fun u => FC.flagPt M (BM.F l) (FC.bvec BM l (bp u)) (h u) ⟨k, m⟩) = fun u => FC.bvec BM l (bp u) ⟨⟨k, hk⟩, m⟩` using `funext fun u => dif_pos hk`. Rewrite using `[e1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `va.1 _`. Take `⟨p, hp⟩` from `not_forall.1 hk`. Establish `hp'` using `not_not.1 hp`. Establish `e1 : (fun u => FC.flagPt M (BM.F l) (FC.bvec BM l (bp u)) (h u) ⟨k, m⟩) = fun u => ∑ I, valAt M.x ((BM.F l).u ⟨k, m⟩ I) (FC.bvec BM l (bp u)) * minorIJ (h u p.1) I (stepCols N j p.2)` using `funext fun u => FC.flagPt_step M _ _ _ hp' m`. Rewrite using `[e1]`.
-
-Conclude with `an_sum fun I _ => (va.2 _ (reg_u BM l _ _)).mul (an_minorIJ (hh p.1) _ _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem an_flagPt {M : FlagModel y Ψ N j} {n : ℕ} (BM : BaseMetric M n) (l : Fin BM.q) {e : ℕ}
     {V : Set (Fin e → ℂ)} {bp : (Fin e → ℂ) → BM.Rb.X} (hV : IsOpen V) (hc : ContinuousOn bp V)
@@ -290,9 +280,9 @@ theorem an_flagPt {M : FlagModel y Ψ N j} {n : ℕ} (BM : BaseMetric M n) (l : 
     exact an_sum fun I _ => (va.2 _ (reg_u BM l _ _)).mul (an_minorIJ (hh p.1) _ _)
 
 /- English proof (translation)
-Take `⟨o, m⟩` from `q`. Consider the cases of `o with`. Consider the case `some k => exact an_flagPt BM l hV hc ha hO h hh ⟨k, m⟩`. Consider the case `none`. Establish `va` using `GlobalTheory.T.base_chart_holomorphic_composition K ι Φ y Ψ N j M n BM l e V bp hV hc ha hO`.
+Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Use `show AnalyticOnNhd ℂ (fun u => ∑ I, valAt M.x ((BM.F l).u ⟨k₀, m⟩ I) (FC.bvec BM l (bp u)) * minorIJ (h u τ * (1 + Matrix.single cb ca (t u))) I (stepCols N j a)) V`. Conclude with `an_sum fun I _ => (va.2 _ (reg_u BM l _ _)).mul (an_minorIJ (an_mul_transvection (hh τ) ca cb ht) _ _)`.
+A detailed English derivation is pending.
 -/
 theorem an_wVec {M : FlagModel y Ψ N j} {n : ℕ} (BM : BaseMetric M n) (l : Fin BM.q) {e : ℕ}
     {V : Set (Fin e → ℂ)} {bp : (Fin e → ℂ) → BM.Rb.X} (hV : IsOpen V) (hc : ContinuousOn bp V)
@@ -312,7 +302,7 @@ theorem an_wVec {M : FlagModel y Ψ N j} {n : ℕ} (BM : BaseMetric M n) (l : Fi
       (an_minorIJ (an_mul_transvection (hh τ) ca cb ht) _ _)
 
 /- English proof (translation)
-Take `⟨c, hc, rfl⟩` from `h`. Conclude with `⟨fun k => c k.1, fun k => hc k.1, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem base_orbit {σ : Type} (blk : σ → Option K) {z z' : (Σ k, ι k) → ℂ} (h : SameOrbit z z') :
     SameOrbit (basePart blk z) (basePart blk z') := by
@@ -320,7 +310,7 @@ theorem base_orbit {σ : Type} (blk : σ → Option K) {z z' : (Σ k, ι k) → 
   exact ⟨fun k => c k.1, fun k => hc k.1, rfl⟩
 
 /- English proof (translation)
-Take `⟨c, hc, rfl⟩` from `h`. Conclude with `⟨fun k => c (some k), fun k => hc _, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem fst_orbit (k₀ : K) {z z' : (Σ o : Option K, ι (o.getD k₀)) → ℂ} (h : SameOrbit z z') :
     SameOrbit (fstPt k₀ z) (fstPt k₀ z') := by
@@ -328,9 +318,9 @@ theorem fst_orbit (k₀ : K) {z z' : (Σ o : Option K, ι (o.getD k₀)) → ℂ
   exact ⟨fun k => c (some k), fun k => hc _, rfl⟩
 
 /- English proof (translation)
-Take `⟨c, hc, rfl⟩` from `h`. Use `⟨fun k => if k = k₀ then c none else c (some k), fun k => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only split_ifs`. Conclude with `hc _`. Conclude with `hc _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Use function extensionality and compare the values at `⟨k, m⟩`. Distinguish the cases in `e : k = k₀`. Substitute `e` using the available equality. Simplify using `only [sndPt, Function.comp, v₁_self, if_true]`. Simplify using `only [sndPt, Function.comp, v₁_ne (p := ⟨k, m⟩) e, if_neg e]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem snd_orbit (k₀ : K) {z z' : (Σ o : Option K, ι (o.getD k₀)) → ℂ} (h : SameOrbit z z') :
     SameOrbit (sndPt k₀ z) (sndPt k₀ z') := by
@@ -349,29 +339,27 @@ theorem snd_orbit (k₀ : K) {z z' : (Σ o : Option K, ι (o.getD k₀)) → ℂ
 end Families
 
 /- English proof (translation)
-Introduce `K _ ι _ Φ _ y Ψ _ _ N j M n d BM FA τ a b k₀ ca cb hba hab hk₀ hca hcb RW q hq hq0 hq1 hqi l Un H bp hUn hH hbc hba' hOk`. Establish `hne : ca ≠ cb` using `fun e => by rw [e] at hcb; omega`. Establish `hsb` using `same_block M.j_le hba hab hca hcb`. Establish `hbi` using `FC.re_pi_bijective K ι Φ y Ψ N j M n d BM FA`. Use `haveI : Nonempty FA.S.X := FibNonempty.flagAn_S_nonempty K ι Φ y Ψ N j M n d BM FA`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : Nonempty FA.Re.R.X := by`. Take `⟨x⟩` from `‹Nonempty FA.S.X›`. Conclude with `(hbi.2 x).elim fun r _ => ⟨r⟩`. Use `haveI : Nonempty RW.X := GlobalTheory.T.flag_adjacent_twisted_resolution_third K ι Φ y Ψ N j M n d BM FA τ a b k₀ ca cb hba hab hk₀ hca hcb RW`. Establish `hO : ∀ w ∈ Un, bp w ∈ BM.O l` using `fun w hw => (hOk w hw).1.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfl : ∀ w ∈ Un, ∀ t τ', IsBlockDiag j (hfam H τ ca cb w t τ') ∧ (hfam H τ ca cb w t τ').det ≠ 0` using `fun w hw t => flags_ok (hOk w hw).2 τ hsb hne t`. Establish `hnot : ∀ z, z ∉ mcPts FA.Re.J` using `fun z => by rw [FA.J_top]; exact Proj.not_mem_mcPts_top z`. Establish `exY : ∀ z : Fin (d + 1) → ℂ, Fin.tail z ∈ Un → ∃ x, SameOrbit (FA.Re.R.lift x x) (FC.flagPt M (BM.F l) (FC.bvec BM l (bp (Fin.tail z))) (hfam H τ ca cb (Fin.tail z) (z 0)))` using `fun z hz => FA.Re.R.surj _ (FC.flagPt_mem_mcPts K ι Φ y Ψ N j M n BM l _ (hO _ hz) _ (hfl _ hz _)) (hnot _)`. Establish `exW : ∀ z : Fin (d + 2) → ℂ, Fin.tail (Fin.tail z) ∈ Un → ∃ x, SameOrbit (RW.lift x x) (FC.wVec M (BM.F l) (FC.bvec BM l (bp (Fin.tail (Fin.tail z)))) (hfam H τ ca cb (Fin.tail (Fin.tail z)) (z 0)) τ a k₀ ca cb (z 1 - z 0))` using `fun z hz => RW.surj _ (GlobalTheory.T.flag_adjacent_arith_variety_first K ι Φ y Ψ N j M n BM d τ a b k₀ ca cb hba hab hk₀ hca hcb FA.Re.arith l _ (hO _ hz) _ _ (hfl _ hz _)) (Proj.not_mem_mcPts_top _)`. Use `choose! g hg using exY`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose! ΦW hW using exW`. Establish `hwc1 : Continuous (Fin.tail : (Fin (d + 1) → ℂ) → Fin d → ℂ)` using `continuous_pi fun i => continuous_apply _`. Establish `hwc2 : Continuous (fun z : Fin (d + 2) → ℂ => Fin.tail (Fin.tail z))` using `continuous_pi fun i => continuous_apply _`. Establish `hV1 : IsOpen {z : Fin (d + 1) → ℂ | Fin.tail z ∈ Un}` using `hUn.preimage hwc1`. Establish `hV2 : IsOpen {z : Fin (d + 2) → ℂ | Fin.tail (Fin.tail z) ∈ Un}` using `hUn.preimage hwc2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp1` using `pull_base BM.Rb.A hwc1 an_tail hbc hba'`. Establish `hp2` using `pull_base BM.Rb.A hwc2 an_tail_tail hbc hba'`. Establish `hH1 : ∀ τ' r s, AnalyticOnNhd ℂ (fun z : Fin (d + 1) → ℂ => H τ' (Fin.tail z) r s) {z | Fin.tail z ∈ Un}` using `fun τ' r s z hz => by`. Establish `h1 : AnalyticAt ℂ (fun w => H τ' w r s) (Fin.tail z)` using `hH τ' r s _ hz`. Conclude with `h1.comp (an_tail z trivial)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hH2 : ∀ τ' r s, AnalyticOnNhd ℂ (fun z : Fin (d + 2) → ℂ => H τ' (Fin.tail (Fin.tail z)) r s) {z | Fin.tail (Fin.tail z) ∈ Un}` using `fun τ' r s z hz => by`. Establish `h1 : AnalyticAt ℂ (fun w => H τ' w r s) (Fin.tail (Fin.tail z))` using `hH τ' r s _ hz`. Conclude with `AnalyticAt.comp (f := fun z : Fin (d + 2) → ℂ => Fin.tail (Fin.tail z)) h1 (an_tail_tail z trivial)`. Establish `ht1 : AnalyticOnNhd ℂ (fun z : Fin (d + 1) → ℂ => z 0) {z | Fin.tail z ∈ Un}` using `fun z _ => (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin (d + 1) => ℂ) 0).analyticAt z`. Establish `ht2 : AnalyticOnNhd ℂ (fun z : Fin (d + 2) → ℂ => z 0) {z | Fin.tail (Fin.tail z) ∈ Un}` using `fun z _ => (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin (d + 2) => ℂ) 0).analyticAt z`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht3 : AnalyticOnNhd ℂ (fun z : Fin (d + 2) → ℂ => z 1 - z 0) {z | Fin.tail (Fin.tail z) ∈ Un}` using `fun z hz => ((ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin (d + 2) => ℂ) 1).analyticAt z).sub (ht2 z hz)`. Establish `anY : ∀ q', AnalyticOnNhd ℂ (fun z : Fin (d + 1) → ℂ => FC.flagPt M (BM.F l) (FC.bvec BM l (bp (Fin.tail z))) (hfam H τ ca cb (Fin.tail z) (z 0)) q') {z | Fin.tail z ∈ Un}` using `an_flagPt BM l hV1 hp1.1 hp1.2 (fun z hz => hO _ hz) (fun z => hfam H τ ca cb (Fin.tail z) (z 0)) (an_hfam hH1 ht1)`. Establish `anW : ∀ q', AnalyticOnNhd ℂ (fun z : Fin (d + 2) → ℂ => FC.wVec M (BM.F l) (FC.bvec BM l (bp (Fin.tail (Fin.tail z)))) (hfam H τ ca cb (Fin.tail (Fin.tail z)) (z 0)) τ a k₀ ca cb (z 1 - z 0) q') {z | Fin.tail (Fin.tail z) ∈ Un}` using `an_wVec BM l hV2 hp2.1 hp2.2 (fun z hz => hO _ hz) (fun z => hfam H τ ca cb (Fin.tail (Fin.tail z)) (z 0)) (an_hfam hH2 ht2) τ a k₀ ca cb ht3`. Take `⟨hgc, hga⟩` from `HoloLift.holo_of_analytic_lift _ _ _ _ _ _ FA.Re.R FA.J_top _ _ g hV1 anY hg`. Take `⟨hWc, hWa⟩` from `HoloLift.holo_of_analytic_lift _ _ _ _ _ _ RW rfl _ _ ΦW hV2 anW hW`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨fun z => FA.Re.π (g z), ΦW, FA.Re.holo.1.comp_continuousOn hgc, an_chart_comp FA.Re.R.A FA.S.A FA.Re.holo hV1 hgc hga, hWc, hWa, fun z hz => ⟨?_, fun x₀ hx₀ => ?_⟩, fun z hz => ⟨hW z hz, ?_, ?_⟩⟩` and prove the remaining obligations. Establish `h1` using `FA.pr_eq (g z)`. Establish `h2` using `base_orbit M.blk (hg z hz)`. Rewrite `h2` using `[FC.basePart_flagPt]`. Establish `h3` using `(FC.bvec_good K ι Φ y Ψ N j M n BM l _ (hO _ hz)).2.2.2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `BM.Rb.inj _ _ (Proj.not_mem_mcPts_top _) (orbit_trans (orbit_symm h1) (orbit_trans h2 h3))`. Rewrite using `[hbi.1 hx₀]`. Conclude with `hg z hz`. Establish `hs` using `FC.fstPt_sndPt_wVec K ι Φ y Ψ N j M τ a b k₀ ca cb hba hab hk₀ hca hcb (BM.F l) (FC.bvec BM l (bp (Fin.tail (Fin.tail z)))) (hfam H τ ca cb (Fin.tail (Fin.tail z)) (z 0)) (z 1 - z 0)`. Take `⟨x₀, hx₀⟩` from `hbi.2 (q 0 (ΦW z))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `o1` using `hq0 (ΦW z) x₀ hx₀`. Establish `o2` using `fst_orbit k₀ (hW z hz)`. Rewrite `o2` using `[hs.1]`. Establish `o3` using `hg (Fin.cons (z 0) (Fin.tail (Fin.tail z))) (by simpa [Fin.tail_cons] using hz)`. Rewrite `o3` using `[Fin.tail_cons, Fin.cons_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hx₀, FA.Re.R.inj _ _ (hnot _) (orbit_trans o1 (orbit_trans o2 (orbit_symm o3)))]`. Establish `hs` using `FC.fstPt_sndPt_wVec K ι Φ y Ψ N j M τ a b k₀ ca cb hba hab hk₀ hca hcb (BM.F l) (FC.bvec BM l (bp (Fin.tail (Fin.tail z)))) (hfam H τ ca cb (Fin.tail (Fin.tail z)) (z 0)) (z 1 - z 0)`. Take `⟨x₀, hx₀⟩` from `hbi.2 (q 1 (ΦW z))`. Establish `o1` using `hq1 (ΦW z) x₀ hx₀`. Establish `o2` using `snd_orbit k₀ (hW z hz)`.
-
-Rewrite `o2` using `[hs.2, hfam_update H τ hne, add_sub_cancel]`. Establish `o3` using `hg (Fin.tail z) hz`. Establish `e1 : Fin.tail z 0 = z 1` using `by simp [Fin.tail]`. Rewrite `o3` using `[e1]`. Rewrite using `[← hx₀, FA.Re.R.inj _ _ (hnot _) (orbit_trans o1 (orbit_trans o2 (orbit_symm o3)))]`.
+A detailed English derivation is pending.
 -/
 theorem charts : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (n d : ℕ) (BM : BaseMetric M n) (FA : FlagAn BM d) (τ : Ψ) (a b : Fin N) (k₀ : K) (ca cb : Fin N), (b : ℕ) = a + 1 → ((b : ℕ) < j ∨ j ≤ (a : ℕ)) → M.blk (τ, a) = some k₀ → (ca : ℕ) = lastCol N j a → (cb : ℕ) = ca + 1 → ∀ (RW : AnLogRes (mCoordIdeal (M.wCo (τ, a) k₀ ca cb RatFunc.X)) ⊤ (d + 2)) (q : Fin 2 → RW.X → FA.S.X), (∀ i, HoloMap RW.A FA.S.A (q i)) → (∀ x x₀, FA.Re.π x₀ = q 0 x → SameOrbit (FA.Re.R.lift x₀ x₀) (fstPt k₀ (RW.lift x x))) → (∀ x x₀, FA.Re.π x₀ = q 1 x → SameOrbit (FA.Re.R.lift x₀ x₀) (sndPt k₀ (RW.lift x x))) → (Function.Injective fun w => (q 0 w, q 1 w)) → ∀ (l : Fin BM.q) (Un : Set (Fin d → ℂ)) (H : Ψ → (Fin d → ℂ) → Matrix (Fin N) (Fin N) ℂ) (bp : (Fin d → ℂ) → BM.Rb.X), IsOpen Un → (∀ τ' r s, AnalyticOnNhd ℂ (fun w => H τ' w r s) Un) → ContinuousOn bp Un → (∀ k, AnalyticOnNhd ℂ (BM.Rb.A.chart k ∘ bp) (Un ∩ bp ⁻¹' (BM.Rb.A.chart k).source)) → (∀ w ∈ Un, bp w ∈ BM.O l \ bdry BM.s ∧ ∀ τ', IsBlockDiag j (H τ' w) ∧ (H τ' w).det ≠ 0) → ∃ (ΦY : (Fin (d + 1) → ℂ) → FA.S.X) (ΦW : (Fin (d + 2) → ℂ) → RW.X), ContinuousOn ΦY {z | Fin.tail z ∈ Un} ∧ (∀ k, AnalyticOnNhd ℂ (FA.S.A.chart k ∘ ΦY) ({z | Fin.tail z ∈ Un} ∩ ΦY ⁻¹' (FA.S.A.chart k).source)) ∧ ContinuousOn ΦW {z | Fin.tail (Fin.tail z) ∈ Un} ∧ (∀ k, AnalyticOnNhd ℂ (RW.A.chart k ∘ ΦW) ({z | Fin.tail (Fin.tail z) ∈ Un} ∩ ΦW ⁻¹' (RW.A.chart k).source)) ∧ (∀ z : Fin (d + 1) → ℂ, Fin.tail z ∈ Un → FA.pr (ΦY z) = bp (Fin.tail z) ∧ ∀ x₀, FA.Re.π x₀ = ΦY z → SameOrbit (FA.Re.R.lift x₀ x₀) (FC.flagPt M (BM.F l) (FC.bvec BM l (bp (Fin.tail z))) (Function.update (fun τ' => H τ' (Fin.tail z)) τ (H τ (Fin.tail z) * (1 + Matrix.single cb ca (z 0)))))) ∧ (∀ z : Fin (d + 2) → ℂ, Fin.tail (Fin.tail z) ∈ Un → SameOrbit (RW.lift (ΦW z) (ΦW z)) (FC.wVec M (BM.F l) (FC.bvec BM l (bp (Fin.tail (Fin.tail z)))) (Function.update (fun τ' => H τ' (Fin.tail (Fin.tail z))) τ (H τ (Fin.tail (Fin.tail z)) * (1 + Matrix.single cb ca (z 0)))) τ a k₀ ca cb (z 1 - z 0)) ∧ q 0 (ΦW z) = ΦY (Fin.cons (z 0) (Fin.tail (Fin.tail z))) ∧ q 1 (ΦW z) = ΦY (Fin.tail z)) := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M n d BM FA τ a b k₀ ca cb hba hab hk₀ hca hcb RW q hq hq0 hq1 hqi l Un H bp hUn hH hbc hba' hOk

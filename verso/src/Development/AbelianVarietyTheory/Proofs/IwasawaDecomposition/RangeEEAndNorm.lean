@@ -15,9 +15,9 @@ section Scale
 variable {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar}
 
 /- English proof (translation)
-Introduce `v v'`. Take `⟨hi, he⟩` from `h v v'`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Unfold `IntegrableOn at hi ⊢`. Rewrite using `[Measure.restrict_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hi.smul_measure ENNReal.ofReal_ne_top`. Rewrite using `[Measure.restrict_smul, integral_smul_measure, he, ENNReal.toReal_ofReal hc.le, Complex.real_smul, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMultiplicityInner_smul_measure (M : DSModel V S) (μ : Measure (GA D V)) (𝓕 : Set (GA D V)) (T T' : MMap M) {c : ℝ}
     (hc : 0 < c) {k : ℂ} (h : IsMultIP M μ 𝓕 T T' k) :
@@ -31,11 +31,11 @@ theorem isMultiplicityInner_smul_measure (M : DSModel V S) (μ : Measure (GA D V
   · rw [Measure.restrict_smul, integral_smul_measure, he, ENNReal.toReal_ofReal hc.le, Complex.real_smul, mul_assoc]
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `hv`. Distinguish the cases in `h : ∃ k, IsMultIP M μ 𝓕 T T' k`. Establish `hs` using `isMultiplicityInner_smul_measure M μ 𝓕 T T' hc (ipM_spec M μ 𝓕 T T' h)`. Conclude with `hasPeterssonInner_unique M _ 𝓕 T T' v hv (ipM_spec M _ 𝓕 T T' ⟨_, hs⟩) hs`. Establish `h' : ¬ ∃ k, IsMultIP M (ENNReal.ofReal c • μ) 𝓕 T T' k`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨k, hk⟩`. Establish `e : ENNReal.ofReal c⁻¹ • ENNReal.ofReal c • μ = μ`. Rewrite using `[smul_smul, ← ENNReal.ofReal_mul (inv_nonneg.2 hc.le), inv_mul_cancel₀ hc.ne', ENNReal.ofReal_one, one_smul]`. Use `isMultiplicityInner_smul_measure M _ 𝓕 T T' (inv_pos.2 hc) hk` as an intermediate fact. Rewrite `this` using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Conclude with `h ⟨_, this⟩`. Unfold `ipM`. Rewrite using `[dif_neg h, dif_neg h', mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ipM_smul (M : DSModel V S) (μ : Measure (GA D V)) (𝓕 : Set (GA D V)) (T T' : MMap M) {c : ℝ}
     (hc : 0 < c) (hv : ∃ v : M.Vec, ∏ τ, ⟪(v τ : M.H τ), (v τ : M.H τ)⟫_ℂ ≠ 0) :
@@ -55,11 +55,9 @@ theorem ipM_smul (M : DSModel V S) (μ : Measure (GA D V)) (𝓕 : Set (GA D V))
     rw [dif_neg h, dif_neg h', mul_zero]
 
 /- English proof (translation)
-Establish `: ∃ τ, ∀ w : M.sm τ, w = 0`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Use `choose w hw using hne`. Use `hv ⟨w, Finset.prod_ne_zero_iff.2 fun τ _ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Rewrite using `[inner_self_ne_zero]`. Conclude with `fun h0 => hw τ (Subtype.ext h0)`. Take `⟨τ, hτ⟩` from `this`. Use extensionality with `v g`. Rewrite using `[T.map_coord_zero τ (hτ (v τ))]`.
-
-Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mmap_eq_zero (M : DSModel V S) (hv : ¬ ∃ v : M.Vec, ∏ τ, ⟪(v τ : M.H τ), (v τ : M.H τ)⟫_ℂ ≠ 0) (T : MMap M) :
     T = 0 := by
@@ -85,25 +83,23 @@ namespace GlobalTheory.Mem.R3.RowsLvl
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y hP _`. Establish `hE : R.models_HE` using `hP.char.base.models.HE`. Establish `hEEc : (toChainReal R.toRealDat F.lv2 Y.tupT Y.hm Y.hTop).EEc true = (R.toRealDat.EEat (R.toRealDat.levR F.lv2 true)).map (PiTensorProduct.lift : Mult.MMap (R.MY 0) ≃ₗ[ℂ] _).toLinearMap` using `rfl`. Establish `hlift : Function.Injective (PiTensorProduct.lift : Mult.MMap (R.MY 0) ≃ₗ[ℂ] _)` using `LinearEquiv.injective _`. Use `⟨?_, fun x => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `h`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`. Establish `hm` using `(Y.Ish.jE x).2`. Rewrite `hm` using `[Y.eE_read, hEEc]`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨u, hu, he⟩` from `hm`. Establish `: u = R.HE.e (Y.eE x)` using `hlift he`. Rewrite using `[Submodule.mem_comap, ← this]`. Conclude with `hu`. Introduce `hh`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hh` using `[Submodule.mem_comap]`. Establish `hm : (PiTensorProduct.lift : Mult.MMap (R.MY 0) ≃ₗ[ℂ] _) (R.HE.e h) ∈ (toChainReal R.toRealDat F.lv2 Y.tupT Y.hm Y.hTop).EEc true`. Rewrite using `[hEEc]`. Conclude with `⟨_, hh, rfl⟩`. Use `⟨Y.Ish.jE.symm ⟨_, hm⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e1` using `Y.eE_read (Y.Ish.jE.symm ⟨_, hm⟩)`. Rewrite `e1` using `[LinearEquiv.apply_symm_apply]`. Conclude with `(hE.1 (hlift e1)).symm`. Establish `hx` using `Y.tied.sharp.ee x x`. Establish `hy` using `hE.2.2 (Y.eE x) (Y.eE x)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hnP : 0 < RealDat.nP F.lv2 true`. Unfold `RealDat.nP`. Conclude with `Nat.card_pos` after adjusting the coercions. Distinguish the cases in `hv : ∃ v : (R.MY 0).Vec, ∏ τ, ⟪(v τ : (R.MY 0).H τ), (v τ : (R.MY 0).H τ)⟫_ℂ ≠ 0`. Establish `e : ⟪x, x⟫_ℂ = (((RealDat.nP F.lv2 true)⁻¹ : ℝ) : ℂ) * ⟪Y.eE x, Y.eE x⟫_ℂ`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx, hy]`. Use `show ipMT _ _ _ _ _ = _`. Unfold `ipMT`. Rewrite using `[Y.eE_read]`. Use `erw [LinearEquiv.symm_apply_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ipM_smul _ _ _ _ _ (inv_pos.2 hnP) hv`. Rewrite `e` using `[inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K]`. Establish `e' : ‖x‖ ^ 2 = (RealDat.nP F.lv2 true)⁻¹ * ‖Y.eE x‖ ^ 2`. Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[Complex.ofReal_mul, Complex.ofReal_pow, Complex.ofReal_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `e`. Rewrite using `[e', ← mul_assoc, mul_inv_cancel₀ hnP.ne', one_mul]`. Establish `h0 : Y.eE x = 0` using `hE.1 (by rw [mmap_eq_zero _ hv (R.HE.e (Y.eE x)), mmap_eq_zero _ hv (R.HE.e 0)])`. Establish `h1 : (Y.Ish.jE x).1 = 0`. Rewrite using `[Y.eE_read, h0, map_zero]`.
-
-Conclude with `map_zero _`. Establish `hx0 : x = 0` using `(LinearEquiv.map_eq_zero_iff _).1 (Submodule.coe_eq_zero.1 h1)`. Simplify using `[h0, hx0]`.
+A detailed English derivation is pending.
 -/
 theorem range_eE_and_norm : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I0 T : Type) (A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) (cG : G0 R.Pg D.R.r ≃* G0g D.nd) (X0 : BaseLevelRowSide D) (Y : Read (A3 := A3) R.toRealDat F.lv2 X0), Pins R F cG → Holds R F → LinearMap.range Y.eE = (R.toRealDat.EEat (R.toRealDat.levR F.lv2 true)).comap R.HE.e ∧ ∀ x, ‖Y.eE x‖ ^ 2 = RealDat.nP F.lv2 true * ‖x‖ ^ 2 := by
   intro D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y hP _

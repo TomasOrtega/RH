@@ -22,9 +22,7 @@ open scoped Classical
 variable {g : ℕ} [Fact g.Prime]
 
 /- English proof (translation)
-Use `haveI : NeZero g := ⟨(Fact.out : g.Prime).ne_zero⟩`. Use `haveI : Finite (Polynomial.degreeLT (ZMod g) (d + 1)) := Finite.of_equiv _ (Polynomial.degreeLTEquiv (ZMod g) (d + 1)).symm.toEquiv`. Use `(Set.toFinite (Polynomial.degreeLT (ZMod g) (d + 1) : Set (ZMod g)[X])).subset fun P hP => ?_` and prove the remaining obligations. Establish `h` using `Polynomial.degree_eq_natDegree hP.1.ne_zero`. Rewrite using `[SetLike.mem_coe, Polynomial.mem_degreeLT, h, hP.2.2.2]`.
-
-Conclude with `Nat.lt_succ_self d` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_primeLab (d : ℕ) : {P : (ZMod g)[X] | IsPrimeLab d P}.Finite := by
   haveI : NeZero g := ⟨(Fact.out : g.Prime).ne_zero⟩
@@ -36,9 +34,9 @@ theorem finite_primeLab (d : ℕ) : {P : (ZMod g)[X] | IsPrimeLab d P}.Finite :=
   exact_mod_cast Nat.lt_succ_self d
 
 /- English proof (translation)
-Use `haveI : NeZero g := ⟨(Fact.out : g.Prime).ne_zero⟩`. Use `haveI : Invertible (Fintype.card (GL (Fin d) (ZMod g)) : ℂ) := invertibleOfNonzero (by exact_mod_cast Fintype.card_ne_zero)`. Establish `h1` using `FDRep.char_orthonormal V W`. Establish `h2` using `FDRep.char_orthonormal V V`. Establish `e : W.character = V.character` using `(funext h).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite `h1` using `[e, h2, if_pos ⟨Iso.refl V⟩]`. Assume the negation of the conclusion as `hn`. Rewrite `h1` using `[if_neg hn]`. Conclude with `one_ne_zero h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iso_of_char {d : ℕ} (V W : FDRep ℂ (GL (Fin d) (ZMod g))) [Simple V] [Simple W]
     (h : ∀ x, V.character x = W.character x) : Nonempty (V ≅ W) := by
@@ -53,7 +51,7 @@ theorem iso_of_char {d : ℕ} (V W : FDRep ℂ (GL (Fin d) (ZMod g))) [Simple V]
   exact one_ne_zero h1
 
 /- English proof (translation)
-Take `⟨a, b, c, e⟩` from `O.lab_spec d V hd hs hc`. Conclude with `⟨a, b, Formalism.L2.NT.coeff_zero_ne_of_monic_irr a b c, e⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem primeLab_lab {C : LabelConv (ZMod g)} (O : LabelMap (ZMod g) C) {d : ℕ} (V : FDRep ℂ (GL (Fin d) (ZMod g)))
     (hd : 1 ≤ d) (hs : Simple V) (hc : IsCuspidal (ZMod g) V) : IsPrimeLab d (O.lab d V) := by
@@ -61,17 +59,17 @@ theorem primeLab_lab {C : LabelConv (ZMod g)} (O : LabelMap (ZMod g) C) {d : ℕ
   exact ⟨a, b, Formalism.L2.NT.coeff_zero_ne_of_monic_irr a b c, e⟩
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos d with h0 | hd` into its components or cases. Conclude with `⟨id, id, fun P hP => ⟨hP, rfl⟩, fun V h => by omega⟩`. Take `⟨τ, h1, h2, h3⟩` from `hG g L d hd`. Establish `hV : ∀ P : {P : (ZMod g)[X] // IsPrimeLab d P}, ∃ V : FDRep ℂ (GL (Fin d) (ZMod g)), Simple V ∧ IsCuspidal (ZMod g) V ∧ ∀ x, V.character x = τ P.1 x` using `fun P => by`. Establish `hc` using `(h1 P.1 P.2).1.2.1`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨V, hs, hx⟩` from `hc.2.1`. Establish `e : (fun x => V.character x) = τ P.1` using `funext hx`. Conclude with `⟨V, hs, (GlobalTheory.T.isCuspidalCharacter_iff_isCuspidal_GLnFiniteField g d V hd hs).1 (e ▸ hc), hx⟩`. Use `choose W hWs hWc hWx using hV`. Set `p : {P : (ZMod g)[X] // IsPrimeLab d P} → {P : (ZMod g)[X] // IsPrimeLab d P}` to `fun P => ⟨O.lab d (W P), primeLab_lab O _ hd (hWs P) (hWc P)⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective p` using `fun P Q h => by`. Take `⟨i⟩` from `O.lab_inj d (W P) (W Q) hd (hWs P) (hWc P) (hWs Q) (hWc Q) (congrArg Subtype.val h)`. Use `Subtype.ext (h2 _ _ P.2 Q.2 (funext fun x => ?_))` and prove the remaining obligations. Rewrite using `[← hWx, ← hWx, FDRep.char_iso i]`. Use `haveI : Finite {P : (ZMod g)[X] // IsPrimeLab d P} := (finite_primeLab d).to_subtype`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `e` to `Equiv.ofBijective p (Finite.injective_iff_bijective.1 hinj)`. Use `⟨fun P => if h : IsPrimeLab d P then (e.symm ⟨P, h⟩).1 else P, fun P => if h : IsPrimeLab d P then (e ⟨P, h⟩).1 else P, fun P hP => ?_, fun V _ hs hc => ?_⟩` and prove the remaining obligations. Simplify using `only [dif_pos hP]`. Use `⟨(e.symm ⟨P, hP⟩).2, ?_⟩` and prove the remaining obligations. Rewrite using `[dif_pos (e.symm ⟨P, hP⟩).2]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using the standard rewrite rules. Take `⟨P, hP, hχ⟩` from `h3 _ ((GlobalTheory.T.isCuspidalCharacter_iff_isCuspidal_GLnFiniteField g d V hd hs).2 hc) haveI := hs haveI := hWs ⟨P, hP⟩`. Establish `hi` using `iso_of_char V (W ⟨P, hP⟩) fun x => by rw [hWx]; exact congrFun hχ x`. Establish `hl : O.lab d V = O.lab d (W ⟨P, hP⟩)` using `O.lab_iso d _ _ hi`. Establish `hp` using `primeLab_lab O V hd hs hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e1 : (⟨O.lab d V, hp⟩ : {P : (ZMod g)[X] // IsPrimeLab d P}) = e ⟨P, hP⟩` using `Subtype.ext hl`. Simplify using `only [dif_pos hp]`. Rewrite using `[e1, Equiv.symm_apply_apply, hχ]`. Conclude with `(h1 P hP).1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_perm_deg (hG : Green) (L : LabelDatum g) {C : LabelConv (ZMod g)} (O : LabelMap (ZMod g) C) (d : ℕ) :
     ∃ σ π : (ZMod g)[X] → (ZMod g)[X], (∀ P, IsPrimeLab d P → IsPrimeLab d (σ P) ∧ π (σ P) = P) ∧
@@ -113,9 +111,9 @@ theorem exists_perm_deg (hG : Green) (L : LabelDatum g) {C : LabelConv (ZMod g)}
     exact (h1 P hP).1
 
 /- English proof (translation)
-Use `choose σ π h1 h2 using exists_perm_deg hG L O`. Use `⟨fun P => σ P.natDegree P, fun P => π P.natDegree P, fun d P hP => ?_, fun d V hd hs hc => ?_⟩` and prove the remaining obligations. Establish `e` using `hP.2.2.2`. Establish `a` using `h1 d P hP`. Simplify using `only [e, a.1.2.2.2]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `a`. Simplify using `only [(primeLab_lab O V hd hs hc).2.2.2]`. Conclude with `h2 d V hd hs hc`.
+A detailed English derivation is pending.
 -/
 theorem exists_perm (hG : Green) (L : LabelDatum g) {C : LabelConv (ZMod g)} (O : LabelMap (ZMod g) C) :
     ∃ σ π : (ZMod g)[X] → (ZMod g)[X], (∀ d P, IsPrimeLab d P → IsPrimeLab d (σ P) ∧ π (σ P) = P) ∧
@@ -131,7 +129,7 @@ theorem exists_perm (hG : Green) (L : LabelDatum g) {C : LabelConv (ZMod g)} (O 
     exact h2 d V hd hs hc
 
 /- English proof (translation)
-Rewrite using `[normalizedFactors_prod_eq M fun P hP => (h P hP).choose_spec.2.1]`. Use `conv_rhs => rw [← Multiset.map_id M]`. Conclude with `Multiset.map_congr rfl fun P hP => (h P hP).choose_spec.1.normalize_eq_self`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nf_prod (M : Multiset (ZMod g)[X]) (h : ∀ P ∈ M, ∃ d, IsPrimeLab d P) : normalizedFactors M.prod = M := by
   rw [normalizedFactors_prod_eq M fun P hP => (h P hP).choose_spec.2.1]
@@ -139,9 +137,9 @@ theorem nf_prod (M : Multiset (ZMod g)[X]) (h : ∀ P ∈ M, ∃ d, IsPrimeLab d
   exact Multiset.map_congr rfl fun P hP => (h P hP).choose_spec.1.normalize_eq_self
 
 /- English proof (translation)
-Use `⟨fun P hP => ?_, ?_⟩` and prove the remaining obligations. Take `⟨a, b, c, hc⟩` from `(Polynomial.mem_normalizedFactors_iff hm.ne_zero).1 hP`. Use `⟨b, a, fun h => h0 ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[hc, mul_coeff_zero, h, zero_mul]`. Use `Polynomial.leadingCoeff_mul_prod_normalizedFactors f` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[hm.leadingCoeff, C_1, one_mul]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem nf_lab {f : (ZMod g)[X]} (hm : f.Monic) (h0 : f.coeff 0 ≠ 0) :
     (∀ P ∈ normalizedFactors f, IsPrimeLab P.natDegree P) ∧ (normalizedFactors f).prod = f := by
@@ -160,7 +158,7 @@ variable {σ π : (ZMod g)[X] → (ZMod g)[X]} (hσ : ∀ d P, IsPrimeLab d P �
 include hσ
 
 /- English proof (translation)
-The claim follows from `nf_prod _ fun P hP => by obtain ⟨Q, hQ, rfl⟩ := Multiset.mem_map.1 hP exact ⟨_, (hσ _ _ ((nf_lab hm h0).1 Q hQ)).1⟩`.
+A detailed English derivation is pending.
 -/
 theorem nf_ext {f : (ZMod g)[X]} (hm : f.Monic) (h0 : f.coeff 0 ≠ 0) :
     normalizedFactors (ext σ f) = (normalizedFactors f).map σ :=
@@ -169,7 +167,7 @@ theorem nf_ext {f : (ZMod g)[X]} (hm : f.Monic) (h0 : f.coeff 0 ≠ 0) :
     exact ⟨_, (hσ _ _ ((nf_lab hm h0).1 Q hQ)).1⟩
 
 /- English proof (translation)
-Rewrite using `[ext, nf_ext hσ hm h0, Multiset.map_map]`. Use `conv_rhs => rw [← (nf_lab hm h0).2, ← Multiset.map_id (normalizedFactors f)]`. Use `congr 1`. Conclude with `Multiset.map_congr rfl fun P hP => (hσ _ _ ((nf_lab hm h0).1 P hP)).2`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem ext_back {f : (ZMod g)[X]} (hm : f.Monic) (h0 : f.coeff 0 ≠ 0) : ext π (ext σ f) = f := by
   rw [ext, nf_ext hσ hm h0, Multiset.map_map]
@@ -178,13 +176,11 @@ theorem ext_back {f : (ZMod g)[X]} (hm : f.Monic) (h0 : f.coeff 0 ≠ 0) : ext �
   exact Multiset.map_congr rfl fun P hP => (hσ _ _ ((nf_lab hm h0).1 P hP)).2
 
 /- English proof (translation)
-Establish `hP` using `(nf_lab hm h0).1`. Establish `hM : (ext σ f).Monic` using `monic_multiset_prod_of_monic _ _ fun P h => (hσ _ _ (hP P h)).1.1`. Use `⟨hM, ?_, ?_, fun hs => ?_⟩` and prove the remaining obligations. Use `conv_rhs => rw [← (nf_lab hm h0).2]`. Rewrite using `[ext, natDegree_multiset_prod_of_monic _ fun P h => by`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨Q, hQ, rfl⟩` from `Multiset.mem_map.1 h`. Conclude with `(hσ _ _ (hP Q hQ)).1.1,`. Use `natDegree_multiset_prod_of_monic _ fun P h => (hP P h).1, Multiset.map_map]`. Use `congr 1`. Conclude with `Multiset.map_congr rfl fun P h => (hσ _ _ (hP P h)).1.2.2.2`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[ext, coeff_zero_multiset_prod]`. Use `Multiset.prod_ne_zero fun h => ?_` and prove the remaining obligations. Rewrite `h` using `[Multiset.map_map]`. Take `⟨Q, hQ, e⟩` from `Multiset.mem_map.1 h`. Conclude with `(hσ _ _ (hP Q hQ)).1.2.2.1 e`.
-
-Rewrite using `[squarefree_iff_nodup_normalizedFactors hM.ne_zero, nf_ext hσ hm h0]`. Use `Multiset.Nodup.map_on (fun P h Q h' e => ?_) ((squarefree_iff_nodup_normalizedFactors hm.ne_zero).1 hs)` and prove the remaining obligations. Rewrite using `[← (hσ _ _ (hP P h)).2, e, (hσ _ _ (hP Q h')).2]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ext_lab {f : (ZMod g)[X]} (hm : f.Monic) (h0 : f.coeff 0 ≠ 0) :
     (ext σ f).Monic ∧ (ext σ f).natDegree = f.natDegree ∧ (ext σ f).coeff 0 ≠ 0 ∧ (Squarefree f → Squarefree (ext σ f)) := by
@@ -210,7 +206,7 @@ theorem ext_lab {f : (ZMod g)[X]} (hm : f.Monic) (h0 : f.coeff 0 ≠ 0) :
 end Ext
 
 /- English proof (translation)
-Rewrite using `[ext, ← Multiset.prod_coe, nf_prod _ fun P hP => h P (Multiset.mem_coe.1 hP), Multiset.map_coe, Multiset.prod_coe]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ext_list (σ : (ZMod g)[X] → (ZMod g)[X]) (M : List (ZMod g)[X]) (h : ∀ P ∈ M, ∃ d, IsPrimeLab d P) :
     ext σ M.prod = (M.map σ).prod := by
@@ -225,17 +221,17 @@ variable (L : LabelDatum g) {C : LabelConv (ZMod g)} (O : LabelMap (ZMod g) C) {
 include h1
 
 /- English proof (translation)
-Take `⟨s, b, lam, hb, hl, hcon, rfl⟩` from `hL`. Establish `hc : ∀ c, 1 ≤ Fintype.card {i // b i = c}` using `fun c => by`. Take `⟨i, hi⟩` from `hb c`. Conclude with `Fintype.card_pos_iff.mpr ⟨⟨i, hi⟩⟩`. Set `Q : List ((ZMod g)[X] × Pc g)` to `(List.finRange s).map fun c => (σ (labO O (lam c)), ⟨Fintype.card {i // b i = c}, fun x => (transp (Fintype.equivFin {i // b i = c}) (lam c)).character x⟩)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hQ : Q.map Prod.snd = canonList b lam`. Simplify using `only [Q, canonList, List.map_map]`. Both sides reduce to the same expression. Use `⟨Q, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `p hp`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Q, List.mem_map] at hp`. Take `⟨c, -, rfl⟩` from `hp`. Conclude with `h1 _ _ (hc c) (Formalism.L2.PT.simple_transp _ (hl c).1) (Formalism.L2.PT.isCuspidal_transp _ (hl c).2)`. Rewrite using `[hQ]`. Unfold `degL canonList`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[List.map_map]`. Establish `e : ((List.finRange s).map ((fun p : Pc g => p.1) ∘ fun c : Fin s => (⟨Fintype.card {i // b i = c}, fun x => (transp (Fintype.equivFin {i // b i = c}) (lam c)).character x⟩ : Pc g))).sum = ∑ c : Fin s, Fintype.card {i // b i = c}`. Rewrite using `[Fin.sum_univ_def]`. Both sides reduce to the same expression. Rewrite using `[e, ← Fintype.card_sigma, Fintype.card_congr (Equiv.sigmaFiberEquiv b), Fintype.card_fin]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Fin.prod_univ_def, ext_list σ _ fun P hP => by`. Take `⟨c, -, rfl⟩` from `List.mem_map.1 hP`. Conclude with `⟨_, primeLab_lab O _ (hc c) (Formalism.L2.PT.simple_transp _ (hl c).1) (Formalism.L2.PT.isCuspidal_transp _ (hl c).2)⟩]`. Simplify using `only [Q, List.map_map]`. Both sides reduce to the same expression.
+Supply the required witnesses or components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hQ]`. Establish `ht : (fun x => LinearMap.trace ℂ (hcSpace (ZMod g) b lam) (hcRep (ZMod g) b lam x)) = hcL (canonList b lam) r` using `funext (GlobalTheory.T.trace_harishChandra_induced_eq_product_characters g r s b lam hb)`. Use `(GlobalTheory.T.isConstituent_harishChandraRep_iff_pairing_ne_zero g r s b lam τ hτ).1 hcon` as an intermediate fact. Rewrite `this` using `[ht]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasLabel_of {r : ℕ} (τ : FDRep ℂ (GL (Fin r) (ZMod g))) (f : (ZMod g)[X]) (hτ : Simple τ) (hL : HasLabelO O τ f) :
     HasLabel L (fun x => τ.character x) (ext σ f) := by
@@ -278,13 +274,13 @@ theorem hasLabel_of {r : ℕ} (τ : FDRep ℂ (GL (Fin r) (ZMod g))) (f : (ZMod 
 
 omit h1 in
 /- English proof (translation)
-Take `⟨Q', hQ, hdeg, hf, hip⟩` from `hl`. Substitute `hdeg` using the available equality. Take `⟨b, lam, hb, hlam, hcan⟩` from `GlobalTheory.T.exists_blocks_of_cuspidal_character_list g (Q'.map Prod.snd) (by`. Introduce `p hp`. Take `⟨p', hp', rfl⟩` from `List.mem_map.1 hp`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hχ` using `(hQ p' hp').2.1`. Take `⟨V, hV, hVχ⟩` from `hχ.2.1`. Establish `hχV : (fun x => V.character x) = p'.2.2` using `funext hVχ`. Conclude with `⟨hχ.1, V, hV, (GlobalTheory.T.isCuspidalCharacter_iff_isCuspidal_GLnFiniteField g _ V hχ.1 hV).1 (hχV ▸ hχ), hVχ⟩)`. Establish `hp : ∀ c, IsPrimeLab _ (labO O (lam c))` using `fun c => primeLab_lab O _ (by obtain ⟨i, hi⟩ := hb c; exact Fintype.card_pos_iff.mpr ⟨⟨i, hi⟩⟩) (Formalism.L2.PT.simple_transp _ (hlam c).1) (Formalism.L2.PT.isCuspidal_transp _ (hlam c).2)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `⟨∏ c, labO O (lam c), monic_prod_of_monic _ _ fun c _ => (hp c).1, ?_, _, b, lam, hb, hlam, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[coeff_zero_prod]`. Conclude with `Finset.prod_ne_zero_iff.2 fun c _ => (hp c).2.2.1`. Use `(GlobalTheory.T.isConstituent_harishChandraRep_iff_pairing_ne_zero g _ _ b lam τ hτ).2 ?_` and prove the remaining obligations. Establish `e` using `funext (GlobalTheory.T.trace_harishChandra_induced_eq_product_characters g _ _ b lam hb)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, hcan]`. Conclude with `hip`.
+A detailed English derivation is pending.
 -/
 theorem exists_labelO {r : ℕ} (τ : FDRep ℂ (GL (Fin r) (ZMod g))) (f : (ZMod g)[X]) (hτ : Simple τ)
     (hl : HasLabel L (fun x => τ.character x) f) : ∃ f', f'.Monic ∧ f'.coeff 0 ≠ 0 ∧ HasLabelO O τ f' := by
@@ -310,11 +306,11 @@ theorem exists_labelO {r : ℕ} (τ : FDRep ℂ (GL (Fin r) (ZMod g))) (f : (ZMo
 
 include hσ in
 /- English proof (translation)
-Establish `hB : ∀ τ : FDRep ℂ (GL (Fin r) (ZMod g)), Simple τ → (HasLabel L (fun x => τ.character x) (ext σ f) ↔ HasLabelO O τ f)` using `fun τ hτ => by`. Use `⟨fun h => ?_, hasLabel_of L O h1 τ f hτ⟩` and prove the remaining obligations. Take `⟨f', a, b, c⟩` from `exists_labelO L O τ _ hτ h`. Establish `e` using `((GlobalTheory.T.harishChandraSeriesLabel_exists_unique_GLn g L h5 hG r).1 _ ⟨τ, hτ, fun _ => rfl⟩).unique h (hasLabel_of L O h1 τ f' hτ c)`. Establish `e' : f = f'` using `by rw [← ext_back hσ hm h0, e, ext_back hσ a b]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `e' ▸ c`. Unfold `eSerC Formalism.L2.NT.eSerO`. Rewrite using `[GlobalTheory.T.finsum_centralIdempotentOfIrrCharacter_eq_simple]`. Use `finsum_congr fun z => finsum_congr_Prop (propext ?_) fun _ => rfl` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨τ, hτ, hz, hl⟩`. Conclude with `⟨τ, hτ, hz, (hB τ hτ).2 hl⟩`. Introduce and unpack `⟨τ, hτ, hz, hl⟩`. Conclude with `⟨τ, hτ, hz, (hB τ hτ).1 hl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem eSer_eq (h5 : 5 ≤ g) (hG : Green) (r : ℕ) {f : (ZMod g)[X]} (hm : f.Monic) (h0 : f.coeff 0 ≠ 0) :
     Formalism.L2.NT.eSerO O r f = eSerC L r (ext σ f) := by
@@ -339,23 +335,21 @@ end Dict
 open Formalism.BasicNotions Formalism.MainNotions.ArithmeticCylinders in
 
 /- English proof (translation)
-Introduce `hG D jE T k ψ hψ`. Use `haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩`. Set `L : LabelDatum (D.host.g k)` to `⟨D.ntypes.teichC k, D.ntypes.teichC_inj k, T.ζ k, fun d hd => (T.ζ_gen k d hd).1, fun d e hd he => (T.ζ_gen k d hd).2 _ (dvd_mul_right d e) (Nat.mul_pos hd he)⟩`. Take `⟨σ, π, hσ, h1⟩` from `exists_perm hG L (T.O k)`. Establish `h5` using `five_le_typePrime D k`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr` using `rank_eq_k_add_two_mul D.R`. Establish `hk : 1 ≤ D.R.k` using `by have := D.R.m_add_three_le_k; omega`. Establish `hw : ∀ a f, IsLabel D k f → wtOf D k a f = wtC L a (ext σ f)`. Introduce `a f hf`. Unfold `wtOf wtC`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[T.eSer_def, eSer_eq L (T.O k) hσ h1 h5 hG _ hf.1 hf.2.2]`. Establish `hz : ∀ a f, ¬ IsLabel D k f → wtOf D k a f = 0`. Introduce `a f hf`. Unfold `wtOf`. Rewrite using `[Formalism.L2.eSer_zero_of_tie T k f hf]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Take `⟨hU, hU1, hJ, -⟩` from `GlobalTheory.T.whittakerJacquetIdempotents_properties_primeField (D.host.g k) D.R.r D.R.k (D.R.m / 2 - 1) ψ`. Take `⟨hJ, hJ1⟩` from `hJ hr`. Use `⟨fun f => ?_, fun f hf hs => ?_, fun f hf => ?_, fun f hf hs => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hf : IsLabel D k f`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hw _ _ hf, hw _ _ hf]`. Use `⟨GlobalTheory.T.harishChandraSeriesWeight_nonneg_of_idempotent_glnPrime _ L _ _ hU ?_ _, GlobalTheory.T.harishChandraSeriesWeight_nonneg_of_idempotent_glnPrime _ L _ _ hJ ?_ _⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `0 ≤ ((eU (D.host.g k) D.R.r ψ).coeff 1).re`. Rewrite using `[hU1, ← Nat.cast_pow, ← Complex.ofReal_natCast, ← Complex.ofReal_inv, Complex.ofReal_re]`. Check the signs of the components of the expression.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `0 ≤ ((eJ (D.host.g k) D.R.r D.R.k (D.R.m / 2 - 1) ψ).coeff 1).re`. Rewrite using `[hJ1, ← Nat.cast_pow, ← Nat.cast_pow, ← Complex.ofReal_natCast, ← Complex.ofReal_natCast, ← Complex.ofReal_inv, ← Complex.ofReal_mul, Complex.ofReal_re]`. Check the signs of the components of the expression. Rewrite using `[hz _ _ hf, hz _ _ hf]`. Conclude with `⟨le_rfl, le_rfl⟩`.
+Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨a, b, c, e⟩` from `ext_lab hσ hf.1 hf.2.2`. Rewrite using `[hw _ _ hf]`. Use `(GlobalTheory.T.harishChandraSeriesWeight_squarefree_label_gelfandGraev _ L h5 hG ψ hψ _ _ a (b.trans hf.2.1) c (e hs)).trans ?_` and prove the remaining obligations. Rewrite using `[nf_ext hσ hf.1 hf.2.2, Multiset.map_map]`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Conclude with `Multiset.map_congr rfl fun P h => by`. Simplify using `only [Function.comp, (hσ _ _ ((nf_lab hf.1 hf.2.2).1 P h)).1.2.2.2]`. Rewrite using `[hw _ _ hf, hw _ _ hf]`. Conclude with `GlobalTheory.T.harishChandraSeriesWeight_lower_comparison _ L ψ hψ _ _ _ hr hk _`. Take `⟨a, b, c, e⟩` from `ext_lab hσ hf.1 hf.2.2`.
-
-Rewrite using `[hw _ _ hf, hw _ _ hf]`. Conclude with `GlobalTheory.T.harishChandraSeriesWeight_le_squarefree _ L h5 hG ψ hψ _ _ _ hr hk _ a (b.trans hf.2.1) c (e hs)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem admissibleLabelWeights_of_greenCuspidalParametrisation : Green → ∀ (D : D7) (jE : D.host.E →+* Formalism.L2.Host.Qb) (T : Formalism.L2.NormalizedTypesCompatibility D jE), admLq D := by
   intro hG D jE T k ψ hψ

@@ -9,9 +9,9 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions.TaylorLogMetric Fo
 open Formalism.MainNotions.FormalGroupSystem (Sys)
 
 /- English proof (translation)
-Take `⟨m, r, t, L₁, L₁', hr, ht, hL, rfl⟩` from `h`. Use `⟨m, fun k => c * r k, t, L₁, L₁', fun k => ?_, ht, hL, ?_⟩` and prove the remaining obligations. Use `hr k` as an intermediate fact. Simplify using `only [IsIntP] at this ⊢`. Rewrite using `[norm_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_one₀ hc (norm_nonneg _) this`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, map_mul, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isComb_smul (D : D7) (T : Tor D) (e : FamE D) {N N' p : ℕ} [Fact p.Prime] (lam : Qbar →+* ℂ_[p])
     {L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)} {L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)}
@@ -28,7 +28,7 @@ theorem isComb_smul (D : D7) (T : Tor D) (e : FamE D) {N N' p : ℕ} [Fact p.Pri
     rw [Algebra.smul_def, map_mul, mul_assoc]
 
 /- English proof (translation)
-Establish `e1 : ((p : ℂ_[p]) ^ k) • pSer D lam (fun z => s * G z) = ((p : ℂ_[p]) ^ k * lamC lam s) • pSer D lam G`. Rewrite using `[Formalism.L2.PairingIndexBounds.PowerSeriesNecessity.pSer_const_mul D lam hs, Algebra.smul_def, Algebra.smul_def, map_mul, mul_assoc]`. Both sides reduce to the same expression. Rewrite using `[e1]`. Conclude with `isComb_smul D T e lam h hk`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isComb_scalar (D : D7) (T : Tor D) (e : FamE D) {N N' p : ℕ} [Fact p.Prime] (lam : Qbar →+* ℂ_[p])
     {L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)} {L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)}
@@ -42,7 +42,7 @@ theorem isComb_scalar (D : D7) (T : Tor D) (e : FamE D) {N N' p : ℕ} [Fact p.P
   exact isComb_smul D T e lam h hk
 
 /- English proof (translation)
-Introduce `j L0 h0 La' hL'`. Take `⟨hA, hC⟩` from `h j L0 h0 La' hL'`. Conclude with `⟨hA, isComb_scalar D T e lam _ hC (hs j L0 h0 La' hL').1 _ (hs j L0 h0 La' hL').2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem combAt_scalar {p : ℕ} [Fact p.Prime] (X : Sys p) (hfin : ∀ j c, (X.Lv.lev j c).FinClasses) (D : D7)
     (large₂ : ∀ j, X.Lt j → X.Lt (j + 1) → Submodule (𝓞 D.host.E) (Fin ((X.Pj j).m + 1) → D.host.E))

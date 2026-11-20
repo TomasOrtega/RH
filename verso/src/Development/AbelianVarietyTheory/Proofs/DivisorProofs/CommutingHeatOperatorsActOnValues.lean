@@ -24,7 +24,7 @@ noncomputable section
 namespace GlobalTheory.Heat
 
 /- English proof (translation)
-Simplify using `only [ringOp, map_sub, map_add, map_mul, map_sum, map_pow, map_natCast, map_ofNat, hd, hdd, RingHom.mapMatrix_apply, Matrix.map_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ringOp_map_of_intertwine {A B : Type} [CommRing A] [CommRing B] (iK : A →+* B) {n : ℕ} (d : A → A) (dd : Fin n → A → A)
     (d' : B → B) (dd' : Fin n → B → B) (hd : ∀ w, d' (iK w) = iK (d w)) (hdd : ∀ a w, dd' a (iK w) = iK (dd a w))
@@ -34,7 +34,7 @@ theorem ringOp_map_of_intertwine {A B : Type} [CommRing A] [CommRing B] (iK : A 
     RingHom.mapMatrix_apply, Matrix.map_apply]
 
 /- English proof (translation)
-Simplify using `only [ringOp, h1, hd, mul_left_comm _ c, ← Finset.mul_sum]`. Apply the tactic sequence `try ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ringOp_mul_of_const {K : Type} [CommRing K] {n : ℕ} (d : K → K) (δ : Fin n → K → K)
     (Θ : Matrix (Fin n) (Fin n) K) (u : Fin n → K) (p p' : K) (k : ℕ) (c s : K)
@@ -44,11 +44,11 @@ theorem ringOp_mul_of_const {K : Type} [CommRing K] {n : ℕ} (d : K → K) (δ 
   try ring
 
 /- English proof (translation)
-Take `⟨δ', hder, hδ'⟩` from `Formalism.L2.Pj.GenericSectionMinimum.IsDer.ofLoc (nonZeroDivisors Ω) (B := FractionRing Ω) (fun w => algebraMap Ω (FractionRing Ω) (d w)) (fun a b => by simp) (fun a b => by simp [Derivation.leibniz, smul_eq_mul])`. Establish `hsm : ∀ (z : ℤ) (a : FractionRing Ω), δ' (z • a) = z • δ' a`. Introduce `z a`. Proceed by induction on `z using Int.induction_on with`. Consider the case `zero => simp [hder.der_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ i ih => simp only [add_smul, one_smul, hder.add, ih]`. Consider the case `pred i ih => simp only [sub_smul, one_smul, hder.der_sub, ih]`. Establish `hint : ∀ m : ℤ, δ' (m : FractionRing Ω) = 0` using `fun m => by`. Use `hsm m 1` as an intermediate fact. Rewrite `this` using `[zsmul_eq_mul, _root_.mul_one, hder.der_one]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using this`. Establish `hlb : ∀ a b : FractionRing Ω, δ' (a * b) = a • δ' b + b • δ' a` using `fun a b => by`. Rewrite using `[hder.mul, smul_eq_mul, smul_eq_mul]`. Set `dL : Derivation ℤ (FractionRing Ω) (FractionRing Ω)` to `{ toFun := δ', map_add' := hder.add, map_smul' := fun m y => by rw [RingHom.id_apply, Algebra.smul_def, eq_intCast, zsmul_eq_mul, hder.mul, hint m, MulZeroClass.mul_zero, add_zero], map_one_eq_zero' := hder.der_one, leibniz' := hlb }`. Conclude with `⟨dL, hδ'⟩`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem exists_derivation_fractionRing_ext (Ω : Type) [CommRing Ω] [IsDomain Ω] (d : Derivation ℤ Ω Ω) :
     ∃ dL : Derivation ℤ (FractionRing Ω) (FractionRing Ω),
@@ -72,23 +72,23 @@ theorem exists_derivation_fractionRing_ext (Ω : Type) [CommRing Ω] [IsDomain �
   exact ⟨dL, hδ'⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H R _ _ _ _ _ _ t P m tt gam hmono htt hab`. Introduce `Y n vH dd hinv v' hpt D h hbasic hdef i0 Ω _ _ _ φ x x' δ hcompl hx hx' hδφ hδ hpx dΩ hW hdΩ g hg δL hδL`. Use `letI := H.starRing`. Establish `hDφ` using `(GlobalTheory.T.heatOperator_value_at_point_eq_ringOperator R Y.H _ _ P.D.toPre.P.L n dd ⇑D h i0 Ω φ x hx δ hδ dΩ hW hdΩ).1`. Take `⟨e, p0, p0', hcore⟩` from `GlobalTheory.T.heat_operator_values_of_sections_complete_local_ring E H R t P m tt gam hmono htt hab Y n vH dd hinv v' hpt D h hbasic hdef i0 Ω φ x x' δ hcompl hx hx' hδφ hδ hpx dΩ hW hdΩ g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨dL, hdL⟩` from `exists_derivation_fractionRing_ext Ω dΩ`. Use `set iK := algebraMap Ω (FractionRing Ω) with hiK`. Establish `hiKinj : Function.Injective iK` using `IsFractionRing.injective Ω (FractionRing Ω)`. Establish `h2R : IsUnit (2 : R)`. Use `(isUnit_iff_ne_zero.2 (two_ne_zero : (2 : ℚ) ≠ 0)).map (algebraMap ℚ R)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[map_ofNat]`. Then use the resulting hypothesis. Establish `h2K : (2 : FractionRing Ω) ≠ 0`. Use `(h2R.map (iK.comp φ)).ne_zero` as an intermediate fact. Rewrite `this` using `[map_ofNat]`. Then use the resulting hypothesis. Establish `hsymm : ((iK.comp φ).mapMatrix h.Θ)ᵀ = (iK.comp φ).mapMatrix h.Θ` using `by show (h.Θ.map _)ᵀ = h.Θ.map _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.transpose_map, h.symm]`. Establish `hce : iK ((e⁻¹ : Ωˣ) : Ω) ≠ 0` using `fun h0 => (e⁻¹).ne_zero (hiKinj (h0.trans (map_zero iK).symm))`. Take `⟨d', u'', q, q', hd'c, hconj⟩` from `GlobalTheory.T.heatOperatorOnRing_conj_pow_fractionField Ω n dL δL ((iK.comp φ).mapMatrix h.Θ) hsymm h2K (fun a => iK (φ (h.u a))) (iK p0) (iK p0') _ hce`. Use `⟨d', u'', q, q', fun r => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hd'c _ (fun a => by rw [hδL, hδφ, map_zero]), hdL, hDφ]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k hk s ⟨r₁, σ, ω, hr₁, hv, hs⟩`. Take `⟨r₂, σ₂, ω₂, hr₂, hv₂, hω₂⟩` from `hcore k hk σ ω hv`. Establish `key : iK ω₂ = iK (φ r₂) * ringOp ⇑d' (fun a => ⇑(δL a)) ((iK.comp φ).mapMatrix h.Θ) u'' q q' k (iK ω)`. Rewrite using `[hω₂, map_mul, map_mul, map_pow, ringOp_map_of_intertwine iK _ _ _ _ hdL hδL, map_mul, map_pow]`. Establish `e1 : iK.mapMatrix (φ.mapMatrix h.Θ) = (iK.comp φ).mapMatrix h.Θ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `a b`. Simplify using the standard rewrite rules. Rewrite using `[e1, hconj, ← _root_.mul_assoc (iK (e : Ω) ^ k), ← mul_pow, ← map_mul, Units.mul_inv, map_one, one_pow, _root_.one_mul]`. Distinguish the cases in `hc1 : φ r₁ = 0`. Conclude with `⟨r₁, σ, ω, hr₁, hv, by rw [hs, hc1]; simp⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hδc : ∀ a, δL a (iK (φ r₁)) = 0` using `fun a => by rw [hδL, hδφ, map_zero]`. Establish `hdc : d' (iK (φ r₁)) = iK (φ (D r₁))` using `by rw [hd'c _ hδc, hdL, hDφ]`. Establish `hs' : iK ω = iK (φ r₁) * s` using `hs`. Establish `hRO` using `ringOp_mul_of_const ⇑d' (fun a => ⇑(δL a)) ((iK.comp φ).mapMatrix h.Θ) u'' q q' k (iK (φ r₁)) s (by rw [Derivation.leibniz, smul_eq_mul, smul_eq_mul]) (fun a y => by`. Rewrite using `[Derivation.leibniz, hδc, smul_zero, add_zero, smul_eq_mul])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hRO` using `[← hs', hdc]`. Take `⟨σ₃, hv₃⟩` from `GlobalTheory.T.sectionValueInFrame_linearCombination R t.G t.PP.L Ω φ x' hx' g k σ₂ σ ω₂ ω r₁ (-(2 * (k : R)) * D r₁ * r₂) hv₂ hv`. Use `⟨r₁ * r₁ * r₂, σ₃, _, mul_ne_zero (mul_ne_zero hr₁ hr₁) hr₂, hv₃, ?_⟩` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, map_add, map_mul, map_neg, map_natCast, map_ofNat]`. Rewrite using `[key, hRO, hs']`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem heat_acts_on_values : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] [IsAdicComplete (maximalIdeal R) R] [Algebra ℚ R] (t : SAB H (Sp R)) (P : PELUnif (maximalIdeal R) t) (m : ℕ) (tt : Fin m → R) (gam : Fin m → LinearMap.BilinForm ℤ P.D.toPre.X), IsMonomial P.D.toPre tt gam → (∀ i, tt i ≠ 0) → (∀ p : Sp R, p ∈ abLocus t.G ↔ ∏ i, tt i ∉ p.asIdeal) → letI := H.starRing; ∀ (Y : Ray P.oD) (n : ℕ) (vH : Module.Basis (Fin n) R (TanM (𝟙 (Sp R)) Y.H)) (dd : Fin n → Fld Y.H.left), (∀ a, IsInv Y.H (vH a) (dd a)) → ∀ (v' : Fin n → TanM (𝟙 (Sp R)) t.G), (∀ a, GlobalTheory.FormalPoint.IsPointOf P.U.toUnifPre (Y.Φ _ (tv (vH a))) (tv (v' a))) → ∀ (D : Derivation ℤ R R) (h : Heat Y.H Y.q.left P.D.toPre.P.L dd ⇑D), IsBasic Y h → HasDefect Y h (fun _ _ _ => 0) → ∀ (i0 : h.J) (Ω : Type) [CommRing Ω] [IsDomain Ω] [IsLocalRing Ω] (φ : R →+* Ω) (x : Sp Ω ⟶ Y.H.left) (x' : Sp Ω ⟶ t.G.left) (δ : Fin n → Derivation ℤ Ω Ω), IsAdicComplete ((maximalIdeal R).map φ) Ω → ∀ (hx : x ≫ Y.H.hom = spMap φ) (hx' : x' ≫ t.G.hom = spMap φ), (∀ a r, δ a (φ r) = 0) → (∀ a O f, ⊤ ≤ x ⁻¹ᵁ O → valR x O (dd a O f) = δ a (valR x O f)) → GlobalTheory.FormalPoint.IsPointOf P.U.toUnifPre (Y.Φ (Over.mk (spMap φ)) (Over.homMk x hx)) (Over.homMk x' hx') → ∀ (dΩ : Derivation ℤ Ω Ω), ⊤ ≤ x ⁻¹ᵁ h.W i0 → (∀ O f, O ≤ h.W i0 → ⊤ ≤ x ⁻¹ᵁ O → valR x O (h.d i0 O f) = dΩ (valR x O f)) → ∀ (g : GlobalTheory.RayEv.Transport.Frame t.PP.L (x' ≫ 𝟙 t.G.left)), g.IsGen → ∀ (δL : Fin n → Derivation ℤ (FractionRing Ω) (FractionRing Ω)), (∀ a ω, δL a ((algebraMap Ω (FractionRing Ω)) ω) = (algebraMap Ω (FractionRing Ω)) (δ a ω)) → ∃ (dt : Derivation ℤ (FractionRing Ω) (FractionRing Ω)) (u' : Fin n → (FractionRing Ω)) (p p' : (FractionRing Ω)), (∀ r, dt ((algebraMap Ω (FractionRing Ω)) (φ r)) = (algebraMap Ω (FractionRing Ω)) (φ (D r))) ∧ ∀ (k : ℕ), 1 ≤ k → ∀ s : (FractionRing Ω), (∃ (r : R) (σ : SecM (𝟙 t.G.left) t.PP.L k) (ω : Ω), r ≠ 0 ∧ IsValue (𝟙 _) t.PP.L x' g k σ ω ∧ (algebraMap Ω (FractionRing Ω)) ω = (algebraMap Ω (FractionRing Ω)) (φ r) * (s)) → (∃ (r : R) (σ : SecM (𝟙 t.G.left) t.PP.L k) (ω : Ω), r ≠ 0 ∧ IsValue (𝟙 _) t.PP.L x' g k σ ω ∧ (algebraMap Ω (FractionRing Ω)) ω = (algebraMap Ω (FractionRing Ω)) (φ r) * (ringOp ⇑dt (fun a => ⇑(δL a)) (((algebraMap Ω (FractionRing Ω)).comp φ).mapMatrix h.Θ) u' p p' k s)) := by
   intro E _ _ _ H R _ _ _ _ _ _ t P m tt gam hmono htt hab

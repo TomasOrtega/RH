@@ -17,14 +17,14 @@ def unc {A B : Type} (f : TV n (TV n M A) B) : TV n M (A ⊕ B) := fun I => f (I
 def cur {A B : Type} (g : TV n M (A ⊕ B)) : TV n (TV n M A) B := fun J K => g (Sum.elim K J)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `I`. Simplify using `only [unc, cur, Sum.elim_comp_inl_inr]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem unc_cur {A B : Type} (g : TV n M (A ⊕ B)) : unc (cur g) = g := by
   funext I
   simp only [unc, cur, Sum.elim_comp_inl_inr]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `J K`. Use `congrFun h (Sum.elim K J)` as an intermediate fact. Simplify `this` using `[unc]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem unc_inj {A B : Type} {f g : TV n (TV n M A) B} (h : unc f = unc g) : f = g := by
   funext J K
@@ -42,11 +42,11 @@ Both sides reduce to the same expression.
 theorem reIx_smul {P Q : Type} (e : P ≃ Q) (c : ℂ) (ξ : TV n M P) : reIx e (c • ξ) = c • reIx e ξ := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `I`. Simplify using `only [actT, reIx, LinearMap.pi_apply, LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.comp_apply, LinearMap.proj_apply, Function.comp_apply]`. Use `symm`. Use `Fintype.sum_equiv (e.arrowCongr (Equiv.refl (Fin n))) _ _ (fun J => ?_)` and prove the remaining obligations. Establish `hJ : (e.arrowCongr (Equiv.refl (Fin n)) J) ∘ e = J`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `p`. Simplify using `[Equiv.arrowCongr_apply]`. Rewrite using `[hJ]`. Use `congr 1`. Use `Fintype.prod_equiv e _ _ (fun p => ?_)` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[Equiv.arrowCongr_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem actT_reIx {ι Γ P Q : Type} [Fintype P] [DecidableEq P] [Fintype Q] [DecidableEq Q] (e : P ≃ Q)
     (lab : P → ι) (κ : ι → Γ → Matrix (Fin n) (Fin n) ℂ) (ρ : Γ → Module.End ℂ M) (γ : Γ) (ξ : TV n M P) :
@@ -64,9 +64,9 @@ theorem actT_reIx {ι Γ P Q : Type} [Fintype P] [DecidableEq P] [Fintype Q] [De
   simp [Equiv.arrowCongr_apply]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `I`. Simplify using `only [actT, unc, LinearMap.pi_apply, LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.comp_apply, LinearMap.proj_apply, Function.comp_apply, Finset.sum_apply, Pi.smul_apply]`. Repeatedly rewrite using `[Finset.smul_sum, smul_smul]`. Rewrite using `[← Fintype.sum_prod_type']`. Use `Fintype.sum_equiv ((Equiv.sumArrowEquivProdArrow A B (Fin n)).trans (Equiv.prodComm _ _)) _ _ (fun d => ?_)` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Equiv.trans_apply, Equiv.prodComm_apply, Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr]`. Rewrite using `[mul_comm]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem actT_unc {ι Γ A B : Type} [Fintype A] [DecidableEq A] [Fintype B] [DecidableEq B] (la : A → ι) (lb : B → ι)
     (κ : ι → Γ → Matrix (Fin n) (Fin n) ℂ) (ρ : Γ → Module.End ℂ M) (γ : Γ) (f : TV n (TV n M A) B) :
@@ -94,17 +94,17 @@ def splitE (m n : ℕ) (h : n ≤ m) : Fin m ≃ Fin (m - n) ⊕ Fin n where
     · simp [j.2]
 
 /- English proof (translation)
-Establish `hmem : ∀ σ : Equiv.Perm (Fin m), σ ∈ firstG m k ↔ ∀ j : Fin m, k ≤ (j : ℕ) → σ j = j`. Introduce `σ`. Simplify using `[firstG]`. Establish `hτ'` using `(hmem τ).1 hτ`. Establish `hmul : ∀ σ : Equiv.Perm (Fin m), pm τ (pm σ x) = pm (τ * σ) x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `σ`. Use function extensionality and compare the values at `I`. Both sides reduce to the same expression. Simplify using `only [alt, LinearMap.sum_apply, map_sum, Finset.smul_sum, LinearMap.smul_apply, map_smul, hmul, smul_smul]`. Use `Finset.sum_nbij' (fun σ => τ * σ) (fun σ => τ⁻¹ * σ) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `σ hσ`. Rewrite `hσ`, the goal using `[hmem]`. Introduce `j hj`. Simplify using `[Equiv.Perm.mul_apply, hσ j hj, hτ' j hj]`. Introduce `σ hσ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hσ`, the goal using `[hmem]`. Introduce `j hj`. Establish `h1 : τ⁻¹ j = j`. Rewrite using `[Equiv.Perm.inv_eq_iff_eq]`. Conclude with `(hτ' j hj).symm`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Equiv.Perm.mul_apply, hσ j hj, h1]`. Introduce `σ _`. Simplify using the standard rewrite rules. Introduce `σ _`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `σ _`. Use `congr 1`. Rewrite using `[Equiv.Perm.sign_mul]`. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign τ) with h | h <;> simp [h]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem pm_alt_firstG {m k : ℕ} (τ : Equiv.Perm (Fin m)) (hτ : τ ∈ firstG m k) (x : TV n M (Fin m)) :
     pm τ (alt (firstG m k) x) = ((Equiv.Perm.sign τ : ℤ) : ℂ) • alt (firstG m k) x := by
@@ -139,15 +139,15 @@ theorem pm_alt_firstG {m k : ℕ} (τ : Equiv.Perm (Fin m)) (hτ : τ ∈ firstG
     rcases Int.units_eq_one_or (Equiv.Perm.sign τ) with h | h <;> simp [h]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `J K`. Use `set e := splitE m n h with he`. Set `S : Equiv.Perm (Fin (m - n) ⊕ Fin n)` to `Equiv.sumCongr (Equiv.refl _) σ`. Set `τ : Equiv.Perm (Fin m)` to `(e.trans S).trans e.symm`. Establish `hτ : τ ∈ firstG m n`.
+Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [firstG, Finset.mem_filter, Finset.mem_univ, true_and]`. Introduce `j hj`. Establish `hj' : ¬ (j : ℕ) < n` using `by omega`. Establish `ha : e j = Sum.inl ⟨(j : ℕ) - n, by omega⟩`. Simplify using `[he, splitE, hj']`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `show e.symm (S (e j)) = j`. Rewrite using `[ha]`. Conclude with `e.symm_apply_eq.2 ha.symm`. Establish `hs : Equiv.Perm.sign τ = Equiv.Perm.sign σ` using `by show Equiv.Perm.sign ((e.symm.symm.trans S).trans e.symm) = _`. Rewrite using `[Equiv.Perm.sign_symm_trans_trans]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[S, Equiv.Perm.sign_sumCongr]`. Establish `key` using `congrFun (hη τ hτ) (Sum.elim K J ∘ e)`. Simplify using `only [pm, LinearMap.pi_apply, LinearMap.proj_apply, Pi.smul_apply] at key`. Simplify using `only [pm, cur, reIx, LinearMap.pi_apply, LinearMap.proj_apply, Pi.smul_apply]`. Rewrite using `[← hs, ← key]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `only [Function.comp_apply, τ, Equiv.trans_apply, Equiv.apply_symm_apply]`. Generalize the expression as in `e x = y`. Apply the tactic sequence `cases y <;> rfl`.
+Replace the chosen expression with an arbitrary variable. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem cur_anti {m : ℕ} (h : n ≤ m) (η : TV n M (Fin m))
     (hη : ∀ τ ∈ firstG m n, pm τ η = ((Equiv.Perm.sign τ : ℤ) : ℂ) • η) (σ : Equiv.Perm (Fin n)) :

@@ -10,7 +10,7 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.QCoh Gl
 namespace GlobalTheory.FieldPair
 
 /- English proof (translation)
-Introduce `X _ _ x`. Set `e : X.presheaf.stalk x ≃+* locRing x` to `RingEquiv.ofBijective (algebraMap (X.presheaf.stalk x) X.functionField).rangeRestrict ⟨fun _ _ h => IsFractionRing.injective _ X.functionField (congrArg Subtype.val h), RingHom.rangeRestrict_surjective _⟩`. Use `haveI : IsIntegrallyClosed (X.presheaf.stalk x) := GlobalTheory.IsNormalScheme.isIntegrallyClosed_stalk x`. Conclude with `IsIntegrallyClosed.of_equiv e`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem isIntegrallyClosed_locRing : ∀ (X : Scheme.{0}) [IsIntegral X] [GlobalTheory.IsNormalScheme X] (x : X),
     IsIntegrallyClosed (locRing x) := by

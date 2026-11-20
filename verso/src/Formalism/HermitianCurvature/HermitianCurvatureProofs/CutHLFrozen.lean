@@ -14,9 +14,7 @@ section comm
 variable {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ}
 
 /- English proof (translation)
-Unfold `Tm`. Use `Commute.add_right ?_ ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `(Algebra.commutes v (Eu p p)).symm`. Conclude with `Commute.zero_right _`.
-
-Establish `h` using `hG p p a b`. Rewrite `h` using `[if_neg (Ne.symm ha), if_neg hb, sub_zero]`. Conclude with `sub_eq_zero.mp h`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comm_Tm (Eu : Fin n → Fin n → A) (hG : GlRel Eu) (p a b : Fin n) (ha : a ≠ p) (hb : b ≠ p) (v : ℂ) :
     Commute (Eu p p) (Tm Eu v a b) := by
@@ -30,9 +28,9 @@ theorem comm_Tm (Eu : Fin n → Fin n → A) (hG : GlRel Eu) (p a b : Fin n) (ha
     exact sub_eq_zero.mp h
 
 /- English proof (translation)
-Unfold `qminor`. Use `Commute.sum_right _ _ _ (fun σ _ => ?_)` and prove the remaining obligations. Use `Commute.mul_right (Int.cast_commute _ _).symm ?_` and prove the remaining obligations. Use `Commute.list_prod_right _ _ (fun x hx => ?_)` and prove the remaining obligations. Take `⟨i, rfl⟩` from `List.mem_ofFn.mp hx`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `comm_Tm Eu hG p _ _ (ha _) (hb i) _`.
+A detailed English derivation is pending.
 -/
 theorem comm_qminor (Eu : Fin n → Fin n → A) (hG : GlRel Eu) {t : ℕ} (a b : Fin t → Fin n) (u : ℂ) (p : Fin n)
     (ha : ∀ i, a i ≠ p) (hb : ∀ i, b i ≠ p) : Commute (Eu p p) (qminor Eu a b u) := by
@@ -50,7 +48,7 @@ section aa
 variable {A : Type} [Ring A] [Algebra ℂ A] {k r : ℕ}
 
 /- English proof (translation)
-Unfold `C3.AAx`. Simplify using `only [show ∀ a : Fin m, xi (Fin.castLE hm a) = xi' (Fin.castLE hm a) from fun a => h _ a.isLt]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem AAx_congr_rows (Eu : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → A)
     (xi xi' : Fin r → Fin (2 * r + k + 1) → ℂ) (m : ℕ) (hm : m ≤ r) (u : ℂ)
@@ -59,7 +57,7 @@ theorem AAx_congr_rows (Eu : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → A)
   simp only [show ∀ a : Fin m, xi (Fin.castLE hm a) = xi' (Fin.castLE hm a) from fun a => h _ a.isLt]
 
 /- English proof (translation)
-Unfold `C3.AAv`. Simplify using `only [show ∀ a : Fin m, y (Fin.castLE hm a) = y' (Fin.castLE hm a) from fun a => h _ a.isLt]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem AAv_congr_rows (Eu : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → A)
     (y y' : Fin r → Fin (2 * r + k + 1) → ℂ) (m : ℕ) (hm : m ≤ r) (ℓ : ℂ)
@@ -68,13 +66,11 @@ theorem AAv_congr_rows (Eu : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → A)
   simp only [show ∀ a : Fin m, y (Fin.castLE hm a) = y' (Fin.castLE hm a) from fun a => h _ a.isLt]
 
 /- English proof (translation)
-Unfold `C3.AAx`. Use `Commute.sum_right _ _ _ (fun c _ => ?_)` and prove the remaining obligations. Use `split_ifs with hc`. Distinguish the cases in `hp : ∃ l, c l = eI k r ⟨j, by omega⟩`. Take `⟨l, hl⟩` from `hp`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hdet : (of fun (a l : Fin j) => xi (Fin.castLE (by omega) a) (c l)).det = 0`. Apply `Matrix.det_eq_zero_of_column_eq_zero l` to reduce the goal to its premises. Introduce `a`. Simplify using `only [of_apply, hl]`. Conclude with `h0 _ a.isLt`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [hdet, zero_smul]`. Conclude with `Commute.zero_right _`. Use `push_neg at hp`. Use `Commute.smul_right ?_ _` and prove the remaining obligations. Use `comm_qminor Eu hG _ _ u _ (fun i => ?_) hp` and prove the remaining obligations.
-
-Use `i.isLt` as an intermediate fact. Simplify using `only [C3.xR, eI, ne_eq, Fin.ext_iff, Fin.coe_castLE]`. Use linear arithmetic over natural numbers and integers. Conclude with `Commute.zero_right _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem comm_AAx (Eu : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → A) (hG : GlRel Eu)
     (xi : Fin r → Fin (2 * r + k + 1) → ℂ) (j : ℕ) (hj : j + 1 ≤ r) (u : ℂ)
@@ -101,13 +97,11 @@ theorem comm_AAx (Eu : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → A) (hG : 
   · exact Commute.zero_right _
 
 /- English proof (translation)
-Unfold `C3.AAv`. Use `Commute.sum_right _ _ _ (fun c _ => ?_)` and prove the remaining obligations. Use `split_ifs with hc`. Distinguish the cases in `hp : ∃ l, c l = esI k r ⟨j, by omega⟩`. Take `⟨l, hl⟩` from `hp`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hdet : (of fun (a l : Fin j) => y (Fin.castLE (by omega) a) (c l)).det = 0`. Apply `Matrix.det_eq_zero_of_column_eq_zero l` to reduce the goal to its premises. Introduce `a`. Simplify using `only [of_apply, hl]`. Conclude with `h0 _ a.isLt`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [hdet, zero_smul]`. Conclude with `Commute.zero_right _`. Use `push_neg at hp`. Use `Commute.smul_right ?_ _` and prove the remaining obligations. Use `comm_qminor Eu hG _ _ _ _ hp (fun i => ?_)` and prove the remaining obligations.
-
-Use `i.isLt` as an intermediate fact. Simplify using `only [C3.sR, esI, ne_eq, Fin.ext_iff, Fin.coe_castLE]`. Use linear arithmetic over natural numbers and integers. Conclude with `Commute.zero_right _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem comm_AAv (Eu : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → A) (hG : GlRel Eu)
     (y : Fin r → Fin (2 * r + k + 1) → ℂ) (j : ℕ) (hj : j + 1 ≤ r) (ℓ : ℂ)
@@ -140,19 +134,19 @@ section what₂
 variable {k r j : ℕ}
 
 /- English proof (translation)
-Simplify using `only [x0, Dx2.Split.castM_apply, U.mMap, U.blk3, reindex_apply, submatrix_apply]`. Establish `he : (U.eB k (j + 1) (r - (j + 1))).symm (Fin.cast (by omega) (esI k r a)) = Sum.inr ⟨j - a.val, by omega⟩`. Rewrite using `[Equiv.symm_apply_eq]`. Simplify using `[U.eB, esI, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[he]`. Break down `hq : (U.eB k (j + 1) (r - (j + 1))).symm (Fin.cast (by omega) q) with (l | l) | l` into its components or cases. Apply the tactic sequence `all_goals rw [Equiv.symm_apply_eq] at hq`. Apply the tactic sequence `all_goals have hv := congrArg Fin.val hq`. Apply the tactic sequence `all_goals simp [U.eB] at hv`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[fromBlocks_apply₂₁, fromCols_apply_inl, StandardCharacterExists.wMat_mul_apply]`. Establish `hr : (⟨j - a.val, by omega⟩ : Fin (j + 1)).rev = Fin.castAdd 1 ⟨a.val, ha⟩`. Use `ext`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hr]`. Simplify using `only [zfull, U.blk2, reindex_apply, submatrix_apply, finSumFinEquiv_symm_apply_castAdd]`. Distinguish the cases in `hl : l.val < j`. Establish `hl' : l = Fin.castAdd 1 ⟨l.val, hl⟩`. Use `ext`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using the standard rewrite rules. Rewrite using `[hl', finSumFinEquiv_symm_apply_castAdd, fromBlocks_apply₁₁, dif_pos (by omega)]`. Use `congr 1`. Use `ext`. Simplify using `[hv]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hl' : l = Fin.natAdd j 0`. Use `ext`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite using `[hl', finSumFinEquiv_symm_apply_natAdd, fromBlocks_apply₁₂, dif_neg (by omega)]`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[fromBlocks_apply₂₁, fromCols_apply_inr, dif_neg (by omega)]`. Both sides reduce to the same expression. Rewrite using `[fromBlocks_apply₂₂, dif_neg (by omega)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem x0_esI_apply_eq_dite_Z {k r j : ℕ} (hj : j + 1 ≤ r) (Z : Matrix (Fin j) (Fin j) ℂ) (τ : ℂ)
     (γ : B.Mat k (r - (j + 1))) (a : Fin r) (ha : a.val < j) (q : Fin (2 * r + k + 1)) :
@@ -195,9 +189,9 @@ private theorem x0_esI_apply_eq_dite_Z {k r j : ℕ} (hj : j + 1 ≤ r) (Z : Mat
     rfl
 
 /- English proof (translation)
-Establish `hH : ∀ s, Hpk k r (eI k r a) s = if s = esI k r a then 1 else 0`. Introduce `s`. Use `a.isLt` as an intermediate fact. Use `s.isLt` as an intermediate fact. Simplify using `only [Hpk, eI, esI, Fin.ext_iff, Fin.val_mk]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hd : 2 * r + k - (a : ℕ) + a = 2 * r + k` using `Nat.sub_add_cancel (by omega)`. Generalize the expression as in `2 * r + k - (a : ℕ) = d at *`. Apply the tactic sequence `split_ifs <;> first | rfl | omega`. Simplify using `[PBG.xi0, herm, bvec, mulVec, dotProduct, Pi.single_apply, hH]`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 private theorem xi0_apply_eq_esI_apply {k r : ℕ} (g : B.Mat k r) (a : Fin r) (p : Fin (2 * r + k + 1)) :
     PBG.xi0 g a p = g (esI k r a) p := by
@@ -212,15 +206,15 @@ private theorem xi0_apply_eq_esI_apply {k r : ℕ} (g : B.Mat k r) (a : Fin r) (
   simp [PBG.xi0, herm, bvec, mulVec, dotProduct, Pi.single_apply, hH]
 
 /- English proof (translation)
-Establish `hs : GBasic.sig k r (GBasic.sig k r p) = p`. Use `p.isLt` as an intermediate fact. Use `ext`. Simplify using `only [GBasic.sig]`. Apply the tactic sequence `split_ifs with h1 h2 h2 <;> simp only [Fin.val_mk] at * <;> omega`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hn : GBasic.sgn k r (eI k r a) = 1`. Use `a.isLt` as an intermediate fact. Rewrite using `[GBasic.sgn, if_neg]`. Simplify using `only [eI, Fin.val_mk]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Establish `he : GBasic.sig k r (eI k r a) = esI k r a`. Use `a.isLt` as an intermediate fact. Use `ext`. Simplify using `[GBasic.sig, eI, esI]`. Establish `hu` using `B2x5.isUnit_det_GV hg`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : Hpk k r * g⁻¹ = gᴴ * Hpk k r`. Establish `hg' : gᴴ * Hpk k r * g = Hpk k r` using `hg`. Combine the equalities or inequalities in the displayed calculation. Establish `h2` using `congrFun (congrFun h1 (GBasic.sig k r p)) (eI k r a)`. Rewrite `h2` using `[C2x6.Hpk_mul_apply, C2x6.mul_Hpk_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[hs, he, hn, mul_one, conjTranspose_apply]`. Establish `hy : PBG.y0 g a p = g⁻¹ p (eI k r a)`. Simplify using `[PBG.y0, bvec, mulVec, dotProduct, Pi.single_apply]`. Rewrite using `[hy, h2]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem sgn_sig_mul_y0_eq_star_esI_apply_of_mem_GV {k r : ℕ} (g : B.Mat k r) (hg : g ∈ B.GV k r) (a : Fin r)
     (p : Fin (2 * r + k + 1)) :
@@ -252,7 +246,7 @@ private theorem sgn_sig_mul_y0_eq_star_esI_apply_of_mem_GV {k r : ℕ} (g : B.Ma
   rw [hy, h2]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Rewrite using `[xi0_apply_eq_esI_apply, xi0_apply_eq_esI_apply, x0_esI_apply_eq_dite_Z hj Z τ' γ a ha, x0_esI_apply_eq_dite_Z hj Z τ γ a ha]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem xi0_row_independent_of_tau (hj : j + 1 ≤ r) (Z : Matrix (Fin j) (Fin j) ℂ) (τ τ' : ℂ) (γ : B.Mat k (r - (j + 1)))
     (a : Fin r) (ha : a.val < j) : PBG.xi0 (x0 k r j hj Z τ' γ) a = PBG.xi0 (x0 k r j hj Z τ γ) a := by
@@ -260,7 +254,7 @@ theorem xi0_row_independent_of_tau (hj : j + 1 ≤ r) (Z : Matrix (Fin j) (Fin j
   rw [xi0_apply_eq_esI_apply, xi0_apply_eq_esI_apply, x0_esI_apply_eq_dite_Z hj Z τ' γ a ha, x0_esI_apply_eq_dite_Z hj Z τ γ a ha]
 
 /- English proof (translation)
-Rewrite using `[xi0_apply_eq_esI_apply, x0_esI_apply_eq_dite_Z hj Z τ γ a ha, dif_neg]`. Simplify using `[eI]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem xi0_x0_eI_j_eq_zero (hj : j + 1 ≤ r) (Z : Matrix (Fin j) (Fin j) ℂ) (τ : ℂ) (γ : B.Mat k (r - (j + 1)))
     (a : Fin r) (ha : a.val < j) : PBG.xi0 (x0 k r j hj Z τ γ) a (eI k r ⟨j, by omega⟩) = 0 := by
@@ -268,9 +262,9 @@ theorem xi0_x0_eI_j_eq_zero (hj : j + 1 ≤ r) (Z : Matrix (Fin j) (Fin j) ℂ) 
   simp [eI]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Establish `hs : GBasic.sgn k r (GBasic.sig k r p) ≠ 0`. Unfold `GBasic.sgn`. Apply the tactic sequence `split_ifs <;> norm_num`. Apply `mul_left_cancel₀ hs` to reduce the goal to its premises.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[sgn_sig_mul_y0_eq_star_esI_apply_of_mem_GV _ (LevelPointCoordinates.x0_GV hj hZ hτ' hγ), sgn_sig_mul_y0_eq_star_esI_apply_of_mem_GV _ (LevelPointCoordinates.x0_GV hj hZ hτ hγ), x0_esI_apply_eq_dite_Z hj Z τ' γ a ha, x0_esI_apply_eq_dite_Z hj Z τ γ a ha]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem y0_row_independent_of_tau (hj : j + 1 ≤ r) {Z : Matrix (Fin j) (Fin j) ℂ} {τ τ' : ℂ} (hZ : Z.det ≠ 0) (hτ : τ ≠ 0)
     (hτ' : τ' ≠ 0) {γ : B.Mat k (r - (j + 1))} (hγ : γ ∈ B.GV k (r - (j + 1))) (a : Fin r) (ha : a.val < j) :
@@ -284,11 +278,11 @@ theorem y0_row_independent_of_tau (hj : j + 1 ≤ r) {Z : Matrix (Fin j) (Fin j)
     x0_esI_apply_eq_dite_Z hj Z τ' γ a ha, x0_esI_apply_eq_dite_Z hj Z τ γ a ha]
 
 /- English proof (translation)
-Establish `hs : GBasic.sgn k r (GBasic.sig k r (esI k r ⟨j, by omega⟩)) ≠ 0`. Unfold `GBasic.sgn`. Apply the tactic sequence `split_ifs <;> norm_num`. Apply `mul_left_cancel₀ hs` to reduce the goal to its premises. Rewrite using `[sgn_sig_mul_y0_eq_star_esI_apply_of_mem_GV _ (LevelPointCoordinates.x0_GV hj hZ hτ hγ), x0_esI_apply_eq_dite_Z hj Z τ γ a ha, dif_neg, mul_zero, star_zero]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `: j + 1 ≤ r` using `hj`. Establish `hse : (GBasic.sig k r (esI k r ⟨j, by omega⟩)).val = j`. Unfold `GBasic.sig`. Rewrite using `[if_pos (Or.inr (by simp only [esI]; omega))]`. Simplify using `only [esI]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[hse]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem y0_x0_esI_j_eq_zero_of_det_ne_zero (hj : j + 1 ≤ r) {Z : Matrix (Fin j) (Fin j) ℂ} {τ : ℂ} (hZ : Z.det ≠ 0) (hτ : τ ≠ 0)
     {γ : B.Mat k (r - (j + 1))} (hγ : γ ∈ B.GV k (r - (j + 1))) (a : Fin r) (ha : a.val < j) :
@@ -310,7 +304,7 @@ theorem y0_x0_esI_j_eq_zero_of_det_ne_zero (hj : j + 1 ≤ r) {Z : Matrix (Fin j
 end what₂
 
 /- English proof (translation)
-Introduce `A _ _ k r j hj Eu Z τ τ' u γ hG hZ hτ hτ' hγ`. Conclude with `⟨AAx_congr_rows Eu _ _ j _ u (fun a ha => xi0_row_independent_of_tau hj Z τ τ' γ a ha), comm_AAx Eu hG _ j hj u (fun a ha => xi0_x0_eI_j_eq_zero hj Z τ γ a ha)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem frozen_X_identity : FrozenX := by
   intro A _ _ k r j hj Eu Z τ τ' u γ hG hZ hτ hτ' hγ
@@ -318,7 +312,7 @@ theorem frozen_X_identity : FrozenX := by
     comm_AAx Eu hG _ j hj u (fun a ha => xi0_x0_eI_j_eq_zero hj Z τ γ a ha)⟩
 
 /- English proof (translation)
-Introduce `A _ _ k r j hj Eu Z τ τ' ℓ γ hG hZ hτ hτ' hγ`. Conclude with `⟨AAv_congr_rows Eu _ _ j _ ℓ (fun a ha => y0_row_independent_of_tau hj hZ hτ hτ' hγ a ha), comm_AAv Eu hG _ j hj ℓ (fun a ha => y0_x0_esI_j_eq_zero_of_det_ne_zero hj hZ hτ hγ a ha)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem frozen_V_identity : FrozenV := by
   intro A _ _ k r j hj Eu Z τ τ' ℓ γ hG hZ hτ hτ' hγ

@@ -5,7 +5,7 @@ open NumberField Matrix UpperTheory.V UpperTheory.V.KT
 open scoped ComplexOrder
 
 /- English proof (translation)
-Establish `h` using `Finsupp.lmapDomain_supported ℤ ℤ (Subtype.val : {t // t ∈ s} → X) Set.univ`. Rewrite `h` using `[Set.image_univ, Subtype.range_coe_subtype, Set.setOf_mem_eq]`. Rewrite `hc` using `[← h]`. Take `⟨f, -, hf⟩` from `hc`. Conclude with `⟨f, hf⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem UpperTheory.V.KT.fe_lift {X : Type} (s : Set X) (c : X →₀ ℤ)
     (hc : c ∈ Finsupp.supported ℤ ℤ s) :
@@ -17,7 +17,7 @@ private theorem UpperTheory.V.KT.fe_lift {X : Type} (s : Set X) (c : X →₀ �
   exact ⟨f, hf⟩
 
 /- English proof (translation)
-Establish `h` using `Finsupp.lmapDomain_supported (M := ℤ) (R := ℤ) (Subtype.val : {t // t ∈ s} → X) Set.univ`. Rewrite `h` using `[Set.image_univ, Subtype.range_coe]`. Rewrite using `[← h]`. Conclude with `Submodule.mem_map_of_mem (by simp [Finsupp.supported_univ])`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.KT.fe_mem {X : Type} (s : Set X) (f : {t // t ∈ s} →₀ ℤ) :
     Finsupp.mapDomain Subtype.val f ∈ Finsupp.supported ℤ ℤ s := by
@@ -27,11 +27,11 @@ private theorem UpperTheory.V.KT.fe_mem {X : Type} (s : Set X) (f : {t // t ∈ 
   exact Submodule.mem_map_of_mem (by simp [Finsupp.supported_univ])
 
 /- English proof (translation)
-Proceed by induction on `f using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add f g hf hg`. Rewrite using `[map_add, Finsupp.mapDomain_add, hf, hg, Finsupp.mapDomain_add, map_add]`. Consider the case `single t c`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[KH.faceD_single, Finsupp.mapDomain_single]`. Simplify using `only [ConeExtensionAcyclic.bd, Finsupp.linearCombination_single, Finset.smul_sum]`. Rewrite using `[← Finsupp.lmapDomain_apply ℤ ℤ, map_sum]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[map_zsmul, Finsupp.lmapDomain_apply, Finsupp.mapDomain_single]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finsupp.smul_single, smul_eq_mul, mul_one]`. Rewrite using `[mul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem UpperTheory.V.KT.fe_comm {I : Type} (S : ∀ n, Set (Fin n → I)) (hS : ConeExtensionAcyclic.FaceClosed S)
     (p : ℕ) (f : {t : Fin (p + 1) → I // t ∈ S (p + 1)} →₀ ℤ) :
@@ -53,11 +53,11 @@ private theorem UpperTheory.V.KT.fe_comm {I : Type} (S : ∀ n, Set (Fin n → I
     rw [mul_comm]
 
 /- English proof (translation)
-Proceed by induction on `f using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add f g hf hg`. Rewrite using `[Finsupp.mapDomain_add, map_add, hf, hg, map_add, Finsupp.single_add]`. Consider the case `single t c`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[Finsupp.mapDomain_single, KH.aug_single]`. Simplify using `only [ConeExtensionAcyclic.bd, Finsupp.linearCombination_single]`. Rewrite using `[Fin.sum_univ_one]`. Simplify using `only [Fin.val_zero, pow_zero, one_smul, Finsupp.smul_single, smul_eq_mul, mul_one]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `k`. Conclude with `Fin.elim0 k`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.KT.fe_aug {I : Type} (s : Set (Fin 1 → I)) (f : {t // t ∈ s} →₀ ℤ) :
     ConeExtensionAcyclic.bd I 0 (Finsupp.mapDomain Subtype.val f) =
@@ -76,21 +76,21 @@ private theorem UpperTheory.V.KT.fe_aug {I : Type} (s : Set (Fin 1 → I)) (f : 
     exact Fin.elim0 k
 
 /- English proof (translation)
-Introduce `I S hS hS0 hA m`. Take `⟨hA0, hAn⟩` from `hA`. Establish `inj : ∀ n, Function.Injective (Finsupp.mapDomain (M` using `ℤ) (Subtype.val : {t : Fin n → I // t ∈ S n} → (Fin n → I))) := fun n => Finsupp.mapDomain_injective Subtype.val_injective`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hc : Finsupp.single (Fin.elim0 : Fin 0 → I) (1 : ℤ) ∈ Finsupp.supported ℤ ℤ (S 0)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hS0, Finsupp.supported_univ]`. Conclude with `Submodule.mem_top`. Take `⟨b, hb, hbc⟩` from `hA0 _ hc`. Take `⟨f, rfl⟩` from `fe_lift (S 1) b hb`. Rewrite `hbc` using `[fe_aug]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : KH.aug _ f = 1` using `Finsupp.single_injective _ hbc`. Introduce `n`. Conclude with `⟨n • f, by rw [map_zsmul, h1, smul_eq_mul, mul_one]⟩`. Introduce `y`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hy`. Establish `hc` using `fe_mem (S 1) y`. Establish `hbd : ConeExtensionAcyclic.bd I 0 (Finsupp.mapDomain Subtype.val y) = 0`. Rewrite using `[fe_aug, hy, Finsupp.single_zero]`. Take `⟨b, hb, hbc⟩` from `hAn 0 _ hc hbd`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g, rfl⟩` from `fe_lift (S 2) b hb`. Use `⟨g, inj 1 ?_⟩` and prove the remaining obligations. Rewrite using `[fe_comm S hS 1 g, hbc]`. Introduce and unpack `⟨g, rfl⟩`. Establish `h` using `fe_aug (S 1) (KH.faceD (fun (i : Fin 2) (t : {t : Fin 2 → I // t ∈ S 2}) => (⟨t.1 ∘ i.succAbove, hS _ t.1 t.2 i⟩ : {t : Fin 1 → I // t ∈ S 1})) g)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[fe_comm S hS 1 g, ConeExtensionAcyclic.bd_bd]`. Conclude with `Finsupp.single_eq_zero.mp h.symm`. Introduce `p _ y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc` using `fe_mem (S (p + 2)) y`. Establish `hbd : ConeExtensionAcyclic.bd I (p + 1) (Finsupp.mapDomain Subtype.val y) = 0`. Rewrite using `[← fe_comm S hS (p + 1) y, hy, Finsupp.mapDomain_zero]`. Take `⟨b, hb, hbc⟩` from `hAn (p + 1) _ hc hbd`. Take `⟨g, rfl⟩` from `fe_lift (S (p + 3)) b hb`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨g, inj (p + 2) ?_⟩` and prove the remaining obligations. Rewrite using `[fe_comm S hS (p + 2) g, hbc]`. Introduce and unpack `⟨g, rfl⟩`. Apply `inj (p + 1)` to reduce the goal to its premises. Rewrite using `[fe_comm S hS (p + 1), fe_comm S hS (p + 2) g, ConeExtensionAcyclic.bd_bd, Finsupp.mapDomain_zero]`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.KT.faceexact :
     ∀ (I : Type) (S : ∀ n, Set (Fin n → I)) (hS : ConeExtensionAcyclic.FaceClosed S), S 0 = Set.univ → ConeExtensionAcyclic.Acyc S → ∀ m : ℕ,

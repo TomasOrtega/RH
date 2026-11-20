@@ -23,7 +23,7 @@ namespace GlobalTheory.Poinc.FibLat
 open GlobalTheory.SplitTorus (torusMap bcMap)
 
 /- English proof (translation)
-Establish `h1` using `Spec.map_injective h`. Establish `h2` using `congrArg CommRingCat.Hom.hom h1`. Simplify using `using h2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ringHom_eq_of_spMap {A B : Type} [CommRing A] [CommRing B] {a b : A →+* B} (h : spMap a = spMap b) : a = b := by
   have h1 := Spec.map_injective h
@@ -31,7 +31,7 @@ theorem ringHom_eq_of_spMap {A B : Type} [CommRing A] [CommRing B] {a b : A →+
   simpa using h2
 
 /- English proof (translation)
-Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (a : A →+* B) (b : B →+* C) :
     spMap b ≫ spMap a = spMap (b.comp a) := by
@@ -39,16 +39,16 @@ theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (a : A
   rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(Spec.preimage s).hom, by simp [spMap]⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_spMap {A B : Type} [CommRing A] [CommRing B] (s : Sp B ⟶ Sp A) : ∃ a : A →+* B, s = spMap a := ⟨(Spec.preimage s).hom, by simp [spMap]⟩
 
 /- English proof (translation)
-Use `⟨IsPullback.of_hasPullback _ _, ?_⟩` and prove the remaining obligations. Introduce `T x y x₀ y₀ hx hy`. Establish `key : ∀ (z : T ⟶ (Over.pullback f).obj G) (z₀ : (Over.map f).obj T ⟶ G), z₀.left = z.left ≫ pullback.fst G.hom f → z = (Over.mapPullbackAdj f).unit.app T ≫ (Over.pullback f).map z₀`. Introduce `z z₀ hz`. Use `ext`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [Over.pullback_obj_left, Over.mapPullbackAdj_unit_app, Over.comp_left, Over.pullback_map_left, Category.assoc, pullback.lift_fst, pullback.lift_fst_assoc, Category.id_comp, hz, Over.homMk_left] erw [pullback.lift_fst_assoc, Category.id_comp]`. Simplify using `only [Over.pullback_obj_left, Over.mapPullbackAdj_unit_app, Over.comp_left, Over.pullback_map_left, Category.assoc, pullback.lift_snd, pullback.lift_snd_assoc, Category.id_comp, Over.homMk_left] erw [pullback.lift_snd]`. Conclude with `Over.w z`. Rewrite using `[key x x₀ hx, key y y₀ hy, ← MonObj.comp_mul, ← Functor.map_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use `erw [pullback.lift_fst, pullback.lift_fst_assoc, Category.id_comp]`.
+A detailed English derivation is pending.
 -/
 private theorem isGrpPullback_pullback_fst {S S' : Scheme.{0}} (f : S' ⟶ S) (G : Over S) [GrpObj G] :
     IsGrpPullback ((Over.pullback f).obj G) G f (pullback.fst G.hom f) := by
@@ -71,13 +71,11 @@ private theorem isGrpPullback_pullback_fst {S S' : Scheme.{0}} (f : S' ⟶ S) (G
   erw [pullback.lift_fst, pullback.lift_fst_assoc, Category.id_comp]
 
 /- English proof (translation)
-Take `⟨z, -, -⟩` from `Scheme.Pullback.exists_preimage_pullback (f := s) (g := s') _ _ hs`. Take `⟨K, _, ⟨p⟩⟩ : ∃ (K : Type) (_ : Field K), Nonempty (Sp K ⟶ pullback s s')` from `⟨_, inferInstance, ⟨(pullback s s').fromSpecResidueField z⟩⟩`. Take `⟨b, hb⟩` from `exists_spMap (p ≫ pullback.fst s s')`. Take `⟨b', hb'⟩` from `exists_spMap (p ≫ pullback.snd s s')`. Establish `e : spMap b ≫ s = spMap b' ≫ s'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← hb, ← hb', Category.assoc, Category.assoc, pullback.condition]`. Establish `hψ` using `isGrpPullback_pullback_fst (spMap b) G₀`. Use `set ψ := pullback.fst G₀.hom (spMap b)`. Use `set GK := (Over.pullback (spMap b)).obj G₀`. Establish `w0 : (ψ ≫ φ) ≫ G.hom = (GK.hom ≫ spMap b') ≫ s'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Category.assoc]`. Rewrite using `[hφ.1.w, ← Category.assoc ψ, hψ.1.w, Category.assoc, e]`. Use `⟨K, inferInstance, b, b', GK, inferInstance, ψ, hφ'.1.lift (ψ ≫ φ) (GK.hom ≫ spMap b') w0, e, hψ, ?_, (hφ'.1.lift_fst _ _ _).symm⟩` and prove the remaining obligations. Establish `n` using `hψ.comp hφ`. Rewrite `n` using `[e, ← hφ'.1.lift_fst (ψ ≫ φ) (GK.hom ≫ spMap b') w0]`.
-
-Conclude with `IsGrpPullback.cancel hφ' n (hφ'.1.lift_snd _ _ _)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_common_pullback {Y : Scheme.{0}} {G : Over Y} [GrpObj G] {κ κ' : Type} [Field κ] [Field κ'] {s : Sp κ ⟶ Y}
     {s' : Sp κ' ⟶ Y} (hs : s (closedPoint κ) = s' (closedPoint κ')) {G₀ : Over (Sp κ)} [GrpObj G₀] {φ : G₀.left ⟶ G.left}
@@ -109,7 +107,7 @@ variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {M : RatModel o Ω
   {I T : Type} {f : I → (G ⟶ G)} {gγ : T → (Over.mk M.pt ⟶ G)} {ζ : oˣ} {L : ℕ}
 
 /- English proof (translation)
-Take `⟨X, _, _, _, κ, _, s, G₀, _, φ, tι, hs, hφ, ht, rfl⟩` from `h`. Take `⟨X', _, _, _, κ', _, s', G₀', _, φ', tι', hs', hφ', ht', rfl⟩` from `h'`. Take `⟨K, _, b, b', GK, _, ψ, ψ', -, hψ, hψ', -⟩` from `exists_common_pullback (hs.trans hs'.symm) hφ hφ'`. Take `⟨e, -⟩` from `IsTorPart.exists_equiv (ht.pull hψ) (ht'.pull hψ')`. Conclude with `e.toIntLinearEquiv.finrank_eq`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem RkAt.unique {w : M.Z} {r r' : ℕ} (h : RkAt G w r) (h' : RkAt G w r') : r = r' := by
   obtain ⟨X, _, _, _, κ, _, s, G₀, _, φ, tι, hs, hφ, ht, rfl⟩ := h
@@ -119,9 +117,9 @@ theorem RkAt.unique {w : M.Z} {r r' : ℕ} (h : RkAt G w r) (h' : RkAt G w r') :
   exact e.toIntLinearEquiv.finrank_eq
 
 /- English proof (translation)
-Take `⟨κ, _, s, a, G₀, _, φ, tι, hs, ha, hφ, ht, hc⟩` from `h`. Take `⟨K, _, b, b', GK, _, ψ, ψ', e1, hψ, hψ', e2⟩` from `exists_common_pullback (hs.trans hs'.symm) hφ hφ'`. Take `⟨e, he⟩` from `IsTorPart.exists_equiv (ht'.pull hψ') (ht.pull hψ)`. Establish `hab : b.comp a = b'.comp a'`. Apply `ringHom_eq_of_spMap` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← spMap_comp', ← spMap_comp', ← ha, ← ha', reassoc_of% e1]`. Use `⟨e, K, inferInstance, b', GK, inferInstance, ψ', hψ', ?_⟩` and prove the remaining obligations. Establish `hc2` using `hc.pull b hψ`. Rewrite `hc2` using `[he, e1, hab, e2]`. Conclude with `hc2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LatAt.transfer {X : Type} [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] {m : I → X →+ X}
     {c : T → X →+ ZMod L} {w : M.Z} (h : LatAt f gγ ζ L m c w) {κ' : Type} [Field κ'] {s' : Sp κ' ⟶ M.Z}
@@ -143,15 +141,13 @@ theorem LatAt.transfer {X : Type} [AddCommGroup X] [Module.Free ℤ X] [Module.F
   exact hc2
 
 /- English proof (translation)
-Take `⟨hm, hc⟩` from `h`. Take `⟨hm', hc'⟩` from `h'`. Prove the components needed by the constructor for the conclusion. Use function extensionality and compare the values at `e`. Apply `ht.cancel` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hom_ext_of_pullback hφ` to reduce the goal to its premises. Rewrite using `[← hm e, ← hm' e]`. Use function extensionality and compare the values at `tt`. Take `⟨z, hz, hv⟩` from `hc tt`. Take `⟨z', hz', hv'⟩` from `hc' tt`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hzz : z = z'`. Use `ht.mono` as an intermediate fact. Apply `(cancel_mono t).1` to reduce the goal to its premises. Apply `hom_ext_of_pullback hφ` to reduce the goal to its premises. Conclude with `ValAt.unique hv hv'`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Substitute using the available equality.
 
-Substitute `hzz` using the available equality. Use extensionality with `χ`. Establish `h3` using `congrArg Units.val (GlobalTheory.ZH.TorusPerp.unitOn_injective ((hz χ).symm.trans (hz' χ)))`. Simplify using `only [Units.val_pow_eq_pow_val, Units.coe_map, RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe] at h3`. Use `haveI : NeZero L := ⟨hL.ne'⟩`.
-
-Conclude with `ZMod.val_injective _ (hζ.pow_inj (ZMod.val_lt _) (ZMod.val_lt _) h3)`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Compat.unique [IsSeparated G.hom] (hL : 0 < L) {X : Type} [AddCommGroup X] {m m' : I → X →+ X}
     {c c' : T → X →+ ZMod L} {K : Type} [Field K] {s : Sp K ⟶ M.Z} {a : o →+* K} (hζ : IsPrimitiveRoot (a ζ) L)
@@ -180,9 +176,9 @@ theorem Compat.unique [IsSeparated G.hom] (hL : 0 < L) {X : Type} [AddCommGroup 
     exact ZMod.val_injective _ (hζ.pow_inj (ZMod.val_lt _) (ZMod.val_lt _) h3)
 
 /- English proof (translation)
-Take `⟨κ', _, s', a', G₀', _, φ', tι', hs', ha', hφ', ht', hc'⟩` from `h'`. Take `⟨e, K, _, b, GK, _, ψ, hψ, hc⟩` from `h.transfer hs' ha' hφ' ht'`. Establish `hc2` using `(hc'.pull b hψ).equiv e (m' := fun i => (e : X' →+ X).comp ((m' i).comp (e.symm : X →+ X'))) (c' := fun t => (c' t).comp (e.symm : X →+ X')) (fun i x => by simp) (fun t x => by simp)`. Take `⟨h1, h2⟩` from `Compat.unique hL (hζ K (b.comp a')) (hψ.comp hφ') ((ht'.pull hψ).equiv e) hc hc2`. Substitute `h1 h2` using the available equality.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Substitute using the available equality.
 
-Apply the tactic sequence `refine ⟨e.symm, fun i x => ?_, fun t x => ?_⟩ <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem LatAt.unique [IsSeparated G.hom] (hL : 0 < L) (hζ : ∀ (κ : Type) [Field κ] (a : o →+* κ), IsPrimitiveRoot (a ζ) L)
     {X X' : Type} [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] [AddCommGroup X'] [Module.Free ℤ X']
@@ -198,7 +194,7 @@ theorem LatAt.unique [IsSeparated G.hom] (hL : 0 < L) (hζ : ∀ (κ : Type) [Fi
   refine ⟨e.symm, fun i x => ?_, fun t x => ?_⟩ <;> simp
 
 /- English proof (translation)
-Take `⟨κ, _, s, a, G₀, _, φ, tι, hs, ha, hφ, ht, hcc⟩` from `h`. Conclude with `⟨κ, _, s, a, G₀, _, φ, _, hs, ha, hφ, ht.equiv e, hcc.equiv e hm hc⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem LatAt.equiv {X X' : Type} [AddCommGroup X] [AddCommGroup X'] {m : I → X →+ X} {c : T → X →+ ZMod L}
     {m' : I → X' →+ X'} {c' : T → X' →+ ZMod L} {w : M.Z} (h : LatAt f gγ ζ L m c w)
@@ -207,9 +203,9 @@ theorem LatAt.equiv {X X' : Type} [AddCommGroup X] [AddCommGroup X'] {m : I → 
   exact ⟨κ, _, s, a, G₀, _, φ, _, hs, ha, hφ, ht.equiv e, hcc.equiv e hm hc⟩
 
 /- English proof (translation)
-Use `M.lft` as an intermediate fact. Prove the components needed by the constructor for the conclusion. Introduce `U`. Establish `h1` using `HasRingHomProperty.appLE @LocallyOfFiniteType M.s this ⟨⊤, isAffineOpen_top _⟩ U (by simp)`. Establish `: IsNoetherianRing Γ(Sp o, ⊤)` using `IsLocallyNoetherian.component_noetherian ⟨⊤, isAffineOpen_top _⟩`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `letI := (M.s.appLE ⊤ U.1 (by simp)).hom.toAlgebra`. Establish `: Algebra.FiniteType Γ(Sp o, ⊤) Γ(M.Z, U.1)` using `h1`. Conclude with `Algebra.FiniteType.isNoetherianRing Γ(Sp o, ⊤) Γ(M.Z, U.1)`.
+Equip the data with the indicated structure. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem ratModel_isLocallyNoetherian {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] [IsNoetherianRing o]
     (M : RatModel o Ω) : IsLocallyNoetherian M.Z := by
@@ -223,29 +219,27 @@ private theorem ratModel_isLocallyNoetherian {o Ω : Type} [CommRing o] [Field �
   exact Algebra.FiniteType.isNoetherianRing Γ(Sp o, ⊤) Γ(M.Z, U.1)
 
 /- English proof (translation)
-Distinguish the cases in `hww : w = w'`. Substitute `hww` using the available equality. Conclude with `Iff.rfl`. Use `ratModel_isLocallyNoetherian M` as an intermediate fact. Take `⟨V, _, _, _, ξ, G₁, _, _, φ₁, X₁, _, _, _, j, GK, _, ψ, hψ, hξ', hξ, hφ₁, hj, hjt⟩` from `GlobalTheory.T.exists_trait_spreading_torusPart_of_specialisation M.Z G hG w w' hw hww`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Unfold both sides to obtain the same proposition, which implies itself. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `hj` as an intermediate fact. Take `⟨a, ha⟩` from `exists_spMap (ξ ≫ M.s)`. Establish `hG₁ : IsSemiAbelian G₁` using `GlobalTheory.Mum.isSemiAbelian_of_isGrpPullback_square _ _ ξ G G₁ φ₁ hφ₁ hG`. Establish `hgen : IsGrpPullback GK G (spMap (algebraMap V (FractionRing V)) ≫ ξ) (ψ ≫ φ₁)` using `hψ.comp hφ₁`. Establish `hrX : r = Module.finrank ℤ X₁` using `RkAt.unique hr ⟨X₁, _, inferInstance, inferInstance, FractionRing V, inferInstance, _, GK, inferInstance, _, _, hξ, hgen, hjt, rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨X₀, _, _, _, κ₀, _, s₀, G₀, _, φ₀, t₀, hs₀, hφ₀, ht₀, hrk₀⟩` from `hr'`. Establish `hGc` using `isGrpPullback_pullback_fst (spMap (IsLocalRing.residue V)) G₁`. Establish `hcl : (spMap (IsLocalRing.residue V) ≫ ξ) (closedPoint (IsLocalRing.ResidueField V)) = w'` using `(congrArg (fun x => ξ x) (GtDescent.spMap_cpt (IsLocalRing.residue V))).trans hξ'`. Take `⟨K, _, b₀, b₁, GK', _, ψ₀, ψ₁, -, hψ₀, hψ₁, -⟩` from `exists_common_pullback (hs₀.trans hcl.symm) hφ₀ (hGc.comp hφ₁)`. Establish `hψc : IsGrpPullback GK' G₁ (spMap (b₁.comp (IsLocalRing.residue V))) (ψ₁ ≫ pullback.fst G₁.hom (spMap (IsLocalRing.residue V)))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← spMap_comp']`. Conclude with `hψ₁.comp hGc`. Establish `ht0 : IsTorPart (pullTorus hψc j)` using `GlobalTheory.T.splitTorusPart_generic_fibre_closed_fibre_dvr V G₁ hG₁ X₁ j hj GK ψ hψ hjt K (b₁.comp (IsLocalRing.residue V)) inferInstance GK' _ hψc X₀ _ (ht₀.pull hψ₀) (hrk₀.trans hrX)`. Establish `hsc : (spMap (b₁.comp (IsLocalRing.residue V)) ≫ ξ) (closedPoint K) = w'` using `(congrArg (fun x => ξ x) (GtDescent.spMap_cpt (b₁.comp (IsLocalRing.residue V)))).trans hξ'`. Establish `ha_gen : (spMap (algebraMap V (FractionRing V)) ≫ ξ) ≫ M.s = spMap ((algebraMap V (FractionRing V)).comp a)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, ha, spMap_comp']`. Establish `ha_cl : (spMap (b₁.comp (IsLocalRing.residue V)) ≫ ξ) ≫ M.s = spMap ((b₁.comp (IsLocalRing.residue V)).comp a)`. Rewrite using `[Category.assoc, ha, spMap_comp']`. Establish `hextV : ∀ t, ExtNear (gγ t) (ξ (closedPoint V))`. Rewrite using `[hξ']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `hext`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨e, K₂, _, b₂, GK₂, _, ψ₂, hψ₂, hc⟩` from `h.transfer hξ ha_gen hgen hjt`. Establish `hψ₂' : IsGrpPullback GK₂ G₁ (spMap (b₂.comp (algebraMap V (FractionRing V)))) (ψ₂ ≫ ψ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← spMap_comp']`. Conclude with `hψ₂.comp hψ`. Establish `hinj : Function.Injective (b₂.comp (algebraMap V (FractionRing V)))` using `b₂.injective.comp (IsFractionRing.injective V (FractionRing V))`. Establish `hcV : Compat f gγ ζ L m c ξ a φ₁ (torusMap _ e.toAddMonoidHom ≫ j)`. Use `GlobalTheory.T.torusCompat_of_compat_over_field o Ω M G hG I T f gγ ζ L hL hζ X m c V ξ a G₁ φ₁ hφ₁ _ hextV K₂ _ hinj GK₂ _ hψ₂' ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[pullTorus_torusMap_comp, ← pullTorus_pullTorus hψ₂ hψ hψ₂' (spMap_comp' _ _).symm rfl, ← spMap_comp']`. Simplify `hc` using `only [Category.assoc, RingHom.comp_assoc]`. Establish `hc2` using `hcV.pull (b₁.comp (IsLocalRing.residue V)) hψc`. Rewrite `hc2` using `[pullTorus_torusMap_comp]`. Conclude with `⟨K, _, _, _, GK', _, _, _, hsc, ha_cl, hψc.comp hφ₁, ht0.equiv e, hc2⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `h`. Take `⟨e, K₂, _, b₂, GK₂, _, ψ₂, hψ₂, hc⟩` from `h.transfer hsc ha_cl (hψc.comp hφ₁) ht0`. Establish `hψ₃ : IsGrpPullback GK₂ G₁ (spMap (b₂.comp (b₁.comp (IsLocalRing.residue V)))) (ψ₂ ≫ ψ₁ ≫ pullback.fst G₁.hom (spMap (IsLocalRing.residue V)))`. Rewrite using `[← spMap_comp']`. Conclude with `hψ₂.comp hψc`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hcV : Compat f gγ ζ L m c ξ a φ₁ (torusMap _ e.toAddMonoidHom ≫ j)`. Use `GlobalTheory.T.torusCompat_of_compat_closedPoint o Ω M G hG I T f gγ ζ L hL hζ hu hf hγ X m c V ξ a G₁ φ₁ hφ₁ _ inferInstance hextV GK ψ hψ ?_ K₂ _ inferInstance GK₂ _ hψ₃ ?_ ?_` and prove the remaining obligations. Rewrite using `[pullTorus_torusMap_comp]`. Conclude with `hjt.equiv e`. Rewrite using `[pullTorus_torusMap_comp, ← pullTorus_pullTorus hψ₂ hψc hψ₃ (spMap_comp' _ _).symm rfl]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `(ht0.pull hψ₂).equiv e`. Rewrite using `[pullTorus_torusMap_comp, ← pullTorus_pullTorus hψ₂ hψc hψ₃ (spMap_comp' _ _).symm rfl, ← spMap_comp']`. Simplify `hc` using `only [Category.assoc, RingHom.comp_assoc]`. Establish `hc3` using `hcV.pull (algebraMap V (FractionRing V)) hψ`. Rewrite `hc3` using `[pullTorus_torusMap_comp]`.
-
-Conclude with `⟨FractionRing V, _, _, _, GK, _, _, _, hξ, ha_gen, hgen, hjt.equiv e, hc3⟩`.
+A detailed English derivation is pending.
 -/
 theorem latAt_iff_of_specializes [IsNoetherianRing o] [IsCommMonObj G] (hG : IsSemiAbelian G) (hL : 0 < L) (hζ : ζ ^ L = 1)
     (hu : IsUnit (L : o)) (hf : ∀ e, IsMonHom (f e)) (hγ : ∀ t, gγ t ^ L = 1) {X : Type} [AddCommGroup X]

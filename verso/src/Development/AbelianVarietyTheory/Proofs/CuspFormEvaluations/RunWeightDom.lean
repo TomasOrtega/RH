@@ -16,9 +16,9 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 namespace GlobalTheory.RunWeightDom
 
 /- English proof (translation)
-Introduce `i j hij hj`. Proceed by induction on `j with`. Consider the case `zero => omega`. Consider the case `succ k ih`. Break down `Nat.lt_succ_iff_lt_or_eq.mp hij with hik | rfl` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `lt_trans (h k (by omega)) (ih hik (by omega))`. Conclude with `h i (by omega)`.
+A detailed English derivation is pending.
 -/
 theorem lt_of_succ_lt {p : ℕ} {f : ℕ → ℤ} (h : ∀ i, i + 1 < p → f (i + 1) < f i) :
     ∀ i j, i < j → j < p → f j < f i := by
@@ -31,7 +31,7 @@ theorem lt_of_succ_lt {p : ℕ} {f : ℕ → ℤ} (h : ∀ i, i + 1 < p → f (i
     · exact h i (by omega)
 
 /- English proof (translation)
-Break down `Nat.lt_or_ge i (p - 1) with hlt | hge` into its components or cases. Conclude with `(lt_of_succ_lt h i (p - 1) hlt (by omega)).le`. Establish `: i = p - 1` using `by omega`. Substitute `this` using the available equality. Conclude with `le_rfl`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem le_of_succ_lt {p : ℕ} {f : ℕ → ℤ} (h : ∀ i, i + 1 < p → f (i + 1) < f i) (i : ℕ) (hi : i < p) :
     f (p - 1) ≤ f i := by
@@ -42,7 +42,7 @@ theorem le_of_succ_lt {p : ℕ} {f : ℕ → ℤ} (h : ∀ i, i + 1 < p → f (i
     exact le_rfl
 
 /- English proof (translation)
-Establish `e : Int.fdiv x T' = x / T'` using `Int.fdiv_eq_ediv_of_nonneg x hT.le`. Use `⟨x % T', Int.emod_nonneg x hT.ne', Int.emod_lt_of_pos x hT, ?_⟩` and prove the remaining obligations. Rewrite using `[h, e]`. Conclude with `(Int.mul_ediv_add_emod x T').symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fdiv_spec {x y T' : ℤ} (hT : 0 < T') (h : y = Int.fdiv x T') :
     ∃ ρ, 0 ≤ ρ ∧ ρ < T' ∧ x = T' * y + ρ := by
@@ -52,19 +52,19 @@ theorem fdiv_spec {x y T' : ℤ} (hT : 0 < T') (h : y = Int.fdiv x T') :
   exact (Int.mul_ediv_add_emod x T').symm
 
 /- English proof (translation)
-Establish `hT' : 0 < T + Dm + 2` using `by linarith`. Establish `e : ∀ (f : Fin p → ℕ) (i : ℕ) (hi : i < p), ext0 f i = f ⟨i, hi⟩`. Introduce `f i hi`. Simplify using `[ext0, hi]`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i hi`. Rewrite using `[e wL (i + 1) hi, e wL i (by omega)]`. Establish `hg'` using `hg ⟨i, by omega⟩ hi`. Establish `hL'` using `hL ⟨i, by omega⟩`. Simplify using `only [gapZ, hi, dif_pos, if_true] at hL' hg'`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨ρ, hρ0, hρ1, hx⟩` from `fdiv_spec hT' hL'`. Use the polynomial consequences of the given equalities and inequalities. Introduce `i hi`. Rewrite using `[e wF (i + 1) hi, e wF i (by omega), e wL (i + 1) hi, e wL i (by omega), hF ⟨i + 1, hi⟩, hF ⟨i, by omega⟩]`. Establish `hL'` using `hL ⟨i, by omega⟩`.
+Extract witnesses or component facts from the available result. Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [gapZ, hi, dif_pos, if_true] at hL'`. Take `⟨ρ, hρ0, hρ1, hx⟩` from `fdiv_spec hT' hL'`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlast : p - 1 < p` using `by omega`. Rewrite using `[e wL (p - 1) hlast]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hl'` using `hl ⟨p - 1, hlast⟩ (by simp; omega)`. Establish `hL'` using `hL ⟨p - 1, hlast⟩`. Establish `hn : ¬ (p - 1 + 1 < p)` using `by omega`. Simplify using `only [gapZ, hn, dif_neg, if_false, not_false_eq_true] at hL'`. Take `⟨ρ, hρ0, hρ1, hx⟩` from `fdiv_spec hT' hL'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hc'`. Establish `h1 : 10 * (wL ⟨p - 1, hlast⟩ : ℤ) ≤ 19 * T - 1` using `by linarith [not_le.mp hc']`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left h1 hT'.le, mul_nonneg (by linarith : (0 : ℤ) ≤ 41 * T - 40 * (T + Dm + 2)) (by linarith : (0 : ℤ) ≤ 19 * T + 9)]`. Establish `hlast : p - 1 < p` using `by omega`. Rewrite using `[e wL (p - 1) hlast, e wF (p - 1) hlast, hF ⟨p - 1, hlast⟩]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hL'` using `hL ⟨p - 1, hlast⟩`. Establish `hn : ¬ (p - 1 + 1 < p)` using `by omega`. Simplify using `only [gapZ, hn, dif_neg, if_false, not_false_eq_true] at hL'`. Take `⟨ρ, hρ0, hρ1, hx⟩` from `fdiv_spec hT' hL'`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem block {p : ℕ} (hp : 0 < p) (ka wL wF : Fin p → ℕ) (T Dm r c : ℤ) (hD : 0 ≤ Dm) (hr : 0 ≤ r)
     (h40 : 40 * (Dm + 2) ≤ T) (hc : c ≤ T)
@@ -114,27 +114,27 @@ theorem block {p : ℕ} (hp : 0 < p) (ka wL wF : Fin p → ℕ) (T Dm r c : ℤ)
     nlinarith
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j hij hjq`. Establish `hij' : (i : ℕ) < j` using `hij`. Establish `hi' : ¬ q ≤ (i : ℕ)` using `by omega`. Establish `hj' : ¬ q ≤ (j : ℕ)` using `by omega`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hL i, hL j, if_neg hi', if_neg hj']`. Establish `key` using `lt_of_succ_lt m1 (q - 1 - j) (q - 1 - i) (by omega) (by omega)`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `i j hqi hij`. Establish `hij' : (i : ℕ) < j` using `hij`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hj' : q ≤ (j : ℕ)` using `by omega`. Establish `hjr` using `j.isLt`. Rewrite using `[hL i, hL j, if_pos hqi, if_pos hj']`. Establish `key` using `lt_of_succ_lt p1 (i - q) (j - q) (by omega) (by omega)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Introduce `a b hb hbq`. Establish `hbr` using `b.isLt`. Establish `hbz : ((b : ℕ) : ℤ) = ((a : ℕ) : ℤ) + 1` using `by rw [hb]; push_cast; ring`. Distinguish the cases in `ha : q ≤ (a : ℕ)`. Establish `hb' : q ≤ (b : ℕ)` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[hL a, hL b, hF a, hF b, if_pos ha, if_pos ha, if_pos hb', if_pos hb']`. Establish `hi : (b : ℕ) - q = (a : ℕ) - q + 1` using `by omega`. Rewrite using `[hi]`. Establish `key` using `p2 ((a : ℕ) - q) (by omega)`. Rewrite using `[hbz]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hb' : ¬ q ≤ (b : ℕ)` using `by omega`. Rewrite using `[hL a, hL b, hF a, hF b, if_neg ha, if_neg ha, if_neg hb', if_neg hb']`. Establish `hi : q - 1 - (a : ℕ) = q - 1 - (b : ℕ) + 1` using `by omega`. Rewrite using `[hi]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key` using `m2 (q - 1 - (b : ℕ)) (by omega)`. Rewrite using `[hbz]`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `a b ha hb`. Establish `hbr` using `b.isLt`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `ha' : ¬ q ≤ (a : ℕ)` using `by omega`. Rewrite using `[hL a, hL b, if_neg ha', if_pos hb]`. Establish `h1` using `le_of_succ_lt p1 ((b : ℕ) - q) (by omega)`. Establish `h2` using `le_of_succ_lt m1 (q - 1 - (a : ℕ)) (by omega)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Introduce `a b ha hb hp hq`. Establish `ha' : ¬ q ≤ (a : ℕ)` using `by omega`. Establish `hb' : q ≤ (b : ℕ)` using `by omega`. Rewrite using `[hL a, hL b, hF a, hF b, if_neg ha', if_neg ha', if_pos hb', if_pos hb']`. Establish `e1 : q - 1 - (a : ℕ) = q - 1` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : (b : ℕ) - q = p - 1` using `by omega`. Establish `e3 : ((b : ℕ) : ℤ) = (r : ℤ) - 1`. Rewrite using `[hb]; have : 1 ≤ r := by omega`. Move the coercions through the operations in `[this]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e4 : ((a : ℕ) : ℤ) = 0` using `by rw [ha]; rfl`. Rewrite using `[e1, e2, e3, e4]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem row {r p q : ℕ} (hpq : p + q = r) (T Dm nL nF : ℤ) (hnL : 0 ≤ nL) (hnF : 0 ≤ nF)
     (LP LM FP FM : ℕ → ℤ) (L F : Fin r → ℤ) (hT : 0 ≤ T)
@@ -209,41 +209,39 @@ theorem row {r p q : ℕ} (hpq : p + q = r) (T Dm nL nF : ℤ) (hnL : 0 ≤ nL) 
     linarith
 
 /- English proof (translation)
-Introduce `D T h j hj large₂ H C2 A2 CR CT ka wL wF Tn nP nW h0 hH hjm hr k`. Establish `hj' : 1 ≤ j ∧ j ≤ D.R.m` using `hj`. Take `⟨-, -, -, -, -, hp0, -, tt, hlaR⟩` from `GlobalTheory.Shares.WtDic.weights_dictionary D T h j hj k`. Unfold `FamilyHypotheses.HypPage at hH`. Take `⟨-, hS, -⟩` from `hH`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Unfold `SetC at hS`. Take `⟨-, hgP, hgM, hh0, -, hlP, hlM, -, -, -, -, -, -, -, hIsL, hIsF, -, -, -, h40, hc, -⟩` from `hS`. Unfold `IsL at hIsL`. Unfold `IsF' at hIsF`. Take `⟨hwLn, hLP, hLM⟩` from `hIsL`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Take `⟨-, hFP, hFM⟩` from `hIsF`. Establish `hsum : (D.R.sigW j).1 + (D.R.sigW j).2 = D.R.r` using `Formalism.L2.Geo.sigW_sum D hj'.1 hj'.2`. Establish `hk` using `D.R.m_add_three_le_k`. Establish `hq : 0 < (D.R.sigW j).2` using `by show 0 < D.R.m - j`. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `hp : 0 < (D.R.sigW j).1` using `by show 0 < D.R.k + j - 1`. Use linear arithmetic over natural numbers and integers. Establish `hTp : ((Tp D j Tn : ℕ) : ℤ) = (Tn : ℤ) + (WeightFamilies.dimY D j : ℤ) + 2`. Unfold `Tp`. Use `push_cast`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hD : (0 : ℤ) ≤ (WeightFamilies.dimY D j : ℤ)` using `by positivity`. Establish `hr0 : (0 : ℤ) ≤ (D.R.r : ℤ)` using `by positivity`. Establish `h40' : 40 * ((WeightFamilies.dimY D j : ℤ) + 2) ≤ (Tn : ℤ)` using `by exact_mod_cast h40`. Establish `hc' : ((WeightFamilies.dimY D j : ℤ) + 2) * (nW : ℤ) + 2 * (D.R.r : ℤ) ≤ (Tn : ℤ)` using `by exact_mod_cast hc`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hwn : ((wL.n / 2 : ℕ) : ℤ) * 2 = (nW : ℤ)`. Rewrite using `[← hwLn]`. Conclude with `Nat.div_two_mul_two_of_even wL.n_even` after adjusting the coercions. Establish `gP : ∀ (t : D.what₂.Tau) (i : Fin (D.R.sigW j).1), i.1 + 1 < (D.R.sigW j).1 → ((Tn : ℤ) + (WeightFamilies.dimY D j : ℤ) + 2) * ((Tn : ℤ) + (WeightFamilies.dimY D j : ℤ) + 2 + 2 * (D.R.r : ℤ)) ≤ gapZ (ka.aP t) i + 2`. Introduce `t i hi`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `hgP t i hi`. Move the coercions through the operations in `at h1`. Rewrite `h1` using `[hTp]`. Conclude with `h1`. Establish `gM : ∀ (t : D.what₂.Tau) (i : Fin (D.R.sigW j).2), i.1 + 1 < (D.R.sigW j).2 → ((Tn : ℤ) + (WeightFamilies.dimY D j : ℤ) + 2) * ((Tn : ℤ) + (WeightFamilies.dimY D j : ℤ) + 2 + 2 * (D.R.r : ℤ)) ≤ gapZ (ka.aM t) i + 2`.
+Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `t i hi`. Establish `h1` using `hgM t i hi`. Move the coercions through the operations in `at h1`. Rewrite `h1` using `[hTp]`. Conclude with `h1`.
+Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `lP : ∀ (t : D.what₂.Tau) (i : Fin (D.R.sigW j).1), i.1 + 1 = (D.R.sigW j).1 → 2 * (Tn : ℤ) ^ 2 ≤ (ka.aP t i : ℤ)`. Introduce `t i hi`. Establish `h1` using `hlP t i hi`. Establish `h2 : 2 * (Tn : ℝ) ^ 2 ≤ (ka.aP t i : ℝ)` using `by linarith`. Conclude with `h2` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `lM : ∀ (t : D.what₂.Tau) (i : Fin (D.R.sigW j).2), i.1 + 1 = (D.R.sigW j).2 → 2 * (Tn : ℤ) ^ 2 ≤ (ka.aM t i : ℤ)`. Introduce `t i hi`. Establish `h1` using `hlM t i hi`. Establish `h2 : 2 * (Tn : ℝ) ^ 2 ≤ (ka.aM t i : ℝ)` using `by linarith`. Conclude with `h2` after adjusting the coercions.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `LPf : ∀ (t : D.what₂.Tau) (i : Fin (D.R.sigW j).1), gapZ (wL.aP t) i = if i.1 + 1 < (D.R.sigW j).1 then Int.fdiv (gapZ (ka.aP t) i + 2) ((Tn : ℤ) + (WeightFamilies.dimY D j : ℤ) + 2) else Int.fdiv ((ka.aP t i : ℤ) - (((WeightFamilies.dimY D j : ℤ) + 2) * (nW : ℤ) + 2 * (D.R.r : ℤ …`. Introduce `t i`. Rewrite using `[hLP t i, hTp, sub_sub]`. Establish `LMf : ∀ (t : D.what₂.Tau) (i : Fin (D.R.sigW j).2), gapZ (wL.aM t) i = if i.1 + 1 < (D.R.sigW j).2 then Int.fdiv (gapZ (ka.aM t) i + 2) ((Tn : ℤ) + (WeightFamilies.dimY D j : ℤ) + 2) else Int.fdiv ((ka.aM t i : ℤ) - 0) ((Tn : ℤ) + (WeightFamilies.dimY D j : ℤ) + 2)`. Introduce `t i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hLM t i, hTp, sub_zero]`. Establish `BP` using `fun t : D.what₂.Tau => block hp (ka.aP t) (wL.aP t) (wF.aP t) (Tn : ℤ) (WeightFamilies.dimY D j : ℤ) (D.R.r : ℤ) (((WeightFamilies.dimY D j : ℤ) + 2) * (nW : ℤ) + 2 * (D.R.r : ℤ)) hD hr0 h40' hc' (gP t) (lP t) (LPf t) (hFP t)`. Establish `BM` using `fun t : D.what₂.Tau => block hq (ka.aM t) (wL.aM t) (wF.aM t) (Tn : ℤ) (WeightFamilies.dimY D j : ℤ) (D.R.r : ℤ) 0 hD hr0 h40' (by positivity) (gM t) (lM t) (LMf t) (hFM t)`. Establish `RW` using `fun τ : ((T.U j T.σ₀).X k).Ψ => row (r := D.R.r) (p := (D.R.sigW j).1) (q := (D.R.sigW j).2) hsum (Tn : ℤ) (WeightFamilies.dimY D j : ℤ) ((wL.n / 2 : ℕ) : ℤ) ((wF.n / 2 : ℕ) : ℤ) (by positivity) (by positivity) (fun i => (ext0 (wL.aP (tt τ)) i : ℤ)) (fun i => (ext0 (wL.aM (tt τ)) …`. Establish `h1` using `(BP (tt τ)).2.2.2`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite `h1` using `[← hwn]`. Use the proof step `linarith)`. Use the proof step `(BM (tt τ)).1 (BM (tt τ)).2.1 (BM (tt τ)).2.2.1 (BM (tt τ)).2.2.2`. Unfold `IsStrictDom de2W kapW`. Rewrite using `[hp0]`.
+Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `⟨fun τ => ?_, fun τ => ?_, fun τ => ?_⟩` and prove the remaining obligations. Take `⟨R1, R2, -, R4, -⟩` from `RW τ`. Use `⟨R1, R2, fun i j hi hj => ?_⟩` and prove the remaining obligations. Combine the linear relations using `[R4 i j hi hj]`. Take `⟨R1, R2, -, R4, -⟩` from `RW τ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Simplify using `only [Pi.sub_apply, Pi.smul_apply]`. Simplify using `only [nsmul_eq_mul]`. Use `⟨fun i j hij hjq => ?_, fun i j hqi hij => ?_, fun i j hi hj => ?_⟩` and prove the remaining obligations. Establish `hij' : (i : ℕ) < j` using `hij`. Establish `h1` using `R1 i j hij hjq`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `split_ifs <;> omega`. Establish `hij' : (i : ℕ) < j` using `hij`. Establish `h1` using `R2 i j hqi hij`. Apply the tactic sequence `split_ifs <;> omega`. Apply the tactic sequence `have h1 := R4 i j hi hj split_ifs <;> omega`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Take `⟨-, -, R3, R4, R5⟩` from `RW τ`. Use `⟨fun a b hb hbq => ?_, fun a b ha hb => ⟨R4 a b ha hb, ?_⟩⟩` and prove the remaining obligations. Establish `h1` using `R3 a b hb hbq`. Simplify using `only [Pi.sub_apply, Pi.smul_apply]`. Simplify using `only [nsmul_eq_mul]`.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1` using `R5 ⟨0, by omega⟩ ⟨D.R.r - 1, by omega⟩ rfl rfl hp hq`. Simplify using `only [Pi.sub_apply, Pi.smul_apply]`. Simplify using `only [nsmul_eq_mul]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem run_weight_dom : ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j) (large₂ : SizeData₂ D) (H : KHyp) (C2 A2 CR CT : ℝ) (ka wL wF : WeightFamilies.Wt D j) (Tn nP nW : ℕ) (h0 : ℝ), FamilyHypotheses.HypPage large₂ (recPJ h j hj) H C2 A2 CR CT ka wL wF Tn nP nW h0 → j < D.R.m → 8 ≤ D.R.r → ∀ k : (T.U j T.σ₀).Comp, IsStrictDom ((T.U j T.σ₀).X k) (laR T j wL k) ∧ IsStrictDom ((T.U j T.σ₀).X k) (2 • laR T j wL k - de2W ((T.U j T.σ₀).X k)) ∧ ∀ τ : ((T.U j T.σ₀).X k).Ψ, (∀ a b : Fin D.R.r, (b : ℕ) = a + 1 → (b : ℕ) ≠ ((T.U j T.σ₀).X k).p0 → (laR T j wF k - kapW ((T.U j T.σ₀).X k) - WeightFamilies.dimY D j • laR T j wL k) τ b + 2 * (laR T j wL k τ a - laR T j wL k τ b) ≤ (laR T j wF k - kapW ((T.U j T.σ₀).X k) - WeightFamilies.dimY D j • laR T j wL k) τ a) ∧ ∀ a b : Fin D.R.r, (a : ℕ) < ((T.U j T.σ₀).X k).p0 → ((T.U j T.σ₀).X k).p0 ≤ (b : ℕ) → 19 * (Tn : ℤ) ≤ 10 * (laR T j wL k τ b - laR T j wL k τ a) ∧ 2 * (laR T j wL k τ ⟨D.R.r - 1, by have := a.2; omega⟩ - laR T j wL k τ ⟨0, by have := a.2; omega⟩) ≤ (laR T j wF k - kapW ((T.U j T.σ₀).X k) - WeightFamilies.dimY D j • laR T j wL k) τ ⟨D.R.r - 1, by have := a.2; omega⟩ - (laR T j wF k - kapW ((T.U j T.σ₀).X k) - WeightFamilies.dimY D j • laR T j wL k) τ ⟨0, by have := a.2; omega⟩ := by
   intro D T h j hj large₂ H C2 A2 CR CT ka wL wF Tn nP nW h0 hH hjm hr k

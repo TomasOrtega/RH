@@ -16,15 +16,15 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Fl
 
 /- English proof (translation)
-Introduce `E _ _ _ H _ χ hχ ρ hρ`. Establish `hL` using `GlobalTheory.abelianSchemeLaws_all.1`. Establish `hU` using `GlobalTheory.thetaUnifAV_closed`. Establish `hX` using `GlobalTheory.CM.homExtDvr_of_card_torsion GlobalTheory.UU.TorsionCount.card_torsion_points_unconditional`. Take `⟨M, _, ω, C, x, hω, hpr, hper, hx⟩` from `GlobalTheory.T.exists_cmEllipticCurve_integers_with_period GlobalTheory.T.exists_cmEllipticCurve_withPeriod hU hL hX E H χ hχ ρ hρ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨C', π, c'⟩` from `exists_ellMap hL.polBaseChange E H _ ω C ℂ ((algebraMap M ℂ).comp (algebraMap (𝓞 M) M))`. Take `⟨u, hu⟩` from `PureType.exists_isThetaUnif hU C'.P`. Take `⟨c, hc, hΛ⟩` from `hpr C'.P π c'.2.1 u`. Take `⟨Hm, χ', Ef, h1, h2, h3⟩` from `id hu`. Take `⟨w, hw, -⟩` from `h2 C'.v (C'.basis.1 0)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hd` using `C'.dim`. Set `Z : Curve0 H ρ` to `⟨M, ω, C, hω, C', π, c', u, hu, c, hc, hΛ, w ⟨0, by omega⟩ / c, by`. Use `hw using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`. Rewrite using `[mul_div_cancel₀ _ hc]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Apply `Fin.ext` to reduce the goal to its premises. Use `j.2` as an intermediate fact. Simplify using `only`. Use the proof step `omega⟩`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Conclude with `⟨Z, x, GlobalTheory.T.curve_z_ne_zero E H ρ Z, hper, hx⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_curve0_hasPeriod : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [NeZero H.d]
     (χ : DirichletCharacter ℂ H.d), IsKroneckerChar χ → ∀ ρ : ℂ, ρ ^ 2 = -(H.d : ℂ) →

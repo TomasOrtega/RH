@@ -5,9 +5,9 @@ namespace GlobalTheory.ValuedPrincipal
 variable {F : Type} [Field F] (v : AddValuation F (WithTop ℚ))
 
 /- English proof (translation)
-Establish `hit : v x⁻¹ ≠ ⊤` using `(v.ne_top_iff).2 (inv_ne_zero hx)`. Take `⟨r, hr⟩` from `WithTop.ne_top_iff_exists.1 ((v.ne_top_iff).2 hx)`. Take `⟨s, hs⟩` from `WithTop.ne_top_iff_exists.1 hit`. Use `⟨r, hr.symm, ?_⟩` and prove the remaining obligations. Establish `hsum : v x + v x⁻¹ = 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← v.map_mul, mul_inv_cancel₀ hx, v.map_one]`. Rewrite `hsum` using `[← hr, ← hs, ← WithTop.coe_add]`. Establish `h0 : r + s = 0` using `by exact_mod_cast hsum`. Rewrite using `[← hs]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -26,15 +26,15 @@ theorem exists_val_eq {x : F} (hx : x ≠ 0) :
   linarith
 
 /- English proof (translation)
-Establish `hπ0 : π ≠ 0` using `(v.ne_top_iff).1 (by rw [hπ]; exact WithTop.coe_ne_top)`. Take `⟨r, hr, hri⟩` from `exists_val_eq v hπ0`. Establish `hr1 : r = 1`. Rewrite `hr` using `[hπ]`. Conclude with `hr.symm` after adjusting the coercions.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Substitute `hr1` using the available equality. Proceed by induction on `n using Int.induction_on with`. Consider the case `zero => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `succ k ih`. Take `⟨y, hy, hyv⟩` from `ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨y * π, mul_ne_zero hy hπ0, ?_⟩` and prove the remaining obligations. Rewrite using `[v.map_mul, hyv, hπ, ← WithTop.coe_add]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Consider the case `pred k ih`. Take `⟨y, hy, hyv⟩` from `ih`. Use `⟨y * π⁻¹, mul_ne_zero hy (inv_ne_zero hπ0), ?_⟩` and prove the remaining obligations. Rewrite using `[v.map_mul, hyv, hri, ← WithTop.coe_add]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_val_eq_int {π : F} (hπ : v π = ((1 : ℚ) : WithTop ℚ)) (n : ℤ) :
     ∃ y : F, y ≠ 0 ∧ v y = ((n : ℚ) : WithTop ℚ) := by
@@ -62,9 +62,9 @@ theorem exists_val_eq_int {π : F} (hπ : v π = ((1 : ℚ) : WithTop ℚ)) (n :
     ring
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[pow_succ, v.map_mul, ih, h, ← WithTop.coe_add]`. Use `congr 1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem val_pow_eq {t : F} {r : ℚ} (h : v t = (r : WithTop ℚ)) (k : ℕ) :
     v (t ^ k) = (((k : ℚ) * r : ℚ) : WithTop ℚ) := by
@@ -77,13 +77,13 @@ theorem val_pow_eq {t : F} {r : ℚ} (h : v t = (r : WithTop ℚ)) (k : ℕ) :
     ring
 
 /- English proof (translation)
-Take `⟨y, hy, hyv⟩` from `exists_val_eq_int v hπ q.num`. Take `⟨t, ht⟩` from `IsAlgClosed.exists_pow_nat_eq y q.den_pos`. Establish `ht0 : t ≠ 0`. Introduce and unpack `rfl`. Rewrite `ht` using `[zero_pow q.den_ne_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hy ht.symm`. Take `⟨s, hs, -⟩` from `exists_val_eq v ht0`. Use `⟨t, ht0, ?_⟩` and prove the remaining obligations. Establish `hp` using `val_pow_eq v hs q.den`. Rewrite `hp` using `[ht, hyv]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hq : (q.num : ℚ) = q.den * s` using `by exact_mod_cast hp`. Establish `hd : (q.den : ℚ) ≠ 0` using `by exact_mod_cast q.den_ne_zero`. Rewrite using `[hs]`. Use `congr 1`. Rewrite using `[← Rat.num_div_den q, eq_div_iff hd, hq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem exists_val_eq_rat [IsAlgClosed F] {π : F} (hπ : v π = ((1 : ℚ) : WithTop ℚ)) (q : ℚ) :
     ∃ t : F, t ≠ 0 ∧ v t = (q : WithTop ℚ) := by
@@ -105,19 +105,17 @@ theorem exists_val_eq_rat [IsAlgClosed F] {π : F} (hπ : v π = ((1 : ℚ) : Wi
   ring
 
 /- English proof (translation)
-Establish `hdq : (0 : ℚ) < d` using `by exact_mod_cast hd`. Establish `hne : ∃ n : ℤ, ∃ x : F, x ≠ 0 ∧ v x = (((n : ℚ) / d : ℚ) : WithTop ℚ) ∧ q ≤ (n : ℚ) / d`. Take `⟨y, hy, hyv⟩` from `exists_val_eq_int v hπ ⌈q⌉`. Establish `hc : ((⌈q⌉ * d : ℤ) : ℚ) / d = ⌈q⌉`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Clear the denominators using the available nonvanishing facts. Use `⟨⌈q⌉ * d, y, hy, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hyv, hc]`. Rewrite using `[hc]`. Conclude with `Int.le_ceil q`.
+Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hbdd : ∃ b : ℤ, ∀ n : ℤ, (∃ x : F, x ≠ 0 ∧ v x = (((n : ℚ) / d : ℚ) : WithTop ℚ) ∧ q ≤ (n : ℚ) / d) → b ≤ n`. Use `⟨⌊q * d⌋, ?_⟩` and prove the remaining obligations. Introduce and unpack `n ⟨x, -, -, hqn⟩`. Rewrite `hqn` using `[le_div_iff₀ hdq]`. Establish `hf` using `Int.floor_le (q * d)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `hf.trans hqn` after adjusting the coercions. Take `⟨n, ⟨t, ht, htv, hqt⟩, hmin⟩` from `Int.exists_least_of_bdd hbdd hne`. Use `⟨t, ht, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[htv]`. Conclude with `hqt` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Introduce `a ha`. Distinguish the cases in `ha0 : a = 0`. Rewrite using `[ha0, v.map_zero]`. Conclude with `le_top`. Take `⟨m, hm⟩` from `h a ha0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hqm : q ≤ (m : ℚ) / d`. Rewrite `ha` using `[hm]`. Conclude with `ha` after adjusting the coercions. Establish `hnm : (n : ℚ) ≤ m` using `by exact_mod_cast hmin m ⟨a, ha0, hm, hqm⟩`. Establish `hdiv : (n : ℚ) / d ≤ (m : ℚ) / d` using `by gcongr`.
-
-Rewrite using `[htv, hm]`. Conclude with `hdiv` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_least_of_discrete {π : F} (hπ : v π = ((1 : ℚ) : WithTop ℚ)) {d : ℕ} (hd : 1 ≤ d)
     (h : ∀ x : F, x ≠ 0 → ∃ n : ℤ, v x = (((n : ℚ) / d : ℚ) : WithTop ℚ)) (q : ℚ) :
@@ -158,9 +156,9 @@ theorem exists_least_of_discrete {π : F} (hπ : v π = ((1 : ℚ) : WithTop ℚ
       exact_mod_cast hdiv
 
 /- English proof (translation)
-Use `⟨a * t⁻¹, ?_, (inv_mul_cancel_right₀ ht a).symm⟩` and prove the remaining obligations. Distinguish the cases in `ha : a = 0`. Rewrite using `[ha, zero_mul, v.map_zero]`. Conclude with `le_top`. Take `⟨r, hr, hri⟩` from `exists_val_eq v ht`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, -⟩` from `exists_val_eq v ha`. Rewrite `h` using `[hr, hs]`. Establish `hrs : r ≤ s` using `by exact_mod_cast h`. Rewrite using `[v.map_mul, hs, hri, ← WithTop.coe_add]`. Conclude with `(by linarith : (0 : ℚ) ≤ s + -r)` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_eq_mul_of_le {t a : F} (ht : t ≠ 0) (h : v t ≤ v a) :
     ∃ c : F, (0 : WithTop ℚ) ≤ v c ∧ a = c * t := by
@@ -176,11 +174,9 @@ theorem exists_eq_mul_of_le {t a : F} (ht : t ≠ 0) (h : v t ≤ v a) :
     exact_mod_cast (by linarith : (0 : ℚ) ≤ s + -r)
 
 /- English proof (translation)
-Introduce `F _ v π hπ hcase q`. Establish `key : ∃ t : F, t ≠ 0 ∧ (q : WithTop ℚ) ≤ v t ∧ ∀ a : F, (q : WithTop ℚ) ≤ v a → v t ≤ v a`. Break down `hcase with hac | ⟨d, hd, hdisc⟩` into its components or cases. Use `haveI := hac`. Take `⟨t, ht, htv⟩` from `exists_val_eq_rat v hπ q`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨t, ht, htv.ge, fun a ha => ?_⟩` and prove the remaining obligations. Rewrite using `[htv]`. Conclude with `ha`. Conclude with `exists_least_of_discrete v hπ hd hdisc q`. Take `⟨t, ht, hqt, hmin⟩` from `key`.
-
-Conclude with `⟨t, ht, hqt, fun a ha => exists_eq_mul_of_le v ht (hmin a ha)⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem main : ∀ (F : Type) [Field F] (v : AddValuation F (WithTop ℚ)) (π : F), v π = ((1 : ℚ) : WithTop ℚ) → (IsAlgClosed F ∨ ∃ d : ℕ, 1 ≤ d ∧ ∀ x : F, x ≠ 0 → ∃ n : ℤ, v x = (((n : ℚ) / d : ℚ) : WithTop ℚ)) → ∀ q : ℚ, ∃ t : F, t ≠ 0 ∧ ((q : ℚ) : WithTop ℚ) ≤ v t ∧ ∀ a : F, ((q : ℚ) : WithTop ℚ) ≤ v a → ∃ c : F, (0 : WithTop ℚ) ≤ v c ∧ a = c * t := by
   intro F _ v π hπ hcase q

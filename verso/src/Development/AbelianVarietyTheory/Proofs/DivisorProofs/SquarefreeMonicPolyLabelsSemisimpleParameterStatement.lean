@@ -8,7 +8,7 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraS
 open Polynomial GlobalTheory.IndefiniteRowSideFullHecke.LevelCuspCharacters GlobalTheory.ParamLabel
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.ParamExists.param_exists` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSquarefreeMonicPolyLabelsSemisimpleParameter.lean&line=130#L130)
 -/

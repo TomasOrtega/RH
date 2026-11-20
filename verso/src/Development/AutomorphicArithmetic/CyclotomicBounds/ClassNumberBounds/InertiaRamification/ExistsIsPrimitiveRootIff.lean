@@ -10,9 +10,7 @@ open scoped Pointwise
 variable {N : ℕ} [NeZero N] {K : Type*} [Field K] [NumberField K] [IsCyclotomicExtension {N} ℚ K]
 
 /- English proof (translation)
-Rewrite using `[fieldChars, mem_annihilator_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h σ hσ`. Conclude with `h _ ⟨σ, hσ, rfl⟩`. Introduce and unpack `h _ ⟨σ, hσ, rfl⟩`.
-
-Conclude with `h σ hσ`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem bv_mem (E : IntermediateField ℚ K) (ψ : DirichletCharacter ℂ N) :
     ψ ∈ fieldChars N E ↔ ∀ σ ∈ E.fixingSubgroup, ψ (galEquivZMod N K σ) = 1 := by
@@ -24,7 +22,7 @@ private theorem bv_mem (E : IntermediateField ℚ K) (ψ : DirichletCharacter �
     exact h σ hσ
 
 /- English proof (translation)
-Use extensionality with `ψ`. Rewrite using `[bv_mem, mem_intermediateFieldEquivSubgroupChar_iff]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 private theorem bv_eq [IsAbelianGalois ℚ K] (E : IntermediateField ℚ K) :
     fieldChars N E = intermediateFieldEquivSubgroupChar N K ℂ E := by
@@ -32,11 +30,11 @@ private theorem bv_eq [IsAbelianGalois ℚ K] (E : IntermediateField ℚ K) :
   rw [bv_mem, mem_intermediateFieldEquivSubgroupChar_iff]
 
 /- English proof (translation)
-Establish `hζ` using `IsCyclotomicExtension.zeta_spec N ℚ K`. Establish `key : φ.toRatAlgHom.comp (σ : K →ₐ[ℚ] K) = ((starRingEnd ℂ).comp φ).toRatAlgHom`. Apply `(hζ.powerBasis ℚ).algHom_ext` to reduce the goal to its premises. Rewrite using `[IsPrimitiveRoot.powerBasis_gen]`. Express the relevant statement in the definitionally equal form `φ (σ _) = starRingEnd ℂ (φ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h1 : ‖φ (IsCyclotomicExtension.zeta N ℚ K)‖ = 1` using `(hζ.map_of_injective φ.injective).norm'_eq_one (NeZero.ne N)`. Rewrite using `[← Complex.inv_eq_conj h1, ← map_inv₀, galEquivZMod_apply_of_pow_eq N K σ hζ.pow_eq_one, hσ]`. Use `congr 1`. Apply `eq_inv_of_mul_eq_one_left` to reduce the goal to its premises. Rewrite using `[← pow_succ, hζ.pow_eq_one_iff_dvd, ← ZMod.natCast_eq_zero_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Conclude with `DFunLike.congr_fun key x`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem bv_conj (σ : Gal(K/ℚ)) (hσ : galEquivZMod N K σ = -1) (φ : K →+* ℂ)
     (x : K) : φ (σ x) = starRingEnd ℂ (φ x) := by
@@ -55,7 +53,7 @@ private theorem bv_conj (σ : Gal(K/ℚ)) (hσ : galEquivZMod N K σ = -1) (φ :
   exact DFunLike.congr_fun key x
 
 /- English proof (translation)
-Establish `h1 : φ x = ComplexEmbedding.lift K φ (x : K)` using `(ComplexEmbedding.lift_algebraMap_apply K φ x).symm`. Rewrite using `[h1, RCLike.star_def, ← bv_conj σ hσ, (ComplexEmbedding.lift K φ).injective.eq_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem bv_real (σ : Gal(K/ℚ)) (hσ : galEquivZMod N K σ = -1) (E : IntermediateField ℚ K)
     (φ : E →+* ℂ) (x : E) : star (φ x) = φ x ↔ σ x = x := by
@@ -64,13 +62,11 @@ private theorem bv_real (σ : Gal(K/ℚ)) (hσ : galEquivZMod N K σ = -1) (E : 
   rw [h1, RCLike.star_def, ← bv_conj σ hσ, (ComplexEmbedding.lift K φ).injective.eq_iff]
 
 /- English proof (translation)
-Establish `h` using `(card_fieldChars (N := N) E).2`. Take `⟨σ, hσ⟩` from `(galEquivZMod N K).surjective (-1)`. Prove the components needed by the constructor for the conclusion. Introduce `hc`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push Not at hne`. Establish `hr` using `h.2 fun ψ hψ => ψ.even_or_odd.resolve_right (hne ψ hψ)`. Take `⟨φ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Conclude with `IsTotallyComplex.complexEmbedding_not_isReal φ (IsTotallyReal.complexEmbedding_isReal φ)`. Introduce and unpack `⟨ψ, hψ, hodd⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[← InfinitePlace.not_isReal_iff_isComplex, InfinitePlace.isReal_iff, ComplexEmbedding.isReal_iff]`. Introduce `hw`. Use `hodd.not_even ψ (h.1 ⟨fun w' => ?_⟩ ψ hψ)` and prove the remaining obligations. Rewrite using `[InfinitePlace.isReal_iff, ComplexEmbedding.isReal_iff]`.
-
-Use extensionality with `x`. Conclude with `(bv_real σ hσ E _ x).2 ((bv_real σ hσ E _ x).1 (RingHom.congr_fun hw x))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 private theorem bv_complex (E : IntermediateField ℚ K) :
     IsTotallyComplex E ↔ ∃ ψ ∈ fieldChars N E, ψ.Odd := by
@@ -94,9 +90,9 @@ private theorem bv_complex (E : IntermediateField ℚ K) :
     exact (bv_real σ hσ E _ x).2 ((bv_real σ hσ E _ x).1 (RingHom.congr_fun hw x))
 
 /- English proof (translation)
-Establish `: IsAbelianGalois ℚ K` using `IsCyclotomicExtension.isAbelianGalois {N} ℚ K`. Use `⟨?_, fun E E' => ⟨?_, ?_, ?_, (annihilator_charKer ⊥ (fieldUnits N E)).2.1⟩⟩` and prove the remaining obligations. Simplify using `only [bv_eq]`. Conclude with `(intermediateFieldEquivSubgroupChar N K ℂ).bijective`. Rewrite using `[bv_eq, bv_eq, OrderIso.le_iff_le]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[bv_eq, bv_eq, bv_eq, OrderIso.map_sup]`. Rewrite using `[bv_eq, bv_eq, bv_eq, OrderIso.map_inf]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fieldChars_lattice :
     Function.Bijective (fun E : IntermediateField ℚ K => fieldChars N E) ∧
@@ -113,29 +109,27 @@ theorem fieldChars_lattice :
   · rw [bv_eq, bv_eq, bv_eq, OrderIso.map_inf]
 
 /- English proof (translation)
-Establish `hcard` using `(card_fieldChars (N := N) E).1`. Establish `hdisc` using `(natAbs_discr_eq_finprod_conductor (N := N) E).1`. Establish `hsign` using `sign_discr E`. Establish `hcx` using `bv_complex (N := N) E`. Establish `hprod : ∀ ψ ∈ fieldChars N E, ψ.Odd → Nat.card (fieldChars N E) = 2 → (discr E).natAbs = ψ.conductor ∧ fieldChars N E = Subgroup.zpowers ψ ∧ ψ ^ 2 = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `ψ hψ hodd h2`. Rewrite using `[hdisc]`. Generalize the expression as in `fieldChars N E = X at hψ h2`. Establish `hne : (⟨ψ, hψ⟩ : X) ≠ 1`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h' : ψ = 1` using `congrArg Subtype.val h`. Apply `hodd.not_even ψ` to reduce the goal to its premises. Rewrite using `[h', DirichletCharacter.Even]`. Conclude with `MulChar.one_apply (isUnit_one.neg)`. Establish `hall : ∀ χ : X, χ = 1 ∨ χ = ⟨ψ, hψ⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `χ`. Establish `h3` using `(Nat.card_eq_two_iff' (1 : X)).1 h2`. Distinguish the cases in `h1 : χ = 1`. Conclude with `Or.inl h1`. Conclude with `Or.inr (h3.unique h1 hne)`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Prove the first alternative. Prove the second alternative. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[finprod_eq_single _ (⟨ψ, hψ⟩ : X)]`. Introduce `χ hχ`. Rewrite using `[(hall χ).resolve_right hχ]`. Conclude with `conductor_one`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Use `le_antisymm (fun χ hχ => ?_) (by simpa using hψ)` and prove the remaining obligations. Break down `hall ⟨χ, hχ⟩ with h | h` into its components or cases. Rewrite using `[show χ = 1 from congrArg Subtype.val h]`. Conclude with `one_mem _`. Rewrite using `[show χ = ψ from congrArg Subtype.val h]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Subgroup.mem_zpowers _`. Establish `h4 : (⟨ψ, hψ⟩ : X) ^ Nat.card X = 1` using `pow_card_eq_one'`. Rewrite `h4` using `[h2]`. Conclude with `congrArg Subtype.val h4`. Establish `hrk` using `InfinitePlace.card_add_two_mul_card_eq_rank E`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h2, hd⟩`. Establish `hneg : discr E < 0` using `lt_of_le_of_ne (by omega) (discr_ne_zero E)`. Rewrite `hsign` using `[Int.sign_eq_neg_one_of_neg hneg]`. Establish `h0 : InfinitePlace.nrComplexPlaces E ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `h`. Rewrite `hsign` using `[h]`. Simplify using `at hsign`. Take `⟨ψ, hψ, hodd⟩` from `hcx.1 (nrRealPlaces_eq_zero_iff.1 (by omega))`. Take `⟨a, b, c⟩` from `hprod ψ hψ hodd (hcard.trans h2)`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨ψ, ⟨c, hodd, by omega⟩, b⟩`. Introduce and unpack `⟨ψ, ⟨h1, hodd, hc⟩, hX⟩`. Establish `hψ : ψ ∈ fieldChars N E` using `hX ▸ Subgroup.mem_zpowers ψ`. Establish `hne : ψ ≠ 1`. Introduce `h'`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `hodd.not_even ψ` to reduce the goal to its premises. Rewrite using `[h', DirichletCharacter.Even]`. Conclude with `MulChar.one_apply (isUnit_one.neg)`. Establish `h2 : Nat.card (fieldChars N E) = 2`. Rewrite using `[hX, Nat.card_zpowers, orderOf_eq_prime h1 hne]`.
-
-Establish `h0` using `nrRealPlaces_eq_zero_iff.2 (hcx.2 ⟨ψ, hψ, hodd⟩)`. Establish `h3 : InfinitePlace.nrComplexPlaces E = 1` using `by omega`. Rewrite `hsign` using `[h3, pow_one, Int.sign_eq_neg_one_iff_neg]`. Use `(hprod ψ hψ hodd h2).1` as an intermediate fact. Conclude with `⟨by omega, by omega⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem quadratic_discr_iff (E : IntermediateField ℚ K) (d : ℕ) :
     (Module.finrank ℚ E = 2 ∧ discr E = -(d : ℤ)) ↔

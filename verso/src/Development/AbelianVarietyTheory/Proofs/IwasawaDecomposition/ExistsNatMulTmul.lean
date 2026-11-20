@@ -20,11 +20,9 @@ variable {C : Type} [NormedField C] [IsUltrametricDist C]
 end Norm
 
 /- English proof (translation)
-Establish `h' : ⊤ ≤ (spMap (intO C).subtype ≫ z) ⁻¹ᵁ U` using `fun x _ => h (Set.mem_univ _)`. Set `ev : Γ(X, U) →+* ↥(intO C)` to `(Scheme.ΓSpecIso (CommRingCat.of ↥(intO C))).hom.hom.comp (z.appLE U ⊤ h).hom`. Establish `e : ∀ a, valF (spMap (intO C).subtype ≫ z) U a = (ev a : C)` using `fun a => by`. Rewrite using `[valF, dif_pos h']`. Establish `e1 : (spMap (intO C).subtype ≫ z).appLE U ⊤ h' = z.appLE U ⊤ h ≫ (spMap (intO C).subtype).appTop`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Conclude with `(Scheme.Hom.appLE_comp_appLE (spMap (intO C).subtype) z U ⊤ ⊤ h le_top).symm`. Rewrite using `[e1]`. Conclude with `ConcreteCategory.congr_hom (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom (intO C).subtype)) _`. Rewrite using `[e]`.
-
-Conclude with `(ev b).2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_valF_le_one {X : Scheme.{0}} {C : Type} [NontriviallyNormedField C] [IsUltrametricDist C]
     (z : Sp ↥(intO C) ⟶ X) (U : X.Opens) (h : ⊤ ≤ z ⁻¹ᵁ U) (b : Γ(X, U)) :

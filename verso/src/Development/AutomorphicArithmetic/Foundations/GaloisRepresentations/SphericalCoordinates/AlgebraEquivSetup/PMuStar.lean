@@ -6,9 +6,9 @@ open UpperTheory.Gal.CertificateRingHomMap (GUf Gam0 AfQ Plc sim mat comp rat le
 open scoped TensorProduct
 
 /- English proof (translation)
-Establish `hc : (IsCMField.complexConj E) ((A.c : 𝓞 E) : E) = (A.c : E)`. Rewrite using `[← A.bar_eq, A.c_real]`. Use extensionality with `i j`. Simplify using `only [Arith.H, Matrix.map_apply, Matrix.diagonal_apply]`. Use `split_ifs with hij`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `simp only [Arith.hd, Arith.dg] split_ifs <;> simp [hc]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem conj_H {E : Type} [Field E] [NumberField E] [IsCMField E] (A : Arith E) (n : ℕ) :
     (A.H n).map (IsCMField.complexConj E : E →+* E) = A.H n := by
@@ -22,7 +22,7 @@ private theorem conj_H {E : Type} [Field E] [NumberField E] [IsCMField E] (A : A
   · simp
 
 /- English proof (translation)
-Rewrite using `[Arith.H, ← Matrix.diagonal_smul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 private theorem H_eq {E : Type} [Field E] [NumberField E] [IsCMField E] (A : Arith E) (n : ℕ) :
     A.H n = (-(A.c : E)) • Matrix.diagonal (fun i => (A.dg n i : E)) := by
@@ -30,9 +30,9 @@ private theorem H_eq {E : Type} [Field E] [NumberField E] [IsCMField E] (A : Ari
   congr 1
 
 /- English proof (translation)
-Rewrite using `[conj_H]`. Establish `hc : (-(A.c : E)) ≠ 0` using `neg_ne_zero.mpr A.c_ne`. Establish `hD : Matrix.diagonal (fun i => (A.dg n i : E)) = (-(A.c : E))⁻¹ • A.H n`. Rewrite using `[H_eq, smul_smul, inv_mul_cancel₀ hc, one_smul]`. Establish `hu : IsUnit (A.H n).det` using `isUnit_iff_ne_zero.mpr (A.det_ne n)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hD, Matrix.smul_mul, Matrix.mul_smul, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem key {E : Type} [Field E] [NumberField E] [IsCMField E] (A : Arith E) (n : ℕ)
     (y : Matrix (Fin n) (Fin n) E) :
@@ -48,11 +48,11 @@ private theorem key {E : Type} [Field E] [NumberField E] [IsCMField E] (A : Arit
     Matrix.mul_nonsing_inv _ hu, Matrix.one_mul]
 
 /- English proof (translation)
-Introduce `R E _ _ _ _ _ A n μ hμ x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r m`. Establish `hk` using `key A n ((m.map (IsCMField.complexConj E : E →+* E))ᵀ)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Use extensionality with `i k`. Rewrite using `[starT_tmul, hermStar_apply, Matrix.diagonal_mul, Matrix.mul_diagonal, hμ, Matrix.transpose_apply, Matrix.map_apply, hμ, conjT_tmul, Algebra.TensorProduct.tmul_mul_tmul, Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_one]`. Use `congr 1`. Use `congrFun (congrFun hk i) k` as an intermediate fact. Simplify `this` using `[Matrix.diagonal_mul, Matrix.mul_diagonal]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `add x y hx hy`. Rewrite using `[map_add, MulOpposite.unop_add, map_add, Matrix.mul_add, hx, hy, map_add, Matrix.map_add _ (map_add _), Matrix.transpose_add, Matrix.add_mul]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Gal.W2.Seed.pMuStar :
     MuStar := by

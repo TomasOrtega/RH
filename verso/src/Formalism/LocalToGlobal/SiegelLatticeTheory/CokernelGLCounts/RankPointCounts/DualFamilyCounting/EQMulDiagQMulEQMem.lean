@@ -34,9 +34,9 @@ variable {K F : Type} [Field K] [NumberField K] [StarRing K] [Field F] [NumberFi
   [Fact (IsFixF K F)] {m : ℕ}
 
 /- English proof (translation)
-Unfold `eQ`. Rewrite using `[Matrix.diagonal_conjTranspose]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Rewrite using `[Pi.star_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eQ_conjTranspose (𝔭 : Ideal (𝓞 F)) (k : ℕ) (a : Fin m → 𝓞 F) :
     (eQ K 𝔭 k a)ᴴ = eQ K 𝔭 k a := by
@@ -48,9 +48,7 @@ theorem eQ_conjTranspose (𝔭 : Ideal (𝓞 F)) (k : ℕ) (a : Fin m → 𝓞 F
   split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `eQ diagQ`. Rewrite using `[Matrix.diagonal_mul_diagonal, Matrix.diagonal_mul_diagonal, Matrix.diagonal_apply]`. Use `split_ifs with hij hi`. Rewrite using `[one_mul, mul_one]`. Conclude with `Ideal.mem_map_of_mem _ (Ideal.mem_map_of_mem (algebraMap (𝓞 F) (𝓞 K)) hi)`.
-
-Simplify using the standard rewrite rules. Conclude with `zero_mem _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eQ_mul_diagQ_mul_eQ_mem {𝔭 : Ideal (𝓞 F)} {k : ℕ} (a : Fin m → 𝓞 F) (i j : Fin m) :
     (eQ K 𝔭 k a * diagQ K 𝔭 k a * eQ K 𝔭 k a) i j ∈
@@ -64,13 +62,13 @@ theorem eQ_mul_diagQ_mul_eQ_mem {𝔭 : Ideal (𝓞 F)} {k : ℕ} (a : Fin m →
   · exact zero_mem _
 
 /- English proof (translation)
-Introduce `K F _ _ _ _ _ _ _ hK 𝔭 h𝔭 m a ha k hk Y`. Take `⟨Y', P, W, Z₀, hY, hPY, hW, hWh, hEW, hEP1, hEP2, hdet⟩` from `hN K F hK 𝔭 h𝔭 m a ha k hk Y`. Establish `hEh` using `eQ_conjTranspose (K := K) 𝔭 k a`. Establish `hH` using `diagQ_conjTranspose (K := K) 𝔭 k a`. Establish `h2 : P * eQ K 𝔭 k a = eQ K 𝔭 k a * P` using `hEP2.trans hEP1.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Pᴴ * eQ K 𝔭 k a = eQ K 𝔭 k a * Pᴴ`. Establish `h` using `congrArg Matrix.conjTranspose h2`. Rewrite `h` using `[conjTranspose_mul, conjTranspose_mul, hEh]`. Conclude with `h.symm`. Establish `hu : IsUnit (Pᴴ).det`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.det_conjTranspose]`. Conclude with `hdet.star`. Take `⟨Z', hZ'⟩` from `exists_solve_quot hK h𝔭 (k := k) (by omega) (H := eQ K 𝔭 k a * diagQ K 𝔭 k a * eQ K 𝔭 k a) (P := P) (Q := (Pᴴ)⁻¹) (S := W) (by simp only [conjTranspose_mul, hEh, hH, Matrix.mul_assoc]) (fun i j => eQ_mul_diagQ_mul_eQ_mem a i j) (fun i j => by rw [Matrix.mul_nonsing_inv _ hu, sub_ …`. Use `⟨Y', P, W, eQ K 𝔭 k a * Z' * eQ K 𝔭 k a, Z₀, hY, hPY, hW, ?_⟩` and prove the remaining obligations. Establish `h2' : ∀ X : Matrix (Fin m) (Fin m) (𝓞 K ⧸ extP K 𝔭 ^ k), X * P * eQ K 𝔭 k a = X * eQ K 𝔭 k a * P` using `fun X => by rw [Matrix.mul_assoc, h2, ← Matrix.mul_assoc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `key : W + Pᴴ * (eQ K 𝔭 k a * Z' * eQ K 𝔭 k a) + (eQ K 𝔭 k a * Z' * eQ K 𝔭 k a)ᴴ * P + (eQ K 𝔭 k a * Z' * eQ K 𝔭 k a)ᴴ * diagQ K 𝔭 k a * (eQ K 𝔭 k a * Z' * eQ K 𝔭 k a) = eQ K 𝔭 k a * (W + Pᴴ * Z' + Z'ᴴ * P + Z'ᴴ * (eQ K 𝔭 k a * diagQ K 𝔭 k a * eQ K 𝔭 k a) * Z') * eQ K 𝔭 k a`. Apply the tactic sequence `simp only [conjTranspose_mul, hEh, Matrix.mul_add, Matrix.add_mul, ← Matrix.mul_assoc, h2', ← h1, hEW] <;> abel`. Rewrite using `[key, hZ', Matrix.mul_zero, Matrix.zero_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem solveOnto_of_norm (hN : NormOnto) : SolveOnto := by
   intro K F _ _ _ _ _ _ _ hK 𝔭 h𝔭 m a ha k hk Y
@@ -104,7 +102,7 @@ theorem solveOnto_of_norm (hN : NormOnto) : SolveOnto := by
   rw [key, hZ', Matrix.mul_zero, Matrix.zero_mul]
 
 /- English proof (translation)
-The claim follows from `discOnto_of_solve hU (solveOnto_of_norm hN)`.
+A detailed English derivation is pending.
 -/
 theorem discOnto_of_norm (hU : UDModel) (hN : NormOnto) : DiscOnto :=
   discOnto_of_solve hU (solveOnto_of_norm hN)

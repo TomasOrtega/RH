@@ -40,7 +40,7 @@ abbrev cechH (n : ℕ) : Type (max w u) :=
 variable {P U}
 
 /- English proof (translation)
-The claim follows from `AddMonoidHom.mem_ker`.
+A detailed English derivation is pending.
 -/
 lemma mem_cocycles {n : ℕ} (σ : Cochain P U n) : σ ∈ cocycles P U n ↔ d P U n σ = 0 :=
   AddMonoidHom.mem_ker
@@ -49,14 +49,14 @@ def cls {n : ℕ} (σ : Cochain P U n) (hσ : d P U n σ = 0) : cechH P U n :=
   QuotientAddGroup.mk (⟨σ, (mem_cocycles σ).2 hσ⟩ : cocycles P U n)
 
 /- English proof (translation)
-Rewrite using `[cls, QuotientAddGroup.eq_zero_iff, AddSubgroup.mem_addSubgroupOf]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma cls_eq_zero_iff {n : ℕ} (σ : Cochain P U n) (hσ : d P U n σ = 0) :
     cls σ hσ = 0 ↔ σ ∈ coboundaries P U n := by
   rw [cls, QuotientAddGroup.eq_zero_iff, AddSubgroup.mem_addSubgroupOf]
 
 /- English proof (translation)
-The claim follows from `QuotientAddGroup.mk_zero _`.
+A detailed English derivation is pending.
 -/
 lemma cls_zero {n : ℕ} : cls (0 : Cochain P U n) (map_zero _) = 0 :=
   QuotientAddGroup.mk_zero _
@@ -69,7 +69,7 @@ lemma cls_add {n : ℕ} (σ σ' : Cochain P U n) (hσ : d P U n σ = 0) (hσ' : 
   rfl
 
 /- English proof (translation)
-Rewrite using `[cls, cls, QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf, neg_add_eq_sub]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma cls_eq_cls_iff {n : ℕ} (σ σ' : Cochain P U n) (hσ : d P U n σ = 0)
     (hσ' : d P U n σ' = 0) : cls σ hσ = cls σ' hσ' ↔ σ' - σ ∈ coboundaries P U n := by
@@ -77,7 +77,7 @@ lemma cls_eq_cls_iff {n : ℕ} (σ σ' : Cochain P U n) (hσ : d P U n σ = 0)
   rfl
 
 /- English proof (translation)
-Take `⟨⟨σ, hσ⟩, rfl⟩` from `QuotientAddGroup.mk_surjective c`. Conclude with `⟨σ, (mem_cocycles σ).1 hσ, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma exists_cls {n : ℕ} (c : cechH P U n) :
     ∃ σ hσ, cls (P := P) (U := U) (n := n) σ hσ = c := by
@@ -105,7 +105,7 @@ def DeltaRel (f : F ⟶ I) (g : I ⟶ Q) (n : ℕ) (σ : Cochain Q U n) (c : cec
 variable {U} {f : F ⟶ I} {g : I ⟶ Q}
 
 /- English proof (translation)
-Take `⟨τ, ρ, hρ, hτ, hρτ, rfl⟩` from `h`. Take `⟨τ', ρ', hρ', hτ', hρτ', rfl⟩` from `h'`. Conclude with `⟨τ + τ', ρ + ρ', by rw [map_add, hρ, hρ', add_zero], by rw [map_add, hτ, hτ'], by rw [map_add, map_add, hρτ, hρτ'], (cls_add _ _ hρ hρ' _).symm⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma DeltaRel.add {n : ℕ} {σ σ' : Cochain Q U n} {c c' : cechH F U (n + 1)}
     (h : DeltaRel U f g n σ c) (h' : DeltaRel U f g n σ' c') :
@@ -121,20 +121,20 @@ variable (hS : IsCechShortExact U f g)
 include hS
 
 /- English proof (translation)
-The claim follows from `push_injective U f n fun i => hS.injective i`.
+A detailed English derivation is pending.
 -/
 lemma push_injective' (n : ℕ) : Function.Injective (push U f n) :=
   push_injective U f n fun i => hS.injective i
 
 /- English proof (translation)
-Use `choose τ hτ using fun i => hS.surjective i (σ i)`. Conclude with `⟨τ, funext hτ⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma push_surjective (n : ℕ) (σ : Cochain Q U n) : ∃ τ, push U g n τ = σ := by
   choose τ hτ using fun i => hS.surjective i (σ i)
   exact ⟨τ, funext hτ⟩
 
 /- English proof (translation)
-Use `choose α hα using fun i => hS.exact i (τ i) (congrFun hτ i)`. Conclude with `⟨α, funext hα⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma push_exact (n : ℕ) (τ : Cochain I U n) (hτ : push U g n τ = 0) :
     ∃ α, push U f n α = τ := by
@@ -142,15 +142,15 @@ lemma push_exact (n : ℕ) (τ : Cochain I U n) (hτ : push U g n τ = 0) :
   exact ⟨α, funext hα⟩
 
 /- English proof (translation)
-Rewrite using `[push_comp, hS.zero, push_zero']`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma push_push (n : ℕ) (α : Cochain F U n) : push U g n (push U f n α) = 0 := by
   rw [push_comp, hS.zero, push_zero']
 
 /- English proof (translation)
-Take `⟨τ, hτ⟩` from `hS.push_surjective n σ`. Establish `h0 : push U g (n + 1) (d I U n τ) = 0` using `by rw [push_d, hτ, hσ]`. Take `⟨ρ, hρ⟩` from `hS.push_exact (n + 1) _ h0`. Establish `hρc : d F U (n + 1) ρ = 0`. Apply `hS.push_injective' (n + 2)` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[map_zero, push_d, hρ, d_d]`. Conclude with `⟨cls ρ hρc, τ, ρ, hρc, hτ, hρ, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 lemma exists_deltaRel {n : ℕ} (σ : Cochain Q U n) (hσ : d Q U n σ = 0) :
     ∃ c, DeltaRel U f g n σ c := by
@@ -163,9 +163,9 @@ lemma exists_deltaRel {n : ℕ} (σ : Cochain Q U n) (hσ : d Q U n σ = 0) :
   exact ⟨cls ρ hρc, τ, ρ, hρc, hτ, hρ, rfl⟩
 
 /- English proof (translation)
-Take `⟨τ, ρ, hρ, hτ, hρτ, rfl⟩` from `h`. Take `⟨τ', ρ', hρ', hτ', hρτ', rfl⟩` from `h'`. Rewrite using `[cls_eq_cls_iff, coboundaries_succ]`. Take `⟨α, hα⟩` from `hS.push_exact n (τ' - τ) (by rw [map_sub, hτ, hτ', sub_self])`. Use `AddMonoidHom.mem_range.2 ⟨α, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `hS.push_injective' (n + 1)` to reduce the goal to its premises. Rewrite using `[push_d, hα, map_sub, map_sub, hρτ, hρτ']`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 lemma deltaRel_unique {n : ℕ} {σ : Cochain Q U n} {c c' : cechH F U (n + 1)}
     (h : DeltaRel U f g n σ c) (h' : DeltaRel U f g n σ c') : c = c' := by
@@ -181,7 +181,7 @@ def deltaFun (n : ℕ) (σ : cocycles Q U n) : cechH F U (n + 1) :=
   Classical.choose (hS.exists_deltaRel σ.1 ((mem_cocycles _).1 σ.2))
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (hS.exists_deltaRel σ.1 ((mem_cocycles _).1 σ.2))`.
+A detailed English derivation is pending.
 -/
 lemma deltaFun_spec (n : ℕ) (σ : cocycles Q U n) : DeltaRel U f g n σ.1 (hS.deltaFun n σ) :=
   Classical.choose_spec (hS.exists_deltaRel σ.1 ((mem_cocycles _).1 σ.2))
@@ -194,13 +194,13 @@ def delta (n : ℕ) : cocycles Q U n →+ cechH F U (n + 1) where
     ((hS.deltaFun_spec n σ).add (hS.deltaFun_spec n σ'))
 
 /- English proof (translation)
-The claim follows from `hS.deltaFun_spec n σ`.
+A detailed English derivation is pending.
 -/
 lemma delta_spec (n : ℕ) (σ : cocycles Q U n) : DeltaRel U f g n σ.1 (hS.delta n σ) :=
   hS.deltaFun_spec n σ
 
 /- English proof (translation)
-Introduce `c`. Take `⟨ρ, hρ, rfl⟩` from `exists_cls c`. Take `⟨τ, hτ⟩` from `hI n (push U f (n + 1) ρ) (by rw [← push_d, hρ, map_zero])`. Establish `hσ : d Q U n (push U g n τ) = 0` using `by rw [← push_d, hτ, hS.push_push]`. Conclude with `⟨⟨push U g n τ, (mem_cocycles _).2 hσ⟩, hS.deltaRel_unique (hS.delta_spec n _) ⟨τ, ρ, hρ, rfl, hτ.symm, rfl⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 lemma delta_surjective (hI : CechAcyclic I U) (n : ℕ) : Function.Surjective (hS.delta n) := by
   intro c
@@ -211,9 +211,9 @@ lemma delta_surjective (hI : CechAcyclic I U) (n : ℕ) : Function.Surjective (h
     hS.deltaRel_unique (hS.delta_spec n _) ⟨τ, ρ, hρ, rfl, hτ.symm, rfl⟩⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h0`. Take `⟨τ, ρ, hρ, hτ, hρτ, hc⟩` from `hS.delta_spec n σ`. Rewrite `hc` using `[h0, eq_comm, cls_eq_zero_iff, coboundaries_succ]`. Take `⟨β, hβ⟩` from `AddMonoidHom.mem_range.1 hc`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨τ - push U f n β, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, ← hρτ, ← hβ, push_d, sub_self]`. Rewrite using `[map_sub, hS.push_push, sub_zero, hτ]`. Introduce and unpack `⟨κ, hκ, hgκ⟩`. Conclude with `hS.deltaRel_unique (hS.delta_spec n σ) ⟨κ, 0, map_zero _, hgκ, by rw [map_zero, hκ], cls_zero.symm⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 lemma delta_eq_zero_iff (n : ℕ) (σ : cocycles Q U n) :
     hS.delta n σ = 0 ↔ ∃ κ : Cochain I U n, d I U n κ = 0 ∧ push U g n κ = σ := by
@@ -230,9 +230,9 @@ lemma delta_eq_zero_iff (n : ℕ) (σ : cocycles Q U n) :
       ⟨κ, 0, map_zero _, hgκ, by rw [map_zero, hκ], cls_zero.symm⟩
 
 /- English proof (translation)
-Use extensionality with `σ`. Rewrite using `[AddMonoidHom.mem_ker, hS.delta_eq_zero_iff, AddSubgroup.mem_addSubgroupOf, coboundaries_succ]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨κ, hκ, hgκ⟩`. Take `⟨θ, hθ⟩` from `hI m κ hκ`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `AddMonoidHom.mem_range.2 ⟨push U g m θ, by rw [← push_d, hθ, hgκ]⟩`. Introduce `hσ`. Take `⟨θ, hθ⟩` from `AddMonoidHom.mem_range.1 hσ`. Take `⟨θ', hθ'⟩` from `hS.push_surjective m θ`. Conclude with `⟨d I U m θ', d_d I U m θ', by rw [push_d, hθ', hθ]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma ker_delta_succ (hI : CechAcyclic I U) (m : ℕ) :
     (hS.delta (m + 1)).ker =
@@ -270,7 +270,7 @@ def globalCocycle : P.obj (op ⊤) →+ cocycles P U 0 where
 
 variable {P} in
 /- English proof (translation)
-The claim follows from `funext fun _ => app_res φ _ s`.
+A detailed English derivation is pending.
 -/
 lemma push_globalCocycle {P' : (Opens X)ᵒᵖ ⥤ AddCommGrpCat.{u}} (φ : P ⟶ P')
     (s : P.obj (op ⊤)) :
@@ -281,7 +281,7 @@ variable (hP : Presheaf.IsSheaf (Opens.grothendieckTopology X) P) (hU : iSup U =
 include hP hU
 
 /- English proof (translation)
-Introduce and unpack `⟨κ, hκ⟩`. Take `⟨t, ht⟩` from `exists_glue P hP U ⊤ (fun _ => le_top) hU.ge κ ((mem_cocycles κ).1 hκ)`. Conclude with `⟨t, Subtype.ext (funext ht)⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma globalCocycle_surjective : Function.Surjective (globalCocycle P U) := by
   rintro ⟨κ, hκ⟩
@@ -289,9 +289,9 @@ lemma globalCocycle_surjective : Function.Surjective (globalCocycle P U) := by
   exact ⟨t, Subtype.ext (funext ht)⟩
 
 /- English proof (translation)
-Use `(injective_iff_map_eq_zero _).2 fun s hs => ?_` and prove the remaining obligations. Apply `TopCat.Sheaf.eq_of_locally_eq' (⟨P, hP⟩ : TopCat.Sheaf AddCommGrpCat.{u} X) U ⊤ (fun _ => homOfLE le_top) hU.ge` to reduce the goal to its premises. Introduce `a`. Establish `h1` using `congrFun (congrArg Subtype.val hs) (fun _ : Fin 1 => a)`. Establish `h2` using `congrArg (res P (le_inter_const U a)) h1`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `res P (le_inter_const U a) (res P _ s) = res P (le_inter_const U a) 0 at h2`. Rewrite `h2` using `[res_res, map_zero]`. Express the relevant statement in the definitionally equal form `res P le_top s = res P le_top 0`. Rewrite using `[map_zero]`. Conclude with `h2`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma globalCocycle_injective : Function.Injective (globalCocycle P U) := by
   refine (injective_iff_map_eq_zero _).2 fun s hs => ?_
@@ -337,21 +337,19 @@ variable {B Good} (hC : IsCoverSystem B Good)
 include hC hS
 
 /- English proof (translation)
-Introduce `s`. Establish `hls` using `(TopCat.Sheaf.isLocallySurjective_iff_epi S.g).mpr hS.epi_g`. Establish `hloc` using `(TopCat.Presheaf.isLocallySurjective_iff S.g.hom).mp hls`. Use `choose O hOV ht hxO using fun x : V => hloc V s x.1 x.2`. Use `choose t ht using ht`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨κ, _, U, hgood, hUO⟩` from `hC.exists_refinement V hV O hxO`. Use `choose x hx using hUO`. Establish `hUV : ∀ a, U a ≤ V` using `fun a => (hx a).trans (hOV (x a))`. Establish `hsup : iSup U = V` using `hC.iSup_eq V U hgood`. Set `τ0 : Cochain S.X₂.obj U 0` to `fun i => res S.X₂.obj ((inter_le U i 0).trans (hx (i 0))) (t (x (i 0)))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hτ0 : push U S.g.hom 0 τ0 = constCochain S.X₃.obj U hUV s`. Use function extensionality and compare the values at `i`. Simplify using `only [push, τ0, constCochain, AddMonoidHom.coe_mk, ZeroHom.coe_mk]`. Rewrite using `[app_res, ht]`. Conclude with `res_res _ _ _ s`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdτ0 : push U S.g.hom 1 (d _ U 0 τ0) = 0`. Rewrite using `[push_d, hτ0, d_constCochain]`. Use `choose ρ hρ using fun j => app_exact_of_shortExact hS _ _ (congrFun hdτ0 j)`. Establish `hρ' : push U S.f.hom 1 ρ = d _ U 0 τ0` using `funext hρ`. Establish `hρc : d S.X₁.obj U 1 ρ = 0`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `push_injective U S.f.hom 2 (fun j => app_injective_of_shortExact hS _)` to reduce the goal to its premises. Rewrite using `[map_zero, push_d, hρ', d_d]`. Take `⟨β, hβ⟩` from `hF V hV κ U hgood 0 ρ hρc`. Establish `hc : d S.X₂.obj U 0 (τ0 - push U S.f.hom 0 β) = 0`. Rewrite using `[map_sub, ← push_d, hβ, hρ', sub_self]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨t', ht'⟩` from `exists_glue S.X₂.obj S.X₂.property U V hUV hsup.ge _ hc`. Use `⟨t', ?_⟩` and prove the remaining obligations. Apply `TopCat.Sheaf.eq_of_locally_eq' S.X₃ U V (fun a => homOfLE (hUV a)) hsup.ge` to reduce the goal to its premises. Introduce `a`. Establish `key : res S.X₃.obj ((inter_le U (fun _ : Fin 1 => a) 0).trans (hUV a)) (S.g.hom.app _ t') = res S.X₃.obj ((inter_le U (fun _ : Fin 1 => a) 0).trans (hUV a)) s`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← app_res, ht' (fun _ => a), Pi.sub_apply, map_sub]`. Establish `h1 : S.g.hom.app _ ((push U S.f.hom 0 β) (fun _ => a)) = 0` using `app_comp_apply_eq_zero _ _`. Rewrite using `[h1, sub_zero]`. Conclude with `congrFun hτ0 (fun _ => a)`. Use `congrArg (res S.X₃.obj (le_inter_const U a)) key` as an intermediate fact.
-
-Rewrite `this` using `[res_res, res_res]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem surjective_of_goodAcyclic (hF : GoodAcyclic B Good S.X₁) (V : Opens X) (hV : B V) :
     Function.Surjective (S.g.hom.app (op V)) := by
@@ -398,7 +396,7 @@ theorem surjective_of_goodAcyclic (hF : GoodAcyclic B Good S.X₁) (V : Opens X)
   exact this
 
 /- English proof (translation)
-Introduce `V hV κ _ U hU`. Conclude with `CechAcyclic.of_shortExact' U S.f.hom S.g.hom comp_hom_eq_zero (fun i => app_injective_of_shortExact hS _) (fun i y hy => app_exact_of_shortExact hS _ y hy) (fun i => surjective_of_goodAcyclic hC hS hF _ (hC.inter_mem V U hU i)) (hF V hV κ U hU) (hI κ U)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem goodAcyclic_of_shortExact (hF : GoodAcyclic B Good S.X₁)
     (hI : ∀ (κ : Type u) (U : κ → Opens X), CechAcyclic S.X₂.obj U) :
@@ -417,7 +415,7 @@ section Leray
 variable {ι : Type w}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨comp_hom_eq_zero, fun _ => app_injective_of_shortExact hS _, fun _ y hy => app_exact_of_shortExact hS _ y hy, hsurj⟩`.
+Supply the required witnesses or components.
 -/
 lemma isCechShortExact_of_surjective {S : ShortComplex (TopCat.Sheaf AddCommGrpCat.{u} X)}
     (hS : S.ShortExact) (U : ι → Opens X)
@@ -445,19 +443,19 @@ def hDeltaEquiv (m : ℕ) : Sheaf.H.{w'} S.X₃ (m + 1) ≃+ Sheaf.H.{w'} S.X₁
 include hS in
 
 /- English proof (translation)
-Set `pC : S.X₃.obj.obj (op ⊤) →+ cechH S.X₁.obj U 1` to `(hC.delta 0).comp (globalCocycle S.X₃.obj U)`. Set `pH : S.X₃.obj.obj (op ⊤) →+ Sheaf.H.{w'} S.X₁ 1` to `(H.δ hS 0 1 rfl).comp (Sheaf.H.equiv₀ S.X₃ isTerminalTop).symm.toAddMonoidHom`. Establish `hpC : Function.Surjective pC` using `(hC.delta_surjective hI 0).comp (globalCocycle_surjective _ U S.X₃.property hU)`. Establish `hpH : Function.Surjective pH`. Introduce `x`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨y, hy⟩` from `H.exact₁ hS rfl x (H.eq_zero_of_injective S.X₂ _)`. Conclude with `⟨Sheaf.H.equiv₀ S.X₃ isTerminalTop y, by simp [pH, hy]⟩`. Establish `hker : pC.ker = pH.ker`. Use extensionality with `s`. Rewrite using `[AddMonoidHom.mem_ker, AddMonoidHom.mem_ker]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : pC s = 0 ↔ ∃ t, S.g.hom.app (op ⊤) t = s`. Express the relevant statement in the definitionally equal form `hC.delta 0 (globalCocycle S.X₃.obj U s) = 0 ↔ _`. Rewrite using `[hC.delta_eq_zero_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨κ, hκ, hgκ⟩`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Take `⟨t, ht⟩` from `globalCocycle_surjective _ U S.X₂.property hU ⟨κ, (mem_cocycles κ).2 hκ⟩`. Use `⟨t, globalCocycle_injective _ U S.X₃.property hU (Subtype.ext ?_)⟩` and prove the remaining obligations. Rewrite using `[← push_globalCocycle, ht]`. Conclude with `hgκ`. Introduce and unpack `⟨t, rfl⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨(globalCocycle S.X₂.obj U t).1, (mem_cocycles _).1 (globalCocycle _ U t).2, push_globalCocycle U _ t⟩`. Establish `e2 : pH s = 0 ↔ ∃ t, S.g.hom.app (op ⊤) t = s`. Express the relevant statement in the definitionally equal form `H.δ hS 0 1 rfl ((Sheaf.H.equiv₀ S.X₃ isTerminalTop).symm s) = 0 ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx⟩` from `H.exact₃ hS rfl _ h`. Use `⟨Sheaf.H.equiv₀ S.X₂ isTerminalTop x, ?_⟩` and prove the remaining obligations. Apply `(Sheaf.H.equiv₀ S.X₃ isTerminalTop).symm.injective` to reduce the goal to its premises. Rewrite using `[← Sheaf.H.equiv₀_symm_naturality, AddEquiv.symm_apply_apply, hx]`. Introduce and unpack `⟨t, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Sheaf.H.equiv₀_symm_naturality]`. Conclude with `H.δ_map_g hS rfl _`. Rewrite using `[e1, e2]`. Conclude with `⟨(QuotientAddGroup.quotientKerEquivOfSurjective pC hpC).symm.trans ((QuotientAddGroup.quotientAddEquivOfEq hker).trans (QuotientAddGroup.quotientKerEquivOfSurjective pH hpH))⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonempty_cechH_one_equiv (U : ι → Opens X) (hU : iSup U = ⊤)
     (hC : IsCechShortExact U S.f.hom S.g.hom) (hI : CechAcyclic S.X₂.obj U) :
@@ -512,11 +510,11 @@ variable {ι : Type w} [HasExt.{w'} (Sheaf (Opens.grothendieckTopology X) AddCom
   {B : Opens X → Prop} {Good : ∀ {κ : Type u}, Opens X → (κ → Opens X) → Prop}
 
 /- English proof (translation)
-Consider the cases of `n with`. Consider the case `zero => exact ⟨cechHZeroEquivH G U hU⟩`. Consider the case `succ n`. Proceed by induction on `n generalizing G with`. Consider the case `zero`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Establish `hS` using `injectiveSequence_shortExact G`. Establish `hI : CechAcyclic (injectiveSequence G).X₂.obj U` using `@cechAcyclic_of_injective X (injectiveSequence G).X₂ (inferInstanceAs (Injective (Injective.under G))) ι U`. Conclude with `nonempty_cechH_one_equiv hS U hU (isCechShortExact_of_surjective hS U fun i => surjective_of_goodAcyclic hC hS hG _ (hUB i)) hI`. Consider the case `succ m ih`. Establish `hS` using `injectiveSequence_shortExact G`.
+Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hI : CechAcyclic (injectiveSequence G).X₂.obj U` using `@cechAcyclic_of_injective X (injectiveSequence G).X₂ (inferInstanceAs (Injective (Injective.under G))) ι U`. Establish `hSC` using `isCechShortExact_of_surjective hS U fun i => surjective_of_goodAcyclic hC hS hG _ (hUB i)`. Establish `hQ : GoodAcyclic B Good (injectiveSequence G).X₃` using `goodAcyclic_of_shortExact hC hS hG fun κ V => @cechAcyclic_of_injective X (injectiveSequence G).X₂ (inferInstanceAs (Injective (Injective.under G))) κ V`. Take `⟨e⟩` from `ih _ hQ`. Conclude with `⟨((hSC.deltaEquiv hI m).symm.trans e).trans (hDeltaEquiv hS m)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonempty_cechH_equiv (hC : IsCoverSystem B Good) (U : ι → Opens X) (hU : iSup U = ⊤)
     (hUB : ∀ {n : ℕ} (i : Fin (n + 1) → ι), B (inter U i)) (n : ℕ)

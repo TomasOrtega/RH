@@ -14,14 +14,14 @@ section Blocks
 variable {R S : Type} [CommRing R] [CommRing S] {c N : ℕ} {n : Fin c → ℕ}
 
 /- English proof (translation)
-Simplify using `[Matrix.one_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem one_apply_blk (e : (Σ a, Fin (n a)) ≃ Fin N) (a : Fin c) (i j : Fin (n a)) :
     (1 : Matrix (Fin N) (Fin N) R) (e ⟨a, i⟩) (e ⟨a, j⟩) = (1 : Matrix (Fin (n a)) (Fin (n a)) R) i j := by
   simp [Matrix.one_apply]
 
 /- English proof (translation)
-Rewrite using `[Matrix.one_apply_ne]`. Introduce `h'`. Conclude with `h (congrArg Sigma.fst (e.injective h'))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem one_apply_blk_ne (e : (Σ a, Fin (n a)) ≃ Fin N) {a b : Fin c} (h : a ≠ b) (i : Fin (n a)) (j : Fin (n b)) :
     (1 : Matrix (Fin N) (Fin N) R) (e ⟨a, i⟩) (e ⟨b, j⟩) = 0 := by
@@ -38,9 +38,9 @@ theorem cornerGL_apply {a : ℕ} (s : R →ₙ+* S) (g : GL (Fin a) R) (i j : Fi
   rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Take `⟨⟨a, i⟩, rfl⟩` from `e.surjective i`. Take `⟨⟨b, j⟩, rfl⟩` from `e.surjective j`. Rewrite using `[cornerGL_apply]`. Distinguish the cases in `hab : a = b`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hab` using the available equality. Rewrite using `[leviEmb_apply_same, leviEmb_apply_same, cornerGL_apply, one_apply_blk, one_apply_blk]`. Rewrite using `[leviEmb_apply_ne R e m hab, leviEmb_apply_ne S e _ hab, one_apply_blk_ne e hab, one_apply_blk_ne e hab, map_zero]`. Simplify using the standard rewrite rules.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cornerGL_leviEmb (e : (Σ a, Fin (n a)) ≃ Fin N) (s : R →ₙ+* S) (m : ∀ a, GL (Fin (n a)) R) :
     cornerGL N s (leviEmb R e m) = leviEmb S e fun a => cornerGL (n a) s (m a) := by
@@ -56,9 +56,9 @@ theorem cornerGL_leviEmb (e : (Σ a, Fin (n a)) ≃ Fin N) (s : R →ₙ+* S) (m
     simp
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `mem_unipRad.1 hu`. Use `mem_unipRad.2 ⟨mem_parab.2 fun i j hij => ?_, fun a i j => ?_⟩` and prove the remaining obligations. Establish `hne : i ≠ j` using `fun h' => by subst h'; exact lt_irrefl _ hij`. Rewrite using `[cornerGL_apply, h1 hij, Matrix.one_apply_ne hne, Matrix.one_apply_ne hne, map_zero]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[cornerGL_apply, h2 a i j, one_apply_blk, one_apply_blk]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cornerGL_mem_unipRad (e : (Σ a, Fin (n a)) ≃ Fin N) (s : R →ₙ+* S) {u : GL (Fin N) R}
     (hu : u ∈ unipRad R e) : cornerGL N s u ∈ unipRad S e := by
@@ -75,7 +75,7 @@ end Blocks
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Use `Matrix.GeneralLinearGroup.ext fun i j => FiniteAdeleRing.ext (R := 𝓞 E) E fun v => ?_` and prove the remaining obligations. Use `congrArg (fun z : GL (Fin N) (v.adicCompletion E) => z.val i j) (H v)` as an intermediate fact. Simplify using `only [GeneralLinearGroup.map_apply] at this`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem glAf_ext {N : ℕ} {x y : GL (Fin N) (Af E)}
     (H : ∀ v : HeightOneSpectrum (𝓞 E), GeneralLinearGroup.map (pLoc E v) x = GeneralLinearGroup.map (pLoc E v) y) :
@@ -86,9 +86,9 @@ theorem glAf_ext {N : ℕ} {x y : GL (Fin N) (Af E)}
   exact this
 
 /- English proof (translation)
-Use `glAf_ext fun v => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul]`. Distinguish the cases in `hv : v = w`. Substitute `hv` using the available equality. Rewrite using `[hx, mul_one, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pLoc_locGL_of_ne hv, one_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem locGL_commute {N : ℕ} (w : HeightOneSpectrum (𝓞 E)) (x : GL (Fin N) (Af E)) (g : GL (Fin N) (w.adicCompletion E))
     (hx : GeneralLinearGroup.map (pLoc E w) x = 1) : locGL E N w g * x = x * locGL E N w g := by
@@ -102,7 +102,7 @@ theorem locGL_commute {N : ℕ} (w : HeightOneSpectrum (𝓞 E)) (x : GL (Fin N)
 variable {N : ℕ} {w : HeightOneSpectrum (𝓞 E)}
 
 /- English proof (translation)
-Use extensionality with `i j`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem wPart_apply (g : GA E N) :
     wPart N w g = GeneralLinearGroup.map (pLoc E w) (GeneralLinearGroup.map (pFin E) g) := by
@@ -110,27 +110,27 @@ theorem wPart_apply (g : GA E N) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[wPart_apply, MonoidHom.comp_apply, pFin_finGL, pLoc_locGL]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem wPart_iota (x : GL (Fin N) (w.adicCompletion E)) : wPart N w (iota N w x) = x := by
   rw [wPart_apply, MonoidHom.comp_apply, pFin_finGL, pLoc_locGL]
 
 /- English proof (translation)
-Rewrite using `[awayPart, map_mul, map_inv, wPart_iota, mul_inv_cancel]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem wPart_awayPart (g : GA E N) : wPart N w (awayPart N w g) = 1 := by
   rw [awayPart, map_mul, map_inv, wPart_iota, mul_inv_cancel]
 
 /- English proof (translation)
-Rewrite using `[awayPart, inv_mul_cancel_right]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem awayPart_mul_iota_wPart (g : GA E N) : awayPart N w g * iota N w (wPart N w g) = g := by
   rw [awayPart, inv_mul_cancel_right]
 
 /- English proof (translation)
-Use `ga_ext ?_ ?_` and prove the remaining obligations. Simplify using `only [map_mul, MonoidHom.comp_apply, pInf_finGL, mul_one, one_mul]`. Simplify using `only [map_mul, MonoidHom.comp_apply, pFin_finGL]`. Use `(locGL_commute w _ x ?_).symm` and prove the remaining obligations. Rewrite using `[← wPart_apply]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hy`.
+A detailed English derivation is pending.
 -/
 theorem commute_iota [IsTotallyComplex E] {y : GA E N} (hy : wPart N w y = 1) (x : GL (Fin N) (w.adicCompletion E)) :
     y * iota N w x = iota N w x * y := by
@@ -144,7 +144,7 @@ theorem commute_iota [IsTotallyComplex E] {y : GA E N} (hy : wPart N w y = 1) (x
 variable {c : ℕ} {n : Fin c → ℕ} (h : ∑ i, n i = N)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `cornerGL N (sFin E) (cornerGL N (sLoc E w) _) = _`. Rewrite using `[cornerGL_leviEmb, cornerGL_leviEmb]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem iota_leviEmb (x : ∀ i, GL (Fin (n i)) (w.adicCompletion E)) :
     iota N w (leviEmb (w.adicCompletion E) (stdBlocks n h) x) =
@@ -154,7 +154,7 @@ theorem iota_leviEmb (x : ∀ i, GL (Fin (n i)) (w.adicCompletion E)) :
   rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `cornerGL N (sFin E) (cornerGL N (sLoc E w) u) ∈ _`. Conclude with `cornerGL_mem_unipRad _ _ (cornerGL_mem_unipRad _ _ hu)`.
+Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem iota_mem_unipRad {u : GL (Fin N) (w.adicCompletion E)} (hu : u ∈ unipRad (w.adicCompletion E) (stdBlocks n h)) :
     iota N w u ∈ unipRad (Ad E) (stdBlocks n h) := by

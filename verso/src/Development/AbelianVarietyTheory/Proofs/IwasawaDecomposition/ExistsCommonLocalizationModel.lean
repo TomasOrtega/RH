@@ -12,23 +12,19 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 namespace GlobalTheory.Member
 
 /- English proof (translation)
-Introduce `O F R R₂ _ _ _ _ β r r₂ b b₂ ω ω₂ hβ hω hω₂ hωb hω₂b hR hR₂ hO`. Use `letI : Algebra O R := b.toAlgebra`. Use `letI : Algebra O R₂ := b₂.toAlgebra`. Use `haveI := hR`. Use `haveI := hR₂`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set L := Localization.Away (b r₂)`. Establish `hu₂ : IsUnit (b₂ r₂)` using `IsLocalization.Away.algebraMap_isUnit (S := R₂) r₂`. Establish `hu : IsUnit (b r)` using `IsLocalization.Away.algebraMap_isUnit (S := R) r`. Establish `hωr : IsUnit (ω (b r₂))`. Establish `: ω (b r₂) = ω₂ (b₂ r₂)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[← RingHom.comp_apply, hωb, ← RingHom.comp_apply, hω₂b]`. Rewrite using `[this]`. Conclude with `hu₂.map ω₂`. Set `ω' : L →+* F` to `IsLocalization.Away.lift (b r₂) hωr`. Establish `hω' : ω'.comp (algebraMap R L) = ω` using `IsLocalization.Away.lift_comp _ hωr`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLu : IsUnit (((algebraMap R L).comp b) r₂)` using `IsLocalization.Away.algebraMap_isUnit (S := L) (b r₂)`. Set `h : R₂ →+* L` to `IsLocalization.Away.lift (S := R₂) r₂ hLu`. Establish `hh : h.comp b₂ = (algebraMap R L).comp b` using `IsLocalization.Away.lift_comp (S := R₂) r₂ hLu`. Establish `hωh : ω'.comp h = ω₂`. Apply `IsLocalization.ringHom_ext (Submonoid.powers r₂) (S := R₂)` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(ω'.comp h).comp b₂ = ω₂.comp b₂`. Rewrite using `[RingHom.comp_assoc, hh, ← RingHom.comp_assoc, hω', hωb, hω₂b]`. Establish `hne : ω (b r₂) ≠ 0` using `hωr.ne_zero`. Establish `hD' : Models.IsDedFrac ω'` using `GlobalTheory.Member.isDedFrac_away R F ω (b r₂) hne hω ω' hω'`. Use `⟨ω', h, hω', hωh, hD', ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : Algebra.FinitePresentation O R := IsLocalization.Away.finitePresentation (S := R) r haveI : Algebra.FinitePresentation R L := IsLocalization.Away.finitePresentation (S := L) (b r₂) haveI : Algebra.FiniteType ℤ R := Algebra.FiniteType.trans (S := O) hO inferInstance`. Use `letI : Algebra ℤ L := Ring.toIntAlgebra _`. Conclude with `Algebra.FiniteType.trans (S := R) (A := L) inferInstance inferInstance`. Conclude with `IsOpenImmersion.of_isLocalization (S := R) r`. Use `haveI : IsLocalization (Submonoid.map b (Submonoid.powers r₂)) L := by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[Submonoid.map_powers]`. Use `infer_instance`. Establish `P` using `CommRingCat.isPushout_of_isLocalization (Rₘ := R₂) (Sₘ := L) b h hh (Submonoid.powers r₂)`. Conclude with `isPullback_SpecMap_of_isPushout _ _ _ _ P`. Introduce `ω₂' hω₂'`.
-
-Establish `hsu : IsUnit (h (b₂ r))`. Establish `: h (b₂ r) = algebraMap R L (b r)`. Rewrite using `[← RingHom.comp_apply, hh, RingHom.comp_apply]`. Rewrite using `[this]`. Conclude with `hu.map _`.
-
-Set `s : Localization.Away (b₂ r) →+* L` to `IsLocalization.Away.lift (b₂ r) hsu`. Establish `hs : s.comp (algebraMap R₂ _) = h` using `IsLocalization.Away.lift_comp _ hsu`. Use `⟨s, ?_⟩` and prove the remaining obligations. Apply `IsLocalization.ringHom_ext (Submonoid.powers (b₂ r)) (S := Localization.Away (b₂ r))` to reduce the goal to its premises. Rewrite using `[RingHom.comp_assoc, hs, hωh, hω₂']`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem overlap_rings : ∀ {O F R R₂ : Type} [CommRing O] [Field F] [CommRing R] [CommRing R₂] (β : O →+* F) (r r₂ : O) (b : O →+* R)
     (b₂ : O →+* R₂) (ω : R →+* F) (ω₂ : R₂ →+* F), Models.IsDedFrac β → Models.IsDedFrac ω → Models.IsDedFrac ω₂ →

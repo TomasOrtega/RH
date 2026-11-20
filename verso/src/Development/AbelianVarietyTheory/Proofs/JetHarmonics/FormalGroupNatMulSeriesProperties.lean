@@ -9,7 +9,7 @@ open MvPowerSeries Finsupp
 
 open MvPowerSeries Finsupp in
 /- English proof (translation)
-Use `hasSubst_of_constantCoeff_zero fun s => ?_` and prove the remaining obligations. Use `fin_cases s`. Conclude with `hf`. Conclude with `hg`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ConvSer.nMul_hasSubst_pair {R : Type*} [CommRing R] {f g : PowerSeries R}
     (hf : PowerSeries.constantCoeff f = 0) (hg : PowerSeries.constantCoeff g = 0) :
@@ -21,9 +21,9 @@ theorem _root_.GlobalTheory.ConvSer.nMul_hasSubst_pair {R : Type*} [CommRing R] 
 
 open MvPowerSeries Finsupp in
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp [_root_.GlobalTheory.ConvSer.nMul_zero]`. Consider the case `succ n ih`. Rewrite using `[_root_.GlobalTheory.ConvSer.nMul_succ]`. Use `constantCoeff_subst_eq_zero (_root_.GlobalTheory.ConvSer.nMul_hasSubst_pair ih PowerSeries.constantCoeff_X) (fun s => ?_) F.2` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `fin_cases s`. Conclude with `ih`. Conclude with `PowerSeries.constantCoeff_X`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ConvSer.nMul_constantCoeff {R : Type*} [CommRing R] (F : FormalGroup R)
     (n : ℕ) : PowerSeries.constantCoeff (_root_.GlobalTheory.ConvSer.nMul F n) = 0 := by
@@ -38,28 +38,26 @@ theorem _root_.GlobalTheory.ConvSer.nMul_constantCoeff {R : Type*} [CommRing R] 
     · exact PowerSeries.constantCoeff_X
 
 /- English proof (translation)
-The claim follows from `PowerSeries.HasSubst.of_constantCoeff_zero' (nMul_constantCoeff F n)`.
+A detailed English derivation is pending.
 -/
 theorem nMul_hasSubst {R : Type*} [CommRing R] (F : FormalGroup R) (n : ℕ) :
     PowerSeries.HasSubst (nMul F n) :=
   PowerSeries.HasSubst.of_constantCoeff_zero' (nMul_constantCoeff F n)
 
 /- English proof (translation)
-Establish `hne : (single 0 1 : Fin 2 →₀ ℕ) ≠ single 1 1`. Introduce `h`. Use `DFunLike.congr_fun h 0` as an intermediate fact. Simplify using `at this`. Establish `key : ∀ d : Fin 2 →₀ ℕ, (d.prod fun s e => (![f, g] : Fin 2 → MvPowerSeries Unit R) s ^ e) = (f ^ d 0 * g ^ d 1 : PowerSeries R)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `d`. Rewrite using `[Finsupp.prod_fintype _ _ (by simp), Fin.prod_univ_two]`. Both sides reduce to the same expression. Establish `hc : ∀ h : PowerSeries R, MvPowerSeries.coeff (single () 1) h = PowerSeries.coeff 1 h` using `fun _ => rfl`. Rewrite using `[← hc, coeff_subst (nMul_hasSubst_pair hf hg), finsum_eq_sum_of_support_subset (s := {single 0 1, single 1 1})]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_pair hne, key, key, hc, hc, F.lin_coeff_X, F.lin_coeff_Y]`. Simplify using the standard rewrite rules. Introduce `d hd`. Assume the negation of the conclusion as `hn`. Apply `hd` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [Finset.coe_insert, Finset.coe_singleton, Set.mem_insert_iff, Set.mem_singleton_iff, not_or] at hn`. Establish `h2 : d 0 + d 1 = 0 ∨ 2 ≤ d 0 + d 1`. Assume the negation of the conclusion as `hh`. Establish `: (d 0 = 1 ∧ d 1 = 0) ∨ (d 0 = 0 ∧ d 1 = 1)` using `by omega`. Break down `this with h | h` into its components or cases.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Apply `hn.1` to reduce the goal to its premises. Use extensionality with `s`. Apply the tactic sequence `fin_cases s <;> simp [h]`. Apply `hn.2` to reduce the goal to its premises. Use extensionality with `s`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Apply the tactic sequence `fin_cases s <;> simp [h]`. Establish `h0 : PowerSeries.coeff 1 (f ^ d 0 * g ^ d 1) = 0`. Break down `h2 with h | h` into its components or cases. Establish `h0 : d 0 = 0` using `by omega`. Establish `h1 : d 1 = 0` using `by omega`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[h0, h1, PowerSeries.coeff_one]`. Establish `hd : (PowerSeries.X : PowerSeries R) ^ (d 0 + d 1) ∣ f ^ d 0 * g ^ d 1`. Rewrite using `[pow_add]`. Conclude with `mul_dvd_mul (pow_dvd_pow_of_dvd (PowerSeries.X_dvd_iff.2 hf) _) (pow_dvd_pow_of_dvd (PowerSeries.X_dvd_iff.2 hg) _)`. Conclude with `PowerSeries.X_pow_dvd_iff.1 hd 1 (by omega)`.
-
-Use `show _ • _ = _`. Rewrite using `[key, hc, h0, smul_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_one_formalGroup_subst {R : Type*} [CommRing R] (F : FormalGroup R)
     {f g : PowerSeries R}
@@ -110,7 +108,7 @@ theorem coeff_one_formalGroup_subst {R : Type*} [CommRing R] (F : FormalGroup R)
     rw [key, hc, h0, smul_zero]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp [nMul_zero]`. Consider the case `succ n ih`. Rewrite using `[nMul_succ, coeff_one_formalGroup_subst F (nMul_constantCoeff F n) PowerSeries.constantCoeff_X, ih]`. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem nMul_coeff_one {R : Type*} [CommRing R] (F : FormalGroup R) (n : ℕ) :
     PowerSeries.coeff 1 (nMul F n) = (n : R) := by
@@ -122,14 +120,14 @@ theorem nMul_coeff_one {R : Type*} [CommRing R] (F : FormalGroup R) (n : ℕ) :
     simp
 
 /- English proof (translation)
-Rewrite using `[nMul_succ, nMul_zero]`. Conclude with `F.zeroX_eq_X`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nMul_one {R : Type*} [CommRing R] (F : FormalGroup R) : nMul F 1 = PowerSeries.X := by
   rw [nMul_succ, nMul_zero]
   exact F.zeroX_eq_X
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => exact F.add_zero (nMul_hasSubst F i)`. Consider the case `succ j ih`. Rewrite using `[← add_assoc, nMul_succ, nMul_succ, ← ih]`. Conclude with `(F.assoc' (nMul_hasSubst F i) (nMul_hasSubst F j) PowerSeries.HasSubst.X').symm`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nMul_add {R : Type*} [CommRing R] (F : FormalGroup R) (i j : ℕ) :
     MvPowerSeries.subst (![nMul F i, nMul F j] : Fin 2 → MvPowerSeries Unit R) F.toPowerSeries
@@ -141,9 +139,9 @@ theorem nMul_add {R : Type*} [CommRing R] (F : FormalGroup R) (i j : ℕ) :
     exact (F.assoc' (nMul_hasSubst F i) (nMul_hasSubst F j) PowerSeries.HasSubst.X').symm
 
 /- English proof (translation)
-Proceed by induction on `i with`. Consider the case `zero`. Rewrite using `[zero_mul, nMul_zero, ← PowerSeries.coe_substAlgHom (nMul_hasSubst F j), map_zero]`. Consider the case `succ i ih`. Rewrite using `[add_mul, one_mul, ← nMul_add F (i * j) j, nMul_succ F i, PowerSeries.subst, subst_comp_subst_apply (nMul_hasSubst_pair (nMul_constantCoeff F i) PowerSeries.constantCoeff_X) (nMul_hasSubst F j).const]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `congr! 2 with s`. Use `fin_cases s`. Conclude with `ih`. Conclude with `PowerSeries.subst_X (nMul_hasSubst F j)`.
+A detailed English derivation is pending.
 -/
 theorem nMul_subst_nMul {R : Type*} [CommRing R] (F : FormalGroup R) (i j : ℕ) :
     (nMul F i).subst (nMul F j) = nMul F (i * j) := by
@@ -162,19 +160,17 @@ theorem nMul_subst_nMul {R : Type*} [CommRing R] (F : FormalGroup R) (i j : ℕ)
 
 open MvPowerSeries Finsupp in
 /- English proof (translation)
-Establish `ha` using `_root_.GlobalTheory.ConvSer.nMul_hasSubst_pair hf PowerSeries.constantCoeff_X`. Take `⟨g, rfl⟩` from `PowerSeries.X_dvd_iff.mpr hf`. Establish `hprod : ∀ d : Fin 2 →₀ ℕ, (d.prod fun s e => (![PowerSeries.X * g, PowerSeries.X] : Fin 2 → MvPowerSeries Unit R) s ^ e) = PowerSeries.X ^ (d 0 + d 1) * g ^ d 0`. Introduce `d`. Rewrite using `[Finsupp.prod_fintype _ _ (fun _ => pow_zero _), Fin.prod_univ_two]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `show (PowerSeries.X * g) ^ d 0 * PowerSeries.X ^ d 1 = _`. Expand and normalize the polynomial expressions, which then agree. Establish `hcoeff : ∀ h : PowerSeries R, MvPowerSeries.coeff (single () 1) h = PowerSeries.coeff 1 h` using `fun _ => rfl`. Establish `hne : (single 0 1 : Fin 2 →₀ ℕ) ≠ single 1 1`. Introduce `h`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congrArg (fun d => d 0) h` as an intermediate fact. Simplify using `at this`. Use `show MvPowerSeries.coeff (single () 1) _ = _`. Rewrite using `[coeff_subst ha, finsum_eq_sum_of_support_subset (s := {single 0 1, single 1 1}), Finset.sum_pair hne]`. Simplify using `only [hprod, hcoeff, F.3, F.4]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Introduce `d hd`. Simplify using `only [Function.mem_support, hprod, hcoeff, PowerSeries.coeff_X_pow_mul'] at hd`. Simplify using `only [Finset.coe_insert, Finset.coe_singleton, Set.mem_insert_iff, Set.mem_singleton_iff]`. Distinguish the cases in `h2 : d 0 + d 1 ≤ 1`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-Break down `Nat.le_one_iff_eq_zero_or_eq_one.mp h2 with h | h` into its components or cases. It suffices to derive a contradiction. Apply `hd` to reduce the goal to its premises. Apply the tactic sequence `have hd0 : d = 0 := Finsupp.ext fun i => by fin_cases i <;> simp <;> omega`. Simplify using `[hd0, MvPowerSeries.coeff_zero_eq_constantCoeff_apply, F.2]`.
+Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `h0 : d 0 ≤ 1` using `by omega`. Break down `Nat.le_one_iff_eq_zero_or_eq_one.mp h0 with h0 | h0` into its components or cases. Use `right`. Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;> simp <;> omega`.
-
-Use `left`. Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;> simp <;> omega`. Conclude with `absurd (by simp [h2]) hd`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private theorem coeff_one_subst_pair_X {R : Type*} [CommRing R] (F : FormalGroup R)
     {f : PowerSeries R} (hf : PowerSeries.constantCoeff f = 0) :
@@ -221,25 +217,21 @@ private theorem coeff_one_subst_pair_X {R : Type*} [CommRing R] (F : FormalGroup
 open MvPowerSeries Finsupp in
 
 /- English proof (translation)
-Introduce `R _ F`. Establish `hc` using `_root_.GlobalTheory.ConvSer.nMul_constantCoeff F`. Establish `hs : ∀ n, PowerSeries.HasSubst (_root_.GlobalTheory.ConvSer.nMul F n)` using `fun n => PowerSeries.HasSubst.of_constantCoeff_zero' (hc n)`. Establish `hX : PowerSeries.HasSubst (PowerSeries.X : PowerSeries R)` using `PowerSeries.HasSubst.of_constantCoeff_zero' PowerSeries.constantCoeff_X`. Establish `hadd : ∀ i j, MvPowerSeries.subst (![_root_.GlobalTheory.ConvSer.nMul F i, _root_.GlobalTheory.ConvSer.nMul F j] : Fin 2 → MvPowerSeries Unit R) F.toPowerSeries = _root_.GlobalTheory.ConvSer.nMul F (i + j)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i j`. Proceed by induction on `j with`. Consider the case `zero`. Rewrite using `[_root_.GlobalTheory.ConvSer.nMul_zero, Nat.add_zero]`. Conclude with `F.add_zero (hs i)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `succ j ih`. Rewrite using `[_root_.GlobalTheory.ConvSer.nMul_succ F j, show i + (j + 1) = (i + j) + 1 by omega, _root_.GlobalTheory.ConvSer.nMul_succ F (i + j), ← ih]`. Conclude with `(F.assoc' (hs i) (hs j) hX).symm`. Use `⟨fun n => ⟨hc n, ?_⟩, ?_, hadd, ?_, ?_⟩` and prove the remaining obligations. Proceed by induction on `n with`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp [_root_.GlobalTheory.ConvSer.nMul_zero]`. Consider the case `succ n ih`. Rewrite using `[_root_.GlobalTheory.ConvSer.nMul_succ, coeff_one_subst_pair_X F (hc n), ih]`. Use `push_cast`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[_root_.GlobalTheory.ConvSer.nMul_succ, _root_.GlobalTheory.ConvSer.nMul_zero]`. Conclude with `F.zero_add hX`. Introduce `i j`. Proceed by induction on `i with`. Consider the case `zero`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[_root_.GlobalTheory.ConvSer.nMul_zero, Nat.zero_mul, _root_.GlobalTheory.ConvSer.nMul_zero, ← PowerSeries.coe_substAlgHom (hs j), map_zero]`. Consider the case `succ i ih`. Rewrite using `[_root_.GlobalTheory.ConvSer.nMul_succ F i, Nat.succ_mul, ← hadd (i * j) j, ← ih]`. Use `show MvPowerSeries.subst (fun _ => _root_.GlobalTheory.ConvSer.nMul F j) _ = _`. Rewrite using `[MvPowerSeries.subst_comp_subst_apply (_root_.GlobalTheory.ConvSer.nMul_hasSubst_pair (hc i) PowerSeries.constantCoeff_X) (hasSubst_of_constantCoeff_zero fun _ => hc j)]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congr 1`. Use function extensionality and compare the values at `s`. Use `fin_cases s`. Both sides reduce to the same expression. Conclude with `PowerSeries.subst_X (hs j)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `S _ φ n`. Proceed by induction on `n with`. Consider the case `zero => simp [_root_.GlobalTheory.ConvSer.nMul_zero]`. Consider the case `succ n ih`. Rewrite using `[_root_.GlobalTheory.ConvSer.nMul_succ, _root_.GlobalTheory.ConvSer.nMul_succ, FormalGroup.map_toPowerSeries, ← ih]`.
-
-Use `show MvPowerSeries.map φ _ = _`. Rewrite using `[MvPowerSeries.map_subst (_root_.GlobalTheory.ConvSer.nMul_hasSubst_pair (hc n) PowerSeries.constantCoeff_X)]`. Use `congr 1`. Use function extensionality and compare the values at `s`. Use `fin_cases s`.
-
-Both sides reduce to the same expression. Conclude with `PowerSeries.map_X φ`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ConvSer.nMul_props : ∀ (R : Type) [CommRing R] (F : FormalGroup R), (∀ n, PowerSeries.constantCoeff (_root_.GlobalTheory.ConvSer.nMul F n) = 0 ∧ PowerSeries.coeff 1 (_root_.GlobalTheory.ConvSer.nMul F n) = (n : R)) ∧ _root_.GlobalTheory.ConvSer.nMul F 1 = PowerSeries.X ∧ (∀ i j, MvPowerSeries.subst (![_root_.GlobalTheory.ConvSer.nMul F i, _root_.GlobalTheory.ConvSer.nMul F j] : Fin 2 → MvPowerSeries Unit R) F.toPowerSeries = _root_.GlobalTheory.ConvSer.nMul F (i + j)) ∧ (∀ i j, (_root_.GlobalTheory.ConvSer.nMul F i).subst (_root_.GlobalTheory.ConvSer.nMul F j) = _root_.GlobalTheory.ConvSer.nMul F (i * j)) ∧ (∀ (S : Type) [CommRing S] (φ : R →+* S) (n : ℕ), PowerSeries.map φ (_root_.GlobalTheory.ConvSer.nMul F n) = _root_.GlobalTheory.ConvSer.nMul (F.map φ) n) := by
   intro R _ F

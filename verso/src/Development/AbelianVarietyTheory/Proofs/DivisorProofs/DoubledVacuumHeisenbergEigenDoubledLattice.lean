@@ -20,7 +20,7 @@ variable {R E : Type} [CommRing R] [CommRing E] [Algebra R E] (c : E →ₐ[R] E
 omit [DecidableEq α] in
 
 /- English proof (translation)
-Simplify using `only [hTens, dbl, Fintype.sum_sum_type, Matrix.fromCols_apply_inl, Matrix.fromCols_apply_inr, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.zero_apply, Matrix.neg_apply, mul_zero, zero_mul, add_zero, zero_add, m …`.
+Simplify using the standard rewrite rules.
 -/
 theorem hTens_dbl (JA : Matrix α α E) (JB : Matrix β β E) (x₁ x₂ y₁ y₂ : Matrix α β E) :
     hTens c JA (dbl JB) (Matrix.fromCols x₁ x₂) (Matrix.fromCols y₁ y₂) = hTens c JA JB x₁ y₁ - hTens c JA JB x₂ y₂ := by
@@ -32,9 +32,9 @@ theorem hTens_dbl (JA : Matrix α α E) (JB : Matrix β β E) (x₁ x₂ y₁ y�
 omit [DecidableEq α] [DecidableEq β] in
 
 /- English proof (translation)
-Unfold `hTens`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Matrix.transpose_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hTens_transpose (JA : Matrix α α E) (JB : Matrix β β E) (x y : Matrix β α E) :
     hTens c JA JB xᵀ yᵀ = hTens c JB JA x y := by
@@ -55,9 +55,9 @@ namespace GlobalTheory.DblVacEigen
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Unfold `dotProduct`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `e` using `congrFun (hy (z i - z' i) (by rw [map_sub, h i, sub_self])) i`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at e`. Rewrite `e` using `[sub_mul]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `sub_eq_zero.mp e`.
+A detailed English derivation is pending.
 -/
 theorem dot_congr_at {κ : Type} [Fintype κ] (v : Pl F) {y : κ → AF F} (hy : At (evFin F v) y) {z z' : κ → AF F}
     (h : ∀ i, evFin F v (z i) = evFin F v (z' i)) : z ⬝ᵥ y = z' ⬝ᵥ y := by
@@ -69,13 +69,13 @@ theorem dot_congr_at {κ : Type} [Fintype κ] (v : Pl F) {y : κ → AF F} (hy :
   exact sub_eq_zero.mp e
 
 /- English proof (translation)
-Take `⟨R, hR0, hR⟩` from `GlobalTheory.RestWitness.exists_rest κ v`. Establish `hr` using `hR φ hφ`. Set `Δ : κ → AF F` to `fun i => GlobalTheory.LatVac.liftV v (evFin F v (z i))`. Establish `hΔ : At (evFin F v) Δ` using `fun u hu => funext fun i => GlobalTheory.LatVac.at_liftV v _ u hu`. Establish `hevΔ : ∀ i, evFin F v (Δ i) = evFin F v (z i)` using `fun i => GlobalTheory.LatVac.evFin_liftV v _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `congrFun (h R hr) Δ`. Establish `hR2 : R Δ = R 0` using `by simpa using hr.1 0 Δ hΔ`. Establish `hR1 : R (Δ + p.1) = R 0` using `by rw [hr.1 Δ p.1 hp1, hR2]`. Simplify using `only [schr, tens, Pi.smul_apply, smul_eq_mul] at e`. Rewrite `e` using `[hR1, hR2, dot_congr_at v hp2 hevΔ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hev : (fun i => evFin F v ((Δ + p.1) i)) = fun i => evFin F v ((z + p.1) i)`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.add_apply, map_add, hevΔ]`. Establish `hev' : (fun i => evFin F v (Δ i)) = fun i => evFin F v (z i)` using `funext hevΔ`. Rewrite `e` using `[hev, hev']`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mul_right_cancel₀ hR0 (by linear_combination e)`.
+A detailed English derivation is pending.
 -/
 theorem eigen_pointwise {κ : Type} [Fintype κ] (v : Pl F) (ψ : AddChar (AF F) ℂ) {φ : (κ → Fv F v) → ℂ}
     (hφ : φ ∈ SB (κ → Fv F v)) (p : (κ → AF F) × (κ → AF F)) (hp1 : At (evFin F v) p.1) (hp2 : At (evFin F v) p.2)
@@ -99,13 +99,13 @@ theorem eigen_pointwise {κ : Type} [Fintype κ] (v : Pl F) (ψ : AddChar (AF F)
   exact mul_right_cancel₀ hR0 (by linear_combination e)
 
 /- English proof (translation)
-Introduce `r hr`. Establish `hX : At (evFin F v) (Sum.elim X₁ X₂ : κ ⊕ κ' → AF F)`. Introduce `u hu`. Use function extensionality and compare the values at `i`. Consider the cases of `i with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data.
 
-Consider the case `inl i => exact congrFun (h11 u hu) i`. Consider the case `inr i => exact congrFun (h21 u hu) i`. Use function extensionality and compare the values at `x`. Establish `hd1 : x ⬝ᵥ Sum.elim Y₁ Y₂ = (x ∘ Sum.inl) ⬝ᵥ Y₁ + (x ∘ Sum.inr) ⬝ᵥ Y₂`. Simplify using `[dotProduct, Fintype.sum_sum_type]`.
+Treat this case separately. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hd2 : Sum.elim X₁ X₂ ⬝ᵥ Sum.elim Y₁ Y₂ = X₁ ⬝ᵥ Y₁ + X₂ ⬝ᵥ Y₂` using `by simp [dotProduct, Fintype.sum_sum_type]`. Simplify using `only [schr, tens, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[hr.1 x _ hX, hd1, hd2, show (x ∘ Sum.inl) ⬝ᵥ Y₁ + (x ∘ Sum.inr) ⬝ᵥ Y₂ + ⅟(2 : AF F) * (X₁ ⬝ᵥ Y₁ + X₂ ⬝ᵥ Y₂) = ((x ∘ Sum.inl) ⬝ᵥ Y₁ + ⅟(2 : AF F) * (X₁ ⬝ᵥ Y₁)) + ((x ∘ Sum.inr) ⬝ᵥ Y₂ + ⅟(2 : AF F) * (X₂ ⬝ᵥ Y₂)) by ring, AddChar.map_add_eq_mul]`. Establish `e1` using `h₁ (x ∘ Sum.inl)`. Establish `e2` using `h₂ (x ∘ Sum.inr)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [boxFun, Function.comp_def, Pi.add_apply, Sum.elim_inl, Sum.elim_inr] at e1 e2 ⊢`. Rewrite using `[show ∀ a e b f s : ℂ, a * e * ((b * f) * s) = (a * b) * (e * f) * s from fun _ _ _ _ _ => by ring, e1, e2]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem acts_box {κ κ' : Type} [Fintype κ] [Fintype κ'] (v : Pl F) (ψ : AddChar (AF F) ℂ)
     {φ₁ : (κ → Fv F v) → ℂ} {φ₂ : (κ' → Fv F v) → ℂ} (X₁ Y₁ : κ → AF F)
@@ -143,19 +143,19 @@ end GlobalTheory.DblVacEigen
 namespace GlobalTheory.DblVacEigen
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT v w _ _ d' hd' dd hdd θ _ hvac w₁ hw₁ w₂ hw₂`. Establish `hSB` using `(hT.geo.hM.vac v).1`. Establish `hψ : ∀ t, ‖B.ψ t‖ = 1` using `GlobalTheory.StdCharWeilDatum.norm_psi hT.base.std`. Establish `hstar : ∀ t, star (B.ψ t) = B.ψ (-t)`. Introduce `t`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[AddChar.map_neg_eq_inv, Complex.inv_def, Complex.normSq_eq_norm_sq, hψ t]`. Simplify using the standard rewrite rules. Establish `hAt : ∀ γ ∈ latAtV G.V G.W v, At (evFin F v) γ` using `(GlobalTheory.LatVac.latAtV_at_stable G.V G.W v).1`. Establish `hco : ∀ γ ∈ latAtV G.V G.W v, At (evFin F v) (G.M.co.e γ).1 ∧ At (evFin F v) (G.M.co.e γ).2`. Introduce `γ hγ`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : ∀ u, evFin F v u = 0 → u • G.M.co.e γ = 0` using `fun u hu => by`. Rewrite using `[← map_smul, hAt γ hγ u hu, map_zero]`. Conclude with `⟨fun u hu => congrArg Prod.fst (e u hu), fun u hu => congrArg Prod.snd (e u hu)⟩`. Establish `h1` using `eigen_pointwise v B.ψ hSB (G.M.co.e w₁) (hco w₁ hw₁).1 (hco w₁ hw₁).2 _ (hvac w₁ hw₁)`. Establish `h2` using `eigen_pointwise v B.ψ hSB (G.M.co.e w₂) (hco w₂ hw₂).1 (hco w₂ hw₂).2 _ (hvac w₂ hw₂)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2' : ∀ z, B.ψ (z ⬝ᵥ (-(G.M.co.e w₂).2) + ⅟(2 : AF F) * ((G.M.co.e w₂).1 ⬝ᵥ (-(G.M.co.e w₂).2))) * (fun x => star (G.M.vac v x)) (fun i => evFin F v ((z + (G.M.co.e w₂).1) i)) = star (B.ψ (⅟(2 : AF F) * symp (cA σ) (inclR (F` using `F) (AF F) (θ : E)) (incM F G.V.J) (incM F G.W.J) w₂ w₂)) * (fun x => star (G.M.vac v x)) (fun i => evFin F v (z i)) := by`. Introduce `z`. Establish `e` using `congrArg star (h2 z)`. Simplify using `only [star_mul, hstar] at e`. Rewrite using `[hstar, show z ⬝ᵥ (-(G.M.co.e w₂).2) + ⅟(2 : AF F) * ((G.M.co.e w₂).1 ⬝ᵥ (-(G.M.co.e w₂).2)) = -(z ⬝ᵥ (G.M.co.e w₂).2 + ⅟(2 : AF F) * ((G.M.co.e w₂).1 ⬝ᵥ (G.M.co.e w₂).2)) by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[dotProduct_neg, dotProduct_neg]`. Use the proof step `ring]`. Take the linear combination `e`. Establish `hbox` using `acts_box v B.ψ (φ₁ := G.M.vac v) (φ₂ := fun x => star (G.M.vac v x)) (G.M.co.e w₁).1 (G.M.co.e w₁).2 (G.M.co.e w₂).1 (-(G.M.co.e w₂).2) (hco w₁ hw₁).1 (hco w₂ hw₂).1 _ _ h1 h2'`. Establish `hrho : dd.rho B.ψ (Matrix.fromCols w₁ᵀ w₂ᵀ) = schr B.ψ (Sum.elim (G.M.co.e w₁).1 (G.M.co.e w₂).1, Sum.elim (G.M.co.e w₁).2 (-(G.M.co.e w₂).2))`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Darboux.rho, hdd, hd', hd']`. Establish `hS : symp (cA σ) (inclR (F` using `F) (AF F) (θ : E)) (incM F G.W.J) (dbl (incM F G.V.J)) (Matrix.fromCols w₁ᵀ w₂ᵀ) (Matrix.fromCols w₁ᵀ w₂ᵀ) = symp (cA σ) (inclR (F := F) (AF F) (θ : E)) (incM F G.V.J) (incM F G.W.J) w₁ w₁ - symp (cA σ) (inclR (F := F) (AF F) (θ : E)) (incM F G.V.J) (incM F G.W.J) w₂ w₂ := by`. Unfold `symp`. Rewrite using `[hTens_dbl, hTens_transpose, hTens_transpose, mul_sub, map_sub]`. Establish `hc : B.ψ (⅟(2 : AF F) * (symp (cA σ) (inclR (F` using `F) (AF F) (θ : E)) (incM F G.V.J) (incM F G.W.J) w₁ w₁ - symp (cA σ) (inclR (F := F) (AF F) (θ : E)) (incM F G.V.J) (incM F G.W.J) w₂ w₂)) = B.ψ (⅟(2 : AF F) * symp (cA σ) (inclR (F := F) (AF F) (θ : E)) (incM F G.V.J) (incM F G.W.J) w₁ w₁) * star (B.ψ (⅟(2 : AF F) * symp (cA σ) …`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hstar, ← AddChar.map_add_eq_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hrho, hS, hc]`. Conclude with `hbox`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem doubled_vac_eigen : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →

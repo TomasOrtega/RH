@@ -16,7 +16,7 @@ section Sandwich
 variable {A B : Type*} [AddCommGroup A] [AddCommGroup B]
 
 /- English proof (translation)
-Rewrite `hH`, the goal using `[AddSubgroup.fg_iff_exists_fin_addMonoidHom]`. Take `⟨k, f, rfl⟩` from `hH`. Conclude with `⟨k, φ.comp f, by rw [AddMonoidHom.range_comp]⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem fg_map_of_fg {H : AddSubgroup A} (hH : H.FG) (φ : A →+ B) : (H.map φ).FG := by
   rw [AddSubgroup.fg_iff_exists_fin_addMonoidHom] at hH ⊢
@@ -24,7 +24,7 @@ theorem fg_map_of_fg {H : AddSubgroup A} (hH : H.FG) (φ : A →+ B) : (H.map φ
   exact ⟨k, φ.comp f, by rw [AddMonoidHom.range_comp]⟩
 
 /- English proof (translation)
-Establish `hK' : K.toIntSubmodule.FG` using `(Submodule.fg_iff_addSubgroup_fg _).2 hK`. Use `isNoetherian_of_fg_of_noetherian _ hK'` as an intermediate fact. Conclude with `(Submodule.fg_iff_addSubgroup_fg H.toIntSubmodule).1 (Submodule.FG.of_le_of_isNoetherian (S := H.toIntSubmodule) (T := K.toIntSubmodule) hHK)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fg_of_le_fg {H K : AddSubgroup A} (hHK : H ≤ K) (hK : K.FG) : H.FG := by
   have hK' : K.toIntSubmodule.FG := (Submodule.fg_iff_addSubgroup_fg _).2 hK
@@ -35,23 +35,21 @@ theorem fg_of_le_fg {H K : AddSubgroup A} (hHK : H ≤ K) (hK : K.FG) : H.FG := 
 variable [NoZeroSMulDivisors ℕ A]
 
 /- English proof (translation)
-Break down `Set.eq_empty_or_nonempty {L : AddSubgroup A | M ≤ L ∧ (∀ x ∈ L, n • x ∈ M) ∧ L.FG} with he | ⟨L₀, hML₀, -, hL₀⟩` into its components or cases. Rewrite using `[he]`. Conclude with `Set.finite_empty`. Establish `hM : M.FG` using `fg_of_le_fg hML₀ hL₀`. Set `f : A →+ A` to `nsmulAddMonoidHom n`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hf : Function.Injective f` using `fun x y hxy => by`. Establish `hxy' : n • x = n • y` using `hxy`. Conclude with `smul_right_injective A hn.ne' hxy'`. Set `N : AddSubgroup A` to `M.comap f`. Establish `hNM : (N.map f) ≤ M` using `AddSubgroup.map_comap_le _ _`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN : N.FG`. Establish `h1 : (N.map f).FG` using `fg_of_le_fg hNM hM`. Establish `h2 : N.toIntSubmodule.FG`. Use `Submodule.fg_of_fg_map_injective f.toIntLinearMap hf ?_` and prove the remaining obligations. Establish `: (N.toIntSubmodule.map f.toIntLinearMap) = (N.map f).toIntSubmodule`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `(Submodule.fg_iff_addSubgroup_fg _).2 h1`. Conclude with `(Submodule.fg_iff_addSubgroup_fg _).1 h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hMN : M ≤ N` using `fun x hx => M.nsmul_mem hx n`. Set `M' : AddSubgroup N` to `M.addSubgroupOf N`. Establish `: AddGroup.FG N` using `(AddGroup.fg_iff_addSubgroup_fg N).2 hN`. Establish `: AddGroup.FG (N ⧸ M')` using `AddGroup.fg_of_surjective (QuotientAddGroup.mk'_surjective M')`. Establish `: Finite (N ⧸ M')`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `AddCommGroup.finite_of_fg_isAddTorsion _ fun q => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `QuotientAddGroup.mk'_surjective M' q`. Use `isOfFinAddOrder_iff_nsmul_eq_zero.2 ⟨n, hn, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_nsmul, QuotientAddGroup.mk'_apply, QuotientAddGroup.eq_zero_iff]`. Conclude with `x.2`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `q : AddSubgroup A → Set (N ⧸ M')` to `fun L => QuotientAddGroup.mk' M' '' {y : N | (y : A) ∈ L}`. Use `Set.Finite.of_finite_image (f := q) (Set.toFinite _) ?_` and prove the remaining obligations. Introduce and unpack `L ⟨hML, hLn, -⟩ L' ⟨hML', hL'n, -⟩ hq`. Establish `key : ∀ L L' : AddSubgroup A, M ≤ L' → (∀ x ∈ L, n • x ∈ M) → q L ⊆ q L' → L ≤ L'`. Introduce `L L' hML' hLn hsub x hx`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxN : x ∈ N` using `hLn x hx`. Take `⟨y, hy, hyx⟩` from `hsub ⟨⟨x, hxN⟩, hx, rfl⟩`. Rewrite `hyx` using `[QuotientAddGroup.mk'_apply, QuotientAddGroup.mk'_apply, QuotientAddGroup.eq]`. Establish `hd : -(y : A) + x ∈ M`. Use `AddSubgroup.mem_addSubgroupOf.1 hyx` as an intermediate fact.
-
-Simplify using `using this`. Establish `: x = y + (-(y : A) + x)` using `by abel`. Rewrite using `[this]`. Conclude with `L'.add_mem hy (hML' hd)`. Conclude with `le_antisymm (key L L' hML' hLn hq.le) (key L' L hML hL'n hq.ge)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_sandwich (M : AddSubgroup A) {n : ℕ} (hn : 0 < n) :
     {L : AddSubgroup A | M ≤ L ∧ (∀ x ∈ L, n • x ∈ M) ∧ L.FG}.Finite := by
@@ -115,51 +113,45 @@ variable {F E : Type*} [Field F] [Field E] [NumberField F] [NumberField E] [Alge
 variable {W : Type u} [AddCommGroup W] [Module E W]
 
 /- English proof (translation)
-Introduce `D`. Distinguish the cases in `hex : ∃ v₀ : W, v₀ ≠ 0 ∧ h.toSesq v₀ v₀ = 0`. Use `swap`. Use `⟨∅, Set.finite_empty, fun La l _ hl => ?_⟩` and prove the remaining obligations. It suffices to derive a contradiction.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Establish `hne : l ≠ ⊥` using `fun hb => by`. Use `hl.1` as an intermediate fact. Rewrite `this` using `[hb, finrank_bot]`. Conclude with `zero_ne_one this`. Take `⟨x, hxl, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hex ⟨x, hx0, hl.2 x hxl x hxl⟩`. Take `⟨v₀, hv₀, hv₀₀⟩` from `hex`. Take `⟨w₀, hvw, hww⟩` from `h₂ v₀ hv₀ hv₀₀`. Establish `hp : IsHyperbolicPair h v₀ w₀` using `⟨hv₀₀, hww, hvw⟩`. Take `⟨h', hh'⟩` from `h₃ v₀ w₀ hp`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨KK, hKK, n, D', hn, hred⟩` from `h₅ v₀ w₀ hp h' hh' D`. Establish `hdim : finrank E (hypComplement h v₀ w₀) < finrank E W`. Use `Submodule.finrank_lt fun htop => ?_` and prove the remaining obligations. Establish `hv : v₀ ∈ hypComplement h v₀ w₀` using `htop ▸ Submodule.mem_top`. Establish `h1 : h.toSesq w₀ v₀ = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← h.isSymm.eq v₀ w₀, hvw, map_one]`. Conclude with `one_ne_zero (h1 ▸ (mem_hypComplement.1 hv).2)`. Take `⟨S', hS', hS'L⟩` from `h₁ (hypComplement h v₀ w₀) h' hdim D'`. Establish `: NoZeroSMulDivisors ℕ W` using `⟨fun {c x} hcx => by`. Rewrite `hcx` using `[← Nat.cast_smul_eq_nsmul E]`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Introduce a local definition for the expression.
 
-Break down `smul_eq_zero.1 hcx with h0 | h0` into its components or cases. Conclude with `Or.inl (Nat.cast_eq_zero.1 h0)`. Conclude with `Or.inr h0⟩`. Set `Mof : AddSubgroup E × AddSubgroup E → AddSubgroup (hypComplement h v₀ w₀) → AddSubgroup W` to `fun p L => p.1.map ((smulAddHom E W).flip v₀) ⊔ L.map (hypComplement h v₀ w₀).subtype.toAddMonoidHom ⊔ p.2.map ((smulAddHom E W).flip w₀)`. Use `⟨(⋃ p ∈ KK, ⋃ L ∈ S', {La | Mof p L ≤ La ∧ (∀ x ∈ La, n • x ∈ Mof p L) ∧ La.FG}) ×ˢ {Submodule.span E {v₀}}, (hKK.biUnion fun p _ => hS'.biUnion fun L _ => finite_sandwich _ hn).prod (Set.finite_singleton _), ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `La l hLa hl`. Take `⟨g, La₁, hgLa, hgv, hK, hsplit, hInt⟩` from `hred La l hLa hl`. Take `⟨L, hL, m, hmL⟩` from `hS'L _ hInt`. Take `⟨gm, hgv₀, hgw₀, hgx⟩` from `h₄ v₀ w₀ hp h' hh' m`. Establish `hsmul : ∀ (γ : h.unitaryGroup) (c : E) (x : W), γ • (c • x) = c • (γ • x)` using `fun γ c x => map_smul (γ : W ≃ₗ[E] W) c x`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hmem : ∀ x : W, x ∈ gm⁻¹ • La₁ ↔ gm • x ∈ La₁` using `fun x => by`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨y, hy, rfl⟩` from `(AddSubgroup.mem_smul_pointwise_iff_exists _ _ _).1 hx`. Simplify using `using hy`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `hx`. Use `AddSubgroup.smul_mem_pointwise_smul _ gm⁻¹ La₁ hx` as an intermediate fact. Rewrite `this` using `[inv_smul_smul]`. Conclude with `this`. Use `⟨(gm⁻¹ • La₁, Submodule.span E {v₀}), ⟨?_, rfl⟩, g * gm, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Use `Set.mem_iUnion₂.2 ⟨_, hK, Set.mem_iUnion₂.2 ⟨L, hL, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Use `sup_le (sup_le ?_ ?_) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Rewrite using `[hmem]`. Express the relevant statement in the definitionally equal form `gm • (a • v₀) ∈ La₁`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsmul, hgv₀]`. Conclude with `ha`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Rewrite using `[hmem]`. Express the relevant statement in the definitionally equal form `gm • (y : W) ∈ La₁`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hgx]`. Establish `: m • y ∈ m • L` using `AddSubgroup.smul_mem_pointwise_smul y m L hy`. Rewrite `this` using `[hmL]`. Conclude with `this`. Introduce and unpack `_ ⟨b, hb, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hmem]`. Express the relevant statement in the definitionally equal form `gm • (b • w₀) ∈ La₁`. Rewrite using `[hsmul, hgw₀]`. Conclude with `hb`. Introduce `x hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `hx` using `[hmem]`. Take `⟨a, ha, b, hb, hz⟩` from `hsplit _ hx`. Use `set z : W := n • (gm • x) - a • v₀ - b • w₀ with hzdef`. Establish `hzL : z ∈ La₁` using `La₁.sub_mem (La₁.sub_mem (La₁.nsmul_mem hx n) ha) hb`. Establish `hz' : (⟨z, hz⟩ : hypComplement h v₀ w₀) ∈ m • L`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[hmL]`. Conclude with `hzL`. Take `⟨y, hy, hyz⟩` from `(AddSubgroup.mem_smul_pointwise_iff_exists _ _ _).1 hz'`. Establish `hnx : n • x = a • v₀ + (y : W) + b • w₀`. Apply `(MulAction.injective gm)` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show gm • (n • x) = gm • (a • v₀ + (y : W) + b • w₀)`. Establish `e1 : gm • (n • x) = n • (gm • x)` using `map_nsmul (gm : W ≃ₗ[E] W) n x`. Establish `e2 : gm • (y : W) = z`. Rewrite using `[hgx, hyz]`. Rewrite using `[e1, smul_add, smul_add, hsmul, hsmul, hgv₀, hgw₀, e2, hzdef]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[hnx]`. Use `AddSubgroup.add_mem _ (AddSubgroup.add_mem _ ?_ ?_) ?_` and prove the remaining obligations. Conclude with `AddSubgroup.mem_sup_left (AddSubgroup.mem_sup_left ⟨a, ha, rfl⟩)`. Conclude with `AddSubgroup.mem_sup_left (AddSubgroup.mem_sup_right ⟨y, hy, rfl⟩)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `AddSubgroup.mem_sup_right ⟨b, hb, rfl⟩`. Establish `hLa₁ : La₁ = g⁻¹ • La`. Rewrite using `[← hgLa, inv_smul_smul]`. Establish `hfg : ∀ (γ : h.unitaryGroup) (S : AddSubgroup W), S.FG → (γ • S).FG`. Introduce `γ S hS`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `: γ • S = S.map (((γ : W ≃ₗ[E] W) : W →ₗ[E] W).toAddMonoidHom)`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨y, hy, rfl⟩` from `(AddSubgroup.mem_smul_pointwise_iff_exists _ _ _).1 hx`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨y, hy, rfl⟩`. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `AddSubgroup.smul_mem_pointwise_smul y γ S hy`. Rewrite using `[this]`. Conclude with `fg_map_of_fg hS _`.
-
-Conclude with `hfg _ _ (hLa₁ ▸ hfg _ _ hLa.isLattice.fg)`. Rewrite using `[mul_smul, smul_inv_smul, hgLa]`. Establish `hgv0 : (g : W ≃ₗ[E] W) v₀ ≠ 0` using `fun h0 => hv₀ ((g : W ≃ₗ[E] W).map_eq_zero_iff.1 h0)`. Establish `hg' : ((g * gm : h.unitaryGroup) : W ≃ₗ[E] W) v₀ = (g : W ≃ₗ[E] W) v₀`. Express the relevant statement in the definitionally equal form `(g : W ≃ₗ[E] W) ((gm : W ≃ₗ[E] W) v₀) = _`.
-
-Conclude with `congrArg _ hgv₀`. Express the relevant statement in the definitionally equal form `(Submodule.span E {v₀}).map _ = l`. Rewrite using `[Submodule.map_span, Set.image_singleton]`. Express the relevant statement in the definitionally equal form `Submodule.span E {((g * gm : h.unitaryGroup) : W ≃ₗ[E] W) v₀} = l`. Rewrite using `[hg']`.
-
-Use `Submodule.eq_of_le_of_finrank_eq ?_ ?_` and prove the remaining obligations. Rewrite using `[Submodule.span_singleton_le_iff_mem]`. Conclude with `hgv`. Rewrite using `[finrank_span_singleton hgv0, hl.1]`.
+A detailed English derivation is pending.
 -/
 theorem LinePairOrbitsFinite.proof (h : HermitianForm F E W) [FiniteDimensional E W]
     (h₁ : LatticeOrbitsFiniteBelow.{u} F E (finrank E W)) (h₂ : WittPartner.Statement h)

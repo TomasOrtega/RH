@@ -14,7 +14,7 @@ noncomputable section
 namespace ZeroLocusDimH
 
 /- English proof (translation)
-Rewrite using `[Polynomial.hom_eval₂, Polynomial.eval_map, MvPolynomial.eval_X]`. Use `congr 1`. Use `MvPolynomial.ringHom_ext (fun a => ?_) (fun j => ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using `[paramMap]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem eval_eval₂_aeval {n s : ℕ} (π : Fin s → MvPolynomial (Fin n) ℂ)
     (Q : Polynomial (MvPolynomial (Fin s) ℂ)) (x : Fin n → ℂ) (i : Fin n) :
@@ -27,14 +27,14 @@ theorem eval_eval₂_aeval {n s : ℕ} (π : Fin s → MvPolynomial (Fin n) ℂ)
   · simp [paramMap]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h q hq => RingHom.mem_ker.2 (h q hq), fun h _ hq => RingHom.mem_ker.1 (h hq)⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_zeroSet_iff {n : ℕ} (I : Ideal (MvPolynomial (Fin n) ℂ)) (x : Fin n → ℂ) :
     (∀ q ∈ I, MvPolynomial.eval x q = 0) ↔ I ≤ RingHom.ker (MvPolynomial.eval x) :=
   ⟨fun h q hq => RingHom.mem_ker.2 (h q hq), fun h _ hq => RingHom.mem_ker.1 (h hq)⟩
 
 /- English proof (translation)
-Establish `hne : Ideal.Quotient.mk p g ≠ 0` using `by rwa [Ne, Ideal.Quotient.eq_zero_iff_mem]`. Establish `h` using `ringKrullDim_quotient_succ_le_of_nonZeroDivisor (mem_nonZeroDivisors_of_ne_zero hne)`. Establish `e : ((MvPolynomial (Fin n) ℂ ⧸ p) ⧸ Ideal.span {Ideal.Quotient.mk p g}) ≃+* MvPolynomial (Fin n) ℂ ⧸ (p ⊔ Ideal.span {g})` using `(Ideal.quotEquivOfEq (by rw [Ideal.map_span, Set.image_singleton])).trans (DoubleQuot.quotQuotEquivQuotSup p (Ideal.span {g}))`. Rewrite `h` using `[ringKrullDim_eq_of_ringEquiv e]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem ringKrullDim_quot_sup_add_one_le {n : ℕ} (p : Ideal (MvPolynomial (Fin n) ℂ)) [p.IsPrime]
     (g : MvPolynomial (Fin n) ℂ) (hg : g ∉ p) :
@@ -49,28 +49,26 @@ theorem ringKrullDim_quot_sup_add_one_le {n : ℕ} (p : Ideal (MvPolynomial (Fin
   rwa [ringKrullDim_eq_of_ringEquiv e] at h
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Qn14.le_of_add_one_le_succ h`.
+A detailed English derivation is pending.
 -/
 theorem le_of_add_one_le_succ {a : WithBot ℕ∞} {k : ℕ} (h : a + 1 ≤ ((k + 1 : ℕ) : WithBot ℕ∞)) :
     a ≤ (k : WithBot ℕ∞) :=
   _root_.UpperTheory.Reformulated.B.Qn14.le_of_add_one_le_succ h
 
 /- English proof (translation)
-Establish `hcover : {x : Fin n → ℂ | ∀ q ∈ J, MvPolynomial.eval x q = 0} ⊆ ⋃ p ∈ J.minimalPrimes, {x : Fin n → ℂ | ∀ q ∈ p, MvPolynomial.eval x q = 0}`. Introduce `x hx`. Rewrite `hx` using `[Set.mem_ofPred_eq, mem_zeroSet_iff]`. Establish `: (RingHom.ker (MvPolynomial.eval x)).IsPrime` using `RingHom.ker_isPrime _`. Take `⟨p, hp, hpx⟩` from `Ideal.exists_minimalPrimes_le hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `Set.mem_biUnion hp ((mem_zeroSet_iff p x).2 hpx)`. Use `(dimH_mono hcover).trans ?_` and prove the remaining obligations. Rewrite using `[dimH_bUnion (Ideal.finite_minimalPrimes_of_isNoetherianRing _ J).countable]`. Use `iSup₂_le fun p hp => ?_` and prove the remaining obligations. Establish `: p.IsPrime` using `hp.1.1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpd : ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ p) ≤ d` using `(ringKrullDim_le_of_surjective _ (Ideal.Quotient.factor_surjective hp.1.2)).trans hJ`. Take `⟨s, hs, π, P, hP, hP'⟩` from `exists_simple_root_data p`. Use `set g := ∏ i, (Polynomial.derivative (P i)).eval₂ (MvPolynomial.aeval π).toRingHom (X i) with hgdef`. Establish `hg : g ∉ p`. Rewrite using `[hgdef, Ideal.IsPrime.prod_mem_iff]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `⟨i, -, hi⟩`. Conclude with `hP' i hi`. Establish `hsplit : {x : Fin n → ℂ | ∀ q ∈ p, MvPolynomial.eval x q = 0} ⊆ {x | x ∈ {x : Fin n → ℂ | ∀ q ∈ p, MvPolynomial.eval x q = 0} ∧ ∀ i, Polynomial.eval (x i) ((Polynomial.derivative (P i)).map (MvPolynomial.eval (paramMap π x))) ≠ 0} ∪ {x : Fin n → ℂ | ∀ q ∈ p ⊔ Ideal.span {g}, MvPo …`. Introduce `x hx`. Distinguish the cases in `h : ∀ i, Polynomial.eval (x i) ((Polynomial.derivative (P i)).map (MvPolynomial.eval (paramMap π x))) ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Prove the first alternative. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Or.inl ⟨hx, h⟩`. Use `right push Not at h`. Take `⟨i, hi⟩` from `h`. Rewrite using `[Set.mem_ofPred_eq, mem_zeroSet_iff, sup_le_iff, Ideal.span_singleton_le_iff_mem, RingHom.mem_ker]`. Use `⟨(mem_zeroSet_iff p x).1 hx, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hgdef, map_prod]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) (by rw [eval_eval₂_aeval]; exact hi)`. Use `(dimH_mono hsplit).trans ?_` and prove the remaining obligations. Rewrite using `[dimH_union]`. Use `max_le ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hV : ∀ x ∈ {x : Fin n → ℂ | ∀ q ∈ p, MvPolynomial.eval x q = 0}, ∀ i, Polynomial.eval (x i) ((P i).map (MvPolynomial.eval (paramMap π x))) = 0`. Introduce `x hx i`. Rewrite using `[← eval_eval₂_aeval]`. Conclude with `hx _ (hP i)`. Use `(dimH_simple_roots_le π P _ hV).trans ?_` and prove the remaining obligations.
-
-Establish `hsd : s ≤ d` using `by exact_mod_cast hs.trans hpd`. Establish `: (s : ENNReal) ≤ d` using `by exact_mod_cast hsd`. Use `gcongr`. Conclude with `hIH _ ((ringKrullDim_quot_sup_add_one_le p g hg).trans hpd)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dimH_le_of_step {n : ℕ} (d : ℕ)
     (hIH : ∀ J' : Ideal (MvPolynomial (Fin n) ℂ), ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ J') + 1 ≤ d →
@@ -128,15 +126,15 @@ theorem dimH_le_of_step {n : ℕ} (d : ℕ)
   · exact hIH _ ((ringKrullDim_quot_sup_add_one_le p g hg).trans hpd)
 
 /- English proof (translation)
-Proceed by induction on `d with`. Consider the case `zero`. Introduce `n J hJ`. Use `dimH_le_of_step 0 (fun J' hJ' => ?_) J hJ` and prove the remaining obligations. Distinguish the cases in `htop : J' = ⊤`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Establish `: {x : Fin n → ℂ | ∀ q ∈ J', MvPolynomial.eval x q = 0} = ∅`. Use extensionality with `x`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false, not_forall]`. Conclude with `⟨1, htop ▸ Submodule.mem_top, by simp⟩`. Rewrite using `[this, dimH_empty]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `: Nontrivial (MvPolynomial (Fin n) ℂ ⧸ J')` using `Ideal.Quotient.nontrivial_iff.2 htop`. Establish `h0` using `ringKrullDim_nonneg_of_nontrivial (R := MvPolynomial (Fin n) ℂ ⧸ J')`. Establish `h1 : (0 : WithBot ℕ∞) + 1 ≤ ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ J') + 1` using `by gcongr`. Establish `h2` using `h1.trans hJ'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[zero_add, Nat.cast_zero]`. Conclude with `absurd h2 (not_le.2 zero_lt_one)`. Consider the case `succ k ih`. Introduce `n J hJ`. Use `dimH_le_of_step (k + 1) (fun J' hJ' => ?_) J hJ` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(ih n J' (le_of_add_one_le_succ hJ')).trans ?_` and prove the remaining obligations. Establish `: (k : ENNReal) ≤ ((k + 1 : ℕ) : ENNReal)` using `by exact_mod_cast Nat.le_succ k`. Use `gcongr`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dimH_zeroLocus_le (d : ℕ) : ∀ (n : ℕ) (J : Ideal (MvPolynomial (Fin n) ℂ)),
     ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ J) ≤ d →
@@ -166,7 +164,7 @@ theorem dimH_zeroLocus_le (d : ℕ) : ∀ (n : ℕ) (J : Ideal (MvPolynomial (Fi
     gcongr
 
 /- English proof (translation)
-Introduce `n d J hJ` and use `dimH_zeroLocus_le d n J hJ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem proof : Statement := fun n d J hJ => dimH_zeroLocus_le d n J hJ
 

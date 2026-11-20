@@ -9,13 +9,13 @@ open MvPolynomial GlobalTheory.Capelli GlobalTheory.Harm GlobalTheory.Harm.Highe
 namespace GlobalTheory.DefLift.Joint
 
 /- English proof (translation)
-Rewrite using `[Q.as_sum, map_sum, Finset.mul_sum]`. Use `Submodule.sum_mem _ fun m hm => ?_` and prove the remaining obligations. Rewrite `hQ`, the goal using `[mem_restrictTotalDegree]`. Establish `hd : (m.sum fun _ e => e) ≤ N` using `(le_totalDegree hm).trans hQ`. Rewrite using `[pderiv_monomial]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : m v = 0`. Simplify using `[h]`. Rewrite using `[X, monomial_mul]`. Use `(totalDegree_monomial_le _ _).trans (le_trans (le_of_eq ?_) hd)` and prove the remaining obligations. Establish `h1 : Finsupp.single v 1 ≤ m`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Finsupp.single_le_iff]`. Use linear arithmetic over natural numbers and integers. Establish `h2 : m = Finsupp.single v 1 + (m - Finsupp.single v 1)` using `(add_tsub_cancel_of_le h1).symm`. Use `conv_rhs => rw [h2]`. Rewrite using `[Finsupp.sum_add_index' (by simp) (by simp), Finsupp.sum_add_index' (by simp) (by simp)]`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem X_mul_pderiv_mem {σ : Type} (u v : σ) (N : ℕ) (Q : MvPolynomial σ ℂ)
     (hQ : Q ∈ restrictTotalDegree σ ℂ N) : X u * pderiv v Q ∈ restrictTotalDegree σ ℂ N := by
@@ -38,7 +38,7 @@ theorem X_mul_pderiv_mem {σ : Type} (u v : σ) (N : ℕ) (Q : MvPolynomial σ �
     rfl
 
 /- English proof (translation)
-The claim follows from `highest_weight_antitone (rowOp ℂ z) (rowOp_lie z hz) (restrictTotalDegree σ ℂ P.totalDegree) (fun i j w hw => by rw [rowOp_apply] exact Submodule.sum_mem _ fun _ _ => X_mul_pderiv_mem _ _ _ _ hw) P ((mem_restrictTotalDegree _ _ _).2 le_rfl) hP μ (fun a b h => (rowOp_apply _ _ _ _ …`.
+A detailed English derivation is pending.
 -/
 theorem antitone_rowOp {σ J : Type} [Fintype σ] [Fintype J] {p : ℕ} (z : Fin p × J → σ)
     (hz : Function.Injective z) {P : MvPolynomial σ ℂ} (hP : P ≠ 0) (μ : Fin p → ℤ)
@@ -53,7 +53,7 @@ theorem antitone_rowOp {σ J : Type} [Fintype σ] [Fintype J] {p : ℕ} (z : Fin
     (fun a => (rowOp_apply _ _ _ _).trans (hwt a))
 
 /- English proof (translation)
-Use `congrArg (coeff m) h` as an intermediate fact. Rewrite `this` using `[coeff_sum, coeff_smul]`. Simplify using `only [coeff_X_mul_pderiv, ← Finset.sum_mul, smul_eq_mul] at this`. Establish `h2` using `mul_right_cancel₀ (mem_support_iff.1 hm) this`. Conclude with `h2` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem degree_of_mem_support {σ J : Type} [Fintype J] (z : J → σ) {P : MvPolynomial σ ℂ} {w : ℤ}
     (h : ∑ k, X (z k) * pderiv (z k) P = (w : ℂ) • P) {m : σ →₀ ℕ} (hm : m ∈ P.support) :
@@ -65,17 +65,17 @@ theorem degree_of_mem_support {σ J : Type} [Fintype J] (z : J → σ) {P : MvPo
   exact_mod_cast h2
 
 /- English proof (translation)
-Set `z : T → Fin p × Fin n → Var T p 0 (Fin n)` to `fun t w => xVar t w.1 w.2`. Set `y : T → Fin 0 × Fin n → Var T p 0 (Fin n)` to `fun t w => yVar t w.1 w.2`. Establish `hz : ∀ t, Function.Injective (z t)` using `fun t u w e => by simpa [z, Prod.ext_iff] using e`. Establish `hy : ∀ t, Function.Injective (y t)` using `fun t u w e => u.1.elim0`. Establish `hzy : ∀ t u w, z t u ≠ y t w` using `fun t u w => w.1.elim0`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hμ : ∀ t, Antitone (μ t)` using `fun t => antitone_rowOp (z t) (hz t) hP _ (hup' t) (hwt' t)`. Establish `hκ : ∀ t, Antitone (κ t)` using `fun t => antitone_rowOp (fun w : Fin n × Fin p => z t w.swap) ((hz t).comp Prod.swap_injective) hP _ (hup t) (hwt t)`. Set `a : T → Fin p → ℕ` to `fun t i => (μ t i).toNat`. Establish `ha : ∀ t, Antitone (a t)` using `fun t i j hij => Int.toNat_le_toNat (hμ t hij)`. Establish `hdeg : ∀ t i, ∀ m ∈ P.support, ∑ k, m (xVar t i k) = a t i` using `fun t i m hm => by`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `degree_of_mem_support (fun k => xVar t i k) (hwt' t i) hm` as an intermediate fact. Simplify using `only [a]`. Use linear arithmetic over natural numbers and integers. Establish `hinv : ∀ t (i j : Fin p), i < j → ∀ s : ℂ, bind₁ (fun v => X v + ∑ k, if v = z t (j, k) then C s * X (z t (i, k)) else 0) P = P` using `fun t i j hij => ((rowAdd_invariant_iff (fun k => z t (i, k)) (fun k => z t (j, k)) (fun k l e => by simpa using hz t e) (fun k l e => hij.ne (congrArg Prod.fst (hz t e))) P).out 2 1).1 (hup' t i j hij)`. Establish `hw : ∀ t, κ t = mixedWeight n (a t) (fun _ : Fin 0 => 0)` using `fun t => weight_eq_mixedWeight h (z t) (hz t) (y t) (hy t) (hzy t) (a t) _ (ha t) (fun i => i.elim0) (hdeg t) (fun i => i.elim0) (hinv t) (fun i => i.elim0) (fun _ i => i.elim0) (κ t) (hκ t) (fun k l hkl => by rw [mixedOp_apply]; simpa using hup t k l hkl) (fun k => by rw [mixedO …`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (fun t => diffOf fun i : Fin p => (κ t (Fin.castLE (n` using `p) h i)).toNat) = fun t => diffOf (a t) := by`. Use function extensionality and compare the values at `t`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[hw t, mixedWeight_apply]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[e]`. Use `exists_eq_smul_basePoly h _ _ ?_ κ hκ (fun t k l hkl => by simpa using hup t k l hkl) fun t k => by simpa using hwt t k` and prove the remaining obligations. Use `mem_rowHighest_iff_of_charZero.2 ⟨fun _ _ b => b.elim0, fun t i m hm => ?_, fun _ b => b.elim0, fun t i j hij s => ?_, fun _ b => b.elim0⟩` and prove the remaining obligations. Rewrite using `[partOf_diffOf (ha t)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hdeg t i m hm`. Rewrite using `[rowAddX_eq_bind₁]`. Conclude with `hinv t i j hij s`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_eq_smul_base {T : Type} [Fintype T] {p n : ℕ} (h : p + 0 ≤ n)
     {P : Poly ℂ T p 0 (Fin n)} (hP : P ≠ 0) (κ : T → Fin n → ℤ) (μ : T → Fin p → ℤ)
@@ -130,15 +130,15 @@ end GlobalTheory.DefLift.Joint
 namespace GlobalTheory.DefLift
 
 /- English proof (translation)
-Distinguish the cases in `hQ : Q = 0`. Conclude with `⟨0, by simp [hQ]⟩`. Set `f : ι × Fin m × Fin n → Var ι n 0 (Fin m)` to `fun v => xVar v.1 v.2.2 v.2.1`. Establish `hf : Function.Injective f` using `fun u w e => by`. Simplify using `only [f, Prod.ext_iff, Sum.inl.injEq] at e`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Prod.ext e.1 (Prod.ext e.2.2 e.2.1)`. Establish `hr : ∀ τ k l (R : Pol ι m n), rename f (rowLie n τ k l R) = ∑ a, X (xVar τ a k) * pderiv (xVar τ a l) (rename f R)` using `fun τ k l R => by`. Rewrite using `[rowLie_apply, map_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, rename_X, ← pderiv_rename hf]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : ∀ τ k l (R : Pol ι m n), rename f (colLie m τ k l R) = ∑ a, X (xVar τ k a) * pderiv (xVar τ l a) (rename f R)` using `fun τ k l R => by`. Rewrite using `[colLie_apply, map_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, rename_X, ← pderiv_rename hf]`. Establish `hi` using `rename_injective (R := ℂ) f hf`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨r, er⟩` from `Joint.exists_eq_smul_base (show n + 0 ≤ m from hnm) ((map_ne_zero_iff _ hi).2 hP) κ μ (fun t k l h => by rw [← hr, (h1 t k l h).1, map_zero]) (fun t k => by rw [← hr, (h2 t k).1, map_smul]) (fun t k l h => by rw [← hc, (h3 t k l h).1, map_zero]) (fun t k => by rw [← hc, (h4 t k). …`. Take `⟨s, es⟩` from `Joint.exists_eq_smul_base (show n + 0 ≤ m from hnm) ((map_ne_zero_iff _ hi).2 hQ) κ μ' (fun t k l h => by rw [← hr, (h1 t k l h).2, map_zero]) (fun t k => by rw [← hr, (h2 t k).2, map_smul]) (fun t k l h => by rw [← hc, (h3 t k l h).2, map_zero]) (fun t k => by rw [← hc, (h4 t k) …`. Establish `hr0 : r ≠ 0`. Introduce and unpack `rfl`. Conclude with `hP (hi (by rw [er, zero_smul, map_zero]))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨s / r, hi ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, er, es, smul_smul, div_mul_cancel₀ _ hr0]`.
+A detailed English derivation is pending.
 -/
 theorem joint_highest_proportional (ι : Type) [Fintype ι] (m n : ℕ) (hnm : n ≤ m) (P Q : Pol ι m n)
     (κ : ι → Fin m → ℤ) (μ μ' : ι → Fin n → ℤ) (hP : P ≠ 0)

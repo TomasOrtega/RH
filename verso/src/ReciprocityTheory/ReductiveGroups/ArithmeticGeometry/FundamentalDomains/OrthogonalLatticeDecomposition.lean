@@ -8,13 +8,13 @@ open scoped ComplexConjugate
 variable {E : Type} [Field E] [NumberField E] [NumberField.IsCMField E]
 
 /- English proof (translation)
-Introduce `r X ξ hξ x hx u hu`. Take `⟨-, hiso, hne⟩` from `hξ`. Establish `key : ∀ τ : X.Ψ, hermC τ.1 X.Gm (X.ucomp x ξ u τ) (Data.emb τ.1 ξ) = 0 ∧ hermC τ.1 X.Gm (X.Jz x (X.ucomp x ξ u) τ) (Data.emb τ.1 ξ) = 0`. Introduce `τ`. Use `set e := Data.emb τ.1 ξ with he`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `he0 : e ≠ 0` using `emb_ne_zero τ.1 hne`. Establish `hee : hermC τ.1 X.Gm e e = 0` using `by rw [he, hermC_emb, hiso, map_zero]`. Establish `hη : X.Hf x τ e e ≠ 0` using `fun h => by`. Use `X.Hf_iso_pos hx τ he0 hee` as an intermediate fact. Rewrite `this` using `[h]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `at this`. Establish `hu' : X.ucomp x ξ u τ = u τ - (X.Hf x τ (u τ) e / X.Hf x τ e e) • e` using `rfl`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hu', hermC_sub_left, hermC_smul_left, hee, mul_zero, sub_zero]`. Conclude with `hu τ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[Data.Jz_apply, hu', hermC_smul_left, Data.jp_sub, Data.jp_smul, hermC_sub_left, hermC_smul_left, ← Data.Hf_eq_jp, ← Data.Hf_eq_jp, div_mul_cancel₀ _ hη, sub_self, mul_zero]`. Conclude with `⟨fun τ => (key τ).1, fun τ => (key τ).2⟩`.
+A detailed English derivation is pending.
 -/
 theorem orthogonal_lattice_decomposition : ProjectionAlongComplement (E := E) := by
   intro r X ξ hξ x hx u hu

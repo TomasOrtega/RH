@@ -8,7 +8,7 @@ open LateralTheory.DivDb Finset
 variable {C : Type} [Field C] {N n : ℕ}
 
 /- English proof (translation)
-The claim follows from `Function.mk_mem_periodicPts (orderOf_pos π) (by show (π^[orderOf π]) k = k rw [Equiv.Perm.iterate_eq_pow, pow_orderOf_eq_one]; rfl)`.
+A detailed English derivation is pending.
 -/
 theorem mem_periodic (π : Equiv.Perm (Fin n)) (k : Fin n) : k ∈ Function.periodicPts π :=
   Function.mk_mem_periodicPts (orderOf_pos π) (by
@@ -16,15 +16,15 @@ theorem mem_periodic (π : Equiv.Perm (Fin n)) (k : Fin n) : k ∈ Function.peri
     rw [Equiv.Perm.iterate_eq_pow, pow_orderOf_eq_one]; rfl)
 
 /- English proof (translation)
-The claim follows from `Function.minimalPeriod_pos_of_mem_periodicPts (mem_periodic π k)`.
+A detailed English derivation is pending.
 -/
 theorem mp_pos (π : Equiv.Perm (Fin n)) (k : Fin n) : 0 < Function.minimalPeriod π k :=
   Function.minimalPeriod_pos_of_mem_periodicPts (mem_periodic π k)
 
 /- English proof (translation)
-Use extensionality with `m`. Simplify using `only [mem_filter, mem_univ, true_and, mem_image, mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨i, hi⟩` from `h.exists_nat_pow_eq`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨i % Function.minimalPeriod π k, Nat.mod_lt _ (mp_pos π k), ?_⟩` and prove the remaining obligations. Rewrite using `[Function.iterate_mod_minimalPeriod_eq, Equiv.Perm.iterate_eq_pow, hi]`. Introduce and unpack `⟨s, -, rfl⟩`. Rewrite using `[Equiv.Perm.iterate_eq_pow]`. Conclude with `Equiv.Perm.sameCycle_pow_right.2 (Equiv.Perm.SameCycle.refl _ _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orbit_eq (π : Equiv.Perm (Fin n)) (k : Fin n) :
     (univ.filter (fun m => π.SameCycle k m)) =
@@ -41,7 +41,7 @@ theorem orbit_eq (π : Equiv.Perm (Fin n)) (k : Fin n) :
     exact Equiv.Perm.sameCycle_pow_right.2 (Equiv.Perm.SameCycle.refl _ _)
 
 /- English proof (translation)
-Introduce `a ha b hb h`. Conclude with `Function.iterate_injOn_Iio_minimalPeriod (by simpa using ha) (by simpa using hb) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem injOn_orbit (π : Equiv.Perm (Fin n)) (k : Fin n) :
     Set.InjOn (fun s => (π^[s]) k) ↑(range (Function.minimalPeriod π k)) := by
@@ -49,14 +49,14 @@ theorem injOn_orbit (π : Equiv.Perm (Fin n)) (k : Fin n) :
   exact Function.iterate_injOn_Iio_minimalPeriod (by simpa using ha) (by simpa using hb) h
 
 /- English proof (translation)
-Rewrite using `[orbit_eq, card_image_of_injOn (injOn_orbit π k), card_range]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem card_orbit (π : Equiv.Perm (Fin n)) (k : Fin n) :
     (univ.filter (fun m => π.SameCycle k m)).card = Function.minimalPeriod π k := by
   rw [orbit_eq, card_image_of_injOn (injOn_orbit π k), card_range]
 
 /- English proof (translation)
-Rewrite using `[orbit_eq, prod_image (injOn_orbit π k)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_orbit (π : Equiv.Perm (Fin n)) (k : Fin n) (τ : Fin n → C) :
     ∏ s ∈ range (Function.minimalPeriod π k), τ ((π^[s]) k) =
@@ -64,7 +64,7 @@ theorem prod_orbit (π : Equiv.Perm (Fin n)) (k : Fin n) (τ : Fin n → C) :
   rw [orbit_eq, prod_image (injOn_orbit π k)]
 
 /- English proof (translation)
-Use extensionality with `m`. Simplify using `only [mem_filter, mem_univ, true_and]`. Conclude with `⟨fun h' => h.symm.trans h', fun h' => h.trans h'⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem filt_eq (π : Equiv.Perm (Fin n)) {i k : Fin n} (h : π.SameCycle i k) :
     univ.filter (fun m => π.SameCycle i m) = univ.filter (fun m => π.SameCycle k m) := by
@@ -73,7 +73,7 @@ theorem filt_eq (π : Equiv.Perm (Fin n)) {i k : Fin n} (h : π.SameCycle i k) :
   exact ⟨fun h' => h.symm.trans h', fun h' => h.trans h'⟩
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_mul, Finset.sum_eq_single k]`. Rewrite using `[smul_mul_assoc, (hp.1.idem k).eq]`. Introduce `j _ hj`. Rewrite using `[smul_mul_assoc, hp.1.ortho hj, smul_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem tp {p : Fin n → Mat C N} (hp : Sys p) (τ : Fin n → C) (k : Fin n) :
     (∑ j, τ j • p j) * p k = τ k • p k := by
@@ -83,7 +83,7 @@ theorem tp {p : Fin n → Mat C N} (hp : Sys p) (τ : Fin n → C) (k : Fin n) :
   · simp
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Rewrite using `[pow_succ', mul_assoc, ih, ← mul_assoc, hx, mul_assoc, ← pow_succ', Function.iterate_succ_apply']`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem xpow {p : Fin n → Mat C N} {x : Mat C N} {π : Equiv.Perm (Fin n)}
     (hx : ∀ j, x * p j = p (π j) * x) (m : ℕ) (k : Fin n) :
@@ -95,9 +95,9 @@ theorem xpow {p : Fin n → Mat C N} {x : Mat C N} {π : Equiv.Perm (Fin n)}
       Function.iterate_succ_apply']
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Rewrite using `[pow_succ', mul_assoc, ih, mul_smul_comm, xpow hx, prod_range_succ, ← smul_smul, pow_succ', mul_assoc x (x ^ m), xpow hx]`. Use `congr 1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← mul_assoc, mul_assoc x, tp hp, mul_smul_comm, smul_mul_assoc]`. Simplify using `only [mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ypow {p : Fin n → Mat C N} {x : Mat C N} {π : Equiv.Perm (Fin n)} (hp : Sys p)
     (hx : ∀ j, x * p j = p (π j) * x) (τ : Fin n → C) (m : ℕ) (k : Fin n) :
@@ -112,7 +112,7 @@ theorem ypow {p : Fin n → Mat C N} {x : Mat C N} {π : Equiv.Perm (Fin n)} (hp
     simp only [mul_assoc]
 
 /- English proof (translation)
-Establish `h1 : M *ᵥ v = ∑ k, (M * p k) *ᵥ v` using `by conv_lhs => rw [← mul_one M, ← hp.1.complete, Finset.mul_sum]`. Rewrite using `[Matrix.sum_mulVec]`. Rewrite using `[h1, ← Finset.sum_subset (subset_univ O)]`. Introduce `k _ hk`. Rewrite using `[← mulVec_mulVec, hs k hk, mulVec_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem split {p : Fin n → Mat C N} (hp : Sys p) (O : Finset (Fin n)) (v : Fin N → C)
     (hs : ∀ k, k ∉ O → p k *ᵥ v = 0) (M : Mat C N) : M *ᵥ v = ∑ k ∈ O, (M * p k) *ᵥ v := by
@@ -123,7 +123,7 @@ theorem split {p : Fin n → Mat C N} (hp : Sys p) (O : Finset (Fin n)) (v : Fin
   intro k _ hk; rw [← mulVec_mulVec, hs k hk, mulVec_zero]
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih => rw [pow_succ, ← mulVec_mulVec, h, mulVec_smul, ih, smul_smul, pow_succ']`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem powv (y : Mat C N) (l : C) (v : Fin N → C) (h : y *ᵥ v = l • v) (m : ℕ) :
     (y ^ m) *ᵥ v = l ^ m • v := by
@@ -132,7 +132,7 @@ theorem powv (y : Mat C N) (l : C) (v : Fin N → C) (h : y *ᵥ v = l • v) (m
   | succ m ih => rw [pow_succ, ← mulVec_mulVec, h, mulVec_smul, ih, smul_smul, pow_succ']
 
 /- English proof (translation)
-Rewrite using `[Polynomial.IsRoot.def, eval_charpoly, ← exists_mulVec_eq_zero_iff]`. Use `⟨v, hv, ?_⟩` and prove the remaining obligations. Rewrite using `[sub_mulVec, h]`. Use extensionality with `a`. Simplify using `[Matrix.scalar_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem root_of (M : Mat C N) (β : C) (v : Fin N → C) (hv : v ≠ 0) (h : M *ᵥ v = β • v) :
     M.charpoly.IsRoot β := by
@@ -143,13 +143,13 @@ theorem root_of (M : Mat C N) (β : C) (v : Fin N → C) (hv : v ≠ 0) (h : M *
   simp [Matrix.scalar_apply]
 
 /- English proof (translation)
-Establish `hs' : ∀ k, k ∉ univ.filter (fun m => π.SameCycle i m) → p k *ᵥ v = 0` using `fun k hk => hs k (by simpa using hk)`. Establish `hQ : (∏ k ∈ univ.filter (fun m => π.SameCycle i m), τ k) ≠ 0` using `prod_ne_zero_iff.2 fun k _ => hτ k`. Establish `hk : ∀ k ∈ univ.filter (fun m => π.SameCycle i m), (x * ∑ j, τ j • p j) ^ (univ.filter (fun m => π.SameCycle i m)).card * p k = (∏ k ∈ univ.filter (fun m => π.SameCycle i m), τ k) • (x ^ (univ.filter (fun m => π.SameCycle i m)).card * p k)`. Introduce `k hk`. Establish `hik : π.SameCycle i k` using `by simpa using hk`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[ypow hp hx]`. Use `congr 1`. Rewrite using `[filt_eq π hik, card_orbit, prod_orbit]`. Establish `key : (∏ k ∈ univ.filter (fun m => π.SameCycle i m), τ k) • (x ^ (univ.filter (fun m => π.SameCycle i m)).card *ᵥ v) = l ^ (univ.filter (fun m => π.SameCycle i m)).card • v`. Rewrite using `[← powv _ _ _ hy, split hp _ v hs' (x ^ _), split hp _ v hs' ((x * ∑ j, τ j • p j) ^ _), smul_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `sum_congr rfl fun k hk' => ?_` and prove the remaining obligations. Rewrite using `[hk k hk', smul_mulVec]`. Establish `hxc` using `hxu.pow (univ.filter (fun m => π.SameCycle i m)).card`. Establish `hl : l ^ (univ.filter (fun m => π.SameCycle i m)).card ≠ 0`. Introduce `h0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `key` using `[h0, zero_smul]`. Establish `h2` using `(smul_eq_zero.1 key).resolve_left hQ`. Conclude with `hv ((mulVec_injective_iff_isUnit.2 hxc) (by rw [h2, mulVec_zero]))`. Use `⟨_, div_ne_zero hl hQ, root_of _ _ v hv ?_, by field_simp⟩` and prove the remaining obligations. Rewrite using `[div_eq_inv_mul, ← smul_smul, ← key, smul_smul, inv_mul_cancel₀ hQ, one_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eig {p : Fin n → Mat C N} {x : Mat C N} {π : Equiv.Perm (Fin n)} (hp : Sys p)
     (hxu : IsUnit x) (hx : ∀ j, x * p j = p (π j) * x) (τ : Fin n → C) (hτ : ∀ j, τ j ≠ 0)
@@ -188,15 +188,13 @@ theorem eig {p : Fin n → Mat C N} {x : Mat C N} {π : Equiv.Perm (Fin n)} (hp 
   rw [div_eq_inv_mul, ← smul_smul, ← key, smul_smul, inv_mul_cancel₀ hQ, one_smul]
 
 /- English proof (translation)
-Introduce `C _ N n p x π hp hxu hx`. Use `⟨⋃ a : Fin (n + 1), ⋃ b : Fin (n + 1), Set.image2 (fun β β' => β' ^ (a : ℕ) / β ^ (b : ℕ)) (↑(x ^ (a : ℕ)).charpoly.roots.toFinset) (↑(x ^ (b : ℕ)).charpoly.roots.toFinset), ?_, ?_⟩` and prove the remaining obligations. Conclude with `Set.finite_iUnion fun a => Set.finite_iUnion fun b => (Finset.finite_toSet _).image2 _ (Finset.finite_toSet _)`. Introduce `τ hτ hml i j hij l v w hv hw hyv hyw hsv hsw`. Take `⟨β, hβ0, hβr, hβ⟩` from `eig hp hxu hx τ hτ i l v hv hyv hsv`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨β', hβ0', hβr', hβ'⟩` from `eig hp hxu hx τ hτ j l w hw hyw hsw`. Establish `hO : (univ.filter (fun m => π.SameCycle i m)).Nonempty` using `⟨i, mem_filter.2 ⟨mem_univ _, Equiv.Perm.SameCycle.refl _ _⟩⟩`. Establish `hO' : (univ.filter (fun m => π.SameCycle j m)).Nonempty` using `⟨j, mem_filter.2 ⟨mem_univ _, Equiv.Perm.SameCycle.refl _ _⟩⟩`. Establish `hd : Disjoint (univ.filter (fun m => π.SameCycle i m)) (univ.filter (fun m => π.SameCycle j m))`. Rewrite using `[Finset.disjoint_left]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m h1 h2`. Simplify using `only [mem_filter, mem_univ, true_and] at h1 h2`. Conclude with `hij (h1.trans h2.symm)`. Establish `hc : ∀ O : Finset (Fin n), O.card < n + 1` using `fun O => Nat.lt_succ_of_le ((card_le_univ O).trans (by simp))`. Use `hml _ _ hO hO' hd (β' ^ (univ.filter (fun m => π.SameCycle i m)).card / β ^ (univ.filter (fun m => π.SameCycle j m)).card) ?_ ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Set.mem_iUnion.2 ⟨⟨_, hc (univ.filter (fun m => π.SameCycle i m))⟩, Set.mem_iUnion.2 ⟨⟨_, hc (univ.filter (fun m => π.SameCycle j m))⟩, Set.mem_image2_of_mem ?_ ?_⟩⟩` and prove the remaining obligations. Simplify using `only [Finset.mem_coe, Multiset.mem_toFinset]`. Conclude with `(Polynomial.mem_roots (Matrix.charpoly_monic _).ne_zero).2 hβr`. Simplify using `only [Finset.mem_coe, Multiset.mem_toFinset]`. Conclude with `(Polynomial.mem_roots (Matrix.charpoly_monic _).ne_zero).2 hβr'`.
-
-Rewrite using `[div_mul_eq_mul_div, eq_div_iff (pow_ne_zero _ hβ0), ← mul_pow, ← hβ, ← pow_mul, ← mul_pow, mul_comm β', ← hβ', ← pow_mul, mul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GenSpec_of : GenSpec := by
   intro C _ N n p x π hp hxu hx

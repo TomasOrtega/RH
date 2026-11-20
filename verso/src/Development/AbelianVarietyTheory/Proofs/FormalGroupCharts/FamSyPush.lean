@@ -15,9 +15,9 @@ open GlobalTheory.ChartCmp
 namespace GlobalTheory.PushSym
 
 /- English proof (translation)
-Establish `m1 : ∀ k, (r ≫ φ k) z ∈ (L.pull F).U (fun _ => J ((r ≫ φ k) ≫ F))` using `fun k => Set.mem_iInter.2 fun _ => hJ ((r ≫ φ k) ≫ F)`. Establish `hm : r z ∈ LB.wchart (L.pull F) φ (fun k _ => J ((r ≫ φ k) ≫ F)) ⊓ LB.wchart L' φ (fun k => J' (r ≫ φ k))` using `⟨Set.mem_iInter.2 m1, hJ'.mem φ r⟩`. Establish `e` using `congrArg (gm r z (LB.wchart (L.pull F) φ (fun k _ => J ((r ≫ φ k) ≫ F)) ⊓ LB.wchart L' φ (fun k => J' (r ≫ φ k)))) (h (fun k _ => J ((r ≫ φ k) ≫ F), fun k => J' (r ≫ φ k)))`. Rewrite using `[val_of g' r z J (fun k => J ((r ≫ φ k) ≫ F)) (fun k => by rw [Category.assoc])]`. Use `((gm_res r z _ hm _).trans (gm_res r z _ hm.1 _)).symm.trans (e.trans ((map_mul _ _ _).trans (congrArg₂ (· * ·) ?_ (gm_res r z _ hm _))))` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(map_prod _ _ _).trans (Finset.prod_congr rfl fun k _ => (map_zpow _ _ _).trans (congrArg (· ^ ε k) ?_))` and prove the remaining obligations. Conclude with `(gm_res r z _ hm _).trans (gm_pull r (φ k) z ((L.pull F).U (fun _ => J ((r ≫ φ k) ≫ F)) ⊓ L'.U (J' (r ≫ φ k))) ⟨m1 k, hJ' (r ≫ φ k)⟩ _)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem val_carries {X X' Y Z : Scheme.{0}} {L' : LB X'} (L : LB X) (F : X' ⟶ X) (w : LB.Iso L' (L.pull F))
     {K : Type} [Fintype K] (φ : K → (Y ⟶ X')) (ε : K → ℤ) (g : LB.Gen (LB.LinComb L' φ ε))
@@ -39,7 +39,7 @@ theorem val_carries {X X' Y Z : Scheme.{0}} {L' : LB X'} (L : LB X) (F : X' ⟶ 
     ⟨m1 k, hJ' (r ≫ φ k)⟩ _)
 
 /- English proof (translation)
-The claim follows from `(map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_res r z _ (hJ.mem φ r) _) rfl)`.
+A detailed English derivation is pending.
 -/
 theorem val_scaleGenG {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X0 : Scheme.{0}} (t : SAB H X0)
     {Y Z : Scheme.{0}} {K : Type} [Fintype K] (φ : K → (Y ⟶ t.G.left)) (ε : K → ℤ) (u : Γ(Y, ⊤)ˣ)
@@ -48,11 +48,9 @@ theorem val_scaleGenG {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Ho
   (map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_res r z _ (hJ.mem φ r) _) rfl)
 
 /- English proof (translation)
-Establish `e : ∀ k, s.left ≫ cφG t ![a, b] k = cφG t ![b, a] k` using `fun k => by`. Use `psum_hom (preHom (G := t.G) s) ![a, b] k.down` as an intermediate fact. Establish `e2 : (fun i => preHom (G` using `t.G) s (![a, b] i)) = ![b, a] := by`. Use function extensionality and compare the values at `i`. Use `fin_cases i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `exacts [ha, hb]`. Rewrite `this` using `[e2]`. Conclude with `congrArg (fun q => q.left) this`. Use `(Finset.prod_congr rfl fun k _ => congrArg (fun q => h q ^ cε 2 k) (e k)).trans ?_` and prove the remaining obligations. Use `(prod_cube₂ b a h).trans (Eq.trans ?_ (prod_cube₂ a b h).symm)` and prove the remaining obligations.
-
-Rewrite using `[_root_.mul_comm b a, mul_right_comm (h (a * b).left)]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_swap {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X0 : Scheme.{0}} (t : SAB H X0)
     {T : Over X0} (a b : T ⟶ t.G) (s : T ⟶ T) (ha : s ≫ a = b) (hb : s ≫ b = a) {U : Type} [CommGroup U]
@@ -70,13 +68,13 @@ theorem prod_swap {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E
   rw [_root_.mul_comm b a, mul_right_comm (h (a * b).left)]
 
 /- English proof (translation)
-Introduce `E _ _ _ H V _ t t' n w d x x' e e' _ _ _ hP sy hs m`. Take `⟨u, hu, hc⟩` from `hs m`. Take `⟨-, c, -, hce, hcar⟩` from `hP m`. Use `⟨u, hu, corr_of_val t'.PP.isLB fun y J hJ => ?_⟩` and prove the remaining obligations. Use `choose J' hJ' using fun χ : (jOG (𝟙 (Sp V)) d m 2).left ⟶ t.G.left => exists_chart t.PP.isLB (χ y)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hJ'' : Good t.PP.L y J'` using `hJ'`. Establish `hsub : (fun p : Fin 2 × Fin d => (![fun j => MvPolynomial.X ((1 : Fin 2), j), fun j => MvPolynomial.X ((0 : Fin 2), j)] : Fin 2 → Fin d → MvPolynomial (Fin 2 × Fin d) V) p.1 p.2) = Formalism.MainNotions.ModuliIntegralCharts.H1.FBIdPh.rel d ![1, 0]`. Apply the tactic sequence `funext ⟨i, j⟩; fin_cases i <;> rfl`. Establish `k` using `(val_corr hJ'' hc (𝟙 _)).trans ((val_scaleGenG t _ _ _ _ _ y hJ'').trans (congrArg₂ (· * ·) rfl (val_pull hJ'' _ _ _)))`. Use `Eq.trans ?_ ((val_scaleGenG t' _ _ _ _ _ y hJ).trans (congrArg₂ (· * ·) rfl (val_pull hJ _ _ _))).symm` and prove the remaining obligations.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `v` using `fun r : (jOG (𝟙 (Sp V)) d m 2).left ⟶ (jOG (𝟙 (Sp V)) d m 2).left => (val_corr hJ hce r).symm.trans (val_carries _ _ w _ _ _ _ hcar r y hJ hJ'')`. Use `(v _).trans (Eq.trans ?_ (congrArg₂ (· * ·) rfl (v _)).symm)` and prove the remaining obligations. Use `(congrArg₂ (· * ·) ?_ k).trans (mul_left_comm _ _ _)` and prove the remaining obligations. Establish `p` using `(prod_swap t _ _ _ (Formalism.MainNotions.ModuliIntegralCharts.H1.FBIdPh.relabel_jpt t (𝟙 (Sp V)) d x m ![1, 0] 0) (Formalism.MainNotions.ModuliIntegralCharts.H1.FBIdPh.relabel_jpt t (𝟙 (Sp V)) d x m ![1, 0] 1) (fun ψ => gm ψ y ((t'.PP.L.pull n.φ).U (fun _ => J (ψ ≫ n.φ)) ⊓ t.PP. …`. Rewrite `p` using `[← hsub]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans (Finset.prod_congr rfl fun k _ => ?_) (p.trans (Finset.prod_congr rfl fun k _ => ?_))` and prove the remaining obligations. Rewrite using `[Category.id_comp]`. Both sides reduce to the same expression. Rewrite using `[Category.id_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem famSy_push : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (V : Type) [CommRing V] (t t' : SAB H (Sp V)) (n : SABMap t t' (𝟙 (Sp V))) (w : LB.Iso t.PP.L (t'.PP.L.pull n.φ)) (d : ℕ) (x : ∀ m, jOG (𝟙 (Sp V)) d m 1 ⟶ t.G) (x' : ∀ m, jOG (𝟙 (Sp V)) d m 1 ⟶ t'.G) (e : ∀ m, FrTyG t (𝟙 (Sp V)) d x m) (e' : ∀ m, FrTyG t' (𝟙 (Sp V)) d x' m), CubIso n w → (∀ m, (x' m).left = (x m).left ≫ n.φ) → (∀ m, (e m).IsGen) → PushFr n w x x' e e' → ∀ sy : PS V 2 d, FamSy t (𝟙 (Sp V)) d x sy e → FamSy t' (𝟙 (Sp V)) d x' sy e' := by
   intro E _ _ _ H V _ t t' n w d x x' e e' _ _ _ hP sy hs m

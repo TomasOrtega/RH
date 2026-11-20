@@ -18,33 +18,33 @@ abbrev Lat (F : Type) [Field F] [NumberField F] (N : ℕ) : AddSubgroup (Fin N �
 abbrev Q (F : Type) [Field F] [NumberField F] (N : ℕ) : Type := (Fin N → AF F) ⧸ Lat F N
 
 /- English proof (translation)
-Use function extensionality and compare the values at `l`. Simplify using `[rat]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem rat_neg (ξ : Fin N → F) : rat (-ξ) = -rat ξ := by
   funext l; simp [rat]
 
 /- English proof (translation)
-Simplify using `only [Bd, Pi.add_apply, ← Finset.sum_add_distrib]`. Use `congr 1`. Use function extensionality and compare the values at `l`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Bd_add_left (a : Fin N → F) (u u' w : Fin N → AF F) :
     Bd (AF F) a (u + u') w = Bd (AF F) a u w + Bd (AF F) a u' w := by
   simp only [Bd, Pi.add_apply, ← Finset.sum_add_distrib]; congr 1; funext l; ring
 
 /- English proof (translation)
-Simplify using `only [Bd, rat, Pi.add_apply, map_add, ← Finset.sum_add_distrib]`. Use `congr 1`. Use function extensionality and compare the values at `l`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Bd_rat_add (a : Fin N → F) (u : Fin N → AF F) (ξ η : Fin N → F) :
     Bd (AF F) a u (rat (ξ + η)) = Bd (AF F) a u (rat ξ) + Bd (AF F) a u (rat η) := by
   simp only [Bd, rat, Pi.add_apply, map_add, ← Finset.sum_add_distrib]; congr 1; funext l; ring
 
 /- English proof (translation)
-Simplify using `[Bd, rat]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Bd_rat_zero (a : Fin N → F) (u : Fin N → AF F) : Bd (AF F) a u (rat 0) = 0 := by
   simp [Bd, rat]
 
 /- English proof (translation)
-Establish `h` using `Bd_rat_add a u ξ (-ξ)`. Rewrite `h` using `[add_neg_cancel, Bd_rat_zero]`. Conclude with `(neg_eq_of_add_eq_zero_right h.symm).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Bd_rat_neg (a : Fin N → F) (u : Fin N → AF F) (ξ : Fin N → F) :
     Bd (AF F) a u (rat (-ξ)) = -Bd (AF F) a u (rat ξ) := by
@@ -53,14 +53,14 @@ theorem Bd_rat_neg (a : Fin N → F) (u : Fin N → AF F) (ξ : Fin N → F) :
   exact (neg_eq_of_add_eq_zero_right h.symm).symm
 
 /- English proof (translation)
-Simplify using `[Bd, rat, map_sum, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Bd_rat_rat (a : Fin N → F) (η ξ : Fin N → F) :
     Bd (AF F) a (rat η) (rat ξ) = algebraMap F (AF F) (Bd F a η ξ) := by
   simp [Bd, rat, map_sum, map_mul]
 
 /- English proof (translation)
-Unfold `Bd`. Conclude with `continuous_finset_sum _ fun l _ => (continuous_const.mul (continuous_apply l)).mul continuous_const`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem cont_Bd (a : Fin N → F) (w : Fin N → AF F) : Continuous fun u : Fin N → AF F => Bd (AF F) a u w := by
   unfold Bd
@@ -72,20 +72,20 @@ def chi (ψ : AddChar (AF F) ℂ) (a : Fin N → F) (ξ : Fin N → F) (u : Fin 
 variable {ψ : AddChar (AF F) ℂ} {a : Fin N → F}
 
 /- English proof (translation)
-Rewrite using `[AddChar.map_neg_eq_inv, Complex.inv_def, Complex.normSq_eq_norm_sq, hψ.2.1 x]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem psi_conj (hψ : IsCharAF F ψ) (x : AF F) : conj (ψ x) = ψ (-x) := by
   rw [AddChar.map_neg_eq_inv, Complex.inv_def, Complex.normSq_eq_norm_sq, hψ.2.1 x]; simp
 
 /- English proof (translation)
-Rewrite using `[chi, chi, Bd_add_left, Bd_rat_rat, neg_add, AddChar.map_add_eq_mul, ← map_neg, hψ.2.2.1, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem chi_periodic (hψ : IsCharAF F ψ) (ξ η : Fin N → F) (u : Fin N → AF F) :
     chi ψ a ξ (rat η + u) = chi ψ a ξ u := by
   rw [chi, chi, Bd_add_left, Bd_rat_rat, neg_add, AddChar.map_add_eq_mul, ← map_neg, hψ.2.2.1, one_mul]
 
 /- English proof (translation)
-Introduce `g hg u`. Take `⟨ξ, rfl⟩` from `(hL g).1 hg`. Conclude with `hf ξ u`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem periodic_of (hL : ∀ u, u ∈ Lat F N ↔ ∃ ξ, u = rat ξ) {f : (Fin N → AF F) → ℂ}
     (hf : ∀ ξ u, f (rat ξ + u) = f u) : ∀ g ∈ Lat F N, ∀ u, f (g + u) = f u := by
@@ -125,7 +125,7 @@ theorem chiC_apply (ξ : Fin N → F) (u : Fin N → AF F) :
     chiC a hL hψ ξ (u : Q F N) = ψ (-(Bd (AF F) a u (rat ξ))) := rfl
 
 /- English proof (translation)
-Use extensionality with `q`. Take `⟨u, rfl⟩` from `QuotientAddGroup.mk_surjective q`. Simplify using `only [ContinuousMap.mul_apply, chiC_apply, Bd_rat_add, neg_add, AddChar.map_add_eq_mul]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem chiC_mul (ξ η : Fin N → F) :
     chiC a hL hψ ξ * chiC a hL hψ η = chiC a hL hψ (ξ + η) := by
@@ -134,7 +134,7 @@ theorem chiC_mul (ξ η : Fin N → F) :
   simp only [ContinuousMap.mul_apply, chiC_apply, Bd_rat_add, neg_add, AddChar.map_add_eq_mul]
 
 /- English proof (translation)
-Use extensionality with `q`. Take `⟨u, rfl⟩` from `QuotientAddGroup.mk_surjective q`. Simplify using `only [ContinuousMap.one_apply, chiC_apply, Bd_rat_zero, neg_zero, AddChar.map_zero_eq_one]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem chiC_zero : chiC a hL hψ 0 = 1 := by
   ext q
@@ -142,7 +142,7 @@ theorem chiC_zero : chiC a hL hψ 0 = 1 := by
   simp only [ContinuousMap.one_apply, chiC_apply, Bd_rat_zero, neg_zero, AddChar.map_zero_eq_one]
 
 /- English proof (translation)
-Use extensionality with `q`. Take `⟨u, rfl⟩` from `QuotientAddGroup.mk_surjective q`. Rewrite using `[ContinuousMap.star_apply, chiC_apply, chiC_apply, Bd_rat_neg]`. Conclude with `psi_conj hψ _`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chiC_star (ξ : Fin N → F) : star (chiC a hL hψ ξ) = chiC a hL hψ (-ξ) := by
   ext q
@@ -193,9 +193,9 @@ namespace GlobalTheory.SWQ.FZero
 variable {F : Type} [Field F] [NumberField F] {N : ℕ}
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `hK.exists_bound_of_continuousOn hg.continuousOn`. Use `⟨C, fun u => ?_⟩` and prove the remaining obligations. Take `⟨ξ, hξ⟩` from `hKc u`. Establish `e : g (u - rat ξ) = g u`. Rewrite using `[show u - rat ξ = rat (-ξ) + u by rw [rat_neg]; abel, hp]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e]`. Conclude with `hC _ hξ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bdd_of_periodic {K : Set (Fin N → AF F)} (hK : IsCompact K) (hKc : ∀ u, ∃ ξ, u - rat ξ ∈ K)
     (g : (Fin N → AF F) → ℂ) (hg : Continuous g) (hp : ∀ ξ u, g (rat ξ + u) = g u) :
@@ -209,22 +209,20 @@ theorem bdd_of_periodic {K : Set (Fin N → AF F)} (hK : IsCompact K) (hKc : ∀
   exact hC _ hξ
 
 /- English proof (translation)
-The claim follows from `Measure.integrableOn_of_bounded hD hg.aestronglyMeasurable (M := C) (Filter.Eventually.of_forall hC)`.
+A detailed English derivation is pending.
 -/
 theorem integrableOn_of_bdd {g : (Fin N → AF F) → ℂ} (hg : Continuous g) {C : ℝ} (hC : ∀ u, ‖g u‖ ≤ C)
     (μ : Measure (Fin N → AF F)) (D : Set (Fin N → AF F)) (hD : μ D ≠ ∞) : IntegrableOn g D μ :=
   Measure.integrableOn_of_bounded hD hg.aestronglyMeasurable (M := C) (Filter.Eventually.of_forall hC)
 
 /- English proof (translation)
-Establish `hl : ∀ l, ∃ c : F, y l = algebraMap F (AF F) c`. Introduce `l`. Apply `hann` to reduce the goal to its premises. Introduce `ζ`. Establish `h2 : (2 * a l) ≠ 0` using `mul_ne_zero two_ne_zero (ha l)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : Bd (AF F) a y (rat (Pi.single l (-(ζ / (2 * a l))))) = -(y l * algebraMap F (AF F) ζ)`. Rewrite using `[Bd, Finset.sum_eq_single l]`. Simplify using `only [rat, Pi.single_eq_same]`. Establish `hal` using `ha l`. Establish `h3 : (2 * a l) * (-(ζ / (2 * a l))) = -ζ` using `by field_simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_mul (algebraMap F (AF F)) (2 * a l) (-(ζ / (2 * a l))), mul_comm (algebraMap F (AF F) (2 * a l)) (y l), mul_assoc]`. Use `_ = _ := by rw [h3, map_neg, mul_neg]`. Introduce `m _ hm`. Simplify using `[rat, Pi.single_eq_of_ne hm]`.
+Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ l) h`. Use `hy (Pi.single l (-(ζ / (2 * a l))))` as an intermediate fact. Rewrite `this` using `[e, neg_neg]`. Then use the resulting hypothesis. Use `choose c hc using hl`.
-
-Conclude with `AddSubgroup.subset_closure ⟨c, funext fun l => (hc l).symm⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mem_of_chi {ψ : AddChar (AF F) ℂ} {a : Fin N → F}
     (hann : ∀ x : AF F, (∀ ξ : F, ψ (x * algebraMap F (AF F) ξ) = 1) → ∃ ξ : F, x = algebraMap F (AF F) ξ)
@@ -251,11 +249,9 @@ theorem mem_of_chi {ψ : AddChar (AF F) ℂ} {a : Fin N → F}
   exact AddSubgroup.subset_closure ⟨c, funext fun l => (hc l).symm⟩
 
 /- English proof (translation)
-Use `⟨?_⟩` and prove the remaining obligations. Establish `h : (Set.univ : Set (Q F N)) = (QuotientAddGroup.mk : (Fin N → AF F) → Q F N) '' K`. Use extensionality with `q`. Simplify using `only [Set.mem_univ, Set.mem_image, true_iff]`. Take `⟨z, rfl⟩` from `QuotientAddGroup.mk_surjective q`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨ξ, hξ⟩` from `hKc z`. Use `⟨z - rat ξ, hξ, ?_⟩` and prove the remaining obligations. Rewrite using `[QuotientAddGroup.eq, show -(z - rat ξ) + z = rat ξ by abel]`. Conclude with `AddSubgroup.subset_closure ⟨ξ, rfl⟩`. Rewrite using `[h]`.
-
-Conclude with `hK.image continuous_quotient_mk'`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem compact_Q {K : Set (Fin N → AF F)} (hK : IsCompact K) (hKc : ∀ u, ∃ ξ, u - rat ξ ∈ K) :
     CompactSpace (Q F N) := by
@@ -278,61 +274,53 @@ namespace GlobalTheory.SWQ.FZero
 variable {F : Type} [Field F] [NumberField F] {N : ℕ}
 
 /- English proof (translation)
-Use `compact_Q hK hKc` as an intermediate fact. Take `⟨C, hC⟩` from `bdd_of_periodic hK hKc P hPc hPp`. Establish `hint : ∀ g : C(Q F N, ℂ), IntegrableOn (fun u => P u * g (u : Q F N)) D μ`. Introduce `g`. Take `⟨C', hC'⟩` from `bdd_of_periodic hK hKc (fun u => P u * g (u : Q F N)) (hPc.mul (g.continuous.comp continuous_quotient_mk')) (fun ξ u => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hPp]`. Use `congr 2`. Rewrite using `[QuotientAddGroup.eq, show -(rat ξ + u) + u = -rat ξ by abel]`. Conclude with `neg_mem (AddSubgroup.subset_closure ⟨ξ, rfl⟩))`. Conclude with `integrableOn_of_bdd (hPc.mul (g.continuous.comp continuous_quotient_mk')) hC' μ D hDf`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hvan : ∀ g ∈ Achar a hL hψ, ∫ u in D, P u * g (u : Q F N) ∂μ = 0`. Introduce `g hg`. Proceed by induction on `hg using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨ξ, rfl⟩` from `hx`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Conclude with `hcoef ξ`. Consider the case `zero => simp`. Consider the case `add x y hx hy h1 h2`. Simplify using `only [ContinuousMap.add_apply, mul_add]`. Rewrite using `[integral_add (hint x) (hint y), h1, h2, add_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Consider the case `smul c x hx h`. Simplify using `only [ContinuousMap.smul_apply, smul_eq_mul]`. Establish `e : (fun u : Fin N → AF F => P u * (c * x (u : Q F N))) = fun u => c * (P u * x (u : Q F N))`. Use function extensionality and compare the values at `u`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[e, integral_const_mul, h, mul_zero]`. Establish `hsep : (Achar a hL hψ).SeparatesPoints`. Introduce `q q' hqq'`. Take `⟨x, rfl⟩` from `QuotientAddGroup.mk_surjective q`. Take `⟨x', rfl⟩` from `QuotientAddGroup.mk_surjective q'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hnot : x - x' ∉ Lat F N`. Introduce `h`. Apply `hqq'` to reduce the goal to its premises. Rewrite using `[QuotientAddGroup.eq, show -x + x' = -(x - x') by abel]`. Conclude with `neg_mem h`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Choose the witnesses or unpack the hypotheses as in `⟨ξ, hξ⟩ : ∃ ξ, ψ (-(Bd (AF F) a (x - x') (rat ξ))) ≠ 1 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hnot (mem_of_chi hann ha _ h)`. Use `⟨chiC a hL hψ ξ, ⟨chiC a hL hψ ξ, Submodule.subset_span ⟨ξ, rfl⟩, rfl⟩, ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `heq`. Apply `hξ` to reduce the goal to its premises. Establish `e1 : Bd (AF F) a x (rat ξ) = Bd (AF F) a (x - x') (rat ξ) + Bd (AF F) a x' (rat ξ)`. Rewrite using `[← Bd_add_left, sub_add_cancel]`. Establish `h1 : chiC a hL hψ ξ (x : Q F N) = chiC a hL hψ ξ (x' : Q F N)` using `heq`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite `h1` using `[chiC_apply, chiC_apply, e1, neg_add, AddChar.map_add_eq_mul]`. Establish `hne : ψ (-(Bd (AF F) a x' (rat ξ))) ≠ 0`. Introduce `h0`. Use `hψ.2.1 (-(Bd (AF F) a x' (rat ξ)))` as an intermediate fact. Rewrite `this` using `[h0, norm_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `zero_ne_one this`. Combine the equalities or inequalities in the displayed calculation. Establish `hclos` using `ContinuousMap.starSubalgebra_topologicalClosure_eq_top_of_separatesPoints (Achar a hL hψ) hsep`. Establish `hcp : ∀ ξ u, conj (P (rat ξ + u)) = conj (P u)` using `fun ξ u => by rw [hPp]`. Set `Pb : C(Q F N, ℂ)` to `liftC hL (fun u => conj (P u)) hcp (Complex.continuous_conj.comp hPc)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hmem : Pb ∈ closure ((Achar a hL hψ : Set C(Q F N, ℂ)))`. Establish `: Pb ∈ (Achar a hL hψ).topologicalClosure` using `by rw [hclos]; exact StarSubalgebra.mem_top`. Conclude with `this`. Establish `hint0 : ∫ u in D, P u * conj (P u) ∂μ = 0`. Use `norm_le_zero_iff.1 (le_of_forall_pos_le_add fun ε hε => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hC0 : 0 ≤ C` using `le_trans (norm_nonneg _) (hC 0)`. Use `set M := μ.real D`. Establish `hM : 0 ≤ M` using `measureReal_nonneg`. Take `⟨b, hb, hdist⟩` from `Metric.mem_closure_iff.1 hmem (ε / ((C + 1) * (M + 1))) (by positivity)`. Establish `e : ∫ u in D, P u * conj (P u) ∂μ = ∫ u in D, P u * (Pb - b) (u : Q F N) ∂μ`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `hvan b hb`. Establish `h2 : ∫ u in D, P u * (Pb - b) (u : Q F N) ∂μ = ∫ u in D, P u * Pb (u : Q F N) ∂μ - ∫ u in D, P u * b (u : Q F N) ∂μ`. Simplify using `only [ContinuousMap.sub_apply, mul_sub]`. Conclude with `integral_sub (hint Pb) (hint b)`. Rewrite using `[h2, h1, sub_zero]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[e, zero_add]`. Establish `hbd : ∀ u ∈ D, ‖P u * (Pb - b) (u : Q F N)‖ ≤ C * (ε / ((C + 1) * (M + 1)))`. Introduce `u _`. Rewrite using `[norm_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `mul_le_mul (hC u) ?_ (norm_nonneg _) hC0` and prove the remaining obligations. Use `le_trans (ContinuousMap.norm_coe_le_norm _ _) ?_` and prove the remaining obligations. Rewrite using `[← dist_eq_norm]`. Conclude with `hdist.le`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[show C * (ε / ((C + 1) * (M + 1))) * M = ε * (C / (C + 1)) * (M / (M + 1)) by field_simp]`. Establish `h1 : C / (C + 1) ≤ 1` using `(div_le_one (by positivity)).2 (by linarith)`. Establish `h2 : M / (M + 1) ≤ 1` using `(div_le_one (by positivity)).2 (by linarith)`. Establish `h3 : 0 ≤ C / (C + 1)` using `by positivity`. Establish `h4 : 0 ≤ M / (M + 1)` using `by positivity`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[mul_le_mul h1 h2 h4 zero_le_one]`. Establish `hsq : ∫ u in D, ‖P u‖ ^ 2 ∂μ = 0`. Establish `e : (fun u => P u * conj (P u)) = fun u => ((‖P u‖ ^ 2 : ℝ) : ℂ)`. Use function extensionality and compare the values at `u`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite `hint0` using `[e, integral_complex_ofReal]`. Conclude with `hint0` after adjusting the coercions. Establish `hInt : IntegrableOn (fun u => ‖P u‖ ^ 2) D μ` using `by haveI : IsFiniteMeasure (μ.restrict D) := isFiniteMeasure_restrict.2 hDf`. Use `Integrable.mono' (integrable_const (C ^ 2)) (hPc.norm.pow 2).aestronglyMeasurable (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (by positivity)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `pow_le_pow_left₀ (norm_nonneg _) (hC u) 2`. Establish `hae` using `(integral_eq_zero_iff_of_nonneg (fun u => by positivity) hInt).1 hsq`. Use `set t : Set (Fin N → AF F) := {u | P u ≠ 0} with ht`. Establish `hto : IsOpen t` using `isOpen_ne_fun hPc continuous_const`. Establish `htD : μ (t ∩ D) = 0`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : (μ.restrict D) t = 0`. Rewrite `hae` using `[Filter.EventuallyEq, ae_iff]`. Use `measure_mono_null (fun u hu => ?_) hae` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq, Pi.zero_apply]`. Introduce `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hu (by simpa using h0)`. Rewrite `h1` using `[Measure.restrict_apply hto.measurableSet]`. Then use the resulting hypothesis. Use `haveI : Countable F := (Module.finBasis ℚ F).equivFun.injective.countable`. Establish `hcount : Countable (Lat F N)`. Establish `hs : ((Lat F N : Set (Fin N → AF F))).Countable`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (Lat F N : Set (Fin N → AF F)) = Set.range (rat : (Fin N → F) → (Fin N → AF F))`. Use extensionality with `u`. Simplify using `only [SetLike.mem_coe, hL, Set.mem_range]`. Conclude with `⟨fun ⟨ξ, h⟩ => ⟨ξ, h.symm⟩, fun ⟨ξ, h⟩ => ⟨ξ, h.symm⟩⟩`. Rewrite using `[this]`.
+Assume the negation of the conclusion and derive a contradiction. Apply function extensionality and compare values at an arbitrary argument. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Set.countable_range _`. Conclude with `hs.to_subtype`. Establish `: MeasurableConstVAdd (Lat F N) (Fin N → AF F)` using `⟨fun c => (continuous_const.add continuous_id).measurable⟩`. Establish `: VAddInvariantMeasure (Lat F N) (Fin N → AF F) μ` using `⟨fun c s _ => measure_preimage_add μ (c : Fin N → AF F) s⟩`. Establish `hinv : ∀ g : Lat F N, g +ᵥ t = t`.
-
-Introduce `g`. Use extensionality with `u`. Rewrite using `[Set.mem_vadd_set_iff_neg_vadd_mem]`. Simplify using `only [ht, Set.mem_setOf_eq]`. Use `periodic_of hL hPp (-(g : Fin N → AF F)) (neg_mem g.2) u` as an intermediate fact.
-
-Use `show P (-(g : Fin N → AF F) + u) ≠ 0 ↔ P u ≠ 0`. Rewrite using `[this]`. Establish `ht0 : μ t = 0` using `hD.measure_zero_of_invariant t hinv htD`. Establish `hte : t = ∅`. Assume the negation of the conclusion as `hne`.
-
-Conclude with `(hto.measure_pos μ (Set.nonempty_iff_ne_empty.2 hne)).ne' ht0`. Use function extensionality and compare the values at `u`. Assume the negation of the conclusion as `hu`. Establish `: u ∈ t` using `hu`. Rewrite `this` using `[hte]`.
-
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of (ψ : AddChar (AF F) ℂ) (a : Fin N → F) (hψ : IsCharAF F ψ)
     (hann : ∀ x : AF F, (∀ ξ : F, ψ (x * algebraMap F (AF F) ξ) = 1) → ∃ ξ : F, x = algebraMap F (AF F) ξ)
@@ -492,7 +480,7 @@ end GlobalTheory.SWQ.FZero
 namespace GlobalTheory.SWQ
 
 /- English proof (translation)
-Introduce `F _ _ N ψ lam ν a hctx D hD hD1 P hPc hPp hcoef`. Take `⟨hTR, hψ, -, hcov, ha⟩` from `hctx`. Take `⟨hμ, hL, -, ⟨K, hK, hKc⟩, -⟩` from `GlobalTheory.T.rationalVectors_adeles_fundamentalDomain_mass_one F N ν hcov`. Conclude with `FZero.eq_zero_of ψ a hψ (GlobalTheory.T.numberField_self_annihilator_adeleCharacter F hTR ψ hψ).2 ha hL hK hKc (muV N ν) hμ D hD (by rw [hD1]; exact ENNReal.one_ne_top) P hPc hPp hcoef`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem periodic_eq_zero_of_coeff : ∀ (F : Type) [Field F] [NumberField F] (N : ℕ) (ψ : AddChar (AF F) ℂ)
     (lam : InfinitePlace F → ℝ) (ν : Measure (AF F)) (a : Fin N → F), Ctx ψ lam ν a →

@@ -13,9 +13,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
 def IntAlg (f : Rul Xo c) : Prop := ∀ la, ∀ v ∈ valSet Xo c (algCls Xo c) la, 0 ≤ v f
 
 /- English proof (translation)
-Introduce `la v hv`. Simplify using `only [valSet, Set.mem_setOf_eq] at hv`. Take `⟨y, rfl⟩` from `hv`. Unfold `vAtV`. Take `⟨⟨w, q⟩, T, io, e, ho, z, hz, eta, -, hw⟩` from `y`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Unfold `profI at hw`. Take `⟨rfl, -⟩` from `Prod.mk.inj hw`. Simplify using `[evI, evR, evalAt, nval]`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem intAlg_zero : IntAlg (0 : Rul Xo c) := by
   intro la v hv
@@ -28,13 +28,13 @@ theorem intAlg_zero : IntAlg (0 : Rul Xo c) := by
   simp [evI, evR, evalAt, nval]
 
 /- English proof (translation)
-Introduce `la v hv` and use `(le_min (hf la v hv) (hg la v hv)).trans ((isVal_valSet la v hv).add f g)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem intAlg_add {f g : Rul Xo c} (hf : IntAlg f) (hg : IntAlg g) : IntAlg (f + g) := fun la v hv =>
   (le_min (hf la v hv) (hg la v hv)).trans ((isVal_valSet la v hv).add f g)
 
 /- English proof (translation)
-Introduce `la v hv` and use `by have e : (a • f : Rul Xo c) = (a : c.F) • f := rfl rw [e] by_cases ha : (a : c.F) = 0 · rw [ha, zero_smul, (isVal_valSet la v hv).zero]; exact le_top · rw [(isVal_valSet la v hv).smul _ _ ha] exact add_nonneg (by exact_mod_cast vAdd_int_nonneg la ha) (hf la v hv)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem intAlg_smul (a : 𝓞 c.F) {f : Rul Xo c} (hf : IntAlg f) : IntAlg (a • f) := fun la v hv => by
   have e : (a • f : Rul Xo c) = (a : c.F) • f := rfl
@@ -45,7 +45,7 @@ theorem intAlg_smul (a : 𝓞 c.F) {f : Rul Xo c} (hf : IntAlg f) : IntAlg (a �
     exact add_nonneg (by exact_mod_cast vAdd_int_nonneg la ha) (hf la v hv)
 
 /- English proof (translation)
-Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x h => exact hs x h`. Consider the case `zero => exact intAlg_zero`. Consider the case `add x y _ _ hx hy => exact intAlg_add hx hy`. Consider the case `smul a x _ hx => exact intAlg_smul a hx`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem intAlg_span {s : Set (Rul Xo c)} (hs : ∀ f ∈ s, IntAlg f) {f : Rul Xo c}
     (hf : f ∈ Submodule.span (𝓞 c.F) s) : IntAlg f := by
@@ -64,9 +64,9 @@ def RegularityR1ValuedPoints (C : ((E →+* ℂ) × ℕ → ℕ) → ℕ → Sub
     ∀ la (y : PtV Xo c cls (PY la) (lies la) la), 0 ≤ vAtV y f
 
 /- English proof (translation)
-Unfold `ramIdx`. Establish `hpos : ∀ n ∈ {n : ℤ | ∃ a ∈ la.asIdeal, a ≠ 0 ∧ v ((algebraMap c.F Ω) ↑a) = ↑n}, 0 ≤ n`. Introduce and unpack `n ⟨a, ha, -, hv⟩`. Establish `h` using `(ho a).mpr ha`. Rewrite `h` using `[hv]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h.le` after adjusting the coercions. Break down `Set.eq_empty_or_nonempty {n : ℤ | ∃ a ∈ la.asIdeal, a ≠ 0 ∧ v ((algebraMap c.F Ω) ↑a) = ↑n} with he | hne` into its components or cases. Rewrite using `[he, Int.csInf_empty]`. Conclude with `hpos _ (Int.csInf_mem hne ⟨0, hpos⟩)`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ramIdx_nonneg {Ω : Type} [Field Ω] [Algebra c.F Ω] {v : AddValuation Ω (WithTop ℤ)}
     {la : HeightOneSpectrum (𝓞 c.F)} (ho : IsOver (K := c.F) v la) : 0 ≤ ramIdx (K := c.F) v la := by
@@ -87,9 +87,9 @@ variable (h : GenFrEx Xo c) (δ : ∀ Z : Comp Xo c, AddValuation (Om Z) (WithTo
   (lies : ∀ la (T : CDVR) (ι : c.F →+* T.Fr), IntFr Xo c T ι → PY la → Prop)
 
 /- English proof (translation)
-Establish `key : (0 : EReal) ≤ (((ordC (δ Z v) v (wtZ a n) (valC h a n F Z) : ℤ) : ℝ) : EReal)`. Break down `hv with ⟨la, ho⟩ | ht` into its components or cases. Take `⟨y, hy⟩` from `hT Z v la hd ho`. Rewrite using `[hy a n F hFs hne]`. Conclude with `mul_nonneg (by exact_mod_cast ramIdx_nonneg ho) (hR1 a n F hFC hF la y)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨q, hq⟩` from `hTQ Z v hd ht`. Rewrite using `[hq a n F hFs hne]`. Take `⟨la⟩` from `‹Nonempty (HeightOneSpectrum (𝓞 c.F))›`. Conclude with `hR1Q a n F hFC ⟨la, hF la⟩ q`. Conclude with `key` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ord_nonneg_of [Nonempty (HeightOneSpectrum (𝓞 c.F))]
     (hT : OrdTie h δ cls PY lies) (hTQ : OrdTieQ h δ) (hR1 : RegularityR1ValuedPoints Xo c C cls PY lies) (hR1Q : RegularityR1Quotient Xo c C)
@@ -109,7 +109,7 @@ theorem ord_nonneg_of [Nonempty (HeightOneSpectrum (𝓞 c.F))]
   exact_mod_cast key
 
 /- English proof (translation)
-Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem x h => exact hs h`. Consider the case `zero => exact S.zero_mem`. Consider the case `add x y _ _ hx hy => exact S.add_mem hx hy`. Consider the case `smul a x _ hx => exact S.smul_mem (a : c.F) hx`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem mem_of_mem_span_int (S : Submodule c.F (Rul Xo c)) {s : Set (Rul Xo c)} (hs : s ⊆ S) {F : Rul Xo c}
     (hF : F ∈ Submodule.span (𝓞 c.F) s) : F ∈ S := by
@@ -122,13 +122,11 @@ theorem mem_of_mem_span_int (S : Submodule c.F (Rul Xo c)) {s : Set (Rul Xo c)} 
 omit δ C cls PY lies in
 
 /- English proof (translation)
-Apply the tactic sequence `try dsimp only at hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨k, rfl⟩` from `hy`. Conclude with `⟨R k, Submodule.subset_span ⟨k, rfl⟩, rfl⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `zero => exact ⟨0, zero_mem _, funext fun Z => (valC_zero h u.1 u.2 Z).symm⟩`. Consider the case `add y z _ _ hy hz`. Take `⟨F, hF, rfl⟩` from `hy`. Take `⟨G, hG, rfl⟩` from `hz`. Conclude with `⟨F + G, add_mem hF hG, funext fun Z => (valC_add h u.1 u.2 F G Z).symm⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `smul a y _ hy`. Take `⟨F, hF, rfl⟩` from `hy`. Use `⟨a • F, Submodule.smul_mem _ a hF, funext fun Z => ?_⟩` and prove the remaining obligations. Use `(Algebra.smul_def a (valG h u F Z)).trans ?_` and prove the remaining obligations. Rewrite using `[IsScalarTower.algebraMap_apply (𝓞 c.F) c.F (AC Z)]`.
-
-Conclude with `(valC_smul_ct h u.1 u.2 (a : c.F) F Z).symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_of_mem_span_valG {u : WtR E} {ι : Type} {R : ι → Rul Xo c} {x : ∀ Z : Comp Xo c, AC Z}
     (hx : x ∈ (letI : ∀ Z : Comp Xo c, Module (𝓞 c.F) (AC Z) := fun _ => Algebra.toModule
@@ -165,15 +163,15 @@ variable [Fintype (Comp Xo c)]
     (wsize : WTZ E → ℝ) (DF PN PQ tableDegreeThreeBase PP0' Pd Gc PI4 Pet tableLineDegreeFive tableLineDegreeTwo Prw PO f r : ℝ)
 
 /- English proof (translation)
-Establish `cases' : ∀ {Z : Comp Xo c} {v : AddValuation (Om Z) (WithTop ℤ)}, (dataOf h δ fn yP Dd N T i g0 cc uL uF uka ude uet uta1 uta2 wR jc np thpR n0 th0R uF0 nk thkR MR etR ta1R ta2R nu ip wsize DF PN PQ tableDegreeThreeBase PP0' Pd Gc PI4 Pet tableLineDegreeFive tableLineDegreeTwo Pr …` using `c.F) v la) ∨ IsTrivOn c.F v) := by`. Introduce `Z v hA`. Take `⟨hd, hc⟩` from `hA`. Conclude with `⟨hd, hc.imp (fun h' => let ⟨la, ho, _⟩ := h'; ⟨la, ho⟩) (fun h' => h'.1)⟩`. Use `⟨fun Z v hA x hx hx0 => ?_, fun Z v hA x hx hx0 => ?_, fun Z v hA => ?_, fun Z v hA => ?_, fun Z v hA => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hd, hc⟩` from `cases' hA`. Take `⟨F, hF, rfl⟩` from `exists_of_mem_span_valG h hx`. Establish `h0` using `ord_nonneg_of h δ C cls PY lies hT hTQ hR1 hR1Q (mem_of_mem_span_int _ (Set.range_subset_iff.2 hwS) hF) (mem_of_mem_span_int _ (Set.range_subset_iff.2 hwC) hF) (intAlg_span (Set.forall_mem_range.2 hwI) hF) hd hc (evC_ne_zero_of_valC hx0)`. Conclude with `h0`. Take `⟨hd, hc⟩` from `cases' hA`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨F, hF, rfl⟩` from `exists_of_mem_span_valG h hx`. Establish `h0` using `ord_nonneg_of h δ C cls PY lies hT hTQ hR1 hR1Q (mem_of_mem_span_int _ (Set.range_subset_iff.2 hpS) hF) (mem_of_mem_span_int _ (Set.range_subset_iff.2 hpC) hF) (intAlg_span (Set.forall_mem_range.2 hpI) hF) hd hc (evC_ne_zero_of_valC hx0)`. Conclude with `h0`. Take `⟨hd, hc⟩` from `cases' hA`. Establish `h0` using `ord_nonneg_of h δ C cls PY lies hT hTQ hR1 hR1Q heS heC heI hd hc (heN Z)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `h0` using `[huet]`. Conclude with `h0`. Take `⟨hd, hc⟩` from `cases' hA`. Establish `h0` using `ord_nonneg_of h δ C cls PY lies hT hTQ hR1 hR1Q h1S h1C h1I hd hc (h1N Z)`. Rewrite `h0` using `[huta1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h0`. Take `⟨hd, hc⟩` from `cases' hA`. Establish `h0` using `ord_nonneg_of h δ C cls PY lies hT hTQ hR1 hR1Q h2S h2C h2I hd hc (h2N Z)`. Rewrite `h0` using `[huta2]`. Conclude with `h0`.
+A detailed English derivation is pending.
 -/
 theorem lawA2_of_data [Nonempty (HeightOneSpectrum (𝓞 c.F))]
     (hT : OrdTie h δ cls PY lies) (hTQ : OrdTieQ h δ) (hR1 : RegularityR1ValuedPoints Xo c C cls PY lies) (hR1Q : RegularityR1Quotient Xo c C)

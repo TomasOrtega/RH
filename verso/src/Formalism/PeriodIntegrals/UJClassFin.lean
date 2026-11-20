@@ -14,14 +14,14 @@ variable {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n]
 def cT (σ : A →+* A) {m p : Type} (M : Matrix m p A) : Matrix p m A := (M.map σ)ᵀ
 
 /- English proof (translation)
-Simplify using `[cT, Matrix.map_mul, Matrix.transpose_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cT_mul (σ : A →+* A) {m p q : Type} [Fintype p] (M : Matrix m p A) (N : Matrix p q A) :
     cT σ (M * N) = cT σ N * cT σ M := by
   simp [cT, Matrix.map_mul, Matrix.transpose_mul]
 
 /- English proof (translation)
-Unfold `cT`. Rewrite using `[Matrix.map_one σ (map_zero σ) (map_one σ), Matrix.transpose_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem cT_one (σ : A →+* A) : cT σ (1 : Matrix n n A) = 1 := by
   unfold cT
@@ -135,14 +135,14 @@ def finMat (h : HA (AF F) σ J) : Matrix (Fin M) (Fin M) (Af F ⊗[F] E) :=
     (Algebra.TensorProduct.map (sndA F) (AlgHom.id F E))
 
 /- English proof (translation)
-The claim follows from `Matrix.map_mul (f := φ.toRingHom)`.
+A detailed English derivation is pending.
 -/
 theorem mapAlg_mul {R A B : Type*} [CommSemiring R] [Semiring A] [Semiring B] [Algebra R A] [Algebra R B]
     (φ : A →ₐ[R] B) {n : ℕ} (X Y : Matrix (Fin n) (Fin n) A) : (X * Y).map φ = X.map φ * Y.map φ :=
   Matrix.map_mul (f := φ.toRingHom)
 
 /- English proof (translation)
-The claim follows from `Matrix.map_one _ (map_zero φ) (map_one φ)`.
+A detailed English derivation is pending.
 -/
 theorem mapAlg_one {R A B : Type*} [CommSemiring R] [Semiring A] [Semiring B] [Algebra R A] [Algebra R B]
     (φ : A →ₐ[R] B) {n : ℕ} : (1 : Matrix (Fin n) (Fin n) A).map φ = 1 :=
@@ -161,7 +161,7 @@ Both sides reduce to the same expression.
 theorem HA_mat_one : HA.mat (AF F) σ J 1 = 1 := rfl
 
 /- English proof (translation)
-Unfold `finMat`. Rewrite using `[HA_mat_mul, Units.val_mul]`. Conclude with `mapAlg_mul _ _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finMat_mul (h h' : HA (AF F) σ J) : finMat σ J (h * h') = finMat σ J h * finMat σ J h' := by
   unfold finMat
@@ -169,7 +169,7 @@ theorem finMat_mul (h h' : HA (AF F) σ J) : finMat σ J (h * h') = finMat σ J 
   exact mapAlg_mul _ _ _
 
 /- English proof (translation)
-Unfold `finMat`. Rewrite using `[HA_mat_one, Units.val_one]`. Conclude with `mapAlg_one _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finMat_one : finMat σ J (1 : HA (AF F) σ J) = 1 := by
   unfold finMat

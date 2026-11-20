@@ -10,19 +10,17 @@ open Filter Topology
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `set g : α → ℝ := fun t => max (c t + f t) (-κ) with hg`. Establish `hC : Tendsto (fun t => (c t : EReal)) l (𝓝 (c₀ : EReal))` using `(continuous_coe_real_ereal.tendsto c₀).comp hc`. Establish `hCs : limsup (fun t => (c t : EReal)) l = (c₀ : EReal)` using `hC.limsup_eq`. Establish `hCi : liminf (fun t => (c t : EReal)) l = (c₀ : EReal)` using `hC.liminf_eq`. Establish `hsum : limsup (fun t => (c t : EReal) + (f t : EReal)) l = (c₀ : EReal) + limsup (fun t => (f t : EReal)) l`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `le_antisymm` to reduce the goal to its premises. Use `EReal.limsup_add_le (f := l) (u := fun t => (c t : EReal)) (v := fun t => (f t : EReal)) (by rw [hCs]; exact .inl (EReal.coe_ne_bot c₀)) (by rw [hCs]; exact .inl (EReal.coe_ne_top c₀))` as an intermediate fact. Rewrite `this` using `[hCs]`. Conclude with `this`. Use `EReal.le_limsup_add (f := l) (u := fun t => (f t : EReal)) (v := fun t => (c t : EReal))` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[hCi]`. Rewrite using `[add_comm]`. Use `this using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `t`. Simplify using `[add_comm]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmax : limsup (fun t => max ((c t : EReal) + (f t : EReal)) ((-κ : ℝ) : EReal)) l = max (limsup (fun t => (c t : EReal) + (f t : EReal)) l) ((-κ : ℝ) : EReal)`. Establish `hmono : Monotone (fun x : EReal => max x ((-κ : ℝ) : EReal))` using `fun a b hab => max_le_max hab le_rfl`. Establish `hcont : Continuous (fun x : EReal => max x ((-κ : ℝ) : EReal))` using `continuous_id.max continuous_const`. Conclude with `(hmono.map_limsup_of_continuousAt (F := l) (fun t => (c t : EReal) + (f t : EReal)) hcont.continuousAt).symm`. Establish `hbdd : IsBoundedUnder (· ≤ ·) l g`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hcb : ∀ᶠ t in l, c t ≤ c₀ + 1` using `hc.eventually (gt_mem_nhds (by linarith)) |>.mono fun t ht => ht.le`. Use `⟨max (c₀ + 1 + M) (-κ), eventually_map.2 ?_⟩` and prove the remaining obligations. Use `filter_upwards [hcb, hf] with t h1 h2`. Use `show max (c t + f t) (-κ) ≤ _`. Conclude with `max_le_max (by linarith) le_rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hcobdd : IsCoboundedUnder (· ≤ ·) l g` using `isCoboundedUnder_le_of_le l (x := -κ) (fun t => le_max_right _ _)`. Establish `hreal : ((limsup g l : ℝ) : EReal) = limsup (fun t => ((g t : ℝ) : EReal)) l` using `Monotone.map_limsup_of_continuousAt (F := l) (f := fun x : ℝ => (x : EReal)) (fun a b h => EReal.coe_le_coe_iff.2 h) g continuous_coe_real_ereal.continuousAt hbdd hcobdd`. Establish `hcoe : (fun t => ((g t : ℝ) : EReal)) = fun t => max ((c t : EReal) + (f t : EReal)) ((-κ : ℝ) : EReal)`. Use function extensionality and compare the values at `t`. Use `show ((max (c t + f t) (-κ) : ℝ) : EReal) = _`.
-
-Rewrite using `[EReal.coe_strictMono.monotone.map_max, EReal.coe_add]`. Rewrite `hreal` using `[hcoe, hmax, hsum]`. Rewrite using `[← hreal, EReal.toReal_coe]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem limsup_max_add_tendsto_eq_toReal (α : Type) (l : Filter α) [l.NeBot] (c f : α → ℝ)
     (c₀ κ M : ℝ) (hc : Filter.Tendsto c l (nhds c₀)) (hf : ∀ᶠ t in l, f t ≤ M) :

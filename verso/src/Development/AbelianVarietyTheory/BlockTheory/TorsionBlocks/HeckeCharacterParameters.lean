@@ -159,14 +159,14 @@ def HarmonicModule : Prop :=
         HarmonicMaps F D W τ M j (delta hn ap am) e0 v0 io I
 
 /- English proof (translation)
-Simplify using `[delta, minorProd, nextRow, zPlus, zMinus, topRows, botRows]`.
+Simplify using the standard rewrite rules.
 -/
 example (a b : ℕ) : delta (p := 1) (q := 1) (n := 3) (by norm_num) (fun _ => a) (fun _ => b) =
     MvPolynomial.X (Sum.inl 0, Sum.inl 0) ^ a * MvPolynomial.X (Sum.inr 0, Sum.inl 2) ^ b := by
   simp [delta, minorProd, nextRow, zPlus, zMinus, topRows, botRows]
 
 /- English proof (translation)
-Establish `: (0 : Mat p q).toBlocks₁₂ = 0` using `rfl`. Simplify using `[decay, this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 example (p q n : ℕ) : decay n (0 : Mat p q) = 1 := by
   have : (0 : Mat p q).toBlocks₁₂ = 0 := rfl

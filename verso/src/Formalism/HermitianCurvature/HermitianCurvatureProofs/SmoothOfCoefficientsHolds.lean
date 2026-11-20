@@ -10,11 +10,11 @@ noncomputable section
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Introduce `k r E _ _ _ Dm J h g₀ hg₀`. Set `b` to `Module.finBasis ℂ E`. Set `ℓ : Fin (Module.finrank ℂ E) → E →L[ℂ] ℂ` to `fun i => LinearMap.toContinuousLinearMap (b.coord i)`. Use `choose U F hU hgU hF hJF using fun i => h (ℓ i) g₀ hg₀`. Use `⟨⋂ i, U i, fun g => ∑ i, F i g • b i, isOpen_iInter_of_finite hU, Set.mem_iInter.2 hgU, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `ContDiffOn.sum fun i _ => ?_` and prove the remaining obligations. Conclude with `((hF i).mono (Set.iInter_subset _ i)).smul contDiffOn_const`. Introduce `g hg hgG`. Establish `hg'` using `Set.mem_iInter.1 hg`. Use `conv_lhs => rw [← b.sum_repr (J g)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← hJF i g (hg' i) hgG]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem smooth_of_coefficients_holds : SmoothOfCoeffs := by
   intro k r E _ _ _ Dm J h g₀ hg₀

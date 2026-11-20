@@ -28,7 +28,7 @@ abbrev toK (k : Type) [Field k] : PowerSeries k →ₐ[k] FractionRing (PowerSer
   IsScalarTower.toAlgHom k (PowerSeries k) (FractionRing (PowerSeries k))
 
 /- English proof (translation)
-The claim follows from `IsFractionRing.injective (PowerSeries k) _`.
+A detailed English derivation is pending.
 -/
 theorem toK_injective : Function.Injective (toK k) := IsFractionRing.injective (PowerSeries k) _
 
@@ -47,11 +47,11 @@ def Red (x : algOver k (FractionRing (PowerSeries k)) ⟶ G) (c : algOver k k �
   ∃ b : algOver k (PowerSeries k) ⟶ G, algOverHom (toK k) ≫ b = x ∧ algOverHom (ev0 k) ≫ b = c
 
 /- English proof (translation)
-Take `⟨b, h1, rfl⟩` from `h`. Take `⟨b', h2, rfl⟩` from `h'`. Establish `hd : IsDominant (algOverHom (toK k)).left`. Rewrite using `[algOverHom_left]`. Use `⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical _).2 ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x hx`. Establish `: x = 0` using `toK_injective (hx.trans (map_zero _).symm)`. Simplify using `[this]`. Establish `hr : IsReduced (algOver k (PowerSeries k)).left` using `inferInstanceAs (IsReduced (Sp (PowerSeries k)))`. Establish `: b = b'` using `by ext1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `ext_of_isDominant_of_isSeparated G.hom ?_ (algOverHom (toK k)).left ?_` and prove the remaining obligations. Rewrite using `[Over.w, Over.w]`. Rewrite using `[← Over.comp_left, ← Over.comp_left, h1, h2]`. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem Red.unique (hG : IsSeparated G.hom) {x : algOver k (FractionRing (PowerSeries k)) ⟶ G}
     {c c' : algOver k k ⟶ G} (h : Red x c) (h' : Red x c') : c = c' := by
@@ -74,7 +74,7 @@ theorem Red.unique (hG : IsSeparated G.hom) {x : algOver k (FractionRing (PowerS
 variable [GrpObj G]
 
 /- English proof (translation)
-Take `⟨b, rfl, rfl⟩` from `h`. Take `⟨b', rfl, rfl⟩` from `h'`. Conclude with `⟨b * b', MonObj.comp_mul _ _ _, MonObj.comp_mul _ _ _⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Red.mul {x y : algOver k (FractionRing (PowerSeries k)) ⟶ G} {c c' : algOver k k ⟶ G}
     (h : Red x c) (h' : Red y c') : Red (x * y) (c * c') := by
@@ -83,7 +83,7 @@ theorem Red.mul {x y : algOver k (FractionRing (PowerSeries k)) ⟶ G} {c c' : a
   exact ⟨b * b', MonObj.comp_mul _ _ _, MonObj.comp_mul _ _ _⟩
 
 /- English proof (translation)
-Take `⟨b, rfl, rfl⟩` from `h`. Conclude with `⟨b⁻¹, GrpObj.comp_inv _ _, GrpObj.comp_inv _ _⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Red.inv {x : algOver k (FractionRing (PowerSeries k)) ⟶ G} {c : algOver k k ⟶ G}
     (h : Red x c) : Red x⁻¹ c⁻¹ := by
@@ -93,7 +93,7 @@ theorem Red.inv {x : algOver k (FractionRing (PowerSeries k)) ⟶ G} {c : algOve
 end Red
 
 /- English proof (translation)
-Establish `hs : PowerSeries.HasSubst z` using `PowerSeries.HasSubst.of_constantCoeff_zero' h.1`. Take `⟨σ, hσ⟩` from `exists_lift ((toK k).comp (PowerSeries.substAlgHom hs)) (by`. Rewrite using `[AlgHom.comp_apply, PowerSeries.substAlgHom_X]`. Conclude with `IsUnit.mk0 _ fun e => h.2 (toK_injective (e.trans (map_zero _).symm)))`. Conclude with `⟨σ, fun x => by rw [hσ, AlgHom.comp_apply, PowerSeries.coe_substAlgHom]⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_sig {z : PowerSeries k} (h : PowerSeries.constantCoeff z = 0 ∧ z ≠ 0) :
     ∃ σ : FractionRing (PowerSeries k) →ₐ[k] FractionRing (PowerSeries k),
@@ -110,7 +110,7 @@ def sig (z : PowerSeries k) : FractionRing (PowerSeries k) →ₐ[k] FractionRin
   if h : PowerSeries.constantCoeff z = 0 ∧ z ≠ 0 then (exists_sig h).choose else AlgHom.id k _
 
 /- English proof (translation)
-Rewrite using `[sig, dif_pos ⟨h, h0⟩]`. Conclude with `(exists_sig ⟨h, h0⟩).choose_spec x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sig_apply {z : PowerSeries k} (h : PowerSeries.constantCoeff z = 0) (h0 : z ≠ 0) (x : PowerSeries k) :
     sig z (algebraMap _ _ x) = toK k (x.subst z) := by
@@ -126,7 +126,7 @@ def Rel (z w : PowerSeries k) (c : algOver k k ⟶ G) : Prop :=
 variable {a}
 
 /- English proof (translation)
-Use `Red.mul h' h` as an intermediate fact. Rewrite `this` using `[_root_.mul_assoc, inv_mul_cancel_left]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem Rel.trans {x y z : PowerSeries k} {c c' : algOver k k ⟶ G} (h : Rel a x y c) (h' : Rel a y z c') :
     Rel a x z (c' * c) := by
@@ -134,7 +134,7 @@ theorem Rel.trans {x y z : PowerSeries k} {c c' : algOver k k ⟶ G} (h : Rel a 
   rwa [_root_.mul_assoc, inv_mul_cancel_left] at this
 
 /- English proof (translation)
-Use `Red.inv h` as an intermediate fact. Rewrite `this` using `[mul_inv_rev, inv_inv]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem Rel.symm {x y : PowerSeries k} {c : algOver k k ⟶ G} (h : Rel a x y c) : Rel a y x c⁻¹ := by
   have := Red.inv h
@@ -144,7 +144,7 @@ variable {A : Type} [CommRing A] [Algebra k A] {j : algOver k A ⟶ G} {ε : A �
   {h : Fin r → MvPowerSeries (Fin 2) k} {d : MvPowerSeries (Fin 2) k}
 
 /- English proof (translation)
-Apply the tactic sequence `have hs : MvPowerSeries.HasSubst (![z, w] : Fin 2 → PowerSeries k) := MvPowerSeries.hasSubst_of_constantCoeff_zero fun i => by fin_cases i <;> assumption`. Establish `hτ : ∀ x : MvPowerSeries (Fin 2) k, ((toK k).comp (MvPowerSeries.substAlgHom hs)) x = toK k (MvPowerSeries.subst (![z, w] : Fin 2 → PowerSeries k) x)` using `fun x => by`. Rewrite using `[AlgHom.comp_apply, MvPowerSeries.coe_substAlgHom]`. Take `⟨χ, h1, h2⟩` from `ht _ ((toK k).comp (MvPowerSeries.substAlgHom hs)) (sig z) (sig w) (by rw [hτ]; exact fun e => hd (toK_injective (e.trans (map_zero _).symm))) (fun x => by rw [hτ, sig_apply hz hz0, ((GlobalTheory.T.subst_two_variables_identities_alt k).2 x z w hz hw).1]) (fun x => by rw [hτ, sig …`. Conclude with `⟨χ, fun i => by rw [← hτ, ← hτ]; exact h1 i, by rw [h2, mul_inv_cancel_right]⟩`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem TwoVar.arc (ht : TwoVar j f a h d) {z w : PowerSeries k} (hz : PowerSeries.constantCoeff z = 0)
     (hw : PowerSeries.constantCoeff w = 0) (hz0 : z ≠ 0) (hw0 : w ≠ 0)
@@ -165,13 +165,11 @@ theorem TwoVar.arc (ht : TwoVar j f a h d) {z w : PowerSeries k} (hz : PowerSeri
   exact ⟨χ, fun i => by rw [← hτ, ← hτ]; exact h1 i, by rw [h2, mul_inv_cancel_right]⟩
 
 /- English proof (translation)
-Take `⟨χ, h1, h2⟩` from `ht.arc hz hw hz0 hw0 hd`. Establish `hf : ∀ i, χ (f i) = toK k (y i)` using `fun i => by`. Use `h1 i` as an intermediate fact. Rewrite `this` using `[← hy i, map_mul]`. Conclude with `mul_right_cancel₀ (fun e => hd (toK_injective (e.trans (map_zero _).symm))) this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hm : ∀ x, χ x ∈ (toK k).range` using `fun x => by`. Establish `: Algebra.adjoin k (Set.range f) ≤ (toK k).range.comap χ` using `Algebra.adjoin_le (by rintro _ ⟨i, rfl⟩; exact ⟨y i, (hf i).symm⟩)`. Conclude with `this (hc.2.2.1 ▸ Algebra.mem_top)`. Set `χ₀ : A →ₐ[k] PowerSeries k` to `(AlgEquiv.ofInjective (toK k) toK_injective).symm.toAlgHom.comp (χ.codRestrict _ hm)`. Establish `e : (toK k).comp χ₀ = χ`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `x`. Conclude with `congrArg Subtype.val ((AlgEquiv.ofInjective (toK k) toK_injective).apply_symm_apply ⟨χ x, hm x⟩)`. Use `⟨(ev0 k).comp χ₀, fun i => ?_, algOverHom χ₀ ≫ j, ?_, ?_⟩` and prove the remaining obligations. Establish `: χ₀ (f i) = y i` using `toK_injective ((AlgHom.congr_fun e (f i)).trans (hf i))`. Rewrite using `[AlgHom.comp_apply, this, laurentCoeffEvalLinear_apply]`.
-
-Rewrite using `[h2, ← Category.assoc, ← algOverHom_comp, e]`. Rewrite using `[← Category.assoc, ← algOverHom_comp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem TwoVar.rel (hc : IsChart G j ε f) (ht : TwoVar j f a h d) {z w : PowerSeries k}
     (hz : PowerSeries.constantCoeff z = 0)
@@ -201,11 +199,11 @@ theorem TwoVar.rel (hc : IsChart G j ε f) (ht : TwoVar j f a h d) {z w : PowerS
   · rw [← Category.assoc, ← algOverHom_comp]
 
 /- English proof (translation)
-Take `⟨χ, h1, h2⟩` from `ht.arc hz hw hz0 hw0 hd`. Take `⟨b, hb1, hb2⟩` from `hr`. Take `⟨e, he, hl⟩` from `GlobalTheory.T.exists_basicOpen_factor_fieldPoint_affineOpen k G A (PowerSeries k) k j b (ev0 k) ε hc.1 (hb2.trans hc.2.1.symm)`. Take `⟨χ₀, h0⟩` from `hl (PowerSeries k) (AlgHom.id k _) (PowerSeries.isUnit_iff_constantCoeff.2 (IsUnit.mk0 _ he))`. Rewrite `h0` using `[algOverHom_id, Category.id_comp]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Substitute `h0` using the available equality. Rewrite `hb1`, `hb2` using `[← Category.assoc, ← algOverHom_comp]`. Establish `e1` using `eq_of_comp_eq hc.1 (hb1.trans h2)`. Establish `e2` using `eq_of_comp_eq hc.1 (hb2.trans hc.2.1.symm)`. Use `⟨χ₀ (f i), (AlgHom.congr_fun e2 (f i)).trans (hc.2.2.2 i), toK_injective ?_⟩` and prove the remaining obligations.
+Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, ← h1 i, ← e1, AlgHom.comp_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem TwoVar.of_rel_one (hc : IsChart G j ε f) (ht : TwoVar j f a h d) {z w : PowerSeries k}
     (hz : PowerSeries.constantCoeff z = 0)
@@ -228,7 +226,7 @@ theorem TwoVar.of_rel_one (hc : IsChart G j ε f) (ht : TwoVar j f a h d) {z w :
   rw [map_mul, ← h1 i, ← e1, AlgHom.comp_apply]
 
 /- English proof (translation)
-Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply]`. Conclude with `PowerSeries.coeff_of_lt_order 0 (lt_of_lt_of_le (by exact_mod_cast hm) hz)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem const_of_le {m : ℕ} (hm : 1 ≤ m) {z : PowerSeries k} (hz : (m : ℕ∞) ≤ z.order) :
     PowerSeries.constantCoeff z = 0 := by
@@ -236,38 +234,38 @@ theorem const_of_le {m : ℕ} (hm : 1 ≤ m) {z : PowerSeries k} (hz : (m : ℕ�
   exact PowerSeries.coeff_of_lt_order 0 (lt_of_lt_of_le (by exact_mod_cast hm) hz)
 
 /- English proof (translation)
-The claim follows from `PowerSeries.nat_le_order _ _ fun i hi => by simp [PowerSeries.coeff_X_pow, hi.ne]`.
+A detailed English derivation is pending.
 -/
 theorem le_order_mon (t : k) (n : ℕ) : (n : ℕ∞) ≤ (PowerSeries.C t * PowerSeries.X ^ n : PowerSeries k).order :=
   PowerSeries.nat_le_order _ _ fun i hi => by simp [PowerSeries.coeff_X_pow, hi.ne]
 
 /- English proof (translation)
-Simplify using `[PowerSeries.coeff_X_pow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coeff_mon (t : k) (n : ℕ) : PowerSeries.coeff n (PowerSeries.C t * PowerSeries.X ^ n : PowerSeries k) = t := by
   simp [PowerSeries.coeff_X_pow]
 
 /- English proof (translation)
-The claim follows from `le_antisymm (PowerSeries.order_le n (by rwa [coeff_mon])) (le_order_mon t n)`.
+A detailed English derivation is pending.
 -/
 theorem order_mon {t : k} (ht : t ≠ 0) (n : ℕ) : (PowerSeries.C t * PowerSeries.X ^ n : PowerSeries k).order = n :=
   le_antisymm (PowerSeries.order_le n (by rwa [coeff_mon])) (le_order_mon t n)
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Simplify using `at hz`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 -/
 theorem ne_zero_of_coeff {n : ℕ} {z : PowerSeries k} (hz : PowerSeries.coeff n z ≠ 0) : z ≠ 0 := by
   rintro rfl
   simp at hz
 
 /- English proof (translation)
-The claim follows from `(PowerSeries.order_eq_nat.1 hz).1`.
+A detailed English derivation is pending.
 -/
 theorem coeff_ne_of_order {n : ℕ} {z : PowerSeries k} (hz : z.order = n) : PowerSeries.coeff n z ≠ 0 :=
   (PowerSeries.order_eq_nat.1 hz).1
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg]`. Use `le_trans (le_min hz ?_) (PowerSeries.min_order_le_order_add _ _)` and prove the remaining obligations. Rewrite using `[PowerSeries.order_neg]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem le_order_sub {n : ℕ∞} {z w : PowerSeries k} (hz : n ≤ z.order) (hw : n ≤ w.order) : n ≤ (z - w).order := by
   rw [sub_eq_add_neg]
@@ -277,15 +275,15 @@ theorem le_order_sub {n : ℕ∞} {z w : PowerSeries k} (hz : n ≤ z.order) (hw
 variable [IsAlgClosed k]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hlt`. Establish `hle` using `not_lt.1 hlt`. Establish `hi : h i ≠ 0`. Introduce `e`. Rewrite `hle` using `[e, MvPowerSeries.weightedOrder_zero, top_le_iff, MvPowerSeries.weightedOrder_eq_top_iff]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hd hle`. Take `⟨P₁, Q₁, hP₁, -, h₁⟩` from `GlobalTheory.T.exists_leading_quotient_weighted_arcs k m n hm hn 1 (fun _ => d) (h i) hi (fun _ => hle)`. Take `⟨P₂, Q₂, hP₂, -, h₂⟩` from `GlobalTheory.T.exists_leading_quotient_weighted_arcs k m n hm hn 0 Fin.elim0 d hd (fun i => i.elim0)`. Take `⟨t, ht0⟩` from `Polynomial.exists_eval_ne_zero_of_natDegree_lt_card (Polynomial.X * P₁ * P₂) (mul_ne_zero (mul_ne_zero Polynomial.X_ne_zero hP₁) hP₂) (lt_of_lt_of_le Cardinal.natCast_lt_aleph0 (Cardinal.aleph0_le_mk k))`. Simplify using `only [Polynomial.eval_mul, Polynomial.eval_X, ne_eq, mul_eq_zero, not_or] at ht0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `c1 : PowerSeries.coeff m (PowerSeries.C (1 : k) * PowerSeries.X ^ m : PowerSeries k) = 1 ^ m`. Rewrite using `[coeff_mon, one_pow]`. Establish `c2 : PowerSeries.coeff n (PowerSeries.C t * PowerSeries.X ^ n : PowerSeries k) = 1 ^ n * t`. Rewrite using `[coeff_mon, one_pow, _root_.one_mul]`. Take `⟨-, y, hy⟩` from `h₁ 1 t _ _ one_ne_zero (le_order_mon 1 m) (le_order_mon t n) c1 c2 ht0.1.2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hD, -⟩` from `h₂ 1 t _ _ one_ne_zero (le_order_mon 1 m) (le_order_mon t n) c1 c2 ht0.2`. Take `⟨y', hy0, hy'⟩` from `ht.of_rel_one hc (const_of_le hm (le_order_mon 1 m)) (const_of_le hn (le_order_mon t n)) (ne_zero_of_coeff (n := m) (by rw [coeff_mon]; exact one_ne_zero)) (ne_zero_of_coeff (n := n) (by rw [coeff_mon]; exact ht0.1.1)) hD (hr _ _ (order_mon one_ne_zero m) (order_mon ht0.1.1 n)) i`. Establish `e` using `(hy 0).1`. Rewrite `e` using `[← hy', ← _root_.mul_assoc]`. Establish `e1 : y 0 * y' = 1` using `mul_right_cancel₀ hD (e.trans (_root_.one_mul _).symm)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `congrArg PowerSeries.constantCoeff e1`. Simplify using `[hy0] at e2`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem TwoVar.lt_of_rel (hc : IsChart G j ε f) (ht : TwoVar j f a h d) (hd : d ≠ 0) {m n : ℕ} (hm : 1 ≤ m)
     (hn : 1 ≤ n) (hr : ∀ z w : PowerSeries k, z.order = m → w.order = n → Rel a z w 1) (i : Fin r) :
@@ -319,13 +317,13 @@ theorem TwoVar.lt_of_rel (hc : IsChart G j ε f) (ht : TwoVar j f a h d) (hd : d
   simp [hy0] at e2
 
 /- English proof (translation)
-Take `⟨Pd, P, hPd, hP, hg⟩` from `GlobalTheory.T.exists_leading_quotient_weighted_arcs k m n hm hn r h d hd (fun i => (hq i).le)`. Establish `hz0` using `coeff_ne_of_order hz`. Take `⟨s, hs⟩` from `IsAlgClosed.exists_pow_nat_eq (PowerSeries.coeff m z) (n := m) hm`. Establish `hs0 : s ≠ 0`. Introduce and unpack `rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite `hs` using `[zero_pow (by omega)]`. Conclude with `hz0 hs.symm`. Use `⟨insert 0 ((fun t => s ^ n * t) '' {t | Pd.IsRoot t}), ((Polynomial.finite_setOf_isRoot hPd).image _).insert _, fun t hS => ?_⟩` and prove the remaining obligations. Establish `e : s ^ n * (t / s ^ n) = t` using `mul_div_cancel₀ _ (pow_ne_zero _ hs0)`. Establish `ht0 : t ≠ 0` using `fun e => hS (Or.inl e)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : Pd.eval (t / s ^ n) ≠ 0` using `fun e' => hS (Or.inr ⟨_, e', e⟩)`. Take `⟨hD, y, hy⟩` from `hg s (t / s ^ n) z _ hs0 hz.ge (le_order_mon t n) hs.symm (by rw [coeff_mon, e]) hp`. Take `⟨χ, h1, h2⟩` from `ht.rel hc (const_of_le hm hz.ge) (const_of_le hn (le_order_mon t n)) (ne_zero_of_coeff hz0) (ne_zero_of_coeff (n := n) (by rwa [coeff_mon])) hD y (fun i => (hy i).1)`. Establish `: χ = ε` using `hc.hom_ext fun i => by`. Use `(hy i).2` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[(hP i).2 (hq i), Polynomial.eval_zero, mul_eq_zero]`. Rewrite using `[h1, hc.2.2.2, this.resolve_right hp]`. Rewrite `h2` using `[this, hc.2.1]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem TwoVar.gen_of_lt (hc : IsChart G j ε f) (ht : TwoVar j f a h d) (hd : d ≠ 0) {m n : ℕ} (hm : 1 ≤ m)
     (hn : 1 ≤ n) (hq : ∀ i, MvPowerSeries.weightedOrder (![m, n] : Fin 2 → ℕ) d < MvPowerSeries.weightedOrder (![m, n] : Fin 2 → ℕ) (h i))
@@ -353,11 +351,11 @@ theorem TwoVar.gen_of_lt (hc : IsChart G j ε f) (ht : TwoVar j f a h d) (hd : d
   rwa [this, hc.2.1] at h2
 
 /- English proof (translation)
-Take `⟨Pd, P, hPd, hP, hg⟩` from `GlobalTheory.T.exists_leading_quotient_weighted_arcs k m n hm hn r _ _ hd hq`. Use `⟨Pd, P, fun t => if e : ∃ χ : A →ₐ[k] k, ∀ i, χ (f i) * Pd.eval t = (P i).eval t then e.choose else ε, hPd, hP, fun s t z w hs hz hw cz cw hp hw0 => ?_⟩` and prove the remaining obligations. Take `⟨hD, y, hy⟩` from `hg s t z (w - z) hs hz hw cz cw hp`. Establish `z0` using `const_of_le hm hz`. Establish `w0` using `const_of_le hn hw`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ x : MvPowerSeries (Fin 2) k, MvPowerSeries.subst (![z, w - z] : Fin 2 → PowerSeries k) (MvPowerSeries.subst (![MvPowerSeries.X 0, MvPowerSeries.X 0 + MvPowerSeries.X 1] : Fin 2 → MvPowerSeries (Fin 2) k) x) = MvPowerSeries.subst (![z, w] : Fin 2 → PowerSeries k) x` using `fun x => by`. Rewrite using `[((GlobalTheory.T.subst_two_variables_identities_alt k).1 x).2 z (w - z) z0 w0, add_sub_cancel]`. Simplify using `only [key] at hD hy`. Take `⟨χ, h1, h2⟩` from `ht.rel hc z0 (by rwa [map_sub, z0, sub_zero] at w0) (ne_zero_of_coeff (n := m) (by rw [cz]; exact pow_ne_zero _ hs)) hw0 hD y (fun i => (hy i).1)`. Establish `e : ∃ χ : A →ₐ[k] k, ∀ i, χ (f i) * Pd.eval t = (P i).eval t` using `⟨χ, fun i => by rw [h1, (hy i).2]⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [dif_pos e]`. Establish `: e.choose = χ` using `hc.hom_ext fun i => mul_right_cancel₀ hp (by rw [e.choose_spec i, h1, (hy i).2])`. Conclude with `⟨e.choose_spec, by rwa [this]⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem TwoVar.shear (hc : IsChart G j ε f) (ht : TwoVar j f a h d) (hd : (MvPowerSeries.subst (![MvPowerSeries.X 0, MvPowerSeries.X 0 + MvPowerSeries.X 1] : Fin 2 → MvPowerSeries (Fin 2) k) d) ≠ 0) {m n : ℕ} (hm : 1 ≤ m)
     (hn : 1 ≤ n) (hq : ∀ i, MvPowerSeries.weightedOrder (![m, n] : Fin 2 → ℕ) (MvPowerSeries.subst (![MvPowerSeries.X 0, MvPowerSeries.X 0 + MvPowerSeries.X 1] : Fin 2 → MvPowerSeries (Fin 2) k) d) ≤ MvPowerSeries.weightedOrder (![m, n] : Fin 2 → ℕ) (MvPowerSeries.subst (![MvPowerSeries.X 0, MvPowerSeries.X 0 + MvPowerSeries.X 1] : Fin 2 → MvPowerSeries (Fin 2) k) (h i))) :
@@ -388,11 +386,11 @@ theorem TwoVar.shear (hc : IsChart G j ε f) (ht : TwoVar j f a h d) (hd : (MvPo
 omit [IsAlgClosed k] in
 
 /- English proof (translation)
-Establish `c : ∀ v : k, PowerSeries.coeff m (PowerSeries.C (1 : k) * PowerSeries.X ^ m + PowerSeries.C v * PowerSeries.X ^ n : PowerSeries k) = 1`. Introduce `v`. Simplify using `[PowerSeries.coeff_X_pow, hmn.ne]`. Establish `e : (PowerSeries.C 1 * PowerSeries.X ^ m + PowerSeries.C (t + u) * PowerSeries.X ^ n : PowerSeries k) - (PowerSeries.C 1 * PowerSeries.X ^ m + PowerSeries.C u * PowerSeries.X ^ n) = PowerSeries.C t * PowerSeries.X ^ n`. Rewrite using `[map_add]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Use `hg 1 t _ _ one_ne_zero ?_ ?_ ?_ ?_ ht (ne_zero_of_coeff (n := m) (by rw [c]; exact one_ne_zero))` and prove the remaining obligations. Use `le_trans (le_min (le_order_mon 1 m) (le_trans ?_ (le_order_mon u n))) (PowerSeries.min_order_le_order_add _ _)` and prove the remaining obligations. Conclude with `hmn.le` after adjusting the coercions. Rewrite using `[e]`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_order_mon t n`. Rewrite using `[c, one_pow]`. Rewrite using `[e, coeff_mon, one_pow, _root_.one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem add_step {m n : ℕ} (hmn : m < n) {Pd : Polynomial k} {P : Fin r → Polynomial k} {ψ : k → (A →ₐ[k] k)}
     (hg : ∀ (s t : k) (z w : PowerSeries k), s ≠ 0 → (m : ℕ∞) ≤ z.order → (n : ℕ∞) ≤ (w - z).order →
@@ -417,9 +415,9 @@ theorem add_step {m n : ℕ} (hmn : m < n) {Pd : Polynomial k} {P : Fin r → Po
   · rw [e, coeff_mon, one_pow, _root_.one_mul]
 
 /- English proof (translation)
-Establish `hz0` using `coeff_ne_of_order hz`. Take `⟨s, hs⟩` from `IsAlgClosed.exists_pow_nat_eq (PowerSeries.coeff m z) (n := m) hm`. Establish `hs0 : s ≠ 0`. Introduce and unpack `rfl`. Rewrite `hs` using `[zero_pow (by omega)]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hz0 hs.symm`. Use `hg s (t - 1) _ _ hs0 hz.ge (le_order_sub (le_order_mon _ m) hz.ge) hs.symm ?_ ht (ne_zero_of_coeff (n := m) (by rw [coeff_mon]; exact mul_ne_zero h0 hz0))` and prove the remaining obligations. Rewrite using `[map_sub, coeff_mon, hs]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem mul_step {m : ℕ} (hm : 1 ≤ m) {Pd : Polynomial k} {P : Fin r → Polynomial k} {ψ : k → (A →ₐ[k] k)}
     (hg : ∀ (s t : k) (z w : PowerSeries k), s ≠ 0 → (m : ℕ∞) ≤ z.order → (m : ℕ∞) ≤ (w - z).order →
@@ -439,7 +437,7 @@ theorem mul_step {m : ℕ} (hm : 1 ≤ m) {Pd : Polynomial k} {P : Fin r → Pol
 
 omit [IsAlgClosed k] in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun e => by have e' : (q.comp (Polynomial.X - Polynomial.C 1)).comp (Polynomial.X + Polynomial.C (1 : k)) = 0 := by rw [e, Polynomial.zero_comp] rw [Polynomial.comp_assoc] at e' simpa using e', fun e => by rw [e, Polynomial.zero_comp]⟩`.
+Supply the required witnesses or components.
 -/
 theorem comp_sub_one_eq_zero {q : Polynomial k} : q.comp (Polynomial.X - Polynomial.C 1) = 0 ↔ q = 0 :=
   ⟨fun e => by
@@ -450,29 +448,27 @@ theorem comp_sub_one_eq_zero {q : Polynomial k} : q.comp (Polynomial.X - Polynom
     fun e => by rw [e, Polynomial.zero_comp]⟩
 
 /- English proof (translation)
-Take `⟨A, _, _, j, ε, r, f, hc⟩` from `GlobalTheory.T.exists_affineUnitChart_smoothGroupScheme k G hG`. Take `⟨h, d, hd1, hh1, ht⟩` from `GlobalTheory.T.exists_arcQuotient_twoVariable_coords k G A j ε r f hc a`. Establish `hsep` using `hG.2.2.1`. Establish `hXd` using `mt ((GlobalTheory.T.subst_two_variables_identities_alt k).1 d).1.1 hd1`. Establish `hXh` using `fun i => ((GlobalTheory.T.subst_two_variables_identities_alt k).1 (h i)).1.2 (hh1 i)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd' : (MvPowerSeries.subst (![MvPowerSeries.X 0, MvPowerSeries.X 0 + MvPowerSeries.X 1] : Fin 2 → MvPowerSeries (Fin 2) k) d) ≠ 0` using `fun e => hXd (e ▸ dvd_zero _)`. Establish `hd : d ≠ 0`. Introduce and unpack `rfl`. Apply `hd1` to reduce the goal to its premises. Apply the tactic sequence `rw [← MvPowerSeries.coe_substAlgHom (MvPowerSeries.hasSubst_of_constantCoeff_zero fun i => by fin_cases i <;> exact PowerSeries.constantCoeff_X), map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation.
 
-Distinguish the cases in `hQ : ∀ i, MvPowerSeries.weightedOrder (![1, 1] : Fin 2 → ℕ) (MvPowerSeries.subst (![MvPowerSeries.X 0, MvPowerSeries.X 0 + MvPowerSeries.X 1] : Fin 2 → MvPowerSeries (Fin 2) k) d) < MvPowerSeries.weightedOrder (![1, 1] : Fin 2 → ℕ) (MvPowerSeries.subst (![MvPowerSeries.X 0, MvPow …`. It suffices to derive a contradiction. Take `⟨Pd, P, ψ, hPd, hP, hg⟩` from `ht.shear hc hd' le_rfl le_rfl (fun i => (hQ i).le)`. Take `⟨ch1, ch2⟩` from `GlobalTheory.T.relation_of_gen_of_order_eq k (fun z w => Rel a z w 1) (fun m n => ∀ z : PowerSeries k, z.order = (m : ℕ∞) → ∃ S : Set k, S.Finite ∧ ∀ t, t ∉ S → Rel a z (PowerSeries.C t * PowerSeries.X ^ n) 1) (fun z w h => by simpa using h.symm) (fun x y z h h' => by simpa using …`. Establish `g11` using `ch1 1 1 (fun z hz => by`.
+Consider separately whether the proposition holds or fails. It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hz0` using `coeff_ne_of_order hz`. Use `⟨insert 0 ((fun t => (t + 1) * PowerSeries.coeff 1 z) '' {t | Pd.IsRoot t}), ((Polynomial.finite_setOf_isRoot hPd).image _).insert _, fun t hS => ?_⟩` and prove the remaining obligations. Establish `e : t / PowerSeries.coeff 1 z * PowerSeries.coeff 1 z = t` using `div_mul_cancel₀ _ hz0`. Establish `ht0 : t ≠ 0` using `fun e => hS (Or.inl e)`. Establish `hp : Pd.eval (t / PowerSeries.coeff 1 z - 1) ≠ 0` using `fun e' => hS (Or.inr ⟨_, e', by simp only [sub_add_cancel, e]⟩)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨h1, h2⟩` from `mul_step le_rfl hg z hz _ (div_ne_zero ht0 hz0) hp`. Establish `: ψ (t / PowerSeries.coeff 1 z - 1) = ε` using `hc.hom_ext fun i => by`. Use `h1 i` as an intermediate fact. Rewrite `this` using `[(hP i).2 (hQ i), Polynomial.eval_zero, mul_eq_zero]`. Rewrite using `[hc.2.2.2, this.resolve_right hp]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, hc.2.1, e] at h2)` and apply the resulting hypothesis. Take `⟨-, s2, s3, s4⟩` from `GlobalTheory.T.weightedOrder_slope_comparison_alt k r h d hd _ (fun _ _ => Iff.rfl)`. Take `⟨m₀, hm₀⟩` from `s2 (ht.lt_of_rel hc hd le_rfl le_rfl g11)`. Establish `all` using `ch2 (m₀ + 1) fun m hm => ht.gen_of_lt hc hd (m := m) (n := m + 1) (by omega) (by omega) (hm₀ m (by omega))`. Use `hna (GlobalTheory.T.arc_extends_of_regular_second_axis k G A j ε r f hc a h d hd ht (s4 fun n hn => ?_))` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(s3 1 n (m₀ + 1) (by omega)).1 (ht.lt_of_rel hc hd (by omega) (Nat.mul_pos (by omega) hn) ?_)` and prove the remaining obligations. Introduce `z w hz hw`. Conclude with `all _ _ z w (by omega) (Nat.le_mul_of_pos_right _ hn) hz hw`. Take `⟨m, n, hm, hmn, hle, i, hi⟩` from `(GlobalTheory.T.weightedOrder_slope_comparison_alt k r (fun i => (MvPowerSeries.subst (![MvPowerSeries.X 0, MvPowerSeries.X 0 + MvPowerSeries.X 1] : Fin 2 → MvPowerSeries (Fin 2) k) (h i))) _ hd' _ (fun _ _ => Iff.rfl)).1 hXh hXd ⟨1, 1, le_rfl, le_rfl, hQ⟩`. Take `⟨Pd, P, ψ, hPd, hP, hg⟩` from `ht.shear hc hd' hm (hm.trans hmn) hle`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hPi : P i ≠ 0` using `fun e => ((hP i).1 e).ne hi`. Break down `hmn.lt_or_eq with hlt | rfl` into its components or cases. Use `left`. Use `GlobalTheory.T.infinite_pth_roots_of_additive_family k p _ A r f ε (fun χ => algOverHom χ ≫ j) Pd P ψ hc.2.2.1 hc.2.2.2 (fun _ _ e => eq_of_comp_eq hc.1 e) hc.2.1 hPd ⟨i, hPi⟩ (fun t ht => (add_step hlt hg 0 t ht).1) fun t t' h1 h2 h3 => ?_` and prove the remaining obligations. Establish `e1` using `(add_step hlt hg 0 t' h2).2`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `(add_step hlt hg (t' + 0) t h1).2`. Establish `e3` using `(add_step hlt hg 0 (t + t') h3).2`. Rewrite `e3` using `[_root_.add_assoc]`. Conclude with `Red.unique hsep (e1.trans e2) e3`. Use `right`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `ev : ∀ (q : Polynomial k) (t : k), (q.comp (Polynomial.X - Polynomial.C 1)).eval t = q.eval (t - 1)` using `fun q t => by simp`. Use `GlobalTheory.T.exists_oneParameterSubgroup_of_rational_family k G A j ε r f (Pd.comp (Polynomial.X - Polynomial.C 1)) (fun i => (P i).comp (Polynomial.X - Polynomial.C 1)) (fun t => ψ (t - 1)) hG hc (mt comp_sub_one_eq_zero.1 hPd) ⟨i, mt comp_sub_one_eq_zero.1 hPi⟩ (fun t h0 h1 = …` and prove the remaining obligations. Simplify using `only [ev] at h1 ⊢`. Conclude with `(mul_step hm hg _ (order_mon one_ne_zero m) t h0 h1).1`. Rewrite `h1`, `h2`, `h3` using `[ev]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e1` using `(mul_step hm hg _ (order_mon one_ne_zero m) t' h0' h2).2`. Establish `e3` using `(mul_step hm hg _ (order_mon one_ne_zero m) _ (mul_ne_zero h0 h0') h3).2`. Rewrite `e1`, `e3` using `[coeff_mon, _root_.mul_one]`. Establish `e2` using `(mul_step hm hg _ (order_mon h0' m) t h0 h1).2`. Rewrite `e2` using `[coeff_mon]`.
-
-Conclude with `Red.unique hsep (e1.trans e2) e3`.
+A detailed English derivation is pending.
 -/
 theorem dichotomy_alg (p : ℕ) [CharP k p] (hG : SmConn G)
     (hna : ¬ ∃ b : algOver k (PowerSeries k) ⟶ G, algOverHom (toK k) ≫ b = a) :
@@ -556,11 +552,9 @@ namespace GlobalTheory.SS
 open ArcInf
 
 /- English proof (translation)
-Introduce `k _ _ p _ _ G _ hG a ha hna`. Set `a' : algOver k (FractionRing (PowerSeries k)) ⟶ G` to `Over.homMk a ha`. Use `(dichotomy_alg (a := a') p hG ?_).imp_left fun (hI : Infinite {x : (algOver k k ⟶ G) // x ^ p = 1}) => ?_` and prove the remaining obligations. Introduce and unpack `⟨b, hb⟩`. Conclude with `hna ⟨b.left, congrArg (fun x => x.left) hb⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Introduce a local definition for the expression.
 
-Set `e : 𝟙_ (Over (Sp k)) ≅ algOver k k` to `Over.isoMk (Iso.refl _) (by`. Express the relevant statement in the definitionally equal form `𝟙 _ ≫ spMap (RingHom.id k) = 𝟙 _`. Rewrite using `[Category.id_comp]`. Conclude with `Spec.map_id _)`. Use `@Infinite.of_injective _ _ hI (fun x : {x : (algOver k k ⟶ G) // x ^ p = 1} => (⟨e.hom ≫ x.1, by rw [← MonObj.comp_pow, x.2, MonObj.comp_one]⟩ : {x : (𝟙_ (Over (Sp k)) ⟶ G) // x ^ p = 1})) ?_` and prove the remaining obligations.
-
-Introduce `x y hxy`. Conclude with `Subtype.ext ((cancel_epi e.hom).1 (congrArg Subtype.val hxy))`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem infinite_torsion_or_cocharacter : ∀ (k : Type) [Field k] [IsAlgClosed k] (p : ℕ) [Fact p.Prime] [CharP k p] (G : Over (Sp k)) [GrpObj G], SmConn G → ∀ a : Sp (FractionRing (PowerSeries k)) ⟶ G.left, a ≫ G.hom = spMap (algebraMap k (FractionRing (PowerSeries k))) → (¬ ∃ b : Sp (PowerSeries k) ⟶ G.left, spMap (algebraMap (PowerSeries k) (FractionRing (PowerSeries k))) ≫ b = a) → Infinite {x : (𝟙_ (Over (Sp k)) ⟶ G) // x ^ p = 1} ∨ ∃ f : Gm (Sp k) ⟶ G, IsMonHom f ∧ f ≠ 1 := by
   intro k _ _ p _ _ G _ hG a ha hna

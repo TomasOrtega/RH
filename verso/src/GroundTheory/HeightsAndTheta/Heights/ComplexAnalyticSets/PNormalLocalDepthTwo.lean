@@ -7,23 +7,21 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets
 open IsLocalRing RingTheory.Sequence
 
 /- English proof (translation)
-Set `K` to `FractionRing B`. Distinguish the cases in `h : ∀ a ∈ maximalIdeal B, ∀ b, a * y = x * b → b ∈ maximalIdeal B`. Use `set u : K := algebraMap B K y / algebraMap B K x with hu`. Establish `hxK : algebraMap B K x ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective B K)).mpr hx`. Set `N : Submodule B K` to `Submodule.map (Algebra.linearMap B K) (maximalIdeal B)`.
+Introduce a local definition for the expression. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hmbot : maximalIdeal B ≠ ⊥` using `fun h0 => hm (h0 ▸ ⟨⟨0, by simp⟩⟩)`. Establish `hN : N ≠ ⊥`. Take `⟨a, ha, ha0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hmbot`. Introduce `hN0`. Establish `: algebraMap B K a ∈ N` using `Submodule.mem_map_of_mem ha`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hN0, Submodule.mem_bot]`. Conclude with `ha0 ((map_eq_zero_iff _ (IsFractionRing.injective B K)).mp this)`. Establish `hNfg : N.FG` using `(IsNoetherian.noetherian (maximalIdeal B)).map _`. Establish `hstab : ∀ n ∈ N, u • n ∈ N`. Introduce and unpack `_ ⟨a, ha, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨b, hb⟩` from `hy a ha`. Use `⟨b, h a ha b hb, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap B K b = u * algebraMap B K a`. Rewrite using `[hu, div_mul_eq_mul_div, eq_div_iff hxK, ← map_mul, ← map_mul]`. Use `congr 1`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Take the linear combination `-hb`. Take `⟨c, hc⟩` from `IsIntegrallyClosed.isIntegral_iff.mp (isIntegral_of_smul_mem_submodule N hN hNfg u hstab)`. Use `⟨c, IsFractionRing.injective B K ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hc, hu]`. Conclude with `(mul_div_cancel₀ _ hxK).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push Not at h`. Take `⟨a, ha, b, hab, hb⟩` from `h`. Establish `hbu : IsUnit b`. Assume the negation of the conclusion as `hb'`. Conclude with `hb ((mem_maximalIdeal b).mpr hb')`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hy0 : y = 0`. Conclude with `⟨0, by simp [hy0]⟩`. It suffices to derive a contradiction. Apply `hm` to reduce the goal to its premises. Use `⟨⟨a, le_antisymm ?_ ?_⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce `a' ha'`. Take `⟨b', hb'⟩` from `hy a' ha'`. Establish `hab' : a' * b = a * b'` using `mul_right_cancel₀ hy0 (by linear_combination b * hb' - b' * hab)`. Use `Submodule.mem_span_singleton.mpr ⟨b' * ↑hbu.unit⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_eq_mul, show b' * ↑hbu.unit⁻¹ * a = (a * b') * ↑hbu.unit⁻¹ by ring, ← hab', mul_assoc, hbu.mul_val_inv, mul_one]`.
-
-Rewrite using `[Ideal.submodule_span_eq, Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `ha`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem NormalLocalDepthTwo.mem_span_of_maximalIdeal_mul_le {B : Type*} [CommRing B] [IsLocalRing B]
     [IsNoetherianRing B] [IsDomain B] [IsIntegrallyClosed B] (hm : ¬ (maximalIdeal B).IsPrincipal)
@@ -77,23 +75,21 @@ theorem NormalLocalDepthTwo.mem_span_of_maximalIdeal_mul_le {B : Type*} [CommRin
       exact ha
 
 /- English proof (translation)
-Introduce `B _ _ _ _ _`. Distinguish the cases in `hfield : IsField B`. Use `⟨[], by simp, IsWeaklyRegular.nil B B, ?_⟩` and prove the remaining obligations. Rewrite using `[ringKrullDim_eq_zero_of_isField hfield]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hmbot : maximalIdeal B ≠ ⊥` using `isField_iff_maximalIdeal_eq.not.mp hfield`. Take `⟨x, hxm, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hmbot`. Establish `hxreg : IsSMulRegular B x` using `fun a b h => mul_left_cancel₀ hx0 h`. Distinguish the cases in `hp : (maximalIdeal B).IsPrincipal`. Establish `: IsDiscreteValuationRing B` using `((IsDiscreteValuationRing.TFAE B hfield).out 4 0).mp hp`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Use `⟨[x], by simpa using hxm, (isWeaklyRegular_cons_iff _ _ _).mpr ⟨hxreg, IsWeaklyRegular.nil _ _⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[IsDiscreteValuationRing.ringKrullDim_eq_one]`. Simplify using the standard rewrite rules. Establish `hreg : ∃ y ∈ maximalIdeal B, IsSMulRegular (QuotSMulTop x B) y`. Assume the negation of the conclusion as `hcon`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push Not at hcon`. Establish `hsub : ((maximalIdeal B : Ideal B) : Set B) ⊆ ⋃ p ∈ associatedPrimes B (QuotSMulTop x B), (p : Set B)`. Rewrite using `[biUnion_associatedPrimes_eq_zero_divisors]`. Introduce `y hy`. Establish `h1` using `hcon y hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[isSMulRegular_iff_right_eq_zero_of_smul]`. Use `push Not at h1`. Take `⟨z, hz, hz0⟩` from `h1`. Conclude with `⟨z, hz0, hz⟩`. Establish `hmem` using `(Ideal.subset_iUnion_iff_mem_of_isMaximal_of_finite (associatedPrimes.finite B (QuotSMulTop x B)) ⊥ ⊥ (fun I hI _ _ => IsAssociatedPrime.isPrime hI) bot_ne_top bot_ne_top).mp hsub`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, z, hz⟩` from `isAssociatedPrime_iff.mp hmem`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ z`. Establish `hyx : ∀ a ∈ maximalIdeal B, ∃ b, a * y = x * b`. Introduce `a ha`. Rewrite `ha` using `[hz, Submodule.mem_colon_singleton, Submodule.mem_bot, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, Submodule.mem_smul_pointwise_iff_exists]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨b, -, hb⟩` from `ha`. Conclude with `⟨b, by simpa [smul_eq_mul] using hb.symm⟩`. Take `⟨c, hc⟩` from `NormalLocalDepthTwo.mem_span_of_maximalIdeal_mul_le hp hx0 hyx`. Establish `h1 : (1 : B) ∈ maximalIdeal B`. Rewrite using `[hz, Submodule.mem_colon_singleton, one_smul, Submodule.mem_bot, Submodule.Quotient.mk_eq_zero, Submodule.mem_smul_pointwise_iff_exists]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨c, trivial, by rw [hc, smul_eq_mul]⟩`. Conclude with `(maximalIdeal.isMaximal B).ne_top ((Ideal.eq_top_iff_one _).mpr h1)`. Take `⟨y, hym, hy⟩` from `hreg`. Use `⟨[x, y], ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `r hr`.
-
-Simplify using `only [List.mem_cons, List.not_mem_nil, or_false] at hr`. Apply the tactic sequence `rcases hr with rfl | rfl <;> assumption`. Conclude with `(isWeaklyRegular_cons_iff _ _ _).mpr ⟨hxreg, (isWeaklyRegular_cons_iff _ _ _).mpr ⟨hy, IsWeaklyRegular.nil _ _⟩⟩`. Conclude with `(min_le_left _ _).trans (by simp)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem NormalLocalDepthTwo.proof : NormalLocalDepthTwo.Statement := by
   intro B _ _ _ _ _

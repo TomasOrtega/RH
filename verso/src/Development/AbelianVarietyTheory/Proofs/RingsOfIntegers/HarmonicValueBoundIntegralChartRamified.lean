@@ -17,15 +17,15 @@ open ReciprocityTheory.ChartRestriction.G.PullbackSections ReciprocityTheory.Cha
 namespace GlobalTheory.PlaceInt.ChartRam
 
 /- English proof (translation)
-Use `⟨IsFractionRing.injective T.V T.Fr, fun y => ?_⟩` and prove the remaining obligations. Establish `hNV0 : (N : T.V) ≠ 0` using `by exact_mod_cast hN0`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible T.V`. Take `⟨m, hm⟩` from `IsDiscreteValuationRing.associated_pow_irreducible hNV0 hϖ`. Establish `hϖN : ϖ ∣ (N : T.V)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Break down `m with _ | m` into its components or cases. Conclude with `absurd (hm.isUnit_iff.2 (by simp)) hNu`. Conclude with `(dvd_pow_self ϖ (Nat.succ_ne_zero m)).trans hm.symm.dvd`. Take `⟨a, s, hs, rfl⟩` from `IsFractionRing.div_surjective (A := T.V) y`. Establish `hs0 : s ≠ 0` using `nonZeroDivisors.ne_zero hs`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨n, hn⟩` from `IsDiscreteValuationRing.associated_pow_irreducible hs0 hϖ`. Establish `hsd : s ∣ (N : T.V) ^ n` using `hn.dvd.trans (pow_dvd_pow_of_dvd hϖN n)`. Take `⟨c, hc⟩` from `hsd`. Use `⟨c * a, N ^ n, pow_pos (Nat.pos_of_ne_zero hN0) n, ?_⟩` and prove the remaining obligations. Establish `hsK : algebraMap T.V T.Fr s ≠ 0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Ne, map_eq_zero_iff _ (IsFractionRing.injective T.V T.Fr)]`. Conclude with `hs0`. Establish `hcast : ((N ^ n : ℕ) : T.Fr) = algebraMap T.V T.Fr ((N : T.V) ^ n)`. Rewrite using `[map_pow, map_natCast]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Both sides reduce to the same expression. Rewrite using `[hcast, hc, map_mul, map_mul]`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem isRQ_of_not_isUnit (T : CDVR) (N : ℕ) (hN0 : N ≠ 0) (hNu : ¬ IsUnit (N : T.V)) :
     TB.IsRQ (R := T.V) T.Fr := by
@@ -51,9 +51,9 @@ theorem isRQ_of_not_isUnit (T : CDVR) (N : ℕ) (hN0 : N ≠ 0) (hNu : ¬ IsUnit
   field_simp
 
 /- English proof (translation)
-Establish `hr : algebraMap T.V T.Fr (N : T.V) ≠ 0`. Rewrite using `[Ne, map_eq_zero_iff _ (IsFractionRing.injective T.V T.Fr)]`. Conclude with `hN0` after adjusting the coercions. Establish `h1` using `(IsDiscreteValuationRing.maximalIdeal T.V).valuation_le_one (K := T.Fr) (N : T.V)`. Establish `h2 : valV T.V (algebraMap T.V T.Fr (N : T.V)) ≠ 0` using `valV_ne_zero hr`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `(WithZero.log_le_log h2 one_ne_zero).mpr h1`. Rewrite `h3` using `[WithZero.log_one, map_natCast]`. Unfold `vV`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem vV_natCast_nonneg (T : CDVR) (N : ℕ) (hN0 : N ≠ 0) : 0 ≤ vV T.V (N : T.Fr) := by
   have hr : algebraMap T.V T.Fr (N : T.V) ≠ 0 := by
@@ -69,15 +69,15 @@ theorem vV_natCast_nonneg (T : CDVR) (N : ℕ) (hN0 : N ≠ 0) : 0 ≤ vV T.V (N
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c _ hstar T io y C hG p a m hp hpu hpm hd hmv e he w n`. Use `GlobalTheory.T.harmonicValue_bound_of_column_products E H Dw l Xo c hstar T io y C e _ w n ?_` and prove the remaining obligations. Introduce `k P hP f hf`. Set `_` to `io.toAlgebra`. Take `⟨π, _, _, cc, s, hcs, φ, ψ, hψ, heig, h21a, h21b, h21c⟩` from `GlobalTheory.T.exists_ramified_eigen_lifts_of_chart_directions E H Dw l Xo c hstar T io y C hG p a m hp hpu hpm hd hmv e he`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨hF, hA, h1, h2, hs, had, hu⟩` from `C.gen.1`. Establish `hinj : Function.Injective (algebraMap T.V T.Fr)` using `IsFractionRing.injective T.V T.Fr`. Set `t : CVA.IntTie (algebraMap T.V T.Fr) C.ch.B` to `⟨C.FT, C.actT, C.ph1T, C.ph2T, C.syT, C.adT, funext fun i => (hF i).symm, fun a => funext fun i => (hA a i).symm, h1.symm, h2.symm, hs.symm, fun a => (had a).symm⟩`. Establish `huv : C.ch.uvec = fun ℓ i => algebraMap T.V T.Fr (C.uvecT ℓ i)` using `funext fun ℓ => funext fun i => hu ℓ i`. Simplify using `only [huv] at heig h21a h21b h21c`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `set cJ : ℝ := (vV T.V (p : T.Fr) : ℝ) / e * ((a : ℝ) / Module.finrank ℚ E) with hcJ`. Establish `hv : (0 : ℝ) ≤ (vV T.V (p : T.Fr) : ℝ)` using `by exact_mod_cast vV_natCast_nonneg T p hp.ne_zero`. Establish `hcJ0 : 0 ≤ cJ` using `by rw [hcJ]; positivity`. Establish `hw0 : H.w0 + star H.w0 = 1` using `by rw [hstar]; exact CVA.cmHostUnit_add_conj_eq_one H`. Establish `hpmin : ∀ mo ∈ P.support, ∑ b, TB.pairMin (fun ℓ : Lt1 Dw => cc ℓ.1) (fun ℓ => s ℓ.1) (colL Dw.mult n mo b) ≤ Formalism.L2.Pj.DF Dw w / 2` using `fun mo hmo => sum_pairMin_le Dw.mult n cc s (fun τ i => w (τ, i)) mo (hP.1.2.2 mo hmo)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem` using `chartValJ (isRQ_of_not_isUnit T p hp.ne_zero hpu) (Jv T e cJ) (one_mem_Jv T e hcJ0) (CVA.fbOf t hinj) C.ch.h (CVA.fbOf_canon t hinj C.ch.h C.ch.gauge) H.w0 hw0 k Dw.mult ComplexEmbedding.conjugate (fun τ => by ext x; simp) (InPsi H) (CVA.inPsi_or H) cc s hcs C.uvecT φ ψ hψ heig h …`. Establish `hval` using `mem_Jv_pow T e hcJ0 _ _ hmem`. Simplify using `only [CVA.fbOf_nabVal] at hval`. Rewrite using `[huv]`. Use `le_trans ?_ hval` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `EReal.coe_le_coe_iff.2` to reduce the goal to its premises. Establish `hdiv : ((Formalism.L2.Pj.DF Dw w / 2 : ℕ) : ℝ) ≤ (Formalism.L2.Pj.DF Dw w : ℝ) / 2`. Rewrite using `[le_div_iff₀ (by norm_num : (0 : ℝ) < 2)]`. Conclude with `Nat.div_mul_le_self _ 2` after adjusting the coercions. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem chBound_ramified : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)], (∀ a : 𝓞 E, star a = H.bar a) → ∀ (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io) (C : IntegralChartA3 Xo c T io y), IsGalois ℚ E → ∀ (p a m : ℕ), p.Prime → ¬ IsUnit (p : T.V) → ¬ p ∣ m → (NumberField.discr E).natAbs = p ^ a * m → (∀ 𝔭 : Ideal (𝓞 E), 𝔭.IsPrime → (p : 𝓞 E) ∈ 𝔭 → ∃ x ∈ 𝔭, H.bar x ∉ 𝔭) → ∀ e : ℕ, 0 < e → ∀ (w : (E →+* ℂ) × ℕ → ℕ) (n : ℕ), ChBound C e ((vV T.V (p : T.Fr) : ℝ) / e * ((a : ℝ) / Module.finrank ℚ E) * (Formalism.L2.Pj.DF Dw w : ℝ) / 2) w n := by
   intro E _ _ _ H Dw l Xo c _ hstar T io y C hG p a m hp hpu hpm hd hmv e he w n

@@ -21,29 +21,27 @@ open Limits
 namespace GlobalTheory.NefDeRhamCore
 
 /- English proof (translation)
-Introduce `Z i _ _ _ hd`. Establish `: IsNoetherianRing k` using `IsNoetherianRing.of_finite ℤ k`. Establish `: IsProper p` using `(isProper_and_exists_isAmpleLB_of_isProjOver hp).1`. Establish `: IsProper q` using `(isProper_and_exists_isAmpleLB_of_isProjOver hq).1`. Establish `: IsProper (π ≫ p)` using `by rw [hπ]; infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsProper π` using `IsProper.of_comp π p`. Establish `: Surjective π` using `⟨hsurj⟩`. Establish `: IsNoetherian Y` using `isNoetherian_of_isProjOver hq`. Establish `: IsNoetherian X` using `isNoetherian_of_isProjOver hp`. Establish `: IsNoetherian Z`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `LocallyOfFiniteType.isLocallyNoetherian i` as an intermediate fact. Use `QuasiCompact.compactSpace_of_compactSpace i` as an intermediate fact. Conclude with `{}`. Set `g` to `pullback.snd π i`. Establish `: IsProper g` using `inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Surjective g` using `inferInstance`. Take `⟨w, hw, hdeg⟩` from `GlobalTheory.NefDescent.fibre_point _ Z g (genericPoint Z) (g.surjective _)`. Set `C : Closeds (pullback π i : Scheme.{0})` to `⟨closure {w}, isClosed_closure⟩`. Establish `: IsIntegral (Scheme.IdealSheafData.vanishingIdeal C).subscheme` using `isIntegral_red isIrreducible_singleton.closure`. Establish `hgen` using `GlobalTheory.NefDescent.red_genericPoint _ w C rfl`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `f` to `redι C ≫ g`. Set `i'` to `redι C ≫ pullback.fst π i`. Establish `hη : f (genericPoint _) = genericPoint Z`. Simplify using `only [f, Scheme.Hom.comp_apply, hgen, hw]`. Establish `hdeg' : 0 < f.residueDegree (genericPoint _)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [f, CurveDegreesCompare.residueDegree_comp, hgen, GlobalTheory.Published.residueDegree_of_isClosedImmersion, mul_one]`. Conclude with `hdeg`. Establish `hd'` using `GlobalTheory.NefDescent.dim_eq_one _ Z f hd hη hdeg'`. Establish `: IsNoetherian (Scheme.IdealSheafData.vanishingIdeal C).subscheme`. Use `LocallyOfFiniteType.isLocallyNoetherian i'` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `QuasiCompact.compactSpace_of_compactSpace i'` as an intermediate fact. Conclude with `{}`. Establish `: IsFinite f` using `GlobalTheory.NefDescent.isFinite_of_dim _ Z f hd' hd hη`. Use `letI : Algebra (ZMod r) Γ((Scheme.IdealSheafData.vanishingIdeal C).subscheme, ⊤) := algebraΓAlong (ZMod r) f`. Establish `h1` using `hL _ i' hd'`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN : (L.B.pull i).IsLB` using `LB.isLB_pull L.isLB i`. Establish `hcomm : i' ≫ π = f ≫ i` using `by simp only [i', f, g, Category.assoc, pullback.condition]`. Establish `e1 : topSelfIntersection (ZMod r) ((L.pull π hπ).B.pull i') 1 = topSelfIntersection (ZMod r) ((L.B.pull i).pull f) 1`. Rewrite using `[topSelf_def, topSelf_def]`. Use `interNum_congr_cls (ZMod r) _ (fun _ => LB.isLB_pull (LB.isLB_pull L.isLB π) i') (fun _ => LB.isLB_pull hN f) fun _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show pull i' (pull π (cls L.B L.isLB)) = pull f (pull i (cls L.B L.isLB))`. Rewrite using `[← pull_comp, ← pull_comp, hcomm]`. Establish `e2 : topSelfIntersection (ZMod r) ((L.B.pull i).pull f) 1 = interNumOn (ZMod r) f (fun _ : Fin 1 => L.B.pull i)` using `(interNumOn_const_eq_topSelf (k := ZMod r) (fun _ => rfl) hN 1).symm`. Establish `e3 : interNumOn (ZMod r) f (fun _ : Fin 1 => L.B.pull i) = interNumOn (ZMod r) f ![L.B.pull i]` using `congrArg _ (funext fun j => by fin_cases j; rfl)`. Establish `hproj : IsProjOver (strHom (ZMod r) Z)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsFinite (spMap (Int.castRingHom k))`. Rewrite using `[spMap, IsFinite.SpecMap_iff]`. Conclude with `(RingHom.finite_algebraMap (A := ℤ) (B := k)).2 inferInstance`. Establish `e : strHom (ZMod r) Z ≫ spMap (Int.castRingHom (ZMod r)) = i ≫ p ≫ spMap (Int.castRingHom k)` using `specZIsTerminal.hom_ext _ _`. Establish `: IsProper (strHom (ZMod r) Z ≫ spMap (Int.castRingHom (ZMod r)))` using `by rw [e]; infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: IsProper (strHom (ZMod r) Z)` using `IsProper.of_comp _ (spMap (Int.castRingHom (ZMod r)))`. Conclude with `ProperCurve.isProjOver_of_isProper _ hd`. Establish `e4` using `GlobalTheory.T.intersection_number_finite_pushforward (ZMod r) Z _ f hproj hd hη (L.B.pull i) hN`. Establish `e5 : interNum (ZMod r) (structureModule Z) ![L.B.pull i] = topSelfIntersection (ZMod r) (L.B.pull i) 1`. Rewrite using `[topSelf_def]`.
-
-Conclude with `congrArg _ (funext fun j => by fin_cases j; rfl)`. Establish `hT : 0 ≤ (f.residueDegree (genericPoint _) : ℤ) * topSelfIntersection (ZMod r) (L.B.pull i) 1`. Rewrite using `[← e5, ← e4, ← e3, ← e2, ← e1]`. Conclude with `h1`. Conclude with `nonneg_of_mul_nonneg_right hT (by exact_mod_cast hdeg')`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem descend (k : Type) [CommRing k] [Module.Finite ℤ k] (X Y : Scheme.{0}) (p : X ⟶ Sp k) (q : Y ⟶ Sp k)
     (hp : IsProjOver p) (hq : IsProjOver q) (π : Y ⟶ X) (hπ : π ≫ p = q) (hsurj : Function.Surjective π) (L : HermLB p)
@@ -119,13 +117,13 @@ theorem descend (k : Type) [CommRing k] [Module.Finite ℤ k] (X Y : Scheme.{0})
   exact nonneg_of_mul_nonneg_right hT (by exact_mod_cast hdeg')
 
 /- English proof (translation)
-Introduce `hX hP hH D O hO A T H hR B hB u s hu hs hdom hnef c M L k cf hI q _ hq`. Take `⟨X', p', π, hπ, ρ, hρ, hproj, hsurj, κ, a, hκ, ha, heq⟩` from `GlobalTheory.T.dominant_induced_model_reduction hP hH D O hO A T H hR B hB u s hu hs hdom c M L k cf hI q`. Use `⟨M, 𝟙 _, Category.id_comp _, Function.surjective_id, ?_⟩` and prove the remaining obligations. Introduce `Z i _ _ _ hd`. Establish `hL : ∀ (Z : Scheme.{0}) (i : Z ⟶ X') [IsClosedImmersion i] [IsIntegral Z] [Algebra (ZMod q) Γ(Z, ⊤)], topologicalKrullDim Z = 1 → 0 ≤ topSelfIntersection (ZMod q) ((L.pull π hπ).B.pull i) 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `Z i _ _ _ hd`. Establish `e` using `heq Z i hd`. Establish `h1` using `GlobalTheory.T.proj_model_closed_fiber_integral hP hH D O hO A T H hR _ c X' p' hproj ρ hρ q Z i hd`. Establish `h2` using `GlobalTheory.T.nef_dominant_weight_positivity hX hP hH D O hO A T H hR B hB _ hdom hnef c X' p' hproj ρ hρ q hq Z i hd`. Establish `h3 : (0 : ℝ) ≤ κ * (topSelfIntersection (ZMod q) ((L.pull π hπ).B.pull i) 1 : ℝ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e]; exact add_nonneg (mul_nonneg ha (by exact_mod_cast h1)) h2`. Conclude with `nonneg_of_mul_nonneg_right h3 hκ` after adjusting the coercions. Use `descend _ M.X X' M.p p' M.ar.isProjOver hproj π hπ hsurj L q hL Z i hd` as an intermediate fact. Establish `e : topSelfIntersection (ZMod q) ((L.pull (𝟙 M.X) (Category.id_comp _)).B.pull i) 1 = topSelfIntersection (ZMod q) (L.B.pull i) 1`. Rewrite using `[topSelf_def, topSelf_def]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `interNum_congr_cls (ZMod q) _ (fun _ => LB.isLB_pull (LB.isLB_pull L.isLB _) i) (fun _ => LB.isLB_pull L.isLB i) fun _ => ?_` and prove the remaining obligations. Use `show pull i (pull (𝟙 M.X) (cls L.B L.isLB)) = pull i (cls L.B L.isLB)`. Rewrite using `[pull_id]`. Rewrite using `[e]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_model_nonneg : GlobalTheory.CovTop.HypothesesXH → Hypotheses2 → HypothesesH → ∀ (D : D7) (O : Setup D), O.Core → ∀ (A : SlopeTestRemainingChoices O.Y) (T : Real0 O.Y) (H : Ht O.Y), O.Reads A T H →
   ∀ (B : ℝ), 2 ≤ B → ∀ (u : Wt O.Y) (s : ℚ), IsRat O.Y u → 0 < s → WeightThresholdDefs.Dominant O.Y (A.sh u s) → NefCond O.Y B (A.sh u s) →

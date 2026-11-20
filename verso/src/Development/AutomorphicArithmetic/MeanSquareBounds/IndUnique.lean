@@ -5,21 +5,19 @@ open Finset Formalism.HermitianLattices.ZeroFreeRegionGL2 Formalism.HermitianLat
 namespace QH
 
 /- English proof (translation)
-Introduce `N N' M _ _ ψ ψ' hM hψ hψ' h`. Establish `hN : N ≠ 0` using `NeZero.ne N`. Establish `hN' : N' ≠ 0` using `NeZero.ne N'`. Use `haveI : NeZero (N * N' * M) := ⟨mul_ne_zero (mul_ne_zero hN hN') hM⟩`. Use `haveI : NeZero (N * N') := ⟨mul_ne_zero hN hN'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : NeZero (N' * N) := ⟨mul_ne_zero hN' hN⟩`. Establish `hL1 : N ∣ N * N' * M` using `(Nat.dvd_mul_right N N').mul_right M`. Establish `hL2 : N' ∣ N * N' * M` using `(Nat.dvd_mul_left N' N).mul_right M`. Establish `hLM : M ∣ N * N' * M` using `Nat.dvd_mul_left M _`. Establish `hA : N * N' ∣ N * N' * M` using `Nat.dvd_mul_right _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hB : N' * N ∣ N * N' * M` using `⟨M, by ring⟩`. Establish `key : ψ.changeLevel hL1 = ψ'.changeLevel hL2`. Use extensionality with `a`. Rewrite using `[DirichletCharacter.changeLevel_eq_cast_of_dvd, DirichletCharacter.changeLevel_eq_cast_of_dvd]`. Establish `hc : ((a : ZMod (N * N' * M)).val).Coprime (N * N' * M)` using `ZMod.val_coe_unit_coprime a`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← ZMod.natCast_zmod_val (a : ZMod (N * N' * M)), ZMod.cast_natCast hL1, ZMod.cast_natCast hL2]`. Conclude with `h _ (Nat.Coprime.coprime_dvd_right hLM hc)`. Establish `k1 : ψ.changeLevel (Nat.dvd_mul_right N N') = ψ'.changeLevel (Nat.dvd_mul_left N' N)`. Apply `DirichletCharacter.changeLevel_injective hA` to reduce the goal to its premises. Rewrite using `[← DirichletCharacter.changeLevel_trans, ← DirichletCharacter.changeLevel_trans]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `key`. Establish `k2 : ψ'.changeLevel (Nat.dvd_mul_right N' N) = ψ.changeLevel (Nat.dvd_mul_left N N')`. Apply `DirichletCharacter.changeLevel_injective hB` to reduce the goal to its premises. Rewrite using `[← DirichletCharacter.changeLevel_trans, ← DirichletCharacter.changeLevel_trans]`. Conclude with `key.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `f1` using `DirichletCharacter.factorsThrough_gcd ψ ψ' k1`. Establish `f2` using `DirichletCharacter.factorsThrough_gcd ψ' ψ k2`. Establish `e1 : ψ.conductor = N` using `hψ`. Establish `e2 : ψ'.conductor = N'` using `hψ'`. Establish `c1 : ψ.conductor ≤ N.gcd N'` using `Nat.sInf_le f1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c2 : ψ'.conductor ≤ N'.gcd N` using `Nat.sInf_le f2`. Rewrite `c1` using `[e1]`. Rewrite `c2` using `[e2]`. Establish `g1 : N.gcd N' = N` using `le_antisymm (Nat.gcd_le_left _ (Nat.pos_of_ne_zero hN)) c1`. Establish `g2 : N'.gcd N = N'` using `le_antisymm (Nat.gcd_le_left _ (Nat.pos_of_ne_zero hN')) c2`.
-
-Establish `hEq : N = N'` using `by rw [← g1, Nat.gcd_comm, g2]`. Substitute `hEq` using the available equality. Establish `: ψ = ψ'` using `DirichletCharacter.changeLevel_injective (Nat.dvd_mul_right N N) k1`. Substitute `this` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ind_unique :
     ∀ (N N' M : ℕ) [NeZero N] [NeZero N'] (ψ : DirichletCharacter ℂ N) (ψ' : DirichletCharacter ℂ N'), M ≠ 0 →

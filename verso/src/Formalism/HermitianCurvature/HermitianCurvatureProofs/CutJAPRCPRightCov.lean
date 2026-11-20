@@ -8,9 +8,9 @@ namespace Formalism.FourierDecayAlt.P.CutMP.JA.SSn.Rep.Core.TC.PR.CP
 noncomputable section
 
 /- English proof (translation)
-Establish `key : ∀ t : ℝ, F (g * NormedSpace.exp ((t : ℂ) • X)) = (F g).comp (π' (NormedSpace.exp ((t : ℂ) • X)))` using `fun t => hF _ (Formalism.FourierDecayAlt.P.QrD.exp_uw hX t) g hg`. Unfold `Formalism.REAL.RdV`. Simplify using `only [key]`. Set `L : (Wq →L[ℂ] Wq) →L[ℝ] (Wq →L[ℂ] Wp)` to `(ContinuousLinearMap.compL ℂ Wq Wq Wp (F g)).restrictScalars ℝ`. Establish `hL : ∀ A, L A = (F g).comp A` using `fun A => rfl`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hd : HasDerivAt (fun t : ℝ => L (π' (NormedSpace.exp ((t : ℂ) • X)))) (L (P.QrD.dOp π' X)) 0` using `L.hasFDerivAt.comp_hasDerivAt 0 (Formalism.FourierDecayAlt.P.QrD.dOp_hasDeriv hπ hc hX)`. Simplify using `only [hL] at hd`. Conclude with `hd.deriv`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rdV_rightCov {k r : ℕ} {z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type} [NormedAddCommGroup Wp] [NormedSpace ℂ Wp]
     [NormedAddCommGroup Wq] [NormedSpace ℂ Wq] [FiniteDimensional ℂ Wq]
@@ -32,7 +32,7 @@ theorem rdV_rightCov {k r : ℕ} {z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Typ
   exact hd.deriv
 
 /- English proof (translation)
-Introduce `k r z' Wp Wq _ _ _ _ _ _ π' hπ hc _ D F _ _ _ hF g hg A hA`. Use `⟨⟨hA.1.1, hA.2.1⟩, ?_⟩` and prove the remaining obligations. Unfold `Rc P.QrD.ecOp`. Rewrite using `[rdV_rightCov hπ hc hF hg hA.1, rdV_rightCov hπ hc hF hg hA.2]`. Use extensionality with `v`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
 Simplify using the standard rewrite rules.
 -/

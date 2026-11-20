@@ -9,9 +9,9 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 namespace GlobalTheory.PolFan
 
 /- English proof (translation)
-Establish `: Module.Finite ℤ X` using `Module.Finite.trans (𝓞 E) X`. Establish `: Module.Free ℤ X` using `free_int_of_projective E`. Establish `h1 : genRank γ ≤ Module.finrank ℤ (LinearMap.BilinForm ℤ X)` using `Submodule.finrank_le _`. Establish `h2 : Module.finrank ℤ (LinearMap.BilinForm ℤ X) = Module.finrank ℤ X * Module.finrank ℤ X`. Unfold `LinearMap.BilinForm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[Module.finrank_linearMap, Module.finrank_linearMap_self]`. Establish `h3 : Module.finrank ℤ X ≤ q * Module.finrank ℚ E`. Rewrite using `[finrank_int_eq_finrank_mul E X, mul_comm]`. Conclude with `Nat.mul_le_mul_right _ hX`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem genRank_le_sq (E : Type) [Field E] [NumberField E] (q : ℕ) (X : Type) [AddCommGroup X] [Module (𝓞 E) X]
     [Module.Finite (𝓞 E) X] [Module.Projective (𝓞 E) X] (hX : Module.finrank (𝓞 E) X ≤ q) {m : ℕ}
@@ -31,11 +31,9 @@ theorem genRank_le_sq (E : Type) [Field E] [NumberField E] (q : ℕ) (X : Type) 
     _ = (q * Module.finrank ℚ E) ^ 2 := (sq _).symm
 
 /- English proof (translation)
-Introduce `E _ _ _ H q ψ lab hlab`. Use `⟨(q * Module.finrank ℚ E) ^ 2, fun X _ _ _ _ hX β hβ hpos => ?_⟩` and prove the remaining obligations. Rewrite using `[hlab X hX β hβ hpos]`. Conclude with `(by` after adjusting the coercions. Break down `Set.eq_empty_or_nonempty {k : ℕ | ∃ (m : ℕ) (γ : Fin m → LinearMap.BilinForm ℤ X), IsCell H.bar ψ γ ∧ InRCone γ β ∧ genRank γ = k} with he | hne` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he, Nat.sInf_empty]`. Conclude with `Nat.zero_le _`. Take `⟨m, γ, -, -, hk⟩` from `Nat.sInf_mem hne`. Rewrite using `[← hk]`. Conclude with `genRank_le_sq E q X hX γ :`.
-
-Use `sInf {k : ℕ | ∃ (m : ℕ) (γ : Fin m → LinearMap.BilinForm ℤ X), IsCell H.bar ψ γ ∧ InRCone γ β ∧ genRank γ = k} ≤ (q * Module.finrank ℚ E) ^ 2)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem carrierDim_bounded : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (q : ℕ)
     (ψ lab : InvFun (𝓞 E)), IsCarrierDim H.bar q ψ lab → ∃ N : ℕ, ∀ (X : Type) [AddCommGroup X] [Module (𝓞 E) X]

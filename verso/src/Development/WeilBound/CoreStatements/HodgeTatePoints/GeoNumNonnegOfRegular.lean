@@ -11,29 +11,25 @@ namespace PositivityTheory.HtPt.Gf
 variable {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)]
 
 /- English proof (translation)
-Establish `hC : (MvPolynomial.C (p : ℤ) : MRing J) ∈ W`. Simplify `hp` using `[map_natCast]`. Establish `hker : RingHom.ker (red (ι` using `J) p) ≤ W := by`. Rewrite using `[ker_red]`. Conclude with `(Ideal.span_le).2 (by simpa using hC)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set P := Ideal.map (red (ι := J) p) W with hPdef`. Establish `hcomap : Ideal.comap (red (ι` using `J) p) P = W := comap_map_eq p hker`. Establish `hWp : W.IsPrime` using `hW.1`. Establish `hPprime : P.IsPrime` using `Ideal.map_isPrime_of_surjective (red_surjective p) hker`. Establish `hsupp : ∀ h : MRing J, ∀ b : K → ℕ, IsMultiHomog h b → GroundTheory.Heights₂.Heights.NumbersDVR.IsMultiHomog (red (ι` using `J) p h) b := by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h b hh`. Rewrite using `[GroundTheory.Heights₂.Heights.Bridge.isMultiHomog_iff]`. Introduce `m hm k`. Conclude with `hh m (MvPolynomial.support_map_subset _ _ hm) k`. Establish `hPhom : GroundTheory.Heights₂.Heights.NumbersDVR.IsMultiHomogIdeal P`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[GroundTheory.Heights₂.Heights.Bridge.isMultiHomogIdeal_iff]`. Take `⟨S, hS, rfl⟩` from `hW.2.1`. Use `⟨(red (ι := J) p) '' S, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨h, hh, rfl⟩`. Take `⟨b, hb⟩` from `hS h hh`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `⟨b, (GroundTheory.Heights₂.Heights.Bridge.isMultiHomog_iff _ _).1 (hsupp h b hb)⟩`. Rewrite using `[hPdef, Ideal.map_span]`. Establish `hPrel : GroundTheory.Heights₂.Heights.NumbersDVR.IsRelevant P`. Rewrite using `[← GroundTheory.Heights₂.Heights.Bridge.GeoNum.isRelevant_comap_iff p P, hcomap]`. Conclude with `hW.2.2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hPm : GroundTheory.Heights₂.Heights.NumbersDVR.IsMultiProjPrime P` using `⟨hPprime, hPhom, hPrel⟩`. Establish `hdimP : ringKrullDim (GroundTheory.Heights₂.Heights.NumbersDVR.MRing J (ZMod p) ⧸ P) = ((1 + Fintype.card K : ℕ) : WithBot ℕ∞)`. Rewrite using `[← hdim, ← ringKrullDim_eq_of_ringEquiv (quotEquiv p P), hcomap]`. Establish `hreg' : GroundTheory.Heights₂.Heights.Model.IsRegularSection P a (red (ι` using `J) p f) (red (ι := J) p g) := by`. Use `⟨⟨bf, bg, hsupp f bf hf, hsupp g bg hg, funext ha⟩, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `hm`. Conclude with `hfW (by rw [← hcomap]; exact hm)`. Introduce `hm`. Conclude with `hgW (by rw [← hcomap]; exact hm)`. Introduce `W' hW' hPW' set W'' := Ideal.comap (red (ι := J) p) W'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hW'pr : W'.IsPrime` using `hW'.1`. Establish `hW''pr : W''.IsPrime` using `Ideal.comap_isPrime _ _`. Establish `hWW'' : W ≤ W''`. Rewrite using `[← hcomap]`. Conclude with `Ideal.comap_mono hPW'`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `hrel : IsRelevant W''` using `(GroundTheory.Heights₂.Heights.Bridge.GeoNum.isRelevant_comap_iff p W').2 hW'.relevant`. Use `choose t ht using hrel`. Take `⟨n, c, v, hn, hv⟩` from `hreg t (fun k hk => ht k (hWW'' hk))`. Use `⟨red (ι := J) p ((n : MRing J) * mon t c), red (ι := J) p v, ?_, ?_⟩` and prove the remaining obligations. Introduce `hu`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hu' : ((n : MRing J) * mon t c) ∈ W''` using `hu`. Break down `hW''pr.mem_or_mem hu' with h1 | h1` into its components or cases. Conclude with `natCast_not_mem hW''pr.ne_top (hWW'' hp) hn h1`. Conclude with `mon_not_mem hW''pr ht c h1`. Use `Ideal.mem_map_of_mem (red (ι := J) p) hv` as an intermediate fact.
-
-Simplify `this` using `[map_sub, map_mul]`. Establish `key` using `GroundTheory.Heights₂.Heights.Model.SectionNef.proof K J (ZMod p) P hPm hdimP a (red (ι := J) p f) (red (ι := J) p g) hreg'`. Rewrite `key` using `[GroundTheory.Heights₂.Heights.Bridge.intNum_map_eq_geoNum p 1 W hW hC hdim]`. Establish `hfun : (![a] : Fin 1 → K → ℤ) = fun _ => a`. Use function extensionality and compare the values at `i`.
-
-Use `fin_cases i`. Both sides reduce to the same expression. Rewrite `key` using `[hfun]`. Then use the resulting hypothesis.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem geoNum_nonneg_of_regular (p : ℕ) [Fact p.Prime] {W : Ideal (MRing J)} (hW : IsMultiProjPrime W)
     (hp : (p : MRing J) ∈ W) (hdim : ringKrullDim (MRing J ⧸ W) = ((1 + Fintype.card K : ℕ) : WithBot ℕ∞))

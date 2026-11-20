@@ -15,13 +15,11 @@ namespace GlobalTheory.ChartNotAb
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-Establish `hmax : (maximalIdeal R ^ (0 + 1)).IsMaximal`. Rewrite using `[zero_add, pow_one]`. Use `infer_instance`. Establish `hF : IsField (R ⧸ maximalIdeal R ^ (0 + 1))` using `(Ideal.Quotient.maximal_ideal_iff_isField_quotient _).1 hmax`. Establish `hle : maximalIdeal R ^ (0 + 1) ≤ (closedPoint R).asIdeal`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[zero_add, pow_one]`. Conclude with `le_rfl`. Choose the witnesses or unpack the hypotheses as in `⟨q, hq⟩ : closedPoint R ∈ Set.range (PrimeSpectrum.comap (Ideal.Quotient.mk (maximalIdeal R ^ (0 + 1)))) := by`. Rewrite using `[range_comap_of_surjective _ _ Ideal.Quotient.mk_surjective, Ideal.mk_ker]`. Conclude with `hle`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `g` to `P.U.gt 0`. Establish `m : Mono g.i` using `⟨fun a b h => g.isKernel.hom_ext h (toUnit_unique _ _)⟩`. Establish `hq' : thick R (maximalIdeal R) 0 q ∈ abLocus t.G`. Rewrite `hc` using `[← hq]`. Conclude with `hc`.
-
-Conclude with `ArcNotAbelian.subsingleton_of_mem_abLocus t.G t.semi _ hF _ q hq' P.D.toPre.X g.i g.i_hom`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subsingleton_of_closed_mem_abLocus {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] {t : SAB H (Sp R)}
     (P : PELUnif (maximalIdeal R) t) (hc : (closedPoint R : Sp R) ∈ abLocus t.G) : Subsingleton P.D.toPre.X := by
@@ -45,9 +43,9 @@ end GlobalTheory.ChartNotAb
 open GlobalTheory.ChartNotAb in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c φ k _ m e C hT hm hc`. Take `⟨-, -, -, -, -, ⟨N, s, ε, τ₀, -, hε, -, -⟩, -⟩` from `hT`. Establish `hs` using `subsingleton_of_closed_mem_abLocus C.P hc`. Set `i : Fin C.m` to `⟨0, hm⟩`. Apply `ε.ne_zero (Sum.inl i)` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Submodule.coe_zero, hε i]`. Use extensionality with `x y`. Rewrite using `[Subsingleton.elim x 0]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem GlobalTheory.UChart.closedPoint_not_mem_abLocus_of_isTaut : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Geo.Tor.Level H} (Xo : Moduli Dw l) (c : Coeff l) (φ : InvFun (𝓞 E)) (k : Type) [Field k] (m e : ℕ) (C : MonoFam Xo c φ (ChartRing k m e)), IsTaut C → 1 ≤ C.m → closedPoint (ChartRing k m e) ∉ abLocus C.t.G := by
   intro E _ _ _ H Dw l Xo c φ k _ m e C hT hm hc

@@ -32,19 +32,19 @@ def vf (Y : Mat p q) : Matrix (Fin p) (Fin q) (PolB p q) :=
 def tau (Y : Mat p q) : PolB p q := Matrix.trace (cM p q Y.toBlocks₂₁ * Zm p q + cM p q Y.toBlocks₂₂)
 
 /- English proof (translation)
-Use extensionality with `i j : 1`. Simplify using `[cM]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cM_add {m n : Type} (A B : Matrix m n ℂ) : cM p q (A + B) = cM p q A + cM p q B := by
   ext i j : 1; simp [cM]
 
 /- English proof (translation)
-Use extensionality with `i j : 1`. Simplify using `[cM, MvPolynomial.smul_eq_C_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cM_smul {m n : Type} (c : ℂ) (A : Matrix m n ℂ) : cM p q (c • A) = c • cM p q A := by
   ext i j : 1; simp [cM, MvPolynomial.smul_eq_C_mul]
 
 /- English proof (translation)
-Establish `h1 : (X + Y).toBlocks₁₁ = X.toBlocks₁₁ + Y.toBlocks₁₁` using `rfl`. Establish `h2 : (X + Y).toBlocks₁₂ = X.toBlocks₁₂ + Y.toBlocks₁₂` using `rfl`. Establish `h3 : (X + Y).toBlocks₂₁ = X.toBlocks₂₁ + Y.toBlocks₂₁` using `rfl`. Establish `h4 : (X + Y).toBlocks₂₂ = X.toBlocks₂₂ + Y.toBlocks₂₂` using `rfl`. Simplify using `only [vf, h1, h2, h3, h4, cM_add, Matrix.add_mul, Matrix.mul_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -57,7 +57,7 @@ theorem vf_add (X Y : Mat p q) : vf (X + Y) = vf X + vf Y := by
   abel
 
 /- English proof (translation)
-Establish `h1 : (c • X).toBlocks₁₁ = c • X.toBlocks₁₁` using `rfl`. Establish `h2 : (c • X).toBlocks₁₂ = c • X.toBlocks₁₂` using `rfl`. Establish `h3 : (c • X).toBlocks₂₁ = c • X.toBlocks₂₁` using `rfl`. Establish `h4 : (c • X).toBlocks₂₂ = c • X.toBlocks₂₂` using `rfl`. Simplify using `only [vf, h1, h2, h3, h4, cM_smul, Matrix.smul_mul, Matrix.mul_smul, smul_add, smul_sub]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem vf_smul (c : ℂ) (X : Mat p q) : vf (c • X) = c • vf X := by
   have h1 : (c • X).toBlocks₁₁ = c • X.toBlocks₁₁ := rfl
@@ -67,7 +67,7 @@ theorem vf_smul (c : ℂ) (X : Mat p q) : vf (c • X) = c • vf X := by
   simp only [vf, h1, h2, h3, h4, cM_smul, Matrix.smul_mul, Matrix.mul_smul, smul_add, smul_sub]
 
 /- English proof (translation)
-Establish `h3 : (X + Y).toBlocks₂₁ = X.toBlocks₂₁ + Y.toBlocks₂₁` using `rfl`. Establish `h4 : (X + Y).toBlocks₂₂ = X.toBlocks₂₂ + Y.toBlocks₂₂` using `rfl`. Simplify using `only [tau, h3, h4, cM_add, Matrix.add_mul, Matrix.trace_add]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem tau_add (X Y : Mat p q) : tau (X + Y) = tau X + tau Y := by
   have h3 : (X + Y).toBlocks₂₁ = X.toBlocks₂₁ + Y.toBlocks₂₁ := rfl
@@ -76,7 +76,7 @@ theorem tau_add (X Y : Mat p q) : tau (X + Y) = tau X + tau Y := by
   abel
 
 /- English proof (translation)
-Establish `h3 : (c • X).toBlocks₂₁ = c • X.toBlocks₂₁` using `rfl`. Establish `h4 : (c • X).toBlocks₂₂ = c • X.toBlocks₂₂` using `rfl`. Simplify using `only [tau, h3, h4, cM_smul, Matrix.smul_mul, Matrix.trace_add, Matrix.trace_smul, smul_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem tau_smul (c : ℂ) (X : Mat p q) : tau (c • X) = c • tau X := by
   have h3 : (c • X).toBlocks₂₁ = c • X.toBlocks₂₁ := rfl
@@ -100,9 +100,9 @@ Both sides reduce to the same expression.
 theorem Jm_eq : Jm p q = Matrix.fromBlocks 1 0 0 (-1) := rfl
 
 /- English proof (translation)
-Unfold `InU at h`. Rewrite `h` using `[← Matrix.fromBlocks_toBlocks x, Jm_eq, Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply, Matrix.fromBlocks_inj]`. Simplify using `only [Matrix.mul_one, Matrix.mul_zero, add_zero, zero_add, Matrix.mul_neg, Matrix.neg_mul] at h`. Take `⟨h1, h2, -, h4⟩` from `h`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← h1]`. Normalize the expressions using the abelian group laws. Rewrite using `[← sub_eq_zero, ← h2]`. Normalize the expressions using the abelian group laws. Rewrite using `[← sub_eq_zero, ← neg_eq_zero, ← sub_eq_zero.2 h4]`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -121,7 +121,7 @@ theorem InU.blocks {x : Mat p q} (h : InU x) :
   · rw [← sub_eq_zero, ← neg_eq_zero, ← sub_eq_zero.2 h4]; abel
 
 /- English proof (translation)
-Unfold `InU at *`. Rewrite using `[Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem InU.mul {x y : Mat p q} (hx : InU x) (hy : InU y) : InU (x * y) := by
   unfold InU at *
@@ -130,7 +130,7 @@ theorem InU.mul {x y : Mat p q} (hx : InU x) (hy : InU y) : InU (x * y) := by
     _ = _ := by rw [hx, hy]
 
 /- English proof (translation)
-Use `conv_lhs => rw [← Matrix.fromBlocks_toBlocks g, ← Matrix.fromBlocks_toBlocks x, Matrix.fromBlocks_multiply]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem toBlocks₁₂_mul (g x : Mat p q) :
     (g * x).toBlocks₁₂ = g.toBlocks₁₁ * x.toBlocks₁₂ + g.toBlocks₁₂ * x.toBlocks₂₂ := by
@@ -138,7 +138,7 @@ theorem toBlocks₁₂_mul (g x : Mat p q) :
   rfl
 
 /- English proof (translation)
-Use `conv_lhs => rw [← Matrix.fromBlocks_toBlocks g, ← Matrix.fromBlocks_toBlocks x, Matrix.fromBlocks_multiply]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem toBlocks₂₂_mul (g x : Mat p q) :
     (g * x).toBlocks₂₂ = g.toBlocks₂₁ * x.toBlocks₁₂ + g.toBlocks₂₂ * x.toBlocks₂₂ := by

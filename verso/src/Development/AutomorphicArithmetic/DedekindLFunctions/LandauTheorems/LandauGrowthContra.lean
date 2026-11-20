@@ -7,17 +7,17 @@ noncomputable section
 namespace Deduction
 
 /- English proof (translation)
-Establish `he : 0 < e` using `hd.trans hde`. Establish `hL : 0 < Real.log (e / d)` using `Real.log_pos ((one_lt_div hd).mpr hde)`. Use `set L := Real.log (e / d) with hLdef`. Use `⟨L / 2, by positivity, 2 * |C| / (c * L), ?_⟩` and prove the remaining obligations. Introduce `U hU k hk`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hdk : 0 < d ^ k` using `pow_pos hd k`. Establish `hek : 0 < e ^ k` using `pow_pos he k`. Establish `hpow : e ^ k = d ^ k * Real.exp (k * L)`. Rewrite using `[Real.exp_nat_mul, hLdef, Real.exp_log (div_pos he hd), div_pow, mul_div_cancel₀ _ hdk.ne']`. Rewrite using `[div_lt_div_iff₀ hek hdk, hpow]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set X := Real.exp (L / 2 * U) with hXdef`. Establish `hXpos : 0 < X` using `Real.exp_pos _`. Establish `hcL : 0 < c * L` using `mul_pos hc hL`. Rewrite `hU` using `[ge_iff_le, div_le_iff₀ hcL]`. Establish `h1 : L / 2 * U + 1 ≤ X` using `Real.add_one_le_exp _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hX : |C| < c * X`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left h1 hc.le]`. Establish `hY : X * X ≤ Real.exp (k * L)`. Rewrite using `[hXdef, ← Real.exp_add]`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hk hL.le]`. Establish `hCX : C * X * d ^ k ≤ |C| * X * d ^ k`. Use `le_abs_self C` as an intermediate fact. Establish `hXd : 0 < X * d ^ k` using `mul_pos hXpos hdk`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : |C| * X < c * (X * X)` using `by nlinarith`. Establish `h3 : c * (X * X) ≤ c * Real.exp (k * L)` using `mul_le_mul_of_nonneg_left hY hc.le`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem landau_growth_contra {c d e C : ℝ} (hc : 0 < c) (hd : 0 < d) (hde : d < e) :
     ∃ η : ℝ, 0 < η ∧ ∃ U₀ : ℝ, ∀ U ≥ U₀, ∀ k : ℕ, U ≤ k → C * Real.exp (η * U) / e ^ k < c / d ^ k := by

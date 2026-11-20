@@ -9,7 +9,7 @@ section
 variable {E : Type} [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[mem_iwahori, GlobalTheory.SplitFlip.mem_KO_iff]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem mem_iw {g : GL (Fin n) E} : g ∈ iwahori E (Fin n) ↔
     ((∀ i j, valuation E (g.val i j) ≤ 1) ∧ ∀ i j, valuation E (g⁻¹.val i j) ≤ 1) ∧
@@ -18,11 +18,11 @@ private theorem mem_iw {g : GL (Fin n) E} : g ∈ iwahori E (Fin n) ↔
   rfl
 
 /- English proof (translation)
-Take `⟨⟨h1, h2⟩, h3⟩` from `mem_iw.1 hg`. Establish `h4` using `(mem_iw.1 (inv_mem hg)).2`. Use `le_antisymm (h1 i i) (not_lt.1 fun h => ?_)` and prove the remaining obligations. Establish `: valuation E (∑ l, g.val i l * g⁻¹.val l i) < 1`. Use `Valuation.map_sum_lt _ one_ne_zero fun l _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul]`. Break down `lt_trichotomy l i with hl | hl | hl` into its components or cases. Conclude with `(mul_le_of_le_one_right' (h2 l i)).trans_lt (h3 i l hl)`. Substitute `hl` using the available equality. Conclude with `(mul_le_of_le_one_right' (h2 l l)).trans_lt h`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `(mul_le_of_le_one_left' (h1 i l)).trans_lt (h4 l i hl)`. Rewrite `this` using `[← mul_apply, g.mul_inv]`. Simplify using `at this`.
+A detailed English derivation is pending.
 -/
 private theorem diag_one {g : GL (Fin n) E} (hg : g ∈ iwahori E (Fin n)) (i : Fin n) :
     valuation E (g.val i i) = 1 := by
@@ -41,7 +41,7 @@ private theorem diag_one {g : GL (Fin n) E} (hg : g ∈ iwahori E (Fin n)) (i : 
   simp at this
 
 /- English proof (translation)
-Take `⟨⟨h1, h2⟩, h3⟩` from `mem_iw.1 hg`. Rewrite using `[mem_iw, ← map_inv]`. Conclude with `⟨⟨fun i j => (hσ _).le.trans (h1 i j), fun i j => (hσ _).le.trans (h2 i j)⟩, fun i j h => (hσ _).le.trans_lt (h3 i j h)⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 private theorem sg_mem {σ : E ≃+* E} (hσ : Isom σ) {g : GL (Fin n) E} (hg : g ∈ iwahori E (Fin n)) :
     sg σ g ∈ iwahori E (Fin n) := by
@@ -53,15 +53,13 @@ private theorem sg_mem {σ : E ≃+* E} (hσ : Isom σ) {g : GL (Fin n) E} (hg :
 end
 
 /- English proof (translation)
-Introduce and unpack `E _ _ _ _ n σ hσ t ht g ⟨a, ha, b, hb, rfl⟩`. Establish `hb' : b * sg σ a ∈ iwahori E (Fin n)` using `mul_mem hb (sg_mem hσ ha)`. Take `⟨⟨h1, h2⟩, h3⟩` from `mem_iw.1 hb'`. Establish `hu : uniformizer E < 1` using `uniformizer_lt_one`. Establish `ht' : ∀ j l, j < l → valuation E ((t j : E) / t l) ≤ uniformizer E` using `fun j l h => by`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[le_uniformizer_iff, map_div₀, div_lt_one₀ (zero_le.trans_lt (ht j l h))]`. Conclude with `ht j l h`. Take `⟨k, hk, hk', s, hs, e⟩` from `exists_conj hσ t le_rfl hu ht' (b * sg σ a) h1 h2 (diag_one hb') (diag_one (inv_mem hb')) (fun j l h => le_uniformizer_iff.2 (h3 j l h)) (fun j l h => by`. Rewrite using `[map_mul]`. Conclude with `(mul_le_of_le_one_right' (h2 j l)).trans (ht' j l h))`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hkI : k ∈ iwahori E (Fin n)`. Use `mem_iw.2 ⟨⟨fun i j => ?_, hk'⟩, fun i j h => by simpa [one_apply_ne h.ne'] using (hk i j).trans_lt hu⟩` and prove the remaining obligations. Rewrite using `[← sub_add_cancel (k.val i j) ((1 : Matrix (Fin n) (Fin n) E) i j)]`. Use `Valuation.map_add_le _ ((hk i j).trans hu.le) ?_` and prove the remaining obligations. Rewrite using `[one_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `split_ifs <;> simp`. Use `⟨k * a⁻¹, mul_mem hkI (inv_mem ha), s, inv_mem_iff.1 fun i => ?_, ?_⟩` and prove the remaining obligations. Establish `hd` using `diag_one (inv_mem hb') i show valuation E (((s i)⁻¹ : Eˣ) : E) = 1`. Rewrite using `[← sub_add_cancel (((s i)⁻¹ : Eˣ) : E) ((b * sg σ a)⁻¹.val i i), Valuation.map_add_eq_of_lt_right, hd]`. Conclude with `hd ▸ (hs i).trans_lt hu`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.Loc.contractI :
     ∀ (E : Type) [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] (n : ℕ) (σ : E ≃+* E), Isom σ → ∀ t : Fin n → Eˣ, Strict t → ∀ g ∈ iwahoriCoset t,

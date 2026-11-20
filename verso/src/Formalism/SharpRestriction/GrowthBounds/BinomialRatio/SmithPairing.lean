@@ -5,27 +5,27 @@ namespace Formalism.InvariantFactorPaths.KP
 open Module
 
 /- English proof (translation)
-Take `⟨m, snf⟩` from `Submodule.smithNormalForm (Pi.basisFun O (Fin n)) (LinearMap.range φ)`. Establish `hx : ∀ i, ∃ x, φ x = (snf.bN i : Fin n → O)` using `fun i => LinearMap.mem_range.1 (snf.bN i).2`. Use `choose x hx using hx`. Set `s : LinearMap.range φ →ₗ[O] (Fin n → O)` to `snf.bN.constr O x`. Establish `hs : ∀ y : LinearMap.range φ, φ (s y) = y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: φ ∘ₗ s = (LinearMap.range φ).subtype` using `snf.bN.ext fun i => by simp [s, Module.Basis.constr_basis, hx]`. Introduce `y`. Conclude with `LinearMap.congr_fun this y`. Establish `hsi : Function.Injective s` using `fun y y' h => Subtype.ext (by rw [← hs y, ← hs y', h])`. Set `f : (Fin n → O) →ₗ[O] LinearMap.range s` to `s.rangeRestrict ∘ₗ φ.rangeRestrict`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hf : ∀ v : LinearMap.range s, f v = v`. Introduce and unpack `⟨v, y, rfl⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `: φ.rangeRestrict (s y) = y` using `Subtype.ext (hs y)`. Simplify using `only [f, LinearMap.comp_apply, this]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hc : IsCompl (LinearMap.range s) (LinearMap.ker f)` using `LinearMap.isCompl_of_proj hf`. Establish `hK : ∀ v ∈ LinearMap.ker f, φ v = 0`. Introduce `v hv`. Rewrite `hv` using `[LinearMap.mem_ker]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : s (φ.rangeRestrict v) = 0`. Use `congrArg Subtype.val hv` as an intermediate fact. Simplify `this` using `[f]`. Establish `h2 : φ.rangeRestrict v = 0` using `hsi (by rw [h1, map_zero])`. Simplify using `using congrArg Subtype.val h2`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨k, bK⟩` from `Submodule.basisOfPid (Pi.basisFun O (Fin n)) (LinearMap.ker f)`. Set `bS : Module.Basis (Fin m) O (LinearMap.range s)` to `snf.bN.map (LinearEquiv.ofInjective s hsi)`. Set `B : Module.Basis (Fin m ⊕ Fin k) O (Fin n → O)` to `(bS.prod bK).map (Submodule.prodEquivOfIsCompl _ _ hc)`. Establish `hB1 : ∀ i, B (Sum.inl i) = x i`. Introduce `i`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[B, bS, Module.Basis.constr_basis, s]`. Establish `hB2 : ∀ l, B (Sum.inr l) ∈ LinearMap.ker f`. Introduce `l`. Simplify using `[B]`. Establish `hcard : n = m + k`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `Fintype.card_congr ((Pi.basisFun O (Fin n)).indexEquiv B)` as an intermediate fact. Simplify using `using this`. Set `e1 : Fin m ≃ Set.range snf.f` to `Equiv.ofInjective snf.f snf.f.injective`. Establish `hc2 : Fintype.card (Fin k) = Fintype.card {j // j ∉ Set.range snf.f}`. Establish `h1` using `Fintype.card_congr e1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Fintype.card_subtype_compl, ← h1]`. Simplify using `only [Fintype.card_fin]`. Use linear arithmetic over natural numbers and integers. Set `e2 : Fin k ≃ {j // j ∉ Set.range snf.f}` to `Fintype.equivOfCardEq hc2`. Set `E : Fin m ⊕ Fin k ≃ Fin n` to `(Equiv.sumCongr e1 e2).trans (Equiv.sumCompl (· ∈ Set.range snf.f))`.
+Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨B.reindex E, snf.bM, fun i j hij => ?_⟩` and prove the remaining obligations. Take `⟨z, rfl⟩` from `E.surjective j`. Rewrite using `[Module.Basis.reindex_apply, E.symm_apply_apply]`. Break down `z with a | l` into its components or cases. Establish `hEa : E (Sum.inl a) = snf.f a` using `rfl`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hij` using `[hEa]`. Rewrite using `[hB1, hx, snf.snf a, map_smul, Module.Basis.repr_self, Finsupp.smul_apply, Finsupp.single_apply, if_neg hij.symm, smul_zero]`. Rewrite using `[hK _ (hB2 l), map_zero, Finsupp.zero_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem smithMatrix_lemma {O : Type} [CommRing O] [IsDomain O] [IsPrincipalIdealRing O] (n : ℕ)
     (φ : (Fin n → O) →ₗ[O] (Fin n → O)) :
@@ -90,9 +90,9 @@ private theorem smithMatrix_lemma {O : Type} [CommRing O] [IsDomain O] [IsPrinci
   · rw [hK _ (hB2 l), map_zero, Finsupp.zero_apply]
 
 /- English proof (translation)
-Take `⟨b, c, hbc⟩` from `smithMatrix_lemma n (Matrix.toLin' A)`. Use `⟨c.toMatrix (Pi.basisFun O (Fin n)), (Pi.basisFun O (Fin n)).toMatrix b, ?_, ?_, fun i j hij => ?_⟩` and prove the remaining obligations. Conclude with `Matrix.isUnit_det_of_right_inverse (Module.Basis.toMatrix_mul_toMatrix_flip _ _)`. Conclude with `Matrix.isUnit_det_of_right_inverse (Module.Basis.toMatrix_mul_toMatrix_flip _ _)`. Establish `h` using `basis_toMatrix_mul_linearMap_toMatrix_mul_basis_toMatrix b (Pi.basisFun O (Fin n)) c (Pi.basisFun O (Fin n)) (Matrix.toLin' A)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[LinearMap.toMatrix_eq_toMatrix', LinearMap.toMatrix'_toLin']`. Rewrite using `[h, LinearMap.toMatrix_apply]`. Conclude with `hbc i j hij`.
+A detailed English derivation is pending.
 -/
 theorem smithMatrix {O : Type} [CommRing O] [IsDomain O] [IsPrincipalIdealRing O] (n : ℕ)
     (A : Matrix (Fin n) (Fin n) O) :
@@ -110,13 +110,13 @@ theorem smithMatrix {O : Type} [CommRing O] [IsDomain O] [IsPrincipalIdealRing O
     exact hbc i j hij
 
 /- English proof (translation)
-Take `⟨d, hd⟩` from `IsLocalization.exist_integer_multiples (nonZeroDivisors O) (Finset.univ : Finset (Fin n × Fin n)) (fun p => G p.1 p.2)`. Establish `hA : ∀ i j, ∃ a : O, algebraMap O K a = (d : O) • G i j` using `fun i j => by`. Take `⟨a, ha⟩` from `hd (i, j) (Finset.mem_univ _)`. Conclude with `⟨a, ha⟩`. Use `choose A hA using hA`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨P, Q, hP, hQ, hPQ⟩` from `smithMatrix n (Matrix.of A)`. Use `⟨P, Q, hP, hQ, fun i j hij => ?_⟩` and prove the remaining obligations. Establish `hd0 : algebraMap O K (d : O) ≠ 0`. Rewrite using `[Ne, ← map_zero (algebraMap O K), (IsFractionRing.injective O K).eq_iff]`. Conclude with `nonZeroDivisors.coe_ne_zero d`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `key : (Matrix.of A).map (algebraMap O K) = algebraMap O K (d : O) • G`. Use extensionality with `i j`. Simplify using `[hA, Algebra.smul_def]`. Establish `h2 : (P * Matrix.of A * Q).map (algebraMap O K) = algebraMap O K (d : O) • (P.map (algebraMap O K) * G * Q.map (algebraMap O K))`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, key, Matrix.mul_smul, Matrix.smul_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `congrFun (congrFun h2 i) j`. Rewrite `h3` using `[Matrix.map_apply, hPQ i j hij, map_zero, Matrix.smul_apply, smul_eq_mul]`. Conclude with `(mul_eq_zero.1 h3.symm).resolve_left hd0`.
+A detailed English derivation is pending.
 -/
 theorem smithPairing (O K : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K]
     [Algebra O K] [IsFractionRing O K] (n : ℕ) (G : Matrix (Fin n) (Fin n) K) :

@@ -9,7 +9,7 @@ open scoped Formalism.Per NNReal
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `sub_eq_zero.1 ((mem_nonZeroDivisors_iff.mp hL).2 _ ?_)` and prove the remaining obligations. Establish `e : ∑ i ∈ s, u i * v i * L = ∑ i ∈ s, L * u i * v i` using `Finset.sum_congr rfl fun i _ => by ring`. Rewrite using `[sub_mul, Finset.sum_mul, e, ← h]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem envelope_dvd_lpow_aux₁ {R : Type} [CommRing R] {ι : Type} (s : Finset ι) (L a b : R) (u v : ι → R)
     (hL : L ∈ nonZeroDivisors R) (h : a * (L * b) = ∑ i ∈ s, L * u i * v i) : a * b = ∑ i ∈ s, u i * v i := by
@@ -19,14 +19,14 @@ theorem envelope_dvd_lpow_aux₁ {R : Type} [CommRing R] {ι : Type} (s : Finset
   ring
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨z, sub_eq_zero.1 (hL _ (by rw [mul_sub, h, pow_succ', mul_assoc, sub_self]))⟩`.
+Supply the required witnesses or components.
 -/
 theorem envelope_dvd_lpow_aux₂ {R : Type} [CommRing R] (L w z : R) (k : ℕ)
     (hL : ∀ x : R, L * x = 0 → x = 0) (h : L * w = L ^ (k + 1) * z) : L ^ k ∣ w :=
   ⟨z, sub_eq_zero.1 (hL _ (by rw [mul_sub, h, pow_succ', mul_assoc, sub_self]))⟩
 
 /- English proof (translation)
-Rewrite using `[hxy, pow_succ']`. Conclude with `mul_dvd_mul_left _ h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem envelope_dvd_lpow_aux₄ {R : Type} [CommRing R] (L x y : R) (k : ℕ) (hxy : x = L * y) (h : L ^ k ∣ y) :
     L ^ (k + 1) ∣ x := by
@@ -34,7 +34,7 @@ theorem envelope_dvd_lpow_aux₄ {R : Type} [CommRing R] (L x y : R) (k : ℕ) (
   exact mul_dvd_mul_left _ h
 
 /- English proof (translation)
-Substitute `hxy` using the available equality. Take `⟨z, hz⟩` from `h`. Rewrite `hz` using `[map_mul, map_natCast]`. Conclude with `envelope_dvd_lpow_aux₂ (R := Ainf l) (l : Ainf l) (σ.f y) z k ainf_torsionFree hz`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem envelope_dvd_lpow_aux₃ {l : ℕ} [Fact l.Prime] {K : FinExt l} {B : Obj l ↥(OL K)} (σ : Hom B (ainfObj K))
     (x y : B.A) (k : ℕ) (hxy : x = (l : B.A) * y) (h : ((l : ℕ) : (ainfObj K).A) ^ (k + 1) ∣ σ.f x) :
@@ -45,13 +45,11 @@ theorem envelope_dvd_lpow_aux₃ {l : ℕ} [Fact l.Prime] {K : FinExt l} {B : Ob
   exact envelope_dvd_lpow_aux₂ (R := Ainf l) (l : Ainf l) (σ.f y) z k ainf_torsionFree hz
 
 /- English proof (translation)
-Introduce `l _ K bk En κ _ c h k`. Establish `hreg : ((l : ℕ) : En.Q.A) ∈ nonZeroDivisors En.Q.A` using `(GlobalTheory.T.toDisc_injective_and_nonZeroDivisors_of_topBasis l K bk En.Q.A (BK.hf En.inl) (Digits l) En.tb).2.2.1`. Proceed by induction on `k with`. Consider the case `zero => intro x _ _ j`. Rewrite using `[pow_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `one_dvd _`. Consider the case `succ k ih`. Introduce `x hx hσ j`. Establish `h1` using `GlobalTheory.T.dvd_l_of_galoisSections_breuilKisinCoproduct l K bk En κ x c h hx (fun g σ e1 e2 i => dvd_trans (dvd_pow_self _ (Nat.succ_ne_zero k)) (hσ g σ e1 e2 i))`. Use `choose y hy using h1`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hyeq : ∀ j, BK.hf En.inl bk.E ^ h * y j = ∑ i, En.Q.D.φ (y i) * c i j`. Introduce `j`. Establish `hxj` using `hx j`. Simplify using `only [hy, map_mul, map_natCast] at hxj`. Conclude with `envelope_dvd_lpow_aux₁ Finset.univ _ _ _ (fun i => En.Q.D.φ (y i)) (fun i => c i j) hreg hxj`.
-
-Establish `hσ' : ∀ (g : ↥(GK K)) (σ : Hom En.Q (ainfObj K)), σ.comp En.inl = bk.ι → σ.comp En.inr = (ainfHom K g).comp bk.ι → ∀ j, ((l : ℕ) : (ainfObj K).A) ^ k ∣ σ.f (y j)`. Introduce `g σ e1 e2 i`. Conclude with `envelope_dvd_lpow_aux₃ σ (x i) (y i) k (hy i) (hσ g σ e1 e2 i)`. Conclude with `envelope_dvd_lpow_aux₄ _ _ _ k (hy j) (ih y hyeq hσ' j)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem envelope_dvd_lpow_of_sections : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (En : Env bk bk.prism (bk.toP bk.E) (bk.toP X)) (κ : Type) [Fintype κ] (c : κ → κ → En.Q.A) (h k : ℕ) (x : κ → En.Q.A), (∀ j, BK.hf En.inl bk.E ^ h * x j = ∑ i, En.Q.D.φ (x i) * c i j) → (∀ (g : ↥(GK K)) (σ : Hom En.Q (ainfObj K)), σ.comp En.inl = bk.ι → σ.comp En.inr = (ainfHom K g).comp bk.ι → ∀ j, ((l : ℕ) : (ainfObj K).A) ^ k ∣ σ.f (x j)) → ∀ j, ((l : ℕ) : En.Q.A) ^ k ∣ x j := by
   intro l _ K bk En κ _ c h k

@@ -19,7 +19,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.TowerPropA
 
 /- English proof (translation)
-Use `IsPreimmersion.of_isLocalization (S := F) (nonZeroDivisors (𝓞 F))` as an intermediate fact. Conclude with `inferInstanceAs (Mono (Spec.map (CommRingCat.ofHom (algebraMap (𝓞 F) F))))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mono_spMap_ringOfIntegers (F : Type) [Field F] [NumberField F] :
     Mono (spMap (algebraMap (𝓞 F) F)) := by
@@ -27,9 +27,9 @@ theorem mono_spMap_ringOfIntegers (F : Type) [Field F] [NumberField F] :
   exact inferInstanceAs (Mono (Spec.map (CommRingCat.ofHom (algebraMap (𝓞 F) F))))
 
 /- English proof (translation)
-Establish `e₁ : ∀ w : Spec (CommRingCat.of Ω), genPt ξ₁ = a w`. Introduce `w`. Rewrite using `[h₁, Scheme.Hom.comp_apply]`. Conclude with `congrArg ξ₁ (Subsingleton.elim (α := PrimeSpectrum Ω₁) _ _)`. Establish `e₂ : ∀ w : Spec (CommRingCat.of Ω), genPt ξ₂ = a w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w`. Rewrite using `[h₂, Scheme.Hom.comp_apply]`. Conclude with `congrArg ξ₂ (Subsingleton.elim (α := PrimeSpectrum Ω₂) _ _)`. Conclude with `(e₁ (IsLocalRing.closedPoint Ω)).trans (e₂ (IsLocalRing.closedPoint Ω)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem genPt_eq_of_factor {X : Scheme.{0}} {Ω Ω₁ Ω₂ : Type} [Field Ω] [Field Ω₁] [Field Ω₂]
     {a : Spec (CommRingCat.of Ω) ⟶ X} {ξ₁ : Spec (CommRingCat.of Ω₁) ⟶ X} {ξ₂ : Spec (CommRingCat.of Ω₂) ⟶ X}
@@ -47,19 +47,17 @@ theorem genPt_eq_of_factor {X : Scheme.{0}} {Ω Ω₁ Ω₂ : Type} [Field Ω] [
   exact (e₁ (IsLocalRing.closedPoint Ω)).trans (e₂ (IsLocalRing.closedPoint Ω)).symm
 
 /- English proof (translation)
-Introduce `hpair htw II hII E _ _ _ H D l Xo c Y _ T o hgal hOm hhol hR hconv`. Establish `: FiniteDimensional ℚ c.F` using `c.fin`. Establish `: NumberField c.F` using `⟨⟩`. Establish `hmono : Mono (spMap (algebraMap (𝓞 c.F) c.F))` using `mono_spMap_ringOfIntegers c.F`. Establish `hinj : Function.Injective (algebraMap (𝓞 c.F) c.F)` using `RingOfIntegers.coe_injective`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdisc : ∀ B, ∀ p : ℕ, p.Prime → (p : ℤ) ∣ NumberField.discr E → p ∈ o.S B`. Introduce `B p hp hd`. Rewrite using `[o.S_iff]`. Use `⟨hp, Or.inr ?_⟩` and prove the remaining obligations. Rewrite using `[o.bad_iff]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨hp, Dvd.dvd.mul_right (Dvd.dvd.mul_left hd 2) _⟩`. Establish `hex : ∀ B a, ∃ t : HodgeTie Y (o.S B) (Module.finrank ℚ c.F) (T.M B a), t.A = (o.Or B a).𝔐`. Introduce `B a`. Take `⟨-, ⟨x, hx⟩, -⟩` from `HodgeCpt.basic _ _ _ _ _ _ _ _ Y _ _ _ _ _ (o.Or B a).𝔐 hinj`. Conclude with `GlobalTheory.T.prime_divisors_of_omega_bundle E H D l Xo c (𝓞 c.F) _ Y (o.S B) (T.M B a) (o.Sys a) (o.Fx a) (o.Or B a) (hOm B a) (hdisc B) (GlobalTheory.T.root_model_origin_compatibility E H D l Xo c (𝓞 c.F) _ Y (o.S B) (T.M B a) (o.Sys a) (o.Fx a) (o.Or B a) x hx hmono (hhol a))`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose tie htie using hex`. Establish `hgen : ∀ B a, genPt (tie B a).A.ξ₀ = genPt (o.Fx a).ξf`. Introduce `B a`. Rewrite using `[htie B a]`. Conclude with `genPt_eq_of_factor (o.Or B a).𝔐.fn_over (o.Or B a).g_over`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `GlobalTheory.T.hodge_tie_galois hpair htw II hII E H D l Xo c (𝓞 c.F) (algebraMap (𝓞 c.F) c.F) Y T o.S (Module.finrank ℚ c.F) tie hgal hmono hconv ?_ ?_` and prove the remaining obligations. Introduce `B k k' p hp`. Rewrite using `[htie B k', htie B k]`. Conclude with `hR B k k' p hp`. Introduce `B Φ hΦ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Use `GlobalTheory.T.hodge_ties_distinct_generic E H D l Xo c (𝓞 c.F) _ Y (o.S B) _ T.Comp (T.M B) (tie B) hmono ?_ ?_ Φ hΦ` and prove the remaining obligations. Introduce `k k' h`. Apply `o.comp_inj` to reduce the goal to its premises. Simplify `h` using `only [hgen]`. Introduce `q hq`.
-
-Take `⟨a, ha⟩` from `o.comp_onto q hq`. Conclude with `⟨a, (hgen B a).trans ha⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem propA_of_origin : CmpPair → TwistAut → ∀ (II : IntersectionSystem), IsFullIntersectionSystem II → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) [DecidableEq (CMType H)] (T : Top.RootTower (CMType H) (D.p + D.q)) (o : TowerOrigin Y T), IsGalois ℚ E → (∀ B a, (o.Or B a).𝔐.OmVB) → (∀ a, (∀ x : (o.Sys a).X, ∃ (U : Set (o.Sys a).X) (lam : (o.Sys a).X → Fin ((o.Fx a).m + 1) → ℂ), IsOpen U ∧ x ∈ U ∧ (∀ i, (o.Sys a).A.HoloOn U fun y => lam y i) ∧ (∀ y ∈ U, ∃ a₀ : ℂ, a₀ ≠ 0 ∧ lam y = a₀ • (o.Fx a).pt y) ∧ ∀ p, lam x p ≠ 0 → ∀ j, x ∈ ((o.Sys a).A.chart j).source → (fderiv ℂ (fun z i => lam (((o.Sys a).A.chart j).symm z) i / lam (((o.Sys a).A.chart j).symm z) p) ((o.Sys a).A.chart j x)).ker = ⊥)) → (∀ B a a', ∀ p ∈ o.S B, (o.Or B a').𝔐.R p = (o.Or B a).𝔐.R p) → T.Conv II → T.PropA II := by
   intro hpair htw II hII E _ _ _ H D l Xo c Y _ T o hgal hOm hhol hR hconv

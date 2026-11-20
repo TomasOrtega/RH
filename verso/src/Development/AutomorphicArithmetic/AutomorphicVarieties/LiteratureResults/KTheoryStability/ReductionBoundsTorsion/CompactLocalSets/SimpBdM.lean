@@ -14,15 +14,15 @@ def Sx (q : ℕ) : Set (Fin q → ℝ) := {t | (∀ j, 0 ≤ t j) ∧ ∑ j, t j
 def bary {q : ℕ} (t : Fin q → ℝ) : Fin (q + 1) → ℝ := Fin.cons (1 - ∑ j, t j) t
 
 /- English proof (translation)
-Simplify using `[bary, Fin.sum_univ_succ]`.
+Simplify using the standard rewrite rules.
 -/
 lemma bary_sum {q : ℕ} (t : Fin q → ℝ) : ∑ j, bary t j = 1 := by
   simp [bary, Fin.sum_univ_succ]
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `ht`. Use `Fin.cases ?_ (fun i => ?_) j` and prove the remaining obligations. Simplify using `only [bary, Fin.cons_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [bary, Fin.cons_succ]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules.
 
-Conclude with `h1 i`.
+A detailed English derivation is pending.
 -/
 lemma bary_nonneg {q : ℕ} {t : Fin q → ℝ} (ht : t ∈ Sx q) (j : Fin (q + 1)) : 0 ≤ bary t j := by
   obtain ⟨h1, h2⟩ := ht
@@ -33,7 +33,7 @@ lemma bary_nonneg {q : ℕ} {t : Fin q → ℝ} (ht : t ∈ Sx q) (j : Fin (q + 
     exact h1 i
 
 /- English proof (translation)
-Rewrite using `[Fin.sum_univ_succ]`. Simplify using `only [bary, Fin.cons_zero, Fin.cons_succ, smul_sub, Finset.sum_sub_distrib, sub_smul, one_smul, ← Finset.sum_smul]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 lemma pt_eq {q : ℕ} (t : Fin q → ℝ) (y : Fin (q + 1) → V) :
     y 0 + ∑ j, t j • (y j.succ - y 0) = ∑ j, bary t j • y j := by
@@ -46,7 +46,7 @@ def KS {q : ℕ} (A : Fin (q + 1) → V →L[ℝ] V) (B : Set V) : Set V :=
     ∃ y : Fin (q + 1) → V, (∀ j, y j ∈ B) ∧ p = ∑ j, τ j • A j (y j)}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨bary t, bary_nonneg ht, bary_sum t, y, hy, pt_eq t (fun j => A j (y j))⟩`.
+Supply the required witnesses or components.
 -/
 lemma mem_KS {q : ℕ} (A : Fin (q + 1) → V →L[ℝ] V) (B : Set V) {t : Fin q → ℝ} (ht : t ∈ Sx q)
     {y : Fin (q + 1) → V} (hy : ∀ j, y j ∈ B) :
@@ -54,13 +54,13 @@ lemma mem_KS {q : ℕ} (A : Fin (q + 1) → V →L[ℝ] V) (B : Set V) {t : Fin 
   ⟨bary t, bary_nonneg ht, bary_sum t, y, hy, pt_eq t (fun j => A j (y j))⟩
 
 /- English proof (translation)
-Establish `hSc : IsClosed {τ : Fin (q + 1) → ℝ | (∀ j, 0 ≤ τ j) ∧ ∑ j, τ j = 1}`. Simplify using `only [Set.setOf_and, Set.setOf_forall]`. Conclude with `(isClosed_iInter fun j => isClosed_le continuous_const (continuous_apply j)).inter (isClosed_eq (continuous_finset_sum _ fun j _ => continuous_apply j) continuous_const)`. Establish `hS : IsCompact {τ : Fin (q + 1) → ℝ | (∀ j, 0 ≤ τ j) ∧ ∑ j, τ j = 1}`. Use `IsCompact.of_isClosed_subset (isCompact_univ_pi fun _ : Fin (q + 1) => isCompact_Icc (a := (0:ℝ)) (b := 1)) hSc ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `τ hτ j _`. Use `⟨hτ.1 j, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `hK : KS A B = (fun p : (Fin (q + 1) → ℝ) × (Fin (q + 1) → V) => ∑ j, p.1 j • A j (p.2 j)) '' ({τ : Fin (q + 1) → ℝ | (∀ j, 0 ≤ τ j) ∧ ∑ j, τ j = 1} ×ˢ Set.univ.pi fun _ => B)`. Use extensionality with `p`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨τ, h0, h1, y, hy, rfl⟩`. Conclude with `⟨(τ, y), ⟨⟨h0, h1⟩, fun j _ => hy j⟩, rfl⟩`. Introduce and unpack `⟨⟨τ, y⟩, ⟨⟨h0, h1⟩, hy⟩, rfl⟩`. Conclude with `⟨τ, h0, h1, y, fun j => hy j (Set.mem_univ j), rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hK]`. Use `(hS.prod (isCompact_univ_pi fun _ => hB)).image ?_` and prove the remaining obligations. Use `continuous_finset_sum _ fun j _ => ?_` and prove the remaining obligations. Conclude with `((continuous_apply j).comp continuous_fst).smul ((A j).continuous.comp ((continuous_apply j).comp continuous_snd))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma isCompact_KS {q : ℕ} (A : Fin (q + 1) → V →L[ℝ] V) {B : Set V} (hB : IsCompact B) :
     IsCompact (KS A B) := by
@@ -89,9 +89,7 @@ lemma isCompact_KS {q : ℕ} (A : Fin (q + 1) → V →L[ℝ] V) {B : Set V} (hB
     ((A j).continuous.comp ((continuous_apply j).comp continuous_snd))
 
 /- English proof (translation)
-Establish `h1 : IsClosed {t : Fin q → ℝ | ∀ j, 0 ≤ t j}`. Simplify using `only [Set.setOf_forall]`. Conclude with `isClosed_iInter fun j => isClosed_le continuous_const (continuous_apply j)`. Establish `h2 : IsClosed {t : Fin q → ℝ | ∑ j, t j ≤ 1}` using `isClosed_le (continuous_finset_sum _ fun j _ => continuous_apply j) continuous_const`. Simplify using `only [Sx, Set.setOf_and]`.
-
-Conclude with `h1.inter h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma isClosed_Sx (q : ℕ) : IsClosed (Sx q) := by
   have h1 : IsClosed {t : Fin q → ℝ | ∀ j, 0 ≤ t j} := by
@@ -103,7 +101,7 @@ lemma isClosed_Sx (q : ℕ) : IsClosed (Sx q) := by
   exact h1.inter h2
 
 /- English proof (translation)
-Use `(isCompact_univ_pi fun _ => isCompact_Icc (a := (0 : ℝ)) (b := 1)).of_isClosed_subset (isClosed_Sx q) ?_` and prove the remaining obligations. Introduce `t ht j _`. Conclude with `⟨ht.1 j, le_trans (Finset.single_le_sum (fun i _ => ht.1 i) (Finset.mem_univ j)) ht.2⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 lemma isCompact_Sx (q : ℕ) : IsCompact (Sx q) := by
   refine (isCompact_univ_pi fun _ => isCompact_Icc (a := (0 : ℝ)) (b := 1)).of_isClosed_subset (isClosed_Sx q) ?_
@@ -111,14 +109,14 @@ lemma isCompact_Sx (q : ℕ) : IsCompact (Sx q) := by
   exact ⟨ht.1 j, le_trans (Finset.single_le_sum (fun i _ => ht.1 i) (Finset.mem_univ j)) ht.2⟩
 
 /- English proof (translation)
-The claim follows from `(isCompact_Sx q).measure_lt_top`.
+A detailed English derivation is pending.
 -/
 lemma vol_Sx (q : ℕ) : volume (Sx q) < ⊤ := (isCompact_Sx q).measure_lt_top
 
 variable [FiniteDimensional ℝ V] [MeasurableSpace V] [BorelSpace V]
 
 /- English proof (translation)
-Establish `hTc : Continuous T` using `LinearMap.continuous_of_finiteDimensional T`. Establish `hmap` using `Measure.map_linearMap_addHaar_eq_smul_addHaar μ hT`. Establish `h1 : ∫⁻ x, G (T x + c) ∂μ = ∫⁻ x, G (x + c) ∂(Measure.map T μ)` using `(lintegral_map (f := fun x => G (x + c)) (hG.comp (measurable_add_const c)) hTc.measurable).symm`. Rewrite using `[h1, hmap, lintegral_smul_measure, lintegral_add_right_eq_self (fun x => G x) c, smul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 lemma lint_affine (μ : Measure V) [μ.IsAddHaarMeasure] (T : V →ₗ[ℝ] V) (hT : LinearMap.det T ≠ 0) (c : V)
     {G : V → ℝ≥0∞} (hG : Measurable G) :
@@ -135,15 +133,15 @@ def iS {q : ℕ} (ω : V → V [⋀^Fin q]→L[ℝ] ℝ) (y : Fin (q + 1) → V)
   ∫ t in Sx q, ω (y 0 + ∑ j, t j • (y j.succ - y 0)) fun j => y j.succ - y 0
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by simp [nm, Measure.smul_apply, ENNReal.inv_mul_cancel h0 ht]⟩`.
+Supply the required witnesses or components.
 -/
 lemma nm_prob (μ : Measure V) (B : Set V) (h0 : μ B ≠ 0) (ht : μ B ≠ ⊤) : IsProbabilityMeasure (nm μ B) :=
   ⟨by simp [nm, Measure.smul_apply, ENNReal.inv_mul_cancel h0 ht]⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Simplify using `only [nm, Measure.smul_apply, Measure.restrict_apply_univ, smul_eq_mul]`. Distinguish the cases in `h0 : μ B = 0`. Simplify using `[h0]`. Rewrite using `[ENNReal.inv_mul_cancel h0 ht]`.
+Prove the components needed by the constructor for the conclusion. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ENNReal.one_lt_top`.
+A detailed English derivation is pending.
 -/
 lemma nm_fin (μ : Measure V) (B : Set V) (ht : μ B ≠ ⊤) : IsFiniteMeasure (nm μ B) := by
   constructor
@@ -154,7 +152,7 @@ lemma nm_fin (μ : Measure V) (B : Set V) (ht : μ B ≠ ⊤) : IsFiniteMeasure 
     exact ENNReal.one_lt_top
 
 /- English proof (translation)
-Use `haveI := nm_fin μ B hBt`. Establish `h : ∀ᵐ x ∂(nm μ B), x ∈ B` using `Measure.ae_smul_measure (ae_restrict_mem hB) _`. Simplify using `only [Set.mem_univ_pi]`. Conclude with `ae_all_iff.2 fun i => Measure.tendsto_eval_ae_ae.eventually h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma ae_mem_pi (μ : Measure V) {B : Set V} (hB : MeasurableSet B) (hBt : μ B ≠ ⊤) (q : ℕ) :
     ∀ᵐ y ∂(Measure.pi fun _ : Fin (q + 1) => nm μ B), y ∈ Set.univ.pi fun _ => B := by
@@ -164,15 +162,15 @@ lemma ae_mem_pi (μ : Measure V) {B : Set V} (hB : MeasurableSet B) (hBt : μ B 
   exact ae_all_iff.2 fun i => Measure.tendsto_eval_ae_ae.eventually h
 
 /- English proof (translation)
-Establish `hKc : IsCompact (Sx q ×ˢ Set.univ.pi (fun _ : Fin (q + 1) => B))` using `(isCompact_Sx q).prod (isCompact_univ_pi fun _ => hB)`. Establish `hP : Continuous (fun p : (Fin q → ℝ) × (Fin (q + 1) → V) => A 0 (p.2 0) + ∑ j, p.1 j • (A j.succ (p.2 j.succ) - A 0 (p.2 0)))` using `by fun_prop`. Establish `hD : Continuous (fun p : (Fin q → ℝ) × (Fin (q + 1) → V) => fun j : Fin q => A j.succ (p.2 j.succ) - A 0 (p.2 0))` using `by fun_prop`. Establish `hmaps : Set.MapsTo (fun p : (Fin q → ℝ) × (Fin (q + 1) → V) => A 0 (p.2 0) + ∑ j, p.1 j • (A j.succ (p.2 j.succ) - A 0 (p.2 0))) (Sx q ×ˢ Set.univ.pi (fun _ : Fin (q + 1) => B)) (KS A B)`. Introduce and unpack `⟨t, y⟩ ⟨ht, hy⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `mem_KS A B ht fun j => hy j (Set.mem_univ j)`. Establish `hg : ContinuousOn (fun p : (Fin q → ℝ) × (Fin (q + 1) → V) => ω (A 0 (p.2 0) + ∑ j, p.1 j • (A j.succ (p.2 j.succ) - A 0 (p.2 0))) (fun j : Fin q => A j.succ (p.2 j.succ) - A 0 (p.2 0))) (Sx q ×ˢ Set.univ.pi (fun _ : Fin (q + 1) => B))` using `continuous_eval.comp_continuousOn ((hω.comp hP.continuousOn hmaps).prodMk hD.continuousOn)`. Take `⟨M, hM⟩` from `hKc.exists_bound_of_continuousOn hg`. Establish `hvol : volume (Sx q) < ⊤` using `vol_Sx q`. Establish `hms : MeasurableSet (Sx q)` using `(isClosed_Sx q).measurableSet`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [iS]`. Use `⟨?_, M * volume.real (Sx q), ?_⟩` and prove the remaining obligations. Use `continuousOn_of_dominated (bound := fun _ => M) (F := fun (y : Fin (q + 1) → V) (t : Fin q → ℝ) => ω (A 0 (y 0) + ∑ j, t j • (A j.succ (y j.succ) - A 0 (y 0))) (fun j : Fin q => A j.succ (y j.succ) - A 0 (y 0))) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `y hy`. Use `ContinuousOn.aestronglyMeasurable ?_ hms` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hg.comp (continuous_id.prodMk continuous_const).continuousOn (fun t ht => ⟨ht, hy⟩)`. Introduce `y hy`. Use `(ae_restrict_iff' hms).2 (Filter.Eventually.of_forall fun t ht => ?_)` and prove the remaining obligations. Conclude with `hM (t, y) ⟨ht, hy⟩`. Conclude with `integrableOn_const hvol.ne`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `(ae_restrict_iff' hms).2 (Filter.Eventually.of_forall fun t ht => ?_)` and prove the remaining obligations. Conclude with `hg.comp (continuous_const.prodMk continuous_id).continuousOn (fun y hy => ⟨ht, hy⟩)`. Introduce `y hy`. Use `norm_setIntegral_le_of_norm_le_const hvol (fun t ht => hM (t, y) ⟨ht, hy⟩)` as an intermediate fact. Simplify `this` using `[Real.norm_eq_abs]`.
+A detailed English derivation is pending.
 -/
 lemma cont_iS {q : ℕ} (A : Fin (q + 1) → V →L[ℝ] V) {B : Set V} (hB : IsCompact B)
     (ω : V → V [⋀^Fin q]→L[ℝ] ℝ) (hω : ContinuousOn ω (KS A B)) :
@@ -217,11 +215,9 @@ lemma cont_iS {q : ℕ} (A : Fin (q + 1) → V →L[ℝ] V) {B : Set V} (hB : Is
     simpa [Real.norm_eq_abs] using this
 
 /- English proof (translation)
-Establish `hBt : μ B ≠ ⊤` using `hB.measure_lt_top.ne`. Use `haveI := nm_fin μ B hBt`. Take `⟨hc, M, hM⟩` from `cont_iS A hB ω hω`. Establish `hs : MeasurableSet (Set.univ.pi fun _ : Fin (q + 1) => B)` using `MeasurableSet.univ_pi fun _ => hB.isClosed.measurableSet`. Establish `hae` using `ae_mem_pi μ hB.isClosed.measurableSet hBt q`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc' : ContinuousOn (fun y => iS ω fun j => A j (w y j)) (Set.univ.pi fun _ => B)` using `hc.comp hw.continuousOn hwB`. Use `Integrable.mono' (integrable_const M) ?_ ?_` and prove the remaining obligations. Use `hc'.aestronglyMeasurable (μ := Measure.pi fun _ : Fin (q + 1) => nm μ B) hs` as an intermediate fact. Rewrite `this` using `[Measure.restrict_eq_self_of_ae_mem hae]`. Then use the resulting hypothesis. Use `filter_upwards [hae] with y hy`.
-
-Simplify `hM _ (hwB y hy)` using `[Real.norm_eq_abs]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 lemma integ_iS {q : ℕ} (μ : Measure V) [IsFiniteMeasureOnCompacts μ] (A : Fin (q + 1) → V →L[ℝ] V) {B : Set V} (hB : IsCompact B)
     (ω : V → V [⋀^Fin q]→L[ℝ] ℝ) (hω : ContinuousOn ω (KS A B))
@@ -243,30 +239,26 @@ lemma integ_iS {q : ℕ} (μ : Measure V) [IsFiniteMeasureOnCompacts μ] (A : Fi
     simpa [Real.norm_eq_abs] using hM _ (hwB y hy)
 
 /- English proof (translation)
-The claim follows from `(A i).toLinearEquiv.isUnit_det'.ne_zero`.
+A detailed English derivation is pending.
 -/
 lemma det_ne {q : ℕ} (A : Fin (q + 1) → V ≃L[ℝ] V) (i : Fin (q + 1)) :
     LinearMap.det ((A i : V →L[ℝ] V) : V →ₗ[ℝ] V) ≠ 0 :=
   (A i).toLinearEquiv.isUnit_det'.ne_zero
 
 /- English proof (translation)
-Use `haveI := nm_prob μ B h0 ht`. Use `set ν := nm μ B with hν`. Use `set Ai : V →ₗ[ℝ] V := ((A i : V →L[ℝ] V) : V →ₗ[ℝ] V) with hAi`. Establish `hq : (0:ℝ) < (q:ℝ) + 1` using `by positivity`. Establish `hτpos : 0 < τ i` using `lt_of_lt_of_le (by positivity) hi`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set T : V →ₗ[ℝ] V := τ i • Ai with hT`. Establish `hdetA : LinearMap.det Ai ≠ 0` using `det_ne A i`. Establish `hdetT : LinearMap.det T = τ i ^ Module.finrank ℝ V * LinearMap.det Ai` using `LinearMap.det_smul _ _`. Establish `hdetT0 : LinearMap.det T ≠ 0`. Rewrite using `[hdetT]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `mul_ne_zero (pow_ne_zero _ hτpos.ne') hdetA`. Establish `hcoef : ENNReal.ofReal |(LinearMap.det T)⁻¹| ≤ ENNReal.ofReal (((q : ℝ) + 1) ^ Module.finrank ℝ V * |(LinearMap.det Ai)⁻¹|)`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Rewrite using `[hdetT, mul_inv, abs_mul, ← inv_pow, abs_pow, abs_inv, abs_of_pos hτpos]`. Apply `mul_le_mul_of_nonneg_right _ (abs_nonneg _)` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Apply `pow_le_pow_left₀ (inv_nonneg.2 hτpos.le)` to reduce the goal to its premises. Rewrite using `[inv_le_comm₀ hτpos hq]`. Simplify `hi` using `[one_div]`. Use `set K : ℝ≥0∞ := (μ B)⁻¹ * ENNReal.ofReal (((q : ℝ) + 1) ^ Module.finrank ℝ V * |(LinearMap.det Ai)⁻¹|) * ∫⁻ x, G x ∂μ with hK`. Establish `hFm : Measurable fun y : Fin (q + 1) → V => G (∑ j, τ j • A j (y j))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `hG.comp (Continuous.measurable ?_)` and prove the remaining obligations. Conclude with `continuous_finset_sum _ fun j _ => continuous_const.smul ((A j).continuous.comp (continuous_apply j))`. Establish `hinner : ∀ z : Fin q → V, ∫⁻ x, G (∑ j, τ j • A j (Fin.insertNth (α` using `fun _ => V) i x z j)) ∂ν ≤ K := by`. Introduce `z`. Establish `hrw : ∀ x : V, ∑ j, τ j • A j (Fin.insertNth (α` using `fun _ => V) i x z j) = T x + ∑ j, τ (i.succAbove j) • A (i.succAbove j) (z j) := by`.
+Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `x`. Rewrite using `[Fin.sum_univ_succAbove _ i]`. Simplify using `[hT, hAi, Fin.insertNth_apply_same, Fin.insertNth_apply_succAbove]`. Repeatedly rewrite using `[hrw]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hν, nm, lintegral_smul_measure, smul_eq_mul]`. Use `gcongr`. Conclude with `Measure.restrict_le_self`. Use `_ = (μ B)⁻¹ * (ENNReal.ofReal |(LinearMap.det T)⁻¹| * ∫⁻ x, G x ∂μ) := by`. Rewrite using `[lint_affine μ T hdetT0 _ hG]`.
-
-Use `_ ≤ K := by`. Rewrite using `[hK, mul_assoc]`. Use `gcongr`. Establish `hmp` using `(measurePreserving_piFinSuccAbove (fun _ : Fin (q + 1) => ν) i).symm`. Rewrite using `[← hmp.lintegral_comp hFm]`.
-
-Rewrite using `[lintegral_prod_symm (fun a : V × (Fin q → V) => G (∑ j, τ j • A j ((MeasurableEquiv.piFinSuccAbove (fun _ => V) i).symm a j))) ((hFm.comp (MeasurableEquiv.measurable _)).aemeasurable)]`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono fun z => ?_` and prove the remaining obligations. Simplify `hinner z` using `[MeasurableEquiv.piFinSuccAbove_symm_apply]`. Use `_ = K := by simp`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 lemma coord_step {q : ℕ} (μ : Measure V) [μ.IsAddHaarMeasure] (A : Fin (q + 1) → V ≃L[ℝ] V) (B : Set V)
     (h0 : μ B ≠ 0) (ht : μ B ≠ ⊤) {G : V → ℝ≥0∞} (hG : Measurable G) (τ : Fin (q + 1) → ℝ)
@@ -326,16 +318,16 @@ lemma coord_step {q : ℕ} (μ : Measure V) [μ.IsAddHaarMeasure] (A : Fin (q + 
     _ = K := by simp
 
 /- English proof (translation)
-The claim follows from `pt_eq t (fun j => A j (y j))`.
+A detailed English derivation is pending.
 -/
 lemma pt_eqA {q : ℕ} (A : Fin (q + 1) → V ≃L[ℝ] V) (t : Fin q → ℝ) (y : Fin (q + 1) → V) :
     A 0 (y 0) + ∑ j, t j • (A j.succ (y j.succ) - A 0 (y 0)) = ∑ j, bary t j • A j (y j) :=
   pt_eq t (fun j => A j (y j))
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `hlt : ∑ j, τ j < ∑ _j : Fin (q + 1), 1 / ((q : ℝ) + 1)` using `Finset.sum_lt_sum_of_nonempty Finset.univ_nonempty fun j _ => h j`. Rewrite `hlt` using `[hs, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Establish `hq : ((q : ℝ) + 1) ≠ 0` using `by positivity`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Move the coercions through the operations in `at hlt`. Rewrite `hlt` using `[mul_one_div_cancel hq]`. Conclude with `lt_irrefl _ hlt`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma exists_big {q : ℕ} (τ : Fin (q + 1) → ℝ) (hs : ∑ j, τ j = 1) : ∃ i, 1 / ((q : ℝ) + 1) ≤ τ i := by
   by_contra h
@@ -349,11 +341,11 @@ lemma exists_big {q : ℕ} (τ : Fin (q + 1) → ℝ) (hs : ∑ j, τ j = 1) : �
   exact lt_irrefl _ hlt
 
 /- English proof (translation)
-Establish `hw : Continuous fun y : Fin (q + 1) → V => fun j => if b j then y j else y₀`. Use `continuous_pi fun j => ?_` and prove the remaining obligations. Distinguish the cases in `h : b j = true`. Simplify using `only [h, if_true]`. Conclude with `continuous_apply j`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [h]`. Conclude with `continuous_const`. Establish `hwB : ∀ y ∈ Set.univ.pi (fun _ : Fin (q + 1) => B), (fun j => if b j then y j else y₀) ∈ Set.univ.pi fun _ : Fin (q + 1) => B`. Introduce `y hy j _`. Distinguish the cases in `h : b j = true`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [h, if_true]`. Conclude with `hy j (Set.mem_univ j)`. Simplify using `only [h]`. Conclude with `hy₀`. Conclude with `integ_iS μ (fun j => (A j : V →L[ℝ] V)) hB ω hω _ hw hwB`.
+A detailed English derivation is pending.
 -/
 private theorem exists_ne_zero_smul_mem_of_mem_span' (μ : Measure V) [μ.IsAddHaarMeasure] {q : ℕ} (A : Fin (q + 1) → V ≃L[ℝ] V) {B : Set V}
     (hB : IsCompact B) (ω : V → V [⋀^Fin q]→L[ℝ] ℝ) (hω : ContinuousOn ω (KS (fun j => (A j : V →L[ℝ] V)) B))
@@ -378,9 +370,9 @@ private theorem exists_ne_zero_smul_mem_of_mem_span' (μ : Measure V) [μ.IsAddH
   exact integ_iS μ (fun j => (A j : V →L[ℝ] V)) hB ω hω _ hw hwB
 
 /- English proof (translation)
-Establish `h1 : ‖f m‖ ≤ K * ‖f‖`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← ofReal_norm_eq_enorm]`. Use `(ENNReal.ofReal_le_ofReal h1).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[ENNReal.ofReal_mul hK0]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[ofReal_norm_eq_enorm]`. Both sides reduce to the same expression.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem main_lemma_2 {q : ℕ} (f : V [⋀^Fin q]→L[ℝ] ℝ) (m : Fin q → V) (K : ℝ) (hK0 : 0 ≤ K)
     (hm : ∏ j, ‖m j‖ ≤ K) : ‖f m‖ₑ ≤ ENNReal.ofReal K * (‖f‖₊ : ℝ≥0∞) := by
@@ -396,39 +388,35 @@ private theorem main_lemma_2 {q : ℕ} (f : V [⋀^Fin q]→L[ℝ] ℝ) (m : Fin
   rfl
 
 /- English proof (translation)
-Establish `hBm : MeasurableSet B` using `hB.isClosed.measurableSet`. Establish `hBt : μ B ≠ ⊤` using `hB.measure_lt_top.ne`. Use `haveI := nm_fin μ B hBt`. Take `⟨r, hr⟩` from `hB.isBounded.exists_norm_le`. Take `⟨a, ha⟩ : ∃ a : ℝ, a = ∑ j, ‖(A j : V →L[ℝ] V)‖` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ha0 : 0 ≤ a` using `ha ▸ Finset.sum_nonneg fun j _ => norm_nonneg _`. Establish `hr0 : 0 ≤ max r 0` using `le_max_right _ _`. Establish `hAx : ∀ j, ∀ x ∈ B, ‖A j x‖ ≤ a * max r 0`. Introduce `j x hx`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result.
 
-Take `⟨K, hK⟩ : ∃ K : ℝ, K = (2 * a * max r 0) ^ q` from `⟨_, rfl⟩`. Establish `hc0 : 0 ≤ 2 * a * max r 0` using `mul_nonneg (mul_nonneg (by norm_num) ha0) hr0`. Establish `hK0 : 0 ≤ K` using `hK ▸ pow_nonneg hc0 _`. Establish `hprod : ∀ y ∈ Set.univ.pi (fun _ : Fin (q + 1) => B), ∏ j : Fin q, ‖A j.succ (y j.succ) - A 0 (y 0)‖ ≤ K`. Introduce `y hy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hy' : ∀ j, y j ∈ B` using `fun j => hy j (Set.mem_univ j)`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Use `_ = K := by rw [Finset.prod_const, Finset.card_univ, Fintype.card_fin, hK]`. Distinguish the cases in `h0 : μ B = 0`.
+Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨0, fun ω hω => ⟨fun b y₀ hy₀ => exists_ne_zero_smul_mem_of_mem_span' μ A hB ω hω b y₀ hy₀, ?_⟩⟩` and prove the remaining obligations. Establish `hnm : nm μ B = 0` using `by simp [nm, Measure.restrict_eq_zero.2 h0]`. Establish `hP : Measure.pi (fun _ : Fin (q + 1) => nm μ B) = 0`. Rewrite using `[hnm]`. Use `Measure.measure_univ_eq_zero.1 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Measure.pi_univ]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ 0) (by simp)`. Rewrite using `[hP, integral_zero_measure]`. Simplify using the standard rewrite rules. Use `haveI := nm_prob μ B h0 hBt`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨S, hS⟩ : ∃ S : ℝ≥0∞, S = ∑ i, ENNReal.ofReal (((q : ℝ) + 1) ^ Module.finrank ℝ V * |(LinearMap.det ((A i : V →L[ℝ] V) : V →ₗ[ℝ] V))⁻¹|)` from `⟨_, rfl⟩`. Establish `hSt : S ≠ ⊤` using `hS ▸ ENNReal.sum_ne_top.2 fun _ _ => ENNReal.ofReal_ne_top`. Take `⟨Cε, hCε⟩ : ∃ C : ℝ≥0∞, C = ENNReal.ofReal K * ((μ B)⁻¹ * S) * volume (Sx q)` from `⟨_, rfl⟩`. Establish `hCt : Cε ≠ ⊤` using `hCε ▸ ENNReal.mul_ne_top (ENNReal.mul_ne_top ENNReal.ofReal_ne_top (ENNReal.mul_ne_top (ENNReal.inv_ne_top.2 h0) hSt)) (vol_Sx q).ne`. Use `⟨Cε.toReal, fun ω hω => ⟨fun b y₀ hy₀ => exists_ne_zero_smul_mem_of_mem_span' μ A hB ω hω b y₀ hy₀, ?_⟩⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[ENNReal.ofReal_toReal hCt]`. Take `⟨G, hGdef⟩ : ∃ G : V → ℝ≥0∞, G = (KS (fun j => (A j : V →L[ℝ] V)) B).indicator (fun p => (‖ω p‖₊ : ℝ≥0∞))` from `⟨_, rfl⟩`. Establish `hKSm : MeasurableSet (KS (fun j => (A j : V →L[ℝ] V)) B)` using `(isCompact_KS _ hB).isClosed.measurableSet`. Establish `hGm : Measurable G`. Rewrite using `[hGdef, ← Set.piecewise_eq_indicator]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `ContinuousOn.measurable_piecewise ((ENNReal.continuous_coe.comp continuous_nnnorm).comp_continuousOn hω) continuousOn_const hKSm`. Establish `hGint : ∫⁻ x, G x ∂μ = ∫⁻ p in KS (fun j => (A j : V →L[ℝ] V)) B, ‖ω p‖₊ ∂μ`. Rewrite using `[hGdef]`. Conclude with `lintegral_indicator hKSm _`. Establish `hpt : ∀ y ∈ Set.univ.pi (fun _ : Fin (q + 1) => B), ENNReal.ofReal |iS ω fun j => A j (y j)| ≤ ∫⁻ t in Sx q, ENNReal.ofReal K * G (A 0 (y 0) + ∑ j, t j • (A j.succ (y j.succ) - A 0 (y 0)))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `y hy`. Establish `hy' : ∀ j, y j ∈ B` using `fun j => hy j (Set.mem_univ j)`. Rewrite using `[← Real.enorm_eq_ofReal_abs]`. Simplify using `only [iS]`. Use `(enorm_integral_le_lintegral_enorm _).trans ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `setLIntegral_mono ?_ ?_` and prove the remaining obligations. Conclude with `measurable_const.mul (hGm.comp (continuous_const.add (continuous_finset_sum _ fun j _ => (continuous_apply j).smul continuous_const)).measurable)`. Introduce `t ht`. Establish `hmem : A 0 (y 0) + ∑ j, t j • (A j.succ (y j.succ) - A 0 (y 0)) ∈ KS (fun j => (A j : V →L[ℝ] V)) B` using `mem_KS _ B ht hy'`. Rewrite using `[hGdef, Set.indicator_of_mem hmem]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `main_lemma_2 _ _ K hK0 (hprod y hy)`. Establish `h1 : ENNReal.ofReal (∫ y, |iS ω fun j => A j (y j)| ∂(Measure.pi fun _ => nm μ B)) ≤ ∫⁻ y, ENNReal.ofReal |iS ω fun j => A j (y j)| ∂(Measure.pi fun _ => nm μ B)`. Use `(ENNReal.ofReal_le_ofReal (le_abs_self _)).trans ?_` and prove the remaining obligations. Rewrite using `[← Real.enorm_eq_ofReal_abs]`. Use `(enorm_integral_le_lintegral_enorm _).trans (le_of_eq ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congr 1`. Use extensionality with `y`. Rewrite using `[Real.enorm_eq_ofReal_abs, abs_abs]`. Establish `h2` using `lintegral_mono_ae ((ae_mem_pi μ hBm hBt q).mono fun y hy => hpt y hy)`. Establish `hmeas : Measurable (Function.uncurry fun (y : Fin (q + 1) → V) (t : Fin q → ℝ) => ENNReal.ofReal K * G (A 0 (y 0) + ∑ j, t j • (A j.succ (y j.succ) - A 0 (y 0))))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `measurable_const.mul (hGm.comp ?_)` and prove the remaining obligations. Use `fun_prop`. Establish `h3` using `lintegral_lintegral_swap (μ := Measure.pi fun _ : Fin (q + 1) => nm μ B) (ν := volume.restrict (Sx q)) hmeas.aemeasurable`. Establish `h4 : ∀ t ∈ Sx q, ∫⁻ y, ENNReal.ofReal K * G (A 0 (y 0) + ∑ j, t j • (A j.succ (y j.succ) - A 0 (y 0))) ∂(Measure.pi fun _ => nm μ B) ≤ ENNReal.ofReal K * ((μ B)⁻¹ * S * ∫⁻ x, G x ∂μ)`. Introduce `t ht`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hmt : Measurable fun y : Fin (q + 1) → V => A 0 (y 0) + ∑ j, t j • (A j.succ (y j.succ) - A 0 (y 0))` using `by fun_prop`. Rewrite using `[lintegral_const_mul (ENNReal.ofReal K) (f := fun y : Fin (q + 1) → V => G (A 0 (y 0) + ∑ j, t j • (A j.succ (y j.succ) - A 0 (y 0)))) (hGm.comp hmt)]`. Use `gcongr ENNReal.ofReal K * ?_`. Repeatedly rewrite using `[pt_eqA A t]`. Take `⟨i, hi⟩` from `exists_big (bary t) (bary_sum t)`.
-
-Use `(coord_step μ A B h0 hBt hGm (bary t) i hi).trans ?_` and prove the remaining obligations. Use `gcongr (μ B)⁻¹ * ?_ * _`. Rewrite using `[hS]`. Conclude with `Finset.single_le_sum (f := fun i => ENNReal.ofReal (((q : ℝ) + 1) ^ Module.finrank ℝ V * |(LinearMap.det ((A i : V →L[ℝ] V) : V →ₗ[ℝ] V))⁻¹|)) (fun _ _ => zero_le) (Finset.mem_univ i)`. Establish `h5` using `(setLIntegral_mono' (isClosed_Sx q).measurableSet h4).trans (le_of_eq (setLIntegral_const (μ := volume) _ _))`.
-
-Use `h1.trans (h2.trans ((le_of_eq h3).trans (h5.trans (le_of_eq ?_))))` and prove the remaining obligations. Rewrite using `[hCε, ← hGint]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem main (μ : Measure V) [μ.IsAddHaarMeasure] (q : ℕ) (A : Fin (q + 1) → V ≃L[ℝ] V) (B : Set V)
     (hB : IsCompact B) : ∃ C : ℝ, ∀ ω : V → V [⋀^Fin q]→L[ℝ] ℝ,

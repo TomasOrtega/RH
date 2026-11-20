@@ -10,9 +10,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AmpleClsIff
 
 /- English proof (translation)
-Introduce `K _ A L hL`. Establish `: IsProper A.X.hom` using `A.ab.proper`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨M, hM, hr, he⟩`. Establish `hM' : IsAmpleLB M` using `(relAmple_iff_isAmpleLB_of_isAffine A.X hM).1 hr`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `hM'.of_lbIso hL ((CechPic.cls_eq_iff hL hM).1 he.symm)`. Introduce `h`. Conclude with `⟨L, hL, (relAmple_iff_isAmpleLB_of_isAffine A.X hL).2 h, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isAmpleCls_cls_iff : ∀ (K : Type) [Field K] (A : AbVar K) (L : LB A.X.left) (hL : L.IsLB),
     IsAmpleCls (cls L hL) ↔ IsAmpleLB L := by

@@ -34,7 +34,7 @@ namespace GlobalTheory.ContraProd
 section Fixed
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.finiteDimensional_compact_fixed_vectors_piTensor_smooth ρ hρ K hK hf`.
+A detailed English derivation is pending.
 -/
 theorem finiteDimensional_fixed_piTensor {α : Type} [Finite α] {Γ X : α → Type} [∀ a, Group (Γ a)]
     [∀ a, TopologicalSpace (Γ a)] [∀ a, IsTopologicalGroup (Γ a)] [∀ a, AddCommGroup (X a)]
@@ -49,7 +49,7 @@ end Fixed
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Take `⟨J, h1, h2, h3, -⟩` from `exists_open_normalised_subgroup_subset k n U hU`. Conclude with `⟨J, h1, GlobalTheory.SplitFlip.isCompact_KO.of_isClosed_subset (J.isClosed_of_isOpen h1) h3, h2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_compactOpen_GL (n : Type) [Fintype n] [DecidableEq n] (U : Set (GL n k)) (hU : U ∈ nhds 1) :
     ∃ K : Subgroup (GL n k), IsOpen (K : Set (GL n k)) ∧ IsCompact (K : Set (GL n k)) ∧ (K : Set (GL n k)) ⊆ U := by
@@ -57,9 +57,9 @@ theorem exists_compactOpen_GL (n : Type) [Fintype n] [DecidableEq n] (U : Set (G
   exact ⟨J, h1, GlobalTheory.SplitFlip.isCompact_KO.of_isClosed_subset (J.isClosed_of_isOpen h1) h3, h2⟩
 
 /- English proof (translation)
-Rewrite `hU` using `[nhds_pi, Filter.mem_pi]`. Take `⟨I, -, t, ht, hts⟩` from `hU`. Use `choose K hKo hKc hKt using fun a => exists_compactOpen_GL (k := k) (m a) (t a) (ht a)`. Use `⟨K, hKo, hKc, ?_⟩` and prove the remaining obligations. Rewrite using `[Subgroup.coe_pi]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun g hg => hts fun a _ => hKt a (hg a (Set.mem_univ a))`.
+A detailed English derivation is pending.
 -/
 theorem exists_pi_compactOpen {α : Type} [Finite α] (m : α → Type) [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)]
     (U : Set (Levi k m)) (hU : U ∈ nhds (1 : Levi k m)) :
@@ -73,7 +73,7 @@ theorem exists_pi_compactOpen {α : Type} [Finite α] (m : α → Type) [∀ a, 
   exact fun g hg => hts fun a _ => hKt a (hg a (Set.mem_univ a))
 
 /- English proof (translation)
-Use `⟨isSmooth_piTensor fun a => (hρ a).1, fun K hKo hKc => ?_⟩` and prove the remaining obligations. Take `⟨K', hKo', hKc', hK'⟩` from `exists_pi_compactOpen m (K : Set (Levi k m)) (hKo.mem_nhds K.one_mem)`. Use `haveI := finiteDimensional_fixed_piTensor ρ (fun a => (hρ a).1) K' hKc' fun a => (hρ a).2 (K' a) (hKo' a) (hKc' a)`. Conclude with `Submodule.finiteDimensional_of_le (S₁ := fixed (piTensor ρ : Representation ℂ (Levi k m) _) K) (S₂ := fixed (piTensor ρ) (Subgroup.pi Set.univ K')) (fun v hv => GlobalTheory.ContraRefl.mem_fix.2 fun h hh => GlobalTheory.ContraRefl.mem_fix.1 hv h (hK' hh))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isAdmissible_piTensor {α : Type} [Finite α] (m : α → Type) [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)]
     {X : α → Type} [∀ a, AddCommGroup (X a)] [∀ a, Module ℂ (X a)]
@@ -103,7 +103,7 @@ def pairLin : (⨂[ℂ] a, smoothPart (ρ a).dual) →ₗ[ℂ] Module.Dual ℂ (
   PiTensorProduct.dualDistrib ∘ₗ PiTensorProduct.map (fun a => (smoothPart (ρ a).dual).subtype)
 
 /- English proof (translation)
-Simplify using `[pairLin, PiTensorProduct.map_tprod, PiTensorProduct.dualDistrib_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pairLin_tprod (l : ∀ a, smoothPart (ρ a).dual) (v : ∀ a, X a) :
     pairLin ρ (PiTensorProduct.tprod ℂ l) (PiTensorProduct.tprod ℂ v) =
@@ -111,9 +111,9 @@ theorem pairLin_tprod (l : ∀ a, smoothPart (ρ a).dual) (v : ∀ a, X a) :
   simp [pairLin, PiTensorProduct.map_tprod, PiTensorProduct.dualDistrib_apply]
 
 /- English proof (translation)
-Proceed by induction on `t using PiTensorProduct.induction_on with`. Consider the case `smul_tprod c l`. Rewrite using `[map_smul, map_smul, map_smul, map_smul]`. Use `congr 1`. Use `PiTensorProduct.ext (MultilinearMap.ext fun v => ?_)` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [LinearMap.compMultilinearMap_apply, piTensor_tprod, pairLin_tprod, Representation.dual_apply, Module.Dual.transpose_apply, LinearMap.comp_apply, contra_apply, Pi.inv_apply]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, map_add, map_add]`.
+Simplify using the standard rewrite rules. Treat this case separately.
 -/
 theorem pairLin_equivariant (g : ∀ a, Γ a) (t : ⨂[ℂ] a, smoothPart (ρ a).dual) :
     pairLin ρ (piTensor (fun a => contra (ρ a)) g t) = (piTensor ρ).dual g (pairLin ρ t) := by
@@ -127,11 +127,9 @@ theorem pairLin_equivariant (g : ∀ a, Γ a) (t : ⨂[ℂ] a, smoothPart (ρ a)
   | add x y hx hy => rw [map_add, map_add, hx, hy, map_add, map_add]
 
 /- English proof (translation)
-Proceed by induction on `t using PiTensorProduct.induction_on with`. Consider the case `smul_tprod c l`. Rewrite using `[map_smul]`. Use `Submodule.smul_mem _ _ (mem_smoothPart_of_nhds ?_)` and prove the remaining obligations. Use `Filter.mem_of_superset (set_pi_mem_nhds Set.finite_univ fun a _ => (isSmooth_contra (ρ a) (l a)).mem_nhds (by simp)) fun g hg => ?_` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `show (piTensor ρ).dual g (pairLin ρ (PiTensorProduct.tprod ℂ l)) = pairLin ρ (PiTensorProduct.tprod ℂ l)`. Rewrite using `[← pairLin_equivariant, piTensor_tprod]`. Use `congr 2`. Use function extensionality and compare the values at `a`. Conclude with `hg a (Set.mem_univ a)`.
-
-Consider the case `add x y hx hy => rw [map_add]`. Conclude with `add_mem hx hy`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem pairLin_mem (t : ⨂[ℂ] a, smoothPart (ρ a).dual) : pairLin ρ t ∈ smoothPart (piTensor ρ).dual := by
   induction t using PiTensorProduct.induction_on with

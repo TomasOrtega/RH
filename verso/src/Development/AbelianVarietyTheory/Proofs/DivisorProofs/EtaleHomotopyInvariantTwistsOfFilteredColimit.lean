@@ -37,7 +37,7 @@ open scoped TensorProduct in
 variable {J : Type} [SmallCategory J] (D : J ⥤ CommRingCat.{0}) in
 variable {D} [IsFiltered J] in
 /- English proof (translation)
-Take `⟨k, f, g, hfg⟩` from `Concrete.isColimit_exists_of_rep_eq D hc x 0 (by simpa using h)`. Conclude with `⟨k, f, by simpa using hfg⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private lemma exists_map_eq_zero_of_isColimit_lemma {c : Cocone D} (hc : IsColimit c) {j : J}
     (x : D.obj j) (h : (c.ι.app j).hom x = 0) : ∃ (k : J) (f : j ⟶ k), (D.map f).hom x = 0 := by
@@ -49,13 +49,13 @@ open scoped TensorProduct in
 variable {J : Type} [SmallCategory J] (D : J ⥤ CommRingCat.{0}) in
 variable {D} [IsFiltered J] in
 /- English proof (translation)
-Establish `key : ∀ s : Finset ℕ, ∃ (k : J) (f : j ⟶ k), ∀ n ∈ s, (D.map f).hom (p.coeff n) = 0`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨j, 𝟙 j, by simp⟩`. Consider the case `insert a s _ ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Take `⟨k, f, hf⟩` from `ih`. Establish `ha : (c.ι.app k).hom ((D.map f).hom (p.coeff a)) = 0`. Rewrite using `[← CommRingCat.comp_apply, c.w f, ← Polynomial.coeff_map, h, Polynomial.coeff_zero]`. Take `⟨k', f', hf'⟩` from `exists_map_eq_zero_of_isColimit_lemma hc _ ha`. Use `⟨k', f ≫ f', fun n hn => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[D.map_comp, CommRingCat.comp_apply]`. Break down `Finset.mem_insert.mp hn with rfl | hn` into its components or cases. Conclude with `hf'`. Rewrite using `[hf n hn, map_zero]`. Take `⟨k, f, hf⟩` from `key p.support`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨k, f, Polynomial.ext fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.coeff_map, Polynomial.coeff_zero]`. Distinguish the cases in `hn : n ∈ p.support`. Conclude with `hf n hn`. Rewrite using `[Polynomial.notMem_support_iff.mp hn, map_zero]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.EtC.PolyColim.poly_exists_map_eq_zero {c : Cocone D} (hc : IsColimit c) {j : J}
     (p : Polynomial (D.obj j))
@@ -86,7 +86,7 @@ open scoped TensorProduct in
 variable {J : Type} [SmallCategory J] (D : J ⥤ CommRingCat.{0}) in
 variable {D} [IsFiltered J] in
 /- English proof (translation)
-Take `⟨j, y, hy⟩` from `Concrete.isColimit_exists_rep D hc x`. Conclude with `⟨j, y, hy⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private lemma exists_rep_of_isColimit_lemma_2 {c : Cocone D} (hc : IsColimit c) (x : c.pt) :
     ∃ (j : J) (y : D.obj j), (c.ι.app j).hom y = x := by
@@ -98,9 +98,9 @@ open scoped TensorProduct in
 variable {J : Type} [SmallCategory J] (D : J ⥤ CommRingCat.{0}) in
 variable {D} [IsFiltered J] in
 /- English proof (translation)
-Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq`. Take `⟨i, y, hy⟩` from `hp`. Take `⟨j, z, hz⟩` from `hq`. Use `⟨IsFiltered.max i j, y.map (D.map (IsFiltered.leftToMax i j)).hom + z.map (D.map (IsFiltered.rightToMax i j)).hom, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Polynomial.map_add, Polynomial.map_map, Polynomial.map_map, ← CommRingCat.hom_comp, ← CommRingCat.hom_comp, c.w, c.w, hy, hz]`. Consider the case `monomial n a`. Take `⟨j, y, hy⟩` from `exists_rep_of_isColimit_lemma_2 hc a`. Conclude with `⟨j, Polynomial.monomial n y, by rw [Polynomial.map_monomial, hy]⟩`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem _root_.GlobalTheory.EtC.PolyColim.poly_exists_rep {c : Cocone D} (hc : IsColimit c)
     (p : Polynomial c.pt) :
@@ -143,7 +143,7 @@ end GlobalTheory.EtC.PolyColim
 namespace GlobalTheory.EtC
 
 /- English proof (translation)
-Use `show pull R (sch.map _) F n x = _`. Rewrite using `[CommRingCat.ofHom_comp, Spec.map_comp, Functor.map_comp, pull_comp]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pull_spMap_comp (R : Type) [CommRing R] {A B C : Type} [CommRing A] [CommRing B] [CommRing C]
     (f : A →+* B) (g : B →+* C) (F : Shv R) (n : ℤ) (x : H R (sp A) F n) :
@@ -152,7 +152,7 @@ theorem pull_spMap_comp (R : Type) [CommRing R] {A B C : Type} [CommRing A] [Com
   rw [CommRingCat.ofHom_comp, Spec.map_comp, Functor.map_comp, pull_comp]
 
 /- English proof (translation)
-Use `show sch.map _ = sch.map _ ≫ sch.map _`. Rewrite using `[CommRingCat.ofHom_comp, Spec.map_comp, Functor.map_comp]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (g.comp f) = spMap g ≫ spMap f := by
@@ -160,19 +160,19 @@ theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A
   rw [CommRingCat.ofHom_comp, Spec.map_comp, Functor.map_comp]
 
 /- English proof (translation)
-Introduce `q _ J _ _ D c hc hq hH i n`. Establish `hB : B1` using `pairingProperties`. Set `D'` to `PolyColim.polyDiag D`. Set `c'` to `PolyColim.polyCocone D c`. Establish `hc' : IsColimit c'` using `PolyColim.polyCoconeIsColimit hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨j0⟩ : Nonempty J` from `IsFiltered.nonempty`. Establish `hqc : IsUnit (q : c.pt)`. Use `(hq j0).map (c.ι.app j0).hom` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Establish `hqP : ∀ j, IsUnit (q : D'.obj j)` using `fun j => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `(hq j).map (Polynomial.C : D.obj j →+* Polynomial (D.obj j))` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Establish `hqc' : IsUnit (q : c'.pt)`. Use `hqc.map (Polynomial.C : c.pt →+* Polynomial c.pt)` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `sq : ∀ j, (c'.ι.app j).hom.comp (Polynomial.C : D.obj j →+* Polynomial (D.obj j)) = (Polynomial.C : c.pt →+* Polynomial c.pt).comp (c.ι.app j).hom` using `fun j => RingHom.ext fun a => by`. Express the relevant statement in the definitionally equal form `Polynomial.map (c.ι.app j).hom (Polynomial.C a) = Polynomial.C ((c.ι.app j).hom a)`. Conclude with `Polynomial.map_C _`. Establish `sqD : ∀ {j k : J} (f : j ⟶ k), (D'.map f).hom.comp (Polynomial.C : D.obj j →+* Polynomial (D.obj j)) = (Polynomial.C : D.obj k →+* Polynomial (D.obj k)).comp (D.map f).hom` using `@fun j k f => RingHom.ext fun a => by`. Express the relevant statement in the definitionally equal form `Polynomial.map (D.map f).hom (Polynomial.C a) = Polynomial.C ((D.map f).hom a)`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `Polynomial.map_C _`. Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Take `⟨j, y, rfl⟩` from `(hB q D c hc n i).1 x hqc`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `e1 : pull _ (spMap (c'.ι.app j).hom) _ _ (pull _ (spMap (Polynomial.C : D.obj j →+* Polynomial (D.obj j))) _ _ y) = 0` using `(pull_spMap_comp (ZMod q) Polynomial.C (c'.ι.app j).hom (tw q i) n y).symm.trans ((congrArg (fun g => pull (ZMod q) (spMap g) (tw q i) n y) (sq j)).trans ((pull_spMap_comp (ZMod q) (c.ι.app j).hom Polynomial.C (tw q i) n y).trans hx))`. Take `⟨k, f, hf⟩` from `(hB q D' c' hc' n i).2 j _ (hqP j) e1`. Establish `e2 : pull _ (spMap (Polynomial.C : D.obj k →+* Polynomial (D.obj k))) _ _ (pull _ (spMap (D.map f).hom) _ _ y) = 0` using `(pull_spMap_comp (ZMod q) (D.map f).hom Polynomial.C (tw q i) n y).symm.trans ((congrArg (fun g => pull (ZMod q) (spMap g) (tw q i) n y) (sqD f).symm).trans ((pull_spMap_comp (ZMod q) Polynomial.C (D'.map f).hom (tw q i) n y).trans hf))`. Establish `e3` using `(hH k i n).1 (e2.trans (map_zero _).symm)`. Rewrite using `[← c.w f, CommRingCat.hom_comp, spMap_comp', pull_comp, e3, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `x`. Take `⟨j, y, rfl⟩` from `(hB q D' c' hc' n i).1 x hqc'`. Take `⟨y', rfl⟩` from `(hH j i n).2 y`. Use `⟨pull _ (spMap (c.ι.app j).hom) _ _ y', ?_⟩` and prove the remaining obligations. Conclude with `(pull_spMap_comp (ZMod q) (c.ι.app j).hom Polynomial.C (tw q i) n y').symm.trans ((congrArg (fun g => pull (ZMod q) (spMap g) (tw q i) n y') (sq j).symm).trans (pull_spMap_comp (ZMod q) Polynomial.C (c'.ι.app j).hom (tw q i) n y'))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem hInv_of_filtered_colimit : ∀ (q : ℕ) [NeZero q] (J : Type) [SmallCategory J] [IsFiltered J]
     (D : J ⥤ CommRingCat.{0}) (c : Cocone D), IsColimit c → (∀ j, IsUnit (q : D.obj j)) →

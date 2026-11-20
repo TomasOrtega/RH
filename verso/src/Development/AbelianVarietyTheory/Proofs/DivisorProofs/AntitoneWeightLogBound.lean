@@ -35,7 +35,7 @@ namespace GlobalTheory.BergRank
 open ReciprocityTheory.ChartRestriction.G.FD
 
 /- English proof (translation)
-The claim follows from `|(((wtOf Dw la 0).1 x : ℤ) : ℝ)| ≤ ∑ τ, ∑ i, |(la τ i : ℝ)| := by have key : ∀ τ i, |(la τ i : ℝ)| ≤ ∑ τ, ∑ i, |(la τ i : ℝ)| := fun τ i => (Finset.single_le_sum (f := fun i => |(la τ i : ℝ)|) (fun _ _ => abs_nonneg _) (Finset.mem_univ i)).trans (Finset.single_le_sum (f := fun τ …`.
+A detailed English derivation is pending.
 -/
 theorem abs_wtOf_le {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H} (la : AllWt.Weight Dw) (x : (E →+* ℂ) × ℕ) :
@@ -50,7 +50,7 @@ theorem abs_wtOf_le {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Reci
   split_ifs <;> push_cast <;> simp only [sub_zero, abs_neg, abs_zero] <;> first | exact h0 | exact key _ _
 
 /- English proof (translation)
-The claim follows from `|((AllWt.modelWt U (wtOf Dw la 0) k τ i : ℤ) : ℝ)| ≤ ∑ τ, ∑ i, |(la τ i : ℝ)| := by unfold AllWt.modelWt have h2 : (wtOf Dw la 0).2 / 2 = 0 := by rw [AllWt.wtOf_snd]; simp split_ifs · rw [h2, add_zero]; exact abs_wtOf_le la _ · rw [h2, sub_zero]; push_cast; rw [abs_neg]; exact ab …`.
+A detailed English derivation is pending.
 -/
 theorem abs_modelWt_le {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {σ : c.F →+* ℂ} {r : ℕ} (U : Unf Xo c σ r)
@@ -63,13 +63,13 @@ theorem abs_modelWt_le {E : Type} [Field E] [NumberField E] [IsCMField E] {H : R
   · rw [h2, sub_zero]; push_cast; rw [abs_neg]; exact abs_wtOf_le la _
 
 /- English proof (translation)
-Use `set S := ∑ τ, ∑ i, |(la τ i : ℝ)| with hS`. Establish `h0 : 0 ≤ S` using `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => abs_nonneg _`. Establish `hsp : ∀ τ, (U.X k).spread (AllWt.modelWt U (wtOf Dw la 0) k) τ ≤ 2 * S`. Introduce `τ`. Unfold `Data.spread`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `isEmpty_or_nonempty (Fin r) with hr | hr` into its components or cases. Simplify using `[Real.iSup_of_isEmpty, Real.iInf_of_isEmpty]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hb` using `fun i => abs_le.1 (abs_modelWt_le U la k τ i)`. Establish `h1 : (⨆ i, ((AllWt.modelWt U (wtOf Dw la 0) k τ i : ℤ) : ℝ)) ≤ S` using `ciSup_le fun i => (hb i).2`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : -S ≤ ⨅ i, ((AllWt.modelWt U (wtOf Dw la 0) k τ i : ℤ) : ℝ)` using `le_ciInf fun i => (hb i).1`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hcard : (Fintype.card (U.X k).Ψ : ℝ) ≤ Module.finrank ℚ E`. Establish `e1 : Fintype.card (U.X k).Ψ = (U.X k).Ψ.card` using `Fintype.card_coe _`. Establish `e2 : (U.X k).Ψ.card ≤ Fintype.card (E →+* ℂ)` using `Finset.card_le_univ _`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e2` using `[NumberField.Embeddings.card]`. Conclude with `e1 ▸ e2` after adjusting the coercions. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem sum_spread_modelWt_le {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {σ : c.F →+* ℂ} {r : ℕ} (U : Unf Xo c σ r)
@@ -103,27 +103,23 @@ end GlobalTheory.BergRank
 namespace GlobalTheory.BergRank
 
 /- English proof (translation)
-Introduce `hP`. Use `⟨4000, by norm_num, ?_⟩` and prove the remaining obligations. Introduce `D T hT j hp hq hE hj Y e o hY Lb hLb hM hsz hfr ho la hla hS Z`. Establish `hL` using `(GlobalTheory.T.deepLevelCover_principalLevel_laws_galois D T j Y e o hT hj hY hY.unit hY.modelW).1`. Use `set S : ℝ := ∑ τ, ∑ k, |(la τ k : ℝ)| with hSdef`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS0 : 0 ≤ S` using `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => abs_nonneg _`. Use `set n : ℝ := (Module.finrank ℚ D.host.E : ℝ) with hn`. Establish `hn1 : 1 ≤ n`. Establish `: 0 < Module.finrank ℚ D.host.E` using `Module.finrank_pos`. Rewrite using `[hn]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Establish `hnlog : Real.log n ≤ 3 * Lb` using `(log_finrank_le_fieldSz _).trans hsz`. Use `set w : ℝ := 2 * n * S + 1 with hw`. Establish `hnS : 0 ≤ n * S` using `mul_nonneg (by linarith) hS0`. Establish `hw1 : 1 ≤ w` using `by rw [hw]; nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hlogw : Real.log w ≤ 25 * Lb`. Establish `hint : S = (((∑ τ, ∑ k, |la τ k|) : ℤ) : ℝ)` using `by rw [hSdef]; push_cast; rfl`. Establish `hz : (0 : ℤ) ≤ ∑ τ, ∑ k, |la τ k|` using `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => abs_nonneg _`. Break down `hz.eq_or_lt with h0 | h1` into its components or cases. Establish `: S = 0` using `by rw [hint, ← h0]; simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[hw, this]`. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hS1 : 1 ≤ S` using `by rw [hint]; exact_mod_cast h1`. Establish `hwle : w ≤ 3 * (n * S)` using `by rw [hw]; nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hlS : Real.log S ≤ 20 * Lb` using `hS`. Establish `e1 : Real.log w ≤ Real.log (3 * (n * S))` using `Real.log_le_log (by linarith) hwle`. Rewrite `e1` using `[Real.log_mul (by norm_num) (by positivity), Real.log_mul (by positivity) (by positivity)]`. Establish `h3 : Real.log 3 < 2`. Use `Real.log_two_lt_d9; have h4 : Real.log 3 < Real.log 4 := Real.log_lt_log (by norm_num) (by norm_num)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Establish `: Real.log 4 = 2 * Real.log 2` using `by rw [show (4:ℝ) = 2 ^ 2 by norm_num, Real.log_pow]; norm_num`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨hβ1, hβ⟩` from `GlobalTheory.T.sup_constant_log_bound D Y.d.l₂.M Lb w (by have := Y.d.l₂.three_le; omega) hLb hM hsz hfr hw1 hlogw`. Use `set β := GlobalTheory.LevGeo.supConst D.host.E D.R.r D.host.d Y.d.l₂.M w with hβdef`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hβexp : β ≤ Real.exp (4000 * ((D.R.f : ℝ) * D.R.r * Lb) ^ 3)`. Rewrite using `[← Real.exp_log (by linarith : 0 < β)]; exact Real.exp_le_exp.2 hβ`. Establish `hsp : ∀ σ k, ∑ τ, ((Y.U σ).X k).spread (AllWt.modelWt (Y.U σ) (wtOf _ la 0) k) τ ≤ w` using `fun σ k => (sum_spread_modelWt_le _ la k).trans (by rw [hw]; linarith)`. Establish `hB : BergLe Z Y.U (fun _ => D.sp.W j) Y.dict la β` using `fun σ hσ y hy => GlobalTheory.T.level_geometry_weight_bound hP.p6 D j _ _ _ _ _ Y.U Y.dict hL σ hσ (wtOf _ la 0) (AllWt.even_wtOf la 0) w (by linarith) (hsp σ) Z y hy`. Establish `hBexp : BergLe Z Y.U (fun _ => D.sp.W j) Y.dict la (Real.exp (4000 * ((D.R.f : ℝ) * D.R.r * Lb) ^ 3))` using `fun σ hσ y hy => (hB σ hσ y hy).trans (ENNReal.ofReal_le_ofReal hβexp)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨hBexp, ?_, ?_⟩` and prove the remaining obligations. Use `SupBdWt.of_bergOn (Real.exp_pos _).le ?_ hBexp` and prove the remaining obligations. Introduce `σ hσ g`. Take `⟨th, hr, -, hd⟩` from `hY.dictU σ hσ`. Conclude with `Formalism.L2.Pj.dict_dom_of hd g`.
-
-Establish `hrk` using `GlobalTheory.T.cuspFormRank_le_bergmanBound_goodCover D T.toCore j Y e o hY la Z β (by linarith) hB`. Establish `hpos : 0 ≤ 4000 * ((D.R.f : ℝ) * D.R.r * Lb) ^ 3` using `by positivity`. Break down `(show (0 : ℝ) ≤ Y.rkC la Z by unfold Deep.rkC; positivity).eq_or_lt with h0 | h0` into its components or cases. Rewrite using `[← h0, Real.log_zero]`. Conclude with `hpos`.
-
-Conclude with `(Real.log_le_log h0 hrk).trans hβ`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem berg_sup_rank : Hypotheses2 → ∃ C : ℝ, 0 ≤ C ∧ ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j : ℕ, 1 ≤ (T.Q.Dw j).p → 1 ≤ (T.Q.Dw j).q → 2 < Module.finrank ℚ D.host.E / 2 → InR D j → ∀ (Y : Deep T.toCore j) (e : ℕ) (o : ℝ), Y.Good e o → ∀ Lb : ℝ, 1 ≤ Lb → Real.log Y.d.l₂.M ≤ 30 * Lb → fieldSz D.host.E ≤ 3 * Lb → Real.log (D.R.f * D.R.r) ≤ Lb → o ≤ 391 * (D.R.f * D.R.r * Lb) ^ 2 → ∀ la : AllWt.Weight (T.Q.Dw j), (∀ τ, Antitone (la τ)) → Real.log (∑ τ, ∑ k, |(la τ k : ℝ)|) ≤ 20 * Lb → ∀ Z, BergLe Z Y.U (fun _ => D.sp.W j) Y.dict la (Real.exp (C * ((D.R.f : ℝ) * D.R.r * Lb) ^ 3)) ∧ SupBdWt Y.U (xiR D) (fun _ => D.sp.W j) Y.dict Z la (Real.exp (C * ((D.R.f : ℝ) * D.R.r * Lb) ^ 3)) ∧ Real.log (Y.rkC la Z) ≤ C * ((D.R.f : ℝ) * D.R.r * Lb) ^ 3 := by
   intro hP

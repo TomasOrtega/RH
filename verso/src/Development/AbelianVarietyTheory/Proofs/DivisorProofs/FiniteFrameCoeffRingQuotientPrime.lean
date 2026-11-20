@@ -8,15 +8,13 @@ open GlobalTheory.ExpFrame Formalism.BasicNotions.Loc GlobalTheory.Cyc
 namespace GlobalTheory.FrameQuot
 
 /- English proof (translation)
-Take `⟨hinj, L, hL, hrange⟩` from `hF.ring`. Use `haveI := hL`. Establish `hmem : ∀ x : F.O, F.emb x ∈ L ∧ ‖F.emb x‖ ≤ 1` using `fun x => by`. Establish `hx : F.emb x ∈ Set.range F.emb` using `⟨x, rfl⟩`. Rewrite `hx` using `[hrange]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `hx`. Set `f : F.O →+* integralClosure ℤ_[l] L` to `{ toFun := fun x => ⟨⟨F.emb x, (hmem x).1⟩, (GlobalTheory.mem_integralClosure_padicInt_iff L ⟨F.emb x, (hmem x).1⟩).2 (hmem x).2⟩ map_one' := Subtype.ext (Subtype.ext (map_one F.emb)) map_mul' := fun x y => Subtype.ext (Subtype.ext (map_mul F.emb x y)) map_zero' := Subtype.ext (S …`. Establish `hsurj : Function.Surjective f`. Introduce and unpack `⟨⟨y, hyL⟩, hy⟩`. Establish `hn` using `(GlobalTheory.mem_integralClosure_padicInt_iff L ⟨y, hyL⟩).1 hy`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hy' : y ∈ Set.range F.emb`. Rewrite using `[hrange]`. Conclude with `⟨hyL, hn⟩`. Take `⟨x, rfl⟩` from `hy'`. Conclude with `⟨x, rfl⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hbij : Function.Bijective f` using `⟨fun x y h => hinj (congrArg (fun z : integralClosure ℤ_[l] L => ((z : L) : PadicAlgCl l)) h), hsurj⟩`. Set `e` to `RingEquiv.ofBijective f hbij`. Establish `hfin : Finite (integralClosure ℤ_[l] L ⧸ Ideal.span {((l : ℕ) : integralClosure ℤ_[l] L) ^ 1})` using `GlobalTheory.LocalIntegers.finite_quotient_pow l (integralClosure ℤ_[l] L) 1`. Establish `hIJ : Ideal.span {((l : ℕ) : integralClosure ℤ_[l] L) ^ 1} = (Ideal.span {((l : ℕ) : F.O)}).map (e : F.O →+* integralClosure ℤ_[l] L)`. Rewrite using `[Ideal.map_span, Set.image_singleton, map_natCast, pow_one]`.
-
-Conclude with `Finite.of_equiv _ (Ideal.quotientEquiv _ _ e hIJ).symm.toEquiv`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_quot_prime (l : ℕ) [Fact l.Prime] (ι : Type) (N : ℕ) (F : Frame l ι N) (hF : F.Ok) :
     Finite (F.O ⧸ Ideal.span {((l : ℕ) : F.O)}) := by

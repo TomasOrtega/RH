@@ -19,9 +19,9 @@ variable (p : ℕ) [hp : Fact p.Prime] {L : Type*} [NontriviallyNormedField L] [
 def wittInt : Subring (WittVector p L) := (WittVector.map (normInteger L).subtype).range
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, rfl⟩ n`. Rewrite using `[WittVector.map_coeff]`. Conclude with `mem_normInteger.1 (v.coeff n).2`. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨WittVector.mk p fun n => ⟨w.coeff n, mem_normInteger.2 (h n)⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `n`. Simplify using `[WittVector.map_coeff]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_wittInt_iff {w : WittVector p L} : w ∈ wittInt p ↔ ∀ n, ‖w.coeff n‖ ≤ 1 := by
   constructor
@@ -34,7 +34,7 @@ theorem mem_wittInt_iff {w : WittVector p L} : w ∈ wittInt p ↔ ∀ n, ‖w.c
     simp [WittVector.map_coeff]
 
 /- English proof (translation)
-Rewrite using `[mem_wittInt_iff]`. Introduce `n`. Consider the cases of `n with`. Consider the case `zero => simpa using ha`. Consider the case `succ n => simp [teichmuller_coeff_pos]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem teichmuller_mem_wittInt {a : L} (ha : ‖a‖ ≤ 1) : teichmuller p a ∈ wittInt p := by
   rw [mem_wittInt_iff]
@@ -46,9 +46,9 @@ theorem teichmuller_mem_wittInt {a : L} (ha : ‖a‖ ≤ 1) : teichmuller p a �
 variable [CharP L p] [PerfectRing L p]
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `mem_span_singleton'.1 ((mem_span_p_iff_coeff_zero_eq_zero w).2 h0)`. Use `⟨v, ?_, hv.symm⟩` and prove the remaining obligations. Rewrite `hw`, the goal using `[mem_wittInt_iff]`. Introduce `n`. Establish `h1` using `hw (n + 1)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[← hv, mul_charP_coeff_succ, norm_pow]`. Conclude with `(pow_le_one_iff_of_nonneg (norm_nonneg _) hp.out.ne_zero).1 h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mem_wittInt_eq_mul_p {w : WittVector p L} (hw : w ∈ wittInt p) (h0 : w.coeff 0 = 0) :
     ∃ v ∈ wittInt p, w = v * (p : WittVector p L) := by
@@ -61,7 +61,7 @@ theorem exists_mem_wittInt_eq_mul_p {w : WittVector p L} (hw : w ∈ wittInt p) 
   exact (pow_le_one_iff_of_nonneg (norm_nonneg _) hp.out.ne_zero).1 h1
 
 /- English proof (translation)
-The claim follows from `le_coeff_eq_iff_le_sub_coeff_eq_zero.2 ((mem_span_p_pow_iff_le_coeff_eq_zero _ _).1 h) i hi`.
+A detailed English derivation is pending.
 -/
 theorem coeff_eq_of_sub_mem {a b : WittVector p L} {m : ℕ}
     (h : a - b ∈ span {(p : WittVector p L) ^ m}) {i : ℕ} (hi : i < m) : a.coeff i = b.coeff i :=
@@ -137,7 +137,7 @@ def gammaRed : Gamma p ι →+* L :=
 
 @[simp]
 /- English proof (translation)
-Set `_` to `redAlgebra p ι`. Conclude with `Algebra.TensorProduct.lift_tmul _ _ _ _ _`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem gammaRed_tmul (w : WittOver p ι) (o : normInteger K) :
     gammaRed p ι (w ⊗ₜ o) = (WittOver.equiv p ι w).coeff 0 * ι (residue _ o) := by
@@ -145,7 +145,7 @@ theorem gammaRed_tmul (w : WittOver p ι) (o : normInteger K) :
   exact Algebra.TensorProduct.lift_tmul _ _ _ _ _
 
 /- English proof (translation)
-Introduce `a`. Use `⟨(WittOver.equiv p ι).symm (teichmuller p a) ⊗ₜ 1, ?_⟩` and prove the remaining obligations. Rewrite using `[gammaRed_tmul, map_one, map_one, mul_one]`. Conclude with `teichmuller_coeff_zero p a`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gammaRed_surjective : Function.Surjective (gammaRed p ι) := by
   intro a
@@ -156,14 +156,14 @@ theorem gammaRed_surjective : Function.Surjective (gammaRed p ι) := by
 def wittOverInt : Subring (WittOver p ι) := (wittInt p).comap (WittOver.equiv p ι).toRingHom
 
 /- English proof (translation)
-Rewrite using `[wittOverInt, Subring.mem_comap]`. Conclude with `mem_wittInt_iff p`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_wittOverInt_iff {w : WittOver p ι} :
     w ∈ wittOverInt p ι ↔ ∀ n, ‖(WittOver.equiv p ι w).coeff n‖ ≤ 1 := by
   rw [wittOverInt, Subring.mem_comap]; exact mem_wittInt_iff p
 
 /- English proof (translation)
-Rewrite using `[mem_wittOverInt_iff]`. Introduce `n`. Rewrite using `[algebraMap_wittOver, WittVector.map_coeff]`. Conclude with `hι _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem algebraMap_mem_wittOverInt (hι : ∀ a, ‖ι a‖ ≤ 1)
     (c : WittVector p (ResidueField (normInteger K))) :
@@ -177,7 +177,7 @@ def gammaInt : Subring (Gamma p ι) :=
   Subring.closure {x | ∃ w ∈ wittOverInt p ι, ∃ o : normInteger K, x = w ⊗ₜ o}
 
 /- English proof (translation)
-The claim follows from `Subring.subset_closure ⟨w, hw, o, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem tmul_mem_gammaInt {w : WittOver p ι} (hw : w ∈ wittOverInt p ι) (o : normInteger K) :
     w ⊗ₜ o ∈ gammaInt p ι :=
@@ -189,7 +189,7 @@ Both sides reduce to the same expression.
 theorem gammaPi_eq (ϖ : normInteger K) : gammaPi p ι ϖ = 1 ⊗ₜ ϖ := rfl
 
 /- English proof (translation)
-Rewrite using `[← map_natCast (Algebra.TensorProduct.includeLeftRingHom (R := WittVector p (ResidueField (normInteger K))) (A := WittOver p ι) (B := normInteger K))]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem natCast_eq_tmul_left (n : ℕ) : (n : Gamma p ι) = (n : WittOver p ι) ⊗ₜ (1 : normInteger K) := by
   rw [← map_natCast (Algebra.TensorProduct.includeLeftRingHom
@@ -197,20 +197,20 @@ theorem natCast_eq_tmul_left (n : ℕ) : (n : Gamma p ι) = (n : WittOver p ι) 
   rfl
 
 /- English proof (translation)
-Rewrite using `[← map_natCast (gammaOfInt p ι)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem natCast_eq_tmul_right (n : ℕ) : (n : Gamma p ι) = (1 : WittOver p ι) ⊗ₜ (n : normInteger K) := by
   rw [← map_natCast (gammaOfInt p ι)]
   rfl
 
 /- English proof (translation)
-The claim follows from `map_natCast _ n`.
+A detailed English derivation is pending.
 -/
 theorem wittOver_equiv_natCast (n : ℕ) : WittOver.equiv p ι (n : WittOver p ι) = (n : WittVector p L) :=
   map_natCast _ n
 
 /- English proof (translation)
-Use `⟨(WittOver.equiv p ι).symm (teichmuller p a) ⊗ₜ 1, tmul_mem_gammaInt p ι ?_ 1, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_wittOverInt_iff, RingEquiv.apply_symm_apply]`. Conclude with `(mem_wittInt_iff p).1 (teichmuller_mem_wittInt p ha)`. Rewrite using `[gammaRed_tmul, map_one, map_one, mul_one, RingEquiv.apply_symm_apply]`. Conclude with `teichmuller_coeff_zero p a`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mem_gammaInt_gammaRed_eq {a : L} (ha : ‖a‖ ≤ 1) :
     ∃ x ∈ gammaInt p ι, gammaRed p ι x = a := by
@@ -221,7 +221,7 @@ theorem exists_mem_gammaInt_gammaRed_eq {a : L} (ha : ‖a‖ ≤ 1) :
     exact teichmuller_coeff_zero p a
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one]`. Use `_ = (a ⊗ₜ o) * (n : Gamma p ι) := by rw [natCast_eq_tmul_left]`. Use `_ = (a ⊗ₜ o) * ((1 : WittOver p ι) ⊗ₜ (n : normInteger K)) := by rw [natCast_eq_tmul_right]`. Use `_ = a ⊗ₜ ((n : normInteger K) * o) := by rw [Algebra.TensorProduct.tmul_mul_tmul, mul_one, mul_comm]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_natCast_tmul (a : WittOver p ι) (o : normInteger K) (n : ℕ) :
     (a * (n : WittOver p ι)) ⊗ₜ o = a ⊗ₜ[WittVector p (IsLocalRing.ResidueField (normInteger K))] ((n : normInteger K) * o) := by
@@ -241,13 +241,13 @@ def gammaBasis : Module.Basis (Fin (ramIdx p hϖ)) (WittOver p ι) (Gamma p ι) 
 
 @[simp]
 /- English proof (translation)
-Simplify using `[gammaBasis]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gammaBasis_apply (j : Fin (ramIdx p hϖ)) : gammaBasis p ι hϖ j = 1 ⊗ₜ (ϖ ^ (j : ℕ)) := by
   simp [gammaBasis]
 
 /- English proof (translation)
-Simplify using `[gammaBasis, Algebra.TensorProduct.basis_repr_tmul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gammaBasis_repr_tmul (w : WittOver p ι) (o : normInteger K) (j : Fin (ramIdx p hϖ)) :
     (gammaBasis p ι hϖ).repr (w ⊗ₜ o) j =
@@ -255,7 +255,7 @@ theorem gammaBasis_repr_tmul (w : WittOver p ι) (o : normInteger K) (j : Fin (r
   simp [gammaBasis, Algebra.TensorProduct.basis_repr_tmul]
 
 /- English proof (translation)
-Use `conv_lhs => rw [← (gammaBasis p ι hϖ).sum_repr x]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[gammaBasis, Algebra.TensorProduct.basis_repr_symm_apply', cohenBasis_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_sum_tmul (x : Gamma p ι) :
     x = ∑ j, (gammaBasis p ι hϖ).repr x j ⊗ₜ (ϖ ^ (j : ℕ)) := by
@@ -264,7 +264,7 @@ theorem eq_sum_tmul (x : Gamma p ι) :
   rw [gammaBasis, Algebra.TensorProduct.basis_repr_symm_apply', cohenBasis_apply]
 
 /- English proof (translation)
-Rewrite using `[gammaRed_tmul, map_pow]`. Establish `: residue (normInteger K) ϖ = 0` using `(residue_eq_zero_iff _).2 hϖ.not_isUnit`. Rewrite using `[this, zero_pow hj, map_zero, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem gammaRed_tmul_unif_pow (w : WittOver p ι) {j : ℕ} (hj : j ≠ 0) :
     gammaRed p ι (w ⊗ₜ (ϖ ^ j)) = 0 := by
@@ -276,9 +276,7 @@ theorem gammaRed_tmul_unif_pow (w : WittOver p ι) {j : ℕ} (hj : j ≠ 0) :
 def fin0 : Fin (ramIdx p hϖ) := ⟨0, ramIdx_pos p hϖ⟩
 
 /- English proof (translation)
-Use `conv_lhs => rw [eq_sum_tmul p ι hϖ x]`. Rewrite using `[map_sum, Finset.sum_eq_single (fin0 p hϖ)]`. Simplify using `[fin0]`. Introduce `j _ hj`. Conclude with `gammaRed_tmul_unif_pow p ι hϖ _ fun h => hj (Fin.ext h)`.
-
-Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gammaRed_eq_coeff (x : Gamma p ι) :
     gammaRed p ι x = (WittOver.equiv p ι ((gammaBasis p ι hϖ).repr x (fin0 p hϖ))).coeff 0 := by
@@ -290,7 +288,7 @@ theorem gammaRed_eq_coeff (x : Gamma p ι) :
   · simp
 
 /- English proof (translation)
-Rewrite using `[gammaBasis_repr_tmul]`. Conclude with `mul_mem hw (algebraMap_mem_wittOverInt p ι hι _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem repr_mem_wittOverInt_of_tmul (hι : ∀ a, ‖ι a‖ ≤ 1) {w : WittOver p ι}
     (hw : w ∈ wittOverInt p ι) (o : normInteger K) (j : Fin (ramIdx p hϖ)) :
@@ -299,17 +297,15 @@ theorem repr_mem_wittOverInt_of_tmul (hι : ∀ a, ‖ι a‖ ≤ 1) {w : WittOv
   exact mul_mem hw (algebraMap_mem_wittOverInt p ι hι _)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Proceed by induction on `hx using Subring.closure_induction with`. Consider the case `mem x hx`. Take `⟨w, hw, o, rfl⟩` from `hx`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `repr_mem_wittOverInt_of_tmul p ι hϖ hι hw o`. Consider the case `zero => simp`. Consider the case `one`. Introduce `j`. Rewrite using `[Algebra.TensorProduct.one_def]`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `repr_mem_wittOverInt_of_tmul p ι hϖ hι (one_mem _) 1 j`. Consider the case `add x y _ _ hx hy`. Introduce `j`. Rewrite using `[map_add, Finsupp.add_apply]`. Conclude with `add_mem (hx j) (hy j)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Consider the case `neg x _ hx`. Introduce `j`. Rewrite using `[map_neg, Finsupp.neg_apply]`. Conclude with `neg_mem (hx j)`. Consider the case `mul x y _ _ hx hy`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `j`. Rewrite using `[eq_sum_tmul p ι hϖ x, eq_sum_tmul p ι hϖ y, Finset.sum_mul_sum, map_sum, Finsupp.finsetSum_apply]`. Use `Subring.sum_mem _ fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum, Finsupp.finsetSum_apply]`. Use `Subring.sum_mem _ fun b _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul]`. Conclude with `repr_mem_wittOverInt_of_tmul p ι hϖ hι (mul_mem (hx a) (hy b)) _ j`. Introduce `h`. Rewrite using `[eq_sum_tmul p ι hϖ x]`. Conclude with `Subring.sum_mem _ fun j _ => tmul_mem_gammaInt p ι (h j) _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_gammaInt_iff (hι : ∀ a, ‖ι a‖ ≤ 1) {x : Gamma p ι} :
     x ∈ gammaInt p ι ↔ ∀ j, (gammaBasis p ι hϖ).repr x j ∈ wittOverInt p ι := by
@@ -342,7 +338,7 @@ theorem mem_gammaInt_iff (hι : ∀ a, ‖ι a‖ ≤ 1) {x : Gamma p ι} :
     exact Subring.sum_mem _ fun j _ => tmul_mem_gammaInt p ι (h j) _
 
 /- English proof (translation)
-Rewrite using `[gammaRed_eq_coeff p ι hϖ]`. Conclude with `(mem_wittOverInt_iff p ι).1 ((mem_gammaInt_iff p ι hϖ hι).1 hx _) 0`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_gammaRed_le_one (hι : ∀ a, ‖ι a‖ ≤ 1) {x : Gamma p ι} (hx : x ∈ gammaInt p ι) :
     ‖gammaRed p ι x‖ ≤ 1 := by
@@ -350,7 +346,7 @@ theorem norm_gammaRed_le_one (hι : ∀ a, ‖ι a‖ ≤ 1) {x : Gamma p ι} (h
   exact (mem_wittOverInt_iff p ι).1 ((mem_gammaInt_iff p ι hϖ hι).1 hx _) 0
 
 /- English proof (translation)
-Establish `: ∑ i, a i ⊗ₜ (ϖ ^ (i : ℕ)) = ∑ i, a i • gammaBasis p ι hϖ i`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[gammaBasis, Algebra.TensorProduct.basis_repr_symm_apply', cohenBasis_apply]`. Rewrite using `[this, Module.Basis.repr_sum_self]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem repr_sum_tmul (a : Fin (ramIdx p hϖ) → WittOver p ι) (j : Fin (ramIdx p hϖ)) :
     (gammaBasis p ι hϖ).repr (∑ i, a i ⊗ₜ (ϖ ^ (i : ℕ))) j = a j := by
@@ -360,7 +356,7 @@ theorem repr_sum_tmul (a : Fin (ramIdx p hϖ) → WittOver p ι) (j : Fin (ramId
   rw [this, Module.Basis.repr_sum_self]
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `exists_unit_natCast_prime_eq p hϖ`. Use `⟨Units.map (gammaOfInt p ι).toMonoidHom u⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[gammaPi_eq, Algebra.TensorProduct.tmul_pow, one_pow, natCast_eq_tmul_right, Units.coe_map]`. Express the relevant statement in the definitionally equal form `_ = _ * (gammaOfInt p ι) _`. Rewrite using `[gammaOfInt_apply, Algebra.TensorProduct.tmul_mul_tmul, one_mul, hu, mul_assoc, Units.mul_inv, mul_one]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_gammaPi_pow_ramIdx :
     ∃ v : (Gamma p ι)ˣ, gammaPi p ι ϖ ^ ramIdx p hϖ = (p : Gamma p ι) * v := by
@@ -373,7 +369,7 @@ theorem exists_gammaPi_pow_ramIdx :
     mul_one]
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `exists_gammaPi_pow_ramIdx p ι hϖ`. Rewrite using `[pow_mul, hv, mul_pow, ← Units.val_pow_eq_pow_val]`. Conclude with `span_singleton_mul_right_unit (v ^ m).isUnit _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_gammaPi_pow_eq (m : ℕ) :
     span {gammaPi p ι ϖ ^ (ramIdx p hϖ * m)} = span {(p : Gamma p ι) ^ m} := by
@@ -382,7 +378,7 @@ theorem span_gammaPi_pow_eq (m : ℕ) :
   exact span_singleton_mul_right_unit (v ^ m).isUnit _
 
 /- English proof (translation)
-Establish `: (p : Gamma p ι) ^ m * z = ((p : WittOver p ι) ^ m) • z`. Rewrite using `[Algebra.smul_def, map_pow, map_natCast]`. Rewrite using `[this, map_smul, Finsupp.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem repr_natCast_pow_mul (m : ℕ) (z : Gamma p ι) (j : Fin (ramIdx p hϖ)) :
     (gammaBasis p ι hϖ).repr ((p : Gamma p ι) ^ m * z) j =
@@ -392,7 +388,7 @@ theorem repr_natCast_pow_mul (m : ℕ) (z : Gamma p ι) (j : Fin (ramIdx p hϖ))
   rw [this, map_smul, Finsupp.smul_apply, smul_eq_mul]
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `mem_span_singleton'.1 hx`. Rewrite using `[mul_comm, repr_natCast_pow_mul p ι hϖ, map_mul, map_pow, wittOver_equiv_natCast]`. Conclude with `mem_span_singleton.2 ⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem repr_mem_span_of_mem_span {x : Gamma p ι} {m : ℕ}
     (hx : x ∈ span {(p : Gamma p ι) ^ m}) (j : Fin (ramIdx p hϖ)) :
@@ -402,9 +398,9 @@ theorem repr_mem_span_of_mem_span {x : Gamma p ι} {m : ℕ}
   exact mem_span_singleton.2 ⟨_, rfl⟩
 
 /- English proof (translation)
-Use `choose c hc using fun j => mem_span_singleton.1 (h j)`. Use `set z : Gamma p ι := ∑ j, (WittOver.equiv p ι).symm (c j) ⊗ₜ (ϖ ^ (j : ℕ))`. Establish `hx : x = (p : Gamma p ι) ^ m * z`. Apply `(gammaBasis p ι hϖ).repr.injective` to reduce the goal to its premises. Use extensionality with `j`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[repr_natCast_pow_mul p ι hϖ, repr_sum_tmul p ι hϖ]`. Apply `(WittOver.equiv p ι).injective` to reduce the goal to its premises. Rewrite using `[hc j, map_mul, map_pow, wittOver_equiv_natCast, RingEquiv.apply_symm_apply]`. Conclude with `mem_span_singleton'.2 ⟨z, by rw [hx, mul_comm]⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_span_of_repr_mem_span {x : Gamma p ι} {m : ℕ}
     (h : ∀ j, WittOver.equiv p ι ((gammaBasis p ι hϖ).repr x j) ∈ span {(p : WittVector p L) ^ m}) :
@@ -420,23 +416,19 @@ theorem mem_span_of_repr_mem_span {x : Gamma p ι} {m : ℕ}
   exact mem_span_singleton'.2 ⟨z, by rw [hx, mul_comm]⟩
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `exists_unit_natCast_prime_eq p hϖ`. Establish `he` using `ramIdx_pos p hϖ`. Use `set c := (gammaBasis p ι hϖ).repr x with hc_def`. Establish `hc0 : (WittOver.equiv p ι (c (fin0 p hϖ))).coeff 0 = 0`. Rewrite using `[← gammaRed_eq_coeff p ι hϖ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hx`. Take `⟨v, hv⟩` from `mem_span_singleton'.1 ((mem_span_p_iff_coeff_zero_eq_zero _).2 hc0)`. Establish `hvint : c (fin0 p hϖ) ∈ wittOverInt p ι → (WittOver.equiv p ι).symm v ∈ wittOverInt p ι`. Introduce `hint`. Rewrite `hint`, the goal using `[mem_wittOverInt_iff]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `n`. Establish `h1` using `hint (n + 1)`. Rewrite `h1` using `[← hv, mul_charP_coeff_succ, norm_pow]`. Rewrite using `[RingEquiv.apply_symm_apply]`. Conclude with `(pow_le_one_iff_of_nonneg (norm_nonneg _) hp.out.ne_zero).1 h1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Use `set y0 : Gamma p ι := (WittOver.equiv p ι).symm v ⊗ₜ (ϖ ^ (ramIdx p hϖ - 1) * u)`. Use `set yj : Fin (ramIdx p hϖ) → Gamma p ι := fun j => if (j : ℕ) = 0 then y0 else c j ⊗ₜ (ϖ ^ ((j : ℕ) - 1))`. Establish `hterm : ∀ j, c j ⊗ₜ (ϖ ^ (j : ℕ)) = gammaPi p ι ϖ * yj j`. Introduce `j`. Distinguish the cases in `hj : (j : ℕ) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hj' : j = fin0 p hϖ` using `Fin.ext hj`. Establish `hcv : c j = (WittOver.equiv p ι).symm v * (p : WittOver p ι)`. Rewrite using `[hj']`. Apply `(WittOver.equiv p ι).injective` to reduce the goal to its premises. Rewrite using `[map_mul, RingEquiv.apply_symm_apply, wittOver_equiv_natCast, ← hv]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [yj, if_pos hj, y0, gammaPi_eq, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Rewrite using `[hcv, hj, pow_zero, mul_natCast_tmul, mul_one, hu]`. Use `congr 1`. Rewrite using `[← mul_assoc, ← pow_succ', Nat.sub_add_cancel he]`. Simplify using `only [yj, if_neg hj, gammaPi_eq, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← pow_succ', Nat.sub_add_cancel (Nat.one_le_iff_ne_zero.2 hj)]`. Use `⟨∑ j, yj j, ?_, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [eq_sum_tmul p ι hϖ x]`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => hterm j`.
-
-Introduce `hι hxint`. Establish `hci` using `(mem_gammaInt_iff p ι hϖ hι).1 hxint`. Use `Subring.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `hj : (j : ℕ) = 0`. Simplify using `only [yj, if_pos hj, y0]`.
-
-Conclude with `tmul_mem_gammaInt p ι (hvint (hci _)) _`. Simplify using `only [yj, if_neg hj]`. Conclude with `tmul_mem_gammaInt p ι (hci j) _`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_eq_gammaPi_mul {x : Gamma p ι} (hx : gammaRed p ι x = 0) :
     ∃ y, x = gammaPi p ι ϖ * y ∧
@@ -487,16 +479,16 @@ theorem exists_eq_gammaPi_mul {x : Gamma p ι} (hx : gammaRed p ι x = 0) :
       exact tmul_mem_gammaInt p ι (hci j) _
 
 /- English proof (translation)
-Rewrite using `[gammaPi_eq, ← pow_one ϖ]`. Conclude with `gammaRed_tmul_unif_pow p ι hϖ 1 one_ne_zero`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gammaRed_gammaPi : gammaRed p ι (gammaPi p ι ϖ) = 0 := by
   rw [gammaPi_eq, ← pow_one ϖ]
   exact gammaRed_tmul_unif_pow p ι hϖ 1 one_ne_zero
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[RingHom.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨y, rfl, -⟩` from `exists_eq_gammaPi_mul p ι hϖ hx`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `mem_span_singleton'.2 ⟨y, mul_comm _ _⟩`. Introduce `hx`. Take `⟨y, rfl⟩` from `mem_span_singleton'.1 hx`. Rewrite using `[map_mul, gammaRed_gammaPi p ι hϖ, mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_gammaRed : RingHom.ker (gammaRed p ι) = span {gammaPi p ι ϖ} := by
   ext x
@@ -510,7 +502,7 @@ theorem ker_gammaRed : RingHom.ker (gammaRed p ι) = span {gammaPi p ι ϖ} := b
     rw [map_mul, gammaRed_gammaPi p ι hϖ, mul_zero]
 
 /- English proof (translation)
-Take `⟨y, hy, hint⟩` from `exists_eq_gammaPi_mul p ι hϖ h0`. Conclude with `⟨y, hint hι hx, hy⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_mem_gammaInt_eq_gammaPi_mul (hι : ∀ a, ‖ι a‖ ≤ 1) {x : Gamma p ι}
     (hx : x ∈ gammaInt p ι) (h0 : gammaRed p ι x = 0) :
@@ -519,9 +511,9 @@ theorem exists_mem_gammaInt_eq_gammaPi_mul (hι : ∀ a, ‖ι a‖ ≤ 1) {x : 
   exact ⟨y, hint hι hx, hy⟩
 
 /- English proof (translation)
-Apply `(gammaBasis p ι hϖ).repr.injective` to reduce the goal to its premises. Use extensionality with `j`. Establish `h` using `congrArg (fun z => (gammaBasis p ι hϖ).repr z j) hx`. Rewrite `h` using `[← pow_one (p : Gamma p ι), repr_natCast_pow_mul p ι hϖ, pow_one, map_zero, Finsupp.zero_apply]`. Rewrite using `[map_zero, Finsupp.zero_apply]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `(WittOver.equiv p ι).injective` to reduce the goal to its premises. Establish `h2` using `congrArg (WittOver.equiv p ι) h`. Rewrite `h2` using `[map_mul, wittOver_equiv_natCast, map_zero]`. Rewrite using `[map_zero]`. Conclude with `(mul_eq_zero.1 h2).resolve_left (WittVector.p_nonzero p L)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_natCast_mul_eq_zero {x : Gamma p ι} (hx : (p : Gamma p ι) * x = 0) : x = 0 := by
   apply (gammaBasis p ι hϖ).repr.injective
@@ -536,9 +528,9 @@ theorem eq_zero_of_natCast_mul_eq_zero {x : Gamma p ι} (hx : (p : Gamma p ι) *
   exact (mul_eq_zero.1 h2).resolve_left (WittVector.p_nonzero p L)
 
 /- English proof (translation)
-Rewrite using `[mem_nonZeroDivisors_iff_right]`. Introduce `x hx`. Take `⟨v, hv⟩` from `exists_gammaPi_pow_ramIdx p ι hϖ`. Establish `he` using `ramIdx_pos p hϖ`. Establish `h1 : gammaPi p ι ϖ ^ ramIdx p hϖ * x = 0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Nat.sub_add_cancel he, pow_succ, mul_assoc, mul_comm (gammaPi p ι ϖ) x, hx, mul_zero]`. Rewrite `h1` using `[hv, mul_assoc]`. Establish `h2` using `eq_zero_of_natCast_mul_eq_zero p ι hϖ h1`. Use `congrArg (fun z => (↑v⁻¹ : Gamma p ι) * z) h2` as an intermediate fact. Simplify `this` using `[← mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem gammaPi_mem_nonZeroDivisors : gammaPi p ι ϖ ∈ nonZeroDivisors (Gamma p ι) := by
   rw [mem_nonZeroDivisors_iff_right]
@@ -553,23 +545,21 @@ theorem gammaPi_mem_nonZeroDivisors : gammaPi p ι ϖ ∈ nonZeroDivisors (Gamma
   simpa [← mul_assoc] using this
 
 /- English proof (translation)
-Establish `he` using `ramIdx_pos p hϖ`. Establish `hmem : ∀ (n : ℕ) (x y : Gamma p ι), x ≡ y [SMOD (span {gammaPi p ι ϖ} ^ n • ⊤ : Submodule (Gamma p ι) (Gamma p ι))] ↔ x - y ∈ span {gammaPi p ι ϖ ^ n}`. Introduce `n x y`. Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, span_singleton_pow]`. Establish `hle : ∀ n m, n ≤ m → span {gammaPi p ι ϖ ^ m} ≤ span {gammaPi p ι ϖ ^ n}` using `fun n m h => span_singleton_le_span_singleton.2 (pow_dvd_pow _ h)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `{ haus' := ?_, prec' := ?_ }` and prove the remaining obligations. Introduce `x hx`. Simplify using `only [hmem, sub_zero] at hx`. Establish `hc : ∀ j, (gammaBasis p ι hϖ).repr x j = 0`. Introduce `j`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `(WittOver.equiv p ι).injective` to reduce the goal to its premises. Rewrite using `[map_zero]`. Apply `WittLift.eq_zero_of_forall_mem` to reduce the goal to its premises. Introduce `m`. Apply `repr_mem_span_of_mem_span p ι hϖ _ j` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← span_gammaPi_pow_eq p ι hϖ]`. Conclude with `hx _`. Rewrite using `[eq_sum_tmul p ι hϖ x]`. Simplify using `[hc]`. Introduce `f hf`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [hmem] at hf`. Use `set a : Fin (ramIdx p hϖ) → ℕ → WittVector p L := fun j n => WittOver.equiv p ι ((gammaBasis p ι hϖ).repr (f (ramIdx p hϖ * n)) j) with ha_def`. Establish `ha : ∀ j n, a j (n + 1) - a j n ∈ span {(p : WittVector p L) ^ n}`. Introduce `j n`. Establish `h1 : f (ramIdx p hϖ * n) - f (ramIdx p hϖ * (n + 1)) ∈ span {(p : Gamma p ι) ^ n}`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← span_gammaPi_pow_eq p ι hϖ]`. Conclude with `hf (Nat.mul_le_mul_left _ (Nat.le_succ n))`. Establish `h2` using `repr_mem_span_of_mem_span p ι hϖ h1 j`. Rewrite `h2` using `[map_sub, Finsupp.sub_apply, map_sub]`. Rewrite using `[← neg_sub]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `neg_mem h2`. Use `choose W hW using fun j => WittLift.exists_limit (a j) (ha j)`. Use `⟨∑ j, (WittOver.equiv p ι).symm (W j) ⊗ₜ (ϖ ^ (j : ℕ)), fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[hmem]`. Establish `h1 : f n - f (ramIdx p hϖ * n) ∈ span {gammaPi p ι ϖ ^ n}` using `hf (Nat.le_mul_of_pos_left n he)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2 : f (ramIdx p hϖ * n) - ∑ j, (WittOver.equiv p ι).symm (W j) ⊗ₜ (ϖ ^ (j : ℕ)) ∈ span {gammaPi p ι ϖ ^ n}`. Apply `hle n (ramIdx p hϖ * n) (Nat.le_mul_of_pos_left n he)` to reduce the goal to its premises. Rewrite using `[span_gammaPi_pow_eq p ι hϖ]`. Apply `mem_span_of_repr_mem_span p ι hϖ` to reduce the goal to its premises. Introduce `j`.
-
-Rewrite using `[map_sub, Finsupp.sub_apply, repr_sum_tmul p ι hϖ, map_sub, RingEquiv.apply_symm_apply]`. Rewrite using `[← neg_sub]`. Conclude with `neg_mem (hW j n)`. Use `add_mem h1 h2` as an intermediate fact. Rewrite `this` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem isAdicComplete_gammaPi : IsAdicComplete (span {gammaPi p ι ϖ}) (Gamma p ι) := by
   have he := ramIdx_pos p hϖ
@@ -625,9 +615,9 @@ theorem isAdicComplete_gammaPi : IsAdicComplete (span {gammaPi p ι ϖ}) (Gamma 
     rwa [sub_add_sub_cancel] at this
 
 /- English proof (translation)
-Rewrite using `[mem_gammaInt_iff p ι hϖ hι]`. Introduce `j`. Rewrite using `[mem_wittOverInt_iff]`. Introduce `n`. Take `⟨y, hy, hxy⟩` from `h (ramIdx p hϖ * (n + 1))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite `hxy` using `[span_gammaPi_pow_eq p ι hϖ]`. Establish `h1` using `repr_mem_span_of_mem_span p ι hϖ hxy j`. Rewrite `h1` using `[map_sub, Finsupp.sub_apply, map_sub]`. Rewrite using `[coeff_eq_of_sub_mem p h1 (Nat.lt_succ_self n)]`. Conclude with `(mem_wittOverInt_iff p ι).1 ((mem_gammaInt_iff p ι hϖ hι).1 hy j) n`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_gammaInt_of_forall (hι : ∀ a, ‖ι a‖ ≤ 1) {x : Gamma p ι}
     (h : ∀ N : ℕ, ∃ y ∈ gammaInt p ι, x - y ∈ span {gammaPi p ι ϖ ^ N}) : x ∈ gammaInt p ι := by
@@ -659,7 +649,7 @@ def wittOverFrob (a : ℕ) : WittOver p ι →+* WittOver p ι :=
     ((WittVector.map (iterateFrobenius L p a)).comp (WittOver.equiv p ι).toRingHom)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(WittVector.map (iterateFrobenius L p a) (WittOver.equiv p ι w)).coeff n = _`. Rewrite using `[WittVector.map_coeff, iterateFrobenius_def]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem wittOverFrob_coeff (a : ℕ) (w : WittOver p ι) (n : ℕ) :
     (WittOver.equiv p ι (wittOverFrob p ι a w)).coeff n = (WittOver.equiv p ι w).coeff n ^ p ^ a := by
@@ -667,7 +657,7 @@ theorem wittOverFrob_coeff (a : ℕ) (w : WittOver p ι) (n : ℕ) :
   rw [WittVector.map_coeff, iterateFrobenius_def]
 
 /- English proof (translation)
-Establish `hb : Function.Bijective (iterateFrobenius L p a)`. Rewrite using `[← coe_iterateFrobeniusEquiv]`. Conclude with `(iterateFrobeniusEquiv L p a).bijective`. Establish `hm : Function.Bijective (WittVector.map (iterateFrobenius L p a) : WittVector p L → WittVector p L)` using `⟨WittVector.map_injective _ hb.1, WittVector.map_surjective _ hb.2⟩`. Conclude with `(WittOver.equiv p ι).symm.bijective.comp (hm.comp (WittOver.equiv p ι).bijective)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem wittOverFrob_bijective (a : ℕ) : Function.Bijective (wittOverFrob p ι a) := by
   have hb : Function.Bijective (iterateFrobenius L p a) := by
@@ -677,7 +667,7 @@ theorem wittOverFrob_bijective (a : ℕ) : Function.Bijective (wittOverFrob p ι
   exact (WittOver.equiv p ι).symm.bijective.comp (hm.comp (WittOver.equiv p ι).bijective)
 
 /- English proof (translation)
-Rewrite `hw`, the goal using `[mem_wittOverInt_iff]`. Introduce `n`. Rewrite using `[wittOverFrob_coeff, norm_pow]`. Conclude with `pow_le_one₀ (norm_nonneg _) (hw n)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wittOverFrob_mem_wittOverInt (a : ℕ) {w : WittOver p ι} (hw : w ∈ wittOverInt p ι) :
     wittOverFrob p ι a w ∈ wittOverInt p ι := by
@@ -728,7 +718,7 @@ def gammaPhi (hσ : ∀ x, residue (normInteger K) (σ x) = residue (normInteger
     (fun _ _ => Commute.all _ _)).toRingHom
 
 /- English proof (translation)
-Establish `h` using `Algebra.TensorProduct.lift_tmul (gammaPhiLeft p ι a) (gammaPhiRight p ι a σ hσ) (fun _ _ => Commute.all _ _) w o`. Use `h.trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((wittOverFrob p ι a w ⊗ₜ[WittVector p (IsLocalRing.ResidueField (normInteger K))] (1 : normInteger K) : Gamma p ι) * ((1 : WittOver p ι) ⊗ₜ[WittVector p (IsLocalRing.ResidueField (normInteger K))] σ o : Gamma p ι)) = _`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem gammaPhi_tmul (hσ : ∀ x, residue (normInteger K) (σ x) = residue (normInteger K) x ^ p ^ a) (w : WittOver p ι) (o : normInteger K) :
     gammaPhi p ι a σ hσ (w ⊗ₜ o) = wittOverFrob p ι a w ⊗ₜ[WittVector p (IsLocalRing.ResidueField (normInteger K))] σ o := by
@@ -740,9 +730,9 @@ theorem gammaPhi_tmul (hσ : ∀ x, residue (normInteger K) (σ x) = residue (no
   rw [Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp [zero_pow (pow_ne_zero _ hp.out.ne_zero)]`. Consider the case `tmul w o`. Rewrite using `[gammaPhi_tmul p ι a σ hσ, gammaRed_tmul, gammaRed_tmul, wittOverFrob_coeff, hσ, map_pow, mul_pow]`. Consider the case `add x y hx hy`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[map_add, map_add, hx, hy, map_add]`. Conclude with `(add_pow_expChar_pow _ _ p a).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gammaRed_gammaPhi (hσ : ∀ x, residue (normInteger K) (σ x) = residue (normInteger K) x ^ p ^ a) (x : Gamma p ι) :
     gammaRed p ι (gammaPhi p ι a σ hσ x) = gammaRed p ι x ^ p ^ a := by
@@ -755,11 +745,9 @@ theorem gammaRed_gammaPhi (hσ : ∀ x, residue (normInteger K) (σ x) = residue
     exact (add_pow_expChar_pow _ _ p a).symm
 
 /- English proof (translation)
-Proceed by induction on `hx using Subring.closure_induction with`. Consider the case `mem x hx`. Take `⟨w, hw, o, rfl⟩` from `hx`. Rewrite using `[gammaPhi_tmul]`. Conclude with `tmul_mem_gammaInt p ι (wittOverFrob_mem_wittOverInt p ι a hw) _`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `one => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [map_neg]`.
-
-Conclude with `neg_mem hx`. Consider the case `mul x y _ _ hx hy => rw [map_mul]`. Conclude with `mul_mem hx hy`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem gammaPhi_mem_gammaInt (hσ : ∀ x, residue (normInteger K) (σ x) = residue (normInteger K) x ^ p ^ a) {x : Gamma p ι} (hx : x ∈ gammaInt p ι) :
     gammaPhi p ι a σ hσ x ∈ gammaInt p ι := by
@@ -775,31 +763,29 @@ theorem gammaPhi_mem_gammaInt (hσ : ∀ x, residue (normInteger K) (σ x) = res
   | mul x y _ _ hx hy => rw [map_mul]; exact mul_mem hx hy
 
 /- English proof (translation)
-Rewrite using `[gammaPi_eq, gammaPhi_tmul, map_one, gammaPi_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gammaPhi_gammaPi (hσ : ∀ x, residue (normInteger K) (σ x) = residue (normInteger K) x ^ p ^ a) (ϖ : normInteger K) : gammaPhi p ι a σ hσ (gammaPi p ι ϖ) = gammaPi p ι (σ ϖ) := by
   rw [gammaPi_eq, gammaPhi_tmul, map_one, gammaPi_eq]
 
 /- English proof (translation)
-Use `set e := RingEquiv.ofBijective σ hbij`. Establish `hϖ' : Irreducible (σ ϖ)`. Establish `: Irreducible (e ϖ)` using `(MulEquiv.irreducible_iff (f := e.toMulEquiv)).2 hϖ`. Simplify `this` using `[e]`. Establish `hram : ramIdx p hϖ' = ramIdx p hϖ`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `norm_natCast_prime_eq (K := K) p hϖ`. Establish `h2` using `norm_natCast_prime_eq (K := K) p hϖ'`. Establish `hn : ‖((σ ϖ : normInteger K) : K)‖ = ‖(ϖ : K)‖`. Take `⟨n, hn⟩` from `exists_norm_eq_pow hϖ (x := σ ϖ) hϖ'.ne_zero`. Take `⟨m, hm⟩` from `exists_norm_eq_pow hϖ' (x := ϖ) hϖ.ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h0` using `norm_unif_pos hϖ`. Establish `h1'` using `norm_unif_lt_one hϖ`. Rewrite `hm` using `[hn]`. Rewrite `hm` using `[← pow_mul]`. Establish `: 1 = n * m`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `pow_right_injective₀ h0 h1'.ne (show ‖(ϖ : K)‖ ^ 1 = ‖(ϖ : K)‖ ^ (n * m) by rw [pow_one]; exact hm)` as an intermediate fact. Conclude with `this`. Establish `hn1 : n = 1` using `Nat.eq_one_of_mul_eq_one_right this.symm`. Rewrite using `[hn, hn1, pow_one]`. Rewrite `h2` using `[hn]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[h1]`. Conclude with `(pow_right_injective₀ (norm_unif_pos hϖ) (norm_unif_lt_one hϖ).ne h2).symm`. Establish `hphi : ∀ x : Gamma p ι, gammaPhi p ι a σ hσ x = ∑ j : Fin (ramIdx p hϖ), wittOverFrob p ι a ((gammaBasis p ι hϖ).repr x j) ⊗ₜ[WittVector p (IsLocalRing.ResidueField (normInteger K))] ((σ ϖ) ^ (j : ℕ))`. Introduce `x`. Use `conv_lhs => rw [eq_sum_tmul p ι hϖ x]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[gammaPhi_tmul p ι a σ hσ, map_pow]`. Take `⟨finv, hfl, hfr⟩ : ∃ g : WittOver p ι → WittOver p ι, Function.LeftInverse g (wittOverFrob p ι a) ∧ Function.RightInverse g (wittOverFrob p ι a)` from `⟨Function.surjInv (wittOverFrob_bijective p ι a).2, Function.leftInverse_surjInv (wittOverFrob_bijective p ι a), Function.rightInverse_surjInv (wittOverFrob_bijective p ι a).2⟩`. Establish `hsum : ∀ c : Fin (ramIdx p hϖ) → WittOver p ι, ∀ j : Fin (ramIdx p hϖ'), (gammaBasis p ι hϖ').repr (∑ i : Fin (ramIdx p hϖ), c i ⊗ₜ[WittVector p (IsLocalRing.ResidueField (normInteger K))] ((σ ϖ) ^ (i : ℕ))) j = c (Fin.cast hram j)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `c j`. Establish `: ∑ i : Fin (ramIdx p hϖ), c i ⊗ₜ[WittVector p (IsLocalRing.ResidueField (normInteger K))] ((σ ϖ) ^ (i : ℕ)) = ∑ i : Fin (ramIdx p hϖ'), c (Fin.cast hram i) ⊗ₜ[WittVector p (IsLocalRing.ResidueField (normInteger K))] ((σ ϖ) ^ (i : ℕ))`. Rewrite using `[← (finCongr hram.symm).sum_comp]`. Both sides reduce to the same expression. Rewrite using `[this, repr_sum_tmul p ι hϖ']`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use `⟨fun x y hxy => ?_, fun y => ?_⟩` and prove the remaining obligations. Apply `(gammaBasis p ι hϖ).repr.injective` to reduce the goal to its premises. Use extensionality with `j`. Establish `h` using `congrArg (fun z => (gammaBasis p ι hϖ').repr z (Fin.cast hram.symm j)) hxy`. Simplify using `only [hphi, hsum] at h`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(wittOverFrob_bijective p ι a).1 (by simpa using h)`. Use `⟨∑ j : Fin (ramIdx p hϖ), finv ((gammaBasis p ι hϖ').repr y (Fin.cast hram.symm j)) ⊗ₜ[WittVector p (IsLocalRing.ResidueField (normInteger K))] (ϖ ^ (j : ℕ)), ?_⟩` and prove the remaining obligations. Apply `(gammaBasis p ι hϖ').repr.injective` to reduce the goal to its premises. Use extensionality with `j`. Rewrite using `[hphi, hsum, repr_sum_tmul p ι hϖ, hfr]`.
-
-Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gammaPhi_bijective (hσ : ∀ x, residue (normInteger K) (σ x) = residue (normInteger K) x ^ p ^ a) (hbij : Function.Bijective σ) {ϖ : normInteger K} (hϖ : Irreducible ϖ) :
     Function.Bijective (gammaPhi p ι a σ hσ) := by

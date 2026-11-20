@@ -19,9 +19,9 @@ variable {B B' : Scheme.{0}} {G : Over B} [GrpObj G] {A : Over B'} [GrpObj A]
   {L₀ : LB G.left} {L₁ : LB A.left} {w : LB.Iso L₁ (L₀.pull φ)}
 
 /- English proof (translation)
-Proceed by induction on `F using Finset.induction_on with`. Consider the case `empty`. Rewrite using `[Finset.sum_empty, Finset.sum_empty]`. Establish `h` using `ThetaAct.sv_add (0 : SecM A L k T) 0 r z hJ`. Rewrite `h` using `[add_zero]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `left_eq_add.1 h`. Consider the case `insert a F ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, ThetaAct.sv_add _ _ _ _ hJ, ThetaAct.sv_smul _ _ _ _ hJ, ih]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sv_sum_smul {L : LB A.left} {k : ℤ} {I : Type} (F : Finset I) (c : I → Γ(T.left, ⊤))
     (v : I → SecM A L k T) {Z : Scheme.{0}} (r : Z ⟶ (T ⊗ A).left) (z : Z) {J} (hJ : Good L z J) :
@@ -37,9 +37,9 @@ theorem sv_sum_smul {L : LB A.left} {k : ℤ} {I : Type} (F : Finset I) (c : I �
     rw [Finset.sum_insert ha, Finset.sum_insert ha, ThetaAct.sv_add _ _ _ _ hJ, ThetaAct.sv_smul _ _ _ _ hJ, ih]
 
 /- English proof (translation)
-Introduce `Z r z J J' hJ hJ'`. Use `(sv_sum_smul Finset.univ c (fun l => SecM.ofSec G (s l)) (r ≫ psi hp τ hτ) z hJ).trans (Eq.trans ?_ (congrArg (_ * ·) (sv_sum_smul Finset.univ (fun l => τ.appTop.hom (c l)) (fun l => SecM.ofSec A (t l)) r z hJ').symm))` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm, Category.assoc, psi_fst', ← Category.assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg₂ (· * ·) (gs_pull _ τ z ⊤ trivial (c l)).symm (h l Z r z J J' hJ hJ')`.
+A detailed English derivation is pending.
 -/
 theorem secRel_sum {k : ℤ} {I : Type} [Fintype I] (c : I → Γ(T₀.left, ⊤))
     {t : I → LB.Sec (LPow A L₁ k T)} {s : I → LB.Sec (LPow G L₀ k T₀)} (h : ∀ l, SecRel hp τ hτ w (t l) (s l)) :
@@ -55,7 +55,7 @@ theorem secRel_sum {k : ℤ} {I : Type} [Fintype I] (c : I → Γ(T₀.left, ⊤
   exact congrArg₂ (· * ·) (gs_pull _ τ z ⊤ trivial (c l)).symm (h l Z r z J J' hJ hJ')
 
 /- English proof (translation)
-The claim follows from `ThetaAct.sv_ext hL fun y J hJ => ((ThetaAct.isActOf_iff hL θ s s₁).1 h₁ y J hJ).trans ((ThetaAct.isActOf_iff hL θ s s₂).1 h₂ y J hJ).symm`.
+A detailed English derivation is pending.
 -/
 theorem isActOf_unique {L : LB A.left} (hL : L.IsLB) {k : ℤ} {θ : ThetaGrp A L k T}
     {s s₁ s₂ : LB.Sec (LPow A L k T)} (h₁ : IsActOf A L k θ s s₁) (h₂ : IsActOf A L k θ s s₂) :
@@ -64,7 +64,7 @@ theorem isActOf_unique {L : LB A.left} (hL : L.IsLB) {k : ℤ} {θ : ThetaGrp A 
     ((ThetaAct.isActOf_iff hL θ s s₁).1 h₁ y J hJ).trans ((ThetaAct.isActOf_iff hL θ s s₂).1 h₂ y J hJ).symm
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `ThetaAct.exists_act hL θ (SecM.ofSec A s)`. Conclude with `⟨SecM.toSec A v, (ThetaAct.isActOf_iff hL θ _ _).2 fun y J hJ => hv _ _ y J hJ⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isActOf' {L : LB A.left} (hL : L.IsLB) {k : ℤ} (θ : ThetaGrp A L k T)
     (s : LB.Sec (LPow A L k T)) : ∃ s', IsActOf A L k θ s s' := by
@@ -72,7 +72,7 @@ theorem exists_isActOf' {L : LB A.left} (hL : L.IsLB) {k : ℤ} (θ : ThetaGrp A
   exact ⟨SecM.toSec A v, (ThetaAct.isActOf_iff hL θ _ _).2 fun y J hJ => hv _ _ y J hJ⟩
 
 /- English proof (translation)
-Establish `e : SecM.ofSec A σ = ∑ l, c l • SecM.ofSec A (s l)`. Use `Subtype.ext (funext fun j => (h j).trans ?_)` and prove the remaining obligations. Rewrite using `[Submodule.coe_sum, Finset.sum_apply]`. Both sides reduce to the same expression. Rewrite using `[← e]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -87,9 +87,9 @@ theorem ofSec_eq_sum {L : LB A.left} {k : ℤ} {I : Type} [Fintype I] (c : I →
   rfl
 
 /- English proof (translation)
-Take `⟨θ, hθ, H⟩` from `symLift_move hp τ hτ hw hL₀ hL₁ hx hn H₀`. Use `⟨θ, hθ, fun i t' ht' => ?_⟩` and prove the remaining obligations. Take `⟨σ, hσ⟩` from `exists_isActOf' hL₀ θ₀ (s i)`. Establish `e` using `ofSec_eq_sum _ _ σ (hs i σ hσ)`. Establish `hr` using `secRel_sum hp τ hτ (fun l => c l i) h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hr` using `[← e]`. Use `(isActOf_unique hL₁ ht' (H _ _ _ _ (h i) hr hσ)).trans ?_` and prove the remaining obligations. Simplify using `only [hc]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem symLift_act_move [IsCommMonObj A] (hw : w.IsGen) (hL₀ : L₀.IsLB) (hL₁ : L₁.IsLB) {k : ℤ} {n : ℕ}
     {x : T ⟶ A} {x₀ : T₀ ⟶ G} (hx : τ ≫ x₀.left = x.left ≫ φ) (hn : x ^ n = 1) {θ₀ : ThetaGrp G L₀ k T₀}
@@ -112,7 +112,7 @@ theorem symLift_act_move [IsCommMonObj A] (hw : w.IsGen) (hL₀ : L₀.IsLB) (hL
 end General
 
 /- English proof (translation)
-The claim follows from `(congrArg (fun q => q.hom c) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom y))).symm`.
+A detailed English derivation is pending.
 -/
 theorem appTop_fn {R : Type} [CommRing R] (V : Type) [CommRing V] [IsDomain V] (F : Type) [Field F]
     [Algebra (FractionRing V) F] (y : R →+* F) (c : R) :
@@ -120,7 +120,7 @@ theorem appTop_fn {R : Type} [CommRing R] (V : Type) [CommRing V] [IsDomain V] (
   (congrArg (fun q => q.hom c) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom y))).symm
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ _ S ρ p _ y₀ u w hw t ht a x hx hn`. Use `u.A.isAb.comm` as an intermediate fact. Conclude with `symLift_act_move u.cart (T := TFK (R := u.V) (PadicAlgCl p)) (T₀ := baseOver (Sp S.R)) (spMap y₀) (base_eq u) hw ρ.P.isLB u.A.isLB hx.symm hn (ρ.U_sym a) (fun l i => fn (algebraMap o S.R (S.ρ a l i))) _ (fun l i => appTop_fn u.V (PadicAlgCl p) y₀ _) ht (ρ.U_act a)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_symLift_act : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (p : ℕ) [Fact p.Prime] (y₀ : S.R →+* PadicAlgCl p) (u : ρ.UTest p y₀) (w : LB.Iso u.A.L (ρ.P.L.pull u.φ)), w.IsGen → ∀ t : S.J → SecA u.A (PadicAlgCl p) S.N, (∀ i, Moved u w (t i) (ρ.s i)) → ∀ (a : S.Gam) (x : TFK (R := u.V) (PadicAlgCl p) ⟶ u.A.A), x.left ≫ u.φ = spMap y₀ ≫ (ρ.pt (S.r • a)).left → x ^ S.N = 1 → ∃ θ : ThetaGrp u.A.A u.A.L (S.N : ℤ) (TFK (R := u.V) (PadicAlgCl p)), SymLift u.A.A u.A.L S.N S.N x θ ∧ ∀ i t', IsActOf u.A.A u.A.L S.N θ (t i) t' → SecM.ofSec u.A.A t' = ∑ l, kf u.V (PadicAlgCl p) (y₀ (algebraMap o S.R (S.ρ a l i))) • SecM.ofSec u.A.A (t l) := by
   intro o Ω _ _ _ _ S ρ p _ y₀ u w hw t ht a x hx hn

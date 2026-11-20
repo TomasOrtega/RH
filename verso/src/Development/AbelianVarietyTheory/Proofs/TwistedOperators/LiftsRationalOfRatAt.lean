@@ -36,7 +36,7 @@ section Package
 variable {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A)
 
 /- English proof (translation)
-Use `conv_lhs => rw [← (Pi.basisFun D.what₂.LL (Fin (R.nW i))).sum_repr y]`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [map_smulₛₗ, Pi.basisFun_repr]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem j_eq_sum (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) (y : Fin (R.nW i) → D.what₂.LL) :
     (R.FW i).j σ y = ∑ k, σ (y k) • (R.FW i).j σ (Pi.basisFun D.what₂.LL (Fin (R.nW i)) k) := by
@@ -45,7 +45,7 @@ theorem j_eq_sum (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) (y : Fin (R.nW i)
   exact Finset.sum_congr rfl fun k _ => by rw [map_smulₛₗ, Pi.basisFun_repr]
 
 /- English proof (translation)
-Use `top_le_iff.1 ((hU i σ).2.1.ge.trans (Submodule.span_le.2 ?_))` and prove the remaining obligations. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[j_eq_sum]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_basis (hU : R.LUnif) (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) :
     Submodule.span ℂ (Set.range fun k => (R.FW i).j σ (Pi.basisFun D.what₂.LL (Fin (R.nW i)) k)) = ⊤ := by

@@ -10,7 +10,7 @@ def Bnd (r : WithZero (Multiplicative ℤ)) (X : Matrix (Fin N) (Fin N) (P.adicC
   ∀ i j, Valued.v (X i j) ≤ r
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[Nat.cast_succ]`. Conclude with `(Valuation.map_add _ _ _).trans (max_le ih (by simp))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem v_natCast_le_one (m : ℕ) : Valued.v ((m : P.adicCompletion E)) ≤ 1 := by
   induction m with
@@ -22,68 +22,68 @@ theorem v_natCast_le_one (m : ℕ) : Valued.v ((m : P.adicCompletion E)) ≤ 1 :
 variable {r s : WithZero (Multiplicative ℤ)} {X Y : Matrix (Fin N) (Fin N) (P.adicCompletion E)}
 
 /- English proof (translation)
-Introduce `i j` and use `(Valuation.map_add _ _ _).trans (max_le (hX i j) (hY i j))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem bnd_add (hX : Bnd r X) (hY : Bnd r Y) : Bnd r (X + Y) := fun i j =>
   (Valuation.map_add _ _ _).trans (max_le (hX i j) (hY i j))
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.neg_apply, Valuation.map_neg]; exact hX i j`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem bnd_neg (hX : Bnd r X) : Bnd r (-X) := fun i j => by
   rw [Matrix.neg_apply, Valuation.map_neg]; exact hX i j
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg]`. Conclude with `bnd_add hX (bnd_neg hY)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bnd_sub (hX : Bnd r X) (hY : Bnd r Y) : Bnd r (X - Y) := by
   rw [sub_eq_add_neg]; exact bnd_add hX (bnd_neg hY)
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.smul_apply, smul_eq_mul, Valuation.map_mul]; exact mul_le_mul' le_rfl (hX i j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem bnd_smul (a : P.adicCompletion E) (hX : Bnd r X) : Bnd (Valued.v a * r) (a • X) := fun i j => by
   rw [Matrix.smul_apply, smul_eq_mul, Valuation.map_mul]; exact mul_le_mul' le_rfl (hX i j)
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.mul_apply] exact Valuation.map_sum_le _ fun k _ => by rw [Valuation.map_mul]; exact mul_le_mul' (hX i k) (hY k j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem bnd_mul (hX : Bnd r X) (hY : Bnd s Y) : Bnd (r * s) (X * Y) := fun i j => by
   rw [Matrix.mul_apply]
   exact Valuation.map_sum_le _ fun k _ => by rw [Valuation.map_mul]; exact mul_le_mul' (hX i k) (hY k j)
 
 /- English proof (translation)
-Introduce `i j` and use `(hX i j).trans h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem bnd_mono (h : r ≤ s) (hX : Bnd r X) : Bnd s X := fun i j => (hX i j).trans h
 
 /- English proof (translation)
-Introduce `i j` and use `by simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem bnd_zero : Bnd r (0 : Matrix (Fin N) (Fin N) (P.adicCompletion E)) := fun i j => by simp
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.one_apply]; split_ifs <;> simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem bnd_one : Bnd 1 (1 : Matrix (Fin N) (Fin N) (P.adicCompletion E)) := fun i j => by
   rw [Matrix.one_apply]; split_ifs <;> simp
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.sum_apply]; exact Valuation.map_sum_le _ fun k hk => h k hk i j`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem bnd_sum {ι : Type} (t : Finset ι) (f : ι → Matrix (Fin N) (Fin N) (P.adicCompletion E))
     (h : ∀ k ∈ t, Bnd r (f k)) : Bnd r (∑ k ∈ t, f k) := fun i j => by
   rw [Matrix.sum_apply]; exact Valuation.map_sum_le _ fun k hk => h k hk i j
 
 /- English proof (translation)
-The claim follows from `| 0 => by rw [pow_zero]; exact bnd_one | k + 1 => by rw [pow_succ]; simpa only [one_mul] using bnd_mul (bnd_pow hX k) hX`.
+A detailed English derivation is pending.
 -/
 theorem bnd_pow (hX : Bnd 1 X) : ∀ k : ℕ, Bnd 1 (X ^ k)
   | 0 => by rw [pow_zero]; exact bnd_one
   | k + 1 => by rw [pow_succ]; simpa only [one_mul] using bnd_mul (bnd_pow hX k) hX
 
 /- English proof (translation)
-The claim follows from `| 0 => by rw [pow_zero, pow_zero, sub_self]; exact bnd_zero | k + 1 => by have e : X ^ (k + 1) - Y ^ (k + 1) = X ^ k * (X - Y) + (X ^ k - Y ^ k) * Y := by rw [pow_succ, pow_succ]; noncomm_ring rw [e] exact bnd_add (by simpa only [one_mul] using bnd_mul (bnd_pow hX k) hXY) (by sim …`.
+A detailed English derivation is pending.
 -/
 theorem bnd_pow_sub (hX : Bnd 1 X) (hY : Bnd 1 Y) (hXY : Bnd r (X - Y)) :
     ∀ k : ℕ, Bnd r (X ^ k - Y ^ k)
@@ -100,7 +100,7 @@ noncomputable def tail (n : ℕ) (c : P.adicCompletion E) (X : Matrix (Fin N) (F
   ∑ k ∈ Finset.range (n - 1), ((n.choose (k + 2) : P.adicCompletion E) * ((n : P.adicCompletion E) * c) ^ k) • X ^ (k + 2)
 
 /- English proof (translation)
-Rewrite using `[Valuation.map_mul, Valuation.map_pow, Valuation.map_mul]`. Conclude with `mul_le_one' (v_natCast_le_one _) (pow_le_one' (mul_le_one' (v_natCast_le_one _) hc) _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem v_coef_le_one (n k : ℕ) {c : P.adicCompletion E} (hc : Valued.v c ≤ 1) :
     Valued.v ((n.choose (k + 2) : P.adicCompletion E) * ((n : P.adicCompletion E) * c) ^ k) ≤ 1 := by
@@ -108,7 +108,7 @@ theorem v_coef_le_one (n k : ℕ) {c : P.adicCompletion E} (hc : Valued.v c ≤ 
   exact mul_le_one' (v_natCast_le_one _) (pow_le_one' (mul_le_one' (v_natCast_le_one _) hc) _)
 
 /- English proof (translation)
-The claim follows from `bnd_sum _ _ fun k _ => bnd_mono (by simpa only [mul_one] using v_coef_le_one n k hc) (bnd_smul _ (bnd_pow hX _))`.
+A detailed English derivation is pending.
 -/
 theorem bnd_tail (n : ℕ) {c : P.adicCompletion E} (hc : Valued.v c ≤ 1) (hX : Bnd 1 X) :
     Bnd 1 (tail n c X) :=
@@ -116,7 +116,7 @@ theorem bnd_tail (n : ℕ) {c : P.adicCompletion E} (hc : Valued.v c ≤ 1) (hX 
     (bnd_smul _ (bnd_pow hX _))
 
 /- English proof (translation)
-Unfold `tail`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `bnd_sum _ _ fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← smul_sub]`. Conclude with `bnd_mono (by simpa only [one_mul] using mul_le_mul' (v_coef_le_one n k hc) (le_refl r)) (bnd_smul _ (bnd_pow_sub hX hY hXY _))`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bnd_tail_sub (n : ℕ) {c : P.adicCompletion E} (hc : Valued.v c ≤ 1) (hX : Bnd 1 X) (hY : Bnd 1 Y)
     (hXY : Bnd r (X - Y)) : Bnd r (tail n c X - tail n c Y) := by
@@ -128,13 +128,13 @@ theorem bnd_tail_sub (n : ℕ) {c : P.adicCompletion E} (hc : Valued.v c ≤ 1) 
     (bnd_smul _ (bnd_pow_sub hX hY hXY _))
 
 /- English proof (translation)
-Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨n - 1, by omega⟩`. Rewrite using `[add_comm (1 : Matrix _ _ _), (Commute.one_right _).add_pow]`. Simplify using `only [one_pow, mul_one]`. Rewrite using `[Finset.sum_range_succ', Finset.sum_range_succ']`. Simplify using `only [tail, Nat.add_sub_cancel, smul_add, Finset.smul_sum, smul_smul, smul_pow]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hc : ∀ (j : ℕ) (Z : Matrix (Fin N) (Fin N) (P.adicCompletion E)), Z * ((j : ℕ) : Matrix (Fin N) (Fin N) (P.adicCompletion E)) = (j : P.adicCompletion E) • Z`. Introduce `j Z`. Rewrite using `[← Nat.cast_comm, ← nsmul_eq_mul, Nat.cast_smul_eq_nsmul]`. Simplify using `only [hc, smul_smul]`. Establish `hs : ∀ x ∈ Finset.range m, (((m + 1).choose (x + 1 + 1) : P.adicCompletion E) * (((m + 1 : ℕ) : P.adicCompletion E) * c) ^ (x + 1 + 1)) • X ^ (x + 1 + 1) = (((m + 1 : ℕ) : P.adicCompletion E) ^ 2 * c * (c * (((m + 1).choose (x + 2) : P.adicCompletion E) * (((m + 1 : ℕ) : P.adicCo …`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `x _`. Rewrite using `[show x + 1 + 1 = x + 2 by omega]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl hs]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [zero_add, Nat.choose_zero_right, Nat.choose_one_right, pow_zero, pow_one, Nat.cast_one, one_mul, one_smul]`. Establish `e : ((m + 1 : ℕ) : P.adicCompletion E) * (((m + 1 : ℕ) : P.adicCompletion E) * c) = ((m + 1 : ℕ) : P.adicCompletion E) ^ 2 * c` using `by ring`. Rewrite using `[e]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem one_add_smul_pow (n : ℕ) (hn : 0 < n) (c : P.adicCompletion E)
     (X : Matrix (Fin N) (Fin N) (P.adicCompletion E)) :
@@ -174,35 +174,31 @@ namespace GlobalTheory.MatNthRoot
 variable {E : Type} [Field E] [NumberField E] {P : HeightOneSpectrum (𝓞 E)} {N : ℕ}
 
 /- English proof (translation)
-Introduce `E _ _ P N n c A hn hc hA`. Establish `hc1 : Valued.v c ≤ 1` using `hc.le`. Break down `eq_or_ne c 0 with rfl | hc0` into its components or cases. Use `⟨1, fun i j => by simp, ?_⟩` and prove the remaining obligations. Rewrite using `[one_pow]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hA1 : A - 1 = 0` using `Matrix.ext fun i j => by`. Establish `h` using `hA i j`. Rewrite `h` using `[mul_zero, Valuation.map_zero, le_zero_iff, Valuation.zero_iff]`. Then use the resulting hypothesis. Conclude with `(sub_eq_zero.1 hA1).symm`. Establish `hn0 : (n : P.adicCompletion E) ≠ 0` using `Nat.cast_ne_zero.2 hn.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set s : P.adicCompletion E := (n : P.adicCompletion E) ^ 2 * c with hs`. Establish `hs0 : s ≠ 0` using `mul_ne_zero (pow_ne_zero _ hn0) hc0`. Use `set Y : Matrix (Fin N) (Fin N) (P.adicCompletion E) := s⁻¹ • (A - 1) with hYdef`. Establish `hY : Bnd 1 Y` using `fun i j => by`. Rewrite using `[hYdef, Matrix.smul_apply, smul_eq_mul, Valuation.map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Set `f : Matrix (Fin N) (Fin N) (P.adicCompletion E) → Matrix (Fin N) (Fin N) (P.adicCompletion E)` to `fun X => Y - c • tail n c X`. Establish `hf1 : ∀ X, Bnd 1 X → Bnd 1 (f X)` using `fun X hX => bnd_sub hY (bnd_mono (by simpa only [mul_one] using hc1) (bnd_smul c (bnd_tail n hc1 hX)))`. Establish `hfl : ∀ X Z r, Bnd 1 X → Bnd 1 Z → Bnd r (X - Z) → Bnd (Valued.v c * r) (f X - f Z)`. Introduce `X Z r hX hZ hXZ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Establish `e : f X - f Z = -(c • (tail n c X - tail n c Z))`. Simplify using `only [f, smul_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `bnd_neg (bnd_smul c (bnd_tail_sub n hc1 hX hZ hXZ))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Establish `hb : ∀ k : ℕ, Bnd 1 (f^[k] 0)`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => exact bnd_zero`. Consider the case `succ k ih => rw [Function.iterate_succ_apply']`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Conclude with `hf1 _ ih`. Establish `hd : ∀ k : ℕ, Bnd (Valued.v c ^ k) (f^[k + 1] 0 - f^[k] 0)`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => rw [pow_zero]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Conclude with `bnd_sub (hb 1) (hb 0)`. Consider the case `succ k ih`. Rewrite using `[Function.iterate_succ_apply']`. Use `hfl _ _ _ (hb (k + 1)) (hb k) ih` as an intermediate fact. Rewrite `this` using `[← Function.iterate_succ_apply' f k 0, ← pow_succ']`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hcau : ∀ i j, CauchySeq fun k => (f^[k] 0) i j`. Introduce `i j`. Use `cauchySeq_of_le_geometric ‖c‖ 1 (Valued.toNormedField.norm_lt_one_iff.2 hc) fun k => ?_` and prove the remaining obligations. Rewrite using `[dist_eq_norm', one_mul, ← norm_pow]`. Use `Valued.toNormedField.norm_le_iff.2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Valuation.map_pow]`. Use `hd k i j` as an intermediate fact. Rewrite `this` using `[Matrix.sub_apply]`. Then use the resulting hypothesis. Use `choose L hL using fun i j => cauchySeq_tendsto_of_complete (hcau i j)`. Use `set L' : Matrix (Fin N) (Fin N) (P.adicCompletion E) := Matrix.of L with hL'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hT : Filter.Tendsto (fun k => f^[k] 0) Filter.atTop (nhds L')` using `tendsto_pi_nhds.2 fun i => tendsto_pi_nhds.2 fun j => hL i j`. Establish `hfc : Continuous f`. Simplify using `only [f, tail]`. Use `fun_prop`. Establish `hfix : f L' = L'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h1 : Filter.Tendsto (fun k => f^[k + 1] 0) Filter.atTop (nhds L')` using `hT.comp (Filter.tendsto_add_atTop_nat 1)`. Establish `h2 : Filter.Tendsto (fun k => f^[k + 1] 0) Filter.atTop (nhds (f L'))`. Simplify using `only [Function.iterate_succ_apply']`. Conclude with `(hfc.tendsto L').comp hT`. Conclude with `tendsto_nhds_unique h2 h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Establish `hLb : Bnd 1 L'`. Introduce `i j`. Establish `hm` using `(Valued.isClosed_valuationSubring (P.adicCompletion E)).mem_of_tendsto (hL i j) (Filter.Eventually.of_forall fun k => (Valuation.mem_valuationSubring_iff _ _).2 (hb k i j))`. Conclude with `(Valuation.mem_valuationSubring_iff _ _).1 hm`. Use `⟨1 + ((n : P.adicCompletion E) * c) • L', fun i j => ?_, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[add_sub_cancel_left, Matrix.smul_apply, smul_eq_mul, Valuation.map_mul]`. Simplify `mul_le_mul' (le_refl (Valued.v ((n : P.adicCompletion E) * c))) (hLb i j)` using `only [mul_one]`. Rewrite using `[one_add_smul_pow n hn c L']`. Establish `e : L' + c • tail n c L' = Y` using `by nth_rewrite 1 [← hfix]`. Simplify using `only [f]`.
-
-Normalize the expressions using the abelian group laws. Rewrite using `[e, hYdef, smul_smul, ← hs, mul_inv_cancel₀ hs0, one_smul, add_sub_cancel]`.
+A detailed English derivation is pending.
 -/
 theorem exists_nthRoot : ∀ (E : Type) [Field E] [NumberField E] (P : HeightOneSpectrum (𝓞 E)) (N n : ℕ)
     (c : P.adicCompletion E) (A : Matrix (Fin N) (Fin N) (P.adicCompletion E)), 0 < n → Valued.v c < 1 →

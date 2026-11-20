@@ -3,17 +3,15 @@ import Mathlib
 namespace GlobalTheory.CompanionTheory.EigenLift
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Use `haveI : FiniteDimensional ℂ W' := Module.Finite.of_surjective (R := ℂ) f hf`. Use `set A : W →ₗ[ℂ] W := T - c • LinearMap.id with hA`. Use `set B : W' →ₗ[ℂ] W' := S - c • LinearMap.id with hB`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hinj : Function.Injective A`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `w hw`. Assume the negation of the conclusion as `h0`. Apply `hne w h0` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify `hw` using `[hA, sub_eq_zero]`. Establish `hsurjT : Function.Surjective A` using `LinearMap.injective_iff_surjective.1 hinj`. Establish `hcomm : ∀ z, f (A z) = B (f z)`. Introduce `z`. Establish `h1` using `LinearMap.congr_fun hfT z`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [LinearMap.comp_apply] at h1`. Simplify using `[hA, hB, map_sub, map_smul, h1]`. Establish `hsurjS : Function.Surjective B`. Introduce `y`. Take `⟨x, rfl⟩` from `hf y`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨z, rfl⟩` from `hsurjT x`. Conclude with `⟨f z, (hcomm z).symm⟩`. Establish `hinjS` using `LinearMap.injective_iff_surjective.2 hsurjS`. Apply `hw'` to reduce the goal to its premises. Apply `hinjS` to reduce the goal to its premises.
-
-Simplify using `[hB, hS]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_eigenvector_of_surjective_intertwiner
     (W W' : Type) [AddCommGroup W] [Module ℂ W] [AddCommGroup W'] [Module ℂ W']
@@ -49,7 +47,7 @@ theorem exists_eigenvector_of_surjective_intertwiner
   simp [hB, hS]
 
 /- English proof (translation)
-Introduce `W W' _ _ _ _ _ T S f hf hfT c w' hw' hS _`. Conclude with `exists_eigenvector_of_surjective_intertwiner W W' T S f hf hfT c w' hw' hS`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem nonzero_eigenvalue_lifts :
     ∀ (W W' : Type) [AddCommGroup W] [Module ℂ W] [AddCommGroup W'] [Module ℂ W']

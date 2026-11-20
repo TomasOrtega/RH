@@ -18,9 +18,9 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 namespace GlobalTheory.CompanionTheory.WaveMult.KerSwap
 
 /- English proof (translation)
-Introduce `hW hR n _ _ μ _ E w w' g T K hg hK`. Use `⟨hK.1, hK.2.1, hK.2.2.1, fun u hu x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[hK.2.2.2 u hu x hx]`. Establish `hs : ContDiffOn ℝ ∞ (fun x' => ∫ t : ℝ, (g t : ℂ) • u t x') (GLs n)`. Establish `h1` using `((GlobalTheory.CompanionTheory.WaveMult.WaveAvg.isWave_avg hW n E u g T hu hg).2.1 0).1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `h1` using `only [zero_add]`. Conclude with `GlobalTheory.CompanionTheory.WaveMult.Swap.zOp_swap hR n w w' _ hs x hx`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isKer_swap : WaveSpeed → RCalc → ∀ (n : ℕ) [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure] (E : KMod n) (w w' : List (Bool × ℕ)) (g : ℝ → ℝ) (T : ℝ) (K : Mat n → (E.V →L[ℂ] E.V)), IsBump g T → IsKer μ E (w ++ w') g K → IsKer μ E (w' ++ w) g K := by
   intro hW hR n _ _ μ _ E w w' g T K hg hK

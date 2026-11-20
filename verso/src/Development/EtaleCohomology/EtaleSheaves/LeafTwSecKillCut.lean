@@ -31,7 +31,7 @@ def LeafTwPt : Prop := ∀ (q : ℕ) [NeZero q] (j : ℤ) (U : Scheme.{0}) (u : 
   ∃ (W : Scheme.{0}) (w : W ⟶ U), Etale w ∧ u ∈ Set.range w ∧ ((twF q j).map (Scheme.Γ.map w.op)).hom t = 0
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun f => f.hom t) ((toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ M)).naturality g.op)`. Conclude with `h.symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sec_res {R : Type} [CommRing R] (M : CommRingCat.{0} ⥤ ModuleCat.{1} (ULift.{1} R)) {V U : Scheme.{0}}
     (g : V ⟶ U) (t : M.obj Γ(U, ⊤)) :
@@ -40,29 +40,27 @@ theorem sec_res {R : Type} [CommRing R] (M : CommRingCat.{0} ⥤ ModuleCat.{1} (
   exact h.symm
 
 /- English proof (translation)
-Simplify using `[Sec.res]`.
+Simplify using the standard rewrite rules.
 -/
 theorem res_comp {R : Type} [CommRing R] {F : Shv R} {W V U : Scheme.{0}} (f : W ⟶ V) (g : V ⟶ U) (s : Sec F U) :
     Sec.res (f ≫ g) s = Sec.res f (Sec.res g s) := by
   simp [Sec.res]
 
 /- English proof (translation)
-The claim follows from `map_zero _`.
+A detailed English derivation is pending.
 -/
 theorem sec_zero {R : Type} [CommRing R] (M : CommRingCat.{0} ⥤ ModuleCat.{1} (ULift.{1} R)) (U : Scheme.{0}) :
     ofRings.sec M U 0 = 0 :=
   map_zero _
 
 /- English proof (translation)
-Introduce `q _ X Z _ ι _ hq j s hs x hx`. Take `⟨z, rfl⟩` from `hx`. Take `⟨U, w, hw, ⟨u, hu⟩, t, ht⟩` from `h1 (ZMod q) (twF q j) X s (ι z)`. Take `⟨p, hp1, hp2⟩` from `Scheme.Pullback.exists_preimage_pullback (f := w) (g := ι) u z hu`. Establish `hP : ofRings.sec (twF q j) _ (((twF q j).map (Scheme.Γ.map (pullback.fst w ι).op)).hom t) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← sec_res, ← ht]`. Establish `e2 : Sec.res (F` using `tw q j) (pullback.fst w ι) (Sec.res w s) = Sec.res (F := tw q j) (pullback.snd w ι) (Sec.res ι s) := by`. Rewrite using `[← res_comp, ← res_comp, pullback.condition]`. Conclude with `e2.trans (by rw [hs]; exact map_zero _)`. Take `⟨V, v, hv, ⟨v0, hv0⟩, hV⟩` from `h2 (ZMod q) (twF q j) _ _ hP p`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hV' : ((twF q j).map (Scheme.Γ.map (v ≫ pullback.fst w ι).op)).hom t = 0`. Rewrite using `[op_comp, Functor.map_comp, Functor.map_comp]`. Conclude with `hV`. Take `⟨W, w', hw', hu', hW⟩` from `h3 q j U u t V (v ≫ pullback.fst w ι) v0 (by simp [hv0, hp1]) hV'`. Use `haveI := hw`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `haveI := hw'`. Use `⟨W, w' ≫ w, inferInstance, ?_, ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `hu'`. Conclude with `⟨a, by simp [ha, hu]⟩`. Rewrite using `[res_comp]`.
-
-Establish `e` using `sec_res (twF q j) w' t`. Rewrite `e` using `[hW]`. Conclude with `(congrArg (Sec.res w') ht).trans (e.trans (sec_zero _ _))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goal_of (h1 : LeafOfRingsLocSurj) (h2 : LeafOfRingsLocInj) (h3 : LeafTwPt) : LateralTheory.E.E8.LeafTwSecKill := by
   intro q _ X Z _ ι _ hq j s hs x hx

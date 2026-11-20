@@ -14,43 +14,43 @@ open CategoryTheory AlgebraicGeometry TensorProduct GlobalTheory.LogCris Divided
 namespace CrystallineSemistableComparison.Pb
 
 /- English proof (translation)
-The claim follows from `bc_loc @loc_bc @poly_tf`.
+A detailed English derivation is pending.
 -/
 theorem bcOn_true : BcOn True := bc_loc @loc_bc @poly_tf
 
 /- English proof (translation)
-The claim follows from `bc_glob @glob_bc_st bcOn_true`.
+A detailed English derivation is pending.
 -/
 theorem bcOn_false : BcOn False := bc_glob @glob_bc_st bcOn_true
 
 /- English proof (translation)
-The claim follows from `@loc_gr`.
+A detailed English derivation is pending.
 -/
 theorem kh1 : KH.LocGr := @loc_gr
 
 /- English proof (translation)
-The claim follows from `@glob_serre_st`.
+A detailed English derivation is pending.
 -/
 theorem kh2 : KH.GlobSerreSt := @glob_serre_st
 
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨trivial, fin_o kh1 @poly_tf kh2 kh3.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem finO' : True ∧ FinO := ⟨trivial, fin_o kh1 @poly_tf kh2 kh3.2⟩
 
 /- English proof (translation)
-The claim follows from `afg_a bcOn_false finO'.2`.
+A detailed English derivation is pending.
 -/
 theorem afgA : AfgA := afg_a bcOn_false finO'.2
 
 /- English proof (translation)
-The claim follows from `lift_a afgA`.
+A detailed English derivation is pending.
 -/
 theorem liftA : LiftA := lift_a afgA
 
 /- English proof (translation)
-The claim follows from `basis_b bcOn_false @k_iso`.
+A detailed English derivation is pending.
 -/
 theorem basisB : BasisB := basis_b bcOn_false @k_iso
 

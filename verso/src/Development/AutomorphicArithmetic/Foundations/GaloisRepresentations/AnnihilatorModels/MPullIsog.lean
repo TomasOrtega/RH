@@ -15,25 +15,23 @@ open UpperTheory.Gal.crystallineComparison UpperTheory.Gal.crystallineComparison
 open GlobalTheory.CechPic GlobalTheory.UPel.HT.ES.PIsogExt
 
 /- English proof (translation)
-Introduce `p _ D R _ b N S S' s s' f hs c o o' ψ hψ o₁ m`. Substitute `hs` using the available equality. Establish `hcpos : 0 < c` using `hψ.pos`. Take `⟨hk, hmon, hact, heta, ⟨hiso⟩, ψ', hmon', h₁, h₂⟩` from `hψ`. Use `haveI := hmon`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := hmon'`. Take `⟨o₁', ⟨m'⟩⟩` from `GlobalTheory.T.exists_harrisTaylorObject_pullback p D R b N S S' s f o'`. Set `ψ₁ : o₁.A ⟶ o₁'.A` to `Over.homMk (m'.cart.1.lift (m.φ ≫ ψ.left) o₁.A.hom (by rw [Category.assoc, Over.w ψ, m.cart.1.w])) (m'.cart.1.lift_snd _ _ _)`. Set `ψ₁' : o₁'.A ⟶ o₁.A` to `Over.homMk (m.cart.1.lift (m'.φ ≫ ψ'.left) o₁'.A.hom (by rw [Category.assoc, Over.w ψ', m'.cart.1.w])) (m.cart.1.lift_snd _ _ _)`. Establish `e : m.φ ≫ ψ.left = ψ₁.left ≫ m'.φ` using `(m'.cart.1.lift_fst _ _ _).symm`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e' : m'.φ ≫ ψ'.left = ψ₁'.left ≫ m.φ` using `(m.cart.1.lift_fst _ _ _).symm`. Establish `pt : ∀ (T : Over S') (x : T ⟶ o₁.A), m'.ptEquiv T (x ≫ ψ₁) = m.ptEquiv T x ≫ ψ` using `fun T x => Over.OverMorphism.ext (by`. Rewrite using `[ObjMap.ptEquiv_left, Over.comp_left, Over.comp_left, ObjMap.ptEquiv_left, Category.assoc, Category.assoc, e])`. Establish `pt' : ∀ (T : Over S') (x : T ⟶ o₁'.A), m.ptEquiv T (x ≫ ψ₁') = m'.ptEquiv T x ≫ ψ'` using `fun T x => Over.OverMorphism.ext (by`. Rewrite using `[ObjMap.ptEquiv_left, Over.comp_left, Over.comp_left, ObjMap.ptEquiv_left, Category.assoc, Category.assoc, e'])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `mh : IsMonHom ψ₁` using `GlobalTheory.GrpPullPow.isMonHom_of_mul_pts ψ₁ fun T x y => (m'.ptEquiv T).injective (by`. Rewrite using `[map_mul, pt, pt, pt, map_mul, MonObj.mul_comp])`. Establish `mh' : IsMonHom ψ₁'` using `GlobalTheory.GrpPullPow.isMonHom_of_mul_pts ψ₁' fun T x y => (m.ptEquiv T).injective (by`. Rewrite using `[map_mul, pt', pt', pt', map_mul, MonObj.mul_comp])`. Establish `hsq` using `isSquare_square_compatible_homs m.sq m'.sq e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcL : ∀ {X : Scheme.{0}} (L : LB X) (hL : L.IsLB) (h : (Hecke.lbPow L c).IsLB), cls _ h = c • cls L hL` using `fun {X} L hL h => (cls_linComb (L := L) hL (fun _ => 𝟙 X) (fun _ => 1) h).trans (by simp [pull_id])`. Establish `hL₁ : (Hecke.lbPow o₁.P c).IsLB` using `LB.isLB_linComb o₁.isLB _ _`. Establish `hM₁ : (o₁'.P.pull (sq2 ψ₁)).IsLB` using `pull_isLB o₁'.isLB _`. Establish `e1` using `(cls_eq_iff o₁'.isLB (pull_isLB o'.isLB _)).2 m'.pol`. Establish `e2` using `(cls_eq_iff o₁.isLB (pull_isLB o.isLB _)).2 m.pol`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL₀ : (Hecke.lbPow o.P c).IsLB` using `LB.isLB_linComb o.isLB _ _`. Establish `e3 : cls _ hL₀ = cls _ (pull_isLB o'.isLB (sq2 ψ))` using `(cls_eq_iff hL₀ (pull_isLB o'.isLB (sq2 ψ))).2 hiso`. Establish `ext₁ : ∀ {T : Over S'} (g h : T ⟶ o₁.A), g.left ≫ m.φ = h.left ≫ m.φ → g = h` using `fun g h H => Over.OverMorphism.ext (m.cart.1.hom_ext H (by simp))`. Establish `ext₂ : ∀ {T : Over S'} (g h : T ⟶ o₁'.A), g.left ≫ m'.φ = h.left ≫ m'.φ → g = h` using `fun g h H => Over.OverMorphism.ext (m'.cart.1.hom_ext H (by simp))`. Establish `hcls : cls _ hL₁ = cls _ hM₁`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hcL o.P o.isLB hL₀, e3]`. Use `_ = pull (m.φ₂ ≫ sq2 ψ) (cls o'.P o'.isLB) := by rw [cls_pull o'.isLB, pull_comp]`. Use `_ = pull (sq2 ψ₁) (pull m'.φ₂ (cls o'.P o'.isLB)) := by rw [hsq, pull_comp]`. Use `_ = pull (sq2 ψ₁) (cls o₁'.P o₁'.isLB) := by rw [e1, cls_pull o'.isLB]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `_ = cls _ hM₁ := (cls_pull o₁'.isLB _ _).symm`. Use `⟨o₁', m', ψ₁, ⟨hk, mh, fun c' => ?_, fun x => ?_, ⟨(cls_eq_iff hL₁ hM₁).1 hcls⟩, ψ₁', mh', ?_, ?_⟩, e⟩` and prove the remaining obligations. Use `ext₂ _ _ ?_` and prove the remaining obligations. Establish `h` using `congrArg (fun q => m.φ ≫ q.left) (hact c')`. Simplify using `only [Over.comp_left] at h ⊢`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Category.assoc, ← e, ← Category.assoc, m.act c', Category.assoc, h, Category.assoc, m'.act c', ← Category.assoc (Over.Hom.left ψ₁), ← e, Category.assoc]`. Use `ext₂ _ _ ?_` and prove the remaining obligations. Rewrite using `[m'.eta x, heta x, Over.comp_left, Over.comp_left, Category.assoc, ← e, ← Category.assoc (Over.Hom.left (o₁.eta x)), m.eta x, Category.assoc]`. Use `ext₁ _ _ ?_` and prove the remaining obligations. Rewrite using `[Over.comp_left, Category.assoc, ← e', ← Category.assoc, ← e, Category.assoc, ← Over.comp_left, h₁, pow_comp_of_isGrpPullback m.cart c hcpos]`.
-
-Use `ext₂ _ _ ?_` and prove the remaining obligations. Rewrite using `[Over.comp_left, Category.assoc, ← e, ← Category.assoc, ← e', Category.assoc, ← Over.comp_left, h₂, pow_comp_of_isGrpPullback m'.cart c hcpos]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.crystallineComparison.Mod.pullIsog_of :
     PullIsog := by

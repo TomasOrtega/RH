@@ -11,11 +11,9 @@ namespace GlobalTheory
 open PDivGroup Sandwich Dieudonne
 
 /- English proof (translation)
-Introduce `h p _ C _ _ _ v O _ _ hv _ _ G c w hc hcw`. Use `haveI : IsDomain O := hv.hom_inj.isDomain (algebraMap O C)`. Use `haveI : IsDomain (PreTilt O p) := PreTilt.isDomain C v O hv p`. Take `⟨ε, hε⟩` from `ReciprocityTheory.PGsh.exists_eps (p := p) C v O hv`. Take `⟨M, D, φ, r, ι, π, -, hM, -, -, hr, -, hex, -⟩` from `h p C v O hv ε hε`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Use `haveI := (hM G).1`. Use `haveI := (hM G).2.1`. Take `⟨h1, -, -⟩` from `free_of_reduction (ReciprocityTheory.PGsh.Ainf.theta_surj p O hv) (ReciprocityTheory.PGsh.Ainf.theta_xi p O hv ε hε) (r G) (hr G).1 fun m => ((hr G).2 m).1`. Use `haveI := h1`. Apply `(hex G).1` to reduce the goal to its premises.
-
-Rewrite using `[map_zero]`. Establish `h2 : c • ι G w = 0` using `by rw [← map_smul, hcw, map_zero]`. Conclude with `(smul_eq_zero.1 h2).resolve_left hc`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem omega_eq_zero_of_smul_eq_zero : GlobalTheory.Published.PrismaticDieudonneHodge → ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C], v.Integers O → ∀ [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] (G : GlobalTheory.PDivGroup p O) (c : O) (w : G.omega), c ≠ 0 → c • w = 0 → w = 0 := by
   intro h p _ C _ _ _ v O _ _ hv _ _ G c w hc hcw

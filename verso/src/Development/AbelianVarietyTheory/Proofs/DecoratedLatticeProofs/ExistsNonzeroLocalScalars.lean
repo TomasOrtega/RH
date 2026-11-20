@@ -28,7 +28,7 @@ section Gen
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D}
 
 /- English proof (translation)
-The claim follows from `Finset.sum_induction _ (IsThetaFunO ψ S T) (fun _ _ => GlobalTheory.OrientedHeis.theta_add) GlobalTheory.OrientedHeis.theta_zero fun u hu => GlobalTheory.OrientedHeis.theta_smul _ (GlobalTheory.FinTranslate.isThetaFunO_heisO hψ.1.1 hψ.1.2.1 hf (hc u hu))`.
+A detailed English derivation is pending.
 -/
 theorem theta_comb (hψ : IsStdChar D ψ (-1)) {c : WO S T →₀ ℂ} (hc : IsFinComb c) {f : WO S T → ℂ}
     (hf : IsThetaFunO ψ S T f) : IsThetaFunO ψ S T (comb ψ S T c f) :=
@@ -36,7 +36,7 @@ theorem theta_comb (hψ : IsStdChar D ψ (-1)) {c : WO S T →₀ ℂ} (hc : IsF
     fun u hu => GlobalTheory.OrientedHeis.theta_smul _ (GlobalTheory.FinTranslate.isThetaFunO_heisO hψ.1.1 hψ.1.2.1 hf (hc u hu))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Simplify using `only [GlobalTheory.FrComb.comb_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => by ring`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem comb_smul (c : WO S T →₀ ℂ) (a : ℂ) (f : WO S T → ℂ) :
     comb ψ S T c (a • f) = a • comb ψ S T c f := by
@@ -45,16 +45,16 @@ theorem comb_smul (c : WO S T →₀ ℂ) (a : ℂ) (f : WO S T → ℂ) :
   exact Finset.sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Use `comb_smul (ψ := ψ) c 0 0` as an intermediate fact. Rewrite `this` using `[zero_smul, zero_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem comb_zero (c : WO S T →₀ ℂ) : comb ψ S T c 0 = 0 := by
   have := comb_smul (ψ := ψ) c 0 0
   rwa [zero_smul, zero_smul] at this
 
 /- English proof (translation)
-Set `q` to `e.support.equivFin`. Establish `key` using `(GlobalTheory.FockFiniteHeis.heis_comb_pureTensorO D ψ θ S T hψ hθ sS sT BS BT f₀ hf₀ e.support.card (fun i => e (q.symm i).1) (fun i => (q.symm i).1) (fun i => he _ (q.symm i).2) P).1`. Establish `h1 : ∀ g : WO S T → (WO S T → ℂ), ∑ u ∈ e.support, e u • g u = ∑ i, e (q.symm i).1 • g (q.symm i).1`. Introduce `g`. Rewrite using `[← Finset.sum_coe_sort e.support]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Equiv.sum_comp q.symm (fun u : e.support => e u.1 • g u.1)).symm`. Simplify using `only [comb]`. Rewrite using `[h1, h1]`. Conclude with `key`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comb_pureTensorO (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (sS sT BS BT) {e : WO S T →₀ ℂ} (he : IsFinComb e)
     {f₀ : WO S T → ℂ} (hf₀ : IsThetaFunO ψ S T f₀) (P) :
@@ -71,9 +71,9 @@ theorem comb_pureTensorO (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (sS sT 
   exact key
 
 /- English proof (translation)
-Establish `hψ : IsStdChar D ψ (-1)` using `hW.std`. Establish `hfin : ∀ f, IsThetaFunO ψ S T f → IsThetaFunO ψ S T (pureTensorO ψ θ S T sS sT BS BT f P) ∧ om (b, b') (pureTensorO ψ θ S T sS sT BS BT f P) = pureTensorO ψ θ S T sS sT BS BT (om (b, b') f) P` using `fun f hf => GlobalTheory.OrientedHeis.om_pureTensorO D ψ θ S T χS χT om hW hθ sS sS BS BS sT sT BT BT b b' (fun τ => by rw [GlobalTheory.FiniteFock.compAt_mt_of_finite θ τ hb, Matrix.mul_one, Matrix.one_mul]) (fun τ => by rw [GlobalTheory.FiniteFock.compAt_mt_of_finite θ τ hb', M …`. Establish `hbg` using `hW.om_pres (b, b') g hg`. Establish `e1 : ((a * b, a' * b') : GA D S × GA D T) = (a, a') * (b, b')` using `rfl`. Establish `t1 : IsThetaFunO ψ S T (pureTensorO ψ θ S T sS sT BS BT (om (b, b') g) P)` using `(hfin _ hbg).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `t2 : IsThetaFunO ψ S T (comb ψ S T o (pureTensorO ψ θ S T sS sT BS BT (om (b, b') g) P))` using `theta_comb hψ ho t1`. Rewrite using `[e1, map_mul, Module.End.mul_apply, Module.End.mul_apply, comb_pureTensorO hψ hθ sS sT BS BT hd hg, (hfin _ (theta_comb hψ hd hg)).2, h, GlobalTheory.FiniteFock.pureTensorO_smul, map_smul, (hfin g hg).2, ← comb_pureTensorO hψ hθ sS sT BS BT he (theta_comb hψ ho hbg), ← comb_pureT …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem fock {χS χT : (AE D)ˣ →* Circle} {om : Om S T} (hθ : IsInfFam θ) (hW : IsWeilDatumO ψ S T χS χT om) (sS sT BS BT)
     {d o e : WO S T →₀ ℂ} {g : WO S T → ℂ} {s : ℂ} (hd : IsFinComb d) (ho : IsFinComb o) (he : IsFinComb e)
@@ -100,14 +100,14 @@ theorem fock {χS χT : (AE D)ˣ →* Circle} {om : Om S T} (hθ : IsInfFam θ) 
     GlobalTheory.FrComb.om_comb hW ha ha' he t2, GlobalTheory.FrComb.om_comb hW ha ha' ho t1]
 
 /- English proof (translation)
-Use `GlobalTheory.FiniteFock.pureTensorO_smul ψ θ S T sS sT BS BT 0 0 P` as an intermediate fact. Rewrite `this` using `[zero_smul, zero_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem pureTensorO_zero (sS sT BS BT) (P) : pureTensorO ψ θ S T sS sT BS BT (0 : WO S T → ℂ) P = 0 := by
   have := GlobalTheory.FiniteFock.pureTensorO_smul ψ θ S T sS sT BS BT 0 0 P
   rwa [zero_smul, zero_smul] at this
 
 /- English proof (translation)
-Establish `hle : latO S T (LS : Set _) (LT : Set _) P ≤ latO S T (LS : Set _) (LT : Set _) fun _ => True` using `AddSubgroup.closure_mono fun w ⟨α, hα, _, hw⟩ => ⟨α, hα, fun _ h => absurd trivial h, hw⟩`. Conclude with `⟨h.1, fun u hu => h.2.1 u (hle hu), fun e he u hu hh => h.2.2 e he u (hle hu) hh⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem vac_mono {LS : GlobalTheory.FinPl.Lat S} {LT : GlobalTheory.FinPl.Lat T} (P : GlobalTheory.FinPl.Pl D → Prop) {f : WO S T → ℂ}
     (h : GlobalTheory.FinPl.Vac ψ S T LS LT (fun _ => True) f) : GlobalTheory.FinPl.Vac ψ S T LS LT P f := by
@@ -122,15 +122,15 @@ end GlobalTheory.GVecAt
 namespace GlobalTheory.GVecAt
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.descent_data_chain_step`.
+A detailed English derivation is pending.
 -/
 theorem datum_mid : ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi : Formalism.MainNotions.G.Inst D L) (Gl : Formalism.MainNotions.G.LatInst D) (Kc : Formalism.MainNotions.G.Consts) (Yd : DivX D) (cX : ExtraC) (ex : Extra D L hT Gi Gl Kc Yd cX) (W : RealPack ex) (u : D.what₂.Word) (f : FamCh W u), PkHyp W → f.RowOK → ∀ v : VCom f.c, v.Is → VTie f v → ∀ (n : ℕ) (G : Fin n → GLoc v) (pl : Fin n ≃ (pk W).Pg), GPin G → GRead f G pl → ∀ j, j + 1 < D.R.m → ∀ d₀, IsDG W j ((pk W).MY (j + 1)) ((pk W).ΛY (j + 1)) ((pk W).βY (j + 1)) ((pk W).vac j) d₀ → ∃ (M : GlobalTheory.FinPl.Lat (Yc D j)) (M' : GlobalTheory.FinPl.Lat (Yc D (j + 1))) (o' : WO (Yc D j) (Yc D (j + 1)) →₀ ℂ), IsSelfDualC (Yc D j) M ∧ IsSelfDualC (Yc D (j + 1)) M' ∧ GlobalTheory.FinPl.CombAt (· ∈ v.gP) o' ∧ GlobalTheory.FinPl.Vac f.c.ψ _ _ M M' (· ∈ v.gP) ((pk W).ωY W.P.A3.A.μ0 j (f.g.b j, f.g.b (j + 1)) ((pk W).vac j)) ∧ GlobalTheory.FinPl.Vac f.c.ψ _ _ (v.N j) (v.N (j + 1)) (· ∈ v.gP) (comb f.c.ψ _ _ o' ((pk W).ωY W.P.A3.A.μ0 j (f.g.b j, f.g.b (j + 1)) ((pk W).vac j))) ∧ (((pk W).ωY W.P.A3.A.μ0 j (f.g.b j, f.g.b (j + 1)) ((pk W).vac j)) ≠ 0 → comb f.c.ψ _ _ o' ((pk W).ωY W.P.A3.A.μ0 j (f.g.b j, f.g.b (j + 1)) ((pk W).vac j)) ≠ 0) ∧ ∃ κ : ℂ, κ ≠ 0 ∧ ∀ d, IsDG W j ((pk W).MY (j + 1)) ((pk W).ΛY (j + 1)) ((pk W).βY (j + 1)) ((pk W).vac j) d → (pk W).ωY W.P.A3.A.μ0 j (f.g.b j, f.g.b (j + 1)) (comb f.c.ψ _ _ d ((pk W).vac j)) = κ • comb f.c.ψ _ _ (v.eG j) (comb f.c.ψ _ _ o' ((pk W).ωY W.P.A3.A.μ0 j (f.g.b j, f.g.b (j + 1)) ((pk W).vac j))) := GlobalTheory.T.descent_data_chain_step
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.descent_data_top_step`.
+A detailed English derivation is pending.
 -/
 theorem datum_top : ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi : Formalism.MainNotions.G.Inst D L) (Gl : Formalism.MainNotions.G.LatInst D) (Kc : Formalism.MainNotions.G.Consts) (Yd : DivX D) (cX : ExtraC) (ex : Extra D L hT Gi Gl Kc Yd cX) (W : RealPack ex) (u : D.what₂.Word) (f : FamCh W u), PkHyp W → f.RowOK → ∀ v : VCom f.c, v.Is → VTie f v → ∀ (n : ℕ) (G : Fin n → GLoc v) (pl : Fin n ≃ (pk W).Pg), GPin G → GRead f G pl → ∀ j (h : j + 2 * 0 + 2 = D.R.m), ∀ d₀, IsDG W (j + 1) (pk W).MX (pk W).ΛX (pk W).βX (vacT (pk W) j h) d₀ → ∃ (M : GlobalTheory.FinPl.Lat (Yc D (j + 1))) (M' : GlobalTheory.FinPl.Lat D.sp.X') (o' : WO (Yc D (j + 1)) D.sp.X' →₀ ℂ), IsSelfDualC (Yc D (j + 1)) M ∧ IsSelfDualC D.sp.X' M' ∧ GlobalTheory.FinPl.CombAt (· ∈ v.gP) o' ∧ GlobalTheory.FinPl.Vac f.c.ψ _ _ M M' (· ∈ v.gP) (omT (pk W) W.P.A3.A.μ0 j h (f.g.b (j + 1), f.g.bT) (vacT (pk W) j h)) ∧ GlobalTheory.FinPl.Vac f.c.ψ _ _ (v.N (j + 1)) v.NT (· ∈ v.gP) (comb f.c.ψ _ _ o' (omT (pk W) W.P.A3.A.μ0 j h (f.g.b (j + 1), f.g.bT) (vacT (pk W) j h))) ∧ ((omT (pk W) W.P.A3.A.μ0 j h (f.g.b (j + 1), f.g.bT) (vacT (pk W) j h)) ≠ 0 → comb f.c.ψ _ _ o' (omT (pk W) W.P.A3.A.μ0 j h (f.g.b (j + 1), f.g.bT) (vacT (pk W) j h)) ≠ 0) ∧ ∃ κ : ℂ, κ ≠ 0 ∧ ∀ d, IsDG W (j + 1) (pk W).MX (pk W).ΛX (pk W).βX (vacT (pk W) j h) d → omT (pk W) W.P.A3.A.μ0 j h (f.g.b (j + 1), f.g.bT) (comb f.c.ψ _ _ d (vacT (pk W) j h)) = κ • comb f.c.ψ _ _ (v.eGT j h) (comb f.c.ψ _ _ o' (omT (pk W) W.P.A3.A.μ0 j h (f.g.b (j + 1), f.g.bT) (vacT (pk W) j h))) := GlobalTheory.T.descent_data_top_step
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.latticeVacuumCombinations_differ_by_scalar`.
+A detailed English derivation is pending.
 -/
 theorem scalar : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (M N : GlobalTheory.FinPl.Lat S) (M' N' : GlobalTheory.FinPl.Lat T) (Q : Finset (GlobalTheory.FinPl.Pl D)) (o o' : WO S T →₀ ℂ) (g₀ : WO S T → ℂ), IsStdChar D ψ (-1) → IsSelfDualC S M → IsSelfDualC T M' → IsSelfDualC S N → IsSelfDualC T N' → GlobalTheory.FinPl.CombAt (· ∈ Q) o → GlobalTheory.FinPl.CombAt (· ∈ Q) o' → GlobalTheory.FinPl.Vac ψ S T M M' (· ∈ Q) g₀ → GlobalTheory.FinPl.Vac ψ S T N N' (· ∈ Q) (comb ψ S T o g₀) → GlobalTheory.FinPl.Vac ψ S T N N' (· ∈ Q) (comb ψ S T o' g₀) → comb ψ S T o' g₀ ≠ 0 → ∃ c : ℂ, comb ψ S T o g₀ = c • comb ψ S T o' g₀ := GlobalTheory.T.latticeVacuumCombinations_differ_by_scalar
 
@@ -140,9 +140,9 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
   {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex)
 
 /- English proof (translation)
-Establish `hω` using `W.Q.charW.base.chain.ωX W.P.A3.A.μ0`. Establish `key : ∀ n (e : D.R.m - 1 = n), IsWeilDatumO (pk W).ψ (Yc D n) D.sp.X' (Lift.chrStep ((pk W).toLevCh.mu W.P.A3.A.μ0) (pk W).eta D.R.m).1 (Lift.chrStep ((pk W).toLevCh.mu W.P.A3.A.μ0) (pk W).eta D.R.m).2 (Eq.rec (motive` using `fun n _ => Om (Yc D n) D.sp.X') ((pk W).ωX W.P.A3.A.μ0) e) := by`. Introduce `n e`. Substitute `e` using the available equality. Conclude with `hω`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Supply the required witnesses or components.
 
-Conclude with `⟨_, _, key _ (GlobalTheory.Fam.idx_top h)⟩`.
+A detailed English derivation is pending.
 -/
 theorem weil_top (j : ℕ) (h : j + 2 * 0 + 2 = D.R.m) : ∃ χS χT, IsWeilDatumO (pk W).ψ (Yc D (j + 1)) D.sp.X' χS χT
     (omT (pk W) W.P.A3.A.μ0 j h) := by
@@ -159,41 +159,37 @@ theorem weil_top (j : ℕ) (h : j + 2 * 0 + 2 = D.R.m) : ∃ χS χT, IsWeilDatu
 end Fam
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Yd cX ex W u f hPk hRow v hv hVT n G pl hGP hGR`. Establish `fin : ∀ {S T : HSp D} (P : GlobalTheory.FinPl.Pl D → Prop) (e : WO S T →₀ ℂ), IsStdChar D (pk W).ψ (-1) → GlobalTheory.FinPl.CombAt P e → IsFinComb e` using `fun P e hψ he => ((GlobalTheory.DisjComb.main D (pk W).ψ hψ _ _ P (fun _ => False) (fun _ _ h => h)).2.1 e he).1`. Establish `mid : ∀ j, j + 1 < D.R.m → ∃ c : ℂ, c ≠ 0 ∧ ∀ d, IsDG W j ((pk W).MY (j + 1)) ((pk W).ΛY (j + 1)) ((pk W).βY (j + 1)) ((pk W).vac j) d → ∀ P, ∀ a ∈ GinfC _, ∀ a' ∈ GinfC _, (pk W).ωY W.P.A3.A.μ0 j (a * f.g.b j, a' * f.g.b (j + 1)) (comb f.c.ψ _ _ d (pureTensorO f.c.ψ f.c.θ (Yc D …`. Introduce `j hj`. Distinguish the cases in `hex : ∃ d₀, IsDG W j ((pk W).MY (j + 1)) ((pk W).ΛY (j + 1)) ((pk W).βY (j + 1)) ((pk W).vac j) d₀`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Use `swap`. Conclude with `⟨1, one_ne_zero, fun d hd => absurd ⟨d, hd⟩ hex⟩`. Take `⟨d₀, hd₀⟩` from `hex`. Take `⟨M, M', o', hM, hM', ho', hg0, ho'v, ho'nz, κ, hκ, hdat⟩` from `datum_mid D L hT Gi Gl Kc Yd cX ex W u f hPk hRow v hv hVT n G pl hGP hGR j hj d₀ hd₀`. Take `⟨o, ho, hΨ⟩` from `hVT.Ψ j hj`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hstd : IsStdChar D (pk W).ψ (-1)` using `hd₀.2.1.1`. Establish `hinf : IsInfFam (pk W).θ` using `hd₀.2.1.2.inf`. Establish `hvth : IsThetaFunO (pk W).ψ _ _ ((pk W).vac j)` using `hd₀.2.1.2.theta`. Establish `hWe` using `W.Q.charW.base.chain.ωY W.P.A3.A.μ0 j hj`. Establish `hb : f.g.b j ∈ GfC _` using `hVT.b j ▸ hv.b j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb' : f.g.b (j + 1) ∈ GfC _` using `hVT.b (j + 1) ▸ hv.b (j + 1)`. Establish `hΨ1 : v.Ψ j 1 1 1 = comb f.c.ψ _ _ o ((pk W).ωY W.P.A3.A.μ0 j (f.g.b j, f.g.b (j + 1)) ((pk W).vac j))`. Rewrite using `[hΨ, GlobalTheory.FiniteFock.pureTensorO_one, one_mul, one_mul]`. Establish `hov` using `vac_mono (· ∈ v.gP) (hΨ1 ▸ hv.Ψ j hj 1 1 (one_mem _) 1 (one_mem _))`. Establish `honz : comb f.c.ψ _ _ o ((pk W).ωY W.P.A3.A.μ0 j (f.g.b j, f.g.b (j + 1)) ((pk W).vac j)) ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Take `⟨P, hP⟩` from `hVT.nz.1 j hj`. Apply `hP` to reduce the goal to its premises. Rewrite using `[hΨ, one_mul, one_mul]`. Establish `hfin` using `GlobalTheory.OrientedHeis.om_pureTensorO D (pk W).ψ (pk W).θ _ _ _ _ _ hWe hinf (cart ((pk W).MY j)) (cart ((pk W).MY j)) (onb ((pk W).MY j)) (onb ((pk W).MY j)) (cart ((pk W).MY (j + 1))) (cart ((pk W).MY (j + 1))) (onb ((pk W).MY (j + 1))) (onb ((pk W).MY (j + 1))) (f.g.b j) (f …`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hfin.2, comb_pureTensorO hstd hinf _ _ _ _ (fin _ o hstd ho) (hWe.om_pres _ _ hvth), h0, pureTensorO_zero]`. Establish `hg0nz : (pk W).ωY W.P.A3.A.μ0 j (f.g.b j, f.g.b (j + 1)) ((pk W).vac j) ≠ 0` using `fun h0 => honz (by rw [h0]; exact comb_zero _)`. Take `⟨c, hc⟩` from `scalar D f.c.ψ _ _ M (v.N j) M' (v.N (j + 1)) v.gP o o' _ hstd hM hM' (hv.sd j (by omega)) (hv.sd (j + 1) hj) ho ho' hg0 hov ho'v (ho'nz hg0nz)`. Establish `hc0 : c ≠ 0` using `fun h0 => honz (by rw [hc, h0, zero_smul])`. Use `⟨κ / c, div_ne_zero hκ hc0, fun d hd P a ha a' ha' => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hbase : (pk W).ωY W.P.A3.A.μ0 j (f.g.b j, f.g.b (j + 1)) (comb f.c.ψ _ _ d ((pk W).vac j)) = (κ / c) • comb f.c.ψ _ _ (v.eG j) (comb f.c.ψ _ _ o ((pk W).ωY W.P.A3.A.μ0 j (f.g.b j, f.g.b (j + 1)) ((pk W).vac j)))`. Rewrite using `[hdat d hd, hc, comb_smul, smul_smul, div_mul_cancel₀ _ hc0]`. Rewrite using `[hΨ P a a']`. Conclude with `fock hinf hWe _ _ _ _ (fin _ d hstd hd.1) (fin _ o hstd ho) (fin _ _ hstd (hv.atG j).1) hvth hb hb' hbase P ha ha'`. Establish `top : ∀ j (h : j + 2 * 0 + 2 = D.R.m), ∃ c : ℂ, c ≠ 0 ∧ ∀ d, IsDG W (j + 1) (pk W).MX (pk W).ΛX (pk W).βX (vacT (pk W) j h) d → ∀ P, omT (pk W) W.P.A3.A.μ0 j h (f.g.b (j + 1), f.g.bT) (comb f.c.ψ _ _ d (pureTensorO f.c.ψ f.c.θ (Yc D (j + 1)) D.sp.X' (cart ((pk W).MY (j + 1))) (ca …`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `j h`. Distinguish the cases in `hex : ∃ d₀, IsDG W (j + 1) (pk W).MX (pk W).ΛX (pk W).βX (vacT (pk W) j h) d₀`. Use `swap`. Conclude with `⟨1, one_ne_zero, fun d hd => absurd ⟨d, hd⟩ hex⟩`. Take `⟨d₀, hd₀⟩` from `hex`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨M, M', o', hM, hM', ho', hg0, ho'v, ho'nz, κ, hκ, hdat⟩` from `datum_top D L hT Gi Gl Kc Yd cX ex W u f hPk hRow v hv hVT n G pl hGP hGR j h d₀ hd₀`. Take `⟨o, ho, hΨ⟩` from `hVT.ΨT j h`. Establish `hstd : IsStdChar D (pk W).ψ (-1)` using `hd₀.2.1.1`. Establish `hinf : IsInfFam (pk W).θ` using `hd₀.2.1.2.inf`. Establish `hvth : IsThetaFunO (pk W).ψ _ _ (vacT (pk W) j h)` using `hd₀.2.1.2.theta`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨χS, χT, hWe⟩` from `weil_top W j h`. Establish `hb : f.g.b (j + 1) ∈ GfC _` using `hVT.b (j + 1) ▸ hv.b (j + 1)`. Establish `hb' : f.g.bT ∈ GfC _` using `hVT.bT.1 ▸ hv.bT`. Establish `hΨ1 : v.ΨT j h 1 = comb f.c.ψ _ _ o (omT (pk W) W.P.A3.A.μ0 j h (f.g.b (j + 1), f.g.bT) (vacT (pk W) j h))`. Rewrite using `[hΨ, GlobalTheory.FiniteFock.pureTensorO_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hov` using `vac_mono (· ∈ v.gP) (hΨ1 ▸ hv.ΨT j h 1)`. Establish `honz : comb f.c.ψ _ _ o (omT (pk W) W.P.A3.A.μ0 j h (f.g.b (j + 1), f.g.bT) (vacT (pk W) j h)) ≠ 0`. Introduce `h0`. Take `⟨P, hP⟩` from `hVT.nz.2 j h`. Apply `hP` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hΨ]`. Establish `hfin` using `GlobalTheory.OrientedHeis.om_pureTensorO D (pk W).ψ (pk W).θ _ _ _ _ _ hWe hinf (cart ((pk W).MY (j + 1))) (cart ((pk W).MY (j + 1))) (onb ((pk W).MY (j + 1))) (onb ((pk W).MY (j + 1))) (cart (pk W).MX) (cart (pk W).MX) (onb (pk W).MX) (onb (pk W).MX) (f.g.b (j + 1)) f.g.bT (fun …`. Rewrite using `[hfin.2, comb_pureTensorO hstd hinf _ _ _ _ (fin _ o hstd ho) (hWe.om_pres _ _ hvth), h0, pureTensorO_zero]`. Establish `hg0nz : omT (pk W) W.P.A3.A.μ0 j h (f.g.b (j + 1), f.g.bT) (vacT (pk W) j h) ≠ 0` using `fun h0 => honz (by rw [h0]; exact comb_zero _)`. Take `⟨c, hc⟩` from `scalar D f.c.ψ _ _ M (v.N (j + 1)) M' v.NT v.gP o o' _ hstd hM hM' (hv.sd (j + 1) (by omega)) hv.sdT ho ho' hg0 hov ho'v (ho'nz hg0nz)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hc0 : c ≠ 0` using `fun h0 => honz (by rw [hc, h0, zero_smul])`. Use `⟨κ / c, div_ne_zero hκ hc0, fun d hd P => ?_⟩` and prove the remaining obligations. Establish `hbase : omT (pk W) W.P.A3.A.μ0 j h (f.g.b (j + 1), f.g.bT) (comb f.c.ψ _ _ d (vacT (pk W) j h)) = (κ / c) • comb f.c.ψ _ _ (v.eGT j h) (comb f.c.ψ _ _ o (omT (pk W) W.P.A3.A.μ0 j h (f.g.b (j + 1), f.g.bT) (vacT (pk W) j h)))`. Rewrite using `[hdat d hd, hc, comb_smul, smul_smul, div_mul_cancel₀ _ hc0]`. Rewrite using `[hΨ P]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Use `fock hinf hWe (cart ((pk W).MY (j + 1))) (cart (pk W).MX) (onb ((pk W).MY (j + 1))) (onb (pk W).MX) (fin _ d hstd hd.1) (fin _ o hstd ho) (fin _ _ hstd ((hv.atG j).2.2 h)) hvth hb hb' hbase P (one_mem (GinfC _)) (one_mem (GinfC _))` as an intermediate fact. Simplify `this` using `only [one_mul]`. Use `choose cm hcm using mid`. Use `choose ct hct using top`. Set `s : ℕ → ℂ` to `fun i => if hi : i + 1 < D.R.m then cm i hi else match i with`.
+Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately.
 
-Consider the case `0 => 1`. Consider the case `k + 1 => if hk : k + 2 * 0 + 2 = D.R.m then ct k hk else 1`. Use `⟨s, fun i => ?_, fun j hj d hd P a ha a' ha' => ?_, fun j h d hd P => ?_⟩` and prove the remaining obligations. Use `show (if hi : i + 1 < D.R.m then cm i hi else (match i with`. Consider the case `0 => 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Consider the case `k + 1 => if hk : k + 2 * 0 + 2 = D.R.m then ct k hk else 1)) ≠ 0`. Use `split_ifs with hi`. Conclude with `(hcm i hi).1`. Use `split`. Conclude with `one_ne_zero`.
-
-Use `split_ifs with hk`. Conclude with `(hct _ hk).1`. Conclude with `one_ne_zero`. Establish `hs : s j = cm j hj` using `dif_pos hj`. Rewrite using `[hs]`.
-
-Conclude with `(hcm j hj).2 d hd P a ha a' ha'`. Establish `hs : s (j + 1) = ct j h` using `by show (if hi : j + 1 + 1 < D.R.m then cm (j + 1) hi else if hk : j + 2 * 0 + 2 = D.R.m then ct j hk else 1) = ct j h`. Rewrite using `[dif_neg (by omega), dif_pos h]`. Rewrite using `[hs]`. Conclude with `(hct j h).2 d hd P`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi : Formalism.MainNotions.G.Inst D L) (Gl : Formalism.MainNotions.G.LatInst D) (Kc : Formalism.MainNotions.G.Consts) (Yd : DivX D) (cX : ExtraC) (ex : Extra D L hT Gi Gl Kc Yd cX) (W : RealPack ex) (u : D.what₂.Word) (f : FamCh W u), PkHyp W → f.RowOK → ∀ v : VCom f.c, v.Is → VTie f v → ∀ (n : ℕ) (G : Fin n → GLoc v) (pl : Fin n ≃ (pk W).Pg), GPin G → GRead f G pl → ∃ s : ℕ → ℂ, (∀ j, s j ≠ 0) ∧ GVec f v s := by
   intro D L hT Gi Gl Kc Yd cX ex W u f hPk hRow v hv hVT n G pl hGP hGR

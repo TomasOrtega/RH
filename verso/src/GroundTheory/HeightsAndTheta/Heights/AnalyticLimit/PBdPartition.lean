@@ -14,13 +14,13 @@ open scoped ContDiff
 noncomputable section
 
 /- English proof (translation)
-Introduce `X _ _ _ D A R`. Use `set e : Fin R.n → OpenPartialHomeomorph X (Fin D → ℂ) := fun j => (R.ψ j).restrOpen (bdDom R j) (isOpen_bdDom R j) with he`. Establish `hsrc : ∀ j, (e j).source = bdDom R j`. Introduce `j`. Simplify using `only [he, OpenPartialHomeomorph.restrOpen_source]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `Set.inter_eq_right.2 Set.inter_subset_left`. Establish `hc : ∀ j, IsCompatChart A (e j)` using `fun j => ReciprocityTheory.AnForm.M.pa_compat_restr A (R.ψ j) (R.compat j) _ (isOpen_bdDom R j)`. Establish `hcov : ∀ x, ∃ j, x ∈ (e j).source` using `fun x => ⟨bdIdx R x, by rw [hsrc]; exact mem_bdDom_bdIdx R x⟩`. Establish `htr : ∀ i j, ContDiffOn ℝ ∞ (e j ∘ (e i).symm) ((e i).target ∩ (e i).symm ⁻¹' (e j).source)` using `fun i j => ReciprocityTheory.AnForm.M.pa_holoSmooth _ _ fun v hv => ReciprocityTheory.AnForm.M.SimpleNormalCrossingSliceCharts.compat_trans A (hc i) (hc j) hv.1 hv.2`. Take `⟨χ, h0, h1, hs, hsm⟩` from `ReciprocityTheory.AnForm.exists_chart_partition e hcov htr`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨B, hAB, -, hB⟩` from `ReciprocityTheory.AnForm.M.atlasOfCompat A e hc hcov`. Establish `hBs : ∀ i, B.Smooth (χ i)`. Introduce `i j`. Take `⟨l, hl⟩` from `hB j`. Rewrite using `[hl]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hsm i l).mono Set.inter_subset_left`. Use `⟨χ, fun i => ReciprocityTheory.AnForm.M.smoothOn_of_compatible hAB.symm' isOpen_univ (hBs i), h0, h1, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[← hsrc]`. Conclude with `hs i`.
+A detailed English derivation is pending.
 -/
 theorem BdPartition.proof : BdPartition.Statement := by
   intro X _ _ _ D A R

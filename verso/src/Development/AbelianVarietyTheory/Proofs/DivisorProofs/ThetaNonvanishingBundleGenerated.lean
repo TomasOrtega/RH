@@ -27,14 +27,14 @@ def pt (z : Fin g → ℂ) : CxPts A.hom (RingHom.id ℂ) :=
   ⟨(u.ex z).left, (Over.w (u.ex z)).trans (Spec.map_id _).symm⟩
 
 /- English proof (translation)
-Introduce `y` and use `by obtain ⟨z, hz⟩ := u.ex_onto (Over.homMk y.1 (y.2.trans (Spec.map_id _))) exact ⟨z, Subtype.ext (congrArg (·.left) hz)⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem pt_surjective : Function.Surjective (pt u) := fun y => by
   obtain ⟨z, hz⟩ := u.ex_onto (Over.homMk y.1 (y.2.trans (Spec.map_id _)))
   exact ⟨z, Subtype.ext (congrArg (·.left) hz)⟩
 
 /- English proof (translation)
-Establish `h' : u.ex z = u.ex w` using `Over.OverMorphism.ext (congrArg Subtype.val h)`. Establish `e` using `u.ex_add (z - w) w`. Rewrite `e` using `[sub_add_cancel, h']`. Conclude with `(u.ker _).1 (mul_eq_right.1 e.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sub_mem_of_pt_eq {z w : Fin g → ℂ} (h : pt u z = pt u w) : z - w ∈ u.Λ := by
   have h' : u.ex z = u.ex w := Over.OverMorphism.ext (congrArg Subtype.val h)
@@ -43,26 +43,26 @@ theorem sub_mem_of_pt_eq {z w : Fin g → ℂ} (h : pt u z = pt u w) : z - w ∈
   exact (u.ker _).1 (mul_eq_right.1 e.symm)
 
 /- English proof (translation)
-The claim follows from `(u.hol U 0).1`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_pre (U : A.left.Opens) : IsOpen (pt u ⁻¹' ptsIn _ _ U) := (u.hol U 0).1
 
 /- English proof (translation)
-The claim follows from `(u.hol U f).2`.
+A detailed English derivation is pending.
 -/
 theorem differentiableOn_ev (U : A.left.Opens) (f : Γ(A.left, U)) :
     DifferentiableOn ℂ (ev _ _ U f ∘ pt u) (pt u ⁻¹' ptsIn _ _ U) := (u.hol U f).2
 
 /- English proof (translation)
-The claim follows from `CxPts.continuous_iff.2 fun U => ⟨isOpen_pre u U, fun f => (differentiableOn_ev u U f).continuousOn⟩`.
+A detailed English derivation is pending.
 -/
 theorem continuous_pt : Continuous (pt u) :=
   CxPts.continuous_iff.2 fun U => ⟨isOpen_pre u U, fun f => (differentiableOn_ev u U f).continuousOn⟩
 
 /- English proof (translation)
-Use `TorusTransfer.eq_zero_of_fderiv_eq_zero u w fun U f h => ?_` and prove the remaining obligations. Set `T : A ⟶ A` to `(toUnit A ≫ u.ex (-z₀)) * 𝟙 A`. Establish `hT : ∀ z, (u.ex z).left ≫ T.left = (u.ex (-z₀ + z)).left` using `fun z => by`. Rewrite using `[← Over.comp_left, u.ex_add]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[MonObj.comp_mul, Category.comp_id, ← Category.assoc, toUnit_unique (u.ex z ≫ toUnit A) (𝟙 _), Category.id_comp]`. Establish `h1` using `hw (T.left ⁻¹ᵁ U) ((T.left.app U).hom f) (by rw [← top_le_preimage_comp, hT, neg_add_cancel]; exact h)`. Simplify using `only [valAt'_comp, hT] at h1`. Rewrite `h1` using `[fderiv_comp_add_left (f := fun z => valAt' (u.ex z).left U f), neg_add_cancel]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_fderiv_eq_zero (z₀ w : Fin g → ℂ)
     (hw : ∀ (U : A.left.Opens) (f : Γ(A.left, U)), ⊤ ≤ (u.ex z₀).left ⁻¹ᵁ U →
@@ -83,19 +83,19 @@ theorem eq_zero_of_fderiv_eq_zero (z₀ w : Fin g → ℂ)
 variable {D : ℕ} (c : AlgChart A.hom (RingHom.id ℂ) D)
 
 /- English proof (translation)
-The claim follows from `c.e.open_source.preimage (continuous_pt u)`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_pre_source : IsOpen (pt u ⁻¹' c.e.source) := c.e.open_source.preimage (continuous_pt u)
 
 /- English proof (translation)
-The claim follows from `SCV.analyticOnNhd_of_differentiableOn (isOpen_pre_source u c) (differentiableOn_euclidean.2 fun a => ((differentiableOn_ev u _ (c.x a)).mono fun _ hz => c.source_subset hz).congr fun _ hz => c.apply_eq _ hz a)`.
+A detailed English derivation is pending.
 -/
 theorem analyticOnNhd_chart : AnalyticOnNhd ℂ (c.e ∘ pt u) (pt u ⁻¹' c.e.source) :=
   SCV.analyticOnNhd_of_differentiableOn (isOpen_pre_source u c) (differentiableOn_euclidean.2 fun a =>
     ((differentiableOn_ev u _ (c.x a)).mono fun _ hz => c.source_subset hz).congr fun _ hz => c.apply_eq _ hz a)
 
 /- English proof (translation)
-Use `(injective_iff_map_eq_zero _).2 fun w hw => eq_zero_of_fderiv_eq_zero u z₀ w fun U f hU => ?_` and prove the remaining obligations. Establish `e : ev _ _ U f ∘ pt u =ᶠ[𝓝 z₀] (ev _ _ U f ∘ c.e.symm) ∘ (c.e ∘ pt u)` using `eventually_of_mem ((isOpen_pre_source u c).mem_nhds hz) fun z hz => (congrArg (ev _ _ U f) (c.e.left_inv hz)).symm`. Express the relevant statement in the definitionally equal form `fderiv ℂ (ev _ _ U f ∘ pt u) z₀ w = 0`. Rewrite using `[e.fderiv_eq, fderiv_comp (f := c.e ∘ pt u) z₀ (c.differentiableAt_ev f hz hU) (analyticOnNhd_chart u c z₀ hz).differentiableAt, ContinuousLinearMap.comp_apply, hw, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem injective_fderiv {z₀ : Fin g → ℂ} (hz : pt u z₀ ∈ c.e.source) :
     Function.Injective (fderiv ℂ (c.e ∘ pt u) z₀) := by
@@ -108,7 +108,7 @@ theorem injective_fderiv {z₀ : Fin g → ℂ} (hz : pt u z₀ ∈ c.e.source) 
     (analyticOnNhd_chart u c z₀ hz).differentiableAt, ContinuousLinearMap.comp_apply, hw, map_zero]
 
 /- English proof (translation)
-Establish `h1 : dimH ((c.e ∘ pt u) '' (pt u ⁻¹' c.e.source)) ≤ dimH (pt u ⁻¹' c.e.source)` using `dimH_image_le_of_locally_lipschitzOn fun z hz => by`. Take `⟨K, t, ht, h⟩` from `(analyticOnNhd_chart u c z hz).contDiffAt.exists_lipschitzOnWith`. Conclude with `⟨K, t, mem_nhdsWithin_of_mem_nhds ht, h⟩`. Rewrite `h1` using `[Set.image_comp, Set.image_preimage_eq _ (pt_surjective u), c.e.image_source_eq_target, Real.dimH_of_mem_nhds (c.e.open_target.mem_nhds (c.e.map_source hz)), Real.dimH_of_mem_nhds ((isOpen_pre_source u c).mem_nhds hz), Nat.cast_le, finrank_real_of_complex, finrank_real_of_complex …`. Simplify using `using h1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem dim_le {z₀ : Fin g → ℂ} (hz : pt u z₀ ∈ c.e.source) : D ≤ g := by
   have h1 : dimH ((c.e ∘ pt u) '' (pt u ⁻¹' c.e.source)) ≤ dimH (pt u ⁻¹' c.e.source) :=
@@ -122,15 +122,13 @@ theorem dim_le {z₀ : Fin g → ℂ} (hz : pt u z₀ ∈ c.e.source) : D ≤ g 
   simpa using h1
 
 /- English proof (translation)
-Introduce `i v hv`. Use `set c := R.chart i`. Take `⟨z₀, hz₀⟩` from `pt_surjective u (c.e.symm v)`. Establish `hz : pt u z₀ ∈ c.e.source` using `hz₀ ▸ c.e.map_target hv.1`. Establish `hv₀ : (c.e ∘ pt u) z₀ = v` using `by rw [Function.comp_apply, hz₀, c.e.right_inv hv.1]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinj` using `injective_fderiv u c hz`. Establish `hle` using `LinearMap.finrank_le_finrank_of_injective (f := (fderiv ℂ (c.e ∘ pt u) z₀ : (Fin g → ℂ) →ₗ[ℂ] V D)) hinj`. Establish `hrk : Module.finrank ℂ (Fin g → ℂ) = Module.finrank ℂ (V D)` using `le_antisymm hle (by simpa using dim_le u c hz)`. Set `L : (Fin g → ℂ) ≃L[ℂ] V D` to `(LinearEquiv.ofBijective (fderiv ℂ (c.e ∘ pt u) z₀ : (Fin g → ℂ) →ₗ[ℂ] V D) ⟨hinj, (LinearMap.injective_iff_surjective_of_finrank_eq_finrank hrk).1 hinj⟩).toContinuousLinearEquiv`. Establish `hs : HasStrictFDerivAt (c.e ∘ pt u) (L : (Fin g → ℂ) →L[ℂ] V D) z₀` using `(analyticOnNhd_chart u c z₀ hz).hasStrictFDerivAt`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd` using `hs.to_localInverse.hasFDerivAt.differentiableAt`. Establish `hr` using `hs.eventually_right_inverse`. Establish `hl` using `hs.localInverse_apply_image`. Establish `ht` using `hs.localInverse_tendsto`. Rewrite `hd`, `hr`, `hl`, `ht` using `[hv₀]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hFz : DifferentiableAt ℂ (F ∘ pt u) (hs.localInverse _ _ _ v)`. Rewrite using `[hl]`. Conclude with `hF.differentiableAt ((hS.preimage (continuous_pt u)).mem_nhds (show pt u z₀ ∈ S from hz₀ ▸ hv.2))`. Use `((hFz.comp v hd).congr_of_eventuallyEq ?_).differentiableWithinAt` and prove the remaining obligations. Use `filter_upwards [hr, ht ((isOpen_pre_source u c).mem_nhds hz)] with w hw hw'`.
-
-Conclude with `congrArg F ((congrArg c.e.symm hw.symm).trans (c.e.left_inv hw'))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem holoOn_of_comp (R : AnRead A.hom (RingHom.id ℂ) D) {S : Set (CxPts A.hom (RingHom.id ℂ))} (hS : IsOpen S)
     {F : CxPts A.hom (RingHom.id ℂ) → ℂ} (hF : DifferentiableOn ℂ (F ∘ pt u) (pt u ⁻¹' S)) : R.HoloOn S F := by
@@ -162,13 +160,13 @@ theorem holoOn_of_comp (R : AnRead A.hom (RingHom.id ℂ) D) {S : Set (CxPts A.h
   exact congrArg F ((congrArg c.e.symm hw.symm).trans (c.e.left_inv hw'))
 
 /- English proof (translation)
-Take `⟨D, hD⟩` from `AbelianDim.exists_relDim ℂ A hA`. Set `r` to `Function.surjInv (pt_surjective u)`. Establish `hr : ∀ y, pt u (r y) = y` using `Function.surjInv_eq (pt_surjective u)`. Set `s : M.ι → CxPts A.hom (RingHom.id ℂ) → ℂ` to `fun i y => if y ∈ ptsIn _ _ (M.U i) then θ (r y) * u.fr i (r y) else 0`. Establish `hs : ∀ i z, pt u z ∈ ptsIn _ _ (M.U i) → s i (pt u z) = θ z * u.fr i z` using `fun i z hz => by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `hper _ (sub_mem_of_pt_eq u (hr (pt u z))) i z hz` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Conclude with `(if_pos hz).trans this`. Establish `hmem : s ∈ (AnRead.all A.hom (RingHom.id ℂ) D).holSec M`. Use `⟨⟨fun i j y hi hj => ?_, fun i y h => if_neg h⟩, fun i => holoOn_of_comp u _ (isOpen_ptsIn _) ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨z, rfl⟩` from `pt_surjective u y`. Establish `hij : pt u z ∈ ptsIn _ _ (M.U i ⊓ M.U j)` using `mem_ptsIn_inf.2 ⟨hi, hj⟩`. Establish `e : u.fr i z = gv _ _ M i j (pt u z) * u.fr j z` using `u.fr_compat i j z hij`. Rewrite using `[hs i z hi, hs j z hj, e, mul_left_comm]`. Conclude with `(hθ.differentiableOn.mul (u.fr_hol i)).congr fun z hz => hs i z hz`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨σ, hσ⟩` from `(GlobalTheory.Published.serreHolomorphicSections_holds A.left A.hom D hD hp _ M hM).2 ⟨s, hmem⟩`. Conclude with `⟨σ, fun i z hz => (congrFun₂ (congrArg Subtype.val hσ) i (pt u z)).trans (hs i z hz)⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_isFn (hA : IsAbelianScheme A) (hp : IsProjOver A.hom) (hM : M.IsLB) {θ : (Fin g → ℂ) → ℂ}
     (hθ : Differentiable ℂ θ)
@@ -195,9 +193,9 @@ theorem exists_isFn (hA : IsAbelianScheme A) (hp : IsProjOver A.hom) (hM : M.IsL
   exact ⟨σ, fun i z hz => (congrFun₂ (congrArg Subtype.val hσ) i (pt u z)).trans (hs i z hz)⟩
 
 /- English proof (translation)
-Use `LocallyOfFiniteType.jacobsonSpace p` as an intermediate fact. Establish `hU : U ≤ Y.basicOpen f`. Assume the negation of the conclusion as `hn`. Take `⟨x, hx, hx'⟩` from `Set.not_subset.1 hn`. Take `⟨y, hy, hy'⟩` from `nonempty_inter_closedPoints (Z := (U : Set Y) ∩ (Y.basicOpen f : Set Y)ᶜ) ⟨x, hx, hx'⟩ (U.isOpen.isLocallyClosed.inter (Y.basicOpen f).isOpen.isClosed_compl.isLocallyClosed)`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `q : CxPts p (RingHom.id ℂ)` to `⟨pointOfClosedPoint p y hy', (pointOfClosedPoint_comp p y hy').trans (Spec.map_id _).symm⟩`. Establish `hq : q.1 (IsLocalRing.closedPoint ℂ) = y` using `pointOfClosedPoint_apply p y hy' _`. Establish `hqU : q ∈ ptsIn p _ U` using `mem_ptsIn.2 (hq ▸ hy.1)`. Conclude with `hy.2 (hq ▸ mem_ptsIn.1 ((mem_ptsIn_basicOpen hqU f).2 (h q hqU)))`. Conclude with `Y.toRingedSpace.isUnit_of_isUnit_germ U f fun x hx => (Y.mem_basicOpen f x hx).1 (hU hx)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isUnit_of_ev_ne_zero {Y : Scheme.{0}} (p : Y ⟶ Sp ℂ) [LocallyOfFiniteType p] {U : Y.Opens} (f : Γ(Y, U))
     (h : ∀ y ∈ ptsIn p (RingHom.id ℂ) U, ev p _ U f y ≠ 0) : IsUnit f := by
@@ -215,9 +213,9 @@ theorem isUnit_of_ev_ne_zero {Y : Scheme.{0}} (p : Y ⟶ Sp ℂ) [LocallyOfFinit
   exact Y.toRingedSpace.isUnit_of_isUnit_germ U f fun x hx => (Y.mem_basicOpen f x hx).1 (hU hx)
 
 /- English proof (translation)
-Introduce `A _ hA hp M hM g u θ hθ h0 hper`. Take `⟨s, hs⟩` from `exists_isFn u hA hp hM hθ hper`. Use `hA.proper` as an intermediate fact. Establish `hu : ∀ i, IsUnit (s.f i)` using `fun i => isUnit_of_ev_ne_zero A.hom _ fun y hy => by`. Take `⟨z, rfl⟩` from `pt_surjective u y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `(hs i z hy).trans_ne (mul_ne_zero (h0 z) (u.fr_ne i z hy))`. Conclude with `⟨⟨fun i => (hu i).unit⟩, fun i j => Units.ext (s.compat i j)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem hasGen_of_periodic : ∀ (A : Over (Sp ℂ)) [GrpObj A], IsAbelianScheme A → IsProjOver A.hom →
     ∀ (M : LB A.left), M.IsLB → ∀ (g : ℕ) (u : HolUnif A M g) (θ : (Fin g → ℂ) → ℂ), Differentiable ℂ θ →

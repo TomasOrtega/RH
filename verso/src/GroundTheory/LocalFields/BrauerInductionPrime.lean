@@ -30,19 +30,19 @@ def mulSubgroup (C P : Subgroup G) (hcomm : ∀ c ∈ C, ∀ y ∈ P, c * y = y 
     exact (hcomm c⁻¹ (C.inv_mem hc) y⁻¹ (P.inv_mem hy)).symm
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_mulSubgroup {C P : Subgroup G} {hcomm : ∀ c ∈ C, ∀ y ∈ P, c * y = y * c} {h : G} :
     h ∈ mulSubgroup C P hcomm ↔ ∃ c ∈ C, ∃ y ∈ P, h = c * y := Iff.rfl
 
 /- English proof (translation)
-The claim follows from `fun c hc ↦ ⟨c, hc, 1, P.one_mem, (mul_one c).symm⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem left_le_mulSubgroup {C P : Subgroup G} (hcomm : ∀ c ∈ C, ∀ y ∈ P, c * y = y * c) :
     C ≤ mulSubgroup C P hcomm := fun c hc ↦ ⟨c, hc, 1, P.one_mem, (mul_one c).symm⟩
 
 /- English proof (translation)
-The claim follows from `fun y hy ↦ ⟨1, C.one_mem, y, hy, (one_mul y).symm⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem right_le_mulSubgroup {C P : Subgroup G} (hcomm : ∀ c ∈ C, ∀ y ∈ P, c * y = y * c) :
     P ≤ mulSubgroup C P hcomm := fun y hy ↦ ⟨1, C.one_mem, y, hy, (one_mul y).symm⟩
@@ -59,7 +59,7 @@ variable {p x}
 
 omit [Fintype G] hp in
 /- English proof (translation)
-Establish `: y ∈ Subgroup.centralizer {x}` using `Subgroup.map_subtype_le _ hy`. Conclude with `Subgroup.mem_centralizer_singleton_iff.mp this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem commute_of_mem_sylowCent {y : G} (hy : y ∈ sylowCent p x) : y * x = x * y := by
   have : y ∈ Subgroup.centralizer {x} := Subgroup.map_subtype_le _ hy
@@ -68,7 +68,7 @@ theorem commute_of_mem_sylowCent {y : G} (hy : y ∈ sylowCent p x) : y * x = x 
 omit [Fintype G] hp in
 variable (p x) in
 /- English proof (translation)
-The claim follows from `(Classical.arbitrary (Sylow p (Subgroup.centralizer {x}))).isPGroup'.map _`.
+A detailed English derivation is pending.
 -/
 theorem isPGroup_sylowCent : IsPGroup p (sylowCent p x) :=
   (Classical.arbitrary (Sylow p (Subgroup.centralizer {x}))).isPGroup'.map _
@@ -76,7 +76,7 @@ theorem isPGroup_sylowCent : IsPGroup p (sylowCent p x) :=
 variable (p x) in
 
 /- English proof (translation)
-Use `set P0 := Classical.arbitrary (Sylow p (Subgroup.centralizer {x}))`. Use `⟨(P0 : Subgroup (Subgroup.centralizer {x})).index, ?_, P0.not_dvd_index⟩` and prove the remaining obligations. Rewrite using `[sylowCent, Subgroup.card_map_of_injective (Subgroup.subtype_injective _), Subgroup.card_mul_index]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_card_centralizer_eq :
     ∃ m : ℕ, Nat.card (Subgroup.centralizer {x}) = Nat.card (sylowCent p x) * m ∧ ¬ p ∣ m := by
@@ -86,7 +86,7 @@ theorem exists_card_centralizer_eq :
 
 omit [Fintype G] hp in
 /- English proof (translation)
-Introduce `c hc y hy`. Take `⟨i, rfl⟩` from `Subgroup.mem_zpowers_iff.mp hc`. Conclude with `((Commute.symm (commute_of_mem_sylowCent hy)).zpow_left i).eq`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem commute_zpowers_sylowCent :
     ∀ c ∈ Subgroup.zpowers x, ∀ y ∈ sylowCent p x, c * y = y * c := by
@@ -100,20 +100,20 @@ def elemSub : Subgroup G := mulSubgroup (Subgroup.zpowers x) (sylowCent p x) com
 
 omit [Fintype G] hp in
 /- English proof (translation)
-The claim follows from `left_le_mulSubgroup _ (Subgroup.mem_zpowers x)`.
+A detailed English derivation is pending.
 -/
 theorem mem_elemSub_self : x ∈ elemSub p x :=
   left_le_mulSubgroup _ (Subgroup.mem_zpowers x)
 
 omit [Fintype G] hp in
 /- English proof (translation)
-The claim follows from `right_le_mulSubgroup _`.
+A detailed English derivation is pending.
 -/
 theorem sylowCent_le_elemSub : sylowCent p x ≤ elemSub p x := right_le_mulSubgroup _
 
 omit [Fintype G] hp in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Subgroup.zpowers x, sylowCent p x, left_le_mulSubgroup _, right_le_mulSubgroup _, inferInstance, by rwa [Nat.card_zpowers], isPGroup_sylowCent p x, commute_zpowers_sylowCent, fun _ hh ↦ hh⟩`.
+Supply the required witnesses or components.
 -/
 theorem isElementaryAt_elemSub (hx : (orderOf x).Coprime p) : IsElementaryAt p (elemSub p x) :=
   ⟨Subgroup.zpowers x, sylowCent p x, left_le_mulSubgroup _, right_le_mulSubgroup _, inferInstance,
@@ -138,13 +138,13 @@ instance normal_sylowCentIn : (sylowCentIn p x).Normal := by
 
 omit [Fintype G] hp in
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `QuotientGroup.mk_surjective a`. Take `⟨b, rfl⟩` from `QuotientGroup.mk_surjective b`. Rewrite using `[← QuotientGroup.mk_mul, ← QuotientGroup.mk_mul, QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Take `⟨c1, hc1, y1, hy1, ha⟩` from `mem_mulSubgroup.mp a.2`. Take `⟨c2, hc2, y2, hy2, hb⟩` from `mem_mulSubgroup.mp b.2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hcc : c1 * c2 = c2 * c1`. Take `⟨i, rfl⟩` from `Subgroup.mem_zpowers_iff.mp hc1`. Take `⟨j, rfl⟩` from `Subgroup.mem_zpowers_iff.mp hc2`. Rewrite using `[← zpow_add, ← zpow_add, add_comm]`. Establish `hab : ((a * b : elemSub p x) : G) = (c1 * c2) * (y1 * y2)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Subgroup.coe_mul, ha, hb]`. Rewrite using `[show c1 * y1 * (c2 * y2) = c1 * (y1 * c2) * y2 by group, ← commute_zpowers_sylowCent c2 hc2 y1 hy1]`. Use `group`. Establish `hba : ((b * a : elemSub p x) : G) = (c1 * c2) * (y2 * y1)`. Simplify using `only [Subgroup.coe_mul, ha, hb]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[show c2 * y2 * (c1 * y1) = c2 * (y2 * c1) * y1 by group, ← commute_zpowers_sylowCent c1 hc1 y2 hy2, hcc]`. Use `group`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv] at hab hba ⊢`. Rewrite using `[hab, hba, show (c1 * c2 * (y1 * y2))⁻¹ * (c1 * c2 * (y2 * y1)) = (y1 * y2)⁻¹ * (y2 * y1) by group]`. Conclude with `(sylowCent p x).mul_mem ((sylowCent p x).inv_mem ((sylowCent p x).mul_mem hy1 hy2)) ((sylowCent p x).mul_mem hy2 hy1)`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quotient_mul_comm (a b : elemSub p x ⧸ sylowCentIn p x) : a * b = b * a := by
   obtain ⟨a, rfl⟩ := QuotientGroup.mk_surjective a
@@ -185,7 +185,7 @@ def theta (h : elemSub p x) : ℂ :=
 
 omit [Fintype G] hp in
 /- English proof (translation)
-Rewrite using `[QuotientGroup.eq, Subgroup.mem_subgroupOf, ← (sylowCent p x).inv_mem_iff]`. Simplify using `[xIn]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mk_eq_mk_xIn_iff (h : elemSub p x) :
     (h : elemSub p x ⧸ sylowCentIn p x) = (xIn p x : elemSub p x ⧸ sylowCentIn p x) ↔
@@ -196,21 +196,19 @@ theorem mk_eq_mk_xIn_iff (h : elemSub p x) :
 omit hp in
 
 /- English proof (translation)
-Use `set H := elemSub p x`. Use `set P := sylowCent p x`. Use `set Q := H ⧸ sylowCentIn p x`. Establish `hinner : ∀ z : G, ∑ h : H, (if (H.subtype h) = z then theta p x h else 0) = if x⁻¹ * z ∈ P then (Nat.card Q : ℂ) else 0`. Introduce `z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hz : z ∈ H`. Rewrite using `[Finset.sum_eq_single ⟨z, hz⟩]`. Rewrite using `[show H.subtype ⟨z, hz⟩ = z from rfl, if_pos rfl, theta]`. Establish `hiff` using `mk_eq_mk_xIn_iff (p := p) (x := x) ⟨z, hz⟩`. Distinguish the cases in `hc : x⁻¹ * z ∈ P`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_pos (hiff.mpr hc), if_pos hc]`. Rewrite using `[if_neg (fun h ↦ hc (hiff.mp h)), if_neg hc]`. Introduce `h _ hne`. Rewrite using `[if_neg]`. Introduce `h'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hne (Subtype.ext h')`. Introduce `h'`. Conclude with `absurd (Finset.mem_univ _) h'`. Rewrite using `[Finset.sum_eq_zero, if_neg]`. Introduce `hP`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply `hz` to reduce the goal to its premises. Use `H.mul_mem (mem_elemSub_self (p := p)) (sylowCent_le_elemSub hP)` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_left]`. Then use the resulting hypothesis. Introduce `h _`. Rewrite using `[if_neg]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Introduce `h'`. Conclude with `hz (h' ▸ h.2)`. Establish `hcard : (Nat.card H : ℂ) = Nat.card Q * Nat.card P`. Rewrite using `[Subgroup.card_eq_card_quotient_mul_card_subgroup (sylowCentIn p x), Nat.card_congr (Subgroup.subgroupOfEquivOfLe sylowCent_le_elemSub).toEquiv]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Establish `hQ : (Nat.card Q : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr Nat.card_pos.ne'`. Establish `hP : (Nat.card P : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr Nat.card_pos.ne'`. Rewrite using `[indFun_apply, Finset.sum_congr rfl fun t _ ↦ hinner _, hcard, ← mul_assoc, mul_inv, mul_comm (Nat.card Q : ℂ)⁻¹, ← mul_assoc, mul_inv_cancel₀ hP, one_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun t _ ↦ ?_` and prove the remaining obligations.
-
-Use `split_ifs`. Conclude with `inv_mul_cancel₀ hQ`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem card_mul_indFun_theta (g : G) :
     (Nat.card (sylowCent p x) : ℂ) * indFun (elemSub p x).subtype (theta p x) g =
@@ -260,15 +258,15 @@ theorem card_mul_indFun_theta (g : G) :
 omit [Fintype G] in
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hw`. Establish `hxw : x * (x⁻¹ * z) = (x⁻¹ * z) * x` using `(commute_of_mem_sylowCent hw).symm`. Establish `hxz : Commute x z`. Establish `h1 : Commute x (x⁻¹ * z)` using `hxw`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(Commute.refl x).mul_right h1` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_left]`. Then use the resulting hypothesis. Establish `hcomm : Commute x⁻¹ z` using `hxz.inv_left`. Take `⟨j, hj⟩` from `(IsPGroup.iff_orderOf.mp (isPGroup_sylowCent p x)) ⟨_, hw⟩`. Rewrite `hj` using `[Subgroup.orderOf_mk]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hdvd` using `hcomm.orderOf_mul_dvd_lcm`. Rewrite `hdvd` using `[orderOf_inv, hj]`. Establish `hcop : (Nat.lcm (orderOf x) (orderOf z)).Coprime p` using `Nat.Coprime.coprime_dvd_left (Nat.lcm_dvd_mul _ _) (Nat.Coprime.mul_left hx hz)`. Establish `hj0 : j = 0`. Assume the negation of the conclusion as `hj0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `: p ∣ Nat.lcm (orderOf x) (orderOf z)` using `(dvd_pow_self p hj0).trans hdvd`. Conclude with `hp.out.one_lt.ne' ((Nat.coprime_comm.mp hcop).eq_one_of_dvd this)`. Rewrite `hj` using `[hj0, pow_zero, orderOf_eq_one_iff]`. Combine the equalities or inequalities in the displayed calculation. Introduce `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, inv_mul_cancel]`. Conclude with `(sylowCent p x).one_mem`.
+A detailed English derivation is pending.
 -/
 theorem mem_sylowCent_iff (hx : (orderOf x).Coprime p) {z : G} (hz : (orderOf z).Coprime p) :
     x⁻¹ * z ∈ sylowCent p x ↔ z = x := by
@@ -310,17 +308,17 @@ omit hp in
 include hζ hmono in
 
 /- English proof (translation)
-Use `set H := elemSub p x`. Use `set Q := H ⧸ sylowCentIn p x`. Use `set xb : Q := (xIn p x : Q)`. Use `set δ : Q → ℂ := fun q ↦ if q = xb then (Nat.card Q : ℂ) else 0`. Establish `hδ : IsClassFun δ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `g h`. Simplify using `only [δ]`. Rewrite using `[quotient_mul_comm h g, mul_inv_cancel_right]`. Establish `hN : (Nat.card Q : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr Nat.card_pos.ne'`. Establish `hcoef : ∀ ψ : Q → ℂ, charInner Q δ ψ = ψ xb⁻¹`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `ψ`. Rewrite using `[charInner_apply]`. Simplify using `only [δ, ite_mul, zero_mul]`. Rewrite using `[Finset.sum_ite_eq', if_pos (Finset.mem_univ _), ← mul_assoc, inv_mul_cancel₀ hN, one_mul]`. Establish `htheta : theta p x = δ ∘ QuotientGroup.mk' (sylowCentIn p x)` using `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[htheta, eq_sum_irrChars_of_isClassFun hδ]`. Establish `hcomp : (∑ ψ ∈ irrChars Q, charInner Q δ ψ • ψ) ∘ QuotientGroup.mk' (sylowCentIn p x) = ∑ ψ ∈ irrChars Q, charInner Q δ ψ • (ψ ∘ QuotientGroup.mk' (sylowCentIn p x))`. Use function extensionality and compare the values at `h`. Simplify using `[Finset.sum_apply]`. Rewrite using `[hcomp, map_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.sum_mem _ fun ψ hψ ↦ ?_` and prove the remaining obligations. Rewrite using `[map_smul, hcoef]`. Establish `hψc` using `(mem_irrChars.mp hψ).isCharacter`. Use `smul_mem_spanA ?_ (indFun_mem_spanZ (fun K L hK hLK ↦ hK.mono hLK) hmono (isElementaryAt_elemSub hx) (hψc.comp _))` and prove the remaining obligations. Establish `: NeZero (Nat.card G)` using `⟨Nat.card_pos.ne'⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `hψc.apply_mem_adjoin _ hζ ?_` and prove the remaining obligations. Rewrite using `[orderOf_inv]`. Use `(orderOf_map_dvd (QuotientGroup.mk' (sylowCentIn p x)) (xIn p x)).trans ?_` and prove the remaining obligations. Rewrite using `[xIn, Subgroup.orderOf_mk]`. Conclude with `orderOf_dvd_natCard x`.
+A detailed English derivation is pending.
 -/
 theorem indFun_theta_mem_spanA (hx : (orderOf x).Coprime p) :
     indFun (elemSub p x).subtype (theta p x) ∈ spanA (G := G) (IsElementaryAt p) ζ := by
@@ -361,7 +359,7 @@ omit hp in
 include hζ hmono in
 
 /- English proof (translation)
-Establish `hA` using `apply_mem_adjoin_of_mem_spanA hζ (indFun_theta_mem_spanA hζ hmono hx) g`. Establish `hcount` using `card_mul_indFun_theta (p := p) (x := x) g`. Take `⟨z, hz, -⟩` from `exists_int_of_mul_eq_int (hζ.isIntegral Nat.card_pos) hA (d := Nat.card (sylowCent p x)) (k := ∑ t : G, if x⁻¹ * (t⁻¹ * g * t) ∈ sylowCent p x then 1 else 0) (Int.natCast_ne_zero.mpr Nat.card_pos.ne') (by push_cast; exact hcount)`. Conclude with `⟨z, hz⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_int_indFun_theta (hx : (orderOf x).Coprime p) (g : G) :
     ∃ k : ℤ, indFun (elemSub p x).subtype (theta p x) g = k := by
@@ -377,9 +375,9 @@ end ThetaSpan
 section Count
 
 /- English proof (translation)
-Rewrite using `[card_mul_indFun_theta]`. Use `Finset.sum_congr rfl fun t _ ↦ ?_` and prove the remaining obligations. Establish `ht : (orderOf (t⁻¹ * g * t)).Coprime p`. Establish `: t⁻¹ * g * t = (MulAut.conj t⁻¹) g` using `by simp`. Rewrite using `[this, MulEquiv.orderOf_eq]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hg`. Distinguish the cases in `h : t⁻¹ * g * t = x`. Rewrite using `[if_pos h, if_pos ((mem_sylowCent_iff hx ht).mpr h)]`. Rewrite using `[if_neg h, if_neg fun h' ↦ h ((mem_sylowCent_iff hx ht).mp h')]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_mul_indFun_theta_of_coprime (hx : (orderOf x).Coprime p) {g : G}
     (hg : (orderOf g).Coprime p) :
@@ -397,11 +395,11 @@ theorem card_mul_indFun_theta_of_coprime (hx : (orderOf x).Coprime p) {g : G}
 
 omit [Fintype G] hp in
 /- English proof (translation)
-Take `⟨u, hu⟩` from `isConj_iff.mp hc`. Rewrite using `[← hu]`. Rewrite using `[Fintype.sum_equiv (Equiv.mulLeft u⁻¹) _ (fun t ↦ if t ∈ Subgroup.centralizer {x} then (1 : ℂ) else 0) (fun t ↦ ?_)]`. Rewrite using `[Finset.sum_boole, Nat.card_eq_fintype_card, Fintype.card_subtype]`. Simplify using `only [Equiv.coe_mulLeft, Subgroup.mem_centralizer_singleton_iff]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Apply `propext` to reduce the goal to its premises. Prove the components needed by the constructor for the conclusion. Introduce `h`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation.
 
-Introduce `h`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation.
 -/
 theorem sum_conj_eq_card_centralizer [Fintype G] {g : G} (hc : IsConj x g) :
     (∑ t : G, if t⁻¹ * g * t = x then (1 : ℂ) else 0) = Nat.card (Subgroup.centralizer {x}) := by
@@ -424,7 +422,7 @@ theorem sum_conj_eq_card_centralizer [Fintype G] {g : G} (hc : IsConj x g) :
 
 omit [Fintype G] hp in
 /- English proof (translation)
-Use `Finset.sum_eq_zero fun t _ ↦ if_neg fun h ↦ hc ?_` and prove the remaining obligations. Rewrite using `[isConj_iff]`. Conclude with `⟨t, by rw [← h]; group⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem sum_conj_eq_zero [Fintype G] {g : G} (hc : ¬ IsConj x g) :
     (∑ t : G, if t⁻¹ * g * t = x then (1 : ℂ) else 0) = 0 := by
@@ -440,7 +438,7 @@ def classRep (c : ConjClasses G) : G := Classical.choose c.exists_rep
 
 omit [Fintype G] hp in
 /- English proof (translation)
-The claim follows from `Classical.choose_spec c.exists_rep`.
+A detailed English derivation is pending.
 -/
 theorem mk_classRep (c : ConjClasses G) : ConjClasses.mk (classRep c) = c :=
   Classical.choose_spec c.exists_rep
@@ -458,7 +456,7 @@ include hζ hmono
 
 omit hp in
 /- English proof (translation)
-Use `Submodule.sum_mem _ fun c _ ↦ ?_` and prove the remaining obligations. Use `split_ifs with h`. Conclude with `indFun_theta_mem_spanA hζ hmono h`. Conclude with `Submodule.zero_mem _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem brauerFun_mem_spanA : brauerFun p ∈ spanA (G := G) (IsElementaryAt p) ζ := by
   refine Submodule.sum_mem _ fun c _ ↦ ?_
@@ -468,9 +466,9 @@ theorem brauerFun_mem_spanA : brauerFun p ∈ spanA (G := G) (IsElementaryAt p) 
 
 omit hp in
 /- English proof (translation)
-Establish `h : ∀ c : ConjClasses G, ∃ k : ℤ, (if (orderOf (classRep c)).Coprime p then indFun (elemSub p (classRep c)).subtype (theta p (classRep c)) else 0) g = k`. Introduce `c`. Use `split_ifs with h`. Conclude with `exists_int_indFun_theta hζ hmono h g`. Conclude with `⟨0, by simp⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `choose k hk using h`. Use `⟨∑ c, k c, ?_⟩` and prove the remaining obligations. Rewrite using `[brauerFun, Finset.sum_apply]`. Use `push_cast`. Conclude with `Finset.sum_congr rfl fun c _ ↦ hk c`.
+Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem exists_int_brauerFun (g : G) : ∃ k : ℤ, brauerFun p g = k := by
   have h : ∀ c : ConjClasses G, ∃ k : ℤ, (if (orderOf (classRep c)).Coprime p then
@@ -488,17 +486,15 @@ theorem exists_int_brauerFun (g : G) : ∃ k : ℤ, brauerFun p g = k := by
 omit hζ hmono in
 
 /- English proof (translation)
-Use `set c0 := ConjClasses.mk y`. Use `set x := classRep c0`. Establish `hxy : IsConj x y` using `ConjClasses.mk_eq_mk_iff_isConj.mp (mk_classRep c0)`. Establish `hx : (orderOf x).Coprime p`. Take `⟨u, hu⟩` from `isConj_iff.mp hxy`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[show x = (MulAut.conj u⁻¹) y by rw [MulAut.conj_apply, ← hu]; group, MulEquiv.orderOf_eq]`. Conclude with `hy`. Take `⟨m, hm, hpm⟩` from `exists_card_centralizer_eq p x`. Use `⟨m, ?_, hpm⟩` and prove the remaining obligations. Rewrite using `[brauerFun, Finset.sum_apply, Finset.sum_eq_single c0]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[if_pos hx]`. Establish `h` using `card_mul_indFun_theta_of_coprime hx hy`. Rewrite `h` using `[sum_conj_eq_card_centralizer hxy, hm]`. Establish `hP : (Nat.card (sylowCent p x) : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr Nat.card_pos.ne'`. Move the coercions through the operations in `at h`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_left_cancel₀ hP h`. Introduce `c _ hc split_ifs with hxc`. Establish `h` using `card_mul_indFun_theta_of_coprime hxc hy`. Establish `hnc : ¬ IsConj (classRep c) y`. Introduce `hcj`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Apply `hc` to reduce the goal to its premises. Rewrite using `[← mk_classRep c]`. Conclude with `ConjClasses.mk_eq_mk_iff_isConj.mpr hcj`. Rewrite `h` using `[sum_conj_eq_zero hnc]`. Establish `hP : (Nat.card (sylowCent p (classRep c)) : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr Nat.card_pos.ne'`.
-
-Conclude with `(mul_eq_zero.mp h).resolve_left hP`. Simplify using the standard rewrite rules. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem brauerFun_of_coprime {y : G} (hy : (orderOf y).Coprime p) :
     ∃ m : ℕ, brauerFun p y = m ∧ ¬ p ∣ m := by
@@ -534,9 +530,9 @@ theorem brauerFun_of_coprime {y : G} (hy : (orderOf y).Coprime p) :
     exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Take `⟨a, b, hab, ha, hb⟩` from `exists_zpow_mul_zpow_eq hp.out s`. Take `⟨k, hk⟩` from `exists_int_brauerFun hζ hmono s`. Take `⟨m, hm, hpm⟩` from `brauerFun_of_coprime ha`. Use `⟨k, hk, fun hdiv ↦ hpm ?_⟩` and prove the remaining obligations. Establish `hcong` using `int_modEq_of_mem_spanA hζ hp.out hab hb (brauerFun_mem_spanA hζ hmono) hk (v := (m : ℤ)) (by rw [hm]; push_cast; rfl)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hcong` using `[(ZMod.intCast_zmod_eq_zero_iff_dvd k p).mpr hdiv]`. Establish `h0` using `(ZMod.intCast_zmod_eq_zero_iff_dvd (m : ℤ) p).mp hcong.symm`. Conclude with `Int.natCast_dvd_natCast.mp h0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem not_dvd_brauerFun (s : G) : ∃ k : ℤ, brauerFun p s = k ∧ ¬ (p : ℤ) ∣ k := by
   obtain ⟨a, b, hab, ha, hb⟩ := exists_zpow_mul_zpow_eq hp.out s
@@ -550,31 +546,27 @@ theorem not_dvd_brauerFun (s : G) : ∃ k : ℤ, brauerFun p s = k ∧ ¬ (p : �
   exact Int.natCast_dvd_natCast.mp h0
 
 /- English proof (translation)
-Establish `hE : ∀ K L : Subgroup G, IsElementaryAt p K → L ≤ K → IsElementaryAt p L` using `fun K L hK hLK ↦ hK.mono hLK`. Establish `hcyc : ∀ s : G, IsElementaryAt p (Subgroup.zpowers s)` using `fun s ↦ isElementaryAt_zpowers hp.out s`. Use `set n := Nat.card G`. Use `set e := n.factorization p`. Use `set q := p ^ e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set m := n / q`. Establish `hn : q * m = n` using `Nat.ordProj_mul_ordCompl_eq_self n p`. Use `set M := Nat.totient q`. Establish `hq0 : 0 < q` using `pow_pos hp.out.pos e`. Establish `hM : M ≠ 0` using `(Nat.totient_pos.mpr hq0).ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `: NeZero q` using `⟨hq0.ne'⟩`. Use `set f : G → ℂ := brauerFun p`. Establish `hfA : f ∈ spanA (G` using `G) (IsElementaryAt p) ζ := brauerFun_mem_spanA hζ hmono`. Establish `hval : ∀ s, ∃ j : ℤ, (f ^ M - 1) s = (q : ℂ) * j`. Introduce `s`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨k, hk, hpk⟩` from `not_dvd_brauerFun hζ hmono s`. Establish `hcop : Nat.Coprime k.natAbs q` using `Nat.Coprime.pow_right e ((Nat.Prime.coprime_iff_not_dvd hp.out).mpr fun h ↦ hpk (Int.natCast_dvd.mpr h)).symm`. Establish `hunit : IsUnit (k : ZMod q)`. Break down `Int.natAbs_eq k with h | h` into its components or cases. Rewrite using `[h, Int.cast_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Move the embeddings inside the algebraic operations.
 
-Conclude with `(ZMod.isUnit_iff_coprime _ _).mpr hcop`. Rewrite using `[h, Int.cast_neg, Int.cast_natCast]`. Conclude with `((ZMod.isUnit_iff_coprime _ _).mpr hcop).neg`. Establish `hpow : ((k ^ M - 1 : ℤ) : ZMod q) = 0`. Establish `h2 : (k : ZMod q) ^ M = 1`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg Units.val (ZMod.pow_totient hunit.unit)` as an intermediate fact. Rewrite `this` using `[Units.val_pow_eq_pow_val, IsUnit.unit_spec, Units.val_one]`. Then use the resulting hypothesis. Use `push_cast`. Rewrite using `[h2, sub_self]`. Take `⟨j, hj⟩` from `(ZMod.intCast_zmod_eq_zero_iff_dvd _ q).mp hpow`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨j, ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.sub_apply, Pi.pow_apply, Pi.one_apply]`. Rewrite using `[show f s = (k : ℂ) from hk, show ((k : ℂ) ^ M - 1) = ((k ^ M - 1 : ℤ) : ℂ) by push_cast; ring, hj]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcl : IsClassFun f` using `isClassFun_of_mem_spanA hfA`. Establish `hF1 : ((m : ℤ) • (f ^ M - 1)) ∈ spanA (G` using `G) (IsElementaryAt p) ζ := by`. Apply `mem_spanA_of_dvd hE hmono hcyc hζ` to reduce the goal to its premises. Introduce `g h`. Simplify using `[hcl g h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Introduce `g`. Take `⟨j, hj⟩` from `hval g`. Use `⟨j, ?_⟩` and prove the remaining obligations. Establish `hn' : (Nat.card G : ℂ) = q * m` using `by exact_mod_cast hn.symm`. Rewrite using `[Pi.smul_apply, hj, zsmul_eq_mul, hn']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hfM` using `pow_mem_spanA hE hmono hfA hM`. Establish `h1 : ((m : ℤ) • (1 : G → ℂ)) = (m : ℤ) • f ^ M - (m : ℤ) • (f ^ M - 1)`. Rewrite using `[smul_sub]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Normalize the expressions using the abelian group laws. Establish `hA1 : ((m : ℤ) • (1 : G → ℂ)) ∈ spanA (G` using `G) (IsElementaryAt p) ζ := by`. Rewrite using `[h1]`. Conclude with `Submodule.sub_mem _ (Submodule.smul_mem _ _ hfM) hF1`. Use `⟨m, Nat.not_dvd_ordCompl hp.out Nat.card_pos.ne', ?_⟩` and prove the remaining obligations.
-
-Apply `mem_spanZ_of_mem_spanA (hζ.isIntegral Nat.card_pos) hA1` to reduce the goal to its premises. Introduce `ψ hψ`. Take `⟨j, hj⟩` from `isCharacter_one.exists_nat_charInner (mem_irrChars.mp hψ).isCharacter`. Use `⟨m * j, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zsmul, LinearMap.smul_apply, hj, zsmul_eq_mul]`.
-
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_smul_one_mem_spanZ :
     ∃ m : ℕ, ¬ p ∣ m ∧ ((m : ℤ) • (1 : G → ℂ)) ∈ spanZ (IsElementaryAt p) := by

@@ -32,11 +32,11 @@ def secPw {L : LB X} (σ : LB.Sec L) (d : ℕ) : LB.Sec (pw L d) where
     rw [zpow_natCast, Units.val_pow_eq_pow_val]
 
 /- English proof (translation)
-Substitute `e` using the available equality. Use `choose ρ hρ using fun j => GlobalTheory.VeryAmplePow.exists_ratio (t i) (t j)`. Use `⟨ρ, fun j k => fn_ext fun y hy => ?_, fun y => ?_⟩` and prove the remaining obligations. Conclude with `(gs_res _ y _ hy _).trans ((hρ j _ (𝟙 X) y k hy.1 hy.2).trans ((gs_mul _ y _ hy _ _).trans (congrArg₂ (· * ·) (gs_res _ y _ hy _) (gs_res _ y _ hy _))).symm)`. Establish `hρb : ∀ l, ρ (c l) = b l` using `fun l => fn_ext fun z hz => by`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨k, hk⟩` from `Opens.mem_iSup.1 (show z ∈ ⨆ k, H.U k by rw [hH.cover]; trivial)`. Establish `hm : (𝟙 X : X ⟶ X) z ∈ nonzeroLocus (t i) ⊓ H.U k` using `⟨hz, hk⟩`. Establish `h₁` using `(gs_res _ z _ hm _).symm.trans ((congrArg (gs (𝟙 X) z _) (hc l k)).trans ((gs_mul _ z _ hm _ _).trans (congrArg₂ (· * ·) (gs_res _ z _ hm _) (gs_res _ z _ hm _))))`. Establish `u` using `(GlobalTheory.VeryAmplePow.isUnit_iff_mem (t i) (𝟙 X) z hk).2 hz`. Conclude with `u.mul_left_inj.1 ((hρ (c l) _ (𝟙 X) z k hz hk).symm.trans h₁)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨p, rfl⟩` from `hb y`. Use `⟨MvPolynomial.rename c p, ?_⟩` and prove the remaining obligations. Rewrite using `[MvPolynomial.eval₂Hom_rename]`. Use `congr 2`. Conclude with `funext hρb`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem chart (f : X ⟶ Spec (CommRingCat.of R)) {H : LB X} (hH : H.IsLB) {I : Type} (t : I → LB.Sec H) (i : I)
     {W : X.Opens} (e : nonzeroLocus (t i) = W) {n : ℕ} (b : Fin n → Γ(X, W))

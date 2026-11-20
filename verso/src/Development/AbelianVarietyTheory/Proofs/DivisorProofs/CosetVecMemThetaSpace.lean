@@ -18,7 +18,7 @@ namespace GlobalTheory.FunObj.CosetTheta
 variable {D : D7}
 
 /- English proof (translation)
-Introduce `h`. Apply `h𝔪` to reduce the goal to its premises. Use `congrArg (fun I : Ideal (𝓞 D.host.E) => D.host.conj⁻¹ • I) h` as an intermediate fact. Simplify `this` using `[inv_smul_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem conj_ne_bot {𝔪 : Ideal (𝓞 D.host.E)} (h𝔪 : 𝔪 ≠ ⊥) : D.host.conj • 𝔪 ≠ ⊥ := by
   intro h
@@ -27,9 +27,9 @@ theorem conj_ne_bot {𝔪 : Ideal (𝓞 D.host.E)} (h𝔪 : 𝔪 ≠ ⊥) : D.ho
   simpa [inv_smul_smul] using this
 
 /- English proof (translation)
-Establish `hJ : ((D.host.conj • 𝔪 : Ideal (𝓞 D.host.E)) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) ≠ 0` using `FractionalIdeal.coeIdeal_ne_zero.2 (conj_ne_bot h𝔪)`. Rewrite `hy` using `[FractionalIdeal.coe_div hJ, Submodule.mem_div_iff_forall_mul_mem]`. Establish `hn : ((Ideal.absNorm (D.host.conj • 𝔪) : ℕ) : D.host.E) ∈ ((((D.host.conj • 𝔪 : Ideal (𝓞 D.host.E)) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E)) : Submodule (𝓞 D.host.E) D.host.E)`. Rewrite using `[FractionalIdeal.coe_coeIdeal, IsLocalization.mem_coeSubmodule]`. Conclude with `⟨_, Ideal.absNorm_mem _, by simp⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `h2` using `hy _ hn`. Rewrite `h2` using `[FractionalIdeal.coe_coeIdeal, IsLocalization.mem_coeSubmodule]`. Take `⟨z, -, hz⟩` from `h2`. Rewrite using `[Submodule.mem_one]`. Conclude with `⟨z, by rw [hz, mul_comm]⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mul_mem_one {𝔪 : Ideal (𝓞 D.host.E)} (h𝔪 : 𝔪 ≠ ⊥) {y : D.host.E}
     (hy : y ∈ (((𝔪 : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) /
@@ -51,11 +51,11 @@ theorem mul_mem_one {𝔪 : Ideal (𝓞 D.host.E)} (h𝔪 : 𝔪 ≠ ⊥) {y : D
   exact ⟨z, by rw [hz, mul_comm]⟩
 
 /- English proof (translation)
-Proceed by induction on `hA using Submodule.span_induction with`. Consider the case `mem A hA`. Apply `Submodule.subset_span` to reduce the goal to its premises. Introduce `x hx`. Establish `h` using `hA x hx`.
+Proceed by induction. Treat this case separately. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h` using `[skewLat, Submodule.mem_pi]`. Rewrite using `[stdL, Submodule.mem_pi]`. Introduce `i _`. Rewrite using `[Matrix.smul_mulVec, Pi.smul_apply, nsmul_eq_mul]`. Conclude with `mul_mem_one h𝔪 (h i trivial)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ c hx`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem nsmul_mem_homL {𝔪 : Ideal (𝓞 D.host.E)} (h𝔪 : 𝔪 ≠ ⊥) {a d : ℕ} {A : Matrix (Fin d) (Fin a) D.host.E}
     (hA : A ∈ homL D (stdL D a) (skewLat D 𝔪 d)) :
@@ -75,9 +75,9 @@ theorem nsmul_mem_homL {𝔪 : Ideal (𝓞 D.host.E)} (h𝔪 : 𝔪 ≠ ⊥) {a 
   | smul c x _ hx => rw [smul_comm]; exact Submodule.smul_mem _ c hx
 
 /- English proof (translation)
-Proceed by induction on `hB using Submodule.span_induction with`. Consider the case `mem B hB`. Take `⟨c, hc, A, hA, rfl⟩` from `hB`. Apply `Submodule.subset_span` to reduce the goal to its premises. Conclude with `⟨c, hc, _, nsmul_mem_homL h𝔪 hA, smul_comm _ _ _⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ c hx`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem nsmul_mem_YYl {𝔪 : Ideal (𝓞 D.host.E)} (h𝔪 : 𝔪 ≠ ⊥) {a d : ℕ} {B : Matrix (Fin d) (Fin a) D.host.E}
     (hB : B ∈ YYl D (stdL D a) (skewLat D 𝔪 d)) :
@@ -92,11 +92,11 @@ theorem nsmul_mem_YYl {𝔪 : Ideal (𝓞 D.host.E)} (h𝔪 : 𝔪 ≠ ⊥) {a d
   | smul c x _ hx => rw [smul_comm]; exact Submodule.smul_mem _ c hx
 
 /- English proof (translation)
-Proceed by induction on `hx using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨w, hw, A, hA, rfl⟩` from `hz`. Apply `AddSubgroup.subset_closure` to reduce the goal to its premises. Use `⟨w, hw, _, nsmul_mem_YYl h𝔪 hA, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `τ i j`. Simplify using `only [embV, tor0, Pi.smul_apply, Matrix.smul_apply, smul_eq_mul, nsmul_eq_mul, map_mul, map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [smul_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Treat this case separately.
 
-Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [smul_neg]`. Conclude with `neg_mem hx`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem absNormConj_smul_mem_stdThetaLattice {𝔪 : Ideal (𝓞 D.host.E)} (h𝔪 : 𝔪 ≠ ⊥) {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} {a d : ℕ}
     {x : VC D a d} (hx : x ∈ La D (tor0 D cc δ) (stdL D a) (skewLat D 𝔪 d)) :
@@ -114,9 +114,9 @@ theorem absNormConj_smul_mem_stdThetaLattice {𝔪 : Ideal (𝓞 D.host.E)} (h�
   | neg x _ hx => rw [smul_neg]; exact neg_mem hx
 
 /- English proof (translation)
-Establish `hw : wdPh D (tor0 D cc δ) x ≠ 0` using `by simp [wdPh, ee, Complex.exp_ne_zero]`. Establish `e : U D (tor0 D cc δ) x F = (wdPh D (tor0 D cc δ) x)⁻¹ • Wd D (tor0 D cc δ) x F`. Use function extensionality and compare the values at `z`. Simplify using `only [Wd, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[inv_mul_cancel_left₀ hw]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `NormUniq.tt_smul (GlobalTheory.T.thetaFunction_rationalTranslate_mem hc hM hx hF) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem u_mem_TT {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (hc : Crv D cc δ) {N N' : ℕ} {x : VC D N N'} {M : ℕ}
     (hM : 0 < M) (hx : M • x ∈ La0 D (tor0 D cc δ) N N') {F : VC D N N' → ℂ} (hF : F ∈ TT D (tor0 D cc δ) N N') :
@@ -130,11 +130,11 @@ theorem u_mem_TT {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (hc : Crv D cc δ) {N N
   exact NormUniq.tt_smul (GlobalTheory.T.thetaFunction_rationalTranslate_mem hc hM hx hF) _
 
 /- English proof (translation)
-Distinguish the cases in `h : ((La0 D (tor0 D cc δ) N N').addSubgroupOf La₂).index = 0`. Establish `e : Iop D (tor0 D cc δ) (La0 D (tor0 D cc δ) N N') La₂ F = 0`. Use function extensionality and compare the values at `z`. Simplify using `[Iop, h]`. Rewrite using `[e]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `NormUniq.tt_zero _`. Establish `: ((La0 D (tor0 D cc δ) N N').addSubgroupOf La₂).FiniteIndex` using `⟨h⟩ haveI : Fintype (La₂ ⧸ (La0 D (tor0 D cc δ) N N').addSubgroupOf La₂) := Fintype.ofFinite _`. Establish `e : Iop D (tor0 D cc δ) (La0 D (tor0 D cc δ) N N') La₂ F = ((Real.sqrt (((La0 D (tor0 D cc δ) N N').addSubgroupOf La₂).index : ℝ))⁻¹ : ℂ) • ∑ q : La₂ ⧸ (La0 D (tor0 D cc δ) N N').addSubgroupOf La₂, al D (tor0 D cc δ) ((Quotient.out q : La₂) : VC D N N') • U D (tor0 D cc δ) ((Quot …`. Use function extensionality and compare the values at `z`. Simplify using `only [Iop, finsum_eq_sum_of_fintype, Pi.smul_apply, Finset.sum_apply, smul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `NormUniq.tt_smul (NormUniq.tt_sum _ fun q _ => NormUniq.tt_smul (u_mem_TT hc hM (hLa _ (Quotient.out q : La₂).2) hF) _) _`.
+A detailed English derivation is pending.
 -/
 theorem iop_mem_TT {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (hc : Crv D cc δ) {N N' : ℕ} {La₂ : AddSubgroup (VC D N N')}
     {M : ℕ} (hM : 0 < M) (hLa : ∀ x ∈ La₂, M • x ∈ La0 D (tor0 D cc δ) N N') {F : VC D N N' → ℂ}
@@ -161,9 +161,9 @@ theorem iop_mem_TT {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (hc : Crv D cc δ) {N
       NormUniq.tt_smul (u_mem_TT hc hM (hLa _ (Quotient.out q : La₂).2) hF) _) _
 
 /- English proof (translation)
-Introduce `D δ t0 Q P 𝔪 h𝔪 o`. Establish `h1` using `(GlobalTheory.InducedType.induced_type D).1`. Establish `he : P.e0 ∈ TT D (tor0 D ⊤ δ) P.a P.d` using `VacMove.vac_TT h1 P.crv P.vac.1`. Establish `hM : 0 < Ideal.absNorm (D.host.conj • 𝔪)` using `Nat.pos_of_ne_zero (by rw [Ne, Ideal.absNorm_eq_zero_iff]; exact conj_ne_bot h𝔪)`. Establish `hI` using `iop_mem_TT P.crv hM (fun x hx => absNormConj_smul_mem_stdThetaLattice h𝔪 hx) he`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `cosetVec`. Conclude with `NormUniq.tt_smul (GlobalTheory.T.thetaFunction_rationalTranslate_mem P.crv one_pos (by rw [one_smul]; exact pt_unitBlock_mem δ o P.a P.d) hI) _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem cosetVec_mem_TT : ∀ {D : D7} {δ t0 : ℂ} {Q : ℕ} (P : Pair D ⊤ δ t0 Q) {𝔪 : Ideal (𝓞 D.host.E)}, 𝔪 ≠ ⊥ →
     ∀ o : ℕ, cosetVec P 𝔪 o ∈ TT D (tor0 D ⊤ δ) P.a P.d := by

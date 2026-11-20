@@ -23,13 +23,13 @@ section Norms
 variable {B V : Type} [NormedAddCommGroup B] [NormedAddCommGroup V]
 
 /- English proof (translation)
-Establish `key : ∀ k : ℕ, ‖iter h k (b, s)‖ ≤ (3 / 5) ^ k * ‖s‖ ∧ iter h k (b, s) ∈ ball (0 : V) ρ`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Use `⟨by simp, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using hs`. Consider the case `succ k ih`. Establish `hk` using `hcontr b hb _ ih.2`. Establish `e : iter h (k + 1) (b, s) = h (b, iter h k (b, s))` using `rfl`. Rewrite using `[e]`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `h2` using `mem_ball_zero_iff.mp ih.2`. Rewrite using `[mem_ball_zero_iff]`. Use polynomial arithmetic with `[norm_nonneg (iter h k (b, s))]`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Conclude with `(key k).1`.
+A detailed English derivation is pending.
 -/
 theorem norm_iter_le (b₀ : B) (h : B × V → V) (ρ : ℝ)
     (hcontr : ∀ b ∈ ball b₀ ρ, ∀ s ∈ ball (0 : V) ρ, ‖h (b, s)‖ ≤ 3 / 5 * ‖s‖)
@@ -55,7 +55,7 @@ theorem norm_iter_le (b₀ : B) (h : B × V → V) (ρ : ℝ)
   exact (key k).1
 
 /- English proof (translation)
-Rewrite using `[mem_ball_zero_iff]`. Establish `h1` using `norm_iter_le b₀ h ρ hcontr hb hs k`. Establish `h2 : (3 / 5 : ℝ) ^ k ≤ 1` using `pow_le_one₀ (by norm_num) (by norm_num)`. Establish `h3 : ‖s‖ < ρ` using `mem_ball_zero_iff.mp hs`. Use polynomial arithmetic with `[norm_nonneg s]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem iter_mem_ball (b₀ : B) (h : B × V → V) (ρ : ℝ)
     (hcontr : ∀ b ∈ ball b₀ ρ, ∀ s ∈ ball (0 : V) ρ, ‖h (b, s)‖ ≤ 3 / 5 * ‖s‖)
@@ -70,11 +70,9 @@ theorem iter_mem_ball (b₀ : B) (h : B × V → V) (ρ : ℝ)
 end Norms
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Establish `e : iter h 0 = Prod.snd` using `funext fun p => rfl`. Rewrite using `[e]`. Conclude with `differentiableOn_snd`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `succ k ih`. Establish `e : iter h (k + 1) = h ∘ fun p => (p.1, iter h k p)` using `funext fun p => rfl`. Rewrite using `[e]`. Use `hd.comp (differentiableOn_fst.prodMk ih) ?_` and prove the remaining obligations. Introduce `p hp`.
-
-Conclude with `Set.mk_mem_prod hp.1 (iter_mem_ball b₀ h ρ hcontr hp.1 hp.2 k)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem iter_differentiableOn {B V : Type} [NormedAddCommGroup B] [NormedSpace ℂ B]
     [NormedAddCommGroup V] [NormedSpace ℂ V] (b₀ : B) (h : B × V → V) (ρ : ℝ)
@@ -94,11 +92,11 @@ theorem iter_differentiableOn {B V : Type} [NormedAddCommGroup B] [NormedSpace �
     exact Set.mk_mem_prod hp.1 (iter_mem_ball b₀ h ρ hcontr hp.1 hp.2 k)
 
 /- English proof (translation)
-Establish `hfst : Tendsto (fun p : B × V × V => p.1) (𝓝 (b₀, 0, 0)) (𝓝 b₀)` using `continuous_fst.tendsto _`. Establish `hs : Tendsto (fun p : B × V × V => p.2.1) (𝓝 (b₀, 0, 0)) (𝓝 0)` using `(continuous_fst.comp continuous_snd).tendsto _`. Establish `ht : Tendsto (fun p : B × V × V => p.2.2) (𝓝 (b₀, 0, 0)) (𝓝 0)` using `(continuous_snd.comp continuous_snd).tendsto _`. Establish `hμ : Tendsto μ (𝓝 (b₀, 0, 0)) (𝓝 0)`. Use `hc.tendsto` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[h0]`. Then use the resulting hypothesis. Establish `htt : Tendsto (fun p : B × V × V => μ (p.1, p.2.2, p.2.2)) (𝓝 (b₀, 0, 0)) (𝓝 0)` using `hμ.comp (hfst.prodMk_nhds (ht.prodMk_nhds ht))`. Establish `orbitMap_conj_smul_one` using `(hfst.prodMk_nhds (hs.prodMk_nhds (hs.prodMk_nhds htt))).eventually hassoc`. Establish `orbitMap_conj_smul_two` using `(hfst.prodMk_nhds (hs.prodMk_nhds (ht.prodMk_nhds ht))).eventually hassoc`. Establish `selfLieBasisVector` using `(hfst.prodMk_nhds (ht.prodMk_nhds (hs.prodMk_nhds ht))).eventually hassoc`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eA4` using `(hfst.prodMk_nhds (hs.prodMk_nhds (ht.prodMk_nhds hμ))).eventually hassoc`. Use `filter_upwards [orbitMap_conj_smul_one, orbitMap_conj_smul_two, selfLieBasisVector, eA4, hcomm] with ⟨b, s, t⟩ a1 a2 a3 a4 c`. Simplify using `only at a1 a2 a3 a4 c ⊢`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Simplify by unfolding definitions. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem medial_eventually {B V : Type} [TopologicalSpace B] [Zero V] [TopologicalSpace V] (b₀ : B)
     (μ : B × V × V → V) (hc : ContinuousAt μ (b₀, 0, 0)) (h0 : μ (b₀, 0, 0) = 0)

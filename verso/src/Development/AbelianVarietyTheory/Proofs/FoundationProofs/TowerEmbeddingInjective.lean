@@ -11,13 +11,13 @@ noncomputable section
 namespace GlobalTheory.K5.EmbInj
 
 /- English proof (translation)
-Introduce `p _ Ω _ _ hc T n hn ι _`. Take `⟨hdom, -, -⟩` from `GlobalTheory.K5.OnDVR.isDVR_On p n hn`. Take `⟨b, -⟩` from `GlobalTheory.K5.OnFree.on_free p n`. Use `haveI : Module.Finite (O0 p) (On p n) := Module.Finite.of_basis b`. Use `haveI : Algebra.IsIntegral (O0 p) (On p n) := Algebra.IsIntegral.of_finite _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[injective_iff_map_eq_zero]`. Establish `hker : RingHom.ker (ι : On p n →+* Ω) = ⊥`. Apply `Ideal.eq_bot_of_comap_eq_bot (R := O0 p)` to reduce the goal to its premises. Rewrite using `[eq_bot_iff]`. Introduce `a ha`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `ha` using `[Ideal.mem_comap, RingHom.mem_ker]`. Establish `: algebraMap (O0 p) Ω a = 0`. Rewrite using `[← ι.commutes a]`. Conclude with `ha`. Rewrite using `[Ideal.mem_bot]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `hc.inj (this.trans (map_zero _).symm)`. Introduce `x hx`. Establish `: x ∈ RingHom.ker (ι : On p n →+* Ω)` using `hx`. Rewrite `this` using `[hker, Ideal.mem_bot]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem emb_injective : ∀ (p : ℕ) [Fact p.Prime] (Ω : Type) [Field Ω] [Algebra (O0 p) Ω], IsClo p Ω →
     ∀ (T : Tower p Ω) (n : ℕ), 1 ≤ n → ∀ ι : On p n →ₐ[O0 p] Ω, IsEmb T n ι →

@@ -32,7 +32,7 @@ def PtTrans : Prop :=
     ζ' = ζ ^ a ∧ ((1 : ℕ) : WithTop ℚ) ≤ v (algebraMap O LL (W.χΓ δ : O) - (a : LL))
 
 /- English proof (translation)
-Introduce `T hT i ζ ζ' δ a hζ hζ' hv x hx k`. Rewrite using `[C.levN_eq, C.levN_eq, C.levB_Γ T hT δ i ζ ζ' 1 a (by rwa [pow_one]) hv hζ' x hx k, map_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem gamΔ_of_tie {Zl Ai : Type} [CommRing Zl] [CommRing Ai] [Algebra Zl O]
     [Algebra Zl Ai] {RW : Type} [CommRing RW] [Algebra O RW] {inclR : (O ⊗[Zl] Ai) →ₐ[O] RW}
@@ -43,7 +43,7 @@ theorem gamΔ_of_tie {Zl Ai : Type} [CommRing Zl] [CommRing Ai] [Algebra Zl O]
   rw [C.levN_eq, C.levN_eq, C.levB_Γ T hT δ i ζ ζ' 1 a (by rwa [pow_one]) hv hζ' x hx k, map_smul]
 
 /- English proof (translation)
-Establish `h1 : (1 : LetA O n) • x ∈ W.N T` using `by rwa [one_smul]`. Take `⟨m, hm⟩` from `W.levN_supp T i ζ ⟨x, hx⟩`. Use `⟨⟨m, hm⟩, 1, h1, by rw [map_one]; exact one_ne_zero, fun k => ?_⟩` and prove the remaining obligations. Establish `e : (⟨(1 : LetA O n) • x, h1⟩ : ↥(W.N T)) = ⟨x, hx⟩` using `Subtype.ext (one_smul _ _)`. Rewrite using `[e, map_one, conv_eq, smulS_one hm]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem isExp_self (T : LocLat G Qp LL O) (i : ZMod n) (ζ : LL) {x : W.DD T} (hx : x ∈ W.N T) :
     Formalism.MainNotions.RamifiedCoefficientChains.Sh.IsExp W T i ζ x (W.levN T i ζ ⟨x, hx⟩) := by
@@ -54,9 +54,9 @@ theorem isExp_self (T : LocLat G Qp LL O) (i : ZMod n) (ζ : LL) {x : W.DD T} (h
   rw [e, map_one, conv_eq, smulS_one hm]
 
 /- English proof (translation)
-Take `⟨⟨m, hm⟩, a, ha, hla, he⟩` from `hd`. Establish `hmem : a • (a' • x) ∈ W.N T` using `by rw [smul_comm]; exact (W.N T).smul_mem a' ha`. Use `⟨⟨m, LB_smulS hm _⟩, a, hmem, hla, fun k => ?_⟩` and prove the remaining obligations. Establish `e1 : (⟨a • (a' • x), hmem⟩ : ↥(W.N T)) = a' • (⟨a • x, ha⟩ : ↥(W.N T))` using `Subtype.ext (by simp only [SetLike.val_smul]; rw [smul_comm])`. Rewrite using `[e1, levN_smulS, funext he]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show smulS (W.lev i ζ a') (smulS (W.lev i ζ a) d) k = smulS (W.lev i ζ a) (smulS (W.lev i ζ a') d) k`. Rewrite using `[smulS_comm hm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isExp_smulA (T : LocLat G Qp LL O) (i : ZMod n) (ζ : LL) {x : W.DD T}
     {d : ℤ → T.V ⊗[Qp] BdR} (hd : Formalism.MainNotions.RamifiedCoefficientChains.Sh.IsExp W T i ζ x d) (a' : LetA O n) :
@@ -71,25 +71,23 @@ theorem isExp_smulA (T : LocLat G Qp LL O) (i : ZMod n) (ζ : LL) {x : W.DD T}
   rw [smulS_comm hm]
 
 /- English proof (translation)
-Introduce `T hT i ζ hζ x d hDL hd ⟨k, hk⟩`. Establish `hs : W.s = 1` using `hA.2.1`. Use `haveI := hdom`. Establish `hp` using `p_ne_zero_LL W`. Establish `hFl : Antitone (Formalism.MainNotions.WachCoordinates.FilLev W T i 0)` using `Formalism.MainNotions.UnusedSlot80.LevR.filLev_anti W T i 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hx j`. Rewrite using `[isExp_unique W T i ζ hd (isExp_self W T i ζ hx)]`. Conclude with `(h4 T hT i 0 ζ (by rwa [zero_add, pow_one])).1 ⟨x, hx⟩ j`. Introduce `hcoef`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨w, hw⟩` from `hR.2.2.2.2.1`. Rewrite `hw` using `[eat_qp]`. Establish `hQ : W.Q = (w : LetA O n) * Formalism.MainNotions.LiftingTheory.qp W` using `by rw [MC.Q_eq_q W hs, hw]`. Establish `hQk : W.Q ^ k • x ∈ W.N T`. Rewrite using `[hQ, mul_pow, mul_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `(W.N T).smul_mem _ hk`. Use `memCrit_of W hA hFr h1 h3 h4 h5 hD T hT i x k hQk hDL.1 fun ζ' hζ' j => ?_` and prove the remaining obligations. Take `⟨u, hu0, hq⟩` from `MC.lev_q_eq W i hζ hp`. Establish `hlevQ : W.lev i ζ W.Q = PowerSeries.X * u` using `by rw [MC.Q_eq_q W hs]; exact hq`. Take `⟨m, hm⟩` from `hd.1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hEQ : W.levN T i ζ ⟨W.Q ^ k • x, hQk⟩ = smulS ((PowerSeries.X * u) ^ k) d`. Use `isExp_unique W T i ζ (isExp_self W T i ζ hQk) (isExp_smulA W T i ζ hd (W.Q ^ k))` as an intermediate fact. Rewrite using `[this, map_pow, hlevQ]`. Establish `hDgζ : ∀ j : ℤ, W.levN T i ζ ⟨W.Q ^ k • x, hQk⟩ j ∈ Formalism.MainNotions.WachCoordinates.FilLev W T i 0 ((k : ℤ) - j)`. Introduce `j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hEQ, mul_pow, smulS_mul hm, smulS_X_pow (LB_smulS hm _)]`. Use `Dg_smulS hFl hm (s := 0) (fun j => by simpa using hcoef j) (u ^ k) (j - k)` as an intermediate fact. Simplify using `only at this ⊢`. Rewrite `this` using `[show (0 : ℤ) - (j - (k : ℤ)) = (k : ℤ) - j by ring]`. Then use the resulting hypothesis. Take `⟨δ, hδ, a, hζa, hv⟩` from `hΔ ζ' ζ hζ' hζ`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hγy : W.γD T δ (W.Q ^ k • x) ∈ W.N T` using `W.N_Γ T δ _ hQk`. Take `⟨vv, hvv, hvu⟩` from `gam_q W δ`. Take `⟨vU, rfl⟩` from `hvu`. Establish `hγQ : W.γA δ W.Q = W.Q * vU` using `by rw [MC.Q_eq_q W hs]; exact hvv`. Establish `eγ : W.γD T δ (W.Q ^ k • x) = ((vU : LetA O n) ^ k) • (W.Q ^ k • x)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RL.γD_smulA, map_pow, hDL.2 δ hδ, hγQ, mul_pow, mul_comm, mul_smul]`. Establish `eback : W.Q ^ k • x = (((vU⁻¹ : (LetA O n)ˣ) : LetA O n) ^ k) • W.γD T δ (W.Q ^ k • x)`. Rewrite using `[eγ, smul_smul, ← mul_pow, Units.inv_mul, one_pow, one_smul]`. Establish `hsub : (⟨W.Q ^ k • x, hQk⟩ : ↥(W.N T)) = (((vU⁻¹ : (LetA O n)ˣ) : LetA O n) ^ k) • (⟨W.γD T δ (W.Q ^ k • x), hγy⟩ : ↥(W.N T))` using `Subtype.ext eback`. Establish `htr : ∀ j, W.levN T i ζ' ⟨W.γD T δ (W.Q ^ k • x), hγy⟩ j = (algebraMap O LL (W.χΓ δ : O)) ^ j • W.levN T i ζ ⟨W.Q ^ k • x, hQk⟩ j` using `fun j => hΓ T hT i ζ' ζ δ a hζ' hζa hv ⟨W.Q ^ k • x, hQk⟩ hγy j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hDg' : ∀ j : ℤ, W.levN T i ζ' ⟨W.γD T δ (W.Q ^ k • x), hγy⟩ j ∈ Formalism.MainNotions.WachCoordinates.FilLev W T i 0 ((k : ℤ) - j)` using `fun j => by`. Rewrite using `[htr j]`. Conclude with `Submodule.smul_mem _ _ (hDgζ j)`. Take `⟨m', hm'⟩` from `W.levN_supp T i ζ' ⟨W.γD T δ (W.Q ^ k • x), hγy⟩`. Rewrite using `[hsub, levN_smulS]`.
-
-Conclude with `Dg_smulS hFl hm' hDg' _ j`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem expCritN_of [NeZero n] (hA : Formalism.MainNotions.LiftingTheory.CaseA W) (hdom : IsDomain O)
     (hFr : IsFractionRing O LL) (h1 : Formalism.MainNotions.DeltaInvariantLattices.WachLatticeFree W) (h3 : Formalism.MainNotions.DeltaInvariantLattices.P3W W)

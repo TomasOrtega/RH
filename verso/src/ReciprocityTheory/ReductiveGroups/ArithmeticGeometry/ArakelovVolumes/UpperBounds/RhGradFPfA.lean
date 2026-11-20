@@ -8,9 +8,9 @@ open scoped ContDiff
 noncomputable section
 
 /- English proof (translation)
-Establish `hd : fderiv ℝ (g ∘ F) v = (fderiv ℝ g (F v)).comp (J.restrictScalars ℝ)` using `(hg.hasFDerivAt.comp v (hF.restrictScalars ℝ)).fderiv`. Rewrite using `[wdb, hd]`. Simplify using `only [ContinuousLinearMap.coe_comp, Function.comp_apply, ContinuousLinearMap.coe_restrictScalars', ContinuousLinearMap.map_smul]`. Use `set D := fderiv ℝ g (F v)`. Use `set c := J (bas n j)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[fc_clm_decomp d D c, fc_clm_decomp d D (Complex.I • c), Finset.mul_sum, ← Finset.sum_add_distrib, Finset.sum_div]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `only [PiLp.smul_apply, smul_eq_mul, map_mul, Complex.conj_I, wdb, wd]`. Take the linear combination `((D (bas d a) - Complex.I * D (Complex.I • bas d a)) / 2 * c a / 2 - (D (bas d a) + Complex.I * D (Complex.I • bas d a)) / 2 * (starRingEnd ℂ) (c a) / 2) * Complex.I_sq`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem gc_wdb_comp (n d : ℕ) (g : V d → ℂ) (F : V n → V d) (J : V n →L[ℂ] V d) (v : V n)
     (hg : DifferentiableAt ℝ g (F v)) (hF : HasFDerivAt F J v) (j : Fin n) :
@@ -31,9 +31,9 @@ theorem gc_wdb_comp (n d : ℕ) (g : V d → ℂ) (F : V n → V d) (J : V n →
       Complex.I_sq
 
 /- English proof (translation)
-Establish `hd : fderiv ℝ (g ∘ F) v = (fderiv ℝ g (F v)).comp (J.restrictScalars ℝ)` using `(hg.hasFDerivAt.comp v (hF.restrictScalars ℝ)).fderiv`. Rewrite using `[wd, hd]`. Simplify using `only [ContinuousLinearMap.coe_comp, Function.comp_apply, ContinuousLinearMap.coe_restrictScalars', ContinuousLinearMap.map_smul]`. Use `set D := fderiv ℝ g (F v)`. Use `set c := J (bas n j)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[fc_clm_decomp d D c, fc_clm_decomp d D (Complex.I • c), Finset.mul_sum, ← Finset.sum_sub_distrib, Finset.sum_div]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `only [PiLp.smul_apply, smul_eq_mul, map_mul, Complex.conj_I, wdb, wd]`. Take the linear combination `(-(D (bas d a) - Complex.I * D (Complex.I • bas d a)) / 2 * c a / 2 + (D (bas d a) + Complex.I * D (Complex.I • bas d a)) / 2 * (starRingEnd ℂ) (c a) / 2) * Complex.I_sq`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem gc_wd_comp (n d : ℕ) (g : V d → ℂ) (F : V n → V d) (J : V n →L[ℂ] V d) (v : V n)
     (hg : DifferentiableAt ℝ g (F v)) (hF : HasFDerivAt F J v) (j : Fin n) :
@@ -54,7 +54,7 @@ theorem gc_wd_comp (n d : ℕ) (g : V d → ℂ) (F : V n → V d) (J : V n →L
       Complex.I_sq
 
 /- English proof (translation)
-Establish `h : WithLp.toLp 2 ξ = ∑ j, ξ j • bas n j`. Use extensionality with `k`. Simplify using `[bas, Pi.single_apply]`. Rewrite using `[h, map_sum]`. Simplify using `[map_smul]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gc_toLp_apply (n d : ℕ) (J : V n →L[ℂ] V d) (ξ : Fin n → ℂ) (b : Fin d) :
     J (WithLp.toLp 2 ξ) b = ∑ j, ξ j * J (bas n j) b := by
@@ -65,7 +65,7 @@ theorem gc_toLp_apply (n d : ℕ) (J : V n →L[ℂ] V d) (ξ : Fin n → ℂ) (
   simp [map_smul]
 
 /- English proof (translation)
-Simplify using `only [gc_wd_comp n d g F J v hg hF, gc_toLp_apply, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun j _ => by ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gc_sum_wd_comp (n d : ℕ) (g : V d → ℂ) (F : V n → V d) (J : V n →L[ℂ] V d) (v : V n)
     (hg : DifferentiableAt ℝ g (F v)) (hF : HasFDerivAt F J v) (ξ : Fin n → ℂ) :
@@ -75,7 +75,7 @@ theorem gc_sum_wd_comp (n d : ℕ) (g : V d → ℂ) (F : V n → V d) (J : V n 
   exact Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem sum_four_indices_comm (n d : ℕ) (f : Fin n → Fin n → Fin d → Fin d → ℂ) :
     ∑ j, ∑ k, ∑ a, ∑ b, f j k a b = ∑ b, ∑ a, ∑ j, ∑ k, f j k a b := by
@@ -88,19 +88,19 @@ theorem sum_four_indices_comm (n d : ℕ) (f : Fin n → Fin n → Fin d → Fin
     _ = ∑ b, ∑ a, ∑ j, ∑ k, f j k a b := Finset.sum_congr rfl fun b _ => Finset.sum_comm
 
 /- English proof (translation)
-Establish `hFd : ∀ y ∈ U, HasFDerivAt F (fderiv ℂ F y) y` using `fun y hy => (((hF.differentiableOn (by norm_num)) y hy).differentiableAt (hU.mem_nhds hy)).hasFDerivAt`. Establish `hgev : ∀ᶠ y in 𝓝 v, ContDiffAt ℝ 2 g (F y)` using `(hFd v hv).continuousAt.eventually (hg.eventually (by simp))`. Establish `hwdb : ∀ k, wdb n k (g ∘ F) =ᶠ[𝓝 v] fun y => ∑ a, wdb d a g (F y) * (starRingEnd ℂ) (fderiv ℂ F y (bas n k) a)`. Introduce `k`. Use `filter_upwards [hgev, hU.mem_nhds hv] with y hy hyU`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `gc_wdb_comp n d g F _ y (hy.differentiableAt (by simp)) (hFd y hyU) k`. Establish `hD : DifferentiableAt ℝ (fderiv ℝ g) (F v)` using `(hg.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)`. Establish `hWg : ∀ a, DifferentiableAt ℝ (wdb d a g) (F v)`. Introduce `a`. Use `show DifferentiableAt ℝ (fun y => (fderiv ℝ g y (bas d a) + Complex.I * fderiv ℝ g y (Complex.I • bas d a)) / 2) (F v)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hD.clm_apply (differentiableAt_const (bas d a))`. Establish `h2` using `hD.clm_apply (differentiableAt_const (Complex.I • bas d a))`. Establish `h3` using `(h1.add (h2.const_mul Complex.I)).mul_const ((2 : ℂ)⁻¹)`. Use `h3.congr_of_eventuallyEq (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `[div_eq_mul_inv]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hWa : ∀ a, DifferentiableAt ℝ (fun y => wdb d a g (F y)) v` using `fun a => (hWg a).comp v ((hFd v hv).restrictScalars ℝ).differentiableAt`. Establish `hDF : DifferentiableAt ℂ (fun y => fderiv ℂ F y) v` using `((hF.fderiv_of_isOpen hU (m := 1) (by norm_num)).contDiffAt (hU.mem_nhds hv)).differentiableAt (by norm_num)`. Establish `hPa : ∀ k a, DifferentiableAt ℂ (fun y => fderiv ℂ F y (bas n k) a) v` using `fun k a => (differentiableAt_piLp 2).1 (hDF.clm_apply (differentiableAt_const _)) a`. Establish `hCa : ∀ k a, DifferentiableAt ℝ (fun y => (starRingEnd ℂ) (fderiv ℂ F y (bas n k) a)) v`. Introduce `k a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `Complex.conjCLE.differentiableAt.comp v ((hPa k a).restrictScalars ℝ)` as an intermediate fact. Simplify `this` using `[Function.comp_def]`. Establish `step : ∀ j k, wd n j (wdb n k (g ∘ F)) v = ∑ a, ∑ b, wd d b (wdb d a g) (F v) * fderiv ℂ F v (bas n j) b * (starRingEnd ℂ) (fderiv ℂ F v (bas n k) a)`. Introduce `j k`. Rewrite using `[wd_congr n j _ _ v (hwdb k), fc_wd_sum n j Finset.univ (fun a y => wdb d a g (F y) * (starRingEnd ℂ) (fderiv ℂ F y (bas n k) a)) v (fun a _ => (hWa a).mul (hCa k a))]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[wd_mul' n j _ _ v (hWa a) (hCa k a), wd_conj', fc_wdb_holo n _ v (hPa k a) j, map_zero, mul_zero, add_zero]`. Use `gc_wd_comp n d (wdb d a g) F (fderiv ℂ F v) v (hWg a) (hFd v hv) j` as an intermediate fact. Rewrite using `[show (fun y => wdb d a g (F y)) = wdb d a g ∘ F from rfl, this, Finset.sum_mul]`. Unfold `leviV`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [step, gc_toLp_apply, Finset.sum_mul, map_sum, map_mul, Finset.mul_sum]`. Rewrite using `[sum_four_indices_comm]`. Use `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => by ring`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gc_leviV_comp (n d : ℕ) (g : V d → ℂ) (F : V n → V d) (U : Set (V n)) (hU : IsOpen U)
     (v : V n) (hv : v ∈ U) (hF : ContDiffOn ℂ 2 F U) (hg : ContDiffAt ℝ 2 g (F v))

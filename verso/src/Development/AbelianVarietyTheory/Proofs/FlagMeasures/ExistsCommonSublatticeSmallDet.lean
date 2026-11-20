@@ -12,9 +12,9 @@ open NumberField
 variable {K V : Type} [Field K] [NumberField K] [AddCommGroup V] [Module (𝓞 K) V] [Module K V]
 
 /- English proof (translation)
-Use `le_antisymm (Submodule.span_mono hPM) ?_` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`. Introduce `m hm`. Establish `hn : (P.toAddSubgroup.relIndex M.toAddSubgroup) • m ∈ P` using `AddSubgroup.nsmul_relIndex_mem P.toAddSubgroup (K := M.toAddSubgroup) hm`. Establish `hnK : ((P.toAddSubgroup.relIndex M.toAddSubgroup : ℕ) : K) ≠ 0` using `Nat.cast_ne_zero.mpr h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm' : m = ((P.toAddSubgroup.relIndex M.toAddSubgroup : ℕ) : K)⁻¹ • (P.toAddSubgroup.relIndex M.toAddSubgroup • m)`. Rewrite using `[← Nat.cast_smul_eq_nsmul K, smul_smul, inv_mul_cancel₀ hnK, one_smul]`. Rewrite using `[SetLike.mem_coe, hm']`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hn)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_eq_of_relIndex_ne_zero {P M : Submodule (𝓞 K) V} (hPM : P ≤ M)
     (h : P.toAddSubgroup.relIndex M.toAddSubgroup ≠ 0) :
@@ -34,9 +34,9 @@ theorem span_eq_of_relIndex_ne_zero {P M : Submodule (𝓞 K) V} (hPM : P ≤ M)
 
 omit [NumberField K] [Module K V] in
 /- English proof (translation)
-Establish `e : ((B' ⊓ B'') ⊓ M).toAddSubgroup.relIndex M.toAddSubgroup = (B'.toAddSubgroup ⊓ B''.toAddSubgroup).relIndex M.toAddSubgroup` using `AddSubgroup.inf_relIndex_right (B'.toAddSubgroup ⊓ B''.toAddSubgroup) M.toAddSubgroup`. Establish `h1' : M.toAddSubgroup ≤ A'.toAddSubgroup` using `fun x hx => h1 hx`. Establish `h2' : M.toAddSubgroup ≤ A''.toAddSubgroup` using `fun x hx => h2 hx`. Establish `m1 : B'.toAddSubgroup.relIndex M.toAddSubgroup ≠ 0` using `mt (AddSubgroup.relIndex_eq_zero_of_le_right h1') n1`. Establish `m2 : B''.toAddSubgroup.relIndex M.toAddSubgroup ≠ 0` using `mt (AddSubgroup.relIndex_eq_zero_of_le_right h2') n2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e]`. Use `⟨AddSubgroup.relIndex_inf_ne_zero m1 m2, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 theorem relIndex_inf_bound {M A' A'' B' B'' : Submodule (𝓞 K) V} (h1 : M ≤ A') (h2 : M ≤ A'')
     (n1 : B'.toAddSubgroup.relIndex A'.toAddSubgroup ≠ 0)
@@ -74,13 +74,13 @@ Both sides reduce to the same expression.
 theorem idxW_eq (D : D7) (A B : LatW D) : idxW D A B = B.toAddSubgroup.relIndex A.toAddSubgroup := rfl
 
 /- English proof (translation)
-Introduce `D L M A' A'' B' B'' hPD hL hI hMA' hMA'' hA'L hA''L hB' hB'' r1 r2`. Establish `hfg : ∀ N : LatW D, N ≤ L → N.FG` using `fun N hN => Submodule.FG.of_le hL hN`. Establish `hint : ∀ N : LatW D, N ≤ L → Formalism.HermitianLatticesTheory.IsIntegralLat (D.sp.X 0).hT N` using `fun N hN x hx y hy => hI x (hN hx) y (hN hy)`. Establish `k1` using `((GlobalTheory.LoopC.DetCard.main D A' (hfg _ hA'L) hPD (hint _ hA'L)).2.2 B' hB' r1).1`. Establish `k2` using `((GlobalTheory.LoopC.DetCard.main D A'' (hfg _ hA''L) hPD (hint _ hA''L)).2.2 B'' hB'' r2).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `k1`, `k2` using `[idxW_eq]`. Take `⟨n0, nle⟩` from `relIndex_inf_bound (K := D.host.E) hMA' hMA'' (Nat.one_le_iff_ne_zero.mp k1) (Nat.one_le_iff_ne_zero.mp k2)`. Establish `hrk : rkW D ((B' ⊓ B'') ⊓ M) = rkW D M`. Unfold `rkW`. Rewrite using `[span_eq_of_relIndex_ne_zero (K := D.host.E) inf_le_right n0]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hML : M ≤ L` using `hMA'.trans hA'L`. Establish `k3` using `(GlobalTheory.LoopC.DetCard.main D M (hfg _ hML) hPD (hint _ hML)).2.2 _ inf_le_right hrk`. Use `⟨(B' ⊓ B'') ⊓ M, inf_le_right, fun x hx => hx.1.1, fun x hx => hx.1.2, hrk, ?_⟩` and prove the remaining obligations. Establish `hd : 0 ≤ detW D M` using `Real.sqrt_nonneg _`. Rewrite using `[k3.2, mul_assoc, idxW_eq, idxW_eq, idxW_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `gcongr`. Conclude with `nle` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (D : D7) (L M A' A'' B' B'' : LatW D), IsPosDef (D.sp.X 0).hT → L.FG → Formalism.HermitianLatticesTheory.IsIntegralLat (D.sp.X 0).hT L → M ≤ A' → M ≤ A'' → A' ≤ L → A'' ≤ L → B' ≤ A' → B'' ≤ A'' → rkW D B' = rkW D A' → rkW D B'' = rkW D A'' → ∃ P : LatW D, P ≤ M ∧ P ≤ B' ∧ P ≤ B'' ∧ rkW D P = rkW D M ∧ detW D P ≤ detW D M * (idxW D A' B' : ℝ) * (idxW D A'' B'' : ℝ) := by
   intro D L M A' A'' B' B'' hPD hL hI hMA' hMA'' hA'L hA''L hB' hB'' r1 r2

@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Definitions.CMLattices.IntegralOf
 open AlgebraicGeometry CategoryTheory ReciprocityTheory.ChartRestriction.G.Semi NumberField IsDedekindDomain Module Formalism.BasicNotions Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD GlobalTheory.AllWt GlobalTheory.FlatLine GlobalTheory.CompHt GlobalTheory.FlatCore GlobalTheory.Frames
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.EigLatSpan.eigLat_le_span` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCompletedEigenLatticeLeSpanIntegralFrame.lean&line=181#L181)
 -/

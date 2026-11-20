@@ -15,7 +15,7 @@ variable {E F : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteD
   [NormedAddCommGroup F] [InnerProductSpace ℂ F] [CompleteSpace F]
 
 /- English proof (translation)
-Establish `h : ‖ξ‖ ≤ ‖ξ - η‖ + ‖η‖`. Simplify using `using norm_add_le (ξ - η) η`. Establish `h2 : ‖ξ‖ ^ 2 ≤ 2 * ‖ξ - η‖ ^ 2 + 2 * ‖η‖ ^ 2`. Use polynomial arithmetic with `[norm_nonneg ξ, norm_nonneg (ξ - η), norm_nonneg η, sq_nonneg (‖ξ - η‖ - ‖η‖)]`. Use polynomial arithmetic with `[sq_nonneg ‖ξ - η‖, sq_nonneg ‖η‖, mul_nonneg (sq_nonneg ‖ξ - η‖) (sq_nonneg ‖η‖)]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem one_add_norm_sq_le (ξ η : E) :
     1 + ‖ξ‖ ^ 2 ≤ 2 * (1 + ‖ξ - η‖ ^ 2) * (1 + ‖η‖ ^ 2) := by
@@ -26,13 +26,13 @@ theorem one_add_norm_sq_le (ξ η : E) :
   nlinarith [sq_nonneg ‖ξ - η‖, sq_nonneg ‖η‖, mul_nonneg (sq_nonneg ‖ξ - η‖) (sq_nonneg ‖η‖)]
 
 /- English proof (translation)
-Establish `pξ : (0 : ℝ) < 1 + ‖ξ‖ ^ 2` using `by positivity`. Establish `pη : (0 : ℝ) < 1 + ‖η‖ ^ 2` using `by positivity`. Establish `pζ : (0 : ℝ) < 1 + ‖ξ - η‖ ^ 2` using `by positivity`. Break down `le_total 0 r with hr | hr` into its components or cases. Rewrite using `[abs_of_nonneg hr, ← Real.mul_rpow (by norm_num) pζ.le, ← Real.mul_rpow (by positivity) pη.le]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Real.rpow_le_rpow pξ.le (one_add_norm_sq_le ξ η) hr`. Rewrite using `[abs_of_nonpos hr]`. Establish `key : (1 + ‖η‖ ^ 2) ^ (-r) ≤ 2 ^ (-r) * (1 + ‖ξ - η‖ ^ 2) ^ (-r) * (1 + ‖ξ‖ ^ 2) ^ (-r)`. Rewrite using `[← Real.mul_rpow (by norm_num) pζ.le, ← Real.mul_rpow (by positivity) pξ.le]`. Apply `Real.rpow_le_rpow pη.le _ (by linarith)` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `one_add_norm_sq_le η ξ` as an intermediate fact. Rewrite `this` using `[norm_sub_rev]`. Then use the resulting hypothesis. Rewrite `key` using `[Real.rpow_neg pη.le, Real.rpow_neg pξ.le]`. Establish `a` using `Real.rpow_pos_of_pos pξ r`. Establish `b` using `Real.rpow_pos_of_pos pη r`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c : 0 < 2 ^ (-r) * (1 + ‖ξ - η‖ ^ 2) ^ (-r)` using `by positivity`. Rewrite `key` using `[le_mul_inv_iff₀ a, inv_mul_le_iff₀ b]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem peetre (r : ℝ) (ξ η : E) :
     (1 + ‖ξ‖ ^ 2) ^ r ≤ 2 ^ |r| * (1 + ‖ξ - η‖ ^ 2) ^ |r| * (1 + ‖η‖ ^ 2) ^ r := by
@@ -57,7 +57,7 @@ theorem peetre (r : ℝ) (ξ η : E) :
       _ ≤ _ := by nlinarith
 
 /- English proof (translation)
-Use `(fourierFun_multiplier (m := fun _ ↦ (1 : ℂ)) (Function.HasTemperateGrowth.const 1) (SobolevSpace.one_bound h) v).1` as an intermediate fact. Use `filter_upwards [this] with ξ hξ`. Rewrite `hξ` using `[one_smul]`. Conclude with `hξ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fourierFun_inclusion {s t : ℝ} (h : t ≤ s) (v : SobolevSpace E F s) :
     fourierFun (SobolevSpace.inclusion h v) =ᵐ[volume] fourierFun v := by
@@ -68,7 +68,7 @@ theorem fourierFun_inclusion {s t : ℝ} (h : t ≤ s) (v : SobolevSpace E F s) 
   exact hξ
 
 /- English proof (translation)
-Rewrite using `[norm_sq_eq_integral]`. Apply `integral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [fourierFun_inclusion h v] with ξ hξ`. Rewrite using `[hξ]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_inclusion_sq {s t : ℝ} (h : t ≤ s) (v : SobolevSpace E F s) :
     ‖SobolevSpace.inclusion h v‖ ^ 2 = ∫ ξ, (1 + ‖ξ‖ ^ 2) ^ t * ‖fourierFun v ξ‖ ^ 2 := by
@@ -78,9 +78,9 @@ theorem norm_inclusion_sq {s t : ℝ} (h : t ≤ s) (v : SobolevSpace E F s) :
   rw [hξ]
 
 /- English proof (translation)
-Establish `hm : AEStronglyMeasurable (fun ξ ↦ A ξ ^ a) (volume : Measure E)` using `(hA.1.aemeasurable.pow_const a).aestronglyMeasurable`. Establish `hq0 : ENNReal.ofReal (1 / a) ≠ 0`. Rewrite using `[ne_eq, ENNReal.ofReal_eq_zero, not_le]`. Check the signs of the components of the expression. Rewrite using `[← memLp_norm_rpow_iff hm hq0 ENNReal.ofReal_ne_top, ENNReal.div_self hq0 ENNReal.ofReal_ne_top, memLp_one_iff_integrable]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Rewrite the conclusion using the stated equalities.
 
-Use `hA.congr (ae_of_all _ fun ξ ↦ ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[ENNReal.toReal_ofReal (by positivity), Real.norm_eq_abs, abs_of_nonneg (Real.rpow_nonneg (h0 ξ) a), ← Real.rpow_mul (h0 ξ), mul_one_div_cancel ha.ne', Real.rpow_one]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem memLp_rpow_of_integrable {A : E → ℝ} (hA : Integrable A (volume : Measure E))
     (h0 : ∀ ξ, 0 ≤ A ξ) {a : ℝ} (ha : 0 < a) :
@@ -98,21 +98,19 @@ theorem memLp_rpow_of_integrable {A : E → ℝ} (hA : Integrable A (volume : Me
     Real.rpow_one]
 
 /- English proof (translation)
-Establish `hsr : 0 < s - r` using `by linarith`. Use `set a := (t - r) / (s - r) with ha_def`. Use `set θ := (s - t) / (s - r) with hθ_def`. Establish `ha : 0 < a` using `div_pos (by linarith) hsr`. Establish `hθ : 0 < θ` using `div_pos (by linarith) hsr`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `haθ : a + θ = 1` using `by rw [ha_def, hθ_def, ← add_div]; field_simp; ring`. Establish `hexp : s * a + r * θ = t` using `by rw [ha_def, hθ_def]; field_simp; ring`. Use `set A : E → ℝ := fun ξ ↦ (1 + ‖ξ‖ ^ 2) ^ s * ‖fourierFun v ξ‖ ^ 2`. Use `set B : E → ℝ := fun ξ ↦ (1 + ‖ξ‖ ^ 2) ^ r * ‖fourierFun v ξ‖ ^ 2`. Establish `hA : Integrable A (volume : Measure E)` using `integrable_weight_mul_norm_sq_fourierFun v`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hB : Integrable B (volume : Measure E)`. Use `integrable_weight_mul_norm_sq_fourierFun (SobolevSpace.inclusion (hrt.trans hts).le v)` as an intermediate fact. Use `this.congr ?_` and prove the remaining obligations. Use `filter_upwards [fourierFun_inclusion (hrt.trans hts).le v] with ξ hξ`. Simplify using `only [B, hξ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hA0 : ∀ ξ, 0 ≤ A ξ` using `fun ξ ↦ by positivity`. Establish `hB0 : ∀ ξ, 0 ≤ B ξ` using `fun ξ ↦ by positivity`. Establish `hpq : (1 / a).HolderConjugate (1 / θ)`. Rewrite using `[Real.holderConjugate_iff]`. Use `⟨?_, by simp [haθ]⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[lt_div_iff₀ ha, one_mul]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hH` using `integral_mul_le_Lp_mul_Lq_of_nonneg hpq (ae_of_all _ fun ξ ↦ Real.rpow_nonneg (hA0 ξ) a) (ae_of_all _ fun ξ ↦ Real.rpow_nonneg (hB0 ξ) θ) (memLp_rpow_of_integrable hA hA0 ha) (memLp_rpow_of_integrable hB hB0 hθ)`. Establish `e1 : ∀ ξ, A ξ ^ a * B ξ ^ θ = (1 + ‖ξ‖ ^ 2) ^ t * ‖fourierFun v ξ‖ ^ 2`. Introduce `ξ`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : (0 : ℝ) < 1 + ‖ξ‖ ^ 2` using `by positivity`. Simplify using `only [A, B]`. Rewrite using `[Real.mul_rpow (by positivity) (by positivity), Real.mul_rpow (by positivity) (by positivity), ← Real.rpow_mul h0.le, ← Real.rpow_mul h0.le]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.rpow_add h0, hexp, ← Real.rpow_add_of_nonneg (by positivity) ha.le hθ.le, haθ, Real.rpow_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e2 : ∀ ξ, (A ξ ^ a) ^ (1 / a) = A ξ` using `fun ξ ↦ by`. Rewrite using `[← Real.rpow_mul (hA0 ξ), mul_one_div_cancel ha.ne', Real.rpow_one]`. Establish `e3 : ∀ ξ, (B ξ ^ θ) ^ (1 / θ) = B ξ` using `fun ξ ↦ by`. Rewrite using `[← Real.rpow_mul (hB0 ξ), mul_one_div_cancel hθ.ne', Real.rpow_one]`. Simplify using `only [e1, e2, e3, one_div_one_div] at hH`.
-
-Rewrite `hH` using `[← norm_inclusion_sq hts.le, ← norm_sq_eq_integral, ← norm_inclusion_sq (hrt.trans hts).le]`. Establish `hsq : ∀ (x : ℝ) (c : ℝ), 0 ≤ x → (x ^ 2) ^ c = (x ^ c) ^ 2` using `fun x c hx ↦ by`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_natCast, ← Real.rpow_mul hx, ← Real.rpow_mul hx, mul_comm]`. Rewrite `hH` using `[hsq _ _ (norm_nonneg _), hsq _ _ (norm_nonneg _), ← mul_pow]`. Conclude with `le_of_pow_le_pow_left₀ two_ne_zero (by positivity) hH`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_inclusion_le_interpolation {r t s : ℝ} (hrt : r < t) (hts : t < s)
     (v : SobolevSpace E F s) :

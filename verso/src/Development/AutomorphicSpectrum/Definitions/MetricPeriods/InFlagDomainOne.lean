@@ -36,7 +36,7 @@ def logSin (G : Matrix (Fin 2) (Fin 2) ℂ) (a₀ a₁ : ℂ) : ℝ :=
     ((herm2 G ![1, a₀] ![1, a₀]).re * (herm2 G ![1, a₁] ![1, a₁]).re))
 
 /- English proof (translation)
-Use `⟨by simp, ?_⟩` and prove the remaining obligations. Use `haveI : IsEmpty {a : Fin N // (a : ℕ) < N - N} := ⟨fun a => by have := a.2; omega⟩`. Use `⟨by ext i; exact isEmptyElim i, fun x hx => ?_⟩` and prove the remaining obligations. Conclude with `absurd (by ext i; exact isEmptyElim i) hx`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem inFlagDomain_one (N : ℕ) : InFlagDomain N N 1 := by
   refine ⟨by simp, ?_⟩

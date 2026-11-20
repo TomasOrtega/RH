@@ -7,7 +7,7 @@ namespace Formalism.FourierDecayAlt.P.SliceIntegralLemmas
 open Formalism.FourierDecayAlt
 
 /- English proof (translation)
-The claim follows from `CutHB.side_zero_of_positive_and_zero (side0Pos_of'' hPr) (side0Zero_of Formalism.FourierDecayAlt.P.letters_pass_partial_bessel hPr CutHB.pts)`.
+A detailed English derivation is pending.
 -/
 theorem side_zero_of_local_properness (hPr : ProperLeftVariablesDomain) : CutHB.Side0 :=
   CutHB.side_zero_of_positive_and_zero (side0Pos_of'' hPr) (side0Zero_of Formalism.FourierDecayAlt.P.letters_pass_partial_bessel hPr CutHB.pts)

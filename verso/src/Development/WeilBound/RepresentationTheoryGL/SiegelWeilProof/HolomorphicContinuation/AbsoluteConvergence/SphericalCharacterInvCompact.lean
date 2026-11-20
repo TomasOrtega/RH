@@ -20,21 +20,19 @@ def czLoc (p q : ℕ) (e : ℤ) (A B : GR n) (ψ : (Fin n → Fin n → ℝ) →
   ∫ k : KR n, (F0 p q e (k : GR n))⁻¹ * jLoc p q e A B ψ w (k : GR n) ∂μ
 
 /- English proof (translation)
-Take `⟨p0, k0, hp, hk0, rfl⟩` from `hI n y`. Establish `hM1` using `(hM n p q e).1`. Establish `hM2` using `(hM n p q e).2`. Establish `hJ : ∀ g : GR n, jLoc p q e A B ψ w (p0 * g) = ((hLoc p0 : ℂ) ^ w * F0 p q e p0) * jLoc p q e A B ψ w g`. Introduce `g`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `jLoc`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Establish `h1 : p0 * g * A * nbEl x * B = p0 * (g * A * nbEl x * B)` using `by simp only [mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite using `[h1, (hM2 p0 _ hp).1, (hM2 p0 _ hp).2]`. Use `push_cast`. Rewrite using `[Complex.mul_cpow_ofReal_nonneg (by unfold hLoc; positivity) (by unfold hLoc; positivity)]`. Expand and normalize the polynomial expressions, which then agree. Establish `hne : F0 p q e k0 ≠ 0`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Introduce `h0`. Establish `h2` using `(hM1 k0 k0⁻¹ (inv_mem hk0)).1`. Rewrite `h2` using `[mul_inv_cancel, weight_factor_one, h0, zero_mul]`. Conclude with `one_ne_zero h2`. Set `K0 : KR n` to `⟨k0, hk0⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hK0 : (K0 : GR n) = k0` using `rfl`. Establish `hshift : ∀ k : KR n, (F0 p q e (k : GR n))⁻¹ = F0 p q e k0 * (F0 p q e ((K0 * k : KR n) : GR n))⁻¹`. Introduce `k`. Rewrite using `[Subgroup.coe_mul, hK0, (hM1 k0 k k.2).1, mul_inv, ← mul_assoc, mul_inv_cancel₀ hne, one_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `k`. Use `show (F0 p q e (k : GR n))⁻¹ * jLoc p q e A B ψ w (p0 * k0 * (k : GR n)) = _`. Rewrite using `[show p0 * k0 * (k : GR n) = p0 * ((K0 * k : KR n) : GR n) by`. Rewrite using `[Subgroup.coe_mul, hK0, mul_assoc], hJ, hshift k]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Use `_ = ((hLoc p0 : ℂ) ^ w * F0 p q e p0 * F0 p q e k0) * ∫ k : KR n, (F0 p q e (k : GR n))⁻¹ * jLoc p q e A B ψ w (k : GR n) ∂μ := by`. Rewrite using `[integral_const_mul]`. Use `congr 1`. Conclude with `integral_mul_left_eq_self (fun k : KR n => (F0 p q e (k : GR n))⁻¹ * jLoc p q e A B ψ w (k : GR n)) K0`.
-
-Use `_ = _ := by`. Rewrite using `[(hM1 p0 k0 hk0).1, (hM1 p0 k0 hk0).2]`. Unfold `czLoc`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem eigen (hI : Iwa) (hM : Mult) (p q : ℕ) (e : ℤ) (A B : GR n) (ψ : (Fin n → Fin n → ℝ) → ℂ)
     [MeasurableSpace (KR n)] [BorelSpace (KR n)] (μ : Measure (KR n)) [μ.IsHaarMeasure] (w : ℂ) (y : GR n) :
@@ -87,13 +85,13 @@ theorem eigen (hI : Iwa) (hM : Mult) (p q : ℕ) (e : ℤ) (A B : GR n) (ψ : (F
         ring
 
 /- English proof (translation)
-Establish `hmul : ∀ g h : GR n, mR (g * h) = mR g * mR h` using `fun _ _ => rfl`. Establish `hdetN : ∀ x, (nU (herm x) : M2 n).det = 1`. Introduce `x`. Simplify using `[nU, det_fromBlocks_zero₂₁]`. Unfold `czLoc`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Establish `hk : (mR (k : GR n)).det ^ e ≠ 0`. Apply `zpow_ne_zero` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h1 : (mR (k : GR n)).det * (mR ((k : GR n)⁻¹)).det = 1`. Rewrite using `[← det_mul, ← hmul, mul_inv_cancel]`. Conclude with `det_one`. Conclude with `left_ne_zero_of_mul_eq_one h1`. Unfold `jLoc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable.
 
-Simplify using `only [Complex.cpow_zero, one_mul, F0, hmul, mR_mkG, nbEl, det_mul, hdetN, mul_one, mul_zpow, mul_assoc, integral_const_mul]`. Generalize the expression as in `(mR (k : GR n)).det ^ e = D at hk ⊢`. Establish `hD` using `inv_mul_cancel₀ hk`. Rewrite using `[mul_inv]`. Take the linear combination `(det a ^ e * (det b ^ e * ((∫ (x : Fin n → Fin n → ℝ), f0 (↑p) (↑q) (mR (k : GR n) * (a * (nU (herm x) * b))) * ψ x) * (f0 (↑p) (↑q) (mR (k : GR n)))⁻¹))) * hD`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem cz_zero (p q : ℕ) (e : ℤ) (a b : M2 n) (ha : InG a) (hb : InG b) (ψ : (Fin n → Fin n → ℝ) → ℂ)
     [MeasurableSpace (KR n)] (μ : Measure (KR n)) :

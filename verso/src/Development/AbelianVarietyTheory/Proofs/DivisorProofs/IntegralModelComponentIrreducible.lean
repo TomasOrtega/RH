@@ -17,29 +17,27 @@ noncomputable section
 namespace GlobalTheory.FlatModel.ModelOpen
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l' Xo' c' W Y p hp hW U hU`. Establish `hj : IsOpenImmersion Y.j` using `GlobalTheory.LocM.BaseMdl.isOpenImmersion_j hp hW Y`. Use `c'.fin` as an intermediate fact. Establish `hV : (p : c'.F) ∈ (c'.V W).nonunits`. Rewrite `hW`, the goal using `[ValuationSubring.mem_nonunits_iff_or]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `Or.inr fun h => hW.elim (Nat.cast_ne_zero.2 hp.ne_zero) fun h' => h' ?_` and prove the remaining obligations. Establish `h2 : c'.F.val.toRingHom (p : c'.F)⁻¹ ∈ W` using `h`. Simplify using `using h2`. Use `GlobalTheory.LocM.BaseMdl.away_of_valuation c'.F (c'.V W) p hp hV` as an intermediate fact. Establish `hβ : IsOpenImmersion (spMap (c'.V W).subtype)` using `IsOpenImmersion.of_isLocalization (S := c'.F) ((p : ℕ) : c'.V W)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨Y.j ''ᵁ U, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨z, -, rfl⟩`. Conclude with `⟨z, rfl⟩`. Introduce and unpack `_ ⟨z, -, rfl⟩`. Establish `hF : IsUnit (p : Γ(Sp c'.F, ⊤))`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h0 : IsUnit (p : c'.F)` using `IsUnit.mk0 _ (Nat.cast_ne_zero.2 hp.ne_zero)`. Establish `h1` using `h0.map (Scheme.ΓSpecIso (CommRingCat.of c'.F)).inv.hom`. Rewrite `h1` using `[map_natCast]`. Conclude with `h1`. Establish `hunit : IsUnit (p : Γ(Xo'.XF c', ⊤))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hF.map (Scheme.Hom.appTop (pullback.snd Xo'.s (spMap (IntermediateField.inclusion c'.le).toRingHom))).hom`. Rewrite `h1` using `[map_natCast]`. Conclude with `h1`. Establish `hz : z ∈ Y.j ⁻¹ᵁ Y.X.basicOpen (p : Γ(Y.X, ⊤))`. Rewrite using `[Scheme.preimage_basicOpen, map_natCast]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `(Scheme.basicOpen_of_isUnit _ hunit).ge trivial`. Conclude with `hz`. Introduce `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z', hz', e⟩`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Y.j.isOpenEmbedding.injective e]` and apply the resulting hypothesis. Introduce `hz`. Conclude with `⟨z, hz, rfl⟩`. Introduce `k _ f hf`. Set `β` to `(c'.V W).subtype`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Introduce a local definition for the expression.
 
-Set `f' : c'.F →+* k` to `IsFractionRing.lift hf`. Establish `hff : f'.comp β = f`. Use extensionality with `x`. Conclude with `IsFractionRing.lift_algebraMap hf x`. Set `a` to `U.ι ≫ pullback.snd Xo'.s (spMap (IntermediateField.inclusion c'.le).toRingHom)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hU k f'` as an intermediate fact. Set `e` to `Y.j.isoImage U`. Establish `h1 : a ≫ spMap β = e.hom ≫ (Y.j ''ᵁ U).ι ≫ Y.s`. Rewrite using `[Scheme.Hom.isoImage_hom_ι_assoc, GlobalTheory.LocM.BaseMdl.j_s]`. Conclude with `Category.assoc _ _ _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : spMap f' ≫ spMap β = spMap f`. Rewrite using `[← hff]`. Simplify using `only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]`. Set `φ` to `pullback.map a (spMap f') ((Y.j ''ᵁ U).ι ≫ Y.s) (spMap f) e.hom (𝟙 _) (spMap β) h1 (by rw [h2, Category.id_comp])`. Set `ψ : pullback ((Y.j ''ᵁ U).ι ≫ Y.s) (spMap f) ⟶ pullback a (spMap f')` to `pullback.lift (pullback.fst _ _ ≫ e.inv) (pullback.snd _ _) (by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[← cancel_mono (spMap β)]`. Simplify using `only [Category.assoc, h1, Iso.inv_hom_id_assoc, h2]`. Conclude with `pullback.condition)`. Establish `hφψ : ψ ≫ φ = 𝟙 _`. Apply `pullback.hom_ext` to reduce the goal to its premises.
-
-Simplify using `only [φ, ψ, pullback.map, Category.assoc, pullback.lift_fst, pullback.lift_fst_assoc, Iso.inv_hom_id, Category.comp_id, Category.id_comp]`. Simplify using `only [φ, ψ, pullback.map, Category.assoc, pullback.lift_snd, pullback.lift_snd_assoc, Category.comp_id, Category.id_comp]`. Establish `hsurj : Function.Surjective φ` using `fun x => ⟨ψ x, by rw [← Scheme.Hom.comp_apply, hφψ]; rfl⟩`. Conclude with `hsurj.irreducibleSpace φ.continuous`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_geomIrr_open : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H)
     (l' : Level H) (Xo' : Moduli Dw l') (c' : Coeff l') (W : ValuationSubring ℂ) (Y : Model Xo' c' (c'.V W).subtype)

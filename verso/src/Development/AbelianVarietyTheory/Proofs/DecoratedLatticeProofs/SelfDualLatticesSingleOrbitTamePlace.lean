@@ -18,15 +18,13 @@ namespace GlobalTheory.IwaOrbit
 variable {D : D7}
 
 /- English proof (translation)
-Use `AddSubgroup.closure_induction₂ (p := fun x y _ _ => x * y ∈ intAE D) ?_ ?_ ?_ ?_ ?_ ?_ ?_ hx hy` and prove the remaining obligations. Introduce and unpack `_ _ ⟨a, ha, u, rfl⟩ ⟨b, hb, v, rfl⟩`. Use `AddSubgroup.subset_closure ⟨a * b, fun w => ?_, u * v, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `mul_mem (ha w) (hb w)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul]`. Both sides reduce to the same expression. Introduce `x _`. Rewrite using `[zero_mul]`. Conclude with `zero_mem _`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `x _`. Rewrite using `[mul_zero]`. Conclude with `zero_mem _`. Introduce `x y z _ _ _ h1 h2`. Rewrite using `[add_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `add_mem h1 h2`. Introduce `x y z _ _ _ h1 h2`. Rewrite using `[mul_add]`. Conclude with `add_mem h1 h2`. Introduce `x y _ _ h`.
-
-Rewrite using `[neg_mul]`. Conclude with `neg_mem h`. Introduce `x y _ _ h`. Rewrite using `[mul_neg]`. Conclude with `neg_mem h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_mem_intAE {x y : Af D.host.F ⊗[D.host.F] D.host.E} (hx : x ∈ intAE D) (hy : y ∈ intAE D) :
     x * y ∈ intAE D := by
@@ -43,27 +41,27 @@ theorem mul_mem_intAE {x y : Af D.host.F ⊗[D.host.F] D.host.E} (hx : x ∈ int
   · intro x y _ _ h; rw [mul_neg]; exact neg_mem h
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨zero_mem _, by rw [(finPart D).map_zero]; exact zero_mem _⟩`.
+Supply the required witnesses or components.
 -/
 theorem intAt_zero {P : Pl D → Prop} : (0 : AE D) ∈ intAt D P :=
   ⟨zero_mem _, by rw [(finPart D).map_zero]; exact zero_mem _⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨add_mem ha.1 hb.1, by rw [(finPart D).map_add]; exact add_mem ha.2 hb.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem intAt_add {P : Pl D → Prop} {a b : AE D} (ha : a ∈ intAt D P) (hb : b ∈ intAt D P) :
     a + b ∈ intAt D P :=
   ⟨add_mem ha.1 hb.1, by rw [(finPart D).map_add]; exact add_mem ha.2 hb.2⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Ideal.mul_mem_right _ _ ha.1, by rw [(finPart D).map_mul]; exact mul_mem_intAE ha.2 hb.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem intAt_mul {P : Pl D → Prop} {a b : AE D} (ha : a ∈ intAt D P) (hb : b ∈ intAt D P) :
     a * b ∈ intAt D P :=
   ⟨Ideal.mul_mem_right _ _ ha.1, by rw [(finPart D).map_mul]; exact mul_mem_intAE ha.2 hb.2⟩
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `Finset.sum_induction _ (· ∈ intAt D P) (fun _ _ => intAt_add) intAt_zero fun j _ => intAt_mul (hM i j) (hz j)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mulVec_mem_intAt {P : Pl D → Prop} {m n : ℕ} {M : Matrix (Fin m) (Fin n) (AE D)} {z : Fin n → AE D}
     (hM : ∀ i j, M i j ∈ intAt D P) (hz : ∀ j, z j ∈ intAt D P) (i : Fin m) : (M *ᵥ z) i ∈ intAt D P := by
@@ -72,7 +70,7 @@ theorem mulVec_mem_intAt {P : Pl D → Prop} {m n : ℕ} {M : Matrix (Fin m) (Fi
     fun j _ => intAt_mul (hM i j) (hz j)
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Conclude with `Ideal.sum_mem _ fun k _ => Ideal.mul_mem_right _ _ (hA i k)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_mem_idAt_left {P : Pl D → Prop} {l m n : ℕ} {A : Matrix (Fin l) (Fin m) (AE D)}
     (B : Matrix (Fin m) (Fin n) (AE D)) (hA : ∀ i j, A i j ∈ idAt D P) (i : Fin l) (j : Fin n) :
@@ -80,7 +78,7 @@ theorem mul_mem_idAt_left {P : Pl D → Prop} {l m n : ℕ} {A : Matrix (Fin l) 
   rw [Matrix.mul_apply]; exact Ideal.sum_mem _ fun k _ => Ideal.mul_mem_right _ _ (hA i k)
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Conclude with `Ideal.sum_mem _ fun k _ => Ideal.mul_mem_left _ _ (hB k j)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_mem_idAt_right {P : Pl D → Prop} {l m n : ℕ} (A : Matrix (Fin l) (Fin m) (AE D))
     {B : Matrix (Fin m) (Fin n) (AE D)} (hB : ∀ i j, B i j ∈ idAt D P) (i : Fin l) (j : Fin n) :
@@ -88,21 +86,21 @@ theorem mul_mem_idAt_right {P : Pl D → Prop} {l m n : ℕ} (A : Matrix (Fin l)
   rw [Matrix.mul_apply]; exact Ideal.sum_mem _ fun k _ => Ideal.mul_mem_left _ _ (hB k j)
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.smul_apply, smul_eq_mul]`. Conclude with `(hε _).1 (hX i j)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_eq_self {P : Pl D → Prop} {ε : AE D} (hε : ∀ a, a ∈ idAt D P ↔ ε * a = a) {m n : ℕ}
     {X : Matrix (Fin m) (Fin n) (AE D)} (hX : ∀ i j, X i j ∈ idAt D P) : ε • X = X := by
   ext i j; rw [Matrix.smul_apply, smul_eq_mul]; exact (hε _).1 (hX i j)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[Pi.smul_apply, smul_eq_mul]`. Conclude with `(hε _).1 (hy i)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_vec_eq_self {P : Pl D → Prop} {ε : AE D} (hε : ∀ a, a ∈ idAt D P ↔ ε * a = a) {n : ℕ}
     {y : Fin n → AE D} (hy : ∀ i, y i ∈ idAt D P) : ε • y = y := by
   funext i; rw [Pi.smul_apply, smul_eq_mul]; exact (hε _).1 (hy i)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.smul_apply, smul_eq_mul, Pi.smul_apply, Finset.mul_sum, mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem smul_mulVec' {m n : ℕ} (a : AE D) (A : Matrix (Fin m) (Fin n) (AE D)) (y : Fin n → AE D) :
     (a • A) *ᵥ y = a • (A *ᵥ y) := by
@@ -110,7 +108,7 @@ theorem smul_mulVec' {m n : ℕ} (a : AE D) (A : Matrix (Fin m) (Fin n) (AE D)) 
   simp only [Matrix.mulVec, dotProduct, Matrix.smul_apply, smul_eq_mul, Pi.smul_apply, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `cA D (a * X j i) = cA D a * cA D (X j i)`. Conclude with `(cA D).map_mul _ _`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem adj_smul {m n : ℕ} (a : AE D) (X : Matrix (Fin m) (Fin n) (AE D)) : adj (a • X) = cA D a • adj X := by
   ext i j
@@ -118,7 +116,7 @@ theorem adj_smul {m n : ℕ} (a : AE D) (X : Matrix (Fin m) (Fin n) (AE D)) : ad
   exact (cA D).map_mul _ _
 
 /- English proof (translation)
-Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `cA D (X j i - Y j i) = cA D (X j i) - cA D (Y j i)`. Conclude with `(cA D).map_sub _ _`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem adj_sub {m n : ℕ} (X Y : Matrix (Fin m) (Fin n) (AE D)) : adj (X - Y) = adj X - adj Y := by
   ext i j
@@ -126,7 +124,7 @@ theorem adj_sub {m n : ℕ} (X Y : Matrix (Fin m) (Fin n) (AE D)) : adj (X - Y) 
   exact (cA D).map_sub _ _
 
 /- English proof (translation)
-Rewrite using `[hε]`. Establish `h` using `congrArg (cA D) ((hε _).1 (hX j i))`. Rewrite `h` using `[(cA D).map_mul, hcε]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adj_mem_idAt {P : Pl D → Prop} {ε : AE D} (hcε : cA D ε = ε) (hε : ∀ a, a ∈ idAt D P ↔ ε * a = a)
     {m n : ℕ} {X : Matrix (Fin m) (Fin n) (AE D)} (hX : ∀ i j, X i j ∈ idAt D P) (i : Fin n) (j : Fin m) :
@@ -137,13 +135,13 @@ theorem adj_mem_idAt {P : Pl D → Prop} {ε : AE D} (hcε : cA D ε = ε) (hε 
   exact h
 
 /- English proof (translation)
-Take `⟨β, β', hβ, hβ', h1, h2, hmem, hHO, hHc, hH⟩` from `GlobalTheory.T.exists_unimodular_basis_selfDual_lattice_at_place D S v ε Λ ht hεε hcε hεO hεI hΛ`. Take `⟨P, P', hP, hP', hPP', hP'P, hPH⟩` from `GlobalTheory.T.unimodular_hermitian_congr_one_at_tamePlace D v ε S.rank _ ht hεε hcε hεO hεI hHO hHc hH`. Use `⟨β * P, P' * β', mul_mem_idAt_left P hβ, mul_mem_idAt_right P' hβ', ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 
-Introduce `y hy`. Rewrite using `[hmem y hy]`. Prove the components needed by the constructor for the conclusion. Introduce `h i`. Rewrite using `[← Matrix.mulVec_mulVec]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mulVec_mem_intAt hP' h i`. Introduce `h i`. Establish `hz : β' *ᵥ y = P *ᵥ (P' *ᵥ (β' *ᵥ y))`. Rewrite using `[Matrix.mulVec_mulVec, hPP', smul_mulVec', Matrix.one_mulVec, smul_vec_eq_self hεI (mulVec_mem_idAt β' hy)]`. Rewrite using `[hz]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mulVec_mem_intAt hP (fun j => by rw [Matrix.mulVec_mulVec]; exact h j) i`. Rewrite using `[adj_mul, ← hPH]`. Simplify using `only [Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_onb (S : HSp D) (v : Pl D) (ε : AE D) (Λ : AddSubgroup (Fin S.rank → AE D)) (ht : Tame D v)
     (hεε : ε * ε = ε) (hcε : cA D ε = ε) (hεO : ε ∈ intAt D (· = v)) (hεI : ∀ a, a ∈ idAt D (· = v) ↔ ε * a = a)
@@ -178,21 +176,21 @@ theorem exists_onb (S : HSp D) (v : Pl D) (ε : AE D) (Λ : AddSubgroup (Fin S.r
     simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Introduce `D S v Λ Λ' ht hΛ hΛ'`. Take `⟨⟨ε, hεε, hcε, hεO, hεI, -⟩, -⟩` from `GlobalTheory.T.adelicPoint_components_atPlaces_lattices_vacua D (· = v)`. Take `⟨b, b', hb, hb', hbb', hb'b, hmem, hG⟩` from `exists_onb S v ε Λ ht hεε hcε hεO hεI hΛ`. Take `⟨c, c', hc, hc', hcc', hc'c, hmem', hG'⟩` from `exists_onb S v ε Λ' ht hεε hcε hεO hεI hΛ'`. Use `set g := c * b' with hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hgI : ∀ i j, g i j ∈ idAt D (· = v)` using `mul_mem_idAt_right c hb'`. Establish `hag : ε • adj g = adj g` using `smul_eq_self hεI (adj_mem_idAt hcε hεI hgI)`. Establish `hgg : ε • g = g` using `smul_eq_self hεI hgI`. Establish `hb'b' : adj b' * b' = ε • gA S`. Establish `h` using `congrArg (fun X => adj b' * X * b') hG`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[Matrix.mul_smul, Matrix.mul_one, smul_eq_self hεI (adj_mem_idAt hcε hεI hb')]`. Rewrite using `[← h, ← Matrix.mul_assoc, ← Matrix.mul_assoc, ← adj_mul, Matrix.mul_assoc, Matrix.mul_assoc, hbb', adj_smul, adj_one, hcε, Matrix.smul_mul, Matrix.one_mul, Matrix.mul_smul, Matrix.mul_one, smul_smul, hεε]`. Establish `hf1 : adj g * (gA S * g) = ε • gA S`. Rewrite using `[hg, adj_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `haG : adj g * gA S = ε • (adj g * gA S)` using `by rw [← Matrix.smul_mul, hag]`. Establish `hGg : gA S * g = ε • (gA S * g)` using `by rw [← Matrix.mul_smul, hgg]`. Establish `hunit : adj (g + (1 - ε • (1 : Matrix (Fin S.rank) (Fin S.rank) (AE D)))) ⬝ (gA S ⬝ (g + (1 - ε • (1 : Matrix (Fin S.rank) (Fin S.rank) (AE D))))) = gA S` using `by show adj (g + (1 - ε • (1 : Matrix (Fin S.rank) (Fin S.rank) (AE D)))) * (gA S * (g + (1 - ε • (1 : Matrix (Fin S.rank) (Fin S.rank) (AE D))))) = gA S`. Rewrite using `[adj_add, adj_sub, adj_one, adj_smul, adj_one, hcε]`. Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.sub_mul, Matrix.mul_sub, Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, Matrix.mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hf1]`. Simplify using `only [smul_add, smul_sub]`. Rewrite using `[← haG, ← hGg, smul_smul, hεε]`. Normalize the expressions using the abelian group laws. Use `⟨ofMat S (g + (1 - ε • (1 : Matrix (Fin S.rank) (Fin S.rank) (AE D)))) hunit, ?_, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(mem_congGrp_iff S (idAt D (· = v)) _).2 fun i j => ?_ show (g + (1 - ε • (1 : Matrix (Fin S.rank) (Fin S.rank) (AE D)))) i j - (1 : Matrix (Fin S.rank) (Fin S.rank) (AE D)) i j ∈ idAt D (· = v)` and prove the remaining obligations. Establish `e : (g + (1 - ε • (1 : Matrix (Fin S.rank) (Fin S.rank) (AE D)))) i j - (1 : Matrix (Fin S.rank) (Fin S.rank) (AE D)) i j = g i j - ε * (1 : Matrix (Fin S.rank) (Fin S.rank) (AE D)) i j`. Rewrite using `[Matrix.add_apply, Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `sub_mem (hgI i j) (Ideal.mul_mem_right _ _ hεO.1)`. Introduce `y hy`. Establish `hMy : mt S (ofMat S (g + (1 - ε • (1 : Matrix (Fin S.rank) (Fin S.rank) (AE D)))) hunit) *ᵥ y = g *ᵥ y` using `by show (g + (1 - ε • (1 : Matrix (Fin S.rank) (Fin S.rank) (AE D)))) *ᵥ y = g *ᵥ y`. Rewrite using `[Matrix.add_mulVec, Matrix.sub_mulVec, Matrix.one_mulVec, smul_mulVec', Matrix.one_mulVec, smul_vec_eq_self hεI hy, sub_self, add_zero]`. Rewrite using `[hMy, hmem y hy, hmem' _ (mulVec_mem_idAt g hy)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: c' *ᵥ (g *ᵥ y) = b' *ᵥ y`. Rewrite using `[Matrix.mulVec_mulVec, hg, ← Matrix.mul_assoc, hc'c, Matrix.smul_mul, Matrix.one_mul, smul_eq_self hεI hb']`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem selfDual_orbit : ∀ (D : D7) (S₀ : HSp D) (v : Pl D) (Λ Λ' : AddSubgroup (Fin S₀.rank → AE D)), Tame D v → IsSDAt S₀ v Λ → IsSDAt S₀ v Λ' → ∃ γ ∈ grpAt S₀ (· = v), ∀ y : Fin S₀.rank → AE D, (∀ i, y i ∈ idAt D (· = v)) → (y ∈ Λ ↔ mt S₀ γ *ᵥ y ∈ Λ') := by
   intro D S v Λ Λ' ht hΛ hΛ'

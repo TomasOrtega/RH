@@ -75,7 +75,7 @@ def LeafAddKum : Prop := ∀ (q : ℕ) [NeZero q] {X : Scheme.{0}} (u v : (Γ(X,
   kum q (u * v) = kum q u + kum q v ∧ kum q (u ^ q) = 0
 
 /- English proof (translation)
-Use `⟨fun q _ => ⟨h1 q, h2 q, h3 q, h4 q⟩, fun q _ E => ⟨h5 q E, h6 q E, h7 q E⟩, h8, fun q _ => ⟨h9 q, h10 q⟩⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem goal_of (_hCup : LeafCupSpec) (_hTw : LeafTwPairExists) (_hTwU : LeafTwPairUnique) (_hKT : LeafKumTExists)
     (_hOne : LeafOneSpec) (_hKum : LeafKumSpec) (_hC1 : EtaleFirstChernClassRepresentedByChernCocycle)

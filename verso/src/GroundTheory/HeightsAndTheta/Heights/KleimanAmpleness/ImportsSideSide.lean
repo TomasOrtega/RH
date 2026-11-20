@@ -21,7 +21,7 @@ def SegreFibreIdeal.Statement : Prop :=
       (mIdealOver O (segreJoin y)).map (MvPolynomial.map φ) ≤ segreLift ι F W
 
 /- English proof (translation)
-The claim follows from `h exO exΩ (IsLocalRing.ResidueField exO) (IsLocalRing.residue exO) Unit (fun _ => Fin (1 + 1)) (IndefiniteRowSideFullHecke.Kleiman2.oneBlock (Kleiman.lineX exF))`.
+A detailed English derivation is pending.
 -/
 example (h : SegreFibreIdeal.Statement) :=
   h exO exΩ (IsLocalRing.ResidueField exO) (IsLocalRing.residue exO) Unit (fun _ => Fin (1 + 1))

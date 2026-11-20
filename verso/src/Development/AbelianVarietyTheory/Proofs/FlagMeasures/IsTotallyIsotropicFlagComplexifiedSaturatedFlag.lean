@@ -7,25 +7,25 @@ open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheor
 namespace GlobalTheory.FlagMeas
 
 /- English proof (translation)
-Establish `hle : ∀ V : Submodule K (Fin n → K), Module.finrank ℂ (Submodule.span ℂ ((fun y : Fin n → K => fun l => φ (y l)) '' (V : Set (Fin n → K)))) ≤ Module.finrank K V`. Introduce `V`. Set `b` to `Module.finBasis K V`. Establish `hsub : (fun y : Fin n → K => fun l => φ (y l)) '' (V : Set (Fin n → K)) ⊆ Submodule.span ℂ (Set.range fun k => fun l => φ ((b k : Fin n → K) l))`. Introduce and unpack `_ ⟨u, hu, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Simplify using `only [SetLike.mem_coe]`. Establish `hu' : u = ∑ k, b.repr ⟨u, hu⟩ k • (b k : Fin n → K)`. Establish `h` using `congrArg Subtype.val (b.sum_repr ⟨u, hu⟩)`. Simplify using `only [Submodule.coe_sum, SetLike.val_smul] at h`. Conclude with `h.symm`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hφ : (fun l => φ (u l)) = ∑ k, φ (b.repr ⟨u, hu⟩ k) • fun l => φ ((b k : Fin n → K) l)` using `by conv_lhs => rw [hu']`. Use extensionality with `l`. Simplify using `[Finset.sum_apply, map_sum, map_mul]`. Rewrite using `[hφ]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hsup : ∀ V V' : Submodule K (Fin n → K), V ⊔ V' = ⊤ → Submodule.span ℂ ((fun y : Fin n → K => fun l => φ (y l)) '' (V : Set (Fin n → K))) ⊔ Submodule.span ℂ ((fun y : Fin n → K => fun l => φ (y l)) '' (V' : Set (Fin n → K))) = ⊤`. Introduce `V V' h`. Rewrite using `[eq_top_iff]`. Introduce `z _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hz : z = ∑ i, z i • (Pi.single i (1 : ℂ) : Fin n → ℂ)`. Use extensionality with `l`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Rewrite using `[hz]`. Use `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hsingle : (fun l => φ ((Pi.single i (1 : K) : Fin n → K) l)) = (Pi.single i (1 : ℂ) : Fin n → ℂ)`. Use extensionality with `l`. Distinguish the cases in `hl : l = i`. Substitute `hl` using the available equality. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Pi.single_eq_of_ne hl]`. Rewrite using `[← hsingle]`. Establish `hmem : (Pi.single i (1 : K) : Fin n → K) ∈ V ⊔ V'` using `by rw [h]; exact Submodule.mem_top`. Take `⟨u, hu, u', hu', hsum⟩` from `Submodule.mem_sup.1 hmem`. Rewrite using `[← hsum]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hadd : (fun l => φ ((u + u') l)) = (fun l => φ (u l)) + fun l => φ (u' l)`. Use extensionality with `l`. Simplify using the standard rewrite rules. Rewrite using `[hadd]`. Conclude with `Submodule.add_mem_sup (Submodule.subset_span ⟨u, hu, rfl⟩) (Submodule.subset_span ⟨u', hu', rfl⟩)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨U', hU'⟩` from `Submodule.exists_isCompl U`. Establish `h1` using `hle U`. Establish `h2` using `hle U'`. Establish `h3 : Module.finrank K U + Module.finrank K U' = n`. Use `Submodule.finrank_add_eq_of_isCompl hU'` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using this`. Establish `h4` using `Submodule.finrank_add_le_finrank_add_finrank (Submodule.span ℂ ((fun y : Fin n → K => fun l => φ (y l)) '' (U : Set (Fin n → K)))) (Submodule.span ℂ ((fun y : Fin n → K => fun l => φ (y l)) '' (U' : Set (Fin n → K))))`. Rewrite `h4` using `[hsup U U' hU'.sup_eq_top, finrank_top, Module.finrank_fin_fun]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem finrank_span_map_ringHom_eq_finrank {K : Type*} [Field K] {n : ℕ} (φ : K →+* ℂ)
     (U : Submodule K (Fin n → K)) :
@@ -93,15 +93,15 @@ private theorem finrank_span_map_ringHom_eq_finrank {K : Type*} [Field K] {n : �
   omega
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx => exact Submodule.subset_span ⟨x, hx, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately.
 
-Consider the case `zero`. Establish `h0 : (fun l => φ ((0 : Fin n → K) l)) = 0` using `by ext; simp`. Express the relevant statement in the definitionally equal form `(fun l => φ ((0 : Fin n → K) l)) ∈ Submodule.span ℂ ((fun y : Fin n → K => fun l => φ (y l)) '' X)`. Rewrite using `[h0]`. Conclude with `Submodule.zero_mem _`.
+Treat this case separately. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Establish `h : (fun l => φ ((x + y) l)) = (fun l => φ (x l)) + fun l => φ (y l)` using `by ext; simp`. Express the relevant statement in the definitionally equal form `(fun l => φ (x l)) ∈ Submodule.span ℂ ((fun y : Fin n → K => fun l => φ (y l)) '' X) at hx`. Express the relevant statement in the definitionally equal form `(fun l => φ (y l)) ∈ Submodule.span ℂ ((fun y : Fin n → K => fun l => φ (y l)) '' X) at hy`. Express the relevant statement in the definitionally equal form `(fun l => φ ((x + y) l)) ∈ Submodule.span ℂ ((fun y : Fin n → K => fun l => φ (y l)) '' X)`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx`. Establish `h : (fun l => φ ((c • x) l)) = φ c • fun l => φ (x l)` using `by ext; simp`. Express the relevant statement in the definitionally equal form `(fun l => φ (x l)) ∈ Submodule.span ℂ ((fun y : Fin n → K => fun l => φ (y l)) '' X) at hx`.
+Treat this case separately. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(fun l => φ ((c • x) l)) ∈ Submodule.span ℂ ((fun y : Fin n → K => fun l => φ (y l)) '' X)`. Rewrite using `[h]`. Conclude with `Submodule.smul_mem _ _ hx`. Conclude with `Submodule.span_mono (Set.image_mono Submodule.subset_span)`.
+A detailed English derivation is pending.
 -/
 private theorem span_map_ringHom_span_eq_span_map {K : Type*} [Field K] {n : ℕ} (φ : K →+* ℂ) (X : Set (Fin n → K)) :
     Submodule.span ℂ ((fun y : Fin n → K => fun l => φ (y l)) '' (Submodule.span K X : Set (Fin n → K))) =
@@ -129,33 +129,31 @@ private theorem span_map_ringHom_span_eq_span_map {K : Type*} [Field K] {n : ℕ
   · exact Submodule.span_mono (Set.image_mono Submodule.subset_span)
 
 /- English proof (translation)
-Introduce `I Λ a j S hS v`. Take `⟨h0, hmono, hrk, -, hiso⟩` from `hS`. Establish `hdet : IsUnit (I.P v).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (I.P_unit v)`. Establish `hPQ : I.P v * (I.P v)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hdet`. Establish `hinj : Function.Injective (Matrix.mulVecLin (I.P v)⁻¹)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x y hxy`. Establish `h` using `congrArg (fun z => I.P v *ᵥ z) hxy`. Simplify `h` using `[Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, hPQ]`. Establish `hspan : ∀ i, flagAt I S v i = (Submodule.span ℂ ((fun y : Fin I.n → I.E => fun l => I.φ v (y l)) '' (S i : Set _))).map (Matrix.mulVecLin (I.P v)⁻¹)`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Submodule.map_span, Set.image_image]`. Both sides reduce to the same expression. Establish `hfr : ∀ i, Module.finrank ℂ (flagAt I S v i) = Formalism.HN.rkK (S i)`. Introduce `i`. Rewrite using `[hspan i, ← (Submodule.equivMapOfInjective _ hinj _).finrank_eq]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `show _ = Module.finrank I.E (Submodule.span I.E (S i : Set (Fin I.n → I.E)))`. Rewrite using `[← span_map_ringHom_span_eq_span_map, finrank_span_map_ringHom_eq_finrank]`. Establish `hstar : ∀ x : I.E, I.φ v (starRingEnd I.E x) = starRingEnd ℂ (I.φ v x)` using `fun x => I.cm.cmUnram.2.1 (I.φ v) x`. Establish `hJ : ((I.P v)⁻¹)ᴴ * (Formalism.REAL.Jm (I.ε v) * (I.P v)⁻¹) = I.J.map (I.φ v)`. Rewrite using `[← I.P_spec v]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = I.J.map (I.φ v) := by rw [hPQ]; simp`. Establish `hgen : ∀ x y : Fin I.n → ℂ, star ((I.P v)⁻¹ *ᵥ x) ⬝ᵥ (Formalism.REAL.Jm (I.ε v) *ᵥ ((I.P v)⁻¹ *ᵥ y)) = star x ⬝ᵥ (I.J.map (I.φ v) *ᵥ y)`. Introduce `x y`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec]`. Simplify using `only [Matrix.mulVec_mulVec, hJ]`. Establish `hpair : ∀ s ∈ S (Fin.last a), ∀ t ∈ S (Fin.last a), star (fun l => I.φ v (s l)) ⬝ᵥ (I.J.map (I.φ v) *ᵥ fun l => I.φ v (t l)) = 0`. Introduce `s hs t ht`. Establish `h` using `hiso s hs t ht`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h'` using `congrArg (I.φ v) h`. Rewrite `h'` using `[map_zero]`. Rewrite using `[← h']`. Simplify using `[Formalism.UG.hform, dotProduct, Matrix.mulVec, map_sum, map_mul, hstar, Finset.mul_sum, mul_assoc]`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `show Submodule.span ℂ _ = ⊥`. Rewrite using `[Submodule.span_eq_bot]`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Rewrite `hy` using `[h0]`. Establish `hy0 : y = 0` using `by simpa using hy`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Substitute using the available equality. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Substitute `hy0` using the available equality. Use extensionality with `l`. Simplify using `[Matrix.mulVec, dotProduct]`. Introduce `i k hik`. Conclude with `Submodule.span_mono (Set.image_mono (SetLike.coe_subset_coe.2 (hmono hik)))`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `i`. Rewrite using `[hfr, hfr]`. Conclude with `hrk i`. Introduce `x hx y hy`. Rewrite `hx`, `hy` using `[hspan]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Take `⟨w, hw, rfl⟩` from `Submodule.mem_map.1 hx`. Take `⟨w', hw', rfl⟩` from `Submodule.mem_map.1 hy`. Rewrite using `[Matrix.mulVecLin_apply, Matrix.mulVecLin_apply, hgen]`. Use `clear hx hy`. Establish `hgen1 : ∀ g ∈ (fun y : Fin I.n → I.E => fun l => I.φ v (y l)) '' (S (Fin.last a) : Set (Fin I.n → I.E)), ∀ z ∈ Submodule.span ℂ ((fun y : Fin I.n → I.E => fun l => I.φ v (y l)) '' (S (Fin.last a) : Set (Fin I.n → I.E))), star g ⬝ᵥ (I.J.map (I.φ v) *ᵥ z) = 0`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Introduce and unpack `_ ⟨s, hs, rfl⟩ z hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem u hu`. Take `⟨t, ht, rfl⟩` from `hu`. Conclude with `hpair s hs t ht`.
+Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add u u' _ _ hu hu' => rw [Matrix.mulVec_add, dotProduct_add, hu, hu', add_zero]`. Consider the case `smul c u _ hu => rw [Matrix.mulVec_smul, dotProduct_smul, hu, smul_zero]`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem u hu => exact hgen1 u hu w' hw'`.
-
-Consider the case `zero => simp`. Consider the case `add u u' _ _ hu hu' => rw [star_add, add_dotProduct, hu, hu', add_zero]`. Consider the case `smul c u _ hu => rw [star_smul, smul_dotProduct, hu, smul_zero]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isIsoFlag_flagAt_of_isSatFlag :
     ∀ (I : AutInst) (Λ : Submodule (𝓞 I.E) (Fin I.n → I.E)) (a : ℕ) (j : Fin a → ℕ)

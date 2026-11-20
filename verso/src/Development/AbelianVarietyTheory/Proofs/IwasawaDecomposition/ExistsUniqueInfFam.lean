@@ -14,7 +14,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Mem.InfFamUnique
 
 /- English proof (translation)
-Introduce `D`. Take `⟨θ, hθ⟩` from `GlobalTheory.DualPairCompare.exists_infFam D`. Conclude with `⟨θ, hθ, fun θ' h' => funext fun ρ => GlobalTheory.Mem.VolEmb.infEmb_unique (tauE D ρ) (θ' ρ) (θ ρ) (h' ρ) (hθ ρ)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem existsUnique_infFam : ∀ D : D7, ∃! θ : InfF D, IsInfFam θ := by
   intro D

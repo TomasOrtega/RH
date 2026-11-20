@@ -6,13 +6,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open NumberField Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ l _ n M hM m r w hl A hA κ hκ hm i j e`. Take `⟨χ, hχ, -, hI⟩` from `hκ`. Establish `hv : A.valuation (l : Ω) < 1`. Simplify using `using (hA _).2 hl`. Establish `hψ : KillsMu M (χ j / χ i)` using `fun s hs => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[MonoidHom.div_apply, hχ i s hs, hχ j s hs, div_one]`. Establish `hfin : Finite (χ j / χ i).range` using `(UpperTheory.galois_rep_values_in_finite_extension F Ω _ M hM _ hψ).to_subtype`. Establish `hN : ∀ s, (χ j / χ i) s ^ Nat.card (χ j / χ i).range = 1` using `fun s => congrArg Subtype.val (pow_card_eq_one' (x := (⟨_, s, rfl⟩ : (χ j / χ i).range)))`. Establish `hN0 : Nat.card (χ j / χ i).range ≠ 0` using `Nat.card_pos.ne'`. Take `⟨g, hg, hne⟩` from `UpperTheory.V.Ws.Pt.cycIne F Ω l A hv ((m i - (m j + 1)) * Nat.card (χ j / χ i).range) (mul_ne_zero (sub_ne_zero.2 (hm i j)) (by exact_mod_cast hN0))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Apply `hne` to reduce the goal to its premises. Establish `h1` using `DFunLike.congr_fun e ⟨g, Ine_le_Dec A hg⟩`. Rewrite `h1` using `[MonoidHom.mul_apply, hI i _ hg, hI j _ hg]`. Express the relevant statement in the definitionally equal form `cycBar F Ω l g ^ m i * χ i g = cycBar F Ω l g ^ m j * χ j g * cycBar F Ω l g at h1`. Establish `h2 : cycBar F Ω l g ^ (m i - (m j + 1)) = (χ j / χ i) g`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Rewrite using `[MonoidHom.div_apply, zpow_sub, zpow_add_one, ← div_eq_mul_inv, div_eq_div_iff_mul_eq_mul, h1, mul_right_comm, mul_comm]`. Rewrite using `[zpow_mul, h2, zpow_natCast, hN]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.V.Lev.unlGap :
     UpperTheory.V.Lev.UnlGap := by

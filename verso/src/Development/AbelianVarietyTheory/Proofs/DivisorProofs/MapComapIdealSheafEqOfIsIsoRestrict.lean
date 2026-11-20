@@ -8,7 +8,7 @@ open ReciprocityTheory.ChartRestriction.G.Out GlobalTheory.AbLaw GlobalTheory.Fo
 namespace GlobalTheory.MapComapIso
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 -/
 theorem map_eq_comap_inv {X Y : Scheme.{0}} (f : X ⟶ Y) [IsIso f] (K : X.IdealSheafData) :
     K.map f = K.comap (inv f) := by
@@ -23,7 +23,7 @@ theorem map_eq_comap_inv {X Y : Scheme.{0}} (f : X ⟶ Y) [IsIso f] (K : X.Ideal
       _ = K.map f := by simp
 
 /- English proof (translation)
-Rewrite using `[map_eq_comap_inv, ← Scheme.IdealSheafData.comap_comp]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem map_comap_of_isIso {X Y : Scheme.{0}} (f : X ⟶ Y) [IsIso f] (I : Y.IdealSheafData) :
     (I.comap f).map f = I := by
@@ -31,13 +31,13 @@ theorem map_comap_of_isIso {X Y : Scheme.{0}} (f : X ⟶ Y) [IsIso f] (I : Y.Ide
   simp
 
 /- English proof (translation)
-Introduce `W W' π U hq hiso τ V hVU`. Establish `hpb` using `(isPullback_morphismRestrict π U).flip`. Establish `hres : ((τ.comap π).map π).comap U.ι = τ.comap U.ι`. Rewrite using `[GlobalTheory.T.map_comap_eq_comap_map_of_flat W W' U (π ⁻¹ᵁ U) π U.ι (π ⁻¹ᵁ U).ι (π ∣_ U) hpb inferInstance hq (τ.comap π), ← Scheme.IdealSheafData.comap_comp, ← morphismRestrict_ι, Scheme.IdealSheafData.comap_comp, map_comap_of_isIso]`. Establish `hle : V.1 ≤ Scheme.Hom.opensRange U.ι` using `by rw [Scheme.Opens.opensRange_ι]; exact hVU`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `V' : U.toScheme.affineOpens` to `⟨U.ι ⁻¹ᵁ V.1, V.2.preimage_of_isOpenImmersion U.ι hle⟩`. Establish `himg : (⟨U.ι ''ᵁ V'.1, (Scheme.Hom.isAffineOpen_iff_of_isOpenImmersion U.ι).2 V'.2⟩ : W.affineOpens) = V`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `U.ι ''ᵁ U.ι ⁻¹ᵁ V.1 = V.1`. Rewrite using `[Scheme.Hom.image_preimage_eq_opensRange_inf, Scheme.Opens.opensRange_ι]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `inf_eq_right.2 hVU`. Establish `h1` using `Scheme.IdealSheafData.ideal_comap_of_isOpenImmersion ((τ.comap π).map π) U.ι V'`. Establish `h2` using `Scheme.IdealSheafData.ideal_comap_of_isOpenImmersion τ U.ι V'`. Rewrite `h1` using `[hres, h2]`. Establish `h3` using `Ideal.comap_injective_of_surjective _ (ConcreteCategory.bijective_of_isIso (Scheme.Hom.appIso U.ι V'.1).inv).2 h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : ∀ A B : W.affineOpens, A = B → ((τ.comap π).map π).ideal A = τ.ideal A → ((τ.comap π).map π).ideal B = τ.ideal B`. Introduce and unpack `A B rfl h`. Conclude with `h`. Conclude with `h4 _ V himg h3.symm`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem map_comap_ideal_eq_of_isIso_restrict :
     ∀ (W W' : Scheme.{0}) (π : W' ⟶ W) (U : W.Opens), QuasiCompact π → IsIso (π ∣_ U) →

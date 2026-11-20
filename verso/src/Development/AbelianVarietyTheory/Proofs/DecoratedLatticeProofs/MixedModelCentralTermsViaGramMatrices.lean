@@ -19,7 +19,7 @@ namespace GlobalTheory.CentralGram
 variable {D : D7}
 
 /- English proof (translation)
-Use `show Algebra.trace (AF D.host.F) (AE D) ((1 : AF D.host.F) ⊗ₜ[D.host.F] x) = _`. Rewrite using `[Algebra.trace_apply, Algebra.trace_apply, ← Algebra.baseChange_lmul, LinearMap.trace_baseChange]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_incA_eq (x : D.host.E) : Algebra.trace (AF D.host.F) (AE D) (incA D x) =
     algebraMap D.host.F (AF D.host.F) (Algebra.trace D.host.F D.host.E x) := by
@@ -30,32 +30,32 @@ def qG {ρ : ℕ} (A c : Mx D ρ ρ) : AF D.host.F :=
   algebraMap D.host.F (AF D.host.F) (1 / 2) * Algebra.trace (AF D.host.F) (AE D) (A ⬝ c).trace
 
 /- English proof (translation)
-Simplify using `only [qG, Matrix.mul_add, Matrix.trace_add, map_add, mul_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem qG_add_right {ρ : ℕ} (A c c' : Mx D ρ ρ) : qG A (c + c') = qG A c + qG A c' := by
   simp only [qG, Matrix.mul_add, Matrix.trace_add, map_add, mul_add]
 
 /- English proof (translation)
-Simplify using `only [qG, Matrix.sub_mul, Matrix.trace_sub, map_sub, mul_sub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem qG_sub_left {ρ : ℕ} (A A' c : Mx D ρ ρ) : qG (A - A') c = qG A c - qG A' c := by
   simp only [qG, Matrix.sub_mul, Matrix.trace_sub, map_sub, mul_sub]
 
 /- English proof (translation)
-Simplify using `only [Matrix.trace, Matrix.diag, rat, Matrix.map_apply, map_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem trace_rat {ρ : ℕ} (M : Matrix (Fin ρ) (Fin ρ) D.host.E) : (rat M : Mx D ρ ρ).trace = incA D M.trace := by
   simp only [Matrix.trace, Matrix.diag, rat, Matrix.map_apply, map_sum]
 
 /- English proof (translation)
-Rewrite using `[qG, ← rat_mul, trace_rat, trace_incA_eq, map_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem qG_rat {ρ : ℕ} (M C : Matrix (Fin ρ) (Fin ρ) D.host.E) :
     qG (rat M) (rat C) = algebraMap D.host.F (AF D.host.F) (1 / 2 * Algebra.trace D.host.F D.host.E (M * C).trace) := by
   rw [qG, ← rat_mul, trace_rat, trace_incA_eq, map_mul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i j`. Conclude with `GlobalTheory.DualPairCheck.cA_incA _`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem map_cA_rat {m n : ℕ} (N : Matrix (Fin m) (Fin n) D.host.E) : (rat N).map (cA D) = rat (N.map star) := by
   funext i j; exact GlobalTheory.DualPairCheck.cA_incA _
@@ -64,7 +64,7 @@ def gramE (T : HSp D) {ρ : ℕ} (X : Matrix (Fin T.rank) (Fin ρ) D.host.E) : M
   (-D.host.xi0) • (Xᴴ * (T.gram * X))ᵀ
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.gramSkew, ← rat_conjTranspose, gA, ← rat_mul, ← rat_mul, ← map_neg (incA D), gramE, rat_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gramSkew_rat (T : HSp D) {ρ : ℕ} (X : Matrix (Fin T.rank) (Fin ρ) D.host.E) :
     GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.gramSkew T (rat X) = rat (gramE T X) := by
@@ -72,9 +72,9 @@ theorem gramSkew_rat (T : HSp D) {ρ : ℕ} (X : Matrix (Fin T.rank) (Fin ρ) D.
   rfl
 
 /- English proof (translation)
-Establish `hK : (Xᴴ * (T.gram * X))ᴴ = Xᴴ * (T.gram * X)`. Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, gram_conjTranspose, Matrix.conjTranspose_conjTranspose, Matrix.mul_assoc]`. Use function extensionality and compare the values at `i j`. Establish `h` using `congrFun (congrFun hK i) j`. Rewrite `h` using `[Matrix.conjTranspose_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [gramE, Matrix.conjTranspose_apply, Matrix.map_apply, Matrix.neg_apply, Matrix.smul_apply, Matrix.transpose_apply, smul_eq_mul, star_star, star_mul', star_neg, GlobalTheory.DualPairCheck.star_purely_imaginary_eq_neg, h]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gramE_skew (T : HSp D) {ρ : ℕ} (X : Matrix (Fin T.rank) (Fin ρ) D.host.E) :
     ((gramE T X).map star)ᴴ = -((gramE T X).map star) := by
@@ -89,17 +89,17 @@ theorem gramE_skew (T : HSp D) {ρ : ℕ} (X : Matrix (Fin T.rank) (Fin ρ) D.ho
   ring
 
 /- English proof (translation)
-Introduce `D`. Establish `h1` using `GlobalTheory.T.mixed_model_central_terms_gram_identities D`. Establish `hq : ∀ (S S₀ T : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ) (c : skewA D ρ) (x : Mx D T.rank ρ), d.qS T c x = -qG ((GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.gramSkew T x).map (cA D)) c.1` using `fun S S₀ T ρ d c x => (h1.1 S S₀ T ρ d).2 c x`. Use `⟨fun S S₀ T ρ d => ⟨(h1.1 S S₀ T ρ d).1, (h1.1 S S₀ T ρ d).2, fun ψ hψ => ⟨?_, ?_, ?_⟩⟩, h1.2⟩` and prove the remaining obligations. Introduce `x c c'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hq, hq, hq, AddSubgroup.coe_add, qG_add_right, neg_add, AddChar.map_add_eq_mul]`. Introduce `x hx c hc`. Take `⟨X, rfl⟩` from `mem_ratMx.1 hx`. Take `⟨C, hC⟩` from `mem_ratMx.1 hc`. Rewrite using `[hq, gramSkew_rat, map_cA_rat, ← hC, qG_rat, ← map_neg]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hψ.1.2.2.1 _`. Introduce `x hx x' hx'`. Take `⟨X, rfl⟩` from `mem_ratMx.1 hx`. Take `⟨X', rfl⟩` from `mem_ratMx.1 hx'`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Establish `hM` using `GlobalTheory.T.skewHermitian_tracePairing_standardCharacter_perfect D ψ hψ ρ ((gramE T X).map star - (gramE T X').map star) (by rw [Matrix.conjTranspose_sub, gramE_skew, gramE_skew, neg_sub, neg_sub_neg]) (fun c => by`. Rewrite using `[rat_sub, ← map_cA_rat, ← map_cA_rat, ← gramSkew_rat, ← gramSkew_rat]`. Express the relevant statement in the definitionally equal form `ψ (qG _ c.1) = 1`. Establish `eA : qG ((GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.gramSkew T (rat X)).map (cA D)) c.1 = -d.qS T c (rat X)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hq S S₀ T ρ d, neg_neg]`. Establish `eA' : qG ((GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.gramSkew T (rat X')).map (cA D)) c.1 = -d.qS T c (rat X')`. Rewrite using `[hq S S₀ T ρ d, neg_neg]`. Rewrite using `[qG_sub_left, eA, eA', sub_eq_add_neg, neg_neg, AddChar.map_add_eq_mul, ← h c, ← AddChar.map_add_eq_mul, neg_add_cancel, AddChar.map_zero_eq_one])`. Rewrite `hM` using `[sub_eq_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[gramSkew_rat, gramSkew_rat, Matrix.map_injective star_injective hM]`. Introduce `h c`. Rewrite using `[hq, hq, h]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem central : ∀ D : D7, GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.CentralTerms D := by
   intro D

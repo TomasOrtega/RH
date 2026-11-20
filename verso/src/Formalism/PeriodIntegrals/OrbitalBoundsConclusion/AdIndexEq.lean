@@ -6,7 +6,7 @@ noncomputable section
 namespace PI
 
 /- English proof (translation)
-The claim follows from `PI.UnitaryGroupMassFormula.AdIndexEq.indexEq_of_traceInt PI.UnitaryGroupMassFormula.AdIndexEq.trace_integral'`.
+A detailed English derivation is pending.
 -/
 theorem adelic_index_eq : PI.AdIndexEq.IndexEq :=
   PI.UnitaryGroupMassFormula.AdIndexEq.indexEq_of_traceInt PI.UnitaryGroupMassFormula.AdIndexEq.trace_integral'

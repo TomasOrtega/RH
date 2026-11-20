@@ -22,43 +22,39 @@ def toLev (a : H) : Bridge.stab ι J a →* J where
   map_mul' s t := Subtype.ext (by simp [mul_assoc])
 
 /- English proof (translation)
-Set `X` to `J ⧸ J'.subgroupOf J`. Establish `hX : Nat.card X = J'.relIndex J` using `rfl`. Use `haveI : Finite X := Nat.finite_of_card_ne_zero (hX ▸ hN)`. Use `letI : Fintype X := Fintype.ofFinite X`. Use `letI : MulAction (Bridge.stab ι J a) X := MulAction.compHom X (toLev ι J a)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hsm : ∀ (s : Bridge.stab ι J a) (u : J), s • (u : X) = ((toLev ι J a s * u : J) : X)` using `fun _ _ => rfl`. Use `choose idx hidx hu using fun h => (hy h)`. Establish `hi : ∀ h k, idx h = k ↔ ∃ γ, ∃ w ∈ J', h = ι γ * y k * w`. Introduce `h k`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `rfl`. Take `⟨γ, w, e⟩` from `hidx h`. Conclude with `⟨γ, w, w.2, e⟩`. Introduce and unpack `⟨γ, w, hw, e⟩`. Conclude with `(hu h k ⟨γ, ⟨w, hw⟩, e⟩).symm`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `f : X → Cl` to `fun x => idx (a * (x.out : J))`. Establish `hq : ∀ u v : J, (u : X) = (v : X) ↔ (u : H)⁻¹ * v ∈ J'` using `fun u v => QuotientGroup.eq`. Establish `hf : ∀ (u : J) k, f (u : X) = k ↔ ∃ γ, ∃ w ∈ J', a * u = ι γ * y k * w`. Introduce `u k`. Establish `h0 : ((Quotient.out (u : X) : J) : H)⁻¹ * u ∈ J'` using `(hq _ _).1 (Quotient.out_eq _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Express the relevant statement in the definitionally equal form `idx _ = k ↔ _`. Rewrite using `[hi]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨γ, w, hw, e⟩`. Conclude with `⟨γ, _, J'.mul_mem hw h0, by rw [← mul_assoc, ← e]; group⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce and unpack `⟨γ, w, hw, e⟩`. Conclude with `⟨γ, _, J'.mul_mem hw (J'.inv_mem h0), by rw [← mul_assoc, ← e]; group⟩`. Establish `hS : ((Nat.card (Bridge.stab ι J a) : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Nat.card_pos.ne'`. Establish `hN' : ((J'.relIndex J : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hN`. Establish `hcount : J'.relIndex J = ∑ k with (∃ γ, ∃ u ∈ J, y k = ι γ * a * u), (Finset.univ.filter fun x => f x = k).card`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hX, Nat.card_eq_fintype_card, ← Finset.card_univ]`. Use `Finset.card_eq_sum_card_fiberwise fun x _ => ?_` and prove the remaining obligations. Take `⟨u, rfl⟩` from `QuotientGroup.mk_surjective x`. Take `⟨γ, w, hw, e⟩` from `(hf u _).1 rfl`. Simplify using `only [Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_setOf_eq]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨γ⁻¹, u * w⁻¹, J.mul_mem u.2 (J.inv_mem (hle hw)), ?_⟩` and prove the remaining obligations. Rewrite using `[map_inv, mul_assoc, ← mul_assoc a, e]`. Use `group`. Establish `key : ∀ k, (∃ γ, ∃ u ∈ J, y k = ι γ * a * u) → (Finset.univ.filter fun x => f x = k).card * Nat.card (Bridge.stab ι J' (y k)) = Nat.card (Bridge.stab ι J a)`. Introduce and unpack `k ⟨γ₀, u₀, hu₀, e₀⟩`.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Set `x₀ : X` to `((⟨u₀, hu₀⟩ : J) : X)`. Establish `h1 : MulAction.orbit (Bridge.stab ι J a) x₀ = ↑(Finset.univ.filter fun x => f x = k)`. Use extensionality with `x`. Take `⟨u, rfl⟩` from `QuotientGroup.mk_surjective x`. Simplify using `only [Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_setOf_eq]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hf, MulAction.mem_orbit_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs⟩`. Rewrite `hs` using `[hsm, hq]`. Use `⟨s * γ₀⁻¹, _, hs, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `_ = _ * ((a⁻¹ * ι s * a * u₀)⁻¹ * u)`. Rewrite using `[e₀, map_mul, map_inv]`. Use `group`. Introduce and unpack `⟨γ, w, hw, e⟩`. Establish `e1 : a⁻¹ * ι (γ * γ₀) * a = u * w⁻¹ * u₀⁻¹`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `: (u : H) = a⁻¹ * (ι γ * y k * w)` using `by rw [← e]; group`. Rewrite using `[this, e₀, map_mul]`. Use `group`. Use `⟨⟨γ * γ₀, (Bridge.mem_stab _).2 ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[e1]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `J.mul_mem (J.mul_mem u.2 (J.inv_mem (hle hw))) (J.inv_mem hu₀)`. Rewrite using `[hsm, hq]`. Express the relevant statement in the definitionally equal form `(a⁻¹ * ι (γ * γ₀) * a * u₀)⁻¹ * u ∈ J'`. Rewrite using `[e1, show ((u : H) * w⁻¹ * u₀⁻¹ * u₀)⁻¹ * u = w by group]`. Conclude with `hw`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : ∀ s : Bridge.stab ι J a, s ∈ MulAction.stabilizer (Bridge.stab ι J a) x₀ ↔ γ₀ * s * γ₀⁻¹ ∈ Bridge.stab ι J' (y k)`. Introduce `s`. Rewrite using `[MulAction.mem_stabilizer_iff, hsm, eq_comm, hq, Bridge.mem_stab]`. Express the relevant statement in the definitionally equal form `u₀⁻¹ * (a⁻¹ * ι s * a * u₀) ∈ J' ↔ _`. Rewrite using `[e₀, map_mul, map_mul, map_inv, show (ι γ₀ * a * u₀)⁻¹ * (ι γ₀ * ι s * (ι γ₀)⁻¹) * (ι γ₀ * a * u₀) = u₀⁻¹ * (a⁻¹ * ι s * a * u₀) by group]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : Nat.card (MulAction.stabilizer (Bridge.stab ι J a) x₀) = Nat.card (Bridge.stab ι J' (y k))`. Use `Nat.card_eq_of_bijective (fun s => ⟨γ₀ * s.1 * γ₀⁻¹, (h2 _).1 s.2⟩) ⟨fun s t e => ?_, fun t => ?_⟩` and prove the remaining obligations. Use `congrArg Subtype.val e` as an intermediate fact. Simplify using `only [mul_left_inj, mul_right_inj] at this`. Conclude with `Subtype.ext (Subtype.ext this)`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `ht` using `(Bridge.mem_stab _).1 t.2`. Establish `hm : γ₀⁻¹ * t * γ₀ ∈ Bridge.stab ι J a`. Rewrite using `[Bridge.mem_stab, map_mul, map_mul, map_inv, show a⁻¹ * ((ι γ₀)⁻¹ * ι t * ι γ₀) * a = u₀ * ((ι γ₀ * a * u₀)⁻¹ * ι t * (ι γ₀ * a * u₀)) * u₀⁻¹ by group, ← e₀]`. Conclude with `J.mul_mem (J.mul_mem hu₀ (hle ht)) (J.inv_mem hu₀)`. Establish `e : γ₀ * (γ₀⁻¹ * t * γ₀) * γ₀⁻¹ = t` using `by group`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨⟨⟨_, hm⟩, (h2 _).2 (by rw [e]; exact t.2)⟩, Subtype.ext e⟩`. Rewrite using `[← h3, ← Set.ncard_coe_finset, ← h1, ← Nat.card_coe_set_eq, ← Nat.card_prod]`. Conclude with `Nat.card_congr (MulAction.orbitProdStabilizerEquivGroup _ x₀)`. Establish `h4 : ∀ k ∈ Finset.univ.filter (fun k => ∃ γ, ∃ u ∈ J, y k = ι γ * a * u), ((J'.relIndex J : ℕ) : ℂ)⁻¹ * ((Nat.card (Bridge.stab ι J' (y k)) : ℕ) : ℂ)⁻¹ = ((J'.relIndex J : ℕ) : ℂ)⁻¹ * ((Nat.card (Bridge.stab ι J a) : ℕ) : ℂ)⁻¹ * (((Finset.univ.filter fun x => f x = k).card : ℕ) : …`. Introduce `k hk`.
-
-Establish `h5` using `key k (Finset.mem_filter.1 hk).2`. Establish `h6` using `hS`. Rewrite `h6`, the goal using `[← h5]`. Move the coercions through the operations in `at h6 ⊢`. Establish `h7` using `left_ne_zero_of_mul h6`.
-
-Establish `h8` using `right_ne_zero_of_mul h6`. Clear the denominators using the available nonvanishing facts. Rewrite using `[Finset.sum_congr rfl h4, ← Finset.mul_sum, ← Nat.cast_sum, ← hcount]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem sum_inv_card_stab (hle : J' ≤ J) (hN : J'.relIndex J ≠ 0) {Cl : Type} [Fintype Cl] (y : Cl → H)
     (hy : Bridge.IsReps ι J' y) (a : H) [Finite (Bridge.stab ι J a)] :
@@ -169,19 +165,19 @@ theorem sum_inv_card_stab (hle : J' ≤ J) (hN : J'.relIndex J ≠ 0) {Cl : Type
 end Count
 
 /- English proof (translation)
-Use `set ι := π.comp Γ.subtype with hι`. Use `choose σ hσ using hπ`. Establish `hΦ : ∀ x, Φ (σ (π x)) = Φ x` using `fun x => by`. Rewrite using `[← hr ((σ (π x))⁻¹ * x) (by rw [map_mul, map_inv, hσ, inv_mul_cancel]; exact J.one_mem), mul_inv_cancel_left]`. Establish `hΦ' : ∀ (γ : Γ) z (k : J), Φ (σ (ι γ * z * k)) = Φ (σ z)` using `fun γ z k => by`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: ι γ * z * k = π (γ * σ z * σ k)` using `by rw [map_mul, map_mul, hσ, hσ]; rfl`. Rewrite using `[this, hΦ, hr _ (by rw [hσ]; exact k.2), hl _ γ.2]`. Establish `hfin : ∀ z, Finite (Bridge.stab ι J z)` using `fun z => by`. Use `GlobalTheory.InnerClassSum.finite_stab_of_measure ν Γ (J.comap π) h𝓖 (h1 ▸ one_ne_zero) (h1 ▸ ENNReal.one_ne_top) (σ z)` as an intermediate fact. Use `Set.Finite.subset this fun γ hγ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[Set.mem_setOf_eq, Subgroup.mem_comap, map_mul, map_mul, map_inv, hσ]`. Conclude with `(Bridge.mem_stab _).1 hγ`. Set `r : Setoid Cl` to `{ r := fun k l => ∃ γ, ∃ u ∈ J, π (h k) = ι γ * π (h l) * u iseqv := ⟨fun k => ⟨1, 1, J.one_mem, by simp⟩, fun ⟨γ, u, hu, e⟩ => ⟨γ⁻¹, u⁻¹, J.inv_mem hu, by rw [e, map_inv]; group⟩, fun ⟨γ, u, hu, e⟩ ⟨δ, v, hv, e'⟩ => ⟨γ * δ, v * u, J.mul_mem hv hu, by rw [e, e', map_mul]; group⟩⟩ …`. Establish `hq : ∀ k (i : Quotient r), Quotient.mk r k = i ↔ ∃ γ, ∃ u ∈ J, π (h k) = ι γ * π (h i.out) * u` using `fun k i => Quotient.mk_eq_iff_out`. Establish `hreps : Bridge.IsReps ι J fun i : Quotient r => π (h i.out)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `z`. Take `⟨k, ⟨γ, w, e⟩, -⟩` from `hy z`. Use `⟨Quotient.mk r k, ?_, ?_⟩` and prove the remaining obligations. Take `⟨δ, u, hu, e'⟩` from `(hq k _).1 rfl`. Conclude with `⟨γ * δ, ⟨u * w, J.mul_mem hu (hle w.2)⟩, by simp only [] at e ⊢; rw [e, e', map_mul]; group⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Introduce and unpack `i ⟨δ, u, e'⟩`. Use `((hq k i).2 ⟨γ⁻¹ * δ, u * (w : H)⁻¹, J.mul_mem u.2 (J.inv_mem (hle w.2)), ?_⟩).symm` and prove the remaining obligations. Simplify using `only [] at e e'`. Establish `: π (h k) = (ι γ)⁻¹ * z * (w : H)⁻¹` using `by rw [e]; group`. Rewrite using `[this, e', map_mul, map_inv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `group`. Establish `key` using `GlobalTheory.ClassUnfold.integral_eq_sum_of_surjective ν Γ π (fun z => ⟨σ z, hσ z⟩) J 𝓖 h𝓖 ho h1 (Quotient r) _ hreps (fun _ => hfin _) (fun z => Φ (σ z)) hΦ'`. Simplify using `only [hΦ] at key`. Rewrite using `[key, ← Finset.sum_fiberwise Finset.univ (Quotient.mk r)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `haveI := hfin (π (h i.out))`. Rewrite using `[← sum_inv_card_stab ι J J' hle hN _ hy, Finset.sum_mul]`. Use `Finset.sum_congr (Finset.filter_congr fun k _ => (hq k i).symm) fun k hk => ?_` and prove the remaining obligations. Take `⟨γ, u, hu, e⟩` from `(hq k i).1 (Finset.mem_filter.1 hk).2`. Rewrite using `[← hΦ (h k), e, hΦ' γ _ ⟨u, hu⟩, hΦ]`.
+A detailed English derivation is pending.
 -/
 theorem integral_eq_sum_of_le {G H : Type} [Group G] [Group H] [TopologicalSpace G] [IsTopologicalGroup G]
     [MeasurableSpace G] [BorelSpace G] (ν : Measure G) [ν.IsMulLeftInvariant] (Γ : Subgroup G) [Countable Γ]
@@ -236,11 +232,9 @@ theorem integral_eq_sum_of_le {G H : Type} [Group G] [Group H] [TopologicalSpace
   rw [← hΦ (h k), e, hΦ' γ _ ⟨u, hu⟩, hΦ]
 
 /- English proof (translation)
-Introduce `D V β L ν 𝓕 _ _ hν hL J' Cl _ h hle hN hy _ Φ hl hr`. Use `haveI : IsTopologicalGroup (GA D V) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Use `haveI : BorelSpace (GA D V) := ⟨rfl⟩`. Use `haveI : Countable (GQ V) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.countableGamma D.sp.cm.sig V.gram`. Use `haveI := hν.1.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hK : (levEnv V β L).J.comap (finHom V).rangeRestrict = (Formalism.L2.DIV.lev D.sp.cm V.gram β L).comap (Lev.finE V)`. Use extensionality with `g`. Conclude with `(hL (Lev.finE V g)).symm`. Use `integral_eq_sum_of_le ν (GQ V) (finHom V).rangeRestrict (finHom V).rangeRestrict_surjective (levEnv V β L).J J' 𝓕 hν.2 ?_ ?_ hle hN Cl h hy Φ hl hr` and prove the remaining obligations. Use `Subgroup.isOpen_of_mem_nhds _ (g := 1) ?_ filter_upwards [GlobalTheory.ThetaIntegrand.eventually_level V β L] with κ hκ` and prove the remaining obligations.
-
-Conclude with `hκ.1`. Rewrite using `[hK]`. Conclude with `GlobalTheory.Mass.Levels.measure_comap_finE hν.1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_eq_classSum_of_le : ∀ (D : D7) (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank) (ν : Measure (GA D V)) (𝓕 : Set (GA D V)), V.IsPosDef → V.SigOK → IsMeasDef V (Formalism.L2.DIV.lev D.sp.cm V.gram β L) ν 𝓕 → (∀ k, k ∈ Formalism.L2.DIV.lev D.sp.cm V.gram β L ↔ k ∈ Formalism.L2.DIV.lev D.sp.cm V.gram β (Lev.flag1L L)) → ∀ (J' : Subgroup (Bridge.Gf V)) (Cl : Type) [Fintype Cl] (h : Cl → GA D V), J' ≤ (levEnv V β L).J → J'.relIndex (levEnv V β L).J ≠ 0 → Bridge.IsReps (Bridge.ratF V) J' (fun k => fin V (h k)) → (∀ k, h k ∈ GfC V) → ∀ Φ : GA D V → ℂ, (∀ γ ∈ GQ V, ∀ x, Φ (γ * x) = Φ x) → (∀ u : GA D V, fin V u ∈ (levEnv V β L).J → ∀ x, Φ (x * u) = Φ x) → ∫ x in 𝓕, Φ x ∂ν = ∑ k, ((J'.relIndex (levEnv V β L).J : ℕ) : ℂ)⁻¹ * ((Nat.card (Bridge.stab (Bridge.ratF V) J' (fin V (h k))) : ℕ) : ℂ)⁻¹ * Φ (h k) := by
   intro D V β L ν 𝓕 _ _ hν hL J' Cl _ h hle hN hy _ Φ hl hr

@@ -15,17 +15,15 @@ open Classical
 namespace GlobalTheory.ConjRelation
 
 /- English proof (translation)
-Set `S` to `Submodule.span K (Set.range f)`. Use `haveI : FiniteDimensional K S := FiniteDimensional.span_of_finite K (Set.finite_range f)`. Set `b` to `Module.finBasis K S`. Establish `hb` using `hΦ _ (fun l => (b l : C)) (b.linearIndependent.map' S.subtype (Submodule.ker_subtype _))`. Set `c : Fin n → Fin (Module.finrank K S) → K` to `fun k l => b.repr ⟨f k, Submodule.subset_span ⟨k, rfl⟩⟩ l`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hf : ∀ k, f k = ∑ l, c k l • (b l : C)` using `fun k => by`. Establish `h1` using `congrArg S.subtype (b.sum_repr ⟨f k, Submodule.subset_span ⟨k, rfl⟩⟩)`. Rewrite `h1` using `[map_sum]`. Conclude with `h1.symm`. Establish `key : ∀ (a' : Fin n → ℂ) (x : X), ∑ k, a' k * Φ (f k) x = ∑ l, (∑ k, a' k * σ (c k l)) * Φ (b l) x`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `a' x`. Simplify using `only [Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hf k, map_sum, Finset.sum_apply, Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_smulₛₗ, Pi.smul_apply, smul_eq_mul, mul_assoc]`. Establish `h0 : ∀ l, ∑ k, a k * σ (c k l) = 0`. Use `Fintype.linearIndependent_iff.1 hb _ ?_` and prove the remaining obligations. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_apply]`. Conclude with `((h x).trans (key a x)).symm`. Rewrite using `[key]`. Use `(Finset.sum_eq_zero fun l _ => ?_).symm` and prove the remaining obligations. Establish `h1` using `congrArg τ (h0 l)`.
-
-Simplify using `only [map_sum, map_mul, hτ, map_zero] at h1`. Rewrite using `[h1, zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relation_conj {K C X : Type} [Field K] [AddCommGroup C] [Module K C] (σ : K →+* ℂ) (Φ : C →ₛₗ[σ] (X → ℂ))
     (hΦ : ∀ (m : ℕ) (b : Fin m → C), LinearIndependent K b → LinearIndependent ℂ fun k => Φ (b k))
@@ -60,7 +58,7 @@ theorem relation_conj {K C X : Type} [Field K] [AddCommGroup C] [Module K C] (σ
   rw [h1, zero_mul]
 
 /- English proof (translation)
-Substitute `hV` using the available equality. Conclude with `⟨(((lieFac (T.Q.Dw j) (xiR D) a : ℝ) : ℂ) • adel (T.V j σ) (T.dict j σ) (muPin (T.V j σ) (T.dict j σ) (T.mu j σ) (T.cE j σ))).comp (rdU (T.U j σ)), fun _ => rfl, fun _ _ => rfl⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem exists_semilinear {D : D7} (T : CoreJ D) {j : ℕ} {σ : T.Q.c.F →+* ℂ} {W : HSp D} (hV : T.V j σ = W)
     (a : (D.host.E →+* ℂ) × ℕ → ℕ) :
@@ -74,9 +72,9 @@ theorem exists_semilinear {D : D7} (T : CoreJ D) {j : ℕ} {σ : T.Q.c.F →+* �
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A T _ R F κ v₀ _ hfw i Tp tup M _ τ hτ n a f h`. Take `⟨fw⟩` from `hfw`. Establish `hσ : GoodEmb T.Q.c M.s0` using `T.toCore.good_σ₀`. Establish `hex` using `exists_semilinear T M.hV (wtA (κ i))`. Take `⟨Φ, h1, h2⟩` from `hex`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hI` using `GlobalTheory.PhiIndep.phiC_indep D T κ fw.laws i M.s0 hσ M.hV`. Introduce `g`. Establish `hr` using `relation_conj M.s0 (Φ.comp (T.toCore.cuspA ((i : ℕ) + 1) (wtA (κ i)) (κ i).n).subtype) (fun m b hb => (funext fun k => h1 (b k : T.R ((i : ℕ) + 1))).symm ▸ hI m b hb) τ hτ a f (fun x => (h x).trans (Finset.sum_congr rfl fun k _ => congrArg (a k * ·) (h2 _ x).symm)) g`. Conclude with `hr.trans (Finset.sum_congr rfl fun k _ => congrArg (τ (a k) * ·) (h2 _ g))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem expands_zero_conj : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec), GlobalTheory.Hk3.Core R F → Nonempty (FWTie T R κ v₀) → ∀ (i : Fin D.R.m) (Tp : Type) (tup : Tp → T0) (M : OMDat T.toCore R i Tp tup), M.Pins (κ i) (v₀ i (sg0 D A)) (iotaW T i) (T.x₀ ((i : ℕ) + 1) M.s0) → ∀ τ : ℂ ≃+* ℂ, (∀ a : T.Q.c.F, τ (a : ℂ) = (a : ℂ)) → ∀ (n : ℕ) (a : Fin n → ℂ) (f : Fin n → T.toCore.cuspA ((i : ℕ) + 1) (wtA (κ i)) (κ i).n), Expands M (κ i) (fun _ => 0) a f → Expands M (κ i) (fun _ => 0) (fun k => τ (a k)) f := by
   intro D G _ _ Pl0 T0 A T _ R F κ v₀ _ hfw i Tp tup M _ τ hτ n a f h

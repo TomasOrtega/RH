@@ -9,7 +9,7 @@ open ReciprocityTheory.ChartRestriction.G.Geo Filter
 noncomputable section
 
 /- English proof (translation)
-Introduce `s hs c hc`. Establish `h` using `hs c hc`. Rewrite using `[mem_integralClosure_iff]`. Conclude with `isIntegral_algebraMap (R := chartRingZ y c) (A := Ω) (x := ⟨_, h⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chartLat_le_chartLatNm {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)]
     {Ω : Type*} [Field Ω] (y : (Σ k, ι k) → Ω) (a : K → ℤ) (τ : ℕ) :
@@ -20,9 +20,9 @@ theorem chartLat_le_chartLatNm {K : Type*} [Fintype K] {ι : K → Type*} [∀ k
   exact isIntegral_algebraMap (R := chartRingZ y c) (A := Ω) (x := ⟨_, h⟩)
 
 /- English proof (translation)
-Unfold `smallSectionCount`. Establish `: Finite {s : La' τ // P τ (s : Ω)}` using `hfin.to_subtype`. Establish `hc : Nat.card {s : La τ // P τ (s : Ω)} ≤ Nat.card {s : La' τ // P τ (s : Ω)}`. Use `Nat.card_le_card_of_injective (fun s => (⟨⟨(s.1 : Ω), hle s.1.2⟩, s.2⟩ : {s : La' τ // P τ (s : Ω)})) ?_` and prove the remaining obligations. Introduce `s t hst`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Subtype.ext (Subtype.ext (congrArg (fun u : {s : La' τ // P τ (s : Ω)} => ((u.1 : La' τ) : Ω)) hst))`. Break down `Nat.eq_zero_or_pos (Nat.card {s : La τ // P τ (s : Ω)}) with h0 | hpos` into its components or cases. Rewrite using `[h0, Nat.cast_zero, Real.log_zero]`. Conclude with `Real.log_natCast_nonneg _`. Conclude with `Real.log_le_log (by exact_mod_cast hpos) (by exact_mod_cast hc)`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smallSectionCount_mono_lattice {Ω : Type*} [CommRing Ω] (P : ℕ → Ω → Prop) {La La' : ℕ → AddSubgroup Ω}
     (τ : ℕ) (hle : La τ ≤ La' τ) (hfin : {s : La' τ | P τ (s : Ω)}.Finite) :
@@ -40,13 +40,13 @@ theorem smallSectionCount_mono_lattice {Ω : Type*} [CommRing Ω] (P : ℕ → �
   · exact Real.log_le_log (by exact_mod_cast hpos) (by exact_mod_cast hc)
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ y D A P0 II hD hII har hb hP0 hs hnef hc`. Use `(hG6p K ι Ω y D A P0 II hD hII har hb hP0 hs hnef hc).trans ?_` and prove the remaining obligations. Take `⟨hfin, C, hC⟩` from `hPk K ι Ω y D A (chartLatNm y A.a) har hb hs.1 (fun _ => le_rfl)`. Unfold `arVolP`. Simplify using `only [one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Establish `hden : ∀ k : ℕ, 0 ≤ ((k : ℝ) ^ (D + 1) / ((D + 1).factorial : ℝ))` using `fun k => by positivity`. Use `limsup_le_limsup (Eventually.of_forall fun k => div_le_div_of_nonneg_right (smallSectionCount_mono_lattice _ k (chartLat_le_chartLatNm y A.a k) (hfin k)) (hden k)) ?_ ?_` and prove the remaining obligations. Conclude with `isCoboundedUnder_le_of_le atTop (fun k => div_nonneg (Real.log_natCast_nonneg _) (hden k))`. Use `isBoundedUnder_of_eventually_le (a := |C| * 2 ^ (D + 1) * ((D + 1).factorial : ℝ)) (eventually_atTop.2 ⟨1, fun k hk => ?_⟩)` and prove the remaining obligations. Establish `hk' : (1 : ℝ) ≤ k` using `by exact_mod_cast hk`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF : (0 : ℝ) < (D + 1).factorial` using `by positivity`. Establish `hkp : (0 : ℝ) < (k : ℝ) ^ (D + 1)` using `by positivity`. Rewrite using `[div_le_iff₀ (by positivity)]`. Establish `h2 : C * ((k : ℝ) + 1) ^ (D + 1) ≤ |C| * (2 * (k : ℝ)) ^ (D + 1)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem ArithmeticVolumeBigRefined.proof (hG6p : ArithmeticVolumeBig.Statement) (hPk : PackingStatement) :
     ArithmeticVolumeBigRefined.Statement := by

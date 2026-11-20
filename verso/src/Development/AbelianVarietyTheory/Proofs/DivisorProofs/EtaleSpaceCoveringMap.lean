@@ -7,9 +7,9 @@ namespace GlobalTheory.PrimLift.SphericalEisensteinCover
 variable {X : Type} [TopologicalSpace X] {P : Set X → (X → ℂ) → Prop}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `⟨hy, rfl⟩`. Introduce and unpack `⟨h1, h2⟩`. Use `⟨Etale.proj P e, h1, ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `show Etale.mk P _ (g _) = e`. Rewrite using `[← h2]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mem_graph_iff {O : Set X} {g : X → ℂ} (e : Etale P) :
     e ∈ (fun y => Etale.mk P y (g y)) '' O ↔ Etale.proj P e ∈ O ∧ e.val = g (Etale.proj P e) := by
@@ -23,11 +23,11 @@ theorem mem_graph_iff {O : Set X} {g : X → ℂ} (e : Etale P) :
     rfl
 
 /- English proof (translation)
-Rewrite using `[continuous_def]`. Introduce `V hV`. Rewrite using `[isOpen_iff_forall_mem_open]`. Introduce `e he`. Take `⟨O1, f1, h1, hP1⟩` from `hcov (Etale.proj P e)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hP' : P (O1 ∩ V) (fun y => f1 y + (e.val - f1 (Etale.proj P e)))` using `hadd _ _ _ (hmono _ _ _ hP1 ((hopen _ _ hP1).inter hV) Set.inter_subset_left)`. Use `⟨_, ?_, Etale.isOpen_graph hP', ?_⟩` and prove the remaining obligations. Introduce `e' he'`. Conclude with `((mem_graph_iff e').1 he').1.2`. Rewrite using `[mem_graph_iff]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨h1, he⟩, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_proj
     (hopen : ∀ O f, P O f → IsOpen O)
@@ -53,27 +53,25 @@ end GlobalTheory.PrimLift.SphericalEisensteinCover
 
 open GlobalTheory.PrimLift.SphericalEisensteinCover in
 /- English proof (translation)
-Establish `hproj` using `continuous_proj hopen hmono hadd hcov`. Introduce `x`. Take `⟨O, f, hxO, hP⟩` from `hcov x`. Use `letI : TopologicalSpace ℂ := ⊥`. Use `haveI : DiscreteTopology ℂ := ⟨rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hO : IsOpen O` using `hopen _ _ hP`. Set `H : Etale.proj P ⁻¹' O ≃ₜ O × ℂ` to `{ toFun := fun e => (⟨Etale.proj P e.1, e.2⟩, e.1.val - f (Etale.proj P e.1)) invFun := fun p => ⟨Etale.mk P p.1.1 (f p.1.1 + p.2), p.1.2⟩ left_inv := by`. Introduce `e`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show Etale.mk P _ _ = e.1`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[add_sub_cancel]`. Both sides reduce to the same expression. Use `right_inv := by`. Introduce `p`. Apply the tactic sequence `ext <;> simp`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `continuous_toFun := by`. Use `Continuous.prodMk ?_ ?_` and prove the remaining obligations. Conclude with `(hproj.comp continuous_subtype_val).subtype_mk _`. Rewrite using `[continuous_discrete_rng]`. Introduce `c`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Establish `hG` using `Etale.isOpen_graph (hadd _ _ c hP)`. Use `hG.preimage continuous_subtype_val using 1` and compare the differences between its conclusion and the goal. Use extensionality with `e`. Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff, mem_graph_iff]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components.
 
-Introduce `h`. Use `⟨e.2, ?_⟩` and prove the remaining obligations. Rewrite using `[← h]`. Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `⟨_, h⟩`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree. Use `continuous_invFun := by`. Apply `Continuous.subtype_mk` to reduce the goal to its premises. Apply `continuous_generateFrom_iff.mpr` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `S ⟨O', g, hP'', rfl⟩`. Establish `hU : ∀ c : ℂ, IsOpen {y : O | (y : X) ∈ O ∩ O' ∧ f y + c = g y}`. Introduce `c`. Establish `hOO' : IsOpen (O ∩ O')` using `hO.inter (hopen _ _ hP'')`. Establish `h1 : P (O ∩ O') (fun y => f y + c)` using `hmono _ _ _ (hadd _ _ c hP) hOO' Set.inter_subset_left`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `h2 : P (O ∩ O') g` using `hmono _ _ _ hP'' hOO' Set.inter_subset_right`. Conclude with `(heq _ _ _ h1 h2).preimage continuous_subtype_val`. Establish `: (fun p : O × ℂ => Etale.mk P p.1.1 (f p.1.1 + p.2)) ⁻¹' ((fun y => Etale.mk P y (g y)) '' O') = ⋃ c : ℂ, {y : O | (y : X) ∈ O ∩ O' ∧ f y + c = g y} ×ˢ {c}`. Use extensionality with `⟨y, c⟩`. Simplify using `only [Set.mem_preimage, mem_graph_iff, Etale.proj_mk, Etale.val_mk, Set.mem_iUnion, Set.mem_prod, Set.mem_setOf_eq, Set.mem_singleton_iff]`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨c, ⟨⟨y.2, h1⟩, h2⟩, rfl⟩`. Introduce and unpack `⟨c', ⟨⟨_, h1⟩, h2⟩, rfl⟩`. Conclude with `⟨h1, h2⟩`.
-
-Use `show IsOpen ((fun p : O × ℂ => Etale.mk P p.1.1 (f p.1.1 + p.2)) ⁻¹' ((fun y => Etale.mk P y (g y)) '' O'))`. Rewrite using `[this]`. Conclude with `isOpen_iUnion fun c => (hU c).prod (isOpen_discrete _) }`. Use `IsEvenlyCovered.to_isEvenlyCovered_preimage (I := ℂ) ⟨inferInstance, O, hxO, hO, hO.preimage hproj, H, fun e => rfl⟩` and prove the remaining obligations.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.PrimLift.Etale.isCoveringMap_proj
     {X : Type} [TopologicalSpace X] (P : Set X → (X → ℂ) → Prop)

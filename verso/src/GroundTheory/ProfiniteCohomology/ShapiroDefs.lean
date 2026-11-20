@@ -45,7 +45,7 @@ theorem coindUnit_hom_apply (A : Rep.{u} k G) (a : A) (x : G) :
   rfl
 
 /- English proof (translation)
-Use extensionality with `a`. Express the relevant statement in the definitionally equal form `A.ρ 1 a = a`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem coindUnit_comp_coindEvalOne (A : Rep.{u} k G) :
     (Rep.resFunctor U.subtype).map (coindUnit U A) ≫ coindEvalOne U (Rep.res U.subtype A) =
@@ -64,9 +64,9 @@ noncomputable def coindTraceTerm (c : G ⧸ U) :
     (Representation.coindV U.subtype (Rep.res U.subtype A).ρ).subtype
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `A.ρ (x : G ⧸ U).out (f.1 (x : G ⧸ U).out⁻¹) = A.ρ x (f.1 x⁻¹)`. Choose the witnesses or unpack the hypotheses as in `⟨u, hu⟩ : ∃ u : U, (x : G ⧸ U).out = x * u := by`. Establish `h` using `QuotientGroup.mk_out_eq_mul U x`. Take `⟨u, hu⟩` from `h`. Conclude with `⟨u, hu⟩`.
+Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[hu]`. Establish `h1 : (x * (u : G))⁻¹ = U.subtype u⁻¹ * x⁻¹` using `by simp`. Rewrite using `[h1, f.2 u⁻¹ x⁻¹]`. Express the relevant statement in the definitionally equal form `A.ρ (x * u) (A.ρ (u⁻¹ : U) (f.1 x⁻¹)) = _`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -104,16 +104,16 @@ noncomputable def coindTrace : Rep.coind U.subtype (Rep.res U.subtype A) ⟶ A :
       simp [mul_inv_rev, mul_assoc]⟩
 
 /- English proof (translation)
-Simplify using `[coindTrace]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coindTrace_hom_apply (f : Rep.coind U.subtype (Rep.res U.subtype A)) :
     (coindTrace U A).hom f = ∑ c : G ⧸ U, coindTraceTerm U A c f := by
   simp [coindTrace]
 
 /- English proof (translation)
-Use extensionality with `a`. Express the relevant statement in the definitionally equal form `(coindTrace U A).hom ((coindUnit U A).hom a) = (U.index • 𝟙 A : A ⟶ A).hom a`. Rewrite using `[coindTrace_hom_apply]`. Establish `h : ∀ c : G ⧸ U, coindTraceTerm U A c ((coindUnit U A).hom a) = a` using `fun c => by`. Proceed by induction on `c using QuotientGroup.induction_on with`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `H x`. Rewrite using `[coindTraceTerm_apply, coindUnit_hom_apply, ← Module.End.mul_apply, ← map_mul]`. Simplify using the standard rewrite rules. Simplify using `only [h, Finset.sum_const, Finset.card_univ]`. Rewrite using `[Subgroup.index_eq_card, Nat.card_eq_fintype_card, Rep.nsmul_hom]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -141,11 +141,11 @@ section Discrete
 variable (U : OpenSubgroup G) (B : Rep.{u} k (U : Subgroup G)) [IsDiscreteRep B]
 
 /- English proof (translation)
-Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Use `set S : Set G := Subtype.val '' (stabilizer B.ρ (f.1 x) : Set (U : Subgroup G))`. Establish `hS : IsOpen S` using `IsOpen.isOpenMap_subtype_val (s := (U : Set G)) U.isOpen _ (isOpen_stabilizer B (f.1 x))`. Establish `h1 : S ∈ 𝓝 (1 : G)` using `hS.mem_nhds ⟨1, (stabilizer B.ρ (f.1 x)).one_mem, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : Continuous fun y : G => y * x⁻¹` using `continuous_id.mul continuous_const`. Establish `h2 : ∀ᶠ y in 𝓝 x, y * x⁻¹ ∈ S` using `hc.continuousAt.preimage_mem_nhds (by simpa using h1)`. Use `filter_upwards [h2] with y hy`. Take `⟨u, hu, huy⟩` from `hy`. Establish `hy' : y = (U : Subgroup G).subtype u * x`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Subgroup.subtype_apply, huy, inv_mul_cancel_right]`. Rewrite using `[hy', f.2 u x]`. Conclude with `(mem_stabilizer _ _ _).1 hu`.
+A detailed English derivation is pending.
 -/
 theorem isLocallyConstant_coind (f : Rep.coind (U : Subgroup G).subtype B) :
     IsLocallyConstant (f.1 : G → B) := by

@@ -10,21 +10,21 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.TorusPart
 
 /- English proof (translation)
-Introduce `O _ K Ω _ _ _ _ G _ hG i G' _ i' φ hφ X _ _ _ u' A _ q' j hA hu' hK hj`. Use `hG.comm` as an intermediate fact. Use `hG.smooth` as an intermediate fact. Take `⟨e, he, heφ⟩` from `grpPullback_iso hφ.1 (isGrpPullback_pullback G (spMap (algebraMap K Ω)))`. Take `⟨k₁, k₂, k₃, k₄, k₅⟩` from `id hK`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `: IsIso e.inv.left` using `inferInstanceAs (IsIso ((Over.forget _).map e.inv))`. Take `⟨F, hF, ⟨T⟩⟩` from `exists_finite_torusExtension K Ω G inferInstance hG.quasiCompact hG.separated ⟨{ X := X, B := A, isAbelian := hA, q := e.inv ≫ q', q_hom := inferInstance, q_flat := by rw [Over.comp_left]; infer_instance, q_surjective := by rw [Over.comp_left]; infer_instance, q_quasiCompact := b …`. Set `_` to `T.addCommGroup`. Set `_` to `T.free`. Set `_` to `T.finite`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `_` to `T.grpB`. Use `T.i_hom` as an intermediate fact. Use `T.q_hom` as an intermediate fact. Establish `hT : IsKer T.i T.q` using `isKer_torusExtension T`. Establish `hact` using `exists_isActPull (spMap (algebraMap K F)) i`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(OAct.pullback (spMap (algebraMap K F)) G i).hom` as an intermediate fact. Take `⟨j₀, hj₀⟩` from `hT.exists_oAct (OAct.pullback (spMap (algebraMap K F)) G i) fun a => (splitTorus_hom_abelian_eq_one _ T.X _ T.isAbelian _ inferInstance).trans Hom.one_def`. Establish `hc : spMap (algebraMap F Ω) ≫ spMap (algebraMap K F) = spMap (algebraMap K Ω)` using `FieldModel.spMap_comp rfl`. Take `⟨g₁, eg₁, Hg₁⟩` from `FieldModel.exists_baseChange hc hφ.1.1`. Establish `gp : IsGrpPullback G' ((Over.pullback (spMap (algebraMap K F))).obj G) (spMap (algebraMap F Ω)) g₁` using `hact.1.cancel (hφ.1.congr hc.symm eg₁.symm) Hg₁.w`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨u₁, hu₁, -⟩` from `existsUnique_torusCompat Hg₁ T.i`. Use `hu₁.isMonHom gp` as an intermediate fact. Establish `gB` using `isGrpPullback_pullback T.B (spMap (algebraMap F Ω))`. Take `⟨q₁, ⟨l₁, l₂, l₃, l₄, l₅⟩, hq₁⟩` from `hT.baseChange gp gB hu₁`. Establish `hB : IsAbelianScheme ((Over.pullback (spMap (algebraMap F Ω))).obj T.B)` using `{ comm := by have := T.isAbelian.comm; infer_instance smooth := by have := T.isAbelian.smooth; show Smooth (pullback.snd _ _); infer_instance proper := by have := T.isAbelian.proper; show IsProper (pullback.snd _ _); infer_instance geomConnected := by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `T.isAbelian.geomConnected` as an intermediate fact. Use `show GeometricallyConnected (pullback.snd _ _)`. Use `infer_instance }`. Take `⟨β, hβ, hqβ⟩` from `flatQuotient_iso_of_same_kernel _ G' _ A _ _ q₁ u₁ q' u' l₁ inferInstance l₂ l₃ l₄ l₅ k₁ hu' k₂ k₃ k₄ k₅ ((splitTorus_hom_abelian_eq_one _ X _ hB _ inferInstance).trans Hom.one_def) ((splitTorus_hom_abelian_eq_one _ T.X _ hA _ inferInstance).trans Hom.one_def)`. Use `⟨F, hF, _, inferInstance, _, _, T.X, inferInstance, inferInstance, inferInstance, T.i, T.B, inferInstance, T.q, j₀, β.hom.left ≫ pullback.fst T.B.hom (spMap (algebraMap F Ω)), hact, T.isAbelian, T.i_hom, hT, hj₀, ((isGrpPullback_of_iso β).comp gB).congr (Category.id_comp _) rfl, …` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Epi q'.left` using `Flat.epi_of_flat_of_surjective _`. Establish `h₁ : q'.left ≫ β.hom.left ≫ pullback.fst T.B.hom (spMap (algebraMap F Ω)) = g₁ ≫ T.q.left`. Rewrite using `[← Category.assoc, ← Over.comp_left, hqβ]`. Conclude with `hq₁.w.symm`. Establish `h₂ : (i'.act a).left ≫ g₁ = g₁ ≫ ((OAct.pullback (spMap (algebraMap K F)) G i).act a).left`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `hact.1.1.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, hact.2, eg₁, hφ.2, ← Category.assoc, eg₁]`. Rewrite using `[Category.assoc, Category.assoc, Over.w, Hg₁.w, ← Category.assoc, Over.w]`. Rewrite using `[← cancel_epi q'.left, ← Category.assoc, ← Over.comp_left, ← hj, Over.comp_left, Category.assoc, h₁, ← Category.assoc q'.left, h₁, ← Category.assoc, h₂, Category.assoc, Category.assoc, ← Over.comp_left, hj₀, Over.comp_left]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.split_torus_base_change_semiabelian :
     ∀ (O : Type) [CommRing O] (K Ω : Type) [Field K] [Field Ω] [Algebra K Ω] [Algebra.IsAlgebraic K Ω]

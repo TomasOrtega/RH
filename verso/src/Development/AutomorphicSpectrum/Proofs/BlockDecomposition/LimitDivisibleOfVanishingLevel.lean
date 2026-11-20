@@ -7,9 +7,9 @@ open TensorProduct CrystallineSemistableComparison CrystallineSemistableComparis
 namespace GlobalTheory.CompanionTheory.Tower
 
 /- English proof (translation)
-Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le h`. Proceed by induction on `d with`. Consider the case `zero => exact L.ρ_self b _`. Consider the case `succ d ih`. Establish `h'` using `L.ρ_succ (b + d) b (Nat.le_add_right _ _) (x.1 (b + d + 1))`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite `h'` using `[x.2 (b + d), ih (Nat.le_add_right _ _)]`. Conclude with `h'`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rho_lim {W : Type} [CommRing W] {l : ℕ} {S S' : Sys.{1} W} (L : LSeq l S S') (x : S.lim)
     (b c : ℕ) (h : b ≤ c) : L.ρ c b (x.1 c) = x.1 b := by
@@ -22,15 +22,15 @@ theorem rho_lim {W : Type} [CommRing W] {l : ℕ} {S S' : Sys.{1} W} (L : LSeq l
     exact h'
 
 /- English proof (translation)
-Introduce `W _ l S S' L hA n x hx`. Establish `hex : ∀ a, ∃ y, L.ν a (n + a) y = x.1 (n + a)` using `fun a => L.ex₁ a n (n + a) (Nat.add_comm _ _) _ (by rw [rho_lim L x n (n + a) (Nat.le_add_right _ _), hx])`. Use `choose y hy using hex`. Establish `hN : ∀ a w, w ∈ LinearMap.ker (L.ν (a + 1) (n + (a + 1))) → S.r a w ∈ LinearMap.ker (L.ν a (n + a))`. Introduce `a w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hw' : L.ν (a + 1) (n + a + 1) w = 0` using `hw`. Rewrite using `[LinearMap.mem_ker, ← L.ν_r a (n + a) (Nat.le_add_left _ _), hw', map_zero]`. Establish `hc : ∀ a, S.r a (y (a + 1)) - y a ∈ LinearMap.ker (L.ν a (n + a))`. Introduce `a`. Establish `h1 : L.ν (a + 1) (n + a + 1) (y (a + 1)) = x.1 (n + a + 1)` using `hy (a + 1)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.mem_ker, map_sub, ← L.ν_r a (n + a) (Nat.le_add_left _ _), h1, x.2 (n + a), hy a, sub_self]`. Take `⟨z, hz⟩` from `GlobalTheory.T.artinian_limit_lift_of_compatible W S hA (fun a => LinearMap.ker (L.ν a (n + a))) y hN hc`. Establish `key : ∀ a, ((l : W) ^ n) • z.1 (n + a) = x.1 (n + a)`. Introduce `a`. Establish `h1` using `L.ν_ρ a (n + a) (Nat.le_add_left _ _) (z.1 (n + a))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : L.ν a (n + a) (z.1 a) = x.1 (n + a)`. Establish `h3 : L.ν a (n + a) (z.1 a - y a) = 0` using `hz a`. Rewrite `h3` using `[map_sub, hy a, sub_eq_zero]`. Conclude with `h3`. Rewrite `h1` using `[rho_lim L z a (n + a) (Nat.le_add_left _ _), h2, Nat.add_sub_cancel]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Conclude with `h1.symm`. Use `⟨z, Subtype.ext (funext fun c => ?_)⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem lim_eq_pow_smul : ∀ (W : Type) [CommRing W] (l : ℕ) (S S' : Sys.{1} W) (_ : LSeq l S S'),
     (∀ n, IsArtinian W (S.M n)) → ∀ n (x : S.lim), x.1 n = 0 → ∃ y : S.lim, x = ((l : W) ^ n) • y := by

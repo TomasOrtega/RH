@@ -9,17 +9,15 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 namespace GlobalTheory.SiegelSet
 
 /- English proof (translation)
-Introduce `hP F E _ _ _ _ _ σ hCM n J c₀ hc₀ hJ' φ φ' hφ hsm hcusp N`. Take `⟨S, -, hcov, -, -, hφS⟩` from `exists_cover (J := c₀ • J.map σ) hP hCM hJ'`. Take `⟨C, hC⟩` from `(hφS φ' hsm hcusp N).1`. Use `⟨C, fun h => ?_⟩` and prove the remaining obligations. Establish `heq : UG (cA σ) (incM F J) = HR (AF F) σ (c₀ • J.map σ)` using `ug_eq_hr (sigma_sigma hCM) hc₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Set `g' : GAd σ (c₀ • J.map σ)` to `⟨h.1, heq.le h.2⟩`. Take `⟨γ, hγ, s, hs, hgs⟩` from `hcov g'`. Establish `h1 : φ h = φ' s`. Rewrite using `[← hφ h g' rfl, hgs, hsm.left γ hγ s]`. Take `⟨u, -, hu⟩` from `hγ`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Set `δ : UA σ J` to `⟨(γ⁻¹).1, heq.ge (γ⁻¹).2⟩`. Establish `hδ : δ ∈ ratU σ J` using `by show (γ⁻¹).1 ∈ (Matrix.GeneralLinearGroup.map (n := Fin n) (inclR (F := F) (E := E) (AF F))).range`. Use `⟨u⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[map_inv]`. Use `show _ = (γ.1)⁻¹`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `congrArg (·⁻¹) hu`. Establish `h2 : (δ * h).1 = s.1` using `by show (γ⁻¹).1 * h.1 = s.1`. Establish `: h.1 = (γ * s).1` using `congrArg Subtype.val hgs`. Rewrite using `[this]`. Conclude with `inv_mul_cancel_left γ.1 s.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : qht h ≤ height σ (c₀ • J.map σ) s`. Use `(ciInf_le (OrderBot.bddBelow _) ⟨δ, hδ⟩).trans (le_of_eq ?_)` and prove the remaining obligations. Use `show heightGL F (δ * h).1 = heightGL F ((matHom (AF F) σ (c₀ • J.map σ)) s)`. Rewrite using `[h2]`. Both sides reduce to the same expression.
-
-Rewrite using `[h1]`. Use `le_trans (mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (NNReal.coe_nonneg _) (NNReal.coe_le_coe.2 h3) N) (norm_nonneg _)) (hC s hs)` and prove the remaining obligations.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem rapidDecay_qht : GlobalTheory.Published.SiegelSetUnitary → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (c₀ : E), c₀ ≠ 0 → IsHermND σ (c₀ • J.map σ) →

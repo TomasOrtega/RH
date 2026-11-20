@@ -5,9 +5,9 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GlobalArtinLoc
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ChevalleyUnits
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ A w h`. Take `⟨a, ha⟩` from `GlobalTheory.localArtinExists_holds E Ω A w h`. Use `⟨a, ha, fun b hb => ?_⟩` and prove the remaining obligations. Take `⟨art, hart⟩` from `GlobalTheory.globalArtinReciprocity_holds E Ω`. Establish `hinj` using `GlobalTheory.ArtinLocalInj.artin_localIdele_injective GlobalTheory.Published.chevalleyUnits' E Ω art hart w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `MonoidHom.ext fun σ => hinj ?_` and prove the remaining obligations. Conclude with `(hb.glob art hart σ).trans (ha.glob art hart σ).symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Zero.LLC.artEx :
     UpperTheory.Zero.LLC.ArtEx := by

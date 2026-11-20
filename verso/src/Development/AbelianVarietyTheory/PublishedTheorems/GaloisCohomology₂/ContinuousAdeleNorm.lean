@@ -16,7 +16,7 @@ namespace GlobalTheory.GalOfCusp
 variable (E : Type) [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-The claim follows from `(isCMExt_iff _).2 ⟨inferInstance, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem isCMExt_real : HeckeCharacterZeroLocus.ThmBIn.IsCMExt (maximalRealSubfield E) E
     (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.conj (maximalRealSubfield E) E : E →ₐ[maximalRealSubfield E] E) :=
@@ -27,7 +27,7 @@ def adeleNorm : AdeleRing (𝓞 E) E →* AdeleRing (𝓞 (maximalRealSubfield E
     (adeleEquiv (isCMExt_real E)).symm.toRingHom.toMonoidHom
 
 /- English proof (translation)
-Use `Continuous.comp (g := Algebra.norm (AdeleRing (𝓞 (maximalRealSubfield E)) (maximalRealSubfield E))) ?_ (continuous_adeleEquiv_symm (isCMExt_real E))` and prove the remaining obligations. Use `haveI : IsModuleTopology (HeckeCharacterZeroLocus.ThmBIn.AF (maximalRealSubfield E)) (HeckeCharacterZeroLocus.ThmBIn.AE (maximalRealSubfield E) E) := ⟨rfl⟩`. Set `b` to `Algebra.TensorProduct.basis (HeckeCharacterZeroLocus.ThmBIn.AF (maximalRealSubfield E)) (Module.finBasis (maximalRealSubfield E) E)`. Use `(IsModuleTopology.continuous_of_linearMap (Algebra.leftMulMatrix b).toLinearMap).matrix_det.congr fun x => ?_` and prove the remaining obligations. Conclude with `(Algebra.norm_eq_matrix_det b x).symm`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_adeleNorm : Continuous (adeleNorm E) := by
   classical
@@ -40,7 +40,7 @@ theorem continuous_adeleNorm : Continuous (adeleNorm E) := by
   exact (Algebra.norm_eq_matrix_det b x).symm
 
 /- English proof (translation)
-Establish `h : (adeleEquiv (isCMExt_real E)).symm (algebraMap E _ x) = 1 ⊗ₜ x` using `(adeleEquiv (isCMExt_real E)).symm_apply_eq.2 (toAdele_incA x).symm`. Express the relevant statement in the definitionally equal form `Algebra.norm _ ((adeleEquiv (isCMExt_real E)).symm (algebraMap E _ x)) = _`. Rewrite using `[h, Algebra.norm_apply, Algebra.norm_apply, ← LinearMap.det_baseChange]`. Use `congr 1`. Use extensionality with `y`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
 Simplify using the standard rewrite rules.
 -/
@@ -55,7 +55,7 @@ theorem adeleNorm_algebraMap (x : E) :
   simp
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `(adeleEquiv (isCMExt_real E)).surjective x`. Establish `h : adeleNorm E (adeleEquiv (isCMExt_real E) z) = Algebra.norm _ z` using `congrArg (Algebra.norm _) ((adeleEquiv (isCMExt_real E)).symm_apply_apply z)`. Rewrite using `[h, ← toAdele_algebraMap, GlobalTheory.Doubling.algebraMap_norm_eq (isCMExt_real E), map_mul]`. Conclude with `congrArg (_ * ·) (toAdele_cA z)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adeleMap_adeleNorm (x : AdeleRing (𝓞 E) E) :
     GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.adeleMap _ E (adeleNorm E x) = x * adeleConj (maximalRealSubfield E) E x := by
@@ -68,7 +68,7 @@ theorem adeleMap_adeleNorm (x : AdeleRing (𝓞 E) E) :
 def ideleNorm : Ideles E →* Ideles (maximalRealSubfield E) := Units.map (adeleNorm E)
 
 /- English proof (translation)
-The claim follows from `Units.ext (adeleMap_adeleNorm E x)`.
+A detailed English derivation is pending.
 -/
 theorem ideleMap_ideleNorm (x : Ideles E) : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.ideleMap _ E (ideleNorm E x) =
     x * GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.ideleConj (maximalRealSubfield E) E x := Units.ext (adeleMap_adeleNorm E x)
@@ -95,7 +95,7 @@ def quadChar : HChar (maximalRealSubfield E) :=
       (map_one _)⟩
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (MonoidHom.ext fun x => (congrArg (Units.map (Int.castRingHom ℂ).toMonoidHom) (GlobalTheory.IdeleNormChar.normSign_of_mem E ⟨Units.map (adeleEquiv (isCMExt_real E)).symm.toRingHom.toMonoidHom x, rfl⟩)).trans (map_one _))`.
+A detailed English derivation is pending.
 -/
 theorem compNorm_quadChar : compNorm E (quadChar E) = 1 :=
   Subtype.ext (MonoidHom.ext fun x => (congrArg (Units.map (Int.castRingHom ℂ).toMonoidHom)
@@ -103,15 +103,15 @@ theorem compNorm_quadChar : compNorm E (quadChar E) = 1 :=
       ⟨Units.map (adeleEquiv (isCMExt_real E)).symm.toRingHom.toMonoidHom x, rfl⟩)).trans (map_one _))
 
 /- English proof (translation)
-Take `⟨δ, b, hδ, h0, h1⟩` from `GlobalTheory.QuadSymbol.AlmostNorm.exists_basis_sq (maximalRealSubfield E) E`. Establish `hv : v.IsReal` using `IsTotallyReal.isReal v`. Rewrite using `[GlobalTheory.QuadSymbol.eta_eq_neg_one_iff, GlobalTheory.QuadSymbol.mem_normGroup_iff_form b h0 h1]`. Introduce and unpack `⟨x, y, h⟩`. Establish `hc : IsCMField.complexConj E (b 1) = -b 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h2 : IsCMField.complexConj E (b 1) * IsCMField.complexConj E (b 1) = b 1 * b 1`. Rewrite using `[← map_mul, h1, AlgEquiv.commutes]`. Use `(mul_self_eq_mul_self_iff.1 h2).resolve_left fun e => hδ ?_` and prove the remaining obligations. Conclude with `⟨⟨b 1, (IsCMField.complexConj_eq_self_iff E _).1 e⟩, Subtype.ext h1.symm⟩`. Establish `h3` using `ComplexEmbedding.lift_algebraMap_apply E v.embedding δ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `h4` using `IsCMField.complexEmbedding_complexConj E (ComplexEmbedding.lift E v.embedding) (b 1)`. Rewrite `h4` using `[hc, map_neg]`. Rewrite `h3` using `[← h1, map_mul]`. Establish `h5 : InfinitePlace.embedding_of_isReal hv δ ≤ 0`. Establish `h6 : ((InfinitePlace.embedding_of_isReal hv δ : ℝ) : ℂ) = ((-Complex.normSq (ComplexEmbedding.lift E v.embedding (b 1)) : ℝ) : ℂ)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[InfinitePlace.embedding_of_isReal_apply, ← h3, Complex.ofReal_neg, ← Complex.mul_conj, ← h4]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Complex.ofReal_injective h6]`. Conclude with `neg_nonpos.2 (Complex.normSq_nonneg _)`. Set `e` to `InfinitePlace.Completion.ringEquivRealOfIsReal hv`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `he : e (algebraMap _ v.Completion δ) = InfinitePlace.embedding_of_isReal hv δ` using `InfinitePlace.Completion.extensionEmbeddingOfIsReal_coe hv ((WithAbs.equiv v.1).symm δ)`. Establish `h7` using `congrArg e h`. Simplify using `only [Units.val_neg, Units.val_one, map_neg, map_one, map_sub, map_mul, map_pow, he] at h7`. Use polynomial arithmetic with `[sq_nonneg (e x), mul_nonneg (neg_nonneg.2 h5) (sq_nonneg (e y))]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem eta_neg_one (v : InfinitePlace (maximalRealSubfield E)) :
     GlobalTheory.QuadSymbol.eta (maximalRealSubfield E) E v.Completion (-1) = -1 := by
@@ -143,11 +143,11 @@ theorem eta_neg_one (v : InfinitePlace (maximalRealSubfield E)) :
   nlinarith [sq_nonneg (e x), mul_nonneg (neg_nonneg.2 h5) (sq_nonneg (e y))]
 
 /- English proof (translation)
-Establish `h1 : ∀ (A : Type) [CommRing A] [Algebra (maximalRealSubfield E) A], GlobalTheory.QuadSymbol.eta (maximalRealSubfield E) E A 1 = 1` using `fun A _ _ => GlobalTheory.QuadSymbol.eta_eq_one_iff.2 (one_mem _)`. Establish `h : GlobalTheory.IdeleNormChar.normSign E (infIdele _ v (-1)) = -1`. Express the relevant statement in the definitionally equal form `GlobalTheory.QuadSymbol.etaProd _ E _ _ = _`. Unfold `GlobalTheory.QuadSymbol.etaProd`. Establish `e1 : GlobalTheory.IdeleNormChar.finComp (infIdele _ v (-1)) = 1` using `funext fun _ => Units.ext rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `e2 : ∀ u, u ≠ v → GlobalTheory.IdeleNormChar.infComp (infIdele _ v (-1)) u = 1` using `fun u hu => Units.ext (Pi.mulSingle_eq_of_ne (M := fun w : InfinitePlace (maximalRealSubfield E) => w.Completion) hu _)`. Establish `e3 : GlobalTheory.IdeleNormChar.infComp (infIdele _ v (-1)) v = -1` using `Units.ext (Pi.mulSingle_eq_same (M := fun w : InfinitePlace (maximalRealSubfield E) => w.Completion) v _)`. Rewrite using `[e1, Finset.prod_eq_single v (fun u _ hu => by rw [e2 u hu, h1]) (by simp), e3, eta_neg_one]`. Simplify using `[h1]`. Express the relevant statement in the definitionally equal form `Units.map _ (GlobalTheory.IdeleNormChar.normSign E (infIdele _ v (-1))) = _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[h]`. Conclude with `Units.ext (by simp)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quadChar_locInf (v : InfinitePlace (maximalRealSubfield E)) : (quadChar E).locInf v (-1) = -1 := by
   classical
@@ -173,13 +173,13 @@ def IsConjDualBy (π : CuspSub E a) (ψ : HChar E) : Prop :=
   ∃ T : π.V ≃ₗ[ℂ] (π.twist ψ⁻¹).V, ∀ o φ, T (π.op (thetaOp o) φ) = (π.twist ψ⁻¹).op o (T φ)
 
 /- English proof (translation)
-Rewrite using `[IsConjDualBy, inv_one, CuspSub.twist_one, CuspSub.IsCsd]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isConjDualBy_one (π : CuspSub E a) : IsConjDualBy π 1 ↔ π.IsCsd := by
   rw [IsConjDualBy, inv_one, CuspSub.twist_one, CuspSub.IsCsd]
 
 /- English proof (translation)
-Take `⟨T, hT⟩` from `h`. Rewrite using `[IsConjDualBy, ← CuspSub.twist_mul]`. Use `⟨((π.toTwist ξ).symm.trans T).trans (π.toTwist _), fun o φ => ?_⟩` and prove the remaining obligations. Take `⟨φ, rfl⟩` from `(π.toTwist ξ).surjective φ`. Simplify using `only [CuspSub.op_toTwist, LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply, map_add T, map_smul T, hT, (hξ o).1, (hξ o).2]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem isConjDualBy_twist {π : CuspSub E a} (h : π.IsCsd) {ξ ψ : HChar E}
     (hξ : ∀ o : Op E a, opMul ξ (thetaOp o) = opMul (ξ * ψ⁻¹) o ∧ opAdd ξ (thetaOp o) = opAdd (ξ * ψ⁻¹) o) :
@@ -202,7 +202,7 @@ theorem locInf_pow {K : Type} [Field K] [NumberField K] (χ : HChar K) (k : ℕ)
     (x : (v.Completion)ˣ) : (χ ^ k).locInf v x = χ.locInf v x ^ k := rfl
 
 /- English proof (translation)
-Rewrite using `[HChar.locInf_mul, locInf_pow, hχ, quadChar_locInf, ← pow_add, ← add_assoc, pow_add, ← two_mul, pow_mul]`. Simplify using the standard rewrite rules. Use `dual := by rwa [map_mul, map_pow, compNorm_quadChar, one_pow, mul_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem IsConjDualBy.isPolarized {π : CuspSub E a} {χ : HChar (maximalRealSubfield E)}
     (h : IsConjDualBy π (compNorm E χ)) {m : ℕ} (hχ : ∀ v, χ.locInf v (-1) = (-1) ^ m) :
@@ -213,16 +213,16 @@ theorem IsConjDualBy.isPolarized {π : CuspSub E a} {χ : HChar (maximalRealSubf
   dual := by rwa [map_mul, map_pow, compNorm_quadChar, one_pow, mul_one]
 
 /- English proof (translation)
-Simplify using `using IsConjDualBy.isPolarized (π := π) (χ := 1) (by rw [map_one]; exact (isConjDualBy_one π).2 h) (m := 0) fun _ => rfl`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isPolarized_of_isCsd {π : CuspSub E a} (h : π.IsCsd) : IsPolarized π (quadChar E ^ a) := by
   simpa using IsConjDualBy.isPolarized (π := π) (χ := 1) (by rw [map_one]; exact (isConjDualBy_one π).2 h) (m := 0)
     fun _ => rfl
 
 /- English proof (translation)
-Use `⟨isPolarized_of_isCsd ⟨.refl _ _, fun o φ => Subtype.ext ?_⟩, ?_⟩` and prove the remaining obligations. Take `⟨c, e⟩` from `Submodule.mem_span_singleton.1 φ.2`. Express the relevant statement in the definitionally equal form `act (thetaOp o) φ.1 = act o φ.1`. Rewrite using `[← e, map_smul, map_smul, act_oneFn, act_oneFn]`. Apply the tactic sequence `cases o <;> rfl`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[← CuspSub.twist_one (CuspSub.triv E (le_refl 1))]`. Conclude with `(CG.isRegAlg_ofChar 1).2 fun τ => ⟨0, by simp [CG.expo_one]⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPolarized_triv : IsPolarized (CuspSub.triv E (le_refl 1)) (quadChar E ^ 1) ∧
     (CG.mk (CuspSub.triv E (le_refl 1))).IsRegAlg := by

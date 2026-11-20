@@ -5,7 +5,7 @@ open scoped TensorProduct
 namespace GlobalTheory.JointDiag
 
 /- English proof (translation)
-Proceed by induction on `q using Polynomial.induction_on' with`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `monomial n c`. Simplify using `only [aeval_monomial, Module.End.mul_apply, Module.algebraMap_end_apply, Module.End.pow_restrict, LinearMap.restrict_apply, Submodule.coe_smul]`. Rewrite using `[Module.End.pow_restrict n hW]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -21,9 +21,9 @@ theorem aeval_restrict_coe {K V : Type} [Field K] [AddCommGroup V] [Module K V]
     rfl
 
 /- English proof (translation)
-Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Conclude with `LinearMap.ker_id`. Introduce `a s ha ih`. Rewrite using `[Finset.prod_insert ha, ← sup_ker_aeval_eq_ker_aeval_mul_of_coprime, ih, Finset.iSup_insert]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Rewrite using `[Module.End.eigenspace_def, map_sub, aeval_X, aeval_C, Algebra.algebraMap_eq_smul_one]`. Conclude with `IsCoprime.prod_right fun i hi => (pairwise_coprime_X_sub_C (K := K) (s := id) Function.injective_id) (fun h => ha (h ▸ hi))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_prod {K M : Type} [Field K] [AddCommGroup M] [Module K M]
     (f : Module.End K M) (s : Finset K) :
@@ -40,11 +40,11 @@ theorem ker_prod {K M : Type} [Field K] [AddCommGroup M] [Module K M]
         (pairwise_coprime_X_sub_C (K := K) (s := id) Function.injective_id) (fun h => ha (h ▸ hi))
 
 /- English proof (translation)
-Establish `hne : p ≠ 0` using `hs.ne_zero`. Set `s : Finset K` to `⟨p.roots, nodup_roots hs⟩`. Establish `hprod : ∏ r ∈ s, (X - C r) = (p.roots.map (X - C ·)).prod` using `rfl`. Establish `hc : p.leadingCoeff ≠ 0` using `leadingCoeff_ne_zero.mpr hne`. Establish `hker : LinearMap.ker (aeval f (∏ r ∈ s, (X - C r))) = ⊤`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[eq_top_iff]`. Introduce `x _`. Establish `h1` using `LinearMap.congr_fun h0 x`. Rewrite `h1` using `[hp.eq_prod_roots, ← hprod, map_mul, aeval_C, Module.End.mul_apply, Module.algebraMap_end_apply, LinearMap.zero_apply, smul_eq_zero]`. Conclude with `h1.resolve_left hc`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hker` using `[ker_prod]`. Rewrite using `[eq_top_iff, ← hker]`. Conclude with `iSup₂_le fun r _ => le_iSup (fun μ => f.eigenspace μ) r`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iSup_eigenspace_eq_top_of_aeval {K M : Type} [Field K] [AddCommGroup M] [Module K M]
     (f : Module.End K M) (p : K[X]) (hs : p.Separable) (hp : p.Splits) (h0 : aeval f p = 0) :
@@ -66,21 +66,19 @@ theorem iSup_eigenspace_eq_top_of_aeval {K M : Type} [Field K] [AddCommGroup M] 
   exact iSup₂_le fun r _ => le_iSup (fun μ => f.eigenspace μ) r
 
 /- English proof (translation)
-Introduce `K V ι _ _ _ _ T W hc hW hp`. Set `S : ι → Module.End K W` to `fun a => (T a).restrict (hW a)`. Establish `hS0 : ∀ a, ∃ p : K[X], p.Separable ∧ p.Splits ∧ aeval (S a) p = 0`. Introduce `a`. Take `⟨p, hs, hsp, hx⟩` from `hp a`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨p, hs, hsp, LinearMap.ext fun y => Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[aeval_restrict_coe]`. Simplify using `using hx y y.2`. Establish `hmax : ∀ a μ, (S a).maxGenEigenspace μ = (S a).eigenspace μ`. Introduce `a μ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨p, hs, _, h0⟩` from `hS0 a`. Conclude with `(Module.End.isSemisimple_of_squarefree_aeval_eq_zero hs.squarefree h0).isFinitelySemisimple.maxGenEigenspace_eq_eigenspace μ`. Establish `hdiag : ∀ a, ⨆ μ, (S a).maxGenEigenspace μ = ⊤`. Introduce `a`. Take `⟨p, hs, hsp, h0⟩` from `hS0 a`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[hmax]`. Conclude with `iSup_eigenspace_eq_top_of_aeval (S a) p hs hsp h0`. Establish `hcomm : Pairwise fun i j => Commute (S i) (S j)` using `fun i j _ => LinearMap.restrict_commute (hc i j) (hW i) (hW j)`. Establish `htop` using `Module.End.iSup_iInf_maxGenEigenspace_eq_top_of_iSup_maxGenEigenspace_eq_top_of_commute S hcomm hdiag`. Rewrite `htop` using `[hmax]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hle : Submodule.map W.subtype (⨆ χ : ι → K, ⨅ a, (S a).eigenspace (χ a)) ≤ ⨆ ev : ι → K, ((⨅ a, LinearMap.ker (T a - ev a • LinearMap.id)) ⊓ W)`. Rewrite using `[Submodule.map_iSup]`. Use `iSup_mono fun χ => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Use `⟨?_, y.2⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hy`, the goal using `[SetLike.mem_coe]`. Rewrite using `[Submodule.mem_iInf]`. Introduce `a`. Establish `h` using `Module.End.mem_eigenspace_iff.mp ((Submodule.mem_iInf _).mp hy a)`. Establish `h'` using `congrArg Subtype.val h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [S, LinearMap.restrict_apply, Submodule.coe_smul] at h'`. Rewrite using `[LinearMap.mem_ker, Submodule.subtype_apply, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, h', sub_self]`. Introduce `x hx`. Establish `hmem : (⟨x, hx⟩ : W) ∈ ⨆ χ : ι → K, ⨅ a, (S a).eigenspace (χ a)`. Rewrite using `[htop]`.
-
-Discharge the goal by the elementary cases of `trivial`. Conclude with `hle ⟨⟨x, hx⟩, hmem, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. A detailed English derivation is pending.
 -/
 theorem le_iSup_jointEigenspace_inf : ∀ (K V ι : Type) [Field K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] (T : ι → Module.End K V) (W : Submodule K V), (∀ a c, Commute (T a) (T c)) → (∀ a, ∀ x ∈ W, T a x ∈ W) → (∀ a, ∃ p : K[X], p.Separable ∧ p.Splits ∧ ∀ x ∈ W, Polynomial.aeval (T a) p x = 0) → W ≤ ⨆ ev : ι → K, ((⨅ a, LinearMap.ker (T a - ev a • LinearMap.id)) ⊓ W) := by
   intro K V ι _ _ _ _ T W hc hW hp

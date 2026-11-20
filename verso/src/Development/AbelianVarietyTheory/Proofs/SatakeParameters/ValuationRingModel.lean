@@ -27,11 +27,9 @@ def lat (ρ : Γ →* GL (Fin n) K) (S : Finset Γ) : Submodule O (Fin n → K) 
     ((ρ p.1.1 : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) *ᵥ (Pi.single p.2 1 : Fin n → K))
 
 /- English proof (translation)
-Take `⟨s, hs, hh⟩` from `hS (g * t)`. Use `set h := ((ρ (s⁻¹ * (g * t)) : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) with hhdef`. Establish `e1 : ((ρ g : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) *ᵥ (((ρ t : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) *ᵥ (Pi.single i 1 : Fin n → K)) = ((ρ s : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) *ᵥ (h *ᵥ (Pi.single i 1 : Fin n → K))`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hhdef, ← Units.val_mul, ← Units.val_mul, ← map_mul, ← map_mul, mul_inv_cancel_left]`. Establish `e2 : h *ᵥ (Pi.single i 1 : Fin n → K) = ∑ k, h k i • (Pi.single k 1 : Fin n → K)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `m`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Rewrite using `[e1, e2, Matrix.mulVec_sum]`. Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_smul]`.
-
-Conclude with `(lat O ρ S).smul_mem (⟨h k i, hh k i⟩ : O) (Submodule.subset_span ⟨(⟨s, hs⟩, k), rfl⟩)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gen_mem (ρ : Γ →* GL (Fin n) K) (S : Finset Γ)
     (hS : ∀ g, ∃ s ∈ S, ∀ i j, ((ρ (s⁻¹ * g) : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) i j ∈ O)
@@ -54,7 +52,7 @@ theorem gen_mem (ρ : Γ →* GL (Fin n) K) (S : Finset Γ)
   exact (lat O ρ S).smul_mem (⟨h k i, hh k i⟩ : O) (Submodule.subset_span ⟨(⟨s, hs⟩, k), rfl⟩)
 
 /- English proof (translation)
-Establish `h : lat O ρ S ≤ (lat O ρ S).comap (actL O ((ρ g : GL (Fin n) K) : Matrix (Fin n) (Fin n) K))`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨t, i⟩, rfl⟩`. Conclude with `gen_mem O ρ S hS g t.1 i`. Conclude with `fun x hx => h hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem lat_stable (ρ : Γ →* GL (Fin n) K) (S : Finset Γ)
     (hS : ∀ g, ∃ s ∈ S, ∀ i j, ((ρ (s⁻¹ * g) : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) i j ∈ O) (g : Γ) :
@@ -66,7 +64,7 @@ theorem lat_stable (ρ : Γ →* GL (Fin n) K) (S : Finset Γ)
   exact fun x hx => h hx
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨(⟨1, h1⟩, i), by show ((ρ 1 : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) *ᵥ (Pi.single i 1 : Fin n → K) = _ rw [map_one, Units.val_one, Matrix.one_mulVec]⟩`.
+A detailed English derivation is pending.
 -/
 theorem single_mem (ρ : Γ →* GL (Fin n) K) (S : Finset Γ) (h1 : (1 : Γ) ∈ S) (i : Fin n) :
     (Pi.single i 1 : Fin n → K) ∈ lat O ρ S :=
@@ -98,15 +96,15 @@ theorem act_apply (ρ : Γ →* GL (Fin n) K) (S : Finset Γ)
       ((ρ δ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) *ᵥ (x : Fin n → K) := rfl
 
 /- English proof (translation)
-The claim follows from `Module.Finite.iff_fg.mpr (Submodule.fg_span (Set.finite_range _))`.
+A detailed English derivation is pending.
 -/
 theorem lat_finite (ρ : Γ →* GL (Fin n) K) (S : Finset Γ) : Module.Finite O (lat O ρ S) :=
   Module.Finite.iff_fg.mpr (Submodule.fg_span (Set.finite_range _))
 
 /- English proof (translation)
-Use `eq_bot_iff.mpr fun x hx => ?_` and prove the remaining obligations. Rewrite using `[Submodule.mem_bot]`. Take `⟨a, hax⟩` from `(Submodule.mem_torsion_iff x).1 hx`. Establish `ha : ((a : O) : K) ≠ 0` using `fun h => nonZeroDivisors.coe_ne_zero a (Subtype.ext h)`. Establish `h2 : ((a : O) : K) • (x : Fin n → K) = 0` using `congrArg Subtype.val hax`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Subtype.ext ((smul_eq_zero.mp h2).resolve_left ha)`.
+A detailed English derivation is pending.
 -/
 theorem lat_torsion (ρ : Γ →* GL (Fin n) K) (S : Finset Γ) : Submodule.torsion O (lat O ρ S) = ⊥ := by
   refine eq_bot_iff.mpr fun x hx => ?_
@@ -117,13 +115,13 @@ theorem lat_torsion (ρ : Γ →* GL (Fin n) K) (S : Finset Γ) : Submodule.tors
   exact Subtype.ext ((smul_eq_zero.mp h2).resolve_left ha)
 
 /- English proof (translation)
-Use `lat_finite O ρ S` as an intermediate fact. Establish `: Module.Flat O (lat O ρ S)` using `(Module.Flat.flat_iff_torsion_eq_bot_of_isBezout).mpr (lat_torsion O ρ S)`. Establish `: Module.Free O (lat O ρ S)` using `Module.free_of_flat_of_isLocalRing`. Set `b` to `Module.Free.chooseBasis O (lat O ρ S)`. Establish `hle : Fintype.card (Module.Free.ChooseBasisIndex O (lat O ρ S)) ≤ n`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `li` using `b.linearIndependent.map' (lat O ρ S).subtype (Submodule.ker_subtype _)`. Establish `liK` using `(LinearIndependent.iff_fractionRing O K).mp li`. Simplify using `using liK.fintype_card_le_finrank`. Establish `hge : n ≤ Fintype.card (Module.Free.ChooseBasisIndex O (lat O ρ S))`. Establish `li : LinearIndependent O fun i : Fin n => (⟨Pi.single i 1, single_mem O ρ S h1 i⟩ : lat O ρ S)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `LinearIndependent.of_comp (lat O ρ S).subtype` to reduce the goal to its premises. Use `(LinearIndependent.iff_fractionRing O K).mpr ?_` and prove the remaining obligations. Establish `e : ((lat O ρ S).subtype ∘ fun i : Fin n => (⟨Pi.single i 1, single_mem O ρ S h1 i⟩ : lat O ρ S)) = fun i => Pi.basisFun K (Fin n) i`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Conclude with `(Pi.basisFun K (Fin n)).linearIndependent`. Use `li.fintype_card_le_finrank` as an intermediate fact. Rewrite `this` using `[Module.finrank_eq_card_basis b, Fintype.card_fin]`. Then use the resulting hypothesis. Conclude with `⟨b.reindex (Fintype.equivFinOfCardEq (le_antisymm hle hge))⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_basis (ρ : Γ →* GL (Fin n) K) (S : Finset Γ) (h1 : (1 : Γ) ∈ S) :
     Nonempty (Module.Basis (Fin n) O (lat O ρ S)) := by
@@ -152,7 +150,7 @@ theorem exists_basis (ρ : Γ →* GL (Fin n) K) (S : Finset Γ) (h1 : (1 : Γ) 
   exact ⟨b.reindex (Fintype.equivFinOfCardEq (le_antisymm hle hge))⟩
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun y : lat O ρ S => (y : Fin n → K) l) (b.sum_repr x)`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, Finset.sum_apply, Algebra.smul_def] at h`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coe_repr_sum (ρ : Γ →* GL (Fin n) K) (S : Finset Γ) (b : Module.Basis (Fin n) O (lat O ρ S))
     (x : lat O ρ S) (l : Fin n) :
@@ -162,19 +160,17 @@ theorem coe_repr_sum (ρ : Γ →* GL (Fin n) K) (S : Finset Γ) (b : Module.Bas
   exact h
 
 /- English proof (translation)
-Take `⟨b⟩` from `exists_basis O ρ S h1`. Set `G : Matrix (Fin n) (Fin n) K` to `Matrix.of fun i j => ((b j : lat O ρ S) : Fin n → K) i`. Set `D : Matrix (Fin n) (Fin n) K` to `Matrix.of fun i j => algebraMap O K (b.repr ⟨Pi.single j 1, single_mem O ρ S h1 j⟩ i)`. Establish `hGD : G * D = 1`. Use `Matrix.ext fun l j => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.mul_apply]`. Use `coe_repr_sum O ρ S b ⟨Pi.single j 1, single_mem O ρ S h1 j⟩ l` as an intermediate fact. Simplify using `only [G, D, Matrix.of_apply]`. Rewrite using `[Matrix.one_apply]`. Use `this using 1` and compare the differences between its conclusion and the goal.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Conclude with `Finset.sum_congr rfl fun i _ => mul_comm (((b i : lat O ρ S) : Fin n → K) l) _`. Simplify using `[Pi.single_apply]`. Establish `hDG : D * G = 1` using `mul_eq_one_comm.mp hGD`. Set `P : GL (Fin n) K` to `⟨G, D, hGD, hDG⟩`. Set `ρ₀ : Γ →* GL (Fin n) O` to `(Units.map (LinearMap.toMatrixAlgEquiv b).toMonoidHom).comp (act O ρ S hS).toHomUnits`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨ρ₀, P, fun γ => ?_⟩` and prove the remaining obligations. Use `set C := LinearMap.toMatrixAlgEquiv b (act O ρ S hS γ) with hC`. Establish `hρ0 : ((ρ₀ γ : GL (Fin n) O) : Matrix (Fin n) (Fin n) O) = C` using `rfl`. Establish `key : ((ρ γ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) * G = G * C.map (algebraMap O K)`. Use `Matrix.ext fun l j => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_apply, Matrix.mul_apply]`. Establish `h1'` using `act_apply O ρ S hS γ (b j)`. Establish `h2` using `coe_repr_sum O ρ S b (act O ρ S hS γ (b j)) l`. Rewrite `h2` using `[h1']`. Simplify using `only [G, Matrix.of_apply, Matrix.map_apply, hC, LinearMap.toMatrixAlgEquiv_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mulVec, dotProduct] at h2`. Rewrite using `[← h2]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`. Rewrite using `[hρ0]`. Use `show ((ρ γ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) = G * C.map (algebraMap O K) * D`.
-
-Rewrite using `[← key, Matrix.mul_assoc, hGD, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj (ρ : Γ →* GL (Fin n) K) (S : Finset Γ)
     (hS : ∀ g, ∃ s ∈ S, ∀ i j, ((ρ (s⁻¹ * g) : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) i j ∈ O)
@@ -224,15 +220,13 @@ section Top
 variable {K : Type} [Field K] (O : ValuationSubring K)
 
 /- English proof (translation)
-Set `U : Γ → Set Γ` to `fun s => {x | ∀ i j, ((ρ (s⁻¹ * x) : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) i j ∈ O}`. Establish `hU : ∀ s, IsOpen (U s)`. Introduce `s`. Establish `e : U s = ⋂ i, ⋂ j, (fun x => ((ρ (s⁻¹ * x) : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) i j) ⁻¹' (O : Set K)`. Use extensionality with `x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[U]`. Rewrite using `[e]`. Conclude with `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => hO.preimage ((hρ.comp (continuous_const.mul continuous_id)).matrix_elem i j)`. Establish `hcov : Set.univ ⊆ ⋃ s, U s`. Introduce `x _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `Set.mem_iUnion.2 ⟨x, ?_⟩` and prove the remaining obligations. Use `show ∀ i j, ((ρ (x⁻¹ * x) : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) i j ∈ O`. Introduce `i j`. Rewrite using `[inv_mul_cancel, map_one, Units.val_one, Matrix.one_apply]`. Use `split_ifs`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `O.one_mem`. Conclude with `O.zero_mem`. Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover U hU hcov`. Use `⟨insert 1 t, Finset.mem_insert_self _ _, fun g => ?_⟩` and prove the remaining obligations. Establish `hg` using `ht (Set.mem_univ g)`.
-
-Rewrite `hg` using `[Set.mem_iUnion₂]`. Take `⟨s, hs, hgs⟩` from `hg`. Conclude with `⟨s, Finset.mem_insert_of_mem hs, hgs⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_cover [TopologicalSpace K] (hO : IsOpen (O : Set K)) {Γ : Type} [Group Γ] [TopologicalSpace Γ]
     [IsTopologicalGroup Γ] [CompactSpace Γ] {n : ℕ} (ρ : Γ →* GL (Fin n) K)
@@ -267,11 +261,9 @@ theorem exists_cover [TopologicalSpace K] (hO : IsOpen (O : Set K)) {Γ : Type} 
   exact ⟨s, Finset.mem_insert_of_mem hs, hgs⟩
 
 /- English proof (translation)
-Use `first`. Consider the case `(run_tac Lean.Elab.Tactic.liftMetaTactic (fun g => do pure [← g.revertAll]))`. Conclude with `@_root_.GlobalTheory.AlgClosedResidueField.isAlgClosed_residueField`. Consider the case `(run_tac Lean.Elab.Tactic.liftMetaTactic (fun g => do pure [← g.revertAll]))`. Conclude with `_root_.GlobalTheory.AlgClosedResidueField.isAlgClosed_residueField`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact @_root_.GlobalTheory.AlgClosedResidueField.isAlgClosed_residueField`. Consider the case `exact _root_.GlobalTheory.AlgClosedResidueField.isAlgClosed_residueField`. Consider the case `(apply _root_.GlobalTheory.AlgClosedResidueField.isAlgClosed_residueField <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.AlgClosedResidueField.isAlgClosed_residueField <;> assumption)`. Consider the case `(intros; apply @_root_.GlobalTheory.AlgClosedResidueField.isAlgClosed_residueField <;> first | assumption | infer_instance)`.
-
-Consider the case `(intros; exact _root_.GlobalTheory.AlgClosedResidueField.isAlgClosed_residueField ..)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem res_algClosed [IsAlgClosed K] : IsAlgClosed (IsLocalRing.ResidueField O) := by
   first
@@ -293,18 +285,18 @@ variable {K : Type} [NormedField K] [IsUltrametricDist K]
 def unitBall : ValuationSubring K := GlobalTheory.ClosedBallValuationSubring.closedBallValuationSubring K
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_unitBall (x : K) : x ∈ (unitBall : ValuationSubring K) ↔ ‖x‖ ≤ 1 := Iff.rfl
 
 /- English proof (translation)
-Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `lt_of_le_of_ne x.2 fun h1 => hx ?_` and prove the remaining obligations. Establish `hx0 : (x : K) ≠ 0`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `h0`. Rewrite `h1` using `[h0, norm_zero]`. Conclude with `zero_ne_one h1`. Use `isUnit_iff_exists_inv.2 ⟨⟨(x : K)⁻¹, ?_⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Use `show ‖(x : K)⁻¹‖ ≤ 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[norm_inv, h1, inv_one]`. Use `show (x : K) * (x : K)⁻¹ = 1`. Conclude with `mul_inv_cancel₀ hx0`. Introduce and unpack `hx ⟨u, hu⟩`. Establish `h0 : ((u : (unitBall : ValuationSubring K)) : K) * (((u⁻¹ : (unitBall : ValuationSubring K)ˣ) : (unitBall : ValuationSubring K)) : K) = 1` using `congrArg Subtype.val u.mul_inv`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `congrArg norm h0`. Rewrite `h` using `[norm_mul, norm_one]`. Establish `h2 : ‖((u⁻¹ : (unitBall : ValuationSubring K)ˣ) : K)‖ ≤ 1` using `(u⁻¹ : (unitBall : ValuationSubring K)ˣ).1.2`. Rewrite `h` using `[hu]`. Use polynomial arithmetic with `[norm_nonneg ((u⁻¹ : (unitBall : ValuationSubring K)ˣ) : K), norm_nonneg (x : K)]`.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem mem_maximalIdeal_unitBall (x : (unitBall : ValuationSubring K)) :
     x ∈ IsLocalRing.maximalIdeal (unitBall : ValuationSubring K) ↔ ‖(x : K)‖ < 1 := by
@@ -330,7 +322,7 @@ theorem mem_maximalIdeal_unitBall (x : (unitBall : ValuationSubring K)) :
     nlinarith [norm_nonneg ((u⁻¹ : (unitBall : ValuationSubring K)ˣ) : K), norm_nonneg (x : K)]
 
 /- English proof (translation)
-Establish `: ((unitBall : ValuationSubring K) : Set K) = Metric.closedBall 0 1`. Use extensionality with `x`. Simplify using `[mem_unitBall]`. Rewrite using `[this]`. Conclude with `IsUltrametricDist.isOpen_closedBall 0 one_ne_zero`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_unitBall : IsOpen ((unitBall : ValuationSubring K) : Set K) := by
   have : ((unitBall : ValuationSubring K) : Set K) = Metric.closedBall 0 1 := by
@@ -342,11 +334,11 @@ theorem isOpen_unitBall : IsOpen ((unitBall : ValuationSubring K) : Set K) := by
 end Ball
 
 /- English proof (translation)
-Introduce `l _`. Set `O : ValuationSubring (Qbar l)` to `unitBall`. Use `⟨O, inferInstance, inferInstance, res_algClosed O, algebraMap O (Qbar l), fun a b h => Subtype.ext h, ?_, fun x => mem_maximalIdeal_unitBall x, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨y, rfl⟩`. Conclude with `y.2`. Introduce `hx`. Conclude with `⟨⟨x, hx⟩, rfl⟩`. Introduce `Γ _ _ _ _ n ρ hρ`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨S, h1, hS⟩` from `exists_cover O isOpen_unitBall ρ hρ`. Conclude with `conj O ρ S hS h1`.
+A detailed English derivation is pending.
 -/
 theorem valRingModel : ValRingModel := by
   intro l _

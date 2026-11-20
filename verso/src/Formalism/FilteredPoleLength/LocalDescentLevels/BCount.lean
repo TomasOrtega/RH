@@ -5,7 +5,7 @@ namespace Formalism.LatticeBaseChangeAlt
 open Finset
 
 /- English proof (translation)
-Introduce `ι _ ep f mm v T c' h`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_le_sum fun z _ => ?_` and prove the remaining obligations. Establish `hf : (0 : ℝ) ≤ (f z : ℝ)` using `Nat.cast_nonneg _`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem levelsSum : LevelsSum := by
   intro ι _ ep f mm v T c' h

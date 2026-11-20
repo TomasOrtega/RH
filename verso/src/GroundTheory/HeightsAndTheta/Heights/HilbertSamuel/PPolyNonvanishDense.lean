@@ -7,11 +7,11 @@ namespace GroundTheory.Heights₂.Heights.HilbertSamuel
 open MvPolynomial
 
 /- English proof (translation)
-Introduce `e D hD`. Rewrite using `[dense_iff_inter_open]`. Introduce and unpack `U hU ⟨y₀, hy₀⟩`. Assume the negation of the conclusion as `hne`. Rewrite `hne` using `[Set.not_nonempty_iff_eq_empty]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨ε, hε, hball⟩` from `Metric.isOpen_iff.mp hU y₀ hy₀`. Establish `hzero : map (algebraMap ℚ ℂ) D = 0`. Use `funext_set (fun j => Metric.ball (y₀ j) ε) (fun j => infinite_of_mem_nhds (y₀ j) (Metric.ball_mem_nhds _ hε)) fun y hy => ?_` and prove the remaining obligations. Rewrite `hy` using `[← ball_pi y₀ hε]`. Establish `hyU` using `hball hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_zero, eval_map, ← aeval_def]`. Assume the negation of the conclusion as `hyD`. Conclude with `(Set.eq_empty_iff_forall_notMem.mp hne) y ⟨hyU, hyD⟩`. Conclude with `hD (map_injective _ (algebraMap ℚ ℂ).injective (by rw [hzero, map_zero]))`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem PolyNonvanishDense.proof : PolyNonvanishDense.Statement := by
   intro e D hD

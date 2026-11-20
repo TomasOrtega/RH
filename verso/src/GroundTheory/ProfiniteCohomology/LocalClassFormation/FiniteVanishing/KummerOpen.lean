@@ -35,14 +35,14 @@ instance isDiscreteRep_kummerSequenceRes_X₃ : IsDiscreteRep (kummerSequenceRes
   isDiscreteRep_res_subtype _ _
 
 /- English proof (translation)
-The claim follows from `shortExact_map_res V (kummerSequence_shortExact n hn)`.
+A detailed English derivation is pending.
 -/
 theorem kummerSequenceRes_shortExact (hn : (n : K) ≠ 0) :
     (kummerSequenceRes (K := K) (Ksep := Ksep) n V).ShortExact :=
   shortExact_map_res V (kummerSequence_shortExact n hn)
 
 /- English proof (translation)
-Establish `h : (kummerSequenceRes (K` using `K) (Ksep := Ksep) n V).g = n • 𝟙 (kummerSequenceRes (K := K) (Ksep := Ksep) n V).X₂ := by`. Use extensionality with `x`. Conclude with `(nsmul_id_hom_apply _ n x).trans (nsmul_id_hom_apply _ n x).symm`. Rewrite using `[h]`. Conclude with `cohomologyMap_nsmul_id_apply _ n i y`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cohomologyMap_kummerSequenceRes_g_apply (i : ℕ)
     (y : cohomology (kummerSequenceRes (K := K) (Ksep := Ksep) n V).X₂ i) :
@@ -71,7 +71,7 @@ instance isDiscreteRep_res_galUnits (W : Subgroup Gal(Ksep/K)) :
   isDiscreteRep_res_subtype _ _
 
 /- English proof (translation)
-The claim follows from `(ModuleCat.isZero_iff_subsingleton).1 ((localClassFormationOfIsSepClosure K Ksep).isZero_H1_open_subgroups V)`.
+A detailed English derivation is pending.
 -/
 theorem subsingleton_cohomology_one_galUnits_open :
     Subsingleton (cohomology (Rep.res (V : Subgroup Gal(Ksep/K)).subtype (galUnits.{0} K Ksep)) 1) :=
@@ -80,25 +80,23 @@ theorem subsingleton_cohomology_one_galUnits_open :
 include hn in
 
 /- English proof (translation)
-Set `` to `GroundTheory.LocalField.algebraicValuativeRel K Ksep`. Set `` to `GroundTheory.LocalField.algebraicTopology K Ksep`. Use `GroundTheory.LocalField.algebraicTopology_isValuativeTopology K Ksep` as an intermediate fact. Use `GroundTheory.LocalField.algebraicValuativeRel_valuativeExtension K Ksep` as an intermediate fact. Set `E` to `IntermediateField.fixedField (V : Subgroup Gal(Ksep/K))`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `S` to `kummerSequenceRes (K := K) (Ksep := Ksep) n (V : Subgroup Gal(Ksep/K))`. Establish `hS : S.ShortExact` using `kummerSequenceRes_shortExact n _ hn`. Establish `h1 : Subsingleton (cohomology S.X₂ 1)` using `subsingleton_cohomology_one_galUnits_open K Ksep V`. Establish `hfix : ∀ (u : Eˣ) (σ : (V : Subgroup Gal(Ksep/K))), S.X₃.ρ σ (Additive.ofMul (Units.map (algebraMap E Ksep : E →* Ksep) u)) = Additive.ofMul (Units.map (algebraMap E Ksep : E →* Ksep) u)` using `fun u σ => congrArg Additive.ofMul (Units.ext ((IntermediateField.mem_fixedField_iff _ _).1 (u : E).2 σ σ.2))`. Set `φ : Additive Eˣ →+ S.X₃.ρ.invariants` to `{ toFun := fun u => ⟨Additive.ofMul (Units.map (algebraMap E Ksep : E →* Ksep) u.toMul), (Representation.mem_invariants _ _).2 (hfix u.toMul)⟩ map_zero' := Subtype.ext (by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Express the relevant statement in the definitionally equal form `Additive.ofMul (Units.map (algebraMap E Ksep : E →* Ksep) 1) = Additive.ofMul (1 : Ksepˣ)`. Rewrite using `[map_one])`. Use the proof step `map_add' := fun a b => Subtype.ext (by`. Express the relevant statement in the definitionally equal form `Additive.ofMul (Units.map (algebraMap E Ksep : E →* Ksep) (a.toMul * b.toMul)) = Additive.ofMul (Units.map (algebraMap E Ksep : E →* Ksep) a.toMul * Units.map (algebraMap E Ksep : E →* Ksep) b.toMul)`. Rewrite using `[map_mul]) }`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `ψ : Additive Eˣ →+ cohomology S.X₁ 1` to `(δ hS 0 1 rfl).hom.toAddMonoidHom.comp ((H0Iso S.X₃).inv.hom.toAddMonoidHom.comp φ)`. Establish `hsurj : Function.Surjective ψ` using `fun x => by`. Take `⟨v, hv⟩` from `exists_δ_H0Iso_inv_eq hS h1 x`. Establish `ha : ((Additive.toMul (v : S.X₃) : Ksepˣ) : Ksep) ∈ E` using `(IntermediateField.mem_fixedField_iff _ _).2 fun σ hσ => congrArg (fun y : Additive Ksepˣ => ((Additive.toMul y : Ksepˣ) : Ksep)) ((Representation.mem_invariants _ _).1 v.2 ⟨σ, hσ⟩)`. Set `u : Eˣ` to `Units.mk0 ⟨_, ha⟩ fun h => (Additive.toMul (v : S.X₃) : Ksepˣ).ne_zero (congrArg Subtype.val h)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hu : φ (Additive.ofMul u) = v` using `Subtype.ext (congrArg Additive.ofMul (Units.ext rfl))`. Use `⟨Additive.ofMul u, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(δ hS 0 1 rfl).hom ((H0Iso S.X₃).inv.hom (φ (Additive.ofMul u))) = x`. Rewrite using `[hu, hv]`. Establish `hker : ∀ u : Additive Eˣ, ψ (n • u) = 0` using `fun u => by`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(δ hS 0 1 rfl).hom ((H0Iso S.X₃).inv.hom (φ (n • u))) = 0`. Rewrite using `[map_nsmul]`. Use `(δ_H0Iso_inv_eq_zero_iff hS (n • φ u)).2 ⟨φ u, Subtype.ext ?_⟩` and prove the remaining obligations. Conclude with `nsmul_id_hom_apply (galUnits.{0} K Ksep) n _`. Establish `hmE : ((n : ℕ) : E) ≠ 0`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← map_natCast (algebraMap K E) n]`. Conclude with `(map_ne_zero_iff _ (algebraMap K E).injective).2 hn`. Establish `hfinE : Finite (Eˣ ⧸ (powMonoidHom n : Eˣ →* Eˣ).range)` using `GroundTheory.LocalField.finite_quotient_range_pow (K := E) hmE`. Set `ψm : Eˣ →* Multiplicative (cohomology S.X₁ 1)` to `AddMonoidHom.toMultiplicativeRight ψ`. Establish `hle : (powMonoidHom n : Eˣ →* Eˣ).range ≤ ψm.ker`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce and unpack `_ ⟨u, rfl⟩`. Rewrite using `[MonoidHom.mem_ker]`. Express the relevant statement in the definitionally equal form `Multiplicative.ofAdd (ψ (Additive.ofMul (u ^ n))) = 1`. Rewrite using `[ofMul_pow, hker]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finite.of_surjective (fun q => Multiplicative.toAdd (QuotientGroup.lift _ ψm hle q)) fun x => ?_` and prove the remaining obligations. Take `⟨u, rfl⟩` from `hsurj x`. Use `⟨QuotientGroup.mk (Additive.toMul u), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Multiplicative.toAdd (QuotientGroup.lift _ ψm hle (QuotientGroup.mk (Additive.toMul u))) = ψ u`. Rewrite using `[QuotientGroup.lift_mk]`.
-
-Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem finite_cohomology_one_rootsOfUnity_open :
     Finite (cohomology (Rep.res (V : Subgroup Gal(Ksep/K)).subtype (galRootsOfUnity.{0} K Ksep n)) 1) := by
@@ -166,11 +164,9 @@ theorem finite_cohomology_one_rootsOfUnity_open :
 include hn in
 
 /- English proof (translation)
-Use `set F := localClassFormationOfIsSepClosure K Ksep`. Establish `hS` using `kummerSequenceRes_shortExact (Ksep := Ksep) n (V : Subgroup Gal(Ksep/K)) hn`. Establish `hinj` using `cohomologyMap_f_injective_of_subsingleton hS 1 (subsingleton_cohomology_one_galUnits_open K Ksep V)`. Establish `hn0 : 0 < n` using `Nat.pos_of_ne_zero fun h => hn (by simp [h])`. Establish `htors : ∀ x : cohomology (kummerSequenceRes (K` using `K) (Ksep := Ksep) n V).X₁ 2, F.inv V ((cohomologyMap (kummerSequenceRes (K := K) (Ksep := Ksep) n V).f 2).hom x) ∈ {q : QZ | n • q = 0} := fun x => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : n • (cohomologyMap (kummerSequenceRes (K` using `K) (Ksep := Ksep) n V).f 2).hom x = 0 := by`. Rewrite using `[← cohomologyMap_kummerSequenceRes_g_apply]`. Conclude with `cohomologyMap_g_cohomologyMap_f_apply 2 x`. Conclude with `((F.inv V).map_nsmul n _).symm.trans ((congrArg (F.inv V) e).trans (F.inv V).map_zero)`. Use `(QZ.finite_setOf_nsmul_eq_zero hn0).to_subtype` as an intermediate fact.
-
-Conclude with `Finite.of_injective (fun x => (⟨_, htors x⟩ : {q : QZ | n • q = 0})) fun x y h => hinj ((F.inv_bijective V).1 (congrArg Subtype.val h))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_cohomology_two_rootsOfUnity_open :
     Finite (cohomology (Rep.res (V : Subgroup Gal(Ksep/K)).subtype (galRootsOfUnity.{0} K Ksep n)) 2) := by
@@ -193,11 +189,11 @@ theorem finite_cohomology_two_rootsOfUnity_open :
 include hn in
 
 /- English proof (translation)
-Use `set F := localClassFormationOfIsSepClosure K Ksep`. Establish `hS` using `kummerSequenceRes_shortExact (Ksep := Ksep) n (V : Subgroup Gal(Ksep/K)) hn`. Establish `hn0 : n ≠ 0` using `fun h => hn (by simp [h])`. It suffices to establish `h : ∀ x : cohomology (kummerSequenceRes (K` using `K) (Ksep := Ksep) n V).X₁ 3, x = 0 from ⟨fun x y => (h x).trans (h y).symm⟩`. Introduce `x`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz⟩` from `(ShortComplex.moduleCat_exact_iff _).1 (cohomology_exact₁ hS 2 3 rfl) x (h3.elim _ _)`. Take `⟨q, hq⟩` from `QZ.exists_nsmul_eq hn0 (F.inv V z)`. Take `⟨w, hw⟩` from `(F.inv_bijective V).2 q`. Establish `hzw : z = (cohomologyMap (kummerSequenceRes (K` using `K) (Ksep := Ksep) n V).g 2).hom w := by`. Apply `(F.inv_bijective V).1` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `hq.symm.trans ?_` and prove the remaining obligations. Rewrite using `[← hw, ← map_nsmul]`. Conclude with `congrArg (F.inv V) (cohomologyMap_kummerSequenceRes_g_apply n (V : Subgroup Gal(Ksep/K)) 2 w).symm`. Rewrite using `[← hz, hzw]`. Conclude with `congrArg (fun φ => φ.hom w) (comp_δ hS 2 3 rfl)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subsingleton_cohomology_three_rootsOfUnity_open
     (h3 : Subsingleton (cohomology (Rep.res (V : Subgroup Gal(Ksep/K)).subtype (galUnits.{0} K Ksep)) 3)) :
@@ -223,9 +219,7 @@ theorem subsingleton_cohomology_three_rootsOfUnity_open
 include hn in
 
 /- English proof (translation)
-Establish `hn0 : n ≠ 0` using `fun h => hn (by simp [h])`. Establish `: NeZero n` using `⟨hn0⟩`. Establish `: Finite (Rep.res (V : Subgroup Gal(Ksep/K)).subtype (galRootsOfUnity.{0} K Ksep n))` using `inferInstanceAs (Finite (Additive (rootsOfUnity n Ksep)))`. Use `interval_cases r`. Conclude with `finite_cohomology_zero _`.
-
-Conclude with `finite_cohomology_one_rootsOfUnity_open K Ksep hn V`. Conclude with `finite_cohomology_two_rootsOfUnity_open K Ksep hn V`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_cohomology_rootsOfUnity_open (r : ℕ) (hr : r ≤ 2) :
     Finite (cohomology (Rep.res (V : Subgroup Gal(Ksep/K)).subtype (galRootsOfUnity.{0} K Ksep n)) r) := by

@@ -11,7 +11,7 @@ open GlobalTheory.IndefiniteRowSideFullHecke.SelfReciprocalLocalField Positivity
 namespace GlobalTheory.CompanionTheory.EllCRT
 
 /- English proof (translation)
-Establish `hq0 : q ≠ 0` using `(UniqueFactorizationMonoid.irreducible_of_normalized_factor q hq).ne_zero`. Rewrite using `[← UniqueFactorizationMonoid.normalize_normalized_factor q hq]`. Conclude with `Polynomial.monic_normalize hq0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem monic_of_mem_normalizedFactors' {K : Type} [Field K] {P q : K[X]}
     (hq : q ∈ UniqueFactorizationMonoid.normalizedFactors P) : q.Monic := by
@@ -20,9 +20,9 @@ private theorem monic_of_mem_normalizedFactors' {K : Type} [Field K] {P q : K[X]
   exact Polynomial.monic_normalize hq0
 
 /- English proof (translation)
-Establish `hpi : Irreducible p` using `UniqueFactorizationMonoid.irreducible_of_normalized_factor p hp`. Establish `hqi : Irreducible q` using `UniqueFactorizationMonoid.irreducible_of_normalized_factor q hq`. Establish `hcop : IsCoprime p q`. Rewrite using `[Irreducible.coprime_iff_not_dvd hpi]`. Introduce `hd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hpq (Polynomial.eq_of_monic_of_associated (monic_of_mem_normalizedFactors' hp) (monic_of_mem_normalizedFactors' hq) (hpi.associated_of_dvd hqi hd))`. Conclude with `(Ideal.sup_eq_top_iff_isCoprime p q).mpr hcop`.
+A detailed English derivation is pending.
 -/
 private theorem span_sup_span_eq_unit_ideal_of_ne_normalizedFactors {K : Type} [Field K] {P p q : K[X]}
     (hp : p ∈ UniqueFactorizationMonoid.normalizedFactors P)
@@ -38,11 +38,9 @@ private theorem span_sup_span_eq_unit_ideal_of_ne_normalizedFactors {K : Type} [
   exact (Ideal.sup_eq_top_iff_isCoprime p q).mpr hcop
 
 /- English proof (translation)
-Set `S : Finset K[X]` to `(UniqueFactorizationMonoid.normalizedFactors P).toFinset`. Establish `hcop : Pairwise (Function.onFun IsCoprime (fun i : S => Ideal.span {(i : K[X])}))`. Introduce `i j hij`. Use `show IsCoprime (Ideal.span {(i : K[X])}) (Ideal.span {(j : K[X])})`. Conclude with `Ideal.isCoprime_iff_sup_eq.mpr (span_sup_span_eq_unit_ideal_of_ne_normalizedFactors (Multiset.mem_toFinset.mp i.2) (Multiset.mem_toFinset.mp j.2) (fun h => hij (Subtype.ext h)))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨r, hr⟩` from `Ideal.exists_forall_sub_mem_ideal hcop (fun i : S => t i)`. Use `⟨r, fun f hfm hfi hfP => ?_⟩` and prove the remaining obligations. Take `⟨q, hq, hfq⟩` from `UniqueFactorizationMonoid.exists_mem_normalizedFactors_of_dvd hP hfi hfP`. Establish `hfeq : f = q` using `Polynomial.eq_of_monic_of_associated hfm (monic_of_mem_normalizedFactors' hq) hfq`. Substitute `hfeq` using the available equality.
-
-Establish `h` using `hr ⟨f, Multiset.mem_toFinset.mpr hq⟩`. Conclude with `Ideal.mem_span_singleton.mp h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_congr_monic_factors {K : Type} [Field K] {P : K[X]} (hP : P ≠ 0) (t : K[X] → K[X]) :
     ∃ m : K[X], ∀ f : K[X], f.Monic → Irreducible f → f ∣ P → f ∣ m - t f := by
@@ -62,16 +60,16 @@ theorem exists_congr_monic_factors {K : Type} [Field K] {P : K[X]} (hP : P ≠ 0
   exact Ideal.mem_span_singleton.mp h
 
 /- English proof (translation)
-The claim follows from `AdjoinRoot.mk_surjective x`.
+A detailed English derivation is pending.
 -/
 private theorem adjoinRoot_exists_mk_eq {R : Type} [CommRing R] {f : R[X]} (x : AdjoinRoot f) :
     ∃ p : R[X], AdjoinRoot.mk f p = x :=
   AdjoinRoot.mk_surjective x
 
 /- English proof (translation)
-Establish `h1 : Q'.1.natDegree = r'` using `Q'.2.2.2.1`. Establish `h2 : Q.1.natDegree = r` using `Q.2.2.2.1`. Rewrite `h1` using `[hQ]`. Establish `hrr : r' = r` using `h1.symm.trans h2`. Substitute `hrr` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Substitute using the available equality.
 
-Take `rfl : Q' = Q` from `Subtype.ext hQ`. Conclude with `hl`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem adjoinRoot_mk_eq_of_selfRecip_val_eq {E : Type} [Field E] [NumberField E] [IsCMField E]
     (g : ∀ (r : ℕ) (Q : SelfRecip E r), Fld Q) {r r' : ℕ} (Q : SelfRecip E r)
@@ -87,9 +85,9 @@ private theorem adjoinRoot_mk_eq_of_selfRecip_val_eq {E : Type} [Field E] [Numbe
   exact hl
 
 /- English proof (translation)
-Use `⟨fun f => if h : ∃ Q' : SelfRecip E f.natDegree, Q'.1 = f then (adjoinRoot_exists_mk_eq (f := h.choose.1) (g f.natDegree h.choose)).choose else 0, ?_⟩` and prove the remaining obligations. Introduce `r Q`. Establish `hex : ∃ Q' : SelfRecip E Q.1.natDegree, Q'.1 = Q.1` using `⟨⟨Q.1, by rw [Q.2.2.2.1]; exact Q.2⟩, rfl⟩`. Simplify using `only`. Rewrite using `[dif_pos hex]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `adjoinRoot_mk_eq_of_selfRecip_val_eq g Q hex.choose hex.choose_spec _ (adjoinRoot_exists_mk_eq (f := hex.choose.1) (g Q.1.natDegree hex.choose)).choose_spec`.
+A detailed English derivation is pending.
 -/
 private theorem exists_polynomial_lift_adjoinRoot_selfRecip {E : Type} [Field E] [NumberField E] [IsCMField E]
     (g : ∀ (r : ℕ) (Q : SelfRecip E r), Fld Q) :
@@ -107,9 +105,9 @@ private theorem exists_polynomial_lift_adjoinRoot_selfRecip {E : Type} [Field E]
     (adjoinRoot_exists_mk_eq (f := hex.choose.1) (g Q.1.natDegree hex.choose)).choose_spec
 
 /- English proof (translation)
-Introduce `E _ _ _ n γ₀ _ g`. Take `⟨t, ht⟩` from `exists_polynomial_lift_adjoinRoot_selfRecip g`. Take `⟨m, hm⟩` from `exists_congr_monic_factors (Matrix.charpoly_monic γ₀.val).ne_zero t`. Use `⟨m, fun r Q hQ => ?_⟩` and prove the remaining obligations. Rewrite using `[← ht r Q]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `AdjoinRoot.mk_eq_mk.mpr (hm Q.1 Q.2.1 Q.2.2.1 hQ)`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (γ₀ : GL (Fin n) E),
     γ₀.val.charpoly ∈ Ell E n → ∀ g : ∀ (r : ℕ) (Q : SelfRecip E r), Fld Q, ∃ m : E[X],

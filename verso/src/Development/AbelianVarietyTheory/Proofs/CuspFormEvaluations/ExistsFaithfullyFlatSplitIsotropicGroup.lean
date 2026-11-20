@@ -12,9 +12,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `h0 : ev 0 = 1`. Use `h 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `left_eq_mul.mp this`. Introduce `n`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `n with`. Consider the case `zero => intro f`. Simplify using `[h0]`. Consider the case `succ n ih => intro f`. Rewrite using `[Fin.sum_univ_succ, h, ih, List.ofFn_succ, List.prod_cons]`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_sum_eq_prod_ofFn_of_add_eq_mul {A G : Type} [AddCommGroup A] [Group G] (ev : A → G)
     (h : ∀ a b, ev (a + b) = ev a * ev b) :
@@ -29,9 +29,9 @@ theorem map_sum_eq_prod_ofFn_of_add_eq_mul {A G : Type} [AddCommGroup A] [Group 
   | succ n ih => intro f; rw [Fin.sum_univ_succ, h, ih, List.ofFn_succ, List.prod_cons]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Use `h 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Simplify using `using left_eq_mul.mp this`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `succ k ih => rw [succ_nsmul, h, ih, pow_succ]`.
+Treat this case separately.
 -/
 theorem map_nsmul_eq_pow_of_add_eq_mul {A G : Type} [AddCommGroup A] [Group G] (ev : A → G)
     (h : ∀ a b, ev (a + b) = ev a * ev b) (a : A) (k : ℕ) : ev (k • a) = ev a ^ k := by
@@ -43,13 +43,13 @@ theorem map_nsmul_eq_pow_of_add_eq_mul {A G : Type} [AddCommGroup A] [Group G] (
   | succ k ih => rw [succ_nsmul, h, ih, pow_succ]
 
 /- English proof (translation)
-Introduce `hL E _ _ _ H Dw l Xo S _ x0 n Λ N hU hN hle`. Take `⟨B, iB, φ, ev, hff, hadd, hsm, hk, hinj⟩` from `GlobalTheory.T.exists_faithfullyFlat_full_linear_level_structure hL E H Dw l Xo S x0 (N ^ 2) (pow_pos hN 2)`. Take `⟨zz, hz, hzi, -⟩` from `GlobalTheory.T.exists_isotropic_group_lattice_class_representatives E H Dw n Λ N hU hN hle`. Use `⟨B, iB, φ, fun i b => ev (zz i b), hff, fun i => ⟨fun b => ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_nsmul_eq_pow_of_add_eq_mul ev hadd, hk]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `mu hmu cm hcm i'`. Establish `h1` using `hz i mu hmu cm hcm i'`. Simplify using `only [← hsm]`. Rewrite using `[← map_sum_eq_prod_ofFn_of_add_eq_mul ev hadd]`. Take `⟨y, hy⟩` from `h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hy]`. Conclude with `hk y`. Introduce `k _ ψ g hg i i' hii`. Apply `hzi` to reduce the goal to its premises. Introduce `b`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hinj k ψ` to reduce the goal to its premises. Use `congrArg (fun f => f.left) (congrFun hii b)` as an intermediate fact. Simplify using `only [Over.comp_left, hg] at this`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_faithfullyFlat_split_Zh : Laws → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (S : Type) [CommRing S] (x0 : Sp S ⟶ Xo.X) (n : ℕ) (Λ : GenLat E n) (N : ℕ), Λ.Unimod → 0 < N → Ideal.span {(N : 𝓞 E)} • stdLat E n ≤ Λ.La → ∃ (B : Type) (_ : CommRing B) (φ : S →+* B) (z : Fin (Λ.zCard N (Dw.p + Dw.q)) → Fin n → (ptO Xo (spMap φ ≫ x0) ⟶ Xo.univ.t.G)), φ.FaithfullyFlat ∧ (∀ i, InZh Xo Λ N (z i)) ∧ GeoInj Xo (spMap φ ≫ x0) z := by
   intro hL E _ _ _ H Dw l Xo S _ x0 n Λ N hU hN hle

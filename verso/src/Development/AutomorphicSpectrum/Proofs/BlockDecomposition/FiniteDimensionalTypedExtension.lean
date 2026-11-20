@@ -10,23 +10,21 @@ open scoped ContDiff
 namespace GlobalTheory.CompanionTheory.LimV
 
 /- English proof (translation)
-Establish `hK₀ : IsOpen ((K ⊓ KO E N : Subgroup (GL (Fin N) (Af E))) : Set (GL (Fin N) (Af E)))`. Rewrite using `[Subgroup.coe_inf]`. Conclude with `hK.inter (GroundTheory.Automorphic.AdelicGLn.isOpen_integralFiniteGL E N)`. Establish `hfin` using `H (K ⊓ KO E N) W hK₀ hW`. Establish `hflat : FlatFn (absFn (E` using `E) N (-z)) := GlobalTheory.T.flat_absolute_character N (-z)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hval : ∀ (φ : Sm E N) x, (mulChi N (GlobalTheory.CuspRep.Model.absC E (-z)) φ).1 x = absFn N (-z) x * φ.1 x` using `fun φ x => by`. Simplify using `only [mulChi_apply, absFn]`. Conclude with `mul_comm _ _`. Establish `hfinv : ∀ (g : GA E N), ∀ u ∈ KO E N, absFn (E` using `E) N (-z) (g * finGL E N u) = absFn N (-z) g := by`. Introduce `g u hu`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `hflat.rinv g 1 u hu` as an intermediate fact. Simplify `this` using `[cf]`. Establish `hkinv : ∀ (g : GA E N) (k : Kinf E N), absFn (E` using `E) N (-z) (g * infGL E N (Unitary.toUnits k)) = absFn N (-z) g := by`. Introduce `g k`. Use `hflat.rinv g k 1 (one_mem _)` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Simplify `this` using `[cf]`. Set `L : Sm E N ≃ₗ[ℂ] Sm E N` to `mulChi N (GlobalTheory.CuspRep.Model.absC E (-z))`. Establish `hle : (typed (tw U z) K W).map (L : Sm E N →ₗ[ℂ] Sm E N) ≤ typed U (K ⊓ KO E N) W`. Introduce and unpack `_ ⟨φ, ⟨⟨ψ, hψ, rfl⟩, hlev, htype⟩, rfl⟩`. Use `set φ : Sm E N := mulChi N (GlobalTheory.CuspRep.Model.absC E z) ψ with hφ`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hL : ∀ x, (L φ).1 x = absFn N (-z) x * φ.1 x` using `hval φ`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hback : L φ = ψ`. Use `Subtype.ext (funext fun x => ?_)` and prove the remaining obligations. Establish `e : ∀ s : ℂ, ((chiDet N (GlobalTheory.CuspRep.Model.absC E s) x : ℂˣ) : ℂ) = Complex.exp (s * GlobalTheory.Mem.Chr.CharModel.logNorm E (GeneralLinearGroup.det x))` using `fun _ => rfl`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hL, hφ, mulChi_apply, absFn, e, e, mul_left_comm, ← Complex.exp_add]`. Simplify using the standard rewrite rules. Use `show L φ ∈ U`. Rewrite using `[hback]`. Conclude with `hψ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `u hu g`. Establish `h2 : φ.1 (g * finGL E N u) = φ.1 g` using `hlev u hu.1 g`. Use `show (L φ).1 (g * finGL E N u) = (L φ).1 g`. Rewrite using `[hL, hL, hfinv g u hu.2, h2]`. Introduce `g`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : (fun k : Kinf E N => φ.1 (g * infGL E N (Unitary.toUnits k))) ∈ W` using `htype g`. Establish `h4 : (fun k : Kinf E N => (L φ).1 (g * infGL E N (Unitary.toUnits k))) = absFn N (-z) g • (fun k : Kinf E N => φ.1 (g * infGL E N (Unitary.toUnits k)))`. Use function extensionality and compare the values at `k`. Rewrite using `[hL, hkinv g k]`. Both sides reduce to the same expression.
-
-Use `show (fun k : Kinf E N => (L φ).1 (g * infGL E N (Unitary.toUnits k))) ∈ W`. Rewrite using `[h4]`. Conclude with `W.smul_mem _ h3`. Establish `h1 : FiniteDimensional ℂ ((typed (tw U z) K W).map (L : Sm E N →ₗ[ℂ] Sm E N))` using `Submodule.finiteDimensional_of_le hle`. Conclude with `LinearEquiv.finiteDimensional (L.submoduleMap (typed (tw U z) K W)).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem typed_tw_finite {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {N : ℕ}
     (U : Submodule ℂ (Sm E N)) (z : ℂ)

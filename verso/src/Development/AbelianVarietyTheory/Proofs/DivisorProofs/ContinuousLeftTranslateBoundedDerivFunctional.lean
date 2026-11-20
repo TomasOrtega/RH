@@ -11,13 +11,13 @@ open scoped ContDiff
 namespace GlobalTheory.HCA
 
 /- English proof (translation)
-Introduce `𝔸 _ _ _ _ G 𝔤 h d b _ _ μ hμ S hS hL K hK Λ hΛ l f hf`. Use `haveI := h.locallyCompactSpace`. Use `haveI : SecondCountableTopology 𝔸ˣ := Units.isEmbedding_embedProduct.secondCountableTopology`. Use `haveI : SecondCountableTopology G := Topology.IsEmbedding.subtypeVal.secondCountableTopology`. Take `⟨C, hC⟩` from `hΛ.bdd l`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[continuous_iff_continuousAt]`. Introduce `x₀`. Establish `hfc` using `hS f hf`. Establish `hcont : Continuous fun x : G => ∫ y in K, ‖f (x * y) - f (x₀ * y)‖ ∂μ` using `continuous_parametric_integral_of_continuous (f := fun x y : G => ‖f (x * y) - f (x₀ * y)‖) (((hfc.comp (continuous_fst.mul continuous_snd)).sub (hfc.comp (continuous_const.mul continuous_snd))).norm) hK`. Establish `h0 : Filter.Tendsto (fun x : G => C * ∫ y in K, ‖f (x * y) - f (x₀ * y)‖ ∂μ) (nhds x₀) (nhds 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Use `(hcont.const_mul C).tendsto x₀` as an intermediate fact. Simplify using `using this`. Rewrite using `[ContinuousAt, tendsto_iff_norm_sub_tendsto_zero]`. Use `squeeze_zero (fun _ => norm_nonneg _) (fun x => ?_) h0` and prove the remaining obligations. Establish `h1` using `hΛ.lin l _ (hL f hf x₀) _ (hL f hf x) (-1)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2` using `hC _ (S.add_mem (S.smul_mem (-1 : ℂ) (hL f hf x₀)) (hL f hf x))`. Rewrite `h2` using `[h1]`. Simplify `h2` using `[neg_add_eq_sub]`.
+A detailed English derivation is pending.
 -/
 theorem SmFn.continuous_leftTranslate : ∀ (𝔸 : Type) [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] [CompleteSpace 𝔸] [FiniteDimensional ℝ 𝔸] (G : Subgroup 𝔸ˣ) (𝔤 : Submodule ℝ 𝔸) (h : IsExpLieAlgebra G 𝔤) (d : ℕ) (b : Module.Basis (Fin d) ℝ 𝔤) [MeasurableSpace G] [BorelSpace G] (μ : Measure G), μ.IsHaarMeasure → ∀ (S : Submodule ℂ (G → ℂ)), (∀ f ∈ S, Continuous f) → (∀ f ∈ S, ∀ g, (fun y => f (g * y)) ∈ S) → ∀ K : Set G, IsCompact K → ∀ Λ : List (Fin d) → (G → ℂ) → ℂ, SmFn h b μ S K Λ → ∀ l, ∀ f ∈ S, Continuous fun x : G => Λ l fun y => f (x * y) := by
   intro 𝔸 _ _ _ _ G 𝔤 h d b _ _ μ hμ S hS hL K hK Λ hΛ l f hf

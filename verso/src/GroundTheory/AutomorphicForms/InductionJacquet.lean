@@ -17,7 +17,7 @@ omit [TopologicalSpace N] [IsTopologicalGroup N] [LocallyCompactSpace N] [T2Spac
   [TotallyDisconnectedSpace N] in
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨k, v⟩, rfl⟩`. Conclude with `Representation.Coinvariants.sub_mem_ker (k : N) v`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem coinvariantsKer_le_ker (K : Subgroup N) :
     coinvariantsKer ρ K ≤ Representation.Coinvariants.ker ρ := by
@@ -28,9 +28,9 @@ theorem coinvariantsKer_le_ker (K : Subgroup N) :
 omit [IsTopologicalGroup N] [LocallyCompactSpace N] [T2Space N] [TotallyDisconnectedSpace N] in
 
 /- English proof (translation)
-Take `⟨T, hT, hvT⟩` from `Submodule.mem_span_finite_of_mem_span hv`. Establish `: ∀ t ∈ T, ∃ g : N, ∃ w : V, ρ g w - w = t` using `fun t ht => by`. Take `⟨⟨g, w⟩, h⟩` from `hT ht`. Conclude with `⟨g, w, h⟩`. Use `choose! gf wf hgf using this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨K, hKc, hKo, hK⟩` from `hN (T.image gf)`. Use `⟨K, hKc, hKo, Submodule.span_le.2 (fun t ht => ?_) hvT⟩` and prove the remaining obligations. Rewrite using `[← hgf t ht]`. Conclude with `sub_mem_coinvariantsKer (hK _ (Finset.mem_image_of_mem gf ht)) (wf t)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mem_coinvariantsKer
     (hN : ∀ s : Finset N, ∃ K : Subgroup N, IsCompact (K : Set N) ∧ IsOpen (K : Set N) ∧
@@ -52,13 +52,13 @@ variable {W X : Type*} [AddCommGroup W] [Module ℂ W] [AddCommGroup X] [Module 
   {ρ} {σ : Representation ℂ N W} {τ : Representation ℂ N X}
 
 /- English proof (translation)
-Introduce `y`. Take `⟨w, rfl⟩` from `Representation.Coinvariants.mk_surjective _ y`. Rewrite using `[Representation.Coinvariants.map_mk]`. Prove the components needed by the constructor for the conclusion. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h0` using `[Representation.Coinvariants.mk_eq_zero]`. Take `⟨K, hKc, hKo, hK⟩` from `exists_mem_coinvariantsKer τ hN h0`. Establish `h1 : g (fixedProj σ hσ hKc hKo w : W) = 0`. Use `congrArg Subtype.val (fixedProj_map hKc hKo hσ hτ g w)` as an intermediate fact. Rewrite `this` using `[fixedProj_apply_of_mem_coinvariantsKer hτ hKc hKo hK, coe_fixedMap_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.symm`. Take `⟨u, hu⟩` from `(hfg _).1 h1`. Use `⟨Representation.Coinvariants.mk ρ u, ?_⟩` and prove the remaining obligations. Rewrite using `[Representation.Coinvariants.map_mk, hu, Representation.Coinvariants.mk_eq_iff, ← neg_sub]`. Conclude with `Submodule.neg_mem _ (coinvariantsKer_le_ker σ K (sub_fixedProj_mem hσ hKc hKo w))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `⟨u, hu⟩`. Take `⟨u, rfl⟩` from `Representation.Coinvariants.mk_surjective _ u`. Rewrite `hu` using `[Representation.Coinvariants.map_mk]`. Rewrite using `[← Representation.Coinvariants.map_mk g w, ← hu, Representation.Coinvariants.map_mk, (hfg _).2 ⟨u, rfl⟩, map_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exact_coinvariantsMap
     (hN : ∀ s : Finset N, ∃ K : Subgroup N, IsCompact (K : Set N) ∧ IsOpen (K : Set N) ∧
@@ -97,7 +97,7 @@ variable {G : Type*} [Group G] {V : Type*} [AddCommGroup V] [Module ℂ V]
   (ρ : Representation ℂ G V) (N : Subgroup G)
 
 /- English proof (translation)
-The claim follows from `Representation.Coinvariants.mk_self_apply (ρ := ρ.comp N.subtype) ⟨n, hn⟩ u`.
+A detailed English derivation is pending.
 -/
 theorem mk_apply_of_mem {n : G} (hn : n ∈ N) (u : V) :
     Representation.Coinvariants.mk (ρ.comp N.subtype) (ρ n u) =
@@ -127,7 +127,7 @@ theorem coinvariantsTranslate_mk {a : G} (ha : ∀ n ∈ N, a * n * a⁻¹ ∈ N
       Representation.Coinvariants.mk _ (ρ a u) := rfl
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Rewrite using `[Function.iterate_succ_apply', ih, coinvariantsTranslate_mk, pow_succ', map_mul, Module.End.mul_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem iterate_coinvariantsTranslate_mk {a : G} (ha : ∀ n ∈ N, a * n * a⁻¹ ∈ N) (m : ℕ)
     (u : V) :
@@ -140,7 +140,7 @@ theorem iterate_coinvariantsTranslate_mk {a : G} (ha : ∀ n ∈ N, a * n * a⁻
       Module.End.mul_apply]
 
 /- English proof (translation)
-Establish `ha'' : ∀ n ∈ N, a⁻¹ * n * a⁻¹⁻¹ ∈ N` using `fun n hn => by simpa using ha' n hn`. Use `Function.LeftInverse.injective (g := coinvariantsTranslate ρ N a⁻¹ ha'') fun u => ?_` and prove the remaining obligations. Take `⟨u, rfl⟩` from `Representation.Coinvariants.mk_surjective _ u`. Rewrite using `[coinvariantsTranslate_mk, coinvariantsTranslate_mk, ← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem coinvariantsTranslate_injective {a : G} (ha : ∀ n ∈ N, a * n * a⁻¹ ∈ N)
     (ha' : ∀ n ∈ N, a⁻¹ * n * a ∈ N) :
@@ -162,21 +162,19 @@ variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 omit [LocallyCompactSpace G] [T2Space G] [TotallyDisconnectedSpace G] in
 
 /- English proof (translation)
-Use `set S : Subgroup G := stabilizerOf ρ w ⊓ K with hS`. Establish `hSo : IsOpen (S : Set G)`. Rewrite using `[hS, Subgroup.coe_inf]`. Conclude with `(hρ w).inter hKo`. Establish `: CompactSpace K` using `isCompact_iff_compactSpace.1 hKc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hfin : Finite (K ⧸ S.subgroupOf K)`. Use `Subgroup.quotient_finite_of_isOpen _ ?_` and prove the remaining obligations. Rewrite using `[Subgroup.coe_subgroupOf]`. Conclude with `hSo.preimage continuous_subtype_val`. Use `Fintype.ofFinite (K ⧸ S.subgroupOf K)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set n : ℂ := (Fintype.card (K ⧸ S.subgroupOf K) : ℂ)`. Establish `hn : n ≠ 0` using `Nat.cast_ne_zero.2 Fintype.card_ne_zero`. Establish `hterm : ∀ k ∈ K, Representation.Coinvariants.mk (ρ.comp N.subtype) (ρ k w) = Representation.Coinvariants.mk (ρ.comp N.subtype) w`. Introduce `k hk`. Take `⟨x, hx, y, hy, z, hz, rfl⟩` from `hfact k hk`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, hwNbar z hz, mk_apply_of_mem ρ N (Subgroup.mem_inf.1 hx).2, hwM y hy]`. Establish `hrep : ∀ (k : K) (c : K ⧸ S.subgroupOf K), ρ ((k : G) * ((Quotient.out c : K) : G)) w = ρ ((Quotient.out (k • c) : K) : G) w`. Introduce `k c`. Establish `h1 : (QuotientGroup.mk (Quotient.out (k • c)) : K ⧸ S.subgroupOf K) = QuotientGroup.mk (k * Quotient.out c)`. Rewrite using `[QuotientGroup.out_eq', ← smul_eq_mul, ← MulAction.Quotient.smul_mk, QuotientGroup.out_eq']`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h1` using `[QuotientGroup.eq]`. Establish `h2 : ((Quotient.out (k • c) : K) : G)⁻¹ * ((k : G) * ((Quotient.out c : K) : G)) ∈ stabilizerOf ρ w`. Use `(Subgroup.mem_subgroupOf.1 h1)` as an intermediate fact. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv] at this`. Conclude with `(Subgroup.mem_inf.1 this).1`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← mul_inv_cancel_left ((Quotient.out (k • c) : K) : G) ((k : G) * ((Quotient.out c : K) : G)), map_mul, Module.End.mul_apply, mem_stabilizerOf.1 h2]`. Use `set y : V := ∑ c : K ⧸ S.subgroupOf K, ρ ((Quotient.out c : K) : G) w with hy`. Establish `hyK : y ∈ fixedVectors ρ K`. Introduce `k hk`. Rewrite using `[hy, map_sum]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [← Module.End.mul_apply, ← map_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hyq : Representation.Coinvariants.mk (ρ.comp N.subtype) y = n • Representation.Coinvariants.mk (ρ.comp N.subtype) w`. Rewrite using `[hy, map_sum, Finset.sum_congr rfl fun c _ => hterm _ (Quotient.out c).2, Finset.sum_const, Finset.card_univ, ← Nat.cast_smul_eq_nsmul ℂ]`. Use `⟨n⁻¹ • y, Submodule.smul_mem _ _ hyK, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[map_smul, hyq, smul_smul, inv_mul_cancel₀ hn, one_smul]`.
+A detailed English derivation is pending.
 -/
 theorem exists_fixedVectors_mk_eq_of_fixed (hρ : IsSmooth ρ) (hKc : IsCompact (K : Set G))
     (hKo : IsOpen (K : Set G))
@@ -245,31 +243,27 @@ theorem exists_fixedVectors_mk_eq_of_fixed (hρ : IsSmooth ρ) (hKc : IsCompact 
 omit [LocallyCompactSpace G] [T2Space G] [TotallyDisconnectedSpace G] in
 
 /- English proof (translation)
-Take `⟨hsm, hadm⟩` from `hρ`. Establish `hfact' : ∀ k ∈ K, ∃ x ∈ K ⊓ N, ∃ y ∈ K ⊓ M, ∃ z ∈ K ⊓ Nbar, k = x * y * z`. Introduce `k hk`. Take `⟨z, hz, y, hy, x, hx, h⟩` from `hfact k⁻¹ (K.inv_mem hk)`. Use `⟨x⁻¹, Subgroup.inv_mem _ hx, y⁻¹, Subgroup.inv_mem _ hy, z⁻¹, Subgroup.inv_mem _ hz, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← inv_inv k, h]`. Use `group`. Use `set q := Representation.Coinvariants.mk (ρ.comp N.subtype) with hq`. Use `set A := coinvariantsTranslate ρ N a haN with hA`. Establish `hAinj : Function.Injective A` using `coinvariantsTranslate_injective haN haN'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set I : Submodule ℂ (Representation.Coinvariants (ρ.comp N.subtype)) := Submodule.map q (fixedVectors ρ K) with hI`. Establish `: FiniteDimensional ℂ (fixedVectors ρ K)` using `hadm K hKc hKo`. Establish `hIfin : FiniteDimensional ℂ I`. Rewrite using `[hI]`. Use `infer_instance`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hAI : ∀ u ∈ I, A u ∈ I`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Establish `hNbar : ∀ z ∈ K ⊓ Nbar, ρ z (ρ a x) = ρ a x`. Introduce `z hz`. Establish `: z = a * (a⁻¹ * z * a) * a⁻¹` using `by group`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[this, map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, ← Module.End.mul_apply (ρ a⁻¹), ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply, hx _ (haK z hz)]`. Establish `hM0 : ∀ y ∈ K ⊓ M, q (ρ y (ρ a x)) = q (ρ a x)`. Introduce `y hy`. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← haM y hy, map_mul, Module.End.mul_apply, hx y (Subgroup.mem_inf.1 hy).1]`. Take `⟨x', hx', hx'q⟩` from `exists_fixedVectors_mk_eq_of_fixed hsm hKc hKo hfact' hNbar hM0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨x', hx', ?_⟩` and prove the remaining obligations. Rewrite using `[hx'q, hA, coinvariantsTranslate_mk]`. Use `set Ai : I →ₗ[ℂ] I := A.restrict hAI with hAi`. Establish `hAiinj : Function.Injective Ai`. Introduce `u u' h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subtype.ext (hAinj (congrArg Subtype.val h))`. Establish `hAisurj : Function.Surjective Ai` using `LinearMap.injective_iff_surjective.1 hAiinj`. Establish `hback : ∀ u, A u ∈ I → u ∈ I`. Introduce `u hu`. Take `⟨i, hi⟩` from `hAisurj ⟨A u, hu⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `: A i = A u` using `congrArg Subtype.val hi`. Rewrite using `[← hAinj this]`. Conclude with `i.2`. Establish `hiter : ∀ m : ℕ, ∀ u, A^[m] u ∈ I → u ∈ I`. Introduce `m`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `m with`. Consider the case `zero => exact fun u hu => hu`. Consider the case `succ m ih`. Introduce `u hu`. Rewrite `hu` using `[Function.iterate_succ_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hback u (ih _ hu)`. Take `⟨m, hm⟩` from `hlim _ ((hsm v).mem_nhds (one_mem (stabilizerOf ρ v)))`. Establish `hNbar : ∀ z ∈ K ⊓ Nbar, ρ z (ρ (a ^ m) v) = ρ (a ^ m) v`. Introduce `z hz`. Establish `: z = a ^ m * ((a ^ m)⁻¹ * z * a ^ m) * (a ^ m)⁻¹` using `by group`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[this, map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, ← Module.End.mul_apply (ρ (a ^ m)⁻¹), ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply, mem_stabilizerOf.1 (hm z hz)]`. Establish `hM0 : ∀ y ∈ K ⊓ M, q (ρ y (ρ (a ^ m) v)) = q (ρ (a ^ m) v)`. Introduce `y hy`. Establish `hc : a ^ m * y = y * a ^ m` using `((Commute.pow_left (haM y hy) m))`. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← hc, map_mul, Module.End.mul_apply, ← iterate_coinvariantsTranslate_mk haN, hv y hy, iterate_coinvariantsTranslate_mk haN]`.
-
-Take `⟨x, hx, hxq⟩` from `exists_fixedVectors_mk_eq_of_fixed hsm hKc hKo hfact' hNbar hM0`. Establish `hmem : A^[m] (q v) ∈ I`. Rewrite using `[hA, iterate_coinvariantsTranslate_mk haN, ← hxq]`. Conclude with `⟨x, hx, rfl⟩`. Take `⟨x', hx', hx'q⟩` from `hiter m _ hmem`.
-
-Conclude with `⟨x', hx', hx'q⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_fixedVectors_mk_eq (hρ : IsAdmissible ρ) (hKc : IsCompact (K : Set G))
     (hKo : IsOpen (K : Set G))

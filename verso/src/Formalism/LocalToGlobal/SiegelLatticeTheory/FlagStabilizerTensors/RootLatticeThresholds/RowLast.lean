@@ -20,9 +20,9 @@ variable {N r : ℕ} (ε : Fin N → Bool) (F G : Fin (r + 1) → Fin N → ℂ)
 
 include hFF hGG hπ hZ hgap in
 /- English proof (translation)
-Establish `hΓ` using `gram_unit (ε := ε) (F := F) (G := G) (T := T) (T' := T') (π := π) (hFF := hFF) (hGG := hGG) (hπ := hπ) (hZ := hZ) (hgap := hgap)`. Establish `hW : Yc ε F G C * Wfg F G = Wfg F G * (1 + Mm ε F G C)` using `rankUpdate_mul _ _ _ hΓ`. Establish `hGcol : G b = Wfg F G *ᵥ Pi.single (Sum.inr b) 1`. Use function extensionality and compare the values at `p`. Rewrite using `[Matrix.mulVec_single]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Wfg]`. Rewrite using `[hGcol, Matrix.mulVec_mulVec, hW, ← Matrix.mulVec_mulVec, Matrix.mulVec_single]`. Use function extensionality and compare the values at `p`. Simplify using `[Matrix.mulVec, dotProduct, Fintype.sum_sum_type, Wfg, Mm, Matrix.one_apply, Finset.sum_apply, mul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem Yc_G {C : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ} (b : Fin (r + 1)) :
     Yc ε F G C *ᵥ G b = ∑ b', C b' b • G b' := by
@@ -39,9 +39,9 @@ theorem Yc_G {C : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ} (b : Fin (r + 1)) :
 
 include hFF hGG hπ hZ hgap in
 /- English proof (translation)
-Establish `hΓ` using `gram_unit (ε := ε) (F := F) (G := G) (T := T) (T' := T') (π := π) (hFF := hFF) (hGG := hGG) (hπ := hπ) (hZ := hZ) (hgap := hgap)`. Establish `hW : Yc ε F G C * Wfg F G = Wfg F G * (1 + Mm ε F G C)` using `rankUpdate_mul _ _ _ hΓ`. Establish `hFcol : F a = Wfg F G *ᵥ Pi.single (Sum.inl a) 1`. Use function extensionality and compare the values at `p`. Rewrite using `[Matrix.mulVec_single]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Wfg]`. Rewrite using `[hFcol, Matrix.mulVec_mulVec, hW, ← Matrix.mulVec_mulVec, Matrix.mulVec_single]`. Use function extensionality and compare the values at `p`. Simplify using `[Matrix.mulVec, dotProduct, Fintype.sum_sum_type, Wfg, Mm, Matrix.one_apply, Finset.sum_apply, mul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem Yc_F {C : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ} (a : Fin (r + 1)) :
     Yc ε F G C *ᵥ F a = ∑ a', Am ε F G C a' a • F a' := by
@@ -57,9 +57,7 @@ theorem Yc_F {C : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ} (a : Fin (r + 1)) :
   simp [Matrix.mulVec, dotProduct, Fintype.sum_sum_type, Wfg, Mm, Matrix.one_apply, Finset.sum_apply, mul_comm]
 
 /- English proof (translation)
-Take `⟨hdiag, hup⟩` from `hC`. Use `split_ifs with hk`. Rewrite using `[hk]`. Conclude with `hdiag _`. Assume the negation of the conclusion as `h`.
-
-Establish `h1` using `(hup _ _ h).1`. Conclude with `hk (le_antisymm (Fin.le_last k) h1)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rowLast {C : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ} (hC : IsUB blk C) (k : Fin (r + 1)) :
     C (Fin.last r) k = if k = Fin.last r then 1 else 0 := by
@@ -73,9 +71,9 @@ theorem rowLast {C : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ} (hC : IsUB blk C) (
 
 include hπ hblk hanti in
 /- English proof (translation)
-Take `⟨hdiag, hup⟩` from `hC`. Use `split_ifs with hb`. Rewrite using `[hb]`. Conclude with `hdiag _`. Assume the negation of the conclusion as `h`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hle, hbl⟩` from `hup _ _ h`. Establish `hlt : b < π (Fin.last r)` using `lt_of_le_of_ne hle hb`. Establish `h2` using `hanti b (π (Fin.last r)) hbl hlt`. Rewrite `h2` using `[hπ]`. Conclude with `absurd (Fin.le_last (π b)) (not_le.mpr h2)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colMin {C : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ} (hC : IsUB blk C) (b : Fin (r + 1)) :
     C b (π (Fin.last r)) = if b = π (Fin.last r) then 1 else 0 := by

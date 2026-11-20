@@ -16,26 +16,26 @@ def sig (l : ℕ) [NeZero l] (x : SL(2, ℤ)) : Option (Fin l) :=
   else some ⟨(((mat x 1 1 : ℤ) : ZMod l) * ((mat x 1 0 : ℤ) : ZMod l)⁻¹).val, ZMod.val_lt _⟩
 
 /- English proof (translation)
-Simplify using `only [mat, Matrix.SpecialLinearGroup.coe_mul, Matrix.mul_apply, Fin.sum_univ_two]`.
+Simplify using the standard rewrite rules.
 -/
 lemma mul_11 (x y : SL(2, ℤ)) : mat (x * y) 1 1 = mat x 1 0 * mat y 0 1 + mat x 1 1 * mat y 1 1 := by
   simp only [mat, Matrix.SpecialLinearGroup.coe_mul, Matrix.mul_apply, Fin.sum_univ_two]
 
 /- English proof (translation)
-Simplify using `[mat, Matrix.mul_apply, Fin.sum_univ_two, Matrix.SpecialLinearGroup.coe_inv, Matrix.adjugate_fin_two]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma mulInv_10 (x y : SL(2, ℤ)) : mat (x * y⁻¹) 1 0 = mat x 1 0 * mat y 1 1 - mat x 1 1 * mat y 1 0 := by
   simp [mat, Matrix.mul_apply, Fin.sum_univ_two, Matrix.SpecialLinearGroup.coe_inv, Matrix.adjugate_fin_two]
   ring
 
 /- English proof (translation)
-Simplify using `[mat, Matrix.mul_apply, Fin.sum_univ_two, Matrix.SpecialLinearGroup.coe_inv, Matrix.adjugate_fin_two]`.
+Simplify using the standard rewrite rules.
 -/
 lemma mulInv_11 (x y : SL(2, ℤ)) : mat (x * y⁻¹) 1 1 = -(mat x 1 0 * mat y 0 1) + mat x 1 1 * mat y 0 0 := by
   simp [mat, Matrix.mul_apply, Fin.sum_univ_two, Matrix.SpecialLinearGroup.coe_inv, Matrix.adjugate_fin_two]
 
 /- English proof (translation)
-Rewrite using `[Gamma0_mem]`. Conclude with `ZMod.intCast_zmod_eq_zero_iff_dvd _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma mem_iff (M : ℕ) (x : SL(2, ℤ)) : x ∈ Gamma0 M ↔ (M : ℤ) ∣ mat x 1 0 := by
   rw [Gamma0_mem]
@@ -62,13 +62,13 @@ Both sides reduce to the same expression.
 lemma rep_some_11 (j : Fin l) : mat (rep N l a b h (some j)) 1 1 = (N : ℤ) * (j : ℕ) + l * b := rfl
 
 /- English proof (translation)
-Apply the tactic sequence `cases o <;> simp [rep, gaOld, mat]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma rep_00 (o : Option (Fin l)) : mat (rep N l a b h o) 0 0 = 1 := by
   cases o <;> simp [rep, gaOld, mat]
 
 /- English proof (translation)
-Consider the cases of `o with`. Consider the case `none => rw [rep_none_10]`. Simplify using the standard rewrite rules. Consider the case `some j => rw [rep_some_10]`. Simplify using the standard rewrite rules.
+Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 -/
 lemma rep_10 (o : Option (Fin l)) : ((mat (rep N l a b h o) 1 0 : ℤ) : ZMod N) = 0 := by
   cases o with
@@ -76,9 +76,9 @@ lemma rep_10 (o : Option (Fin l)) : ((mat (rep N l a b h o) 1 0 : ℤ) : ZMod N)
   | some j => rw [rep_some_10]; simp
 
 /- English proof (translation)
-Consider the cases of `o with`. Consider the case `none => rw [rep_none_11]`. Simplify using the standard rewrite rules. Consider the case `some j`. Establish `hc` using `congrArg (Int.cast : ℤ → ZMod N) h`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
 
-Move the coercions through the operations in `at hc`. Rewrite `hc` using `[ZMod.natCast_self, zero_mul, sub_zero]`. Rewrite using `[rep_some_11]`. Use `push_cast`. Rewrite using `[ZMod.natCast_self, zero_mul, zero_add, hc]`.
+Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 -/
 lemma rep_11 (o : Option (Fin l)) : ((mat (rep N l a b h o) 1 1 : ℤ) : ZMod N) = 1 := by
   cases o with
@@ -93,18 +93,18 @@ lemma rep_11 (o : Option (Fin l)) : ((mat (rep N l a b h o) 1 1 : ℤ) : ZMod N)
 
 include h in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨-a, b, by linear_combination h⟩`.
+Supply the required witnesses or components.
 -/
 lemma cop : IsCoprime (N : ℤ) (l : ℤ) := ⟨-a, b, by linear_combination h⟩
 
 /- English proof (translation)
-Use `Fact.mk hl` as an intermediate fact. Establish `hc : IsCoprime (N : ℤ) l` using `cop (h := h)`. Establish `hδ : ∀ o, (N : ℤ) ∣ mat (rep N l a b h o) 1 0` using `fun o => (ZMod.intCast_zmod_eq_zero_iff_dvd _ _).1 (rep_10 o)`. Rewrite `hx` using `[mem_iff]`. Rewrite using `[mem_iff, mulInv_10]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Apply `hc.mul_dvd` to reduce the goal to its premises. Conclude with `dvd_sub (Dvd.dvd.mul_right hx _) (Dvd.dvd.mul_left (hδ _) _)`. Unfold `sig split_ifs with hd`. Rewrite using `[rep_none_10, rep_none_11]`.
+Move the embeddings inside the algebraic operations. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hd`. Rewrite using `[rep_some_10, rep_some_11, ← ZMod.intCast_zmod_eq_zero_iff_dvd]`. Establish `hc0 : ((mat x 1 0 : ℤ) : ZMod l) ≠ 0`. Rewrite using `[Ne, ZMod.intCast_zmod_eq_zero_iff_dvd]` and apply the resulting hypothesis. Establish `hu` using `mul_inv_cancel₀ hc0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl0 : ((l : ℕ) : ZMod l) = 0` using `ZMod.natCast_self l`. Use `push_cast`. Simplify using `only [ZMod.natCast_zmod_val]`. Take the linear combination `((N : ZMod l) * ((mat x 1 1 : ℤ) : ZMod l)) * hu + (((mat x 1 0 : ℤ) : ZMod l) * (b : ZMod l)) * hl0`.
+Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma sig_mem [NeZero l] (hl : l.Prime) (x : SL(2, ℤ)) (hx : x ∈ Gamma0 N) :
     x * (rep N l a b h (sig l x))⁻¹ ∈ Gamma0 (N * l) := by
@@ -132,7 +132,7 @@ lemma sig_mem [NeZero l] (hl : l.Prime) (x : SL(2, ℤ)) (hx : x ∈ Gamma0 N) :
         (((mat x 1 0 : ℤ) : ZMod l) * (b : ZMod l)) * hl0
 
 /- English proof (translation)
-Introduce `hd`. Establish `h1` using `Int.le_of_dvd (by exact_mod_cast hN) hd`. Establish `h2 : (2 : ℤ) ≤ l` using `by exact_mod_cast hl.two_le`. Establish `h3 : (0 : ℤ) < N` using `by exact_mod_cast hN`. Use the polynomial consequences of the given equalities and inequalities.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 lemma not_dvd (hN : 0 < N) (hl : l.Prime) : ¬ ((N : ℤ) * l ∣ N) := by
   intro hd
@@ -142,17 +142,15 @@ lemma not_dvd (hN : 0 < N) (hl : l.Prime) : ¬ ((N : ℤ) * l ∣ N) := by
   nlinarith
 
 /- English proof (translation)
-Establish `hc : IsCoprime (N : ℤ) l` using `cop (h := h)`. Establish `hN' : (0 : ℤ) < N` using `by exact_mod_cast hN`. Rewrite `hm` using `[mem_iff, mulInv_10]`. Move the coercions through the operations in `at hm`. Apply the tactic sequence `rcases o₁ with _ | i <;> rcases o₂ with _ | j`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Apply the first step, then apply the next step to every resulting obligation.
 
-Both sides reduce to the same expression. It suffices to derive a contradiction. Rewrite `hm` using `[rep_none_10, rep_none_11, rep_some_10]`. Conclude with `not_dvd hN hl (by simpa using hm)`. It suffices to derive a contradiction.
+Both sides reduce to the same expression. It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hm` using `[rep_some_10, rep_none_11, rep_none_10]`. Conclude with `not_dvd hN hl (by simpa using hm)`. Rewrite `hm` using `[rep_some_10, rep_some_11, rep_some_10, rep_some_11]`. Establish `e : (N : ℤ) * (N * (j : ℕ) + l * b) - (N * (i : ℕ) + l * b) * N = N * (N * (((j : ℕ) : ℤ) - ((i : ℕ) : ℤ)))` using `by ring`. Rewrite `hm` using `[e]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (l : ℤ) ∣ N * (((j : ℕ) : ℤ) - ((i : ℕ) : ℤ))` using `(mul_dvd_mul_iff_left hN'.ne').1 hm`. Establish `h2 : (l : ℤ) ∣ ((j : ℕ) : ℤ) - ((i : ℕ) : ℤ)` using `hc.symm.dvd_of_dvd_mul_left h1`. Establish `h3 : ((j : ℕ) : ℤ) - ((i : ℕ) : ℤ) = 0`. Apply `Int.eq_zero_of_abs_lt_dvd h2` to reduce the goal to its premises. Use `i.isLt` as an intermediate fact.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `j.isLt` as an intermediate fact. Rewrite using `[abs_lt]`. Apply the tactic sequence `constructor <;> omega`. Use `congr 1`. Use `ext`.
-
-Use linear arithmetic over natural numbers and integers.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 lemma rep_inj (hN : 0 < N) (hl : l.Prime) (o₁ o₂ : Option (Fin l))
     (hm : rep N l a b h o₁ * (rep N l a b h o₂)⁻¹ ∈ Gamma0 (N * l)) : o₁ = o₂ := by
@@ -191,21 +189,19 @@ end GlobalTheory.HeckeFamilyMatrices.TrOld
 open GlobalTheory.HeckeFamilyMatrices.TrOld in
 
 /- English proof (translation)
-Introduce `N l k a b h χ G hN hl hG γ hγ`. Establish `: NeZero l` using `⟨hl.ne_zero⟩`. Establish `rep_mem : ∀ o, rep N l a b h o ∈ Gamma0 N` using `fun o => Gamma0_mem.2 (rep_10 o)`. Establish `hsum : trOld k N l a b h G = ∑ o : Option (Fin l), G ∣[k] rep N l a b h o`. Rewrite using `[Fintype.sum_option]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [rep, SlashAction.slash_one]`. Unfold `trOld`. Use `congr 1`. Conclude with `(Fin.sum_univ_eq_sum_range (fun j => G ∣[k] gaOld N l a b h j) l).symm`. Establish `hterm : ∀ o, (G ∣[k] rep N l a b h o) ∣[k] γ = χ ((mat γ 1 1 : ℤ) : ZMod N) • (G ∣[k] rep N l a b h (sig l (rep N l a b h o * γ)))`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `o`. Establish `hA : rep N l a b h o * γ ∈ Gamma0 N` using `mul_mem (rep_mem o) hγ`. Establish `hη` using `sig_mem (h := h) hl _ hA`. Establish `hA0 : ((mat (rep N l a b h o * γ) 1 0 : ℤ) : ZMod N) = 0` using `Gamma0_mem.1 hA`. Establish `hchar : ((mat (rep N l a b h o * γ * (rep N l a b h (sig l (rep N l a b h o * γ)))⁻¹) 1 1 : ℤ) : ZMod N) = ((mat γ 1 1 : ℤ) : ZMod N)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mulInv_11, rep_00]`. Use `push_cast`. Rewrite using `[hA0, mul_11]`. Use `push_cast`. Rewrite using `[rep_10, rep_11]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `e : G ∣[k] (rep N l a b h o * γ) = (G ∣[k] (rep N l a b h o * γ * (rep N l a b h (sig l (rep N l a b h o * γ)))⁻¹)) ∣[k] rep N l a b h (sig l (rep N l a b h o * γ))`. Rewrite using `[← SlashAction.slash_mul, inv_mul_cancel_right]`. Rewrite using `[← SlashAction.slash_mul, e, hG _ hη, ModularForm.SL_smul_slash, hchar]`. Establish `hinj : Function.Injective (fun o => sig l (rep N l a b h o * γ))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `o₁ o₂ he`. Apply `rep_inj (h := h) hN hl` to reduce the goal to its premises. Establish `h1` using `sig_mem (h := h) hl _ (mul_mem (rep_mem o₁) hγ)`. Establish `h2` using `sig_mem (h := h) hl _ (mul_mem (rep_mem o₂) hγ)`. Simplify using `only at he`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[he]`. Establish `h3` using `mul_mem h1 (inv_mem h2)`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Use `group`. Rewrite using `[hsum, SlashAction.sum_slash, Finset.sum_congr rfl (fun o _ => hterm o), ← Finset.smul_sum]`.
-
-Use `congr 1`. Conclude with `(Finite.injective_iff_bijective.mp hinj).sum_comp (fun o => G ∣[k] rep N l a b h o)`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HeckeFamilyMatrices.chiInv_trOld : ∀ (N l : ℕ) (k : ℤ) (a b : ℤ) (h : (l : ℤ) * b - N * a = 1)
     (χ : DirichletCharacter ℂ N) (G : ℍ → ℂ), 0 < N → l.Prime → ChiInv k N (N * l) χ G →

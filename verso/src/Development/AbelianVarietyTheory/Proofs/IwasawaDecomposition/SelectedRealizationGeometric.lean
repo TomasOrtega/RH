@@ -50,7 +50,7 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨S, ⟨n.fi, n.geq, n.rho, n.chi, n.eF, n.bsup, n.act⟩, HEq.rfl, HEq.rfl, HEq.rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem nexp_upd (R : RealDat3 D A3 Ks) (cG : G0 R.Pg D.R.r ≃* G0g D.nd) (S : RatDat D.ntw) (n : NExpRealS R cG S)
     (lam : type_of% R.lam3) (err : type_of% R.err0) :
@@ -61,7 +61,7 @@ end Gen
 variable {hL : GlobalTheory.Published.LocalLanglandsGL} {p : Prm hL} {K : Ctx}
 
 /- English proof (translation)
-Establish `h1` using `x.pins.keep.std`. Establish `h2` using `q.x.th.std`. Establish `e` using `h.s.theta`. Establish `h3 : Formalism.L2.Theta.IsStdChar (q.w.D q.Z) R.T.theta.W.ψ (-1)` using `(congrArg (fun z : (Σ a, Formalism.L2.Theta.AllTied (q.w.D q.Z) q.O.ex.th a) => Formalism.L2.Theta.IsStdChar (q.w.D q.Z) z.2.W.ψ (-1)) e).mpr h2`. Conclude with `GlobalTheory.StdAdelicChar.isStdChar_unique h1 h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem psi_pin (q : WPt p.s K) (R : Formalism.L2.RecT q.O.ex) (h : RecPinE q R) (x : TwIn q.O.ex) :
     x.R.ψ = R.T.theta.W.ψ := by
@@ -75,9 +75,9 @@ theorem psi_pin (q : WPt p.s K) (R : Formalism.L2.RecT q.O.ex) (h : RecPinE q R)
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Take `rfl : a.x = x` from `eq_of_heq hx`. Take `⟨Dc, Sp, Zsc, lam, err, _, x, pack, _⟩` from `a`. Take `⟨G, Pl0, I0, T0, A3, core, R, F, cG, _⟩` from `x`. Simplify using `only at pack ⊢`. Consider the cases of `pack`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Split into cases according to the possible forms of the given data.
 
-Establish `h` using `nexp_upd (D := (q.w.st q.Z).toD7) q.x.what₂.r.z.R q.x.what₂.r.z.cG _ q.core.row.nexp lam err`. Conclude with `(by with_unfolding_all exact (h :))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nexp_move (q : WPt p.s K) (a : TwArgs q.O.ex q.x.what₂) (x : TwIn q.O.ex) (hx : HEq a.x x) :
     ∃ (Sx : Formalism.IndefR.NX.RatDat (q.w.D q.Z).ntw) (n : Formalism.IndefR.NX.NExpRealS x.R x.cG Sx),
@@ -94,11 +94,11 @@ theorem nexp_move (q : WPt p.s K) (a : TwArgs q.O.ex q.x.what₂) (x : TwIn q.O.
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `h1 h2 h3 h4 h5 h6 h7 h8 h9 hL N Γ p hp hNE K q hHost hMult R hPin sP sS hsP hsS a x hax hin hsp κ sEEc hsEE hκ hdef`. Take `⟨hsee, hev, -⟩` from `GlobalTheory.Mem.R3.StageMove.spectralStage_point_rowPlacement_transfer K q.B q.f q.T q.w q.Z q.x.Wt _ _ _ _ _ _ _ q.O.ex q.x.what₂ a _ q.sat`. Take `⟨Sx, nx, hSx, heF, hfi⟩` from `nexp_move q a x hax`. Establish `hψ` using `psi_pin q R hPin x`. Establish `eax : a.x = x` using `eq_of_heq hax`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hsee`, `hev` using `[eax]`. Take `⟨hH, -, -, hpos, -, -, hV, hX⟩` from `hHost (q.w.st q.Z) q.x.isOver`. Establish `hc : R.T.cols = q.x.col.C` using `hPin.s.cols`. Establish `hF : (fun u => (R.T.cols.forms u).to0) = fun u => (q.x.col.C.forms u).to0` using `by rw [hc]`. Establish `e : (⟨_, sP⟩ : Σ F : ∀ u, Formalism.L2.Forms.Forms0 (q.w.D q.Z) u, GlobalTheory.Mem.SRe.SPack (q.w.D q.Z) F) = ⟨_, q.sat.P⟩` using `Sigma.ext hF hsP`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm` using `(congrArg (fun z : (Σ F : ∀ u, Formalism.L2.Forms.Forms0 (q.w.D q.Z) u, GlobalTheory.Mem.SRe.SPack (q.w.D q.Z) F) => SeeAt x.R.toRealDat x.F.lv2 z.2.X z.2.inst q.sat.t ∧ EvalTieT (MP x.R.toRealDat) x.R.toRealDat.ν0 x.R.toRealDat.fd0 (EP x.R.toRealDat x.F.lv2) z.2.X z.2.G (iotaX z …`. Use `⟨{ psiPin := hψ hin := hin spPin := (by with_unfolding_all exact (hsp :)) Sx := Sx nexp := nx stdV := (by with_unfolding_all exact (hV :)) stdX := (by with_unfolding_all exact (hX :)) tS := q.sat.t cS := q.sat.c κS := κ ιS := (iotaX sP.X sP.inst).toMulEquiv instEq := (by with_unf …` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem realIn_exists : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.NT.RayField → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (N : NExt hL) (Γ : GeoP) (p : Prm hL), p = prmR N SExt.none Γ → (∀ K B f T w Z Wt p0 t nch n xd c, N K B f T w Z Wt p0 t nch n xd c → Nonempty (NEb hL K B f T w Z Wt p0 t nch n xd c)) → ∀ (K : Ctx) (q : WPt p.s K), (∀ X : GlobalTheory.Mem.Stages, K.Over X.B.toPre → HostHyp X.toD7 ∧ X.toD7.host.F = maximalRealSubfield X.toD7.host.E ∧ (∀ i, IsFDiag (Wc X.toD7 i) ∧ IsFDiag (Vc X.toD7 i)) ∧ (∀ i, (Vc X.toD7 i).IsPosDef) ∧ (∀ j, Formalism.IndefR.Seed.FrmC.StdLat (X.toD7.sp.Y j) ∧ Formalism.IndefR.Seed.FrmC.StdLat (X.toD7.sp.V j) ∧ (1 ≤ j → j ≤ X.toD7.R.m → Formalism.IndefR.Seed.FrmC.StdLat (X.toD7.sp.W j))) ∧ Formalism.IndefR.Seed.FrmC.StdLat X.toD7.sp.X' ∧ (∀ i, (∀ a b, (Vc X.toD7 i).hT ((Vc X.toD7 i).frame a) ((Vc X.toD7 i).frame b) = if a = b then 1 else 0) ∧ (Vc X.toD7 i).L0 = Submodule.span (𝓞 X.toD7.host.E) (Set.range (Vc X.toD7 i).frame)) ∧ ((∀ a b, X.toD7.sp.X'.hT (X.toD7.sp.X'.frame a) (X.toD7.sp.X'.frame b) = if a = b then 1 else 0) ∧ X.toD7.sp.X'.L0 = Submodule.span (𝓞 X.toD7.host.E) (Set.range X.toD7.sp.X'.frame))) → GlobalTheory.CuspMult.MultEq q.x.what₂.r.z.R.toRealDat → ∀ (R : Formalism.L2.RecT q.O.ex), RecPinE q R → ∀ (sP : GlobalTheory.Mem.SRe.SPack (q.w.D q.Z) fun u => (R.T.cols.forms u).to0) (sS : GlobalTheory.Mem.SRe.SRest sP), HEq sP q.sat.P → HEq sS q.sat.S → ∀ (a : TwArgs q.O.ex q.x.what₂) (x : TwIn q.O.ex), HEq a.x x → ∀ (hin : ∀ u, Formalism.L2.SG.PoincareInHH.PoincareSetting.InHH (sS.toSTiesR R).X u (sS.toSTiesR R).Y.hK), HEq (x.F.Sp (zsOf x.R x.F)) (Formalism.IndefR.Cx.spOf (X := (sS.toSTiesR R).X) (twAt (q.w.D q.Z).what₂.embLL x.A3.A.v0) (x.F.Dc (zsOf x.R x.F)) (sS.toSTiesR R).Y.hK (sS.toSTiesR R).G x.wd (fun m => pwOf (sS.toSTiesR R) hin (x.wd m)) x.bR) → ∀ (κ : ℝ) (sEEc : Tw (twAt (q.w.D q.Z).what₂.embLL x.A3.A.v0) x.R.HE.H →ₗ⋆[ℂ] Tw (twAt (q.w.D q.Z).what₂.embLL x.A3.A.v0) (Formalism.L2.SG.PoincareInHH.PoincareSetting.HHX (sS.toSTiesR R).X)), HEq x.sEE sEEc → 0 < κ → (∀ (v : Tw (twAt (q.w.D q.Z).what₂.embLL x.A3.A.v0) x.R.HE.H) (hx : x.R.HE.e (Tw.out v) ∈ (x.R.toRealDat.EEat (x.R.toRealDat.levR x.F.lv2 true))), sEEc v = Tw.mk (twAt (q.w.D q.Z).what₂.embLL x.A3.A.v0) (((1 : ℂ) * (κ : ℂ)) • (Formalism.IndefR.AutomorphicEvaluation.sEEofTT (x.R.MY 0) x.R.ν0 x.R.fd0 (x.R.toRealDat.EEat (x.R.toRealDat.levR x.F.lv2 true)) (sS.toSTiesR R).X (sS.toSTiesR R).G (Formalism.L2.SG.RowsJoinPinned.iotaX sP.X sP.inst).toMulEquiv q.sat.t q.sat.c) ⟨x.R.HE.e (Tw.out v), hx⟩) ∧ RealDat.nP x.F.lv2 true * ‖sEEc v‖ ^ 2 = ‖v‖ ^ 2) → ∃ y : RealIn x R (sS.toSTiesR R), HEq y.tS q.sat.t ∧ y.cS = q.sat.c ∧ HEq y.Sx (Formalism.IndefR.NX.ratDatR (D := (q.w.st q.Z).toD7) q.x.what₂.r.z.R q.x.what₂.r.z.cG q.core.row.kKs q.core.row.hk) ∧ HEq y.nexp.eF q.core.row.nexp.eF ∧ HEq y.nexp.fi q.core.row.nexp.fi ∧ y.uS = 1 := by
   intro h1 h2 h3 h4 h5 h6 h7 h8 h9 hL N Γ p hp hNE K q hHost hMult R hPin sP sS hsP hsS a x hax hin hsp κ sEEc hsEE hκ hdef

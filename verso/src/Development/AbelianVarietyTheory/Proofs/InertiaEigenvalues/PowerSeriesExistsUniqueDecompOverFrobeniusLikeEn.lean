@@ -4,7 +4,7 @@ open scoped PowerSeries Pointwise
 namespace GlobalTheory.InertiaEigenvalues.PowerSeriesFree
 
 /- English proof (translation)
-Rewrite using `[PowerSeries.coeff_X_pow_mul']`. Distinguish the cases in `h : j ≤ m`. Simplify using `only [h, true_and, if_true]`. Conclude with `hφ g (m - j)`. Simplify using `[h]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coeff_term {O : Type} [CommRing O] (l : ℕ) (φ : O⟦X⟧ →ₐ[O] O⟦X⟧)
     (hφ : ∀ (f : O⟦X⟧) (m : ℕ), PowerSeries.coeff m (φ f) = if l ∣ m then PowerSeries.coeff (m / l) f else 0)
@@ -18,17 +18,15 @@ theorem coeff_term {O : Type} [CommRing O] (l : ℕ) (φ : O⟦X⟧ →ₐ[O] O�
   · simp [h]
 
 /- English proof (translation)
-Establish `hl0 : 0 < l` using `by omega`. Rewrite using `[map_sum]`. Rewrite using `[Finset.sum_eq_single (⟨m % l, Nat.mod_lt _ hl0⟩ : Fin l)]`. Rewrite using `[coeff_term l φ hφ]`. Establish `h1 : m % l ≤ m` using `Nat.mod_le _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : l ∣ m - m % l`. Use `Nat.div_add_mod m l` as an intermediate fact. Conclude with `⟨m / l, by omega⟩`. Establish `h3 : (m - m % l) / l = m / l`. Use `Nat.div_add_mod m l` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[show m - m % l = l * (m / l) by omega]`. Conclude with `Nat.mul_div_cancel_left _ hl0`. Simplify using `only [h1, h2, and_self, if_true, h3]`. Introduce `j _ hj`. Rewrite using `[coeff_term l φ hφ]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg]`. Introduce and unpack `⟨hjm, k, hk⟩`. Apply `hj` to reduce the goal to its premises. Use `ext`. Simplify using `only`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hjl` using `j.isLt`. Establish `: m = l * k + j.val` using `by omega`. Rewrite using `[this, Nat.mul_add_mod]`. Conclude with `(Nat.mod_eq_of_lt hjl).symm`. Introduce `h`.
-
-Conclude with `absurd (Finset.mem_univ _) h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem coeff_sum {O : Type} [CommRing O] (l : ℕ) (hl : 2 ≤ l) (φ : O⟦X⟧ →ₐ[O] O⟦X⟧)
     (hφ : ∀ (f : O⟦X⟧) (m : ℕ), PowerSeries.coeff m (φ f) = if l ∣ m then PowerSeries.coeff (m / l) f else 0)
@@ -62,13 +60,13 @@ theorem coeff_sum {O : Type} [CommRing O] (l : ℕ) (hl : 2 ≤ l) (φ : O⟦X�
   · intro h; exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Introduce `O _ l hl φ hφ f`. Establish `hl0 : 0 < l` using `by omega`. Use `⟨fun j => PowerSeries.mk (fun n => PowerSeries.coeff (n * l + j.val) f), ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `m`. Rewrite using `[coeff_sum l hl φ hφ, PowerSeries.coeff_mk]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only`. Rewrite using `[Nat.div_add_mod']`. Introduce `g hg`. Use function extensionality and compare the values at `j`. Use extensionality with `n`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components.
 
-Rewrite using `[PowerSeries.coeff_mk, hg, coeff_sum l hl φ hφ]`. Establish `hj` using `j.isLt`. Establish `e1 : (n * l + j.val) / l = n`. Rewrite using `[Nat.add_comm, Nat.add_mul_div_right _ _ hl0, Nat.div_eq_of_lt hj, Nat.zero_add]`. Establish `e2 : (n * l + j.val) % l = j.val`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Nat.add_comm, Nat.add_mul_mod_self_right, Nat.mod_eq_of_lt hj]`. Simplify using `only [e1, e2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem main : ∀ {O : Type} [CommRing O] (l : ℕ), 2 ≤ l → ∀ (φ : O⟦X⟧ →ₐ[O] O⟦X⟧), (∀ (f : O⟦X⟧) (m : ℕ), PowerSeries.coeff m (φ f) = if l ∣ m then PowerSeries.coeff (m / l) f else 0) → ∀ f : O⟦X⟧, ∃! g : Fin l → O⟦X⟧, f = ∑ j : Fin l, PowerSeries.X ^ j.val * φ (g j) := by
   intro O _ l hl φ hφ f

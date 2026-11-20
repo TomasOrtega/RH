@@ -20,15 +20,15 @@ def dotOrth {K : Type} [Field K] {d : ℕ} (X : Submodule K (Fin d → K)) :
   smul_mem' := fun c u hu φ hφ => by rw [smul_dotProduct, hu φ hφ, smul_zero]
 
 /- English proof (translation)
-Introduce `K _ C p _ _ O _ _ d D hp`. Take `⟨h0, W₀, hW₀⟩` from `GlobalTheory.T.sub_degree_bot_and_max_exists K C (Fin d → K) D.lie D.lie_bun`. Establish `hp2 : (0 : ℤ) < (p : ℤ) - 2`. Establish `: (2 : ℤ) < (p : ℤ)` using `by exact_mod_cast hp`. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hf` using `GlobalTheory.CompanionTheory.Ar.Crv.SubFrob.subDeg_frob K C p d D.lie W₀ D.lie_bun`. Establish `h1` using `GlobalTheory.T.sub_degree_mono_injective_hom K C (Fin d → K) ((Fin d → K) × (Fin d → K)) (frobLat C p D.lie) D.H D.α (frobSub p W₀) (GlobalTheory.CompanionTheory.Ar.Crv.DegFrob.deg_frobLat K C p d D.lie D.lie_bun).1 D.H_bun D.conj.1 (fun i x hx => (D.conj.2.2.2.1 i x).1 hx)`. Establish `h2` using `GlobalTheory.T.short_exact_sub_degree_bound K C (Fin d → K) ((Fin d → K) × (Fin d → K)) (Fin d → K) (dotDual C D.lie) D.H D.lie (LinearMap.inr K (Fin d → K) (Fin d → K)) (LinearMap.fst K (Fin d → K) (Fin d → K)) (Submodule.map D.α (frobSub p W₀)) D.H_bun D.hodge`. Establish `h3` using `GlobalTheory.T.dot_dual_sub_degree_annihilator K C d D.lie (dotOrth (Submodule.comap (LinearMap.inr K (Fin d → K) (Fin d → K)) (Submodule.map D.α (frobSub p W₀)))) (Submodule.comap (LinearMap.inr K (Fin d → K) (Fin d → K)) (Submodule.map D.α (frobSub p W₀))) D.lie_bun (fun u => I …`. Establish `h4` using `hW₀ (Submodule.map (LinearMap.fst K (Fin d → K) (Fin d → K)) (Submodule.map D.α (frobSub p W₀)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5` using `hW₀ (dotOrth (Submodule.comap (LinearMap.inr K (Fin d → K) (Fin d → K)) (Submodule.map D.α (frobSub p W₀))))`. Establish `hr : ((p : ℤ) - 2) * subDeg C D.lie W₀ = (p : ℤ) * subDeg C D.lie W₀ - 2 * subDeg C D.lie W₀`. Expand and normalize the polynomial expressions, which then agree. Establish `key : ((p : ℤ) - 2) * subDeg C D.lie W₀ ≤ deg C (dotDual C D.lie)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hμ : 0 ≤ subDeg C D.lie W₀`. Use `hW₀ ⊥` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨?_, fun W => ?_⟩` and prove the remaining obligations. Use `mul_nonneg hp2.le hμ` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `mul_le_mul_of_nonneg_left (hW₀ W) hp2.le` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem frob_estimate : ∀ (K : Type) [Field K] (C : ACurve K) (p : ℕ) [Fact p.Prime] [CharP K p]
     (O : Type) [CommRing O] [StarRing O] (d : ℕ) (D : ConjData C p O d), 2 < p →

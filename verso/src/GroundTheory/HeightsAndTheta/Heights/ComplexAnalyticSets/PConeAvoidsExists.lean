@@ -16,7 +16,7 @@ attribute [local instance] MvPolynomial.gradedAlgebra
 variable {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `Ideal.homogeneous_span _ _ (by rintro _ ⟨f, -, rfl⟩ exact ⟨f.totalDegree, (mem_homogeneousSubmodule _ _).2 (homogeneousComponent_isHomogeneous _ _)⟩)`.
+A detailed English derivation is pending.
 -/
 theorem leadIdeal_isHomogeneous (J : Ideal (MvPolynomial (Fin n) ℂ)) :
     (leadIdeal J).IsHomogeneous (homogeneousSubmodule (Fin n) ℂ) :=
@@ -25,7 +25,7 @@ theorem leadIdeal_isHomogeneous (J : Ideal (MvPolynomial (Fin n) ℂ)) :
     exact ⟨f.totalDegree, (mem_homogeneousSubmodule _ _).2 (homogeneousComponent_isHomogeneous _ _)⟩)
 
 /- English proof (translation)
-The claim follows from `Ideal.homogeneous_span _ _ (by rintro _ ⟨i, rfl⟩ exact ⟨1, (mem_homogeneousSubmodule _ _).2 (IsHomogeneous.sum _ _ _ (fun j _ => (isHomogeneous_X ℂ j).C_mul (A i j)))⟩)`.
+A detailed English derivation is pending.
 -/
 theorem linIdeal_isHomogeneous {d : ℕ} (A : Matrix (Fin d) (Fin n) ℂ) :
     (linIdeal A).IsHomogeneous (homogeneousSubmodule (Fin n) ℂ) :=
@@ -35,9 +35,9 @@ theorem linIdeal_isHomogeneous {d : ℕ} (A : Matrix (Fin d) (Fin n) ℂ) :
       (IsHomogeneous.sum _ _ _ (fun j _ => (isHomogeneous_X ℂ j).C_mul (A i j)))⟩)
 
 /- English proof (translation)
-Establish `h : linPoly (Matrix.of (Fin.cons (B 0) A : Fin (k + 1) → Fin n → ℂ)) = Fin.cons (linPoly B 0) (linPoly A)`. Use function extensionality and compare the values at `i`. Conclude with `Fin.cases rfl (fun i => rfl) i`. Establish `hB : Set.range (linPoly B) = {linPoly B 0}`. Rewrite using `[Set.range_unique]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[linIdeal, linIdeal, linIdeal, h, Fin.range_cons, hB, Set.insert_eq, Ideal.span_union, sup_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linIdeal_cons {k : ℕ} (A : Matrix (Fin k) (Fin n) ℂ) (B : Matrix (Fin 1) (Fin n) ℂ) :
     linIdeal (Matrix.of (Fin.cons (B 0) A : Fin (k + 1) → Fin n → ℂ)) = linIdeal A ⊔ linIdeal B := by
@@ -51,15 +51,15 @@ theorem linIdeal_cons {k : ℕ} (A : Matrix (Fin k) (Fin n) ℂ) (B : Matrix (Fi
   rw [linIdeal, linIdeal, linIdeal, h, Fin.range_cons, hB, Set.insert_eq, Ideal.span_union, sup_comm]
 
 /- English proof (translation)
-Introduce `n d J _ hd`. Establish `key : ∀ k, k ≤ d → ∃ A : Matrix (Fin k) (Fin n) ℂ, ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ (leadIdeal J ⊔ linIdeal A)) ≤ ((d - k : ℕ) : WithBot ℕ∞)`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `_`. Use `⟨0, ?_⟩` and prove the remaining obligations. Establish `h0 : linIdeal (0 : Matrix (Fin 0) (Fin n) ℂ) = ⊥`. Rewrite using `[linIdeal, Set.range_eq_empty, Ideal.span_empty]`. Rewrite using `[h0, sup_bot_eq, Nat.sub_zero, ← hd]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hlead n J`. Consider the case `succ k ih`. Introduce `hk`. Take `⟨A, hA⟩` from `ih (by omega)`. Establish `hdk : d - k = (d - (k + 1)) + 1` using `by omega`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hA` using `[hdk]`. Take `⟨B, hB⟩` from `hcut n _ _ hA`. Use `⟨Matrix.of (Fin.cons (B 0) A : Fin (k + 1) → Fin n → ℂ), ?_⟩` and prove the remaining obligations. Rewrite using `[linIdeal_cons, ← sup_assoc]`. Conclude with `hB`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨A, hA⟩` from `key d le_rfl`. Rewrite `hA` using `[Nat.sub_self, Nat.cast_zero]`. Take `⟨N, hN⟩` from `hpow n _ ((leadIdeal_isHomogeneous J).sup (linIdeal_isHomogeneous A)) hA`. Conclude with `⟨A, N, hN⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ConeAvoidsExists.proof (hlead : LeadIdealDim.Statement) (hcut : LinearFormCut.Statement)
     (hpow : HomogDimZeroPow.Statement) : ConeAvoidsExists.Statement := by

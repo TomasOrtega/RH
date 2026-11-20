@@ -8,9 +8,7 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `B X I hI hP l Z u a i hi b g`. Establish `hG` using `((GlobalTheory.Mem.Col2.TC.spaces_in_coordinates I hI hP l Z).2.2.2 i hi).1`. Establish `hU` using `(hI.stp_ok u a i).unit b g`. Use `show cT _ _ * _ * _ = _`. Rewrite using `[hG, Matrix.mul_one]`.
-
-Conclude with `hU`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Mem.Col2.TC.step_gam_mem_UJ : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) (a : I.ι) (i : ℕ) (hi : i ≤ B.R.m), ∀ (b : (I.stp u a i).β) (g : (I.stp u a i).G b), (I.stp u a i).gam b g ∈ UJ (sigD (I.rec7 l Z) : (I.rec7 l Z).host.E →+* (I.rec7 l Z).host.E) (gramN (I.rec7 l Z) i hi) := by
   intro B X I hI hP l Z u a i hi b g

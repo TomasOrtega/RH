@@ -8,23 +8,21 @@ namespace GlobalTheory.CompanionTheory.Counting
 open GroundTheory.Automorphic.CuspidalSpectrum in
 
 /- English proof (translation)
-Take `⟨m, hm, hint⟩` from `GroundTheory.Automorphic.CuspidalSpectrum.exists_natCast_mul_integral_of_isCompact K h𝒦`. Take `⟨C₀, hC₀, hcount⟩` from `GroundTheory.Automorphic.CuspidalSpectrum.exists_ncard_integers_le K`. Establish `hw : ∀ (w : InfinitePlace K) (x : K), w ((m : K) * x) = (m : ℝ) * w x`. Introduce `w x`. Rewrite using `[← w.norm_embedding_eq, map_mul, norm_mul, w.norm_embedding_eq, w.norm_embedding_eq, w.map_natCast]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hm1 : (1 : ℝ) ≤ m` using `by exact_mod_cast hm`. Establish `hmK : (m : K) ≠ 0` using `by exact_mod_cast hm.ne'`. Use `⟨C₀ * (m : ℝ) ^ Module.finrank ℚ K, mul_nonneg hC₀ (by positivity), ?_⟩` and prove the remaining obligations. Introduce `T hT`. Establish `hA : ∀ p : Fin n × Fin n, (((↑) : 𝓞 K → K) '' {z | ∀ w : InfinitePlace K, w (z : K) ≤ (m : ℝ) * T p.1 p.2}).Finite ∧ ((((↑) : 𝓞 K → K) '' {z | ∀ w : InfinitePlace K, w (z : K) ≤ (m : ℝ) * T p.1 p.2}).ncard : ℝ) ≤ C₀ * (1 + (m : ℝ) * T p.1 p.2) ^ Module.finrank ℚ K`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `p`. Take `⟨hf, hc⟩` from `hcount ((m : ℝ) * T p.1 p.2) (mul_nonneg (by positivity) (hT p.1 p.2))`. Conclude with `⟨hf.image _, le_trans (by exact_mod_cast Set.ncard_image_le hf) hc⟩`. Set `F : GL (Fin n) K → (Fin n × Fin n → K)` to `fun γ p => (m : K) * (γ : Matrix (Fin n) (Fin n) K) p.1 p.2`. Take `⟨t, ht⟩ : ∃ t : Finset (Fin n × Fin n → K), t = Fintype.piFinset fun p => (hA p).1.toFinset` from `⟨_, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Establish `key : ∀ γ : GL (Fin n) K, (∀ i j, algebraMap K (FiniteAdeleRing (𝓞 K) K) ((γ : Matrix (Fin n) (Fin n) K) i j) ∈ 𝒦 ∧ ∀ w : InfinitePlace K, w ((γ : Matrix (Fin n) (Fin n) K) i j) ≤ T i j) → F γ ∈ (t : Set (Fin n × Fin n → K))`. Introduce `γ hγ`. Rewrite using `[Finset.mem_coe, ht, Fintype.mem_piFinset]`. Introduce `p`. Rewrite using `[Set.Finite.mem_toFinset]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Take `⟨z, hz⟩` from `hint _ (hγ p.1 p.2).1`. Use `⟨z, fun w => ?_, hz⟩` and prove the remaining obligations. Rewrite using `[hz, hw]`. Conclude with `mul_le_mul_of_nonneg_left ((hγ p.1 p.2).2 w) (by positivity)`. Establish `inj : ∀ γ γ' : GL (Fin n) K, F γ = F γ' → γ = γ'`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `γ γ' h`. Use extensionality with `i j`. Conclude with `mul_left_cancel₀ hmK (congrFun h (i, j))`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `Set.Finite.of_finite_image ((t.finite_toSet).subset (Set.image_subset_iff.mpr fun γ hγ => key γ hγ)) (fun γ _ γ' _ h => inj γ γ' h)`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use `le_trans (Nat.cast_le.mpr (Set.ncard_le_ncard_of_injOn F (fun γ hγ => key γ hγ) (fun γ _ γ' _ h => inj γ γ' h) t.finite_toSet)) ?_` and prove the remaining obligations. Rewrite using `[Set.ncard_coe_finset, ht, Fintype.card_piFinset, Nat.cast_prod, Fintype.prod_prod_type]`. Apply `Finset.prod_le_prod (fun _ _ => Finset.prod_nonneg fun _ _ => by positivity)` to reduce the goal to its premises. Introduce `i _`. Apply `Finset.prod_le_prod (fun _ _ => by positivity)` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `j _`. Rewrite using `[← Set.ncard_eq_toFinset_card _ (hA (i, j)).1]`. Use `le_trans (hA (i, j)).2 ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, ← mul_pow]`. Apply `mul_le_mul_of_nonneg_left _ hC₀` to reduce the goal to its premises.
-
-Apply `pow_le_pow_left₀ (by nlinarith [hT i j])` to reduce the goal to its premises. Use polynomial arithmetic with `[hT i j]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem exists_ncard_entrywiseBox_le (K : Type) [Field K] [NumberField K] (n : ℕ)
     (𝒦 : Set (FiniteAdeleRing (𝓞 K) K)) (h𝒦 : IsCompact 𝒦) :

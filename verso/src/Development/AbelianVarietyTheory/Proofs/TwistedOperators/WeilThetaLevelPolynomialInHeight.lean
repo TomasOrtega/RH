@@ -21,17 +21,17 @@ noncomputable section
 namespace GlobalTheory.LevelGrowth
 
 /- English proof (translation)
-Introduce `D ψ θ hθ ε M X χ χ' ω hω Φ hΦ C₁ hC₁`. Take `⟨U, hU, hΦU⟩` from `GlobalTheory.Size.isTheta_iff_level.1 hΦ`. Take `⟨K₀, h0, hK₀, m, hlev⟩` from `GlobalTheory.KernelSeminorm.exists_level_multiple (S := sgn ε M) (T := X) hU`. Take `⟨B, hB⟩` from `hC₁.bddAbove_image ((GlobalTheory.Grow.continuous_height (sgn ε M)).comp (continuous_ofSgn_symm ε M)).continuousOn`. Take `⟨C, hC, hcmp⟩` from `GlobalTheory.Grow.height_comparison X hθ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨K₀, h0, hK₀, m * max B 0 * C, 1, fun y hy h => ?_⟩` and prove the remaining obligations. Use `set g := (ofSgn ε M).symm y with hg`. Take `⟨n, hn, hnle, hmem⟩` from `hlev g h`. Use `⟨n, hn, ?_, fun u hu hinf => ?_⟩` and prove the remaining obligations. Establish `hgB : GlobalTheory.Grow.height (sgn ε M) g ≤ max B 0` using `(hB ⟨y, hy, rfl⟩).trans (le_max_left _ _)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hhC : GlobalTheory.Grow.height X h ≤ C * (GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.height θ X h : ℝ)` using `(hcmp h).2`. Establish `hm0 : (0 : ℝ) ≤ m` using `m.cast_nonneg`. Establish `hg0` using `(GlobalTheory.Grow.height_pos (sgn ε M) g).le`. Establish `hh0` using `(GlobalTheory.Grow.height_pos X h).le`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hv : (actO (sgn ε M) X g⁻¹ h⁻¹ (n • u)).map (infPart D) = 0`. Establish `: (n • u).map (infPart D) = 0`. Use extensionality with `i j`. Establish `h3 : infPart D (u i j) = 0` using `congrFun (congrFun hinf i) j`. Conclude with `(map_nsmul (infPart D) n (u i j)).trans ((congrArg (n • ·) h3).trans (nsmul_zero n))`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `actO`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, this, Matrix.mul_zero, Matrix.zero_mul]`. Establish `hfix` using `hΦU.2 _ (hmem u hu hinf) hv`. Establish `e` using `hω.om_heis g h (actO (sgn ε M) X g⁻¹ h⁻¹ (n • u)) Φ hΦ`. Rewrite `e` using `[hfix, GlobalTheory.ThetaGrowth.actO_mul, mul_inv_cancel, mul_inv_cancel, GlobalTheory.ThetaGrowth.actO_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e2 : (WRep.toSgn ε ω) (g, h) = ω (y, h)`. Simplify using `[WRep.toSgn, hg]`. Rewrite `e` using `[e2]`. Conclude with `e.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem level_poly : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (hθ : IsInfFam θ) (ε : Bool) (M X : HSp D)
     (χ χ' : (AE D)ˣ →* Circle) (ω : WRep M X) (hω : IsWeil ψ ε M X χ χ' ω) (Φ : WO M X → ℂ) (hΦ : IsThetaFunO ψ (sgn ε M) X Φ)

@@ -17,13 +17,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.TranslPull
 
 /- English proof (translation)
-Introduce `S S' G' _ G _ f φ h x s hx`. Establish `hu' : ∀ (Y : Over S'), (toUnit Y).left = Y.hom` using `fun Y => by`. Simplify using `using Over.w (toUnit Y)`. Establish `hu : ∀ (Y : Over S), (toUnit Y).left = Y.hom` using `fun Y => by`. Simplify using `using Over.w (toUnit Y)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hs : s.left ≫ G.hom = 𝟙 S` using `by simpa using Over.w s`. Set `x₀ : Over.mk (G'.hom ≫ f) ⟶ G` to `Over.homMk (G'.hom ≫ f ≫ s.left) (by`. Simplify using `[hs])`. Set `y₀ : Over.mk (G'.hom ≫ f) ⟶ G` to `Over.homMk φ (by simpa using h.1.w)`. Establish `key` using `h.2 G' (toUnit G' ≫ x) (𝟙 G') x₀ y₀ (by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `[x₀, hu', hx]) (by simp [y₀])`. Establish `e1 : lift (toUnit G' ≫ x) (𝟙 G') ≫ μ[G'] = (toUnit G' ≫ x) * 𝟙 G'` using `rfl`. Establish `e2 : x₀ * y₀ = (Over.homMk φ (by simpa using h.1.w) : Over.mk (G'.hom ≫ f) ⟶ G) ≫ (lift (toUnit G ≫ s) (𝟙 G) ≫ μ[G])`. Rewrite using `[← Category.assoc, comp_lift, Category.comp_id]`. Establish `hx0 : x₀ = ((Over.homMk φ (by simpa using h.1.w) : Over.mk (G'.hom ≫ f) ⟶ G) ≫ toUnit G) ≫ s`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Simplify using `[x₀, hu]`. Rewrite using `[hx0]`. Both sides reduce to the same expression. Rewrite using `[e1, ← key, e2]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/

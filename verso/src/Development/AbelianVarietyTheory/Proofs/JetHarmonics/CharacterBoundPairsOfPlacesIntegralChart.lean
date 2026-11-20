@@ -16,7 +16,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 namespace GlobalTheory.CharPair
 
 /- English proof (translation)
-Rewrite using `[Fintype.sum_sigma, Finset.sum_eq_single a]`. Introduce `b _ hb`. Conclude with `Finset.sum_eq_zero fun i _ => hf _ hb`. Introduce `h`. Conclude with `absurd (Finset.mem_univ a) h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem sum_sigma_type {M : Type} [AddCommMonoid M] {d : ℕ} [NeZero d] (m : ZMod d → ℕ) (a : ZMod d)
     (f : (Σ b : ZMod d, Fin (m b)) → M) (hf : ∀ x, x.1 ≠ a → f x = 0) : ∑ x, f x = ∑ i : Fin (m a), f ⟨a, i⟩ := by
@@ -27,7 +27,7 @@ theorem sum_sigma_type {M : Type} [AddCommMonoid M] {d : ℕ} [NeZero d] (m : ZM
     exact absurd (Finset.mem_univ a) h
 
 /- English proof (translation)
-Take `⟨h1, w', h2, h3⟩` from `hw`. Use `⟨fun q i => h1 q _, fun i q => w' ⟨a, i⟩ q, fun i q => h2 _ q, fun q q' => ?_⟩` and prove the remaining obligations. Rewrite using `[← h3 q q', sum_sigma_type m a (fun x => w q x * w' x q') fun x hx => by rw [h0 q x hx, zero_mul]]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem isSat_type {C : Type} [Field C] {V : VF C} {d : ℕ} [NeZero d] (m : ZMod d → ℕ) (a : ZMod d) {n : ℕ}
     {w : Fin n → (Σ b : ZMod d, Fin (m b)) → C} (hw : IsSat V w) (h0 : ∀ q x, x.1 ≠ a → w q x = 0) :
@@ -37,7 +37,7 @@ theorem isSat_type {C : Type} [Field C] {V : VF C} {d : ℕ} [NeZero d] (m : ZMo
   rw [← h3 q q', sum_sigma_type m a (fun x => w q x * w' x q') fun x hx => by rw [h0 q x hx, zero_mul]]
 
 /- English proof (translation)
-Use `show MvPowerSeries.coeff ((Finsupp.single i 1).mapDomain fun x : Fin dd => ((0 : Fin 1), x)) f = _`. Rewrite using `[Finsupp.mapDomain_single]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem coeff_single_one_uncurry_eq_partialDerivative {C : Type} [Field C] {dd : ℕ} (f : PS C 1 dd) (i : Fin dd) :
     MvPowerSeries.coeff (Finsupp.single i 1) (un1 f) = ReciprocityTheory.ChartRestriction.G.Pdiv.ChartF.dl f i := by
@@ -46,13 +46,13 @@ theorem coeff_single_one_uncurry_eq_partialDerivative {C : Type} [Field C] {dd :
   rfl
 
 /- English proof (translation)
-Introduce `_` and use `hf _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem integralSeries_uncurry_one {C : Type} [Field C] {V : VF C} {dd : ℕ} {f : PS C 1 dd} (hf : IntS V f) : IntS V (un1 f) :=
   fun _ => hf _
 
 /- English proof (translation)
-Rewrite using `[RowLawPair.formalAdd_eq_law Y p (RowLawPair.zc_gp 0) (RowLawPair.zc_gp 1), RowLawPair.subst_oneVarGerm_eq_substPointsPowerSeries (RowLawSquare.zc_law Y (RowLawPair.zc_gp 0) (RowLawPair.zc_gp 1)), RowLawPair.subst_oneVarGerm_eq_substPointsPowerSeries (RowLawPair.zc_gp 0), RowLawP …`. Conclude with `hf.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCharacter_uncurry_logarithm_law {C : Type} [Field C] [CharZero C] {V : VF C} {O : Type} [CommRing O] [StarRing O] {dd : ℕ}
     (Y : FBChart C V O dd) {d : ℕ} {I : Fin 2 → Type} [∀ g, Fintype (I g)] (p : PairData Y d I) {f : PS C 1 dd}
@@ -65,7 +65,7 @@ theorem isCharacter_uncurry_logarithm_law {C : Type} [Field C] [CharZero C] {V :
   exact hf.2
 
 /- English proof (translation)
-Unfold `S4.frobSum`. Conclude with `tsum_congr fun i => by rw [ValuationFitting.rpow_neg_succ hl]`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem orbitSum_eq {d l : ℕ} (hl : 0 < l) (p : ZMod d → ℕ) (s : ZMod d) :
     (∑' i : ℕ, ((l : ℝ) ^ (-((i : ℝ) + 1))) * (p (s + ((i + 1 : ℕ) : ZMod d)) : ℝ)) = S4.frobSum l p s := by
@@ -73,23 +73,21 @@ theorem orbitSum_eq {d l : ℕ} (hl : 0 < l) (p : ZMod d → ℕ) (s : ZMod d) :
   exact tsum_congr fun i => by rw [ValuationFitting.rpow_neg_succ hl]
 
 /- English proof (translation)
-Introduce `hUp E _ _ _ H Dw lv Xo c _ hstar T io y C3 C _ _ V ι hι k Y hY hy hl Orb d _ lab ha hg hr o Hc g a hb w hw h0`. Establish `hinj : Function.Injective (lab.tau o g)` using `fun s s' h => (Prod.mk.inj (Prod.mk.inj (ha.inj (a₁ := (o, g, s)) (a₂ := (o, g, s')) h)).2).2`. Take `⟨χ, hχ, hdet⟩` from `GlobalTheory.T.exists_characters_bounded_minor_eigenspace hUp E H Dw lv Xo c hstar T io y C3 C V ι hι k Y hY hy hl d (lab.tau o g) hinj (ha.frob o g) a lab.n (fun q i => w q ⟨a, i⟩) (isSat_type (fun b => Dw.mult (lab.tau o g b)) a hw h0)`. Establish `hconj : ∀ s, ComplexEmbedding.conjugate (lab.tau o g s) = lab.tau o (1 - g) s`. Introduce `s`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `fin_cases g`. Conclude with `(ha.conj o s).symm`. Use `show ComplexEmbedding.conjugate (lab.tau o 1 s) = lab.tau o 0 s`. Rewrite using `[ha.conj]`. Conclude with `star_star _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [hconj] at hdet`. Establish `hl1 : 1 < V.l` using `V.l_prime.one_lt`. Rewrite `hdet` using `[orbitSum_eq V.l_prime.pos (fun s => Dw.mult (lab.tau o (1 - g) s)) a]`. Establish `hL : (1 : ℝ) < V.l` using `by exact_mod_cast hl1`. Establish `h1` using `S4.one_div_eq_gam_add_rho hl1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hdiv : ∀ x : ℝ, x / ((V.l : ℝ) - 1) = x * (S4.gam V.l + S4.rho V.l)` using `fun x => by`. Rewrite using `[← h1]`. Expand and normalize the polynomial expressions, which then agree. Establish `hrho : 0 ≤ S4.rho V.l` using `div_nonneg zero_le_one (by nlinarith)`. Establish `hgam : 0 ≤ S4.gam V.l` using `div_nonneg (by linarith) (by nlinarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hj : (0 : ℝ) ≤ lab.j` using `Nat.cast_nonneg _`. Establish `hj' : (0 : ℝ) ≤ lab.j'` using `Nat.cast_nonneg _`. Take `⟨hc, hbig, hsm⟩` from `hr o`. Establish `hpb : ∀ b, lab.big o g b → Dw.mult (lab.tau o (1 - g) b) = 0 + lab.j'` using `fun b h => by`. Rewrite using `[hsm (1 - g) b fun hh => (hc g b).1 hh h, zero_add]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hps : ∀ b, ¬ lab.big o g b → Dw.mult (lab.tau o (1 - g) b) = lab.n + lab.j` using `fun b h => hbig (1 - g) b ((hc g b).2 h)`. Establish `hmat : (Matrix.of fun ρ q : Fin lab.n => ∑ x : lab.II Dw o g, (∑ i, MvPowerSeries.coeff (Finsupp.single i 1) (un1 (χ ρ)) * lieBasisVector C3 ι lab o g x i) * w q x) = Matrix.of fun ρ q : Fin lab.n => ∑ x, (∑ i, ReciprocityTheory.ChartRestriction.G.Pdiv.ChartF.dl (χ ρ) i * ι (char …`. Use extensionality with `ρ q`. Simplify using `only [Matrix.of_apply, coeff_single_one_uncurry_eq_partialDerivative]`. Conclude with `sum_sigma_type (fun b => Dw.mult (lab.tau o g b)) a _ fun x hx => by rw [h0 q x hx, mul_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite `hdet` using `[← hmat]`. Use `⟨fun ρ x => ∑ i, MvPowerSeries.coeff (Finsupp.single i 1) (un1 (χ ρ)) * lieBasisVector C3 ι lab o g x i, fun ρ x => VF.Ge.sum fun i _ => (integralSeries_uncurry_one (hχ ρ).1 _).mul_int (hg.u_int o g x i), fun S t ht ρ => ?_, fun hA => hdet.trans (WithTop.coe_le_coe.mpr ?_), fun h …` and prove the remaining obligations. Conclude with `GlobalTheory.T.mvExp_linearPart_integralChar_mem_integralGerm C V d (lab.II Dw o) (Fin (chD C3.ch)) (Y.raw (pairOfLab ha hg o)) (RowLawPair.rLaw_raw Y _) Hc (un1 (χ ρ)) (integralSeries_uncurry_one (hχ ρ).1) ((constantCoeff_uncurry _).trans (hχ ρ).2.1) (isCharacter_uncurry_logarit …`. Rewrite using `[S4.frobSum_alt hl1 0 lab.j' (lab.n + lab.j) (lab.big o g) (CharacteristicFromRanks.alt_step (lab.big o) hc hA g) _ hpb hps a hb] show _ ≤ (lab.n : ℝ) * S4.gam V.l + ((lab.j : ℝ) + lab.j') / ((V.l : ℝ) - 1)`. Rewrite using `[hdiv]`.
+Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `push_cast`. Use polynomial arithmetic with `[mul_nonneg hj hrho, mul_nonneg hj' hgam]`. Rewrite using `[S4.frobSum_const hl1 (0 + lab.j') _ (fun b => hpb b (hB b)) a] show _ ≤ ((lab.j : ℝ) + lab.j') / ((V.l : ℝ) - 1)`. Rewrite using `[hdiv, hdiv]`. Use `push_cast`.
-
-Use polynomial arithmetic with `[mul_nonneg hj hrho, mul_nonneg hj hgam]`.
+A detailed English derivation is pending.
 -/
 theorem chSt_pair : (∀ (p : ℕ) [Fact p.Prime], ReciprocityTheory.ChartRestriction.G.Pdiv.ChartF.UpFSt p) → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (lv : Level H) (Xo : Moduli Dw lv) (c : Coeff lv) [StarRing (𝓞 E)], (∀ x : 𝓞 E, star x = H.bar x) → ∀ (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io) (C3 : IntChart T io y) (C : Type) [Field C] [CharZero C] (V : VF C) (ι : T.Fr →+* C), EmbOK T V ι → ∀ (k : ℕ) (Y : FBChart C V (𝓞 E) (chD C3.ch)), IsBC C3 ι k Y → y.IsAlg → ¬ (V.l : ℤ) ∣ NumberField.discr E → ∀ (Orb : Type) (d : ℕ) [NeZero d] (lab : Lab E Orb d) (ha : LabArith V io ι lab) (hg : LabGeo C3 ι Y lab), lab.RankOK Dw → ∀ (o : Orb) (Hc : ∀ g, (Y.raw (pairOfLab ha hg o)).CartHyp V g), RawChart.CHSt Hc := by
   intro hUp E _ _ _ H Dw lv Xo c _ hstar T io y C3 C _ _ V ι hι k Y hY hy hl Orb d _ lab ha hg hr o Hc g a hb w hw h0

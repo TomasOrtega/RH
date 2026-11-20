@@ -4,21 +4,19 @@ open IsLocalRing TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `R B _ _ _ _ _ _ N h`. Use `set J : Ideal R := N.colon (Set.univ : Set B) with hJ`. Establish `hmem : ∀ r : R, r ∈ J ↔ ∀ b : B, r • b ∈ N`. Introduce `r`. Rewrite using `[hJ, Submodule.mem_colon]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hrad : maximalIdeal R ≤ J.radical`. Rewrite using `[Ideal.radical_eq_sInf]`. Use `le_sInf ?_` and prove the remaining obligations. Introduce and unpack `p ⟨hJp, hp⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hpm : p = maximalIdeal R`. Conclude with `hpm.ge`. It suffices to derive a contradiction. Take `⟨s, hs⟩` from `(Module.Finite.fg_top : (⊤ : Submodule R B).FG)`. Establish `hg : ∀ g : B, ∃ t ∉ p, t • g ∈ N` using `h p hp hpm`.
+It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `choose t ht1 ht2 using hg`. Use `set u : R := ∏ g ∈ s, t g with hu`. Establish `hu_notin : u ∉ p`. Rewrite using `[hu, Ideal.IsPrime.prod_mem_iff]`. Introduce and unpack `⟨i, -, hi⟩`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `ht1 i hi`. Apply `hu_notin` to reduce the goal to its premises. Apply `hJp` to reduce the goal to its premises. Rewrite using `[hmem]`. Introduce `b`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hb : b ∈ Submodule.span R (s : Set B)` using `by rw [hs]; trivial`. Establish `hle : Submodule.span R (s : Set B) ≤ N.comap (u • LinearMap.id)`. Rewrite using `[Submodule.span_le]`. Introduce `g hgs`. Simplify using `only [SetLike.mem_coe, Submodule.mem_comap, LinearMap.smul_apply, LinearMap.id_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[hu, ← Finset.prod_erase_mul s t hgs, mul_smul]`. Conclude with `N.smul_mem _ (ht2 g)`. Use `hle hb` as an intermediate fact. Simplify using `using this`. Take `⟨k, hk⟩` from `Ideal.exists_pow_le_of_le_radical_of_fg hrad (IsNoetherian.noetherian (maximalIdeal R))`.
-
-Conclude with `⟨k, fun x hx b => (hmem x).1 (hk hx) b⟩`.
+A detailed English derivation is pending.
 -/
 theorem smul_mem_of_maximalIdeal_pow_of_locally_eq :
     ∀ (R B : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R] [AddCommGroup B] [Module R B]

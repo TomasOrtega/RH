@@ -43,14 +43,14 @@ def prV : (VS D).V →ₗ[D.host.E] (VS D).V :=
     ∑ a, ((VS D).hT (X.eX a)).smulRight (X.fY a)
 
 /- English proof (translation)
-Simplify using `[prV, LinearMap.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem prV_apply (v : (VS D).V) : prV X v =
     v - ∑ a, (VS D).hT (X.fY a) v • X.eX a - ∑ a, (VS D).hT (X.eX a) v • X.fY a := by
   simp [prV, LinearMap.sum_apply]
 
 /- English proof (translation)
-Establish `h` using `(VS D).herm.eq (X.eX b) (X.fY a)`. Simplify using `only [X.ef] at h`. Rewrite using `[← h]`. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hT_f_e (a b : Fin D.R.rS) : (VS D).hT (X.fY a) (X.eX b) = if b = a then 1 else 0 := by
   have h := (VS D).herm.eq (X.eX b) (X.fY a)
@@ -59,35 +59,35 @@ theorem hT_f_e (a b : Fin D.R.rS) : (VS D).hT (X.fY a) (X.eX b) = if b = a then 
   split_ifs <;> simp
 
 /- English proof (translation)
-Simplify using `[prV_apply, hT_f_e, X.ee]`.
+Simplify using the standard rewrite rules.
 -/
 theorem prV_e (b : Fin D.R.rS) : prV X (X.eX b) = 0 := by
   simp [prV_apply, hT_f_e, X.ee]
 
 /- English proof (translation)
-Simplify using `[prV_apply, X.ef, X.ff]`.
+Simplify using the standard rewrite rules.
 -/
 theorem prV_f (b : Fin D.R.rS) : prV X (X.fY b) = 0 := by
   simp [prV_apply, X.ef, X.ff]
 
 /- English proof (translation)
-Simplify using `[prV_apply, (X.Lb_perp w hw _).1, (X.Lb_perp w hw _).2]`.
+Simplify using the standard rewrite rules.
 -/
 theorem prV_Lb (w : (VS D).V) (hw : w ∈ X.Lb) : prV X w = w := by
   simp [prV_apply, (X.Lb_perp w hw _).1, (X.Lb_perp w hw _).2]
 
 /- English proof (translation)
-Rewrite using `[X.Lam_split]`. Conclude with `le_sup_right.trans le_sup_left`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Lb_le : X.Lb ≤ (VS D).L0 := by
   rw [X.Lam_split]; exact le_sup_right.trans le_sup_left
 
 /- English proof (translation)
-Establish `key : (VS D).L0 ≤ (VS D).L0.comap ((prV X).restrictScalars (𝓞 D.host.E))` using `by conv_lhs => rw [X.Lam_split]`. Use `sup_le (sup_le ?_ ?_) ?_` and prove the remaining obligations. Rewrite using `[latSpanS, Submodule.span_le]`. Introduce and unpack `_ ⟨a, x, -, rfl⟩`. Simplify using `[prV_e]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Introduce `w hw`. Simplify using `only [Submodule.mem_comap, LinearMap.restrictScalars_apply, prV_Lb X w hw]`. Conclude with `Lb_le X hw`. Rewrite using `[latSpanS, Submodule.span_le]`. Introduce and unpack `_ ⟨a, x, -, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Simplify using `[prV_f]`. Conclude with `key hv`.
+A detailed English derivation is pending.
 -/
 theorem projection_preserves_lattice (v : (VS D).V) (hv : v ∈ (VS D).L0) : prV X v ∈ (VS D).L0 := by
   have key : (VS D).L0 ≤ (VS D).L0.comap ((prV X).restrictScalars (𝓞 D.host.E)) := by
@@ -113,7 +113,7 @@ variable {D : D7} (X : HidaSetting D)
 def toV (x : Fin X.B.I.n → X.B.I.E) : (VS D).V := ∑ i, X.ιE (x i) • X.bas i
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [HidaSetting.crd, crdOf, toV]`. Rewrite using `[X.bas.repr_sum_self]`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem crd_toV (x : Fin X.B.I.n → X.B.I.E) : X.crd (toV X x) = x := by
   funext i
@@ -122,31 +122,31 @@ theorem crd_toV (x : Fin X.B.I.n → X.B.I.E) : X.crd (toV X x) = x := by
   simp
 
 /- English proof (translation)
-Simplify using `[toV, HidaSetting.crd, crdOf, Module.Basis.sum_repr]`.
+Simplify using the standard rewrite rules.
 -/
 theorem toV_crd (v : (VS D).V) : toV X (X.crd v) = v := by
   simp [toV, HidaSetting.crd, crdOf, Module.Basis.sum_repr]
 
 /- English proof (translation)
-Simplify using `only [toV, Pi.add_apply, map_add, add_smul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem toV_add (x y : Fin X.B.I.n → X.B.I.E) : toV X (x + y) = toV X x + toV X y := by
   simp only [toV, Pi.add_apply, map_add, add_smul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [toV, Pi.sub_apply, map_sub, sub_smul, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem toV_sub (x y : Fin X.B.I.n → X.B.I.E) : toV X (x - y) = toV X x - toV X y := by
   simp only [toV, Pi.sub_apply, map_sub, sub_smul, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Simplify using `only [toV, Pi.smul_apply, smul_eq_mul, map_mul, mul_smul, Finset.smul_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem toV_smul (c : X.B.I.E) (x : Fin X.B.I.n → X.B.I.E) : toV X (c • x) = X.ιE c • toV X x := by
   simp only [toV, Pi.smul_apply, smul_eq_mul, map_mul, mul_smul, Finset.smul_sum]
 
 /- English proof (translation)
-Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Simplify using `[toV]`. Introduce `j s hj ih`. Rewrite using `[Finset.sum_insert hj, Finset.sum_insert hj, toV_add, ih]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem toV_sum {ι : Type} (s : Finset ι) (x : ι → Fin X.B.I.n → X.B.I.E) :
     toV X (∑ j ∈ s, x j) = ∑ j ∈ s, toV X (x j) := by
@@ -159,7 +159,7 @@ theorem toV_sum {ι : Type} (s : Finset ι) (x : ι → Fin X.B.I.n → X.B.I.E)
 abbrev hE (x y : Fin X.B.I.n → X.B.I.E) : X.B.I.E := Formalism.UG.hform (starRingEnd X.B.I.E) X.B.I.J x y
 
 /- English proof (translation)
-Establish `h` using `hform_crd X (toV X x) (toV X y)`. Rewrite `h` using `[crd_toV, crd_toV]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iota_hE (x y : Fin X.B.I.n → X.B.I.E) : X.ιE (hE X x y) = (VS D).hT (toV X x) (toV X y) := by
   have h := hform_crd X (toV X x) (toV X y)
@@ -170,15 +170,15 @@ def prE (x : Fin X.B.I.n → X.B.I.E) : Fin X.B.I.n → X.B.I.E :=
   x - ∑ a, hE X (X.fR a) x • X.eR a - ∑ a, hE X (X.eR a) x • X.fR a
 
 /- English proof (translation)
-Simplify using `only [prE, toV_sub, toV_sum, toV_smul, iota_hE, prV_apply, HidaSetting.eR, HidaSetting.fR, toV_crd]`.
+Simplify using the standard rewrite rules.
 -/
 theorem toV_prE (x : Fin X.B.I.n → X.B.I.E) : toV X (prE X x) = prV X (toV X x) := by
   simp only [prE, toV_sub, toV_sum, toV_smul, iota_hE, prV_apply, HidaSetting.eR, HidaSetting.fR, toV_crd]
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[X.L_eq]`. Establish `h1 : (∑ i, X.ιE (prE X x i) • X.bas i) = toV X (prE X x)` using `rfl`. Establish `h2 : (∑ i, X.ιE (x i) • X.bas i) = toV X x` using `rfl`. Rewrite using `[h1, toV_prE]`. Rewrite `hx` using `[h2]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `projection_preserves_lattice X _ hx`.
+A detailed English derivation is pending.
 -/
 theorem prE_L (x : Fin X.B.I.n → X.B.I.E) (hx : x ∈ X.B.I.L) : prE X x ∈ X.B.I.L := by
   rw [X.L_eq] at hx ⊢
@@ -193,21 +193,21 @@ def prA : VA X.B.I →ₗ[X.B.I.E ⊗[X.B.I.F] Af X.B.I.F] VA X.B.I :=
     ∑ a, (hAlin X (incl X.B.I (X.eR a))).smulRight (incl X.B.I (X.fR a))
 
 /- English proof (translation)
-Simplify using `[prA, LinearMap.sub_apply, LinearMap.sum_apply, hAlin_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem prA_apply (y : VA X.B.I) : prA X y = y - ∑ a, hA X.B.I (incl X.B.I (X.fR a)) y • incl X.B.I (X.eR a) -
     ∑ a, hA X.B.I (incl X.B.I (X.eR a)) y • incl X.B.I (X.fR a) := by
   simp [prA, LinearMap.sub_apply, LinearMap.sum_apply, hAlin_apply]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[incl, map_sub]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem incl_sub (x y : Fin X.B.I.n → X.B.I.E) : incl X.B.I (x - y) = incl X.B.I x - incl X.B.I y := by
   funext i
   simp [incl, map_sub]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[incl, map_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem incl_smul (c : X.B.I.E) (x : Fin X.B.I.n → X.B.I.E) :
     incl X.B.I (c • x) = Formalism.UG.inclE (F := X.B.I.F) (Af X.B.I.F) c • incl X.B.I x := by
@@ -215,7 +215,7 @@ theorem incl_smul (c : X.B.I.E) (x : Fin X.B.I.n → X.B.I.E) :
   simp [incl, map_mul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[incl, Finset.sum_apply, map_sum]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem incl_sum {ι : Type} (s : Finset ι) (x : ι → Fin X.B.I.n → X.B.I.E) :
     incl X.B.I (∑ j ∈ s, x j) = ∑ j ∈ s, incl X.B.I (x j) := by
@@ -223,24 +223,22 @@ theorem incl_sum {ι : Type} (s : Finset ι) (x : ι → Fin X.B.I.n → X.B.I.E
   simp [incl, Finset.sum_apply, map_sum]
 
 /- English proof (translation)
-Rewrite using `[prA_apply]`. Simplify using `only [hA_incl, prE, incl_sub, incl_sum, incl_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem prA_incl (x : Fin X.B.I.n → X.B.I.E) : prA X (incl X.B.I x) = incl X.B.I (prE X x) := by
   rw [prA_apply]
   simp only [hA_incl, prE, incl_sub, incl_sum, incl_smul]
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨⟨x, hx⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem incl_mem_Lf (x : Fin X.B.I.n → X.B.I.E) (hx : x ∈ X.B.I.L) : incl X.B.I x ∈ X.B.I.Lf :=
   Submodule.subset_span ⟨⟨x, hx⟩, rfl⟩
 
 /- English proof (translation)
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨x, rfl⟩` from `hy`. Use `show prA X (incl X.B.I x) ∈ X.B.I.Lf`. Rewrite using `[prA_incl]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `incl_mem_Lf X _ (prE_L X _ x.2)`. Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz => rw [map_add]`. Conclude with `add_mem hy hz`. Consider the case `smul c y _ hy`.
-
-Rewrite using `[Subring.smul_def, map_smul]`. Conclude with `X.B.I.Lf.smul_mem c hy`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prA_Lf (y : VA X.B.I) (hy : y ∈ X.B.I.Lf) : prA X y ∈ X.B.I.Lf := by
   induction hy using Submodule.span_induction with
@@ -256,41 +254,39 @@ theorem prA_Lf (y : VA X.B.I) (hy : y ∈ X.B.I.Lf) : prA X y ∈ X.B.I.Lf := by
     exact X.B.I.Lf.smul_mem c hy
 
 /- English proof (translation)
-Rewrite using `[HidaSetting.eR, HidaSetting.eR, hA_crd, X.ee]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hA_e_e (a b : Fin D.R.rS) : hA X.B.I (incl X.B.I (X.eR a)) (incl X.B.I (X.eR b)) = 0 := by
   rw [HidaSetting.eR, HidaSetting.eR, hA_crd, X.ee]; simp
 
 /- English proof (translation)
-Rewrite using `[HidaSetting.fR, HidaSetting.fR, hA_crd, X.ff]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hA_f_f (a b : Fin D.R.rS) : hA X.B.I (incl X.B.I (X.fR a)) (incl X.B.I (X.fR b)) = 0 := by
   rw [HidaSetting.fR, HidaSetting.fR, hA_crd, X.ff]; simp
 
 /- English proof (translation)
-Apply the tactic sequence `rw [HidaSetting.eR, HidaSetting.fR, hA_crd, X.ef]; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hA_e_f (a b : Fin D.R.rS) :
     hA X.B.I (incl X.B.I (X.eR a)) (incl X.B.I (X.fR b)) = if a = b then 1 else 0 := by
   rw [HidaSetting.eR, HidaSetting.fR, hA_crd, X.ef]; split_ifs <;> simp
 
 /- English proof (translation)
-Simplify using `[prA_apply, hA_f_e, hA_e_e]`.
+Simplify using the standard rewrite rules.
 -/
 theorem prA_e (b : Fin D.R.rS) : prA X (incl X.B.I (X.eR b)) = 0 := by
   simp [prA_apply, hA_f_e, hA_e_e]
 
 /- English proof (translation)
-Rewrite using `[prA_apply]`. Simplify using `[hA_f_f, hA_e_f]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem prA_f (b : Fin D.R.rS) : prA X (incl X.B.I (X.fR b)) = 0 := by
   rw [prA_apply]
   simp [hA_f_f, hA_e_f]
 
 /- English proof (translation)
-Establish `hle : Submodule.span (X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) (Set.range fun b => incl X.B.I (X.eR b)) ≤ LinearMap.ker (prA X)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨b, rfl⟩`. Rewrite using `[SetLike.mem_coe, LinearMap.mem_ker]`. Conclude with `prA_e X b`.
-
-Conclude with `LinearMap.mem_ker.mp (hle hy)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prA_span_e (y : VA X.B.I)
     (hy : y ∈ Submodule.span (X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) (Set.range fun b => incl X.B.I (X.eR b))) :
@@ -304,9 +300,9 @@ theorem prA_span_e (y : VA X.B.I)
   exact LinearMap.mem_ker.mp (hle hy)
 
 /- English proof (translation)
-Establish `key : ∀ v w : VA X.B.I, hA X.B.I v w = hAlin X v w` using `fun v w => by first`. Consider the case `rfl`. Consider the case `simp [hAlin]`. Rewrite using `[key, prA_apply]`. Simplify using `only [map_sub, map_sum, map_smul, smul_eq_mul]`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[← key, hA_e_e, hA_e_f]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hA_e_prA (y : VA X.B.I) (a : Fin D.R.rS) : hA X.B.I (incl X.B.I (X.eR a)) (prA X y) = 0 := by
   have key : ∀ v w : VA X.B.I, hA X.B.I v w = hAlin X v w := fun v w => by
@@ -318,7 +314,7 @@ theorem hA_e_prA (y : VA X.B.I) (a : Fin D.R.rS) : hA X.B.I (incl X.B.I (X.eR a)
   simp [← key, hA_e_e, hA_e_f]
 
 /- English proof (translation)
-Rewrite using `[← hAlin_apply, prA_apply]`. Simplify using `only [map_sub, map_sum, map_smul, hAlin_apply, hA_f_e, hA_f_f, smul_eq_mul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem hA_f_prA (y : VA X.B.I) (a : Fin D.R.rS) : hA X.B.I (incl X.B.I (X.fR a)) (prA X y) = 0 := by
   rw [← hAlin_apply, prA_apply]
@@ -326,7 +322,7 @@ theorem hA_f_prA (y : VA X.B.I) (a : Fin D.R.rS) : hA X.B.I (incl X.B.I (X.fR a)
   simp
 
 /- English proof (translation)
-Rewrite using `[prA_apply]`. Simplify using `[he, hf]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem prA_fix (q : VA X.B.I) (he : ∀ a, hA X.B.I (incl X.B.I (X.eR a)) q = 0)
     (hf : ∀ a, hA X.B.I (incl X.B.I (X.fR a)) q = 0) : prA X q = q := by
@@ -340,7 +336,7 @@ section Split
 variable {D : D7} (X : HidaSetting D) (u : D.what₂.Word)
 
 /- English proof (translation)
-Establish `e : y - prA X y = ∑ a, hA X.B.I (incl X.B.I (X.fR a)) y • incl X.B.I (X.eR a) + ∑ a, hA X.B.I (incl X.B.I (X.eR a)) y • incl X.B.I (X.fR a)`. Rewrite using `[prA_apply]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, mulVec_add, mulVec_sum, mulVec_sum]`. Simplify using `only [mulVec_smul, hfin_fix X u h _ (eR_mem_fix X u _), hfin_fix X u h _ (fR_mem_fix X u _)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hfin_fix_sub (h : Hfin X u) (y : VA X.B.I) :
     X.B.I.fmat (h : X.B.I.Gf) *ᵥ (y - prA X y) = y - prA X y := by
@@ -351,15 +347,13 @@ theorem hfin_fix_sub (h : Hfin X u) (y : VA X.B.I) :
   simp only [mulVec_smul, hfin_fix X u h _ (eR_mem_fix X u _), hfin_fix X u h _ (fR_mem_fix X u _)]
 
 /- English proof (translation)
-Use `set p := prA X y with hpdef`. Establish `hp : p ∈ X.B.I.Lf` using `prA_Lf X y hy`. Use `set q := X.B.I.fmat (h : X.B.I.Gf) *ᵥ p with hqdef`. Establish `hqe : ∀ a, hA X.B.I (incl X.B.I (X.eR a)) q = 0` using `fun a => by`. Rewrite using `[hqdef, ← hfin_fix X u h _ (eR_mem_fix X u a), hA_fmat]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hA_e_prA X y a`. Establish `hqf : ∀ a, hA X.B.I (incl X.B.I (X.fR a)) q = 0` using `fun a => by`. Rewrite using `[hqdef, ← hfin_fix X u h _ (fR_mem_fix X u a), hA_fmat]`. Conclude with `hA_f_prA X y a`. Establish `hnq : X.B.I.fmat n *ᵥ q ∈ X.B.I.Lf`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : X.B.I.fmat (n * (h : X.B.I.Gf)) *ᵥ p ∈ X.B.I.Lf` using `(hnh p).1 hp`. Rewrite `h1` using `[fmat_mul, ← mulVec_mulVec]`. Then use the resulting hypothesis. Establish `hs` using `hn.2.2 q hqe`. Establish `hpr : prA X (X.B.I.fmat n *ᵥ q) = q`. Establish `e : X.B.I.fmat n *ᵥ q = q + (X.B.I.fmat n - 1) *ᵥ q` using `by rw [sub_mulVec, one_mulVec]; abel`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, map_add, prA_span_e X _ hs, add_zero, prA_fix X q hqe hqf]`. Establish `hq : q ∈ X.B.I.Lf` using `hpr ▸ prA_Lf X _ hnq`. Establish `hsplit : X.B.I.fmat (h : X.B.I.Gf) *ᵥ y = (y - p) + q`. Rewrite using `[hqdef, ← hfin_fix_sub X u h y, ← mulVec_add]`. Use `congr 1`.
-
-Normalize the expressions using the abelian group laws. Rewrite using `[hsplit]`. Conclude with `add_mem (sub_mem hy hp) hq`.
+Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kset_split_fwd (n : X.B.I.Gf) (hn : n ∈ X.NfinU u) (h : Hfin X u)
     (hnh : n * (h : X.B.I.Gf) ∈ X.B.I.Kset) (y : VA X.B.I) (hy : y ∈ X.B.I.Lf) :
@@ -386,11 +380,11 @@ theorem kset_split_fwd (n : X.B.I.Gf) (hn : n ∈ X.NfinU u) (h : Hfin X u)
   exact add_mem (sub_mem hy hp) hq
 
 /- English proof (translation)
-Introduce `n hn h hnh`. Establish `hni : n⁻¹ ∈ X.NfinU u` using `(nfinGroup_holds (X := X) (u := u)).2 n hn`. Establish `hn'` using `(nfinConj_holds X u h⁻¹ n⁻¹ hni).1`. Establish `hK' : ((h⁻¹ : Hfin X u) : X.B.I.Gf) * n⁻¹ * ((h⁻¹ : Hfin X u) : X.B.I.Gf)⁻¹ * ((h⁻¹ : Hfin X u) : X.B.I.Gf) ∈ X.B.I.Kset`. Establish `e : ((h⁻¹ : Hfin X u) : X.B.I.Gf) * n⁻¹ * ((h⁻¹ : Hfin X u) : X.B.I.Gf)⁻¹ * ((h⁻¹ : Hfin X u) : X.B.I.Gf) = (n * (h : X.B.I.Gf))⁻¹` using `by push_cast; group`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `kset_inv X hnh`. Use `show ∀ y, y ∈ X.B.I.Lf ↔ X.B.I.fmat (h : X.B.I.Gf) *ᵥ y ∈ X.B.I.Lf`. Introduce `y`. Use `⟨kset_split_fwd X u n hn h hnh y, fun hy => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h2` using `kset_split_fwd X u _ hn' h⁻¹ hK' _ hy`. Rewrite `h2` using `[mulVec_mulVec, show ((h⁻¹ : Hfin X u) : X.B.I.Gf) = (h : X.B.I.Gf)⁻¹ from rfl, fmat_inv_mul, one_mulVec]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem ksetSplit_holds : KsetSplit X u := by
   intro n hn h hnh
@@ -416,7 +410,7 @@ section Cong
 variable {D : D7} (X : HidaSetting D) (u : D.what₂.Word)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact Nat.cast_smul_eq_nsmul _ c y`. Consider the case `simp`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem natsmul_eq (c : ℕ) (y : VA X.B.I) :
     ((c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • y) = c • y := by
@@ -425,7 +419,7 @@ theorem natsmul_eq (c : ℕ) (y : VA X.B.I) :
   | simp
 
 /- English proof (translation)
-Rewrite using `[natsmul_eq X c y]`. Conclude with `nsmul_mem hy c`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natsmul_mem {N : Submodule (IntAf X.B.I.F X.B.I.E) (VA X.B.I)} (c : ℕ) {y : VA X.B.I} (hy : y ∈ N) :
     (c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • y ∈ N := by
@@ -433,7 +427,7 @@ theorem natsmul_mem {N : Submodule (IntAf X.B.I.F X.B.I.E) (VA X.B.I)} (c : ℕ)
   exact nsmul_mem hy c
 
 /- English proof (translation)
-Use `first`. Consider the case `exact N.smul_mem ⟨t, ht⟩ hy`. Consider the case `simpa using N.smul_mem ⟨t, ht⟩ hy`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem intsmul_mem {N : Submodule (IntAf X.B.I.F X.B.I.E) (VA X.B.I)} {t : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F}
     (ht : t ∈ IntAf X.B.I.F X.B.I.E) {y : VA X.B.I} (hy : y ∈ N) : t • y ∈ N := by
@@ -442,7 +436,7 @@ theorem intsmul_mem {N : Submodule (IntAf X.B.I.F X.B.I.E) (VA X.B.I)} {t : X.B.
   | simpa using N.smul_mem ⟨t, ht⟩ hy
 
 /- English proof (translation)
-Unfold `mL`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `natsmul_mem X _ hy`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mL_le_Lf : mL X.B.I X.B.g ≤ X.B.I.Lf := by
   unfold mL
@@ -451,9 +445,9 @@ theorem mL_le_Lf : mL X.B.I X.B.g ≤ X.B.I.Lf := by
   exact natsmul_mem X _ hy
 
 /- English proof (translation)
-Establish `hgy : (X.B.g : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • y ∈ N` using `hN (unitaryCongruence.smul_mem_mL X.B.I hy)`. Rewrite `hgy`, `hcy` using `[natsmul_eq]`. Establish `e` using `Nat.gcd_eq_gcd_ab c X.B.g`. Rewrite `e` using `[Nat.Coprime.gcd_eq_one hc, Nat.cast_one]`. Establish `key : (Nat.gcdA c X.B.g) • (c • y) + (Nat.gcdB c X.B.g) • (X.B.g • y) = y`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← natCast_zsmul, ← natCast_zsmul, smul_smul, smul_smul, ← add_smul, mul_comm (Nat.gcdA c X.B.g), mul_comm (Nat.gcdB c X.B.g), ← e, one_smul]`. Rewrite using `[← key]`. Conclude with `add_mem (zsmul_mem hcy _) (zsmul_mem hgy _)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bez_vec (N : Submodule (IntAf X.B.I.F X.B.I.E) (VA X.B.I)) (hN : mL X.B.I X.B.g ≤ N)
     {y : VA X.B.I} (hy : y ∈ X.B.I.Lf) {c : ℕ} (hc : Nat.Coprime c X.B.g)
@@ -469,12 +463,12 @@ theorem bez_vec (N : Submodule (IntAf X.B.I.F X.B.I.E) (VA X.B.I)) (hN : mL X.B.
   exact add_mem (zsmul_mem hcy _) (zsmul_mem hgy _)
 
 /- English proof (translation)
-The claim follows from `X.psiEf_int 0 (zero_mem _)`.
+A detailed English derivation is pending.
 -/
 theorem psi_zero : X.psiEf 0 = 1 := X.psiEf_int 0 (zero_mem _)
 
 /- English proof (translation)
-Use `X.psiEf_add y (-y)` as an intermediate fact. Rewrite `this` using `[add_neg_cancel, psi_zero, h, one_mul]`. Conclude with `this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_neg {y : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F} (h : X.psiEf y = 1) : X.psiEf (-y) = 1 := by
   have := X.psiEf_add y (-y)
@@ -482,7 +476,7 @@ theorem psi_neg {y : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F} (h : X.psiEf y = 1) : X.ps
   exact this.symm
 
 /- English proof (translation)
-Proceed by induction on `k using Int.induction_on with`. Consider the case `zero => rw [zero_smul]`. Conclude with `psi_zero X`. Consider the case `succ k ih => rw [add_smul, one_smul, X.psiEf_add, ih, h, one_mul]`. Consider the case `pred k ih => rw [sub_smul, one_smul, sub_eq_add_neg, X.psiEf_add, ih, psi_neg X h, one_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem psi_zsmul {y : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F} (h : X.psiEf y = 1) (k : ℤ) : X.psiEf (k • y) = 1 := by
   induction k using Int.induction_on with
@@ -491,11 +485,11 @@ theorem psi_zsmul {y : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F} (h : X.psiEf y = 1) (k :
   | pred k ih => rw [sub_smul, one_smul, sub_eq_add_neg, X.psiEf_add, ih, psi_neg X h, one_mul]
 
 /- English proof (translation)
-Establish `hg : X.B.g ≠ 0` using `modulus_g_ne_zero X`. Establish `hmg` using `unitaryCongruence.inv_g X.B.I X.B.g hg`. Establish `e` using `Nat.gcd_eq_gcd_ab c X.B.g`. Rewrite `e` using `[Nat.Coprime.gcd_eq_one hc, Nat.cast_one]`. Establish `hcast` using `congrArg (Int.cast : ℤ → X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Move the coercions through the operations in `at hcast`. Establish `key : divN X.B.I X.B.g Δ = (Nat.gcdA c X.B.g) • divN X.B.I X.B.g ((c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) * Δ) + (Nat.gcdB c X.B.g) • Δ`. Unfold `divN`. Rewrite using `[zsmul_eq_mul, zsmul_eq_mul]`. Take the linear combination `(algebraMap X.B.I.F (X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) ((X.B.g : X.B.I.F)⁻¹) * Δ) * hcast + ((Nat.gcdB c X.B.g : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) * Δ) * hmg`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[key, X.psiEf_add, psi_zsmul X h1, psi_zsmul X h2, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem psi_bez {Δ : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F} {c : ℕ} (hc : Nat.Coprime c X.B.g)
     (h1 : X.psiEf (divN X.B.I X.B.g ((c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) * Δ)) = 1) (h2 : X.psiEf Δ = 1) :
@@ -522,7 +516,7 @@ def GoodC (C : ℕ) : Prop :=
     (C : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • (X.B.I.fmat (X.xu u)⁻¹ *ᵥ incl X.B.I (X.zR u) - X.z0) ∈ mL X.B.I X.B.g
 
 /- English proof (translation)
-Take `⟨k, rfl⟩` from `h`. Rewrite using `[Nat.cast_mul, mul_comm, mul_smul]`. Conclude with `natsmul_mem X k hy`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dvd_smul_mL {d C : ℕ} (h : d ∣ C) {y : VA X.B.I}
     (hy : (d : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • y ∈ mL X.B.I X.B.g) :
@@ -532,9 +526,7 @@ theorem dvd_smul_mL {d C : ℕ} (h : d ∣ C) {y : VA X.B.I}
   exact natsmul_mem X k hy
 
 /- English proof (translation)
-Use `choose ce hce using fun b => (X.basisApprox b).1`. Use `choose cf hcf using fun b => (X.basisApprox b).2`. Take `⟨cz, hcz⟩` from `X.xu_z u`. Use `⟨(∏ b, ce b * cf b) * cz, ?_, fun b => ?_, fun b => ?_, ?_⟩` and prove the remaining obligations. Conclude with `Nat.Coprime.mul_left (Nat.Coprime.prod_left fun b _ => Nat.Coprime.mul_left (hce b).1 (hcf b).1) hcz.1`.
-
-Conclude with `dvd_smul_mL X ((dvd_mul_right _ _).trans ((Finset.dvd_prod_of_mem (fun b => ce b * cf b) (Finset.mem_univ b)).trans (dvd_mul_right _ _))) (hce b).2`. Conclude with `dvd_smul_mL X ((dvd_mul_left _ _).trans ((Finset.dvd_prod_of_mem (fun b => ce b * cf b) (Finset.mem_univ b)).trans (dvd_mul_right _ _))) (hcf b).2`. Conclude with `dvd_smul_mL X (dvd_mul_left _ _) hcz.2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_goodC : ∃ C, GoodC X u C := by
   choose ce hce using fun b => (X.basisApprox b).1
@@ -551,7 +543,7 @@ theorem exists_goodC : ∃ C, GoodC X u C := by
 variable {X u}
 
 /- English proof (translation)
-Establish `e : (C : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • incl X.B.I (X.eR b) = (C : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • X.e0 b - (C : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • (X.e0 b - incl X.B.I (X.eR b))`. Rewrite using `[smul_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `sub_mem (natsmul_mem X _ (X.vectorsInLattice.1 b).1) (mL_le_Lf X (hC.2.1 b))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem C_e_Lf {C : ℕ} (hC : GoodC X u C) (b : Fin D.R.rS) :
     (C : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • incl X.B.I (X.eR b) ∈ X.B.I.Lf := by
@@ -562,7 +554,7 @@ theorem C_e_Lf {C : ℕ} (hC : GoodC X u C) (b : Fin D.R.rS) :
   exact sub_mem (natsmul_mem X _ (X.vectorsInLattice.1 b).1) (mL_le_Lf X (hC.2.1 b))
 
 /- English proof (translation)
-Establish `e : (C : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • incl X.B.I (X.fR b) = (C : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • X.f0 b - (C : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • (X.f0 b - incl X.B.I (X.fR b))`. Rewrite using `[smul_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `sub_mem (natsmul_mem X _ (X.vectorsInLattice.1 b).2) (mL_le_Lf X (hC.2.2.1 b))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem C_f_Lf {C : ℕ} (hC : GoodC X u C) (b : Fin D.R.rS) :
     (C : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • incl X.B.I (X.fR b) ∈ X.B.I.Lf := by
@@ -575,7 +567,7 @@ theorem C_f_Lf {C : ℕ} (hC : GoodC X u C) (b : Fin D.R.rS) :
 variable (X u)
 
 /- English proof (translation)
-Introduce `m hm`. Conclude with `unitaryCongruence.mv_mem X.B.I M X.B.g ∅ (mL X.B.I X.B.g) (by simp) (unitaryCongruence.mL_mv X.B.I hM X.B.g le_rfl) m (unitaryCongruence.mL_Mo X.B.I hm)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mL_pres (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (X.B.I.E ⊗[X.B.I.F] Af X.B.I.F))
     (hM : ∀ y ∈ X.B.I.Lf, M *ᵥ y ∈ X.B.I.Lf) : ∀ m ∈ mL X.B.I X.B.g, M *ᵥ m ∈ mL X.B.I X.B.g := by
@@ -584,7 +576,7 @@ theorem mL_pres (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (X.B.I.E ⊗[X.B.I.F] Af
     (unitaryCongruence.mL_Mo X.B.I hm)
 
 /- English proof (translation)
-Rewrite using `[unitaryCongruence.hA_symm X.B.I s m]`. Conclude with `unitaryCongruence.Z_sig X.B.I X.B.g (unitaryCongruence.mL_Qs X.B.I X.B.g hs hm)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Z_left {m s : VA X.B.I} (hm : m ∈ mL X.B.I X.B.g) (hs : s ∈ X.B.I.Lf) :
     ZMod' X.B.I X.B.g (hA X.B.I m s) := by
@@ -592,13 +584,13 @@ theorem Z_left {m s : VA X.B.I} (hm : m ∈ mL X.B.I X.B.g) (hs : s ∈ X.B.I.Lf
   exact unitaryCongruence.Z_sig X.B.I X.B.g (unitaryCongruence.mL_Qs X.B.I X.B.g hs hm)
 
 /- English proof (translation)
-The claim follows from `unitaryCongruence.mL_Qs X.B.I X.B.g hf hm`.
+A detailed English derivation is pending.
 -/
 theorem Z_right {f m : VA X.B.I} (hf : f ∈ X.B.I.Lf) (hm : m ∈ mL X.B.I X.B.g) :
     ZMod' X.B.I X.B.g (hA X.B.I f m) := unitaryCongruence.mL_Qs X.B.I X.B.g hf hm
 
 /- English proof (translation)
-Use `first`. Consider the case `(simp only [hA, Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, map_mul, map_natCast, Finset.mul_sum, mul_assoc]; done)`. Consider the case `(simp [hA, Formalism.UG.hform, Finset.mul_sum, mul_assoc]; done)`. Consider the case `(unfold hA; done)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem hA_natsmul_left (c : ℕ) (u' v : VA X.B.I) :
     hA X.B.I ((c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • u') v = (c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) * hA X.B.I u' v := by
@@ -608,7 +600,7 @@ theorem hA_natsmul_left (c : ℕ) (u' v : VA X.B.I) :
   | (unfold hA; done)
 
 /- English proof (translation)
-Use `first`. Consider the case `(simp only [hA, Formalism.UG.hform, Pi.sub_apply, map_sub, sub_mul, Finset.sum_sub_distrib]; done)`. Consider the case `(simp [hA, Formalism.UG.hform, sub_mul, Finset.sum_sub_distrib]; done)`. Consider the case `(unfold hA; done)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem hA_sub_left (u' u'' v : VA X.B.I) : hA X.B.I (u' - u'') v = hA X.B.I u' v - hA X.B.I u'' v := by
   first
@@ -617,9 +609,7 @@ theorem hA_sub_left (u' u'' v : VA X.B.I) : hA X.B.I (u' - u'') v = hA X.B.I u' 
   | (unfold hA; done)
 
 /- English proof (translation)
-Establish `: Submodule.span (X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) ((fun b => incl X.B.I (X.eR b)) '' T) ≤ LinearMap.ker (hAlin X (incl X.B.I (X.fR b)))`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨c, hc, rfl⟩`. Use `show hA X.B.I (incl X.B.I (X.fR b)) (incl X.B.I (X.eR c)) = 0`. Rewrite using `[hA_f_e, if_neg (fun h : c = b => hb (h ▸ hc))]`.
-
-Conclude with `this hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hA_f_span (T : Set (Fin D.R.rS)) (y : VA X.B.I)
     (hy : y ∈ Submodule.span (X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) ((fun b => incl X.B.I (X.eR b)) '' T))
@@ -633,11 +623,11 @@ theorem hA_f_span (T : Set (Fin D.R.rS)) (y : VA X.B.I)
   exact this hy
 
 /- English proof (translation)
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨a, rfl⟩` from `hy`. Simplify using `[hA_f_e]`. Consider the case `zero => simp only [← hAlin_apply, map_zero, zero_smul, Finset.sum_const_zero]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `add y z _ _ hy hz`. Simplify using `only [← hAlin_apply, map_add, add_smul, Finset.sum_add_distrib]`. Simplify using `only [hAlin_apply]`. Rewrite using `[← hy, ← hz]`. Consider the case `smul c y _ hy`.
+Treat this case separately. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Simplify using `only [← hAlin_apply, map_smul, smul_eq_mul, mul_smul, ← Finset.smul_sum]`. Simplify using `only [hAlin_apply]`. Rewrite using `[← hy]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem span_repr (y : VA X.B.I)
     (hy : y ∈ Submodule.span (X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) (Set.range fun b => incl X.B.I (X.eR b))) :
@@ -659,28 +649,24 @@ theorem span_repr (y : VA X.B.I)
 variable {X u}
 
 /- English proof (translation)
-Use `module`.
+A detailed English derivation is pending.
 -/
 theorem key_alg {R M : Type} [CommRing R] [AddCommGroup M] [Module R M] (c h1 h2 : R) (e e0 : M) :
     (c * c) • (h1 • e) - (c * c) • (h2 • e0) = (c * (h1 - h2)) • (c • e) + h2 • (c • (c • (e - e0))) := by
   module
 
 /- English proof (translation)
-Use `set s' : VA X.B.I := ∑ b, (if b ∈ T then hA X.B.I (X.f0 b) s else 0) • X.e0 b with hs'def`. Establish `hs' : s' ∈ Submodule.span (IntAf X.B.I.F X.B.I.E) (X.e0 '' T)`. Use `Submodule.sum_mem _ fun b _ => ?_` and prove the remaining obligations. Use `split_ifs with hb`. Conclude with `intsmul_mem X (unitaryCongruence.hA_int X.B.I (X.vectorsInLattice.1 b).2 hs) (Submodule.subset_span ⟨b, hb, rfl⟩)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[zero_smul]`. Conclude with `zero_mem _`. Establish `hd : ((C * C : ℕ) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • s - ((C * C : ℕ) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • s' ∈ mL X.B.I X.B.g`. Establish `e1 : ((C * C : ℕ) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • s = ∑ b, ((C * C : ℕ) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • (hA X.B.I (incl X.B.I (X.fR b)) s • incl X.B.I (X.eR b))` using `by conv_lhs => rw [span_repr X s hse]`. Rewrite using `[Finset.smul_sum]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, hs'def, Finset.smul_sum, ← Finset.sum_sub_distrib]`. Use `Submodule.sum_mem _ fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `hb : b ∈ T`. Rewrite using `[if_pos hb]`. Establish `key : ((C * C : ℕ) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • (hA X.B.I (incl X.B.I (X.fR b)) s • incl X.B.I (X.eR b)) - ((C * C : ℕ) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • (hA X.B.I (X.f0 b) s • X.e0 b) = hA X.B.I ((C : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • (incl X.B.I (X.fR b) - X.f0 b)) s • (( …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hA_natsmul_left, hA_sub_left, Nat.cast_mul]`. Conclude with `key_alg _ _ _ _ _`. Rewrite using `[key]`. Use `add_mem ?_ ?_` and prove the remaining obligations. Establish `hm : (C : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • (incl X.B.I (X.fR b) - X.f0 b) ∈ mL X.B.I X.B.g`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← neg_sub, smul_neg]`. Conclude with `neg_mem (hC.2.2.1 b)`. Take `⟨t, ht, hteq⟩` from `Z_left X hm hs`. Rewrite using `[hteq, mul_comm, mul_smul]`. Conclude with `intsmul_mem X ht (unitaryCongruence.smul_mem_mL X.B.I (C_e_Lf hC b))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hm : (C : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • (incl X.B.I (X.eR b) - X.e0 b) ∈ mL X.B.I X.B.g`. Rewrite using `[← neg_sub, smul_neg]`. Conclude with `neg_mem (hC.2.1 b)`. Conclude with `intsmul_mem X (unitaryCongruence.hA_int X.B.I (X.vectorsInLattice.1 b).2 hs) (natsmul_mem X _ hm)`. Rewrite using `[if_neg hb, hT b hb]`.
-
-Simplify using the standard rewrite rules. Establish `hCC : ((C * C : ℕ) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • s ∈ unitaryCongruence.Mo X.B.I X.B.g (X.e0 '' T)`. Establish `e : ((C * C : ℕ) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • s = ((C * C : ℕ) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • s' + (((C * C : ℕ) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • s - ((C * C : ℕ) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • s')` using `by abel`. Rewrite using `[e]`. Conclude with `add_mem (natsmul_mem X _ (Submodule.mem_sup_left hs')) (unitaryCongruence.mL_Mo X.B.I hd)`.
-
-Conclude with `bez_vec X _ (unitaryCongruence.mL_Mo X.B.I) hs (Nat.Coprime.mul_left hC.1 hC.1) hCC`.
+A detailed English derivation is pending.
 -/
 theorem coef {C : ℕ} (hC : GoodC X u C) (T : Set (Fin D.R.rS)) (s : VA X.B.I) (hs : s ∈ X.B.I.Lf)
     (hse : s ∈ Submodule.span (X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) (Set.range fun b => incl X.B.I (X.eR b)))
@@ -734,7 +720,7 @@ section InK2
 variable {D : D7} {X : HidaSetting D} {u : D.what₂.Word}
 
 /- English proof (translation)
-Establish `h : X.B.I.fmat (X.xu u) *ᵥ incl X.B.I (X.eR b) = incl X.B.I (X.eR b)` using `(X.xu_fix u b).1`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem xinv_fix_e (b : Fin D.R.rS) :
     X.B.I.fmat (X.xu u)⁻¹ *ᵥ incl X.B.I (X.eR b) = incl X.B.I (X.eR b) := by
@@ -744,9 +730,7 @@ theorem xinv_fix_e (b : Fin D.R.rS) :
     _ = incl X.B.I (X.eR b) := by rw [mulVec_mulVec, fmat_inv_mul, one_mulVec]
 
 /- English proof (translation)
-Establish `hle : Submodule.span (X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) (Set.range fun b => incl X.B.I (X.eR b)) ≤ LinearMap.eqLocus (Matrix.mulVecLin M) LinearMap.id`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨b, rfl⟩`. Rewrite using `[SetLike.mem_coe, LinearMap.mem_eqLocus]`. Conclude with `hM b`.
-
-Conclude with `LinearMap.mem_eqLocus.mp (hle hy)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fix_span (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (X.B.I.E ⊗[X.B.I.F] Af X.B.I.F))
     (hM : ∀ b, M *ᵥ incl X.B.I (X.eR b) = incl X.B.I (X.eR b)) (y : VA X.B.I)
@@ -761,7 +745,7 @@ theorem fix_span (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (X.B.I.E ⊗[X.B.I.F] A
   exact LinearMap.mem_eqLocus.mp (hle hy)
 
 /- English proof (translation)
-The claim follows from `Submodule.span_mono (Set.image_subset_range _ _)`.
+A detailed English derivation is pending.
 -/
 theorem span_im_le (T : Set (Fin D.R.rS)) :
     Submodule.span (X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) ((fun b => incl X.B.I (X.eR b)) '' T) ≤
@@ -769,7 +753,7 @@ theorem span_im_le (T : Set (Fin D.R.rS)) :
 
 variable (X u) in
 /- English proof (translation)
-Rewrite using `[X.L_eq]`. Use `show toV X (X.crd (X.zu u)) ∈ (VS D).L0`. Rewrite using `[toV_crd]`. Conclude with `Lb_le X (X.zu_Lb u)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zR_L : X.zR u ∈ X.B.I.L := by
   rw [X.L_eq]
@@ -778,28 +762,26 @@ theorem zR_L : X.zR u ∈ X.B.I.L := by
   exact Lb_le X (X.zu_Lb u)
 
 /- English proof (translation)
-Rewrite using `[fmat_mul, fmat_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fmat_kappa (n : X.B.I.Gf) : X.B.I.fmat ((X.xu u)⁻¹ * n * X.xu u) =
     X.B.I.fmat (X.xu u)⁻¹ * X.B.I.fmat n * X.B.I.fmat (X.xu u) := by
   rw [fmat_mul, fmat_mul]
 
 /- English proof (translation)
-The claim follows from `kset_mul X (kset_mul X (kset_inv X (X.xu_K u)) hnK) (X.xu_K u)`.
+A detailed English derivation is pending.
 -/
 theorem kappa_K {n : X.B.I.Gf} (hnK : n ∈ X.B.I.Kset) : (X.xu u)⁻¹ * n * X.xu u ∈ X.B.I.Kset :=
   kset_mul X (kset_mul X (kset_inv X (X.xu_K u)) hnK) (X.xu_K u)
 
 /- English proof (translation)
-Establish `hκ` using `kappa_K (u := u) hnK`. Use `set s := (X.B.I.fmat n - 1) *ᵥ incl X.B.I (X.eR a) with hsdef`. Establish `hs : s ∈ Submodule.span (X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) ((fun b => incl X.B.I (X.eR b)) '' {b | b.1 < a.1})` using `hn.1 a`. Establish `hke : (X.B.I.fmat ((X.xu u)⁻¹ * n * X.xu u) - 1) *ᵥ incl X.B.I (X.eR a) = s`. Establish `hx : X.B.I.fmat (X.xu u) *ᵥ incl X.B.I (X.eR a) = incl X.B.I (X.eR a)` using `(X.xu_fix u a).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn' : X.B.I.fmat n *ᵥ incl X.B.I (X.eR a) = incl X.B.I (X.eR a) + s`. Rewrite using `[hsdef, sub_mulVec, one_mulVec]`. Normalize the expressions using the abelian group laws. Rewrite using `[fmat_kappa, sub_mulVec, one_mulVec, ← mulVec_mulVec, ← mulVec_mulVec, hx, hn', mulVec_add, xinv_fix_e, fix_span _ xinv_fix_e s (span_im_le _ hs)]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Establish `hCsL : (C : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • s ∈ X.B.I.Lf`. Rewrite using `[← hke, ← mulVec_smul]`. Conclude with `unitaryCongruence.K_sub_mv X.B.I hκ (C_e_Lf hC a)`. Establish `hCs` using `coef hC {b | b.1 < a.1} _ hCsL (Submodule.smul_mem _ _ (span_im_le _ hs)) (fun b hb => by`. Rewrite using `[unitaryCongruence.hA_smul_right, hA_f_span X _ s hs b hb, mul_zero])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hy : (X.B.I.fmat ((X.xu u)⁻¹ * n * X.xu u) - 1) *ᵥ X.e0 a ∈ X.B.I.Lf` using `unitaryCongruence.K_sub_mv X.B.I hκ (X.vectorsInLattice.1 a).1`. Use `bez_vec X _ (unitaryCongruence.mL_Mo X.B.I) hy hC.1 ?_` and prove the remaining obligations. Establish `e : (C : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • ((X.B.I.fmat ((X.xu u)⁻¹ * n * X.xu u) - 1) *ᵥ X.e0 a) = (C : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • s + (X.B.I.fmat ((X.xu u)⁻¹ * n * X.xu u) - 1) *ᵥ ((C : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • (X.e0 a - incl X.B.I (X.eR a)))`. Rewrite using `[mulVec_smul, mulVec_sub, hke, smul_sub]`. Normalize the expressions using the abelian group laws.
-
-Rewrite using `[e]`. Conclude with `add_mem hCs (unitaryCongruence.mL_Mo X.B.I (mL_pres X _ (fun y hy => unitaryCongruence.K_sub_mv X.B.I hκ hy) _ (hC.2.1 a)))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cong_e {C : ℕ} (hC : GoodC X u C) {n : X.B.I.Gf} (hn : n ∈ X.NfinU u) (hnK : n ∈ X.B.I.Kset)
     (a : Fin D.R.rS) :
@@ -831,13 +813,13 @@ theorem cong_e {C : ℕ} (hC : GoodC X u C) {n : X.B.I.Gf} (hn : n ∈ X.NfinU u
   exact add_mem hCs (unitaryCongruence.mL_Mo X.B.I (mL_pres X _ (fun y hy => unitaryCongruence.K_sub_mv X.B.I hκ hy) _ (hC.2.1 a)))
 
 /- English proof (translation)
-Establish `hκ` using `kappa_K (u := u) hnK`. Use `set s := (X.B.I.fmat n - 1) *ᵥ incl X.B.I (X.zR u) with hsdef`. Establish `hs : s ∈ Submodule.span (X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) (Set.range fun b => incl X.B.I (X.eR b))` using `hn.2.1`. Establish `hkz : (X.B.I.fmat ((X.xu u)⁻¹ * n * X.xu u) - 1) *ᵥ (X.B.I.fmat (X.xu u)⁻¹ *ᵥ incl X.B.I (X.zR u)) = s`. Rewrite using `[fmat_kappa, sub_mulVec, one_mulVec, ← mulVec_mulVec, ← mulVec_mulVec, mulVec_mulVec (M := X.B.I.fmat (X.xu u)) (N := X.B.I.fmat (X.xu u)⁻¹), fmat_mul_inv, one_mulVec, ← mulVec_sub]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: X.B.I.fmat n *ᵥ incl X.B.I (X.zR u) - incl X.B.I (X.zR u) = s`. Rewrite using `[hsdef, sub_mulVec, one_mulVec]`. Rewrite using `[this, fix_span _ xinv_fix_e s hs]`. Establish `hsL : s ∈ X.B.I.Lf` using `unitaryCongruence.K_sub_mv X.B.I hnK (incl_mem_Lf X _ (zR_L X u))`. Establish `hCs` using `coef hC Set.univ _ (natsmul_mem X C hsL) (Submodule.smul_mem _ _ hs) (fun b hb => absurd (Set.mem_univ b) hb)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hCs` using `[Set.image_univ]`. Establish `hy : (X.B.I.fmat ((X.xu u)⁻¹ * n * X.xu u) - 1) *ᵥ X.z0 ∈ X.B.I.Lf` using `unitaryCongruence.K_sub_mv X.B.I hκ X.vectorsInLattice.2.1`. Use `bez_vec X _ (unitaryCongruence.mL_Mo X.B.I) hy hC.1 ?_` and prove the remaining obligations. Establish `e : (C : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • ((X.B.I.fmat ((X.xu u)⁻¹ * n * X.xu u) - 1) *ᵥ X.z0) = (C : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • s - (X.B.I.fmat ((X.xu u)⁻¹ * n * X.xu u) - 1) *ᵥ ((C : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • (X.B.I.fmat (X.xu u)⁻¹ *ᵥ incl X.B.I (X.zR u) - X.z0))`. Rewrite using `[← hkz, mulVec_smul, ← smul_sub, ← mulVec_sub, sub_sub_cancel]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `sub_mem hCs (unitaryCongruence.mL_Mo X.B.I (mL_pres X _ (fun y hy => unitaryCongruence.K_sub_mv X.B.I hκ hy) _ hC.2.2.2))`.
+A detailed English derivation is pending.
 -/
 theorem cong_alt {C : ℕ} (hC : GoodC X u C) {n : X.B.I.Gf} (hn : n ∈ X.NfinU u) (hnK : n ∈ X.B.I.Kset) :
     (X.B.I.fmat ((X.xu u)⁻¹ * n * X.xu u) - 1) *ᵥ X.z0 ∈ unitaryCongruence.Mo X.B.I X.B.g (Set.range X.e0) := by
@@ -866,7 +848,7 @@ theorem cong_alt {C : ℕ} (hC : GoodC X u C) {n : X.B.I.Gf} (hn : n ∈ X.NfinU
   exact sub_mem hCs (unitaryCongruence.mL_Mo X.B.I (mL_pres X _ (fun y hy => unitaryCongruence.K_sub_mv X.B.I hκ hy) _ hC.2.2.2))
 
 /- English proof (translation)
-Establish `hx : X.B.I.fmat (X.xu u) *ᵥ incl X.B.I (X.eR a) = incl X.B.I (X.eR a)` using `(X.xu_fix u a).1`. Rewrite using `[← hA_fmat X (X.xu u) (incl X.B.I (X.eR a)) y, hx]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem hermitian_e_transport_invariant (a : Fin D.R.rS) (y : VA X.B.I) :
     hA X.B.I (incl X.B.I (X.eR a)) (X.B.I.fmat (X.xu u) *ᵥ y) = hA X.B.I (incl X.B.I (X.eR a)) y := by
@@ -874,27 +856,23 @@ theorem hermitian_e_transport_invariant (a : Fin D.R.rS) (y : VA X.B.I) :
   rw [← hA_fmat X (X.xu u) (incl X.B.I (X.eR a)) y, hx]
 
 /- English proof (translation)
-Establish `hκ` using `kappa_K (u := u) hnK`. Use `set β := X.B.I.fmat (X.xu u) *ᵥ X.bw i with hβdef`. Establish `hβ : β ∈ X.B.I.Lf` using `unitaryCongruence.K_mv X.B.I (X.xu_K u) (X.vectorsInLattice.2.2 i).1`. Establish `hkb : (X.B.I.fmat ((X.xu u)⁻¹ * n * X.xu u) - 1) *ᵥ X.bw i = X.B.I.fmat (X.xu u)⁻¹ *ᵥ ((X.B.I.fmat n - 1) *ᵥ β)`. Rewrite using `[fmat_kappa, sub_mulVec, one_mulVec, ← mulVec_mulVec, ← mulVec_mulVec, hβdef, sub_mulVec, one_mulVec, mulVec_sub, mulVec_mulVec (M := X.B.I.fmat (X.xu u)⁻¹) (N := X.B.I.fmat (X.xu u)), fmat_inv_mul, one_mulVec]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set p := prA X β with hpdef`. Use `set s := (X.B.I.fmat n - 1) *ᵥ ((∑ a, hA X.B.I (incl X.B.I (X.fR a)) β • incl X.B.I (X.eR a)) + p) with hsdef`. Establish `hs : s ∈ Submodule.span (X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) (Set.range fun b => incl X.B.I (X.eR b))`. Rewrite using `[hsdef, mulVec_add, mulVec_sum]`. Use `add_mem (Submodule.sum_mem _ fun a _ => ?_) (hn.2.2 p (hA_e_prA X β))` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mulVec_smul]`. Conclude with `Submodule.smul_mem _ _ (span_im_le _ (hn.1 a))`. Use `set m := ∑ a, ((C * C : ℕ) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • (hA X.B.I (incl X.B.I (X.eR a)) β • ((X.B.I.fmat n - 1) *ᵥ incl X.B.I (X.fR a))) with hmdef`. Establish `hdec : ((C * C : ℕ) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • ((X.B.I.fmat n - 1) *ᵥ β) = ((C * C : ℕ) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • s + m`. Establish `hβs : β = (∑ a, hA X.B.I (incl X.B.I (X.fR a)) β • incl X.B.I (X.eR a)) + p + ∑ a, hA X.B.I (incl X.B.I (X.eR a)) β • incl X.B.I (X.fR a)`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hpdef, prA_apply]`. Normalize the expressions using the abelian group laws. Use `conv_lhs => rw [hβs]`. Rewrite using `[mulVec_add, smul_add, hmdef, mulVec_sum, Finset.smul_sum]`. Simplify using `only [mulVec_smul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hsdef]`. Establish `hm : m ∈ mL X.B.I X.B.g`. Use `Submodule.sum_mem _ fun a _ => ?_` and prove the remaining obligations. Establish `hZ : ZMod' X.B.I X.B.g ((C : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) * hA X.B.I (incl X.B.I (X.eR a)) β)`. Rewrite using `[hβdef, hermitian_e_transport_invariant, ← hA_natsmul_left]`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : (C : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • incl X.B.I (X.eR a) = (C : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • X.e0 a - (C : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • (X.e0 a - incl X.B.I (X.eR a))`. Rewrite using `[smul_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, hA_sub_left, hA_natsmul_left]`. Conclude with `unitaryCongruence.Z_sub X.B.I X.B.g (unitaryCongruence.Z_smul X.B.I X.B.g (natCast_mem _ C) ((X.weightVectorsIntegral i).2.2 a).1) (Z_left X (hC.2.1 a) (X.vectorsInLattice.2.2 i).1)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨t, ht, hteq⟩` from `hZ`. Establish `e2 : ((C * C : ℕ) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • (hA X.B.I (incl X.B.I (X.eR a)) β • ((X.B.I.fmat n - 1) *ᵥ incl X.B.I (X.fR a))) = t • ((X.B.g : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • ((X.B.I.fmat n - 1) *ᵥ ((C : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • incl X.B.I (X.fR a))))`. Rewrite using `[mulVec_smul, smul_smul, smul_smul, smul_smul, Nat.cast_mul]`. Use `congr 1`. Take the linear combination `(C : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) * hteq`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e2]`. Conclude with `intsmul_mem X ht (unitaryCongruence.smul_mem_mL X.B.I (unitaryCongruence.K_sub_mv X.B.I hnK (C_f_Lf hC a)))`. Establish `hy : (X.B.I.fmat ((X.xu u)⁻¹ * n * X.xu u) - 1) *ᵥ X.bw i ∈ X.B.I.Lf` using `unitaryCongruence.K_sub_mv X.B.I hκ (X.vectorsInLattice.2.2 i).1`. Establish `hxm : X.B.I.fmat (X.xu u)⁻¹ *ᵥ m ∈ mL X.B.I X.B.g` using `mL_pres X _ (fun y hy => unitaryCongruence.K_mv X.B.I (kset_inv X (X.xu_K u)) hy) m hm`. Establish `hmain : ((C * C : ℕ) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • ((X.B.I.fmat ((X.xu u)⁻¹ * n * X.xu u) - 1) *ᵥ X.bw i) = ((C * C : ℕ) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • s + X.B.I.fmat (X.xu u)⁻¹ *ᵥ m`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hkb, ← mulVec_smul, hdec, mulVec_add, mulVec_smul, fix_span _ xinv_fix_e s hs]`. Establish `hsL : ((C * C : ℕ) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • s ∈ X.B.I.Lf`. Establish `e : ((C * C : ℕ) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • s = ((C * C : ℕ) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • ((X.B.I.fmat ((X.xu u)⁻¹ * n * X.xu u) - 1) *ᵥ X.bw i) - X.B.I.fmat (X.xu u)⁻¹ *ᵥ m`. Rewrite using `[hmain]`. Normalize the expressions using the abelian group laws.
-
-Rewrite using `[e]`. Conclude with `sub_mem (natsmul_mem X _ hy) (mL_le_Lf X hxm)`. Establish `hCs` using `coef hC Set.univ _ hsL (Submodule.smul_mem _ _ hs) (fun b hb => absurd (Set.mem_univ b) hb)`. Rewrite `hCs` using `[Set.image_univ]`. Use `bez_vec X _ (unitaryCongruence.mL_Mo X.B.I) hy (Nat.Coprime.mul_left hC.1 hC.1) ?_` and prove the remaining obligations.
-
-Rewrite using `[hmain]`. Conclude with `add_mem hCs (unitaryCongruence.mL_Mo X.B.I hxm)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cong_b {C : ℕ} (hC : GoodC X u C) {n : X.B.I.Gf} (hn : n ∈ X.NfinU u) (hnK : n ∈ X.B.I.Kset)
     (i : Fin D.R.k) :
@@ -968,7 +946,7 @@ theorem cong_b {C : ℕ} (hC : GoodC X u C) {n : X.B.I.Gf} (hn : n ∈ X.NfinU u
   exact add_mem hCs (unitaryCongruence.mL_Mo X.B.I hxm)
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `exists_goodC X u`. Conclude with `⟨kappa_K hnK, fun a => cong_e hC hn hnK a, cong_alt hC hn hnK, fun i => unitaryCongruence.Mo_mono X.B.I Set.subset_union_left (cong_b hC hn hnK i)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem unipotent_conj_mem_level {n : X.B.I.Gf} (hn : n ∈ X.NfinU u) (hnK : n ∈ X.B.I.Kset) :
     (X.xu u)⁻¹ * n * X.xu u ∈ X.K2 := by
@@ -988,11 +966,11 @@ def Iad (J : Submodule (𝓞 D.host.E) D.host.E) :
     {w | ∃ y : X.B.I.E, X.ιE y ∈ J ∧ w = Formalism.UG.inclE (F := X.B.I.F) (Af X.B.I.F) y}
 
 /- English proof (translation)
-It suffices to establish `h : ∀ t ∈ IntAf X.B.I.F X.B.I.E, X.psiEf (t * w) = 1 by simpa using h 1 (one_mem _)`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem w hw => obtain ⟨y, hy, rfl⟩ := hw`. Conclude with `fun t ht => hP y hy t ht`. Consider the case `zero => intro t _`.
+Reduce the argument to an intermediate assertion. Proceed by induction. Treat this case separately. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Treat this case separately.
 
-Rewrite using `[mul_zero]`. Conclude with `psi_zero X`. Consider the case `add w1 w2 _ _ h1 h2 => intro t ht`. Rewrite using `[mul_add, X.psiEf_add, h1 t ht, h2 t ht, one_mul]`. Consider the case `smul c w _ hw`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t ht`. Rewrite using `[Subring.smul_def, smul_eq_mul, ← mul_assoc]`. Conclude with `hw _ (mul_mem ht c.2)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_Iad (hP : PsiDd X) (w : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F)
     (hw : w ∈ Iad X (((ddS D)⁻¹ : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) :
@@ -1008,7 +986,7 @@ theorem psi_Iad (hP : PsiDd X) (w : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F)
     exact hw _ (mul_mem ht c.2)
 
 /- English proof (translation)
-Unfold `Iad`. Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `w ⟨y, hy, rfl⟩`. Conclude with `⟨y, h hy, rfl⟩`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem Iad_mono {J J' : Submodule (𝓞 D.host.E) D.host.E} (h : J ≤ J') : Iad X J ≤ Iad X J' := by
   unfold Iad
@@ -1017,11 +995,11 @@ theorem Iad_mono {J J' : Submodule (𝓞 D.host.E) D.host.E} (h : J ≤ J') : Ia
   exact ⟨y, h hy, rfl⟩
 
 /- English proof (translation)
-Set `m : (X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) →ₗ[IntAf X.B.I.F X.B.I.E] (X.B.I.E ⊗[X.B.I.F] Af X.B.I.F)` to `{ toFun := fun w => Formalism.UG.inclE (F := X.B.I.F) (Af X.B.I.F) (X.ιE.symm s) * w map_add' := fun a b => mul_add _ a b map_smul' := fun r w => mul_smul_comm r _ w }`. Establish `hle : Iad X J ≤ (Iad X (Q * J)).comap m`. Unfold `Iad`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[SetLike.mem_coe, Submodule.mem_comap]`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨X.ιE.symm s * y, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, X.ιE.apply_symm_apply]`. Conclude with `Submodule.mul_mem_mul hs hy`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show Formalism.UG.inclE (F := X.B.I.F) (Af X.B.I.F) (X.ιE.symm s) * Formalism.UG.inclE (F := X.B.I.F) (Af X.B.I.F) y = _`. Rewrite using `[map_mul]`. Conclude with `Submodule.mem_comap.mp (hle hw)`.
+A detailed English derivation is pending.
 -/
 theorem Iad_mul (Q J : Submodule (𝓞 D.host.E) D.host.E) (s : D.host.E) (hs : s ∈ Q)
     (w : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) (hw : w ∈ Iad X J) :
@@ -1044,13 +1022,11 @@ theorem Iad_mul (Q J : Submodule (𝓞 D.host.E) D.host.E) (s : D.host.E) (hs : 
   exact Submodule.mem_comap.mp (hle hw)
 
 /- English proof (translation)
-Establish `key : (VS D).L0 ≤ ((aaD D a : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) : Submodule (𝓞 D.host.E) D.host.E).comap (((VS D).hT (X.fY a)).restrictScalars (𝓞 D.host.E))` using `by conv_lhs => rw [X.Lam_split]`. Use `sup_le (sup_le ?_ ?_) ?_` and prove the remaining obligations. Rewrite using `[latSpanS, Submodule.span_le]`. Introduce and unpack `_ ⟨b, x, hx, rfl⟩`. Simplify using `only [SetLike.mem_coe, Submodule.mem_comap, LinearMap.restrictScalars_apply, map_smul, hT_f_e, smul_eq_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[mul_one]`. Conclude with `hx`. Rewrite using `[mul_zero]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `zero_mem _`. Introduce `w hw`. Simplify using `only [Submodule.mem_comap, LinearMap.restrictScalars_apply, (X.Lb_perp w hw a).2]`. Conclude with `zero_mem _`. Rewrite using `[latSpanS, Submodule.span_le]`.
-
-Introduce and unpack `_ ⟨b, x, hx, rfl⟩`. Simplify using `only [SetLike.mem_coe, Submodule.mem_comap, LinearMap.restrictScalars_apply, map_smul, X.ff, smul_eq_mul, mul_zero]`. Conclude with `zero_mem _`. Conclude with `key hv`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hermitian_f_lattice_mem_ideal (a : Fin D.R.rS) (v : (VS D).V) (hv : v ∈ (VS D).L0) :
     (VS D).hT (X.fY a) v ∈ aaD D a := by
@@ -1076,13 +1052,11 @@ theorem hermitian_f_lattice_mem_ideal (a : Fin D.R.rS) (v : (VS D).V) (hv : v �
   exact key hv
 
 /- English proof (translation)
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨x, rfl⟩` from `hy`. Use `show hA X.B.I (incl X.B.I (X.fR a)) (incl X.B.I x) ∈ _`. Rewrite using `[hA_incl]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.subset_span ⟨_, ?_, rfl⟩` and prove the remaining obligations. Establish `h` using `iota_hE X (X.fR a) x`. Rewrite using `[h, HidaSetting.fR, toV_crd]`. Establish `hx : toV X (x : Fin X.B.I.n → X.B.I.E) ∈ (VS D).L0` using `(X.L_eq x).1 x.2`. Conclude with `hermitian_f_lattice_mem_ideal X a _ hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp only [← hAlin_apply, map_zero]`. Conclude with `zero_mem _`. Consider the case `add y z _ _ hy hz => rw [← hAlin_apply, map_add]`. Conclude with `add_mem hy hz`. Consider the case `smul c y _ hy`.
-
-Rewrite using `[Subring.smul_def, ← hAlin_apply, map_smul, hAlin_apply, smul_eq_mul, ← smul_eq_mul, ← Subring.smul_def]`. Conclude with `Submodule.smul_mem _ c hy`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hA_f_Lf (a : Fin D.R.rS) (y : VA X.B.I) (hy : y ∈ X.B.I.Lf) :
     hA X.B.I (incl X.B.I (X.fR a)) y ∈ Iad X ((aaD D a : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) :
@@ -1104,7 +1078,7 @@ theorem hA_f_Lf (a : Fin D.R.rS) (y : VA X.B.I) (hy : y ∈ X.B.I.Lf) :
     exact Submodule.smul_mem _ c hy
 
 /- English proof (translation)
-Unfold `ddS`. Use `FractionalIdeal.coeIdeal_ne_zero.2 ?_` and prove the remaining obligations. Introduce `h`. Rewrite `h` using `[Ideal.map_eq_bot_iff_of_injective (FaithfulSMul.algebraMap_injective _ _)]`. Conclude with `differentIdeal_ne_bot h`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ddS_ne : (ddS D : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) ≠ 0 := by
   unfold ddS
@@ -1116,21 +1090,19 @@ theorem ddS_ne : (ddS D : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.ho
 variable {X u}
 
 /- English proof (translation)
-Unfold `nxt`. Use `split_ifs with h`. Use `set b : Fin D.R.rS := ⟨a.1 + 1, h⟩ with hb set c := hA X.B.I (incl X.B.I (X.fR a)) ((X.B.I.fmat n - 1) *ᵥ incl X.B.I (X.eR b)) with hc`. Establish `hstep : ∀ t ∈ (aaD D b : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E), Formalism.UG.inclE (F` using `X.B.I.F) (Af X.B.I.F) (X.ιE.symm t) * c ∈ Iad X ((aaD D a : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) : Submodule (𝓞 D.host.E) D.host.E) := by`. Introduce `t ht`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hL : X.ιE.symm t • X.eR b ∈ X.B.I.L`. Rewrite using `[X.L_eq]`. Use `show toV X (X.ιE.symm t • X.eR b) ∈ (VS D).L0`. Rewrite using `[toV_smul, RingEquiv.apply_symm_apply, HidaSetting.eR, toV_crd, X.Lam_split]`. Conclude with `Submodule.mem_sup_left (Submodule.mem_sup_left (Submodule.subset_span ⟨b, t, ht, rfl⟩))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `hA_f_Lf X a _ (unitaryCongruence.K_sub_mv X.B.I hnK (incl_mem_Lf X _ hL))`. Rewrite `h1` using `[incl_smul, mulVec_smul, ← hAlin_apply, map_smul, hAlin_apply, smul_eq_mul]`. Then use the resulting hypothesis. Establish `hone : (1 : D.host.E) ∈ ((aaD D b : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) : Submodule (𝓞 D.host.E) D.host.E) * (((aaD D b)⁻¹ : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) : Submodule (𝓞 D.host.E) D.host.E)`. Rewrite using `[← FractionalIdeal.coe_mul, mul_inv_cancel₀ (show aaD D b ≠ 0 from zpow_ne_zero _ ddS_ne)]`. Conclude with `FractionalIdeal.one_mem_one _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hind : Formalism.UG.inclE (F` using `X.B.I.F) (Af X.B.I.F) (X.ιE.symm 1) * c ∈ Iad X ((((aaD D b)⁻¹ : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) : Submodule (𝓞 D.host.E) D.host.E) * ((aaD D a : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) : Submodule (𝓞 D.host.E) D.host.E)) := by`. Use `Submodule.mul_induction_on (C := fun z => Formalism.UG.inclE (F := X.B.I.F) (Af X.B.I.F) (X.ιE.symm z) * c ∈ _) hone (fun t ht s hs => ?_) (fun x y hx hy => ?_)` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, mul_comm (Formalism.UG.inclE (F := X.B.I.F) (Af X.B.I.F) (X.ιE.symm t)), mul_assoc]`. Conclude with `Iad_mul X _ _ s hs _ (hstep t ht)`. Rewrite using `[map_add, map_add, add_mul]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Conclude with `add_mem hx hy`. Rewrite `hind` using `[map_one, map_one, one_mul, ← FractionalIdeal.coe_mul]`. Establish `e : (aaD D b)⁻¹ * aaD D a = (ddS D)⁻¹`. Unfold `aaD`. Rewrite using `[← _root_.zpow_neg, ← zpow_add₀ ddS_ne, ← _root_.zpow_neg_one]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `congr 1`. Simplify using `only [hb]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hind` using `[e]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hr : (aaD D a : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) = (ddS D)⁻¹`. Unfold `aaD`. Rewrite using `[← _root_.zpow_neg_one]`. Use `congr 1`. Use `a.2` as an intermediate fact.
-
-Use linear arithmetic over natural numbers and integers. Establish `h1` using `hA_f_Lf X a _ (unitaryCongruence.K_sub_mv X.B.I hnK (incl_mem_Lf X _ (zR_L X u)))`. Rewrite `h1` using `[hr]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem coord_dd {n : X.B.I.Gf} (hnK : n ∈ X.B.I.Kset) (a : Fin D.R.rS) :
     hA X.B.I (incl X.B.I (X.fR a)) ((X.B.I.fmat n - 1) *ᵥ incl X.B.I (nxt X.eR (X.zR u) a)) ∈
@@ -1183,9 +1155,9 @@ theorem coord_dd {n : X.B.I.Gf} (hnK : n ∈ X.B.I.Kset) (a : Fin D.R.rS) :
     rwa [hr] at h1
 
 /- English proof (translation)
-Unfold `nxt`. Use `split_ifs with h`. Rewrite using `[hA_f_e, if_neg]`. Introduce `h'`. Use `congrArg Fin.val h'` as an intermediate fact.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `at this`. Conclude with `adelicHermitian_hyperbolicF_anisotropic_eq_zero X u a`.
+A detailed English derivation is pending.
 -/
 theorem hA_f_nxt (a : Fin D.R.rS) :
     hA X.B.I (incl X.B.I (X.fR a)) (incl X.B.I (nxt X.eR (X.zR u) a)) = 0 := by
@@ -1198,7 +1170,7 @@ theorem hA_f_nxt (a : Fin D.R.rS) :
   · exact adelicHermitian_hyperbolicF_anisotropic_eq_zero X u a
 
 /- English proof (translation)
-The claim follows from `Finset.sum_induction _ (fun y => X.psiEf y = 1) (fun a b ha hb => by rw [X.psiEf_add, ha, hb, one_mul]) (psi_zero X) h`.
+A detailed English derivation is pending.
 -/
 theorem psi_sum {ι : Type} (s : Finset ι) (f : ι → X.B.I.E ⊗[X.B.I.F] Af X.B.I.F)
     (h : ∀ i ∈ s, X.psiEf (f i) = 1) : X.psiEf (∑ i ∈ s, f i) = 1 :=
@@ -1206,7 +1178,7 @@ theorem psi_sum {ι : Type} (s : Finset ι) (f : ι → X.B.I.E ⊗[X.B.I.F] Af 
     (psi_zero X) h
 
 /- English proof (translation)
-Use `psi_sum _ _ fun a _ => ?_` and prove the remaining obligations. Establish `e : X.B.I.fmat n *ᵥ incl X.B.I (nxt X.eR (X.zR u) a) = incl X.B.I (nxt X.eR (X.zR u) a) + (X.B.I.fmat n - 1) *ᵥ incl X.B.I (nxt X.eR (X.zR u) a)` using `by rw [sub_mulVec, one_mulVec]; abel`. Rewrite using `[e, ← hAlin_apply, map_add, hAlin_apply, hAlin_apply, hA_f_nxt, zero_add]`. Conclude with `psi_Iad X hP _ (coord_dd hnK a)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_B (hP : PsiDd X) {n : X.B.I.Gf} (hnK : n ∈ X.B.I.Kset) :
     X.psiEf (∑ a, hA X.B.I (incl X.B.I (X.fR a)) (X.B.I.fmat n *ᵥ incl X.B.I (nxt X.eR (X.zR u) a))) = 1 := by
@@ -1217,11 +1189,9 @@ theorem psi_B (hP : PsiDd X) {n : X.B.I.Gf} (hnK : n ∈ X.B.I.Kset) :
   exact psi_Iad X hP _ (coord_dd hnK a)
 
 /- English proof (translation)
-Establish `hxK` using `fun y hy => unitaryCongruence.K_mv X.B.I (X.xu_K u) (y := y) hy`. Unfold `nxt`. Use `split_ifs with h`. Establish `hx : X.B.I.fmat (X.xu u) *ᵥ incl X.B.I (X.eR ⟨a.1 + 1, h⟩) = incl X.B.I (X.eR ⟨a.1 + 1, h⟩)` using `(X.xu_fix u _).1`. Establish `e : (C : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • (X.B.I.fmat (X.xu u) *ᵥ X.e0 ⟨a.1 + 1, h⟩ - incl X.B.I (X.eR ⟨a.1 + 1, h⟩)) = X.B.I.fmat (X.xu u) *ᵥ ((C : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • (X.e0 ⟨a.1 + 1, h⟩ - incl X.B.I (X.eR ⟨a.1 + 1, h⟩)))`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mulVec_smul, mulVec_sub, hx]`. Rewrite using `[e]`. Conclude with `mL_pres X _ hxK _ (hC.2.1 _)`. Establish `e : (C : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • (X.B.I.fmat (X.xu u) *ᵥ X.z0 - incl X.B.I (X.zR u)) = -(X.B.I.fmat (X.xu u) *ᵥ ((C : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • (X.B.I.fmat (X.xu u)⁻¹ *ᵥ incl X.B.I (X.zR u) - X.z0)))`. Rewrite using `[mulVec_smul, mulVec_sub, mulVec_mulVec, fmat_mul_inv, one_mulVec, ← smul_neg, neg_sub]`.
-
-Rewrite using `[e]`. Conclude with `neg_mem (mL_pres X _ hxK _ hC.2.2.2)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xw_diff {C : ℕ} (hC : GoodC X u C) (a : Fin D.R.rS) :
     (C : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • (X.B.I.fmat (X.xu u) *ᵥ nxt X.e0 X.z0 a - incl X.B.I (nxt X.eR (X.zR u) a)) ∈
@@ -1242,13 +1212,13 @@ theorem xw_diff {C : ℕ} (hC : GoodC X u C) (a : Fin D.R.rS) :
     rw [e]; exact neg_mem (mL_pres X _ hxK _ hC.2.2.2)
 
 /- English proof (translation)
-Use `set w0 := nxt X.e0 X.z0 a`. Use `set w := incl X.B.I (nxt X.eR (X.zR u) a)`. Use `set x := X.xu u`. Establish `hw0 : w0 ∈ X.B.I.Lf` using `unitaryCongruence.nxt_mem X.B.I X.e0 X.z0 (fun b => (X.vectorsInLattice.1 b).1) X.vectorsInLattice.2.1 a`. Establish `hY : X.B.I.fmat n *ᵥ (X.B.I.fmat x *ᵥ w0) ∈ X.B.I.Lf` using `unitaryCongruence.K_mv X.B.I hnK (unitaryCongruence.K_mv X.B.I (X.xu_K u) hw0)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hA1 : hA X.B.I (X.f0 a) (X.B.I.fmat (x⁻¹ * n * x) *ᵥ w0) = hA X.B.I (X.B.I.fmat x *ᵥ X.f0 a) (X.B.I.fmat n *ᵥ (X.B.I.fmat x *ᵥ w0))`. Rewrite using `[← hA_fmat X x (X.f0 a), fmat_kappa, ← mulVec_mulVec, ← mulVec_mulVec, mulVec_mulVec (M := X.B.I.fmat x) (N := X.B.I.fmat x⁻¹), fmat_mul_inv, one_mulVec]`. Establish `hxf : X.B.I.fmat x *ᵥ incl X.B.I (X.fR a) = incl X.B.I (X.fR a)` using `(X.xu_fix u a).2`. Establish `hm1 : (C : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • (X.B.I.fmat x *ᵥ X.f0 a - incl X.B.I (X.fR a)) ∈ mL X.B.I X.B.g`. Rewrite using `[← hxf, ← mulVec_sub, ← mulVec_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mL_pres X _ (fun y hy => unitaryCongruence.K_mv X.B.I (X.xu_K u) hy) _ (hC.2.2.1 a)`. Establish `hm2 : X.B.I.fmat n *ᵥ ((C : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • (X.B.I.fmat x *ᵥ w0 - w)) ∈ mL X.B.I X.B.g` using `mL_pres X _ (fun y hy => unitaryCongruence.K_mv X.B.I hnK hy) _ (xw_diff hC a)`. Establish `z1` using `unitaryCongruence.Z_smul X.B.I X.B.g (natCast_mem _ C) (Z_left X hm1 hY)`. Establish `z2` using `Z_right X (C_f_Lf hC a) hm2`. Rewrite using `[hA1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ((C * C : ℕ) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) * (hA X.B.I (X.B.I.fmat x *ᵥ X.f0 a) (X.B.I.fmat n *ᵥ (X.B.I.fmat x *ᵥ w0)) - hA X.B.I (incl X.B.I (X.fR a)) (X.B.I.fmat n *ᵥ w)) = (C : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) * hA X.B.I ((C : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • (X.B.I.fma …`. Rewrite using `[hA_natsmul_left, hA_natsmul_left, hA_sub_left, mulVec_smul, unitaryCongruence.hA_smul_right, mulVec_sub, unitaryCongruence.hA_sub_right, Nat.cast_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Conclude with `unitaryCongruence.Z_add X.B.I X.B.g z1 z2`.
+A detailed English derivation is pending.
 -/
 theorem Z_term {C : ℕ} (hC : GoodC X u C) {n : X.B.I.Gf} (hnK : n ∈ X.B.I.Kset) (a : Fin D.R.rS) :
     ZMod' X.B.I X.B.g (((C * C : ℕ) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) *
@@ -1288,13 +1258,11 @@ theorem Z_term {C : ℕ} (hC : GoodC X u C) {n : X.B.I.Gf} (hnK : n ∈ X.B.I.Ks
   exact unitaryCongruence.Z_add X.B.I X.B.g z1 z2
 
 /- English proof (translation)
-Use `split_ifs with h`. Take `⟨C, hC⟩` from `exists_goodC X u`. Establish `hMo` using `cong_b hC hn hnK ⟨i.1 + 1, h⟩`. Establish `hQ : unitaryCongruence.Mo X.B.I X.B.g (Set.range X.e0) ≤ unitaryCongruence.Qs X.B.I X.B.g (X.bwd i)`. Use `sup_le (Submodule.span_le.2 ?_) (unitaryCongruence.mL_Qs X.B.I X.B.g (X.vectorsInLattice.2.2 i).2)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨b, rfl⟩`. Use `show ZMod' X.B.I X.B.g (hA X.B.I (X.bwd i) (X.e0 b))`. Rewrite using `[unitaryCongruence.hA_symm X.B.I (X.e0 b) (X.bwd i)]`. Conclude with `unitaryCongruence.Z_sig X.B.I X.B.g ((X.weightVectorsIntegral i).2.2 b).2.2.1`. Establish `e : X.B.I.fmat ((X.xu u)⁻¹ * n * X.xu u) *ᵥ X.bw ⟨i.1 + 1, h⟩ = X.bw ⟨i.1 + 1, h⟩ + (X.B.I.fmat ((X.xu u)⁻¹ * n * X.xu u) - 1) *ᵥ X.bw ⟨i.1 + 1, h⟩` using `by rw [sub_mulVec, one_mulVec]; abel`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[e, unitaryCongruence.hA_add_right]`. Use `unitaryCongruence.Z_add X.B.I X.B.g ?_ (hQ hMo)` and prove the remaining obligations. Establish `hne : i ≠ ⟨i.1 + 1, h⟩` using `fun h' => by have := congrArg Fin.val h'; simp at this`. Use `X.bw_dual i ⟨i.1 + 1, h⟩` as an intermediate fact. Rewrite `this` using `[if_neg hne, sub_zero]`. Then use the resulting hypothesis.
-
-Conclude with `unitaryCongruence.Z_zero X.B.I X.B.g`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem Z_bw {n : X.B.I.Gf} (hn : n ∈ X.NfinU u) (hnK : n ∈ X.B.I.Kset) (i : Fin D.R.k) :
     ZMod' X.B.I X.B.g (if h : i.1 + 1 < D.R.k then
@@ -1318,15 +1286,13 @@ theorem Z_bw {n : X.B.I.Gf} (hn : n ∈ X.NfinU u) (hnK : n ∈ X.B.I.Kset) (i :
   · exact unitaryCongruence.Z_zero X.B.I X.B.g
 
 /- English proof (translation)
-Introduce `n hn hnK`. Use `⟨unipotent_conj_mem_level hn hnK, ?_⟩` and prove the remaining obligations. Take `⟨C, hC⟩` from `exists_goodC X u`. Establish `hg : X.B.g ≠ 0` using `modulus_g_ne_zero X`. Use `set κ := (X.xu u)⁻¹ * n * X.xu u`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set A := unitaryCongruence.Afun X.B.I X.e0 X.f0 X.z0 X.bw X.bwd κ with hAdef`. Use `set B := ∑ a, hA X.B.I (incl X.B.I (X.fR a)) (X.B.I.fmat n *ᵥ incl X.B.I (nxt X.eR (X.zR u) a)) with hBdef`. Establish `hAB : A - B = (∑ a, (hA X.B.I (X.f0 a) (X.B.I.fmat κ *ᵥ nxt X.e0 X.z0 a) - hA X.B.I (incl X.B.I (X.fR a)) (X.B.I.fmat n *ᵥ incl X.B.I (nxt X.eR (X.zR u) a)))) + ∑ i : Fin D.R.k, (if h : i.1 + 1 < D.R.k then hA X.B.I (X.bwd i) (X.B.I.fmat κ *ᵥ X.bw ⟨i.1 + 1, h⟩) else 0)`. Rewrite using `[hAdef, hBdef, unitaryCongruence.Afun, Finset.sum_sub_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hZ : ZMod' X.B.I X.B.g (((C * C : ℕ) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) * (A - B))`. Rewrite using `[hAB, mul_add, Finset.mul_sum]`. Conclude with `unitaryCongruence.Z_add X.B.I X.B.g (unitaryCongruence.Z_sum X.B.I X.B.g _ _ fun a _ => Z_term hC hnK a) (unitaryCongruence.Z_smul X.B.I X.B.g (natCast_mem _ _) (unitaryCongruence.Z_sum X.B.I X.B.g _ _ fun i _ => Z_bw hn hnK i))`. Establish `h1` using `unitaryCongruence.psi_Z X.B.I X.B.g X.psiEf_add X.psiEf_int hg hZ`. Establish `hAint : A ∈ IntAf X.B.I.F X.B.I.E` using `unitaryCongruence.Afun_int X.B.I X.e0 X.f0 X.z0 X.bw X.bwd (kappa_K hnK) (fun b => (X.vectorsInLattice.1 b).1) (fun b => (X.vectorsInLattice.1 b).2) X.vectorsInLattice.2.1 (fun i => (X.vectorsInLattice.2.2 i).1) (fun i => (X.vectorsInLattice.2.2 i).2)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : X.psiEf (A - B) = 1`. Rewrite using `[sub_eq_add_neg, X.psiEf_add, X.psiEf_int A hAint, psi_neg X (psi_B hP hnK), one_mul]`. Establish `h3` using `psi_bez X (Nat.Coprime.mul_left hC.1 hC.1) h1 h2`. Establish `e : divN X.B.I X.B.g A = divN X.B.I X.B.g B + divN X.B.I X.B.g (A - B)`. Unfold `divN`.
-
-Expand and normalize the polynomial expressions, which then agree. Use `show X.psiEf (divN X.B.I X.B.g A) = X.psiEf (divN X.B.I X.B.g B)`. Rewrite using `[e, X.psiEf_add, h3, mul_one]`.
+Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unipotent_in_level_of_psi (hP : PsiDd X) : UnipotentConjugateInLevel X u := by
   intro n hn hnK
@@ -1357,13 +1323,13 @@ theorem unipotent_in_level_of_psi (hP : PsiDd X) : UnipotentConjugateInLevel X u
   rw [e, X.psiEf_add, h3, mul_one]
 
 /- English proof (translation)
-The claim follows from `levelDec_of X u (level_subgroup_character_unitary X) (ksetSplit_holds X u) (unipotent_in_level_of_psi hP)`.
+A detailed English derivation is pending.
 -/
 theorem levelDec_of_psiDd (hP : PsiDd X) : LevelDec X u :=
   levelDec_of X u (level_subgroup_character_unitary X) (ksetSplit_holds X u) (unipotent_in_level_of_psi hP)
 
 /- English proof (translation)
-The claim follows from `phWellDef_of_steps X u (level_subgroup_character_unitary X) (ksetSplit_holds X u) (unipotent_in_level_of_psi hP)`.
+A detailed English derivation is pending.
 -/
 theorem phWellDef_of_psiDd (hP : PsiDd X) : PhWellDef X u (level_subgroup_character_unitary X) :=
   phWellDef_of_steps X u (level_subgroup_character_unitary X) (ksetSplit_holds X u) (unipotent_in_level_of_psi hP)
@@ -1375,17 +1341,17 @@ section Prod
 variable {D : D7} (X : HidaSetting D) (u : D.what₂.Word)
 
 /- English proof (translation)
-The claim follows from `X.B.I.cm.cmUnram.2.1 (X.B.I.φ v) a`.
+A detailed English derivation is pending.
 -/
 theorem phi_star (v : InfinitePlace X.B.I.F) (a : X.B.I.E) :
     X.B.I.φ v (star a) = star (X.B.I.φ v a) := X.B.I.cm.cmUnram.2.1 (X.B.I.φ v) a
 
 /- English proof (translation)
-Establish `hPu : IsUnit (X.B.I.P v).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (X.B.I.P_unit v)`. Establish `hPH : IsUnit (X.B.I.P v)ᴴ.det` using `by rw [Matrix.det_conjTranspose]; exact hPu.star`. Establish `hJ' : ((X.B.I.P v)⁻¹)ᴴ * Formalism.REAL.Jm (X.B.I.ε v) * (X.B.I.P v)⁻¹ = X.B.I.J.map (X.B.I.φ v)`. Rewrite using `[← X.B.I.P_spec v, Matrix.conjTranspose_nonsing_inv]`. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.mul_nonsing_inv _ hPu, Matrix.mul_one, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hPH, Matrix.one_mul]`. Unfold `hJ rv`. Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hJ']`. Simplify using `only [dotProduct, mulVec, Formalism.UG.hform, map_sum, map_mul, Pi.star_apply, Matrix.map_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[starRingEnd_apply, phi_star]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hJ_rv (v : InfinitePlace X.B.I.F) (x y : Fin X.B.I.n → X.B.I.E) :
     hJ (X.B.I.ε v) (rv X.B.I v x) (rv X.B.I v y) = X.B.I.φ v (hE X x y) := by
@@ -1403,7 +1369,7 @@ theorem hJ_rv (v : InfinitePlace X.B.I.F) (x y : Fin X.B.I.n → X.B.I.E) :
   ring
 
 /- English proof (translation)
-Unfold `rv`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_assoc, Formalism.MainNotions.LeviCoordinates.rrg_P_mul_inv, Matrix.mul_one, ← Matrix.mulVec_mulVec]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, map_sum, map_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem rv_mulVec (v : InfinitePlace X.B.I.F) (G : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E)
     (y : Fin X.B.I.n → X.B.I.E) :
@@ -1416,7 +1382,7 @@ theorem rv_mulVec (v : InfinitePlace X.B.I.F) (G : Matrix (Fin X.B.I.n) (Fin X.B
   simp [Matrix.mulVec, dotProduct, map_sum, map_mul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[incl, Matrix.mulVec, dotProduct, map_sum, map_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem incl_mulVec (G : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) (y : Fin X.B.I.n → X.B.I.E) :
     G.map (Formalism.UG.inclE (F := X.B.I.F) (Af X.B.I.F)) *ᵥ incl X.B.I y = incl X.B.I (G *ᵥ y) := by
@@ -1424,7 +1390,7 @@ theorem incl_mulVec (G : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) (y : Fin X.
   simp [incl, Matrix.mulVec, dotProduct, map_sum, map_mul]
 
 /- English proof (translation)
-Use `first`. Consider the case `(unfold nxt; split_ifs <;> rfl)`. Consider the case `(unfold nxt; split <;> rfl)`. Consider the case `rfl`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem nxt_rv (v : InfinitePlace X.B.I.F) (a : Fin D.R.rS) :
     nxt (fun b => rv X.B.I v (X.eR b)) (rv X.B.I v (X.zR u)) a = rv X.B.I v (nxt X.eR (X.zR u) a) := by
@@ -1434,7 +1400,7 @@ theorem nxt_rv (v : InfinitePlace X.B.I.F) (a : Fin D.R.rS) :
   | rfl
 
 /- English proof (translation)
-Use `first`. Consider the case `(unfold nxt; split_ifs <;> rfl)`. Consider the case `(unfold nxt; split <;> rfl)`. Consider the case `rfl`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem nxt_incl (a : Fin D.R.rS) :
     incl X.B.I (nxt X.eR (X.zR u) a) = nxt (fun b => incl X.B.I (X.eR b)) (incl X.B.I (X.zR u)) a := by
@@ -1444,7 +1410,7 @@ theorem nxt_incl (a : Fin D.R.rS) :
   | rfl
 
 /- English proof (translation)
-Use `first`. Consider the case `rfl`. Consider the case `simp [Formalism.UG.inclE, Algebra.TensorProduct.algebraMap_apply]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem algebraMap_tens (x : X.B.I.F) :
     algebraMap X.B.I.F (X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) x =
@@ -1454,17 +1420,15 @@ theorem algebraMap_tens (x : X.B.I.F) :
   | simp [Formalism.UG.inclE, Algebra.TensorProduct.algebraMap_apply]
 
 /- English proof (translation)
-Introduce `ν hν _ _`. Take `⟨γ, -, hinf, hfin⟩` from `hν`. Use `set G := (γ : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E)`. Use `set c : X.B.I.E := ∑ a, hE X (X.fR a) (G *ᵥ nxt X.eR (X.zR u) a) with hc`. Use `set q : X.B.I.E := algebraMap X.B.I.F X.B.I.E ((X.B.g : X.B.I.F)⁻¹) * c with hq`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hfin' : X.psiFinU u ν.2 = X.psiEf (Formalism.UG.inclE (F` using `X.B.I.F) (Af X.B.I.F) q) := by`. Unfold `HidaSetting.psiFinU psiFin divN`. Use `congr 1`. Rewrite using `[hq, map_mul, ← algebraMap_tens, hc, map_sum]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[hfin, incl_mulVec, hA_incl]`. Establish `hinf' : X.psiInfU u ν.1 = psiEinf X.B.I q`. Unfold `HidaSetting.psiInfU psiInf psiEinf psiR rootCoord`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congr 1`. Establish `hrc : ∀ a, hJ (X.B.I.ε v) (rv X.B.I v (X.fR a)) (uMat (ν.1 v) *ᵥ nxt (fun b => rv X.B.I v (X.eR b)) (rv X.B.I v (X.zR u)) a) = X.B.I.φ v (hE X (X.fR a) (G *ᵥ nxt X.eR (X.zR u) a))`. Introduce `a`. Rewrite using `[hinf v, nxt_rv, rv_mulVec, hJ_rv]`. Simplify using `only [hrc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hg : X.B.I.φ v (algebraMap X.B.I.F X.B.I.E ((X.B.g : X.B.I.F)⁻¹)) = ((X.B.g : ℂ))⁻¹`. Rewrite using `[map_inv₀, map_inv₀, map_natCast, map_natCast]`. Rewrite using `[hq, map_mul, hg, hc, map_sum, Finset.sum_add_distrib, star_mul', star_inv₀, star_natCast, ← star_sum]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hinf', hfin', mul_comm]`.
-
-Conclude with `X.psiEf_rat q`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiProd_holds : PsiProd X u := by
   intro ν hν _ _
@@ -1503,20 +1467,20 @@ section Rat
 variable {D : D7} (X : HidaSetting D) (u : D.what₂.Word)
 
 /- English proof (translation)
-Simplify using `only [hE, Formalism.UG.hform, Pi.add_apply, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hE_add_right (x y y' : Fin X.B.I.n → X.B.I.E) : hE X x (y + y') = hE X x y + hE X x y' := by
   simp only [hE, Formalism.UG.hform, Pi.add_apply, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [hE, Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hE_smul_right (x y : Fin X.B.I.n → X.B.I.E) (c : X.B.I.E) : hE X x (c • y) = c * hE X x y := by
   simp only [hE, Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Simplify using `only [hE, Formalism.UG.hform, star_sum, star_mul', starRingEnd_apply, star_star, unitaryCongruence.J_conj]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hE_symm (x y : Fin X.B.I.n → X.B.I.E) : hE X y x = star (hE X x y) := by
   simp only [hE, Formalism.UG.hform, star_sum, star_mul', starRingEnd_apply, star_star, unitaryCongruence.J_conj]
@@ -1525,14 +1489,14 @@ theorem hE_symm (x y : Fin X.B.I.n → X.B.I.E) : hE X y x = star (hE X x y) := 
   ring
 
 /- English proof (translation)
-Simplify using `only [hE, Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, map_mul, starRingEnd_apply, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hE_smul_left (x y : Fin X.B.I.n → X.B.I.E) (c : X.B.I.E) : hE X (c • x) y = star c * hE X x y := by
   simp only [hE, Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, map_mul, starRingEnd_apply, Finset.mul_sum]
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Simplify using `only [hE, Formalism.UG.hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hE_add_left (x x' y : Fin X.B.I.n → X.B.I.E) : hE X (x + x') y = hE X x y + hE X x' y := by
   simp only [hE, Formalism.UG.hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]
@@ -1548,61 +1512,61 @@ Both sides reduce to the same expression.
 theorem hEl_apply (x y : Fin X.B.I.n → X.B.I.E) : hEl X x y = hE X x y := rfl
 
 /- English proof (translation)
-Simplify using `using congrArg X.ιE.symm h`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem iota_inj {a b : X.B.I.E} (h : X.ιE a = X.ιE b) : a = b := by
   simpa using congrArg X.ιE.symm h
 
 /- English proof (translation)
-Apply `iota_inj X` to reduce the goal to its premises. Rewrite using `[iota_hE, HidaSetting.eR, HidaSetting.eR, toV_crd, toV_crd, X.ee, map_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem hE_e_e (a b : Fin D.R.rS) : hE X (X.eR a) (X.eR b) = 0 := by
   apply iota_inj X; rw [iota_hE, HidaSetting.eR, HidaSetting.eR, toV_crd, toV_crd, X.ee, map_zero]
 
 /- English proof (translation)
-Apply `iota_inj X` to reduce the goal to its premises. Rewrite using `[iota_hE, HidaSetting.fR, HidaSetting.fR, toV_crd, toV_crd, X.ff, map_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem hE_f_f (a b : Fin D.R.rS) : hE X (X.fR a) (X.fR b) = 0 := by
   apply iota_inj X; rw [iota_hE, HidaSetting.fR, HidaSetting.fR, toV_crd, toV_crd, X.ff, map_zero]
 
 /- English proof (translation)
-Apply the tactic sequence `apply iota_inj X; rw [iota_hE, HidaSetting.eR, HidaSetting.fR, toV_crd, toV_crd, X.ef]; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hE_e_f (a b : Fin D.R.rS) : hE X (X.eR a) (X.fR b) = if a = b then 1 else 0 := by
   apply iota_inj X; rw [iota_hE, HidaSetting.eR, HidaSetting.fR, toV_crd, toV_crd, X.ef]; split_ifs <;> simp
 
 /- English proof (translation)
-Apply the tactic sequence `rw [hE_symm, hE_e_f]; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hE_f_e (a b : Fin D.R.rS) : hE X (X.fR a) (X.eR b) = if b = a then 1 else 0 := by
   rw [hE_symm, hE_e_f]; split_ifs <;> simp
 
 /- English proof (translation)
-Apply `iota_inj X` to reduce the goal to its premises. Rewrite using `[iota_hE, HidaSetting.eR, HidaSetting.zR, toV_crd, toV_crd, (X.zu_orth u a).1, map_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem hermitian_e_z_zero (a : Fin D.R.rS) : hE X (X.eR a) (X.zR u) = 0 := by
   apply iota_inj X; rw [iota_hE, HidaSetting.eR, HidaSetting.zR, toV_crd, toV_crd, (X.zu_orth u a).1, map_zero]
 
 /- English proof (translation)
-Apply `iota_inj X` to reduce the goal to its premises. Rewrite using `[iota_hE, HidaSetting.fR, HidaSetting.zR, toV_crd, toV_crd, (X.zu_orth u a).2, map_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem hermitian_f_z_zero (a : Fin D.R.rS) : hE X (X.fR a) (X.zR u) = 0 := by
   apply iota_inj X; rw [iota_hE, HidaSetting.fR, HidaSetting.zR, toV_crd, toV_crd, (X.zu_orth u a).2, map_zero]
 
 /- English proof (translation)
-Rewrite using `[hE_symm, hermitian_e_z_zero, star_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hE_z_e (a : Fin D.R.rS) : hE X (X.zR u) (X.eR a) = 0 := by
   rw [hE_symm, hermitian_e_z_zero, star_zero]
 
 /- English proof (translation)
-Rewrite using `[hE_symm, hermitian_f_z_zero, star_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hE_z_f (a : Fin D.R.rS) : hE X (X.zR u) (X.fR a) = 0 := by
   rw [hE_symm, hermitian_f_z_zero, star_zero]
 
 /- English proof (translation)
-Introduce `h`. Establish `h2` using `congrArg X.ιE h`. Rewrite `h2` using `[iota_hE, HidaSetting.zR, toV_crd, X.zu_norm, map_zero, neg_eq_zero, Nat.cast_eq_zero]`. Conclude with `(D.mem u).A.T_prime.ne_zero h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hE_z_z_ne : hE X (X.zR u) (X.zR u) ≠ 0 := by
   intro h
@@ -1615,14 +1579,14 @@ def PW (y : Fin X.B.I.n → X.B.I.E) : Fin X.B.I.n → X.B.I.E :=
     (hE X (X.zR u) y * (hE X (X.zR u) (X.zR u))⁻¹) • X.zR u
 
 /- English proof (translation)
-Simplify using `only [PW, hE_add_right, add_smul, Finset.sum_add_distrib, add_mul]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem PW_add (y y' : Fin X.B.I.n → X.B.I.E) : PW X u (y + y') = PW X u y + PW X u y' := by
   simp only [PW, hE_add_right, add_smul, Finset.sum_add_distrib, add_mul]
   abel
 
 /- English proof (translation)
-Use `first`. Consider the case `(simp only [PW, hE_smul_right, mul_assoc, mul_smul, smul_sub, Finset.smul_sum]; done)`. Consider the case `(simp only [PW, hE_smul_right, mul_assoc, mul_smul, smul_sub, Finset.smul_sum]; abel)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem PW_smul (c : X.B.I.E) (y : Fin X.B.I.n → X.B.I.E) : PW X u (c • y) = c • PW X u y := by
   first
@@ -1630,7 +1594,7 @@ theorem PW_smul (c : X.B.I.E) (y : Fin X.B.I.n → X.B.I.E) : PW X u (c • y) =
   | (simp only [PW, hE_smul_right, mul_assoc, mul_smul, smul_sub, Finset.smul_sum]; abel)
 
 /- English proof (translation)
-Establish `hs : ∀ x z z' : Fin X.B.I.n → X.B.I.E, hE X x (z - z') = hE X x z - hE X x z'` using `fun x z z' => by`. Simplify using `only [hE, Formalism.UG.hform, Pi.sub_apply, mul_sub, Finset.sum_sub_distrib]`. Simplify using `only [PW, hs, sub_smul, Finset.sum_sub_distrib, sub_mul]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem PW_sub (y y' : Fin X.B.I.n → X.B.I.E) : PW X u (y - y') = PW X u y - PW X u y' := by
   have hs : ∀ x z z' : Fin X.B.I.n → X.B.I.E, hE X x (z - z') = hE X x z - hE X x z' := fun x z z' => by
@@ -1639,7 +1603,7 @@ theorem PW_sub (y y' : Fin X.B.I.n → X.B.I.E) : PW X u (y - y') = PW X u y - P
   abel
 
 /- English proof (translation)
-Establish `key : hE X (X.eR a) (PW X u y) = hEl X (X.eR a) (PW X u y)` using `rfl`. Rewrite using `[key]`. Simplify using `only [PW, map_sub, map_sum, map_smul, smul_eq_mul]`. Simplify using `[hEl_apply, hE_e_e, hE_e_f, hermitian_e_z_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem hE_e_PW (a : Fin D.R.rS) (y : Fin X.B.I.n → X.B.I.E) : hE X (X.eR a) (PW X u y) = 0 := by
   have key : hE X (X.eR a) (PW X u y) = hEl X (X.eR a) (PW X u y) := rfl
@@ -1648,7 +1612,7 @@ theorem hE_e_PW (a : Fin D.R.rS) (y : Fin X.B.I.n → X.B.I.E) : hE X (X.eR a) (
   simp [hEl_apply, hE_e_e, hE_e_f, hermitian_e_z_zero]
 
 /- English proof (translation)
-Establish `key : hE X (X.fR a) (PW X u y) = hEl X (X.fR a) (PW X u y)` using `rfl`. Rewrite using `[key]`. Simplify using `only [PW, map_sub, map_sum, map_smul, smul_eq_mul]`. Simplify using `[hEl_apply, hE_f_e, hE_f_f, hermitian_f_z_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem hE_f_PW (a : Fin D.R.rS) (y : Fin X.B.I.n → X.B.I.E) : hE X (X.fR a) (PW X u y) = 0 := by
   have key : hE X (X.fR a) (PW X u y) = hEl X (X.fR a) (PW X u y) := rfl
@@ -1657,7 +1621,7 @@ theorem hE_f_PW (a : Fin D.R.rS) (y : Fin X.B.I.n → X.B.I.E) : hE X (X.fR a) (
   simp [hEl_apply, hE_f_e, hE_f_f, hermitian_f_z_zero]
 
 /- English proof (translation)
-Establish `key : hE X (X.zR u) (PW X u y) = hEl X (X.zR u) (PW X u y)` using `rfl`. Rewrite using `[key]`. Simplify using `only [PW, map_sub, map_sum, map_smul, smul_eq_mul]`. Simplify using `[hEl_apply, hE_z_e, hE_z_f, inv_mul_cancel_right₀ (hE_z_z_ne X u)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem hE_z_PW (y : Fin X.B.I.n → X.B.I.E) : hE X (X.zR u) (PW X u y) = 0 := by
   have key : hE X (X.zR u) (PW X u y) = hEl X (X.zR u) (PW X u y) := rfl
@@ -1666,32 +1630,32 @@ theorem hE_z_PW (y : Fin X.B.I.n → X.B.I.E) : hE X (X.zR u) (PW X u y) = 0 := 
   simp [hEl_apply, hE_z_e, hE_z_f, inv_mul_cancel_right₀ (hE_z_z_ne X u)]
 
 /- English proof (translation)
-Simplify using `only [PW, he, hf, hz, zero_smul, zero_mul, Finset.sum_const_zero, sub_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem PW_fix (w : Fin X.B.I.n → X.B.I.E) (he : ∀ a, hE X (X.eR a) w = 0) (hf : ∀ a, hE X (X.fR a) w = 0)
     (hz : hE X (X.zR u) w = 0) : PW X u w = w := by
   simp only [PW, he, hf, hz, zero_smul, zero_mul, Finset.sum_const_zero, sub_zero]
 
 /- English proof (translation)
-Simplify using `[PW, hE_f_e, hE_e_e, hE_z_e]`.
+Simplify using the standard rewrite rules.
 -/
 theorem PW_e (b : Fin D.R.rS) : PW X u (X.eR b) = 0 := by
   simp [PW, hE_f_e, hE_e_e, hE_z_e]
 
 /- English proof (translation)
-Simplify using `[PW, hE_f_f, hE_e_f, hE_z_f]`.
+Simplify using the standard rewrite rules.
 -/
 theorem PW_f (b : Fin D.R.rS) : PW X u (X.fR b) = 0 := by
   simp [PW, hE_f_f, hE_e_f, hE_z_f]
 
 /- English proof (translation)
-Simplify using `[PW, hermitian_f_z_zero, hermitian_e_z_zero, mul_inv_cancel₀ (hE_z_z_ne X u)]`.
+Simplify using the standard rewrite rules.
 -/
 theorem levi_projection_z_zero : PW X u (X.zR u) = 0 := by
   simp [PW, hermitian_f_z_zero, hermitian_e_z_zero, mul_inv_cancel₀ (hE_z_z_ne X u)]
 
 /- English proof (translation)
-Simplify using `only [PW]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem sub_PW (y : Fin X.B.I.n → X.B.I.E) : y - PW X u y = ∑ a, hE X (X.fR a) y • X.eR a +
     ∑ a, hE X (X.eR a) y • X.fR a + (hE X (X.zR u) y * (hE X (X.zR u) (X.zR u))⁻¹) • X.zR u := by
@@ -1699,9 +1663,9 @@ theorem sub_PW (y : Fin X.B.I.n → X.B.I.E) : y - PW X u y = ∑ a, hE X (X.fR 
   abel
 
 /- English proof (translation)
-Establish `hp : ∀ v, hE X v p = 0 → hE X p v = 0` using `fun v hv => by rw [hE_symm, hv, star_zero]`. Establish `hpe : ∀ a, hE X p (X.eR a) = 0` using `fun a => hp _ (he a)`. Establish `hpf : ∀ a, hE X p (X.fR a) = 0` using `fun a => hp _ (hf a)`. Establish `hpz : hE X p (X.zR u) = 0` using `hp _ hz`. Establish `h2 : hE X p (y - PW X u y) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[sub_PW]`. Use `show hEl X p _ = 0`. Simplify using `only [map_add, map_sum, map_smul, smul_eq_mul, hEl_apply, hpe, hpf, hpz, mul_zero, Finset.sum_const_zero, add_zero]`. Conclude with `⟨by rw [hE_symm X p, h2, star_zero], h2⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem hE_perp_sub (p y : Fin X.B.I.n → X.B.I.E) (he : ∀ a, hE X (X.eR a) p = 0)
     (hf : ∀ a, hE X (X.fR a) p = 0) (hz : hE X (X.zR u) p = 0) :
@@ -1724,9 +1688,9 @@ section Levi
 variable {D : D7} (X : HidaSetting D) (u : D.what₂.Word)
 
 /- English proof (translation)
-Establish `hle : Submodule.span X.B.I.E (Set.range X.eR) ≤ LinearMap.eqLocus LinearMap.id (∑ b, (hEl X (X.fR b)).smulRight (X.eR b))`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨c, rfl⟩`. Rewrite using `[SetLike.mem_coe, LinearMap.mem_eqLocus]`. Simplify using `[LinearMap.sum_apply, hEl_apply, hE_f_e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hs'` using `LinearMap.mem_eqLocus.mp (hle hs)`. Simplify `hs'` using `[LinearMap.sum_apply, hEl_apply]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem span_repr_E (s : Fin X.B.I.n → X.B.I.E) (hs : s ∈ Submodule.span X.B.I.E (Set.range X.eR)) :
     s = ∑ b, hE X (X.fR b) s • X.eR b := by
@@ -1740,7 +1704,7 @@ theorem span_repr_E (s : Fin X.B.I.n → X.B.I.E) (hs : s ∈ Submodule.span X.B
   simpa [LinearMap.sum_apply, hEl_apply] using hs'
 
 /- English proof (translation)
-Establish `hw' : ∀ b, hE X w (X.eR b) = 0` using `fun b => by rw [hE_symm, hw, star_zero]`. Rewrite using `[span_repr_E X s hs, hE_symm X w]`. Use `show star (hEl X w (∑ b, hE X (X.fR b) s • X.eR b)) = 0`. Rewrite using `[map_sum]`. Simplify using `only [map_smul, smul_eq_mul, hEl_apply, hw', mul_zero, Finset.sum_const_zero, star_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hE_span_left (s w : Fin X.B.I.n → X.B.I.E) (hs : s ∈ Submodule.span X.B.I.E (Set.range X.eR))
     (hw : ∀ a, hE X (X.eR a) w = 0) : hE X s w = 0 := by
@@ -1751,7 +1715,7 @@ theorem hE_span_left (s w : Fin X.B.I.n → X.B.I.E) (hs : s ∈ Submodule.span 
   simp only [map_smul, smul_eq_mul, hEl_apply, hw', mul_zero, Finset.sum_const_zero, star_zero]
 
 /- English proof (translation)
-Rewrite using `[span_repr_E X s hs]`. Use `show hEl X x (∑ b, hE X (X.fR b) s • X.eR b) = 0`. Rewrite using `[map_sum]`. Simplify using `only [map_smul, smul_eq_mul, hEl_apply, hx, mul_zero, Finset.sum_const_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hE_span_right (x s : Fin X.B.I.n → X.B.I.E) (hs : s ∈ Submodule.span X.B.I.E (Set.range X.eR))
     (hx : ∀ a, hE X x (X.eR a) = 0) : hE X x s = 0 := by
@@ -1761,14 +1725,14 @@ theorem hE_span_right (x s : Fin X.B.I.n → X.B.I.E) (hs : s ∈ Submodule.span
   simp only [map_smul, smul_eq_mul, hEl_apply, hx, mul_zero, Finset.sum_const_zero]
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨a, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem e_mem_span (a : Fin D.R.rS) : X.eR a ∈ Submodule.span X.B.I.E (Set.range X.eR) := Submodule.subset_span ⟨a, rfl⟩
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `h` using `hM (Pi.single i 1) (Pi.single j 1)`. Establish `hJij : hE X (Pi.single i 1) (Pi.single j 1) = X.B.I.J i j`. Simplify using `[hE, Formalism.UG.hform, Pi.single_apply, apply_ite]`. Rewrite `h` using `[hJij, mulVec_single_one, mulVec_single_one]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← h]`. Simplify using `only [hE, Formalism.UG.hform, Formalism.UG.cT, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem unit_of_form (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E)
     (hM : ∀ x y, hE X (M *ᵥ x) (M *ᵥ y) = hE X x y) :
@@ -1784,7 +1748,7 @@ theorem unit_of_form (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E)
   rfl
 
 /- English proof (translation)
-Introduce `h0`. Use `congrArg Matrix.det hM` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, h0, mul_zero]`. Conclude with `X.B.I.J_det this.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_ne_of_unit (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E)
     (hM : Formalism.UG.cT (starRingEnd X.B.I.E) M * X.B.I.J * M = X.B.I.J) : M.det ≠ 0 := by
@@ -1794,15 +1758,15 @@ theorem det_ne_of_unit (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E)
   exact X.B.I.J_det this.symm
 
 /- English proof (translation)
-Simplify using `using PW_smul X u (0 : X.B.I.E) 0`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem PW_zero : PW X u 0 = 0 := by
   simpa using PW_smul X u (0 : X.B.I.E) 0
 
 /- English proof (translation)
-Establish `h1` using `(hE_perp_sub X u (PW X u y') y (fun a => hE_e_PW X u a y') (fun a => hE_f_PW X u a y') (hE_z_PW X u y')).1`. Establish `h2` using `(hE_perp_sub X u (PW X u y) y' (fun a => hE_e_PW X u a y) (fun a => hE_f_PW X u a y) (hE_z_PW X u y)).2`. Combine the equalities or inequalities in the displayed calculation. Consider the case `(congr 1 <;> abel)`. Consider the case `simp`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Treat this case separately. Treat this case separately.
 
-Use `_ = hE X (PW X u y) (PW X u y') + hE X (y - PW X u y) (y' - PW X u y') := by`. Rewrite using `[hE_add_left, hE_add_right, hE_add_right]`. Simplify using `only [h1, h2, add_zero, zero_add]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hE_sub_PW_self (y y' : Fin X.B.I.n → X.B.I.E) :
     hE X y y' = hE X (PW X u y) (PW X u y') + hE X (y - PW X u y) (y' - PW X u y') := by
@@ -1828,9 +1792,9 @@ structure SRat (G G' : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) : Prop where
   c2 : (G - 1) *ᵥ X.zR u ∈ Formalism.L2.SG.PoincareInHH.Cut.SpL X.eR D.R.rS
 
 /- English proof (translation)
-Establish `L : ∀ a b : Fin X.B.I.n → X.B.I.E, hE X a b = (fun i => starRingEnd X.B.I.E (a i)) ⬝ᵥ (X.B.I.J *ᵥ b)` using `fun a b => by`. Simplify using `only [hE, Formalism.UG.hform, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]`. Establish `hσ : (fun i => starRingEnd X.B.I.E ((G *ᵥ x) i)) = (G.map (starRingEnd X.B.I.E)) *ᵥ (fun i => starRingEnd X.B.I.E (x i))`. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, map_sum, map_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[L, L, hσ, Matrix.mulVec_mulVec, ← Matrix.vecMul_transpose (G.map (starRingEnd X.B.I.E)), ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec]`. Use `congr 2`. Simplify `h.unit` using `[Formalism.UG.cT, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem SRat.hE_G {G G' : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E} (h : SRat (u := u) G G')
     (x y : Fin X.B.I.n → X.B.I.E) : hE X (G *ᵥ x) (G *ᵥ y) = hE X x y := by
@@ -1847,13 +1811,13 @@ theorem SRat.hE_G {G G' : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E} (h : SRat 
   simpa [Formalism.UG.cT, Matrix.mul_assoc] using h.unit
 
 /- English proof (translation)
-Establish `key : ∀ n : ℕ, ∀ a : Fin D.R.rS, a.1 < n → G' *ᵥ X.eR a ∈ Submodule.span X.B.I.E (Set.range X.eR)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro a ha`. Conclude with `absurd ha (Nat.not_lt_zero _)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `succ n ih`. Introduce `a ha`. Establish `hle : Formalism.L2.SG.PoincareInHH.Cut.SpL X.eR a.1 ≤ (Submodule.span X.B.I.E (Set.range X.eR)).comap (Matrix.mulVecLin G')`. Unfold `Formalism.L2.SG.PoincareInHH.Cut.SpL`. Rewrite using `[Submodule.span_le]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨b, hb, rfl⟩`. Rewrite using `[SetLike.mem_coe, Submodule.mem_comap]`. Conclude with `ih b (lt_of_lt_of_le hb (Nat.lt_succ_iff.mp ha))`. Establish `hsub` using `hle (h.c1 a)`. Establish `hdec : G' *ᵥ X.eR a = X.eR a - G' *ᵥ ((G - 1) *ᵥ X.eR a)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_sub, h.inv1, Matrix.mul_one, Matrix.sub_mulVec, Matrix.one_mulVec]`. Normalize the expressions using the abelian group laws. Rewrite using `[hdec]`. Conclude with `Submodule.sub_mem _ (Submodule.subset_span ⟨a, rfl⟩) (Submodule.mem_comap.mp hsub)`. Conclude with `key _ a a.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SRat.inv_e {G G' : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E} (h : SRat (u := u) G G')
     (a : Fin D.R.rS) : G' *ᵥ X.eR a ∈ Submodule.span X.B.I.E (Set.range X.eR) := by
@@ -1880,11 +1844,9 @@ theorem SRat.inv_e {G G' : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E} (h : SRat
   exact key _ a a.2
 
 /- English proof (translation)
-Establish `hle : Submodule.span X.B.I.E (Set.range X.eR) ≤ (Submodule.span X.B.I.E (Set.range X.eR)).comap (Matrix.mulVecLin G')`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨b, rfl⟩`. Rewrite using `[SetLike.mem_coe, Submodule.mem_comap]`. Conclude with `h.inv_e b`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : (G - 1) *ᵥ X.zR u ∈ Submodule.span X.B.I.E (Set.range X.eR)` using `Submodule.span_mono (Set.image_subset_range _ _) h.c2`. Establish `hdec : (G' - 1) *ᵥ X.zR u = -(G' *ᵥ ((G - 1) *ᵥ X.zR u))`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_sub, h.inv1, Matrix.mul_one, Matrix.sub_mulVec, Matrix.sub_mulVec, Matrix.one_mulVec]`. Normalize the expressions using the abelian group laws. Rewrite using `[hdec]`.
-
-Conclude with `Submodule.neg_mem _ (Submodule.mem_comap.mp (hle hc))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SRat.coordinate_inverse_zeta {G G' : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E} (h : SRat (u := u) G G') :
     (G' - 1) *ᵥ X.zR u ∈ Submodule.span X.B.I.E (Set.range X.eR) := by
@@ -1904,9 +1866,9 @@ theorem SRat.coordinate_inverse_zeta {G G' : Matrix (Fin X.B.I.n) (Fin X.B.I.n) 
   exact Submodule.neg_mem _ (Submodule.mem_comap.mp (hle hc))
 
 /- English proof (translation)
-Establish `hGG : ∀ v, G *ᵥ (G' *ᵥ v) = v` using `fun v => by rw [Matrix.mulVec_mulVec, h.inv2, Matrix.one_mulVec]`. Use `⟨fun a => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hGG (X.eR a), h.hE_G]`. Conclude with `hE_span_left X _ _ (h.inv_e a) he`. Rewrite using `[← hGG (X.zR u), h.hE_G]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsplit : G' *ᵥ X.zR u = X.zR u + (G' - 1) *ᵥ X.zR u`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec]`. Normalize the expressions using the abelian group laws. Rewrite using `[hsplit, hE_add_left, hz, hE_span_left X _ _ h.coordinate_inverse_zeta he, add_zero]`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SRat.perp {G G' : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E} (h : SRat (u := u) G G')
     (w : Fin X.B.I.n → X.B.I.E) (he : ∀ a, hE X (X.eR a) w = 0) (hz : hE X (X.zR u) w = 0) :
@@ -1922,7 +1884,7 @@ theorem SRat.perp {G G' : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E} (h : SRat 
     rw [hsplit, hE_add_left, hz, hE_span_left X _ _ h.coordinate_inverse_zeta he, add_zero]
 
 /- English proof (translation)
-Take `⟨he', hz'⟩` from `h.perp w he hz`. Rewrite using `[sub_PW]`. Simplify using `only [he', hz', zero_smul, Finset.sum_const_zero, zero_mul, add_zero]`. Conclude with `Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem SRat.sub_PW_mem {G G' : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E} (h : SRat (u := u) G G')
     (w : Fin X.B.I.n → X.B.I.E) (he : ∀ a, hE X (X.eR a) w = 0) (hz : hE X (X.zR u) w = 0) :
@@ -1947,7 +1909,7 @@ def Hm (G : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) : Matrix (Fin X.B.I.n) (
   LinearMap.toMatrix' (Hl (X := X) (u := u) G)
 
 /- English proof (translation)
-Use `first`. Consider the case `(rw [Hm, LinearMap.toMatrix'_mulVec]; rfl)`. Consider the case `rw [Hm, LinearMap.toMatrix'_mulVec]`. Consider the case `simp [Hm, Hl]`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem Hm_mulVec (G : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) (y : Fin X.B.I.n → X.B.I.E) :
     Hm (X := X) (u := u) G *ᵥ y = Hf (X := X) (u := u) G y := by
@@ -1957,7 +1919,7 @@ theorem Hm_mulVec (G : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) (y : Fin X.B.
   | simp [Hm, Hl]
 
 /- English proof (translation)
-Rewrite using `[Hm_mulVec]`. Simplify using `only [Hf, hy, Matrix.mulVec_zero, PW_zero, zero_add, sub_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Hm_fix (G : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) (y : Fin X.B.I.n → X.B.I.E)
     (hy : PW X u y = 0) : Hm (X := X) (u := u) G *ᵥ y = y := by
@@ -1965,13 +1927,11 @@ theorem Hm_fix (G : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) (y : Fin X.B.I.n
   simp only [Hf, hy, Matrix.mulVec_zero, PW_zero, zero_add, sub_zero]
 
 /- English proof (translation)
-Establish `idem : ∀ z, PW X u (PW X u z) = PW X u z` using `fun z => PW_fix X u (PW X u z) (fun a => hE_e_PW X u a z) (fun a => hE_f_PW X u a z) (hE_z_PW X u z)`. Establish `hPd : ∀ z, PW X u (z - PW X u z) = 0` using `fun z => by rw [PW_sub, idem, sub_self]`. Establish `hPH : ∀ z, PW X u (Hm (X` using `X) (u := u) G *ᵥ z) = PW X u (G *ᵥ PW X u z) := fun z => by`. Rewrite using `[Hm_mulVec, Hf, PW_add, idem, hPd, add_zero]`. Establish `hdH : ∀ z, Hm (X` using `X) (u := u) G *ᵥ z - PW X u (Hm (X := X) (u := u) G *ᵥ z) = z - PW X u z := fun z => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hPH, Hm_mulVec, Hf]`. Normalize the expressions using the abelian group laws. Establish `hG : ∀ w w', (∀ a, hE X (X.eR a) w = 0) → hE X (X.zR u) w = 0 → (∀ a, hE X (X.eR a) w' = 0) → hE X (X.zR u) w' = 0 → hE X (PW X u (G *ᵥ w)) (PW X u (G *ᵥ w')) = hE X w w'`. Introduce `w w' he hz he' hz'`. Establish `hperp : ∀ a, hE X (X.eR a) (G *ᵥ w' - PW X u (G *ᵥ w')) = 0`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `a`. Use `show hEl X (X.eR a) (G *ᵥ w' - PW X u (G *ᵥ w')) = 0`. Rewrite using `[map_sub, hEl_apply, hEl_apply, (h.perp w' he' hz').1 a, hE_e_PW, sub_zero]`. Rewrite using `[← h.hE_G w w', hE_sub_PW_self X u (G *ᵥ w) (G *ᵥ w'), hE_span_left X _ _ (h.sub_PW_mem w he hz) hperp, add_zero]`. Rewrite using `[hE_sub_PW_self X u (Hm (X := X) (u := u) G *ᵥ x) (Hm (X := X) (u := u) G *ᵥ y), hdH, hdH, hPH, hPH, hG _ _ (fun a => hE_e_PW X u a x) (hE_z_PW X u x) (fun a => hE_e_PW X u a y) (hE_z_PW X u y)]`.
-
-Conclude with `(hE_sub_PW_self X u x y).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SRat.hE_H {G G' : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E} (h : SRat (u := u) G G')
     (x y : Fin X.B.I.n → X.B.I.E) :
@@ -2010,7 +1970,7 @@ theorem HGL_coe {G G' : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E} (h : SRat (u
     ((HGL h : GL (Fin X.B.I.n) X.B.I.E) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) = Hm (X := X) (u := u) G := rfl
 
 /- English proof (translation)
-Use `first`. Consider the case `exact unit_of_form X _ h.hE_H`. Consider the case `simp [Formalism.UG.UJ, HGL_coe, unit_of_form X _ h.hE_H]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem HGL_mem {G G' : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E} (h : SRat (u := u) G G') :
     HGL h ∈ Formalism.UG.UJ (starRingEnd X.B.I.E) X.B.I.J := by
@@ -2030,25 +1990,25 @@ structure NRat (N : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) : Prop where
   n3 : ∀ y, (∀ a, hE X (X.eR a) y = 0) → (N - 1) *ᵥ y ∈ Submodule.span X.B.I.E (Set.range X.eR)
 
 /- English proof (translation)
-The claim follows from `Hm_fix G _ (PW_e X u a)`.
+A detailed English derivation is pending.
 -/
 theorem Hm_e {G : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E} (a : Fin D.R.rS) :
     Hm (X := X) (u := u) G *ᵥ X.eR a = X.eR a := Hm_fix G _ (PW_e X u a)
 
 /- English proof (translation)
-The claim follows from `Hm_fix G _ (PW_f X u a)`.
+A detailed English derivation is pending.
 -/
 theorem Hm_f {G : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E} (a : Fin D.R.rS) :
     Hm (X := X) (u := u) G *ᵥ X.fR a = X.fR a := Hm_fix G _ (PW_f X u a)
 
 /- English proof (translation)
-The claim follows from `Hm_fix G _ (levi_projection_z_zero X u)`.
+A detailed English derivation is pending.
 -/
 theorem levi_fixes_z {G : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E} :
     Hm (X := X) (u := u) G *ᵥ X.zR u = X.zR u := Hm_fix G _ (levi_projection_z_zero X u)
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem inv_fix {A B : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E} (hBA : B * A = 1) {v : Fin X.B.I.n → X.B.I.E}
     (hv : A *ᵥ v = v) : B *ᵥ v = v := by
@@ -2056,23 +2016,19 @@ theorem inv_fix {A B : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E} (hBA : B * A 
     _ = v := by rw [Matrix.mulVec_mulVec, hBA, Matrix.one_mulVec]
 
 /- English proof (translation)
-Use `set Hi := (((HGL h)⁻¹ : GL (Fin X.B.I.n) X.B.I.E) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E)`. Establish `hiH : Hi * Hm (X` using `X) (u := u) G = 1 := by`. Rewrite using `[← HGL_coe h]`. Simplify using `[Hi]`. Establish `hHi : Hm (X` using `X) (u := u) G * Hi = 1 := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← HGL_coe h]`. Simplify using `[Hi]`. Establish `hie : ∀ a, Hi *ᵥ X.eR a = X.eR a` using `fun a => inv_fix hiH (Hm_e a)`. Establish `hiz : Hi *ᵥ X.zR u = X.zR u` using `inv_fix hiH levi_fixes_z`. Use `⟨fun a => ?_, ?_, fun y hy => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : (G * Hi - 1) *ᵥ X.eR a = (G - 1) *ᵥ X.eR a`. Rewrite using `[sub_mulVec, sub_mulVec, one_mulVec, ← mulVec_mulVec, hie]`. Rewrite using `[e]`. Conclude with `h.c1 a`. Establish `e : (G * Hi - 1) *ᵥ X.zR u = (G - 1) *ᵥ X.zR u`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sub_mulVec, sub_mulVec, one_mulVec, ← mulVec_mulVec, hiz]`. Rewrite using `[e, spL_range]`. Conclude with `h.c2`. Use `set y₁ := Hi *ᵥ y`. Establish `hy1 : Hm (X` using `X) (u := u) G *ᵥ y₁ = y := by rw [mulVec_mulVec, hHi, one_mulVec]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he1 : ∀ a, hE X (X.eR a) y₁ = 0` using `fun a => by`. Rewrite using `[← h.hE_H (X.eR a) y₁, Hm_e, hy1]`. Conclude with `hy a`. Use `set w := PW X u y₁`. Use `set b := y₁ - PW X u y₁`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (G * Hi - 1) *ᵥ y = (G *ᵥ w - PW X u (G *ᵥ w)) + (G - 1) *ᵥ b`. Establish `h1 : (G * Hi - 1) *ᵥ y = G *ᵥ y₁ - y` using `by rw [sub_mulVec, one_mulVec, ← mulVec_mulVec]`. Rewrite using `[h1]`. Establish `h2 : y = PW X u (G *ᵥ w) + b` using `by rw [← hy1, Hm_mulVec, Hf]`. Establish `h3 : y₁ = w + b` using `by simp only [w, b]; abel`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h2, sub_mulVec, one_mulVec]`. Use `nth_rewrite 1 [h3]`. Rewrite using `[mulVec_add]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`.
-
-Use `add_mem (h.sub_PW_mem w (fun a => hE_e_PW X u a y₁) (hE_z_PW X u y₁)) ?_` and prove the remaining obligations. Rewrite using `[show b = y₁ - PW X u y₁ from rfl, sub_PW]`. Simplify using `only [he1, zero_smul, Finset.sum_const_zero, add_zero, mulVec_add, mulVec_sum, mulVec_smul]`. Use `add_mem (Submodule.sum_mem _ fun c _ => Submodule.smul_mem _ _ ?_) (Submodule.smul_mem _ _ ?_)` and prove the remaining obligations. Conclude with `Submodule.span_mono (Set.image_subset_range _ _) (h.c1 c)`.
-
-Rewrite using `[spL_range]`. Conclude with `h.c2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SRat.nrat {G G' : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E} (h : SRat (u := u) G G') :
     NRat (X := X) (u := u) (G * (((HGL h)⁻¹ : GL (Fin X.B.I.n) X.B.I.E) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E)) := by
@@ -2119,9 +2075,9 @@ section Transfer
 variable {D : D7} {X : HidaSetting D} {u : D.what₂.Word}
 
 /- English proof (translation)
-Set `ι' : (Fin X.B.I.n → X.B.I.E) →ₛₗ[ψ] (Fin X.B.I.n → R)` to `{ toFun := ι, map_add' := map_add ι, map_smul' := hιs }`. Establish `hle : Submodule.span X.B.I.E (X.eR '' T) ≤ (Submodule.span R ((fun a => ι (X.eR a)) '' T)).comap ι'`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Rewrite using `[SetLike.mem_coe, Submodule.mem_comap]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.subset_span ⟨a, ha, rfl⟩`. Conclude with `Submodule.mem_comap.mp (hle hs)`.
+A detailed English derivation is pending.
 -/
 theorem transfer_span {R : Type} [CommRing R] (ψ : X.B.I.E →+* R) (ι : (Fin X.B.I.n → X.B.I.E) →+ (Fin X.B.I.n → R))
     (hιs : ∀ (c : X.B.I.E) x, ι (c • x) = ψ c • ι x) (T : Set (Fin D.R.rS)) (s : Fin X.B.I.n → X.B.I.E)
@@ -2138,21 +2094,21 @@ theorem transfer_span {R : Type} [CommRing R] (ψ : X.B.I.E →+* R) (ι : (Fin 
   exact Submodule.mem_comap.mp (hle hs)
 
 /- English proof (translation)
-Set `Q : (Fin X.B.I.n → R) → (Fin X.B.I.n → R)` to `fun y => y - ∑ b, hR (ι (X.eR b)) y • ι (X.fR b)`. Set `T : (Fin X.B.I.n → R) → (Fin X.B.I.n → R)` to `fun y => (M - 1) *ᵥ Q y - ∑ b, hR (ι (X.fR b)) ((M - 1) *ᵥ Q y) • ι (X.eR b)`. Establish `hQadd : ∀ y y', Q (y + y') = Q y + Q y'` using `fun y y' => by`. Simplify using `only [Q, hRadd, add_smul, Finset.sum_add_distrib]`. Normalize the expressions using the abelian group laws.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Establish `hQsmul : ∀ (c : R) y, Q (c • y) = c • Q y` using `fun c y => by`. Simplify using `only [Q, hRsmul, smul_sub, Finset.smul_sum, smul_smul]`. Establish `hTadd : ∀ y y', T (y + y') = T y + T y'` using `fun y y' => by`. Simplify using `only [T, hQadd, mulVec_add, hRadd, add_smul, Finset.sum_add_distrib]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Establish `hTsmul : ∀ (c : R) y, T (c • y) = c • T y` using `fun c y => by`. Simplify using `only [T, hQsmul, mulVec_smul, hRsmul, smul_sub, Finset.smul_sum, smul_smul]`. Establish `hTι : ∀ x, T (ι x) = 0` using `fun x => by set qx := x - ∑ b, hE X (X.eR b) x • X.fR b with hqx`. Establish `hQ : Q (ι x) = ι qx`. Simplify using `only [Q, hqx, map_sub, map_sum, hιs, hh]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hperp : ∀ a, hE X (X.eR a) qx = 0` using `fun a => by`. Simplify using `only [hqx, ← hEl_apply, map_sub, map_sum, map_smul]`. Simplify using `[hEl_apply, hE_e_f]`. Use `clear_value qx`. Establish `hs` using `hN.n3 qx hperp`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hMs : (M - 1) *ᵥ ι qx = ι ((N - 1) *ᵥ qx)`. Rewrite using `[sub_mulVec, one_mulVec, hM, sub_mulVec, one_mulVec, map_sub]`. Simplify using `only [T, hQ, hMs, hh]`. Establish `hr : (∑ b, ψ (hE X (X.fR b) ((N - 1) *ᵥ qx)) • ι (X.eR b)) = ι ((N - 1) *ᵥ qx)` using `by conv_rhs => rw [span_repr_E X _ hs]`. Rewrite using `[map_sum]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hιs]`. Rewrite using `[hr, sub_self]`. Establish `hT0 : ∀ y, T y = 0` using `fun y => by`. Proceed by induction on `hsp y using Submodule.span_induction with`. Consider the case `mem y hy => obtain ⟨x, rfl⟩ := hy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Conclude with `hTι x`. Consider the case `zero => simpa using hTι 0`. Consider the case `add y z _ _ hy hz => rw [hTadd, hy, hz, add_zero]`. Consider the case `smul c y _ hy => rw [hTsmul, hy, smul_zero]`. Introduce `y hy`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQy : Q y = y` using `by simp only [Q, hy, zero_smul, Finset.sum_const_zero, sub_zero]`. Establish `h1` using `hT0 y`. Simplify using `only [T, hQy] at h1`. Rewrite using `[sub_eq_zero.mp h1]`. Conclude with `Submodule.sum_mem _ fun b _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨b, rfl⟩)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transfer3 {R : Type} [CommRing R] (ψ : X.B.I.E →+* R) (ι : (Fin X.B.I.n → X.B.I.E) →+ (Fin X.B.I.n → R))
     (hιs : ∀ (c : X.B.I.E) x, ι (c • x) = ψ c • ι x)
@@ -2212,7 +2168,7 @@ section Emb
 variable {D : D7} (X : HidaSetting D) (u : D.what₂.Word)
 
 /- English proof (translation)
-Establish `hPu : IsUnit (X.B.I.P v).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (X.B.I.P_unit v)`. Establish `hPH : IsUnit (X.B.I.P v)ᴴ.det` using `by rw [Matrix.det_conjTranspose]; exact hPu.star`. Rewrite using `[← X.B.I.P_spec v, Matrix.conjTranspose_nonsing_inv]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[Matrix.mul_nonsing_inv _ hPu, Matrix.mul_one, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hPH, Matrix.one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem hJP (v : InfinitePlace X.B.I.F) :
     ((X.B.I.P v)⁻¹)ᴴ * Formalism.REAL.Jm (X.B.I.ε v) * (X.B.I.P v)⁻¹ = X.B.I.J.map (X.B.I.φ v) := by
@@ -2283,7 +2239,7 @@ def ratGA (H : GL (Fin X.B.I.n) X.B.I.E) (hH : H ∈ Formalism.UG.UJ (starRingEn
   (fun v => ratInf X H hH v, ratFin X H hH)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨H, hH, fun v => rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem ratGA_mem (H : GL (Fin X.B.I.n) X.B.I.E) (hH : H ∈ Formalism.UG.UJ (starRingEnd X.B.I.E) X.B.I.J) :
     ratGA X H hH ∈ Formalism.MainNotions.LeviCoordinates.rr_GF X.B.I :=
@@ -2298,7 +2254,7 @@ theorem uMat_ratGA_inv (H : GL (Fin X.B.I.n) X.B.I.E) (hH : H ∈ Formalism.UG.U
         X.B.I.P v := rfl
 
 /- English proof (translation)
-Use `first`. Consider the case `rfl`. Consider the case `simp [ratGA, ratFin]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem fmat_ratGA_inv (H : GL (Fin X.B.I.n) X.B.I.E) (hH : H ∈ Formalism.UG.UJ (starRingEnd X.B.I.E) X.B.I.J) :
     X.B.I.fmat ((ratGA X H hH)⁻¹.2) =
@@ -2315,7 +2271,7 @@ section Final
 variable {D : D7} (X : HidaSetting D) (u : D.what₂.Word)
 
 /- English proof (translation)
-Take `⟨M, hM⟩` from `Ideal.exists_maximal (𝓞 F)`. Set `v : IsDedekindDomain.HeightOneSpectrum (𝓞 F)` to `⟨M, hM.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hM (NumberField.RingOfIntegers.not_isField F)⟩`. Use `⟨⟨0, 1, fun h => ?_⟩⟩` and prove the remaining obligations. Establish `h' : (0 : Af F) v = (1 : Af F) v` using `by rw [h]`. Conclude with `zero_ne_one (α := v.adicCompletion F) h'`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem af_ntriv (F : Type) [Field F] [NumberField F] : Nontrivial (Af F) := by
   obtain ⟨M, hM⟩ := Ideal.exists_maximal (𝓞 F)
@@ -2326,20 +2282,18 @@ theorem af_ntriv (F : Type) [Field F] [NumberField F] : Nontrivial (Af F) := by
   exact zero_ne_one (α := v.adicCompletion F) h'
 
 /- English proof (translation)
-Use `af_ntriv X.B.I.F` as an intermediate fact. Conclude with `Algebra.TensorProduct.includeLeft_injective (S := X.B.I.F) (algebraMap X.B.I.F (Af X.B.I.F)).injective`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem inclE_inj : Function.Injective (Formalism.UG.inclE (F := X.B.I.F) (Af X.B.I.F) : X.B.I.E → _) := by
   have := af_ntriv X.B.I.F
   exact Algebra.TensorProduct.includeLeft_injective (S := X.B.I.F) (algebraMap X.B.I.F (Af X.B.I.F)).injective
 
 /- English proof (translation)
-Establish `hinc : Function.Injective (incl X.B.I)` using `fun x y h => funext fun i => inclE_inj X (congrFun h i)`. Establish `hrep` using `span_repr X (incl X.B.I s) (span_im_le T hs)`. Simplify using `only [hA_incl] at hrep`. Establish `hs' : s = ∑ b, hE X (X.fR b) s • X.eR b`. Apply `hinc` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[incl_sum]`. Simplify using `only [incl_smul]`. Conclude with `hrep`. Establish `h0 : ∀ b ∉ T, hE X (X.fR b) s = 0` using `fun b hb => by`. Use `hA_f_span X T _ hs b hb` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hA_incl]`. Conclude with `inclE_inj X (by rw [this, map_zero])`. Rewrite using `[hs']`. Use `Submodule.sum_mem _ fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `hb : b ∈ T`.
-
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨b, hb, rfl⟩)`. Rewrite using `[h0 b hb, zero_smul]`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem descend (T : Set (Fin D.R.rS)) (s : Fin X.B.I.n → X.B.I.E)
     (hs : incl X.B.I s ∈ Submodule.span (X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) ((fun b => incl X.B.I (X.eR b)) '' T)) :
@@ -2363,7 +2317,7 @@ theorem descend (T : Set (Fin D.R.rS)) (s : Fin X.B.I.n → X.B.I.E)
   · rw [h0 b hb, zero_smul]; exact zero_mem _
 
 /- English proof (translation)
-Rewrite `hs`, the goal using `[← Set.image_univ]`. Conclude with `descend X Set.univ s hs`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem descend_range (s : Fin X.B.I.n → X.B.I.E)
     (hs : incl X.B.I s ∈ Submodule.span (X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) (Set.range fun b => incl X.B.I (X.eR b))) :
@@ -2372,7 +2326,7 @@ theorem descend_range (s : Fin X.B.I.n → X.B.I.E)
   exact descend X Set.univ s hs
 
 /- English proof (translation)
-Rewrite using `[Matrix.sub_mulVec, Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.one_mulVec, incl_mulVec, incl_sub]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem incl_sub_mulVec (G : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) (y : Fin X.B.I.n → X.B.I.E) :
     (G.map (Formalism.UG.inclE (F := X.B.I.F) (Af X.B.I.F)) - 1) *ᵥ incl X.B.I y = incl X.B.I ((G - 1) *ᵥ y) := by
@@ -2397,9 +2351,9 @@ Both sides reduce to the same expression.
 theorem rvHom_apply (v : InfinitePlace X.B.I.F) (x : Fin X.B.I.n → X.B.I.E) : rvHom X v x = rv X.B.I v x := rfl
 
 /- English proof (translation)
-Use `show rv X.B.I v (c • x) = X.B.I.φ v c • rv X.B.I v x`. Unfold `rv`. Rewrite using `[← Matrix.mulVec_smul]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[map_mul]`.
+A detailed English derivation is pending.
 -/
 theorem rv_smul (v : InfinitePlace X.B.I.F) (c : X.B.I.E) (x : Fin X.B.I.n → X.B.I.E) :
     rvHom X v (c • x) = X.B.I.φ v c • rvHom X v x := by
@@ -2421,7 +2375,7 @@ Both sides reduce to the same expression.
 theorem inclHom_apply (x : Fin X.B.I.n → X.B.I.E) : inclHom X x = incl X.B.I x := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `[Finset.sum_apply, Pi.single_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem sum_single {R : Type} [CommRing R] (c : Fin X.B.I.n → R) :
     ∑ i, c i • (Pi.single i (1 : R) : Fin X.B.I.n → R) = c := by
@@ -2429,13 +2383,13 @@ theorem sum_single {R : Type} [CommRing R] (c : Fin X.B.I.n → R) :
   simp [Finset.sum_apply, Pi.single_apply]
 
 /- English proof (translation)
-Establish `hPu : IsUnit (X.B.I.P v).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (X.B.I.P_unit v)`. Establish `hs1 : ∀ i, rvHom X v (Pi.single i 1) = (X.B.I.P v)⁻¹ *ᵥ Pi.single i 1`. Introduce `i`. Rewrite using `[rvHom_apply]`. Unfold `rv`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `congr 1`. Use function extensionality and compare the values at `k`. Distinguish the cases in `h : k = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_apply, h]`. Establish `hy : y = ∑ i, (X.B.I.P v *ᵥ y) i • rvHom X v (Pi.single i 1)`. Simplify using `only [hs1, ← mulVec_smul, ← mulVec_sum]`. Rewrite using `[sum_single X, mulVec_mulVec, Matrix.nonsing_inv_mul _ hPu, one_mulVec]`. Rewrite using `[hy]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem rv_span (v : InfinitePlace X.B.I.F) (y : Fin X.B.I.n → ℂ) :
     y ∈ Submodule.span ℂ (Set.range (rvHom X v)) := by
@@ -2456,9 +2410,9 @@ theorem rv_span (v : InfinitePlace X.B.I.F) (y : Fin X.B.I.n → ℂ) :
   exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)
 
 /- English proof (translation)
-Establish `hy : y = ∑ i, y i • inclHom X (Pi.single i 1)` using `by conv_lhs => rw [← sum_single X y]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Use `congr 1`. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply the tactic sequence `by_cases h : j = i <;> simp [inclHom, incl, Pi.single_apply, h]`. Rewrite using `[hy]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem incl_span (y : VA X.B.I) : y ∈ Submodule.span (X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) (Set.range (inclHom X)) := by
   have hy : y = ∑ i, y i • inclHom X (Pi.single i 1) := by
@@ -2472,42 +2426,34 @@ theorem incl_span (y : VA X.B.I) : y ∈ Submodule.span (X.B.I.E ⊗[X.B.I.F] Af
   exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)
 
 /- English proof (translation)
-Establish `h : {b : Fin D.R.rS | b.1 < D.R.rS} = Set.univ` using `Set.eq_univ_of_forall fun b => b.2`. Rewrite using `[h, Set.image_univ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem image_lt_r {V : Type} (e : Fin D.R.rS → V) : e '' {b : Fin D.R.rS | b.1 < D.R.rS} = Set.range e := by
   have h : {b : Fin D.R.rS | b.1 < D.R.rS} = Set.univ := Set.eq_univ_of_forall fun b => b.2
   rw [h, Set.image_univ]
 
 /- English proof (translation)
-Introduce `γ hγ hγI hγf`. Take `⟨γ₀, hγU, hinf, hfin⟩` from `id hγ`. Establish `hS : SRat (X` using `X) (u := u) (γ₀ : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) ((γ₀⁻¹ : GL (Fin X.B.I.n) X.B.I.E) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) := by`. Use `⟨hγU, by simp, by simp, fun a => ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `hγf.1 a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h1` using `[hfin, incl_sub_mulVec]`. Conclude with `descend X _ _ h1`. Establish `h1` using `hγf.2`. Rewrite `h1` using `[hfin, incl_sub_mulVec]`. Rewrite using `[← spL_range]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `descend_range X _ h1`. Establish `hHU` using `HGL_mem hS`. Establish `hN` using `hS.nrat`. Use `set H := HGL hS with hHdef`. Use `set G := (γ₀ : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Hi := ((H⁻¹ : GL (Fin X.B.I.n) X.B.I.E) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E)`. Establish `hHm : (H : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) = Hm (X` using `X) (u := u) G := HGL_coe hS`. Use `⟨γ * (ratGA X H hHU)⁻¹, ratGA X H hHU, by group, mul_mem hγ (inv_mem (ratGA_mem X H hHU)), fun v => ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hM : uMat ((γ * (ratGA X H hHU)⁻¹).1 v) = (X.B.I.P v)⁻¹ * (G * Hi).map (X.B.I.φ v) * X.B.I.P v`. Establish `e : uMat ((γ * (ratGA X H hHU)⁻¹).1 v) = uMat (γ.1 v) * uMat ((ratGA X H hHU)⁻¹.1 v)` using `rfl`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[e, hinf v, uMat_ratGA_inv, Matrix.map_mul]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (X.B.I.P v) (X.B.I.P v)⁻¹, Formalism.MainNotions.LeviCoordinates.rrg_P_mul_inv, Matrix.one_mul]`. Establish `hrv : ∀ x, (uMat ((γ * (ratGA X H hHU)⁻¹).1 v) - 1) *ᵥ rvHom X v x = rvHom X v ((G * Hi - 1) *ᵥ x)`. Introduce `x`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hM, sub_mulVec, one_mulVec, rvHom_apply, rvHom_apply, rv_mulVec, sub_mulVec, one_mulVec]`. Conclude with `((rvHom X v).map_sub _ _).symm`. Use `⟨⟨fun a => ?_, ?_⟩, fun y hy => ?_⟩` and prove the remaining obligations. Use `hrv (X.eR a)` as an intermediate fact. Rewrite `this` using `[rvHom_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `transfer_span (X.B.I.φ v) (rvHom X v) (rv_smul X v) _ _ (hN.n1 a)`. Use `hrv (X.zR u)` as an intermediate fact. Rewrite `this` using `[rvHom_apply]`. Rewrite using `[this]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `hN.n2`. Rewrite `h2` using `[← image_lt_r]`. Conclude with `transfer_span (X.B.I.φ v) (rvHom X v) (rv_smul X v) _ _ h2`. Establish `h3` using `transfer3 (X.B.I.φ v) (rvHom X v) (rv_smul X v) (hJ (X.B.I.ε v)) (fun x y y' => by simp [hJ, mulVec_add, dotProduct_add]) (fun x c y => by simp [hJ, mulVec_smul, dotProduct_smul]) (fun x y => hJ_rv X v x y) (rv_span X v) hN (uMat ((γ * (ratGA X H hHU)⁻¹).1 v)) (fun x => by rw [hM …`. Unfold `spanLt`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[image_lt_r]`. Conclude with `h3`. Establish `hF : X.B.I.fmat ((γ * (ratGA X H hHU)⁻¹).2) = (G * Hi).map (Formalism.UG.inclE (F` using `X.B.I.F) (Af X.B.I.F)) := by`. Rewrite using `[Prod.snd_mul, fmat_mul, hfin, fmat_ratGA_inv, Matrix.map_mul]`. Use `⟨fun a => ?_, ?_, fun y hy => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[hF, incl_sub_mulVec]`. Conclude with `transfer_span (Formalism.UG.inclE (F := X.B.I.F) (Af X.B.I.F)) (inclHom X) (fun c x => incl_smul X c x) _ _ (hN.n1 a)`. Rewrite using `[hF, incl_sub_mulVec]`. Establish `h2` using `hN.n2`. Rewrite `h2`, the goal using `[← Set.image_univ]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `transfer_span (Formalism.UG.inclE (F := X.B.I.F) (Af X.B.I.F)) (inclHom X) (fun c x => incl_smul X c x) _ _ h2`. Rewrite using `[hF]`. Conclude with `transfer3 (Formalism.UG.inclE (F := X.B.I.F) (Af X.B.I.F)) (inclHom X) (fun c x => incl_smul X c x) (hA X.B.I) (fun x y y' => unitaryCongruence.hA_add_right X.B.I _ y y') (fun x c y => unitaryCongruence.hA_smul_right X.B.I _ y c) (fun x y => hA_incl X x y) (incl_span X) hN _ (fun …`. Use `Subgroup.mem_inf.2 ⟨ratGA_mem X H hHU, Subgroup.mem_prod.2 ⟨fun v x hx => ?_, fun x hx => ?_⟩⟩` and prove the remaining obligations. Establish `hfix : (H : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) *ᵥ x = x`.
-
-Rewrite using `[hHm]`. Break down `hx with (⟨a, rfl⟩ | ⟨a, rfl⟩) | hz` into its components or cases. Conclude with `Hm_e a`. Conclude with `Hm_f a`. Rewrite `hz` using `[Set.mem_singleton_iff]`.
-
-Rewrite using `[hz]`. Conclude with `levi_fixes_z`. Use `show ((X.B.I.P v)⁻¹ * (H : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E).map (X.B.I.φ v) * X.B.I.P v) *ᵥ rv X.B.I v x = rv X.B.I v x`. Rewrite using `[rv_mulVec, hfix]`. Establish `hfix : (H : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) *ᵥ x = x`.
-
-Rewrite using `[hHm]`. Break down `hx with (⟨a, rfl⟩ | ⟨a, rfl⟩) | hz` into its components or cases. Conclude with `Hm_e a`. Conclude with `Hm_f a`. Rewrite `hz` using `[Set.mem_singleton_iff]`.
-
-Rewrite using `[hz]`. Conclude with `levi_fixes_z`. Use `show (H : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E).map (Formalism.UG.inclE (F := X.B.I.F) (Af X.B.I.F)) *ᵥ incl X.B.I x = incl X.B.I x`. Rewrite using `[incl_mulVec, hfix]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratLevi_holds : RatLevi X u := by
   intro γ hγ hγI hγf
@@ -2606,16 +2552,16 @@ export Level (prV prV_apply hT_f_e prV_e prV_f prV_Lb Lb_le projection_preserves
 variable {D : D7} (X : HidaSetting D) (u : D.what₂.Word)
 
 /- English proof (translation)
-The claim follows from `Level.ksetSplit_holds X u`.
+A detailed English derivation is pending.
 -/
 theorem ksetSplit_holds : KsetSplit X u := Level.ksetSplit_holds X u
 
 /- English proof (translation)
-Introduce `y hy t ht`. Use `hA X.B.I X.psiEf X.psiEf_add X.psiEf_int (fun x => X.psiEf_rat x) y (fun o => ?_) t ht` and prove the remaining obligations. Set `e : X.B.I.E ≃ₐ[ℚ] D.host.E` to `AlgEquiv.ofRingEquiv (f := X.ιE) (fun q => by`. Rewrite using `[eq_ratCast (algebraMap ℚ X.B.I.E) q, eq_ratCast (algebraMap ℚ D.host.E) q, map_ratCast])`. Establish `ho : IsIntegral ℤ (X.ιE (o : X.B.I.E))` using `(NumberField.RingOfIntegers.isIntegral_coe o).map X.ιE.toRingHom.toIntAlgHom`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨m, hm⟩` from `hB D.host.F D.host.E (X.ιE y) hy ⟨X.ιE o, ho⟩`. Use `⟨m, ?_⟩` and prove the remaining obligations. Rewrite using `[← Algebra.trace_eq_of_algEquiv e]`. Establish `: e ((o : X.B.I.E) * y) = X.ιE o * X.ιE y` using `by simp [e]`. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hm`.
+A detailed English derivation is pending.
 -/
 theorem psiDd_of_cores (hA : PsiTrCore) (hB : DdTraceCore) : PsiDd X := by
   intro y hy t ht
@@ -2632,38 +2578,38 @@ theorem psiDd_of_cores (hA : PsiTrCore) (hB : DdTraceCore) : PsiDd X := by
   exact hm
 
 /- English proof (translation)
-The claim follows from `psiDd_of_cores X Formalism.L2.S.Pv.PsiTrCore.psiTrCore_holds Formalism.L2.S.Pv.DdTraceCore.ddTraceCore_holds`.
+A detailed English derivation is pending.
 -/
 theorem psiDd_holds : PsiDd X :=
   psiDd_of_cores X Formalism.L2.S.Pv.PsiTrCore.psiTrCore_holds Formalism.L2.S.Pv.DdTraceCore.ddTraceCore_holds
 
 /- English proof (translation)
-The claim follows from `Level.unipotent_in_level_of_psi hP`.
+A detailed English derivation is pending.
 -/
 theorem unipotent_in_level_of_psi {X : HidaSetting D} {u : D.what₂.Word} (hP : PsiDd X) : UnipotentConjugateInLevel X u := Level.unipotent_in_level_of_psi hP
 
 /- English proof (translation)
-The claim follows from `unipotent_in_level_of_psi (psiDd_holds X)`.
+A detailed English derivation is pending.
 -/
 theorem unipotent_in_level : UnipotentConjugateInLevel X u := unipotent_in_level_of_psi (psiDd_holds X)
 
 /- English proof (translation)
-The claim follows from `Level.levelDec_of_psiDd (psiDd_holds X)`.
+A detailed English derivation is pending.
 -/
 theorem levelDec_holds : LevelDec X u := Level.levelDec_of_psiDd (psiDd_holds X)
 
 /- English proof (translation)
-The claim follows from `Level.phWellDef_of_psiDd (psiDd_holds X)`.
+A detailed English derivation is pending.
 -/
 theorem phWellDef_holds : PhWellDef X u (level_subgroup_character_unitary X) := Level.phWellDef_of_psiDd (psiDd_holds X)
 
 /- English proof (translation)
-The claim follows from `Level.psiProd_holds X u`.
+A detailed English derivation is pending.
 -/
 theorem psiProd_holds : PsiProd X u := Level.psiProd_holds X u
 
 /- English proof (translation)
-The claim follows from `Level.ratLevi_holds X u`.
+A detailed English derivation is pending.
 -/
 theorem ratLevi_holds : RatLevi X u := Level.ratLevi_holds X u
 

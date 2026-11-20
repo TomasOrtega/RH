@@ -14,17 +14,17 @@ noncomputable section
 namespace GlobalTheory.SiegelThetaInvT
 
 /- English proof (translation)
-Establish `hdet : IsUnit G.det` using `isUnit_iff_ne_zero.2 hG`. Establish `hKG : G⁻¹.map ι * G.map ι = 1`. Rewrite using `[← Matrix.map_mul, Matrix.nonsing_inv_mul _ hdet, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hGK : G.map ι * G⁻¹.map ι = 1`. Rewrite using `[← Matrix.map_mul, Matrix.mul_nonsing_inv _ hdet, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsm : (x • G⁻¹).map ι = ι x • G⁻¹.map ι`. Use extensionality with `i j`. Simplify using `[smul_eq_mul, map_mul]`. Establish `hd : ι x⁻¹ * ι x = 1` using `by rw [← map_mul, inv_mul_cancel₀ hx, map_one]`. Generalize the expression as in `G⁻¹.map ι = K at hKG hGK hsm`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `G.map ι = G' at hKG hGK ⊢`. Establish `h1 : ι x • (Mᵀ * K * M.map c) = ι x • K`. Rewrite using `[← Matrix.smul_mul, ← Matrix.mul_smul, ← hsm, ← hξ, Matrix.mul_smul, Matrix.smul_mul, hb]`. Establish `h2 : Mᵀ * K * M.map c = K`. Use `congrArg (fun X => ι x⁻¹ • X) h1` as an intermediate fact.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `only [smul_smul, hd, one_smul]`. Establish `hcNM : N.map c * M.map c = 1`. Rewrite using `[← Matrix.map_mul, hNM]`. Conclude with `Matrix.map_one _ (map_zero c) (map_one c)`. Establish `hX : N.map c * G' * Nᵀ * K = 1`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.transpose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = N.map c * M.map c := by`. Rewrite using `[hMN, Matrix.transpose_one, Matrix.one_mul, Matrix.mul_assoc (N.map c), hGK, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `_ = 1 := hcNM`. Establish `hT : (Nᵀ.map c)ᵀ = N.map c` using `rfl`. Rewrite using `[hT]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem invTranspose_abstract {E A n : Type} [Field E] [CommRing A] [Fintype n] [DecidableEq n]
     (ι : E →+* A) (c : A →+* A) (G J : Matrix n n E) (hG : G.det ≠ 0) (x : E) (hx : x ≠ 0) (ξ : A)
@@ -67,7 +67,7 @@ private def invT {A n : Type} [CommRing A] [Fintype n] [DecidableEq n] (m : GL n
     by rw [← Matrix.transpose_mul, Units.inv_mul, Matrix.transpose_one]⟩
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => simp [sigR, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 private theorem sigR_eq_cA {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
     (σ : E →ₐ[F] E) (x : AF F ⊗[F] E) : sigR (AF F) σ x = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA σ x := by
@@ -77,9 +77,9 @@ private theorem sigR_eq_cA {F E : Type} [Field F] [NumberField F] [Field E] [Alg
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `b`. Establish `hb : m.1ᵀ * incM F J * m.1.map (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA σ) = incM F J` using `hm`. Establish `hc : (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA σ : AF F ⊗[F] E → AF F ⊗[F] E) = sigR (AF F) σ`. Use function extensionality and compare the values at `fun y => (sigR_eq_cA σ y).symm`. Rewrite `hb` using `[hc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `key` using `invTranspose_abstract (inclR (F := F) (AF F)) (sigR (AF F) σ) G J hG x hx ξ hξ m.1 (m⁻¹).1 (Units.mul_inv m) (Units.inv_mul m) hb`. Conclude with `⟨⟨invT m, key⟩, rfl⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 private theorem invT_mem_HR {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) {r : ℕ}
     (G J : Matrix (Fin r) (Fin r) E) (hG : G.det ≠ 0) (x : E) (hx : x ≠ 0) (ξ : AF F ⊗[F] E)
@@ -96,7 +96,7 @@ private theorem invT_mem_HR {F E : Type} [Field F] [NumberField F] [Field E] [Al
   exact ⟨⟨invT m, key⟩, rfl⟩
 
 /- English proof (translation)
-Introduce `D V J ξ hξ b`. Take `⟨g, hg⟩` from `invT_mem_HR D.sp.cm.sig V.gram J (GlobalTheory.Doubling.isHermND_gram V).2 D.host.xi0 (GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D) ξ hξ b`. Conclude with `⟨g, hg⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem _root_.GlobalTheory.T.exists_unitary_invTranspose_of_scaledInverseGram : ∀ (D : D7) (V : HSp D) (J : Matrix (Fin V.rank) (Fin V.rank) D.host.E)
     (ξ : AF D.host.F ⊗[D.host.F] D.host.E), ξ • incM D.host.F J = incM D.host.F (D.host.xi0 • V.gram⁻¹) →

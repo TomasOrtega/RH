@@ -16,11 +16,11 @@ open scoped Classical
 
 open GroundTheory.Global.AdeleBaseChange in
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ _ σ hσ hp v w hw i1 i2 i3 i4 hmap η hη u`. Take `⟨w0, hw0⟩` from `w`. Take `rfl : below F w0 = v` from `(below_eq_iff w0 v).2 hw0`. Establish `h2` using `ideleNorm_finiteEmbedding (K := F) w0 u`. Establish `h3` using `UpperTheory.Gal.InertialTypesAlt.G.normTriv F E η hη (IdeleGroup.finiteEmbedding w0 u)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h3` using `[h2]`. Establish `hi : i1 = GroundTheory.Global.SemiLocal.algebraCompletion (below F w0) w0`. Apply `Algebra.algebra_ext` to reduce the goal to its premises. Introduce `r`. Conclude with `(hmap r).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Substitute `hi` using the available equality. Conclude with `h3`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.InertialTypesAlt.L.normLoc :
     UpperTheory.Gal.InertialTypesAlt.L.NormLoc := by

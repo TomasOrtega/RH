@@ -12,7 +12,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.exists_e8Form_value_coprime_oddPrimePow'` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsE8FormValueCoprimeOddPrimePow.lean&line=49#L49)
 -/

@@ -13,13 +13,11 @@ open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalS
 open scoped TensorProduct InnerProductSpace ComplexConjugate Pointwise
 
 /- English proof (translation)
-Introduce `K _ _ n μ _ w _ mw φ T hT h hh`. Take `⟨-, -, -, -, -, hmul, -, -, -⟩` from `UpperTheory.ConvolutionTheory.Tf.commPrj K n μ ⊥`. Establish `hc` using `(UpperTheory.ConvolutionTheory.Tf.locEmb K n w).2.2.2.2 h hh`. Establish `hcomm : ∀ (g : Gw n w) (v : LL μ), rhoL μ w g (rhoF μ h v) = rhoF μ h (rhoL μ w g v)`. Introduce `g v`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : rhoF μ (AdelicGLn.localEmbedding w g * h) = rhoF μ (h * AdelicGLn.localEmbedding w g)`. Rewrite using `[hc g]`. Rewrite `e` using `[hmul, hmul]`. Conclude with `congrArg (fun S : LL μ →L[ℂ] LL μ => S v) e`. Establish `key : ∀ u v : LL μ, ⟪u, T (rhoF μ h v)⟫_ℂ = ⟪u, rhoF μ h (T v)⟫_ℂ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u v`. Rewrite using `[← ContinuousLinearMap.adjoint_inner_left (rhoF μ h) (T v) u, hT u, hT]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Use `show φ g * ⟪u, rhoL μ w g (rhoF μ h v)⟫_ℂ = φ g * ⟪ContinuousLinearMap.adjoint (rhoF μ h) u, rhoL μ w g v⟫_ℂ`. Rewrite using `[ContinuousLinearMap.adjoint_inner_left, hcomm]`.
-
-Use `ContinuousLinearMap.ext fun v => ext_inner_left ℂ fun u => ?_` and prove the remaining obligations. Conclude with `key u v`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.localOperator_commute_rhoF_of_trivial_at_place :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure] (w : Pl K)

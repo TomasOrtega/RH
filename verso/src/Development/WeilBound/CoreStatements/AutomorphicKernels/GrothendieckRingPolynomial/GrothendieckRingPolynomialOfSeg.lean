@@ -6,7 +6,7 @@ import Development.WeilBound.CoreStatements.AutomorphicKernels.LanglandsExhausti
 namespace PositivityTheory.Groth
 
 /- English proof (translation)
-Establish `hu` using `Exh.lUnlinkedIrr_of_seg hZ`. Use `groth_of_three hZ (fun k _ _ _ _ => hu k) (fun k _ _ _ _ => ?_)` and prove the remaining obligations. Conclude with `⟨Exh.midP' k Exh.irreducibleAdmissibleGL, Exh.refineP' k, Exh.swapP' k (ClsOfF.comm_of (hu k))⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 -/
 theorem grothendieckRingPolynomial_of_seg (hZ : GlobalTheory.Published.SegmentRepresentation) : GlobalTheory.Published.GrothendieckRingPolynomial := by
   have hu := Exh.lUnlinkedIrr_of_seg hZ

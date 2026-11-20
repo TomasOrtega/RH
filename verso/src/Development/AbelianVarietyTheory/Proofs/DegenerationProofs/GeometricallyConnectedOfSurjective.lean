@@ -22,11 +22,11 @@ namespace GlobalTheory.DivisiblePart
 open RationalPoint
 
 /- English proof (translation)
-Use `⟨fun y => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hy`. Establish `hC` using `(isConstructible_image_of_isClosed f isClosed_univ).compl`. Take `⟨V, hV, h1, h2⟩` from `exists_isOpen_inter_closure_subset_of_isConstructible continuous_id hC`. Rewrite `h1`, `h2` using `[Set.preimage_id]`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hne : (V ∩ closure (f.left '' Set.univ)ᶜ).Nonempty`. Rewrite using `[← closure_nonempty_iff, h2, closure_nonempty_iff]`. Conclude with `⟨y, fun ⟨x, _, hx⟩ => hy ⟨x, hx⟩⟩`. Establish `: JacobsonSpace Y.left` using `LocallyOfFiniteType.jacobsonSpace Y.hom`. Take `⟨c, hcZ, hc⟩` from `nonempty_inter_closedPoints hne (hV.isLocallyClosed.inter isClosed_closure.isLocallyClosed)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz⟩` from `exists_pt_mem (X := Y) (Z := {c}) hc ⟨c, rfl⟩`. Take `⟨x, rfl⟩` from `h z`. Conclude with `h1 hcZ ⟨pt x, trivial, hz⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem surjective_of_rationalPoints {k : Type} [Field k] [IsAlgClosed k] {X Y : Over (Sp k)}
     [LocallyOfFiniteType X.hom] [QuasiCompact X.hom] [LocallyOfFiniteType Y.hom]
@@ -50,7 +50,7 @@ theorem surjective_of_rationalPoints {k : Type} [Field k] [IsAlgClosed k] {X Y :
   exact h1 hcZ ⟨pt x, trivial, hz⟩
 
 /- English proof (translation)
-Use `⟨fun K _ y W fst snd hW => ?_⟩` and prove the remaining obligations. Establish `h1` using `(IsPullback.of_hasPullback f fst).paste_vert hW`. Establish `: ConnectedSpace ↥(pullback f fst)` using `GeometricallyConnected.geometrically_connectedSpace _ _ _ h1`. Conclude with `(pullback.snd f fst).surjective.connectedSpace (pullback.snd f fst).continuous`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem geometricallyConnected_of_surjective {X Y S : Scheme.{0}} (f : X ⟶ Y) (g : Y ⟶ S)
     [Surjective f] [GeometricallyConnected (f ≫ g)] : GeometricallyConnected g := by
@@ -61,15 +61,13 @@ theorem geometricallyConnected_of_surjective {X Y S : Scheme.{0}} (f : X ⟶ Y) 
   exact (pullback.snd f fst).surjective.connectedSpace (pullback.snd f fst).continuous
 
 /- English proof (translation)
-It suffices to establish `Surjective ν from isIso_of_isClosedImmersion_of_surjective ν`. Use `⟨fun y => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hy`. Take `⟨n⟩` from `‹Nonempty N›`. Take `⟨_, ⟨U, hU, rfl⟩, hnU, -⟩` from `G.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (ν n)) isOpen_univ`.
+Reduce the argument to an intermediate assertion. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `replace hU : IsAffineOpen U := hU`. Set `W : G.Opens` to `⟨(Set.range ν)ᶜ, ν.isClosedEmbedding.isClosed_range.isOpen_compl⟩`. Take `⟨z, hzU, hzW⟩` from `nonempty_preirreducible_inter U.isOpen W.isOpen ⟨_, hnU⟩ ⟨y, hy⟩`. Take `⟨r, hrW, hzr⟩` from `hU.exists_basicOpen_le (V := W) ⟨z, hzW⟩ hzU`. Establish `hr0 : r ≠ 0`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Simplify using `at hzr`. Establish `hr1 : (ν.app U).hom r = 0`. Rewrite using `[← basicOpen_eq_bot_iff, ← Scheme.preimage_basicOpen, eq_bot_iff]`. Introduce `t ht`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(hrW ht ⟨t, rfl⟩).elim`. Establish `: Nonempty U` using `⟨⟨_, hnU⟩⟩`. Establish `h1` using `ringKrullDim_succ_le_of_surjective (ν.app U).hom (ν.app_surjective U hU) (mem_nonZeroDivisors_of_ne_zero hr0) hr1`. Rewrite `h1` using `[SmoothDim.ringKrullDim_affineOpen k G s g hg U hU ⟨_, hnU⟩, SmoothDim.ringKrullDim_affineOpen k N _ g' hg' _ (hU.preimage ν) ⟨n, hnU⟩]`. Establish `: g' + 1 ≤ g` using `by exact_mod_cast h1`.
-
-Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem isIso_of_dim_le {k : Type} [Field k] {N G : Scheme.{0}} (ν : N ⟶ G) (s : G ⟶ Sp k)
     [IsClosedImmersion ν] [IsIntegral G] [IsReduced N] [Nonempty N] {g g' : ℕ}
@@ -101,33 +99,31 @@ theorem isIso_of_dim_le {k : Type} [Field k] {N G : Scheme.{0}} (ν : N ⟶ G) (
   omega
 
 /- English proof (translation)
-Introduce `k _ _ p G _ ⟨hc, hs, hsep, hqc, hgc⟩`. Take `⟨a, ha⟩` from `TorsionDense.exists_pow_stable G p ⊤ Set.univ isClosed_univ (by simp)`. Establish `hpow : ∀ n : ℕ, IsMonHom (𝟙 G ^ n)` using `fun n => by`. Proceed by induction on `n with`. Consider the case `zero`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Rewrite using `[pow_zero]`. Conclude with `inferInstanceAs (IsMonHom (toUnit G ≫ η[G]))`. Consider the case `succ n ih`. Rewrite using `[pow_succ]`. Conclude with `inferInstanceAs (IsMonHom (lift (𝟙 G ^ n) (𝟙 G) ≫ μ[G]))`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨Z, hZ, h⟩` from `exists_isClosed_image_of_isClosed_subgroup k G G (𝟙 G ^ (p ^ a)) (hpow _) inferInstance inferInstance inferInstance inferInstance ⊤ Set.univ isClosed_univ (by simp)`. Use `replace h : ∀ y : 𝟙_ (Over (Sp k)) ⟶ G, (∃ x, x ^ (p ^ a) = y) ↔ Set.range y.left ⊆ Z := by`. Introduce `y`. Rewrite using `[← h]`. Simplify using `only [MonObj.comp_pow, Category.comp_id, Subgroup.mem_top, true_and]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce the local definition `φ : (𝟙_ (Over (Sp k)) ⟶ G) →* (𝟙_ (Over (Sp k)) ⟶ G)`. Use `hpow (p ^ a)` as an intermediate fact. Use the proof step `MonoidHom.mk' (fun x => x ≫ 𝟙 G ^ (p ^ a)) fun x y => MonObj.mul_comp x y _`. Take `⟨N, _, ν, hν, hνc, hNs, hr⟩` from `ReducedSubgroup.exists_smooth_closed_subgroup k G inferInstance φ.range Z hZ (fun x => by`. Rewrite using `[← h, MonoidHom.mem_range]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [φ, MonoidHom.mk'_apply, MonObj.comp_pow, Category.comp_id])`. Establish `: Mono ν` using `(Over.forget _).mono_of_mono_map (inferInstanceAs (Mono ν.left))`. Establish `hw : N.hom = ν.left ≫ G.hom` using `(Over.w ν).symm`. Establish `hNsep : IsSeparated N.hom` using `by rw [hw]; infer_instance`. Establish `hNqc : QuasiCompact N.hom` using `by rw [hw]; infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGi : IsIntegral G.left` using `isIntegral_of_smooth_of_geometricallyConnected G.hom`. Establish `hNr : IsReduced N.left`. Use `isNormalScheme_of_smooth N.hom` as an intermediate fact. Use the proof step `IsNormalScheme.isReduced`. Establish `hlift : ∀ {T : Over (Sp k)} [IsReduced T.left] [LocallyOfFiniteType T.hom] (g : T ⟶ G), (∀ x : 𝟙_ (Over (Sp k)) ⟶ T, ∃ y, y ^ (p ^ a) = x ≫ g) → ∃ l : T ⟶ N, l ≫ ν = g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `T _ _ g hg`. Take `⟨l, hl⟩` from `AbelianSubgroupFinite.exists_lift_of_range_subset g.left ν.left (hr ▸ ReducedSubgroup.range_subset_of_points g hZ fun x => (h _).1 (hg x))`. Use `⟨Over.homMk l ?_, Over.OverMorphism.ext hl⟩` and prove the remaining obligations. Rewrite using `[← ν.w, ← Category.assoc, hl, g.w]`. Establish `hmem : ∀ x : 𝟙_ (Over (Sp k)) ⟶ N, ∃ y, y ^ (p ^ a) = x ≫ ν` using `fun x => by`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[h, ← hr]`. Introduce and unpack `_ ⟨t, rfl⟩`. Conclude with `⟨x.left t, rfl⟩`. Take `⟨l, hl⟩` from `hlift (𝟙 G ^ (p ^ a)) fun x => ⟨x, by rw [MonObj.comp_pow, Category.comp_id]⟩`. Establish `hl' : ∀ x : 𝟙_ (Over (Sp k)) ⟶ G, (x ≫ l) ≫ ν = x ^ (p ^ a)` using `fun x => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, hl, MonObj.comp_pow, Category.comp_id]`. Establish `: Surjective l.left` using `surjective_of_rationalPoints l fun y => by`. Take `⟨x, hx⟩` from `hmem y`. Conclude with `⟨x, by rw [← cancel_mono ν, hl', hx]⟩`. Establish `hNgc : GeometricallyConnected N.hom`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: GeometricallyConnected (l.left ≫ N.hom)` using `by rw [Over.w l]; exact hgc`. Conclude with `geometricallyConnected_of_surjective l.left N.hom`. Use `⟨N, _, ν, ⟨AbelianSubgroupFinite.isCommMonObj_of_mono ν, hNs, hNsep, hNqc, hNgc⟩, hν, hνc, fun y => ?_, fun x n hn hn0 hx => ?_, fun F hF => ?_, fun g hg => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `hmem y`. Take `⟨z, -, hz⟩` from `ha x trivial`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `⟨z ≫ l, ?_⟩` and prove the remaining obligations. Rewrite using `[← cancel_mono ν, MonObj.pow_comp, hl', ← pow_mul, ← pow_succ, hz, hx]`. Establish `hco : (p ^ a).Coprime (orderOf x)` using `(Nat.Coprime.pow_left a hn.symm).coprime_dvd_right (orderOf_dvd_of_pow_eq_one hx)`. Take `⟨m, hm⟩` from `exists_pow_eq_self_of_coprime hco`. Conclude with `⟨(x ^ m) ≫ l, by rw [hl', ← pow_mul, mul_comm, pow_mul, hm]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨F', hF'⟩` from `hlift (ν ≫ F) fun x => by`. Take `⟨y, hy⟩` from `hmem x`. Conclude with `⟨y ≫ F, by rw [← MonObj.pow_comp, hy, Category.assoc]⟩`. Use `⟨F', ⟨?_, ?_⟩, hF'⟩` and prove the remaining obligations. Rewrite using `[← cancel_mono ν, Category.assoc, hF', IsMonHom.one_hom, IsMonHom.one_hom]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← cancel_mono ν, Category.assoc, hF', IsMonHom.mul_hom, Category.assoc, IsMonHom.mul_hom, tensorHom_comp_tensorHom_assoc, hF']`. Establish `hNi : IsIntegral N.left` using `isIntegral_of_smooth_of_geometricallyConnected N.hom`. Take `⟨g', hg'⟩` from `exists_dim_of_preconnected N.hom (Classical.arbitrary _)`. Use `⟨g', hg', fun hle => ?_⟩` and prove the remaining obligations. Establish `: IsIso ν.left` using `isIso_of_dim_le ν.left G.hom hg (hw ▸ hg') hle`.
-
-Establish `: IsIso ((Over.forget _).map ν)` using `this`. Conclude with `isIso_of_reflects_iso ν (Over.forget _)`.
+A detailed English derivation is pending.
 -/
 theorem exists_divisiblePart : ∀ (k : Type) [Field k] [IsAlgClosed k] (p : ℕ) (G : Over (Sp k)) [GrpObj G], SmConn G → ∃ (N : Over (Sp k)) (_ : GrpObj N) (ν : N ⟶ G), SmConn N ∧ IsMonHom ν ∧ IsClosedImmersion ν.left ∧ (∀ y : (𝟙_ (Over (Sp k)) ⟶ N), ∃ x : (𝟙_ (Over (Sp k)) ⟶ N), x ^ p = y) ∧ (∀ (x : (𝟙_ (Over (Sp k)) ⟶ G)) (n : ℕ), n.Coprime p → n ≠ 0 → x ^ n = 1 → ∃ y, y ≫ ν = x) ∧ (∀ F : G ⟶ G, IsMonHom F → ∃ F' : N ⟶ N, IsMonHom F' ∧ F' ≫ ν = ν ≫ F) ∧ ∀ g, SmoothOfRelativeDimension g G.hom → ∃ g', SmoothOfRelativeDimension g' N.hom ∧ (g ≤ g' → IsIso ν) := by
   intro k _ _ p G _ ⟨hc, hs, hsep, hqc, hgc⟩

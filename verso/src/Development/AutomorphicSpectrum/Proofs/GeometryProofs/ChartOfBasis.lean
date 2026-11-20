@@ -13,11 +13,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X0 : Scheme.{0}}
 
 /- English proof (translation)
-Take `⟨d, G, A, uvec, x, rfl, hu, hc⟩` from `GlobalTheory.ChartData.exists_isChartG_of_basis E H X0 t S x0 _ tg h.1 h.2`. Set `e` to `Fintype.equivFin (Fin n)`. Use `⟨G, A, fun i => tg (e.symm i), x, ⟨hc.zero, hc.trunc, hc.law, hc.act, fun l => ?_, fun v => ?_⟩, fun l => h.1 _, fun w hw => ?_⟩` and prove the remaining obligations. Use `hc.tan (e.symm l)` as an intermediate fact. Use `this using 2 with j` and compare the differences between its conclusion and the goal.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Rewrite using `[hu]`. Simplify using `[e, Fin.ext_iff, eq_comm]`. Use `⟨v, fun j => by simp, fun a ha => funext fun j => by simpa using ha j⟩` and prove the remaining obligations. Take `⟨a, ha, hu⟩` from `h.2 w hw`. Use `⟨fun i => a (e.symm i), ha, fun b hb => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `hu (fun l => b (e l)) (by simpa only [e, Equiv.apply_symm_apply] using hb)` as an intermediate fact. Use function extensionality and compare the values at `i`. Rewrite using `[← this]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem chart_of_basis (t : SAB H X0) {S : Type} [CommRing S] (x0 : Sp S ⟶ X0) {n : ℕ}
     (tg : Fin n → (Sp (DualNumber S) ⟶ t.G.left)) (h : GlobalTheory.ChartCompare.IsTanBasisG t x0 tg) :
@@ -39,9 +39,9 @@ theorem chart_of_basis (t : SAB H X0) {S : Type} [CommRing S] (x0 : Sp S ⟶ X0)
     funext i; rw [← this]; simp
 
 /- English proof (translation)
-Introduce `E _ _ _ H _ hs X0 t hp S _ _ x0`. Take `⟨n, tg, h⟩` from `GlobalTheory.ChartDataChecks.premises_met t x0`. Take `⟨G, A, tg', x, hc, ht, hb⟩` from `chart_of_basis t x0 tg h`. Take `⟨e, wP, ph1, ph2, sy, ad, hfr, -, htr, hfa, had, -⟩` from `GermB.frameSt_holds E H X0 t S x0 _ G A _ tg' _ x hc`. Take `⟨hax, hr⟩` from `FBIdAd.fbId E H X0 t hp hs S x0 _ G A _ tg' _ x e ph1 ph2 sy ad hc hfr hfa had`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨_, ⟨⟨mkFB G A ph1 ph2 sy ad hax hr, x, e, tg', hc, ht, hb, hfr, htr, hfa⟩⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem germ_local : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)], (∀ a : 𝓞 E, star a = H.bar a) → ∀ (X0 : Scheme.{0}) (t : SAB H X0), PowFns t → ∀ (S : Type) [CommRing S] [IsLocalRing S] (x : Sp S ⟶ X0), ∃ d, Nonempty (GermAt t x d) := by
   intro E _ _ _ H _ hs X0 t hp S _ _ x0

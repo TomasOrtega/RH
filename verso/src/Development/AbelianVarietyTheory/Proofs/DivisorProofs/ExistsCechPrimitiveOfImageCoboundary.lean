@@ -13,20 +13,20 @@ namespace GlobalTheory.CechHOneInj
 variable {κ : Type} [LinearOrder κ] {R : Type} [CommRing R] (F : (NE κ)ᵒᵖ ⥤ CommAlgCat.{0} R)
 
 /- English proof (translation)
-The claim follows from `Quiver.Hom.unop_inj (Subsingleton.elim _ _)`.
+A detailed English derivation is pending.
 -/
 theorem hom_eq {a b : (NE κ)ᵒᵖ} (f f' : a ⟶ b) : f = f' :=
   Quiver.Hom.unop_inj (Subsingleton.elim _ _)
 
 /- English proof (translation)
-Substitute `e` using the available equality. Rewrite using `[hom_eq f f']`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem mp_transport0 (g : C0 F) {a a' b : (NE κ)ᵒᵖ} (e : a = a') (f : a ⟶ b) (f' : a' ⟶ b) :
     mp F f (g a) = mp F f' (g a') := by
   subst e; rw [hom_eq f f']
 
 /- English proof (translation)
-Substitute `e` using the available equality. Rewrite using `[hom_eq f f']`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem mp_transport1 {p : ℕ} (x : CC F p) {s s' : {s : Finset κ // s.card = p + 1}} (e : s = s')
     {b : (NE κ)ᵒᵖ} (f : ne s.1 (card_nonempty s) ⟶ b) (f' : ne s'.1 (card_nonempty s') ⟶ b) :
@@ -34,21 +34,21 @@ theorem mp_transport1 {p : ℕ} (x : CC F p) {s s' : {s : Finset κ // s.card = 
   subst e; rw [hom_eq f f']
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem ne_eq_ne {s s' : Finset κ} (hs : s.Nonempty) (hs' : s'.Nonempty) (e : s = s') :
     ne s hs = ne s' hs' := by
   subst e; rfl
 
 /- English proof (translation)
-The claim follows from `le_antisymm (Finset.min'_le _ _ (Finset.mem_insert_self _ _)) (Finset.le_min' _ _ _ (by intro y hy; simp at hy; rcases hy with rfl | rfl <;> [exact le_rfl; exact h.le]))`.
+A detailed English derivation is pending.
 -/
 theorem min'_pair {i j : κ} (h : i < j) : ({i, j} : Finset κ).min' (Finset.insert_nonempty _ _) = i :=
   le_antisymm (Finset.min'_le _ _ (Finset.mem_insert_self _ _))
     (Finset.le_min' _ _ _ (by intro y hy; simp at hy; rcases hy with rfl | rfl <;> [exact le_rfl; exact h.le]))
 
 /- English proof (translation)
-Apply the tactic sequence `simp only [e1, LinearMap.pi_apply]; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem orderedCechToCatCochainsOne_apply_valueAtSubset (z : CC F 1) {a b : (NE κ)ᵒᵖ} (f : a ⟶ b) :
     e1 F z a b f = if h : mn b < mn a then
@@ -63,23 +63,21 @@ namespace GlobalTheory.CechHOneInj
 variable {κ : Type} [LinearOrder κ] {R : Type} [CommRing R] (F : (NE κ)ᵒᵖ ⥤ CommAlgCat.{0} R)
 
 /- English proof (translation)
-Establish `hi : i ∈ ({i, j} : Finset κ)` using `Finset.mem_insert_self _ _`. Establish `hj : j ∈ ({i, j} : Finset κ)` using `Finset.mem_insert_of_mem (Finset.mem_singleton_self _)`. Establish `sij : ({i} : Finset κ) ⊆ {i, j}` using `Finset.singleton_subset_iff.2 hi`. Establish `sji : ({j} : Finset κ) ⊆ {i, j}` using `Finset.singleton_subset_iff.2 hj`. Establish `ei : ({i, j} : Finset κ).erase i = {j}` using `Finset.erase_insert (by simp [h.ne])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ej : ({i, j} : Finset κ).erase j = {i}`. Use extensionality with `x`. Simplify using `only [Finset.mem_erase, Finset.mem_insert, Finset.mem_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hx, rfl | rfl⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Both sides reduce to the same expression. Conclude with `absurd rfl hx`. Introduce and unpack `rfl`. Conclude with `⟨h.ne, Or.inl rfl⟩`. Establish `h1` using `congrFun (congrFun (congrFun hg (ne {i} (Finset.singleton_nonempty _))) (ne {i, j} (Finset.insert_nonempty _ _))) (homOf sij)`.
+Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `congrFun (congrFun (congrFun hg (ne {j} (Finset.singleton_nonempty _))) (ne {i, j} (Finset.insert_nonempty _ _))) (homOf sji)`. Establish `mi : mn (ne ({i} : Finset κ) (Finset.singleton_nonempty _)) = i` using `Finset.min'_singleton i`. Establish `mj : mn (ne ({j} : Finset κ) (Finset.singleton_nonempty _)) = j` using `Finset.min'_singleton j`. Establish `mij : mn (ne ({i, j} : Finset κ) (Finset.insert_nonempty _ _)) = i` using `min'_pair h`. Rewrite `h1` using `[orderedCechToCatCochainsOne_apply_valueAtSubset, amitsur_d0_apply, dif_neg (by rw [mi, mij]; exact lt_irrefl i)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[orderedCechToCatCochainsOne_apply_valueAtSubset, amitsur_d0_apply, dif_pos (by rw [mj, mij]; exact h)]`. Establish `key` using `mp_transport1 F z (s := ⟨{mn (ne {i, j} (Finset.insert_nonempty _ _)), mn (ne {j} (Finset.singleton_nonempty _))}, Finset.card_pair (by rw [mj, mij]; exact h.ne)⟩) (s' := ⟨{i, j}, hs⟩) (Subtype.ext (by simp only [mj, mij])) (homOf (pair_subset (homOf sji))) (𝟙 _)`. Rewrite `key` using `[mp_id]`. Establish `si : GlobalTheory.cubeSign ({i, j} : Finset κ) i = 1` using `GlobalTheory.cubeSign_eq_one_of_forall_le (by`. Introduce `y hy`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hy`. Break down `hy with rfl | rfl` into its components or cases. Conclude with `le_rfl`. Conclude with `h.le)`. Establish `sj : GlobalTheory.cubeSign ({i, j} : Finset κ) j = -1`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `GlobalTheory.cubeSign_erase_of_lt hi h (t := ({i, j} : Finset κ))` as an intermediate fact. Rewrite `this` using `[ei, GlobalTheory.cubeSign_singleton]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[δ_apply, Fintype.sum_eq_add ⟨i, hi⟩ ⟨j, hj⟩ (by simp [h.ne]) (by`. Introduce and unpack `⟨x, hx⟩ ⟨ha, hb⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify by unfolding definitions.
 
-Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hx`. Break down `hx with rfl | rfl` into its components or cases. Conclude with `absurd rfl ha`. Conclude with `absurd rfl hb)]`. Simplify using `only`.
-
-Establish `tj` using `mp_transport0 F g (ne_eq_ne _ (Finset.singleton_nonempty j) ei) (homOf (a := ne _ (card_nonempty (GlobalTheory.Cube.eraseIdx (⟨{i, j}, hs⟩ : {s : Finset κ // s.card = 1 + 1}) ⟨i, hi⟩))) (b := ne {i, j} (Finset.insert_nonempty _ _)) (Finset.erase_subset _ _)) (homOf (a := ne {j} ( …`. Establish `ti` using `mp_transport0 F g (ne_eq_ne _ (Finset.singleton_nonempty i) ej) (homOf (a := ne _ (card_nonempty (GlobalTheory.Cube.eraseIdx (⟨{i, j}, hs⟩ : {s : Finset κ // s.card = 1 + 1}) ⟨j, hj⟩))) (b := ne {i, j} (Finset.insert_nonempty _ _)) (Finset.erase_subset _ _)) (homOf (a := ne {i} ( …`. Rewrite using `[si, sj, one_smul, neg_smul, one_smul]`. Take the linear combination `h2 - h1 + key + tj - ti`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem δ_pair (z : CC F 1) (g : C0 F) (hg : e1 F z = d0 F g) {i j : κ} (h : i < j)
     (hs : ({i, j} : Finset κ).card = 1 + 1) :
@@ -139,9 +137,9 @@ theorem δ_pair (z : CC F 1) (g : C0 F) (hg : e1 F z = d0 F g) {i j : κ} (h : i
   linear_combination h2 - h1 + key + tj - ti
 
 /- English proof (translation)
-Introduce `κ _ R _ F z _ g hg`. Use `⟨fun s => g (ne s.1 (card_nonempty s)), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `t`. Take `⟨s, hs⟩` from `t`. Take `⟨i, j, hij, rfl⟩` from `Finset.card_eq_two.1 hs`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Break down `lt_or_gt_of_ne hij with h | h` into its components or cases. Conclude with `δ_pair F z g hg h hs`. Use `revert hs`. Rewrite using `[Finset.pair_comm i j]`. Conclude with `δ_pair F z g hg h`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_cech_primitive : ∀ {κ : Type} [LinearOrder κ] {R : Type} [CommRing R]
     (F : (NE κ)ᵒᵖ ⥤ CommAlgCat.{0} R) (z : CC F 1), δ F 1 z = 0 →

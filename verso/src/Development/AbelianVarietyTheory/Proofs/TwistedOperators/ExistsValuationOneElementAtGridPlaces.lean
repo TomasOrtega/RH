@@ -13,9 +13,9 @@ open scoped nonZeroDivisors ContDiff
 namespace GlobalTheory.AAUnit
 
 /- English proof (translation)
-Introduce `hn`. Take `⟨u, v, huv⟩` from `(Nat.isCoprime_iff_coprime.mpr h).map (Int.castRingHom (𝓞 K))`. Establish `h1 : (1 : 𝓞 K) ∈ w.asIdeal`. Rewrite using `[← huv]`. Simplify using `only [eq_intCast, Int.cast_natCast]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `w.asIdeal.add_mem (w.asIdeal.mul_mem_left u hn) (w.asIdeal.mul_mem_left v hp)`. Conclude with `w.isPrime.ne_top ((Ideal.eq_top_iff_one _).mpr h1)`.
+A detailed English derivation is pending.
 -/
 theorem natCast_notMem_of_coprime {K : Type} [Field K] [NumberField K] (w : HeightOneSpectrum (𝓞 K)) {n p : ℕ}
     (h : Nat.Coprime n p) (hp : ((p : ℕ) : 𝓞 K) ∈ w.asIdeal) : ((n : ℕ) : 𝓞 K) ∉ w.asIdeal := by
@@ -28,9 +28,9 @@ theorem natCast_notMem_of_coprime {K : Type} [Field K] [NumberField K] (w : Heig
   exact w.isPrime.ne_top ((Ideal.eq_top_iff_one _).mpr h1)
 
 /- English proof (translation)
-Break down `P.mem_S0_of_sum_eq.mp hv with h | h` into its components or cases. Substitute `h` using the available equality. Establish `hq` using `GlobalTheory.ChiGrid.leastSplitAuxiliaryPrimeThetaChain_spec (D := D)`. Conclude with `natCast_notMem_of_coprime P.v0 ((Nat.Prime.coprime_iff_not_dvd hq.1).mpr hq.2.2).symm P.basePlace_over_qZero`. Establish `hcop : ∀ p ∈ D.host.levelPrimes, ((p : ℕ) : 𝓞 D.host.F) ∈ v.asIdeal → ((Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.F) ∉ v.asIdeal` using `fun p hp hpv => natCast_notMem_of_coprime v (D.host.ccK_coprime p (by simp [hp])) hpv`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `(GlobalTheory.ChiGrid.S1_mem_OmF (D := D)).mp h with h' | h' | h' | h'` into its components or cases. Conclude with `hcop _ (D.host.g_level 0) h'`. Conclude with `hcop _ (D.host.g_level 1) h'`. Conclude with `hcop _ D.host.pde_level.1 h'`. Conclude with `hcop _ D.host.pde_level.2 h'`.
+A detailed English derivation is pending.
 -/
 theorem absNorm_cmIdeal_not_mem_gridPlaces {D : D7} {T : Type} {L : LevCh D T} (P : Places L) {v : HeightOneSpectrum (𝓞 D.host.F)}
     (hv : v ∈ P.S0) : ((Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.F) ∉ v.asIdeal := by
@@ -50,13 +50,11 @@ theorem absNorm_cmIdeal_not_mem_gridPlaces {D : D7} {T : Type} {L : LevCh D T} (
     · exact hcop _ D.host.pde_level.2 h'
 
 /- English proof (translation)
-Introduce `D T L sc μ₀ _ _ G w hw`. Take `⟨v, hv, rfl⟩` from `Finset.mem_image.mp hw`. Establish `hN : ((Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) ∉ (G.pl.w v).asIdeal`. Introduce `hin`. Apply `absNorm_cmIdeal_not_mem_gridPlaces G.pl hv` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hc : ((Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.F) ∈ ((G.pl.w v).under (𝓞 D.host.F)).asIdeal` using `by show ((Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.F) ∈ Ideal.comap (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) (G.pl.w v).asIdeal`. Rewrite using `[Ideal.mem_comap, map_natCast]`. Conclude with `hin`. Rewrite `hc` using `[G.pl.under_w hv]`. Conclude with `hc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨_, GlobalTheory.HostClear.absNorm_mem_AA D, ?_⟩` and prove the remaining obligations. Establish `key` using `(HeightOneSpectrum.valuation_eq_one_iff_notMem (K := D.host.E) (v := G.pl.w v)).mpr hN`. Rewrite `key` using `[map_natCast]`. Use `first`. Consider the case `exact (HeightOneSpectrum.valuedAdicCompletion_eq_valuation' (v := G.pl.w v) _).trans key`.
-
-Consider the case `(erw [HeightOneSpectrum.valuedAdicCompletion_eq_valuation']; exact key)`.
+Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_valuation_one_element_at_grid_places : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {μ₀ : T}, GlobalTheory.SepRows.OffQ D → L.Is μ₀ → ∀ (G : GridData L sc), ∀ w ∈ G.pl.W0, ∃ a ∈ D.host.AA, Valued.v ((algebraMap D.host.E (Kw w)) a) = 1 := by
   intro D T L sc μ₀ _ _ G w hw

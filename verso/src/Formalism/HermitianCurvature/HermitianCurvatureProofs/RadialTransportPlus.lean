@@ -12,11 +12,11 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Form
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Establish `hb : ∀ ζ ∈ Metric.closedBall (0 : ℂ) R, ENNReal.ofReal (B2.zWeight k T T' ζ) ≤ ENNReal.ofReal ((R ^ 2 + |T * T'|) ^ (k - 1))`. Introduce `ζ hζ`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Unfold `B2.zWeight`. Use `split_ifs with h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `pow_le_pow_left₀ (by linarith)` to reduce the goal to its premises. Establish `h1 : Complex.normSq ζ ≤ R ^ 2`. Rewrite using `[Complex.normSq_eq_norm_sq]`. Use `mem_closedBall_zero_iff.mp hζ` as an intermediate fact. Establish `h0 : 0 ≤ ‖ζ‖` using `norm_nonneg _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `h2 : -(T * T') ≤ |T * T'|` using `neg_le_abs _`. Combine the linear equalities and inequalities to obtain the conclusion. Check the signs of the components of the expression. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Check the signs of the components of the expression. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem lintegral_zWeight_closedBall_ne_infty (k : ℕ) (T T' R : ℝ) :
     ∫⁻ ζ in Metric.closedBall (0 : ℂ) R, ENNReal.ofReal (B2.zWeight k T T' ζ) < ⊤ := by
@@ -43,17 +43,17 @@ private theorem lintegral_zWeight_closedBall_ne_infty (k : ℕ) (T T' R : ℝ) :
     _ < ⊤ := ENNReal.mul_lt_top ENNReal.ofReal_lt_top measure_closedBall_lt_top
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Establish `ez : z = liftVec k 1 ρ zs`. Rewrite using `[hz]`. Use function extensionality and compare the values at `i`. Simplify using `[D.castV]`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `ez' : z' = liftVec k 1 ρ zs'`. Rewrite using `[hz']`. Use function extensionality and compare the values at `i`. Simplify using `[D.castV]`. Establish `eπ : πs = fun y => π (ιLev k 1 ρ y)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `y`. Rewrite using `[hπ y]`. Use `congr 1`. Establish `eπ' : πs' = fun y => π' (ιLev k 1 ρ y)`. Use function extensionality and compare the values at `y`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hπ' y]`. Use `congr 1`. Substitute `ez ez' eπ eπ'` using the available equality. Establish `hmap : μs.map (B2.levM k ρ) = μ`. Use `map_levM_eq hμ hμs (fun ζ => ENNReal.ofReal (B2.zWeight k (Tz k ρ zs) (Tz k ρ zs') ζ)) (fun R => lintegral_zWeight_closedBall_ne_infty k _ _ R) ?_ hlaws` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `ψ hψ`. Rewrite using `[hlaw ψ hψ, tz_iota, tz_iota]`. Use `⟨trL ht zs zs' π π', ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `intro Φ c g (try simp [D.castM]) <;> rfl`. Introduce `S _ _ w x y c c₀`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `ph_tr ht hzs hzs' hL hLs hst hsts hmap w x y c c₀`.
+A detailed English derivation is pending.
 -/
 theorem ph_cast {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] {k n ρ : ℕ} (hn : n = 1 + ρ)
@@ -145,7 +145,7 @@ namespace Formalism.FourierDecayAlt.P
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Formalism.FourierDecayAlt.Q Formalism.FourierDecayAlt.P.PBH
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P p j hj X μ L st Xs μs Ls sts hD hZ hDs hZs t ht`. Conclude with `ph_cast (n := P.r - j) (ρ := P.r - (j + 1)) (by omega) (levTower_bs_z_eq_castV_liftVec p.T j hj) (levTower_bs_z'_eq_castV_liftVec p.T j hj) hDs.1.2.1 hDs.1.2.2.1 (tower_π p.T j hj) (tower_π' p.T j hj) X Xs L st Ls sts _ μ μs hD.2.2.1 hDs.2.2.1 hD.2.2.2.1 (fun Y => (hDs.2.2.2.1 Y) …`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem radial_transport_plus : Formalism.FourierDecayAlt.P.PBH.RadTransportPl := by
   intro Wp Wq _ _ _ _ _ _ P p j hj X μ L st Xs μs Ls sts hD hZ hDs hZs t ht

@@ -28,37 +28,37 @@ theorem cj_apply (g : GL (Fin (n + 1)) k) (x : Mx k n) :
     cj g x = (g : Matrix (Fin (n + 1)) (Fin (n + 1)) k) * x * ((g⁻¹ : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) := rfl
 
 /- English proof (translation)
-Simplify using `[cj_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cj_one (x : Mx k n) : cj (1 : GL (Fin (n + 1)) k) x = x := by
   simp [cj_apply]
 
 /- English proof (translation)
-Simplify using `only [cj_apply, _root_.mul_inv_rev, Units.val_mul, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cj_mul (g h : GL (Fin (n + 1)) k) (x : Mx k n) : cj (g * h) x = cj g (cj h x) := by
   simp only [cj_apply, _root_.mul_inv_rev, Units.val_mul, Matrix.mul_assoc]
 
 /- English proof (translation)
-Simplify using `[actP, cj_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem polyAction_one₂ (p : Mx k n × Vc k n) : actP (1 : GL (Fin (n + 1)) k) p = p := by
   simp [actP, cj_one]
 
 /- English proof (translation)
-Simplify using `only [actP, _root_.mul_inv_rev, cj_mul, Units.val_mul, transpose_mul, mulVec_mulVec]`.
+Simplify using the standard rewrite rules.
 -/
 theorem polyAction_mul (g h : GL (Fin (n + 1)) k) (p : Mx k n × Vc k n) : actP (g * h) p = actP h (actP g p) := by
   simp only [actP, _root_.mul_inv_rev, cj_mul, Units.val_mul, transpose_mul, mulVec_mulVec]
 
 /- English proof (translation)
-Rewrite using `[← polyAction_mul, mul_inv_cancel, polyAction_one₂]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem actP_inv_actP (g : GL (Fin (n + 1)) k) (p : Mx k n × Vc k n) : actP g⁻¹ (actP g p) = p := by
   rw [← polyAction_mul, mul_inv_cancel, polyAction_one₂]
 
 /- English proof (translation)
-Unfold `actP cj`. Use `Continuous.prodMk ?_ ?_` and prove the remaining obligations. Simplify using `only [inv_inv]`. Conclude with `((Units.continuous_coe_inv.comp continuous_fst).matrix_mul (continuous_fst.comp continuous_snd)).matrix_mul (Units.continuous_val.comp continuous_fst)`. Conclude with `(Units.continuous_val.comp continuous_fst).matrix_transpose.matrix_mulVec (continuous_snd.comp continuous_snd)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_actP : Continuous fun q : GL (Fin (n + 1)) k × (Mx k n × Vc k n) => actP q.1 q.2 := by
   unfold actP cj
@@ -69,13 +69,11 @@ theorem continuous_actP : Continuous fun q : GL (Fin (n + 1)) k × (Mx k n × Vc
   · exact (Units.continuous_val.comp continuous_fst).matrix_transpose.matrix_mulVec (continuous_snd.comp continuous_snd)
 
 /- English proof (translation)
-Establish `h1 : ∀ᶠ g in 𝓝 (1 : GL (Fin (n + 1)) k), ∀ p ∈ tsupport F, F (actP g p) = F p`. Use `IsCompact.eventually_forall_of_forall_eventually hF.2 fun p _ => ?_` and prove the remaining obligations. Establish `h2 : IsLocallyConstant fun q : GL (Fin (n + 1)) k × (Mx k n × Vc k n) => (F (actP q.1 q.2), F q.2)` using `(hF.1.comp_continuous continuous_actP).prodMk (hF.1.comp_continuous continuous_snd)`. Use `filter_upwards [h2.eventually_eq ((1 : GL (Fin (n + 1)) k), p)] with q hq`. Simplify using `only [Prod.mk.injEq, polyAction_one₂] at hq`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hq.1, hq.2]`. Establish `h3 : ∀ᶠ g in 𝓝 (1 : GL (Fin (n + 1)) k), ∀ p ∈ tsupport F, F (actP g⁻¹ p) = F p`. Establish `ht : Tendsto (fun g : GL (Fin (n + 1)) k => g⁻¹) (𝓝 1) (𝓝 1)`. Simplify using `using (continuous_inv.tendsto (1 : GL (Fin (n + 1)) k))`. Conclude with `ht.eventually h1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails.
 
-Use `filter_upwards [h1, h3] with g hg hg' p`. Distinguish the cases in `hp : p ∈ tsupport F`. Conclude with `hg p hp`. Distinguish the cases in `hq : actP g p ∈ tsupport F`. Use `hg' _ hq` as an intermediate fact.
-
-Rewrite `this` using `[actP_inv_actP]`. Conclude with `this.symm`. Rewrite using `[image_eq_zero_of_notMem_tsupport hp, image_eq_zero_of_notMem_tsupport hq]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eventually_actP_eq {F : Mx k n × Vc k n → ℂ} (hF : F ∈ SB (Mx k n × Vc k n)) :
     ∀ᶠ g in 𝓝 (1 : GL (Fin (n + 1)) k), ∀ p, F (actP g p) = F p := by
@@ -106,7 +104,7 @@ section Phi
 variable {n : ℕ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `[vecMul, dotProduct, eLast, Pi.single_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem vecMul_eLast (M : Matrix (Fin (n + 1)) (Fin (n + 1)) k) : vecMul (eLast k n) M = fun j => M (Fin.last n) j := by
   funext j
@@ -125,7 +123,7 @@ def cjHomeo (g : GL (Fin (n + 1)) k) : Mx k n ≃ₜ Mx k n where
     exact (continuous_const.matrix_mul continuous_id).matrix_mul continuous_const
 
 /- English proof (translation)
-Use `haveI := t2Space k`. Use `⟨hF.1.comp_continuous (f := fun y => (y, w)) (by fun_prop), HasCompactSupport.intro (IsCompact.image hF.2 continuous_fst) fun y hy => ?_⟩` and prove the remaining obligations. Conclude with `image_eq_zero_of_notMem_tsupport fun h => hy ⟨_, h, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem slice_snd_mem {F : Mx k n × Vc k n → ℂ} (hF : F ∈ SB (Mx k n × Vc k n)) (w : Vc k n) :
     (fun y => F (y, w)) ∈ SB (Mx k n) := by
@@ -135,13 +133,13 @@ theorem slice_snd_mem {F : Mx k n × Vc k n → ℂ} (hF : F ∈ SB (Mx k n × V
   exact image_eq_zero_of_notMem_tsupport fun h => hy ⟨_, h, rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hf.1.comp_continuous (cjHomeo g).continuous, hf.2.comp_homeomorph (cjHomeo g)⟩`.
+Supply the required witnesses or components.
 -/
 theorem comp_cj_mem {f : Mx k n → ℂ} (hf : f ∈ SB (Mx k n)) (g : GL (Fin (n + 1)) k) : f ∘ cj g ∈ SB (Mx k n) :=
   ⟨hf.1.comp_continuous (cjHomeo g).continuous, hf.2.comp_homeomorph (cjHomeo g)⟩
 
 /- English proof (translation)
-Establish `hex : ∃ s' : GL (Fin (n + 1)) k, ∀ j, (s' : Matrix (Fin (n + 1)) (Fin (n + 1)) k) (Fin.last n) j = w j` using `⟨s, hs⟩`. Unfold `sec`. Rewrite using `[dif_pos hex]`. Conclude with `hex.choose_spec`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sec_row {w : Vc k n} {s : GL (Fin (n + 1)) k} (hs : ∀ j, (s : Matrix (Fin (n + 1)) (Fin (n + 1)) k) (Fin.last n) j = w j) :
     ∀ j, ((sec w : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) (Fin.last n) j = w j := by
@@ -151,15 +149,15 @@ theorem sec_row {w : Vc k n} {s : GL (Fin (n + 1)) k} (hs : ∀ j, (s : Matrix (
   exact hex.choose_spec
 
 /- English proof (translation)
-Unfold `phi`. Rewrite using `[if_neg hw]`. Use `set t := (sec w : GL (Fin (n + 1)) k) with ht`. Establish `htr` using `sec_row hs`. Establish `hp : s * t⁻¹ ∈ Mir k n` using `by show vecMul (eLast k n) ((s * t⁻¹ : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) = eLast k n`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : vecMul (eLast k n) (s : Matrix (Fin (n + 1)) (Fin (n + 1)) k) = vecMul (eLast k n) (t : Matrix (Fin (n + 1)) (Fin (n + 1)) k)`. Rewrite using `[vecMul_eLast, vecMul_eLast]`. Use function extensionality and compare the values at `j`. Rewrite using `[hs j, ht, htr j]`. Rewrite using `[Units.val_mul, ← vecMul_vecMul, e1, vecMul_vecMul, ← Units.val_mul, mul_inv_cancel, Units.val_one, vecMul_one]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpi : (s * t⁻¹)⁻¹ ∈ Mir k n` using `(Mir k n).inv_mem hp`. Establish `hH` using `comp_cj_mem (slice_snd_mem hF w) t⁻¹`. Establish `key` using `hP _ hpi _ hH`. Establish `e : ((fun y => F (y, w)) ∘ cj t⁻¹) ∘ cj (s * t⁻¹)⁻¹ = fun x => F (cj s⁻¹ x, w)`. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.comp_apply]`. Rewrite using `[← cj_mul]`. Use `congr 2`. Use `group`. Rewrite `key` using `[e]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[key]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem phi_eq_of_row {Λ : (Mx k n → ℂ) →ₗ[ℂ] ℂ} (hP : PInvX Λ) {F : Mx k n × Vc k n → ℂ} (hF : F ∈ SB (Mx k n × Vc k n))
     (s : GL (Fin (n + 1)) k) {w : Vc k n} (hs : ∀ j, (s : Matrix (Fin (n + 1)) (Fin (n + 1)) k) (Fin.last n) j = w j)
@@ -190,23 +188,21 @@ theorem phi_eq_of_row {Λ : (Mx k n → ℂ) →ₗ[ℂ] ℂ} (hP : PInvX Λ) {F
   rfl
 
 /- English proof (translation)
-Take `⟨s₀, hs₀⟩` from `PositivityTheory.RgUd.AB.Pf.exists_last_row w₀ hw₀`. Take `⟨i, hi⟩` from `Function.ne_iff.1 hw₀`. Set `Mf : Vc k n → Matrix (Fin (n + 1)) (Fin (n + 1)) k` to `fun w => 1 + vecMulVec (Pi.single i (w₀ i)⁻¹) (w - w₀)`. Establish `hMc : Continuous Mf` using `continuous_const.add (Continuous.matrix_vecMulVec continuous_const (continuous_id.sub continuous_const))`. Establish `hM0 : Mf w₀ = 1` using `by simp [Mf]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨W, hW1, hW⟩` from `(eventually_actP_eq hF).exists_mem`. Establish `hE` using `PositivityTheory.PfBern.cocyclesToWachVectorsExponent.isOpenEmbedding_valGL (k := k) (m := n + 1)`. Establish `hO : Units.val '' W ∈ 𝓝 (1 : Matrix (Fin (n + 1)) (Fin (n + 1)) k)`. Use `hE.isOpenMap.image_mem_nhds hW1` as an intermediate fact. Simplify using `using this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h1 : ∀ᶠ w in 𝓝 w₀, Mf w ∈ Units.val '' W`. Use `hMc.continuousAt (x := w₀)` as an intermediate fact. Rewrite `this` using `[ContinuousAt, hM0]`. Conclude with `this hO`. Use `filter_upwards [h1, eventually_ne_nhds hw₀ |>.mono fun _ h => h, isOpen_ne.mem_nhds hw₀] with w hw _ hw0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨g, hgW, hg⟩` from `hw`. Establish `hrow : ∀ j, ((s₀ * g : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) (Fin.last n) j = w j`. Establish `e1 : vecMul (eLast k n) ((s₀ * g : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) = w`. Rewrite using `[Units.val_mul, ← vecMul_vecMul, vecMul_eLast, hg]`. Establish `e2 : (fun j => (s₀ : Matrix (Fin (n + 1)) (Fin (n + 1)) k) (Fin.last n) j) = w₀` using `funext hs₀`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e2]`. Simplify using `only [Mf, vecMul_add, vecMul_one, vecMul_vecMulVec]`. Establish `e3 : w₀ ⬝ᵥ Pi.single i (w₀ i)⁻¹ = 1`. Rewrite using `[dotProduct_single, mul_inv_cancel₀ hi]`. Rewrite using `[e3, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Fix the arbitrary inputs or assume the hypotheses.
 
-Normalize the expressions using the abelian group laws. Introduce `j`. Use `congrFun e1 j` as an intermediate fact. Rewrite `this` using `[vecMul_eLast]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hw0' : w ≠ 0` using `hw0`. Rewrite using `[phi_eq_of_row hP hF (s₀ * g) hrow hw0', phi_eq_of_row hP hF s₀ hs₀ hw₀]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Establish `hwg : w = (g : Matrix (Fin (n + 1)) (Fin (n + 1)) k)ᵀ *ᵥ w₀`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mulVec_transpose]`. Establish `e2 : (fun j => (s₀ : Matrix (Fin (n + 1)) (Fin (n + 1)) k) (Fin.last n) j) = w₀` using `funext hs₀`. Rewrite using `[← e2, ← vecMul_eLast, vecMul_vecMul, ← Units.val_mul, vecMul_eLast]`. Use function extensionality and compare the values at `j`. Conclude with `(hrow j).symm`.
-
-Use `hW g hgW (cj s₀⁻¹ x, w₀)` as an intermediate fact. Simplify using `only [actP] at this`. Rewrite using `[_root_.mul_inv_rev, cj_mul, hwg]`. Conclude with `this`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phi_eventually_eq {Λ : (Mx k n → ℂ) →ₗ[ℂ] ℂ} (hP : PInvX Λ) {F : Mx k n × Vc k n → ℂ}
     (hF : F ∈ SB (Mx k n × Vc k n)) {w₀ : Vc k n} (hw₀ : w₀ ≠ 0) : ∀ᶠ w in 𝓝 w₀, phi Λ F w = phi Λ F w₀ := by
@@ -257,9 +253,9 @@ theorem phi_eventually_eq {Λ : (Mx k n → ℂ) →ₗ[ℂ] ℂ} (hP : PInvX Λ
   exact this
 
 /- English proof (translation)
-Unfold `phi`. Use `split_ifs`. Both sides reduce to the same expression. Establish `: (fun x => F (cj (sec w)⁻¹ x, w)) = 0`. Use function extensionality and compare the values at `x`.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `image_eq_zero_of_notMem_tsupport fun h => hw ⟨_, h, rfl⟩`. Rewrite using `[this, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem phi_eq_zero_of_notMem {Λ : (Mx k n → ℂ) →ₗ[ℂ] ℂ} {F : Mx k n × Vc k n → ℂ} {w : Vc k n}
     (hw : w ∉ Prod.snd '' tsupport F) : phi Λ F w = 0 := by
@@ -272,21 +268,21 @@ theorem phi_eq_zero_of_notMem {Λ : (Mx k n → ℂ) →ₗ[ℂ] ℂ} {F : Mx k 
     rw [this, map_zero]
 
 /- English proof (translation)
-Simplify using `[phi]`.
+Simplify using the standard rewrite rules.
 -/
 theorem phi_zero {Λ : (Mx k n → ℂ) →ₗ[ℂ] ℂ} {F : Mx k n × Vc k n → ℂ} : phi Λ F 0 = 0 := by
   simp [phi]
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `GlobalTheory.SplitDict.exists_box_invariant_snd hF`. Establish `h0 : ∀ u ∈ box (Fin (n + 1)) s, ∀ y, F (y, u) = F (y, 0)` using `fun u hu y => by`. Use `hs u hu (y, 0)` as an intermediate fact. Simplify using `using this`. Use `⟨s, fun w hw c hc => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hw0 : w = 0`. Substitute `hw0` using the available equality. Simplify using the standard rewrite rules. Establish `hcw : c • w ≠ 0` using `fun h => hw0 (by simpa using congrArg (fun v => c⁻¹ • v) h)`. Take `⟨t, ht⟩` from `PositivityTheory.RgUd.AB.Pf.exists_last_row w hw0`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `sc : GL (Fin (n + 1)) k` to `Matrix.GeneralLinearGroup.scalar (Fin (n + 1)) c`. Establish `hrow : ∀ j, ((sc * t : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) (Fin.last n) j = (c • w) j`. Introduce `j`. Simplify using `[sc, ht j, Units.smul_def]`. Rewrite using `[phi_eq_of_row hP hF (sc * t) hrow hcw, phi_eq_of_row hP hF t ht hw0]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `x`. Establish `hcj : cj (sc * t)⁻¹ x = cj t⁻¹ x`. Rewrite using `[_root_.mul_inv_rev, cj_mul]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `a b`. Simplify using `[sc, cj_apply, Matrix.GeneralLinearGroup.scalar, Matrix.diagonal_mul, Matrix.mul_diagonal]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hcj, h0 _ hc, h0 _ hw]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_box_phi_smul {Λ : (Mx k n → ℂ) →ₗ[ℂ] ℂ} (hP : PInvX Λ) {F : Mx k n × Vc k n → ℂ}
     (hF : F ∈ SB (Mx k n × Vc k n)) : ∃ s : kˣ, ∀ w ∈ box (Fin (n + 1)) s, ∀ c : kˣ, c • w ∈ box (Fin (n + 1)) s →
@@ -323,7 +319,7 @@ section Fin
 variable {X Y : Type*} [TopologicalSpace X]
 
 /- English proof (translation)
-Take `⟨t, htK, hcov⟩` from `hK.elim_nhds_subcover (fun x => {y | f y = f x}) (fun x hx => h x hx)`. Use `(t.finite_toSet.image f).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Take `⟨x, hx, hyx⟩` from `Set.mem_iUnion₂.1 (hcov hy)`. Conclude with `⟨x, hx, hyx.symm⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem finite_image_of_eventually {f : X → Y} {K : Set X} (hK : IsCompact K)
     (h : ∀ x ∈ K, ∀ᶠ y in 𝓝 x, f y = f x) : (f '' K).Finite := by
@@ -340,22 +336,22 @@ section Range
 variable {n : ℕ}
 
 /- English proof (translation)
-Introduce `i _`. Simplify using `[cball]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem zero_mem_box (s : kˣ) : (0 : Vc k n) ∈ box (Fin (n + 1)) s := by
   intro i _
   simp [cball]
 
 /- English proof (translation)
-Take `⟨i, -, hi⟩` from `Finset.exists_max_image Finset.univ (fun j => valuation k (w j)) Finset.univ_nonempty`. Establish `hwi : w i ≠ 0`. Introduce `h`. Apply `hw0` to reduce the goal to its premises. Use function extensionality and compare the values at `j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `hi j (Finset.mem_univ j)` as an intermediate fact. Rewrite `this` using `[h, map_zero]`. Simplify using `using le_antisymm this zero_le'`. Use `⟨s * (Units.mk0 (w i) hwi)⁻¹, ?_, ?_⟩` and prove the remaining obligations. Introduce `j _ show valuation k (((s * (Units.mk0 (w i) hwi)⁻¹ : kˣ) : k) * w j) ≤ valuation k (s : k)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hv : valuation k (w i) ≠ 0` using `by simpa using hwi`. Simplify using `only [Units.val_mul, Units.val_inv_eq_inv_val, Units.val_mk0, map_mul, map_inv₀]`. Rewrite using `[mul_assoc]`. Combine the equalities or inequalities in the displayed calculation. Introduce `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `h i (Set.mem_univ i)` as an intermediate fact. Express the relevant statement in the definitionally equal form `valuation k (((s * (Units.mk0 (w i) hwi)⁻¹ : kˣ) : k) * w i) ≤ valuation k (((s * Units.mk0 r hr0 : kˣ)) : k) at this`. Simplify using `only [Units.val_mul, Units.val_inv_eq_inv_val, Units.val_mk0] at this`. Rewrite `this` using `[mul_assoc, inv_mul_cancel₀ hwi, mul_one, map_mul]`. Establish `hs : 0 < valuation k (s : k)` using `by simp [zero_lt_iff]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `lt_of_le_of_lt this (by rw [mul_comm]; exact mul_lt_of_lt_one_left hs hr1)` as an intermediate fact. Conclude with `lt_irrefl _ this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_smul_shell {s : kˣ} {r : k} (hr0 : r ≠ 0) (hr1 : valuation k r < 1) {w : Vc k n}
     (hw0 : w ≠ 0) : ∃ c : kˣ, c • w ∈ box (Fin (n + 1)) s ∧ c • w ∉ box (Fin (n + 1)) (s * Units.mk0 r hr0) := by
@@ -387,17 +383,13 @@ theorem exists_smul_shell {s : kˣ} {r : k} (hr0 : r ≠ 0) (hr1 : valuation k r
     exact lt_irrefl _ this
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.SplitWeil.t2Space (k := k)`. Take `⟨s, hs⟩` from `exists_box_phi_smul hP hF`. Take `⟨r, hr, hr1⟩` from `Valuation.IsNontrivial.exists_lt_one (v := valuation k)`. Establish `hr0 : r ≠ 0` using `by simpa using hr`. Use `set Q := Prod.snd '' tsupport F with hQdef`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQ : IsCompact Q` using `hF.2.image continuous_snd`. Use `set B := box (Fin (n + 1)) s with hBdef`. Use `set B' := box (Fin (n + 1)) (s * Units.mk0 r hr0) with hB'def`. Establish `hBo : IsOpen B` using `isOpen_box s`. Establish `hB'o : IsOpen B'` using `isOpen_box _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK1 : IsCompact (Q ∩ Bᶜ)` using `hQ.inter_right hBo.isClosed_compl`. Establish `hK2 : IsCompact (B ∩ B'ᶜ)` using `(isCompact_box s).inter_right hB'o.isClosed_compl`. Establish `hf1 : (phi Λ F '' (Q ∩ Bᶜ)).Finite` using `finite_image_of_eventually hK1 fun x hx => phi_eventually_eq hP hF fun h => hx.2 (h ▸ zero_mem_box s)`. Establish `hf2 : (phi Λ F '' (B ∩ B'ᶜ)).Finite` using `finite_image_of_eventually hK2 fun x hx => phi_eventually_eq hP hF fun h => hx.2 (h ▸ zero_mem_box _)`. Use `((Set.finite_singleton (0 : ℂ)).union (hf1.union hf2)).subset ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Introduce and unpack `_ ⟨w, rfl⟩`. Distinguish the cases in `hw0 : w = 0`. Use `left`. Rewrite using `[hw0]`. Conclude with `phi_zero`.
-
-Distinguish the cases in `hwB : w ∈ B`. Take `⟨c, hc1, hc2⟩` from `exists_smul_shell (s := s) hr0 hr1 hw0 right`. Use `right`. Conclude with `⟨c • w, ⟨hc1, hc2⟩, hs w hwB c hc1⟩`. Distinguish the cases in `hwQ : w ∈ Q`.
-
-Use `right`. Use `left`. Conclude with `⟨w, ⟨hwQ, hwB⟩, rfl⟩`. Use `left`. Conclude with `phi_eq_zero_of_notMem hwQ`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem finite_range_phi {Λ : (Mx k n → ℂ) →ₗ[ℂ] ℂ} (hP : PInvX Λ) {F : Mx k n × Vc k n → ℂ}
     (hF : F ∈ SB (Mx k n × Vc k n)) : (Set.range (phi Λ F)).Finite := by
@@ -436,13 +428,11 @@ section Meas
 variable {n : ℕ} [MeasurableSpace k] [BorelSpace k]
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.SplitWeil.t2Space (k := k)`. Use `haveI := GlobalTheory.SplitWeil.secondCountable (k := k)`. Introduce `S _`. Establish `hU : IsOpen (phi Λ F ⁻¹' S ∩ {w | w ≠ 0})`. Rewrite using `[isOpen_iff_mem_nhds]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `w ⟨hwS, hw0⟩`. Use `filter_upwards [phi_eventually_eq hP hF hw0, isOpen_ne.mem_nhds hw0] with y hy hy0`. Conclude with `⟨by show phi Λ F y ∈ S; rw [hy]; exact hwS, hy0⟩`. Establish `e : phi Λ F ⁻¹' S = (phi Λ F ⁻¹' S ∩ {w | w ≠ 0}) ∪ (phi Λ F ⁻¹' S ∩ {0})`. Use extensionality with `w`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `by_cases hw : w = 0 <;> simp [hw]`. Rewrite using `[e]`. Use `hU.measurableSet.union ?_` and prove the remaining obligations. Distinguish the cases in `h0 : (0 : Vc k n) ∈ phi Λ F ⁻¹' S`. Rewrite using `[Set.inter_eq_right.2 (Set.singleton_subset_iff.2 h0)]`.
-
-Conclude with `isClosed_singleton.measurableSet`. Rewrite using `[Set.inter_singleton_eq_empty.2 h0]`. Conclude with `MeasurableSet.empty`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measurable_phi {Λ : (Mx k n → ℂ) →ₗ[ℂ] ℂ} (hP : PInvX Λ) {F : Mx k n × Vc k n → ℂ}
     (hF : F ∈ SB (Mx k n × Vc k n)) : Measurable (phi Λ F) := by
@@ -476,11 +466,11 @@ open PositivityTheory.RgUd.AB PositivityTheory.RgUd.AB.BoxIntegration
 variable (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Introduce `_ _ ν _ n Λ hP F hF`. Use `haveI := GlobalTheory.SplitWeil.t2Space (k := k)`. Use `haveI := GlobalTheory.SplitWeil.secondCountable (k := k)`. Take `⟨M, hM⟩` from `((finite_range_phi hP hF).image norm).bddAbove`. Establish `hM' : ∀ w, ‖phi Λ F w‖ ≤ M` using `fun w => hM ⟨_, ⟨w, rfl⟩, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Q := Prod.snd '' tsupport F with hQdef`. Establish `hQ : IsCompact Q` using `hF.2.image continuous_snd`. Establish `hQm : MeasurableSet Q` using `hQ.isClosed.measurableSet`. Establish `hQfin : (Measure.pi fun _ : Fin (n + 1) => ν) Q < ⊤` using `hQ.measure_lt_top`. Use `Integrable.mono' (g := Q.indicator fun _ => M) ?_ (measurable_phi hP hF).aestronglyMeasurable (Filter.Eventually.of_forall fun w => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(integrableOn_const hQfin.ne).integrable_indicator hQm`. Distinguish the cases in `hw : w ∈ Q`. Rewrite using `[Set.indicator_of_mem hw]`. Conclude with `hM' w`. Rewrite using `[Set.indicator_of_notMem hw, phi_eq_zero_of_notMem hw, norm_zero]`.
+A detailed English derivation is pending.
 -/
 theorem phiInt : PhiInt k := by
   intro _ _ ν _ n Λ hP F hF

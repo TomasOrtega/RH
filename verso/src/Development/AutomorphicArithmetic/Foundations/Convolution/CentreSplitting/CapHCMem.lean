@@ -9,7 +9,7 @@ open UpperTheory.ConvolutionTheory.C UpperTheory.ConvolutionTheory.Dp UpperTheor
 
 open GroundTheory.Automorphic.HarishChandra in
 /- English proof (translation)
-Establish `hgl : Formalism.REAL.GlRel (fun i j : Fin n => e (i, j))`. Introduce `i j k l`. Conclude with `e_mul_sub_mul (i, j) (k, l)`. Use `mem_center_of_commute_e fun a => ?_` and prove the remaining obligations. Conclude with `(Formalism.REAL.qDetCentral (U n) n _ hgl u a.1 a.2).symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.ConvolutionTheory.Dp.capHC_mem (n : ℕ) (u : ℂ) :
     Formalism.REAL.qdet (fun i j : Fin n => e (i, j)) u ∈ Subalgebra.center ℂ (U n) := by
@@ -20,9 +20,9 @@ private theorem UpperTheory.ConvolutionTheory.Dp.capHC_mem (n : ℕ) (u : ℂ) :
   exact (Formalism.REAL.qDetCentral (U n) n _ hgl u a.1 a.2).symm
 
 /- English proof (translation)
-Introduce `n u`. Use `⟨⟨_, capHC_mem n (u + ((n : ℂ) - 1) / 2)⟩, rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[HarishChandra.harishChandraHom_apply]`. Simplify using `only`. Rewrite using `[UpperTheory.harishChandraProj_quantumDet_eq_prod, map_prod]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Unfold `GroundTheory.Automorphic.HarishChandra.translate`. Rewrite using `[map_add, MvPolynomial.aeval_C, MvPolynomial.aeval_X, MvPolynomial.algebraMap_eq, add_comm (MvPolynomial.X k), ← add_assoc, ← map_add]`. Use `congr 2`. Simplify using `only [HarishChandra.rhoVec, Pi.neg_apply]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

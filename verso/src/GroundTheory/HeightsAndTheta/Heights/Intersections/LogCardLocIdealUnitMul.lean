@@ -14,13 +14,13 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo
 noncomputable section
 
 /- English proof (translation)
-Set `f : S →+ S` to `AddMonoidHom.mulLeft u`. Establish `hf : Function.Injective f` using `fun a b h => mul_left_cancel₀ hu h`. Establish `e1 : (Ideal.span {v}).toAddSubgroup.map f = (Ideal.span {u * v}).toAddSubgroup`. Use extensionality with `z`. Simplify using `only [AddSubgroup.mem_map, Submodule.mem_toAddSubgroup, Ideal.mem_span_singleton']`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨r, rfl⟩, rfl⟩`. Conclude with `⟨r, by simp only [f, AddMonoidHom.coe_mulLeft]; ring⟩`. Introduce and unpack `⟨r, rfl⟩`. Conclude with `⟨r * v, ⟨r, rfl⟩, by simp only [f, AddMonoidHom.coe_mulLeft]; ring⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Establish `e2 : (⊤ : AddSubgroup S).map f = (Ideal.span {u}).toAddSubgroup`. Use extensionality with `z`. Simplify using `only [AddSubgroup.mem_map, AddSubgroup.mem_top, true_and, Submodule.mem_toAddSubgroup, Ideal.mem_span_singleton', f, AddMonoidHom.coe_mulLeft]`. Conclude with `⟨fun ⟨y, hy⟩ => ⟨y, by rw [← hy, mul_comm]⟩, fun ⟨r, hr⟩ => ⟨r, by rw [← hr, mul_comm]⟩⟩`. Establish `hle : (Ideal.span {u * v}).toAddSubgroup ≤ (Ideal.span {u}).toAddSubgroup` using `fun z hz => Ideal.span_singleton_le_span_singleton.mpr (dvd_mul_right u v) hz`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `h2 : (Ideal.span {u * v}).toAddSubgroup.relIndex (Ideal.span {u}).toAddSubgroup = (Ideal.span {v}).toAddSubgroup.index`. Rewrite using `[← e1, ← e2, AddSubgroup.relIndex_map_map_of_injective _ _ hf, AddSubgroup.relIndex_top_right]`. Establish `hc : ∀ I : Ideal S, Nat.card (S ⧸ I) = I.toAddSubgroup.index` using `fun I => (AddSubgroup.index_eq_card _).symm`. Rewrite using `[hc, hc, hc, ← AddSubgroup.relIndex_mul_index hle, h2, mul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_quot_span_mul {S : Type*} [CommRing S] [IsDomain S] (u v : S) (hu : u ≠ 0) :
     Nat.card (S ⧸ Ideal.span {u * v}) = Nat.card (S ⧸ Ideal.span {u}) * Nat.card (S ⧸ Ideal.span {v}) := by
@@ -51,7 +51,7 @@ theorem card_quot_span_mul {S : Type*} [CommRing S] [IsDomain S] (u v : S) (hu :
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Rewrite `hf₁`, the goal using `[locIdeal_eq_span h₁]`. Rewrite `hf₂`, the goal using `[locIdeal_eq_span h₂]`. Rewrite using `[locIdeal_eq_span (mul_mem h₁ h₂)]`. Establish `: (⟨y₁ * y₂, mul_mem h₁ h₂⟩ : locRing P W) = ⟨y₁, h₁⟩ * ⟨y₂, h₂⟩` using `rfl`. Rewrite using `[this, card_quot_span_mul _ _ (fun h => hne (congrArg Subtype.val h)), Nat.cast_mul, Real.log_mul (Nat.cast_ne_zero.mpr Nat.card_pos.ne') (Nat.cast_ne_zero.mpr Nat.card_pos.ne')]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem log_card_locIdeal_mul {P W : Ideal (MRing ι)} [P.IsPrime] {y₁ y₂ : FractionRing (MRing ι ⧸ P)}
     (h₁ : y₁ ∈ locRing P W) (h₂ : y₂ ∈ locRing P W) (hne : y₁ ≠ 0)
@@ -66,7 +66,7 @@ theorem log_card_locIdeal_mul {P W : Ideal (MRing ι)} [P.IsPrime] {y₁ y₂ : 
     Real.log_mul (Nat.cast_ne_zero.mpr Nat.card_pos.ne') (Nat.cast_ne_zero.mpr Nat.card_pos.ne')]
 
 /- English proof (translation)
-Rewrite using `[locIdeal_eq_span hy, Ideal.span_singleton_eq_top.mpr (IsUnit.of_mul_eq_one (⟨z, hz⟩ : locRing P W) (Subtype.ext h))]`. Establish `: Subsingleton (locRing P W ⧸ (⊤ : Ideal (locRing P W)))` using `Ideal.Quotient.subsingleton_iff.mpr rfl`. Rewrite using `[Nat.card_of_subsingleton (0 : locRing P W ⧸ (⊤ : Ideal (locRing P W)))]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem log_card_locIdeal_unit {P W : Ideal (MRing ι)} [P.IsPrime] {y z : FractionRing (MRing ι ⧸ P)}
     (hy : y ∈ locRing P W) (hz : z ∈ locRing P W) (h : y * z = 1) :
@@ -78,7 +78,7 @@ theorem log_card_locIdeal_unit {P W : Ideal (MRing ι)} [P.IsPrime] {y z : Fract
   simp
 
 /- English proof (translation)
-Rewrite using `[locIdeal_eq_span (mul_mem hy hc), locIdeal_eq_span hc]`. Establish `: (⟨y * c, mul_mem hy hc⟩ : locRing P W) = ⟨y, hy⟩ * ⟨c, hc⟩` using `rfl`. Rewrite using `[this, Ideal.span_singleton_mul_left_unit (IsUnit.of_mul_eq_one (⟨z, hz⟩ : locRing P W) (Subtype.ext h))]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem log_card_locIdeal_unit_mul {P W : Ideal (MRing ι)} [P.IsPrime] {y z c : FractionRing (MRing ι ⧸ P)}
     (hy : y ∈ locRing P W) (hz : z ∈ locRing P W) (h : y * z = 1) (hc : c ∈ locRing P W) :
@@ -89,7 +89,7 @@ theorem log_card_locIdeal_unit_mul {P W : Ideal (MRing ι)} [P.IsPrime] {y z c :
   rw [this, Ideal.span_singleton_mul_left_unit (IsUnit.of_mul_eq_one (⟨z, hz⟩ : locRing P W) (Subtype.ext h))]
 
 /- English proof (translation)
-Establish `hvP : Ideal.Quotient.mk P v ∈ nonZeroDivisors (MRing ι ⧸ P)` using `mem_nonZeroDivisors_of_ne_zero (by rw [Ne, Ideal.Quotient.eq_zero_iff_mem]; exact fun h => hvW (hPW h))`. Conclude with `Subring.subset_closure ⟨u, v, a, hvP, hvW, hu, hv, IsLocalization.eq_mk'_iff_mul_eq.mpr hy⟩`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem frac_mem_locRing {P W : Ideal (MRing ι)} (hPW : P ≤ W) {u v : MRing ι} {a : K → ℕ}
     (hu : IsMultiHomog u a) (hv : IsMultiHomog v a) (hvW : v ∉ W) [P.IsPrime] {y : FractionRing (MRing ι ⧸ P)}
@@ -101,9 +101,9 @@ theorem frac_mem_locRing {P W : Ideal (MRing ι)} (hPW : P ≤ W) {u v : MRing �
   exact Subring.subset_closure ⟨u, v, a, hvP, hvW, hu, hv, IsLocalization.eq_mk'_iff_mul_eq.mpr hy⟩
 
 /- English proof (translation)
-Establish `hu0 : algebraMap (MRing ι ⧸ P) (FractionRing (MRing ι ⧸ P)) (Ideal.Quotient.mk P u) ≠ 0`. Rewrite using `[Ne, IsFractionRing.to_map_eq_zero_iff, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `fun h => huW (hPW h)`. Establish `hv0 : algebraMap (MRing ι ⧸ P) (FractionRing (MRing ι ⧸ P)) (Ideal.Quotient.mk P v) ≠ 0`. Rewrite using `[Ne, IsFractionRing.to_map_eq_zero_iff, Ideal.Quotient.eq_zero_iff_mem]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fun h => hvW (hPW h)`. Use `set z := algebraMap (MRing ι ⧸ P) (FractionRing (MRing ι ⧸ P)) (Ideal.Quotient.mk P v) / algebraMap (MRing ι ⧸ P) (FractionRing (MRing ι ⧸ P)) (Ideal.Quotient.mk P u)`. Use `⟨frac_mem_locRing hPW hu hv hvW hy, z, frac_mem_locRing hPW hv hu huW (div_mul_cancel₀ _ hu0), ?_⟩` and prove the remaining obligations. Rewrite using `[mul_div_assoc', hy, div_self hu0]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frac_unit_locRing {P W : Ideal (MRing ι)} (hPW : P ≤ W) {u v : MRing ι} {a : K → ℕ}
     (hu : IsMultiHomog u a) (hv : IsMultiHomog v a) (huW : u ∉ W) (hvW : v ∉ W) [P.IsPrime]
@@ -123,39 +123,37 @@ theorem frac_unit_locRing {P W : Ideal (MRing ι)} (hPW : P ≤ W) {u v : MRing 
   rw [mul_div_assoc', hy, div_self hu0]
 
 /- English proof (translation)
-Introduce `K _ ι _ P f g a x t yf yg hP hf hg hfP hgP hx ht`. Establish `: P.IsPrime` using `hP.2.1.1`. Take `⟨c, hc0, hcW⟩` from `hD K ι P x hP`. Establish `hφ : ∀ s, s ∉ P → algebraMap (MRing ι ⧸ P) (FractionRing (MRing ι ⧸ P)) (Ideal.Quotient.mk P s) ≠ 0` using `fun s hs => by rw [Ne, IsFractionRing.to_map_eq_zero_iff, Ideal.Quotient.eq_zero_iff_mem]; exact hs`. Establish `hx0 : x ≠ 0` using `fun h => hφ f hfP (by rw [← hx, h]; simp)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb0 : x * c ≠ 0` using `mul_ne_zero hx0 hc0`. Establish `hxc : ((x * c : funField P) : FractionRing (MRing ι ⧸ P)) = x * c` using `rfl`. Establish `hmem : ∀ {s : MRing ι} {W}, IsMultiHomog s a → s ∉ P → IsClosedPt W → P ≤ W → (W ∈ divSupp P s ↔ s ∈ W)` using `fun hs hsP hWc hPW => (hC K ι P _ a _ hP hs hsP).trans ⟨fun h => h.2.2, fun h => ⟨hWc, hPW, h⟩⟩`. Establish `key : ∀ W, IsClosedPt W → P ≤ W → (if W ∈ divSupp P f then Real.log (Nat.card (locRing P W ⧸ locIdeal P W (yf W))) else 0) - (if W ∈ divSupp P g then Real.log (Nat.card (locRing P W ⧸ locIdeal P W (yg W))) else 0) = Real.log (Nat.card (locRing P W ⧸ locIdeal P W ((x * c : funFiel …`. Introduce `W hWc hPW`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨hcS, hbS⟩` from `hcW W hWc hPW`. Distinguish the cases in `hU : W ∈ divSupp P f ∪ divSupp P g`. Take `⟨htW, htn, hyf, hyg⟩` from `ht W hU`. Establish `hyfS` using `frac_mem_locRing hPW hf htW htn hyf`. Establish `hygS` using `frac_mem_locRing hPW hg htW htn hyg`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyf0 : yf W ≠ 0` using `fun h => hφ f hfP (by rw [← hyf, h, zero_mul])`. Establish `hyg0 : yg W ≠ 0` using `fun h => hφ g hgP (by rw [← hyg, h, zero_mul])`. Establish `hrel : yf W = x * yg W` using `mul_right_cancel₀ (hφ _ fun h => htn (hPW h)) (by rw [hyf, mul_assoc, hyg, hx])`. Choose the witnesses or unpack the hypotheses as in `⟨s, hs, hsP, hWs⟩ : ∃ s, IsMultiHomog s a ∧ s ∉ P ∧ W ∈ divSupp P s := by`. Break down `hU with h | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Use `exacts [⟨f, hf, hfP, h⟩, ⟨g, hg, hgP, h⟩]`. Establish `fin : ∀ y, y ∈ locRing P W → y ≠ 0 → Finite (locRing P W ⧸ locIdeal P W y)` using `fun y hy hy0 => hF K ι P s a W y hP hs hsP hWs hy hy0`. Establish `hc0' : (c : FractionRing (MRing ι ⧸ P)) ≠ 0` using `fun h => hc0 (Subtype.ext h)`. Establish `hb0' : ((x * c : funField P) : FractionRing (MRing ι ⧸ P)) ≠ 0` using `fun h => hb0 (Subtype.ext h)`. Establish `e : yf W * c = ((x * c : funField P) : FractionRing (MRing ι ⧸ P)) * yg W`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hrel, hxc]`. Expand and normalize the polynomial expressions, which then agree. Establish `hm` using `log_card_locIdeal_mul hyfS hcS hyf0 (fin _ hyfS hyf0) (fin _ hcS hc0')`. Establish `hm'` using `log_card_locIdeal_mul hbS hygS hb0' (fin _ hbS hb0') (fin _ hygS hyg0)`. Rewrite `hm` using `[e]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `by_cases h1 : W ∈ divSupp P f <;> by_cases h2 : W ∈ divSupp P g`. Rewrite using `[if_pos h1, if_pos h2]`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨-, z, hz, hz1⟩` from `frac_unit_locRing hPW hg htW (fun h => h2 ((hmem hg hgP hWc hPW).mpr h)) htn hyg`. Use `log_card_locIdeal_unit hygS hz hz1` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos h1, if_neg h2]`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨-, z, hz, hz1⟩` from `frac_unit_locRing hPW hf htW (fun h => h1 ((hmem hf hfP hWc hPW).mpr h)) htn hyf`. Use `log_card_locIdeal_unit hyfS hz hz1` as an intermediate fact. Rewrite using `[if_neg h1, if_pos h2]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `absurd hU (by simp [h1, h2])`. Establish `h1 : W ∉ divSupp P f` using `fun h => hU (Or.inl h)`. Establish `h2 : W ∉ divSupp P g` using `fun h => hU (Or.inr h)`. Take `⟨hxS, z, hz, hz1⟩` from `frac_unit_locRing hPW hf hg (fun h => h1 ((hmem hf hfP hWc hPW).mpr h)) (fun h => h2 ((hmem hg hgP hWc hPW).mpr h)) hx`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[if_neg h1, if_neg h2, hxc, log_card_locIdeal_unit_mul hxS hz hz1 hcS]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨hbfin, hbsum⟩` from `hR K ι P (x * c) hP hb0 (fun W h1 h2 => (hcW W h1 h2).2)`. Take `⟨hcfin, hcsum⟩` from `hR K ι P c hP hc0 (fun W h1 h2 => (hcW W h1 h2).1)`. Establish `eq1 : ∀ (s : MRing ι) (y : Ideal (MRing ι) → FractionRing (MRing ι ⧸ P)), ∑ᶠ W ∈ divSupp P s, Real.log (Nat.card (locRing P W ⧸ locIdeal P W (y W))) = ∑ᶠ W, (if W ∈ divSupp P s then Real.log (Nat.card (locRing P W ⧸ locIdeal P W (y W))) else 0)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `s y`. Rewrite using `[finsum_mem_def]`. Both sides reduce to the same expression. Establish `fsA : ∀ (s : MRing ι) (y : Ideal (MRing ι) → FractionRing (MRing ι ⧸ P)), (Function.support fun W => if W ∈ divSupp P s then Real.log (Nat.card (locRing P W ⧸ locIdeal P W (y W))) else 0).Finite` using `fun s y => (divSupp_finite P s).subset fun W hW => by`. Assume the negation of the conclusion as `h`.
+Both sides reduce to the same expression. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hW (if_neg h)`. Establish `fsB : ∀ z : FractionRing (MRing ι ⧸ P), {W | IsClosedPt W ∧ P ≤ W ∧ Nat.card (locRing P W ⧸ locIdeal P W z) ≠ 1}.Finite → (Function.support ({W : Ideal (MRing ι) | IsClosedPt W ∧ P ≤ W}.indicator fun W => Real.log (Nat.card (locRing P W ⧸ locIdeal P W z)))).Finite` using `fun z hz => hz.subset fun W hW => by`. Rewrite `hW` using `[Function.mem_support]`. Distinguish the cases in `hWC : W ∈ {W : Ideal (MRing ι) | IsClosedPt W ∧ P ≤ W}`. Rewrite `hW` using `[Set.indicator_of_mem hWC]`.
+Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨hWC.1, hWC.2, fun h1 => hW (by rw [h1]; simp)⟩`. Rewrite `hW` using `[Set.indicator_of_notMem hWC]`. Conclude with `absurd rfl hW`. Take `⟨hFld, hNF⟩` from `hN K ι P hP`. Set `_` to `hFld.toField`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hσ : ∀ y : funField P, y ≠ 0 → ∀ σ : funField P →+* ℂ, σ y ≠ 0` using `fun y hy σ h => by`. Take `⟨z, hz⟩` from `hFld.mul_inv_cancel hy`. Use `congrArg σ hz` as an intermediate fact. Rewrite `this` using `[map_mul, h, zero_mul, map_one]`. Conclude with `zero_ne_one this`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[eq1 f yf, eq1 g yg, finsum_sub_distrib (fsA f yf) (fsA g yg)]`. Use `_ = ∑ᶠ W, ({W : Ideal (MRing ι) | IsClosedPt W ∧ P ≤ W}.indicator (fun W => Real.log (Nat.card (locRing P W ⧸ locIdeal P W ((x * c : funField P) : FractionRing (MRing ι ⧸ P))))) W - {W : Ideal (MRing ι) | IsClosedPt W ∧ P ≤ W}.indicator (fun W => Real.log (Nat.card (locRing P W ⧸ …`. Use `finsum_congr fun W => ?_` and prove the remaining obligations. Distinguish the cases in `hWC : W ∈ {W : Ideal (MRing ι) | IsClosedPt W ∧ P ≤ W}`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_mem hWC, Set.indicator_of_mem hWC]`. Conclude with `key W hWC.1 hWC.2`. Rewrite using `[Set.indicator_of_notMem hWC, Set.indicator_of_notMem hWC, if_neg fun h => hWC ⟨((hC K ι P f a W hP hf hfP).mp h).1, ((hC K ι P f a W hP hf hfP).mp h).2.1⟩, if_neg fun h => hWC ⟨((hC K ι P g a W hP hg hgP).mp h).1, ((hC K ι P g a W hP hg hgP).mp h).2.1⟩]`. Use `_ = ∑ᶠ σ : funField P →+* ℂ, Real.log ‖σ (x * c)‖ - ∑ᶠ σ : funField P →+* ℂ, Real.log ‖σ c‖ := by`. Rewrite using `[finsum_sub_distrib (fsB _ hbfin) (fsB _ hcfin), ← finsum_mem_def, ← finsum_mem_def, hbsum, hcsum]`.
-
-Use `_ = _ := by`. Rewrite using `[← finsum_sub_distrib (Set.toFinite _) (Set.toFinite _)]`. Use `finsum_congr fun σ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, norm_mul, Real.log_mul (norm_ne_zero_iff.mpr (hσ x hx0 σ)) (norm_ne_zero_iff.mpr (hσ c hc0 σ))]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem RegularityLocalProduct.proof (hN : RegularityFunctionFieldNumber.Statement) (hR : RegularityFormula.Statement)
     (hD : RegularityDenominator.Statement) (hC : RegularityDivisorSupportClosed.Statement) (hF : RegularityLocalFinite.Statement) :

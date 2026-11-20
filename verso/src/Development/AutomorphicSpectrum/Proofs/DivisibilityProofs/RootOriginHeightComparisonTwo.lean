@@ -22,9 +22,9 @@ variable {K₀ : Type} [Fintype K₀] {ι₀ : K₀ → Type} [∀ k, Fintype (�
   {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)] {Ω : Type} [Field Ω]
 
 /- English proof (translation)
-Set `ψ : MvPolynomial K₀ Ω₀ →+* MvPolynomial K Ω` to `eval₂Hom (C.comp i) fun k => X (κ k)`. Establish `e : (mConeMap y).toRingHom.comp (rename v : MRing ι₀ →ₐ[ℤ] MRing J).toRingHom = ψ.comp (mConeMap y₀).toRingHom`. Use `MvPolynomial.ringHom_ext (fun r => ?_) fun p => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using `[mConeMap, ψ, hy, hv]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `h0 : mConeMap y₀ f = 0` using `hf`. Use `show mConeMap y (rename v f) = 0`. Use `congrArg (fun φ => φ f) e` as an intermediate fact. Simplify `this` using `[h0]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem rename_mem_mCoordIdeal {y₀ : (Σ k, ι₀ k) → Ω₀} {y : (Σ k, J k) → Ω} {κ : K₀ → K}
     {v : (Σ k, ι₀ k) → Σ k, J k} (i : Ω₀ →+* Ω) (hv : ∀ p, (v p).1 = κ p.1)
@@ -42,11 +42,11 @@ theorem rename_mem_mCoordIdeal {y₀ : (Σ k, ι₀ k) → Ω₀} {y : (Σ k, J 
   simpa [h0] using this
 
 /- English proof (translation)
-Use `⟨fun k => ?_, fun f hf => ?_⟩` and prove the remaining obligations. Take `⟨j, hj⟩` from `hz.1 (κ k)`. Take `⟨p, hp⟩` from `hb.2.2.2 ⟨κ k, j⟩ ⟨k, rfl⟩`. Establish `h2 : p.1 = k` using `hb.1 (by rw [← hb.2.2.1 p, hp])`. Take `⟨pk, pi⟩` from `p`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Simplify using `only at h2`. Substitute `h2` using the available equality. Use `⟨pi, ?_⟩` and prove the remaining obligations. Use `show z (v ⟨pk, pi⟩) ≠ 0`. Rewrite using `[hp]`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hj`. Use `hz.2 _ (rename_mem_mCoordIdeal i hb.2.2.1 hy hf)` as an intermediate fact. Rewrite `this` using `[map_rename, eval_rename]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem pull_mem_mcPts {y₀ : (Σ k, ι₀ k) → Ω₀} {y : (Σ k, J k) → Ω} {κ : K₀ → K}
     {v : (Σ k, ι₀ k) → Σ k, J k} (i : Ω₀ →+* Ω) (hb : IsBlockMap κ v)
@@ -67,7 +67,7 @@ theorem pull_mem_mcPts {y₀ : (Σ k, ι₀ k) → Ω₀} {y : (Σ k, J k) → �
     rwa [map_rename, eval_rename] at this
 
 /- English proof (translation)
-Use `show mConeMap y (X q) = 0 ↔ _`. Simplify using `[mConeMap, X_ne_zero]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem X_mem_mCoordIdeal_iff (y : (Σ k, J k) → Ω) (q : Σ k, J k) :
     (X q : MRing J) ∈ mCoordIdeal y ↔ y q = 0 := by
@@ -75,9 +75,9 @@ theorem X_mem_mCoordIdeal_iff (y : (Σ k, J k) → Ω) (q : Σ k, J k) :
   simp [mConeMap, X_ne_zero]
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `hb.2.2.2 q ⟨k₀, hq.symm⟩`. Establish `h2 : p.1 = k₀` using `hb.1 (by rw [← hb.2.2.1 p, hp, hq])`. Take `⟨pk, pi⟩` from `p`. Simplify using `only at h2`. Substitute `h2` using the available equality.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Conclude with `⟨e.symm pi, by simpa using hp⟩`.
+Supply the required witnesses or components.
 -/
 theorem block_onto {κ : K₀ → K} {v : (Σ k, ι₀ k) → Σ k, J k} (hb : IsBlockMap κ v) {n : Type}
     (k₀ : K₀) (e : n ≃ ι₀ k₀) (q : Σ k, J k) (hq : q.1 = κ k₀) : ∃ i, v ⟨k₀, e i⟩ = q := by
@@ -89,11 +89,11 @@ theorem block_onto {κ : K₀ → K} {v : (Σ k, ι₀ k) → Σ k, J k} (hb : I
   exact ⟨e.symm pi, by simpa using hp⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k'`. Distinguish the cases in `hk : ∃ k, κ k = k'`. Take `⟨k, rfl⟩` from `hk`. Rewrite using `[pullDeg, hκ.extend_apply]`. Distinguish the cases in `e : k = k₀`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `e` using the available equality. Simplify using `[h1]`. Establish `: κ k ≠ κ k₀` using `fun h => e (hκ h)`. Simplify using `[h2 k e, this]`. Rewrite using `[pullDeg, Function.extend_apply' _ _ _ hk]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `: k' ≠ κ k₀` using `fun h => hk ⟨k₀, h.symm⟩`. Simplify using `[this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem pullDeg_single [DecidableEq K] {κ : K₀ → K} (hκ : Function.Injective κ) {a : K₀ → ℤ} {k₀ : K₀}
     (h1 : a k₀ = 1) (h2 : ∀ k, k ≠ k₀ → a k = 0) :
@@ -119,7 +119,7 @@ variable {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)] {Ω : Ty
   {y : (Σ k, J k) → Ω} {n : Type} {w₀ w₁ : n → Σ k, J k} {a₀ a₁ : K}
 
 /- English proof (translation)
-Use `show mConeMap y _ = 0`. Simplify using `only [mConeMap, map_sub, map_mul, aeval_X, b₀, b₁, hw]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem minor_mem (b₀ : ∀ i, (w₀ i).1 = a₀) (b₁ : ∀ i, (w₁ i).1 = a₁)
     (hw : ∀ i, y (w₀ i) = y (w₁ i)) (i j : n) :
@@ -129,13 +129,13 @@ theorem minor_mem (b₀ : ∀ i, (w₀ i).1 = a₀) (b₁ : ∀ i, (w₁ i).1 = 
   ring
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `hrel a₀`. Take `⟨b, hb⟩` from `s₀ ⟨a₀, i⟩ rfl`. Take `⟨j, hj⟩` from `hrel a₁`. Take `⟨c, hc⟩` from `s₁ ⟨a₁, j⟩ rfl`. Rewrite `hi` using `[← hb]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hj` using `[← hc]`. Establish `hu : (X (w₁ b) : MRing J) ∉ W`. Introduce `h`. Establish `m` using `hPW (minor_mem b₀ b₁ hw b c)`. Establish `h2 : (X (w₀ b) * X (w₁ c) : MRing J) ∈ W`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `W.add_mem m (W.mul_mem_left (X (w₀ c)) h)` as an intermediate fact. Simplify using `using this`. Conclude with `(hW.mem_or_mem h2).elim hi hj`. Use `⟨X (w₁ b), X (w₀ b), hu, hi, ?_⟩` and prove the remaining obligations. Establish `e : (X (w₁ b) * X (w₀ a) - X (w₀ b) * X (w₁ a) : MRing J) = X (w₀ a) * X (w₁ b) - X (w₀ b) * X (w₁ a)` using `by ring`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `minor_mem b₀ b₁ hw a b`.
+A detailed English derivation is pending.
 -/
 theorem exists_unit [DecidableEq K] (b₀ : ∀ i, (w₀ i).1 = a₀) (b₁ : ∀ i, (w₁ i).1 = a₁)
     (s₀ : ∀ q : Σ k, J k, q.1 = a₀ → ∃ i, w₀ i = q) (s₁ : ∀ q : Σ k, J k, q.1 = a₁ → ∃ i, w₁ i = q)
@@ -162,13 +162,13 @@ theorem exists_unit [DecidableEq K] (b₀ : ∀ i, (w₀ i).1 = a₀) (b₁ : �
   exact minor_mem b₀ b₁ hw a b
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `hz.1 a₀`. Take `⟨b, hb⟩` from `s₀ ⟨a₀, i⟩ rfl`. Take `⟨j, hj⟩` from `hz.1 a₁`. Take `⟨c, hc⟩` from `s₁ ⟨a₁, j⟩ rfl`. Rewrite `hi` using `[← hb]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hj` using `[← hc]`. Establish `hm : ∀ i j, z (w₀ i) * z (w₁ j) = z (w₀ j) * z (w₁ i)` using `fun i j => by`. Use `hz.2 _ (minor_mem b₀ b₁ hw i j)` as an intermediate fact. Simplify `this` using `[sub_eq_zero]`. Establish `h0 : z (w₀ c) ≠ 0` using `fun h => by`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `hm b c` as an intermediate fact. Rewrite `this` using `[h, zero_mul]`. Conclude with `mul_ne_zero hi hj this`. Use `⟨z (w₀ c) / z (w₁ c), div_ne_zero h0 hj, fun i => ?_⟩` and prove the remaining obligations. Use `hm i c` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem exists_prop (b₀ : ∀ i, (w₀ i).1 = a₀) (b₁ : ∀ i, (w₁ i).1 = a₁)
     (s₀ : ∀ q : Σ k, J k, q.1 = a₀ → ∃ i, w₀ i = q) (s₁ : ∀ q : Σ k, J k, q.1 = a₁ → ∃ i, w₁ i = q)
@@ -200,13 +200,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {Xo : Moduli D l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}
 
 /- English proof (translation)
-Set `cc : M.K → ℂ` to `fun k => if k = o.k₀ then r else 1`. Establish `hcc : ∀ k, cc k ≠ 0` using `fun k => by`. Apply the tactic sequence `by_cases e : k = o.k₀ <;> simp [cc, e, hr]`. Establish `hz'` using `mcPts_smul M.arith.2.1.2.1 cc hcc hz`. Establish `e1` using `o.A_h _ hz'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `M.A.smul cc z hcc`. Establish `e3` using `o.A_h _ hz`. Establish `e4 : (∏ k, ‖cc k‖ ^ M.A.a k) = ‖r‖`. Rewrite using `[Finset.prod_eq_single o.k₀]`. Simplify using `[cc, o.A_deg.1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `k _ hk`. Simplify using `[o.A_deg.2 k hk]`. Simplify using the standard rewrite rules. Establish `e5 : cc o.k₀ = r` using `by simp [cc]`. Rewrite `e2` using `[e4, e3]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← e2, e1]`. Simplify using `only [e5]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hf_smul {Y : Model Xo c β} {S : Finset ℕ} {M : RootModel (CMType H) (D.p + D.q)}
     {Sys : PB.AnSys (dimFl (CMType H) (D.p + D.q)) (Option (RootIx D))} {Fx : FixedData Y Sys}
@@ -238,25 +238,21 @@ end GlobalTheory.CompanionTheory.Ar.Top.LineUnit
 namespace GlobalTheory.CompanionTheory.Ar.Top.LineUnit
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c Y S₀ S M₀ M₁ Sys Fx o₀ o₁ Ω _ K _ _ J _ y κ₀ v₀ κ₁ v₁ i₀ i₁ h₀ h₁ hy₀ hy₁ hg ha`. Set `w₀ : Fin (Fx.m + 1) → Σ k, J k` to `fun i => v₀ ⟨o₀.k₀, o₀.ix i⟩`. Set `w₁ : Fin (Fx.m + 1) → Σ k, J k` to `fun i => v₁ ⟨o₁.k₀, o₁.ix i⟩`. Establish `b₀ : ∀ i, (w₀ i).1 = κ₀ o₀.k₀` using `fun i => h₀.2.2.1 _`. Establish `b₁ : ∀ i, (w₁ i).1 = κ₁ o₁.k₀` using `fun i => h₁.2.2.1 _`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s₀ : ∀ q : Σ k, J k, q.1 = κ₀ o₀.k₀ → ∃ i, w₀ i = q` using `block_onto h₀ o₀.k₀ o₀.ix`. Establish `s₁ : ∀ q : Σ k, J k, q.1 = κ₁ o₁.k₀ → ∃ i, w₁ i = q` using `block_onto h₁ o₁.k₀ o₁.ix`. Establish `hw : ∀ i, y (w₀ i) = y (w₁ i)` using `fun i => by`. Establish `e` using `congrArg (fun φ => φ (Fx.yf i)) hg`. Simplify using `only [RingHom.comp_apply] at e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `show y (v₀ _) = y (v₁ _)`. Rewrite using `[hy₀, hy₁, o₀.y_eq, o₁.y_eq]`. Conclude with `e`. Take `⟨j, hj⟩` from `ha.2.1.2.2 (κ₀ o₀.k₀)`. Take `⟨a, ha'⟩` from `s₀ ⟨κ₀ o₀.k₀, j⟩ rfl`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hj` using `[← ha']`. Establish `hf : (X (w₀ a) : MRing J) ∉ mCoordIdeal y` using `hj`. Establish `hg' : (X (w₁ a) : MRing J) ∉ mCoordIdeal y`. Rewrite using `[X_mem_mCoordIdeal_iff, ← hw, ← X_mem_mCoordIdeal_iff]`. Conclude with `hf`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `d₀ : (pullHerm h₀ M₀.A).a = fun k => (((Pi.single (κ₀ o₀.k₀) 1 : K → ℕ) k : ℕ) : ℤ)` using `pullDeg_single h₀.1 o₀.A_deg.1 o₀.A_deg.2`. Establish `d₁ : (pullHerm h₁ M₁.A).a = fun k => (((Pi.single (κ₁ o₁.k₀) 1 : K → ℕ) k : ℕ) : ℤ)` using `pullDeg_single h₁.1 o₁.A_deg.1 o₁.A_deg.2`. Establish `hX : ∀ (q : Σ k, J k) (k : K), q.1 = k → GroundTheory.Heights₂.Heights.NumbersDVR.IsMultiHomog (X q : MRing J) (Pi.single k 1)`. Introduce and unpack `q k rfl`. Conclude with `isWeightedHomogeneous_X ℤ (GroundTheory.Heights₂.Heights.NumbersDVR.blockWeight J) q`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `⟨⟨fun _ => (pullHerm h₀ M₀.A).a, fun _ => (pullHerm h₁ M₁.A).a, fun _ => X (w₀ a), fun _ => X (w₁ a)⟩, rfl, rfl, fun _ => ⟨?_, hf, hg', ?_⟩, fun _ => ⟨rfl, rfl, ?_⟩⟩` and prove the remaining obligations. Use `⟨Pi.single (κ₀ o₀.k₀) 1, Pi.single (κ₁ o₁.k₀) 1, hX _ _ (b₀ a), hX _ _ (b₁ a), ?_⟩ show _ = (pullHerm h₀ M₀.A).a - (pullHerm h₁ M₁.A).a` and prove the remaining obligations. Rewrite using `[d₀, d₁]`. Both sides reduce to the same expression. Introduce `W hW hPW hrel _`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `exists_unit b₀ b₁ s₀ s₁ hw a hW hPW hrel`. Introduce `z hz`. Take `⟨r, hr, hp⟩` from `exists_prop b₀ b₁ s₀ s₁ hw hz`. Establish `z₀` using `pull_mem_mcPts i₀ h₀ hy₀ hz`. Establish `z₁` using `pull_mem_mcPts i₁ h₁ hy₁ hz`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e₀` using `o₀.A_h _ z₀`. Establish `e₁` using `o₁.A_h _ z₁`. Establish `es` using `hf_smul o₁ z₁ hr`. Establish `hfun : (fun i => z (w₀ i)) = fun i => r * z (w₁ i)` using `funext hp`. Use `show ‖eval z (map (Int.castRingHom ℂ) (X (w₀ a)))‖ * M₁.A.h (fun p => z (v₁ p)) = ‖eval z (map (Int.castRingHom ℂ) (X (w₁ a)))‖ * M₀.A.h (fun p => z (v₀ p))`.
-
-Rewrite using `[map_X, map_X, eval_X, eval_X, e₀, e₁]`. Establish `e₂ : Fx.hf (fun i => z (v₀ ⟨o₀.k₀, o₀.ix i⟩)) = ‖r‖ * Fx.hf (fun i => z (v₁ ⟨o₁.k₀, o₁.ix i⟩))`. Rewrite using `[← es]`. Conclude with `congrArg Fx.hf hfun`. Rewrite using `[e₂, hp a, norm_mul]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem lines_isometric : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (S₀ S : Finset ℕ) (M₀ M₁ : RootModel (CMType H) (D.p + D.q)) (Sys : PB.AnSys (dimFl (CMType H) (D.p + D.q)) (Option (RootIx D))) (Fx : FixedData Y Sys) (o₀ : RootOrigin Y S₀ M₀ Fx) (o₁ : RootOrigin Y S M₁ Fx) (Ω : Type) [Field Ω] (K : Type) [Fintype K] [DecidableEq K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (κ₀ : M₀.K → K) (v₀ : (Σ k, M₀.ι k) → Σ k, J k) (κ₁ : M₁.K → K) (v₁ : (Σ k, M₁.ι k) → Σ k, J k) (i₀ : M₀.Ω →+* Ω) (i₁ : M₁.Ω →+* Ω) (h₀ : IsBlockMap κ₀ v₀) (h₁ : IsBlockMap κ₁ v₁), (∀ p, y (v₀ p) = i₀ (M₀.y p)) → (∀ p, y (v₁ p) = i₁ (M₁.y p)) → i₀.comp o₀.g = i₁.comp o₁.g → IsArithVar (mCoordIdeal y) (dimFl (CMType H) (D.p + D.q) + 1) → ∃ T : LocPair J ℤ Unit, T.x () = (pullHerm h₀ M₀.A).a ∧ T.x' () = (pullHerm h₁ M₁.A).a ∧ T.IsVertOff (mCoordIdeal y) ∅ ∧ T.IsIsometric (mCoordIdeal y) (fun _ => pullHerm h₀ M₀.A) (fun _ => pullHerm h₁ M₁.A) := by
   intro E _ _ _ H D l Xo c Y S₀ S M₀ M₁ Sys Fx o₀ o₁ Ω _ K _ _ J _ y κ₀ v₀ κ₁ v₁ i₀ i₁ h₀ h₁ hy₀ hy₁ hg ha

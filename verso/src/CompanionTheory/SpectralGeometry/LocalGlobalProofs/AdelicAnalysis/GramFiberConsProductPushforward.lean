@@ -27,13 +27,13 @@ def qM (t : F) (c : Fin n → R ⊗[F] E) : Matrix (Fin n) (Fin n) (R ⊗[F] E) 
   fun i j => sigR R σ (c i) * inclR R (algebraMap F E t) * c j
 
 /- English proof (translation)
-Simplify using `[sigR, inclR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sigR_inclT (t : F) : sigR R σ (inclR R (algebraMap F E t)) = inclR R (algebraMap F E t) := by
   simp [sigR, inclR]
 
 /- English proof (translation)
-Introduce `i j`. Establish `h : sigR R σ (sigR R σ (c j)) = c j` using `GlobalTheory.GaussMean.OneVec.sigR_sigR R hσ _`. Use `show sigR R σ (qM R σ t c j i) = qM R σ t c i j`. Simplify using `only [qM, map_mul, sigR_inclT, h]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem qM_mem (hσ : IsCMExt F E σ) (t : F) (c : Fin n → R ⊗[F] E) : qM R σ t c ∈ HermR R σ n := by
   intro i j
@@ -49,9 +49,9 @@ theorem schurM_eq (t : F) (a : R → Rˣ) (S : Matrix (Fin (n + 1)) (Fin (n + 1)
     (i j : Fin n) : schurM R σ t a S i j = S i.succ j.succ - qM R σ t (cvec R t a S) i j := rfl
 
 /- English proof (translation)
-Establish `hm : schurM R σ t a (S : Matrix (Fin (n + 1)) (Fin (n + 1)) (R ⊗[F] E)) = (S'' : Matrix (Fin n) (Fin n) (R ⊗[F] E)) - qM R σ t (cvec R t a (S : Matrix _ _ _))`. Use function extensionality and compare the values at `i j`. Rewrite using `[schurM_eq, h]`. Both sides reduce to the same expression. Establish `hmem : schurM R σ t a (S : Matrix (Fin (n + 1)) (Fin (n + 1)) (R ⊗[F] E)) ∈ HermR R σ n`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[hm]`. Conclude with `sub_mem S''.2 (qM_mem R σ hσ t _)`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[schur_coe R σ t a S hmem, hm]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem schur_split (hσ : IsCMExt F E σ) (t : F) (a : R → Rˣ) (S : HermR R σ (n + 1))
     (S'' : HermR R σ n)
@@ -71,7 +71,7 @@ theorem schur_split (hσ : IsCMExt F E σ) (t : F) (a : R → Rˣ) (S : HermR R 
   rfl
 
 /- English proof (translation)
-Use `GlobalTheory.GaussMean.OneVec.half_trace (F := F) (E := E) (σ := σ) R hσ x` as an intermediate fact. Rewrite `this` using `[Algebra.TensorProduct.algebraMap_apply]`. Simplify `this` using `[s0, h]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem corner_half_trace_of_cm_pure_tensor (hσ : IsCMExt F E σ) (S : Matrix (Fin (n + 1)) (Fin (n + 1)) (R ⊗[F] E)) (x : R)
     (h : S 0 0 = x ⊗ₜ[F] (1 : E)) : s0 R S = x := by
@@ -82,61 +82,47 @@ theorem corner_half_trace_of_cm_pure_tensor (hσ : IsCMExt F E σ) (S : Matrix (
 end Alg
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ M J t n R _ _ _ _ _ d b lam m₁ m' s B₀ a κ₁ cm D φ hφ`. Take `⟨hTR, hLC, hSC, hT2, -⟩` from `D.hR`. Use `haveI := hTR`. Use `haveI := hLC`. Use `haveI := hSC`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI := hT2`. Establish `hσ` using `D.hCM`. Establish `hlam` using `D.hlam`. Use `haveI := hlam`. Take `⟨hKring, hKlc, hKsc, hKt2, hsig, htr, -, -, -, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hσ R`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := hKring`. Use `haveI := hKlc`. Use `haveI := hKsc`. Use `haveI := hKt2`. Use `haveI : BorelSpace (R ⊗[F] E) := ⟨rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨hκh, -, hνh⟩` from `GlobalTheory.T.coordinate_haar_measure F E σ hσ R d b lam hlam`. Use `haveI := hκh`. Use `haveI hHb : ∀ m, BorelSpace (HermR R σ m) := fun _ => ⟨rfl⟩`. Use `haveI hHlc : ∀ m, LocallyCompactSpace (HermR R σ m) := fun m => (GlobalTheory.T.hermitian_matrices_locally_compact_borel F E σ hσ R m).1`. Use `haveI hHsc : ∀ m, SecondCountableTopology (HermR R σ m) := fun m => (GlobalTheory.T.hermitian_matrices_locally_compact_borel F E σ hσ R m).2.1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : (coordHerm R σ b lam n).IsAddHaarMeasure := hνh n`. Use `haveI : SigmaFinite (coordK R b lam) := inferInstance`. Use `haveI : SigmaFinite (coordHerm R σ b lam n) := inferInstance`. Take `⟨e, he00, he0j, heij, hemap⟩` from `GlobalTheory.T.coordinate_homeomorph_tensor_product_measure F E σ hσ R d b lam hlam n`. Take `⟨hs0c, hacS, hcvc, hschc, hBopen⟩` from `GlobalTheory.T.continuousOn_schur_coordinates_and_isOpen_Bset F E σ M J t n R d b lam m₁ m' s B₀ a κ₁ cm D`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hGon0` using `GlobalTheory.T.gram_fiber_cons_lintegral_eq_scale_mul_Pint F E σ M J t n R d b lam m₁ m' s B₀ a κ₁ cm D φ hφ`. Establish `hmeas` using `GlobalTheory.T.measurable_Pint' F E σ M J t n R d b lam m₁ m' s B₀ a κ₁ cm D φ hφ`. Establish `hsubst` using `GlobalTheory.T.lintegral_coordK_coordHerm_scale_shear F E σ M J t n R d b lam m₁ m' s B₀ a κ₁ cm D`. Establish `hUnt : IsOpen (Unt σ R n)` using `(GlobalTheory.T.gram_fiber_measure_locally_finite_measurable_supported F E σ hσ M n J D.hJ R D.hR d b lam hlam m' D.hm').1`. Establish `hGoff0 : ∀ S, S ∉ Bset R σ t a B₀ → ∫⁻ v, φ v ∂(fibS σ J t m₁ m' s B₀ a κ₁ cm S) = 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `S hS`. Establish `h0 : fibS σ J t m₁ m' s B₀ a κ₁ cm S = 0`. Unfold `fibS`. Conclude with `Set.indicator_of_notMem hS _`. Rewrite using `[h0, lintegral_zero_measure]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Take `⟨G, hG⟩ : ∃ G : HermR R σ (n + 1) → ℝ≥0∞, G = fun S => ∫⁻ v, φ v ∂(fibS σ J t m₁ m' s B₀ a κ₁ cm S)` from `⟨_, rfl⟩`. Establish `hGoff : ∀ S, S ∉ Bset R σ t a B₀ → G S = 0`. Introduce `S hS`. Rewrite using `[hG]`. Conclude with `hGoff0 S hS`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGon : ∀ S ∈ (Bset R σ t a B₀ : Set (HermR R σ (n + 1))), G S = (κ₁ (a (s0 R (S : Matrix (Fin (n + 1)) (Fin (n + 1)) (R ⊗[F] E)))) : ℝ≥0∞) * (cm (a (s0 R (S : Matrix (Fin (n + 1)) (Fin (n + 1)) (R ⊗[F] E)))) : ℝ≥0∞) ^ n * Pint σ J t m₁ m' s φ ((a (s0 R (S : Matrix (Fin (n + 1)) ( …`. Introduce `S hS`. Rewrite using `[hG]`. Conclude with `hGon0 S hS`. Use `show ∫⁻ S, (fun S => ∫⁻ v, φ v ∂(fibS σ J t m₁ m' s B₀ a κ₁ cm S)) S ∂(coordHerm R σ b lam (n + 1)) = _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hG]`. Use `clear hGon0 hGoff0 hG`. Establish `hGm : Measurable G`. Use `measurable_of_restrict_of_restrict_compl hBopen.measurableSet ?_ ?_` and prove the remaining obligations. Establish `hsub : (Bset R σ t a B₀ : Set (HermR R σ (n + 1))) ⊆ {S | s0 R (S : Matrix (Fin (n + 1)) (Fin (n + 1)) (R ⊗[F] E)) ∈ B₀}` using `fun S h => h.1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hk` using `continuousOn_iff_continuous_restrict.1 (hacS.mono hsub)`. Establish `hc` using `continuousOn_iff_continuous_restrict.1 (hcvc.mono hsub)`. Establish `hw` using `continuousOn_iff_continuous_restrict.1 (hschc.mono hsub)`. Establish `hP` using `hmeas.comp (((Units.continuous_val.comp hk).prodMk (hc.prodMk hw)).measurable)`. Establish `hE : (Bset R σ t a B₀ : Set (HermR R σ (n + 1))).domRestrict G = _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `fun S => hGon S S.2`. Rewrite using `[hE]`. Conclude with `(((ENNReal.continuous_coe.comp (D.hκc.comp hk)).measurable).mul (((ENNReal.continuous_coe.comp (D.hcmc.comp hk)).measurable).pow_const n)).mul hP`. Establish `hE : (Bset R σ t a B₀ : Set (HermR R σ (n + 1)))ᶜ.domRestrict G = fun _ => 0`. Use function extensionality and compare the values at `fun S => hGoff S S.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[hE]`. Conclude with `measurable_const`. Establish `hL : ∫⁻ S, G S ∂(coordHerm R σ b lam (n + 1)) = ∫⁻ x, ∫⁻ r, ∫⁻ S'', G (e (x, r, S'')) ∂(coordHerm R σ b lam n) ∂(Measure.pi fun _ => coordK R b lam) ∂lam`. Establish `hGe : Measurable (fun p => G (e p))` using `hGm.comp e.continuous.measurable`. Rewrite using `[← hemap, lintegral_map hGm e.continuous.measurable, lintegral_prod _ hGe.aemeasurable]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Conclude with `lintegral_prod _ (hGe.comp measurable_prodMk_left).aemeasurable`. Establish `hs0 : ∀ p, s0 R (e p : Matrix (Fin (n + 1)) (Fin (n + 1)) (R ⊗[F] E)) = p.1` using `fun p => corner_half_trace_of_cm_pure_tensor R σ hσ _ _ (he00 p)`. Establish `hoff : ∀ x, x ∉ B₀ → ∫⁻ r, ∫⁻ S'', G (e (x, r, S'')) ∂(coordHerm R σ b lam n) ∂(Measure.pi fun _ => coordK R b lam) = 0`. Introduce `x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h0 : ∀ (r : Fin n → R ⊗[F] E) (S'' : HermR R σ n), G (e (x, r, S'')) = 0`. Introduce `r S''`. Use `hGoff _ fun h => hx ?_` and prove the remaining obligations. Establish `h1` using `h.1`. Rewrite `h1` using `[hs0]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[h0]`. Establish `hon : ∀ x ∈ B₀, ∫⁻ r, ∫⁻ S'', G (e (x, r, S'')) ∂(coordHerm R σ b lam n) ∂(Measure.pi fun _ => coordK R b lam) = (κ₁ (a x) : ℝ≥0∞) * ∫⁻ c : Fin n → R ⊗[F] E, ∫⁻ S' in Unt σ R n, Pint σ J t m₁ m' s φ ((a x : Rˣ) : R) c S' ∂(coordHerm R σ b lam n) ∂(Measure.pi fun _ => coordK R b l …`. Introduce `x hx`. Take `⟨u, hu⟩ : ∃ u : Rˣ, u = a x` from `⟨_, rfl⟩`. Rewrite using `[← hu]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨cr, hcrdef⟩ : ∃ cr : (Fin n → R ⊗[F] E) → Fin n → R ⊗[F] E, cr = fun r j => ((((u⁻¹ : Rˣ) : R) ⊗ₜ[F] (algebraMap F E t⁻¹)) * r j)` from `⟨_, rfl⟩`. Establish `hcr : Continuous cr`. Rewrite using `[hcrdef]`. Conclude with `continuous_pi fun j => continuous_const.mul (continuous_apply j)`. Set `w : (Fin n → R ⊗[F] E) → HermR R σ n` to `fun r => ⟨qM R σ t (cr r), qM_mem R σ hσ t _⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hw : Measurable w`. Establish `hwc : Continuous w`. Use `Continuous.subtype_mk (continuous_pi fun i => continuous_pi fun j => ?_) _` and prove the remaining obligations. Conclude with `((hsig.comp ((continuous_apply i).comp hcr)).mul continuous_const).mul ((continuous_apply j).comp hcr)`. Conclude with `hwc.measurable`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Set `f : (Fin n → R ⊗[F] E) × HermR R σ n → ℝ≥0∞` to `fun z => (Unt σ R n).indicator (fun S' => Pint σ J t m₁ m' s φ (u : R) z.1 S') z.2`. Establish `hf : Measurable f`. Establish `h1 : Measurable fun z : (Fin n → R ⊗[F] E) × HermR R σ n => Pint σ J t m₁ m' s φ (u : R) z.1 z.2` using `hmeas.comp (measurable_const.prodMk measurable_id)`. Conclude with `h1.indicator (measurable_snd hUnt.measurableSet)`. Establish `hpt : ∀ (r : Fin n → R ⊗[F] E) (S'' : HermR R σ n), G (e (x, r, S'')) = ((κ₁ u : ℝ≥0∞) * (cm u : ℝ≥0∞) ^ n) * f (cr r, S'' - w r)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `r S''`. Establish `h0 : s0 R (e (x, r, S'') : Matrix (Fin (n + 1)) (Fin (n + 1)) (R ⊗[F] E)) = x` using `hs0 _`. Establish `h1 : cvec R t a (e (x, r, S'') : Matrix (Fin (n + 1)) (Fin (n + 1)) (R ⊗[F] E)) = cr r`. Use function extensionality and compare the values at `j`. Rewrite using `[hcrdef]`.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `show ((((a (s0 R _))⁻¹ : Rˣ) : R) ⊗ₜ[F] (algebraMap F E t⁻¹)) * _ = _`. Rewrite using `[h0, he0j, ← hu]`. Establish `h2 : schur R σ t a (e (x, r, S'')) = S'' - w r`. Rewrite using `[schur_split R σ hσ t a (e (x, r, S'')) S'' (heij (x, r, S''))]`. Establish `h3 : (⟨qM R σ t (cvec R t a (e (x, r, S'') : Matrix (Fin (n + 1)) (Fin (n + 1)) (R ⊗[F] E))), qM_mem R σ hσ t _⟩ : HermR R σ n) = w r` using `Subtype.ext (congrArg (qM R σ t) h1)`.
-
-Rewrite using `[h3]`. Distinguish the cases in `hU : S'' - w r ∈ Unt σ R n`. Establish `hB : e (x, r, S'') ∈ (Bset R σ t a B₀ : Set (HermR R σ (n + 1)))` using `⟨by show s0 R _ ∈ B₀; rw [h0]; exact hx, by rw [h2]; exact hU⟩`. Rewrite using `[hGon _ hB, h0, h1, h2, ← hu]`. Simplify using `only [f, Set.indicator_of_mem hU]`.
-
-Establish `hB : e (x, r, S'') ∉ (Bset R σ t a B₀ : Set (HermR R σ (n + 1)))`. Introduce `h`. Establish `h3` using `h.2`. Rewrite `h3` using `[h2]`. Conclude with `hU h3`.
-
-Rewrite using `[hGoff _ hB]`. Simplify using `only [f, Set.indicator_of_notMem hU, mul_zero]`. Establish `hC : ((κ₁ u : ℝ≥0∞) * (cm u : ℝ≥0∞) ^ n) ≠ ∞` using `ENNReal.mul_ne_top ENNReal.coe_ne_top (ENNReal.pow_ne_top ENNReal.coe_ne_top)`. Establish `hS : ∫⁻ c, ∫⁻ S', f (c, S') ∂(coordHerm R σ b lam n) ∂(Measure.pi fun _ => coordK R b lam) = (cm u : ℝ≥0∞) ^ n * ∫⁻ r, ∫⁻ S'', f (cr r, S'' - w r) ∂(coordHerm R σ b lam n) ∂(Measure.pi fun _ => coordK R b lam)`. Rewrite using `[hcrdef]`.
-
-Conclude with `hsubst u w hw f hf`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hpt]`. Use `_ = ((κ₁ u : ℝ≥0∞) * (cm u : ℝ≥0∞) ^ n) * ∫⁻ r, ∫⁻ S'', f (cr r, S'' - w r) ∂(coordHerm R σ b lam n) ∂(Measure.pi fun _ => coordK R b lam) := by`. Simplify using `only [lintegral_const_mul' _ _ hC]`.
-
-Use `_ = (κ₁ u : ℝ≥0∞) * ((cm u : ℝ≥0∞) ^ n * ∫⁻ r, ∫⁻ S'', f (cr r, S'' - w r) ∂(coordHerm R σ b lam n) ∂(Measure.pi fun _ => coordK R b lam)) := mul_assoc _ _ _`. Use `_ = (κ₁ u : ℝ≥0∞) * ∫⁻ c, ∫⁻ S', f (c, S') ∂(coordHerm R σ b lam n) ∂(Measure.pi fun _ => coordK R b lam) := by rw [hS]`. Use `_ = _ := by`. Use `congr 1`. Use `lintegral_congr fun c => ?_` and prove the remaining obligations.
-
-Conclude with `lintegral_indicator hUnt.measurableSet (fun S' => Pint σ J t m₁ m' s φ (u : R) c S')`. Rewrite using `[hL]`. Unfold `Mid`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_congr fun x => ?_` and prove the remaining obligations.
-
-Distinguish the cases in `hx : x ∈ B₀`. Rewrite using `[Set.indicator_of_mem hx]`. Rewrite using `[Set.indicator_of_notMem hx, hoff x hx]`. Use `_ = ∫⁻ x in B₀, ∫⁻ r, ∫⁻ S'', G (e (x, r, S'')) ∂(coordHerm R σ b lam n) ∂(Measure.pi fun _ => coordK R b lam) ∂lam := lintegral_indicator D.hB₀.measurableSet _`. Use `_ = _ := setLIntegral_congr_fun D.hB₀.measurableSet hon`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fold : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (M : ℕ) (J : Matrix (Fin M) (Fin M) E) (t : F) (n : ℕ) (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [MeasurableSpace R] [BorelSpace R] (d : ℕ) (b : Module.Basis (Fin d) F E) (lam : Measure R) (m₁ : HermR R σ 1 → Measure (Fin 1 → Fin (M + 1) → R ⊗[F] E)) (m' : HermR R σ n → Measure (Fin n → Fin M → R ⊗[F] E)) (s : (Fin 1 → Fin (M + 1) → R ⊗[F] E) → HA R σ (blockOne (algebraMap F E t) J)) (B₀ : Set R) (a : R → Rˣ) (κ₁ cm : Rˣ → ℝ≥0), StageData σ J t n b lam m₁ m' s B₀ a κ₁ cm → ∀ φ : (Fin (n + 1) → Fin (M + 1) → R ⊗[F] E) → ℝ≥0∞, Measurable φ → ∫⁻ S, ∫⁻ v, φ v ∂(fibS σ J t m₁ m' s B₀ a κ₁ cm S) ∂(coordHerm R σ b lam (n + 1)) = Mid σ J t m₁ m' s B₀ a κ₁ b lam φ := by
   intro F E _ _ _ _ _ σ M J t n R _ _ _ _ _ d b lam m₁ m' s B₀ a κ₁ cm D φ hφ

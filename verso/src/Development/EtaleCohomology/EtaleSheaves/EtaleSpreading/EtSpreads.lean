@@ -8,9 +8,9 @@ namespace LateralTheory.E.SpreadPf
 def EtSpreads : Prop := MorphismProperty.PreIndSpreads.{0} Et
 
 /- English proof (translation)
-Introduce `A O f hf C _ _ _`. Take `⟨J, _, _, D, t, s, hc, hJ⟩` from `hf`. Establish `hC : Et (CommRingCat.ofHom (algebraMap O C) : O ⟶ CommRingCat.of C)`. Express the relevant statement in the definitionally equal form `(algebraMap O C).Etale`. Conclude with `RingHom.etale_algebraMap.mpr inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result.
 
-Take `⟨j, T', f', g', hP, hf'⟩` from `hE.exists_isPushout hc _ hC`. Conclude with `⟨D.obj j, t.app j, s.app j, T', f', g'.hom, (hJ j).1, hf', (hJ j).2, hP.flip⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem Spread_of (hE : EtSpreads) : LateralTheory.E.DescendPf.Spread := by
   intro A O f hf C _ _ _

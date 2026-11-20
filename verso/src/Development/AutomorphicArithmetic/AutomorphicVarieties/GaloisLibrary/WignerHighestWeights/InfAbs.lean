@@ -5,9 +5,9 @@ open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.Al
 open scoped TensorProduct
 
 /- English proof (translation)
-Set `b` to `Module.finBasis ℝ V`. Establish `e : (μ : (Fin q → V) → ℂ) = fun x => ∑ r : Fin q → Fin (Module.finrank ℝ V), (∏ i, b.coord (r i) (x i)) • μ fun i => b (r i)`. Use function extensionality and compare the values at `x`. Establish `h : x = fun i => ∑ j, b.coord j (x i) • b j` using `funext fun i => (b.sum_repr (x i)).symm`. Use `conv_lhs => rw [h, μ.map_sum]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [μ.map_smul_univ]`. Rewrite using `[e]`. Use `continuous_finset_sum _ fun r _ => Continuous.fun_smul ?_ continuous_const` and prove the remaining obligations. Conclude with `continuous_finset_prod _ fun i _ => (b.coord (r i)).continuous_of_finiteDimensional.comp (continuous_apply i)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem multi_cont {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] {q : ℕ}
     (μ : MultilinearMap ℝ (fun _ : Fin q => V) ℂ) : Continuous μ := by
@@ -24,7 +24,7 @@ private theorem multi_cont {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
     (b.coord (r i)).continuous_of_finiteDimensional.comp (continuous_apply i)
 
 /- English proof (translation)
-Set `ν : ContinuousMultilinearMap ℝ (fun _ : Fin q => V) ℂ` to `⟨μ, multi_cont μ⟩`. Establish `h` using `(ν.hasFDerivAt (c 0)).comp_hasDerivAt (0 : ℝ) (hasDerivAt_pi.2 hc)`. Rewrite `h` using `[ContinuousMultilinearMap.linearDeriv_apply]`. Conclude with `h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem multi_deriv {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] {q : ℕ}
     (μ : MultilinearMap ℝ (fun _ : Fin q => V) ℂ) (c : ℝ → Fin q → V) (c' : Fin q → V)
@@ -36,7 +36,7 @@ private theorem multi_deriv {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V
   exact h
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Establish `h : star Y.1 = Y.1` using `Y.2`. Rewrite using `[hp_val, h, ← two_smul ℝ, smul_smul]`. Evaluate the numerical expressions.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 private theorem hp_herm {E : Type} [Field E] {a : ℕ} (Y : Herm E a) : hp (toL Y.1) = Y := by
   apply Subtype.ext
@@ -45,9 +45,7 @@ private theorem hp_herm {E : Type} [Field E] {a : ℕ} (Y : Herm E a) : hp (toL 
   norm_num
 
 /- English proof (translation)
-Use `open scoped Matrix.Norms.Operator in`. Establish `h1 : HasDerivAt (fun t => (k t).1) Z 0` using `hk`. Use `open scoped Matrix.Norms.Operator in`. Establish `h2 : HasDerivAt (fun t => star (k t).1) (star Z) 0` using `(hasDerivAt_pi.2 fun i => hasDerivAt_pi.2 fun j => (hasDerivAt_pi.1 (hasDerivAt_pi.1 hk j) i).star : HasDerivAt (fun t => toL (star (k t).1)) (toL (star Z)) 0)`. Use `open scoped Matrix.Norms.Operator in`.
-
-Establish `h` using `(h1.mul_const Y).mul h2`. Simplify using `only [h0, hZ, OneMemClass.coe_one, star_one, mul_one, one_mul, mul_neg, ← sub_eq_add_neg] at h`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem conj_deriv {E : Type} [Field E] [NumberField E] {a : ℕ} (k : ℝ → Kinf E a)
     (Z : Matrix (Fin a) (Fin a) (Cinf E)) (hZ : star Z = -Z) (h0 : k 0 = 1)
@@ -65,15 +63,15 @@ private theorem conj_deriv {E : Type} [Field E] [NumberField E] {a : ℕ} (k : �
   exact h
 
 /- English proof (translation)
-Introduce `E _ _ _ a M _ _ _ _ κ L hS q ω hω Z hZ Y`. Take `⟨k, h0, hk⟩` from `kCurve E a Z hZ`. Rewrite using `[← sub_eq_zero]`. Assume the negation of the conclusion as `hne`. Take `⟨l, hl, hd⟩` from `hS k Z h0 hk _ hne`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Apply `hl` to reduce the goal to its premises. Set `μ : MultilinearMap ℝ (fun _ : Fin q => Lie E a) ℂ` to `(l.restrictScalars ℝ).compMultilinearMap (ω.toMultilinearMap.compLinearMap fun _ => hp)`. Establish `hμ : ∀ X : Fin q → Herm E a, μ (fun i => toL (X i).1) = l (ω X)` using `fun X => by`. Express the relevant statement in the definitionally equal form `l (ω fun i => hp (toL (X i).1)) = _`. Simplify using `only [hp_herm]`.
+Reduce the claim to the hypotheses of an applicable result. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Establish `h1` using `multi_deriv μ (fun t i => toL (adHerm (k t) (Y i)).1) (fun i => toL (brH Z hZ (Y i)).1) (fun i => conj_deriv k Z hZ h0 hk (Y i).1)`. Establish `h2 : ∀ t, μ (fun i => toL (adHerm (k t) (Y i)).1) = l (κ (k t) (ω Y))` using `fun t => by`. Rewrite using `[hμ, hω]`. Simplify using `only [h2] at h1`. Rewrite using `[map_sub, (hd (ω Y)).unique h1, map_sum, sub_eq_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← hμ]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = i`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using `only [Function.update_self]`. Simplify using `only [Function.update_of_ne h, h0, adHerm, OneMemClass.coe_one, star_one, mul_one, one_mul]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.V.AlgRepEndIrreducible.infAbs :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (M : Type) [AddCommGroup M] [Module ℂ M] [Module ℝ M] [IsScalarTower ℝ ℂ M] (κ : Kinf E a → Module.End ℂ M) (L : Lie E a →ₗ[ℝ] Module.End ℂ M),

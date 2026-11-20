@@ -7,13 +7,13 @@ open GlobalTheory.Nef
 namespace GlobalTheory.Nef
 
 /- English proof (translation)
-Introduce `F _ φ`. Establish `key : ∀ P : F[X], algebraMap (RatFunc F) (LaurentSeries F) (algebraMap F[X] (RatFunc F) P) = algebraMap (PowerSeries F) (LaurentSeries F) (P : PowerSeries F)`. Introduce `P`. Conclude with `(RatFunc.coe_coe P).symm`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨p, q, hq, h⟩`. Use `⟨algebraMap F[X] (RatFunc F) p / algebraMap F[X] (RatFunc F) q, ?_⟩` and prove the remaining obligations. Establish `hq' : algebraMap (PowerSeries F) (LaurentSeries F) (q : PowerSeries F) ≠ 0`. Rewrite using `[← key]`. Conclude with `(map_ne_zero _).2 ((map_ne_zero_iff _ (IsFractionRing.injective F[X] (RatFunc F))).2 hq)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[map_div₀, key, key, div_eq_iff hq', ← h, map_mul, mul_comm]`. Introduce and unpack `⟨ρ, h⟩`. Use `⟨ρ.num, ρ.denom, ρ.denom_ne_zero, ?_⟩` and prove the remaining obligations. Apply `HahnSeries.ofPowerSeries_injective (Γ := ℤ)` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `algebraMap (PowerSeries F) (LaurentSeries F) _ = algebraMap (PowerSeries F) (LaurentSeries F) _`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[map_mul, ← key, ← key, ← h, ← map_mul]`. Use `congr 1`. Establish `hd : algebraMap F[X] (RatFunc F) ρ.denom ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective F[X] (RatFunc F))).2 ρ.denom_ne_zero`. Establish `e : ρ = algebraMap F[X] (RatFunc F) ρ.num / algebraMap F[X] (RatFunc F) ρ.denom` using `(RatFunc.num_div_denom ρ).symm`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem isRat_iff_exists_ratFunc : ∀ (F : Type) [Field F] (φ : PowerSeries F), IsRat φ ↔
     ∃ ρ : RatFunc F, algebraMap (RatFunc F) (LaurentSeries F) ρ = algebraMap (PowerSeries F) (LaurentSeries F) φ := by

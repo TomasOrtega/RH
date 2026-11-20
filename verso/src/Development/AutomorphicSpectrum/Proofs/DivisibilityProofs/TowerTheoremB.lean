@@ -13,7 +13,7 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo Filter Topology Globa
 namespace GlobalTheory.CompanionTheory.Ar.Top
 
 /- English proof (translation)
-The claim follows from `@RootFieldNumerics.antisymmetry_tower_theorem`.
+A detailed English derivation is pending.
 -/
 theorem thmB_functional : GroundTheory.Heights₂.Heights.AntisymPerturbation.Statement → ∀ II : IntersectionSystem, ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) (T : RootTower Ψ N) (hh : RP Ψ N →ₗ[ℝ] ℝ), T.Proportional → T.ThmW II → T.I8 II hh → I9 (Ψ := Ψ) (N := N) hh → T.ThmB II hh :=
   @RootFieldNumerics.antisymmetry_tower_theorem

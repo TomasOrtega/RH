@@ -19,17 +19,17 @@ open MvPolynomial MeasureTheory ReciprocityTheory.ChartRestriction.G.Geo GlobalT
 open ReciprocityTheory.AnForm.R (conePts)
 
 /- English proof (translation)
-Introduce `K _ ι _ P d hP Q hQ`. Take `⟨hK, ⟨hPp, hPm, hPr⟩, hPh, hdim⟩` from `hP`. Establish `hc : Q.comap (MvPolynomial.map (Int.castRingHom ℂ) : MRing ι →+* MRingOver ℂ ι) = P` using `GroundTheory.Heights₂.Heights.Targets.ConeComplexBaseChange.comap_of_minimal P hPh Q hQ`. Establish `hCm : IsMultiHomogIdeal (cxIdeal P)`. Take `⟨T, hT, hPT⟩` from `hPm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨MvPolynomial.map (Int.castRingHom ℂ) '' T, ?_, by rw [cxIdeal, hPT, Ideal.map_span]⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Take `⟨a, ha⟩` from `hT f hf`. Conclude with `⟨a, fun m hm k => ha m (support_map_subset _ _ hm) k⟩`. Establish `hQm : IsMultiHomogIdeal Q` using `GroundTheory.Heights₂.Heights.HilbertSamuel.GenNearCover.isMultiHomogIdeal_of_mem_minimalPrimes hCm hQ`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hQr : IsRelevant Q` using `fun k => by`. Take `⟨i, hi⟩` from `hPr k`. Use `⟨i, fun hX => hi ?_⟩` and prove the remaining obligations. Rewrite using `[← hc, Ideal.mem_comap, MvPolynomial.map_X]`. Conclude with `hX`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hP' : ∀ m : ℤ, (C m : MRing ι) ∈ P → m = 0` using `fun m hm => by`. Establish `: m ∈ P.comap (C : ℤ →+* MRing ι)` using `hm`. Rewrite `this` using `[hPh]`. Conclude with `this`. Take `⟨hQp, -, hQdim⟩` from `ReciprocityTheory.AnForm.R.extQ_spec P hP'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmapP : cxIdeal P = (ReciprocityTheory.AnForm.R.extQ P).map (MvPolynomial.map (algebraMap ℚ ℂ))`. Rewrite using `[cxIdeal, GroundTheory.Heights₂.Heights.Targets.ConeComplexBaseChange.map_int_complex_eq, ← Ideal.map_map]`. Both sides reduce to the same expression. Establish `hQ'` using `hQ`. Rewrite `hQ'` using `[hmapP]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨hK, ⟨hQ.1.1, hQm, hQr⟩, ?_⟩, hc⟩` and prove the remaining obligations. Rewrite using `[ReciprocityTheory.AnForm.R.BaseChangeC.ringKrullDim_of_mem_minimalPrimes_map _ Q hQ']`. Rewrite `hQdim` using `[hdim, show d + 1 + Fintype.card K = (d + Fintype.card K) + 1 by omega]`. Conclude with `GroundTheory.Heights₂.Heights.Targets.ConeComplexBaseChange.dim_cancel_one hQdim`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCxVar_of_mem_minimalPrimes_cxIdeal :
     ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)]

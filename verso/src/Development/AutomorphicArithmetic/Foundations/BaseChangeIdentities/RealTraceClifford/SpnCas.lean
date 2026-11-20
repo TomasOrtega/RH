@@ -26,20 +26,20 @@ private abbrev Fm (c : Fin n → Fin n → Matrix J J ℂ) : Fin n → Fin n →
   dg (fun _ _ : Fin n => (0 : Module.End ℂ ℂ)) c
 
 /- English proof (translation)
-Simplify using `[Fm, dg]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem Fm_eq (c : Fin n → Fin n → Matrix J J ℂ) (a b : Fin n) :
     Fm c a b = mt ℂ (spn c a b) := by
   simp [Fm, dg]
 
 /- English proof (translation)
-Establish `key : ∀ a j, (Fm c a a x) j = (η j a : ℂ) * x j`. Introduce `a j`. Rewrite using `[Fm_eq, h.diag a]`. Simplify using `[mt, Matrix.diagonal_apply]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hx j hj`. Use function extensionality and compare the values at `a`. Establish `e : (Fm c a a x) j = ((μ a : ℂ) • x) j` using `congrArg (fun y : Ten J ℂ => y j) (hx a)`. Rewrite `e` using `[key]`. Establish `e' : (η j a : ℂ) * x j = (μ a : ℂ) * x j` using `by simpa using e`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Complex.ofReal_injective (mul_right_cancel₀ hj e')`. Introduce `hx a`. Use extensionality with `j`. Rewrite using `[key]`. Distinguish the cases in `hj : x j = 0`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[hj]`. Simplify using `[hx j hj]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem mem_wsp (c : Fin n → Fin n → Matrix J J ℂ) (η : J → Wt n) (h : ClifMod c η)
     (μ : Wt n) (x : Ten J ℂ) : x ∈ wsp (Fm c) μ ↔ ∀ j, x j ≠ 0 → η j = μ := by
@@ -84,7 +84,7 @@ private def wEquiv (c : Fin n → Fin n → Matrix J J ℂ) (η : J → Wt n) (h
     simp [j.2]
 
 /- English proof (translation)
-Simplify using `[cf, ex, Finsupp.finset_sum_apply, Finsupp.single_apply, Fintype.card_subtype]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem cf_sum_ex (η : J → Wt n) (μ : Wt n) :
     cf (∑ j, ex (η j)) μ = (Fintype.card {j // η j = μ} : ℂ) := by
@@ -92,7 +92,7 @@ private theorem cf_sum_ex (η : J → Wt n) (μ : Wt n) :
   simp [cf, ex, Finsupp.finset_sum_apply, Finsupp.single_apply, Fintype.card_subtype]
 
 /- English proof (translation)
-Introduce `μ`. Rewrite using `[cf_sum_ex, inf_top_eq, (trAdd _ 1).2.2.2 _ inferInstance, (wEquiv c η h μ).finrank_eq, Module.finrank_fintype_fun_eq_card]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 private theorem isCh_top (c : Fin n → Fin n → Matrix J J ℂ) (η : J → Wt n) (h : ClifMod c η) :
     IsCh (Fm c) ⊤ 1 (∑ j, ex (η j)) := by
@@ -101,7 +101,7 @@ private theorem isCh_top (c : Fin n → Fin n → Matrix J J ℂ) (η : J → Wt
     (wEquiv c η h μ).finrank_eq, Module.finrank_fintype_fun_eq_card]
 
 /- English proof (translation)
-Use extensionality with `j k`. Establish `e` using `congrArg (fun y : Ten J ℂ => y j) (hs (WithLp.toLp 2 (Pi.single k 1)))`. Simplify `e` using `[mt, Pi.single_apply, Matrix.one_apply, eq_comm]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem mt_ext (M : Matrix J J ℂ) (s : ℂ) (hs : ∀ x : Ten J ℂ, mt ℂ M x = s • x) :
     M = s • (1 : Matrix J J ℂ) := by
@@ -110,7 +110,7 @@ private theorem mt_ext (M : Matrix J J ℂ) (s : ℂ) (hs : ∀ x : Ten J ℂ, m
   simpa [mt, Pi.single_apply, Matrix.one_apply, eq_comm] using e
 
 /- English proof (translation)
-Take `⟨φ, hφ⟩` from `(tenF n ℂ J).1`. Simplify using `only [Cas, Fm_eq, ← hφ, map_sum, map_mul]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 private theorem cas_eq (c : Fin n → Fin n → Matrix J J ℂ) :
     Cas (Fm c) = mt ℂ (Cas (spn c)) := by
@@ -118,17 +118,15 @@ private theorem cas_eq (c : Fin n → Fin n → Matrix J J ℂ) :
   simp only [Cas, Fm_eq, ← hφ, map_sum, map_mul]
 
 /- English proof (translation)
-Rewrite using `[inf_top_eq]`. Assume the negation of the conclusion as `hne`. Take `⟨x, hx, hx0⟩` from `(Submodule.ne_bot_iff _).1 hne`. Establish `hS : FiniteDimensional ℂ (⊤ : Submodule ℂ (Ten J ℂ))` using `inferInstance`. Establish `hStb : Stb (Fm c) ⊤` using `fun _ _ _ _ => Submodule.mem_top`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdom : Dom μ` using `hwDom n _ _ hU ⊤ hS hStb μ x Submodule.mem_top hx0 hx`. Take `⟨-, -, hρ, -, hd, -⟩` from `rearr n`. Establish `hanti : StrictAnti (μ + rhoV n)` using `(hd μ hdom).1.add_strictAnti hρ`. Establish `hm` using `mult n _ _ hU ⊤ hS hStb 1 _ ⟨fun a b => by simp, fun _ _ => Submodule.mem_top⟩ (isCh_top c η h) μ hanti`. Establish `hfin : FiniteDimensional ℂ (hw (Fm c) μ ⊓ ⊤ : Submodule ℂ (Ten J ℂ))` using `inferInstance`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hm` using `[(trAdd _ 1).2.2.2 _ hfin, inf_top_eq, h.chr, mul_smul_comm, ← (chRF n).1]`. Establish `hpos : Module.finrank ℂ (hw (Fm c) μ) ≠ 0`. Introduce `h0`. Conclude with `hne (Submodule.finrank_eq_zero.1 h0)`. Establish `h2 : StrictAnti ((2 : ℝ) • rhoV n)` using `fun a b hab => by`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hρ hab` as an intermediate fact. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨-, -, -, hcf, -, -, -, -, -, -, -, htop, -⟩` from `cfBasic n`. Establish `hne2 : μ + rhoV n ≠ (2 : ℝ) • rhoV n` using `fun e => hμ (by`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `a`. Use `congrFun e a` as an intermediate fact. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul] at this`. Use the proof step `linarith)`. Rewrite `hm` using `[(hcf _ 0 _ _).2, (htop _ h2).2 _ hanti hne2, mul_zero]`.
-
-Conclude with `hpos (by exact_mod_cast hm.symm)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hw_bot (c : Fin n → Fin n → Matrix J J ℂ) (η : J → Wt n) (h : ClifMod c η)
     (hU : UF (Fm c)) (μ : Wt n) (hμ : μ ≠ rhoV n) : hw (Fm c) μ ⊓ ⊤ = ⊥ := by
@@ -164,9 +162,9 @@ end UpperTheory.RealTr.SpinCasimir
 
 open UpperTheory.RealTr.SpinCasimir in
 /- English proof (translation)
-Introduce `n J _ _ c η h`. Establish `hU : UF (Fm c)` using `(tenF n ℂ J).2.2.2.2 _ c η uf_zero h`. Establish `hS : FiniteDimensional ℂ (⊤ : Submodule ℂ (Ten J ℂ))` using `inferInstance`. Establish `hStb : Stb (Fm c) ⊤` using `fun _ _ _ _ => Submodule.mem_top`. Establish `hiso` using `(isoFacts n _ _ hU ⊤ hS hStb (rhoV n) (hw_bot c η h hU)).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : nsq (rhoV n + rhoV n) - nsq (rhoV n) = 3 * nsq (rhoV n)`. Simplify using `only [nsq, Pi.add_apply, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl fun a _ => by ring`. Use `mt_ext _ _ fun x => ?_` and prove the remaining obligations. Rewrite using `[← cas_eq, hiso x Submodule.mem_top, hn]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.RealTr.spnCas :
     ∀ n : ℕ, ∀ (J : Type) [Fintype J] [DecidableEq J] (c : Fin n → Fin n → Matrix J J ℂ) (η : J → Wt n), ClifMod c η → Cas (spn c) = ((3 * nsq (rhoV n) : ℝ) : ℂ) • (1 : Matrix J J ℂ) := by

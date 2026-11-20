@@ -28,9 +28,9 @@ import Formalism.LocalToGlobal.PairingIndexBounds.SplitPairEquations.IntegralSqu
 import Formalism.LocalToGlobal.PairingIndexBounds.SplitPairEquations.IntegralSquareRoots.SecondConstantOfGaussSum
 
 /- English proof (translation)
-Introduce `D x n hn hx`. Use `haveI := D.host.isCMField_hostE`. Establish `hc : D.host.φ₀ (star x) = starRingEnd ℂ (D.host.φ₀ x)` using `NumberField.IsCMField.complexEmbedding_complexConj _ D.host.φ₀ x`. Establish `h2 : star x ^ 2 = x ^ 2` using `by rw [← star_pow, hx, star_neg, star_natCast]`. Use `(sq_eq_sq_iff_eq_or_eq_neg.1 h2).resolve_left fun h => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr⟩` from `Complex.conj_eq_iff_real.1 (h ▸ hc).symm`. Establish `h3 : (r : ℂ) ^ 2 = -(n : ℂ)` using `by rw [← hr, ← map_pow, hx, map_neg, map_natCast]`. Establish `h4 : r ^ 2 = -(n : ℝ)` using `by exact_mod_cast h3`. Establish `hn' : (0 : ℝ) < n` using `by exact_mod_cast hn`. Use polynomial arithmetic with `[sq_nonneg r]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.HeightShare.star_sqrt_neg :
     ∀ {D : Formalism.BasicNotions.D7} (x : D.host.E) (n : ℕ),

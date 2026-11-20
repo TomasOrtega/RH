@@ -10,17 +10,15 @@ noncomputable section
 namespace GlobalTheory.VanishAwayInt
 
 /- English proof (translation)
-Establish `hI : Ideal.span {N} ≠ ⊥` using `by simpa using hN`. Establish `hpu : ¬ IsUnit p`. Rewrite using `[Ideal.isUnit_iff]`. Conclude with `hp.ne_top`. Take `⟨b, hb, hnd⟩` from `(FiniteMultiplicity.of_not_isUnit hpu hI).exists_eq_pow_mul_and_not_dvd`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hbp : ¬ b ≤ p` using `fun h => hnd (Ideal.dvd_iff_le.2 h)`. Take `⟨t, htb, htp⟩` from `SetLike.not_le_iff_exists.1 hbp`. Use `⟨t, htp, fun w hw => ?_⟩` and prove the remaining obligations. Establish `hpw : ¬ p ^ multiplicity p (Ideal.span {N}) ≤ w.asIdeal`. Introduce `h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Nat.eq_zero_or_pos (multiplicity p (Ideal.span {N})) with h0 | hm` into its components or cases. Rewrite `h` using `[h0, pow_zero, Ideal.one_eq_top, top_le_iff]`. Conclude with `w.isPrime.ne_top h`. Establish `hle : p ≤ w.asIdeal` using `w.isPrime.le_of_pow_le h`. Establish `hpb : p ≠ ⊥`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `h'`. Apply `hI` to reduce the goal to its premises. Rewrite using `[eq_bot_iff]`. Combine the equalities or inequalities in the displayed calculation. Establish `hmax : p.IsMaximal` using `hp.isMaximal hpb`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hw (hmax.eq_of_le w.isPrime.ne_top hle).symm`. Take `⟨y, hy, hyw⟩` from `SetLike.not_le_iff_exists.1 hpw`. Establish `hyt : y * t ∈ Ideal.span {N}`. Rewrite using `[hb]`. Conclude with `Ideal.mul_mem_mul hy htb`.
-
-Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 hyt`. Conclude with `⟨c, y, hyw, by rw [← hc, mul_comm]⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_away {F : Type} [Field F] [NumberField F] (p : Ideal (𝓞 F)) [hp : p.IsPrime] (N : 𝓞 F) (hN : N ≠ 0) :
     ∃ t : 𝓞 F, t ∉ p ∧ ∀ w : HeightOneSpectrum (𝓞 F), w.asIdeal ≠ p →
@@ -56,21 +54,19 @@ theorem exists_away {F : Type} [Field F] [NumberField F] (p : Ideal (𝓞 F)) [h
   exact ⟨c, y, hyw, by rw [← hc, mul_comm]⟩
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ P z hz`. Take `⟨m, hm, hmz⟩` from `GlobalTheory.St.G.IntAd.exists_nat_denom (F := F) (E := E) z`. Use `haveI : (P.asIdeal.comap (algebraMap (𝓞 F) (𝓞 E))).IsPrime := Ideal.comap_isPrime _ _`. Establish `hm0 : (m : 𝓞 F) ≠ 0` using `Nat.cast_ne_zero.2 hm.ne'`. Take `⟨t, htp, ht⟩` from `exists_away (P.asIdeal.comap (algebraMap (𝓞 F) (𝓞 E))) (m : 𝓞 F) hm0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨algebraMap (𝓞 F) (𝓞 E) t, htp, ?_⟩` and prove the remaining obligations. Establish `key : iA F E (algebraMap (𝓞 E) E (algebraMap (𝓞 F) (𝓞 E) t)) = algebraMap F (E ⊗[F] FiniteAdeleRing (𝓞 F) F) (algebraMap (𝓞 F) F t)` using `rfl`. Apply `GlobalTheory.St.G.IntAd.mem_of_local` to reduce the goal to its premises. Introduce `w`. Distinguish the cases in `hw : w.asIdeal = P.asIdeal.comap (algebraMap (𝓞 F) (𝓞 E))`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, hz w hw, mul_zero]`. Conclude with `zero_mem _`. Take `⟨c, y, hyw, hyc⟩` from `ht w hw`. Establish `hmF : (m : F) ≠ 0` using `Nat.cast_ne_zero.2 hm.ne'`. Establish `hy0 : algebraMap (𝓞 F) F y ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `h0`. Apply `hyw` to reduce the goal to its premises. Rewrite using `[(FaithfulSMul.algebraMap_eq_zero_iff (𝓞 F) F).1 h0]`. Conclude with `zero_mem _`. Use `set q : F := algebraMap (𝓞 F) F t / (m : F) with hqdef`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : iA F E (algebraMap (𝓞 E) E (algebraMap (𝓞 F) (𝓞 E) t)) * z = algebraMap F (E ⊗[F] FiniteAdeleRing (𝓞 F) F) q * ((m : E ⊗[F] FiniteAdeleRing (𝓞 F) F) * z)`. Rewrite using `[key, ← mul_assoc, ← map_natCast (algebraMap F (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) m, ← map_mul, hqdef, div_mul_cancel₀ _ hmF]`. Rewrite using `[e, map_mul]`. Use `mul_mem ?_ (Formalism.UG.P.afsplit_prV_int w _ hmz)` and prove the remaining obligations. Establish `hc : prV (E` using `E) w (algebraMap F (E ⊗[F] FiniteAdeleRing (𝓞 F) F) q) = algebraMap F (E ⊗[F] w.adicCompletion F) q := (Algebra.TensorProduct.map (AlgHom.id F E) (evalV F w)).commutes q`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hc, Algebra.TensorProduct.algebraMap_apply']`. Establish `hq' : q = algebraMap (𝓞 F) F c / algebraMap (𝓞 F) F y`. Rewrite using `[hqdef, div_eq_div_iff hmF hy0]`. Use `congrArg (algebraMap (𝓞 F) F) hyc` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul, map_natCast]`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `this`. Establish `hq : algebraMap F (w.adicCompletion F) q ∈ w.adicCompletionIntegers F`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Use `erw [HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w q]`. Rewrite using `[hq', map_div₀, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.valuation_of_algebraMap]`.
-
-Establish `hy1 : w.intValuation y = 1` using `le_antisymm (w.intValuation_le_one y) (not_lt.1 fun h => hyw ((w.intValuation_lt_one_iff_mem y).1 h))`. Rewrite using `[hy1, div_one]`. Conclude with `w.intValuation_le_one c`. Conclude with `Subring.subset_closure (Or.inr ⟨⟨_, hq⟩, rfl⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intAtA_of_prV_eq_zero : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (P : HeightOneSpectrum (𝓞 E)) (z : E ⊗[F] FiniteAdeleRing (𝓞 F) F),

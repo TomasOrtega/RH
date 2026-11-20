@@ -14,19 +14,17 @@ open GlobalTheory.SS.ArcInf
 namespace GlobalTheory.SS.ArcInf
 
 /- English proof (translation)
-Introduce `k _ G _ hG`. Establish `hs : Smooth G.hom` using `hG.2.1`. Set `e : algOver k k ⟶ G` to `1`. Set `x0 : (Sp k)` to `IsLocalRing.closedPoint k`. Take `⟨R, i, hi, hx, -⟩` from `Scheme.exists_affine_mem_range_and_range_subset (X := G.left) (x := e.left x0) (U := ⊤) trivial`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨φ, hφ⟩` from `Spec.map_surjective (i ≫ G.hom : Spec R ⟶ Spec (CommRingCat.of k))`. Use `letI : Algebra k R := φ.hom.toAlgebra`. Establish `hft : Algebra.FiniteType k R`. Establish `h1 : LocallyOfFiniteType (Spec.map φ)` using `by rw [hφ]; infer_instance`. Conclude with `(HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)).1 h1`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `j : algOver k R ⟶ G` to `Over.homMk i hφ.symm`. Establish `hr : Set.range e.left ⊆ Set.range i`. Introduce and unpack `_ ⟨y, rfl⟩`. Establish `: y = x0` using `Subsingleton.elim (α := PrimeSpectrum k) _ _`. Rewrite using `[this]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `hx`. Set `l : algOver k k ⟶ algOver k R` to `Over.homMk (IsOpenImmersion.lift i e.left hr) (by`. Use `Over.w e` as an intermediate fact. Rewrite using `[← this]`. Use `show _ ≫ Spec.map φ = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hφ, IsOpenImmersion.lift_fac_assoc])`. Take `⟨ε, hε⟩` from `algOverHom_surjective l`. Take `⟨s, hsg⟩` from `hft.out`. Use `⟨R, inferInstance, inferInstance, j, ε, s.card, fun n => (s.equivFin.symm n : R) - algebraMap k R (ε (s.equivFin.symm n)), hi, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hε] ext1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `IsOpenImmersion.lift_fac i e.left hr`. Rewrite using `[eq_top_iff, ← hsg, Algebra.adjoin_le_iff]`. Introduce `a ha`. Establish `h1 : a - algebraMap k R (ε a) ∈ Algebra.adjoin k (Set.range fun n => (s.equivFin.symm n : R) - algebraMap k R (ε (s.equivFin.symm n)))` using `Algebra.subset_adjoin ⟨s.equivFin ⟨a, ha⟩, by simp⟩`. Establish `h2` using `add_mem h1 (Subalgebra.algebraMap_mem _ (ε a))`.
-
-Simplify using `using h2`. Introduce `n`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_isChart : ∀ (k : Type) [Field k] (G : Over (Sp k)) [GrpObj G], SmConn G → ∃ (A : Type) (_ : CommRing A) (_ : Algebra k A) (j : algOver k A ⟶ G) (ε : A →ₐ[k] k) (r : ℕ) (f : Fin r → A), IsChart G j ε f := by
   intro k _ G _ hG

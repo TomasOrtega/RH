@@ -16,7 +16,7 @@ private def btTanCrd (gb : Module.Basis (Fin g) R₀ V) (M : Type) [AddCommGroup
   (TensorProduct.lid R₀ M).toLinearMap ∘ₗ LinearMap.rTensor M (gb.coord k)
 
 /- English proof (translation)
-Simplify using `[btTanCrd]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma btTanCrd_tmul (gb : Module.Basis (Fin g) R₀ V) {M : Type} [AddCommGroup M]
     [Module R₀ M] (k : Fin g) (w : V) (m : M) :
@@ -24,7 +24,7 @@ private lemma btTanCrd_tmul (gb : Module.Basis (Fin g) R₀ V) {M : Type} [AddCo
   simp [btTanCrd]
 
 /- English proof (translation)
-Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul w m => simp [btTanCrd_tmul]`. Consider the case `add x y hx hy => simp [hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 private lemma btTanCrd_nat (gb : Module.Basis (Fin g) R₀ V) {M N : Type} [AddCommGroup M]
     [Module R₀ M] [AddCommGroup N] [Module R₀ N] (f : M →ₗ[R₀] N) (k : Fin g) (v : V ⊗[R₀] M) :
@@ -35,7 +35,7 @@ private lemma btTanCrd_nat (gb : Module.Basis (Fin g) R₀ V) {M N : Type} [AddC
   | add x y hx hy => simp [hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul w m => simp [btTanCrd_tmul]`. Consider the case `add x y hx hy => simp [hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 private lemma btTanCrd_base (gb : Module.Basis (Fin g) R₀ V) {S : Type} [CommRing S]
     [Algebra R₀ S] (k : Fin g) (v : V ⊗[R₀] S) :
@@ -48,17 +48,17 @@ private lemma btTanCrd_base (gb : Module.Basis (Fin g) R₀ V) {S : Type} [CommR
 end
 
 /- English proof (translation)
-Establish `hmul : ∀ x ∈ RingHom.ker π.1, ∀ y ∈ RingHom.ker π.1, x * y = 0`. Introduce `x hx y hy`. Use `Ideal.mul_mem_mul hx hy` as an intermediate fact. Rewrite `this` using `[← pow_two, hπ.2]`. Conclude with `this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction.
 
-Proceed by induction on `v using TensorProduct.induction_on generalizing k with`. Consider the case `zero`. Use `ch.χ_tg ρ hρ π hπ ρS hfac 0 0 k` as an intermediate fact. Simplify using `using this`. Consider the case `tmul w m`.
+Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ch.χ_tg ρ hρ π hπ ρS hfac w m k, btTanCrd_tmul]`. Both sides reduce to the same expression. Consider the case `add x y hx hy`. Establish `h` using `congrFun (ch.χ_add ρ hρ ⟨B.tg π hπ x, map_tg_ker B ρ π hπ ρS hfac _⟩ ⟨B.tg π hπ y, map_tg_ker B ρ π hπ ρS hfac _⟩) k`. Simplify using `only [hx, hy] at h`.
+Both sides reduce to the same expression. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨M, hM, hMe⟩` from `hF (fun k => (btTanCrd ch.gb π.ker k x : (R : Type))) (fun i => ⟨2, by rw [pow_two]; exact hmul _ (btTanCrd ch.gb π.ker i x).2 _ (btTanCrd ch.gb π.ker i x).2⟩)`. Rewrite `h` using `[hMe _ (fun i j => hmul _ (btTanCrd ch.gb π.ker i y).2 _ (btTanCrd ch.gb π.ker j y).2)]`. Establish `hle : Ideal.span (Set.range fun k => (btTanCrd ch.gb π.ker k x : (R : Type))) ≤ RingHom.ker π.1`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `(btTanCrd ch.gb π.ker i x).2`. Establish `h0 : ((M - 1) *ᵥ fun k => (btTanCrd ch.gb π.ker k y : (R : Type))) k = 0`. Simplify using `only [Matrix.mulVec, dotProduct]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Conclude with `hmul _ (hle (hM k j)) _ (btTanCrd ch.gb π.ker j y).2`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h0` using `[Matrix.sub_mulVec, Matrix.one_mulVec, Pi.sub_apply, sub_eq_zero]`. Rewrite `h` using `[Pi.add_apply, h0]`. Simplify using `only [map_add, Submodule.coe_add]`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 private lemma btTan_chi_tg {R₀ : Type} [CommRing R₀] {g : ℕ} {B : BX R₀} {K : LAlg R₀}
     (ch : FormalChartAtZero B K g) {R S : LAlg R₀}
@@ -103,25 +103,25 @@ private lemma btTan_chi_tg {R₀ : Type} [CommRing R₀] {g : ℕ} {B : BX R₀}
     exact h
 
 /- English proof (translation)
-Introduce `hF R₀ _ p _ g B Tw Dt _ Oe _ _ σ cp D t`. Use `choose th w hth hpth hw using fun i => D.L.bt_spec i 1`. Establish `hsq : D.wd.πW.SqZero` using `D.wd.πW.sqZero_of_span (p : (D.wd.W : Type)) D.wd.πW_surj D.wd.ker_πW (by rw [← pow_two]; exact D.wd.p_sq)`. Establish `hc1 : D.wd.πW.comp D.wd.ψ = (Tw.r 0).comp (Tw.π 1)` using `Subtype.ext (AlgHom.ext fun a => D.wd.compat a)`. Establish `hc2 : (Tw.r 0).comp (Tw.q 1) = Tw.q 0` using `Subtype.ext (AlgHom.ext fun a => Tw.r_q 0 a)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : ∀ a ∈ (Tw.π 1).ker, D.wd.ψ.1.toLinearMap a ∈ D.wd.πW.ker`. Introduce `a ha`. Express the relevant statement in the definitionally equal form `D.wd.πW.1 (D.wd.ψ.1 a) = 0`. Express the relevant statement in the definitionally equal form `(Tw.π 1).1 a = 0 at ha`. Rewrite using `[D.wd.compat, ha, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `n : Ix g → ℕ` to `fun i => (red p g t i).val`. Set `v : B.gg ⊗[R₀] D.wd.πW.ker` to `∑ i, n i • LinearMap.lTensor B.gg (D.wd.ψ.1.toLinearMap.restrict hf) (TensorProduct.map LinearMap.id (ξmul (Tw.π 1) (Tw.ξ 1) (Tw.ξ_mem 1)) (w i))`. Establish `hpt : p • ∑ i, n i • B.map D.wd.ψ (p • th i) = B.tg D.wd.πW hsq v`. Simplify using `only [v, map_sum, map_nsmul (B.tg D.wd.πW hsq), Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[B.tg_nat (Tw.π 1) D.wd.πW (Tw.sqZero 1) hsq, ← hpth, smul_comm p, ← map_nsmul, smul_smul, pow_two]`. Use `⟨∑ i, n i • B.map D.wd.ψ (p • th i), ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [ptOf, map_sum, map_nsmul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← B.map_comp, hc1, B.map_comp, hth, ← B.map_comp, hc2, D.L.τ_compat i 0, map_nsmul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hpt ▸ map_tg_ker B _ _ hsq _ D.wd.ρW_eq v, fun k => ?_⟩` and prove the remaining obligations. Use `⟨∑ i, n i • D.wd.ψ.1 (btTanCrd D.ch.gb _ k (w i)), ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [map_sum, map_nsmul, Matrix.mulVec, dotProduct, map_mul, Function.comp_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h1` using `congrArg (btTanCrd D.ch.gb _ k) (hw i)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[btTanCrd_nat, btTanCrd_nat]`. Simplify using `only [AlgHom.toLinearMap_apply] at h1`. Rewrite using `[D.wd.compat, h1, Tw.r_q, D.L.Bt_eq, btTanCrd_base]`. Establish `h2 : (Tw.q 0).1 (algebraMap ℤ_[p] (Tw.O : Type) (t i)) = (n i : (Tw.R 0 : Type))`. Establish `h3 : t i - (n i : ℤ_[p]) ∈ RingHom.ker (PadicInt.toZMod (p` using `p)) := by`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.mem_ker, map_sub, map_natCast]`. Simplify using `only [n, red]`. Rewrite using `[ZMod.natCast_zmod_val, sub_self]`. Rewrite `h3` using `[PadicInt.ker_toZMod, PadicInt.maximalIdeal_eq_span_p, Ideal.mem_span_singleton']`. Take `⟨c, hc⟩` from `h3`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hp0 : (Tw.q 0).1 (p : (Tw.O : Type)) = 0`. Rewrite using `[← RingHom.mem_ker, D.tower_zero_ker]`. Conclude with `Ideal.subset_span rfl`. Rewrite using `[eq_add_of_sub_eq hc.symm]`. Simplify using `only [map_add, map_mul, map_natCast (algebraMap ℤ_[p] (Tw.O : Type)), hp0]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[h2, nsmul_eq_mul, mul_comm]`. Establish `h` using `btTan_chi_tg D.ch (hF D.ch _) D.wd.ρW D.sm.nil D.wd.πW hsq D.wd.ρ1 D.wd.ρW_eq v k`. Simplify using `only [hpt]`. Rewrite using `[h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [v, map_sum, map_nsmul, AddSubmonoidClass.coe_finset_sum, AddSubmonoidClass.coe_nsmul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[btTanCrd_nat, ← LinearMap.lTensor_def, btTanCrd_nat, ← D.wd.ξ_img, mul_smul_comm, ← map_mul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem chart_p_smul_lift_eq_bt :
   (∀ {R₀ : Type} [CommRing R₀] {g : ℕ} {B : BX R₀} {K : LAlg R₀} (ch : FormalChartAtZero B K g) (S : Type) [CommRing S] [Algebra R₀ S] (a : Fin g → S), (∀ i, IsNilpotent (a i)) →

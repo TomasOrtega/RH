@@ -22,14 +22,14 @@ def SegreFibresNef.Statement : Prop :=
         IndefiniteRowSideFullHecke.Kleiman2.IsNefIdeal (FractionRing O) (NumbersDVR.genFib (mIdealOver O y)) β)
 
 /- English proof (translation)
-Introduce `_` and use `⟨0, Kleiman.lineX_ne_zero exF 0⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem SegreFibresNef.hyps :
     ∀ k, ∃ i, IndefiniteRowSideFullHecke.Kleiman2.oneBlock (Kleiman.lineX exF) ⟨k, i⟩ ≠ 0 :=
   fun _ => ⟨0, Kleiman.lineX_ne_zero exF 0⟩
 
 /- English proof (translation)
-The claim follows from `h exO exΩ Unit (fun _ => Fin (1 + 1)) (IndefiniteRowSideFullHecke.Kleiman2.oneBlock (Kleiman.lineX exF)) SegreFibresNef.hyps 1`.
+A detailed English derivation is pending.
 -/
 example (h : SegreFibresNef.Statement) :=
   h exO exΩ Unit (fun _ => Fin (1 + 1)) (IndefiniteRowSideFullHecke.Kleiman2.oneBlock (Kleiman.lineX exF)) SegreFibresNef.hyps 1

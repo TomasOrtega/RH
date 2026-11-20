@@ -38,7 +38,7 @@ structure IsRegSurf (p : X ⟶ Sp k) : Prop extends IsArithVar p 1 where
   regular : ∀ x, IsRegularLocalRing (X.presheaf.stalk x)
 
 /- English proof (translation)
-Establish `: Smooth (PSpace.str ℤ 1)` using `SmoothOfRelativeDimension.smooth 1 _`. Use `⟨ProjSpace.isArithVar_int 1, fun x => ?_⟩` and prove the remaining obligations. Use `ExtendRig.isRegularRing_stalk isRegularRing_of_smooth ℤ (PSpace.str ℤ 1) x` as an intermediate fact. Conclude with `.of_isRegularRing_of_isLocalRing _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ProjSpace.isRegSurf_line : IsRegSurf (PSpace.str ℤ 1) := by
   have : Smooth (PSpace.str ℤ 1) := SmoothOfRelativeDimension.smooth 1 _
@@ -67,7 +67,7 @@ instance : IsIntegral C.Y := C.reg.isIntegral
 def deg : ℕ := C.ρ.residueDegree (genericPoint C.Y)
 
 /- English proof (translation)
-The claim follows from `Nat.pos_of_ne_zero C.finite`.
+A detailed English derivation is pending.
 -/
 theorem deg_pos : 0 < C.deg := Nat.pos_of_ne_zero C.finite
 
@@ -79,7 +79,7 @@ def self (h : IsRegSurf p) : RegCover p where
   finite := (Scheme.Hom.residueDegree_id _).trans_ne one_ne_zero
 
 /- English proof (translation)
-The claim follows from `Scheme.Hom.residueDegree_id _`.
+A detailed English derivation is pending.
 -/
 theorem deg_self (h : IsRegSurf p) : (self h).deg = 1 := Scheme.Hom.residueDegree_id _
 
@@ -96,7 +96,7 @@ def IsInter (a : ℝ) : Prop :=
 variable {L M}
 
 /- English proof (translation)
-Take `⟨h, H, ha⟩` from `ha`. Take `⟨h', H', hb⟩` from `hb`. Take `⟨r, hr⟩` from `exists_isRatSec L.isLB`. Rewrite using `[(ha r hr).2, (hb r hr).2, H.unique hX H']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsInter.unique (hX : IsArithVar p 1) {a b : ℝ} (ha : L.IsInter M a) (hb : L.IsInter M b) :
     a = b := by
@@ -106,15 +106,13 @@ theorem IsInter.unique (hX : IsArithVar p 1) {a b : ℝ} (ha : L.IsInter M a) (h
   rw [(ha r hr).2, (hb r hr).2, H.unique hX H']
 
 /- English proof (translation)
-Take `⟨h, -, H⟩` from `h`. Establish `hr : IsRatSec (LB.triv X) fun _ => 1` using `fun a b h => by`. Conclude with `((congrArg (· * _) (map_one _)).trans (one_mul _)).symm`. Establish `hL` using `LB.isLB_triv X`. Establish `h₀ (z : X) : (divOfRatSec hL hr).IsEqn z 1` using `(presents_divOfRatSec hL hr).isEqn PUnit.unit z trivial`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₁ (z : X) : (divOfRatSec hL hr).mult z = 0` using `(h₀ z).mult_eq.trans (unitAt_one z).ord_eq_zero`. Establish `h₂ (σ) : offSupp p σ (divOfRatSec hL hr) = univ` using `eq_univ_of_forall fun y => mem_offSupp.2 fun h => h (h₀ _)`. Establish `h₃ (σ) : logNorm (((triv p).shift (fun _ => t) fun _ => rfl).φ σ) (fun _ => 1) = fun _ : CxPts p σ => -t * 1` using `funext fun y => by`. Establish `e` using `ratVal_fnOf (y := y) mem_ptsIn_top trivial 1`. Rewrite `e` using `[map_one, ev_one mem_ptsIn_top]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[logNorm, Units.val_one, e]`. Simplify using `[triv, shift, Weight.ofFun, Weight.addFn]`. Establish `e` using `(H _ hr).2`. Use `Fintype.ofFinite (k →+* ℂ)` as an intermediate fact. Simplify using `only [archInt, div] at e`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `erw [finsum_congr fun z => congrArg (fun n : ℤ => (n : ℝ) * h z) (h₁ z)] at e`. Rewrite using `[e, ArInt.gdeg, ArInt.chInt]`. Simplify using `only [Int.cast_zero, zero_mul, finsum_zero, zero_sub]`. Rewrite using `[finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype, Finset.mul_sum, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations.
-
-Use `erw [h₂, h₃, Weight.chernInt_const_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem IsInter.triv_shift {t a : ℝ} (h : ((triv p).shift (fun _ => t) fun _ => rfl).IsInter M a)
     [Finite (k →+* ℂ)] : a = t * ArInt.gdeg M 1 := by
@@ -220,7 +218,7 @@ def VMetric.orthSum (h₁ : VMetric p E₁ r) (h₂ : VMetric p E₂ s) : VMetri
         ((h₂.conj σ σ').gram _ e hc)).trans (Matrix.map_add _ star_add _ _).symm⟩⟩
 
 /- English proof (translation)
-Introduce `σ U t t' y hy` and use `by have hc := (h₁.isVB.biprod h₂.isVB).mem_pick y have k₁ := h₁.isVB.mem_pick y have k₂ := h₂.isVB.mem_pick y rw [Met.form_eq _ _ hc _ _ hy, Met.form_eq _ _ k₁ _ _ hy, Met.form_eq _ _ k₂ _ _ hy, Chart.crd_app _ _ biprod.fst t hy hc, Chart.crd_app _ _ biprod.fst t' hy hc, Chart.cr …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem VMetric.isOrthSum_orthSum (h₁ : VMetric p E₁ r) (h₂ : VMetric p E₂ s) :
     (h₁.orthSum h₂).IsOrthSum h₁ h₂ := fun σ U t t' y hy => by
@@ -234,7 +232,7 @@ theorem VMetric.isOrthSum_orthSum (h₁ : VMetric p E₁ r) (h₂ : VMetric p E�
   rfl
 
 /- English proof (translation)
-Introduce `σ _ _ hy a b` and use `(((H₁ σ).gram _ hy a b).prodMk ((H₂ σ).gram _ hy a b)).comp_contDiff (Ψ := fun x => x.1 + x.2) (contDiff_fst.add contDiff_snd)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem VMetric.IsCInf.orthSum {h₁ : VMetric p E₁ r} {h₂ : VMetric p E₂ s} (H₁ : h₁.IsCInf)
     (H₂ : h₂.IsCInf) : (h₁.orthSum h₂).IsCInf := fun σ _ _ hy a b =>
@@ -255,7 +253,7 @@ def IsFlagCh2 (H : h.IsCInf) (fl : Vert.Flag E r) (a : ℝ) : Prop :=
     a = ∑ i, x i / 2 - h.flagBc fl / 2
 
 /- English proof (translation)
-Take `⟨-, x, hx, rfl⟩` from `ha`. Take `⟨-, x', hx', rfl⟩` from `hb`. Rewrite using `[funext fun i => (hx i).unique hX (hx' i)]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsFlagCh2.unique {D : ℕ} (hX : IsArithVar p D) {H : h.IsCInf} {fl : Vert.Flag E r}
     (ha : IsFlagCh2 H fl a) (hb : IsFlagCh2 H fl b) : a = b := by
@@ -264,7 +262,7 @@ theorem IsFlagCh2.unique {D : ℕ} (hX : IsArithVar p D) {H : h.IsCInf} {fl : Ve
   rw [funext fun i => (hx i).unique hX (hx' i)]
 
 /- English proof (translation)
-Take `⟨h₁, h₂⟩` from `flagBc_rank_one h fl`. Use `⟨?_, fun e => ⟨h₁, fun _ => 2 * a, fun i => Subsingleton.elim 0 i ▸ e, by simp [h₂]⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨-, x, hx, rfl⟩`. Use `hx 0 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[h₂, Fin.sum_univ_one]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -278,7 +276,7 @@ theorem isFlagCh2_rank_one {h : VMetric p E 1} (H : h.IsCInf) (fl : Vert.Flag E 
   ring
 
 /- English proof (translation)
-Simplify using `[IsFlagCh2, FlagBcFinite, flagBc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem isFlagCh2_rank_zero {h : VMetric p E 0} (H : h.IsCInf) (fl : Vert.Flag E 0) :
     IsFlagCh2 H fl a ↔ a = 0 := by
@@ -301,7 +299,7 @@ def IsCh2Deg (a : ℝ) : Prop :=
   Nonempty h.FlagModel ∧ ∀ M : h.FlagModel, IsFlagCh2 M.cInf M.flag (M.deg * a)
 
 /- English proof (translation)
-The claim follows from `have ⟨M⟩ := ha.1 mul_left_cancel₀ (Nat.cast_ne_zero.2 M.deg_pos.ne') ((ha.2 M).unique M.reg.toIsArithVar (hb.2 M))`.
+A detailed English derivation is pending.
 -/
 theorem IsCh2Deg.unique (ha : h.IsCh2Deg a) (hb : h.IsCh2Deg b) : a = b :=
   have ⟨M⟩ := ha.1
@@ -313,13 +311,13 @@ variable (h) in
 def ch2Deg : ℝ := Classical.epsilon h.IsCh2Deg
 
 /- English proof (translation)
-The claim follows from `(Classical.epsilon_spec ⟨a, ha⟩).unique ha`.
+A detailed English derivation is pending.
 -/
 theorem IsCh2Deg.ch2Deg_eq (ha : h.IsCh2Deg a) : h.ch2Deg = a :=
   (Classical.epsilon_spec ⟨a, ha⟩).unique ha
 
 /- English proof (translation)
-Rewrite using `[hb.unique M.reg.toIsArithVar (ha.2 M), mul_div_cancel_left₀ _ (Nat.cast_ne_zero.2 M.deg_pos.ne')]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem IsCh2Deg.eq_div (ha : h.IsCh2Deg a) (M : h.FlagModel) (hb : IsFlagCh2 M.cInf M.flag b) :
     a = b / M.deg := by
@@ -327,7 +325,7 @@ theorem IsCh2Deg.eq_div (ha : h.IsCh2Deg a) (M : h.FlagModel) (hb : IsFlagCh2 M.
     mul_div_cancel_left₀ _ (Nat.cast_ne_zero.2 M.deg_pos.ne')]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨.self hX H fl⟩, fun M => (isFlagCh2_rank_zero _ _).2 (mul_zero _)⟩`.
+Supply the required witnesses or components.
 -/
 theorem isCh2Deg_rank_zero (hX : IsRegSurf p) {h : VMetric p E 0} (H : h.IsCInf)
     (fl : Vert.Flag E 0) : h.IsCh2Deg 0 :=
@@ -341,7 +339,7 @@ def ProjSpace.hermSum : HermVB (PSpace.str ℤ 1) (1 + 1) :=
   (HermVB.ofLB (ProjSpace.hermitianTwistingSheaf ℤ 1)).orthSum (HermVB.ofLB (ProjSpace.hermitianTwistingSheaf ℤ 1)).dual
 
 /- English proof (translation)
-The claim follows from `ProjSpace.isRegSurf_line.isIntegral ∃ M : ProjSpace.hermSum.h.FlagModel, M.deg = 1 := haveI := ProjSpace.isRegSurf_line.isIntegral ⟨.self ProjSpace.isRegSurf_line ProjSpace.hermSum.cInf (.ofBiprod (HermVB.ofLB (ProjSpace.hermitianTwistingSheaf ℤ 1)).h.isVB (HermVB.ofLB (ProjSpace …`.
+A detailed English derivation is pending.
 -/
 theorem ProjSpace.exists_flagModel_hermSum :
     haveI := ProjSpace.isRegSurf_line.isIntegral
@@ -372,7 +370,7 @@ def cxDeg (E : X.Modules) (r : ℕ) : ℤ :=
   degOfRank ℂ ((Scheme.Modules.pullback (cxFibre.fst p)).obj E) r
 
 /- English proof (translation)
-The claim follows from `degOfRank_congr ℂ ((Scheme.Modules.pullback _).mapIso φ)`.
+A detailed English derivation is pending.
 -/
 theorem cxDeg_congr {E E' : X.Modules} (φ : E ≅ E') (r : ℕ) : cxDeg p E r = cxDeg p E' r :=
   degOfRank_congr ℂ ((Scheme.Modules.pullback _).mapIso φ)
@@ -416,7 +414,7 @@ def ofPolAV (Q : Out.PolAV S) : PPAS S where
   isPol := IndefiniteRowSideFullHecke.ZeroSectionBase.isPrincipalPol_of_polAV Q
 
 /- English proof (translation)
-The claim follows from `LieVB.isVB_omega P.A P.g`.
+A detailed English derivation is pending.
 -/
 theorem isVB_omega : IsVB (omega P.A) P.g := LieVB.isVB_omega P.A P.g
 
@@ -427,7 +425,7 @@ def HasTheta : Prop :=
   ∃ (L : LB P.A.left) (hL : L.IsLB), Out.Sym P.A L ∧ P.c = lam (cls L hL) (fst P.A P.A) (snd P.A P.A)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Q.L, Q.isLB, Q.sym, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem hasTheta_ofPolAV (Q : Out.PolAV S) : (ofPolAV Q).HasTheta := ⟨Q.L, Q.isLB, Q.sym, rfl⟩
 
@@ -462,7 +460,7 @@ attribute [instance] grp
 variable {P} {y : Sp ℂ ⟶ S} (d : P.RiemannData y)
 
 /- English proof (translation)
-The claim follows from `posDef_iff.2 ⟨d.isAH.1, fun v hv => Complex.pos_iff.2 ⟨d.isAH.2.1 v hv, (Complex.conj_eq_iff_im.1 (conj_form d.isAH.1 v v)).symm⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem posDef : d.H.PosDef := posDef_iff.2 ⟨d.isAH.1, fun v hv =>
   Complex.pos_iff.2 ⟨d.isAH.2.1 v hv, (Complex.conj_eq_iff_im.1 (conj_form d.isAH.1 v v)).symm⟩⟩
@@ -474,14 +472,14 @@ def cov (W : P.A.left.Opens) (f : Γ(P.A.left, W)) : Fin P.g → ℂ := fun a =>
   fderiv ℂ (d.fn W f) 0 (Pi.single a 1)
 
 /- English proof (translation)
-Rewrite using `[(d.u.ker 0).2 (zero_mem _), ← LieVB.unitSec_comp d.isPull]`. Conclude with `congrArg (·.left ≫ d.φ) (MonObj.one_eq_one d.B).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ex_zero : (d.u.ex 0).left ≫ d.φ = y ≫ unitSec P.A := by
   rw [(d.u.ker 0).2 (zero_mem _), ← LieVB.unitSec_comp d.isPull]
   exact congrArg (·.left ≫ d.φ) (MonObj.one_eq_one d.B).symm
 
 /- English proof (translation)
-Take `⟨h₁, h₂⟩` from `d.u.hol (d.φ ⁻¹ᵁ W) (d.φ.app W f)`. Rewrite `h` using `[← d.ex_zero]`. Conclude with `(h₂.differentiableAt (h₁.mem_nhds h)).congr_of_eventuallyEq (.of_forall fun z => valR_comp _ _ _ _)`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem differentiableAt_fn {W : P.A.left.Opens} (f : Γ(P.A.left, W))
     (h : ⊤ ≤ (y ≫ unitSec P.A) ⁻¹ᵁ W) : DifferentiableAt ℂ (d.fn W f) 0 := by
@@ -493,9 +491,9 @@ theorem differentiableAt_fn {W : P.A.left.Opens} (f : Γ(P.A.left, W))
 end RiemannData
 
 /- English proof (translation)
-Set `m : Over.mk ((A' ⊗ A').hom ≫ f) ⟶ A ⊗ A` to `Over.homMk (sqMap h.1.w) (by`. Express the relevant statement in the definitionally equal form `sqMap h.1.w ≫ pullback.fst _ _ ≫ A.hom = (pullback.fst _ _ ≫ A'.hom) ≫ f`. Rewrite using `[sqMap, pullback.lift_fst_assoc, Category.assoc, Category.assoc, h.1.w])`. Rewrite using `[CechPic.lam_pull_of_isGrpPullback h]`. Use `(CechPic.pull_lam m c _ _).trans ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `congr 1 <;> refine Over.OverMorphism.ext ?_`. Use `exacts [pullback.lift_fst _ _ _, pullback.lift_snd _ _ _]`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem pull_sqMap_lam {A : Over S} {A' : Over S'} [GrpObj A] [GrpObj A'] {f : S' ⟶ S}
     {φ : A'.left ⟶ A.left} (h : IsGrpPullback A' A f φ) (c : Pic A.left) :
@@ -510,9 +508,9 @@ theorem pull_sqMap_lam {A : Over S} {A' : Over S'} [GrpObj A] [GrpObj A'] {f : S
   exacts [pullback.lift_fst _ _ _, pullback.lift_snd _ _ _]
 
 /- English proof (translation)
-Establish `h` using `isGrpPullback_pullback Q.A y`. Establish `hL` using `pull_isLB Q.isLB (pullback.fst Q.A.hom y)`. Take `⟨w, hw⟩` from `(CechPic.cls_eq_iff hL hL).1 rfl`. Take `⟨U, hU, hx, -⟩` from `exists_isAffineOpen_mem_and_subset (X := S) (x := y (IsLocalRing.closedPoint ℂ)) (U := ⊤) trivial`. Set `Q' : Out.PolAV (Sp ℂ)` to `⟨(Over.pullback y).obj Q.A, PolPull.isAbelianScheme_of_isGrpPullback Q.isAb h, Q.g, (smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback h.1 Q.smoothDim, _, hL, PolBaseChange.rigidified_pull h Q.rigid, PolBaseChange.sym_pull h Q.sym, relAmple_pull h.1 Q.isLB hL ((i …`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨rig, hr⟩` from `Q'.rigid`. Take `⟨u, H, χ, -, hH, -⟩` from `thetaUnifAV_all Q' rig hr`. Conclude with `⟨⟨Q'.A, _, h, Q'.L, hL, (pull_sqMap_lam h _).trans (congrArg (lam · _ _) (CechPic.cls_pull Q.isLB _ hL).symm), u, H, χ, hH⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nonempty_riemannData (Q : Out.PolAV S) (y : Sp ℂ ⟶ S) :
     Nonempty ((ofPolAV Q).RiemannData y) := by
@@ -546,9 +544,9 @@ abbrev IsHodge (h : VMetric p (omega P.A) P.g) : Prop := P.IsDualRiemann Real.pi
 variable {P} {t : ℝ} {h h' : VMetric p (omega P.A) P.g}
 
 /- English proof (translation)
-Use `VMetric.ext (funext fun σ => Met.ext_form fun U s s' y hy => ?_)` and prove the remaining obligations. Take `⟨U', W, hx, hle, c⟩` from `Conormal.exists_isChart (LieVB.sec_hom (MonObj.one (X := P.A))) (mem_ptsIn.1 hy)`. Establish `hy' : y ∈ ptsIn p σ U'` using `mem_ptsIn.2 hx`. Take `⟨f, hf⟩` from `c.d_surjective (LieVB.sec_hom (MonObj.one (X := P.A))) (resM (omega P.A) hle s)`. Take `⟨f', hf'⟩` from `c.d_surjective (LieVB.sec_hom (MonObj.one (X := P.A))) (resM (omega P.A) hle s')`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨d⟩` from `(H σ y).1`. Rewrite using `[← Met.form_resM _ s s' hle hy', ← Met.form_resM _ s s' hle hy', ← hf, ← hf']`. Conclude with `((H σ y).2 d U' W c.le f f' hy').trans ((H' σ y).2 d U' W c.le f f' hy').symm`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsDualRiemann.unique (H : P.IsDualRiemann t h) (H' : P.IsDualRiemann t h') : h = h' := by
   refine VMetric.ext (funext fun σ => Met.ext_form fun U s s' y hy => ?_)
@@ -561,7 +559,7 @@ theorem IsDualRiemann.unique (H : P.IsDualRiemann t h) (H' : P.IsDualRiemann t h
   exact ((H σ y).2 d U' W c.le f f' hy').trans ((H' σ y).2 d U' W c.le f f' hy').symm
 
 /- English proof (translation)
-Introduce `σ y` and use `⟨(H σ y).1, fun d U W hU f f' hy => by have e : ((Real.exp (-s) : ℂ) • (t : ℂ) • d.H)⁻¹ = (Real.exp s : ℂ) • ((t : ℂ) • d.H)⁻¹ := by have e₁ : (Real.exp (-s) : ℂ) * Real.exp s = 1 := by rw [← Complex.ofReal_mul, ← Real.exp_add]; simp by_cases hu : IsUnit ((t : ℂ) • d.H).det · exa …`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem IsDualRiemann.scale (H : P.IsDualRiemann t h) (s : ℝ) :
     P.IsDualRiemann (Real.exp (-s) * t) (h.scale s) := fun σ y => ⟨(H σ y).1,
@@ -579,7 +577,7 @@ theorem IsDualRiemann.scale (H : P.IsDualRiemann t h) (s : ℝ) :
       transpose_smul, form_smul]⟩
 
 /- English proof (translation)
-Use `H.scale (Real.log (2 * Real.pi)) using 1` and compare the differences between its conclusion and the goal. Rewrite using `[Real.exp_neg, Real.exp_log (by positivity)]`. Clear the denominators using the available nonvanishing facts.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem IsHodge.flat (H : P.IsHodge h) :
     P.IsDualRiemann (1 / 2) (h.scale (Real.log (2 * Real.pi))) := by
@@ -600,7 +598,7 @@ def degOmega : ℤ := cxDeg p (omega P.A) P.g
 variable {P p} {a b : ℝ}
 
 /- English proof (translation)
-Take `⟨h, H, ha⟩` from `ha`. Take `⟨h', H', hb⟩` from `hb`. Conclude with `ha.unique (H.unique H' ▸ hb)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem IsCh2Omega.unique (ha : P.IsCh2Omega p a) (hb : P.IsCh2Omega p b) : a = b := by
   obtain ⟨h, H, ha⟩ := ha
@@ -608,13 +606,13 @@ theorem IsCh2Omega.unique (ha : P.IsCh2Omega p a) (hb : P.IsCh2Omega p b) : a = 
   exact ha.unique (H.unique H' ▸ hb)
 
 /- English proof (translation)
-The claim follows from `IsCh2Omega.unique (Classical.epsilon_spec ⟨a, ha⟩) ha`.
+A detailed English derivation is pending.
 -/
 theorem IsCh2Omega.ch2Omega_eq (ha : P.IsCh2Omega p a) : P.ch2Omega p = a :=
   IsCh2Omega.unique (Classical.epsilon_spec ⟨a, ha⟩) ha
 
 /- English proof (translation)
-The claim follows from `IsCh2Omega.ch2Omega_eq ⟨h, H, ha⟩`.
+A detailed English derivation is pending.
 -/
 theorem IsHodge.ch2Omega_eq (H : P.IsHodge h) (ha : h.IsCh2Deg a) : P.ch2Omega p = a :=
   IsCh2Omega.ch2Omega_eq ⟨h, H, ha⟩
@@ -622,7 +620,7 @@ theorem IsHodge.ch2Omega_eq (H : P.IsHodge h) (ha : h.IsCh2Deg a) : P.ch2Omega p
 end PPAS
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, PPAS.nonempty_riemannData _ _⟩`.
+Supply the required witnesses or components.
 -/
 example (W : _root_.WeierstrassCurve ℂ) [W.IsElliptic] :
     (PPAS.ofPolAV (WeierstrassCurve.ellPolAV W)).g = 1 ∧
@@ -630,7 +628,7 @@ example (W : _root_.WeierstrassCurve ℂ) [W.IsElliptic] :
   ⟨rfl, PPAS.nonempty_riemannData _ _⟩
 
 /- English proof (translation)
-Rewrite using `[dualGram, inv_eq_right_inv (B := (1 / Real.pi : ℂ) • 1), transpose_smul, transpose_one]`. Rewrite using `[smul_mul_smul_comm, mul_one, mul_one_div_cancel (by simp), one_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 example : dualGram ((Real.pi : ℂ) • (1 : Matrix (Fin 2) (Fin 2) ℂ)) = (1 / Real.pi : ℂ) • 1 := by
   rw [dualGram, inv_eq_right_inv (B := (1 / Real.pi : ℂ) • 1), transpose_smul, transpose_one]

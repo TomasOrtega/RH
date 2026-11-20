@@ -16,7 +16,7 @@ namespace GlobalTheory.QPl.LineCancel
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Introduce `x a ha`. Rewrite using `[MonoidHom.mul_apply, MonoidHom.mul_apply, Units.val_mul, h x a ha, h' x a ha, Circle.coe_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem isComp_mul (p : Place D k) {χ χ' : (AE D)ˣ →* Circle} {μ μ' : kˣ →* ℂˣ} (h : p.IsComp χ μ)
     (h' : p.IsComp χ' μ') : p.IsComp (χ * χ') (μ * μ') := by
@@ -24,7 +24,7 @@ theorem isComp_mul (p : Place D k) {χ χ' : (AE D)ˣ →* Circle} {μ μ' : kˣ
   rw [MonoidHom.mul_apply, MonoidHom.mul_apply, Units.val_mul, h x a ha, h' x a ha, Circle.coe_mul]
 
 /- English proof (translation)
-Introduce `x a ha`. Rewrite using `[MonoidHom.inv_apply, MonoidHom.inv_apply, Units.val_inv_eq_inv_val, h x a ha, Circle.coe_inv]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem isComp_inv (p : Place D k) {χ : (AE D)ˣ →* Circle} {μ : kˣ →* ℂˣ} (h : p.IsComp χ μ) :
     p.IsComp χ⁻¹ μ⁻¹ := by
@@ -32,7 +32,7 @@ theorem isComp_inv (p : Place D k) {χ : (AE D)ˣ →* Circle} {μ : kˣ →* �
   rw [MonoidHom.inv_apply, MonoidHom.inv_apply, Units.val_inv_eq_inv_val, h x a ha, Circle.coe_inv]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Simplify using `only [om, Pi.smul_apply, smul_eq_mul, MonoidHom.mul_apply, mul_inv, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem om_mul {a b : Type} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b] (μ ν : kˣ →* ℂˣ) (g : GL a k)
     (h : GL b k) (Φ : Matrix b a k → ℂ) :
@@ -43,11 +43,11 @@ theorem om_mul {a b : Type} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq
   ring
 
 /- English proof (translation)
-Establish `e : S.con ((z : ℂ) • A) (((z⁻¹ : ℂˣ) : ℂ) • B) g h₁ h₂ = S.con A B g h₁ h₂`. Unfold `Dbl2.con`. Rewrite using `[map_smul, map_smul, GlobalTheory.HandHom.flatBF_smul, GlobalTheory.HandHom.flatFB_smul]`. Use function extensionality and compare the values at `u v`. Unfold `GlobalTheory.Unf.contr`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions.
 
-Use `congr 1`. Use function extensionality and compare the values at `w`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Rewrite using `[mul_mul_mul_comm, Units.inv_mul, one_mul]`. Unfold `Dbl2.val`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem val_smul_inv {ψ : AddChar (AF D.host.F) ℂ} {σ : ℕ} (S : Dbl2 ψ σ) (c₁ : WO S.B.A S.J.W₀ →₀ ℂ)
     (c₂ : WO S.J.W₀ S.B'.A →₀ ℂ) (A : WO S.B.V S.J.W → ℂ) (B : WO S.J.W S.B'.V → ℂ) (φ : GA D S.B.A → ℂ)
@@ -70,14 +70,14 @@ end GlobalTheory.QPl.LineCancel
 namespace GlobalTheory.QPl.LineCancel
 
 /- English proof (translation)
-Rewrite using `[inv_mul_cancel_comm]`. Simplify using `only [MonoidHom.inv_apply, inv_inv, mul_inv_cancel_left]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem scal_one {G : Type} [Group G] (μ ζ : G →* ℂˣ) (a x : G) : ζ x = ((μ⁻¹ * ζ) * μ) a * (ζ⁻¹ a * (ζ⁻¹ x)⁻¹) := by
   rw [inv_mul_cancel_comm]
   simp only [MonoidHom.inv_apply, inv_inv, mul_inv_cancel_left]
 
 /- English proof (translation)
-Rewrite using `[inv_mul_cancel_left, MonoidHom.inv_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem scal_two {G : Type} [Group G] (μ ζ : G →* ℂˣ) (x : G) : (ζ x)⁻¹ = (μ⁻¹ * (μ * ζ⁻¹)) x := by
   rw [inv_mul_cancel_left, MonoidHom.inv_apply]
@@ -87,13 +87,13 @@ end GlobalTheory.QPl.LineCancel
 namespace GlobalTheory.QPl.LineCancel
 
 /- English proof (translation)
-Introduce `D ψ hψ σ S Q T₁ T₂ h₁ h₂ c₁ c₂ φ F a x y Φ₁ Φ₁' Φ₂ Φ₂' e₁ e₂`. Take `⟨ζ, hζ⟩` from `GlobalTheory.LocMod.Witness.exists_isComp (ofSplit Q.q) S.χz`. Establish `k₁' : (ofSplit Q.q).IsComp S.χ₁ Q.μ₁⁻¹` using `by simpa using isComp_inv _ Q.comp₁`. Establish `k₂' : (ofSplit Q.q).IsComp S.χ₂ Q.μ₂⁻¹` using `by simpa using isComp_inv _ Q.comp₂`. Establish `hV₁ : (ofSplit Q.q).IsComp S.s₁.χV (Q.μ₁⁻¹ * ζ)` using `by rw [S.V₁]; exact isComp_mul _ k₁' hζ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hW₁ : (ofSplit Q.q).IsComp S.s₁.χW Q.μ₁⁻¹` using `by rw [S.W₁]; exact k₁'`. Establish `hV₂ : (ofSplit Q.q).IsComp S.s₂.χV Q.μ₂⁻¹` using `by rw [S.V₂]; exact k₂'`. Establish `hW₂ : (ofSplit Q.q).IsComp S.s₂.χW (Q.μ₂⁻¹ * ζ)` using `by rw [S.W₂]; exact isComp_mul _ k₂' hζ`. Establish `r₁` using `GlobalTheory.T.weilDatum_localModel_formula D Q.k (ofSplit Q.q) ψ S.B.V S.J.W S.s₁.χV S.s₁.χW S.s₁.om S.s₁.weil (Q.μ₁⁻¹ * ζ) Q.μ₁⁻¹ hV₁ hW₁ (Q.n₁ ⊕ Fin (Q.c + 1 + 1)) (Q.n₀ ⊕ Fin (Q.c + 1 + 1 + 1)) Q.F.G₀ Q.F.G₁ T₁ h₁ (Q.gl₀ a) a (Q.gl₁ x) x (Q.loc₀ a) (Q.loc₁ x) Φ₁ (((ζ (Matrix. …`. Rewrite using `[Submodule.coe_smul, e₁, mul_inv, inv_inv, om_mul, smul_smul, ← Units.val_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Conclude with `scal_one Q.μ₁ ζ _ _)`. Establish `r₂` using `GlobalTheory.T.weilDatum_localModel_formula D Q.k (ofSplit Q.q) ψ S.J.W S.B'.V S.s₂.χV S.s₂.χW S.s₂.om S.s₂.weil Q.μ₂⁻¹ (Q.μ₂⁻¹ * ζ) hV₂ hW₂ (Q.n₂ ⊕ Fin (Q.c + 1)) (Q.n₁ ⊕ Fin (Q.c + 1 + 1)) Q.F.G₁ Q.F.G₂ T₂ h₂ (Q.gl₁ x) x (Q.gl₂ y) y (Q.loc₁ x) (Q.loc₂ y) Φ₂ ((((ζ (Matrix.Genera …`. Rewrite using `[Submodule.coe_smul, e₂, inv_inv, mul_inv, inv_inv]`. Use `congr 2`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Conclude with `scal_two Q.μ₂ ζ _)`. Rewrite using `[r₁, r₂, map_smul, map_smul]`. Conclude with `val_smul_inv S c₁ c₂ _ _ φ F 1 1 1 _`.
+A detailed English derivation is pending.
 -/
 theorem val_om_loc : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (σ : ℕ) (S : Dbl2 ψ σ) (Q : QStep S)
     (T₁ : SB (Matrix (Q.n₁ ⊕ Fin (Q.c + 1 + 1)) (Q.n₀ ⊕ Fin (Q.c + 1 + 1 + 1)) Q.k) →ₗ[ℂ] (WO S.B.V S.J.W → ℂ))

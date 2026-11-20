@@ -13,17 +13,17 @@ namespace GlobalTheory.CompanionTheory.ContractVolume
 open ValuativeRel Matrix MeasureTheory GroundTheory.Automorphic.GLnLocal
 
 /- English proof (translation)
-Use `set T : ℤ := ∑ a, ∑ b, if a ≤ j ∧ b ≤ j then (d a : ℤ) * (d b : ℤ) * ((if a < b then 1 else 0) - (if b < a then 1 else 0)) else 0 with hT`. Establish `hT0 : T = 0`. Establish `h1 : T = -T` using `by conv_lhs => rw [hT, Finset.sum_comm]`. Rewrite using `[hT, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `hab : a ≤ j ∧ b ≤ j`. Rewrite using `[if_pos hab, if_pos hab.symm]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hab, if_neg (fun h => hab h.symm)]`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish `h2 : ∀ a : Fin h, (if a ≤ j then (d a : ℤ) * modExp (fun a => Fin (d a)) a else 0) = (∑ b, if a ≤ j ∧ b ≤ j then (d a : ℤ) * (d b : ℤ) * ((if a < b then 1 else 0) - (if b < a then 1 else 0)) else 0) + (if a ≤ j then (d a : ℤ) else 0) * ∑ b, if j < b then (d b : ℤ) else 0`. Introduce `a`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `ha : a ≤ j`. Simplify using `only [ha, if_true, true_and]`. Rewrite using `[modExp, Finset.mul_sum, ← Finset.sum_add_distrib, Finset.sum_filter, Finset.sum_filter, ← Finset.sum_sub_distrib, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [Fintype.card_fin]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hb : b ≤ j`. Establish `hb' : ¬ j < b` using `not_lt.2 hb`. Simplify using `only [hb, hb', if_true, if_false]`. Apply the tactic sequence `split_ifs <;> ring`. Establish `hb' : j < b` using `not_le.1 hb`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : a < b` using `lt_of_le_of_lt ha hb'`. Simplify using `[hb, hb', h3, h3.le, not_lt.2 h3.le]`. Simplify using `[ha]`. Rewrite using `[Finset.sum_congr rfl fun a _ => h2 a, Finset.sum_add_distrib, ← hT, hT0, zero_add, Finset.sum_mul]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_modExp {h : ℕ} (d : Fin h → ℕ) (j : Fin h) :
     (∑ a, if a ≤ j then (d a : ℤ) * modExp (fun a => Fin (d a)) a else 0) =
@@ -65,15 +65,15 @@ theorem sum_modExp {h : ℕ} (d : Fin h → ℕ) (j : Fin h) :
     Finset.sum_mul]
 
 /- English proof (translation)
-Establish `hmono` using `GlobalTheory.CompanionTheory.BlockIndex.blockIdx_monotone h N d hd`. Establish `h1 : ∀ i l : Fin N, (if i < l then ((if Zl.JC.blockIdx d hd i ≤ j then (n : ℤ) else 0) - (if Zl.JC.blockIdx d hd l ≤ j then (n : ℤ) else 0)).toNat else 0) = n * ((if Zl.JC.blockIdx d hd i ≤ j then 1 else 0) * (if j < Zl.JC.blockIdx d hd l then 1 else 0))`. Introduce `i l`. Distinguish the cases in `hi : Zl.JC.blockIdx d hd i ≤ j`. Distinguish the cases in `hl : j < Zl.JC.blockIdx d hd l`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails.
 
-Establish `hil : i < l`. Assume the negation of the conclusion as `hc`. Conclude with `absurd (hmono (not_lt.1 hc)) (not_le.2 (lt_of_le_of_lt hi hl))`. Simplify using `[hi, hl, hil, not_le.2 hl]`. Establish `hl'` using `not_lt.1 hl`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[hi, hl, hl']`. Distinguish the cases in `hl : j < Zl.JC.blockIdx d hd l`. Simplify using `[hi, not_le.2 hl]`. Establish `hl'` using `not_lt.1 hl`. Simplify using `only [hi, hl', if_true, if_false, hl]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> simp`. Establish `h2 : ∀ P : Fin h → Prop, [DecidablePred P] → (∑ i : Fin N, if P (Zl.JC.blockIdx d hd i) then 1 else 0) = ∑ a, if P a then d a else 0`. Introduce `P _`. Rewrite using `[← Equiv.sum_comp (stdBlocks d hd), Fintype.sum_sigma]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[Zl.JC.blockIdx]`. Simplify using `only [h1]`. Rewrite using `[← h2, ← h2, Finset.sum_mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_toNat {h N : ℕ} (d : Fin h → ℕ) (hd : ∑ a, d a = N) (j : Fin h) (n : ℕ) :
     (∑ i : Fin N, ∑ l : Fin N, if i < l then
@@ -113,17 +113,17 @@ theorem sum_toNat {h N : ℕ} (d : Fin h → ℕ) (hd : ∑ a, d a = N) (j : Fin
   rw [Finset.mul_sum]
 
 /- English proof (translation)
-Establish `hϖ0 : ((uniformizer k : 𝒪[k]) : k) ≠ 0` using `(Valuation.ne_zero_iff _).1 (valuation_uniformizer_ne_zero k)`. Establish `hlt : valuation k (((uniformizer k : 𝒪[k]) : k) ^ m) < 1`. Rewrite using `[map_pow]`. Conclude with `pow_lt_one' (valuation_uniformizer_lt_one k) (by omega)`. Take `⟨H, hH⟩` from `GlobalTheory.CompanionTheory.PrincipalCongruence.exists_principalCongruence k N _ (pow_ne_zero m hϖ0) hlt`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hint : ∀ g ∈ H, ∀ i j, (g : GL (Fin N) k) i j ∈ 𝒪[k]`. Introduce `g hg i j`. Establish `h1 : g ∈ (H : Set (GL (Fin N) k))` using `hg`. Rewrite `h1` using `[hH]`. Establish `h2` using `h1 i j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : valuation k ((g : Matrix (Fin N) (Fin N) k) i j) ≤ 1`. Establish `h4 : (g : Matrix (Fin N) (Fin N) k) i j = ((g : Matrix (Fin N) (Fin N) k) i j - (1 : Matrix (Fin N) (Fin N) k) i j) + (1 : Matrix (Fin N) (Fin N) k) i j` using `by ring`. Rewrite using `[h4]`. Use `(Valuation.map_add _ _ _).trans (max_le (h2.trans hlt.le) ?_)` and prove the remaining obligations. Rewrite using `[Matrix.one_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> simp`. Conclude with `(Valuation.mem_integer_iff _ _).2 h3`. Use extensionality with `g`. Rewrite using `[SetLike.mem_coe, mem_congruenceSubgroup_iff]`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨-, h2⟩ i j`. Rewrite using `[map_pow]`. Conclude with `h2 i j`. Introduce `hg`. Establish `hgH : g ∈ H`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← SetLike.mem_coe, hH]`. Conclude with `hg`. Use `⟨(mem_integralGL_iff k N).2 ⟨hint g hgH, hint _ (H.inv_mem hgH)⟩, fun i j => ?_⟩` and prove the remaining obligations. Use `hg i j` as an intermediate fact. Rewrite `this` using `[map_pow]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem coe_congruenceSubgroup (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (N m : ℕ) (hm : 1 ≤ m) :
@@ -166,9 +166,7 @@ theorem coe_congruenceSubgroup (k : Type) [Field k] [ValuativeRel k] [Topologica
     rwa [map_pow] at this
 
 /- English proof (translation)
-Establish `hxi : x ∈ 𝒪[k]` using `(Valuation.mem_integer_iff _ _).2 hx.le`. Establish `h1 : (⟨x, hxi⟩ : 𝒪[k]) ∈ IsLocalRing.maximalIdeal 𝒪[k]`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, Valuation.Integer.not_isUnit_iff_valuation_lt_one]`. Conclude with `hx`. Rewrite `h1` using `[(IsDiscreteValuationRing.irreducible_iff_uniformizer _).mp (irreducible_uniformizer k), Ideal.mem_span_singleton]`.
-
-Conclude with `(Valuation.integer.integers (valuation k)).le_of_dvd h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_valuation_uniformizer (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (x : k) (hx : valuation k x < 1) :
@@ -185,13 +183,13 @@ theorem le_valuation_uniformizer (k : Type) [Field k] [ValuativeRel k] [Topologi
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[val_diagT]`. Use extensionality with `i l`. Take `⟨⟨a, x⟩, rfl⟩` from `(stdBlocks d hd).surjective i`. Take `⟨⟨b, y⟩, rfl⟩` from `(stdBlocks d hd).surjective l`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Rewrite using `[leviEmb_apply_same]`. Distinguish the cases in `hxy : x = y`. Substitute `hxy` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Apply the tactic sequence `by_cases ha : a ≤ j <;> simp [Zl.JC.zj, Zl.JC.blockIdx, ha, Matrix.GeneralLinearGroup.scalar]`. Establish `hne : stdBlocks d hd ⟨a, x⟩ ≠ stdBlocks d hd ⟨a, y⟩` using `fun e => hxy (by`. Use `(stdBlocks d hd).injective e` as an intermediate fact. Simplify using `using this)`. Rewrite using `[Matrix.diagonal_apply_ne _ hne]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `by_cases ha : a ≤ j <;> simp [Zl.JC.zj, ha, Matrix.GeneralLinearGroup.scalar, hxy]`. Establish `hne : stdBlocks d hd ⟨a, x⟩ ≠ stdBlocks d hd ⟨b, y⟩` using `fun e => hab (by`. Use `(stdBlocks d hd).injective e` as an intermediate fact. Conclude with `congrArg Sigma.fst this)`. Rewrite using `[Matrix.diagonal_apply_ne _ hne, leviEmb_apply_ne k _ _ hab]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem leviEmb_zj {h N : ℕ} (d : Fin h → ℕ) (hd : ∑ a, d a = N) (t : kˣ) (j : Fin h) :
     leviEmb k (stdBlocks d hd) (Zl.JC.zj d t j) =
@@ -218,19 +216,19 @@ theorem leviEmb_zj {h N : ℕ} (d : Fin h → ℕ) (hd : ∑ a, d a = N) (t : k�
     rw [Matrix.diagonal_apply_ne _ hne, leviEmb_apply_ne k _ _ hab]
 
 /- English proof (translation)
-Simplify using `[nabs]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nabs_pow' (t : kˣ) (n : ℕ) : nabs k (t ^ n) = nabs k t ^ n := by
   simp [nabs]
 
 /- English proof (translation)
-Establish `hpos : nabs k t ≠ 0` using `(nabs_pos k t).ne'`. Establish `h1 : ∀ a : Fin h, nabs k (Matrix.GeneralLinearGroup.det (Zl.JC.zj d t j a)) ^ modExp (fun a => Fin (d a)) a = nabs k t ^ (if a ≤ j then (d a : ℤ) * modExp (fun a => Fin (d a)) a else 0)`. Introduce `a`. Distinguish the cases in `ha : a ≤ j`. Establish `h2 : Matrix.GeneralLinearGroup.det (Zl.JC.zj d t j a) = t ^ d a`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Use `ext`. Simplify using `[Zl.JC.zj, ha, Matrix.GeneralLinearGroup.scalar, Matrix.GeneralLinearGroup.val_det_apply]`. Rewrite using `[h2, nabs_pow', if_pos ha, _root_.zpow_mul, zpow_natCast]`. Establish `h2 : Matrix.GeneralLinearGroup.det (Zl.JC.zj d t j a) = 1`. Simplify using `[Zl.JC.zj, ha]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h2, if_neg ha]`. Simplify using `[nabs]`. Rewrite using `[modulus, Finset.prod_congr rfl fun a _ => h1 a]`. Proceed by induction on `(Finset.univ : Finset (Fin h)) using Finset.induction_on with`. Consider the case `empty => simp`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Consider the case `insert i s hi ih => rw [Finset.prod_insert hi, Finset.sum_insert hi, zpow_add₀ hpos, ih]`.
+Treat this case separately.
 -/
 theorem modulus_zj {h : ℕ} (d : Fin h → ℕ) (t : kˣ) (j : Fin h) :
     modulus k (fun a => Fin (d a)) (Zl.JC.zj d t j) =
@@ -255,11 +253,11 @@ theorem modulus_zj {h : ℕ} (d : Fin h → ℕ) (t : kˣ) (j : Fin h) :
   | insert i s hi ih => rw [Finset.prod_insert hi, Finset.sum_insert hi, zpow_add₀ hpos, ih]
 
 /- English proof (translation)
-Establish `hϖ0 : ((uniformizer k : 𝒪[k]) : k) ≠ 0` using `(Valuation.ne_zero_iff _).1 (valuation_uniformizer_ne_zero k)`. Establish `hti : (t : k) ∈ 𝒪[k]` using `(Valuation.mem_integer_iff _ _).2 ht.le`. Establish `ht0 : (⟨t, hti⟩ : 𝒪[k]) ≠ 0` using `fun e => t.ne_zero (congrArg Subtype.val e)`. Take `⟨n, e, he⟩` from `IsDiscreteValuationRing.associated_pow_irreducible ht0 (irreducible_uniformizer k)`. Establish `hu0 : (((e⁻¹ : 𝒪[k]ˣ) : 𝒪[k]) : k) ≠ 0` using `fun h0 => (e⁻¹).ne_zero (Subtype.ext h0)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨n, Units.mk0 _ hϖ0, Units.mk0 _ hu0, rfl, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(Valuation.integer.integers (valuation k)).isUnit_iff_valuation_eq_one.1 (e⁻¹).isUnit`. Apply `Units.ext` to reduce the goal to its premises. Establish `h1 : (⟨t, hti⟩ : 𝒪[k]) = GroundTheory.Automorphic.GLnLocal.uniformizer k ^ n * ((e⁻¹ : 𝒪[k]ˣ) : 𝒪[k])`. Rewrite using `[← he, mul_assoc, Units.mul_inv, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `congrArg Subtype.val h1`. Simplify using `using h2`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_decomp (t : kˣ) (ht : valuation k (t : k) < 1) :
     ∃ (n : ℕ) (p u : kˣ), (p : k) = ((uniformizer k : 𝒪[k]) : k) ∧ valuation k (u : k) = 1 ∧
@@ -280,11 +278,9 @@ theorem exists_decomp (t : kˣ) (ht : valuation k (t : k) < 1) :
     simpa using h2
 
 /- English proof (translation)
-Establish `hent : ∀ g : Fin N → kˣ, (∀ i, valuation k (g i : k) = 1) → ∀ i j, (diagT k (Fin N) g : GL (Fin N) k) i j ∈ 𝒪[k]`. Introduce `g hg i j`. Use `show (diagT k (Fin N) g : Matrix (Fin N) (Fin N) k) i j ∈ 𝒪[k]`. Rewrite using `[val_diagT, Matrix.diagonal_apply]`. Use `split_ifs`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(Valuation.mem_integer_iff _ _).2 (hg i).le`. Conclude with `zero_mem _`. Rewrite using `[mem_integralGL_iff]`. Use `⟨hent f hf, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_inv]`.
-
-Use `hent _ fun i => ?_` and prove the remaining obligations. Simplify using `[hf i]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem diagT_mem_integralGL {N : ℕ} (f : Fin N → kˣ) (hf : ∀ i, valuation k (f i : k) = 1) :
     diagT k (Fin N) f ∈ integralGL k N := by
@@ -303,9 +299,9 @@ theorem diagT_mem_integralGL {N : ℕ} (f : Fin N → kˣ) (hf : ∀ i, valuatio
   simp [hf i]
 
 /- English proof (translation)
-Establish `hsub : (QuotientGroup.mk : GL (Fin N) k → AdGL k N) '' {g | ∃ x ∈ K, ∃ y ∈ K, g = x * s * y} ⊆ (fun q => (QuotientGroup.mk w : AdGL k N) * q) ⁻¹' ((QuotientGroup.mk : GL (Fin N) k → AdGL k N) '' {g | ∃ x ∈ K, ∃ y ∈ K, g = x * (s * w) * y})`. Introduce and unpack `_ ⟨_, ⟨x, hx, y, hy, rfl⟩, rfl⟩`. Use `⟨_, ⟨w * x * w⁻¹, hw x hx, y, hy, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show (QuotientGroup.mk _ : AdGL k N) = QuotientGroup.mk (w * (x * s * y))`. Use `congr 1`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc.eq]`. Use `group`. Conclude with `(measure_mono hsub).trans_eq (measure_preimage_mul μ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem measure_le_translate {N : ℕ} [MeasurableSpace (AdGL k N)] [BorelSpace (AdGL k N)]
     (μ : Measure (AdGL k N)) [μ.IsMulLeftInvariant] (K : Subgroup (GL (Fin N) k))
@@ -326,27 +322,25 @@ theorem measure_le_translate {N : ℕ} [MeasurableSpace (AdGL k N)] [BorelSpace 
   exact (measure_mono hsub).trans_eq (measure_preimage_mul μ _ _)
 
 /- English proof (translation)
-Introduce `k _ _ _ _ h N d hd _ t ht j _ m hm _ _ μ hμ`. Use `haveI := hμ`. Take `⟨n, p, u, hp, hu, htu⟩` from `exists_decomp t ht`. Establish `hK` using `coe_congruenceSubgroup k N m hm`. Rewrite `hK` using `[← hp]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hϖ1 : valuation k (p : k) < 1` using `hp ▸ valuation_uniformizer_lt_one k`. Establish `hunif : ∀ x : k, valuation k x < 1 → valuation k x ≤ valuation k (p : k)` using `fun x hx => hp ▸ le_valuation_uniformizer k x hx`. Take `⟨hpos, hfin⟩` from `GlobalTheory.CompanionTheory.PrincipalCongruence.measure_image_principal_pos_lt_top k N (p : k) m p.ne_zero hϖ1 hunif hm μ hμ`. Rewrite `hpos`, `hfin` using `[← hK]`. Set `a : Fin N → ℤ` to `fun i => if Zl.JC.blockIdx d hd i ≤ j then (n : ℤ) else 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `ha : Antitone a`. Introduce `x y hxy`. Establish `hmono` using `GlobalTheory.CompanionTheory.BlockIndex.blockIdx_monotone h N d hd hxy`. Use `show (if _ then _ else _) ≤ (if _ then _ else _)`. Distinguish the cases in `hy : Zl.JC.blockIdx d hd y ≤ j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[hy, hmono.trans hy]`. Apply the tactic sequence `rw [if_neg hy] split_ifs <;> simp`. Set `D : GL (Fin N) k` to `diagT k (Fin N) (fun i => p ^ a i)`. Establish `hD : (D : Matrix (Fin N) (Fin N) k) = Matrix.diagonal (fun i => (p : k) ^ a i)`. Simplify using `[D, val_diagT]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `w : GL (Fin N) k` to `diagT k (Fin N) (fun i => if Zl.JC.blockIdx d hd i ≤ j then u else 1)`. Establish `hw : w ∈ integralGL k N`. Use `diagT_mem_integralGL _ fun i => ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `hu`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using the standard rewrite rules. Establish `hfac : leviEmb k (stdBlocks d hd) (Zl.JC.zj d t j) = D * w`. Rewrite using `[leviEmb_zj, ← map_mul]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Distinguish the cases in `hi : Zl.JC.blockIdx d hd i ≤ j`. Simplify using `[a, hi, htu]`. Simplify using `[a, hi]`. Establish `hcomm : Commute D w` using `by show D * w = w * D`. Rewrite using `[← map_mul, ← map_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmod : (modulus k (fun a => Fin (d a)) (Zl.JC.zj d t j))⁻¹ = (resCard k : ℝ) ^ (n * ((∑ a, if a ≤ j then d a else 0) * ∑ b, if j < b then d b else 0))`. Establish `h1 : nabs k t = ((resCard k : ℝ)⁻¹) ^ n`. Establish `h2` using `nabs_uniformiser (irreducible_uniformizer k) hp`. Establish `h3` using `nabs_eq_one_of_valuation_eq_one hu`. Rewrite using `[htu, show nabs k (p ^ n * u) = nabs k (p ^ n) * nabs k u from nabs_mul k _ _, nabs_pow', h2, h3, mul_one]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : (∑ a, if a ≤ j then (d a : ℤ) else 0) * (∑ b, if j < b then (d b : ℤ) else 0) = (((∑ a, if a ≤ j then d a else 0) * ∑ b, if j < b then d b else 0 : ℕ) : ℤ)`. Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[modulus_zj, sum_modExp, h4, h1, zpow_natCast, ← pow_mul, inv_pow, inv_inv]`. Use `⟨(μ ((QuotientGroup.mk : GL (Fin N) k → AdGL k N) '' (GroundTheory.Automorphic.GLnLocal.congruenceSubgroup k N m : Set (GL (Fin N) k)))).toReal, ENNReal.toReal_pos hpos.ne' hfin.ne, fun r => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hvol` using `GlobalTheory.CompanionTheory.DoubleCosetVolume.measure_image_doubleCoset k N (p : k) m a p.ne_zero hϖ1 hunif hm ha D hD μ hμ r`. Rewrite `hvol` using `[← hK, sum_toNat d hd j n]`. Establish `hle` using `measure_le_translate μ (GroundTheory.Automorphic.GLnLocal.congruenceSubgroup k N m) (D ^ r) (w ^ r) (hcomm.pow_pow r r) (fun x hx => conj_mem_congruenceSubgroup k N ((integralGL k N).pow_mem hw r) hx)`. Rewrite using `[hfac, hcomm.mul_pow, hmod]`. Use `le_trans (le_of_eq ?_) hle` and prove the remaining obligations.
-
-Simplify using `only [SetLike.mem_coe] at hvol`. Rewrite using `[hvol, ENNReal.ofReal_mul ENNReal.toReal_nonneg, ENNReal.ofReal_toReal hfin.ne, mul_comm, ← pow_mul, ENNReal.ofReal_pow (by positivity), ENNReal.ofReal_natCast, mul_comm _ r]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem volume_lower_bound : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k], ∀ (h N : ℕ) (d : Fin h → ℕ) (hd : ∑ a, d a = N), (∀ a, 0 < d a) → ∀ (t : kˣ), ValuativeRel.valuation k (t : k) < 1 → ∀ (j : Fin h), j.val + 1 < h → ∀ (m : ℕ), 1 ≤ m → ∀ [MeasurableSpace (AdGL k N)] [BorelSpace (AdGL k N)] (μ : MeasureTheory.Measure (AdGL k N)), μ.IsHaarMeasure → ∃ c : ℝ, 0 < c ∧ ∀ r : ℕ, ENNReal.ofReal (c * ((modulus k (fun a => Fin (d a)) (Zl.JC.zj d t j))⁻¹) ^ r) ≤ μ ((QuotientGroup.mk : GL (Fin N) k → AdGL k N) '' {g | ∃ x ∈ GroundTheory.Automorphic.GLnLocal.congruenceSubgroup k N m, ∃ y ∈ GroundTheory.Automorphic.GLnLocal.congruenceSubgroup k N m, g = x * (leviEmb k (stdBlocks d hd) (Zl.JC.zj d t j)) ^ r * y}) := by
   intro k _ _ _ _ h N d hd _ t ht j _ m hm _ _ μ hμ

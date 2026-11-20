@@ -11,9 +11,9 @@ namespace GlobalTheory.CompanionTheory.BesselMapSm
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Introduce `n Hm H _ _ _ σ hσ u hu`. Establish `h1 : (1 : Mat n) ∈ Formalism.QuantumDeterminants.UH Hm` using `hσ.grp.2.1`. Take `⟨U, F, hUo, h1U, hF, hfF⟩` from `hu 1 h1`. Use `⟨fderiv ℝ F 1, fun X hX => ?_⟩` and prove the remaining obligations. Establish `hmem : ∀ t : ℝ, ex X t ∈ Formalism.QuantumDeterminants.UH Hm` using `fun t => ex_mem_of_lie hX t`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hd : HasDerivAt (fun t : ℝ => ex X t) X 0`. Simplify using `using hasDerivAt_mul_ex (1 : Mat n) X`. Establish `hl` using `hasDerivAt_local (f := fun g => σ g u) hmem (ex_zero X) hd hUo h1U hF hfF`. Conclude with `hl.deriv`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dsLin : DsLin := by
   intro n Hm H _ _ _ σ hσ u hu

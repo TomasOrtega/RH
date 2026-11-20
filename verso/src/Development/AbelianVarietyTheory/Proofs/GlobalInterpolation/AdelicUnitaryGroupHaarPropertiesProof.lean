@@ -10,7 +10,7 @@ import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.IsCountableDi
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ M J hJ`. Conclude with `⟨GlobalTheory.T.adelic_unitaryGroup_stabilisers_unimodular F E σ hσ M J hJ, GlobalTheory.T.archimedean_unitaryGroup_stabilisers_unimodular F E σ hσ M J hJ, GlobalTheory.T.finiteAdelicUnitaryGroup_stabilizers_unimodular F E σ hσ M J hJ, GlobalTheory.T.localUnitaryGroup_stabilizers …`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem adelicUnitaryHaar_holds : GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryHaarMeasure.AdelicUnitaryHaar := by
   intro F E _ _ _ _ _ σ hσ M J hJ

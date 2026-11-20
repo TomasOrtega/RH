@@ -13,11 +13,11 @@ open GlobalTheory.Doubling (absE)
 namespace GlobalTheory.ThK.UnipEvZero
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B n d d₁ X W W₁ M M₁ H' i₀ i₁ hH hM₁ e₀ he₀ χX χW om r s r' s' hP u hu Ψ hΨ`. Establish `hW₁` using `KernelZero.isSkew_complement F E σ B hP.base d d₁ W W₁ H' i₀ i₁ r' s' hP.skew hH`. Establish `hres₁ : ResEtaPow (Units.map (algebraMap F (AF F)).toMonoidHom).range χW d₁`. Introduce `a`. Rewrite using `[hP.resW a, hH.rank, pow_add, neg_one_sq, mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Take `⟨om₁, hom₁⟩` from `GlobalTheory.WeilExGen.exists_isWeil hKP.base F E σ B hP.base n d₁ X W₁ r s (r' - 1) (s' - 1) hP.herm hW₁ M₁ hM₁ χX χW hP.hX hP.hW hP.resX hres₁`. Establish `hP₁ : IsPair B M₁ χX χW om₁ r s (r' - 1) (s' - 1)` using `⟨hP.base, hP.herm, hW₁, hM₁, hP.hX, hP.hW, hP.resX, hres₁, hom₁⟩`. Establish `hL : IsLevi H' 1 (1 : UA σ W₁.J) (1 : UA σ W.J)`. Apply the tactic sequence `refine ⟨?_, ?_, ?_⟩ <;> simp [mat]`. Establish `h` using `GlobalTheory.T.adapted_plane_second_variable hKP.base F E σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ (r' - 1) (s' - 1) hH hP₁ e₀ he₀ 1 1 1 1 hL u hu Ψ hΨ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `h1 : om₁ (1, 1) = 1` using `map_one om₁`. Simplify `h` using `[h1]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem evZero_unip_invariant : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d d₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (W₁ : Spc F E d₁) (M : Model σ X W) (M₁ : Model σ X W₁) (H' : Plane E d d₁) (i₀ i₁ : ℕ),

@@ -11,23 +11,19 @@ open scoped Matrix
 set_option autoImplicit false
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Y T F _ e σ g ty Fu X j hj hjo y hy c' hyc`. Use `T.Z.jQ_open` as an intermediate fact. Establish `: IsLocalRing (CAt σ)` using `inferInstanceAs (IsLocalRing ℂ)`. Set `L` to `EuclideanSpace.equiv (Fin X.dim) ℂ`. Establish `hsy` using `GlobalTheory.TrueCx.TorHolo.isHolTo_symm c'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hsj` using `ReciprocityTheory.ChartRestriction.G.PullbackSections.isHolTo_comp hsy j`. Establish `hB₀` using `(hsj T.Z.jQ.opensRange 0).1`. Use `set B₀ := {b ∈ c'.e.target | ⊤ ≤ ((c'.e.symm b).1 ≫ j) ⁻¹ᵁ T.Z.jQ.opensRange} with hB₀def`. Establish `hb₀ : c'.e y ∈ B₀`. Use `⟨c'.e.map_source hyc, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[c'.e.left_inv hyc]`. Introduce `s _`. Establish `h1 : y.1 s ∈ openPart j` using `hy (Set.mem_univ s)`. Conclude with `not_not.1 h1`. Establish `hw : ∀ b ∈ B₀, ∃ w : Sp ℂ ⟶ Xo.XF c, w ≫ T.Z.jQ = (c'.e.symm b).1 ≫ j` using `fun b hb => ⟨IsOpenImmersion.lift T.Z.jQ _ (by rintro _ ⟨s, rfl⟩; exact hb.2 (Set.mem_univ s)), IsOpenImmersion.lift_fac _ _ _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Nonempty (Sp ℂ ⟶ Xo.XF c)` using `⟨(hw _ hb₀).choose⟩`. Use `choose! w hw using hw`. Establish `hwh : IsHolTo B₀ w` using `GlobalTheory.TrueCx.TorHolo.isHolTo_of_openImmersion T.Z.jQ (LocLift.isHolTo_congr (LocLift.isHolTo_mono hsj hB₀ fun b hb => hb.1) hw)`. Establish `hyh` using `ReciprocityTheory.ChartRestriction.G.PullbackSections.isHolTo_comp hwh (Limits.pullback.fst _ _)`. Establish `hsnd : ∀ b ∈ B₀, w b ≫ Limits.pullback.snd _ _ = spMap σ` using `fun b hb => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← T.Z.jQ_over, ← Category.assoc, hw b hb]`. Conclude with `(Category.assoc _ _ _).trans (cxOf e σ hj (c'.e.symm b)).2`. Establish `hB₁ : IsOpen (L.symm ⁻¹' B₀)` using `hB₀.preimage L.symm.continuous`. Take `⟨B', i, P, hB', hb', hsub, hP, hu⟩` from `Fu.lift X.dim (L.symm ⁻¹' B₀) (fun x => w (L.symm x) ≫ Limits.pullback.fst _ _) hB₁ (fun x hx => by`. Rewrite using `[Category.assoc, Limits.pullback.condition, ← Category.assoc, hsnd _ hx, ← Spec.map_comp]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use the proof step `rfl)`. Use the proof step `(LocLift.isHolTo_comp hyh hB₁ L.symm.differentiableOn fun x hx => hx) (L (c'.e y))`. Use the proof step `(by simpa only [Set.mem_preimage, ContinuousLinearEquiv.symm_apply_apply] using hb₀)`. Use `⟨i, L ⁻¹' B', fun v => P (L v), hB'.preimage L.continuous, hb', fun v hv => ?_, fun v hv => hP.1 _ hv, fun x => (hP.2 x).comp L.differentiableOn fun v hv => hv, fun b hb => ?_⟩` and prove the remaining obligations. Use `hsub hv` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Set.mem_preimage, ContinuousLinearEquiv.symm_apply_apply] at this`. Conclude with `this.1`. Establish `hb1` using `hsub hb`. Simplify using `only [Set.mem_preimage, ContinuousLinearEquiv.symm_apply_apply] at hb1`. Establish `h2` using `hu _ hb`.
-
-Simplify using `only [ContinuousLinearEquiv.symm_apply_apply] at h2`. Establish `ho : (w b ≫ Limits.pullback.fst _ _) ≫ Xo.s = sOf c (CAt σ)`. Rewrite using `[Category.assoc, Limits.pullback.condition, ← Category.assoc, hsnd b hb1]`. Conclude with `OpenReg.spMap_comp _ _`. Take `⟨q, hq⟩ : ∃ q : FrPt Xo c (CAt σ), q.x = w b ≫ Limits.pullback.fst _ _` from `GlobalTheory.FlagTan.exists_frPt _ ho`.
-
-Use `⟨q, Subtype.ext ?_, h2.trans hq.symm⟩` and prove the remaining obligations. Establish `h3 : GlobalTheory.AllWt.ptF (S` using `CAt σ) q = w b := Limits.pullback.hom_ext ((ptF_fst q).trans hq) ((ptF_snd q).trans (hsnd b hb1).symm)`. Conclude with `(congrArg (· ≫ T.Z.jQ) h3).trans (hw b hb1)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ShFam.chart_lift_periods_of_openPart : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (T : TorModel Y) (F : Type) [Field F] (e : F ≃+* c.F) (σ : c.F →+* ℂ) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (Fu : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) ty) (X : Var F) (j : X.X ⟶ gen T.Z) (hj : j ≫ genStr T.Z ≫ spMap e.toRingHom = X.str), IsOpenImmersion j → ∀ y ∈ ptsIn X.str (σ.comp e.toRingHom) (openPart j), ∀ c' : AlgChart X.str (σ.comp e.toRingHom) X.dim, y ∈ c'.e.source → ∃ (i : Fin Fu.n) (B : Set (ReciprocityTheory.L2DbarEstimates.V X.dim)) (P : ReciprocityTheory.L2DbarEstimates.V X.dim → ((Fu.Di i).La →+ (Fin g → ℂ))), IsOpen B ∧ c'.e y ∈ B ∧ B ⊆ c'.e.target ∧ (∀ b ∈ B, IsPeriod (Fu.Di i) ty (P b)) ∧ (∀ x, DifferentiableOn ℂ (fun b => P b x) B) ∧ ∀ b ∈ B, ∃ q : FrPt Xo c (Formalism.L2.Pj.CAt σ), cxPt T.Z q = cxOf e σ hj (c'.e.symm b) ∧ Fu.u i (P b) = q.x := by
   intro E _ _ _ H Dw l Xo c O _ β Y T F _ e σ g ty Fu X j hj hjo y hy c' hyc

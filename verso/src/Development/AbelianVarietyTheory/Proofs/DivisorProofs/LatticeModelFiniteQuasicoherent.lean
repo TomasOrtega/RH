@@ -17,7 +17,7 @@ variable {X : Scheme.{0}} [IsIntegral X] {V : Type} [AddCommGroup V] [Module X.f
   {M : X → AddSubgroup V} {F : X.Modules}
 
 /- English proof (translation)
-Simplify using `only [Fintype.linearCombination_apply, map_sum, L.smul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← L.res U W h hW (e i)]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem val_linearCombination (L : LatModel M F) {U W : X.Opens} (h : W ≤ U)
     (hW : genericPoint X ∈ W) {m : ℕ} (e : Fin m → Γ(F, U)) (a : Fin m → Γ(X, W)) :
@@ -28,7 +28,7 @@ theorem val_linearCombination (L : LatModel M F) {U W : X.Opens} (h : W ≤ U)
   rw [← L.res U W h hW (e i)]
 
 /- English proof (translation)
-Establish `h : L.val W hW s ∈ latSec M W` using `L.range W hW ▸ ⟨s, rfl⟩`. Simplify using `only [latSec, AddSubgroup.mem_iInf] at h`. Conclude with `h z hz`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem val_mem (L : LatModel M F) {W : X.Opens} (hW : genericPoint X ∈ W) (s : Γ(F, W))
     {z : X} (hz : z ∈ W) : L.val W hW s ∈ M z := by
@@ -37,15 +37,13 @@ theorem val_mem (L : LatModel M F) {W : X.Opens} (hW : genericPoint X ∈ W) (s 
   exact h z hz
 
 /- English proof (translation)
-Use `VB.isFrame_of_forall_exists fun W h x hx => ⟨W, le_rfl, hx, ?_⟩` and prove the remaining obligations. Establish `hW : genericPoint X ∈ W` using `gen_mem hx`. Establish `key : ∀ a : Fin m → Γ(X, W), L.val W hW (Fintype.linearCombination Γ(X, W) (fun i => Twist.resM F (le_rfl.trans h) (e i)) a) = ∑ i, fnOf W hW (a i) • v i` using `fun a => by`. Rewrite using `[val_linearCombination L]`. Simplify using `only [he]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce `a b hab`. Use `congrArg (L.val W hW) hab` as an intermediate fact. Rewrite `this` using `[key, key]`. Use function extensionality and compare the values at `i`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `fnOf_injective W hW (Fintype.linearIndependent_iffₛ.1 hv _ _ this i)`. Introduce `s`. Take `⟨c, -, hc⟩` from `(hM _ (h hW) _).1 (val_mem L hW s hW)`. Establish `hreg : ∀ i, ∀ z ∈ W, RegAt z (c i)`. Introduce `i z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨c', hc', e'⟩` from `(hM z (h hz) _).1 (val_mem L hW s hz)`. Rewrite using `[Fintype.linearIndependent_iffₛ.1 hv _ _ (hc.symm.trans e') i]`. Conclude with `hc' i`. Use `choose a ha using fun i => exists_fnOf_eq hW (hreg i)`. Use `⟨a, L.inj W hW ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[key, hc]`. Simplify using `only [ha]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isFrame (L : LatModel M F) {U : X.Opens} (hU : genericPoint X ∈ U) {m : ℕ}
     {v : Fin m → V} (hv : LinearIndependent X.functionField v)
@@ -77,15 +75,13 @@ theorem isFrame (L : LatModel M F) {U : X.Opens} (hU : genericPoint X ∈ U) {m 
     simp only [ha]
 
 /- English proof (translation)
-Introduce `X _ V _ _ M F L H`. Use `choose U m v hy _ hv hM using H`. Establish `frame : ∀ y, ∃ e : Fin (m y) → Γ(F, U y), VB.IsFrame e`. Introduce `y`. Establish `hU : genericPoint X ∈ U y` using `gen_mem (hy y)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : ∀ i, v y i ∈ latSec M (U y)`. Introduce `i`. Simplify using `only [latSec, AddSubgroup.mem_iInf]`. Introduce `z hz`. Use `(hM y z hz _).2 ⟨Pi.single i 1, fun j => ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using `using (unitAt_one z).regAt`. Simplify `regAt_zero z` using `[Pi.single_apply, hj]`. Simplify using `[Pi.single_apply]`.
+Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Use `choose e he using fun i => (L.range (U y) hU).ge (hmem i)`. Conclude with `⟨e, isFrame L hU (hv y) (hM y) e he⟩`. Use `choose e he using frame`. Use `QCoh.IsFiniteQC.of_restrict (fun y => (U y).ι) (fun x => ⟨x, by simpa using hy x⟩) fun y => ?_` and prove the remaining obligations. Establish `hf` using `(VB.isFrame_restrict_iff (U y).ι _).2 ((he y).res ((U y).ι_image_le ⊤))`.
-
-Conclude with `hf.isVB.isFiniteQC`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isFiniteQC_of_latModel : ∀ (X : Scheme.{0}) [IsIntegral X] {V : Type} [AddCommGroup V]
     [Module X.functionField V] (M : X → AddSubgroup V) (F : X.Modules), LatModel M F →

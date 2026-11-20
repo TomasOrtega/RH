@@ -15,7 +15,7 @@ open Formalism.GrowthSums (gamP rhoP gainG excessGain)
 namespace ParitySumsOverFilteredPairs
 
 /- English proof (translation)
-Establish `h : univ.filter (fun x : A × B => x.1 ∈ S) = S ×ˢ univ`. Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[h, Finset.sum_product]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma sum_filter_fst {A B M : Type*} [Fintype A] [Fintype B] [DecidableEq A] [AddCommMonoid M]
     (S : Finset A) (f : A × B → M) :
@@ -28,7 +28,7 @@ lemma sum_filter_fst {A B M : Type*} [Fintype A] [Fintype B] [DecidableEq A] [Ad
 variable {ν r0 r1 E : ℕ}
 
 /- English proof (translation)
-Use `haveI : NeZero (2 * ν) := ⟨by have := NeZero.ne ν; omega⟩`. Rewrite using `[ZMod.val_add, ZMod.val_natCast, Nat.mod_mod_of_dvd _ (dvd_mul_right 2 ν), Nat.add_mod, Nat.mod_mod_of_dvd _ (dvd_mul_right 2 ν), ← Nat.add_mod]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma val_add_nat_mod_two [NeZero ν] (x : ZMod (2 * ν)) (m : ℕ) :
     (x + (m : ZMod (2 * ν))).val % 2 = (x.val + m) % 2 := by
@@ -37,9 +37,9 @@ lemma val_add_nat_mod_two [NeZero ν] (x : ZMod (2 * ν)) (m : ℕ) :
     Nat.mod_mod_of_dvd _ (dvd_mul_right 2 ν), ← Nat.add_mod]
 
 /- English proof (translation)
-Establish `hν : 1 ≤ 2 * ν` using `by have := NeZero.ne ν; omega`. Establish `e : pairSecond φ = pairFirst φ + (((1 + 2 * φ.2.1.val + 2 * (φ.2.2.1.val * (2 * ν - 1))) : ℕ) : ZMod (2 * ν))`. Unfold `pairFirst pairSecond`. Establish `h0 : ((2 * ν : ℕ) : ZMod (2 * ν)) = 0` using `ZMod.natCast_self _`. Move the coercions through the operations in `[Nat.cast_sub hν] at h0 ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Take the linear combination `(-(2 * (φ.2.2.1.val : ZMod (2 * ν)))) * h0`. Rewrite using `[e, val_add_nat_mod_two]`. Use linear arithmetic over natural numbers and integers.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 lemma phi_parity [NeZero ν] (φ : PhiI ν r0 r1 E) :
     (pairSecond φ).val % 2 = ((pairFirst φ).val + 1) % 2 := by
@@ -57,7 +57,7 @@ def iN (β : KapI ν r1 E →₀ ℕ) (s : ZMod (2 * ν)) (e' : ℕ) : ℕ :=
   if h : e' < E then ∑ b, β (s, ⟨e', h⟩, b) else 0
 
 /- English proof (translation)
-Unfold `iN`. Rewrite using `[dif_neg (fun h' => h (Finset.mem_range.2 h'))]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma iN_of_not_mem (β : KapI ν r1 E →₀ ℕ) (s : ZMod (2 * ν)) (e' : ℕ) (h : e' ∉ range E) :
     iN β s e' = 0 := by
@@ -65,7 +65,7 @@ lemma iN_of_not_mem (β : KapI ν r1 E →₀ ℕ) (s : ZMod (2 * ν)) (e' : ℕ
   rw [dif_neg (fun h' => h (Finset.mem_range.2 h'))]
 
 /- English proof (translation)
-Rewrite using `[sum_filter_fst A (fun k => β k)]`. Use `Finset.sum_congr rfl (fun s _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.sum_range (fun e' => iN β s e'), Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl (fun e _ => ?_)` and prove the remaining obligations. Simplify using `[iN, e.isLt]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 lemma sum_iN [NeZero ν] (β : KapI ν r1 E →₀ ℕ) (A : Finset (ZMod (2 * ν))) :
     ∑ s ∈ A, ∑ e' ∈ range E, iN β s e' =
@@ -77,7 +77,7 @@ lemma sum_iN [NeZero ν] (β : KapI ν r1 E →₀ ℕ) (A : Finset (ZMod (2 * �
   simp [iN, e.isLt]
 
 /- English proof (translation)
-Unfold `dAof`. Rewrite using `[Finsupp.add_apply, Finsupp.single_eq_same]`. Conclude with `le_trans (Nat.one_le_pow (1 + 2 * φ.2.1.val) p hp) (Nat.le_add_right _ _)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma one_le_dAof_left {p : ℕ} (hp : 0 < p) (φ : PhiI ν r0 r1 E) :
     1 ≤ dAof p φ (pairFirst φ, φ.2.2.2.2) := by
@@ -86,7 +86,7 @@ lemma one_le_dAof_left {p : ℕ} (hp : 0 < p) (φ : PhiI ν r0 r1 E) :
   exact le_trans (Nat.one_le_pow (1 + 2 * φ.2.1.val) p hp) (Nat.le_add_right _ _)
 
 /- English proof (translation)
-Unfold `dAof`. Rewrite using `[Finsupp.add_apply, Finsupp.single_eq_same]`. Conclude with `le_trans (Nat.one_le_pow (2 * φ.2.2.1.val) p hp) (Nat.le_add_left _ _)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma one_le_dAof_right {p : ℕ} (hp : 0 < p) (φ : PhiI ν r0 r1 E) :
     1 ≤ dAof p φ (pairSecond φ, φ.2.2.2.2) := by
@@ -95,15 +95,13 @@ lemma one_le_dAof_right {p : ℕ} (hp : 0 < p) (φ : PhiI ν r0 r1 E) :
   exact le_trans (Nat.one_le_pow (2 * φ.2.2.1.val) p hp) (Nat.le_add_left _ _)
 
 /- English proof (translation)
-Establish `hsum` using `Finset.sum_le_sum (fun τ (_ : τ ∈ P) => h3 τ)`. Establish `e1 : ∑ τ ∈ P, ∑ φ, α φ * dAof p φ τ = ∑ φ, ∑ τ ∈ P, α φ * dAof p φ τ` using `Finset.sum_comm`. Establish `e2 : ∑ τ ∈ P, ∑ k, β k * dBof p k τ = ∑ k, ∑ τ ∈ P, β k * dBof p k τ` using `Finset.sum_comm`. Rewrite `hsum` using `[Finset.sum_add_distrib, e1, e2]`. Use `le_trans (add_le_add ?_ ?_) hsum` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_le_sum (fun φ _ => ?_)` and prove the remaining obligations. Rewrite using `[← Finset.mul_sum]`. Distinguish the cases in `hα : α φ = 0`. Simplify using `[hα]`. Establish `h1 : 1 ≤ ∑ τ ∈ P, dAof p φ τ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Break down `hP φ hα with h | h` into its components or cases. Conclude with `le_trans (one_le_dAof_left hp φ) (Finset.single_le_sum (fun _ _ => Nat.zero_le _) h)`. Conclude with `le_trans (one_le_dAof_right hp φ) (Finset.single_le_sum (fun _ _ => Nat.zero_le _) h)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_filter]`.
+Separate the alternatives or extract the components of the hypothesis. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_le_sum (fun k _ => ?_)` and prove the remaining obligations. Use `split_ifs with hk`. Rewrite using `[← Finset.mul_sum]`. Establish `h1 : 1 ≤ ∑ τ ∈ P, dBof p k τ`. Use `le_trans ?_ (Finset.single_le_sum (fun _ _ => Nat.zero_le _) hk)` and prove the remaining obligations.
-
-Simplify using `only [dBof, Finsupp.single_eq_same]`. Conclude with `Nat.one_le_pow _ _ hp`. Combine the equalities or inequalities in the displayed calculation. Conclude with `Nat.zero_le _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 lemma pay_le [NeZero ν] {p : ℕ} (hp : 0 < p) (α : PhiI ν r0 r1 E → ℕ) (β : KapI ν r1 E →₀ ℕ)
     (e : TpV ν r1 → ℕ)
@@ -139,11 +137,9 @@ lemma pay_le [NeZero ν] {p : ℕ} (hp : 0 < p) (α : PhiI ν r0 r1 E → ℕ) (
     · exact Nat.zero_le _
 
 /- English proof (translation)
-Unfold `iN alN`. Use `split_ifs with h`. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_le_sum (fun b _ => ?_)` and prove the remaining obligations. Establish `h1` using `h3 (s, b)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : β (s, ⟨e', h⟩, b) * dBof p (s, ⟨e', h⟩, b) (s, b) ≤ ∑ k, β k * dBof p k (s, b)` using `Finset.single_le_sum (f := fun k => β k * dBof p k (s, b)) (fun _ _ => Nat.zero_le _) (Finset.mem_univ _)`. Establish `h4 : dBof p (s, ⟨e', h⟩, b) (s, b) = p ^ (2 * e' + 1)`. Simplify using `[dBof]`. Rewrite `h2` using `[h4]`. Conclude with `le_trans h2 (le_trans (Nat.le_add_left _ _) h1)`.
-
-Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma iN_mul_le [NeZero ν] {p : ℕ} (α : PhiI ν r0 r1 E → ℕ) (β : KapI ν r1 E →₀ ℕ)
     (e : TpV ν r1 → ℕ)
@@ -164,11 +160,9 @@ lemma iN_mul_le [NeZero ν] {p : ℕ} (α : PhiI ν r0 r1 E → ℕ) (β : KapI 
   · simp
 
 /- English proof (translation)
-Unfold `iN`. Use `split_ifs with h`. Assume the negation of the conclusion as `hlt push_neg at hlt`. Apply `h4` to reduce the goal to its premises. Conclude with `hC K (ZMod (2 * ν)) (KapI ν r1 E) r0 r1 C l sf T I (fun k => k.1 + ((2 * k.2.1.val + 1 : ℕ) : ZMod (2 * ν))) (fun k a => ξ k.1 a ^ (p ^ (2 * k.2.1.val + 1))) (fun k => k.2.2) ((univ : Finset (Fin r1)).image (fun b => (s, (⟨e', h⟩ : Fin E), b))) (s + ((2 * e' + 1 : ℕ) : ZMod (2 * …`.
+Replace the relevant objects with their definitions. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b, _, rfl⟩` from `Finset.mem_image.1 hk`. Take `⟨b', _, rfl⟩` from `Finset.mem_image.1 hk'`. Use the proof step `rfl)`. Use `β`. Use the proof step `(by`.
-
-Rewrite using `[Finset.sum_image (fun b _ b' _ hbb => by simpa using hbb)]`. Conclude with `hlt)`. Conclude with `Nat.zero_le _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma iN_le_cap (hC : HitsCapPos) {K : Type} [Field K] [NeZero ν] {C : ℕ} (p : ℕ)
     (ξ : ZMod (2 * ν) → Fin r0 → K) (β : KapI ν r1 E →₀ ℕ) (l : Fin C → ℕ)
@@ -197,7 +191,7 @@ lemma iN_le_cap (hC : HitsCapPos) {K : Type} [Field K] [NeZero ν] {C : ℕ} (p 
   · exact Nat.zero_le _
 
 /- English proof (translation)
-Use `le_min ?_ ?_` and prove the remaining obligations. Rewrite using `[le_div_iff₀ (pow_pos (Nat.cast_pos.2 hp) _)]`. Conclude with `iN_mul_le α β e h3 s e'` after adjusting the coercions. Conclude with `iN_le_cap hC p ξ β l sf T I h4 s e'` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma iN_le_min (hC : HitsCapPos) {K : Type} [Field K] [NeZero ν] {C : ℕ} {p : ℕ} (hp : 0 < p)
     (ξ : ZMod (2 * ν) → Fin r0 → K) (α : PhiI ν r0 r1 E → ℕ) (β : KapI ν r1 E →₀ ℕ)
@@ -213,7 +207,7 @@ lemma iN_le_min (hC : HitsCapPos) {K : Type} [Field K] [NeZero ν] {C : ℕ} {p 
   · exact_mod_cast iN_le_cap hC p ξ β l sf T I h4 s e'
 
 /- English proof (translation)
-Rewrite using `[sum_iN β TT]`. Conclude with `Finset.sum_filter_of_ne (fun k _ hk => h2 k hk)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma sum_iN_tops [NeZero ν] (β : KapI ν r1 E →₀ ℕ) (TT : Finset (ZMod (2 * ν)))
     (h2 : ∀ k, β k ≠ 0 → k.1 ∈ TT) :
@@ -222,19 +216,17 @@ lemma sum_iN_tops [NeZero ν] (β : KapI ν r1 E →₀ ℕ) (TT : Finset (ZMod 
   exact Finset.sum_filter_of_ne (fun k _ hk => h2 k hk)
 
 /- English proof (translation)
-Use `set Od : Finset (ZMod (2 * ν)) := univ.filter (fun s => s.val % 2 = 1) with hOd`. Use `set pos : KapI ν r1 E → ZMod (2 * ν) := fun k => k.1 + ((2 * k.2.1.val + 1 : ℕ) : ZMod (2 * ν)) with hpos`. Establish `hmaps : ∀ k ∈ univ.filter (fun k : KapI ν r1 E => k.1.val % 2 = 0 ∧ k.2.2 ∈ J), pos k ∈ Od`. Introduce `k hk`. Rewrite `hk` using `[Finset.mem_filter]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hOd, Finset.mem_filter]`. Use `⟨Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Simplify using `only [hpos]`. Rewrite using `[val_add_nat_mod_two]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Finset.sum_fiberwise_of_maps_to hmaps]`. Establish `hR : ∑ c, (if (sf c).val % 2 = 1 then ((univ.image (I c)) ∩ J).card else 0) = ∑ y ∈ Od, ∑ c ∈ univ.filter (fun c => sf c = y), ((univ.image (I c)) ∩ J).card`. Rewrite using `[← Finset.sum_filter]`. Rewrite using `[← Finset.sum_fiberwise_of_maps_to (g := sf) (t := Od) (fun c hc => by`. Rewrite `hc` using `[Finset.mem_filter]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[hOd, Finset.mem_filter]`. Conclude with `⟨Finset.mem_univ _, hc.2⟩)]`. Use `Finset.sum_congr rfl (fun y hy => ?_)` and prove the remaining obligations. Rewrite `hy` using `[hOd, Finset.mem_filter]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `c`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion. Conclude with `fun h => h.2`. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨by rw [h]; exact hy.2, h⟩`. Rewrite using `[hR]`. Use `Finset.sum_le_sum (fun y _ => ?_)` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`.
-
-Apply `h4` to reduce the goal to its premises. Conclude with `hJ K (ZMod (2 * ν)) (KapI ν r1 E) r0 r1 C l sf T I pos (fun k a => ξ k.1 a ^ (p ^ (2 * k.2.1.val + 1))) (fun k => k.2.2) ((univ.filter (fun k : KapI ν r1 E => k.1.val % 2 = 0 ∧ k.2.2 ∈ J)).filter (fun k => pos k = y)) y J (fun k hk => (Finset.mem_filter.1 hk).2) (fun k hk => ((Fi …`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 lemma low_pay (hJ : HitsColumnsPos) {K : Type} [Field K] [NeZero ν] {C : ℕ} (p : ℕ)
     (ξ : ZMod (2 * ν) → Fin r0 → K) (β : KapI ν r1 E →₀ ℕ) (l : Fin C → ℕ)
@@ -287,19 +279,17 @@ end ParitySumsOverFilteredPairs
 open ParitySumsOverFilteredPairs
 
 /- English proof (translation)
-Introduce `K _ _ p ν r0 r1 C _ u F TT ξ e l sf T I hH`. Establish `hH'` using `hH`. Take `⟨-, hp2, -, -, -, -, -, -⟩` from `hH'`. Establish `hp : 0 < p` using `by omega`. Establish `hp1 : (1 : ℝ) < p` using `by exact_mod_cast (by omega : 1 < p)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `hS K p ν r0 r1 C u F TT ξ e l sf T I hH with h0 | ⟨E, α, β, hα, hβ, h3, h4, hn⟩` into its components or cases. Rewrite using `[h0, norm_zero]`. Conclude with `Real.rpow_nonneg (Nat.cast_nonneg p) _`. Use `le_trans hn (Real.rpow_le_rpow_of_exponent_le hp1.le ?_) set P2 : Finset (TpV ν r1) := univ.filter (fun x : TpV ν r1 => x.1 ∈ TT \ oddT TT) with hP2def` and prove the remaining obligations. Establish `hP : ∀ φ, α φ ≠ 0 → (pairFirst φ, φ.2.2.2.2) ∈ P2 ∨ (pairSecond φ, φ.2.2.2.2) ∈ P2`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `φ hφ`. Take `⟨h1, h2⟩` from `hα φ hφ`. Establish `hpar` using `phi_parity φ`. Simplify using `only [hP2def, Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_sdiff, oddT, not_and]`. Distinguish the cases in `hv : (pairFirst φ).val % 2 = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Use `right`. Conclude with `⟨h2, fun _ => by show ¬ (pairSecond φ).val % 2 = 1; omega⟩`. Use `left`. Conclude with `⟨h1, fun _ => hv⟩`. Establish `key : ∑ φ, α φ + ∑ s ∈ TT \ oddT TT, ∑ e' ∈ range E, iN β s e' ≤ ∑ s ∈ TT \ oddT TT, alN e s`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[sum_iN β (TT \ oddT TT)]`. Establish `hfil : univ.filter (fun k : KapI ν r1 E => k.1 ∈ TT \ oddT TT) = univ.filter (fun k : KapI ν r1 E => (k.1, k.2.2) ∈ P2)`. Use extensionality with `k`. Simplify using `[hP2def]`. Rewrite using `[hfil]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `le_trans (pay_le hp α β e h3 P2 hP) (le_of_eq ?_)` and prove the remaining obligations. Conclude with `sum_filter_fst (A := ZMod (2 * ν)) (B := Fin r1) (TT \ oddT TT) e`. Establish `hsumβ : ∑ s ∈ TT, ∑ e' ∈ range E, (iN β s e' : ℝ) = ∑ k, (β k : ℝ)`. Conclude with `sum_iN_tops β TT hβ` after adjusting the coercions. Establish `keyR : ∑ φ, (α φ : ℝ) + ∑ s ∈ TT \ oddT TT, ∑ e' ∈ range E, (iN β s e' : ℝ) ≤ ∑ s ∈ TT \ oddT TT, (alN e s : ℝ)`.
-
-Conclude with `key` after adjusting the coercions. Establish `core` using `hA (2 * ν) (p : ℝ) TT (oddT TT) (fun s => (alN e s : ℝ)) (fun s => (capN sf s : ℝ)) (deLoss p r0 r1 TT (alN e) (lsN l sf)) (gamP p * ∑ s ∈ TT, (alN e s : ℝ) - ∑ φ, (α φ : ℝ) - ∑ k, (β k : ℝ) - deLoss p r0 r1 TT (alN e) (lsN l sf)) (∑ φ, (α φ : ℝ)) (fun s e' => (iN β s e' : ℝ)) (r …`. Use `beta_reduce at core`. Combine the linear relations using `[core]`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem entryCappedBound_of (hS : EntryStar) (hC : HitsCapPos) (hA : Formalism.GrowthSums.CappedGainSubLE) : EntryCappedBound := by
   intro K _ _ p ν r0 r1 C _ u F TT ξ e l sf T I hH
@@ -350,31 +340,27 @@ theorem entryCappedBound_of (hS : EntryStar) (hC : HitsCapPos) (hA : Formalism.G
     linarith [core]
 
 /- English proof (translation)
-Introduce `K _ _ p ν r0 r1 C _ u F TT ξ e l sf T I J hH`. Establish `hH'` using `hH`. Take `⟨-, hp2, hpn, -, -, -, -, -⟩` from `hH'`. Establish `hp : 0 < p` using `by omega`. Establish `hp1 : (1 : ℝ) < p` using `by exact_mod_cast (by omega : 1 < p)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set N := ∑ x : TpV ν r1, (if (x.1.val % 2 = 0 ∧ x.2 ∉ J) ∨ (x.1.val % 2 = 1 ∧ x.2 ∈ J) then e x else 0) + ∑ c, (if (sf c).val % 2 = 1 then ((univ.image (I c)) ∩ J).card else 0) with hN`. Rewrite using `[norm_mul, norm_pow, hpn]`. Break down `hS K p ν r0 r1 C u F TT ξ e l sf T I hH with h0 | ⟨E, α, β, hα, hβ, h3, h4, hn⟩` into its components or cases. Rewrite using `[h0, norm_zero, mul_zero]`. Conclude with `Real.rpow_nonneg (Nat.cast_nonneg p) _`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hpinv : ((p : ℝ)⁻¹) ^ N = (p : ℝ) ^ (-(N : ℝ))`. Rewrite using `[Real.rpow_neg (Nat.cast_nonneg p), Real.rpow_natCast, inv_pow]`. Rewrite using `[hpinv]`. Use `le_trans (mul_le_mul_of_nonneg_left hn (Real.rpow_nonneg (Nat.cast_nonneg p) _)) ?_` and prove the remaining obligations. Rewrite using `[← Real.rpow_add (by exact_mod_cast hp)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Real.rpow_le_rpow_of_exponent_le hp1.le ?_` and prove the remaining obligations. Use `set P : Finset (TpV ν r1) := univ.filter (fun x : TpV ν r1 => (x.1.val % 2 = 0 ∧ x.2 ∉ J) ∨ (x.1.val % 2 = 1 ∧ x.2 ∈ J)) with hPdef`. Establish `hP : ∀ φ, α φ ≠ 0 → (pairFirst φ, φ.2.2.2.2) ∈ P ∨ (pairSecond φ, φ.2.2.2.2) ∈ P`. Introduce `φ _`. Establish `hpar` using `phi_parity φ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [hPdef, Finset.mem_filter, Finset.mem_univ, true_and]`. Use `show ((pairFirst φ).val % 2 = 0 ∧ φ.2.2.2.2 ∉ J ∨ (pairFirst φ).val % 2 = 1 ∧ φ.2.2.2.2 ∈ J) ∨ ((pairSecond φ).val % 2 = 0 ∧ φ.2.2.2.2 ∉ J ∨ (pairSecond φ).val % 2 = 1 ∧ φ.2.2.2.2 ∈ J)`. Distinguish the cases in `hb : φ.2.2.2.2 ∈ J`. Distinguish the cases in `hv : (pairFirst φ).val % 2 = 1`. Conclude with `Or.inl (Or.inr ⟨hv, hb⟩)`.
+Prove the first alternative. Prove the second alternative. Consider separately whether the proposition holds or fails. Prove the first alternative. Prove the second alternative.
 
-Conclude with `Or.inr (Or.inr ⟨by omega, hb⟩)`. Distinguish the cases in `hv : (pairFirst φ).val % 2 = 0`. Conclude with `Or.inl (Or.inl ⟨hv, hb⟩)`. Conclude with `Or.inr (Or.inl ⟨by omega, hb⟩)`. Establish `keyB : ∑ φ, α φ + ∑ s ∈ TT \ oddT TT, ∑ e' ∈ range E, iN β s e' ≤ N`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[sum_iN β (TT \ oddT TT)]`. Establish `hpay` using `pay_le hp α β e h3 P hP`. Establish `hlow` using `low_pay hJ p ξ β l sf T I h4 J`. Establish `hNe : ∑ x : TpV ν r1, (if (x.1.val % 2 = 0 ∧ x.2 ∉ J) ∨ (x.1.val % 2 = 1 ∧ x.2 ∈ J) then e x else 0) = ∑ τ ∈ P, e τ`. Rewrite using `[hPdef, Finset.sum_filter]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsplit : ∑ k ∈ univ.filter (fun k : KapI ν r1 E => k.1 ∈ TT \ oddT TT), β k ≤ ∑ k ∈ univ.filter (fun k : KapI ν r1 E => (k.1, k.2.2) ∈ P), β k + ∑ k ∈ univ.filter (fun k : KapI ν r1 E => k.1.val % 2 = 0 ∧ k.2.2 ∈ J), β k`. Simplify using `only [Finset.sum_filter]`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_le_sum (fun k _ => ?_)` and prove the remaining obligations. Distinguish the cases in `h1 : k.1 ∈ TT \ oddT TT`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `hev : k.1.val % 2 = 0`. Simplify using `only [oddT, Finset.mem_sdiff, Finset.mem_filter, not_and] at h1`. Use `h1.2 h1.1` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_pos h1]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hb : k.2.2 ∈ J`. Rewrite using `[if_pos (show k.1.val % 2 = 0 ∧ k.2.2 ∈ J from ⟨hev, hb⟩)]`. Conclude with `Nat.le_add_left _ _`. Rewrite using `[if_pos (show (k.1, k.2.2) ∈ P by simp [hPdef, hev, hb])]`. Conclude with `Nat.le_add_right _ _`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[if_neg h1]`. Conclude with `Nat.zero_le _`. Rewrite using `[hN]`. Use linear arithmetic over natural numbers and integers. Establish `hsumβ : ∑ s ∈ TT, ∑ e' ∈ range E, (iN β s e' : ℝ) = ∑ k, (β k : ℝ)`.
-
-Conclude with `sum_iN_tops β TT hβ` after adjusting the coercions. Establish `keyR : ∑ φ, (α φ : ℝ) + ∑ s ∈ TT \ oddT TT, ∑ e' ∈ range E, (iN β s e' : ℝ) ≤ (N : ℝ)`. Conclude with `keyB` after adjusting the coercions. Establish `core` using `hB (2 * ν) (p : ℝ) TT (oddT TT) (fun s => (alN e s : ℝ)) (fun s => (capN sf s : ℝ)) (deLoss p r0 r1 TT (alN e) (lsN l sf)) ((N : ℝ) + gamP p * ∑ s ∈ TT, (alN e s : ℝ) - ∑ φ, (α φ : ℝ) - ∑ k, (β k : ℝ) - deLoss p r0 r1 TT (alN e) (lsN l sf)) ((N : ℝ) - ∑ φ, (α φ : ℝ)) (fun s e' => …`. Use `beta_reduce at core`.
-
-Combine the linear relations using `[core]`.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem EntryB_of (hS : EntryStar) (hC : HitsCapPos) (hJ : HitsColumnsPos) (hB : BCore) :
     EntryB := by

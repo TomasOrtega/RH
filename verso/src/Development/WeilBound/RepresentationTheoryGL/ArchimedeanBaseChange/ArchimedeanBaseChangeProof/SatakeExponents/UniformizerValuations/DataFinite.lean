@@ -31,11 +31,11 @@ def RunAgree : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n
   (S T : Finset (HeightOneSpectrum (𝓞 E))) (D D' : Pre E n), D.Agree D' → RunOut π S T D → RunOut π S T D'
 
 /- English proof (translation)
-Introduce `E _ _ _ hE n hn π hπ S hS`. Take `⟨k, L, hL⟩` from `h2 E hE n hn π hπ S hS`. Set `good : Fin k → Prop` to `fun j => ∃ T D, RunOut π S T D ∧ D.Agree (L j)`. Establish `hg : ∀ j, good j → RunOut π S ∅ (L j)` using `fun j ⟨T, D, hD, hA⟩ =>`. Set `h` to `h3 E n π S T D (L j) hA hD`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use the proof step `⟨h.1, h.2.1, fun w hw => absurd hw (Finset.notMem_empty w)⟩`. Set `idx` to `{j : Fin k // good j}`. Take `⟨m, ⟨e⟩⟩` from `Finite.exists_equiv_fin idx`. Use `⟨m, fun i => L (e.symm i).1, fun i => ⟨(hg _ (e.symm i).2).1, (hg _ (e.symm i).2).2.1⟩, fun T => ?_⟩` and prove the remaining obligations. Take `⟨D, hD⟩` from `h1 E hE n hn π hπ S T hS`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨j, hj⟩` from `hL T D hD`. Use `⟨e ⟨j, T, D, hD, hj⟩, ?_⟩` and prove the remaining obligations. Use `show ∀ w ∈ T, IsUnramU π w → ¬IsSplitAt w → InertAt π (L (e.symm (e ⟨j, T, D, hD, hj⟩)).1) w`. Rewrite using `[Equiv.symm_apply_apply]`. Conclude with `(h3 E n π S T D (L j) hj hD).2.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem runFin_of (h1 : RunOne) (h2 : DataFinite) (h3 : RunAgree) : RunFin := by
   intro E _ _ _ hE n hn π hπ S hS

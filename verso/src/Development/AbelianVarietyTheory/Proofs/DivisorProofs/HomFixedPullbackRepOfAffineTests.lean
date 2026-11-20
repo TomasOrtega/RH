@@ -32,14 +32,14 @@ def IsRestr {T U : Scheme.{0}} (g : U ⟶ T) {A' B' : Over T} [GrpObj A'] [GrpOb
 variable {π : H ⟶ S} {φA : AH.left ⟶ A.left} {φB : BH.left ⟶ B.left} {Φ : AH ⟶ BH}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isGrpPullback_pullback A' g, isGrpPullback_pullback B' g, pullback.lift_fst _ _ _⟩`.
+Supply the required witnesses or components.
 -/
 theorem isRestr_pullback {T U : Scheme.{0}} (g : U ⟶ T) {A' B' : Over T} [GrpObj A'] [GrpObj B'] (Φ' : A' ⟶ B') :
     IsRestr g Φ' ((Over.pullback g).map Φ') (pullback.fst A'.hom g) (pullback.fst B'.hom g) :=
   ⟨isGrpPullback_pullback A' g, isGrpPullback_pullback B' g, pullback.lift_fst _ _ _⟩
 
 /- English proof (translation)
-Take `⟨h1, ψA, ψB, pA, pB, eA, eB, eΦ⟩` from `hs`. Take `⟨rA, rB, rΦ⟩` from `hr`. Use `⟨by rw [Category.assoc, h1], ρA ≫ ψA, ρB ≫ ψB, rA.comp pA, rB.comp pB, by rw [Category.assoc, eA], by rw [Category.assoc, eB], ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, rΦ, Category.assoc, eΦ, Category.assoc]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsSol.restr {T U : Scheme.{0}} {t : T ⟶ S} {A' B' : Over T} [GrpObj A'] [GrpObj B']
     {φA' : A'.left ⟶ A.left} {φB' : B'.left ⟶ B.left} {Φ' : A' ⟶ B'} {h : T ⟶ H}
@@ -53,9 +53,9 @@ theorem IsSol.restr {T U : Scheme.{0}} {t : T ⟶ S} {A' B' : Over T} [GrpObj A'
   rw [← Category.assoc, rΦ, Category.assoc, eΦ, Category.assoc]
 
 /- English proof (translation)
-Take `⟨aα, bα, cα⟩` from `hα`. Take `⟨aW, bW, cW⟩` from `hW`. Establish `wA : ρAW ≫ A'.hom = (AW.hom ≫ k) ≫ f` using `by rw [aW.1.w, Category.assoc]`. Establish `wB : ρBW ≫ B'.hom = (BW.hom ≫ k) ≫ f` using `by rw [bW.1.w, Category.assoc]`. Use `⟨aα.1.lift _ _ wA, bα.1.lift _ _ wB, ⟨aα.cancel (aW.congr rfl (aα.1.lift_fst _ _ wA).symm) (aα.1.lift_snd _ _ wA), bα.cancel (bW.congr rfl (bα.1.lift_fst _ _ wB).symm) (bα.1.lift_snd _ _ wB), ?_⟩, aα.1.lift_fst _ _ wA, bα.1.lift_fst _ _ wB⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Apply `bα.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, bα.1.lift_fst, cW, cα, ← Category.assoc, aα.1.lift_fst]`. Rewrite using `[Category.assoc, Category.assoc, bα.1.lift_snd, Over.w Φα, aα.1.lift_snd, ← Category.assoc, Over.w ΦW]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsRestr.factor {T U W : Scheme.{0}} {f : U ⟶ T} {k : W ⟶ U} {A' B' : Over T} [GrpObj A'] [GrpObj B']
     {Φ' : A' ⟶ B'} {Aα Bα : Over U} [GrpObj Aα] [GrpObj Bα] {Φα : Aα ⟶ Bα} {ρAα : Aα.left ⟶ A'.left}
@@ -75,9 +75,9 @@ theorem IsRestr.factor {T U W : Scheme.{0}} {f : U ⟶ T} {k : W ⟶ U} {A' B' :
   · rw [Category.assoc, Category.assoc, bα.1.lift_snd, Over.w Φα, aα.1.lift_snd, ← Category.assoc, Over.w ΦW]
 
 /- English proof (translation)
-Substitute `hg` using the available equality. Take `⟨σA, σB, hr, eA, eB⟩` from `hα.factor hW`. Use `hs.restr hr` as an intermediate fact. Rewrite using `[← eA, ← eB]`. Simplify using `only [Category.assoc] at this ⊢`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem IsSol.pull {T U W : Scheme.{0}} {t : T ⟶ S} {f : U ⟶ T} {A' B' : Over T} [GrpObj A'] [GrpObj B']
     {φA' : A'.left ⟶ A.left} {φB' : B'.left ⟶ B.left} {Φ' : A' ⟶ B'} {Aα Bα : Over U} [GrpObj Aα] [GrpObj Bα]
@@ -93,9 +93,9 @@ theorem IsSol.pull {T U W : Scheme.{0}} {t : T ⟶ S} {f : U ⟶ T} {A' B' : Ove
   exact this
 
 /- English proof (translation)
-Establish `wA : φA' ≫ A.hom = (A'.hom ≫ h) ≫ π` using `by rw [hA.1.w, Category.assoc, hh]`. Establish `wB : φB' ≫ B.hom = (B'.hom ≫ h) ≫ π` using `by rw [hB.1.w, Category.assoc, hh]`. Use `⟨hh, pbA.1.lift _ _ wA, pbB.1.lift _ _ wB, pbA.cancel (hA.congr hh.symm (pbA.1.lift_fst _ _ wA).symm) (pbA.1.lift_snd _ _ wA), pbB.cancel (hB.congr hh.symm (pbB.1.lift_fst _ _ wB).symm) (pbB.1.lift_snd _ _ wB), pbA.1.lift_fst _ _ wA, pbB.1.lift_fst _ _ wB, hepi _ _ fun i => ?_⟩` and prove the remaining obligations. Take `⟨-, ψA, ψB, pA, pB, eA, eB, eΦ⟩` from `hs i`. Take `⟨rA, rB, rΦ⟩` from `hr i`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hψA : ψA = ρA i ≫ pbA.1.lift _ _ wA` using `pbA.1.hom_ext (by rw [eA, Category.assoc, pbA.1.lift_fst]) (by rw [pA.1.w, Category.assoc, pbA.1.lift_snd, ← Category.assoc (ρA i), rA.1.w, Category.assoc])`. Establish `hψB : ψB = ρB i ≫ pbB.1.lift _ _ wB` using `pbB.1.hom_ext (by rw [eB, Category.assoc, pbB.1.lift_fst]) (by rw [pB.1.w, Category.assoc, pbB.1.lift_snd, ← Category.assoc (ρB i), rB.1.w, Category.assoc])`. Rewrite using `[← Category.assoc, ← rΦ, Category.assoc, ← hψB, eΦ, hψA, Category.assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem isSol_of_local (pbA : IsGrpPullback AH A π φA) (pbB : IsGrpPullback BH B π φB) {T : Scheme.{0}} {t : T ⟶ S}
     {A' B' : Over T} [GrpObj A'] [GrpObj B'] {φA' : A'.left ⟶ A.left} {φB' : B'.left ⟶ B.left} {Φ' : A' ⟶ B'}
@@ -121,7 +121,7 @@ theorem isSol_of_local (pbA : IsGrpPullback AH A π φA) (pbB : IsGrpPullback BH
   rw [← Category.assoc, ← rΦ, Category.assoc, ← hψB, eΦ, hψA, Category.assoc]
 
 /- English proof (translation)
-Establish `hN` using `pull_isLB hM φB'`. Establish `i1 : LBIso (L.pull (ρA ≫ φA')) ((M.pull φB').pull (Φ''l ≫ ρB))` using `GlobalTheory.GenSpread.lbIso_pull_comp ρA rfl e iso`. Establish `i2 : LBIso ((M.pull φB').pull (Φ''l ≫ ρB)) (((M.pull φB').pull ρB).pull Φ''l)` using `GlobalTheory.GenSpread.lbIso_pull_pull hN Φ''l rfl`. Establish `i3 : LBIso (((M.pull φB').pull ρB).pull Φ''l) ((M.pull (ρB ≫ φB')).pull Φ''l)` using `GlobalTheory.GenSpread.lbIso_pullback (LBIso.symm (GlobalTheory.GenSpread.lbIso_pull_pull hM ρB rfl)) Φ''l`. Conclude with `LBIso.trans (pull_isLB hL _) (pull_isLB hN _) (pull_isLB (pull_isLB hM _) _) i1 (LBIso.trans (pull_isLB hN _) (pull_isLB (pull_isLB hN _) _) (pull_isLB (pull_isLB hM _) _) i2 i3)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lbIso_restr {XA XB A'l B'l A''l B''l : Scheme.{0}} {L : LB XA} {M : LB XB} (hL : L.IsLB) (hM : M.IsLB)
     {φA' : A'l ⟶ XA} {φB' : B'l ⟶ XB} {Φl : A'l ⟶ B'l} {ρA : A''l ⟶ A'l} {ρB : B''l ⟶ B'l} {Φ''l : A''l ⟶ B''l}
@@ -138,15 +138,13 @@ theorem lbIso_restr {XA XB A'l B'l A''l B''l : Scheme.{0}} {L : LB XA} {M : LB X
     (LBIso.trans (pull_isLB hN _) (pull_isLB (pull_isLB hN _) _) (pull_isLB (pull_isLB hM _) _) i2 i3)
 
 /- English proof (translation)
-Introduce `S A B _ _ L M hL hM H π AH _ BH _ φA φB Φ pbA pbB haff T t A' B' _ _ φA' φB' Φ' hA hB hΦ iso`. Establish `key : ∀ (R : Type) [CommRing R] (f : Sp R ⟶ T), ∃! k : Sp R ⟶ H, IsSol π φA φB Φ (f ≫ t) ((Over.pullback f).obj A') ((Over.pullback f).obj B') (pullback.fst A'.hom f ≫ φA') (pullback.fst B'.hom f ≫ φB') ((Over.pullback f).map Φ') k` using `fun R _ f => haff R (f ≫ t) ((Over.pullback f).obj A') ((Over.pullback f).obj B') _ _ ((Over.pullback f).map Φ') ((isRestr_pullback f Φ').1.comp hA) ((isRestr_pullback f Φ').2.1.comp hB) inferInstance (lbIso_restr hL hM (isRestr_pullback f Φ').2.2 iso)`. Set `𝒜` to `T.affineOpenCover`. Set `𝒰` to `𝒜.openCover`. Establish `hloc : ∀ i, ∃! k : 𝒰.X i ⟶ H, IsSol π φA φB Φ (𝒰.f i ≫ t) ((Over.pullback (𝒰.f i)).obj A') ((Over.pullback (𝒰.f i)).obj B') (pullback.fst A'.hom (𝒰.f i) ≫ φA') (pullback.fst B'.hom (𝒰.f i) ≫ φB') ((Over.pullback (𝒰.f i)).map Φ') k` using `fun i => key (𝒜.X i) (𝒰.f i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `choose k hk hku using hloc`. Establish `hagree : ∀ i j, pullback.fst (𝒰.f i) (𝒰.f j) ≫ k i = pullback.snd (𝒰.f i) (𝒰.f j) ≫ k j`. Introduce `i j`. Set `𝒲` to `(pullback (𝒰.f i) (𝒰.f j)).affineOpenCover`. Use `𝒲.openCover.hom_ext _ _ fun l => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Set `g : Sp (𝒲.X l) ⟶ T` to `(𝒲.openCover.f l ≫ pullback.fst _ _) ≫ 𝒰.f i`. Establish `hg : g = (𝒲.openCover.f l ≫ pullback.snd _ _) ≫ 𝒰.f j` using `(Category.assoc _ _ _).trans ((congrArg (𝒲.openCover.f l ≫ ·) pullback.condition).trans (Category.assoc _ _ _).symm)`. Establish `hu` using `key (𝒲.X l) g`. Rewrite using `[← Category.assoc, ← Category.assoc]`. Conclude with `hu.unique (IsSol.pull (isRestr_pullback _ Φ') (hk i) _ rfl (isRestr_pullback g Φ')) (IsSol.pull (isRestr_pullback _ Φ') (hk j) _ hg (isRestr_pullback g Φ'))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `hg` to `𝒰.glueMorphisms k hagree`. Establish `hι : ∀ i, 𝒰.f i ≫ hg = k i` using `𝒰.ι_glueMorphisms k hagree`. Establish `hh : hg ≫ π = t` using `𝒰.hom_ext _ _ fun i => by rw [← Category.assoc, hι]; exact (hk i).1`. Establish `hsol : IsSol π φA φB Φ t A' B' φA' φB' Φ' hg` using `isSol_of_local pbA pbB hA hB hh 𝒰.f (fun i => (Over.pullback (𝒰.f i)).obj A') (fun i => (Over.pullback (𝒰.f i)).obj B') (fun i => (Over.pullback (𝒰.f i)).map Φ') (fun i => pullback.fst A'.hom (𝒰.f i)) (fun i => pullback.fst B'.hom (𝒰.f i)) (fun i => isRestr_pullback _ Φ') (fun i …`. Use `⟨hg, hsol, fun h' hs' => 𝒰.hom_ext _ _ fun i => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hι]`. Conclude with `hku i _ (IsSol.restr hs' (isRestr_pullback _ Φ'))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rep_of_affine : ∀ (S : Scheme.{0}) (A B : Over S) [GrpObj A] [GrpObj B] (L : LB A.left) (M : LB B.left), L.IsLB → M.IsLB →
   ∀ (H : Scheme.{0}) (π : H ⟶ S) (AH : Over H) [GrpObj AH] (BH : Over H) [GrpObj BH]

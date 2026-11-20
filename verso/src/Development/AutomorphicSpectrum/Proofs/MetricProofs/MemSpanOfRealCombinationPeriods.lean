@@ -9,19 +9,19 @@ open NumberField Matrix Filter Topology GlobalTheory.CompanionTheory.Ar GlobalTh
 namespace GlobalTheory.CompanionTheory.Ar.Cusp
 
 /- English proof (translation)
-Introduce `g k n Λ _ P b f hli hf x c hx`. Establish `hPx : P x = ∑ j, ((b.repr x j : ℤ) : ℝ) • P (b j)` using `by conv_lhs => rw [← b.sum_repr x]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, Int.cast_smul_eq_zsmul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Set `d : Fin n → ℝ` to `fun j => ∑ i, if f i = j then c i else 0`. Establish `hPd : P x = ∑ j, d j • P (b j)`. Rewrite using `[hx]`. Simplify using `only [d, Finset.sum_smul, ite_smul, zero_smul]`. Rewrite using `[Finset.sum_comm]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_ite_eq, if_pos (Finset.mem_univ _), Complex.coe_smul]`. Establish `hcoef : ∀ j, ((b.repr x j : ℤ) : ℝ) = d j`. Establish `h0 : ∑ j, (((b.repr x j : ℤ) : ℝ) - d j) • P (b j) = 0`. Simplify using `only [sub_smul, Finset.sum_sub_distrib]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hPx, ← hPd, sub_self]`. Introduce `j`. Conclude with `sub_eq_zero.mp (Fintype.linearIndependent_iff.mp hli _ h0 j)`. Establish `hzero : ∀ j, j ∉ Set.range f → b.repr x j = 0`. Introduce `j hj`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hd : d j = 0`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[if_neg]`. Conclude with `fun h => hj ⟨i, h⟩`. Use `hcoef j` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hd]`. Conclude with `this` after adjusting the coercions. Rewrite using `[← b.sum_repr x]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `hj : j ∈ Set.range f`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨i, rfl⟩` from `hj`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Rewrite using `[hzero j hj, zero_smul]`. Conclude with `Submodule.zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem mem_span_part_of_period_real_comb :
     ∀ (g k n : ℕ) (Λ : Type) [AddCommGroup Λ] (P : Λ →+ (Fin g → ℂ))

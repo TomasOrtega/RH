@@ -16,7 +16,7 @@ variable {P : M.Par} {A : Type} [Ring A] [StarRing A] [Algebra ℂ A] [StarModul
 omit [StarModule ℂ A] in
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨b, hb, [X], rfl, by simpa using hX, by simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem gen_mem (d : Q.NFData P A) {T : Set A} {b X : A} (hb : b ∈ bmon d) (hX : X ∈ T) :
     b * d.L.Di * X ∈ nfSpan d T 1 0 1 :=
@@ -25,7 +25,7 @@ theorem gen_mem (d : Q.NFData P A) {T : Set A} {b X : A} (hb : b ∈ bmon d) (hX
 omit [StarModule ℂ A] in
 
 /- English proof (translation)
-Use `(Submodule.span_le.mpr ?_ : nfSpan d ∅ 0 0 0 ≤ N) hE` and prove the remaining obligations. Introduce and unpack `x ⟨b, hb, H, hH, -, rfl⟩`. Rewrite `hH` using `[List.length_eq_zero_iff]`. Substitute `hH` using the available equality. Simplify using `using hN b hb`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem bounded_induction (d : Q.NFData P A) (N : Submodule ℂ A) (hN : ∀ b ∈ bmon d, b ∈ N) {E : A}
     (hE : E ∈ nfSpan d ∅ 0 0 0) : E ∈ N := by
@@ -37,7 +37,7 @@ theorem bounded_induction (d : Q.NFData P A) (N : Submodule ℂ A) (hN : ∀ b �
 
 omit [StarModule ℂ A] in
 /- English proof (translation)
-Use `bounded_induction d ((nfSpan d T 1 0 1).comap (LinearMap.mulRight ℂ (b * d.L.Di * X))) ?_ hE` and prove the remaining obligations. Introduce `c hc`. Use `gen_mem d (mul_mem hc hb) hX` as an intermediate fact. Simplify `this` using `[mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem bounded_mul_mem (d : Q.NFData P A) {T : Set A} {E b X : A} (hE : E ∈ nfSpan d ∅ 0 0 0) (hb : b ∈ bmon d)
     (hX : X ∈ T) : E * (b * d.L.Di * X) ∈ nfSpan d T 1 0 1 := by
@@ -48,7 +48,7 @@ theorem bounded_mul_mem (d : Q.NFData P A) {T : Set A} {E b X : A} (hE : E ∈ n
 
 omit [StarModule ℂ A] in
 /- English proof (translation)
-Use `bounded_induction d (LinearMap.ker (LinearMap.mulLeft ℂ f - LinearMap.mulRight ℂ f)) (fun b hb => by simp [(hf b hb).eq]) hE` as an intermediate fact. Simplify `this` using `[sub_eq_zero]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem bounded_comm (d : Q.NFData P A) {E f : A} (hE : E ∈ nfSpan d ∅ 0 0 0) (hf : ∀ b ∈ bmon d, Commute b f) :
     f * E = E * f := by
@@ -60,7 +60,7 @@ variable {S : Type} [Fintype S] [DecidableEq S]
 
 omit [StarModule ℂ A] [StarRing A] in
 /- English proof (translation)
-Simplify using `only [io, Matrix.scalar_apply, Matrix.diagonal_apply]`. Use `split_ifs`. Conclude with `ha`. Conclude with `N.zero_mem`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem io_mem {N : Submodule ℂ A} {a : A} (ha : a ∈ N) (e e' : Ix S) : (io a : SlopeTestRemainingChoices S A) e e' ∈ N := by
   simp only [io, Matrix.scalar_apply, Matrix.diagonal_apply]
@@ -70,9 +70,9 @@ theorem io_mem {N : Submodule ℂ A} {a : A} (ha : a ∈ N) (e e' : Ix S) : (io 
 
 omit [StarModule ℂ A] [StarRing A] in
 /- English proof (translation)
-Establish `key : io s * ((io X + io k * E) * io V + io W) = (io (s * (X * V + W)) : SlopeTestRemainingChoices S A) + io (s * k) * E * io V`. Simplify using `only [io, map_mul, map_add]`. Use `noncomm_ring`. Rewrite using `[key, Matrix.add_apply]`. Use `N.add_mem (io_mem h1 e e') ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: (io (s * k) * E * io V : SlopeTestRemainingChoices S A) e e' = s * k * E e e' * V`. Simplify using `[io, Matrix.scalar_apply, Matrix.diagonal_mul, Matrix.mul_diagonal]`. Rewrite using `[this]`. Conclude with `h2 e e'`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem col_mem {N : Submodule ℂ A} {s X k V W : A} {E : SlopeTestRemainingChoices S A} (h1 : s * (X * V + W) ∈ N)
     (h2 : ∀ e e', s * k * E e e' * V ∈ N) (e e' : Ix S) :
@@ -88,31 +88,31 @@ theorem col_mem {N : Submodule ℂ A} {s X k V W : A} {E : SlopeTestRemainingCho
   exact h2 e e'
 
 /- English proof (translation)
-Introduce `P A _ _ _ _ d hd0 L st s hT S _ _ l w hA i e e'`. Take `⟨hnd, hre, hpt, hpw⟩` from `hA`. Establish `hnd' : l.intersection_update_fsHerm_neg_one ∉ w.map Letter.intersection_update_fsHerm_neg_one ∧ (w.map Letter.intersection_update_fsHerm_neg_one).Nodup` using `List.nodup_cons.mp (by simpa only [List.map_cons] using hnd)`. Establish `hpw'` using `List.pairwise_cons.mp hpw`. Establish `hAw : admitted st w` using `⟨hnd'.2, fun l' h => hre l' (by simp [h]), fun l' h => hpt l' (by simp [h]), hpw'.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨p0, p1, pm1, -, -⟩` from `hpt l (by simp)`. Establish `hd` using `hpw'.1`. Establish `m0 : l.pt ∈ (ofWord L st w).inv` using `Formalism.FourierDecayAlt.P.Fr2.mem_inv L st w _ p0 (fun l' hl' => ⟨fun e => hd l' hl' 0 (by norm_num) (by push_cast; linear_combination e), fun e => hd l' hl' 1 (by norm_num) (by push_cast; linear_combination e), fun e => hd l' hl' (-1) (by norm_num) (by push_cast; linear_combin …`. Establish `m1 : l.pt + 1 ∈ (ofWord L st w).inv` using `Formalism.FourierDecayAlt.P.Fr2.mem_inv L st w _ p1 (fun l' hl' => ⟨fun e => hd l' hl' (-1) (by norm_num) (by push_cast; linear_combination e), fun e => hd l' hl' 0 (by norm_num) (by push_cast; linear_combination e), fun e => hd l' hl' (-2) (by norm_num) (by push_cast; linear_com …`. Establish `mm1 : l.pt - 1 ∈ (ofWord L st w).inv` using `Formalism.FourierDecayAlt.P.Fr2.mem_inv L st w _ pm1 (fun l' hl' => ⟨fun e => hd l' hl' 1 (by norm_num) (by push_cast; linear_combination e), fun e => hd l' hl' 2 (by norm_num) (by push_cast; linear_combination e), fun e => hd l' hl' 0 (by norm_num) (by push_cast; linear_combinat …`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr : star l.pt = l.pt` using `hre l (by simp)`. Take `⟨-, hb, -⟩` from `GlobalTheory.T.hatLetters_pass_Di_gI_boundedFactors P A d hd0`. Take `⟨ep, epb, ec, eci, ecb, ecbi, eζ, eζi, eζb, eζbi, eG, eGi, -⟩` from `hT.2.1`. Establish `eT : L.Tprod l.pt = d.L.Tprod l.pt`. Unfold `LevelData.Tprod LevelData.Tl`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[ep, ec, eci]`. Establish `eTv : L.Tvprod l.pt = d.L.Tvprod l.pt`. Unfold `LevelData.Tvprod LevelData.Tvl`. Rewrite using `[epb, ecb, ecbi]`. Establish `eA : L.Ar l.pt = d.L.Ar l.pt` using `by unfold LevelData.Ar; rw [eT]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `eB : L.Br l.pt = d.L.Br l.pt` using `by unfold LevelData.Br; rw [eT]`. Establish `eAv : L.Avr l.pt = d.L.Avr l.pt` using `by unfold LevelData.Avr; rw [eTv]`. Establish `eBv : L.Bvr l.pt = d.L.Bvr l.pt` using `by unfold LevelData.Bvr; rw [eTv]`. Establish `hβ : d.L.D * d.L.Dbi ∈ bmon d` using `Submonoid.subset_closure (by simp [bset])`. Establish `i1 : 1 * d.L.Di * d.L.Dr = d.L.ζi`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[one_mul, LevelData.Di, mul_assoc, Dri_Dr, mul_one]`. Establish `i2 : d.L.D * d.L.Dbi * d.L.Di * d.L.Drb = d.L.ζbi`. Establish `: d.L.Di * d.L.D = 1`. Rewrite using `[LevelData.D, ← mul_assoc, ← one_mul d.L.Di, i1, d.L.ζi_ζ]`. Rewrite using `[(hb _ hβ).2.1.eq, ← mul_assoc, this, one_mul, LevelData.Dbi, mul_assoc, Drbi_Drb, mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `j1 : d.L.ζi * d.L.Ar l.pt = 1 * d.L.Di * d.L.Ahat l.pt`. Rewrite using `[LevelData.Ahat, ← mul_assoc, i1]`. Establish `j2 : d.L.ζbi * d.L.Avr l.pt = d.L.D * d.L.Dbi * d.L.Di * d.L.Ahatv l.pt`. Rewrite using `[LevelData.Ahatv, ← mul_assoc, i2]`. Establish `hA1 : d.L.Ahat l.pt ∈ hats d.L` using `by simp [hats]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hA2 : d.L.Ahatv l.pt ∈ hats d.L` using `by simp [hats]`. Establish `hR1 : d.L.R0 l.pt ∈ hats d.L` using `by simp [hats]`. Establish `hR2 : d.L.R0v l.pt ∈ hats d.L` using `by simp [hats]`. Unfold `TL.letterCol`. Distinguish the cases in `hp : l.plus`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [hp, if_true] fin_cases i`. Use `io_mem (a := TL.aP L l.pt) ?_ e e'` and prove the remaining obligations. Rewrite using `[TL.aP, eζi, eA, j1]`. Conclude with `gen_mem d (one_mem _) hA1`. Simplify using `only [Fin.mk_one, Matrix.cons_val_one, Matrix.cons_val_zero]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨E, hE, hl⟩` from `GlobalTheory.T.word_l_decomposition_nf_span P A d hd0 L st s hT S w hAw l.pt m0 m1`. Rewrite using `[hl, eζbi, eG, eA, eB, kapL]`. Use `col_mem ?_ (fun f f' => ?_) e e'` and prove the remaining obligations. Use `gen_mem d hβ hR1` as an intermediate fact. Rewrite `this` using `[LevelData.R0, ← mul_assoc, ← mul_assoc, i2]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ColumnLift.s1p, bounded_comm d (hE f f') (fun b h => (hb b h).1 _ (by simp [LevelData.fns])), mul_assoc, j1]`. Conclude with `bounded_mul_mem d (hE f f') (one_mem _) hA1`. Simplify using `only [hp, Bool.false_eq_true, if_false] fin_cases i`. Use `io_mem (a := TL.aM L l.pt) ?_ e e'` and prove the remaining obligations. Rewrite using `[TL.aM, eζbi, eAv, j2]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `gen_mem d hβ hA2`. Simplify using `only [Fin.mk_one, Matrix.cons_val_one, Matrix.cons_val_zero]`. Take `⟨E, hE, hl⟩` from `GlobalTheory.T.word_m_decomposition_self_adjoint P A d hd0 L st s hT S w hAw l.pt m0 hr mm1`. Rewrite using `[hl, eζi, eG, eAv, eBv]`. Use `col_mem ?_ (fun f f' => ?_) e e'` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Use `gen_mem d (one_mem _) hR2` as an intermediate fact. Rewrite `this` using `[LevelData.R0v, ← mul_assoc, ← mul_assoc, i1]`. Then use the resulting hypothesis. Rewrite using `[ColumnLift.s1m, bounded_comm d (hE f f') (fun b h => (hb b h).1 _ (by simp [LevelData.fns])), mul_assoc, j2]`. Conclude with `bounded_mul_mem d (hE f f') hβ hA2`.
+A detailed English derivation is pending.
 -/
 theorem letterCol_mem : ∀ (P : M.Par) (A : Type) [Ring A] [StarRing A] [Algebra ℂ A] [StarModule ℂ A]
     (d : Q.NFData P A), HatHyp d → ∀ (L : LevelData A P.r) (st : Start A) (s : ℂ), Comparison₂ d L st s →

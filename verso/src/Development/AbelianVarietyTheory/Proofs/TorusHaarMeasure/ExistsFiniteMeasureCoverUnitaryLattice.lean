@@ -15,15 +15,15 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 namespace GlobalTheory.FiniteCovolume
 
 /- English proof (translation)
-Introduce `r X H hH _ _ ν _`. Take `⟨Γ, hΓ⟩` from `GlobalTheory.FiniteCovolume.exists_stabiliser_image_subgroup r X H hH`. It suffices to establish `hS : ∃ Ω : Set H, MeasurableSet Ω ∧ ν Ω < ⊤ ∧ ∀ g : H, ∃ γ ∈ Γ, ∃ w ∈ Ω, g = γ * w by`. Take `⟨Ω, h1, h2, h3⟩` from `hS`. Use `⟨Ω, h1, h2, fun g => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨u, hu, w, hw, rfl⟩` from `h3 g`. Take `⟨γ, hγ, hγu⟩` from `(hΓ u).1 hu`. Use `⟨γ, hγ, w, hw, fun τ => ?_⟩` and prove the remaining obligations. Rewrite using `[← hγu τ]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hp : X.p0 = 0 ∨ X.p0 = r`. Use `haveI : CompactSpace H := GlobalTheory.T.compactSpace_realUnitaryGroup_of_definite r X H hH hp`. Conclude with `⟨Set.univ, MeasurableSet.univ, isCompact_univ.measure_lt_top, fun g => ⟨1, Γ.one_mem, g, Set.mem_univ _, (one_mul g).symm⟩⟩`. Establish `hp0 : 0 < X.p0` using `Nat.pos_of_ne_zero fun h => hp (Or.inl h)`. Establish `hpr : X.p0 < r` using `lt_of_le_of_ne X.p0_le fun h => hp (Or.inr h)`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hlc, hsc, -⟩` from `(GlobalTheory.UnitaryFrames.unitary_group_frames (E := E)).2 r X H hH`. Establish `hx0 : IsOrth X (x0F X)` using `fun τ => (X.signature τ).choose_spec.2`. Take `⟨σ, _, _, h, f, c, b, hk, hf, hf0, hinv, hc0, hc1, hb, hdrift, hsub⟩` from `GlobalTheory.T.exists_drift_function_realUnitaryGroup r X H hH hp0 hpr (x0F X) hx0`. Take `⟨U, hU, hU1⟩` from `GlobalTheory.GamDisc.gamDisc r X H hH`. Use `GlobalTheory.exists_finite_measure_cover_of_drift_function H ν Γ σ h f c b ⟨U, hU, fun γ hγ => hU1 γ ((hΓ γ).1 hγ)⟩ hk hf hf0 (fun γ hγ => hinv γ ((hΓ γ).1 hγ)) hc0 hc1 hb hdrift fun M => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨ε, hε, hM⟩` from `hsub M`. Take `⟨K, hK, hKc⟩` from `GlobalTheory.T.compact_mod_latticeStabiliser_of_le_firstMinimum r X H hH (x0F X) hx0 ε hε`. Use `⟨K, hK, fun g hg => ?_⟩` and prove the remaining obligations. Take `⟨u, hu, k, hk, e⟩` from `hKc g (hM g hg)`. Conclude with `⟨u, (hΓ u).2 hu, k, hk, e⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_finite_measure_cover : (∀ (r : ℕ) (X : Data E r) (H : Subgroup (X.Ψ → GL (Fin r) ℂ)), (∀ g, g ∈ H ↔ X.IsUnitaryC fun τ => (g τ : Matrix (Fin r) (Fin r) ℂ)) → ∀ [MeasurableSpace H] [BorelSpace H] (ν : Measure H) [ν.IsHaarMeasure], ∃ Ω : Set H, MeasurableSet Ω ∧ ν Ω < ⊤ ∧ ∀ g : H, ∃ γ : GL (Fin r) E, IsUStab X.Gm X.Λ γ ∧ ∃ w ∈ Ω, ∀ τ : X.Ψ, (((g : X.Ψ → GL (Fin r) ℂ) τ : GL (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ) = (γ : Matrix (Fin r) (Fin r) E).map τ.1 * (((w : X.Ψ → GL (Fin r) ℂ) τ : GL (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ)) := by
   intro r X H hH _ _ ν _

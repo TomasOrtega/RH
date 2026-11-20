@@ -19,11 +19,11 @@ noncomputable def eIter (n : ℕ) : (j : ℕ) → GL (Fin n) k →* Mir k (n + j
   | j + 1 => ((levi k (n + j + 1)).comp (Mir k (n + j)).subtype).comp (eIter n j)
 
 /- English proof (translation)
-Proceed by induction on `a using Fin.lastCases with`. Consider the case `last`. Proceed by induction on `b using Fin.lastCases with`. Consider the case `last => simp [glEmbMat]`. Consider the case `cast b`.
+Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `hb` using `b.isLt`. Simplify using `[glEmbMat, hb.ne']`. Consider the case `cast a`. Proceed by induction on `b using Fin.lastCases with`. Consider the case `last`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Establish `ha` using `a.isLt`. Simplify using `[glEmbMat, ha.ne]`. Consider the case `cast b => simp [glEmbMat]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately.
 -/
 theorem glEmbMat_apply (m : ℕ) (A : Matrix (Fin m) (Fin m) k) (a b : Fin (m + 1)) :
     glEmbMat k m A a b = if h : (a : ℕ) < m ∧ (b : ℕ) < m then A ⟨a, h.1⟩ ⟨b, h.2⟩
@@ -43,7 +43,7 @@ theorem glEmbMat_apply (m : ℕ) (A : Matrix (Fin m) (Fin m) k) (a b : Fin (m + 
     | cast b => simp [glEmbMat]
 
 /- English proof (translation)
-The claim follows from `| 0, g, a, b => glEmbMat_apply k n _ a b | j + 1, g, a, b => by have e : (((eIter k n (j + 1) g : Mir k (n + (j + 1))) : GL (Fin (n + (j + 1) + 1)) k) : Matrix (Fin (n + (j + 1) + 1)) (Fin (n + (j + 1) + 1)) k) a b = glEmbMat k (n + j + 1) (((eIter k n j g : Mir k (n + j)) : GL ( …`.
+A detailed English derivation is pending.
 -/
 theorem eIter_apply (n : ℕ) : ∀ (j : ℕ) (g : GL (Fin n) k) (a b : Fin (n + j + 1)),
     (((eIter k n j g : Mir k (n + j)) : GL (Fin (n + j + 1)) k) : Matrix (Fin (n + j + 1)) (Fin (n + j + 1)) k) a b =
@@ -63,23 +63,21 @@ theorem eIter_apply (n : ℕ) : ∀ (j : ℕ) (g : GL (Fin n) k) (a b : Fin (n +
       rw [dif_neg h']
 
 /- English proof (translation)
-Use `set e := stdBlocks ![n, j + 1] hd with he`. Establish `h0 : ∀ i : Fin n, (e ⟨0, i⟩ : ℕ) = i` using `fun i => by`. Use `stdBlocks_val ![n, j + 1] hd 0 i` as an intermediate fact. Simplify using `using this`. Establish `h1 : ∀ i : Fin (j + 1), (e ⟨1, i⟩ : ℕ) = n + i` using `fun i => by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `stdBlocks_val ![n, j + 1] hd 1 i` as an intermediate fact. Simplify using `using this`. Establish `hsplit₀ : ∀ (a : Fin 2) (i : Fin (![n, j + 1] a)), (∃ l : Fin n, e ⟨a, i⟩ = e ⟨0, l⟩) ∨ (∃ l : Fin (j + 1), e ⟨a, i⟩ = e ⟨1, l⟩)` using `Fin.forall_fin_two.2 ⟨fun i => Or.inl ⟨i, rfl⟩, fun i => Or.inr ⟨i, rfl⟩⟩`. Establish `hsplit : ∀ x : Fin (n + j + 1), (∃ i : Fin n, x = e ⟨0, i⟩) ∨ (∃ i : Fin (j + 1), x = e ⟨1, i⟩)`. Introduce `x`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨a, i⟩, rfl⟩` from `e.surjective x`. Conclude with `hsplit₀ a i`. Establish `hv0 : ∀ (i : Fin n) (h : (e ⟨0, i⟩ : ℕ) < n), (⟨(e ⟨0, i⟩ : ℕ), h⟩ : Fin n) = i` using `fun i _ => Fin.ext (h0 i)`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `x y`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[eIter_apply]`. Apply the tactic sequence `rcases hsplit x with ⟨i, rfl⟩ | ⟨i, rfl⟩ <;> rcases hsplit y with ⟨l, rfl⟩ | ⟨l, rfl⟩`. Establish `hi` using `i.isLt`. Establish `hl` using `l.isLt`. Rewrite using `[dif_pos ⟨by rw [h0]; exact hi, by rw [h0]; exact hl⟩]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `leviEmb_apply_same k e (firstEmb ![n, j + 1] g) 0 i l` as an intermediate fact. Rewrite using `[this]`. Establish `h2 : (firstEmb ![n, j + 1] g) 0 = g` using `by show (Pi.mulSingle (0 : Fin 2) g : ∀ a, GL (Fin (![n, j + 1] a)) k) 0 = g`. Conclude with `Pi.mulSingle_eq_same _ _`. Rewrite using `[h2, hv0, hv0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hi` using `i.isLt`. Rewrite using `[dif_neg (fun h => by have := h.2; rw [h1] at this; omega), if_neg (by rw [h0, h1]; omega)]`. Conclude with `(leviEmb_apply_ne k e _ (a := 0) (b := 1) (by decide) i l).symm`. Establish `hl` using `l.isLt`. Rewrite using `[dif_neg (fun h => by have := h.1; rw [h1] at this; omega), if_neg (by rw [h0, h1]; omega)]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(leviEmb_apply_ne k e _ (a := 1) (b := 0) (by decide) i l).symm`. Rewrite using `[dif_neg (fun h => by have := h.1; rw [h1] at this; omega)]`. Use `leviEmb_apply_same k e (firstEmb ![n, j + 1] g) 1 i l` as an intermediate fact. Rewrite using `[this]`. Establish `h3 : (firstEmb ![n, j + 1] g) 1 = 1` using `by show (Pi.mulSingle (0 : Fin 2) g : ∀ a, GL (Fin (![n, j + 1] a)) k) 1 = 1`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Pi.mulSingle_eq_of_ne (by decide) _`. Rewrite using `[h3, h1, h1]`. Distinguish the cases in `hil : i = l`. Substitute `hil` using the available equality. Conclude with `(if_pos rfl).trans (Matrix.one_apply_eq i).symm`.
-
-Establish `: ¬ (n + (i : ℕ) = n + l)` using `fun h => hil (Fin.ext (by omega))`. Rewrite using `[if_neg this]`. Conclude with `(Matrix.one_apply_ne hil).symm`.
+A detailed English derivation is pending.
 -/
 theorem eIter_eq_leviEmb (n j : ℕ) (hd : ∑ a, (![n, j + 1] a) = n + j + 1) (g : GL (Fin n) k) :
     ((eIter k n j g : Mir k (n + j)) : GL (Fin (n + j + 1)) k) =
@@ -139,7 +137,7 @@ section Quot
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Take `⟨e, hle⟩` from `GlobalTheory.CompanionTheory.BZMirStep.twKer_twAct_eq_map τ (MirUin k (m + 1)) (mirChar k ψ m) _ (levi_stab ψ m) (derUnipM k m n) (derCharM k ψ m n) (derUnipM k (m + 1) n) (derCharM k ψ (m + 1) n) (GlobalTheory.CompanionTheory.BZMirStep.MirUin_step ψ hnm) (GlobalTheory.CompanionT …`. Use `show (twKer (twAct τ (MirUin k (m + 1)) (mirChar k ψ m) _ (levi_stab ψ m)) (derUnipM k m n) (derCharM k ψ m n)).comap _ = _`. Rewrite using `[e, Submodule.comap_map_eq, Submodule.ker_mkQ, sup_eq_left.2 hle]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comap_twKer_phiMinus (ψ : AddChar k Circle) {m n : ℕ} (hnm : n ≤ m) {V : Type} [AddCommGroup V] [Module ℂ V]
     (τ : Representation ℂ (Mir k (m + 1)) V) :
@@ -155,7 +153,7 @@ theorem comap_twKer_phiMinus (ψ : AddChar k Circle) {m n : ℕ} (hnm : n ≤ m)
   rw [e, Submodule.comap_map_eq, Submodule.ker_mkQ, sup_eq_left.2 hle]
 
 /- English proof (translation)
-Rewrite using `[LinearMap.ker_comp, h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ker_comp_mkQ {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W] (K : Submodule ℂ V)
     (L : Submodule ℂ (V ⧸ K)) (q : (V ⧸ K) →ₗ[ℂ] W) (h : LinearMap.ker q = L) :
@@ -163,7 +161,7 @@ theorem ker_comp_mkQ {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup 
   rw [LinearMap.ker_comp, h]
 
 /- English proof (translation)
-The claim follows from `| 0, τ => ⟨(twKer τ.ρ (MirUin k n) 1).mkQ, Submodule.mkQ_surjective _, (Submodule.ker_mkQ _).trans (GlobalTheory.CompanionTheory.BZMir.twKer_MirUin_eq_derUnipM k ψ n _ τ.ρ), fun g v => rfl⟩ | j + 1, τ => by obtain ⟨q₁, hs, hk, he⟩ := exists_quotM ψ n j (MRep.phiM k ψ τ) refine ⟨q …`.
+A detailed English derivation is pending.
 -/
 theorem exists_quotM (ψ : AddChar k Circle) (n : ℕ) : ∀ (j : ℕ) (τ : MRep k (n + j)),
     ∃ q : τ.V →ₗ[ℂ] TwJacquet (iterPhi k ψ j τ).ρ (MirUin k n) 1, Function.Surjective q ∧
@@ -178,7 +176,7 @@ theorem exists_quotM (ψ : AddChar k Circle) (n : ℕ) : ∀ (j : ℕ) (τ : MRe
     exact (ker_comp_mkQ _ _ q₁ hk).trans (comap_twKer_phiMinus ψ (Nat.le_add_right n j) τ.ρ)
 
 /- English proof (translation)
-Introduce `k _ _ _ _ ψ n j V _ _ π hd`. Take `⟨q, hs, hk, he⟩` from `exists_quotM ψ n j (resM k π)`. Use `⟨q, hs, hk.trans (GlobalTheory.CompanionTheory.BZMirDer.twKer_resM_derUnipM k ψ (n + j) n V π), fun g v => ?_⟩` and prove the remaining obligations. Rewrite using `[← eIter_eq_leviEmb k n j hd g]`. Conclude with `he g v`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_deriv_quot : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ψ : AddChar k Circle) (n j : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V]
     (π : Representation ℂ (GL (Fin (n + j + 1)) k) V) (hd : ∑ a, (![n, j + 1] a) = n + j + 1),

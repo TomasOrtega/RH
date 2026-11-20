@@ -13,7 +13,7 @@ open GlobalTheory.ChartGlue
 namespace GlobalTheory.ChernCalc
 
 /- English proof (translation)
-Unfold `chartMeas`. Use `congr 1`. Use `withDensity_congr_ae ?_` and prove the remaining obligations. Use `(ae_restrict_iff' e.open_target.measurableSet).2 (Eventually.of_forall fun v hv => ?_)` and prove the remaining obligations. Conclude with `h _ (e.map_target hv)`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem chartMeas_congr_source {Y : Type} [TopologicalSpace Y] [MeasurableSpace Y] {n : ℕ}
     (e : OpenPartialHomeomorph Y (V n)) {ρ ρ' : Y → ENNReal} (h : ∀ y ∈ e.source, ρ y = ρ' y) :
@@ -25,9 +25,9 @@ theorem chartMeas_congr_source {Y : Type} [TopologicalSpace Y] [MeasurableSpace 
   exact h _ (e.map_target hv)
 
 /- English proof (translation)
-Introduce `F _ σ X ι m E H R ε`. Unfold `chernTopPart HolAtlas.part glueMeas`. Use `iSup_congr fun c => chartMeas_congr_source _ fun y hy => ?_` and prove the remaining obligations. Establish `hx : (atlas X σ).loc (evalF (atlas X σ) (chernF E H) R) c (c.e y) = evalF (atlas X σ) (chernF E H) R ⟨(c, y), hy⟩` using `HolAtlas.loc_crd (atlas X σ) (evalF (atlas X σ) (chernF E H) R) ⟨(c, y), hy⟩`. Use `show ENNReal.ofReal (_ * chernTop _ _ _) = ENNReal.ofReal (_ * (dens ((atlas X σ).loc _ c (c.e y))).re)`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx]`. Use `congr 2`. Conclude with `(GlobalTheory.T.topDensity_chernPolynomial_re_eq_chernPolyTopDensity X.dim ι m R (fun v => H (E.nonempty (under y)).choose (c.e.symm v)) (c.e y)).symm`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem chernTopPart_eq_part : ∀ (F : Type) [Field F] (σ : F →+* ℂ) (X : Var F) (ι : Type) (m : ι → ℕ) (E : Fr (ratOf X) m 0) (H : Mat m X.Fn → CxPts X.str σ → Mat m ℂ), ∀ (R : MvPolynomial (ι × ℕ) ℝ) (ε : ℤˣ), chernTopPart E H R ε = (atlas X σ).part (evalF (atlas X σ) (chernF E H) R) ε := by
   intro F _ σ X ι m E H R ε

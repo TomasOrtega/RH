@@ -15,13 +15,13 @@ variable {α : Type} [DecidableEq α] {β : α → Type} [∀ a, DecidableEq (β
   (M : (Σ a, β a) → Type) [∀ p, AddCommGroup (M p)] [∀ p, Module ℂ (M p)]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Distinguish the cases in `h : a = a₀`. Substitute `h` using the available equality. Rewrite using `[Function.update_self]`. Use `congr 1`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `b`. Distinguish the cases in `hb : b = b₀`. Substitute `hb` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Function.update_of_ne hb, Function.update_of_ne]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `h'`. Conclude with `hb (eq_of_heq (Sigma.mk.inj h').2)`. Rewrite using `[Function.update_of_ne h]`. Use `congr 1`. Use function extensionality and compare the values at `b`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Function.update_of_ne]`. Introduce `h'`. Conclude with `h (congrArg Sigma.fst h')`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem tprod_tprod_update_sigma [DecidableEq (Σ a, β a)] (x : ∀ p, M p) (a₀ : α) (b₀ : β a₀)
     (v : M ⟨a₀, b₀⟩) :
@@ -75,7 +75,7 @@ def sigmaCurry : (⨂[ℂ] p, M p) ≃ₗ[ℂ] ⨂[ℂ] a, ⨂[ℂ] b, M ⟨a, b
   (sigBasis M).equiv (nestBasis M) (Equiv.piCurry fun a b => Free.ChooseBasisIndex ℂ (M ⟨a, b⟩))
 
 /- English proof (translation)
-Apply `(sigBasis M).ext` to reduce the goal to its premises. Introduce `q`. Rewrite using `[LinearEquiv.coe_coe, sigmaCurry, Basis.equiv_apply]`. Simplify using `only [sigBasis, nestBasis, Basis.piTensorProduct_apply, lift.tprod, curryML_apply]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem sigmaCurry_eq_lift : (sigmaCurry M : (⨂[ℂ] p, M p) →ₗ[ℂ] _) = lift (curryML M) := by
   apply (sigBasis M).ext
@@ -85,7 +85,7 @@ theorem sigmaCurry_eq_lift : (sigmaCurry M : (⨂[ℂ] p, M p) →ₗ[ℂ] _) = 
   rfl
 
 /- English proof (translation)
-Establish `h` using `LinearMap.congr_fun (sigmaCurry_eq_lift M) (tprod ℂ x)`. Simplify `h` using `[curryML_apply]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 @[simp] theorem sigmaCurry_tprod (x : ∀ p, M p) :
     sigmaCurry M (tprod ℂ x) = tprod ℂ fun a => tprod ℂ fun b => x ⟨a, b⟩ := by
@@ -105,7 +105,7 @@ def flatTensorEquiv (Y : ∀ a, Fin (t a) → Type) [∀ a b, AddCommGroup (Y a 
     (sigmaCurry fun p : Σ a, Fin (t a) => Y p.1 p.2)
 
 /- English proof (translation)
-Rewrite using `[flatTensorEquiv, LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply, sigmaCurry_tprod]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem flatTensorEquiv_reindex_tprod (Y : ∀ a, Fin (t a) → Type) [∀ a b, AddCommGroup (Y a b)]
     [∀ a b, Module ℂ (Y a b)] (x : ∀ p : Σ a, Fin (t a), Y p.1 p.2) :
@@ -114,7 +114,7 @@ theorem flatTensorEquiv_reindex_tprod (Y : ∀ a, Fin (t a) → Type) [∀ a b, 
   rw [flatTensorEquiv, LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply, sigmaCurry_tprod]
 
 /- English proof (translation)
-Rewrite using `[← flatTensorEquiv_reindex_tprod, reindex_tprod]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem flatTensorEquiv_tprod (Y : ∀ a, Fin (t a) → Type) [∀ a b, AddCommGroup (Y a b)]
     [∀ a b, Module ℂ (Y a b)] (x : ∀ p : Σ a, Fin (t a), Y p.1 p.2) :
@@ -123,13 +123,13 @@ theorem flatTensorEquiv_tprod (Y : ∀ a, Fin (t a) → Type) [∀ a b, AddCommG
   rw [← flatTensorEquiv_reindex_tprod, reindex_tprod]
 
 /- English proof (translation)
-Introduce `s t Γ _ Y _ _ ρ`. Use `⟨Representation.Equiv.mk (flatTensorEquiv Y) fun g => ?_⟩` and prove the remaining obligations. Establish `key : ∀ w : ⨂[ℂ] p : Σ a, Fin (t a), Y p.1 p.2, flatTensorEquiv Y (((piTensor fun c : Fin (∑ a, t a) => ρ (finSigmaFinEquiv.symm c).1 (finSigmaFinEquiv.symm c).2).comp (flatHom Γ)) g (reindex ℂ (fun p : Σ a, Fin (t a) => Y p.1 p.2) finSigmaFinEquiv w)) = piTensor (fun a => piTens …`. Introduce `w`. Proceed by induction on `w using PiTensorProduct.induction_on with`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `smul_tprod r x`. Simplify using `only [map_smul]`. Use `congr 1`. Rewrite using `[flatTensorEquiv_reindex_tprod, piTensor_tprod]`. Simplify using `only [piTensor_tprod]`.
+Treat this case separately. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[reindex_tprod, MonoidHom.comp_apply, piTensor_tprod]`. Conclude with `flatTensorEquiv_tprod Y fun p => ρ p.1 p.2 (g p.1 p.2) (x p)`. Consider the case `add w w' hw hw'`. Simplify using `only [map_add]`. Rewrite using `[hw, hw']`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Take `⟨w, rfl⟩` from `(reindex ℂ (fun p : Σ a, Fin (t a) => Y p.1 p.2) finSigmaFinEquiv).surjective v`. Conclude with `key w`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem piTensor_flatHom_equiv : ∀ (s : ℕ) (t : Fin s → ℕ) (Γ : ∀ a, Fin (t a) → Type) [∀ a b, Group (Γ a b)]
     (Y : ∀ a, Fin (t a) → Type) [∀ a b, AddCommGroup (Y a b)] [∀ a b, Module ℂ (Y a b)]

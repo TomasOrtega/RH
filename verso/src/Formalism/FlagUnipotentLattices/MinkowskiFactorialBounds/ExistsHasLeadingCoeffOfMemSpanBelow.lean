@@ -12,14 +12,14 @@ variable {K : Type} [Field K] [StarRing K] {V : Type} [AddCommGroup V] [Module K
   {H : HermSpace K V} {r : ℕ}
 
 /- English proof (translation)
-Rewrite using `[← H.herm x y, h, star_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma B_swap0 (H : HermSpace K V) {x y : V} (h : H.B x y = 0) : H.B y x = 0 := by rw [← H.herm x y, h, star_zero]
 
 /- English proof (translation)
-Establish `hle : Submodule.span K S ≤ LinearMap.ker (H.B.flip v)`. Rewrite using `[Submodule.span_le]`. Introduce `s hs`. Simplify using `[h s hs]`. Introduce `u hu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using hle hu`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma perp_span (H : HermSpace K V) {S : Set V} {v : V} (h : ∀ s ∈ S, H.B s v = 0) :
     ∀ u ∈ Submodule.span K S, H.B u v = 0 := by
@@ -31,7 +31,7 @@ lemma perp_span (H : HermSpace K V) {S : Set V} {v : V} (h : ∀ s ∈ S, H.B s 
   simpa using hle hu
 
 /- English proof (translation)
-Establish `hle : S ⊔ T ≤ LinearMap.ker (H.B.flip v)` using `sup_le (fun s hs => by simp [h s hs]) (fun s hs => by simp [h' s hs])`. Introduce `u hu`. Simplify using `using hle hu`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma perp_sup (H : HermSpace K V) {S T : Submodule K V} {v : V} (h : ∀ s ∈ S, H.B s v = 0)
     (h' : ∀ s ∈ T, H.B s v = 0) : ∀ u ∈ S ⊔ T, H.B u v = 0 := by
@@ -41,7 +41,7 @@ lemma perp_sup (H : HermSpace K V) {S T : Submodule K V} {v : V} (h : ∀ s ∈ 
   simpa using hle hu
 
 /- English proof (translation)
-Unfold `Formalism.HermitianLatticeCounting.S6.FlagD.Xa`. Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨b, hb, rfl⟩`. Conclude with `⟨b, lt_of_lt_of_le hb h, rfl⟩`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 lemma Xa_mono (F : FlagD H r) {a b : ℕ} (h : a ≤ b) : F.Xa a ≤ F.Xa b := by
   unfold Formalism.HermitianLatticeCounting.S6.FlagD.Xa
@@ -50,12 +50,12 @@ lemma Xa_mono (F : FlagD H r) {a b : ℕ} (h : a ≤ b) : F.Xa a ≤ F.Xa b := b
   exact ⟨b, lt_of_lt_of_le hb h, rfl⟩
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨b, h, rfl⟩`.
+A detailed English derivation is pending.
 -/
 lemma e_mem_Xa (F : FlagD H r) (b : Fin r) {a : ℕ} (h : b.val < a) : F.e b.castSucc ∈ F.Xa a := Submodule.subset_span ⟨b, h, rfl⟩
 
 /- English proof (translation)
-Unfold `Formalism.HermitianLatticeCounting.S6.FlagD.X Formalism.HermitianLatticeCounting.S6.FlagD.Xa`. Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨b, -, rfl⟩`. Conclude with `⟨b, b.isLt, rfl⟩`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 lemma Xa_le_X (F : FlagD H r) (a : ℕ) : F.Xa a ≤ F.X := by
   unfold Formalism.HermitianLatticeCounting.S6.FlagD.X Formalism.HermitianLatticeCounting.S6.FlagD.Xa
@@ -64,24 +64,24 @@ lemma Xa_le_X (F : FlagD H r) (a : ℕ) : F.Xa a ≤ F.X := by
   exact ⟨b, b.isLt, rfl⟩
 
 /- English proof (translation)
-The claim follows from `le_antisymm ((Xa_le_X F) a) ((Xa_mono F) h)`.
+A detailed English derivation is pending.
 -/
 lemma Xa_of_ge (F : FlagD H r) {a : ℕ} (h : r ≤ a) : F.Xa a = F.X := le_antisymm ((Xa_le_X F) a) ((Xa_mono F) h)
 
 /- English proof (translation)
-The claim follows from `(e_mem_Xa F) b b.isLt`.
+A detailed English derivation is pending.
 -/
 lemma e_mem_X (F : FlagD H r) (b : Fin r) : F.e b.castSucc ∈ F.X := (e_mem_Xa F) b b.isLt
 
 /- English proof (translation)
-Simplify using `[Formalism.HermitianLatticeCounting.S6.FlagD.Xa]`.
+Simplify using the standard rewrite rules.
 -/
 lemma Xa_zero (F : FlagD H r) : F.Xa 0 = ⊥ := by simp [Formalism.HermitianLatticeCounting.S6.FlagD.Xa]
 
 /- English proof (translation)
-Unfold `Formalism.HermitianLatticeCounting.S6.FlagD.Xa`. Establish `hs : {b : Fin r | b.val < a.val + 1} = {b | b.val < a.val} ∪ {a}`. Use extensionality with `b`. Simplify using `only [Set.mem_setOf_eq, Set.mem_union, Set.mem_singleton_iff, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[hs, Set.image_union, Submodule.span_union, Set.image_singleton]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma Xa_succ (F : FlagD H r) (a : Fin r) :
     F.Xa (a.val + 1) = F.Xa a.val ⊔ K ∙ F.e a.castSucc := by
@@ -93,7 +93,7 @@ lemma Xa_succ (F : FlagD H r) (a : Fin r) :
   rw [hs, Set.image_union, Submodule.span_union, Set.image_singleton]
 
 /- English proof (translation)
-Introduce `u hu`. Use `perp_span H (S := (fun b : Fin r => F.e b.castSucc) '' {b | b.val < a}) ?_ u hu` and prove the remaining obligations. Introduce and unpack `_ ⟨b, hb, rfl⟩`. Conclude with `h b hb`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 lemma perp_Xa (F : FlagD H r) {a : ℕ} {v : V}
     (h : ∀ b : Fin r, b.val < a → H.B (F.e b.castSucc) v = 0) : ∀ u ∈ F.Xa a, H.B u v = 0 := by
@@ -103,13 +103,13 @@ lemma perp_Xa (F : FlagD H r) {a : ℕ} {v : V}
   exact h b hb
 
 /- English proof (translation)
-The claim follows from `perp_Xa F (a := r) (fun b _ => h b)`.
+A detailed English derivation is pending.
 -/
 lemma perp_X (F : FlagD H r) {v : V}
     (h : ∀ b : Fin r, H.B (F.e b.castSucc) v = 0) : ∀ u ∈ F.X, H.B u v = 0 := perp_Xa F (a := r) (fun b _ => h b)
 
 /- English proof (translation)
-Establish `h1 : ∀ b : Fin r, ∀ w ∈ F.X, H.B w (F.e b.castSucc) = 0` using `fun b => (perp_X F) (fun b' => F.iso b' b)`. Conclude with `(perp_X F) (fun b => B_swap0 H (h1 b v hv)) u hu`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma X_iso (F : FlagD H r) {u v : V} (hu : u ∈ F.X) (hv : v ∈ F.X) : H.B u v = 0 := by
   have h1 : ∀ b : Fin r, ∀ w ∈ F.X, H.B w (F.e b.castSucc) = 0 :=
@@ -117,22 +117,22 @@ lemma X_iso (F : FlagD H r) {u v : V} (hu : u ∈ F.X) (hv : v ∈ F.X) : H.B u 
   exact (perp_X F) (fun b => B_swap0 H (h1 b v hv)) u hu
 
 /- English proof (translation)
-The claim follows from `perp_X F (v := F.z) (fun b => F.zperp b) u hu`.
+A detailed English derivation is pending.
 -/
 lemma pairing_isotropicSpan_lastVector (F : FlagD H r) {u : V} (hu : u ∈ F.X) : H.B u F.z = 0 := perp_X F (v := F.z) (fun b => F.zperp b) u hu
 
 /- English proof (translation)
-The claim follows from `B_swap0 H ((pairing_isotropicSpan_lastVector F) hu)`.
+A detailed English derivation is pending.
 -/
 lemma z_X (F : FlagD H r) {u : V} (hu : u ∈ F.X) : H.B F.z u = 0 := B_swap0 H ((pairing_isotropicSpan_lastVector F) hu)
 
 /- English proof (translation)
-The claim follows from `F.zz`.
+A detailed English derivation is pending.
 -/
 lemma pairing_lastVector_lastVector (F : FlagD H r) : H.B F.z F.z = -F.T := F.zz
 
 /- English proof (translation)
-Proceed by induction on `i using Fin.lastCases with`. Consider the case `last => exact (z_X F) hu`. Consider the case `cast b => exact B_swap0 H ((perp_X F) (fun b' => F.iso b' b) u hu)`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 lemma e_X (F : FlagD H r) (i : Fin (r + 1)) {u : V} (hu : u ∈ F.X) : H.B (F.e i) u = 0 := by
   induction i using Fin.lastCases with
@@ -140,7 +140,7 @@ lemma e_X (F : FlagD H r) (i : Fin (r + 1)) {u : V} (hu : u ∈ F.X) : H.B (F.e 
   | cast b => exact B_swap0 H ((perp_X F) (fun b' => F.iso b' b) u hu)
 
 /- English proof (translation)
-Unfold `Formalism.HermitianLatticeCounting.S6.FlagD.Xa`. Use `first`. Consider the case `exact F.indep.notMem_span_image (s := {b : Fin r | b.val < a.val}) (by simp)`. Consider the case `exact F.indep.not_mem_span_image (s := {b : Fin r | b.val < a.val}) (by simp)`.
+Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma e_notMem_Xa (F : FlagD H r) (a : Fin r) : F.e a.castSucc ∉ F.Xa a.val := by
   unfold Formalism.HermitianLatticeCounting.S6.FlagD.Xa
@@ -149,7 +149,7 @@ lemma e_notMem_Xa (F : FlagD H r) (a : Fin r) : F.e a.castSucc ∉ F.Xa a.val :=
   | exact F.indep.not_mem_span_image (s := {b : Fin r | b.val < a.val}) (by simp)
 
 /- English proof (translation)
-Take `⟨hal, hx⟩` from `h`. Establish `h1 : x - al • F.e a.castSucc ∈ F.Xa (a.val + 1)` using `(Xa_mono F) (Nat.le_succ _) hx`. Establish `h2 : F.e a.castSucc ∈ F.Xa (a.val + 1)` using `(e_mem_Xa F) a (Nat.lt_succ_self _)`. Simplify using `using Submodule.add_mem _ h1 (Submodule.smul_mem _ al h2)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma level_mem (F : FlagD H r) {x : V} {a : Fin r} {al : K} (h : F.HasLevel x a al) :
     x ∈ F.Xa (a.val + 1) := by
@@ -159,13 +159,13 @@ lemma level_mem (F : FlagD H r) {x : V} {a : Fin r} {al : K} (h : F.HasLevel x a
   simpa using Submodule.add_mem _ h1 (Submodule.smul_mem _ al h2)
 
 /- English proof (translation)
-The claim follows from `(Xa_le_X F) _ ((level_mem F) h)`.
+A detailed English derivation is pending.
 -/
 lemma level_mem_X (F : FlagD H r) {x : V} {a : Fin r} {al : K} (h : F.HasLevel x a al) :
     x ∈ F.X := (Xa_le_X F) _ ((level_mem F) h)
 
 /- English proof (translation)
-Take `⟨hal, hx'⟩` from `h`. Introduce `hx`. Establish `h1 : al • F.e a.castSucc ∈ F.Xa a.val`. Simplify using `using Submodule.sub_mem _ hx hx'`. Conclude with `(e_notMem_Xa F) a ((Submodule.smul_mem_iff _ hal).1 h1)`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 lemma level_notMem (F : FlagD H r) {x : V} {a : Fin r} {al : K} (h : F.HasLevel x a al) :
     x ∉ F.Xa a.val := by
@@ -176,7 +176,7 @@ lemma level_notMem (F : FlagD H r) {x : V} {a : Fin r} {al : K} (h : F.HasLevel 
   exact (e_notMem_Xa F) a ((Submodule.smul_mem_iff _ hal).1 h1)
 
 /- English proof (translation)
-Introduce `h0`. Apply `(level_notMem F) h` to reduce the goal to its premises. Rewrite using `[h0]`. Conclude with `Submodule.zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma level_ne_zero (F : FlagD H r) {x : V} {a : Fin r} {al : K} (h : F.HasLevel x a al) :
     x ≠ 0 := by
@@ -186,13 +186,11 @@ lemma level_ne_zero (F : FlagD H r) {x : V} {a : Fin r} {al : K} (h : F.HasLevel
   exact Submodule.zero_mem _
 
 /- English proof (translation)
-Take `⟨hal, hx⟩` from `id h`. Take `⟨hbl, hx'⟩` from `id h'`. Establish `hab : a = b`. Assume the negation of the conclusion as `hne`. Break down `lt_or_gt_of_ne hne with hlt | hlt` into its components or cases.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `(level_notMem F) h' ((Xa_mono F) (by have := Fin.lt_iff_val_lt_val.1 hlt; omega) ((level_mem F) h))`. Conclude with `(level_notMem F) h ((Xa_mono F) (by have := Fin.lt_iff_val_lt_val.1 hlt; omega) ((level_mem F) h'))`. Substitute `hab` using the available equality. Use `⟨rfl, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (bl - al) • F.e a.castSucc ∈ F.Xa a.val`. Use `Submodule.sub_mem _ hx hx'` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[sub_smul]`. Normalize the expressions using the abelian group laws.
-
-Conclude with `(e_notMem_Xa F) a ((Submodule.smul_mem_iff _ (sub_ne_zero.2 (Ne.symm hne))).1 h1)`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 lemma level_unique (F : FlagD H r) {x : V} {a b : Fin r} {al bl : K} (h : F.HasLevel x a al)
     (h' : F.HasLevel x b bl) : a = b ∧ al = bl := by
@@ -216,15 +214,15 @@ lemma level_unique (F : FlagD H r) {x : V} {a b : Fin r} {al bl : K} (h : F.HasL
   exact (e_notMem_Xa F) a ((Submodule.smul_mem_iff _ (sub_ne_zero.2 (Ne.symm hne))).1 h1)
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `_ x hx h0`. Rewrite `hx` using `[(Xa_zero F)]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd ((Submodule.mem_bot K).1 hx) h0`. Consider the case `succ n ih`. Introduce `hn x hx h0`. Establish `hnr : n < r` using `by omega`. Establish `hsb : F.Xa (n + 1) = F.Xa n ⊔ K ∙ F.e (⟨n, hnr⟩ : Fin r).castSucc` using `(Xa_succ F) ⟨n, hnr⟩`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx` using `[hsb]`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 hx`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hz`. Distinguish the cases in `hc : c = 0`. Substitute `hc` using the available equality.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hy0 : y ≠ 0` using `by simpa using h0`. Take `⟨a, al, ha, hl⟩` from `ih (by omega) y hy hy0`. Use `⟨a, al, by omega, ?_⟩` and prove the remaining obligations. Simplify using `using hl`. Use `⟨⟨n, hnr⟩, c, by simp, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Unfold `Formalism.HermitianLatticeCounting.S6.FlagD.HasLevel`. Conclude with `⟨hc, by simpa using hy⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem FlagD_exists_level_lt_of_mem_Xa_of_ne_zero (F : Formalism.HermitianLatticeCounting.S6.FlagD H r) : ∀ n : ℕ, n ≤ r → ∀ x : V, x ∈ F.Xa n → x ≠ 0 →
     ∃ (a : Fin r) (al : K), a.val < n ∧ F.HasLevel x a al := by
@@ -253,7 +251,7 @@ private theorem FlagD_exists_level_lt_of_mem_Xa_of_ne_zero (F : Formalism.Hermit
       exact ⟨hc, by simpa using hy⟩
 
 /- English proof (translation)
-Take `⟨a, al, -, h⟩` from `FlagD_exists_level_lt_of_mem_Xa_of_ne_zero F r le_rfl x hx h0`. Conclude with `⟨a, al, h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma level_exists (F : FlagD H r) {x : V} (hx : x ∈ F.X) (h0 : x ≠ 0) :
     ∃ (a : Fin r) (al : K), F.HasLevel x a al := by
@@ -261,7 +259,7 @@ lemma level_exists (F : FlagD H r) {x : V} (hx : x ∈ F.X) (h0 : x ≠ 0) :
   exact ⟨a, al, h⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Conclude with `(level_notMem F) h ((Xa_mono F) hlt hx)`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 lemma level_lt_of_mem (F : FlagD H r) {x : V} {a : Fin r} {al : K} (h : F.HasLevel x a al) {n : ℕ}
     (hx : x ∈ F.Xa n) : a.val < n := by
@@ -270,62 +268,62 @@ lemma level_lt_of_mem (F : FlagD H r) {x : V} {a : Fin r} {al : K} (h : F.HasLev
   exact (level_notMem F) h ((Xa_mono F) hlt hx)
 
 /- English proof (translation)
-Rewrite using `[map_add, LinearMap.add_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem HermSpace_B_add_left (H : Formalism.HermitianLatticeCounting.S6.HermSpace K V) (x y z : V) : H.B (x + y) z = H.B x z + H.B y z := by
   rw [map_add, LinearMap.add_apply]
 
 /- English proof (translation)
-Rewrite using `[map_sub, LinearMap.sub_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem HermSpace_B_sub_left (H : Formalism.HermitianLatticeCounting.S6.HermSpace K V) (x y z : V) : H.B (x - y) z = H.B x z - H.B y z := by
   rw [map_sub, LinearMap.sub_apply]
 
 /- English proof (translation)
-Rewrite using `[map_smul, LinearMap.smul_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem HermSpace_B_smul_left (H : Formalism.HermitianLatticeCounting.S6.HermSpace K V) (c : K) (x y : V) : H.B (c • x) y = c * H.B x y := by
   rw [map_smul, LinearMap.smul_apply, smul_eq_mul]
 
 /- English proof (translation)
-Rewrite using `[map_zero, LinearMap.zero_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem HermSpace_B_zero_left (H : Formalism.HermitianLatticeCounting.S6.HermSpace K V) (y : V) : H.B 0 y = 0 := by
   rw [map_zero, LinearMap.zero_apply]
 
 /- English proof (translation)
-Rewrite using `[map_neg, LinearMap.neg_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem HermSpace_B_neg_left (H : Formalism.HermitianLatticeCounting.S6.HermSpace K V) (x y : V) : H.B (-x) y = -H.B x y := by
   rw [map_neg, LinearMap.neg_apply]
 
 /- English proof (translation)
-The claim follows from `map_add _ _ _`.
+A detailed English derivation is pending.
 -/
 private theorem HermSpace_B_add_right (H : Formalism.HermitianLatticeCounting.S6.HermSpace K V) (x y z : V) : H.B x (y + z) = H.B x y + H.B x z :=
   map_add _ _ _
 
 /- English proof (translation)
-The claim follows from `map_sub _ _ _`.
+A detailed English derivation is pending.
 -/
 private theorem HermSpace_B_sub_right (H : Formalism.HermitianLatticeCounting.S6.HermSpace K V) (x y z : V) : H.B x (y - z) = H.B x y - H.B x z :=
   map_sub _ _ _
 
 /- English proof (translation)
-Rewrite using `[LinearMap.map_smulₛₗ, smul_eq_mul, starRingEnd_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem HermSpace_B_smul_right_eq_star_mul (H : Formalism.HermitianLatticeCounting.S6.HermSpace K V) (c : K) (x y : V) : H.B x (c • y) = star c * H.B x y := by
   rw [LinearMap.map_smulₛₗ, smul_eq_mul, starRingEnd_apply]
 
 /- English proof (translation)
-Simplify using `only [Formalism.HermitianLatticeCounting.S6.xv, LinearMap.sub_apply, LinearMap.smulRight_apply, LinearMap.flip_apply]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem xv_apply_eq_B_smul_sub_B_smul (H : Formalism.HermitianLatticeCounting.S6.HermSpace K V) (x v y : V) :
     Formalism.HermitianLatticeCounting.S6.xv H x v y = H.B y v • x - H.B y x • v := by
   simp only [Formalism.HermitianLatticeCounting.S6.xv, LinearMap.sub_apply, LinearMap.smulRight_apply, LinearMap.flip_apply]
 
 /- English proof (translation)
-Simplify using `only [Formalism.HermitianLatticeCounting.S6.eich, LinearMap.add_apply, LinearMap.id_apply, LinearMap.smul_apply, LinearMap.smulRight_apply, LinearMap.flip_apply, xv_apply_eq_B_smul_sub_B_smul]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem eich_apply_eq_add_wedge_add_smul (H : Formalism.HermitianLatticeCounting.S6.HermSpace K V) (x v : V) (c : K) (y : V) :
     Formalism.HermitianLatticeCounting.S6.eich H x v c y = y + (H.B y v • x - H.B y x • v) + c • H.B y x • x := by
@@ -333,7 +331,7 @@ private theorem eich_apply_eq_add_wedge_add_smul (H : Formalism.HermitianLattice
     LinearMap.flip_apply, xv_apply_eq_B_smul_sub_B_smul]
 
 /- English proof (translation)
-Unfold `Formalism.HermitianLatticeCounting.S6.FlagD.HasLevel`. Conclude with `⟨one_ne_zero, by simp⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 lemma e_level (F : FlagD H r) (a : Fin r) : F.HasLevel (F.e a.castSucc) a 1 := by
   unfold Formalism.HermitianLatticeCounting.S6.FlagD.HasLevel
@@ -342,27 +340,23 @@ lemma e_level (F : FlagD H r) (a : Fin r) : F.HasLevel (F.e a.castSucc) a 1 := b
 end Base
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ H r F x v a al hx hv`. Take `⟨hal, hxa⟩` from `id hx`. Establish `hxI : x ∈ F.X` using `(level_mem_X F) hx`. Establish `hx1 : x ∈ F.Xa (a.val + 1)` using `(level_mem F) hx`. Establish `hex : ∀ i : Fin (r + 1), H.B (F.e i) x = 0` using `fun i => (e_X F) i hxI`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hY : ∀ y, Formalism.HermitianLatticeCounting.S6.xv H x v y = H.B y v • x - H.B y x • v` using `xv_apply_eq_B_smul_sub_B_smul H x v`. Establish `hYe : ∀ i : Fin (r + 1), Formalism.HermitianLatticeCounting.S6.xv H x v (F.e i) = H.B (F.e i) v • x`. Introduce `i`. Rewrite using `[hY, hex i, zero_smul, sub_zero]`. Establish `hv' : ∀ y ∈ F.Xa (a.val + 1), H.B y v = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `(perp_Xa F)` to reduce the goal to its premises. Introduce `b hb`. Conclude with `hv b (Fin.le_iff_val_le_val.2 (by omega))`. Establish `hx' : ∀ y ∈ F.Xa (a.val + 1), H.B y x = 0` using `fun y hy => (X_iso F) ((Xa_le_X F) _ hy) hxI`. Establish `hperp : ∀ y : V, (∀ b : Fin r, H.B (F.e b.castSucc) y = 0) → Formalism.HermitianLatticeCounting.S6.xv H x v y = H.B y v • x`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Establish `h1 : H.B x y = 0` using `(perp_X F) hy x hxI`. Rewrite using `[hY, B_swap0 H h1, zero_smul, sub_zero]`. Establish `har` using `a.isLt`. Use `⟨fun y hy => by rw [hY, hv' y hy, hx' y hy]; simp, fun y hy => ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hperp y hy]`. Conclude with `Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self x)`. Unfold `Formalism.HermitianLatticeCounting.S6.FlagD.LieN`. Use `⟨fun y y' => ?_, fun b => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Simplify using `only [hY, HermSpace_B_sub_left, HermSpace_B_smul_left, HermSpace_B_sub_right, HermSpace_B_smul_right_eq_star_mul]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[H.herm y' v, H.herm y' x]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hYe]`. Distinguish the cases in `hba : b ≤ a`. Rewrite using `[hv b hba, zero_smul]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Conclude with `Submodule.zero_mem _`. Use `push_neg at hba`. Conclude with `Submodule.smul_mem _ _ ((Xa_mono F) (by have := Fin.lt_iff_val_lt_val.1 hba; omega) hx1)`. Rewrite using `[hperp y hy]`. Conclude with `Submodule.smul_mem _ _ hxI`.
+Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Unfold `Formalism.HermitianLatticeCounting.S6.FlagD.DPsi`. Use `⟨fun b => if b = a then al * H.B (F.e a.succ) v else 0, by simp, fun b => ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[hYe]`. Break down `lt_trichotomy b a with hba | hba | hba` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hba'` using `Fin.lt_iff_val_lt_val.1 hba`. Establish `hb1 : b.succ = (⟨b.val + 1, by omega⟩ : Fin r).castSucc` using `Fin.ext (by simp)`. Establish `h0 : H.B (F.e b.succ) v = 0`. Rewrite using `[hb1]`. Conclude with `hv _ (Fin.le_iff_val_le_val.2 (show b.val + 1 ≤ a.val by omega))`.
-
-Rewrite using `[h0, if_neg (ne_of_lt hba)]`. Simplify using the standard rewrite rules. Substitute `hba` using the available equality. Rewrite using `[if_pos rfl, mul_comm, ← smul_smul, ← smul_sub]`. Conclude with `Submodule.smul_mem _ _ hxa`.
-
-Rewrite using `[if_neg (ne_of_gt hba), zero_smul, sub_zero]`. Conclude with `Submodule.smul_mem _ _ ((Xa_mono F) (by have := Fin.lt_iff_val_lt_val.1 hba; omega) hx1)`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wedgeMapInLieAlgebra : Formalism.HermitianLatticeCounting.S6.Y1 := by
   intro K V _ _ _ _ H r F x v a al hx hv
@@ -420,13 +414,13 @@ theorem wedgeMapInLieAlgebra : Formalism.HermitianLatticeCounting.S6.Y1 := by
       exact Submodule.smul_mem _ _ ((Xa_mono F) (by have := Fin.lt_iff_val_lt_val.1 hba; omega) hx1)
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ H r F F' hz`. Take `⟨u, hu, u', hu', hsum⟩` from `Submodule.mem_sup.1 hz`. Establish `hzu : H.B F.z u = 0` using `(z_X F) hu`. Establish `huu : H.B u u = 0` using `(X_iso F) hu hu`. Establish `hu'u' : H.B u' u' = 0` using `(X_iso F') hu' hu'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : H.B F.z F.z = H.B u u'`. Establish `h1 : H.B F.z (u + u') = H.B F.z F.z` using `by rw [hsum]`. Rewrite `h1` using `[HermSpace_B_add_right, hzu, zero_add]`. Rewrite using `[← h1, ← hsum, HermSpace_B_add_left, hu'u', add_zero]`. Establish `e2 : H.B F.z F.z = H.B u u' + H.B u' u`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hsum, HermSpace_B_add_left, HermSpace_B_add_right, HermSpace_B_add_right, huu, hu'u']`. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : H.B u' u = 0`. Rewrite `e2` using `[e1]`. Take the linear combination `-e2`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `h4 : H.B u u' = 0` using `B_swap0 H h3`. Establish `h5 : H.B F.z F.z = -F.T` using `F.zz`. Rewrite `h5` using `[e1, h4]`. Conclude with `F.hT (neg_eq_zero.1 h5.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lastVectorNotMemSup : Formalism.HermitianLatticeCounting.S6.LastVectorNotMemSup := by
   intro K V _ _ _ _ H r F F' hz
@@ -450,20 +444,20 @@ theorem lastVectorNotMemSup : Formalism.HermitianLatticeCounting.S6.LastVectorNo
   exact F.hT (neg_eq_zero.1 h5.symm)
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ H r F F' hA y hy hyo`. Conclude with `hA y hyo ((X_iso F') hy hy)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem memOfOrthogonalAnisotropic : Formalism.HermitianLatticeCounting.S6.MemOfOrthogonalAnisotropic := by
   intro K V _ _ _ _ H r F F' hA y hy hyo
   exact hA y hyo ((X_iso F') hy hy)
 
 /- English proof (translation)
-Set `b` to `Module.finBasis K V`. Set `Ψ : V →ₗ[K] (Fin (Module.finrank K V) → K)` to `LinearMap.pi fun i => H.B.flip (b i)`. Establish `hΨ : Function.Injective Ψ`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `v hv`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `H.nondeg v` to reduce the goal to its premises. Establish `hb : ∀ i, H.B v (b i) = 0` using `fun i => by simpa [Ψ] using congrFun hv i`. Establish `h0 : H.B v = 0` using `b.ext fun i => by rw [hb i, LinearMap.zero_apply]`. Introduce `y`. Rewrite using `[h0, LinearMap.zero_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hsurj : Function.Surjective Ψ` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank (by simp)).1 hΨ`. Take `⟨v, hv⟩` from `hsurj (fun i => star (f (b i)))`. Use `⟨v, fun u => ?_⟩` and prove the remaining obligations. Establish `hfl : H.B.flip v = f` using `b.ext fun i => by`. Establish `h1` using `congrFun hv i`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Ψ, LinearMap.pi_apply, LinearMap.flip_apply] at h1`. Rewrite using `[LinearMap.flip_apply, ← H.herm v (b i), h1, star_star]`. Use `LinearMap.congr_fun hfl u` as an intermediate fact. Simplify using `using this`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem HermSpace_exists_B_right_eq_linearForm {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V]
     (H : Formalism.HermitianLatticeCounting.S6.HermSpace K V) (f : V →ₗ[K] K) : ∃ v : V, ∀ u : V, H.B u v = f u := by
@@ -489,11 +483,11 @@ private theorem HermSpace_exists_B_right_eq_linearForm {K V : Type} [Field K] [S
   simpa using this
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ _ H S w hw`. Assume the negation of the conclusion as `hwS`. Establish `hq : S.mkQ w ≠ 0`. Rewrite using `[Ne, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `hwS`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨φ, hφ⟩ : ∃ φ : Module.Dual K (V ⧸ S), φ (S.mkQ w) ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hq ((Module.forall_dual_apply_eq_zero_iff K _).1 h)`. Take `⟨v, hv⟩` from `HermSpace_exists_B_right_eq_linearForm H (φ.comp S.mkQ)`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `hφ` to reduce the goal to its premises. Establish `h1` using `hw v (fun s hs => by`. Rewrite using `[hv s, LinearMap.comp_apply, Submodule.mkQ_apply, (Submodule.Quotient.mk_eq_zero S).2 hs, map_zero])`. Rewrite `h1` using `[hv w, LinearMap.comp_apply]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem memOfOrthogonalOrthogonal : Formalism.HermitianLatticeCounting.S6.PerpPerp := by
   intro K V _ _ _ _ _ H S w hw
@@ -513,19 +507,17 @@ theorem memOfOrthogonalOrthogonal : Formalism.HermitianLatticeCounting.S6.PerpPe
   exact h1
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ _ H r F F' x a a' al al' hμ hrel hx hxa hxa'`. Apply `hPP K V H (F.Xa (a.val + 1) ⊔ F'.Xa (a'.val + 1))` to reduce the goal to its premises. Introduce `v hv`. Establish `hvF : ∀ b : Fin r, b ≤ a → H.B (F.e b.castSucc) v = 0` using `fun b hb => hv _ (Submodule.mem_sup_left ((e_mem_Xa F) b (by have := Fin.le_iff_val_le_val.1 hb; omega)))`. Establish `hvF' : ∀ b : Fin r, b ≤ a' → H.B (F'.e b.castSucc) v = 0` using `fun b hb => hv _ (Submodule.mem_sup_right ((e_mem_Xa F') b (by have := Fin.le_iff_val_le_val.1 hb; omega)))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨d, hd_def⟩ : ∃ d : K, d = al * H.B (F.e a.succ) v - al' * H.B (F'.e a'.succ) v` from `⟨_, rfl⟩`. Establish `key : ∀ t : K, t * d + star (t * d) = 0`. Introduce `t`. Establish `hvt : ∀ b : Fin r, b ≤ a → H.B (F.e b.castSucc) (star t • v) = 0` using `fun b hb => by`. Rewrite using `[HermSpace_B_smul_right_eq_star_mul, hvF b hb, mul_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hvt' : ∀ b : Fin r, b ≤ a' → H.B (F'.e b.castSucc) (star t • v) = 0` using `fun b hb => by`. Rewrite using `[HermSpace_B_smul_right_eq_star_mul, hvF' b hb, mul_zero]`. Take `⟨-, -, hL, hc⟩` from `hY1 K V H r F x (star t • v) a al hxa hvt`. Take `⟨-, -, hL', hc'⟩` from `hY1 K V H r F' x (star t • v) a' al' hxa' hvt'`. Establish `h1` using `hrel _ hL hL' _ _ hc hc'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [HermSpace_B_smul_right_eq_star_mul, star_star, star_mul', star_add] at h1`. Rewrite using `[hd_def]`. Simplify using `only [star_mul', star_sub]`. Take the linear combination `h1`. Take `⟨μ, hμ⟩` from `hμ`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Establish `hd : d = 0`. Establish `h1` using `key (μ * star d)`. Establish `h2 : (μ + star μ) * (star d * d) = 0`. Simplify using `only [star_mul', star_star] at h1`. Take the linear combination `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Break down `mul_eq_zero.1 h2 with h3 | h3` into its components or cases. Conclude with `absurd h3 hμ`. Break down `mul_eq_zero.1 h3 with h4 | h4` into its components or cases. Conclude with `star_eq_zero.1 h4`. Conclude with `h4`.
-
-Rewrite using `[HermSpace_B_sub_left, HermSpace_B_smul_left, HermSpace_B_smul_left, ← hd_def, hd]`.
+Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma nFStep_of (hY1 : Formalism.HermitianLatticeCounting.S6.Y1) (hPP : Formalism.HermitianLatticeCounting.S6.PerpPerp) : Formalism.HermitianLatticeCounting.S6.NFStep := by
   intro K V _ _ _ _ _ H r F F' x a a' al al' hμ hrel hx hxa hxa'
@@ -563,7 +555,7 @@ lemma nFStep_of (hY1 : Formalism.HermitianLatticeCounting.S6.Y1) (hPP : Formalis
   rw [HermSpace_B_sub_left, HermSpace_B_smul_left, HermSpace_B_smul_left, ← hd_def, hd]
 
 /- English proof (translation)
-The claim follows from `nFStep_of wedgeMapInLieAlgebra memOfOrthogonalOrthogonal`.
+A detailed English derivation is pending.
 -/
 theorem normalFormStep : Formalism.HermitianLatticeCounting.S6.NFStep := nFStep_of wedgeMapInLieAlgebra memOfOrthogonalOrthogonal
 
@@ -573,9 +565,9 @@ variable {K : Type} [Field K] [StarRing K] {V : Type} [AddCommGroup V] [Module K
   {H : HermSpace K V} {r : ℕ}
 
 /- English proof (translation)
-Unfold `Formalism.HermitianLatticeCounting.S6.FlagD.Xa`. Use `congr 1`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, hb, rfl⟩`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨⟨b.val, hb⟩, congrArg F.e (Fin.ext rfl)⟩`. Introduce and unpack `⟨a, rfl⟩`. Conclude with `⟨⟨a.val, by have := a.isLt; omega⟩, a.isLt, congrArg F.e (Fin.ext rfl)⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 lemma Xa_eq_range (F : FlagD H r) {j : ℕ} (hj : j ≤ r) :
     F.Xa j = Submodule.span K
@@ -590,7 +582,7 @@ lemma Xa_eq_range (F : FlagD H r) {j : ℕ} (hj : j ≤ r) :
     exact ⟨⟨a.val, by have := a.isLt; omega⟩, a.isLt, congrArg F.e (Fin.ext rfl)⟩
 
 /- English proof (translation)
-Use `F.indep.comp (Fin.castLE hj) (Fin.castLE_injective hj)` as an intermediate fact. Conclude with `this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma indep_le (F : FlagD H r) {j : ℕ} (hj : j ≤ r) :
     LinearIndependent K (fun a : Fin j => F.e (Fin.castLE (hj.trans (Nat.le_succ r)) a)) := by
@@ -598,25 +590,25 @@ lemma indep_le (F : FlagD H r) {j : ℕ} (hj : j ≤ r) :
   exact this
 
 /- English proof (translation)
-Rewrite using `[(Xa_eq_range F) hj, finrank_span_eq_card ((indep_le F) hj), Fintype.card_fin]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma finrank_Xa (F : FlagD H r) {j : ℕ} (hj : j ≤ r) : Module.finrank K (F.Xa j) = j := by
   rw [(Xa_eq_range F) hj, finrank_span_eq_card ((indep_le F) hj), Fintype.card_fin]
 
 /- English proof (translation)
-The claim follows from `(finrank_Xa F) le_rfl`.
+A detailed English derivation is pending.
 -/
 lemma finrank_X (F : FlagD H r) : Module.finrank K F.X = r := (finrank_Xa F) le_rfl
 
 /- English proof (translation)
-Rewrite using `[(Xa_eq_range F) hj, Submodule.mem_span_range_iff_exists_fun]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma mem_Xa_iff (F : FlagD H r) {j : ℕ} (hj : j ≤ r) {x : V} :
     x ∈ F.Xa j ↔ ∃ c : Fin j → K, ∑ a, c a • F.e (Fin.castLE (hj.trans (Nat.le_succ r)) a) = x := by
   rw [(Xa_eq_range F) hj, Submodule.mem_span_range_iff_exists_fun]
 
 /- English proof (translation)
-Use `Submodule.finrank_sup_add_finrank_inf_eq (F.Xa j) I` as an intermediate fact. Rewrite `this` using `[← h1, inf_comm, h2, finrank_bot, (finrank_X F), (finrank_Xa F) hj]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 lemma finrank_compl [FiniteDimensional K V] (F : FlagD H r) {j : ℕ} (hj : j ≤ r) (I : Submodule K V)
     (h1 : F.X = F.Xa j ⊔ I) (h2 : I ⊓ F.Xa j = ⊥) : Module.finrank K I = r - j := by
@@ -625,17 +617,15 @@ lemma finrank_compl [FiniteDimensional K V] (F : FlagD H r) {j : ℕ} (hj : j �
   omega
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Establish `key : ∀ n, n ≤ r → F.Xa n ≤ F.Xa j ⊔ I`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `_`. Rewrite using `[(Xa_zero F)]`. Conclude with `bot_le`. Consider the case `succ n ih`. Introduce `hn`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hnr : n < r` using `by omega`. Establish `hsb : F.Xa (n + 1) = F.Xa n ⊔ K ∙ F.e (⟨n, hnr⟩ : Fin r).castSucc` using `(Xa_succ F) ⟨n, hnr⟩`. Rewrite using `[hsb]`. Use `sup_le (ih (by omega)) ?_` and prove the remaining obligations. Rewrite using `[Submodule.span_singleton_le_iff_mem]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hjn : j ≤ n`. Take `⟨x, hxI, al, hal⟩` from `h ⟨n, hnr⟩ hjn`. Take `⟨hal0, hxa⟩` from `id hal`. Establish `h1 : x - al • F.e (⟨n, hnr⟩ : Fin r).castSucc ∈ F.Xa j ⊔ I` using `ih (by omega) hxa`. Establish `h2 : x ∈ F.Xa j ⊔ I` using `Submodule.mem_sup_right hxI`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : al • F.e (⟨n, hnr⟩ : Fin r).castSucc ∈ F.Xa j ⊔ I`. Simplify using `using Submodule.sub_mem _ h2 h1`. Conclude with `(Submodule.smul_mem_iff _ hal0).1 h3`. Conclude with `Submodule.mem_sup_left ((e_mem_Xa F) _ (show n < j by omega))`. Conclude with `key r le_rfl`.
-
-Conclude with `sup_le ((Xa_le_X F) j) hI`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 lemma X_eq_of_levels (F : FlagD H r) (j : ℕ) (I : Submodule K V) (hI : I ≤ F.X)
     (h : ∀ a : Fin r, j ≤ a.val → ∃ x ∈ I, ∃ al : K, F.HasLevel x a al) : F.X = F.Xa j ⊔ I := by
@@ -670,9 +660,9 @@ lemma X_eq_of_levels (F : FlagD H r) (j : ℕ) (I : Submodule K V) (hI : I ≤ F
 end Base2
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ H r F F' c₁ c₂ h₁ h₂`. Assume the negation of the conclusion as `hne`. Establish `h3 : (c₂ - c₁) • F.z ∈ F.X ⊔ F'.X`. Use `Submodule.sub_mem _ h₁ h₂` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Rewrite using `[sub_smul]`. Normalize the expressions using the abelian group laws. Conclude with `lastVectorNotMemSup K V H r F F' ((Submodule.smul_mem_iff _ (sub_ne_zero.2 (Ne.symm hne))).1 h3)`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem scalarUnique : Formalism.HermitianLatticeCounting.S6.NFCUnique := by
   intro K V _ _ _ _ H r F F' c₁ c₂ h₁ h₂
@@ -690,52 +680,50 @@ variable {K : Type} [Field K] [StarRing K] {V : Type} [AddCommGroup V] [Module K
   [FiniteDimensional K V] {H : HermSpace K V} {r : ℕ}
 
 /- English proof (translation)
-The claim follows from `Fin.ext (by simp)`.
+A detailed English derivation is pending.
 -/
 lemma succ_eq_castSucc {r : ℕ} (a : Fin r) (h : a.val + 1 < r) :
     a.succ = (⟨a.val + 1, h⟩ : Fin r).castSucc := Fin.ext (by simp)
 
 /- English proof (translation)
-The claim follows from `Fin.ext (by simpa using h)`.
+A detailed English derivation is pending.
 -/
 lemma succ_eq_last {r : ℕ} (a : Fin r) (h : a.val + 1 = r) : a.succ = Fin.last r := Fin.ext (by simpa using h)
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `x a a' al al' hk hx hF hF'`. Establish `ha : a.val + 1 = r` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hstep` using `hStep K V H r F F' x a a' al al' hμ hrel hx hF hF'`. Establish `hsa : a.succ = Fin.last r` using `succ_eq_last a ha`. Take `⟨hal, -⟩` from `id hF`. Take `⟨hal', -⟩` from `id hF'`. Establish `h3 : F.Xa (a.val + 1) ⊔ F'.Xa (a'.val + 1) ≤ F.X ⊔ F'.X` using `sup_le_sup ((Xa_le_X F) _) ((Xa_le_X F') _)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `haa' : a = a'`. Assume the negation of the conclusion as `hne`. Establish `hne' : a'.val ≠ a.val` using `fun h => hne (Fin.ext h).symm`. Establish `ha'lt : a'.val + 1 < r` using `by have := a'.isLt; omega`. Establish `hsa' : a'.succ = (⟨a'.val + 1, ha'lt⟩ : Fin r).castSucc` using `succ_eq_castSucc a' ha'lt`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : al' • F'.e a'.succ ∈ F.X ⊔ F'.X`. Rewrite using `[hsa']`. Conclude with `Submodule.mem_sup_right (Submodule.smul_mem _ _ ((e_mem_X F') _))`. Establish `h4` using `Submodule.add_mem _ (h3 hstep) h2`. Rewrite `h4` using `[sub_add_cancel, hsa]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Conclude with `hN0 K V H r F F' ((Submodule.smul_mem_iff _ hal).1 h4)`. Substitute `haa'` using the available equality. Use `⟨rfl, ?_, fun b hb => ⟨x, hx, ?_⟩⟩` and prove the remaining obligations. Establish `h4` using `Submodule.smul_mem _ (-(al')⁻¹) (h3 hstep)`. Rewrite `h4` using `[hsa]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `h4 using 1` and compare the differences between its conclusion and the goal. Use `show F'.e (Fin.last r) - (al / al') • F.e (Fin.last r) = _`. Rewrite using `[smul_sub, smul_smul, smul_smul, show -(al')⁻¹ * al' = -1 by rw [neg_mul, inv_mul_cancel₀ hal'], show -(al')⁻¹ * al = -(al / al') by ring]`. Simplify using `only [neg_smul, one_smul]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components.
 
-Establish `hba : b = a` using `Fin.ext (by have := b.isLt; have := Fin.le_iff_val_le_val.1 hb; omega)`. Substitute `hba` using the available equality. Conclude with `⟨hF, hF'⟩`. Consider the case `succ k ih`. Introduce `x a a' al al' hk hx hF hF'`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha1 : a.val + 1 < r` using `by omega`. Establish `hsa : a.succ = (⟨a.val + 1, ha1⟩ : Fin r).castSucc` using `succ_eq_castSucc a ha1`. Establish `hstep` using `hStep K V H r F F' x a a' al al' hμ hrel hx hF hF'`. Take `⟨hal, -⟩` from `id hF`. Take `⟨hal', -⟩` from `id hF'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨s, hs, s', hs', hss⟩` from `Submodule.mem_sup.1 hstep`. Establish `hae : al • F.e a.succ = s + s' + al' • F'.e a'.succ`. Rewrite using `[hss]`. Normalize the expressions using the abelian group laws. Distinguish the cases in `ha'1 : a'.val + 1 < r`.
+Normalize the expressions using the abelian group laws. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsa' : a'.succ = (⟨a'.val + 1, ha'1⟩ : Fin r).castSucc` using `succ_eq_castSucc a' ha'1`. Take `⟨y, hydef⟩ : ∃ y : V, y = al • F.e a.succ - s` from `⟨_, rfl⟩`. Establish `hy2 : y = al' • F'.e a'.succ + s'`. Rewrite using `[hydef, hae]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hyF : y ∈ F.X`. Rewrite using `[hydef, hsa]`. Conclude with `Submodule.sub_mem _ (Submodule.smul_mem _ _ ((e_mem_X F) _)) ((Xa_le_X F) _ hs)`. Establish `hyF' : y ∈ F'.X`. Rewrite using `[hy2, hsa']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Submodule.add_mem _ (Submodule.smul_mem _ _ ((e_mem_X F') _)) ((Xa_le_X F') _ hs')`. Establish `hyM : y ∈ Formalism.HermitianLatticeCounting.S6.II F F'` using `Submodule.mem_inf.2 ⟨hyF, hyF'⟩`. Establish `hyHF : F.HasLevel y ⟨a.val + 1, ha1⟩ al`. Unfold `Formalism.HermitianLatticeCounting.S6.FlagD.HasLevel`. Use `⟨hal, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hydef, ← hsa]`. Simplify using `using hs`. Establish `hyHF' : F'.HasLevel y ⟨a'.val + 1, ha'1⟩ al'`. Unfold `Formalism.HermitianLatticeCounting.S6.FlagD.HasLevel`. Use `⟨hal', ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hy2, ← hsa']`. Simplify using `using hs'`. Take `⟨h1, h2, h3⟩` from `ih y ⟨a.val + 1, ha1⟩ ⟨a'.val + 1, ha'1⟩ al al' (show a.val + 1 + 1 + k = r by omega) hyM hyHF hyHF'`. Establish `haa' : a = a'` using `Fin.ext (by have h5 : a.val + 1 = a'.val + 1 := congrArg Fin.val h1; omega)`. Use `⟨haa', h2, fun b hb => ?_⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `hba : b = a`. Substitute `hba` using the available equality. Use `⟨x, hx, hF, ?_⟩` and prove the remaining obligations. Rewrite using `[haa']`. Conclude with `hF'`.
+Establish an intermediate fact. Establish an intermediate fact. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hne : b.val ≠ a.val` using `fun h => hba (Fin.ext h)`. Conclude with `h3 b (Fin.le_iff_val_le_val.2 (show a.val + 1 ≤ b.val by have := Fin.le_iff_val_le_val.1 hb; omega))`. Establish `ha'r : a'.val + 1 = r` using `by have := a'.isLt; omega`. Establish `hsa' : a'.succ = Fin.last r` using `succ_eq_last a' ha'r`. It suffices to derive a contradiction.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `hN0 K V H r F' F` to reduce the goal to its premises. Establish `h4 : al' • F'.e a'.succ = al • F.e a.succ - s - s'`. Rewrite using `[hae]`. Normalize the expressions using the abelian group laws. Establish `h5 : al • F.e a.succ - s - s' ∈ F'.X ⊔ F.X`.
-
-Rewrite using `[hsa]`. Conclude with `Submodule.sub_mem _ (Submodule.sub_mem _ (Submodule.mem_sup_right (Submodule.smul_mem _ _ ((e_mem_X F) _))) (Submodule.mem_sup_right ((Xa_le_X F) _ hs))) (Submodule.mem_sup_left ((Xa_le_X F') _ hs'))`. Rewrite `h5` using `[← h4, hsa']`. Conclude with `(Submodule.smul_mem_iff _ hal').1 h5`.
+A detailed English derivation is pending.
 -/
 lemma hasLevel_index_eq_of_mem_II (F F' : FlagD H r) (hStep : Formalism.HermitianLatticeCounting.S6.NFStep) (hN0 : Formalism.HermitianLatticeCounting.S6.LastVectorNotMemSup) (hμ : ∃ μ : K, μ + star μ ≠ 0) (hrel : Relevant F F') :
     ∀ (k : ℕ) (x : V) (a a' : Fin r) (al al' : K), a.val + 1 + k = r → x ∈ II F F' →
@@ -841,31 +829,31 @@ lemma hasLevel_index_eq_of_mem_II (F F' : FlagD H r) (hStep : Formalism.Hermitia
 end CaseA
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ _ H r F F' hμ hrel hm`. Establish `key : ∀ x ∈ Formalism.HermitianLatticeCounting.S6.II F F', ∀ (a a' : Fin r) (al al' : K), F.HasLevel x a al → F'.HasLevel x a' al' → a = a' ∧ F'.z - (al / al') • F.z ∈ F.X ⊔ F'.X ∧ ∀ b : Fin r, a ≤ b → ∃ y ∈ Formalism.HermitianLatticeCounting.S6.II F F', F.HasLevel y b al ∧ F'.Ha …` using `fun x hx a a' al al' hF hF' => hasLevel_index_eq_of_mem_II F F' hStep hN0 hμ hrel (r - a.val - 1) x a a' al al' (by have := a.isLt; omega) hx hF hF'`. Establish `hex : ∃ n : ℕ, ∃ x ∈ Formalism.HermitianLatticeCounting.S6.II F F', x ≠ 0 ∧ ∃ (a : Fin r) (al : K), a.val = n ∧ F.HasLevel x a al`. Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hm`. Take `⟨a, al, h⟩` from `(level_exists F) (Submodule.mem_inf.1 hx).1 hx0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a.val, x, hx, hx0, a, al, rfl, h⟩`. Take `⟨j, hjdef⟩ : ∃ j : ℕ, j = Nat.find hex` from `⟨_, rfl⟩`. Establish `hspec` using `Nat.find_spec hex`. Rewrite `hspec` using `[← hjdef]`. Take `⟨x₀, hx₀, hx₀0, a₀, al₀, ha₀, hF₀⟩` from `hspec`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hmin : ∀ x ∈ Formalism.HermitianLatticeCounting.S6.II F F', x ≠ 0 → ∀ (a : Fin r) (al : K), F.HasLevel x a al → j ≤ a.val`. Introduce `x hx hx0 a al h`. Rewrite using `[hjdef]`. Conclude with `Nat.find_min' hex ⟨x, hx, hx0, a, al, rfl, h⟩`. Take `⟨a₀', al₀', hF₀'⟩` from `(level_exists F') (Submodule.mem_inf.1 hx₀).2 hx₀0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, hz, hall⟩` from `key x₀ hx₀ a₀ a₀' al₀ al₀' hF₀ hF₀'`. Take `⟨hal₀, -⟩` from `id hF₀`. Take `⟨hal₀', -⟩` from `id hF₀'`. Establish `hjr : j < r` using `by rw [← ha₀]; exact a₀.isLt`. Establish `hlead : ∀ x ∈ Formalism.HermitianLatticeCounting.S6.II F F', x ≠ 0 → ∃ (a : Fin r) (al al' : K), F.HasLevel x a al ∧ F'.HasLevel x a al' ∧ j ≤ a.val ∧ al = al₀ / al₀' * al'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx hx0`. Take `⟨a, al, hF⟩` from `(level_exists F) (Submodule.mem_inf.1 hx).1 hx0`. Take `⟨a', al', hF'⟩` from `(level_exists F') (Submodule.mem_inf.1 hx).2 hx0`. Take `⟨rfl, hz', -⟩` from `key x hx a a' al al' hF hF'`. Establish `hc` using `scalarUnique K V H r F F' _ _ hz' hz`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hal', -⟩` from `id hF'`. Use `⟨a, al, al', hF, hF', hmin x hx hx0 a al hF, ?_⟩` and prove the remaining obligations. Rewrite using `[← hc]`. Conclude with `(div_mul_cancel₀ al hal').symm`. Establish `hall' : ∀ a : Fin r, j ≤ a.val → ∃ x ∈ Formalism.HermitianLatticeCounting.S6.II F F', ∃ al al' : K, F.HasLevel x a al ∧ F'.HasLevel x a al'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `a ha`. Take `⟨y, hy, h1, h2⟩` from `hall a (Fin.le_iff_val_le_val.2 (by omega))`. Conclude with `⟨y, hy, al₀, al₀', h1, h2⟩`. Establish `hb : Formalism.HermitianLatticeCounting.S6.II F F' ⊓ F.Xa j = ⊥`. Rewrite using `[eq_bot_iff]`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `y hy`. Take `⟨hyM, hyS⟩` from `Submodule.mem_inf.1 hy`. Rewrite using `[Submodule.mem_bot]`. Assume the negation of the conclusion as `hy0`. Take `⟨a, al, hF⟩` from `(level_exists F) (Submodule.mem_inf.1 hyM).1 hy0`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `(level_lt_of_mem F) hF hyS`. Establish `h2` using `hmin y hyM hy0 a al hF`. Use linear arithmetic over natural numbers and integers. Establish `hb' : Formalism.HermitianLatticeCounting.S6.II F F' ⊓ F'.Xa j = ⊥`. Rewrite using `[eq_bot_iff]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `y hy`. Take `⟨hyM, hyS⟩` from `Submodule.mem_inf.1 hy`. Rewrite using `[Submodule.mem_bot]`. Assume the negation of the conclusion as `hy0`. Take `⟨a', al', hF'⟩` from `(level_exists F') (Submodule.mem_inf.1 hyM).2 hy0`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, al, hF⟩` from `(level_exists F) (Submodule.mem_inf.1 hyM).1 hy0`. Take `⟨rfl, -, -⟩` from `key y hyM a a' al al' hF hF'`. Establish `h1` using `(level_lt_of_mem F') hF' hyS`. Establish `h2` using `hmin y hyM hy0 a al hF`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hI` using `(X_eq_of_levels F) j (Formalism.HermitianLatticeCounting.S6.II F F') inf_le_left (fun a ha => by`. Take `⟨x, hx, al, al', h1, -⟩` from `hall' a ha`. Conclude with `⟨x, hx, al, h1⟩)`. Establish `hI'` using `(X_eq_of_levels F') j (Formalism.HermitianLatticeCounting.S6.II F F') inf_le_right (fun a ha => by`. Take `⟨x, hx, al, al', -, h2⟩` from `hall' a ha`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨x, hx, al', h2⟩)`. Establish `hfin` using `(finrank_compl F) hjr.le (Formalism.HermitianLatticeCounting.S6.II F F') hI hb`. Use `⟨j, al₀ / al₀', hjr, ?_⟩` and prove the remaining obligations. Unfold `Formalism.HermitianLatticeCounting.S6.NFShape`. Conclude with `⟨div_ne_zero hal₀ hal₀', hfin, hlead, hall', hb, hb', hI, hI', hz⟩`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma nFCaseA_of_lastVectorNotMemSup (hStep : Formalism.HermitianLatticeCounting.S6.NFStep) (hN0 : Formalism.HermitianLatticeCounting.S6.LastVectorNotMemSup) : Formalism.HermitianLatticeCounting.S6.NFCaseA := by
   intro K V _ _ _ _ _ H r F F' hμ hrel hm
@@ -943,7 +931,7 @@ lemma nFCaseA_of_lastVectorNotMemSup (hStep : Formalism.HermitianLatticeCounting
   exact ⟨div_ne_zero hal₀ hal₀', hfin, hlead, hall', hb, hb', hI, hI', hz⟩
 
 /- English proof (translation)
-The claim follows from `nFCaseA_of_lastVectorNotMemSup normalFormStep lastVectorNotMemSup`.
+A detailed English derivation is pending.
 -/
 theorem normalFormMeetNeBot : Formalism.HermitianLatticeCounting.S6.NFCaseA := nFCaseA_of_lastVectorNotMemSup normalFormStep lastVectorNotMemSup
 
@@ -953,7 +941,7 @@ variable {K : Type} [Field K] [StarRing K] {V : Type} [AddCommGroup V] [Module K
   {H : HermSpace K V} {r : ℕ}
 
 /- English proof (translation)
-Use `first`. Consider the case `(rw [map_sum, LinearMap.sum_apply]; simp only [HermSpace_B_smul_left])`. Consider the case `simp [map_sum, HermSpace_B_smul_left]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma B_sum_left (H : HermSpace K V) {n : ℕ} (c : Fin n → K) (u : Fin n → V) (y : V) :
     H.B (∑ a, c a • u a) y = ∑ a, c a * H.B (u a) y := by
@@ -962,9 +950,9 @@ lemma B_sum_left (H : HermSpace K V) {n : ℕ} (c : Fin n → K) (u : Fin n → 
   | simp [map_sum, HermSpace_B_smul_left]
 
 /- English proof (translation)
-Establish `hu : IsUnit (Matrix.of fun a b => H.B (u a) (w b)).det` using `isUnit_iff_ne_zero.2 hM`. Use `⟨Matrix.vecMul t (Matrix.of fun a b => H.B (u a) (w b))⁻¹, fun b => ?_⟩` and prove the remaining obligations. Rewrite using `[B_sum_left]`. Establish `h1 : Matrix.vecMul (Matrix.vecMul t (Matrix.of fun a b => H.B (u a) (w b))⁻¹) (Matrix.of fun a b => H.B (u a) (w b)) = t`. Rewrite using `[Matrix.vecMul_vecMul, Matrix.nonsing_inv_mul _ hu, Matrix.vecMul_one]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← congrFun h1 b]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma gram_solve (H : HermSpace K V) {n : ℕ} (u w : Fin n → V)
     (hM : (Matrix.of fun a b => H.B (u a) (w b)).det ≠ 0) (t : Fin n → K) :
@@ -978,9 +966,9 @@ lemma gram_solve (H : HermSpace K V) {n : ℕ} (u w : Fin n → V)
   rfl
 
 /- English proof (translation)
-Establish `hu : IsUnit (Matrix.of fun a b => H.B (u a) (w b)).det` using `isUnit_iff_ne_zero.2 hM`. Establish `h1 : Matrix.vecMul c (Matrix.of fun a b => H.B (u a) (w b)) = 0`. Use function extensionality and compare the values at `b`. Use `show _ = (0 : K)`. Rewrite using `[← h b, B_sum_left]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `h2` using `congrArg (fun y => Matrix.vecMul y (Matrix.of fun a b => H.B (u a) (w b))⁻¹) h1`. Simplify `h2` using `[Matrix.vecMul_vecMul, Matrix.mul_nonsing_inv _ hu]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 lemma gram_inj (H : HermSpace K V) {n : ℕ} (u w : Fin n → V)
     (hM : (Matrix.of fun a b => H.B (u a) (w b)).det ≠ 0) (c : Fin n → K)
@@ -995,7 +983,7 @@ lemma gram_inj (H : HermSpace K V) {n : ℕ} (u w : Fin n → V)
   simpa [Matrix.vecMul_vecMul, Matrix.mul_nonsing_inv _ hu] using h2
 
 /- English proof (translation)
-Take `⟨c, hc, hc0⟩` from `Matrix.exists_vecMul_eq_zero_iff.2 hM`. Use `⟨c, hc, fun b => ?_⟩` and prove the remaining obligations. Rewrite using `[B_sum_left]`. Conclude with `congrFun hc0 b`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma gram_zero (H : HermSpace K V) {n : ℕ} (u w : Fin n → V)
     (hM : (Matrix.of fun a b => H.B (u a) (w b)).det = 0) :
@@ -1012,7 +1000,7 @@ lemma Dl_eq (F F' : FlagD H r) (l : ℕ) (hl : l ≤ r + 1) :
     Dl F F' l hl = (Matrix.of fun a b : Fin l => H.B (F.e (Fin.castLE hl a)) (F'.e (Fin.castLE hl b))).det := rfl
 
 /- English proof (translation)
-Rewrite using `[Dl_eq, Dl_eq, ← Matrix.det_conjTranspose]`. Use `congr 1`. Use extensionality with `a b`. Simplify using `[Matrix.conjTranspose_apply, H.herm]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma Dl_swap (F F' : FlagD H r) (l : ℕ) (hl : l ≤ r + 1) : Dl F' F l hl = star (Dl F F' l hl) := by
   rw [Dl_eq, Dl_eq, ← Matrix.det_conjTranspose]
@@ -1021,7 +1009,7 @@ lemma Dl_swap (F F' : FlagD H r) (l : ℕ) (hl : l ≤ r + 1) : Dl F' F l hl = s
   simp [Matrix.conjTranspose_apply, H.herm]
 
 /- English proof (translation)
-Rewrite `hD` using `[Dl_eq]`. Take `⟨c, hc⟩` from `gram_solve H (fun a : Fin j => F.e (Fin.castLE (hj.trans (Nat.le_succ r)) a)) (fun b : Fin j => F'.e (Fin.castLE (hj.trans (Nat.le_succ r)) b)) hD t`. Conclude with `⟨_, ((mem_Xa_iff F) hj).2 ⟨c, rfl⟩, hc⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma Dl_solveL (F F' : FlagD H r) {j : ℕ} (hj : j ≤ r) (hD : Dl F F' j (hj.trans (Nat.le_succ r)) ≠ 0)
     (t : Fin j → K) : ∃ x ∈ F.Xa j, ∀ b : Fin j, H.B x (F'.e (Fin.castLE (hj.trans (Nat.le_succ r)) b)) = t b := by
@@ -1031,7 +1019,7 @@ lemma Dl_solveL (F F' : FlagD H r) {j : ℕ} (hj : j ≤ r) (hD : Dl F F' j (hj.
   exact ⟨_, ((mem_Xa_iff F) hj).2 ⟨c, rfl⟩, hc⟩
 
 /- English proof (translation)
-Rewrite `hD` using `[Dl_eq]`. Take `⟨c, rfl⟩` from `((mem_Xa_iff F) hj).1 hx`. Establish `hc` using `gram_inj H (fun a : Fin j => F.e (Fin.castLE (hj.trans (Nat.le_succ r)) a)) (fun b : Fin j => F'.e (Fin.castLE (hj.trans (Nat.le_succ r)) b)) hD c (fun b => h _ ((e_mem_Xa F') ⟨b.val, by have := b.isLt; omega⟩ b.isLt))`. Rewrite using `[hc]`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma Dl_injL (F F' : FlagD H r) {j : ℕ} (hj : j ≤ r) (hD : Dl F F' j (hj.trans (Nat.le_succ r)) ≠ 0)
     {x : V} (hx : x ∈ F.Xa j) (h : ∀ u ∈ F'.Xa j, H.B x u = 0) : x = 0 := by
@@ -1044,11 +1032,9 @@ lemma Dl_injL (F F' : FlagD H r) {j : ℕ} (hj : j ≤ r) (hD : Dl F F' j (hj.tr
   simp
 
 /- English proof (translation)
-Rewrite `hD` using `[Dl_eq]`. Take `⟨c, hc, hcb⟩` from `gram_zero H (fun a : Fin j => F.e (Fin.castLE (hj.trans (Nat.le_succ r)) a)) (fun b : Fin j => F'.e (Fin.castLE (hj.trans (Nat.le_succ r)) b)) hD`. Use `⟨_, ((mem_Xa_iff F) hj).2 ⟨c, rfl⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Apply `hc` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use function extensionality and compare the values at `a`. Conclude with `Fintype.linearIndependent_iff.1 ((indep_le F) hj) c h0 a`. Introduce `u hu`. Take `⟨d, rfl⟩` from `((mem_Xa_iff F') hj).1 hu`. Rewrite using `[map_sum]`.
-
-Conclude with `Finset.sum_eq_zero fun b _ => by rw [HermSpace_B_smul_right_eq_star_mul, hcb b, mul_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma Dl_zeroL (F F' : FlagD H r) {j : ℕ} (hj : j ≤ r) (hD : Dl F F' j (hj.trans (Nat.le_succ r)) = 0) :
     ∃ x ∈ F.Xa j, x ≠ 0 ∧ ∀ u ∈ F'.Xa j, H.B x u = 0 := by
@@ -1067,23 +1053,23 @@ lemma Dl_zeroL (F F' : FlagD H r) {j : ℕ} (hj : j ≤ r) (hD : Dl F F' j (hj.t
     exact Finset.sum_eq_zero fun b _ => by rw [HermSpace_B_smul_right_eq_star_mul, hcb b, mul_zero]
 
 /- English proof (translation)
-Unfold `Formalism.HermitianLatticeCounting.S6.II`. Conclude with `inf_comm _ _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma II_comm (F F' : FlagD H r) : II F' F = II F F' := by
   unfold Formalism.HermitianLatticeCounting.S6.II
   exact inf_comm _ _
 
 /- English proof (translation)
-Unfold `Formalism.HermitianLatticeCounting.S6.V0`. Rewrite using `[sup_comm F'.X, Set.pair_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma jointSpan_comm (F F' : FlagD H r) : V0 F' F = V0 F F' := by
   unfold Formalism.HermitianLatticeCounting.S6.V0
   rw [sup_comm F'.X, Set.pair_comm]
 
 /- English proof (translation)
-Introduce `u hu`. Unfold `Formalism.HermitianLatticeCounting.S6.V0 at hu`. Use `perp_sup H (S := F.X ⊔ F'.X) (T := Submodule.span K {F.z, F'.z}) (perp_sup H h1 h2) ?_ u hu` and prove the remaining obligations. Apply `perp_span H` to reduce the goal to its premises. Introduce `s hs`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `hs with rfl | hs` into its components or cases. Conclude with `h3`. Rewrite using `[Set.mem_singleton_iff.1 hs]`. Conclude with `h4`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma pairing_eq_zero_of_mem_jointSpan (F F' : FlagD H r) {v : V} (h1 : ∀ u ∈ F.X, H.B u v = 0) (h2 : ∀ u ∈ F'.X, H.B u v = 0)
     (h3 : H.B F.z v = 0) (h4 : H.B F'.z v = 0) : ∀ u ∈ V0 F F', H.B u v = 0 := by
@@ -1099,32 +1085,32 @@ lemma pairing_eq_zero_of_mem_jointSpan (F F' : FlagD H r) {v : V} (h1 : ∀ u �
     exact h4
 
 /- English proof (translation)
-Unfold `Formalism.HermitianLatticeCounting.S6.V0`. Conclude with `le_sup_of_le_left le_sup_left`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma isotropicSpan_le_jointSpan_left (F F' : FlagD H r) : F.X ≤ V0 F F' := by
   unfold Formalism.HermitianLatticeCounting.S6.V0
   exact le_sup_of_le_left le_sup_left
 /- English proof (translation)
-Unfold `Formalism.HermitianLatticeCounting.S6.V0`. Conclude with `le_sup_of_le_left le_sup_right`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma isotropicSpan_le_jointSpan_right (F F' : FlagD H r) : F'.X ≤ V0 F F' := by
   unfold Formalism.HermitianLatticeCounting.S6.V0
   exact le_sup_of_le_left le_sup_right
 /- English proof (translation)
-Unfold `Formalism.HermitianLatticeCounting.S6.V0`. Conclude with `Submodule.mem_sup_right (Submodule.subset_span (Set.mem_insert _ _))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma lastVector_mem_jointSpan_left (F F' : FlagD H r) : F.z ∈ V0 F F' := by
   unfold Formalism.HermitianLatticeCounting.S6.V0
   exact Submodule.mem_sup_right (Submodule.subset_span (Set.mem_insert _ _))
 /- English proof (translation)
-Unfold `Formalism.HermitianLatticeCounting.S6.V0`. Conclude with `Submodule.mem_sup_right (Submodule.subset_span (Set.mem_insert_of_mem _ rfl))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma lastVector_mem_jointSpan_right (F F' : FlagD H r) : F'.z ∈ V0 F F' := by
   unfold Formalism.HermitianLatticeCounting.S6.V0
   exact Submodule.mem_sup_right (Submodule.subset_span (Set.mem_insert_of_mem _ rfl))
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_succ_row A (Fin.last m), Fin.sum_univ_castSucc]`. Simplify using `only [h, mul_zero, zero_mul, Finset.sum_const_zero, zero_add, Fin.succAbove_last, Fin.val_last]`. Rewrite using `[show ((-1 : R) ^ (m + m)) = 1 from Even.neg_one_pow ⟨m, rfl⟩, one_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem det_eq_last_mul_det_submatrix_of_last_row_eq_zero {R : Type} [CommRing R] {m : ℕ}
     (A : Matrix (Fin (m + 1)) (Fin (m + 1)) R) (h : ∀ j : Fin m, A (Fin.last m) j.castSucc = 0) :
@@ -1134,7 +1120,7 @@ private theorem det_eq_last_mul_det_submatrix_of_last_row_eq_zero {R : Type} [Co
   rw [show ((-1 : R) ^ (m + m)) = 1 from Even.neg_one_pow ⟨m, rfl⟩, one_mul]
 
 /- English proof (translation)
-Establish `h4 : H.B (F'.z - c • F.z) v = 0` using `perp_sup H h1 h2 _ hz`. Rewrite `h4` using `[HermSpace_B_sub_left, HermSpace_B_smul_left, h3, mul_zero, sub_zero]`. Conclude with `h4`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma pairing_lastVector_right_eq_zero (F F' : FlagD H r) {c : K} (hz : F'.z - c • F.z ∈ F.X ⊔ F'.X) {v : V}
     (h1 : ∀ u ∈ F.X, H.B u v = 0) (h2 : ∀ u ∈ F'.X, H.B u v = 0) (h3 : H.B F.z v = 0) :
@@ -1146,35 +1132,31 @@ lemma pairing_lastVector_right_eq_zero (F F' : FlagD H r) {c : K} (hz : F'.z - c
 end Gram
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ H r F F' hD`. Establish `hD' : Formalism.HermitianLatticeCounting.S6.Dl F' F r (Nat.le_succ r) ≠ 0`. Rewrite using `[Dl_swap]`. Conclude with `fun h => hD (star_eq_zero.1 h)`. Take `⟨x, hx, hxe⟩` from `Dl_solveL F F' (le_refl r) hD (fun b => H.B F.z (F'.e b.castSucc))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result.
 
-Take `⟨x', hx', hxe'⟩` from `Dl_solveL F' F (le_refl r) hD' (fun a => H.B F'.z (F.e a.castSucc))`. Establish `hxI : x ∈ F.X` using `hx`. Establish `hxI' : x' ∈ F'.X` using `hx'`. Establish `hxe2 : ∀ b : Fin r, H.B x (F'.e b.castSucc) = H.B F.z (F'.e b.castSucc)` using `fun b => hxe b`. Establish `hxe2' : ∀ a : Fin r, H.B x' (F.e a.castSucc) = H.B F'.z (F.e a.castSucc)` using `fun a => hxe' a`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ∀ w ∈ F.X ⊔ F'.X, H.B w (F.z - x) = 0`. Apply `perp_sup H` to reduce the goal to its premises. Introduce `s hs`. Rewrite using `[HermSpace_B_sub_right, (pairing_isotropicSpan_lastVector F) hs, (X_iso F) hs hxI, sub_zero]`. Conclude with `(perp_X F') (fun b => B_swap0 H (by rw [HermSpace_B_sub_left, hxe2 b, sub_self]))`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ∀ w ∈ F.X ⊔ F'.X, H.B w (F'.z - x') = 0`. Apply `perp_sup H` to reduce the goal to its premises. Conclude with `(perp_X F) (fun a => B_swap0 H (by rw [HermSpace_B_sub_left, hxe2' a, sub_self]))`. Introduce `s hs`. Rewrite using `[HermSpace_B_sub_right, (pairing_isotropicSpan_lastVector F') hs, (X_iso F') hs hxI', sub_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : H.B (F.z - x) (F.z - x) = -F.T`. Rewrite using `[HermSpace_B_sub_left, h1 x (Submodule.mem_sup_left hxI), sub_zero, HermSpace_B_sub_right, (z_X F) hxI, sub_zero]`. Conclude with `(pairing_lastVector_lastVector F)`. Establish `h4 : H.B (F'.z - x') (F'.z - x') = -F'.T`. Rewrite using `[HermSpace_B_sub_left, h2 x' (Submodule.mem_sup_right hxI'), sub_zero, HermSpace_B_sub_right, (z_X F') hxI', sub_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `(pairing_lastVector_lastVector F')`. Take `⟨P, hPdef⟩ : ∃ P : Matrix (Fin (r + 1)) (Fin (r + 1)) K, P = Matrix.of fun a b => H.B (F.e a) (F'.e b)` from `⟨_, rfl⟩`. Establish `hrowdet : ∀ y ∈ F.X, (P.updateRow (Fin.last r) (fun b => H.B y (F'.e b))).det = 0`. Set `f : V →ₗ[K] K` to `{ toFun := fun y => (P.updateRow (Fin.last r) (fun b => H.B y (F'.e b))).det map_add' := fun y y' => by`. Simplify using `only [HermSpace_B_add_left]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `Matrix.det_updateRow_add P (Fin.last r) (fun b => H.B y (F'.e b)) (fun b => H.B y' (F'.e b))`. Use the proof step `map_smul' := fun c y => by`. Simplify using `only [HermSpace_B_smul_left, RingHom.id_apply, smul_eq_mul]`. Conclude with `Matrix.det_updateRow_smul P (Fin.last r) c (fun b => H.B y (F'.e b)) }`. Establish `hle : F.X ≤ LinearMap.ker f` using `by show Submodule.span K ((fun b : Fin r => F.e b.castSucc) '' {b | b.val < r}) ≤ LinearMap.ker f`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, -, rfl⟩`. Rewrite using `[SetLike.mem_coe, LinearMap.mem_ker]`. Use `show (P.updateRow (Fin.last r) (fun b => H.B (F.e a.castSucc) (F'.e b))).det = 0`. Apply `Matrix.det_zero_of_row_eq (Fin.castSucc_ne_last a)` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Matrix.updateRow_self, Matrix.updateRow_ne (Fin.castSucc_ne_last a)]`. Use function extensionality and compare the values at `b`. Simplify using `[hPdef]`. Introduce `y hy`. Conclude with `LinearMap.mem_ker.1 (hle hy)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `hzrow : (fun b => H.B F.z (F'.e b)) = P (Fin.last r)`. Use function extensionality and compare the values at `b`. Simplify using `[hPdef, Formalism.HermitianLatticeCounting.S6.FlagD.z]`. Establish `hQ : (P.updateRow (Fin.last r) (fun b => H.B (F.z - x) (F'.e b))).det = P.det`. Establish `e1 : (fun b => H.B (F.z - x) (F'.e b)) = (fun b => H.B F.z (F'.e b)) + (-1 : K) • (fun b => H.B x (F'.e b))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use function extensionality and compare the values at `b`. Simplify using `only [HermSpace_B_sub_left, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, Matrix.det_updateRow_add, Matrix.det_updateRow_smul, hrowdet x hxI, mul_zero, add_zero, hzrow, Matrix.updateRow_eq_self]`. Establish `hlast : ∀ j : Fin r, (P.updateRow (Fin.last r) (fun b => H.B (F.z - x) (F'.e b))) (Fin.last r) j.castSucc = 0`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `j`. Rewrite using `[Matrix.updateRow_self]`. Conclude with `B_swap0 H (h1 _ (Submodule.mem_sup_right ((e_mem_X F') j)))`. Establish `hsub : (P.updateRow (Fin.last r) (fun b => H.B (F.z - x) (F'.e b))).submatrix Fin.castSucc Fin.castSucc = Matrix.of fun a b : Fin r => H.B (F.e (Fin.castLE (Nat.le_succ r) a)) (F'.e (Fin.castLE (Nat.le_succ r) b))`. Use extensionality with `a b`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `simp [hPdef, Matrix.updateRow_ne (Fin.castSucc_ne_last a)] <;> rfl`. Establish `hP : Formalism.HermitianLatticeCounting.S6.Dl F F' (r + 1) le_rfl = P.det`. Rewrite using `[hPdef]`. Conclude with `Dl_eq F F' (r + 1) le_rfl`. Establish `hLr` using `Dl_eq F F' r (Nat.le_succ r)`.
-
-Establish `hbb : H.B (F.z - x) (F'.e (Fin.last r)) = H.B (F.z - x) (F'.z - x')`. Rewrite using `[HermSpace_B_sub_right H (F.z - x) F'.z x', B_swap0 H (h1 x' (Submodule.mem_sup_right hxI')), sub_zero]`. Both sides reduce to the same expression. Establish `hlm : Formalism.HermitianLatticeCounting.S6.Dl F F' (r + 1) le_rfl = Formalism.HermitianLatticeCounting.S6.Dl F F' r (Nat.le_succ r) * H.B (F.z - x) (F'.z - x')`. Rewrite using `[hP, ← hQ, det_eq_last_mul_det_submatrix_of_last_row_eq_zero _ hlast, hsub, ← hLr, Matrix.updateRow_self, ← hbb]`.
-
-Conclude with `mul_comm _ _`. Use `⟨x, hxI, x', hxI', h1, h2, h3, h4, hlm, ?_⟩` and prove the remaining obligations. Unfold `Formalism.HermitianLatticeCounting.S6.Gval`. Rewrite using `[hlm, star_mul']`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem normalFormMinorNeZero : Formalism.HermitianLatticeCounting.S6.NFCaseB := by
   intro K V _ _ _ _ H r F F' hD
@@ -1270,25 +1252,23 @@ theorem normalFormMinorNeZero : Formalism.HermitianLatticeCounting.S6.NFCaseB :=
   ring
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ H r F F' hA hA' hm hDr hg`. Establish `hD : Formalism.HermitianLatticeCounting.S6.Dl F F' (r + 1) le_rfl = 0`. Unfold `Formalism.HermitianLatticeCounting.S6.Gval at hg`. Rewrite `hg` using `[hDr, star_zero, mul_zero, mul_zero, sub_zero]`. Break down `mul_eq_zero.1 hg with h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `h`. Conclude with `star_eq_zero.1 h`. Establish `hD' : (Matrix.of fun a b : Fin (r + 1) => H.B (F'.e (Fin.castLE le_rfl a)) (F.e (Fin.castLE le_rfl b))).det = 0`. Rewrite using `[← Dl_eq, Dl_swap, hD, star_zero]`. Take `⟨c, hc, hcb⟩` from `gram_zero H (fun a : Fin (r + 1) => F'.e (Fin.castLE le_rfl a)) (fun b : Fin (r + 1) => F.e (Fin.castLE le_rfl b)) hD'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨y', hy'def⟩ : ∃ y' : V, y' = ∑ a : Fin (r + 1), c a • F'.e (Fin.castLE le_rfl a)` from `⟨_, rfl⟩`. Establish `hy' : ∀ a : Fin (r + 1), H.B (F.e a) y' = 0` using `fun a => by`. Rewrite using `[hy'def]`. Conclude with `B_swap0 H (hcb a)`. Establish `hsplit : y' = (∑ a : Fin r, c a.castSucc • F'.e a.castSucc) + c (Fin.last r) • F'.z`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[hy'def, Fin.sum_univ_castSucc]`. Both sides reduce to the same expression. Establish `hx₀' : ∑ a : Fin r, c a.castSucc • F'.e a.castSucc ∈ F'.X` using `Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ ((e_mem_X F') a)`. Establish `hβ : c (Fin.last r) ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hsplit` using `[h0, zero_smul, add_zero]`. Establish `hyI' : y' ∈ F'.X` using `by rw [hsplit]; exact hx₀'`. Establish `hyI : y' ∈ F.X` using `hA y' hy' ((X_iso F') hyI' hyI')`. Establish `hy0 : y' = 0`. Establish `hmem : y' ∈ Formalism.HermitianLatticeCounting.S6.II F F'` using `Submodule.mem_inf.2 ⟨hyI, hyI'⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `hmem` using `[hm]`. Conclude with `(Submodule.mem_bot K).1 hmem`. Establish `hind` using `Fintype.linearIndependent_iff.1 F'.indep (fun a => c a.castSucc) (by have h5 := hsplit.symm.trans hy0; simpa using h5)`. Apply `hc` to reduce the goal to its premises. Use function extensionality and compare the values at `a`.
+Apply function extensionality and compare values at an arbitrary argument. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Proceed by induction on `a using Fin.lastCases with`. Consider the case `last => exact h0`. Consider the case `cast b => exact hind b`. Take `⟨x, hx, hx0, hxu⟩` from `Dl_zeroL F F' (le_refl r) hDr`. Establish `hγ : H.B x F'.z ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hγ`. Establish `hxF' : x ∈ F'.X`. Apply `hA' x` to reduce the goal to its premises. Introduce `a`. Apply `B_swap0 H` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Proceed by induction on `a using Fin.lastCases with`. Consider the case `last => exact hγ`. Consider the case `cast b => exact hxu _ ((e_mem_X F') b)`. Conclude with `(X_iso F) hx hx`. Establish `hmem : x ∈ Formalism.HermitianLatticeCounting.S6.II F F'` using `Submodule.mem_inf.2 ⟨hx, hxF'⟩`.
-
-Rewrite `hmem` using `[hm]`. Conclude with `hx0 ((Submodule.mem_bot K).1 hmem)`. Establish `h1 : H.B x y' = 0` using `(perp_X F) (fun b => hy' b.castSucc) x hx`. Rewrite `h1` using `[hsplit, HermSpace_B_add_right, HermSpace_B_smul_right_eq_star_mul, hxu _ hx₀', zero_add]`. Conclude with `(mul_ne_zero (star_ne_zero.2 hβ) hγ) h1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normalFormDegenerateImpossible : Formalism.HermitianLatticeCounting.S6.NFCaseC := by
   intro K V _ _ _ _ H r F F' hA hA' hm hDr hg
@@ -1347,17 +1327,15 @@ theorem normalFormDegenerateImpossible : Formalism.HermitianLatticeCounting.S6.N
   exact (mul_ne_zero (star_ne_zero.2 hβ) hγ) h1
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ H r F F' j hj c hA' hb hI' hz hD`. Take `⟨x, hx, hx0, hxu⟩` from `Dl_zeroL F F' hj hD`. Establish `hxI : x ∈ F.X` using `(Xa_le_X F) j hx`. Establish `hxI' : ∀ u ∈ F'.X, H.B x u = 0`. Rewrite using `[hI']`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `u hu`. Take `⟨y, hy, m, hm, rfl⟩` from `Submodule.mem_sup.1 hu`. Rewrite using `[HermSpace_B_add_right, hxu y hy, (X_iso F) hxI (Submodule.mem_inf.1 hm).1, add_zero]`. Establish `hxS : ∀ u ∈ F.X ⊔ F'.X, H.B u x = 0`. Apply `perp_sup H` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `u hu`. Conclude with `(X_iso F) hu hxI`. Introduce `u hu`. Conclude with `B_swap0 H (hxI' u hu)`. Establish `hxz' : H.B x F'.z = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `B_swap0 H (hxS _ hz)`. Rewrite `h1` using `[HermSpace_B_sub_right, HermSpace_B_smul_right_eq_star_mul, (pairing_isotropicSpan_lastVector F) hxI, mul_zero, sub_zero]`. Conclude with `h1`. Establish `hxF' : x ∈ F'.X`. Apply `hA' x` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Proceed by induction.
 
-Introduce `a`. Apply `B_swap0 H` to reduce the goal to its premises. Proceed by induction on `a using Fin.lastCases with`. Consider the case `last => exact hxz'`. Consider the case `cast b => exact hxI' _ ((e_mem_X F') b)`.
-
-Conclude with `(X_iso F) hxI hxI`. Establish `hmem : x ∈ Formalism.HermitianLatticeCounting.S6.II F F' ⊓ F.Xa j` using `Submodule.mem_inf.2 ⟨Submodule.mem_inf.2 ⟨hxI, hxF'⟩, hx⟩`. Rewrite `hmem` using `[hb]`. Conclude with `hx0 ((Submodule.mem_bot K).1 hmem)`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem leadingMinorNeZero : Formalism.HermitianLatticeCounting.S6.NFDj := by
   intro K V _ _ _ _ H r F F' j hj c hA' hb hI' hz hD
@@ -1391,15 +1369,15 @@ theorem leadingMinorNeZero : Formalism.HermitianLatticeCounting.S6.NFDj := by
   exact hx0 ((Submodule.mem_bot K).1 hmem)
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ H r F F' j hj c _ _ hz _`. Take `⟨u, hu, u', hu', hsum⟩` from `Submodule.mem_sup.1 hz`. Take `⟨p, hp⟩ : ∃ p : V, p = c • F.z + u` from `⟨_, rfl⟩`. Establish `hz' : F'.z = p + u'`. Rewrite using `[hp, add_assoc, hsum]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Establish `hpp : H.B p p = -(c * star c * F.T)`. Rewrite using `[hp]`. Simplify using `only [HermSpace_B_add_left, HermSpace_B_add_right, HermSpace_B_smul_left, HermSpace_B_smul_right_eq_star_mul, (pairing_lastVector_lastVector F), (z_X F) hu, (pairing_isotropicSpan_lastVector F) hu, (X_iso F) hu hu]`. Expand and normalize the polynomial expressions, which then agree.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hu'z' : H.B u' F'.z = 0` using `(pairing_isotropicSpan_lastVector F') hu'`. Establish `hu'u' : H.B u' u' = 0` using `(X_iso F') hu' hu'`. Establish `hu'p : H.B u' p = 0`. Establish `hp' : p = F'.z - u'`. Rewrite using `[hz']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[hp', HermSpace_B_sub_right, hu'z', hu'u', sub_zero]`. Establish `hpu' : H.B p u' = 0` using `B_swap0 H hu'p`. Establish `h1 : H.B F'.z F'.z = -F'.T` using `(pairing_lastVector_lastVector F')`. Rewrite `h1` using `[hz', HermSpace_B_add_left, HermSpace_B_add_right, HermSpace_B_add_right, hpp, hpu', hu'p, hu'u']`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take the linear combination `-h1`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem normSqScalarMulEq : Formalism.HermitianLatticeCounting.S6.NFAbsC := by
   intro K V _ _ _ _ H r F F' j hj c _ _ hz _
@@ -1432,9 +1410,9 @@ variable {K : Type} [Field K] [StarRing K] {V : Type} [AddCommGroup V] [Module K
   {H : HermSpace K V} {r : ℕ}
 
 /- English proof (translation)
-Unfold `Formalism.HermitianLatticeCounting.S6.V0`. Apply `le_antisymm` to reduce the goal to its premises. Use `sup_le le_sup_left ?_` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`. Introduce `s hs`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `hs with rfl | hs` into its components or cases. Conclude with `Submodule.mem_sup_right (Submodule.mem_span_singleton_self _)`. Rewrite using `[Set.mem_singleton_iff.1 hs, ← sub_add_cancel F'.z (c • F.z)]`. Conclude with `Submodule.add_mem _ (Submodule.mem_sup_left hz) (Submodule.mem_sup_right (Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self _)))`. Conclude with `sup_le_sup_left (Submodule.span_mono (Set.singleton_subset_iff.2 (Set.mem_insert _ _))) _`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma jointSpan_eq (F F' : FlagD H r) {c : K} (hz : F'.z - c • F.z ∈ F.X ⊔ F'.X) :
     V0 F F' = (F.X ⊔ F'.X) ⊔ K ∙ F.z := by
@@ -1451,7 +1429,7 @@ lemma jointSpan_eq (F F' : FlagD H r) {c : K} (hz : F'.z - c • F.z ∈ F.X ⊔
   · exact sup_le_sup_left (Submodule.span_mono (Set.singleton_subset_iff.2 (Set.mem_insert _ _))) _
 
 /- English proof (translation)
-Introduce `h`. Apply `F.hT` to reduce the goal to its premises. Establish `h1 : H.B (F.e (Fin.last r)) (F.e (Fin.last r)) = -F.T` using `F.zz`. Rewrite `h1` using `[show F.e (Fin.last r) = 0 from h, HermSpace_B_zero_left]`. Conclude with `neg_eq_zero.1 h1.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma z_ne_zero (F : FlagD H r) : F.z ≠ 0 := by
   intro h
@@ -1461,7 +1439,7 @@ lemma z_ne_zero (F : FlagD H r) : F.z ≠ 0 := by
   exact neg_eq_zero.1 h1.symm
 
 /- English proof (translation)
-Take `⟨hxF, hxF'⟩` from `Submodule.mem_inf.1 hx`. Conclude with `pairing_eq_zero_of_mem_jointSpan F F' (fun u hu => (X_iso F) hu hxF) (fun u hu => (X_iso F') hu hxF') ((z_X F) hxF) ((z_X F') hxF')`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 lemma pairing_jointSpan_isotropicMeet (F F' : FlagD H r) {x : V} (hx : x ∈ II F F') : ∀ w ∈ V0 F F', H.B w x = 0 := by
   obtain ⟨hxF, hxF'⟩ := Submodule.mem_inf.1 hx
@@ -1472,35 +1450,31 @@ lemma pairing_jointSpan_isotropicMeet (F F' : FlagD H r) {x : V} (hx : x ∈ II 
 end V0
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ _ H r F F' j hj c hA' hb hb' hI hI' hz hD`. Establish `hJ` using `jointSpan_eq F F' hz`. Establish `hmI : Formalism.HermitianLatticeCounting.S6.II F F' ≤ F.X` using `inf_le_left`. Establish `hc3 : ∀ x ∈ F.X, (∀ w ∈ Formalism.HermitianLatticeCounting.S6.V0 F F', H.B w x = 0) ↔ x ∈ Formalism.HermitianLatticeCounting.S6.II F F'`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hw`. Establish `hxF' : x ∈ F'.X`. Apply `hA' x` to reduce the goal to its premises. Introduce `a`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `a using Fin.lastCases with`. Consider the case `last => exact hw _ (lastVector_mem_jointSpan_right F F')`. Consider the case `cast b => exact hw _ (isotropicSpan_le_jointSpan_right F F' ((e_mem_X F') b))`. Conclude with `(X_iso F) hx hx`. Conclude with `Submodule.mem_inf.2 ⟨hx, hxF'⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `hm w hw`. Conclude with `pairing_jointSpan_isotropicMeet F F' hm w hw`. Use `⟨fun v hv => ⟨fun hvw => ?_, fun hm w hw => B_swap0 H (pairing_jointSpan_isotropicMeet F F' hm w hw)⟩, ?_, hc3⟩` and prove the remaining obligations. Establish `hw' : ∀ w ∈ Formalism.HermitianLatticeCounting.S6.V0 F F', H.B w v = 0` using `fun w hw => B_swap0 H (hvw w hw)`. Rewrite `hv` using `[hJ]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy, t, ht, rfl⟩` from `Submodule.mem_sup.1 hv`. Take `⟨β, rfl⟩` from `Submodule.mem_span_singleton.1 ht`. Take `⟨u, hu, u', hu', rfl⟩` from `Submodule.mem_sup.1 hy`. Rewrite `hu'` using `[hI']`. Take `⟨s', hs', m, hm, rfl⟩` from `Submodule.mem_sup.1 hu'`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Establish `hD' : Formalism.HermitianLatticeCounting.S6.Dl F' F j (hj.trans (Nat.le_succ r)) ≠ 0`. Rewrite using `[Dl_swap]`. Conclude with `fun h0 => hD (star_eq_zero.1 h0)`. Establish `hs'0 : s' = 0`. Apply `Dl_injL F' F hj hD' hs'` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x hx`. Establish `hxI : x ∈ F.X` using `(Xa_le_X F) j hx`. Establish `h1` using `hw' x (isotropicSpan_le_jointSpan_left F F' hxI)`. Rewrite `h1` using `[HermSpace_B_add_right, HermSpace_B_add_right, HermSpace_B_add_right, HermSpace_B_smul_right_eq_star_mul, (X_iso F) hxI hu, (X_iso F) hxI (hmI hm), (pairing_isotropicSpan_lastVector F) hxI]`. Conclude with `B_swap0 H (by simpa using h1)`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Substitute `hs'0` using the available equality. Establish `hβ : β = 0`. Establish `h1` using `hw' F.z (lastVector_mem_jointSpan_left F F')`. Rewrite `h1` using `[zero_add, HermSpace_B_add_right, HermSpace_B_add_right, HermSpace_B_smul_right_eq_star_mul, (z_X F) hu, (z_X F) (hmI hm), (pairing_lastVector_lastVector F)]`. Establish `h2 : star β * F.T = 0` using `by linear_combination -h1`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `mul_eq_zero.1 h2 with h3 | h3` into its components or cases. Conclude with `star_eq_zero.1 h3`. Conclude with `absurd h3 F.hT`. Substitute `hβ` using the available equality. Rewrite using `[zero_smul, add_zero, zero_add]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hw'` using `[zero_smul, add_zero, zero_add]`. Conclude with `(hc3 _ (Submodule.add_mem _ hu (hmI hm))).1 hw'`. Establish `hII : F.X ⊔ F'.X = F.X ⊔ F'.Xa j`. Apply `le_antisymm` to reduce the goal to its premises. Use `sup_le le_sup_left ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[hI']`. Conclude with `sup_le le_sup_right (hmI.trans le_sup_left)`. Conclude with `sup_le le_sup_left (le_sup_of_le_right ((Xa_le_X F') j))`. Establish `hinf1 : F.X ⊓ F'.Xa j = ⊥`. Rewrite using `[eq_bot_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Introduce `y hy`. Take `⟨hy1, hy2⟩` from `Submodule.mem_inf.1 hy`. Establish `hmem : y ∈ Formalism.HermitianLatticeCounting.S6.II F F' ⊓ F'.Xa j` using `Submodule.mem_inf.2 ⟨Submodule.mem_inf.2 ⟨hy1, (Xa_le_X F') j hy2⟩, hy2⟩`. Rewrite `hmem` using `[hb']`. Then use the resulting hypothesis. Establish `hfr1 : Module.finrank K ↥(F.X ⊔ F'.X) = r + j`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Establish `h1` using `Submodule.finrank_sup_add_finrank_inf_eq F.X (F'.Xa j)`. Rewrite `h1` using `[hinf1, finrank_bot, (finrank_X F), (finrank_Xa F') hj, ← hII]`. Use linear arithmetic over natural numbers and integers. Establish `hinf2 : (F.X ⊔ F'.X) ⊓ (K ∙ F.z) = ⊥`. Rewrite using `[eq_bot_iff]`.
-
-Introduce `y hy`. Take `⟨hy1, hy2⟩` from `Submodule.mem_inf.1 hy`. Take `⟨a, rfl⟩` from `Submodule.mem_span_singleton.1 hy2`. Distinguish the cases in `ha : a = 0`. Rewrite using `[ha, zero_smul]`.
-
-Conclude with `Submodule.zero_mem _`. Conclude with `absurd ((Submodule.smul_mem_iff _ ha).1 hy1) (lastVectorNotMemSup K V H r F F')`. Establish `h2` using `Submodule.finrank_sup_add_finrank_inf_eq (F.X ⊔ F'.X) (K ∙ F.z)`. Rewrite `h2` using `[hinf2, finrank_bot, hfr1, finrank_span_singleton (z_ne_zero F), ← hJ]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem jointSpanRadical : Formalism.HermitianLatticeCounting.S6.JointSpanRadical := by
   intro K V _ _ _ _ _ H r F F' j hj c hA' hb hb' hI hI' hz hD
@@ -1584,13 +1558,13 @@ theorem jointSpanRadical : Formalism.HermitianLatticeCounting.S6.JointSpanRadica
     omega
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ H r F F' j hj c hI' hz hD w hw`. Take `⟨x, hx, hxt⟩` from `Dl_solveL F F' hj hD (fun b => H.B w (F'.e (Fin.castLE (hj.trans (Nat.le_succ r)) b)))`. Establish `hxI : x ∈ F.X` using `(Xa_le_X F) j hx`. Use `⟨x, hxI, ?_⟩` and prove the remaining obligations. Establish `hwI : ∀ u ∈ F.X, H.B u w = 0` using `(perp_X F) (fun b => hw b.castSucc)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : ∀ u ∈ F.X, H.B u (w - x) = 0` using `fun u hu => by`. Rewrite using `[HermSpace_B_sub_right, hwI u hu, (X_iso F) hu hxI, sub_zero]`. Establish `h3 : H.B F.z (w - x) = 0`. Rewrite using `[HermSpace_B_sub_right, (z_X F) hxI, sub_zero]`. Conclude with `hw (Fin.last r)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ∀ u ∈ F'.X, H.B u (w - x) = 0`. Rewrite using `[hI']`. Apply `perp_sup H` to reduce the goal to its premises. Apply `(perp_Xa F')` to reduce the goal to its premises. Introduce `b hb`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h4 : H.B x (F'.e b.castSucc) = H.B w (F'.e b.castSucc)` using `hxt ⟨b.val, hb⟩`. Rewrite using `[HermSpace_B_sub_right, ← H.herm x, h4, H.herm, sub_self]`. Introduce `u hu`. Conclude with `h1 u (Submodule.mem_inf.1 hu).1`. Conclude with `pairing_eq_zero_of_mem_jointSpan F F' h1 h2 h3 (pairing_lastVector_right_eq_zero F F' hz h1 h2 h3)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem jointSpanComplement : Formalism.HermitianLatticeCounting.S6.JointSpanComplement := by
   intro K V _ _ _ _ H r F F' j hj c hI' hz hD w hw
@@ -1616,31 +1590,27 @@ theorem jointSpanComplement : Formalism.HermitianLatticeCounting.S6.JointSpanCom
   exact pairing_eq_zero_of_mem_jointSpan F F' h1 h2 h3 (pairing_lastVector_right_eq_zero F F' hz h1 h2 h3)
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ H r F F' c hS`. Take `⟨hc, -, hlead, hex, -, -, hI, hI', hz⟩` from `id hS`. Rewrite `hI` using `[(Xa_zero F), bot_sup_eq]`. Rewrite `hI'` using `[(Xa_zero F'), bot_sup_eq]`. Establish `hII : F'.X = F.X` using `hI'.trans hI.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hsb : ∀ n, F'.Xa n = F.Xa n`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => rw [(Xa_zero F), (Xa_zero F')]`. Consider the case `succ n ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Distinguish the cases in `hnr : n < r`. Establish `hsF : F.Xa (n + 1) = F.Xa n ⊔ K ∙ F.e (⟨n, hnr⟩ : Fin r).castSucc` using `(Xa_succ F) ⟨n, hnr⟩`. Establish `hsF' : F'.Xa (n + 1) = F'.Xa n ⊔ K ∙ F'.e (⟨n, hnr⟩ : Fin r).castSucc` using `(Xa_succ F') ⟨n, hnr⟩`. Take `⟨x, hxm, al, al', hF, hF'⟩` from `hex ⟨n, hnr⟩ (Nat.zero_le _)`. Take `⟨hal, hxa⟩` from `id hF`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hal', hxa'⟩` from `id hF'`. Establish `hx1 : x ∈ F.Xa (n + 1)` using `level_mem F (a := ⟨n, hnr⟩) (al := al) hF`. Establish `hx1' : x ∈ F'.Xa (n + 1)` using `level_mem F' (a := ⟨n, hnr⟩) (al := al') hF'`. Establish `hxa2 : x - al • F.e (⟨n, hnr⟩ : Fin r).castSucc ∈ F'.Xa n`. Rewrite using `[ih]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hxa`. Establish `hxa2' : x - al' • F'.e (⟨n, hnr⟩ : Fin r).castSucc ∈ F.Xa n`. Rewrite using `[← ih]`. Conclude with `hxa'`. Apply `le_antisymm` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hsF']`. Use `sup_le ((le_of_eq ih).trans ((Xa_mono F) (Nat.le_succ n))) ?_` and prove the remaining obligations. Rewrite using `[Submodule.span_singleton_le_iff_mem]`. Establish `h3` using `Submodule.sub_mem _ hx1 ((Xa_mono F) (Nat.le_succ n) hxa2')`. Rewrite `h3` using `[sub_sub_cancel]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(Submodule.smul_mem_iff _ hal').1 h3`. Rewrite using `[hsF]`. Use `sup_le ((le_of_eq ih.symm).trans ((Xa_mono F') (Nat.le_succ n))) ?_` and prove the remaining obligations. Rewrite using `[Submodule.span_singleton_le_iff_mem]`. Establish `h3` using `Submodule.sub_mem _ hx1' ((Xa_mono F') (Nat.le_succ n) hxa2)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h3` using `[sub_sub_cancel]`. Conclude with `(Submodule.smul_mem_iff _ hal).1 h3`. Use `push_neg at hnr`. Rewrite using `[Xa_of_ge F (a := n + 1) (by omega), Xa_of_ge F' (a := n + 1) (by omega), hII]`. Establish `hstep : ∀ a : Fin r, F'.e a.castSucc - c • F.e a.castSucc ∈ F.Xa a.val`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `a`. Take `⟨x, hxm, al, al', hF, hF'⟩` from `hex a (Nat.zero_le _)`. Establish `hx0 : x ≠ 0` using `(level_ne_zero F) hF`. Take `⟨b, bl, bl', hFb, hF'b, -, hbl⟩` from `hlead x hxm hx0`. Take `⟨hab, hal_eq⟩` from `(level_unique F) hF hFb`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨-, hal'_eq⟩` from `(level_unique F') hF' hF'b`. Take `⟨hal, hxa⟩` from `id hF`. Take `⟨hal', hxa'⟩` from `id hF'`. Establish `hxa2' : x - al' • F'.e a.castSucc ∈ F.Xa a.val`. Rewrite using `[← hsb]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hxa'`. Establish `h3` using `Submodule.sub_mem _ hxa hxa2'`. Establish `hcal : al = c * al'` using `by rw [hal_eq, hal'_eq]; exact hbl`. Establish `h4 : al' • (F'.e a.castSucc - c • F.e a.castSucc) ∈ F.Xa a.val`. Use `h3 using 1` and compare the differences between its conclusion and the goal.
-
-Rewrite using `[hcal, smul_sub, smul_smul, mul_comm al' c]`. Normalize the expressions using the abelian group laws. Conclude with `(Submodule.smul_mem_iff _ hal').1 h4`. Use `⟨hsb, hstep, ?_⟩` and prove the remaining obligations. Establish `h5` using `hz`.
-
-Rewrite `h5` using `[hII, sup_idem]`. Then use the resulting hypothesis.
+Normalize the expressions using the abelian group laws. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem normalFormZero : Formalism.HermitianLatticeCounting.S6.NFJZero := by
   intro K V _ _ _ _ H r F F' c hS
@@ -1713,7 +1683,7 @@ section Sig
 variable {K U : Type} [Field K] [StarRing K] [AddCommGroup U] [Module K U]
 
 /- English proof (translation)
-Establish `h1 : σ (h x x) = star (σ (h x x))` using `by rw [← hσ, herm]`. Establish `h2` using `congrArg Complex.im h1`. Establish `hs : ∀ z : ℂ, star z = (starRingEnd ℂ) z` using `fun z => rfl`. Rewrite `h2` using `[hs, Complex.conj_im]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma herm_im (σ : K →+* ℂ) (h : U →ₗ[K] U →ₗ⋆[K] K) (hσ : ∀ x : K, σ (star x) = star (σ x))
     (herm : ∀ x y : U, star (h x y) = h y x) (x : U) : (σ (h x x)).im = 0 := by
@@ -1724,7 +1694,7 @@ lemma herm_im (σ : K →+* ℂ) (h : U →ₗ[K] U →ₗ⋆[K] K) (hσ : ∀ x
   linarith
 
 /- English proof (translation)
-Rewrite using `[map_mul, map_mul, hσ]`. Establish `hs : ∀ z : ℂ, star z = (starRingEnd ℂ) z` using `fun z => rfl`. Rewrite using `[hs]`. Simplify using `only [Complex.mul_re, Complex.mul_im, Complex.conj_re, Complex.conj_im, Complex.normSq_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma sig_norm (σ : K →+* ℂ) (hσ : ∀ x : K, σ (star x) = star (σ x)) (a b : K) :
     (σ (a * star a * b)).re = Complex.normSq (σ a) * (σ b).re := by
@@ -1735,21 +1705,21 @@ lemma sig_norm (σ : K →+* ℂ) (hσ : ∀ x : K, σ (star x) = star (σ x)) (
   ring
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hneg`. Use `push_neg at hneg`. Establish `herm0 : ∀ x y : U, h x y = 0 → h y x = 0` using `fun x y hxy => by rw [← herm x y, hxy, star_zero]`. Establish `hzz : h z z ≠ 0`. Introduce `h0`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hzn` using `[h0, map_zero, Complex.zero_re]`. Conclude with `lt_irrefl _ hzn`. Establish `hwz' : h z w = 0` using `herm0 _ _ hwz`. Distinguish the cases in `hz0 : h z z₀ = 0`. Establish `hzN : z ∉ N` using `fun hzN => hzz (hN z hzN z hz)`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `pos z hz hz0 hzN` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨a, ha_def⟩ : ∃ a : K, a = h w z₀` from `⟨_, rfl⟩`. Take `⟨b, hb_def⟩ : ∃ b : K, b = -h z z₀` from `⟨_, rfl⟩`. Establish `hp : a • z + b • w ∈ A` using `A.add_mem (A.smul_mem _ hz) (A.smul_mem _ hw)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hpz0 : h (a • z + b • w) z₀ = 0`. Simplify using `only [map_add, map_smul, LinearMap.add_apply, LinearMap.smul_apply, smul_eq_mul]`. Rewrite using `[ha_def, hb_def]`. Expand and normalize the polynomial expressions, which then agree. Establish `hb : b ≠ 0`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hb_def]`. Conclude with `neg_ne_zero.2 hz0`. Establish `hpN : a • z + b • w ∉ N`. Introduce `hpN`. Establish `h1 : h (a • z + b • w) z = 0` using `hN _ hpN z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [map_add, map_smul, LinearMap.add_apply, LinearMap.smul_apply, smul_eq_mul, hwz, mul_zero, add_zero] at h1`. Establish `ha : a = 0` using `(mul_eq_zero.1 h1).resolve_right hzz`. Apply `hwN` to reduce the goal to its premises. Establish `hw' : w = b⁻¹ • (a • z + b • w)`. Rewrite using `[ha, zero_smul, zero_add, smul_smul, inv_mul_cancel₀ hb, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hw']`. Conclude with `N.smul_mem _ hpN`. Establish `hpos` using `pos _ hp hpz0 hpN`. Establish `hpp : h (a • z + b • w) (a • z + b • w) = a * star a * h z z + b * star b * h w w`. Simplify using `only [map_add, map_smul, LinearMap.add_apply, LinearMap.smul_apply, smul_eq_mul, map_smulₛₗ, starRingEnd_apply, hwz, hwz']`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `hpos` using `[hpp, map_add, Complex.add_re, sig_norm σ hσ, sig_norm σ hσ]`. Establish `h1` using `Complex.normSq_nonneg (σ a)`. Establish `h2` using `Complex.normSq_nonneg (σ b)`. Use polynomial arithmetic with `[mul_nonneg h1 (neg_nonneg.2 hzn.le), mul_nonneg h2 (neg_nonneg.2 hneg)]`.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 lemma negperp_gen (σ : K →+* ℂ) (h : U →ₗ[K] U →ₗ⋆[K] K) (hσ : ∀ x : K, σ (star x) = star (σ x))
     (herm : ∀ x y : U, star (h x y) = h y x) (A N : Submodule K U)
@@ -1801,29 +1771,27 @@ lemma negperp_gen (σ : K →+* ℂ) (h : U →ₗ[K] U →ₗ⋆[K] K) (hσ : �
     nlinarith [mul_nonneg h1 (neg_nonneg.2 hzn.le), mul_nonneg h2 (neg_nonneg.2 hneg)]
 
 /- English proof (translation)
-Establish `hα : h z z ≠ 0`. Introduce `h0`. Rewrite `hzn` using `[h0, map_zero, Complex.zero_re]`. Conclude with `lt_irrefl _ hzn`. Establish `hαs : star (h z z) = h z z` using `herm z z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨β, hβdef⟩ : ∃ β : K, β = h z' z` from `⟨_, rfl⟩`. Establish `hβs : h z z' = star β` using `by rw [hβdef, herm]`. Take `⟨w, hwdef⟩ : ∃ w : U, w = z' - (β / h z z) • z` from `⟨_, rfl⟩`. Establish `hwA : w ∈ A`. Rewrite using `[hwdef]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `A.sub_mem hz' (A.smul_mem _ hz)`. Establish `hwz : h w z = 0`. Rewrite using `[hwdef]`. Simplify using `only [map_sub, map_smul, LinearMap.sub_apply, LinearMap.smul_apply, smul_eq_mul]`. Rewrite using `[← hβdef, div_mul_cancel₀ β hα, sub_self]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hww : h z z * h w w = h z z * h z' z' - β * star β`. Rewrite using `[hwdef]`. Simplify using `only [map_sub, map_smul, LinearMap.sub_apply, LinearMap.smul_apply, smul_eq_mul, map_smulₛₗ, starRingEnd_apply]`. Rewrite using `[← hβdef, hβs, star_div₀, hαs]`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hwwre : 0 ≤ (σ (h w w)).re`. Distinguish the cases in `hwN : w ∈ N`. Rewrite using `[hN w hwN w hwA, map_zero, Complex.zero_re]`. Conclude with `(negperp_gen σ h hσ herm A N hN z₀ hz₀ pos z hz hzn w hwA hwz hwN).le`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `him_zz` using `herm_im σ h hσ herm z`. Establish `him_ww` using `herm_im σ h hσ herm w`. Establish `him_z'z'` using `herm_im σ h hσ herm z'`. Establish `hre_mul : ∀ p q : ℂ, p.im = 0 → q.im = 0 → (p * q).re = p.re * q.re` using `fun p q hp hq => by`. Rewrite using `[Complex.mul_re, hp, hq, mul_zero, sub_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : ∀ t : ℂ, star t = (starRingEnd ℂ) t` using `fun t => rfl`. Establish `hns : (σ β * star (σ β)).re = Complex.normSq (σ β)`. Rewrite using `[hs]`. Simplify using `only [Complex.mul_re, Complex.conj_re, Complex.conj_im, Complex.normSq_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e1` using `congrArg (fun t => (σ t).re) hww`. Simplify using `only [map_mul, map_sub] at e1`. Rewrite `e1` using `[hre_mul _ _ him_zz him_ww, Complex.sub_re, hre_mul _ _ him_zz him_z'z', hσ, hns]`. Establish `hnsq : Complex.normSq (σ (h z z')) = Complex.normSq (σ β)`. Rewrite using `[hβs, hσ, hs, Complex.normSq_conj]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Rewrite using `[hnsq]`. Establish `h3 : (σ (h z z)).re * (σ (h w w)).re ≤ 0` using `mul_nonpos_iff.2 (Or.inr ⟨hzn.le, hwwre⟩)`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `heq`.
+Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h0 : h z z * h w w = 0`. Rewrite using `[hww, heq, hβs, star_star]`. Expand and normalize the polynomial expressions, which then agree. Establish `hw0 : h w w = 0` using `(mul_eq_zero.1 h0).resolve_left hα`. Establish `hwN : w ∈ N`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Assume the negation of the conclusion as `hwN`. Establish `h4` using `negperp_gen σ h hσ herm A N hN z₀ hz₀ pos z hz hzn w hwA hwz hwN`. Rewrite `h4` using `[hw0, map_zero, Complex.zero_re]`. Conclude with `lt_irrefl _ h4`. Use `⟨β / h z z, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← hwdef]`. Conclude with `hwN`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma reverseCS_gen (σ : K →+* ℂ) (h : U →ₗ[K] U →ₗ⋆[K] K) (hσ : ∀ x : K, σ (star x) = star (σ x))
     (herm : ∀ x y : U, star (h x y) = h y x) (A N : Submodule K U)
@@ -1904,7 +1872,7 @@ def perpS (H : HermSpace K V) (S : Submodule K V) : Submodule K V where
   smul_mem' := by intro c a ha s hs; simp [ha s hs]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 lemma mem_perpS (H : HermSpace K V) (S : Submodule K V) (v : V) :
     v ∈ perpS H S ↔ ∀ s ∈ S, H.B s v = 0 := Iff.rfl
@@ -1912,7 +1880,7 @@ lemma mem_perpS (H : HermSpace K V) (S : Submodule K V) (v : V) :
 end Perp
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ σ H r F hpos w hw hww`. Assume the negation of the conclusion as `hwI`. Use `hpos w hw hwI` as an intermediate fact. Rewrite `this` using `[hww, map_zero, Complex.zero_re]`. Conclude with `lt_irrefl _ this`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAnisotropicOfPosDef : Formalism.HermitianLatticeCounting.S6.AnisoOfPosDef := by
   intro K V _ _ _ _ σ H r F hpos w hw hww
@@ -1922,13 +1890,13 @@ theorem isAnisotropicOfPosDef : Formalism.HermitianLatticeCounting.S6.AnisoOfPos
   exact lt_irrefl _ this
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ σ H r F F' hT hP hD`. Take `⟨x, hx, x', hx', h1, -, h3, -, -, -⟩` from `normalFormMinorNeZero K V H r F F' hD`. Unfold `Formalism.HermitianLatticeCounting.S6.SigPerp`. Use `⟨F.z - x, h1, ?_, fun w hw hwz hw0 => ?_⟩` and prove the remaining obligations. Rewrite using `[h3, map_neg, Complex.neg_re]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Apply `hP w` to reduce the goal to its premises. Introduce `a`. Proceed by induction on `a using Fin.lastCases with`. Consider the case `last`.
+Combine the linear equalities and inequalities to obtain the conclusion. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Establish `e : F.e (Fin.last r) = (F.z - x) + x` using `(sub_add_cancel F.z x).symm`. Rewrite using `[e, HermSpace_B_add_left, B_swap0 H hwz, hw x (Submodule.mem_sup_left hx), add_zero]`. Consider the case `cast b => exact hw _ (Submodule.mem_sup_left ((e_mem_X F) b))`. Introduce `hwI`. Apply `hw0` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `Dl_injL F F' (le_refl r) hD hwI (fun u hu => B_swap0 H (hw u (Submodule.mem_sup_right hu)))`.
+A detailed English derivation is pending.
 -/
 theorem signatureOneComplementOfMinorNeZero : Formalism.HermitianLatticeCounting.S6.NFCaseBSig := by
   intro K V _ _ _ _ σ H r F F' hT hP hD
@@ -1950,13 +1918,13 @@ theorem signatureOneComplementOfMinorNeZero : Formalism.HermitianLatticeCounting
         (fun u hu => B_swap0 H (hw u (Submodule.mem_sup_right hu)))
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ σ H r F F' hσ hT hT' hsig hD hg`. Take `⟨x, hx, x', hx', h1, h2, h3, h4, -, h6⟩` from `normalFormMinorNeZero K V H r F F' hD`. Take `⟨z₀, hz₀, hz₀n, hpos⟩` from `id hsig`. Establish `hDD : Formalism.HermitianLatticeCounting.S6.Dl F F' r (Nat.le_succ r) * star (Formalism.HermitianLatticeCounting.S6.Dl F F' r (Nat.le_succ r)) ≠ 0` using `mul_ne_zero hD (star_ne_zero.2 hD)`. Establish `hβ : H.B (F.z - x) (F'.z - x') * star (H.B (F.z - x) (F'.z - x')) = F.T * F'.T`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h6` using `[hg]`. Establish `h7` using `(mul_eq_zero.1 h6.symm).resolve_left hDD`. Take the linear combination `h7`. Establish `hmemA : ∀ y : V, (∀ w ∈ F.X ⊔ F'.X, H.B w y = 0) → y ∈ perpS H (F.X ⊔ F'.X)` using `fun y hy => (mem_perpS H _ y).2 hy`. Take `⟨-, heq⟩` from `reverseCS_gen σ H.B hσ H.herm (perpS H (F.X ⊔ F'.X)) ⊥ (fun n hn u _ => by rw [(Submodule.mem_bot K).1 hn, HermSpace_B_zero_left]) z₀ (hmemA _ hz₀) (fun w hw h5 h7 => hpos w ((mem_perpS H _ w).1 hw) h5 (fun h0 => h7 (by rw [h0]; exact Submodule.zero_mem _))) (F.z - x) (hmemA _ h1 …`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `heq (by rw [h3, h4, hβ]; ring)`. Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `hc0 : F'.z - x' - c • (F.z - x) = 0` using `(Submodule.mem_bot K).1 hc`. Establish `e : F'.z - c • F.z = (F'.z - x' - c • (F.z - x)) + (x' - c • x)`. Rewrite using `[smul_sub]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[e, hc0, zero_add]`. Conclude with `Submodule.sub_mem _ (Submodule.mem_sup_right hx') (Submodule.mem_sup_left (Submodule.smul_mem _ _ hx))`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem existsScalarOfGramDefectZero : Formalism.HermitianLatticeCounting.S6.NFCaseBConcl := by
   intro K V _ _ _ _ σ H r F F' hσ hT hT' hsig hD hg
@@ -1989,15 +1957,15 @@ theorem existsScalarOfGramDefectZero : Formalism.HermitianLatticeCounting.S6.NFC
   exact Submodule.sub_mem _ (Submodule.mem_sup_right hx') (Submodule.mem_sup_left (Submodule.smul_mem _ _ hx))
 
 /- English proof (translation)
-Take `⟨hc, hfr, hlead, hex, hb, hb', hI, hI', hz⟩` from `id hS`. Establish `hminor` using `leadingMinorNeZero K V H r F F' j hj c hA' hb hI' hz`. Establish `hnorm` using `normSqScalarMulEq K V H r F F' j hj c hI hI' hz hminor`. Take `⟨hrad, hfin, hx⟩` from `jointSpanRadical K V H r F F' j hj c hA' hb hb' hI hI' hz hminor`. Establish `hcompl` using `jointSpanComplement K V H r F F' j hj c hI' hz hminor`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hz' : F.z - c⁻¹ • F'.z ∈ F'.X ⊔ F.X`. Rewrite using `[sup_comm]`. Use `Submodule.smul_mem _ (-c⁻¹) hz` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[smul_sub, smul_smul, show -c⁻¹ * c = -1 by rw [neg_mul, inv_mul_cancel₀ hc]]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `only [neg_smul, one_smul]`. Normalize the expressions using the abelian group laws. Establish `hminor' : Formalism.HermitianLatticeCounting.S6.Dl F' F j (hj.trans (Nat.le_succ r)) ≠ 0`. Rewrite using `[Dl_swap]`. Conclude with `fun h0 => hminor (star_eq_zero.1 h0)`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Establish `hb2 : Formalism.HermitianLatticeCounting.S6.II F' F ⊓ F'.Xa j = ⊥` using `by rw [II_comm]; exact hb'`. Establish `hb2' : Formalism.HermitianLatticeCounting.S6.II F' F ⊓ F.Xa j = ⊥` using `by rw [II_comm]; exact hb`. Establish `hI2 : F'.X = F'.Xa j ⊔ Formalism.HermitianLatticeCounting.S6.II F' F` using `by rw [II_comm]; exact hI'`. Establish `hI2' : F.X = F.Xa j ⊔ Formalism.HermitianLatticeCounting.S6.II F' F` using `by rw [II_comm]; exact hI`. Take `⟨-, -, hx'⟩` from `jointSpanRadical K V H r F' F j hj c⁻¹ hA hb2 hb2' hI2 hI2' hz' hminor'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hcompl'` using `jointSpanComplement K V H r F' F j hj c⁻¹ hI2' hz' hminor'`. Rewrite `hx'` using `[jointSpan_comm, II_comm]`. Rewrite `hcompl'` using `[jointSpan_comm]`. Unfold `Formalism.HermitianLatticeCounting.S6.NFFull`. Conclude with `⟨hS, hnorm, hminor, hrad, hfin, hx, hx', hcompl, hcompl'⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 lemma nf_full {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V]
     {H : HermSpace K V} {r : ℕ} (F F' : FlagD H r) (hA : F.Aniso) (hA' : F'.Aniso) (j : ℕ) (hj : j ≤ r)
@@ -2029,19 +1997,19 @@ lemma nf_full {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V] 
   exact ⟨hS, hnorm, hminor, hrad, hfin, hx, hx', hcompl, hcompl'⟩
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ _ σ H r F F' hσ hT hT' hP hP' hrel hg`. Establish `hA` using `isAnisotropicOfPosDef K V σ H r F hP`. Establish `hA'` using `isAnisotropicOfPosDef K V σ H r F' hP'`. Establish `hμ : ∃ μ : K, μ + star μ ≠ 0`. Use `⟨F.T, fun h0 => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `congrArg (fun t => (σ t).re) h0`. Simplify using `only [map_add, hσ, map_zero, Complex.add_re, Complex.zero_re] at h1`. Rewrite `h1` using `[show star (σ F.T) = (starRingEnd ℂ) (σ F.T) from rfl, Complex.conj_re]`. Combine the linear equalities and inequalities to obtain the conclusion. Distinguish the cases in `hm : Formalism.HermitianLatticeCounting.S6.II F F' = ⊥`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Consider separately whether the proposition holds or fails.
 
-Establish `hD : Formalism.HermitianLatticeCounting.S6.Dl F F' r (Nat.le_succ r) ≠ 0` using `fun hD => normalFormDegenerateImpossible K V H r F F' hA hA' hm hD hg`. Establish `hsig` using `signatureOneComplementOfMinorNeZero K V σ H r F F' hT hP hD`. Take `⟨c, hz⟩` from `existsScalarOfGramDefectZero K V σ H r F F' hσ hT hT' hsig hD hg`. Establish `hc : c ≠ 0`. Introduce and unpack `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Apply `lastVectorNotMemSup K V H r F' F` to reduce the goal to its premises. Rewrite using `[sup_comm]`. Simplify using `using hz`. Use `⟨r, le_rfl, c, nf_full F F' hA hA' r le_rfl c ?_⟩` and prove the remaining obligations. Unfold `Formalism.HermitianLatticeCounting.S6.NFShape`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Use `⟨hc, ?_, ?_, ?_, ?_, ?_, ?_, ?_, hz⟩` and prove the remaining obligations. Rewrite using `[hm, finrank_bot, Nat.sub_self]`. Introduce `x hx hx0`. Rewrite `hx` using `[hm]`. Conclude with `absurd ((Submodule.mem_bot K).1 hx) hx0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha`. Conclude with `absurd a.isLt (by omega)`. Rewrite using `[hm, bot_inf_eq]`. Rewrite using `[hm, bot_inf_eq]`. Rewrite using `[hm, sup_bot_eq]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[hm, sup_bot_eq]`. Both sides reduce to the same expression. Take `⟨j, c, hj, hS⟩` from `normalFormMeetNeBot K V H r F F' hμ hrel hm`. Conclude with `⟨j, hj.le, c, nf_full F F' hA hA' j hj.le c hS⟩`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem existsNormalForm : Formalism.HermitianLatticeCounting.S6.NormalForm := by
   intro K V _ _ _ _ _ σ H r F F' hσ hT hT' hP hP' hrel hg
@@ -2090,11 +2058,11 @@ def Esing (p : n) (s : R) : Matrix n n R := Matrix.of fun a b => if a = p ∧ b 
 end DetBlocks
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ H x v c hxx hxv hc`. Establish `hvx : H.B v x = 0` using `B_swap0 H hxv`. Establish `hcs : star c = -H.B v v - c` using `by linear_combination hc`. Use `⟨fun y y' => ?_, fun y => ?_, fun y => ?_⟩` and prove the remaining obligations. Simplify using `only [eich_apply_eq_add_wedge_add_smul, HermSpace_B_add_left, HermSpace_B_sub_left, HermSpace_B_smul_left, HermSpace_B_add_right, HermSpace_B_sub_right, HermSpace_B_smul_right_eq_star_mul, H.herm, hxx, hxv, hvx]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Take the linear combination `(H.B y x * H.B x y') * hc`. Simplify using `only [eich_apply_eq_add_wedge_add_smul, HermSpace_B_add_left, HermSpace_B_sub_left, HermSpace_B_smul_left, HermSpace_B_neg_left, map_neg, LinearMap.neg_apply, hxx, hxv, hvx]`. Rewrite using `[hcs]`. Use `module`. Simplify using `only [eich_apply_eq_add_wedge_add_smul, HermSpace_B_add_left, HermSpace_B_sub_left, HermSpace_B_smul_left, HermSpace_B_neg_left, map_neg, LinearMap.neg_apply, hxx, hxv, hvx]`.
+Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcs]`. Use `module`.
+A detailed English derivation is pending.
 -/
 theorem eichlerMapIsometry : Formalism.HermitianLatticeCounting.S6.EichlerIsom := by
   intro K V _ _ _ _ H x v c hxx hxv hc
@@ -2117,7 +2085,7 @@ variable {K : Type} [Field K] [StarRing K] {V : Type} [AddCommGroup V] [Module K
   {H : HermSpace K V} {r : ℕ}
 
 /- English proof (translation)
-Simplify using `only [Formalism.HermitianLatticeCounting.S6.eich, LinearMap.add_apply, LinearMap.id_apply, LinearMap.smul_apply, LinearMap.smulRight_apply, LinearMap.flip_apply, xv_apply_eq_B_smul_sub_B_smul]`.
+Simplify using the standard rewrite rules.
 -/
 lemma eich_apply (H : HermSpace K V) (x v : V) (c : K) (y : V) :
     eich H x v c y = y + (H.B y v • x - H.B y x • v) + c • H.B y x • x := by
@@ -2129,16 +2097,14 @@ def GoodMap (F F' : FlagD H r) (g : V →ₗ[K] V) : Prop :=
   (∀ y : V, (∀ u ∈ II F F', H.B u y = 0) → g y - y ∈ II F F')
 
 /- English proof (translation)
-The claim follows from `inf_le_left.trans (isotropicSpan_le_jointSpan_left F F')`.
+A detailed English derivation is pending.
 -/
 lemma isotropicMeet_le_jointSpan (F F' : FlagD H r) : II F F' ≤ V0 F F' := inf_le_left.trans (isotropicSpan_le_jointSpan_left F F')
 
 /- English proof (translation)
-Take `⟨hiso, hbij, hfix, hmeet⟩` from `id hg`. Prove the components needed by the constructor for the conclusion. Unfold `Formalism.HermitianLatticeCounting.S6.FlagD.InN`. Use `⟨hiso, hbij, fun a => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[hfix _ (Formalism.HermitianLatticeCounting.P.isotropicSpan_le_jointSpan_left F F' ((Formalism.HermitianLatticeCounting.P.e_mem_X F) a)), sub_self]`.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.zero_mem _`. Conclude with `(Submodule.mem_inf.1 (hmeet y fun u hu => (Formalism.HermitianLatticeCounting.P.perp_X F) hy u (Submodule.mem_inf.1 hu).1)).1`. Unfold `Formalism.HermitianLatticeCounting.S6.FlagD.InN`. Use `⟨hiso, hbij, fun a => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[hfix _ (Formalism.HermitianLatticeCounting.P.isotropicSpan_le_jointSpan_right F F' ((Formalism.HermitianLatticeCounting.P.e_mem_X F') a)), sub_self]`.
-
-Conclude with `Submodule.zero_mem _`. Conclude with `(Submodule.mem_inf.1 (hmeet y fun u hu => (Formalism.HermitianLatticeCounting.P.perp_X F') hy u (Submodule.mem_inf.1 hu).2)).2`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma GoodMap.inN (F F' : FlagD H r) {g : V →ₗ[K] V} (hg : GoodMap F F' g) : F.InN g ∧ F'.InN g := by
   obtain ⟨hiso, hbij, hfix, hmeet⟩ := id hg
@@ -2157,15 +2123,13 @@ lemma GoodMap.inN (F F' : FlagD H r) {g : V →ₗ[K] V} (hg : GoodMap F F' g) :
         (Formalism.HermitianLatticeCounting.P.perp_X F') hy u (Submodule.mem_inf.1 hu).2)).2
 
 /- English proof (translation)
-Take `⟨hiso, hbij, hfix, hmeet⟩` from `id hg`. Take `⟨hiso', hbij', hfix', hmeet'⟩` from `id hg'`. Unfold `Formalism.HermitianLatticeCounting.P.GoodMap`. Use `⟨fun x y => ?_, ?_, fun y hy => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[hiso, hiso']`. Rewrite using `[LinearMap.coe_comp]`. Conclude with `hbij.comp hbij'`. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[hfix' y hy, hfix y hy]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.comp_apply]`. Establish `h1` using `hmeet' y hy`. Establish `h2 : ∀ u ∈ Formalism.HermitianLatticeCounting.S6.II F F', H.B u (g' y) = 0`. Introduce `u hu`. Establish `hgy : g' y = y + (g' y - y)` using `by abel`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hgy, _root_.Formalism.HermitianLatticeCounting.P.HermSpace_B_add_right, hy u hu, zero_add]`. Conclude with `(Formalism.HermitianLatticeCounting.P.X_iso F) (Submodule.mem_inf.1 hu).1 (Submodule.mem_inf.1 h1).1`. Establish `h3` using `hmeet (g' y) h2`. Establish `hsplit : g (g' y) - y = (g (g' y) - g' y) + (g' y - y)` using `by abel`. Rewrite using `[hsplit]`.
-
-Conclude with `Submodule.add_mem _ h3 h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma GoodMap.comp (F F' : FlagD H r) {g g' : V →ₗ[K] V} (hg : GoodMap F F' g) (hg' : GoodMap F F' g') :
     GoodMap F F' (g ∘ₗ g') := by
@@ -2192,11 +2156,11 @@ lemma GoodMap.comp (F F' : FlagD H r) {g g' : V →ₗ[K] V} (hg : GoodMap F F' 
     exact Submodule.add_mem _ h3 h1
 
 /- English proof (translation)
-Establish `hxI : x ∈ F.X` using `(Submodule.mem_inf.1 hx).1`. Establish `hxx : H.B x x = 0` using `(X_iso F) hxI hxI`. Establish `hxv : H.B x v = 0` using `hv x (isotropicMeet_le_jointSpan F F' hx)`. Take `⟨hiso, hl, hr⟩` from `hE _ _ H x v c hxx hxv hc`. Unfold `GoodMap`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Use `⟨hiso, ⟨fun y y' h => ?_, fun y => ⟨_, hr y⟩⟩, fun y hy => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[← hl y, h, hl y']`. Establish `h1` using `hv y hy`. Establish `h2` using `pairing_jointSpan_isotropicMeet F F' hx y hy`. Rewrite using `[eich_apply, h1, h2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `h2 : H.B y x = 0` using `B_swap0 H (hy x hx)`. Rewrite using `[eich_apply, h2]`. Simplify using `only [zero_smul, sub_zero, smul_zero, add_zero, add_sub_cancel_left]`. Conclude with `Submodule.smul_mem _ _ hx`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma eich_good (hE : Formalism.HermitianLatticeCounting.S6.EichlerIsom) (F F' : FlagD H r) {x v : V} {c : K} (hx : x ∈ II F F')
     (hv : ∀ y ∈ V0 F F', H.B y v = 0) (hc : c + star c = -H.B v v) : GoodMap F F' (eich H x v c) := by
@@ -2217,7 +2181,7 @@ lemma eich_good (hE : Formalism.HermitianLatticeCounting.S6.EichlerIsom) (F F' :
     exact Submodule.smul_mem _ _ hx
 
 /- English proof (translation)
-Establish `hwx : H.B w x = 0` using `B_swap0 H (hw x (isotropicMeet_le_jointSpan F F' hx))`. Rewrite using `[eich_apply, hwx]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma eich_perp (F F' : FlagD H r) {x v : V} {c : K} (hx : x ∈ II F F') {w : V}
     (hw : ∀ y ∈ V0 F F', H.B y w = 0) : eich H x v c w = w + H.B w v • x := by
@@ -2226,7 +2190,7 @@ lemma eich_perp (F F' : FlagD H r) {x v : V} {c : K} (hx : x ∈ II F F') {w : V
   simp
 
 /- English proof (translation)
-Take `⟨μ, hμ⟩` from `hμ`. Use `⟨-q * μ / (μ + star μ), ?_⟩` and prove the remaining obligations. Establish `hs : star (μ + star μ) = μ + star μ` using `by rw [star_add, star_star, add_comm]`. Rewrite using `[star_div₀, star_mul', star_neg, hq, hs]`. Clear the denominators using the available nonvanishing facts.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -2240,13 +2204,13 @@ lemma exists_half (hμ : ∃ μ : K, μ + star μ ≠ 0) (q : K) (hq : star q = 
   ring
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Use `⟨LinearMap.id, ?_, fun w _ => by simp⟩` and prove the remaining obligations. Unfold `GoodMap`. Use `⟨fun _ _ => rfl, Function.bijective_id, fun _ _ => rfl, fun y _ => by simp⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `succ n ih`. Take `⟨g₀, hg₀, hg₀w⟩` from `ih (fun i => x i.castSucc) (fun i => v i.castSucc) (fun i => hx _) (fun i => hv _)`. Take `⟨c, hc⟩` from `exists_half hμ (H.B (v (Fin.last n)) (v (Fin.last n))) (H.herm _ _)`. Establish `hE'` using `eich_good hE F F' (hx (Fin.last n)) (hv (Fin.last n)) hc`. Use `⟨Formalism.HermitianLatticeCounting.S6.eich H (x (Fin.last n)) (v (Fin.last n)) c ∘ₗ g₀, Formalism.HermitianLatticeCounting.P.GoodMap.comp F F' hE' hg₀, fun w hw => ?_⟩` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[LinearMap.comp_apply, hg₀w w hw]`. Establish `hsum : ∑ i : Fin n, H.B w (v i.castSucc) • x i.castSucc ∈ Formalism.HermitianLatticeCounting.S6.II F F'` using `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (hx _)`. Establish `hw' : ∀ y ∈ Formalism.HermitianLatticeCounting.S6.V0 F F', H.B y (w + ∑ i : Fin n, H.B w (v i.castSucc) • x i.castSucc) = 0`. Introduce `y hy`. Rewrite using `[HermSpace_B_add_right, hw y hy, pairing_jointSpan_isotropicMeet F F' hsum y hy, add_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eich_perp F F' (hx (Fin.last n)) hw', Fin.sum_univ_castSucc]`. Establish `h0 : H.B (∑ i : Fin n, H.B w (v i.castSucc) • x i.castSucc) (v (Fin.last n)) = 0` using `hv _ _ (isotropicMeet_le_jointSpan F F' hsum)`. Rewrite using `[HermSpace_B_add_left, h0, add_zero, add_assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 lemma good_family (hE : Formalism.HermitianLatticeCounting.S6.EichlerIsom) (hR : Formalism.HermitianLatticeCounting.S6.EichlerInR) (F F' : FlagD H r) (hμ : ∃ μ : K, μ + star μ ≠ 0) (n : ℕ) (x v : Fin n → V)
     (hx : ∀ i, x i ∈ II F F') (hv : ∀ i, ∀ y ∈ V0 F F', H.B y (v i) = 0) :
@@ -2275,15 +2239,15 @@ lemma good_family (hE : Formalism.HermitianLatticeCounting.S6.EichlerIsom) (hR :
     rw [HermSpace_B_add_left, h0, add_zero, add_assoc]
 
 /- English proof (translation)
-Set `b` to `Module.finBasis K W`. Set `Ψ : W →ₗ[K] (Fin (Module.finrank K W) → K)` to `LinearMap.pi fun i => (H.B.flip (b i : V)).comp W.subtype`. Establish `hΨ : Function.Injective Ψ`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `w hw`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hb : ∀ i, H.B (w : V) (b i : V) = 0` using `fun i => by simpa [Ψ] using congrFun hw i`. Establish `h0 : (H.B (w : V)).comp W.subtype = 0` using `b.ext fun i => by`. Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply, LinearMap.zero_apply]`. Conclude with `hb i`. Establish `h5` using `LinearMap.congr_fun h0 w`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply, LinearMap.zero_apply] at h5`. Conclude with `Subtype.ext (hW w w.2 h5)`. Establish `hsurj : Function.Surjective Ψ` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank (by simp)).1 hΨ`. Take `⟨w, hw⟩` from `hsurj (fun i => star (l (b i : V)))`. Establish `key : ∀ i, H.B (b i : V) (w : V) = l (b i : V)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i`. Establish `h1` using `congrFun hw i`. Simplify using `only [Ψ, LinearMap.pi_apply, LinearMap.comp_apply, Submodule.subtype_apply, LinearMap.flip_apply] at h1`. Rewrite using `[← H.herm, h1, star_star]`. Use `⟨w, w.2, fun u hu => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2 : (H.B.flip (w : V)).comp W.subtype = l.comp W.subtype` using `b.ext fun i => by`. Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply, LinearMap.flip_apply]`. Conclude with `key i`. Establish `h3` using `LinearMap.congr_fun h2 ⟨u, hu⟩`. Simplify using `using h3`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 lemma repr_aniso [FiniteDimensional K V] (H : HermSpace K V) (W : Submodule K V)
     (hW : ∀ w ∈ W, H.B w w = 0 → w = 0) (l : V →ₗ[K] K) : ∃ v ∈ W, ∀ w ∈ W, H.B w v = l w := by
@@ -2317,7 +2281,7 @@ lemma repr_aniso [FiniteDimensional K V] (H : HermSpace K V) (W : Submodule K V)
 end Lift
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ H r F F' x v c hx hv hc`. Apply the tactic sequence `have hadm := eich_good eichlerMapIsometry F F' hx hv hc`. Take `⟨hU, hU'⟩` from `Formalism.HermitianLatticeCounting.P.GoodMap.inN F F' hadm`. Take `⟨-, -, hfix, -⟩` from `id hadm`. Conclude with `⟨hfix, hU, hU', fun w hw => eich_perp F F' hx hw⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem eichlerMapFixesJointSpan : Formalism.HermitianLatticeCounting.S6.EichlerInR := by
   intro K V _ _ _ _ H r F F' x v c hx hv hc
@@ -2327,33 +2291,31 @@ theorem eichlerMapFixesJointSpan : Formalism.HermitianLatticeCounting.S6.Eichler
   exact ⟨hfix, hU, hU', fun w hw => eich_perp F F' hx hw⟩
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ _ H r F F' W₁ W₂ hμ hA hA' hW₁ hW₂`. Take `⟨hW₁o, hW₁m, hW₁s⟩` from `id hW₁`. Take `⟨hW₂o, hW₂m, hW₂s⟩` from `id hW₂`. Establish `heF : ∀ a : Fin (r + 1), F.e a ∈ Formalism.HermitianLatticeCounting.S6.V0 F F'`. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `a using Fin.lastCases with`. Consider the case `last => exact lastVector_mem_jointSpan_left F F'`. Consider the case `cast b => exact isotropicSpan_le_jointSpan_left F F' ((e_mem_X F) b)`. Establish `heF' : ∀ a : Fin (r + 1), F'.e a ∈ Formalism.HermitianLatticeCounting.S6.V0 F F'`. Introduce `a`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `a using Fin.lastCases with`. Consider the case `last => exact lastVector_mem_jointSpan_right F F'`. Consider the case `cast b => exact isotropicSpan_le_jointSpan_right F F' ((e_mem_X F') b)`. Establish `hanis : ∀ w ∈ W₁, H.B w w = 0 → w = 0`. Introduce `w hw hww`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hwF : w ∈ F.X` using `hA w (fun a => hW₁o w hw _ (heF a)) hww`. Establish `hwF' : w ∈ F'.X` using `hA' w (fun a => hW₁o w hw _ (heF' a)) hww`. Establish `hmem : w ∈ W₁ ⊓ Formalism.HermitianLatticeCounting.S6.II F F'` using `Submodule.mem_inf.2 ⟨hw, Submodule.mem_inf.2 ⟨hwF, hwF'⟩⟩`. Rewrite `hmem` using `[hW₁m]`. Conclude with `(Submodule.mem_bot K).1 hmem`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Set `bm` to `Module.finBasis K (Formalism.HermitianLatticeCounting.S6.II F F')`. Set `b1` to `Module.finBasis K W₁`. Establish `hdec : ∀ k, ∃ m : Formalism.HermitianLatticeCounting.S6.II F F', (b1 k : V) - (m : V) ∈ W₂`. Introduce `k`. Take `⟨w₂, hw₂, m, hm, hsum⟩` from `Submodule.mem_sup.1 (hW₂s _ (hW₁o _ (b1 k).2))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨m, hm⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← hsum]`. Simplify using `using hw₂`. Use `choose mk hmk using hdec`. Set `φ : W₁ →ₗ[K] Formalism.HermitianLatticeCounting.S6.II F F'` to `b1.constr K mk`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hφ : ∀ w : W₁, (w : V) - (φ w : V) ∈ W₂`. Introduce `w`. Rewrite using `[← b1.sum_repr w]`. Simplify using `only [φ, map_sum, map_smul, Module.Basis.constr_basis, Submodule.coe_sum, Submodule.coe_smul]`. Rewrite using `[← Finset.sum_sub_distrib]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Submodule.sum_mem _ fun k _ => by`. Rewrite using `[← smul_sub]`. Conclude with `Submodule.smul_mem _ _ (hmk k)`. Establish `hv : ∀ i, ∃ v : V, v ∈ W₁ ∧ ∀ w : W₁, H.B (w : V) v = -(bm.repr (φ w) i)`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨g, hg⟩` from `LinearMap.exists_extend (-((bm.coord i).comp φ))`. Take `⟨v, hvW, hvl⟩` from `repr_aniso H W₁ hanis g`. Use `⟨v, hvW, fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[hvl w w.2]`. Establish `h1` using `LinearMap.congr_fun hg w`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `using h1`. Use `choose v hvW hvB using hv`. Take `⟨g, hg, hgw⟩` from `good_family hE hR F F' hμ _ (fun i => (bm i : V)) v (fun i => (bm i).2) (fun i y hy => hW₁o _ (hvW i) y hy)`. Take `⟨hU, hU'⟩` from `Formalism.HermitianLatticeCounting.P.GoodMap.inN F F' hg`. Take `⟨-, hbij, hfix, -⟩` from `id hg`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨g, hU, hU', hfix, ?_⟩` and prove the remaining obligations. Establish `hle : W₁.map g ≤ W₂`. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Rewrite using `[hgw w (hW₁o w hw)]`. Establish `h2 : ∀ i, H.B w (v i) = -(bm.repr (φ ⟨w, hw⟩)) i` using `fun i => hvB i ⟨w, hw⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : ∑ i, (bm.repr (φ ⟨w, hw⟩)) i • (bm i : V) = (φ ⟨w, hw⟩ : V)` using `by conv_rhs => rw [← bm.sum_repr (φ ⟨w, hw⟩)]`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul]`. Simplify using `only [h2, neg_smul, Finset.sum_neg_distrib]`. Rewrite using `[h3, ← sub_eq_add_neg]`. Conclude with `hφ ⟨w, hw⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hsup : W₁ ⊔ Formalism.HermitianLatticeCounting.S6.II F F' = W₂ ⊔ Formalism.HermitianLatticeCounting.S6.II F F'` using `le_antisymm (sup_le (fun w hw => hW₂s w (hW₁o w hw)) le_sup_right) (sup_le (fun w hw => hW₁s w (hW₂o w hw)) le_sup_right)`. Establish `hfr : Module.finrank K W₁ = Module.finrank K W₂`. Establish `e1` using `Submodule.finrank_sup_add_finrank_inf_eq W₁ (Formalism.HermitianLatticeCounting.S6.II F F')`. Establish `e2` using `Submodule.finrank_sup_add_finrank_inf_eq W₂ (Formalism.HermitianLatticeCounting.S6.II F F')`. Rewrite `e1` using `[hW₁m, finrank_bot, hsup]`.
-
-Rewrite `e2` using `[hW₂m, finrank_bot]`. Use linear arithmetic over natural numbers and integers. Conclude with `Submodule.eq_of_le_of_finrank_eq hle (by rw [← (Submodule.equivMapOfInjective g hbij.1 W₁).finrank_eq, hfr])`.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 lemma liftTransitive_of (hE : Formalism.HermitianLatticeCounting.S6.EichlerIsom) (hR : Formalism.HermitianLatticeCounting.S6.EichlerInR) :
     Formalism.HermitianLatticeCounting.S6.LiftTransitive := by
@@ -2432,7 +2394,7 @@ lemma liftTransitive_of (hE : Formalism.HermitianLatticeCounting.S6.EichlerIsom)
     (by rw [← (Submodule.equivMapOfInjective g hbij.1 W₁).finrank_eq, hfr])
 
 /- English proof (translation)
-The claim follows from `liftTransitive_of eichlerMapIsometry eichlerMapFixesJointSpan`.
+A detailed English derivation is pending.
 -/
 theorem complementLiftTransitive : Formalism.HermitianLatticeCounting.S6.LiftTransitive := liftTransitive_of eichlerMapIsometry eichlerMapFixesJointSpan
 

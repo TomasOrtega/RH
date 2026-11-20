@@ -16,14 +16,14 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} {X : Formalism.L2.SG.HidaSetting.HidaSetting D} (TR : TypedRed X)
 
 /- English proof (translation)
-Unfold `resT`. Rewrite using `[dif_pos hz]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem resT_of_mem (v : TR.Pl) {z : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F} (hz : z ∈ IntAf X.B.I.F X.B.I.E) :
     resT TR v z = TR.res v ⟨z, hz⟩ := by
   unfold resT; rw [dif_pos hz]
 
 /- English proof (translation)
-The claim follows from `(TR.res_ker ⟨z, hz⟩).2 (Z_smul X.B.I X.B.g X.ew_int hZ) v`.
+A detailed English derivation is pending.
 -/
 theorem res_eq_zero_of_Z (v : TR.Pl) {z : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F} (hz : z ∈ IntAf X.B.I.F X.B.I.E)
     (hZ : ZMod' X.B.I X.B.g z) : TR.res v ⟨z, hz⟩ = 0 :=
@@ -63,34 +63,32 @@ def PhiSub (x : X.B.I.Gf) (i : Fin D.R.k) : Submodule (IntAf X.B.I.F X.B.I.E) (V
     rw [e]; exact Z_smul X.B.I X.B.g c.2 hz
 
 /- English proof (translation)
-Rewrite using `[hA_symm]`. Conclude with `Z_sig X.B.I X.B.g ((X.weightVectorsIntegral i).2.2 a).2.2.1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dual_beta_reference_congruence (i : Fin D.R.k) (a : Fin D.R.rS) : ZMod' X.B.I X.B.g (hA X.B.I (X.bwd i) (X.e0 a)) := by
   rw [hA_symm]
   exact Z_sig X.B.I X.B.g ((X.weightVectorsIntegral i).2.2 a).2.2.1
 
 /- English proof (translation)
-Establish `hbw : ∀ j, X.bw j ∈ X.B.I.Lf` using `fun j => (X.vectorsInLattice.2.2 j).1`. Establish `hbwd : ∀ j, X.bwd j ∈ X.B.I.Lf` using `fun j => (X.vectorsInLattice.2.2 j).2`. Establish `he0 : ∀ a, X.e0 a ∈ X.B.I.Lf` using `fun a => (X.vectorsInLattice.1 a).1`. Establish `key : ∀ i, Mo X.B.I X.B.g (Set.range X.e0 ∪ Set.range X.bw) ≤ PhiSub x i`. Introduce `i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `sup_le (Submodule.span_le.2 ?_) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `z (⟨a, rfl⟩ | ⟨m, rfl⟩)`. Use `show ZMod' X.B.I X.B.g (hA X.B.I (X.bwd i) (X.B.I.fmat x *ᵥ X.e0 a) - ∑ l, hA X.B.I (X.bwd i) (X.B.I.fmat x *ᵥ X.bw l) * hA X.B.I (X.bwd l) (X.e0 a))`. Use `Z_sub X.B.I X.B.g ?_ (Z_sum X.B.I X.B.g _ _ fun l _ => Z_smul X.B.I X.B.g (hA_int X.B.I (hbwd i) (K_mv X.B.I hx (hbw l))) (dual_beta_reference_congruence l a))` and prove the remaining obligations. Establish `hQ : Mo X.B.I X.B.g (Set.range X.e0) ≤ Qs X.B.I X.B.g (X.bwd i)` using `sup_le (Submodule.span_le.2 (by rintro _ ⟨b, rfl⟩; exact dual_beta_reference_congruence i b)) (mL_Qs X.B.I X.B.g (hbwd i))`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hQ (hxe a)`. Use `show ZMod' X.B.I X.B.g (hA X.B.I (X.bwd i) (X.B.I.fmat x *ᵥ X.bw m) - ∑ l, hA X.B.I (X.bwd i) (X.B.I.fmat x *ᵥ X.bw l) * hA X.B.I (X.bwd l) (X.bw m))`. Establish `hw : hA X.B.I (X.bwd i) (X.B.I.fmat x *ᵥ X.bw m) = X.ew * hA X.B.I (X.bwd i) (X.B.I.fmat x *ᵥ X.bw m)` using `by conv_lhs => rw [X.bw_w m, Matrix.mulVec_smul, hA_smul_right]`. Establish `e : hA X.B.I (X.bwd i) (X.B.I.fmat x *ᵥ X.bw m) - ∑ l, hA X.B.I (X.bwd i) (X.B.I.fmat x *ᵥ X.bw l) * hA X.B.I (X.bwd l) (X.bw m) = (hA X.B.I (X.bwd i) (X.B.I.fmat x *ᵥ X.bw m) - hA X.B.I (X.bwd i) (X.B.I.fmat x *ᵥ X.bw m) * X.ew) - ∑ l, hA X.B.I (X.bwd i) (X.B.I.fmat x *ᵥ X.bw l) …`. Simplify using `only [mul_sub, Finset.sum_sub_distrib, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `e2 : hA X.B.I (X.bwd i) (X.B.I.fmat x *ᵥ X.bw m) - hA X.B.I (X.bwd i) (X.B.I.fmat x *ᵥ X.bw m) * X.ew = 0`. Rewrite using `[hw]`. Use `X.ew_idem` as an intermediate fact. Take the linear combination `(-(hA X.B.I (X.bwd i) (X.B.I.fmat x *ᵥ X.bw m))) * this`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e, e2, zero_sub]`. Use `Z_sum X.B.I X.B.g Finset.univ _ fun l _ => Z_smul X.B.I X.B.g (hA_int X.B.I (hbwd i) (K_mv X.B.I hx (hbw l))) (X.bw_dual l m)` as an intermediate fact. Take `⟨t, ht, htt⟩` from `this`. Conclude with `⟨-t, neg_mem ht, by rw [htt]; ring⟩`. Introduce and unpack `_ ⟨w, hw, rfl⟩ show ZMod' X.B.I X.B.g (hA X.B.I (X.bwd i) (X.B.I.fmat x *ᵥ ((X.B.g : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • w)) - ∑ l, hA X.B.I (X.bwd i) (X.B.I.fmat x *ᵥ X.bw l) * hA X.B.I (X.bwd l) ((X.B.g : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • w))`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `⟨hA X.B.I (X.bwd i) (X.B.I.fmat x *ᵥ w) - ∑ l, hA X.B.I (X.bwd i) (X.B.I.fmat x *ᵥ X.bw l) * hA X.B.I (X.bwd l) w, ?_, ?_⟩` and prove the remaining obligations. Conclude with `sub_mem (hA_int X.B.I (hbwd i) (K_mv X.B.I hx hw)) (sum_mem fun l _ => mul_mem (hA_int X.B.I (hbwd i) (K_mv X.B.I hx (hbw l))) (hA_int X.B.I (hbwd l) hw))`. Simplify using `only [Matrix.mulVec_smul, hA_smul_right, mul_sub, Finset.mul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Use extensionality with `i j`. Establish `hxy : X.B.I.fmat (x * y) *ᵥ X.bw j = X.B.I.fmat x *ᵥ (X.B.I.fmat y *ᵥ X.bw j)`. Rewrite using `[fmat_mul, Matrix.mulVec_mulVec]`. Establish `hZ` using `key i (hyb j)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [PhiSub, Submodule.mem_mk, AddSubmonoid.mem_mk, AddSubsemigroup.mem_mk, Set.mem_ofPred_eq] at hZ`. Rewrite `hZ` using `[← hxy]`. Establish `hI1 : hA X.B.I (X.bwd i) (X.B.I.fmat (x * y) *ᵥ X.bw j) ∈ IntAf X.B.I.F X.B.I.E` using `hA_int X.B.I (hbwd i) (K_mv X.B.I (K_mul X.B.I hx hy) (hbw j))`. Establish `hI2 : ∀ l, hA X.B.I (X.bwd i) (X.B.I.fmat x *ᵥ X.bw l) ∈ IntAf X.B.I.F X.B.I.E` using `fun l => hA_int X.B.I (hbwd i) (K_mv X.B.I hx (hbw l))`. Establish `hI3 : ∀ l, hA X.B.I (X.bwd l) (X.B.I.fmat y *ᵥ X.bw j) ∈ IntAf X.B.I.F X.B.I.E` using `fun l => hA_int X.B.I (hbwd l) (K_mv X.B.I hy (hbw j))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hIs : ∑ l, hA X.B.I (X.bwd i) (X.B.I.fmat x *ᵥ X.bw l) * hA X.B.I (X.bwd l) (X.B.I.fmat y *ᵥ X.bw j) ∈ IntAf X.B.I.F X.B.I.E` using `sum_mem fun l _ => mul_mem (hI2 l) (hI3 l)`. Establish `hD` using `res_eq_zero_of_Z TR v (sub_mem hI1 hIs) hZ`. Simplify using `only [leviM, Matrix.mul_apply]`. Rewrite using `[resT_of_mem TR v hI1]`. Simplify using `only [resT_of_mem TR v (hI2 _), resT_of_mem TR v (hI3 _)]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e3 : (⟨hA X.B.I (X.bwd i) (X.B.I.fmat (x * y) *ᵥ X.bw j), hI1⟩ : IntAf X.B.I.F X.B.I.E) = ⟨_, sub_mem hI1 hIs⟩ + ∑ l, (⟨_, hI2 l⟩ : IntAf X.B.I.F X.B.I.E) * ⟨_, hI3 l⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Subring.coe_add, AddSubmonoidClass.coe_finsetSum, Subring.coe_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e3, map_add, hD, zero_add, map_sum]`.
-
-Simplify using `only [map_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem leviM_mul {x y : X.B.I.Gf} (hx : x ∈ X.B.I.Kset) (hy : y ∈ X.B.I.Kset)
     (hyb : ∀ j, X.B.I.fmat y *ᵥ X.bw j ∈ Mo X.B.I X.B.g (Set.range X.e0 ∪ Set.range X.bw))

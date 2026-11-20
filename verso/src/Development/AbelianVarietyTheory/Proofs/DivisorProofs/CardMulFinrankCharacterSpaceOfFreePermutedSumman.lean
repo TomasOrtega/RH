@@ -4,7 +4,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Arithmet
 namespace GlobalTheory.BadCount
 
 /- English proof (translation)
-Use `LinearMap.trace_eq_zero_of_mapsTo_ne hA (fun x => h • x) (fun x hx => hne (hfree h x hx)) ?_` and prove the remaining obligations. Introduce `x v hv`. Conclude with `hmap h x v hv`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem trace_rho_eq_zero_of_free {K Γ V X : Type} [Field K] [Group Γ] [AddCommGroup V]
     [Module K V] [FiniteDimensional K V] [DecidableEq X] (ρ : Representation K Γ V) (H : Subgroup Γ)
@@ -18,23 +18,23 @@ theorem trace_rho_eq_zero_of_free {K Γ V X : Type} [Field K] [Group Γ] [AddCom
   exact hmap h x v hv
 
 /- English proof (translation)
-Introduce `K Γ V X _ _ _ _ _ _ _ _ _ ρ H _ hfree A hA hmap Hb hle lam`. Use `haveI : Fintype Hb := Fintype.ofFinite Hb`. Use `set n : K := (Fintype.card Hb : K) with hn`. Establish `hn0 : n ≠ 0` using `by simp [hn, Fintype.card_ne_zero]`. Set `P : Module.End K V` to `n⁻¹ • ∑ h : Hb, (((lam h)⁻¹ : Kˣ) : K) • ρ h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Establish `hproj : LinearMap.IsProj (eig ρ Hb lam) P`. Prove the components needed by the constructor for the conclusion. Introduce `v`. Rewrite using `[mem_eig]`. Introduce `g`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [P, LinearMap.smul_apply, LinearMap.sum_apply, map_smul, map_sum]`. Rewrite using `[smul_comm]`. Use `congr 1`. Rewrite using `[Finset.smul_sum]`. Use `Fintype.sum_equiv (Equiv.mulLeft g) _ _ (fun h => ?_)` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [Equiv.coe_mulLeft, Subgroup.coe_mul, map_mul, Module.End.mul_apply, smul_smul, mul_inv, Units.val_mul]`. Use `congr 1`. Simplify using `only [← Units.val_mul]`. Use `congr 1`. Use `group`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `v hv`. Rewrite `hv` using `[mem_eig]`. Simplify using `only [P, LinearMap.smul_apply, LinearMap.sum_apply, hv, smul_smul, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_smul, Finset.sum_const, Finset.card_univ]`. Rewrite using `[← Nat.cast_smul_eq_nsmul K, smul_smul, ← hn, inv_mul_cancel₀ hn0, one_smul]`. Establish `htr : LinearMap.trace K V P = n⁻¹ * (finrank K V : K)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [P, map_smul, map_sum, smul_eq_mul]`. Use `congr 1`. Rewrite using `[Finset.sum_eq_single 1]`. Simplify using `[LinearMap.trace_one]`. Introduce `h _ hne`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h0 : LinearMap.trace K V (ρ h) = 0` using `trace_rho_eq_zero_of_free ρ H hfree A hA hmap ⟨h, hle h.2⟩ (by`. Introduce `e`. Apply `hne` to reduce the goal to its premises. Use `ext`. Simplify using `using congrArg Subtype.val e)`.
+By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[h0, mul_zero]`. Simplify using the standard rewrite rules. Establish `h1` using `hproj.trace`. Rewrite `h1` using `[htr]`. Rewrite using `[Nat.card_eq_fintype_card]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Establish `: ((Fintype.card Hb * finrank K (eig ρ Hb lam) : ℕ) : K) = (finrank K V : K)`. Use `push_cast`. Rewrite using `[← h1, ← hn, ← mul_assoc, mul_inv_cancel₀ hn0, one_mul]`. Conclude with `this` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem card_mul_finrank_eig_of_free : ∀ (K Γ V X : Type) [Field K] [CharZero K] [Group Γ] [Finite Γ] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Fintype X] [DecidableEq X] (ρ : Representation K Γ V) (H : Subgroup Γ) [MulAction H X], (∀ (h : H) (x : X), h • x = x → h = 1) → ∀ (A : X → Submodule K V), DirectSum.IsInternal A → (∀ (h : H) (x : X), ∀ v ∈ A x, ρ h v ∈ A (h • x)) → ∀ (Hb : Subgroup Γ), Hb ≤ H → ∀ lam : Hb →* Kˣ, Nat.card Hb * finrank K (eig ρ Hb lam) = finrank K V := by
   intro K Γ V X _ _ _ _ _ _ _ _ _ ρ H _ hfree A hA hmap Hb hle lam

@@ -15,19 +15,17 @@ namespace UpperTheory.Lit.Cusp
 open GlobalTheory.FibreAtTau
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `h`. Establish `hd` using `(Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ)`. Take `⟨-, hmul, -, -⟩` from `isCompact_ball V.rank (M.ε τ)`. Use `set c : ℝ := 1 + Real.sqrt (Formalism.REAL.hs (M.fr τ)) * Real.sqrt (Formalism.REAL.hs (M.fr τ)⁻¹) with hc`. Use `⟨c ^ (2 * V.rank ^ 2 + 1) * C, fun u => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `set g := (M.fr τ)⁻¹ * Formalism.MainNotions.S.umat u * M.fr τ with hg`. Establish `hu : M.fr τ * g * (M.fr τ)⁻¹ = Formalism.MainNotions.S.umat u`. Rewrite using `[hg, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hd, Matrix.one_mul, Matrix.mul_nonsing_inv_cancel_right _ _ hd]`. Establish `hJ : (Formalism.MainNotions.S.umat u)ᴴ * Formalism.REAL.Jm (M.ε τ) * Formalism.MainNotions.S.umat u = Formalism.REAL.Jm (M.ε τ)` using `u.2`. Establish `hfg : M.fr τ * g = Formalism.MainNotions.S.umat u * M.fr τ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hg, Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ hd]`. Establish `hmem : g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)` using `by show gᴴ * gramAt D V τ * g = gramAt D V τ`. Rewrite using `[← M.fr_gram τ]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `_ = (M.fr τ)ᴴ * ((Formalism.MainNotions.S.umat u)ᴴ * Formalism.REAL.Jm (M.ε τ) * Formalism.MainNotions.S.umat u) * M.fr τ := by`. Rewrite using `[hfg]`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = _ := by rw [hJ]`. Establish `h1` using `hC g hmem`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `he : M.rep τ g = M.σ τ (Formalism.MainNotions.S.umat u)` using `by rw [DSModel.rep, hu]`. Rewrite `h1` using `[he]`. Establish `hn : Real.sqrt (Formalism.REAL.hs (Formalism.MainNotions.S.umat u)) ≤ Real.sqrt (Formalism.REAL.hs (M.fr τ)) * hsn g * Real.sqrt (Formalism.REAL.hs (M.fr τ)⁻¹)`. Rewrite using `[← hu]`. Conclude with `(hmul _ _).trans (mul_le_mul_of_nonneg_right (hmul _ _) (Real.sqrt_nonneg _))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : 0 ≤ hsn g` using `Real.sqrt_nonneg _`. Establish `hp : 0 ≤ Real.sqrt (Formalism.REAL.hs (M.fr τ)) * Real.sqrt (Formalism.REAL.hs (M.fr τ)⁻¹)` using `by positivity`. Establish `h2 : 1 + Real.sqrt (Formalism.REAL.hs (Formalism.MainNotions.S.umat u)) ≤ c * (1 + hsn g)` using `by rw [hc]; nlinarith`. Establish `h3 : wt u ≤ c ^ (2 * V.rank ^ 2 + 1) * (1 + hsn g) ^ (2 * V.rank ^ 2 + 1)`. Rewrite using `[← mul_pow]`.
-
-Conclude with `pow_le_pow_left₀ (by positivity) h2 _`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem decays_of_decayAt {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) (τ : D.what₂.Tau) (v a : M.H τ)
     (h : DecayAt M τ v a (2 * V.rank ^ 2 + 1)) : Decays (Formalism.MainNotions.S.coefOn (ε := M.ε τ) (M.σ τ) a v) := by
@@ -71,19 +69,17 @@ theorem decays_of_decayAt {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M :
     _ ≤ _ := mul_le_mul_of_nonneg_left h1 (by positivity)
 
 /- English proof (translation)
-Introduce `D θ hθ V S M K v a hv ha τ r C hC`. Use `⟨atP θ V C τ, offP θ V C τ, (L_closed θ hθ V C τ).1, (L_closed θ hθ V C τ).2, (L_comm θ hθ V C τ).1, L_decomp θ hθ V C hC τ, (L_comm θ hθ V C τ).2, ?_⟩` and prove the remaining obligations. Introduce `ν hν q hq x y`. Use `haveI : BorelSpace (GA D V) := ⟨rfl⟩`. Use `haveI : BorelSpace (Formalism.REAL.UJ (M.ε τ)) := ⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨E, hE⟩` from `L_hom θ hθ V S M τ`. Take `⟨W, hW, hemb, hrange⟩` from `L_emb θ hθ V S M τ C hC E hE`. Take `⟨R, hR⟩` from `L_factor θ hθ V S M K v a τ C q hq x y`. Set `ι : atP θ V C τ →* Formalism.REAL.UJ (M.ε τ)` to `E.comp ((NI V C).subtype.comp (atP θ V C τ).subtype)`. Establish `hι : Topology.IsClosedEmbedding ι` using `hemb`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmap` using `isHaarSub_map_closedEmb ι hι ⊤ isClosed_univ ν (isHaarSub_top ν)`. Establish `hr : (((⊤ : Subgroup (atP θ V C τ)).map ι : Subgroup _) : Set _) = GlobalTheory.Dec.NW (M.ε τ) W`. Rewrite using `[← MonoidHom.range_eq_map, MonoidHom.coe_range]`. Conclude with `hrange`. Rewrite `hmap` using `[hr]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `hsq : GlobalTheory.Dec.IsSqIntIrr (M.ε τ) (M.σ τ)`. Establish `hDS` using `M.ds τ`. Conclude with `⟨hDS.1, hDS.2.1, hDS.2.2.1, hDS.2.2.2.1, hDS.2.2.2.2.1⟩`. Establish `h0` using `integral_coef_eq_zero V.rank (M.ε τ) (M.H τ) (M.σ τ) hsq (v τ) (a τ) (decays_of_decayAt M τ _ _ (hv τ)) (decays_of_decayAt M τ _ _ (ha τ)) W hW (ν.map ι) hmap (E x) (E y)`. Establish `hd` using `(Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ p : atP θ V C τ, coef θ M K v a (x * (((p : NI V C) * q : NI V C) : GA D V) * y) = ⟪v τ, M.σ τ (Formalism.MainNotions.S.umat (E x * ι p * E y)) (a τ)⟫_ℂ * R`. Introduce `p`. Rewrite using `[hR p p.2]`. Use `congr 2`. Use `show M.σ τ (M.fr τ * _ * (M.fr τ)⁻¹) (a τ) = M.σ τ _ (a τ)`.
+Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congr 2`. Express the relevant statement in the definitionally equal form `M.fr τ * _ * (M.fr τ)⁻¹ = Formalism.MainNotions.S.umat (E x) * Formalism.MainNotions.S.umat (E ((p : NI V C) : GA D V)) * Formalism.MainNotions.S.umat (E y)`. Rewrite using `[hE, hE, hE]`. Simplify using `only [Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_left _ _ hd]`. Repeatedly rewrite using `[key]`.
-
-Establish `hint` using `hι.measurableEmbedding.integral_map (μ := ν) (fun m => ⟪v τ, M.σ τ (Formalism.MainNotions.S.umat (E x * m * E y)) (a τ)⟫_ℂ)`. Rewrite using `[integral_mul_const, ← hint, h0, zero_mul]`.
+Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fibre_integral_eq_zero : ∀ (D : D7) (θ : InfFam D), IsInfFam θ →
     ∀ (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (K : Subgroup (GL (Fin V.rank) (Lev.EAf D)))

@@ -24,13 +24,11 @@ open GlobalTheory.SmallDat GlobalTheory.TripleCplxAt
 open scoped ComplexConjugate
 
 /- English proof (translation)
-Use `choose ξ hξ using fun v => Function.ne_iff.1 (hG.vac v).2.1`. Establish `hS` using `Filter.eventually_cofinite.1 hG.std`. Set `y : Fin n × Fin d → Af F` to `fun k => ∑ v ∈ hS.toFinset, singleFin v (ξ v k)`. Establish `hy : finPartFn M.vac y ≠ 0`. Use `finprod_induction (· ≠ (0 : ℂ)) one_ne_zero (fun _ _ => mul_ne_zero) fun v => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hv : v ∈ hS.toFinset`. Establish `: (fun k => evalV F v (y k)) = ξ v` using `funext fun k => by`. Rewrite using `[map_sum, Finset.sum_eq_single_of_mem v hv fun v' _ h => evalV_singleFin_ne h.symm _, evalV_singleFin_self]`. Rewrite using `[this]`. Conclude with `hξ v`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (fun k => evalV F v (y k)) = 0` using `funext fun k => by`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_eq_zero fun v' h => evalV_singleFin_ne (fun e : v = v' => hv (e ▸ h)) _`. Rewrite using `[this, of_not_not (mt hS.mem_toFinset.2 hv), Set.indicator_of_mem (by exact fun _ => zero_mem _)]`. Conclude with `one_ne_zero`.
-
-Use extensionality with `z`. Use `congrFun h fun k => pairA F ((InfiniteAdeleRing.ringEquiv_mixedSpace _).symm (z k)) (y k)` as an intermediate fact. Simplify using `only [pure_eq, pureA, pairA, RingEquiv.apply_symm_apply] at this`. Conclude with `mul_right_cancel₀ hy this`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pure_vac_inj {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {n d : ℕ} {X : Spc F E n} {Y : Spc F E d} {M : Model σ X Y} {ψ : AddChar (AF F) ℂ} (hG : M.IsGood ψ)
@@ -59,7 +57,7 @@ theorem pure_vac_inj {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {i j : ℕ}
 
 /- English proof (translation)
-Use `show compAt θ τ (HMul.hMul (colV e u)ᵀ ((spW₁ G i j).gram.map (incA D))) = _`. Rewrite using `[compAt_mul', compAt_inc θ hθ]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem compAt_mapA (θ : InfFam D) (hθ : IsInfFam θ) (τ : D.what₂.Tau) (t : T) (e : Num G i j) (u : PtS G i j) :
     compAt θ τ (mapA t e u) = ((compAt θ τ u).submatrix id fun k => e (.inl k))ᵀ * gramAt D (spW₁ G i j) τ := by
@@ -68,7 +66,7 @@ theorem compAt_mapA (θ : InfFam D) (hθ : IsInfFam θ) (τ : D.what₂.Tau) (t 
   rfl
 
 /- English proof (translation)
-Use `show compAt θ τ (-HMul.hMul ((u.submatrix id fun k => e (.inr k)).map (cA D)) ((spV₁ G i j).gram.map (incA D))) = _`. Rewrite using `[compAt_neg', compAt_mul', compAt_inc θ hθ, compAt_conj θ hθ]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem compAt_mapB (θ : InfFam D) (hθ : IsInfFam θ) (τ : D.what₂.Tau) (e : Num G i j) (u : PtS G i j) :
     compAt θ τ (mapB e u) = -(((compAt θ τ u).submatrix id fun k => e (.inr k)).map conj * gramAt D (spV₁ G i j) τ) := by
@@ -79,19 +77,19 @@ theorem compAt_mapB (θ : InfFam D) (hθ : IsInfFam θ) (τ : D.what₂.Tau) (e 
 open GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation (blk) in
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨w, hpi, hV, hWW⟩ : ∃ w, (∀ y, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.piInf (Bs.emb w) y = conj (W.θ τ (infPart D y))) ∧ Γ.V'.θ w = -W.cart (.grid i j) τ ∧ Γ.W.θ w = (blk e (W.cart (.grid i (j + 1)) τ) (W.cart (.grid (i + 1) j) τ)).map conj := by`. Take `⟨w, hw⟩ : ∃ w : InfinitePlace D.host.F, w = InfinitePlace.mk ((tauE D τ).comp (algebraMap D.host.F D.host.E))` from `⟨_, rfl⟩`. Take `⟨τ', hemb, -, hV, hWW⟩` from `h.cart w`. Establish `h1 : (Bs.emb w).1.comp (algebraMap D.host.F D.host.E) = w.embedding` using `(Bs.emb w).2`. Establish `h2 : (tauE D τ').comp (algebraMap D.host.F D.host.E) = NumberField.ComplexEmbedding.conjugate w.embedding`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `x`. Rewrite using `[NumberField.ComplexEmbedding.conjugate_coe_eq, ← h1]`. Simplify using `[hemb]`. Establish `hh : ((starRingEnd ℂ).comp (tauE D τ')).comp (algebraMap D.host.F D.host.E) = w.embedding`. Rewrite using `[← h1]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `x`. Simplify using `[hemb]`. Establish `hb : Bs.emb w = ⟨_, hh⟩` using `Subtype.ext (RingHom.ext hemb)`. Establish `hτ : τ' = τ` using `(GlobalTheory.CMTypePlaces.places_bijective D).1 (by show InfinitePlace.mk ((tauE D τ').comp _) = InfinitePlace.mk ((tauE D τ).comp _)`. Rewrite using `[h2, InfinitePlace.mk_conjugate_eq, InfinitePlace.mk_embedding, hw])`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Substitute `hτ` using the available equality. Conclude with `⟨w, fun y => by rw [hb]; exact GlobalTheory.ConjInfExp.piInf_eq W.θ W.θ_is _ w hh y, hV, hWW⟩`. Establish `hmap : ∀ v : PtS G i j, v.map (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.piInf (Bs.emb w)) = (compAt W.θ τ v).map conj` using `fun v => Matrix.ext fun a b => hpi _`. Establish `hX` using `hu w`. Rewrite `hX` using `[hmap, hmap, hV, hWW]`.
+Substitute using the available equality. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `cW₁` using `W.cart_is (.grid (i : ℕ) (j : ℕ)) ⟨by omega, by omega⟩ τ`. Establish `cV₁` using `W.cart_is (.grid ((i : ℕ) + 1) (j : ℕ)) ⟨by omega, by omega⟩ τ`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hs : (-W.cart (.grid i j) τ)ᴴ * (-gramAt D (spW₁ G i j) τ) = (-gramAt D (spW₁ G i j) τ) * (-W.cart (.grid i j) τ)`. Rewrite using `[Matrix.conjTranspose_neg, neg_mul_neg, neg_mul_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `cartan_comm cW₁`. Use `algV e _ _ _ _ _ _ hX hs` as an intermediate fact. Simplify using `only [neg_neg] at this`. Rewrite using `[compAt_mapA W.θ W.θ_is, compAt_mapA W.θ W.θ_is]`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `algW e _ _ _ _ _ _ hX (cartan_comm cV₁)` as an intermediate fact. Rewrite using `[compAt_mapB W.θ W.θ_is, compAt_mapB W.θ W.θ_is, this]`. Use `show _ = Complex.I • (_ * _ * _)`. Simplify using `only [Matrix.neg_mul, Matrix.mul_neg, neg_neg]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cplx_pairS {W : G.Weil} {M : Vol G} {t : T} {i j : Fin D.R.m} {e : Num G i j} {Bs : Base D.host.F D.host.E}
     {Γ : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.Geo G i j} {X : Chars D.host.F D.host.E} (h : IsTripleOf W M t i j e Bs Γ X) (u u' : PtS G i j)
@@ -139,19 +137,19 @@ theorem cplx_pairS {W : G.Weil} {M : Vol G} {t : T} {i j : Fin D.R.m} {e : Num G
     simp only [Matrix.neg_mul, Matrix.mul_neg, neg_neg]
 
 /- English proof (translation)
-Introduce `D T L sc G W M t i j e Bs Γ X om om' h hT f₁ f₂ h₁ h₂ c f₀ hb`. Take `⟨-, hinj, -⟩` from `GlobalTheory.T.smallModel_thetaTransform_injective_products W M t i j e Bs Γ X om om' h hT`. Establish `hG : Γ.M'.IsGood W.ψ` using `h.ψ ▸ hT.geo.hM'`. Establish `hm` using `fun f => (isFinPart_vac hG ∅).fam.mem hG f`. Rewrite using `[h.ψ]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨1, fun u u' _ _ hJ f f' hf hf' => pure_vac_inj hG (hinj _ (hm _) _ (hm _) (funext fun x => ?_))⟩` and prove the remaining obligations. Establish `hc` using `cplx_pairS h u u' fun w => by simpa using hJ w`. Take `⟨a, ha, ha'⟩` from `GlobalTheory.T.fockVacuum_thetaFunction_derivative_complex_structure W.ψ W.θ _ _ _ _ f₁ W.ψ_std W.θ_is h₁.2.theta h₁.2.fock _ _ (fun τ => (hc τ).1) (mapA t e x)`. Take `⟨b, hb₁, hb'⟩` from `GlobalTheory.T.fockVacuum_thetaFunction_derivative_complex_structure W.ψ W.θ _ _ _ _ f₂ W.ψ_std W.θ_is h₂.2.theta h₂.2.fock _ _ (fun τ => (hc τ).2) (mapB e x)`. Establish `hr : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rest (evI D.host.F) f₀ fun y : IxS G i j → AF D.host.F => finPartFn Γ.M'.vac fun k => (y k).2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨fun y z hz => ?_, hm f₀⟩` and prove the remaining obligations. Use `congrArg (finPartFn Γ.M'.vac) (funext fun k => ?_)` and prove the remaining obligations. Establish `: (pairA D.host.F 0 1 * z k).2 = 0` using `congrArg (fun q => (q k).2) (hz (pairA D.host.F 0 1) (map_zero (InfiniteAdeleRing.ringEquiv_mixedSpace _)))`. Conclude with `(add_eq_left (a := (y k).2)).2 ((one_mul (z k).2).symm.trans this)`. Establish `key : ∀ u (g : SInf D.host.F (IxS G i j)), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ActsD (evI D.host.F) (Γ.M'.heisLine W.ψ u) f₀ g → HasDerivAt (fun s : ℝ => c * (heisO W.ψ _ _ (realAd D.host.F s • mapA t e u) f₁ (mapA t e x) * heisO W.ψ _ _ (realAd D.host.F s • …`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u g hg`. Use `GlobalTheory.T.hasDerivAt_thetaTransform_heisenberg_real_line Γ.M'.co W.ψ inferInstance W.ψ_std.1 u _ (hm f₀) _ (hm g) (hg _ hr) x` as an intermediate fact. Use `this using 2 with s` and compare the differences between its conclusion and the goal. Use `Eq.trans ?_ (congrFun (thetaS_rho Γ W.ψ _ (realAd D.host.F s • u)) x).symm` and prove the remaining obligations. Rewrite using `[hb, ← mapA_smul, ← mapB_smul]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans (congrArg (c * ·) (congrFun (heisS_box t e Γ h.JW₁ h.JWW W.ψ _ f₁ f₂) x).symm) ?_` and prove the remaining obligations. Simplify using `only [heisS, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `e1` using `(key u f hf).unique ((ha.mul hb₁).const_mul c)`. Establish `e2` using `(key u' f' hf').unique ((ha'.mul hb').const_mul c)`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (Complex.I • f) Γ.M'.vac = Complex.I • GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f Γ.M'.vac`. Use function extensionality and compare the values at `fun _ => mul_assoc _ _ _`. Establish `e4 : realAd D.host.F 0 = 0`. Unfold `realAd`. Rewrite using `[map_zero (algebraMap ℝ _), map_zero (RingEquiv.symm _)]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `e5 : thetaS Γ W.ψ (Complex.I • GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f Γ.M'.vac) x = Complex.I * thetaS Γ W.ψ (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f Γ.M'.vac) x` using `thetaS_smul _ _ _ _ _`. Rewrite using `[e3, e5, e1, e2]`. Simplify using `only [e4, zero_smul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem isGauss : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (W : G.Weil) (M : Vol G) (t : T) (i j : Fin D.R.m) (e : Num G i j) (Bs : Base D.host.F D.host.E) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.Geo G i j) (X : Chars D.host.F D.host.E)
     (om : Rep D.sp.cm.sig Γ.V Γ.W) (om' : Rep D.sp.cm.sig Γ.V' Γ.W), IsTripleOf W M t i j e Bs Γ X → IsTriple Bs Γ X om om' →

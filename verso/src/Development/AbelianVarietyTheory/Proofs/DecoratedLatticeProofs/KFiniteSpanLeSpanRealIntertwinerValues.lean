@@ -22,13 +22,13 @@ open GlobalTheory.IndefiniteRowSideFullHecke.KTypeExtension (kFin maxCpt)
 open GlobalTheory.Chain.IoLift
 
 /- English proof (translation)
-The claim follows from `Submodule.span_eq (kFin M τ)`.
+A detailed English derivation is pending.
 -/
 theorem kfin_eq {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) (τ : D.what₂.Tau) :
     GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.kfin M τ = kFin M τ := Submodule.span_eq (kFin M τ)
 
 /- English proof (translation)
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Use `⟨PiTensorProduct.tprod ℂ fun τ => ⟨(v τ : M.H τ), (kfin_eq M τ) ▸ hv τ⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[inclK_tprod]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem span_le_range {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) (h : KSm M) :
     Submodule.span ℂ {w : SmT M | ∃ v : M.Vec, (∀ τ, (v τ : M.H τ) ∈ GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.kfin M τ) ∧
@@ -39,9 +39,7 @@ theorem span_le_range {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSM
   rw [inclK_tprod]
 
 /- English proof (translation)
-Proceed by induction on `y using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r u`. Rewrite using `[map_smul, inclK_tprod]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, fun τ => (kfin_eq M τ).symm ▸ (u τ).2, rfl⟩)`. Consider the case `add x y hx hy => rw [map_add]`.
-
-Conclude with `add_mem hx hy`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem range_le_span {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) (h : KSm M) (y : KT M) :
     inclK h y ∈ Submodule.span ℂ {w : SmT M | ∃ v : M.Vec, (∀ τ, (v τ : M.H τ) ∈ GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.kfin M τ) ∧
@@ -53,29 +51,25 @@ theorem range_le_span {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSM
   | add x y hx hy => rw [map_add]; exact add_mem hx hy
 
 /- English proof (translation)
-Introduce `hD hH D V W S S' M M' θ ψ aS aT ω f It hθ hW hf hIt`. Use `choose hs a ha hirr using fun τ => GlobalTheory.T.kFinite_vectors_discrete_series_smooth_absolutely_irreducible hH D V S M τ`. Establish `h : KSm M` using `hs`. Establish `h' : KSm M'` using `fun τ => (GlobalTheory.T.kFinite_vectors_discrete_series_smooth_absolutely_irreducible hH D W S' M' τ).1`. Establish `hval` using `GlobalTheory.T.real_intertwiner_values_kFinite D V W S S' M M' θ ψ aS aT ω f It hθ hW hf hIt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `inj` using `inclK_injective h`. Choose the witnesses or unpack the hypotheses as in `⟨I, hI⟩ : ∃ I : PolF D W.rank V.rank →ₗ[ℂ] KT M' →ₗ[ℂ] KT M, ∀ φ y, inclK h (I φ y) = It φ (inclK h' y) := by`. Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective _ (LinearMap.ker_eq_bot.2 inj)`. Use `⟨(It.compl₂ (inclK h')).compr₂ g, fun φ y => ?_⟩` and prove the remaining obligations. Take `⟨z, hz⟩` from `span_le_range M h (hval φ (inclK h' y))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `inclK h (g (It φ (inclK h' y))) = _`. Rewrite using `[← hz, ← LinearMap.comp_apply g, hg, LinearMap.id_apply]`. Take `⟨χS, χT, hω, hexp⟩` from `hW`. Establish `hL` using `fun τ => GlobalTheory.T.lieAction_fockOperators_scalars_trace D V W (Fr.ofModel M) (Fr.ofModel M') θ ψ χS χT ω f τ (aS τ) (aT τ) hθ hω (hexp τ).1 (hexp τ).2 (isVacF_of_isVacVec hf)`. Establish `hstep : ∀ τ, ∀ X ∈ lieAt V τ, ∀ φ, ∃ φ', ∀ y, intersection_update_fsHerm_neg_one τ (a τ X) (I φ y) = I φ' y`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `τ X hX φ`. Take `⟨φ', hd⟩ : ∃ φ', ∀ v, DerT M τ X (It φ v) (It φ' v)` from `⟨_, hIt.eqg τ X hX φ _ ((hL τ).1 X hX φ)⟩`. Use `⟨φ', fun y => inj ?_⟩` and prove the remaining obligations. Establish `e` using `hd (inclK h' y)`. Rewrite `e` using `[← hI]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hI]`. Conclude with `derT_unique ((GlobalTheory.Chain.IoLift.FinTensor.kFinTensor D V S M τ h).2.1 _ (ha τ) X hX _) e`. Take `⟨N, hNd⟩ : ∃ N : Submodule ℂ (KT M), N = Submodule.span ℂ {x | ∃ φ y, I φ y = x}` from `⟨_, rfl⟩`. Establish `hN : ∀ τ (X : lieAt V τ), ∀ x ∈ N, intersection_update_fsHerm_neg_one τ (a τ X) x ∈ N`. Introduce `τ X x hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Proceed by induction.
 
-Rewrite `hx`, the goal using `[hNd]`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨φ, y, rfl⟩` from `hx`. Take `⟨φ', hφ'⟩` from `hstep τ X X.2 φ`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Conclude with `Submodule.subset_span ⟨φ', y, (hφ' y).symm⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`.
+Treat this case separately. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `smul c x _ hx => rw [map_smul]`. Conclude with `Submodule.smul_mem _ c hx`. Establish `h0 : N ≠ ⊥`. Take `⟨φ, y, hne⟩` from `GlobalTheory.T.exists_realIntertwiner_ne_zero_KFinite_tensor hH D V W S S' M M' θ ω _ It hIt h'`. Introduce `e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hne ?_` and prove the remaining obligations. Establish `: I φ y ∈ N` using `hNd ▸ Submodule.subset_span ⟨φ, y, rfl⟩`. Rewrite `this` using `[e, Submodule.mem_bot]`. Rewrite using `[← hI, this, map_zero]`. Establish `htop` using `GlobalTheory.T.piTensor_submodule_eq_top_of_absolutely_irreducible_stable D.what₂.Tau (fun τ => kFin M τ) (fun τ => lieAt V τ) (fun τ X => a τ X) hirr N hN h0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately.
 
-Introduce `w hw`. Take `⟨z, rfl⟩` from `span_le_range M h hw`. Establish `hz : z ∈ N` using `htop ▸ Submodule.mem_top`. Rewrite `hz` using `[hNd]`. Use `clear hw`.
-
-Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨φ, y, rfl⟩` from `hx`. Conclude with `Submodule.subset_span ⟨φ, inclK h' y, range_le_span M' h' y, (hI φ y)⟩`. Consider the case `zero => rw [map_zero]`.
-
-Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx => rw [map_smul]`. Conclude with `Submodule.smul_mem _ c hx`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem kfinSpan_le_span_it : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → ∀ (D : D7) (V W : HSp D) (S S' : D.what₂.Tau → SPar) (M : DSModel V S) (M' : DSModel W S') (θ : InfFam D) (ψ : AddChar (AF D.host.F) ℂ) (aS aT : D.what₂.Tau → ℚ) (ω : (GA D V × GA D W →* Module.End ℂ (WO V W → ℂ))) (f : WO V W → ℂ) (It : PolF D W.rank V.rank →ₗ[ℂ] SmT M' →ₗ[ℂ] SmT M), IsInfFam θ → IsWeilExp ψ V W aS aT ω → IsVacVec ψ θ M M' f → IsItW θ M M' ω (ptOf ψ θ M M' f) It → (Submodule.span ℂ {w : SmT M | ∃ v : (M).Vec, (∀ τ, (v τ : (M).H τ) ∈ GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.kfin M τ) ∧ w = PiTensorProduct.tprod ℂ v}) ≤ Submodule.span ℂ {w | ∃ P, ∃ v ∈ (Submodule.span ℂ {w : SmT M' | ∃ v : (M').Vec, (∀ τ, (v τ : (M').H τ) ∈ GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.kfin M' τ) ∧ w = PiTensorProduct.tprod ℂ v}), w = It P v} := by
   intro hD hH D V W S S' M M' θ ψ aS aT ω f It hθ hW hf hIt

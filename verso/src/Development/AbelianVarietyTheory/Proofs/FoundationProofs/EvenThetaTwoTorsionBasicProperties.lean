@@ -14,7 +14,7 @@ open NumberField Classical in
 open scoped BigOperators in
 variable {Λ : AddSubgroup ℂ} in
 /- English proof (translation)
-Establish `h` using `hΛ.sg_law ha z`. Unfold `_root_.Formalism.MainNotions.TaylorLogMetric.U1 at h`. Rewrite using `[← h, mul_assoc, ← Complex.exp_add]`. Apply the tactic sequence `ring_nf <;> simp`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma sgStar_add_lattice_eq_mul_exp (hΛ : _root_.GlobalTheory.EvenTheta.IsLat Λ) {a : ℂ} (ha : a ∈ Λ)
     (z : ℂ) :
@@ -30,9 +30,9 @@ open NumberField Classical in
 open scoped BigOperators in
 variable {Λ : AddSubgroup ℂ} in
 /- English proof (translation)
-Establish `h' : -1 * s * Complex.exp x = ε * (-1 * s * (Complex.exp x * Complex.exp k))`. Rewrite using `[← Complex.exp_add, ← hk, Complex.exp_add]`. Take the linear combination `h`. Establish `hprod : (s * Complex.exp x) * (ε * Complex.exp k - 1) = 0`. Take the linear combination `h'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Break down `mul_eq_zero.1 hprod with h0 | h0` into its components or cases. Conclude with `absurd h0 (mul_ne_zero hs (Complex.exp_ne_zero x))`. Conclude with `sub_eq_zero.1 h0`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 private lemma mul_exp_eq_one_of_exp_relation {ε s x y w k : ℂ} (hs : s ≠ 0)
     (h : -1 * s * Complex.exp x = ε * (-1 * s * Complex.exp y) * Complex.exp w)
@@ -50,7 +50,7 @@ open NumberField Classical in
 open scoped BigOperators in
 variable {Λ : AddSubgroup ℂ} in
 /- English proof (translation)
-Rewrite using `[hs, Complex.exp_add]`. Take the linear combination `(a * Complex.exp q) * h`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private lemma mul_mul_exp_eq_of_mul_exp_eq_one {ε k a s q : ℂ} (h : ε * Complex.exp k = 1) (hs : s = k + q) :
     ε * (a * Complex.exp s) = a * Complex.exp q := by
@@ -62,29 +62,27 @@ open scoped BigOperators in
 variable {Λ : AddSubgroup ℂ} in
 
 /- English proof (translation)
-Introduce `Λ hΛ t ht h2t`. Establish `hσt : _root_.Formalism.MainNotions.TaylorLogMetric.sgStar Λ t ≠ 0` using `fun h => ht ((hΛ.sg_eq_zero t).1 h)`. Establish `hhalf : ¬ (2 * t / 2 ∈ Λ)` using `by rwa [mul_div_cancel_left₀ t two_ne_zero]`. Establish `hU0 : _root_.Formalism.MainNotions.TaylorLogMetric.U1 Λ t (_root_.Formalism.MainNotions.TaylorLogMetric.sgStar Λ) 0 ≠ 0`. Unfold `_root_.Formalism.MainNotions.TaylorLogMetric.U1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[zero_add]`. Conclude with `mul_ne_zero hσt (Complex.exp_ne_zero _)`. Establish `hopp : ∀ y, _root_.Formalism.MainNotions.TaylorLogMetric.U1 Λ (-t) (_root_.Formalism.MainNotions.TaylorLogMetric.sgStar Λ) y = -_root_.Formalism.MainNotions.TaylorLogMetric.U1 Λ t (_root_.Formalism.MainNotions.TaylorLogMetric.sgStar Λ) y`. Introduce `y`. Unfold `_root_.Formalism.MainNotions.TaylorLogMetric.U1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[show y + t = y + -t + 2 * t by ring, sgStar_add_lattice_eq_mul_exp hΛ h2t, if_neg hhalf]`. Simplify using `only [mul_assoc, ← Complex.exp_add, map_neg, map_mul, map_ofNat]`. Put the polynomial expressions in normal form. Establish `heven : ∀ z, _root_.Formalism.MainNotions.TaylorLogMetric.U1 Λ t (_root_.Formalism.MainNotions.TaylorLogMetric.sgStar Λ) (-z) = _root_.Formalism.MainNotions.TaylorLogMetric.U1 Λ t (_root_.Formalism.MainNotions.TaylorLogMetric.sgStar Λ) z`. Introduce `z`.
+Simplify using the standard rewrite rules. Put the polynomial expressions in normal form. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `hopp z`. Unfold `_root_.Formalism.MainNotions.TaylorLogMetric.U1 at h ⊢`. Rewrite using `[show -z + t = -(z + -t) by ring, hΛ.sg_neg]`. Simplify using `only [map_neg] at h ⊢`. Use `ring_nf at h ⊢`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Put the polynomial expressions in normal form. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `-h`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hd` using `hΛ.differentiable`. Unfold `_root_.Formalism.MainNotions.GL3Theta.th0 _root_.Formalism.MainNotions.TaylorLogMetric.U1`. Use `fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `_root_.Formalism.MainNotions.GL3Theta.th0`. Conclude with `div_self hU0`. Introduce `z`. Unfold `_root_.Formalism.MainNotions.GL3Theta.th0`. Rewrite using `[heven]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `z`. Establish `h` using `hΛ.sqTh_mul ht z`. Rewrite `h` using `[hopp, hopp]`. Unfold `_root_.Formalism.MainNotions.GL3Theta.th0`. Rewrite using `[div_pow, div_eq_iff (pow_ne_zero 2 hU0)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Take the linear combination `h`. Introduce `z`. Unfold `_root_.Formalism.MainNotions.GL3Theta.th0`. Rewrite using `[div_eq_zero_iff, or_iff_left hU0]`. Unfold `_root_.Formalism.MainNotions.TaylorLogMetric.U1`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[mul_eq_zero, or_iff_left (Complex.exp_ne_zero _), hΛ.sg_eq_zero]`. Introduce `ω hω hωt z`. Establish `hsum : ¬ ((ω + 2 * t) / 2 ∈ Λ)`. Rewrite using `[show (ω + 2 * t) / 2 = ω / 2 + t by ring]` and apply the resulting hypothesis. Establish `h1` using `sgStar_add_lattice_eq_mul_exp hΛ (add_mem hω h2t) t`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `sgStar_add_lattice_eq_mul_exp hΛ hω (t + 2 * t)`. Establish `h3` using `sgStar_add_lattice_eq_mul_exp hΛ h2t t`. Rewrite `h1` using `[if_neg hsum]`. Rewrite `h3` using `[if_neg hhalf]`. Rewrite `h2` using `[show t + 2 * t + ω = t + (ω + 2 * t) by ring, h1, h3]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hε` using `mul_exp_eq_one_of_exp_relation (k := (↑Real.pi * t * (starRingEnd ℂ) ω - ↑Real.pi * ω * (starRingEnd ℂ) t) / ↑(_root_.Formalism.MainNotions.TaylorLogMetric.area Λ)) hσt h2 (by simp only [map_add, map_mul, map_ofNat]; ring)`. Unfold `_root_.Formalism.MainNotions.GL3Theta.th0 _root_.Formalism.MainNotions.TaylorLogMetric.U1`. Use `beta_reduce`. Rewrite using `[show z + ω + t = z + t + ω by ring, sgStar_add_lattice_eq_mul_exp hΛ hω, div_mul_eq_mul_div]`. Use `congr 1`.
-
-Simplify using `only [mul_assoc, ← Complex.exp_add]`. Conclude with `mul_mul_exp_eq_of_mul_exp_eq_one hε (by ring)`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.EvenTheta.evenThetaTwoTorsion_basic_properties : ∀ Λ : AddSubgroup ℂ, _root_.GlobalTheory.EvenTheta.IsLat Λ →
     ∀ t₀ : ℂ, t₀ ∉ Λ → 2 * t₀ ∈ Λ → Differentiable ℂ (_root_.Formalism.MainNotions.GL3Theta.th0 Λ t₀) ∧ _root_.Formalism.MainNotions.GL3Theta.th0 Λ t₀ 0 = 1 ∧

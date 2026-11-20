@@ -6,21 +6,21 @@ namespace GlobalTheory
 
 open KaehlerDifferential in
 /- English proof (translation)
-Rewrite using `[linearIndependent_iff']`. Introduce `s g hg n hn`. Use `set B : ℤ := ∑ m ∈ s, ∑ i, |m i| with hBdef`. Establish `hB : ∀ m ∈ s, ∀ i, 0 ≤ m i + B`. Introduce `m hm i`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : |m i| ≤ ∑ i, |m i|` using `Finset.single_le_sum (f := fun i => |m i|) (fun i _ => abs_nonneg _) (Finset.mem_univ i)`. Establish `h2 : ∑ i, |m i| ≤ B` using `Finset.single_le_sum (f := fun m : ι → ℤ => ∑ i, |m i|) (fun m _ => Finset.sum_nonneg fun i _ => abs_nonneg _) hm`. Combine the linear relations using `[neg_abs_le (m i)]`. Set `e : (ι → ℤ) → (ι →₀ ℕ)` to `fun m => Finsupp.equivFunOnFinite.symm (fun i => (m i + B).toNat)`. Establish `he : Set.InjOn e s`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m hm m' hm' h`. Use function extensionality and compare the values at `i`. Establish `h'` using `congrArg (fun f : ι →₀ ℕ => f i) h`. Simplify using `only [e, Finsupp.coe_equivFunOnFinite_symm] at h'`. Use `Int.toNat_of_nonneg (hB m hm i)` as an intermediate fact.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Int.toNat_of_nonneg (hB m' hm' i)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `set P : F := ∏ i, y i ^ B with hPdef`. Establish `hkey : ∀ m ∈ s, MvPolynomial.aeval y (MvPolynomial.monomial (e m) (1 : k)) = P * ∏ i, y i ^ m i`. Introduce `m hm`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[MvPolynomial.aeval_monomial, map_one, one_mul, Finsupp.prod_fintype _ _ (fun i => pow_zero _), hPdef, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← zpow_add₀ (hy0 i), ← zpow_natCast]`. Use `congr 1`. Simplify using `only [e, Finsupp.coe_equivFunOnFinite_symm]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Int.toNat_of_nonneg (hB m hm i)]`. Expand and normalize the polynomial expressions, which then agree. Establish `hw : LinearIndependent k (fun a : ι →₀ ℕ => MvPolynomial.aeval y (MvPolynomial.monomial a (1 : k)))`. Use `(MvPolynomial.basisMonomials ι k).linearIndependent.map' (MvPolynomial.aeval y).toLinearMap (LinearMap.ker_eq_bot.mpr hy)` as an intermediate fact. Simplify `this` using `only [MvPolynomial.coe_basisMonomials, Function.comp_def, AlgHom.toLinearMap_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hws : LinearIndependent k (fun m : s => MvPolynomial.aeval y (MvPolynomial.monomial (e m) (1 : k)))` using `hw.comp (fun m : s => e m) (fun a b h => Subtype.ext (he a.2 b.2 h))`. Rewrite `hws` using `[Fintype.linearIndependent_iff]`. Use `hws (fun m => g m) ?_ ⟨n, hn⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hkey m m.2, mul_smul_comm]`. Use `_ = P * ∑ m ∈ s, g m • ∏ i, y i ^ m i := by`. Rewrite using `[← Finset.mul_sum, Finset.sum_coe_sort s (fun m => g m • ∏ i, y i ^ m i)]`. Use `_ = 0 := by rw [hg, mul_zero]`.
+A detailed English derivation is pending.
 -/
 private theorem linearIndependent_laurentMonomials {k F ι : Type} [Field k] [Field F] [Algebra k F]
     [Fintype ι] (y : ι → F) (hy : AlgebraicIndependent k y) (hy0 : ∀ i, y i ≠ 0) :
@@ -77,11 +77,11 @@ private theorem linearIndependent_laurentMonomials {k F ι : Type} [Field k] [Fi
 
 open KaehlerDifferential in
 /- English proof (translation)
-Establish `h0 : m 0 = -∑ i : Fin d, m i.succ`. Rewrite `hm` using `[Fin.sum_univ_succ]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpow : ∀ s : Finset (Fin d), ∏ i ∈ s, x 0 ^ m i.succ = x 0 ^ ∑ i ∈ s, m i.succ` using `by classical`. Introduce `s`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => rw [Finset.prod_insert ha, Finset.sum_insert ha, ih, zpow_add₀ (hx 0)]`. Rewrite using `[Fin.prod_univ_succ, h0]`. Repeatedly rewrite using `[div_zpow]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[Finset.prod_div_distrib, hpow, zpow_neg, div_eq_mul_inv, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem prod_zpow_eq_prod_div_zpow_of_sum_eq_zero {F : Type} [Field F] {d : ℕ} (x : Fin (d + 1) → F)
     (hx : ∀ i, x i ≠ 0) (m : Fin (d + 1) → ℤ) (hm : ∑ j, m j = 0) :
@@ -102,19 +102,19 @@ private theorem prod_zpow_eq_prod_div_zpow_of_sum_eq_zero {F : Type} [Field F] {
 open KaehlerDifferential in
 
 /- English proof (translation)
-Introduce `k _ F _ _ d x hx`. Set `v : {m : Fin (d + 1) → ℤ // ∑ j, m j = 0} → F` to `fun m => ∏ j, x j ^ m.1 j`. Establish `hv : LinearIndependent k v`. Establish `hL` using `linearIndependent_laurentMonomials (k := k) (fun i : Fin d => x i.succ / x 0) hx.indep (fun i => div_ne_zero (hx.ne _) (hx.ne 0))`. Establish `hinj : Function.Injective (fun m : {m : Fin (d + 1) → ℤ // ∑ j, m j = 0} => fun i : Fin d => m.1 i.succ)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a b h`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `hs : ∀ i : Fin d, a.1 i.succ = b.1 i.succ` using `fun i => congrFun h i`. Establish `ha` using `a.2`. Establish `hb` using `b.2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `ha`, `hb` using `[Fin.sum_univ_succ]`. Establish `hsum : ∑ i : Fin d, a.1 i.succ = ∑ i : Fin d, b.1 i.succ` using `Finset.sum_congr rfl fun i _ => hs i`. Use function extensionality and compare the values at `j`. Use `Fin.cases ?_ (fun i => hs i) j` and prove the remaining obligations. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `hL.comp _ hinj` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `m`. Conclude with `prod_zpow_eq_prod_div_zpow_of_sum_eq_zero x hx.ne m.1 m.2`. Set `z₀ : {m : Fin (d + 1) → ℤ // ∑ j, m j = 0}` to `⟨0, by simp⟩`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h1 : v z₀ = 1` using `by simp [v, z₀]`. Establish `hnot` using `hv.notMem_span_image (s := {z | z ≠ z₀}) (x := z₀) (by simp)`. Rewrite `hnot` using `[h1]`. Take `⟨f, hf1, hf⟩` from `Submodule.exists_dual_map_eq_bot_of_notMem hnot inferInstance`. Use `⟨(f 1)⁻¹ • f, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `delta _root_.GlobalTheory.PD.IsRes`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, smul_eq_mul, inv_mul_cancel₀ hf1]`. Introduce `m hm hm0`. Establish `hmem : ∏ j, x j ^ m j ∈ Submodule.span k (v '' {z | z ≠ z₀})` using `Submodule.subset_span ⟨⟨m, hm⟩, fun h => hm0 (congrArg Subtype.val h), rfl⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hzero : f (∏ j, x j ^ m j) = 0`. Conclude with `LinearMap.mem_ker.mp ((LinearMap.le_ker_iff_map.mpr hf) hmem)`. Rewrite using `[LinearMap.smul_apply, hzero, smul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.exists_isRes : ∀ (k : Type) [Field k] (F : Type) [Field F]
     [Algebra k F] (d : ℕ) (x : Fin (d + 1) → F),

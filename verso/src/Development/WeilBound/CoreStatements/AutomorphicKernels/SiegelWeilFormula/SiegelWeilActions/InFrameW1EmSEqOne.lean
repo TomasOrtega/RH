@@ -21,9 +21,9 @@ namespace I
 
 variable (L) in
 /- English proof (translation)
-Establish `himg : Finset.univ.image L.em = Finset.univ.erase L.i₀`. Use extensionality with `i`. Simplify using `only [Finset.mem_image, Finset.mem_univ, true_and, Finset.mem_erase, and_true]`. Rewrite using `[L.rng i]`. Both sides reduce to the same expression.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← Finset.add_sum_erase _ _ (Finset.mem_univ L.i₀), ← himg, Finset.sum_image (fun a _ b _ h => L.inj h)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_split' {M : Type} [AddCommMonoid M] (f : Fin d.n → M) : ∑ i, f i = f L.i₀ + ∑ k, f (L.em k) := by
   have himg : Finset.univ.image L.em = Finset.univ.erase L.i₀ := by
@@ -34,9 +34,9 @@ theorem sum_split' {M : Type} [AddCommMonoid M] (f : Fin d.n → M) : ∑ i, f i
   rw [← Finset.add_sum_erase _ _ (Finset.mem_univ L.i₀), ← himg, Finset.sum_image (fun a _ b _ h => L.inj h)]
 
 /- English proof (translation)
-Use extensionality with `a a'`. Simplify using `only [Matrix.submatrix_apply, Matrix.mul_apply]`. Use `Bq.sum_emb (emS L) (emS_inj L) _ fun k hk => ?_` and prove the remaining obligations. Break down `mem_out L hk with rfl | rfl` into its components or cases. Rewrite using `[hM, Matrix.one_apply_ne, zero_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fun h => not_inl L L.i₀ rfl ⟨a, h⟩`. Rewrite using `[hN, Matrix.one_apply_ne, mul_zero]`. Conclude with `fun h => not_inr L L.i₀ rfl ⟨a', h.symm⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem blk_mul {M N : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) (AE F E)}
     (hM : ∀ r, M r (Sum.inl L.i₀) = (1 : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) (AE F E)) r (Sum.inl L.i₀))
@@ -52,16 +52,16 @@ theorem blk_mul {M N : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) (AE F 
     exact fun h => not_inr L L.i₀ rfl ⟨a', h.symm⟩
 
 /- English proof (translation)
-Use extensionality with `a a'`. Simplify using `[Matrix.one_apply, (emS_inj L).eq_iff]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem blk_one : (1 : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) (AE F E)).submatrix (emS L) (emS L) = 1 := by
   ext a a'
   simp [Matrix.one_apply, (emS_inj L).eq_iff]
 
 /- English proof (translation)
-Rewrite using `[cM_frame h]`. Break down `k with k | k` into its components or cases. Simplify using the standard rewrite rules. Distinguish the cases in `hk : k = L.i₀`. Substitute `hk` using the available equality.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[uA, Matrix.one_apply, Matrix.single_apply, Matrix.sum_apply, C4.em_ne L]`. Simplify using `[uA, Matrix.one_apply, Matrix.single_apply, Matrix.sum_apply, C4.em_ne L, hk, Ne.symm hk]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem rowy_cM (h : Hyp L nb uM nb' w₁ cM δ) (c : (Fin L.n → AE F E) × AF F) (k : Fin d.n ⊕ Fin d.n) :
     inFrame d.b (cM c) (Sum.inr L.i₀) k =
@@ -75,9 +75,9 @@ theorem rowy_cM (h : Hyp L nb uM nb' w₁ cM δ) (c : (Fin L.n → AE F E) × AF
     · simp [uA, Matrix.one_apply, Matrix.single_apply, Matrix.sum_apply, C4.em_ne L, hk, Ne.symm hk]
 
 /- English proof (translation)
-Establish `h1 : (inFrame d.b x * inFrame d.b x⁻¹) (Sum.inr L.i₀) k = (1 : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) (AE F E)) (Sum.inr L.i₀) k`. Rewrite using `[← GlobalTheory.EisBL.DoubledParabolic.inFrame_mul, mul_inv_cancel, GlobalTheory.EisBL.DoubledParabolic.inFrame_one]`. Rewrite `h1` using `[Matrix.mul_apply, Finset.sum_eq_single (Sum.inr L.i₀)]`. Rewrite `h1` using `[hx, Matrix.one_apply_eq, one_mul]`. Then use the resulting hypothesis. Introduce `j _ hj`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hx, Matrix.one_apply_ne (Ne.symm hj), zero_mul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rowy_inv {x : d.G}
     (hx : ∀ k, inFrame d.b x (Sum.inr L.i₀) k =
@@ -94,7 +94,7 @@ theorem rowy_inv {x : d.G}
   · simp
 
 /- English proof (translation)
-The claim follows from `(L.j_out g (Sum.inr L.i₀) (by simp) k).1`.
+A detailed English derivation is pending.
 -/
 theorem rowy_j (g : G2 σ L.Y) (k : Fin d.n ⊕ Fin d.n) :
     inFrame d.b (L.j g) (Sum.inr L.i₀) k =
@@ -102,16 +102,16 @@ theorem rowy_j (g : G2 σ L.Y) (k : Fin d.n ⊕ Fin d.n) :
   (L.j_out g (Sum.inr L.i₀) (by simp) k).1
 
 /- English proof (translation)
-Use extensionality with `a a'`. Rewrite using `[Matrix.submatrix_apply, inFrame_j, padM_emS]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem blk_j (g : G2 σ L.Y) : (inFrame d.b (L.j g)).submatrix (emS L) (emS L) = inFrame L.b g := by
   ext a a'
   rw [Matrix.submatrix_apply, inFrame_j, padM_emS]
 
 /- English proof (translation)
-Take `⟨a₀, b₀, -, -, hW⟩` from `h.wf`. Rewrite using `[hW]`. Establish `hne` using `C4.em_ne L`. Apply the tactic sequence `rcases a with a | a <;>`. Apply the tactic sequence `simp [emS, Matrix.single_apply, Matrix.one_apply, hne a, Ne.symm (hne a)] <;>`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `(constructor <;> congr)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem inFrame_w1_emS_eq_one (h : Hyp L nb uM nb' w₁ cM δ) (a : Fin L.n ⊕ Fin L.n) (l : Fin d.n ⊕ Fin d.n) :
     inFrame d.b w₁ (emS L a) l = (1 : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) (AE F E)) (emS L a) l ∧
@@ -124,9 +124,9 @@ theorem inFrame_w1_emS_eq_one (h : Hyp L nb uM nb' w₁ cM δ) (a : Fin L.n ⊕ 
     (constructor <;> congr)
 
 /- English proof (translation)
-Take `⟨a₀, b₀, -, hb, hW⟩` from `h.wf`. Use `⟨b₀, hb, fun l => ?_, fun j l => (inFrame_w1_emS_eq_one h (Sum.inr j) l).1⟩` and prove the remaining obligations. Rewrite using `[hW]`. Apply the tactic sequence `rcases l with i | i <;> by_cases hi : i = L.i₀`. Substitute `hi` using the available equality.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality.
 
-Simplify using `[Matrix.single_apply, Matrix.one_apply]`. Simplify using `[Matrix.single_apply, Matrix.one_apply, hi, Ne.symm hi]`. Substitute `hi` using the available equality. Simplify using `[Matrix.single_apply, Matrix.one_apply]`. Simplify using `[Matrix.single_apply, Matrix.one_apply, hi, Ne.symm hi]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem w1_frame_rows (h : Hyp L nb uM nb' w₁ cM δ) : ∃ b₀ : E, b₀ ≠ 0 ∧
     (∀ l, inFrame d.b w₁ (Sum.inr L.i₀) l = if l = Sum.inl L.i₀ then inclR (F := F) (AF F) b₀ else 0) ∧
@@ -142,11 +142,11 @@ theorem w1_frame_rows (h : Hyp L nb uM nb' w₁ cM δ) : ∃ b₀ : E, b₀ ≠ 
   · simp [Matrix.single_apply, Matrix.one_apply, hi, Ne.symm hi]
 
 /- English proof (translation)
-Take `⟨φ, hφ⟩` from `Module.Projective.exists_dual_ne_zero F hδ`. Use `set ψ : Module.Dual F E := (φ δ)⁻¹ • φ with hψ`. Establish `hψδ : ψ δ = 1`. Rewrite using `[hψ, LinearMap.smul_apply, smul_eq_mul, inv_mul_cancel₀ hφ]`. Set `f : AF F ⊗[F] E →ₗ[F] AF F` to `(TensorProduct.rid F (AF F)).toLinearMap ∘ₗ LinearMap.lTensor (AF F) ψ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hf : ∀ t : AF F, f (t • inclR (F` using `F) (E := E) (AF F) δ) = t := by`. Introduce `t`. Rewrite using `[kfour.inclR_eq, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Simplify using `[f, LinearMap.lTensor_tmul, hψδ]`. Establish `h2` using `congrArg f h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h2` using `[hf, hf]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem smul_inclR_inj (hδ : δ ≠ 0) {a a' : AF F}
     (h : a • inclR (F := F) (E := E) (AF F) δ = a' • inclR (F := F) (E := E) (AF F) δ) : a = a' := by
@@ -163,13 +163,13 @@ theorem smul_inclR_inj (hδ : δ ≠ 0) {a a' : AF F}
   rwa [hf, hf] at h2
 
 /- English proof (translation)
-Establish `hy : ∀ X : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) (AE F E), (Wm * X) (Sum.inr L.i₀) k = b * X (Sum.inl L.i₀) k`. Introduce `X`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (Sum.inl L.i₀)]`. Rewrite using `[hWy, if_pos rfl]`. Introduce `l _ hl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hWy, if_neg hl, zero_mul]`. Simplify using the standard rewrite rules. Establish `hem : ∀ j, (Wm * C) (Sum.inr (L.em j)) k = C (Sum.inr (L.em j)) k`. Introduce `j`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (Sum.inr (L.em j))]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hWo, Matrix.one_apply_eq, one_mul]`. Introduce `l _ hl`. Rewrite using `[hWo, Matrix.one_apply_ne (Ne.symm hl), zero_mul]`. Simplify using the standard rewrite rules. Establish `e` using `congrFun (congrFun hE (Sum.inr L.i₀)) k`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← hy C', ← e, Matrix.mul_apply, Fintype.sum_sum_type]`. Simplify using `only [hP, zero_mul, Finset.sum_const_zero, zero_add]`. Rewrite using `[sum_split' L (fun i => P (Sum.inr L.i₀) (Sum.inr i) * (Wm * C) (Sum.inr i) k), hy C]`. Simplify using `only [hem]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem row_eq {P Wm C C' : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) (AE F E)} {b : AE F E}
     (hP : ∀ i, P (Sum.inr L.i₀) (Sum.inl i) = 0)
@@ -201,7 +201,7 @@ theorem row_eq {P Wm C C' : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) (
   simp only [hem]
 
 /- English proof (translation)
-Rewrite using `[cM_frame h]`. Simplify using `[uA, Matrix.one_apply, Matrix.single_apply, Matrix.sum_apply, C4.em_ne L, L.inj.eq_iff, Ne.symm (C4.em_ne L _)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cx_em (h : Hyp L nb uM nb' w₁ cM δ) (c : (Fin L.n → AE F E) × AF F) (m : Fin L.n) :
     inFrame d.b (cM c) (Sum.inl L.i₀) (Sum.inl (L.em m)) = c.1 m := by
@@ -210,7 +210,7 @@ theorem cx_em (h : Hyp L nb uM nb' w₁ cM δ) (c : (Fin L.n → AE F E) × AF F
     Ne.symm (C4.em_ne L _)]
 
 /- English proof (translation)
-Rewrite using `[cM_frame h]`. Simplify using `[aB, Matrix.single_apply, C4.em_ne L, Ne.symm (C4.em_ne L _)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cx_emr (h : Hyp L nb uM nb' w₁ cM δ) (c : (Fin L.n → AE F E) × AF F) (m : Fin L.n) :
     inFrame d.b (cM c) (Sum.inl L.i₀) (Sum.inr (L.em m)) = 0 := by
@@ -218,7 +218,7 @@ theorem cx_emr (h : Hyp L nb uM nb' w₁ cM δ) (c : (Fin L.n → AE F E) × AF 
   simp [aB, Matrix.single_apply, C4.em_ne L, Ne.symm (C4.em_ne L _)]
 
 /- English proof (translation)
-Rewrite using `[cM_frame h]`. Simplify using `[aB]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cx_y (h : Hyp L nb uM nb' w₁ cM δ) (c : (Fin L.n → AE F E) × AF F) :
     inFrame d.b (cM c) (Sum.inl L.i₀) (Sum.inr L.i₀) = c.2 • inclR (F := F) (E := E) (AF F) δ := by
@@ -226,7 +226,7 @@ theorem cx_y (h : Hyp L nb uM nb' w₁ cM δ) (c : (Fin L.n → AE F E) × AF F)
   simp [aB]
 
 /- English proof (translation)
-Rewrite using `[cM_frame h]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cem_l (h : Hyp L nb uM nb' w₁ cM δ) (c : (Fin L.n → AE F E) × AF F) (j : Fin L.n) (l : Fin d.n) :
     inFrame d.b (cM c) (Sum.inr (L.em j)) (Sum.inl l) = 0 := by
@@ -234,7 +234,7 @@ theorem cem_l (h : Hyp L nb uM nb' w₁ cM δ) (c : (Fin L.n → AE F E) × AF F
   simp
 
 /- English proof (translation)
-Rewrite using `[cM_frame h]`. Distinguish the cases in `hjm : j = m`. Substitute `hjm` using the available equality. Simplify using `[uA, Matrix.one_apply, Matrix.single_apply, Matrix.sum_apply, C4.em_ne L, Ne.symm (C4.em_ne L _)]`. Simplify using `[uA, Matrix.one_apply, Matrix.single_apply, Matrix.sum_apply, C4.em_ne L, Ne.symm (C4.em_ne L _), L.inj.eq_iff, hjm, Ne.symm hjm]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem cem_em (h : Hyp L nb uM nb' w₁ cM δ) (c : (Fin L.n → AE F E) × AF F) (j m : Fin L.n) :
     inFrame d.b (cM c) (Sum.inr (L.em j)) (Sum.inr (L.em m)) =
@@ -247,39 +247,35 @@ theorem cem_em (h : Hyp L nb uM nb' w₁ cM δ) (c : (Fin L.n → AE F E) × AF 
       L.inj.eq_iff, hjm, Ne.symm hjm]
 
 /- English proof (translation)
-Establish `hP21 : (inFrame d.b p).toBlocks₂₁ = 0` using `(ComplexParameterFamilyContinuity.mem_stabiliser_iff_frame_lower_block d.ok.frame p).1 hp`. Establish `hP : ∀ i k, inFrame d.b p (Sum.inr i) (Sum.inl k) = 0` using `fun i k => congrFun (congrFun hP21 i) k`. Use `⟨?_, fun hγ => ?_⟩` and prove the remaining obligations. Use `set g := γ'' * γ'⁻¹ with hg`. Establish `key : w₁⁻¹ * p * w₁ * (cM c.1 * L.j γ') = cM c'.1 * L.j γ''`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[mul_assoc (w₁⁻¹ * p), mul_assoc w₁⁻¹, e, inv_mul_cancel_left]`. Establish `key2 : w₁⁻¹ * p * w₁ = cM c'.1 * L.j g * (cM c.1)⁻¹`. Rewrite using `[hg, map_mul, map_inv, ← mul_assoc (cM c'.1), ← key]`. Use `group`. Establish `hQ : (inFrame d.b (w₁⁻¹ * p * w₁)).submatrix (emS L) (emS L) = (inFrame d.b p).submatrix (emS L) (emS L)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hWQ : inFrame d.b w₁ * inFrame d.b (w₁⁻¹ * p * w₁) = inFrame d.b p * inFrame d.b w₁`. Rewrite using `[← GlobalTheory.EisBL.DoubledParabolic.inFrame_mul, ← GlobalTheory.EisBL.DoubledParabolic.inFrame_mul, ← mul_assoc, ← mul_assoc, mul_inv_cancel, one_mul]`. Use extensionality with `a a'`. Establish `e1` using `congrFun (congrFun hWQ (emS L a)) (emS L a')`. Rewrite `e1` using `[Matrix.mul_apply, Matrix.mul_apply, Finset.sum_eq_single (emS L a), Finset.sum_eq_single (emS L a')]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `e1` using `[(inFrame_w1_emS_eq_one h a (emS L a)).1, (inFrame_w1_emS_eq_one h a' (emS L a')).2, Matrix.one_apply_eq, Matrix.one_apply_eq, one_mul, mul_one]`. Conclude with `e1`. Introduce `l _ hl`. Rewrite using `[(inFrame_w1_emS_eq_one h a' l).2, Matrix.one_apply_ne hl, mul_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `l _ hl`. Rewrite using `[(inFrame_w1_emS_eq_one h a l).1, Matrix.one_apply_ne (Ne.symm hl), zero_mul]`. Simplify using the standard rewrite rules. Establish `hfixC'` using `fix_cM' h c'.1`. Establish `hC1 : (inFrame d.b (cM c.1)⁻¹).submatrix (emS L) (emS L) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `blk_mul (L := L) (M := inFrame d.b (cM c.1)) (N := inFrame d.b (cM c.1)⁻¹) (fix_cM' h c.1) (rowy_inv (rowy_cM h c.1))`. Rewrite `h1` using `[← GlobalTheory.EisBL.DoubledParabolic.inFrame_mul, mul_inv_cancel, GlobalTheory.EisBL.DoubledParabolic.inFrame_one, blk_one, emS_cM h, one_mul]`. Conclude with `h1.symm`. Establish `hR : (inFrame d.b (cM c'.1 * L.j g * (cM c.1)⁻¹)).submatrix (emS L) (emS L) = inFrame L.b g`. Rewrite using `[GlobalTheory.EisBL.DoubledParabolic.inFrame_mul, blk_mul (fix_mul hfixC' (fix_j g)) (rowy_inv (rowy_cM h c.1)), GlobalTheory.EisBL.DoubledParabolic.inFrame_mul, blk_mul hfixC' (rowy_j g), emS_cM h, blk_j, hC1, one_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Establish `hG : inFrame L.b g = (inFrame d.b p).submatrix (emS L) (emS L)`. Rewrite using `[← hR, ← key2, hQ]`. Use `(ComplexParameterFamilyContinuity.mem_stabiliser_iff_frame_lower_block L.ok.frame g).2 ?_` and prove the remaining obligations. Use extensionality with `i k`. Rewrite using `[hG]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Matrix.toBlocks₂₁, Matrix.of_apply, Matrix.submatrix_apply, Matrix.zero_apply, emS, Sum.map_inr, Sum.map_inl]`. Conclude with `hP _ _`. Substitute `hγ` using the available equality. Establish `e2 : p * w₁ * cM c.1 = w₁ * cM c'.1`. Establish `h1` using `congrArg (· * (L.j γ'')⁻¹) e`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Simplify `h1` using `[mul_assoc]`. Establish `hE : inFrame d.b p * (inFrame d.b w₁ * inFrame d.b (cM c.1)) = inFrame d.b w₁ * inFrame d.b (cM c'.1)`. Establish `h1` using `congrArg (inFrame d.b) e2`. Simplify `h1` using `only [GlobalTheory.EisBL.DoubledParabolic.inFrame_mul, Matrix.mul_assoc]`. Take `⟨b₀, hb₀, hWy, hWo⟩` from `w1_frame_rows h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hrow` using `row_eq (fun i => hP L.i₀ i) hWy hWo hE`. Use `set bA := inclR (F := F) (E := E) (AF F) b₀`. Establish `hbinv : inclR (F` using `F) (E := E) (AF F) b₀⁻¹ * bA = 1 := by`. Rewrite using `[← map_mul, inv_mul_cancel₀ hb₀, map_one]`. Establish `canc : ∀ X Y : AE F E, bA * X = bA * Y → X = Y`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `X Y hXY`. Establish `h1` using `congrArg (inclR (F := F) (E := E) (AF F) b₀⁻¹ * ·) hXY`. Simplify `h1` using `only [← mul_assoc, hbinv, one_mul]`. Establish `hfixC` using `fix_cM' h c.1`. Establish `hfixC'` using `fix_cM' h c'.1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hyy : inFrame d.b p (Sum.inr L.i₀) (Sum.inr L.i₀) = 1`. Establish `h1` using `hrow (Sum.inl L.i₀)`. Establish `hs : ∑ j, inFrame d.b p (Sum.inr L.i₀) (Sum.inr (L.em j)) * inFrame d.b (cM c.1) (Sum.inr (L.em j)) (Sum.inl L.i₀) = 0` using `Finset.sum_eq_zero fun j _ => by rw [hfixC, Matrix.one_apply_ne (by simp), mul_zero]`. Rewrite `h1` using `[hs, add_zero, hfixC', hfixC, Matrix.one_apply_eq, mul_one]`. Conclude with `canc _ _ (by rw [mul_one, mul_comm]; exact h1.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hd : ∀ l, inFrame d.b p (Sum.inr L.i₀) (Sum.inr (L.em l)) = 0`. Introduce `l`. Establish `h1` using `hrow (Sum.inr (L.em l))`. Establish `hs : ∑ j, inFrame d.b p (Sum.inr L.i₀) (Sum.inr (L.em j)) * inFrame d.b (cM c.1) (Sum.inr (L.em j)) (Sum.inr (L.em l)) = inFrame d.b p (Sum.inr L.i₀) (Sum.inr (L.em l))`. Rewrite using `[Finset.sum_eq_single l]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[cem_em h, Matrix.one_apply_eq, mul_one]`. Introduce `j _ hj`. Rewrite using `[cem_em h, Matrix.one_apply_ne hj, mul_zero]`. Simplify using the standard rewrite rules. Rewrite `h1` using `[hs, cx_emr h, cx_emr h]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [mul_zero, zero_add] at h1`. Conclude with `h1.symm`. Establish `hu : ∀ m, c'.1.1 m = c.1.1 m`. Introduce `m`. Establish `h1` using `hrow (Sum.inl (L.em m))`.
-
-Establish `hs : ∑ j, inFrame d.b p (Sum.inr L.i₀) (Sum.inr (L.em j)) * inFrame d.b (cM c.1) (Sum.inr (L.em j)) (Sum.inl (L.em m)) = 0` using `Finset.sum_eq_zero fun j _ => by rw [cem_l h, mul_zero]`. Rewrite `h1` using `[hs, add_zero, cx_em h, cx_em h, hyy, one_mul]`. Conclude with `canc _ _ h1`. Establish `ha : c'.1.2 = c.1.2`. Establish `h1` using `hrow (Sum.inr L.i₀)`.
-
-Establish `hs : ∑ j, inFrame d.b p (Sum.inr L.i₀) (Sum.inr (L.em j)) * inFrame d.b (cM c.1) (Sum.inr (L.em j)) (Sum.inr L.i₀) = 0` using `Finset.sum_eq_zero fun j _ => by rw [hd, zero_mul]`. Rewrite `h1` using `[hs, add_zero, cx_y h, cx_y h, hyy, one_mul]`. Conclude with `smul_inclR_inj h.δ0 (canc _ _ h1)`. Conclude with `Subtype.ext (Prod.ext (funext fun m => (hu m).symm) ha.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inj_core (h : Hyp L nb uM nb' w₁ cM δ) {p : d.G} (hp : p ∈ par2 σ d.Y) (hpr : p ∈ rat2 σ d.Y) {c c' : Cr L}
     {γ' γ'' : G2 σ L.Y} (h' : γ' ∈ rat2 σ L.Y) (h'' : γ'' ∈ rat2 σ L.Y)

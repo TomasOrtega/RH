@@ -15,13 +15,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.PowDim
 
 /- English proof (translation)
-Introduce `S _ G H _ _ g pr huniv hG hH`. Establish `hlim : IsLimit (Fan.mk H pr)` using `mkFanLimit _ (fun s => (huniv s.pt s.proj).choose) (fun s i => (huniv s.pt s.proj).choose_spec.1 i) (fun s m hm => (huniv s.pt s.proj).choose_spec.2 m hm)`. Set `e : H ≅ powObj G 8` to `hlim.conePointUniqueUpToIso (powIsLimit G 8)`. Establish `hw : H.hom = e.hom.left ≫ (powObj G 8).hom` using `(Over.w e.hom).symm`. Use `haveI : IsIso e.hom.left := inferInstanceAs (IsIso ((Over.forget _).map e.hom))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : Smooth G.hom := hG.smooth`. Use `haveI : GeometricallyConnected G.hom := hG.geomConnected`. Use `haveI : ConnectedSpace S := inferInstance`. Use `haveI : ConnectedSpace G.left := GeometricallyConnected.connectedSpace G.hom G.hom.isOpenMap`. Take `⟨s⟩ : Nonempty S` from `inferInstance`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨n, hn⟩` from `Geo.Tor.exists_dim_of_preconnected G.hom (eSec G s)`. Establish `h8` using `smoothOfRelativeDimension_powObj G n hn 8`. Establish `h2 : SmoothOfRelativeDimension (0 + 8 * n) H.hom`. Rewrite using `[hw]`. Use `infer_instance`.
-
-Use `ReciprocityTheory.ChartRestriction.G.H1.dim_unique _ hH h2 (eSec H s)` as an intermediate fact. Establish `hgn : g = n` using `by omega`. Substitute `hgn` using the available equality. Conclude with `hn`.
+Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem smoothOfRelativeDimension_of_eighthPower : ∀ {S : Scheme.{0}} [IsIntegral S] (G H : Over S) [GrpObj G] [GrpObj H] (g : ℕ) (pr : Fin 8 → (H ⟶ G)) (huniv : ∀ (T : Over S) (y : Fin 8 → (T ⟶ G)), ∃! x : T ⟶ H, ∀ u, x ≫ pr u = y u) (hG : IsSemiAbelian G) (hH : SmoothOfRelativeDimension (8 * g) H.hom), SmoothOfRelativeDimension g G.hom := by
   intro S _ G H _ _ g pr huniv hG hH

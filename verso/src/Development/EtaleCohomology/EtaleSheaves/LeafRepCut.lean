@@ -124,7 +124,7 @@ def LeafDeg : Prop := Hyps → ∀ (q : ℕ) [NeZero q] (k : Type) [Field k], Is
     IsIso ((DerivedCategory.homologyFunctor (SShv B q) 0).map ℓ)
 
 /- English proof (translation)
-Introduce `hy q _ k _ hq i B W Y0 Y1 Y2 b ι _ V hV p g1 g2 h0 h1 h2 hA`. Take `⟨K0, K1, K2, L, f, g, ℓ, l0, l1, l2, lL, e0, e2, eL, r0, r1, r2, rL, mf, mg, mℓ, hinj, hsurj, c0, cL⟩` from `hC q i ι p g1 g2`. Take `⟨d1, d2, d3, d4, d5, d6⟩` from `hD hy q k hq i b ι V hV p g1 g2 h0 h1 h2 hA K0 K1 K2 L f g ℓ l0 l1 l2 lL r0 r1 r2 rL mf mg mℓ`. Conclude with `⟨SShv B q, inferInstance, inferInstance, inferInstance, (OU B q).obj (top B), K0, K1, K2, L, f, g, ℓ, e0, e2, eL, d1, d2, d3, d4, d5, d6, hinj, hsurj, c0, cL⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem goal_of (hC : LeafCons) (hD : LeafDeg) : LateralTheory.E.LeafGhostRelCut.LeafRep := by
   intro hy q _ k _ hq i B W Y0 Y1 Y2 b ι _ V hV p g1 g2 h0 h1 h2 hA

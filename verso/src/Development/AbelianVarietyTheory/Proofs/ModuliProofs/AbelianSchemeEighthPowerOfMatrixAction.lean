@@ -52,7 +52,7 @@ variable {C : Type*} [Category* C] [CartesianMonoidalCategory C]
       simp }
 
 /- English proof (translation)
-The claim follows from `{ one_hom := by rw [MonObj.one_eq_one M, MonObj.one_eq_one N, h1] mul_hom := by rw [MonObj.mul_eq_mul M, MonObj.mul_eq_mul N, h2, MonObj.comp_mul, tensorHom_fst, tensorHom_snd] }`.
+A detailed English derivation is pending.
 -/
 private theorem isMonHom_of_one_comp_of_mul_comp {M N : C} [MonObj M] [MonObj N] (f : M ⟶ N)
     (h1 : (1 : 𝟙_ C ⟶ M) ≫ f = 1)
@@ -63,15 +63,15 @@ private theorem isMonHom_of_one_comp_of_mul_comp {M N : C} [MonObj M] [MonObj N]
         tensorHom_snd] }
 
 /- English proof (translation)
-Set `gA : GrpObj A` to `retractGrpObj i r hir`. Establish `hm : ∀ {T : C} (a b : T ⟶ A), a * b = (a ≫ i * b ≫ i) ≫ r`. Introduce `T a b`. Rewrite using `[Hom.mul_def]`. Express the relevant statement in the definitionally equal form `lift a b ≫ (fst A A ≫ i * snd A A ≫ i) ≫ r = _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← Category.assoc, MonObj.comp_mul, lift_fst_assoc, lift_snd_assoc]`. Establish `ho : ∀ {T : C}, (1 : T ⟶ A) = (1 : T ⟶ G) ≫ r`. Introduce `T`. Rewrite using `[Hom.one_def]`. Express the relevant statement in the definitionally equal form `toUnit T ≫ (1 : 𝟙_ C ⟶ G) ≫ r = _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← Category.assoc, MonObj.comp_one]`. Use `⟨gA, ?_, ?_⟩` and prove the remaining obligations. Use `isMonHom_of_one_comp_of_mul_comp i ?_ ?_` and prove the remaining obligations. Rewrite using `[ho, Category.assoc, MonObj.one_comp]`. Rewrite using `[hm, Category.assoc, MonObj.mul_comp]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Category.assoc, reassoc_of% hir]`. Use `isMonHom_of_one_comp_of_mul_comp r ho.symm ?_` and prove the remaining obligations. Rewrite using `[hm]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Category.assoc, hir, Category.comp_id]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use `_ = _ := by rw [MonObj.mul_comp]; simp only [Category.assoc]`.
+A detailed English derivation is pending.
 -/
 theorem exists_grpObj_retract {G A : C} [GrpObj G] (i : A ⟶ G) (r : G ⟶ A) (hir : i ≫ r = 𝟙 A)
     [he : IsMonHom (r ≫ i)] : ∃ _ : GrpObj A, IsMonHom i ∧ IsMonHom r := by
@@ -100,7 +100,7 @@ theorem exists_grpObj_retract {G A : C} [GrpObj G] (i : A ⟶ G) (r : G ⟶ A) (
 variable [BraidedCategory C]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp only [Finset.prod_empty, MonObj.comp_one]`. Consider the case `insert a s ha ih => rw [Finset.prod_insert ha, Finset.prod_insert ha, MonObj.comp_mul, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem comp_prod {n : Type*} (s : Finset n) {T X G : C} [GrpObj G] [IsCommMonObj G]
     (f : T ⟶ X) (g : n → (X ⟶ G)) : f ≫ ∏ u ∈ s, g u = ∏ u ∈ s, f ≫ g u := by
@@ -110,7 +110,7 @@ theorem comp_prod {n : Type*} (s : Finset n) {T X G : C} [GrpObj G] [IsCommMonOb
   | insert a s ha ih => rw [Finset.prod_insert ha, Finset.prod_insert ha, MonObj.comp_mul, ih]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp only [Finset.prod_empty, MonObj.one_comp]`. Consider the case `insert a s ha ih => rw [Finset.prod_insert ha, Finset.prod_insert ha, MonObj.mul_comp, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem prod_comp {n : Type*} (s : Finset n) {T G H : C} [GrpObj G] [IsCommMonObj G]
     [GrpObj H] [IsCommMonObj H] (g : n → (T ⟶ G)) (f : G ⟶ H) [IsMonHom f] :
@@ -121,39 +121,37 @@ theorem prod_comp {n : Type*} (s : Finset n) {T G H : C} [GrpObj G] [IsCommMonOb
   | insert a s ha ih => rw [Finset.prod_insert ha, Finset.prod_insert ha, MonObj.mul_comp, ih]
 
 /- English proof (translation)
-Establish `: ∀ m, IsMonHom (ρ m)` using `hρ`. Establish `hc : ∀ a b : Matrix n n ℤ, ρ a ≫ ρ b = ρ (b * a)` using `fun a b => (hmul b a).symm`. Establish `h0 : ρ 0 = 1`. Establish `h` using `hadd 0 0`. Rewrite `h` using `[add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mul_eq_left.mp h.symm`. Establish `hneg : ∀ a, ρ (-a) = (ρ a)⁻¹` using `fun a => eq_inv_of_mul_eq_one_right (by rw [← hadd, add_neg_cancel, h0])`. Establish `hsum : ∀ (s : Finset n) (f : n → Matrix n n ℤ), ρ (∑ v ∈ s, f v) = ∏ v ∈ s, ρ (f v)`. Introduce `s f`. Proceed by induction on `s using Finset.induction_on with`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `empty => rw [Finset.sum_empty, Finset.prod_empty, h0]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.prod_insert ha, hadd, ih]`. Establish `hzs : ∀ (k : ℤ) (a : Matrix n n ℤ), ρ (k • a) = ρ a ^ k`. Introduce `k a`. Use `Int.induction_on k ?_ ?_ ?_` and prove the remaining obligations.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[zero_smul, h0, zpow_zero]`. Introduce `j ih`. Rewrite using `[add_smul, one_smul, hadd, ih, zpow_add_one]`. Introduce `j ih`. Rewrite using `[sub_smul, one_smul, sub_eq_add_neg, hadd, ih, hneg, zpow_sub_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hidem : ρ (Matrix.single o o 1) ≫ ρ (Matrix.single o o 1) = ρ (Matrix.single o o 1) ≫ 𝟙 G`. Rewrite using `[Category.comp_id, hc, Matrix.single_mul_single_same, _root_.mul_one]`. Choose the witnesses or unpack the hypotheses as in `⟨A, i, r, hir, hri⟩ : ∃ (A : C) (i : A ⟶ G) (r : G ⟶ A), i ≫ r = 𝟙 A ∧ r ≫ i = ρ (Matrix.single o o 1) := by`. Use `⟨equalizer (ρ (Matrix.single o o 1)) (𝟙 G), equalizer.ι _ _, equalizer.lift _ hidem, ?_, equalizer.lift_ι _ _⟩` and prove the remaining obligations. Apply `equalizer.hom_ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, equalizer.lift_ι, Category.id_comp]`. Conclude with `(equalizer.condition _ _).trans (Category.comp_id _)`. Establish `hmono : Mono i` using `(SplitMono.mk r hir).mono`. Establish `: IsMonHom (r ≫ i)` using `by rw [hri]; infer_instance`. Take `⟨gA, hi, hr⟩` from `exists_grpObj_retract i r hir`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcA : IsCommMonObj A` using `(isCommMonObj_iff_isMulCommutative _).2 fun X => ⟨⟨fun a b => by show a * b = b * a`. Rewrite using `[← cancel_mono i, MonObj.mul_comp, MonObj.mul_comp, mul_comm]⟩⟩`. Use `⟨A, gA, hcA, ⟨i, r, hir⟩, fun u => ρ (Matrix.single o u 1) ≫ r, fun u => inferInstance, ?_, ?_⟩` and prove the remaining obligations. Introduce `T y`. Use `⟨∏ v, y v ≫ i ≫ ρ (Matrix.single v o 1), fun u => ?_, fun x hx => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only`. Rewrite using `[prod_comp, Finset.prod_eq_single u]`. Establish `h3 : ρ (Matrix.single u o 1) ≫ ρ (Matrix.single o u 1) ≫ r = r ≫ i ≫ r`. Rewrite using `[← Category.assoc, hc, Matrix.single_mul_single_same, _root_.mul_one, ← hri, Category.assoc]`. Simplify using `only [Category.assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h3, reassoc_of% hir, hir, Category.comp_id]`. Introduce `v _ hv`. Establish `h3 : ρ (Matrix.single v o 1) ≫ ρ (Matrix.single o u 1) ≫ r = 1`. Establish `h5 : Matrix.single o u (1 : ℤ) * Matrix.single v o 1 = 0`. Simplify using `[Ne.symm hv]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Category.assoc, hc, h5, h0, MonObj.one_comp]`. Simplify using `only [Category.assoc]`. Rewrite using `[h3, MonObj.comp_one, MonObj.comp_one]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ u) h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only at hx`. Establish `h1 : (1 : Matrix n n ℤ) = ∑ v, Matrix.single v v 1`. Use extensionality with `a b`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Matrix.sum_apply, Matrix.single_apply]`. Rewrite using `[Matrix.sum_apply, Finset.sum_eq_zero]`. Conclude with `Matrix.one_apply_ne hab`. Introduce `v _`. Rewrite using `[Matrix.single_apply]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with h`. Conclude with `absurd (h.1.symm.trans h.2) hab`. Both sides reduce to the same expression. Combine the equalities or inequalities in the displayed calculation. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hx v]`. Establish `h4 : ρ (Matrix.single o v 1) ≫ r ≫ i ≫ ρ (Matrix.single v o 1) = ρ (Matrix.single v v 1)`. Rewrite using `[reassoc_of% hri, hc, Matrix.single_mul_single_same, hc, Matrix.single_mul_single_same]`. Simplify using `only [_root_.mul_one]`. Simplify using `only [Category.assoc, h4]`.
+Simplify by unfolding definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Introduce `m u dsimp only`. Establish `hrow : Matrix.single o u (1 : ℤ) * m = ∑ v, m u v • Matrix.single o v 1`. Use extensionality with `a b`. Distinguish the cases in `ha : a = o`. Substitute `ha` using the available equality.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[Matrix.mul_apply, Matrix.sum_apply, Matrix.single_apply]`. Simplify using `[Matrix.mul_apply, Matrix.sum_apply, Ne.symm ha]`. Use `hcA` as an intermediate fact. Rewrite using `[← Category.assoc, hc, hrow, hsum, prod_comp]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[hzs, GrpObj.zpow_comp]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_power [HasEqualizers C] {n : Type*} [Fintype n] [DecidableEq n] (o : n)
     (G : C) [GrpObj G] [IsCommMonObj G] (ρ : Matrix n n ℤ → (G ⟶ G))
@@ -261,9 +259,9 @@ theorem exists_power [HasEqualizers C] {n : Type*} [Fintype n] [DecidableEq n] (
 end General
 
 /- English proof (translation)
-Introduce `S G _ ρ hab hρ hmul hadd hone`. Take `⟨hcomm, hsmooth, hproper, hgeo⟩` from `hab`. Take `⟨A, gA, hcA, R, pr, hpr, huniv, hact⟩` from `exists_power (0 : Fin 8) G ρ hρ hmul hadd hone`. Take `⟨-, -, -, hsm, -, -, -, -, hpro, -, hgc, -, -⟩` from `GlobalTheory.Retract.over_properties R`. Use `⟨A, gA, pr, ⟨hcA, hsm hsmooth, hpro hproper, hgc hgeo⟩, hpr, huniv, fun m u => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hact, List.prod_ofFn]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem abelianScheme_matrix_power : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] (ρ : Matrix (Fin 8) (Fin 8) ℤ → (G ⟶ G)), IsAbelianScheme G → (∀ m, IsMonHom (ρ m)) → (∀ m m', ρ (m * m') = ρ m' ≫ ρ m) → (∀ m m', ρ (m + m') = ρ m * ρ m') → ρ 1 = 𝟙 G → ∃ (A : Over S) (_ : GrpObj A) (pr : Fin 8 → (G ⟶ A)), IsAbelianScheme A ∧ (∀ u, IsMonHom (pr u)) ∧ (∀ (T : Over S) (y : Fin 8 → (T ⟶ A)), ∃! x : T ⟶ G, ∀ u, x ≫ pr u = y u) ∧ ∀ m u, ρ m ≫ pr u = (List.ofFn fun v => pr v ^ m u v).prod := by
   intro S G _ ρ hab hρ hmul hadd hone

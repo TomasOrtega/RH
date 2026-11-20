@@ -18,7 +18,7 @@ def chg (FS : Frame k M Y') (FT : Frame k N Y) (GS : Frame k M Z') (GT : Frame k
   GT.γ * FT.β * x * (FS.γ * GS.β)
 
 /- English proof (translation)
-Simplify using `only [chg, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc GT.β GT.γ, GT.βγ, Matrix.one_mul, ← Matrix.mul_assoc FT.γ FT.β, FT.γβ, Matrix.one_mul, ← Matrix.mul_assoc GS.β GS.γ, GS.βγ, Matrix.one_mul, FS.γβ, Matrix.mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem chg_inv (FS : Frame k M Y') (FT : Frame k N Y) (GS : Frame k M Z') (GT : Frame k N Z)
     (x : Matrix Y Y' k) : chg GS GT FS FT (chg FS FT GS GT x) = x := by
@@ -27,7 +27,7 @@ theorem chg_inv (FS : Frame k M Y') (FT : Frame k N Y) (GS : Frame k M Z') (GT :
     ← Matrix.mul_assoc GS.β GS.γ, GS.βγ, Matrix.one_mul, FS.γβ, Matrix.mul_one]
 
 /- English proof (translation)
-Simplify using `only [chg, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc GT.β GT.γ, GT.βγ, Matrix.one_mul, GS.βγ, Matrix.mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem frame_sandwich (FS : Frame k M Y') (FT : Frame k N Y) (GS : Frame k M Z') (GT : Frame k N Z)
     (x : Matrix Y Y' k) : GT.β * chg FS FT GS GT x * GS.γ = FT.β * x * FS.γ := by
@@ -35,7 +35,7 @@ theorem frame_sandwich (FS : Frame k M Y') (FT : Frame k N Y) (GS : Frame k M Z'
   rw [← Matrix.mul_assoc GT.β GT.γ, GT.βγ, Matrix.one_mul, GS.βγ, Matrix.mul_one]
 
 /- English proof (translation)
-Simplify using `only [chg, Matrix.mul_add, Matrix.add_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chg_add (FS : Frame k M Y') (FT : Frame k N Y) (GS : Frame k M Z') (GT : Frame k N Z)
     (x y : Matrix Y Y' k) : chg FS FT GS GT (x + y) = chg FS FT GS GT x + chg FS FT GS GT y := by
@@ -44,7 +44,7 @@ theorem chg_add (FS : Frame k M Y') (FT : Frame k N Y) (GS : Frame k M Z') (GT :
 variable [TopologicalSpace k] [IsTopologicalRing k]
 
 /- English proof (translation)
-Unfold `chg`. Conclude with `(continuous_const.matrix_mul continuous_id).matrix_mul continuous_const`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_chg (FS : Frame k M Y') (FT : Frame k N Y) (GS : Frame k M Z') (GT : Frame k N Z) :
     Continuous (chg FS FT GS GT) := by
@@ -78,7 +78,7 @@ variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [Is
   (p : Place D k)
 
 /- English proof (translation)
-Unfold `up`. Rewrite using `[frame_sandwich]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem up_chg {Y Y' Z Z' : Type} [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y']
     [Fintype Z] [DecidableEq Z] [Fintype Z'] [DecidableEq Z'] {S T : HSp D}
@@ -88,13 +88,13 @@ theorem up_chg {Y Y' Z Z' : Type} [Fintype Y] [DecidableEq Y] [Fintype Y'] [Deci
   rw [frame_sandwich]
 
 /- English proof (translation)
-Introduce `Tm hTm`. Use `⟨Tm.comp (pull FS FT GS GT), ⟨?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `Φ'`. Conclude with `hTm.theta _`. Introduce `x Φ' Φ'' h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `hTm.trans (chg GS GT FS FT x) (pull FS FT GS GT Φ') (pull FS FT GS GT Φ'') (by` as an intermediate fact. Introduce `t`. Express the relevant statement in the definitionally equal form `Φ''.1 (chg FS FT GS GT t) = Φ'.1 (chg FS FT GS GT (t + chg GS GT FS FT x))`. Rewrite using `[h, chg_add, chg_inv])`. Simplify `this` using `[LinearMap.comp_apply, up_chg, chg_inv]`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy Φ' Φ'' h`. Use `hTm.modul y hy (pull FS FT GS GT Φ') (pull FS FT GS GT Φ'') (by` as an intermediate fact. Introduce `t`. Express the relevant statement in the definitionally equal form `Φ''.1 (chg FS FT GS GT t) = ψ (symplO S T (p.up FS FT t) y) * Φ'.1 (chg FS FT GS GT t)`. Rewrite using `[h, up_chg])`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[LinearMap.comp_apply]`. Introduce `Φ Φ' h`. Express the relevant statement in the definitionally equal form `Tm (pull FS FT GS GT Φ') = Tm Φ`. Use `congr 1`. Conclude with `Subtype.ext (funext fun x => (h x).symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem exists_isModel_chg (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (p : Place D k) (Y Y' : Type) [Fintype Y] [DecidableEq Y] [Fintype Y']

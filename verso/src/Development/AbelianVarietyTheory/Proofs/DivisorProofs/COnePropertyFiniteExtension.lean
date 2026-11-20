@@ -5,17 +5,17 @@ open IsLocalRing
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `K L _ _ _ _ hK n d f hf hd hdn`. Take `⟨F, hFh, hFe⟩` from `GlobalTheory.T.exists_isHomogeneous_eval_eq_norm K L n d f hf`. Establish `hm0 : 0 < Module.finrank K L` using `Module.finrank_pos`. Set `e : Fin n × Fin (Module.finrank K L) ≃ Fin (n * Module.finrank K L)` to `finProdFinEquiv`. Establish `hG : (MvPolynomial.rename e F).IsHomogeneous (d * Module.finrank K L)` using `hFh.rename_isHomogeneous`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨z, hz0, hz⟩` from `hK (n * Module.finrank K L) (d * Module.finrank K L) (MvPolynomial.rename e F) hG (Nat.mul_pos hd hm0) (Nat.mul_lt_mul_of_pos_right hdn hm0)`. Use `set y : Fin n × Fin (Module.finrank K L) → K := z ∘ e with hy`. Rewrite `hz` using `[MvPolynomial.eval_rename]`. Establish `hy0 : y ≠ 0`. Introduce `h`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hz0` to reduce the goal to its premises. Use function extensionality and compare the values at `k`. Use `congrFun h (e.symm k)` as an intermediate fact. Simplify `this` using `[hy]`. Use `⟨fun i => ∑ j, algebraMap K L (y (i, j)) * Module.finBasis K L j, ?_, ?_⟩` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hx`. Apply `hy0` to reduce the goal to its premises. Use function extensionality and compare the values at `⟨i, j⟩`. Establish `hi` using `congrFun hx i`. Simplify using `only [Pi.zero_apply] at hi`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hli` using `(Module.finBasis K L).linearIndependent`. Rewrite `hli` using `[Fintype.linearIndependent_iff]`. Use `hli (fun j => y (i, j)) (by simpa [Algebra.smul_def] using hi) j` as an intermediate fact. Simplify using `using this`. Use `hFe y` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hz]`. Conclude with `(Algebra.norm_eq_zero_iff (R := K)).mp this.symm`.
+A detailed English derivation is pending.
 -/
 theorem c_one_of_finite_extension : ∀ (K L : Type) [Field K] [Field L] [Algebra K L] [FiniteDimensional K L], (∀ (n d : ℕ) (f : MvPolynomial (Fin n) K), f.IsHomogeneous d → 0 < d → d < n → ∃ x : Fin n → K, x ≠ 0 ∧ MvPolynomial.eval x f = 0) → (∀ (n d : ℕ) (f : MvPolynomial (Fin n) L), f.IsHomogeneous d → 0 < d → d < n → ∃ x : Fin n → L, x ≠ 0 ∧ MvPolynomial.eval x f = 0) := by
   intro K L _ _ _ _ hK n d f hf hd hdn

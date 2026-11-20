@@ -15,7 +15,7 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `S S' f G' G _ _ j p`. Use `⟨⟨fun i => (Over.pullback f).map (p.pr i), fun i => ?_, ?_⟩, fun i => rfl⟩` and prove the remaining obligations. Use `haveI := p.hom i infer_instance`. Conclude with `isLimitFanMkObjOfIsLimit (Over.pullback f) _ _ p.lim`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isPowGrp_baseChange : ∀ (S S' : Scheme.{0}) (f : S' ⟶ S) (G' G : Over S) [GrpObj G'] [GrpObj G] (j : ℕ) (p : IsPowGrp G' G j), ∃ p' : IsPowGrp ((Over.pullback f).obj G') ((Over.pullback f).obj G) j, ∀ i, p'.pr i = (Over.pullback f).map (p.pr i) := by
   intro S S' f G' G _ _ j p

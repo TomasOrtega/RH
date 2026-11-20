@@ -10,7 +10,7 @@ open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.S
   IsDedekindDomain Formalism.BasicNotions Formalism.L2.SG.HidaSetting Formalism.L2.SG.AdBridge MassDataIdxStIm
 
 /- English proof (translation)
-The claim follows from `Subgroup.card_map_of_injective (MulAut.conj c).injective`.
+A detailed English derivation is pending.
 -/
 theorem card_conj {G : Type} [Group G] (H : Subgroup G) (c : G) :
     Nat.card (H.map (MulAut.conj c).toMonoidHom) = Nat.card H :=
@@ -33,15 +33,15 @@ def ParabolicReductionImage (u : D.what₂.Word) (p : TypX X) : Prop :=
         ∃ c, B.map ρ₀ = (sG (ZMod (gOf p)) D.R.rS D.R.k).map (MulAut.conj c).toMonoidHom
 
 /- English proof (translation)
-Take `⟨K₀, hK₀, ρ₀, hρ₀, hker₀, A, hA, hkA, c, hc⟩` from `h`. Introduce `K hK ρ hρ hker`. Establish `hKK : K = K₀` using `SetLike.coe_injective (hK.trans hK₀.symm)`. Substitute `hKK` using the available equality. Establish `hkers : ρ.ker = ρ₀.ker`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Use extensionality with `x`. Rewrite using `[MonoidHom.mem_ker, MonoidHom.mem_ker, hker, hker₀]`. Establish `hkA' : ρ.ker ≤ A` using `hkers.le.trans hkA`. Use `⟨A, hA, hkA', ?_⟩` and prove the remaining obligations. Establish `hq : ∀ f : ↥K →* GL (Formalism.FourierDecayAlt.S3.Idx D.R.rS D.R.k) (ZMod (gOf p)), Nat.card (A.map f) = Nat.card (↥A ⧸ (f.comp A.subtype).ker)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `f`. Establish `hr : A.map f = (f.comp A.subtype).range` using `by first`. Consider the case `rw [MonoidHom.range_comp, Subgroup.range_subtype]`. Consider the case `rw [MonoidHom.range_comp, Subgroup.subtype_range]`. Rewrite using `[hr]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.card_congr (QuotientGroup.quotientKerEquivRange (f.comp A.subtype)).toEquiv.symm`. Establish `hk2 : (ρ.comp A.subtype).ker = (ρ₀.comp A.subtype).ker`. Use extensionality with `x`. Simplify using `only [MonoidHom.mem_ker, MonoidHom.coe_comp, Function.comp_apply, hker, hker₀]`. Rewrite using `[hq ρ, hk2, ← hq ρ₀, hc, card_conj]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Use `haveI : Fact (gOf p).Prime := ⟨gOf_prime X p⟩`. Use `first`. Consider the case `exact card_nuG (ZMod (gOf p)) D.R.rS D.R.k`. Consider the case `(rw [card_nuG]; unfold nnC ukC; rfl)`. Consider the case `(rw [card_nuG]; unfold nnC ukC)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem stImA_of (p : TypX X) (h : LevelReductionImage X hb p) : StImA X hb p := by
   obtain ⟨K₀, hK₀, ρ₀, hρ₀, hker₀, A, hA, hkA, c, hc⟩ := h
@@ -73,15 +73,15 @@ theorem stImA_of (p : TypX X) (h : LevelReductionImage X hb p) : StImA X hb p :=
   | (rw [card_nuG]; unfold nnC ukC)
 
 /- English proof (translation)
-Take `⟨K₀, hK₀, ρ₀, hρ₀, hker₀, A, hA, hkA, c, hc⟩` from `h`. Introduce `K hK ρ hρ hker`. Establish `hKK : K = K₀` using `SetLike.coe_injective (hK.trans hK₀.symm)`. Substitute `hKK` using the available equality. Establish `hkers : ρ.ker = ρ₀.ker`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Use extensionality with `x`. Rewrite using `[MonoidHom.mem_ker, MonoidHom.mem_ker, hker, hker₀]`. Establish `hkA' : ρ.ker ≤ A` using `hkers.le.trans hkA`. Use `⟨A, hA, hkA', ?_⟩` and prove the remaining obligations. Establish `hq : ∀ f : ↥K →* GL (Formalism.FourierDecayAlt.S3.Idx D.R.rS D.R.k) (ZMod (gOf p)), Nat.card (A.map f) = Nat.card (↥A ⧸ (f.comp A.subtype).ker)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `f`. Establish `hr : A.map f = (f.comp A.subtype).range` using `by first`. Consider the case `rw [MonoidHom.range_comp, Subgroup.range_subtype]`. Consider the case `rw [MonoidHom.range_comp, Subgroup.subtype_range]`. Rewrite using `[hr]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.card_congr (QuotientGroup.quotientKerEquivRange (f.comp A.subtype)).toEquiv.symm`. Establish `hk2 : (ρ.comp A.subtype).ker = (ρ₀.comp A.subtype).ker`. Use extensionality with `x`. Simplify using `only [MonoidHom.mem_ker, MonoidHom.coe_comp, Function.comp_apply, hker, hker₀]`. Rewrite using `[hq ρ, hk2, ← hq ρ₀, hc, card_conj]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Use `haveI : Fact (gOf p).Prime := ⟨gOf_prime X p⟩`. Use `first`. Consider the case `exact card_sG (ZMod (gOf p)) D.R.rS D.R.k`. Consider the case `(rw [card_sG]; unfold glkC nnC; rfl)`. Consider the case `(rw [card_sG]; unfold glkC nnC)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem stImB_of (u : D.what₂.Word) (p : TypX X) (h : ParabolicReductionImage X u p) : StImB X u p := by
   obtain ⟨K₀, hK₀, ρ₀, hρ₀, hker₀, A, hA, hkA, c, hc⟩ := h

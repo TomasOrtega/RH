@@ -5,15 +5,15 @@ open IsDedekindDomain NumberField Matrix GlobalTheory.ChiGrid GlobalTheory.FunOb
 namespace GlobalTheory.DefRank
 
 /- English proof (translation)
-Introduce `D T L sc G X hX`. Establish `hr : D.R.r = D.R.k + D.R.m - 1` using `rfl`. Establish `hm` using `D.R.two_le_m`. Break down `X with ⟨_ | i, j⟩ | i | j` into its components or cases. Take `rfl` from `hX.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Establish `e : G.V (.grid 0 D.R.m) = D.sp.X'` using `congrArg LSp.sp (colY_m L)`. Rewrite using `[e, D.sp.X'_rank]`. Use `show D.R.r + D.R.m * D.R.t ≤ D.R.k + D.R.m * (D.R.t + sLen D + 1)`. Establish `e : D.R.m * (D.R.t + sLen D + 1) = D.R.m * D.R.t + D.R.m * sLen D + D.R.m` using `by ring`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Take `⟨hi, rfl⟩` from `hX`. Rewrite using `[(G.isV (X := .grid (i + 1) D.R.m) ⟨hi, le_rfl⟩ (by simp)).rank]`. Use `show D.R.r + D.R.m * D.R.t + (i + 1) * sLen D ≤ D.R.k + D.R.m * (D.R.t + sLen D + 1)`. Use `Nat.mul_le_mul_right (sLen D) hi` as an intermediate fact. Establish `e : D.R.m * (D.R.t + sLen D + 1) = D.R.m * D.R.t + D.R.m * sLen D + D.R.m` using `by ring`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Conclude with `hX.elim`. Rewrite using `[(G.isV (X := .top j) hX (by simp)).rank] show nRk D + D.R.m * (sLen D - 1) + j * (D.R.t + 1) ≤ D.R.k + D.R.m * (D.R.t + sLen D + 1)`. Establish `h1` using `Nat.mul_le_mul_right (D.R.t + 1) (show j ≤ D.R.m from hX)`. Establish `hs : sLen D - 1 + 1 = sLen D` using `by unfold sLen; omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hn : nRk D = D.R.r + 1` using `rfl`. Establish `e : D.R.m * (D.R.t + sLen D + 1) = D.R.m * (sLen D - 1) + D.R.m * (D.R.t + 1) + D.R.m` using `by conv_lhs => rw [← hs]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : j * (D.R.t + 1) ≤ D.R.m * (D.R.t + 1)` using `h1`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem rank_le_bigN : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) (X : Node),
     DefNode D.R.m X → (G.V X).rank ≤ bigN D := by

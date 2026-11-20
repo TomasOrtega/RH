@@ -15,21 +15,19 @@ open scoped Kronecker ComplexOrder TensorProduct in
 variable {G : Type} [Group G] {V : Type} [AddCommGroup V] [Module ℂ V] {ρ : Representation ℂ G V} in
 
 /- English proof (translation)
-Set `F : Subrepresentation σ.toRepresentation → Subrepresentation ρ` to `fun τ => ⟨τ.toSubmodule.map σ.toSubmodule.subtype, by`. Introduce and unpack `g _ ⟨w, hw, rfl⟩`. Conclude with `⟨σ.toRepresentation g w, τ.apply_mem_toSubmodule g hw, rfl⟩⟩`. Establish `hinj : Function.Injective (Submodule.map σ.toSubmodule.subtype)` using `Submodule.map_injective_of_injective σ.toSubmodule.injective_subtype`. Establish `hle : ∀ τ, F τ ≤ σ`.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `τ`. Use `show τ.toSubmodule.map σ.toSubmodule.subtype ≤ σ.toSubmodule`. Rewrite using `[Submodule.map_le_iff_le_comap]`. Introduce `w _`. Conclude with `w.2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF : ∀ τ, F τ = ⊥ ∨ F τ = σ` using `fun τ => h.le_iff.mp (hle τ)`. Establish `hbot : ∀ τ, F τ = ⊥ → τ = ⊥`. Introduce `τ hτ`. Apply `Subrepresentation.ext` to reduce the goal to its premises. Apply `hinj` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use `congrArg Subrepresentation.toSubmodule hτ` as an intermediate fact. Express the relevant statement in the definitionally equal form `_ = Submodule.map _ ⊥`. Rewrite using `[Submodule.map_bot]`. Conclude with `this`. Establish `htop : ∀ τ, F τ = σ → τ = ⊤`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `τ hτ`. Apply `Subrepresentation.ext` to reduce the goal to its premises. Apply `hinj` to reduce the goal to its premises. Use `congrArg Subrepresentation.toSubmodule hτ` as an intermediate fact. Simplify using `only [F] at this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[this]`. Conclude with `(Submodule.map_subtype_top σ.toSubmodule).symm`. Establish `hne : (⊥ : Subrepresentation σ.toRepresentation) ≠ ⊤`. Introduce `he`. Apply `h.1` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h1 : F ⊤ = σ`. Apply `Subrepresentation.ext` to reduce the goal to its premises. Conclude with `Submodule.map_subtype_top σ.toSubmodule`. Establish `h2 : F ⊥ = ⊥`. Apply `Subrepresentation.ext` to reduce the goal to its premises.
-
-Conclude with `Submodule.map_bot _`. Rewrite using `[← h1, ← he, h2]`. Use `haveI : Nontrivial (Subrepresentation σ.toRepresentation) := ⟨⟨⊥, ⊤, hne⟩⟩`. Conclude with `⟨fun τ => (hF τ).imp (hbot τ) (htop τ)⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ClassFin.isIrreducible_toRepresentation_of_isAtom (σ : Subrepresentation ρ) (h : IsAtom σ) :
     σ.toRepresentation.IsIrreducible := by
@@ -76,11 +74,9 @@ theorem _root_.GlobalTheory.ClassFin.isIrreducible_toRepresentation_of_isAtom (�
   exact ⟨fun τ => (hF τ).imp (hbot τ) (htop τ)⟩
 
 /- English proof (translation)
-Set `S : Subrepresentation ρ` to `⟨⨆ σ : {σ : Subrepresentation ρ // IsAtom σ}, σ.1.toSubmodule, by`. Introduce `g v hv`. Establish `: (⨆ σ : {σ : Subrepresentation ρ // IsAtom σ}, σ.1.toSubmodule) ≤ (⨆ σ : {σ : Subrepresentation ρ // IsAtom σ}, σ.1.toSubmodule).comap (ρ g)` using `iSup_le fun σ w hw => Submodule.mem_iSup_of_mem σ (σ.1.apply_mem_toSubmodule g hw)`. Conclude with `this hv⟩`. Use `haveI : WellFoundedLT (Subrepresentation ρ) := StrictMono.wellFoundedLT (f := Subrepresentation.toSubmodule) (fun _ _ hab => hab)`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Use `haveI : IsAtomic (Subrepresentation ρ) := isAtomic_of_orderBot_wellFounded_lt wellFounded_lt`. Take `⟨T, hT⟩` from `exists_isCompl S`. Break down `eq_bot_or_exists_atom_le T with h0 | ⟨a, ha, haT⟩` into its components or cases. Substitute `h0` using the available equality. Establish `: S = ⊤` using `by simpa using hT.sup_eq_top`.
-
-Conclude with `congrArg Subrepresentation.toSubmodule this`. It suffices to derive a contradiction. Establish `haS : a ≤ S` using `fun w hw => Submodule.mem_iSup_of_mem (⟨a, ha⟩ : {σ : Subrepresentation ρ // IsAtom σ}) hw`. Conclude with `ha.1 (hT.disjoint haS haT |> le_bot_iff.mp)`.
+Substitute using the available equality. Establish an intermediate fact. It suffices to derive a contradiction. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem iSup_atoms_eq_top [FiniteDimensional ℂ V] (h : ρ.IsSemisimpleRepresentation) :
     (⨆ σ : {σ : Subrepresentation ρ // IsAtom σ}, σ.1.toSubmodule) = ⊤ := by
@@ -110,15 +106,13 @@ end
 open Matrix in
 open scoped Kronecker ComplexOrder TensorProduct in
 /- English proof (translation)
-Use `haveI : ComplementedLattice (Subrepresentation ρ) := hρ`. Use `haveI : WellFoundedLT (Subrepresentation ρ) := StrictMono.wellFoundedLT (f := Subrepresentation.toSubmodule) fun a b hab => lt_of_le_of_ne hab.le fun he => hab.ne (Subrepresentation.toSubmodule_injective he)`. Use `haveI : IsAtomic (Subrepresentation ρ) := isAtomic_of_orderBot_wellFounded_lt wellFounded_lt`. Use `set A := ⨆ σ : {σ : Subrepresentation ρ // IsAtom σ}, σ.1.toSubmodule with hA`. Set `α : Subrepresentation ρ` to `⟨A, by`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `g v hv`. Use `Submodule.iSup_induction _ (motive := fun v => ρ g v ∈ A) hv ?_ ?_ ?_` and prove the remaining obligations. Introduce `σ w hw`. Conclude with `(le_iSup (fun σ : {σ : Subrepresentation ρ // IsAtom σ} => σ.1.toSubmodule) σ) (σ.1.apply_mem_toSubmodule g hw)`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `x y hx hy`. Simplify using `using A.add_mem hx hy⟩`. Take `⟨β, hβ⟩` from `exists_isCompl α`. Establish `hβbot : β = ⊥`. Break down `eq_bot_or_exists_atom_le β with h | ⟨τ, hτ, hτβ⟩` into its components or cases.
+It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `h`. It suffices to derive a contradiction. Establish `hτα : τ ≤ α` using `fun v hv => (le_iSup (fun σ : {σ : Subrepresentation ρ // IsAtom σ} => σ.1.toSubmodule) ⟨τ, hτ⟩) hv`. Conclude with `hτ.1 (le_bot_iff.mp (hβ.1 hτα hτβ))`. Establish `hαtop : α = ⊤`.
-
-Use `hβ.2.eq_top` as an intermediate fact. Rewrite `this` using `[hβbot, sup_bot_eq]`. Then use the resulting hypothesis. Conclude with `congrArg Subrepresentation.toSubmodule hαtop`.
+A detailed English derivation is pending.
 -/
 private theorem iSup_atoms_toSubmodule_eq_whole_of_semisimple {G : Type} [Group G] {V : Type} [AddCommGroup V]
     [Module ℂ V] [FiniteDimensional ℂ V] (ρ : Representation ℂ G V)
@@ -156,19 +150,17 @@ open Matrix in
 open scoped Kronecker ComplexOrder TensorProduct in
 
 /- English proof (translation)
-Introduce `G _ V _ _ ρ W _ _ ρ' _ _ hρ hρ'`. Set `J` to `{σ : Subrepresentation ρ // IsAtom σ} × {τ : Subrepresentation ρ' // IsAtom τ}`. Set `p : (j : J) → j.1.1.toSubmodule ⊗[ℂ] j.2.1.toSubmodule →ₗ[ℂ] V ⊗[ℂ] W` to `fun j => TensorProduct.map j.1.1.toSubmodule.subtype j.2.1.toSubmodule.subtype`. Use `_root_.GlobalTheory.ClassFin.isSemisimpleRepresentation_of_iSup_range G (V ⊗[ℂ] W) (ρ.tprod ρ') J (fun j => j.1.1.toSubmodule ⊗[ℂ] j.2.1.toSubmodule) (fun j => j.1.1.toRepresentation.tprod j.2.1.toRepresentation) p ?_ ?_ ?_` and prove the remaining obligations. Introduce `j`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `_root_.GlobalTheory.ClassFin.isSemisimpleRepresentation_tprod_of_isIrreducible G _ _ _ _ (_root_.GlobalTheory.ClassFin.isIrreducible_toRepresentation_of_isAtom j.1.1 j.1.2) (_root_.GlobalTheory.ClassFin.isIrreducible_toRepresentation_of_isAtom j.2.1 j.2.2)`. Introduce `j g v`. Simplify using `only [p]`. Rewrite using `[Representation.tprod_apply, Representation.tprod_apply, ← LinearMap.comp_apply, ← LinearMap.comp_apply, ← TensorProduct.map_comp, ← TensorProduct.map_comp]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_top_iff, ← TensorProduct.span_tmul_eq_top, Submodule.span_le]`. Introduce and unpack `_ ⟨v, w, rfl⟩`. Establish `hv : v ∈ ⨆ σ : {σ : Subrepresentation ρ // IsAtom σ}, σ.1.toSubmodule`. Rewrite using `[iSup_atoms_toSubmodule_eq_whole_of_semisimple ρ hρ]`. Discharge the goal by the elementary cases of `trivial`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Establish an intermediate fact.
 
-Establish `hw : w ∈ ⨆ τ : {τ : Subrepresentation ρ' // IsAtom τ}, τ.1.toSubmodule`. Rewrite using `[iSup_atoms_toSubmodule_eq_whole_of_semisimple ρ' hρ']`. Discharge the goal by the elementary cases of `trivial`. Use `Submodule.iSup_induction _ (motive := fun v => ∀ w, w ∈ ⨆ τ : {τ : Subrepresentation ρ' // IsAtom τ}, τ.1.toSubmodule → v ⊗ₜ[ℂ] w ∈ ⨆ j, LinearMap.range (p j)) hv ?_ ?_ ?_ w hw` and prove the remaining obligations. Introduce `σ x hx w hw`.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.iSup_induction _ (motive := fun w => x ⊗ₜ[ℂ] w ∈ ⨆ j, LinearMap.range (p j)) hw ?_ ?_ ?_` and prove the remaining obligations. Introduce `τ y hy`. Conclude with `(le_iSup (fun j => LinearMap.range (p j)) (σ, τ)) ⟨(⟨x, hx⟩ : σ.1.toSubmodule) ⊗ₜ[ℂ] (⟨y, hy⟩ : τ.1.toSubmodule), rfl⟩`. Simplify using the standard rewrite rules. Introduce `a b ha hb`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[TensorProduct.tmul_add]`. Conclude with `Submodule.add_mem _ ha hb`. Introduce `w _`. Simplify using the standard rewrite rules. Introduce `a b ha hb w hw`.
-
-Rewrite using `[TensorProduct.add_tmul]`. Conclude with `Submodule.add_mem _ (ha w hw) (hb w hw)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ClassFin.isSemisimpleRepresentation_tprod : ∀ (G : Type) [Group G] (V : Type) [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V) (W : Type) [AddCommGroup W] [Module ℂ W] (ρ' : Representation ℂ G W) [FiniteDimensional ℂ V] [FiniteDimensional ℂ W], ρ.IsSemisimpleRepresentation → ρ'.IsSemisimpleRepresentation → (ρ.tprod ρ').IsSemisimpleRepresentation := by
   intro G _ V _ _ ρ W _ _ ρ' _ _ hρ hρ'

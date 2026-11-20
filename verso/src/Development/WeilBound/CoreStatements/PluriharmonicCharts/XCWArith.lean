@@ -8,11 +8,9 @@ open MvPolynomial MeasureTheory Filter Topology Matrix ReciprocityTheory.AnForm 
 open scoped ComplexOrder Classical
 
 /- English proof (translation)
-Introduce `K _ ι _ Φ _ y Ψ _ _ N j M d τ a b k₀ ca cb hb hab hk hca hcb har`. Use `haveI : CharZero Φ := PositivityTheory.Xgp.W.charZero_of_model M`. Establish `hne : ∀ k, ∃ i, y ⟨k, i⟩ ≠ 0` using `PositivityTheory.Xgp.W.blocks_of_model M`. Use `choose c hc using hne`. Establish `hpt : PositivityTheory.Xgp.W.IsPt y y` using `PositivityTheory.Xgp.W.isPt_self (fun k => ⟨c k, hc k⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨Fr⟩` from `PositivityTheory.Xgp.W.exists_penFrame M hb hab hk hca hcb hpt c hc`. Establish `hA` using `PositivityTheory.Xgp.W.arith_pen hc Fr (d := d + 1) har`. Rewrite using `[PositivityTheory.Xgp.W.wCo_eq M hb hab hk hca hcb, PositivityTheory.Xgp.W.wCo_eq M hb hab hk hca hcb, PositivityTheory.Xgp.W.ideal_pen_zero]`. Use `⟨hA.1, hA.2, PositivityTheory.Xgp.W.pen_le_zero _ _ _ _, PositivityTheory.Xgp.W.image_pen _ _ _ _ _, ?_⟩` and prove the remaining obligations. Introduce `v₁ h1 h2`.
-
-Rewrite using `[← PositivityTheory.Xgp.W.wCo_eq M hb hab hk hca hcb]`. Conclude with `PositivityTheory.Xgp.W.image_snd M hb hab hk hca hcb v₁ h1 h2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgp.t_c_w_arith : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (d : ℕ) (τ : Ψ) (a b : Fin N) (k₀ : K) (ca cb : Fin N), (b : ℕ) = a + 1 → ((b : ℕ) < j ∨ j ≤ (a : ℕ)) → M.blk (τ, a) = some k₀ → (ca : ℕ) = lastCol N j a → (cb : ℕ) = ca + 1 → IsArithVar (mCoordIdeal y) (d + 2) → IsArithVar (mCoordIdeal (M.wCo (τ, a) k₀ ca cb RatFunc.X)) (d + 3) ∧ IsArithVar (mCoordIdeal (M.wCo (τ, a) k₀ ca cb 0)) (d + 2) ∧ mCoordIdeal (M.wCo (τ, a) k₀ ca cb RatFunc.X) ≤ mCoordIdeal (M.wCo (τ, a) k₀ ca cb 0) ∧ imageZ (fun p : (Σ k, ι k) => (⟨some p.1, p.2⟩ : Σ o : Option K, ι (o.getD k₀))) (mCoordIdeal (M.wCo (τ, a) k₀ ca cb RatFunc.X)) = mCoordIdeal y ∧ ∀ v₁ : (Σ k, ι k) → (Σ o : Option K, ι (o.getD k₀)), (∀ p : (Σ k, ι k), p.1 ≠ k₀ → v₁ p = ⟨some p.1, p.2⟩) → (∀ m : ι k₀, v₁ ⟨k₀, m⟩ = ⟨none, m⟩) → imageZ v₁ (mCoordIdeal (M.wCo (τ, a) k₀ ca cb RatFunc.X)) = mCoordIdeal y := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M d τ a b k₀ ca cb hb hab hk hca hcb har

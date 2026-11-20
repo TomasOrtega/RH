@@ -11,9 +11,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues GlobalTheory.Ade
 namespace GlobalTheory.LowRow.ParWidth
 
 /- English proof (translation)
-Unfold `Formalism.L2.NTheta.holPar at hx`. Take `⟨a, -, ha⟩` from `Finset.mem_image.1 hx`. Establish `e` using `Formalism.L2.NTheta.holEnt_kapW h p q hpq a`. Establish `hx' : x = Formalism.L2.NTheta.holEnt p q (Formalism.L2.NTheta.kapW h p q) a` using `(congrArg Prod.fst ha).symm`. Break down `a with i | c` into its components or cases.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `⟨i, by omega, hx'.trans (by simpa using e)⟩`. Conclude with `⟨p + c, by omega, hx'.trans (by simpa using e)⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem mem_holPar_kapW {Rk : Ranks} (h : HCParam Rk) (p q : ℕ) (hpq : Odd (p + q)) {x : ℚ} {b : Bool}
     (hx : (x, b) ∈ Formalism.L2.NTheta.holPar p q (Formalism.L2.NTheta.kapW h p q)) :
@@ -27,9 +27,9 @@ theorem mem_holPar_kapW {Rk : Ranks} (h : HCParam Rk) (p q : ℕ) (hpq : Odd (p 
   · exact ⟨p + c, by omega, hx'.trans (by simpa using e)⟩
 
 /- English proof (translation)
-Establish `mono : ∀ d : ℕ, n + d < Rk.r → Formalism.L2.NTheta.lamAt h (n + d) ≤ Formalism.L2.NTheta.lamAt h n`. Introduce `d`. Proceed by induction on `d with`. Consider the case `zero => intro _`. Conclude with `le_rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `succ d ih`. Introduce `hd`. Conclude with `(Formalism.L2.NTheta.lamAt_lt h (n + d) (by omega)).le.trans (ih (by omega))`. Use `mono (n' - n) (by omega)` as an intermediate fact. Rewrite `this` using `[show n + (n' - n) = n' by omega]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem lamAt_anti {Rk : Ranks} (h : HCParam Rk) {n n' : ℕ} (hnn : n ≤ n') (hn : n' < Rk.r) :
     Formalism.L2.NTheta.lamAt h n' ≤ Formalism.L2.NTheta.lamAt h n := by
@@ -44,7 +44,7 @@ theorem lamAt_anti {Rk : Ranks} (h : HCParam Rk) {n n' : ℕ} (hnn : n ≤ n') (
   rwa [show n + (n' - n) = n' by omega] at this
 
 /- English proof (translation)
-Unfold `Formalism.L2.NTheta.lamAt`. Rewrite using `[dif_neg (by omega), dif_pos (by omega)]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lamAt_b {Rk : Ranks} (h : HCParam Rk) (c : ℕ) (hc : c < Rk.m) :
     Formalism.L2.NTheta.lamAt h (Rk.k - 1 + c) = -h.b ⟨c, hc⟩ := by
@@ -53,7 +53,7 @@ theorem lamAt_b {Rk : Ranks} (h : HCParam Rk) (c : ℕ) (hc : c < Rk.m) :
   simp
 
 /- English proof (translation)
-Establish `h1` using `Int.lt_floor_add_one x`. Establish `h2 : ((⌊x⌋ : ℤ) : ℚ) ≤ (((⌊x⌋.toNat : ℕ) : ℤ) : ℚ)` using `by exact_mod_cast Int.self_le_toNat _`. Rewrite `h2` using `[Int.cast_natCast]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem le_toNat_floor (x : ℚ) : x ≤ ((⌊x⌋.toNat : ℕ) : ℚ) + 1 := by
   have h1 := Int.lt_floor_add_one x
@@ -66,27 +66,25 @@ end GlobalTheory.LowRow.ParWidth
 namespace GlobalTheory.LowRow.ParWidth
 
 /- English proof (translation)
-Establish `hsig : (Wc D i).sig (tauE D ρ) = D.R.sigW ((i : ℕ) + 1)` using `D.sp.W_sigval _ (Nat.le_add_left _ _) i.2 _`. Establish `hp : pW D i ρ = D.R.k + i` using `by simp only [pW, hsig, Ranks.sigW]; omega`. Establish `hq : qW D i ρ = D.R.m - (i + 1)` using `by simp only [qW, hsig, Ranks.sigW]`. Establish `hk` using `D.R.m_add_three_le_k`. Establish `hi` using `i.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set h := D.hc (lab σ ρ) with hh`. Establish `hr : D.R.r = D.R.k + D.R.m - 1` using `rfl`. Establish `hnV : (D.R.nV : ℚ) = (D.R.k : ℚ) + D.R.m - 1 + D.R.t`. Simplify using `only [Ranks.nV, Ranks.r]; push_cast [show 1 ≤ D.R.k + D.R.m by omega]; ring`. Establish `hP0 : (aPlAt D i σ ρ 0 : ℚ) + 1 ≥ Formalism.L2.NTheta.lamAt h 0 + h.e i - ((D.R.k + i : ℕ) - (0 + 1) : ℚ) - ((D.R.t : ℚ) + 1) / 2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `le_toNat_floor (Formalism.L2.NTheta.lamAt h 0 + h.e i - ((D.R.k + i : ℕ) - ((0 : ℕ) + 1) : ℚ) - ((D.R.t : ℚ) + 1) / 2)` as an intermediate fact. Unfold `aPlAt aPl`. Rewrite using `[hp, if_pos (by omega)]`. Simplify using `using this`. Establish `hdeg : (aPlAt D i σ ρ 0 : ℚ) + (if 0 < qW D i ρ then (aMiAt D i σ ρ 0 : ℚ) else 0) ≤ degAt D i σ ρ`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : aPlAt D i σ ρ 0 ≤ ∑ n ∈ Finset.range (pW D i ρ), aPlAt D i σ ρ n` using `Finset.single_le_sum (f := aPlAt D i σ ρ) (fun _ _ => Nat.zero_le _) (Finset.mem_range.2 (by omega))`. Establish `e2 : (if 0 < qW D i ρ then aMiAt D i σ ρ 0 else 0) ≤ ∑ n ∈ Finset.range (qW D i ρ), aMiAt D i σ ρ n` using `by split_ifs with hq0`. Conclude with `Finset.single_le_sum (f := aMiAt D i σ ρ) (fun _ _ => Nat.zero_le _) (Finset.mem_range.2 hq0)`. Conclude with `Nat.zero_le _`. Establish `e3` using `Nat.add_le_add e1 e2`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Unfold `degAt`. Establish `: ((aPlAt D i σ ρ 0 + (if 0 < qW D i ρ then aMiAt D i σ ρ 0 else 0) : ℕ) : ℚ) ≤ ((∑ n ∈ Finset.range (pW D i ρ), aPlAt D i σ ρ n + ∑ n ∈ Finset.range (qW D i ρ), aMiAt D i σ ρ n : ℕ) : ℚ)`. Conclude with `e3` after adjusting the coercions. Move the coercions through the operations in `at this`. Apply the tactic sequence `split_ifs at this ⊢ <;> simpa using this`.
+Apply the first step, then apply the next step to every resulting obligation. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `hq0 : (i : ℕ) + 1 < D.R.m`. Establish `hqpos : 0 < qW D i ρ` using `by rw [hq]; omega`. Rewrite `hdeg` using `[if_pos hqpos]`. Establish `hM0 : (aMiAt D i σ ρ 0 : ℚ) + 1 ≥ -(h.e i + Formalism.L2.NTheta.lamAt h (D.R.r - 1) + ((D.R.m - (i + 1) : ℕ) : ℚ) + ((D.R.t : ℚ) - 1) / 2)`. Use `le_toNat_floor (-(h.e i + Formalism.L2.NTheta.lamAt h (D.R.r - 1) + ((D.R.m - (i + 1) : ℕ) : ℚ) + ((D.R.t : ℚ) - 1) / 2))` as an intermediate fact.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Unfold `aMiAt aMi`. Rewrite using `[hp, hq, if_pos (by omega), show D.R.k + ↑i + (D.R.m - (↑i + 1) - 0) - 1 = D.R.r - 1 by omega]`. Simplify using `using this`. Establish `c1 : (((D.R.k + i : ℕ) : ℚ)) = D.R.k + (i : ℚ)` using `by push_cast; ring`. Establish `c2 : (((D.R.m - (i + 1) : ℕ) : ℚ)) = D.R.m - (i : ℚ) - 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.cast_sub (by omega)]; push_cast; ring`. Rewrite `hP0` using `[c1]`. Rewrite `hM0` using `[c2]`. Rewrite using `[hnV]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `him : (i : ℕ) = D.R.m - 1` using `by omega`. Rewrite `hdeg` using `[if_neg (by rw [hq]; omega), add_zero]`. Establish `hb : Formalism.L2.NTheta.lamAt h (D.R.r - 1) = -h.b i`. Rewrite using `[show D.R.r - 1 = D.R.k - 1 + (i : ℕ) by omega, lamAt_b h i i.2]`. Establish `hg` using `h.gap_be i`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `c1 : (((D.R.k + i : ℕ) : ℚ)) = D.R.k + (i : ℚ)` using `by push_cast; ring`. Rewrite `hP0` using `[c1]`. Establish `hmi : (i : ℚ) = D.R.m - 1`. Rewrite using `[him, Nat.cast_sub (by omega)]; simp`. Rewrite using `[hnV, hb]`.
-
-Establish `ht : (0 : ℚ) ≤ D.R.t` using `Nat.cast_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem width_le (D : D7) (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) (ρ : D.what₂.Tau) :
     Formalism.L2.NTheta.lamAt (D.hc (lab σ ρ)) 0 - Formalism.L2.NTheta.lamAt (D.hc (lab σ ρ)) (D.R.r - 1) ≤
@@ -155,25 +153,23 @@ end GlobalTheory.LowRow.ParWidth
 open GlobalTheory.LowRow.ParWidth in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F _hC i σ s hσ ρ`. Establish `hK : GlobalTheory.IndefiniteRowSideFullHecke.WeilGramSignature.OverK σ` using `hσ.2`. Establish `hat : labE σ (lab σ ρ) = tauE D ρ` using `((GlobalTheory.GalLift.labels_overK σ).1 hK).2 ρ`. Take `⟨hanti, qv, hqv, hS⟩` from `(R.MW i σ).enum ρ`. Establish `hpar : parAt (Wc D i) σ ρ = Formalism.L2.NTheta.holPar _ _ (kapAt (Wc D i) σ ρ)` using `if_pos hat`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsig : (Wc D i).sig (tauE D ρ) = D.R.sigW ((i : ℕ) + 1)` using `D.sp.W_sigval _ (Nat.le_add_left _ _) i.2 _`. Establish `hk` using `D.R.m_add_three_le_k`. Establish `hi` using `i.2`. Establish `hr : ((Wc D i).sig (tauE D ρ)).1 + ((Wc D i).sig (tauE D ρ)).2 = D.R.r`. Rewrite using `[hsig]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Ranks.sigW, Ranks.r]`. Use linear arithmetic over natural numbers and integers. Establish `hrodd : Odd D.R.r`. Take `⟨a, ha⟩` from `D.R.k_even`. Take `⟨b, hb⟩` from `D.R.m_even`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a + b - 1, by simp only [Ranks.r]; omega⟩`. Establish `hodd : Odd (((Wc D i).sig (tauE D ρ)).1 + ((Wc D i).sig (tauE D ρ)).2)` using `hr ▸ hrodd`. Establish `hent : ∀ a, ∃ n < D.R.r, (R.MW i σ).lam ρ a = ((Formalism.L2.NTheta.lamAt (D.hc (lab σ ρ)) n : ℚ) : ℝ)`. Introduce `a`. Establish `hmem : (qv a, (R.MW i σ).ε ρ a) ∈ parAt (Wc D i) σ ρ`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hS]`. Conclude with `Finset.mem_image_of_mem _ (Finset.mem_univ a)`. Rewrite `hmem` using `[hpar]`. Take `⟨n, hn, e⟩` from `mem_holPar_kapW _ _ _ hodd hmem`. Conclude with `⟨n, hr ▸ hn, by rw [hqv a, e]⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hrank : (Wc D i).rank = D.R.r`. Rewrite using `[← hr]`. Conclude with `(Formalism.BasicNotions.sig_sum _ (D.sp.W_sig _) _).symm`. Use `⟨hanti, fun a => ?_, fun a b => ?_⟩` and prove the remaining obligations. Take `⟨n, -, e⟩` from `hent a`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz⟩` from `Formalism.L2.NTheta.lamAt_int (D.hc (lab σ ρ)) n`. Take `⟨w, hw⟩` from `hrodd`. Use `⟨z - w, ?_⟩` and prove the remaining obligations. Rewrite using `[e, hz, hrank, hw]`. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨n, hn, ea⟩` from `hent a`. Take `⟨n', hn', eb⟩` from `hent b`. Establish `hW` using `width_le D i σ ρ`. Establish `l1` using `lamAt_anti (D.hc (lab σ ρ)) (Nat.zero_le n) hn`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `l2` using `lamAt_anti (D.hc (lab σ ρ)) (Nat.zero_le n') hn'`. Establish `u1` using `lamAt_anti (D.hc (lab σ ρ)) (show n ≤ D.R.r - 1 by omega) (by omega)`. Establish `u2` using `lamAt_anti (D.hc (lab σ ρ)) (show n' ≤ D.R.r - 1 by omega) (by omega)`. Establish `key : |Formalism.L2.NTheta.lamAt (D.hc (lab σ ρ)) n - Formalism.L2.NTheta.lamAt (D.hc (lab σ ρ)) n'| ≤ (degAt D i σ ρ : ℚ) + D.R.nV + 3`. Apply the tactic sequence `rw [abs_sub_le_iff]; constructor <;> linarith`.
-
-Rewrite using `[ea, eb, ← Rat.cast_sub, ← Rat.cast_abs]`. Conclude with `key` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LowRow.lam_par_width : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.Core5 R F → ∀ i σ s, IsEmbOverK D σ s → ∀ ρ, StrictAnti ((R.MW i σ).lam ρ) ∧ (∀ a, ∃ z : ℤ, (R.MW i σ).lam ρ a - (((Wc D i).rank : ℝ) - 1) / 2 = (z : ℝ)) ∧ ∀ a b, |(R.MW i σ).lam ρ a - (R.MW i σ).lam ρ b| ≤ (degAt D i σ ρ : ℝ) + D.R.nV + 3 := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F _hC i σ s hσ ρ

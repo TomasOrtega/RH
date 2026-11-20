@@ -6,15 +6,15 @@ open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspR
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Pp
 
 /- English proof (translation)
-Introduce `F _ _ f hf`. Establish `hc : ∀ {f : GL (Fin 2) (A F) → ℂ}, Lf f → ∀ g, IntegrableOn (fun b => f (gl (nU b) * g) * ψ b) (fundamentalSet F) (adeleMeasure F)` using `fun hf g => intOn ((hf.1.comp (cont_n.mul continuous_const)).mul cont_ψ)`. Use `⟨?_, fun b g => ?_, hc hf, fun c g => ?_, fun f' hf' g => ?_⟩` and prove the remaining obligations. Take `⟨C, hC, hs⟩` from `exists_cpt (F := F)`. Establish `e : Wf f = fun g => ∫ b in C, f (gl (nU b) * g) * ψ b ∂((adeleMeasure F).restrict (fundamentalSet F))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `g`. Rewrite using `[Measure.restrict_restrict hC.measurableSet, Set.inter_eq_right.2 hs]`. Both sides reduce to the same expression. Rewrite using `[e]`. Use `haveI : IsFiniteMeasure ((adeleMeasure F).restrict (fundamentalSet F)) := isFiniteMeasure_restrict.2 (by rw [adeleMeasure_fundamentalSet]; exact ENNReal.one_ne_top)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Conclude with `continuous_parametric_integral_of_continuous ((hf.1.comp ((cont_n.comp continuous_snd).mul continuous_fst)).mul (cont_ψ.comp continuous_snd)) hC`. Unfold `Wf`. Rewrite using `[← integral_const_mul, ← int_add (h := fun x => ψ (-b) * (f (gl (nU x) * g) * ψ x)) (fun k x => by rw [hf.per, ψ_add, ψ_rt, one_mul]) b]`. Use `integral_congr_ae (Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Establish `: ψ (-b) * ψ (x + b) = ψ x` using `by rw [← ψ_add]; congr 1; ring`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [n_add, mul_assoc]`. Rewrite using `[mul_left_comm, this]`. Unfold `Wf`. Rewrite using `[← integral_const_mul]`. Simplify using `[mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `Wf`. Rewrite using `[← integral_add (hc hf g) (hc hf' g)]`. Simplify using `[add_mul]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.Pp.wfBasic :
     ∀ (F : Type) [Field F] [NumberField F], UpperTheory.ConvolutionTheory.R2.Pp.WfBasic F := by

@@ -4,7 +4,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.LagMa
 open Polynomial Matrix IsLocalRing TensorProduct UpperTheory.V.AlgebraTools
 
 /- English proof (translation)
-Proceed by induction on `q using Polynomial.induction_on with`. Consider the case `C c => simp [Algebra.algebraMap_eq_smul_one, Matrix.smul_mulVec]`. Consider the case `add p q hp hq => rw [map_add, Matrix.add_mulVec, hp, hq, eval_add, add_smul]`. Consider the case `monomial n c h`. Rewrite using `[pow_succ, ← mul_assoc, map_mul, aeval_X, ← Matrix.mulVec_mulVec, hv, Matrix.mulVec_smul, h, eval_mul (q := X), eval_X, smul_smul, mul_comm]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 private theorem UpperTheory.V.AlgebraTools.aeval_mulVec_eigen {k ι : Type} [CommRing k] [Fintype ι] [DecidableEq ι]
     (M : Matrix ι ι k) (t : k) (v : ι → k) (hv : M *ᵥ v = t • v) (q : k[X]) :
@@ -17,15 +17,13 @@ private theorem UpperTheory.V.AlgebraTools.aeval_mulVec_eigen {k ι : Type} [Com
       eval_mul (q := X), eval_X, smul_smul, mul_comm]
 
 /- English proof (translation)
-Introduce `h0`. Establish `h1` using `(eq_lag_iff a P i (fun j hj => hu i j hj.symm) (lag a P i)).1 rfl`. Rewrite `h1` using `[h0, smul_zero]`. Establish `hroot : P.charpoly.eval (a i) = 0`. Rewrite using `[hP, eval_prod]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) (by simp)`. Rewrite `hroot` using `[Matrix.eval_charpoly]`. Take `⟨v, hv0, hv⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 hroot`. Establish `hv' : P *ᵥ v = a i • v`. Rewrite `hv` using `[Matrix.sub_mulVec, sub_eq_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hv]`. Use extensionality with `j`. Simplify using `[Matrix.mulVec_diagonal]`. Establish `h2` using `UpperTheory.V.AlgebraTools.aeval_mulVec_eigen P (a i) v hv' (∏ j ∈ Finset.univ.erase i, (X - C (a j)))`. Rewrite `h2` using `[← h1, Matrix.zero_mulVec, eval_prod]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `smul_eq_zero.1 h2.symm with h | h` into its components or cases. Take `⟨j, hj, hj0⟩` from `Finset.prod_eq_zero_iff.1 h`. Use `(hu i j (Finset.ne_of_mem_erase hj).symm).ne_zero` as an intermediate fact. Apply `this` to reduce the goal to its premises. Simplify using `using hj0`.
-
-Conclude with `hv0 h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.AlgebraTools.lag_ne_zero_field {k ι : Type} [Field k] [Fintype ι] [DecidableEq ι]
     (a : ι → k) (P : Matrix ι ι k) (hu : ∀ i j, i ≠ j → IsUnit (a i - a j))
@@ -53,9 +51,9 @@ private theorem UpperTheory.V.AlgebraTools.lag_ne_zero_field {k ι : Type} [Fiel
   · exact hv0 h
 
 /- English proof (translation)
-Introduce `R _ _ ι _ _ a P hu hP i h0`. Establish `h` using `lag_map (residue R) (residue R).mapMatrix a P (fun c => by`. Use extensionality with `x y`. Apply the tactic sequence `by_cases hxy : x = y <;> simp [Matrix.algebraMap_matrix_apply, hxy]) hu i`. Rewrite `h` using `[h0, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `UpperTheory.V.AlgebraTools.lag_ne_zero_field (fun j => residue R (a j)) ((residue R).mapMatrix P) (fun i j hij => by simpa only [map_sub] using (hu i j hij).map (residue R)) ?_ i h.symm` and prove the remaining obligations. Rewrite using `[RingHom.mapMatrix_apply, Matrix.charpoly_map, hP]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.V.AlgebraTools.lag_ne_zero :
     ∀ {R : Type} [CommRing R] [IsLocalRing R] {ι : Type} [Fintype ι] [DecidableEq ι] (a : ι → R) (P : Matrix ι ι R), (∀ i j, i ≠ j → IsUnit (a i - a j)) → P.charpoly.map (residue R) = ∏ i, (X - C (residue R (a i))) → ∀ i, lag a P i ≠ 0 := by

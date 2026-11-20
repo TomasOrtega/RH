@@ -11,19 +11,17 @@ open DoubleCoset (doubleCoset)
 namespace GlobalTheory.CompanionTheory.JacquetEquiv
 
 /- English proof (translation)
-Introduce `F _ _ _ _ n γ V V' _ _ _ _ π π' φ`. Set `e : V ≃ₗ[ℂ] V'` to `φ.toLinearEquiv`. Establish `he : ∀ g, (e : V →ₗ[ℂ] V') ∘ₗ π g = π' g ∘ₗ (e : V →ₗ[ℂ] V')`. Introduce `g`. Rewrite using `[Representation.Equiv.toLinearEquiv_toLinearMap]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `φ.toIntertwiningMap.isIntertwining' g`. Establish `he'` using `LinearEquiv.isIntertwining_symm_isIntertwining he`. Set `f : Representation.IntertwiningMap (MonoidHom.comp π (unipotentRadical F n γ).subtype) (MonoidHom.comp π' (unipotentRadical F n γ).subtype)` to `⟨(e : V →ₗ[ℂ] V'), fun x => he x⟩`. Set `g : Representation.IntertwiningMap (MonoidHom.comp π' (unipotentRadical F n γ).subtype) (MonoidHom.comp π (unipotentRadical F n γ).subtype)` to `⟨(e.symm : V' →ₗ[ℂ] V), fun x => he' x⟩`. Set `M` to `Representation.Coinvariants.map _ _ f`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `M'` to `Representation.Coinvariants.map _ _ g`. Establish `hMM' : M ∘ₗ M' = LinearMap.id`. Apply `Representation.Coinvariants.hom_ext` to reduce the goal to its premises. Use extensionality with `v`. Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply, M, M', Representation.Coinvariants.map_mk]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Conclude with `e.apply_symm_apply v`. Establish `hM'M : M' ∘ₗ M = LinearMap.id`. Apply `Representation.Coinvariants.hom_ext` to reduce the goal to its premises. Use extensionality with `v`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply, M, M', Representation.Coinvariants.map_mk]`. Use `congr 1`. Conclude with `e.symm_apply_apply v`. Set `E` to `LinearEquiv.ofLinearMap (re₁₂ := RingHomInvPair.ids) (re₂₁ := RingHomInvPair.ids) M M' hMM' hM'M`. Use `⟨Representation.Equiv.mk E ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Introduce `m`. Apply `Representation.Coinvariants.hom_ext` to reduce the goal to its premises. Use extensionality with `u`. Establish `hc : f ((π (m : GL (Fin n) F)) u) = (π' (m : GL (Fin n) F)) (f u)` using `LinearMap.congr_fun (he m) u`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, E, LinearEquiv.coe_ofLinearMap, jacquetRep, GroundTheory.Automorphic.Parabolic.twist_apply, map_smul, GroundTheory.Automorphic.Parabolic.jacquetAction, MonoidHom.coe_mk, OneHom.coe_mk, GroundTheory.Automorphic.coinvariantsTranslate …`.
-
-Rewrite using `[hc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonempty_jacquetRep_equiv : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] (n : ℕ) (γ : Fin n → ℕ) {V V' : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V'] (π : Representation ℂ (GL (Fin n) F) V) (π' : Representation ℂ (GL (Fin n) F) V'), π.Equiv π' → Nonempty ((jacquetRep F n γ π).Equiv (jacquetRep F n γ π')) := by
   intro F _ _ _ _ n γ V V' _ _ _ _ π π' φ

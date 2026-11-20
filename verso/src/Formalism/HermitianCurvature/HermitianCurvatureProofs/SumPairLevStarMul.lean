@@ -22,7 +22,7 @@ def pairLev (μ : Measure (Mt k r)) (i : Fin (r + 1)) (Φ Ψ : RadSp k r z z' π
 variable {μ : Measure (Mt k r)} {i : Fin (r + 1)} {U : Submodule ℂ (RadSp k r z z' π π')}
 
 /- English proof (translation)
-Unfold `pairLev`. Rewrite using `[← integral_conj]`. Use `congr 1`. Use function extensionality and compare the values at `c'`. Rewrite using `[pairAt_swap, map_mul, Complex.conj_ofReal]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem pairLev_swap (Φ Ψ : RadSp k r z z' π π') (c : Fin r → ℂ) :
     pairLev μ i Ψ Φ c = conj (pairLev μ i Φ Ψ c) := by
@@ -33,7 +33,7 @@ theorem pairLev_swap (Φ Ψ : RadSp k r z z' π π') (c : Fin r → ℂ) :
   rw [pairAt_swap, map_mul, Complex.conj_ofReal]
 
 /- English proof (translation)
-Unfold `pairLev`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `c'`. Rewrite using `[pairAt_smul_left]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -47,7 +47,7 @@ theorem pairLev_smul_left (Φ Ψ : RadSp k r z z' π π') (c : Fin r → ℂ) (a
   ring
 
 /- English proof (translation)
-Unfold `pairLev`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `c'`. Rewrite using `[pairAt_smul_right]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -61,9 +61,9 @@ theorem pairLev_smul_right (Φ Ψ : RadSp k r z z' π π') (c : Fin r → ℂ) (
   ring
 
 /- English proof (translation)
-Unfold `pairLev`. Rewrite using `[← integral_add (hI c hc Φ hΦ Ψ hΨ).2 (hI c hc Φ' hΦ' Ψ hΨ).2]`. Use `congr 1`. Use function extensionality and compare the values at `c'`. Use `pairAt_add_smul_left μ Φ Φ' Ψ (glue i c c') 1 ((hI c hc Φ hΦ Ψ hΨ).1 c') ((hI c hc Φ' hΦ' Ψ hΨ).1 c')` as an intermediate fact.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite `this` using `[one_smul, one_mul]`. Rewrite using `[this, mul_add]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem pairLev_add_left (hI : IntLevOn μ i U) {c : Fin r → ℂ} (hc : c ∈ OmX r) {Φ Φ' Ψ : RadSp k r z z' π π'}
     (hΦ : Φ ∈ U) (hΦ' : Φ' ∈ U) (hΨ : Ψ ∈ U) :
@@ -77,7 +77,7 @@ theorem pairLev_add_left (hI : IntLevOn μ i U) {c : Fin r → ℂ} (hc : c ∈ 
   rw [this, mul_add]
 
 /- English proof (translation)
-Rewrite using `[pairLev_swap, pairLev_add_left hI hc hΨ hΨ' hΦ, map_add, ← pairLev_swap, ← pairLev_swap]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pairLev_add_right (hI : IntLevOn μ i U) {c : Fin r → ℂ} (hc : c ∈ OmX r) {Φ Ψ Ψ' : RadSp k r z z' π π'}
     (hΦ : Φ ∈ U) (hΨ : Ψ ∈ U) (hΨ' : Ψ' ∈ U) :
@@ -85,7 +85,7 @@ theorem pairLev_add_right (hI : IntLevOn μ i U) {c : Fin r → ℂ} (hc : c ∈
   rw [pairLev_swap, pairLev_add_left hI hc hΨ hΨ' hΦ, map_add, ← pairLev_swap, ← pairLev_swap]
 
 /- English proof (translation)
-Unfold `pairLev`. Establish `h0 : ∀ c', pairAt μ (0 : RadSp k r z z' π π') Ψ c' = 0` using `fun c' => by`. Use `pairAt_smul_left μ (0 : RadSp k r z z' π π') Ψ c' 0` as an intermediate fact. Rewrite `this` using `[zero_smul, zero_mul]`. Then use the resulting hypothesis. Simplify using `[h0]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules.
 -/
 theorem pairLev_zero_left (Ψ : RadSp k r z z' π π') (c : Fin r → ℂ) : pairLev μ i 0 Ψ c = 0 := by
   unfold pairLev
@@ -95,7 +95,7 @@ theorem pairLev_zero_left (Ψ : RadSp k r z z' π π') (c : Fin r → ℂ) : pai
   simp [h0]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp only [Finset.sum_empty]`. Conclude with `pairLev_zero_left Ψ c`. Consider the case `insert j s hj ih`. Rewrite using `[Finset.sum_insert hj, Finset.sum_insert hj, pairLev_add_left hI hc (hΦ j) (U.sum_mem fun j' _ => hΦ j') hΨ, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairLev_sum_left (hI : IntLevOn μ i U) {c : Fin r → ℂ} (hc : c ∈ OmX r) {ι : Type} (s : Finset ι)
     (Φ : ι → RadSp k r z z' π π') (hΦ : ∀ j, Φ j ∈ U) {Ψ : RadSp k r z z' π π'} (hΨ : Ψ ∈ U) :
@@ -108,7 +108,7 @@ theorem pairLev_sum_left (hI : IntLevOn μ i U) {c : Fin r → ℂ} (hc : c ∈ 
       ih]
 
 /- English proof (translation)
-Rewrite using `[pairLev_swap, pairLev_sum_left hI hc s Ψ hΨ hΦ, map_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => (pairLev_swap (μ := μ) (i := i) (Ψ j) Φ c).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairLev_sum_right (hI : IntLevOn μ i U) {c : Fin r → ℂ} (hc : c ∈ OmX r) {ι : Type} (s : Finset ι)
     {Φ : RadSp k r z z' π π'} (hΦ : Φ ∈ U) (Ψ : ι → RadSp k r z z' π π') (hΨ : ∀ j, Ψ j ∈ U) :
@@ -146,19 +146,19 @@ def adjLev (μ : Measure (Mt k r)) (i : Fin (r + 1)) (U : Submodule ℂ (RadSp k
     rw [pairLev_swap (Φ := Ψ), ← ha Ψ hΨ Φ hΦ, ← pairLev_swap]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨ha.1, ha.2.1⟩`.
+Supply the required witnesses or components.
 -/
 theorem adjLev_pres {hI : IntLevOn μ i U} {c : Fin r → ℂ} {hc : c ∈ OmX r} {a : Pr (RadSp k r z z' π π')}
     (ha : a ∈ adjLev μ i U hI c hc) : a ∈ presAlg U := ⟨ha.1, ha.2.1⟩
 
 /- English proof (translation)
-The claim follows from `U.sum_mem fun b _ => (hM a b).1 _ (hx b)`.
+A detailed English derivation is pending.
 -/
 theorem act_mem_pres (M : SlopeTestRemainingChoices S (Pr (RadSp k r z z' π π'))) (hM : ∀ a b, M a b ∈ presAlg U)
     (x : Ix S → RadSp k r z z' π π') (hx : ∀ a, x a ∈ U) (a : Ix S) : act M x a ∈ U := U.sum_mem fun b _ => (hM a b).1 _ (hx b)
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Conclude with `(presAlg U).sum_mem fun c _ => (presAlg U).mul_mem (hM a c) (hN c b)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_mem_pres (M N : SlopeTestRemainingChoices S (Pr (RadSp k r z z' π π'))) (hM : ∀ a b, M a b ∈ presAlg U)
     (hN : ∀ a b, N a b ∈ presAlg U) (a b : Ix S) : (M * N) a b ∈ presAlg U := by
@@ -166,7 +166,7 @@ theorem mul_mem_pres (M N : SlopeTestRemainingChoices S (Pr (RadSp k r z z' π �
   exact (presAlg U).sum_mem fun c _ => (presAlg U).mul_mem (hM a c) (hN c b)
 
 /- English proof (translation)
-Rewrite using `[Matrix.star_apply]`. Conclude with `star_mem (hM b a)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem star_mem_pres (M : SlopeTestRemainingChoices S (Pr (RadSp k r z z' π π'))) (hM : ∀ a b, M a b ∈ presAlg U) (a b : Ix S) :
     (star M) a b ∈ presAlg U := by
@@ -174,7 +174,7 @@ theorem star_mem_pres (M : SlopeTestRemainingChoices S (Pr (RadSp k r z z' π π
   exact star_mem (hM b a)
 
 /- English proof (translation)
-Unfold `form pairLev`. Simplify using `only [Finset.mul_sum]`. Conclude with `integral_finsetSum _ fun a _ => (hI c hc _ (hu a) _ (hv a)).2`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem form_eq_sum (hI : IntLevOn μ i U) {c : Fin r → ℂ} (hc : c ∈ OmX r) (u v : Ix S → RadSp k r z z' π π')
     (hu : ∀ a, u a ∈ U) (hv : ∀ a, v a ∈ U) : form μ i u v c = ∑ a, pairLev μ i (u a) (v a) c := by
@@ -183,7 +183,7 @@ theorem form_eq_sum (hI : IntLevOn μ i U) {c : Fin r → ℂ} (hc : c ∈ OmX r
   exact integral_finsetSum _ fun a _ => (hI c hc _ (hu a) _ (hv a)).2
 
 /- English proof (translation)
-Simplify using `only [Finset.mul_sum]`. Conclude with `integrable_finsetSum _ fun a _ => (hI c hc _ (hu a) _ (hv a)).2`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem form_int (hI : IntLevOn μ i U) {c : Fin r → ℂ} (hc : c ∈ OmX r) (u v : Ix S → RadSp k r z z' π π')
     (hu : ∀ a, u a ∈ U) (hv : ∀ a, v a ∈ U) :
@@ -192,11 +192,11 @@ theorem form_int (hI : IntLevOn μ i U) {c : Fin r → ℂ} (hc : c ∈ OmX r) (
   exact integrable_finsetSum _ fun a _ => (hI c hc _ (hu a) _ (hv a)).2
 
 /- English proof (translation)
-Establish `hu : ∀ e, act N x e ∈ U` using `act_mem_pres N hN x hx`. Rewrite using `[act_mul]`. Establish `h1 : ∀ a, act (star M) (act N x) a = ∑ e, (M e a).2.unop (act N x e)`. Introduce `a`. Simplify using `only [act, Matrix.star_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Simplify using `only [h1]`. Rewrite using `[Finset.sum_congr rfl fun a _ => pairLev_sum_left hI hc Finset.univ _ (fun e => (hM e a).2.1 _ (hu e)) (hy a)]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hs : ∀ a, pairLev μ i ((M e a).2.unop (act N x e)) (y a) c = pairLev μ i (act N x e) ((M e a).1 (y a)) c` using `fun a => (star_mem (hM e a) : star (M e a) ∈ adjLev μ i U hI c hc).2.2 _ (hu e) _ (hy a)`. Rewrite using `[Finset.sum_congr rfl fun a _ => hs a]`. Rewrite using `[← pairLev_sum_right hI hc Finset.univ (hu e) _ fun a => (hM e a).1 _ (hy a)]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sum_pairLev_star_mul (hI : IntLevOn μ i U) {c : Fin r → ℂ} (hc : c ∈ OmX r)
     (M N : SlopeTestRemainingChoices S (Pr (RadSp k r z z' π π'))) (hM : ∀ a b, M a b ∈ adjLev μ i U hI c hc)
@@ -227,15 +227,15 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] {S : Type} [Fintype S] [DecidableEq S]
 
 /- English proof (translation)
-Introduce `w hw l x y hx hy c hc`. Take `⟨φ, hφc, hφe, hC⟩` from `hPh w hw l x y hx hy c hc`. Use `⟨φ, hφc, hφe, hC, ?_⟩` and prove the remaining obligations. Establish `h1 : ∫ t, φ t = ∫ t, ph L st μ l w x y c t` using `integral_congr_ae (ae_complex_ne_zero.mono fun t ht => hφe t ht)`. Rewrite using `[h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hxU : ∀ a, x a ∈ U l` using `fun a => hKU l (hx a)`. Establish `hyU : ∀ a, y a ∈ U l` using `fun a => hKU l (hy a)`. Establish `hBm : ∀ a b, bTl L l w a b ∈ adjLev μ l.castSucc (U l) (hI l) c hc` using `hB w hw l c hc`. Establish `hBp : ∀ a b, bTl L l w a b ∈ presAlg (U l)` using `fun a b => adjLev_pres (hBm a b)`. Establish `hN : ∀ a b, (RRi L st l.succ w * bTl L l w) a b ∈ presAlg (U l)` using `mul_mem_pres _ _ (hR w hw l) hBp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hRR : RRi L st l.castSucc w = star (bTl L l w) * (RRi L st l.succ w * bTl L l w)`. Rewrite using `[← hSite w hw l, mul_assoc]`. Establish `hu : ∀ e, act (RRi L st l.succ w * bTl L l w) x e ∈ U l` using `act_mem_pres _ hN x hxU`. Establish `hv : ∀ e, act (bTl L l w) y e ∈ U l` using `act_mem_pres _ hBp y hyU`. Establish `hu0 : ∀ a, act (RRi L st l.castSucc w) x a ∈ U l`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hRR]`. Conclude with `act_mem_pres _ (mul_mem_pres _ _ (star_mem_pres _ hBp) hN) x hxU`. Use `symm`. Use `show form μ l.castSucc (act (RRi L st l.castSucc w) x) y c = _`. Rewrite using `[form_eq_sum (hI l) hc _ _ hu0 hyU]`.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hRR]`. Rewrite using `[sum_pairLev_star_mul (hI l) hc _ _ hBm hN x y hxU hyU, ← form_eq_sum (hI l) hc _ _ hu hv, form_split μ l _ _ c (form_int (hI l) hc _ _ hu hv)]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Use `show _ = ((‖t‖ ^ (-2 : ℤ) : ℝ) : ℂ) * form μ l.succ (act (RRi L st l.succ w) (act (bTl L l w) x)) (act (bTl L l w) y) (Function.update c l t)`. Rewrite using `[act_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stepDens_of (P : M.Par) (z z' : Fin (2 * P.r + P.k + 1) → ℂ) (π : Mx P.k P.r → (Wp →L[ℂ] Wp))
     (π' : Mx P.k P.r → (Wq →L[ℂ] Wq)) (μ : Measure (Mt P.k P.r))

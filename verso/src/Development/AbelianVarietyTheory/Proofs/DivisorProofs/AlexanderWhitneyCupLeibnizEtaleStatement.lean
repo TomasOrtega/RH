@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.DivisorSupportCondi
 import Development.AbelianVarietyTheory.Definitions.Divisors.SecClass
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC
 /- English proof (citation)
-Apply `GlobalTheory.EtC.aw_leibniz_rule` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAlexanderWhitneyCupLeibnizEtale.lean&line=10#L10)
 -/

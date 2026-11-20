@@ -18,19 +18,17 @@ def boxSubgroup (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNo
   neg_mem' hx i _ := neg_mem_cball (hx i trivial)
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n _ r R _`. Use `set H := boxSubgroup k n r`. Establish `hH : ∀ x, x ∈ H ↔ x ∈ box n r` using `fun _ => Iff.rfl`. Establish `hq : ∀ a b : n → k, (QuotientAddGroup.mk a : (n → k) ⧸ H) = QuotientAddGroup.mk b ↔ a - b ∈ box n r`. Introduce `a b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[QuotientAddGroup.eq, ← hH, ← H.neg_mem_iff]`. Simplify using `[neg_add_eq_sub]`. Take `⟨T, hTsub, hTfin, hcov⟩` from `(isCompact_box (n := n) R).elim_finite_subcover_image (b := box n R) (c := fun a => (fun x => x - a) ⁻¹' box n r) (fun a _ => (isOpen_box r).preimage (continuous_id.sub continuous_const)) (fun x hx => Set.mem_biUnion hx (show x - x ∈ box n r by rw [sub_self]; exact (boxSubgroup k …`. Use `set π : (n → k) → (n → k) ⧸ H := QuotientAddGroup.mk`. Set `f : (n → k) ⧸ H → (n → k)` to `fun q => if h : ∃ a ∈ box n R, π a = q then Classical.choose h else 0`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hf : ∀ a ∈ box n R, f (π a) ∈ box n R ∧ π (f (π a)) = π a`. Introduce `a ha`. Establish `h : ∃ b ∈ box n R, π b = π a` using `⟨a, ha, rfl⟩`. Simplify using `only [f, dif_pos h]`. Conclude with `Classical.choose_spec h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `⟨(hTfin.toFinset.image π).image f, ?_, ?_⟩` and prove the remaining obligations. Introduce `b hb`. Simplify using `only [Finset.mem_image, Set.Finite.mem_toFinset] at hb`. Take `⟨q, ⟨t, ht, rfl⟩, rfl⟩` from `hb`. Conclude with `(hf t (hTsub ht)).1`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a ha`. Take `⟨t, ht, hat⟩` from `Set.mem_iUnion₂.mp (hcov ha)`. Establish `hat' : π a = π t` using `(hq a t).mpr hat`. Use `⟨f (π a), ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.mem_image, Set.Finite.mem_toFinset]`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨π t, ⟨t, ht, rfl⟩, by rw [hat']⟩`. Conclude with `(hq a _).mp (hf a ha).2.symm`. Introduce and unpack `b ⟨hb, hab⟩`. Simplify using `only [Finset.mem_image, Set.Finite.mem_toFinset] at hb`. Take `⟨q, ⟨t', ht', rfl⟩, rfl⟩` from `hb`.
-
-Establish `h1 : π a = π (f (π t'))` using `(hq a _).mpr hab`. Rewrite `h1` using `[(hf t' (hTsub ht')).2]`. Rewrite using `[h1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_finset_box_reps : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : Type) [Fintype n] (r R : kˣ), valuation k (r : k) ≤ valuation k (R : k) → ∃ S : Finset (n → k), (∀ b ∈ S, b ∈ box n R) ∧ ∀ a ∈ box n R, ∃! b, b ∈ S ∧ a - b ∈ box n r := by
   intro k _ _ _ _ n _ r R _

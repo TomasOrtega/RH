@@ -10,16 +10,16 @@ noncomputable def UpperTheory.Reformulated.B.Qh31.vge :
     fun {K : Type} [Field K] (v : AddValuation K (WithTop ℚ)) (a : ℝ) (x : K) ↦ (↑a : WithTop ℝ) ≤ UpperTheory.Reformulated.B.Qh31.vR v x
 
 /- English proof (translation)
-The claim follows from `Monotone.withTop_map (fun _ _ h ↦ Rat.cast_le.mpr h)`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Reformulated.B.Qh31.map_cast_mono :
     Monotone (WithTop.map (fun (n : ℚ) ↦ (↑n : ℝ))) :=
   Monotone.withTop_map (fun _ _ h ↦ Rat.cast_le.mpr h)
 
 /- English proof (translation)
-Introduce `K _ v ι a s f h`. Use `Finset.sum_induction f (UpperTheory.Reformulated.B.Qh31.vge v a) ?_ ?_ h` and prove the remaining obligations. Introduce `x y hx hy`. Unfold `UpperTheory.Reformulated.B.Qh31.vge UpperTheory.Reformulated.B.Qh31.vR at *`. Break down `min_le_iff.mp (v.map_add x y) with hxy | hxy` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hx.trans (UpperTheory.Reformulated.B.Qh31.map_cast_mono hxy)`. Conclude with `hy.trans (UpperTheory.Reformulated.B.Qh31.map_cast_mono hxy)`. Unfold `UpperTheory.Reformulated.B.Qh31.vge UpperTheory.Reformulated.B.Qh31.vR`. Rewrite using `[v.map_zero, WithTop.map_top]`. Conclude with `le_top`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qh31.vge_sum :
     ∀ {K : Type} [inst : Field K] (v : AddValuation K (WithTop ℚ)) {ι : Type} {a : ℝ} (s : Finset ι) (f : ι → K),

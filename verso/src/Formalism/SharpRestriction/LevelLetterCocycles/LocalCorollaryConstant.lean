@@ -9,11 +9,11 @@ open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.Basi
 def localCorollaryConstant : ℝ := Classical.choose corollary_local_exists_constant
 
 /- English proof (translation)
-Establish `h` using `Classical.choose_spec corollary_local_exists_constant`. Introduce `hA`. Substitute `hE1` using the available equality. Take `⟨a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16⟩` from `hA`. Take `⟨t1, c2, pr2, l3⟩` from `a1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hP3 : Formalism.MainNotions.DeltaInvariantLattices.P3 D HW F Cm` using `fun l _ K s LL hg => (t1 l K s LL hg).2.2.1`. Establish `hP4 : Formalism.MainNotions.DeltaInvariantLattices.P4 D HW F Cm` using `fun l _ K s LL hg => (t1 l K s LL hg).2.2.2.1`. Establish `hP5 : Formalism.MainNotions.DeltaInvariantLattices.P5 D HW F` using `fun l _ K s LL hg => (t1 l K s LL hg).2.2.2.2.1`. Establish `hP6 : Formalism.MainNotions.DeltaInvariantLattices.P6 D HW F` using `fun l _ K s LL hg => (t1 l K s LL hg).2.2.2.2.2.1`. Establish `hP9 : Formalism.MainNotions.DeltaInvariantLattices.P9 D HW F` using `fun l _ K s LL hg => (t1 l K s LL hg).2.2.2.2.2.2.2.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP2a : Formalism.MainNotions.DeltaInvariantLattices.Pr2a D HW F` using `fun l _ K s LL hg => (pr2 l K s LL hg).1`. Establish `r` using `h D HW F Cm CR hP3 hP4 hP5 hP6 hP9 hP2a l3 a3 a4 a7 a8 a9 a10 a12 a14 hDdR h9 hFont hUG`. Conclude with `⟨r.1, r.2 E2 hE2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem local_corollary_of_de_rham (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F)
     (CR E1 E2 : ℝ) (hE1 : E1 = 800) (hE2 : localCorollaryConstant ≤ E2)

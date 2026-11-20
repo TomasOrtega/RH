@@ -10,9 +10,9 @@ open GlobalTheory.AbLaw
 namespace GlobalTheory.PrimVan
 
 /- English proof (translation)
-Introduce `K _ B _ _ hB hP M hM hu hn κ _ _ D hD hc n`. Use `hB.proper` as an intermediate fact. Establish `h` using `acyclic_of_kuenneth GlobalTheory.AbLaw.finrank_cechLB_homology_extProd hB hM (lbIso_pull_mul hM hu) (subsingleton_sec hB hM hu hn) hD hc (GlobalTheory.AbLaw.cechLB_homology_finite_of_affine_cover K _ _ M κ D hM inferInstance hP hD hc) (GlobalTheory.AbLaw.cechLB_homology_finite_of …`. Establish `hz` using `(HomologicalComplex.exactAt_iff_isZero_homology _ _).1 h`. Use `ModuleCat.isZero_iff_subsingleton.1 hz` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨h, hz, Module.finrank_zero_of_subsingleton⟩`.
+Supply the required witnesses or components.
 -/
 theorem cechLB_acyclic_of_primitive :
     ∀ (K : Type) [Field K] (B : Over (Spec (CommRingCat.of K))) [GrpObj B] [IsCommMonObj B],
@@ -31,7 +31,7 @@ theorem cechLB_acyclic_of_primitive :
   exact ⟨h, hz, Module.finrank_zero_of_subsingleton⟩
 
 /- English proof (translation)
-Introduce `K _ _ B _ _ hB hP M hM hu hn κ _ _ D hD hc n` and use `(cechLB_acyclic_of_primitive K B hB hP M hM hu hn κ D hD hc n).1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem acyclic_cechLB_of_primitive :
     ∀ (K : Type) [Field K] [IsAlgClosed K] (B : Over (Spec (CommRingCat.of K))) [GrpObj B] [IsCommMonObj B], IsAbelianScheme B → IsProjBy B.hom → ∀ M : LB B.left, M.IsLB → (∃ u : LB.Gen (abelian₂ B M), u.IsGen) → ¬ Triv M → (∀ (κ : Type) [LinearOrder κ] [Fintype κ] (D : κ → (B.left).Opens), (∀ i, IsAffineOpen (D i)) → ⨆ i, D i = ⊤ → (cechLB (B.hom) (M) D).Acyclic) :=

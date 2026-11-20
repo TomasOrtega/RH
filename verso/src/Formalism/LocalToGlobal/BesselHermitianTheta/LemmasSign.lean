@@ -8,9 +8,9 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH
 namespace Formalism.L2.Theta
 
 /- English proof (translation)
-Establish `hpsi : g.1.2 = 1`. Establish `h` using `hg`. Simplify using `only [Formalism.HC.Frame.Psi, Formalism.HC.Frame.chD, MonoidHom.mem_ker, MonoidHom.coe_comp, Function.comp_apply, MonoidHom.coe_fst, MonoidHom.coe_snd] at h`. Conclude with `h`. Unfold `Formalism.BasicNotions.Host.sigmaOf Formalism.BasicNotions.Host.sqrtMinusD`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[D.host.gal_sqd, MulEquiv.apply_symm_apply, hpsi]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sigmaOf_sqrtMinusD (D : D7) (g : D.R.GG) (hg : g ∈ D.R.Psi) :
     D.host.sigmaOf g D.host.sqrtMinusD = D.host.sqrtMinusD := by
@@ -24,7 +24,7 @@ theorem sigmaOf_sqrtMinusD (D : D7) (g : D.R.GG) (hg : g ∈ D.R.Psi) :
   simp
 
 /- English proof (translation)
-Establish `h1` using `sigmaOf_sqrtMinusD D (D.eTau τ).1 (D.eTau τ).2`. Use `show D.host.φ₀ ((D.host.sigmaOf (D.eTau τ).1) D.host.sqrtMinusD) = _`. Rewrite using `[h1]`. Conclude with `D.host.φ₀_mem`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tauE_sqrtMinusD (D : D7) (τ : D.what₂.Tau) :
     tauE D τ D.host.sqrtMinusD = Complex.I * (Real.sqrt D.host.d : ℂ) := by
@@ -34,11 +34,9 @@ theorem tauE_sqrtMinusD (D : D7) (τ : D.what₂.Tau) :
   exact D.host.φ₀_mem
 
 /- English proof (translation)
-Establish `hN : (Ideal.absNorm D.host.ccK : ℝ) ≠ 0`. Rewrite using `[Nat.cast_ne_zero, Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `D.host.ccK_ne_bot`. Establish `hNpos : (0 : ℝ) < Ideal.absNorm D.host.ccK` using `lt_of_le_of_ne (Nat.cast_nonneg _) (Ne.symm hN)`. Establish `hd : (0 : ℝ) < Real.sqrt D.host.d` using `Real.sqrt_pos.mpr (by exact_mod_cast D.host.hyp.2.1.pos)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc0` using `mul_pos hNpos hd`. Unfold `Formalism.BasicNotions.Host.xi0`. Rewrite using `[map_div₀, map_neg, map_one, map_mul, map_natCast, tauE_sqrtMinusD]`. Establish `hc : ((Ideal.absNorm D.host.ccK : ℕ) : ℂ) * (Complex.I * (Real.sqrt D.host.d : ℂ)) = Complex.I * (((Ideal.absNorm D.host.ccK : ℝ) * Real.sqrt D.host.d : ℝ) : ℂ)` using `by push_cast; ring`. Rewrite using `[hc, div_mul_eq_div_div, Complex.div_I, Complex.div_ofReal_im, neg_mul, one_mul, neg_neg, Complex.I_im]`.
-
-Conclude with `div_pos one_pos hc0`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xi_zero_im_pos (D : D7) (τ : D.what₂.Tau) : 0 < (tauE D τ D.host.xi0).im := by
   have hN : (Ideal.absNorm D.host.ccK : ℝ) ≠ 0 := by

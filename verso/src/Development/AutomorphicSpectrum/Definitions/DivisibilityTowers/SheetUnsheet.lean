@@ -37,7 +37,7 @@ def toZ {p : X ⟶ Sp k} (L : HermLB p) (t : X ⟶ Sp ℤ) (hc : ∀ τ, (wZ L t
   conj _ _ i y y' h hy := L.conj _ _ i (unsheet p y) (unsheet p y') h hy
 
 /- English proof (translation)
-Establish `h : y.1 ≫ p = Spec.map (CommRingCat.ofHom σ)` using `y.2`. Use `show (Spec.preimage (y.1 ≫ p)).hom = σ`. Rewrite using `[h, Spec.preimage_map]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem emb_sheet {p : X ⟶ Sp k} {σ : k →+* ℂ} (t : X ⟶ Sp ℤ) (τ : ℤ →+* ℂ) (y : CxPts p σ) :
     emb p (sheet t τ y) = σ := by
@@ -53,7 +53,7 @@ theorem sheet_unsheet (p : X ⟶ Sp k) {t : X ⟶ Sp ℤ} {τ : ℤ →+* ℂ} (
     sheet t τ (unsheet p y) = y := rfl
 
 /- English proof (translation)
-Introduce `σ i y _`. Establish `key : ∀ (σ' : k →+* ℂ) (_ : σ' = σ) (y' : CxPts p σ'), y'.1 = y.1 → (L.φ σ').φ i y' = (L.φ σ).φ i y`. Introduce and unpack `σ' rfl y' h`. Rewrite using `[Subtype.ext h]`. Conclude with `key _ (emb_sheet t τ y) _ rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wOver_wZ {p : X ⟶ Sp k} (L : HermLB p) (t : X ⟶ Sp ℤ) (τ : ℤ →+* ℂ) : WOver L.φ (wZ L t τ) := by
   intro σ i y _

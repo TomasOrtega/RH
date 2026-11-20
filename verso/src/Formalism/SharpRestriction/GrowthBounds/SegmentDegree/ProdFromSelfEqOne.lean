@@ -12,11 +12,11 @@ def prodFrom (r K n0 : ℕ) (B : Fin N → ℕ) (s : ℕ) : ℕ :=
   ∏ i : Fin N, if s ≤ i.val ∧ i.val < n0 then Nat.choose (B i + (r + K) - 1) (r + K - 1) else 1
 
 /- English proof (translation)
-Unfold `prodFrom`. Establish `hpt : ∀ i : Fin N, (if s ≤ i.val ∧ i.val < n0 then Nat.choose (B i + (r + K) - 1) (r + K - 1) else 1) = (if i = ⟨s, hs⟩ then Nat.choose (B ⟨s, hs⟩ + (r + K) - 1) (r + K - 1) else 1) * (if s + 1 ≤ i.val ∧ i.val < n0 then Nat.choose (B i + (r + K) - 1) (r + K - 1) else 1)`. Introduce `i`. Distinguish the cases in `he : i = ⟨s, hs⟩`. Substitute `he` using the available equality.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[if_pos ⟨le_rfl, hsn⟩, if_pos rfl, if_neg (by simp), mul_one]`. Establish `hne : i.val ≠ s` using `fun h => he (Fin.ext h)`. Rewrite using `[if_neg he, one_mul]`. Distinguish the cases in `h1 : s ≤ i.val ∧ i.val < n0`. Rewrite using `[if_pos h1, if_pos ⟨by omega, h1.2⟩]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg h1, if_neg (by omega)]`. Rewrite using `[Finset.prod_congr rfl fun i _ => hpt i, Finset.prod_mul_distrib, Finset.prod_ite_eq' ]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem prodFrom_succ (n0 : ℕ) (B : Fin N → ℕ) (s : ℕ) (hs : s < N) (hsn : s < n0) :
     prodFrom r K n0 B s = Nat.choose (B ⟨s, hs⟩ + (r + K) - 1) (r + K - 1) * prodFrom r K n0 B (s + 1) := by
@@ -38,7 +38,7 @@ theorem prodFrom_succ (n0 : ℕ) (B : Fin N → ℕ) (s : ℕ) (hs : s < N) (hsn
   simp
 
 /- English proof (translation)
-Unfold `prodFrom`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Rewrite using `[if_neg (by omega)]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem prodFrom_self_eq_one (n0 : ℕ) (B : Fin N → ℕ) : prodFrom r K n0 B n0 = 1 := by
   unfold prodFrom
@@ -50,29 +50,27 @@ variable {n0 : ℕ} {LL : Letters (Fin N)} {B : Fin N → ℕ} {od : Fin N → F
 
 open Classical in
 /- English proof (translation)
-Establish `hN` using `H.hN`. Establish `hn : 0 < r + K` using `by have := H.r1; omega`. Introduce `u`. Proceed by induction on `u with`. Consider the case `zero`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `s hsu μ0 hv`. Establish `hs : s = n0` using `by omega`. Substitute `hs` using the available equality. Rewrite using `[tau_count D h3 h4 H hfin r s (by omega) le_rfl μ0 hv, prodFrom_self_eq_one, mul_one, ← stCount_cast (Nat.add_comm K r) (μ0 ⟨s, by omega⟩)]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `l`. Rewrite using `[tailT_apply r le_rfl]`. Use `congr 1`. Conclude with `Fin.ext (by simp)`. Consider the case `succ u ih`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s hsu μ0 hv`. Establish `hsn : s < n0` using `by omega`. Establish `hs : s < N` using `by omega`. Establish `hlad : Dominant (μ0 (⟨s, hs⟩ : Fin N).castSucc)` using `hv.2.1 _ (by simp)`. Rewrite using `[prodFrom_succ n0 B s hs hsn, ← mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data.
 
-Use `show _ = stCount (r + K) (μ0 (⟨s, hs⟩ : Fin N).castSucc) * _ * _`. Consider the cases of `hvec : LL.vec ⟨s, hs⟩ with`. Consider the case `true`. Rewrite using `[pieri_vec D h5 (r + K) hn _ (B ⟨s, hs⟩) hlad, Finset.sum_mul]`. Rewrite using `[Af_card_sum hfin s hs μ0 _ ?_]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Finset.sum_congr rfl fun la' hla' => ?_` and prove the remaining obligations. Rewrite `hla'` using `[Finset.mem_filter]`. Establish `hst : StepOK LL n0 B ⟨s, hs⟩ (μ0 (⟨s, hs⟩ : Fin N).castSucc) la'` using `⟨fun _ => by rw [if_pos hvec]; exact hla'.2, fun h => absurd h (by simp only; omega)⟩`. Establish `hv'` using `vp_update hs hv la' (dom_of_strip_up hla'.2 hlad) hst`. Rewrite using `[ih (s + 1) (by omega) _ hv']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Use `show Function.update μ0 (⟨s, hs⟩ : Fin N).succ la' (⟨s, hs⟩ : Fin N).succ = la'`. Rewrite using `[Function.update_self]`. Introduce `q hq`. Take `⟨_, hstq⟩` from `Af_step H hfin s hs μ0 q hq`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hS` using `hstq.1 hsn`. Rewrite `hS` using `[if_pos hvec]`. Rewrite using `[Finset.mem_filter, Fintype.mem_piFinset]`. Conclude with `⟨fun x => Finset.mem_Icc.mpr ⟨hS.1 x, strip_le_add hS x⟩, hS⟩`. Consider the case `false`.
+Supply the required witnesses or components. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[pieri_cov D h5 (r + K) hn _ (B ⟨s, hs⟩) hlad, Finset.sum_mul]`. Rewrite using `[Af_card_sum hfin s hs μ0 _ ?_]`. Use `Finset.sum_congr rfl fun la' hla' => ?_` and prove the remaining obligations. Rewrite `hla'` using `[Finset.mem_filter]`. Establish `hst : StepOK LL n0 B ⟨s, hs⟩ (μ0 (⟨s, hs⟩ : Fin N).castSucc) la'` using `⟨fun _ => by rw [if_neg (by simp [hvec])]; exact hla'.2, fun h => absurd h (by simp only; omega)⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hv'` using `vp_update hs hv la' (dom_of_strip_down hla'.2 hlad) hst`. Rewrite using `[ih (s + 1) (by omega) _ hv']`. Use `congr 2`. Use `show Function.update μ0 (⟨s, hs⟩ : Fin N).succ la' (⟨s, hs⟩ : Fin N).succ = la'`. Rewrite using `[Function.update_self]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `q hq`. Take `⟨_, hstq⟩` from `Af_step H hfin s hs μ0 q hq`. Establish `hS` using `hstq.1 hsn`. Rewrite `hS` using `[if_neg (by simp [hvec])]`. Rewrite using `[Finset.mem_filter, Fintype.mem_piFinset]`.
-
-Use `⟨fun x => Finset.mem_Icc.mpr ⟨?_, hS.1 x⟩, hS⟩` and prove the remaining obligations. Use `strip_le_add hS x` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem pre_count (D : Formalism.BasicNotions.D7) (h3 : admB3 D) (h4 : ColumnFamilyLowerSet D) (h5 : GenericProjectionCriterion D)
     (H : HypT N n0 r K LL B od bb a La p) (hfin : (SAll (r := r) (K := K) LL n0 B).Finite) :
@@ -143,13 +141,13 @@ theorem pre_count (D : Formalism.BasicNotions.D7) (h3 : admB3 D) (h4 : ColumnFam
 end
 
 /- English proof (translation)
-Introduce `N n0 r K _ _ LL B od bb a La p H`. Establish `hfin` using `finite_SAll H`. Use `⟨hfin, ?_⟩` and prove the remaining obligations. Establish `hv : VP (r` using `r) (K := K) LL n0 B 0 (fun _ => 0) := ⟨rfl, fun _ _ _ _ _ => le_rfl, fun i hi => absurd hi (by omega)⟩`. Establish `h` using `pre_count D h3 h4 h5 H hfin n0 0 (by omega) (fun _ => 0) hv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : Af hfin 0 (fun _ => 0) = hfin.toFinset`. Unfold `Af`. Rewrite using `[Finset.filter_eq_self]`. Introduce `q hq t ht`. Rewrite `hq` using `[Set.Finite.mem_toFinset]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `ht0 : t = 0` using `Fin.ext (by simpa using ht)`. Rewrite using `[ht0]`. Conclude with `((sp_iff H q.1).1 hq.1).1`. Rewrite using `[Set.ncard_eq_toFinset_card _ hfin, ← hA, h]`. Establish `h0 : stCount (r + K) ((fun _ => 0 : Fin (N + 1) → Fin (r + K) → ℤ) ⟨0, by omega⟩) = 1` using `stCount_zero D h3 (r + K)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0, one_mul]`. Unfold `prodFrom rkA`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem path_weight_eq_rank (D : Formalism.BasicNotions.D7) (h3 : admB3 D) (h4 : ColumnFamilyLowerSet D) (h5 : GenericProjectionCriterion D) : PathWeightEqRank := by
   classical

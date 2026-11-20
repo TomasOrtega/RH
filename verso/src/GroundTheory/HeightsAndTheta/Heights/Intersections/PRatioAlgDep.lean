@@ -20,11 +20,11 @@ def homog (c : ∀ k, ι k) (p : Fin d → Σ k, ι k) (f : MvPolynomial (Fin d)
     ∏ j, X (p j) ^ m j * X ⟨(p j).1, c (p j).1⟩ ^ (f.totalDegree - m j)
 
 /- English proof (translation)
-Establish `hsum : aeval (fun j ↦ w (p j) / w ⟨(p j).1, c (p j).1⟩) f = ∑ m ∈ f.support, aeval (fun j ↦ w (p j) / w ⟨(p j).1, c (p j).1⟩) (monomial m (coeff m f))` using `by conv_lhs => rw [f.as_sum]`. Rewrite using `[map_sum]`. Rewrite using `[hsum, Finset.mul_sum, homog, map_sum]`. Use `Finset.sum_congr rfl fun m hm ↦ ?_` and prove the remaining obligations. Establish `hle : ∀ j, m j ≤ f.totalDegree` using `fun j ↦ (monomial_le_degreeOf j hm).trans (degreeOf_le_totalDegree f j)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[map_mul, aeval_C, map_prod, aeval_monomial, Finsupp.prod_fintype _ _ (fun _ ↦ pow_zero _), ← Finset.prod_pow, mul_left_comm, ← Finset.prod_mul_distrib]`. Use `congr 1`. Use `Finset.prod_congr rfl fun j _ ↦ ?_` and prove the remaining obligations. Take `⟨e, he⟩` from `Nat.exists_eq_add_of_le (hle j)`. Rewrite using `[map_mul, map_pow, map_pow, aeval_X, aeval_X, div_pow, he, Nat.add_sub_cancel_left, pow_add]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_comm (w ⟨(p j).1, c (p j).1⟩ ^ m j), mul_assoc, mul_div_cancel₀ _ (pow_ne_zero _ (hw j)), mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem aeval_homog {F : Type} [Field F] [Algebra ℤ F] (c : ∀ k, ι k) (p : Fin d → Σ k, ι k)
     (f : MvPolynomial (Fin d) ℤ) (w : (Σ k, ι k) → F) (hw : ∀ j, w ⟨(p j).1, c (p j).1⟩ ≠ 0) :
@@ -53,27 +53,25 @@ end RatioAlgebraicDependence
 open RatioAlgebraicDependence in
 
 /- English proof (translation)
-Introduce `K _ ι _ Q d c p hQ`. Distinguish the cases in `hX : ∃ k, (X ⟨k, c k⟩ : MRing ι) ∈ Q`. Take `⟨k, hk⟩` from `hX`. Use `⟨1, one_ne_zero, fun z hz hzc ↦ absurd ?_ (hzc k)⟩` and prove the remaining obligations. Simplify using `using hz _ hk`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Use `push Not at hX`. Take `⟨Ω, _, y, hy, hbir⟩` from `HilbertSamuel.BirationalModelExists.proof K ι Q d hQ`. Establish `hc : ∀ k, y ⟨k, c k⟩ ≠ 0` using `fun k h0 ↦ hX k (by`. Rewrite using `[← hy, mCoordIdeal, RingHom.mem_ker, mConeMap, aeval_X, h0, C_0, zero_mul])`. Take `⟨_, ⟨hprime, -, -⟩, hhor, hdim⟩` from `hQ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `htr` using `ConeTrdeg.proof K ι Ω y hbir (fun k ↦ ⟨c k, hc k⟩) (hy ▸ hhor)`. Rewrite `htr` using `[hy]`. Use `hprime` as an intermediate fact. Establish `hA` using `IntDomainDim.proof (MRing ι ⧸ Q) (CoordinateConeArithVar.algebraMap_injective Q hhor)`. Rewrite `hA` using `[hdim, htr, map_add, map_natCast]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hA' : ((d + Fintype.card K : ℕ) : ℕ∞) = Cardinal.toENat (Algebra.trdeg ℤ Ω) + Fintype.card K + 1` using `by exact_mod_cast hA`. Establish `hlt : Algebra.trdeg ℤ Ω < d`. Rewrite using `[← Cardinal.toENat_lt_natCast]`. Choose the witnesses or unpack the hypotheses as in `⟨n, hn⟩ : ∃ n : ℕ, Cardinal.toENat (Algebra.trdeg ℤ Ω) = n := by`. Use `ENat.ne_top_iff_exists.mp (fun htop ↦ ?_) |>.imp fun _ h ↦ h.symm` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hA'` using `[htop]`. Simplify using `at hA'`. Rewrite `hA'`, the goal using `[hn]`. Establish `: d + Fintype.card K = n + Fintype.card K + 1` using `by exact_mod_cast hA'`. Conclude with `(by omega : n < d)` after adjusting the coercions.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdep : ¬ AlgebraicIndependent ℤ (fun j : Fin d ↦ y (p j) / y ⟨(p j).1, c (p j).1⟩)` using `fun hind ↦ by`. Establish `h` using `hind.cardinalMk_le_trdeg`. Rewrite `h` using `[Cardinal.mk_fin]`. Conclude with `absurd hlt (not_lt.2 h)`. Rewrite `hdep` using `[algebraicIndependent_iff]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push Not at hdep`. Take `⟨f, hf0, hfne⟩` from `hdep`. Establish `hH : homog c p f ∈ Q`. Rewrite using `[← hy, mCoordIdeal, RingHom.mem_ker]`. Use `set L := FractionRing (MvPolynomial K Ω)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `φ : MvPolynomial K Ω →ₐ[ℤ] L` to `{ algebraMap (MvPolynomial K Ω) L with commutes' := fun n ↦ by simp }`. Establish `hφ : Function.Injective φ` using `fun a b h ↦ IsFractionRing.injective (MvPolynomial K Ω) L h`. Establish `hw : ∀ q : Σ k, ι k, y q ≠ 0 → φ (C (y q) * X q.1) ≠ 0` using `fun q hq ↦ by`. Rewrite using `[Ne, ← map_zero φ, hφ.eq_iff]`. Conclude with `mul_ne_zero (by rwa [Ne, C_eq_zero]) (X_ne_zero _)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Establish `hrat : ∀ j, φ (C (y (p j)) * X (p j).1) / φ (C (y ⟨(p j).1, c (p j).1⟩) * X (p j).1) = φ (C (y (p j) / y ⟨(p j).1, c (p j).1⟩))` using `fun j ↦ by`. Rewrite using `[div_eq_iff (hw _ (hc _)), ← map_mul, ← mul_assoc, ← C_mul, div_mul_cancel₀ _ (hc _)]`. Use `hφ ?_` and prove the remaining obligations. Rewrite using `[map_zero, mConeMap, comp_aeval_apply, aeval_homog c p f _ (fun j ↦ hw _ (hc _))]`. Simplify using `only [hrat]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Set `ψ : Ω →ₐ[ℤ] L` to `φ.comp (IsScalarTower.toAlgHom ℤ Ω (MvPolynomial K Ω))`. Establish `key : (aeval fun j ↦ φ (C (y (p j) / y ⟨(p j).1, c (p j).1⟩))) f = ψ (aeval (fun j ↦ y (p j) / y ⟨(p j).1, c (p j).1⟩) f)`. Rewrite using `[comp_aeval_apply]`. Both sides reduce to the same expression. Rewrite using `[key, hf0, map_zero, mul_zero]`.
-
-Use `⟨f, hfne, fun z hz hzc ↦ ?_⟩` and prove the remaining obligations. Establish `h1` using `hz _ hH`. Rewrite `h1` using `[eval_map, ← algebraMap_int_eq, ← aeval_def, aeval_homog c p f z (fun j ↦ hzc _)]`. Rewrite using `[eval_map, ← algebraMap_int_eq, ← aeval_def]`. Conclude with `(mul_eq_zero.1 h1).resolve_left (pow_ne_zero _ (Finset.prod_ne_zero_iff.2 fun j _ ↦ hzc _))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem RatioAlgDep.proof : RatioAlgDep.Statement := by
   intro K _ ι _ Q d c p hQ

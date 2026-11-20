@@ -11,31 +11,29 @@ noncomputable section
 open Coinv
 
 /- English proof (translation)
-Introduce `K _ _ f n b k e he`. Take `⟨c, hc⟩` from `Coinv.exists_reduction (K := K) (f := f) (n := n) b k`. Use `set φ : ↥(Finset.Ioi k) → Fin f × Fin n := fun s => (b, (s : Fin n)) with hφ`. Establish `hinj : Function.Injective φ` using `fun s t h => Subtype.ext (Prod.ext_iff.mp h).2`. Choose the witnesses or unpack the hypotheses as in `⟨e₀, rfl⟩ : ∃ e₀ : Fin f × Fin n →₀ ℕ, e = e₀ + Finsupp.single (b, k) ((k : ℕ) + 1) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨e - Finsupp.single (b, k) ((k : ℕ) + 1), ?_⟩` and prove the remaining obligations. Use extensionality with `u`. Simplify using `only [Finsupp.coe_add, Finsupp.coe_tsub, Pi.add_apply, Pi.sub_apply]`. Distinguish the cases in `hu : u = (b, k)`. Substitute `hu` using the available equality.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finsupp.single_eq_same]`. Use linear arithmetic over natural numbers and integers. Simplify using `[Ne.symm hu]`. Use `set P : MvPolynomial (Fin f × Fin n) K := ∑ j ∈ range ((k : ℕ) + 1), monomial e₀ 1 * (rename φ (-c j) * X (b, k) ^ j) with hP`. Use `⟨P.support, fun e' => P.coeff e', ?_, ?_⟩` and prove the remaining obligations.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `e' he'`. Establish `h1` using `support_sum he'`. Rewrite `h1` using `[Finset.mem_biUnion]`. Take `⟨j, hj, hj'⟩` from `h1`. Establish `h2` using `support_mul _ _ hj'`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `h2` using `[Finset.mem_add]`. Take `⟨a, ha, d', hd', rfl⟩` from `h2`. Establish `ha' : a = e₀` using `Finset.mem_singleton.mp (support_monomial_subset ha)`. Establish `h3` using `support_mul _ _ hd'`. Rewrite `h3` using `[Finset.mem_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨d, hd, s, hs, rfl⟩` from `h3`. Rewrite `hs` using `[X_pow_eq_monomial]`. Establish `hs' : s = Finsupp.single (b, k) j` using `Finset.mem_singleton.mp (support_monomial_subset hs)`. Rewrite `hd` using `[support_rename_of_injective hinj, Finset.mem_image]`. Take `⟨d₀, -, rfl⟩` from `hd`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact.
 
-Substitute `ha' hs'` using the available equality. Establish `hoff : ∀ u : Fin f × Fin n, (u.1 ≠ b ∨ u.2 ≤ k) → Finsupp.mapDomain φ d₀ u = 0`. Introduce `u hu`. Apply `Finsupp.mapDomain_of_notMem_range` to reduce the goal to its premises. Introduce and unpack `⟨s, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hks : k < (s : Fin n)` using `Finset.mem_Ioi.mp s.2`. Break down `hu with hu | hu` into its components or cases. Conclude with `hu rfl`. Conclude with `absurd hu (not_le.mpr hks)`. Rewrite `hj` using `[Finset.mem_range]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `⟨fun u hu => ?_, ?_⟩` and prove the remaining obligations. Establish `hne : u ≠ (b, k)`. Introduce and unpack `rfl`. Apply the tactic sequence `rcases hu with h | ⟨-, h⟩ <;> exact lt_irrefl _ h`. Establish `h0` using `hoff u (by`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Simplify using the standard rewrite rules.
 
-Break down `hu with h | ⟨-, h⟩` into its components or cases. Conclude with `Or.inl (ne_of_lt h)`. Conclude with `Or.inr (le_of_lt h))`. Simplify using `[h0, Ne.symm hne]`. Establish `h0` using `hoff (b, k) (Or.inr le_rfl)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Finsupp.add_apply, h0, Finsupp.single_eq_same]`. Use linear arithmetic over natural numbers and integers. Establish `hsum : ∑ e' ∈ P.support, P.coeff e' • monomial e' (1 : K) = P` using `by conv_rhs => rw [P.as_sum]`. Use `Finset.sum_congr rfl fun e' _ => ?_` and prove the remaining obligations. Rewrite using `[smul_monomial, smul_eq_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hsum]`. Establish `hm : monomial (e₀ + Finsupp.single (b, k) ((k : ℕ) + 1)) (1 : K) = monomial e₀ 1 * X (b, k) ^ ((k : ℕ) + 1)`. Rewrite using `[X_pow_eq_monomial, monomial_mul, one_mul]`. Establish `hdiff : monomial (e₀ + Finsupp.single (b, k) ((k : ℕ) + 1)) (1 : K) - P = monomial e₀ 1 * (X (b, k) ^ ((k : ℕ) + 1) + ∑ j ∈ range ((k : ℕ) + 1), rename φ (c j) * X (b, k) ^ j)`. Rewrite using `[hm, hP, mul_add, Finset.mul_sum]`.
-
-Simplify using `only [map_neg, neg_mul, mul_neg, Finset.sum_neg_distrib, sub_neg_eq_add]`. Rewrite using `[hdiff]`. Conclude with `Ideal.mul_mem_left _ _ hc`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem CoinvStepReduction.proof : CoinvStepReduction.Statement := by
   classical

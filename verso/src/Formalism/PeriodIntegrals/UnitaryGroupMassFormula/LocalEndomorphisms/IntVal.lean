@@ -10,7 +10,7 @@ section
 variable {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F))
 
 /- English proof (translation)
-Establish `h` using `v.valuedAdicCompletion_eq_valuation (K := F) (n : 𝓞 F)`. Rewrite `h` using `[HeightOneSpectrum.valuation_of_algebraMap]`. Simplify using `using h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma val_natCast (n : ℕ) :
     Valued.v ((n : v.adicCompletion F)) = v.intValuation (n : 𝓞 F) := by
@@ -19,17 +19,15 @@ lemma val_natCast (n : ℕ) :
   simpa using h
 
 /- English proof (translation)
-Use `set N := Ideal.absNorm v.asIdeal with hN`. Establish `hNmem : ((N : ℕ) : 𝓞 F) ∈ v.asIdeal` using `Ideal.absNorm_mem v.asIdeal`. Establish `hNpos : 0 < N`. Rewrite using `[Nat.pos_iff_ne_zero, hN, Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `v.ne_bot`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN0 : ((N : ℕ) : 𝓞 F) ≠ 0` using `by exact_mod_cast hNpos.ne'`. Establish `hlt : v.intValuation (N : 𝓞 F) < 1` using `(v.intValuation_lt_one_iff_mem _).2 hNmem`. Establish `hne : v.intValuation (N : 𝓞 F) ≠ 0` using `v.intValuation_ne_zero _ hN0`. Take `⟨k, hk⟩ : ∃ k : ℤ, v.intValuation (N : 𝓞 F) = exp k` from `⟨_, (exp_log hne).symm⟩`. Establish `hk0 : k < 0` using `by rw [hk, ← exp_zero, exp_lt_exp] at hlt; exact hlt`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨N, hNpos, (-k).toNat, by omega, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[val_natCast, hk]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Introduce `ℓ hℓ hNℓ`.
+Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[val_natCast, HeightOneSpectrum.intValuation_eq_one_iff_mem_primeCompl, Ideal.mem_primeCompl_iff]`. Introduce `hmem`. Establish `hcop : Nat.Coprime ℓ N` using `(Nat.Prime.coprime_iff_not_dvd hℓ).2 (Nat.not_dvd_of_pos_of_lt hNpos hNℓ)`. Take `⟨a, b, hab⟩` from `Nat.isCoprime_iff_coprime.2 hcop`. Establish `h1 : (a : 𝓞 F) * (ℓ : 𝓞 F) + (b : 𝓞 F) * (N : 𝓞 F) = 1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Use `congrArg (Int.cast : ℤ → 𝓞 F) hab` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`. Establish `: (1 : 𝓞 F) ∈ v.asIdeal`. Rewrite using `[← h1]`.
-
-Conclude with `v.asIdeal.add_mem (v.asIdeal.mul_mem_left _ hmem) (v.asIdeal.mul_mem_left _ hNmem)`. Conclude with `v.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 this)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma exists_N : ∃ N : ℕ, 0 < N ∧ ∃ m : ℕ, 0 < m ∧
     Valued.v ((N : v.adicCompletion F)) = exp (-(m : ℤ)) ∧
@@ -61,15 +59,15 @@ lemma exists_N : ∃ N : ℕ, 0 < N ∧ ∃ m : ℕ, 0 < m ∧
     exact v.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 this)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hy`. Rewrite `hy` using `[not_le]`. Establish `hy0 : Valued.v y ≠ 0` using `ne_of_gt (lt_trans zero_lt_one hy)`. Take `⟨a, ha⟩ : ∃ a : ℤ, Valued.v y = exp a` from `⟨_, (exp_log hy0).symm⟩`. Establish `ha1 : 0 < a` using `by rw [ha, ← exp_zero, exp_lt_exp] at hy; exact hy`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hNy : Valued.v ((N : v.adicCompletion F) * y ^ ℓ) = exp ((ℓ : ℤ) * a - m)`. Rewrite using `[map_mul, map_pow, hN, ha, ← exp_nsmul, ← exp_add]`. Use `congr 1`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hgt : Valued.v (1 : v.adicCompletion F) < Valued.v ((N : v.adicCompletion F) * y ^ ℓ)`. Rewrite using `[hNy, map_one, ← exp_zero, exp_lt_exp]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hsum : Valued.v (1 + (N : v.adicCompletion F) * y ^ ℓ) = exp ((ℓ : ℤ) * a - m)`. Rewrite using `[Valuation.map_add_eq_of_lt_right _ hgt, hNy]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hz0 : Valued.v z ≠ 0`. Introduce `h0`. Rewrite `hsum` using `[← h, map_pow, h0, zero_pow (by omega)]`. Conclude with `exp_ne_zero hsum.symm`. Take `⟨c, hc⟩ : ∃ c : ℤ, Valued.v z = exp c` from `⟨_, (exp_log hz0).symm⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hsum` using `[← h, map_pow, hc, ← exp_nsmul, exp_inj]`. Simplify using `only [nsmul_eq_mul] at hsum`. Establish `hd : (ℓ : ℤ) ∣ (m : ℤ)` using `⟨a - c, by linarith⟩`. Use `Int.le_of_dvd (by omega) hd` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 lemma le_one_of_pow_eq {N ℓ m : ℕ} (hm : 0 < m) (hmℓ : m < ℓ)
     (hN : Valued.v ((N : v.adicCompletion F)) = exp (-(m : ℤ)))
@@ -99,11 +97,11 @@ lemma le_one_of_pow_eq {N ℓ m : ℕ} (hm : 0 < m) (hmℓ : m < ℓ)
 end
 
 /- English proof (translation)
-Introduce `hH F _ _ v τ x hx`. Take `⟨N, hNpos, m, hm, hNv, hℓ⟩` from `exists_N v`. Take `⟨ℓ, hge, hprime⟩` from `Nat.exists_infinite_primes (N + m + 1)`. Establish `hℓ1` using `hℓ ℓ hprime (by omega)`. Establish `hu : Valued.v ((1 + (N : v.adicCompletion F) * x ^ ℓ) - 1) < 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[add_sub_cancel_left, map_mul, map_pow, hNv]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨z, hz⟩` from `hH F v ℓ _ hℓ1 hu`. Establish `hτ : (τ z) ^ ℓ = 1 + (N : v.adicCompletion F) * (τ x) ^ ℓ`. Rewrite using `[← map_pow, hz, map_add, map_one, map_mul, map_natCast, map_pow]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_one_of_pow_eq v hm (by omega) hNv hτ`.
+A detailed English derivation is pending.
 -/
 theorem intOfHensel : IntOfHensel := by
   intro hH F _ _ v τ x hx
@@ -121,17 +119,17 @@ theorem intOfHensel : IntOfHensel := by
   exact le_one_of_pow_eq v hm (by omega) hNv hτ
 
 /- English proof (translation)
-Introduce `hI F _ _ v τ x`. Take `⟨N, hNpos, m, hm, hNv, -⟩` from `exists_N v`. Establish `h1 : ∀ y : v.adicCompletion F, Valued.v y = 1 → Valued.v (τ y) = 1`. Introduce `y hy`. Establish `hy0 : y ≠ 0` using `by rintro rfl; simp at hy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `ht : Valued.v (τ y) ≠ 0` using `by simp [hy0]`. Apply `le_antisymm (hI F v τ y hy.le)` to reduce the goal to its premises. Establish `h2` using `hI F v τ y⁻¹ (by rw [map_inv₀, hy, inv_one])`. Rewrite `h2` using `[map_inv₀, map_inv₀]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Distinguish the cases in `hx : x = 0`. Simplify using `[hx]`. Establish `hx0 : Valued.v x ≠ 0` using `by simpa using hx`. Establish `htx0 : Valued.v (τ x) ≠ 0` using `by simp [hx]`. Take `⟨a, ha⟩ : ∃ a : ℤ, Valued.v x = exp a` from `⟨_, (exp_log hx0).symm⟩`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩ : ∃ b : ℤ, Valued.v (τ x) = exp b` from `⟨_, (exp_log htx0).symm⟩`. Establish `hy : Valued.v (x ^ m * (N : v.adicCompletion F) ^ a) = 1`. Rewrite using `[map_mul, map_pow, map_zpow₀, ha, hNv, ← exp_nsmul, ← exp_zsmul, ← exp_add, ← exp_zero]`. Use `congr 1`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hτy` using `h1 _ hy`. Rewrite `hτy` using `[map_mul, map_pow, map_zpow₀, map_natCast, map_mul, map_pow, map_zpow₀, hb, hNv, ← exp_nsmul, ← exp_zsmul, ← exp_add, ← exp_zero, exp_inj]`. Simplify using `only [nsmul_eq_mul, smul_eq_mul] at hτy`. Establish `hmb : (m : ℤ) * (b - a) = 0` using `by linarith`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Break down `mul_eq_zero.1 hmb with h | h` into its components or cases. Use linear arithmetic over natural numbers and integers. Rewrite using `[ha, hb]`. Use `congr 1`. Combine the linear equalities and inequalities to obtain the conclusion.
+Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem valOfInt : ValOfInt := by
   intro hI F _ _ v τ x

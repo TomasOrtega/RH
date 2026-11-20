@@ -8,15 +8,15 @@ import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.KummerThetaLoga
 namespace Formalism.L2.Th1.D
 
 /- English proof (translation)
-The claim follows from `sqrt_in_unramified_completion`.
+A detailed English derivation is pending.
 -/
 theorem sqrtKur : SqrtKur := sqrt_in_unramified_completion
 /- English proof (translation)
-The claim follows from `dense_criterion`.
+A detailed English derivation is pending.
 -/
 theorem denseOK : DenseOK := dense_criterion
 /- English proof (translation)
-The claim follows from `homothetic_lattice_integral_of`.
+A detailed English derivation is pending.
 -/
 theorem homothetic_lattice_integral_s2 : HomotheticLatticeIntegralS2 := homothetic_lattice_integral_of
 

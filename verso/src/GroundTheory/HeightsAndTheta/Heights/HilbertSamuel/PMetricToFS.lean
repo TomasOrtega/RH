@@ -11,7 +11,7 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 noncomputable section
 
 /- English proof (translation)
-Introduce `D Ω _ _ κ _ I d e hI hF`. Take `⟨m₀, hs, hc, hp, hpull⟩` from `hE D Ω κ d.x e hF`. Conclude with `⟨d.withMetric m₀ ⊥ hs hc bot_le hp, rfl, hpull, hC D Ω κ I d m₀ ⊥ hs hc bot_le hp e hI hF⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem MetricToFS.proof (hE : PullFSExtension.Statement) (hC : DefectMetricChange.Statement) :
     MetricToFS.Statement := by

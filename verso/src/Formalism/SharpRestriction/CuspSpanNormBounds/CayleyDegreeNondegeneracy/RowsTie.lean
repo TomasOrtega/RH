@@ -10,17 +10,17 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.S Formal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Apply the tactic sequence `cases xs <;> simp [List.scanl_cons]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rows_scanl_head (xs : List ℕ) (a : ℕ) : xs.scanl (· + ·) a = a :: (xs.scanl (· + ·) a).tail := by
   cases xs <;> simp [List.scanl_cons]
 
 /- English proof (translation)
-Introduce `xs`. Proceed by induction on `xs with`. Consider the case `nil => intro a _`. Simplify using `[List.scanl]`. Consider the case `cons x xs ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `a h`. Establish `hx : 1 ≤ x` using `h x (List.mem_cons_self ..)`. Take `⟨ih1, ih2⟩` from `ih (a + x) (fun y hy => h y (List.mem_cons_of_mem _ hy))`. Simplify using `only [List.scanl_cons, List.tail_cons]`. Rewrite using `[rows_scanl_head xs (a + x)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `⟨List.pairwise_cons.2 ⟨fun y hy => ih2 y hy, ih1⟩, ?_⟩` and prove the remaining obligations. Introduce `y hy`. Break down `List.mem_cons.1 hy with rfl | hy` into its components or cases. Use linear arithmetic over natural numbers and integers. Use `ih2 y hy` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -43,7 +43,7 @@ theorem rows_scanl_pw : ∀ (xs : List ℕ) (a : ℕ), (∀ x ∈ xs, 1 ≤ x) �
       omega
 
 /- English proof (translation)
-Introduce `l₁ l₂ h1 h2 hm`. Establish `hp : l₁.Perm l₂` using `(List.perm_ext_iff_of_nodup (h1.imp ne_of_lt) (h2.imp ne_of_lt)).2 hm`. Conclude with `hp.eq_of_sortedLE (List.sortedLE_iff_pairwise.2 (h1.imp le_of_lt)) (List.sortedLE_iff_pairwise.2 (h2.imp le_of_lt))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rows_pw_ext : ∀ (l₁ l₂ : List ℕ), l₁.Pairwise (· < ·) → l₂.Pairwise (· < ·) → (∀ x, x ∈ l₁ ↔ x ∈ l₂) → l₁ = l₂ := by
   intro l₁ l₂ h1 h2 hm
@@ -52,7 +52,7 @@ theorem rows_pw_ext : ∀ (l₁ l₂ : List ℕ), l₁.Pairwise (· < ·) → l�
     (List.sortedLE_iff_pairwise.2 (h2.imp le_of_lt))
 
 /- English proof (translation)
-Establish `h` using `rows_scanl_pw (p.1.map Prod.snd) 0 (by`. Introduce `x hx`. Take `⟨b, hb, rfl⟩` from `List.mem_map.1 hx`. Conclude with `(p.2.1 b hb).2)`. Conclude with `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem rows_blockEnds_pw {i : ℕ} (p : Point ℂ i) :
     (ptBlockEnds p).Pairwise (· < ·) ∧ ∀ y ∈ ptBlockEnds p, 0 < y := by
@@ -72,7 +72,7 @@ def wordPairNormRelation (X : TermTie D) (u u' : D.what₂.Word) : Prop :=
     ∀ l, l ≤ D.R.rS + 1 → leadMinorE (termGramMatrix X t) l ≠ 0 → 1 ≤ ∏ τ, absDl D (termGramMatrix X t) l τ ^ 2
 
 /- English proof (translation)
-Rewrite using `[← norm_ne_zero_iff, d_norm_Dmin Y hrd t τ l hl]`. Unfold `absDl absReal`. Establish `h0 : D.host.rdE ^ (-(2 * (frameExp D.R.rS l : ℝ))) ≠ 0` using `(Real.rpow_pos_of_pos hrd _).ne'`. Rewrite using `[mul_ne_zero_iff, norm_ne_zero_iff, map_ne_zero]`. Conclude with `⟨fun h => h.1, fun h => ⟨h, h0⟩⟩`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem rows_Dmin_ne_iff (hrd : 0 < D.host.rdE) (t : D.s.Term u u') (τ : D.what₂.Tau) (l : ℕ) (hl : l ≤ D.R.rS + 1) :
     DminN (Y.W τ).z (Y.W τ).z' (Y.γ t τ) l ≠ 0 ↔ leadMinorE (termGramMatrix X t) l ≠ 0 := by
@@ -83,13 +83,13 @@ theorem rows_Dmin_ne_iff (hrd : 0 < D.host.rdE) (t : D.s.Term u u') (τ : D.what
   exact ⟨fun h => h.1, fun h => ⟨h, h0⟩⟩
 
 /- English proof (translation)
-Introduce `t hG hrel`. Establish `hR : ∀ τ, RelPt D (Y.W τ).z (Y.W τ).z' (Y.γ t τ) (Y.pt t τ)` using `fun τ => (Y.rel t hG hrel τ).1`. Establish `mem_iff : ∀ τ l, l ∈ ptBlockEnds (Y.pt t τ) ↔ (1 ≤ l ∧ l ≤ D.R.rS + 1 ∧ leadMinorE (termGramMatrix X t) l ≠ 0)`. Introduce `τ l`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Establish `hl` using `blockEnd_le (Y.pt t τ) l h`. Conclude with `⟨(rows_blockEnds_pw (Y.pt t τ)).2 l h, hl, (rows_Dmin_ne_iff Y hrd t τ l hl).1 (cell_ne_of_mem D (hR τ) l h)⟩`. Introduce and unpack `⟨h1, hl, hne⟩`. Conclude with `cell_mem_blockEnds D (hR τ) l h1 hl ((rows_Dmin_ne_iff Y hrd t τ l hl).2 hne)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun τ => ?_, fun τ τ' => ?_, ?_, fun τ₀ l hl => ?_⟩` and prove the remaining obligations. Take `⟨_, _, hz, hz', hT, hT', _⟩` from `Y.goodW τ`. Conclude with `⟨hz, hz', hT, hT', hR τ⟩`. Conclude with `rows_pw_ext _ _ (rows_blockEnds_pw _).1 (rows_blockEnds_pw _).1 fun x => by rw [mem_iff τ x, mem_iff τ' x]`. Rewrite using `[Finset.prod_congr rfl fun τ _ => d_Gf_eq Y hrd t τ]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hN t hG hrel).1`. Take `⟨_, h2, h3⟩` from `(mem_iff τ₀ l).1 hl`. Rewrite using `[Finset.prod_congr rfl fun τ _ => by rw [d_norm_Dmin Y hrd t τ l h2]]`. Conclude with `(hN t hG hrel).2 l h2 h3`.
+A detailed English derivation is pending.
 -/
 theorem rows_TermPtsTie_of (hrd : 0 < D.host.rdE) (hN : wordPairNormRelation X u u') : TermPtsTie X Y := by
   intro t hG hrel

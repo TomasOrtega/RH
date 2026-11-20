@@ -11,19 +11,19 @@ noncomputable section
 open Coinv in
 
 /- English proof (translation)
-Introduce `K _ f n J hJ`. Proceed by induction on `hJ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨m₀, b₀, h1, h2, rfl⟩` from `hx`. Use `⟨fun m b => if m = m₀ ∧ b = b₀ then 1 else 0, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hm₀ : m₀ ∈ Finset.Icc 1 n` using `Finset.mem_Icc.mpr ⟨h1, h2⟩`. Use `symm`. Rewrite using `[Finset.sum_eq_single m₀]`. Rewrite using `[Finset.sum_eq_single b₀]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `b _ hb`. Simplify using `[hb]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ b₀) h`. Introduce `m _ hm`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `b _`. Simplify using `[hm]`. Introduce `h`. Conclude with `absurd hm₀ h`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Supply the required witnesses or components.
 
-Consider the case `zero`. Conclude with `⟨0, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨a, rfl⟩` from `hx`. Take `⟨a', rfl⟩` from `hy`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `⟨a + a', ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, mul_add, Finset.sum_add_distrib]`. Consider the case `smul r x _ hx`. Take `⟨a, rfl⟩` from `hx`. Use `⟨fun m b => r * a m b, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem CoinvIdealRepresentation.proof : CoinvIdealRepresentation.Statement := by
   intro K _ f n J hJ

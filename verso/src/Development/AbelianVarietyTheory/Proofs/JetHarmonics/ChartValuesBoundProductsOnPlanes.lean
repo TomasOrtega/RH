@@ -10,7 +10,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 namespace GlobalTheory.RowAt
 
 /- English proof (translation)
-Introduce `C _ _ V O _ _ dd Y d _ Orb _ I0 _ p H Ls N n pl ν hs hν`. Introduce and unpack `Po ⟨P, hP, hQ⟩ kind hk S t ht gr hg`. Establish `h` using `hν.trans (val_self Y p H Ls n hs (GlobalTheory.T.valEqSelfSt_of_hyps C V O dd Y d Orb I0 p H Ls n) N pl P hP Po hQ kind hk S t ht gr hg)`. Conclude with `WithBot.coe_le_coe.1 h`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem valO_self : ∀ (C : Type) [Field C] [CharZero C] (V : VF C) (O : Type) [CommRing O] [StarRing O] (dd : ℕ) (Y : FBChart C V O dd) (d : ℕ) [NeZero d] (Orb : Type) [Fintype Orb] (I0 : Orb → Type) [∀ o, Fintype (I0 o)] (p : ∀ o, SelfData Y d (I0 o)) (H : ∀ o, (Y.rawSelf (p o)).Hyps V) (Ls : LetSys C dd) (N n : ℕ) (pl : Fin N × Fin 2 ↪ Fin n) (ν : ℝ), SelfSep Y p → (ν : EReal) ≤ Y.nuPlE Ls n → RF.ValO (fun o => (Y.rawSelf (p o)).rowData (H o)) N (imgFamS Y p Ls pl) ν := by
   intro C _ _ V O _ _ dd Y d _ Orb _ I0 _ p H Ls N n pl ν hs hν

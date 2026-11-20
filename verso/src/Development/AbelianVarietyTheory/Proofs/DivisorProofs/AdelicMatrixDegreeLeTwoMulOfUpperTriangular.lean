@@ -19,43 +19,39 @@ open scoped IntermediateField Polynomial RatFunc
 open GlobalTheory.Nef Polynomial
 
 /- English proof (translation)
-Introduce `k F _ _ _ _ _ hFF g hg htri b hb`. Distinguish the cases in `hne : IsEmpty (Place k F)`. Establish `h0 : deg g = 0` using `by simp [deg, finsum_of_isEmpty]`. Establish `hres : IsRes (k` using `k) (F := F) (E := F) id := fun p x => by simp`. Establish `hw : (![1, 0] : Fin 2 → F) ≠ 0` using `by intro h; simpa using congrFun h 0`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hb F id hres ![1, 0] hw`. Establish `hl : degLine (pullAd id g) (![1, 0] : Fin 2 → F) = 0` using `by simp [degLine, finsum_of_isEmpty]`. Rewrite `h1` using `[hl]`. Simplify using `at h1`. Rewrite using `[h0]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `hne` using `[not_isEmpty_iff]`. Take `⟨v₀⟩` from `hne`. Take `⟨γ, hγ⟩` from `GlobalTheory.T.exists_section_of_large_adelic_degree k F hFF`.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨π, hπ0, hπ⟩` from `(GlobalTheory.T.functionFieldPlaceOrder_calculus k F v₀).2.2.2.2.2.1`. Establish `key : ∀ m : ℕ, ((m * (m + 1) / 2 : ℕ) : ℝ) * (deg g : ℝ) ≤ (m + 1) * (m * b + 1 + γ)`. Introduce `m`. Use `set N : ℕ := m * (m + 1) / 2 with hN`. Use `set S : Place k F → Matrix (Fin (m + 1)) (Fin (m + 1)) F := fun v => symMat m (g v) with hS`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨hSadm, hSdeg⟩` from `GlobalTheory.Nef.admissible_degree_symmetricPowerFamily k F m g hg htri`. Rewrite `hSdeg` using `[← hN]`. Use `set D : ℤ := (N : ℤ) * deg g - (m + 1) * γ - 1 with hD`. Use `set e : ℤ := D / (m + 1) with he`. Establish `hm0 : (0 : ℤ) < m + 1` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hdiv` using `Int.mul_ediv_add_emod D (m + 1)`. Establish `hmod0` using `Int.emod_nonneg D hm0.ne'`. Establish `hmod1` using `Int.emod_lt_of_pos D hm0`. Rewrite `hdiv` using `[← he]`. Take `⟨hTadm, hTdeg⟩` from `GlobalTheory.Nef.admissible_degree_twistFamilyAtPlaceByScalar k F (m + 1) S hSadm v₀ π hπ0 hπ e`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hdegT : ((m + 1 : ℕ) : ℤ) * γ < deg (twistAt v₀ (π ^ (-e)) S)`. Establish `hc1 : ((m + 1 : ℕ) : ℤ) = (m : ℤ) + 1` using `by push_cast; ring`. Rewrite using `[hTdeg, hSdeg, hc1]`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨p, hp0, hpint⟩` from `hγ (m + 1) _ hTadm hdegT`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Establish `hep : e ≤ degLine S p` using `GlobalTheory.T.lineDegree_ge_of_twisted_section k F hFF (m + 1) S hSadm v₀ π hπ0 hπ e p hp0 hpint`. Take `⟨E, _, _, _, c, s, t, hc, hst, hid⟩` from `GlobalTheory.T.exists_binary_form_eq_mul_prod_linear F m p hp0`. Use `letI : Algebra k E := ((algebraMap F E).comp (algebraMap k F)).toAlgebra`. Use `haveI : IsScalarTower k F E := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Take `⟨ρ, hρ⟩` from `(GlobalTheory.T.functionFieldPlace_restriction_exists_pow k F E).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hEFF : IsFF k E` using `(GlobalTheory.T.functionFieldOneVariable_transcendental_finite_and_ext k F hFF).2 E`. Establish `pS` using `GlobalTheory.T.isAdmissibleAdelicMatrixFamily_pullback_extension k F E hFF ρ hρ (m + 1) S hSadm`. Establish `pg` using `GlobalTheory.T.isAdmissibleAdelicMatrixFamily_pullback_extension k F E hFF ρ hρ 2 g hg`. Establish `hpull : pullAd ρ S = fun P => symMat m (pullAd ρ g P)`. Use function extensionality and compare the values at `P`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [pullAd, hS, symMat_map]`. Establish `htriE : ∀ P, pullAd ρ g P 1 0 = 0` using `by intro P; simp [pullAd, htri]`. Use `set q : Fin (m + 1) → E := fun i => algebraMap F E (p i) with hq`. Establish `hpt : ∀ P, ordVec P ((symMat m (pullAd ρ g P)).mulVec q) = ord P c + ∑ j, ordVec P ((pullAd ρ g P).mulVec ![s j, t j])` using `fun P => GlobalTheory.T.gaussLemma_symPowMatrix_upperTriangular_placeOrder k E P m _ (htriE P) (pg.1.1 P) q c s t hc hst (by`. Establish `h3` using `hid E[X] (C ((pullAd ρ g P) 0 0)) (C ((pullAd ρ g P) 0 1) + C ((pullAd ρ g P) 1 1) * X)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h3` using `[Polynomial.algebraMap_eq]`. Conclude with `h3)`. Establish `h6` using `GlobalTheory.T.lineDegree_eq_sum_of_scalar_split k E hEFF m (m + 1) (pullAd ρ g) pg.1 (fun P => symMat m (pullAd ρ g P)) q c (fun j => ![s j, t j]) hc hst hpt`. Establish `h2` using `pS.2.2.1 p hp0`. Rewrite `h2` using `[hpull]`.
+Move the embeddings inside the algebraic operations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbound : ∀ j, (degLine (pullAd ρ g) ![s j, t j] : ℝ) ≤ b * Module.finrank F E` using `fun j => hb E ρ hρ _ (hst j)`. Establish `hsum : ((∑ j, degLine (pullAd ρ g) ![s j, t j] : ℤ) : ℝ) ≤ m * (b * Module.finrank F E)`. Use `push_cast`. Combine the equalities or inequalities in the displayed calculation. Establish `hfr : (0 : ℝ) < Module.finrank F E` using `by exact_mod_cast Module.finrank_pos`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h7 : (Module.finrank F E : ℝ) * (e : ℝ) ≤ m * (b * Module.finrank F E)`. Establish `h8 : (Module.finrank F E : ℤ) * degLine S p = ∑ j, degLine (pullAd ρ g) ![s j, t j]`. Rewrite using `[← h6, ← h2]`. Establish `h8' : (Module.finrank F E : ℝ) * (degLine S p : ℝ) = ((∑ j, degLine (pullAd ρ g) ![s j, t j] : ℤ) : ℝ)`. Conclude with `h8` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Establish `h9 : (e : ℝ) ≤ (degLine S p : ℝ)` using `by exact_mod_cast hep`. Establish `h10 : (Module.finrank F E : ℝ) * (e : ℝ) ≤ (Module.finrank F E : ℝ) * (degLine S p : ℝ)` using `mul_le_mul_of_nonneg_left h9 hfr.le`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hemb : (e : ℝ) ≤ m * b`. Establish `: (Module.finrank F E : ℝ) * (e : ℝ) ≤ (Module.finrank F E : ℝ) * (m * b)` using `by linarith`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `le_of_mul_le_mul_left this hfr`. Establish `hint : (N : ℤ) * deg g ≤ (m + 1) * (e + 1 + γ)` using `by linarith`. Establish `hreal : ((N : ℤ) : ℝ) * (deg g : ℝ) ≤ ((m : ℝ) + 1) * ((e : ℝ) + 1 + γ)` using `by exact_mod_cast hint`. Move the coercions through the operations in `at hreal`. Establish `hm1 : (0 : ℝ) ≤ (m : ℝ) + 1` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Establish `hpos : (0 : ℝ) < (deg g : ℝ) - 2 * b` using `by linarith`. Take `⟨m, hm⟩` from `exists_nat_gt (2 * (1 + γ) / ((deg g : ℝ) - 2 * b))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hk` using `key m`. Establish `hN : ((m * (m + 1) / 2 : ℕ) : ℝ) = (m : ℝ) * (m + 1) / 2`. Establish `h2 : 2 ∣ m * (m + 1)` using `(Nat.even_mul_succ_self m).two_dvd`. Rewrite using `[Nat.cast_div h2 (by norm_num)]; push_cast; ring`. Rewrite `hk` using `[hN]`.
-
-Rewrite `hm` using `[div_lt_iff₀ hpos]`. Establish `hm' : (0 : ℝ) < (m : ℝ) + 1` using `by positivity`. Establish `: (m : ℝ) * (deg g : ℝ) ≤ 2 * (m * b + 1 + γ)`. Establish `h3 : ((m : ℝ) + 1) * ((m : ℝ) * (deg g : ℝ)) ≤ ((m : ℝ) + 1) * (2 * (m * b + 1 + γ))` using `by nlinarith`. Conclude with `le_of_mul_le_mul_left h3 hm'`.
-
-Use the polynomial consequences of the given equalities and inequalities.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Nef.deg_le_two_mul_of_triangular : ∀ (k F : Type) [Field k] [IsAlgClosed k] [CharZero k] [Field F] [Algebra k F], IsFF k F →
   ∀ (g : Place k F → Matrix (Fin 2) (Fin 2) F), admitted g → (∀ v, g v 1 0 = 0) → ∀ b : ℝ, LinesLE g b → (deg g : ℝ) ≤ 2 * b := by

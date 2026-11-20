@@ -27,7 +27,7 @@ def oneLine : HermLine (dualBlocks T) :=
 
 omit [Fintype T] [DecidableEq T] in
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Simplify using `[logNorm, oneLine, HermLine.ofWeight]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem logNorm_oneLine : logNorm (oneLine (T := T)) 1 = fun _ => (1 : ℝ) := by
   funext z
@@ -35,20 +35,18 @@ theorem logNorm_oneLine : logNorm (oneLine (T := T)) 1 = fun _ => (1 : ℝ) := b
 
 omit [Fintype T] [DecidableEq T] in
 /- English proof (translation)
-Simplify using `[segre]`.
+Simplify using the standard rewrite rules.
 -/
 theorem segre_apply (z : (Σ _ : Unit, T) → ℂ) (s : (k : Unit) → dualBlocks T k) :
     segre (ι := dualBlocks T) z s = z ⟨(), s ()⟩ := by
   simp [segre]
 
 /- English proof (translation)
-Introduce `z hz h0`. Take `⟨σ, hσ⟩` from `hOn K (D + 1) F T b hb z hz`. Establish `hne : dualRecover b hb (fun t => z ⟨(), t⟩) ≠ 0`. Introduce `h`. Take `⟨t, ht⟩` from `hz.1 ()`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `ht (congrFun ((dualRecover b hb).map_eq_zero_iff.mp h) t)`. Take `⟨⟨τ, j⟩, hτ⟩` from `Function.ne_iff.mp hne`. Establish `hτσ : τ = σ`. Assume the negation of the conclusion as `h`. Conclude with `hτ (hσ τ h j)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Substitute using the available equality. Establish an intermediate fact.
 
-Substitute `hτσ` using the available equality. Establish `h1` using `congrFun h0 j`. Rewrite `h1` using `[dualProj_apply]`. Simplify using `only [segre_apply] at h1`. Rewrite `h1` using `[Finset.sum_eq_single τ (fun τ' _ h => hσ τ' h j) (fun h => absurd (Finset.mem_univ τ) h)]`.
-
-Conclude with `hτ h1`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isGoodProj (hOn : DualPtsOnPlane.Statement) {D : ℕ} {F : HermLattice K (D + 1)}
     (b : Module.Basis T ℤ (dualLattice F))
@@ -76,17 +74,17 @@ end DualGeometricDegreePositive
 open DualGeometricDegreePositive in
 
 /- English proof (translation)
-Introduce `K _ _ i F T _ _ b hb hi`. Take `⟨D, rfl⟩ : ∃ D, i = D + 1` from `⟨i - 1, by omega⟩`. Rewrite using `[Nat.add_sub_cancel]`. Establish `hV : IsArithVar (dualIdeal b) (D + 1)` using `hArith K (D + 1) F T b hi`. Establish `hS1 : IsSmoothHerm (dualLine (stdLattice F) b hb)` using `(hSemi K (D + 1) (stdLattice F) T b hb).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e0` using `hDeg Unit (dualBlocks T) (dualIdeal b) D (fun _ => dualLine F b hb) 2 hV (fun _ => (hSemi K (D + 1) F T b hb).1) Nat.prime_two`. Establish `e1` using `hDeg Unit (dualBlocks T) (dualIdeal b) D (fun _ => dualLine (stdLattice F) b hb) 2 hV (fun _ => hS1) Nat.prime_two`. Establish `hswap : geomDeg (dualIdeal b) (dualLine F b hb) D = geomDeg (dualIdeal b) (dualLine (stdLattice F) b hb) D`. Express the relevant statement in the definitionally equal form `ptsIntegral (dualIdeal b) (pot fun _ => dualLine F b hb) (fun _ => 1) = ptsIntegral (dualIdeal b) (pot fun _ => dualLine (stdLattice F) b hb) (fun _ => 1)`. Rewrite using `[e0, e1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hgood` using `isGoodProj hOn b hb`. Establish `hΨ : ∃ Ψ : (((k : Unit) → dualBlocks T k) → ℂ) →ₗ[ℂ] (Fin (D + 1) → ℂ), IsGoodProj (dualIdeal b) Ψ` using `⟨_, hgood⟩`. Establish `hsec : IsSectionOn (dualIdeal b) (oneLine (T` using `T)) 1 := by`. Use `⟨fun _ => 0, fun _ => rfl, ?_, ?_⟩` and prove the remaining obligations.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `d hd k`. Rewrite `hd` using `[support_one]`. Simplify using `only [Finset.mem_singleton] at hd`. Simplify using `[hd]`. Conclude with `(Ideal.ne_top_iff_one _).1 hV.2.1.1.ne_top`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h` using `hInd Unit (dualBlocks T) (dualIdeal b) D hΨ.choose (dualProj b hb) (fun _ => dualLine (stdLattice F) b hb) oneLine 1 hV hΨ.choose_spec hgood (fun _ => hS1) contDiffOn_const hsec`. Rewrite `h` using `[logNorm_oneLine]`. Establish `hm` using `hMass K D (stdLattice F) T b hb fun _ => rfl`. Establish `hval : geomDeg (dualIdeal b) (dualLine (stdLattice F) b hb) D = Fintype.card (K →+* ℂ)`. Unfold `geomDeg ptsIntegral`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos hΨ]`. Conclude with `h.trans hm`. Rewrite using `[hswap, hval]`. Conclude with `Fintype.card_pos` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem DualGeomDegPos.proof (hDeg : DegreeStatement) (hInd : PtsIndepStatement)
     (hArith : DualArithVar.Statement) (hSemi : DualLineSemipositive.Statement)

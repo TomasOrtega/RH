@@ -7,9 +7,9 @@ open MeasureTheory NumberField IsDedekindDomain ValuativeRel GlobalTheory.PRep G
 open PositivityTheory.Rg.Tf.Geo (mapGL incFin galFin)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ σ hσ v w hw n _ _ _ _ mE mF hE hF`. Take `⟨iA, iV, iF, iG, s, hs, hrk, hinc, hgal, -⟩` from `UpperTheory.V.Z.Tf.Orb.placeData_holds F E σ hσ v w hw`. Use `letI : MeasurableSpace (GL (Fin n) (w.1.adicCompletion E)) := borel _`. Use `haveI : BorelSpace (GL (Fin n) (w.1.adicCompletion E)) := ⟨rfl⟩`. Take `⟨hH, hM⟩` from `UpperTheory.V.Z.Tf.Orb.placeOfLocal_holds F E σ hσ v w hw s hs hrk hinc hgal n mE mF hE hF`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI : CharZero (v.adicCompletion F) := charZero_of_injective_algebraMap (algebraMap F (v.adicCompletion F)).injective`. Take `⟨ρ, hρ, h⟩` from `UpperTheory.ConvolutionTheory.Loc.nearUp (v.adicCompletion F) (w.1.adicCompletion E) s hs n _ mF hH hF`. Use `⟨ρ, hρ, fun f hf hsup => ?_⟩` and prove the remaining obligations. Take `⟨φ, hφ, hm⟩` from `h f hf hsup`. Conclude with `⟨φ, hφ, hM φ hφ f hf hm⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.Loc.placeUp :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsGalois F E] (σ : E ≃ₐ[F] E),

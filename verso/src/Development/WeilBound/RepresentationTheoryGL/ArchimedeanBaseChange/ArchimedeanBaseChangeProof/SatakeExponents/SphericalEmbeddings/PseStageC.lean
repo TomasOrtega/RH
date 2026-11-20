@@ -12,7 +12,7 @@ open PositivityTheory.Rg.BcB.N3 PositivityTheory.Rg.BcB.N3.Pse
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Apply the tactic sequence `refine Fin.addCases (fun l => ?_) (fun l => ?_) i <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem unrChar_append {r t : ℕ} (a : Fin r → ℂˣ) (b : Fin t → ℂˣ) :
     (fun i => unrChar k (Fin.append a b i)) = Fin.append (fun i => unrChar k (a i)) (fun i => unrChar k (b i)) := by
@@ -21,7 +21,7 @@ theorem unrChar_append {r t : ℕ} (a : Fin r → ℂˣ) (b : Fin t → ℂˣ) :
 
 set_option maxHeartbeats 2000000 in
 /- English proof (translation)
-Take `⟨E1⟩` from `GlobalTheory.SmGL.PrinProd.stage_one (k := k) ψ₁ ψ₂`. Take `⟨E2⟩` from `GlobalTheory.SmGL.PrinProd.stage_two (k := k) ψ₁ ψ₂`. Conclude with `⟨E1.trans E2⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem prin_append {r t : ℕ} (ψ₁ : Fin r → kˣ →* ℂˣ) (ψ₂ : Fin t → kˣ →* ℂˣ) :
     Nonempty ((prod₂ (prinSeries ψ₁) (prinSeries ψ₂)).Equiv (prinSeries (Fin.append ψ₁ ψ₂))) := by
@@ -31,7 +31,7 @@ theorem prin_append {r t : ℕ} (ψ₁ : Fin r → kˣ →* ℂˣ) (ψ₂ : Fin 
 
 set_option maxHeartbeats 2000000 in
 /- English proof (translation)
-Establish `key : ∀ χ : Fin (r + t) → kˣ →* ℂˣ, χ = Fin.append (fun i => unrChar k (A i)) (fun i => unrChar k (B i)) → Nonempty ((prod₂ (prinSeries fun i => unrChar k (A i)) (prinSeries fun i => unrChar k (B i))).Equiv (prinSeries χ))`. Introduce and unpack `χ rfl`. Conclude with `prin_append _ _`. Conclude with `key _ (unrChar_append A B)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem iP_append (r t : ℕ) (A : Fin r → ℂˣ) (B : Fin t → ℂˣ) :
     Nonempty ((prod₂ (iP (k := k) A) (iP (k := k) B)).Equiv (iP (k := k) (Fin.append A B))) := by
@@ -44,7 +44,7 @@ theorem iP_append (r t : ℕ) (A : Fin r → ℂˣ) (B : Fin t → ℂˣ) :
   exact key _ (unrChar_append A B)
 
 /- English proof (translation)
-Set `M : πi.IntertwiningMap πi'` to `Ei'.toIntertwiningMap.comp ((GlobalTheory.CompanionTheory.CuspStd.prod₂MapL T πB).comp Ei.symm.toIntertwiningMap)`. Establish `hM : KInj k M` using `kinj_comp _ _ (kinj_comp _ _ (kinj_equiv _) (kinj_prod₂MapL T hT _)) (kinj_equiv _)`. Conclude with `⟨Eo'.toIntertwiningMap.comp ((GlobalTheory.CompanionTheory.CuspStd.prod₂MapR πA M).comp Eo.symm.toIntertwiningMap), kinj_comp _ _ (kinj_comp _ _ (kinj_equiv _) (kinj_prod₂MapR _ M hM)) (kinj_equiv _)⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem mainGen {r t : ℕ} {VA VB Vc Vc' Vi Vi' Vo Vo' : Type} [AddCommGroup VA] [Module ℂ VA] [AddCommGroup VB]
     [Module ℂ VB] [AddCommGroup Vc] [Module ℂ Vc] [AddCommGroup Vc'] [Module ℂ Vc'] [AddCommGroup Vi] [Module ℂ Vi]

@@ -16,7 +16,7 @@ open Formalism.InvariantFactorPaths.G7 (Simeq)
 open Formalism.DworkPowerSeriesWeights (Integral mvExp)
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[Nat.mul_succ, ← Nat.add_assoc, ← h.add, ih, h.period]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 private theorem pos_add_mul {Lt : Type} {i : ℕ} {pos : Lt → ℕ → Lt} (h : IsPos i pos) (z : Lt) (a k : ℕ) :
     pos z (a + i * k) = pos z a := by
@@ -26,14 +26,14 @@ private theorem pos_add_mul {Lt : Type} {i : ℕ} {pos : Lt → ℕ → Lt} (h :
     rw [Nat.mul_succ, ← Nat.add_assoc, ← h.add, ih, h.period]
 
 /- English proof (translation)
-Rewrite using `[← Nat.mod_add_div a i, ← Nat.mod_add_div b i, pos_add_mul h, pos_add_mul h, hab]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem pos_congr {Lt : Type} {i : ℕ} {pos : Lt → ℕ → Lt} (h : IsPos i pos) (z : Lt) {a b : ℕ}
     (hab : a ≡ b [MOD i]) : pos z a = pos z b := by
   rw [← Nat.mod_add_div a i, ← Nat.mod_add_div b i, pos_add_mul h, pos_add_mul h, hab]
 
 /- English proof (translation)
-Apply `pos_congr h` to reduce the goal to its premises. Rewrite `hab` using `[ZMod.natCast_eq_natCast_iff]`. Conclude with `Nat.ModEq.of_mul_left 2 hab`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pos_cast {Lt : Type} {i : ℕ} {pos : Lt → ℕ → Lt} (h : IsPos i pos) (z : Lt) {a b : ℕ}
     (hab : ((a : ℕ) : ZMod (2 * i)) = (b : ℕ)) : pos z a = pos z b := by
@@ -42,9 +42,9 @@ private theorem pos_cast {Lt : Type} {i : ℕ} {pos : Lt → ℕ → Lt} (h : Is
   exact Nat.ModEq.of_mul_left 2 hab
 
 /- English proof (translation)
-Proceed by induction on `e with`. Consider the case `zero => simp [h.zero]`. Consider the case `succ e ih`. Rewrite using `[Function.iterate_succ_apply', ih]`. Simplify using `only [h.add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congr 2`.
+Reduce the equality to equality of the corresponding arguments.
 -/
 private theorem iter_pred {Lt β : Type} {i : ℕ} {pos : Lt → ℕ → Lt} (h : IsPos i pos) (z : Lt) (b : β) (e : ℕ) :
     (fun y : Lt × β => (pos y.1 (2 * (i - 1)), y.2))^[e] (z, b) = (pos z (2 * (i - 1) * e), b) := by
@@ -56,11 +56,11 @@ private theorem iter_pred {Lt β : Type} {i : ℕ} {pos : Lt → ℕ → Lt} (h 
     congr 2
 
 /- English proof (translation)
-Use `haveI : NeZero (2 * i) := ⟨by have := NeZero.ne i; omega⟩`. Establish `key : ∀ e : ℕ, pos r (s.val + 2 * (i - 1) * e) = pos r ((s - 2 * (e : ZMod (2 * i))).val)`. Introduce `e`. Apply `pos_cast h` to reduce the goal to its premises. Establish `hi : 1 ≤ i` using `Nat.one_le_iff_ne_zero.mpr (NeZero.ne i)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Move the coercions through the operations in `[Nat.cast_sub hi, ZMod.natCast_zmod_val]`. Establish `h2i : ((2 * i : ℕ) : ZMod (2 * i)) = 0` using `ZMod.natCast_self _`. Move the coercions through the operations in `at h2i`. Take the linear combination `(e : ZMod (2 * i)) * h2i`. Use extensionality with `n`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MvPowerSeries.coeff_apply, MvPowerSeries.coeff_apply]`. Simplify using `only [logS, Formalism.DworkPowerSeriesWeights.genLog, KernelCokernelKilling.gLog]`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Rewrite using `[iter_pred h, h.add, key]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem logS_eq_gLog {K Lt β : Type} [Field K] [DecidableEq Lt] [DecidableEq β] (l : ℕ) {i : ℕ} [NeZero i]
     {pos : Lt → ℕ → Lt} (h : IsPos i pos) (r : Lt) (b : β) (s : ZMod (2 * i)) :
@@ -82,7 +82,7 @@ private theorem logS_eq_gLog {K Lt β : Type} [Field K] [DecidableEq Lt] [Decida
   rw [iter_pred h, h.add, key]
 
 /- English proof (translation)
-Use `haveI : NeZero (2 * i) := ⟨by have := NeZero.ne i; omega⟩`. Establish `hi : 0 < i` using `Nat.pos_of_ne_zero (NeZero.ne i)`. Use `⟨(s.val + i) / (2 * i), ?_⟩` and prove the remaining obligations. Rewrite using `[ZMod.val_add, ZMod.val_natCast, Nat.mod_eq_of_lt (by omega : i < 2 * i)]`. Conclude with `(Nat.mod_add_div _ _).symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem val_add_i {i : ℕ} [NeZero i] (s : ZMod (2 * i)) :
     ∃ k : ℕ, s.val + i = (s + (i : ZMod (2 * i))).val + 2 * i * k := by
@@ -93,15 +93,15 @@ private theorem val_add_i {i : ℕ} [NeZero i] (s : ZMod (2 * i)) :
   exact (Nat.mod_add_div _ _).symm
 
 /- English proof (translation)
-Use `haveI : NeZero (2 * i) := ⟨by have := NeZero.ne i; omega⟩`. Unfold `linOL linEL`. Use `Fintype.sum_equiv (Equiv.addRight (i : ZMod (2 * i))) _ _ fun s => ?_` and prove the remaining obligations. Simplify using `only [Equiv.coe_addRight]`. Rewrite using `[hL s, ← Function.iterate_add_apply]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `val_add_i s`. Take `⟨m, hm⟩` from `hi`. Establish `hs` using `ZMod.val_lt s`. Establish `hk1 : k ≤ 1`. Assume the negation of the conclusion as `hc'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `push_neg at hc'`. Use the polynomial consequences of the given equalities and inequalities. Establish `hit : σ^[(s + (i : ZMod (2 * i))).val + i] c = σ^[s.val] c` using `by interval_cases k`. Rewrite using `[show (s + (i : ZMod (2 * i))).val + i = s.val + 2 * i by omega, Function.iterate_add_apply, hc]`. Rewrite using `[show (s + (i : ZMod (2 * i))).val + i = s.val by omega]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Consider separately whether the proposition holds or fails.
 
-Apply the tactic sequence `have hpar : s.val % 2 = 0 ↔ ¬ (s + (i : ZMod (2 * i))).val % 2 = 0 := by interval_cases k <;> omega`. Distinguish the cases in `h0 : s.val % 2 = 0`. Establish `h1` using `hpar.mp h0`. Simplify using `[h0, h1]`. Establish `h1 : (s + (i : ZMod (2 * i))).val % 2 = 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules.
 
-Assume the negation of the conclusion as `h1`. Conclude with `h0 (hpar.mpr h1)`. Simplify using `[h0, h1, hit]`.
+A detailed English derivation is pending.
 -/
 private theorem linOL_eq {K τ : Type} [NormedField K] {i : ℕ} [NeZero i] (hi : Odd i) (σ : K →+* K) {c : K}
     (hc : σ^[2 * i] c = c) (L : ZMod (2 * i) → MvPowerSeries τ K) (hL : ∀ s, L (s + (i : ZMod (2 * i))) = L s) :
@@ -133,21 +133,19 @@ private theorem linOL_eq {K τ : Type} [NormedField K] {i : ℕ} [NeZero i] (hi 
     simp [h0, h1, hit]
 
 /- English proof (translation)
-Establish `hlp : Nat.Prime l` using `hU.1`. Establish `hl2 : 2 ≤ l` using `hlp.two_le`. Establish `hd2 : 2 ≤ 2 * i` using `by have := NeZero.ne i; omega`. Establish `hde : Even (2 * i)` using `even_two_mul i`. Establish `hIP : ∀ ρ, IP l σ (linEL σ (σ^[i] (om ρ)) L)` using `fun ρ => (shiftIP K l (2 * i) σ hU hde τ L hS _ (hOw.1 ρ).2 (hOw.2 ρ).2).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose x hx0 hxI hxL using fun ρ => ipLemma K l σ hU τ _ (hIP ρ)`. Use `⟨x, hx0, hxI, hxL, ?_⟩` and prove the remaining obligations. Take `⟨-, hsymm, htrans, -, -⟩` from `Formalism.InvariantFactorPaths.G7.Top.simeqRules K τ`. Establish `hsubU` using `(Formalism.InvariantFactorPaths.G7.Top.simeqRules K Unit).2.2.2.2 τ`. Establish `hM` using `meanSimeqL K l (2 * i) σ hU hd2 hde F hF be0 hF1 hF2 (Fin i) om (fun r => σ^[i] (om r)) hOw hTr ζ hζ τ L hS`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hM` using `[substTil K l (2 * i) σ hl2 be0 (Fin i) om _ τ L (fun s => (hS s).1)]`. Establish `ha : MvPowerSeries.HasSubst (fun _ : Fin 2 => (PowerSeries.X : PowerSeries K))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun _ => MvPowerSeries.constantCoeff_X _)`. Establish `hterm : ∀ r : Fin i, Simeq (subst ![linEL σ (σ^[i] (om r)) L, linOL σ (om r) L] (addC l be0)) (C (2 : K) * PowerSeries.subst (x r) ph)`. Introduce `r`. Rewrite using `[linOL_eq hi σ (hOw.2 r).1 L hL, ← hxL r, Pair.addC_log expSpec hl2 (hx0 r) (hx0 r) be0]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hb : MvPowerSeries.HasSubst (fun _ : Unit => x r)` using `PowerSeries.HasSubst.const (PowerSeries.HasSubst.of_constantCoeff_zero (hx0 r))`. Establish `h1` using `hsubU (C (2 : K) * ph) _ (fun _ => x r) (fun _ => hx0 r) (fun _ => hxI r) hph`. Rewrite `h1` using `[MvPowerSeries.subst_mul hb, MvPowerSeries.subst_C, MvPowerSeries.subst_comp_subst_apply ha hb]`. Establish `e : (fun _ : Fin 2 => subst (fun _ : Unit => x r) (PowerSeries.X : PowerSeries K)) = ![x r, x r]`. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[PowerSeries.X, MvPowerSeries.subst_X hb]`. Apply the tactic sequence `fin_cases j <;> rfl`. Rewrite `h1` using `[e]`. Conclude with `hsymm _ _ h1`. Establish `hsum` using `B4.simeq_sum Finset.univ _ _ fun r _ => hterm r`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hsum` using `[← Finset.mul_sum]`. Establish `h2` using `htrans _ _ _ hM hsum`. Establish `hl3 : 2 < l` using `hU.2.1`. Establish `hnd : ¬ l ∣ 2` using `fun hd => by have := Nat.le_of_dvd (by norm_num) hd; omega`. Establish `hlam` using `Formalism.InvariantFactorPaths.G7.Top.lamModule K τ l σ hlp hU.2.2.1 hU.2.2.2.2 _ 2 hnd (B4.simeq_sub_zero h2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `hsymm` to reduce the goal to its premises. Establish `key : C ((2 : K)⁻¹) * subst L (beMean (d` using `2 * i) l σ be0 om (fun r => σ^[i] (om r)) ζ) - ∑ ρ, PowerSeries.subst (x ρ) ph = C ((2 : ℕ) : K)⁻¹ * (subst L (beMean (d := 2 * i) l σ be0 om (fun r => σ^[i] (om r)) ζ) - C (2 : K) * ∑ ρ, PowerSeries.subst (x ρ) ph) := by`. Rewrite using `[mul_sub, ← mul_assoc, ← map_mul, Nat.cast_ofNat, inv_mul_cancel₀ two_ne_zero, map_one, one_mul]`. Unfold `Formalism.InvariantFactorPaths.G7.Simeq at hlam ⊢`. Rewrite `hlam` using `[sub_zero]`.
-
-Rewrite using `[key]`. Conclude with `hlam`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem diag (K : Type) [NormedField K] [IsUltrametricDist K] [CharZero K] (l i : ℕ) [NeZero i]
     (σ : K →+* K) (hU : UnrOK K l σ) (hi : Odd i) (F : MvPowerSeries (Fin 2) K) (hF : IsLawOfLog l F)
@@ -209,7 +207,7 @@ private theorem diag (K : Type) [NormedField K] [IsUltrametricDist K] [CharZero 
   exact hlam
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[MvPowerSeries.coeff_map, MvPowerSeries.coeff_apply, MvPowerSeries.coeff_apply]`. Simplify using `only [logS, Formalism.DworkPowerSeriesWeights.genLog]`. Simplify using `[map_sum, apply_ite j]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem map_logS {K K' Lt β : Type} [Field K] [Field K'] [DecidableEq Lt] [DecidableEq β] (j : K →+* K') (l i : ℕ)
     (pos : Lt → ℕ → Lt) (v : Lt × β) : map j (logS (K := K) l i pos v) = logS (K := K') l i pos v := by
@@ -219,7 +217,7 @@ private theorem map_logS {K K' Lt β : Type} [Field K] [Field K'] [DecidableEq L
   simp [map_sum, apply_ite j]
 
 /- English proof (translation)
-Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, MvPowerSeries.coeff_apply]`. Simplify using `only [logS, Formalism.DworkPowerSeriesWeights.genLog]`. Simplify using `only [map_zero, zero_add, Finset.sum_range_one, pow_zero, Function.iterate_zero, id_eq, ite_eq_right_iff]`. Introduce `h0`. Conclude with `absurd h0.symm (Finsupp.single_ne_zero.mpr one_ne_zero)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem cc_logS {K Lt β : Type} [Field K] [DecidableEq Lt] [DecidableEq β] {l : ℕ} (hl : 2 ≤ l) (i : ℕ)
     (pos : Lt → ℕ → Lt) (v : Lt × β) : constantCoeff (logS (K := K) l i pos v) = 0 := by
@@ -238,23 +236,21 @@ open Formalism.InvariantFactorPaths.G7 (Simeq)
 open Formalism.DworkPowerSeriesWeights (Integral mvExp)
 
 /- English proof (translation)
-Establish `hlp : Nat.Prime l` using `hU.1`. Establish `hl2 : 2 ≤ l` using `hlp.two_le`. Use `haveI : NeZero (2 * i) := ⟨by have := NeZero.ne i; omega⟩`. Use `set L0 : ZMod (2 * i) → MvPowerSeries (Lt × β) K0 := fun s => logS (K := K0) l i pos (pos r s.val, b) with hL0`. Establish `hS : ShiftType l σ L0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e : L0 = fun s => KernelCokernelKilling.gLog K0 l (fun s : ZMod (2 * i) => (pos r s.val, b)) s`. Use function extensionality and compare the values at `fun s => logS_eq_gLog l hpos r b s`. Rewrite using `[e]`. Conclude with `KernelCokernelKilling.shiftType_gLog hlp σ _`. Establish `hLp : ∀ s, L0 (s + (i : ZMod (2 * i))) = L0 s`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `s`. Take `⟨k, hk⟩` from `val_add_i s`. Establish `e1 : (s.val + i) % i = s.val % i` using `Nat.add_mod_right _ _`. Establish `e2 : ((s + (i : ZMod (2 * i))).val + 2 * i * k) % i = (s + (i : ZMod (2 * i))).val % i`. Rewrite using `[show 2 * i * k = i * (2 * k) by ring, Nat.add_mul_mod_self_left]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hmod : (s + (i : ZMod (2 * i))).val ≡ s.val [MOD i]`. Unfold `Nat.ModEq`. Rewrite using `[← e2, ← hk, e1]`. Simplify using `only [hL0, pos_congr hpos r hmod]`. Take `⟨x, hx0, hxI, hxL, hsim⟩` from `diag K0 l i σ hU hi F hF be0 hF1 hF2 om hOw hTr ζ hζ ph hph (Lt × β) L0 hS hLp`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hs : MvPowerSeries.HasSubst (logS (K` using `K) (β := β) l i pos) := MvPowerSeries.hasSubst_of_constantCoeff_zero (fun v => cc_logS hl2 i pos v)`. Establish `hs0 : MvPowerSeries.HasSubst L0` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun s => cc_logS hl2 i pos _)`. Use `⟨fun ρ => map j (x ρ), fun ρ => ?_, fun ρ => ?_, fun ρ => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[MvPowerSeries.constantCoeff_map, hx0, map_zero]`. Conclude with `Formalism.DworkPowerSeriesWeights.Transfer.integral_map j hj (hxI ρ)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Formalism.InvariantFactorPaths.G7.FormalGroupLaws.map_lgF j l, ← PowerSeries.map_subst (PowerSeries.HasSubst.of_constantCoeff_zero (hx0 ρ)), hxL ρ]`. Unfold `linEL linS`. Rewrite using `[map_sum, Pair.subst_sum hs]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Use `split_ifs`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_mul, MvPowerSeries.map_C, MvPowerSeries.subst_mul hs, MvPowerSeries.subst_C, MvPowerSeries.subst_X hs]`. Simplify using `only [hL0, map_logS]`. Rewrite using `[map_zero, Pair.subst_zero' hs]`. Establish `hm` using `(Formalism.InvariantFactorPaths.G7.Top.mapSimeq K0 K (Lt × β) j hj).1 _ _ hsim`. Establish `e1 : map j (∑ ρ, PowerSeries.subst (x ρ) ph) = ∑ ρ, PowerSeries.subst (map j (x ρ)) (PowerSeries.map j ph)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun ρ _ => PowerSeries.map_subst (PowerSeries.HasSubst.of_constantCoeff_zero (hx0 ρ)) ph`. Establish `e2 : map j (C ((2 : K0)⁻¹) * subst L0 (beMean (d` using `2 * i) l σ be0 om (fun r => σ^[i] (om r)) ζ)) = C ((2 : K)⁻¹) * subst (fun s : ZMod (2 * i) => logS (K := K) l i pos (pos r s.val, b)) (map j (beMean (d := 2 * i) l σ be0 om (fun r => σ^[i] (om r)) ζ)) := by`. Rewrite using `[map_mul, MvPowerSeries.map_C, map_inv₀, map_ofNat, MvPowerSeries.map_subst hs0]`. Use `congr 2`.
-
-Use function extensionality and compare the values at `s`. Simplify using `only [hL0, map_logS]`. Rewrite `hm` using `[e1, e2]`. Conclude with `hm`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem diagJ (K0 K : Type) [NormedField K0] [IsUltrametricDist K0] [CharZero K0] [NormedField K]
     [IsUltrametricDist K] [CharZero K] (j : K0 →+* K) (hj : ∀ a, ‖j a‖ = ‖a‖) (l i : ℕ) [NeZero i]
@@ -331,47 +327,39 @@ open MvPowerSeries Formalism.L2.Th1.D UpperTheory.G2.ConjugatePartitionShape in
 open Formalism.InvariantFactorPaths.G7 (Simeq) in
 open Formalism.DworkPowerSeriesWeights (Integral mvExp) in
 /- English proof (translation)
-Introduce `p _ g2 g3 s2 ε σ F ⟨hp5, hg2, hg3, hε, hθ, hU, hF, hNR⟩ i _ hi om hOw hTr Lt β _ _ _ _ pos hpos R Θ hI ep Th hep hTh`. Use `set j : ↥(MaximalUnramifiedExtension p) →+* ℂ_[p] := (MaximalUnramifiedExtension p).subtype with hjdef`. Establish `hj : ∀ a, ‖j a‖ = ‖a‖` using `FAux.norm_coe p`. Establish `hl2 : 2 ≤ p` using `hU.1.two_le`. Establish `hd2 : 2 ≤ 2 * i` using `by have := NeZero.ne i; omega`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hde : Even (2 * i)` using `even_two_mul i`. Take `⟨hF1, hF2, hph⟩` from `FAux.ffs p first_level_on_curve g2 g3 ε hg2 hg3 hε hθ σ hU F hF s2 hNR`. Establish `hgt : 1 < p ^ (2 * i)` using `Nat.one_lt_pow (by omega) (by omega)`. Establish `hpos' : 0 < p ^ (2 * i) - 1` using `by omega`. Establish `hndvd : ¬ p ∣ p ^ (2 * i) - 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hd`. Establish `h1 : p ∣ p ^ (2 * i)` using `dvd_pow_self p (by omega)`. Establish `h2` using `Nat.dvd_sub h1 hd`. Rewrite `h2` using `[Nat.sub_sub_self (by omega)]`. Use `Nat.le_of_dvd one_pos h2` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Take `⟨ζ0, hζ0⟩` from `kurRoots p (p ^ (2 * i) - 1) hpos' hndvd`. Use `set ph := phFF p g2 g3 s2 ε with hphdef`. Use `set be0 := cob F ph with hbe0`. Use `set bM := beMean (d := 2 * i) p σ be0 om (fun r => σ^[i] (om r)) ζ0 with hbM`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hB` using `biextension_hypotheses_of_level_one (MaximalUnramifiedExtension p) p (2 * i) σ hU hd2 hde F hF be0 hF1 (Fin i) om _ hOw ζ0 hζ0`. Establish `hB'` using `(Formalism.DworkPowerSeriesWeights.admissibleTransfer (MaximalUnramifiedExtension p) ℂ_[p] j hj p (2 * i) 0 0 ⊤ ζ0 bM).2.1 hB`. Establish `hK : Subfield.map j ⊤ = MaximalUnramifiedExtension p`. Rewrite using `[← RingHom.fieldRange_eq_map, hjdef, Subfield.fieldRange_subtype]`. Rewrite `hB'` using `[hK]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose x hx0 hxI hxL hxS using fun (r : {r // r ∈ R}) (b : β) => diagJ (MaximalUnramifiedExtension p) ℂ_[p] j hj p i σ hU hi F hF be0 hF1 hF2 om hOw hTr ζ0 hζ0 ph hph Lt β pos hpos r.1 b`. Use `⟨MaximalUnramifiedExtension p, j ζ0, R, ep, fun _ => -1, fun _ => map j bM, kurUnram p, hζ0.map_of_injective j.injective, hep, fun _ _ => Or.inr rfl, fun _ _ => hB', ?_⟩` and prove the remaining obligations. Use `set Λ : Lt × β → MvPowerSeries (Lt × β) ℂ_[p] := logS (K := ℂ_[p]) p i pos with hΛ`. Establish `hΛs : MvPowerSeries.HasSubst Λ` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun v => cc_logS hl2 i pos v)`. Use `set y : ({r // r ∈ R} × Fin i) × β → MvPowerSeries (Lt × β) ℂ_[p] := fun e => x e.1.1 e.2 e.1.2 with hy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Establish `hy0 : ∀ e, constantCoeff (y e) = 0` using `fun e => hx0 _ _ _`. Establish `hyI : ∀ e, Integral (y e)` using `fun e => hxI _ _ _`. Establish `hys : MvPowerSeries.HasSubst y` using `MvPowerSeries.hasSubst_of_constantCoeff_zero hy0`. Establish `hat : MvPowerSeries.HasSubst (fun e : ({r // r ∈ R} × Fin i) × β => (at1 e (lgF ℂ_[p] p) : MvPowerSeries (({r // r ∈ R} × Fin i) × β) ℂ_[p]))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun e => Pair.constantCoeff_inVar_eq_zero e (Pair.cc_lgF hl2))`. Establish `hlin : MvPowerSeries.HasSubst (fun e : ({r // r ∈ R} × Fin i) × β => linS j σ i pos (σ^[i] (om e.1.2)) e.1.1.1 e.2)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun e => ?_)` and prove the remaining obligations. Unfold `linS`. Rewrite using `[map_sum]`. Use `Finset.sum_eq_zero fun s _ => ?_` and prove the remaining obligations. Use `split_ifs`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[map_mul, MvPowerSeries.constantCoeff_X, mul_zero]`. Conclude with `map_zero _`. Establish `hcx : MvPowerSeries.HasSubst (fun v : Lt × β => (C ep * X v : MvPowerSeries (Lt × β) ℂ_[p]))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun v => by simp)`. Establish `step1 : subst (fun v => C ep * Λ v) Th = subst y (subst (fun e : ({r // r ∈ R} × Fin i) × β => (at1 e (lgF ℂ_[p] p) : MvPowerSeries (({r // r ∈ R} × Fin i) × β) ℂ_[p])) Θ)`. Establish `e1 : (fun v => C ep * Λ v) = fun v => subst Λ (C ep * X v : MvPowerSeries (Lt × β) ℂ_[p])`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `v`. Rewrite using `[MvPowerSeries.subst_mul hΛs, MvPowerSeries.subst_C, MvPowerSeries.subst_X hΛs]`. Rewrite using `[e1, ← MvPowerSeries.subst_comp_subst_apply hcx hΛs, hTh, MvPowerSeries.subst_comp_subst_apply hlin hΛs, MvPowerSeries.subst_comp_subst_apply hat hys]`. Use `congr 1`. Use function extensionality and compare the values at `e`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Rewrite using `[Pair.subst_single_var hys]`. Conclude with `(hxL _ _ _).symm`. Establish `hph0 : PowerSeries.constantCoeff (PowerSeries.map j ph) = 0`. Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_map, PowerSeries.coeff_zero_eq_constantCoeff_apply, hphdef, FAux.cc_phFF hl2, map_zero]`. Establish `hP0 : constantCoeff (∑ e : ({r // r ∈ R} × Fin i) × β, (at1 e (PowerSeries.map j ph) : MvPowerSeries (({r // r ∈ R} × Fin i) × β) ℂ_[p])) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_sum]`. Conclude with `Finset.sum_eq_zero fun e _ => Pair.constantCoeff_inVar_eq_zero e hph0`. Establish `hW` using `Formalism.InvariantFactorPaths.G7.LogarithmEquivalence.integral_subst' hy0 hyI hI`. Rewrite `hW` using `[MvPowerSeries.subst_mul hys, Formalism.InvariantFactorPaths.G7.LogarithmEquivalence.subst_mvExp' hys hP0, Pair.subst_sum hys]`. Simplify using `only [Pair.subst_single_var hys] at hW`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `set Q := ∑ e : ({r // r ∈ R} × Fin i) × β, PowerSeries.subst (y e) (PowerSeries.map j ph) with hQdef`. Use `set Q2 := ∑ r : {r // r ∈ R}, ∑ b : β, C ((2 : ℂ_[p])⁻¹) *`. Substitute `(fun s : ZMod (2 * i) => Λ (pos r.1 s.val, b)) (map j bM) with hQ2def` using the available equality. Establish `hQ : Simeq Q Q2`. Establish `eQ : Q = ∑ r : {r // r ∈ R}, ∑ b : β, ∑ ρ : Fin i, PowerSeries.subst (x r b ρ) (PowerSeries.map j ph)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hQdef, Fintype.sum_prod_type, Fintype.sum_prod_type]`. Conclude with `Finset.sum_congr rfl fun r _ => Finset.sum_comm`. Rewrite using `[eQ]`. Conclude with `B4.simeq_sum _ _ _ fun r _ => B4.simeq_sum _ _ _ fun b _ => hxS r b`. Use `set G := subst (fun e : ({r // r ∈ R} × Fin i) × β => (at1 e (lgF ℂ_[p] p) : MvPowerSeries (({r // r ∈ R} × Fin i) × β) ℂ_[p])) Θ with hG`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hbe0c : constantCoeff (map j bM) = 0`. Rewrite using `[MvPowerSeries.constantCoeff_map, Formalism.DworkPowerSeriesWeights.Transfer.cc_of_noLow hB.2.2.1, map_zero]`. Establish `hXs : ∀ (r : Lt) (b : β), MvPowerSeries.HasSubst (fun s : ZMod (2 * i) => (X (pos r s.val, b) : MvPowerSeries (Lt × β) ℂ_[p]))` using `fun r b => MvPowerSeries.hasSubst_of_constantCoeff_zero (fun s => MvPowerSeries.constantCoeff_X _)`. Establish `hbeS0 : constantCoeff (beS i pos R (fun _ => (-1 : ℂ_[p])) (fun _ => map j bM) : MvPowerSeries (Lt × β) ℂ_[p]) = 0`. Unfold `beS`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_sum]`. Use `Finset.sum_eq_zero fun r _ => ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.smul_eq_C_mul, map_mul, map_sum, Finset.sum_eq_zero (fun b _ => MvPowerSeries.constantCoeff_subst_eq_zero (hXs r b) (fun s => MvPowerSeries.constantCoeff_X _) hbe0c), mul_zero]`. Establish `hsub : subst Λ (beS i pos R (fun _ => (-1 : ℂ_[p])) (fun _ => map j bM)) = -Q2`. Unfold `beS`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pair.subst_sum hΛs, hQ2def, ← Finset.sum_coe_sort R, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.subst_smul hΛs, Pair.subst_sum hΛs, MvPowerSeries.smul_eq_C_mul, Finset.mul_sum, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.subst_comp_subst_apply (hXs r.1 b) hΛs]`.
-
-Simplify using `only [MvPowerSeries.subst_X hΛs]`. Rewrite using `[show ((-1 : ℂ_[p]) / 2) = -(2⁻¹) by ring, map_neg, neg_mul]`. Establish `hQc : constantCoeff Q = 0`. Rewrite using `[hQdef, map_sum]`. Conclude with `Finset.sum_eq_zero fun e _ => Pair.cc_ps (hy0 e) hph0`.
-
-Establish `hQ2c : constantCoeff Q2 = 0`. Use `hQ.1` as an intermediate fact. Rewrite `this` using `[map_sub, hQc, zero_sub, neg_eq_zero]`. Conclude with `this`. Take `⟨-, hsymm, -, -, -⟩` from `Formalism.InvariantFactorPaths.G7.Top.simeqRules ℂ_[p] (Lt × β)`.
-
-Establish `hQ'` using `hsymm _ _ hQ`. Use `⟨mvExp Q * subst y G * mvExp (Q2 - Q), Formalism.InvariantFactorPaths.G7.LogarithmEquivalence.integral_mul' hW hQ'.2, ?_⟩` and prove the remaining obligations. Rewrite using `[step1, Formalism.InvariantFactorPaths.G7.LogarithmEquivalence.subst_mvExp' hΛs hbeS0, hsub]`. Establish `h1 : mvExp Q * mvExp (Q2 - Q) * mvExp (-Q2) = (1 : MvPowerSeries (Lt × β) ℂ_[p])`. Rewrite using `[← Formalism.InvariantFactorPaths.G7.mvExp_add hQc (by rw [map_sub, hQc, hQ2c, sub_zero]), ← Formalism.InvariantFactorPaths.G7.mvExp_add (by rw [map_add, map_sub, hQc, hQ2c]; simp) (by rw [map_neg, hQ2c, neg_zero])]`.
-
-Rewrite using `[show Q + (Q2 - Q) + -Q2 = 0 by ring, Formalism.InvariantFactorPaths.G7.LogarithmEquivalence.mvExp_zero']`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.integral_mvExp_sum_logS_of_odd_period :
     ∀ (p : ℕ) [Fact p.Prime] (g2 g3 s2 ε : MaximalUnramifiedExtension p) (σ : MaximalUnramifiedExtension p →+* MaximalUnramifiedExtension p) (F : MvPowerSeries (Fin 2) (MaximalUnramifiedExtension p)),

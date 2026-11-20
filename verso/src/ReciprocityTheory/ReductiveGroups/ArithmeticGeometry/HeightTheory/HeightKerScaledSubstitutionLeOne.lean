@@ -17,25 +17,23 @@ namespace Data
 variable (d : Data K ι Ω WT A)
 
 /- English proof (translation)
-Take `⟨J, hJ⟩` from `hd.a1 c`. Take `⟨δ, hδ⟩` from `ReciprocityTheory.MultiplicativeHeights.DerivationAlgebraicIndependence.exists_dual_derivations (K := K) (d.x c) J hJ`. Establish `hy : d.affineCoord c (d.jc c) = 1` using `scalarRatio_self (hd.w_base c)`. Set `ρ : Option (Fin d.D) → Fin (d.D + 2)` to `fun o => (finSuccEquiv (d.D + 1)).symm (some ((finSuccEquiv d.D).symm o))`. Establish `hρ : Function.Injective ρ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `o o' h`. Simplify `h` using `[ρ]`. Establish `hind` using `algebraicIndependent_scaledForms (K := K) (d.affineCoord c) (d.jc c) hy J δ hδ ρ hρ`. Set `e : (Fin (d.D + 2) × Fin (d.N + 1)) ⊕ Fin (d.D + 2) ≃ Option ((Fin (d.D + 2) × Fin (d.N + 1)) ⊕ Option (Fin d.D))` to `{ toFun := fun x => match x with`. Consider the case `Sum.inl p => some (Sum.inl p)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Introduce a local definition for the expression. Treat this case separately.
 
-Consider the case `Sum.inr i => (finSuccEquiv (d.D + 1) i).map fun j => Sum.inr (finSuccEquiv d.D j)`. Use `invFun := fun y => match y with`. Consider the case `none => Sum.inr 0`. Consider the case `some (Sum.inl p) => Sum.inl p`. Consider the case `some (Sum.inr o) => Sum.inr (ρ o)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Assume the hypotheses and unpack their components.
 
-Use `left_inv := by`. Introduce and unpack `(p | i)`. Both sides reduce to the same expression. Apply the tactic sequence `rcases h : finSuccEquiv (d.D + 1) i with _ | j <;>`. Use `(finSuccEquiv (d.D + 1)).symm_apply_apply i` as an intermediate fact.
+Both sides reduce to the same expression. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `this` using `[h]`. Simplify `this` using `[h, ρ]`. Use `right_inv := by`. Introduce and unpack `(_ | p | o)`. Simplify using the standard rewrite rules.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Both sides reduce to the same expression. Simplify using `[ρ] }`. Set `g` to `(MvPolynomial.renameEquiv K e).trans (MvPolynomial.optionEquivLeft K ((Fin (d.D + 2) × Fin (d.N + 1)) ⊕ Option (Fin d.D)))`. Set `gr` to `g.toRingEquiv`. Rewrite using `[← RingEquiv.height_comap gr.symm (RingHom.ker (d.scaledSubstitution c))]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI hk : (RingHom.ker (d.scaledSubstitution c)).IsPrime := RingHom.ker_isPrime _`. Use `haveI : (Ideal.comap gr.symm (RingHom.ker (d.scaledSubstitution c))).IsPrime := Ideal.comap_isPrime _ _`. Use `ReciprocityTheory.CA.height_le_one_of_comap_C_eq_bot _ ?_` and prove the remaining obligations. Rewrite using `[eq_bot_iff]`. Introduce `a ha`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `ha` using `[Ideal.mem_comap, Ideal.mem_comap, RingHom.mem_ker]`. Rewrite using `[Ideal.mem_bot]`. Establish `h2 : (MvPolynomial.optionEquivLeft K ((Fin (d.D + 2) × Fin (d.N + 1)) ⊕ Option (Fin d.D))).symm (Polynomial.C a) = MvPolynomial.rename some a`. Rewrite using `[AlgEquiv.symm_apply_eq]`. Conclude with `(optionEquivLeft_rename_some' a).symm`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h1 : gr.symm (Polynomial.C a) = MvPolynomial.rename (fun s => e.symm (some s)) a` using `by show (MvPolynomial.renameEquiv K e).symm ((MvPolynomial.optionEquivLeft K ((Fin (d.D + 2) × Fin (d.N + 1)) ⊕ Option (Fin d.D))).symm (Polynomial.C a)) = _`. Rewrite using `[h2, MvPolynomial.renameEquiv_symm, MvPolynomial.renameEquiv_apply, MvPolynomial.rename_rename]`. Both sides reduce to the same expression. Rewrite `ha` using `[h1, scaledSubstitution_eq, MvPolynomial.aeval_rename]`. Establish `hfam : (Sum.elim (fun p => (MvPolynomial.X (some p) : MvPolynomial (Option (Fin (d.D + 2) × Fin (d.N + 1))) (Ω c))) (fun i => MvPolynomial.X none * ∑ j, MvPolynomial.X (some (i, j)) * MvPolynomial.C (d.affineCoord c j))) ∘ (fun s => e.symm (some s)) = Sum.elim (fun p => (MvPolyno …`.
-
-Use function extensionality and compare the values at `s`. Apply the tactic sequence `rcases s with p | o <;> rfl`. Rewrite `ha` using `[hfam]`. Conclude with `(injective_iff_map_eq_zero _).mp hind a ha`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem height_ker_scaledSubstitution_le_one (hd : d.AxH 𝒜) (c : ι) : (RingHom.ker (d.scaledSubstitution c)).height ≤ 1 := by
   classical

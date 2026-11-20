@@ -9,9 +9,9 @@ open Matrix
 namespace GlobalTheory.NegSpace
 
 /- English proof (translation)
-Take `⟨e, P, hP⟩` from `h`. Set `s` to `Equiv.sumComm (Fin p) (Fin q)`. Use `⟨e.trans s, Units.map (Matrix.reindexAlgEquiv ℂ ℂ s).toRingHom.toMonoidHom P, ?_⟩` and prove the remaining obligations. Establish `e1 : Formalism.UG.Jpq q p = -(Formalism.UG.Jpq p q).submatrix s.symm s.symm`. Use extensionality with `i j`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;> simp [Formalism.UG.Jpq, s]`. Rewrite using `[e1, ← hP, ← submatrix_mul_equiv _ _ _ s.symm, ← submatrix_mul_equiv _ _ _ s.symm, ← Matrix.neg_mul, ← Matrix.mul_neg]`. Both sides reduce to the same expression.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem hasSignature_neg_swap {n : Type} [Fintype n] [DecidableEq n] {J : Matrix n n ℂ} {p q : ℕ}
     (h : Formalism.UG.HasSignature J p q) : Formalism.UG.HasSignature (-J) q p := by
@@ -25,7 +25,7 @@ theorem hasSignature_neg_swap {n : Type} [Fintype n] [DecidableEq n] {J : Matrix
   rfl
 
 /- English proof (translation)
-Introduce `E _ _ _ W h τ`. Establish `e : (neg W).gram.map τ = -W.gram.map τ` using `Matrix.ext fun i j => map_neg τ (W.gram i j)`. Rewrite using `[e]`. Conclude with `hasSignature_neg_swap (h τ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sigOK_neg : ∀ (E : Type) [Field E] [NumberField E] [StarRing E] (W : HSpace E), W.SigOK → (GlobalTheory.NegSpace.neg W).SigOK := by
   intro E _ _ _ W h τ

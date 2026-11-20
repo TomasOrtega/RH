@@ -19,9 +19,9 @@ variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {k : ℕ}
 
 omit [IsTotallyComplex E] in
 /- English proof (translation)
-Establish `h` using `RestrictedProduct.isOpen_forall_imp_mem (R := fun v : HeightOneSpectrum (𝓞 E) => v.adicCompletion E) (A := fun v => (v.adicCompletionIntegers E : Set (v.adicCompletion E))) (fun v => Valued.isOpen_integer _) (p := fun v => v ∉ S)`. Establish `e : {y : Fin k → Af E | ∀ v, v ∉ S → ∀ i, y i v ∈ v.adicCompletionIntegers E} = ⋂ i, (fun y : Fin k → Af E => y i) ⁻¹' {x | ∀ v, v ∉ S → x v ∈ v.adicCompletionIntegers E}`. Use extensionality with `y`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_iInter, Set.mem_preimage]`. Conclude with `⟨fun h i v hv => h v hv i, fun h v hv i => h i v hv⟩`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Rewrite using `[e]`. Conclude with `isOpen_iInter_of_finite fun i => h.preimage (continuous_apply i)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_fInt (S : Finset (HeightOneSpectrum (𝓞 E))) :
     IsOpen {y : Fin k → Af E | ∀ v, v ∉ S → ∀ i, y i v ∈ v.adicCompletionIntegers E} := by
@@ -38,9 +38,9 @@ theorem isOpen_fInt (S : Finset (HeightOneSpectrum (𝓞 E))) :
 
 omit [IsTotallyComplex E] in
 /- English proof (translation)
-Take `⟨T, hT⟩` from `hC.elim_finite_subcover (fun S : Finset (HeightOneSpectrum (𝓞 E)) => {y : Fin k → Af E | ∀ v, v ∉ S → ∀ i, y i v ∈ v.adicCompletionIntegers E}) (fun S => isOpen_fInt S) (fun y _ => by`. Establish `hfin : (⋃ i, {v : HeightOneSpectrum (𝓞 E) | y i v ∉ v.adicCompletionIntegers E}).Finite` using `Set.finite_iUnion fun i => Filter.eventually_cofinite.1 (y i).2`. Use `Set.mem_iUnion.2 ⟨hfin.toFinset, fun v hv i => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `hv (hfin.mem_toFinset.2 (Set.mem_iUnion.2 ⟨i, h⟩)))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨T.sup id, fun y hy v hv => ?_⟩` and prove the remaining obligations. Take `⟨S, hS, hyS⟩` from `Set.mem_iUnion₂.1 (hT hy)`. Conclude with `hyS v fun h => hv (Finset.mem_sup.2 ⟨S, hS, h⟩)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_finite_fInt {C : Set (Fin k → Af E)} (hC : IsCompact C) :
     ∃ S : Finset (HeightOneSpectrum (𝓞 E)), ∀ y ∈ C, ∀ v, v ∉ S → ∀ i, y i v ∈ v.adicCompletionIntegers E := by
@@ -60,13 +60,9 @@ theorem exists_finite_fInt {C : Set (Fin k → Af E)} (hC : IsCompact C) :
 
 omit [IsTotallyComplex E] in
 /- English proof (translation)
-Take `⟨S, hS⟩` from `exists_finite_fInt hC`. Establish `hfin : ∀ v : HeightOneSpectrum (𝓞 E), ∃ m : ℝ, 1 ≤ m ∧ ∀ y ∈ C, ‖fun i => y i v‖ ≤ m` using `fun v => exists_one_le_bound hC (f := fun y => ‖fun i => y i v‖) (continuous_norm.comp (continuous_pi fun i => (RestrictedProduct.continuous_eval v).comp (continuous_apply i)))`. Use `choose b hb1 hb using hfin`. Use `⟨∏ v ∈ S, b v, by simpa using Finset.prod_le_prod (s := S) (f := fun _ => (1:ℝ)) (fun _ _ => zero_le_one) (fun v _ => hb1 v), fun g ξ hξ hy => ?_⟩` and prove the remaining obligations. Establish `hfc` using `hasFiniteContent_height g hξ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set y : Fin k → Ad E := (fun i => algebraMap E (Ad E) (ξ i)) ᵥ* g.val with hy'`. Use `set b' : HeightOneSpectrum (𝓞 E) → ℝ := fun v => if v ∈ S then b v else 1 with hb'`. Establish `hsub : Function.mulSupport b' ⊆ (S : Set _)` using `fun v hv => by`. Assume the negation of the conclusion as `h`. Conclude with `hv (by simp only [hb', if_neg (show v ∉ S from h)])`.
-
-Use `(finprod_le_finprod_of_nonneg hfc.finite_mulSupport ((S.finite_toSet).subset hsub) (fun v => norm_nonneg _) fun v => ?_).trans (le_of_eq ?_)` and prove the remaining obligations. Simplify using `only [hb'] split_ifs with hv`. Conclude with `hb v _ hy`. Conclude with `(pi_norm_le_iff_of_nonneg zero_le_one).2 fun i => norm_le_one_of_mem v (hS _ hy v hv i)`. Rewrite using `[finprod_eq_prod_of_mulSupport_subset b' hsub]`.
-
-Conclude with `Finset.prod_congr rfl fun v hv => by simp only [hb', if_pos hv]`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fin_bd (C : Set (Fin k → Af E)) (hC : IsCompact C) : ∃ B : ℝ, 1 ≤ B ∧ ∀ (g : GA E k) (ξ : Fin k → E), ξ ≠ 0 →
     (fun i => pFin E (((fun i => algebraMap E (Ad E) (ξ i)) ᵥ* g.val) i)) ∈ C →
@@ -95,19 +91,17 @@ theorem fin_bd (C : Set (Fin k → Af E)) (hC : IsCompact C) : ∃ B : ℝ, 1 �
     exact Finset.prod_congr rfl fun v hv => by simp only [hb', if_pos hv]
 
 /- English proof (translation)
-The claim follows from `(InfinitePlace.Completion.isometry_extensionEmbedding w).norm_map_of_map_zero (map_zero _) _`.
+A detailed English derivation is pending.
 -/
 theorem norm_pInf (a : Ad E) (w : InfinitePlace E) : ‖pInf E a w‖ = ‖a.1 w‖ :=
   (InfinitePlace.Completion.isometry_extensionEmbedding w).norm_map_of_map_zero (map_zero _) _
 
 /- English proof (translation)
-Take `⟨Bf, hBf, hf⟩` from `fin_bd C hC`. Use `⟨Bf * (√k + 1) ^ (∑ w : InfinitePlace E, w.mult), by positivity, fun g ξ hξ hy => ?_⟩` and prove the remaining obligations. Use `set y : Fin k → Ad E := (fun i => algebraMap E (Ad E) (ξ i)) ᵥ* g.val with hy'`. Use `set z := fun i => pInf E (y i) with hz`. Establish `e : height g ξ = adelicNorm y` using `rfl`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e, adelicNorm]`. Establish `hw : ∀ w : InfinitePlace E, euclidNorm (infComp w y) ≤ (√k + 1) * ‖z‖` using `fun w => by`. Use `(euclidNorm_le_sqrt_mul _).trans (mul_le_mul (by linarith) ?_ (norm_nonneg _) (by positivity))` and prove the remaining obligations. Use `(pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun i => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `‖(y i).1 w‖ ≤ ‖z‖`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← norm_pInf]`. Conclude with `(norm_le_pi_norm (z i) w).trans (norm_le_pi_norm z i)`. Establish `h1 : (∏ w : InfinitePlace E, euclidNorm (infComp w y) ^ w.mult) ≤ ((√k + 1) * ‖z‖) ^ (∑ w : InfinitePlace E, w.mult)`. Rewrite using `[← Finset.prod_pow_eq_pow_sum]`. Conclude with `Finset.prod_le_prod (fun w _ => pow_nonneg (euclidNorm_nonneg _) _) fun w _ => pow_le_pow_left₀ (euclidNorm_nonneg _) (hw w) _`.
-
-Establish `h2` using `hf g ξ hξ hy`. Establish `h3 : 0 ≤ ∏ᶠ v, ‖finComp v y‖` using `finprod_nonneg fun _ => norm_nonneg _`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem ht_le (C : Set (Fin k → Af E)) (hC : IsCompact C) : ∃ B : ℝ, 0 < B ∧ ∀ (g : GA E k) (ξ : Fin k → E), ξ ≠ 0 →
     (fun i => pFin E (((fun i => algebraMap E (Ad E) (ξ i)) ᵥ* g.val) i)) ∈ C →
@@ -144,11 +138,11 @@ namespace SeparatedThetaSum
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {k : ℕ}
 
 /- English proof (translation)
-Establish `ht : 0 < ρ ^ d` using `pow_pos hρ d`. Establish `h1 : 1 ≤ (1 + ρ) ^ (d * a)` using `one_le_pow₀ (by linarith)`. Establish `h2 : (ρ ^ d) ^ a ≤ (1 + ρ) ^ (d * a)`. Rewrite using `[pow_mul]; exact pow_le_pow_left₀ ht.le (pow_le_pow_left₀ hρ.le (by linarith) d) a`. Break down `le_total (ρ ^ d) 1 with h | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `h3 : ((ρ ^ d) ^ k)⁻¹ ≤ ((ρ ^ d) ^ a)⁻¹` using `inv_anti₀ (pow_pos ht a) (pow_le_pow_of_le_one ht.le h hka)`. Establish `h4 : ((1 + ρ) ^ (d * a))⁻¹ ≤ 1` using `inv_le_one_of_one_le₀ h1`. Combine the equalities or inequalities in the displayed calculation. Establish `h3 : ((ρ ^ d) ^ k)⁻¹ ≤ 1` using `inv_le_one_of_one_le₀ (one_le_pow₀ h)`. Establish `h4 : ((1 + ρ) ^ (d * a))⁻¹ ≤ ((ρ ^ d) ^ a)⁻¹` using `inv_anti₀ (pow_pos ht a) h2`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem real_ineq (ρ : ℝ) (hρ : 0 < ρ) (d k a : ℕ) (hka : k ≤ a) :
     ((ρ ^ d) ^ k)⁻¹ * ((1 + ρ) ^ (d * a))⁻¹ ≤ ((ρ ^ d) ^ a)⁻¹ := by
@@ -170,24 +164,22 @@ theorem real_ineq (ρ : ℝ) (hρ : 0 < ρ) (d k a : ℕ) (hka : k ≤ a) :
       _ = _ := one_mul _
 
 /- English proof (translation)
-Simplify using `[Module.finrank_pi_fintype, Complex.finrank_real_complex, IsTotallyComplex.mult_eq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dim_eq : Module.finrank ℝ (Fin k → Cinf E) = k * ∑ w : InfinitePlace E, w.mult := by
   simp [Module.finrank_pi_fintype, Complex.finrank_real_complex, IsTotallyComplex.mult_eq]
 
 open Classical in
 /- English proof (translation)
-Use `tsum_le_of_sum_le' (by simp) fun s => ?_` and prove the remaining obligations. Apply the tactic sequence `rw [← ENNReal.ofReal_sum_of_nonneg (fun i _ => by split_ifs <;> positivity)]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_filter]`. Use `set t := s.filter p with ht`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hp : ∀ i ∈ t, p i` using `fun i hi => (Finset.mem_filter.1 hi).2`. Establish `hinj : Set.InjOn z t` using `fun i hi j hj hij => by`. Assume the negation of the conclusion as `h`. Use `hs i j (hp i hi) (hp j hj) h` as an intermediate fact. Rewrite `this` using `[hij, sub_self, norm_zero]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun i hi => ?_` and prove the remaining obligations. Rewrite using `[pow_add, mul_inv]`. Establish `h0 : 0 < 1 + ‖z i‖` using `by positivity`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul_of_nonneg_left (inv_anti₀ (by positivity) (pow_le_pow_left₀ (by linarith) (by linarith [hn i (hp i hi)]) m)) (by positivity)`. Use `_ = (∑ x ∈ t.image z, ((1 + ‖x‖) ^ (Module.finrank ℝ X + 1))⁻¹) * ((1 + ρ) ^ m)⁻¹ := by`. Rewrite using `[Finset.sum_image hinj, Finset.sum_mul]`. Use `_ ≤ C0 * (ρ ^ Module.finrank ℝ X)⁻¹ * ((1 + ρ) ^ m)⁻¹ := by`. Use `mul_le_mul_of_nonneg_right (hsep ρ hρ _ ?_ ?_) (by positivity)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `x hx`. Take `⟨i, hi, rfl⟩` from `Finset.mem_image.1 hx`. Conclude with `hn i (hp i hi)`. Introduce `x hx y hy hxy`. Take `⟨i, hi, rfl⟩` from `Finset.mem_image.1 hx`.
-
-Take `⟨j, hj, rfl⟩` from `Finset.mem_image.1 hy`. Conclude with `hs i j (hp i hi) (hp j hj) fun h => hxy (h ▸ rfl)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem core {ι X : Type} [NormedAddCommGroup X] [NormedSpace ℝ X] [FiniteDimensional ℝ X] (C0 : ℝ)
     (hsep : ∀ ρ : ℝ, 0 < ρ → ∀ P : Finset X, (∀ p ∈ P, ρ ≤ ‖p‖) → (∀ p ∈ P, ∀ q ∈ P, p ≠ q → ρ ≤ ‖p - q‖) →
@@ -230,23 +222,21 @@ theorem core {ι X : Type} [NormedAddCommGroup X] [NormedSpace ℝ X] [FiniteDim
 end SeparatedThetaSum
 
 /- English proof (translation)
-Introduce `E _ _ _ k Cf hCf a hka`. Use `set K : Set (Fin k → Af E) := Cf ∪ (fun p : (Fin k → Af E) × (Fin k → Af E) => p.1 - p.2) '' (Cf ×ˢ Cf) with hK`. Establish `hKc : IsCompact K` using `hCf.union ((hCf.prod hCf).image (continuous_fst.sub continuous_snd))`. Take `⟨B, hB, hht⟩` from `SeparatedThetaSum.ht_le K hKc`. Take `⟨C0, hC0, hsep⟩` from `SeparatedThetaSum.sep_sum (Fin k → Cinf E)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set d := ∑ w : InfinitePlace E, w.mult with hd`. Establish `hdpos : 0 < d` using `by rw [hd, InfinitePlace.sum_mult_eq]; exact Module.finrank_pos`. Use `⟨Module.finrank ℝ (Fin k → Cinf E) + 1 + d * a, C0 * B ^ a, fun g r hr hrh => ?_⟩` and prove the remaining obligations. Use `set ρ : ℝ := (r / B) ^ ((d : ℝ)⁻¹) with hρdef`. Establish `hρ0 : 0 < ρ` using `Real.rpow_pos_of_pos (div_pos hr hB) _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hρd : ρ ^ d = r / B` using `Real.rpow_inv_natCast_pow (div_pos hr hB).le hdpos.ne'`. Establish `hY : ∀ ξ ξ' : Fin k → E, (fun i => algebraMap E (Ad E) ((ξ - ξ') i)) ᵥ* g.val = (fun i => algebraMap E (Ad E) (ξ i)) ᵥ* g.val - (fun i => algebraMap E (Ad E) (ξ' i)) ᵥ* g.val`. Introduce `ξ ξ'`. Rewrite using `[← sub_vecMul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `i`. Simplify using `[map_sub]`. Establish `key : ∀ ξ : Fin k → E, ξ ≠ 0 → (fun i => pFin E (((fun i => algebraMap E (Ad E) (ξ i)) ᵥ* g.val) i)) ∈ K → ρ ≤ ‖fun i => pInf E (((fun i => algebraMap E (Ad E) (ξ i)) ᵥ* g.val) i)‖` using `fun ξ hξ hK => by`. Establish `h1` using `(hrh ξ hξ).trans (hht g ξ hξ hK)`. Establish `h2 : ρ ^ d ≤ ‖fun i => pInf E (((fun i => algebraMap E (Ad E) (ξ i)) ᵥ* g.val) i)‖ ^ d`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[hρd, div_le_iff₀ hB]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `(pow_le_pow_iff_left₀ hρ0.le (norm_nonneg _) hdpos.ne').1 h2`. Establish `hcore` using `SeparatedThetaSum.core (ι := {ξ : Fin k → E // ξ ≠ 0}) C0 hsep (fun ξ => fun i => pInf E (((fun i => algebraMap E (Ad E) (ξ.1 i)) ᵥ* g.val) i)) (fun ξ => (fun i => pFin E (((fun i => algebraMap E (Ad E) (ξ.1 i)) ᵥ* g.val) i)) ∈ Cf) ρ hρ0 (fun ξ hξ => key ξ.1 ξ.2 (Or.inl hξ)) (fun …`. Establish `hne' : ξ.1 - ξ'.1 ≠ 0` using `sub_ne_zero.2 fun h => hne (Subtype.ext h)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `key (ξ.1 - ξ'.1) hne' (Or.inr ⟨(_, _), ⟨h, h'⟩, by` as an intermediate fact. Simplify using `only [hY]`. Use extensionality with `i`. Simplify using `[map_sub]⟩)`. Use `this.trans_eq (congrArg norm ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hY]`. Use extensionality with `i`. Simplify using `[map_sub]) (d * a)`. Use `le_trans ?_ (hcore.trans (ENNReal.ofReal_le_ofReal ?_))` and prove the remaining obligations. Use `le_of_eq (tsum_congr fun ξ => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Set.indicator_apply]`. Rewrite using `[SeparatedThetaSum.dim_eq, ← hd, mul_comm k d, pow_mul]`. Establish `h` using `SeparatedThetaSum.real_ineq ρ hρ0 d k a hka`. Establish `e : ((ρ ^ d) ^ a)⁻¹ = B ^ a * (r ^ a)⁻¹` using `by rw [hρd, div_pow, inv_div, div_eq_mul_inv]`. Rewrite `h` using `[e]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem theta_bound_holds : ThetaSeriesBound := by
   intro E _ _ _ k Cf hCf a hka

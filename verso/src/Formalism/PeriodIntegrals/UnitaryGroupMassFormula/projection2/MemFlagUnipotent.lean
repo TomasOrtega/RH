@@ -9,11 +9,9 @@ open Loc LocE
 variable {k : Type} [Field k] {n c : ℕ}
 
 /- English proof (translation)
-Establish `hle : (PI.OneCosetSharp.Loc.Ufl k n c i).map (r : (Fin (n + c) → k) →ₗ[k] (Fin (n + c) → k)) ≤ PI.OneCosetSharp.Loc.Ufl k n c i`. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Conclude with `h w hw`. Establish `heq : (PI.OneCosetSharp.Loc.Ufl k n c i).map (r : (Fin (n + c) → k) →ₗ[k] (Fin (n + c) → k)) = PI.OneCosetSharp.Loc.Ufl k n c i` using `Submodule.eq_of_le_of_finrank_eq hle (LinearEquiv.finrank_map_eq r _)`. Rewrite `hv` using `[← heq]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw, hwv⟩` from `hv`. Establish `: r.symm v = w`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Conclude with `hwv.symm`. Rewrite using `[this]`.
-
-Conclude with `hw`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem symm_mem_Ufl_of_maps_Ufl {i : ℕ} {r : (Fin (n + c) → k) ≃ₗ[k] (Fin (n + c) → k)}
     (h : ∀ v ∈ PI.OneCosetSharp.Loc.Ufl k n c i, r v ∈ PI.OneCosetSharp.Loc.Ufl k n c i) {v : Fin (n + c) → k}
@@ -32,9 +30,9 @@ private theorem symm_mem_Ufl_of_maps_Ufl {i : ℕ} {r : (Fin (n + c) → k) ≃�
   exact hw
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `hr`. Use `⟨fun i v hv => symm_mem_Ufl_of_maps_Ufl (h1 i) hv, ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearEquiv.symm_apply_eq]`. Conclude with `h2.symm`. Establish `hu` using `symm_mem_Ufl_of_maps_Ufl (h1 i) (h3 i)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hneg` using `(PI.OneCosetSharp.Loc.Ufl k n c i).neg_mem hu`. Establish `: r.symm (PI.OneCosetSharp.Loc.eN k (n + c) (n + i)) - PI.OneCosetSharp.Loc.eN k (n + c) (n + i) = -r.symm (r (PI.OneCosetSharp.Loc.eN k (n + c) (n + i)) - PI.OneCosetSharp.Loc.eN k (n + c) (n + i))`. Rewrite using `[map_sub, LinearEquiv.symm_apply_apply, neg_sub]`. Rewrite using `[this]`. Conclude with `hneg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem R1cond_symm {r : (Fin (n + c) → k) ≃ₗ[k] (Fin (n + c) → k)} (hr : R1cond k n c r) : R1cond k n c r.symm := by
   obtain ⟨h1, h2, h3⟩ := hr
@@ -50,13 +48,13 @@ theorem R1cond_symm {r : (Fin (n + c) → k) ≃ₗ[k] (Fin (n + c) → k)} (hr 
     exact hneg
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hr, R1cond_symm hr⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_flagUnipotent {r : (Fin (n + c) → k) ≃ₗ[k] (Fin (n + c) → k)} (hr : R1cond k n c r) : r ∈ R1 k n c :=
   ⟨hr, R1cond_symm hr⟩
 
 /- English proof (translation)
-Use `show (∀ l : Fin (n + c), l.1 ∉ {l | l < n + i} → v l = 0) ↔ _`. Simplify using `only [Set.mem_ofPred_eq, not_lt]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_Ufl {i : ℕ} {v : Fin (n + c) → k} : v ∈ Ufl k n c i ↔ ∀ l : Fin (n + c), n + i ≤ l.1 → v l = 0 := by
   show (∀ l : Fin (n + c), l.1 ∉ {l | l < n + i} → v l = 0) ↔ _
@@ -69,19 +67,19 @@ def AP : (Fin (n + c) → k) →ₗ[k] (Fin (n + c) → k) :=
   LinearMap.pi fun l => if l.1 < n then 0 else LinearMap.proj l
 
 /- English proof (translation)
-Apply the tactic sequence `by_cases h : l.1 < n <;> simp [XP, h]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lowProj_apply₂ (v : Fin (n + c) → k) (l : Fin (n + c)) : (XP : (Fin (n + c) → k) →ₗ[k] _) v l = if l.1 < n then v l else 0 := by
   by_cases h : l.1 < n <;> simp [XP, h]
 
 /- English proof (translation)
-Apply the tactic sequence `by_cases h : l.1 < n <;> simp [AP, h]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem projA_apply (v : Fin (n + c) → k) (l : Fin (n + c)) : (AP : (Fin (n + c) → k) →ₗ[k] _) v l = if l.1 < n then 0 else v l := by
   by_cases h : l.1 < n <;> simp [AP, h]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `l`. Rewrite using `[Pi.add_apply, lowProj_apply₂, projA_apply]`. Apply the tactic sequence `by_cases h : l.1 < n <;> simp [h]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lowProj_add_highProj (v : Fin (n + c) → k) : (XP : (Fin (n + c) → k) →ₗ[k] _) v + AP v = v := by
   funext l
@@ -89,7 +87,7 @@ theorem lowProj_add_highProj (v : Fin (n + c) → k) : (XP : (Fin (n + c) → k)
   by_cases h : l.1 < n <;> simp [h]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `l`. Rewrite using `[projA_apply]`. Distinguish the cases in `h : l.1 < n`. Simplify using `[h]`. Simplify using `[h, PI.OneCosetSharp.Loc.inX]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem projA_inX (v : Fin n → k) : (AP : (Fin (n + c) → k) →ₗ[k] _) (inX k n c v) = 0 := by
   funext l

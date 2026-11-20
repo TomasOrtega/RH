@@ -17,11 +17,11 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 namespace GlobalTheory.ThK.ComplPair
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hH' hq _ M₁ om₁ hM₁ hom₁`. Establish `hP` using `(Check.isPair_of_isTriple hT).1`. Establish `hW : G.W.IsSkew σ B (a + a' - G.p) G.p`. Establish `h` using `hT.geo.hW`. Rewrite `h` using `[hq, add_zero]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨P, hPι⟩` from `GlobalTheory.plane_iota_leftInverse F E σ B hT.base _ _ G.W W₁ H' i₀ i₁ _ _ hW hH'`. Establish `hW₁ : W₁.IsSkew σ B (a + a' - G.p - 1) (G.p - 1)` using `⟨GlobalTheory.plane_compl_skew F E σ B hT.base _ _ G.W W₁ H' i₀ i₁ _ _ hW hH', GlobalTheory.SkewPlaneSig.hasSig_skew_complement F E σ B hT.base _ _ G.W W₁ H' i₀ i₁ _ _ hW hH' P hPι, GlobalTheory.isLattice_complement_of_adapted_plane F E σ B hT.base _ _ G.W W₁ H' i₀ i₁ _ _ hW hH' …`. Establish `hres₁ : ResEtaPow (Units.map (algebraMap F (AF F)).toMonoidHom).range (X.β / X.α) d₁`. Introduce `u`. Rewrite using `[hP.resW u, hH'.rank, pow_add, neg_one_sq, mul_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨hT.base, hT.geo.hV, hW₁, hM₁, hP.hX, hP.hW, hP.resX, hres₁, hom₁⟩`.
+Supply the required witnesses or components.
 -/
 theorem isPair_compl : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)
     (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →

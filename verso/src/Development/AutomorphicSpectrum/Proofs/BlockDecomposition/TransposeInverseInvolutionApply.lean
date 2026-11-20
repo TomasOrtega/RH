@@ -10,7 +10,7 @@ open scoped Matrix
 namespace GlobalTheory.CompanionTheory.ThetaInv
 
 /- English proof (translation)
-Simplify using `[thetaW, invT, Matrix.reindexAlgEquiv_apply, Matrix.reindex_apply, Matrix.submatrix, Matrix.transpose_apply, Fin.revPerm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem thetaW_val_apply {A : Type} [CommRing A] (N : ℕ) (g : GL (Fin N) A) (i j : Fin N) :
     (thetaW A N g).1 i j = (g⁻¹).1 (Fin.rev j) (Fin.rev i) := by
@@ -18,7 +18,7 @@ theorem thetaW_val_apply {A : Type} [CommRing A] (N : ℕ) (g : GL (Fin N) A) (i
     Matrix.transpose_apply, Fin.revPerm]
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Rewrite using `[thetaW_val_apply, ← map_inv, thetaW_val_apply, inv_inv, Fin.rev_rev, Fin.rev_rev]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem thetaW_thetaW_ring {A : Type} [CommRing A] (N : ℕ) (g : GL (Fin N) A) :
     thetaW A N (thetaW A N g) = g := by
@@ -26,7 +26,7 @@ theorem thetaW_thetaW_ring {A : Type} [CommRing A] (N : ℕ) (g : GL (Fin N) A) 
   rw [thetaW_val_apply, ← map_inv, thetaW_val_apply, inv_inv, Fin.rev_rev, Fin.rev_rev]
 
 /- English proof (translation)
-The claim follows from `thetaW_thetaW_ring N g`.
+A detailed English derivation is pending.
 -/
 theorem thetaW_thetaW {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (N : ℕ) (g : GL (Fin N) k) :

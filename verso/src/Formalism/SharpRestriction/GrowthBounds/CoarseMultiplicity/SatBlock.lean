@@ -27,7 +27,7 @@ def giF (v : BVar N r D.T.t) : MvPolynomial (BVar N r D.T.t) (KK O) :=
   | Sum.inr (i, true) => X (Sum.inr (i, true)) - qq (O := O) (r := r) D i
 
 /- English proof (translation)
-Use `Fin.lastCases ?_ (fun i' => ?_) i` and prove the remaining obligations. Simplify using `[qq, xiVar, hf]`. Simplify using `[qq, hf]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem qq_fix (f : BVar N r D.T.t → MvPolynomial (BVar N r D.T.t) (KK O)) (hf : ∀ a, f (Sum.inl a) = X (Sum.inl a))
     (i : Fin (D.T.t + 1)) : aeval f (qq (O := O) (r := r) D i) = qq (O := O) (r := r) D i := by
@@ -36,7 +36,7 @@ theorem qq_fix (f : BVar N r D.T.t → MvPolynomial (BVar N r D.T.t) (KK O)) (hf
   · simp [qq, hf]
 
 /- English proof (translation)
-Use `Fin.lastCases ?_ (fun i' => ?_) i` and prove the remaining obligations. Simplify using `only [qq, Fin.lastCases_last]`. Conclude with `Subalgebra.sum_mem _ fun c _ => (IntAlg O _).mul_mem (X_mem_intAlg O _) (X_mem_intAlg O _)`. Simplify using `only [qq, Fin.lastCases_castSucc]`. Conclude with `Subalgebra.sum_mem _ fun c _ => (IntAlg O _).mul_mem (X_mem_intAlg O _) (X_mem_intAlg O _)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem qq_int (i : Fin (D.T.t + 1)) : qq (O := O) (r := r) D i ∈ IntAlg O (BVar N r D.T.t) := by
   refine Fin.lastCases ?_ (fun i' => ?_) i
@@ -46,9 +46,9 @@ theorem qq_int (i : Fin (D.T.t + 1)) : qq (O := O) (r := r) D i ∈ IntAlg O (BV
     exact Subalgebra.sum_mem _ fun c _ => (IntAlg O _).mul_mem (X_mem_intAlg O _) (X_mem_intAlg O _)
 
 /- English proof (translation)
-Establish `h : ((aeval (giF (O` using `O) (r := r) D)).comp ((aeval (beF (O := O) (r := r) D)).comp (tau D))) = aeval (beF (O := O) (r := r) D) := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce and unpack `(a | ⟨i, _ | _⟩)`. Simplify using `[tau, tauF, beF, giF]`. Simplify using `[tau, tauF, beF, giF]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [AlgHom.comp_apply, tau, aeval_X, tauF, map_add, map_mul, beF, one_mul, giF, map_one]`. Rewrite using `[qq_fix D (beF D) (fun _ => rfl), qq_fix D (giF D) (fun _ => rfl)]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `DFunLike.congr_fun h P`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem gi_be_tau (P : MvPolynomial (BVar N r D.T.t) (KK O)) :
     aeval (giF (O := O) (r := r) D) (aeval (beF (O := O) (r := r) D) (tau D P)) = aeval (beF (O := O) (r := r) D) P := by
@@ -64,9 +64,9 @@ theorem gi_be_tau (P : MvPolynomial (BVar N r D.T.t) (KK O)) :
   exact DFunLike.congr_fun h P
 
 /- English proof (translation)
-Establish `h : (ppi (O` using `O) (r := r) D).comp (aeval (beF (O := O) (r := r) D)) = ppi D := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce and unpack `(a | ⟨i, _ | _⟩)`. Simplify using `[beF]`. Simplify using `[beF, ppi, piF]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[beF]`. Conclude with `DFunLike.congr_fun h P`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ppi_be (P : MvPolynomial (BVar N r D.T.t) (KK O)) :
     ppi D (aeval (beF (O := O) (r := r) D) P) = ppi D P := by
@@ -79,19 +79,15 @@ theorem ppi_be (P : MvPolynomial (BVar N r D.T.t) (KK O)) :
   exact DFunLike.congr_fun h P
 
 /- English proof (translation)
-Proceed by induction on `q using MvPolynomial.induction_on generalizing e with`. Consider the case `C a`. Rewrite using `[map_C]`. Establish `: ppi (O` using `O) (r := r) D (C (algebraMap O (KK O) a)) = C (C (algebraMap O (KK O) a)) := by`. Simplify using `[ppi, MvPolynomial.algebraMap_eq]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, coeff_C]`. Use `split_ifs`. Conclude with `⟨C a, by simp⟩`. Conclude with `(IntAlg O _).zero_mem`. Consider the case `add p q hp hq`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[map_add, map_add, coeff_add]`. Conclude with `(IntAlg O _).add_mem (hp e) (hq e)`. Consider the case `mul_X p v hp`. Rewrite using `[map_mul, map_mul, map_X]`. Establish `hv : ppi (O` using `O) (r := r) D (X v) = piF D v := by simp [ppi]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hv]`. Break down `v with ⟨a, c⟩ | ⟨i, _ | _⟩` into its components or cases. Use `Fin.lastCases ?_ (fun a' => ?_) a` and prove the remaining obligations. Simplify using `only [piF, Fin.lastCases_last]`. Rewrite using `[coeff_mul_X']`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `split_ifs`. Conclude with `hp _`. Conclude with `(IntAlg O _).zero_mem`. Simplify using `only [piF, Fin.lastCases_castSucc]`. Rewrite using `[mul_comm, coeff_C_mul]`.
-
-Conclude with `(IntAlg O _).mul_mem (X_mem_intAlg O _) (hp e)`. Simplify using `only [piF, mul_one]`. Conclude with `hp e`. Simplify using `only [piF]`. Rewrite using `[coeff_mul_X']`.
-
-Use `split_ifs`. Conclude with `hp _`. Conclude with `(IntAlg O _).zero_mem`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ppi_int (q : MvPolynomial (BVar N r D.T.t) O) (e : (Fin (D.T.t + 1) ⊕ Fin r) →₀ ℕ) :
     coeff e (ppi (O := O) (r := r) D (map (algebraMap O (KK O)) q)) ∈ IntAlg O (Fin N × Fin r) := by
@@ -131,25 +127,21 @@ theorem ppi_int (q : MvPolynomial (BVar N r D.T.t) O) (e : (Fin (D.T.t + 1) ⊕ 
       · exact (IntAlg O _).zero_mem
 
 /- English proof (translation)
-Rewrite `hx` using `[span_eq_range]`. Take `⟨v, rfl⟩` from `hx`. Establish `hv` using `Ltot_apply D v`. Use `set B := ∑ i : ↥(IF (r := r) D), base D i.1.1 i.1.2 (v i : MvPolynomial (Fin N × Fin r) (KK O)) with hB`. Establish `hT : Ltot D v = tau D B`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hv, hB, map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => ell_eq_tau D _ _ _`. Establish `h1 : aeval (beF (O` using `O) (r := r) D) B ∈ IntAlg O (BVar N r D.T.t) := by`. Rewrite using `[← gi_be_tau D B, ← hT]`. Use `aeval_mem_intAlg O _ ?_ (aeval_mem_intAlg O _ ?_ (intPol_le O hi))` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `(a | ⟨i, _ | _⟩)`. Conclude with `X_mem_intAlg O _`. Conclude with `X_mem_intAlg O _`. Conclude with `(IntAlg O _).sub_mem (X_mem_intAlg O _) (qq_int D i)`. Introduce and unpack `(a | ⟨i, _ | _⟩)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `X_mem_intAlg O _`. Conclude with `(IntAlg O _).one_mem`. Conclude with `X_mem_intAlg O _`. Take `⟨q, hq⟩` from `h1`. Establish `hq' : map (algebraMap O (KK O)) q = aeval (beF (O` using `O) (r := r) D) B := hq`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hint : ∀ i0 : ↥(IF (r` using `r) D), (v i0 : MvPolynomial (Fin N × Fin r) (KK O)) ∈ IntAlg O (Fin N × Fin r) := by`. Introduce `i0`. Establish `h2` using `ppi_int D q (eExp D i0.1.1 i0.1.2)`. Rewrite `h2` using `[hq', ppi_be, hB, map_sum]`. Simplify using `only [ppi_base] at h2`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h2` using `[coeff_sum, Finset.sum_eq_single i0]`. Rewrite `h2` using `[coeff_monomial, if_pos rfl]`. Then use the resulting hypothesis. Introduce `b _ hb`. Rewrite using `[coeff_monomial, if_neg]`. Introduce `he`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨e1, e2⟩` from `eExp_inj D he`. Conclude with `hb (Subtype.ext (Sigma.ext e1 (heq_of_eq e2)))`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Rewrite using `[hv]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Establish `hi'` using `i.2`. Unfold `IF at hi'`. Rewrite `hi'` using `[Finset.mem_sigma]`. Establish `hlv` using `(mem_Lv D _).1 hi'.1`.
-
-Establish `hβ` using `Finset.Nat.mem_antidiagonalTuple.1 hi'.2`. Take `⟨q0, hq0⟩` from `hint i`. Unfold `BlockData.SSZ`. Use `Submodule.subset_span ?_` and prove the remaining obligations. Simplify using `only [Set.mem_iUnion]`.
-
-Use `⟨i.1.1.1, i.1.1.2, hlv, (v i : MvPolynomial (Fin N × Fin r) (KK O)), ⟨(v i).2, ⟨q0, hq0⟩⟩, xiMon (KK O) N r D.T.t i.1.2, xiMon_mem D _ _ hβ, ?_⟩` and prove the remaining obligations. Rewrite using `[ell_apply]`. Simplify using `only [pre, mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sat_block (x : MvPolynomial (BVar N r D.T.t) (KK O))
     (hx : x ∈ Submodule.span (KK O) ((D.SSZ O (r := r) : Submodule O (MvPolynomial (BVar N r D.T.t) (KK O))) :
@@ -208,7 +200,7 @@ theorem sat_block (x : MvPolynomial (BVar N r D.T.t) (KK O))
 end
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ D x hx hi` and use `sat_block D x hx hi`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem satAt : SatAt := fun _ _ _ _ _ _ _ D x hx hi => sat_block D x hx hi
 

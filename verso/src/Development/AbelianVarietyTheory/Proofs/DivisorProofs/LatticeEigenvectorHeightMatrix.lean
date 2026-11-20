@@ -16,9 +16,9 @@ attribute [local instance] algPadicInt algPadicField towerPadic factPadic Global
 open GlobalTheory.ShFam.Descent
 
 /- English proof (translation)
-Introduce `E _ _ _ H p _ δ hδ l c _ Q τ hyp n xx g hx hb a`. Use `letI := H.starRing`. Use `set s := ∑ i, a i • ∑ j, g i j • Q.bLie (xx j) with hs`. Establish `hsV : s ∈ Q.eigV (embInt c Q.integers τ.1)` using `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (bLie_mem_eigV (hx j)))`. Establish `h1` using `hyp (δ⁻¹ • s) (Submodule.smul_mem _ _ hsV)`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[smul_smul, mul_inv_cancel₀ hδ, one_smul]`. Rewrite using `[← h1, hs, Finset.smul_sum]`. Repeatedly rewrite using `[smul_smul]`. Rewrite using `[hb.sum_mem_iff]`. Repeatedly rewrite using `[mem_range_iff_norm_le]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompHt.eigtau_sum_mem_latT_iff : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (p : ℕ) [Fact p.Prime]
     (δ : ℂ_[p]), δ ≠ 0 → ∀ (l : Level H) (c : Coeff l) [Algebra c.F ℂ_[p]],

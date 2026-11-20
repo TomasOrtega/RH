@@ -51,7 +51,7 @@ noncomputable abbrev finiteUnitsAboveRep :
   piUnitsRep
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `finiteUnitsAbove_smul_apply v σ y w`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem finiteUnitsAbove_smul_apply_of_eq (σ : Gal(L/K))
     (y : (w : PlacesOver L v) → (w.1.adicCompletion L)ˣ) (w w' : PlacesOver L v)
@@ -62,9 +62,9 @@ theorem finiteUnitsAbove_smul_apply_of_eq (σ : Gal(L/K))
   exact finiteUnitsAbove_smul_apply v σ y w
 
 /- English proof (translation)
-Introduce `σ f w hf`. Apply `Additive.toMul.injective` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(((σ • fun x => (f x).toMul) (σ • w) : ((σ • w).1.adicCompletion L)ˣ) : (σ • w).1.adicCompletion L) = 1`. Rewrite using `[finiteUnitsAbove_smul_apply, hf]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `map_one _`.
+A detailed English derivation is pending.
 -/
 theorem permutesFactors_finiteUnitsAboveRep : PermutesFactors (finiteUnitsAboveRep L v) := by
   intro σ f w hf
@@ -127,9 +127,9 @@ theorem finiteEmbedAboveRep_hom_apply (y : ∀ w : PlacesOver L v, Additive (w.1
   rfl
 
 /- English proof (translation)
-Apply `Rep.hom_ext` to reduce the goal to its premises. Apply `Representation.IntertwiningMap.ext` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `y`. Use function extensionality and compare the values at `w`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Express the relevant statement in the definitionally equal form `Additive.ofMul (finiteProjAbove v (finiteEmbedAbove v fun w => (y w).toMul) w) = y w`. Rewrite using `[finiteProjAbove_finiteEmbedAbove]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem finiteEmbedAboveRep_comp_finiteProjAboveRep :
     finiteEmbedAboveRep (L := L) v ≫ finiteProjAboveRep (L := L) v = 𝟙 _ := by
@@ -143,9 +143,9 @@ theorem finiteEmbedAboveRep_comp_finiteProjAboveRep :
   rfl
 
 /- English proof (translation)
-Apply `Rep.hom_ext` to reduce the goal to its premises. Apply `Representation.IntertwiningMap.ext` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `y`. Use function extensionality and compare the values at `w`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Express the relevant statement in the definitionally equal form `Additive.ofMul (finiteProjAbove v' (finiteEmbedAbove v fun w => (y w).toMul) w) = 0`. Rewrite using `[finiteProjAbove_finiteEmbedAbove_of_ne h]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem finiteEmbedAboveRep_comp_finiteProjAboveRep_of_ne {v v' : HeightOneSpectrum (𝓞 K)}
     (h : v' ≠ v) : finiteEmbedAboveRep (L := L) v ≫ finiteProjAboveRep (L := L) v' = 0 := by
@@ -167,7 +167,7 @@ variable (w : PlacesOver L v)
 omit [NumberField K] [NumberField L] in
 
 /- English proof (translation)
-Rewrite using `[MulAction.mem_stabilizer_iff, Subtype.ext_iff, coe_smul_placesOver, HeightOneSpectrum.ext_iff, smul_asIdeal]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_stabilizer_iff_smul_eq (σ : Gal(L/K)) :
     σ ∈ MulAction.stabilizer Gal(L/K) w.1.asIdeal ↔ σ • w = w := by
@@ -177,7 +177,7 @@ theorem mem_stabilizer_iff_smul_eq (σ : Gal(L/K)) :
 omit [NumberField K] in
 
 /- English proof (translation)
-Rewrite using `[decomposition_smul_def]`. Conclude with `congrFun (congrArg DFunLike.coe (ringHom_ext_adicCompletion w.1 (continuous_galHom _ _ _ h) (continuous_adicCompletionRingHomOf _ _) fun y => by`. Rewrite using `[galHom_algebraMap, adicCompletionRingHomOf_algebraMap])) x`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem galHom_eq_decomposition (σ : MulAction.stabilizer Gal(L/K) w.1.asIdeal)
     (h : w.1 = (σ : Gal(L/K)) • w.1) (x : w.1.adicCompletion L) :
@@ -188,9 +188,9 @@ theorem galHom_eq_decomposition (σ : MulAction.stabilizer Gal(L/K) w.1.asIdeal)
       rw [galHom_algebraMap, adicCompletionRingHomOf_algebraMap])) x
 
 /- English proof (translation)
-Rewrite using `[stabRep_apply]`. Apply `Additive.toMul.injective` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Establish `hw : w = (σ : Gal(L/K)) • w` using `((mem_stabilizer_iff_smul_eq v w σ).1 σ.2).symm`. Simplify using `only [piUnitsRep_apply, toMul_ofMul]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[finiteUnitsAbove_smul_apply_of_eq v (σ : Gal(L/K)) _ w w hw, galEquiv_apply, galHom_eq_decomposition]`. Simplify using `only [Pi.single_eq_same]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem stabRep_finiteUnitsAboveRep (σ : MulAction.stabilizer Gal(L/K) w.1.asIdeal)
     (a : Additive (w.1.adicCompletion L)ˣ) :

@@ -22,17 +22,17 @@ namespace BoxFamIndep
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor BoxIndep
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero`. Use `⟨F, inferInstance, inferInstance, fun i => i.elim0, fun c hc => ?_⟩` and prove the remaining obligations. Use `hc (fun i => i.elim0)` as an intermediate fact. Use function extensionality and compare the values at `a`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite `this` using `[Fintype.sum_unique]`. Rewrite using `[Subsingleton.elim a default]`. Simplify using `using this`. Consider the case `succ j ih`. Take `⟨B, _, _, em, h⟩` from `ih`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨TensorProduct F O B, inferInstance, inferInstance, Fin.cons Algebra.TensorProduct.includeLeft (fun i => (Algebra.TensorProduct.includeRight).comp (em i)), fun c hc => ?_⟩` and prove the remaining obligations. Establish `key : ∀ (α₀ : A) (α : Fin j → A), ∑ l : Fin m, β α₀ l ⊗ₜ[F] (∑ a : Fin j → Fin m, c (Fin.cons l a) • ∏ i, em i (β (α i) (a i))) = 0`. Introduce `α₀ α`. Rewrite using `[← hc (Fin.cons α₀ α), ← (Fin.consEquiv (fun _ : Fin (j+1) => Fin m)).sum_comp, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[TensorProduct.tmul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `only [Fin.consEquiv_apply, Fin.prod_univ_succ, Fin.cons_zero, Fin.cons_succ, AlgHom.comp_apply]`. Rewrite using `[← map_prod, Algebra.TensorProduct.includeLeft_apply, Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.tmul_mul_tmul, _root_.mul_one, _root_.one_mul, TensorProduct.tmul_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `key2 : ∀ l, (fun a : Fin j → Fin m => c (Fin.cons l a)) = 0` using `fun l => h _ fun α => by`. Use `(Module.forall_dual_apply_eq_zero_iff F _).1 fun φ => ?_` and prove the remaining obligations. Use `congrFun (hβ (fun l => φ (∑ a : Fin j → Fin m, c (Fin.cons l a) • ∏ i, em i (β (α i) (a i)))) fun α₀ => ?_) l` and prove the remaining obligations. Use `congrArg (fun t => TensorProduct.rid F O (LinearMap.lTensor O φ t)) (key α₀ α)` as an intermediate fact. Simplify `this` using `only [map_sum (LinearMap.lTensor O φ), map_sum (TensorProduct.rid F O), LinearMap.lTensor_tmul, TensorProduct.rid_tmul, map_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use function extensionality and compare the values at `a`. Use `congrFun (key2 (a 0)) (Fin.tail a)` as an intermediate fact. Simplify using `only [Fin.cons_self_tail] at this`. Conclude with `this`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_tensor_pow (F O : Type) [Field F] [CommRing O] [Algebra F O] {A : Type} {m : ℕ} (β : A → Fin m → O)
     (hβ : ∀ c : Fin m → F, (∀ α, ∑ l, c l • β α l = 0) → c = 0) (j : ℕ) :
@@ -78,13 +78,13 @@ theorem exists_tensor_pow (F O : Type) [Field F] [CommRing O] [Algebra F O] {A :
 variable {X Z : Scheme.{0}}
 
 /- English proof (translation)
-Set `: Algebra F (X.presheaf.stalk x)` to `(germOf p x).toAlgebra`. Take `⟨B, _, _, em, h⟩` from `exists_tensor_pow F _ (fun α l => gs (𝟙 X) x (U α) (s α l)) (fun c hc => hs c fun α => by`. Use `hc α` as an intermediate fact. Simplify using `only [Algebra.smul_def] at this`. Conclude with `this) j`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Spec (CommRingCat.of B), Spec.map (CommRingCat.ofHom (algebraMap F B)), fun i => (Spec.map (CommRingCat.ofHom (em i).toRingHom) : _ ⟶ Spec (X.presheaf.stalk x)) ≫ X.fromSpecStalk x, fun i => ?_, fun i z α => fromSpecStalk_mem x (hx α) _, fun c hc => ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, fromSpecStalk_comp]`. Use `(Spec.map_comp _ _).symm.trans (congrArg Spec.map ?_)` and prove the remaining obligations. Use extensionality with `a`. Conclude with `(em i).commutes a`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `h c fun α => eq_zero_of_germOf (B := CommRingCat.of B) _ fun z => ?_` and prove the remaining obligations. Rewrite using `[← hc α z, map_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, map_mul, map_prod]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← Category.id_comp (Spec.map _), germOf_map]`. Both sides reduce to the same expression. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[gs_fromSpecStalk x (hx _)]`. Conclude with `(germOf_map (B := X.presheaf.stalk x) (𝟙 _) (CommRingCat.ofHom (em i).toRingHom) z _).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_test {F : Type} [Field F] (p : X ⟶ Spec (CommRingCat.of F)) (x : X) {A : Type} {U : A → X.Opens}
     (hx : ∀ α, x ∈ U α) {m : ℕ} (s : ∀ α, Fin m → Γ(X, U α))
@@ -118,7 +118,7 @@ theorem exists_test {F : Type} [Field F] (p : X ⟶ Spec (CommRingCat.of F)) (x 
 variable {R : Type} [CommRing R] [IsDomain R] {F : Type} [Field F] [Algebra (FractionRing R) F] {k : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => rfl`. Consider the case `insert a S ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, add_f, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem sum_f {D : DegPre R} {K : Type} (S : Finset K) (b : K → Fam D F k) (α : D.X) (jj) :
     ((∑ l ∈ S, b l).s α).f jj = ∑ l ∈ S, ((b l).s α).f jj := by
@@ -128,7 +128,7 @@ theorem sum_f {D : DegPre R} {K : Type} (S : Finset K) (b : K → Fam D F k) (α
   | insert a S ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, add_f, ih]
 
 /- English proof (translation)
-Use `(congrArg _ (sum_f _ _ α jj)).trans ?_` and prove the remaining obligations. Use `(gs_fsum r z _ hz _ _).trans (Finset.sum_congr rfl fun l _ => ?_)` and prove the remaining obligations. Use `(gs_mul r z _ hz _ _).trans (congrArg (· * _) ?_)` and prove the remaining obligations. Conclude with `(gs_res r z le_top hz _).trans ((gs_pull r (fst (TF (R := R) F) D.P.A).left z ⊤ trivial _).trans (germOf_apply _ _ _).symm)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gs_comb {D : DegPre R} {K : Type} [Fintype K] (c : K → F) (b : K → Fam D F k) (α : D.X) (jj)
     (r : Z ⟶ (DegPre.BF D F).left) (z : Z) (hz : r z ∈ LB.wchart D.P.L (DegPre.famφ D F α) jj) :
@@ -142,25 +142,21 @@ theorem gs_comb {D : DegPre R} {K : Type} [Fintype K] (c : K → F) (b : K → F
     ((gs_pull r (fst (TF (R := R) F) D.P.A).left z ⊤ trivial _).trans (germOf_apply _ _ _).symm)
 
 /- English proof (translation)
-Use `Fintype.linearIndependent_iff.2 fun c hc => congrFun (?_ : c = 0)` and prove the remaining obligations. Use `D.P.isAb.smooth` as an intermediate fact. Use `D.P.isAb.geomConnected` as an intermediate fact. Establish `hg` using `geometricallyIntegral_of_smooth_of_geometricallyConnected_fibres D.P.A.hom`. Establish `hint : IsIntegral (DegPre.BF D F).left` using `hg.geometrically_isIntegral (TF (R := R) F).hom _ _ (IsPullback.of_hasPullback (TF (R := R) F).hom D.P.A.hom).flip`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose J₀ hJ₀ using fun χ : (DegPre.BF D F).left ⟶ D.P.A.left => exists_chart D.P.isLB (χ (genericPoint (DegPre.BF D F).left))`. Establish `hx : ∀ α, genericPoint (DegPre.BF D F).left ∈ LB.wchart D.P.L (DegPre.famφ D F α) (fun a => J₀ (DegPre.famφ D F α a))` using `fun α => Set.mem_iInter.2 fun a => hJ₀ _`. Take `⟨Z, q, r, hq, hr, H⟩` from `exists_test (F := F) (fst (TF (R := R) F) D.P.A).left _ hx (fun α l => ((b l).s α).f (fun a => J₀ (DegPre.famφ D F α a))) (fun c hc => funext <| Fintype.linearIndependent_iff.1 hb c <| fam_ext fun α jj => by`. Use `fn_ext fun y hy => congrArg _ ?_` and prove the remaining obligations. Establish `hy' : genericPoint (DegPre.BF D F).left ∈ LB.wchart D.P.L (DegPre.famφ D F α) jj` using `((genericPoint_spec _).mem_open_set_iff (TopologicalSpace.Opens.isOpen _)).mpr ⟨y, trivial, hy⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `germ_injective_of_isIntegral _ _ hy'` to reduce the goal to its premises. Use `(gs_eq (𝟙 _) _ _ hy' _).symm.trans (Eq.trans ?_ (map_zero _).symm)` and prove the remaining obligations. Use `(sec_trans _ (𝟙 _) _ hy' (hx α)).trans ?_` and prove the remaining obligations. Use `(congrArg _ ((gs_comb c b α _ (𝟙 _) _ (hx α)).trans ?_)).trans (mul_zero _)` and prove the remaining obligations. Rewrite using `[Category.id_comp]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `hc α) j`. Set `T : Over (Spec (CommRingCat.of R))` to `Over.mk (q ≫ (TF (R := R) F).hom)`. Set `q' : T ⟶ TF (R` to `R) F := Over.homMk q rfl`. Set `r' : Fin j → (T ⟶ DegPre.BF D F)` to `fun i => Over.homMk (r i) (by`. Rewrite using `[← Over.w (fst (TF (R := R) F) D.P.A), ← Category.assoc, hq]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use the proof step `rfl)`. Set `ρ : T ⟶ DegPre.BF D' F` to `lift q' (Fan.IsLimit.lift pD.pw.lim fun i => r' i ≫ snd _ _)`. Establish `hρ : ∀ i, ρ ≫ TF (R` using `R) F ◁ pD.pw.pr i = r' i := fun i => by`. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, whiskerLeft_fst, lift_fst]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Over.OverMorphism.ext (hq i).symm`. Rewrite using `[Category.assoc, whiskerLeft_snd, ← Category.assoc, lift_snd]`. Conclude with `Fan.IsLimit.fac pD.pw.lim _ i`. Establish `hρ' : ∀ i, (ρ.left : Z ⟶ _) ≫ prB pD F i = r i` using `fun i => congrArg (fun g => g.left) (hρ i)`. Establish `hρq : (ρ.left : Z ⟶ _) ≫ (fst (TF (R` using `R) F) D'.P.A).left = q := congrArg (fun g => g.left) (lift_fst q' (Fan.IsLimit.lift pD.pw.lim fun i => r' i ≫ snd _ _))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `H c fun α z => ?_` and prove the remaining obligations. Take `⟨α', rfl⟩` from `pD.xe.surjective α`. Use `choose J hJ using fun ψ : Z ⟶ D.P.A.left => exists_chart D.P.isLB (ψ z)`. Establish `hJ : Good D.P.L z J` using `hJ`. Use `choose J' hJ' using fun ψ : Z ⟶ D'.P.A.left => exists_chart D'.P.isLB (ψ z)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hJ' : Good D'.P.L z J'` using `hJ'`. Establish `hm` using `hJ'.mem (DegPre.famφ D' F α') (ρ.left : Z ⟶ _)`. Establish `E` using `(gs_comb c b' α' _ (ρ.left : Z ⟶ _) z hm).symm.trans ((congrArg (fun s : Fam D' F k => gs (Y := Z) ρ.left z _ ((s.s α').f _)) hc).trans (gs_zero _ _ _ hm))`. Rewrite `E` using `[hρq]`. Establish `E'` using `fun a => BoxPhi.fam_val pD (hb' a) α' (Z := Z) ρ.left z hJ hJ'`.
-
-Simplify using `only [hρ'] at E'`. Take `⟨u, hu⟩ : ∃ u : Z.presheaf.stalk z, ∀ a, u * sval (Z` from `Z) ((b' a).s α') ρ.left z J' = ∏ i, sval ((b (a i)).s (pD.xe α' i)) (r i) z J := ⟨_, E'⟩`. Take `⟨v, hv⟩ : ∃ v : Fin j → Z.presheaf.stalk z, ∀ i l, gs (r i) z (LB.wchart D.P.L (DegPre.famφ D F (pD.xe α' i)) (fun a => J₀ (DegPre.famφ D F (pD.xe α' i) a))) (((b l).s (pD.xe α' i)).f (fun a => J₀ (DegPre.famφ D F (pD.xe α' i) a))) = v i * sval ((b l).s (pD.xe α' i)) (r i) z J` from `⟨_, fun i l => sec_trans _ (r i) z (hr i z _) (hJ.mem _ (r i))⟩`. Use `Eq.trans (Finset.sum_congr rfl fun a _ => ?_) ((Finset.mul_sum _ _ ((∏ i, v i) * u)).symm.trans ((congrArg _ E).trans (mul_zero _)))` and prove the remaining obligations. Use `Eq.trans (congrArg _ (((Finset.prod_congr rfl fun i _ => hv i (a i)).trans Finset.prod_mul_distrib).trans (congrArg _ (hu a).symm))) ?_` and prove the remaining obligations.
-
-Conclude with `(congrArg _ (_root_.mul_assoc _ _ _).symm).trans (mul_left_comm _ _ _)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem main {j : ℕ} {D D' : DegPre R} (pD : IsPowDeg D' D j) {m : ℕ} (b : Fin m → Fam D F k)
     (hb : LinearIndependent F b) (b' : (Fin j → Fin m) → Fam D' F k)
@@ -230,7 +226,7 @@ theorem main {j : ℕ} {D D' : DegPre R} (pD : IsPowDeg D' D j) {m : ℕ} (b : F
 end BoxFamIndep
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ pD _ _ _ _ _ b hb b' hb'` and use `BoxFamIndep.main pD b hb b' hb'`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem boxFam_linearIndependent : ∀ (R : Type) [CommRing R] [IsDomain R] (j : ℕ) (D D' : DegPre R) (pD : IsPowDeg D' D j) (F : Type) [Field F] [Algebra (FractionRing R) F] (k m : ℕ) (b : Fin m → Fam D F k), LinearIndependent F b → ∀ b' : (Fin j → Fin m) → Fam D' F k, (∀ a, IsBoxFam pD F k (b' a) (fun i => b (a i))) → LinearIndependent F b' :=
   fun _ _ _ _ _ _ pD _ _ _ _ _ b hb b' hb' => BoxFamIndep.main pD b hb b' hb'

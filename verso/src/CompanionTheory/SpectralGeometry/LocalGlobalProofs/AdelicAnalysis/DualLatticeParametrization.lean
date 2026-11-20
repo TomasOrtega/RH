@@ -9,14 +9,14 @@ noncomputable def ratBasis {F : Type} [Field F] [NumberField F] {κ : Type} [Fin
   b.localizationLocalization ℚ (nonZeroDivisors ℤ) F
 
 /- English proof (translation)
-Simplify using `[ratBasis, Module.Basis.localizationLocalization_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ratBasis_apply {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
     (b : Module.Basis κ ℤ (𝓞 F)) (v : κ) : ratBasis b v = (b v : F) := by
   simp [ratBasis, Module.Basis.localizationLocalization_apply]
 
 /- English proof (translation)
-Establish `hnd` using `traceForm_nondegenerate ℚ F`. Use `⟨fun u => (Algebra.traceForm ℚ F).dualBasis hnd (ratBasis b) u, fun v u => ?_⟩` and prove the remaining obligations. Establish `h` using `LinearMap.BilinForm.apply_dualBasis_left (B := Algebra.traceForm ℚ F) hnd (ratBasis b) u v`. Rewrite `h` using `[Algebra.traceForm_apply, ratBasis_apply, mul_comm]`. Conclude with `h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_trace_dual {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
     [DecidableEq κ] (b : Module.Basis κ ℤ (𝓞 F)) :
@@ -30,9 +30,9 @@ theorem exists_trace_dual {F : Type} [Field F] [NumberField F] {κ : Type} [Fint
   exact h
 
 /- English proof (translation)
-Establish `hnd` using `traceForm_nondegenerate ℚ F`. Rewrite using `[← sub_eq_zero]`. Apply `hnd.2 _` to reduce the goal to its premises. Introduce `z`. Establish `hL : (Algebra.trace ℚ F) ∘ₗ (LinearMap.mulRight ℚ (x - y)) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `(ratBasis b).ext fun v => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, LinearMap.mulRight_apply, ratBasis_apply, mul_sub, map_sub, h v, sub_self, LinearMap.zero_apply]`. Conclude with `LinearMap.congr_fun hL z`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_trace_eq {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
     (b : Module.Basis κ ℤ (𝓞 F)) {x y : F}
@@ -49,17 +49,17 @@ theorem eq_of_trace_eq {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype
   exact LinearMap.congr_fun hL z
 
 /- English proof (translation)
-Take `⟨d, hd⟩` from `exists_trace_dual b`. Establish `hNq : (N : ℚ) ≠ 0` using `by exact_mod_cast hN.ne'`. Establish `hu : IsUnit B.det` using `isUnit_iff_ne_zero.mpr hB`. Establish `hBB : ∀ c : ι → F, B *ᵥ (B⁻¹ *ᵥ c) = c` using `fun c => by`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv B hu, Matrix.one_mulVec]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hinj : ∀ y : ι → F, B⁻¹ *ᵥ (B *ᵥ y) = y` using `fun y => by`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul B hu, Matrix.one_mulVec]`. Choose the witnesses or unpack the hypotheses as in `⟨c, hc⟩ : ∃ c : (ι × InfinitePlace F → ℤ) → ι → F, ∀ n i v, (N : ℚ) * Algebra.trace ℚ F ((b v : F) * c n i) = n (i, v) := by`. Use `⟨fun n i => ∑ u, algebraMap ℚ F ((n (i, u) : ℚ) / N) * d u, fun n i v => ?_⟩` and prove the remaining obligations. Establish `: Algebra.trace ℚ F ((b v : F) * ∑ u, algebraMap ℚ F ((n (i, u) : ℚ) / N) * d u) = (n (i, v) : ℚ) / N`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [Finset.mul_sum, map_sum]`. Establish `hterm : ∀ u, Algebra.trace ℚ F ((b v : F) * (algebraMap ℚ F ((n (i, u) : ℚ) / N) * d u)) = ((n (i, u) : ℚ) / N) * (if v = u then 1 else 0)`. Introduce `u`. Rewrite using `[mul_left_comm, ← Algebra.smul_def, map_smul, hd, smul_eq_mul]`. Rewrite using `[Finset.sum_congr rfl fun u _ => hterm u]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Simplify using `only [this]`. Clear the denominators using the available nonvanishing facts. Use `⟨fun n => B⁻¹ *ᵥ c n, fun n i v => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Simplify using `only [hBB]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `hc n i v`. Use `choose m hm using hy`. Use `⟨fun p => m p.1 p.2, ?_⟩` and prove the remaining obligations. Establish `hcy : c (fun p => m p.1 p.2) = B *ᵥ y`. Use function extensionality and compare the values at `i`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `eq_of_trace_eq b fun v => mul_left_cancel₀ hNq ((hc (fun p => m p.1 p.2) i v).trans (hm i v).symm)`. Express the relevant statement in the definitionally equal form `B⁻¹ *ᵥ c (fun p => m p.1 p.2) = y`. Rewrite using `[hcy, hinj]`.
+A detailed English derivation is pending.
 -/
 theorem exists_dual_param (F : Type) [Field F] [NumberField F] (ι : Type) [Fintype ι]
     [DecidableEq ι] (B : Matrix ι ι F) (b : Module.Basis (InfinitePlace F) ℤ (𝓞 F)) (N : ℕ)

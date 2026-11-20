@@ -13,7 +13,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.HeckeBridge
 
 /- English proof (translation)
-Introduce `_ _ _ χ a s` and use `GlobalTheory.HeckeEpsAbs.finEps_eq χ a s`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem finEps_shift : ∀ (E : Type) [Field E] [NumberField E] (χ : HChar E) (a : HeightOneSpectrum (𝓞 E) →₀ ℕ) (s : ℂ), finEps χ a s = finEps χ a (1 / 2) * (((discr E).natAbs * a.prod fun v k => Ideal.absNorm v.asIdeal ^ k : ℕ) : ℂ) ^ (1 / 2 - s) :=
   fun _ _ _ χ a s => GlobalTheory.HeckeEpsAbs.finEps_eq χ a s

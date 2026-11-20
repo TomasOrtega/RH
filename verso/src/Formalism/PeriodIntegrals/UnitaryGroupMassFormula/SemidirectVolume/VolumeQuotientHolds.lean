@@ -13,7 +13,7 @@ section Dec
 variable {X : Type} [Group X] [TopologicalSpace X] {K N H : Subgroup X}
 
 /- English proof (translation)
-Use `he (e.symm k)` as an intermediate fact. Rewrite `this` using `[e.apply_symm_apply]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem dec_coe (e : (N × H) ≃ₜ K) (he : ∀ p : N × H, ((e p : K) : X) = (p.1 : X) * (p.2 : X))
     (k : K) : (k : X) = ((e.symm k).1 : X) * ((e.symm k).2 : X) := by
@@ -21,7 +21,7 @@ theorem dec_coe (e : (N × H) ≃ₜ K) (he : ∀ p : N × H, ((e p : K) : X) = 
   rwa [e.apply_symm_apply] at this
 
 /- English proof (translation)
-Establish `h1 : e (n1, h1) = e (n2, h2)` using `Subtype.ext (by rw [he, he]; exact h)`. Establish `h2` using `e.injective h1`. Conclude with `⟨congrArg Prod.fst h2, congrArg Prod.snd h2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem dec_unique (e : (N × H) ≃ₜ K) (he : ∀ p : N × H, ((e p : K) : X) = (p.1 : X) * (p.2 : X))
     {n1 n2 : N} {h1 h2 : H} (h : (n1 : X) * (h1 : X) = (n2 : X) * (h2 : X)) :
@@ -31,7 +31,7 @@ theorem dec_unique (e : (N × H) ≃ₜ K) (he : ∀ p : N × H, ((e p : K) : X)
   exact ⟨congrArg Prod.fst h2, congrArg Prod.snd h2⟩
 
 /- English proof (translation)
-Rewrite using `[e.symm_apply_eq]`. Conclude with `Subtype.ext (by rw [he]; exact hk)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem symm_eq (e : (N × H) ≃ₜ K) (he : ∀ p : N × H, ((e p : K) : X) = (p.1 : X) * (p.2 : X))
     {k : K} {n : N} {h : H} (hk : (k : X) = (n : X) * (h : X)) : e.symm k = (n, h) := by
@@ -41,7 +41,7 @@ theorem symm_eq (e : (N × H) ≃ₜ K) (he : ∀ p : N × H, ((e p : K) : X) = 
 end Dec
 
 /- English proof (translation)
-Use `Subgroup.mem_subgroupOf.mp γ.2` as an intermediate fact. Conclude with `(Subgroup.mem_inf.mp this).1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem memΓ {X : Type} [Group X] {Γ K : Subgroup X} (γ : ratG Γ K) : ((γ : K) : X) ∈ Γ := by
   have := Subgroup.mem_subgroupOf.mp γ.2
@@ -51,61 +51,55 @@ def mkR {X : Type} [Group X] {Γ K : Subgroup X} (x : K) (hx : (x : X) ∈ Γ) :
   ⟨x, Subgroup.mem_subgroupOf.2 ⟨hx, x.2⟩⟩
 
 /- English proof (translation)
-Introduce `X _ _ _ _ Γ K N H hS hR lK lN lH dK dN dH μK μN μH hK hN hH hP 𝓕 𝓕N 𝓕H h𝓕 h𝓕N h𝓕H`. Take `⟨hnorm, e, he⟩` from `hS`. Take `⟨_, _, _, _⟩` from `lK`. Take `⟨_, _, _, _⟩` from `lN`. Take `⟨_, _, _, _⟩` from `lH`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨_, _⟩` from `dK`. Take `⟨_, _⟩` from `dN`. Take `⟨_, _⟩` from `dH`. Establish `hNK : ∀ n : N, (n : X) ∈ K` using `fun n => by`. Establish `h` using `(e (n, 1)).2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[he]`. Simplify using `using h`. Establish `hHK : ∀ h : H, (h : X) ∈ K` using `fun h => by`. Establish `h'` using `(e (1, h)).2`. Rewrite `h'` using `[he]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using h'`. Take `⟨𝓕N0, mN0, uN0⟩` from `exists_sfd (ratG Γ N)`. Take `⟨𝓕H0, mH0, uH0⟩` from `exists_sfd (ratG Γ H)`. Establish `: MeasurableConstSMul (ratG Γ N) N` using `⟨fun γ => (continuous_const_mul ((γ : N))).measurable⟩`. Establish `: MeasurableConstSMul (ratG Γ H) H` using `⟨fun γ => (continuous_const_mul ((γ : H))).measurable⟩`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: MeasurableConstSMul (ratG Γ K) K` using `⟨fun γ => (continuous_const_mul ((γ : K))).measurable⟩`. Establish `eN : μN 𝓕N = μN 𝓕N0` using `h𝓕N.measure_eq (IsFundamentalDomain.mk' mN0.nullMeasurableSet uN0)`. Establish `eH : μH 𝓕H = μH 𝓕H0` using `h𝓕H.measure_eq (IsFundamentalDomain.mk' mH0.nullMeasurableSet uH0)`. Set `𝓕0 : Set K` to `e.symm ⁻¹' (𝓕N0 ×ˢ 𝓕H0)`. Establish `hm0 : MeasurableSet 𝓕0` using `e.symm.continuous.measurable (mN0.prod mH0)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hkey : ∀ (k : K) (δ : ratG Γ K), k ∈ 𝓕0 → δ • k ∈ 𝓕0 → δ = 1`. Introduce `k δ hk hδk`. Use `set p := e.symm k with hp`. Use `set q := e.symm (δ : K) with hq`. Use `set r := e.symm (δ • k) with hr`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hkX` using `dec_coe e he k`. Establish `hδX` using `dec_coe e he (δ : K)`. Establish `hrX` using `dec_coe e he (δ • k)`. Rewrite `hkX` using `[← hp]`. Rewrite `hδX` using `[← hq]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hrX` using `[← hr]`. Establish `hq2 : (q.2 : X) ∈ Γ` using `hR _ q.1.2 _ q.2.2 (hδX ▸ memΓ δ)`. Establish `hq1 : (q.1 : X) ∈ Γ`. Establish `: (q.1 : X) = ((δ : K) : X) * (q.2 : X)⁻¹` using `by rw [hδX]; group`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `Γ.mul_mem (memΓ δ) (Γ.inv_mem hq2)`. Establish `hcomb : ((δ • k : K) : X) = ((q.1 : X) * ((q.2 : X) * (p.1 : X) * (q.2 : X)⁻¹)) * ((q.2 : X) * (p.2 : X))` using `by show ((δ : K) : X) * (k : X) = _`. Rewrite using `[hδX, hkX]`. Use `group`. Set `n' : N` to `⟨(q.1 : X) * ((q.2 : X) * (p.1 : X) * (q.2 : X)⁻¹), N.mul_mem q.1.2 (hnorm _ q.2.2 _ p.1.2)⟩`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `h' : H` to `⟨(q.2 : X) * (p.2 : X), H.mul_mem q.2.2 p.2.2⟩`. Take `⟨hr1, hr2⟩` from `dec_unique e he (n1 := r.1) (h1 := r.2) (n2 := n') (h2 := h') (by rw [← hrX, hcomb])`. Establish `hk' : p.1 ∈ 𝓕N0 ∧ p.2 ∈ 𝓕H0` using `hk`. Establish `hδk' : r.1 ∈ 𝓕N0 ∧ r.2 ∈ 𝓕H0` using `hδk`. Set `η : ratG Γ H` to `mkR q.2 hq2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hη : η • p.2 ∈ 𝓕H0`. Establish `: η • p.2 = r.2` using `by rw [hr2]; rfl`. Rewrite using `[this]`. Conclude with `hδk'.2`. Establish `hη1 : η = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨γ0, -, hγ0⟩` from `uH0 p.2`. Establish `a` using `hγ0 η hη`. Establish `b` using `hγ0 1 (by show (1 : ratG Γ H) • p.2 ∈ 𝓕H0; rw [one_smul]; exact hk'.2)`. Rewrite using `[a, b]`. Establish `hq2' : (q.2 : X) = 1`.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg (fun t : ratG Γ H => ((t : H) : X)) hη1` as an intermediate fact. Simplify `this` using `[η, mkR]`. Set `ν : ratG Γ N` to `mkR q.1 hq1`. Establish `hν : ν • p.1 ∈ 𝓕N0`. Establish `: ν • p.1 = r.1`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hr1]`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (q.1 : X) * (p.1 : X) = (q.1 : X) * ((q.2 : X) * (p.1 : X) * (q.2 : X)⁻¹)`. Rewrite using `[hq2']`. Use `group`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `hδk'.1`. Establish `hν1 : ν = 1`. Take `⟨γ0, -, hγ0⟩` from `uN0 p.1`. Establish `a` using `hγ0 ν hν`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `b` using `hγ0 1 (by show (1 : ratG Γ N) • p.1 ∈ 𝓕N0; rw [one_smul]; exact hk'.1)`. Rewrite using `[a, b]`. Establish `hq1' : (q.1 : X) = 1`. Use `congrArg (fun t : ratG Γ N => ((t : N) : X)) hν1` as an intermediate fact. Simplify `this` using `[ν, mkR]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use `show ((δ : K) : X) = 1`. Rewrite using `[hδX, hq1', hq2', one_mul]`. Establish `huniq : ∀ k : K, ∃! γ : ratG Γ K, γ • k ∈ 𝓕0`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `k`. Use `set p := e.symm k with hp`. Establish `hkX` using `dec_coe e he k`. Rewrite `hkX` using `[← hp]`. Take `⟨η, hη, -⟩` from `uH0 p.2`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `n' : N` to `⟨((η : H) : X) * (p.1 : X) * ((η : H) : X)⁻¹, hnorm _ (η : H).2 _ p.1.2⟩`. Take `⟨ν, hν, -⟩` from `uN0 n'`. Set `γK : K` to `⟨((ν : N) : X) * ((η : H) : X), K.mul_mem (hNK _) (hHK _)⟩`. Set `γ : ratG Γ K` to `mkR γK (Γ.mul_mem (memΓ ν) (memΓ η))`. Establish `hγk : γ • k ∈ 𝓕0` using `by show e.symm (γ • k) ∈ 𝓕N0 ×ˢ 𝓕H0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[symm_eq e he (n := ν • n') (h := η • p.2)]`. Conclude with `⟨hν, hη⟩`. Use `show ((ν : N) : X) * ((η : H) : X) * (k : X) = ((ν : N) : X) * (((η : H) : X) * (p.1 : X) * ((η : H) : X)⁻¹) * (((η : H) : X) * (p.2 : X))`. Rewrite using `[hkX]`. Use `group`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `⟨γ, hγk, fun γ' hγ' => ?_⟩` and prove the remaining obligations. Establish `h1 : (γ' * γ⁻¹) • (γ • k) ∈ 𝓕0` using `by rwa [smul_smul, inv_mul_cancel_right]`. Use `hkey _ _ hγk h1` as an intermediate fact. Conclude with `(mul_inv_eq_one.1 this)`. Establish `h𝓕0 : IsFundamentalDomain (ratG Γ K) 𝓕0 μK` using `IsFundamentalDomain.mk' hm0.nullMeasurableSet huniq`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `eK : μK 𝓕 = μK 𝓕0` using `h𝓕.measure_eq h𝓕0`. Establish `hm0'` using `hm0`. Take `⟨B, hBm, hBe⟩` from `hm0`. Establish `hPB` using `hP (B.indicator 1) (measurable_one.indicator hBm)`. Establish `hL : (fun k : K => B.indicator (1 : X → ENNReal) (k : X)) = 𝓕0.indicator 1`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Apply the first step, then apply the next step to every resulting obligation.
 
-Use function extensionality and compare the values at `k`. Rewrite using `[← hBe]`. Both sides reduce to the same expression. Establish `hRfun : ∀ (m : N) (h : H), B.indicator (1 : X → ENNReal) ((m : X) * (h : X)) = 𝓕N0.indicator 1 m * 𝓕H0.indicator 1 h`. Introduce `m h`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmem : (m : X) * (h : X) ∈ B ↔ m ∈ 𝓕N0 ∧ h ∈ 𝓕H0`. Establish `h1 : (m : X) * (h : X) = ((e (m, h) : K) : X)` using `(he (m, h)).symm`. Establish `h2 : ((e (m, h) : K) : X) ∈ B ↔ e (m, h) ∈ 𝓕0`. Rewrite using `[← hBe]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, h2]`. Use `show e.symm (e (m, h)) ∈ 𝓕N0 ×ˢ 𝓕H0 ↔ _`. Rewrite using `[e.symm_apply_apply]`. Both sides reduce to the same expression. Apply the tactic sequence `by_cases hm : m ∈ 𝓕N0 <;> by_cases hh : h ∈ 𝓕H0 <;>`.
-
-Simplify using `[Set.indicator, hmem, hm, hh]`. Establish `hR2 : ∫⁻ m, ∫⁻ h, B.indicator (1 : X → ENNReal) ((m : X) * (h : X)) ∂μH ∂μN = μN 𝓕N0 * μH 𝓕H0`. Repeatedly rewrite using `[hRfun]`. Establish `hi : ∀ m : N, ∫⁻ h, 𝓕N0.indicator 1 m * 𝓕H0.indicator 1 h ∂μH = 𝓕N0.indicator 1 m * μH 𝓕H0`. Introduce `m`.
-
-Rewrite using `[lintegral_const_mul _ (measurable_one.indicator mH0), lintegral_indicator_one mH0]`. Repeatedly rewrite using `[hi]`. Rewrite using `[lintegral_mul_const _ (measurable_one.indicator mN0), lintegral_indicator_one mN0]`. Establish `hL2 : ∫⁻ k, B.indicator (1 : X → ENNReal) (k : X) ∂μK = μK 𝓕0`. Rewrite using `[hL, lintegral_indicator_one hm0']`.
-
-Rewrite using `[eK, eN, eH, ← hL2, ← hR2]`. Conclude with `hPB`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem volume_quotient_holds : VolG := by
   intro X _ _ _ _ Γ K N H hS hR lK lN lH dK dN dH μK μN μH hK hN hH hP 𝓕 𝓕N 𝓕H h𝓕 h𝓕N h𝓕H

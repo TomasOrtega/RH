@@ -32,7 +32,7 @@ section General
 variable {S : Scheme.{0}}
 
 /- English proof (translation)
-Use `(IsPullback.of_right (h₁₁ := (π ▷ B).left) (v₁₁ := pullback.fst W.hom B.hom) (h₂₁ := π.left) (v₁₂ := pullback.fst V.hom B.hom) ?_ (Over.whiskerRight_left_fst π) (IsPullback.of_hasPullback V.hom B.hom).flip).flip` and prove the remaining obligations. Rewrite using `[Over.whiskerRight_left_snd, Over.w]`. Conclude with `(IsPullback.of_hasPullback W.hom B.hom).flip`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPullback_whiskerRight {W V : Over S} (π : W ⟶ V) (B : Over S) :
     IsPullback (fst W B).left (π ▷ B).left π.left (fst V B).left := by
@@ -43,9 +43,9 @@ theorem isPullback_whiskerRight {W V : Over S} (π : W ⟶ V) (B : Over S) :
   exact (IsPullback.of_hasPullback W.hom B.hom).flip
 
 /- English proof (translation)
-Use `IsPullback.of_right ?_ ?_ (isPullback_whiskerRight π B)` and prove the remaining obligations. Rewrite using `[← Over.comp_left, ← Over.comp_left, lift_fst, lift_fst, Over.id_left, Over.id_left]`. Conclude with `IsPullback.of_horiz_isIso ⟨by simp⟩`. Rewrite using `[← Over.comp_left, ← Over.comp_left]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Use `ext1`. Simplify using the standard rewrite rules. Simplify using `[← Category.assoc]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isPullback_slice {W V B : Over S} (π : W ⟶ V) (y : 𝟙_ (Over S) ⟶ B) :
     IsPullback (lift (𝟙 W) (toUnit W ≫ y)).left π.left (π ▷ B).left (lift (𝟙 V) (toUnit V ≫ y)).left := by
@@ -59,7 +59,7 @@ theorem isPullback_slice {W V B : Over S} (π : W ⟶ V) (y : 𝟙_ (Over S) ⟶
     · simp [← Category.assoc]
 
 /- English proof (translation)
-Apply the tactic sequence `refine ⟨(toUnit B ≫ x)⁻¹ * 𝟙 B, ?_, ?_⟩ <;>`. Simplify using `[MonObj.comp_mul, GrpObj.comp_inv, ← Category.assoc]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem isIso_transl_left {B : Over S} [GrpObj B] (x : 𝟙_ (Over S) ⟶ B) :
     IsIso ((toUnit B ≫ x) * 𝟙 B) := by
@@ -67,7 +67,7 @@ theorem isIso_transl_left {B : Over S} [GrpObj B] (x : 𝟙_ (Over S) ⟶ B) :
     simp [MonObj.comp_mul, GrpObj.comp_inv, ← Category.assoc]
 
 /- English proof (translation)
-Apply the tactic sequence `refine ⟨𝟙 B * (toUnit B ≫ x)⁻¹, ?_, ?_⟩ <;>`. Simplify using `[MonObj.comp_mul, GrpObj.comp_inv, ← Category.assoc]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem isIso_transl_right {B : Over S} [GrpObj B] (x : 𝟙_ (Over S) ⟶ B) :
     IsIso (𝟙 B * (toUnit B ≫ x)) := by
@@ -75,7 +75,7 @@ theorem isIso_transl_right {B : Over S} [GrpObj B] (x : 𝟙_ (Over S) ⟶ B) :
     simp [MonObj.comp_mul, GrpObj.comp_inv, ← Category.assoc]
 
 /- English proof (translation)
-Take `⟨O, hO, hOw⟩` from `isDiscrete_iff_forall_exists_isOpen.mp (π.isDiscrete_preimage_singleton (π w)) w rfl`. Establish `hw : w ∈ O ∩ π ⁻¹' {π w}` using `by rw [hOw]; rfl`. Establish `hg : genericPoint W ∈ O ∩ π ⁻¹' {π w}` using `⟨(genericPoint_specializes w).mem_open hO hw.1, h.symm⟩`. Rewrite `hg` using `[hOw]`. Conclude with `hg.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_genericPoint {W V : Scheme.{0}} [IsIntegral W] (π : W ⟶ V) [IsFinite π] (w : W)
     (h : π w = π (genericPoint W)) : w = genericPoint W := by
@@ -87,7 +87,7 @@ theorem eq_genericPoint {W V : Scheme.{0}} [IsIntegral W] (π : W ⟶ V) [IsFini
   exact hg.symm
 
 /- English proof (translation)
-Establish `: JacobsonSpace X.left` using `LocallyOfFiniteType.jacobsonSpace X.hom`. Take `⟨c, hcZ, hc⟩` from `nonempty_inter_closedPoints hne hZ`. Use `⟨Over.homMk (pointOfClosedPoint X.hom c hc) (pointOfClosedPoint_comp X.hom c hc), fun p => ?_⟩` and prove the remaining obligations. Conclude with `(pointOfClosedPoint_apply X.hom c hc p).symm ▸ hcZ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_point {K : Type} [Field K] [IsAlgClosed K] (X : Over (Spec (CommRingCat.of K)))
     [LocallyOfFiniteType X.hom] {Z : Set X.left} (hZ : IsLocallyClosed Z) (hne : Z.Nonempty) :
@@ -98,7 +98,7 @@ theorem exists_point {K : Type} [Field K] [IsAlgClosed K] (X : Over (Spec (CommR
   exact (pointOfClosedPoint_apply X.hom c hc p).symm ▸ hcZ
 
 /- English proof (translation)
-The claim follows from `have := ExtendRig.isRegularRing_stalk isRegularRing_of_smooth K f x uniqueFactorizationMonoid_of_isRegularRing_of_isLocalRing exists_hasProjectiveDimensionLE_of_isRegularLocalRing isPrincipal_map_away_of_hasProjectiveDimensionLE _`.
+A detailed English derivation is pending.
 -/
 theorem ufd_stalk {K : Type} [Field K] {X : Scheme.{0}} [IsIntegral X] (f : X ⟶ Spec (CommRingCat.of K))
     [Smooth f] (x : X) : UniqueFactorizationMonoid (X.presheaf.stalk x) :=
@@ -108,7 +108,7 @@ theorem ufd_stalk {K : Type} [Field K] {X : Scheme.{0}} [IsIntegral X] (f : X �
     isPrincipal_map_away_of_hasProjectiveDimensionLE _
 
 /- English proof (translation)
-Rewrite using `[HasRingHomProperty.Spec_iff (P := @Smooth)]`. Conclude with `RingHom.smooth_algebraMap.2 {}`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smooth_affineSpace (K : Type) [Field K] (g : ℕ) :
     Smooth (Spec.map (CommRingCat.ofHom (algebraMap K (MvPolynomial (Fin g) K)))) := by
@@ -122,9 +122,9 @@ section Family
 variable {K : Type} [Field K] {W V B : Over (Spec (CommRingCat.of K))}
 
 /- English proof (translation)
-Establish `e : 𝟙 B.left = (lift (toUnit B ≫ v) (𝟙 B)).left ≫ (snd V B).left`. Rewrite using `[← Over.comp_left, lift_snd, Over.id_left]`. Establish `H' : LBIso (N.pull (lift (toUnit B ≫ v) (𝟙 B)).left) (N₀.pull (𝟙 B.left))` using `LBIso.chartPull (GlobalTheory.chartPullPull N _) (chartPullSame N₀ _ _ _ _ fun _ => e) H`. Establish `H'' : LBIso N₀ (N.pull (lift (toUnit B ≫ v) (𝟙 B)).left)` using `LBIso.trans hN₀ (pull_isLB hN₀ _) (pull_isLB hN _) (LBIso.symm (GlobalTheory.lbIso_of_chartPull (GlobalTheory.chartPullPull N₀ (𝟙 _)) hN₀)) (LBIso.symm H')`. Take `⟨t, ht⟩` from `GlobalTheory.exists_sec_nonzeroLocus_eq_of_lbIso hN₀ (pull_isLB hN _) H'' (GlobalTheory.secPull n _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨t, ht.trans (GlobalTheory.nonzeroLocus_secPull n _)⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_sec_fibre {N : LB (V ⊗ B).left} {N₀ : LB B.left} (hN : N.IsLB) (hN₀ : N₀.IsLB)
     (H : LBIso N (N₀.pull (snd V B).left)) (n : N.Sec) (v : 𝟙_ (Over (Spec (CommRingCat.of K))) ⟶ V) :
@@ -142,9 +142,9 @@ theorem exists_sec_fibre {N : LB (V ⊗ B).left} {N₀ : LB B.left} (hN : N.IsLB
 variable [GrpObj B]
 
 /- English proof (translation)
-Introduce `b hb`. Establish `e₁ : lift (toUnit B ≫ w) (𝟙 B) ≫ π ▷ B = lift (toUnit B ≫ w ≫ π) (𝟙 B)` using `by simp`. Establish `e₂ : lift (toUnit B ≫ w) (𝟙 B) ≫ ((fst W B ≫ a) * snd W B) = (toUnit B ≫ w ≫ a) * 𝟙 B`. Simplify using `[MonObj.comp_mul]`. Establish `h` using `hO _ hb ((lift (toUnit B ≫ w) (𝟙 B)).left b) (by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← Scheme.Hom.comp_apply, ← Over.comp_left, e₁])`. Rewrite using `[← e₂, Over.comp_left]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fibre_le (π : W ⟶ V) (a : W ⟶ B) (U : B.left.Opens) (O : (V ⊗ B).left.Opens)
     (hO : ∀ x, x ∈ O → ∀ z, (π ▷ B).left z = x → z ∈ ((fst W B ≫ a) * snd W B).left ⁻¹ᵁ U)
@@ -160,13 +160,13 @@ theorem fibre_le (π : W ⟶ V) (a : W ⟶ B) (U : B.left.Opens) (O : (V ⊗ B).
   exact h
 
 /- English proof (translation)
-Establish `hg : genericPoint W.left ∈ (π ≫ lift (𝟙 V) (toUnit V ≫ y)).left ⁻¹ᵁ O`. Use `hO _ fun z hz => ?_` and prove the remaining obligations. Take `⟨w', rfl, hw'⟩` from `Scheme.exists_preimage_of_isPullback (isPullback_slice π y) z (π.left (genericPoint W.left)) (by rw [hz, Over.comp_left, Scheme.Hom.comp_apply])`. Take `rfl` from `eq_genericPoint π.left w' hw'`. Establish `e : lift (𝟙 W) (toUnit W ≫ y) ≫ ((fst W B ≫ a) * snd W B) = a ≫ (𝟙 B * (toUnit B ≫ y))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `[MonObj.comp_mul, ← Category.assoc]`. Use `isIso_transl_right y` as an intermediate fact. Establish `: IsIso (𝟙 B * (toUnit B ≫ y)).left` using `inferInstanceAs (IsIso ((Over.forget _).map (𝟙 B * (toUnit B ≫ y))))`. Express the relevant statement in the definitionally equal form `((lift (𝟙 W) (toUnit W ≫ y)).left ≫ ((fst W B ≫ a) * snd W B).left) _ ∈ U`. Rewrite using `[← Over.comp_left, e, Over.comp_left, genericPoint_eq_of_isOpenImmersion]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((genericPoint_spec B.left).mem_open_set_iff U.isOpen).2 (by simpa using hU)`. Take `⟨w, hw⟩` from `exists_point W (Z := ((π ≫ lift (𝟙 V) (toUnit V ≫ y)).left ⁻¹ᵁ O : W.left.Opens)) (TopologicalSpace.Opens.isOpen _).isLocallyClosed ⟨_, hg⟩`. Use `⟨w, fun p => ?_⟩` and prove the remaining obligations. Establish `e : y ≫ lift (toUnit B ≫ w ≫ π) (𝟙 B) = w ≫ π ≫ lift (𝟙 V) (toUnit V ≫ y)` using `by ext1`. Simplify using `[← Category.assoc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[← Category.assoc]`. Establish `h` using `hw p`. Express the relevant statement in the definitionally equal form `(y.left ≫ (lift (toUnit B ≫ w ≫ π) (𝟙 B)).left) p ∈ O`. Rewrite using `[← Over.comp_left, e, Over.comp_left]`. Conclude with `h`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_fibre_mem [IsAlgClosed K] [IsIntegral B.left] [IsIntegral W.left] [LocallyOfFiniteType W.hom]
     (π : W ⟶ V) [IsFinite π.left] (a : W ⟶ B) [IsOpenImmersion a.left] (U : B.left.Opens)
@@ -203,29 +203,27 @@ theorem exists_fibre_mem [IsAlgClosed K] [IsIntegral B.left] [IsIntegral W.left]
 end Family
 
 /- English proof (translation)
-Use `hB.smooth` as an intermediate fact. Use `hB.proper` as an intermediate fact. Establish `: GeometricallyIntegral B.hom` using `forall_geometricallyIntegral_of_smooth_of_geometricallyConnected _ _ _ hB.smooth hB.geomConnected`. Establish `: IsIntegral B.left` using `GeometricallyIntegral.isIntegral_of_isLocallyNoetherian B.hom`. Establish `: IsLocallyNoetherian B.left` using `LocallyOfFiniteType.isLocallyNoetherian B.hom`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: B.left.IsSeparated` using `⟨by rw [← terminal.comp_from B.hom]; infer_instance⟩`. Take `⟨_, ⟨U, hU, rfl⟩, hxU, -⟩` from `B.left.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (genericPoint B.left)) isOpen_univ`. Take `⟨L, s, hL, hs⟩` from `GlobalTheory.exists_sec_nonzeroLocus_eq_of_isAffineOpen_of_factorial B.left (ufd_stalk B.hom) U hU ⟨_, hxU⟩`. Take `⟨g, W₀, V₀, π₀, hW, hfin, hflat, -, hπ⟩` from `GlobalTheory.Unif.exists_finite_flat_chart K B.left B.hom`. Set `A : Over (Spec (CommRingCat.of K))` to `Over.mk (Spec.map (CommRingCat.ofHom (algebraMap K (MvPolynomial (Fin g) K))))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `: Smooth A.hom` using `smooth_affineSpace K g`. Establish `: IsIntegral A.left` using `inferInstanceAs (IsIntegral (Spec (CommRingCat.of (MvPolynomial (Fin g) K))))`. Establish `: IsAffine A.left` using `inferInstanceAs (IsAffine (Spec (CommRingCat.of (MvPolynomial (Fin g) K))))`. Establish `: IsLocallyNoetherian A.left` using `LocallyOfFiniteType.isLocallyNoetherian A.hom`. Set `W : Over (Spec (CommRingCat.of K))` to `Over.mk (W₀.ι ≫ B.hom)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `V : Over (Spec (CommRingCat.of K))` to `Over.mk (V₀.ι ≫ A.hom)`. Set `π : W ⟶ V` to `Over.homMk π₀ hπ`. Set `a : W ⟶ B` to `Over.homMk W₀.ι rfl`. Set `j : V ⟶ A` to `Over.homMk V₀.ι rfl`. Establish `: IsFinite π.left` using `hfin`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: Flat π.left` using `hflat`. Establish `: IsOpenImmersion a.left` using `inferInstanceAs (IsOpenImmersion W₀.ι)`. Establish `: IsOpenImmersion j.left` using `inferInstanceAs (IsOpenImmersion V₀.ι)`. Establish `: Nonempty W.left` using `⟨⟨hW.choose, hW.choose_spec⟩⟩`. Establish `: IsIntegral W.left` using `isIntegral_of_isOpenImmersion a.left`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: LocallyOfFiniteType W.hom` using `inferInstanceAs (LocallyOfFiniteType (W₀.ι ≫ B.hom))`. Establish `: IsFinite (π ▷ B).left` using `MorphismProperty.of_isPullback (isPullback_whiskerRight π B) ‹_›`. Establish `: Flat (π ▷ B).left` using `MorphismProperty.of_isPullback (isPullback_whiskerRight π B) ‹_›`. Establish `hj : IsOpenImmersion (j ▷ B).left` using `MorphismProperty.of_isPullback (isPullback_whiskerRight j B) ‹_›`. Establish `: Smooth (A ⊗ B).hom` using `inferInstanceAs (Smooth (pullback.fst A.hom B.hom ≫ A.hom))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: QuasiCompact (A ⊗ B).hom` using `inferInstanceAs (QuasiCompact (pullback.fst A.hom B.hom ≫ A.hom))`. Establish `: IsLocallyNoetherian (A ⊗ B).left` using `LocallyOfFiniteType.isLocallyNoetherian (A ⊗ B).hom`. Establish `: CompactSpace (A ⊗ B).left` using `QuasiCompact.compactSpace_of_compactSpace (A ⊗ B).hom`. Establish `: IsIntegral (A ⊗ B).left` using `GeometricallyIntegral.isIntegral_of_isLocallyNoetherian (pullback.fst A.hom B.hom)`. Establish `: IsLocallyNoetherian (V ⊗ B).left` using `LocallyOfFiniteType.isLocallyNoetherian (j ▷ B).left`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨N, n, hN, hn⟩` from `GlobalTheory.FlatNorm.exists_norm_lb _ _ (π ▷ B).left (L.pull ((fst W B ≫ a) * snd W B).left) (GlobalTheory.secPull s _) (pull_isLB hL _)`. Rewrite `hn` using `[GlobalTheory.nonzeroLocus_secPull, hs]`. Take `⟨N', hN', hφ⟩` from `GlobalTheory.exists_lineBundle_extension _ _ (j ▷ B).left hj (ufd_stalk (A ⊗ B).hom) N hN`. Take `⟨N₀, hN₀, hψ⟩` from `GlobalTheory.exists_lbIso_pull_affineSpace K B (ufd_stalk B.hom) g N' hN'`. Establish `e : (snd V B).left = (j ▷ B).left ≫ (snd A B).left`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← Over.comp_left, whiskerRight_snd]`. Establish `H : LBIso N (N₀.pull (snd V B).left)` using `LBIso.trans hN (pull_isLB hN' _) (pull_isLB hN₀ _) (LBIso.symm hφ) (LBIso.chartPull (GlobalTheory.chartPullPull N' _) (chartPullSame N₀ _ _ _ _ fun _ => e) hψ)`. Use `choose t ht using fun w : 𝟙_ (Over (Spec (CommRingCat.of K))) ⟶ W => exists_sec_fibre hN hN₀ H n (w ≫ π)`. Use `⟨N₀, _, t, hN₀, ?_, fun w => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hc : ((⨆ i, nonzeroLocus (t i) : B.left.Opens) : Set B.left)ᶜ.Nonempty` using `Set.nonempty_compl.2 fun h => hne (TopologicalSpace.Opens.ext h)`. Take `⟨y, hy⟩` from `exists_point B (TopologicalSpace.Opens.isOpen _).isClosed_compl.isLocallyClosed hc`. Take `⟨w, hw⟩` from `exists_fibre_mem π a U ⟨_, hxU⟩ (nonzeroLocus n) (fun x => (hn x).2) y`. Use `hy (IsLocalRing.closedPoint K) (TopologicalSpace.Opens.mem_iSup.2 ⟨w, ?_⟩)` and prove the remaining obligations. Rewrite using `[ht]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hw _`. Establish `hle : nonzeroLocus (t w) ≤ ((toUnit B ≫ w ≫ a) * 𝟙 B).left ⁻¹ᵁ U` using `(ht w).trans_le (fibre_le π a U (nonzeroLocus n) (fun x => (hn x).1) w)`. Use `isIso_transl_left (w ≫ a)` as an intermediate fact. Establish `: IsIso ((toUnit B ≫ w ≫ a) * 𝟙 B).left` using `inferInstanceAs (IsIso ((Over.forget _).map ((toUnit B ≫ w ≫ a) * 𝟙 B)))`. Establish `h` using `GlobalTheory.isAffineOpen_nonzeroLocus_inf hN₀ (t w) (hU.preimage ((toUnit B ≫ w ≫ a) * 𝟙 B).left)`.
-
-Rewrite `h` using `[inf_eq_left.2 hle]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_affine_loci (K : Type) [Field K] [IsAlgClosed K] (B : Over (Spec (CommRingCat.of K))) [GrpObj B]
     (hB : IsAbelianScheme B) : ∃ (N₀ : LB B.left) (I : Type) (t : I → N₀.Sec), N₀.IsLB ∧
@@ -299,13 +297,13 @@ theorem exists_affine_loci (K : Type) [Field K] [IsAlgClosed K] (B : Over (Spec 
     rwa [inf_eq_left.2 hle] at h
 
 /- English proof (translation)
-Introduce `K _ _ B _ _ hB`. Use `hB.proper` as an intermediate fact. Establish `: CompactSpace B.left` using `QuasiCompact.compactSpace_of_compactSpace B.hom`. Take `⟨N₀, I, t, hN₀, hc, ha⟩` from `exists_affine_loci K B hB`. Take `⟨F, hF⟩` from `isCompact_univ.elim_finite_subcover (fun i => (nonzeroLocus (t i) : Set B.left)) (fun i => (nonzeroLocus (t i)).isOpen) fun x _ => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hx : x ∈ ⨆ i, nonzeroLocus (t i)` using `by rw [hc]; trivial`. Conclude with `Set.mem_iUnion.2 (TopologicalSpace.Opens.mem_iSup.1 hx)`. Establish `hne : F.Nonempty`. Take `⟨i, hi, -⟩` from `Set.mem_iUnion₂.1 (hF (Set.mem_univ (η[B].left (IsLocalRing.closedPoint K))))`. Conclude with `⟨i, hi⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm⟩` from `Nat.exists_eq_succ_of_ne_zero hne.card_pos.ne'`. Set `e : Fin (m + 1) ≃ F` to `(F.equivFinOfCardEq hm).symm`. Take `⟨d, -, n', s, hs⟩` from `veryAmpleBy_pw_of_affine_loci K B.left B.hom N₀ m (fun k => t (e k)) hN₀ (top_unique fun x _ => by`. Take `⟨i, hi, hx⟩` from `Set.mem_iUnion₂.1 (hF (Set.mem_univ x))`. Use `TopologicalSpace.Opens.mem_iSup.2 ⟨e.symm ⟨i, hi⟩, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Equiv.apply_symm_apply]`. Conclude with `hx)`. Use `fun k => ha _`. Conclude with `⟨_, isLB_pw hN₀ _, n', s, hs⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isProjBy_of_isAbelianScheme : ∀ (K : Type) [Field K] [IsAlgClosed K] (B : Over (Spec (CommRingCat.of K))) [GrpObj B] [IsCommMonObj B], IsAbelianScheme B → IsProjBy B.hom := by
   intro K _ _ B _ _ hB

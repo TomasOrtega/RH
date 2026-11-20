@@ -23,7 +23,7 @@ def topMinors {a d : ℕ} (h : a ≤ d) (n : ι → ℕ) : Pol ι d a :=
   prodMinors (ι := ι) (n := n) (fun _ _ => topRows h)
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C c => simp [rowSub]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p y hp => simp [rowSub, hp] at *`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem eval_rowSub {d a : ℕ} (κ : ι → Matrix (Fin d) (Fin d) ℂ) (z : Var ι d a → ℂ) (P : Pol ι d a) :
     eval z (rowSub κ P) = eval (fun y => ∑ i' : Fin d, κ y.1 i' y.2.1 * z (y.1, i', y.2.2)) P := by
@@ -33,7 +33,7 @@ theorem eval_rowSub {d a : ℕ} (κ : ι → Matrix (Fin d) (Fin d) ℂ) (z : Va
   | mul_X p y hp => simp [rowSub, hp] at *
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C c => simp [colSub]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p y hp => simp [colSub, hp] at *`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem eval_colSub {d a : ℕ} (g : ι → Matrix (Fin a) (Fin a) ℂ) (z : Var ι d a → ℂ) (P : Pol ι d a) :
     eval z (colSub g P) = eval (fun y => ∑ j' : Fin a, g y.1 j' y.2.2 * z (y.1, y.2.1, j')) P := by
@@ -43,9 +43,9 @@ theorem eval_colSub {d a : ℕ} (g : ι → Matrix (Fin a) (Fin a) ℂ) (z : Var
   | mul_X p y hp => simp [colSub, hp] at *
 
 /- English proof (translation)
-Establish `: (rowSub κ).comp (rowSub κ') = (rowSub (fun τ => κ τ * κ' τ) : Pol ι d a →ₐ[ℂ] Pol ι d a)`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `y`. Simplify using `only [AlgHom.comp_apply, rowSub, aeval_X, map_sum, map_mul, algHom_C, algebraMap_eq, Matrix.mul_apply, Finset.mul_sum, Finset.sum_mul, C_mul]`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Conclude with `congrArg (fun φ : Pol ι d a →ₐ[ℂ] Pol ι d a => φ P) this`.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem rowSub_rowSub {d a : ℕ} (κ κ' : ι → Matrix (Fin d) (Fin d) ℂ) (P : Pol ι d a) :
     rowSub κ (rowSub κ' P) = rowSub (fun τ => κ τ * κ' τ) P := by
@@ -60,9 +60,9 @@ theorem rowSub_rowSub {d a : ℕ} (κ κ' : ι → Matrix (Fin d) (Fin d) ℂ) (
   exact congrArg (fun φ : Pol ι d a →ₐ[ℂ] Pol ι d a => φ P) this
 
 /- English proof (translation)
-Establish `: (rowSub (fun _ => (1 : Matrix (Fin d) (Fin d) ℂ)) : Pol ι d a →ₐ[ℂ] Pol ι d a) = AlgHom.id ℂ _`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `y`. Simplify using `only [rowSub, aeval_X, Matrix.one_apply, AlgHom.id_apply]`. Rewrite using `[Finset.sum_eq_single y.2.1]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[hb]`. Simplify using the standard rewrite rules. Conclude with `congrArg (fun φ : Pol ι d a →ₐ[ℂ] Pol ι d a => φ P) this`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rowSub_one {d a : ℕ} (P : Pol ι d a) : rowSub (fun _ => (1 : Matrix (Fin d) (Fin d) ℂ)) P = P := by
   have : (rowSub (fun _ => (1 : Matrix (Fin d) (Fin d) ℂ)) : Pol ι d a →ₐ[ℂ] Pol ι d a) = AlgHom.id ℂ _ := by
@@ -76,9 +76,9 @@ theorem rowSub_one {d a : ℕ} (P : Pol ι d a) : rowSub (fun _ => (1 : Matrix (
   exact congrArg (fun φ : Pol ι d a →ₐ[ℂ] Pol ι d a => φ P) this
 
 /- English proof (translation)
-Simplify using `only [topMinors, prodMinors, minorAt, map_prod, RingHom.map_det]`. Use `Finset.prod_eq_one fun τ _ => Finset.prod_eq_one fun j _ => ?_` and prove the remaining obligations. Establish `: (RingHom.mapMatrix (eval (basePt ι d a))) (Matrix.of fun i i' : Fin a => (X (τ, (topRows h).1 i, i') : Pol ι d a)) = 1`. Use extensionality with `i i'`. Simplify using `[basePt, topRows, Matrix.one_apply, Fin.ext_iff]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, Matrix.det_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eval_basePt_topMinors {a d : ℕ} (h : a ≤ d) (n : ι → ℕ) : eval (basePt ι d a) (topMinors h n) = 1 := by
   simp only [topMinors, prodMinors, minorAt, map_prod, RingHom.map_det]
@@ -90,7 +90,7 @@ theorem eval_basePt_topMinors {a d : ℕ} (h : a ≤ d) (n : ι → ℕ) : eval 
   rw [this, Matrix.det_one]
 
 /- English proof (translation)
-Introduce `h0`. Use `eval_basePt_topMinors (ι := ι) h n` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`. Conclude with `zero_ne_one this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem topMinors_ne_zero {a d : ℕ} (h : a ≤ d) (n : ι → ℕ) : topMinors (ι := ι) h n ≠ 0 := by
   intro h0

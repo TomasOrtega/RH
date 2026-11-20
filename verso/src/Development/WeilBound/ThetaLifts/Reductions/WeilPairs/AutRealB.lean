@@ -12,7 +12,7 @@ open Formalism.IndefR.DatumF MeasureTheory GlobalTheory.FinWeil GlobalTheory.Fin
 namespace PositivityTheory.ThKW
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.RatAut.RealInt.dot_expM hH hQ, gaussV, omV_apply, omV_apply, jV_apply, ← Complex.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gaussV_eq {κ : Type} [Fintype κ] [DecidableEq κ] {H s g : Matrix κ κ ℂ} (hH : Hᴴ = H) (hQ : (H * s).PosDef)
     (v : κ → ℂ) : gaussV H s g v =
@@ -22,11 +22,11 @@ theorem gaussV_eq {κ : Type} [Fintype κ] [DecidableEq κ] {H s g : Matrix κ �
   ring
 
 /- English proof (translation)
-Take `⟨-, h1, h2⟩` from `GlobalTheory.MatrixGaussian.integral_gaussian κ _ (GlobalTheory.RatAut.RealInt.expM_herm hQ hd)`. Establish `e : gaussV H s g = fun v => Complex.exp (-(Real.pi : ℂ) * (star v ⬝ᵥ GlobalTheory.RatAut.RealInt.expM H s g *ᵥ v))`. Use function extensionality and compare the values at `(gaussV_eq hH hQ)`. Use `⟨by rw [e]; exact h1, ?_, (H * s).det.re⁻¹, inv_pos.2 (Complex.pos_iff.1 hQ.det_pos).1, ?_⟩` and prove the remaining obligations. Establish `h3` using `congrArg det (GlobalTheory.RatAut.RealInt.expM_mul hH hs hg hc hi)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [det_mul] at h3`. Establish `h4 : (-H).det * (-s).det = (H * s).det` using `by rw [← det_mul, Matrix.neg_mul, Matrix.mul_neg, neg_neg]`. Introduce `h0`. Unfold `GlobalTheory.RealWeil.dP at h0`. Establish `h5 : (-H).det * (g - 1).det = 0` using `by rw [← h3, h0]; ring`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Break down `mul_eq_zero.1 h5 with h6 | h6` into its components or cases. Conclude with `hQ.det_pos.ne' (by rw [← h4, h6, zero_mul])`. Conclude with `hd h6`. Rewrite using `[e, h2]`. Conclude with `GlobalTheory.RatAut.RealInt.gauss_det hH hs hQ hg hc hi hd`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_gaussV_B {κ : Type} [Fintype κ] [DecidableEq κ] {H s g g' : Matrix κ κ ℂ} (hH : Hᴴ = H) (hs : s * s = 1)
     (hQ : (H * s).PosDef) (hg : gᴴ * H * g = H) (hc : s * g = g * s) (hi : g * g' = 1) (hd : (g - 1).det ≠ 0) :
@@ -53,15 +53,13 @@ variable {σ : E →ₐ[F] E} {B : Base F E} {nS nT : ℕ} {JS : Matrix (Fin nS)
   {ξ₀ : E} {θ : InfinitePlace F → (Ainf F ⊗[F] E →+* ℂ)} {ι : (InfinitePlace F → ℂ) →+ AEF F E}
 
 /- English proof (translation)
-Establish `e1 : ∀ w, compAtF θ w (mtF σ JT h⁻¹) = b.map (tauB B w)` using `fun w => by`. Rewrite using `[show mtF σ JT h⁻¹ = b.map (incAF F E) from hb]`. Use extensionality with `i j`. Conclude with `PositivityTheory.ThKW.RealC.theta_inc (C.inf w) _`. Establish `e2 : ∀ w, compAtF θ w (mtF σ JS g⁻¹⁻¹) = a.map (tauB B w)` using `fun w => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inv_inv, show mtF σ JS g = a.map (incAF F E) from ha]`. Use extensionality with `i j`. Conclude with `PositivityTheory.ThKW.RealC.theta_inc (C.inf w) _`. Establish `e3 : ∀ w, (b.map (tauB B w) ⊗ₖ (a.map (tauB B w))ᵀ) = (b ⊗ₖ aᵀ).map (tauB B w)` using `fun w => by`. Use extensionality with `⟨i, j⟩ ⟨k, l⟩`.
+By extensionality, compare the relevant components. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.kroneckerMap_apply, Matrix.map_apply, Matrix.transpose_apply, map_mul]`. Rewrite using `[mMF_apply]`. Simplify using `only [e1, e2]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.RatAut.RealInt.det_blk]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[e3]`. Conclude with `(RingHom.map_det _ _).symm`. Rewrite using `[GlobalTheory.RatAut.RealInt.det_blk_sub_one]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[e3, RingHom.map_det, map_sub, map_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem det_mMF_B (C : Ctx σ B JS JT ξ₀ θ ι) {g : GAF σ JS} {h : GAF σ JT} {a b}
     (ha : IsRatF σ JS g a) (hb : IsRatF σ JT h⁻¹ b) :

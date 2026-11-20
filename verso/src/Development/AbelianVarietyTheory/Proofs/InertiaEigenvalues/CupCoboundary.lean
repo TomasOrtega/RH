@@ -18,7 +18,7 @@ variable {l : ℕ} [Fact l.Prime] {E Ω : Type} [Field E] [Field Ω] [Algebra E 
   (Bw : LocBridge l E Ω Gw O) (P : LocPrime l)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `algebraMap ℚ_[l] ↥Bw.LL.1 (((P.PD Bw.Kw).χ g : ℚ_[l]ˣ) : ℚ_[l]) = _`. Rewrite using `[P.PD_χ, ← GlobalTheory.BlockJumps.cycZ_eq_chi Bw P g]`. Conclude with `(congrArg Subtype.val (Bw.eO_alg _)).symm`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cycLL_eq (g : ↥(GK Bw.Kw)) :
     ((cycLL (P.PD Bw.Kw) ↥Bw.LL.1 g : (↥Bw.LL.1)ˣ) : ↥Bw.LL.1) =
@@ -28,9 +28,9 @@ theorem cycLL_eq (g : ↥(GK Bw.Kw)) :
   exact (congrArg Subtype.val (Bw.eO_alg _)).symm
 
 /- English proof (translation)
-Establish `h1 : (ε • (A : Matrix (Fin m) (Fin m) O)⁻¹.transpose).map φ = φ ε • (((A : Matrix (Fin m) (Fin m) O)⁻¹).map φ).transpose`. Use extensionality with `a b`. Simplify using the standard rewrite rules. Establish `h2 : ((A : Matrix (Fin m) (Fin m) O)⁻¹).map φ * (A : Matrix (Fin m) (Fin m) O).map φ = 1`. Rewrite using `[← Matrix.map_mul, ← Matrix.coe_units_inv, Units.inv_mul, Matrix.map_one _ φ.map_zero φ.map_one]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, Matrix.smul_mulVec, dotProduct_smul, smul_eq_mul, Matrix.dotProduct_mulVec, Matrix.vecMul_transpose, Matrix.mulVec_mulVec, h2, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dot_dual {O L : Type} [CommRing O] [CommRing L] (φ : O →+* L) {m : ℕ} (A : GL (Fin m) O) (ε : O)
     (x y : Fin m → L) :
@@ -47,13 +47,13 @@ theorem dot_dual {O L : Type} [CommRing O] [CommRing L] (φ : O →+* L) {m : �
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Establish `hG` using `(GlobalTheory.LocalIntegers.good_integers l Bw.LL).1`. Set `A` to `grepOf Bw r hr`. Set `A'` to `grepOf Bw r' hr'`. Establish `hA : IsDR (P.PD Bw.Kw) A.ρ`. Express the relevant statement in the definitionally equal form `Module.finrank ↥Bw.LL.1 ↥(DdR (P.PD Bw.Kw) (Bw.rep r)) = Module.finrank ℚ_[l] ↥Bw.Kw.1 * Module.finrank ↥Bw.LL.1 (Fin m → ↥Bw.LL.1)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Module.finrank_fin_fun]`. Conclude with `hdR`. Set `Q : (Fin m → ↥Bw.LL.1) →ₗ[↥Bw.LL.1] (Fin m → ↥Bw.LL.1) →ₗ[↥Bw.LL.1] ↥Bw.LL.1` to `dotProductBilin ↥Bw.LL.1 ↥Bw.LL.1`. Establish `hD : IsDual1 (P.PD Bw.Kw) (Bw.rep r) (Bw.rep r') Q`. Use `⟨fun g x z => ?_, fun x hx => ?_, fun z hz => ?_, rfl⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `Bw.rep r g x ⬝ᵥ Bw.rep r' g z = _ * (x ⬝ᵥ z)`. Rewrite using `[rep_apply, rep_apply, hd, dot_dual, cycLL_eq]`. Conclude with `dotProduct_eq_zero x hx`. Conclude with `dotProduct_eq_zero z fun x => (dotProduct_comm _ _).trans (hz x)`. Take `⟨f, hf, hf'⟩` from `(((hBK _ _ hG A A' Q hA hD).1 c hc.1).1 hc) c' hc'`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨f ∘ Bw.e, hf.comp Bw.e_cont, fun g h => ?_⟩` and prove the remaining obligations. Establish `h1 : ((cycLL (P.PD Bw.Kw) ↥Bw.LL.1 (Bw.e g) : (↥Bw.LL.1)ˣ) : ↥Bw.LL.1) * f (Bw.e h) - f (Bw.e g * Bw.e h) + f (Bw.e g) = c (Bw.e g) ⬝ᵥ Bw.rep r' (Bw.e g) (c' (Bw.e h))` using `congrFun hf' (Bw.e g, Bw.e h)`. Rewrite `h1` using `[cycLL_eq, rep_apply, MulEquiv.symm_apply_apply, ← map_mul]`. Use `Eq.trans ?_ h1.symm` and prove the remaining obligations. Simplify using `only [dotProduct, Matrix.mulVec, map_sum, map_mul, Matrix.map_apply, hy, hy']`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cup_cob {m : ℕ} (r r' : ↥Gw →* GL (Fin m) O)
     (hr : Continuous fun g => ((r g : GL (Fin m) O) : Matrix (Fin m) (Fin m) O))
@@ -97,9 +97,9 @@ end Bridge
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.MainNotions.BlochKatoReduction Formalism.MainNotions.BlochKatoReduction.Gen GlobalTheory.TwSys GlobalTheory.SelFun GlobalTheory.Published GlobalTheory.Published.PoitouTate GlobalTheory.ResSel
 
 /- English proof (translation)
-Introduce `D N X bkP i s h ρ hρ v hv c c' y y' hc hc' hy hy'`. Use `haveI : IsAlgClosed N.Om := IsAlgClosure.isAlgClosed D.host.E`. Use `cup_cob (bkP.br i v hv) (D.loc (X.l i)) ((Tgl i s).comp (DecV N v).subtype) (ρ.comp (DecV N v).subtype) ?_ ?_ (fun g => ?_) (h.2.2.2.2.2.1 _ _).1 (h.1.2.1 v hv (Tgl i s) (Or.inr rfl)).1 c c' y y' hc hc' hy hy'` and prove the remaining obligations. Conclude with `((GlobalTheory.PrimeToInertia.continuous_Tmat i s).comp continuous_subtype_val).congr fun g => (Tgl_coe i s g).symm`. Conclude with `((GlobalTheory.PrimeToInertia.continuous_Tdual i s).comp continuous_subtype_val).congr fun g => (hρ g).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `(hρ g).trans ?_` and prove the remaining obligations. Rewrite using `[Tdual, ← Tgl_coe]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem cup_coboundary : ∀ (D : Formalism.BasicNotions.D7) (N : NData D.R D.host D.what₂) (X : NTw D.R D.host D.what₂ D.LL0 N) (bkP : BKPh X) (i : X.Tw) (s : X.Sig i), GalHyp bkP i s → ∀ ρ, IsDual i s ρ → ∀ (v : PlE D.host) (hv : v ∈ placesOver D.host.E (X.l i)) (c c' : ↥(Loc.GK (bkP.br i v hv).Kw) → Fin D.R.r → ↥(bkP.br i v hv).LL.1) (y y' : ↥(DecV N v) → Fin D.R.r → X.O0 i), c ∈ Formalism.WeaklyAdmissibleFiltrations.finiteCocycles (PDv bkP i v hv) (repV bkP i v hv (Tgl i s)) → c' ∈ Formalism.WeaklyAdmissibleFiltrations.finiteCocycles (PDv bkP i v hv) (repV bkP i v hv ρ) → (∀ g a, c ((bkP.br i v hv).e g) a = (bkP.br i v hv).toLL (y g a)) → (∀ g a, c' ((bkP.br i v hv).e g) a = (bkP.br i v hv).toLL (y' g a)) → ∃ f : ↥(DecV N v) → ↥(bkP.br i v hv).LL.1, Continuous f ∧ ∀ g h : ↥(DecV N v), (bkP.br i v hv).toLL (y g ⬝ᵥ ((ρ g : GL (Fin D.R.r) (X.O0 i)) : Matrix (Fin D.R.r) (Fin D.R.r) (X.O0 i)).mulVec (y' h)) = (bkP.br i v hv).toLL (algebraMap ℤ_[X.l i] (X.O0 i) ((cycZ D.host.E N.Om (X.l i) g : ℤ_[X.l i]ˣ) : ℤ_[X.l i])) * f h - f (g * h) + f g := by
   intro D N X bkP i s h ρ hρ v hv c c' y y' hc hc' hy hy'

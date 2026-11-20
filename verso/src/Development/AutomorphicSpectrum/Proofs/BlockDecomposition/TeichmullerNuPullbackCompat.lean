@@ -11,7 +11,7 @@ open CategoryTheory Limits AlgebraicGeometry TensorProduct GroundTheory.PAdicHod
 namespace GlobalTheory.CompanionTheory.NuPull
 
 /- English proof (translation)
-Unfold `Mid.nu pullM B.pullHc Mid.nuMor pullT' B.pullMorC`. Conclude with `(cr_square (Mid.mOut r M' n hT) (B.crMor (F := B.schFn M'.p) (F' := B.schFn M.p) (b := B.bs l true n) (b' := B.bs l true n) (ht := rfl) (ht' := rfl) (RingHom.id _) rfl (DPMorphism.id _).isDPMorphism ((B.schMap u hu).ptK _) fun _ _ _ => rfl) (B.crMor (F := B.schFn M'.p) (F' := B.s …`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem nu_pull {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)} (r : CrystallineSemistableComparison.Res l K) {N : ℕ}
     (hT : Mid.TeichmullerCongruence r N) {M M' : Model l K} (u : M.X ⟶ M'.X) (hu : u ≫ M'.p = M.p) (n j : ℕ)

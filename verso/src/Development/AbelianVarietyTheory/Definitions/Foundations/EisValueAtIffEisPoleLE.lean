@@ -98,40 +98,40 @@ section One
 variable {Φ Ψ : GA D (dblSp V) → ℂ} {g : GA D (dblSp V)} {s : ℂ}
 
 /- English proof (translation)
-Introduce `_ hγ g` and use `apply_siegelQ_mul V a hμ hΦ hγ g`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem leftInv_of_mem (hμ : IsHeckeChar D μ) (hΦ : Φ ∈ degPS V a μ s) : LeftInv (siegelQ V) Φ :=
   fun _ hγ g => apply_siegelQ_mul V a hμ hΦ hγ g
 
 /- English proof (translation)
-The claim follows from `CosetConv.hasSum h`.
+A detailed English derivation is pending.
 -/
 theorem EisConv.hasSum (h : EisConv V Φ g) :
     HasSum (fun q : SiegelCosets V => Φ ((q.out : GQ (dblSp V)) * g)) (eis V Φ g) := CosetConv.hasSum h
 
 /- English proof (translation)
-The claim follows from `leftInv_cosetSum h`.
+A detailed English derivation is pending.
 -/
 theorem leftInv_eis (h : LeftInv (siegelQ V) Φ) : LeftInv (GQ (dblSp V)) (eis V Φ) := leftInv_cosetSum h
 
 /- English proof (translation)
-The claim follows from `funext (cosetSum_mul_right Φ k)`.
+A detailed English derivation is pending.
 -/
 theorem eis_rTr (k : GA D (dblSp V)) (Φ : GA D (dblSp V) → ℂ) : eis V (rTr _ k Φ) = rTr _ k (eis V Φ) :=
   funext (cosetSum_mul_right Φ k)
 
 /- English proof (translation)
-The claim follows from `cosetSum_add h h'`.
+A detailed English derivation is pending.
 -/
 theorem eis_add (h : EisConv V Φ g) (h' : EisConv V Ψ g) : eis V (Φ + Ψ) g = eis V Φ g + eis V Ψ g := cosetSum_add h h'
 
 /- English proof (translation)
-The claim follows from `funext (cosetSum_smul c Φ)`.
+A detailed English derivation is pending.
 -/
 theorem eis_smul (c : ℂ) (Φ : GA D (dblSp V) → ℂ) : eis V (c • Φ) = c • eis V Φ := funext (cosetSum_smul c Φ)
 
 /- English proof (translation)
-Introduce `γ δ e` and use `by obtain ⟨p, hp⟩ := mk_eq_iff.1 e have h1 : ((p : GQ (dblSp V)) : GA D (dblSp V)) = io V (δ * (γ : GA D V)⁻¹, 1) := by rw [eq_mul_inv_of_mul_eq (congrArg Subtype.val hp), ← map_inv, ← map_mul]; simp exact Subtype.ext (mul_inv_eq_one.1 ((io_mem_siegel V).1 (h1 ▸ p.2))).symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem injective_mk_io : Function.Injective fun γ : GQ V =>
     (mk _ ⟨io V (γ, 1), io_mem_GQ V γ.2 (one_mem _)⟩ : SiegelCosets V) := fun γ δ e => by
@@ -147,100 +147,100 @@ section Families
 variable {Φ Ψ E : ℂ → GA D (dblSp V) → ℂ} {φ ψ : GA D (dblSp V) → ℂ} {U : Set ℂ} {s s₀ : ℂ} {n : ℤ} {k : ℕ}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, fun s hs => leftInv_eis (h s hs).1 γ hγ g⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsEisFamily.eqRight (h : IsEisFamily V Φ) {γ : GA D (dblSp V)} (hγ : γ ∈ GQ (dblSp V)) (g : GA D (dblSp V)) :
     EqRight (eisSer V Φ (γ * g)) (eisSer V Φ g) := ⟨_, fun s hs => leftInv_eis (h s hs).1 γ hγ g⟩
 
 /- English proof (translation)
-Introduce `s hs` and use `⟨fun γ hγ g => congrArg₂ (· + ·) ((h s hs).1 γ hγ g) ((h' s hs).1 γ hγ g), fun g => ((h s hs).2 g).add ((h' s hs).2 g)⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem IsEisFamily.add (h : IsEisFamily V Φ) (h' : IsEisFamily V Ψ) : IsEisFamily V (Φ + Ψ) := fun s hs =>
   ⟨fun γ hγ g => congrArg₂ (· + ·) ((h s hs).1 γ hγ g) ((h' s hs).1 γ hγ g), fun g => ((h s hs).2 g).add ((h' s hs).2 g)⟩
 
 /- English proof (translation)
-Introduce `s hs` and use `⟨fun γ hγ g => congrArg (c s • ·) ((h s hs).1 γ hγ g), fun g => ((h s hs).2 g).smul (c s)⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem IsEisFamily.smul (h : IsEisFamily V Φ) (c : ℂ → ℂ) : IsEisFamily V (c • Φ) := fun s hs =>
   ⟨fun γ hγ g => congrArg (c s • ·) ((h s hs).1 γ hγ g), fun g => ((h s hs).2 g).smul (c s)⟩
 
 /- English proof (translation)
-Introduce `s hs` and use `⟨(h s hs).1.mul_right x, fun g => (cosetConv_mul_right (Φ s) x g).2 ((h s hs).2 _)⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem IsEisFamily.rTr (h : IsEisFamily V Φ) (x : GA D (dblSp V)) : IsEisFamily V fun s => rTr _ x (Φ s) := fun s hs =>
   ⟨(h s hs).1.mul_right x, fun g => (cosetConv_mul_right (Φ s) x g).2 ((h s hs).2 _)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, h.2.1, fun g => (h.2.2.1 g).meromorphicOn, h.2.2.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsEisHolExt.isEisExt (h : IsEisHolExt V Φ U E) : IsEisExt V Φ U E :=
   ⟨h.1, h.2.1, fun g => (h.2.2.1 g).meromorphicOn, h.2.2.2⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.2.1, h.2.2.1 g, _, fun s hs => congrFun (h.2.2.2 s hs) g⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsEisExt.isMerExt (h : IsEisExt V Φ U E) (g : GA D (dblSp V)) : IsMerExt (eisSer V Φ g) U (E · g) :=
   ⟨h.2.1, h.2.2.1 g, _, fun s hs => congrFun (h.2.2.2 s hs) g⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, fun g => ⟨_, (h.isMerExt g).isExtAt hs, ha g, rfl⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsEisExt.eisValueAt (h : IsEisExt V Φ U E) (hs : s₀ ∈ U) (ha : ∀ g, AnalyticAt ℂ (E · g) s₀) :
     EisValueAt V Φ s₀ (E s₀) := ⟨h.1, fun g => ⟨_, (h.isMerExt g).isExtAt hs, ha g, rfl⟩⟩
 
 /- English proof (translation)
-The claim follows from `h.isEisExt.eisValueAt hs fun g => h.2.2.1 g _ hs`.
+A detailed English derivation is pending.
 -/
 theorem IsEisHolExt.eisValueAt (h : IsEisHolExt V Φ U E) (hs : s₀ ∈ U) : EisValueAt V Φ s₀ (E s₀) :=
   h.isEisExt.eisValueAt hs fun g => h.2.2.1 g _ hs
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, fun g => coeffAt_zero.2 (h.2 g).valueAt⟩`.
+Supply the required witnesses or components.
 -/
 theorem EisValueAt.eisCoeffAt (h : EisValueAt V Φ s₀ φ) : EisCoeffAt V Φ s₀ 0 φ :=
   ⟨h.1, fun g => coeffAt_zero.2 (h.2 g).valueAt⟩
 
 /- English proof (translation)
-Simplify using `only [EisValueAt, EisPoleLE, EisCoeffAt, holValueAt_iff_poleLE, coeffAt_zero, forall_and]`. The claim follows by propositional logic.
+Simplify using the standard rewrite rules. The claim follows by propositional logic.
 -/
 theorem eisValueAt_iff_eisPoleLE : EisValueAt V Φ s₀ φ ↔ EisPoleLE V Φ s₀ 0 ∧ EisCoeffAt V Φ s₀ 0 φ := by
   simp only [EisValueAt, EisPoleLE, EisCoeffAt, holValueAt_iff_poleLE, coeffAt_zero, forall_and]
   tauto
 
 /- English proof (translation)
-The claim follows from `funext fun g => (h.2 g).laurent_eq`.
+A detailed English derivation is pending.
 -/
 theorem EisCoeffAt.eisLaurent_eq (h : EisCoeffAt V Φ s₀ n φ) : eisLaurent V Φ s₀ n = φ := funext fun g => (h.2 g).laurent_eq
 
 /- English proof (translation)
-The claim follows from `h.eisCoeffAt.eisLaurent_eq`.
+A detailed English derivation is pending.
 -/
 theorem EisValueAt.eisCont_eq (h : EisValueAt V Φ s₀ φ) : eisCont V Φ s₀ = φ := h.eisCoeffAt.eisLaurent_eq
 
 /- English proof (translation)
-The claim follows from `h.eisLaurent_eq.symm.trans h'.eisLaurent_eq`.
+A detailed English derivation is pending.
 -/
 theorem EisCoeffAt.unique (h : EisCoeffAt V Φ s₀ n φ) (h' : EisCoeffAt V Φ s₀ n ψ) : φ = ψ :=
   h.eisLaurent_eq.symm.trans h'.eisLaurent_eq
 
 /- English proof (translation)
-The claim follows from `h.eisCoeffAt.unique h'.eisCoeffAt`.
+A detailed English derivation is pending.
 -/
 theorem EisValueAt.unique (h : EisValueAt V Φ s₀ φ) (h' : EisValueAt V Φ s₀ ψ) : φ = ψ := h.eisCoeffAt.unique h'.eisCoeffAt
 
 /- English proof (translation)
-Introduce `_ hγ g` and use `((h.2 _).congr (h.1.eqRight hγ g)).unique (h.2 g)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem EisCoeffAt.leftInv (h : EisCoeffAt V Φ s₀ n φ) : LeftInv (GQ (dblSp V)) φ :=
   fun _ hγ g => ((h.2 _).congr (h.1.eqRight hγ g)).unique (h.2 g)
 
 /- English proof (translation)
-The claim follows from `h.eisCoeffAt.leftInv`.
+A detailed English derivation is pending.
 -/
 theorem EisValueAt.leftInv (h : EisValueAt V Φ s₀ φ) : LeftInv (GQ (dblSp V)) φ := h.eisCoeffAt.leftInv
 
 /- English proof (translation)
-Introduce `γ hγ g` and use `by have e : CoeffAt (eisSer V Φ (γ * g)) s₀ n = CoeffAt (eisSer V Φ g) s₀ n := funext fun c => propext ⟨fun b => b.congr (h.eqRight hγ g), fun b => b.congr (h.eqRight hγ g).symm⟩ unfold eisLaurent laurent rw [e]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsEisFamily.leftInv_eisLaurent (h : IsEisFamily V Φ) (s₀ : ℂ) (n : ℤ) :
     LeftInv (GQ (dblSp V)) (eisLaurent V Φ s₀ n) := fun γ hγ g => by
@@ -250,45 +250,45 @@ theorem IsEisFamily.leftInv_eisLaurent (h : IsEisFamily V Φ) (s₀ : ℂ) (n : 
   rw [e]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, fun g => let ⟨_, b⟩ := h.2 g; coeffAt_laurent (b.subset_contDom trivial) n⟩`.
+Supply the required witnesses or components.
 -/
 theorem EisContinues.eisCoeffAt (h : EisContinues V Φ) (s₀ : ℂ) (n : ℤ) : EisCoeffAt V Φ s₀ n (eisLaurent V Φ s₀ n) :=
   ⟨h.1, fun g => let ⟨_, b⟩ := h.2 g; coeffAt_laurent (b.subset_contDom trivial) n⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1.add h'.1, fun g => ((h.2 g).add (h'.2 g)).congr ⟨_, fun s hs => (eis_add ((h.1 s hs).2 g) ((h'.1 s hs).2 g)).symm⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem EisCoeffAt.add (h : EisCoeffAt V Φ s₀ n φ) (h' : EisCoeffAt V Ψ s₀ n ψ) : EisCoeffAt V (Φ + Ψ) s₀ n (φ + ψ) :=
   ⟨h.1.add h'.1, fun g => ((h.2 g).add (h'.2 g)).congr ⟨_, fun s hs => (eis_add ((h.1 s hs).2 g) ((h'.1 s hs).2 g)).symm⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1.add h'.1, fun g => ((h.2 g).add (h'.2 g)).congr ⟨_, fun s hs => (eis_add ((h.1 s hs).2 g) ((h'.1 s hs).2 g)).symm⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem EisValueAt.add (h : EisValueAt V Φ s₀ φ) (h' : EisValueAt V Ψ s₀ ψ) : EisValueAt V (Φ + Ψ) s₀ (φ + ψ) :=
   ⟨h.1.add h'.1, fun g => ((h.2 g).add (h'.2 g)).congr ⟨_, fun s hs => (eis_add ((h.1 s hs).2 g) ((h'.1 s hs).2 g)).symm⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1.smul fun _ => c, fun g => ((h.2 g).const_mul c).congr ⟨0, fun s _ => (congrFun (eis_smul c (Φ s)) g).symm⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem EisCoeffAt.smul (h : EisCoeffAt V Φ s₀ n φ) (c : ℂ) : EisCoeffAt V (c • Φ) s₀ n (c • φ) :=
   ⟨h.1.smul fun _ => c, fun g => ((h.2 g).const_mul c).congr ⟨0, fun s _ => (congrFun (eis_smul c (Φ s)) g).symm⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1.smul fun _ => c, fun g => ((holValueAt_const c s₀).mul (h.2 g)).congr ⟨0, fun s _ => (congrFun (eis_smul c (Φ s)) g).symm⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem EisValueAt.smul (h : EisValueAt V Φ s₀ φ) (c : ℂ) : EisValueAt V (c • Φ) s₀ (c • φ) :=
   ⟨h.1.smul fun _ => c, fun g => ((holValueAt_const c s₀).mul (h.2 g)).congr
     ⟨0, fun s _ => (congrFun (eis_smul c (Φ s)) g).symm⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1.rTr x, fun g => (h.2 (g * x)).congr ⟨0, fun s _ => (congrFun (eis_rTr x (Φ s)) g).symm⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem EisCoeffAt.rTr (h : EisCoeffAt V Φ s₀ n φ) (x : GA D (dblSp V)) :
     EisCoeffAt V (fun s => rTr _ x (Φ s)) s₀ n (rTr _ x φ) :=
   ⟨h.1.rTr x, fun g => (h.2 (g * x)).congr ⟨0, fun s _ => (congrFun (eis_rTr x (Φ s)) g).symm⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1.rTr x, fun g => (h.2 (g * x)).congr ⟨0, fun s _ => (congrFun (eis_rTr x (Φ s)) g).symm⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem EisValueAt.rTr (h : EisValueAt V Φ s₀ φ) (x : GA D (dblSp V)) :
     EisValueAt V (fun s => rTr _ x (Φ s)) s₀ (rTr _ x φ) :=
@@ -300,13 +300,13 @@ variable (h : IsEisFamily V Φ) (ha : ∀ g, AnalyticOnNhd ℂ (eisSer V Φ g) (
 include h ha
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h, isRightDomain_rightOf _, ha, fun _ _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsEisFamily.isEisHolExt : IsEisHolExt V Φ (rightOf (V.rank / 2)) fun s => eis V (Φ s) :=
   ⟨h, isRightDomain_rightOf _, ha, fun _ _ => rfl⟩
 
 /- English proof (translation)
-The claim follows from `(h.isEisHolExt ha).eisValueAt hs`.
+A detailed English derivation is pending.
 -/
 theorem IsEisFamily.eisValueAt (hs : (V.rank : ℝ) / 2 < s₀.re) : EisValueAt V Φ s₀ (eis V (Φ s₀)) :=
   (h.isEisHolExt ha).eisValueAt hs
@@ -314,7 +314,7 @@ theorem IsEisFamily.eisValueAt (hs : (V.rank : ℝ) / 2 < s₀.re) : EisValueAt 
 end Holomorphic
 
 /- English proof (translation)
-The claim follows from `analyticOnNhd_tsum_npow (f := term _ _ φ g) (a := term _ _ (hgt V a) g) (fun _ => hgtH_pos _) fun s hs => (h s hs).2 g`.
+A detailed English derivation is pending.
 -/
 theorem IsEisFamily.analyticOnNhd_flat {s₁ : ℂ} (h : IsEisFamily V (flat V a φ s₁)) (g : GA D (dblSp V)) :
     AnalyticOnNhd ℂ (eisSer V (flat V a φ s₁) g) (rightOf (V.rank / 2)) :=
@@ -328,7 +328,7 @@ omit hμ hs in
 include hI in
 
 /- English proof (translation)
-The claim follows from `haveI := t2Space_adeleRing' (F := D.host.F) hI.iwasawaOf continuous_absE (isCompact_Khat V a)`.
+A detailed English derivation is pending.
 -/
 theorem isIwasawa_Khat : IsIwasawa ((absA D).comp (aP V)) (Khat V a) :=
   haveI := t2Space_adeleRing' (F := D.host.F)
@@ -341,7 +341,7 @@ omit hμ hI hs hc in
 include hl in
 
 /- English proof (translation)
-Introduce `s hs p g` and use `by rw [((mem_degPS V a).1 (hl s hs)).1 p g]; push_cast; rfl`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem indLaw_of_mem : ∀ s ∈ rightOf (V.rank / 2),
     IndLaw ((absA D).comp (aP V)) (μ.comp (aP V)) (s + ((V.rank : ℝ) / 2 : ℝ)) (Φ s) := fun s hs p g => by
@@ -351,7 +351,7 @@ omit hμ hI in
 include hs in
 
 /- English proof (translation)
-Introduce `τ hτ` and use `by simp only [term, mul_one]; exact hs τ hτ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem SphConv.summable : ∀ τ, (V.rank : ℝ) / 2 < τ → Summable fun q =>
     ((term (siegel V) (GQ (dblSp V)) (iwAbs ((absA D).comp (aP V)) (Khat V a)) 1 q : ℝ≥0) : ℝ) ^ (τ + (V.rank : ℝ) / 2) :=
@@ -360,7 +360,7 @@ theorem SphConv.summable : ∀ τ, (V.rank : ℝ) / 2 < τ → Summable fun q =>
 include hμ hI hs hc hl
 
 /- English proof (translation)
-Introduce `s h` and use `⟨leftInv_of_mem hμ (hl s h), cosetConv_of_spherical (isIwasawa_Khat hI) (isCompact_Khat V a) hc (indLaw_of_mem hl) hs.summable h⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem SphConv.isEisFamily : IsEisFamily V Φ := fun s h => ⟨leftInv_of_mem hμ (hl s h),
   cosetConv_of_spherical (isIwasawa_Khat hI) (isCompact_Khat V a) hc (indLaw_of_mem hl) hs.summable h⟩
@@ -368,7 +368,7 @@ theorem SphConv.isEisFamily : IsEisFamily V Φ := fun s h => ⟨leftInv_of_mem h
 omit hμ in
 
 /- English proof (translation)
-The claim follows from `continuousOn_cosetSum (isIwasawa_Khat hI) (isCompact_Khat V a) hc (indLaw_of_mem hl) hs.summable`.
+A detailed English derivation is pending.
 -/
 theorem SphConv.continuousOn_eis :
     ContinuousOn (fun x : ℂ × GA D (dblSp V) => eis V (Φ x.1) x.2) (rightOf (V.rank / 2) ×ˢ univ) :=
@@ -382,16 +382,14 @@ variable (hI : HasIwasawa D.sp.cm.sig (dblSp V).gram (Khat V a)) {s₁ : ℂ} (h
 include hI hφ
 
 /- English proof (translation)
-The claim follows from `haveI := t2Space_adeleRing' (F := D.host.F) hI.flatH_mem continuous_absE (isCompact_Khat V a) hφ s`.
+A detailed English derivation is pending.
 -/
 theorem flat_mem (s : ℂ) : flat V a φ s₁ s ∈ degPS V a μ s :=
   haveI := t2Space_adeleRing' (F := D.host.F)
   hI.flatH_mem continuous_absE (isCompact_Khat V a) hφ s
 
 /- English proof (translation)
-Use `haveI := t2Space_adeleRing' (F := D.host.F)`. Establish `h1 : Continuous (hgt V a)` using `hI.continuous_hgtH continuous_absE (isCompact_Khat V a)`. Establish `h2 : Continuous fun g => Real.log (hgt V a g)` using `(NNReal.continuous_coe.comp h1).log fun g => (NNReal.coe_pos.2 (hgtH_pos g)).ne'`. Establish `h3 : Continuous φ` using `hφ.2.1`. Simplify using `only [flatH_apply, npow_eq_exp (hgtH_pos _)]`.
-
-Conclude with `(h3.comp continuous_snd).mul (((Complex.continuous_ofReal.comp (h2.comp continuous_snd)).mul (continuous_fst.sub continuous_const)).cexp)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_flat : Continuous fun x : ℂ × GA D (dblSp V) => flat V a φ s₁ x.1 x.2 := by
   haveI := t2Space_adeleRing' (F := D.host.F)
@@ -404,13 +402,13 @@ theorem continuous_flat : Continuous fun x : ℂ × GA D (dblSp V) => flat V a �
     (continuous_fst.sub continuous_const)).cexp)
 
 /- English proof (translation)
-The claim follows from `hs.isEisFamily hμ hI (continuous_flat hI hφ).continuousOn fun s _ => flat_mem hI hφ s`.
+A detailed English derivation is pending.
 -/
 theorem SphConv.isEisFamily_flat (hs : SphConv V a) (hμ : IsHeckeChar D μ) : IsEisFamily V (flat V a φ s₁) :=
   hs.isEisFamily hμ hI (continuous_flat hI hφ).continuousOn fun s _ => flat_mem hI hφ s
 
 /- English proof (translation)
-Use `(hs.continuousOn_eis hI (continuous_flat hI hφ).continuousOn fun s _ => flat_mem hI hφ s).comp_continuous (f := fun g => (s₁, g)) (by fun_prop) fun g => ⟨h, trivial⟩` as an intermediate fact. Simplify `this` using `only [Function.comp_def, flatH_self]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem SphConv.continuous_eis (hs : SphConv V a) (h : (V.rank : ℝ) / 2 < s₁.re) : Continuous (eis V φ) := by
   have := (hs.continuousOn_eis hI (continuous_flat hI hφ).continuousOn fun s _ => flat_mem hI hφ s).comp_continuous
@@ -418,7 +416,7 @@ theorem SphConv.continuous_eis (hs : SphConv V a) (h : (V.rank : ℝ) / 2 < s₁
   simpa only [Function.comp_def, flatH_self] using this
 
 /- English proof (translation)
-Establish `h1` using `hs.isEisFamily_flat hI hφ hμ`. Simplify `h1.eisValueAt h1.analyticOnNhd_flat h` using `only [flatH_self]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem SphConv.eisValueAt_flat (hs : SphConv V a) (hμ : IsHeckeChar D μ) (h : (V.rank : ℝ) / 2 < s₁.re) :
     EisValueAt V (flat V a φ s₁) s₁ (eis V φ) := by
@@ -428,7 +426,7 @@ theorem SphConv.eisValueAt_flat (hs : SphConv V a) (hμ : IsHeckeChar D μ) (h :
 omit hφ in
 
 /- English proof (translation)
-The claim follows from `haveI := t2Space_adeleRing' (F := D.host.F) hI.spherical_mem continuous_absE (isCompact_Khat V a) s`.
+A detailed English derivation is pending.
 -/
 theorem sph_mem (s : ℂ) : sph V a s ∈ degPS V a 1 s :=
   haveI := t2Space_adeleRing' (F := D.host.F)
@@ -438,13 +436,11 @@ open scoped Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes in
 omit hφ in
 
 /- English proof (translation)
-Establish `h1 : IsHeckeChar D 1` using `⟨continuous_const, fun _ => rfl⟩`. Establish `h2 : ∀ (σ : ℝ) g, sph V a σ g = ((hgt V a g : ℝ) ^ (σ + (V.rank : ℝ) / 2) : ℝ)` using `fun σ g => by`. Rewrite using `[Complex.ofReal_cpow (NNReal.coe_nonneg _)]`. Use `push_cast`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Use `⟨fun hs => ⟨?_, fun σ hσ => ?_⟩, fun h σ hσ => ((h.1 σ hσ).2 1).congr fun q => ?_⟩` and prove the remaining obligations. Rewrite using `[show sph V a = flat V a (sph V a 0) 0 from funext fun s => funext fun g => by`. Conclude with `(congrArg (npow _) (by ring)).trans (npow_add (hgtH_pos g) _ _)]`. Conclude with `hs.isEisFamily_flat hI (sph_mem hI 0) h1`. Establish `h3 : eis V (sph V a σ) 1 = (∑' q : SiegelCosets V, (hgt V a (q.out : GQ (dblSp V)) : ℝ) ^ (σ + (V.rank : ℝ) / 2) : ℝ)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Complex.ofReal_tsum]; exact tsum_congr fun q => by rw [term, mul_one, h2]`. Establish `h4` using `term_mk (leftInv_of_mem h1 (sph_mem hI σ)) 1 1`. Rewrite `h4` using `[term, mul_one, h2, h2, Complex.ofReal_inj, OneMemClass.coe_one, mul_one, show hgt V a 1 = 1 from (isIwasawa_Khat hI).iwAbs_of_mem (one_mem _), NNReal.coe_one, Real.one_rpow]`. Rewrite using `[h3, Complex.ofReal_re, ← h4]`. Conclude with `(hs σ hσ).le_tsum _ fun _ _ => by positivity`.
-
-Rewrite using `[term, mul_one, h2, Complex.norm_real, Real.norm_of_nonneg (by positivity)]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sphConv_iff : SphConv V a ↔ IsEisFamily V (sph V a) ∧
     ∀ σ : ℝ, (V.rank : ℝ) / 2 < σ → 1 ≤ (eis V (sph V a σ) 1).re := by
@@ -474,7 +470,7 @@ section Dbl
 variable {m : Measure (GA D V)} {E E' : GA D (dblSp V) → ℂ} {f₁ f₂ f : GA D V → ℂ} {𝓕 : Set (GA D V)}
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `exists_aH_eq_of_mem_ratPts (ioDiag (gram_hdbl V) γ) (io_mem_GQ V hγ hγ)`. Rewrite using `[← aH_ioDiag (gram_hdbl V), hx]`. Conclude with `hμ.2 x`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem apply_detA (hμ : IsHeckeChar D μ) {γ : GA D V} (hγ : γ ∈ GQ V) : μ (detA V γ) = 1 := by
   obtain ⟨x, hx⟩ := exists_aH_eq_of_mem_ratPts (ioDiag (gram_hdbl V) γ) (io_mem_GQ V hγ hγ)
@@ -482,7 +478,7 @@ theorem apply_detA (hμ : IsHeckeChar D μ) {γ : GA D V} (hγ : γ ∈ GQ V) : 
   exact hμ.2 x
 
 /- English proof (translation)
-Introduce `γ hγ g` and use `by simp only [dblIntegrand, map_mul (io V), hE _ (io_mem_GQ V hγ.1 hγ.2), Prod.fst_mul, Prod.snd_mul, h₁ _ hγ.1, h₂ _ hγ.2, map_mul (detA V), map_mul μ, apply_detA hμ hγ.2, one_mul]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem leftInv_dblIntegrand (hμ : IsHeckeChar D μ) (hE : LeftInv (GQ (dblSp V)) E) (h₁ : LeftInv (GQ V) f₁)
     (h₂ : LeftInv (GQ V) f₂) : LeftInv ((GQ V).prod (GQ V)) (dblIntegrand V μ E f₁ f₂) := fun γ hγ g => by
@@ -492,7 +488,7 @@ theorem leftInv_dblIntegrand (hμ : IsHeckeChar D μ) (hE : LeftInv (GQ (dblSp V
 open scoped Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes in
 
 /- English proof (translation)
-Establish `h1 : Continuous (aP V)` using `continuous_aH`. Establish `h2 : Continuous fun g : GA D V => (⟨io V (g, g), (io_mem_siegel V).2 rfl⟩ : siegel V)` using `((continuous_io V).comp (continuous_id.prodMk continuous_id)).subtype_mk _`. Conclude with `(h1.comp h2).congr fun g => aH_ioDiag (gram_hdbl V) g`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_detA : Continuous (detA V) := by
   have h1 : Continuous (aP V) := continuous_aH
@@ -503,7 +499,7 @@ theorem continuous_detA : Continuous (detA V) := by
 open scoped Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes in
 
 /- English proof (translation)
-The claim follows from `have h : Continuous fun g : GA D V => (μ (detA V g) : ℂ) := continuous_subtype_val.comp (hμ.1.comp continuous_detA) (((hE.comp (continuous_io V)).mul (Complex.continuous_conj.comp (h₁.comp continuous_fst))).mul (h₂.comp continuous_snd)).mul ((h.comp continuous_snd).inv₀ fun _ => …`.
+A detailed English derivation is pending.
 -/
 theorem continuous_dblIntegrand (hμ : IsHeckeChar D μ) (hE : Continuous E) (h₁ : Continuous f₁) (h₂ : Continuous f₂) :
     Continuous (dblIntegrand V μ E f₁ f₂) :=
@@ -512,7 +508,7 @@ theorem continuous_dblIntegrand (hμ : IsHeckeChar D μ) (hE : Continuous E) (h�
     (h₂.comp continuous_snd)).mul ((h.comp continuous_snd).inv₀ fun _ => Circle.coe_ne_zero _)
 
 /- English proof (translation)
-Take `⟨γ, e⟩` from `mk_eq_iff.1 (Quotient.out_eq (mk (GQ V) g₁)).symm`. Take `⟨δ, e'⟩` from `mk_eq_iff.1 (Quotient.out_eq (mk (GQ V) g₂)).symm`. Rewrite using `[← h (γ, δ) ⟨γ.2, δ.2⟩ (g₁, g₂), Prod.mk_mul_mk, e, e']`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem dblIntegrandQ_mk (h : LeftInv ((GQ V).prod (GQ V)) (dblIntegrand V μ E f₁ f₂)) (g₁ g₂ : GA D V) :
     dblIntegrandQ V μ E f₁ f₂ (mk (GQ V) g₁, mk (GQ V) g₂) = dblIntegrand V μ E f₁ f₂ (g₁, g₂) := by
@@ -522,7 +518,7 @@ theorem dblIntegrandQ_mk (h : LeftInv ((GQ V).prod (GQ V)) (dblIntegrand V μ E 
   rfl
 
 /- English proof (translation)
-Use `apply_io_mul V a hE x g 1` as an intermediate fact. Rewrite `this` using `[mul_one]`. Simplify using `only [dblIntegrand, this]`. Clear denominators, using `[Circle.coe_ne_zero]` for the nonvanishing conditions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 -/
 theorem dblIntegrand_mul {s : ℂ} (hE : E ∈ degPS V a μ s) (g x : GA D V) :
     dblIntegrand V μ E f₁ f₂ (x * g, x) = E (io V (g, 1)) * conj (f₁ (x * g)) * f₂ x := by
@@ -532,14 +528,14 @@ theorem dblIntegrand_mul {s : ℂ} (hE : E ∈ degPS V a μ s) (g x : GA D V) :
   field_simp [Circle.coe_ne_zero]
 
 /- English proof (translation)
-The claim follows from `(integral_congr_ae (.of_forall fun q => by simp only [dblIntegrandQ, dblIntegrand, Pi.smul_apply, smul_eq_mul, map_mul]; ring)).trans (integral_const_mul _ _)`.
+A detailed English derivation is pending.
 -/
 theorem dblInt_smul (c c₁ c₂ : ℂ) : dblInt V μ m (c • E) (c₁ • f₁) (c₂ • f₂) = c * conj c₁ * c₂ * dblInt V μ m E f₁ f₂ :=
   (integral_congr_ae (.of_forall fun q => by
     simp only [dblIntegrandQ, dblIntegrand, Pi.smul_apply, smul_eq_mul, map_mul]; ring)).trans (integral_const_mul _ _)
 
 /- English proof (translation)
-The claim follows from `(integral_congr_ae (.of_forall fun q => by simp only [dblIntegrandQ, dblIntegrand, Pi.add_apply]; ring)).trans (integral_add h.2 h'.2)`.
+A detailed English derivation is pending.
 -/
 theorem dblInt_add (h : DblConv V μ m E f₁ f₂) (h' : DblConv V μ m E' f₁ f₂) :
     dblInt V μ m (E + E') f₁ f₂ = dblInt V μ m E f₁ f₂ + dblInt V μ m E' f₁ f₂ :=
@@ -549,7 +545,7 @@ theorem dblInt_add (h : DblConv V μ m E f₁ f₂) (h' : DblConv V μ m E' f₁
 variable [SigmaFinite m]
 
 /- English proof (translation)
-Establish `e : autMeasure V (c • m) = c • autMeasure V m` using `quotMeasure_smul (c : ℝ≥0∞)`. Rewrite using `[dblInt, e, Measure.prod_smul_left, Measure.prod_smul_right, integral_smul_nnreal_measure, integral_smul_nnreal_measure, smul_smul, ← sq, NNReal.smul_def, Complex.real_smul]`. Use `push_cast`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem dblInt_smul_measure (c : ℝ≥0) : dblInt V μ (c • m) E f₁ f₂ = (c : ℂ) ^ 2 * dblInt V μ m E f₁ f₂ := by
   have e : autMeasure V (c • m) = c • autMeasure V m := quotMeasure_smul (c : ℝ≥0∞)
@@ -558,7 +554,7 @@ theorem dblInt_smul_measure (c : ℝ≥0) : dblInt V μ (c • m) E f₁ f₂ = 
   push_cast; rfl
 
 /- English proof (translation)
-Use `(integral_congr_ae (.of_forall fun q => ?_)).trans (integral_prod_mul _ _)` and prove the remaining obligations. Simplify using `only [dblIntegrandQ, dblIntegrand, h, AutomorphicL2Unitary.descend]`. Clear denominators, using `[Circle.coe_ne_zero]` for the nonvanishing conditions.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 -/
 theorem dblInt_of_factor {A B : GA D V → ℂ} (h : ∀ g₁ g₂, E (io V (g₁, g₂)) = A g₁ * conj (B g₂) * μ (detA V g₂)) :
     dblInt V μ m E f₁ f₂ = Cusp.petersson V m A f₁ * Cusp.petersson V m f₂ B := by
@@ -569,9 +565,9 @@ theorem dblInt_of_factor {A B : GA D V → ℂ} (h : ∀ g₁ g₂, E (io V (g�
 variable [m.IsMulLeftInvariant]
 
 /- English proof (translation)
-Establish `h1` using `(measurePreserving_mk h).prod (measurePreserving_mk h)`. Establish `e : dblIntegrandQ V μ E f₁ f₂ ∘ Prod.map (mk (GQ V)) (mk (GQ V)) = dblIntegrand V μ E f₁ f₂`. Use function extensionality and compare the values at `fun g => dblIntegrandQ_mk hc.1 g.1 g.2`. Rewrite using `[IntegrableOn, ← Measure.prod_restrict, ← e]`. Use `⟨h1.integrable_comp_of_integrable hc.2, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2` using `hc.2.1`. Rewrite `*` using `[dblInt, autMeasure, ← h1.map_eq]`. Conclude with `integral_map h1.measurable.aemeasurable h2`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem DblConv.dblInt_eq (hc : DblConv V μ m E f₁ f₂) (h : IsFundamentalDomain (GQ V) 𝓕 m) :
     IntegrableOn (dblIntegrand V μ E f₁ f₂) (𝓕 ×ˢ 𝓕) (m.prod m) ∧
@@ -586,9 +582,9 @@ theorem DblConv.dblInt_eq (hc : DblConv V μ m E f₁ f₂) (h : IsFundamentalDo
   exact integral_map h1.measurable.aemeasurable h2
 
 /- English proof (translation)
-Use `⟨fun hc => (hc.dblInt_eq h).1, fun hc => ⟨hi, ?_⟩⟩` and prove the remaining obligations. Establish `e : dblIntegrandQ V μ E f₁ f₂ ∘ Prod.map (mk (GQ V)) (mk (GQ V)) = dblIntegrand V μ E f₁ f₂`. Use function extensionality and compare the values at `fun g => dblIntegrandQ_mk hi g.1 g.2`. Establish `e' : dblIntegrandQ V μ E f₁ f₂ = dblIntegrand V μ E f₁ f₂ ∘ Prod.map (sec (GQ V)) (sec (GQ V))`. Use function extensionality and compare the values at `fun q => (congrArg _ (Prod.ext (mk_sec q.1) (mk_sec q.2)).symm).trans (dblIntegrandQ_mk hi _ _)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite `hc` using `[IntegrableOn, ← Measure.prod_restrict, ← e]`. Conclude with `(((measurePreserving_mk h).prod (measurePreserving_mk h)).integrable_comp (e' ▸ (hm.comp (measurableEmbedding_sec.measurable.prodMap measurableEmbedding_sec.measurable)).aestronglyMeasurable)).1 hc`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dblConv_iff (hi : LeftInv ((GQ V).prod (GQ V)) (dblIntegrand V μ E f₁ f₂))
     (hm : Measurable (dblIntegrand V μ E f₁ f₂)) (h : IsFundamentalDomain (GQ V) 𝓕 m) :
@@ -609,13 +605,13 @@ section ZetaNonvanishing₂
 variable {m : Measure (GA D V)} {Φ : ℂ → GA D (dblSp V) → ℂ} {f₁ f₂ : GA D V → ℂ} {s₀ c c' : ℂ} {n : ℤ}
 
 /- English proof (translation)
-The claim follows from `h.2.unique h'.2`.
+A detailed English derivation is pending.
 -/
 theorem ZetaValueAt.unique (h : ZetaValueAt V μ m Φ f₁ f₂ s₀ c) (h' : ZetaValueAt V μ m Φ f₁ f₂ s₀ c') : c = c' :=
   h.2.unique h'.2
 
 /- English proof (translation)
-The claim follows from `h.2.unique h'.2`.
+A detailed English derivation is pending.
 -/
 theorem ZetaCoeffAt.unique (h : ZetaCoeffAt V μ m Φ f₁ f₂ s₀ n c) (h' : ZetaCoeffAt V μ m Φ f₁ f₂ s₀ n c') : c = c' :=
   h.2.unique h'.2
@@ -631,14 +627,14 @@ variable {K : Type} [Field K] [NumberField K] {T : Set (HeightOneSpectrum (𝓞 
 end Euler
 
 /- English proof (translation)
-The claim follows from `cosetSum_of_le (fun _ _ => mem_siegelOf.2 ((keepsDiag_iff _).2 fun i => absurd i.2 (by omega))) h g`.
+A detailed English derivation is pending.
 -/
 example (h0 : V.rank = 0) {Φ : GA D (dblSp V) → ℂ} (h : LeftInv (siegelQ V) Φ) (g : GA D (dblSp V)) :
     EisConv V Φ g ∧ eis V Φ g = Φ g :=
   cosetSum_of_le (fun _ _ => mem_siegelOf.2 ((keepsDiag_iff _).2 fun i => absurd i.2 (by omega))) h g
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨IsEisFamily.smul (Φ := fun _ => _) (fun _ _ => ⟨(cosetSum_indicator 1).1, fun g => (cosetSum_indicator g).2.1⟩) c, fun s => (eis_smul _ _).trans (congrArg _ (funext fun g => (cosetSum_indicator g).2.2))⟩`.
+Supply the required witnesses or components.
 -/
 theorem eis_smul_indicator (V : HSp D) (c : ℂ → ℂ) :
     IsEisFamily V (fun s => c s • indicator (siegelQ V : Set (GA D (dblSp V))) 1) ∧
@@ -647,9 +643,9 @@ theorem eis_smul_indicator (V : HSp D) (c : ℂ → ℂ) :
     fun s => (eis_smul _ _).trans (congrArg _ (funext fun g => (cosetSum_indicator g).2.2))⟩
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `eis_smul_indicator V fun s => (s - s₀)⁻¹`. Establish `h3 : ∀ g, IsMerExt (eisSer V (fun s => (s - s₀)⁻¹ • indicator (siegelQ V : Set (GA D (dblSp V))) 1) g) univ fun s => (s - s₀)⁻¹ * indicator (GQ (dblSp V) : Set _) 1 g` using `fun g => ⟨isRightDomain_univ, fun s _ => by fun_prop, 0, fun s _ => (congrFun (h2 s) g).symm⟩`. Establish `h4 : ∀ z : ℂ, Tendsto (fun s => (s - s₀) ^ 1 * ((s - s₀)⁻¹ * z)) (𝓝[≠] s₀) (𝓝 z)` using `fun z => tendsto_const_nhds.congr' (eventually_nhdsWithin_of_forall fun s hs => by simp [sub_ne_zero.2 hs])`. Use `⟨_, ⟨h1, fun g => ⟨_, h3 g⟩⟩, ⟨h1, fun g => ((h3 g).isExtAt trivial).poleLE_iff.2 ⟨_, h4 _⟩⟩, ⟨h1, fun g => ((h3 g).isExtAt trivial).coeffAt_of_tendsto (h4 _)⟩, fun φ h => ?_⟩` and prove the remaining obligations. Establish `h5` using `((tendsto_nhdsWithin_of_tendsto_nhds (s := {s₀}ᶜ) ((continuous_sub_right s₀).pow 1).continuousAt.tendsto).mul (((h3 1).isExtAt trivial).holValueAt_iff.1 (h.2 1)))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify `tendsto_nhds_unique h5 (h4 _)` using `[indicator_of_mem (one_mem (GQ (dblSp V)))]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 example (V : HSp D) (s₀ : ℂ) : ∃ Φ, EisContinues V Φ ∧ EisPoleLE V Φ s₀ 1 ∧
     EisCoeffAt V Φ s₀ (-1) (indicator (GQ (dblSp V) : Set _) 1) ∧ ∀ φ, ¬ EisValueAt V Φ s₀ φ := by
@@ -666,7 +662,7 @@ example (V : HSp D) (s₀ : ℂ) : ∃ Φ, EisContinues V Φ ∧ EisPoleLE V Φ 
   simpa [indicator_of_mem (one_mem (GQ (dblSp V)))] using tendsto_nhds_unique h5 (h4 _)
 
 /- English proof (translation)
-Establish `e : dblIntegrandQ V 1 (fun _ => c) (fun _ => c₁) (fun _ => c₂) = fun _ => c * conj c₁ * c₂`. Use function extensionality and compare the values at `fun _ => by simp [dblIntegrandQ, dblIntegrand]`. Use `⟨⟨fun _ _ _ => rfl, e ▸ integrable_const _⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[dblInt, e, integral_const, ← univ_prod_univ, measureReal_prod_prod, Complex.real_smul]`. Use `push_cast`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

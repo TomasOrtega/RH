@@ -44,12 +44,12 @@ def beta (A : DatAt Y P) (a b : A.Ylat) : ℝ :=
   betaAt A.U.D.toPre ((intO ↥C.S).subtype.comp A.f) p a b
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨A.U, A.unitOn, A.tors⟩`.
+Supply the required witnesses or components.
 -/
 theorem data_at_point_n3 (A : DatAt Y P) : UniformisationConclusion A.t (A.ι ⁻¹' abLocus Y.t.G) := ⟨A.U, A.unitOn, A.tors⟩
 
 /- English proof (translation)
-The claim follows from `betaAt_symm _ _ _ a b`.
+A detailed English derivation is pending.
 -/
 theorem beta_symm (A : DatAt Y P) (a b : A.Ylat) : A.beta a b = A.beta b a :=
   betaAt_symm _ _ _ a b

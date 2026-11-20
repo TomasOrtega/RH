@@ -9,7 +9,7 @@ namespace PositivityTheory.Rg.BcB.E2.P
 namespace Fdata
 
 /- English proof (translation)
-Break down `le_or_gt a (W * b) with h | h` into its components or cases. Combine the equalities or inequalities in the displayed calculation. Establish `hb : b ≤ W⁻¹ * a`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Separate the alternatives or extract the components of the hypothesis. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 -/
 lemma mul_le_weighted_squares (a b W : ℝ≥0∞) (h0 : W ≠ 0) (ht : W ≠ ⊤) : a * b ≤ W⁻¹ * a ^ 2 + W * b ^ 2 := by
   rcases le_or_gt a (W * b) with h | h
@@ -26,39 +26,33 @@ lemma mul_le_weighted_squares (a b W : ℝ≥0∞) (h0 : W ≠ 0) (ht : W ≠ �
 end Fdata
 
 /- English proof (translation)
-Introduce `hRx hRe X ι _ K _ _ _ J B _ _ _ _ R a₀ Φ g W S _ ν _ χ V hJ hΦ hT hS hne hW hW' hWc hg hg'`. Take `⟨T₁, hT₁, hT₁J⟩` from `hT 1`. Take `⟨k, hk⟩` from `hRx X ι (Φ 1) T₁ (hΦ 1) hT₁`. Use `set L : Lp ℂ 2 ν →L[ℂ] X.Hs ι := J.comp V with hL`. Establish `hLn : ∀ h, ‖L h‖ = ‖h‖` using `fun h => (hJ _).trans (hS.iso h)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL1 : ‖L‖ ≤ 1` using `ContinuousLinearMap.opNorm_le_bound _ zero_le_one fun h => by rw [hLn, one_mul]`. Use `set A := ContinuousLinearMap.adjoint L with hA`. Establish `hAn : ∀ v, ‖A v‖ ≤ ‖v‖` using `fun v => by`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hA, LinearIsometryEquiv.norm_map]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hL1`. Use `_ = ‖v‖ := one_mul _`. Establish `hAe : ∀ v, ‖A v‖ₑ ≤ ‖v‖ₑ` using `fun v => by`. Rewrite using `[← ofReal_norm, ← ofReal_norm]`. Conclude with `ENNReal.ofReal_le_ofReal (hAn v)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hin : ∀ v h, inner ℂ (A v) h = inner ℂ v (L h)` using `fun v h => ContinuousLinearMap.adjoint_inner_left L h v`. Establish `hT1L : ∀ h, T₁ (L h) = J (R a₀ (V h))` using `fun h => by show T₁ (J (V h)) = _`. Rewrite using `[hT₁J, one_mul]`. Establish `hmem : ∀ b (h : Lp ℂ 2 ν), MemLp (fun s => χ s b * h s) 2 ν` using `fun b h => MemLp.of_le_mul (c := ‖R b‖) (Lp.memLp h) ((hS.meas b).aestronglyMeasurable.mul (Lp.aestronglyMeasurable h)) (Filter.Eventually.of_forall fun s => by rw [norm_mul]; gcongr; exact hS.bdd b s)`. Establish `hwt : ∀ i, ∫⁻ x, W x * ‖A (k i x)‖ₑ ^ 2 ∂X.ν ≠ ⊤`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i`. Take `⟨C, Ω, hC, hΩ, hkC⟩` from `hk.norm`. Use `ne_top_of_le_ne_top (ENNReal.mul_ne_top hC (hWc Ω hΩ)) ?_` and prove the remaining obligations. Rewrite using `[← lintegral_const_mul' _ _ hC]`. Use `lintegral_mono fun x => ?_` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Use `⟨fun i x => A (k i x), ?_⟩` and prove the remaining obligations. Use `⟨fun i => A.continuous.comp (hk.cont i), fun i γ hγ x => by simp only [hk.inv i γ hγ x], ?_, hwt, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `hF0`. Establish `hA0 : ∀ i x, A (k i x) = 0` using `fun i x => congrFun (congrFun hF0 i) x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : ∀ h, T₁ (L h) = 0` using `fun h => by`. Use `PiLp.ext fun i => ?_` and prove the remaining obligations. Rewrite using `[PiLp.zero_apply]`. Use `Lp.ext ?_` and prove the remaining obligations. Use `filter_upwards [hk.rep (L h) i, Lp.coeFn_zero ℂ 2 X.ν] with x h1 h2`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h1, h2, ← hin, hA0, inner_zero_left]`. Both sides reduce to the same expression. Use `set h1 : Lp ℂ 2 ν := (memLp_const (1 : ℂ)).toLp _ with hh1`. Use `set h' : Lp ℂ 2 ν := (hmem a₀ h1).toLp _ with hh'`. Establish `hV : V h' = R a₀ (V h1)` using `hS.mul _ h1 _ (MemLp.coeFn_toLp _)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hJ0 : J (V h') = 0` using `by rw [hV, ← hT1L, h0]`. Establish `hn : ‖h'‖ = 0` using `by rw [← hS.iso, ← hJ, hJ0, norm_zero]`. Establish `hz : h' = 0` using `norm_eq_zero.1 hn`. Establish `hae : ∀ᵐ s ∂ν, False` using `by filter_upwards [hne, MemLp.coeFn_toLp (hmem a₀ h1), MemLp.coeFn_toLp (memLp_const (1 : ℂ) (μ := ν) (p := 2)), Lp.coeFn_zero ℂ 2 ν] with s hs e1 e2 e3`. Apply `hs` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (h' : S → ℂ) s = 0` using `by rw [hz, e3]; rfl`. Rewrite `this` using `[hh', e1, hh1, e2]`. Simplify using `using this`. Conclude with `hS.ne (ae_eq_bot.1 (Filter.eventually_false_iff_eq_bot.1 hae))`. Introduce `c x i h`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `set h' : Lp ℂ 2 ν := (hmem (c * a₀) h).toLp _ with hh'`. Establish `hV : V h' = R (c * a₀) (V h)` using `hS.mul _ h _ (MemLp.coeFn_toLp _)`. Take `⟨Tc, hTc, hTcJ⟩` from `hT c`. Establish `key : Tc (T₁ (L h)) = T₁ (L h')`. Rewrite using `[hT1L, hT1L, hTcJ, hV]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congr 1`. Use `show (R (c * a₀) * R a₀) (V h) = (R a₀ * R (c * a₀)) (V h)`. Rewrite using `[← map_mul, ← map_mul, mul_comm]`. Establish `e` using `hRe X ι (Φ c) Tc T₁ k (L h) (L h') (hΦ c) hTc hk key x i`. Simplify using `only [hin]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e, ← hin, L2.inner_def]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [MemLp.coeFn_toLp (hmem (c * a₀) h)] with s hs`. Rewrite using `[hs, RCLike.inner_apply']`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `n i`. Establish `hgm : AEStronglyMeasurable (fun x => (g n i : X.G → ℂ) x) X.ν` using `Lp.aestronglyMeasurable _`. Use `⟨Complex.continuous_conj.comp_aestronglyMeasurable hgm, ?_⟩` and prove the remaining obligations. Use `ne_top_of_le_ne_top (ENNReal.add_ne_top.2 ⟨hg' n i, hwt i⟩) ?_` and prove the remaining obligations. Establish `hm : AEMeasurable (fun x => (W x)⁻¹ * ‖(g n i : X.G → ℂ) x‖ₑ ^ 2) X.ν` using `hW.inv.aemeasurable.mul (hgm.enorm.pow_const 2)`.
-
-Rewrite using `[← lintegral_add_left' hm]`. Use `lintegral_mono fun x => ?_` and prove the remaining obligations. Rewrite using `[RCLike.enorm_conj]`. Conclude with `Fdata.mul_le_weighted_squares _ _ _ (hW' x).1 (hW' x).2`. Introduce `n h`.
-
-Establish `e : ∀ i, ∫ x, conj ((g n i : X.G → ℂ) x) * inner ℂ (A (k i x)) h ∂X.ν = inner ℂ (g n i) (T₁ (L h) i)`. Introduce `i`. Rewrite using `[L2.inner_def]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hk.rep (L h) i] with x hx`.
-
-Rewrite using `[hx, hin, RCLike.inner_apply']`. Simplify using `only [e]`. Rewrite using `[← PiLp.inner_apply, hT1L]`. Conclude with `inner_eq_zero_symm.1 (hg n _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fdata : RowsEx → RowsEig → FData := by
   intro hRx hRe X ι _ K _ _ _ J B _ _ _ _ R a₀ Φ g W S _ ν _ χ V hJ hΦ hT hS hne hW hW' hWc hg hg'

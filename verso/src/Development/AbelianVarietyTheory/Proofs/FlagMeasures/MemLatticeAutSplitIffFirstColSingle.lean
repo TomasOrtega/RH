@@ -9,7 +9,7 @@ namespace GlobalTheory.OrbitTerm.SplitStab
 variable {E : Type} [Field E] {k : ℕ}
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_succ_column_zero, Fin.sum_univ_succ]`. Simplify using `[h, Fin.succ_ne_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_of_col (M : Matrix (Fin (k + 1)) (Fin (k + 1)) E)
     (h : ∀ a, M a 0 = if a = 0 then 1 else 0) : M.det = (M.submatrix Fin.succ Fin.succ).det := by
@@ -17,7 +17,7 @@ theorem det_of_col (M : Matrix (Fin (k + 1)) (Fin (k + 1)) E)
   simp [h, Fin.succ_ne_zero]
 
 /- English proof (translation)
-Establish `h0 : M 0 0 = 1` using `by simpa using h 0`. Simplify using `[Matrix.mulVec, dotProduct, Fin.sum_univ_succ, h0, Fin.tail]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem mulVec_zero_of_col (M : Matrix (Fin (k + 1)) (Fin (k + 1)) E)
     (h : ∀ a, M a 0 = if a = 0 then 1 else 0) (y : Fin (k + 1) → E) :
@@ -26,7 +26,7 @@ theorem mulVec_zero_of_col (M : Matrix (Fin (k + 1)) (Fin (k + 1)) E)
   simp [Matrix.mulVec, dotProduct, Fin.sum_univ_succ, h0, Fin.tail]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `b`. Establish `hb : M b.succ 0 = 0` using `by simpa [Fin.succ_ne_zero] using h b.succ`. Simplify using `[Fin.tail, Matrix.mulVec, dotProduct, Fin.sum_univ_succ, hb, Matrix.submatrix]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem tail_mulVec_of_col (M : Matrix (Fin (k + 1)) (Fin (k + 1)) E)
     (h : ∀ a, M a 0 = if a = 0 then 1 else 0) (y : Fin (k + 1) → E) :
@@ -36,23 +36,21 @@ theorem tail_mulVec_of_col (M : Matrix (Fin (k + 1)) (Fin (k + 1)) E)
   simp [Fin.tail, Matrix.mulVec, dotProduct, Fin.sum_univ_succ, hb, Matrix.submatrix]
 
 /- English proof (translation)
-Establish `key : ∀ y : Fin (k + 1) → E, M *ᵥ y ∈ Λ ↔ ((fun _ => y 0) + (fun _ => (fun b => M 0 (Fin.succ b)) ⬝ᵥ Fin.tail y) : Fin 1 → E) ∈ Λ₀ ∧ M.submatrix Fin.succ Fin.succ *ᵥ Fin.tail y ∈ Λ'`. Introduce `y`. Rewrite using `[hΛ, mulVec_zero_of_col M h y, tail_mulVec_of_col M h y]`. Conclude with `Iff.rfl`. Establish `hcons : ∀ (c : E) (z : Fin k → E), (Fin.cons c z : Fin (k + 1) → E) 0 = c ∧ Fin.tail (Fin.cons c z : Fin (k + 1) → E) = z` using `fun c z => ⟨Fin.cons_zero _ _, Fin.tail_cons _ _⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hM`. Use `⟨fun z => ⟨fun hz => ?_, fun hz => ?_⟩, fun z hz => ?_⟩` and prove the remaining obligations. Use `set c : E := -((fun b => M 0 (Fin.succ b)) ⬝ᵥ z)`. Establish `h1 : M *ᵥ (Fin.cons c z : Fin (k + 1) → E) ∈ Λ`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key, (hcons c z).1, (hcons c z).2]`. Use `⟨?_, hz⟩` and prove the remaining obligations. Establish `hz0 : ((fun _ => c) + (fun _ => (fun b => M 0 (Fin.succ b)) ⬝ᵥ z) : Fin 1 → E) = 0`. Use function extensionality and compare the values at `i`. Simplify using `[c]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz0]`. Conclude with `Λ₀.zero_mem`. Establish `h2` using `(hΛ _).1 ((hM _).1 h1)`. Rewrite `h2` using `[(hcons c z).2]`. Conclude with `h2.2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `h1 : (Fin.cons 0 z : Fin (k + 1) → E) ∈ Λ`. Rewrite using `[hΛ, (hcons 0 z).1, (hcons 0 z).2]`. Conclude with `⟨Λ₀.zero_mem, hz⟩`. Establish `h2` using `(key _).1 ((hM _).2 h1)`. Rewrite `h2` using `[(hcons 0 z).2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `h2.2`. Establish `h1 : (Fin.cons 0 z : Fin (k + 1) → E) ∈ Λ`. Rewrite using `[hΛ, (hcons 0 z).1, (hcons 0 z).2]`. Conclude with `⟨Λ₀.zero_mem, hz⟩`. Establish `h2` using `((key _).1 ((hM _).2 h1)).1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite `h2` using `[(hcons 0 z).1, (hcons 0 z).2]`. Establish `he : ((fun _ => (0 : E)) + (fun _ => (fun b => M 0 (Fin.succ b)) ⬝ᵥ z) : Fin 1 → E) = fun _ => (fun b => M 0 (Fin.succ b)) ⬝ᵥ z`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Rewrite `h2` using `[he]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨hA, hr⟩ y`. Rewrite using `[key, hΛ, hA]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨(add_mem_cancel_right (hr _ h2)).1 h1, h2⟩`.
-
-Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨Λ₀.add_mem h1 (hr _ h2), h2⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem preserves_iff [NumberField E] (Λ : Submodule (𝓞 E) (Fin (k + 1) → E)) (Λ₀ : Submodule (𝓞 E) (Fin 1 → E))
     (Λ' : Submodule (𝓞 E) (Fin k → E)) (hΛ : ∀ y, y ∈ Λ ↔ (fun _ => y 0) ∈ Λ₀ ∧ Fin.tail y ∈ Λ')
@@ -110,25 +108,23 @@ namespace GlobalTheory.OrbitTerm
 open SplitStab in
 
 /- English proof (translation)
-Introduce `E _ _ k Λ Λ₀ Λ' hΛ x hx`. Take `⟨w₀⟩ : Nonempty (InfinitePlace E)` from `inferInstance`. Simplify using `only [autGL, Set.mem_ofPred_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨γ, hγ, hxγ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `hcol : ∀ a, (γ : Matrix (Fin (k + 1)) (Fin (k + 1)) E) a 0 = if a = 0 then 1 else 0`. Introduce `a`. Apply `w₀.embedding.injective` to reduce the goal to its premises. Rewrite using `[← hxγ w₀ a 0, hx w₀ a]`. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hdet : (γ : Matrix (Fin (k + 1)) (Fin (k + 1)) E).det ≠ 0` using `(Matrix.isUnits_det_units γ).ne_zero`. Rewrite `hdet` using `[det_of_col _ hcol]`. Take `⟨hA, hr⟩` from `(preserves_iff Λ Λ₀ Λ' hΛ _ hcol).1 hγ`. Conclude with `⟨⟨Matrix.GeneralLinearGroup.mkOfDetNeZero _ hdet, hA, fun w a b => hxγ w a.succ b.succ⟩, fun b => (γ : Matrix (Fin (k + 1)) (Fin (k + 1)) E) 0 b.succ, hr, fun w b => hxγ w 0 b.succ⟩`. Introduce and unpack `⟨⟨γ', hγ', hxγ'⟩, τ, hτ, hxτ⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Take `⟨M, hM⟩ : ∃ M : Matrix (Fin (k + 1)) (Fin (k + 1)) E, M = Matrix.of (Fin.cons (Fin.cons 1 τ : Fin (k + 1) → E) (fun a => (Fin.cons 0 ((γ' : Matrix (Fin k) (Fin k) E) a) : Fin (k + 1) → E)) : Fin (k + 1) → Fin (k + 1) → E)` from `⟨_, rfl⟩`. Establish `hcol : ∀ a, M a 0 = if a = 0 then 1 else 0`. Introduce `a`. Apply the tactic sequence `rcases Fin.eq_zero_or_eq_succ a with rfl | ⟨a, rfl⟩ <;> simp [hM, Fin.succ_ne_zero]`. Establish `hsub : M.submatrix Fin.succ Fin.succ = (γ' : Matrix (Fin k) (Fin k) E)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Use extensionality with `a b`. Simplify using `[hM]`. Establish `hrow : (fun b => M 0 (Fin.succ b)) = τ`. Use function extensionality and compare the values at `b`. Simplify using `[hM]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hdet : M.det ≠ 0`. Rewrite using `[det_of_col M hcol, hsub]`. Conclude with `(Matrix.isUnits_det_units γ').ne_zero`. Use `⟨Matrix.GeneralLinearGroup.mkOfDetNeZero M hdet, ?_, ?_⟩` and prove the remaining obligations. Use `show ∀ y, M *ᵥ y ∈ Λ ↔ y ∈ Λ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(preserves_iff Λ Λ₀ Λ' hΛ M hcol).2 ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hsub]`. Conclude with `hγ'`. Rewrite using `[hrow]`. Conclude with `hτ`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Introduce `w a b show x w a b = w.embedding (M a b)`. Apply the tactic sequence `rcases Fin.eq_zero_or_eq_succ a with rfl | ⟨a, rfl⟩ <;>`. Break down `Fin.eq_zero_or_eq_succ b with rfl | ⟨b, rfl⟩` into its components or cases. Rewrite using `[hx]`. Simplify using `[hM]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hxτ]`. Simplify using `[hM]`. Rewrite using `[hx]`. Simplify using `[hM, Fin.succ_ne_zero]`. Use `(hxγ' w a b).trans ?_` and prove the remaining obligations.
-
-Simplify using `[hM]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_autGL_split_iff : ∀ (E : Type) [Field E] [NumberField E] (k : ℕ) (Λ : Submodule (𝓞 E) (Fin (k + 1) → E)) (Λ₀ : Submodule (𝓞 E) (Fin 1 → E)) (Λ' : Submodule (𝓞 E) (Fin k → E)), (∀ y, y ∈ Λ ↔ (fun _ => y 0) ∈ Λ₀ ∧ Fin.tail y ∈ Λ') → ∀ x : MatInf E (k + 1), (∀ w a, x w a 0 = if a = 0 then 1 else 0) → (x ∈ autGL E (k + 1) Λ ↔ (fun w a b => x w a.succ b.succ) ∈ autGL E k Λ' ∧ ∃ τ : Fin k → E, (∀ y ∈ Λ', (fun _ => τ ⬝ᵥ y) ∈ Λ₀) ∧ ∀ w b, x w 0 b.succ = w.embedding (τ b)) := by
   intro E _ _ k Λ Λ₀ Λ' hΛ x hx

@@ -10,16 +10,16 @@ variable (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZ
   [IsFractionRing O K]
 
 /- English proof (translation)
-Unfold `ord_vw`. Rewrite using `[map_mul, WithZero.log_mul ((Valuation.ne_zero_iff _).2 ha) ((Valuation.ne_zero_iff _).2 hb), neg_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem ord_mul' {a b : K} (ha : a ≠ 0) (hb : b ≠ 0) : ord_vw O (a * b) = ord_vw O a + ord_vw O b := by
   unfold ord_vw
   rw [map_mul, WithZero.log_mul ((Valuation.ne_zero_iff _).2 ha) ((Valuation.ne_zero_iff _).2 hb), neg_add]
 
 /- English proof (translation)
-Establish `hx' : algebraMap O K x ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective O K)).2 hx`. Establish `h2 : (IsDiscreteValuationRing.maximalIdeal O).valuation K (algebraMap O K x) ≠ 0` using `(Valuation.ne_zero_iff _).2 hx'`. Establish `h1 : (IsDiscreteValuationRing.maximalIdeal O).valuation K (algebraMap O K x) ≤ 1`. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `HeightOneSpectrum.intValuation_le_one _ x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `ord_vw`. Rewrite `h1` using `[← WithZero.exp_log h2, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem ord_alg_nonneg (x : O) (hx : x ≠ 0) : 0 ≤ ord_vw O (algebraMap O K x) := by
   have hx' : algebraMap O K x ≠ 0 := (map_ne_zero_iff _ (IsFractionRing.injective O K)).2 hx
@@ -32,9 +32,9 @@ theorem ord_alg_nonneg (x : O) (hx : x ≠ 0) : 0 ≤ ord_vw O (algebraMap O K x
   linarith
 
 /- English proof (translation)
-Establish `h0 : (l : K) ≠ 0`. Rewrite using `[← map_natCast (algebraMap O K)]`. Conclude with `(map_ne_zero_iff _ (IsFractionRing.injective O K)).2 (Nat.cast_ne_zero.2 hl)`. Establish `h1 : (IsDiscreteValuationRing.maximalIdeal O).valuation K (l : K) < 1`. Rewrite using `[← map_natCast (algebraMap O K), HeightOneSpectrum.valuation_lt_one_iff_mem]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h`. Establish `h2 : (IsDiscreteValuationRing.maximalIdeal O).valuation K (l : K) ≠ 0` using `by simpa using h0`. Unfold `ord_vw`. Rewrite `h1` using `[← WithZero.exp_log h2, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem ord_l_pos (l : ℕ) (hl : l ≠ 0) (h : (l : O) ∈ IsLocalRing.maximalIdeal O) : 0 < ord_vw O (l : K) := by
   have h0 : (l : K) ≠ 0 := by
@@ -49,7 +49,7 @@ theorem ord_l_pos (l : ℕ) (hl : l ≠ 0) (h : (l : O) ∈ IsLocalRing.maximalI
   linarith
 
 /- English proof (translation)
-Unfold `val_vp`. Use `split_ifs with hx`. Conclude with `le_top`. Establish `hx' : x ≠ 0` using `by rintro rfl; exact hx (map_zero _)`. Conclude with `WithTop.coe_le_coe.2 (div_nonneg (by exact_mod_cast ord_alg_nonneg O x hx') (by exact_mod_cast (ord_l_pos O (K := K) l hl h).le))`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem val_nonneg (l : ℕ) (hl : l ≠ 0) (h : (l : O) ∈ IsLocalRing.maximalIdeal O) (x : O) :
     0 ≤ val_vp O l (algebraMap O K x) := by
@@ -61,11 +61,11 @@ theorem val_nonneg (l : ℕ) (hl : l ≠ 0) (h : (l : O) ∈ IsLocalRing.maximal
       (by exact_mod_cast (ord_l_pos O (K := K) l hl h).le))
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `hxy`. Establish `hx : x ≠ 0` using `left_ne_zero_of_mul hy`. Establish `hz : z ≠ 0` using `right_ne_zero_of_mul hy`. Establish `inj` using `IsFractionRing.injective O K`. Establish `hx' : algebraMap O K x ≠ 0` using `(map_ne_zero_iff _ inj).2 hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz' : algebraMap O K z ≠ 0` using `(map_ne_zero_iff _ inj).2 hz`. Establish `hy' : algebraMap O K (x * z) ≠ 0` using `(map_ne_zero_iff _ inj).2 hy`. Unfold `val_vp`. Rewrite using `[if_neg hx', if_neg hy', map_mul, ord_mul' O hx' hz']`. Use `WithTop.coe_le_coe.2 (div_le_div_of_nonneg_right ?_ (by exact_mod_cast (ord_l_pos O (K := K) l hl h).le))` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `push_cast`. Combine the linear relations using `[(by exact_mod_cast ord_alg_nonneg O z hz : (0 : ℚ) ≤ ord_vw O (algebraMap O K z))]`.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem val_le_of_dvd (l : ℕ) (hl : l ≠ 0) (h : (l : O) ∈ IsLocalRing.maximalIdeal O) {x y : O} (hy : y ≠ 0)
     (hxy : x ∣ y) : val_vp O l (algebraMap O K x) ≤ val_vp O l (algebraMap O K y) := by
@@ -89,21 +89,19 @@ end GlobalTheory.PairingBound
 namespace GlobalTheory.PairingBound
 
 /- English proof (translation)
-Introduce `E _ _ _ c _ l hl O _ _ _ _ K _ _ _ hlm _ D hD _ I _ φ _ H _ _ ρ Fil B hLat hEig e f hGen i`. Take `⟨hfree, -, -, -, -, -, hbij, halt, -⟩` from `hLat`. Take `⟨-, hsat, ⟨-, hsum⟩, -, horth⟩` from `hEig`. Take `⟨he, hf⟩` from `hGen i`. Use `haveI := hfree`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, ⟨g, hg0, hgs⟩, -, -, C, hC⟩` from `hsat (φ i)`. Establish `he0 : e i ≠ 0`. Introduce `h0`. Rewrite `hgs` using `[he, h0, Submodule.span_singleton_eq_bot.2 rfl]`. Conclude with `hg0 (Submodule.span_singleton_eq_bot.1 hgs.symm)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `heL : e i ∈ eigLat ρ (φ i)` using `by rw [he]; exact Submodule.mem_span_singleton_self _`. Rewrite `hC` using `[he]`. Set `lam : H →ₗ[O] O` to `((LinearEquiv.toSpanNonzeroSingleton O H (e i) he0).symm.toLinearMap).comp (Submodule.linearProjOfIsCompl _ C hC)`. Establish `hlam : lam (e i) = 1`. Simplify using `only [lam, LinearMap.comp_apply, LinearEquiv.coe_coe]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hp : (Submodule.linearProjOfIsCompl _ C hC) (e i) = ⟨e i, Submodule.mem_span_singleton_self _⟩` using `Submodule.linearProjOfIsCompl_apply_left hC ⟨e i, Submodule.mem_span_singleton_self _⟩`. Rewrite using `[hp, LinearEquiv.symm_apply_eq, LinearEquiv.toSpanNonzeroSingleton_one]`. Take `⟨h, hh⟩` from `hbij.2 lam`. Establish `hBeh : B (e i) h = -1`. Rewrite using `[← LinearMap.IsAlt.neg halt h (e i), hh, hlam]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hle : (⨆ σ : E →+* K, eigLat ρ σ) ≤ LinearMap.ker (B (e i)) ⊔ (O ∙ f i)`. Use `iSup_le fun σ => ?_` and prove the remaining obligations. Distinguish the cases in `hσ : σ = bar (φ i)`. Substitute `hσ` using the available equality. Rewrite using `[hf]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_sup_right`. Use `le_sup_of_le_left fun y hy => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.mem_ker]`. Establish `h0` using `horth (φ i) σ hσ _ heL _ hy`. Simplify using `only [inK, TensorProduct.mk_apply, LinearMap.BilinForm.baseChange_tmul, mul_one, Algebra.smul_def] at h0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(IsFractionRing.injective O K) (by rw [h0, map_zero])`. Take `⟨k, hk, y, hy, hky⟩` from `Submodule.mem_sup.1 (hle (hsum h))`. Take `⟨u, rfl⟩` from `Submodule.mem_span_singleton.1 hy`. Establish `hdiv : B (e i) (f i) ∣ D`. Establish `h1` using `congrArg (B (e i)) hky`.
-
-Rewrite `h1` using `[map_add, LinearMap.mem_ker.1 hk, zero_add, map_smul, map_smul, hBeh, smul_eq_mul, smul_eq_mul]`. Conclude with `⟨-u, by linear_combination h1⟩`. Conclude with `⟨val_nonneg O l hl.ne_zero hlm _, val_le_of_dvd O l hl.ne_zero hlm hD hdiv⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem pairing_val_bounds : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (c : Ideal (OF E)), c ≠ ⊥ → ∀ (l : ℕ), l.Prime → ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O] (K : Type) [Field K] [Algebra O K] [IsFractionRing O K], (l : O) ∈ IsLocalRing.maximalIdeal O → Nat.card (E →+* K) = Module.finrank ℚ E → ∀ (D : O), D ≠ 0 → ClearsIdem K c D → ∀ (I : Type) [Fintype I] (φ : I → E →+* K), IsCMTypeIn φ → ∀ (H : Type) [AddCommGroup H] [Module O H] (ρ : orderC c →+* Module.End O H) (Fil : Submodule O H) (B : LinearMap.BilinForm O H), IsCMLattice φ ρ Fil B → EigenClaims φ ρ Fil B D → ∀ e f : I → H, IsGens φ ρ e f → ∀ i, 0 ≤ val_vp O l (algebraMap O K (B (e i) (f i))) ∧ val_vp O l (algebraMap O K (B (e i) (f i))) ≤ val_vp O l (algebraMap O K D) := by
   intro E _ _ _ c _ l hl O _ _ _ _ K _ _ _ hlm _ D hD _ I _ φ _ H _ _ ρ Fil B hLat hEig e f hGen i

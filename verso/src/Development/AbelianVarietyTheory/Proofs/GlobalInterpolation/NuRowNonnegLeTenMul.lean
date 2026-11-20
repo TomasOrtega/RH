@@ -8,9 +8,9 @@ open Formalism.BasicNotions Formalism.BasicNotions.DV Formalism.MainNotions Numb
 namespace GlobalTheory
 
 /- English proof (translation)
-Unfold `nuRow srcPar`. Rewrite using `[dif_pos hk]`. Establish `h1 : 1 ≤ D.R.N j` using `by unfold Ranks.N; omega`. Establish `h1' : (1 : ℝ) ≤ D.R.N j` using `by exact_mod_cast h1`. Establish `h2 : (0 : ℝ) ≤ D.R.N (j - 1)` using `Nat.cast_nonneg _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem nuRow_zero_le (D : D7) (u : D.what₂.Word) (j : ℕ) (τ : D.what₂.Tau) (hk : 0 < D.R.k) :
     nuRow D u j τ 0 ≤ ((((D.hcW u τ).u ⟨0, hk⟩ : ℚ)) : ℝ) + wSz D j τ := by
@@ -23,13 +23,13 @@ theorem nuRow_zero_le (D : D7) (u : D.what₂.Word) (j : ℕ) (τ : D.what₂.Ta
   linarith
 
 /- English proof (translation)
-Introduce `eps Fm`. Take `⟨x0, h⟩` from `GlobalTheory.HCEntries.entries eps Fm`. Use `⟨x0, fun x hx hx1 i u j hj τ l hl => ?_⟩` and prove the remaining obligations. Take `⟨hw, hu, -⟩` from `h x hx hx1 i`. Take `⟨-, hw3, hwe⟩` from `hw j hj τ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hj'` using `Finset.mem_Icc.1 hj`. Take `⟨j', rfl⟩ : ∃ j', j = j' + 1` from `⟨j - 1, by omega⟩`. Establish `hl' : l < (Fm.D x i).R.N j'` using `by simpa using hl`. Establish `hjm : j' < (Fm.D x i).R.m` using `by omega`. Establish `hk : 0 < (Fm.D x i).R.k` using `by have := (Fm.D x i).R.m_add_three_le_k; omega`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨(RowWeightLemmas.nuRow_pos _ u j' hjm τ l hl').le, ?_⟩` and prove the remaining obligations. Establish `h1` using `RowWeightLemmas.nuRow_anti' _ u j' hjm τ l 0 (Nat.zero_le _) hl'`. Establish `h2` using `nuRow_zero_le (Fm.D x i) u (j' + 1) τ hk`. Establish `h3` using `(abs_le.1 (hu u τ ⟨0, hk⟩)).2`. Establish `hb : 0 < (Fm.L x i).sc.b` using `Real.exp_pos _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx' : 1 < x` using `Fm.one_lt_family_threshold.trans hx1`. Establish `h4 : (Fm.L x i).sc.b ≤ x * (Fm.L x i).sc.b` using `le_mul_of_one_le_left hb.le hx'.le`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem nuRow_nonneg_le_ten_mul : ∀ (eps : ℝ) (Fm : FamP eps), (∃ x0 : ℝ, ∀ x ≥ x0, Fm.x1 < x → ∀ i : Fm.Ix x, ∀ u, ∀ j ∈ SizeData₂.lifts (Fm.D x i), ∀ τ, ∀ l < (Fm.D x i).R.N (j - 1), 0 ≤ nuRow (Fm.D x i) u j τ l ∧ nuRow (Fm.D x i) u j τ l ≤ 10 * x * (Fm.L x i).sc.b) := by
   intro eps Fm

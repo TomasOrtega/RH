@@ -43,7 +43,7 @@ structure Recip.Good (a : Recip D Ω) : Prop where
   artin : IsGlobalArtin a.art
 
 /- English proof (translation)
-Take `⟨art, ha⟩` from `h D.host.E Ω`. Take `⟨κ, h1, h2, h3⟩` from `GlobalTheory.CharTransport.exists_hom D`. Conclude with `⟨⟨κ, art⟩, h1, h2, h3, ha⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_recip_good (h : GlobalTheory.Published.GlobalArtinReciprocity) (D : D7) (Ω : Type) [Field Ω] [Algebra D.host.E Ω]
     [IsAlgClosure D.host.E Ω] : ∃ a : Recip D Ω, a.Good := by
@@ -59,7 +59,7 @@ def descend (φ : G D.host.E Ω →* A) : Gab D.host.E Ω →* A :=
   if h : (commutator (G D.host.E Ω)).topologicalClosure ≤ φ.ker then QuotientGroup.lift _ φ h else 1
 
 /- English proof (translation)
-Rewrite using `[descend, dif_pos (Subgroup.topologicalClosure_minimal _ (Abelianization.commutator_subset_ker φ) (Subgroup.isClosed_of_isOpen _ h))]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem descend_toAb {φ : G D.host.E Ω →* A} (h : IsOpen (φ.ker : Set (G D.host.E Ω))) (σ : G D.host.E Ω) :
     descend φ (toAb D.host.E Ω σ) = φ σ := by
@@ -70,20 +70,20 @@ theorem descend_toAb {φ : G D.host.E Ω →* A} (h : IsOpen (φ.ker : Set (G D.
 def Recip.pull (a : Recip D Ω) (φ : G D.host.E Ω →* A) : (AE D)ˣ →* A := (descend φ).comp a.sym
 
 /- English proof (translation)
-Rewrite using `[Recip.pull, MonoidHom.comp_apply, hx, descend_toAb h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Recip.pull_eq (a : Recip D Ω) {φ : G D.host.E Ω →* A} (h : IsOpen (φ.ker : Set (G D.host.E Ω))) {x : (AE D)ˣ}
     {σ : G D.host.E Ω} (hx : a.sym x = toAb D.host.E Ω σ) : a.pull φ x = φ σ := by
   rw [Recip.pull, MonoidHom.comp_apply, hx, descend_toAb h]
 
 /- English proof (translation)
-The claim follows from `(QuotientGroup.mk'_surjective _ (a.sym x)).imp fun _ h => h.symm`.
+A detailed English derivation is pending.
 -/
 theorem Recip.exists_sym (a : Recip D Ω) (x : (AE D)ˣ) : ∃ σ, a.sym x = toAb D.host.E Ω σ :=
   (QuotientGroup.mk'_surjective _ (a.sym x)).imp fun _ h => h.symm
 
 /- English proof (translation)
-Use extensionality with `x`. Take `⟨σ, h⟩` from `a.exists_sym x`. Rewrite using `[a.pull_eq (by simp) h]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 @[simp] theorem Recip.pull_one (a : Recip D Ω) : a.pull (1 : G D.host.E Ω →* A) = 1 := by
   ext x
@@ -92,7 +92,7 @@ Use extensionality with `x`. Take `⟨σ, h⟩` from `a.exists_sym x`. Rewrite u
   rfl
 
 /- English proof (translation)
-Use extensionality with `x`. Take `⟨σ, hx⟩` from `a.exists_sym x`. Rewrite using `[MonoidHom.comp_apply, a.pull_eq h hx, a.pull_eq (Subgroup.isOpen_mono (H₁ := φ.ker) (fun g hg => by simp [MonoidHom.mem_ker.1 hg]) h) hx]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem Recip.pull_comp (a : Recip D Ω) {A' : Type} [CommGroup A'] {φ : G D.host.E Ω →* A}
     (h : IsOpen (φ.ker : Set (G D.host.E Ω))) (f : A →* A') : a.pull (f.comp φ) = f.comp (a.pull φ) := by
@@ -112,7 +112,7 @@ def unitPart : ℂˣ →* Circle where
     rw [Units.val_mul, norm_mul, Complex.ofReal_mul, div_mul_div_comm])
 
 /- English proof (translation)
-Establish `h1 : ‖(z : ℂ)‖ = 1` using `Complex.norm_eq_one_of_pow_eq_one (by rw [← Units.val_pow_eq_pow_val, h, Units.val_one]) hn`. Express the relevant statement in the definitionally equal form `(z : ℂ) / ‖(z : ℂ)‖ = z`. Rewrite using `[h1, Complex.ofReal_one, div_one]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem unitPart_of_pow {z : ℂˣ} {n : ℕ} (hn : n ≠ 0) (h : z ^ n = 1) : ((unitPart z : Circle) : ℂ) = z := by
   have h1 : ‖(z : ℂ)‖ = 1 := Complex.norm_eq_one_of_pow_eq_one (by rw [← Units.val_pow_eq_pow_val, h, Units.val_one]) hn
@@ -122,7 +122,7 @@ theorem unitPart_of_pow {z : ℂˣ} {n : ℕ} (hn : n ≠ 0) (h : z ^ n = 1) : (
 def resOf {A : Type} [CommGroup A] (χ : (AE D)ˣ →* A) : ResChars D A := fun P => Classical.epsilon (IsResAt χ P)
 
 /- English proof (translation)
-The claim follows from `Classical.epsilon_spec h`.
+A detailed English derivation is pending.
 -/
 theorem isResAt_resOf {A : Type} [CommGroup A] {χ : (AE D)ˣ →* A} {P : Pl D.host.E} (h : ∃ c, IsResAt χ P c) :
     IsResAt χ P (resOf χ P) := Classical.epsilon_spec h
@@ -137,14 +137,14 @@ open Classical in
 def half (ch : Set (Pl D.host.E)) (Q : Finset (Pl D.host.E)) : Finset (Pl D.host.E) := Q.filter (· ∈ ch)
 
 /- English proof (translation)
-Conclude with `Finset.mem_filter`.
+A detailed English derivation is pending.
 -/
 theorem mem_half {ch : Set (Pl D.host.E)} {Q : Finset (Pl D.host.E)} {P : Pl D.host.E} : P ∈ half ch Q ↔ P ∈ Q ∧ P ∈ ch := by
   classical
   exact Finset.mem_filter
 
 /- English proof (translation)
-The claim follows from `Finset.eq_empty_of_forall_notMem fun _ h => Finset.notMem_empty _ (mem_half.1 h).1`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem half_empty (ch : Set (Pl D.host.E)) : half ch ∅ = ∅ := Finset.eq_empty_of_forall_notMem fun _ h => Finset.notMem_empty _ (mem_half.1 h).1
 
@@ -155,7 +155,7 @@ variable {Ω : Type} [Field Ω] [Algebra D.host.E Ω] (a : Recip D Ω) {R : Type
 def charOf (ψ : G D.host.E Ω →* Rˣ) : (AE D)ˣ →* Circle := unitPart.comp ((Units.map f.toMonoidHom).comp (a.pull ψ))
 
 /- English proof (translation)
-Rewrite using `[charOf, MonoidHom.comp_apply, MonoidHom.comp_apply, a.pull_eq h hx, unitPart_of_pow hn (by rw [← map_pow, hψ, map_one])]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem charOf_eq {ψ : G D.host.E Ω →* Rˣ} (h : IsOpen (ψ.ker : Set (G D.host.E Ω))) {x : (AE D)ˣ} {σ : G D.host.E Ω}
     (hx : a.sym x = toAb D.host.E Ω σ) {n : ℕ} (hn : n ≠ 0) (hψ : ψ σ ^ n = 1) :
@@ -164,7 +164,7 @@ theorem charOf_eq {ψ : G D.host.E Ω →* Rˣ} (h : IsOpen (ψ.ker : Set (G D.h
   rfl
 
 /- English proof (translation)
-Rewrite using `[charOf, Recip.pull_one, MonoidHom.comp_one, MonoidHom.comp_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem charOf_one : charOf a f 1 = 1 := by
   rw [charOf, Recip.pull_one, MonoidHom.comp_one, MonoidHom.comp_one]
@@ -188,23 +188,23 @@ def admissibleConjugatePairPlaces (i : X.Tw) (Q : Finset (Pl D.host.E)) (M : ℕ
 
 open Classical in
 /- English proof (translation)
-The claim follows from `Finset.mem_filter`.
+A detailed English derivation is pending.
 -/
 theorem mem_admissibleConjugatePairPlaces_iff {i : X.Tw} {Q : Finset (Pl D.host.E)} {M : ℕ} {P : Pl D.host.E} : P ∈ admissibleConjugatePairPlaces X i Q M ↔
     P ∈ Q ∧ ∃ P' ∈ Q, IsConjPl D.host P P' ∧ Formalism.MainNotions.NAdm.AdmQ X i {P, P'} M := Finset.mem_filter
 
 /- English proof (translation)
-Introduce `_ h` and use `(mem_admissibleConjugatePairPlaces_iff.1 h).1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem admissibleConjugatePairPlaces_subset (i : X.Tw) (Q : Finset (Pl D.host.E)) (M : ℕ) : admissibleConjugatePairPlaces X i Q M ⊆ Q := fun _ h => (mem_admissibleConjugatePairPlaces_iff.1 h).1
 
 /- English proof (translation)
-The claim follows from `Finset.subset_empty.1 (admissibleConjugatePairPlaces_subset i ∅ M)`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem admissibleConjugatePairPlaces_empty (i : X.Tw) (M : ℕ) : admissibleConjugatePairPlaces X i ∅ M = ∅ := Finset.subset_empty.1 (admissibleConjugatePairPlaces_subset i ∅ M)
 
 /- English proof (translation)
-Take `⟨h1, P'', h2, h3, h4⟩` from `mem_admissibleConjugatePairPlaces_iff.1 h`. Take `rfl` from `GlobalTheory.GalChar.isConjPl_unique hc h3`. Conclude with `mem_admissibleConjugatePairPlaces_iff.2 ⟨h2, P, h1, GlobalTheory.GalChar.isConjPl_symm hc, by rwa [Finset.pair_comm]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem conj_mem_admissibleConjugatePairPlaces {i : X.Tw} {Q : Finset (Pl D.host.E)} {M : ℕ} {P P' : Pl D.host.E} (h : P ∈ admissibleConjugatePairPlaces X i Q M)
     (hc : IsConjPl D.host P P') : P' ∈ admissibleConjugatePairPlaces X i Q M := by
@@ -214,7 +214,7 @@ theorem conj_mem_admissibleConjugatePairPlaces {i : X.Tw} {Q : Finset (Pl D.host
   exact mem_admissibleConjugatePairPlaces_iff.2 ⟨h2, P, h1, GlobalTheory.GalChar.isConjPl_symm hc, by rwa [Finset.pair_comm]⟩
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Take `⟨x, hx, h2⟩` from `h`. Conclude with `h2 (RingOfIntegers.mapRingHom (D.host.conj : D.host.E →+* D.host.E) x) rfl ((hc x _ rfl).1 hx)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ne_of_split {P P' : Pl D.host.E} (h : IsSplitPl D.host P) (hc : IsConjPl D.host P P') : P ≠ P' := by
   rintro rfl
@@ -222,7 +222,7 @@ theorem ne_of_split {P P' : Pl D.host.E} (h : IsSplitPl D.host P) (hc : IsConjPl
   exact h2 (RingOfIntegers.mapRingHom (D.host.conj : D.host.E →+* D.host.E) x) rfl ((hc x _ rfl).1 hx)
 
 /- English proof (translation)
-Take `⟨-, P', -, -, h4⟩` from `mem_admissibleConjugatePairPlaces_iff.1 h`. Conclude with `(h4.1 P (by simp)).1`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isSplit_of_mem_admissibleConjugatePairPlaces {i : X.Tw} {Q : Finset (Pl D.host.E)} {M : ℕ} {P : Pl D.host.E} (h : P ∈ admissibleConjugatePairPlaces X i Q M) :
     IsSplitPl D.host P := by
@@ -239,7 +239,7 @@ def coord (P : Pl D.host.E) : G D.host.E N.Om →* Multiplicative (ZMod (X.l i ^
   else 1
 
 /- English proof (translation)
-Rewrite using `[coord, dif_pos h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem coord_apply {P : Pl D.host.E} (h : P ∈ Q) (σ : G D.host.E N.Om) :
     Multiplicative.toAdd (coord Y i Q M P σ) = Multiplicative.toAdd (Y.delU i Q M σ) ⟨P, h⟩ := by
@@ -269,7 +269,7 @@ theorem spread_apply (x : ↥(half ch (admissibleConjugatePairPlaces X i Q M)) �
     ∑ P, weight Y i (admissibleConjugatePairPlaces X i Q M) M ⟨P.1, (mem_half.1 P.2).1⟩ v.1 * x P := rfl
 
 /- English proof (translation)
-Use `Finset.sum_eq_zero fun P _ => ?_` and prove the remaining obligations. Rewrite using `[weight, if_neg fun e : v.1 = P.1 => hv (e ▸ (mem_half.1 P.2).1), dif_neg fun h => hv h.1, zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem spread_of_not_mem (x : ↥(half ch (admissibleConjugatePairPlaces X i Q M)) → ZMod (X.l i ^ M)) (v : ↥Q) (hv : v.1 ∉ admissibleConjugatePairPlaces X i Q M) :
     spread Y i Q M ch x v = 0 := by
@@ -279,7 +279,7 @@ theorem spread_of_not_mem (x : ↥(half ch (admissibleConjugatePairPlaces X i Q 
 variable {ch}
 
 /- English proof (translation)
-Rewrite using `[spread_apply, Finset.sum_eq_single ⟨v.1, hv⟩, weight, if_pos rfl, one_mul]`. Introduce `P _ hP`. Establish `hne : v.1 ≠ P.1` using `fun e => hP (Subtype.ext e.symm)`. Rewrite using `[weight, if_neg hne, dif_neg fun h => (hch.pair _ _ h.2 hne.symm).1 (mem_half.1 P.2).2 (mem_half.1 hv).2, zero_mul]`. Conclude with `fun h => absurd (Finset.mem_univ _) h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem spread_of_mem (hch : IsChoice ch) (x : ↥(half ch (admissibleConjugatePairPlaces X i Q M)) → ZMod (X.l i ^ M)) (v : ↥Q)
     (hv : v.1 ∈ half ch (admissibleConjugatePairPlaces X i Q M)) : spread Y i Q M ch x v = x ⟨v.1, hv⟩ := by
@@ -290,13 +290,11 @@ theorem spread_of_mem (hch : IsChoice ch) (x : ↥(half ch (admissibleConjugateP
   · exact fun h => absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Distinguish the cases in `hv : v.1 ∈ admissibleConjugatePairPlaces X i Q M`. Distinguish the cases in `hc : v.1 ∈ ch`. Conclude with `spread_of_mem Y i Q M hch _ v (mem_half.2 ⟨hv, hc⟩)`. Take `⟨-, P, -, hP, -⟩` from `mem_admissibleConjugatePairPlaces_iff.1 hv`. Establish `hne : v.1 ≠ P` using `ne_of_split (isSplit_of_mem_admissibleConjugatePairPlaces hv) hP`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPc : P ∈ ch`. Assume the negation of the conclusion as `h`. Conclude with `hc ((hch.pair _ _ hP hne).2 h)`. Establish `hPa` using `conj_mem_admissibleConjugatePairPlaces hv hP`. Establish `hP'` using `GlobalTheory.GalChar.isConjPl_symm hP`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[spread_apply, Finset.sum_eq_single ⟨P, mem_half.2 ⟨hPa, hPc⟩⟩, weight, if_neg hne, dif_pos ⟨hv, hP'⟩, coord_apply _ _ _ _ hv, coord_apply _ _ _ _ hPa]`. Conclude with `((Y.delU_conj i _ M P hPa v.1 hv hP').choose_spec σ).symm`. Introduce `P' _ h'`. Rewrite using `[weight, if_neg fun e : v.1 = P'.1 => hc (e ▸ (mem_half.1 P'.2).2), dif_neg fun h => h' (Subtype.ext (GlobalTheory.GalChar.isConjPl_unique (GlobalTheory.GalChar.isConjPl_symm h.2) hP)), zero_mul]`. Conclude with `fun h => absurd (Finset.mem_univ _) h`.
-
-Rewrite using `[spread_of_not_mem Y i Q M ch _ v hv, coord, dif_neg hv]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem spread_coord (hch : IsChoice ch) (σ : G D.host.E N.Om) (v : ↥Q) :
     spread Y i Q M ch (fun P => Multiplicative.toAdd (coord Y i (admissibleConjugatePairPlaces X i Q M) M P.1 σ)) v =
@@ -324,7 +322,7 @@ theorem spread_coord (hch : IsChoice ch) (σ : G D.host.E N.Om) (v : ↥Q) :
 end Univ
 
 /- English proof (translation)
-The claim follows from `unitPart_of_pow two_ne_zero (by simp)`.
+A detailed English derivation is pending.
 -/
 example : ((unitPart (-1) : Circle) : ℂ) = -1 := unitPart_of_pow two_ne_zero (by simp)
 

@@ -17,15 +17,15 @@ variable {k G : Type u} [CommRing k] [Group G] [TopologicalSpace G] [IsTopologic
   {S : ShortComplex (Rep.{u} k G)} [IsDiscreteRep S.X₁] [IsDiscreteRep S.X₂] [IsDiscreteRep S.X₃]
 
 /- English proof (translation)
-Establish `hk` using `fun {X Y : ModuleCat k} (φ : X ⟶ Y) => card_eq_card_ker_mul_card_range φ.hom`. Establish `e2 : ∀ i, Nat.card (LinearMap.range (cohomologyMap S.f i).hom) = Nat.card (LinearMap.ker (cohomologyMap S.g i).hom)` using `fun i => card_range_eq_card_ker_of_exact (cohomology_exact₂ hS i)`. Establish `e30 : Nat.card (LinearMap.range (cohomologyMap S.g 0).hom) = Nat.card (LinearMap.ker (δ hS 0 1 rfl).hom)` using `card_range_eq_card_ker_of_exact (cohomology_exact₃ hS 0 1 rfl)`. Establish `e31 : Nat.card (LinearMap.range (cohomologyMap S.g 1).hom) = Nat.card (LinearMap.ker (δ hS 1 2 rfl).hom)` using `card_range_eq_card_ker_of_exact (cohomology_exact₃ hS 1 2 rfl)`. Establish `e32 : Nat.card (LinearMap.range (cohomologyMap S.g 2).hom) = Nat.card (LinearMap.ker (δ hS 2 3 rfl).hom)` using `card_range_eq_card_ker_of_exact (cohomology_exact₃ hS 2 3 rfl)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e10 : Nat.card (LinearMap.range (δ hS 0 1 rfl).hom) = Nat.card (LinearMap.ker (cohomologyMap S.f 1).hom)` using `card_range_eq_card_ker_of_exact (cohomology_exact₁ hS 0 1 rfl)`. Establish `e11 : Nat.card (LinearMap.range (δ hS 1 2 rfl).hom) = Nat.card (LinearMap.ker (cohomologyMap S.f 2).hom)` using `card_range_eq_card_ker_of_exact (cohomology_exact₁ hS 1 2 rfl)`. Establish `h0 : Nat.card (LinearMap.ker (cohomologyMap S.f 0).hom) = 1`. Use `hS.mono_f` as an intermediate fact. Establish `hm : Mono (cohomologyMap S.f 0)` using `HomologicalComplex.mono_homologyMap_of_mono_of_not_rel (cochainsMap S.f) 0 (fun i => by simp)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[LinearMap.ker_eq_bot.2 ((ModuleCat.mono_iff_injective _).1 hm)]`. Simplify using the standard rewrite rules. Establish `hA1 : Nat.card (cohomology S.X₁ 1) ≠ 0` using `Nat.card_pos.ne'`. Establish `hB1 : Nat.card (cohomology S.X₂ 1) ≠ 0` using `Nat.card_pos.ne'`. Establish `hC1 : Nat.card (cohomology S.X₃ 1) ≠ 0` using `Nat.card_pos.ne'`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hA1` using `[hk (cohomologyMap S.f 1), ← e10]`. Rewrite `hB1` using `[hk (cohomologyMap S.g 1), ← e2 1]`. Rewrite `hC1` using `[hk (δ hS 1 2 rfl), ← e31]`. Rewrite using `[eulerChar_eq, eulerChar_eq, eulerChar_eq, hk (cohomologyMap S.f 0), hk (cohomologyMap S.f 1), hk (cohomologyMap S.f 2), hk (cohomologyMap S.g 0), hk (cohomologyMap S.g 1), hk (cohomologyMap S.g 2), hk (δ hS 0 1 rfl), hk (δ hS 1 2 rfl), hk (δ hS 2 3 rfl), h0, ← e2 0, ← e2 1, ← e2 …`. Simplify using `only [mul_ne_zero_iff] at hA1 hB1 hC1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨hz0, hx1⟩` from `hA1`. Take `⟨-, hy1⟩` from `hB1`. Take `⟨-, hz1⟩` from `hC1`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 -/
 theorem eulerChar_mul_eq_mul_card_range_δ (hS : S.ShortExact)
     [Finite (cohomology S.X₁ 1)] [Finite (cohomology S.X₂ 1)] [Finite (cohomology S.X₃ 1)] :
@@ -76,7 +76,7 @@ theorem eulerChar_mul_eq_mul_card_range_δ (hS : S.ShortExact)
   field_simp
 
 /- English proof (translation)
-Rewrite using `[eulerChar_mul_eq_mul_card_range_δ hS, card_range_eq_card_ker_of_exact (cohomology_exact₁ hS 2 3 rfl)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eulerChar_mul_eq_mul_card_ker (hS : S.ShortExact)
     [Finite (cohomology S.X₁ 1)] [Finite (cohomology S.X₂ 1)] [Finite (cohomology S.X₃ 1)] :
@@ -89,9 +89,9 @@ omit [TopologicalSpace G] [IsTopologicalGroup G] [IsDiscreteRep S.X₁] [IsDiscr
   [IsDiscreteRep S.X₃] in
 
 /- English proof (translation)
-Establish `hinj : Function.Injective S.f.hom` using `(Rep.mono_iff_injective _).1 hS.mono_f`. Establish `hsurj : Function.Surjective S.g.hom` using `(Rep.epi_iff_surjective _).1 hS.epi_g`. Establish `hex` using `(hS.exact.map (forget₂ (Rep.{u} k G) (ModuleCat.{u} k)))`. Rewrite `hex` using `[ShortComplex.moduleCat_exact_iff_range_eq_ker]`. Rewrite using `[card_eq_card_ker_mul_card_range S.g.hom.toLinearMap, LinearMap.range_eq_top.2 hsurj]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Establish `hex' : LinearMap.range S.f.hom.toLinearMap = LinearMap.ker S.g.hom.toLinearMap` using `hex`. Rewrite using `[← hex']`. Conclude with `(Nat.card_congr (LinearEquiv.ofInjective S.f.hom.toLinearMap hinj).toEquiv).symm`. Conclude with `Nat.card_congr (Submodule.topEquiv).toEquiv`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_X₂_eq_of_shortExact (hS : S.ShortExact) [Finite S.X₂] :
     Nat.card S.X₂ = Nat.card S.X₁ * Nat.card S.X₃ := by
@@ -115,11 +115,11 @@ variable {R M N ι : Type*} [Ring R] [AddCommGroup M] [Module R M] [AddCommGroup
   [∀ v, AddCommGroup (Nv v)] [∀ v, Module R (Nv v)]
 
 /- English proof (translation)
-Set `ψ : LinearMap.ker f → ∀ v, LinearMap.ker (fv v)` to `fun x v => ⟨rA x.1 v, by`. Rewrite using `[LinearMap.mem_ker, ← hcomm, LinearMap.mem_ker.1 x.2, map_zero, Pi.zero_apply]⟩`. Establish `hψ : Function.Bijective ψ`. Use `⟨fun x y hxy => Subtype.ext (hA.1 (funext fun v => ?_)), fun y => ?_⟩` and prove the remaining obligations. Conclude with `congrArg Subtype.val (congrFun hxy v)`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx⟩` from `hA.2 (fun v => (y v).1)`. Establish `hfx : f x = 0` using `hB (by`. Use function extensionality and compare the values at `v`. Rewrite using `[hcomm, hx, map_zero, Pi.zero_apply]`. Conclude with `(y v).2)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨⟨x, hfx⟩, funext fun v => Subtype.ext (congrFun hx v)⟩`. Rewrite using `[Nat.card_congr (Equiv.ofBijective ψ hψ), Nat.card_pi]`.
+A detailed English derivation is pending.
 -/
 theorem card_ker_eq_prod_card_ker (f : M →ₗ[R] N) (fv : ∀ v, Mv v →ₗ[R] Nv v)
     (rA : M →ₗ[R] (∀ v, Mv v)) (rB : N →ₗ[R] (∀ v, Nv v))
@@ -145,7 +145,7 @@ end Kernels
 section GS
 
 /- English proof (translation)
-Rewrite using `[div_mul_div_comm, div_eq_div_iff hPB (mul_ne_zero hPA hPC), hP, hn, mul_pow]`. Take the linear combination `(-(nA ^ r * nC ^ r * PB)) * hχ`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem ratio_mul_eq {a b c nA nB nC PA PB PC κ : ℚ} (r : ℕ) (hPA : PA ≠ 0) (hPB : PB ≠ 0)
     (hPC : PC ≠ 0) (hn : nB = nA * nC) (hχ : a * c = b * κ) (hP : PA * PC = PB * κ) :
@@ -161,11 +161,11 @@ variable {K : FiniteSubfield} (S : Set (HeightOneSpectrum (𝓞 K.1)))
   [IsDiscreteRep T.X₁] [IsDiscreteRep T.X₂] [IsDiscreteRep T.X₃]
 
 /- English proof (translation)
-Establish `hTv` using `(Rep.shortExact_res (gsRealFamily S ιr v).toMonoidHom).2 hT`. Establish `: IsDiscreteRep (T.map (Rep.resFunctor (gsRealFamily S ιr v).toMonoidHom)).X₁` using `inferInstanceAs (IsDiscreteRep (Rep.res (gsRealFamily S ιr v).toMonoidHom T.X₁))`. Establish `: IsDiscreteRep (T.map (Rep.resFunctor (gsRealFamily S ιr v).toMonoidHom)).X₂` using `inferInstanceAs (IsDiscreteRep (Rep.res (gsRealFamily S ιr v).toMonoidHom T.X₂))`. Establish `: IsDiscreteRep (T.map (Rep.resFunctor (gsRealFamily S ιr v).toMonoidHom)).X₃` using `inferInstanceAs (IsDiscreteRep (Rep.res (gsRealFamily S ιr v).toMonoidHom T.X₃))`. Establish `: Finite (cohomology (T.map (Rep.resFunctor (gsRealFamily S ιr v).toMonoidHom)).X₁ 1)` using `gsReal_finite_cohomology S ιr T.X₁ v 1 (by norm_num)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Finite (cohomology (T.map (Rep.resFunctor (gsRealFamily S ιr v).toMonoidHom)).X₂ 1)` using `gsReal_finite_cohomology S ιr T.X₂ v 1 (by norm_num)`. Establish `: Finite (cohomology (T.map (Rep.resFunctor (gsRealFamily S ιr v).toMonoidHom)).X₃ 1)` using `gsReal_finite_cohomology S ιr T.X₃ v 1 (by norm_num)`. Establish `h` using `eulerChar_mul_eq_mul_card_ker hTv`. Establish `e1 : eulerChar (T.map (Rep.resFunctor (gsRealFamily S ιr v).toMonoidHom)).X₁ = (gsRealH0Card S T.X₁ ιr v : ℚ)` using `gsReal_eulerChar_eq_card_cohomology_zero S ιr T.X₁ v`. Establish `e2 : eulerChar (T.map (Rep.resFunctor (gsRealFamily S ιr v).toMonoidHom)).X₂ = (gsRealH0Card S T.X₂ ιr v : ℚ)` using `gsReal_eulerChar_eq_card_cohomology_zero S ιr T.X₂ v`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : eulerChar (T.map (Rep.resFunctor (gsRealFamily S ιr v).toMonoidHom)).X₃ = (gsRealH0Card S T.X₃ ιr v : ℚ)` using `gsReal_eulerChar_eq_card_cohomology_zero S ιr T.X₃ v`. Conclude with `((congrArg₂ (· * ·) e1 e3).symm.trans h).trans (congrArg (· * _) e2)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gsReal_card_mul_eq (hT : T.ShortExact) [Finite T.X₁] [Finite T.X₂] [Finite T.X₃]
     (v : {v : InfinitePlace K.1 // v.IsReal}) :
@@ -197,7 +197,7 @@ theorem gsReal_card_mul_eq (hT : T.ShortExact) [Finite T.X₁] [Finite T.X₂] [
 omit [IsDiscreteRep T.X₁] [IsDiscreteRep T.X₂] [IsDiscreteRep T.X₃] in
 
 /- English proof (translation)
-Establish `h1` using `cohomologyMapAlong_cohomologyMap (gsRealFamily S ιr v).toMonoidHom (continuous_toMonoidHom _) f (𝟙 _) x`. Establish `h2` using `cohomologyMap_cohomologyMapAlong (gsRealFamily S ιr v).toMonoidHom (continuous_toMonoidHom _) (𝟙 _) ((Rep.resFunctor (gsRealFamily S ιr v).toMonoidHom).map f) x`. Establish `c1` using `congrArg (fun g => (cohomologyMapAlong (gsRealFamily S ιr v).toMonoidHom (continuous_toMonoidHom _) g n).hom x) (Category.comp_id ((Rep.resFunctor (gsRealFamily S ιr v).toMonoidHom).map f))`. Establish `c2` using `congrArg (fun g => (cohomologyMapAlong (gsRealFamily S ιr v).toMonoidHom (continuous_toMonoidHom _) g n).hom x) (Category.id_comp ((Rep.resFunctor (gsRealFamily S ιr v).toMonoidHom).map f))`. Conclude with `(h1.trans c1).trans (h2.trans c2).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gsRealRes_cohomologyMap {A B : Rep.{0} (ULift.{0} ℤ) (galUnramifiedOutside K.1 ℚ̄ S)}
     [IsDiscreteRep A] [IsDiscreteRep B] (f : A ⟶ B) (n : ℕ) (x : cohomology A n)
@@ -220,13 +220,13 @@ theorem gsRealRes_cohomologyMap {A B : Rep.{0} (ULift.{0} ℤ) (galUnramifiedOut
 open scoped Classical in
 
 /- English proof (translation)
-Establish `hinj : Function.Injective T.f.hom` using `(Rep.mono_iff_injective _).1 hT.mono_f`. Establish `hsurj : Function.Surjective T.g.hom` using `(Rep.epi_iff_surjective _).1 hT.epi_g`. Establish `: Finite T.X₁` using `Finite.of_injective _ hinj`. Establish `: Finite T.X₃` using `Finite.of_surjective _ hsurj`. Establish `hcard` using `card_X₂_eq_of_shortExact hT`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn1 : ∀ v : HeightOneSpectrum (𝓞 K.1), ((Nat.card T.X₁ : ℕ) : 𝓞 K.1) ∈ v.asIdeal → v ∈ S` using `fun v hv => hn v (by rw [hcard, Nat.cast_mul]; exact Ideal.mul_mem_right _ _ hv)`. Establish `hn3 : ∀ v : HeightOneSpectrum (𝓞 K.1), ((Nat.card T.X₃ : ℕ) : 𝓞 K.1) ∈ v.asIdeal → v ∈ S` using `fun v hv => hn v (by rw [hcard, Nat.cast_mul]; exact Ideal.mul_mem_left _ _ hv)`. Establish `: Finite (cohomology T.X₁ 1)` using `finite_cohomology_gs K S T.X₁ hn1 1 (by norm_num)`. Establish `: Finite (cohomology T.X₂ 1)` using `finite_cohomology_gs K S T.X₂ hn 1 (by norm_num)`. Establish `: Finite (cohomology T.X₃ 1)` using `finite_cohomology_gs K S T.X₃ hn3 1 (by norm_num)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hglob` using `eulerChar_mul_eq_mul_card_ker hT`. Establish `hker` using `card_ker_eq_prod_card_ker (cohomologyMap T.f 3).hom (fun v => (cohomologyMap ((Rep.resFunctor (gsRealFamily S ιr v).toMonoidHom).map T.f) 3).hom) (gsRealRes S ιr T.X₁ 3).hom (gsRealRes S ιr T.X₂ 3).hom (fun x v => gsRealRes_cohomologyMap S ιr T.f 3 x v) hA hB`. Establish `hloc` using `fun v => gsReal_card_mul_eq S ιr hT v`. Establish `hPA : (∏ v : {v : InfinitePlace K.1 // v.IsReal}, (gsRealH0Card S T.X₁ ιr v : ℚ)) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun v _ => by exact_mod_cast (gsRealH0Card_pos S T.X₁ ιr v).ne'`. Establish `hPB : (∏ v : {v : InfinitePlace K.1 // v.IsReal}, (gsRealH0Card S T.X₂ ιr v : ℚ)) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun v _ => by exact_mod_cast (gsRealH0Card_pos S T.X₂ ιr v).ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPC : (∏ v : {v : InfinitePlace K.1 // v.IsReal}, (gsRealH0Card S T.X₃ ιr v : ℚ)) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun v _ => by exact_mod_cast (gsRealH0Card_pos S T.X₃ ιr v).ne'`. Establish `hprod : (∏ v : {v : InfinitePlace K.1 // v.IsReal}, (gsRealH0Card S T.X₁ ιr v : ℚ)) * ∏ v : {v : InfinitePlace K.1 // v.IsReal}, (gsRealH0Card S T.X₃ ιr v : ℚ) = (∏ v : {v : InfinitePlace K.1 // v.IsReal}, (gsRealH0Card S T.X₂ ιr v : ℚ)) * (Nat.card (LinearMap.ker (cohomologyMap …`. Use `Finset.prod_mul_distrib.symm.trans ((Finset.prod_congr rfl (fun v _ => hloc v)).trans (Finset.prod_mul_distrib.trans ?_))` and prove the remaining obligations. Conclude with `congrArg (_ * ·) ((Nat.cast_prod _ _).symm.trans (congrArg Nat.cast hker.symm))`. Conclude with `ratio_mul_eq (Fintype.card (InfinitePlace K.1)) hPA hPB hPC (by exact_mod_cast hcard) hglob hprod`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gsEulerRatio_shortExact [Finite S] (hT : T.ShortExact) [Finite T.X₂]
     (hn : ∀ v : HeightOneSpectrum (𝓞 K.1), ((Nat.card T.X₂ : ℕ) : 𝓞 K.1) ∈ v.asIdeal → v ∈ S)
@@ -270,7 +270,7 @@ theorem gsEulerRatio_shortExact [Finite S] (hT : T.ShortExact) [Finite T.X₂]
 open scoped Classical in
 
 /- English proof (translation)
-The claim follows from `gsEulerRatio_shortExact S ιr hT hn hA hB.1`.
+A detailed English derivation is pending.
 -/
 theorem gsEulerRatio_shortExact_of_bijective [Finite S] (hT : T.ShortExact) [Finite T.X₂]
     (hn : ∀ v : HeightOneSpectrum (𝓞 K.1), ((Nat.card T.X₂ : ℕ) : 𝓞 K.1) ∈ v.asIdeal → v ∈ S)

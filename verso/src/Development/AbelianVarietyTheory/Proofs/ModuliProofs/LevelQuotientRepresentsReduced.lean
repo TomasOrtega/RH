@@ -24,7 +24,7 @@ namespace GlobalTheory.LevelQuotRep
 
 attribute [local instance] MvPolynomial.gradedAlgebra in
 /- English proof (translation)
-Take `⟨N, i, hi, -, rfl⟩` from `h`. Unfold `PSpace.str`. Use `infer_instance`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem isSeparated_of_qproj {R : Type} [CommRing R] {X : Scheme.{0}} {f : X ⟶ Sp R} (h : IsQProjOver f) :
     IsSeparated f := by
@@ -33,9 +33,9 @@ theorem isSeparated_of_qproj {R : Type} [CommRing R] {X : Scheme.{0}} {f : X ⟶
   infer_instance
 
 /- English proof (translation)
-Take `⟨y, -⟩` from `(pullback.snd q x).surjective (IsLocalRing.closedPoint K)`. Establish `: JacobsonSpace ↥(pullback q x)` using `LocallyOfFiniteType.jacobsonSpace (pullback.snd q x)`. Take `⟨y', -, hy'⟩` from `nonempty_inter_closedPoints (Z := (Set.univ : Set ↥(pullback q x))) ⟨y, trivial⟩ isOpen_univ.isLocallyClosed`. Establish `hc : IsClosed {y'}` using `hy'`. Use `⟨pointOfClosedPoint (pullback.snd q x) y' hc ≫ pullback.fst q x, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Category.assoc, pullback.condition, pointOfClosedPoint_comp_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_lift_geom {W Z : Scheme.{0}} (q : W ⟶ Z) [LocallyOfFiniteType q] [Surjective q] {K : Type} [Field K]
     [IsAlgClosed K] (x : Sp K ⟶ Z) : ∃ h : Sp K ⟶ W, h ≫ q = x := by
@@ -48,9 +48,9 @@ theorem exists_lift_geom {W Z : Scheme.{0}} (q : W ⟶ Z) [LocallyOfFiniteType q
   rw [Category.assoc, pullback.condition, pointOfClosedPoint_comp_assoc]
 
 /- English proof (translation)
-Use `algebraize [k]`. Establish `: IsScalarTower ℚ K L` using `IsScalarTower.of_algebraMap_eq fun x => by simp`. Establish `hf : Module.Finite K L` using `Module.Finite.of_restrictScalars_finite ℚ K L`. Use `⟨?_, ?_, ⟨fun y => ⟨default, Subsingleton.elim _ _⟩⟩⟩` and prove the remaining obligations. Rewrite using `[IsFinite.SpecMap_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hf`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @Etale)]`. Establish `: Algebra.FormallyEtale K L` using `Algebra.FormallyEtale.of_isSeparable K L`. Establish `: Algebra.FinitePresentation K L` using `Algebra.FinitePresentation.of_finiteType.mp inferInstance`. Conclude with `(⟨inferInstance, inferInstance⟩ : Algebra.Etale K L)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_etale_onto_spMap {K L : Type} [Field K] [Field L] [CharZero K] [CharZero L] [FiniteDimensional ℚ L]
     (k : K →+* L) : IsFinite (spMap k) ∧ Etale (spMap k) ∧ Surjective (spMap k) := by
@@ -68,9 +68,9 @@ theorem finite_etale_onto_spMap {K L : Type} [Field K] [Field L] [CharZero K] [C
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l l₂ : Level H}
 
 /- English proof (translation)
-Use `IntermediateField.finiteDimensional_adjoin fun x hx => ?_` and prove the remaining obligations. Break down `hx with rfl | rfl` into its components or cases. Use `IsIntegral.of_pow two_pos ?_` and prove the remaining obligations. Rewrite using `[H.sqrt_neg_disc_sq]`. Conclude with `(isIntegral_algebraMap (x := (H.d : ℚ))).neg`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `IsIntegral.of_pow l.A_pos ?_` and prove the remaining obligations. Rewrite using `[show zeta l.A ^ l.A = 1 from (Complex.isPrimitiveRoot_exp l.A l.A_pos.ne').pow_eq_one]`. Conclude with `isIntegral_one`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_KA (l : Level H) : FiniteDimensional ℚ (KA l) := by
   refine IntermediateField.finiteDimensional_adjoin fun x hx => ?_
@@ -89,14 +89,14 @@ variable {B B' B'' : Type} [CommRing B] [CommRing B'] [CommRing B''] {b : Base l
   {o : Obj D l b s} {o' : Obj D l b' s'} {o'' : Obj D l b'' s''}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(((ObjMaps.id_comp_cancel E H D l _ _ _ _ _ _ _ _ _ _ _ _ o o' o'').2 f f' m).1 m').choose⟩`.
+Supply the required witnesses or components.
 -/
 theorem obj_comp {f : S' ⟶ S} {f' : S'' ⟶ S'} (m' : ObjMap o'' o' f') (m : ObjMap o' o f) :
     Nonempty (ObjMap o'' o (f' ≫ f)) :=
   ⟨(((ObjMaps.id_comp_cancel E H D l _ _ _ _ _ _ _ _ _ _ _ _ o o' o'').2 f f' m).1 m').choose⟩
 
 /- English proof (translation)
-Substitute `he` using the available equality. Conclude with `⟨(((ObjMaps.id_comp_cancel E H D l _ _ _ _ _ _ _ _ _ _ _ _ o o' o'').2 f g m).2 n).choose⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem obj_cancel {f : S' ⟶ S} {e : S'' ⟶ S} (m : ObjMap o' o f) (n : ObjMap o'' o e) (g : S'' ⟶ S')
     (he : g ≫ f = e) : Nonempty (ObjMap o'' o' g) := by
@@ -104,7 +104,7 @@ theorem obj_cancel {f : S' ⟶ S} {e : S'' ⟶ S} (m : ObjMap o' o f) (n : ObjMa
   exact ⟨(((ObjMaps.id_comp_cancel E H D l _ _ _ _ _ _ _ _ _ _ _ _ o o' o'').2 f g m).2 n).choose⟩
 
 /- English proof (translation)
-The claim follows from `obj_pull E H D l _ _ b b (RingHom.id _) _ _ s _ f rfl rfl (by rw [spMap_id', Category.comp_id]) o`.
+A detailed English derivation is pending.
 -/
 theorem obj_pull_same (o : Obj D l b s) (f : S' ⟶ S) : ∃ o' : Obj D l b (f ≫ s), Nonempty (ObjMap o' o f) :=
   obj_pull E H D l _ _ b b (RingHom.id _) _ _ s _ f rfl rfl (by rw [spMap_id', Category.comp_id]) o
@@ -114,9 +114,7 @@ end Obj
 variable {Xo₂ : Moduli D l₂} (Q : LevelQuot l Xo₂)
 
 /- English proof (translation)
-Take `⟨mu, hmu⟩` from `sab_cancel Q.m n.toSABMap y hy`. Use `⟨mu, fun a => sec_cancel mu Q.m _ _ ?_, fun a => sec_cancel mu Q.m _ _ ?_⟩` and prove the remaining obligations. Rewrite using `[hmu, Q.eta, ← Category.assoc, hy]`. Conclude with `n.eta a`. Rewrite using `[hmu, Q.etaA, ← Category.assoc, hy]`.
-
-Conclude with `n.etaA a`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lowers {B : Type} [CommRing B] {b : Base l B} {T : Scheme.{0}} {t : T ⟶ Sp B} {o : Obj D l b t}
     {z : T ⟶ Q.X} (n : ObjMap o Q.univ z) (y : T ⟶ Xo₂.X) (hy : y ≫ Q.π = z) :
@@ -127,11 +125,11 @@ theorem exists_lowers {B : Type} [CommRing B] {b : Base l B} {T : Scheme.{0}} {t
   · rw [hmu, Q.etaA, ← Category.assoc, hy]; exact n.etaA a
 
 /- English proof (translation)
-Use `isSeparated_of_qproj Q.qproj` as an intermediate fact. Use `Q.fin` as an intermediate fact. Use `Q.onto` as an intermediate fact. Use `(hom_eq_iff_forall_isAlgClosed Q.s h).mpr fun K _ _ x => ?_` and prove the remaining obligations. Take `⟨ox, ⟨n⟩⟩` from `obj_pull_same o x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨u⟩` from `obj_comp n m`. Take `⟨u'⟩` from `obj_comp n m'`. Take `⟨y, hy⟩` from `exists_lift_geom Q.π (x ≫ f)`. Take `⟨y', hy'⟩` from `exists_lift_geom Q.π (x ≫ f')`. Take `⟨mu, hmu⟩` from `exists_lowers Q u y hy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨mu', hmu'⟩` from `exists_lowers Q u' y' hy'`. Rewrite using `[← hy, ← hy']`. Use `Q.fibre K y y' ox.t mu mu' ox.eta ox.etaA ?_ hmu hmu'` and prove the remaining obligations. Rewrite using `[← Q.overK, ← Category.assoc, ← Category.assoc, hy, hy', Category.assoc, Category.assoc, h]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem hom_unique {B : Type} [CommRing B] {b : Base l B} {T : Scheme.{0}} [IsReduced T] {t : T ⟶ Sp B}
     {o : Obj D l b t} {f f' : T ⟶ Q.X} (h : f ≫ Q.s = f' ≫ Q.s) (m : ObjMap o Q.univ f) (m' : ObjMap o Q.univ f') :
@@ -164,29 +162,29 @@ Both sides reduce to the same expression.
 theorem baseKA_rho_coe (l : Level H) : (((baseKA l).ρ : KA l) : ℂ) = H.rt0 := rfl
 
 /- English proof (translation)
-The claim follows from `Q.jK_val (baseKA l).ρ`.
+A detailed English derivation is pending.
 -/
 theorem baseUp_rho_coe : (((baseUp Q).ρ : KA l₂) : ℂ) = (((baseKA l).ρ : KA l) : ℂ) := Q.jK_val (baseKA l).ρ
 
 /- English proof (translation)
-The claim follows from `Subtype.ext ((baseUp_rho_coe Q).trans ((baseKA_rho_coe l).trans (baseKA_rho_coe l₂).symm))`.
+A detailed English derivation is pending.
 -/
 theorem baseUp_rho : (baseUp Q).ρ = (baseKA l₂).ρ :=
   Subtype.ext ((baseUp_rho_coe Q).trans ((baseKA_rho_coe l).trans (baseKA_rho_coe l₂).symm))
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (by rw [IntermediateField.coe_pow] exact (Q.jK_val _).trans (zeta_dvd l₂.A_pos hd))`.
+A detailed English derivation is pending.
 -/
 theorem baseUp_zeta (hd : l.A ∣ l₂.A) : (baseUp Q).ζ = (baseKA l₂).ζ ^ (l₂.A / l.A) := Subtype.ext (by
   rw [IntermediateField.coe_pow]
   exact (Q.jK_val _).trans (zeta_dvd l₂.A_pos hd))
 
 /- English proof (translation)
-Use `finiteDimensional_KA l₂` as an intermediate fact. Take `⟨k1, k2, k3⟩` from `finite_etale_onto_spMap Q.jK`. Take `⟨o₁, ⟨n₁⟩⟩` from `obj_pull E H D l _ _ (baseKA l) (baseUp Q) Q.jK _ _ s' (pullback.snd s' (spMap Q.jK)) (pullback.fst _ _) rfl rfl pullback.condition ob`. Take `⟨S₂, p, o₂, m, hf, he, hs, ⟨hm₁, hm₂⟩, -⟩` from `GlobalTheory.T.exists_finiteEtale_deeper_level_cover hL E H D l l₂ _ (baseUp Q) (baseKA l₂) _ _ o₁ hpq hd (baseUp_rho Q) (baseUp_zeta Q hd.2.2)`. Establish `hr : IsReduced S₂` using `isReduced_of_smooth_of_isReduced (p ≫ pullback.fst s' (spMap Q.jK))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨f₂, ⟨hf₂, ⟨u⟩⟩, -⟩` from `Xo₂.rep S₂ _ hr o₂`. Set `o` to `ObjLower.lower o₂ hd (baseUp_rho Q) (baseUp_zeta Q hd.2.2)`. Set `mo : ObjMap o o₁ p` to `⟨m, hm₁, hm₂⟩`. Take `⟨z, hz⟩` from `sab_comp u.toSABMap Q.m rfl`. Use `⟨S₂, p ≫ pullback.fst _ _, f₂ ≫ Q.π, _, o, inferInstance, inferInstance, inferInstance, ?_, obj_comp mo n₁, ⟨⟨z, fun a => ?_, fun a => ?_⟩⟩⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Category.assoc, Q.overK, ← Category.assoc, hf₂, Category.assoc, Category.assoc, pullback.condition]`. Use `show (o₂.eta a ^ (l₂.M / l.M)).left ≫ z.φ = _`. Rewrite using `[hz, ← Category.assoc, sec_pow u.toSABMap _ _ (u.eta a), Category.assoc, Q.eta, Category.assoc]`. Use `show (o₂.etaA a ^ (l₂.A / l.A)).left ≫ z.φ = _`. Rewrite using `[hz, ← Category.assoc, sec_pow u.toSABMap _ _ (u.etaA a), Category.assoc, Q.etaA, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_cover (hL : Out.Laws) (hpq : 1 ≤ D.p + D.q) (hd : l.Dvd l₂) {S : Scheme.{0}} [IsReduced S]
     {s' : S ⟶ Sp (KA l)} (ob : Obj D l (baseKA l) s') :
@@ -219,13 +217,13 @@ namespace GlobalTheory
 open LevelQuotRep in
 
 /- English proof (translation)
-Introduce `hL hL2 E _ _ _ H D l l₂ Xo₂ Q hpq hd S s' hS ob`. Use `existsUnique_of_exists_of_unique ?_ fun f f' ⟨h, ⟨m⟩⟩ ⟨h', ⟨m'⟩⟩ => hom_unique Q (h.trans h'.symm) m m'` and prove the remaining obligations. Take `⟨S₂, q, g, s₂, o, hf, he, hs, hg, ⟨mq⟩, ⟨mg⟩⟩` from `exists_cover Q hL hpq hd ob`. Establish `key : pullback.fst q q ≫ g = pullback.snd q q ≫ g`. Establish `: IsReduced (pullback q q)` using `isReduced_of_smooth_of_isReduced (pullback.fst q q ≫ q)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨oR, ⟨n⟩⟩` from `obj_pull_same o (pullback.fst q q)`. Take `⟨n₁⟩` from `obj_comp n mq`. Take `⟨n'⟩` from `obj_cancel mq n₁ (pullback.snd q q) pullback.condition.symm`. Take `⟨u⟩` from `obj_comp n mg`. Take `⟨u'⟩` from `obj_comp n' mg`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hom_unique Q (by rw [Category.assoc, Category.assoc, hg, pullback.condition_assoc]) u u'`. Establish `hcoeq : ∀ {Z : Scheme.{0}} (g₁ g₂ : Z ⟶ S₂), g₁ ≫ q = g₂ ≫ q → g₁ ≫ g = g₂ ≫ g` using `fun g₁ g₂ h => by`. Use `pullback.lift g₁ g₂ h ≫= key` as an intermediate fact. Rewrite `this` using `[pullback.lift_fst_assoc, pullback.lift_snd_assoc]`. Then use the resulting hypothesis. Establish `hfac : q ≫ EffectiveEpi.desc q g hcoeq = g` using `EffectiveEpi.fac q g hcoeq`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨EffectiveEpi.desc q g hcoeq, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← cancel_epi q, ← Category.assoc, hfac, hg]`. Conclude with `GlobalTheory.T.nonempty_objMap_of_finite_etale_surjective_cover hL hL2 E H D l _ _ _ _ _ _ _ _ _ _ _ _ Q.univ ob o q _ (Or.inl hS) hf he hs ⟨mq⟩ (hfac.symm ▸ ⟨mg⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levelQuot_represents : Out.Laws → Out.Laws2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l l₂ : Level H) (Xo₂ : Moduli D l₂) (Q : LevelQuot l Xo₂), 1 ≤ D.p + D.q → l.Dvd l₂ → ∀ (S : Scheme.{0}) (s' : S ⟶ Sp (KA l)), IsReduced S → ∀ ob : Obj D l (baseKA l) s', ∃! f : S ⟶ Q.X, f ≫ Q.s = s' ∧ Nonempty (ObjMap ob Q.univ f) := by
   intro hL hL2 E _ _ _ H D l l₂ Xo₂ Q hpq hd S s' hS ob

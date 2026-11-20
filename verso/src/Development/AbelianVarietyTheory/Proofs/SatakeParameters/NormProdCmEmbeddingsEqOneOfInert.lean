@@ -17,7 +17,7 @@ namespace GlobalTheory.NormUnitInert.Arith
 variable {K : Type*} [Field K] [NumberField K]
 
 /- English proof (translation)
-Establish `hP0 : (P : FractionalIdeal (𝓞 K)⁰ K) ≠ 0` using `FractionalIdeal.coeIdeal_ne_zero.mpr hP`. Establish `hinv : ((((P : FractionalIdeal (𝓞 K)⁰ K)⁻¹ : FractionalIdeal (𝓞 K)⁰ K) : Submodule (𝓞 K) K)) * coeSubmodule K P = 1`. Rewrite using `[← FractionalIdeal.coe_coeIdeal, ← FractionalIdeal.coe_mul, inv_mul_cancel₀ hP0, FractionalIdeal.coe_one]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem cancel_coe {P : Ideal (𝓞 K)} (hP : P ≠ ⊥) {A B : Submodule (𝓞 K) K}
     (h : coeSubmodule K P * A = coeSubmodule K P * B) : A = B := by
@@ -31,13 +31,13 @@ theorem cancel_coe {P : Ideal (𝓞 K)} (hP : P ≠ ⊥) {A B : Submodule (𝓞 
     _ = B := by rw [← mul_assoc, hinv, one_mul]
 
 /- English proof (translation)
-Rewrite using `[Nat.coprime_comm, Nat.Prime.coprime_iff_not_dvd hp.out]`. Introduce `hdvd`. Use `Ideal.finiteQuotientOfFreeOfNeBot I hI` as an intermediate fact. Set `_ : Fintype (𝓞 K ⧸ I)` to `Fintype.ofFinite _`. Rewrite `hdvd` using `[Ideal.absNorm_apply, Submodule.cardQuot_apply, Nat.card_eq_fintype_card]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨x, hx⟩` from `exists_prime_addOrderOf_dvd_card p hdvd`. Establish `h1 : (1 : 𝓞 K) ∈ I ⊔ Ideal.span {((p : ℕ) : 𝓞 K)}` using `by rw [h]; trivial`. Take `⟨i, hi, r, hr, hir⟩` from `Submodule.mem_sup.mp h1`. Take `⟨t, rfl⟩` from `Ideal.mem_span_singleton'.mp hr`. Establish `hpx : (p : ℕ) • x = 0` using `by rw [← hx]; exact addOrderOf_nsmul_eq_zero x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hq : (Ideal.Quotient.mk I i) = 0` using `Ideal.Quotient.eq_zero_iff_mem.mpr hi`. Establish `hx0 : x = 0`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Establish `e0 : y = i * y + t * (((p : ℕ) : 𝓞 K) * y)` using `by linear_combination (-(y)) * hir`. Establish `e : Ideal.Quotient.mk I y = Ideal.Quotient.mk I i * Ideal.Quotient.mk I y + Ideal.Quotient.mk I t * ((p : ℕ) • Ideal.Quotient.mk I y)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[nsmul_eq_mul, ← map_natCast (Ideal.Quotient.mk I) p, ← map_mul, ← map_mul, ← map_mul, ← map_add, ← e0]`. Rewrite using `[e, hpx, mul_zero, add_zero, hq, zero_mul]`. Rewrite `hx` using `[hx0, addOrderOf_zero]`. Conclude with `hp.out.one_lt.ne hx`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coprime_absNorm (p : ℕ) [hp : Fact p.Prime] {I : Ideal (𝓞 K)} (hI : I ≠ ⊥)
     (h : I ⊔ Ideal.span {((p : ℕ) : 𝓞 K)} = ⊤) : Nat.Coprime (Ideal.absNorm I) p := by
@@ -75,19 +75,17 @@ def Goal : Prop :=
 variable {c p 𝔞 𝔟}
 
 /- English proof (translation)
-Rewrite using `[← coeSubmodule_top]`. Conclude with `coeSubmodule_mono _ le_top`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coe_le_one (I : Ideal (𝓞 K)) : coeSubmodule K I ≤ 1 := by
   rw [← coeSubmodule_top]; exact coeSubmodule_mono _ le_top
 
 /- English proof (translation)
-Use `⟨Ideal.absNorm I, coprime_absNorm p hC.1 htop, fun x hx => ?_, ?_⟩` and prove the remaining obligations. Establish `hs : ((Ideal.absNorm I : ℕ) : K) ∈ coeSubmodule K I` using `(mem_coeSubmodule _ _).2 ⟨_, Ideal.absNorm_mem I, map_natCast _ _⟩`. Establish `h` using `Submodule.mul_mem_mul hs hx`. Rewrite `h` using `[hC.2]`. Conclude with `coe_le_one _ h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hs : ((Ideal.absNorm I : ℕ) : 𝓞 K) ∈ I.map (RingOfIntegers.mapRingEquiv c)`. Use `Ideal.mem_map_of_mem (RingOfIntegers.mapRingEquiv c) (Ideal.absNorm_mem I)` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Establish `hs' : ((Ideal.absNorm I : ℕ) : K) ∈ coeSubmodule K (I.map (RingOfIntegers.mapRingEquiv c))` using `(mem_coeSubmodule _ _).2 ⟨_, hs, map_natCast _ _⟩`. Rewrite `hs'` using `[← hC.2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hle : coeSubmodule K I * 𝔞 ≤ 𝔞`. Rewrite using `[Submodule.mul_le]`. Introduce `m hm n hn`. Take `⟨y, -, rfl⟩` from `(mem_coeSubmodule _ _).1 hm`. Rewrite using `[← Algebra.smul_def]`.
-
-Conclude with `𝔞.smul_mem y hn`. Conclude with `hle hs'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goal_of_top {I : Ideal (𝓞 K)} (hC : Cnd c 𝔞 I) (htop : I ⊔ Ideal.span {((p : ℕ) : 𝓞 K)} = ⊤) :
     Goal p 𝔞 := by
@@ -112,11 +110,11 @@ theorem goal_of_top {I : Ideal (𝓞 K)} (hC : Cnd c 𝔞 I) (htop : I ⊔ Ideal
     exact hle hs'
 
 /- English proof (translation)
-Take `⟨I', rfl⟩` from `Ideal.dvd_iff_le.mpr hIP`. Establish `hI' : I' ≠ ⊥`. Introduce and unpack `rfl`. Conclude with `hC.1 (by rw [Ideal.mul_bot])`. Use `⟨I', ⟨hI', cancel_coe hP0 ?_⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h` using `hC.2`. Rewrite `h` using `[Ideal.map_mul, hst P hPp hP0 hpP, coeSubmodule_mul, coeSubmodule_mul, mul_assoc]`. Conclude with `h`. Rewrite using `[map_mul]`. Establish `h1 : Ideal.absNorm P ≠ 1` using `fun h => hPp.ne_top (Ideal.absNorm_eq_one_iff.mp h)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : Ideal.absNorm P ≠ 0` using `fun h => hP0 (Ideal.absNorm_eq_zero_iff.mp h)`. Establish `h0' : Ideal.absNorm I' ≠ 0` using `fun h => hI' (Ideal.absNorm_eq_zero_iff.mp h)`. Establish `h2 : 2 ≤ Ideal.absNorm P` using `by omega`. Establish `h3 : 1 ≤ Ideal.absNorm I'` using `by omega`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem descent (hst : ∀ P : Ideal (𝓞 K), P.IsPrime → P ≠ ⊥ → ((p : ℕ) : 𝓞 K) ∈ P →
       P.map (RingOfIntegers.mapRingEquiv c) = P)
@@ -140,11 +138,11 @@ theorem descent (hst : ∀ P : Ideal (𝓞 K), P.IsPrime → P ≠ ⊥ → ((p :
     nlinarith
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `I hn hC`. Distinguish the cases in `htop : I ⊔ Ideal.span {((p : ℕ) : 𝓞 K)} = ⊤`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Conclude with `goal_of_top hC htop`. Take `⟨P, hPm, hle⟩` from `Ideal.exists_le_maximal _ htop`. Establish `hpP : ((p : ℕ) : 𝓞 K) ∈ P` using `hle (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))`. Establish `hP0 : P ≠ ⊥`. Introduce `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hpP` using `[h, Ideal.mem_bot]`. Conclude with `hp.out.ne_zero (by exact_mod_cast hpP)`. Take `⟨I', hC', hlt⟩` from `descent hst hC hPm.isPrime hP0 hpP (le_sup_left.trans hle)`. Conclude with `ih _ (hn ▸ hlt) I' rfl hC'`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem goal_of_cnd (hst : ∀ P : Ideal (𝓞 K), P.IsPrime → P ≠ ⊥ → ((p : ℕ) : 𝓞 K) ∈ P →
       P.map (RingOfIntegers.mapRingEquiv c) = P) :
@@ -165,38 +163,34 @@ theorem goal_of_cnd (hst : ∀ P : Ideal (𝓞 K), P.IsPrime → P ≠ ⊥ → (
       exact ih _ (hn ▸ hlt) I' rfl hC'
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_comap_integers_fractionalIdeal_iff (y : 𝓞 K) : y ∈ Submodule.comap (Algebra.linearMap (𝓞 K) K) 𝔟 ↔ (y : K) ∈ 𝔟 := Iff.rfl
 
 /- English proof (translation)
-Establish `hba : 𝔟 * 𝔞 = 1` using `by rw [mul_comm]; exact hab`. Establish `hint : ∀ a ∈ 𝔞, ∀ b ∈ 𝔟, a * b ∈ (1 : Submodule (𝓞 K) K)` using `fun a ha b hb' => by`. Rewrite using `[← hab]`. Conclude with `Submodule.mul_mem_mul ha hb'`. Use `⟨?_, le_antisymm ?_ ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hb0 : 𝔟 ≠ ⊥`. Introduce and unpack `rfl`. Rewrite `hab` using `[Submodule.mul_bot]`. Establish `h1 : (1 : K) ∈ (1 : Submodule (𝓞 K) K)` using `Submodule.one_le.mp le_rfl`. Rewrite `h1` using `[← hab, Submodule.mem_bot]`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `one_ne_zero h1`. Take `⟨b, hbm, hb0'⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hb0`. Take `⟨⟨z, d⟩, hz⟩` from `IsLocalization.surj (𝓞 K)⁰ b`. Simplify using `only at hz`. Introduce `hbot`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hzmem : z ∈ Submodule.comap (Algebra.linearMap (𝓞 K) K) 𝔟`. Rewrite using `[mem_comap_integers_fractionalIdeal_iff]`. Establish `: (z : K) = (d : 𝓞 K) • b`. Rewrite using `[Algebra.smul_def, mul_comm]`. Conclude with `hz.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Rewrite using `[this]`. Conclude with `𝔟.smul_mem _ hbm`. Rewrite `hzmem` using `[hbot, Ideal.mem_bot]`. Substitute `hzmem` using the available equality. Establish `hd0 : algebraMap (𝓞 K) K (d : 𝓞 K) ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors d.2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite `hz` using `[map_zero]`. Conclude with `hb0' ((mul_eq_zero.mp hz).resolve_right hd0)`. Rewrite using `[Submodule.mul_le]`. Introduce `m hm n hn`. Take `⟨y, hy, rfl⟩` from `(mem_coeSubmodule _ _).1 hm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hyn : algebraMap (𝓞 K) K y * n ∈ (1 : Submodule (𝓞 K) K)`. Rewrite using `[mul_comm]`. Conclude with `hint n hn _ hy`. Take `⟨z, hz⟩` from `Submodule.mem_one.mp hyn`. Use `(mem_coeSubmodule _ _).2 ⟨z, ?_, hz⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `(Ideal.mem_map_of_equiv (RingOfIntegers.mapRingEquiv c) z).2 ⟨(RingOfIntegers.mapRingEquiv c).symm z, ?_, (RingOfIntegers.mapRingEquiv c).apply_symm_apply z⟩` and prove the remaining obligations. Rewrite using `[mem_comap_integers_fractionalIdeal_iff, hb, RingOfIntegers.mapRingEquiv_symm_apply, RingEquiv.apply_symm_apply]`. Express the relevant statement in the definitionally equal form `algebraMap (𝓞 K) K z ∈ 𝔞`. Rewrite using `[hz, ← Algebra.smul_def]`. Conclude with `𝔞.smul_mem y hn`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `m hm`. Take `⟨z, hz, rfl⟩` from `(mem_coeSubmodule _ _).1 hm`. Take `⟨w, hw, rfl⟩` from `(Ideal.mem_map_of_equiv (RingOfIntegers.mapRingEquiv c) z).1 hz`. Establish `hwa : c (w : K) ∈ 𝔞` using `(hb _).1 ((mem_comap_integers_fractionalIdeal_iff w).1 hw)`. Establish `hzK : algebraMap (𝓞 K) K (RingOfIntegers.mapRingEquiv c w) = c (w : K)` using `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hzK]`. Use `set z' : 𝓞 K := RingOfIntegers.mapRingEquiv c w with hz'`. Establish `hz'K : (z' : K) = c (w : K)` using `rfl`. Establish `hsp : Submodule.span (𝓞 K) {(z' : K)} * 𝔟 ≤ coeSubmodule K (Submodule.comap (Algebra.linearMap (𝓞 K) K) 𝔟)`. Rewrite using `[Submodule.mul_le]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce `u hu n hn`. Take `⟨r, rfl⟩` from `Submodule.mem_span_singleton.mp hu`. Rewrite using `[smul_mul_assoc]`. Use `Submodule.smul_mem _ r ?_` and prove the remaining obligations. Take `⟨q, hq⟩` from `Submodule.mem_one.mp (hint _ (hz'K ▸ hwa) n hn)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `(mem_coeSubmodule _ _).2 ⟨q, ?_, hq⟩` and prove the remaining obligations. Rewrite using `[mem_comap_integers_fractionalIdeal_iff]`. Express the relevant statement in the definitionally equal form `algebraMap (𝓞 K) K q ∈ 𝔟`. Rewrite using `[hq, ← Algebra.smul_def]`. Conclude with `𝔟.smul_mem z' hn`.
-
-Establish `h1 : (1 : K) ∈ 𝔟 * 𝔞` using `by rw [hba]; exact Submodule.one_le.mp le_rfl`. Establish `hmem : (z' : K) * 1 ∈ Submodule.span (𝓞 K) {(z' : K)} * (𝔟 * 𝔞)` using `Submodule.mul_mem_mul (Submodule.mem_span_singleton_self _) h1`. Rewrite `hmem` using `[mul_one, ← mul_assoc]`. Rewrite using `[← hz'K]`. Establish `hle : Submodule.span (𝓞 K) {(z' : K)} * 𝔟 * 𝔞 ≤ coeSubmodule K (Submodule.comap (Algebra.linearMap (𝓞 K) K) 𝔟) * 𝔞`.
-
-Rewrite using `[Submodule.mul_le]`. Introduce `u hu a ha`. Conclude with `Submodule.mul_mem_mul (hsp hu) ha`. Conclude with `hle hmem`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem idealDescent_conjInvariant_of_inverse (hb : ∀ x, x ∈ 𝔟 ↔ c x ∈ 𝔞) (hab : 𝔞 * 𝔟 = 1) :
     Cnd c 𝔞 (Submodule.comap (Algebra.linearMap (𝓞 K) K) 𝔟) := by
@@ -274,7 +268,7 @@ theorem idealDescent_conjInvariant_of_inverse (hb : ∀ x, x ∈ 𝔟 ↔ c x �
     exact hle hmem
 
 /- English proof (translation)
-The claim follows from `goal_of_cnd hst _ _ rfl (idealDescent_conjInvariant_of_inverse hb hab)`.
+A detailed English derivation is pending.
 -/
 theorem fractionalIdealUnitAtPrime_of_conj_inverse (hst : ∀ P : Ideal (𝓞 K), P.IsPrime → P ≠ ⊥ → ((p : ℕ) : 𝓞 K) ∈ P →
       P.map (RingOfIntegers.mapRingEquiv c) = P)
@@ -298,7 +292,7 @@ def NormUnitK (D : D7) (p : ℕ) [Fact p.Prime] (lam : TaylorLogMetric.Qbar →+
   ∀ z : D.host.E, z * D.host.conj z = 1 → ‖TaylorLogMetric.lamC lam (∏ τ : D.what₂.Tau, TaylorLogMetric.embT D τ z)‖ = 1
 
 /- English proof (translation)
-The claim follows from `dif_pos h`.
+A detailed English derivation is pending.
 -/
 theorem lamC_of_mem {p : ℕ} [Fact p.Prime] (lam : TaylorLogMetric.Qbar →+* ℂ_[p]) {x : ℂ} (h : x ∈ TaylorLogMetric.Qbar) :
     TaylorLogMetric.lamC lam x = lam ⟨x, h⟩ := dif_pos h
@@ -313,7 +307,7 @@ section nu
 variable {D : D7}
 
 /- English proof (translation)
-The claim follows from `map_mul (D.host.gal).symm g h`.
+A detailed English derivation is pending.
 -/
 theorem sigmaOf_mul' (g h : D.R.GG) : D.host.sigmaOf (g * h) = D.host.sigmaOf g * D.host.sigmaOf h :=
   map_mul (D.host.gal).symm g h
@@ -324,7 +318,7 @@ Both sides reduce to the same expression.
 theorem conj_eq' : D.host.conj = D.host.sigmaOf (D.R.cc) := rfl
 
 /- English proof (translation)
-Rewrite using `[conj_eq']`. Express the relevant statement in the definitionally equal form `(D.host.sigmaOf (D.R.cc) * D.host.sigmaOf g) x = (D.host.sigmaOf g * D.host.sigmaOf (D.R.cc)) x`. Rewrite using `[← sigmaOf_mul', ← sigmaOf_mul', mul_comm]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_sigmaOf (g : D.R.GG) (x : D.host.E) :
     D.host.conj (D.host.sigmaOf g x) = D.host.sigmaOf g (D.host.conj x) := by
@@ -333,9 +327,9 @@ theorem conj_sigmaOf (g : D.R.GG) (x : D.host.E) :
   rw [← sigmaOf_mul', ← sigmaOf_mul', mul_comm]
 
 /- English proof (translation)
-Rewrite using `[conj_eq']`. Express the relevant statement in the definitionally equal form `(D.host.sigmaOf (D.R.cc) * D.host.sigmaOf (D.R.cc)) x = x`. Rewrite using `[← sigmaOf_mul']`. Establish `: D.R.cc * D.R.cc = 1`. Conclude with `Prod.ext (by change c0 * c0 = 1; decide) (mul_one _)`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, show D.host.sigmaOf 1 = 1 from map_one (D.host.gal).symm]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem conj_conj' (x : D.host.E) : D.host.conj (D.host.conj x) = x := by
   rw [conj_eq']
@@ -349,9 +343,9 @@ theorem conj_conj' (x : D.host.E) : D.host.conj (D.host.conj x) = x := by
 def nPsi (D : D7) (z : D.host.E) : D.host.E := ∏ τ : D.what₂.Tau, D.host.sigmaOf (D.eTau τ : D.R.GG) z
 
 /- English proof (translation)
-Unfold `nPsi`. Rewrite using `[map_prod]`. Set `e : D.what₂.Tau ≃ D.what₂.Tau` to `(D.eTau.trans (Equiv.mulLeft (⟨ρ, hρ⟩ : D.R.Psi))).trans D.eTau.symm`. Use `Fintype.prod_equiv e _ _ fun τ => ?_` and prove the remaining obligations. Simplify using `only [e, Equiv.trans_apply, Equiv.apply_symm_apply, Equiv.coe_mulLeft, Subgroup.coe_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[sigmaOf_mul']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem nPsi_inv {ρ : D.R.GG} (hρ : ρ ∈ D.R.Psi) (z : D.host.E) :
     D.host.sigmaOf ρ (nPsi D z) = nPsi D z := by
@@ -364,7 +358,7 @@ theorem nPsi_inv {ρ : D.R.GG} (hρ : ρ ∈ D.R.Psi) (z : D.host.E) :
   rfl
 
 /- English proof (translation)
-Unfold `nPsi`. Rewrite using `[map_prod, ← Finset.prod_mul_distrib]`. Use `Finset.prod_eq_one fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[conj_sigmaOf, ← map_mul, hz, map_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem nPsi_conj {z : D.host.E} (hz : z * D.host.conj z = 1) : nPsi D z * D.host.conj (nPsi D z) = 1 := by
   unfold nPsi
@@ -373,7 +367,7 @@ theorem nPsi_conj {z : D.host.E} (hz : z * D.host.conj z = 1) : nPsi D z * D.hos
   rw [conj_sigmaOf, ← map_mul, hz, map_one]
 
 /- English proof (translation)
-Unfold `nPsi`. Rewrite using `[map_prod]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem prod_embT (z : D.host.E) : ∏ τ : D.what₂.Tau, TaylorLogMetric.embT D τ z = D.host.φ₀ (nPsi D z) := by
   unfold nPsi
@@ -381,31 +375,29 @@ theorem prod_embT (z : D.host.E) : ∏ τ : D.what₂.Tau, TaylorLogMetric.embT 
   rfl
 
 /- English proof (translation)
-Introduce `z hz`. Take `⟨g, hg, hst⟩` from `hF`. Use `set y := nPsi D z with hy`. Establish `hyc : y * D.host.conj y = 1` using `nPsi_conj hz`. Establish `hy0 : y ≠ 0` using `by rintro h; rw [h, zero_mul] at hyc; exact zero_ne_one hyc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hρ : (D.R.cc)⁻¹ * g ∈ D.R.Psi`. Rewrite `hg`, the goal using `[Formalism.HC.Frame.mem_Psi_iff]`. Establish `h1 : ((D.R.cc)⁻¹ * g).1.2 = (D.R.cc).1.2⁻¹ * g.1.2` using `rfl`. Establish `h2 : (D.R.cc).1.2 = -1` using `rfl`. Rewrite using `[h1, h2]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Int.units_eq_one_or g.1.2 with h | h` into its components or cases. Conclude with `absurd h hg`. Rewrite using `[h]`. Evaluate the decidable proposition. Establish `hgy : D.host.sigmaOf g y = D.host.conj y`.
+Rewrite the conclusion using the stated equalities. Evaluate the decidable proposition. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: g = D.R.cc * ((D.R.cc)⁻¹ * g)` using `by rw [mul_inv_cancel_left]`. Rewrite using `[this, sigmaOf_mul', AlgEquiv.mul_apply, nPsi_inv hρ, ← conj_eq']`. Establish `hgcy : D.host.sigmaOf g (D.host.conj y) = y`. Rewrite using `[← conj_sigmaOf, hgy, conj_conj']`. Use `set c : D.host.E ≃+* D.host.E := (D.host.sigmaOf g : D.host.E ≃+* D.host.E) with hc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcx : ∀ x, c x = D.host.sigmaOf g x` using `fun x => rfl`. Establish `hb : ∀ x, x ∈ Submodule.span (𝓞 D.host.E) {D.host.conj y} ↔ c x ∈ Submodule.span (𝓞 D.host.E) {y}`. Introduce `x`. Simplify using `only [Submodule.mem_span_singleton]`. Prove the components needed by the constructor for the conclusion.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨r, rfl⟩`. Use `⟨RingOfIntegers.mapRingEquiv c r, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, Algebra.smul_def, map_mul, hcx (D.host.conj y), hgcy]`. Both sides reduce to the same expression. Introduce and unpack `⟨r, hr⟩`.
+Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `⟨(RingOfIntegers.mapRingEquiv c).symm r, c.injective ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, map_mul, hcx (D.host.conj y), hgcy, ← hr, Algebra.smul_def]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `c (c.symm (r : D.host.E)) = (r : D.host.E)`. Conclude with `c.apply_symm_apply _`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hab : Submodule.span (𝓞 D.host.E) {y} * Submodule.span (𝓞 D.host.E) {D.host.conj y} = 1`. Rewrite using `[Submodule.span_mul_span, Set.singleton_mul_singleton, hyc, ← Submodule.one_eq_span]`. Take `⟨s, hs, h1, h2⟩` from `Arith.fractionalIdealUnitAtPrime_of_conj_inverse (c := c) (p := p) hst hb hab`. Establish `hA : (s : D.host.E) * y ∈ (1 : TaylorLogMetric.IdE D)` using `h1 y (Submodule.mem_span_singleton_self y)`. Establish `hB : (s : D.host.E) * D.host.conj y ∈ (1 : TaylorLogMetric.IdE D)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨r, hr⟩` from `Submodule.mem_span_singleton.mp h2`. Rewrite using `[← hr, Algebra.smul_def, mul_assoc, hyc, mul_one]`. Conclude with `Submodule.mem_one.mpr ⟨r, rfl⟩`. Set `τ₁ : D.what₂.Tau` to `D.eTau.symm 1`. Establish `hemb : ∀ x, TaylorLogMetric.embT D τ₁ x = D.host.φ₀ (D.host.sigmaOf (D.eTau τ₁ : D.R.GG) x)` using `fun x => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hτ₁ : (D.eTau τ₁ : D.R.GG) = 1` using `by simp [τ₁]`. Establish `hn : ‖(s : ℂ_[p])‖ = 1` using `Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.RestC.norm_nat_coprime p hs`. Establish `hprod : lam (Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.RestC.embQ τ₁ ((s : D.host.E) * y)) * lam (Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.RestC.embQ τ₁ ((s : D.host.E) * D.host.conj y)) = (s : ℂ_[p]) ^ 2`. Rewrite using `[← map_mul, ← map_mul]`. Establish `e : (s : D.host.E) * y * ((s : D.host.E) * D.host.conj y) = (s : D.host.E) ^ 2`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[show (s : D.host.E) * y * ((s : D.host.E) * D.host.conj y) = (s : D.host.E) ^ 2 * (y * D.host.conj y) by ring, hyc, mul_one]`. Rewrite using `[e, map_pow, map_pow, map_natCast, map_natCast]`. Establish `a1` using `Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.RestC.norm_lam_int lam τ₁ hA`. Establish `b1` using `Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.RestC.norm_lam_int lam τ₁ hB`. Establish `hnorm : ‖lam (Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.RestC.embQ τ₁ ((s : D.host.E) * y))‖ * ‖lam (Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.RestC.embQ τ₁ ((s : D.host.E) * D.host.conj y))‖ = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[← norm_mul, hprod, norm_pow, hn, one_pow]`. Establish `hA1 : ‖lam (Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.RestC.embQ τ₁ ((s : D.host.E) * y))‖ = 1`. Establish `n0` using `norm_nonneg (lam (Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.RestC.embQ τ₁ ((s : D.host.E) * y)))`. Establish `n1` using `norm_nonneg (lam (Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.RestC.embQ τ₁ ((s : D.host.E) * D.host.conj y)))`. Use the polynomial consequences of the given equalities and inequalities.
-
-Simplify using `only [map_mul, map_natCast, norm_mul, hn, one_mul] at hA1`. Establish `hP : ∏ τ : D.what₂.Tau, TaylorLogMetric.embT D τ z = TaylorLogMetric.embT D τ₁ y`. Rewrite using `[prod_embT, hemb, nPsi_inv (D.eTau τ₁).2]`. Rewrite using `[hP, lamC_of_mem lam (Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.RestC.emb_mem τ₁ y)]`. Conclude with `hA1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normUnitK_of_frobOut {p : ℕ} [Fact p.Prime] (lam : TaylorLogMetric.Qbar →+* ℂ_[p]) (hF : FrobOut D p) :
     NormUnitK D p lam := by
@@ -491,63 +483,57 @@ variable {D : D7}
 set_option maxHeartbeats 400000 in
 
 /- English proof (translation)
-Set `G` to `𝓞 D.host.E ≃ₐ[ℤ] 𝓞 D.host.E`. Establish `hGal : IsGalois ℚ D.host.E` using `D.host.hostE_isGalois`. Establish `hInv : Algebra.IsInvariant ℤ (𝓞 D.host.E) G` using `Algebra.isInvariant_of_isGalois' ℤ ℚ D.host.E (𝓞 D.host.E)`. Establish `hFin : Finite G` using `Finite.of_equiv _ (galRestrict ℤ ℚ D.host.E (𝓞 D.host.E)).toEquiv`. Establish `hcomm : ∀ σ τ : G, σ * τ = τ * σ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `σ τ`. Apply `(galRestrict ℤ ℚ D.host.E (𝓞 D.host.E)).symm.injective` to reduce the goal to its premises. Apply `(D.host.gal).injective` to reduce the goal to its premises. Simplify using `only [map_mul]`. Conclude with `mul_comm _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hpZ : Prime (p : ℤ)` using `Nat.prime_iff_prime_int.mp hp.out`. Establish `hPmax : (Ideal.span {(p : ℤ)}).IsMaximal` using `PrincipalIdealRing.isMaximal_of_irreducible hpZ.irreducible`. Take `⟨Q₀, hQm, hQc⟩` from `Ideal.exists_ideal_over_maximal_of_isIntegral (S := 𝓞 D.host.E) (Ideal.span {(p : ℤ)}) (by`. Introduce `x hx`. Establish `: x = 0` using `(algebraMap ℤ (𝓞 D.host.E)).injective_int (by rw [RingHom.mem_ker] at hx; rw [hx, map_zero])`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `Submodule.zero_mem _)`. Establish `hunder : ∀ P : Ideal (𝓞 D.host.E), P.IsPrime → ((p : ℕ) : 𝓞 D.host.E) ∈ P → P.under ℤ = Ideal.span {(p : ℤ)}`. Introduce `P hP hpP`. Use `(hPmax.eq_of_le ?_ ?_).symm` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h`. Establish `h1 : (1 : ℤ) ∈ P.under ℤ` using `by rw [h]; trivial`. Rewrite `h1` using `[Ideal.under_def, Ideal.mem_comap, map_one]`. Conclude with `hP.ne_top ((Ideal.eq_top_iff_one _).mpr h1)`. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff, SetLike.mem_coe, Ideal.under_def, Ideal.mem_comap]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using hpP`. Establish `hpQ : ((p : ℕ) : 𝓞 D.host.E) ∈ Q₀`. Establish `: (p : ℤ) ∈ Q₀.comap (algebraMap ℤ (𝓞 D.host.E))` using `by rw [hQc]; exact Ideal.mem_span_singleton_self _`. Rewrite `this` using `[Ideal.mem_comap]`. Simplify using `using this`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hQ0 : Q₀ ≠ ⊥`. Introduce `h`. Rewrite `hpQ` using `[h, Ideal.mem_bot]`. Conclude with `hp.out.ne_zero (by exact_mod_cast hpQ)`. Establish `hQfin : Finite (𝓞 D.host.E ⧸ Q₀)` using `Ideal.finiteQuotientOfFreeOfNeBot Q₀ hQ0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨σ, hσ⟩` from `IsArithFrobAt.exists_of_isInvariant ℤ G Q₀`. Establish `hstab : σ • Q₀ = Q₀` using `MulAction.mem_stabilizer_iff.mp hσ.mem_stabilizer`. Establish `hfix : ∀ P : Ideal (𝓞 D.host.E), P.IsPrime → ((p : ℕ) : 𝓞 D.host.E) ∈ P → σ • P = P`. Introduce `P hP hpP`. Establish `hu : Q₀.under ℤ = P.under ℤ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[hunder P hP hpP, hunder Q₀ hQm.isPrime hpQ]`. Take `⟨τ, hτ⟩` from `Algebra.IsInvariant.exists_smul_of_under_eq ℤ (𝓞 D.host.E) G Q₀ P hu`. Rewrite using `[hτ, smul_smul, hcomm, ← smul_smul, hstab]`. Set `τ' : D.host.E ≃ₐ[ℚ] D.host.E` to `(galRestrict ℤ ℚ D.host.E (𝓞 D.host.E)).symm σ`. Set `g : D.R.GG` to `D.host.gal τ'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsg : D.host.sigmaOf g = τ'`. Express the relevant statement in the definitionally equal form `(D.host.gal).symm (D.host.gal τ') = τ'`. Conclude with `MulEquiv.symm_apply_apply _ _`. Establish `hfun : ∀ x : 𝓞 D.host.E, RingOfIntegers.mapRingEquiv (D.host.sigmaOf g : D.host.E ≃+* D.host.E) x = σ • x`. Introduce `x`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[RingOfIntegers.mapRingEquiv_apply]`. Establish `h1 : σ = galRestrict ℤ ℚ D.host.E (𝓞 D.host.E) τ'` using `(MulEquiv.apply_symm_apply _ σ).symm`. Establish `h2` using `algebraMap_galRestrict_apply (A := ℤ) (K := ℚ) (L := D.host.E) (B := 𝓞 D.host.E) τ' x`. Rewrite `h2` using `[← h1]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(D.host.sigmaOf g) (x : D.host.E) = algebraMap (𝓞 D.host.E) D.host.E (σ x)`. Rewrite using `[h2, hsg]`. Use `⟨g, ?_, ?_⟩` and prove the remaining obligations. Introduce `hgPsi`. Establish `hbK : D.host.sqrtMinusD ∈ D.host.K` using `IntermediateField.mem_adjoin_simple_self ℚ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hb` using `Formalism.MainNotions.UnusedSlot33.HK.sigmaOf_fix_K D.host g hgPsi _ hbK`. Establish `hbsq : D.host.sqrtMinusD ^ 2 = -((D.host.d : ℕ) : D.host.E)` using `D.host.sqrtMinusD_sq`. Establish `hint : IsIntegral ℤ D.host.sqrtMinusD`. Use `IsIntegral.of_pow (n := 2) (by norm_num) ?_` and prove the remaining obligations. Rewrite using `[hbsq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `: -((D.host.d : ℕ) : D.host.E) = algebraMap ℤ D.host.E (-(D.host.d : ℤ))` using `by push_cast; rfl`. Rewrite using `[this]`. Conclude with `isIntegral_algebraMap`. Set `β : 𝓞 D.host.E` to `⟨D.host.sqrtMinusD, hint⟩`. Establish `hβsq : β ^ 2 = ((-(D.host.d : ℤ) : ℤ) : 𝓞 D.host.E)`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `RingOfIntegers.ext` to reduce the goal to its premises. Use `push_cast`. Conclude with `hbsq`. Establish `hσβ : σ • β = β`. Rewrite using `[← hfun]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[RingOfIntegers.mapRingEquiv_apply]`. Conclude with `hb`. Establish `hcard : Nat.card (ℤ ⧸ Q₀.under ℤ) = p`. Rewrite using `[hunder Q₀ hQm.isPrime hpQ, Nat.card_congr (Int.quotientSpanNatEquivZMod p).toEquiv, Nat.card_zmod]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hfr` using `hσ β`. Rewrite `hfr` using `[hcard]`. Express the relevant statement in the definitionally equal form `σ • β - β ^ p ∈ Q₀ at hfr`. Rewrite `hfr` using `[hσβ]`. Establish `hl : legendreSym p (-(D.host.d : ℤ)) = -1` using `by rw [jacobiSym.legendreSym.to_jacobiSym]; exact hI`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `he` using `legendreSym.eq_pow p (-(D.host.d : ℤ))`. Rewrite `he` using `[hl]`. Take `⟨t, ht⟩` from `(ZMod.intCast_eq_intCast_iff_dvd_sub (-1) ((-(D.host.d : ℤ)) ^ (p / 2)) p).mp (by push_cast at he ⊢; exact he)`. Establish `hodd : p = 2 * (p / 2) + 1`. Break down `hp.out.eq_two_or_odd' with h | h` into its components or cases.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `absurd h hp2`. Take `⟨k, hk⟩` from `h`. Use linear arithmetic over natural numbers and integers. Establish `hβp : β ^ p = β * (((-(D.host.d : ℤ)) ^ (p / 2) : ℤ) : 𝓞 D.host.E)` using `by conv_lhs => rw [hodd]`. Rewrite using `[pow_succ, pow_mul, hβsq, mul_comm]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h2β : 2 * β ∈ Q₀`. Establish `e1 : ((-(D.host.d : ℤ)) ^ (p / 2) : ℤ) = -1 + p * t` using `by linarith`. Rewrite `hfr` using `[hβp, e1]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : 2 * β = (β - β * (((-1 + p * t : ℤ)) : 𝓞 D.host.E)) + ((p : ℕ) : 𝓞 D.host.E) * ((t : 𝓞 D.host.E) * β)` using `by push_cast; ring`. Rewrite using `[e2]`. Conclude with `Q₀.add_mem hfr (Q₀.mul_mem_right _ hpQ)`. Establish `h4d : (((-4 * (D.host.d : ℤ)) : ℤ) : 𝓞 D.host.E) ∈ Q₀`. Establish `: (((-4 * (D.host.d : ℤ)) : ℤ) : 𝓞 D.host.E) = (2 * β) * (2 * β)`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Rewrite using `[show (2 * β) * (2 * β) = 4 * β ^ 2 by ring, hβsq]; push_cast; ring`. Rewrite using `[this]`. Conclude with `Q₀.mul_mem_right _ h2β`. Establish `hdvd : (p : ℤ) ∣ -4 * (D.host.d : ℤ)`. Establish `: (-4 * (D.host.d : ℤ)) ∈ Q₀.comap (algebraMap ℤ (𝓞 D.host.E))`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Ideal.mem_comap]`. Simplify using `using h4d`. Rewrite `this` using `[hQc, Ideal.mem_span_singleton]`. Conclude with `this`. Rewrite `hdvd` using `[neg_mul, dvd_neg]`.
+Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Break down `hpZ.dvd_or_dvd hdvd with h4 | hd` into its components or cases. Establish `: (p : ℤ) ∣ 2 * 2` using `by norm_num at h4 ⊢; exact h4`. Apply the tactic sequence `rcases hpZ.dvd_or_dvd this with h2 | h2 <;>`. Establish `h2' : p ∣ 2` using `by exact_mod_cast h2`. Break down `(Nat.prime_two.eq_one_or_self_of_dvd p h2') with h | h` into its components or cases.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hp.out.one_lt.ne' h`. Conclude with `hp2 h`. Establish `h0 : ((-(D.host.d : ℤ) : ℤ) : ZMod p) = 0` using `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).mpr ((dvd_neg).mpr hd)`. Use `(legendreSym.eq_zero_iff p (-(D.host.d : ℤ))).mpr h0` as an intermediate fact. Rewrite `this` using `[hl]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Evaluate the numerical expressions using `at this`. Introduce `P hP hP0 hpP`. Establish `hσP` using `hfix P hP hpP`. Use extensionality with `y`. Rewrite using `[Ideal.mem_map_of_equiv]`.
-
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Rewrite using `[hfun]`. Use `Ideal.smul_mem_pointwise_smul σ x P hx` as an intermediate fact. Rewrite `this` using `[hσP]`. Then use the resulting hypothesis.
-
-Introduce `hy`. Use `⟨σ⁻¹ • y, ?_, ?_⟩` and prove the remaining obligations. Rewrite `hy` using `[← hσP]`. Establish `: σ • (σ⁻¹ • y) ∈ σ • P` using `by rwa [smul_inv_smul]`. Conclude with `(Ideal.smul_mem_pointwise_smul_iff).mp this`.
-
-Rewrite using `[hfun, smul_inv_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frobOut_of_inertK {p : ℕ} [hp : Fact p.Prime] (hp2 : p ≠ 2) (hI : Formalism.MainNotions.GL3Theta.InertK D p) : FrobOut D p := by
   classical
@@ -703,7 +689,7 @@ theorem frobOut_of_inertK {p : ℕ} [hp : Fact p.Prime] (hp2 : p ≠ 2) (hI : Fo
       · rw [hfun, smul_inv_smul]
 
 /- English proof (translation)
-The claim follows from `normUnitK_of_frobOut lam (frobOut_of_inertK hp2 hI)`.
+A detailed English derivation is pending.
 -/
 theorem normUnitK_of_inertK {p : ℕ} [Fact p.Prime] (lam : TaylorLogMetric.Qbar →+* ℂ_[p]) (hp2 : p ≠ 2)
     (hI : Formalism.MainNotions.GL3Theta.InertK D p) : NormUnitK D p lam :=
@@ -716,7 +702,7 @@ end GlobalTheory.NormUnitInert
 open Formalism.BasicNotions NumberField IsDedekindDomain Formalism.MainNotions Formalism.MainNotions.G Formalism.MainNotions.FormalGroupSystem Formalism.L2.G.Pend Formalism.L2.Ker Formalism.L2.PairingIndexBounds.F GlobalTheory.TwU TensorProduct in
 
 /- English proof (translation)
-Introduce `_ _ _ lam hp2 hI` and use `GlobalTheory.NormUnitInert.normUnitK_of_inertK lam hp2 hI`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.normUnit_of_inert : ∀ (D : D7) (p : ℕ) [Fact p.Prime] (lam : TaylorLogMetric.Qbar →+* ℂ_[p]), p ≠ 2 → GL3Theta.InertK D p →
     ∀ z : D.host.E, z * D.host.conj z = 1 → ‖TaylorLogMetric.lamC lam (∏ τ : D.what₂.Tau, TaylorLogMetric.embT D τ z)‖ = 1 :=

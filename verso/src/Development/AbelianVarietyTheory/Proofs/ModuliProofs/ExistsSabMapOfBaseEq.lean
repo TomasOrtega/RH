@@ -14,9 +14,9 @@ noncomputable section
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `h`. Establish `ha : 0 < a` using `Nat.pos_of_mul_pos_right hb`. Establish `hc : 0 < c` using `Nat.pos_of_mul_pos_left hb`. Establish `ha' : (a : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr ha.ne'`. Establish `hc' : (c : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr hc.ne'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Nat.mul_div_cancel_left c ha, zeta, zeta, ← Complex.exp_nat_mul]`. Use `congr 1`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 -/
 theorem zeta_eq_pow_div_of_dvd {a b : ℕ} (hb : 0 < b) (h : a ∣ b) : zeta a = zeta b ^ (b / a) := by
   obtain ⟨c, rfl⟩ := h
@@ -30,9 +30,9 @@ theorem zeta_eq_pow_div_of_dvd {a b : ℕ} (hb : 0 < b) (h : a ∣ b) : zeta a =
   field_simp
 
 /- English proof (translation)
-Unfold `KA`. Rewrite using `[IntermediateField.adjoin_le_iff]`. Introduce `x hx`. Break down `hx with rfl | hx` into its components or cases. Conclude with `IntermediateField.subset_adjoin _ _ (by simp)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx` using `[Set.mem_singleton_iff]`. Substitute `hx` using the available equality. Rewrite using `[zeta_eq_pow_div_of_dvd l₂.A_pos h]`. Conclude with `pow_mem (IntermediateField.subset_adjoin ℚ ({H.rt0, zeta l₂.A} : Set ℂ) (by simp)) _`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levelField_le_of_dvd {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {l l₂ : Level H}
     (h : l.A ∣ l₂.A) : KA l ≤ KA l₂ := by
@@ -59,7 +59,7 @@ def levelFieldIncl {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host 
   (IntermediateField.inclusion (levelField_le_of_dvd h)).toRingHom
 
 /- English proof (translation)
-The claim follows from `IntermediateField.coe_inclusion (levelField_le_of_dvd h) x`.
+A detailed English derivation is pending.
 -/
 theorem coe_levelFieldIncl {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {l l₂ : Level H}
     (h : l.A ∣ l₂.A) (x : KA l) : ((levelFieldIncl h x : KA l₂) : ℂ) = (x : ℂ) :=
@@ -72,7 +72,7 @@ theorem coe_baseKA_rho {E : Type} [Field E] [NumberField E] [IsCMField E] {H : H
     (((baseKA l).ρ : KA l) : ℂ) = H.rt0 := rfl
 
 /- English proof (translation)
-The claim follows from `Subtype.ext ((coe_levelFieldIncl h _).trans ((coe_baseKA_rho l).trans (coe_baseKA_rho l₂).symm))`.
+A detailed English derivation is pending.
 -/
 theorem levelFieldIncl_rho {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {l l₂ : Level H}
     (h : l.A ∣ l₂.A) : levelFieldIncl h (baseKA l).ρ = (baseOfFinerLevel h).ρ :=
@@ -91,7 +91,7 @@ theorem baseOfFinerLevel_rho {E : Type} [Field E] [NumberField E] [IsCMField E] 
     (h : l.A ∣ l₂.A) : (baseOfFinerLevel h).ρ = (baseKA l₂).ρ := rfl
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[SubmonoidClass.coe_pow, ← levelFieldIncl_zeta, coe_levelFieldIncl]`. Conclude with `zeta_eq_pow_div_of_dvd l₂.A_pos h`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem baseOfFinerLevel_zeta {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {l l₂ : Level H}
     (h : l.A ∣ l₂.A) : (baseOfFinerLevel h).ζ = (baseKA l₂).ζ ^ (l₂.A / l.A) := by
@@ -100,7 +100,7 @@ theorem baseOfFinerLevel_zeta {E : Type} [Field E] [NumberField E] [IsCMField E]
   exact zeta_eq_pow_div_of_dvd l₂.A_pos h
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `⟨n, rfl⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem exists_sabMap_of_base_eq {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {S S' : Scheme.{0}}
     {t' : SAB H S'} {t : SAB H S} {f g : S' ⟶ S} (n : SABMap t' t f) (h : f = g) :
@@ -109,11 +109,11 @@ theorem exists_sabMap_of_base_eq {E : Type} [Field E] [NumberField E] [IsCMField
   exact ⟨n, rfl⟩
 
 /- English proof (translation)
-Introduce `hsm _ hlow hrep E _ _ _ H D l l₂ Xo Xo₂ _ hd`. Establish `hA : l.A ∣ l₂.A` using `hd.2.2`. Take `⟨o, m₁, h₁, h₁A⟩` from `hlow E H D l l₂ (KA l₂) (baseOfFinerLevel hA) (baseKA l₂) Xo₂.X Xo₂.s Xo₂.univ hd (baseOfFinerLevel_rho hA) (baseOfFinerLevel_zeta hA)`. Establish `hred : IsReduced Xo₂.X`. Use `Xo₂.smooth` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(hsm _ _ Xo₂.s (SmoothOfRelativeDimension.smooth D.dim Xo₂.s)).1`. Take `⟨r, ⟨hr, ⟨m₂⟩⟩, -⟩` from `hrep E H D l Xo (KA l₂) (baseOfFinerLevel hA) (levelFieldIncl hA) Xo₂.X Xo₂.s o hred (levelFieldIncl_rho hA) (levelFieldIncl_zeta hA)`. Take `⟨m, hm⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ m₂.toSABMap m₁`. Take `⟨n, hn⟩` from `exists_sabMap_of_base_eq m (Category.id_comp r)`. Establish `hφ : n.φ = m₁.φ ≫ m₂.toSABMap.φ` using `hn.trans hm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨r, levelFieldIncl hA, n, coe_levelFieldIncl hA, hr, fun a => ?_, fun a => ?_⟩` and prove the remaining obligations. Conclude with `(congrArg (_ ≫ ·) hφ).trans ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ m₂.toSABMap.φ) ((h₁ a).trans (Category.id_comp _))).trans (m₂.eta a)))`. Conclude with `(congrArg (_ ≫ ·) hφ).trans ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ m₂.toSABMap.φ) ((h₁A a).trans (Category.id_comp _))).trans (m₂.etaA a)))`.
+A detailed English derivation is pending.
 -/
 theorem exists_levelMap : (∀ (k : Type) [Field k] (X : Scheme.{0}) (s : X ⟶ Sp k), Smooth s → IsReduced X ∧ IsNormalScheme X ∧ IsLocallyNoetherian X) → (∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (B B' B'' : Type) [CommRing B] [CommRing B'] [CommRing B''] (b : Base l B) (b' : Base l B') (b'' : Base l B'') (S S' S'' : Scheme.{0}) (s : S ⟶ Sp B) (s' : S' ⟶ Sp B') (s'' : S'' ⟶ Sp B'') (o : Obj D l b s) (o' : Obj D l b' s') (o'' : Obj D l b'' s''), (∃ m : ObjMap o o (𝟙 S), m.toSABMap.φ = 𝟙 _) ∧ ∀ (f : S' ⟶ S) (f' : S'' ⟶ S') (m : ObjMap o' o f), (∀ m' : ObjMap o'' o' f', ∃ m'' : ObjMap o'' o (f' ≫ f), m''.toSABMap.φ = m'.toSABMap.φ ≫ m.toSABMap.φ) ∧ (∀ m'' : ObjMap o'' o (f' ≫ f), ∃ m' : ObjMap o'' o' f', m''.toSABMap.φ = m'.toSABMap.φ ≫ m.toSABMap.φ)) → (∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l l₂ : Level H) (B : Type) [CommRing B] (b : Base l B) (b₂ : Base l₂ B) (S : Scheme.{0}) (s : S ⟶ Sp B) (o₂ : Obj D l₂ b₂ s), l.Dvd l₂ → b.ρ = b₂.ρ → b.ζ = b₂.ζ ^ (l₂.A / l.A) → ∃ (o : Obj D l b s) (m : SABMap o₂.t o.t (𝟙 S)), (∀ a, (o₂.eta a ^ (l₂.M / l.M)).left ≫ m.φ = 𝟙 S ≫ (o.eta a).left) ∧ (∀ a, (o₂.etaA a ^ (l₂.A / l.A)).left ≫ m.φ = 𝟙 S ≫ (o.etaA a).left)) → (∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (B : Type) [CommRing B] (b : Base l B) (j : KA l →+* B) (S : Scheme.{0}) (s : S ⟶ Sp B) (o : Obj D l b s), IsReduced S → j (baseKA l).ρ = b.ρ → j (baseKA l).ζ = b.ζ → ∃! f : S ⟶ Xo.X, f ≫ Xo.s = s ≫ spMap j ∧ Nonempty (ObjMap o Xo.univ f)) → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l l₂ : Level H) (Xo : Moduli D l) (Xo₂ : Moduli D l₂), 1 ≤ D.p + D.q → l.Dvd l₂ → ∃ (r : Xo₂.X ⟶ Xo.X) (jK : KA l →+* KA l₂) (m : SABMap Xo₂.univ.t Xo.univ.t r), (∀ x, ((jK x : KA l₂) : ℂ) = ((x : KA l) : ℂ)) ∧ r ≫ Xo.s = Xo₂.s ≫ spMap jK ∧ (∀ a, (Xo₂.univ.eta a ^ (l₂.M / l.M)).left ≫ m.φ = r ≫ (Xo.univ.eta a).left) ∧ (∀ a, (Xo₂.univ.etaA a ^ (l₂.A / l.A)).left ≫ m.φ = r ≫ (Xo.univ.etaA a).left) := by
   intro hsm _ hlow hrep E _ _ _ H D l l₂ Xo Xo₂ _ hd

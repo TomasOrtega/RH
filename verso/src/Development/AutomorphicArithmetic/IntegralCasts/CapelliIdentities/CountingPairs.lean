@@ -7,9 +7,9 @@ noncomputable def UpperTheory.Reformulated.B.CountingPairs.rhoPair :
 namespace UpperTheory.Reformulated.B.CountingPairs.Priv
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_boole]`. Establish `: (Finset.univ.filter (fun c : Fin k => i < c)) = Finset.Ioi i`. Use extensionality with `c`. Simplify using the standard rewrite rules. Rewrite using `[this, Fin.card_Ioi]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `i.isLt` as an intermediate fact. Move the coercions through the operations in `[Nat.sub_sub, show 1 + (i:ℕ) ≤ k by omega]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 private lemma cntGt {k : ℕ} (i : Fin k) :
     (∑ c : Fin k, if i < c then (1:ℤ) else 0) = (k:ℤ) - 1 - i := by
@@ -22,7 +22,7 @@ private lemma cntGt {k : ℕ} (i : Fin k) :
   ring
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_boole]`. Establish `: (Finset.univ.filter (fun i : Fin k => i < c)) = Finset.Iio c`. Use extensionality with `i`. Simplify using the standard rewrite rules. Rewrite using `[this, Fin.card_Iio]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private lemma cntLt {k : ℕ} (c : Fin k) :
     (∑ i : Fin k, if i < c then (1:ℤ) else 0) = (c:ℤ) := by
@@ -35,9 +35,9 @@ end UpperTheory.Reformulated.B.CountingPairs.Priv
 
 open UpperTheory.Reformulated.B.CountingPairs.Priv in
 /- English proof (translation)
-Introduce `k l`. Establish `h1 : ∀ c i : Fin k, (if i < c then l i - l c else (0:ℤ)) = (if i < c then (1:ℤ) else 0) * l i - (if i < c then (1:ℤ) else 0) * l c`. Apply the tactic sequence `intro c i; split_ifs <;> simp`. Repeatedly rewrite using `[h1, Finset.sum_sub_distrib]`. Rewrite using `[Finset.sum_comm (f := fun c i => (if i < c then (1:ℤ) else 0) * l i)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[← Finset.sum_mul, cntGt, cntLt]`. Unfold `UpperTheory.Reformulated.B.CountingPairs.rhoPair`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl ?_` and prove the remaining obligations. Introduce `i _`.
+Rewrite the conclusion repeatedly using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

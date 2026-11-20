@@ -14,7 +14,7 @@ namespace GlobalTheory
 def latticeNormDisc (L : PeriodPair) : ℝ := latticeArea L ^ 6 * ‖L.g₂ ^ 3 - 27 * L.g₃ ^ 2‖
 
 /- English proof (translation)
-Rewrite using `[latticeArea_eq, ← abs_neg]`. Use `congr 1`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem latticeArea_eq_abs_im_mul_conj (L : PeriodPair) :
     latticeArea L = |(L.ω₁ * starRingEnd ℂ L.ω₂).im| := by
@@ -24,20 +24,20 @@ theorem latticeArea_eq_abs_im_mul_conj (L : PeriodPair) :
   ring
 
 /- English proof (translation)
-Rewrite using `[latticeNormDisc, latticeArea_eq_abs_im_mul_conj]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem latticeNormDisc_eq (L : PeriodPair) :
     latticeNormDisc L = |(L.ω₁ * starRingEnd ℂ L.ω₂).im| ^ 6 * ‖L.g₂ ^ 3 - 27 * L.g₃ ^ 2‖ := by
   rw [latticeNormDisc, latticeArea_eq_abs_im_mul_conj]
 
 /- English proof (translation)
-The claim follows from `mul_pos (pow_pos (latticeArea_pos L) _) (norm_pos_iff.2 (g₂_cube_sub_g₃_sq_ne_zero L))`.
+A detailed English derivation is pending.
 -/
 theorem latticeNormDisc_pos (L : PeriodPair) : 0 < latticeNormDisc L :=
   mul_pos (pow_pos (latticeArea_pos L) _) (norm_pos_iff.2 (g₂_cube_sub_g₃_sq_ne_zero L))
 
 /- English proof (translation)
-Establish `hc : ‖c‖ ≠ 0` using `norm_ne_zero_iff.2 h.ne_zero`. Establish `e : L'.g₂ ^ 3 - 27 * L'.g₃ ^ 2 = (c ^ 12)⁻¹ * (L.g₂ ^ 3 - 27 * L.g₃ ^ 2)`. Rewrite using `[h.g₂_eq, h.g₃_eq]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[latticeNormDisc, latticeNormDisc, h.latticeArea_eq, e, norm_mul, norm_inv, norm_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
 Clear the denominators using the available nonvanishing facts.
 -/
@@ -61,7 +61,7 @@ def conjPeriods (L : PeriodPair) : PeriodPair where
     simpa using this
 
 /- English proof (translation)
-Simplify using `only [PeriodPair.mem_lattice, conjPeriods]`. Use `exists₂_congr fun m n => ⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Simplify using `using congrArg (starRingEnd ℂ) h`. Simplify using `using congrArg (starRingEnd ℂ) h`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_conjPeriods_lattice (L : PeriodPair) (z : ℂ) :
     z ∈ (conjPeriods L).lattice ↔ starRingEnd ℂ z ∈ L.lattice := by
@@ -71,7 +71,7 @@ theorem mem_conjPeriods_lattice (L : PeriodPair) (z : ℂ) :
   · simpa using congrArg (starRingEnd ℂ) h
 
 /- English proof (translation)
-Set `e : L.lattice ≃ (conjPeriods L).lattice` to `{ toFun := fun x => ⟨starRingEnd ℂ x, (mem_conjPeriods_lattice L _).2 (by simp)⟩ invFun := fun y => ⟨starRingEnd ℂ y, (mem_conjPeriods_lattice L _).1 y.2⟩ left_inv := fun x => by simp right_inv := fun y => by simp }`. Simplify using `only [PeriodPair.G]`. Rewrite using `[← e.tsum_eq, Complex.conj_tsum]`. Simplify using `[e]`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem G_conjPeriods (L : PeriodPair) (n : ℕ) :
     (conjPeriods L).G n = starRingEnd ℂ (L.G n) := by
@@ -85,9 +85,9 @@ theorem G_conjPeriods (L : PeriodPair) (n : ℕ) :
   simp [e]
 
 /- English proof (translation)
-Establish `e : (conjPeriods L).g₂ ^ 3 - 27 * (conjPeriods L).g₃ ^ 2 = starRingEnd ℂ (L.g₂ ^ 3 - 27 * L.g₃ ^ 2)`. Simplify using `only [PeriodPair.g₂, PeriodPair.g₃, G_conjPeriods, map_sub, map_mul, map_pow, map_ofNat]`. Establish `a : latticeArea (conjPeriods L) = latticeArea L`. Rewrite using `[latticeArea_eq, latticeArea_eq_abs_im_mul_conj]`. Simplify using `[conjPeriods]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[latticeNormDisc, latticeNormDisc, e, a, Complex.norm_conj]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem latticeNormDisc_conjPeriods (L : PeriodPair) :
     latticeNormDisc (conjPeriods L) = latticeNormDisc L := by
@@ -100,9 +100,9 @@ theorem latticeNormDisc_conjPeriods (L : PeriodPair) :
   rw [latticeNormDisc, latticeNormDisc, e, a, Complex.norm_conj]
 
 /- English proof (translation)
-Establish `hp : ((periodsOfUpperHalfPlane τ).ω₁ = 1 ∧ (periodsOfUpperHalfPlane τ).ω₂ = τ) ∨ ((periodsOfUpperHalfPlane τ).ω₁ = τ ∧ (periodsOfUpperHalfPlane τ).ω₂ = 1)`. Simplify using `[periodsOfUpperHalfPlane]`. Establish `H : IsHomothetic a (periodsOfUpperHalfPlane τ) L`. Introduce `x`. Rewrite using `[h, mem_lattice_iff_of_periods_eq hp]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[ha]`. Rewrite using `[H.latticeNormDisc_eq, latticeNormDisc, latticeArea_periodsOfUpperHalfPlane, (invariants_of_periods_eq hp).2.1]`. Simplify using `only [norm_mul, norm_pow, Complex.norm_real, Real.norm_eq_abs, abs_of_pos Real.pi_pos, Complex.norm_ofNat]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem latticeNormDisc_eq_eta {L : PeriodPair} {a : ℂ} {τ : ℍ} (ha : a ≠ 0)
     (h : ∀ x, x ∈ L.lattice ↔ ∃ m n : ℤ, a * (m * (τ : ℂ) + n) = x) :
@@ -121,9 +121,9 @@ theorem latticeNormDisc_eq_eta {L : PeriodPair} {a : ℂ} {τ : ℍ} (ha : a ≠
   ring
 
 /- English proof (translation)
-Establish `hpos` using `latticeNormDisc_pos L`. Rewrite using `[← latticeNormDisc_eq]`. Rewrite `hpos`, the goal using `[latticeNormDisc_eq_eta ha h]`. Establish `hne : 4 * π * τ.im * ‖ModularForm.eta τ‖ ^ 4 ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hpos` using `[show 4 * π ^ 2 * τ.im * ‖ModularForm.eta τ‖ ^ 4 = π * (4 * π * τ.im * ‖ModularForm.eta τ‖ ^ 4) by ring, h0]`. Simplify using `at hpos`. Rewrite using `[Real.log_pow, show 4 * π ^ 2 * τ.im * ‖ModularForm.eta τ‖ ^ 4 = π * (4 * π * τ.im * ‖ModularForm.eta τ‖ ^ 4) by ring, Real.log_mul Real.pi_ne_zero hne]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem log_pi_sub_log_latticeNormDisc {L : PeriodPair} {a : ℂ} {τ : ℍ} (ha : a ≠ 0)
     (h : ∀ x, x ∈ L.lattice ↔ ∃ m n : ℤ, a * (m * (τ : ℂ) + n) = x) :
@@ -148,9 +148,9 @@ section CM
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-Establish `hne : σ₀ ≠ ComplexEmbedding.conjugate σ₀` using `fun h => h₀ (ComplexEmbedding.isReal_iff.2 h.symm)`. Establish `: ({σ₀, ComplexEmbedding.conjugate σ₀} : Finset (K →+* ℂ)) = Finset.univ`. Apply `Finset.eq_univ_of_card` to reduce the goal to its premises. Rewrite using `[Finset.card_pair hne, Embeddings.card, hK]`. Establish `hm` using `this ▸ Finset.mem_univ σ`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `using hm`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem embedding_eq_or_eq_conjugate (hK : Module.finrank ℚ K = 2) {σ₀ : K →+* ℂ}
     (h₀ : ¬ ComplexEmbedding.IsReal σ₀) (σ : K →+* ℂ) :
@@ -165,19 +165,19 @@ theorem embedding_eq_or_eq_conjugate (hK : Module.finrank ℚ K = 2) {σ₀ : K 
   simpa using hm
 
 /- English proof (translation)
-Rewrite `h` using `[← map_mul, ClassGroup.mk0_eq_mk0_iff]`. Take `⟨x, y, hx, hy, e⟩` from `h`. Establish `hx' : (x : K) ≠ 0` using `by exact_mod_cast hx`. Establish `hy' : (y : K) ≠ 0` using `by exact_mod_cast hy`. Establish `hB : ((𝔟 : Ideal (𝓞 K)) : FractionalIdeal (𝓞 K)⁰ K) ≠ 0` using `FractionalIdeal.coeIdeal_ne_zero.2 (nonZeroDivisors.coe_ne_zero 𝔟)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e'` using `congrArg (fun I : Ideal (𝓞 K) => (I : FractionalIdeal (𝓞 K)⁰ K)) e`. Simplify using `only [Submonoid.coe_mul, FractionalIdeal.coeIdeal_mul, FractionalIdeal.coeIdeal_span_singleton] at e'`. Establish `hY : FractionalIdeal.spanSingleton (𝓞 K)⁰ (algebraMap (𝓞 K) K y) ≠ 0` using `FractionalIdeal.spanSingleton_ne_zero_iff.2 hy'`. Establish `key : ((𝔞 : Ideal (𝓞 K)) : FractionalIdeal (𝓞 K)⁰ K) / (𝔟 : Ideal (𝓞 K)) = FractionalIdeal.spanSingleton (𝓞 K)⁰ ((x : K) / (y : K)) * (𝔡 : Ideal (𝓞 K))`. Rewrite using `[div_eq_iff hB]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `mul_left_cancel₀ hY` to reduce the goal to its premises. Rewrite using `[← e', ← mul_assoc, ← mul_assoc, ← mul_assoc, FractionalIdeal.spanSingleton_mul_spanSingleton]`. Use `congr 3`. Express the relevant statement in the definitionally equal form `(x : K) = (y : K) * _`. Clear the denominators using the available nonvanishing facts.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Clear the denominators using the available nonvanishing facts.
 
-Use `⟨x / y, div_ne_zero hx' hy', fun t => ?_⟩` and prove the remaining obligations. Establish `h1 : (∀ b ∈ (𝔟 : Ideal (𝓞 K)), ∃ a ∈ (𝔞 : Ideal (𝓞 K)), (x : K) / y * t * (b : K) = a) ↔ (x : K) / y * t ∈ ((𝔞 : Ideal (𝓞 K)) : FractionalIdeal (𝓞 K)⁰ K) / (𝔟 : Ideal (𝓞 K))`. Rewrite using `[FractionalIdeal.mem_div_iff_of_ne_zero hB]`. Prove the components needed by the constructor for the conclusion. Introduce `h b hb`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨b, hb', rfl⟩` from `(FractionalIdeal.mem_coeIdeal _).1 hb`. Take `⟨a, ha, e⟩` from `h b hb'`. Conclude with `(FractionalIdeal.mem_coeIdeal _).2 ⟨a, ha, e.symm⟩`. Introduce `h b hb`. Take `⟨a, ha, e⟩` from `(FractionalIdeal.mem_coeIdeal _).1 (h _ (FractionalIdeal.mem_coeIdeal_of_mem _ hb))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨a, ha, e.symm⟩`. Rewrite using `[h1, key, FractionalIdeal.mem_singleton_mul]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨d, hd, e⟩`. Take `⟨d, hd', rfl⟩` from `(FractionalIdeal.mem_coeIdeal _).1 hd`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨d, hd', mul_left_cancel₀ (div_ne_zero hx' hy') e⟩`. Introduce and unpack `⟨d, hd, rfl⟩`. Conclude with `⟨_, FractionalIdeal.mem_coeIdeal_of_mem _ hd, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_mul_mem_iff_of_mk0_eq (𝔞 𝔟 𝔡 : (Ideal (𝓞 K))⁰)
     (h : ClassGroup.mk0 𝔡 * ClassGroup.mk0 𝔟 = ClassGroup.mk0 𝔞) :
@@ -225,17 +225,17 @@ theorem exists_mul_mem_iff_of_mk0_eq (𝔞 𝔟 𝔡 : (Ideal (𝓞 K))⁰)
     exact ⟨_, FractionalIdeal.mem_coeIdeal_of_mem _ hd, rfl⟩
 
 /- English proof (translation)
-Take `⟨u, hu, H⟩` from `exists_mul_mem_iff_of_mk0_eq 𝔞 𝔟 𝔡 h`. Establish `hu' : σ u ≠ 0` using `(map_ne_zero σ).2 hu`. Use `⟨β * c * σ u, fun z => ?_⟩` and prove the remaining obligations. Establish `e : ∀ (y : 𝓞 K) (t : K), β⁻¹ * σ (y : K) * (β * c * σ u * σ t) = c * σ (u * t * y)`. Introduce `y t`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_mul, map_mul]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hL', hP]`. Prove the components needed by the constructor for the conclusion. Introduce `hz`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Choose the witnesses or unpack the hypotheses as in `⟨t, rfl⟩ : ∃ t : K, z = σ t := by`. Take `⟨y, hy, hy0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot (nonZeroDivisors.coe_ne_zero 𝔟)`. Take `⟨a, -, ha⟩` from `(hL _).1 (hz y hy)`. Establish `hy1 : σ (y : K) ≠ 0`. Rewrite using `[map_ne_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hy0` after adjusting the coercions. Use `⟨a / (u * y), ?_⟩` and prove the remaining obligations. Rewrite using `[map_div₀, map_mul]`. Clear the denominators using the available nonvanishing facts. Clear denominators, using `at ha` for the nonvanishing conditions.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `ha`. Take `⟨d, hd, rfl⟩` from `(H t).1 fun b hb => by`. Take `⟨a, ha, e'⟩` from `(hL _).1 (hz b hb)`. Rewrite `e'` using `[e]`. Conclude with `⟨a, ha, σ.injective (mul_left_cancel₀ hc e')⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨d, hd, rfl⟩`. Introduce and unpack `⟨d, hd, rfl⟩ y hy`. Take `⟨a, ha, e'⟩` from `(H d).2 ⟨d, hd, rfl⟩ y hy`. Rewrite using `[e, e']`. Conclude with `(hL _).2 ⟨a, ha, rfl⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isHomothetic_of_mk0_eq (σ : K →+* ℂ) (𝔞 𝔟 𝔡 : (Ideal (𝓞 K))⁰)
     (h : ClassGroup.mk0 𝔡 * ClassGroup.mk0 𝔟 = ClassGroup.mk0 𝔞) {L L' P : PeriodPair}
@@ -277,35 +277,33 @@ theorem exists_isHomothetic_of_mk0_eq (σ : K →+* ℂ) (𝔞 𝔟 𝔡 : (Idea
 end CM
 
 /- English proof (translation)
-Introduce `K M _ _ _ _ _ hK σ₀ h₀ 𝔟 Lc h𝔟 hLc L₀ L δ β hst hδ hβ h1 h2`. Simplify using `only [← latticeNormDisc_eq]`. Simplify using `only [← latticeArea_eq_abs_im_mul_conj]`. Establish `hb0 : ∀ C, (𝔟 C : Ideal (𝓞 K)) ≠ ⊥` using `fun C => nonZeroDivisors.coe_ne_zero _`. Establish `hnr : ∀ s : M →+* ℂ, ¬ ComplexEmbedding.IsReal (s.comp (algebraMap K M))`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `s`. Apply the tactic sequence `rcases embedding_eq_or_eq_conjugate hK h₀ (s.comp (algebraMap K M)) with h | h <;> rw [h]`. Conclude with `h₀`. Rewrite using `[ComplexEmbedding.isReal_conjugate_iff]` and apply the resulting hypothesis. Establish `hlat` using `fun C s => lattice_cm_eq_ideal_and_covolume K hK (s.comp (algebraMap K M)) (hnr s) (L₀ s) (L C s) (hst s)`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsβ : ∀ C (s : M →+* ℂ), s (β C) ≠ 0` using `fun C s => (map_ne_zero s).2 (hβ C)`. Establish `hdiv` using `fun C s => (hlat C s).2 (𝔟 C) (s (β C)) (hb0 C) (hsβ C s) (fun x hx z hz => by simpa using (h1 C x hx).2 s z hz) (fun y hy z hz => by simpa using (h2 C y hy).2 s z hz)`. Establish `hA : ∀ C, ∑ s, Real.log (latticeNormDisc (L C s)) = 6 * ∑ s, Real.log (latticeArea (L₀ s))`. Introduce `C`. Establish `hN : (Ideal.absNorm (𝔟 C : Ideal (𝓞 K)) : ℝ) ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Ideal.absNorm_eq_zero_iff.not.2 (hb0 C)` after adjusting the coercions. Establish `hδ0 : ((δ C : 𝓞 M) : M) ≠ 0` using `by exact_mod_cast (δ C).ne_zero`. Establish `e1 : ∑ s : M →+* ℂ, Real.log ‖s ((δ C : 𝓞 M) : M)‖ = 0`. Use `sum_log_norm_embedding_eq_finrank_mul_log_absNorm M M ⊤ ((δ C : 𝓞 M) : M) top_ne_bot hδ0 (fun x hx => (RingOfIntegers.isIntegral_coe _).mul (by simpa using hx 1 trivial)) (fun y _ => by` as an intermediate fact. Establish `: (((δ C : 𝓞 M) : M))⁻¹ = (((δ C)⁻¹ : (𝓞 M)ˣ) : 𝓞 M)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `inv_eq_of_mul_eq_one_right` to reduce the goal to its premises. Rewrite using `[← map_mul]`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `(RingOfIntegers.isIntegral_coe _).mul (RingOfIntegers.isIntegral_coe _))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `e2` using `sum_log_norm_embedding_eq_finrank_mul_log_absNorm K M (𝔟 C) (β C) (hb0 C) (hβ C) (fun x hx => (h1 C x hx).1) (fun y hy => (h2 C y hy).1)`. Establish `e3 : ∀ s : M →+* ℂ, Real.log (latticeNormDisc (L C s)) = 6 * (2 * Real.log ‖s (β C)‖ + Real.log (latticeArea (L₀ s)) - Real.log (Ideal.absNorm (𝔟 C : Ideal (𝓞 K)) : ℝ)) + Real.log ‖s ((δ C : 𝓞 M) : M)‖`. Introduce `s`. Establish `h` using `congrArg Real.log (hdiv C s).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite `h` using `[← latticeArea_eq_abs_im_mul_conj, ← latticeArea_eq_abs_im_mul_conj, Real.log_mul (latticeArea_pos _).ne' hN, Real.log_mul (pow_ne_zero _ (norm_ne_zero_iff.2 (hsβ C s))) (latticeArea_pos _).ne', Real.log_pow]`. Rewrite using `[latticeNormDisc, Real.log_mul (pow_pos (latticeArea_pos _) _).ne' (norm_ne_zero_iff.2 (g₂_cube_sub_g₃_sq_ne_zero _)), Real.log_pow, hδ]`. Move the coercions through the operations in `at h ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e4 : (Fintype.card (M →+* ℂ) : ℝ) = 2 * Module.finrank K M`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Embeddings.card, ← Module.finrank_mul_finrank ℚ K M, hK]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [e3, Finset.sum_add_distrib, Finset.sum_sub_distrib, ← Finset.mul_sum, e1, e2, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, e4]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hB : ∀ s, ∑ C, Real.log (latticeNormDisc (L C s)) = ∑ C, Real.log (latticeNormDisc (Lc C))`. Introduce `s`. Take `⟨𝔞, c, h𝔞, hc, hL⟩` from `(hlat 1 s).1`. Set `𝔞' : (Ideal (𝓞 K))⁰` to `⟨𝔞, mem_nonZeroDivisors_of_ne_zero h𝔞⟩`. Use `Fintype.sum_equiv (Equiv.divLeft (ClassGroup.mk0 𝔞')) _ _ fun C => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Establish `hcl : ClassGroup.mk0 (𝔟 (ClassGroup.mk0 𝔞' / C)) * ClassGroup.mk0 (𝔟 C) = ClassGroup.mk0 𝔞'`. Rewrite using `[h𝔟, h𝔟, div_mul_cancel]`. Express the relevant statement in the definitionally equal form `_ = latticeNormDisc (Lc (ClassGroup.mk0 𝔞' / C))`. Break down `embedding_eq_or_eq_conjugate hK h₀ (s.comp (algebraMap K M)) with h | h` into its components or cases.
+Express the relevant assertion in an equivalent form by its definition. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨κ, H⟩` from `exists_isHomothetic_of_mk0_eq (s.comp (algebraMap K M)) 𝔞' _ _ hcl hc (hsβ C s) hL (hdiv C s).1 (P := Lc (ClassGroup.mk0 𝔞' / C)) (by rw [h]; exact hLc _)`. Conclude with `H.latticeNormDisc_eq`. Take `⟨κ, H⟩` from `exists_isHomothetic_of_mk0_eq (s.comp (algebraMap K M)) 𝔞' _ _ hcl hc (hsβ C s) hL (hdiv C s).1 (P := conjPeriods (Lc (ClassGroup.mk0 𝔞' / C))) (by`. Introduce `z`. Rewrite using `[h, mem_conjPeriods_lattice, hLc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `exists_congr fun a => and_congr_right fun _ => ?_` and prove the remaining obligations. Rewrite using `[ComplexEmbedding.conjugate_coe_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `e`. Rewrite using `[← e]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `e`. Rewrite using `[e]`. Use the proof step `simp)`. Rewrite using `[H.latticeNormDisc_eq, latticeNormDisc_conjPeriods]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Establish `hS` using `Finset.sum_comm (s := Finset.univ) (t := Finset.univ) (f := fun C s => Real.log (latticeNormDisc (L C s)))`. Simplify using `only [hA, hB, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, Embeddings.card] at hS`. Establish `hm : (Module.finrank ℚ M : ℝ) ≠ 0` using `by exact_mod_cast Module.finrank_pos.ne'`. Establish `hh : (Fintype.card (ClassGroup (𝓞 K)) : ℝ) ≠ 0` using `by exact_mod_cast Fintype.card_ne_zero`. Clear the denominators using the available nonvanishing facts.
-
-Take the linear combination `hS`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem mean_log_covolume_eq_mean_classGroup :
     ∀ (K M : Type) [Field K] [NumberField K] [Field M] [NumberField M] [Algebra K M], Module.finrank ℚ K = 2 →

@@ -7,9 +7,9 @@ open scoped TensorProduct Matrix
 namespace GlobalTheory.UnRep
 
 /- English proof (translation)
-Distinguish the cases in `ha : a = 0`. Simplify using `[ha]`. Establish `h1 : P.intValuation a = WithZero.exp (-((Associates.mk P.asIdeal).count (Associates.mk (Ideal.span {a} : Ideal R)).factors : ℕ) : ℤ)` using `P.intValuation_if_neg ha`. Use `set k := (Associates.mk P.asIdeal).count (Associates.mk (Ideal.span {a} : Ideal R)).factors`. Establish `h2 : a ∈ P.asIdeal ^ k` using `(P.intValuation_le_pow_iff_mem a k).1 h1.le`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, P.intValuation_le_pow_iff_mem]`. Establish `h3 : (P.asIdeal ^ k).map σ ≤ P.asIdeal ^ k`. Rewrite using `[Ideal.map_pow]`. Conclude with `Ideal.pow_right_mono h k`. Conclude with `h3 (Ideal.mem_map_of_mem σ h2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intValuation_map_le_of_map_le {R : Type} [CommRing R] [IsDedekindDomain R] (σ : R →+* R)
     (P : HeightOneSpectrum R) (h : P.asIdeal.map σ ≤ P.asIdeal) (a : R) :
@@ -27,17 +27,15 @@ theorem intValuation_map_le_of_map_le {R : Type} [CommRing R] [IsDedekindDomain 
   exact h3 (Ideal.mem_map_of_mem σ h2)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ c hc u P hu hP`. Set `σ : 𝓞 E →+* 𝓞 E` to `RingOfIntegers.mapRingHom (c : E →+* E)`. Establish `hσ : ∀ a : 𝓞 E, ((σ a : 𝓞 E) : E) = c (a : E)` using `fun a => rfl`. Establish `hσσ : ∀ a, σ (σ a) = a` using `fun a => by`. Apply `RingOfIntegers.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hσ, hσ, hc]`. Establish `hle : P.asIdeal.map σ ≤ P.asIdeal`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `a ha`. Assume the negation of the conclusion as `hb`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hP ⟨a, ha, σ a, hσ a, hb⟩`. Establish `hint : ∀ a, P.intValuation (σ a) = P.intValuation a` using `fun a => by`. Apply `le_antisymm (intValuation_map_le_of_map_le σ P hle a)` to reduce the goal to its premises. Use `intValuation_map_le_of_map_le σ P hle (σ a)` as an intermediate fact. Rewrite `this` using `[hσσ]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hval : ∀ a : 𝓞 E, P.valuation E (c (a : E)) = P.valuation E (a : E)` using `fun a => by`. Rewrite using `[← hσ]`. Express the relevant statement in the definitionally equal form `P.valuation E (algebraMap (𝓞 E) E (σ a)) = P.valuation E (algebraMap (𝓞 E) E a)`. Rewrite using `[P.valuation_of_algebraMap, P.valuation_of_algebraMap, hint]`. Establish `hcu : P.valuation E (c u) = P.valuation E u`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a, b, -, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 E) u`. Rewrite using `[map_div₀, map_div₀, map_div₀]`. Conclude with `congrArg₂ (· / ·) (hval a) (hval b)`. Establish `h2 : P.valuation E u ^ 2 = 1`. Use `congrArg (P.valuation E) hu` as an intermediate fact.
-
-Rewrite `this` using `[map_mul, hcu, map_one, ← sq]`. Then use the resulting hypothesis. Conclude with `(pow_eq_one_iff_of_nonneg zero_le' two_ne_zero).1 h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem valuation_eq_one_of_norm_one_of_not_moved :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (c : E ≃ₐ[F] E),

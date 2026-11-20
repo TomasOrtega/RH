@@ -8,7 +8,7 @@ open scoped Classical
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Unfold `toG`. Rewrite using `[dif_pos isUnit_one]`. Conclude with `Units.ext (IsUnit.unit_spec _)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem toG_one' {F : Type} [Field F] (m : ℕ) :
     toG (1 : Matrix (Fin m) (Fin m) F) = 1 := by
@@ -17,7 +17,7 @@ private theorem toG_one' {F : Type} [Field F] (m : ℕ) :
   exact Units.ext (IsUnit.unit_spec _)
 
 /- English proof (translation)
-Unfold `ent`. Rewrite using `[dif_pos ⟨hi, hj⟩, Matrix.one_apply]`. Simplify using `only [Fin.mk.injEq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem ent_one' {F : Type} [Field F] {n : ℕ} (i j : ℕ) (hi : i < n) (hj : j < n) :
     ent (1 : Matrix (Fin n) (Fin n) F) i j = if i = j then 1 else 0 := by
@@ -26,9 +26,9 @@ private theorem ent_one' {F : Type} [Field F] {n : ℕ} (i j : ℕ) (hi : i < n)
   simp only [Fin.mk.injEq]
 
 /- English proof (translation)
-Establish `h : tl a ((1 : GL (Fin (a + b)) F) : Matrix (Fin (a + b)) (Fin (a + b)) F) = 1`. Use extensionality with `i j`. Rewrite using `[Matrix.one_apply]`. Use `show ent _ (i : ℕ) (j : ℕ) = _`. Rewrite using `[Units.val_one, ent_one' _ _ (lt_of_lt_of_le i.isLt (Nat.le_add_right a b)) (lt_of_lt_of_le j.isLt (Nat.le_add_right a b))]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.val_inj]`. Unfold `tlG`. Rewrite using `[h, toG_one']`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem tlG_one' {F : Type} [Field F] (a b : ℕ) :
     tlG a (1 : GL (Fin (a + b)) F) = 1 := by
@@ -43,9 +43,9 @@ private theorem tlG_one' {F : Type} [Field F] (a b : ℕ) :
   rw [h, toG_one']
 
 /- English proof (translation)
-Establish `h : br a b ((1 : GL (Fin (a + b)) F) : Matrix (Fin (a + b)) (Fin (a + b)) F) = 1`. Use extensionality with `i j`. Rewrite using `[Matrix.one_apply]`. Use `show ent _ (a + (i : ℕ)) (a + (j : ℕ)) = _`. Rewrite using `[Units.val_one, ent_one' _ _ (Nat.add_lt_add_left i.isLt a) (Nat.add_lt_add_left j.isLt a)]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Nat.add_left_cancel_iff, Fin.val_inj]`. Unfold `brG`. Rewrite using `[h, toG_one']`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem brG_one' {F : Type} [Field F] (a b : ℕ) :
     brG a b (1 : GL (Fin (a + b)) F) = 1 := by
@@ -60,7 +60,7 @@ private theorem brG_one' {F : Type} [Field F] (a b : ℕ) :
   rw [h, toG_one']
 
 /- English proof (translation)
-Introduce `i j hj hi`. Rewrite using `[Units.val_one, Matrix.one_apply_ne]`. Introduce `h`. Rewrite `hi` using `[h]`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 private theorem inPar_one' {F : Type} [Field F] (a n : ℕ) : InPar a (1 : GL (Fin n) F) := by
   intro i j hj hi
@@ -70,7 +70,7 @@ private theorem inPar_one' {F : Type} [Field F] (a n : ℕ) : InPar a (1 : GL (F
   omega
 
 /- English proof (translation)
-Use extensionality with `i j`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 private theorem gal_id' {F : Type} [Field F] (n : ℕ) (y : GL (Fin n) F) :
     gal (RingHom.id F) n y = y := by
@@ -78,9 +78,9 @@ private theorem gal_id' {F : Type} [Field F] (n : ℕ) (y : GL (Fin n) F) :
   rfl
 
 /- English proof (translation)
-Introduce `F _ _ a b n hn α β hα hβ`. Substitute `hn` using the available equality. Unfold `hc hcTw`. Simplify using `only [gal_id', mul_one, inv_mul_cancel, inPar_one', ite_true, tlG_one', brG_one']`. Use `haveI : Nonempty { p : GL (Fin (a + b)) F // InPar a p } := ⟨⟨1, inPar_one' a _⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : Fintype (GL (Fin (a + b)) F) := Fintype.ofFinite _`. Rewrite using `[finsum_eq_sum_of_fintype, Finset.sum_const, nsmul_eq_mul]`. Conclude with `mul_ne_zero (inv_ne_zero (Nat.cast_ne_zero.mpr Nat.card_pos.ne')) (mul_ne_zero (Nat.cast_ne_zero.mpr Finset.univ_nonempty.card_pos.ne') (mul_ne_zero hα hβ))`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.InertialTypesAlt.hcOne :
     HcOne := by

@@ -6,15 +6,15 @@ open NumberField
 namespace PI.Bridge
 
 /- English proof (translation)
-Establish `h` using `stdCharTR`. Unfold `PI.StdCharTR.Target at h`. Unfold `HeckeCharacterZeroLocus.StdAdditiveCharExists`. Introduce `F _ _ hF`. Take `⟨ψ, hψ, hinf⟩` from `h F hF`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Unfold `Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsCharAF at hψ`. Take `⟨hc, hn, hk, x₀, hx₀⟩` from `hψ`. Use `⟨ψ.compAddMonoidHom (-(AddMonoidHom.id _)), ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Continuous (fun x => ψ (-x))`. Conclude with `hc.comp continuous_neg`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Express the relevant statement in the definitionally equal form `‖ψ (-x)‖ = 1`. Conclude with `hn _`. Introduce `a`. Express the relevant statement in the definitionally equal form `ψ (-(algebraMap F _ a)) = 1`.
+Express the relevant assertion in an equivalent form by its definition. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← map_neg]`. Conclude with `hk (-a)`. Use `⟨-x₀, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ψ (- -x₀) ≠ 1`. Rewrite using `[neg_neg]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx₀`. Introduce `x`. Express the relevant statement in the definitionally equal form `ψ (-_) = _`. Rewrite using `[AddChar.map_neg_eq_inv, Complex.exp_neg, ← hinf x]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem bridge_stdAddChar : HeckeCharacterZeroLocus.StdAdditiveCharExists := by
   have h := stdCharTR

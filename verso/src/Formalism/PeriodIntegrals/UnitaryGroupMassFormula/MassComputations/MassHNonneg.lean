@@ -13,22 +13,22 @@ open scoped TensorProduct
 namespace MassDataMassesW
 
 /- English proof (translation)
-The claim follows from `finsum_nonneg fun _ => inv_nonneg.2 (Nat.cast_nonneg _)`.
+A detailed English derivation is pending.
 -/
 theorem massH_nonneg {D : D7} (X : HidaSetting D) (u : D.what₂.Word) :
     0 ≤ massH X.B.I.cm.sig X.B.I.J (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E)) (frameOf X u) :=
   finsum_nonneg fun _ => inv_nonneg.2 (Nat.cast_nonneg _)
 
 /- English proof (translation)
-Introduce `D X hb u hT`. Establish `: FiniteDimensional X.B.I.F X.B.I.E` using `Module.finite_of_finrank_pos (by rw [X.B.I.cm.deg2]; norm_num)`. Establish `hN` using `X.measW_norm u`. Establish `hcs` using `hH X u`. Establish `hfin : MassFinite (G` using `↥(Hsub (Af X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u))) (GamH X u) (KH X u) := ⟨hC X u, stabFinite_of hH hK X u⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨𝓕, h𝓕⟩` from `fdExistsH_holds X u`. Establish `hU` using `massUnfold_holds X u hN hcs (hK X).1 (hK X).2 hfin 𝓕 h𝓕`. Establish `hcov : covol (X.measW u).μH = ((X.measW u).μH 𝓕).toReal` using `covol_eq_of_fd X.B.I.cm.sig X.B.I.J _ (X.measW u).μH hN.1.toIsMulLeftInvariant 𝓕 h𝓕`. Establish `hV` using `volHTie_holds X hb u hT`. Establish `h1` using `hN.2.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hN.2.2.1`. Establish `ha0 : (X.measW u).μHinf Set.univ ≠ 0` using `(isOpen_univ.measure_pos _ Set.univ_nonempty).ne'`. Establish `haT : (X.measW u).μHinf Set.univ ≠ ⊤` using `(h1.toIsFiniteMeasureOnCompacts.lt_top_of_isCompact (@isCompact_univ _ _ (hH X u))).ne`. Establish `hKo : IsOpen (Subtype.val ⁻¹' (KX X : Set (HA (Af X.B.I.F) X.B.I.cm.sig X.B.I.J)) : Set ↥(Hsub (Af X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u)))` using `(hK X).2.preimage continuous_subtype_val`. Establish `hb0 : (X.measW u).μHf (Subtype.val ⁻¹' (KX X : Set (HA (Af X.B.I.F) X.B.I.cm.sig X.B.I.J))) ≠ 0` using `h2.toIsOpenPosMeasure.open_pos _ hKo ⟨1, (KX X).one_mem⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcl : IsClosed ((Hsub (Af X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u) : Subgroup (HA (Af X.B.I.F) X.B.I.cm.sig X.B.I.J)) : Set (HA (Af X.B.I.F) X.B.I.cm.sig X.B.I.J))` using `isClosed_stabT' X.B.I.cm.sig X.B.I.J (Af X.B.I.F) (tupH (frameOf X u))`. Establish `hbT : (X.measW u).μHf (Subtype.val ⁻¹' (KX X : Set (HA (Af X.B.I.F) X.B.I.cm.sig X.B.I.J))) ≠ ⊤` using `(h2.toIsFiniteMeasureOnCompacts.lt_top_of_isCompact (hcl.isClosedEmbedding_subtypeVal.isCompact_preimage (hK X).1)).ne`. Establish `ha : 0 < ((X.measW u).μHinf Set.univ).toReal` using `ENNReal.toReal_pos ha0 haT`. Establish `hb' : 0 < ((X.measW u).μHf (Subtype.val ⁻¹' (KX X : Set (HA (Af X.B.I.F) X.B.I.cm.sig X.B.I.J)))).toReal` using `ENNReal.toReal_pos hb0 hbT`. Unfold `MassAt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[hcov, hU, hV, ENNReal.toReal_mul, ENNReal.toReal_mul, ENNReal.toReal_ofReal (massH_nonneg X u)]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem massAll_of (hH : HinfCompact) (hK : KCompactOpen) (hC : ClassFinite) : MassAll := by
   intro D X hb u hT

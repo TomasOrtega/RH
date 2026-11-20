@@ -15,7 +15,7 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : G.Inst D L} {Gl : G
   {Lv : Levels (Gl.Fl u w hg)} {I : CmpJIn ex.tw u μ w hg Lv} {H : CmpJHyp ex.cmp I} {X : LabIn I} {t : KerEntTied ex}
 
 /- English proof (translation)
-Establish `h : ∃ y' : Formalism.L2.Herm.unitaryOneFiniteAdeles D.sp.cm, Matrix.GeneralLinearGroup.det y'.1 = Matrix.GeneralLinearGroup.det y.1` using `⟨y, rfl⟩`. Unfold `chiI`. Rewrite using `[dif_pos h]`. Establish `e : h.choose = y` using `Subtype.ext (GlobalTheory.TwV.MuLawPf.generalLinearGroupOne_eq_of_det_eq h.choose_spec)`. Rewrite using `[e]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem chiI_det (J : Joint t H X) (y : Formalism.L2.Herm.unitaryOneFiniteAdeles D.sp.cm) :
     chiI J (Matrix.GeneralLinearGroup.det y.1) = ((D.chiD (J.dtU y) : ℂˣ) : ℂ) := by
@@ -28,13 +28,13 @@ theorem chiI_det (J : Joint t H X) (y : Formalism.L2.Herm.unitaryOneFiniteAdeles
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Establish `hu` using `(Submonoid.mem_units_iff _ _).1 hy`. Introduce `v`. Use `show v ∈ latS (Formalism.L2.Herm.Af D.host.F) (Formalism.L2.Herm.intAf D.host.F D.host.E) (Formalism.L2.Col.stdLat D.host.E 1) ↔ _ ∈ latS (Formalism.L2.Herm.Af D.host.F) (Formalism.L2.Herm.intAf D.host.F D.host.E) (Formalism.L2.Col.stdLat D.host.E 1)`. Rewrite using `[Formalism.L2.Col.mem_latS_std, Formalism.L2.Col.mem_latS_std]`. Establish `e1 : Units.val ((y.1)⁻¹) 0 0 = Units.val ((Matrix.GeneralLinearGroup.det y.1)⁻¹)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_inv, Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_fin_one]`. Establish `e2 : ∀ i : Fin 1, (Matrix.mulVec (Units.val ((y.1)⁻¹)) v) i = Units.val ((Matrix.GeneralLinearGroup.det y.1)⁻¹) * v 0`. Introduce `i`. Use `fin_cases i`. Simplify using `only [Matrix.mulVec, dotProduct, Fin.sum_univ_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← e1]`. Both sides reduce to the same expression. Simplify using `only [e2]`. Prove the components needed by the constructor for the conclusion. Introduce `h i`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `mul_mem hu.2 (h 0)`. Introduce `h i fin_cases i`. Use `mul_mem hu.1 (h 0)` as an intermediate fact. Rewrite `this` using `[← mul_assoc, Units.mul_inv, one_mul]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem carries_std_of_int (y : Formalism.L2.Herm.unitaryOneFiniteAdeles D.sp.cm) (hy : Matrix.GeneralLinearGroup.det y.1 ∈ intU D.host.F D.host.E) :
     Formalism.L2.Herm.Carries y.1 (Formalism.MainNotions.StandardLatticesGL3.stdL D 1) (Formalism.MainNotions.StandardLatticesGL3.stdL D 1) := by
@@ -62,7 +62,7 @@ theorem carries_std_of_int (y : Formalism.L2.Herm.unitaryOneFiniteAdeles D.sp.cm
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Establish `h` using `J.rel 1 ⟨_, Formalism.MainNotions.GlobalTheoryTheory.Inhab.stdL_isSD D 1⟩ ⟨_, Formalism.MainNotions.GlobalTheoryTheory.Inhab.stdL_isSD D 1⟩ y.1 y.2 (carries_std_of_int y hy) y rfl`. Conclude with `(QuotientGroup.eq_one_iff _).1 (h.symm.trans (D.relDet_self _ _))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dtU_mem_UO (J : Joint t H X) (y : Formalism.L2.Herm.unitaryOneFiniteAdeles D.sp.cm)
     (hy : Matrix.GeneralLinearGroup.det y.1 ∈ intU D.host.F D.host.E) : J.dtU y ∈ D.UO := by
@@ -78,11 +78,11 @@ open GlobalTheory.TwV.Xc.ChiHom in
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S _ _`. Use `⟨?_, ?_, fun y => chiI_det J y, ?_⟩` and prove the remaining obligations. Introduce `x hx y hy`. Take `⟨x', rfl⟩` from `GlobalTheory.TwV.MuLawPf.exists_unitaryOne_det_eq_normOneIdele hx`. Take `⟨y', rfl⟩` from `GlobalTheory.TwV.MuLawPf.exists_unitaryOne_det_eq_normOneIdele hy`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e : Matrix.GeneralLinearGroup.det x'.1 * Matrix.GeneralLinearGroup.det y'.1 = Matrix.GeneralLinearGroup.det (x' * y').1`. Rewrite using `[Subgroup.coe_mul, map_mul]`. Rewrite using `[e, chiI_det, chiI_det, chiI_det, map_mul, map_mul, Units.val_mul]`. Introduce `x hx hint`. Take `⟨y, rfl⟩` from `GlobalTheory.TwV.MuLawPf.exists_unitaryOne_det_eq_normOneIdele hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[chiI_det, D.chiD_UO _ (dtU_mem_UO J y hint), Units.val_one]`. Introduce `x hx`. Take `⟨y, rfl⟩` from `GlobalTheory.TwV.MuLawPf.exists_unitaryOne_det_eq_normOneIdele hx`. Use `⟨t.idl (QuotientGroup.mk (J.dtU y)), (t.idl_ok.2.1 _).2 ⟨_, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[chiI_det, t.χ_rec, TaylorLogMetric.chiRec_idl D t.idl t.idl_ok.1]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/

@@ -7,7 +7,7 @@ open GlobalTheory.QFam
 namespace GlobalTheory.QFam
 
 /- English proof (translation)
-Simplify using `only [MvPolynomial.eval_eq']`. Rewrite using `[Finset.sum_comm, Finset.sum_comm (s := Finset.univ)]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.mul_sum, ← Finset.mul_sum, h d]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_eval_eq_of_sum_monomial_eq {ι S : Type} [Fintype ι] [Fintype S] (x y : ι → S → ℂ)
     (h : ∀ μ : S → ℕ, ∑ i, ∏ s, x i s ^ μ s = ∑ i, ∏ s, y i s ^ μ s) (Q : MvPolynomial S ℂ) :
@@ -18,13 +18,13 @@ theorem sum_eval_eq_of_sum_monomial_eq {ι S : Type} [Fintype ι] [Fintype S] (x
   rw [← Finset.mul_sum, ← Finset.mul_sum, h d]
 
 /- English proof (translation)
-Introduce `ι S _ _ x y h`. Establish `hcard : ∀ p : S → ℂ, Fintype.card {i // x i = p} = Fintype.card {i // y i = p}`. Introduce `p`. Take `⟨Q, hQ1, hQ0⟩` from `exists_mvPolynomial_pick_point S (Finset.univ.image x ∪ Finset.univ.image y) p`. Establish `key : ∀ z : ι → S → ℂ, (∀ i, z i ∈ Finset.univ.image x ∪ Finset.univ.image y) → ∑ i, MvPolynomial.eval (z i) Q = (Fintype.card {i // z i = p} : ℂ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `z hz`. Establish `: ∀ i, MvPolynomial.eval (z i) Q = if z i = p then 1 else 0`. Introduce `i`. Use `split_ifs with hi`. Rewrite using `[hi, hQ1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `hQ0 _ (hz i) hi`. Simplify using `only [this]`. Rewrite using `[Finset.sum_boole, Fintype.card_subtype]`. Establish `h1` using `key x (fun i => by simp)`. Establish `h2` using `key y (fun i => by simp)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `sum_eval_eq_of_sum_monomial_eq x y h Q`. Rewrite `h3` using `[h1, h2]`. Conclude with `h3` after adjusting the coercions. Use `⟨Equiv.ofFiberEquiv (f := x) (g := y) (fun p => Fintype.equivOfCardEq (hcard p)), fun i => ?_⟩` and prove the remaining obligations. Conclude with `(Equiv.ofFiberEquiv_map _ i).symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_perm_of_sum_monomial_eq :
     ∀ (ι S : Type) [Fintype ι] [Fintype S] (x y : ι → S → ℂ),

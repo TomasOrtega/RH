@@ -16,15 +16,15 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 namespace GlobalTheory.ChF
 
 /- English proof (translation)
-Set `χ : (σ → Fin N) → (Multiplicative (σ → ℕ) →* O)` to `fun a => { toFun := fun b => ∏ i, (ζ ^ (Multiplicative.toAdd b) i) ^ (a i : ℕ) map_one' := by simp map_mul' := fun b b' => by`. Simplify using `[pow_add, mul_pow, Finset.prod_mul_distrib] }`. Establish `hinj : Function.Injective χ`. Introduce `a a' haa`. Use function extensionality and compare the values at `j`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h1` using `DFunLike.congr_fun haa (Multiplicative.ofAdd (Pi.single j 1))`. Establish `key : ∀ e : σ → Fin N, χ e (Multiplicative.ofAdd (Pi.single j 1)) = ζ ^ (e j : ℕ)`. Introduce `e`. Use `show ∏ i, (ζ ^ (Pi.single j 1 : σ → ℕ) i) ^ (e i : ℕ) = _`. Rewrite using `[Finset.prod_eq_single j]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `i _ hij`. Simplify using `[Pi.single_eq_of_ne hij]`. Simplify using the standard rewrite rules. Rewrite `h1` using `[key, key]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Fin.ext (hζ.pow_inj (a j).2 (a' j).2 h1)`. Establish `hli` using `(linearIndependent_monoidHom (Multiplicative (σ → ℕ)) O).comp χ hinj`. Rewrite `hli` using `[Fintype.linearIndependent_iff]`. Apply `hli c` to reduce the goal to its premises. Use function extensionality and compare the values at `b`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `h (Multiplicative.toAdd b)` as an intermediate fact. Simplify `this` using `[Finset.sum_apply, χ]`.
+A detailed English derivation is pending.
 -/
 private theorem coeff_eq_zero_of_roots {O : Type} [CommRing O] [IsDomain O] {σ : Type} [Fintype σ]
     [DecidableEq σ] {N : ℕ} {ζ : O} (hζ : IsPrimitiveRoot ζ N) (c : (σ → Fin N) → O)
@@ -56,19 +56,17 @@ private theorem coeff_eq_zero_of_roots {O : Type} [CommRing O] [IsDomain O] {σ 
   simpa [Finset.sum_apply, χ] using this
 
 /- English proof (translation)
-Use `set S := Submodule.span O (Set.range fun a : σ → Fin N => ∏ i, (1 + ψ (MvPowerSeries.X i)) ^ (a i : ℕ)) with hS`. Establish `hmon : ∀ e : σ → ℕ, ∏ i, (1 + ψ (MvPowerSeries.X i)) ^ (e i) ∈ S`. Introduce `e`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨fun i => ⟨e i % N, Nat.mod_lt _ hN⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `(pow_eq_pow_mod (e i) (hy i)).symm`. Establish `hmul : ∀ j, ∀ q ∈ S, q * (1 + ψ (MvPowerSeries.X j)) ∈ S`. Introduce `j q hq`. Proceed by induction on `hq using Submodule.span_induction with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `mem x hx`. Take `⟨a, rfl⟩` from `hx`. Use `hmon (fun i => (a i : ℕ) + (Pi.single j 1 : σ → ℕ) i)` as an intermediate fact. Simplify using `only [pow_add, Finset.prod_mul_distrib] at this`. Rewrite `this` using `[Finset.prod_eq_single j (f := fun i => (1 + ψ (MvPowerSeries.X i)) ^ (Pi.single j 1 : σ → ℕ) i) (fun i _ hij => by simp [Pi.single_eq_of_ne hij]) (by simp), Pi.single_eq_same, pow_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [add_mul]`. Conclude with `S.add_mem hx hy`. Consider the case `smul a x _ hx => rw [smul_mul_assoc]`. Conclude with `S.smul_mem a hx`.
+Treat this case separately. Proceed by induction. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a`. Establish `h1 : (1 : Q) ∈ S` using `by simpa using hmon 0`. Establish `: ψ ((MvPolynomial.C a : MvPolynomial σ O) : MvPowerSeries σ O) = a • (1 : Q)`. Rewrite using `[MvPolynomial.coe_C, ← Algebra.algebraMap_eq_smul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ψ.commutes a`. Rewrite using `[this]`. Conclude with `S.smul_mem a h1`. Consider the case `add f g hf hg => rw [MvPolynomial.coe_add, map_add]`. Conclude with `S.add_mem hf hg`.
-
-Consider the case `mul_X f j hf`. Rewrite using `[MvPolynomial.coe_mul, MvPolynomial.coe_X, map_mul]`. Use `S.sub_mem (hmul j _ hf) hf` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem map_coe_mem_span {O Q : Type} [CommRing O] [CommRing Q] [Algebra O Q] {σ : Type}
     [Fintype σ] [DecidableEq σ] {N : ℕ} (hN : 0 < N) (ψ : MvPowerSeries σ O →ₐ[O] Q)
@@ -112,7 +110,7 @@ private theorem map_coe_mem_span {O Q : Type} [CommRing O] [CommRing Q] [Algebra
     ring
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `exists_add_pow_prime_pow_eq hp (1 : A) x k`. Use `⟨-(x * s), ?_⟩` and prove the remaining obligations. Rewrite using `[hs]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem exists_pow_eq {A : Type} [CommRing A] {p : ℕ} (hp : p.Prime) (k : ℕ) (x : A) :
     ∃ s : A, x ^ p ^ k = ((1 + x) ^ p ^ k - 1) + (p : A) * s := by
@@ -122,9 +120,9 @@ private theorem exists_pow_eq {A : Type} [CommRing A] {p : ℕ} (hp : p.Prime) (
   ring
 
 /- English proof (translation)
-Use `haveI : NeZero N := ⟨hN.ne'⟩`. Take `⟨z, hz⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot C N`. Establish `hvz : v z ≤ 1`. Establish `: v z ^ N = 1` using `by rw [← map_pow, hz.pow_eq_one, map_one]`. Conclude with `((pow_eq_one_iff_of_nonneg zero_le hN.ne').1 this).le`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨ζ, rfl⟩` from `hv.exists_of_le_one hvz`. Conclude with `⟨ζ, hz.of_map_of_injective hv.hom_inj⟩`.
+A detailed English derivation is pending.
 -/
 private theorem exists_primitiveRoot_integers {C : Type} [Field C] [IsAlgClosed C] [CharZero C]
     {v : Valuation C NNReal} {O : Type} [CommRing O] [Algebra O C] (hv : v.Integers O) {N : ℕ}
@@ -138,31 +136,27 @@ private theorem exists_primitiveRoot_integers {C : Type} [Field C] [IsAlgClosed 
   exact ⟨ζ, hz.of_map_of_injective hv.hom_inj⟩
 
 /- English proof (translation)
-Introduce `p hp C _ _ _ v O _ _ hv _ hc r k`. Use `haveI : IsDomain O := hv.hom_inj.isDomain _`. Establish `hN : 0 < p ^ k` using `pow_pos hp.out.pos k`. Take `⟨ζ, hζ⟩` from `exists_primitiveRoot_integers hv hN`. Establish `hmul` using `(gmLaw_chars_mul O r).2.2 (p ^ k)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set I : Ideal (PS O 1 r) := Ideal.span (Set.range (mulF (gmF O r) (p ^ k))) with hI`. Establish `hrel : ∀ i : Fin 1 × Fin r, (1 + MvPowerSeries.X i : PS O 1 r) ^ p ^ k - 1 ∈ I`. Introduce and unpack `⟨i0, i⟩`. Take `rfl : i0 = 0` from `Subsingleton.elim _ _`. Conclude with `Ideal.subset_span ⟨i, hmul i⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Choose the witnesses or unpack the hypotheses as in `⟨M, hM⟩ : ∃ M : ℕ, Ideal.span (Set.range (MvPowerSeries.X : Fin 1 × Fin r → PS O 1 r)) ^ M ≤ I ⊔ Ideal.map (MvPowerSeries.C : O →+* PS O 1 r) (Ideal.span {(p : O)}) := by`. Apply `Ideal.exists_pow_le_of_le_radical_of_fg _ (Submodule.fg_span (Set.finite_range _))` to reduce the goal to its premises. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Take `⟨s, hs⟩` from `exists_pow_eq hp.out k (MvPowerSeries.X i : PS O 1 r)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨p ^ k, ?_⟩` and prove the remaining obligations. Rewrite using `[hs]`. Use `Ideal.add_mem _ (Ideal.mem_sup_left (hrel i)) (Ideal.mem_sup_right (Ideal.mul_mem_right _ _ ?_))` and prove the remaining obligations. Rewrite using `[← map_natCast (MvPowerSeries.C : O →+* PS O 1 r) p]`. Conclude with `Ideal.mem_map_of_mem _ (Ideal.mem_span_singleton_self _)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `π : PS O 1 r →ₐ[O] (PS O 1 r ⧸ I)` to `Ideal.Quotient.mkₐ O I`. Set `m : (Fin 1 × Fin r → Fin (p ^ k)) → (PS O 1 r ⧸ I)` to `fun a => ∏ i, (1 + π (MvPowerSeries.X i)) ^ (a i : ℕ)`. Establish `hspan : ∀ q : PS O 1 r ⧸ I, q ∈ Submodule.span O (Set.range m)`. Introduce `q`. Take `⟨g, rfl⟩` from `Ideal.Quotient.mk_surjective q`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨P, -, hP⟩` from `GlobalTheory.CompleteBaseChange.exists_polynomial_totalDegree_le_sub_mem O (Ideal.span {(p : O)}) (Submodule.fg_span (Set.finite_singleton _)) hc (Fin 1 × Fin r) (Fin r) (mulF (gmF O r) (p ^ k)) M hM g`. Rewrite using `[Ideal.Quotient.eq.2 hP]`. Use `map_coe_mem_span hN π (fun i => ?_) P` and prove the remaining obligations. Establish `h0 : π ((1 + MvPowerSeries.X i : PS O 1 r) ^ p ^ k - 1) = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 (hrel i)`. Rewrite `h0` using `[map_sub, map_pow, map_add, map_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `sub_eq_zero.1 h0`. Establish `hpt : ∀ b : Fin 1 × Fin r → ℕ, ∃ φ : (PS O 1 r ⧸ I) →ₐ[O] O, ∀ i, φ (π (MvPowerSeries.X i)) = ζ ^ b i - 1`. Introduce `b`. Establish `hone : ∀ i, (1 + (ζ ^ b i - 1)) ^ p ^ k - 1 = 0`. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[add_sub_cancel, ← pow_mul, mul_comm, pow_mul, hζ.pow_eq_one, one_pow, sub_self]`. Take `⟨ψ, hψ⟩` from `(GlobalTheory.mvPowerSeries_eval_of_pow_mem O (Ideal.span {(p : O)}) (Fin 1 × Fin r) (fun i => ζ ^ b i - 1) (fun i => by`. Take `⟨s, hs⟩` from `exists_pow_eq hp.out k (ζ ^ b i - 1)`. Use `⟨p ^ k, ?_⟩` and prove the remaining obligations. Rewrite using `[hs, hone, zero_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _))).1 hc O`. Establish `hker : I ≤ RingHom.ker ψ`. Rewrite using `[hI, Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Use `show ψ _ = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hmul, map_sub, map_pow, map_add, map_one, hψ]`. Conclude with `hone _`. Conclude with `⟨Ideal.Quotient.liftₐ I ψ (fun a ha => hker ha), fun i => hψ i⟩`. Establish `hsep : ∀ c : (Fin 1 × Fin r → Fin (p ^ k)) → O, (∀ φ : (PS O 1 r ⧸ I) →ₐ[O] O, φ (∑ a, c a • m a) = 0) → ∀ a, c a = 0`. Introduce `c hcφ`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Use `coeff_eq_zero_of_roots hζ c fun b => ?_` and prove the remaining obligations. Take `⟨φ, hφ⟩` from `hpt b`. Use `hcφ φ` as an intermediate fact. Simplify `this` using `only [map_sum, map_smul, m, map_prod, map_pow, map_add, map_one, hφ, add_sub_cancel, smul_eq_mul]`. Establish `hli : LinearIndependent O m`.
-
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `c h0`. Conclude with `hsep c fun φ => by rw [h0, map_zero]`. Set `B` to `Module.Basis.mk hli (fun q _ => hspan q)`. Use `⟨Module.Free.of_basis B, Module.Finite.of_basis B, fun q hq => ?_⟩` and prove the remaining obligations.
-
-Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun O).1 (hspan q)`. Simplify using `[hsep c hq]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fh_gmF : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C]
     (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C], v.Integers O →

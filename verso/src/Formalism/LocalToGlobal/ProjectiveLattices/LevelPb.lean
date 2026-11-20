@@ -12,19 +12,19 @@ namespace LPb
 variable (D : D7)
 
 /- English proof (translation)
-The claim follows from `IntermediateField.mem_adjoin_simple_self ℚ _`.
+A detailed English derivation is pending.
 -/
 theorem sqrtMinusD_mem_K : D.host.sqrtMinusD ∈ D.host.K :=
   IntermediateField.mem_adjoin_simple_self ℚ _
 
 /- English proof (translation)
-Establish `hb : D.host.sqrtMinusD ^ 2 = -(D.host.d : D.host.E)` using `D.host.sqrtMinusD_sq`. Establish `hd : (0 : ℚ) < D.host.d` using `by exact_mod_cast D.host.hyp.2.1.pos`. Establish `hmon : (X ^ 2 + C (D.host.d : ℚ)).Monic` using `by monicity!`. Establish `hroot : aeval D.host.sqrtMinusD (X ^ 2 + C (D.host.d : ℚ)) = 0` using `by simp [hb]`. Establish `hirr : Irreducible (X ^ 2 + C (D.host.d : ℚ))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Polynomial.irreducible_of_degree_le_three_of_not_isRoot` to reduce the goal to its premises. Rewrite using `[natDegree_X_pow_add_C]`. Simplify using the standard rewrite rules. Introduce `x hx`. Simplify using `only [IsRoot, eval_add, eval_pow, eval_X, eval_C] at hx`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use polynomial arithmetic with `[sq_nonneg x]`. Establish `hint : IsIntegral ℚ D.host.sqrtMinusD` using `⟨_, hmon, by simpa [aeval_def] using hroot⟩`. Establish `hmin : minpoly ℚ D.host.sqrtMinusD = X ^ 2 + C (D.host.d : ℚ)` using `(minpoly.eq_of_irreducible_of_monic hirr hroot hmon).symm`. Establish `h` using `IntermediateField.adjoin.finrank hint`. Rewrite `h` using `[hmin, natDegree_X_pow_add_C]`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem finrank_K : Module.finrank ℚ D.host.K = 2 := by
   have hb : D.host.sqrtMinusD ^ 2 = -(D.host.d : D.host.E) := D.host.sqrtMinusD_sq
@@ -45,7 +45,7 @@ theorem finrank_K : Module.finrank ℚ D.host.K = 2 := by
   exact h
 
 /- English proof (translation)
-Establish `h2 : (2 : D.host.E) ∈ D.host.K`. Use `D.host.K.algebraMap_mem (2 : ℚ)` as an intermediate fact. Simplify using `using this`. Conclude with `div_mem (add_mem (one_mem _) (sqrtMinusD_mem_K D)) h2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem half_one_add_sqrt_mem_K : ((1 + D.host.sqrtMinusD) / 2 : D.host.E) ∈ D.host.K := by
   have h2 : (2 : D.host.E) ∈ D.host.K := by
@@ -61,7 +61,7 @@ def phiK : 𝓞 D.host.K →+* D.host.E :=
   (D.host.K.val.toRingHom).comp (algebraMap (𝓞 D.host.K) D.host.K)
 
 /- English proof (translation)
-Introduce `a b h`. Apply `IsFractionRing.injective (𝓞 D.host.K) D.host.K` to reduce the goal to its premises. Conclude with `(RingHom.injective (D.host.K.val.toRingHom)) h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem phiK_inj : Function.Injective (phiK D) := by
   intro a b h
@@ -69,7 +69,7 @@ theorem phiK_inj : Function.Injective (phiK D) := by
   exact (RingHom.injective (D.host.K.val.toRingHom)) h
 
 /- English proof (translation)
-Apply `phiK_inj D` to reduce the goal to its premises. Rewrite using `[map_pow, map_sub, map_natCast]`. Use `show ((1 + D.host.sqrtMinusD) / 2) ^ 2 = (1 + D.host.sqrtMinusD) / 2 - (mE D : D.host.E)`. Establish `e : ((D.host.d : ℕ) : D.host.E) + 1 = 4 * (mE D : D.host.E)` using `by exact_mod_cast (mE_spec D).symm`. Take the linear combination `(1 / 4 : D.host.E) * D.host.sqrtMinusD_sq - (1 / 4 : D.host.E) * e`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem w0K_sq : w0K D ^ 2 = w0K D - (mE D : 𝓞 D.host.K) := by
   apply phiK_inj D
@@ -79,7 +79,7 @@ theorem w0K_sq : w0K D ^ 2 = w0K D - (mE D : 𝓞 D.host.K) := by
   linear_combination (1 / 4 : D.host.E) * D.host.sqrtMinusD_sq - (1 / 4 : D.host.E) * e
 
 /- English proof (translation)
-Apply `RingOfIntegers.ext` to reduce the goal to its premises. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Both sides reduce to the same expression.
 -/
 theorem algebraMap_w0K : algebraMap (𝓞 D.host.K) (𝓞 D.host.E) (w0K D) = w0E D := by
   apply RingOfIntegers.ext
@@ -90,24 +90,22 @@ def JK (p : ℕ) (e : ℤ) : Ideal (𝓞 D.host.K) := Ideal.span {(p : 𝓞 D.ho
 def QE (p : ℕ) (e : ℤ) : Ideal (𝓞 D.host.E) := Ideal.span {(p : 𝓞 D.host.E), w0E D - (e : 𝓞 D.host.E)}
 
 /- English proof (translation)
-Simplify using `only [JK, QE, Ideal.map_span, Set.image_insert_eq, Set.image_singleton, map_natCast, map_sub, map_intCast, algebraMap_w0K]`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_JK (p : ℕ) (e : ℤ) : (JK D p e).map (algebraMap (𝓞 D.host.K) (𝓞 D.host.E)) = QE D p e := by
   simp only [JK, QE, Ideal.map_span, Set.image_insert_eq, Set.image_singleton, map_natCast, map_sub,
     map_intCast, algebraMap_w0K]
 
 /- English proof (translation)
-Unfold `JK`. Rewrite using `[Ideal.span_pair_mul_span_pair]`. Take `⟨t, ht⟩` from `hp`. Take `⟨u, v, huv⟩` from `hc`. Establish `hw` using `w0K_sq D`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Ideal.span_le]`. Introduce `z hz`. Simplify using `only [Set.mem_insert_iff, Set.mem_singleton_iff] at hz`. Rewrite using `[SetLike.mem_coe, Ideal.mem_span_singleton]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Break down `hz with rfl | rfl | rfl | rfl` into its components or cases. Conclude with `dvd_mul_right _ _`. Conclude with `dvd_mul_right _ _`. Conclude with `dvd_mul_left _ _`. Use `⟨-(t : 𝓞 D.host.K), ?_⟩` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `ht' : ((e ^ 2 - e + mE D : ℤ) : 𝓞 D.host.K) = ((p * t : ℤ) : 𝓞 D.host.K)` using `by rw [ht]`. Move the coercions through the operations in `at ht' ⊢`. Take the linear combination `hw - ht'`. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff, SetLike.mem_coe]`. Establish `huv' : ((u * (1 - 2 * e) + v * p : ℤ) : 𝓞 D.host.K) = ((1 : ℤ) : 𝓞 D.host.K)` using `by rw [huv]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Move the coercions through the operations in `at huv'`. Establish `e1 : (p : 𝓞 D.host.K) = (-(u : 𝓞 D.host.K)) * ((p : 𝓞 D.host.K) * (w0K D - ((1 - e : ℤ) : 𝓞 D.host.K))) + (u : 𝓞 D.host.K) * ((w0K D - (e : 𝓞 D.host.K)) * (p : 𝓞 D.host.K)) + (v : 𝓞 D.host.K) * ((p : 𝓞 D.host.K) * (p : 𝓞 D.host.K))`. Use `push_cast`. Take the linear combination `(-(p : 𝓞 D.host.K)) * huv'`. Establish `hm : (-(u : 𝓞 D.host.K)) * ((p : 𝓞 D.host.K) * (w0K D - ((1 - e : ℤ) : 𝓞 D.host.K))) + (u : 𝓞 D.host.K) * ((w0K D - (e : 𝓞 D.host.K)) * (p : 𝓞 D.host.K)) + (v : 𝓞 D.host.K) * ((p : 𝓞 D.host.K) * (p : 𝓞 D.host.K)) ∈ Ideal.span {(p : 𝓞 D.host.K) * (p : 𝓞 D.host.K), (p : 𝓞 D.host.K) …` using `Ideal.add_mem _ (Ideal.add_mem _ (Ideal.mul_mem_left _ _ (Ideal.subset_span (Set.mem_insert_of_mem _ (Set.mem_insert _ _)))) (Ideal.mul_mem_left _ _ (Ideal.subset_span (Set.mem_insert_of_mem _ (Set.mem_insert_of_mem _ (Set.mem_insert _ _)))))) (Ideal.mul_mem_left _ _ (Ideal.subse …`.
-
-Rewrite `hm` using `[← e1]`. Then use the resulting hypothesis.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem JK_mul (p : ℕ) (e : ℤ) (hp : (p : ℤ) ∣ e ^ 2 - e + mE D) (hc : IsCoprime (1 - 2 * e) (p : ℤ)) :
     JK D p e * JK D p (1 - e) = Ideal.span {(p : 𝓞 D.host.K)} := by
@@ -150,14 +148,14 @@ theorem JK_mul (p : ℕ) (e : ℤ) (hp : (p : ℤ) ∣ e ^ 2 - e + mE D) (hc : I
     rwa [← e1] at hm
 
 /- English proof (translation)
-Rewrite using `[← map_JK, ← map_JK, ← Ideal.map_mul, JK_mul D p e hp hc, Ideal.map_span, Set.image_singleton, map_natCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem QE_mul (p : ℕ) (e : ℤ) (hp : (p : ℤ) ∣ e ^ 2 - e + mE D) (hc : IsCoprime (1 - 2 * e) (p : ℤ)) :
     QE D p e * QE D p (1 - e) = Ideal.span {(p : 𝓞 D.host.E)} := by
   rw [← map_JK, ← map_JK, ← Ideal.map_mul, JK_mul D p e hp hc, Ideal.map_span, Set.image_singleton, map_natCast]
 
 /- English proof (translation)
-Rewrite using `[QE, QE, Ideal.map_span, Set.image_pair, map_sub, map_natCast, map_intCast]`. Establish `hb : bH D (w0E D) = 1 - w0E D` using `conj_w0E D`. Rewrite using `[hb]`. Establish `: (1 - w0E D - (e : 𝓞 D.host.E)) = -(w0E D - ((1 - e : ℤ) : 𝓞 D.host.E))` using `by push_cast; ring`. Rewrite using `[this, Ideal.span_insert, Ideal.span_insert, Ideal.span_singleton_neg]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem QE_map_bar (p : ℕ) (e : ℤ) : (QE D p e).map (bH D) = QE D p (1 - e) := by
   rw [QE, QE, Ideal.map_span, Set.image_pair, map_sub, map_natCast, map_intCast]
@@ -167,7 +165,7 @@ theorem QE_map_bar (p : ℕ) (e : ℤ) : (QE D p e).map (bH D) = QE D p (1 - e) 
   rw [this, Ideal.span_insert, Ideal.span_insert, Ideal.span_singleton_neg]
 
 /- English proof (translation)
-Establish `hp : ((p : ℕ) : 𝓞 D.host.K) = algebraMap ℤ (𝓞 D.host.K) (p : ℤ)` using `by simp`. Rewrite using `[Ideal.absNorm_span_singleton, hp, Algebra.norm_algebraMap, NumberField.RingOfIntegers.rank, finrank_K D]`. Simplify using `[Int.natAbs_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem absNorm_span_p (p : ℕ) : Ideal.absNorm (Ideal.span {(p : 𝓞 D.host.K)}) = p ^ 2 := by
   have hp : ((p : ℕ) : 𝓞 D.host.K) = algebraMap ℤ (𝓞 D.host.K) (p : ℤ) := by simp
@@ -175,9 +173,9 @@ theorem absNorm_span_p (p : ℕ) : Ideal.absNorm (Ideal.span {(p : 𝓞 D.host.K
   simp [Int.natAbs_pow]
 
 /- English proof (translation)
-Rewrite using `[Ne, Ideal.span_singleton_eq_top]`. Introduce `hu`. Establish `h2 : IsUnit (Algebra.norm ℤ (algebraMap ℤ (𝓞 D.host.E) (p : ℤ)))`. Simplify using `using hu.map (Algebra.norm ℤ)`. Rewrite `h2` using `[Algebra.norm_algebraMap, isUnit_pow_iff Module.finrank_pos.ne']`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hp.ne_one (by simpa using Int.isUnit_iff_natAbs_eq.1 h2)`.
+A detailed English derivation is pending.
 -/
 theorem span_p_ne_top {p : ℕ} (hp : p.Prime) : Ideal.span {(p : 𝓞 D.host.E)} ≠ ⊤ := by
   rw [Ne, Ideal.span_singleton_eq_top]
@@ -188,31 +186,27 @@ theorem span_p_ne_top {p : ℕ} (hp : p.Prime) : Ideal.span {(p : 𝓞 D.host.E)
   exact hp.ne_one (by simpa using Int.isUnit_iff_natAbs_eq.1 h2)
 
 /- English proof (translation)
-Establish `key : ∀ e : ℤ, (p : ℤ) ∣ e ^ 2 - e + mE D → IsCoprime (1 - 2 * e) (p : ℤ) → w0K D - (e : 𝓞 D.host.K) ∈ pb.asIdeal → pb.asIdeal = JK D p e`. Introduce `e he1 he2 hmem`. Establish `hJ : JK D p e ≤ pb.asIdeal`. Rewrite using `[JK, Ideal.span_le]`. Introduce `z hz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `hz with rfl | hz` into its components or cases. Conclude with `hpb`. Rewrite using `[Set.mem_singleton_iff.1 hz]`. Conclude with `hmem`. Establish `hN` using `congrArg Ideal.absNorm (JK_mul D p e he1 he2)`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hN` using `[map_mul, absNorm_span_p]`. Establish `h1 : Ideal.absNorm (JK D p e) ≠ 1`. Rewrite using `[Ne, Ideal.absNorm_eq_one_iff]`. Introduce `htop`. Conclude with `pb.isPrime.ne_top (top_le_iff.1 (htop ▸ hJ))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2 : Ideal.absNorm (JK D p (1 - e)) ≠ 1`. Rewrite using `[Ne, Ideal.absNorm_eq_one_iff]`. Introduce `htop`. Establish `hm` using `map_JK D p (1 - e)`. Rewrite `hm` using `[htop, Ideal.map_top]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hb` using `QE_map_bar D p (1 - e)`. Rewrite `hb` using `[← hm, Ideal.map_top, sub_sub_cancel]`. Establish `hmulE` using `QE_mul D p e he1 he2`. Rewrite `hmulE` using `[← hb, ← hm, Ideal.top_mul]`. Conclude with `span_p_ne_top D hp.1 hmulE.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Both sides reduce to the same expression.
 
-Take `⟨i, hi, hieq⟩` from `(Nat.dvd_prime_pow hp.1).1 (Dvd.intro _ hN)`. Establish `hi1 : i = 1` using `by interval_cases i`. Rewrite `hieq` using `[pow_zero]`. Conclude with `absurd hieq h1`. Both sides reduce to the same expression.
+It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-It suffices to derive a contradiction. Rewrite `hN` using `[hieq]`. Conclude with `h2 (Nat.eq_of_mul_eq_mul_left (by have := hp.1.pos; positivity) (hN.trans (mul_one _).symm))`. Rewrite `hieq` using `[hi1, pow_one]`. Establish `hprime : (JK D p e).IsPrime` using `Ideal.isPrime_of_irreducible_absNorm (by rw [hieq]; exact hp.1.prime.irreducible)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : JK D p e ≠ ⊥`. Introduce `h`. Rewrite `hieq` using `[h, Ideal.absNorm_bot]`. Conclude with `hp.1.ne_zero hieq.symm`. Conclude with `((hprime.isMaximal hne).eq_of_le pb.isPrime.ne_top hJ).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set c := cRoot D p`. Establish `hc1` using `cRoot_spec D hp`. Establish `hc2` using `cRoot_coprime D hp`. Establish `hd1 : (p : ℤ) ∣ (1 - c) ^ 2 - (1 - c) + mE D`. Establish `: (1 - c) ^ 2 - (1 - c) + (mE D : ℤ) = c ^ 2 - c + mE D` using `by ring`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `hc1`. Establish `hd2 : IsCoprime (1 - 2 * (1 - c)) (p : ℤ)`. Establish `: 1 - 2 * (1 - c) = -(1 - 2 * c)` using `by ring`. Rewrite using `[this]`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Conclude with `hc2.neg_left`. Take `⟨t, ht⟩` from `hc1`. Establish `hprod : (w0K D - (c : 𝓞 D.host.K)) * (w0K D - ((1 - c : ℤ) : 𝓞 D.host.K)) ∈ pb.asIdeal`. Establish `e1 : (w0K D - (c : 𝓞 D.host.K)) * (w0K D - ((1 - c : ℤ) : 𝓞 D.host.K)) = (p : 𝓞 D.host.K) * (-(t : 𝓞 D.host.K))`. Establish `hw` using `w0K_sq D`.
-
-Establish `ht' : ((c ^ 2 - c + mE D : ℤ) : 𝓞 D.host.K) = ((p * t : ℤ) : 𝓞 D.host.K)` using `by rw [ht]`. Move the coercions through the operations in `at ht' ⊢`. Take the linear combination `hw - ht'`. Rewrite using `[e1]`. Conclude with `Ideal.mul_mem_right _ _ hpb`.
-
-Break down `pb.isPrime.mem_or_mem hprod with h | h` into its components or cases. Conclude with `⟨c, ⟨t, ht⟩, hc2, key c ⟨t, ht⟩ hc2 h⟩`. Conclude with `⟨1 - c, hd1, hd2, key (1 - c) hd1 hd2 h⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem pb_eq_JK {p : ℕ} (hp : SplitOK D p) (pb : HeightOneSpectrum (𝓞 D.host.K))
     (hpb : (p : 𝓞 D.host.K) ∈ pb.asIdeal) :
@@ -281,11 +275,11 @@ theorem pb_eq_JK {p : ℕ} (hp : SplitOK D p) (pb : HeightOneSpectrum (𝓞 D.ho
   · exact ⟨1 - c, hd1, hd2, key (1 - c) hd1 hd2 h⟩
 
 /- English proof (translation)
-Take `⟨u, v, huv⟩` from `hc`. Rewrite using `[Ideal.isCoprime_iff_sup_eq, Ideal.eq_top_iff_one]`. Establish `h1 : ((1 - 2 * e : ℤ) : 𝓞 D.host.E) ∈ QE D p e ⊔ QE D p (1 - e)`. Establish `ha : w0E D - (e : 𝓞 D.host.E) ∈ QE D p e ⊔ QE D p (1 - e)` using `Ideal.mem_sup_left (Ideal.subset_span (by simp))`. Establish `hb : w0E D - ((1 - e : ℤ) : 𝓞 D.host.E) ∈ QE D p e ⊔ QE D p (1 - e)` using `Ideal.mem_sup_right (Ideal.subset_span (by simp))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hab` using `Submodule.sub_mem _ ha hb`. Use `hab using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : ((p : ℤ) : 𝓞 D.host.E) ∈ QE D p e ⊔ QE D p (1 - e)` using `Ideal.mem_sup_left (Ideal.subset_span (by simp))`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hs` using `Submodule.add_mem _ (Ideal.mul_mem_left _ (u : 𝓞 D.host.E) h1) (Ideal.mul_mem_left _ (v : 𝓞 D.host.E) h2)`. Establish `e1 : (u : 𝓞 D.host.E) * ((1 - 2 * e : ℤ) : 𝓞 D.host.E) + (v : 𝓞 D.host.E) * ((p : ℤ) : 𝓞 D.host.E) = 1`. Conclude with `congrArg (Int.cast : ℤ → 𝓞 D.host.E) huv` after adjusting the coercions. Rewrite `hs` using `[e1]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem QE_cop_self (p : ℕ) (e : ℤ) (hc : IsCoprime (1 - 2 * e) (p : ℤ)) :
     IsCoprime (QE D p e) (QE D p (1 - e)) := by
@@ -309,9 +303,7 @@ theorem QE_cop_self (p : ℕ) (e : ℤ) (hc : IsCoprime (1 - 2 * e) (p : ℤ)) :
   rwa [e1] at hs
 
 /- English proof (translation)
-Take `⟨a, b, hab⟩` from `Nat.isCoprime_iff_coprime.2 ((Nat.coprime_primes hp hq).2 hpq)`. Rewrite using `[Ideal.isCoprime_iff_sup_eq, Ideal.eq_top_iff_one]`. Establish `e1 : (a : 𝓞 D.host.E) * (p : 𝓞 D.host.E) + (b : 𝓞 D.host.E) * (q : 𝓞 D.host.E) = 1`. Conclude with `congrArg (Int.cast : ℤ → 𝓞 D.host.E) hab` after adjusting the coercions. Rewrite using `[← e1]`.
-
-Conclude with `Submodule.add_mem_sup (Ideal.mul_mem_left _ _ (Ideal.subset_span (by simp))) (Ideal.mul_mem_left _ _ (Ideal.subset_span (by simp)))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem QE_cop_ne {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hpq : p ≠ q) (e f : ℤ) :
     IsCoprime (QE D p e) (QE D q f) := by
@@ -328,19 +320,15 @@ end LPb
 open LPb in
 
 /- English proof (translation)
-Apply the tactic sequence `have hsp : ∀ k : Fin 2, SplitOK D (D.host.g k) := fun k => splitG D _ (by fin_cases k <;> simp)`. Use `choose e he1 he2 hpb using fun k => pb_eq_JK D (hsp k) (pb k) (hg k)`. Establish `hQ : ∀ k, (pb k).asIdeal.map (algebraMap (𝓞 D.host.K) (𝓞 D.host.E)) = QE D (D.host.g k) (e k)` using `fun k => by rw [hpb k, map_JK]`. Establish `g0` using `(D.host.g_prime 0).two_le`. Establish `g1` using `(D.host.g_prime 1).two_le`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n0` using `g_ne_two D 0`. Establish `n1` using `g_ne_two D 1`. Use `⟨{ M := D.host.g 0 * D.host.g 1 three_le := by` and prove the remaining obligations. Establish `a : 3 ≤ D.host.g 0` using `by omega`. Establish `b : 3 ≤ D.host.g 1` using `by omega`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Use `odd := ((D.host.g_prime 0).odd_of_ne_two n0).mul ((D.host.g_prime 1).odd_of_ne_two n1)`. Use `Mb := QE D (D.host.g 0) (e 0) * QE D (D.host.g 1) (e 1)`. Use `fromK := ?_`. Use `prod := ?_`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `coprime := ?_`. Use `A := 1`. Use `A_pos := Nat.one_pos }, ⟨rfl, rfl⟩, ?_⟩`. Use `fromK_of_gen ⟨{((D.host.g 0 : ℕ) : 𝓞 D.host.E), w0E D - (e 0 : 𝓞 D.host.E)} * {((D.host.g 1 : ℕ) : 𝓞 D.host.E), w0E D - (e 1 : 𝓞 D.host.E)}, by rw [QE, QE, Ideal.span_mul_span'], ?_⟩` and prove the remaining obligations. Introduce `x hx`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨a, ha, b, hb, rfl⟩` from `Set.mem_mul.1 hx`. Establish `hgen : ∀ (p : ℕ) (f : ℤ) (y : 𝓞 D.host.E), y ∈ ({(p : 𝓞 D.host.E), w0E D - (f : 𝓞 D.host.E)} : Set (𝓞 D.host.E)) → y ∈ Algebra.adjoin ℤ {w0E D}`. Introduce `p f y hy`. Break down `hy with rfl | hy` into its components or cases. Conclude with `Subalgebra.natCast_mem _ _`.
-
-Rewrite using `[Set.mem_singleton_iff.1 hy]`. Conclude with `Subalgebra.sub_mem _ (Algebra.subset_adjoin (Set.mem_singleton _)) (Subalgebra.intCast_mem _ _)`. Conclude with `Subalgebra.mul_mem _ (hgen _ _ _ ha) (hgen _ _ _ hb)`. Express the relevant statement in the definitionally equal form `QE D (D.host.g 0) (e 0) * QE D (D.host.g 1) (e 1) * (QE D (D.host.g 0) (e 0) * QE D (D.host.g 1) (e 1)).map (bH D) = Ideal.span {((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.E)}`. Rewrite using `[Ideal.map_mul, QE_map_bar, QE_map_bar, mul_mul_mul_comm, QE_mul D _ _ (he1 0) (he2 0), QE_mul D _ _ (he1 1) (he2 1), Ideal.span_singleton_mul_span_singleton, Nat.cast_mul]`.
-
-Express the relevant statement in the definitionally equal form `QE D (D.host.g 0) (e 0) * QE D (D.host.g 1) (e 1) ⊔ (QE D (D.host.g 0) (e 0) * QE D (D.host.g 1) (e 1)).map (bH D) = ⊤`. Rewrite using `[← Ideal.isCoprime_iff_sup_eq, Ideal.map_mul, QE_map_bar, QE_map_bar]`. Conclude with `IsCoprime.mul_left (IsCoprime.mul_right (QE_cop_self D _ _ (he2 0)) (QE_cop_ne D (D.host.g_prime 0) (D.host.g_prime 1) D.host.g_ne _ _)) (IsCoprime.mul_right (QE_cop_ne D (D.host.g_prime 1) (D.host.g_prime 0) D.host.g_ne.symm _ _) (QE_cop_self D _ _ (he2 1)))`. Use `show _ = ∏ k, _`. Rewrite using `[Fin.prod_univ_two, hQ 0, hQ 1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levelPb_exists (D : D7) (pb : Fin 2 → HeightOneSpectrum (𝓞 D.host.K))
     (hg : ∀ k, ((D.host.g k : ℕ) : 𝓞 D.host.K) ∈ (pb k).asIdeal) :

@@ -61,9 +61,9 @@ end GlobalTheory.PolMatchLin
 namespace GlobalTheory.PolMatchLin
 
 /- English proof (translation)
-Rewrite using `[PiTensorProduct.lift.tprod, extMul_apply]`. Use `congr 1`. Use function extensionality and compare the values at `v`. Distinguish the cases in `hv : (v : ι) ∈ S`. Rewrite using `[dif_pos hv]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_neg hv, hu v v.2 hv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem extMul_tprod {ι : Type} (M : ι → Type) [∀ v, AddCommGroup (M v)] [∀ v, Module ℂ (M v)]
     (S T : Finset ι) (h : S ⊆ T) (z : ∀ v, M v) (u : ∀ v, M v) (hu : ∀ v ∈ T, v ∉ S → u v = z v) :
@@ -78,25 +78,23 @@ theorem extMul_tprod {ι : Type} (M : ι → Type) [∀ v, AddCommGroup (M v)] [
   · rw [dif_neg hv, hu v v.2 hv]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' R Rf hM Φ Φ' Ψ Ψ' c h1 h2`. Take `⟨T₁, hT₁, m, m', f, φ, f', φ', hf, hf', rfl, rfl, e1⟩` from `h1`. Take `⟨T₂, hT₂, k, k', g, ψ, g', ψ', hg, hg', rfl, rfl, e2⟩` from `h2`. Use `set T := T₁ ∪ T₂ with hT`. Establish `h₁ : T₁ ⊆ T` using `Finset.subset_union_left`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₂ : T₂ ⊆ T` using `Finset.subset_union_right`. Use `set z : ∀ v, Rf.Pi v := fun v => Rf.p v (G.M.vac v) with hz`. Establish `trL : ∀ (S : Finset (Pl F)) (hS : S ⊆ T) {n : ℕ} (h : Fin n → SInf F _) (χ : Fin n → ∀ v : Pl F, (_ → Fv F v) → ℂ), (∀ i, ∀ v ∉ S, χ i v = G.M.vac v) → LinearMap.lTensor R.Pi (PiTensorProduct.lift (extMul Rf.Pi S T hS z)) (∑ i, R.p (h i) ⊗ₜ[ℂ] (PiTensorProduct.tprod ℂ fun v : S = …`. Introduce `S hS n h χ hχ`. Rewrite using `[map_sum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.lTensor_tmul, extMul_tprod Rf.Pi S T hS z (fun v => Rf.p v (χ i v))]`. Introduce `v _ hv`. Rewrite using `[hχ i v hv]`. Establish `trR : ∀ (S : Finset (Pl F)) (hS : S ⊆ T), X.T ⊆ S → ∀ {n : ℕ} (h : Fin n → SInf F _) (χ : Fin n → ∀ v : Pl F, (_ → Fv F v) → ℂ), (∀ i, ∀ v ∉ S, χ i v = G.M'.vac v) → LinearMap.lTensor R.Pi (PiTensorProduct.lift (extMul Rf.Pi S T hS z)) (∑ i, R.p' (h i) ⊗ₜ[ℂ] (PiTensorProduct.tpro …`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `S hS hXS n h χ hχ`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.lTensor_tmul, extMul_tprod Rf.Pi S T hS z (fun v => Rf.p' v (χ i v))]`. Introduce `v _ hv`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hχ i v hv, hz]`. Conclude with `((hM.fin.sph v fun hvX => hv (hXS hvX)).1).symm`. Establish `k1` using `congrArg (LinearMap.lTensor R.Pi (PiTensorProduct.lift (extMul Rf.Pi T₁ T h₁ z))) e1`. Rewrite `k1` using `[trL T₁ h₁ f φ (fun i => (hf i).2.2), trR T₁ h₁ hT₁ f' φ' (fun j => (hf' j).2.2)]`. Establish `k2` using `congrArg (LinearMap.lTensor R.Pi (PiTensorProduct.lift (extMul Rf.Pi T₂ T h₂ z))) e2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `k2` using `[trL T₂ h₂ g ψ (fun i => (hg i).2.2), trR T₂ h₂ hT₂ g' ψ' (fun j => (hg' j).2.2)]`. Use `⟨T, hT₁.trans h₁, m + k, m' + k', Fin.append (c • f) g, Fin.append φ ψ, Fin.append (c • f') g', Fin.append φ' ψ', ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i`. Use `Fin.addCases (fun i => ?_) (fun i => ?_) i` and prove the remaining obligations. Simplify using `only [Fin.append_left, Pi.smul_apply]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Conclude with `⟨Submodule.smul_mem _ _ (hf i).1, (hf i).2.1, fun v hv => (hf i).2.2 v fun hv' => hv (h₁ hv')⟩`. Simplify using `only [Fin.append_right]`. Conclude with `⟨(hg i).1, (hg i).2.1, fun v hv => (hg i).2.2 v fun hv' => hv (h₂ hv')⟩`. Introduce `i`. Use `Fin.addCases (fun i => ?_) (fun i => ?_) i` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.append_left, Pi.smul_apply]`. Conclude with `⟨Submodule.smul_mem _ _ (hf' i).1, (hf' i).2.1, fun v hv => (hf' i).2.2 v fun hv' => hv (h₁ hv')⟩`. Simplify using `only [Fin.append_right]`. Conclude with `⟨(hg' i).1, (hg' i).2.1, fun v hv => (hg' i).2.2 v fun hv' => hv (h₂ hv')⟩`. Use function extensionality and compare the values at `x`.
+Supply the required witnesses or components. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[Fin.sum_univ_add, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, Finset.mul_sum, mul_assoc]`. Use function extensionality and compare the values at `x`. Simplify using `[Fin.sum_univ_add, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, Finset.mul_sum, mul_assoc]`. Rewrite using `[Fin.sum_univ_add, Fin.sum_univ_add]`. Simplify using `only [Fin.append_left, Fin.append_right, Pi.smul_apply, map_smul, ← TensorProduct.smul_tmul']`.
-
-Rewrite using `[← Finset.smul_sum, ← Finset.smul_sum, k1, k2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem polMatch_smul_add : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)
     (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (R : RealMaps F a a') (Rf : FinMaps F a a'), IsMatched B G X om om' R Rf →

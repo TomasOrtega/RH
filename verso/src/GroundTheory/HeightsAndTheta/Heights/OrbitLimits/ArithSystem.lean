@@ -11,11 +11,9 @@ open ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction
 namespace ArithIntersectionSystem
 
 /- English proof (translation)
-Introduce `K _ ι _ P n L j A B hP hL hA hB`. Consider the cases of `n with`. Consider the case `zero => exact j.elim0`. Consider the case `succ m`. Take `⟨hsym, hadd, -⟩` from `hI K ι`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `e : ∀ X : HermLine ι, IsSmoothHerm X → I K ι P (m + 1) (Function.update L j X) = I K ι P (m + 1) (Fin.snoc (fun i : Fin m => L (Equiv.swap j (Fin.last m) i.castSucc)) X)`. Introduce `X hX`. Rewrite using `[← GroundTheory.Heights₂.Heights.Inter.ThmIMultilin.update_comp_swap]`. Conclude with `(hsym P (m + 1) _ _ hP (GroundTheory.Heights₂.Heights.Inter.ThmIMultilin.smooth_update hL j hX)).symm`. Rewrite using `[e _ (isSmoothHerm_tensor hA hB), e A hA, e B hB]`.
-
-Conclude with `hadd P m _ A B hP (fun i => hL _) hA hB`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem multilin_of_isFamily {I : AllFam} (hI : I.IsFamily) : IsMultilinFam I := by
   intro K _ ι _ P n L j A B hP hL hA hB
@@ -35,7 +33,7 @@ theorem multilin_of_isFamily {I : AllFam} (hI : I.IsFamily) : IsMultilinFam I :=
     exact hadd P m _ A B hP (fun i => hL _) hA hB
 
 /- English proof (translation)
-Take `⟨I, hI⟩` from `(hE : ExistsStatement)`. Conclude with `⟨I, hI, multilin_of_isFamily hI, hPF I hI, hCM I hI⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem of_found (hE : GroundTheory.Heights₂.Heights.Inter.ThmIExists.Statement) (hPF : PFCoordStatement)
     (hCM : ContractMixedStatement) : ArithIntersectionSystemStatement := by

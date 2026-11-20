@@ -4,17 +4,17 @@ open scoped InnerProductSpace
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hc : ∀ w, a (c w) = c (a w) + (s : ℂ) • w`. Introduce `w`. Establish `h` using `congrArg (fun f : Module.End ℂ T => f w) hcomm`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, LinearMap.smul_apply, Module.End.one_apply] at h`. Rewrite using `[← h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Establish `hD : ∀ w, a ((c - a) w) = (c - a) (a w) + (s : ℂ) • w`. Introduce `w`. Rewrite using `[LinearMap.sub_apply, LinearMap.sub_apply, map_sub, hc]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Establish `key : ∀ (k : ℕ) (w : T), a (((c - a) ^ (k + 1)) w) = ((c - a) ^ (k + 1)) (a w) + (((k : ℂ) + 1) * (s : ℂ)) • ((c - a) ^ k) w`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Nat.cast_zero, zero_add, pow_one, pow_zero, Module.End.one_apply, one_mul]`. Conclude with `hD w`. Consider the case `succ k ih`. Introduce `w`. Establish `e1 : ((c - a) ^ (k + 1 + 1)) w = ((c - a) ^ (k + 1)) ((c - a) w)`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_succ, Module.End.mul_apply]`. Establish `e2 : ((c - a) ^ (k + 1)) w = ((c - a) ^ k) ((c - a) w)`. Rewrite using `[pow_succ, Module.End.mul_apply]`. Establish `e3 : ((c - a) ^ (k + 1 + 1)) (a w) = ((c - a) ^ (k + 1)) ((c - a) (a w))`. Rewrite using `[pow_succ, Module.End.mul_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e4 : (s : ℂ) + ((k : ℂ) + 1) * (s : ℂ) = (((k + 1 : ℕ) : ℂ) + 1) * (s : ℂ)` using `by push_cast; ring`. Rewrite using `[e1, ih, e3, hD, map_add, map_smul, ← e2, add_assoc, ← add_smul, e4]`. Use `key k v` as an intermediate fact. Rewrite `this` using `[hv, map_zero, zero_add]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem annihilation_pow_vacuum {T : Type} [AddCommGroup T] [Module ℂ T]
     (a c : Module.End ℂ T) (s : ℝ) (v : T)
@@ -54,9 +54,9 @@ theorem annihilation_pow_vacuum {T : Type} [AddCommGroup T] [Module ℂ T]
   exact this
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Use `⟨by simpa using hvK, ?_⟩` and prove the remaining obligations. Simplify `hcK v hvK` using `[hv]`. Consider the case `succ k ih`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Take `⟨h1, h2⟩` from `ih`. Use `⟨h2, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_succ', Module.End.mul_apply, LinearMap.sub_apply, annihilation_pow_vacuum a c s v hcomm hv k]`. Conclude with `K.sub_mem (hcK _ h2) (K.smul_mem _ h1)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_vacuum_mem {T : Type} [AddCommGroup T] [Module ℂ T]
     (a c : Module.End ℂ T) (s : ℝ) (v : T)
@@ -75,27 +75,27 @@ theorem pow_vacuum_mem {T : Type} [AddCommGroup T] [Module ℂ T]
     exact K.sub_mem (hcK _ h2) (K.smul_mem _ h1)
 
 /- English proof (translation)
-Establish `hc : ∀ w, a (c w) = c (a w) + (s : ℂ) • w`. Introduce `w`. Establish `h` using `congrArg (fun f : Module.End ℂ T => f w) hcomm`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, LinearMap.smul_apply, Module.End.one_apply] at h`. Rewrite using `[← h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Use `⟨fun K hvK hcK k => (pow_vacuum_mem a c s v hcomm hv K hvK hcK k).1, ?_⟩` and prove the remaining obligations. Establish `hcn : ∀ y, ‖Φ (c y)‖ ^ 2 = ‖Φ (a y)‖ ^ 2 + s * ‖Φ y‖ ^ 2`. Introduce `y`. Establish `e : inner ℂ (Φ (c y)) (Φ (c y)) = inner ℂ (Φ (a y)) (Φ (a y)) + (s : ℂ) * inner ℂ (Φ y) (Φ y)`.
+Normalize the expressions using the abelian group laws. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hadj, hc, map_add, map_smul, inner_add_right, inner_smul_right]`. Use `congr 1`. Rewrite using `[← inner_conj_symm (Φ y) (Φ (c (a y))), hadj]`. Conclude with `inner_conj_symm _ _`. Simplify using `only [inner_self_eq_norm_sq_to_K] at e`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Complex.ofReal_injective` to reduce the goal to its premises. Use `push_cast`. Take the linear combination `e`. Establish `hDn : ∀ y, ‖Φ ((c - a) y)‖ ^ 2 ≤ 2 * ‖Φ (c y)‖ ^ 2 + 2 * ‖Φ (a y)‖ ^ 2`. Introduce `y`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.sub_apply, map_sub]`. Establish `h` using `norm_sub_le (Φ (c y)) (Φ (a y))`. Establish `h2 : ‖Φ (c y) - Φ (a y)‖ ^ 2 ≤ (‖Φ (c y)‖ + ‖Φ (a y)‖) ^ 2` using `by gcongr`. Use polynomial arithmetic with `[sq_nonneg (‖Φ (c y)‖ - ‖Φ (a y)‖)]`. Establish `hsm : ∀ k : ℕ, ‖Φ (a (((c - a) ^ (k + 1)) v))‖ = ((k : ℝ) + 1) * s * ‖Φ (((c - a) ^ k) v)‖`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k`. Rewrite using `[annihilation_pow_vacuum a c s v hcomm hv k, map_smul, norm_smul]`. Use `congr 1`. Establish `e : ((k : ℂ) + 1) * (s : ℂ) = ((((k : ℝ) + 1) * s : ℝ) : ℂ)` using `by push_cast; ring`. Rewrite using `[e, Complex.norm_real, Real.norm_of_nonneg (mul_nonneg (by positivity) hs)]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `main : ∀ k : ℕ, ‖Φ (((c - a) ^ k) v)‖ ^ 2 ≤ ‖Φ v‖ ^ 2 * (2 * s) ^ k * k.factorial ∧ ‖Φ (((c - a) ^ (k + 1)) v)‖ ^ 2 ≤ ‖Φ v‖ ^ 2 * (2 * s) ^ (k + 1) * (k + 1).factorial`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Use `⟨by simp, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h` using `hcn v`. Rewrite `h` using `[hv, map_zero, norm_zero]`. Simplify using `only [zero_add, pow_one, LinearMap.sub_apply, hv, sub_zero, Nat.factorial_one, Nat.cast_one, mul_one]`. Rewrite using `[h]`. Use polynomial arithmetic with `[mul_nonneg hs (sq_nonneg ‖Φ v‖)]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Treat this case separately.
 
-Consider the case `succ k ih`. Take `⟨h1, h2⟩` from `ih`. Use `⟨h2, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_succ' (c - a) (k + 1), Module.End.mul_apply]`. Establish `hA` using `mul_le_mul_of_nonneg_left h1 (show (0 : ℝ) ≤ 4 * (((k : ℝ) + 1) * s) ^ 2 by positivity)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB` using `mul_le_mul_of_nonneg_left h2 (show (0 : ℝ) ≤ 2 * s by linarith)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hcn, hsm]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ 4 * (((k : ℝ) + 1) * s) ^ 2 * (‖Φ v‖ ^ 2 * (2 * s) ^ k * k.factorial) + 2 * s * (‖Φ v‖ ^ 2 * (2 * s) ^ (k + 1) * (k + 1).factorial) := add_le_add hA hB`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `_ = ‖Φ v‖ ^ 2 * (2 * s) ^ (k + 1 + 1) * (k + 1 + 1).factorial := by`. Rewrite using `[Nat.factorial_succ (k + 1), Nat.factorial_succ k]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Conclude with `fun k => (main k).1`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem pow_vacuum_fock_bound (T H : Type) [AddCommGroup T] [Module ℂ T]
     [NormedAddCommGroup H] [InnerProductSpace ℂ H] (Φ : T →ₗ[ℂ] H)

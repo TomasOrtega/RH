@@ -16,7 +16,7 @@ namespace GlobalTheory.Mem.LiftBound
 variable {D : D7}
 
 /- English proof (translation)
-Unfold `normInf`. Use `le_trans ?_ (Finset.single_le_sum (f := fun τ => ∑ i, ∑ j, (‖infMat D.sp.cm.sig V.gram (θ τ) g i j‖ + ‖infMat D.sp.cm.sig V.gram (θ τ) g⁻¹ i j‖)) (fun _ _ => by positivity) (Finset.mem_univ τ))` and prove the remaining obligations. Use `le_trans ?_ (Finset.single_le_sum (f := fun i => ∑ j, (‖infMat D.sp.cm.sig V.gram (θ τ) g i j‖ + ‖infMat D.sp.cm.sig V.gram (θ τ) g⁻¹ i j‖)) (fun _ _ => by positivity) (Finset.mem_univ i))` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun j => (‖infMat D.sp.cm.sig V.gram (θ τ) g i j‖ + ‖infMat D.sp.cm.sig V.gram (θ τ) g⁻¹ i j‖)) (fun _ _ => by positivity) (Finset.mem_univ j)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem entry_le (θ : InfF D) (V : HSp D) (g : GA D V) (τ : D.what₂.Tau) (i j : Fin V.rank) :
     ‖infMat D.sp.cm.sig V.gram (θ τ) g i j‖ + ‖infMat D.sp.cm.sig V.gram (θ τ) g⁻¹ i j‖ ≤ normInf θ V g := by
@@ -32,9 +32,9 @@ theorem entry_le (θ : InfF D) (V : HSp D) (g : GA D V) (τ : D.what₂.Tau) (i 
       (fun _ _ => by positivity) (Finset.mem_univ j)
 
 /- English proof (translation)
-Establish `ha` using `GlobalTheory.SmoothForms.normInf_nonneg (θ := θ) a`. Establish `hb` using `GlobalTheory.SmoothForms.normInf_nonneg (θ := θ) b`. Rewrite using `[GlobalTheory.RealWeil.mM_apply, GlobalTheory.RealWeil.blk, blockDiagonal_apply]`. Use `split_ifs`. Rewrite using `[kroneckerMap_apply, transpose_apply, norm_mul, mul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `mul_le_mul ?_ ?_ (norm_nonneg _) ha` and prove the remaining obligations. Conclude with `(le_add_of_nonneg_left (norm_nonneg _)).trans (entry_le θ S a p.2 q.1.2 p.1.2)`. Conclude with `(le_add_of_nonneg_right (norm_nonneg _)).trans (entry_le θ T b p.2 p.1.1 q.1.1)`. Rewrite using `[norm_zero]`. Conclude with `mul_nonneg ha hb`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_mM_le (θ : InfF D) (S T : HSp D) (a : GA D S) (b : GA D T) (p q : GlobalTheory.RealWeil.Ix S T) :
     ‖GlobalTheory.RealWeil.mM θ S T (a, b) p q‖ ≤ normInf θ S a * normInf θ T b := by
@@ -50,11 +50,11 @@ theorem norm_mM_le (θ : InfF D) (S T : HSp D) (a : GA D S) (b : GA D T) (p q : 
     exact mul_nonneg ha hb
 
 /- English proof (translation)
-Take `⟨c, hc⟩ : ∃ c : ℝ, c = (Fintype.card (GlobalTheory.RealWeil.Ix S T) : ℝ)` from `⟨_, rfl⟩`. Establish `c0 : 0 ≤ c` using `hc ▸ Nat.cast_nonneg _`. Use `⟨1 + c * c, by positivity, fun a b => ?_⟩` and prove the remaining obligations. Establish `ha` using `GlobalTheory.SmoothForms.normInf_nonneg (θ := θ) a`. Establish `hb` using `GlobalTheory.SmoothForms.normInf_nonneg (θ := θ) b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ∑ p, ∑ q, ‖GlobalTheory.RealWeil.mM θ S T (a, b) p q‖ ≤ c * (c * (normInf θ S a * normInf θ T b))`. Use `(Finset.sum_le_sum fun p _ => Finset.sum_le_sum fun q _ => norm_mM_le θ S T a b p q).trans_eq ?_` and prove the remaining obligations. Simplify using `only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul, hc]`. Establish `h2` using `mul_nonneg ha hb`. Establish `h3` using `mul_nonneg c0 c0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[mul_nonneg h3 ha, mul_nonneg h3 hb]`.
+Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem sum_mM_le (θ : InfF D) (S T : HSp D) : ∃ K : ℝ, 0 ≤ K ∧ ∀ (a : GA D S) (b : GA D T),
     1 + ∑ p, ∑ q, ‖GlobalTheory.RealWeil.mM θ S T (a, b) p q‖ ≤ K * ((1 + normInf θ S a) * (1 + normInf θ T b)) := by
@@ -71,7 +71,7 @@ theorem sum_mM_le (θ : InfF D) (S T : HSp D) : ∃ K : ℝ, 0 ≤ K ∧ ∀ (a 
   nlinarith [mul_nonneg h3 ha, mul_nonneg h3 hb]
 
 /- English proof (translation)
-Establish `h1` using `(GlobalTheory.T.normInf_submultiplicative_le_adelicHeight D θ V).1 g h`. Establish `ha` using `GlobalTheory.SmoothForms.normInf_nonneg (θ := θ) g`. Establish `hb` using `GlobalTheory.SmoothForms.normInf_nonneg (θ := θ) h`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem one_add_normInf_mul (θ : InfF D) (V : HSp D) (g h : GA D V) :
     1 + normInf θ V (g * h) ≤ (1 + normInf θ V g) * (1 + normInf θ V h) := by
@@ -81,19 +81,19 @@ theorem one_add_normInf_mul (θ : InfF D) (V : HSp D) (g h : GA D V) :
   nlinarith
 
 /- English proof (translation)
-Introduce `D ψ hψ S T om hom θ hθ`. Take `⟨σ, h⟩` from `GlobalTheory.RealLineAt.exists_inverse_chart hθ`. Take `⟨Ω, hosc, ⟨N, hN⟩, -⟩` from `GlobalTheory.T.hasDerivAt_oscillatorAction_unitaryPath_quadratic (GlobalTheory.RealWeil.Ix S T) (GlobalTheory.RealWeil.HM S T) GlobalTheory.RealWeil.HM_herm GlobalTheory.RealWeil.HM_det (GlobalTheory.RealWeil.BB ψ S T) (GlobalTheory.RealWeil.rhoV hψ σ S T) (GlobalTheory.RealWeil. …`. Take `⟨K, hK0, hK⟩` from `sum_mM_le θ S T`. Take `⟨-, -, -, -, -, s6, s7, -⟩` from `(GlobalTheory.T.adelicUnitary_realPoints_structure_realPlaces D).2 θ hθ S`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, -, -, -, t6, t7, -⟩` from `(GlobalTheory.T.adelicUnitary_realPoints_structure_realPlaces D).2 θ hθ T`. Use `⟨N, fun f hf x y => ?_⟩` and prove the remaining obligations. Take `⟨k, hk, a₀, ha₀, rfl⟩` from `s7 x`. Take `⟨k', hk', b₀, hb₀, rfl⟩` from `t7 y`. Establish `hf'` using `hom.om_pres (k, k') f hf`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hF : IsThetaFunO ψ S T (GlobalTheory.RealWeil.toB hψ _ hf').1`. Rewrite using `[GlobalTheory.RealWeil.coe_toB]`. Conclude with `hf'`. Take `⟨C, hC⟩` from `hN _ (GlobalTheory.RealWeil.sm_of_theta h hψ _ hF)`. Use `⟨|C| * (K * ((1 + normInf θ S a₀) * (1 + normInf θ T b₀))) ^ N, fun a ha b hb w => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `haa` using `mul_mem ha₀ ha`. Establish `hbb` using `mul_mem hb₀ hb`. Take `⟨c, hc, hcF⟩` from `GlobalTheory.T.weakWeilRep_eq_unit_smul_oscillator_real_points D θ σ h ψ hψ S T om hom Ω hosc _ haa _ hbb`. Establish `e : ((k * a₀ * a, k' * b₀ * b) : GA D S × GA D T) = (a₀ * a, b₀ * b) * (k, k')`. Rewrite using `[Prod.mk_mul_mk, s6 _ haa k hk, t6 _ hbb k' hk', mul_assoc, mul_assoc]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2` using `hcF _ hF`. Rewrite `e2` using `[GlobalTheory.RealWeil.coe_toB]`. Rewrite using `[e, map_mul, Module.End.mul_apply, e2, Pi.smul_apply, norm_smul, hc, one_mul]`. Use `(GlobalTheory.RealWeil.norm_ev_le w _).trans ((hC _).trans ?_)` and prove the remaining obligations. Establish `n1` using `GlobalTheory.SmoothForms.normInf_nonneg (θ := θ) a₀`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n2` using `GlobalTheory.SmoothForms.normInf_nonneg (θ := θ) b₀`. Establish `n3` using `GlobalTheory.SmoothForms.normInf_nonneg (θ := θ) a`. Establish `n4` using `GlobalTheory.SmoothForms.normInf_nonneg (θ := θ) b`. Establish `n5` using `GlobalTheory.SmoothForms.normInf_nonneg (θ := θ) (b₀ * b)`. Rewrite using `[mul_assoc, ← mul_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `mul_le_mul (le_abs_self C) (pow_le_pow_left₀ (by positivity) ((hK _ _).trans ?_) N) (by positivity) (abs_nonneg C)` and prove the remaining obligations. Rewrite using `[mul_assoc K]`. Use `mul_le_mul_of_nonneg_left ?_ hK0` and prove the remaining obligations. Use `(mul_le_mul (one_add_normInf_mul θ S a₀ a) (one_add_normInf_mul θ T b₀ b) (by positivity) (by positivity)).trans_eq ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem om_growth : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S T : HSp D) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)), GlobalTheory.Ker.IsWeak ψ S T om → ∀ θ : InfF D, IsInfFam θ → ∃ N : ℕ, ∀ f, IsThetaFunO ψ S T f → ∀ x y, ∃ C : ℝ, ∀ a ∈ GinfC S, ∀ b ∈ GinfC T, ∀ w, ‖om (x * a, y * b) f w‖ ≤ C * ((1 + normInf θ S a) * (1 + normInf θ T b)) ^ N := by
   intro D ψ hψ S T om hom θ hθ

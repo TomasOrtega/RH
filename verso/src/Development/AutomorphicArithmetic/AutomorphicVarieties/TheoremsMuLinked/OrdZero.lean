@@ -90,14 +90,14 @@ def FreeAt (l : ℕ) [Fact l.Prime] {F Ω : Type} [Field F] [Field Ω] [Algebra 
     ∃ α : Fin n → (Qbar l)ˣ, Pr.FreeRatios α ∧ (mat r g).charpoly = ∏ i, (X - C ((α i : (Qbar l)ˣ) : Qbar l))
 
 /- English proof (translation)
-Introduce `A _` and use `⟨1, one_mem _, map_one _, 1, fun i j h => absurd (Subsingleton.elim i j) h, by simp [Matrix.charpoly_one]⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 example {l : ℕ} [Fact l.Prime] {F Ω : Type} [Field F] [Field Ω] [Algebra F Ω] : FreeAt l (1 : G F Ω →* GL (Fin 1) (Qbar l)) :=
   fun A _ => ⟨1, one_mem _, map_one _, 1, fun i j h => absurd (Subsingleton.elim i j) h, by
     simp [Matrix.charpoly_one]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, 0, fun g => ⟨fun i j h => by simp [Matrix.one_apply_ne h.ne'], fun i => by simp, fun i j _ => by simp, fun _ i => by simp⟩⟩`.
+Supply the required witnesses or components.
 -/
 example {l : ℕ} [Fact l.Prime] {F : GFrame l} {K : Type} [Field K] {n : ℕ} {H : Type} [Group H] (I : Subgroup H) :
     OrdAt I (1 : H →* GL (Fin n) K) 1 0 :=

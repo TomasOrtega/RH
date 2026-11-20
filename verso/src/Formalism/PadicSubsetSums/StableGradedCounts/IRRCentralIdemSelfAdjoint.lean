@@ -5,7 +5,7 @@ open Module
 namespace Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
 
 /- English proof (translation)
-Rewrite using `[LinearMap.trace_eq_matrix_trace ℂ v h, Matrix.trace]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[Matrix.diag_apply, LinearMap.toMatrix_apply, hv i, map_smul, Finsupp.smul_apply, Basis.repr_self, Finsupp.single_eq_same, smul_eq_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_of_diag {V I : Type*} [AddCommGroup V] [Module ℂ V] [Fintype I] [DecidableEq I]
     (v : Basis I ℂ V) (h : V →ₗ[ℂ] V) (c : I → ℂ) (hv : ∀ i, h (v i) = c i • v i) :
@@ -16,23 +16,21 @@ theorem trace_of_diag {V I : Type*} [AddCommGroup V] [Module ℂ V] [Fintype I] 
     Basis.repr_self, Finsupp.single_eq_same, smul_eq_mul, mul_one]
 
 /- English proof (translation)
-Use `set s : Module.End ℂ V := ρ g with hs`. Use `set n := orderOf g with hn`. Establish `hn0 : 0 < n` using `orderOf_pos g`. Establish `hsn : s ^ n = 1` using `by rw [hs, ← map_pow, hn, pow_orderOf_eq_one, map_one]`. Establish `hsq : Squarefree (Polynomial.X ^ n - 1 : Polynomial ℂ)` using `(Polynomial.X_pow_sub_one_separable_iff.mpr (by exact_mod_cast hn0.ne')).squarefree`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hss : s.IsSemisimple` using `Module.End.isSemisimple_of_squarefree_aeval_eq_zero hsq (by simp [hsn])`. Set `eigenDecomp` to `DirectSum.isInternal_submodule_of_iSupIndep_of_iSup_eq_top s.eigenspaces_iSupIndep hss.iSup_eigenspace_eq_top`. Set `I` to `(ν : ℂ) × Fin (finrank ℂ (s.eigenspace ν))`. Set `v : Basis I ℂ V` to `eigenDecomp.collectedBasis fun μ ↦ finBasis ℂ (s.eigenspace μ)`. Establish `: Fintype I` using `FiniteDimensional.fintypeBasisIndex v`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `μ : I → ℂ` to `Sigma.fst`. Establish `hsv (i : I) : s (v i) = μ i • v i` using `Module.End.mem_eigenspace_iff.mp (eigenDecomp.collectedBasis_mem _ i)`. Establish `hpow : ∀ (i : I) (k : ℕ), (s ^ k) (v i) = μ i ^ k • v i`. Introduce `i k`. Proceed by induction on `k with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[pow_succ, Module.End.mul_apply, hsv, map_smul, ih, smul_smul, pow_succ, mul_comm]`. Establish `hμn : ∀ i, μ i ^ n = 1`. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `hpow i n`. Rewrite `h1` using `[hsn, Module.End.one_apply]`. Establish `h2 : (μ i ^ n - 1) • v i = 0` using `by rw [sub_smul, one_smul, ← h1, sub_self]`. Break down `smul_eq_zero.mp h2 with h3 | h3` into its components or cases. Conclude with `sub_eq_zero.mp h3`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `absurd h3 (v.ne_zero i)`. Establish `hμ0 : ∀ i, μ i ≠ 0`. Introduce `i h0`. Use `hμn i` as an intermediate fact. Rewrite `this` using `[h0, zero_pow hn0.ne']`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_ne_one this`. Establish `hinv : ∀ i, ρ g⁻¹ (v i) = (starRingEnd ℂ) (μ i) • v i`. Introduce `i`. Establish `h1 : ρ g⁻¹ (s (v i)) = v i`. Rewrite using `[hs, ← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[hsv, map_smul]`. Establish `h2 : (μ i)⁻¹ = (starRingEnd ℂ) (μ i)` using `Complex.inv_eq_conj (Complex.norm_eq_one_of_pow_eq_one (hμn i) hn0.ne')`. Rewrite using `[← h2]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_smul, inv_mul_cancel₀ (hμ0 i), one_smul]`.
-
-Use `_ = (μ i)⁻¹ • v i := by rw [h1]`. Unfold `Representation.character`. Rewrite using `[trace_of_diag v (ρ g⁻¹) _ hinv, trace_of_diag v (ρ g) μ hsv, map_sum]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem character_inv {G V : Type} [Group G] [Fintype G] [AddCommGroup V] [Module ℂ V]
     [FiniteDimensional ℂ V] (ρ : Representation ℂ G V) (g : G) :
@@ -88,9 +86,9 @@ theorem character_inv {G V : Type} [Group G] [Fintype G] [AddCommGroup V] [Modul
   rw [trace_of_diag v (ρ g⁻¹) _ hinv, trace_of_diag v (ρ g) μ hsv, map_sum]
 
 /- English proof (translation)
-Unfold `centralIdem`. Rewrite using `[MonoidAlgebra.coeff_sum, Finsupp.finsetSum_apply]`. Rewrite using `[Finset.sum_eq_single x]`. Simplify using `[MonoidAlgebra.of_apply, MonoidAlgebra.coeff_single]`. Introduce `b _ hb`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[MonoidAlgebra.of_apply, MonoidAlgebra.coeff_single, hb]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ x) h`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem centralIdem_coeff {G V : Type} [Group G] [Fintype G] [AddCommGroup V] [Module ℂ V]
     (ρ : Representation ℂ G V) (x : G) :
@@ -106,7 +104,7 @@ theorem centralIdem_coeff {G V : Type} [Group G] [Fintype G] [AddCommGroup V] [M
   · intro h; exact absurd (Finset.mem_univ x) h
 
 /- English proof (translation)
-Introduce `G V _ _ _ _ _ ρ g`. Use `⟨character_inv ρ g, ?_⟩` and prove the remaining obligations. Rewrite using `[centralIdem_coeff, centralIdem_coeff, inv_inv, map_mul, character_inv ρ g, map_div₀, Complex.conj_natCast, Complex.conj_natCast, Complex.conj_conj]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem central_idempotent_self_adjoint : CentralIdemSelfAdjoint := by
   intro G V _ _ _ _ _ ρ g

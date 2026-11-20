@@ -11,11 +11,11 @@ section
 attribute [local instance low] specializationOrder
 
 /- English proof (translation)
-Establish `hmono : StrictMono j`. Introduce `x y hxy`. Use `lt_of_le_of_ne ?_ (fun hxy' => hxy.ne (hi hxy'))` and prove the remaining obligations. Conclude with `(show y ⤳ x from hxy.le).map hj`. Rewrite using `[topologicalKrullDim, topologicalKrullDim, Order.krullDim_eq_of_orderIso (irreducibleSetEquivPoints (α := W)), Order.krullDim_eq_of_orderIso (irreducibleSetEquivPoints (α := S))]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `isEmpty_or_nonempty W with hW | hW` into its components or cases. Rewrite using `[Order.krullDim_eq_bot]`. Simplify using the standard rewrite rules. Establish `: Nonempty S` using `⟨j hW.some⟩`. Rewrite using `[Order.krullDim_eq_iSup_height_of_nonempty, Order.krullDim_eq_iSup_height_add_coheight_of_nonempty, ← WithBot.coe_add, WithBot.coe_le_coe, ENat.iSup_add]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `iSup_le fun w => le_trans ?_ (le_iSup (fun a : S => Order.height a + Order.coheight a) (j w))` and prove the remaining obligations. Conclude with `add_le_add (Order.height_le_height_apply_of_strictMono j hmono w) (h w)`.
+A detailed English derivation is pending.
 -/
 theorem dim_add_le_of_le_coheight {S W : Type*} [TopologicalSpace S] [TopologicalSpace W]
     [QuasiSober S] [T0Space S] [QuasiSober W] [T0Space W] {j : W → S} (hj : Continuous j)
@@ -42,15 +42,15 @@ theorem dim_add_le_of_le_coheight {S W : Type*} [TopologicalSpace S] [Topologica
 end
 
 /- English proof (translation)
-Establish `hc : IsClosed ((U : Set X)ᶜ)` using `U.isOpen.isClosed_compl`. Establish `: QuasiSober ((U : Set X)ᶜ : Set X)` using `hc.isClosedEmbedding_subtypeVal.quasiSober`. Establish `key : topologicalKrullDim ((U : Set X)ᶜ : Set X) + ((2 : ℕ∞) : WithBot ℕ∞) ≤ topologicalKrullDim X`. Apply `dim_add_le_of_le_coheight continuous_subtype_val Subtype.val_injective` to reduce the goal to its premises. Introduce `w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hlt : 1 < ringKrullDim (X.presheaf.stalk w.1)` using `lt_of_not_ge fun h => w.2 (hU _ h)`. Rewrite `hlt` using `[AlgebraicGeometry.ringKrullDim_stalk_eq_coheight]`. Establish `h1 : (1 : ℕ∞) < Order.coheight w.1` using `by exact_mod_cast hlt`. Use `Order.add_one_le_of_lt h1` as an intermediate fact. Conclude with `le_trans (by norm_num) this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `key` using `[hX]`. Generalize the expression as in `topologicalKrullDim ((U : Set X)ᶜ : Set X) = D at key ⊢`. Proceed by induction on `D using WithBot.recBotCoe with`. Consider the case `bot => simp`. Consider the case `coe m`.
+Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `key` using `[← WithBot.coe_natCast, ← WithBot.coe_add, WithBot.coe_le_coe]`. Rewrite using `[← WithBot.coe_natCast, ← WithBot.coe_one, ← WithBot.coe_add, WithBot.coe_le_coe]`. Proceed by induction on `m using ENat.recTopCoe with`. Consider the case `top => exfalso`. Simplify using `at key`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `coe n`. Normalize the coercions in `at key ⊢`. Use linear arithmetic over natural numbers and integers.
+Put the expressions in a common number system so they can be compared. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem dim_compl_add_one_le (X : Scheme.{0}) (U : X.Opens) (d : ℕ)
     (hX : topologicalKrullDim X = ((d + 1 : ℕ) : WithBot ℕ∞))

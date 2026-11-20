@@ -13,9 +13,9 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.Points Gl
 namespace GlobalTheory.ProjFormulaTop
 
 /- English proof (translation)
-Introduce `k _ X Y _ _ p q _ D hp hq hD π hπ hgen hdeg B hB`. Take `⟨U, hU, hgU, hU', -, hfin, hfree, hrank⟩` from `GlobalTheory.T.exists_affine_etale_finite_free_nbhd k X Y p q hp hq π hπ hgen hdeg`. Substitute `hπ` using the available equality. Use `letI := GlobalTheory.algebraΓOfHom p`. Use `letI := GlobalTheory.algebraΓOfHom (π ≫ p)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Substitute using the available equality. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Rewrite using `[topSelf_def, topSelf_def]`. Use `letI := (π.app U).hom.toAlgebra`. Establish `hfin' : Module.Finite Γ(X, U) Γ(Y, π ⁻¹ᵁ U)` using `hfin`. Conclude with `GlobalTheory.FieldProj.interNum_pull_eq_mul k Y X p π hq hp U _ hgU hU hU' ⟨hfree, hfin', hrank⟩ D hD (fun _ => B) (fun _ => hB)`.
+Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem topSelf_pull_eq_mul : ∀ (k : Type) [Field k] (X Y : Scheme.{0}) [IsIntegral X] [IsIntegral Y] (p : X ⟶ Sp k) (q : Y ⟶ Sp k) [CharZero k] (D : ℕ), IsProjOver p → IsProjOver q → topologicalKrullDim X ≤ D → ∀ (π : Y ⟶ X), π ≫ p = q → π (genericPoint Y) = genericPoint X → π.residueDegree (genericPoint Y) ≠ 0 → ∀ B : LB X, B.IsLB → letI := GlobalTheory.algebraΓOfHom p; letI := GlobalTheory.algebraΓOfHom q; topSelfIntersection k (B.pull π) D = (π.residueDegree (genericPoint Y) : ℤ) * topSelfIntersection k B D := by
   intro k _ X Y _ _ p q _ D hp hq hD π hπ hgen hdeg B hB

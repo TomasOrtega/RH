@@ -8,9 +8,9 @@ noncomputable section
 namespace GlobalTheory.UPel.HT.TateTransportO
 
 /- English proof (translation)
-Use `⟨fun x => if h : ∃ g : G, (∃ n, 0 < n ∧ n.Coprime p ∧ g ^ n = 1) ∧ ρ g = x then h.choose else 1, ?_⟩` and prove the remaining obligations. Introduce `n hn hnp g hg`. Establish `h : ∃ g' : G, (∃ n, 0 < n ∧ n.Coprime p ∧ g' ^ n = 1) ∧ ρ g' = ρ g` using `⟨g, ⟨n, hn, hnp, hg⟩, rfl⟩`. Simplify using `only [dif_pos h]`. Take `⟨⟨m, hm, hmp, hgm⟩, he⟩` from `h.choose_spec`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `hi (m * n) (Nat.mul_pos hm hn) (Nat.Coprime.mul hmp hnp) _ _ (by rw [pow_mul, hgm, one_pow]) (by rw [mul_comm, pow_mul, hg, one_pow]) he`.
+A detailed English derivation is pending.
 -/
 theorem exists_torsLift {G H : Type} [Group G] [Group H] (p : ℕ) (ρ : G →* H)
     (hi : ∀ n, 0 < n → n.Coprime p → ∀ g h : G, g ^ n = 1 → h ^ n = 1 → ρ g = ρ h → g = h) :
@@ -25,47 +25,45 @@ theorem exists_torsLift {G H : Type} [Group G] [Group H] (p : ℕ) (ρ : G →* 
     (by rw [pow_mul, hgm, one_pow]) (by rw [mul_comm, pow_mul, hg, one_pow]) he
 
 /- English proof (translation)
-Introduce `p _ D R k k' QR Q Q' _ _ _ _ _ _ hcomm actR act act' e e' ρ ρ' φ φ' hρi hρs hρ'i hρ's hφi hφs hφ'i hactR hρact hρ'act hact'1 hpair huniq I`. Take `⟨L, hL⟩` from `exists_torsLift p ρ hρi`. Take `⟨W, hW⟩` from `exists_torsLift p φ hφi`. Establish `hLx : ∀ n, 0 < n → n.Coprime p → ∀ x : Q, x ^ n = 1 → L x ^ n = 1 ∧ ρ (L x) = x`. Introduce `n hn hnp x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨g, hg, rfl⟩` from `hρs n hn hnp x hx`. Rewrite using `[hL n hn hnp g hg]`. Conclude with `⟨hg, rfl⟩`. Establish `hWx : ∀ n, 0 < n → n.Coprime p → ∀ z : kˣ, z ^ n = 1 → W z ^ n = 1 ∧ φ (W z) = z`. Introduce `n hn hnp z hz`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨u, hu, rfl⟩` from `hφs n hn hnp z hz`. Rewrite using `[hW n hn hnp u hu]`. Conclude with `⟨hu, rfl⟩`. Establish `hLmul : ∀ n, 0 < n → n.Coprime p → ∀ x y : Q, x ^ n = 1 → y ^ n = 1 → L (x * y) = L x * L y`. Introduce `n hn hnp x y hx hy`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨hx1, hx2⟩` from `hLx n hn hnp x hx`. Take `⟨hy1, hy2⟩` from `hLx n hn hnp y hy`. Use `hL n hn hnp (L x * L y) (by rw [(show Commute (L x) (L y) from hcomm _ _).mul_pow, hx1, hy1, _root_.one_mul])` as an intermediate fact. Rewrite `this` using `[map_mul, hx2, hy2]`. Then use the resulting hypothesis. Establish `hevt : ∀ n, 0 < n → n.Coprime p → ∀ a, I.ev n a ^ n = 1` using `fun n hn hnp a => (I.onto n hn hnp _).2 ⟨a, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hζt : ∀ n, 0 < n → n.Coprime p → I.ζ n ^ n = 1` using `fun n hn hnp => (I.ζ_prim n hn hnp).pow_eq_one`. Establish `hactR1 : ∀ c, actR c 1 = 1` using `fun c => by`. Use `hactR c 1 1` as an intermediate fact. Rewrite `this` using `[_root_.mul_one]`. Conclude with `mul_left_cancel (this.symm.trans (_root_.mul_one _).symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hactRpow : ∀ c g (n : ℕ), actR c (g ^ n) = actR c g ^ n`. Introduce `c g n`. Proceed by induction on `n with`. Consider the case `zero => simp [hactR1]`. Consider the case `succ n ih => rw [pow_succ, hactR, ih, pow_succ]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hLact : ∀ n, 0 < n → n.Coprime p → ∀ c x, x ^ n = 1 → L (act c x) = actR c (L x)`. Introduce `n hn hnp c x hx`. Take `⟨h1, h2⟩` from `hLx n hn hnp x hx`. Use `hL n hn hnp (actR c (L x)) (by rw [← hactRpow, h1, hactR1])` as an intermediate fact. Rewrite `this` using `[hρact, h2]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨{ ζ := fun n => φ' (W (I.ζ n)), ζ_prim := ?_, ζ_pow := ?_, ev := fun n a => if 0 < n ∧ n.Coprime p then ρ' (L (I.ev n a)) else 1, add := ?_, lin := ?_, ker := ?_, onto := ?_, tower := ?_, isom := ?_ }, ?_⟩` and prove the remaining obligations. Introduce `n hn hnp`. Take `⟨hw1, hw2⟩` from `hWx n hn hnp _ (hζt n hn hnp)`. Use `⟨by rw [← map_pow, hw1, map_one], fun l hl => ?_⟩` and prove the remaining obligations. Rewrite `hl` using `[← map_pow]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: W (I.ζ n) ^ l = 1` using `hφ'i n hn hnp _ _ (by rw [← pow_mul, mul_comm, pow_mul, hw1, one_pow]) (one_pow n) (by rw [hl, map_one])`. Conclude with `(I.ζ_prim n hn hnp).dvd_of_pow_eq_one l (by rw [← hw2, ← map_pow, this, map_one])`. Introduce `n m hn hm hnm`. Establish `hnp : n.Coprime p` using `Nat.Coprime.coprime_dvd_left (Dvd.intro m rfl) hnm`. Take `⟨a1, a2⟩` from `hWx (n * m) (Nat.mul_pos hn hm) hnm _ (hζt _ (Nat.mul_pos hn hm) hnm)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Take `⟨b1, b2⟩` from `hWx n hn hnp _ (hζt n hn hnp)`. Use `show φ' (W (I.ζ (n * m))) ^ m = φ' (W (I.ζ n))`. Rewrite using `[← map_pow, hφi n hn hnp (W (I.ζ (n * m)) ^ m) (W (I.ζ n)) (by rw [← pow_mul, mul_comm m n, a1]) b1 (by rw [map_pow, a2, b2, I.ζ_pow n m hn hm hnm])]`. Introduce `n a b split_ifs with h`. Rewrite using `[I.add, hLmul n h.1 h.2 _ _ (hevt n h.1 h.2 a) (hevt n h.1 h.2 b), map_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[_root_.mul_one]`. Introduce `n c a split_ifs with h`. Rewrite using `[I.lin, hLact n h.1 h.2 c _ (hevt n h.1 h.2 a), hρ'act]`. Rewrite using `[hact'1]`. Introduce `n hn hnp a`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hg : 0 < n ∧ n.Coprime p` using `⟨hn, hnp⟩`. Simplify using `only [if_pos hg]`. Rewrite using `[← I.ker n hn hnp a]`. Take `⟨h1, h2⟩` from `hLx n hn hnp _ (hevt n hn hnp a)`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Use `hρ'i n hn hnp _ 1 h1 (one_pow n) (by rw [h, map_one])` as an intermediate fact. Rewrite using `[← h2, this, map_one]`. Introduce `h`. Rewrite using `[h, ← map_one ρ, hL n hn hnp 1 (one_pow n), map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `n hn hnp y`. Establish `hg : 0 < n ∧ n.Coprime p` using `⟨hn, hnp⟩`. Simplify using `only [if_pos hg]`. Prove the components needed by the constructor for the conclusion. Introduce `hy`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨g, hg1, rfl⟩` from `hρ's n hn hnp y hy`. Take `⟨a, ha⟩` from `(I.onto n hn hnp (ρ g)).1 (by rw [← map_pow, hg1, map_one])`. Conclude with `⟨a, by rw [ha, hL n hn hnp g hg1]⟩`. Introduce and unpack `⟨a, rfl⟩`. Rewrite using `[← map_pow, (hLx n hn hnp _ (hevt n hn hnp a)).1, map_one]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `n m hn hm hnm a`. Establish `hnp : n.Coprime p` using `Nat.Coprime.coprime_dvd_left (Dvd.intro m rfl) hnm`. Establish `hnm0 : 0 < n * m` using `Nat.mul_pos hn hm`. Establish `hg1 : 0 < n * m ∧ (n * m).Coprime p` using `⟨hnm0, hnm⟩`. Establish `hg2 : 0 < n ∧ n.Coprime p` using `⟨hn, hnp⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [if_pos hg1, if_pos hg2]`. Take `⟨h1, h2⟩` from `hLx (n * m) hnm0 hnm _ (hevt _ hnm0 hnm a)`. Use `hL n hn hnp (L (I.ev (n * m) a) ^ m) (by rw [← pow_mul, mul_comm m n, h1])` as an intermediate fact. Rewrite `this` using `[map_pow, h2, I.tower n m hn hm hnm]`. Rewrite using `[← map_pow, ← this]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `n hn hnp a b`. Establish `hg : 0 < n ∧ n.Coprime p` using `⟨hn, hnp⟩`. Simplify using `only [if_pos hg]`. Take `⟨ga1, ga2⟩` from `hLx n hn hnp _ (hevt n hn hnp a)`. Take `⟨gb1, gb2⟩` from `hLx n hn hnp _ (hevt n hn hnp b)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu, he, he'⟩` from `hpair n hn hnp _ _ ga1 gb1`. Rewrite `he` using `[ga2, gb2]`. Take `⟨w1, w2⟩` from `hWx n hn hnp _ (hζt n hn hnp)`. Establish `hk` using `huniq n hn hnp _ _ _ _ he (I.isom n hn hnp a b)`. Establish `hu' : u = W (I.ζ n) ^ (2 * D.EF a b)` using `hφi n hn hnp _ _ hu (by rw [← zpow_natCast, ← zpow_mul, mul_comm (2 * D.EF a b), zpow_mul, zpow_natCast, w1, one_zpow]) (by rw [hk, map_zpow, w2])`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `he'` using `[hu', map_zpow]`. Conclude with `he'`. Introduce `n hn hnp a g hg hρg`. Establish `hgd : 0 < n ∧ n.Coprime p` using `⟨hn, hnp⟩`. Simplify using `only [if_pos hgd]`.
-
-Rewrite using `[← hρg, hL n hn hnp g hg]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transport_alg :
     ∀ {p : ℕ} [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p)

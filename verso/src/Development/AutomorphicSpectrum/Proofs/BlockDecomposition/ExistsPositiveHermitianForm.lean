@@ -15,7 +15,7 @@ def toep {K : Type} [CommRing K] {n : ℕ} (M M' : Matrix (Fin n) (Fin n) K) : M
   Matrix.of fun j k => Matrix.trace (M ^ (k : ℕ) * M' ^ (j : ℕ))
 
 /- English proof (translation)
-Use extensionality with `j k`. Simplify using `only [toep, Matrix.map_apply, Matrix.of_apply]`. Rewrite using `[← Matrix.map_pow, ← Matrix.map_pow, ← Matrix.map_mul]`. Conclude with `AddMonoidHom.map_trace f.toAddMonoidHom _`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toep_map {K L : Type} [CommRing K] [CommRing L] {n : ℕ} (f : K →+* L) (M M' : Matrix (Fin n) (Fin n) K) :
     (toep M M').map f = toep (M.map f) (M'.map f) := by
@@ -25,9 +25,9 @@ theorem toep_map {K L : Type} [CommRing K] [CommRing L] {n : ℕ} (f : K →+* L
   exact AddMonoidHom.map_trace f.toAddMonoidHom _
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[pow_succ', Matrix.mul_assoc, ih, ← Matrix.mul_assoc, h, Matrix.mul_assoc, diagonal_mul_diagonal]`. Use `congr 2`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `i`. Rewrite using `[pow_succ']`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_mul_eq {n : ℕ} {A T : Matrix (Fin n) (Fin n) ℂ} {z : Fin n → ℂ} (h : A * T = T * diagonal z) (k : ℕ) :
     A ^ k * T = T * diagonal (fun i => z i ^ k) := by
@@ -40,31 +40,29 @@ theorem pow_mul_eq {n : ℕ} {A T : Matrix (Fin n) (Fin n) ℂ} {z : Fin n → �
     rw [pow_succ']
 
 /- English proof (translation)
-Use `set B := GlobalTheory.ClassParam.krylov A v with hBdef`. Set `V : Matrix (Fin n) (Fin n) ℂ` to `Matrix.of fun i k => z i ^ (k : ℕ)`. Set `zc : Fin n → ℂ` to `fun i => starRingEnd ℂ (z i)`. Establish `hzz : ∀ i, z i * zc i = 1`. Introduce `i`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [zc]`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, hz i]`. Simplify using the standard rewrite rules. Establish `hDD : diagonal z * diagonal zc = 1`. Rewrite using `[diagonal_mul_diagonal]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[hzz]`. Establish `hBTV : B = T * V`. Use extensionality with `i k`. Establish `h1` using `pow_mul_eq hT (k : ℕ)`. Establish `h2 : ((A ^ (k : ℕ)) *ᵥ v) = (T * diagonal (fun i => z i ^ (k : ℕ))) *ᵥ 1`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hv, Matrix.mulVec_mulVec, h1]`. Simplify using `only [hBdef, GlobalTheory.ClassParam.krylov, Matrix.of_apply]`. Rewrite using `[h2]`. Simplify using `[Matrix.mul_apply, Matrix.mulVec, dotProduct, V, Matrix.diagonal_apply]`. Establish `hdet : T.det * V.det ≠ 0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.det_mul, ← hBTV]`. Conclude with `hB`. Establish `hTd : IsUnit T.det` using `(isUnit_iff_ne_zero).2 (left_ne_zero_of_mul hdet)`. Establish `hVd : IsUnit V.det` using `(isUnit_iff_ne_zero).2 (right_ne_zero_of_mul hdet)`. Establish `hA' : A' * T = T * diagonal zc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc A' A T, hT]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = T * diagonal zc := by rw [hAA, Matrix.one_mul]`. Establish `hTT : T * T⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hTd`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hTT' : T⁻¹ * T = 1` using `Matrix.nonsing_inv_mul _ hTd`. Establish `hG : toep A A' = Vᴴ * V`. Use extensionality with `j k`. Establish `h1 : A ^ (k : ℕ) * A' ^ (j : ℕ) * T = T * diagonal (fun i => z i ^ (k : ℕ) * zc i ^ (j : ℕ))`. Rewrite using `[Matrix.mul_assoc, pow_mul_eq hA', ← Matrix.mul_assoc, pow_mul_eq hT, Matrix.mul_assoc, diagonal_mul_diagonal]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h2 : A ^ (k : ℕ) * A' ^ (j : ℕ) = T * (diagonal (fun i => z i ^ (k : ℕ) * zc i ^ (j : ℕ)) * T⁻¹)`. Rewrite using `[← Matrix.mul_assoc, ← h1, Matrix.mul_assoc, hTT, Matrix.mul_one]`. Simplify using `only [toep, Matrix.of_apply]`. Rewrite using `[h2, Matrix.trace_mul_comm, Matrix.mul_assoc, hTT', Matrix.mul_one, Matrix.trace_diagonal]`. Simplify using `only [Matrix.mul_apply, Matrix.conjTranspose_apply, V, Matrix.of_apply, zc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[mul_comm]`. Establish `hQ : V * B⁻¹ = T⁻¹`. Rewrite using `[hBTV, Matrix.mul_inv_rev, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hVd, Matrix.one_mul]`. Establish `hP : (B⁻¹)ᴴ * toep A A' * B⁻¹ = (T⁻¹)ᴴ * T⁻¹`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hG, ← hQ, Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[hP]`. Establish `hQA : T⁻¹ * A = diagonal z * T⁻¹`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Matrix.PosDef.conjTranspose_mul_self _ (Matrix.mulVec_injective_of_isUnit ?_), ?_⟩` and prove the remaining obligations. Conclude with `(Matrix.isUnit_iff_isUnit_det _).2 (by rw [Matrix.det_nonsing_inv]; simpa using hTd)`. Establish `hDc : (diagonal z)ᴴ * diagonal z = 1`. Rewrite using `[Matrix.diagonal_conjTranspose, diagonal_mul_diagonal]`. Establish `h1 : (fun i => (star z) i * z i) = fun _ => (1 : ℂ)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `fun i => by rw [Pi.star_apply, mul_comm]; exact hzz i`. Rewrite using `[h1]`. Conclude with `diagonal_one`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.conjTranspose_mul]`.
-
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = (T⁻¹)ᴴ * ((diagonal z)ᴴ * diagonal z) * T⁻¹ := by`. Rewrite using `[hQA, Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = (T⁻¹)ᴴ * T⁻¹ := by rw [hDc, Matrix.mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem core {n : ℕ} (A A' T : Matrix (Fin n) (Fin n) ℂ) (z : Fin n → ℂ) (v : Fin n → ℂ) (hAA : A' * A = 1)
     (hT : A * T = T * diagonal z) (hv : v = T *ᵥ 1) (hz : ∀ i, ‖z i‖ = 1)
@@ -141,17 +139,17 @@ theorem core {n : ℕ} (A A' T : Matrix (Fin n) (Fin n) ℂ) (z : Fin n → ℂ)
       _ = (T⁻¹)ᴴ * T⁻¹ := by rw [hDc, Matrix.mul_one]
 
 /- English proof (translation)
-Establish `hnd : A.charpoly.roots.Nodup` using `nodup_roots hs`. Establish `hcard` using `splits_iff_card_roots.1 (IsAlgClosed.splits A.charpoly)`. Establish `hdeg : A.charpoly.natDegree = n`. Rewrite using `[charpoly_natDegree_eq_dim, Fintype.card_fin]`. Use `set s := A.charpoly.roots.toFinset with hs_def`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsc : Fintype.card s = n`. Rewrite using `[Fintype.card_coe, Multiset.toFinset_card_of_nodup hnd, hcard, hdeg]`. Set `e` to `Fintype.equivFinOfCardEq hsc`. Set `z : Fin n → ℂ` to `fun a => ((e.symm a : s) : ℂ)`. Establish `hprod : A.charpoly = ∏ a, (X - C (z a))`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Equiv.prod_comp e.symm (fun r : s => X - C (r : ℂ)), Finset.prod_coe_sort s (fun r => X - C r), Finset.prod_eq_multiset_prod, hs_def, Multiset.toFinset_val, Multiset.dedup_eq_self.2 hnd, prod_multiset_X_sub_C_of_monic_of_roots_card_eq (charpoly_monic _) hcard]`. Establish `hch : (diagonal z).charpoly = A.charpoly` using `by rw [charpoly_diagonal, hprod]`. Take `⟨x, hx⟩` from `GlobalTheory.Orb.IsRegSS.exists_conj (M := diagonal z) (N := A) (by rw [GlobalTheory.Orb.IsRegSS, hch]; exact hs) hch.symm`. Set `w : Fin n → ℂ` to `((x⁻¹ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) *ᵥ v`. Use `⟨(x : Matrix (Fin n) (Fin n) ℂ) * diagonal w, z, ?_, ?_, fun i => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.mul_assoc, hx, Matrix.mul_assoc, Matrix.mul_assoc, diagonal_mul_diagonal, diagonal_mul_diagonal]`. Use `congr 2`. Use extensionality with `i`. Conclude with `mul_comm _ _`. Establish `h1 : diagonal w *ᵥ (1 : Fin n → ℂ) = w`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `i`. Simplify using `[Matrix.mulVec_diagonal]`. Rewrite using `[← Matrix.mulVec_mulVec, h1]`. Simplify using `only [w]`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `: (e.symm i : ℂ) ∈ s` using `(e.symm i).2`. Conclude with `Multiset.mem_toFinset.1 this`.
+A detailed English derivation is pending.
 -/
 theorem exists_diag {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (hs : A.charpoly.Separable) (v : Fin n → ℂ) :
     ∃ (T : Matrix (Fin n) (Fin n) ℂ) (z : Fin n → ℂ),
@@ -189,25 +187,21 @@ theorem exists_diag {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (hs : A.charpoly.
     exact Multiset.mem_toFinset.1 this
 
 /- English proof (translation)
-Introduce `E _ _ _ n N hs hr`. Use `set c : E →+* E := (IsCMField.complexConj E).toRingEquiv.toRingHom with hc`. Take `⟨v, hv⟩` from `GlobalTheory.ClassParam.exists_cyclic_field N.val hs`. Use `set B := GlobalTheory.ClassParam.krylov N.val v with hB`. Use `set N' : Matrix (Fin n) (Fin n) E := ((N⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) with hN'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hN'N : N' * N.val = 1`. Rewrite using `[hN', ← Units.val_mul, inv_mul_cancel]`. Both sides reduce to the same expression. Establish `hcT : ∀ (τ : E →+* ℂ) (M : Matrix (Fin n) (Fin n) E), (cT c M).map τ = (M.map τ)ᴴ`. Introduce `τ M`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `i j`. Simplify using `only [cT, Matrix.map_apply, Matrix.transpose_apply, Matrix.conjTranspose_apply]`. Conclude with `IsCMField.complexEmbedding_complexConj E τ (M j i)`. Establish `hinv : ∀ τ : E →+* ℂ, (B⁻¹).map τ = (B.map τ)⁻¹`. Introduce `τ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Establish `h1 : (B⁻¹).map τ * B.map τ = 1`. Rewrite using `[← Matrix.map_mul, Matrix.nonsing_inv_mul _ ((isUnit_iff_ne_zero).2 hv)]`. Simplify using the standard rewrite rules. Conclude with `(Matrix.inv_eq_left_inv h1).symm`. Set `H : Matrix (Fin n) (Fin n) E` to `cT c B⁻¹ * toep N.val N' * B⁻¹`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hkey : ∀ τ : E →+* ℂ, (H.map τ).PosDef ∧ (N.val.map τ)ᴴ * H.map τ * N.val.map τ = H.map τ`. Introduce `τ`. Establish `hHτ : H.map τ = ((GlobalTheory.ClassParam.krylov (N.val.map τ) (τ ∘ v))⁻¹)ᴴ * toep (N.val.map τ) (N'.map τ) * (GlobalTheory.ClassParam.krylov (N.val.map τ) (τ ∘ v))⁻¹`. Simplify using `only [H]`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, hcT, toep_map, hinv, hB, GlobalTheory.ClassParam.krylov_map]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsτ : (N.val.map τ).charpoly.Separable`. Rewrite using `[Matrix.charpoly_map]`. Conclude with `hs.map`. Take `⟨T, z, h1, h2, h3⟩` from `exists_diag (N.val.map τ) hsτ (τ ∘ v)`. Establish `hz : ∀ i, ‖z i‖ = 1` using `fun i => hr τ (z i) (by rw [← Matrix.charpoly_map]; exact h3 i)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hdet : (GlobalTheory.ClassParam.krylov (N.val.map τ) (τ ∘ v)).det ≠ 0`. Rewrite using `[← GlobalTheory.ClassParam.krylov_map, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `(map_ne_zero τ).2 hv`. Rewrite using `[hHτ]`. Conclude with `core _ _ T z _ (by rw [← Matrix.map_mul, hN'N]; simp) h1 h2 hz hdet`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hhermτ : ∀ τ : E →+* ℂ, (cT c H).map τ = H.map τ` using `fun τ => by`. Rewrite using `[hcT]`. Conclude with `(hkey τ).1.isHermitian.eq`. Take `⟨τ₀⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Establish `hinj : Function.Injective (fun M : Matrix (Fin n) (Fin n) E => M.map τ₀)` using `Matrix.map_injective τ₀.injective`.
-
-Use `⟨H, ?_, hinj (hhermτ τ₀), ?_, fun τ => (hkey τ).1⟩` and prove the remaining obligations. Establish `h` using `(hkey τ₀).1.det_pos.ne'`. Rewrite `h` using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `(isUnit_iff_ne_zero).2 (fun h0 => h (by rw [h0, map_zero]))`. Express the relevant statement in the definitionally equal form `cT c N.val * H * N.val = H`.
-
-Apply `hinj` to reduce the goal to its premises. Simplify using `only`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, hcT]`. Conclude with `(hkey τ₀).2`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_posDef_herm : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (N : GL (Fin n) E),
   N.val.charpoly.Separable → (∀ τ : E →+* ℂ, ∀ z ∈ (N.val.charpoly.map τ).roots, ‖z‖ = 1) →

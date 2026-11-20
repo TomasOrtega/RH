@@ -23,9 +23,9 @@ def ExpZeroAlt : Prop := _root_.GlobalTheory.BigOn.Exp.TwistConditions fun Fm x 
   ∀ (n : ℕ) (c : Fin n → ℂ) (g : Fin n → NX.FmK p.Sx ((j : ℕ) + 1)),
     ∑ k, c k • evW p.nexp p.v₀ j (g k).val = 0 → ∑ k, τ (c k) • evW p.nexp p.v₀ j (g k).val = 0
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.BigOn.Exp.ExpZeroAlt _root_.GlobalTheory.BigOn.Exp.TwistConditions _root_.GlobalTheory.BigOn.AtPtsAlt`. Use `⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm CH _ _ => ⟨0, fun x hx _ i p hr hm w _ j τ hτ n c g h0 => ?_⟩⟩⟩` and prove the remaining obligations. Take `⟨Z⟩` from `hm.2.2.series`. Establish `hU : p.R.toRealDat.LUnif` using `hr.prim.unif`. Establish `hW : p.R.toRealDat.models_HW` using `p.charW.base.models.HW`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK : (p.Sx.A ((j : ℕ) + 1)).IsKsForm` using `GlobalTheory.isKsForm_of_formsIso _ _ (p.nexp.fi j) (p.fw.ks j)`. Conclude with `conj_sum_zero _ _ _ _ _ _ _ _ _ _ p.nexp p.v₀ j hU hW (Z.vec j) hK τ hτ n c g h0`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem bigOn_expZero : _root_.GlobalTheory.BigOn.Exp.ExpZeroAlt := by
   unfold _root_.GlobalTheory.BigOn.Exp.ExpZeroAlt _root_.GlobalTheory.BigOn.Exp.TwistConditions _root_.GlobalTheory.BigOn.AtPtsAlt

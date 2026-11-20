@@ -21,7 +21,7 @@ variable {F : Type} [Field F] {K : Type} [Fintype K] [LinearOrder K] {ι : K →
   [∀ k, LinearOrder (ι k)]
 
 /- English proof (translation)
-Substitute `hZ hB` using the available equality. Conclude with `⟨rfl, Iff.rfl⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem quot_congr {X : Type} [AddCommGroup X] [Module F X] {Z Z' B B' : Submodule F X} (hZ : Z = Z')
     (hB : B = B') :
@@ -31,7 +31,7 @@ theorem quot_congr {X : Type} [AddCommGroup X] [Module F X] {Z Z' B B' : Submodu
   exact ⟨rfl, Iff.rfl⟩
 
 /- English proof (translation)
-Establish `hZ : KH.cechZc ι 𝓜 c n = EulerSES.cyc (fun n => KH.cechCc ι 𝓜 c n) (fun n => (KH.cechD F ι M n).restrictScalars F) n`. Simplify using `only [KH.cechZc, EulerSES.cyc, LinearMap.ker_restrictScalars]`. Establish `hB : KH.cechBc ι 𝓜 c n = EulerSES.bnd (fun n => KH.cechCc ι 𝓜 c n) (fun n => (KH.cechD F ι M n).restrictScalars F) n`. Apply the tactic sequence `cases n <;> rfl`. Conclude with `quot_congr hZ hB`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem cechHc_eq_coh {M : Type} [AddCommGroup M] [Module (MRingOver F ι) M] [Module F M]
     [IsScalarTower F (MRingOver F ι) M] (𝓜 : (K → ℤ) → Submodule F M) (c : K → ℤ) (n : ℕ) :
@@ -48,9 +48,9 @@ theorem cechHc_eq_coh {M : Type} [AddCommGroup M] [Module (MRingOver F ι) M] [M
   exact quot_congr hZ hB
 
 /- English proof (translation)
-Establish `hI : ∀ I : KH.Cell K ι (∑ k, (Fintype.card (ι k) - 1) + 1), False` using `fun I => by`. Establish `h1 : ∑ k, ((I.1 k).card - 1) ≤ ∑ k, (Fintype.card (ι k) - 1)` using `Finset.sum_le_sum fun k _ => Nat.sub_le_sub_right (Finset.card_le_univ _) 1`. Use `I.2.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `⟨fun a b => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ a`. Take `⟨b, rfl⟩` from `Submodule.Quotient.mk_surjective _ b`. Use `congr 1`. Conclude with `Subtype.ext (funext fun I => (hI I).elim)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem coh_top {M : Type} [AddCommGroup M] [Module (MRingOver F ι) M] [Module F M]
     [IsScalarTower F (MRingOver F ι) M] (𝓜 : (K → ℤ) → Submodule F M) (c : K → ℤ) :
@@ -73,41 +73,35 @@ set_option maxHeartbeats 1600000 in
 open EulerVar in
 
 /- English proof (translation)
-Introduce `F _ K _ _ ι _ _ V v hV hfV hfW hfU m`. Use `set x : MvPolynomial (Σ k, ι k) F := X v with hx`. Use `set W := V.colon (Ideal.span {x}) with hW`. Use `set U := V ⊔ Ideal.span {x} with hU`. Use `set e : K → ℤ := Pi.single v.1 1 with he`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hWV : W ≤ Submodule.comap (LinearMap.mulLeft (MvPolynomial (Σ k, ι k) F) x) V` using `fun p hp => by`. Rewrite `hp` using `[hW, Submodule.mem_colon_span_singleton, smul_eq_mul]`. Rewrite using `[Submodule.mem_comap, LinearMap.mulLeft_apply, mul_comm]`. Conclude with `hp`. Set `g : (MvPolynomial (Σ k, ι k) F ⧸ W) →ₗ[MvPolynomial (Σ k, ι k) F] (MvPolynomial (Σ k, ι k) F ⧸ V)` to `Submodule.mapQ W V (LinearMap.mulLeft _ x) hWV`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `h : (MvPolynomial (Σ k, ι k) F ⧸ V) →ₗ[MvPolynomial (Σ k, ι k) F] (MvPolynomial (Σ k, ι k) F ⧸ U)` to `Submodule.factor (le_sup_left : V ≤ U)`. Establish `hg_mk : ∀ p, g (Ideal.Quotient.mk W p) = Ideal.Quotient.mk V (x * p)` using `fun p => rfl`. Establish `hh_mk : ∀ p, h (Ideal.Quotient.mk V p) = Ideal.Quotient.mk U p` using `fun p => rfl`. Establish `hinj : Function.Injective g`. Use `(injective_iff_map_eq_zero g).2 fun a ha => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨p, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Rewrite `ha` using `[hg_mk, Ideal.Quotient.eq_zero_iff_mem]`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, hW, Submodule.mem_colon_span_singleton, smul_eq_mul, mul_comm]`. Conclude with `ha`. Establish `hsurj : Function.Surjective h` using `fun b => by`.
+Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨p, rfl⟩` from `Ideal.Quotient.mk_surjective b`. Conclude with `⟨Ideal.Quotient.mk V p, hh_mk p⟩`. Establish `hex : LinearMap.range g = LinearMap.ker h`. Use extensionality with `b`. Take `⟨q, rfl⟩` from `Ideal.Quotient.mk_surjective b`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[LinearMap.mem_range, LinearMap.mem_ker, hh_mk, Ideal.Quotient.eq_zero_iff_mem]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha⟩`. Take `⟨p, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Rewrite `ha` using `[hg_mk, Ideal.Quotient.eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h1 : x * p ∈ U` using `Ideal.mem_sup_right (Ideal.mul_mem_right p _ (Ideal.subset_span rfl))`. Establish `h2 : x * p - q ∈ U` using `Ideal.mem_sup_left ha`. Use `U.sub_mem h1 h2` as an intermediate fact. Rewrite `this` using `[sub_sub_cancel]`. Then use the resulting hypothesis. Introduce `hq`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 hq`. Take `⟨r, rfl⟩` from `Ideal.mem_span_singleton'.1 hb`. Use `⟨Ideal.Quotient.mk W r, ?_⟩` and prove the remaining obligations. Rewrite using `[hg_mk, Ideal.Quotient.eq]`. Establish `: x * r - (a + r * x) = -a` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `V.neg_mem ha`. Establish `hVW : NumbersDVR.IsMultiHomogIdeal W` using `snapper_colon_X hV v`. Establish `hVU : NumbersDVR.IsMultiHomogIdeal U` using `FieldNumbers.isMultiHomogIdeal_sup_span hV (isWeightedHomogeneous_X F (NumbersDVR.blockWeight ι) v)`. Establish `grV` using `HilbertSamuel.QuotPartGraded.proof F K ι V ((NumbersDVR.Objects.isMultiHomogIdeal_iff V).1 hV)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Establish `grW` using `HilbertSamuel.QuotPartGraded.proof F K ι W ((NumbersDVR.Objects.isMultiHomogIdeal_iff W).1 hVW)`. Establish `grU` using `HilbertSamuel.QuotPartGraded.proof F K ι U ((NumbersDVR.Objects.isMultiHomogIdeal_iff U).1 hVU)`. Establish `grW'` using `HilbertSamuel.H1VanishingDevissage.isMGraded_shift grW (-e)`. Establish `hxe : IsWeightedHomogeneous (HilbertSamuel.QuotPartGraded.blockWeight ι) x e`. Use `isWeightedHomogeneous_X F (HilbertSamuel.QuotPartGraded.blockWeight ι) v` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `k`. Simplify using `[HilbertSamuel.QuotPartGraded.blockWeight, he, Pi.single_apply]`. Establish `hg : KH.IsMGradedMap F ι (fun d => quotPart F W (d + -e)) (quotPart F V) g`. Introduce `c y hy`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `y ∈ quotPart F W (c + -e) at hy`. Rewrite `hy`, the goal using `[HilbertSamuel.QuotPartGraded.quotPart_eq]`. Take `⟨p, hp, rfl⟩` from `Submodule.mem_map.1 hy`. Use `Submodule.mem_map.2 ⟨x * p, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[mem_weightedHomogeneousSubmodule]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hc : c = e + (c + -e)` using `by abel`. Rewrite using `[hc]`. Conclude with `hxe.mul hp`. Establish `hh : KH.IsMGradedMap F ι (quotPart F V) (quotPart F U) h`. Introduce `c y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite `hy`, the goal using `[HilbertSamuel.QuotPartGraded.quotPart_eq]`. Take `⟨p, hp, rfl⟩` from `Submodule.mem_map.1 hy`. Conclude with `Submodule.mem_map.2 ⟨p, hp, rfl⟩`. Establish `hCA : ∀ n, KH.cechCc ι (fun d => quotPart F W (d + -e)) m n = KH.cechCc ι (quotPart F W) (m - e) n`. Introduce `n`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[HilbertSamuel.H1VanishingDevissage.cechCc_shift, sub_eq_add_neg]`. Establish `key` using `hE F (fun n => CechC F ι (MvPolynomial (Σ k, ι k) F ⧸ W) n) (fun n => CechC F ι (MvPolynomial (Σ k, ι k) F ⧸ V) n) (fun n => CechC F ι (MvPolynomial (Σ k, ι k) F ⧸ U) n) (fun n => KH.cechCc ι (quotPart F W) (m - e) n) (fun n => KH.cechCc ι (quotPart F V) m n) (fun n => KH.cechCc …`. Take `⟨z, hz, hzy⟩` from `KHCechSES.cechMap_exact grW' grV hg hinj hex hy h0`. Conclude with `⟨z, (hCA n) ▸ hz, hzy⟩)`. Use the proof step `(fun n y hy => KHCechSES.cechMap_lift grV grU hh hsurj hy)`.
-
-Use the proof step `(fun n => ((cechHc_eq_coh _ _ n).2).1 (hfW (m - e) n))`. Use the proof step `(fun n => ((cechHc_eq_coh _ _ n).2).1 (hfV m n))`. Use the proof step `(fun n => ((cechHc_eq_coh _ _ n).2).1 (hfU m n))`. Use the proof step `(coh_top _ _)`. Establish `eA : ∀ n, (Module.finrank F (EulerSES.coh (fun n => KH.cechCc ι (quotPart F W) (m - e) n) (fun n => (KH.cechD F ι (MvPolynomial (Σ k, ι k) F ⧸ W) n).restrictScalars F) n) : ℤ) = Module.finrank F (cechHc ι (quotPart F W) (m - e) n)` using `fun n => by rw [(cechHc_eq_coh _ _ n).1]`.
-
-Establish `eB : ∀ n, (Module.finrank F (EulerSES.coh (fun n => KH.cechCc ι (quotPart F V) m n) (fun n => (KH.cechD F ι (MvPolynomial (Σ k, ι k) F ⧸ V) n).restrictScalars F) n) : ℤ) = Module.finrank F (cechHc ι (quotPart F V) m n)` using `fun n => by rw [(cechHc_eq_coh _ _ n).1]`. Establish `eC : ∀ n, (Module.finrank F (EulerSES.coh (fun n => KH.cechCc ι (quotPart F U) m n) (fun n => (KH.cechD F ι (MvPolynomial (Σ k, ι k) F ⧸ U) n).restrictScalars F) n) : ℤ) = Module.finrank F (cechHc ι (quotPart F U) m n)` using `fun n => by rw [(cechHc_eq_coh _ _ n).1]`. Simplify using `only [eA, eB, eC] at key`. Establish `key'` using `congrArg (Int.cast : ℤ → ℚ) key`. Move the coercions through the operations in `at key'`.
-
-Unfold `eulerChar`. Conclude with `key'`.
+Move the embeddings inside the algebraic operations. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem EulerVar.proof (hSq : KH.CechDSqStatement) (hE : EulerSES.Statement) : EulerVar.Statement := by
   classical

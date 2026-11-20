@@ -15,11 +15,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.RowCombGood
 
 /- English proof (translation)
-Use `⟨0, fun ε CF _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F s ch _ _ => ?_⟩⟩` and prove the remaining obligations. Introduce `C hC c _`. Establish `hψ : IsStdChar D ch.W.ψ (-1)` using `ch.W.ψ_std`. Establish `hL` using `s.core.lev`. Use `⟨fun j hje hj => ?_, fun i => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨k, hk⟩` from `D.R.m_even`. Take `⟨l, hl⟩` from `hje`. Take `⟨hv, hs⟩` from `hC j ⟨l, hl⟩ hj`. Establish `h1 : IsBiTheta ch.W.ψ _ _ _ (C j)` using `GlobalTheory.FrComb.biTheta_of_vac (node_isV ch.G hL (X := .top j) (show j ≤ D.R.m by omega)).sd (node_isV ch.G hL (X := .top (j + 1)) (show j + 1 ≤ D.R.m by omega)).sd (node_isV ch.G hL (X := .top (j + 1 + 1)) (show j + 1 + 1 ≤ D.R.m by omega)).sd hv hs`. Conclude with `GlobalTheory.FrCombAny.biTheta_biComb D _ hψ _ _ _ _ h1 _ _`.
-
-Conclude with `GlobalTheory.CombThetaAny.main D _ hψ _ _ _ _ (ch.rm.vX_is i D.R.m i.2 le_rfl).2.theta`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem comb_good : Big fun {D} _ _ _ _ _ _ _ _ _ _ _ ch => ∀ C, IsRealFam ch.W C → ∀ c : Combs ch.G, (∀ j, j < D.R.m → IsFinComb (c.1 j)) →
     Good ch.W (combC ch.W c C) (combR ch.rm c) := by

@@ -32,19 +32,19 @@ def fixS (V : Submodule ℂ (Sm E N)) (L : Subgroup (GL (Fin N) (Af E))) : Submo
   smul_mem' := fun c x hx => ⟨V.smul_mem c hx.1, fun u hu => by rw [map_smul, hx.2 u hu]⟩
 
 /- English proof (translation)
-The claim follows from `mem_l2Sub_of_isAutForm μ (hV.aut x hx) (hV.sqInt x hx)`.
+A detailed English derivation is pending.
 -/
 theorem mem_l2_of_discrete (μ : Measure (GA E N)) [μ.IsHaarMeasure] {V : Submodule ℂ (Sm E N)} (hV : IsDiscrete V) {x : Sm E N}
     (hx : x ∈ V) : x ∈ squareIntegrableSmoothSubmoduleGL μ := mem_l2Sub_of_isAutForm μ (hV.aut x hx) (hV.sqInt x hx)
 
 /- English proof (translation)
-The claim follows from `ContAut.continuous_of_isOpen_stab E N x (hV.aut x hx).level`.
+A detailed English derivation is pending.
 -/
 theorem cont_of_mem {V : Submodule ℂ (Sm E N)} (hV : IsDiscrete V) {x : Sm E N} (hx : x ∈ V) : Continuous x.1 :=
   ContAut.continuous_of_isOpen_stab E N x (hV.aut x hx).level
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `re_l2Form_pos μ (mem_l2_of_discrete μ hV hx) (cont_of_mem hV hx) hne` as an intermediate fact. Simplify using `[l2Form, h0] at this`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem eq_zero_of_l2Map_eq_zero_of_isDiscrete (μ : Measure (GA E N)) [μ.IsHaarMeasure] {V : Submodule ℂ (Sm E N)} (hV : IsDiscrete V) {x : Sm E N}
     (hx : x ∈ V) (h0 : l2Map μ x = 0) : x = 0 := by
@@ -67,15 +67,13 @@ def stabS (x : Sm E N) : Subgroup (GL (Fin N) (Af E)) where
     rwa [ha] at h
 
 /- English proof (translation)
-Take `⟨L, hLS, hLo, hLc⟩` from `GlobalTheory.T.exists_open_compact_subgroup_le E N (stabS x) (hV.aut x hx).level`. Apply the tactic sequence `have hunit : ∀ (k : Kinf E N) {W W' : Submodule ℂ (Sm E N)}, IsDiscrete W → IsDiscrete W' → ∀ a ∈ W, ∀ b ∈ W', ⟪l2Map μ (cptRep E N k a), l2Map μ (cptRep E N k b)⟫_ℂ = ⟪l2Map μ a, l2Map μ b⟫_ℂ := fun k _ _ h h' a ha b hb => (GlobalTheory.T.right_translate_isometry E N μ _ a b (me …`. Use `letI : MeasurableSpace (Kinf E N) := borel _`. Use `haveI : BorelSpace (Kinf E N) := ⟨rfl⟩`. Use `haveI : CompactSpace (Kinf E N) := GlobalTheory.KinfCompactness.compactSpace_Kinf E N`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `key` using `GlobalTheory.T.representation_unitary_average (Measure.haar : Measure (Kinf E N)) (cptRep E N) (l2Map μ) (fixS V L) (fixS V' L) (fun g : GA E N => (LinearMap.proj g).comp (Sm E N).subtype) (fun k a ha b hb => hunit k hV' hV a ha.1 b hb.1) (fun k a ha b hb => hunit k hV' hV' a ha. …`. Take `⟨A, h1, h2, h3, h4, h5⟩` from `GlobalTheory.T.exists_finite_dim_compact_stable E N V hV L a ha.1 ha.2`. Conclude with `⟨A, h1, h2, fun b hb => h3 b hb, h4, h5⟩)`. Use the proof step `(fun a ha => by`. Take `⟨A, h1, h2, h3, h4, h5⟩` from `GlobalTheory.T.exists_finite_dim_compact_stable E N V' hV' L a ha.1 ha.2`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨A, h1, h2, fun b hb => h3 b hb, h4, h5⟩)`. Use the proof step `(fun W hW => by haveI := GlobalTheory.CompanionTheory.AdmDiscFin.admissible_discrete_spaces E N L W hLo hW V' hV'`. Use `Submodule.finiteDimensional_of_le (Submodule.span_mono (t := {φ | φ ∈ V' ∧ TypeB L W φ}) ?_)` and prove the remaining obligations. Introduce and unpack `a ⟨ha, hW'⟩`. Conclude with `⟨ha.1, fun u hu g => congrFun (congrArg Subtype.val (ha.2 u hu)) g, hW'⟩)`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hfx : ∀ u ∈ L, finRep E N u x = x` using `fun u hu => hLS hu`. Take `⟨y, hy, hyz⟩` from `key x ⟨hx, hfx⟩`. Use `⟨y, hy.1, fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨z', hz', hfix, e⟩` from `GlobalTheory.T.exists_invariant_projection E N μ V' hV' L hLc z hz`. Rewrite using `[e x (mem_l2_of_discrete μ hV hx) hfx, e y (mem_l2_of_discrete μ hV' hy.1) hy.2]`.
-
-Conclude with `hyz z' ⟨hz', hfix⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_repr (μ : Measure (GA E N)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant] {V V' : Submodule ℂ (Sm E N)}
     (hV : IsDiscrete V) (hV' : IsDiscrete V') {x : Sm E N} (hx : x ∈ V) :
@@ -110,17 +108,17 @@ theorem exists_repr (μ : Measure (GA E N)) [μ.IsHaarMeasure] [μ.IsMulRightInv
   exact hyz z' ⟨hz', hfix⟩
 
 /- English proof (translation)
-Consider the cases of `o with`. Consider the case `fin k`. Use `⟨.fin k⁻¹, fun {V W} hV hW x hx y hy => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `have h := (GlobalTheory.T.right_translate_isometry E N μ (finGL E N k) (act (.fin k⁻¹) x) y (mem_l2_of_discrete μ hV (hV.stable _ x hx)) (mem_l2_of_discrete μ hW hy)).2`. Rewrite using `[← h]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Express the relevant statement in the definitionally equal form `x = finRep E N k (finRep E N k⁻¹ x)`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Consider the case `cpt k`. Use `⟨.cpt k⁻¹, fun {V W} hV hW x hx y hy => ?_⟩` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `have h := (GlobalTheory.T.right_translate_isometry E N μ (infGL E N (Unitary.toUnits k)) (act (.cpt k⁻¹) x) y (mem_l2_of_discrete μ hV (hV.stable _ x hx)) (mem_l2_of_discrete μ hW hy)).2`. Rewrite using `[← h]`. Use `congr 2`. Express the relevant statement in the definitionally equal form `x = cptRep E N k (cptRep E N k⁻¹ x)`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Consider the case `lie X`. Use `⟨.lie (-X), fun {V W} hV hW x hx y hy => ?_⟩` and prove the remaining obligations. Establish `hxX` using `hV.stable (.lie X) x hx`. Establish `hyX` using `hW.stable (.lie X) y hy`. Establish `h` using `GlobalTheory.T.lie_skew_adjoint_l2' E N μ X x y (cont_of_mem hV hx) (cont_of_mem hW hy) (cont_of_mem hV hxX) (cont_of_mem hW hyX) (mem_l2_of_discrete μ hV hx) (mem_l2_of_discrete μ hW hy) (mem_l2_of_discrete μ hV hxX) (mem_l2_of_discrete μ hW hyX)`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : act (.lie (-X)) x = - lie E N X x`. Express the relevant statement in the definitionally equal form `lie E N (-X) x = _`. Rewrite using `[map_neg]`. Both sides reduce to the same expression. Rewrite using `[e, map_neg, inner_neg_left]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem exists_adj (μ : Measure (GA E N)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant] (o : Op E N) :
     ∃ o' : Op E N, ∀ {V W : Submodule ℂ (Sm E N)}, IsDiscrete V → IsDiscrete W → ∀ x ∈ V, ∀ y ∈ W,
@@ -153,29 +151,27 @@ theorem exists_adj (μ : Measure (GA E N)) [μ.IsHaarMeasure] [μ.IsMulRightInva
     exact h
 
 /- English proof (translation)
-Establish `uniq : ∀ a ∈ V', ∀ b ∈ V', (∀ z ∈ V', ⟪l2Map μ z, l2Map μ a⟫_ℂ = ⟪l2Map μ z, l2Map μ b⟫_ℂ) → a = b`. Introduce `a ha b hb h`. Establish `h1` using `h (a - b) (V'.sub_mem ha hb)`. Rewrite `h1` using `[← sub_eq_zero, ← inner_sub_right, ← map_sub, inner_self_eq_zero]`. Conclude with `sub_eq_zero.1 (eq_zero_of_l2Map_eq_zero_of_isDiscrete μ hV' (V'.sub_mem ha hb) h1)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Use `choose T hTm hT using fun x : V => exists_repr μ hV hV' x.2`. Set `Tl : V →ₗ[ℂ] V'` to `{ toFun := fun x => ⟨T x, hTm x⟩ map_add' := fun x y => Subtype.ext (uniq _ (hTm _) _ (V'.add_mem (hTm x) (hTm y)) fun z hz => by`. Rewrite using `[← hT _ z hz]`. Simplify using `only [Submodule.coe_add, map_add, inner_add_right]`. Rewrite using `[← hT x z hz, ← hT y z hz])`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use the proof step `map_smul' := fun c x => Subtype.ext (uniq _ (hTm _) _ (V'.smul_mem c (hTm x)) fun z hz => by`. Rewrite using `[← hT _ z hz]`. Simplify using `only [Submodule.coe_smul, map_smul, inner_smul_right, RingHom.id_apply]`. Rewrite using `[← hT x z hz]) }`. Establish `hTl : ∀ x : V, (Tl x).1 = T x` using `fun _ => rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `eqv : ∀ (o : Op E N) (x y : V), y.1 = act o x.1 → (Tl y).1 = act o (Tl x).1`. Introduce `o x y hxy`. Take `⟨o', ho'⟩` from `exists_adj μ o`. Use `uniq _ (hTm y) _ (hV'.stable o _ (hTm x)) fun z hz => ?_` and prove the remaining obligations. Rewrite using `[hTl, ← hT y z hz, hxy, ho' hV' hV z hz _ x.2, ho' hV' hV' z hz _ (hTm x), hT x _ (hV'.stable o' z hz)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hnz : Tl ≠ 0`. Introduce `h0`. Apply `hne` to reduce the goal to its premises. Establish `h1 : T ⟨x₀, hx₀⟩ = 0` using `congrArg Subtype.val (LinearMap.congr_fun h0 ⟨x₀, hx₀⟩)`. Rewrite using `[hT ⟨x₀, hx₀⟩ y₀ hy₀, h1, map_zero, inner_zero_right]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hker : LinearMap.ker Tl = ⊥`. Establish `hst : IsStable ((LinearMap.ker Tl).map V.subtype)`. Introduce and unpack `o _ ⟨x, hx, rfl⟩`. Use `⟨⟨_, hV.stable o _ x.2⟩, ?_, rfl⟩` and prove the remaining obligations. Use `Subtype.ext ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `hx` using `[SetLike.mem_coe, LinearMap.mem_ker]`. Rewrite using `[eqv o x _ rfl, hx]`. Simplify using the standard rewrite rules. Break down `hV.irred _ (Submodule.map_subtype_le _ _) hst with h | h` into its components or cases. Conclude with `Submodule.map_injective_of_injective V.injective_subtype (by rwa [Submodule.map_bot])`.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-It suffices to derive a contradiction. Use `hnz (LinearMap.ext fun x => ?_)` and prove the remaining obligations. Establish `: x.1 ∈ (LinearMap.ker Tl).map V.subtype` using `by rw [h]; exact x.2`. Take `⟨x', hx', e⟩` from `this`. Take `rfl : x' = x` from `Subtype.ext e`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `hx'`. Establish `hran : LinearMap.range Tl = ⊤`. Establish `hst : IsStable ((LinearMap.range Tl).map V'.subtype)`. Introduce and unpack `o _ ⟨_, ⟨x, rfl⟩, rfl⟩`. Conclude with `⟨Tl ⟨_, hV.stable o _ x.2⟩, ⟨_, rfl⟩, eqv o x _ rfl⟩`.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `hV'.irred _ (Submodule.map_subtype_le _ _) hst with h | h` into its components or cases. It suffices to derive a contradiction. Establish `h1 : LinearMap.range Tl = ⊥` using `Submodule.map_injective_of_injective V'.injective_subtype (by rwa [Submodule.map_bot])`. Conclude with `hnz (LinearMap.range_eq_bot.1 h1)`. Rewrite using `[eq_top_iff]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y _`. Establish `: y.1 ∈ (LinearMap.range Tl).map V'.subtype` using `by rw [h]; exact y.2`. Take `⟨y', hy', e⟩` from `this`. Take `rfl : y' = y` from `Subtype.ext e`. Conclude with `hy'`.
-
-Use `⟨LinearEquiv.ofBijective Tl ⟨LinearMap.ker_eq_bot.1 hker, LinearMap.range_eq_top.1 hran⟩, ?_⟩` and prove the remaining obligations. Introduce `o x y hxy`. Conclude with `eqv o x y hxy`.
+A detailed English derivation is pending.
 -/
 theorem isoV_of_ne (μ : Measure (GA E N)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant] {V V' : Submodule ℂ (Sm E N)}
     (hV : IsDiscrete V) (hV' : IsDiscrete V') {x₀ y₀ : Sm E N} (hx₀ : x₀ ∈ V) (hy₀ : y₀ ∈ V')
@@ -248,9 +244,7 @@ end GlobalTheory.CompanionTheory.FinDisc.Orth
 open GlobalTheory.CompanionTheory.FinDisc.Orth in
 
 /- English proof (translation)
-Introduce `E _ _ _ N mG bG μ _ F hF V V' hV hV' hno φ hφ ψ hψ`. Take `rfl : mG = borel _` from `bG.measurable_eq`. Use `haveI := GlobalTheory.T.haar_right_invariant E N μ`. Rewrite using `[GlobalTheory.T.integral_eq_l2_inner E N μ F hF φ ψ (mem_l2_of_discrete μ hV hφ) (mem_l2_of_discrete μ hV' hψ)]`. Assume the negation of the conclusion as `hne`.
-
-Conclude with `hno (isoV_of_ne μ hV hV' hφ hψ hne)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.FinDisc.integral_eq_zero_of_not_isoV :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (N : ℕ) [MeasurableSpace (GA E N)] [BorelSpace (GA E N)]

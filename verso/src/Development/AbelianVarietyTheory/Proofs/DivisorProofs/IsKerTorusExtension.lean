@@ -48,7 +48,7 @@ def WtGeneric : Prop :=
           t.left.appTop.hom (charUnit S X χ).val * (g.left.appLE _ ⊤ h₂).hom f → Wt u V f χ
 
 /- English proof (translation)
-The claim follows from `have := h.2.2.2.2.1 ⟨h.2.1, h.2.2.1, h.2.2.2.1, inferInstance, h.2.2.2.2.2.1⟩`.
+A detailed English derivation is pending.
 -/
 theorem isKer_of_isQuot {S : Scheme.{0}} {T G B : Over S} [GrpObj T] [GrpObj G] [GrpObj B] {u : T ⟶ G} {q : G ⟶ B}
     (h : IsQuot u q) : IsKer u q :=
@@ -56,14 +56,14 @@ theorem isKer_of_isQuot {S : Scheme.{0}} {T G B : Over S} [GrpObj T] [GrpObj G] 
   ⟨h.2.1, h.2.2.1, h.2.2.2.1, inferInstance, h.2.2.2.2.2.1⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨T.q_hom, T.q_flat, T.q_surjective, T.q_quasiCompact, T.isKernel⟩`.
+Supply the required witnesses or components.
 -/
 theorem isKer_torusExtension {K : Type} [Field K] {G : Over (Sp K)} [GrpObj G] (T : TorusExtension G) :
     letI := T.addCommGroup; letI := T.grpB; IsKer T.i T.q :=
   ⟨T.q_hom, T.q_flat, T.q_surjective, T.q_quasiCompact, T.isKernel⟩
 
 /- English proof (translation)
-Take `⟨h₁, h₂, h₃, h₄, h₅⟩` from `h`. Establish `: IsIso e.hom.left` using `inferInstanceAs (IsIso ((Over.forget S).map e.hom))`. Use `⟨he, by rw [Over.comp_left]; infer_instance, by rw [Over.comp_left]; infer_instance, by rw [Over.comp_left]; infer_instance, h₅.of_iso (Iso.refl _) (Iso.refl _) (Iso.refl _) e (by simp) (by simp) (by simp) ?_⟩` and prove the remaining obligations. Rewrite using `[Iso.refl_hom, Category.id_comp, ← IsMonHom.one_hom q, Category.assoc, IsMonHom.one_hom]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsKer.comp_iso {S : Scheme.{0}} {T G B B' : Over S} [GrpObj G] [GrpObj B] [GrpObj B'] {u : T ⟶ G} {q : G ⟶ B}
     (h : IsKer u q) (e : B ≅ B') (he : IsMonHom (q ≫ e.hom)) : IsKer u (q ≫ e.hom) := by
@@ -75,15 +75,15 @@ theorem IsKer.comp_iso {S : Scheme.{0}} {T G B B' : Over S} [GrpObj G] [GrpObj B
   rw [Iso.refl_hom, Category.id_comp, ← IsMonHom.one_hom q, Category.assoc, IsMonHom.one_hom]
 
 /- English proof (translation)
-Take `⟨e, he, heF⟩` from `grpPullback_iso hφ (isGrpPullback_pullback G f)`. Take `⟨d, hd, hdF⟩` from `grpPullback_iso (isGrpPullback_pullback B f) hψ`. Take `⟨_, _, _, _, h₅⟩` from `h`. Establish `sq` using `isPullback_pullback_map_left f q`. Establish `: IsIso e.hom.left` using `inferInstanceAs (IsIso ((Over.forget S').map e.hom))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi : u' ≫ e.hom = (SplitTorus.bcIso f X).hom ≫ (Over.pullback f).map u`. Use `Over.OverMorphism.ext (pullback.hom_ext ?_ ((Over.w _).trans (Over.w _).symm))` and prove the remaining obligations. Establish `a` using `(isPullback_pullback_map_left f u).w`. Establish `b` using `SplitTorus.bcIso_hom_fst f X`. Conclude with `((Category.assoc _ _ _).trans ((congrArg (u'.left ≫ ·) heF).trans (torusCompat_iff.1 hT).symm)).trans ((congrArg (· ≫ u.left) b.symm).trans ((Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) a).trans (Category.assoc _ _ _).symm)))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk : IsPullback u' (toUnit _) (e.hom ≫ (Over.pullback f).map q) (η[(Over.pullback f).obj B])`. Use `(isPullback_kernel_baseChange f h₅).of_iso (SplitTorus.bcIso f X).symm e.symm (Iso.refl _) (Iso.refl _) ?_ (toUnit_unique _ _) (by simp) (by simp)` and prove the remaining obligations. Rewrite using `[Iso.symm_hom, Iso.symm_hom, Iso.comp_inv_eq, Category.assoc, hi, Iso.inv_hom_id_assoc]`. Establish `h₁ : Flat ((Over.pullback f).map q).left` using `MorphismProperty.of_isPullback (P := @Flat) sq inferInstance`. Establish `h₂ : Surjective ((Over.pullback f).map q).left` using `MorphismProperty.of_isPullback (P := @Surjective) sq inferInstance`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₃ : QuasiCompact ((Over.pullback f).map q).left` using `MorphismProperty.of_isPullback (P := @QuasiCompact) sq inferInstance`. Establish `hK : IsKer u' (e.hom ≫ (Over.pullback f).map q)` using `⟨inferInstance, by rw [Over.comp_left]; infer_instance, by rw [Over.comp_left]; infer_instance, by rw [Over.comp_left]; infer_instance, hk⟩`. Use `⟨_, hK.comp_iso d inferInstance, ?_⟩` and prove the remaining obligations. Use `IsPullback.of_bot (v₂₁ := B'.hom) (v₂₂ := B.hom) ?_ ?_ hψ.1` and prove the remaining obligations. Rewrite using `[Over.w, Over.w]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hφ.1`. Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, Category.assoc, hdF, ← heF, Category.assoc]`. Conclude with `congrArg (_ ≫ ·) sq.w`.
+A detailed English derivation is pending.
 -/
 theorem IsKer.baseChange {S S' : Scheme.{0}} {f : S' ⟶ S} {X : Type} [AddCommGroup X] {G B : Over S} [GrpObj G]
     [GrpObj B] {G' B' : Over S'} [GrpObj G'] [GrpObj B'] {φ : G'.left ⟶ G.left} {ψ : B'.left ⟶ B.left}
@@ -121,9 +121,9 @@ theorem IsKer.baseChange {S S' : Scheme.{0}} {f : S' ⟶ S} {X : Type} [AddCommG
     exact congrArg (_ ≫ ·) sq.w
 
 /- English proof (translation)
-Take `⟨_, _, _, _, h₅⟩` from `h`. Use `i.hom` as an intermediate fact. Establish `: Epi q` using `FlatQuotient.epi_of_flat_surjective q`. Use `choose fB hm hfB using fun a => FlatQuotient.exists_desc q u (i.act a ≫ q) h₅ (hu a)`. Use `⟨⟨fB, hm, ?_, fun a b => ?_, fun a b => ?_⟩, fun a => (hfB a).symm⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← cancel_epi q, hfB, i.one, Category.comp_id, Category.id_comp]`. Rewrite using `[← cancel_epi q, hfB, i.mul, Category.assoc, ← hfB, reassoc_of% hfB]`. Rewrite using `[← cancel_epi q, hfB, MonObj.comp_mul, hfB, hfB, i.add, MonObj.mul_comp]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsKer.exists_oAct {S : Scheme.{0}} {T G B : Over S} [GrpObj G] [GrpObj B] {u : T ⟶ G} {q : G ⟶ B}
     (h : IsKer u q) {O : Type} [CommRing O] (i : OAct O G) (hu : ∀ a, u ≫ i.act a ≫ q = toUnit _ ≫ η[B]) :
@@ -138,7 +138,7 @@ theorem IsKer.exists_oAct {S : Scheme.{0}} {T G B : Over S} [GrpObj G] [GrpObj B
   · rw [← cancel_epi q, hfB, MonObj.comp_mul, hfB, hfB, i.add, MonObj.mul_comp]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isGrpPullback_pullback G f, fun _ => pullback.lift_fst _ _ _⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_isActPull {O : Type} [CommRing O] {S S' : Scheme.{0}} (f : S' ⟶ S) {G : Over S} [GrpObj G]
     [IsCommMonObj G] (i : OAct O G) : IsActPull (OAct.pullback f G i) i f (pullback.fst G.hom f) :=

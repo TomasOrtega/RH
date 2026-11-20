@@ -46,11 +46,11 @@ open GlobalTheory.HeightCounting.Up GlobalTheory.Mem.SRe GlobalTheory.Mem.R3.Rw
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `K B f T w Z O x N h O' hO' col n`. Take `⟨t', hs, hgeo, hpk, hobj, hrx⟩` from `GlobalTheory.T.rows_pass_to_moved_divisionLatticesHeights K B f T w Z x.Wt O x.what₂ N h O' hO'`. Take `⟨nch', xd', -, hnx, -, -, hmv⟩` from `GlobalTheory.T.exists_kept_choice_upper_lattice hL K B f T w Z x.Wt Z.S N h O.nch O.xd`. Take `⟨hn1, hn2⟩` from `hnx rfl`. Substitute `hO'` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Substitute using the available equality.
 
-Establish `e1 : nch' = (O.tr N h).nch` using `eq_of_heq hn1`. Establish `e2 : xd' = (O.tr N h).xd` using `eq_of_heq hn2`. Substitute `e1 e2` using the available equality. Establish `hlp` using `GlobalTheory.Mem.GridMove.listPin_rowsSame cDep K.s.b K B f T w Z x.Wt Z.S N h O.p0 x.what₂ (O.tr N h).p0 t' hs x.nx.2.2.down`. Take `⟨c⟩` from `hmv O.p0 x.what₂ x.n (O.tr N h).p0 t' n hs hgeo ⟨x.nx.1, x.nx.2.1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨s⟩` from `GlobalTheory.T.spectralStageData_transfer_lattices_heights K B f T w Z x.Wt O.p0 x.what₂ x.col.toColT N h (O.tr N h).p0 t' col.toColT hpk ⟨x.sx.1⟩`. Take `⟨o⟩` from `GlobalTheory.T.divisionGeometryScalars_transfer_setDivision Γ K B f T w Z x.Wt N h O (O.tr N h) rfl x.what₂ t' hs x.ox`. Conclude with `⟨t', hobj x.obj, hrx ⟨x.rx⟩, ⟨⟨c.1, c.2, ⟨hlp⟩⟩⟩, ⟨⟨s, PUnit.unit⟩⟩, ⟨o⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem movable_pin (hL : GlobalTheory.Published.LocalLanglandsGL) (cDep : ℝ) (Γ : GeoP) :
     PositionMv (prmR (NEl hL cDep) SExt.none (geoCl Γ)).s := by
@@ -73,7 +73,7 @@ end Slot
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N NumberField ReciprocityTheory.Gal GlobalTheory.Mem GlobalTheory.Mem.Top GlobalTheory.Mem.Top.Bl GlobalTheory.HeightCounting GlobalTheory.HeightCounting.Up GlobalTheory.Fc GlobalTheory.NFacts
 
 /- English proof (translation)
-Introduce `hP prN hX serN dzw dzs lf ltd lec hL cDep hAt`. Establish `hF` using `GlobalTheory.T.facts_at_membership prN hX serN dzw dzs lf ltd lec hL`. Establish `hW : WitMv (prmR (NEl hL cDep) SExt.none (geoCl anyGeometry)).s` using `GlobalTheory.T.witnesses_pass_along_set_division _ (movable_pin hL cDep anyGeometry)`. Conclude with `GlobalTheory.T.residual_at_of_nonempty_exceptional hP hX.ht prN dzw dzs hL (NEl hL cDep) SExt.none (geoCl anyGeometry) hW (fun _ _ _ _ _ _ _ _ _ _ _ _ _ e => ⟨e.1⟩) hF hAt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem main : GlobalTheory.NLink.Hypotheses₂ → PrN → GlobalTheory.NRows.HypothesesX → SerN → GlobalTheory.Published.DepthZeroWild → GlobalTheory.Published.DepthZeroSupport → LocalFiniteness → LocalTateDuality → LocalEulerChar → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (cDep : ℝ), RL.At (prm1 hL cDep) (fun Q L => R1.PredicateAtBundlePoints Q L fun 𝒞 => Formalism.MainNotions.Closed 𝒞 fun Fm _ => GlobalTheory.NLink.BoundAtTwoAndThreeForFamily Fm) → RL.At (prm1 hL cDep) (fun Q L => R1.PredicateAtBundlePoints Q L fun 𝒞 => Formalism.MainNotions.Closed 𝒞 fun Fm _ => Formalism.MainNotions.LinkN Fm) := by
   intro hP prN hX serN dzw dzs lf ltd lec hL cDep hAt

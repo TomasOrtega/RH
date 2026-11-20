@@ -13,32 +13,30 @@ namespace GlobalTheory.FlagBundle.Transfer
 variable {ι : Type} {m : ι → ℕ}
 
 /- English proof (translation)
-Rewrite using `[← mul_assoc, Mat.inv_mul hg, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_mul_cancel_left {K : Type} [Field K] {g : Mat m K} (hg : ∀ τ, (g τ).det ≠ 0) (X : Mat m K) :
     g⁻¹ * (g * X) = X := by
   rw [← mul_assoc, Mat.inv_mul hg, one_mul]
 
 /- English proof (translation)
-Rewrite using `[← mul_assoc, Mat.mul_inv hg, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_inv_cancel_left {K : Type} [Field K] {g : Mat m K} (hg : ∀ τ, (g τ).det ≠ 0) (X : Mat m K) :
     g * (g⁻¹ * X) = X := by
   rw [← mul_assoc, Mat.mul_inv hg, one_mul]
 
 /- English proof (translation)
-Rewrite using `[Pi.mul_apply, Matrix.det_mul]`. Conclude with `mul_ne_zero (hg τ) (hg' τ)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_mul_ne {K : Type} [Field K] {g g' : Mat m K} (hg : ∀ τ, (g τ).det ≠ 0) (hg' : ∀ τ, (g' τ).det ≠ 0)
     (τ : ι) : ((g * g') τ).det ≠ 0 := by
   rw [Pi.mul_apply, Matrix.det_mul]; exact mul_ne_zero (hg τ) (hg' τ)
 
 /- English proof (translation)
-Establish `hh' : ∀ τ, (h' τ).det ≠ 0` using `fun τ => by`. Use `G3.det_ne τ` as an intermediate fact. Rewrite `this` using `[Pi.mul_apply, Matrix.det_mul]`. Conclude with `left_ne_zero_of_mul this`. Establish `hLPE : ∀ τ, ((L * (P * E)) τ).det ≠ 0` using `det_mul_ne hL.det_ne (det_mul_ne hP hE)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : h * Q⁻¹ = h * P⁻¹ * L⁻¹ * (h' * (L * (P * E))⁻¹)⁻¹ * (h' * (Q * E)⁻¹)`. Rewrite using `[Mat.mul_inv_rev h', Mat.inv_inv hLPE, Mat.mul_inv_rev Q E]`. Simplify using `only [mul_assoc]`. Rewrite using `[inv_mul_cancel_left hh', mul_inv_cancel_left hE, inv_mul_cancel_left hL.det_ne, inv_mul_cancel_left hP]`. Rewrite using `[e]`.
-
-Conclude with `((G1.mul hL.inv).mul G2.inv).mul G3`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem par_of_three {K : Type} [Field K] {k : ι → ℕ} {h h' P Q E L : Mat m K} (hP : ∀ τ, (P τ).det ≠ 0)
     (hQ : ∀ τ, (Q τ).det ≠ 0) (hE : ∀ τ, (E τ).det ≠ 0) (hL : Par k ⊤ L) (G1 : Par k ⊤ (h * P⁻¹))
@@ -59,14 +57,14 @@ theorem par_of_three {K : Type} [Field K] {k : ι → ℕ} {h h' P Q E L : Mat m
 variable {F : Type} [Field F]
 
 /- English proof (translation)
-Rewrite using `[Subsingleton.elim w (IsLocalRing.closedPoint K)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sp_specializes {Y : Var F} {K : Type} [Field K] (p : Sp K ⟶ Y.X) (w : Sp K) :
     p w ⤳ p (IsLocalRing.closedPoint K) := by
   rw [Subsingleton.elim w (IsLocalRing.closedPoint K)]
 
 /- English proof (translation)
-The claim follows from `hg.map_mul_of hg' _ (RatModel.valHomOf p _ (sp_specializes p)) fun _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem val_map_mul {Y : Var F} {K : Type} [Field K] (p : Sp K ⟶ Y.X) {k k' : ι → ℕ} {g g' : Mat m Y.Fn}
     (hg : Par k ((ratOf Y).O (p (IsLocalRing.closedPoint K))).toSubring g)
@@ -75,7 +73,7 @@ theorem val_map_mul {Y : Var F} {K : Type} [Field K] (p : Sp K ⟶ Y.X) {k k' : 
   hg.map_mul_of hg' _ (RatModel.valHomOf p _ (sp_specializes p)) fun _ => rfl
 
 /- English proof (translation)
-The claim follows from `hg.map_of _ (RatModel.valHomOf p _ (sp_specializes p)) fun _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem val_map_par {Y : Var F} {K : Type} [Field K] (p : Sp K ⟶ Y.X) {k : ι → ℕ} {g : Mat m Y.Fn}
     (hg : Par k ((ratOf Y).O (p (IsLocalRing.closedPoint K))).toSubring g) :
@@ -83,9 +81,9 @@ theorem val_map_par {Y : Var F} {K : Type} [Field K] (p : Sp K ⟶ Y.X) {k : ι 
   hg.map_of _ (RatModel.valHomOf p _ (sp_specializes p)) fun _ => rfl
 
 /- English proof (translation)
-Introduce `C`. Establish `hA' : ∀ τ, ((A.map ψ) τ).det ≠ 0` using `fun τ => by`. Establish `e : (A.map ψ τ).det = ψ (A τ).det` using `Mat.det_map A ψ.toRingHom τ`. Rewrite using `[e]`. Conclude with `(map_ne_zero _).2 (hA τ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : (A * B⁻¹).map ψ = A.map ψ * B⁻¹.map ψ` using `Mat.map_mul A B⁻¹ ψ.toRingHom`. Establish `e2 : B⁻¹.map ψ = (B.map ψ)⁻¹` using `Mat.map_inv B ψ.toRingHom`. Rewrite using `[e1, e2]`. Use `show C * (B.map ψ)⁻¹ = C * (A.map ψ)⁻¹ * (A.map ψ * (B.map ψ)⁻¹)`. Rewrite using `[mul_assoc, inv_mul_cancel_left hA']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frame_change {X Y : Var F} (ψ : X.Fn →ₐ[F] Y.Fn) (A B : Mat m X.Fn) (hA : ∀ τ, (A τ).det ≠ 0)
     : ∀ C : Mat m Y.Fn, C * (B.map ψ)⁻¹ = (C * (A.map ψ)⁻¹) * (A * B⁻¹).map ψ := by
@@ -100,7 +98,7 @@ theorem frame_change {X Y : Var F} (ψ : X.Fn →ₐ[F] Y.Fn) (A B : Mat m X.Fn)
   rw [mul_assoc, inv_mul_cancel_left hA']
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Use extensionality with `i j`. Conclude with `(hf.val_comp p (IsLocalRing.closedPoint K) ((hD τ).1 i j)).symm`.
+Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem val_map_hom {X Y : Var F} {ψ : X.Fn →ₐ[F] Y.Fn} {f : Y.X ⟶ X.X} (hf : (ratOf X).IsHom (ratOf Y) ψ f)
     {K : Type} [Field K] (p : Sp K ⟶ Y.X) {k : ι → ℕ} {D : Mat m X.Fn}
@@ -111,7 +109,7 @@ theorem val_map_hom {X Y : Var F} {ψ : X.Fn →ₐ[F] Y.Fn} {f : Y.X ⟶ X.X} (
   exact (hf.val_comp p (IsLocalRing.closedPoint K) ((hD τ).1 i j)).symm
 
 /- English proof (translation)
-The claim follows from `hD.map ψ.toRingHom fun _ hx => hf.map_mem_O hx`.
+A detailed English derivation is pending.
 -/
 theorem par_map_hom {X Y : Var F} {ψ : X.Fn →ₐ[F] Y.Fn} {f : Y.X ⟶ X.X} (hf : (ratOf X).IsHom (ratOf Y) ψ f)
     {z : Y.X} {k : ι → ℕ} {D : Mat m X.Fn} (hD : Par k ((ratOf X).O (f z)).toSubring D) :
@@ -125,15 +123,15 @@ namespace GlobalTheory.FlagBundle
 open Transfer
 
 /- English proof (translation)
-Introduce `F _ ι _ m X Y₁ Y₂ Eb S₁ φ₁ f₁ S₂ φ₂ f₂ R₁ R₂ K _ p q hpq A hA B hB h h' b1 b2 b3`. Take `⟨A₁, hA₁, G1⟩` from `b1`. Take `⟨A₁', hA₁', G2⟩` from `b2`. Take `⟨A₂, hA₂, G3⟩` from `b3`. Use `⟨A₂, hA₂, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hx1 : f₁ (p (IsLocalRing.closedPoint K)) = (p ≫ f₁) (IsLocalRing.closedPoint K)` using `rfl`. Establish `hx2 : f₂ (q (IsLocalRing.closedPoint K)) = (p ≫ f₁) (IsLocalRing.closedPoint K)` using `by rw [hpq]; rfl`. Establish `hD : Par 0 ((ratOf X).O ((p ≫ f₁) (IsLocalRing.closedPoint K))).toSubring (A * B⁻¹)` using `(Fr.mem_iff hB).1 hA`. Establish `hD1 : Par 0 ((ratOf X).O (f₁ (p (IsLocalRing.closedPoint K)))).toSubring (A * B⁻¹)` using `hx1 ▸ hD`. Establish `hD2 : Par 0 ((ratOf X).O (f₂ (q (IsLocalRing.closedPoint K)))).toSubring (A * B⁻¹)` using `hx2 ▸ hD`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `C1` using `R₁.2.1 _ A₁ hA₁ A (hx1 ▸ hA)`. Establish `C1B` using `R₁.2.1 _ A₁ hA₁ B (hx1 ▸ hB)`. Establish `C2` using `R₂.2.1 _ A₂ hA₂ A (hx2 ▸ hA)`. Establish `L1` using `(Fr.mem_iff hA₁).1 hA₁'`. Establish `e1 : A₁' * (B.map φ₁)⁻¹ = (A₁' * A₁⁻¹) * (A₁ * (B.map φ₁)⁻¹)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mul_assoc, inv_mul_cancel_left (Fr.det_ne hA₁)]`. Establish `hAd : ∀ τ, (A τ).det ≠ 0` using `Fr.det_ne hA`. Rewrite `G2` using `[e1, val_map_mul p L1 C1B, frame_change φ₁ A B hAd, val_map_mul p C1 (par_map_hom R₁.1 hD1), val_map_hom R₁.1 p hD1]`. Rewrite `G3` using `[frame_change φ₂ A B hAd, val_map_mul q C2 (par_map_hom R₂.1 hD2), val_map_hom R₂.1 q hD2]`. Establish `ev : (A * B⁻¹).map ((ratOf X).val (q ≫ f₂)) = (A * B⁻¹).map ((ratOf X).val (p ≫ f₁))` using `congrArg (fun y => (A * B⁻¹).map ((ratOf X).val y)) hpq.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `G3` using `[ev]`. Establish `hE : Par 0 ⊤ ((A * B⁻¹).map ((ratOf X).val (p ≫ f₁)))`. Rewrite using `[← val_map_hom R₁.1 p hD1]`. Conclude with `val_map_par p (par_map_hom R₁.1 hD1)`. Conclude with `par_of_three (val_map_par p C1).det_ne (val_map_par q C2).det_ne hE.det_ne (val_map_par p L1) G1 G2 G3`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Bears.transfer : ∀ (F : Type) [Field F] (ι : Type) [Fintype ι] (m : ι → ℕ) (X Y₁ Y₂ : Var F)
     (Eb : Fr (ratOf X) m 0) (S₁ : Fr (ratOf Y₁) m m) (φ₁ : X.Fn →ₐ[F] Y₁.Fn) (f₁ : Y₁.X ⟶ X.X)

@@ -18,18 +18,18 @@ private def dX {V : Type} [AddCommGroup V] [Module ℂ V] (F : Fin n → Fin n �
     Module.End ℂ V := ∑ a, ∑ b, X a b • F a b
 
 /- English proof (translation)
-Simplify using `[dX, LinearMap.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem dX_apply {V : Type} [AddCommGroup V] [Module ℂ V] (F : Fin n → Fin n → Module.End ℂ V) (X : Mat n) (w : V) :
     dX F X w = ∑ a, ∑ b, X a b • F a b w := by
   simp [dX, LinearMap.sum_apply]
 
 /- English proof (translation)
-Establish `hs : ∀ t : ℝ, ((t : ℂ) • X)ᴴ = -((t : ℂ) • X)` using `fun t => by`. Simplify using `[Matrix.conjTranspose_smul, hX]`. Use `⟨fun t => ⟨NormedSpace.exp ((t : ℂ) • X), ((skewExp n).1 _ (hs t))⟩, fun t => rfl, fun s h => ?_, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext show NormedSpace.exp (((h + s : ℝ) : ℂ) • X) = NormedSpace.exp ((h : ℂ) • X) * NormedSpace.exp ((s : ℂ) • X)` to reduce the goal to its premises. Rewrite using `[← Matrix.exp_add_of_commute]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `push_cast`. Rewrite using `[add_smul]`. Conclude with `((Commute.refl X).smul_left _).smul_right _`. Apply `Subtype.ext show NormedSpace.exp (((0 : ℝ) : ℂ) • X) = 1` to reduce the goal to its premises.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 private theorem gam (X : Mat n) (hX : Xᴴ = -X) :
     ∃ γ : ℝ → UK n, (∀ t : ℝ, (γ t).1 = NormedSpace.exp ((t : ℂ) • X)) ∧ (∀ s h, γ (h + s) = γ h * γ s) ∧ γ 0 = 1 := by
@@ -52,7 +52,7 @@ variable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] {σ : UK n 
   {F : Fin n → Fin n → Module.End ℂ V}
 
 /- English proof (translation)
-Take `⟨S, -, hw, -, -, hd⟩` from `h.2 w`. Rewrite using `[dX_apply]`. Conclude with `hd X γ hγ w hw`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem der0 (h : IsDerivK σ F) {X : Mat n} {γ : ℝ → UK n} (hγ : ∀ t : ℝ, (γ t).1 = NormedSpace.exp ((t : ℂ) • X))
     (w : V) : HasDerivAt (fun t : ℝ => σ (γ t) w) (dX F X w) 0 := by
@@ -61,11 +61,9 @@ private theorem der0 (h : IsDerivK σ F) {X : Mat n} {γ : ℝ → UK n} (hγ : 
   exact hd X γ hγ w hw
 
 /- English proof (translation)
-Establish `h0` using `der0 h hγ (σ (γ s) w)`. Establish `h1 : HasDerivAt (fun t : ℝ => σ (γ (t - s)) (σ (γ s) w)) (dX F X (σ (γ s) w)) s`. Establish `: HasDerivAt (fun t : ℝ => σ (γ t) (σ (γ s) w)) (dX F X (σ (γ s) w)) (s - s)`. Simplify using `using h0`. Conclude with `HasDerivAt.comp_sub_const s s this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `h1.congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Use `show σ (γ t) w = σ (γ (t - s)) (σ (γ s) w)`. Use `hm s (t - s)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Rewrite using `[this, map_mul]`.
-
-Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem derS (h : IsDerivK σ F) {X : Mat n} {γ : ℝ → UK n} (hγ : ∀ t : ℝ, (γ t).1 = NormedSpace.exp ((t : ℂ) • X))
     (hm : ∀ s h, γ (h + s) = γ h * γ s) (w : V) (s : ℝ) :
@@ -83,9 +81,9 @@ private theorem derS (h : IsDerivK σ F) {X : Mat n} {γ : ℝ → UK n} (hγ : 
   rfl
 
 /- English proof (translation)
-Establish `hu` using `der0 h hγ u`. Establish `hi` using `hu.inner ℂ hu`. Establish `hc : (fun t : ℝ => ⟪σ (γ t) u, σ (γ t) u⟫_ℂ) = fun _ => ⟪u, u⟫_ℂ` using `funext fun t => h.1 _ _ _`. Establish `h1 : σ (γ 0) u = u` using `by rw [h0, map_one]; rfl`. Rewrite `hi` using `[hc, h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hi.unique (hasDerivAt_const _ _)`.
+A detailed English derivation is pending.
 -/
 private theorem skw (h : IsDerivK σ F) {X : Mat n} {γ : ℝ → UK n} (hγ : ∀ t : ℝ, (γ t).1 = NormedSpace.exp ((t : ℂ) • X))
     (h0 : γ 0 = 1) (u : V) : ⟪u, dX F X u⟫_ℂ + ⟪dX F X u, u⟫_ℂ = 0 := by
@@ -97,9 +95,9 @@ private theorem skw (h : IsDerivK σ F) {X : Mat n} {γ : ℝ → UK n} (hγ : �
   exact hi.unique (hasDerivAt_const _ _)
 
 /- English proof (translation)
-Establish `hder : ∀ r, HasDerivAt (fun t : ℝ => ⟪d t, d t⟫_ℂ) 0 r` using `fun r => by`. Use `(hd r).inner ℂ (hd r)` as an intermediate fact. Rewrite `this` using `[skw h hγ h0]`. Then use the resulting hypothesis. Establish `hc` using `is_const_of_deriv_eq_zero (fun r => (hder r).differentiableAt) (fun r => (hder r).deriv) s 0`. Simplify using `only [hz, inner_zero_left] at hc`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `inner_self_eq_zero.1 hc`.
+A detailed English derivation is pending.
 -/
 private theorem zero_of (h : IsDerivK σ F) {X : Mat n} {γ : ℝ → UK n} (hγ : ∀ t : ℝ, (γ t).1 = NormedSpace.exp ((t : ℂ) • X))
     (h0 : γ 0 = 1) (d : ℝ → V) (hd : ∀ s, HasDerivAt d (dX F X (d s)) s) (hz : d 0 = 0) (s : ℝ) : d s = 0 := by
@@ -116,9 +114,9 @@ end UpperTheory.RealTr.DerivativeAtIdentity
 
 open UpperTheory.RealTr.DerivativeAtIdentity in
 /- English proof (translation)
-Rewrite using `[Finset.sum_eq_single a, Finset.sum_eq_single b]`. Simplify using the standard rewrite rules. Introduce `d _ hd`. Simplify using `[Matrix.single_apply, hd.symm]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `c _ hc`. Use `Finset.sum_eq_zero fun d _ => ?_` and prove the remaining obligations. Simplify using `[Matrix.single_apply, hc.symm]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem single_dX {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] (D : Fin n → Fin n → V) (a b : Fin n) (z : ℂ) :
     ∑ c, ∑ d, (Matrix.single a b z : Mat n) c d • D c d = z • D a b := by
@@ -134,13 +132,13 @@ private theorem single_dX {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] (
 
 open UpperTheory.RealTr.DerivativeAtIdentity in
 /- English proof (translation)
-Establish `h1` using `h (Matrix.single a b 1 - Matrix.single b a 1) (by`. Simplify using `[Matrix.conjTranspose_sub, Matrix.conjTranspose_single])`. Establish `h2` using `h (Matrix.single a b Complex.I + Matrix.single b a Complex.I) (by`. Simplify using `only [Matrix.conjTranspose_add, Matrix.conjTranspose_single, Complex.star_def, Complex.conj_I, add_comm]`. Use extensionality with `c d`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Simplify using `only [Matrix.add_apply, Matrix.neg_apply, Matrix.single_apply]`. Apply the tactic sequence `split_ifs <;> simp [add_comm])`. Simplify using `only [Matrix.sub_apply, Matrix.add_apply, sub_smul, add_smul, Finset.sum_sub_distrib, Finset.sum_add_distrib, single_dX] at h1 h2`. Establish `h3 : D a b + D b a = 0`. Use `congrArg (fun v => (-Complex.I) • v) h2` as an intermediate fact.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[smul_add, smul_smul]`. Simplify using `only [one_smul] at h1`. Establish `h4 : (2 : ℂ) • D a b = 0`. Rewrite using `[two_smul]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Conclude with `(smul_eq_zero.1 h4).resolve_left two_ne_zero`.
+A detailed English derivation is pending.
 -/
 private theorem entries_zero {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] (D : Fin n → Fin n → V)
     (h : ∀ X : Mat n, Xᴴ = -X → ∑ c, ∑ d, X c d • D c d = 0) (a b : Fin n) : D a b = 0 := by
@@ -165,35 +163,33 @@ private theorem entries_zero {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V
 
 open UpperTheory.RealTr.DerivativeAtIdentity in
 /- English proof (translation)
-Introduce `n V _ _ σ F hF`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `μ θ k v hk hv set X : Mat n := diagonal (fun a => Complex.I * (θ a : ℂ)) with hXd`. Establish `hXs : Xᴴ = -X`. Establish `hst : (star fun a => Complex.I * (θ a : ℂ)) = fun a => -(Complex.I * (θ a : ℂ))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `a`. Simplify using the standard rewrite rules. Rewrite using `[hXd, Matrix.diagonal_conjTranspose, hst, ← Matrix.diagonal_neg]`. Take `⟨γ, hγ, hm, h0⟩` from `gam X hXs`. Use `set c : ℂ := Complex.I * ∑ a, (θ a : ℂ) * (μ a : ℂ) with hc`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hdv : dX F X v = c • v`. Rewrite using `[dX_apply]`. Establish `: ∀ a, ∑ b, X a b • F a b v = (Complex.I * (θ a : ℂ) * (μ a : ℂ)) • v` using `fun a => by`. Rewrite using `[Finset.sum_eq_single a]`. Rewrite using `[hXd, Matrix.diagonal_apply_eq, hv a, smul_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b _ hb`. Simplify using `[hXd, Matrix.diagonal_apply_ne _ hb.symm]`. Simplify using the standard rewrite rules. Simplify using `only [this, ← Finset.sum_smul, hc, Finset.mul_sum, mul_assoc]`. Establish `hexp : ∀ s : ℝ, HasDerivAt (fun t : ℝ => Complex.exp (c * t) • v) ((Complex.exp (c * s) * c) • v) s` using `fun s => by`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : HasDerivAt (fun t : ℝ => c * (t : ℂ)) c s`. Simplify using `using (Complex.ofRealCLM.hasDerivAt (x := s)).const_mul c`. Conclude with `h1.cexp.smul_const v`. Establish `hz` using `zero_of hF hγ h0 (fun s => σ (γ s) v - Complex.exp (c * s) • v) (fun s => by`. Use `(derS hF hγ hm v s).fun_sub (hexp s)` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_sub, map_smul, hdv, smul_smul]) (by`. Simplify using `[h0]) 1`. Establish `hg : γ 1 = k`. Apply `Subtype.ext` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hγ, hk, hXd]`. Simplify using `[Matrix.exp_diagonal]`. Introduce `i`. Rewrite using `[Complex.exp_eq_exp_ℂ]`. Establish `e` using `sub_eq_zero.1 hz`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e` using `[hg]`. Rewrite using `[e]`. Use `congr 1`. Simplify using `[evT, ex, hc]`. Introduce `N _ _ _ σ' F' hF' t`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `tc : N →L[ℝ] V` to `(LinearMap.toContinuousLinearMap t).restrictScalars ℝ`. Establish `htc : ∀ x, tc x = t x` using `fun _ => rfl`. Establish `hcomp : ∀ {X : Mat n} {γ : ℝ → UK n} (x : N) (s : ℝ) (y : N), HasDerivAt (fun r : ℝ => σ' (γ r) x) y s → HasDerivAt (fun r : ℝ => t (σ' (γ r) x)) (t y) s` using `fun x s y h => tc.hasFDerivAt.comp_hasDerivAt s h`. Prove the components needed by the constructor for the conclusion. Introduce `hk a b x`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `entries_zero (fun a b => t (F' a b x) - F a b (t x)) (fun X hX => by` as an intermediate fact. Take `⟨γ, hγ, hm, h0⟩` from `gam X hX`. Establish `h1` using `hcomp (X := X) x 0 _ (der0 hF' hγ x)`. Simplify using `only [hk] at h1`. Establish `h2` using `h1.unique (der0 hF hγ (t x))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h2` using `[dX_apply, dX_apply, map_sum]`. Simplify using `only [map_sum, map_smul] at h2`. Simplify using `only [smul_sub, Finset.sum_sub_distrib]`. Conclude with `sub_eq_zero.2 h2) a b`. Conclude with `sub_eq_zero.1 this`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `ht k x`. Take `⟨X, hX, hkX⟩` from `(skewExp n).2 k`. Take `⟨γ, hγ, hm, h0⟩` from `gam X hX`. Establish `hI : ∀ y : N, t (dX F' X y) = dX F X (t y)` using `fun y => by`. Rewrite using `[dX_apply, dX_apply, map_sum]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Simplify using `only [map_sum, map_smul]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by rw [ht a b y]`. Establish `hz` using `zero_of hF hγ h0 (fun s => t (σ' (γ s) x) - σ (γ s) (t x)) (fun s => by`. Use `(hcomp (X := X) x s _ (derS hF' hγ hm x s)).fun_sub (derS hF hγ hm (t x) s)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, hI]) (by`. Simplify using `[h0]) 1`. Establish `hg : γ 1 = k`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hγ, ← hkX]`.
-
-Simplify using the standard rewrite rules. Rewrite `hz` using `[hg]`. Conclude with `sub_eq_zero.1 hz`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.RealTr.derAt :
     ∀ (n : ℕ) (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] (σ : UK n →* (V →ₗ[ℂ] V)) (F : Fin n → Fin n → Module.End ℂ V), IsDerivK σ F →

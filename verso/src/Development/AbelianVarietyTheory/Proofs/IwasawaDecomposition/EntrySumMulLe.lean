@@ -3,11 +3,9 @@ import Mathlib
 namespace GlobalTheory.EntrySumMulBound
 
 /- English proof (translation)
-Introduce `d1 n inst A B`. Use `show ∑ i : n, ∑ j : n, ‖(A * B) i j‖ ≤ (∑ i : n, ∑ k : n, ‖A i k‖) * (∑ l : n, ∑ j : n, ‖B l j‖)`. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun k _ => norm_mul_le _ _)` and prove the remaining obligations. Use `_ = ∑ k : n, ‖A i k‖ * ∑ j : n, ‖B k j‖ := by`. Rewrite using `[Finset.sum_comm]`.
-
-Conclude with `Finset.sum_congr rfl fun k _ => (Finset.mul_sum _ _ _).symm`. Use `_ ≤ ∑ k : n, ‖A i k‖ * ∑ l : n, ∑ j : n, ‖B l j‖ := by`. Use `Finset.sum_le_sum fun k _ => mul_le_mul_of_nonneg_left ?_ (norm_nonneg _)` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun l => ∑ j : n, ‖B l j‖) (fun l _ => Finset.sum_nonneg fun j _ => norm_nonneg _) (Finset.mem_univ k)`. Use `_ = (∑ k : n, ‖A i k‖) * ∑ l : n, ∑ j : n, ‖B l j‖ := (Finset.sum_mul _ _ _).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem entrySum_mul_le :
     (let d1 : {n : Type} → [Fintype n] → Matrix n n ℂ → ℝ := @(fun {n : Type} [Fintype n] (M : Matrix n n ℂ) ↦ ∑ i : n, ∑ j : n, ‖M i j‖); ∀ {n : Type} [inst : Fintype n] (A B : Matrix n n ℂ), d1 (A * B) ≤ d1 A * d1 B) := by

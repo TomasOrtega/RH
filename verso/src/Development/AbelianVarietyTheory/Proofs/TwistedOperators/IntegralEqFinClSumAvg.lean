@@ -19,9 +19,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 namespace GlobalTheory.DefiniteClassReal
 
 /- English proof (translation)
-Introduce `b`. Take `⟨i, ⟨γ, k, hk⟩, hu⟩` from `h (e.symm b)`. Use `⟨i, ⟨γ, ⟨e k, (hJ k).2 k.2⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Use `congrArg e hk` as an intermediate fact. Rewrite `this` using `[e.apply_symm_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[this, map_mul, map_mul, he]`. Introduce and unpack `j ⟨γ', k', hk'⟩`. Use `hu j ⟨γ', ⟨e.symm k', (hJ _).1 (by rw [e.apply_symm_apply]; exact k'.2)⟩, ?_⟩` and prove the remaining obligations. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[e.apply_symm_apply, hk', map_mul, map_mul, he, e.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem isReps_transfer {Γ A B : Type} [Group Γ] [Group A] [Group B] (ι : Γ →* A) (ι' : Γ →* B) (e : A ≃* B)
     (he : ∀ γ, e (ι γ) = ι' γ) (J : Subgroup A) (J' : Subgroup B) (hJ : ∀ a, e a ∈ J' ↔ a ∈ J) {I : Type} (y : I → A)
@@ -38,7 +38,7 @@ theorem isReps_transfer {Γ A B : Type} [Group Γ] [Group A] [Group B] (ι : Γ 
     rw [e.apply_symm_apply, hk', map_mul, map_mul, he, e.apply_symm_apply]
 
 /- English proof (translation)
-Use extensionality with `γ`. Rewrite using `[Bridge.mem_stab, Bridge.mem_stab, ← he, ← map_inv, ← map_mul, ← map_mul, hJ]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem stab_transfer {Γ A B : Type} [Group Γ] [Group A] [Group B] (ι : Γ →* A) (ι' : Γ →* B) (e : A ≃* B)
     (he : ∀ γ, e (ι γ) = ι' γ) (J : Subgroup A) (J' : Subgroup B) (hJ : ∀ a, e a ∈ J' ↔ a ∈ J) (x : A) :
@@ -52,31 +52,31 @@ namespace GlobalTheory.DefiniteClassReal
 open GlobalTheory.FunObj GlobalTheory.ClassRegroup GlobalTheory.IndefiniteRowSideFullHecke.ClassFunctionSumIntegral GlobalTheory.DefiniteClassAvg
 
 /- English proof (translation)
-Introduce `D V hV K K'' hK hK'' hle μ 𝓕 hμ Φ hl hr hc`. Set `V' : HSp D` to `{ V with sig := fun _ => (V.rank, 0) }`. Establish `hS' : V'.SigOK` using `fun τ => GlobalTheory.Proof.GenusMassSignature.hasSignature_of_posDef (hV τ)`. Establish `hD' : V'.IsDefinite` using `fun τ => Or.inl rfl`. Establish `hGc : IsCompact (GinfC V : Set (GA D V))` using `Formalism.IndefR.Eqv.isCompact_GinfC (V := V') hS' hD'`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : CompactSpace (GinfC V) := isCompact_iff_compactSpace.1 hGc`. Establish `hT` using `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V`. Establish `hLC` using `hT.1`. Establish `hSC` using `hT.2.1`. Establish `hB` using `hT.2.2.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG` using `hT.2.2.2.2.1`. Establish `hC` using `hT.2.2.2.2.2.2`. Establish `hHaar` using `hμ.1.1`. Establish `hfin0 : Finite (FinCl V K'')` using `(finite_finCl_and_gamOrd V K'' hV hK'').1`. Use `letI : Fintype (FinCl V K'') := Fintype.ofFinite _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Set `κ : Measure (GinfC V)` to `Measure.haarMeasure (⊤ : TopologicalSpace.PositiveCompacts (GinfC V))`. Use `haveI hκH : κ.IsHaarMeasure := Measure.isHaarMeasure_haarMeasure _`. Establish `hκ1 : κ Set.univ = 1`. Use `Measure.haarMeasure_self (K₀ := (⊤ : TopologicalSpace.PositiveCompacts (GinfC V)))` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Use `haveI : IsProbabilityMeasure κ := ⟨hκ1⟩`. Use `⟨hfin0, κ, hκH, inferInstance, ?_⟩` and prove the remaining obligations. Set `e` to `finEquiv V`. Establish `he : ∀ γ, e (((finPt V).comp (GQ V).subtype) γ) = Bridge.ratF V γ` using `fun γ => e.apply_symm_apply _`. Establish `hJe : ∀ a, e a ∈ levelFin V K'' ↔ a ∈ K''.comap (finG V)` using `fun a => Iff.rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hy` using `isReps_transfer _ _ e he _ _ hJe _ (isReps_out V K'')`. Set `y : FinCl V K'' → Bridge.Gf V` to `fun c => e (Quotient.out c)`. Set `z : FinCl V K'' → GA D V` to `fun c => ((Quotient.out c : GfC V) : GA D V)`. Establish `hz : ∀ c, (finHom V).rangeRestrict (z c) = y c` using `fun c => rfl`. Set `J : Subgroup (GA D V)` to `K''.comap (Lev.finE V)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `JK : Subgroup (GA D V)` to `K.comap (Lev.finE V)`. Establish `hJo : IsOpen (J : Set (GA D V))` using `hK''.1`. Establish `hJJK : J ≤ JK` using `fun x hx => hle hx`. Establish `hJK1 : μ JK = 1` using `GlobalTheory.Mass.Levels.measure_comap_finE hμ.1`. Establish `hJtop : μ J ≠ ⊤` using `ne_top_of_le_ne_top (by rw [hJK1]; exact ENNReal.one_ne_top) (measure_mono (fun x hx => hJJK hx))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hJ0 : μ J ≠ 0` using `(hJo.measure_pos μ ⟨1, J.one_mem⟩).ne'`. Establish `hinfJ : GinfC V ≤ J` using `by show GinfC V ≤ K''.comap (Lev.finE V)`. Rewrite using `[GlobalTheory.Mass.Levels.comap_finE]`. Conclude with `le_sup_right`. Establish `hcont : Continuous Φ` using `continuous_of_level V K'' hK''.1 Φ hr hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Establish `hu : ∀ x : GA D V, ∃! c, ∃ γ ∈ GQ V, ∃ k ∈ J, x = γ * z c * k` using `existsUnique_doubleCoset (finHom V).rangeRestrict (GQ V) (levelFin V K'') y hy z hz`. Establish `hs : ∀ c, (classGroupAt V K'' (y c) : Set (GQ V)) = {γ : GQ V | (z c)⁻¹ * (γ : GA D V) * z c ∈ J}`. Introduce `c`. Use extensionality with `γ`. Rewrite using `[SetLike.mem_coe, ← hz c, mem_classGroupAt]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Both sides reduce to the same expression. Establish `hfinΓ : ∀ c, {γ : GQ V | (z c)⁻¹ * (γ : GA D V) * z c ∈ J}.Finite` using `fun c => GlobalTheory.InnerClassSum.finite_stab_of_measure μ (GQ V) J hμ.2 hJ0 hJtop (z c)`. Establish `him : ∀ c, {γ : GA D V | γ ∈ GQ V ∧ (z c)⁻¹ * γ * z c ∈ J} = Subtype.val '' {γ : GQ V | (z c)⁻¹ * (γ : GA D V) * z c ∈ J}`. Introduce `c`. Use extensionality with `γ`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Set.mem_setOf_eq, Set.mem_image, Subtype.exists, exists_and_right, exists_eq_right]`. Conclude with `⟨fun h => ⟨h.1, h.2⟩, fun ⟨h, h'⟩ => ⟨h, h'⟩⟩`. Establish `hfin : ∀ c, {γ : GA D V | γ ∈ GQ V ∧ (z c)⁻¹ * γ * z c ∈ J}.Finite` using `fun c => him c ▸ (hfinΓ c).image _`. Establish `hdec : ∀ k ∈ J, ∃ k' ∈ Lev.levA V K'', ∃ w : GinfC V, k = k' * (GinfC V).subtype w` using `fun k hk => ⟨finPart V k, finPart_mem_levA V hk, ⟨realPart V k, realPart_mem V k⟩, (finPart_mul_realPart V k).symm⟩`. Establish `hcomm : ∀ k ∈ Lev.levA V K'', ∀ w : GinfC V, k * (GinfC V).subtype w = (GinfC V).subtype w * k` using `fun k hk w => (Eqv.Act.comm_inf_fin w.2 (Subgroup.mem_inf.1 hk).1).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hrt : ∀ w : GinfC V, MeasurePreserving (· * (GinfC V).subtype w) μ μ` using `fun w => measurePreserving_mul_right_of_mem μ J hJo hJ0 hJtop (hinfJ w.2)`. Take `⟨-, heq⟩` from `integral_eq_sum_avg (GA D V) μ (GQ V) J (Lev.levA V K'') 𝓕 hμ.2 hJo hJtop (GinfC V) κ (GinfC V).subtype continuous_subtype_val hrt hdec hcomm (FinCl V K'') z hu hfin Φ hcont hl hr`. Rewrite using `[heq, Finset.mul_sum, finsum_eq_sum_of_fintype]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Establish `hcard : Nat.card (classGroupAt V K'' (y c)) = gamOrd V K'' (Quotient.out c)` using `by show Nat.card (Bridge.stab (Bridge.ratF V) (levelFin V K'') (e (Quotient.out c))) = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[stab_transfer _ _ e he _ _ hJe]`. Conclude with `card_stab V K'' _`. Establish `hcard' : ((classGroupAt V K'' (y c) : Set (GQ V))).ncard = gamOrd V K'' (Quotient.out c)` using `(Nat.card_coe_set_eq _).symm.trans hcard`. Rewrite using `[him, Set.ncard_image_of_injective _ Subtype.val_injective, ← hs, hcard', div_eq_mul_inv, mul_assoc]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem integral_eq_finClSum_avg : ∀ {D : D7} (V : HSp D), (∀ φ : D.host.E →+* ℂ, (V.gram.map φ).PosDef) →
     ∀ (K K'' : Subgroup (GL (Fin V.rank) (Lev.EAf D))), IsOpenCompactLevel V K → IsOpenCompactLevel V K'' → K'' ≤ K →

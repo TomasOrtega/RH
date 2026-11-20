@@ -17,9 +17,9 @@ noncomputable section
 namespace GlobalTheory.SquareAgree
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n d Y Wd M ψ hψ Z _ crd Φ Φ' f f' h h'`. Use `⟨add_mem h.1 h'.1, fun u => ?_⟩` and prove the remaining obligations. Establish `e : M.co.rho ψ u (Φ + Φ') = M.co.rho ψ u Φ + M.co.rho ψ u Φ'`. Use function extensionality and compare the values at `x`. Simplify using `only [GlobalTheory.WeilM.Darboux.rho, GlobalTheory.WeilM.schr, Pi.add_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, GlobalTheory.WeilM.thetaSum_add F (GlobalTheory.HeisSchA.rho_mem_schA M ψ hψ u Φ h.1) (GlobalTheory.HeisSchA.rho_mem_schA M ψ hψ u Φ' h'.1), h.2 u, h'.2 u]`. Both sides reduce to the same expression.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem isDatum_add : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ}
     {Y : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n} {Wd : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d} (M : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model σ Y Wd)

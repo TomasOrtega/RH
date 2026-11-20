@@ -7,7 +7,7 @@ namespace ReciprocityTheory.ChartRestriction.G.T0
 open NumberField MvPolynomial MeasureTheory
 
 /- English proof (translation)
-The claim follows from `(Module.finBasis ℚ K).equivFun.injective.countable`.
+A detailed English derivation is pending.
 -/
 theorem countable_numberField (K : Type) [Field K] [NumberField K] : Countable K :=
   (Module.finBasis ℚ K).equivFun.injective.countable
@@ -24,9 +24,9 @@ namespace Data
 variable (d : Data K ι Ω WT A)
 
 /- English proof (translation)
-Use extensionality with `P`. Simplify using `only [ST, Set.mem_setOf_eq, NPB.gpt, Fin.cases_succ]`. Use `and_congr_right fun _ => forall_congr' fun i => ?_` and prove the remaining obligations. Repeatedly rewrite using `[mul_assoc]`. Rewrite using `[← Finset.mul_sum, mul_eq_zero]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hy i]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ST_scale (c : ι) (sg : K →+* ℂ) (t : Fin d.D → Fin (d.N + 1) → ℂ) (y : Fin (d.N + 1 + d.D) → ℂ)
     (hy : ∀ i, y (Fin.natAdd (d.N + 1) i) ≠ 0) :
@@ -39,7 +39,7 @@ theorem ST_scale (c : ι) (sg : K →+* ℂ) (t : Fin d.D → Fin (d.N + 1) → 
   simp [hy i]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Break down `v with ⟨a, j⟩` into its components or cases. Apply the tactic sequence `refine Fin.cases ?_ (fun i => ?_) a <;> simp [NPB.gpt]`.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gpt_one (t : Fin d.D → Fin (d.N + 1) → ℂ) (t0 : Fin (d.N + 1) → ℂ) :
     NPB.gpt (fun q => t q.1 q.2) (Fin.addCases t0 (fun _ => (1 : ℂ))) =
@@ -49,19 +49,17 @@ theorem gpt_one (t : Fin d.D → Fin (d.N + 1) → ℂ) (t0 : Fin (d.N + 1) → 
   refine Fin.cases ?_ (fun i => ?_) a <;> simp [NPB.gpt]
 
 /- English proof (translation)
-Use `letI iA : Algebra (KTf K d.D d.N) (OmS (Ω c) d.D d.N) := (d.KTtoS h c).toAlgebra`. Use `letI iB : Algebra (KTf K d.D d.N) ℂ := (tauPev sg _ hpt).toAlgebra`. Take `⟨hfd, hrank⟩` from `d.omS_finite hd h c`. Use `haveI := hfd`. Use `haveI : CharZero (KTf K d.D d.N) := inferInstance`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : Algebra.IsIntegral (KTf K d.D d.N) (OmS (Ω c) d.D d.N) := Algebra.IsIntegral.of_finite _ _`. Use `haveI : Algebra.IsSeparable (KTf K d.D d.N) (OmS (Ω c) d.D d.N) := Algebra.IsSeparable.of_integral _ _`. Establish `hy : ∀ i, y (Fin.natAdd (d.N + 1) i) ≠ 0`. Introduce `i h0`. Apply `hpt (MvPolynomial.X (i.succ, 0)) (MvPolynomial.X_ne_zero _)` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[NPB.gpt, h0]`. Establish `hST : d.ST c sg (fun i j => NPB.gpt (fun q => t q.1 q.2) y (i.succ, j)) = d.ST c sg t` using `d.ST_scale c sg t y hy`. Take `⟨hinj, hrange⟩` from `d.fibre_core (hd := hd) (h := h) (c := c) (sg := sg) (pt := NPB.gpt (fun q => t q.1 q.2) y) (hpt := hpt)`. Rewrite `hrange` using `[hST]`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← hrange]`. Conclude with `Set.finite_range _`. Rewrite using `[← hrange, Set.ncard_range_of_injective hinj, Nat.card_eq_fintype_card, AlgHom.card, hrank]`. Introduce `g`. Establish `h1` using `Algebra.norm_eq_prod_embeddings (KTf K d.D d.N) ℂ (algebraMap (Ω c) (OmS (Ω c) d.D d.N) g)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← hrange, finprod_mem_range hinj, finprod_eq_prod_of_fintype]`. Conclude with `h1`. Establish `h1` using `Algebra.norm_eq_prod_embeddings (KTf K d.D d.N) ℂ (d.rationalBaseRow c)`. Rewrite using `[← hrange, finprod_mem_range hinj, finprod_eq_prod_of_fintype]`. Use `h1.trans (Finset.prod_congr rfl fun σ _ => ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hσ : (σ : OmS (Ω c) d.D d.N →+* ℂ).comp (d.KTtoS h c) = tauPev sg _ hpt` using `RingHom.ext fun x => σ.commutes x`. Simplify using `only [rationalBaseRow, map_sum, map_mul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `he` using `d.emb_sH (h := h) (c := c) (sg := sg) (pt := NPB.gpt (fun q => t q.1 q.2) y) (hpt := hpt) (σ : OmS (Ω c) d.D d.N →+* ℂ) hσ (MvPolynomial.X (0, j))`. Simplify using `only [AlgHom.coe_toRingHom] at he`.
-
-Rewrite using `[he]`. Simplify using `[NPB.gpt]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fib (hd : d.AxH 𝒜) (h : d.S1) (c : ι) (sg : K →+* ℂ) (t : Fin d.D → Fin (d.N + 1) → ℂ)
     (y : Fin (d.N + 1 + d.D) → ℂ)
@@ -114,21 +112,21 @@ theorem fib (hd : d.AxH 𝒜) (h : d.S1) (c : ι) (sg : K →+* ℂ) (t : Fin d.
     simp [NPB.gpt]
 
 /- English proof (translation)
-Use `letI : Algebra (KTf K d.D d.N) (OmS (Ω c) d.D d.N) := (d.KTtoS h c).toAlgebra`. Use `countable_numberField K` as an intermediate fact. Use `filter_upwards [NPB.ae_gen (K := K) (D := d.D) (N := d.N) sg] with z hz`. Establish `hG : ∀ (a : Fin d.D → ℕ) (p : MvPolynomial (Fin d.D × Fin (d.N + 1)) K), ReciprocityTheory.MultiplicativeHeights.IsMultiHomogeneous a p → p ≠ 0 → eval₂ sg (fun q => d.tOf z q.1 q.2) p ≠ 0` using `hz`. Take `⟨y1, -, hpt1⟩` from `NPB.exists_gen sg (fun q => d.tOf z q.1 q.2) hG 1 one_ne_zero`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hfin, hcard, -, -⟩` from `d.fib hd h c sg (d.tOf z) y1 hpt1`. Use `⟨hfin, hcard, ?_, ?_⟩` and prove the remaining obligations. Introduce `g a b t0 _ _ hab hbt`. Establish `hQ : NPB.psi sg (fun q => d.tOf z q.1 q.2) a - C (∏ᶠ (P : Ω c →+* ℂ) (_ : P ∈ d.ST c sg (d.tOf z)), P g) * NPB.psi sg (fun q => d.tOf z q.1 q.2) b = 0`. Assume the negation of the conclusion as `hQ`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy, hpt⟩` from `NPB.exists_gen sg _ hG _ hQ`. Take `⟨-, -, hn, -⟩` from `d.fib hd h c sg (d.tOf z) y hpt`. Apply `hy` to reduce the goal to its premises. Establish `h1` using `congrArg (tauPev sg _ hpt) hab`. Rewrite `h1` using `[map_mul, hn g, tauPev_apply, tauPev_apply]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, map_mul, eval_C, NPB.eval_psi, NPB.eval_psi, ← h1, sub_self]`. Establish `h2` using `congrArg (eval (Fin.addCases t0 (fun _ => (1 : ℂ)))) hQ`. Rewrite `h2` using `[map_sub, map_mul, eval_C, NPB.eval_psi, NPB.eval_psi, d.gpt_one, map_zero, sub_eq_zero]`. Rewrite using `[div_eq_iff hbt]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Introduce `a b t0 _ hab hbt`. Set `cX : MvPolynomial (Fin (d.N + 1 + d.D)) ℂ` to `∏ P ∈ hfin.toFinset, ∑ j, X (Fin.castAdd d.D j) * C (P (ratio (Ω := Ω c) (d.w j c) (d.w (d.jc c) c)))`. Establish `hcX : ∀ y, eval y cX = ∏ᶠ (P : Ω c →+* ℂ) (_ : P ∈ d.ST c sg (d.tOf z)), ∑ j, y (Fin.castAdd d.D j) * P (ratio (Ω` using `Ω c) (d.w j c) (d.w (d.jc c) c)) := by`. Introduce `y`. Rewrite using `[finprod_mem_eq_finite_toFinset_prod _ hfin]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [cX, map_prod, map_sum, map_mul, eval_X, eval_C]`. Establish `hQ : NPB.psi sg (fun q => d.tOf z q.1 q.2) a - cX * NPB.psi sg (fun q => d.tOf z q.1 q.2) b = 0`. Assume the negation of the conclusion as `hQ`. Take `⟨y, hy, hpt⟩` from `NPB.exists_gen sg _ hG _ hQ`. Take `⟨-, -, -, hn⟩` from `d.fib hd h c sg (d.tOf z) y hpt`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `hy` to reduce the goal to its premises. Establish `h1` using `congrArg (tauPev sg _ hpt) hab`. Rewrite `h1` using `[map_mul, hn, tauPev_apply, tauPev_apply]`. Rewrite using `[map_sub, map_mul, hcX, NPB.eval_psi, NPB.eval_psi, ← h1, sub_self]`. Establish `h2` using `congrArg (eval (Fin.addCases t0 (fun _ => (1 : ℂ)))) hQ`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h2` using `[map_sub, map_mul, hcX, NPB.eval_psi, NPB.eval_psi, d.gpt_one, map_zero, sub_eq_zero]`. Simplify using `only [Fin.addCases_left] at h2`. Rewrite using `[div_eq_iff hbt]`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_at_sg_B (hd : d.AxH 𝒜) (h : d.S1) (c : ι) (sg : K →+* ℂ) :
     letI : Algebra (KTf K d.D d.N) (OmS (Ω c) d.D d.N) := (d.KTtoS h c).toAlgebra

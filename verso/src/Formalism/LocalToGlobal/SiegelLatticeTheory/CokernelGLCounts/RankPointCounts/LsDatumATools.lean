@@ -16,7 +16,7 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
 
 /- English proof (translation)
-Set `φ : V →+ E` to `AddMonoidHom.mk' (fun x => H.h x y) (fun x x' => H.h_add_left x x' y)`. Establish `h1` using `map_sum φ (fun i => c i • x i) Finset.univ`. Simplify using `only [φ, AddMonoidHom.mk'_apply, H.h_smul_left] at h1`. Conclude with `h1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem hermSp_h_sum_smul_left {M : Model F E} {V : Type} [AddCommGroup V] [Module E V] (H : HermSp M V)
     {ι : Type} [Fintype ι] (c : ι → E) (x : ι → V) (y : V) : H.h (∑ i, c i • x i) y = ∑ i, c i * H.h (x i) y := by
@@ -26,7 +26,7 @@ private theorem hermSp_h_sum_smul_left {M : Model F E} {V : Type} [AddCommGroup 
   exact h1
 
 /- English proof (translation)
-Rewrite using `[H.h_herm (∑ i, c i • x i) y, hermSp_h_sum_smul_left, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, ← H.h_herm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem hermSp_h_sum_smul_right {M : Model F E} {V : Type} [AddCommGroup V] [Module E V] (H : HermSp M V)
     {ι : Type} [Fintype ι] (y : V) (c : ι → E) (x : ι → V) :
@@ -36,7 +36,7 @@ private theorem hermSp_h_sum_smul_right {M : Model F E} {V : Type} [AddCommGroup
   rw [map_mul, ← H.h_herm]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [HermSp.gram, Matrix.of_apply, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply]`. Rewrite using `[hermSp_h_sum_smul_left]`. Simplify using `only [hermSp_h_sum_smul_right, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -51,11 +51,11 @@ theorem gram_recomb {M : Model F E} {V : Type} [AddCommGroup V] [Module E V] (H 
   ring
 
 /- English proof (translation)
-Introduce `V _ _ H t hg`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `(Submodule.span_le (R := E)).2 fun v hv => hv.2`. Introduce `w hw`. Establish `hwΛ : w ∈ Submodule.span E (t.abelian₂ : Set V)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hg.1.1.2.1]`. Conclude with `Submodule.mem_top`. Take `⟨c, hc0, hc⟩` from `PI.LocHerm.Glue.existsIntegralMultiple M hM V t.abelian₂ w hwΛ`. Establish `hcW : algebraMap F E (c : F) • w ∈ ThL H t` using `⟨hc, Submodule.smul_mem _ _ hw⟩`. Establish `hunit : IsUnit (algebraMap F E (c : F))` using `(Units.mk0 (c : F) hc0).isUnit.map _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : w = (hunit.unit⁻¹ : Eˣ) • (algebraMap F E (c : F) • w)`. Rewrite using `[Units.smul_def, smul_smul, IsUnit.val_inv_mul, one_smul]`. Rewrite using `[e, Units.smul_def]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hcW)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thSpan_at (M : Model F E) (r : ℕ) (hM : M.OK) : ThSpan M r := by
   intro V _ _ H t hg
@@ -74,23 +74,21 @@ theorem thSpan_at (M : Model F E) (r : ℕ) (hM : M.OK) : ThSpan M r := by
     exact Submodule.smul_mem _ _ (Submodule.subset_span hcW)
 
 /- English proof (translation)
-Introduce `V _ _ H hn t₁ f₂ f₂' φ φ' hyp hD₂`. Take `⟨hg₁, hF₂, hF₂', hI, -, -⟩` from `hyp`. Establish `hT1` using `hg₁.1`. Establish `hD₁ : IsUnit (H.Dl t₁.f t₁.f' (r + 1))` using `hT1.2.2.2.1`. Establish `hG₁ : IsUnit (H.Gdet t₁.f t₁.f' t₁.T t₁.T')` using `isUnit_Gdet H _ _ _ _ hT1.2.2.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG₂ : IsUnit (H.Gdet f₂ f₂' t₁.T t₁.T')`. Establish `e` using `Gdet_rel H t₁.f t₁.f' f₂ f₂' t₁.T t₁.T' hI.2.2.2.2.2`. Establish `hN₂ : IsUnit (H.normE (H.Dl f₂ f₂' (r + 1)))` using `hD₂.mul (hD₂.map M.L.cj)`. Establish `h3 : IsUnit (H.Gdet f₂ f₂' t₁.T t₁.T' * H.normE (H.Dl t₁.f t₁.f' (r + 1)))`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hN₂.mul hG₁`. Conclude with `isUnit_of_mul_isUnit_left h3`. Take `⟨s, hs, hdet⟩` from `gram_det H f₂ f₂' t₁.T t₁.T' hF₂ hF₂' hD₂`. Establish `hgu : IsUnit (H.gram (Sum.elim f₂ f₂')).det`. Establish `hsu : IsUnit s` using `⟨⟨s, s, hs, hs⟩, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (H.gram (Sum.elim f₂ f₂')).det = H.Gdet f₂ f₂' t₁.T t₁.T' * s`. Rewrite using `[← hdet, mul_assoc, hs, mul_one]`. Rewrite using `[this]`. Conclude with `hG₂.mul hsu`. Break down `hsplit : M.split with _ | g` into its components or cases.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hMM : H.MMfam (⟨⊥, f₂, f₂', t₁.T, t₁.T'⟩ : Term V M r) = Sum.elim f₂ f₂'`. Unfold `HermSp.MMfam`. Rewrite using `[hsplit]`. Rewrite using `[hMM]`. Conclude with `hgu`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `set qi : E := algebraMap F E ((g.q : F)⁻¹)`. Establish `hq0 : (g.q : F) ≠ 0` using `fun h0 => g.q_irr.ne_zero (Subtype.ext h0)`. Establish `hqi : IsUnit qi` using `((Units.mk0 (g.q : F) hq0)⁻¹.isUnit).map (algebraMap F E)`. Establish `hMM : H.MMfam (⟨⊥, f₂, f₂', t₁.T, t₁.T'⟩ : Term V M r) = Sum.elim f₂ (fun a => qi • (f₂' a - f₂ a))`. Unfold `HermSp.MMfam`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[hsplit]`. Set `A : Matrix (Fin (r + 1) ⊕ Fin (r + 1)) (Fin (r + 1) ⊕ Fin (r + 1)) E` to `fromBlocks 1 (-(qi • (1 : Matrix (Fin (r + 1)) (Fin (r + 1)) E))) 0 (qi • 1)`. Establish `hw : Sum.elim f₂ (fun a => qi • (f₂' a - f₂ a)) = fun j => ∑ i, A i j • Sum.elim f₂ f₂' i`. Use function extensionality and compare the values at `j`. Break down `j with a | a` into its components or cases.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[A, Fintype.sum_sum_type, Matrix.one_apply]`. Simplify using `[A, Fintype.sum_sum_type, Matrix.one_apply, smul_sub, sub_eq_add_neg, add_comm]`. Rewrite using `[hMM, hw, gram_recomb, det_mul, det_mul, det_transpose]`. Establish `hA : A.det = qi ^ (r + 1)`. Simplify using `[A, det_fromBlocks_zero₂₁, det_smul]`.
-
-Establish `hAm : (A.map M.L.cj).det = M.L.cj A.det`. Rewrite using `[show A.map M.L.cj = (M.L.cj.toRingEquiv.toRingHom).mapMatrix A from rfl, ← RingHom.map_det]`. Both sides reduce to the same expression. Rewrite using `[hAm, hA]`. Conclude with `((hqi.pow _).map M.L.cj).mul hgu |>.mul (hqi.pow _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gramMM_holds (M : Model F E) (r n : ℕ) : GramMM M r n := by
   intro V _ _ H hn t₁ f₂ f₂' φ φ' hyp hD₂

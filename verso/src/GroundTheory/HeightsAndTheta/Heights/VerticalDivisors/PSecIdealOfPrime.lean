@@ -15,19 +15,19 @@ noncomputable section
 namespace SecIdealOfPrime
 
 /- English proof (translation)
-Set `_ : Algebra (MvPolynomial (Par e n) k) E` to `(eval₂Hom φ y).toAlgebra`. Establish `: FaithfulSMul (MvPolynomial (Par e n) k) E` using `(faithfulSMul_iff_algebraMap_injective _ _).mpr hinj`. Establish `: IsFractionRing (MvPolynomial (Par e n) k) E` using `IsFractionRing.of_field _ _ hsurj`. Set `σ : GenParField k e n ≃ₐ[MvPolynomial (Par e n) k] E` to `FractionRing.algEquiv _ E`. Establish `hσX : ∀ p, σ (genPar k e n p) = y p` using `fun p => by show σ (algebraMap (MvPolynomial (Par e n) k) (GenParField k e n) (X p)) = y p`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `(σ.commutes (X p)).trans (eval₂_X _ _ p)`. Establish `hσC : (σ : GenParField k e n →+* E).comp (algebraMap k (GenParField k e n)) = φ`. Use `RingHom.ext fun c => ?_` and prove the remaining obligations. Use `show σ (algebraMap k (GenParField k e n) c) = φ c`. Rewrite using `[IsScalarTower.algebraMap_apply k (MvPolynomial (Par e n) k) (GenParField k e n), σ.commutes]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `eval₂_C _ _ _`. Establish `hmm : ∀ {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (φ₁ : A →+* B) (φ₂ : B →+* C), (MvPolynomial.map φ₂).comp (MvPolynomial.map φ₁) = (MvPolynomial.map (φ₂.comp φ₁) : MvPolynomial (Fin n) A →+* MvPolynomial (Fin n) C)` using `fun φ₁ φ₂ ↦ RingHom.ext fun p ↦ MvPolynomial.map_map _ _ p`. Set `QF` to `Q.map (MvPolynomial.map (algebraMap k (GenParField k e n)))`. Set `QE` to `Q.map (MvPolynomial.map φ)`. Set `M : MvPolynomial (Fin n) (GenParField k e n) ≃+* MvPolynomial (Fin n) E` to `MvPolynomial.mapEquiv (Fin n) σ.toRingEquiv`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmσ : (M : MvPolynomial (Fin n) (GenParField k e n) →+* MvPolynomial (Fin n) E) = MvPolynomial.map (σ : GenParField k e n →+* E)` using `RingHom.ext fun _ => rfl`. Establish `hIJ : secIdeal QE y = (secIdeal QF (genPar k e n)).map (M : MvPolynomial (Fin n) (GenParField k e n) →+* MvPolynomial (Fin n) E)`. Rewrite using `[hmσ]`. Simplify using `only [secIdeal, Ideal.map_sup, Ideal.map_span, QF, QE, Ideal.map_map, hmm, hσC]`. Use `congr 3`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[← Set.range_comp]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `[secForm, linForm, hσX]`. Rewrite using `[Set.image_singleton]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Use `congr 1`. Simplify using `[chartForm, linForm, hσX]`. Set `τ : GenSec k e Q ≃+* SecAlg QE y` to `Ideal.quotientEquiv _ _ M hIJ`. Use `⟨MulEquiv.isField hQF τ.symm.toMulEquiv, ?_⟩` and prove the remaining obligations. Establish `hc : (Ideal.Quotient.mk (secIdeal QE y)).comp (MvPolynomial.map φ) = (τ : GenSec k e Q →+* SecAlg QE y).comp ((Ideal.Quotient.mk (secIdeal QF (genPar k e n))).comp (MvPolynomial.map (algebraMap k (GenParField k e n))))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `RingHom.ext fun p => ?_` and prove the remaining obligations. Use `show Ideal.Quotient.mk (secIdeal QE y) (MvPolynomial.map φ p) = Ideal.Quotient.mk (secIdeal QE y) (MvPolynomial.map (σ : GenParField k e n →+* E) (MvPolynomial.map (algebraMap k (GenParField k e n)) p))`. Rewrite using `[MvPolynomial.map_map, hσC]`. Rewrite using `[hc, RingHom.ker_comp_of_injective _ (f := (τ : GenSec k e Q →+* SecAlg QE y)) τ.injective]`. Conclude with `hQK`.
+A detailed English derivation is pending.
 -/
 theorem secAlg_of_ratFunc {k E : Type} [Field k] [Field E] (n e : ℕ) (φ : k →+* E) (y : Par e n → E)
     (hinj : Function.Injective (eval₂Hom φ y))
@@ -90,9 +90,9 @@ theorem secAlg_of_ratFunc {k E : Type} [Field k] [Field E] (n e : ℕ) (φ : k �
   exact hQK
 
 /- English proof (translation)
-Establish `h : (algebraMap (ParDVR e n v) (IsLocalRing.maximalIdeal (ParDVR e n v)).ResidueField).comp (algebraMap (MvPolynomial (Par e n) (𝓞 K)) (ParDVR e n v)) = (eval₂Hom (resToKappa e n v) (parYκ e n v)).comp (MvPolynomial.map (algebraMap (𝓞 K) v.asIdeal.ResidueField))`. Use `MvPolynomial.ringHom_ext (fun c => ?_) (fun p => ?_)` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, MvPolynomial.map_C, eval₂Hom_C]`. Rewrite using `[← MvPolynomial.algebraMap_eq, ← IsScalarTower.algebraMap_apply]`. Conclude with `(Ideal.ResidueField.map_algebraMap v.asIdeal (IsLocalRing.maximalIdeal (ParDVR e n v)) (algebraMap (𝓞 K) (ParDVR e n v)) (comap_maximalIdeal_parDVR e n v).symm c).symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [RingHom.comp_apply, MvPolynomial.map_X, eval₂Hom_X']`. Both sides reduce to the same expression. Conclude with `RingHom.congr_fun h a`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem residue_algebraMap {K : Type*} [Field K] [NumberField K] (e n : ℕ) (v : HeightOneSpectrum (𝓞 K))
     (a : MvPolynomial (Par e n) (𝓞 K)) :
@@ -113,7 +113,7 @@ theorem residue_algebraMap {K : Type*} [Field K] [NumberField K] (e n : ℕ) (v 
   exact RingHom.congr_fun h a
 
 /- English proof (translation)
-Take `⟨r, rfl⟩` from `Ideal.algebraMap_residueField_surjective (IsLocalRing.maximalIdeal (ParDVR e n v)) z`. Take `⟨⟨a, s⟩, rfl⟩` from `IsLocalization.mk'_surjective (parPrime e n v).primeCompl r`. Use `⟨a.map (algebraMap (𝓞 K) v.asIdeal.ResidueField), (s : MvPolynomial (Par e n) (𝓞 K)).map (algebraMap (𝓞 K) v.asIdeal.ResidueField), ?_⟩` and prove the remaining obligations. Establish `hs : algebraMap (ParDVR e n v) (IsLocalRing.maximalIdeal (ParDVR e n v)).ResidueField (algebraMap _ (ParDVR e n v) (s : MvPolynomial (Par e n) (𝓞 K))) ≠ 0` using `((IsLocalization.map_units (ParDVR e n v) s).map _).ne_zero`. Rewrite using `[← residue_algebraMap, ← residue_algebraMap, eq_div_iff hs, ← map_mul, IsLocalization.mk'_spec]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem residue_surj {K : Type*} [Field K] [NumberField K] (e n : ℕ) (v : HeightOneSpectrum (𝓞 K))
     (z : (IsLocalRing.maximalIdeal (ParDVR e n v)).ResidueField) :
@@ -130,39 +130,35 @@ theorem residue_surj {K : Type*} [Field K] [NumberField K] (e n : ℕ) (v : Heig
 end SecIdealOfPrime
 
 /- English proof (translation)
-Introduce `K _ _ n e I f v hI hf W hW`. Establish `: v.asIdeal.IsMaximal` using `v.isMaximal`. Take `⟨hQ, hQdim⟩` from `hDim K n e I f v hI hf W hW`. Take `⟨g, hg⟩` from `hExist v.asIdeal.ResidueField n (e + 1) (reduceMod v W) hQ hQdim`. Establish `hψ : Function.Injective (eval₂Hom (resToKappa e n v) (parYκ e n v))` using `fun _ _ hpq => hInd K e n v hpq`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hFieldE, hkerE⟩` from `SecIdealOfPrime.secAlg_of_ratFunc n e (resToKappa e n v) (parYκ e n v) hψ (SecIdealOfPrime.residue_surj e n v) (reduceMod v W) (hField _ n e _ g hQ hg) (hKer _ n e _ g hQ hg)`. Set `R` to `ParDVR e n v`. Set `E` to `(IsLocalRing.maximalIdeal R).ResidueField`. Set `k` to `v.asIdeal.ResidueField`. Set `QE` to `(reduceMod v W).map (MvPolynomial.map (resToKappa e n v))`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `T` to `secIdeal QE (parYκ e n v)`. Establish `hmm : ∀ {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (φ₁ : A →+* B) (φ₂ : B →+* C), (MvPolynomial.map φ₂).comp (MvPolynomial.map φ₁) = (MvPolynomial.map (φ₂.comp φ₁) : MvPolynomial (Fin n) A →+* MvPolynomial (Fin n) C)` using `fun φ₁ φ₂ ↦ RingHom.ext fun p ↦ MvPolynomial.map_map _ _ p`. Set `ι : 𝓞 K →+* R` to `algebraMap (𝓞 K) R`. Set `ρ : R →+* E` to `algebraMap R E`. Establish `hρ : Function.Surjective ρ` using `Ideal.algebraMap_residueField_surjective _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `Ψ : MvPolynomial (Fin n) R →+* MvPolynomial (Fin n) E` to `MvPolynomial.map ρ`. Establish `hΨ : Function.Surjective Ψ` using `MvPolynomial.map_surjective _ hρ`. Establish `hcomp : ρ.comp ι = (resToKappa e n v).comp (algebraMap (𝓞 K) k)`. Use extensionality with `a`. Conclude with `(Ideal.ResidueField.map_algebraMap v.asIdeal (IsLocalRing.maximalIdeal (ParDVR e n v)) (algebraMap (𝓞 K) (ParDVR e n v)) (comap_maximalIdeal_parDVR e n v).symm a).symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `hJW : integralModel I ⊔ Ideal.map C v.asIdeal ≤ W` using `hW.1.1.2`. Set `WR : Ideal (MvPolynomial (Fin n) R)` to `W.map (MvPolynomial.map ι)`. Set `S` to `secIdeal (modelR e I v) (parY e n v)`. Establish `hWR : WR.map Ψ = QE`. Simplify using `only [WR, QE, reduceMod, Ideal.map_map, Ψ, hmm, hcomp]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hM : (modelR e I v).map Ψ ≤ QE`. Rewrite using `[← hWR]`. Conclude with `Ideal.map_mono (Ideal.map_mono (le_sup_left.trans hJW))`. Establish `hA : (Ideal.span (Set.range (secForm (parY e n v)))).map Ψ = Ideal.span (Set.range (secForm (parYκ e n v)))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Ideal.map_span, ← Set.range_comp]`. Use `congr 2`. Use function extensionality and compare the values at `i`. Simplify using `[Ψ, secForm, linForm, parYκ, ρ]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hB : (Ideal.span {chartForm (parY e n v) - 1}).map Ψ = Ideal.span {chartForm (parYκ e n v) - 1}`. Rewrite using `[Ideal.map_span, Set.image_singleton]`. Use `congr 2`. Simplify using `[Ψ, chartForm, linForm, parYκ, ρ]`. Both sides reduce to the same expression.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hT : (S ⊔ WR).map Ψ = T`. Simplify using `only [S, T, secIdeal, Ideal.map_sup, hA, hB, hWR]`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `sup_le (sup_le (sup_le (hM.trans (le_sup_left.trans le_sup_left)) (le_sup_right.trans le_sup_left)) le_sup_right) (le_sup_left.trans le_sup_left)`. Conclude with `sup_le (sup_le le_sup_right (le_sup_right.trans (le_sup_left.trans le_sup_left))) (le_sup_right.trans le_sup_left)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hkerΨ : RingHom.ker Ψ ≤ WR`. Establish `h1 : ι = (algebraMap (MvPolynomial (Par e n) (𝓞 K)) R).comp C` using `IsScalarTower.algebraMap_eq _ _ _`. Establish `hmax : IsLocalRing.maximalIdeal R = v.asIdeal.map ι`. Rewrite using `[h1, ← Ideal.map_map]`. Conclude with `Localization.AtPrime.map_eq_maximalIdeal.symm`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[MvPolynomial.ker_map, Ideal.ker_algebraMap_residueField, hmax, Ideal.map_map, ← MvPolynomial.map_comp_C, ← Ideal.map_map]`. Conclude with `Ideal.map_mono (le_sup_right.trans hJW)`. Set `Φ : MvPolynomial (Fin n) R →+* SecAlg QE (parYκ e n v)` to `(Ideal.Quotient.mk T).comp Ψ`. Establish `hker : RingHom.ker Φ = S ⊔ WR`. Establish `: RingHom.ker Φ = T.comap Ψ`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use extensionality with `x`. Simplify using `[Φ, RingHom.mem_ker, Ideal.Quotient.eq_zero_iff_mem]`. Rewrite using `[this, ← hT, Ideal.comap_map_of_surjective _ hΨ, ← RingHom.ker_eq_comap_bot]`. Conclude with `sup_eq_left.mpr (hkerΨ.trans le_sup_right)`. Establish `hkerPrime : (RingHom.ker Φ).IsPrime`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `_` to `hFieldE.toField`. Conclude with `RingHom.ker_isPrime Φ`. Establish `hSle : S ≤ RingHom.ker Φ` using `hker ▸ le_sup_left`. Establish `hsec : secIdealOf e I v W = (RingHom.ker Φ).map (Ideal.Quotient.mk S)`. Rewrite using `[hker, Ideal.map_sup, Ideal.map_quotient_self, bot_sup_eq]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hcomap : (secIdealOf e I v W).comap (Ideal.Quotient.mk S) = RingHom.ker Φ`. Rewrite using `[hsec, Ideal.comap_map_of_surjective _ Ideal.Quotient.mk_surjective, ← RingHom.ker_eq_comap_bot, Ideal.mk_ker]`. Conclude with `sup_eq_left.mpr hSle`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsec]`. Conclude with `Ideal.map_isPrime_of_surjective Ideal.Quotient.mk_surjective (by rw [Ideal.mk_ker]; exact hSle)`. Establish `hto : toSecB e I v = (Ideal.Quotient.mk S).comp (MvPolynomial.map ι)` using `rfl`. Establish `hπ : Function.Surjective (MvPolynomial.map (algebraMap (𝓞 K) k) : MvPolynomial (Fin n) (𝓞 K) →+* MvPolynomial (Fin n) k)` using `MvPolynomial.map_surjective _ (Ideal.algebraMap_residueField_surjective v.asIdeal)`. Rewrite using `[hto, ← Ideal.comap_comap, hcomap]`.
-
-Use extensionality with `p`. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker]`. Establish `hΦp : Φ (MvPolynomial.map ι p) = ((Ideal.Quotient.mk T).comp (MvPolynomial.map (resToKappa e n v))) (MvPolynomial.map (algebraMap (𝓞 K) k) p)`. Simplify using `only [Φ, Ψ, RingHom.comp_apply, MvPolynomial.map_map, hcomp]`. Rewrite using `[hΦp, ← RingHom.mem_ker, hkerE]`.
-
-Express the relevant statement in the definitionally equal form `MvPolynomial.map (algebraMap (𝓞 K) k) p ∈ W.map (MvPolynomial.map (algebraMap (𝓞 K) k)) ↔ p ∈ W`. Rewrite using `[← Ideal.mem_comap, Ideal.comap_map_of_surjective _ hπ, ← RingHom.ker_eq_comap_bot, MvPolynomial.ker_map, Ideal.ker_algebraMap_residueField, sup_eq_left.mpr (le_sup_right.trans hJW)]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SecIdealOfPrime.proof (hDim : SpecCompDim.Statement) (hExist : ChowFormExists.Statement)
     (hInd : ResidueAlgIndep.Statement) (hField : SecAlgField.Statement) (hKer : GenSecKer.Statement) :

@@ -12,13 +12,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open UpperTheory.Gal.crystallineComparison UpperTheory.Gal.crystallineComparison.Mod
 
 /- English proof (translation)
-Introduce `S A B _ _ _ _ hA c hc`. Take `⟨hfin, hflat, hsurj⟩` from `GlobalTheory.KthRoot.finite_flat_surjective_mulN_any S A hA c hc`. Establish `hmon : IsMonHom (mulN A c)`. Rewrite using `[GlobalTheory.MulFlatSurj.mulN_eq_pow]`. Conclude with `GlobalTheory.AbLaw.MulN.isMonHom_mulA A c`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hqc : QuasiCompact (mulN A c).left` using `inferInstance`. Establish `key : ∀ ν : A ⟶ B, IsMonHom ν → mulN A c ≫ ν = ν ^ c`. Introduce `ν _`. Rewrite using `[GlobalTheory.MulFlatSurj.mulN_eq_pow, MonObj.pow_comp, Category.id_comp]`. Establish `hker : ∀ (T : Over S) (g : T ⟶ A), g ≫ mulN A c = g ^ c`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `T g`. Rewrite using `[GlobalTheory.MulFlatSurj.mulN_eq_pow, MonObj.comp_pow, Category.comp_id]`. Use `⟨fun h hh htors => ?_, fun ν ν' hν hν' heq => ?_⟩` and prove the remaining obligations. Take `⟨⟨ψ, hψ, hcomp⟩, _⟩` from `GlobalTheory.exists_monHom_factor_of_flat_surjective S A A B (mulN A c) h hmon hh hflat hsurj hqc (fun T x hx => htors T x (by rw [← hker]; exact hx))`. Conclude with `⟨ψ, hψ, by rw [← key ψ hψ, hcomp]⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨_, hepi⟩` from `GlobalTheory.exists_monHom_factor_of_flat_surjective S A A A (mulN A c) (mulN A c) hmon hmon hflat hsurj hqc (fun _ _ hx => hx)`. Rewrite using `[← cancel_epi (mulN A c), key ν hν, key ν' hν', heq]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.crystallineComparison.Mod.divC_of :
     DivC := by

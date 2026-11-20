@@ -25,21 +25,21 @@ namespace GlobalTheory.HalfDuality
 variable {D : D7}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨GlobalTheory.LatticeStable.liftFin D ((Algebra.TensorProduct.comm D.host.F (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.host.E).symm t), GlobalTheory.AdForm.infPart_liftFin _, GlobalTheory.AdForm.toEAf_liftFin t⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_lift (t : Datum.EAf D) : ∃ Z : AE D, infPart D Z = 0 ∧ toEAf D Z = t :=
   ⟨GlobalTheory.LatticeStable.liftFin D ((Algebra.TensorProduct.comm D.host.F (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.host.E).symm t),
    GlobalTheory.AdForm.infPart_liftFin _, GlobalTheory.AdForm.toEAf_liftFin t⟩
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.toEAf_orientedHermitianForm_eq_trace_frames S T βS βT k y`.
+A detailed English derivation is pending.
 -/
 theorem trace_id (S T : HSp D) (βS : GL (Fin S.rank) (Datum.EAf D)) (βT : GL (Fin T.rank) (Datum.EAf D)) (k y : WO S T) :
     toEAf D (hO S T y k) = Matrix.trace (frMapAdj S T βS βT k * frMapO S T βS βT y) :=
   GlobalTheory.T.toEAf_orientedHermitianForm_eq_trace_frames S T βS βT k y
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_dualElement_standardChar_splitPrime ψ hψ e₁ PP he₁`.
+A detailed English derivation is pending.
 -/
 theorem local_dual (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdChar D ψ (-1)) (e₁ : AE D) (PP : Pl D.host.E)
     (he₁ : Formalism.L2.NTheta.IsIdemAt e₁ PP) :
@@ -51,7 +51,7 @@ theorem local_dual (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdChar D ψ (-1)) 
   GlobalTheory.T.exists_dualElement_standardChar_splitPrime ψ hψ e₁ PP he₁
 
 /- English proof (translation)
-Rewrite using `[← AddChar.map_add_eq_mul, ← map_add, ← mul_add, add_sub_cancel Z₁ Z]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem psi_trace_split (ψ : AddChar (AF D.host.F) ℂ) (a Z Z₁ : AE D) :
     ψ (Algebra.trace (AF D.host.F) (AE D) (a * Z)) =
@@ -59,7 +59,7 @@ theorem psi_trace_split (ψ : AddChar (AF D.host.F) ℂ) (a Z Z₁ : AE D) :
   rw [← AddChar.map_add_eq_mul, ← map_add, ← mul_add, add_sub_cancel Z₁ Z]
 
 /- English proof (translation)
-Simplify using `only [redM]`. Conclude with `dif_pos h`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem redM_apply_of_mem (PP : Pl D.host.E) {b a : ℕ} (N : Matrix (Fin b) (Fin a) (Datum.EAf D)) (i : Fin b) (j : Fin a)
     (h : N i j ∈ Formalism.L2.Herm.intAf D.host.F D.host.E) : redM PP N i j = resS D.host.F PP ⟨N i j, h⟩ := by
@@ -69,13 +69,13 @@ theorem redM_apply_of_mem (PP : Pl D.host.E) {b a : ℕ} (N : Matrix (Fin b) (Fi
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Take `⟨c, h1, h2⟩` from `local_dual ψ hψ e₁ PP he₁`. Use `haveI := PP.isMaximal`. Take `⟨b, hb⟩` from `Ideal.Quotient.exists_inv (I := PP.asIdeal) hu`. Take `⟨a, ha⟩` from `Ideal.Quotient.mk_surjective b`. Establish `hra : resS D.host.F PP (oToS D.host.F D.host.E a) * resS D.host.F PP u = 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[resS_oToS, ha, mul_comm, hb]`. Use `⟨c * ((oToS D.host.F D.host.E a : Formalism.L2.Herm.intAf D.host.F D.host.E) : Datum.EAf D), fun Z hZ r hr hZr => ?_, fun Z hZ hZu => ?_⟩` and prove the remaining obligations. Use `h1 Z hZ (oToS D.host.F D.host.E a * r) (by rw [map_mul, hr, mul_zero]) ?_` and prove the remaining obligations. Rewrite using `[hZr, MulMemClass.coe_mul, mul_assoc]`. Take `⟨Z₁, hZ₁, hZ₁c⟩` from `exists_lift (D := D) c`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hr : resS D.host.F PP (oToS D.host.F D.host.E a * u - 1) = 0`. Rewrite using `[map_sub, map_mul, hra, map_one, sub_self]`. Establish `h0` using `h1 (Z - Z₁) (by rw [map_sub, hZ, hZ₁, sub_zero]) (oToS D.host.F D.host.E a * u - 1) hr (by`. Rewrite using `[map_sub, hZu, hZ₁c, AddSubgroupClass.coe_sub, MulMemClass.coe_mul, OneMemClass.coe_one, mul_sub, mul_one, mul_assoc])`. Introduce `hc`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `h2 Z₁ hZ₁ hZ₁c` to reduce the goal to its premises. Rewrite `hc` using `[psi_trace_split ψ _ Z Z₁, h0, mul_one]`. Conclude with `hc`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem local_dual_unit (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdChar D ψ (-1)) (e₁ : AE D) (PP : Pl D.host.E)
     (he₁ : Formalism.L2.NTheta.IsIdemAt e₁ PP) (u : Formalism.L2.Herm.intAf D.host.F D.host.E) (hu : resS D.host.F PP u ≠ 0) :
@@ -109,13 +109,13 @@ set_option maxHeartbeats 800000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Use `choose L hL0 hL using fun t : Datum.EAf D => exists_lift (D := D) t`. Set `Y : Matrix (Fin T.rank) (Fin S.rank) (Datum.EAf D)` to `HMul.hMul (HMul.hMul βT.val z) (βS⁻¹).val`. Use `⟨Matrix.of fun i j => e * L (Y i j), fun i j => ?_, fun i j => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.of_apply, ← mul_assoc, hee]`. Simplify using `only [Matrix.of_apply, map_mul, hL0, mul_zero]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hz' : toEAf D e • z = z` using `Matrix.ext fun i j => hz i j`. Establish `h3 : toEAf D e • Y = Y` using `by show toEAf D e • HMul.hMul (HMul.hMul βT.val z) (βS⁻¹).val = HMul.hMul (HMul.hMul βT.val z) (βS⁻¹).val`. Rewrite using `[← Matrix.smul_mul, ← Matrix.mul_smul, hz']`. Establish `hY : (Matrix.of fun i j => e * L (Y i j) : WO S T).map (toEAf D) = Y`. Use extensionality with `i j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.map_apply, Matrix.of_apply, map_mul, hL]`. Conclude with `congrFun (congrFun h3 i) j`. Unfold `frMapO`. Rewrite using `[hY]`. Establish `e1 : HMul.hMul (HMul.hMul (βT⁻¹).val Y) βS.val = HMul.hMul (HMul.hMul (HMul.hMul ((βT⁻¹).val) βT.val) z) (HMul.hMul (βS⁻¹).val βS.val)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Y, Matrix.mul_assoc]`. Rewrite using `[e1, Units.inv_mul, Units.inv_mul, Matrix.one_mul, Matrix.mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem exists_half_frMapO (S T : HSp D) (βS : GL (Fin S.rank) (Datum.EAf D)) (βT : GL (Fin T.rank) (Datum.EAf D))
     (e : AE D) (hee : e * e = e) (z : Matrix (Fin T.rank) (Fin S.rank) (Datum.EAf D))
@@ -142,9 +142,9 @@ theorem exists_half_frMapO (S T : HSp D) (βS : GL (Fin S.rank) (Datum.EAf D)) (
     rw [e1, Units.inv_mul, Units.inv_mul, Matrix.one_mul, Matrix.mul_one]
 
 /- English proof (translation)
-Rewrite using `[Matrix.trace, Finset.sum_eq_single a]`. Simplify using `[Matrix.mul_apply, Matrix.single_apply]`. Introduce `j _ hj`. Simplify using `[Matrix.mul_apply, Matrix.single_apply, Ne.symm hj]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ a) h`.
+A detailed English derivation is pending.
 -/
 theorem trace_mul_single {m n : ℕ} (M : Matrix (Fin m) (Fin n) (Datum.EAf D)) (b : Fin n) (a : Fin m) (t0 : Datum.EAf D) :
     Matrix.trace (M * Matrix.single b a t0) = M a b * t0 := by
@@ -159,17 +159,17 @@ end GlobalTheory.HalfDuality
 
 set_option maxHeartbeats 1600000 in
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F _ i t σ s P cμ cη m ω BW f₀ f c io hL e he x hx hint hex`. Take `⟨PP, hPP, hred⟩` from `hex`. Establish `hψ : IsStdChar D R.ψ (-1)` using `hL.2.2.2.2.2.1.std`. Establish `hee : e * e = e` using `GlobalTheory.PlaceDatum.idemSum_mul_self he`. Take `⟨⟨es, hes, -⟩, -⟩` from `he`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨a, b, hab⟩ : ∃ a b, redM PP (frMapAdj (Vc D i) (Wc D i) (R.βV i) (R.βW i) x) a b ≠ 0 := by`. Assume the negation of the conclusion as `hn`. Use `push_neg at hn`. Conclude with `hred (Matrix.ext hn)`. Establish `hu : resS D.host.F PP ⟨_, hint a b⟩ ≠ 0`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← GlobalTheory.HalfDuality.redM_apply_of_mem]`. Conclude with `hab`. Take `⟨c₀, h1, h2⟩` from `GlobalTheory.HalfDuality.local_dual_unit R.ψ hψ (es PP) PP (hes PP hPP) _ hu`. Take `⟨y, hyh, hy0, hyz⟩` from `GlobalTheory.HalfDuality.exists_half_frMapO (Vc D i) (Wc D i) (R.βV i) (R.βW i) e hee (Matrix.single b a (toEAf D e * c₀)) (fun i' j' => by`. Rewrite using `[Matrix.single_apply]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `split_ifs`. Rewrite using `[← mul_assoc, ← map_mul, hee]`. Rewrite using `[mul_zero])`. Establish `hinf : ∀ k, infPart D (hO (Vc D i) (Wc D i) y k) = 0` using `fun k => by`. Simplify using `only [hO, map_sum, map_mul, hy0, mul_zero, Finset.sum_const_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hfin : ∀ k, IsHalf (cA D e) k → toEAf D (hO (Vc D i) (Wc D i) y k) = c₀ * frMapAdj (Vc D i) (Wc D i) (R.βV i) (R.βW i) k a b` using `fun k hk => by`. Rewrite using `[GlobalTheory.HalfDuality.trace_id _ _ (R.βV i) (R.βW i), hyz, GlobalTheory.HalfDuality.trace_mul_single, mul_comm (toEAf D e) c₀, mul_left_comm, mul_comm _ (toEAf D e), GlobalTheory.AdjVecLocal.frMapAdj_half _ _ _ _ hk]`. Establish `hs : ∀ k, R.ψ (symplO (Vc D i) (Wc D i) k y) = (R.ψ (Algebra.trace (AF D.host.F) (AE D) (incA D D.host.xi0 * hO (Vc D i) (Wc D i) y k)))⁻¹` using `fun k => by`. Rewrite using `[GlobalTheory.OrientedHeis.symplO_skew y k, AddChar.map_neg_eq_inv]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Use `⟨y, by rw [Formalism.L2.Theta.cA_cA]; exact hyh, fun k hk hki hkr => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hs, h1 _ (hinf k) ⟨_, hki a b⟩ (by rw [← GlobalTheory.HalfDuality.redM_apply_of_mem]; exact congrFun (congrFun (hkr PP hPP) a) b) (hfin k hk), inv_one]`. Rewrite using `[hs]`. Conclude with `fun h => h2 _ (hinf x) (hfin x hx) (inv_eq_one.1 h)`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HalfDuality.exists_dual_half : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.PlaceModels D → ∀ i t σ s P cμ cη m ω BW f₀ f c io, GlobalTheory.LiftRows.IsLiftDataC R F i t σ s P cμ cη m ω BW f₀ f c io → ∀ e : AE D, IsIdemSum e (R.Pg ∪ R.Q t) → ∀ x : WO (Vc D i) (Wc D i), IsHalf (cA D e) x → IsIntM (frMapAdj (Vc D i) (Wc D i) (R.βV i) (R.βW i) x) →
   (∃ PP ∈ R.Pg ∪ R.Q t, redM PP (frMapAdj (Vc D i) (Wc D i) (R.βV i) (R.βW i) x) ≠ 0) →

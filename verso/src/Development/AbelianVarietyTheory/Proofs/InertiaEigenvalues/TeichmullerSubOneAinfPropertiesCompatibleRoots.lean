@@ -20,7 +20,7 @@ namespace GlobalTheory.MuOfEps
 variable {l : ℕ} [hl : Fact l.Prime]
 
 /- English proof (translation)
-Apply `(frobeniusEquiv (OCb l) l).injective` to reduce the goal to its premises. Rewrite using `[RingEquiv.apply_symm_apply, ← h]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem root_eq {ε δ : OCb l} (h : δ ^ l = ε) : δ = (frobeniusEquiv (OCb l) l).symm ε := by
   apply (frobeniusEquiv (OCb l) l).injective
@@ -28,14 +28,14 @@ theorem root_eq {ε δ : OCb l} (h : δ ^ l = ε) : δ = (frobeniusEquiv (OCb l)
   rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `WittVector.constantCoeff (WittVector.teichmuller l x - 1) = x - 1`. Rewrite using `[map_sub, map_one, WittVector.constantCoeff_apply, WittVector.teichmuller_coeff_zero]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_zero_muOf (x : OCb l) : (muOf x).coeff 0 = x - 1 := by
   change WittVector.constantCoeff (WittVector.teichmuller l x - 1) = x - 1
   rw [map_sub, map_one, WittVector.constantCoeff_apply, WittVector.teichmuller_coeff_zero]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[Function.iterate_succ_apply', ih, muOf, muOf, map_sub, map_one, WittVector.frobenius_eq_map_frobenius, WittVector.map_teichmuller, frobenius_def, ← pow_mul, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem frob_iterate_muOf (x : OCb l) (n : ℕ) :
     WittVector.frobenius^[n] (muOf x) = muOf (x ^ (l ^ n)) := by
@@ -46,7 +46,7 @@ theorem frob_iterate_muOf (x : OCb l) (n : ℕ) :
       WittVector.frobenius_eq_map_frobenius, WittVector.map_teichmuller, frobenius_def, ← pow_mul, pow_succ]
 
 /- English proof (translation)
-Rewrite using `[muOf, map_sub, map_one, WittVector.fontaineTheta_teichmuller]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem theta_muOf (x : OCb l) : Per.θ l (muOf x) = x.untilt - 1 := by
   rw [muOf, map_sub, map_one, WittVector.fontaineTheta_teichmuller]
@@ -56,13 +56,13 @@ variable (l) in
 def kerAll : Ideal (Ainf l) := ⨅ n : ℕ, RingHom.ker ((Per.θ l).comp (WittVector.frobenius ^ n))
 
 /- English proof (translation)
-Simplify using `only [kerAll, Ideal.mem_iInf, RingHom.mem_ker, RingHom.comp_apply, RingHom.coe_pow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_kerAll (a : Ainf l) : a ∈ kerAll l ↔ ∀ n : ℕ, Per.θ l (WittVector.frobenius^[n] a) = 0 := by
   simp only [kerAll, Ideal.mem_iInf, RingHom.mem_ker, RingHom.comp_apply, RingHom.coe_pow]
 
 /- English proof (translation)
-Rewrite using `[mem_kerAll]`. Introduce `n`. Rewrite using `[frob_iterate_muOf, theta_muOf, map_pow, hx, one_pow, sub_self]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem muOf_mem_kerAll {x : OCb l} (hx : x.untilt = 1) : muOf x ∈ kerAll l := by
   rw [mem_kerAll]
@@ -70,7 +70,7 @@ theorem muOf_mem_kerAll {x : OCb l} (hx : x.untilt = 1) : muOf x ∈ kerAll l :=
   rw [frob_iterate_muOf, theta_muOf, map_pow, hx, one_pow, sub_self]
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[mem_kerAll]`. Introduce `n`. Establish `h1` using `h n`. Rewrite `h1` using `[← RingHom.coe_pow, map_mul, map_natCast, map_mul, map_natCast, RingHom.coe_pow]`. Conclude with `(mul_eq_zero.1 h1).resolve_left (Nat.cast_ne_zero.2 hl.out.ne_zero)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kerAll_sat (a : Ainf l) (h : (l : Ainf l) * a ∈ kerAll l) : a ∈ kerAll l := by
   rw [mem_kerAll] at h ⊢
@@ -80,7 +80,7 @@ theorem kerAll_sat (a : Ainf l) (h : (l : Ainf l) * a ∈ kerAll l) : a ∈ kerA
   exact (mul_eq_zero.1 h1).resolve_left (Nat.cast_ne_zero.2 hl.out.ne_zero)
 
 /- English proof (translation)
-Take `⟨h1, δ, hδ, hδ1⟩` from `hε`. Conclude with `⟨h1, by rw [← root_eq hδ]; exact hδ1⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isEps_mem {ε : OCb l} (hε : IsEps ε) :
     GlobalTheory.MemLoc.IsEps ε := by
@@ -88,7 +88,7 @@ theorem isEps_mem {ε : OCb l} (hε : IsEps ε) :
   exact ⟨h1, by rw [← root_eq hδ]; exact hδ1⟩
 
 /- English proof (translation)
-Take `⟨-, δ, hδ, hδ1⟩` from `hε`. Introduce and unpack `rfl`. Establish `: δ = 1` using `by rw [root_eq hδ, map_one]`. Conclude with `hδ1 (by rw [this, map_one])`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ne_one {ε : OCb l} (hε : IsEps ε) : ε ≠ 1 := by
   obtain ⟨-, δ, hδ, hδ1⟩ := hε
@@ -97,14 +97,14 @@ theorem ne_one {ε : OCb l} (hε : IsEps ε) : ε ≠ 1 := by
   exact hδ1 (by rw [this, map_one])
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.wittVector_dvd_of_mem_saturated_ideal l (OCb l) (kerAll l) (muOf ε) (muOf_mem_kerAll hε.1) kerAll_sat (fun a ha => by rw [coeff_zero_muOf]; exact GlobalTheory.T.epsilon_sub_one_dvd_ainf_coeff_zero_of_theta_vanishing l ε hε a ((mem_kerAll a).1 ha)) _ (muOf_mem_kerAl …`.
+A detailed English derivation is pending.
 -/
 theorem muOf_dvd {ε : OCb l} (hε : IsEps ε) {x : OCb l} (hx : x.untilt = 1) : muOf ε ∣ muOf x :=
   GlobalTheory.T.wittVector_dvd_of_mem_saturated_ideal l (OCb l) (kerAll l) (muOf ε) (muOf_mem_kerAll hε.1) kerAll_sat
     (fun a ha => by rw [coeff_zero_muOf]; exact GlobalTheory.T.epsilon_sub_one_dvd_ainf_coeff_zero_of_theta_vanishing l ε hε a ((mem_kerAll a).1 ha)) _ (muOf_mem_kerAll hx)
 
 /- English proof (translation)
-Introduce `h` and use `by have := congrArg (fun y : Ainf l => y.coeff 0) h simp only [coeff_zero_muOf, WittVector.zero_coeff] at this exact ne_one hε (sub_eq_zero.1 this)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem muOf_ne_zero {ε : OCb l} (hε : IsEps ε) : muOf ε ≠ 0 := fun h => by
   have := congrArg (fun y : Ainf l => y.coeff 0) h
@@ -112,13 +112,13 @@ theorem muOf_ne_zero {ε : OCb l} (hε : IsEps ε) : muOf ε ≠ 0 := fun h => b
   exact ne_one hε (sub_eq_zero.1 this)
 
 /- English proof (translation)
-Rewrite using `[muOf, muOf, map_sub, map_one, GlobalTheory.RingIface.sigA_teich]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem σA_muOf (g : GQ l) (x : OCb l) : Per.σA g (muOf x) = muOf (Per.σF g x) := by
   rw [muOf, muOf, map_sub, map_one, GlobalTheory.RingIface.sigA_teich]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.RingBasics.untilt_σF, hx, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem untilt_σF_eq {x : OCb l} (hx : x.untilt = 1) (g : GQ l) : (Per.σF g x).untilt = 1 := by
   rw [GlobalTheory.RingBasics.untilt_σF, hx, map_one]
@@ -130,9 +130,9 @@ namespace GlobalTheory.MuOfEps
 variable {l : ℕ} [hl : Fact l.Prime]
 
 /- English proof (translation)
-Take `⟨ζ, e, h0, -, h1, hr⟩` from `GlobalTheory.MemLoc.exists_zeta_eps l`. Establish `he : e.untilt = 1` using `Subtype.ext (by`. Use `hr 0` as an intermediate fact. Rewrite `this` using `[h0, map_one]`. Conclude with `this)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hE : GlobalTheory.MemLoc.IsEps e` using `⟨he, fun hh => h1 (by`. Apply `(algebraMap (Om l) ℂ_[l]).injective` to reduce the goal to its premises. Rewrite using `[← hr 1, map_one]`. Conclude with `congrArg Subtype.val hh)⟩`. Conclude with `⟨e, he, _, frobeniusEquiv_symm_pow_p (OCb l) l e, hE.2⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isEps (l : ℕ) [Fact l.Prime] : ∃ ε : OCb l, IsEps ε := by
   obtain ⟨ζ, e, h0, -, h1, hr⟩ := GlobalTheory.MemLoc.exists_zeta_eps l
@@ -147,11 +147,11 @@ theorem exists_isEps (l : ℕ) [Fact l.Prime] : ∃ ε : OCb l, IsEps ε := by
   exact ⟨e, he, _, frobeniusEquiv_symm_pow_p (OCb l) l e, hE.2⟩
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `muOf_dvd hε (untilt_σF_eq hε.1 g)`. Take `⟨b, hb⟩` from `muOf_dvd hε (untilt_σF_eq hε.1 g⁻¹)`. Rewrite `ha`, `hb` using `[← σA_muOf]`. Establish `h : muOf ε = Per.σA g b * a * muOf ε`. Use `congrArg (Per.σA g) hb` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[← GlobalTheory.RingBasics.σA_mul, mul_inv_cancel, GlobalTheory.RingBasics.σA_one, map_mul, ha]`. Take the linear combination `this`. Establish `h1 : Per.σA g b * a = 1`. Establish `h2 : (Per.σA g b * a - 1) * muOf ε = 0` using `by linear_combination -h`. Conclude with `sub_eq_zero.1 ((mul_eq_zero.1 h2).resolve_right (muOf_ne_zero hε))`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨a, Per.σA g b, by rw [mul_comm]; exact h1, h1⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[ha, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem units_σA {ε : OCb l} (hε : IsEps ε) (g : GQ l) :
     ∃ u : (Ainf l)ˣ, Per.σA g (muOf ε) = u * muOf ε := by
@@ -169,11 +169,11 @@ theorem units_σA {ε : OCb l} (hε : IsEps ε) (g : GQ l) :
   rw [ha, mul_comm]
 
 /- English proof (translation)
-Introduce `l _`. Use `⟨exists_isEps l, fun ε δ hε hδ => ?_⟩` and prove the remaining obligations. Establish `hr` using `root_eq hδ`. Establish `hE` using `isEps_mem hε`. Use `⟨⟨GlobalTheory.MemLoc.xi ε, (GlobalTheory.MemLoc.ker_theta_eq_span_xi hE).symm, ?_⟩, ?_, ?_, ?_, ?_, units_σA hε, fun x hx => muOf_dvd hε hx⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[GlobalTheory.MemLoc.xi, ← hr, muOf, muOf, geom_sum_mul, ← map_pow, hδ]`. Rewrite using `[muOf, muOf, map_sub, map_one, WittVector.frobenius_eq_map_frobenius, WittVector.map_teichmuller, frobenius_def, hδ]`. Rewrite using `[theta_muOf, sub_ne_zero]`. Take `⟨-, δ', hδ', hδ'1⟩` from `hε`. Rewrite `hδ'1` using `[root_eq hδ', ← hr]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `GlobalTheory.CrisLoc.unit_of_root l ε hε.1 (ne_one hε)`. Use `WittVector.isUnit_of_coeff_zero_ne_zero _ fun h => ?_` and prove the remaining obligations. Establish `h0 : (muOf ε).coeff 0 = 0` using `IsFractionRing.injective (OCb l) (Cb l) (h.trans (map_zero _).symm)`. Rewrite `h0` using `[coeff_zero_muOf]`. Conclude with `ne_one hε (sub_eq_zero.1 h0)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (l : ℕ) [Fact l.Prime], (∃ ε : OCb l, IsEps ε) ∧ ∀ ε δ : OCb l, IsEps ε → δ ^ l = ε → (∃ ξ : Ainf l, Ideal.span {ξ} = RingHom.ker (Per.θ l) ∧ muOf ε = ξ * muOf δ) ∧ WittVector.frobenius (muOf δ) = muOf ε ∧ Per.θ l (muOf δ) ≠ 0 ∧ IsUnit (acrisToBcris l (ainfToAcris l (muOf ε))) ∧ IsUnit (inclW l (muOf ε)) ∧ (∀ g : GQ l, ∃ u : (Ainf l)ˣ, Per.σA g (muOf ε) = u * muOf ε) ∧ ∀ x : OCb l, x.untilt = 1 → muOf ε ∣ muOf x := by
   intro l _

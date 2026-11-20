@@ -5,17 +5,15 @@ open Matrix
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `n B hB`. Establish `hdet : B.val.det = ∏ i, B.val i i` using `Matrix.det_of_upperTriangular hB`. Establish `hdet0 : B.val.det ≠ 0` using `((Matrix.isUnit_iff_isUnit_det _).mp B.isUnit).ne_zero`. Establish `hne : ∀ i, B.val i i ≠ 0`. Introduce `i h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hdet0` to reduce the goal to its premises. Rewrite using `[hdet]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) h`. Set `D : GL (Fin n) ℂ` to `⟨diagonal (fun i => B.val i i), diagonal (fun i => (B.val i i)⁻¹), by`. Rewrite using `[diagonal_mul_diagonal, ← diagonal_one]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `mul_inv_cancel₀ (hne i),`. Use `by`. Rewrite using `[diagonal_mul_diagonal, ← diagonal_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `inv_mul_cancel₀ (hne i)⟩`. Establish `hU : ∀ i j, (D⁻¹ * B).val i j = (B.val i i)⁻¹ * B.val i j`. Introduce `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `(diagonal (fun i => (B.val i i)⁻¹) * B.val) i j = _`. Rewrite using `[diagonal_mul]`. Use `⟨D, D⁻¹ * B, by simp, isDiag_diagonal _, fun i => diagonal_apply_eq _ _, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j hij`. Rewrite using `[hU, hB hij, mul_zero]`.
-
-Introduce `i`. Rewrite using `[hU, inv_mul_cancel₀ (hne i)]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GL_upperTriangular_eq_diagonal_mul_unitriangular :
     ∀ (n : ℕ) (B : GL (Fin n) ℂ), B.val.BlockTriangular id → ∃ D U : GL (Fin n) ℂ,

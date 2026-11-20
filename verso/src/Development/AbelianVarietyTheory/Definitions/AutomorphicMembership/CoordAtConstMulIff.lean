@@ -25,7 +25,7 @@ variable (Z : Model Xo c β) {R : Type} [CommRing R] [Algebra c.F R] (P : FrPt X
 def frameOf : EigFrame Z (algebraMap c.F R) (GlobalTheory.AllWt.ptF P ≫ Z.j) := (exists_tie_frame P rfl).choose
 
 /- English proof (translation)
-The claim follows from `(exists_tie_frame P rfl).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem tie_frameOf : Comparison₂ P (frameOf Z P) := (exists_tie_frame P rfl).choose_spec
 
@@ -36,9 +36,9 @@ end Frame
 variable {Z : Model Xo c β} {F : Type} [Field F] [NumberField F] {e : F ≃+* c.F} (Y : FlagCpt Z e)
 
 /- English proof (translation)
-Take `⟨y, ψ, φ₁, f, t, t', r, h1, h2, h3, h4, h5⟩` from `h`. Use `⟨y, ψ, φ₁, f, t, t', φ₁ b * r, h1, h2, h3, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, h4, mul_assoc]`. Conclude with `congrArg (· * _) (RingHom.congr_fun h2.2.1 b).symm`. Rewrite using `[map_mul, h5, mul_assoc, h3.2.1]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem IsCoord.const_mul {k : Type} [Field k] {φ : c.F →+* k} {x : Sp k ⟶ Z.X} {p : Sp k ⟶ Y.Y.X} {g : EigFrame Z φ x}
     {n : Letter Dw → ℤ} {σ : Y.Y.Fn} {a : k} (h : IsCoord Y p g n σ a) (b : c.F) :
@@ -51,7 +51,7 @@ theorem IsCoord.const_mul {k : Type} [Field k] {φ : c.F →+* k} {x : Sp k ⟶ 
     rfl
 
 /- English proof (translation)
-Take `⟨y, ψ, φ₁, f, t, t', -, h1, h2, h3, -⟩` from `h`. Conclude with `⟨y, ψ, φ₁, f, t, t', h1, h2, h3⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsCoord.carries {k : Type} [Field k] {φ : c.F →+* k} {x : Sp k ⟶ Z.X} {p : Sp k ⟶ Y.Y.X} {g : EigFrame Z φ x}
     {n : Letter Dw → ℤ} {σ : Y.Y.Fn} {a : k} (h : IsCoord Y p g n σ a) : Y.Carries p g := by
@@ -72,16 +72,16 @@ def CoordAtC {ι : c.F →+* ℂ} (P : FrPt Xo c (CAt ι)) (n : Letter Dw → �
 variable {Y}
 
 /- English proof (translation)
-The claim follows from `h.imp fun _ hp => ⟨hp.1, hp.2.const_mul Y b⟩`.
+A detailed English derivation is pending.
 -/
 theorem CoordAt.const_mul {k : Type} [Field k] [Algebra c.F k] {P : FrPt Xo c k} {n : Letter Dw → ℤ} {σ : Y.Y.Fn} {a : k}
     (h : CoordAt Y P n σ a) (b : c.F) : CoordAt Y P n (constF e Y.Y b * σ) (algebraMap c.F k b * a) :=
   h.imp fun _ hp => ⟨hp.1, hp.2.const_mul Y b⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `h.const_mul b⁻¹` as an intermediate fact. Rewrite `this` using `[← mul_assoc, ← map_mul, inv_mul_cancel₀ hb, map_one, one_mul]`. Then use the resulting hypothesis. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `h.const_mul b` as an intermediate fact. Rewrite `this` using `[← mul_assoc, ← map_mul, mul_inv_cancel₀ hb, map_one, one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem coordAt_const_mul_iff {k : Type} [Field k] [Algebra c.F k] {P : FrPt Xo c k} {n : Letter Dw → ℤ} {σ : Y.Y.Fn}
     {a : k} {b : c.F} (hb : b ≠ 0) :
@@ -95,7 +95,7 @@ theorem coordAt_const_mul_iff {k : Type} [Field k] [Algebra c.F k] {P : FrPt Xo 
     rwa [← mul_assoc, ← map_mul, mul_inv_cancel₀ hb, map_one, one_mul] at this
 
 /- English proof (translation)
-The claim follows from `h.imp fun _ hp => ⟨hp.1, hp.2.carries Y⟩`.
+A detailed English derivation is pending.
 -/
 theorem CoordAt.carried {k : Type} [Field k] [Algebra c.F k] {P : FrPt Xo c k} {n : Letter Dw → ℤ} {σ : Y.Y.Fn} {a : k}
     (h : CoordAt Y P n σ a) : Carried Y P := h.imp fun _ hp => ⟨hp.1, hp.2.carries Y⟩

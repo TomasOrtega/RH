@@ -15,7 +15,7 @@ instance haarInner (n : ℕ) : (volume : Measure (Fin n → ℂ)).IsAddHaarMeasu
 instance haarOuter (m n : ℕ) : (volume : Measure (Fin m → Fin n → ℂ)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _
 
 /- English proof (translation)
-Take `⟨S, rfl⟩` from `hf`. Take `⟨S', rfl⟩` from `hg`. Conclude with `⟨S - S', by ext u; simp⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isSch_sub {f g : (Fin m → Fin n → ℂ) → ℂ} (hf : IsSch f) (hg : IsSch g) : IsSch (f - g) := by
   obtain ⟨S, rfl⟩ := hf
@@ -23,21 +23,21 @@ theorem isSch_sub {f g : (Fin m → Fin n → ℂ) → ℂ} (hf : IsSch f) (hg :
   exact ⟨S - S', by ext u; simp⟩
 
 /- English proof (translation)
-Take `⟨S, rfl⟩` from `hf`. Conclude with `⟨a • S, by ext u; simp [smul_eq_mul]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isSch_smul (a : ℂ) {f : (Fin m → Fin n → ℂ) → ℂ} (hf : IsSch f) : IsSch (fun u => a * f u) := by
   obtain ⟨S, rfl⟩ := hf
   exact ⟨a • S, by ext u; simp [smul_eq_mul]⟩
 
 /- English proof (translation)
-Take `⟨S, rfl⟩` from `hf`. Conclude with `S.continuous`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isSch_continuous {f : (Fin m → Fin n → ℂ) → ℂ} (hf : IsSch f) : Continuous f := by
   obtain ⟨S, rfl⟩ := hf
   exact S.continuous
 
 /- English proof (translation)
-Take `⟨S, rfl⟩` from `hf`. Conclude with `(S.memLp ((2 : ℕ) : ENNReal) volume).integrable_norm_pow two_ne_zero`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isSch_sq_integrable {f : (Fin m → Fin n → ℂ) → ℂ} (hf : IsSch f) :
     Integrable (fun u => ‖f u‖ ^ 2) := by
@@ -48,31 +48,25 @@ end SchwartzDifferenceQuotient
 
 open SchwartzDifferenceQuotient in
 /- English proof (translation)
-Introduce `m n T κ hκ hTS hTsub hTsmul hTiso G G' E' s hG hG' hE' hL2 hpt`. Establish `hD : ∀ h : ℝ, IsSch (fun u => (G (s + h) u - G s u) / (h : ℂ) - G' u)`. Introduce `h`. Establish `h3` using `isSch_sub (isSch_smul ((h : ℂ)⁻¹) (isSch_sub (hG (s + h)) (hG s))) hG'`. Use `h3 using 1` and compare the differences between its conclusion and the goal.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use function extensionality and compare the values at `u`. Simplify using `only [Pi.sub_apply]`. Apply the tactic sequence `try ring`. Establish `hTD : ∀ h : ℝ, T (fun u => (G (s + h) u - G s u) / (h : ℂ) - G' u) = fun u => (T (G (s + h)) u - T (G s) u) / (h : ℂ) - T G' u`. Introduce `h`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e1 : (fun u => (G (s + h) u - G s u) / (h : ℂ) - G' u) = (fun u => (h : ℂ)⁻¹ * (G (s + h) - G s) u) - G'`. Use function extensionality and compare the values at `u`. Simplify using `only [Pi.sub_apply]`. Apply the tactic sequence `try ring`. Rewrite using `[e1, hTsub _ _ (isSch_smul _ (isSch_sub (hG _) (hG _))) hG', hTsmul _ _ (isSch_sub (hG _) (hG _)), hTsub _ _ (hG _) (hG _)]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `u`. Simplify using `only [Pi.sub_apply]`. Apply the tactic sequence `try ring`. Take `⟨F, hF⟩ : ∃ F : ℝ → (Fin m → Fin n → ℂ) → ENNReal, F = fun h u => ENNReal.ofReal (‖(T (G (s + h)) u - T (G s) u) / (h : ℂ) - T G' u‖ ^ 2)` from `⟨_, rfl⟩`. Establish `hmeas : ∀ h, Measurable (F h)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h`. Establish `hc` using `isSch_continuous (hTS _ (hD h))`. Rewrite `hc` using `[hTD]`. Rewrite using `[hF]`. Conclude with `ENNReal.measurable_ofReal.comp (hc.norm.pow 2).measurable`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hlim_pt : ∀ u, Tendsto (fun h => F h u) (𝓝[≠] 0) (𝓝 (ENNReal.ofReal (‖E' u - T G' u‖ ^ 2)))`. Introduce `u`. Rewrite using `[hF]`. Establish `h1` using `((hpt u).sub_const (T G' u)).norm.pow 2`. Conclude with `(ENNReal.continuous_ofReal.tendsto _).comp h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hint : ∀ h, ∫⁻ u, F h u = ENNReal.ofReal (κ * ∫ u, ‖(G (s + h) u - G s u) / (h : ℂ) - G' u‖ ^ 2)`. Introduce `h`. Rewrite using `[← hTiso _ (hD h), hTD, ofReal_integral_eq_lintegral_ofReal, hF]`. Establish `hi` using `isSch_sq_integrable (hTS _ (hD h))`. Rewrite `hi` using `[hTD]`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hi`. Conclude with `Filter.Eventually.of_forall fun u => sq_nonneg _`. Establish `hlim_int : Tendsto (fun h => ∫⁻ u, F h u) (𝓝[≠] 0) (𝓝 0)`. Repeatedly rewrite using `[hint]`. Establish `h1` using `hL2.const_mul κ`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h1` using `[mul_zero]`. Establish `h2` using `(ENNReal.continuous_ofReal.tendsto 0).comp h1`. Rewrite `h2` using `[ENNReal.ofReal_zero]`. Conclude with `h2`. Establish `hfatou` using `lintegral_liminf_le (μ := (volume : Measure (Fin m → Fin n → ℂ))) (u := 𝓝[≠] (0 : ℝ)) hmeas`.
+Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hfatou` using `[hlim_int.liminf_eq]`. Establish `hz : ∫⁻ u, ENNReal.ofReal (‖E' u - T G' u‖ ^ 2) = 0`. Use `le_antisymm ?_ (by simp)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`.
-
-Use function extensionality and compare the values at `u`. Conclude with `((hlim_pt u).liminf_eq).symm`. Use `_ ≤ 0 := hfatou`. Establish `hcT` using `isSch_continuous (hTS _ hG')`. Establish `hcE : Continuous fun u => E' u - T G' u` using `hE'.sub hcT`.
-
-Establish `hm : Measurable fun u => ENNReal.ofReal (‖E' u - T G' u‖ ^ 2)` using `ENNReal.measurable_ofReal.comp (hcE.norm.pow 2).measurable`. Rewrite `hz` using `[lintegral_eq_zero_iff hm]`. Establish `hae : E' =ᵐ[volume] T G'` using `by filter_upwards [hz] with u hu`. Simplify using `only [Pi.zero_apply, ENNReal.ofReal_eq_zero] at hu`. Conclude with `sub_eq_zero.mp (norm_eq_zero.mp ((pow_eq_zero_iff two_ne_zero).mp (le_antisymm hu (sq_nonneg _))))`.
-
-Conclude with `((Continuous.ae_eq_iff_eq volume hE' hcT).mp hae).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dL2 : DifferenceQuotientIsometryExchange := by
   intro m n T κ hκ hTS hTsub hTsmul hTiso G G' E' s hG hG' hE' hL2 hpt

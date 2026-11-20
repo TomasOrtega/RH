@@ -23,37 +23,31 @@ Both sides reduce to the same expression.
 theorem fockQRight_apply {σ : Type} (f g : MvPolynomial σ ℚ) : fockQRight f g = Formalism.GradedWeylDivisibility.fockQ f g := rfl
 
 /- English proof (translation)
-Introduce `H N Y hY`. Establish `hanti : Antitone (fun r : Fin N => Y.rowLen r)` using `fun a b hab => Y.rowLen_anti _ _ hab`. Use `haveI : Fintype (Formalism.GradedWeylDivisibility.ssIdx N N (fun r : Fin N => Y.rowLen r)) := (Formalism.GradedWeylDivisibility.sSIdxFinite N N _).fintype`. Take `⟨b, d, hb, hd, hbd⟩` from `GlobalTheory.StdDual.exists_dual_bases N (fun r : Fin N => Y.rowLen r) hanti`. Use `set Nc := Formalism.GradedWeylDivisibility.fockQ (Formalism.GradedWeylDivisibility.hw ℚ (le_refl N) (fun r : Fin N => Y.rowLen r)) (Formalism.GradedWeylDivisibility.hw ℚ (le_refl N) (fun r : Fin N => Y.rowLen r)) with hNc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNc0 : Nc ≠ 0` using `((Formalism.GradedWeylDivisibility.fockQPos _ (Formalism.GradedWeylDivisibility.hw ℚ (le_refl N) (fun r : Fin N => Y.rowLen r)) (Formalism.GradedWeylDivisibility.hw ℚ (le_refl N) (fun r : Fin N => Y.rowLen r))).2 (Formalism.GradedWeylDivisibility.hwNe ℚ N N le_rfl _)).ne'`. Establish `H'` using `H N Y hY`. Use `clear H`. Use `set C := GlobalTheory.WeylMinorDual.colProd ℚ N Y hY with hCdef`. Establish `hspanC : Submodule.span ℤ (GlobalTheory.StdDual.bidSet ℚ N (fun r : Fin N => Y.rowLen r)) = Submodule.span ℤ (Set.range C)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite using `[← GlobalTheory.StdDual.dualWeyl_intQ, GlobalTheory.WeylMinorDual.dualWeyl_eq_span_colProd ℤ N Y hY, Submodule.map_span, ← Set.range_comp]`. Use `congr 2`. Use function extensionality and compare the values at `J`. Conclude with `Formalism.L2.DIV.fk_map_bidet (Int.castRingHom ℚ) _ _ _`. Establish `hbC : Submodule.span ℤ (Set.range b) = Submodule.span ℤ (Set.range C)` using `hb.trans hspanC`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hCb : ∀ J, C J ∈ Submodule.span ℤ (Set.range b)` using `fun J => hbC ▸ Submodule.subset_span ⟨J, rfl⟩`. Establish `hbCm : ∀ k, b k ∈ Submodule.span ℤ (Set.range C)` using `fun k => hbC ▸ Submodule.subset_span ⟨k, rfl⟩`. Use `choose c hc using fun J => (Submodule.mem_span_range_iff_exists_fun ℤ).mp (hCb J)`. Use `choose d' hd' using fun k => (Submodule.mem_span_range_iff_exists_fun ℤ).mp (hbCm k)`. Establish `hcQ : ∀ J, C J = ∑ k, (c J k : ℚ) • b k` using `fun J => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hc J]`. Simplify using `only [Int.cast_smul_eq_zsmul]`. Establish `hdQ : ∀ k, b k = ∑ J, (d' k J : ℚ) • C J` using `fun k => by`. Rewrite using `[← hd' k]`. Simplify using `only [Int.cast_smul_eq_zsmul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set g := fun k => ∑ J, (c J k : ℚ) • C J with hg`. Establish `hdb : ∀ j k, Formalism.GradedWeylDivisibility.fockQ (d j) (b k) = if k = j then Nc else 0` using `fun j k => (Formalism.GradedWeylDivisibility.fockQPos _ _ _).1.trans (hbd k j)`. Establish `hdC : ∀ j J, Formalism.GradedWeylDivisibility.fockQ (d j) (C J) = (c J j : ℚ) * Nc`. Introduce `j J`. Rewrite using `[hcQ J, ← fockQRight_apply, map_sum]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [map_smul, fockQRight_apply, hdb, smul_eq_mul, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Establish `hgi : ∀ i k, Formalism.GradedWeylDivisibility.fockQ (b i) (g k) = ∑ J, (c J k : ℚ) * Formalism.GradedWeylDivisibility.fockQ (b i) (C J)`. Introduce `i k`. Rewrite using `[← fockQRight_apply, hg, map_sum]`. Simplify using `only [map_smul, fockQRight_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `key : ∀ i k, Formalism.GradedWeylDivisibility.fockQ (b i) (g k) = if i = k then Nc else 0`. Introduce `i k`. Establish `hmem : b i ∈ Formalism.GradedWeylDivisibility.dualWeyl ℚ N N (fun r : Fin N => Y.rowLen r)`. Rewrite using `[GlobalTheory.StdDual.dualWeyl_eq]`. Conclude with `Submodule.span_le_restrictScalars ℤ ℚ _ (hb ▸ Submodule.subset_span ⟨i, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `congrArg (fockQRight (d k)) (H' (b i) hmem)`. Rewrite `h1` using `[map_sum, map_smul]`. Simplify using `only [map_smul, fockQRight_apply, smul_eq_mul, hdC] at h1`. Rewrite `h1` using `[hdb]`. Rewrite using `[hgi]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `mul_right_cancel₀ hNc0` to reduce the goal to its premises. Rewrite using `[Finset.sum_mul]`. Conclude with `Eq.trans (Finset.sum_congr rfl fun J _ => by ring) (h1.trans (mul_comm _ _))`. Establish `hgd : ∀ k, g k = d k`. Introduce `k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hg1 : g k ∈ Submodule.span ℤ (Set.range b)`. Rewrite using `[hbC, hg]`. Use `Submodule.sum_mem _ fun J _ => ?_` and prove the remaining obligations. Rewrite using `[Int.cast_smul_eq_zsmul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨J, rfl⟩)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hd1 : d k ∈ Submodule.span ℤ (Set.range b)`. Establish `h2 : d k ∈ (Formalism.GradedWeylDivisibility.weyl ℤ N N le_rfl (fun r : Fin N => Y.rowLen r)).map (Formalism.GradedWeylDivisibility.intQ N N)`. Rewrite using `[GlobalTheory.StdDual.weyl_intQ, ← hd]`. Conclude with `Submodule.subset_span ⟨k, rfl⟩`. Establish `h3` using `Submodule.map_mono (f := Formalism.GradedWeylDivisibility.intQ N N) (Formalism.GradedWeylDivisibility.weylLeDual ℤ N N le_rfl _ hanti) h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h3` using `[GlobalTheory.StdDual.dualWeyl_intQ, ← hb]`. Then use the resulting hypothesis. Establish `hx` using `Submodule.sub_mem _ hg1 hd1`. Take `⟨a, ha⟩` from `(Submodule.mem_span_range_iff_exists_fun ℤ).mp hx`. Establish `horth : ∀ i, Formalism.GradedWeylDivisibility.fockQ (g k - d k) (b i) = 0`. Introduce `i`.
-
-Rewrite using `[(Formalism.GradedWeylDivisibility.fockQPos _ _ _).1, ← fockQRight_apply, map_sub, fockQRight_apply, fockQRight_apply, key, ← (Formalism.GradedWeylDivisibility.fockQPos _ _ _).1, hdb]`. Apply the tactic sequence `split_ifs with h1 h2 h2 <;> first | rfl | simp | (exact absurd h1.symm h2) | (exact absurd h2.symm h1)`. Establish `h0 : Formalism.GradedWeylDivisibility.fockQ (g k - d k) (g k - d k) = 0`. Rewrite using `[← fockQRight_apply]`. Use `nth_rewrite 2 [← ha]`.
-
-Rewrite using `[map_sum]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, fockQRight_apply, horth, smul_zero]`. Assume the negation of the conclusion as `hne`. Conclude with `(ne_of_gt ((Formalism.GradedWeylDivisibility.fockQPos _ (g k - d k) (g k - d k)).2 (sub_ne_zero.mpr hne))) h0`.
-
-Use `⟨Formalism.GradedWeylDivisibility.ssIdx N N (fun r : Fin N => Y.rowLen r), inferInstance, inferInstance, b, g, c, d', Nc, hNc0, hcQ, hdQ, fun k => rfl, key, ?_⟩` and prove the remaining obligations. Establish `: g = d` using `funext hgd`. Rewrite using `[this, hd, GlobalTheory.StdDual.weyl_intQ]`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dual_bases_colProd : (∀ (N : ℕ) (Y : YoungDiagram) (hY : Y.colLen 0 ≤ N) (h : MvPolynomial (Fin N × Fin N) ℚ),
     h ∈ Formalism.GradedWeylDivisibility.dualWeyl ℚ N N (fun r => Y.rowLen r) →

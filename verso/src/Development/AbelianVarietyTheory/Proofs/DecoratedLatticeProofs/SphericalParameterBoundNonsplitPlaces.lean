@@ -18,25 +18,21 @@ namespace GlobalTheory.Core.Rk.ParamInert
 open Formalism.UG (IsUnramInv GU KU qV IsInertAt)
 
 /- English proof (translation)
-Introduce `D A L hL v hv par c hc hc1 w hw`. Take `⟨⟨C, hC⟩, V, iV, iM, ρ, x, ℓ, hpar, hℓ, hcv⟩` from `hc`. Establish `hp` using `hpar w hw`. Use `⟨hp.card, ?_⟩` and prove the remaining obligations. Break down `hp with ⟨hs, -⟩ | ⟨hin, τ, ϖ, e, α, hU, he, hsat, hB⟩` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `absurd hs hv`. Establish `hϖ0 : ϖ ≠ 0`. Introduce `h0`. Establish `h4` using `hU.2.2.2.1`. Rewrite `h4` using `[h0, map_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `WithZero.zero_ne_coe h4`. Use `set ϖu : (w.adicCompletion D.host.E)ˣ := Units.mk0 ϖ hϖ0 with hϖu`. Establish `hU' : IsUnramInv ((ϖu : w.adicCompletion D.host.E)) τ (qV D.host.F v)` using `hU`. Use `set ρ' : Representation ℂ (GU τ A.rank) V := ρ.comp e.symm.toMonoidHom with hρ'`. Establish `hKinv : ∀ k ∈ KU τ A.rank, ∀ g, ℓ (ρ' (k * g) x) = ℓ (ρ' g x)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `k hk g`. Establish `hk' : e.symm k ∈ stabLoc D.sp.cm.sig A.gram L v`. Rewrite using `[he.2.2, MulEquiv.apply_symm_apply]`. Conclude with `hk`. Simplify using `only [hρ', MonoidHom.coe_comp, Function.comp_apply, MulEquiv.coe_toMonoidHom, map_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_mul]`. Conclude with `hℓ _ hk' _`. Establish `h1 : ℓ x ≠ 0`. Introduce `h0`. Apply `hc1` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hcv, map_one]`. Conclude with `h0`. Establish `hz` using `(GlobalTheory.T.invariant_sphericalCoefficient_eq_zero_or_zonal _ ϖu τ (qV D.host.F v) A.rank hU' V ρ' x α hsat ℓ hKinv).2 h1`. Establish `hbd : ∃ C' : ℝ, ∀ g, ‖ℓ (ρ' g x) / ℓ x‖ ≤ C'`. Use `⟨C / ‖ℓ x‖, fun g => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[norm_div]`. Establish `: ‖ℓ (ρ' g x)‖ ≤ C`. Use `hC (e.symm g)` as an intermediate fact. Rewrite `this` using `[hcv]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `div_le_div_of_nonneg_right this (norm_nonneg _)`. Establish `htb` using `GlobalTheory.T.satakeTrivialBound_of_bounded_zonal_spherical_unitary hUDI _ ϖu τ (qV D.host.F v) A.rank hU' α _ hz hbd`. Introduce `β hβ`. Rewrite `hβ` using `[hB]`. Establish `hq2 : 2 ≤ qV D.host.F v` using `hU.2.2.2.2.2.1`.
-
-Establish `hle` using `GlobalTheory.FinZeta.ParamBound.norm_le_of_mem_bcParam hq2 htb β hβ`. Establish `hnorm : Ideal.absNorm w.asIdeal = Ideal.absNorm v.asIdeal ^ 2` using `((GlobalTheory.LFun.exists_isInertChart _ (isCMExt_host D) v).2 w hw hin).2.2.2.1`. Establish `hqv : (qV D.host.F v : ℝ) = (Ideal.absNorm v.asIdeal : ℝ)` using `rfl`. Rewrite using `[hnorm, Nat.cast_pow, ← hqv]`. Use `hle.trans (Real.rpow_le_rpow_of_exponent_le ?_ ?_)` and prove the remaining obligations.
-
-Establish `: (1 : ℝ) ≤ qV D.host.F v` using `by exact_mod_cast (by omega : 1 ≤ qV D.host.F v)`. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem paramBoundOn_nonsplit (hUDI : GlobalTheory.IndefiniteRowSideFullHecke.SphericalSectionVariables.UnramDoublingInert) :
     ∀ D : D7, ParamBoundOn D fun v => ¬ Formalism.MainNotions.SchurIrreducible.IsSplit (E := D.host.E) v := by

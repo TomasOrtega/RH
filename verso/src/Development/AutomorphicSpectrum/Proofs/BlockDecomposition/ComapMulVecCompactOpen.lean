@@ -5,13 +5,13 @@ open Matrix
 namespace GlobalTheory.CompanionTheory.Dblock.ComapLat
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n g hg A hc ho`. Use `haveI : IsTopologicalRing k := inferInstance`. Establish `hdet : IsUnit g.det` using `(Matrix.isUnit_iff_isUnit_det g).1 hg`. Establish `hcont : ∀ m : Matrix (Fin n) (Fin n) k, Continuous (fun x : Fin n → k => m.mulVec x)` using `fun m => continuous_const.matrix_mulVec continuous_id`. Establish `hset : ((A.comap (Matrix.mulVecLin g).toAddMonoidHom : AddSubgroup (Fin n → k)) : Set (Fin n → k)) = (fun x : Fin n → k => g.mulVec x) ⁻¹' (A : Set (Fin n → k))` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hset]`. Use `⟨?_, ho.preimage (hcont g)⟩` and prove the remaining obligations. Establish `himg : (fun x : Fin n → k => g.mulVec x) ⁻¹' (A : Set (Fin n → k)) = (fun x : Fin n → k => g⁻¹.mulVec x) '' (A : Set (Fin n → k))`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hx`. Use `⟨g.mulVec x, hx, ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul g hdet, Matrix.one_mulVec]`. Introduce and unpack `⟨y, hy, rfl⟩`. Simplify using `only [Set.mem_preimage, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv g hdet, Matrix.one_mulVec]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hy`. Rewrite using `[himg]`. Conclude with `hc.image (hcont g⁻¹)`.
+A detailed English derivation is pending.
 -/
 theorem comap_mulVec_compact_open : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (g : Matrix (Fin n) (Fin n) k), IsUnit g → ∀ A : AddSubgroup (Fin n → k), IsCompact (A : Set (Fin n → k)) → IsOpen (A : Set (Fin n → k)) → IsCompact ((A.comap (Matrix.mulVecLin g).toAddMonoidHom : AddSubgroup (Fin n → k)) : Set (Fin n → k)) ∧ IsOpen ((A.comap (Matrix.mulVecLin g).toAddMonoidHom : AddSubgroup (Fin n → k)) : Set (Fin n → k)) := by
   intro k _ _ _ _ n g hg A hc ho

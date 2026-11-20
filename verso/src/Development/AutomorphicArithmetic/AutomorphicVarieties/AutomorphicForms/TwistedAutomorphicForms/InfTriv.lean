@@ -9,13 +9,13 @@ namespace UpperTheory.V.Af.Tw
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Set `T : Set (w.Completion)ˣ` to `Units.val ⁻¹' S`. Establish `hT : IsPreconnected T`. Establish `himg : Units.val '' T = S`. Use extensionality with `a`. Prove the components needed by the constructor for the conclusion.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨u, hu, rfl⟩`. Conclude with `hu`. Introduce `ha`. Establish `ha0 : a ≠ 0` using `fun h => h0 (h ▸ ha)`. Conclude with `⟨Units.mk0 a ha0, ha, rfl⟩`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Units.isEmbedding_val₀.isInducing.isPreconnected_image, himg]`. Conclude with `hS`. Set `φ : (w.Completion)ˣ →* (InfiniteAdeleRing E)ˣ` to `Units.map (MonoidHom.mulSingle (fun v : InfinitePlace E => v.Completion) w)`. Establish `hφ : Continuous φ` using `Continuous.units_map _ (continuous_mulSingle w)`. Establish `hsub : φ '' T ⊆ connectedComponent (1 : (InfiniteAdeleRing E)ˣ)` using `(hT.image _ hφ.continuousOn).subset_connectedComponent ⟨1, h1, map_one φ⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `infConn`. Use `⟨φ x, hsub ⟨x, hx, rfl⟩, ?_⟩` and prove the remaining obligations. Conclude with `Units.ext rfl`.
+A detailed English derivation is pending.
 -/
 private theorem mem_infConn_of (w : InfinitePlace E) (x : (w.Completion)ˣ) (S : Set w.Completion)
     (hS : IsPreconnected S) (h0 : 0 ∉ S) (h1 : 1 ∈ S) (hx : (x : w.Completion) ∈ S) : infIdele E w x ∈ infConn E := by
@@ -42,19 +42,17 @@ private theorem mem_infConn_of (w : InfinitePlace E) (x : (w.Completion)ˣ) (S :
   exact Units.ext rfl
 
 /- English proof (translation)
-Establish `key : ∀ (K : Type) [NormedField K] (e : w.Completion ≃ᵢ K), (∀ a, e a = 0 ↔ a = 0) → e 1 = 1 → ∀ T : Set K, IsPreconnected T → (0 : K) ∉ T → (1 : K) ∈ T → ∀ y : (w.Completion)ˣ, e y ∈ T → infIdele E w y ∈ N`. Introduce `K _ e he0 he1 T hT hT0 hT1 y hy`. Apply `hN` to reduce the goal to its premises. Use `mem_infConn_of w y (e.symm '' T) (hT.image _ e.symm.continuous.continuousOn) ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `⟨b, hb, hb0⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hb' : b = e 0` using `by rw [← hb0, e.apply_symm_apply]`. Rewrite `hb` using `[hb', (he0 0).2 rfl]`. Conclude with `hT0 hb`. Use `⟨1, hT1, ?_⟩` and prove the remaining obligations. Rewrite using `[← he1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `e.symm_apply_apply 1`. Conclude with `⟨e y, hy, e.symm_apply_apply _⟩`. Break down `InfinitePlace.isReal_or_isComplex w with hr | hc` into its components or cases. Set `e` to `InfinitePlace.Completion.isometryEquivRealOfIsReal hr`. Establish `he0 : ∀ a, e a = 0 ↔ a = 0` using `fun a => map_eq_zero_iff (InfinitePlace.Completion.extensionEmbeddingOfIsReal hr) (InfinitePlace.Completion.extensionEmbeddingOfIsReal hr).injective`.
+Separate the alternatives or extract the components of the hypothesis. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he1 : e 1 = 1` using `map_one (InfinitePlace.Completion.extensionEmbeddingOfIsReal hr)`. Establish `hneg : ∀ a, e (-a) = - e a` using `fun a => map_neg (InfinitePlace.Completion.extensionEmbeddingOfIsReal hr) a`. Establish `hx0 : e x ≠ 0` using `fun h => x.ne_zero ((he0 _).1 h)`. Break down `lt_or_gt_of_ne hx0 with hlt | hgt` into its components or cases. Establish `hm : infIdele E w (-x) ∈ N` using `key ℝ e he0 he1 (Set.Ioi 0) isPreconnected_Ioi (by simp) (by simp) (-x) (by show e (-(x : w.Completion)) ∈ Set.Ioi 0`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hneg]`. Conclude with `neg_pos.2 hlt)`. Establish `hx : x = (-1) * (-x)` using `by simp`. Rewrite using `[hx, map_mul]`. Conclude with `N.mul_mem (hs w hr) hm`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `key ℝ e he0 he1 (Set.Ioi 0) isPreconnected_Ioi (by simp) (by simp) x hgt`. Set `e` to `InfinitePlace.Completion.isometryEquivComplexOfIsComplex hc`. Establish `he0 : ∀ a, e a = 0 ↔ a = 0` using `fun a => map_eq_zero_iff (InfinitePlace.Completion.extensionEmbedding w) (InfinitePlace.Completion.extensionEmbedding w).injective`. Establish `he1 : e 1 = 1` using `map_one (InfinitePlace.Completion.extensionEmbedding w)`. Use `key ℂ e he0 he1 {0}ᶜ ?_ (by simp) (by simp) x ?_` and prove the remaining obligations.
-
-Conclude with `(isConnected_compl_singleton_of_one_lt_rank (by simp [Complex.rank_real_complex]) 0).isPreconnected`. Conclude with `fun h => x.ne_zero ((he0 _).1 h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 private theorem mem_of_sign (N : Subgroup (Ideles E)) (hN : infConn E ≤ N)
     (hs : ∀ w : InfinitePlace E, w.IsReal → infIdele E w (-1) ∈ N) (w : InfinitePlace E) (x : (w.Completion)ˣ) :
@@ -102,15 +100,15 @@ private theorem mem_of_sign (N : Subgroup (Ideles E)) (hN : infConn E ≤ N)
     · exact fun h => x.ne_zero ((he0 _).1 h)
 
 /- English proof (translation)
-Set `y : ∀ w : InfinitePlace E, (w.Completion)ˣ` to `fun w => ⟨z.val.1 w, z.inv.1 w, congrFun (congrArg Prod.fst z.val_inv) w, congrFun (congrArg Prod.fst z.inv_val) w⟩`. Use `⟨y, ?_⟩` and prove the remaining obligations. Use `ext1`. Rewrite using `[Units.coe_prod]`. Establish `h1` using `map_prod (MonoidHom.fst (InfiniteAdeleRing E) (FiniteAdeleRing (𝓞 E) E)) (fun i => ((infIdele E i (y i)).val : InfiniteAdeleRing E × FiniteAdeleRing (𝓞 E) E)) Finset.univ`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `map_prod (MonoidHom.snd (InfiniteAdeleRing E) (FiniteAdeleRing (𝓞 E) E)) (fun i => ((infIdele E i (y i)).val : InfiniteAdeleRing E × FiniteAdeleRing (𝓞 E) E)) Finset.univ`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `Eq.trans ?_ h1.symm` and prove the remaining obligations. Use function extensionality and compare the values at `v`. Establish `h3` using `map_prod (Pi.evalMonoidHom (fun w : InfinitePlace E => w.Completion) v) (fun i => (Pi.mulSingle i (z.val.1 i) : ∀ w : InfinitePlace E, w.Completion)) Finset.univ`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ h3.symm` and prove the remaining obligations. Rewrite using `[Finset.prod_eq_single v]`. Use `show z.val.1 v = Pi.mulSingle v (z.val.1 v) v`. Rewrite using `[Pi.mulSingle_eq_same]`. Introduce `b _ hb show Pi.mulSingle b (z.val.1 b) v = 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Pi.mulSingle_eq_of_ne hb.symm _`. Introduce `h`. Conclude with `absurd (Finset.mem_univ v) h`. Use `Eq.trans ?_ h2.symm` and prove the remaining obligations. Rewrite using `[hz]`.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 
-Use `symm`. Apply `Finset.prod_eq_one` to reduce the goal to its premises. Introduce `i _`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 private theorem eq_prod_infIdele (z : Ideles E) (hz : z.val.2 = 1) :
     ∃ y : ∀ w : InfinitePlace E, (w.Completion)ˣ, z = ∏ w, infIdele E w (y w) := by
@@ -148,13 +146,11 @@ private theorem eq_prod_infIdele (z : Ideles E) (hz : z.val.2 = 1) :
 end UpperTheory.V.Af.Tw
 
 /- English proof (translation)
-Introduce `F Ω B _ _ _ _ _ _ _ _ _ art ha ν hν hc z σ hz hσ`. Set `N : Subgroup (Ideles F)` to `((liftAb ν hν).comp art).ker`. Establish `hN : infConn F ≤ N` using `fun x hx => by`. Establish `h : x ∈ art.ker`. Rewrite using `[ha.ker]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subgroup.le_topologicalClosure _ (Subgroup.mem_sup_right hx)`. Use `show liftAb ν hν (art x) = 1`. Rewrite using `[show art x = 1 from h, map_one]`. Establish `hs : ∀ w : InfinitePlace F, w.IsReal → infIdele F w (-1) ∈ N` using `fun w hw => by`. Take `⟨j, c, hj, rfl⟩` from `GlobalTheory.HilbertFromArtin.exists_conj (Ω := Ω) w hw`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `show liftAb ν hν (art _) = 1`. Rewrite using `[GlobalTheory.HilbertFromArtin.art_sign_eq ha j c hj, liftAb_toAb]`. Conclude with `hc c ⟨j, hj⟩`. Take `⟨y, hy⟩` from `eq_prod_infIdele z hz`. Establish `hm : z ∈ N` using `hy ▸ prod_mem fun w _ => mem_of_sign N hN hs w (y w)`.
-
-Establish `hm' : liftAb ν hν (art z) = 1` using `hm`. Rewrite `hm'` using `[hσ, liftAb_toAb]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.Tw.infTriv :
     UpperTheory.V.Af.Tw.InfTriv := by

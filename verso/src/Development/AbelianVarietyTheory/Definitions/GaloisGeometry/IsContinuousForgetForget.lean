@@ -13,7 +13,7 @@ variable (X : Scheme.{0})
 set_option backward.isDefEq.respectTransparency.types false in
 
 /- English proof (translation)
-The claim follows from `Scheme.locallyCoverDense_of_le (P := @Etale) (Q := @Etale) X le_rfl`.
+A detailed English derivation is pending.
 -/
 theorem locallyCoverDense_forget :
     (MorphismProperty.Over.forget @Etale ⊤ X).LocallyCoverDense (Scheme.overGrothendieckTopology @Etale X) :=
@@ -22,7 +22,7 @@ theorem locallyCoverDense_forget :
 set_option backward.isDefEq.respectTransparency.types false in
 
 /- English proof (translation)
-The claim follows from `@Functor.mem_restrictedTopology_iff _ _ _ _ (MorphismProperty.Over.forget @Etale ⊤ X) _ (locallyCoverDense_forget X) inferInstance inferInstance U S`.
+A detailed English derivation is pending.
 -/
 theorem mem_small_iff {U : X.Etale} (S : Sieve U) :
     S ∈ X.smallEtaleTopology U ↔
@@ -61,9 +61,9 @@ instance : PreservesFiniteLimits (bc f) :=
 instance : RepresentablyFlat (bc f) := flat_of_preservesFiniteLimits _
 
 /- English proof (translation)
-Establish `h` using `(Scheme.etaleTopology.coverPreserving_overPullback f).cover_preserve ((mem_small_iff X S).1 hS)`. Rewrite using `[mem_small_iff]`. Establish `e : (S.functorPushforward (bc f)).functorPushforward (Scheme.Etale.forget Y) = (S.functorPushforward (Scheme.Etale.forget X)).functorPushforward (Over.pullback f)`. Rewrite using `[← Sieve.functorPushforward_comp, ← Sieve.functorPushforward_comp]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[e]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bc_coverPreserving : CoverPreserving X.smallEtaleTopology Y.smallEtaleTopology (bc f) where
   cover_preserve {U S} hS := by
@@ -205,12 +205,12 @@ Both sides reduce to the same expression.
 example (U : X.Etale) : ((bc f).obj U).left = pullback U.hom f := rfl
 
 /- English proof (translation)
-The claim follows from `HX.one ℤ _`.
+A detailed English derivation is pending.
 -/
 example (K : Type) [Field K] : HX ℤ (Spec (CommRingCat.of K)) (unitD ℤ _) 0 := HX.one ℤ _
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : AddCommGroup (HX R X (unitD R X) 3) := inferInstance
 

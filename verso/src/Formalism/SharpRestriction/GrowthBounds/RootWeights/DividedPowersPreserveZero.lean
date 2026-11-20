@@ -16,7 +16,7 @@ def DividedPowersPreserve (Q : V → Prop) (D : Module.End K V) : Prop :=
   ∀ (k : ℕ) (x : V), Q x → Q (((k.factorial : K)⁻¹) • (D ^ k) x)
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using h0`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`. Conclude with `hadd _ _ (h a (Finset.mem_insert_self _ _)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem predicate_finset_sum_mem (Q : V → Prop) (h0 : Q 0) (hadd : ∀ x y, Q x → Q y → Q (x + y)) {α : Type*}
     (s : Finset α) (f : α → V) (h : ∀ i ∈ s, Q (f i)) : Q (∑ i ∈ s, f i) := by
@@ -28,13 +28,13 @@ theorem predicate_finset_sum_mem (Q : V → Prop) (h0 : Q 0) (hadd : ∀ x y, Q 
     exact hadd _ _ (h a (Finset.mem_insert_self _ _)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
 /- English proof (translation)
-Introduce `k x hx`. Rewrite using `[hc.add_pow, LinearMap.sum_apply, Finset.smul_sum]`. Use `predicate_finset_sum_mem Q h0 hadd _ _ fun m hm => ?_` and prove the remaining obligations. Establish `hmk : m ≤ k` using `Nat.lt_succ_iff.1 (Finset.mem_range.1 hm)`. Establish `h1` using `hD m _ (hD' (k - m) x hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ((k.factorial : K)⁻¹) • (D ^ m * D' ^ (k - m) * ((k.choose m : ℕ) : Module.End K V)) x = ((m.factorial : K)⁻¹) • (D ^ m) ((((k - m).factorial : K)⁻¹) • (D' ^ (k - m)) x)`. Establish `h3 : ((k.choose m : ℕ) : Module.End K V) x = ((k.choose m : ℕ) : K) • x`. Rewrite using `[Module.End.natCast_apply, Nat.cast_smul_eq_nsmul]`. Simplify using `only [Module.End.mul_apply, h3, map_smul, smul_smul]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h4 : ((k.choose m : ℕ) : K) = (k.factorial : K) / ((m.factorial : K) * ((k - m).factorial : K))` using `Nat.cast_choose K hmk`. Establish `hk : (k.factorial : K) ≠ 0` using `by exact_mod_cast k.factorial_ne_zero`. Establish `hm' : (m.factorial : K) ≠ 0` using `by exact_mod_cast m.factorial_ne_zero`. Establish `hkm : ((k - m).factorial : K) ≠ 0` using `by exact_mod_cast (k - m).factorial_ne_zero`. Rewrite using `[h4]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[h2]`. Conclude with `h1`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem divided_powers_preserve_add (Q : V → Prop) (h0 : Q 0) (hadd : ∀ x y, Q x → Q y → Q (x + y))
     (D D' : Module.End K V) (hc : Commute D D') (hD : DividedPowersPreserve Q D) (hD' : DividedPowersPreserve Q D') :

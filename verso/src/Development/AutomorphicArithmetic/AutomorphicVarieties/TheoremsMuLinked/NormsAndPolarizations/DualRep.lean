@@ -10,30 +10,30 @@ section Cont
 variable {G R : Type} [TopologicalSpace G] [CommRing R] {I : Ideal R} {n : ℕ}
 
 /- English proof (translation)
-Introduce `_` and use `IsLocallyConstant.const _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem ac_const (a : R) : AdicCont I fun _ : G => a := fun _ => IsLocallyConstant.const _
 
 /- English proof (translation)
-Introduce `N` and use `by simp only [map_add]; exact (hf N).add (hg N)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem ac_add {f g : G → R} (hf : AdicCont I f) (hg : AdicCont I g) : AdicCont I fun x => f x + g x := fun N => by
   simp only [map_add]; exact (hf N).add (hg N)
 
 /- English proof (translation)
-Introduce `N` and use `by simp only [map_sub]; exact (hf N).sub (hg N)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem ac_sub {f g : G → R} (hf : AdicCont I f) (hg : AdicCont I g) : AdicCont I fun x => f x - g x := fun N => by
   simp only [map_sub]; exact (hf N).sub (hg N)
 
 /- English proof (translation)
-Introduce `N` and use `by simp only [map_mul]; exact (hf N).mul (hg N)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem ac_mul {f g : G → R} (hf : AdicCont I f) (hg : AdicCont I g) : AdicCont I fun x => f x * g x := fun N => by
   simp only [map_mul]; exact (hf N).mul (hg N)
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using ac_const (G := G) (I := I) 0`. Consider the case `insert a s ha ih => simp only [Finset.sum_insert ha]`. Conclude with `ac_add (hf a) ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem ac_sum {ι : Type} (s : Finset ι) (f : ι → G → R) (hf : ∀ k, AdicCont I (f k)) :
     AdicCont I fun x => ∑ k ∈ s, f k x := by
@@ -43,13 +43,13 @@ private theorem ac_sum {ι : Type} (s : Finset ι) (f : ι → G → R) (hf : �
   | insert a s ha ih => simp only [Finset.sum_insert ha]; exact ac_add (hf a) ih
 
 /- English proof (translation)
-Introduce `N` and use `(hf N).comp_continuous hp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem ac_comp {H : Type} [TopologicalSpace H] {f : G → R} (hf : AdicCont I f) {p : H → G} (hp : Continuous p) :
     AdicCont I fun x => f (p x) := fun N => (hf N).comp_continuous hp
 
 /- English proof (translation)
-Introduce `N` and use `(hf N).comp (Ideal.quotientMap (J ^ N) q ((Ideal.pow_right_mono hq N).trans (Ideal.le_comap_pow q N)))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem ac_map {S : Type} [CommRing S] {J : Ideal S} (q : R →+* S) (hq : I ≤ J.comap q) {f : G → R}
     (hf : AdicCont I f) : AdicCont J fun x => q (f x) := fun N =>
@@ -58,18 +58,18 @@ private theorem ac_map {S : Type} [CommRing S] {J : Ideal S} (q : R →+* S) (hq
 private def MC (I : Ideal R) (f : G → Matrix (Fin n) (Fin n) R) : Prop := ∀ i j, AdicCont I fun g => f g i j
 
 /- English proof (translation)
-Introduce `_ _` and use `ac_const _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem mc_const (a : Matrix (Fin n) (Fin n) R) : MC I fun _ : G => a := fun _ _ => ac_const _
 
 /- English proof (translation)
-Introduce `i j` and use `ac_sub (hf i j) (hg i j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem mc_sub {f g : G → Matrix (Fin n) (Fin n) R} (hf : MC I f) (hg : MC I g) : MC I fun x => f x - g x :=
   fun i j => ac_sub (hf i j) (hg i j)
 
 /- English proof (translation)
-Introduce `i j` and use `by simp only [Matrix.mul_apply] exact ac_sum _ (fun k x => f x i k * g x k j) fun k => ac_mul (hf i k) (hg k j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem mc_mul {f g : G → Matrix (Fin n) (Fin n) R} (hf : MC I f) (hg : MC I g) : MC I fun x => f x * g x :=
   fun i j => by
@@ -77,7 +77,7 @@ private theorem mc_mul {f g : G → Matrix (Fin n) (Fin n) R} (hf : MC I f) (hg 
     exact ac_sum _ (fun k x => f x i k * g x k j) fun k => ac_mul (hf i k) (hg k j)
 
 /- English proof (translation)
-Introduce `i j` and use `ac_comp (hf i j) hp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem mc_comp {H : Type} [TopologicalSpace H] {f : G → Matrix (Fin n) (Fin n) R} (hf : MC I f) {p : H → G}
     (hp : Continuous p) : MC I fun x => f (p x) := fun i j => ac_comp (hf i j) hp
@@ -89,7 +89,7 @@ section Tri
 variable {R : Type} [CommRing R] {n : ℕ} {A B : Matrix (Fin n) (Fin n) R}
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Break down `lt_or_ge k i with hk | hk` into its components or cases. Rewrite using `[hA _ _ hk, zero_mul]`. Rewrite using `[hB _ _ (h.trans_le hk), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem ut_mul (hA : ∀ i j, j < i → A i j = 0) (hB : ∀ i j, j < i → B i j = 0) (i j : Fin n) (h : j < i) :
     (A * B) i j = 0 := by
@@ -100,7 +100,7 @@ private theorem ut_mul (hA : ∀ i j, j < i → A i j = 0) (hB : ∀ i j, j < i 
   · rw [hB _ _ (h.trans_le hk), mul_zero]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_single i (fun k _ hk => ?_) (by simp)` and prove the remaining obligations. Break down `lt_or_gt_of_ne hk with hk | hk` into its components or cases. Rewrite using `[hA _ _ hk, zero_mul]`. Rewrite using `[hB _ _ hk, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem ut_diag (hA : ∀ i j, j < i → A i j = 0) (hB : ∀ i j, j < i → B i j = 0) (i : Fin n) :
     (A * B) i i = A i i * B i i := by
@@ -120,17 +120,17 @@ private def du (A B : Matrix (Fin n) (Fin n) O) : Matrix (Fin n) (Fin n) (DualNu
   Matrix.of fun i j => TrivSqZeroExt.inl (A i j) + TrivSqZeroExt.inr (B i j)
 
 /- English proof (translation)
-Simplify using `[du]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem du_fst (A B : Matrix (Fin n) (Fin n) O) (i j : Fin n) : (du A B i j).fst = A i j := by simp [du]
 
 /- English proof (translation)
-Simplify using `[du]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem du_snd (A B : Matrix (Fin n) (Fin n) O) (i j : Fin n) : (du A B i j).snd = B i j := by simp [du]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, TrivSqZeroExt.fst_sum, du_fst]`. Simplify using `[Matrix.mul_apply, TrivSqZeroExt.snd_sum, du_fst, du_snd, Finset.sum_add_distrib, mul_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem du_mul (A B C D : Matrix (Fin n) (Fin n) O) : du A B * du C D = du (A * C) (A * D + B * C) := by
   ext i j
@@ -138,7 +138,7 @@ private theorem du_mul (A B C D : Matrix (Fin n) (Fin n) O) : du A B * du C D = 
   · simp [Matrix.mul_apply, TrivSqZeroExt.snd_sum, du_fst, du_snd, Finset.sum_add_distrib, mul_comm]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `rw [du_fst]; by_cases h : i = j <;> simp [Matrix.one_apply, h]`. Apply the tactic sequence `rw [du_snd]; by_cases h : i = j <;> simp [Matrix.one_apply, h]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem du_one : du (1 : Matrix (Fin n) (Fin n) O) 0 = 1 := by
   ext i j
@@ -151,7 +151,7 @@ Both sides reduce to the same expression.
 private theorem du_tr (A B : Matrix (Fin n) (Fin n) O) : (du A B)ᵀ = du Aᵀ Bᵀ := rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[du_fst, TrivSqZeroExt.algebraMap_eq_inl]`. Simplify using `[du_snd, du_fst, TrivSqZeroExt.algebraMap_eq_inl]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem du_smul (a : O) (A : Matrix (Fin n) (Fin n) O) :
     algebraMap O (DualNumber O) a • du A 0 = du (a • A) 0 := by
@@ -160,13 +160,13 @@ private theorem du_smul (a : O) (A : Matrix (Fin n) (Fin n) O) :
   · simp [du_snd, du_fst, TrivSqZeroExt.algebraMap_eq_inl]
 
 /- English proof (translation)
-Simplify using `[Matrix.trace, TrivSqZeroExt.snd_sum, du_snd]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem du_trace (A B : Matrix (Fin n) (Fin n) O) : (du A B).trace.snd = B.trace := by
   simp [Matrix.trace, TrivSqZeroExt.snd_sum, du_snd]
 
 /- English proof (translation)
-Introduce `i j` and use `by have hq : maximalIdeal O ≤ (maximalIdeal (DualNumber O)).comap (algebraMap O (DualNumber O)) := fun a ha hu => ha (by simpa [TrivSqZeroExt.algebraMap_eq_inl] using TrivSqZeroExt.isUnit_iff_isUnit_fst.1 hu) have := ac_add (ac_map _ hq (hA i j)) (ac_mul (ac_map _ hq (hB i j)) (a …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem mc_du {G : Type} [TopologicalSpace G] [IsLocalRing O] [IsLocalRing (DualNumber O)]
     {A B : G → Matrix (Fin n) (Fin n) O} (hA : MC (maximalIdeal O) A) (hB : MC (maximalIdeal O) B) :
@@ -198,7 +198,7 @@ section Main
 variable {O : Type} [CommRing O] {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[← map_mul, inv_mul_cancel, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem mat_inv {G : Type} [Group G] (ρ : G →* GL (Fin n) O) (g : G) : mat ρ g⁻¹ * mat ρ g = 1 := by
   rw [← map_mul, inv_mul_cancel, map_one]
@@ -218,7 +218,7 @@ private def duRep {G : Type} [Group G] (ρ : G →* GL (Fin n) O) (z : G → Mat
         · rw [mul_assoc] }
 
 /- English proof (translation)
-The claim follows from `MonoidHom.coe_toHomUnits _ g`.
+A detailed English derivation is pending.
 -/
 private theorem mat_duRep {G : Type} [Group G] (ρ : G →* GL (Fin n) O) (z : G → Matrix (Fin n) (Fin n) O)
     (hz : ∀ g g', z (g * g') = z g + mat ρ g * z g' * mat ρ g⁻¹) (g : G) :
@@ -238,9 +238,9 @@ private theorem duU_inv (w : GL (Fin n) O) (A : Matrix (Fin n) (Fin n) O) :
     ((duU w A)⁻¹).val = du (w⁻¹).val (-((w⁻¹).val * A)) := rfl
 
 /- English proof (translation)
-Establish `e1 : (duRep ρ z hz g).val = du (mat ρ g) (z g * mat ρ g)` using `mat_duRep ρ z hz g`. Establish `e2 : (ρ g).val = mat ρ g` using `rfl`. Simplify using `only [Units.val_mul]`. Rewrite using `[e1, e2, duU_val, duU_inv, du_mul, du_mul]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h1 : ∀ X : Matrix (Fin n) (Fin n) O, (w : Matrix (Fin n) (Fin n) O) * (((w⁻¹ : GL (Fin n) O) : Matrix (Fin n) (Fin n) O) * X) = X` using `fun X => by`. Rewrite using `[← mul_assoc, Units.mul_inv, one_mul]`. Establish `h2 : ∀ X : Matrix (Fin n) (Fin n) O, mat ρ g⁻¹ * (mat ρ g * X) = X` using `fun X => by`. Rewrite using `[← mul_assoc, mat_inv, one_mul]`. Simplify using `only [mul_assoc, mul_sub, sub_mul, add_mul, mul_neg, neg_mul, neg_neg, h1, h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -273,7 +273,7 @@ private def diagCh {G R : Type} [Group G] [CommRing R] (τ : G →* GL (Fin n) R
         exact ut_diag (h g) (h g') i }
 
 /- English proof (translation)
-The claim follows from `MonoidHom.coe_toHomUnits _ g`.
+A detailed English derivation is pending.
 -/
 private theorem diagCh_val {G R : Type} [Group G] [CommRing R] (τ : G →* GL (Fin n) R)
     (h : ∀ g i j, j < i → (τ g : GL (Fin n) R) i j = 0) (i : Fin n) (g : G) :
@@ -282,31 +282,29 @@ private theorem diagCh_val {G R : Type} [Group G] [CommRing R] (τ : G →* GL (
 end Main
 
 /- English proof (translation)
-Introduce `l _ n F O _ _ _ y z _ hmu hz`. Use `choose Y hY using hz.ord`. Set `b : ∀ v, F.Gv v → Matrix (Fin n) (Fin n) O` to `fun v g => (((y.w v)⁻¹ : GL (Fin n) O) : Matrix (Fin n) (Fin n) O) * (z (F.φ v g) - dY F (mat y.ρ) (Y v) (F.φ v g)) * (y.w v : Matrix (Fin n) (Fin n) O)`. Set `T : ∀ v, F.Gv v → Matrix (Fin n) (Fin n) O` to `fun v g => ((y.w v)⁻¹ * y.ρ (F.φ v g) * y.w v : GL (Fin n) O)`. Set `τ : ∀ v, F.Gv v →* GL (Fin n) (DualNumber O)` to `fun v => cj (duU (y.w v) (-Y v)) ((duRep y.ρ z hz.coc).comp (F.φ v))`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hτ : ∀ v g, (τ v g : Matrix (Fin n) (Fin n) (DualNumber O)) = du (T v g) (b v g * T v g)` using `fun v g => by`. Simplify using `only [τ, cj_apply]`. Conclude with `conj_duRep y.ρ z hz.coc (y.w v) (Y v) (F.φ v g)`. Establish `hut : ∀ v g i j, j < i → (τ v g : GL (Fin n) (DualNumber O)) i j = 0` using `fun v g i j h => by`. Rewrite using `[hτ]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations. Rewrite using `[du_fst]`. Conclude with `(hY v g).1 i j h`. Rewrite using `[du_snd]`. Conclude with `ut_mul (hY v g).2.2.1 (hY v g).1 i j h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hfst : ∀ v i g, ((diagCh (τ v) (hut v) i g : (DualNumber O)ˣ) : DualNumber O).fst = (y.ψ v i g : O)` using `fun v i g => by`. Rewrite using `[diagCh_val, hτ, du_fst]`. Conclude with `(hY v g).2.1 i`. Establish `hsnd : ∀ v i g, ((diagCh (τ v) (hut v) i g : (DualNumber O)ˣ) : DualNumber O).snd = b v g i i * (y.ψ v i g : O)` using `fun v i g => by`. Rewrite using `[diagCh_val, hτ, du_snd, ut_diag (hY v g).2.2.1 (hY v g).1, (hY v g).2.1 i]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `cρ : MC (maximalIdeal O) fun g => mat y.ρ g` using `y.cont`. Establish `cz : MC (maximalIdeal O) z` using `hz.cont`. Establish `cb : ∀ v, MC (maximalIdeal O) (b v)` using `fun v => mc_mul (mc_mul (mc_const _) (mc_comp (mc_sub cz (mc_sub (mc_mul (mc_mul cρ (mc_const _)) (mc_comp cρ continuous_inv)) (mc_const _))) (F.φ_cont v))) (mc_const _)`. Establish `cT : ∀ v, MC (maximalIdeal O) (T v)` using `fun v => mc_mul (mc_mul (mc_const _) (mc_comp cρ (F.φ_cont v))) (mc_const _)`. Use `⟨duRep y.ρ z hz.coc, duU y.P 0, fun v => diagCh (τ v) (hut v), fun i j => ?_, fun g => ?_, fun v => ⟨(duU (y.w v) (-Y v))⁻¹, fun g => ?_⟩, fun u g hg => ?_, ?_, fun g => ?_, fun v i => ⟨?_, ?_, fun g hg => ?_⟩⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using `only [mat_duRep]`. Conclude with `mc_du cρ (mc_mul cz cρ) i j`. Establish `he : ((F.eps O (DualNumber O) g ^ (1 - (n : ℤ)) : (DualNumber O)ˣ) : DualNumber O) = algebraMap O (DualNumber O) ((F.eps O O g ^ (1 - (n : ℤ)) : Oˣ) : O)`. Establish `: F.eps O (DualNumber O) g = Units.map (algebraMap O (DualNumber O) : O →* DualNumber O) (F.eps O O g)` using `Units.ext rfl`. Rewrite using `[this, ← map_zpow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hP : ((duU y.P 0 : GL (Fin n) (DualNumber O)) : Matrix (Fin n) (Fin n) (DualNumber O)) = du (y.P : Matrix (Fin n) (Fin n) O) 0`. Rewrite using `[duU_val, zero_mul]`. Rewrite using `[he, hP, mat_duRep, mat_duRep, du_tr, du_mul, du_mul, du_smul, y.form g]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_assoc, ← mul_assoc (y.P : Matrix (Fin n) (Fin n) O), hz.pol, transpose_mul]`. Simplify using `only [mul_zero, zero_add, neg_mul, mul_neg, mul_assoc, neg_add_cancel]`. Rewrite using `[inv_inv, ← cj_apply]`. Conclude with `⟨hut v g, fun i => (diagCh_val _ _ i g).symm⟩`. Use `Units.ext ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `(mat_duRep y.ρ z hz.coc g).trans ?_` and prove the remaining obligations. Establish `h1 : mat y.ρ g = 1` using `by show ((y.ρ g : GL (Fin n) O) : Matrix (Fin n) (Fin n) O) = 1`. Rewrite using `[y.ine u g hg]`. Both sides reduce to the same expression. Rewrite using `[hz.ine u g hg, h1, zero_mul, du_one]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Both sides reduce to the same expression. Use extensionality with `g i j show (mat (duRep y.ρ z hz.coc :) g i j).fst = mat y.ρ g i j`. Rewrite using `[mat_duRep, du_fst]`. Rewrite using `[mat_duRep, du_trace]`. Conclude with `MonoidHom.ext fun g => Units.ext (hfst v i g)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h` using `mc_du (cT v) (mc_mul (cb v) (cT v)) i i`. Use `h using 2 with g` and compare the differences between its conclusion and the goal. Rewrite using `[diagCh_val, hτ]`. Establish `h0 : b v g i i = 0`. Break down `hg with hg | hg` into its components or cases.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `(hY v g).2.2.2 hg i`. Use `hmu v (fun g => b v g i i) (cb v i i) (fun s t => ?_) g hg` and prove the remaining obligations. Establish `h` using `hsnd v i (s * t)`. Rewrite `h` using `[map_mul, Units.val_mul, TrivSqZeroExt.snd_mul, hsnd, hsnd, hfst, hfst]`. Use `(y.ψ v i (s * t)).isUnit.mul_right_cancel ?_` and prove the remaining obligations.
-
-Rewrite using `[← h, map_mul, Units.val_mul]`. Simplify using `only [smul_eq_mul, MulOpposite.smul_eq_mul_unop, MulOpposite.unop_op]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsnd, h0, zero_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem dualRep_gen :
     ∀ {l : ℕ} [Fact l.Prime] {n : ℕ} (F : GFrame l) (O : Type) [CommRing O] [IsLocalRing O] [Algebra ℤ_[l] O] (y : Pt F O n) (z : F.G₀ → Matrix (Fin n) (Fin n) O) [IsLocalRing (DualNumber O)], (∀ v (d : F.Gv v → O), AdicCont (maximalIdeal O) d → (∀ g h, d (g * h) = d g + d h) → ∀ g ∈ F.mu v, d g = 0) → OCoc y z → ∃ (ρ' : F.G₀ →* GL (Fin n) (DualNumber O)) (P' : GL (Fin n) (DualNumber O)) (ψ' : ∀ v, Fin n → F.Gv v →* (DualNumber O)ˣ), (∀ i j, AdicCont (maximalIdeal (DualNumber O)) fun g => mat ρ' g i j) ∧ F.IsForm O n ρ' P' ∧ (∀ v, HasFlag (ρ'.comp (F.φ v)) (ψ' v)) ∧ (∀ u, ∀ g ∈ F.Iu u, ρ' g = 1) ∧ pushRep (TrivSqZeroExt.fstHom O O O : DualNumber O →+* O) ρ' = y.ρ ∧ (∀ g, (mat ρ' g).trace.snd = (z g * mat y.ρ g).trace) ∧ ∀ v i, pushCh (TrivSqZeroExt.fstHom O O O : DualNumber O →+* O) (ψ' v i) = y.ψ v i ∧ (AdicCont (maximalIdeal (DualNumber O)) fun g => ((ψ' v i g : (DualNumber O)ˣ) : DualNumber O)) ∧ ∀ g, g ∈ F.Iv v ∨ g ∈ F.mu v → ((ψ' v i g : (DualNumber O)ˣ) : DualNumber O).snd = 0 := by
@@ -386,7 +384,7 @@ private theorem dualRep_gen :
 end UpperTheory.V.Th.Nm
 
 /- English proof (translation)
-Introduce `l _ n F c y z _ hz`. Conclude with `dualRep_gen F c.O y z (fun v d => homMu c (F.Gv v) d) hz`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Th.Nm.dualRep :
     ∀ {l : ℕ} [Fact l.Prime] {n : ℕ} (F : GFrame l) (c : Coef l) (y : Pt F c.O n) (z : F.G₀ → Matrix (Fin n) (Fin n) c.O) [IsCO c.O (DualNumber c.O)], OCoc y z → ∃ (ρ' : F.G₀ →* GL (Fin n) (DualNumber c.O)) (P' : GL (Fin n) (DualNumber c.O)) (ψ' : ∀ v, Fin n → F.Gv v →* (DualNumber c.O)ˣ), (∀ i j, AdicCont (maximalIdeal (DualNumber c.O)) fun g => mat ρ' g i j) ∧ F.IsForm c.O n ρ' P' ∧ (∀ v, HasFlag (ρ'.comp (F.φ v)) (ψ' v)) ∧ (∀ u, ∀ g ∈ F.Iu u, ρ' g = 1) ∧ pushRep (TrivSqZeroExt.fstHom c.O c.O c.O : DualNumber c.O →+* c.O) ρ' = y.ρ ∧ (∀ g, (mat ρ' g).trace.snd = (z g * mat y.ρ g).trace) ∧ ∀ v i, pushCh (TrivSqZeroExt.fstHom c.O c.O c.O : DualNumber c.O →+* c.O) (ψ' v i) = y.ψ v i ∧ (AdicCont (maximalIdeal (DualNumber c.O)) fun g => ((ψ' v i g : (DualNumber c.O)ˣ) : DualNumber c.O)) ∧ ∀ g, g ∈ F.Iv v ∨ g ∈ F.mu v → ((ψ' v i g : (DualNumber c.O)ˣ) : DualNumber c.O).snd = 0 := by

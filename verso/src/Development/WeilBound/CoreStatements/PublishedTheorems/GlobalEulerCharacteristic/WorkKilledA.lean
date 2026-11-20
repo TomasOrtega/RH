@@ -27,7 +27,7 @@ instance isDiscreteRep_resTo {K : FiniteSubfield} (S : Set (HeightOneSpectrum (ð
   isDiscreteRep_res_gsBaseChange_symm S hK' _
 
 /- English proof (translation)
-The claim follows from `TotallyComplexOfOdd.isTotallyComplex_of_odd L' L hodd htc`.
+A detailed English derivation is pending.
 -/
 theorem isTotallyComplex_of_odd (L' L : FiniteSubfield) [Fact (L' â‰¤ L)]
     (hodd : Odd (Module.finrank L'.1 L.1)) (htc : NumberField.IsTotallyComplex L.1) :

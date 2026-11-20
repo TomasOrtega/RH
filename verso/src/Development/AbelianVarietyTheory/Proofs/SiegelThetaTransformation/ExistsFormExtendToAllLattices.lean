@@ -16,7 +16,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 omit [IsCMField E] in
 /- English proof (translation)
-Unfold `mapL`. Rewrite using `[← Submodule.map_comp, Units.val_mul, Matrix.toLin'_mul]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mapL_mul (a b : GL (Fin r) E) (L : Lt E r) : mapL (a * b) L = mapL a (mapL b L) := by
   unfold mapL
@@ -25,7 +25,7 @@ theorem mapL_mul (a b : GL (Fin r) E) (L : Lt E r) : mapL (a * b) L = mapL a (ma
 
 omit [IsCMField E] in
 /- English proof (translation)
-Unfold `mapL`. Rewrite using `[Units.val_one, Matrix.toLin'_one]`. Conclude with `Submodule.map_id L`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mapL_one (L : Lt E r) : mapL (1 : GL (Fin r) E) L = L := by
   unfold mapL
@@ -34,7 +34,7 @@ theorem mapL_one (L : Lt E r) : mapL (1 : GL (Fin r) E) L = L := by
 
 omit [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Use `show ((a : Matrix (Fin r) (Fin r) E).map τ.1 * ((b : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ) : Matrix (Fin r) (Fin r) ℂ) = (((a * b : GL (Fin r) E) : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ)`. Rewrite using `[Units.val_mul, Matrix.map_mul, Matrix.mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lact_lact {Ψ : Finset (E →+* ℂ)} (a b : GL (Fin r) E) (x : Frame Ψ r) :
     lact a (lact b x) = lact (a * b) x := by
@@ -45,7 +45,7 @@ theorem lact_lact {Ψ : Finset (E →+* ℂ)} (a b : GL (Fin r) E) (x : Frame Ψ
 
 omit [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Use `show (((1 : GL (Fin r) E) : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ : Matrix (Fin r) (Fin r) ℂ) = x τ`. Rewrite using `[Units.val_one, Matrix.map_one _ (map_zero τ.1) (map_one τ.1), Matrix.one_mul]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem lact_one {Ψ : Finset (E →+* ℂ)} (x : Frame Ψ r) : lact (1 : GL (Fin r) E) x = x := by
   funext τ
@@ -54,7 +54,7 @@ theorem lact_one {Ψ : Finset (E →+* ℂ)} (x : Frame Ψ r) : lact (1 : GL (Fi
 
 omit [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Use `show ((a : Matrix (Fin r) (Fin r) E).map τ.1 * (mat x τ * mat b τ) : Matrix (Fin r) (Fin r) ℂ) = (a : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ * mat b τ`. Rewrite using `[Matrix.mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lact_rmul {Ψ : Finset (E →+* ℂ)} (a : GL (Fin r) E) (x b : Frame Ψ r) :
     lact a (rmul x b) = rmul (lact a x) b := by
@@ -65,9 +65,9 @@ theorem lact_rmul {Ψ : Finset (E →+* ℂ)} (a : GL (Fin r) E) (x b : Frame Ψ
 
 omit [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Rewrite using `[differentiable_pi]`. Introduce `τ`. Rewrite using `[differentiable_pi]`. Introduce `i`. Rewrite using `[differentiable_pi]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `j`. Simplify using `only [lact, Matrix.mul_apply, mat, Matrix.of_apply]`. Use `fun_prop`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem differentiable_lact {Ψ : Finset (E →+* ℂ)} (a : GL (Fin r) E) :
     Differentiable ℂ (lact (Ψ := Ψ) a) := by
@@ -80,9 +80,9 @@ theorem differentiable_lact {Ψ : Finset (E →+* ℂ)} (a : GL (Fin r) E) :
 variable {X : Data E r}
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `h` using `ha (Pi.single i 1) (Pi.single j 1)`. Simplify using `only [FD.herm, Matrix.mulVec, dotProduct, Pi.single_apply, mul_ite, _root_.mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true, ite_mul, zero_mul, _root_.one_mul] at h`. Establish `hL : ((a : Matrix (Fin r) (Fin r) E).transpose * X.Gm * (a : Matrix (Fin r) (Fin r) E).map FD.cc) i j = ∑ c, ∑ d, (a : Matrix (Fin r) (Fin r) E) c i * X.Gm c d * FD.cc ((a : Matrix (Fin r) (Fin r) E) d j)`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Rewrite using `[hL, h]`. Simplify using `[apply_ite FD.cc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gramE {a : GL (Fin r) E} (ha : IsUn X a) :
     (a : Matrix (Fin r) (Fin r) E).transpose * X.Gm * (a : Matrix (Fin r) (Fin r) E).map FD.cc = X.Gm := by
@@ -99,7 +99,7 @@ theorem gramE {a : GL (Fin r) E} (ha : IsUn X a) :
 
 omit [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [FD.gram, hermC, FD.col, Matrix.of_apply, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem gram_eq (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (M : Matrix (Fin r) (Fin r) ℂ) :
     FD.gram τ G M = M.transpose * G.map τ * M.map (starRingEnd ℂ) := by
@@ -109,11 +109,11 @@ theorem gram_eq (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (M : Matrix (F
   rw [Finset.sum_comm]
 
 /- English proof (translation)
-Establish `hc : ((a : Matrix (Fin r) (Fin r) E).map τ.1).map (starRingEnd ℂ) = ((a : Matrix (Fin r) (Fin r) E).map FD.cc).map τ.1`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply]`. Conclude with `(IsCMField.complexEmbedding_complexConj E τ.1 _).symm`. Establish `key : ((a : Matrix (Fin r) (Fin r) E).map τ.1).transpose * X.Gm.map τ.1 * ((a : Matrix (Fin r) (Fin r) E).map τ.1).map (starRingEnd ℂ) = X.Gm.map τ.1`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc, ← Matrix.transpose_map, ← Matrix.map_mul, ← Matrix.map_mul, gramE ha]`. Establish `e1 : mat (lact a x) τ = (a : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ` using `rfl`. Unfold `dmin`. Use `congr 1`. Rewrite using `[gram_eq, gram_eq, e1, Matrix.transpose_mul, Matrix.map_mul]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [key]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dmin_lact {a : GL (Fin r) E} (ha : IsUn X a) (x : Frame X.Ψ r) (τ : X.Ψ) (i : Fin (r + 1)) :
     dmin X.Gm (lact a x) τ i = dmin X.Gm x τ i := by
@@ -137,9 +137,9 @@ theorem dmin_lact {a : GL (Fin r) E} (ha : IsUn X a) (x : Frame X.Ψ r) (τ : X.
     _ = _ := by rw [key]
 
 /- English proof (translation)
-Introduce `τ`. Establish `e1 : mat (lact a x) τ = (a : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ` using `rfl`. Use `⟨?_, fun i => ?_⟩` and prove the remaining obligations. Establish `hu : IsUnit ((a : Matrix (Fin r) (Fin r) E).map τ.1).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (a.isUnit.map τ.1.mapMatrix)`. Rewrite using `[e1, Matrix.det_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_ne_zero hu.ne_zero (hx τ).1`. Rewrite using `[dmin_lact ha]`. Conclude with `(hx τ).2 i`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lact_mem {a : GL (Fin r) E} (ha : IsUn X a) {x : Frame X.Ψ r} (hx : x ∈ X.dom) :
     lact a x ∈ X.dom := by
@@ -156,29 +156,27 @@ theorem lact_mem {a : GL (Fin r) E} (ha : IsUn X a) {x : Frame X.Ψ r} (hx : x �
 end GlobalTheory.Dict.Extend
 
 /- English proof (translation)
-Introduce `E _ _ _ r X Δ 𝓛 mu la Jx _ L Q hun hmu hcoc hL hsep hst hQ`. Set `F : Lt E r → Frame X.Ψ r → ℂ` to `fun L' x => if h : ∃ p : Jx × GL (Fin r) E, p.2 ∈ Δ ∧ mapL p.2 (L p.1) = L' then (mu h.choose.2 (L h.choose.1))⁻¹ * Q h.choose.1 (lact h.choose.2⁻¹ x) else 0`. Establish `key : ∀ k, ∀ a ∈ Δ, ∀ x ∈ X.dom, F (mapL a (L k)) x = (mu a (L k))⁻¹ * Q k (lact a⁻¹ x)`. Introduce `k a ha x hx`. Establish `h : ∃ p : Jx × GL (Fin r) E, p.2 ∈ Δ ∧ mapL p.2 (L p.1) = mapL a (L k)` using `⟨(k, a), ha, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [F, dif_pos h]`. Take `⟨h1, h2⟩` from `h.choose_spec`. Generalize the expression as in `h.choose = p at h1 h2`. Take `⟨k', b⟩` from `p`. Simplify using `only at h1 h2 ⊢`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Simplify by unfolding definitions.
 
-Establish `hs : a⁻¹ * b ∈ Δ` using `Δ.mul_mem (Δ.inv_mem ha) h1`. Establish `h3 : mapL (a⁻¹ * b) (L k') = L k`. Rewrite using `[Extend.mapL_mul, h2, ← Extend.mapL_mul, inv_mul_cancel, Extend.mapL_one]`. Take `rfl` from `hsep k' k _ hs h3`. Establish `h4 : mu b (L k') = mu a (L k')`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hcoc a ha _ hs _ (hL k')` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_left, h3, hst _ _ hs h3, _root_.mul_one]`. Then use the resulting hypothesis. Establish `h5` using `(hQ k').inv _ hs h3 _ (Extend.lact_mem (hun _ (Δ.inv_mem h1)) hx)`. Rewrite `h5` using `[Extend.lact_lact, mul_inv_cancel_right]`. Rewrite using `[h4, h5]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `zero : ∀ L', (¬ ∃ p : Jx × GL (Fin r) E, p.2 ∈ Δ ∧ mapL p.2 (L p.1) = L') → ∀ x, F L' x = 0` using `fun L' h x => by simp only [F, dif_neg h]`. Use `choose C hC using fun k => (hQ k).bdd`. Take `⟨B, hB⟩` from `(Set.finite_range C).bddAbove`. Use `⟨F, ⟨fun L' _ => ?_, fun L' _ x hx b hb => ?_, fun g hg L' hL' x hx => ?_, max B 0, fun L' _ x hx => ?_⟩, fun k x hx => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : ∃ p : Jx × GL (Fin r) E, p.2 ∈ Δ ∧ mapL p.2 (L p.1) = L'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨k, a⟩, ha, rfl⟩` from `h`. Use `DifferentiableOn.congr ?_ (key k a ha)` and prove the remaining obligations. Conclude with `((hQ k).hol.comp (Extend.differentiable_lact a⁻¹).differentiableOn fun x hx => Extend.lact_mem (hun _ (Δ.inv_mem ha)) hx).const_mul _`. Conclude with `(differentiableOn_const 0).congr fun x _ => zero L' h x`. Distinguish the cases in `h : ∃ p : Jx × GL (Fin r) E, p.2 ∈ Δ ∧ mapL p.2 (L p.1) = L'`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨h1, -⟩` from `h.choose_spec`. Simplify using `only [F, dif_pos h]`. Rewrite using `[Extend.lact_rmul, (hQ _).bor _ (Extend.lact_mem (hun _ (Δ.inv_mem h1)) hx) b hb]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[zero L' h, zero L' h, mul_zero]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify by unfolding definitions.
 
-Distinguish the cases in `h : ∃ p : Jx × GL (Fin r) E, p.2 ∈ Δ ∧ mapL p.2 (L p.1) = L'`. Take `⟨⟨k, a⟩, ha, rfl⟩` from `h dsimp only at ha ⊢`. Rewrite using `[← Extend.mapL_mul, key k _ (Δ.mul_mem hg ha) _ (Extend.lact_mem (hun g hg) hx), key k a ha x hx, hcoc g hg a ha _ (hL k), Extend.lact_lact, _root_.mul_inv_rev g a, inv_mul_cancel_right, mul_inv, _root_.mul_assoc]`. Rewrite using `[zero L' h, mul_zero]`. Use `zero _ ?_ _` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨⟨k, a⟩, ha, h2⟩`. Use `h ⟨(k, g⁻¹ * a), Δ.mul_mem (Δ.inv_mem hg) ha, ?_⟩` and prove the remaining obligations. Simplify using `only at h2 ⊢`. Rewrite using `[Extend.mapL_mul, h2, ← Extend.mapL_mul, inv_mul_cancel, Extend.mapL_one]`. Distinguish the cases in `h : ∃ p : Jx × GL (Fin r) E, p.2 ∈ Δ ∧ mapL p.2 (L p.1) = L'`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify by unfolding definitions.
 
-Take `⟨⟨k, a⟩, ha, rfl⟩` from `h dsimp only at ha ⊢`. Establish `hu` using `hun _ (Δ.inv_mem ha)`. Establish `h1` using `hC k _ (Extend.lact_mem hu hx)`. Use `le_trans (le_of_eq ?_) (h1.trans ((hB ⟨k, rfl⟩).trans (le_max_left _ _)))` and prove the remaining obligations. Simplify using `only [Data.pnorm, Extend.dmin_lact hu]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key k a ha x hx, norm_mul, norm_inv, (hmu a ha _ (hL k)).2, inv_one, _root_.one_mul]`. Simplify using `only [Data.pnorm]`. Rewrite using `[zero L' h, norm_zero, zero_mul]`. Conclude with `le_max_right _ _`. Establish `h` using `key k 1 Δ.one_mem x hx`.
-
-Rewrite `h` using `[hst k 1 Δ.one_mem (Extend.mapL_one _), Extend.mapL_one, inv_one, inv_one, _root_.one_mul, Extend.lact_one]`. Conclude with `h`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Dict.exists_form_extend : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (Δ : Subgroup (GL (Fin r) E)) (𝓛 : Set (Lt E r)) (mu : GL (Fin r) E → Lt E r → ℂ) (la : Wt X.Ψ r) (Jx : Type) [Finite Jx] (L : Jx → Lt E r) (Q : Jx → Frame X.Ψ r → ℂ), (∀ ga ∈ Δ, IsUn X ga) → (∀ ga ∈ Δ, ∀ L' ∈ 𝓛, mapL ga L' ∈ 𝓛 ∧ ‖mu ga L'‖ = 1) → (∀ ga ∈ Δ, ∀ ga' ∈ Δ, ∀ L' ∈ 𝓛, mu (ga * ga') L' = mu ga (mapL ga' L') * mu ga' L') → (∀ k, L k ∈ 𝓛) → (∀ k k', ∀ ga ∈ Δ, mapL ga (L k) = L k' → k = k') → (∀ k, ∀ ga ∈ Δ, mapL ga (L k) = L k → mu ga (L k) = 1) → (∀ k, IsStabForm X Δ (L k) la (Q k)) → ∃ F : Lt E r → Frame X.Ψ r → ℂ, IsForm X Δ 𝓛 mu la F ∧ ∀ k, ∀ x ∈ X.dom, F (L k) x = Q k x := by
   intro E _ _ _ r X Δ 𝓛 mu la Jx _ L Q hun hmu hcoc hL hsep hst hQ

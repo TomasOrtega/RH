@@ -8,11 +8,9 @@ namespace GlobalTheory.FinGL.LeviWh
 open Formalism.L2.DIV Module Matrix
 
 /- English proof (translation)
-Introduce `i j hij`. Distinguish the cases in `hi : S i`. Establish `hj : ¬ S j` using `fun h => hij ⟨hi, h⟩`. Establish `e : (M * N) i j = (M * (1 : Matrix (Fin r) (Fin r) F)) i j`. Simplify using `only [Matrix.mul_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_congr rfl fun a _ => by rw [hN a j fun h => hj h.2]`. Rewrite using `[e, Matrix.mul_one, hM i j hij]`. Establish `e : (M * N) i j = ((1 : Matrix (Fin r) (Fin r) F) * N) i j`. Simplify using `only [Matrix.mul_apply]`. Conclude with `Finset.sum_congr rfl fun a _ => by rw [hM i a fun h => hi h.1]`.
-
-Rewrite using `[e, Matrix.one_mul, hN i j hij]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_one_off_mul {F : Type} [Field F] {r : ℕ} (S : Fin r → Prop) (M N : Matrix (Fin r) (Fin r) F)
     (hM : ∀ i j, ¬ (S i ∧ S j) → M i j = (1 : Matrix (Fin r) (Fin r) F) i j)
@@ -31,17 +29,17 @@ theorem eq_one_off_mul {F : Type} [Field F] {r : ℕ} (S : Fin r → Prop) (M N 
     rw [e, Matrix.one_mul, hN i j hij]
 
 /- English proof (translation)
-Use `set e : Fin r → F := Pi.single c 1 with he`. Use `set A : Matrix (Fin r) (Fin r) F := vecMulVec e (l - e) with hA`. Establish `hd : (l - e) ⬝ᵥ e = l c - 1` using `by simp [he]`. Establish `hAA : A * A = (l c - 1) • A`. Rewrite using `[hA, vecMulVec_mul_vecMulVec, hd, vecMulVec_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (1 - (l c)⁻¹ • A) * (1 + A) = 1`. Rewrite using `[sub_mul, one_mul, smul_mul_assoc, mul_add, mul_one, hAA]`. Establish `: A + (l c - 1) • A = l c • A` using `by rw [sub_smul, one_smul]; abel`. Rewrite using `[this, smul_smul, inv_mul_cancel₀ hl, one_smul]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨⟨1 - (l c)⁻¹ • A, 1 + A, h1, mul_eq_one_comm.mp h1⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j hij`. Establish `: A i j = 0`. Rewrite using `[hA, vecMulVec_apply]`. Distinguish the cases in `hi : i = c`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hj : ¬ S j` using `fun h => hij ⟨hi ▸ hc, h⟩`. Establish `hlj : l j = 0`. Assume the negation of the conclusion as `h`. Conclude with `hj (hS j h)`. Establish `hjc : j ≠ c` using `fun h => hj (h ▸ hc)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[he, hlj, hjc]`. Simplify using `[he, hi]`. Simplify using `[this]`. Establish `hv : Matrix.vecMul l A = l c • (l - e)`. Rewrite using `[hA, vecMul_vecMulVec]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Simplify using `[he]`. Use `show Matrix.vecMul l (1 - (l c)⁻¹ • A) = e`. Rewrite using `[vecMul_sub, vecMul_one, vecMul_smul, hv, smul_smul, inv_mul_cancel₀ hl, one_smul]`. Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem exists_gl_vecMul_eq_single_of_ne {F : Type} [Field F] {r : ℕ} (S : Fin r → Prop) (c : Fin r) (hc : S c)
     (l : Fin r → F) (hl : l c ≠ 0) (hS : ∀ i, l i ≠ 0 → S i) :
@@ -77,17 +75,17 @@ theorem exists_gl_vecMul_eq_single_of_ne {F : Type} [Field F] {r : ℕ} (S : Fin
     abel
 
 /- English proof (translation)
-Distinguish the cases in `hlc : l c = 0`. Use `swap`. Conclude with `exists_gl_vecMul_eq_single_of_ne S c hc l hlc hS`. Take `⟨a, ha⟩` from `Function.ne_iff.mp hl`. Establish `ha : l a ≠ 0` using `ha`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hac : a ≠ c` using `fun h => ha (h ▸ hlc)`. Establish `h1 : transvection a c (1 : F) * transvection a c (-1 : F) = 1`. Rewrite using `[transvection_mul_transvection_same a c hac, add_neg_cancel, transvection_zero]`. Set `t : GL (Fin r) F` to `⟨transvection a c 1, transvection a c (-1), h1, mul_eq_one_comm.mp h1⟩`. Establish `hv : ∀ j, Matrix.vecMul l (transvection a c (1 : F)) j = l j + if j = c then l a else 0`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `j`. Rewrite using `[transvection, vecMul_add, vecMul_one, Pi.add_apply]`. Use `congr 1`. Distinguish the cases in `hj : j = c`. Substitute `hj` using the available equality.
+Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[vecMul, dotProduct, Matrix.single_apply]`. Simplify using `[vecMul, dotProduct, Matrix.single_apply, hj, Ne.symm hj]`. Take `⟨h, hh1, hh2⟩` from `exists_gl_vecMul_eq_single_of_ne S c hc (Matrix.vecMul l (transvection a c (1 : F))) (by rw [hv]; simpa [hlc] using ha) (by`. Introduce `i hi`. Distinguish the cases in `hic : i = c`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hic ▸ hc`. Rewrite `hi` using `[hv]`. Conclude with `hS i (by simpa [hic] using hi))`. Use `⟨t * h, ?_, ?_⟩` and prove the remaining obligations. Use `eq_one_off_mul S (transvection a c (1 : F)) _ ?_ hh1` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `i j hij`. Establish `: ¬ (a = i ∧ c = j)` using `fun h => hij ⟨h.1 ▸ hS a ha, h.2 ▸ hc⟩`. Simplify using `[transvection, Matrix.single_apply, this]`. Rewrite using `[← hh2, vecMul_vecMul]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_gl_vecMul_eq_single {F : Type} [Field F] {r : ℕ} (S : Fin r → Prop) (c : Fin r) (hc : S c)
     (l : Fin r → F) (hl : l ≠ 0) (hS : ∀ i, l i ≠ 0 → S i) :
@@ -127,13 +125,11 @@ theorem exists_gl_vecMul_eq_single {F : Type} [Field F] {r : ℕ} (S : Fin r →
     rfl
 
 /- English proof (translation)
-Introduce `F _ r b hb k k' hk l hl hS`. Establish `hk' : k' < k ∧ b k' = b k`. Take `⟨a, ha⟩` from `Function.ne_iff.mp hl`. Take `⟨h1, h2⟩` from `hS a ha`. Establish `h3 : k' < k` using `by rw [Fin.lt_def]; omega`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h4 : a ≤ k'` using `by rw [Fin.lt_def] at h1; rw [Fin.le_def]; omega`. Conclude with `⟨h3, le_antisymm (hb h3.le) (h2 ▸ hb h4)⟩`. Take `⟨h, h1, h2⟩` from `exists_gl_vecMul_eq_single (fun i => i < k ∧ b i = b k) k' hk' l hl hS`. Use `⟨⟨h, ?_⟩, ?_, h2⟩` and prove the remaining obligations. Establish `: (h : Matrix (Fin r) (Fin r) F).BlockTriangular b`.
+Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `i j hij`. Rewrite using `[h1 i j (fun hh => by rw [hh.1.2, hh.2.2] at hij; exact lt_irrefl _ hij)]`. Conclude with `Matrix.one_apply_ne (fun e => by rw [e] at hij; exact lt_irrefl _ hij)`. Conclude with `this`. Introduce `i j hij`.
-
-Assume the negation of the conclusion as `hn`. Conclude with `hij (h1 i j fun hh => hn ⟨hh.1.1, hh.2.1⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem exists_blockTri_vecMul_eq_single : ∀ (F : Type) [Field F] (r : ℕ) (b : Fin r → ℕ), Monotone b → ∀ (k k' : Fin r), k'.val + 1 = k.val → ∀ l : Fin r → F, l ≠ 0 → (∀ i, l i ≠ 0 → i < k ∧ b i = b k) → ∃ h : blockTri (κ := F) b, (∀ i j, ((h : GL (Fin r) F) : Matrix (Fin r) (Fin r) F) i j ≠ (1 : Matrix (Fin r) (Fin r) F) i j → i < k ∧ j < k) ∧ Matrix.vecMul l ((h : GL (Fin r) F) : Matrix (Fin r) (Fin r) F) = Pi.single k' 1 := by
   intro F _ r b hb k k' hk l hl hS

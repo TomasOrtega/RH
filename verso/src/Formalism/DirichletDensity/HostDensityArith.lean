@@ -8,31 +8,31 @@ import Formalism.DirichletDensity.DirichletDensityProofs.HostDensity
 namespace Formalism.HF.Final
 
 /- English proof (translation)
-The claim follows from `Formalism.HF.quadDiscr`.
+A detailed English derivation is pending.
 -/
 theorem quadDiscr : Formalism.HF.QuadDiscr := Formalism.HF.quadDiscr
 /- English proof (translation)
-The claim follows from `Formalism.HF.mqDiscr_of quadDiscr`.
+A detailed English derivation is pending.
 -/
 theorem mqDiscr : Formalism.HF.MQDiscr := Formalism.HF.mqDiscr_of quadDiscr
 /- English proof (translation)
-The claim follows from `Formalism.HF.hostDiscr_of mqDiscr`.
+A detailed English derivation is pending.
 -/
 theorem hostDiscr : Formalism.HF.HostDiscr := Formalism.HF.hostDiscr_of mqDiscr
 /- English proof (translation)
-The claim follows from `Formalism.HF.apLogDensity`.
+A detailed English derivation is pending.
 -/
 theorem apLogDensity : Formalism.HF.APLogDensity := Formalism.HF.apLogDensity
 /- English proof (translation)
-The claim follows from `Formalism.HF.logToDir`.
+A detailed English derivation is pending.
 -/
 theorem logToDir : Formalism.HF.LogToDir := Formalism.HF.logToDir
 /- English proof (translation)
-The claim follows from `Formalism.HF.hostDensityArith_of apLogDensity logToDir`.
+A detailed English derivation is pending.
 -/
 theorem hostDensityArith : Formalism.HF.HostDensityArith := Formalism.HF.hostDensityArith_of apLogDensity logToDir
 /- English proof (translation)
-The claim follows from `Formalism.HF.hostDensity_of hostDensityArith`.
+A detailed English derivation is pending.
 -/
 theorem hostDensity : Formalism.HF.HostDensity := Formalism.HF.hostDensity_of hostDensityArith
 

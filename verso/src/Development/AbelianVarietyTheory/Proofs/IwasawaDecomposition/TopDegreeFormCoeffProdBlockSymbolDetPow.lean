@@ -25,7 +25,7 @@ Both sides reduce to the same expression.
 theorem topCoeff_eq_tc {n : ℕ} (P : MvPolynomial (Fin n × Fin n) ℂ) : GlobalTheory.GoodMetric.topCoeff P = tc P := rfl
 
 /- English proof (translation)
-Simplify using `only [tc, coeff_sum, Finset.mul_sum]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tc_sum {κ : Type} (s : Finset κ) (f : κ → MvPolynomial (α × α) ℂ) :
     tc (∑ i ∈ s, f i) = ∑ i ∈ s, tc (f i) := by
@@ -33,7 +33,7 @@ theorem tc_sum {κ : Type} (s : Finset κ) (f : κ → MvPolynomial (α × α) �
   exact Finset.sum_comm
 
 /- English proof (translation)
-Simplify using `only [tc, coeff_monomial, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> ring`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tc_monomial (u : α × α →₀ ℕ) (c : ℂ) : tc (monomial u c) = c * tc (monomial u 1) := by
   simp only [tc, coeff_monomial, Finset.mul_sum]
@@ -41,18 +41,18 @@ theorem tc_monomial (u : α × α →₀ ℕ) (c : ℂ) : tc (monomial u c) = c 
   split_ifs <;> ring
 
 /- English proof (translation)
-Rewrite using `[graph, Finsupp.finset_sum_apply, Finset.sum_eq_single a (fun c _ hc => by simp [Finsupp.single_apply, hc]) (by simp)]`. Simplify using `[Finsupp.single_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem graph_apply (w : Equiv.Perm α) (a b : α) : graph w (a, b) = if w a = b then 1 else 0 := by
   rw [graph, Finsupp.finset_sum_apply, Finset.sum_eq_single a (fun c _ hc => by simp [Finsupp.single_apply, hc]) (by simp)]
   simp [Finsupp.single_apply]
 
 /- English proof (translation)
-Unfold `tc`. Rewrite using `[← (Equiv.permCongr e).sum_comp]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Establish `hg : graph (e.permCongr v) = Finsupp.mapDomain (Prod.map e e) (graph v)`. Unfold `graph`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[Finsupp.mapDomain_finset_sum]`. Simplify using `only [Finsupp.mapDomain_single]`. Rewrite using `[← e.sum_comp]`. Simplify using `[Equiv.permCongr_apply]`. Establish `hinj : Function.Injective (Prod.map e e)` using `fun x y h => by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Prod.map, Prod.mk.injEq, EmbeddingLike.apply_eq_iff_eq] at h`. Conclude with `Prod.ext h.1 h.2`. Rewrite using `[hg, coeff_rename_mapDomain _ hinj, Equiv.Perm.sign_permCongr]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tc_rename_equiv {β : Type} [Fintype β] [DecidableEq β] (e : α ≃ β) (P : MvPolynomial (α × α) ℂ) :
     tc (rename (Prod.map e e) P) = tc P := by
@@ -71,7 +71,7 @@ theorem tc_rename_equiv {β : Type} [Fintype β] [DecidableEq β] (e : α ≃ β
   rw [hg, coeff_rename_mapDomain _ hinj, Equiv.Perm.sign_permCongr]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => rw [Finset.prod_insert ha, ih, monomial_mul, Finset.sum_insert ha, Finset.prod_insert ha]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem prod_monomial' {κ : Type} (s : Finset κ) (f : κ → α × α →₀ ℕ) (c : κ → ℂ) :
     ∏ i ∈ s, (monomial (f i) (c i) : MvPolynomial (α × α) ℂ) = monomial (∑ i ∈ s, f i) (∏ i ∈ s, c i) := by
@@ -89,7 +89,7 @@ variable {ι γ : Type} [Fintype ι] [DecidableEq ι] [Fintype γ] [DecidableEq 
 def emb (τ : ι) (v : γ × γ) : (ι × γ) × (ι × γ) := ((τ, v.1), (τ, v.2))
 
 /- English proof (translation)
-Introduce and unpack `⟨a, b⟩ ⟨c, d⟩ h`. Simplify using `only [emb, Prod.mk.injEq, true_and] at h`. Simplify using `[h]`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem emb_injective (τ : ι) : Function.Injective (emb (γ := γ) τ) := by
   rintro ⟨a, b⟩ ⟨c, d⟩ h
@@ -99,9 +99,9 @@ theorem emb_injective (τ : ι) : Function.Injective (emb (γ := γ) τ) := by
 def glue (D : ι → (γ × γ →₀ ℕ)) : (ι × γ) × (ι × γ) →₀ ℕ := ∑ τ, (D τ).mapDomain (emb τ)
 
 /- English proof (translation)
-Unfold `glue`. Rewrite using `[Finsupp.finset_sum_apply, Finset.sum_eq_single τ]`. Conclude with `Finsupp.mapDomain_apply (emb_injective τ) _ _`. Introduce `τ' _ hτ'`. Apply `Finsupp.mapDomain_notin_range` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨u, hu⟩`. Simplify using `only [emb, Prod.mk.injEq] at hu`. Conclude with `hτ' hu.1.1`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem glue_emb (D : ι → (γ × γ →₀ ℕ)) (τ : ι) (v : γ × γ) : glue D (emb τ v) = D τ v := by
   unfold glue
@@ -115,9 +115,9 @@ theorem glue_emb (D : ι → (γ × γ →₀ ℕ)) (τ : ι) (v : γ × γ) : g
   · simp
 
 /- English proof (translation)
-Unfold `glue`. Rewrite using `[Finsupp.finset_sum_apply]`. Use `Finset.sum_eq_zero fun τ _ => Finsupp.mapDomain_notin_range _ _ ?_` and prove the remaining obligations. Introduce and unpack `⟨u, hu⟩`. Simplify using `only [emb, Prod.mk.injEq] at hu`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Conclude with `h (by rw [← hu.1, ← hu.2])`.
+A detailed English derivation is pending.
 -/
 theorem glue_off (D : ι → (γ × γ →₀ ℕ)) (a b : ι × γ) (h : a.1 ≠ b.1) : glue D (a, b) = 0 := by
   unfold glue
@@ -128,7 +128,7 @@ theorem glue_off (D : ι → (γ × γ →₀ ℕ)) (a b : ι × γ) (h : a.1 �
   exact h (by rw [← hu.1, ← hu.2])
 
 /- English proof (translation)
-Introduce `D D' h`. Use function extensionality and compare the values at `τ`. Use extensionality with `v`. Rewrite using `[← glue_emb, h, glue_emb]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem glue_injective : Function.Injective (glue (ι := ι) (γ := γ)) := by
   intro D D' h
@@ -137,7 +137,7 @@ theorem glue_injective : Function.Injective (glue (ι := ι) (γ := γ)) := by
   rw [← glue_emb, h, glue_emb]
 
 /- English proof (translation)
-Unfold `glue graph`. Simplify using `only [Finsupp.mapDomain_finset_sum, Finsupp.mapDomain_single]`. Rewrite using `[Fintype.sum_prod_type]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem graph_prodCongrRight (σ : ι → Equiv.Perm γ) :
     graph (Equiv.prodCongrRight σ) = glue fun τ => graph (σ τ) := by
@@ -147,11 +147,11 @@ theorem graph_prodCongrRight (σ : ι → Equiv.Perm γ) :
   rfl
 
 /- English proof (translation)
-Establish `hw' : ∀ b, (w.symm b).1 = b.1` using `fun b => by`. Use `hw (w.symm b)` as an intermediate fact. Rewrite `this` using `[Equiv.apply_symm_apply]`. Conclude with `this.symm`. Establish `li : ∀ τ x, (w.symm (τ, (w (τ, x)).2)).2 = x` using `fun τ x => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : (τ, (w (τ, x)).2) = w (τ, x)` using `Prod.ext (hw (τ, x)).symm rfl`. Rewrite using `[e1, Equiv.symm_apply_apply]`. Establish `ri : ∀ τ x, (w (τ, (w.symm (τ, x)).2)).2 = x` using `fun τ x => by`. Establish `e1 : (τ, (w.symm (τ, x)).2) = w.symm (τ, x)` using `Prod.ext (hw' (τ, x)).symm rfl`. Rewrite using `[e1, Equiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun τ => Equiv.mk (fun x => (w (τ, x)).2) (fun x => (w.symm (τ, x)).2) (li τ) (ri τ), ?_⟩` and prove the remaining obligations. Use extensionality with `⟨τ, x⟩`. Simplify using `[hw]`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_prodCongrRight (w : Equiv.Perm (ι × γ)) (hw : ∀ a, (w a).1 = a.1) :
     ∃ σ : ι → Equiv.Perm γ, Equiv.prodCongrRight σ = w := by
@@ -171,7 +171,7 @@ theorem exists_prodCongrRight (w : Equiv.Perm (ι × γ)) (hw : ∀ a, (w a).1 =
   · simp
 
 /- English proof (translation)
-Introduce `σ σ' h`. Use function extensionality and compare the values at `τ`. Use extensionality with `x`. Use `congrArg (fun w : Equiv.Perm (ι × γ) => (w (τ, x)).2) h` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem prodCongrRight_injective :
     Function.Injective (fun σ : ι → Equiv.Perm γ => (Equiv.prodCongrRight σ : Equiv.Perm (ι × γ))) := by
@@ -182,19 +182,17 @@ theorem prodCongrRight_injective :
   simpa using this
 
 /- English proof (translation)
-Simplify using `only [tc, coeff_monomial]`. Rewrite using `[Finset.prod_univ_sum, Fintype.piFinset_univ]`. Use `set F : Equiv.Perm (ι × γ) → ℂ := fun w => ((Equiv.Perm.sign w : ℤ) : ℂ) * if glue D = graph w then 1 else 0 with hF`. Establish `h1 : ∑ w, F w = ∑ w ∈ Finset.univ.image (fun σ : ι → Equiv.Perm γ => Equiv.prodCongrRight σ), F w`. Use `(Finset.sum_subset (Finset.subset_univ _) fun w _ hw => ?_).symm` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [hF]`. Rewrite using `[if_neg, mul_zero]`. Introduce `hg`. Apply `hw` to reduce the goal to its premises. Establish `hb : ∀ a, (w a).1 = a.1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a`. Assume the negation of the conclusion as `hne`. Establish `e1` using `glue_off D a (w a) (Ne.symm hne)`. Rewrite `e1` using `[hg, graph_apply, if_pos rfl]`. Conclude with `one_ne_zero e1`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨σ, hσ⟩` from `exists_prodCongrRight w hb`. Conclude with `Finset.mem_image.mpr ⟨σ, Finset.mem_univ _, hσ⟩`. Rewrite using `[h1, Finset.sum_image fun x _ y _ h => prodCongrRight_injective h]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Simplify using `only [hF, graph_prodCongrRight, glue_injective.eq_iff, Equiv.Perm.sign_prodCongrRight]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Finset.prod_mul_distrib]`. Use `push_cast`. Use `congr 1`. Distinguish the cases in `hD : D = fun τ => graph (σ τ)`. Rewrite using `[if_pos hD]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `symm`. Conclude with `Finset.prod_eq_one fun τ _ => if_pos (congrFun hD τ)`. Rewrite using `[if_neg hD]`. Choose the witnesses or unpack the hypotheses as in `⟨τ, hτ⟩ : ∃ τ, D τ ≠ graph (σ τ) := by`. Assume the negation of the conclusion as `hall`.
-
-Use `push_neg at hall`. Conclude with `hD (funext hall)`. Use `symm`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ τ) (if_neg hτ)`.
+Assume the negation of the conclusion and derive a contradiction. Use symmetry to reverse the relation. A detailed English derivation is pending.
 -/
 theorem tc_monomial_glue (D : ι → (γ × γ →₀ ℕ)) :
     tc (monomial (glue D) (1 : ℂ)) = ∏ τ, tc (monomial (D τ) (1 : ℂ)) := by
@@ -234,15 +232,13 @@ theorem tc_monomial_glue (D : ι → (γ × γ →₀ ℕ)) :
     exact Finset.prod_eq_zero (Finset.mem_univ τ) (if_neg hτ)
 
 /- English proof (translation)
-Establish `hL : ∏ τ, rename (emb τ) (f τ) = ∑ x ∈ Fintype.piFinset fun τ => (f τ).support, monomial (glue x) (∏ τ, coeff (x τ) (f τ))`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Use `conv_lhs => rw [(f τ).as_sum]`. Rewrite using `[map_sum]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [rename_monomial]`. Use `_ = _ := by`. Rewrite using `[Finset.prod_univ_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[prod_monomial']`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hR : ∀ τ, tc (f τ) = ∑ d ∈ (f τ).support, coeff d (f τ) * tc (monomial d (1 : ℂ))`. Introduce `τ`. Use `conv_lhs => rw [(f τ).as_sum]`. Rewrite using `[tc_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun d _ => tc_monomial _ _`. Rewrite using `[hL, tc_sum]`. Repeatedly rewrite using `[hR]`. Rewrite using `[Finset.prod_univ_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[tc_monomial, tc_monomial_glue, Finset.prod_mul_distrib]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tc_prod_rename (f : ι → MvPolynomial (γ × γ) ℂ) :
     tc (∏ τ, rename (emb τ) (f τ)) = ∏ τ, tc (f τ) := by
@@ -280,14 +276,14 @@ def symMat (p q : ℕ) : Matrix (Fin p) (Fin p) (MvPolynomial ((Fin p × Fin q) 
   Matrix.of fun i j => ∑ b : Fin q, X ((i, b), (j, b))
 
 /- English proof (translation)
-The claim follows from `(AlgHom.map_det (rename g) _).symm`.
+A detailed English derivation is pending.
 -/
 theorem det_map_rename {σ' : Type} (p q : ℕ) (g : (Fin p × Fin q) × (Fin p × Fin q) → σ') :
     ((symMat p q).map (rename (R := ℂ) g)).det = rename g (symMat p q).det :=
   (AlgHom.map_det (rename g) _).symm
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[GlobalTheory.DomainDens.blockSym, symMat, map_sum, rename_X, emb]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem blockSym_eq {ι : Type} [Fintype ι] {p q n : ℕ} (h : Fintype.card (ι × Fin p × Fin q) = n) (τ : ι) :
     GlobalTheory.DomainDens.blockSym h τ = (symMat p q).map
@@ -300,11 +296,9 @@ end GlobalTheory.BlockTop
 open GlobalTheory.BlockTop in
 
 /- English proof (translation)
-Introduce `ι _ p q n h h1`. Use `set e := Fintype.equivFinOfCardEq h`. Use `set e1 := Fintype.equivFinOfCardEq h1`. Establish `hL : ∏ τ, (GlobalTheory.DomainDens.blockSym h τ).det ^ q = rename (Prod.map e e) (∏ τ, rename (emb τ) ((symMat p q).det ^ q))`. Rewrite using `[map_prod]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[blockSym_eq, det_map_rename, rename_rename, map_pow]`. Use `set e' : Fin p × Fin q ≃ Fin (p * q) := (Equiv.punitProd (Fin p × Fin q)).symm.trans e1`. Establish `hR : (GlobalTheory.DomainDens.blockSym h1 ()).det ^ q = rename (Prod.map e' e') ((symMat p q).det ^ q)`. Rewrite using `[blockSym_eq, det_map_rename, map_pow]`.
-
-Both sides reduce to the same expression. Rewrite using `[hL, hR, topCoeff_eq_tc, topCoeff_eq_tc, tc_rename_equiv, tc_rename_equiv, tc_prod_rename, Finset.prod_const, Finset.card_univ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.DomainDens.topCoeff_prod_blockSym_det_pow : ∀ (ι : Type) [Fintype ι] (p q n : ℕ)
     (h : Fintype.card (ι × Fin p × Fin q) = n) (h1 : Fintype.card (Unit × Fin p × Fin q) = p * q),

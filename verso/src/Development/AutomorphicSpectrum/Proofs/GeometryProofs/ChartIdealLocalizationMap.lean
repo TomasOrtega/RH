@@ -21,7 +21,7 @@ open MvPolynomial
 namespace GlobalTheory.CompanionTheory.Ar.ChartHom
 
 /- English proof (translation)
-Introduce `K _ J _ Ω _ _ y c hc R _ θ hθ F hF S hS`. Conclude with `exists_hom_adjoin_inv (fun p : Σ k, J k => y p / y ⟨p.1, c p.1⟩) (θ.comp (map (algebraMap ℚ ℂ))) (fun G hG => hθ _ (GlobalTheory.CompanionTheory.Ar.ChartDehom.map_mem_chartIdeal K J Ω y c hc G hG)) F hF S hS`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_hom_chart : ∀ (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (Ω : Type) [Field Ω] [CharZero Ω]
     (y : (Σ k, J k) → Ω) (c : (k : K) → J k), (∀ k, y ⟨k, c k⟩ ≠ 0) →

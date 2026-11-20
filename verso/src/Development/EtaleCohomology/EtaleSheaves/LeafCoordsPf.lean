@@ -8,11 +8,11 @@ open LateralTheory.E.LeafChartRingPf
 open scoped Pointwise
 
 /- English proof (translation)
-Consider the cases of `subsingleton_or_nontrivial (Localization.Away g) with`. Consider the case `inl h => exact linearIndependent_of_subsingleton`. Consider the case `inr h`. Establish `h0 : Algebra.IsStandardSmoothOfRelativeDimension 0 B (Localization.Away g)` using `Algebra.IsStandardSmoothOfRelativeDimension.localization_away g`. Establish `h1 : Algebra.IsStandardSmoothOfRelativeDimension (0 + n) A (Localization.Away g)` using `Algebra.IsStandardSmoothOfRelativeDimension.trans n 0 A B (Localization.Away g)`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[zero_add]`. Establish `hr` using `Algebra.IsStandardSmoothOfRelativeDimension.rank_kaehlerDifferential (R := A) (S := Localization.Away g) n`. Establish `: Module.Free (Localization.Away g) Ω[Localization.Away g⁄A]`. Use `h1.isStandardSmooth` as an intermediate fact. Use `infer_instance`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : Module.finrank (Localization.Away g) Ω[Localization.Away g⁄A] = n` using `Module.finrank_eq_of_rank_eq hr`. Conclude with `linearIndependent_of_top_le_span_of_card_eq_finrank hsp.ge (hcard.trans hf.symm)`.
+A detailed English derivation is pending.
 -/
 theorem linIndep_of_span {A B : Type} [CommRing A] [CommRing B] [Algebra A B] (n : ℕ)
     (hB : Algebra.IsStandardSmoothOfRelativeDimension n A B) (g : B) {ι : Type} [Fintype ι]
@@ -37,7 +37,7 @@ theorem linIndep_of_span {A B : Type} [CommRing A] [CommRing B] [Algebra A B] (n
     exact linearIndependent_of_top_le_span_of_card_eq_finrank hsp.ge (hcard.trans hf.symm)
 
 /- English proof (translation)
-Use `hB.isStandardSmooth` as an intermediate fact. Use `hBI.isStandardSmooth` as an intermediate fact. Conclude with `(Algebra.FormallySmooth.iff_split_injection (R := A) (P := B) (A := B ⧸ I) Ideal.Quotient.mk_surjective).mp inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem conormal_retraction {A B : Type} [CommRing A] [CommRing B] [Algebra A B] (I : Ideal B) (n m : ℕ)
     (hB : Algebra.IsStandardSmoothOfRelativeDimension n A B)
@@ -53,7 +53,7 @@ def dyt {A B : Type} [CommRing A] [CommRing B] [Algebra A B] {d e : ℕ} (y : Fi
   Sum.elim (fun k => KaehlerDifferential.D A B (y k)) (fun j => KaehlerDifferential.D A B (t j))
 
 /- English proof (translation)
-Use `hB.isStandardSmooth` as an intermediate fact. Use `hBI.isStandardSmooth` as an intermediate fact. Establish `h` using `Algebra.FinitePresentation.ker_fG_of_surjective (Ideal.Quotient.mkₐ A I) (Ideal.Quotient.mkₐ_surjective A I)`. Simplify using `using h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ideal_fg {A B : Type} [CommRing A] [CommRing B] [Algebra A B] (I : Ideal B) (n m : ℕ)
     (hB : Algebra.IsStandardSmoothOfRelativeDimension n A B)
@@ -65,19 +65,15 @@ theorem ideal_fg {A B : Type} [CommRing A] [CommRing B] [Algebra A B] (I : Ideal
   simpa using h
 
 /- English proof (translation)
-Establish `hu : IsUnit (algebraMap B (Localization.Away h) h)` using `IsLocalization.Away.algebraMap_isUnit h`. Use `⟨h, hh, ?_, ?_⟩` and prove the remaining obligations. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `x hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : h * x ∈ Ideal.span (Set.range t)` using `hI (Submodule.smul_mem_pointwise_smul x h I hx)`. Establish `h2` using `Ideal.mem_map_of_mem (algebraMap B (Localization.Away h)) h1`. Rewrite `h2` using `[Ideal.map_span, ← Set.range_comp, map_mul]`. Conclude with `(Ideal.unit_mul_mem_iff_mem _ hu).mp h2`. Rewrite using `[Ideal.span_le]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `Ideal.mem_map_of_mem _ (ht j)`. Use `set T := Localization.Away h set S := Submodule.span T (Set.range (Sum.elim (fun k => KaehlerDifferential.D A T (algebraMap B T (y k))) (fun j => KaehlerDifferential.D A T (algebraMap B T (t j)))))`. Set `f` to `KaehlerDifferential.map A A B T`. Establish `hspan : Submodule.span B (Set.range (dyt (A` using `A) y t)) ≤ (S.restrictScalars B).comap f := by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Break down `i with k | j` into its components or cases. Conclude with `Submodule.subset_span ⟨Sum.inl k, by simp [dyt, f, KaehlerDifferential.map_D]⟩`. Conclude with `Submodule.subset_span ⟨Sum.inr j, by simp [dyt, f, KaehlerDifferential.map_D]⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[eq_top_iff]`. Introduce `ω _`. Take `⟨⟨m, u⟩, rfl⟩` from `IsLocalizedModule.mk'_surjective (Submonoid.powers h) f ω`. Establish `huu : IsUnit (algebraMap B T (u : B))` using `IsLocalization.map_units T u`. Establish `hm : f (h • m) ∈ S` using `hspan (hΩ (Submodule.smul_mem_pointwise_smul m h ⊤ trivial))`.
-
-Establish `key : (algebraMap B T h * algebraMap B T (u : B)) • IsLocalizedModule.mk' f m u = f (h • m)`. Rewrite using `[mul_smul, algebraMap_smul, algebraMap_smul, LinearMap.map_smul]`. Use `congr 1`. Conclude with `IsLocalizedModule.mk'_cancel' f m u`. Rewrite `hm` using `[← key]`.
-
-Conclude with `(Submodule.smul_mem_iff_of_isUnit S (hu.mul huu)).mp hm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spread (d e : ℕ) (A B : Type) [CommRing A] [CommRing B] [Algebra A B] (I : Ideal B)
     (P : Ideal B) (t : Fin d → B) (y : Fin e → B) (h : B) (hh : h ∉ P)
@@ -133,13 +129,13 @@ def LeafCoordsPoint : Prop := ∀ (d e : ℕ) (A B : Type) [CommRing A] [CommRin
     h • (⊤ : Submodule B Ω[B⁄A]) ≤ Submodule.span B (Set.range (dyt (A := A) y t)) ⊔ P • ⊤
 
 /- English proof (translation)
-Introduce `d e A B _ _ _ I hB hBI P hP hIP`. Take `⟨h, hh, t, y, ht, hI, hΩ⟩` from `hPt d e A B I hB hBI P hP hIP`. Take `⟨u1, hu1, h1⟩` from `hN B B P hP _ I (ideal_fg I _ _ hB hBI) h hh hI`. Use `hB.isStandardSmooth` as an intermediate fact. Take `⟨u2, hu2, h2⟩` from `hN B Ω[B⁄A] P hP _ ⊤ Module.Finite.fg_top h hh hΩ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hu : u1 * u2 ∉ P` using `fun H => (hP.mem_or_mem H).elim hu1 hu2`. Take `⟨g, hg, hIg, hsp⟩` from `spread d e A B I P t y (u1 * u2) hu ht (by`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Establish `: u1 * x ∈ Ideal.span (Set.range t)` using `h1 (Submodule.smul_mem_pointwise_smul x u1 I hx)`. Use `Ideal.mul_mem_left _ u2 this` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this)` using `[smul_eq_mul, mul_comm, mul_left_comm, mul_assoc]`. Use the proof step `(by`. Introduce and unpack `_ ⟨x, -, rfl⟩`. Establish `: u2 • x ∈ Submodule.span B (Set.range (dyt (A` using `A) y t)) := h2 (Submodule.smul_mem_pointwise_smul x u2 ⊤ trivial)`. Use `show (u1 * u2) • x ∈ _`.
+Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[mul_smul]`. Conclude with `Submodule.smul_mem _ u1 this)`. Conclude with `⟨g, hg, t, y, hIg, linIndep_of_span (e + d) hB g _ (by simp) hsp, hsp⟩`.
+A detailed English derivation is pending.
 -/
 theorem LeafCoords_of (hPt : LeafCoordsPoint) (hN : LeafNakH) : LeafCoords := by
   intro d e A B _ _ _ I hB hBI P hP hIP

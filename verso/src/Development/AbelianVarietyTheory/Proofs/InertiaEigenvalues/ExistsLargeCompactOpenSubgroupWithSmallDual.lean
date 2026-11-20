@@ -10,49 +10,41 @@ noncomputable section
 namespace GlobalTheory.JR.WeilQuad.LargeLattice
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ A ψ x μ ω h C hC V hV`. Take `⟨hK, hL, hψ, -, -⟩` from `h`. Use `haveI := FourierTest.finite_F_L A`. Use `haveI : IsUltrametricDist F := Unram.ultraF (F := F) (E := E)`. Use `haveI : LocallyCompactSpace F := Unram.lcF (F := F) (E := E)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : ProperSpace F := ProperSpace.of_locallyCompactSpace F`. Use `haveI : ContinuousAdd A.L := IsModuleTopology.toContinuousAdd F A.L`. Use `haveI : ContinuousSMul F A.L := IsModuleTopology.toContinuousSMul F A.L`. Establish `hcond` using `((GlobalTheory.T.unramifiedStandardAddChar_conductor_properties F E).2 ψ hψ).2.2.1`. Set `β` to `FourierTest.beta A (x : A.K)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hker : ∀ w y, A.kerL ψ x w y = ψ (β w y)` using `fun _ _ => rfl`. Set `e` to `Module.finBasis F A.L`. Set `Φ : A.L →ₗ[F] (Fin (Module.finrank F A.L) → F)` to `LinearMap.pi (fun i => β (e i))`. Establish `hΦ : ∀ y i, Φ y i = β (e i) y` using `fun _ _ => rfl`. Establish `hinj : Function.Injective Φ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `y hy`. Apply `FourierTest.beta_sepLeft A hK hL x y` to reduce the goal to its premises. Introduce `w`. Establish `h0 : β.flip y = 0` using `e.ext (fun i => by`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify `congrFun hy i)` using `[hΦ]`. Rewrite using `[FourierTest.beta_symm A hK hL]`. Simplify using `using LinearMap.congr_fun h0 w`. Establish `hsurj : Function.Surjective Φ` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank (by simp)).1 hinj`. Set `Φe` to `LinearEquiv.ofBijective Φ ⟨hinj, hsurj⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hΦe : ∀ y, Φe y = Φ y` using `fun _ => rfl`. Establish `hΦc : Continuous Φ` using `IsModuleTopology.continuous_of_linearMap Φ`. Establish `hΨc : Continuous Φe.symm` using `IsModuleTopology.continuous_of_linearMap (Φe.symm : (Fin (Module.finrank F A.L) → F) →ₗ[F] A.L)`. Establish `hV' : Φe.symm ⁻¹' V ∈ 𝓝 (0 : Fin (Module.finrank F A.L) → F)` using `hΨc.continuousAt.preimage_mem_nhds (by simpa using hV)`. Take `⟨ε, hε0, hεV⟩` from `Metric.mem_nhds_iff.1 hV'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Take `⟨t, ht⟩` from `NormedField.exists_lt_norm F (1 / ε)`. Establish `ht0 : 0 < ‖t‖` using `lt_trans (by positivity) ht`. Take `⟨b, hb⟩` from `hC.exists_bound_of_continuousOn hΦc.continuousOn`. Set `Km : ℝ` to `∑ i, ‖Φ (e i)‖`. Establish `hKm : ∀ i j, ‖Φ (e i) j‖ ≤ Km` using `fun i j => (norm_le_pi_norm (Φ (e i)) j).trans (Finset.single_le_sum (f := fun i => ‖Φ (e i)‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ i))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `R : ℝ` to `max (max b (‖t‖ * Km)) (max ε 1)`. Establish `hR1 : 1 ≤ R` using `le_trans (le_max_right _ _) (le_max_right _ _)`. Establish `hR0 : 0 < R` using `lt_of_lt_of_le one_pos hR1`. Establish `hRε : ε ≤ R` using `le_trans (le_max_left _ _) (le_max_right _ _)`. Establish `hRb : b ≤ R` using `le_trans (le_max_left _ _) (le_max_left _ _)`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hRt : ‖t‖ * Km ≤ R` using `le_trans (le_max_right _ _) (le_max_left _ _)`. Set `Λ : AddSubgroup A.L` to `{ carrier := {y | ∀ i, ‖Φ y i‖ ≤ R} add_mem' := by`. Introduce `a c ha hc i`. Simplify using `only [Set.mem_setOf_eq, map_add, Pi.add_apply] at *`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (ha i) (hc i))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `zero_mem' := by intro i; simp [hR0.le]`. Use the proof step `neg_mem' := by`. Introduce `a ha i`. Simplify using `only [Set.mem_setOf_eq, map_neg, Pi.neg_apply, norm_neg] at *`. Conclude with `ha i }`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hmem : ∀ y, y ∈ Λ ↔ ∀ i, ‖Φ y i‖ ≤ R` using `fun _ => Iff.rfl`. Establish `hperp : ∀ y ∈ {y : A.L | ∀ w ∈ (Λ : Set A.L), A.kerL ψ x w y = 1}, ∀ i, ‖Φ y i‖ < ε`. Introduce `y hy i`. Establish `h1 : ‖t * Φ y i‖ ≤ 1`. Use `(hcond (t * Φ y i)).1 fun e' he' => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hw : (e' * t) • e i ∈ Λ`. Rewrite using `[hmem]`. Introduce `j`. Rewrite using `[map_smul, Pi.smul_apply, smul_eq_mul, norm_mul, norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `hy _ hw` as an intermediate fact. Rewrite `this` using `[hker, map_smul, LinearMap.smul_apply, smul_eq_mul]`. Rewrite `this` using `[← hΦ]`. Rewrite using `[← mul_assoc]` and apply the resulting hypothesis. Rewrite `h1` using `[norm_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ‖Φ y i‖ ≤ 1 / ‖t‖` using `by rw [le_div_iff₀ ht0]; linarith`. Establish `h3 : 1 / ‖t‖ < ε`. Rewrite using `[div_lt_iff₀ ht0]`. Rewrite `ht` using `[div_lt_iff₀ hε0]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `lt_of_le_of_lt h2 h3`. Use `⟨Λ, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `: (Λ : Set A.L) = ⋂ i, (fun y => Φ y i) ⁻¹' Metric.closedBall 0 R`. Use extensionality with `y`. Simplify using `[hmem, mem_closedBall_zero_iff]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[this]`. Conclude with `isOpen_iInter_of_finite fun i => (IsUltrametricDist.isOpen_closedBall 0 hR0.ne').preimage ((continuous_apply i).comp hΦc)`. Establish `: (Λ : Set A.L) = Φe.symm '' Metric.closedBall 0 R`. Use extensionality with `y`. Rewrite using `[SetLike.mem_coe, hmem, Set.mem_image]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hy`. Use `⟨Φe y, ?_, by simp⟩` and prove the remaining obligations. Rewrite using `[mem_closedBall_zero_iff, pi_norm_le_iff_of_nonneg hR0.le, hΦe]`. Conclude with `hy`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `⟨z, hz, rfl⟩`. Rewrite `hz` using `[mem_closedBall_zero_iff, pi_norm_le_iff_of_nonneg hR0.le]`. Introduce `i`. Establish `: Φ (Φe.symm z) = z` using `by rw [← hΦe]; simp`. Rewrite using `[this]`.
-
-Conclude with `hz i`. Rewrite using `[this]`. Conclude with `(isCompact_closedBall 0 R).image hΨc`. Introduce `y hy`. Rewrite using `[SetLike.mem_coe, hmem]`.
-
-Introduce `i`. Conclude with `((norm_le_pi_norm (Φ y) i).trans (hb y hy)).trans hRb`. Introduce `y hy`. Rewrite using `[SetLike.mem_coe, hmem]`. Introduce `i`.
-
-Conclude with `(hperp y hy i).le.trans hRε`. Introduce `y hy`. Establish `hb' : Φe y ∈ Metric.ball (0 : Fin (Module.finrank F A.L) → F) ε`. Rewrite using `[mem_ball_zero_iff, pi_norm_lt_iff hε0, hΦe]`. Conclude with `hperp y hy`.
-
-Use `hεV hb'` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem main : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E]
     [StarRing E] [Unram F E] (A : Et F E) (ψ : AddChar F ℂ) (x : A.Kˣ) (μ : Measure A.L) (ω : A.K → ℂ),

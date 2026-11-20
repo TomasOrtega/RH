@@ -10,13 +10,11 @@ open AlgebraicGeometry CategoryTheory GlobalTheory.CompanionTheory.Ar NumberFiel
 namespace PositivityTheory.HtPt.Mb
 
 /- English proof (translation)
-Introduce `X Ω _ ξ X' Ω' _ ξ' i f hd p'`. Take `⟨q, hq⟩` from `p'`. Establish `hp : genPt ξ ⤳ f q` using `RegAtDom.map_genPt hd ▸ hq.map f.continuous`. Use `⟨hp, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨s, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨(f.stalkMap q).hom s, RegAtDom.genMap_stalkMap hd q hq hp s⟩`. Introduce and unpack `_ ⟨s, rfl⟩ ⟨h0, -, t, ht⟩`. Establish `hv` using `RegAtDom.genMap_stalkMap hd q hq hp s`. Establish `hone : genMap ξ' ⟨q, hq⟩ (1 - (f.stalkMap q).hom s * t) = 0`. Rewrite using `[map_sub, map_mul, map_one, hv, ht, mul_inv_cancel₀ h0, sub_self]`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hu : IsUnit ((f.stalkMap q).hom s)`. Break down `IsLocalRing.isUnit_or_isUnit_one_sub_self ((f.stalkMap q).hom s * t) with h | h` into its components or cases. Conclude with `isUnit_of_mul_isUnit_left h`. Establish `h'` using `h.map (genMap ξ' ⟨q, hq⟩)`. Rewrite `h'` using `[hone]`.
-
-Conclude with `absurd h' not_isUnit_zero`. Conclude with `RegAtMono.unitAt_of_isUnit ξ ⟨f q, hp⟩ (isUnit_of_map_unit (f.stalkMap q).hom s hu)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dom_local : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (X' : Scheme.{0}) (Ω' : Type) [Field Ω'] (ξ' : Spec (CommRingCat.of Ω') ⟶ X') (i : Ω →+* Ω') (f : X' ⟶ X), Dominates ξ' ξ f i → ∀ p' : Cpt ξ', ∃ h : genPt ξ ⤳ f p'.1, ((∀ a ∈ regAt ξ ⟨f p'.1, h⟩, i a ∈ regAt ξ' p') ∧ ∀ a ∈ regAt ξ ⟨f p'.1, h⟩, unitAt ξ' p' (i a) → unitAt ξ ⟨f p'.1, h⟩ a) := by
   intro X Ω _ ξ X' Ω' _ ξ' i f hd p'
@@ -38,7 +36,7 @@ theorem dom_local : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (Comm
     exact RegAtMono.unitAt_of_isUnit ξ ⟨f q, hp⟩ (isUnit_of_map_unit (f.stalkMap q).hom s hu)
 
 /- English proof (translation)
-Introduce `X Ω _ ξ X' Ω' _ ξ' i f hd p' h n`. Take `⟨h', hc⟩` from `dom_local X Ω ξ X' Ω' ξ' i f hd p'`. Use `IsCtrOf.unitAt_iff (i := i) (p := ⟨f p'.1, h⟩) (p' := p') hc (natCast_mem _ n)` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem genfib_map : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (X' : Scheme.{0}) (Ω' : Type) [Field Ω'] (ξ' : Spec (CommRingCat.of Ω') ⟶ X') (i : Ω →+* Ω') (f : X' ⟶ X), Dominates ξ' ξ f i → ∀ (p' : Cpt ξ') (h : genPt ξ ⤳ f p'.1) (n : ℕ), unitAt ξ' p' (n : Ω') ↔ unitAt ξ ⟨f p'.1, h⟩ (n : Ω) := by
   intro X Ω _ ξ X' Ω' _ ξ' i f hd p' h n
@@ -47,7 +45,7 @@ theorem genfib_map : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (Com
   rwa [map_natCast] at this
 
 /- English proof (translation)
-Unfold `Dominates at *`. Rewrite using `[← Category.assoc, hg, Category.assoc, hf, ← Category.assoc, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem dom_comp {X X₁ X₂ : Scheme.{0}} {Ω Ω₁ Ω₂ : Type} [Field Ω] [Field Ω₁] [Field Ω₂]
     {ξ : Spec (CommRingCat.of Ω) ⟶ X} {ξ₁ : Spec (CommRingCat.of Ω₁) ⟶ X₁} {ξ₂ : Spec (CommRingCat.of Ω₂) ⟶ X₂}
@@ -58,21 +56,19 @@ theorem dom_comp {X X₁ X₂ : Scheme.{0}} {Ω Ω₁ Ω₂ : Type} [Field Ω] [
   rfl
 
 /- English proof (translation)
-Introduce `X Ω _ ξ X₁ X₂ Ω' _ i p`. Use `⟨fun ξ₁ ξ₂ f g hg hf hn => ?_, fun ξ₁ ξ₂ f g hg hf hn => ?_, fun ξ₁ ξ₂ f g hg hf hn => ?_⟩` and prove the remaining obligations. Establish `hr : ∀ p₁ : Cpt ξ₁, f p₁.1 = p.1 → regAt ξ p = regAt ξ₁ p₁` using `fun p₁ h => by`. Rewrite using `[hf.regAt_eq p₁ h, Subring.map_id]`. Use `⟨fun q hq => ?_, ?_, by` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `dom_comp hf.dom hg`. Rewrite using `[RingHom.comp_id] at h⟩` and apply the resulting hypothesis. Take `⟨h, -⟩` from `dom_local _ _ ξ₁ _ _ ξ₂ i g hg q`. Rewrite using `[hr ⟨_, h⟩ hq]`. Conclude with `(hn ⟨_, h⟩ hq).exists_max q rfl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨p₁, h₁, hu⟩` from `hf.existsUnique`. Rewrite using `[hr p₁ h₁]`. Introduce `P hP`. Take `⟨q, ⟨hq, hq'⟩, hqu⟩` from `(hn p₁ h₁).existsUnique P hP`. Use `⟨q, ⟨(congrArg f hq).trans h₁, hq'⟩, fun q' hq'' => hqu q' ⟨?_, hq''.2⟩⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨h, -⟩` from `dom_local _ _ ξ₁ _ _ ξ₂ i g hg q'`. Conclude with `congrArg Subtype.val (hu ⟨_, h⟩ hq''.1)`. Establish `hr : ∀ (q : Cpt ξ₂) (p₁ : Cpt ξ₁), g q.1 = p₁.1 → f p₁.1 = p.1 → regAt ξ₂ q = regAt ξ₁ p₁` using `fun q p₁ h h' => by rw [(hn p₁ h').regAt_eq q h, Subring.map_id]`. Use `⟨fun q hq => ?_, fun P hP => ?_, by` and prove the remaining obligations. Establish `h` using `dom_comp hf.dom hg`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Rewrite using `[RingHom.id_comp] at h⟩` and apply the resulting hypothesis. Take `⟨h, -⟩` from `dom_local _ _ ξ₁ _ _ ξ₂ _ g hg q`. Rewrite using `[hr q ⟨_, h⟩ rfl hq]`. Conclude with `hf.exists_max ⟨_, h⟩ hq`. Take `⟨p₁, ⟨h₁, h₁'⟩, hu⟩` from `hf.existsUnique P hP`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨q, hq, hqu⟩` from `(hn p₁ h₁).existsUnique`. Use `⟨q, ⟨(congrArg f hq).trans h₁, (hr q p₁ hq h₁).trans h₁'⟩, fun q' hq' => hqu q' ?_⟩` and prove the remaining obligations. Take `⟨h, -⟩` from `dom_local _ _ ξ₁ _ _ ξ₂ _ g hg q'`. Conclude with `congrArg Subtype.val (hu ⟨_, h⟩ ⟨hq'.1, (hr q' ⟨_, h⟩ rfl hq'.1).symm.trans hq'.2⟩)`. Use `⟨?_, fun q hq => ?_, by` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h` using `dom_comp hf.dom hg`. Rewrite using `[RingHom.comp_id] at h⟩` and apply the resulting hypothesis. Take `⟨p₁, h₁, hu⟩` from `hf.existsUnique`. Take `⟨q, hq, hqu⟩` from `(hn p₁ h₁).existsUnique`. Use `⟨q, (congrArg f hq).trans h₁, fun q' hq' => hqu q' ?_⟩` and prove the remaining obligations.
-
-Take `⟨h, -⟩` from `dom_local _ _ ξ₁ _ _ ξ₂ _ g hg q'`. Conclude with `congrArg Subtype.val (hu ⟨_, h⟩ hq')`. Take `⟨h, -⟩` from `dom_local _ _ ξ₁ _ _ ξ₂ _ g hg q`. Rewrite using `[(hn ⟨_, h⟩ hq).regAt_eq q rfl, Subring.map_id, hf.regAt_eq ⟨_, h⟩ hq]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iso_comp : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (X₁ X₂ : Scheme.{0}) (Ω' : Type) [Field Ω'] (i : Ω →+* Ω') (p : Cpt ξ), (∀ (ξ₁ : Spec (CommRingCat.of Ω) ⟶ X₁) (ξ₂ : Spec (CommRingCat.of Ω') ⟶ X₂) (f : X₁ ⟶ X) (g : X₂ ⟶ X₁), Dominates ξ₂ ξ₁ g i → IsoAt ξ₁ f (RingHom.id Ω) p → (∀ p₁ : Cpt ξ₁, f p₁.1 = p.1 → NormAt ξ₂ g i p₁) → NormAt ξ₂ (g ≫ f) i p) ∧ (∀ (ξ₁ : Spec (CommRingCat.of Ω') ⟶ X₁) (ξ₂ : Spec (CommRingCat.of Ω') ⟶ X₂) (f : X₁ ⟶ X) (g : X₂ ⟶ X₁), Dominates ξ₂ ξ₁ g (RingHom.id Ω') → NormAt ξ₁ f i p → (∀ p₁ : Cpt ξ₁, f p₁.1 = p.1 → IsoAt ξ₂ g (RingHom.id Ω') p₁) → NormAt ξ₂ (g ≫ f) i p) ∧ (∀ (ξ₁ : Spec (CommRingCat.of Ω) ⟶ X₁) (ξ₂ : Spec (CommRingCat.of Ω) ⟶ X₂) (f : X₁ ⟶ X) (g : X₂ ⟶ X₁), Dominates ξ₂ ξ₁ g (RingHom.id Ω) → IsoAt ξ₁ f (RingHom.id Ω) p → (∀ p₁ : Cpt ξ₁, f p₁.1 = p.1 → IsoAt ξ₂ g (RingHom.id Ω) p₁) → IsoAt ξ₂ (g ≫ f) (RingHom.id Ω) p) := by
   intro X Ω _ ξ X₁ X₂ Ω' _ i p
@@ -117,11 +113,11 @@ theorem iso_comp : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommR
       rw [(hn ⟨_, h⟩ hq).regAt_eq q rfl, Subring.map_id, hf.regAt_eq ⟨_, h⟩ hq]
 
 /- English proof (translation)
-Introduce `X Ω _ ξ X' ξ' f p hN hp`. Establish `e : (integralClosure ((regAt ξ p).map (RingHom.id Ω)) Ω).toSubring = regAt ξ p`. Rewrite using `[Subring.map_id]`. Use extensionality with `a`. Conclude with `⟨hp a, fun ha => isIntegral_algebraMap (x := (⟨a, ha⟩ : regAt ξ p))⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Supply the required witnesses or components.
 
-Use `haveI loc : IsLocalRing (integralClosure ((regAt ξ p).map (RingHom.id Ω)) Ω).toSubring := by`. Rewrite using `[e]`. Conclude with `NormAt.isLocalRing_regAt p`. Establish `hr : ∀ q : Cpt ξ', f q.1 = p.1 → regAt ξ' q = (integralClosure ((regAt ξ p).map (RingHom.id Ω)) Ω).toSubring` using `fun q hq => by`. Take `⟨P, hP, h⟩` from `hN.exists_max q hq`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `h.trans (NormAt.ofPrime_of_isLocalRing _ P hP)`. Use `⟨?_, fun q hq => ?_, hN.dom⟩` and prove the remaining obligations. Take `⟨q, hq, hu⟩` from `hN.existsUnique _ (IsLocalRing.maximalIdeal.isMaximal _)`. Conclude with `⟨q, hq.1, fun q' hq' => hu q' ⟨hq', (hr q' hq').trans (NormAt.ofPrime_of_isLocalRing _ _ (IsLocalRing.maximalIdeal.isMaximal _)).symm⟩⟩`. Rewrite using `[hr q hq, e, Subring.map_id]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_iso : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (X' : Scheme.{0}) (ξ' : Spec (CommRingCat.of Ω) ⟶ X') (f : X' ⟶ X) (p : Cpt ξ), NormAt ξ' f (RingHom.id Ω) p → (∀ a : Ω, IsIntegral (regAt ξ p) a → a ∈ regAt ξ p) → IsoAt ξ' f (RingHom.id Ω) p := by
   intro X Ω _ ξ X' ξ' f p hN hp

@@ -19,7 +19,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Local
 def conjSub (g : G) (K : Subgroup G) : Subgroup G := K.comap (MulAut.conj g⁻¹).toMonoidHom
 
 /- English proof (translation)
-Simplify using `[conjSub, MulAut.conj_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_conjSub {g : G} {K : Subgroup G} {x : G} : x ∈ conjSub g K ↔ g⁻¹ * x * g ∈ K := by
   simp [conjSub, MulAut.conj_apply]
@@ -27,7 +27,7 @@ theorem mem_conjSub {g : G} {K : Subgroup G} {x : G} : x ∈ conjSub g K ↔ g�
 def conjHomeo (g : G) : G ≃ₜ G := (Homeomorph.mulLeft g⁻¹).trans (Homeomorph.mulRight g)
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [SetLike.mem_coe, Set.mem_preimage, mem_conjSub, conjHomeo, Homeomorph.trans_apply, Homeomorph.coe_mulLeft, Homeomorph.coe_mulRight]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem coe_conjSub (g : G) (K : Subgroup G) : (conjSub g K : Set G) = conjHomeo g ⁻¹' (K : Set G) := by
   ext x
@@ -35,7 +35,7 @@ theorem coe_conjSub (g : G) (K : Subgroup G) : (conjSub g K : Set G) = conjHomeo
     Homeomorph.coe_mulLeft, Homeomorph.coe_mulRight]
 
 /- English proof (translation)
-Rewrite using `[coe_conjSub, ← congrFun (conjHomeo g).image_symm (K : Set G)]`. Conclude with `hKc.image (conjHomeo g).symm.continuous`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_conjSub (g : G) {K : Subgroup G} (hKc : IsCompact (K : Set G)) :
     IsCompact (conjSub g K : Set G) := by
@@ -43,7 +43,7 @@ theorem isCompact_conjSub (g : G) {K : Subgroup G} (hKc : IsCompact (K : Set G))
   exact hKc.image (conjHomeo g).symm.continuous
 
 /- English proof (translation)
-Rewrite using `[coe_conjSub]`. Conclude with `hKo.preimage (conjHomeo g).continuous`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_conjSub (g : G) {K : Subgroup G} (hKo : IsOpen (K : Set G)) : IsOpen (conjSub g K : Set G) := by
   rw [coe_conjSub]
@@ -89,11 +89,9 @@ theorem conjEquiv_symm_apply (g : G) (K : Subgroup G) (w : fixedVectors ρ (conj
     ((conjEquiv g K).symm w : V) = ρ g⁻¹ w := rfl
 
 /- English proof (translation)
-Introduce `k hk x`. Establish `hk'` using `mem_conjSub.1 hk`. Prove the components needed by the constructor for the conclusion. Use `show f (g⁻¹ * (k * x) * g) = f (g⁻¹ * x * g)`. Use `(hf _ hk' (g⁻¹ * x * g)).1` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← this]`. Use `congr 1`. Use `group`. Use `show f (g⁻¹ * (x * k) * g) = f (g⁻¹ * x * g)`. Use `(hf _ hk' (g⁻¹ * x * g)).2` as an intermediate fact.
-
-Rewrite using `[← this]`. Use `congr 1`. Use `group`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem biInv_conj (g : G) {K : Subgroup G} {f : G → ℂ} (hf : BiInv K f) : BiInv (conjSub g K) (conjFn g f) := by
   intro k hk x
@@ -107,19 +105,17 @@ theorem biInv_conj (g : G) {K : Subgroup G} {f : G → ℂ} (hf : BiInv K f) : B
     rw [← this]; congr 1; group
 
 /- English proof (translation)
-Establish `hcoe : ((biTranslL g g (⟨f, hf⟩ : testFn G) : testFn G) : G → ℂ) = conjFn g f`. Use extensionality with `x`. Simplify using `[biTranslL, conjFn]`. Establish `h1 : Pr f = ⟨f, hf⟩` using `hPr ⟨f, hf⟩`. Establish `h2 : Pr (conjFn g f) = biTranslL g g (⟨f, hf⟩ : testFn G)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hcoe]`. Conclude with `hPr _`. Rewrite using `[formD_apply, formD_apply, h1, h2]`. Take `⟨K, hKc, hKf⟩` from `exists_K (⟨f, hf⟩ : testFn G)`. Establish `hKo : IsOpen ((K : Subgroup G) : Set G)` using `K.isOpen`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK'c` using `isCompact_conjSub g hKc`. Establish `hK'o` using `isOpen_conjSub g hKo`. Establish `hK'f : BiInv (conjSub g (K : Subgroup G)) (biTranslL g g (⟨f, hf⟩ : testFn G) : G → ℂ)`. Rewrite using `[hcoe]`. Conclude with `biInv_conj g hKf`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[DF_eq μ hρ hpos hinv _ _ hKc hKo hKf, DF_eq μ hρ hpos hinv _ _ hK'c hK'o hK'f]`. Use `haveI := hρ.2 _ hKc hKo`. Use `haveI := hρ.2 _ hK'c hK'o`. Establish `hR : rN μ hρ hpos hK'c hK'o B (biTranslL g g (⟨f, hf⟩ : testFn G)) = (conjEquiv (ρ` using `ρ) g (K : Subgroup G)).conj (rN μ hρ hpos hKc hKo ((B ∘ₗ ρ g).compl₂ (ρ g)) ⟨f, hf⟩) := by`. Apply `riesz_unique hpos (rN_spec μ hρ hpos hK'c hK'o B _)` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `x' y'`. Establish `hs` using `rN_spec μ hρ hpos hKc hKo ((B ∘ₗ ρ g).compl₂ (ρ g)) ⟨f, hf⟩ ((conjEquiv (ρ := ρ) g (K : Subgroup G)).symm x') ((conjEquiv (ρ := ρ) g (K : Subgroup G)).symm y')`. Establish `ex : (((conjEquiv (ρ` using `ρ) g (K : Subgroup G)).conj (rN μ hρ hpos hKc hKo ((B ∘ₗ ρ g).compl₂ (ρ g)) ⟨f, hf⟩) x' : fixedVectors ρ _) : V) = ρ g (rN μ hρ hpos hKc hKo ((B ∘ₗ ρ g).compl₂ (ρ g)) ⟨f, hf⟩ ((conjEquiv (ρ := ρ) g (K : Subgroup G)).symm x')) := by`. Rewrite using `[LinearEquiv.conj_apply_apply, conjEquiv_apply]`. Establish `ey : (y' : V) = ρ g ((conjEquiv (ρ` using `ρ) g (K : Subgroup G)).symm y') := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← conjEquiv_apply, LinearEquiv.apply_symm_apply]`. Establish `eA : resA μ hρ (conjSub g (K : Subgroup G)) (biTranslL g g (⟨f, hf⟩ : testFn G)) x' = ρ g (heckeAct μ ρ f ((conjEquiv (ρ` using `ρ) g (K : Subgroup G)).symm x')) := by`. Rewrite using `[conjEquiv_symm_apply]`. Simplify using `only [resA, LinearMap.comp_apply, Submodule.subtype_apply, heckeLin_apply]`. Conclude with `heckeAct_biTranslL μ hρ.1 g _ _`.
-
-Rewrite using `[ex, ey, hinv, eA]`. Simplify `hs` using `[resA, heckeLin_apply]`. Simplify using `only [DK]`. Rewrite using `[hR, LinearMap.trace_conj']`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem formD_equiv [μ.IsMulRightInvariant] (hinv : ∀ g v w, B₀ (ρ g v) (ρ g w) = B₀ v w)
     (Pr : (G → ℂ) →ₗ[ℂ] testFn G) (hPr : ∀ f : testFn G, Pr f = f) (g : G) (B : Sesq V) (f : G → ℂ)

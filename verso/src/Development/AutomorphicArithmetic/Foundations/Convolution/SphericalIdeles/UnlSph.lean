@@ -15,11 +15,11 @@ namespace UpperTheory.ConvolutionTheory.Sph.UnramifiedSpherical
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Set `x : Fin n → IrrGL k` to `fun i => IrrGL.ofChar (χ i) (hχ i)`. Establish `hx : ∀ i, (x i).IsCusp` using `fun i => IrrGL.isCusp_ofChar _ _`. Establish `hd : ∑ i, (x i).1 = n` using `by simp [x, IrrGL.ofChar]`. Establish `hnu : ∀ i j, x j ≠ (x i).nu 1` using `fun i j e => by`. Simplify using `only [x, IrrGL.nu, IrrGL.tw_ofChar, IrrGL.ofChar_inj] at e`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `h i j e`. Establish `hnl : ∀ i j, ¬ (Segment.single (x i) (hx i)).Linked (Segment.single (x j) (hx j))` using `fun i j => GlobalTheory.CompanionTheory.BZPair.not_linked_single (hx i) (hx j) (hnu i j) (hnu j i)`. Establish `hP : (prodIrr x hd).IsIrreducible` using `GlobalTheory.RgGu.Holds.lUnlinkedIrr_holds k n n (fun i => Segment.single (x i) (hx i)) x hd hnl (fun i => (single_spec (hx i)).2.1)`. Take `⟨p⟩` from `(Placing.parInd_jac_placing k _ _ _ (Equiv.sigmaUnique (Fin n) fun _ => Fin 1) (stdBlocks (fun i => (x i).1) hd) _).1 (piTensor fun i => detRep (Fin 1) (χ i))`. Set `q` to `multiProdEquiv (stdBlocks (fun i => (x i).1) hd) fun i => equivRep (IrrRep.det (Fin 1) (χ i) (hχ i))`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hM : (multiProd (Equiv.sigmaUnique (Fin n) fun _ => Fin 1) fun i => detRep (Fin 1) (χ i)).IsIrreducible` using `GlobalTheory.Parabolic.isIrreducible_of_equiv (p.trans q).symm hP`. Use `haveI := nontrivial_of_irreducible hM`. Use `haveI := nontrivial_of_isSubquotient (GlobalTheory.PermPrin.isSubquotient_multiProd_prinSeries (Equiv.sigmaUnique (Fin n) fun _ => Fin 1) χ)`. Take `⟨e⟩` from `equiv_of_isSubquotient (GlobalTheory.PrinProd.isSubquotient_prinSeries_multiProd k n χ) hM`. Conclude with `GlobalTheory.Parabolic.isIrreducible_of_equiv e hM`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem prin_irr {n : ℕ} (χ : Fin n → kˣ →* ℂˣ) (hχ : ∀ i, IsSmoothChar (χ i))
     (h : ∀ i j, χ j ≠ χ i * absPow k 1) : (prinSeries χ).IsIrreducible := by
@@ -46,13 +46,13 @@ private theorem prin_irr {n : ℕ} (χ : Fin n → kˣ →* ℂˣ) (hχ : ∀ i,
   exact GlobalTheory.Parabolic.isIrreducible_of_equiv e hM
 
 /- English proof (translation)
-Introduce `e`. Take `⟨ϖ, hϖ⟩` from `GlobalTheory.PrinTwo.NoFix.exists_unif k`. Establish `e'` using `congrArg (fun χ : kˣ →* ℂˣ => ((χ ϖ : ℂˣ) : ℂ)) e`. Simplify using `only [MonoidHom.mul_apply, Units.val_mul] at e'`. Rewrite `e'` using `[unrChar_uniformizer k b hϖ, unrChar_uniformizer k a hϖ, val_absPow]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hn : nabs k ϖ = (resCard k : ℝ)⁻¹`. Rewrite using `[GlobalTheory.LGrp.nabs_eq_zpow, ord_eq_one hϖ]`. Simplify using the standard rewrite rules. Establish `hq : (resCard k : ℂ) ≠ 0`. Establish `: (1 : ℝ) < resCard k` using `by exact_mod_cast one_lt_resCard (k := k)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(by positivity : (resCard k : ℝ) ≠ 0)` after adjusting the coercions. Rewrite `e'` using `[Complex.cpow_one, hn]`. Apply `h` to reduce the goal to its premises. Rewrite using `[e']`. Use `push_cast`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 private theorem unr_ne {a b : ℂˣ} (h : (a : ℂ) ≠ (resCard k : ℂ) * b) : unrChar k b ≠ unrChar k a * absPow k 1 := by
   intro e
@@ -72,9 +72,9 @@ private theorem unr_ne {a b : ℂˣ} (h : (a : ℂ) ≠ (resCard k : ℂ) * b) :
   field_simp
 
 /- English proof (translation)
-Unfold `IsSpherical IsSphericalFor at *`. Take `⟨x, hx, h0⟩` from `(Submodule.ne_bot_iff _).1 h`. Use `(Submodule.ne_bot_iff _).2 ⟨e.toLinearEquiv x, fun g => ?_, fun h1 => h0 (e.toLinearEquiv.injective (by rw [h1, map_zero]))⟩` and prove the remaining obligations. Establish `hint : e.toLinearEquiv (ρ (g : GL (Fin n) k) x) = π (g : GL (Fin n) k) (e.toLinearEquiv x)` using `LinearMap.congr_fun (e.isIntertwining' (g : GL (Fin n) k)) x`. Establish `hg` using `hx g`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hint, hg, map_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem sph_of_equiv {n : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     {ρ : Representation ℂ (GL (Fin n) k) V} {π : Representation ℂ (GL (Fin n) k) W} (e : ρ.Equiv π)
@@ -91,9 +91,9 @@ private theorem sph_of_equiv {n : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ
 end UpperTheory.ConvolutionTheory.Sph.UnramifiedSpherical
 
 /- English proof (translation)
-Introduce `K _ _ n v τ α h hs`. Establish `hq : (resCard (v.adicCompletion K) : ℂ) = (Ideal.absNorm v.asIdeal : ℂ)`. Use `GlobalTheory.CompanionTheory.ResCardAbsNorm.resCard_completion_eq_absNorm K v` as an intermediate fact. Conclude with `this` after adjusting the coercions. Establish `hI` using `UnramifiedSpherical.prin_irr (k := v.adicCompletion K) (fun i => unrChar (v.adicCompletion K) (α i)) (fun i => PositivityTheory.Rg.BcB.N3.Pus.isSmoothChar_unr (α i)) (fun i j => UnramifiedSpherical.unr_ne (by rw [hq]; exact h i j))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨e⟩` from `hs.nonempty_equiv τ.irred hI`. Conclude with `UnramifiedSpherical.sph_of_equiv e (PositivityTheory.Rg.BcB.N3.Pse.iP_sph (k := v.adicCompletion K) α)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.Sph.unlSph :
     UpperTheory.ConvolutionTheory.Sph.UnlSph := by

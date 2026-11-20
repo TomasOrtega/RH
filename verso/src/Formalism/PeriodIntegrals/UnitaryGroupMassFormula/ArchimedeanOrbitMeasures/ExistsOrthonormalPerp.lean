@@ -29,7 +29,7 @@ theorem BJ_apply (x y : Fin n → ℂ) : BJ ε x y = star x ⬝ᵥ (Formalism.RE
 def dJ (i : Fin n) : ℂ := if ε i then 1 else -1
 
 /- English proof (translation)
-Rewrite using `[BJ_apply]`. Simplify using `only [dotProduct, Formalism.REAL.Jm, mulVec_diagonal, Pi.star_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem BJ_sum (x y : Fin n → ℂ) : BJ ε x y = ∑ i, star (x i) * (dJ ε i * y i) := by
   rw [BJ_apply]
@@ -37,20 +37,20 @@ theorem BJ_sum (x y : Fin n → ℂ) : BJ ε x y = ∑ i, star (x i) * (dJ ε i 
   rfl
 
 /- English proof (translation)
-Apply the tactic sequence `unfold dJ; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dJ_star (i : Fin n) : star (dJ ε i) = dJ ε i := by
   unfold dJ; split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `dJ`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dJ_ne (i : Fin n) : dJ ε i ≠ 0 := by
   unfold dJ
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[BJ_sum, BJ_sum, star_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[star_mul', star_mul', star_star, dJ_star]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem BJ_herm (x y : Fin n → ℂ) : star (BJ ε x y) = BJ ε y x := by
   rw [BJ_sum, BJ_sum, star_sum]
@@ -59,11 +59,9 @@ theorem BJ_herm (x y : Fin n → ℂ) : star (BJ ε x y) = BJ ε y x := by
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Establish `h1` using `h (Pi.single j 1)`. Rewrite `h1` using `[BJ_sum, Finset.sum_eq_single j]`. Rewrite `h1` using `[Pi.single_eq_same, mul_one]`. Break down `mul_eq_zero.mp h1 with h2 | h2` into its components or cases.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `using h2`. Conclude with `absurd h2 (dJ_ne ε j)`. Introduce `b _ hb`. Rewrite using `[Pi.single_eq_of_ne hb, mul_zero, mul_zero]`. Introduce `hj`.
-
-Conclude with `absurd (Finset.mem_univ j) hj`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem BJ_nondeg (x : Fin n → ℂ) (h : ∀ y, BJ ε x y = 0) : x = 0 := by
   funext j
@@ -79,11 +77,11 @@ theorem BJ_nondeg (x : Fin n → ℂ) (h : ∀ y, BJ ε x y = 0) : x = 0 := by
     exact absurd (Finset.mem_univ j) hj
 
 /- English proof (translation)
-Rewrite using `[BJ_sum]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Rewrite using `[Finset.sum_eq_single i]`. Simplify using `[Formalism.REAL.Jm, dJ]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `b _ hb`. Simplify using `[Pi.single_eq_of_ne hb]`. Introduce `hi`. Conclude with `absurd (Finset.mem_univ i) hi`. Rewrite using `[show Formalism.REAL.Jm ε i j = 0 by simp [Formalism.REAL.Jm, hij]]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `hli : l = i`. Substitute `hli` using the available equality. Simplify using `[Pi.single_eq_of_ne hij]`. Simplify using `[Pi.single_eq_of_ne hli]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem BJ_single (i j : Fin n) : BJ ε (Pi.single i 1) (Pi.single j 1) = Formalism.REAL.Jm ε i j := by
   rw [BJ_sum]
@@ -103,25 +101,25 @@ theorem BJ_single (i j : Fin n) : BJ ε (Pi.single i 1) (Pi.single j 1) = Formal
     · simp [Pi.single_eq_of_ne hli]
 
 /- English proof (translation)
-Conclude with `Complex.conj_eq_iff_re.mp (BJ_herm ε x x)`.
+A detailed English derivation is pending.
 -/
 theorem BJ_self_real (x : Fin n → ℂ) : ((BJ ε x x).re : ℂ) = BJ ε x x := by
   exact Complex.conj_eq_iff_re.mp (BJ_herm ε x x)
 
 /- English proof (translation)
-Set `L : (Fin n → ℂ) →ₗ[ℂ] (Fin m → ℂ)` to `LinearMap.pi fun b => BJ ε (w b)`. Establish `hW : k ≤ Module.finrank ℂ (LinearMap.ker L)`. Establish `h1` using `LinearMap.finrank_range_add_finrank_ker L`. Establish `h2 : Module.finrank ℂ (LinearMap.range L) ≤ m`. Simplify using `using Submodule.finrank_le (LinearMap.range L)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [Module.finrank_fin_fun] at h1`. Use linear arithmetic over natural numbers and integers. Establish `hker : ∀ (x : LinearMap.ker L) b, BJ ε (w b) (x : Fin n → ℂ) = 0`. Introduce `x b`. Establish `hx` using `x.2`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hx` using `[LinearMap.mem_ker]`. Conclude with `congrFun hx b`. Take `⟨v, hvli, hvo⟩` from `PI.UnitaryGroupMassFormula.HermConj.exists_orthogonal_family (starRingEnd ℂ) (Module.finrank ℂ (LinearMap.ker L)) (LinearMap.ker L) rfl (fun x y => BJ ε (x : Fin n → ℂ) (y : Fin n → ℂ)) ⟨fun x y z => by simp, fun x a y => by simp, fun x y => by rw [starRingEnd_apply, BJ_herm]⟩`. Use `⟨fun j => ((Real.sqrt (BJ ε (v (Fin.castLE hW j)) (v (Fin.castLE hW j))).re)⁻¹ : ℂ) • ((v (Fin.castLE hW j) : LinearMap.ker L) : Fin n → ℂ), ?_, ?_⟩` and prove the remaining obligations. Introduce `j b`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul, hker, smul_zero]`. Introduce `i j dsimp only`. Simplify using `only [LinearMap.map_smulₛₗ, LinearMap.smul_apply, map_smul, smul_eq_mul, RingHom.id_apply]`. Use `split_ifs with hij`. Substitute `hij set z := ((v (Fin.castLE hW i) : LinearMap.ker L) : Fin n → ℂ) with hzdef` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Simplify using the standard rewrite rules. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hz : z ≠ 0` using `fun h => hvli.ne_zero _ (Submodule.coe_eq_zero.mp h)`. Establish `hp : 0 < (BJ ε z z).re` using `hpos z hz (fun b => hker _ b)`. Establish `hb : BJ ε z z = ((BJ ε z z).re : ℂ)` using `(BJ_self_real ε z).symm`. Use `set r := (BJ ε z z).re with hr`. Rewrite using `[hb]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : (Real.sqrt r)⁻¹ * ((Real.sqrt r)⁻¹ * r) = 1`. Rewrite using `[← mul_assoc, ← mul_inv, Real.mul_self_sqrt hp.le, inv_mul_cancel₀ hp.ne']`. Rewrite using `[map_inv₀, Complex.conj_ofReal]`. Conclude with `key` after adjusting the coercions. Establish `hne : Fin.castLE hW i ≠ Fin.castLE hW j` using `fun h => hij (Fin.castLE_injective hW h)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h0` using `hvo _ _ hne`. Rewrite using `[h0]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem exists_orthonormal_perp {m k : ℕ} (hn : n = m + k) (w : Fin m → Fin n → ℂ)
     (hpos : ∀ z : Fin n → ℂ, z ≠ 0 → (∀ b, BJ ε (w b) z = 0) → 0 < (BJ ε z z).re) :
@@ -168,7 +166,7 @@ theorem exists_orthonormal_perp {m k : ℕ} (hn : n = m + k) (w : Fin m → Fin 
       simp
 
 /- English proof (translation)
-Simplify using `[map_sum, huo]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem card_true_ge_lemma {k : ℕ} (u : Fin k → Fin n → ℂ)
     (huo : ∀ i j, BJ ε (u i) (u j) = if i = j then 1 else 0) (c : Fin k → ℂ) (j : Fin k) :
@@ -176,7 +174,7 @@ private theorem card_true_ge_lemma {k : ℕ} (u : Fin k → Fin n → ℂ)
   simp [map_sum, huo]
 
 /- English proof (translation)
-Rewrite using `[map_sum (BJ ε), LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smulₛₗ, LinearMap.smul_apply, card_true_ge_lemma ε u huo c l, smul_eq_mul, starRingEnd_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem card_true_ge_lemma_2 {k : ℕ} (u : Fin k → Fin n → ℂ)
     (huo : ∀ i j, BJ ε (u i) (u j) = if i = j then 1 else 0) (c : Fin k → ℂ) :
@@ -189,19 +187,19 @@ private theorem card_true_ge_lemma_2 {k : ℕ} (u : Fin k → Fin n → ℂ)
 open Formalism.L2.SG.HidaSetting Formalism.L2.SG.PoincareInHH.Cut in
 
 /- English proof (translation)
-Set `A : (Fin k → ℂ) →ₗ[ℂ] (Fin n → ℂ)` to `∑ l, (LinearMap.proj l).smulRight (u l)`. Establish `hA : ∀ c, A c = ∑ l, c l • u l`. Introduce `c`. Simplify using `[A, LinearMap.sum_apply]`. Set `φ : (Fin k → ℂ) →ₗ[ℂ] ({i // ε i = true} → ℂ)` to `LinearMap.pi fun t => (LinearMap.proj (R := ℂ) (φ := fun _ : Fin n => ℂ) t.1).comp A`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Establish `hinj : Function.Injective φ`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `c hc`. Use `set x := ∑ l, c l • u l with hxdef`. Establish `hx : ∀ i, ε i = true → x i = 0` using `fun i hi => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `congrFun hc ⟨i, hi⟩`. Simplify using `only [hxdef, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Simplify `h1` using `[φ, hA]`. Establish `e1` using `card_true_ge_lemma_2 ε u huo c`. Rewrite `e1` using `[← hxdef, BJ_sum]`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e2` using `congrArg Complex.re e1`. Rewrite `e2` using `[Complex.re_sum, Complex.re_sum]`. Establish `h1 : ∀ l, (star (c l) * c l).re = Complex.normSq (c l)` using `fun l => by`. Simplify using `[Complex.mul_re, Complex.normSq_apply]`. Establish `h2 : ∀ i, (star (x i) * (dJ ε i * x i)).re ≤ 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Unfold `dJ`. Use `split_ifs with hi`. Rewrite using `[hx i hi]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities.
 
-Simplify using `[Complex.mul_re]`. Use polynomial arithmetic with `[sq_nonneg (x i).re, sq_nonneg (x i).im]`. Establish `hle : ∑ l, Complex.normSq (c l) ≤ 0`. Rewrite using `[← Finset.sum_congr rfl fun l _ => h1 l, ← e2]`. Conclude with `Finset.sum_nonpos fun i _ => h2 i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hz` using `(Finset.sum_eq_zero_iff_of_nonneg fun l _ => Complex.normSq_nonneg (c l)).mp (le_antisymm hle (Finset.sum_nonneg fun l _ => Complex.normSq_nonneg (c l)))`. Use function extensionality and compare the values at `l`. Conclude with `Complex.normSq_eq_zero.mp (hz l (Finset.mem_univ l))`. Establish `h3` using `LinearMap.finrank_le_finrank_of_injective hinj`. Simplify `h3` using `[Module.finrank_fin_fun, Fintype.card_subtype]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem card_true_ge {k : ℕ} (u : Fin k → Fin n → ℂ) (huo : ∀ i j, BJ ε (u i) (u j) = if i = j then 1 else 0) :
     k ≤ (univ.filter fun i => ε i = true).card := by
@@ -245,14 +243,14 @@ theorem card_true_ge {k : ℕ} (u : Fin k → Fin n → ℂ) (huo : ∀ i j, BJ 
   simpa [Module.finrank_fin_fun, Fintype.card_subtype] using h3
 
 /- English proof (translation)
-Conclude with `card_true_ge_lemma ε u huo c j`.
+A detailed English derivation is pending.
 -/
 theorem BJ_orth_sum {k : ℕ} (u : Fin k → Fin n → ℂ) (huo : ∀ i j, BJ ε (u i) (u j) = if i = j then 1 else 0)
     (c : Fin k → ℂ) (j : Fin k) : BJ ε (u j) (∑ l, c l • u l) = c j := by
   exact card_true_ge_lemma ε u huo c j
 
 /- English proof (translation)
-Simplify using `only [map_sum, LinearMap.sum_apply, LinearMap.map_smulₛₗ, LinearMap.smul_apply, map_smul, h]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem wittLin_holds_lemma {k : ℕ} (a b : Fin k → Fin n → ℂ)
     (h : ∀ i j, BJ ε (a i) (a j) = BJ ε (b i) (b j)) (c d : Fin k → ℂ) :
@@ -260,7 +258,7 @@ private theorem wittLin_holds_lemma {k : ℕ} (a b : Fin k → Fin n → ℂ)
   simp only [map_sum, LinearMap.sum_apply, LinearMap.map_smulₛₗ, LinearMap.smul_apply, map_smul, h]
 
 /- English proof (translation)
-Rewrite using `[BJ_apply]`. Unfold `Formalism.REAL.Jm`. Rewrite using `[Matrix.mul_apply]`. Simplify using `only [Matrix.mul_diagonal]`. Simplify using `[mulVec_diagonal, mulVec_single_one, dotProduct, conjTranspose_apply, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem wittLin_holds_lemma_2 (c : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) :
     (cᴴ * Formalism.REAL.Jm ε * c) i j = BJ ε (c *ᵥ Pi.single i 1) (c *ᵥ Pi.single j 1) := by
@@ -271,57 +269,51 @@ private theorem wittLin_holds_lemma_2 (c : Matrix (Fin n) (Fin n) ℂ) (i j : Fi
   simp [mulVec_diagonal, mulVec_single_one, dotProduct, conjTranspose_apply, mul_assoc]
 
 /- English proof (translation)
-Introduce `n m k hn ε w hli hpos`. Establish `hpos' : ∀ z : Fin n → ℂ, z ≠ 0 → (∀ b, BJ ε (w b) z = 0) → 0 < (BJ ε z z).re`. Introduce `z hz h`. Rewrite using `[BJ_apply]`. Conclude with `hpos z hz (fun b => by rw [← BJ_apply]; exact h b)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hperp, huo⟩` from `exists_orthonormal_perp ε hn w hpos'`. Take `⟨S, hSsub, hScard⟩` from `Finset.exists_subset_card_eq (card_true_ge ε u huo)`. Establish `hST : ∀ i ∈ S, ε i = true` using `fun i hi => (Finset.mem_filter.mp (hSsub hi)).2`. Set `s : Fin k → Fin n` to `fun j => (S.equivFin.symm (Fin.cast hScard.symm j)).1`. Establish `hs_mem : ∀ j, s j ∈ S` using `fun j => (S.equivFin.symm (Fin.cast hScard.symm j)).2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs_inj : Function.Injective s`. Introduce `a b hab`. Establish `h1` using `S.equivFin.symm.injective (Subtype.ext hab)`. Conclude with `Fin.cast_injective _ h1`. Establish `hs_surj : ∀ i ∈ S, ∃ j, s j = i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i hi`. Use `⟨Fin.cast hScard (S.equivFin ⟨i, hi⟩), ?_⟩` and prove the remaining obligations. Simplify using `[s]`. Establish `hliu : LinearIndependent ℂ u`. Rewrite using `[Fintype.linearIndependent_iff]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `c hc j`. Establish `h1` using `BJ_orth_sum ε u huo c j`. Rewrite `h1` using `[hc, map_zero]`. Conclude with `h1.symm`. Set `bU` to `Module.Basis.span hliu`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `f : Submodule.span ℂ (Set.range u) →ₗ[ℂ] (Fin n → ℂ)` to `bU.constr ℂ fun j => Pi.single (s j) 1`. Establish `hfb : ∀ j, f (bU j) = Pi.single (s j) 1` using `fun j => bU.constr_basis ℂ _ j`. Establish `hx : ∀ x : Submodule.span ℂ (Set.range u), (x : Fin n → ℂ) = ∑ i, bU.repr x i • u i`. Introduce `x`. Use `conv_lhs => rw [← bU.sum_repr x]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[bU, Module.Basis.span_apply]`. Establish `hfx : ∀ x : Submodule.span ℂ (Set.range u), f x = ∑ i, bU.repr x i • Pi.single (s i) 1`. Introduce `x`. Use `conv_lhs => rw [← bU.sum_repr x]`. Rewrite using `[map_sum]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [map_smul, hfb]`. Establish `hgram : ∀ i j, BJ ε (u i) (u j) = BJ ε (Pi.single (s i) 1) (Pi.single (s j) 1)`. Introduce `i j`. Rewrite using `[BJ_single, huo]`. Distinguish the cases in `hij : i = j`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Substitute `hij` using the available equality. Simplify using `[Formalism.REAL.Jm, hST _ (hs_mem i)]`. Simplify using `[Formalism.REAL.Jm, hij, hs_inj.ne hij]`. Establish `hiso : ∀ x y : Submodule.span ℂ (Set.range u), BJ ε (f x) (f y) = BJ ε x y`. Introduce `x y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hfx, hfx, hx, hx]`. Conclude with `(wittLin_holds_lemma ε u (fun j => Pi.single (s j) 1) hgram _ _).symm`. Establish `hfinj : Function.Injective f`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `x hx0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hr : ∀ j, bU.repr x j = 0`. Introduce `j`. Establish `h1` using `congrFun ((hfx x).symm.trans hx0) (s j)`. Simplify `h1` using `[Finset.sum_apply, Pi.single_apply, hs_inj.eq_iff]`. Establish `h2 : bU.repr x = 0` using `Finsupp.ext hr`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using h2`. Take `⟨g, hg, hgU⟩` from `witt_extension_theorem ℂ (Fin n → ℂ) (BJ ε) (BJ_herm ε) (BJ_nondeg ε) _ f hfinj hiso`. Establish `hgu : ∀ j, g (u j) = Pi.single (s j) 1`. Introduce `j`. Establish `h1` using `hgU (bU j)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite `h1` using `[hfb, Module.Basis.span_apply]`. Conclude with `h1`. Set `cM : Matrix (Fin n) (Fin n) ℂ` to `LinearMap.toMatrix' (g.symm : (Fin n → ℂ) →ₗ[ℂ] (Fin n → ℂ))`. Set `dM : Matrix (Fin n) (Fin n) ℂ` to `LinearMap.toMatrix' (g : (Fin n → ℂ) →ₗ[ℂ] (Fin n → ℂ))`. Establish `hcd : cM * dM = 1`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← LinearMap.toMatrix'_comp, ← LinearMap.toMatrix'_id]`. Use `congr 1`. Use extensionality with `x`. Simplify using the standard rewrite rules. Establish `hdc : dM * cM = 1`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[← LinearMap.toMatrix'_comp, ← LinearMap.toMatrix'_id]`. Use `congr 1`. Use extensionality with `x`. Simplify using the standard rewrite rules. Set `cU : (Matrix (Fin n) (Fin n) ℂ)ˣ` to `⟨cM, dM, hcd, hdc⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hmem : cU ∈ Formalism.REAL.UJ ε` using `by show Formalism.REAL.inUJ ε cM`. Unfold `Formalism.REAL.inUJ`. Use extensionality with `i j`. Rewrite using `[wittLin_holds_lemma_2 ε cM i j, ← BJ_single ε i j]`. Simplify using `only [cM, LinearMap.toMatrix'_mulVec, LinearEquiv.coe_coe]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h1` using `hg (g.symm (Pi.single i 1)) (g.symm (Pi.single j 1))`. Simplify using `only [LinearEquiv.apply_symm_apply] at h1`. Conclude with `h1.symm`. Use `⟨S, ⟨cU, hmem⟩, ⟨hScard, hST⟩, ?_⟩` and prove the remaining obligations. Establish `hgw : ∀ b, Formalism.MainNotions.S.uMat (⟨cU, hmem⟩ : Formalism.REAL.UJ ε)⁻¹ *ᵥ w b = g (w b)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `b`. Use `show dM *ᵥ w b = g (w b)`. Conclude with `LinearMap.toMatrix'_mulVec _ _`. Simplify using `only [hgw]`. Apply `Submodule.eq_of_le_of_finrank_le` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨b, rfl⟩`. Use `set x := g (w b) with hxb`. Establish `hx0 : ∀ i ∈ S, x i = 0`. Introduce `i hi`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨j, rfl⟩` from `hs_surj i hi`. Establish `h1 : BJ ε (Pi.single (s j) 1) x = 0`. Rewrite using `[← hgu j, hxb, hg, ← BJ_herm, hperp j b, star_zero]`. Rewrite `h1` using `[BJ_sum, Finset.sum_eq_single (s j)]`. Simplify using `only [Pi.single_eq_same, star_one, one_mul] at h1`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Break down `mul_eq_zero.mp h1 with h2 | h2` into its components or cases. Conclude with `absurd h2 (dJ_ne ε _)`. Conclude with `h2`. Introduce `l _ hl`. Simplify using `[Pi.single_eq_of_ne hl]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Use `show x ∈ Submodule.span ℂ _`. Rewrite using `[← Finset.univ_sum_single x]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hi : i ∈ S`. Rewrite using `[hx0 i hi, Pi.single_zero]`. Conclude with `Submodule.zero_mem _`. Establish `h1 : Pi.single i (x i) = x i • (Pi.single i 1 : Fin n → ℂ)`. Use extensionality with `l`.
-
-Distinguish the cases in `hl : l = i`. Substitute `hl` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne hl]`. Rewrite using `[h1]`.
-
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, by simpa using hi, rfl⟩)`. Establish `hl1 : LinearIndependent ℂ (fun b => g (w b))` using `hli.map' g.toLinearMap g.ker`. Rewrite using `[finrank_span_eq_card hl1, Fintype.card_fin]`. Establish `hset : (fun i : Fin n => (Pi.single i 1 : Fin n → ℂ)) '' (↑S)ᶜ = ↑(Sᶜ.image fun i : Fin n => (Pi.single i 1 : Fin n → ℂ))`. Simplify using `[Finset.coe_image, Finset.coe_compl]`.
-
-Rewrite using `[hset]`. Use `(finrank_span_finset_le_card _).trans ?_` and prove the remaining obligations. Use `Finset.card_image_le.trans ?_` and prove the remaining obligations. Rewrite using `[Finset.card_compl, Fintype.card_fin, hScard]`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem wittLin_holds : WittLin := by
   intro n m k hn ε w hli hpos

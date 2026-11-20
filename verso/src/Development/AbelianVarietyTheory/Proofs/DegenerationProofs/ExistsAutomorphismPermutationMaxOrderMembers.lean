@@ -24,7 +24,7 @@ open GlobalTheory.SS
 namespace GlobalTheory.SS
 
 /- English proof (translation)
-Take `⟨Y, e, h₁, h₂, h₃⟩` from `M`. Simplify using `[Model.twist]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem Model.twist_twist_symm {R K : Type} [CommRing R] [Field K] [Algebra R K] {A A' : Over (Sp K)}
     (M : Model R A) (f : A ≅ A') : (M.twist f).twist f.symm = M := by
@@ -32,7 +32,7 @@ theorem Model.twist_twist_symm {R K : Type} [CommRing R] [Field K] [Algebra R K]
   simp [Model.twist]
 
 /- English proof (translation)
-Use `hA.smooth` as an intermediate fact. Use `hA.geomConnected` as an intermediate fact. Conclude with `GlobalTheory.isIntegral_of_smooth_of_geometricallyConnected A.hom`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isIntegral_of_abelian {K : Type} [Field K] (A : Over (Sp K)) [GrpObj A] (hA : IsAbelianScheme A) :
     IsIntegral A.left := by
@@ -41,15 +41,15 @@ theorem isIntegral_of_abelian {K : Type} [Field K] (A : Over (Sp K)) [GrpObj A] 
   exact GlobalTheory.isIntegral_of_smooth_of_geometricallyConnected A.hom
 
 /- English proof (translation)
-Establish `hint` using `isIntegral_of_abelian A hA`. Take `⟨-, -, h3, -⟩` from `GlobalTheory.T.modelMapGenericallyOpenImmersion_calculus R K hSH`. Take `⟨hdvr, -, -, hfr⟩` from `hSH`. Establish `bound : ∀ (N : Model R A) (m : ℤ), N.Irr → HasOrd N D π m → m ≤ ρ ∧ (m = ρ → ∃ i', o i' = ρ ∧ GenIso N (M i') (𝟙 A))`. Introduce `N m hN hm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨j, hj⟩` from `GlobalTheory.T.exists_modelMapDefined_weakNeronFamily R K A J M hW N hN`. Take `⟨h₁, h₂⟩` from `GlobalTheory.T.jacobian_order_monotone_semistableModel R K π hπ A I D hD N (M j) m (o j) hN (hI j) hm (ho j) hj`. Use `hρ j` as an intermediate fact. Conclude with `⟨h₁.trans this, fun e => ⟨j, by omega, h₂ (by omega)⟩⟩`. Take `⟨c, hc⟩` from `GlobalTheory.T.abelianVariety_automorphism_shifts_jacobianOrder R K π hπ A hA I D hD f`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨c', hc'⟩` from `GlobalTheory.T.abelianVariety_automorphism_shifts_jacobianOrder R K π hπ A hA I D hD f.symm`. Establish `t₁` using `hc _ _ (ho i)`. Establish `t₂` using `hc' _ _ (ho i)`. Establish `t₃` using `hc' _ _ t₁`. Rewrite `t₃` using `[Model.twist_twist_symm]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e₃` using `(GlobalTheory.T.existsUnique_modelHasJacobianOrder R K π hπ A I D hD (M i) (hI i)).unique t₃ (ho i)`. Establish `i₁ : ((M i).twist f).Irr` using `hI i`. Establish `i₂ : ((M i).twist f.symm).Irr` using `hI i`. Take `⟨b₁, b₁'⟩` from `bound _ _ i₁ t₁`. Take `⟨b₂, -⟩` from `bound _ _ i₂ t₂`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨i', hi', hg⟩` from `b₁' (by omega)`. Conclude with `⟨i', hi', (h3 A A (M i) (M i') f).2.1.2 hg⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_genIso_of_max_ord (R K : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [Field K] [Algebra R K]
     (hSH : SH R K) (π : R) (hπ : Irreducible π) (A : Over (Sp K)) [GrpObj A] (hA : IsAbelianScheme A)
@@ -82,7 +82,7 @@ theorem exists_genIso_of_max_ord (R K : Type) [CommRing R] [IsDomain R] [IsLocal
   exact ⟨i', hi', (h3 A A (M i) (M i') f).2.1.2 hg⟩
 
 /- English proof (translation)
-Take `⟨hdvr, -, -, hfr⟩` from `hSH`. Take `⟨i, -⟩` from `hW R K (by simp) (η[A]).left (by`. Rewrite using `[← Category.assoc, Over.w]`. Use the proof step `simp)`. Conclude with `⟨i⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem WeakNeron.nonempty {R K : Type} [CommRing R] [IsDomain R] [IsLocalRing R] [Field K] [Algebra R K]
     (hSH : SH R K) {A : Over (Sp K)} [GrpObj A] {J : Type} {M : J → Model R A} (hW : WeakNeron M) :
@@ -94,15 +94,15 @@ theorem WeakNeron.nonempty {R K : Type} [CommRing R] [IsDomain R] [IsLocalRing R
   exact ⟨i⟩
 
 /- English proof (translation)
-Introduce `R K _ _ _ _ _ hSH A _ _ hA n M hI hW`. Establish `hne` using `hW.nonempty hSH`. Establish `hdvr` using `hSH.1`. Establish `hfr` using `hSH.2.2.2`. Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible R`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg⟩` from `GlobalTheory.AbelianDim.exists_relDim K A hA`. Take `⟨D, hD⟩` from `GlobalTheory.T.exists_vectorFieldFrame_smooth_commGrpScheme K A g hg`. Use `choose o ho using fun i => (GlobalTheory.T.existsUnique_modelHasJacobianOrder R K π hπ A (Fin g) D hD (M i) (hI i)).exists`. Take `⟨i₀, hi₀⟩` from `Finite.exists_max o`. Use `⟨Finset.univ.filter fun i => o i = o i₀, ⟨i₀, by simp⟩, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `f i hi`. Take `⟨i', hi', h⟩` from `exists_genIso_of_max_ord R K hSH π hπ A hA _ D hD _ M hI hW o ho (o i₀) hi₀ f i (by simpa using hi)`. Conclude with `⟨i', by simpa using hi', h⟩`. Introduce `Θ i hi j hj`. Establish `hi : o i = o i₀` using `by simpa using hi`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hj : o j = o i₀` using `by simpa using hj`. Take `⟨D₂, hD₂, hp⟩` from `GlobalTheory.T.vectorFieldOrder_add_of_prod_strictHenselian R K hSH π hπ A A _ _ D D hD hD`. Take `⟨p₁, p₂⟩` from `GlobalTheory.T.prod_irr_and_weakNeron' R K hSH A A`. Take `⟨⟨i', j'⟩, h', h⟩` from `exists_genIso_of_max_ord R K hSH π hπ (A ⊗ A) (AbelianSchemeGerms.isAbelianScheme_tensor A A hA hA) _ D₂ hD₂ (Fin n × Fin n) (fun p => (M p.1).prod (M p.2)) (fun p => p₁ _ _ (hI _) (hI _)) (p₂ _ _ M M hW hW) (fun p => o p.1 + o p.2) (fun p => hp _ _ _ _ (hI _) (hI _) (ho _) (ho _ …`. Establish `a₁` using `hi₀ i'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a₂` using `hi₀ j'`. Establish `h' : o i' + o j' = o i₀ + o i₀` using `h'`. Conclude with `⟨i', by simp; omega, j', by simp; omega, h⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_permuted_members : ∀ (R K : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [Field K] [Algebra R K], SH R K → ∀ (A : Over (Sp K)) [GrpObj A] [IsCommMonObj A], IsAbelianScheme A → ∀ (n : ℕ) (M : Fin n → Model R A), (∀ i, (M i).Irr) → WeakNeron M → ∃ S : Finset (Fin n), S.Nonempty ∧ (∀ (f : A ≅ A), ∀ i ∈ S, ∃ i' ∈ S, GenIso (M i) (M i') f.hom) ∧ ∀ (Θ : A ⊗ A ≅ A ⊗ A), ∀ i ∈ S, ∀ j ∈ S, ∃ i' ∈ S, ∃ j' ∈ S, GenIso ((M i).prod (M j)) ((M i').prod (M j')) Θ.hom := by
   intro R K _ _ _ _ _ hSH A _ _ hA n M hI hW

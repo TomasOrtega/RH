@@ -20,7 +20,7 @@ open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 open scoped Classical in
 
 /- English proof (translation)
-Introduce `M ψ hψ g u hu` and use `by obtain ⟨D, hD⟩ := GlobalTheory.HeisDeriv.exists_actsD_heisLine M ψ hψ u hu exact ⟨D g, hD g⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HeisLineDeriv.exists_actsD : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ}
     {Y : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n} {Wd : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d} (M : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model σ Y Wd)

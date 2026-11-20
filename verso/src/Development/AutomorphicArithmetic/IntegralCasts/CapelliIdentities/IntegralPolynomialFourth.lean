@@ -10,7 +10,7 @@ noncomputable def UpperTheory.Reformulated.B.IntegralPolynomialFourth.IntegralMv
       ∀ (n : σ →₀ ℕ), UpperTheory.Reformulated.B.IntegralPolynomialFourth.IsIntP ((MvPowerSeries.coeff n : MvPowerSeries σ ℂ_[p] → ℂ_[p]) F)
 
 /- English proof (translation)
-Introduce `p _ σ F h n`. Establish `hn : ‖MvPowerSeries.coeff n F‖ ≤ (1 : ℝ)` using `h n`. Use `show ‖MvPowerSeries.coeff n (-F)‖ ≤ (1 : ℝ)`. Rewrite using `[map_neg, norm_neg]`. Conclude with `hn`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.IntegralPolynomialFourth.intMv_neg.{u_1} :
     ∀ {p : ℕ} [inst : Fact (Nat.Prime p)] {σ : Type u_1} {F : MvPowerSeries σ ℂ_[p]},

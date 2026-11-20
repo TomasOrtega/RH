@@ -35,7 +35,7 @@ def Pair {S : Scheme.{0}} (A B : Over S) [GrpObj A] [GrpObj B] (m : ℕ) : Prop 
   ∃ (i : A ⟶ B) (r : B ⟶ A), IsMonHom i ∧ IsMonHom r ∧ r ≫ i = 𝟙 B ^ m
 
 /- English proof (translation)
-Take `⟨i, r, hi, hr, e⟩` from `h`. Use `⟨a.hom ≫ i ≫ b.inv, b.hom ≫ r ≫ a.inv, inferInstance, inferInstance, ?_⟩` and prove the remaining obligations. Establish `: (b.hom ≫ r ≫ a.inv) ≫ a.hom ≫ i ≫ b.inv = b.hom ≫ (r ≫ i) ≫ b.inv` using `by simp`. Rewrite using `[this, e, MonObj.pow_comp, MonObj.comp_pow]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Pair.of_iso {S : Scheme.{0}} {A B A' B' : Over S} [GrpObj A] [GrpObj B] [GrpObj A'] [GrpObj B'] {m : ℕ}
     (a : A' ≅ A) (b : B' ≅ B) [IsMonHom a.hom] [IsMonHom b.hom] (h : Pair A B m) : Pair A' B' m := by
@@ -46,13 +46,13 @@ theorem Pair.of_iso {S : Scheme.{0}} {A B A' B' : Over S} [GrpObj A] [GrpObj B] 
   simp
 
 /- English proof (translation)
-The claim follows from `inferInstanceAs (IsMonHom a.inv)`.
+A detailed English derivation is pending.
 -/
 theorem isMonHom_symm {S : Scheme.{0}} {A B : Over S} [GrpObj A] [GrpObj B] (a : A ≅ B) [IsMonHom a.hom] :
     IsMonHom a.symm.hom := inferInstanceAs (IsMonHom a.inv)
 
 /- English proof (translation)
-The claim follows from `inferInstanceAs (IsMonHom (𝟙 A))`.
+A detailed English derivation is pending.
 -/
 theorem isMonHom_refl {S : Scheme.{0}} (A : Over S) [GrpObj A] : IsMonHom (Iso.refl A).hom :=
   inferInstanceAs (IsMonHom (𝟙 A))
@@ -60,14 +60,14 @@ theorem isMonHom_refl {S : Scheme.{0}} (A : Over S) [GrpObj A] : IsMonHom (Iso.r
 attribute [local instance] isMonHom_symm isMonHom_refl
 
 /- English proof (translation)
-The claim follows from `(smoothOfRelativeDimension_isStableUnderBaseChange g).of_isPullback (IsPullback.of_hasPullback _ _) h`.
+A detailed English derivation is pending.
 -/
 theorem relDim_pullback {S S' : Scheme.{0}} (f : S' ⟶ S) (X : Over S) {g : ℕ} (h : SmoothOfRelativeDimension g X.hom) :
     SmoothOfRelativeDimension g ((Over.pullback f).obj X).hom :=
   (smoothOfRelativeDimension_isStableUnderBaseChange g).of_isPullback (IsPullback.of_hasPullback _ _) h
 
 /- English proof (translation)
-Take `⟨i, r, hi, hr, e⟩` from `h`. Use `⟨(Over.pullback f).map i, (Over.pullback f).map r, inferInstance, inferInstance, ?_⟩` and prove the remaining obligations. Rewrite using `[← Functor.map_comp, e, ← CategoryTheory.Functor.map_id]`. Conclude with `map_pow ((Over.pullback f).homMonoidHom) _ _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Pair.pullback {S S' : Scheme.{0}} (f : S' ⟶ S) {A B : Over S} [GrpObj A] [GrpObj B] {m : ℕ}
     (h : Pair A B m) : Pair ((Over.pullback f).obj A) ((Over.pullback f).obj B) m := by
@@ -77,7 +77,7 @@ theorem Pair.pullback {S S' : Scheme.{0}} (f : S' ⟶ S) {A B : Over S} [GrpObj 
   exact map_pow ((Over.pullback f).homMonoidHom) _ _
 
 /- English proof (translation)
-Take `⟨a, ha, -⟩` from `grpPullback_iso hA (isGrpPullback_pullback A f)`. Take `⟨b, hb, -⟩` from `grpPullback_iso hB (isGrpPullback_pullback B f)`. Conclude with `(h.pullback f).of_iso a b`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem Pair.baseChange {S S' : Scheme.{0}} {f : S' ⟶ S} {A B : Over S} {A' B' : Over S'} [GrpObj A] [GrpObj B]
     [GrpObj A'] [GrpObj B'] {m : ℕ} {φ : A'.left ⟶ A.left} {ψ : B'.left ⟶ B.left}
@@ -87,7 +87,7 @@ theorem Pair.baseChange {S S' : Scheme.{0}} {f : S' ⟶ S} {A B : Over S} {A' B'
   exact (h.pullback f).of_iso a b
 
 /- English proof (translation)
-Take `rfl : h = g.comp f` from `RingHom.ext fun x => (e x).symm`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem spMap_comp {R₁ R₂ R₃ : Type} [CommRing R₁] [CommRing R₂] [CommRing R₃] (f : R₁ →+* R₂) (g : R₂ →+* R₃)
     (h : R₁ →+* R₃) (e : ∀ x, g (f x) = h x) : spMap g ≫ spMap f = spMap h := by
@@ -95,11 +95,11 @@ theorem spMap_comp {R₁ R₂ R₃ : Type} [CommRing R₁] [CommRing R₂] [Comm
   rw [← Spec.map_comp]; rfl
 
 /- English proof (translation)
-Take `⟨a, ha, -⟩` from `grpPullback_iso (isGrpPullback_pullback A _) pA`. Take `⟨b, hb, -⟩` from `grpPullback_iso (isGrpPullback_pullback B _) pB`. Take `⟨i, r, hi, hr, e⟩` from `h.of_iso a b`. Take `⟨L, hL, i', r', hi', hr', e'⟩` from `GlobalTheory.homPair_descends_to_finite F Ω A B hA hB i r hi hr`. Use `⟨L, hL, fun L' hle A'' B'' _ _ φ' ψ' qA qB => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h₁ : Pair ((Over.pullback (spMap (algebraMap F L))).obj A) ((Over.pullback (spMap (algebraMap F L))).obj B) m` using `⟨i', r', hi', hr', (e' m).2 e⟩`. Set `τ : L →+* L'` to `(IntermediateField.inclusion hle).toRingHom`. Establish `hτ : spMap τ ≫ spMap (algebraMap F L) = spMap (algebraMap F L')` using `spMap_comp _ _ _ fun x => rfl`. Take `⟨a', ha', -⟩` from `grpPullback_iso qA (((isGrpPullback_pullback _ (spMap τ)).comp (isGrpPullback_pullback A _)).congr hτ rfl)`. Take `⟨b', hb', -⟩` from `grpPullback_iso qB (((isGrpPullback_pullback _ (spMap τ)).comp (isGrpPullback_pullback B _)).congr hτ rfl)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `(h₁.pullback (spMap τ)).of_iso a' b'`.
+A detailed English derivation is pending.
 -/
 theorem Pair.descend {F Ω : Type} [Field F] [Field Ω] [Algebra F Ω] [Algebra.IsAlgebraic F Ω]
     {A B : Over (Sp F)} {A' B' : Over (Sp Ω)} [GrpObj A] [GrpObj B] [GrpObj A'] [GrpObj B']
@@ -125,9 +125,9 @@ theorem Pair.descend {F Ω : Type} [Field F] [Field Ω] [Algebra F Ω] [Algebra.
   exact (h₁.pullback (spMap τ)).of_iso a' b'
 
 /- English proof (translation)
-Establish `ht : R₀ = ⊤`. Use `eq_top_iff.2 fun x _ => ?_` and prove the remaining obligations. Take `⟨a, ha, b, hb, rfl⟩` from `hfr x`. Rewrite using `[div_eq_mul_inv]`. Conclude with `R₀.mul_mem ha (R₀.inv_mem_of_algebraic (x := ⟨b, hb⟩) (Algebra.IsAlgebraic.isAlgebraic _))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: Algebra.FiniteType o Ω₀` using `⟨ht ▸ hfg⟩`. Conclude with `Algebra.IsIntegral.finite`.
+A detailed English derivation is pending.
 -/
 theorem finite_of_fg {o Ω₀ : Type} [Field o] [Field Ω₀] [Algebra o Ω₀] [Algebra.IsAlgebraic o Ω₀] (R₀ : Subalgebra o Ω₀)
     (hfg : R₀.FG) (hfr : ∀ x : Ω₀, ∃ a ∈ R₀, ∃ b ∈ R₀, x = a / b) : FiniteDimensional o Ω₀ := by
@@ -140,9 +140,9 @@ theorem finite_of_fg {o Ω₀ : Type} [Field o] [Field Ω₀] [Algebra o Ω₀] 
   exact Algebra.IsIntegral.finite
 
 /- English proof (translation)
-Take `⟨P', φ, hφ, hg, hm, t, ht⟩` from `polBaseChange_holds S S' f P`. Establish `gp : IsGrpPullback P'.A P.A f φ` using `⟨hφ, fun T x y x₀ y₀ hx hy => by`. Rewrite using `[(Over.OverMorphism.ext hx : x₀ = Out.toBase hφ.w x), (Over.OverMorphism.ext hy : y₀ = Out.toBase hφ.w y), ← hm]`. Use the proof step `rfl⟩`. Use `letI := P.isAb.comm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `letI := P'.isAb.comm`. Conclude with `⟨P', φ, gp, GlobalTheory.SymBaseChange.hypS_baseChange S S' P.A P'.A f φ P.L P'.L P.isLB P'.isLB gp (LBIso.symm ⟨t, ht⟩) h⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_pol_baseChange {S S' : Scheme.{0}} (f : S' ⟶ S) (P : Out.PolAV S)
     (h : letI := P.isAb.comm; GlobalTheory.ZH.HypS P.A P.L) :
@@ -158,7 +158,7 @@ theorem exists_pol_baseChange {S S' : Scheme.{0}} (f : S' ⟶ S) (P : Out.PolAV 
     (LBIso.symm ⟨t, ht⟩) h⟩
 
 /- English proof (translation)
-Take `⟨L₁, f₁, h₁⟩` from `h.descend hA hB pA pB`. Take `⟨L₂, f₂, h₂⟩` from `h'.descend Q.isAb hB pC pB`. Take `⟨Q', χ', gp, hS⟩` from `exists_pol_baseChange (spMap (algebraMap F (L₁ ⊔ L₂ : IntermediateField F Ω))) Q hQ`. Conclude with `⟨L₁ ⊔ L₂, Q', inferInstance, hS, h₁ _ le_sup_left _ _ _ _ (isGrpPullback_pullback _ _) (isGrpPullback_pullback _ _), h₂ _ le_sup_right _ _ _ _ gp (isGrpPullback_pullback _ _)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_finite_pairs {F Ω : Type} [Field F] [Field Ω] [Algebra F Ω] [Algebra.IsAlgebraic F Ω]
     {A B : Over (Sp F)} {A' B' C' : Over (Sp Ω)} [GrpObj A] [GrpObj B] [GrpObj A'] [GrpObj B'] [GrpObj C']
@@ -179,15 +179,13 @@ theorem exists_finite_pairs {F Ω : Type} [Field F] [Field Ω] [Algebra F Ω] [A
     h₂ _ le_sup_right _ _ _ _ gp (isGrpPullback_pullback _ _)⟩
 
 /- English proof (translation)
-Set `Ω` to `AlgebraicClosure K`. Take `⟨B, _, M, i, r, m, hB, hgB, hM, hM₁, hM₂, hi, hr, hm, e⟩` from `GlobalTheory.SS.PrincIsog.exists_isogeny_kTriv Ω ((Over.pullback (spMap (algebraMap K Ω))).obj A) g (isAbelianScheme_pullback_obj _ A hA) (relDim_pullback _ A hg)`. Take `⟨Q, i', r', hQ, hi', hr', e'⟩` from `GlobalTheory.EighthPowerFactor.exists_polAV_hypS_retract Ω B g hB hgB M hM hM₁ hM₂`. Take `⟨L₁, f₁, B₁, _, eB, hB₁, heB⟩` from `GlobalTheory.exists_finite_isAbelianScheme_descends K Ω B hB`. Establish `lev` using `GlobalTheory.nonempty_level_of_isAlgClosed Ω Q 1 (Units.map (algebraMap L₁ Ω).toMonoidHom 1) (by simp) (by rw [map_one]; exact IsPrimitiveRoot.one)`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨F, _, _, j, R₀, Q₀, χ, hfg, hfr, -, pC, hQ₀, -⟩` from `GlobalTheory.SymLevelDescent.descends_to_fg_field L₁ Ω Q 1 1 hQ lev`. Use `letI : Algebra F Ω := j.toRingHom.toAlgebra`. Use `haveI : IsScalarTower L₁ F Ω := IsScalarTower.of_algebraMap_eq fun x => (j.commutes x).symm`. Use `haveI : Algebra.IsAlgebraic L₁ Ω := Algebra.IsAlgebraic.tower_top (K := K) L₁`. Use `haveI : Algebra.IsAlgebraic L₁ F := Algebra.IsAlgebraic.of_injective j j.toRingHom.injective`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : Algebra.IsAlgebraic F Ω := Algebra.IsAlgebraic.tower_top (K := L₁) F`. Establish `f₂ : FiniteDimensional L₁ F` using `finite_of_fg R₀ hfg hfr`. Set `c₀ : K →+* F` to `(algebraMap L₁ F).comp (algebraMap K L₁)`. Establish `pB₁ : IsGrpPullback B B₁ (spMap (algebraMap L₁ Ω)) _` using `((isGrpPullback_of_iso eB.symm).comp (isGrpPullback_pullback B₁ _)).congr (Category.id_comp _) rfl`. Establish `hgB₁ : SmoothOfRelativeDimension g B₁.hom` using `(GlobalTheory.FieldDescentAb.isAbelianScheme_and_relDim_descend L₁ Ω _ B₁ B _ pB₁ hB).2 g hgB`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨a, ha, -⟩` from `grpPullback_iso (isGrpPullback_pullback A (spMap (algebraMap K Ω))) (((isGrpPullback_pullback _ (spMap (algebraMap F Ω))).comp (isGrpPullback_pullback A (spMap c₀))).congr (spMap_comp _ _ _ fun x => j.commutes (algebraMap K L₁ x)) rfl)`. Take `⟨b, hb, -⟩` from `grpPullback_iso pB₁ (((isGrpPullback_pullback _ (spMap (algebraMap F Ω))).comp (isGrpPullback_pullback B₁ (spMap (algebraMap L₁ F)))).congr (spMap_comp _ _ _ fun x => j.commutes x) rfl)`. Establish `P₁ : Pair _ B m` using `⟨i, r, hi, hr, e⟩`. Establish `P₂ : Pair Q.A B 1` using `⟨r', i', hr', hi', by rw [e', pow_one]⟩`. Take `⟨L, Q', f₃, hQ', P₃, P₄⟩` from `exists_finite_pairs Q₀ hQ₀ (isAbelianScheme_pullback_obj (spMap c₀) A hA) (isAbelianScheme_pullback_obj (spMap (algebraMap L₁ F)) B₁ hB₁) (isGrpPullback_pullback _ _) (isGrpPullback_pullback _ _) pC (P₁.of_iso a.symm b.symm) (P₂.of_iso (Iso.refl _) b.symm)`.
-
-Take `⟨a', ha', -⟩` from `grpPullback_iso (isGrpPullback_pullback A (spMap ((algebraMap F L).comp c₀))) (((isGrpPullback_pullback _ (spMap (algebraMap F L))).comp (isGrpPullback_pullback A (spMap c₀))).congr (spMap_comp _ _ _ fun x => rfl) rfl)`. Conclude with `⟨L, inferInstance, (algebraMap F L).comp c₀, _, inferInstance, Q', m, (RingHom.finite_algebraMap.2 f₃).comp ((RingHom.finite_algebraMap.2 f₂).comp (RingHom.finite_algebraMap.2 f₁)), relDim_pullback _ _ (relDim_pullback _ _ hgB₁), hm, P₃.of_iso a' (Iso.refl _), P₄, hQ'⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_finite_data (K : Type) [Field K] [CharZero K] (A : Over (Sp K)) [GrpObj A] (hA : IsAbelianScheme A)
     (g : ℕ) (hg : SmoothOfRelativeDimension g A.hom) :
@@ -232,11 +230,11 @@ theorem exists_finite_data (K : Type) [Field K] [CharZero K] (A : Over (Sp K)) [
     relDim_pullback _ _ (relDim_pullback _ _ hgB₁), hm, P₃.of_iso a' (Iso.refl _), P₄, hQ'⟩
 
 /- English proof (translation)
-Introduce `K _ _ A _ hA`. Take `⟨g, hg⟩` from `GlobalTheory.AbelianDim.exists_relDim K A hA`. Take `⟨L₀, _, _, f₀, hP⟩` from `GlobalTheory.ProjFinite.exists_finite_isProjBy K A hA`. Use `haveI : CharZero L₀ := charZero_of_injective_algebraMap (algebraMap K L₀).injective`. Take `⟨L, _, c, B, _, Q, m, hc, hgB, hm, P₁, ⟨r', i', hr', hi', e'⟩, hQ⟩` from `exists_finite_data L₀ _ (isAbelianScheme_pullback_obj (spMap (algebraMap K L₀)) A hA) g (relDim_pullback _ _ hg)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Use `letI : Algebra K L := (c.comp (algebraMap K L₀)).toAlgebra`. Establish `f : FiniteDimensional K L` using `hc.comp (RingHom.finite_algebraMap.2 f₀)`. Take `⟨a, ha, -⟩` from `grpPullback_iso (isGrpPullback_pullback A (spMap (algebraMap K L))) (((isGrpPullback_pullback _ (spMap c)).comp (isGrpPullback_pullback A (spMap (algebraMap K L₀)))).congr (spMap_comp _ _ _ fun x => rfl) rfl)`. Take `⟨i, r, hi, hr, e⟩` from `P₁.of_iso a (Iso.refl _)`. Establish `gp` using `((isGrpPullback_of_iso a).comp (isGrpPullback_pullback _ (spMap c))).congr (Category.id_comp _) rfl`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨L, inferInstance, inferInstance, f, B, inferInstance, Q, g, m, i, r, i', r', GlobalTheory.AbLaw.isProjBy_baseChange L₀ L c _ _ _ _ _ gp.1 hP, relDim_pullback _ _ hg, hgB, hi, hr, hm, e, hi', hr', by rw [e', pow_one], hQ⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_isogenous_retract : ∀ (K : Type) [Field K] [CharZero K] (A : Over (Sp K)) [GrpObj A], IsAbelianScheme A → ∃ (L : Type) (_ : Field L) (_ : Algebra K L) (_ : FiniteDimensional K L) (B : Over (Sp L)) (_ : GrpObj B) (Q : Out.PolAV (Sp L)) (g m : ℕ) (i : (Over.pullback (spMap (algebraMap K L))).obj A ⟶ B) (r : B ⟶ (Over.pullback (spMap (algebraMap K L))).obj A) (i' : B ⟶ Q.A) (r' : Q.A ⟶ B), GlobalTheory.AbLaw.IsProjBy ((Over.pullback (spMap (algebraMap K L))).obj A).hom ∧ SmoothOfRelativeDimension g ((Over.pullback (spMap (algebraMap K L))).obj A).hom ∧ SmoothOfRelativeDimension g B.hom ∧ IsMonHom i ∧ IsMonHom r ∧ 1 ≤ m ∧ r ≫ i = 𝟙 _ ^ m ∧ IsMonHom i' ∧ IsMonHom r' ∧ i' ≫ r' = 𝟙 B ∧ (letI := Q.isAb.comm; GlobalTheory.ZH.HypS Q.A Q.L) := by
   intro K _ _ A _ hA

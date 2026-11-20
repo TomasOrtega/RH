@@ -16,13 +16,13 @@ Both sides reduce to the same expression.
 private theorem P_app (s : Set ℝ) (h : H) : M.P s h = M.J (cut V s (M.J.symm h)) := rfl
 
 /- English proof (translation)
-Take `⟨c1, c2, c3, -, -, c4, c5, -⟩` from `cutLaws (V := V) s t hs ht`. Use `⟨?_, ?_, ?_, fun hd => ?_, fun a => ?_⟩` and prove the remaining obligations. Use extensionality with `h`. Simplify using `only [ContinuousLinearMap.comp_apply, P_app, M.J.symm_apply_apply, ← c1]`. Use `LinearMap.IsSymmetric.isSelfAdjoint fun x y => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨u, rfl⟩` from `M.J.surjective x`. Take `⟨v, rfl⟩` from `M.J.surjective y`. Simplify using `only [ContinuousLinearMap.coe_coe, P_app, M.J.symm_apply_apply, M.J.inner_map_map]`. Conclude with `c2.isSymmetric u v`. Use `ContinuousLinearMap.opNorm_le_bound _ zero_le_one fun h => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[P_app, M.J.norm_map, one_mul]`. Conclude with `(c4 _).trans_eq (M.J.symm.norm_map h)`. Use extensionality with `h`. Simplify using `only [P_app, c3 hd, ContinuousLinearMap.add_apply, map_add]`. Use extensionality with `h`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Take `⟨u, rfl⟩` from `M.J.surjective h`. Simplify using `only [ContinuousLinearMap.comp_apply, P_app, M.J.symm_apply_apply, M.hJ]`. Conclude with `congrArg M.J (DFunLike.congr_fun (c5 a) u)`.
+A detailed English derivation is pending.
 -/
 private theorem one' (s t : Set ℝ) (hs : MeasurableSet s) (ht : MeasurableSet t) : M.P s ∘L M.P t = M.P (s ∩ t) ∧ IsSelfAdjoint (M.P s) ∧ ‖M.P s‖ ≤ 1 ∧
     (Disjoint s t → M.P (s ∪ t) = M.P s + M.P t) ∧ ∀ a : ℝ, M.F.U a ∘L M.P s = M.P ((fun x => x + a) ⁻¹' s) ∘L M.F.U a := by
@@ -47,23 +47,23 @@ private theorem one' (s t : Set ℝ) (hs : MeasurableSet s) (ht : MeasurableSet 
 end
 
 /- English proof (translation)
-Introduce `H _ _ _ V _ _ _ _ W _ _ _ _ M`. Establish `hn : M.F.Null` using `fun h h' => by`. Take `⟨u, rfl⟩` from `M.J.surjective h`. Take `⟨u', rfl⟩` from `M.J.surjective h'`. Simplify using `only [M.hJ, M.J.inner_map_map]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Conclude with `shNull u u'`. Use `⟨hn, funext fun t => by simp [Sc.swap, Flow.rev], fun _ => rfl, fun T T' => sub_right_comm _ _ _, fun s t hs ht => ⟨(one' M s t hs ht).1, (one' M s t hs ht).2.1, (one' M s t hs ht).2.2.1, (one' M s t hs ht).2.2.2.1, fun a => ⟨(one' M s t hs ht).2.2.2.2 a, ?_⟩⟩, ?_, ?_, fun T T' h …` and prove the remaining obligations. Use `(one' M.swap s t hs ht).2.2.2.2 (-a)` as an intermediate fact. Simplify `this` using `[Sc.swap, Flow.rev, Sc.P', sub_eq_add_neg]`. Use extensionality with `h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[P_app, (cutLaws (V := V) ∅ ∅ .empty .empty).2.2.2.2.1]`. Simplify using the standard rewrite rules. Use extensionality with `h`. Rewrite using `[P_app, (cutLaws (V := V) ∅ ∅ .empty .empty).2.2.2.1]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨a1, a2, -⟩` from `one' M (Ioi T) (Ioi T) measurableSet_Ioi measurableSet_Ioi`. Take `⟨b1, b2, -⟩` from `one' M.swap (Ioi T') (Ioi T') measurableSet_Ioi measurableSet_Ioi`. Rewrite `a1`, `b1` using `[inter_self]`. Express the relevant statement in the definitionally equal form `M.P' (Ioi T') ∘L M.P' (Ioi T') = M.P' (Ioi T') at b1`. Express the relevant statement in the definitionally equal form `IsSelfAdjoint (M.P' (Ioi T')) at b2`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Establish `o1 : M.P (Ioi T) * M.P' (Ioi T') = 0`. Use extensionality with `h`. Use `ext_inner_left ℂ fun y => ?_` and prove the remaining obligations. Establish `hc` using `(cutLaws (V := W) (Ioi (2 * M.T₀ - T)) (Ioi T') measurableSet_Ioi measurableSet_Ioi).1`. Rewrite `hc` using `[inter_eq_right.2 (Ioi_subset_Ioi (by linarith))]`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e : M.P' (Ioi T') h = M.J' (cut W (Ioi (2 * M.T₀ - T)) (cut W (Ioi T') (M.J'.symm h)))` using `congrArg M.J' (DFunLike.congr_fun hc _).symm`. Rewrite using `[ContinuousLinearMap.mul_apply, ← a2.isSymmetric.apply_clm, e, P_app, M.causal]`. Simplify using the standard rewrite rules. Establish `o2 : M.P' (Ioi T') * M.P (Ioi T) = 0`. Use `congrArg star o1` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[star_mul, a2.star_eq, b2.star_eq, star_zero]`. Then use the resulting hypothesis. Express the relevant statement in the definitionally equal form `M.P (Ioi T) * M.P (Ioi T) = _ at a1`. Express the relevant statement in the definitionally equal form `M.P' (Ioi T') * M.P' (Ioi T') = _ at b1`. Establish `l1 : M.abelian₂ T T' * M.P (Ioi T) = 0` using `by rw [Sc.abelian₂, sub_mul, sub_mul, a1, o2]; simp`. Establish `l2 : M.P (Ioi T) * M.abelian₂ T T' = 0` using `by rw [Sc.abelian₂, mul_sub, mul_sub, a1, o1]; simp`.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `l3 : M.abelian₂ T T' * M.P' (Ioi T') = 0` using `by rw [Sc.abelian₂, sub_mul, sub_mul, b1, o1]; simp`. Establish `l4 : M.P' (Ioi T') * M.abelian₂ T T' = 0` using `by rw [Sc.abelian₂, mul_sub, mul_sub, b1, o2]; simp`. Establish `l0 : M.abelian₂ T T' * M.abelian₂ T T' = M.abelian₂ T T'` using `by conv_lhs => rw [show M.abelian₂ T T' * M.abelian₂ T T' = M.abelian₂ T T' * (1 - M.P (Ioi T) - M.P' (Ioi T')) from rfl]`. Rewrite using `[mul_sub, mul_sub, l1, l3]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `sa : IsSelfAdjoint (M.abelian₂ T T')` using `((IsSelfAdjoint.one _).sub a2).sub b2`. Conclude with `⟨o1, o2, l0, sa, (IsStarProjection.mk l0 sa).norm_le _, l1, l2, l3, l4⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.IntegralApplyAeEq.projLaws :
     ∀ {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V] [CompleteSpace V] {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W] [FiniteDimensional ℂ W] [CompleteSpace W] (M : Sc H V W), M.F.Null ∧ M.swap.swap.F.U = M.F.U ∧ (∀ s, M.swap.P' s = M.P s) ∧ (∀ T T', M.swap.abelian₂ T' T = M.abelian₂ T T') ∧

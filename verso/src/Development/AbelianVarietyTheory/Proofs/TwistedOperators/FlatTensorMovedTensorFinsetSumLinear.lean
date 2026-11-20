@@ -7,11 +7,11 @@ namespace GlobalTheory.FunObj
 open GlobalTheory.SplitWeil GlobalTheory.SplitFlip GlobalTheory.RootEx
 
 /- English proof (translation)
-Take `⟨_, _⟩` from `Model.secondCountable_and_t2_local_field (k := k)`. Establish `hint : ∀ i ∈ S, Integrable (flatIntegrand hs ψ (moved G keep g (T i)) X Y) (varsVol G ν)`. Introduce `i hi`. Unfold `varsVol`. Conclude with `(continuous_flatIntegrand hs hψ (hT i hi) keep g X Y).integrable_of_hasCompactSupport (hasCompactSupport_flatIntegrand hs ψ (hT i hi) keep g X Y)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `h : ∀ v, flatIntegrand hs ψ (moved G keep g (fun z => ∑ i ∈ S, x i * T i z)) X Y v = ∑ i ∈ S, x i * flatIntegrand hs ψ (moved G keep g (T i)) X Y v`. Introduce `v`. Simplify using `only [flatIntegrand, moved, GlobalTheory.SplitFlip.Grid.pathAct, Finset.mul_sum, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Simplify using `only [flatTensor, h]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[integral_finset_sum _ fun i hi => (hint i hi).const_mul _]`. Simplify using `only [integral_const_mul]`.
+A detailed English derivation is pending.
 -/
 theorem flatTensor_moved_sum {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (G : GlobalTheory.SplitFlip.Grid k) (hs : 1 ≤ G.s)

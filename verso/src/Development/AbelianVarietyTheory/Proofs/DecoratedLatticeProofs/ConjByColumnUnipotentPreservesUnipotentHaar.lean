@@ -18,9 +18,9 @@ open GlobalTheory.RootEx.VolN GlobalTheory.RootEx.Model
 variable {k : Type} [Field k] {n : Type} [Fintype n] [DecidableEq n] {c : ℕ}
 
 /- English proof (translation)
-Apply the tactic sequence `rcases t with t | t <;> rcases s with s | s`. Conclude with `absurd rfl h`. Simplify using `only [colE, upU, Units.inv_mk, fromBlocks_apply₁₂, Matrix.neg_apply, Matrix.of_apply]`. Rewrite using `[if_neg, neg_zero]`. Introduce `hs`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `h` to reduce the goal to its premises. Simplify using `[lev, hs]`. Simplify using `[colE, upU]`. Establish `: t ≠ s` using `by rintro rfl; exact h rfl`. Simplify using `[colE, upU, Matrix.one_apply, this]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem colE_inv_val_eq_zero (ρ : ℕ) (β : n → k) (t s : n ⊕ Fin c) (h : lev (ρ + 1) t ≠ lev (ρ + 1) s) :
     (colE c (ρ + 1) β)⁻¹.val t s = 0 := by
@@ -34,7 +34,7 @@ theorem colE_inv_val_eq_zero (ρ : ℕ) (β : n → k) (t s : n ⊕ Fin c) (h : 
     simp [colE, upU, Matrix.one_apply, this]
 
 /- English proof (translation)
-Introduce and unpack `(r | r) (s | s) h`. Simplify using `[colE, upU, Matrix.one_apply]`. Simplify using `at h`. Simplify using `[colE, upU]`. Simplify using `[colE, upU, Matrix.one_apply]`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem colE_uni (ρ : ℕ) (β : n → k) :
     ∀ r s, (Sum.elim (fun _ => 0) (fun _ => 1) : n ⊕ Fin c → ℕ) s ≤ Sum.elim (fun _ => 0) (fun _ => 1) r →
@@ -46,7 +46,7 @@ theorem colE_uni (ρ : ℕ) (β : n → k) :
   · simp [colE, upU, Matrix.one_apply]
 
 /- English proof (translation)
-Introduce and unpack `(r | r) (s | s) h`. Simplify using `[colE, upU, Matrix.one_apply]`. Simplify using `at h`. Simplify using `[colE, upU]`. Simplify using `[colE, upU, Matrix.one_apply]`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem colE_inv_uni (ρ : ℕ) (β : n → k) :
     ∀ r s, (Sum.elim (fun _ => 0) (fun _ => 1) : n ⊕ Fin c → ℕ) s ≤ Sum.elim (fun _ => 0) (fun _ => 1) r →
@@ -58,11 +58,11 @@ theorem colE_inv_uni (ρ : ℕ) (β : n → k) :
   · simp [colE, upU, Matrix.one_apply]
 
 /- English proof (translation)
-Use extensionality with `r s`. Distinguish the cases in `hrs : lev p r < lev p s`. Rewrite using `[matrixExtendByZero_mul (Up n c p) h e ⟨(r, s), hrs⟩]`. Simplify using `[ext0, hrs]`. Establish `: ext0 (Up n c p) ((rm (Up n c p) h).mulVec e) r s = 0`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [ext0, Matrix.of_apply]`. Rewrite using `[dif_neg hrs]`. Rewrite using `[this, Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun t _ => ?_` and prove the remaining obligations. Distinguish the cases in `hts : lev p t = lev p s`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Establish `: ext0 (Up n c p) e r t = 0`. Simplify using `only [ext0, Matrix.of_apply]; rw [dif_neg (show ¬ lev p r < lev p t by rw [hts]; exact hrs)]`. Rewrite using `[this, zero_mul]`. Rewrite using `[hh t s hts, mul_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem extendAboveDiagonalEntries_mul_blockRespecting (p : ℕ) (h : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k)
     (hh : ∀ t s, lev p t ≠ lev p s → h t s = 0) (e : Ix n c p → k) :
@@ -82,9 +82,9 @@ theorem extendAboveDiagonalEntries_mul_blockRespecting (p : ℕ) (h : Matrix (n 
     · rw [hh t s hts, mul_zero]
 
 /- English proof (translation)
-Rewrite using `[← mkNel_co (ρ + 1) (cjE ρ h1 h2 β (mkNel (ρ + 1) e))]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Establish `hne : a.1.1 ≠ a.1.2` using `fun h => by have := a.2; rw [h] at this; exact lt_irrefl _ this`. Rewrite using `[← Matrix.mulVec_mulVec, ← mul_matrixExtendSelectedEntriesByZero_apply, ← extendAboveDiagonalEntries_mul_blockRespecting (ρ + 1) _ (colE_inv_val_eq_zero ρ β)]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [co, cjE_coe, Units.val_mul, val_mkNel, Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, Units.mul_inv, Matrix.add_apply, Matrix.one_apply_ne hne, zero_add, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cjE_mkNel (ρ : ℕ) (h1 : 1 ≤ ρ) (h2 : ρ < c) (β : n → k) (e : Ix n c (ρ + 1) → k) :
     cjE ρ h1 h2 β (mkNel (ρ + 1) e) =
@@ -99,7 +99,7 @@ theorem cjE_mkNel (ρ : ℕ) (h1 : 1 ≤ ρ) (h2 : ρ < c) (β : n → k) (e : I
     Units.mul_inv, Matrix.add_apply, Matrix.one_apply_ne hne, zero_add, Matrix.mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[det_mul, det_lm, det_rm]`. Rewrite using `[Finset.prod_eq_one fun s _ => det_block_unitri _ _ (colE_uni ρ β) _, Finset.prod_eq_one fun s _ => det_block_unitri _ _ (colE_inv_uni ρ β) _, mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_L (ρ : ℕ) (β : n → k) :
     (lm (Up n c (ρ + 1)) (colE c (ρ + 1) β).val * rm (Up n c (ρ + 1)) (colE c (ρ + 1) β)⁻¹.val).det = 1 := by
@@ -111,7 +111,7 @@ end GlobalTheory.HaarR.CjVol
 
 open GlobalTheory.HaarR.CjVol GlobalTheory.RootEx.VolN GlobalTheory.RootEx.Model in
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ n _ _ c ρ h1 h2 ν hν β`. Conclude with `map_volN_of_affine ν (ρ + 1) (cjE ρ h1 h2 β) _ (det_L ρ β) 0 (fun e => by rw [add_zero]; exact cjE_mkNel ρ h1 h2 β e)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HaarR.map_volN_cjE : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (n : Type) [Fintype n] [DecidableEq n] (c ρ : ℕ) (h1 : 1 ≤ ρ) (h2 : ρ < c) (ν : Measure k), ν.IsAddHaarMeasure → ∀ β : n → k, (volN ν n c (ρ + 1)).map (cjE ρ h1 h2 β) = volN ν n c (ρ + 1) := by
   intro k _ _ _ _ _ _ n _ _ c ρ h1 h2 ν hν β

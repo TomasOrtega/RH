@@ -11,7 +11,7 @@ open DoubleCoset (doubleCoset)
 namespace GlobalTheory.CompanionTheory.Twist
 
 /- English proof (translation)
-Introduce `α _ _ N m _ _ e`. Set `o` to `(Fintype.orderIsoFinOfCardEq α rfl).symm`. Use `⟨fun x => (o (blk e x)).val, fun x y => ?_⟩` and prove the remaining obligations. Conclude with `Fin.lt_def.symm.trans (OrderIso.lt_iff_lt o)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_nat_labelling_blk : ∀ {α : Type} [Fintype α] [LinearOrder α] {N : ℕ} (m : α → Type) [∀ i, Fintype (m i)] [∀ i, DecidableEq (m i)] (e : (Σ i, m i) ≃ Fin N), ∃ β : Fin N → ℕ, ∀ x y, β x < β y ↔ blk e x < blk e y := by
   intro α _ _ N m _ _ e

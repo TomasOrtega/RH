@@ -13,11 +13,11 @@ open scoped Matrix
 namespace GlobalTheory.PELU
 
 /- English proof (translation)
-Introduce `R _ σ X X' s s' f H V _ _ B y hy`. Use `⟨fun h => GlobalTheory.HolFibre.isHolTo_comp h f, fun h => ?_⟩` and prove the remaining obligations. Establish `hB : IsOpen B`. Use `(h ⊤ 0).1` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `GlobalTheory.HolFibre.isHolTo_of_isPullback H h ?_` and prove the remaining obligations. Introduce `U g`. Establish `hc` using `GlobalTheory.HolFibre.isHolTo_const (E := V) hB (spMap (RingHom.id ℂ)) U g`. Establish `e : {b ∈ B | ⊤ ≤ (y b ≫ s') ⁻¹ᵁ U} = {b ∈ B | ⊤ ≤ (spMap (RingHom.id ℂ)) ⁻¹ᵁ U}`. Use extensionality with `b`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `and_congr_right fun hb => by rw [hy b hb]`. Rewrite using `[e]`. Conclude with `⟨hc.1, hc.2.congr fun b hb => by simp only [hy b hb.1]⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isHolTo_bc_iff : ∀ (R : Type) [CommRing R] (σ : R →+* ℂ) (X X' : Scheme.{0}) (s : X ⟶ Sp R) (s' : X' ⟶ Sp ℂ)
     (f : X' ⟶ X), IsPullback f s' s (spMap σ) → ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℂ V] (B : Set V)

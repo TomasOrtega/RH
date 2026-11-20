@@ -8,15 +8,15 @@ section
 variable {O : Type} [CommRing O] {Γ : Type} [Group Γ] {R : Type} [CommRing R] [Algebra O R] (ρ : Γ →* M4 R)
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨[], by simp, by simp⟩`.
+A detailed English derivation is pending.
 -/
 private lemma zm_one : (1 : R) ∈ Submodule.span O (mono ρ 0) :=
   Submodule.subset_span ⟨[], by simp, by simp⟩
 
 /- English proof (translation)
-Use `open scoped Pointwise in`. Establish `hsub : mono ρ v * mono ρ w ⊆ mono ρ (v + w)`. Introduce and unpack `_ ⟨a, ⟨L, hL, rfl⟩, b, ⟨M, hM, rfl⟩, rfl⟩`. Conclude with `⟨L ++ M, by simp [hL, hM], by simp⟩`. Establish `h` using `Submodule.mul_mem_mul hx hy`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[Submodule.span_mul_span]`. Conclude with `Submodule.span_mono hsub h`.
+A detailed English derivation is pending.
 -/
 private lemma zm_mul {v w : ℤ × ℤ} {x y : R} (hx : x ∈ Submodule.span O (mono ρ v))
     (hy : y ∈ Submodule.span O (mono ρ w)) : x * y ∈ Submodule.span O (mono ρ (v + w)) := by
@@ -29,7 +29,7 @@ private lemma zm_mul {v w : ℤ × ℤ} {x y : R} (hx : x ∈ Submodule.span O (
   exact Submodule.span_mono hsub h
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simpa using zm_one (O := O) ρ`. Consider the case `succ k ih => rw [pow_succ, succ_nsmul]`. Conclude with `zm_mul ρ ih hx`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private lemma zm_pow {v : ℤ × ℤ} {x : R} (hx : x ∈ Submodule.span O (mono ρ v)) (k : ℕ) :
     x ^ k ∈ Submodule.span O (mono ρ (k • v)) := by
@@ -40,15 +40,15 @@ private lemma zm_pow {v : ℤ × ℤ} {x : R} (hx : x ∈ Submodule.span O (mono
 end
 
 /- English proof (translation)
-Introduce `O _ Γ _ R _ _ ρ W c hc hz n hn`. Establish `hmem : ∀ i, W.z i ∈ Submodule.span O (mono ρ (W.wt i))`. Introduce `i`. Take `⟨g, a, b, hzi, hwi⟩` from `hz i`. Rewrite using `[hzi, hwi]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Establish `h0 : wt a a = 0` using `(wt_eq_zero a a).mpr rfl`. Rewrite using `[h0, Algebra.algebraMap_eq_smul_one]`. Use `Submodule.sub_mem _ (Submodule.subset_span ⟨[(g, a, a)], by simp [h0], by simp⟩) ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Submodule.smul_mem _ _ (zm_one ρ)`. Rewrite using `[hc g a b hab, map_zero, sub_zero]`. Conclude with `Submodule.subset_span ⟨[(g, a, b)], by simp, by simp⟩`. Establish `hall : ∀ t : Finset W.σ, (∏ s ∈ t, W.z s ^ n s) ∈ Submodule.span O (mono ρ (∑ s ∈ t, n s • W.wt s))`. Introduce `t`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => simpa using zm_one (O := O) ρ`. Consider the case `@insert a t ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha]`. Conclude with `zm_mul ρ (zm_pow ρ (hmem a) _) ih`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `hall n.support`. Rewrite `hn` using `[Finsupp.weight_apply, Finsupp.sum]`. Rewrite `h` using `[hn]`. Conclude with `Algebra.span_le_adjoin O _ h`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Po.zMono :
     ∀ (O : Type) [CommRing O] (Γ : Type) [Group Γ] (R : Type) [CommRing R] [Algebra O R] (ρ : Γ →* M4 R) (W : WPres O (ℤ × ℤ) R)

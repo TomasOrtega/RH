@@ -38,7 +38,7 @@ def chartPullUnLinComb {X X' Y Y' : Scheme.{0}} (L : LB X) (F : X' ⟶ X) {K : T
       rw [Category.assoc, hc k, Category.id_comp] }
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `s`. Take `⟨b, hb⟩` from `t`. Consider the cases of `e`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 -/
 theorem sec_eq_of_f {Y : Scheme.{0}} {N : LB Y} {s t : LB.Sec N} (e : s.f = t.f) : s = t := by
   obtain ⟨a, ha⟩ := s
@@ -47,7 +47,7 @@ theorem sec_eq_of_f {Y : Scheme.{0}} {N : LB Y} {s t : LB.Sec N} (e : s.f = t.f)
   rfl
 
 /- English proof (translation)
-Use `sec_eq_of_f (funext fun j => fn_ext fun y hy => ?_)` and prove the remaining obligations. Establish `hy' : (𝟙 Y ≫ g) y ∈ M'.U (c'.idx j)` using `c'.le j hy`. Rewrite using `[GlobalTheory.SecTwist.gs_pullSec c' _ (𝟙 Y) y j hy, GlobalTheory.SecTwist.gs_pullSec c s (𝟙 Y ≫ g) y _ hy', Category.id_comp, hh, hidx j]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem pullSec_pullSec {Y Y' : Scheme.{0}} {M : LB Y} {M' : LB Y'} {g : Y ⟶ Y'} {h : Y' ⟶ Y}
     (c' : ChartPull M M' g) (c : ChartPull M' M h) (hh : g ≫ h = 𝟙 Y) (hidx : ∀ j, c.idx (c'.idx j) = j)
@@ -58,7 +58,7 @@ theorem pullSec_pullSec {Y Y' : Scheme.{0}} {M : LB Y} {M' : LB Y'} {g : Y ⟶ Y
     Category.id_comp, hh, hidx j]
 
 /- English proof (translation)
-The claim follows from `(gs_res f z le_top hz _).trans (gs_pull f (fst T A).left z ⊤ trivial _)`.
+A detailed English derivation is pending.
 -/
 theorem gs_liftHom {S : Scheme.{0}} (A : Over S) [GrpObj A] {T : Over S} {Z : Scheme.{0}}
     (f : Z ⟶ (T ⊗ A).left) (z : Z) (W : (T ⊗ A).left.Opens) (hz : f z ∈ W) (r : Γ(T.left, ⊤)) :
@@ -88,7 +88,7 @@ def pullLin {S S' Z : Scheme.{0}} (A : Over S) [GrpObj A] (A' : Over S') [GrpObj
     rw [gs_liftHom A _ z _ hz' r, gs_liftHom A' (𝟙 _) z _ hz r, Category.assoc, hfst])
 
 /- English proof (translation)
-Use `⟨hli.map' E.toLinearMap E.ker, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.range_comp, ← E.coe_toLinearMap, Submodule.span_image, hsp, Submodule.map_top, LinearEquiv.range]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem li_span_map {R M M' : Type*} [CommRing R] [AddCommGroup M] [Module R M] [AddCommGroup M']
     [Module R M'] {I : Type*} (E : M ≃ₗ[R] M') (v : I → M) (hli : LinearIndependent R v)
@@ -98,13 +98,13 @@ theorem li_span_map {R M M' : Type*} [CommRing R] [AddCommGroup M] [Module R M] 
   rw [Set.range_comp, ← E.coe_toLinearMap, Submodule.span_image, hsp, Submodule.map_top, LinearEquiv.range]
 
 /- English proof (translation)
-Introduce `S S' A _ Ag _ φ L _ k R _ x y h hc _ hfst m b b' hb' hli hsp`. Set `c` to `chartPullLinComb L φ (fun _ : Fin 1 => (snd (Over.mk x) Ag).left) (fun _ : Fin 1 => (snd (Over.mk y) A).left) (fun _ => k) h hc`. Establish `hc' : ∀ _ : Fin 1, inv h ≫ (snd (Over.mk x) Ag).left ≫ φ = (snd (Over.mk y) A).left` using `fun _ => by`. Rewrite using `[hc 0, IsIso.inv_hom_id_assoc]`. Set `c'` to `chartPullUnLinComb L φ (fun _ : Fin 1 => (snd (Over.mk x) Ag).left) (fun _ : Fin 1 => (snd (Over.mk y) A).left) (fun _ => k) (inv h) hc'`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hfst' : inv h ≫ (fst (Over.mk x) Ag).left = (fst (Over.mk y) A).left`. Rewrite using `[← hfst, IsIso.inv_hom_id_assoc]`. Set `F` to `pullLin A Ag L (L.pull φ) k k y x c hfst`. Set `G` to `pullLin Ag A (L.pull φ) L k k x y c' hfst'`. Establish `GF : ∀ s : LB.Sec (LPow A L k (Over.mk y)), GlobalTheory.SecTwist.pullSec c' (GlobalTheory.SecTwist.pullSec c s) = s` using `pullSec_pullSec c' c (IsIso.inv_hom_id h) (fun _ => rfl)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `FG : ∀ s : LB.Sec (LPow Ag (L.pull φ) k (Over.mk x)), GlobalTheory.SecTwist.pullSec c (GlobalTheory.SecTwist.pullSec c' s) = s` using `pullSec_pullSec c c' (IsIso.hom_inv_id h) (fun _ => rfl)`. Set `E : SecM A L k (Over.mk y) ≃ₗ[Γ(Spec (CommRingCat.of R), ⊤)] SecM Ag (L.pull φ) k (Over.mk x)` to `{ F with invFun := G left_inv := fun n => congrArg (SecM.ofSec A) (GF (SecM.toSec A n)) right_inv := fun n => congrArg (SecM.ofSec Ag) (FG (SecM.toSec Ag n)) }`. Establish `hv : (fun i => (SecM.ofSec Ag (b' i) : SecM Ag (L.pull φ) k (Over.mk x))) = E ∘ fun i => (SecM.ofSec A (b i) : SecM A L k (Over.mk y))`. Use function extensionality and compare the values at `fun i => by rw [hb' i]; rfl`. Establish `key` using `li_span_map E _ hli hsp`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite `key` using `[← hv]`. Conclude with `key`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bases_transfer : ∀ {S S' : Scheme.{0}} (A : Over S) [GrpObj A] (Ag : Over S') [GrpObj Ag] (φ : Ag.left ⟶ A.left) (L : LB A.left), L.IsLB → ∀ (k : ℤ) (R : Type) [CommRing R] (x : Spec (CommRingCat.of R) ⟶ S') (y : Spec (CommRingCat.of R) ⟶ S) (h : (Over.mk x ⊗ Ag).left ⟶ (Over.mk y ⊗ A).left) (hc : ∀ _ : Fin 1, (snd (Over.mk x) Ag).left ≫ φ = h ≫ (snd (Over.mk y) A).left), IsIso h → h ≫ (fst (Over.mk y) A).left = (fst (Over.mk x) Ag).left → ∀ (m : ℕ) (b : Fin m → LB.Sec (LPow A L k (Over.mk y))) (b' : Fin m → LB.Sec (LPow Ag (L.pull φ) k (Over.mk x))), (∀ i, b' i = GlobalTheory.SecTwist.pullSec (chartPullLinComb L φ (fun _ : Fin 1 => (snd (Over.mk x) Ag).left) (fun _ : Fin 1 => (snd (Over.mk y) A).left) (fun _ => k) h hc) (b i)) → LinearIndependent Γ((Over.mk y).left, ⊤) (fun i => (SecM.ofSec A (b i) : SecM A L k (Over.mk y))) → Submodule.span Γ((Over.mk y).left, ⊤) (Set.range fun i => (SecM.ofSec A (b i) : SecM A L k (Over.mk y))) = ⊤ → LinearIndependent Γ((Over.mk x).left, ⊤) (fun i => (SecM.ofSec Ag (b' i) : SecM Ag (L.pull φ) k (Over.mk x))) ∧ Submodule.span Γ((Over.mk x).left, ⊤) (Set.range fun i => (SecM.ofSec Ag (b' i) : SecM Ag (L.pull φ) k (Over.mk x))) = ⊤ := by
   intro S S' A _ Ag _ φ L _ k R _ x y h hc _ hfst m b b' hb' hli hsp

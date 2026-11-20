@@ -11,11 +11,11 @@ namespace ReciprocityTheory.ChartRestriction.DS.TRGap
 variable {n : ℕ} {ε : Fin n → Bool}
 
 /- English proof (translation)
-Establish `hkk : k * kᴴ = 1`. Use `hk.1` as an intermediate fact. Rewrite `this` using `[Matrix.mem_unitaryGroup_iff, star_eq_conjTranspose]`. Conclude with `this`. Rewrite using `[Finset.sum_subset (Finset.subset_univ _)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congrFun (congrFun hkk c) j` as an intermediate fact. Simplify using `only [Matrix.mul_apply, conjTranspose_apply, Matrix.one_apply] at this`. Conclude with `this`. Introduce `i _ hi`. Establish `hi' : ε i = false` using `by simpa [plusIdx] using hi`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Break down `h with h | h` into its components or cases. Rewrite using `[kset_entry_zero hk (by rw [h, hi']; decide), zero_mul]`. Rewrite using `[kset_entry_zero hk (i := j) (by rw [h, hi']; decide), star_zero, mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_plus_kk {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) (c j : Fin n)
     (h : ε c = true ∨ ε j = true) :
@@ -35,11 +35,11 @@ theorem sum_plus_kk {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) (c j :
     · rw [kset_entry_zero hk (i := j) (by rw [h, hi']; decide), star_zero, mul_zero]
 
 /- English proof (translation)
-Establish `hkk : k * kᴴ = 1`. Use `hk.1` as an intermediate fact. Rewrite `this` using `[Matrix.mem_unitaryGroup_iff, star_eq_conjTranspose]`. Conclude with `this`. Rewrite using `[Finset.sum_subset (Finset.subset_univ _)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congrFun (congrFun hkk c) b` as an intermediate fact. Simplify using `only [Matrix.mul_apply, conjTranspose_apply, Matrix.one_apply] at this`. Conclude with `this`. Introduce `a _ ha`. Establish `ha' : ε a = true` using `by simpa [minusIdx] using ha`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Break down `h with h | h` into its components or cases. Rewrite using `[kset_entry_zero hk (by rw [h, ha']; decide), zero_mul]`. Rewrite using `[kset_entry_zero hk (i := b) (by rw [h, ha']; decide), star_zero, mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_minus_kk {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) (c b : Fin n)
     (h : ε c = false ∨ ε b = false) :
@@ -59,7 +59,7 @@ theorem sum_minus_kk {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) (c b 
     · rw [kset_entry_zero hk (i := b) (by rw [h, ha']; decide), star_zero, mul_zero]
 
 /- English proof (translation)
-Simplify using `[Matrix.mul_apply, Matrix.single_apply, conjTranspose_apply, ite_and, ite_mul, Finset.sum_ite_eq,`. Use the proof step `]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conj_single_apply (k : Matrix (Fin n) (Fin n) ℂ) (a i c d : Fin n) :
     (k * Matrix.single a i (1 : ℂ) * kᴴ : Matrix (Fin n) (Fin n) ℂ) c d = k c a * star (k d i) := by
@@ -67,19 +67,17 @@ theorem conj_single_apply (k : Matrix (Fin n) (Fin n) ℂ) (a i c d : Fin n) :
 ]
 
 /- English proof (translation)
-Distinguish the cases in `hx : IsPhys ε x`. Take `⟨j, b⟩` from `x`. Establish `hj : ε j = true` using `hx.1`. Establish `hb : ε b = false` using `hx.2`. Establish `hterm : ∀ i ∈ plusIdx ε, ∀ a ∈ minusIdx ε, (k * Matrix.single a i (1 : ℂ) * kᴴ : Matrix (Fin n) (Fin n) ℂ) c d * adMat ε k (j, b) (i, a) = (k j i * star (k d i)) * (k c a * star (k b a))`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i hi a ha`. Establish `hia : IsPhys ε (i, a)` using `⟨(Finset.mem_filter.mp hi).2, (Finset.mem_filter.mp ha).2⟩`. Rewrite using `[conj_single_apply]`. Simplify using `only [adMat, hx, hia, if_true]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Finset.sum_congr rfl fun i hi => Finset.sum_congr rfl fun a ha => hterm i hi a ha, ← Finset.sum_mul_sum, sum_plus_kk hk j d (Or.inl hj), sum_minus_kk hk c b (Or.inr hb)]`. Apply the tactic sequence `rcases eq_or_ne j d with h1 | h1 <;> rcases eq_or_ne c b with h2 | h2`. Substitute `h1` using the available equality. Substitute `h2` using the available equality. Simplify using `[hj, hb]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg h2, mul_zero, if_neg]`. Introduce and unpack `⟨h, -⟩`. Conclude with `h2 (Prod.ext_iff.mp h).2.symm`. Rewrite using `[if_neg h1, zero_mul, if_neg]`. Introduce and unpack `⟨h, -⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1 (Prod.ext_iff.mp h).1`. Rewrite using `[if_neg h1, zero_mul, if_neg]`. Introduce and unpack `⟨h, -⟩`. Conclude with `h1 (Prod.ext_iff.mp h).1`. Rewrite using `[if_neg]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Finset.sum_eq_zero fun i hi => Finset.sum_eq_zero fun a ha => ?_` and prove the remaining obligations. Establish `hia : IsPhys ε (i, a)` using `⟨(Finset.mem_filter.mp hi).2, (Finset.mem_filter.mp ha).2⟩`. Establish `hne : x ≠ (i, a)` using `fun h => hx (h ▸ hia)`. Simplify using `[adMat, hx, hne]`. Introduce and unpack `⟨rfl, h1, h2⟩`.
-
-Conclude with `hx ⟨h1, h2⟩`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem coef_d {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) (c d : Fin n) (x : Fin n × Fin n) :
     ∑ i ∈ plusIdx ε, ∑ a ∈ minusIdx ε, (k * Matrix.single a i (1 : ℂ) * kᴴ : Matrix (Fin n) (Fin n) ℂ) c d * adMat ε k x (i, a) =
@@ -120,19 +118,17 @@ theorem coef_d {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) (c d : Fin 
       exact hx ⟨h1, h2⟩
 
 /- English proof (translation)
-Distinguish the cases in `hx : IsPhys ε x`. Take `⟨j, b⟩` from `x`. Establish `hj : ε j = true` using `hx.1`. Establish `hb : ε b = false` using `hx.2`. Establish `hterm : ∀ i ∈ plusIdx ε, ∀ a ∈ minusIdx ε, (k * Matrix.single i a (1 : ℂ) * kᴴ : Matrix (Fin n) (Fin n) ℂ) c d * star (adMat ε k (j, b) (i, a)) = (k c i * star (k j i)) * (k b a * star (k d a))`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i hi a ha`. Establish `hia : IsPhys ε (i, a)` using `⟨(Finset.mem_filter.mp hi).2, (Finset.mem_filter.mp ha).2⟩`. Rewrite using `[conj_single_apply]`. Simplify using `only [adMat, hx, hia, if_true, star_mul', star_star]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Finset.sum_congr rfl fun i hi => Finset.sum_congr rfl fun a ha => hterm i hi a ha, ← Finset.sum_mul_sum, sum_plus_kk hk c j (Or.inr hj), sum_minus_kk hk b d (Or.inl hb)]`. Apply the tactic sequence `rcases eq_or_ne c j with h1 | h1 <;> rcases eq_or_ne b d with h2 | h2`. Substitute `h1` using the available equality. Substitute `h2` using the available equality. Simplify using `[hj, hb]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg h2, mul_zero, if_neg]`. Introduce and unpack `⟨h, -⟩`. Conclude with `h2 (Prod.ext_iff.mp h).2`. Rewrite using `[if_neg h1, zero_mul, if_neg]`. Introduce and unpack `⟨h, -⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1 (Prod.ext_iff.mp h).1.symm`. Rewrite using `[if_neg h1, zero_mul, if_neg]`. Introduce and unpack `⟨h, -⟩`. Conclude with `h1 (Prod.ext_iff.mp h).1.symm`. Rewrite using `[if_neg]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Finset.sum_eq_zero fun i hi => Finset.sum_eq_zero fun a ha => ?_` and prove the remaining obligations. Establish `hia : IsPhys ε (i, a)` using `⟨(Finset.mem_filter.mp hi).2, (Finset.mem_filter.mp ha).2⟩`. Establish `hne : x ≠ (i, a)` using `fun h => hx (h ▸ hia)`. Simplify using `[adMat, hx, hne]`. Introduce and unpack `⟨rfl, h1, h2⟩`.
-
-Conclude with `hx ⟨h1, h2⟩`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem coef_d' {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) (c d : Fin n) (x : Fin n × Fin n) :
     ∑ i ∈ plusIdx ε, ∑ a ∈ minusIdx ε, (k * Matrix.single i a (1 : ℂ) * kᴴ : Matrix (Fin n) (Fin n) ℂ) c d * star (adMat ε k x (i, a)) =
@@ -173,7 +169,7 @@ theorem coef_d' {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) (c d : Fin
       exact hx ⟨h1, h2⟩
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem sum_comm_2_3 {M α β γ δ ζ : Type*} [AddCommMonoid M] [Fintype γ] [Fintype δ] [Fintype ζ]
     (s : Finset α) (t : Finset β) (F : α → β → γ → δ → ζ → M) :
@@ -205,14 +201,14 @@ def wK (hD : IsDerivedOn ε σ D E) {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈
   TensorProduct.map (sigD hD hk) (ff ε k).toLinearMap
 
 /- English proof (translation)
-Simplify using `[actM, Matrix.single_apply, ite_and, ite_smul, Finset.sum_ite_eq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem actM_single' {M : Type*} [AddCommGroup M] [Module ℂ M] (F : Fin n → Fin n → Module.End ℂ M)
     (a i : Fin n) : actM F (Matrix.single a i (1 : ℂ)) = F a i := by
   simp [actM, Matrix.single_apply, ite_and, ite_smul, Finset.sum_ite_eq]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Establish `h` using `derived_adK hσ hD hk (Matrix.single a i (1 : ℂ)) v`. Rewrite `h` using `[actM_single']`. Conclude with `h`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sigD_E (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E) {k : Matrix (Fin n) (Fin n) ℂ}
     (hk : k ∈ Kset ε) (a i : Fin n) (v : D) :
@@ -223,14 +219,14 @@ theorem sigD_E (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E) {k : 
   exact h
 
 /- English proof (translation)
-Simplify using `[adPhys, Matrix.mulVec, dotProduct, Pi.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem adPhys_apply_single (k : Matrix (Fin n) (Fin n) ℂ) (x y : Fin n × Fin n) :
     adPhys ε k (Pi.single y 1) x = adMat ε k x y := by
   simp [adPhys, Matrix.mulVec, dotProduct, Pi.single_apply]
 
 /- English proof (translation)
-Establish `h` using `LinearMap.congr_fun (ff_cpV (ε := ε) k (Pi.single (i, a) 1)) f`. Simplify using `only [Module.End.mul_apply, AlgHom.toLinearMap_apply] at h`. Rewrite using `[cpFock_eq_cpV i a, h, cpV_eq_sum, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, adPhys_apply_single]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem ff_cpFock_apply (k : Matrix (Fin n) (Fin n) ℂ) (i a : Fin n) (f : Fock n) :
     ff ε k (cpFock i a f) = ∑ x, adMat ε k x (i, a) • cpFock x.1 x.2 (ff ε k f) := by
@@ -241,7 +237,7 @@ theorem ff_cpFock_apply (k : Matrix (Fin n) (Fin n) ℂ) (i a : Fin n) (f : Fock
   rw [LinearMap.smul_apply, adPhys_apply_single]
 
 /- English proof (translation)
-Establish `h` using `LinearMap.congr_fun (ff_cmV hk (Pi.single (i, a) 1)) f`. Simplify using `only [Module.End.mul_apply, AlgHom.toLinearMap_apply] at h`. Rewrite using `[cmFock_eq_cmV i a, h, cmV_eq_sum, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, adPhys_apply_single]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem ff_cmFock_apply {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) (i a : Fin n) (f : Fock n) :
     ff ε k (cmFock i a f) = ∑ x, star (adMat ε k x (i, a)) • cmFock x.1 x.2 (ff ε k f) := by
@@ -252,15 +248,15 @@ theorem ff_cmFock_apply {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) (i
   rw [LinearMap.smul_apply, adPhys_apply_single]
 
 /- English proof (translation)
-Apply `TensorProduct.ext'` to reduce the goal to its premises. Introduce `v f`. Simplify using `only [Module.End.mul_apply, dOp, LinearMap.sum_apply, map_sum, eT, cpT, TensorProduct.map_tmul, LinearMap.id_apply, wK, AlgHom.toLinearMap_apply]`. Establish `key : ∀ i a, sigD hD hk (E a i v) ⊗ₜ[ℂ] ff ε k (cpFock i a f) = ∑ c, ∑ d, ∑ x : Fin n × Fin n, ((k * Matrix.single a i (1 : ℂ) * kᴴ : Matrix (Fin n) (Fin n) ℂ) c d * adMat ε k x (i, a)) • (E c d (sigD hD hk v) ⊗ₜ[ℂ] cpFock x.1 x.2 (ff ε k f))`. Introduce `i a`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[sigD_E hσ hD hk, ff_cpFock_apply, actM, LinearMap.sum_apply, TensorProduct.sum_tmul]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.sum_apply, TensorProduct.sum_tmul]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[TensorProduct.tmul_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, ← TensorProduct.smul_tmul', TensorProduct.tmul_smul, smul_smul]`. Simplify using `only [key]`. Rewrite using `[sum_comm_2_3]`. Establish `hcoef : ∀ c d (x : Fin n × Fin n), ∑ i ∈ plusIdx ε, ∑ a ∈ minusIdx ε, ((k * Matrix.single a i (1 : ℂ) * kᴴ : Matrix (Fin n) (Fin n) ℂ) c d * adMat ε k x (i, a)) • (E c d (sigD hD hk v) ⊗ₜ[ℂ] cpFock x.1 x.2 (ff ε k f)) = (if x = (d, c) ∧ ε d = true ∧ ε c = false then (1 : ℂ) else …`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `c d x`. Rewrite using `[← coef_d hk c d x, Finset.sum_smul]`. Conclude with `Finset.sum_congr rfl fun i _ => (Finset.sum_smul ..).symm`. Simplify using `only [hcoef]`. Simplify using `only [ite_smul, one_smul, zero_smul, ite_and, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Simplify using `only [plusIdx, minusIdx, Finset.sum_filter]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases hd : ε d = true <;> simp [hd]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem wK_dOp (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E) {k : Matrix (Fin n) (Fin n) ℂ}
     (hk : k ∈ Kset ε) :
@@ -300,15 +296,15 @@ theorem wK_dOp (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E) {k : 
   by_cases hd : ε d = true <;> simp [hd]
 
 /- English proof (translation)
-Apply `TensorProduct.ext'` to reduce the goal to its premises. Introduce `v f`. Simplify using `only [Module.End.mul_apply, dOp', LinearMap.neg_apply, map_neg, LinearMap.sum_apply, map_sum, eT, cmT, TensorProduct.map_tmul, LinearMap.id_apply, wK, AlgHom.toLinearMap_apply]`. Use `congr 1`. Establish `key : ∀ i a, sigD hD hk (E i a v) ⊗ₜ[ℂ] ff ε k (cmFock i a f) = ∑ c, ∑ d, ∑ x : Fin n × Fin n, ((k * Matrix.single i a (1 : ℂ) * kᴴ : Matrix (Fin n) (Fin n) ℂ) c d * star (adMat ε k x (i, a))) • (E c d (sigD hD hk v) ⊗ₜ[ℂ] cmFock x.1 x.2 (ff ε k f))`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Introduce `i a`. Rewrite using `[sigD_E hσ hD hk, ff_cmFock_apply hk, actM, LinearMap.sum_apply, TensorProduct.sum_tmul]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.sum_apply, TensorProduct.sum_tmul]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[TensorProduct.tmul_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, ← TensorProduct.smul_tmul', TensorProduct.tmul_smul, smul_smul]`. Simplify using `only [key]`. Rewrite using `[sum_comm_2_3]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hcoef : ∀ c d (x : Fin n × Fin n), ∑ i ∈ plusIdx ε, ∑ a ∈ minusIdx ε, ((k * Matrix.single i a (1 : ℂ) * kᴴ : Matrix (Fin n) (Fin n) ℂ) c d * star (adMat ε k x (i, a))) • (E c d (sigD hD hk v) ⊗ₜ[ℂ] cmFock x.1 x.2 (ff ε k f)) = (if x = (c, d) ∧ ε c = true ∧ ε d = false then (1 : ℂ …`. Introduce `c d x`. Rewrite using `[← coef_d' hk c d x, Finset.sum_smul]`. Conclude with `Finset.sum_congr rfl fun i _ => (Finset.sum_smul ..).symm`. Simplify using `only [hcoef]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [ite_smul, one_smul, zero_smul, ite_and, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Simplify using `only [plusIdx, minusIdx, Finset.sum_filter]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases hc : ε c = true <;> simp [hc]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem wK_dOp' (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E) {k : Matrix (Fin n) (Fin n) ℂ}
     (hk : k ∈ Kset ε) :

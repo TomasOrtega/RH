@@ -9,7 +9,7 @@ open NumberField Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Forma
 namespace GlobalTheory.SDUnique
 
 /- English proof (translation)
-Introduce `g _`. Use `⟨g (fun i => (x₀ i).2) • ((BoundedContinuousFunction.evalCLM ℂ (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (x₀ i).1)).comp (SchwartzMap.toBoundedContinuousFunctionCLM ℂ _ ℂ)), fun f => ?_⟩` and prove the remaining obligations. Simplify using `[pureA, mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem proj_mem_adm {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (x₀ : κ → AF F) :
     (LinearMap.proj x₀ : ((κ → AF F) → ℂ) →ₗ[ℂ] ℂ) ∈ (adeleClass F).adm κ := by
@@ -20,11 +20,11 @@ theorem proj_mem_adm {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype �
   simp [pureA, mul_comm]
 
 /- English proof (translation)
-Introduce `F _ _ κ _ T f f₁ f₂ h₁ h₂`. Establish `hg` using `GlobalTheory.SchANonzero.indicator_intPts_mem_SB F κ`. Use `SchwartzMap.ext fun x => ?_` and prove the remaining obligations. Set `x₀ : κ → AF F` to `fun i => ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (x i), 0)`. Establish `h` using `(h₁ _ hg _ (proj_mem_adm x₀)).unique (h₂ _ hg _ (proj_mem_adm x₀))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h0 : (fun _ : κ => (0 : Af F)) ∈ GlobalTheory.SchANonzero.intPts F κ` using `fun i _ v => zero_mem (v.adicCompletionIntegers F)`. Establish `e : ∀ φ : SInf F κ, pureA F φ ((GlobalTheory.SchANonzero.intPts F κ).indicator 1) x₀ = φ x` using `fun φ => by`. Establish `hx : (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (x₀ i).1) = x`. Use function extensionality and compare the values at `fun i => RingEquiv.apply_symm_apply _ _`. Establish `h1 : (GlobalTheory.SchANonzero.intPts F κ).indicator (1 : (κ → Af F) → ℂ) (fun i => (x₀ i).2) = 1` using `Set.indicator_of_mem h0 _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Unfold `pureA`. Rewrite using `[hx]`. Conclude with `(congrArg (φ x * ·) h1).trans (mul_one _)`. Conclude with `(e f₁).symm.trans (h.trans (e f₂))`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sd_unique : ∀ {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
     {T : ℝ → ((κ → AF F) → ℂ) → (κ → AF F) → ℂ} {f f₁ f₂ : SInf F κ}, SD T f f₁ → SD T f f₂ → f₁ = f₂ := by

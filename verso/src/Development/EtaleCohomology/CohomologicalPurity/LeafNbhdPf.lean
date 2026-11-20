@@ -6,25 +6,25 @@ open TensorProduct
 namespace LateralTheory.CohomologicalPurity.ChartCut
 
 /- English proof (translation)
-Take `⟨t, ht1, ht⟩` from `hS A T ι I μ hι hμι`. Establish `hu : IsUnit (algebraMap T (Localization.Away t) t)` using `IsLocalization.Away.algebraMap_isUnit t`. Establish `hloc : (algebraMap T (Localization.Away t)).Etale` using `RingHom.etale_algebraMap.mpr (Algebra.Etale.of_isLocalizationAway t)`. Establish `hμι' : ∀ a, μ (ι a) = Ideal.Quotient.mk I a` using `fun a => RingHom.congr_fun hμι a`. Establish `hμκ' : ∀ q, μ (κ q) = MvPolynomial.constantCoeff q` using `fun q => RingHom.congr_fun hμκ q`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ s : T, μ s = 0 → algebraMap T (Localization.Away t) s ∈ I.map ((algebraMap T (Localization.Away t)).comp ι)`. Introduce `s hs`. Establish `h1` using `Ideal.mem_map_of_mem (algebraMap T (Localization.Away t)) (ht s hs)`. Rewrite `h1` using `[Ideal.map_map, map_mul]`. Conclude with `(Ideal.unit_mul_mem_iff_mem _ hu).mp h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hut : IsUnit (μ t)` using `by rw [ht1]; exact isUnit_one`. Set `μB : Localization.Away t →+* A ⧸ I` to `IsLocalization.Away.lift t hut`. Establish `hμB : ∀ a, μB ((algebraMap T (Localization.Away t)).comp ι a) = Ideal.Quotient.mk I a`. Introduce `a`. Simplify using `only [RingHom.comp_apply, μB, IsLocalization.Away.lift_eq, hμι']`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Localization.Away t, inferInstance, (algebraMap T (Localization.Away t)).comp ι, (algebraMap T (Localization.Away t)).comp κ, ⟨RingHom.Etale.stableUnderComposition _ _ hι hloc, ?_, ?_⟩, RingHom.Etale.stableUnderComposition _ _ hκ hloc, ?_, ?_⟩` and prove the remaining obligations. Apply `Ideal.quotientMap_injective'` to reduce the goal to its premises. Introduce `a ha`. Establish `hker : I.map ((algebraMap T (Localization.Away t)).comp ι) ≤ RingHom.ker μB`. Rewrite using `[Ideal.map_le_iff_le_comap]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b hb`. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker, hμB, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hb`. Use `hker (Ideal.mem_comap.mp ha)` as an intermediate fact. Rewrite `this` using `[RingHom.mem_ker, hμB, Ideal.Quotient.eq_zero_iff_mem]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `this`. Introduce `z`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective z`. Take `⟨⟨s, ⟨_, n, rfl⟩⟩, hbn⟩` from `IsLocalization.surj (Submonoid.powers t) b`. Take `⟨a, ha⟩` from `Ideal.Quotient.mk_surjective (μ s)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨Ideal.Quotient.mk I a, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.quotientMap_mk]`. Establish `e1 : Ideal.Quotient.mk (I.map ((algebraMap T (Localization.Away t)).comp ι)) (algebraMap T (Localization.Away t) t) = 1`. Rewrite using `[← map_one (Ideal.Quotient.mk _)]`. Use `Ideal.Quotient.eq.mpr ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `key (t - 1) (by rw [map_sub, map_one, ht1, sub_self])` as an intermediate fact. Simplify `this` using `[map_sub]`. Establish `e2 : Ideal.Quotient.mk (I.map ((algebraMap T (Localization.Away t)).comp ι)) (algebraMap T (Localization.Away t) s) = Ideal.Quotient.mk _ (((algebraMap T (Localization.Away t)).comp ι) a)`. Use `Ideal.Quotient.eq.mpr ?_` and prove the remaining obligations. Use `key (s - ι a) (by rw [map_sub, hμι', ha, sub_self])` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify `this` using `[map_sub]`. Simplify using `only at hbn`. Rewrite using `[← e2, ← hbn, map_mul, map_pow, map_pow, e1, one_pow, mul_one]`. Rewrite using `[show I.map ((algebraMap T (Localization.Away t)).comp ι) = (Ideal.span (Set.range x)).map ((algebraMap T (Localization.Away t)).comp ι) by rw [← hI], Ideal.map_span, ← Set.range_comp]`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `j`. Simplify using `[hx]`. Introduce `a`. Use `key (ι a - κ (MvPolynomial.C (Ideal.Quotient.mk I a))) (by rw [map_sub, hμι', hμκ', MvPolynomial.constantCoeff_C, sub_self])` as an intermediate fact. Simplify `this` using `[map_sub]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem chart_of_data (hS : LeafSec) {d : ℕ} {A T : Type} [CommRing A] [CommRing T] (I : Ideal A) (x : Fin d → A)
     (ι : A →+* T) (κ : MvPolynomial (Fin d) (A ⧸ I) →+* T) (μ : T →+* A ⧸ I)
@@ -93,15 +93,13 @@ theorem chart_of_data (hS : LeafSec) {d : ℕ} {A T : Type} [CommRing A] [CommRi
     simpa [map_sub] using this
 
 /- English proof (translation)
-Set `f : A →ₐ[P] A ⧸ I` to `Ideal.Quotient.mkₐ P I`. Establish `hg : ∀ p, (MvPolynomial.constantCoeff.comp c.symm.toRingHom) (algebraMap P Q p) = algebraMap P (A ⧸ I) p` using `fun p => by`. Rewrite using `[RingHom.comp_apply, ← Ideal.Quotient.mk_algebraMap]`. Conclude with `hcomm p`. Set `g : Q →ₐ[P] A ⧸ I` to `{ MvPolynomial.constantCoeff.comp c.symm.toRingHom with commutes' := hg }`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `μ` to `(Algebra.TensorProduct.lift f g (fun _ _ => Commute.all _ _)).toRingHom`. Set `ι` to `algebraMap A (A ⊗[P] Q)`. Set `κ` to `((Algebra.TensorProduct.comm P Q A).toRingHom.comp (algebraMap Q (Q ⊗[P] A))).comp c.toRingHom`. Establish `hκa : ∀ q, κ q = (1 : A) ⊗ₜ c q` using `fun q => by`. Simplify using `[κ, Algebra.TensorProduct.comm_tmul]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `chart_of_data hS I x ι κ μ (RingHom.etale_algebraMap.mpr inferInstance) ?_ ?_ ?_ ?_ hI` and prove the remaining obligations. Conclude with `RingHom.Etale.stableUnderComposition _ _ (RingHom.Etale.of_bijective c.bijective) (RingHom.Etale.stableUnderComposition _ _ (RingHom.etale_algebraMap.mpr inferInstance) (RingHom.Etale.of_bijective (Algebra.TensorProduct.comm P Q A).bijective))`. Use extensionality with `a`. Simplify using `[μ, ι, f, g]`. Apply `RingHom.ext` to reduce the goal to its premises.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `q`. Simplify using `[μ, hκa, f, g]`. Introduce `j`. Rewrite using `[hκa]`. Use `show x j ⊗ₜ 1 = _`.
-
-Rewrite using `[← hpx1, ← hpx2, Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one (A := Q), TensorProduct.smul_tmul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chart_of_tensor (hS : LeafSec) {d : ℕ} {P A Q : Type} [CommRing P] [CommRing A] [CommRing Q] [Algebra P A]
     [Algebra P Q] (I : Ideal A) (x : Fin d → A) (c : MvPolynomial (Fin d) (A ⧸ I) ≃+* Q) [Algebra.Etale P A]
@@ -133,11 +131,11 @@ theorem chart_of_tensor (hS : LeafSec) {d : ℕ} {P A Q : Type} [CommRing P] [Co
       TensorProduct.smul_tmul]
 
 /- English proof (translation)
-Introduce `e d R A _ _ φ I x y hc`. Establish `hπ` using `hP e d R A φ I x y hc`. Use `set α := MvPolynomial.eval₂Hom φ (Sum.elim x y) with hα`. Use `set π := (MvPolynomial.eval₂Hom ((MvPolynomial.C : A ⧸ I →+* MvPolynomial (Fin d) (A ⧸ I)).comp ((Ideal.Quotient.mk I).comp φ)) (Sum.elim MvPolynomial.X fun i => MvPolynomial.C (Ideal.Quotient.mk I (y i)))) with hπdef`. Establish `hxI : ∀ j, x j ∈ I` using `fun j => hc.2 ▸ Ideal.subset_span ⟨j, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hcomm : MvPolynomial.constantCoeff.comp π = (Ideal.Quotient.mk I).comp α`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Simplify using `[π, α]`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Break down `i with j | i` into its components or cases. Simplify using `[π, α, Ideal.Quotient.eq_zero_iff_mem.mpr (hxI j)]`. Simplify using `[π, α]`. Conclude with `@chart_of_tensor hS d _ A _ _ _ _ α.toAlgebra π.toAlgebra I x (RingEquiv.refl _) hc.1.toAlgebra hπ.toAlgebra (fun p => RingHom.congr_fun hcomm p) (fun j => MvPolynomial.X (Sum.inl j)) (fun j => by show α _ = x j; rw [hα]; simp) (fun j => by show π _ = _; rw [hπdef]; simp) hc.2`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem LeafNbhd_of (hS : LeafSec) (hP : LeafPoly) : LeafNbhd := by
   intro e d R A _ _ φ I x y hc

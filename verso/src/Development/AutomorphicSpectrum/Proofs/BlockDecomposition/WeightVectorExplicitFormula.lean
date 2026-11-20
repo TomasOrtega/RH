@@ -8,9 +8,9 @@ open Ad3.LR
 namespace GlobalTheory.CompanionTheory.WeightClosed
 
 /- English proof (translation)
-Establish `h1 : Δ ^ (2 * (k : ℤ) - 1) = Δ ^ (2 * (k : ℝ) - 1)`. Rewrite using `[← Real.rpow_intCast]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[h1, Real.inv_rpow hΔ.le, ← Real.rpow_neg hΔ.le, ← Real.rpow_add hΔ, ← Real.rpow_add hΔ, ← Real.rpow_natCast]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Move the coercions through the operations in `[Nat.cast_sub hk]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem real_factor (k : ℕ) (hk : 1 ≤ k) (Δ : ℝ) (hΔ : 0 < Δ) :
     (Δ⁻¹) ^ ((2 * (k : ℝ) - 1) / 2) * Δ ^ (-(1 : ℝ) / 2) * Δ ^ (2 * (k : ℤ) - 1) = Δ ^ (k - 1) := by
@@ -25,7 +25,7 @@ theorem real_factor (k : ℕ) (hk : 1 ≤ k) (Δ : ℝ) (hΔ : 0 < Δ) :
   ring
 
 /- English proof (translation)
-Rewrite using `[Matrix.inv_def, Ring.inverse_eq_inv', Matrix.adjugate_fin_two]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem inv_entries (h : M22) :
     ((Matrix.of h)⁻¹ : Matrix (Fin 2) (Fin 2) ℝ) 0 0 = ((Matrix.of h).det)⁻¹ * h 1 1 ∧
@@ -36,9 +36,9 @@ theorem inv_entries (h : M22) :
   simp
 
 /- English proof (translation)
-Introduce `h0`. Establish `hre` using `congrArg Complex.re h0`. Establish `him` using `congrArg Complex.im h0`. Simplify using `at hre him`. Rewrite `hΔ` using `[Matrix.det_fin_two]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[hre, him] at hΔ`.
+Simplify using the standard rewrite rules.
 -/
 theorem alpha_ne_zero (h : M22) (hΔ : 0 < (Matrix.of h).det) :
     (h 0 0 : ℂ) + (h 1 0 : ℂ) * Complex.I ≠ 0 := by
@@ -50,19 +50,19 @@ theorem alpha_ne_zero (h : M22) (hΔ : 0 < (Matrix.of h).det) :
   simp [hre, him] at hΔ
 
 /- English proof (translation)
-Establish `hα` using `alpha_ne_zero h hΔ`. Take `⟨i00, i01, i10, i11⟩` from `inv_entries h`. Establish `hdi : ((Matrix.of h)⁻¹ : Matrix (Fin 2) (Fin 2) ℝ).det = ((Matrix.of h).det)⁻¹`. Rewrite using `[Matrix.det_nonsing_inv, Ring.inverse_eq_inv']`. Establish `hreal` using `real_factor k (by omega) _ hΔ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hD : (((Matrix.of h).det : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hΔ.ne'`. Establish `hsg : sg (Matrix.of h).det = 1`. Unfold `sg`. Conclude with `if_neg (not_lt.mpr hΔ.le)`. Establish `hdp : 0 < ((Matrix.of h)⁻¹ : Matrix (Fin 2) (Fin 2) ℝ).det`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hdi]`. Conclude with `inv_pos.mpr hΔ`. Establish `hab : |(Matrix.of h).det| = (Matrix.of h).det` using `abs_of_pos hΔ`. Establish `e1 : ((((Matrix.of h)⁻¹ : Matrix (Fin 2) (Fin 2) ℝ) 1 1 : ℝ) : ℂ) - ((((Matrix.of h)⁻¹ : Matrix (Fin 2) (Fin 2) ℝ) 1 0 : ℝ) : ℂ) * Complex.I = ((h 0 0 : ℂ) + (h 1 0 : ℂ) * Complex.I) / (((Matrix.of h).det : ℝ) : ℂ)`. Rewrite using `[i11, i10]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : ((((Matrix.of h)⁻¹ : Matrix (Fin 2) (Fin 2) ℝ) 0 1 : ℝ) : ℂ) - ((((Matrix.of h)⁻¹ : Matrix (Fin 2) (Fin 2) ℝ) 0 0 : ℝ) : ℂ) * Complex.I = -((h 0 1 : ℂ) + (h 1 1 : ℂ) * Complex.I) / (((Matrix.of h).det : ℝ) : ℂ)`. Rewrite using `[i01, i00]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hz : (((h 0 0 : ℂ) + (h 1 0 : ℂ) * Complex.I) / (((Matrix.of h).det : ℝ) : ℂ)) ^ (-(2 * (k : ℤ) - 1)) = ((h 0 0 : ℂ) + (h 1 0 : ℂ) * Complex.I) ^ (-(2 * (k : ℤ) - 1)) * (((Matrix.of h).det : ℝ) : ℂ) ^ (2 * (k : ℤ) - 1)`. Rewrite using `[div_zpow, zpow_neg (((Matrix.of h).det : ℝ) : ℂ), div_inv_eq_mul]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Establish `hq : -2 * (Real.pi : ℂ) * Complex.I * ((-((h 0 1 : ℂ) + (h 1 1 : ℂ) * Complex.I) / (((Matrix.of h).det : ℝ) : ℂ)) / (((h 0 0 : ℂ) + (h 1 0 : ℂ) * Complex.I) / (((Matrix.of h).det : ℝ) : ℂ))) = 2 * Real.pi * Complex.I * (((h 0 1 : ℂ) + (h 1 1 : ℂ) * Complex.I) / ((h 0 0 : ℂ) + (h …`. Clear the denominators using the available nonvanishing facts. Establish `hc : (((((Matrix.of h).det)⁻¹ ^ ((2 * (k : ℝ) - 1) / 2) : ℝ)) : ℂ) * (((Matrix.of h).det ^ (-(1 : ℝ) / 2) : ℝ) : ℂ) * (((Matrix.of h).det : ℝ) : ℂ) ^ (2 * (k : ℤ) - 1) = (((Matrix.of h).det : ℝ) : ℂ) ^ (k - 1)`. Use `congrArg (fun x : ℝ => (x : ℂ)) hreal` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `w0 Wm`. Rewrite using `[if_pos hdp, hsg, hab, hdi, e1, e2, hz, hq]`. Take the linear combination `(((h 0 0 : ℂ) + (h 1 0 : ℂ) * Complex.I) ^ (-(2 * (k : ℤ) - 1)) * Complex.exp (2 * Real.pi * Complex.I * (((h 0 1 : ℂ) + (h 1 1 : ℂ) * Complex.I) / ((h 0 0 : ℂ) + (h 1 0 : ℂ) * Complex.I)))) * hc`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem finiteRing_sq_sub_mul_sq_eq_of_card (k : ℕ) (hk : 3 ≤ k) (h : M22) (hΔ : 0 < (Matrix.of h).det) :
     w0 k h = (((Matrix.of h).det : ℝ) : ℂ) ^ (k - 1) *
@@ -121,7 +121,7 @@ theorem finiteRing_sq_sub_mul_sq_eq_of_card (k : ℕ) (hk : 3 ≤ k) (h : M22) (
 end GlobalTheory.CompanionTheory.WeightClosed
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.WeightClosed.finiteRing_sq_sub_mul_sq_eq_of_card`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.WeightClosed.main : ∀ (k : ℕ), 3 ≤ k → ∀ h : Ad3.LR.M22, 0 < (Matrix.of h).det → Ad3.LR.w0 k h = (((Matrix.of h).det : ℝ) : ℂ) ^ (k - 1) * ((h 0 0 : ℂ) + (h 1 0 : ℂ) * Complex.I) ^ (-(2 * (k : ℤ) - 1)) * Complex.exp (2 * Real.pi * Complex.I * (((h 0 1 : ℂ) + (h 1 1 : ℂ) * Complex.I) / ((h 0 0 : ℂ) + (h 1 0 : ℂ) * Complex.I))) :=
   GlobalTheory.CompanionTheory.WeightClosed.finiteRing_sq_sub_mul_sq_eq_of_card

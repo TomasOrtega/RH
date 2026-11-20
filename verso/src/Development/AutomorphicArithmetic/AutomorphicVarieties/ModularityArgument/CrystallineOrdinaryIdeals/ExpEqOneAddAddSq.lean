@@ -6,9 +6,9 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc ReciprocityTheory.Gal Mod
 namespace GlobalTheory.UnrUnipChar
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `ha`. Establish `h2 : a ^ (k + 1 + 1) = 0` using `pow_eq_zero_of_le (by omega) hk`. Use `⟨∑ i ∈ Finset.range k, (((i + 1 + 1).factorial : ℚ))⁻¹ • a ^ i, ?_⟩` and prove the remaining obligations. Rewrite using `[IsNilpotent.exp_eq_sum h2, Finset.sum_range_succ', Finset.sum_range_succ', Finset.mul_sum]`. Establish `: ∀ i ∈ Finset.range k, (((i + 1 + 1).factorial : ℚ))⁻¹ • a ^ (i + 1 + 1) = a ^ 2 * ((((i + 1 + 1).factorial : ℚ))⁻¹ • a ^ i)` using `fun i _ => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mul_smul_comm]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl this]`. Simplify using `only [zero_add, Nat.factorial_one, Nat.factorial_zero, Nat.cast_one, inv_one, one_smul, pow_one, pow_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -31,25 +31,23 @@ end GlobalTheory.UnrUnipChar
 open GlobalTheory.UnrUnipChar in
 
 /- English proof (translation)
-Introduce `l _ B _ _ _ x hx σ hσ`. Use `letI : Algebra ℚ B := ((algebraMap ℚ_[l] B).comp (algebraMap ℚ ℚ_[l])).toAlgebra`. Use `letI : TopologicalSpace B := moduleTopology ℚ_[l] B`. Use `haveI : IsModuleTopology ℚ_[l] B := ⟨rfl⟩`. Use `haveI : IsTopologicalAddGroup B := IsModuleTopology.topologicalAddGroup ℚ_[l] B`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : ContinuousSMul ℚ_[l] B := IsModuleTopology.toContinuousSMul ℚ_[l] B`. Take `⟨c, ⟨hc, hcI, hcσ⟩, -⟩` from `existsUnique_unramified_cocycle_frobenius_value (v := l) (l := l) (A := ℚ_[l]) (V := ℚ_[l]) (1 : Representation ℚ_[l] (GQ l) ℚ_[l]) continuous_snd (fun _ _ => rfl) σ hσ 1`. Establish `hadd : ∀ g h, c (g * h) = c g + c h` using `fun g h => hc.2 g h`. Establish `hcc : Continuous c` using `hc.1`. Establish `hc1 : c 1 = 0` using `hcI 1 (one_mem _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `hcpow : ∀ m : ℕ, c (σ ^ m) = m`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => simp [hc1]`. Consider the case `succ m ih => rw [pow_succ, hadd, ih, hcσ]`.
+Treat this case separately. Treat this case separately. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Set `f : GQ l →* B` to `{ toFun := fun g => IsNilpotent.exp (c g • x) map_one' := by rw [hc1, zero_smul, IsNilpotent.exp_zero] map_mul' := fun g h => by`. Rewrite using `[hadd, add_smul, IsNilpotent.exp_add_of_commute (Commute.all _ _) (hx.smul _) (hx.smul _)] }`. Establish `hf : Continuous f`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Take `⟨k, hk⟩` from `hx`. Establish `: (f : GQ l → B) = fun g => ∑ i ∈ Finset.range k, ((((i.factorial : ℚ)⁻¹ : ℚ) : ℚ_[l]) * c g ^ i) • x ^ i`. Use function extensionality and compare the values at `g`. Express the relevant statement in the definitionally equal form `IsNilpotent.exp (c g • x) = _`. Rewrite using `[IsNilpotent.exp_eq_sum (k := k) (by rw [_root_.smul_pow, hk, smul_zero])]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul, Rat.cast_smul_eq_qsmul, _root_.smul_pow]`. Rewrite using `[this]`. Use `fun_prop`. Establish `hfI : ∀ g ∈ Iq l, f g = 1` using `fun g hg => by`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `IsNilpotent.exp (c g • x) = 1`. Rewrite using `[hcI g hg, zero_smul, IsNilpotent.exp_zero]`. Use `⟨f.toHomUnits, hf, fun g hg => Units.ext (hfI g hg), fun g => ?_, 1, fun m => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `IsNilpotent (IsNilpotent.exp (c g • x) - 1)`. Take `⟨s, hs⟩` from `exp_eq_one_add_add_sq (hx.smul (c g))`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hs, show 1 + c g • x + (c g • x) ^ 2 * s - 1 = (c g • x) * (1 + (c g • x) * s) by ring]`. Use `first`. Consider the case `exact (Commute.all _ _).isNilpotent_mul_right (hx.smul (c g))`. Consider the case `exact (Commute.all _ _).isNilpotent_mul_left (hx.smul (c g))`. Express the relevant statement in the definitionally equal form `∃ b, IsNilpotent.exp (c (σ ^ m) • x) - 1 = x * ((m : B) * ((1 : Bˣ) : B) + x * b)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcpow m]`. Take `⟨s, hs⟩` from `exp_eq_one_add_add_sq (hx.smul ((m : ℚ_[l])))`. Use `⟨(m : B) ^ 2 * s, ?_⟩` and prove the remaining obligations. Establish `e : ((m : ℚ_[l]) • x) = (m : B) * x` using `by rw [Nat.cast_smul_eq_nsmul, nsmul_eq_mul]`. Rewrite using `[hs, e, Units.val_one]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.unr_unip_char_frob :
     ∀ {l : ℕ} [Fact l.Prime] {B : Type} [CommRing B] [Algebra ℚ_[l] B] [Module.Finite ℚ_[l] B] (t : B),

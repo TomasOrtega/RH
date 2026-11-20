@@ -15,15 +15,13 @@ open GlobalTheory.SplitWeil (SB nabs)
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ E _ _ _ _ c δ hE α ν _ _ _ _ Q hQ ψ hψ hψ1 hψne χ hχ hres`. Use `letI : MeasurableSpace (Matrix α ν E) := borel _`. Use `haveI : BorelSpace (Matrix α ν E) := ⟨rfl⟩`. Take `⟨-, -, -, -, -, -, -, hmat⟩` from `GlobalTheory.T.quadExt_topological_properties F E c δ hE`. Take `⟨-, hG⟩` from `hmat α ν`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := hG.grp`. Use `haveI := hG.t2`. Use `haveI := hG.lc`. Use `haveI := hG.sc`. Take `⟨κ, ω, hKW⟩` from `GlobalTheory.T.exists_weil_representation_split_unitary_schwartzBruhat F E c δ hE α ν Q hQ ψ hψ hψ1 hψne χ hχ hres (Measure.addHaar)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨ω, GlobalTheory.T.splitUnitaryWeilRepresentation_isSmooth F E c δ hE α ν Q hQ ψ hψ hψ1 hψne χ hχ hres _ κ ω hKW, ?_, GlobalTheory.T.weilRepresentation_intertwines_heisenberg F E c δ hE α ν Q hQ ψ hψ hψ1 hψne χ hχ hres _ κ ω hKW, ?_⟩` and prove the remaining obligations. Introduce `μ' hμ' g φ`. Conclude with `GlobalTheory.T.weil_representation_preserves_L2_space F E c δ hE α ν Q hQ ψ hψ hψ1 hψne χ hχ hres _ κ ω hKW μ' g φ`. Introduce `a φ x`. Establish `hp : levi c hE.invol a ∈ sieg c ν`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[mem_sieg, mat, levi_val, toBlocks_fromBlocks₂₁]`. Rewrite using `[hKW.par _ hp φ]`. Establish `h0 : ∀ y : Matrix α ν E, pr c Q y 0 = 0` using `fun y => by`. Simplify using `[pr, form, GlobalTheory.WeilM.hTens]`. Take `⟨-, -, hsc, -⟩` from `GlobalTheory.T.unitaryCharacterAbsScalar_basic_properties F E c δ hE (Fintype.card α) χ hres`.
-
-Establish `hd` using `hsc (Matrix.GeneralLinearGroup.det a)`. Rewrite `hd` using `[Matrix.GeneralLinearGroup.val_det_apply]`. Simplify using `only [parFun, mat, levi_val, toBlocks_fromBlocks₁₁, toBlocks_fromBlocks₁₂, Matrix.mul_zero, h0, mul_zero, AddChar.map_zero_eq_one, one_mul, hd]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem kudlaSplittingSplitUnitary : GlobalTheory.Published.KudlaSplittingSplitUnitary := by
   intro F _ _ _ _ _ E _ _ _ _ c δ hE α ν _ _ _ _ Q hQ ψ hψ hψ1 hψne χ hχ hres

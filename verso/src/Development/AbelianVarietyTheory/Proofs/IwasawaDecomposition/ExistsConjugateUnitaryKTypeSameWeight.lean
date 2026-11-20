@@ -65,32 +65,32 @@ def unsub (V : Submodule ℂ (ConjSp E)) : Submodule ℂ E where
 end ConjSp
 
 /- English proof (translation)
-The claim follows from `Matrix.map_mul (f := starRingEnd ℂ)`.
+A detailed English derivation is pending.
 -/
 theorem map_star_mul {k : ℕ} (a b : Matrix (Fin k) (Fin k) ℂ) :
     (a * b).map star = a.map star * b.map star :=
   Matrix.map_mul (f := starRingEnd ℂ)
 
 /- English proof (translation)
-The claim follows from `Matrix.map_one _ (star_zero _) (star_one _)`.
+A detailed English derivation is pending.
 -/
 theorem map_star_one {k : ℕ} : (1 : Matrix (Fin k) (Fin k) ℂ).map star = 1 :=
   Matrix.map_one _ (star_zero _) (star_one _)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_star_star {k : ℕ} (a : Matrix (Fin k) (Fin k) ℂ) : (a.map star).map star = a := by
   ext i j; simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_star_conjTranspose {k : ℕ} (a : Matrix (Fin k) (Fin k) ℂ) : (a.map star)ᴴ = aᴴ.map star := by
   ext i j; simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Formalism.REAL.Jm, Matrix.map_apply, Matrix.diagonal_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem map_star_Jm {k : ℕ} (ε : Fin k → Bool) : (Formalism.REAL.Jm ε).map star = Formalism.REAL.Jm ε := by
   ext i j
@@ -98,7 +98,7 @@ theorem map_star_Jm {k : ℕ} (ε : Fin k → Bool) : (Formalism.REAL.Jm ε).map
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun a : Matrix (Fin k) (Fin k) ℂ => a.map star) (show gᴴ * Formalism.REAL.Jm ε * g = Formalism.REAL.Jm ε from hg)`. Simplify using `only [map_star_mul, map_star_Jm, ← map_star_conjTranspose] at h`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem map_star_mem_UJ {k : ℕ} {ε : Fin k → Bool} {g : Matrix (Fin k) (Fin k) ℂ} (hg : g ∈ UJset ε) :
     g.map star ∈ UJset ε := by
@@ -107,9 +107,9 @@ theorem map_star_mem_UJ {k : ℕ} {ε : Fin k → Bool} {g : Matrix (Fin k) (Fin
   exact h
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `hg`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite `h1`, the goal using `[Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose]`. Rewrite using `[map_star_conjTranspose, ← map_star_mul, h1, map_star_one]`. Establish `h` using `congrArg (fun a : Matrix (Fin k) (Fin k) ℂ => a.map star) h2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify `h` using `only [map_star_mul, map_star_Jm]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem map_star_mem_K {k : ℕ} {ε : Fin k → Bool} {g : Matrix (Fin k) (Fin k) ℂ} (hg : g ∈ Formalism.REAL.Kset ε) :
     g.map star ∈ Formalism.REAL.Kset ε := by
@@ -121,7 +121,7 @@ theorem map_star_mem_K {k : ℕ} {ε : Fin k → Bool} {g : Matrix (Fin k) (Fin 
     simpa only [map_star_mul, map_star_Jm] using h
 
 /- English proof (translation)
-Rewrite using `[← Complex.exp_conj]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem star_exp_mul_I (x : ℝ) :
     starRingEnd ℂ (Complex.exp ((x : ℂ) * Complex.I)) = Complex.exp (((-x : ℝ) : ℂ) * Complex.I) := by
@@ -129,7 +129,7 @@ theorem star_exp_mul_I (x : ℝ) :
   simp
 
 /- English proof (translation)
-Rewrite using `[Matrix.diagonal_map (star_zero _)]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Conclude with `star_exp_mul_I (θ a)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem map_star_diag {k : ℕ} (θ : Fin k → ℝ) :
     (Matrix.diagonal fun a => Complex.exp ((θ a : ℂ) * Complex.I)).map star =
@@ -152,11 +152,11 @@ theorem sum_neg (μ θ : Fin k → ℝ) : ∑ a, μ a * (-θ) a = -∑ a, μ a *
   simp
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h θ hθ`. Establish `h1` using `map_star_mem_K hθ`. Rewrite `h1` using `[map_star_diag]`. Establish `h2 : σ ((Matrix.diagonal fun a => Complex.exp ((((-θ) a : ℝ) : ℂ) * Complex.I)).map star) (ConjSp.out v) = starRingEnd ℂ (Complex.exp (((∑ a, μ a * (-θ) a : ℝ) : ℂ) * Complex.I)) • ConjSp.out v` using `h (-θ) h1`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[map_star_diag, star_exp_mul_I, sum_neg, neg_neg, neg_neg]`. Conclude with `h2`. Introduce `h θ hθ`. Establish `h1` using `map_star_mem_K hθ`. Rewrite `h1` using `[map_star_diag]`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `h (-θ) h1`. Use `show σ ((Matrix.diagonal fun a => Complex.exp ((θ a : ℂ) * Complex.I)).map star) (ConjSp.out v) = starRingEnd ℂ (Complex.exp (((∑ a, μ a * θ a : ℝ) : ℂ) * Complex.I)) • ConjSp.out v`. Rewrite using `[map_star_diag, star_exp_mul_I, ← sum_neg]`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isWtOn_conjRep_iff (ε : Fin k → Bool) (σ : Matrix (Fin k) (Fin k) ℂ → (H →L[ℂ] H)) (μ : Fin k → ℝ)
     (v : ConjSp H) :
@@ -179,9 +179,9 @@ theorem isWtOn_conjRep_iff (ε : Fin k → Bool) (σ : Matrix (Fin k) (Fin k) �
     exact h2
 
 /- English proof (translation)
-Take `⟨⟨h1, h2⟩, h3, h4⟩` from `h`. Use `⟨⟨?_, fun a ha b hb => ?_⟩, fun g hg v => h3 _ (map_star_mem_UJ hg) (ConjSp.out v), fun v => ?_⟩` and prove the remaining obligations. Use extensionality with `v show σ ((1 : Matrix (Fin k) (Fin k) ℂ).map star) (ConjSp.out v) = ConjSp.out v`. Rewrite using `[map_star_one, h1]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use extensionality with `v show σ ((a * b).map star) (ConjSp.out v) = σ (a.map star) (σ (b.map star) (ConjSp.out v))`. Rewrite using `[map_star_mul, h2 _ (map_star_mem_UJ ha) _ (map_star_mem_UJ hb)]`. Both sides reduce to the same expression. Establish `hc : Continuous fun g : Matrix (Fin k) (Fin k) ℂ => g.map star` using `continuous_id.matrix_map continuous_star`. Conclude with `(h4 (ConjSp.out v)).comp hc.continuousOn fun g hg => map_star_mem_UJ hg`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isURepOn_conjRep {ε : Fin k → Bool} {σ : Matrix (Fin k) (Fin k) ℂ → (H →L[ℂ] H)}
     (h : IsURepOn (UJset ε) σ) : IsURepOn (UJset ε) (conjRep σ) := by
@@ -198,13 +198,11 @@ theorem isURepOn_conjRep {ε : Fin k → Bool} {σ : Matrix (Fin k) (Fin k) ℂ 
     exact (h4 (ConjSp.out v)).comp hc.continuousOn fun g hg => map_star_mem_UJ hg
 
 /- English proof (translation)
-Take `⟨-, -, h3, ⟨v, -, hv0, hv⟩, h5⟩` from `h`. Use `⟨inferInstance, fun _ _ _ _ => trivial, fun S _ hS => ?_, ⟨ConjSp.mk v, trivial, hv0, (isWtOn_conjRep_iff ε σ Λ _).2 hv⟩, fun μ w _ hw0 hw => h5 μ (ConjSp.out w) trivial hw0 ((isWtOn_conjRep_iff ε σ μ w).1 hw)⟩` and prove the remaining obligations. Establish `hst : IsKStableOn ε σ (ConjSp.unsub S)`. Introduce `g hg w hw`. Establish `h1 : ConjSp.mk (σ ((g.map star).map star) w) ∈ S` using `hS _ (map_star_mem_K hg) (ConjSp.mk w) hw`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[map_star_star]`. Conclude with `h1`. Break down `h3 _ le_top hst with h0 | h0` into its components or cases. Use `left`. Rewrite using `[eq_bot_iff]`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `w hw`. Establish `: ConjSp.out w ∈ ConjSp.unsub S` using `hw`. Rewrite `this` using `[h0]`. Conclude with `this`. Use `right`.
-
-Rewrite using `[eq_top_iff]`. Introduce `w _`. Establish `: ConjSp.out w ∈ ConjSp.unsub S` using `by rw [h0]; trivial`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isKTypeOf_conjRep [FiniteDimensional ℂ H] {ε : Fin k → Bool} {σ : Matrix (Fin k) (Fin k) ℂ → (H →L[ℂ] H)}
     {Λ : Fin k → ℝ} (h : IsKTypeOf ε σ Λ ⊤) : IsKTypeOf ε (conjRep σ) Λ ⊤ := by
@@ -231,7 +229,7 @@ theorem isKTypeOf_conjRep [FiniteDimensional ℂ H] {ε : Fin k → Bool} {σ : 
     exact this
 
 /- English proof (translation)
-Introduce `k Λ H _ _ _ σ h1 h2`. Conclude with `⟨ConjSp H, inferInstance, inferInstance, inferInstance, conjRep σ, ConjSp.mkL H, Function.bijective_id, isURepOn_conjRep h1, isKTypeOf_conjRep h2, fun _ _ => rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem exists_conjugate_type : ∀ (k : ℕ) (Λ : Fin k → ℝ) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [FiniteDimensional ℂ H] (σ : Matrix (Fin k) (Fin k) ℂ → (H →L[ℂ] H)), IsURepOn (UJset (allPos k)) σ → IsKTypeOf (allPos k) σ Λ ⊤ → ∃ (E : Type) (_ : NormedAddCommGroup E) (_ : InnerProductSpace ℂ E) (_ : FiniteDimensional ℂ E) (π : Matrix (Fin k) (Fin k) ℂ → (E →L[ℂ] E)) (J : H →ₛₗ[starRingEnd ℂ] E), Function.Bijective J ∧ IsURepOn (UJset (allPos k)) π ∧ IsKTypeOf (allPos k) π Λ ⊤ ∧ ∀ g u, π g (J u) = J (σ (g.map star) u) := by
   intro k Λ H _ _ _ σ h1 h2

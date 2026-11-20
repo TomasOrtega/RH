@@ -18,9 +18,9 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 omit [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `mul_le_mul' (le_refl (valuation k ((b⁻¹ : kˣ) : k))) h` as an intermediate fact. Rewrite `this` using `[← map_mul, ← map_mul, ← mul_assoc, ← mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_mul, one_mul]`. Then use the resulting hypothesis. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_mul, map_mul]`. Conclude with `mul_le_mul' le_rfl h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_mul_le_iff (b : kˣ) {x y : k} :
     valuation k ((b : k) * y) ≤ valuation k ((b : k) * x) ↔ valuation k y ≤ valuation k x := by
@@ -34,13 +34,13 @@ theorem val_mul_le_iff (b : kˣ) {x y : k} :
     exact mul_le_mul' le_rfl h
 
 /- English proof (translation)
-Use `⟨fun r hr => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨s, hs, rfl⟩` from `Finset.mem_map.1 hr`. Simplify using `only [mulLeftEmbedding_apply, ord_mul, hR.1 s hs]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : ord k (b⁻¹ * y) = ord k c - a`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `ord_mul k b (b⁻¹ * y)` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_left]`. Rewrite `hy` using `[ord_mul]`. Use linear arithmetic over natural numbers and integers. Establish `h2 : ∀ r : kˣ, valuation k ((y : k) - (b * r : kˣ)) ≤ valuation k ((b * c : kˣ) : k) ↔ valuation k (((b⁻¹ * y : kˣ) : k) - r) ≤ valuation k (c : k)` using `fun r => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Rewrite using `[← val_mul_le_iff b (x := (c : k)) (y := ((b⁻¹ * y : kˣ) : k) - r)]`. Establish `e2 : (b : k) * (((b⁻¹ * y : kˣ) : k) - r) = (y : k) - (b * r : kˣ)`. Simplify using `[mul_sub]`. Rewrite using `[e2]`. Simplify using `only [Units.val_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨r, hr, hr'⟩` from `hR.2 _ h1`. Use `⟨b * r, ⟨Finset.mem_map_of_mem _ hr.1, (h2 r).2 hr.2⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨hm, hv⟩`. Take `⟨r', hm', rfl⟩` from `Finset.mem_map.1 hm`. Rewrite using `[mulLeftEmbedding_apply, hr' r' ⟨hm', (h2 r').1 hv⟩]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsShellReps.map_mul {c : kˣ} {a : ℕ} {R : Finset kˣ} (hR : IsShellReps c a R) (b : kˣ) :
     IsShellReps (b * c) a (R.map (mulLeftEmbedding b)) := by
@@ -67,7 +67,7 @@ theorem IsShellReps.map_mul {c : kˣ} {a : ℕ} {R : Finset kˣ} (hR : IsShellRe
     rw [mulLeftEmbedding_apply, hr' r' ⟨hm', (h2 r').1 hv⟩]
 
 /- English proof (translation)
-Establish `key : ∀ b, ∀ x ∈ unitFilt k b, (χ * μ) x = χ x` using `fun b x hx => by`. Rewrite using `[MonoidHom.mul_apply, hμ x hx.1, mul_one]`. Unfold `HasExponent`. Conclude with `and_congr (forall₂_congr fun x hx => by rw [key _ x hx]) (forall₂_congr fun b _ => exists_congr fun x => and_congr_right fun hx => by rw [key _ x hx])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem hasExponent_mul_of_isUnram {μ : kˣ →* ℂˣ} (hμ : IsUnram μ) {a : ℕ} :
     HasExponent (χ * μ) a ↔ HasExponent χ a := by
@@ -78,9 +78,9 @@ theorem hasExponent_mul_of_isUnram {μ : kˣ →* ℂˣ} (hμ : IsUnram μ) {a :
     (forall₂_congr fun b _ => exists_congr fun x => and_congr_right fun hx => by rw [key _ x hx])
 
 /- English proof (translation)
-Take `⟨c', a', R, hc', ha', hR, rfl⟩` from `he`. Take `rfl` from `ha'.unique ha`. Establish `hord : ord k c' = ord k c` using `valuation_eq_iff_ord.1 (le_antisymm ((hc _).1 ((hc' _).2 le_rfl)) ((hc' _).1 ((hc _).2 le_rfl)))`. Use `⟨c', a', R, hc', (hasExponent_mul_of_isUnram hμ).2 ha', hR, ?_⟩` and prove the remaining obligations. Establish `hs : ∑ r ∈ R, ((((χ * μ) r)⁻¹ : ℂˣ) : ℂ) * (ψ (r : k) : ℂ) = ((m⁻¹ : ℂˣ) : ℂ) * ∑ r ∈ R, (((χ r)⁻¹ : ℂˣ) : ℂ) * (ψ (r : k) : ℂ)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun r hr => ?_` and prove the remaining obligations. Rewrite using `[MonoidHom.mul_apply, hm r ((hR.1 r hr).trans (by rw [hord])), mul_inv, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hs]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -102,7 +102,7 @@ theorem isTateMeas_mul_of_const {μ : kˣ →* ℂˣ} (hμ : IsUnram μ) {c : k�
   ring
 
 /- English proof (translation)
-Use `isTateMeas_mul_of_const (isUnram_unrChar k α) hc ha (m := α ^ (ord k c - a)) (fun r hr => by rw [GlobalTheory.SmGL.unrChar_apply, hr]) he` as an intermediate fact. Rewrite `this` using `[← zpow_neg, neg_sub]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isTateMeas_mul_unrChar (α : ℂˣ) {c : kˣ} {a : ℕ} (hc : HasConductor ψ c) (ha : HasExponent χ a)
     (he : IsTateMeas ψ t χ e) :
@@ -120,9 +120,9 @@ variable {Ω : Type} [Field Ω] {A : ValuationSubring Ω}
   {h : IsPlaceOver A w}
 
 /- English proof (translation)
-Rewrite using `[WD.lpOfChar, WD.lpOfChar, WD.lpTwist_mk]`. Use `WD.sound ⟨.refl _ _, fun σ u => ?_, fun u => rfl⟩` and prove the remaining obligations. Establish `key : GlobalTheory.SmGL.unrChar _ z⁻¹ (a σ) = GlobalTheory.WeilDeligne.unrChar h z σ`. Rewrite using `[GlobalTheory.SmGL.unrChar_apply, GlobalTheory.WeilDeligne.unrChar_apply, ha.ord_eq, inv_zpow', neg_neg]`. Use function extensionality and compare the values at `i`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[WDRep.twist, key, mul_comm, mul_left_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lpTwist_lpOfChar_unr {a : Weil h →* (w.adicCompletion E)ˣ} (ha : IsLocalArtin h a)
     {χ : (w.adicCompletion E)ˣ →* ℂˣ} (hχ : IsSmoothChar χ) (z : ℂˣ) :

@@ -55,11 +55,11 @@ def sOf (M : Model σ X W) (g : UA σ X.J) (h : UA σ W.J) : Pt F (Fin n × Fin 
   map_smul' c a := by rw [map_smul, Matrix.mul_smul, Matrix.smul_mul, map_smul]; rfl
 
 /- English proof (translation)
-Establish `hs` using `IsUWeilPair.isUSplitting hw`. Use `⟨hs.pres _, fun w Φ hΦ => ?_, fun μ hμ Φ hΦ => hs.unit μ hμ _ Φ hΦ⟩` and prove the remaining obligations. Use `hs.impl (g, h) (mat g⁻¹ * M.co.e.symm w * (mat h⁻¹)ᵀ) Φ hΦ` as an intermediate fact. Establish `e : actAB (cA σ) (g, h) (mat g⁻¹ * M.co.e.symm w * (mat h⁻¹)ᵀ) = M.co.e.symm w`. Express the relevant statement in the definitionally equal form `mat g * (mat g⁻¹ * M.co.e.symm w * (mat h⁻¹)ᵀ) * (mat h)ᵀ = _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `e1 : mat g * mat g⁻¹ = 1` using `congrArg mat (mul_inv_cancel g)`. Establish `e2 : mat h * mat h⁻¹ = 1` using `congrArg mat (mul_inv_cancel h)`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, e1, Matrix.one_mul, Matrix.mul_assoc, ← Matrix.transpose_mul, e2, Matrix.transpose_one, Matrix.mul_one]`. Rewrite `this` using `[e]`. Simplify using `only [Darboux.rho, LinearEquiv.apply_symm_apply] at this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem impl_sOf {B : Base F E} {M : Model σ X W} {χX χW : Chr F E} {om : Rep σ X W} (hw : M.IsWeil B.ψ χX χW om)
     (g : UA σ X.J) (h : UA σ W.J) : Impl B.ψ (om (g, h)) (sOf M g h) := by

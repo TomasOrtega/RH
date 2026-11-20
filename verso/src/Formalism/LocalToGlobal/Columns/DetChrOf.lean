@@ -18,7 +18,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 instance liesOver (P : HeightOneSpectrum (𝓞 E)) : P.asIdeal.LiesOver (P.under (𝓞 F)).asIdeal := ⟨rfl⟩
 
 /- English proof (translation)
-The claim follows from `HeightOneSpectrum.uniformContinuous_algebraMap_liesOver F E (P.under (𝓞 F)) P`.
+A detailed English derivation is pending.
 -/
 theorem ucont (P : HeightOneSpectrum (𝓞 E)) :
     UniformContinuous (algebraMap (WithVal ((P.under (𝓞 F)).valuation F)) (WithVal (P.valuation E))) :=
@@ -30,7 +30,7 @@ def compMap (P : HeightOneSpectrum (𝓞 E)) : (P.under (𝓞 F)).adicCompletion
       (ucont P).continuous).comp (HeightOneSpectrum.adicCompletion.equiv F (P.under (𝓞 F))).toRingHom)
 
 /- English proof (translation)
-Apply `HeightOneSpectrum.adicCompletion.ext` to reduce the goal to its premises. Establish `e : (compMap P (x : (P.under (𝓞 F)).adicCompletion F)).toCompletion = UniformSpace.Completion.mapRingHom (algebraMap (WithVal ((P.under (𝓞 F)).valuation F)) (WithVal (P.valuation E))) (ucont P).continuous ((x : F) : ((P.under (𝓞 F)).valuation F).Completion)` using `rfl`. Rewrite using `[e, UniformSpace.Completion.mapRingHom_coe]`. Rewrite using `[HeightOneSpectrum.adicCompletion.coe_toCompletion]`. Use `congr 1`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem compMap_coe (P : HeightOneSpectrum (𝓞 E)) (x : F) :
     compMap P (x : (P.under (𝓞 F)).adicCompletion F) = ((algebraMap F E x : E) : P.adicCompletion E) := by
@@ -43,7 +43,7 @@ theorem compMap_coe (P : HeightOneSpectrum (𝓞 E)) (x : F) :
   congr 1
 
 /- English proof (translation)
-Establish `h1 : Continuous (HeightOneSpectrum.adicCompletion.equiv F (P.under (𝓞 F)))` using `(HeightOneSpectrum.adicCompletion.isUniformInducing_toCompletion F (P.under (𝓞 F))).uniformContinuous.continuous`. Establish `h2 : Continuous (HeightOneSpectrum.adicCompletion.equiv E P).symm`. Rewrite using `[(HeightOneSpectrum.adicCompletion.isUniformInducing_toCompletion E P).isInducing.continuous_iff]`. Conclude with `continuous_id`. Conclude with `h2.comp ((UniformSpace.Completion.continuous_map).comp h1)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_compMap (P : HeightOneSpectrum (𝓞 E)) : Continuous (compMap (F := F) P) := by
   have h1 : Continuous (HeightOneSpectrum.adicCompletion.equiv F (P.under (𝓞 F))) :=
@@ -54,21 +54,21 @@ theorem continuous_compMap (P : HeightOneSpectrum (𝓞 E)) : Continuous (compMa
   exact h2.comp ((UniformSpace.Completion.continuous_map).comp h1)
 
 /- English proof (translation)
-Conclude with `Valued.isOpen_integer _`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_integersAt {K : Type} [Field K] [NumberField K] (v : HeightOneSpectrum (𝓞 K)) :
     IsOpen (v.adicCompletionIntegers K : Set (v.adicCompletion K)) := by
   exact Valued.isOpen_integer _
 
 /- English proof (translation)
-The claim follows from `(v.adicCompletionIntegers K).toAddSubgroup.isClosed_of_isOpen (isOpen_integersAt v)`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_integersAt {K : Type} [Field K] [NumberField K] (v : HeightOneSpectrum (𝓞 K)) :
     IsClosed (v.adicCompletionIntegers K : Set (v.adicCompletion K)) :=
   (v.adicCompletionIntegers K).toAddSubgroup.isClosed_of_isOpen (isOpen_integersAt v)
 
 /- English proof (translation)
-Rewrite using `[compMap_coe, HeightOneSpectrum.valuedAdicCompletion_eq_valuation', HeightOneSpectrum.valuedAdicCompletion_eq_valuation', HeightOneSpectrum.valuation_liesOver E (P.under (𝓞 F)) P x]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem valued_compMap_coe (P : HeightOneSpectrum (𝓞 E)) (x : F) :
     Valued.v (compMap P (x : (P.under (𝓞 F)).adicCompletion F)) =
@@ -77,11 +77,11 @@ theorem valued_compMap_coe (P : HeightOneSpectrum (𝓞 E)) (x : F) :
     HeightOneSpectrum.valuedAdicCompletion_eq_valuation', HeightOneSpectrum.valuation_liesOver E (P.under (𝓞 F)) P x]
 
 /- English proof (translation)
-Establish `hclosed : IsClosed {y : (P.under (𝓞 F)).adicCompletion F | compMap P y ∈ P.adicCompletionIntegers E}` using `(isClosed_integersAt P).preimage (continuous_compMap P)`. Establish `hdense` using `HeightOneSpectrum.denseRange_algebraMap (K := F) (P.under (𝓞 F))`. Establish `hsub` using `hdense.open_subset_closure_inter (isOpen_integersAt (P.under (𝓞 F)))`. Establish `hin : ((P.under (𝓞 F)).adicCompletionIntegers F : Set _) ∩ Set.range (algebraMap F ((P.under (𝓞 F)).adicCompletion F)) ⊆ {y | compMap P y ∈ P.adicCompletionIntegers E}`. Introduce and unpack `y ⟨hyO, a, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `e : algebraMap F ((P.under (𝓞 F)).adicCompletion F) a = (a : (P.under (𝓞 F)).adicCompletion F)`. Rewrite using `[HeightOneSpectrum.algebraMap_adicCompletion]`. Both sides reduce to the same expression. Rewrite `hyO`, the goal using `[e]`. Use `show compMap P (a : (P.under (𝓞 F)).adicCompletion F) ∈ P.adicCompletionIntegers E`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, valued_compMap_coe]`. Rewrite `hyO` using `[SetLike.mem_coe, HeightOneSpectrum.mem_adicCompletionIntegers]`. Conclude with `pow_le_one₀ zero_le' hyO`. Conclude with `(closure_minimal hin hclosed) (hsub hx)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem compMap_mem (P : HeightOneSpectrum (𝓞 E)) {x : (P.under (𝓞 F)).adicCompletion F}
     (hx : x ∈ (P.under (𝓞 F)).adicCompletionIntegers F) : compMap P x ∈ P.adicCompletionIntegers E := by

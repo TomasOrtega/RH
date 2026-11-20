@@ -3,60 +3,52 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.Ep
 open Matrix Filter NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa
 
 /- English proof (translation)
-Rewrite using `[← AddSubgroup.index_ker, AddSubgroup.card_mul_index]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem card_ker_mul_card_range_eq_card {G H : Type} [AddGroup G] [AddGroup H] (f : G →+ H) :
     Nat.card f.ker * Nat.card f.range = Nat.card G := by
   rw [← AddSubgroup.index_ker, AddSubgroup.card_mul_index]
 
 /- English proof (translation)
-Introduce `R Γ M _ _ _ _ _ ρ c hc h2`. Set `f : M →+ (Γ → M)` to `{ toFun := fun m g => ρ g m - m map_zero' := by ext g; simp map_add' := by intro a b; ext g; simp; abel }`. Establish `hf : ∀ m g, f m g = ρ g m - m` using `fun _ _ => rfl`. Establish `hBl : ∀ z, z ∈ Bl ρ ↔ z ∈ f.range`. Introduce `z`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Bl, LinearMap.mem_range, AddMonoidHom.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, rfl⟩`. Conclude with `⟨m, by ext g; simp [hf]⟩`. Introduce and unpack `⟨m, rfl⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨m, by ext g; simp [hf]⟩`. Establish `hker : ∀ m, m ∈ f.ker ↔ m ∈ ρ.invariants`. Introduce `m`. Rewrite using `[AddMonoidHom.mem_ker, Representation.mem_invariants]`. Prove the components needed by the constructor for the conclusion.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h g`. Use `congrFun h g` as an intermediate fact. Rewrite `this` using `[hf]`. Simplify `this` using `[sub_eq_zero]`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `g`. Simplify using `[hf, h g]`. Establish `cardBl : Nat.card (Bl ρ) = Nat.card f.range` using `Nat.card_congr (Equiv.subtypeEquivRight hBl)`. Establish `cardInv : Nat.card ρ.invariants = Nat.card f.ker` using `Nat.card_congr (Equiv.subtypeEquivRight (fun m => (hker m).symm))`. Set `d : M →+ M` to `{ toFun := fun m => ρ c m - m map_zero' := by simp map_add' := by intro a b; simp; abel }`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hd : ∀ m, d m = ρ c m - m` using `fun _ => rfl`. Establish `cardFix : Nat.card {m : M // ρ c m = m} = Nat.card d.ker` using `Nat.card_congr (Equiv.subtypeEquivRight (fun m => by`. Rewrite using `[AddMonoidHom.mem_ker, hd, sub_eq_zero]))`. Establish `hdM : Nat.card d.range * Nat.card {m : M // ρ c m = m} = Nat.card M`. Rewrite using `[cardFix, mul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `card_ker_mul_card_range_eq_card d`. Set `Mc : AddSubgroup M` to `{ carrier := {m | ρ c m = m} add_mem' := by`. Introduce `a b ha hb`. Simplify using `only [Set.mem_setOf_eq] at *`. Rewrite using `[map_add, ha, hb]`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use the proof step `zero_mem' := by simp`. Use the proof step `neg_mem' := by`. Introduce `a ha`. Simplify using `only [Set.mem_setOf_eq] at *`. Rewrite using `[map_neg, ha] }`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `cardMc : Nat.card {m : M // ρ c m = m} = Nat.card Mc` using `Nat.card_congr (Equiv.subtypeEquivRight (fun m => Iff.rfl))`. Set `f' : Mc →+ (Γ → M)` to `f.comp Mc.subtype`. Establish `hf' : ∀ x, f' x = f x.1` using `fun _ => rfl`. Establish `cardKer' : Nat.card f'.ker = Nat.card ρ.invariants`. Rewrite using `[cardInv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `Nat.card_congr { toFun := fun x => ⟨x.1.1, by`. Use `AddMonoidHom.mem_ker.1 x.2` as an intermediate fact. Rewrite `this` using `[hf']`. Conclude with `AddMonoidHom.mem_ker.2 this⟩`. Use `invFun := fun v => ⟨⟨v.1, ((hker _).1 v.2 |> (Representation.mem_invariants ρ _).1) c⟩, by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Apply `AddMonoidHom.mem_ker.2` to reduce the goal to its premises. Rewrite using `[hf']`. Conclude with `AddMonoidHom.mem_ker.1 v.2⟩`. Use `left_inv := fun _ => rfl`. Use `right_inv := fun _ => rfl }`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `hRange' : ∀ z, z ∈ f'.range ↔ z ∈ {z | z ∈ Bl ρ ∧ z c = 0}`. Introduce `z`. Simplify using `only [Set.mem_setOf_eq, AddMonoidHom.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(hBl _).2 ⟨x.1, (hf' x).symm⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hf', hf, sub_eq_zero]`. Conclude with `x.2`. Introduce and unpack `⟨hz, hzc⟩`. Take `⟨m, rfl⟩` from `(hBl z).1 hz`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hzc` using `[hf, sub_eq_zero]`. Conclude with `⟨⟨m, hzc⟩, rfl⟩`. Establish `cardR' : Nat.card f'.range = {z | z ∈ Bl ρ ∧ z c = 0}.ncard`. Rewrite using `[← Nat.card_coe_set_eq]`. Conclude with `Nat.card_congr (Equiv.subtypeEquivRight hRange')`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `Z _ hle hcoc`. Set `ev : Z →+ M` to `{ toFun := fun z => z.1 c map_zero' := rfl map_add' := fun _ _ => rfl }`. Establish `hev : ∀ z, ev z = z.1 c` using `fun _ => rfl`. Establish `kerEv : Nat.card ev.ker = {z | z ∈ Z ∧ z c = 0}.ncard`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Nat.card_coe_set_eq]`. Conclude with `Nat.card_congr { toFun := fun x => ⟨x.1.1, x.1.2, by`. Use `AddMonoidHom.mem_ker.1 x.2` as an intermediate fact. Rewrite using `[hev] at this⟩` and apply the resulting hypothesis. Use `invFun := fun y => ⟨⟨y.1, y.2.1⟩, AddMonoidHom.mem_ker.2 (by rw [hev]; exact y.2.2)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `left_inv := fun _ => rfl`. Use `right_inv := fun _ => rfl }`. Establish `rangeEv : ∀ x, x ∈ ev.range ↔ x ∈ d.range`. Introduce `x`. Simplify using `only [AddMonoidHom.mem_range]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨z, hz⟩, rfl⟩`. Rewrite using `[hev]`. Establish `h1` using `hcoc z hz 1 1`. Simplify using `only [mul_one, map_one, Module.End.one_apply] at h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `hz1 : z 1 = 0`. Establish `: z 1 + z 1 = z 1 + 0` using `by rw [add_zero]; exact h1.symm`. Conclude with `add_left_cancel this`. Establish `h2c` using `hcoc z hz c c`. Rewrite `h2c` using `[hc, hz1]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨u, hu⟩` from `h2`. Use `⟨-((↑u⁻¹ : R) • z c), ?_⟩` and prove the remaining obligations. Rewrite using `[hd, map_neg, map_smul]`. Establish `hneg : ρ c (z c) = -z c`. Rewrite using `[eq_neg_iff_add_eq_zero, add_comm]`.
-
-Conclude with `h2c.symm`. Rewrite using `[hneg, smul_neg, neg_neg, sub_neg_eq_add, ← add_smul]`. Establish `: (↑u⁻¹ : R) + ↑u⁻¹ = 1`. Rewrite using `[← Units.inv_mul u, hu]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[this, one_smul]`. Introduce and unpack `⟨m, rfl⟩`. Establish `hmem : f m ∈ Z` using `hle ((Submodule.mem_toAddSubgroup _).2 ((hBl _).2 ⟨m, rfl⟩))`. Use `⟨⟨f m, hmem⟩, ?_⟩` and prove the remaining obligations. Use `show f m c = d m`.
-
-Rewrite using `[hf, hd]`. Establish `cardRangeEv : Nat.card ev.range = Nat.card d.range` using `Nat.card_congr (Equiv.subtypeEquivRight rangeEv)`. Rewrite using `[← kerEv, ← card_ker_mul_card_range_eq_card ev, cardRangeEv, mul_assoc, hdM]`. Rewrite using `[cardBl, cardInv, mul_comm]`. Conclude with `card_ker_mul_card_range_eq_card f`.
-
-Rewrite using `[← cardR', ← cardKer', cardMc, mul_comm]`. Conclude with `card_ker_mul_card_range_eq_card f'`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.cCount :
     ∀ (R Γ M : Type) [CommRing R] [Group Γ] [AddCommGroup M] [Module R M] [Finite M] (ρ : Representation R Γ M) (c : Γ), c * c = 1 → IsUnit (2 : R) → (∀ Z : AddSubgroup (Γ → M), Finite Z → (Bl ρ).toAddSubgroup ≤ Z → (∀ z ∈ Z, ∀ g h, z (g * h) = z g + ρ g (z h)) → Nat.card Z * Nat.card {m : M // ρ c m = m} = {z | z ∈ Z ∧ z c = 0}.ncard * Nat.card M) ∧ Nat.card (Bl ρ) * Nat.card ρ.invariants = Nat.card M ∧ {z | z ∈ Bl ρ ∧ z c = 0}.ncard * Nat.card ρ.invariants = Nat.card {m : M // ρ c m = m} := by

@@ -16,7 +16,7 @@ def resI (x : X) : K →+* X.residueField x :=
   (Spec.preimage (X.fromSpecResidueField x ≫ q)).hom
 
 /- English proof (translation)
-Establish `: CommRingCat.ofHom (resI q x) = Spec.preimage (X.fromSpecResidueField x ≫ q)` using `rfl`. Rewrite using `[this, Spec.map_preimage]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem spec_resI (x : X) :
     Spec.map (CommRingCat.ofHom (resI q x)) = X.fromSpecResidueField x ≫ q := by
@@ -47,7 +47,7 @@ end GlobalTheory.CompanionTheory.ConeOne
 
 open GlobalTheory.CompanionTheory.ConeOne in
 /- English proof (translation)
-Introduce `K _ X q ⟨x⟩ h`. Establish `h1` using `(Submodule.Quotient.mk_eq_zero _).1 h`. Establish `h2 : (fun s : ComposableArrows (Thick (smFun X q)) 0 => (1 : (thA (smFun X q)).obj (s.obj (Fin.last 0)))) = 0` using `h1`. Establish `h3` using `congrFun h2 (ComposableArrows.mk₀ (resT q x))`. Conclude with `one_ne_zero (α := X.residueField x) h3`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.ConeOne.oneK_ne_zero : ∀ {K : Type} [Field K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)), Nonempty X →
     oneK q ≠ 0 := by

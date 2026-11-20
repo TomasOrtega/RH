@@ -15,7 +15,7 @@ variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
   {W : Type} [AddCommGroup W] [Module (KK O) W] [Module O W] [IsScalarTower O (KK O) W]
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact Bl.general_b_fact_left_alt_form.goal1 .. | (apply Bl.general_b_fact_left_alt_form.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_left_alt_form.goal1 <;> assumption) | (apply @Bl.general_b_fact_left_alt_form.goal1 <;> assumption) | (intros; apply @Bl.genera …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem exists_clear_denominators_alt (M : Submodule O W) (y : W) (hy : y ∈ MQ (K := KK O) M) : ∃ a : O, a ≠ 0 ∧ a • y ∈ M := by
   first | exact Bl.general_b_fact_left_alt_form.goal1 .. | (apply Bl.general_b_fact_left_alt_form.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_left_alt_form.goal1 <;> assumption) | (apply @Bl.general_b_fact_left_alt_form.goal1 <;> assumption) | (intros; apply @Bl.general_b_fact_left_alt_form.goal1 <;> assumption) | (apply @Bl.general_b_fact_left_alt_form.goal1 <;> first | assumption | infer_instance)
@@ -24,18 +24,16 @@ def latticeInter (M : Submodule O W) (L : Submodule (KK O) W) : Submodule O L :=
   M.comap (L.subtype.restrictScalars O)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_latticeInter_iff (M : Submodule O W) (L : Submodule (KK O) W) (x : L) : x ∈ latticeInter M L ↔ (x : W) ∈ M := Iff.rfl
 
 /- English proof (translation)
-Establish `hN : IsNoetherian O M` using `isNoetherian_of_fg_of_noetherian M hfg`. Use `Submodule.fg_of_fg_map_injective (L.subtype.restrictScalars O) (fun x y h => Subtype.ext h) ?_` and prove the remaining obligations. Use `(isNoetherian_submodule.1 hN) _ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Use `span_eq_top := by`. Rewrite using `[eq_top_iff]`. Introduce `x _`. Take `⟨a, ha, hax⟩` from `exists_clear_denominators_alt M (x : W) (by rw [hMQ]; trivial)`. Establish `ha1 : algebraMap O (KK O) a ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using (IsFractionRing.injective O (KK O)).ne ha`. Establish `h1 : a • x ∈ latticeInter M L` using `hax`. Establish `h2 : x = (algebraMap O (KK O) a)⁻¹ • (a • x)`. Rewrite using `[← algebraMap_smul (KK O) a x, smul_smul, inv_mul_cancel₀ ha1, one_smul]`. Rewrite using `[h2]`.
-
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span h1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latticeInter_isLattice (M : Submodule O W) (hfg : M.FG) (hMQ : MQ (K := KK O) M = ⊤) (L : Submodule (KK O) W) :
     Submodule.IsLattice (KK O) (latticeInter M L) where
@@ -60,13 +58,11 @@ theorem latticeInter_isLattice (M : Submodule O W) (hfg : M.FG) (hMQ : MQ (K := 
 end lat
 
 /- English proof (translation)
-Introduce `O _ _ _ W _ _ _ _ _ M hfg hMQ L`. Use `haveI := latticeInter_isLattice M hfg hMQ L`. Use `haveI : Module.Finite O (latticeInter M L) := Module.Finite.iff_fg.2 (Submodule.IsLattice.fg (A := KK O))`. Set `bO` to `Module.finBasis O (latticeInter M L)`. Use `⟨_, bO.extendOfIsLattice (KK O), fun i => ?_, fun x hx i => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Module.Basis.extendOfIsLattice_apply]`. Conclude with `(bO i).2`. Choose the witnesses or unpack the hypotheses as in `⟨c, hc⟩ : ∃ c : Fin _ → O, x = ∑ j, (algebraMap O (KK O) (c j)) • (bO.extendOfIsLattice (KK O)) j := by`. Use `⟨fun j => bO.repr ⟨x, hx⟩ j, ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg (fun z : latticeInter M L => (z : L)) (bO.sum_repr ⟨x, hx⟩)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Submodule.coe_sum, Submodule.coe_smul_of_tower] at h2`. Use `h2.symm.trans (Finset.sum_congr rfl fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[Module.Basis.extendOfIsLattice_apply, algebraMap_smul]`. Use `⟨c i, ?_⟩` and prove the remaining obligations. Rewrite using `[hc, map_sum]`.
-
-Simplify using `only [map_smul, Module.Basis.coord_apply, Module.Basis.repr_self, Finsupp.single_apply, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lattice_adapted_basis_exists : LatticeAdaptedBasisExists := by
   intro O _ _ _ W _ _ _ _ _ M hfg hMQ L

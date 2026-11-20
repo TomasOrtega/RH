@@ -50,9 +50,9 @@ def FormalDegreeValue : Prop :=
       ∀ d : ℝ, IsFdeg (muG ε) σ d → d = c * fdegHC lam
 
 /- English proof (translation)
-Introduce `n ε`. Take `⟨c, hc, h⟩` from `h23 n ε`. Use `⟨c, hc, fun lam H _ _ _ σ hl hσ => ?_⟩` and prove the remaining obligations. Use `haveI : Nontrivial H := hσ.2.1`. Take `⟨d, hd⟩` from `h1 n ε H σ hσ.2.2.1 hσ.2.2.2.1 hσ.2.2.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h lam H σ hl hσ d hd]`. Conclude with `hd`.
+A detailed English derivation is pending.
 -/
 theorem hCFdeg_of (h1 : StableSubspaceMobius) (h23 : FormalDegreeValue) : PI.HCFdeg := by
   intro n ε

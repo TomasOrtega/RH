@@ -3,9 +3,9 @@ import Mathlib
 namespace GlobalTheory.CompanionTheory.Telescope
 
 /- English proof (translation)
-Use `set G : ℕ → ℝ := fun m => F (fun j => if (j : ℕ) < m then b j else a j) with hG`. Establish `h0 : G 0 = F a` using `by simp [hG]`. Establish `hn : G n = F b` using `by simp [hG]`. Rewrite using `[← h0, ← hn, ← Finset.sum_range_sub' G n, Finset.sum_range]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [hG, Nat.lt_succ_iff, Fin.lt_def, Fin.le_def]`.
+A detailed English derivation is pending.
 -/
 theorem telescope_fin_positions (α : Type) (n : ℕ) (F : (Fin n → α) → ℝ) (a b : Fin n → α) :
     F a - F b = ∑ i : Fin n, (F (fun j => if j < i then b j else a j) - F (fun j => if j ≤ i then b j else a j)) := by

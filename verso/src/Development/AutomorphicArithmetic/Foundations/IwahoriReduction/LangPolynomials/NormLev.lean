@@ -5,9 +5,9 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.FrobLiftWittClos
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.HV GlobalTheory.Ord2 GlobalTheory.KZ GlobalTheory.Col UpperTheory.Kd.C7
 
 /- English proof (translation)
-Establish `hV : (Matrix.vandermonde w).det ≠ 0` using `Matrix.det_vandermonde_ne_zero_iff.mpr hw`. Establish `hmul : Matrix.vandermonde w * L = Matrix.diagonal v * Matrix.vandermonde w`. Use extensionality with `k j`. Rewrite using `[Matrix.diagonal_mul, Matrix.mul_apply, Matrix.vandermonde_apply, h k j]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.vandermonde_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `key` using `congrArg Matrix.det hmul`. Rewrite `key` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_diagonal]`. Conclude with `mul_left_cancel₀ hV (key.trans (mul_comm _ _))`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem nl_det {K : Type} [Field K] {n : ℕ} (w v : Fin n → K) (hw : Function.Injective w)
     (L : Matrix (Fin n) (Fin n) K) (h : ∀ k j : Fin n, v k * w k ^ (j : ℕ) = ∑ i, L i j * w k ^ (i : ℕ)) :
@@ -24,23 +24,23 @@ private theorem nl_det {K : Type} [Field K] {n : ℕ} (w v : Fin n → K) (hw : 
   exact mul_left_cancel₀ hV (key.trans (mul_comm _ _))
 
 /- English proof (translation)
-Set `P : Polynomial S → Prop` to `fun F => ∃ G : Fin n → Polynomial S, F = ∑ i, Polynomial.expand S n (G i) * (Polynomial.X - 1) ^ (i : ℕ)`. It suffices to establish `hall : ∀ F, P F from hall F`. Establish `h0 : P 0` using `⟨0, by simp⟩`. Establish `hadd : ∀ F₁ F₂, P F₁ → P F₂ → P (F₁ + F₂)`. Introduce and unpack `F₁ F₂ ⟨G₁, rfl⟩ ⟨G₂, rfl⟩`.
+Introduce a local definition for the expression. Reduce the argument to an intermediate assertion. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨G₁ + G₂, by simp [add_mul, Finset.sum_add_distrib]⟩`. Establish `hmul : ∀ H F, P F → P (Polynomial.expand S n H * F)`. Introduce and unpack `H F ⟨G, rfl⟩`. Conclude with `⟨fun i => H * G i, by simp [Finset.mul_sum, mul_assoc]⟩`. Establish `hsum : ∀ (s : Finset ℕ) (f : ℕ → Polynomial S), (∀ j ∈ s, P (f j)) → P (∑ j ∈ s, f j)`.
+Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `s f hf`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using h0`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hadd _ _ (hf a (Finset.mem_insert_self a s)) (ih fun j hj => hf j (Finset.mem_insert_of_mem hj))`. Establish `hbase : ∀ j, j < n → P ((Polynomial.X - 1) ^ j)`. Introduce `j hj`. Use `⟨Pi.single ⟨j, hj⟩ 1, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single ⟨j, hj⟩]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Pi.single_apply, hb]`. Simplify using the standard rewrite rules. Establish `hXr : ∀ r, r < n → P (Polynomial.X ^ r)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `r hr`. Establish `e : (Polynomial.X : Polynomial S) ^ r = ((Polynomial.X - 1) + 1) ^ r` using `by ring`. Rewrite using `[e, add_pow]`. Use `hsum _ _ fun j hj => ?_` and prove the remaining obligations. Establish `hj' : j < n`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Finset.mem_range.mp hj` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `e2 : (Polynomial.X - 1 : Polynomial S) ^ j * 1 ^ (r - j) * (r.choose j : Polynomial S) = Polynomial.expand S n (Polynomial.C (r.choose j : S)) * (Polynomial.X - 1) ^ j`. Simplify using `[mul_comm]`. Rewrite using `[e2]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hmul _ _ (hbase j hj')`. Introduce `F`. Proceed by induction on `F using Polynomial.induction_on' with`. Consider the case `add p q hp hq => exact hadd _ _ hp hq`. Consider the case `monomial k c`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : Polynomial.monomial k c = Polynomial.expand S n (Polynomial.C c * Polynomial.X ^ (k / n)) * Polynomial.X ^ (k % n)`. Rewrite using `[map_mul, Polynomial.expand_C, map_pow, Polynomial.expand_X, ← pow_mul, mul_assoc, ← pow_add, Nat.div_add_mod, Polynomial.C_mul_X_pow_eq_monomial]`. Rewrite using `[e]`. Conclude with `hmul _ _ (hXr _ (Nat.mod_lt _ hn))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem nl_dec {S : Type} [CommRing S] [Nontrivial S] (n : ℕ) (hn : 0 < n) (F : Polynomial S) :
     ∃ G : Fin n → Polynomial S, F = ∑ i, Polynomial.expand S n (G i) * (Polynomial.X - 1) ^ (i : ℕ) := by
@@ -95,13 +95,11 @@ private theorem nl_dec {S : Type} [CommRing S] [Nontrivial S] (n : ℕ) (hn : 0 
     exact hmul _ _ (hXr _ (Nat.mod_lt _ hn))
 
 /- English proof (translation)
-Take `⟨k, rfl⟩ : ∃ k, m = k + 1` from `⟨m - 1, by omega⟩`. Establish `hl0 : l ≠ 0` using `hl.out.ne_zero`. Use `haveI : NeZero (l ^ (k + 1 + 1)) := ⟨pow_ne_zero _ hl0⟩`. Use `haveI : NeZero (l ^ (k + 1)) := ⟨pow_ne_zero _ hl0⟩`. Establish `hdvd : l ^ (k + 1) ∣ l ^ (k + 1 + 1)` using `pow_dvd_pow l (Nat.le_succ _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsurj : Function.Surjective (red l (k + 1))` using `ZMod.unitsMap_surjective hdvd`. Establish `hc` using `(red l (k + 1)).ker.card_mul_index`. Rewrite `hc` using `[Subgroup.index_ker, MonoidHom.range_eq_top.mpr hsurj, Subgroup.card_top, Nat.card_eq_fintype_card (α := (ZMod (l ^ (k + 1)))ˣ), Nat.card_eq_fintype_card (α := (ZMod (l ^ (k + 1 + 1)))ˣ), ZMod.card_units_eq_totient, ZMod.card_units_eq_totient, Nat.totient_prime_pow_succ hl.out, N …`. Establish `hker : Nat.card (red l (k + 1)).ker = (Finset.univ.filter fun x : (ZMod (l ^ (k + 1 + 1)))ˣ => red l (k + 1) x = 1).card`. Rewrite using `[← Fintype.card_subtype, ← Nat.card_eq_fintype_card]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Nat.card_congr (Equiv.subtypeEquivRight fun x => MonoidHom.mem_ker)`. Rewrite using `[← hker]`. Establish `hpos : 0 < l ^ k * (l - 1)` using `Nat.mul_pos (pow_pos hl.out.pos k) (by have := hl.out.two_le; omega)`. Establish `e : l ^ (k + 1) * (l - 1) = l * (l ^ k * (l - 1))` using `by ring`. Rewrite `hc` using `[e]`.
-
-Conclude with `Nat.eq_of_mul_eq_mul_right hpos hc`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem nl_card (l : ℕ) [hl : Fact l.Prime] (m : ℕ) (hm : 1 ≤ m) :
     (Finset.univ.filter fun x : (ZMod (l ^ (m + 1)))ˣ => red l m x = 1).card = l := by
@@ -130,13 +128,13 @@ private theorem nl_card (l : ℕ) [hl : Fact l.Prime] (m : ℕ) (hm : 1 ≤ m) :
   exact Nat.eq_of_mul_eq_mul_right hpos hc
 
 /- English proof (translation)
-Establish `hb : ∀ j : Fin p, (Model.basis p hu j : Model.Up R p) = (PowerSeries.X ^ (j : ℕ) : PowerSeries R)`. Introduce `j`. Rewrite using `[Model.basis, Module.Basis.mk_apply]`. Establish `hn : normOp p h = c.det`. Establish `key` using `Algebra.norm_eq_matrix_det (Model.basis p hu) (show Model.Up R p from h)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `key.trans ?_` and prove the remaining obligations. Use `congr 1`. Use extensionality with `i j`. Rewrite using `[Algebra.leftMulMatrix_eq_repr_mul]`. Establish `e : (show Model.Up R p from h) * Model.basis p hu j = ∑ i', c i' j • Model.basis p hu i'`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hb j]`. Use `(hc j).trans ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun i' _ => ?_` and prove the remaining obligations. Rewrite using `[hb i']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[e, map_sum]`. Simplify using `[Finsupp.single_apply]`. Rewrite using `[Model.nrm_ev p m hm hu h, hn]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem nl_nrm {R : Type} [CommRing R] (p : ℕ) [hp : Fact p.Prime] (m : ℕ) (hm : 1 ≤ m)
     [IsAdicComplete (Ideal.span {(p : R)}) R] (hu : (p : R) ∈ nonunits R) (h : PowerSeries R)
@@ -164,37 +162,33 @@ private theorem nl_nrm {R : Type} [CommRing R] (p : ℕ) [hp : Fact p.Prime] (m 
   rw [Model.nrm_ev p m hm hu h, hn]
 
 /- English proof (translation)
-Introduce `l hl hl2 Ω _ _ _ A hA jj Φ ζ hζ m hm P Q hPQ`. Establish `hlp : l.Prime` using `hl.out`. Establish `hl0 : 0 < l` using `hlp.pos`. Use `haveI : IsAdicComplete (Ideal.span {(l : Φ.R)}) Φ.R := Φ.fl.complete`. Establish `hu : (l : Φ.R) ∈ nonunits Φ.R` using `Φ.fl.prime.not_unit`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `ψ : Polynomial (R0 A) →+* PowerSeries Φ.R` to `(Polynomial.eval₂RingHom PowerSeries.C (1 + PowerSeries.X)).comp (Polynomial.mapRingHom Φ.i0)`. Establish `hψ : ∀ F, Φ.ser F = ψ F` using `fun F => rfl`. Establish `hψX : ψ (Polynomial.X - 1) = PowerSeries.X` using `by simp [ψ]`. Establish `hψexp : ∀ F, ψ (Polynomial.expand (R0 A) l F) = phi l hl0 (ψ F)`. Introduce `F`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [ψ, RingHom.comp_apply, Polynomial.coe_mapRingHom, Polynomial.coe_eval₂RingHom]`. Rewrite using `[Polynomial.map_expand, phi_eval₂]`. Establish `hdec : ∀ jx : Fin l, ∃ G : Fin l → Polynomial (R0 A), P * (Polynomial.X - 1) ^ (jx : ℕ) = ∑ i, Polynomial.expand (R0 A) l (G i) * (Polynomial.X - 1) ^ (i : ℕ)` using `fun jx => nl_dec l hl0 _`. Use `choose G hG using hdec`. Set `M : Matrix (Fin l) (Fin l) (Polynomial (R0 A))` to `Matrix.of fun i jx => G jx i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc : ∀ jx : Fin l, Φ.ser P * PowerSeries.X ^ (jx : ℕ) = ∑ i, phi l hl0 ((ψ.mapMatrix M) i jx) * PowerSeries.X ^ (i : ℕ)`. Introduce `jx`. Use `congrArg ψ (hG jx)` as an intermediate fact. Rewrite `this` using `[map_mul, map_pow, hψX, map_sum]`. Rewrite using `[hψ, this]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, hψX, hψexp]`. Both sides reduce to the same expression. Establish `hnorm` using `nl_nrm l m hm hu (Φ.ser P) (ψ.mapMatrix M) hc`. Rewrite using `[hnorm, ← RingHom.map_det, ← hψ]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcard : Fintype.card {x : (ZMod (l ^ (m + 1)))ˣ // red l m x = 1} = l`. Rewrite using `[Fintype.card_subtype]`. Conclude with `nl_card l m hm`. Set `e : Fin l ≃ {x : (ZMod (l ^ (m + 1)))ˣ // red l m x = 1}` to `(Fintype.equivFinOfCardEq hcard).symm`. Set `w : Fin l → Ω` to `fun k => ζ (m + 1) ^ (((e k : (ZMod (l ^ (m + 1)))ˣ) : ZMod (l ^ (m + 1))).val)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hprim` using `(hζ (m + 1)).1`. Use `haveI : NeZero (l ^ (m + 1)) := ⟨pow_ne_zero _ hlp.ne_zero⟩`. Use `haveI : NeZero (l ^ m) := ⟨pow_ne_zero _ hlp.ne_zero⟩`. Establish `hmodpow : ∀ a : ℕ, ζ (m + 1) ^ a = ζ (m + 1) ^ (a % l ^ (m + 1))`. Introduce `a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `conv_lhs => rw [← Nat.mod_add_div a (l ^ (m + 1)), pow_add, pow_mul, hprim.pow_eq_one, one_pow, mul_one]`. Establish `hwpow : ∀ k, w k ^ l = ζ m`. Introduce `k`. Establish `hx` using `(e k).2`. Establish `h0 : (((e k : (ZMod (l ^ (m + 1)))ˣ) : ZMod (l ^ (m + 1))).cast : ZMod (l ^ m)) = 1` using `congrArg Units.val hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `h0` using `[ZMod.cast_eq_val]`. Establish `h1 : (((e k : (ZMod (l ^ (m + 1)))ˣ) : ZMod (l ^ (m + 1))).val : ZMod (l ^ m)) = ((1 : ℕ) : ZMod (l ^ m))`. Rewrite using `[Nat.cast_one]`. Conclude with `h0`. Establish `hmod` using `((ZMod.natCast_eq_natCast_iff _ _ _).mp h1).mul_right' l`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hmod` using `[← pow_succ, one_mul]`. Use `show (ζ (m + 1) ^ _) ^ l = ζ m`. Rewrite using `[← pow_mul, ← (hζ m).2, hmodpow (_ * l), hmodpow l]`. Conclude with `congrArg (fun t => ζ (m + 1) ^ t) hmod`. Establish `hwinj : Function.Injective fun k => w k - 1`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b hab`. Establish `h2 : w a = w b` using `by simpa using hab`. Establish `h3` using `hprim.pow_inj (ZMod.val_lt _) (ZMod.val_lt _) h2`. Conclude with `e.injective (Subtype.ext (Units.ext (ZMod.val_injective _ h3)))`. Establish `hev : ∀ (F : Polynomial (R0 A)) (z : Ω), pv (Polynomial.expand (R0 A) l F) z = pv F (z ^ l)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `F z`. Simplify using `only [pv]`. Rewrite using `[← Polynomial.eval_map, ← Polynomial.eval_map, Polynomial.map_expand, Polynomial.expand_eval]`. Establish `hrow : ∀ k (jx : Fin l), pv P (w k) * (w k - 1) ^ (jx : ℕ) = ∑ i, pv (G jx i) (ζ m) * (w k - 1) ^ (i : ℕ)`. Introduce `k jx`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg (Polynomial.eval₂ (R0 A).subtype (w k)) (hG jx)` as an intermediate fact. Simplify using `only [Polynomial.eval₂_mul, Polynomial.eval₂_pow, Polynomial.eval₂_sub, Polynomial.eval₂_X, Polynomial.eval₂_one, Polynomial.eval₂_finset_sum] at this`. Rewrite using `[show pv P (w k) = Polynomial.eval₂ (R0 A).subtype (w k) P from rfl, this]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← hwpow k, ← hev]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hdetL` using `nl_det (fun k => w k - 1) (fun k => pv P (w k)) hwinj (Matrix.of fun i jx => pv (G jx i) (ζ m)) (fun k jx => hrow k jx)`. Establish `hpvdet : pv M.det (ζ m) = (Matrix.of fun i jx => pv (G jx i) (ζ m)).det` using `RingHom.map_det (Polynomial.eval₂RingHom (R0 A).subtype (ζ m)) M`. Establish `hprod : ∏ k, pv P (w k) = pv Q (ζ m)`. Rewrite using `[← hPQ, Finset.prod_subtype (p := fun x => red l m x = 1) _ (fun x => by simp)]`.
-
-Use `e.prod_comp (fun x => pv P (ζ (m + 1) ^ ((x : (ZMod (l ^ (m + 1)))ˣ) : ZMod (l ^ (m + 1))).val))` and compare the differences between its conclusion and the goal. Establish `hzero : pv (M.det - Q) (ζ m) = 0`. Establish `hs : pv (M.det - Q) (ζ m) = pv M.det (ζ m) - pv Q (ζ m)` using `Polynomial.eval₂_sub _`. Rewrite using `[hs, hpvdet, hdetL, hprod, sub_self]`. Establish `key` using `(pWD l hl2 Ω A hA jj Φ ζ hζ m hm (M.det - Q)).1 hzero`.
-
-Rewrite `key` using `[hψ, map_sub, ← hψ, ← hψ, map_sub]`. Conclude with `sub_eq_zero.mp key`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Kd.C7.pNormLev :
     UpperTheory.Kd.C7.SNormLev := by

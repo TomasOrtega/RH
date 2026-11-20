@@ -4,9 +4,9 @@ open MeasureTheory NumberField IsDedekindDomain Filter GroundTheory.Automorphic 
 open GroundTheory.Automorphic.CuspidalSpectrum GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets GlobalTheory.PRep Formalism.BasicNotions GlobalTheory.CuspRep GlobalTheory.SmGL UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.C
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_multiset_map_count]`. Establish `hsub : s.toFinset ⊆ S` using `fun z hz => h z (Multiset.mem_toFinset.1 hz)`. Rewrite using `[← Finset.sum_subset hsub]`. Conclude with `Finset.sum_congr rfl fun z _ => by simp [nsmul_eq_mul]`. Introduce `z _ hz`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: s.count z = 0` using `Multiset.count_eq_zero.2 fun hm => hz (Multiset.mem_toFinset.2 hm)`. Simplify using `[this]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma powSum_eq_count (s : Multiset ℂ) (S : Finset ℂ) (h : ∀ z ∈ s, z ∈ S) (j : ℕ) :
     (s.map (· ^ j)).sum = ∑ z ∈ S, (s.count z : ℂ) * z ^ j := by
@@ -25,7 +25,7 @@ private def powHom (z : ℂ) : Multiplicative ℕ →* ℂ where
   map_mul' a b := by simp [pow_add]
 
 /- English proof (translation)
-Introduce `a b h`. Use `DFunLike.congr_fun h (Multiplicative.ofAdd 1)` as an intermediate fact. Simplify `this` using `[powHom]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private lemma powHom_injective : Function.Injective powHom := by
   intro a b h
@@ -33,19 +33,19 @@ private lemma powHom_injective : Function.Injective powHom := by
   simpa [powHom] using this
 
 /- English proof (translation)
-Introduce `ι _ c Z hZ hev ζ`. Take `⟨N, hN⟩` from `eventually_atTop.1 hev`. Set `S : Finset ℂ` to `Finset.univ.biUnion fun i => (Z i).toFinset`. Set `a : ℂ → ℂ` to `fun z => ∑ i, c i * ((Z i).count z : ℂ)`. Establish `hmem : ∀ i, ∀ z ∈ Z i, z ∈ S` using `fun i z hz => Finset.mem_biUnion.2 ⟨i, Finset.mem_univ i, Multiset.mem_toFinset.2 hz⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `key : ∀ j, N ≤ j → ∑ z ∈ S, a z * z ^ j = 0`. Introduce `j hj`. Establish `h0` using `hN j hj`. Simplify using `only [powSum_eq_count _ S (hmem _) j, Finset.mul_sum] at h0`. Rewrite `h0` using `[Finset.sum_comm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← h0]`. Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations. Simplify using `only [a, Finset.sum_mul, mul_assoc]`. Establish `hne : ∀ z ∈ S, z ≠ 0`. Introduce `z hz h0`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨i, -, hi⟩` from `Finset.mem_biUnion.1 hz`. Conclude with `hZ i (h0 ▸ Multiset.mem_toFinset.1 hi)`. Establish `lin : LinearIndependent ℂ (fun z : S => (powHom z : Multiplicative ℕ → ℂ))` using `(linearIndependent_monoidHom (Multiplicative ℕ) ℂ).comp (fun z : S => powHom z) (powHom_injective.comp Subtype.val_injective)`. Rewrite `lin` using `[Fintype.linearIndependent_iff]`. Establish `hb` using `lin (fun z => a z * (z : ℂ) ^ N) (by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `n`. Use `key (N + n.toAdd) (Nat.le_add_right _ _)` as an intermediate fact. Rewrite `this` using `[← Finset.sum_coe_sort S]`. Simplify `this)` using `[powHom, pow_add, mul_assoc, Finset.sum_apply]`. Establish `ha : a ζ = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hζ : ζ ∈ S`. Use `hb ⟨ζ, hζ⟩` as an intermediate fact. Conclude with `(mul_eq_zero.1 this).resolve_right (pow_ne_zero _ (hne ζ hζ))`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Establish `: (Z i).count ζ = 0` using `Multiset.count_eq_zero.2 fun hm => hζ (hmem i ζ hm)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[this]`. Rewrite using `[← ha]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 2`. Rewrite using `[Multiset.filter_eq', Multiset.card_replicate]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.C.powIndep :
     UpperTheory.ConvolutionTheory.C.PowIndep := by

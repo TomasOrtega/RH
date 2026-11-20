@@ -8,9 +8,9 @@ open ModularForm EisensteinSeries ModularFormClass UpperHalfPlane Formalism.L2.T
 namespace ReciprocityTheory.ChartRestriction.L1
 
 /- English proof (translation)
-Establish `hs : (Complex.I * ((Real.sqrt d : ℝ) : ℂ)) ^ 2 = -(d : ℂ)`. Rewrite using `[mul_pow, Complex.I_sq, ← Complex.ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg d)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Unfold `omegaK`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions.
 
-Take the linear combination `hs`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem omegaK_sq (d : ℕ) : 4 * omegaK d ^ 2 = 4 * omegaK d - (1 + d) := by
   have hs : (Complex.I * ((Real.sqrt d : ℝ) : ℂ)) ^ 2 = -(d : ℂ) := by
@@ -21,13 +21,13 @@ theorem omegaK_sq (d : ℕ) : 4 * omegaK d ^ 2 = 4 * omegaK d - (1 + d) := by
   linear_combination hs
 
 /- English proof (translation)
-Establish `h2 : (t : ℂ) * (1 + Complex.I * ((Real.sqrt d : ℝ) : ℂ)) + 2 * n = 0`. Rewrite `h` using `[omegaK]`. Take the linear combination `2 * h`. Establish `hsq : 0 < Real.sqrt d` using `Real.sqrt_pos.mpr (by exact_mod_cast hd)`. Establish `h3 : (((t : ℝ) + 2 * n : ℝ) : ℂ) + (((t : ℝ) * Real.sqrt d : ℝ) : ℂ) * Complex.I = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_cast`. Take the linear combination `h2`. Establish `him : (t : ℝ) * Real.sqrt d = 0`. Use `congrArg Complex.im h3` as an intermediate fact. Simplify using `using this`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hre : (t : ℝ) + 2 * n = 0`. Use `congrArg Complex.re h3` as an intermediate fact. Simplify using `using this`. Establish `ht : (t : ℝ) = 0`. Break down `mul_eq_zero.mp him with h | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `h`. Conclude with `absurd h hsq.ne'`. Establish `hn : (n : ℝ) = 0` using `by linarith`. Conclude with `⟨by exact_mod_cast ht, by exact_mod_cast hn⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem omegaK_lin {d : ℕ} (hd : 0 < d) {t n : ℤ} (h : (t : ℂ) * omegaK d + n = 0) :
     t = 0 ∧ n = 0 := by
@@ -52,29 +52,27 @@ theorem omegaK_lin {d : ℕ} (hd : 0 < d) {t n : ℤ} (h : (t : ℂ) * omegaK d 
   exact ⟨by exact_mod_cast ht, by exact_mod_cast hn⟩
 
 /- English proof (translation)
-Take `⟨hc, hmem⟩` from `h`. Establish `hmul : ∀ w ∈ L.lattice, ((x : ℂ) + y * omegaK d) * w ∈ L.lattice`. Introduce `w hw`. Establish `h1 : (x : ℂ) * w ∈ L.lattice`. Rewrite using `[← zsmul_eq_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zsmul_mem hw x`. Establish `h2 : (y : ℂ) * (omegaK d * w) ∈ L.lattice`. Rewrite using `[← zsmul_eq_mul]`. Conclude with `zsmul_mem (hL w hw) y`. Establish `e : ((x : ℂ) + y * omegaK d) * w = (x : ℂ) * w + (y : ℂ) * (omegaK d * w)` using `by ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `add_mem h1 h2`. Establish `hcτ : c * (τ : ℂ) ∈ L.lattice` using `(hmem _).2 ⟨1, 0, by push_cast; ring⟩`. Establish `hc1 : c ∈ L.lattice` using `(hmem _).2 ⟨0, 1, by push_cast; ring⟩`. Take `⟨A, B, hAB⟩` from `(hmem _).1 (hmul _ hcτ)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨C, D, hCD⟩` from `(hmem _).1 (hmul _ hc1)`. Establish `e1 : ((x : ℂ) + y * omegaK d) * τ = A * τ + B`. Apply `mul_left_cancel₀ hc` to reduce the goal to its premises. Take the linear combination `hAB`. Establish `e2 : (x : ℂ) + y * omegaK d = C * τ + D`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Apply `mul_left_cancel₀ hc` to reduce the goal to its premises. Take the linear combination `hCD`. Use `⟨A, B, C, D, e1, e2, ?_⟩` and prove the remaining obligations. Establish `key : ((x : ℂ) + y * omegaK d - A) * ((x : ℂ) + y * omegaK d - D) = B * C`. Take the linear combination `((x : ℂ) + y * omegaK d - A) * e2 + (C : ℂ) * e1`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result. Move the embeddings inside the algebraic operations.
 
-Establish `hω` using `omegaK_sq d`. Take `⟨ht, hn⟩` from `omegaK_lin hd (t := 8 * x * y + 4 * y ^ 2 - 4 * (A + D) * y) (n := 4 * x ^ 2 - y ^ 2 * (1 + d) - 4 * (A + D) * x + 4 * (A * D - B * C)) (by`. Use `push_cast`. Take the linear combination `4 * key - (y : ℂ) ^ 2 * hω)`. Distinguish the cases in `hy : y = 0`.
+Take a linear combination of the given relations to obtain the conclusion. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Substitute `hy` using the available equality. Simplify using `only [Int.cast_zero, zero_mul, add_zero] at e1 e2`. Establish `hτ : 0 < (τ : ℂ).im` using `τ.im_pos`. Establish `e2' : (x : ℂ) - D = (C : ℂ) * τ` using `by linear_combination e2`. Establish `e1' : ((x : ℂ) - A) * τ = (B : ℂ)` using `by linear_combination e1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hC : C = 0`. Use `congrArg Complex.im e2'` as an intermediate fact. Simplify using `only [Complex.sub_im, Complex.intCast_im, Complex.mul_im, Complex.intCast_re] at this`. Establish `h0 : (C : ℝ) * (τ : ℂ).im = 0` using `by linarith`. Break down `mul_eq_zero.mp h0 with h0 | h0` into its components or cases.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `h0` after adjusting the coercions. Conclude with `absurd h0 hτ.ne'`. Establish `hA : A = x`. Use `congrArg Complex.im e1'` as an intermediate fact. Simplify using `only [Complex.sub_im, Complex.intCast_im, Complex.mul_im, Complex.intCast_re, Complex.sub_re] at this`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `h0 : ((x : ℝ) - A) * (τ : ℂ).im = 0` using `by linarith`. Break down `mul_eq_zero.mp h0 with h0 | h0` into its components or cases. Establish `: (A : ℝ) = x` using `by linarith`. Conclude with `this` after adjusting the coercions. Conclude with `absurd h0 hτ.ne'`.
+Establish an intermediate fact. Substitute using the available equality. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Substitute `hC hA` using the available equality. Establish `hD : D = A`. Establish `: ((A : ℤ) : ℂ) = D` using `by linear_combination e2'`. Conclude with `this.symm` after adjusting the coercions. Substitute `hD` using the available equality.
-
-Expand and normalize the polynomial expressions, which then agree. Establish `h4 : 4 * (y * (2 * x + y - (A + D))) = 0` using `by linear_combination ht`. Establish `hs : 2 * x + y - (A + D) = 0` using `(mul_eq_zero.mp ((mul_eq_zero.mp h4).resolve_left (by norm_num))).resolve_left hy`. Take the linear combination `hn - 4 * x * hs`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem cmPoint {d : ℕ} (hd : 0 < d) {L : PeriodPair} (hL : HasCMBy d L) {c : ℂ} {τ : ℍ}
     (h : IsTauOf L c τ) (x y : ℤ) :

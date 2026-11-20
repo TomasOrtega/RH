@@ -9,28 +9,28 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E]
 
 omit [NumberField E] in
 /- English proof (translation)
-The claim follows from `hx.map (starRingEnd E).toIntAlgHom`.
+A detailed English derivation is pending.
 -/
 theorem int_star {x : E} (hx : IsIntegral ℤ x) : IsIntegral ℤ (star x) :=
   hx.map (starRingEnd E).toIntAlgHom
 
 omit [NumberField E] [StarRing E] in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨s, hs⟩ => hs ▸ s.2, fun h => ⟨⟨x, h⟩, rfl⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_range_iff (x : E) : x ∈ (algebraMap (𝓞 E) E).range ↔ IsIntegral ℤ x :=
   ⟨fun ⟨s, hs⟩ => hs ▸ s.2, fun h => ⟨⟨x, h⟩, rfl⟩⟩
 
 /- English proof (translation)
-Set `I : FractionalIdeal (nonZeroDivisors (𝓞 E)) E` to `⟨P, FractionalIdeal.isFractional_of_fg hfg⟩`. Establish `hI : I ≠ 0` using `fun h => hne (FractionalIdeal.coeToSubmodule_eq_bot.2 h)`. Establish `h1 : (1 : E) ∈ ((I⁻¹ : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) : Submodule (𝓞 E) E) * (I : Submodule (𝓞 E) E)`. Rewrite using `[← FractionalIdeal.coe_mul, inv_mul_cancel₀ hI]`. Conclude with `FractionalIdeal.one_mem_one _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.mul_induction_on h1 (fun z hz a ha => ?_) hadd` and prove the remaining obligations. Establish `hz'` using `(FractionalIdeal.mem_inv_iff hI).1 hz`. Establish `hx : star z / β ∈ N`. Rewrite using `[hN]`. Introduce `b hb`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `hz' b hb`. Rewrite `h2` using `[FractionalIdeal.mem_one_iff]`. Take `⟨s, hs⟩` from `h2`. Establish `h3 : IsIntegral ℤ (z * b)` using `hs ▸ s.2`. Establish `e : star b * β * (star z / β) = star (z * b)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[star_mul]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Conclude with `int_star h3`. Use `hQ _ hx a ha` as an intermediate fact.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : star (star z / β) * β * a = z * a`. Rewrite using `[star_div₀, star_star, hβ]`. Clear the denominators using the available nonvanishing facts. Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem one_induction (P N : Submodule (𝓞 E) E) (β : E) (hβ : star β = β) (hβ0 : β ≠ 0) (hfg : P.FG)
     (hne : P ≠ ⊥) (hN : ∀ t, t ∈ N ↔ ∀ a ∈ P, IsIntegral ℤ (star a * β * t)) (Q : E → Prop)
@@ -59,17 +59,15 @@ theorem one_induction (P N : Submodule (𝓞 E) E) (β : E) (hβ : star β = β)
   rwa [e] at this
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hc`. Proceed by induction on `hc using Submodule.span_induction with`. Consider the case `mem t ht`. Take `⟨x, hx, y, hy, rfl⟩` from `ht`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Introduce `a ha`. Rewrite using `[hN]`. Introduce `b hb`. Establish `h1` using `(hN y).1 hy b hb`. Establish `h2` using `int_star ((hN x).1 hx a ha)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : star b * β * (star x * β * y * a) = (star b * β * y) * star (star a * β * x)`. Simplify using `only [star_mul, star_star, hβ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `h1.mul h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => intro a _`. Simplify using the standard rewrite rules. Consider the case `add s t _ _ hs ht => intro a ha`. Rewrite using `[add_mul]`. Conclude with `N.add_mem (hs a ha) (ht a ha)`.
+Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `smul r t _ ht => intro a ha`. Rewrite using `[smul_mul_assoc]`. Conclude with `N.smul_mem r (ht a ha)`. Introduce `hc`. Use `one_induction P N β hβ hβ0 hfg hne hN (fun e => c * e ∈ Submodule.span (𝓞 E) {t | ∃ x ∈ N, ∃ y ∈ N, t = star x * β * y}) (fun a b ha hb => by rw [mul_add]; exact Submodule.add_mem _ ha hb) (fun x hx a ha => Submodule.subset_span ⟨x, hx, c * a, hc a ha, by ring⟩)` as an intermediate fact.
-
-Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem span_eq_colon (P N : Submodule (𝓞 E) E) (β : E) (hβ : star β = β) (hβ0 : β ≠ 0) (hfg : P.FG)
     (hne : P ≠ ⊥) (hN : ∀ t, t ∈ N ↔ ∀ a ∈ P, IsIntegral ℤ (star a * β * t)) (c : E) :
@@ -98,7 +96,7 @@ theorem span_eq_colon (P N : Submodule (𝓞 E) E) (β : E) (hβ : star β = β)
     simpa using this
 
 /- English proof (translation)
-Introduce `h`. Use `one_induction P N β hβ hβ0 hfg hne hN (fun e => e = 0) (fun a b ha hb => by rw [ha, hb, add_zero]) (fun x hx a _ => by rw [h, Submodule.mem_bot] at hx; simp [hx])` as an intermediate fact. Conclude with `one_ne_zero this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dual_ne_bot (P N : Submodule (𝓞 E) E) (β : E) (hβ : star β = β) (hβ0 : β ≠ 0) (hfg : P.FG)
     (hne : P ≠ ⊥) (hN : ∀ t, t ∈ N ↔ ∀ a ∈ P, IsIntegral ℤ (star a * β * t)) : N ≠ ⊥ := by
@@ -109,19 +107,17 @@ theorem dual_ne_bot (P N : Submodule (𝓞 E) E) (β : E) (hβ : star β = β) (
   exact one_ne_zero this
 
 /- English proof (translation)
-Use `set M := Submodule.map (Algebra.linearMap (𝓞 E) E) 𝔭 with hM`. Establish `h1 : (1 : E) ∉ M`. Introduce and unpack `⟨s, hs, h⟩`. Establish `: s = 1`. Apply `IsFractionRing.injective (𝓞 E) E` to reduce the goal to its premises.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h`. Conclude with `h𝔭 ((Ideal.eq_top_iff_one _).2 (this ▸ hs))`. Establish `hA : ∃ x ∈ N, ∃ a ∈ P, star x * β * a ∉ M`. Assume the negation of the conclusion as `h`. Use `push Not at h`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `h1 (one_induction P N β hβ hβ0 hfg hne hN (fun e => e ∈ M) (fun a b => M.add_mem) h)`. Establish `hB : ∃ x ∈ N, ∃ a ∈ P, star a * β * x ∉ M`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Use `one_induction P N β hβ hβ0 hfg hne hN (fun e => star e ∈ M) (fun a b ha hb => by rw [star_add]; exact M.add_mem ha hb) (fun x hx a ha => by` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `e : star (star x * β * a) = star a * β * x`. Simplify using `only [star_mul, star_star, hβ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `h x hx a ha)`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `h1 (by simpa using this)`. Take `⟨x, hx, a, ha, hxa⟩` from `hA`. Take `⟨y, hy, b, hb, hyb⟩` from `hB`. Distinguish the cases in `h2 : star b * β * x ∈ M`. Distinguish the cases in `h3 : star y * β * a ∈ M`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `⟨x + y, N.add_mem hx hy, a, ha, b, hb, fun h => hxa ?_, fun h => hyb ?_⟩` and prove the remaining obligations. Use `M.sub_mem h h3` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[star_add]`. Expand and normalize the polynomial expressions, which then agree.
-
-Use `M.sub_mem h h2` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Conclude with `⟨y, hy, a, ha, b, hb, h3, hyb⟩`. Conclude with `⟨x, hx, a, ha, b, hb, hxa, h2⟩`.
+Expand and normalize the polynomial expressions, which then agree. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_good (P N : Submodule (𝓞 E) E) (β : E) (hβ : star β = β) (hβ0 : β ≠ 0) (hfg : P.FG)
     (hne : P ≠ ⊥) (hN : ∀ t, t ∈ N ↔ ∀ a ∈ P, IsIntegral ℤ (star a * β * t))
@@ -164,27 +160,25 @@ theorem exists_good (P N : Submodule (𝓞 E) E) (β : E) (hβ : star β = β) (
   · exact ⟨x, hx, a, ha, b, hb, hxa, h2⟩
 
 /- English proof (translation)
-Use `set 𝔟 : Ideal (𝓞 E) := Ideal.span {t | t ∈ 𝔫 ∧ star (t : E) = t} with h𝔟`. Use `le_antisymm ?_ (Ideal.span_le.2 fun t ht => ht.1)` and prove the remaining obligations. Establish `inj` using `IsFractionRing.injective (𝓞 E) E`. Establish `htop : Submodule.colon 𝔟 (𝔫 : Set (𝓞 E)) = ⊤`. Assume the negation of the conclusion as `hne'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨𝔭, h𝔭, hle⟩` from `Ideal.exists_le_maximal _ hne'`. Take `⟨x, hx, a, ha, b, hb, h1, h2⟩` from `exists_good P N β hβ hβ0 hfg hne hN 𝔭 h𝔭.ne_top`. Establish `e1 : ∀ z c, star z * β * c = star (star c * β * z)` using `fun z c => by`. Simplify using `only [star_mul, star_star, hβ]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `i1 : IsIntegral ℤ (star x * β * a)` using `by rw [e1]; exact int_star ((hN x).1 hx a ha)`. Establish `i2 : IsIntegral ℤ (star b * β * x)` using `(hN x).1 hx b hb`. Set `s : 𝓞 E` to `⟨_, i1⟩`. Set `s' : 𝓞 E` to `⟨_, i2⟩`. Establish `hs : s ∉ 𝔭` using `fun h => h1 ⟨s, h, rfl⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs' : s' ∉ 𝔭` using `fun h => h2 ⟨s', h, rfl⟩`. Establish `hss : s * s' ∈ Submodule.colon 𝔟 (𝔫 : Set (𝓞 E))`. Rewrite using `[Submodule.mem_colon]`. Introduce `t ht`. Establish `hx𝔫 : star x * β * x ∈ Submodule.map (Algebra.linearMap (𝓞 E) E) 𝔫`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h𝔫]`. Conclude with `Submodule.subset_span ⟨x, hx, x, hx, rfl⟩`. Take `⟨n, hn, hnx⟩` from `hx𝔫`. Establish `hnx' : (n : E) = star x * β * x` using `hnx`. Establish `hn𝔟 : n ∈ 𝔟` using `Ideal.subset_span ⟨hn, by rw [hnx', ← e1]⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ e ∈ Submodule.span (𝓞 E) {t | ∃ x ∈ N, ∃ y ∈ N, t = star x * β * y}, (s * s') • e ∈ Submodule.map (Algebra.linearMap (𝓞 E) E) 𝔟`. Introduce `e he`. Proceed by induction on `he using Submodule.span_induction with`. Consider the case `mem e he`. Take `⟨y, hy, z, hz, rfl⟩` from `he`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `j1 : IsIntegral ℤ (star y * β * a)` using `by rw [e1]; exact int_star ((hN y).1 hy a ha)`. Establish `j2 : IsIntegral ℤ (star b * β * z)` using `(hN z).1 hz b hb`. Set `r : 𝓞 E` to `⟨_, j1.mul j2⟩`. Use `⟨r * n, 𝔟.mul_mem_left _ hn𝔟, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(star y * β * a) * (star b * β * z) * (n : E) = (star x * β * a) * (star b * β * x) * (star y * β * z)`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hnx']`. Expand and normalize the polynomial expressions, which then agree. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [smul_add]`. Conclude with `Submodule.add_mem _ ha hb`.
+Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Consider the case `smul r e _ he => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ r he`. Take `⟨m, hm, hme⟩` from `key (t : E) (by rw [h𝔫]; exact ⟨t, ht, rfl⟩)`. Establish `: m = (s * s') • t` using `inj (by`. Express the relevant statement in the definitionally equal form `_ = ((s * s' * t : 𝓞 E) : E)`.
+Express the relevant assertion in an equivalent form by its definition. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `hme)`. Conclude with `this ▸ hm`. Break down `h𝔭.isPrime.mem_or_mem (hle hss) with h | h` into its components or cases. Use `exacts [hs h, hs' h]`. Introduce `t ht`.
-
-Establish `h1 : (1 : 𝓞 E) ∈ Submodule.colon 𝔟 (𝔫 : Set (𝓞 E))` using `htop ▸ Submodule.mem_top`. Simplify using `using Submodule.mem_colon.1 h1 t ht`.
+A detailed English derivation is pending.
 -/
 theorem eq_span_fixed (P N : Submodule (𝓞 E) E) (β : E) (hβ : star β = β) (hβ0 : β ≠ 0) (hfg : P.FG)
     (hne : P ≠ ⊥) (hN : ∀ t, t ∈ N ↔ ∀ a ∈ P, IsIntegral ℤ (star a * β * t)) (𝔫 : Ideal (𝓞 E))
@@ -243,7 +237,7 @@ theorem eq_span_fixed (P N : Submodule (𝓞 E) E) (β : E) (hβ : star β = β)
 
 omit [StarRing E] in
 /- English proof (translation)
-The claim follows from `hfg span_eq_top := by obtain ⟨x, hx, hx0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot hne rw [eq_top_iff] intro y _ have : y = (y / x) • x := by rw [smul_eq_mul]; field_simp rw [this] exact Submodule.smul_mem _ _ (Submodule.subset_span hx)`.
+A detailed English derivation is pending.
 -/
 theorem isLattice_of (N : Submodule (𝓞 E) E) (hfg : N.FG) (hne : N ≠ ⊥) : Submodule.IsLattice E N where
   fg := hfg
@@ -257,13 +251,11 @@ theorem isLattice_of (N : Submodule (𝓞 E) E) (hfg : N.FG) (hne : N ≠ ⊥) :
 
 omit [StarRing E] in
 /- English proof (translation)
-Establish `h1 : Ideal.absNorm 𝔫 ∣ Ideal.absNorm (Ideal.span {b})` using `Ideal.absNorm_dvd_absNorm_of_le ((Ideal.span_singleton_le_iff_mem _).2 hb)`. Establish `h2 : Ideal.absNorm (Ideal.span {b}) ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`. Conclude with `hb0`. Establish `h3 : (Ideal.absNorm 𝔫 : ℝ) ≤ (Ideal.absNorm (Ideal.span {b}) : ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Nat.le_of_dvd (Nat.pos_of_ne_zero h2) h1` after adjusting the coercions. Use `h3.trans ?_` and prove the remaining obligations. Rewrite using `[Ideal.absNorm_span_singleton]`. Establish `h4 : ((Algebra.norm ℤ b).natAbs : ℝ) = |(Algebra.norm ℚ (b : E) : ℝ)|`. Rewrite using `[← Algebra.coe_norm_int, Nat.cast_natAbs]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[h4, ← Rat.cast_abs, ← InfinitePlace.prod_eq_abs_norm, pow_mul, Formalism.HermitianLatticesTheory.fDeg, ← Finset.card_univ, ← Finset.prod_const]`. Use `Finset.prod_le_prod (fun w _ => by positivity) fun w _ => ?_` and prove the remaining obligations. Rewrite using `[IsTotallyComplex.mult_eq]`. Establish `: w (b : E) ≤ ρ` using `by rw [← InfinitePlace.norm_embedding_eq]; exact hρ _`.
-
-Use `gcongr`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem absNorm_le (hE : IsTotallyComplex E) (𝔫 : Ideal (𝓞 E)) (b : 𝓞 E) (hb : b ∈ 𝔫) (hb0 : b ≠ 0) (ρ : ℝ)
     (hρ : ∀ φ : E →+* ℂ, ‖φ (b : E)‖ ≤ ρ) : (Ideal.absNorm 𝔫 : ℝ) ≤ ρ ^ (2 * Formalism.HermitianLatticesTheory.fDeg E) := by
@@ -285,33 +277,31 @@ theorem absNorm_le (hE : IsTotallyComplex E) (𝔫 : Ideal (𝓞 E)) (b : 𝓞 E
   gcongr
 
 /- English proof (translation)
-Set `A` to `L.comap (LinearMap.inl (𝓞 E) E E)`. Set `B` to `L.comap (LinearMap.inr (𝓞 E) E E)`. Set `P` to `L.map (LinearMap.fst (𝓞 E) E E)`. Set `Q` to `L.map (LinearMap.snd (𝓞 E) E E)`. Establish `hA : ∀ t, t ∈ A ↔ (t, 0) ∈ L` using `fun t => Iff.rfl`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hB : ∀ t, t ∈ B ↔ (0, t) ∈ L` using `fun t => Iff.rfl`. Establish `hPfg : P.FG` using `hfg.map _`. Establish `hQfg : Q.FG` using `hfg.map _`. Establish `hPne : P ≠ ⊥`. Take `⟨x, hx, hx0⟩` from `hp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `fun h => hx0 ((Submodule.eq_bot_iff _).1 h _ ⟨x, hx, rfl⟩)`. Establish `hQne : Q ≠ ⊥`. Take `⟨x, hx, hx0⟩` from `hq`. Conclude with `fun h => hx0 ((Submodule.eq_bot_iff _).1 h _ ⟨x, hx, rfl⟩)`. Establish `hAP : ∀ t, t ∈ A ↔ ∀ a ∈ P, IsIntegral ℤ (star a * β₁ * t)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Introduce `t`. Rewrite using `[hA, hL]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `h _ ⟨y, hy, rfl⟩`. Simplify using `using h y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `h y hy`. Simplify using `using h y.1 ⟨y, hy, rfl⟩`. Establish `hBQ : ∀ t, t ∈ B ↔ ∀ a ∈ Q, IsIntegral ℤ (star a * β₂ * t)`. Introduce `t`. Rewrite using `[hB, hL]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `h _ ⟨y, hy, rfl⟩`. Simplify using `using h y hy`. Introduce `h y hy`. Simplify using `using h y.2 ⟨y, hy, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hAle : A ≤ P` using `fun t ht => ⟨(t, 0), ht, rfl⟩`. Establish `hBle : B ≤ Q` using `fun t ht => ⟨(0, t), ht, rfl⟩`. Use `set S := Submodule.span (𝓞 E) {t | ∃ x ∈ A, ∃ y ∈ A, t = star x * β₁ * y} with hS`. Use `set T := Submodule.span (𝓞 E) {t | ∃ x ∈ B, ∃ y ∈ B, t = star x * β₂ * y} with hT`. Establish `hS1 : S ≤ LinearMap.range (Algebra.linearMap (𝓞 E) E)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hS, Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, y, hy, rfl⟩`. Conclude with `⟨⟨_, (hAP y).1 hy x (hAle hx)⟩, rfl⟩`. Establish `hT1 : T ≤ LinearMap.range (Algebra.linearMap (𝓞 E) E)`. Rewrite using `[hT, Submodule.span_le]`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `_ ⟨x, hx, y, hy, rfl⟩`. Conclude with `⟨⟨_, (hBQ y).1 hy x (hBle hx)⟩, rfl⟩`. Establish `hSc` using `span_eq_colon P A β₁ h1 h10 hPfg hPne hAP`. Establish `hTc` using `span_eq_colon Q B β₂ h2 h20 hQfg hQne hBQ`. Establish `hST : S = T`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `c hc`. Take `⟨r, rfl⟩` from `hS1 hc`. Rewrite using `[hTc]`. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `(hA _).1 ((hSc _).1 hc y.1 ⟨y, hy, rfl⟩)`. Establish `e2` using `L.sub_mem (L.smul_mem r hy) e1`. Rewrite using `[hB]`. Use `e2 using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `ext <;> simp [Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `c hc`. Take `⟨r, rfl⟩` from `hT1 hc`. Rewrite using `[hSc]`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Establish `e1` using `(hB _).1 ((hTc _).1 hc y.2 ⟨y, hy, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2` using `L.sub_mem (L.smul_mem r hy) e1`. Rewrite using `[hA]`. Use `e2 using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `ext <;> simp [Algebra.smul_def]`. Establish `hmap : S = Submodule.map (Algebra.linearMap (𝓞 E) E) (S.comap (Algebra.linearMap (𝓞 E) E))` using `(Submodule.map_comap_eq_self hS1).symm`.
-
-Use `⟨A, B, S.comap (Algebra.linearMap (𝓞 E) E), isLattice_of A (hPfg.of_le hAle) (dual_ne_bot P A β₁ h1 h10 hPfg hPne hAP), isLattice_of B (hQfg.of_le hBle) (dual_ne_bot Q B β₂ h2 h20 hQfg hQne hBQ), hA, hB, hmap, hST ▸ hmap, eq_span_fixed P A β₁ h1 h10 hPfg hPne hAP _ hmap⟩` and prove the remaining obligations.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem diag_split (β₁ β₂ : E) (h1 : star β₁ = β₁) (h2 : star β₂ = β₂) (h10 : β₁ ≠ 0) (h20 : β₂ ≠ 0)
     (L : Submodule (𝓞 E) (E × E)) (hfg : L.FG) (hp : ∃ x ∈ L, x.1 ≠ 0) (hq : ∃ x ∈ L, x.2 ≠ 0)
@@ -396,62 +386,56 @@ theorem diag_split (β₁ β₂ : E) (h1 : star β₁ = β₁) (h2 : star β₂ 
 
 omit [NumberField E] in
 /- English proof (translation)
-Rewrite using `[← star_dotProduct_star, star_star, star_mulVec, hJ, dotProduct_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_star {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (hJ : Jᴴ = J) (x y : Fin n → E) :
     star (star y ⬝ᵥ (J *ᵥ x)) = star x ⬝ᵥ (J *ᵥ y) := by
   rw [← star_dotProduct_star, star_star, star_mulVec, hJ, dotProduct_mulVec]
 
 /- English proof (translation)
-Introduce `E _ _ _ hE J hJ hpos Λ hΛ hdual u hu hu0 ρ hρ`. Establish `hne : ∀ y : Fin 2 → E, y ≠ 0 → star y ⬝ᵥ (J *ᵥ y) ≠ 0`. Introduce `y hy h`. Take `⟨φ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Use `hpos φ y hy` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `this` using `[h]`. Simplify using `at this`. Use `set v := star u ᵥ* J with hv`. Set `w : Fin 2 → E` to `![-v 1, v 0]`. Establish `huw : star u ⬝ᵥ (J *ᵥ w) = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dotProduct_mulVec, ← hv]`. Simplify using `[w, dotProduct, Fin.sum_univ_two]`. Expand and normalize the polynomial expressions, which then agree. Establish `hwu : star w ⬝ᵥ (J *ᵥ u) = 0` using `by rw [← herm_star J hJ, huw, star_zero]`. Use `set β₁ := star u ⬝ᵥ (J *ᵥ u) with hβ₁`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set β₂ := star w ⬝ᵥ (J *ᵥ w) with hβ₂`. Establish `h10 : β₁ ≠ 0` using `hne u hu0`. Establish `hb1 : β₁ = v 0 * u 0 + v 1 * u 1`. Rewrite using `[hβ₁, dotProduct_mulVec, ← hv]`. Simplify using `[dotProduct, Fin.sum_univ_two]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hw0 : w ≠ 0`. Introduce `h`. Establish `a0` using `congrFun h 0`. Establish `a1` using `congrFun h 1`. Simplify using `[w] at a0 a1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h10 (by rw [hb1, a0, a1]; ring)`. Establish `h20 : β₂ ≠ 0` using `hne w hw0`. Establish `h1 : star β₁ = β₁` using `herm_star J hJ u u`. Establish `h2 : star β₂ = β₂` using `herm_star J hJ w w`. Set `G : Matrix (Fin 2) (Fin 2) E` to `Matrix.of fun i j => ![u, w] j i`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hG : G.det ≠ 0`. Rewrite using `[Matrix.det_fin_two]`. Simplify using `only [G, w, Matrix.of_apply]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one]`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Apply `h10` to reduce the goal to its premises. Rewrite using `[hb1, ← h]`. Expand and normalize the polynomial expressions, which then agree. Establish `hGv : ∀ a b : E, G *ᵥ ![a, b] = a • u + b • w`. Introduce `a b`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `i`. Simplify using `[G, mulVec, dotProduct, Fin.sum_univ_two, mul_comm]`. Establish `hGJ : Gᴴ * J * G = Matrix.diagonal ![β₁, β₂]`. Establish `: ∀ i j, (Gᴴ * J * G) i j = star (![u, w] i) ⬝ᵥ (J *ᵥ (![u, w] j))`. Introduce `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[G, Matrix.mul_apply, mulVec, dotProduct, Fin.sum_univ_two]`. Expand and normalize the polynomial expressions, which then agree. Use extensionality with `i j`. Rewrite using `[this]`. Apply the tactic sequence `fin_cases i <;> fin_cases j`.
+Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `exacts [rfl, huw, hwu, rfl]`. Set `f : (E × E) →ₗ[E] (Fin 2 → E)` to `(LinearMap.toSpanSingleton E _ u).coprod (LinearMap.toSpanSingleton E _ w)`. Establish `hf : ∀ x : E × E, f x = x.1 • u + x.2 • w` using `fun x => rfl`. Establish `hpair : ∀ x y : E × E, star (f y) ⬝ᵥ (J *ᵥ f x) = star y.1 * β₁ * x.1 + star y.2 * β₂ * x.2`. Introduce `x y`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hf, hf]`. Simplify using `only [star_add, star_smul, mulVec_add, mulVec_smul, add_dotProduct, dotProduct_add, smul_dotProduct, dotProduct_smul, huw, hwu, ← hβ₁, ← hβ₂, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hinj : Function.Injective f`. Rewrite using `[injective_iff_map_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `x hx`. Establish `a0` using `hpair x (1, 0)`. Establish `a1` using `hpair x (0, 1)`. Simplify using `[hx, h10, h20] at a0 a1`. Conclude with `Prod.ext a0 a1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hsurj : Function.Surjective f` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank (by simp)).1 hinj`. Set `L : Submodule (𝓞 E) (E × E)` to `Λ.comap (f.restrictScalars (𝓞 E))`. Establish `hLm : ∀ x, x ∈ L ↔ f x ∈ Λ` using `fun x => Iff.rfl`. Establish `hLfg : L.FG`. Apply `Submodule.fg_of_fg_map_injective (f.restrictScalars (𝓞 E)) hinj` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.map_comap_eq_of_surjective (f := f.restrictScalars (𝓞 E)) hsurj]`. Conclude with `hΛ.fg`. Establish `hu1 : ((1, 0) : E × E) ∈ L` using `by rw [hLm, hf]; simpa using hu`. Establish `hq : ∃ x ∈ L, x.2 ≠ 0`. Assume the negation of the conclusion as `h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `push Not at h`. Establish `: Submodule.span E (Λ : Set (Fin 2 → E)) ≤ (LinearMap.ker (LinearMap.snd E E E)).map f`. Rewrite using `[Submodule.span_le]`. Introduce `y hy`. Take `⟨x, rfl⟩` from `hsurj y`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨x, h x hy, rfl⟩`. Rewrite `this` using `[hΛ.span_eq_top]`. Take `⟨x, hx, hx'⟩` from `this (Submodule.mem_top (x := f (0, 1)))`. Rewrite `hx` using `[hinj hx']`. Simplify using `at hx`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hL : ∀ x, x ∈ L ↔ ∀ y ∈ L, IsIntegral ℤ (star y.1 * β₁ * x.1 + star y.2 * β₂ * x.2)`. Introduce `x`. Rewrite using `[hLm, hdual]`. Prove the components needed by the constructor for the conclusion. Introduce `h y hy`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hpair, ← mem_range_iff]`. Conclude with `h _ hy`. Introduce `h y hy`. Take `⟨y, rfl⟩` from `hsurj y`. Rewrite using `[mem_range_iff, hpair]`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h y hy`. Take `⟨A, B, 𝔫, hA, hB, hA', hB', hS, hT, hfix⟩` from `diag_split β₁ β₂ h1 h2 h10 h20 L hLfg ⟨_, hu1, one_ne_zero⟩ hq hL`. Establish `hβn : β₁ ∈ Submodule.map (Algebra.linearMap (𝓞 E) E) 𝔫`. Rewrite using `[← hS]`. Conclude with `Submodule.subset_span ⟨1, (hA' 1).2 hu1, 1, (hA' 1).2 hu1, by simp⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Take `⟨b, hb, hbβ⟩` from `hβn`. Establish `hbβ' : (b : E) = β₁` using `hbβ`. Establish `hb0 : b ≠ 0`. Introduce and unpack `rfl`. Conclude with `h10 (by rw [← hbβ']; rfl)`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨Matrix.GeneralLinearGroup.mkOfDetNeZero G hG, β₁, β₂, A, B, 𝔫, hGJ, h1, h2, fun φ => ⟨hpos φ u hu0, hpos φ w hw0⟩, hA, hB, fun t => ?_, fun t => ?_, hS, hT, ?_, hfix, ?_⟩` and prove the remaining obligations. Rewrite using `[hA', hLm, hf]`. Express the relevant statement in the definitionally equal form `_ ↔ G *ᵥ _ ∈ Λ`. Rewrite using `[hGv]`. Rewrite using `[hB', hLm, hf]`.
-
-Express the relevant statement in the definitionally equal form `_ ↔ G *ᵥ _ ∈ Λ`. Rewrite using `[hGv]`. Introduce and unpack `rfl`. Conclude with `hb0 hb`. Use `absNorm_le hE.1 𝔫 b hb hb0 ρ fun φ => ?_` and prove the remaining obligations.
-
-Rewrite using `[hbβ']`. Establish `him : (φ β₁).im = 0`. Use `hE.2.1 φ β₁` as an intermediate fact. Rewrite `this` using `[h1]`. Conclude with `Complex.conj_eq_iff_im.1 this.symm`.
-
-Rewrite using `[← Complex.abs_re_eq_norm.2 him, abs_of_pos (hpos φ u hu0)]`. Conclude with `hρ φ`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem planeSplit : ∀ (E : Type) [Field E] [NumberField E] [StarRing E], Formalism.HermitianLatticesTheory.IsCMUnram E → ∀ (J : Matrix (Fin 2) (Fin 2) E), Jᴴ = J → (∀ (φ : E →+* ℂ) (y : Fin 2 → E), y ≠ 0 → 0 < (φ (star y ⬝ᵥ (J *ᵥ y))).re) → ∀ Λ : Submodule (𝓞 E) (Fin 2 → E), Submodule.IsLattice E Λ → (∀ x, x ∈ Λ ↔ ∀ y ∈ Λ, star y ⬝ᵥ (J *ᵥ x) ∈ (algebraMap (𝓞 E) E).range) → ∀ u ∈ Λ, u ≠ 0 → ∀ ρ : ℝ, (∀ φ : E →+* ℂ, (φ (star u ⬝ᵥ (J *ᵥ u))).re ≤ ρ) → ∃ (γ : GL (Fin 2) E) (β₁ β₂ : E) (N₁ N₂ : Submodule (𝓞 E) E) (𝔫 : Ideal (𝓞 E)), (γ : Matrix (Fin 2) (Fin 2) E)ᴴ * J * (γ : Matrix (Fin 2) (Fin 2) E) = Matrix.diagonal ![β₁, β₂] ∧ star β₁ = β₁ ∧ star β₂ = β₂ ∧ (∀ φ : E →+* ℂ, 0 < (φ β₁).re ∧ 0 < (φ β₂).re) ∧ Submodule.IsLattice E N₁ ∧ Submodule.IsLattice E N₂ ∧ (∀ t, t ∈ N₁ ↔ (γ : Matrix (Fin 2) (Fin 2) E) *ᵥ ![t, 0] ∈ Λ) ∧ (∀ t, t ∈ N₂ ↔ (γ : Matrix (Fin 2) (Fin 2) E) *ᵥ ![0, t] ∈ Λ) ∧ Submodule.span (𝓞 E) {t | ∃ x ∈ N₁, ∃ y ∈ N₁, t = star x * β₁ * y} = Submodule.map (Algebra.linearMap (𝓞 E) E) 𝔫 ∧ Submodule.span (𝓞 E) {t | ∃ x ∈ N₂, ∃ y ∈ N₂, t = star x * β₂ * y} = Submodule.map (Algebra.linearMap (𝓞 E) E) 𝔫 ∧ 𝔫 ≠ ⊥ ∧ 𝔫 = Ideal.span {t | t ∈ 𝔫 ∧ star (t : E) = t} ∧ (Ideal.absNorm 𝔫 : ℝ) ≤ ρ ^ (2 * Formalism.HermitianLatticesTheory.fDeg E) := by
   intro E _ _ _ hE J hJ hpos Λ hΛ hdual u hu hu0 ρ hρ

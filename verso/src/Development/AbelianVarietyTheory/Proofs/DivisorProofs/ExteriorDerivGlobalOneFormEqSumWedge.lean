@@ -10,7 +10,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AbCoh
 
 /- English proof (translation)
-Introduce `R _ C _ F hF hH w`. Take `⟨n, u, v, h⟩` from `twoForm_eq_wsum R C F hF hH (fun T ↦ dOne R (F.obj T) (w.1 T)) (fun T T' φ ↦ by rw [pOm_dOne, ← w.2 φ])`. Conclude with `⟨n, u, v, fun T ↦ congrFun h T⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem dOne_glob_eq_wsum : ∀ (R : Type) [CommRing R] (C : Type) [Category.{0} C] (F : C ⥤ CommAlgCat.{0} R),
     HasFrame F → CohomZeroIsConstants F → ∀ w : Glob1 F, ∃ (n : ℕ) (u v : Fin n → Glob1 F), ClRel F w u v := by

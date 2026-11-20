@@ -20,7 +20,7 @@ variable {R B C : Type} [CommRing R] [CommRing B] [Algebra R B] [CommRing C] [Al
   {J : Ideal C}
 
 /- English proof (translation)
-Use `Ideal.mul_mem_mul ha hb` as an intermediate fact. Rewrite `this` using `[← pow_two, hJ, Ideal.zero_eq_bot, Ideal.mem_bot]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mul_eq_zero_of_sq (hJ : J ^ 2 = 0) {a b : C} (ha : a ∈ J) (hb : b ∈ J) : a * b = 0 := by
   have := Ideal.mul_mem_mul ha hb
@@ -49,7 +49,7 @@ def diffLam (hJ : J ^ 2 = 0) (ρ₁ ρ₂ : B →ₐ[R] C) (hd : ∀ b, ρ₁ b 
 variable (hJ : J ^ 2 = 0) (ρ₁ ρ₂ : B →ₐ[R] C) (hd : ∀ b, ρ₁ b - ρ₂ b ∈ J)
 
 /- English proof (translation)
-Use `letI : Algebra B C := (ρ₂ : B →+* C).toAlgebra`. Use `haveI : IsScalarTower R B C := IsScalarTower.of_algebraMap_eq fun r ↦ (ρ₂.commutes r).symm`. Conclude with `((diffDer hJ ρ₁ ρ₂ hd).liftKaehlerDifferential).map_smul b m`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem diffLam_smul (b : B) (m : Ω[B⁄R]) :
     diffLam hJ ρ₁ ρ₂ hd (b • m) = ρ₂ b * diffLam hJ ρ₁ ρ₂ hd m := by
@@ -58,7 +58,7 @@ theorem diffLam_smul (b : B) (m : Ω[B⁄R]) :
   exact ((diffDer hJ ρ₁ ρ₂ hd).liftKaehlerDifferential).map_smul b m
 
 /- English proof (translation)
-Use `letI : Algebra B C := (ρ₂ : B →+* C).toAlgebra`. Use `haveI : IsScalarTower R B C := IsScalarTower.of_algebraMap_eq fun r ↦ (ρ₂.commutes r).symm`. Conclude with `(diffDer hJ ρ₁ ρ₂ hd).liftKaehlerDifferential_comp_D t`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem diffLam_D (t : B) : diffLam hJ ρ₁ ρ₂ hd (D R B t) = ρ₁ t - ρ₂ t := by
   letI : Algebra B C := (ρ₂ : B →+* C).toAlgebra
@@ -66,9 +66,7 @@ theorem diffLam_D (t : B) : diffLam hJ ρ₁ ρ₂ hd (D R B t) = ρ₁ t - ρ�
   exact (diffDer hJ ρ₁ ρ₂ hd).liftKaehlerDifferential_comp_D t
 
 /- English proof (translation)
-Proceed by induction on `m using GlobalTheory.CechDR.ind1 with`. Consider the case `h b c => rw [diffLam_smul, diffLam_D]`. Conclude with `J.mul_mem_left _ (hd c)`. Consider the case `h0 => rw [map_zero]`. Conclude with `J.zero_mem`.
-
-Consider the case `ha x y hx hy => rw [map_add]`. Conclude with `J.add_mem hx hy`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem diffLam_mem (m : Ω[B⁄R]) : diffLam hJ ρ₁ ρ₂ hd m ∈ J := by
   induction m using GlobalTheory.CechDR.ind1 with
@@ -103,19 +101,19 @@ theorem diagLift_apply (c : TrivSqZeroExt B Ω[B⁄R]) :
     diagLift hJ ρ₁ ρ₂ hd c = ρ₂ c.fst + diffLam hJ ρ₁ ρ₂ hd c.snd := rfl
 
 /- English proof (translation)
-Simplify using `[diagLift_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem diagLift_inl (b : B) : diagLift hJ ρ₁ ρ₂ hd (TrivSqZeroExt.inl b) = ρ₂ b := by
   simp [diagLift_apply]
 
 /- English proof (translation)
-Rewrite using `[diagLift_apply, fst_derSec, snd_derSec, diffLam_D]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem diagLift_diagSec (b : B) : diagLift hJ ρ₁ ρ₂ hd (diagSec R B b) = ρ₁ b := by
   rw [diagLift_apply, fst_derSec, snd_derSec, diffLam_D]; ring
 
 /- English proof (translation)
-Rewrite using `[diagLift_apply, add_sub_cancel_left]`. Conclude with `diffLam_mem hJ ρ₁ ρ₂ hd _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diagLift_sub_mem (c : TrivSqZeroExt B Ω[B⁄R]) : diagLift hJ ρ₁ ρ₂ hd c - ρ₂ c.fst ∈ J := by
   rw [diagLift_apply, add_sub_cancel_left]; exact diffLam_mem hJ ρ₁ ρ₂ hd _
@@ -127,9 +125,9 @@ section Repr
 variable {R B : Type} [CommRing R] [CommRing B] [Algebra R B]
 
 /- English proof (translation)
-Proceed by induction on `m using GlobalTheory.CechDR.ind1 with`. Consider the case `h b c => exact ⟨1, fun _ ↦ b, fun _ ↦ c, by simp⟩`. Consider the case `h0 => exact ⟨0, Fin.elim0, Fin.elim0, by simp⟩`. Consider the case `ha x y hx hy`. Take `⟨n, r, t, rfl⟩` from `hx`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨n', r', t', rfl⟩` from `hy`. Use `⟨n + n', Fin.append r r', Fin.append t t', ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_add]`. Simplify using `[Fin.append_left, Fin.append_right]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_sum_smul_D (m : Ω[B⁄R]) : ∃ (n : ℕ) (r t : Fin n → B), m = ∑ k, r k • D R B (t k) := by
   induction m using GlobalTheory.CechDR.ind1 with
@@ -158,14 +156,14 @@ def valHom {C : Type} [CommRing C] [Algebra R C] (y : Sp C ⟶ X) (hy : ⊤ ≤ 
       exact e1 }
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.Points.valR_eq y U hy f`.
+A detailed English derivation is pending.
 -/
 theorem valR_eq_valHom {C : Type} [CommRing C] [Algebra R C] (y : Sp C ⟶ X) (hy : ⊤ ≤ y ⁻¹ᵁ U)
     (hs : y ≫ s = spMap (algebraMap R C)) (f : Γ(X, U)) : valR y U f = valHom y hy hs f :=
   GlobalTheory.Points.valR_eq y U hy f
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.Points.specMap_valMap_fromSpec hU y hy`.
+A detailed English derivation is pending.
 -/
 theorem valHom_pt {C : Type} [CommRing C] [Algebra R C] (hU : IsAffineOpen U) (y : Sp C ⟶ X)
     (hy : ⊤ ≤ y ⁻¹ᵁ U) (hs : y ≫ s = spMap (algebraMap R C)) :
@@ -173,7 +171,7 @@ theorem valHom_pt {C : Type} [CommRing C] [Algebra R C] (hU : IsAffineOpen U) (y
   GlobalTheory.Points.specMap_valMap_fromSpec hU y hy
 
 /- English proof (translation)
-Establish `h1 : spMap a = spMap b` using `(cancel_mono hU.fromSpec).1 h`. Establish `h2` using `Spec.map_injective h1`. Conclude with `congrArg CommRingCat.Hom.hom h2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ringHom_ext_affPt {C : Type} [CommRing C] (hU : IsAffineOpen U) {a b : CechDR.Sec s U →+* C}
     (h : spMap a ≫ CechDR.affPt s ⟨U, hU⟩ = spMap b ≫ CechDR.affPt s ⟨U, hU⟩) : a = b := by
@@ -195,7 +193,7 @@ def diagPr (B : Type) [CommRing B] [Algebra R B] (x : Sp B ⟶ X) (hx : x ≫ s 
   pt := by rw [spMap_id, Category.id_comp]
 
 /- English proof (translation)
-Establish `h0 : ev ω.1 ((diagExt R B).secHom hx j hj ≫ diagPr B x hx) = 0` using `ω.2 _ rfl rfl`. Rewrite `h0` using `[ev_comp]`. Conclude with `eq_neg_of_add_eq_zero_left h0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fst_ev_secHom (ω : Form s) (B : Type) [CommRing B] [Algebra R B] (x : Sp B ⟶ X)
     (hx : x ≫ s = spMap (algebraMap R B)) (j : B →ₐ[R] TrivSqZeroExt B Ω[B⁄R])
@@ -208,19 +206,19 @@ theorem fst_ev_secHom (ω : Form s) (B : Type) [CommRing B] [Algebra R B] (x : S
 end Geo
 
 /- English proof (translation)
-Introduce `R _ X s ω U hU`. Establish `hx` using `CechDR.affPt_w s ⟨U, hU⟩`. Take `⟨n, r, t, hΩ⟩` from `exists_sum_smul_D (connForm ω.1 (CechDR.affPt s ⟨U, hU⟩) hx)`. Use `⟨n, r, t, ?_⟩` and prove the remaining obligations. Introduce `T hJ hδ y₁ y₂ h₁ h₂ e₁ e₂ hy₁ hy₂`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `p₁` using `valHom_pt hU y₁ hy₁ h₁`. Establish `p₂` using `valHom_pt hU y₂ hy₂ h₂`. Establish `hπ : T.π.comp (valHom y₁ hy₁ h₁ : CechDR.Sec s U →+* T.B) = T.π.comp (valHom y₂ hy₂ h₂ : CechDR.Sec s U →+* T.B)` using `ringHom_ext_affPt hU (by rw [Cris.spMap_comp, Cris.spMap_comp, Category.assoc, Category.assoc, p₁, p₂, e₁, e₂])`. Establish `hd : ∀ b, valHom y₁ hy₁ h₁ b - valHom y₂ hy₂ h₂ b ∈ T.J` using `fun b ↦ (T.ker _).1 (by rw [map_sub, sub_eq_zero]; exact RingHom.congr_fun hπ b)`. Set `Φ : (diagExt R (CechDR.Sec s U)).thick (CechDR.affPt s ⟨U, hU⟩) hx ⟶ T` to `{ φ := diagLift hJ _ _ hd φ₀ := T.π.comp (valHom y₂ hy₂ h₂ : CechDR.Sec s U →+* T.B) comm := fun c ↦ by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `h0` using `(T.ker _).2 (diagLift_sub_mem hJ _ _ hd c)`. Rewrite `h0` using `[map_sub, sub_eq_zero]`. Conclude with `h0.symm`. Use `dp := by`. Establish `key : DividedPowers.IsDPMorphism (divided₂ (diagExt R (CechDR.Sec s U)).sq) (divided₂ hJ) (diagLift hJ _ _ hd : TrivSqZeroExt (CechDR.Sec s U) Ω[(CechDR.Sec s U)⁄R] →+* T.B)` using `isDPMorphism_sqDP _ hJ _ fun (a : TrivSqZeroExt (CechDR.Sec s U) Ω[(CechDR.Sec s U)⁄R]) ha ↦ by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha' : a.fst = 0` using `ha`. Establish `h0` using `diagLift_sub_mem hJ _ _ hd a`. Rewrite `h0` using `[ha', map_zero, sub_zero]`. Then use the resulting hypothesis. Rewrite using `[hδ]`. Conclude with `key`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `pt := by rw [Cris.spMap_comp, Category.assoc, p₂, e₂] }`. Set `a₁ : Thick.triv (CechDR.Sec s U) (CechDR.affPt s ⟨U, hU⟩) hx ⟶ Thick.triv T.B y₁ h₁` to `Thick.trivHom (valHom y₁ hy₁ h₁) p₁`. Set `a₂ : Thick.triv (CechDR.Sec s U) (CechDR.affPt s ⟨U, hU⟩) hx ⟶ Thick.triv T.B y₂ h₂` to `Thick.trivHom (valHom y₂ hy₂ h₂) p₂`. Establish `k₂` using `Form.ev_sq ω a₂ (idLift T y₂ h₂ e₂) ((diagExt R (CechDR.Sec s U)).secHom hx (diagExt R (CechDR.Sec s U)).i fun _ ↦ rfl) Φ rfl rfl fun c ↦ (diagLift_inl hJ _ _ hd c).symm`. Establish `k₁` using `Form.ev_sq ω a₁ (idLift T y₁ h₁ e₁) ((diagExt R (CechDR.Sec s U)).secHom hx (diagSec R (CechDR.Sec s U)) (fst_derSec _)) Φ rfl rfl fun c ↦ (diagLift_diagSec hJ _ _ hd c).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `f₁` using `fst_ev_secHom ω (CechDR.Sec s U) _ hx (diagExt R (CechDR.Sec s U)).i fun _ ↦ rfl`. Establish `f₂` using `fst_ev_secHom ω (CechDR.Sec s U) _ hx (diagSec R (CechDR.Sec s U)) (fst_derSec _)`. Rewrite using `[k₁, k₂, add_sub_add_right_eq_sub, ← map_sub]`. Express the relevant statement in the definitionally equal form `diagLift hJ _ _ hd _ = _`. Rewrite using `[diagLift_apply, TrivSqZeroExt.fst_sub, f₁, f₂, sub_self, map_zero, zero_add]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : (ev ω.1 ((diagExt R (CechDR.Sec s U)).secHom hx (diagExt R (CechDR.Sec s U)).i fun _ ↦ rfl) - ev ω.1 ((diagExt R (CechDR.Sec s U)).secHom hx (diagSec R (CechDR.Sec s U)) (fst_derSec _))).snd = connForm ω.1 (CechDR.affPt s ⟨U, hU⟩) hx` using `rfl`. Rewrite using `[hc, hΩ, map_sum]`. Use `Finset.sum_congr rfl fun k _ ↦ ?_` and prove the remaining obligations. Rewrite using `[diffLam_smul, diffLam_D]`. Conclude with `(congrArg₂ (fun a b ↦ a * b) (valR_eq_valHom y₂ hy₂ h₂ (r k)) (congrArg₂ (fun a b ↦ a - b) (valR_eq_valHom y₁ hy₁ h₁ (t k)) (valR_eq_valHom y₂ hy₂ h₂ (t k)))).symm`.
+A detailed English derivation is pending.
 -/
 theorem ev_idLift_sub_eq_sum : ∀ (R : Type) [CommRing R] (X : Scheme.{0}) (s : X ⟶ Sp R) (ω : Form s) (U : X.Opens), IsAffineOpen U → ∃ (n : ℕ) (r t : Fin n → Γ(X, U)), ∀ (T : Thick (dp0 R) s) (hJ : T.J ^ 2 = 0), T.δ = divided₂ hJ → ∀ (y₁ y₂ : Sp T.B ⟶ X) (h₁ : y₁ ≫ s = spMap (algebraMap R T.B)) (h₂ : y₂ ≫ s = spMap (algebraMap R T.B)) (e₁ : spMap T.π ≫ y₁ = T.x) (e₂ : spMap T.π ≫ y₂ = T.x), ⊤ ≤ y₁ ⁻¹ᵁ U → ⊤ ≤ y₂ ⁻¹ᵁ U → ev ω.1 (idLift T y₂ h₂ e₂) - ev ω.1 (idLift T y₁ h₁ e₁) = ∑ k, valR y₂ U (r k) * (valR y₁ U (t k) - valR y₂ U (t k)) := by
   intro R _ X s ω U hU

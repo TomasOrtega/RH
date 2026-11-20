@@ -3,13 +3,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
 /- English proof (translation)
-Introduce `_ hE F Ω _ _ _ _ _ l _ A v hA hl _`. Use `set ρ := Representation.trivial (ZMod (l ^ 1)) (Dec (F := F) A) (ZMod (l ^ 1)) with hρ`. Establish `hcont : ReciprocityTheory.Gal.ContAction ρ` using `by show Continuous fun p : (Dec (F := F) A) × ZMod (l ^ 1) => (ρ p.1) p.2`. Simplify `continuous_snd` using `[hρ]`. Establish `hE'` using `(hE F Ω l 1 (ZMod (l ^ 1)) A ρ v one_pos hA hcont).2 hl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : Nat.card ↥(ReciprocityTheory.Gal.H0 ρ) = l`. Establish `htop : ReciprocityTheory.Gal.H0 ρ = ⊤`. Use extensionality with `x`. Simplify using `[ReciprocityTheory.Gal.H0, hρ]`. Rewrite using `[htop, Nat.card_congr Submodule.topEquiv.toEquiv, Nat.card_zmod, pow_one]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Use `haveI hz : Subsingleton ↥(ReciprocityTheory.Gal.Z1 ρ) := ⟨fun a b => Subtype.ext ((hne a a.2).trans (hne b b.2).symm)⟩`. Use `haveI hs : Subsingleton (ReciprocityTheory.Gal.H1 ρ) := (Submodule.Quotient.mk_surjective _).subsingleton`. Establish `h1 : Nat.card (ReciprocityTheory.Gal.H1 ρ) = 1` using `Nat.card_eq_one_iff_unique.mpr ⟨hs, ⟨0⟩⟩`.
-
-Rewrite `hE'` using `[h1, h0]`. Conclude with `(Fact.out : l.Prime).one_lt.ne' (Nat.eq_one_of_mul_eq_one_right hE'.symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Gys.locNe :
     LocalTateDuality → LocalEulerChar → ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (A : ValuationSubring Ω) (v : HeightOneSpectrum (𝓞 F)), IsPlaceOver A v → ((l : ℕ) : 𝓞 F) ∉ v.asIdeal → (∀ g ∈ Dec (F := F) A, cycMod F Ω l 1 g = 1) → ∃ f ∈ Z1 (Representation.trivial (ZMod (l ^ 1)) (Dec (F := F) A) (ZMod (l ^ 1))), f ≠ 0 := by

@@ -19,9 +19,9 @@ noncomputable section
 namespace GlobalTheory.FlagAmple
 
 /- English proof (translation)
-Introduce `D A N j S κ s Φ k z`. Take `⟨V, hV, φ, g, hz, hstr, hst⟩` from `GlobalTheory.ShFam.EigSpread.exists_stable_eigFrame _ _ _ _ _ _ _ _ s.T.Z z`. Establish `h1` using `GlobalTheory.T.flag_det_divisor_trivial_stable D A N j S κ s Φ k V hV φ g hstr hst`. Establish `hP` using `GlobalTheory.T.isProper_flag_over_affine D A N j S κ s Φ k V hV`. Establish `h23` using `GlobalTheory.T.exists_flag_sections_stable D A N j S κ s Φ k V hV φ g hstr hst`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨V, ((Φ.C k).π ∣_ V) ≫ hV.isoSpec.hom, hz, hV, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `hP`. Conclude with `h1`. Conclude with `h23`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_plk_nhds : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (Φ : s.Flag) (k : s.Comp) (z : gen s.T.Z), ∃ (V : (gen s.T.Z).Opens) (f : ((Φ.C k).π ⁻¹ᵁ V).toScheme ⟶ Sp Γ(gen s.T.Z, V)), z ∈ V ∧ IsAffineOpen V ∧ IsProper f ∧ (∀ τ : D.host.E →+* ℂ, GlobalTheory.CechPic.pull ((Φ.C k).π ⁻¹ᵁ V).ι (toPic (GlobalTheory.FlagAmple.detDiv (Φ.C k) τ (S.Dw.mult τ))) = 0) ∧ ∃ (M : GlobalTheory.FlagAmple.Step S.Dw → ℕ) (t : ∀ x : GlobalTheory.FlagAmple.Step S.Dw, Fin (M x + 1) → (((Φ.C k).Y.lb (-GlobalTheory.FlagAmple.detDiv (Φ.C k) x.1 (x.2.1 : ℕ))).pull ((Φ.C k).π ⁻¹ᵁ V).ι).Sec) (ht : ∀ x, ⨆ m, nonzeroLocus (t x m) = ⊤), ∀ (K : Type) [Field K] [IsAlgClosed K] (a a' : Sp K ⟶ ((Φ.C k).π ⁻¹ᵁ V).toScheme), a ≫ f = a' ≫ f → (∀ x, a ≫ GlobalTheory.ProjSpace.toProj f (t x) (ht x) = a' ≫ GlobalTheory.ProjSpace.toProj f (t x) (ht x)) → a = a' := by
   intro D A N j S κ s Φ k z

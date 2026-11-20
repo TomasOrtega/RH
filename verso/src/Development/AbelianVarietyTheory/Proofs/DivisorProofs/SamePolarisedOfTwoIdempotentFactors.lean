@@ -12,14 +12,14 @@ namespace GlobalTheory.Mum.TwoFac
 variable {R : Type} [CommRing R] [IsDomain R] {D₁ D₂ D' : DegPre R}
 
 /- English proof (translation)
-Rewrite using `[F₁.pr_inc, he, ← F₂.pr_inc, ← Category.assoc, F₂.inc_pr, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inc_pr_inc (F₁ : Factor D₁ D') (F₂ : Factor D₂ D') (he : F₁.o.onB.act F₁.e = F₂.o.onB.act F₂.e) :
     F₂.inc ≫ F₁.pr ≫ F₁.inc = F₂.inc := by
   rw [F₁.pr_inc, he, ← F₂.pr_inc, ← Category.assoc, F₂.inc_pr, Category.id_comp]
 
 /- English proof (translation)
-Simplify using `only [Category.assoc]`. Rewrite using `[← Category.assoc F₁.pr, ← Category.assoc F₂.inc, inc_pr_inc F₁ F₂ he, F₂.inc_pr]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_inv (F₁ : Factor D₁ D') (F₂ : Factor D₂ D') (he : F₁.o.onB.act F₁.e = F₂.o.onB.act F₂.e) :
     (F₂.inc ≫ F₁.pr) ≫ (F₁.inc ≫ F₂.pr) = 𝟙 _ := by
@@ -27,7 +27,7 @@ theorem comp_inv (F₁ : Factor D₁ D') (F₂ : Factor D₂ D') (he : F₁.o.on
   rw [← Category.assoc F₁.pr, ← Category.assoc F₂.inc, inc_pr_inc F₁ F₂ he, F₂.inc_pr]
 
 /- English proof (translation)
-Simplify using `only [Category.assoc]`. Rewrite using `[← Category.assoc F₂.pr, F₂.pr_inc, ← he, ← F₁.pr_inc, Category.assoc F₁.pr, ← Category.assoc F₁.inc, F₁.inc_pr, Category.id_comp]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_comp (F₁ : Factor D₁ D') (F₂ : Factor D₂ D') (he : F₁.o.onB.act F₁.e = F₂.o.onB.act F₂.e) :
     (F₁.inc ≫ F₂.pr) ≫ (F₂.inc ≫ F₁.pr) = 𝟙 _ := by
@@ -36,14 +36,14 @@ theorem inv_comp (F₁ : Factor D₁ D') (F₂ : Factor D₂ D') (he : F₁.o.on
     Category.id_comp]
 
 /- English proof (translation)
-Rewrite using `[F₁.xi_xp, hXe, ← F₂.xi_xp, F₂.xp_xi]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem xi_xp_xi (F₁ : Factor D₁ D') (F₂ : Factor D₂ D') (hXe : ∀ z : D'.X, F₁.e • z = F₂.e • z) (a : D₂.X) :
     F₁.xi (F₁.xp (F₂.xi a)) = F₂.xi a := by
   rw [F₁.xi_xp, hXe, ← F₂.xi_xp, F₂.xp_xi]
 
 /- English proof (translation)
-Establish `h` using `F₁.c_xi (F₁.xp (F₂.xi a))`. Rewrite `h` using `[xi_xp_xi F₁ F₂ hXe]`. Rewrite using `[← Category.assoc, ← F₂.c_xi, h, Category.assoc, F₁.inc_pr, Category.comp_id]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem c_comp (F₁ : Factor D₁ D') (F₂ : Factor D₂ D') (hXe : ∀ z : D'.X, F₁.e • z = F₂.e • z) (a : D₂.X) :
     D₂.c a ≫ F₂.inc ≫ F₁.pr = D₁.c (F₁.xp (F₂.xi a)) := by
@@ -63,7 +63,7 @@ def xEquiv (F₁ : Factor D₁ D') (F₂ : Factor D₂ D') (hXe : ∀ z : D'.X, 
   map_add' a b := by simp
 
 /- English proof (translation)
-Rewrite using `[← Over.comp_left, comp_lift, lift_fst_assoc, lift_snd_assoc]`. Simplify using `only [Category.assoc]`. Rewrite using `[reassoc_of% (inc_pr_inc F₁ F₂ he), inc_pr_inc F₁ F₂ he, hf]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem lift_comp (F₁ : Factor D₁ D') (F₂ : Factor D₂ D') (he : F₁.o.onB.act F₁.e = F₂.o.onB.act F₂.e)
     (hf : F₁.o.onB.act F₁.f = F₂.o.onB.act F₂.f) :
@@ -75,9 +75,9 @@ theorem lift_comp (F₁ : Factor D₁ D') (F₂ : Factor D₂ D') (he : F₁.o.o
   rw [reassoc_of% (inc_pr_inc F₁ F₂ he), inc_pr_inc F₁ F₂ he, hf]
 
 /- English proof (translation)
-Introduce `U _ g`. Simplify using `only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, hA, neg_neg, zpow_neg, Finset.prod_inv_distrib]`. Generalize the expression as in `∏ a₁, g (A a₁) ^ ε a₁ = a`. Generalize the expression as in `∏ x, g (B x) ^ ε x = b`. Generalize the expression as in `∏ x, g (h ≫ B₁ x) ^ ε x = c`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Rewrite using `[mul_inv, inv_inv, _root_.mul_comm a, _root_.mul_assoc, mul_inv_cancel_left, _root_.mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem formEq_cancel {X Y Y' : Scheme.{0}} {K : Type} [Fintype K] (ε : K → ℤ) (A B : K → (Y ⟶ X)) (A₁ B₁ : K → (Y' ⟶ X))
     (h : Y ⟶ Y') (hA : ∀ k, h ≫ A₁ k = A k) :
@@ -92,33 +92,29 @@ theorem formEq_cancel {X Y Y' : Scheme.{0}} {K : Type} [Fintype K] (ε : K → �
   rw [mul_inv, inv_inv, _root_.mul_comm a, _root_.mul_assoc, mul_inv_cancel_left, _root_.mul_comm]
 
 /- English proof (translation)
-Introduce `R _ _ D₁ D₂ D' hB F₁ F₂ he hf hXe hXf`. Use `haveI := F₂.inc_hom`. Use `haveI := F₁.pr_hom`. Set `eI : D₂.P.A ≅ D₁.P.A` to `⟨F₂.inc ≫ F₁.pr, F₁.inc ≫ F₂.pr, comp_inv F₁ F₂ he, inv_comp F₁ F₂ he⟩`. Use `haveI : IsMonHom eI.hom := inferInstanceAs (IsMonHom (F₂.inc ≫ F₁.pr))`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Establish `hs : spMap (RingHom.id R) = 𝟙 (Sp R)` using `Spec.map_id _`. Use `⟨GlobalTheory.PolDeg.Wit.ofDeg D₁ hB, AddEquiv.refl _, xEquiv F₁ F₂ hXe, GlobalTheory.PolDeg.Wit.refines_ofDeg D₁ hB, ?_⟩` and prove the remaining obligations. Set `β₂` to `(lift (fst D₂.P.A D₂.P.A ≫ F₂.inc ≫ F₁.pr) (snd D₂.P.A D₂.P.A ≫ F₂.inc ≫ F₁.pr) : G2 D₂.P.A ⟶ G2 D₁.P.A).left`. Establish `hsq : IsSquare (F₂.inc ≫ F₁.pr).left β₂`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Over.comp_left, lift_fst, Over.comp_left]`. Rewrite using `[← Over.comp_left, lift_snd, Over.comp_left]`. Use `haveI : Nonempty (D₁.P.A.left ⨿ D₂.P.A.left : Scheme.{0}) := ⟨(coprod.inl : D₁.P.A.left ⟶ _) (Classical.arbitrary _)⟩`. Establish `hL₁` using `D₁.P.isLB`. Establish `hL₂` using `D₂.P.isLB`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL'` using `D'.P.isLB`. Establish `h₁₂` using `join_isLB hL₁ hL₂`. Establish `hN` using `join_isLB h₁₂ hL'`. Establish `P₁ : IsPart (join (join D₁.P.L D₂.P.L) D'.P.L) D₁.P.L (coprod.inl ≫ coprod.inl) (Prod.fst ∘ Prod.fst)` using `(isPart_inl _ _).trans (isPart_inl _ _)`. Establish `P₂ : IsPart (join (join D₁.P.L D₂.P.L) D'.P.L) D₂.P.L (coprod.inr ≫ coprod.inl) (Prod.snd ∘ Prod.fst)` using `(isPart_inl _ _).trans (isPart_inr _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `P' : IsPart (join (join D₁.P.L D₂.P.L) D'.P.L) D'.P.L coprod.inr Prod.snd` using `isPart_inr _ _`. Establish `sπ₁ : Function.Surjective (Prod.fst ∘ Prod.fst : (join (join D₁.P.L D₂.P.L) D'.P.L).ι → D₁.P.L.ι)` using `(fst_surjective hL₂).comp (fst_surjective hL')`. Establish `sπ₂ : Function.Surjective (Prod.snd ∘ Prod.fst : (join (join D₁.P.L D₂.P.L) D'.P.L).ι → D₂.P.L.ι)` using `(snd_surjective hL₁).comp (fst_surjective hL')`. Take `⟨t₂, ht₂, vt₂⟩` from `exists_gen_of_iso P' P₂ F₂.w F₂.w_gen`. Take `⟨t₁, ht₁, vt₁⟩` from `exists_gen_of_iso P' P₁ F₁.w F₁.w_gen`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hℓ` using `lift_comp F₁ F₂ he hf`. Set `t` to `LB.mulGen _ _ _ _ _ t₂ (LB.invGen _ _ _ (LB.pullGen _ _ _ t₁ β₂))`. Establish `ht : t.IsGen` using `LB.isGen_mulGen _ _ _ _ _ _ _ ht₂ (LB.isGen_invGen _ _ _ _ (LB.isGen_pullGen _ _ _ _ ht₁ _))`. Take `⟨t', ht', vt'⟩` from `exists_gen hN (formEq_cancel _ _ _ _ _ β₂ (fun k => by rw [← Category.assoc, hℓ])) t ht`. Take `⟨w, hw, vw⟩` from `exists_iso_of_gen P₁ P₂ hL₁ hL₂ sπ₁ sπ₂ t' ht'`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨(F₂.inc ≫ F₁.pr).left, β₂, w, (isGrpPullback_of_iso eI).congr hs.symm rfl, hsq, hw, fun a => ?_, ?_⟩` and prove the remaining obligations. Use `show (D₂.c a).left ≫ (F₂.inc ≫ F₁.pr).left = spMap (RingHom.id R) ≫ (D₁.c (F₁.xp (F₂.xi a))).left`. Rewrite using `[hs, Category.id_comp, ← Over.comp_left, c_comp F₁ F₂ hXe]`. Introduce `κ hκ a b z J J' hJ hJ'`. Choose the witnesses or unpack the hypotheses as in `rfl : κ = 𝟙 _ := by`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hκ` using `[hs, Category.comp_id]`. Establish `: Mono (jK R)` using `GlobalTheory.PolDeg.Wit.mono_jK`. Conclude with `(cancel_mono (jK R)).1 (hκ.trans (Category.id_comp _).symm)`. Take `⟨J₁₂, hJ₁₂, e₁, e₂⟩` from `exists_good_join hL₁ hL₂ hJ hJ'`. Use `choose I hI using fun χ : (TK R).left ⟶ D'.P.A.left => exists_chart hL' (χ z)`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨JN, hJN, e₃, e₄⟩` from `exists_good_join h₁₂ hL' hJ₁₂ (J₂ := I) hI`. Establish `r₁ : GlobalTheory.Mum.Two.rs (coprod.inl ≫ coprod.inl) (Prod.fst ∘ Prod.fst) JN = J`. Rewrite using `[← e₁, ← e₃]`. Use function extensionality and compare the values at `ψ`. Simplify using `only [GlobalTheory.Mum.Two.rs, GlobalTheory.Mum.Two.rl, GlobalTheory.Mum.Two.rr, Function.comp, Category.assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `r₂ : GlobalTheory.Mum.Two.rs (coprod.inr ≫ coprod.inl) (Prod.snd ∘ Prod.fst) JN = J'`. Rewrite using `[← e₂, ← e₃]`. Use function extensionality and compare the values at `ψ`. Simplify using `only [GlobalTheory.Mum.Two.rs, GlobalTheory.Mum.Two.rl, GlobalTheory.Mum.Two.rr, Function.comp, Category.assoc]`. Establish `r₃ : GlobalTheory.Mum.Two.rs coprod.inr Prod.snd JN = I` using `e₄`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hp : (lift (toUnit (TK R) ≫ D₂.c a) (toUnit (TK R) ≫ D₂.c b)).left ≫ β₂ = (lift (toUnit (TK R) ≫ D₁.c (F₁.xp (F₂.xi a))) (toUnit (TK R) ≫ D₁.c (F₁.xp (F₂.xi b)))).left`. Simplify using `only [β₂]`. Rewrite using `[← Over.comp_left, comp_lift, lift_fst_assoc, lift_snd_assoc, Category.assoc, Category.assoc, c_comp F₁ F₂ hXe, c_comp F₁ F₂ hXe]`. Establish `v` using `vw _ (lift (toUnit (TK R) ≫ D₂.c a) (toUnit (TK R) ≫ D₂.c b)).left z JN hJN`. Rewrite `v` using `[vt' _ _ z JN hJN]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hv : val t (lift (toUnit (TK R) ≫ D₂.c a) (toUnit (TK R) ≫ D₂.c b)).left z JN = val t₂ (lift (toUnit (TK R) ≫ D₂.c a) (toUnit (TK R) ≫ D₂.c b)).left z JN * (val t₁ ((lift (toUnit (TK R) ≫ D₂.c a) (toUnit (TK R) ≫ D₂.c b)).left ≫ β₂) z JN)⁻¹`. Rewrite using `[val_mul hJN, val_inv, val_pull hJN]`. Rewrite `v` using `[hv, vt₂ _ _ z JN hJN, vt₁ _ _ z JN hJN, r₁, r₂, r₃, hp]`. Establish `hF₂` using `F₂.tau a b z I J' hI hJ'`. Establish `hF₁` using `F₁.tau (F₁.xp (F₂.xi a)) (F₁.xp (F₂.xi b)) z I J hI hJ`.
-
-Rewrite `hF₁` using `[xi_xp_xi F₁ F₂ hXe, xi_xp_xi F₁ F₂ hXe, hXf]`. Establish `hQ` using `(GlobalTheory.PolDeg.Wit.exists_tau D₁ (F₁.xp (F₂.xi a)) (F₁.xp (F₂.xi b))).choose_spec.2 _ (𝟙 _) z J hJ`. Express the relevant statement in the definitionally equal form `GlobalTheory.PolDeg.lamVal w _ z J J' = GlobalTheory.PolDeg.lamVal F₂.w _ z I J' * (GlobalTheory.PolDeg.lamVal F₁.w _ z I J)⁻¹ at v`. Rewrite using `[hF₂]`. Use `Eq.trans ?_ (congrArg₂ (· * ·) v.symm hQ.symm)` and prove the remaining obligations.
-
-Rewrite using `[hF₁, _root_.mul_assoc, inv_mul_cancel_left]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem samePol_of_two_factors : ∀ (R : Type) [CommRing R] [IsDomain R] (D₁ D₂ D' : DegPre R), D₁.TauBimult → ∀ (F₁ : Factor D₁ D') (F₂ : Factor D₂ D'), F₁.o.onB.act F₁.e = F₂.o.onB.act F₂.e → F₁.o.onB.act F₁.f = F₂.o.onB.act F₂.f → (∀ z : D'.X, F₁.e • z = F₂.e • z) → (∀ z : D'.X, F₁.f • z = F₂.f • z) → SamePol D₁ D₂ := by
   intro R _ _ D₁ D₂ D' hB F₁ F₂ he hf hXe hXf

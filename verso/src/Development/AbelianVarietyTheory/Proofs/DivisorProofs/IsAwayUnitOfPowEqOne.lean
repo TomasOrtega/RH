@@ -13,9 +13,9 @@ open GlobalTheory.RowTest (LocIn NumbersIn)
 namespace GlobalTheory.KappaArith
 
 /- English proof (translation)
-Establish `hint : IsIntegral ℤ z` using `⟨Polynomial.X ^ n - Polynomial.C 1, Polynomial.monic_X_pow_sub_C 1 hn.ne', by simp [hz]⟩`. Set `a : 𝓞 K` to `⟨z, hint⟩`. Establish `ha : (a : K) = z` using `rfl`. Use `⟨a, 0, 0, ⟨a ^ (n - 1), ?_⟩, by simp [ha]⟩` and prove the remaining obligations. Rewrite using `[pow_zero]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply `RingOfIntegers.ext` to reduce the goal to its premises. Establish `e1 : ((a * a ^ (n - 1) : 𝓞 K) : K) = z * z ^ (n - 1)` using `by rw [← ha]; norm_cast`. Rewrite using `[e1, ← pow_succ', Nat.sub_add_cancel hn, hz]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem isAwayUnit_of_pow_eq_one {K : Type} [Field K] (m : ℕ) {z : K} {n : ℕ} (hn : 0 < n) (hz : z ^ n = 1) :
     IsAwayUnit m z := by
@@ -35,12 +35,12 @@ variable {D : D7} {T : Type} {Lc : LevCh D T} {sc : Consts} (G : GridData Lc sc)
 def AwayIm (D : D7) (m : ℕ) (z : ℂ) : Prop := ∃ ζ : D.what₂.LL, IsAwayUnit m ζ ∧ D.what₂.embLL ζ = z
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, IsAwayUnit.one m, map_one _⟩`.
+Supply the required witnesses or components.
 -/
 theorem awayIm_one (m : ℕ) : AwayIm D m 1 := ⟨1, IsAwayUnit.one m, map_one _⟩
 
 /- English proof (translation)
-Take `⟨a, ha, rfl⟩` from `h`. Take `⟨b, hb, rfl⟩` from `h'`. Conclude with `⟨a * b, ha.mul hb, map_mul _ _ _⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem AwayIm.mul {m : ℕ} {z z' : ℂ} (h : AwayIm D m z) (h' : AwayIm D m z') : AwayIm D m (z * z') := by
   obtain ⟨a, ha, rfl⟩ := h
@@ -48,16 +48,16 @@ theorem AwayIm.mul {m : ℕ} {z z' : ℂ} (h : AwayIm D m z) (h' : AwayIm D m z'
   exact ⟨a * b, ha.mul hb, map_mul _ _ _⟩
 
 /- English proof (translation)
-The claim follows from `Finset.prod_induction f (AwayIm D m) (fun _ _ => AwayIm.mul) (awayIm_one m) h`.
+A detailed English derivation is pending.
 -/
 theorem AwayIm.prod {m : ℕ} {ι : Type} (s : Finset ι) (f : ι → ℂ) (h : ∀ i ∈ s, AwayIm D m (f i)) :
     AwayIm D m (∏ i ∈ s, f i) :=
   Finset.prod_induction f (AwayIm D m) (fun _ _ => AwayIm.mul) (awayIm_one m) h
 
 /- English proof (translation)
-Take `⟨n, hn, ho⟩` from `hL.xi_fin t`. Take `⟨ζ, hζ⟩` from `hx w x`. Establish `h1 : ((Lc.xiH t).loc w x) ^ n = 1`. Establish `: ((Lc.xiH t) ^ n).loc w x = 1` using `by rw [show (Lc.xiH t) ^ n = 1 from ho]; rfl`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ζ ^ n = 1` using `D.what₂.embLL.injective (by rw [map_pow, hζ, map_one, ← Units.val_pow_eq_pow_val, h1, Units.val_one])`. Conclude with `⟨ζ, isAwayUnit_of_pow_eq_one m hn h2, hζ⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem awayIm_val {μ₀ : T} (hL : Lc.Is μ₀) {t : T} (hx : LocIn D.what₂.embLL (Lc.xiH t)) (m : ℕ)
     (w : HeightOneSpectrum (𝓞 D.host.E)) (x : (w.adicCompletion D.host.E)ˣ) :

@@ -17,15 +17,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `R K _ _ _ _ _ _ A _ hA N hN`. Establish `hφ` using `IsPullback.of_hasPullback A.hom (spMap (algebraMap R K))`. Use `hA.smooth` as an intermediate fact. Use `hA.proper` as an intermediate fact. Establish `hR : IsRegularRing R` using `inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: GeometricallyIntegral A.hom` using `forall_geometricallyIntegral_of_smooth_of_geometricallyConnected _ _ _ hA.smooth hA.geomConnected`. Establish `: IsIntegral A.left` using `GeometricallyIntegral.isIntegral_of_isLocallyNoetherian A.hom`. Establish `: IsLocallyNoetherian A.left` using `LocallyOfFiniteType.isLocallyNoetherian A.hom`. Establish `: CompactSpace A.left` using `QuasiCompact.compactSpace_of_compactSpace A.hom`. Establish `: GeometricallyIntegral (pullback.snd A.hom (spMap (algebraMap R K)))` using `MorphismProperty.of_isPullback (P := @GeometricallyIntegral) hφ inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Smooth (pullback.snd A.hom (spMap (algebraMap R K)))` using `MorphismProperty.of_isPullback (P := @Smooth) hφ inferInstance`. Establish `: IsIntegral (pullback A.hom (spMap (algebraMap R K)))` using `GeometricallyIntegral.isIntegral_of_isLocallyNoetherian (pullback.snd A.hom (spMap (algebraMap R K)))`. Establish `h1 : IsPreimmersion (spMap (algebraMap R K))` using `IsPreimmersion.of_isLocalization (nonZeroDivisors R)`. Establish `h2 : Flat (spMap (algebraMap R K))`. Rewrite using `[Flat.SpecMap_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `RingHom.flat_algebraMap_iff.2 (IsLocalization.flat K (nonZeroDivisors R))`. Establish `: IsPreimmersion (pullback.fst A.hom (spMap (algebraMap R K)))` using `MorphismProperty.of_isPullback (P := @IsPreimmersion) hφ.flip h1`. Establish `: Flat (pullback.fst A.hom (spMap (algebraMap R K)))` using `MorphismProperty.of_isPullback (P := @Flat) hφ.flip h2`. Establish `hst : ∀ x : A.left, UniqueFactorizationMonoid (A.left.presheaf.stalk x)` using `fun x =>`. Use `ExtendRig.isRegularRing_stalk isRegularRing_of_smooth R A.hom x` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `uniqueFactorizationMonoid_of_isRegularRing_of_isLocalRing exists_hasProjectiveDimensionLE_of_isRegularLocalRing isPrincipal_map_away_of_hasProjectiveDimensionLE _`. Take `⟨L, hL, w, hw⟩` from `exists_lineBundle_extension_of_generalizing A.left _ (pullback.fst A.hom (spMap (algebraMap R K))) (Flat.generalizingMap _) hst N hN`. Conclude with `⟨L, w, hL, hw⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_lineBundle_extension_of_genericFibre_dvr :
     ∀ (W K' : Type) [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Field K'] [Algebra W K'] [IsFractionRing W K'] (G : Over (Sp W)) [GrpObj G], IsAbelianScheme G → ∀ N : LB (pullback G.hom (spMap (algebraMap W K'))), N.IsLB → ∃ (M : LB G.left) (w : LB.Iso (M.pull (pullback.fst G.hom (spMap (algebraMap W K')))) N), M.IsLB ∧ w.IsGen := by

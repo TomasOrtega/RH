@@ -19,7 +19,7 @@ def brOne (K : Type) [Field K] {N n : ℕ} (hN : N = n + 1) (lam : DomWeight N) 
         (rename (fun v : Fin N × Fin N => (((), v) : Unit × Fin N × Fin N))).toLinearMap
 
 /- English proof (translation)
-Establish `h : rename (fun v : Fin N × Fin N => (((), v) : Unit × Fin N × Fin N)) (rename Prod.snd (G : Pol K Unit N)) = (G : Pol K Unit N)`. Rewrite using `[rename_rename]`. Conclude with `rename_id_apply _`. Simplify using `only [brOne, Br.brStd, LinearMap.comp_apply, AlgHom.toLinearMap_apply, h, Submodule.subtype_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem brOne_rename (K : Type) [Field K] {N n : ℕ} (hN : N = n + 1) (lam : DomWeight N) (sg : DomWeight n)
     (G : VV K fun _ : Unit => lam) :
@@ -32,7 +32,7 @@ theorem brOne_rename (K : Type) [Field K] {N n : ℕ} (hN : N = n + 1) (lam : Do
   simp only [brOne, Br.brStd, LinearMap.comp_apply, AlgHom.toLinearMap_apply, h, Submodule.subtype_apply]
 
 /- English proof (translation)
-Use `forall_congr' fun i => ?_` and prove the remaining obligations. Simplify using `only [Br.aBr, Br.bBr, Br.iS, Br.iC]`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem interlace_iff {N n : ℕ} (hN : N = n + 1) (lam : DomWeight N) (sg : DomWeight n) :
     Br.Interlace hN lam sg ↔ Formalism.MainNotions.PrimeDegreeVariant.Interlace hN.symm lam sg := by
@@ -104,7 +104,7 @@ def ExactNorm : Prop :=
 def StatementSharp : Prop := Statement ∧ Transposed ∧ Tensor ∧ BaseChange ∧ ExactNorm
 
 /- English proof (translation)
-Simplify using `[Br.brAt, Br.nBr]`.
+Simplify using the standard rewrite rules.
 -/
 theorem brAt_eq {K : Type} [Field K] {ι : Type} [Fintype ι] {N n : ℕ} (hN : N = n + 1)
     (lam : ι → DomWeight N) (sg : ι → DomWeight n) (t : ι → Kˣ) :
@@ -113,14 +113,14 @@ theorem brAt_eq {K : Type} [Field K] {ι : Type} [Fintype ι] {N n : ℕ} (hN : 
   simp [Br.brAt, Br.nBr]
 
 /- English proof (translation)
-The claim follows from `(lamTrue_sgTrue_detShift W hW u τ).symm`.
+A detailed English derivation is pending.
 -/
 theorem members_sameShift {X : Fields} {Word : Type} {R : Ranks} (W : Wts X Word R) (hW : W.Ok) (u : Word) (τ : X.Tau) :
     Br.SameShift (W.lamTrue u R.m τ) (W.sgTrue τ) :=
   (lamTrue_sgTrue_detShift W hW u τ).symm
 
 /- English proof (translation)
-Use `⟨⟨![2, 0, -1], by decide⟩, ⟨![1, -1], by decide⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Unfold `Br.Interlace`. Evaluate the decidable proposition. Unfold `Br.SameShift`. Evaluate the decidable proposition.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Evaluate the decidable proposition. Replace the relevant objects with their definitions. Evaluate the decidable proposition.
 
 Evaluate the decidable proposition.
 -/

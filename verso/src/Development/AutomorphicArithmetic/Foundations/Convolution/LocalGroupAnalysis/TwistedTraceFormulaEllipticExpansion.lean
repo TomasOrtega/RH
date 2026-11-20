@@ -21,13 +21,13 @@ private def d1 {K : Type} [Field K] [NumberField K] {n : ℕ} (δ : GL (Fin n) K
   ⟨AdelicGLn.diagonal K n δ, rationalGL_le_normOneGL ⟨δ, rfl⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨δ, rfl⟩`.
+Supply the required witnesses or components.
 -/
 private theorem differential_one_mem_scaled_lattice {K : Type} [Field K] [NumberField K] {n : ℕ} (δ : GL (Fin n) K) : d1 δ ∈ Gam K n :=
   ⟨δ, rfl⟩
 
 /- English proof (translation)
-Take `⟨δ, h⟩` from `hg`. Conclude with `⟨δ, Subtype.ext h.symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem exists_diagonalEmbed {K : Type} [Field K] [NumberField K] {n : ℕ} {g : G1 K n} (hg : g ∈ Gam K n) :
     ∃ δ, g = d1 δ := by
@@ -51,7 +51,7 @@ private instance discSub {K : Type} [Field K] [NumberField K] {n : ℕ} (S : Sub
       exact Subtype.ext (Subtype.ext h1)
 
 /- English proof (translation)
-Establish `: (Subgroup.centralizer {g} : Set (G1 K n)) = {x | x * g = g * x}` using `Set.ext fun x => Subgroup.mem_centralizer_singleton_iff`. Rewrite using `[this]`. Conclude with `isClosed_eq (continuous_id.mul continuous_const) (continuous_const.mul continuous_id)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem closedCent {K : Type} [Field K] [NumberField K] {n : ℕ} (g : G1 K n) :
     IsClosed (Subgroup.centralizer {g} : Set (G1 K n)) := by
@@ -74,14 +74,14 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 omit [IsGalois F E] in
 /- English proof (translation)
-The claim follows from `Subtype.ext ((hθ (d1 h)).trans ((UpperTheory.adelicGL_galois_baseChange_diagonal_compat F E σ n).1 h))`.
+A detailed English derivation is pending.
 -/
 private theorem twist_diagonalEmbed (hθ : IsGalTwist σ θ) (h : GL (Fin n) E) : tw θ (d1 h) = d1 (sigmaGL σ h) :=
   Subtype.ext ((hθ (d1 h)).trans ((UpperTheory.adelicGL_galois_baseChange_diagonal_compat F E σ n).1 h))
 
 omit [IsGalois F E] in
 /- English proof (translation)
-Rewrite using `[twist_diagonalEmbed hθ, Subtype.ext_iff, ← (AdelicGLn.diagonal_injective E n).eq_iff, map_mul, map_mul, map_inv]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem diagonalEmbed_conj_iff (hθ : IsGalTwist σ θ) (δ δ' h : GL (Fin n) E) :
     d1 δ' = (d1 h)⁻¹ * d1 δ * tw θ (d1 h) ↔ δ' = h⁻¹ * δ * sigmaGL σ h := by
@@ -89,9 +89,9 @@ private theorem diagonalEmbed_conj_iff (hθ : IsGalTwist σ θ) (δ δ' h : GL (
   rfl
 
 /- English proof (translation)
-Take `⟨R, hR⟩` from `UpperTheory.exists_height_bound_of_twistedElliptic_support h2 F E σ hσ n hn μ θ hθ f hf`. Take `⟨C, hC, hC'⟩` from `UpperTheory.exists_compact_fundamental_set_of_height_le E n R`. Use `hU (G1 E n) (Gam E n) μ (tw θ) θ.e.continuous (fun g hg => (θ.mem_gam g).2 hg) f ⟨C, hC, fun x δ hδ h => hC' x (hR x δ hδ h)⟩ ι (fun i => d1 (r i)) (fun i => differential_one_mem_scaled_lattice _) ?_ ?_` and prove the remaining obligations. Introduce and unpack `δ hδ ⟨x, hx⟩`. Take `⟨δ, rfl⟩` from `exists_diagonalEmbed hδ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨i, h, e⟩` from `hex δ (hf δ x _ (by rw [← hθ x]; rfl) hx)`. Conclude with `⟨i, d1 h, differential_one_mem_scaled_lattice h, (diagonalEmbed_conj_iff hθ _ _ _).2 e⟩`. Introduce `i i' g hg e`. Take `⟨h, rfl⟩` from `exists_diagonalEmbed hg`. Conclude with `hdi i i' h ((diagonalEmbed_conj_iff hθ _ _ _).1 e)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem side (h2 : G2) (hU : U1) (hσ : ∀ τ : E ≃ₐ[F] E, τ ∈ Subgroup.zpowers σ) (hn : 0 < n)
     (hθ : IsGalTwist σ θ) (f : CC E n) (hf : Ell σ f) (ι : Type) (r : ι → GL (Fin n) E)
@@ -115,16 +115,16 @@ private theorem side (h2 : G2) (hU : U1) (hσ : ∀ τ : E ≃ₐ[F] E, τ ∈ S
 end
 
 /- English proof (translation)
-The claim follows from `f.continuous.comp ((continuous_id.inv.mul continuous_const).mul θ.e.continuous)`.
+A detailed English derivation is pending.
 -/
 private theorem contTw {K : Type} [Field K] [NumberField K] {n : ℕ} {μ : Measure (G1 K n)} [μ.IsHaarMeasure] (θ : Twist μ)
     (f : CC K n) (d : G1 K n) : Continuous fun x : G1 K n => f (x⁻¹ * d * tw θ x) :=
   f.continuous.comp ((continuous_id.inv.mul continuous_const).mul θ.e.continuous)
 
 /- English proof (translation)
-Establish `hc : twCent (tw (Twist.id μ)) g = Subgroup.centralizer {g}`. Use extensionality with `x`. Rewrite using `[Subgroup.mem_centralizer_singleton_iff]`. Express the relevant statement in the definitionally equal form `x⁻¹ * g * x = g ↔ _`. Rewrite using `[mul_assoc, inv_mul_eq_iff_eq_mul, eq_comm]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `(hU (G1 F n) (Subgroup.centralizer {g}) μ ν (Subgroup.centralizer {g}).subtype (closedCent g).isClosedEmbedding_subtypeVal _ (Gam F n ⊓ twCent (tw (Twist.id μ)) g) ?_ hv (fun x => f (x⁻¹ * g * tw (Twist.id μ) x)) (contTw _ f g) ?_ hi).1` and prove the remaining obligations. Rewrite using `[hc, Subgroup.subgroupOf_map_subtype]`. Introduce `t x`. Conclude with `congrArg f (twConj_mul_left (tw (Twist.id μ)) g (h := t) (hc.ge t.2) x)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem termF (hU : U2) {F : Type} [Field F] [NumberField F] {n : ℕ} (μ : Measure (G1 F n)) [μ.IsHaarMeasure]
     (f : CC F n) (g : G1 F n) (ν : Measure (Subgroup.centralizer {g})) [ν.IsHaarMeasure] [ν.IsInvInvariant]
@@ -152,19 +152,19 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {n : ℕ} {μ : Measure (G1 E n)} [μ.IsHaarMeasure] {θ : Twist μ}
 
 /- English proof (translation)
-Take `⟨j, hj, hj1, hj2⟩` from `UpperTheory.exists_closedEmbedding_normOneAdelicGL_baseChange n5 F E σ hσ n hn`. Take `⟨-, hd2, hd3⟩` from `UpperTheory.adelicGL_galois_baseChange_diagonal_compat F E σ n`. Set `i : Subgroup.centralizer {d1 γ} →* G1 E n` to `j.comp (Subgroup.centralizer {d1 γ}).subtype`. Establish `hic : Topology.IsClosedEmbedding i` using `hj.comp (closedCent _).isClosedEmbedding_subtypeVal`. Establish `hcent : ∀ x : G1 E n, x ∈ twCent (tw θ) (d1 δ) ↔ ∃ t, x = i t`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x`. Establish `h1 : x ∈ twCent (tw θ) (d1 δ) ↔ (x : AdelicGLn.AdelicGL E n)⁻¹ * AdelicGLn.diagonal E n δ * mapGL n (galAd σ) (x : AdelicGLn.AdelicGL E n) = AdelicGLn.diagonal E n δ`. Rewrite using `[← hθ x]`. Conclude with `Subtype.ext_iff`. Rewrite using `[h1, n3 F E σ hσ n hn δ γ hγ hN]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht, e⟩`. Conclude with `⟨⟨⟨t, hj2 t (e ▸ x.2)⟩, Subgroup.mem_centralizer_singleton_iff.2 (Subtype.ext ht)⟩, Subtype.ext (e.trans (hj1 ⟨t, _⟩).symm)⟩`. Introduce and unpack `⟨t, rfl⟩`. Conclude with `⟨_, congrArg Subtype.val (Subgroup.mem_centralizer_singleton_iff.1 t.2), hj1 t⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hmap : ((Gam F n).subgroupOf (Subgroup.centralizer {d1 γ})).map i = Gam E n ⊓ twCent (tw θ) (d1 δ)`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ⟨g, hg⟩, rfl⟩`. Use `⟨⟨incl g, ?_⟩, (hcent _).2 ⟨t, rfl⟩⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hd2]`. Conclude with `(congrArg (mapGL n (adeleMap F E)) hg).trans (hj1 t).symm`. Introduce and unpack `⟨⟨h, hh⟩, hx⟩`. Take `⟨t, rfl⟩` from `(hcent x).1 hx`. Take `⟨g, hg⟩` from `hd3 _ h ((hj1 t).symm.trans hh.symm)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨t, ⟨g, hg.symm⟩, rfl⟩`. Establish `hinv : ∀ t x, f ((i t * x)⁻¹ * d1 δ * tw θ (i t * x)) = f (x⁻¹ * d1 δ * tw θ x)` using `fun t x => congrArg f (twConj_mul_left (tw θ) (d1 δ) ((hcent _).2 ⟨t, rfl⟩) x)`. Take `⟨h1, h2⟩` from `hU (G1 E n) (Subgroup.centralizer {d1 γ}) μ ν i hic _ _ hmap hv (fun x => f (x⁻¹ * d1 δ * tw θ x)) (contTw _ f _) hinv hi`. Establish `h3` using `UpperTheory.quotientIntegral_lt_top_of_invariant_closedEmbedding q1 q2 (AdelicGLn.AdelicGL E n) _ (normOneGL E n) isClosed_normOneGL μ ν i hic (fun x => f (x⁻¹ * d1 δ * tw θ x)) (contTw _ f _) hinv h2`. Rewrite using `[h1, ← h3]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 2`. Conclude with `funext fun t => hj1 t`. Use function extensionality and compare the values at `x`. Rewrite using `[← hθ x, ext0]`. Conclude with `(dif_pos (x⁻¹ * d1 δ * tw θ x).2 (t := fun h => f ⟨_, h⟩) (e := fun _ => 0)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem termE (hU : U2) (q1 : Q1) (q2 : Q2) (n3 : N3) (n5 : N5)
     (hσ : ∀ τ : E ≃ₐ[F] E, τ ∈ Subgroup.zpowers σ) (hn : 0 < n) (hθ : IsGalTwist σ θ) (f : CC E n)
@@ -222,7 +222,7 @@ private theorem termE (hU : U2) (q1 : Q1) (q2 : Q2) (n3 : N3) (n5 : N5)
 end
 
 /- English proof (translation)
-Rewrite using `[normGL, Module.finrank_self, twNorm_succ, twNorm_zero, one_mul, pow_zero]`. Use extensionality with `a b`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 private theorem norm_self {F : Type} [Field F] {n : ℕ} (γ : GL (Fin n) F) : normGL (1 : F ≃ₐ[F] F) γ = incl γ := by
   rw [normGL, Module.finrank_self, twNorm_succ, twNorm_zero, one_mul, pow_zero]
@@ -233,19 +233,19 @@ end UpperTheory.ConvolutionTheory.G.DiagonalEmbedding
 
 open UpperTheory.ConvolutionTheory.G.DiagonalEmbedding in
 /- English proof (translation)
-Introduce `g2 u1 u2 q1 q2 n1 n2 n3 n4 n5 g0 F E _ _ _ _ _ _ σ hσ n hn μE _ μF _ θ hθ c fE fF hE hF hM`. Establish `h1 : ∀ τ : F ≃ₐ[F] F, τ ∈ Subgroup.zpowers (1 : F ≃ₐ[F] F)` using `fun τ => by`. Rewrite using `[Subsingleton.elim τ 1]`. Conclude with `one_mem _`. Set `ι : Type` to `{p : F[X] // Irreducible p ∧ ∃ γ : GL (Fin n) F, (γ : Matrix (Fin n) (Fin n) F).charpoly = p}`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `γ : ι → GL (Fin n) F` to `fun p => p.2.2.choose`. Establish `hγ : ∀ p : ι, (γ p : Matrix (Fin n) (Fin n) F).charpoly = p.1` using `fun p => p.2.2.choose_spec`. Establish `hirr : ∀ p : ι, Irreducible (γ p : Matrix (Fin n) (Fin n) F).charpoly` using `fun p => (hγ p).symm ▸ p.2.1`. Set `S : Set ι` to `{p | ∃ δ : GL (Fin n) E, normGL σ δ = incl (γ p)}`. Set `δ : S → GL (Fin n) E` to `fun p => p.2.choose`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hδ : ∀ p : S, normGL σ (δ p) = incl (γ p.1)` using `fun p => p.2.choose_spec`. Take `⟨sF, iF⟩` from `side g2 u1 h1 hn (g0.2 F n μF) fF hF ι γ (fun d hd => by`. Take `⟨g, hg, h⟩` from `UpperTheory.exists_irreducible_charpoly_norm_match_of_twistedElliptic n1 n2 F F 1 h1 n hn d hd`. Conclude with `⟨⟨_, hg, g, rfl⟩, (h _ (hγ _)).2 _ (norm_self _)⟩)`. Use `fun p p' h e => Subtype.ext ((hγ p).symm.trans ((UpperTheory.charpoly_eq_of_norm_eq_of_twisted_conj F F 1 h1 n hn _ _ h _ _ (norm_self _) (norm_self _) e).trans (hγ p')))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨sE, iE⟩` from `side g2 u1 hσ hn hθ fE hE S δ (fun d hd => by`. Take `⟨g, hg, h⟩` from `UpperTheory.exists_irreducible_charpoly_norm_match_of_twistedElliptic n1 n2 F E σ hσ n hn d hd`. Take `⟨ha, hb⟩` from `h _ (hγ ⟨_, hg, g, rfl⟩)`. Conclude with `⟨⟨_, ha⟩, hb _ (hδ _)⟩)`. Use `fun p p' h e => Subtype.ext (Subtype.ext ((hγ p.1).symm.trans ((UpperTheory.charpoly_eq_of_norm_eq_of_twisted_conj F E σ hσ n hn _ _ h _ _ (hδ p) (hδ p') e).trans (hγ p'.1))))`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `ν : ∀ p : ι, Measure (Subgroup.centralizer {d1 (γ p)})` to `fun p => Measure.haar`. Establish `hν : ∀ p, (ν p).IsMulRightInvariant ∧ (ν p).IsInvInvariant ∧ quotientMeasure ((Gam F n).subgroupOf (Subgroup.centralizer {d1 (γ p)})) (ν p) Set.univ < ⊤` using `fun p => UpperTheory.unimodular_finite_quotientMeasure_of_cocompact _ _ (ν p) (n4 F n (γ p) (d1 (γ p)) rfl (hirr p)).2`. Use `sE.unique ?_` and prove the remaining obligations. Establish `sF'` using `sF.mul_left c`. Rewrite `sF'` using `[← hasSum_subtype_iff_of_support_subset (s := S)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `Eq.mpr (congrArg (fun g => HasSum g (c * twInt (Twist.id μF) fF)) (funext fun p => ?_)) sF'` and prove the remaining obligations. Take `⟨_, _, hv⟩` from `hν p.1`. Rewrite using `[Function.comp_apply, termF u2 μF fF _ (ν p.1) hv (iF p.1), termE u2 q1 q2 n3 n5 hσ hn hθ fE (δ p) (γ p.1) (hirr p.1).separable (hδ p) (ν p.1) hv (iE p), (hM (γ p.1) (d1 (γ p.1)) rfl (hirr p.1) (ν p.1) inferInstance).1 (δ p) (hδ p)]`. Expand and normalize the polynomial expressions, which then agree. Introduce `p hp`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Assume the negation of the conclusion as `hS`. Take `⟨_, _, hv⟩` from `hν p`. Apply `hp` to reduce the goal to its premises. Use `beta_reduce`. Rewrite using `[termF u2 μF fF _ (ν p) hv (iF p), (hM (γ p) (d1 (γ p)) rfl (hirr p) (ν p) inferInstance).2 hS, mul_zero, mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.G.twisted_trace_formula_elliptic_expansion :
     G2 → U1 → U2 → Q1 → Q2 → N1 → N2 → N3 → N4 → N5 → G0 → G3 := by

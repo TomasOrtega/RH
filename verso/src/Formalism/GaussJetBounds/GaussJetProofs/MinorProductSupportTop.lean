@@ -15,11 +15,11 @@ section ShapeSec
 variable {σ : Type}
 
 /- English proof (translation)
-Use `revert h`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `_ mono hm`. Rewrite `hm` using `[Finset.prod_empty, MvPolynomial.mem_support_iff, MvPolynomial.coeff_one]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs at hm with h0`. Rewrite using `[← h0, hg0, Finset.sum_empty]`. Conclude with `absurd rfl hm`. Consider the case `insert c s hc ih`. Introduce `h mono hm`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hm` using `[Finset.prod_insert hc]`. Take `⟨m1, hm1, m2, hm2, rfl⟩` from `Finset.mem_add.mp (MvPolynomial.support_mul _ _ hm)`. Rewrite using `[hgadd, Finset.sum_insert hc, h c (Finset.mem_insert_self c s) m1 hm1, ih (fun c' hc' => h c' (Finset.mem_insert_of_mem hc')) m2 hm2]`.
+A detailed English derivation is pending.
 -/
 lemma shape_prod_eq {R : Type u} [CommRing R] {ι : Type*} (g : (σ →₀ ℕ) → ℕ) (hg0 : g 0 = 0)
     (hgadd : ∀ a b, g (a + b) = g a + g b) (f : ι → MvPolynomial σ R) (a : ι → ℕ) (s : Finset ι)
@@ -42,11 +42,11 @@ lemma shape_prod_eq {R : Type u} [CommRing R] {ι : Type*} (g : (σ →₀ ℕ) 
       ih (fun c' hc' => h c' (Finset.mem_insert_of_mem hc')) m2 hm2]
 
 /- English proof (translation)
-Use `revert h`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `_ mono hm`. Rewrite `hm` using `[Finset.prod_empty, MvPolynomial.mem_support_iff, MvPolynomial.coeff_one]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs at hm with h0`. Rewrite using `[← h0, hg0, Finset.sum_empty]`. Conclude with `absurd rfl hm`. Consider the case `insert c s hc ih`. Introduce `h mono hm`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hm` using `[Finset.prod_insert hc]`. Take `⟨m1, hm1, m2, hm2, rfl⟩` from `Finset.mem_add.mp (MvPolynomial.support_mul _ _ hm)`. Rewrite using `[hgadd, Finset.sum_insert hc]`. Conclude with `Nat.add_le_add (h c (Finset.mem_insert_self c s) m1 hm1) (ih (fun c' hc' => h c' (Finset.mem_insert_of_mem hc')) m2 hm2)`.
+A detailed English derivation is pending.
 -/
 lemma shape_prod_le {R : Type u} [CommRing R] {ι : Type*} (g : (σ →₀ ℕ) → ℕ) (hg0 : g 0 = 0)
     (hgadd : ∀ a b, g (a + b) = g a + g b) (f : ι → MvPolynomial σ R) (a : ι → ℕ) (s : Finset ι)
@@ -72,7 +72,7 @@ lemma shape_prod_le {R : Type u} [CommRing R] {ι : Type*} (g : (σ →₀ ℕ) 
 end ShapeSec
 
 /- English proof (translation)
-Use `Finset.card_eq_sum_card_fiberwise (s := (Finset.univ : Finset (Fin p))) (t := Finset.univ) (f := τ) (fun i _ => Finset.mem_coe.mpr (Finset.mem_univ (τ i)))` as an intermediate fact. Rewrite `this` using `[Finset.card_univ, Fintype.card_fin]`. Conclude with `this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma shape_count_total {J : Type} [Fintype J] [DecidableEq J] {p : ℕ} (τ : Fin p → J) :
     (∑ j, (Finset.univ.filter (fun i => τ i = j)).card) = p := by
@@ -82,7 +82,7 @@ lemma shape_count_total {J : Type} [Fintype J] [DecidableEq J] {p : ℕ} (τ : F
   exact this.symm
 
 /- English proof (translation)
-Rewrite using `[Finset.card_le_one]`. Introduce `a ha b hb`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at ha hb`. Conclude with `hτ (ha.trans hb.symm)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma shape_count_le_one {J : Type} [DecidableEq J] {p : ℕ} (τ : Fin p → J)
     (hτ : Function.Injective τ) (j : J) :
@@ -98,17 +98,17 @@ def shapeSet {R : Type u} [CommRing R] {J : Type} {N1 p : ℕ} (A : Fin p → J 
     (∃ π : Equiv.Perm (Fin p), ∀ i, A (π i) (τ i) ≠ 0) ∧ mono = ∑ i, Finsupp.single (τ i, I i) 1}
 
 /- English proof (translation)
-Establish `hτ : ∀ τ : Fin p → J, ∑ π : Equiv.Perm (Fin p), Equiv.Perm.sign π • ∏ i, (C (A (π i) (τ i)) * X (τ i, I i) : MvPolynomial (J × Fin N1) R) = C (Matrix.of fun (r i : Fin p) => A r (τ i)).det * ∏ i, X (τ i, I i)`. Introduce `τ`. Rewrite using `[Matrix.det_apply, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun π _ => ?_` and prove the remaining obligations. Simplify using `only [Units.smul_def, map_zsmul, smul_mul_assoc, Finset.prod_mul_distrib, map_prod, Matrix.of_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.det_apply]`. Simplify using `only [Matrix.of_apply]`. Repeatedly rewrite using `[Finset.prod_univ_sum, Finset.smul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Submodule.sum_mem _ fun τ _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hX : ∏ i, (X (τ i, I i) : MvPolynomial (J × Fin N1) R) = monomial (∑ i, Finsupp.single (τ i, I i) 1) 1`. Rewrite using `[monomial_sum_one]`. Both sides reduce to the same expression. Rewrite using `[hτ τ, hX, C_mul_monomial, mul_one, monomial_mem_restrictSupport]`. Distinguish the cases in `hinj : Function.Injective τ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hd : (Matrix.of fun (r i : Fin p) => A r (τ i)).det = 0`. Conclude with `Or.inr hd`. Use `left`. Use `⟨τ, hinj, ?_, rfl⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hno`.
+Consider separately whether the proposition holds or fails. Prove the second alternative. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Use `push_neg at hno`. Apply `hd` to reduce the goal to its premises. Rewrite using `[Matrix.det_apply]`. Use `Finset.sum_eq_zero fun π _ => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `hno π`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ i) (by simp [hi]), smul_zero]`. Use `right`. Simplify using `only [Function.Injective, not_forall] at hinj`. Take `⟨i, i', hii, hne⟩` from `hinj`. Conclude with `Matrix.det_zero_of_column_eq hne (fun k => by simp [hii])`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 lemma shape_minor {R : Type u} [CommRing R] {J : Type} [Fintype J] [DecidableEq J] {N1 p : ℕ}
     (A : Fin p → J → R) (I : Fin p → Fin N1) :
@@ -152,7 +152,7 @@ lemma shape_minor {R : Type u} [CommRing R] {J : Type} [Fintype J] [DecidableEq 
     exact Matrix.det_zero_of_column_eq hne (fun k => by simp [hii])
 
 /- English proof (translation)
-Establish `h` using `shape_minor A I`. Rewrite `h` using `[mem_restrictSupport_iff]`. Conclude with `h hm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma shape_minor_mem {R : Type u} [CommRing R] {J : Type} [Fintype J] [DecidableEq J]
     {N1 p : ℕ} (A : Fin p → J → R) (I : Fin p → Fin N1) (mono : J × Fin N1 →₀ ℕ)

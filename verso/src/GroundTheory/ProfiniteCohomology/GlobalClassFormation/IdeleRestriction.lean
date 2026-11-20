@@ -20,13 +20,13 @@ variable {K : FiniteSubfield}
 def joinField (K F : FiniteSubfield) : FiniteSubfield := ⟨K.1 ⊔ F.1, inferInstance⟩
 
 /- English proof (translation)
-The claim follows from `(le_sup_left : K.1 ≤ K.1 ⊔ F.1)`.
+A detailed English derivation is pending.
 -/
 theorem le_joinField_left (K F : FiniteSubfield) : K ≤ joinField K F :=
   (le_sup_left : K.1 ≤ K.1 ⊔ F.1)
 
 /- English proof (translation)
-The claim follows from `(le_sup_right : F.1 ≤ K.1 ⊔ F.1)`.
+A detailed English derivation is pending.
 -/
 theorem le_joinField_right (K F : FiniteSubfield) : F ≤ joinField K F :=
   (le_sup_right : F.1 ≤ K.1 ⊔ F.1)
@@ -34,7 +34,7 @@ theorem le_joinField_right (K F : FiniteSubfield) : F ≤ joinField K F :=
 instance fact_le_joinField (K F : FiniteSubfield) : Fact (K ≤ joinField K F) := ⟨le_joinField_left K F⟩
 
 /- English proof (translation)
-The claim follows from `sup_le_sup_left (show F.1 ≤ E.1 from h) K.1`.
+A detailed English derivation is pending.
 -/
 theorem joinField_mono (K : FiniteSubfield) {F E : FiniteSubfield} (h : F ≤ E) : joinField K F ≤ joinField K E :=
   sup_le_sup_left (show F.1 ≤ E.1 from h) K.1
@@ -56,7 +56,7 @@ theorem coe_idelesLevelProj (F : FiniteSubfield) [Fact (K ≤ F)] (x : IdeleGrou
   rfl
 
 /- English proof (translation)
-Establish `: Fact (F ≤ E)` using `⟨h⟩`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[coe_idelesLevelProj, coe_idelesLevelProj, ← completionEmbedding_completionMap ι (F := F) (E := E)]`. Use `congr 1`. Conclude with `ideleEmbedding_snd_of_below_eq (placeOfEmbedding ι E).1 (placeOfEmbedding ι F).1 ((AdeleBaseChange.below_eq_iff _ _).2 inferInstance) x`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem idelesLevelProj_ideleMap {F E : FiniteSubfield} [Fact (K ≤ F)] [Fact (K ≤ E)] (h : F ≤ E)
     (x : IdeleGroup F.1) : idelesLevelProj ι E (ideleMap h x) = idelesLevelProj ι F x := by
@@ -75,14 +75,14 @@ def idelesProj : IdeleLimit →* (AlgebraicClosure (v.adicCompletion K.1))ˣ :=
       rw [ideleMap_ideleMap, ← idelesLevelProj_ideleMap ι (joinField_mono K h), ideleMap_ideleMap]
 
 /- English proof (translation)
-The claim follows from `idelesLevelProj_ideleMap ι (le_joinField_right K F) x`.
+A detailed English derivation is pending.
 -/
 theorem idelesProj_of (F : FiniteSubfield) [Fact (K ≤ F)] (x : IdeleGroup F.1) :
     idelesProj ι (of F x) = idelesLevelProj ι F x :=
   idelesLevelProj_ideleMap ι (le_joinField_right K F) x
 
 /- English proof (translation)
-Rewrite using `[idelesProj_of, coe_idelesLevelProj]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coe_idelesProj_of (F : FiniteSubfield) [Fact (K ≤ F)] (x : IdeleGroup F.1) :
     ((idelesProj ι (of F x) : (AlgebraicClosure (v.adicCompletion K.1))ˣ) : AlgebraicClosure (v.adicCompletion K.1)) =
@@ -92,11 +92,11 @@ theorem coe_idelesProj_of (F : FiniteSubfield) [Fact (K ≤ F)] (x : IdeleGroup 
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Take `⟨F, x, rfl⟩` from `exists_of z`. Take `⟨p, hp⟩` from `GLevel.exists_le (K := K) F`. Rewrite using `[← of_ideleMap hp x]`. Generalize the expression as in `ideleMap hp x = y`. Rewrite using `[smul_of_restrictHom, ← coe_localDecompHom_eq_restrictHom ι p.1 σ]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities.
 
-Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `_ = σ ((idelesProj ι (of p.1 y) : AlgebraicClosure (v.adicCompletion K.1)))`. Rewrite using `[coe_idelesProj_of, coe_idelesProj_of]`. Establish `h` using `finiteProj_smul_of_mem_stabilizer (placeOfEmbedding ι p.1) (localDecompHom ι p.1 σ) y`. Establish `h'` using `congrArg (fun u : ((placeOfEmbedding ι p.1).1.adicCompletion p.1.1)ˣ => (u : (placeOfEmbedding ι p.1).1.adicCompletion p.1.1)) h`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [coe_finiteProj] at h'`. Rewrite using `[h']`. Conclude with `completionEmbedding_smul ι p.1 σ _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idelesProj_smul (σ : Gal(AlgebraicClosure (v.adicCompletion K.1)/v.adicCompletion K.1)) (z : IdeleLimit) :
     idelesProj ι ((globalDecomp (v.adicCompletion K.1) ι σ : ℚ̄ ≃ₐ[ℚ] ℚ̄) • z) = σ • idelesProj ι z := by
@@ -155,7 +155,7 @@ theorem coe_infIdelesLevelProj (F : FiniteSubfield) [Fact (K ≤ F)] (x : IdeleG
   rfl
 
 /- English proof (translation)
-Establish `: Fact (F ≤ E)` using `⟨h⟩`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[coe_infIdelesLevelProj, coe_infIdelesLevelProj, ← infCompletionEmbedding_completionMap ι (F := F) (E := E)]`. Use `congr 1`. Conclude with `ideleEmbedding_fst_of_comap_eq (infPlaceOfEmbedding ι E : InfinitePlace E.1) (infPlaceOfEmbedding ι F : InfinitePlace F.1) (InfinitePlace.LiesOver.comap_eq _ _) x`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem infIdelesLevelProj_ideleMap {F E : FiniteSubfield} [Fact (K ≤ F)] [Fact (K ≤ E)] (h : F ≤ E)
     (x : IdeleGroup F.1) : infIdelesLevelProj ι E (ideleMap h x) = infIdelesLevelProj ι F x := by
@@ -175,14 +175,14 @@ def infIdelesProj : IdeleLimit →* (AlgebraicClosure v.Completion)ˣ :=
       rw [ideleMap_ideleMap, ← infIdelesLevelProj_ideleMap ι (joinField_mono K h), ideleMap_ideleMap]
 
 /- English proof (translation)
-The claim follows from `infIdelesLevelProj_ideleMap ι (le_joinField_right K F) x`.
+A detailed English derivation is pending.
 -/
 theorem infIdelesProj_of (F : FiniteSubfield) [Fact (K ≤ F)] (x : IdeleGroup F.1) :
     infIdelesProj ι (of F x) = infIdelesLevelProj ι F x :=
   infIdelesLevelProj_ideleMap ι (le_joinField_right K F) x
 
 /- English proof (translation)
-Rewrite using `[infIdelesProj_of, coe_infIdelesLevelProj]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coe_infIdelesProj_of (F : FiniteSubfield) [Fact (K ≤ F)] (x : IdeleGroup F.1) :
     ((infIdelesProj ι (of F x) : (AlgebraicClosure v.Completion)ˣ) : AlgebraicClosure v.Completion) =
@@ -191,7 +191,7 @@ theorem coe_infIdelesProj_of (F : FiniteSubfield) [Fact (K ≤ F)] (x : IdeleGro
   rw [infIdelesProj_of, coe_infIdelesLevelProj]
 
 /- English proof (translation)
-The claim follows from `decompHom_eq_restrictHom_globalDecomp _ ι F (infEmbedLevel ι F) (infEmbedLevel_apply ι F) σ`.
+A detailed English derivation is pending.
 -/
 theorem coe_infLocalDecompHom_eq_restrictHom (F : FiniteSubfield) [Fact (K ≤ F)] [F.1.fixingSubgroup.Normal]
     (σ : Gal(AlgebraicClosure v.Completion/v.Completion)) :
@@ -201,11 +201,11 @@ theorem coe_infLocalDecompHom_eq_restrictHom (F : FiniteSubfield) [Fact (K ≤ F
   decompHom_eq_restrictHom_globalDecomp _ ι F (infEmbedLevel ι F) (infEmbedLevel_apply ι F) σ
 
 /- English proof (translation)
-Take `⟨F, x, rfl⟩` from `exists_of z`. Take `⟨p, hp⟩` from `GLevel.exists_le (K := K) F`. Rewrite using `[← of_ideleMap hp x]`. Generalize the expression as in `ideleMap hp x = y`. Rewrite using `[smul_of_restrictHom, ← coe_infLocalDecompHom_eq_restrictHom ι p.1 σ]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities.
 
-Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `_ = σ ((infIdelesProj ι (of p.1 y) : AlgebraicClosure v.Completion))`. Rewrite using `[coe_infIdelesProj_of, coe_infIdelesProj_of]`. Establish `h` using `infiniteProj_smul_of_mem_stabilizer (infPlaceOfEmbedding ι p.1) (infLocalDecompHom ι p.1 σ) y`. Establish `h'` using `congrArg (fun u : ((infPlaceOfEmbedding ι p.1 : InfinitePlace p.1.1).Completion)ˣ => (u : (infPlaceOfEmbedding ι p.1 : InfinitePlace p.1.1).Completion)) h`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [coe_infiniteProj] at h'`. Rewrite using `[h']`. Conclude with `infCompletionEmbedding_smul ι p.1 σ _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem infIdelesProj_smul (σ : Gal(AlgebraicClosure v.Completion/v.Completion)) (z : IdeleLimit) :
     infIdelesProj ι ((globalDecomp v.Completion ι σ : ℚ̄ ≃ₐ[ℚ] ℚ̄) • z) = σ • infIdelesProj ι z := by

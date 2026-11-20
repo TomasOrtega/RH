@@ -17,7 +17,7 @@ def liftM (i : R →+ S) (X : Matrix (Fin M) (Fin M) R) : Matrix (Fin M) (Fin M)
   1 + (X - 1).map i
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_addM (i : R →+ S) (A B : Matrix (Fin M) (Fin M) R) :
     (A + B).map i = A.map i + B.map i := by
@@ -25,7 +25,7 @@ theorem map_addM (i : R →+ S) (A B : Matrix (Fin M) (Fin M) R) :
   simp
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[Matrix.mul_apply, map_sum, hi]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_mulM (i : R →+ S) (hi : ∀ x y, i (x * y) = i x * i y) (A B : Matrix (Fin M) (Fin M) R) :
     (A * B).map i = A.map i * B.map i := by
@@ -33,21 +33,21 @@ theorem map_mulM (i : R →+ S) (hi : ∀ x y, i (x * y) = i x * i y) (A B : Mat
   simp [Matrix.mul_apply, map_sum, hi]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_zeroM (i : R →+ S) : (0 : Matrix (Fin M) (Fin M) R).map i = 0 := by
   ext a b
   simp
 
 /- English proof (translation)
-Unfold `liftM`. Rewrite using `[sub_self, map_zeroM, add_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem liftM_one (i : R →+ S) : liftM i (1 : Matrix (Fin M) (Fin M) R) = 1 := by
   unfold liftM
   rw [sub_self, map_zeroM, add_zero]
 
 /- English proof (translation)
-Establish `h : X * Y - 1 = (X - 1) + (Y - 1) + (X - 1) * (Y - 1)` using `by noncomm_ring`. Unfold `liftM`. Rewrite using `[h, map_addM, map_addM, map_mulM i hi]`. Use `noncomm_ring`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem liftM_mul (i : R →+ S) (hi : ∀ x y, i (x * y) = i x * i y) (X Y : Matrix (Fin M) (Fin M) R) :
     liftM i (X * Y) = liftM i X * liftM i Y := by
@@ -57,7 +57,7 @@ theorem liftM_mul (i : R →+ S) (hi : ∀ x y, i (x * y) = i x * i y) (X Y : Ma
   noncomm_ring
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[Formalism.UG.cT]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_addM (c : R →+* R) (A B : Matrix (Fin M) (Fin M) R) :
     Formalism.UG.cT c (A + B) = Formalism.UG.cT c A + Formalism.UG.cT c B := by
@@ -65,13 +65,13 @@ theorem cT_addM (c : R →+* R) (A B : Matrix (Fin M) (Fin M) R) :
   simp [Formalism.UG.cT]
 
 /- English proof (translation)
-Take `⟨A, rfl⟩ : ∃ A, X = 1 + A` from `⟨X - 1, by abel⟩`. Establish `hA : (1 + A) - 1 = A` using `by abel`. Use `set B := Formalism.UG.cT c A with hB`. Establish `h0 : J₁ * A + B * J₁ + B * J₁ * A = 0`. Rewrite `hX` using `[cT_addM, Formalism.UG.cT_one, ← hB]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (1 + B) * J₁ * (1 + A) - J₁ = J₁ * A + B * J₁ + B * J₁ * A` using `by noncomm_ring`. Rewrite using `[← e, hX, sub_self]`. Establish `hd : Formalism.UG.cT d (liftM i (1 + A)) = 1 + B.map i`. Unfold `liftM`. Rewrite using `[hA, cT_addM, Formalism.UG.cT_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use extensionality with `a b`. Simplify using `[Formalism.UG.cT, hB, hc]`. Rewrite using `[hd]`. Unfold `liftM`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hA]`. Establish `e : (1 + B.map i) * J₂ * (1 + A.map i) = J₂ + J₂ * A.map i + B.map i * J₂ + B.map i * J₂ * A.map i` using `by noncomm_ring`. Rewrite using `[e, hr B, hl A, ← map_mulM i hi, add_assoc, add_assoc, ← map_addM, ← map_addM, ← add_assoc (J₁ * A), h0, map_zeroM, add_zero]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem liftM_unitary (i : R →+ S) (hi : ∀ x y, i (x * y) = i x * i y) (c : R →+* R) (d : S →+* S)
     (hc : ∀ x, d (i x) = i (c x)) (J₁ : Matrix (Fin M) (Fin M) R) (J₂ : Matrix (Fin M) (Fin M) S)
@@ -120,9 +120,9 @@ theorem iB_tmul (P : PlaceMap F K) (a : K) (e : E) :
     iB P (a ⊗ₜ[F] e : K ⊗[F] E) = P.inj a ⊗ₜ[F] e := rfl
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [add_mul, map_add, ha, hb]`. Consider the case `tmul a e`. Proceed by induction on `y using TensorProduct.induction_on with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add p q hp hq => simp only [mul_add, map_add, hp, hq]`. Consider the case `tmul b f => simp only [Algebra.TensorProduct.tmul_mul_tmul, iB_tmul, map_mul]`.
+Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem iB_mul (P : PlaceMap F K) (x y : K ⊗[F] E) : iB P (x * y) = iB P x * iB P y := by
   induction x using TensorProduct.induction_on with
@@ -135,7 +135,7 @@ theorem iB_mul (P : PlaceMap F K) (x y : K ⊗[F] E) : iB P (x * y) = iB P x * i
     | tmul b f => simp only [Algebra.TensorProduct.tmul_mul_tmul, iB_tmul, map_mul]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `tmul a e => rfl`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem iB_sig (P : PlaceMap F K) (σ : E →ₐ[F] E) (x : K ⊗[F] E) :
     sigR (AF F) σ (iB P x) = iB P (sigR K σ x) := by
@@ -145,9 +145,9 @@ theorem iB_sig (P : PlaceMap F K) (σ : E →ₐ[F] E) (x : K ⊗[F] E) :
   | tmul a e => rfl
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [mul_add, map_add, ha, hb]`. Consider the case `tmul a e`. Express the relevant statement in the definitionally equal form `((1 : AF F) ⊗ₜ[F] t) * (P.inj a ⊗ₜ[F] e) = iB P (((1 : K) ⊗ₜ[F] t) * (a ⊗ₜ[F] e))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [Algebra.TensorProduct.tmul_mul_tmul, iB_tmul, one_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem incl_mul_iB (P : PlaceMap F K) (t : E) (y : K ⊗[F] E) :
     inclR (AF F) t * iB P y = iB P (inclR K t * y) := by
@@ -159,9 +159,9 @@ theorem incl_mul_iB (P : PlaceMap F K) (t : E) (y : K ⊗[F] E) :
     simp only [Algebra.TensorProduct.tmul_mul_tmul, iB_tmul, one_mul]
 
 /- English proof (translation)
-Apply `(Algebra.TensorProduct.basis (AF F) b).equivFun.injective` to reduce the goal to its premises. Rewrite using `[LinearEquiv.apply_symm_apply]`. Use function extensionality and compare the values at `k`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Proceed by induction. Treat this case separately.
 
-Consider the case `add p q hp hq => simp only [map_add, Pi.add_apply, hp, hq]`. Consider the case `tmul a e`. Rewrite using `[iB_tmul]`. Simplify using `only [Module.Basis.equivFun_apply, Algebra.TensorProduct.basis_repr_tmul, Finsupp.smul_apply, Finsupp.mapRange_apply, smul_eq_mul]`. Rewrite using `[show a * algebraMap F K (b.repr e k) = b.repr e k • a by rw [Algebra.smul_def, Algebra.commutes], map_smul, Algebra.smul_def, Algebra.commutes]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem iB_eq_coord [Module.Finite F E] (P : PlaceMap F K) {d : ℕ} (b : Module.Basis (Fin d) F E) (y : K ⊗[F] E) :
     iB P y = (Algebra.TensorProduct.basis (AF F) b).equivFun.symm
@@ -180,11 +180,9 @@ theorem iB_eq_coord [Module.Finite F E] (P : PlaceMap F K) {d : ℕ} (b : Module
       map_smul, Algebra.smul_def, Algebra.commutes]
 
 /- English proof (translation)
-Use `haveI : IsModuleTopology K (K ⊗[F] E) := ⟨rfl⟩`. Use `haveI : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩`. Use `haveI : ContinuousAdd (K ⊗[F] E) := IsModuleTopology.toContinuousAdd K _`. Use `haveI : ContinuousAdd (AF F ⊗[F] E) := IsModuleTopology.toContinuousAdd (AF F) _`. Set `b` to `Module.finBasis F E`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Continuous (Algebra.TensorProduct.basis K b).equivFun.toLinearMap` using `IsModuleTopology.continuous_of_linearMap _`. Establish `h2 : Continuous (Algebra.TensorProduct.basis (AF F) b).equivFun.symm.toLinearMap` using `IsModuleTopology.continuous_of_linearMap _`. Establish `h3 : Continuous fun y : K ⊗[F] E => (fun k => P.inj ((Algebra.TensorProduct.basis K b).equivFun y k) : Fin _ → AF F)` using `continuous_pi fun k => P.cont_inj.comp ((continuous_apply k).comp h1)`. Establish `h4` using `h2.comp h3`. Use `h4 using 1` and compare the differences between its conclusion and the goal.
-
-Use function extensionality and compare the values at `y`. Conclude with `iB_eq_coord P b y`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem continuous_iB [IsTopologicalRing K] [Module.Finite F E] (P : PlaceMap F K) :
     Continuous (iB P : K ⊗[F] E →ₗ[F] AF F ⊗[F] E) := by
@@ -215,12 +213,12 @@ variable {F E K : Type} [Field F] [NumberField F] [Field E] [Algebra F E] [Field
 def iBa (P : PlaceMap F K) : K ⊗[F] E →+ AF F ⊗[F] E := (iB P).toAddMonoidHom
 
 /- English proof (translation)
-The claim follows from `iB_mul P x y`.
+A detailed English derivation is pending.
 -/
 theorem iBa_mul (P : PlaceMap F K) (x y : K ⊗[F] E) : iBa (E := E) P (x * y) = iBa P x * iBa P y := iB_mul P x y
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [Matrix.mul_apply, Matrix.map_apply, map_sum, JR]`. Conclude with `Finset.sum_congr rfl fun k _ => incl_mul_iB P (J a k) (A k b)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem JR_mul_map (P : PlaceMap F K) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
     (A : Matrix (Fin M) (Fin M) (K ⊗[F] E)) :
@@ -230,7 +228,7 @@ theorem JR_mul_map (P : PlaceMap F K) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
   exact Finset.sum_congr rfl fun k _ => incl_mul_iB P (J a k) (A k b)
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [Matrix.mul_apply, Matrix.map_apply, map_sum, JR]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_comm (A a k)]`. Conclude with `incl_mul_iB P (J k b) (A a k)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_mul_JR (P : PlaceMap F K) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
     (A : Matrix (Fin M) (Fin M) (K ⊗[F] E)) :
@@ -245,7 +243,7 @@ def liftGL (P : PlaceMap F K) (M : ℕ) : GL (Fin M) (K ⊗[F] E) →* GL (Fin M
   Units.map (liftH (iBa P) (iBa_mul P))
 
 /- English proof (translation)
-The claim follows from `liftM_unitary (iBa P) (iBa_mul P) (sigR K σ) (sigR (AF F) σ) (iB_sig P σ) (JR K J) (JR (AF F) J) (JR_mul_map P J) (map_mul_JR P J) _ x.2`.
+A detailed English derivation is pending.
 -/
 theorem liftGL_mem (P : PlaceMap F K) (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
     (x : HR K σ J) : liftGL P M x.1 ∈ HR (AF F) σ J :=
@@ -257,7 +255,7 @@ def liftHA (P : PlaceMap F K) (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M)
   ((liftGL P M).comp (HR K σ J).subtype).codRestrict (HR (AF F) σ J) (liftGL_mem P σ J)
 
 /- English proof (translation)
-Introduce `x i j`. Express the relevant statement in the definitionally equal form `((1 + (((HA.mat K σ J x).1 : Matrix (Fin M) (Fin M) (K ⊗[F] E)) - 1).map (iBa P)) - 1) i j = _`. Rewrite using `[add_sub_cancel_left]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem liftHA_isLift (P : PlaceMap F K) (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) :
     IsLift P σ J (liftHA P σ J) := by
@@ -267,11 +265,9 @@ theorem liftHA_isLift (P : PlaceMap F K) (σ : E →ₐ[F] E) {M : ℕ} (J : Mat
   rfl
 
 /- English proof (translation)
-Use `haveI : IsModuleTopology K (K ⊗[F] E) := ⟨rfl⟩`. Use `haveI : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (K ⊗[F] E) := IsModuleTopology.isTopologicalRing K _`. Use `haveI : IsTopologicalRing (AF F ⊗[F] E) := IsModuleTopology.isTopologicalRing (AF F) _`. Establish `hi : Continuous (iBa (E` using `E) P) := continuous_iB P`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Establish `hm : Continuous (liftH (M` using `M) (iBa P) (iBa_mul (E := E) P)) := by`. Use `continuous_matrix fun a b => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Continuous fun X : Matrix (Fin M) (Fin M) (K ⊗[F] E) => (1 : Matrix (Fin M) (Fin M) (AF F ⊗[F] E)) a b + iBa P (X a b - (1 : Matrix (Fin M) (Fin M) (K ⊗[F] E)) a b)`. Conclude with `continuous_const.add (hi.comp ((continuous_id.matrix_elem a b).sub continuous_const))`. Establish `hu : Continuous (liftGL (E` using `E) P M) := Continuous.units_map _ hm`.
-
-Conclude with `Continuous.subtype_mk (hu.comp continuous_subtype_val) _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_liftHA [IsTopologicalRing K] [Module.Finite F E] (P : PlaceMap F K) (σ : E →ₐ[F] E) {M : ℕ}
     (J : Matrix (Fin M) (Fin M) E) : Continuous (liftHA P σ J) := by
@@ -295,7 +291,7 @@ end GlobalTheory.CompanionTheory.SaGen.ExLift
 namespace GlobalTheory.CompanionTheory.SaGen.ExLift
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ _ M J _ K _ _ P`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Conclude with `⟨liftHA P σ J, continuous_liftHA P σ J, liftHA_isLift P σ J⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_continuous_lift : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ {M : ℕ} (J : Matrix (Fin M) (Fin M) E), IsHermND σ J →

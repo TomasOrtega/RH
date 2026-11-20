@@ -12,7 +12,7 @@ open GlobalTheory.UPel.HT GlobalTheory.UPel.HT.Gen
 namespace UpperTheory
 
 /- English proof (translation)
-Establish `hk : I = RingHom.ker f`. Use extensionality with `a`. Rewrite using `[RingHom.mem_ker]`. Conclude with `h a`. Conclude with `Nat.card_congr ((Ideal.quotEquivOfEq hk).trans (RingHom.quotientKerEquivOfSurjective hf)).toEquiv`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem card_quot_of {A B : Type} [CommRing A] [CommRing B] (f : A →+* B)
     (hf : Function.Surjective f) (I : Ideal A) (h : ∀ a, a ∈ I ↔ f a = 0) :
@@ -34,7 +34,7 @@ private def iota : 𝓞 E →+* Gal.Int.Geo.Ow w :=
       exact w.valuation_le_one a)
 
 /- English proof (translation)
-Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, (Valuation.valuationSubring.integers (w.valuation E)).isUnit_iff_valuation_eq_one, ← w.valuation_lt_one_iff_mem (K := E) a]`. Conclude with `⟨fun h => lt_of_le_of_ne (w.valuation_le_one a) h, ne_of_lt⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 private theorem iota_mem_max (a : 𝓞 E) :
     iota w a ∈ IsLocalRing.maximalIdeal (Gal.Int.Geo.Ow w) ↔ a ∈ w.asIdeal := by
@@ -44,13 +44,13 @@ private theorem iota_mem_max (a : 𝓞 E) :
   exact ⟨fun h => lt_of_le_of_ne (w.valuation_le_one a) h, ne_of_lt⟩
 
 /- English proof (translation)
-Introduce `y`. Take `⟨x, rfl⟩` from `IsLocalRing.residue_surjective y`. Establish `hx : (x : E) ∈ w.valuationSubringAtPrime E`. Rewrite using `[HeightOneSpectrum.valuationSubringAtPrime_eq_valuationSubring]`. Conclude with `x.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `haveI : IsLocalization w.asIdeal.primeCompl (w.valuationSubringAtPrime E) := Localization.subalgebra.isLocalization_ofField E w.asIdeal.primeCompl w.asIdeal.primeCompl_le_nonZeroDivisors`. Take `⟨⟨a, s⟩, h⟩` from `IsLocalization.surj w.asIdeal.primeCompl (⟨x, hx⟩ : w.valuationSubringAtPrime E)`. Establish `hxs : x * iota w (s : 𝓞 E) = iota w a` using `Subtype.ext (congrArg (fun z : w.valuationSubringAtPrime E => (z : E)) h)`. Take `⟨c, i, hi, hc⟩` from `w.isMaximal.exists_inv s.2`. Use `⟨a * c, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[RingHom.comp_apply, ← sub_eq_zero, ← map_sub, IsLocalRing.residue_eq_zero_iff]`. Establish `hc' : iota w c * iota w (s : 𝓞 E) + iota w i = 1`. Rewrite using `[← map_mul, ← map_add, hc, map_one]`. Establish `e1 : iota w (a * c) - x = -(x * iota w i)`. Rewrite using `[map_mul, ← hxs]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `x * hc'`. Rewrite using `[e1]`. Conclude with `neg_mem (Ideal.mul_mem_left _ _ ((iota_mem_max w i).2 hi))`.
+A detailed English derivation is pending.
 -/
 private theorem res_surj :
     Function.Surjective ((IsLocalRing.residue (Gal.Int.Geo.Ow w)).comp (iota w)) := by
@@ -78,7 +78,7 @@ private theorem res_surj :
   exact neg_mem (Ideal.mul_mem_left _ _ ((iota_mem_max w i).2 hi))
 
 /- English proof (translation)
-The claim follows from `(card_quot_of _ (res_surj w) w.asIdeal (fun a => by rw [RingHom.comp_apply, IsLocalRing.residue_eq_zero_iff, iota_mem_max])).symm`.
+A detailed English derivation is pending.
 -/
 private theorem card_res :
     Nat.card (IsLocalRing.ResidueField (Gal.Int.Geo.Ow w)) = Nat.card (𝓞 E ⧸ w.asIdeal) :=
@@ -86,7 +86,7 @@ private theorem card_res :
     rw [RingHom.comp_apply, IsLocalRing.residue_eq_zero_iff, iota_mem_max])).symm
 
 /- English proof (translation)
-Apply the tactic sequence `apply _root_.UpperTheory.Reformulated.B.Qi54.card_pow <;> assumption`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem card_pow (q : ℕ) (hq : q.Prime) (h : (q : 𝓞 E) ∈ w.asIdeal) :
     ∃ f : ℕ, Nat.card (𝓞 E ⧸ w.asIdeal) = q ^ f :=
@@ -95,25 +95,21 @@ private theorem card_pow (q : ℕ) (hq : q.Prime) (h : (q : 𝓞 E) ∈ w.asIdea
 end Local
 
 /- English proof (translation)
-Introduce `q _ D ha hm E _ _ e gb hstd w 𝔴 r hpl hu N₀ h3 hcop`. Use `haveI : Subsingleton (Fin D.a) := by`. Rewrite using `[ha]`. Use `infer_instance`. Establish `hq : q.Prime` using `Fact.out`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `j : 𝓞 D.F ≃+* 𝓞 E` to `NumberField.RingOfIntegers.mapRingEquiv e`. Establish `hj : ∀ c : 𝓞 D.F, ((j c : 𝓞 E) : E) = e (c : D.F)` using `fun c => rfl`. Establish `hpl' : ∀ c : 𝓞 D.F, c ∈ 𝔴 ↔ j c ∈ w.asIdeal` using `fun c => hpl c (j c) (hj c)`. Establish `hqm : (q : 𝓞 E) ∈ w.asIdeal`. Establish `h` using `(hpl' (q : 𝓞 D.F)).1 (hu (ES.p_mem_uIdeal D r))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Rewrite `h` using `[map_natCast]`. Then use the resulting hypothesis. Take `⟨f, hf⟩` from `card_pow w q hq hqm`. Establish `hnw : Ideal.absNorm w.asIdeal = q ^ f`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply, hf]`. Establish `hroot : D.ω ^ 2 - (D.tr : 𝓞 D.F) * D.ω + (D.nm : 𝓞 D.F) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Introduce a local definition for the expression.
 
-Take the linear combination `D.ω * D.tr_eq - D.nm_eq`. Set `t : 𝓞 D.F →+* Gal.Int.Geo.Ow w` to `(iota w).comp j.toRingHom`. Establish `hunit : ∀ k : ℕ, k.Coprime q → IsUnit (k : Gal.Int.Geo.Ow w)`. Introduce `k hk`. Establish `hkw : (k : 𝓞 E) ∉ w.asIdeal`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `hmem`. Take `⟨u, v, huv⟩` from `Nat.isCoprime_iff_coprime.2 hk`. Establish `h1 : (u : 𝓞 E) * (k : 𝓞 E) + (v : 𝓞 E) * (q : 𝓞 E) = 1`. Conclude with `congrArg (Int.cast : ℤ → 𝓞 E) huv` after adjusting the coercions. Use `w.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← h1]`. Conclude with `add_mem (Ideal.mul_mem_left _ _ hmem) (Ideal.mul_mem_left _ _ hqm)`. Assume the negation of the conclusion as `hn`. Use `hkw ((iota_mem_max w _).1 ?_)` and prove the remaining obligations. Rewrite using `[map_natCast]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(IsLocalRing.mem_maximalIdeal _).2 hn`. Set `b : Base D (Gal.Int.Geo.Ow w)` to `{ unit := hunit ρ := t D.ω ρ_root := by`. Establish `h` using `congrArg t hroot`. Simplify `h` using `only [map_add, map_sub, map_mul, map_pow, map_intCast, map_zero]`. Use `t := fun _ => t`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `t_ω := fun _ => rfl`. Use `comax := fun i j h => absurd (Subsingleton.elim i j) h`. Use `apart := fun i j h => absurd (Subsingleton.elim i j) h }`. Use `⟨f, b, ⟨?_, ?_⟩, ?_, hqm, hnw⟩` and prove the remaining obligations. Conclude with `hstd.1`.
-
-Conclude with `fun i => RingHom.ext fun c => hstd.2 i c`. Establish `hsurj : Function.Surjective ((Ideal.Quotient.mk w.asIdeal).comp j.toRingHom)` using `Ideal.Quotient.mk_surjective.comp j.surjective`. Use `{ pmem := ?_ card := by rw [card_res, hf] three := h3 cop := hcop m1 := hm a1 := ha ule := hu norm := ?_ tw := fun i x hx => (iota_mem_max w _).2 ((hpl' x).1 hx) }` and prove the remaining obligations. Rewrite using `[← map_natCast (iota w)]`. Conclude with `(iota_mem_max w _).2 hqm`.
-
-Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply, card_quot_of _ hsurj 𝔴 (fun a => by`. Rewrite using `[RingHom.comp_apply, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hpl' a), hf]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem baseExtension_holds : Gal.Int.Geo.BaseEx := by
   intro q _ D ha hm E _ _ e gb hstd w 𝔴 r hpl hu N₀ h3 hcop

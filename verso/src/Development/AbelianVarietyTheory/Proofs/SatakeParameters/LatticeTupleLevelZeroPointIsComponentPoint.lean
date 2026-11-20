@@ -8,11 +8,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.TwV.DelA
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S hD La hLa`. Take `⟨⟨hr, he⟩, -⟩` from `hD 0 (Nat.zero_le _) La hLa`. Simplify using `only [Joint.cp, cpAt, chAt] at he`. Use `⟨basesAt (chainAt H hT) std _ _ _ _ _ _ _ 0 La.2, fun v => ?_, ?_⟩` and prove the remaining obligations. Unfold `basesAt`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Take `⟨g0, hg0⟩` from `Formalism.MainNotions.G.KAat.exists_bases1 La.2 hLa`. Conclude with `Classical.epsilon_spec (⟨g0 v, hg0 v⟩ : ∃ g : GL (Fin (((sysS H X std).Pj 0).m + 1)) (((sysS H X std).Pj 0).Qq v), La.2 v = colSpan (((sysS H X std).Pj 0).W v) (g : Matrix _ _ _))`. Rewrite using `[he]`. Use `(Classical.epsilon_spec (GlobalTheory.TwU.exists_unitary_pt J.one.good La.1 (basesAt (chainAt H hT) std _ _ _ _ _ _ _ 0 La.2))).1 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `i j`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem latticeTupleLevelZero_point_isComponentPoint : AllSites (fun {D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X} [Fact (D.what₂.places.resChar w).Prime] {std t J} S => J.Dict std → ∀ (La : (sysS H X std).Lt 0), ((sysS H X std).Pj 0).IsLatTup La.2 → ∃ g : ∀ v, GL (Fin (((sysS H X std).Pj 0).m + 1)) (((sysS H X std).Pj 0).Qq v), (∀ v, La.2 v = colSpan (((sysS H X std).Pj 0).W v) (g v).1) ∧ (lev0At J.Gd u w hg).A.IsPt La.1 g (J.pt std 0 (Nat.zero_le _) La).1) := by
   intro D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S hD La hLa

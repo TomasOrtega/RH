@@ -18,15 +18,15 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.WcB.NormOpen
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ E _ _ _ _ _ _ _ _ _ _ _`. Establish `hO : IsOpen ((GroundTheory.LocalField.normUnits F E).range : Set Fˣ)` using `GroundTheory.LocalField.FiltrationCocycleLiftCriterion.WeilRep.isOpen_range_normUnits (K := F) (E := E)`. Establish `hemb : Topology.IsOpenEmbedding (Units.val : Fˣ → F)` using `GroundTheory.LocalField.isOpenEmbedding_units_val`. Establish `hC : IsClosed ((GroundTheory.LocalField.normUnits F E).range : Set Fˣ)` using `Subgroup.isClosed_of_isOpen _ hO`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Establish `h` using `hemb.isOpenMap _ hO`. Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `a`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, rfl⟩`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨GroundTheory.LocalField.normUnits F E t, ⟨t, rfl⟩, rfl⟩`. Introduce and unpack `⟨_, ⟨t, rfl⟩, rfl⟩`. Conclude with `⟨t, rfl⟩`. Establish `h` using `hemb.isOpenMap _ hC.isOpen_compl`. Use `h using 1` and compare the differences between its conclusion and the goal.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use extensionality with `a`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨ha, hn⟩`. Use `⟨Units.mk0 a ha, ?_, rfl⟩` and prove the remaining obligations. Introduce and unpack `⟨t, ht⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `hn ⟨t, by simpa using congrArg Units.val ht⟩`. Introduce and unpack `⟨u, hu, rfl⟩`. Use `⟨u.ne_zero, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨t, ht⟩`. Conclude with `hu ⟨t, Units.ext ht⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem isOpen_norms_and_nonnorms : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (E : Type) [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] [MeasurableSpace E] [BorelSpace E] [Algebra F E] [ValuativeExtension F E] [FiniteDimensional F E] [Algebra.IsSeparable F E] [Fact (Module.finrank F E = 2)], IsOpen {a : F | ∃ t : Eˣ, Algebra.norm F (t : E) = a} ∧ IsOpen {a : F | a ≠ 0 ∧ ¬ ∃ t : Eˣ, Algebra.norm F (t : E) = a} := by
   intro F _ _ _ _ _ _ E _ _ _ _ _ _ _ _ _ _ _

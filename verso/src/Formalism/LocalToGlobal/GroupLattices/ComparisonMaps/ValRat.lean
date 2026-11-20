@@ -84,7 +84,7 @@ structure CmpTie (S : StepLevel F E σ J T f bad) (emb : Tau → E →+* ℂ) (e
     ∃ r : LL, embLL r = (S.chi κ : ℂ) ∧ algebraMap G.O G.Kf ((G.lev i).χ γ : G.O) * e r = 1
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨K.val x i L, (K.val_cmp x i L hL).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem CmpTie.val_rat {S : StepLevel F E σ J T f bad} {emb : Tau → E →+* ℂ} {embLL : LL →+* ℂ} {tE : Tau → E →+* LL}
     {G : GAtP p} {e : LL →+* G.Kf} {A : LocAt F E n G} {pos : (Σ v : Fin G.P.nV, Fin (G.P.n' v)) ≃ Tau}

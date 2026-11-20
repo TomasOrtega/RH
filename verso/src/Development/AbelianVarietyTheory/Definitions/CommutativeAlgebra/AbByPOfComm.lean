@@ -25,7 +25,7 @@ def AbByP (G : Type) [Group G] : Prop :=
   ∃ p : ℕ, p.Prime ∧ ∃ A : Subgroup G, A.Normal ∧ (∀ a ∈ A, ∀ b ∈ A, a * b = b * a) ∧ ∀ g : G, ∃ k : ℕ, g ^ p ^ k ∈ A
 
 /- English proof (translation)
-Use `⟨1, Representation.trivial K G (Fin 1 → K), fun g => ?_⟩` and prove the remaining obligations. Simplify using `[Representation.character, Representation.trivial]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem isChar_one (K L : Type) [Field K] [Field L] [Algebra K L] (G : Type) [Group G] :
     IsChar K L (fun _ : G => (1 : L)) := by

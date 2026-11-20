@@ -10,23 +10,23 @@ section
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] {ε : Ω →+* ℂ} (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (n N : ℕ)
 
 /- English proof (translation)
-The claim follows from `(sCls Ω ε X l n).1 (slU X (toGQ !![(N : ℤ), 0; 0, 1]) f)`.
+A detailed English derivation is pending.
 -/
 private theorem rep_slD (f : X.Kˣ) :
     Rep X l n (slU X (toGQ !![(N : ℤ), 0; 0, 1]) f) (clsK X l n (slD X N (f : X.K))) :=
   (sCls Ω ε X l n).1 (slU X (toGQ !![(N : ℤ), 0; 0, 1]) f)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, by simp⟩`.
+Supply the required witnesses or components.
 -/
 private theorem cgr_rfl {K : Type} [Field K] (m : ℕ) (f : Kˣ) : Cgr m f f := ⟨1, by simp⟩
 
 /- English proof (translation)
-Take `⟨-, hr2, -, hr4, -⟩` from `sCls Ω ε X l n`. Establish `ra` using `rep_slD X l n N a`. Establish `ra'` using `rep_slD X l n N a'`. Establish `rb` using `rep_slD X l n N b`. Establish `rb'` using `rep_slD X l n N b'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `r1` using `(hr2 _ _ _ _ ra' rb).1`. Establish `r2` using `(hr2 _ _ _ _ r1 rb').2`. Take `⟨k, hk⟩` from `h`. Establish `hz` using `hr4 _ _ _ _ ra r2 ⟨slU X (toGQ !![(N : ℤ), 0; 0, 1]) k, by`. Rewrite using `[hk, map_mul, map_pow, map_div, map_mul]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hz` using `[add_sub_assoc]`. Conclude with `hz`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem term_mul (a a' b b' : X.Kˣ) (h : Cgr (l ^ n) a (a' * b / b')) :
     AdicCompletion.eval (idl l) (X.Kl l) n (clsK X l n (slD X N (a : X.K)) -
@@ -45,7 +45,7 @@ private theorem term_mul (a a' b b' : X.Kˣ) (h : Cgr (l ^ n) a (a' * b / b')) :
   exact hz
 
 /- English proof (translation)
-Take `⟨-, -, h3, h4, -⟩` from `sCls Ω ε X l n`. Use `h4 _ _ _ _ (rep_slD X l n N (a ^ k)) (h3 _ _ k (rep_slD X l n N a)) ?_` and prove the remaining obligations. Rewrite using `[map_pow]`. Conclude with `cgr_rfl _ _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem term_pow (a : X.Kˣ) (k : ℕ) :
     AdicCompletion.eval (idl l) (X.Kl l) n (clsK X l n (slD X N ((a ^ k : X.Kˣ) : X.K)) -
@@ -56,7 +56,7 @@ private theorem term_pow (a : X.Kˣ) (k : ℕ) :
   exact cgr_rfl _ _
 
 /- English proof (translation)
-Take `⟨-, -, -, h4, -, h6, -⟩` from `sCls Ω ε X l n`. Conclude with `h4 _ _ _ _ (h6 _ _ (rep_slD X l (n + 1) N a)) (rep_slD X l n N a) (cgr_rfl _ _)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem term_red (a : X.Kˣ) :
     AdicCompletion.eval (idl l) (X.Kl l) n (clsK X l (n + 1) (slD X N (a : X.K)) - clsK X l n (slD X N (a : X.K))) = 0 := by
@@ -66,9 +66,9 @@ private theorem term_red (a : X.Kˣ) :
 end
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_fiberwise_of_maps_to (s := Finset.univ.filter (fun i => C i ∧ Q (d i))) (t := Finset.univ.filter Q) (g := d) (fun i hi => by simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hi ⊢; exact hi.2)]`. Use `Finset.sum_congr rfl fun z hz => Finset.sum_congr ?_ fun _ _ => rfl` and prove the remaining obligations. Use extensionality with `i`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hz ⊢`. Prove the components needed by the constructor for the conclusion.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨⟨h1, -⟩, h2⟩`. Conclude with `⟨h1, h2⟩`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨⟨h1, h2 ▸ hz⟩, h2⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 private theorem fib {ι κ V : Type} [Fintype ι] [Fintype κ] [AddCommMonoid V] (C : ι → Prop) (d : ι → κ) (Q : κ → Prop) (F : ι → V)
     [DecidablePred Q] [DecidablePred fun i => C i ∧ Q (d i)] [∀ z, DecidablePred fun i => C i ∧ d i = z] :
@@ -86,17 +86,17 @@ private theorem fib {ι κ V : Type} [Fintype ι] [Fintype κ] [AddCommMonoid V]
     exact ⟨⟨h1, h2 ▸ hz⟩, h2⟩
 
 /- English proof (translation)
-Introduce `Ω _ _ _ ε X l _ n N M₀ M w _ _ _ g hL x y hxy P`. Establish `hOk : ∀ m : GL (Fin 2) (ZMod M), m ∈ Finset.univ.filter (fun m : GL (Fin 2) (ZMod M) => Cnd l N g (m : Matrix (Fin 2) (Fin 2) (ZMod M)) ∧ P (Matrix.GeneralLinearGroup.det m)) → Ok (x ᵥ* cD N M₀ (m : Matrix (Fin 2) (Fin 2) (ZMod M))) (y ᵥ* cD N M₀ (m : Matrix (Fin 2) (Fin 2) (ZMod …` using `fun m hm => (sCdFacts N M₀ M (Lev.eq hL)).2.2.1 m (Finset.mem_filter.1 hm).2.1.1 x y hxy`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a a' b b' hab u`. Simplify using `only [Pi.add_apply, Pi.sub_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Unfold `Xi`. Rewrite using `[← Finset.sum_sub_distrib, ← Finset.sum_add_distrib, ← Finset.sum_sub_distrib, map_sum]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `m hm`. Rewrite using `[← smul_sub, ← smul_add, ← smul_sub, map_smul, term_mul X l n N _ _ _ _ (hab _ _ (hOk m hm)), smul_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `a k u`. Simplify using `only [Pi.sub_apply, Pi.smul_apply]`. Unfold `Xi`. Use `beta_reduce`. Rewrite using `[Finset.smul_sum, ← Finset.sum_sub_distrib, map_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `m _`. Rewrite using `[smul_comm (k : ℤ_[l]), ← smul_sub, map_smul, term_pow, smul_zero]`. Introduce `a u`. Unfold `Xi`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.sum_sub_distrib, map_sum]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `m _`. Rewrite using `[← smul_sub, map_smul, term_red, smul_zero]`. Introduce `a A π t _`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `u`. Rewrite using `[Finset.sum_apply]`. Unfold `Xi`. Use `fib (fun m : GL (Fin 2) (ZMod M) => Cnd l N g (m : Matrix (Fin 2) (Fin 2) (ZMod M))) (fun m => Matrix.GeneralLinearGroup.det m) (fun z => π z = t) _` and compare the differences between its conclusion and the goal.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Kato.Nb.sXiMul :
     UpperTheory.V.Z.Kato.Nb.SXiMul := by

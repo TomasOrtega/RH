@@ -17,7 +17,7 @@ open GlobalTheory.ZM GlobalTheory.KS
 
 namespace GlobalTheory.KS
 /- English proof (translation)
-Introduce and unpack `rfl`. Establish `h0 : (0 : o) = 1` using `isUnit_zero_iff.mp (by simpa using b.unit)`. Use `haveI : Subsingleton o := subsingleton_of_zero_eq_one h0`. Take `⟨x⟩` from `(inferInstance : Nonempty (PrimeSpectrum ℂ))`. Conclude with `(s₀.base x).isPrime.ne_top (Subsingleton.elim _ _)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem k_ne_zero_lemma {o : Type} [CommRing o] {k : ℕ} (b : TBase o k) (s₀ : Sp ℂ ⟶ Sp o) :
     k ≠ 0 := by
@@ -28,9 +28,9 @@ private theorem k_ne_zero_lemma {o : Type} [CommRing o] {k : ℕ} (b : TBase o k
   exact (s₀.base x).isPrime.ne_top (Subsingleton.elim _ _)
 
 /- English proof (translation)
-Introduce `hL hL2 hT o _ g k J b s₀ s' t₀ t' ρ j hc ⟨hpb, hlb, hpt, hact⟩`. Establish `hk : k ≠ 0` using `k_ne_zero_lemma b s₀`. Use `⟨ρ, hc.1, ?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨u, Hm, χ, hu, -⟩` from `GlobalTheory.KSInh.exists_goodU_ksRel hT t₀.pol`. Conclude with `GlobalTheory.SymRigid.lbIso_pull_of_isConst hL t₀.pol u Hm χ hu t'.A ρ j hc t'.L t'.isLB t'.sym hlb`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Conclude with `GlobalTheory.T.torsionSection_constantFamily_dualNumbers hL t₀.pol t'.A ρ j hc k (t'.pt i) (t₀.pt i) hk (t'.torsion i) (t₀.torsion i) (hpt i).symm`. Introduce `jj`. Conclude with `GlobalTheory.T.endo_constant_family_dualNumbers_eq_baseChange hL hL2 t₀.pol t'.A ρ j hc (t'.act jj) (t₀.act jj) t'.ab (t'.hom jj) (t₀.hom jj) (hact jj).symm`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem tMap_of_isConst : Out.Laws → Out.Laws2 → ThetaUnifAV → ∀ (o : Type) [CommRing o] (g k : ℕ) (J : Type) (b : TBase o k) (s₀ : Sp ℂ ⟶ Sp o) (s' : Sp (DualNumber ℂ) ⟶ Sp o) (t₀ : TObj g k J b s₀) (t' : TObj g k J b s') (ρ : t'.A.left ⟶ t₀.A.left) (j : t₀.A.left ⟶ t'.A.left), IsConst t'.A t₀.A ρ j → (IsGrpPullback t₀.A t'.A (spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom) j ∧ LBIso t₀.L (t'.L.pull j) ∧ (∀ i, (t₀.pt i).left ≫ j = (spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom) ≫ (t'.pt i).left) ∧ ∀ jj, (t₀.act jj).left ≫ j = j ≫ (t'.act jj).left) → TMap t' t₀ (spMap (algebraMap ℂ (DualNumber ℂ))) := by
   intro hL hL2 hT o _ g k J b s₀ s' t₀ t' ρ j hc ⟨hpb, hlb, hpt, hact⟩

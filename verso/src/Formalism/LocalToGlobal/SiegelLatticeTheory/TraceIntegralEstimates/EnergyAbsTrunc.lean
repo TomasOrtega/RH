@@ -25,7 +25,7 @@ def fY (σ : G → (HH →L[ℂ] HH)) (w : HH) (W : G → V) (e : V) (p : G × G
   ⟪W (p.2⁻¹ * p.1), e⟫_ℂ • σ (p.2⁻¹ * p.1) w
 
 /- English proof (translation)
-Establish `hc : Continuous (fun p : G × G => p.2⁻¹ * p.1)` using `continuous_snd.inv.mul continuous_fst`. Establish `h1 : Continuous (fun p : G × G => W (p.2⁻¹ * p.1))` using `hW.comp hc`. Establish `h2 : Continuous (fun p : G × G => σ (p.2⁻¹ * p.1) w)` using `(hσ.2.2.2 w).comp hc`. Conclude with `(h1.inner continuous_const).smul h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_fY {σ : G → (HH →L[ℂ] HH)} (hσ : IsUnitRep σ) (w : HH) {W : G → V} (hW : Continuous W)
     (e : V) : Continuous (fY σ w W e) := by
@@ -35,7 +35,7 @@ theorem continuous_fY {σ : G → (HH →L[ℂ] HH)} (hσ : IsUnitRep σ) (w : H
   exact (h1.inner continuous_const).smul h2
 
 /- English proof (translation)
-Establish `h` using `hσ.2.2.1 x a a`. Establish `h2 : ‖σ x a‖ ^ 2 = ‖a‖ ^ 2`. Rewrite using `[@norm_sq_eq_re_inner ℂ, @norm_sq_eq_re_inner ℂ, h]`. Rewrite using `[← Real.sqrt_sq (norm_nonneg (σ x a)), h2, Real.sqrt_sq (norm_nonneg a)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem norm_rep_apply_of_isUnitRep {σ : G → (HH →L[ℂ] HH)} (hσ : Formalism.L2.SG.Pf.EnergyAbs.IsUnitRep σ) (x : G) (a : HH) :
     ‖σ x a‖ = ‖a‖ := by
@@ -45,7 +45,7 @@ private theorem norm_rep_apply_of_isUnitRep {σ : G → (HH →L[ℂ] HH)} (hσ 
   rw [← Real.sqrt_sq (norm_nonneg (σ x a)), h2, Real.sqrt_sq (norm_nonneg a)]
 
 /- English proof (translation)
-Unfold `fY`. Rewrite using `[norm_smul, norm_rep_apply_of_isUnitRep hσ]`. Conclude with `mul_le_mul_of_nonneg_right (norm_inner_le_norm _ _) (norm_nonneg _)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_fY_le {σ : G → (HH →L[ℂ] HH)} (hσ : IsUnitRep σ) (w : HH) (W : G → V) (e : V) (p : G × G) :
     ‖fY σ w W e p‖ ≤ ‖W (p.2⁻¹ * p.1)‖ * ‖e‖ * ‖w‖ := by
@@ -54,7 +54,7 @@ theorem norm_fY_le {σ : G → (HH →L[ℂ] HH)} (hσ : IsUnitRep σ) (w : HH) 
   exact mul_le_mul_of_nonneg_right (norm_inner_le_norm _ _) (norm_nonneg _)
 
 /- English proof (translation)
-Rewrite using `[ae_iff]`. Establish `hs : {p : G × G | ¬ p.2 ∈ A} = (Set.univ : Set G) ×ˢ Aᶜ`. Use extensionality with `p`. Simplify using the standard rewrite rules. Rewrite using `[hs, Measure.prod_prod, Measure.restrict_apply hA.compl, Set.compl_inter_self, measure_empty, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem ae_prod_restrict_snd_mem {ν μS : Measure G} [SFinite ν] [SFinite μS] {A : Set G} (hA : MeasurableSet A) :
     ∀ᵐ p ∂(ν.prod (μS.restrict A)), p.2 ∈ A := by
@@ -66,11 +66,9 @@ private theorem ae_prod_restrict_snd_mem {ν μS : Measure G} [SFinite ν] [SFin
     mul_zero]
 
 /- English proof (translation)
-Establish `: IsFiniteMeasure (μS.restrict A)` using `⟨by rwa [Measure.restrict_apply_univ]⟩`. Establish `hWc : Continuous W` using `hW.2.2.2.2.1`. Establish `hWi : Integrable (fun z => ‖W z‖) ν`. Use `⟨hWc.norm.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Simplify `hW.2.2.2.2.2.2.1` using `[HasFiniteIntegral, enorm_norm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hg : Integrable (fun p : G × G => ‖W p.1‖ * (‖e‖ * ‖w‖)) (ν.prod (μS.restrict A))` using `hWi.mul_prod (integrable_const (‖e‖ * ‖w‖))`. Use `hg.mono' (continuous_fY hσ w hWc e).aestronglyMeasurable ?_` and prove the remaining obligations. Use `filter_upwards [ae_prod_restrict_snd_mem (ν := ν) (μS := μS) hA] with p hp`. Establish `h1` using `norm_fY_le hσ w W e p`. Rewrite `h1` using `[(norm_W_shift hW) hinv (hAS hp)]`.
-
-Conclude with `h1.trans_eq (by ring)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrable_fY {σ : G → (HH →L[ℂ] HH)} (hσ : IsUnitRep σ) {μ μS ν : Measure G} [SFinite ν]
     [SFinite μS] {d : ℝ} {w : HH} {S : Set G} {τ : G → (V →L[ℂ] V)} {W : G → V}
@@ -90,7 +88,7 @@ theorem integrable_fY {σ : G → (HH →L[ℂ] HH)} (hσ : IsUnitRep σ) {μ μ
   exact h1.trans_eq (by ring)
 
 /- English proof (translation)
-Rewrite using `[integral_prod _ (integrable_fY hσ hW hinv hA hAS hAf e)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem yv_eq_integral {σ : G → (HH →L[ℂ] HH)} (hσ : IsUnitRep σ) {μ μS ν : Measure G} [SFinite ν]
     [SFinite μS] {d : ℝ} {w : HH} {S : Set G} {τ : G → (V →L[ℂ] V)} {W : G → V}
@@ -100,7 +98,7 @@ theorem yv_eq_integral {σ : G → (HH →L[ℂ] HH)} (hσ : IsUnitRep σ) {μ �
   rfl
 
 /- English proof (translation)
-Establish `h : ∫ x, ⟪v, f x⟫_ℂ ∂m = ⟪v, ∫ x, f x ∂m⟫_ℂ` using `integral_inner hf v`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem inner_integral_left {α : Type*} [MeasurableSpace α] {m : Measure α} {f : α → HH} (hf : Integrable f m)
     (v : HH) : ⟪∫ x, f x ∂m, v⟫_ℂ = ∫ x, ⟪f x, v⟫_ℂ ∂m := by
@@ -115,9 +113,9 @@ def Xop (μS ν μS' ν' : Measure G) (σ : G → (HH →L[ℂ] HH)) (d : ℝ) (
   (d : ℂ) • sand σ (Yop μS ν σ w W A) (Yop μS' ν' σ w W' A') γ
 
 /- English proof (translation)
-Establish `hcol : ∀ j, X (stdOrthonormalBasis ℂ V' j) = Z (stdOrthonormalBasis ℂ V' j)`. Introduce `j`. Use `first`. Consider the case `exact ext_inner_left_basis (stdOrthonormalBasis ℂ V).toBasis (fun i => by simpa using h i j)`. Consider the case `(apply (stdOrthonormalBasis ℂ V).repr.injective`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. By extensionality, compare the relevant components.
 
-Use extensionality with `i`. Simplify `h i j)` using `[OrthonormalBasis.repr_apply_apply]`. Apply `ContinuousLinearMap.coe_injective` to reduce the goal to its premises. Conclude with `(stdOrthonormalBasis ℂ V').toBasis.ext (fun j => by simpa using hcol j)`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem op_ext_basis (X Z : V' →L[ℂ] V)
     (h : ∀ i j, ⟪stdOrthonormalBasis ℂ V i, X (stdOrthonormalBasis ℂ V' j)⟫_ℂ =
@@ -139,7 +137,7 @@ private theorem rk1A_apply (u : V) (v : V') (x : V') : Formalism.L2.SG.Pf.Energy
   rfl
 
 /- English proof (translation)
-Unfold `kG fY φinv`. Simplify using `only [ContinuousLinearMap.smul_apply, rk1A_apply, inner_smul_right, inner_smul_left, map_smul, inner_conj_symm]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem inner_kG_apply_eq (σ : G → (HH →L[ℂ] HH)) (d : ℝ) (w : HH) (W : G → V) (W' : G → V')
     (γ : G) (a : V) (b : V') (p p' : G × G) :
@@ -151,21 +149,21 @@ private theorem inner_kG_apply_eq (σ : G → (HH →L[ℂ] HH)) (d : ℝ) (w : 
   ring
 
 /- English proof (translation)
-Conclude with `hF.apply_continuousLinearMap b`.
+A detailed English derivation is pending.
 -/
 private theorem integrable_apply_of_integrable_clm {α : Type*} [MeasurableSpace α] {m : Measure α} {F : α → (V' →L[ℂ] V)}
     (hF : Integrable F m) (b : V') : Integrable (fun x => F x b) m := by
   exact hF.apply_continuousLinearMap b
 
 /- English proof (translation)
-Conclude with `(integrable_apply_of_integrable_clm hF b).const_inner a`.
+A detailed English derivation is pending.
 -/
 private theorem integrable_inner_apply_of_integrable_clm {α : Type*} [MeasurableSpace α] {m : Measure α} {F : α → (V' →L[ℂ] V)}
     (hF : Integrable F m) (a : V) (b : V') : Integrable (fun x => ⟪a, F x b⟫_ℂ) m := by
   exact (integrable_apply_of_integrable_clm hF b).const_inner a
 
 /- English proof (translation)
-Establish `happ : (∫ x, F x ∂m) b = ∫ x, F x b ∂m`. Conclude with `ContinuousLinearMap.integral_apply hF b`. Rewrite using `[happ]`. Conclude with `(integral_inner (integrable_apply_of_integrable_clm hF b) a).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem inner_integral_clm_apply_eq_integral {α : Type*} [MeasurableSpace α] {m : Measure α} {F : α → (V' →L[ℂ] V)}
     (hF : Integrable F m) (a : V) (b : V') : ⟪a, (∫ x, F x ∂m) b⟫_ℂ = ∫ x, ⟪a, F x b⟫_ℂ ∂m := by
@@ -175,11 +173,11 @@ private theorem inner_integral_clm_apply_eq_integral {α : Type*} [MeasurableSpa
   exact (integral_inner (integrable_apply_of_integrable_clm hF b) a).symm
 
 /- English proof (translation)
-Use `op_ext_basis _ _ (fun i j => ?_)` and prove the remaining obligations. Establish `hf` using `integrable_fY hσ hW hinv hA hAS hAf (stdOrthonormalBasis ℂ V i)`. Establish `hf'` using `integrable_fY hσ hW' hinv' hA' hAS' hAf' (stdOrthonormalBasis ℂ V' j)`. Establish `hL : ⟪stdOrthonormalBasis ℂ V i, Xop μS ν μS' ν' σ d w W W' A A' γ (stdOrthonormalBasis ℂ V' j)⟫_ℂ = ∫ p, ∫ p', (d : ℂ) * ⟪fY σ w W (stdOrthonormalBasis ℂ V i) p, σ γ (fY σ w W' (stdOrthonormalBasis ℂ V' j) p')⟫_ℂ ∂(ν'.prod (μS'.restrict A')) ∂(ν.prod (μS.restrict A))`. Rewrite using `[Xop, ContinuousLinearMap.smul_apply, inner_smul_right, inner_sand, Yop_apply_basis, Yop_apply_basis, yv_eq_integral hσ hW hinv hA hAS hAf, yv_eq_integral hσ hW' hinv' hA' hAS' hAf', ← (σ γ).integral_comp_comm hf', inner_integral_left hf, ← integral_const_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `integral_congr_ae (ae_of_all _ fun p => ?_)` and prove the remaining obligations. Apply the tactic sequence `try dsimp only`. Rewrite using `[integral_const_mul, integral_inner ((σ γ).integrable_comp hf')]`. Rewrite using `[hL, inner_integral_clm_apply_eq_integral hK (stdOrthonormalBasis ℂ V i) (stdOrthonormalBasis ℂ V' j), integral_prod _ (integrable_inner_apply_of_integrable_clm hK (stdOrthonormalBasis ℂ V i) (stdOrthonormalBasis ℂ V' j))]`. Use `integral_congr_ae (ae_of_all _ fun p => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `try dsimp only`. Use `integral_congr_ae (ae_of_all _ fun p' => ?_)` and prove the remaining obligations. Apply the tactic sequence `try dsimp only`. Conclude with `(inner_kG_apply_eq σ d w W W' γ _ _ p p').symm`.
+A detailed English derivation is pending.
 -/
 theorem Xop_eq_integral {σ : G → (HH →L[ℂ] HH)} (hσ : IsUnitRep σ) {μ μS ν μS' ν' : Measure G} [SFinite ν]
     [SFinite μS] [SFinite ν'] [SFinite μS'] {d : ℝ} {w : HH} {S S' : Set G} {τ : G → (V →L[ℂ] V)}

@@ -6,15 +6,15 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G.Geo.T
 namespace GlobalTheory.W1
 
 /- English proof (translation)
-Introduce `k K L _ _ _ _ _ _ _ B B' φ hφ hfin hB hB' hK hL`. Use `letI : Algebra B B' := φ.toAlgebra`. Use `haveI : IsScalarTower B B' L := IsScalarTower.of_algebraMap_eq fun x => (hφ x).symm`. Establish `fracK : IsFractionRing B K` using `IsFractionRing.of_field _ _ fun z => by`. Take `⟨a, ha, b, hb, hb0, h⟩` from `hK z`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨a, ha⟩, ⟨b, hb⟩, ?_⟩` and prove the remaining obligations. Use `show z = a / b`. Rewrite using `[eq_div_iff hb0, h]`. Establish `fracL : IsFractionRing B' L` using `IsFractionRing.of_field _ _ fun z => by`. Take `⟨a, ha, b, hb, hb0, h⟩` from `hL z`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨a, ha⟩, ⟨b, hb⟩, ?_⟩` and prove the remaining obligations. Use `show z = a / b`. Rewrite using `[eq_div_iff hb0, h]`. Establish `hint : (algebraMap B B').IsIntegral` using `RingHom.Finite.to_isIntegral hfin`. Use `⟨fun y hy => ?_, fun x hx => ?_, fun y hy => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h1 : IsIntegral B (⟨y, hy⟩ : B')` using `hint _`. Use `h1.algebraMap (B := L)` as an intermediate fact. Simplify using `using this`. Take `⟨c, hc⟩` from `(isIntegrallyClosed_iff K).mp hB hx`. Rewrite using `[← hc]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `c.2`. Establish `h2 : IsIntegral B' y` using `hy.tower_top`. Take `⟨c, hc⟩` from `(isIntegrallyClosed_iff L).mp hB' h2`. Rewrite using `[← hc]`. Conclude with `c.2`.
+A detailed English derivation is pending.
 -/
 theorem integralClosure_of_finite_map : ∀ (k K L : Type) [Field k] [Field K] [Field L] [Algebra k K] [Algebra k L] [Algebra K L] [IsScalarTower k K L] (B : Subalgebra k K) (B' : Subalgebra k L) (φ : B →+* B'), (∀ x : B, (φ x : L) = algebraMap K L x) → φ.Finite → IsIntegrallyClosed B → IsIntegrallyClosed B' → (∀ x : K, ∃ a ∈ B, ∃ b ∈ B, b ≠ 0 ∧ x * b = a) → (∀ y : L, ∃ a ∈ B', ∃ b ∈ B', b ≠ 0 ∧ y * b = a) → (∀ y ∈ B', IsIntegral B (y : L)) ∧ (∀ x : K, IsIntegral B x → x ∈ B) ∧ (∀ y : L, IsIntegral B y → y ∈ B') := by
   intro k K L _ _ _ _ _ _ _ B B' φ hφ hfin hB hB' hK hL

@@ -9,13 +9,11 @@ namespace GlobalTheory.CompanionTheory.Ar
 open Polynomial NumberField
 
 /- English proof (translation)
-Take `⟨θ, -, -, -, -, hgen⟩` from `Cusp.exists_integral_generator F`. Establish `hagree : ∀ (τ : 𝓞 F →+* Ω) (P : ℤ[X]), τ (aeval θ P) = aeval (τ θ) P` using `fun τ P => (aeval_algHom_apply τ.toIntAlgHom θ P).symm`. Establish `hinj : Function.Injective fun s => σ s θ`. Introduce `s t hst`. Apply `hσ` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use extensionality with `a`. Take `⟨n, P, hn, hP⟩` from `hgen a`. Establish `h1` using `hagree (σ s) P`. Establish `h2` using `hagree (σ t) P`. Establish `hst' : σ s θ = σ t θ` using `hst`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[hst', ← h2, ← hP, map_mul, map_mul, map_intCast, map_intCast]`. Conclude with `mul_left_cancel₀ (by exact_mod_cast hn) h1`. Use `((Module.End.eigenspaces_iSupIndep (ρ θ)).comp hinj).mono fun s x hx => ?_` and prove the remaining obligations. Establish `hx'` using `(Submodule.mem_iInf _).1 hx θ`. Rewrite `hx'` using `[LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]`.
-
-Conclude with `Module.End.mem_eigenspace_iff.2 hx'`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iSupIndep_eigSp {Ω E F I : Type} [Field Ω] [CharZero Ω] [AddCommGroup E] [Module Ω E] [Field F] [NumberField F]
     (ρ : 𝓞 F →+* Module.End Ω E) (σ : I → (𝓞 F →+* Ω)) (hσ : Function.Injective σ) :
@@ -39,7 +37,7 @@ theorem iSupIndep_eigSp {Ω E F I : Type} [Field Ω] [CharZero Ω] [AddCommGroup
   exact Module.End.mem_eigenspace_iff.2 hx'
 
 /- English proof (translation)
-Introduce `Ω _ _ E _ _ F _ _ ρ I _ _ σ hσ hcard`. Conclude with `DirectSum.isInternal_submodule_of_iSupIndep_of_iSup_eq_top (iSupIndep_eigSp ρ σ hσ) (Cusp.iSup_eigSp_eq_top ρ σ hσ hcard)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isInternal_eigSp : ∀ (Ω : Type) [Field Ω] [CharZero Ω] (E : Type) [AddCommGroup E] [Module Ω E] (F : Type) [Field F] [NumberField F] (ρ : NumberField.RingOfIntegers F →+* Module.End Ω E) (I : Type) [Fintype I] [DecidableEq I] (σ : I → (NumberField.RingOfIntegers F →+* Ω)), Function.Injective σ → Fintype.card I = Module.finrank ℚ F → DirectSum.IsInternal fun s => eigSp ρ (σ s) := by
   intro Ω _ _ E _ _ F _ _ ρ I _ _ σ hσ hcard

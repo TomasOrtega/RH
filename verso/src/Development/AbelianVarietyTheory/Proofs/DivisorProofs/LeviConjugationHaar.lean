@@ -19,9 +19,7 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 /- English proof (translation)
-Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`. Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Take `⟨e⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (AF F)`.
-
-Conclude with `⟨inferInstance, e.isClosedEmbedding.locallyCompactSpace, e.secondCountableTopology, e.isEmbedding.t2Space⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.UnipConj.aeFacts (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] :
     IsTopologicalRing (AE F E) ∧ LocallyCompactSpace (AE F E) ∧ SecondCountableTopology (AE F E) ∧ T2Space (AE F E) := by
@@ -33,45 +31,39 @@ theorem GlobalTheory.UnipConj.aeFacts (F E : Type) [Field F] [NumberField F] [Fi
   exact ⟨inferInstance, e.isClosedEmbedding.locallyCompactSpace, e.secondCountableTopology, e.isEmbedding.t2Space⟩
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B b a' G G₁ H H' hC hB hG hG₁ μN hμ l g₀ h hL f hf`. Take `⟨iR, iLC, iSC, iT2⟩` from `GlobalTheory.UnipConj.aeFacts F E`. Take `⟨iTG, iULC, iUSC, iUT2⟩` from `GlobalTheory.UnitaryAdelicTop.lcsc_UA F E σ (b + 2) G.V.J`. Use `haveI : BorelSpace (UA σ G.V.J) := ⟨rfl⟩`. Establish `hσ : ∀ e, σ (σ e) = e` using `GlobalTheory.ThK.UnipDom.Inverse.sigma_sigma hB.cm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcA : Continuous (cA σ)` using `IsModuleTopology.continuous_of_linearMap (cA σ).toLinearMap`. Establish `hcc : ∀ z : AE F E, cA σ (cA σ z) = z` using `GlobalTheory.ThK.UnipDom.Inverse.cA_cA hσ`. Establish `hLcl : IsClosed (GlobalTheory.UnipConj.imLine σ : Set (AE F E))` using `isClosed_eq (continuous_id.add hcA) continuous_const`. Use `haveI : LocallyCompactSpace (GlobalTheory.UnipConj.imLine σ) := hLcl.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI : SecondCountableTopology (GlobalTheory.UnipConj.imLine σ) := TopologicalSpace.Subtype.secondCountableTopology _`.
+Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Use `letI mL : MeasurableSpace (GlobalTheory.UnipConj.imLine σ) := borel _`. Use `haveI : BorelSpace (GlobalTheory.UnipConj.imLine σ) := ⟨rfl⟩`. Use `letI mV : MeasurableSpace (Fin b → AE F E) := borel _`. Use `haveI : BorelSpace (Fin b → AE F E) := ⟨rfl⟩`. Take `⟨χ, hχ⟩` from `GlobalTheory.T.unipotent_radical_coordinate_homeomorph F E σ B b a' G G₁ H H' hC hB hG hG₁`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : LocallyCompactSpace (unip σ G.V H) := χ.isClosedEmbedding.locallyCompactSpace`. Establish `hN` using `GlobalTheory.T.levi_normalizes_unipotent_radical F E σ B b a' G G₁ H H' hC hB hG hG₁ l g₀ h hL`. Set `φ : unip σ G.V H ≃ₜ* unip σ G.V H` to `{ toFun := fun n => ⟨h * n * h⁻¹, (hN n n.2).1⟩ invFun := fun n => ⟨h⁻¹ * n * h, (hN n n.2).2⟩ left_inv := fun n => Subtype.ext (by simp [mul_assoc]) right_inv := fun n => Subtype.ext (by simp [mul_assoc]) map_mul' := fun n m => Subtype.ext (by simp [mul_assoc]) continuous_toFun …`. Establish `hφ : ∀ n, (φ n : UA σ G.V.J) = h * n * h⁻¹` using `fun n => rfl`. Set `wf : (Fin b → AE F E) → (Fin b → AE F E) → AE F E` to `fun a₁ a₂ => a₁ ⬝ᵥ GlobalTheory.UnipConj.betaOf σ G₁.V.J a₂`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Introduce a local definition for the expression. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hwm : ∀ w : AE F E, w - cA σ w ∈ GlobalTheory.UnipConj.imLine σ` using `fun w => by`. Rewrite using `[GlobalTheory.UnipConj.mem_imLine, map_sub, hcc]`. Normalize the expressions using the abelian group laws. Set `ω : (Fin b → AE F E) → (Fin b → AE F E) → GlobalTheory.UnipConj.imLine σ` to `fun a₁ a₂ => ⟨wf a₁ a₂ - cA σ (wf a₁ a₂), hwm _⟩`. Establish `hbeta : Continuous (GlobalTheory.UnipConj.betaOf σ G₁.V.J)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Unfold `GlobalTheory.UnipConj.betaOf`. Conclude with `continuous_pi fun i => (hcA.comp ((continuous_apply i).comp (continuous_const.matrix_mulVec continuous_id))).neg`. Establish `hwf : Continuous (fun p : (Fin b → AE F E) × (Fin b → AE F E) => wf p.1 p.2)` using `continuous_fst.dotProduct (hbeta.comp continuous_snd)`. Establish `hω : Continuous (fun p : (Fin b → AE F E) × (Fin b → AE F E) => ω p.1 p.2)` using `Continuous.subtype_mk (hwf.sub (hcA.comp hwf)) _`. Establish `hlaw : ∀ n₁ n₂ : unip σ G.V H, χ (n₁ * n₂) = ((χ n₁).1 + (χ n₂).1, (χ n₁).2 + (χ n₂).2 + ω (χ n₁).1 (χ n₂).1)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Introduce `n₁ n₂`. Take `⟨e1, e2⟩` from `GlobalTheory.T.unipotent_coordinate_additive_alt F E σ B b a' G G₁ H H' hC hB hG hG₁ n₁ n₁.2 n₂ n₂.2`. Use `Prod.ext ?_ (Subtype.ext ?_)` and prove the remaining obligations. Rewrite using `[(hχ _).1, (hχ _).1, (hχ _).1]`. Conclude with `e1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Simplify using `only [AddSubgroup.coe_add, (hχ _).2, (hχ _).1] show GlobalTheory.UnipConj.coT σ G.V.J H ((n₁ * n₂ : unip σ G.V H) : UA σ G.V.J) = _`. Simplify using `only [GlobalTheory.UnipConj.coT, Subgroup.coe_mul, e2, map_add]`. Use `show _ = _ + _ + (wf _ _ - cA σ (wf _ _))`. Normalize the expressions using the abelian group laws. Establish `hg : ∀ a : Fin b → AE F E, (mat g₀)ᵀ *ᵥ ((mat g₀⁻¹)ᵀ *ᵥ a) = a` using `fun a => by`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mulVec_mulVec, ← Matrix.transpose_mul, ← GlobalTheory.ThK.UnipDom.Inverse.mat_mul, inv_mul_cancel, GlobalTheory.ThK.UnipDom.Inverse.mat_one, Matrix.transpose_one, Matrix.one_mulVec]`. Establish `hg' : ∀ a : Fin b → AE F E, (mat g₀⁻¹)ᵀ *ᵥ ((mat g₀)ᵀ *ᵥ a) = a` using `fun a => by`. Rewrite using `[Matrix.mulVec_mulVec, ← Matrix.transpose_mul, ← GlobalTheory.ThK.UnipDom.Inverse.mat_mul, mul_inv_cancel, GlobalTheory.ThK.UnipDom.Inverse.mat_one, Matrix.transpose_one, Matrix.one_mulVec]`. Set `A : (Fin b → AE F E) ≃ₜ+ (Fin b → AE F E)` to `{ toFun := fun a => l.1 • ((mat g₀⁻¹)ᵀ *ᵥ a) invFun := fun a => l⁻¹.1 • ((mat g₀)ᵀ *ᵥ a) left_inv := fun a => by`. Simplify using `only [Matrix.mulVec_smul, smul_smul, Units.inv_mul, one_smul, hg]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `right_inv := fun a => by`. Simplify using `only [Matrix.mulVec_smul, smul_smul, Units.mul_inv, one_smul, hg']`. Use the proof step `map_add' := fun a a' => by simp only [Matrix.mulVec_add, smul_add]`. Use `continuous_toFun := (continuous_const_smul (l.1 : AE F E)).comp (continuous_const.matrix_mulVec continuous_id)`. Use `continuous_invFun := by show Continuous fun a : Fin b → AE F E => (l⁻¹.1 : AE F E) • ((mat g₀)ᵀ *ᵥ a)`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(continuous_const_smul (l⁻¹.1 : AE F E)).comp (continuous_const.matrix_mulVec continuous_id) }`. Establish `hmemB : ∀ (s : AE F E), s = cA σ s → ∀ t ∈ GlobalTheory.UnipConj.imLine σ, s * t ∈ GlobalTheory.UnipConj.imLine σ`. Introduce `s hs t ht`. Rewrite `ht`, the goal using `[GlobalTheory.UnipConj.mem_imLine]`. Rewrite using `[map_mul, ← hs, ← mul_add, ht, mul_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hs1 : l.1 * cA σ l.1 = cA σ (l.1 * cA σ l.1)` using `by rw [map_mul, hcc, mul_comm]`. Establish `hs2 : l⁻¹.1 * cA σ l⁻¹.1 = cA σ (l⁻¹.1 * cA σ l⁻¹.1)` using `by rw [map_mul, hcc, mul_comm]`. Establish `hll : l⁻¹.1 * cA σ l⁻¹.1 * (l.1 * cA σ l.1) = 1`. Establish `: cA σ l⁻¹.1 * cA σ l.1 = 1` using `by rw [← map_mul, Units.inv_mul, map_one]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hll' : l.1 * cA σ l.1 * (l⁻¹.1 * cA σ l⁻¹.1) = 1` using `by rw [mul_comm]; exact hll`. Set `Bl : GlobalTheory.UnipConj.imLine σ ≃ₜ+ GlobalTheory.UnipConj.imLine σ` to `{ toFun := fun t => ⟨l.1 * cA σ l.1 * t, hmemB _ hs1 t t.2⟩ invFun := fun t => ⟨l⁻¹.1 * cA σ l⁻¹.1 * t, hmemB _ hs2 t t.2⟩ left_inv := fun t => Subtype.ext (by simp only [← mul_assoc, hll, one_mul]) right_inv := fun t => Subtype.ext (by simp only [← mul_assoc, hll', one_mul]) map …`. Establish `hconj : ∀ n, χ (φ n) = (A (χ n).1, Bl (χ n).2)`. Introduce `n`. Take `⟨e1, e2⟩` from `GlobalTheory.T.unipotent_coordinate_levi_conjugation F E σ B b a' G G₁ H H' hC hB hG hG₁ l g₀ h hL n`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Prod.ext ?_ (Subtype.ext ?_)` and prove the remaining obligations. Rewrite using `[(hχ _).1, (hχ _).1, hφ, e1]`. Both sides reduce to the same expression. Rewrite using `[(hχ _).2] show GlobalTheory.UnipConj.coT σ G.V.J H (φ n : UA σ G.V.J) = l.1 * cA σ l.1 * ((χ n).2 : AE F E)`. Rewrite using `[(hχ _).2, hφ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [GlobalTheory.UnipConj.coT, e2, map_mul, hcc]`. Expand and normalize the polynomial expressions, which then agree. Establish `hdet : G₁.V.J.det ≠ 0`. Take `⟨w⟩` from `(inferInstance : Nonempty (InfinitePlace F))`. Establish `h1` using `GlobalTheory.LeviElem.det_ne_of_sig _ (hG₁.hV.sig w)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `h0`. Apply `h1` to reduce the goal to its premises. Establish `e` using `(RingHom.map_det (B.emb w).1 G₁.V.J).symm`. Rewrite `e` using `[h0, map_zero]`. Conclude with `e`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Establish `hchar : mulEquivHaarChar φ = absE F E l ^ (b + 1)`. Rewrite using `[GlobalTheory.T.quotient_measure_fubini_locally_compact _ _ _ χ ω hω hlaw φ A Bl hconj, GlobalTheory.T.adelic_automorphism_measure_scaling F E σ hB.cm b G₁.V.J hdet l g₀ A (fun a => rfl), GlobalTheory.T.imaginary_line_measure_scaling F E σ hB.cm l Bl (fun t => rfl), pow_succ]`. Establish `hne : absE F E l ≠ 0`. Introduce `h0`. Establish `h1` using `map_mul (absE F E) l l⁻¹`.
-
-Rewrite `h1` using `[mul_inv_cancel, map_one, h0, zero_mul]`. Conclude with `one_ne_zero h1`. Establish `hc : mulEquivHaarChar φ ≠ 0` using `by rw [hchar]; exact pow_ne_zero _ hne`. Use `haveI : SecondCountableTopology (unip σ G.V H) := TopologicalSpace.Subtype.secondCountableTopology _`. Use `haveI : T2Space (unip σ G.V H) := inferInstance`.
-
-Use `haveI : μN.Regular := by set_option synthInstance.maxHeartbeats 400000 in infer_instance`. Establish `hmap : μN.map φ = (mulEquivHaarChar φ)⁻¹ • μN` using `by conv_rhs => rw [← mulEquivHaarChar_smul_map μN φ]`. Rewrite using `[smul_smul, inv_mul_cancel₀ hc, one_smul]`. Establish `hfm : Measurable (f ∘ Subtype.val : unip σ G.V H → ℝ≥0∞)` using `hf.comp measurable_subtype_coe`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[hmap, lintegral_smul_measure, hchar]`. Simplify using `only [ENNReal.smul_def, smul_eq_mul, Function.comp_apply]`. Use `congr 1`. Rewrite using `[ENNReal.coe_inv (pow_ne_zero _ hne), ENNReal.coe_pow]`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.UnipConj.lintegral_conj_levi : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')
     (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' → B.IsGood σ → G.IsGood B → G₁.IsGood B →

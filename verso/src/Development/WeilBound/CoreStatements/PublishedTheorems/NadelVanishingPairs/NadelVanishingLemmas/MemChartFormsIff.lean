@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemChartFormsIff
 open GlobalTheory GlobalTheory.LogDR
 
 /- English proof (citation)
-Apply `GlobalTheory.LogDR.mem_chartForms_iff` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FMemChartFormsIff.lean&line=103#L103)
 -/

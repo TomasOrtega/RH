@@ -15,17 +15,17 @@ noncomputable def trxForm {F E : Type} [NontriviallyNormedField F] [Nontrivially
     (fun c m n => by simp [mul_smul_comm, smul_mul_assoc])
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ A ψ hψ x`. Establish `hT` using `(GlobalTheory.T.etaleHermitianPair_structure_facts F E A).2.2.1`. Take `⟨hL, -⟩` from `hT`. Establish `hsymm : (trxForm A (x : A.K)).IsSymm`. Use `⟨fun u b => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [trxForm, LinearMap.mk₂_apply, RingHom.id_apply]`. Put the polynomial expressions in normal form. Establish `hleft : ∀ u : A.K, (∀ b, trxForm A (x : A.K) u b = 0) → u = 0`. Introduce `u hu`. Establish `h0 : (x : A.K) * u = 0` using `hL _ (fun b => by`.
+Simplify using the standard rewrite rules. Put the polynomial expressions in normal form. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `hu b` as an intermediate fact. Simplify `this)` using `[trxForm, Algebra.traceForm_apply, mul_assoc]`. Use `congrArg (fun t => ((x⁻¹ : A.Kˣ) : A.K) * t) h0` as an intermediate fact. Simplify `this` using `[← mul_assoc]`. Establish `hnd : (trxForm A (x : A.K)).Nondegenerate`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `⟨hleft, fun b hb => hleft b (fun u => ?_)⟩` and prove the remaining obligations. Use `hb u` as an intermediate fact. Simplify using `only [trxForm, LinearMap.mk₂_apply] at this ⊢`. Rewrite using `[show (x : A.K) * b * u = x * u * b by ring]`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨μ, hμ, -⟩, -⟩` from `GlobalTheory.T.selfDual_measure_exists_unique_fourier_inversion F E ψ hψ A.K (trxForm A (x : A.K)) hsymm hnd`. Use `⟨μ, ?_⟩` and prove the remaining obligations. Establish `hk : (fun u b => ψ (trxForm A (x : A.K) u b)) = Hyp.kx A ψ x`. Use function extensionality and compare the values at `u b`. Simplify using `[trxForm, Hyp.kx, Et.psiK]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hk]`. Conclude with `hμ`.
+A detailed English derivation is pending.
 -/
 theorem selfDual_kx_exists : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] (A : Et F E) (ψ : AddChar F ℂ), IsStdChar ψ → ∀ x : A.Kˣ, ∃ ν : Measure A.K, SelfDual ν (Hyp.kx A ψ x) := by
   intro F E _ _ _ _ _ A ψ hψ x

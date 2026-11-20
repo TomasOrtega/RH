@@ -20,9 +20,9 @@ variable {K : Type} [Field K] {ι : Type} [Fintype ι] {n : ℕ}
 end Cast
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc}
 /- English proof (translation)
-Introduce `_`. Prove the components needed by the constructor for the conclusion. Use `⟨0, fun CF _ => ⟨0, fun ε C _ => ⟨0, ?_⟩⟩⟩` and prove the remaining obligations. Introduce `D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F s ch _ _ _ w c u hu x`. Conclude with `pullback_fin_relation _ _ w c u hu x`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨0, fun CF _ => ⟨0, fun ε C _ => ⟨0, ?_⟩⟩⟩` and prove the remaining obligations. Introduce `D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F s ch _ _ _ σ c u x`. Conclude with `inf_aux _ _ σ c u x`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem test_value_psi_finite_infinite : _root_.GlobalTheory.FunPr.ThetaLocalInputs → FinPsiK ∧ InfPsiK := by
   intro _
@@ -40,7 +40,7 @@ end TestFunctionNorms
 section
 open GlobalTheory.SumSize GlobalTheory.RowClaim
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.TestFunctionNorms.GlobalTheory.CompanionTheory.TestVal.test_value_psi_finite_infinite | exact _root_.TestFunctionNorms.GlobalTheory.CompanionTheory.TestVal.test_value_psi_finite_infinite | (intros; apply _root_.TestFunctionNorms.GlobalTheory.CompanionTheory. …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.Adopt.test_vector_value_factorization : _root_.GlobalTheory.FunPr.ThetaLocalInputs → FinPsiK ∧ InfPsiK := by
   first | exact @_root_.TestFunctionNorms.GlobalTheory.CompanionTheory.TestVal.test_value_psi_finite_infinite | exact _root_.TestFunctionNorms.GlobalTheory.CompanionTheory.TestVal.test_value_psi_finite_infinite | (intros; apply _root_.TestFunctionNorms.GlobalTheory.CompanionTheory.TestVal.test_value_psi_finite_infinite <;> assumption)

@@ -20,9 +20,9 @@ def Comp : Prop := ∀ {P : Scheme.{0}} [CompactSpace P] [QuasiSeparatedSpace P]
       ClopenSys y D c ι ∧ AICSch c.pt
 
 /- English proof (translation)
-Introduce `P _ _`. Take `⟨W, _, w, hW, hs⟩` from `hP (P := P)`. Use `⟨w.normalization, w.fromNormalization, inferInstance, ?_, fun y => ?_⟩` and prove the remaining obligations. Establish `h` using `hs`. Rewrite `h` using `[← w.toNormalization_fromNormalization]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨Function.Surjective.of_comp h.surj⟩`. Take `⟨J, _, _, D, c, ι, hc, hA⟩` from `hC W w hW y`. Use `⟨J, inferInstance, inferInstance, D, c, ι, hc, hA, fun j => ?_⟩` and prove the remaining obligations. Use `hL y D c ι hc j` as an intermediate fact. Use `infer_instance`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem goal_of (hP : Pts) (hL : LimInt) (hC : Comp) : Build := by
   intro P _ _

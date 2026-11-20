@@ -12,7 +12,7 @@ open Formalism.L2.Pj
 namespace GlobalTheory.Mem
 
 /- English proof (translation)
-Introduce `x y h`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Conclude with `Subtype.ext h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem Base.OtoLL_injective' (B : Base) : Function.Injective B.OtoLL := by
   intro x y h
@@ -20,11 +20,11 @@ theorem Base.OtoLL_injective' (B : Base) : Function.Injective B.OtoLL := by
   exact Subtype.ext h
 
 /- English proof (translation)
-Introduce `X`. Use `⟨X.B.OtoLL_injective', ?_⟩` and prove the remaining obligations. Set `f : X.B.Ks →+* ℂ` to `X.B.embLL.comp (algebraMap X.B.Ks X.B.LL)`. Establish `hle : FO X.toD7 ≤ f.toRatAlgHom.fieldRange`. Rewrite using `[FO, IntermediateField.adjoin_le_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨y, rfl⟩`. Conclude with `⟨algebraMap (𝓞 X.B.Ks) X.B.Ks y, rfl⟩`. Introduce `z hz hint`. Take `⟨x, rfl⟩` from `hle hz`. Establish `hx : IsIntegral ℤ x` using `(isIntegral_algHom_iff f.toIntAlgHom f.injective).1 hint`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨(⟨x, hx⟩ : 𝓞 X.B.Ks), rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem hermitianCodeWordStages_ringOfIntegers_full : ∀ X : Stages, OFull X.toD7 := by
   intro X

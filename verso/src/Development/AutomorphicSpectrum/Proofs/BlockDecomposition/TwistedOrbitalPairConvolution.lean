@@ -33,7 +33,7 @@ def twistEquiv {H : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H] 
   continuous_invFun := continuous_fst.prodMk (hc.comp continuous_snd)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.TwOrbConj.twOrb_twConj G θ K δ g F (GlobalTheory.CompanionTheory.SplitIndex.rStab_index_ne_zero_of_compact θ K K' δ F hθ hK hK' hF)`.
+A detailed English derivation is pending.
 -/
 theorem twOrb_conj_of_biinv {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (θ : G →* G)
     (K K' : Subgroup G) (δ g : G) (F : G → ℂ) (hθ : Continuous θ) (hK : IsCompact (K : Set G))
@@ -43,21 +43,19 @@ theorem twOrb_conj_of_biinv {G : Type} [Group G] [TopologicalSpace G] [IsTopolog
     (GlobalTheory.CompanionTheory.SplitIndex.rStab_index_ne_zero_of_compact θ K K' δ F hθ hK hK' hF)
 
 /- English proof (translation)
-Introduce `H _ _ _ _ σ K hc hσ hσK hKo hKc d d' f₁ f₂ K' hK'o hK'K hσK' h₁ h₂ hG hfin`. Use `set θ := (MonoidHom.prodMap σ σ).comp (MulEquiv.prodComm : H × H ≃* H × H).toMonoidHom with hθ`. Establish `hθc : Continuous θ` using `(hc.comp continuous_snd).prodMk (hc.comp continuous_fst)`. Establish `hKKc : IsCompact ((K.prod K : Subgroup (H × H)) : Set (H × H))`. Rewrite using `[Subgroup.coe_prod]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hKc.prod hKc`. Establish `hK'K'o : IsOpen ((K'.prod K' : Subgroup (H × H)) : Set (H × H))`. Rewrite using `[Subgroup.coe_prod]`. Conclude with `hK'o.prod hK'o`. Establish `hinv : ∀ k ∈ K'.prod K', ∀ x : H × H, (fun y : H × H => f₁ y.1 * f₂ (σ y.2)) (k * x) = (fun y : H × H => f₁ y.1 * f₂ (σ y.2)) x ∧ (fun y : H × H => f₁ y.1 * f₂ (σ y.2)) (x * k) = (fun y : H × H => f₁ y.1 * f₂ (σ y.2)) x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `⟨k₁, k₂⟩ hk ⟨x₁, x₂⟩`. Take `⟨hk₁, hk₂⟩` from `Subgroup.mem_prod.1 hk`. Establish `hk₂' : σ k₂ ∈ K'` using `hσK' _ hk₂`. Prove the components needed by the constructor for the conclusion. Use `show f₁ (k₁ * x₁) * f₂ (σ (k₂ * x₂)) = f₁ x₁ * f₂ (σ x₂)`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[(h₁.2 k₁ hk₁ x₁).1, map_mul, (h₂.2 _ hk₂' _).1]`. Use `show f₁ (x₁ * k₁) * f₂ (σ (x₂ * k₂)) = f₁ x₁ * f₂ (σ x₂)`. Rewrite using `[(h₁.2 k₁ hk₁ x₁).2, map_mul, (h₂.2 _ hk₂' _).2]`. Establish `hconj : ((1, d') : H × H)⁻¹ * (d, d') * θ (1, d') = (d * σ d', 1)`. Establish `e : θ (1, d') = (σ d', 1)` using `by simp [hθ]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Apply the tactic sequence `ext <;> simp`. Establish `step₁` using `twOrb_conj_of_biinv θ (K.prod K) (K'.prod K') (d, d') (1, d') (fun y : H × H => f₁ y.1 * f₂ (σ y.2)) hθc hKKc hK'K'o hinv`. Rewrite `step₁` using `[hconj]`. Rewrite using `[← step₁]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `step₂` using `GlobalTheory.EulerTw.Transport.twOrb_transport (H × H) (H × H) (twistEquiv σ hc hσ) θ (MulEquiv.prodComm : H × H ≃* H × H).toMonoidHom (K.prod K) (K.prod K) (d * σ d', 1) (fun y : H × H => f₁ y.1 * f₂ (σ y.2)) (fun y : H × H => f₁ y.1 * f₂ y.2) (by`. Introduce and unpack `⟨x₁, x₂⟩`. Use `show (σ x₂, σ (σ x₁)) = (σ x₂, x₁)`. Rewrite using `[hσ])`. Use the proof step `(by`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨x₁, x₂⟩`. Use `show x₁ ∈ K ∧ x₂ ∈ K ↔ x₁ ∈ K ∧ σ x₂ ∈ K`. Use `and_congr_right fun _ => ⟨hσK _, fun h => ?_⟩` and prove the remaining obligations. Simplify `hσK _ h)` using `[hσ]`. Use the proof step `(fun _ => rfl)`.
-
-Establish `he : (twistEquiv σ hc hσ) (d * σ d', 1) = (d * σ d', 1)` using `by show (d * σ d', σ 1) = (d * σ d', 1)`. Rewrite using `[map_one]`. Rewrite `step₂` using `[he]`. Rewrite using `[step₂]`. Conclude with `GlobalTheory.T.twisted_orbital_swap_convolution H K K' (d * σ d') f₁ f₂ hKo hKc hK'o hK'K h₁ h₂ hG (GlobalTheory.T.exists_compact_conjugacy_transversal H K (d * σ d') hKc hfin)`.
+A detailed English derivation is pending.
 -/
 theorem splitConv_of_finite : ∀ (H : Type) [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [T2Space H] (σ : H →* H) (K : Subgroup H),
   Continuous σ → (∀ g, σ (σ g) = g) → (∀ k ∈ K, σ k ∈ K) → IsOpen (K : Set H) → IsCompact (K : Set H) → ∀ (d d' : H) (f₁ f₂ : H → ℂ) (K' : Subgroup H),

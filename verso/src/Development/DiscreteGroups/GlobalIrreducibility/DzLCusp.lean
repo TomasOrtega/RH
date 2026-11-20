@@ -15,25 +15,23 @@ variable {g : ℕ} [Fact g.Prime] {k : Type} [Field k] [ValuativeRel k] [Topolog
   [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Take `⟨φ, hφ0, hφ⟩` from `hs`. Establish `hgen : ∀ x : GL (Fin n) k, x ∈ GlobalTheory.FiniteGL.unipRadical k (GlobalTheory.FiniteGL.twoBlocks n a) → ∀ v, σ.ρ x v - v ∈ twKer σ.ρ (GlobalTheory.FiniteGL.unipRadical k (GlobalTheory.FiniteGL.twoBlocks n a)) 1`. Introduce `x hx v`. Use `Submodule.subset_span ⟨⟨x, hx⟩, v, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hφT : ∀ w, φ w ∈ twKer σ.ρ (GlobalTheory.FiniteGL.unipRadical k (GlobalTheory.FiniteGL.twoBlocks n a)) 1`. Introduce `w`. Establish `hfin` using `sum_unip_eq_zero τ hτ h0 ha`. Establish `key : ∀ u : GlobalTheory.FiniteGL.unipRadical (ZMod g) (GlobalTheory.FiniteGL.twoBlocks n a), φ w - φ (τ.ρ (u : Gn g n) w) ∈ twKer σ.ρ (GlobalTheory.FiniteGL.unipRadical k (GlobalTheory.FiniteGL.twoBlocks n a)) 1`. Introduce `u`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨κ, hred, hmem⟩` from `exists_lift i (u : Gn g n) u.2`. Establish `h1` using `hφ κ w`. Rewrite `h1` using `[hred]`. Rewrite using `[h1, ← neg_sub]`. Conclude with `Submodule.neg_mem _ (hgen _ hmem (φ w))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsum : ∑ u : GlobalTheory.FiniteGL.unipRadical (ZMod g) (GlobalTheory.FiniteGL.twoBlocks n a), (φ w - φ (τ.ρ (u : Gn g n) w)) = (Fintype.card (GlobalTheory.FiniteGL.unipRadical (ZMod g) (GlobalTheory.FiniteGL.twoBlocks n a)) : ℂ) • φ w`. Rewrite using `[Finset.sum_sub_distrib, ← map_sum φ (fun u : GlobalTheory.FiniteGL.unipRadical (ZMod g) (GlobalTheory.FiniteGL.twoBlocks n a) => τ.ρ (u : Gn g n) w), ← LinearMap.sum_apply Finset.univ (fun u : GlobalTheory.FiniteGL.unipRadical (ZMod g) (GlobalTheory.FiniteGL.twoBlocks n a) => τ. …`. Establish `hc : (Fintype.card (GlobalTheory.FiniteGL.unipRadical (ZMod g) (GlobalTheory.FiniteGL.twoBlocks n a)) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Fintype.card_ne_zero`. Establish `hmem` using `Submodule.sum_mem _ fun u (_ : u ∈ Finset.univ) => key u`. Rewrite `hmem` using `[hsum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `Submodule.smul_mem _ (Fintype.card (GlobalTheory.FiniteGL.unipRadical (ZMod g) (GlobalTheory.FiniteGL.twoBlocks n a)) : ℂ)⁻¹ hmem` as an intermediate fact. Rewrite `this` using `[smul_smul, inv_mul_cancel₀ hc, one_smul]`. Then use the resulting hypothesis. Establish `hall : ∀ (h : GL (Fin n) k) (w : τ), σ.ρ h (φ w) ∈ twKer σ.ρ (GlobalTheory.FiniteGL.unipRadical k (GlobalTheory.FiniteGL.twoBlocks n a)) 1`. Introduce `h w`. Take `⟨p, hp, k0, hk0, rfl⟩` from `GroundTheory.Automorphic.Iwasawa.exists_blockUpper_mul_integralGL k n (monotone_twoBlocks (N := n) a) h`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨κ, rfl⟩` from `exists_inc_eq i hi k0 hk0`. Rewrite using `[map_mul, Module.End.mul_apply]`. Use `twKer_le_comap σ.ρ _ p (blockUpper_le_normalizer (GlobalTheory.FiniteGL.twoBlocks n a) hp) ?_` and prove the remaining obligations. Establish `h1` using `hφ κ w`. Rewrite `h1` using `[show (σ.ρ.comp (Matrix.GeneralLinearGroup.map i.toRingHom)) (GlobalTheory.GLp.inc g n κ) (φ w) = σ.ρ (Matrix.GeneralLinearGroup.map i.toRingHom (GlobalTheory.GLp.inc g n κ)) (φ w) from rfl]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h1]`. Conclude with `hφT _`. Choose the witnesses or unpack the hypotheses as in `⟨w0, hw0⟩ : ∃ w, φ w ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `hφ0 (LinearMap.ext hcon)`. Set `S : Subrepresentation σ.ρ` to `⟨Submodule.span ℂ {v | ∃ (h : GL (Fin n) k) (w : τ), v = σ.ρ h (φ w)}, fun x v hv => by`. Use `(Submodule.span_le.2 ?_ : _ ≤ (Submodule.span ℂ _).comap (σ.ρ x)) hv` and prove the remaining obligations. Introduce and unpack `_ ⟨h, w, rfl⟩`. Conclude with `Submodule.subset_span ⟨x * h, w, by rw [map_mul, Module.End.mul_apply]⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Establish `hST : S.toSubmodule ≤ twKer σ.ρ (GlobalTheory.FiniteGL.unipRadical k (GlobalTheory.FiniteGL.twoBlocks n a)) 1` using `Submodule.span_le.2 (by rintro _ ⟨h, w, rfl⟩; exact hall h w)`. Establish `hirr` using `σ.irr`. Break down `eq_bot_or_eq_top S with hS | hS` into its components or cases. It suffices to derive a contradiction. Establish `hm : φ w0 ∈ S.toSubmodule` using `Submodule.subset_span ⟨1, w0, by rw [map_one, Module.End.one_apply]⟩`.
-
-Rewrite `hm` using `[hS]`. Conclude with `hw0 ((Submodule.mem_bot ℂ).1 hm)`. Use `eq_top_iff.2 fun v _ => hST ?_` and prove the remaining obligations. Rewrite using `[hS]`. Discharge the goal by the elementary cases of `trivial`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. A detailed English derivation is pending.
 -/
 theorem twKer_twoBlocks_eq_top (i : ℚ_[g] ≃+* k) (hi : Continuous i) {n a : ℕ} (h0 : 0 < a) (ha : a < n)
     (τ : FDRep ℂ (Gn g n)) (hτ : GlobalTheory.GLq.IsCusp τ.character) (σ : GlobalTheory.SmGL.IrrRep (GL (Fin n) k))
@@ -105,13 +103,13 @@ theorem twKer_twoBlocks_eq_top (i : ℚ_[g] ≃+* k) (hi : Continuous i) {n a : 
     trivial
 
 /- English proof (translation)
-Use `⟨σ.smooth, fun s d e he => ?_⟩` and prove the remaining obligations. Take `⟨Q, a, h0, ha, hQ⟩` from `exists_perm_conj e he`. Establish `htop` using `twKer_twoBlocks_eq_top i hi h0 ha τ hτ σ hs`. Establish `hinvQ : ∀ z, σ.ρ Q⁻¹ (σ.ρ Q z) = z` using `fun z => by`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmap : twKer σ.ρ (GlobalTheory.FiniteGL.unipRadical k (GlobalTheory.FiniteGL.twoBlocks n a)) 1 ≤ (twKer σ.ρ (unipRad k e) 1).comap (σ.ρ Q)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨x, hx⟩, y, rfl⟩`. Use `Submodule.subset_span ⟨⟨Q * x * Q⁻¹, hQ x hx⟩, σ.ρ Q y, ?_⟩` and prove the remaining obligations. Simplify using `[map_mul, Module.End.mul_apply, hinvQ]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Submodule.Quotient.subsingleton_iff.2 (eq_top_iff.2 fun v _ => ?_)` and prove the remaining obligations. Establish `hv : σ.ρ Q⁻¹ v ∈ twKer σ.ρ (GlobalTheory.FiniteGL.unipRadical k (GlobalTheory.FiniteGL.twoBlocks n a)) 1`. Rewrite using `[htop]`. Conclude with `Submodule.mem_top`. Use `hmap hv` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[Submodule.mem_comap, ← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem isCuspidal_of_inflates (i : ℚ_[g] ≃+* k) (hi : Continuous i) {n : ℕ} (τ : FDRep ℂ (Gn g n))
     (hτ : GlobalTheory.GLq.IsCusp τ.character) (σ : GlobalTheory.SmGL.IrrRep (GL (Fin n) k))
@@ -143,7 +141,7 @@ namespace DiscreteGroups.sglob.DzType
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `E _ _ w g _ i hi n hn τ hτ σ hs`. Conclude with `GlobalTheory.LocGL.IrrGL.isCusp_of.2 ⟨hn, DiscreteGroups.sglob.DzLc.isCuspidal_of_inflates i hi τ hτ σ hs⟩`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lCusp : LCusp := by
   intro E _ _ w g _ i hi n hn τ hτ σ hs

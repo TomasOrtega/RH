@@ -19,7 +19,7 @@ variable {ι : Type} [Fintype ι] [DecidableEq ι] {n : ι → ℕ}
 omit [Fintype ι] [DecidableEq ι] in
 
 /- English proof (translation)
-Introduce and unpack `⟨⟨⟩, i⟩ ⟨⟨⟩, j⟩ h`. Simplify using `only [blockIncl, Sigma.mk.inj_iff, heq_iff_eq, true_and] at h`. Rewrite using `[h]`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem blockIncl_injective (k₀ : ι) : Function.Injective (blockIncl (n := n) k₀) := by
   rintro ⟨⟨⟩, i⟩ ⟨⟨⟩, j⟩ h
@@ -29,14 +29,14 @@ theorem blockIncl_injective (k₀ : ι) : Function.Injective (blockIncl (n := n)
 omit [Fintype ι] [DecidableEq ι] in
 
 /- English proof (translation)
-The claim follows from `fun _ _ _ ↦ rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 theorem const_injective (k₀ : ι) : Function.Injective (fun _ : Unit ↦ k₀) := fun _ _ _ ↦ rfl
 
 omit [Fintype ι] in
 
 /- English proof (translation)
-The claim follows from `FieldNumbers.ContractRelevant.rename_weightedHomogeneousComponent (ι := blockIdx fun _ : Unit ↦ n k₀) (ι' := blockIdx n) (j := fun _ : Unit ↦ k₀) (g := blockIncl k₀) (fun _ ↦ rfl) (const_injective k₀) (blockIncl_injective k₀) m f`.
+A detailed English derivation is pending.
 -/
 theorem rename_component (k₀ : ι) (m : Unit → ℕ) (f : MvPolynomial (Coord fun _ : Unit ↦ n k₀) ℤ) :
     rename (blockIncl k₀) (weightedHomogeneousComponent (coordDeg fun _ : Unit ↦ n k₀) m f) =
@@ -70,7 +70,7 @@ variable {Ω : Type} [Field Ω]
 omit [Fintype ι] [DecidableEq ι] in
 
 /- English proof (translation)
-Establish `h : ((Geo.mConeMap (ι` using `blockIdx n) y).comp (rename (blockIncl k₀))) = ((rename (R := Ω) (fun _ : Unit ↦ k₀)).restrictScalars ℤ).comp (Geo.mConeMap (ι := blockIdx fun _ : Unit ↦ n k₀) (fun p ↦ y ⟨k₀, p.2⟩)) := by`. Use `MvPolynomial.algHom_ext fun v ↦ ?_` and prove the remaining obligations. Simplify using `[Geo.mConeMap, blockIncl]`. Conclude with `congrArg (fun φ : MvPolynomial _ ℤ →ₐ[ℤ] MvPolynomial ι Ω ↦ φ f) h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mConeMap_rename (y : Coord n → Ω) (k₀ : ι)
     (f : MvPolynomial (Coord fun _ : Unit ↦ n k₀) ℤ) :
@@ -87,7 +87,7 @@ theorem mConeMap_rename (y : Coord n → Ω) (k₀ : ι)
 omit [Fintype ι] [DecidableEq ι] in
 
 /- English proof (translation)
-Use extensionality with `f`. Simplify using `only [Ideal.mem_comap, Geo.mCoordIdeal, RingHom.mem_ker]`. Rewrite using `[mConeMap_rename]`. Conclude with `map_eq_zero_iff _ (rename_injective _ (const_injective k₀))`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comap_mCoordIdeal (y : Coord n → Ω) (k₀ : ι) :
     (Geo.mCoordIdeal (ι := blockIdx n) y).comap (rename (blockIncl k₀)) =
@@ -98,9 +98,9 @@ theorem comap_mCoordIdeal (y : Coord n → Ω) (k₀ : ι) :
   exact map_eq_zero_iff _ (rename_injective _ (const_injective k₀))
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Rewrite `ha` using `[← Ideal.Quotient.mk_algebraMap, MvPolynomial.algebraMap_eq, Ideal.Quotient.eq_zero_iff_mem]`. Establish `h' : a ∈ I.comap (C : ℤ →+* Geo.MRing κ)` using `ha`. Rewrite `h'` using `[show I.comap (C : ℤ →+* Geo.MRing κ) = ⊥ from h]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(Submodule.mem_bot ℤ).mp h'`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_injective {K : Type} {κ : K → Type} (I : Ideal (Geo.MRing κ))
     (h : Geo.IsHorizontal I) : Function.Injective (algebraMap ℤ (Geo.MRing κ ⧸ I)) := by
@@ -115,11 +115,11 @@ theorem algebraMap_injective {K : Type} {κ : K → Type} (I : Ideal (Geo.MRing 
 omit [Fintype ι] in
 
 /- English proof (translation)
-Introduce `s`. Take `⟨d, g, h, hg, hh, hne, heq⟩` from `hB s`. Establish `hom : ∀ f : MvPolynomial (Coord fun _ : Unit ↦ n k₀) ℤ, Geo.IsMultiHomog (ι` using `blockIdx fun _ : Unit ↦ n k₀) f d → Geo.IsMultiHomog (ι := blockIdx n) (rename (blockIncl k₀) f) (Function.extend (fun _ : Unit ↦ k₀) d 0) := by`. Introduce `f hf`. Rewrite `hf`, the goal using `[← Bridge.isMultiHomog_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hf' : IsWeightedHomogeneous (coordDeg fun _ : Unit ↦ n k₀) f d` using `hf`. Rewrite using `[← hf'.weightedHomogeneousComponent_same, rename_component]`. Conclude with `weightedHomogeneousComponent_isWeightedHomogeneous _ _`. Use `⟨Function.extend (fun _ : Unit ↦ k₀) d 0, rename (blockIncl k₀) g, rename (blockIncl k₀) h, hom g hg, hom h hh, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[aeval_rename]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hne`. Rewrite using `[aeval_rename, aeval_rename]`. Conclude with `heq`.
+A detailed English derivation is pending.
 -/
 theorem birational_of_block (y : Coord n → Ω) (k₀ : ι)
     (hB : Geo.Birational (ι := blockIdx fun _ : Unit ↦ n k₀) (fun p ↦ y ⟨k₀, p.2⟩)) :
@@ -147,23 +147,23 @@ end BlockImage
 open BlockImage in
 
 /- English proof (translation)
-Use `⟨fun ι _ _ n P k₀ ↦ ⟨projVariety P k₀, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce `ι _ _ n Ω _ y k₀ D hA`. Use `⟨comap_mCoordIdeal y k₀, fun hB ↦ ?_⟩` and prove the remaining obligations. Take `⟨-, hMP, hHor, hKd⟩` from `hA`. Rewrite using `[← comap_mCoordIdeal y k₀]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hMP' : Geo.IsMultiProjPrime (ι` using `blockIdx fun _ : Unit ↦ n k₀) ((Geo.mCoordIdeal (ι := blockIdx n) y).comap (rename (blockIncl k₀))) := by`. Rewrite `hMP`, the goal using `[← Bridge.isMultiProjPrime_iff]`. Use `FieldNumbers.ContractRelevant.isMultiProjPrime_comap_rename (ι := blockIdx fun _ : Unit ↦ n k₀) (ι' := blockIdx n) (j := fun _ : Unit ↦ k₀) (g := blockIncl k₀) (fun _ ↦ rfl) (const_injective k₀) (blockIncl_injective k₀) ?_ hMP` and prove the remaining obligations. Introduce and unpack `⟨k, i⟩ ⟨u, hu⟩`. Take `rfl : k₀ = k` from `hu`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨⟨(), i⟩, rfl⟩`. Establish `hHor' : Geo.IsHorizontal (ι` using `blockIdx fun _ : Unit ↦ n k₀) ((Geo.mCoordIdeal (ι := blockIdx n) y).comap (rename (blockIncl k₀))) := by`. Use `(Ideal.ext fun a ↦ ?_).trans hHor` and prove the remaining obligations. Simplify using `only [Ideal.mem_comap]`. Rewrite using `[rename_C]`.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `⟨inferInstance, hMP', hHor', ?_⟩` and prove the remaining obligations. Establish `hrel : ∀ k, ∃ i, y ⟨k, i⟩ ≠ 0`. Introduce `k`. Take `⟨i, hi⟩` from `hMP.2.2 k`. Use `⟨i, fun h0 ↦ hi ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Geo.mCoordIdeal, RingHom.mem_ker]`. Simplify using `[Geo.mConeMap, h0]`. Rewrite `hHor'`, `hMP'`, the goal using `[comap_mCoordIdeal y k₀]`. Use `hMP.1` as an intermediate fact. Use `hMP'.1` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `dimA` using `hDim _ (algebraMap_injective _ hHor)`. Establish `dimA'` using `hDim _ (algebraMap_injective _ hHor')`. Rewrite `dimA` using `[hTr ι (blockIdx n) Ω y (birational_of_block y k₀ hB) hrel hHor]`. Rewrite `dimA'` using `[hTr Unit (blockIdx fun _ : Unit ↦ n k₀) Ω _ hB (fun _ ↦ hrel k₀) hHor']`. Rewrite `dimA` using `[hKd]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : ((D + 1 + Fintype.card ι : ℕ) : ℕ∞) = (Algebra.trdeg ℤ Ω + Fintype.card ι).toENat + 1` using `by exact_mod_cast dimA`. Simplify using `only [map_add, map_natCast] at h1`. Establish `key : (Algebra.trdeg ℤ Ω).toENat = D`. Generalize the expression as in `(Algebra.trdeg ℤ Ω).toENat = t at h1 ⊢`. Proceed by induction on `t using ENat.recTopCoe with`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Proceed by induction.
 
-Consider the case `top => simp at h1`. Consider the case `coe m`. Normalize the coercions in `at h1 ⊢`. Use linear arithmetic over natural numbers and integers. Rewrite using `[dimA']`.
+Treat this case separately. Treat this case separately. Put the expressions in a common number system so they can be compared. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_add, map_natCast, Fintype.card_unit, key]`. Use `norm_cast`.
+Simplify using the standard rewrite rules. Put the expressions in a common number system so they can be compared.
 -/
 theorem BlockImage.proof (hDim : IntDomainDim.Statement) (hTr : ConeTrdeg.Statement) :
     BlockImage.Statement := by

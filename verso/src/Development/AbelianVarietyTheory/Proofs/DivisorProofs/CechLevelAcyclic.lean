@@ -8,7 +8,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 
 namespace GlobalTheory.EtC
 /- English proof (translation)
-Use `⟨inferInstance, ?_⟩` and prove the remaining obligations. Use `haveI : Algebra.IsIntegral Ω (IsLocalRing.ResidueField Ω) := Algebra.IsIntegral.of_surjective (Algebra.ofId Ω (IsLocalRing.ResidueField Ω)) IsLocalRing.residue_surjective`. Conclude with `Algebra.IsAlgebraic.isSepClosed (F := Ω)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sh_of_isSepClosed (Ω : Type) [Field Ω] [IsSepClosed Ω] : SH Ω := by
   refine ⟨inferInstance, ?_⟩
@@ -17,17 +17,13 @@ theorem sh_of_isSepClosed (Ω : Type) [Field Ω] [IsSepClosed Ω] : SH Ω := by
   exact Algebra.IsAlgebraic.isSepClosed (F := Ω)
 
 /- English proof (translation)
-Introduce `R _ F hF K Ω _ _ _ _ k m hm y`. Use `haveI : IsSepClosed Ω := IsSepClosure.sep_closed K`. Use `haveI : Algebra.IsSeparable K Ω := IsSepClosure.separable`. Establish `hf : IsIntegralHom (Spec.map (CommRingCat.ofHom (algebraMap K Ω)))` using `IsIntegralHom.SpecMap_iff.2 fun x => Algebra.IsIntegral.isIntegral x`. Take `⟨Z, π, e, hπ, -⟩` from `GlobalTheory.T.exists_representable_cech_level_of_stable @IsIntegralHom _ _ _ hf (op ⦋k⦌)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Equip the data with the indicated structure.
 
-Use `haveI : IsIntegralHom π := hπ`. Use `haveI : IsAffine Z := isAffine_of_isAffineHom π`. Set `φ : Ω →+* Γ(Z, ⊤)` to `((Scheme.ΓSpecIso (CommRingCat.of Ω)).inv ≫ π.appTop).hom`. Use `letI : Algebra Ω Γ(Z, ⊤) := φ.toAlgebra`. Establish `hint : (π.app ⊤).hom.IsIntegral` using `π.isIntegral_app ⊤ (isAffineOpen_top _)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `haveI : Algebra.IsIntegral Ω Γ(Z, ⊤) := by`. Use `⟨fun b => ?_⟩` and prove the remaining obligations. Take `⟨p, hp, h⟩` from `hint b`. Use `⟨p.map (Scheme.ΓSpecIso (CommRingCat.of Ω)).hom.hom, hp.map _, ?_⟩` and prove the remaining obligations. Establish `hc : (algebraMap Ω Γ(Z, ⊤)).comp (Scheme.ΓSpecIso (CommRingCat.of Ω)).hom.hom = (π.app ⊤).hom`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `x`. Express the relevant statement in the definitionally equal form `((Scheme.ΓSpecIso (CommRingCat.of Ω)).hom ≫ (Scheme.ΓSpecIso (CommRingCat.of Ω)).inv ≫ π.app ⊤).hom x = _`. Rewrite using `[Iso.hom_inv_id_assoc]`. Both sides reduce to the same expression. Rewrite using `[Polynomial.eval₂_map, hc]`.
-
-Conclude with `h`. Establish `hac : AcycF R (sp Γ(Z, ⊤)) F` using `GlobalTheory.T.integral_strictHenselian_acyclic_finitary R F hF Ω Γ(Z, ⊤) (sh_of_isSepClosed Ω)`. Set `i : sp Γ(Z, ⊤) ≅ disc.obj ((cech (Spec.map (CommRingCat.ofHom (algebraMap K Ω)))).obj (op ⦋k⦌))` to `sch.mapIso Z.isoSpec.symm ≪≫ disc.mapIso e`. Establish `heq : Eqv R i.hom F` using `(GlobalTheory.T.etaleCohomologyEquivalence_basic_properties R F).1 _ _ i.hom inferInstance`. Establish `hs` using `((GlobalTheory.T.etaleCohomologyEquivalence_basic_properties R F).2.2.2 _ _ i.hom heq).1 hac (m : ℤ) (by exact_mod_cast hm)`.
-
-Conclude with `Subsingleton.elim _ _`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cech_level_acyclic : ∀ (R : Type) [CommRing R] (F : Shv R), Finitary F → ∀ (K Ω : Type) [Field K] [Field Ω] [Algebra K Ω] [IsSepClosure K Ω] (k : ℕ) (m : ℕ), 0 < m → ∀ y : H R (disc.obj ((cech (Spec.map (CommRingCat.ofHom (algebraMap K Ω)))).obj (op ⦋k⦌))) F m, y = 0 := by
   intro R _ F hF K Ω _ _ _ _ k m hm y
@@ -62,6 +58,6 @@ theorem cech_level_acyclic : ∀ (R : Type) [CommRing R] (F : Shv R), Finitary F
 end GlobalTheory.EtC
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.EtC.cech_level_acyclic`.
+A detailed English derivation is pending.
 -/
 example : ∀ (R : Type) [CommRing R] (F : Shv R), Finitary F → ∀ (K Ω : Type) [Field K] [Field Ω] [Algebra K Ω] [IsSepClosure K Ω] (k : ℕ) (m : ℕ), 0 < m → ∀ y : H R (disc.obj ((cech (Spec.map (CommRingCat.ofHom (algebraMap K Ω)))).obj (op ⦋k⦌))) F m, y = 0 := GlobalTheory.EtC.cech_level_acyclic

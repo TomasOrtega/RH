@@ -4,23 +4,23 @@ open MeasureTheory NumberField GroundTheory.Automorphic GroundTheory.Automorphic
 open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalSpectrum UpperTheory.ConvolutionTheory.C Polynomial Topology
 
 /- English proof (translation)
-Introduce `d c C ε hε`. Use `⟨Real.sqrt (|c| + (d + 1) * C ^ 2), ?_⟩` and prove the remaining obligations. Introduce `M H _ _ _ _ j V A hA hskew v hv hcas hC i`. Establish `h1 : ∀ k, inner ℂ (j v) (j (A k (A k v))) = -((‖j (A k v)‖ ^ 2 : ℝ) : ℂ)`. Introduce `k`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `hskew k v hv (A k v) (hA k v hv)`. Rewrite `h` using `[inner_self_eq_norm_sq_to_K]`. Use `push_cast`. Conclude with `eq_neg_of_add_eq_zero_right h`. Establish `h2 : (inner ℂ (j v) (j (∑ i, (ε i : ℂ) • A i (A i v)))).re = -∑ k, ε k * ‖j (A k v)‖ ^ 2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sum, inner_sum, Complex.re_sum, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, inner_smul_right, h1 k, ← Complex.ofReal_neg, ← Complex.ofReal_mul, Complex.ofReal_re]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hcas` using `[h2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : ∀ k, ε k = -1 → ‖j (A k v)‖ ^ 2 ≤ C ^ 2 * ‖j v‖ ^ 2`. Introduce `k hk`. Rewrite using `[← mul_pow]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) (hC k hk) 2`. Establish `hCN : 0 ≤ C ^ 2 * ‖j v‖ ^ 2` using `by positivity`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h4 : ∀ k, 0 ≤ ε k * ‖j (A k v)‖ ^ 2 + C ^ 2 * ‖j v‖ ^ 2`. Introduce `k`. Break down `hε k with hk | hk` into its components or cases. Rewrite using `[hk]`. Check the signs of the components of the expression.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `h3 k hk` as an intermediate fact. Rewrite using `[hk]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h5 : ε i * ‖j (A i v)‖ ^ 2 + C ^ 2 * ‖j v‖ ^ 2 ≤ ∑ k, (ε k * ‖j (A k v)‖ ^ 2 + C ^ 2 * ‖j v‖ ^ 2)` using `Finset.single_le_sum (f := fun k => ε k * ‖j (A k v)‖ ^ 2 + C ^ 2 * ‖j v‖ ^ 2) (fun k _ => h4 k) (Finset.mem_univ i)`. Rewrite `h5` using `[Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : c * ‖j v‖ ^ 2 ≤ |c| * ‖j v‖ ^ 2` using `mul_le_mul_of_nonneg_right (le_abs_self c) (by positivity)`. Establish `hc0 : 0 ≤ |c| * ‖j v‖ ^ 2` using `by positivity`. Establish `hd : 0 ≤ (d : ℝ) * (C ^ 2 * ‖j v‖ ^ 2)` using `by positivity`. Establish `h6 : ‖j (A i v)‖ ^ 2 ≤ (|c| + (d + 1) * C ^ 2) * ‖j v‖ ^ 2`. Establish `e : (|c| + (d + 1) * C ^ 2) * ‖j v‖ ^ 2 = |c| * ‖j v‖ ^ 2 + (d : ℝ) * (C ^ 2 * ‖j v‖ ^ 2) + C ^ 2 * ‖j v‖ ^ 2` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[e]`. Break down `hε i with hk | hk` into its components or cases. Rewrite `h5` using `[hk]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `h3 i hk` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h7` using `Real.le_sqrt_of_sq_le h6`. Rewrite `h7` using `[Real.sqrt_mul (by positivity), Real.sqrt_sq (norm_nonneg _)]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem UpperTheory.norm_apply_le_of_laplacian_lower_bound :
     ∀ (d : ℕ) (c C : ℝ) (ε : Fin d → ℝ), (∀ i, ε i = 1 ∨ ε i = -1) → ∃ C' : ℝ, ∀ (M H : Type) [AddCommGroup M] [Module ℂ M] [NormedAddCommGroup H] [InnerProductSpace ℂ H] (j : M →ₗ[ℂ] H) (V : Submodule ℂ M) (A : Fin d → Module.End ℂ M), (∀ i, ∀ x ∈ V, A i x ∈ V) → (∀ i, ∀ x ∈ V, ∀ y ∈ V, inner ℂ (j (A i x)) (j y) + inner ℂ (j x) (j (A i y)) = 0) → ∀ v ∈ V, -c * ‖j v‖ ^ 2 ≤ (inner ℂ (j v) (j (∑ i, (ε i : ℂ) • A i (A i v)))).re → (∀ i, ε i = -1 → ‖j (A i v)‖ ≤ C * ‖j v‖) → ∀ i, ‖j (A i v)‖ ≤ C' * ‖j v‖ := by

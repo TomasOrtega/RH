@@ -4,11 +4,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Bern
 open Finset UpperTheory.V.Bern
 
 /- English proof (translation)
-Introduce `N a hN`. Establish `hN' : (N : ℚ) ≠ 0` using `Nat.cast_ne_zero.2 hN.ne'`. Establish `h` using `congrArg (PowerSeries.rescale (N : ℚ)) (Polynomial.bernoulli_generating_function ((a : ℚ) / N))`. Rewrite `h` using `[map_mul, map_mul, map_sub, map_one, PowerSeries.rescale_mk, PowerSeries.rescale_X, PowerSeries.rescale_rescale]`. Establish `hc : ((a : ℚ) / N) * N = a` using `by field_simp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[hc]`. Use `beta_reduce at h`. Establish `hmk : (PowerSeries.mk fun k => bcoef N k a / (k.factorial : ℚ)) = PowerSeries.C (1 / (N : ℚ)) * PowerSeries.mk (fun n => (N : ℚ) ^ n * (Polynomial.aeval ((a : ℚ) / N)) ((1 / (n.factorial : ℚ)) • Polynomial.bernoulli n))`. Use extensionality with `n`. Rewrite using `[PowerSeries.coeff_C_mul, PowerSeries.coeff_mk, PowerSeries.coeff_mk]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [bcoef, map_smul, Polynomial.coe_aeval_eq_eval, smul_eq_mul]`. Rewrite using `[zpow_sub_one₀ hN', zpow_natCast]`. Establish `hf : (n.factorial : ℚ) ≠ 0` using `Nat.cast_ne_zero.2 (Nat.factorial_ne_zero n)`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hmk, mul_assoc, h, ← mul_assoc, ← mul_assoc, ← map_mul, one_div_mul_cancel hN', map_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Bern.b_egf :
     ∀ (N a : ℕ), 0 < N → (PowerSeries.mk fun k => bcoef N k a / (k.factorial : ℚ)) * (PowerSeries.rescale (N : ℚ) (PowerSeries.exp ℚ) - 1) = PowerSeries.X * PowerSeries.rescale (a : ℚ) (PowerSeries.exp ℚ) := by

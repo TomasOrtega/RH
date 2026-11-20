@@ -12,9 +12,9 @@ namespace PositivityTheory.SiegelWeilFormula.Act.ComplexParameterFamilyContinuit
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Establish `hb` using `d.ok.frame`. Establish `hset : (par2 σ d.Y : Set d.G) = {p | (inFrame d.b p).toBlocks₂₁ = 0}` using `Set.ext fun p => mem_stabiliser_iff_frame_lower_block hb p`. Rewrite using `[hset]`. Establish `hm : Continuous (mat2 (σ` using `σ) (Y := d.Y)) := Units.continuous_val.comp continuous_subtype_val`. Establish `hc : Continuous fun p : d.G => inFrame d.b p` using `(continuous_const.matrix_mul hm).matrix_mul continuous_const`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `isClosed_eq (continuous_matrix fun i j => hc.matrix_elem (Sum.inr i) (Sum.inl j)) continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_diagonal_stabiliser (d : SD σ) : IsClosed (par2 σ d.Y : Set d.G) := by
   have hb := d.ok.frame
@@ -28,9 +28,9 @@ theorem isClosed_diagonal_stabiliser (d : SD σ) : IsClosed (par2 σ d.Y : Set d
   exact isClosed_eq (continuous_matrix fun i j => hc.matrix_elem (Sum.inr i) (Sum.inl j)) continuous_const
 
 /- English proof (translation)
-Use `GlobalTheory.Doubling.continuous_of_prod (P := par2 σ d.Y) (K := d.K) (isClosed_diagonal_stabiliser d) (kunf.isCompact_K d) (fun g => ?_) ?_` and prove the remaining obligations. Take `⟨p, t, hp, k, hk, e⟩` from `d.ok.hgt.iwa g`. Conclude with `⟨⟨p, mem_parabolic_GL2_iff.2 ⟨t, hp⟩⟩, k, hk, e⟩`. Establish `hc : Continuous fun x : par2 σ d.Y × d.K => ((GlobalTheory.Doubling.absE F E (kunf.SecA.uDet x.1) : ℝ≥0) : ℝ)` using `NNReal.continuous_coe.comp (GlobalTheory.Doubling.continuous_absE.comp (kunf.SecA.continuous_uDet.comp continuous_fst))`. Use `hc.congr fun x => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨t, ht⟩` from `mem_parabolic_GL2_iff.1 x.1.2`. Rewrite using `[d.ok.hgt.val _ t ht _ x.2.2, kunf.SecA.uDet_eq ht]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem continuous_a' (d : SD σ) : Continuous d.a := by
   refine GlobalTheory.Doubling.continuous_of_prod (P := par2 σ d.Y) (K := d.K) (isClosed_diagonal_stabiliser d) (kunf.isCompact_K d)

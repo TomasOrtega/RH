@@ -7,18 +7,18 @@ open NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G.Geo.Tor F
 namespace GlobalTheory
 
 /- English proof (translation)
-Conclude with `Nat.pos_of_ne_zero (Formalism.MainNotions.ModuliIntegralCharts.H1.H1algLink.ramOverZ_ne_zero la)` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem ramOverZ_real_pos {K : Type} [Field K] [NumberField K] (la : HeightOneSpectrum (𝓞 K)) :
     (0 : ℝ) < (ramOverZ la : ℝ) := by
   exact_mod_cast Nat.pos_of_ne_zero (Formalism.MainNotions.ModuliIntegralCharts.H1.H1algLink.ramOverZ_ne_zero la)
 
 /- English proof (translation)
-Introduce `D T h j hj large₂ wL nus hH`. Take `⟨h0, h1, h2⟩` from `hH`. Establish `he : ∀ la : HeightOneSpectrum (𝓞 T.Q.c.F), (ramOverZ la : ℝ) * (nus la / (ramOverZ la : ℝ)) = nus la` using `fun la => mul_div_cancel₀ _ (ramOverZ_real_pos la).ne'`. Use `⟨⟨fun la => div_nonneg (h0 la) (Nat.cast_nonneg _), h1.subset ?_, ?_⟩, funext he⟩` and prove the remaining obligations. Introduce `la hla h'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hla (by simp only [show nus la = 0 from h', zero_div])`. Use `le_of_eq_of_le ?_ h2` and prove the remaining obligations. Establish `hs : (Function.support fun la : HeightOneSpectrum (𝓞 T.Q.c.F) => nus la * ReciprocityTheory.ChartRestriction.G.T0.logNorm la).Finite` using `h1.subset fun la hla h' => hla (by simp only [show nus la = 0 from h', zero_mul])`. Simplify using `only [he]`. Rewrite using `[div_eq_mul_inv, finsum_mul' _ _ hs]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `finsum_congr fun la => ?_` and prove the remaining obligations. Rewrite using `[abs_of_nonneg (h0 la), mul_assoc, ← div_eq_mul_inv]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem numerical_h_one_of_weighted_bound : ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j), ∀ (large₂ : SizeData₂ D) (wL : WeightFamilies.Wt D j) (nus : HeightOneSpectrum (𝓞 T.Q.c.F) → ℝ), Formalism.MainNotions.Gaps.EtaleWeightGaps.WeightedPrimeSumBoundAlt large₂ (recPJ h j hj) wL nus → NumericalH1Condition T.Q.c (fun la => nus la / (ramOverZ la : ℝ)) (WeightAlgebra.PN D large₂) wL.size ∧ nuOf T.Q.c (fun la => nus la / (ramOverZ la : ℝ)) = nus := by
   intro D T h j hj large₂ wL nus hH

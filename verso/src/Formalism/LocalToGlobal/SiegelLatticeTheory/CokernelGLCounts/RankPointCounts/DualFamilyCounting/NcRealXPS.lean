@@ -17,13 +17,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 section Gen
 
 /- English proof (translation)
-Establish `hl : ∀ (x y : Fin (2 * r + k + 1) → ℂ) (c : ℂ), hJ ε (c • x) y = star c * hJ ε x y`. Introduce `x y c`. Simplify using `[Formalism.L2.SG.HidaSetting.hJ, Matrix.mulVec_smul]`. Establish `hr : ∀ (x y : Fin (2 * r + k + 1) → ℂ) (c : ℂ), hJ ε x (c • y) = c * hJ ε x y`. Introduce `x y c`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Formalism.L2.SG.HidaSetting.hJ, Matrix.mulVec_smul]`. Establish `hsc : star ((((Real.sqrt T)⁻¹ : ℝ)) : ℂ) = (((Real.sqrt T)⁻¹ : ℝ) : ℂ)` using `Complex.conj_ofReal _`. Establish `key : ((Real.sqrt T)⁻¹ * ((Real.sqrt T)⁻¹ * -T) : ℝ) = -1`. Rewrite using `[← mul_assoc, ← mul_inv, ← sq, Real.sq_sqrt hT.le, mul_neg, inv_mul_cancel₀ hT.ne']`. Use `⟨hee, hff, hef, ?_, ?_, ?_, hww, hew, hfw, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a`. Rewrite using `[Formalism.L2.SG.Pf.WFL.z0v, hr, hez, mul_zero]`. Introduce `a`. Rewrite using `[Formalism.L2.SG.Pf.WFL.z0v, hr, hfz, mul_zero]`. Rewrite using `[Formalism.L2.SG.Pf.WFL.z0v, hl, hr, hzz, hsc]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `key` after adjusting the coercions. Introduce `a`. Rewrite using `[Formalism.L2.SG.Pf.WFL.z0v, hl, hzw, mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem isFrameJ_of {r k : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {e f : Fin r → Fin (2 * r + k + 1) → ℂ}
     {wf : Fin k → Fin (2 * r + k + 1) → ℂ} {z : Fin (2 * r + k + 1) → ℂ} {T : ℝ} (hT : 0 < T)
@@ -53,7 +53,7 @@ theorem isFrameJ_of {r k : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {e f : Fin r
     rw [Formalism.L2.SG.Pf.WFL.z0v, hl, hzw, mul_zero]
 
 /- English proof (translation)
-Use extensionality with `s`. Simplify using `only [Formalism.L2.SG.Pf.NcReal.HLoc, Formalism.L2.SG.RealObj.InfCut.JacobianCoordinates.HLoc, Set.mem_setOf_eq, forall_and, and_assoc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem hLoc_eq {n r : ℕ} (ε : Fin n → Bool) (e f : Fin r → Fin n → ℂ) (z : Fin n → ℂ) :
     Formalism.L2.SG.Pf.NcReal.HLoc ε e f z = Formalism.L2.SG.RealObj.InfCut.JacobianCoordinates.HLoc ε e f z := by
@@ -62,9 +62,9 @@ theorem hLoc_eq {n r : ℕ} (ε : Fin n → Bool) (e f : Fin r → Fin n → ℂ
     and_assoc]
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Establish `hFJ` using `isFrameJ_of hT hee hff hef hww hew hfw hez hfz hzz hzw`. Establish `hemb` using `cM_closedEmb (ε := ε) (A := Qi ε e f wf (z0v T z)) (B := Qm e f wf (z0v T z)) (A' := Qm e f wf (z0v T z)) (B' := Qi ε e f wf (z0v T z)) (Qm_mul_Qi hFJ) (Qm_mul_Qi hFJ)`. Establish `hW : IsCompact (UWset k r (zBv k r T) : Set (Mt k r))` using `Formalism.FourierDecayAlt.P.weyl_subgroup_compact k r (zBv k r T) (inWb_zB T) (by rw [Tz_zB hT.le]; exact hT)`. Establish `hK` using `hemb.isCompact_preimage hW`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcl : IsClosed (Formalism.L2.SG.Pf.NcReal.HLoc ε e f z)`. Rewrite using `[hLoc_eq]`. Conclude with `NilradicalHermitianFrames.NH.HG_closed ε e f z`. Use `hK.of_isClosed_subset hcl fun g hg => ?_` and prove the remaining obligations. Conclude with `conj_mem_UWset hFJ (Qm_zB hT z) (uMat_mem g) (fun a => (hg.1 a).1) (fun a => (hg.1 a).2) hg.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem compact_HLoc {n r k : ℕ} (hn : n = 2 * r + k + 1) (ε : Fin n → Bool) (e f : Fin r → Fin n → ℂ)
     (wf : Fin k → Fin n → ℂ) (z : Fin n → ℂ) {T : ℝ} (hT : 0 < T)
@@ -88,9 +88,7 @@ theorem compact_HLoc {n r k : ℕ} (hn : n = 2 * r + k + 1) (ε : Fin n → Bool
   exact conj_mem_UWset hFJ (Qm_zB hT z) (uMat_mem g) (fun a => (hg.1 a).1) (fun a => (hg.1 a).2) hg.2
 
 /- English proof (translation)
-Use `haveI : ∀ i, SigmaFinite (c i • μ i) := fun i => ⟨⟨⟨spanningSets (μ i), fun _ => Set.mem_univ _, fun n => by`. Rewrite using `[Measure.smul_apply, smul_eq_mul]`. Conclude with `lt_top_iff_ne_top.2 (ENNReal.mul_ne_top (hc i) (measure_spanningSets_lt_top (μ i) n).ne),`. Use `iUnion_spanningSets (μ i)⟩⟩⟩`. Use `Measure.pi_eq fun s hs => ?_` and prove the remaining obligations.
-
-Simplify using `only [Measure.smul_apply, smul_eq_mul, Measure.pi_pi, Finset.prod_mul_distrib]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pi_smul_factors {ι : Type*} [Fintype ι] {α : ι → Type*} [∀ i, MeasurableSpace (α i)]
     (μ : ∀ i, Measure (α i)) [∀ i, SigmaFinite (μ i)] (c : ι → ℝ≥0∞) (hc : ∀ i, c i ≠ ⊤) :
@@ -104,11 +102,11 @@ theorem pi_smul_factors {ι : Type*} [Fintype ι] {α : ι → Type*} [∀ i, Me
   simp only [Measure.smul_apply, smul_eq_mul, Measure.pi_pi, Finset.prod_mul_distrib]
 
 /- English proof (translation)
-Unfold `Formalism.L2.SG.RealObj.IsHaarLoc at h ⊢`. Take `⟨h1, h2, h3, h4⟩` from `h`. Use `haveI := h1`. Use `⟨⟨⟨⟨spanningSets μ, fun _ => Set.mem_univ _, fun n => ?_, iUnion_spanningSets μ⟩⟩⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Measure.smul_apply, smul_eq_mul]`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `lt_top_iff_ne_top.2 (ENNReal.mul_ne_top hc (measure_spanningSets_lt_top μ n).ne)`. Introduce `h0`. Apply `h2` to reduce the goal to its premises. Use extensionality with `s _`. Simplify `congrArg (fun m : Measure (Formalism.REAL.UJ ε) => m s) h0` using `[hc0]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[h3]`. Introduce `s hs`. Rewrite using `[Measure.map_smul, h4 s hs]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHaarLoc_smul {n : ℕ} {ε : Fin n → Bool} {S : Set (Formalism.REAL.UJ ε)} {μ : Measure (Formalism.REAL.UJ ε)}
     (h : IsHaarLoc S μ) {c : ℝ≥0∞} (hc0 : c ≠ 0) (hc : c ≠ ⊤) : IsHaarLoc S (c • μ) := by
@@ -133,7 +131,7 @@ section HidaSetting
 variable {D : D7} (X : HidaSetting D)
 
 /- English proof (translation)
-Rewrite using `[X.n_eq]`. Establish `hm` using `D.R.two_le_m`. Take `⟨j, hj⟩` from `D.R.m_even`. Simplify using `only [Formalism.BasicNotions.Ranks.r, Formalism.BasicNotions.Ranks.rS]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem nX : X.B.I.n = 2 * D.R.rS + D.R.k + 1 := by
   rw [X.n_eq]
@@ -150,55 +148,55 @@ section Facts
 variable (u : D.what₂.Word) (v : InfinitePlace X.B.I.F)
 
 /- English proof (translation)
-Introduce `a b` and use `(ProductExactness.hJ_X X v _ _).trans (by rw [X.ee]; simp)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem fX_ee : ∀ a b, hJ (X.B.I.ε v) (eV X v a) (eV X v b) = 0 := fun a b =>
   (ProductExactness.hJ_X X v _ _).trans (by rw [X.ee]; simp)
 /- English proof (translation)
-Introduce `a b` and use `(ProductExactness.hJ_X X v _ _).trans (by rw [X.ff]; simp)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem fX_ff : ∀ a b, hJ (X.B.I.ε v) (ProductExactness.pV X v a) (ProductExactness.pV X v b) = 0 := fun a b =>
   (ProductExactness.hJ_X X v _ _).trans (by rw [X.ff]; simp)
 /- English proof (translation)
-Introduce `a b` and use `(ProductExactness.hJ_X X v _ _).trans (by rw [X.ef]; split_ifs <;> simp)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem fX_ef : ∀ a b, hJ (X.B.I.ε v) (eV X v a) (ProductExactness.pV X v b) = if a = b then 1 else 0 := fun a b =>
   (ProductExactness.hJ_X X v _ _).trans (by rw [X.ef]; split_ifs <;> simp)
 /- English proof (translation)
-The claim follows from `X.wfr_on u v`.
+A detailed English derivation is pending.
 -/
 theorem fX_ww : ∀ a b, hJ (X.B.I.ε v) (X.wfr u v a) (X.wfr u v b) = if a = b then 1 else 0 := X.wfr_on u v
 /- English proof (translation)
-Introduce `c a` and use `((X.wfr_perp u v a).1 c).1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem fX_ew : ∀ c a, hJ (X.B.I.ε v) (eV X v c) (X.wfr u v a) = 0 := fun c a => ((X.wfr_perp u v a).1 c).1
 /- English proof (translation)
-Introduce `c a` and use `((X.wfr_perp u v a).1 c).2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem fX_fw : ∀ c a, hJ (X.B.I.ε v) (ProductExactness.pV X v c) (X.wfr u v a) = 0 := fun c a => ((X.wfr_perp u v a).1 c).2
 /- English proof (translation)
-The claim follows from `(ProductExactness.frameLoc_X X u u v).ez`.
+A detailed English derivation is pending.
 -/
 theorem fX_ez : ∀ a, hJ (X.B.I.ε v) (eV X v a) (ProductExactness.zV X u v) = 0 := (ProductExactness.frameLoc_X X u u v).ez
 /- English proof (translation)
-Introduce `a` and use `(ProductExactness.hJ_X X v _ _).trans (by rw [(X.zu_orth u a).2]; simp)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem fX_fz : ∀ a, hJ (X.B.I.ε v) (ProductExactness.pV X v a) (ProductExactness.zV X u v) = 0 := fun a =>
   (ProductExactness.hJ_X X v _ _).trans (by rw [(X.zu_orth u a).2]; simp)
 /- English proof (translation)
-The claim follows from `(ProductExactness.frameLoc_X X u u v).zz`.
+A detailed English derivation is pending.
 -/
 theorem frame_real_z_z_eq_neg : hJ (X.B.I.ε v) (ProductExactness.zV X u v) (ProductExactness.zV X u v) = -((Tw u : ℝ) : ℂ) :=
   (ProductExactness.frameLoc_X X u u v).zz
 /- English proof (translation)
-Introduce `a` and use `(X.wfr_perp u v a).2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem fX_zw : ∀ a, hJ (X.B.I.ε v) (ProductExactness.zV X u v) (X.wfr u v a) = 0 := fun a => (X.wfr_perp u v a).2
 
 end Facts
 
 /- English proof (translation)
-Establish `hR` using `refNg_isHaarLoc (nX X) (X.B.I.ε v) (eV X v) (ProductExactness.pV X v) (X.wfr u v) (ProductExactness.zV X u v) (ProductExactness.zV X w v) (ProductExactness.Tw_pos u) (fX_ee X v) (fX_ff X v) (fX_ef X v) (fX_ww X u v) (fX_ew X u v) (fX_fw X u v) (fX_ez X u v) (fX_fz X u v) (frame_r …`. Take `⟨r1, r2, r3, r4⟩` from `hR`. Take `⟨⟨m1, m2, m3, m4⟩, -⟩` from `ProductExactness.muNv_haar X w v`. Use `haveI : SigmaFinite (refNX X u v) := r1`. Conclude with `ProductExactness.PiM.uniq_on_closed (ProductExactness.NGv X w v) (NilradicalHermitianFrames.NH.NG_closed _ _ _) _ _ m3 r3 m4 r4 m2 r2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem muNv_eq (u w : D.what₂.Word) (v : InfinitePlace X.B.I.F) :
     ∃ d : ℝ≥0∞, d ≠ 0 ∧ d ≠ ⊤ ∧ ProductExactness.muNv X w v = d • refNX X u v := by
@@ -211,9 +209,9 @@ theorem muNv_eq (u w : D.what₂.Word) (v : InfinitePlace X.B.I.F) :
   exact ProductExactness.PiM.uniq_on_closed (ProductExactness.NGv X w v) (NilradicalHermitianFrames.NH.NG_closed _ _ _) _ _ m3 r3 m4 r4 m2 r2
 
 /- English proof (translation)
-Take `⟨⟨m1, m2, m3, m4⟩, m5⟩` from `ProductExactness.muHv_haar X u v`. Establish `hK` using `compact_HLoc (nX X) (X.B.I.ε v) (eV X v) (ProductExactness.pV X v) (X.wfr u v) (ProductExactness.zV X u v) (ProductExactness.Tw_pos u) (fX_ee X v) (fX_ff X v) (fX_ef X v) (fX_ww X u v) (fX_ew X u v) (fX_fw X u v) (fX_ez X u v) (fX_fz X u v) (frame_real_z_z_eq_neg X u v) (fX_zw X …`. Rewrite `hK` using `[hLoc_eq]`. Use `⟨fun h0 => m2 (Measure.measure_univ_eq_zero.1 h0), ?_⟩` and prove the remaining obligations. Establish `hsplit : ProductExactness.muHv X u v Set.univ ≤ ProductExactness.muHv X u v (Formalism.L2.SG.RealObj.InfCut.JacobianCoordinates.HLoc (X.B.I.ε v) (eV X v) (ProductExactness.pV X v) (ProductExactness.zV X u v)) + ProductExactness.muHv X u v (Formalism.L2.SG.RealObj.InfCut.JacobianC …`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← Set.union_compl_self (Formalism.L2.SG.RealObj.InfCut.JacobianCoordinates.HLoc (X.B.I.ε v) (eV X v) (ProductExactness.pV X v) (ProductExactness.zV X u v))]`. Conclude with `measure_union_le _ _`. Establish `m3' : ProductExactness.muHv X u v (Formalism.L2.SG.RealObj.InfCut.JacobianCoordinates.HLoc (X.B.I.ε v) (eV X v) (ProductExactness.pV X v) (ProductExactness.zV X u v))ᶜ = 0` using `m3`. Rewrite `hsplit` using `[m3', add_zero]`. Conclude with `(lt_of_le_of_lt hsplit (hK.measure_lt_top)).ne`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem muHv_mass (u : D.what₂.Word) (v : InfinitePlace X.B.I.F) :
     ProductExactness.muHv X u v Set.univ ≠ 0 ∧ ProductExactness.muHv X u v Set.univ ≠ ⊤ := by
@@ -244,29 +242,25 @@ def CovolRef : Prop :=
         |(NumberField.discr X.B.I.F : ℝ)| ^ eDF D.R.k D.R.rS
 
 /- English proof (translation)
-Introduce `D X hb FdN FdN' u u' ψ hHyp _ _ hGd`. Take `⟨v0⟩ : Nonempty (InfinitePlace X.B.I.F)` from `inferInstance`. Establish `hk : 1 ≤ D.R.k` using `by have := D.R.m_add_three_le_k; omega`. Take `⟨κN, hκN0, hκNT, hN⟩` from `ProductExactness.muN_eq X u`. Take `⟨κN', hκN'0, hκN'T, hN'⟩` from `ProductExactness.muN_eq X u'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `choose d hd0 hdT hd using fun v => muNv_eq X u u v`. Use `choose d' hd'0 hd'T hd' using fun v => muNv_eq X u u' v`. Use `set cN : InfinitePlace X.B.I.F → ℝ≥0∞ := fun v => (if v = v0 then κN else 1) * d v with hcN`. Use `set cN' : InfinitePlace X.B.I.F → ℝ≥0∞ := fun v => (if v = v0 then κN' else 1) * d' v with hcN'`. Apply the tactic sequence `have hcT : ∀ v, cN v ≠ ⊤ := fun v => ENNReal.mul_ne_top (by split_ifs <;> simp [hκNT]) (hdT v)`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `have hcT' : ∀ v, cN' v ≠ ⊤ := fun v => ENNReal.mul_ne_top (by split_ifs <;> simp [hκN'T]) (hd'T v)`. Apply the tactic sequence `have hc0 : ∀ v, cN v ≠ 0 := fun v => mul_ne_zero (by split_ifs <;> simp [hκN0]) (hd0 v)`. Apply the tactic sequence `have hc0' : ∀ v, cN' v ≠ 0 := fun v => mul_ne_zero (by split_ifs <;> simp [hκN'0]) (hd'0 v)`. Use `haveI : ∀ v, SigmaFinite (refNX X u v) := fun v => (refNg_isHaarLoc (nX X) (X.B.I.ε v) (eV X v) (ProductExactness.pV X v) (X.wfr u v) (ProductExactness.zV X u v) (ProductExactness.zV X u v) (ProductExactness.Tw_pos u) (fX_ee X v) (fX_ff X v) (fX_ef X v) (fX_ww X u v) (fX_ew X u v …`. Establish `hprod : ∀ (κ0 : ℝ≥0∞) (dd : InfinitePlace X.B.I.F → ℝ≥0∞), (∀ v, dd v ≠ ⊤) → κ0 ≠ ⊤ → κ0 • Measure.pi (fun v => dd v • refNX X u v) = Measure.pi (fun v => ((if v = v0 then κ0 else 1) * dd v) • refNX X u v)`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `κ0 dd hddT hκ0`. Apply the tactic sequence `rw [pi_smul_factors _ dd hddT, pi_smul_factors _ _ (fun v => ENNReal.mul_ne_top (by split_ifs <;> simp [hκ0]) (hddT v)), smul_smul, Finset.prod_mul_distrib]`. Simplify using `only [Finset.prod_ite_eq', Finset.mem_univ, if_true]`. Establish `hmuN : X.muN u = Measure.pi (fun v => cN v • refNX X u v)`. Establish `he : ProductExactness.muNv X u = fun v => d v • refNX X u v` using `funext hd`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hN, he]`. Conclude with `hprod κN d hdT hκNT`. Establish `hmuN' : X.muN u' = Measure.pi (fun v => cN' v • refNX X u v)`. Establish `he : ProductExactness.muNv X u' = fun v => d' v • refNX X u v` using `funext hd'`. Rewrite using `[hN', he]`.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hprod κN' d' hd'T hκN'T`. Take `⟨κH, hκH0, hκHT, hH⟩` from `ProductExactness.muH_eq X u`. Take `⟨κH', hκH'0, hκH'T, hH'⟩` from `ProductExactness.muH_eq X u'`. Use `set μH : ∀ v, Measure (Formalism.REAL.UJ (X.B.I.ε v)) := fun v => (if v = v0 then κH else 1) • ProductExactness.muHv X u v with hμH`. Use `set μH' : ∀ v, Measure (Formalism.REAL.UJ (X.B.I.ε v)) := fun v => (if v = v0 then κH' else 1) • ProductExactness.muHv X u' v with hμH'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply the tactic sequence `have hsH : ∀ v, (if v = v0 then κH else 1) ≠ 0 ∧ (if v = v0 then κH else 1) ≠ ⊤ := fun v => by split_ifs <;> simp [hκH0, hκHT]`. Apply the tactic sequence `have hsH' : ∀ v, (if v = v0 then κH' else 1) ≠ 0 ∧ (if v = v0 then κH' else 1) ≠ ⊤ := fun v => by split_ifs <;> simp [hκH'0, hκH'T]`. Establish `hmuH : X.muH u = Measure.pi μH`. Establish `hp : (∏ v, (if v = v0 then κH else 1 : ℝ≥0∞)) = κH` using `by simp`. Rewrite using `[hH, hμH, pi_smul_factors _ _ (fun v => (hsH v).2), hp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hmuH' : X.muH u' = Measure.pi μH'`. Establish `hp : (∏ v, (if v = v0 then κH' else 1 : ℝ≥0∞)) = κH'` using `by simp`. Rewrite using `[hH', hμH', pi_smul_factors _ _ (fun v => (hsH' v).2), hp]`. Establish `hHaarH : ∀ v, IsHaarLoc (Formalism.L2.SG.Pf.NcReal.HLoc (X.B.I.ε v) (eV X v) (ProductExactness.pV X v) (ProductExactness.zV X u v)) (μH v)` using `fun v => by`. Rewrite using `[hLoc_eq]`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Conclude with `isHaarLoc_smul (ProductExactness.muHv_haar X u v).1 (hsH v).1 (hsH v).2`. Establish `hHaarH' : ∀ v, IsHaarLoc (Formalism.L2.SG.Pf.NcReal.HLoc (X.B.I.ε v) (eV X v) (ProductExactness.pV X v) (ProductExactness.zV X u' v)) (μH' v)` using `fun v => by`. Rewrite using `[hLoc_eq]`. Conclude with `isHaarLoc_smul (ProductExactness.muHv_haar X u' v).1 (hsH' v).1 (hsH' v).2`. Establish `hmH : ∀ v, μH v Set.univ ≠ 0 ∧ μH v Set.univ ≠ ⊤` using `fun v => by`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨h1, h2⟩` from `muHv_mass X u v`. Simplify using `only [hμH, Measure.smul_apply, smul_eq_mul]`. Conclude with `⟨mul_ne_zero (hsH v).1 h1, ENNReal.mul_ne_top (hsH v).2 h2⟩`. Establish `hmH' : ∀ v, μH' v Set.univ ≠ 0 ∧ μH' v Set.univ ≠ ⊤` using `fun v => by`. Take `⟨h1, h2⟩` from `muHv_mass X u' v`.
-
-Simplify using `only [hμH', Measure.smul_apply, smul_eq_mul]`. Conclude with `⟨mul_ne_zero (hsH' v).1 h1, ENNReal.mul_ne_top (hsH' v).2 h2⟩`. Use `⟨fun v => cN v • refNX X u v, fun v => cN' v • refNX X u v, μH, μH', fun v => (μH v Set.univ).toReal, fun v => (μH' v Set.univ).toReal, fun v => (cN v).toReal, fun v => (cN' v).toReal, ((Measure.pi (refNX X u)) FdN).toReal, ((Measure.pi (refNX X u)) FdN').toReal, fun v => Product …` and prove the remaining obligations. Introduce `v h hh`. Establish `hP` using `placeStep hJG (nX X) (X.B.I.ε v) (eV X v) (ProductExactness.pV X v) (X.wfr u v) (ProductExactness.zV X u v) (ProductExactness.zV X u' v) hk (ProductExactness.Tw_pos u) (ProductExactness.Tw_pos u') (fX_ee X v) (fX_ff X v) (fX_ef X v) (fX_ww X u v) (fX_ew X u v) (fX_fw X u v) (fX_e …`.
-
-Rewrite `hP` using `[ENNReal.ofReal_toReal (hcT v), ENNReal.ofReal_toReal (hcT' v)]`. Conclude with `hP`. Rewrite using `[hmuN, pi_smul_factors _ _ hcT, Measure.smul_apply, smul_eq_mul, ENNReal.toReal_mul, ENNReal.toReal_prod]`. Rewrite using `[hmuN', pi_smul_factors _ _ hcT', Measure.smul_apply, smul_eq_mul, ENNReal.toReal_mul, ENNReal.toReal_prod]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem placeSplit_of (hJG : JacGauge) (hC : CovolRef) : PlaceSplit := by
   classical
@@ -358,7 +352,7 @@ theorem placeSplit_of (hJG : JacGauge) (hC : CovolRef) : PlaceSplit := by
   · rw [hmuN', pi_smul_factors _ _ hcT', Measure.smul_apply, smul_eq_mul, ENNReal.toReal_mul, ENNReal.toReal_prod]
 
 /- English proof (translation)
-The claim follows from `realBracket_of Formalism.L2.SG.RealObj.InfCut.ProductExactness.ProdExact_holds hA (placeSplit_of hJG hC) hG`.
+A detailed English derivation is pending.
 -/
 theorem realBracket_of_jac (hJG : JacGauge) (hC : CovolRef) (hA : AprimeInf)
     (hG : ∀ (n : ℕ) (ε : Fin n → Bool), Formalism.MainNotions.S.Gauge.GaugeDens ε) : RealBracket :=

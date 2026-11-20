@@ -20,7 +20,7 @@ def locIdeal {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)] 
   Ideal.span {z | (z : FractionRing (MRing ι ⧸ P)) = y}
 
 /- English proof (translation)
-Unfold `locIdeal`. Use `congr 1`. Use extensionality with `z`. Simplify using `only [Set.mem_singleton_iff]`. Conclude with `⟨fun h => Subtype.ext h, fun h => by rw [h]; rfl⟩`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem locIdeal_eq_span {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)] {P W : Ideal (MRing ι)}
     {y : FractionRing (MRing ι ⧸ P)} (hy : y ∈ locRing P W) :

@@ -207,11 +207,9 @@ section Inhabit
 abbrev exX : Unit → ℚ := fun _ => 1
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hq`. Establish `hle : chartRing ℤ exX () ≤ ⊥`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Simplify using `only [exX, div_one]`. Conclude with `Subalgebra.one_mem _`. Take `⟨n, hn⟩` from `Algebra.mem_bot.1 (hle hq)`. Conclude with `⟨n, by simpa using hn⟩`. Introduce and unpack `⟨n, rfl⟩`.
-
-Conclude with `Subalgebra.intCast_mem _ n`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mem_chartRing_exX (q : ℚ) : q ∈ chartRing ℤ exX () ↔ ∃ n : ℤ, (n : ℚ) = q := by
   constructor
@@ -238,12 +236,12 @@ def intLat : AddSubgroup (Fin 2 → ℚ) where
     exact ⟨-n, by simp [hn]⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_intLat (v : Fin 2 → ℚ) : v ∈ intLat ↔ ∀ q, ∃ n : ℤ, (n : ℚ) = v q := Iff.rfl
 
 /- English proof (translation)
-Introduce `r`. Distinguish the cases in `h : r = q`. Substitute `h` using the available equality. Conclude with `⟨1, by simp⟩`. Conclude with `⟨0, by simp [h]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem single_mem_intLat (q : Fin 2) : (Pi.single q 1 : Fin 2 → ℚ) ∈ intLat := by
   intro r
@@ -276,9 +274,9 @@ def exφ : Unit ⊕ Unit → (Fin 2 → ℚ) →ₗ[ℚ] ℚ :=
   Sum.elim (fun _ => LinearMap.proj 0) (fun _ => LinearMap.proj 1)
 
 /- English proof (translation)
-Introduce `i _ k v hv`. Rewrite using `[mem_lineLat]`. Break down `k with _ | _` into its components or cases. Take `⟨n, hn⟩` from `hv 0`. Conclude with `⟨v 0, (mem_chartRing_exX _).2 ⟨n, hn⟩, by simp [exφ, exX]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨n, hn⟩` from `hv 1`. Conclude with `⟨v 1, (mem_chartRing_exX _).2 ⟨n, hn⟩, by simp [exφ, exX]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ex_dualSec : T.IsTwistedDualSec exBundle exφ := by
   intro i _ k v hv
@@ -290,9 +288,7 @@ theorem ex_dualSec : T.IsTwistedDualSec exBundle exφ := by
     exact ⟨v 1, (mem_chartRing_exX _).2 ⟨n, hn⟩, by simp [exφ, exX]⟩
 
 /- English proof (translation)
-Introduce `i _ ψ hψ`. Use `⟨Sum.elim (fun _ => ψ (Pi.single 0 1)) (fun _ => ψ (Pi.single 1 1)), ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `(_ | _)`. Conclude with `hψ _ (single_mem_intLat 0)`. Conclude with `hψ _ (single_mem_intLat 1)`.
-
-Apply the tactic sequence `refine (Pi.basisFun ℚ (Fin 2)).ext fun q => ?_ fin_cases q <;> simp [exφ, exX, Fintype.sum_sum_type]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem ex_dualGen : T.IsTwistedDualGen exBundle exφ := by
   intro i _ ψ hψ
@@ -304,11 +300,11 @@ theorem ex_dualGen : T.IsTwistedDualGen exBundle exφ := by
     fin_cases q <;> simp [exφ, exX, Fintype.sum_sum_type]
 
 /- English proof (translation)
-Introduce `i _`. Use `⟨fun _ => Submodule.subset_span ⟨Pi.single 0 1, single_mem_intLat 0, Pi.single 1 1, single_mem_intLat 1, by simp [T.detE, exX]⟩, fun u hu w hw => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `hu 0`. Take `⟨b, hb⟩` from `hu 1`. Take `⟨c, hc⟩` from `hw 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨d, hd⟩` from `hw 1`. Establish `hmem : ((a * d - b * c : ℤ) : ℚ) ∈ chartRing ℤ exX i` using `(mem_chartRing_exX _).2 ⟨_, rfl⟩`. Establish `h1 : (1 : ℚ) ∈ Submodule.span (chartRing ℤ exX i) (Set.range fun _ : Unit => (exX i)⁻¹ * 1)` using `Submodule.subset_span ⟨(), by simp [exX]⟩`. Use `Submodule.smul_mem _ (⟨_, hmem⟩ : chartRing ℤ exX i) h1` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Simplify using `[T.detE, ← ha, ← hb, ← hc, ← hd, Subalgebra.smul_def]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ex_detGen : T.IsTwistedDetGen (ν := Unit) exBundle (Pi.basisFun ℚ (Fin 2)) (fun _ => 1) := by
   intro i _
@@ -333,24 +329,24 @@ def exιR : MvPolynomial (Fin 2) ℤ →+* ExΦ :=
   (algebraMap (MvPolynomial (Fin 2) ℚ) ExΦ).comp (MvPolynomial.map (Int.castRingHom ℚ))
 
 /- English proof (translation)
-The claim follows from `(IsFractionRing.injective (MvPolynomial (Fin 2) ℚ) ExΦ).comp (MvPolynomial.map_injective _ (RingHom.injective_int (Int.castRingHom ℚ)))`.
+A detailed English derivation is pending.
 -/
 theorem exιR_injective : Function.Injective exιR :=
   (IsFractionRing.injective (MvPolynomial (Fin 2) ℚ) ExΦ).comp
     (MvPolynomial.map_injective _ (RingHom.injective_int (Int.castRingHom ℚ)))
 
 /- English proof (translation)
-Simplify using `[exιR, exA]`.
+Simplify using the standard rewrite rules.
 -/
 theorem exιR_X (j : Fin 2) : exιR (X j) = exA j := by
   simp [exιR, exA]
 
 /- English proof (translation)
-Rewrite using `[algebraicIndependent_iff_injective_aeval]`. Establish `h : (MvPolynomial.aeval exA : MvPolynomial (Fin 2) ℚ →ₐ[ℚ] ExΦ).toRingHom = algebraMap (MvPolynomial (Fin 2) ℚ) ExΦ`. Use `MvPolynomial.ringHom_ext (fun r => ?_) (fun j => ?_)` and prove the remaining obligations. Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe, MvPolynomial.aeval_C]`. Rewrite using `[← MvPolynomial.algebraMap_eq, ← IsScalarTower.algebraMap_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[exA]`. Introduce `p q hpq`. Apply `IsFractionRing.injective (MvPolynomial (Fin 2) ℚ) ExΦ` to reduce the goal to its premises. Establish `hp` using `RingHom.congr_fun h p`. Establish `hq` using `RingHom.congr_fun h q`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe] at hp hq`. Rewrite using `[← hp, ← hq]`. Conclude with `hpq`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ex_indep : AlgebraicIndependent ℚ exA := by
   rw [algebraicIndependent_iff_injective_aeval]
@@ -382,7 +378,7 @@ def exCY : (Σ k, ExY k) → MvPolynomial (Fin 2) ℤ
   | _ => 1
 
 /- English proof (translation)
-Break down `p with ⟨_ | _ | _ | _, i⟩` into its components or cases. Simplify using `[T.wwCoord, exCW, exX]`. Simplify using `[T.wwCoord, exCW]`. Apply the tactic sequence `rcases i with _ | _ <;> simp [T.wwCoord, exCW, T.lineVal, exφ, exιR_X]`. Apply the tactic sequence `rcases i with _ | _ <;> simp [T.wwCoord, exCW, T.lineVal, exφ, exιR_X]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ex_wwCoord (p : Σ k, ExW k) :
     T.wwCoord exX (fun _ : Unit => (1 : ℚ)) (Pi.basisFun ℚ (Fin 2)) exφ (exA 0) (exA 1) p = exιR (exCW p) := by
@@ -393,7 +389,7 @@ theorem ex_wwCoord (p : Σ k, ExW k) :
   · rcases i with _ | _ <;> simp [T.wwCoord, exCW, T.lineVal, exφ, exιR_X]
 
 /- English proof (translation)
-Break down `p with ⟨_ | _ | _, i⟩` into its components or cases. Simplify using `[T.yyCoord, exCY, exX]`. Simplify using `[T.yyCoord, exCY]`. Apply the tactic sequence `rcases i with _ | _ <;> simp [T.yyCoord, exCY, T.lineVal, exφ, exιR_X]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ex_yyCoord (p : Σ k, ExY k) :
     T.yyCoord exX (fun _ : Unit => (1 : ℚ)) (Pi.basisFun ℚ (Fin 2)) exφ (exA 0) p = exιR (exCY p) := by
@@ -409,7 +405,7 @@ def exZY : MRing ExY →+* MvPolynomial T.YBlk (MvPolynomial (Fin 2) ℤ) :=
   eval₂Hom (Int.castRingHom _) fun p => C (exCY p) * X p.1
 
 /- English proof (translation)
-Use `MvPolynomial.ringHom_ext (fun r => ?_) (fun p => ?_)` and prove the remaining obligations. Simplify using `[T.multiConeMap, exZW]`. Simplify using `[T.multiConeMap, exZW, ex_wwCoord]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem ex_multiConeMap_ww :
     T.multiConeMap (T.wwCoord exX (fun _ : Unit => (1 : ℚ)) (Pi.basisFun ℚ (Fin 2)) exφ (exA 0) (exA 1)) =
@@ -419,7 +415,7 @@ theorem ex_multiConeMap_ww :
   · simp [T.multiConeMap, exZW, ex_wwCoord]
 
 /- English proof (translation)
-Use `MvPolynomial.ringHom_ext (fun r => ?_) (fun p => ?_)` and prove the remaining obligations. Simplify using `[T.multiConeMap, exZY]`. Simplify using `[T.multiConeMap, exZY, ex_yyCoord]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem ex_multiConeMap_yy :
     T.multiConeMap (T.yyCoord exX (fun _ : Unit => (1 : ℚ)) (Pi.basisFun ℚ (Fin 2)) exφ (exA 0)) =
@@ -433,13 +429,13 @@ abbrev ExLW := FractionRing (MRing ExW)
 abbrev ExLY := FractionRing (MRing ExY)
 
 /- English proof (translation)
-The claim follows from `(map_ne_zero_iff _ (IsFractionRing.injective _ ExLW)).2 (X_ne_zero _)`.
+A detailed English derivation is pending.
 -/
 theorem exLW_X_ne_zero (p : Σ k, ExW k) : algebraMap (MRing ExW) ExLW (X p) ≠ 0 :=
   (map_ne_zero_iff _ (IsFractionRing.injective _ ExLW)).2 (X_ne_zero _)
 
 /- English proof (translation)
-The claim follows from `(map_ne_zero_iff _ (IsFractionRing.injective _ ExLY)).2 (X_ne_zero _)`.
+A detailed English derivation is pending.
 -/
 theorem exLY_X_ne_zero (p : Σ k, ExY k) : algebraMap (MRing ExY) ExLY (X p) ≠ 0 :=
   (map_ne_zero_iff _ (IsFractionRing.injective _ ExLY)).2 (X_ne_zero _)
@@ -463,11 +459,11 @@ def exθY : MvPolynomial T.YBlk (MvPolynomial (Fin 2) ℤ) →+* ExLY :=
     | .line => algebraMap (MRing ExY) ExLY (X ⟨.line, Sum.inl ()⟩)
 
 /- English proof (translation)
-Use `MvPolynomial.ringHom_ext (fun r => ?_) (fun p => ?_)` and prove the remaining obligations. Simplify using `[exθW, exZW]`. Break down `p with ⟨_ | _ | _ | _, i⟩` into its components or cases. Simplify using `[exθW, exZW, exCW]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using `[exθW, exZW, exCW]`. Both sides reduce to the same expression. Break down `i with _ | _` into its components or cases. Simplify using `[exθW, exZW, exCW]`. Simplify using `[exθW, exZW, exCW, div_mul_cancel₀ _ (exLW_X_ne_zero _)]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Break down `i with _ | _` into its components or cases. Simplify using `[exθW, exZW, exCW]`. Simplify using `[exθW, exZW, exCW, div_mul_cancel₀ _ (exLW_X_ne_zero _)]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem exθW_comp : exθW.comp exZW = algebraMap (MRing ExW) ExLW := by
   refine MvPolynomial.ringHom_ext (fun r => ?_) (fun p => ?_)
@@ -483,9 +479,9 @@ theorem exθW_comp : exθW.comp exZW = algebraMap (MRing ExW) ExLW := by
       · simp [exθW, exZW, exCW, div_mul_cancel₀ _ (exLW_X_ne_zero _)]
 
 /- English proof (translation)
-Use `MvPolynomial.ringHom_ext (fun r => ?_) (fun p => ?_)` and prove the remaining obligations. Simplify using `[exθY, exZY]`. Break down `p with ⟨_ | _ | _, i⟩` into its components or cases. Simplify using `[exθY, exZY, exCY]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using `[exθY, exZY, exCY]`. Both sides reduce to the same expression. Break down `i with _ | _` into its components or cases. Simplify using `[exθY, exZY, exCY]`. Simplify using `[exθY, exZY, exCY, div_mul_cancel₀ _ (exLY_X_ne_zero _)]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem exθY_comp : exθY.comp exZY = algebraMap (MRing ExY) ExLY := by
   refine MvPolynomial.ringHom_ext (fun r => ?_) (fun p => ?_)
@@ -498,9 +494,9 @@ theorem exθY_comp : exθY.comp exZY = algebraMap (MRing ExY) ExLY := by
       · simp [exθY, exZY, exCY, div_mul_cancel₀ _ (exLY_X_ne_zero _)]
 
 /- English proof (translation)
-Rewrite using `[eq_bot_iff]`. Introduce `P hP`. Rewrite `hP` using `[T.wwIdeal, RingHom.mem_ker, ex_multiConeMap_ww, RingHom.comp_apply]`. Establish `h1 : exZW P = 0` using `MvPolynomial.map_injective _ exιR_injective (hP.trans (map_zero _).symm)`. Establish `h2 : algebraMap (MRing ExW) ExLW P = 0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← exθW_comp, RingHom.comp_apply, h1, map_zero]`. Conclude with `(Ideal.mem_bot).2 (IsFractionRing.injective _ ExLW (h2.trans (map_zero _).symm))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ex_wwIdeal :
     T.wwIdeal exX (fun _ : Unit => (1 : ℚ)) (Pi.basisFun ℚ (Fin 2)) exφ (exA 0) (exA 1) = ⊥ := by
@@ -514,9 +510,9 @@ theorem ex_wwIdeal :
   exact (Ideal.mem_bot).2 (IsFractionRing.injective _ ExLW (h2.trans (map_zero _).symm))
 
 /- English proof (translation)
-Rewrite using `[eq_bot_iff]`. Introduce `P hP`. Rewrite `hP` using `[T.yyIdeal, RingHom.mem_ker, ex_multiConeMap_yy, RingHom.comp_apply]`. Establish `h1 : exZY P = 0` using `MvPolynomial.map_injective _ exιR_injective (hP.trans (map_zero _).symm)`. Establish `h2 : algebraMap (MRing ExY) ExLY P = 0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← exθY_comp, RingHom.comp_apply, h1, map_zero]`. Conclude with `(Ideal.mem_bot).2 (IsFractionRing.injective _ ExLY (h2.trans (map_zero _).symm))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ex_yyIdeal :
     T.yyIdeal exX (fun _ : Unit => (1 : ℚ)) (Pi.basisFun ℚ (Fin 2)) exφ (exA 0) = ⊥ := by
@@ -540,23 +536,23 @@ Both sides reduce to the same expression.
 theorem ex_card_Y : Fintype.card T.YBlk = 3 := rfl
 
 /- English proof (translation)
-Rewrite using `[Nat.card_eq_fintype_card]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem natCard_sigma_blocks_example : Nat.card (Σ k, ExW k) = 6 := by
   rw [Nat.card_eq_fintype_card]
   rfl
 
 /- English proof (translation)
-Rewrite using `[Nat.card_eq_fintype_card]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ex_natCard_Y : Nat.card (Σ k, ExY k) = 4 := by
   rw [Nat.card_eq_fintype_card]
   rfl
 
 /- English proof (translation)
-Rewrite using `[ex_wwIdeal]`. Use `⟨⟨.base⟩, ⟨Ideal.isPrime_bot, ⟨∅, fun f hf => absurd hf (Set.notMem_empty f), Ideal.span_empty.symm⟩, fun k => ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Break down `k with _ | _ | _ | _` into its components or cases. Conclude with `⟨(), by rw [Submodule.mem_bot]; exact X_ne_zero _⟩`. Conclude with `⟨(), by rw [Submodule.mem_bot]; exact X_ne_zero _⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨Sum.inl (), by rw [Submodule.mem_bot]; exact X_ne_zero _⟩`. Conclude with `⟨Sum.inl (), by rw [Submodule.mem_bot]; exact X_ne_zero _⟩`. Use extensionality with `a`. Simplify using `[Ideal.mem_comap]`. Rewrite using `[ringKrullDim_eq_of_ringEquiv (RingEquiv.quotientBot _), MvPolynomial.ringKrullDim_of_isNoetherianRing, IsPrincipalIdealRing.ringKrullDim_eq_one ℤ Int.not_isField, natCard_sigma_blocks_example, card_blocks_projLine_example]`.
+Supply the required witnesses or components. Supply the required witnesses or components. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -578,9 +574,9 @@ theorem ex_arithWW :
     rfl
 
 /- English proof (translation)
-Rewrite using `[ex_yyIdeal]`. Use `⟨⟨.base⟩, ⟨Ideal.isPrime_bot, ⟨∅, fun f hf => absurd hf (Set.notMem_empty f), Ideal.span_empty.symm⟩, fun k => ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Break down `k with _ | _ | _` into its components or cases. Conclude with `⟨(), by rw [Submodule.mem_bot]; exact X_ne_zero _⟩`. Conclude with `⟨(), by rw [Submodule.mem_bot]; exact X_ne_zero _⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨Sum.inl (), by rw [Submodule.mem_bot]; exact X_ne_zero _⟩`. Use extensionality with `a`. Simplify using `[Ideal.mem_comap]`. Rewrite using `[ringKrullDim_eq_of_ringEquiv (RingEquiv.quotientBot _), MvPolynomial.ringKrullDim_of_isNoetherianRing, IsPrincipalIdealRing.ringKrullDim_eq_one ℤ Int.not_isField, ex_natCard_Y, ex_card_Y]`. Both sides reduce to the same expression.
+Supply the required witnesses or components. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ex_arithYY :
     IsArithVar (T.yyIdeal exX (fun _ : Unit => (1 : ℚ)) (Pi.basisFun ℚ (Fin 2)) exφ (exA 0)) (1 + 1) := by
@@ -603,7 +599,7 @@ section Homog
 variable {K : Type*} [DecidableEq K] {ι : K → Type*} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Introduce `m hm k`. Take `⟨m1, hm1, m2, hm2, rfl⟩` from `Finset.mem_add.mp (MvPolynomial.support_mul f g hm)`. Simplify using `only [Finsupp.add_apply, Finset.sum_add_distrib, Pi.add_apply, hf m1 hm1 k, hg m2 hm2 k]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem exHomog_mul {f g : MRing ι} {a b : K → ℕ} (hf : IsMultiHomog f a) (hg : IsMultiHomog g b) :
     IsMultiHomog (f * g) (a + b) := by
@@ -613,9 +609,9 @@ theorem exHomog_mul {f g : MRing ι} {a b : K → ℕ} (hf : IsMultiHomog f a) (
   simp only [Finsupp.add_apply, Finset.sum_add_distrib, Pi.add_apply, hf m1 hm1 k, hg m2 hm2 k]
 
 /- English proof (translation)
-Introduce `m hm k'`. Rewrite `hm` using `[MvPolynomial.support_X, Finset.mem_singleton]`. Substitute `hm` using the available equality. Distinguish the cases in `h : k' = k`. Substitute `h` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[Finsupp.single_apply]`. Establish `: ∀ j : ι k', (⟨k, i⟩ : Σ k, ι k) ≠ ⟨k', j⟩` using `fun j e => h (congrArg Sigma.fst e).symm`. Simplify using `[h]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem exHomog_X (k : K) (i : ι k) : IsMultiHomog (X ⟨k, i⟩ : MRing ι) (Pi.single k 1) := by
   classical
@@ -629,9 +625,7 @@ theorem exHomog_X (k : K) (i : ι k) : IsMultiHomog (X ⟨k, i⟩ : MRing ι) (P
     simp [h]
 
 /- English proof (translation)
-Introduce `m hm k`. Rewrite `hm` using `[sub_eq_add_neg]`. Break down `Finset.mem_union.mp (MvPolynomial.support_add hm) with h | h` into its components or cases. Conclude with `hf m h k`. Rewrite `h` using `[MvPolynomial.support_neg]`.
-
-Conclude with `hg m h k`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exHomog_sub {f g : MRing ι} {a : K → ℕ} (hf : IsMultiHomog f a) (hg : IsMultiHomog g a) :
     IsMultiHomog (f - g) a := by
@@ -644,9 +638,9 @@ theorem exHomog_sub {f g : MRing ι} {a : K → ℕ} (hf : IsMultiHomog f a) (hg
     exact hg m h k
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `m hm k`. Rewrite `hm` using `[pow_zero, MvPolynomial.support_one, Finset.mem_singleton]`. Substitute `hm` using the available equality.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Consider the case `succ n ih`. Rewrite using `[pow_succ, succ_nsmul]`. Conclude with `exHomog_mul ih hf`.
+Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exHomog_pow {f : MRing ι} {a : K → ℕ} (hf : IsMultiHomog f a) (n : ℕ) :
     IsMultiHomog (f ^ n) (n • a) := by
@@ -669,9 +663,9 @@ def exg : MRing ExW :=
 def exh : MRing ExW := X ⟨.base, ()⟩ ^ 3
 
 /- English proof (translation)
-Simplify using `only [exg]`. Establish `h1` using `exHomog_mul (exHomog_X (ι := ExW) T.WBlk.line0 (Sum.inl ())) (exHomog_X (ι := ExW) T.WBlk.line1 (Sum.inr ()))`. Establish `h2` using `exHomog_mul (exHomog_X (ι := ExW) T.WBlk.line0 (Sum.inr ())) (exHomog_X (ι := ExW) T.WBlk.line1 (Sum.inl ()))`. Establish `h3` using `exHomog_mul (exHomog_X (ι := ExW) T.WBlk.det ()) (exHomog_sub h1 (by rwa [add_comm] at h2 ⊢))`. Use `h3 using 1` and compare the differences between its conclusion and the goal.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use function extensionality and compare the values at `k`. Apply the tactic sequence `cases k <;> simp [T.wwDeg]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ex_g_deg : IsMultiHomog exg (T.wwDeg 0 1) := by
   simp only [exg]
@@ -685,7 +679,7 @@ theorem ex_g_deg : IsMultiHomog exg (T.wwDeg 0 1) := by
   cases k <;> simp [T.wwDeg]
 
 /- English proof (translation)
-Simplify using `only [exh]`. Establish `h` using `exHomog_pow (exHomog_X (ι := ExW) T.WBlk.base ()) 3`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`. Apply the tactic sequence `cases k <;> simp [T.wwDeg]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ex_h_deg : IsMultiHomog exh (T.wwDeg (0 + 3) 0) := by
   simp only [exh]
@@ -695,7 +689,7 @@ theorem ex_h_deg : IsMultiHomog exh (T.wwDeg (0 + 3) 0) := by
   cases k <;> simp [T.wwDeg]
 
 /- English proof (translation)
-Rewrite using `[ex_wwIdeal, Submodule.mem_bot]`. Conclude with `pow_ne_zero _ (X_ne_zero _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ex_h_nmem :
     exh ∉ T.wwIdeal exX (fun _ : Unit => (1 : ℚ)) (Pi.basisFun ℚ (Fin 2)) exφ (exA 0) (exA 1) := by
@@ -703,7 +697,7 @@ theorem ex_h_nmem :
   exact pow_ne_zero _ (X_ne_zero _)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => Matrix.PosDef.one, fun _ _ _ _ => rfl, fun _ _ _ => rfl, fun _ _ => contDiffOn_const⟩`.
+Supply the required witnesses or components.
 -/
 theorem ex_metric : IsEEMetric (ι := Unit) (ν := Unit) (κ := Unit ⊕ Unit) fun _ => 1 :=
   ⟨fun _ => Matrix.PosDef.one, fun _ _ _ _ => rfl, fun _ _ _ => rfl, fun _ _ => contDiffOn_const⟩
@@ -713,7 +707,7 @@ section FS
 variable {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Simplify using `only [HermLine.ofMetrics, fsMetric, EuclideanSpace.norm_eq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ofMetrics_fs_h (a : K → ℤ) (z : (Σ k, ι k) → ℂ) :
     (HermLine.ofMetrics (fun k => fsMetric (ι k)) a).h z =
@@ -721,11 +715,11 @@ theorem ofMetrics_fs_h (a : K → ℤ) (z : (Σ k, ι k) → ℂ) :
   simp only [HermLine.ofMetrics, fsMetric, EuclideanSpace.norm_eq]
 
 /- English proof (translation)
-Establish `hfun : (HermLine.ofMetrics (fun k => fsMetric (ι k)) a).h = fun z => ∏ k, Real.sqrt (∑ i, ‖z ⟨k, i⟩‖ ^ 2) ^ a k` using `funext (ofMetrics_fs_h a)`. Unfold `IsSmoothHerm`. Rewrite using `[hfun]`. Use `contDiffOn_prod fun k _ => ?_` and prove the remaining obligations. Establish `hpos : ∀ z ∈ {z : (Σ k, ι k) → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0}, 0 < ∑ i, ‖z ⟨k, i⟩‖ ^ 2`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `z hz`. Take `⟨i, hi⟩` from `hz k`. Conclude with `Finset.sum_pos' (fun j _ => sq_nonneg ‖z ⟨k, j⟩‖) ⟨i, Finset.mem_univ _, pow_pos (norm_pos_iff.mpr hi) 2⟩`. Establish `hf : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun z : (Σ k, ι k) → ℂ => Real.sqrt (∑ i, ‖z ⟨k, i⟩‖ ^ 2)) {z | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0}` using `ContDiffOn.sqrt (ContDiff.sum fun i _ => (contDiff_norm_sq ℝ).comp (contDiff_apply ℝ ℂ (⟨k, i⟩ : Σ k, ι k))).contDiffOn fun z hz => (hpos z hz).ne'`. Establish `hf0 : ∀ z ∈ {z : (Σ k, ι k) → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0}, Real.sqrt (∑ i, ‖z ⟨k, i⟩‖ ^ 2) ≠ 0` using `fun z hz => (Real.sqrt_pos.2 (hpos z hz)).ne'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm | hm⟩` from `Int.eq_nat_or_neg (a k)`. Simplify using `only [hm, zpow_natCast]`. Conclude with `hf.pow m`. Simplify using `only [hm, _root_.zpow_neg, zpow_natCast]`. Conclude with `(hf.pow m).inv fun z hz => pow_ne_zero _ (hf0 z hz)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isSmoothHerm_ofMetrics_fs (a : K → ℤ) : IsSmoothHerm (HermLine.ofMetrics (fun k => fsMetric (ι k)) a) := by
   have hfun : (HermLine.ofMetrics (fun k => fsMetric (ι k)) a).h =
@@ -752,21 +746,21 @@ theorem isSmoothHerm_ofMetrics_fs (a : K → ℤ) : IsSmoothHerm (HermLine.ofMet
 end FS
 
 /- English proof (translation)
-Establish `h : ∀ g : Unit → ℝ, ∑ i, g i = g ()` using `fun g => by simp`. Conclude with `h f`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sumY_base (f : ExY .base → ℝ) : ∑ i, f i = f () := by
   have h : ∀ g : Unit → ℝ, ∑ i, g i = g () := fun g => by simp
   exact h f
 
 /- English proof (translation)
-Establish `h : ∀ g : Unit → ℝ, ∑ i, g i = g ()` using `fun g => by simp`. Conclude with `h f`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sumY_det (f : ExY .det → ℝ) : ∑ i, f i = f () := by
   have h : ∀ g : Unit → ℝ, ∑ i, g i = g () := fun g => by simp
   exact h f
 
 /- English proof (translation)
-Establish `h : ∀ g : Unit ⊕ Unit → ℝ, ∑ i, g i = g (Sum.inl ()) + g (Sum.inr ())` using `fun g => by`. Simplify using `[Fintype.sum_sum_type]`. Conclude with `h f`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sumY_line (f : ExY .line → ℝ) : ∑ i, f i = f (Sum.inl ()) + f (Sum.inr ()) := by
   have h : ∀ g : Unit ⊕ Unit → ℝ, ∑ i, g i = g (Sum.inl ()) + g (Sum.inr ()) := fun g => by
@@ -774,21 +768,21 @@ theorem sumY_line (f : ExY .line → ℝ) : ∑ i, f i = f (Sum.inl ()) + f (Sum
   exact h f
 
 /- English proof (translation)
-Establish `h : ∀ g : Unit → ℝ, ∑ i, g i = g ()` using `fun g => by simp`. Conclude with `h f`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sumW_base (f : ExW .base → ℝ) : ∑ i, f i = f () := by
   have h : ∀ g : Unit → ℝ, ∑ i, g i = g () := fun g => by simp
   exact h f
 
 /- English proof (translation)
-Establish `h : ∀ g : Unit → ℝ, ∑ i, g i = g ()` using `fun g => by simp`. Conclude with `h f`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sumW_det (f : ExW .det → ℝ) : ∑ i, f i = f () := by
   have h : ∀ g : Unit → ℝ, ∑ i, g i = g () := fun g => by simp
   exact h f
 
 /- English proof (translation)
-Establish `h : ∀ g : Unit ⊕ Unit → ℝ, ∑ i, g i = g (Sum.inl ()) + g (Sum.inr ())` using `fun g => by`. Simplify using `[Fintype.sum_sum_type]`. Conclude with `h f`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sumW_line0 (f : ExW .line0 → ℝ) : ∑ i, f i = f (Sum.inl ()) + f (Sum.inr ()) := by
   have h : ∀ g : Unit ⊕ Unit → ℝ, ∑ i, g i = g (Sum.inl ()) + g (Sum.inr ()) := fun g => by
@@ -796,7 +790,7 @@ theorem sumW_line0 (f : ExW .line0 → ℝ) : ∑ i, f i = f (Sum.inl ()) + f (S
   exact h f
 
 /- English proof (translation)
-Establish `h : ∀ g : Unit ⊕ Unit → ℝ, ∑ i, g i = g (Sum.inl ()) + g (Sum.inr ())` using `fun g => by`. Simplify using `[Fintype.sum_sum_type]`. Conclude with `h f`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sumW_line1 (f : ExW .line1 → ℝ) : ∑ i, f i = f (Sum.inl ()) + f (Sum.inr ()) := by
   have h : ∀ g : Unit ⊕ Unit → ℝ, ∑ i, g i = g (Sum.inl ()) + g (Sum.inr ()) := fun g => by
@@ -804,14 +798,14 @@ theorem sumW_line1 (f : ExW .line1 → ℝ) : ∑ i, f i = f (Sum.inl ()) + f (S
   exact h f
 
 /- English proof (translation)
-Rewrite using `[show (Finset.univ : Finset T.YBlk) = {.base, .det, .line} from rfl]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem prod_YBlk (f : T.YBlk → ℝ) : ∏ k, f k = f .base * (f .det * f .line) := by
   rw [show (Finset.univ : Finset T.YBlk) = {.base, .det, .line} from rfl]
   simp
 
 /- English proof (translation)
-Rewrite using `[show (Finset.univ : Finset T.WBlk) = {.base, .det, .line0, .line1} from rfl]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem prod_WBlk (f : T.WBlk → ℝ) : ∏ k, f k = f .base * (f .det * (f .line0 * f .line1)) := by
   rw [show (Finset.univ : Finset T.WBlk) = {.base, .det, .line0, .line1} from rfl]
@@ -822,9 +816,9 @@ def exXi : HermLine ExY := HermLine.ofMetrics (fun k => fsMetric (ExY k)) T.twoX
 def exAL : HermLine ExY := HermLine.ofMetrics (fun k => fsMetric (ExY k)) (Pi.single T.YBlk.base 1)
 
 /- English proof (translation)
-Rewrite using `[exXi, ofMetrics_fs_h, prod_YBlk, sumY_base, sumY_det, sumY_line]`. Simplify using `only [T.twoXiDegY]`. Establish `h1 : Real.sqrt (‖w ⟨.base, ()⟩‖ ^ 2) = ‖w ⟨.base, ()⟩‖` using `Real.sqrt_sq (norm_nonneg _)`. Establish `h2 : Real.sqrt (‖w ⟨.det, ()⟩‖ ^ 2) = ‖w ⟨.det, ()⟩‖` using `Real.sqrt_sq (norm_nonneg _)`. Establish `h3 : Real.sqrt (‖w ⟨.line, Sum.inl ()⟩‖ ^ 2 + ‖w ⟨.line, Sum.inr ()⟩‖ ^ 2) ^ (-2 : ℤ) = (‖w ⟨.line, Sum.inl ()⟩‖ ^ 2 + ‖w ⟨.line, Sum.inr ()⟩‖ ^ 2)⁻¹`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[_root_.zpow_neg, zpow_two, Real.mul_self_sqrt (by positivity)]`. Rewrite using `[h1, h2, h3]`. Simplify using `[_root_.zpow_neg, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exXi_h (w : (Σ k, ExY k) → ℂ) :
     exXi.h w = ‖w ⟨.base, ()⟩‖ ^ 3 * ‖w ⟨.det, ()⟩‖⁻¹ *
@@ -840,7 +834,7 @@ theorem exXi_h (w : (Σ k, ExY k) → ℂ) :
   simp [_root_.zpow_neg, mul_assoc]
 
 /- English proof (translation)
-Simplify using `only [Complex.sq_norm, Complex.normSq_apply, Complex.sub_re, Complex.sub_im, Complex.add_re, Complex.add_im, Complex.mul_re, Complex.mul_im, Complex.star_def, Complex.conj_re, Complex.conj_im]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem lagrange_identity_complex_two (u0 u1 w0 w1 : ℂ) :
     ‖u0 * w1 - u1 * w0‖ ^ 2 + ‖star u0 * w0 + star u1 * w1‖ ^ 2 =
@@ -850,14 +844,14 @@ theorem lagrange_identity_complex_two (u0 u1 w0 w1 : ℂ) :
   ring
 
 /- English proof (translation)
-Simplify using `[hermG, dotProduct, Fintype.sum_sum_type, Matrix.one_mulVec]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hermG_one (u w : Unit ⊕ Unit → ℂ) :
     hermG 1 u w = star (u (Sum.inl ())) * w (Sum.inl ()) + star (u (Sum.inr ())) * w (Sum.inr ()) := by
   simp [hermG, dotProduct, Fintype.sum_sum_type, Matrix.one_mulVec]
 
 /- English proof (translation)
-Rewrite using `[hermG_one]`. Simplify using `only [Complex.add_re, Complex.sq_norm, Complex.normSq_apply, Complex.mul_re, Complex.star_def, Complex.conj_re, Complex.conj_im]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hermG_one_re (u : Unit ⊕ Unit → ℂ) :
     (hermG 1 u u).re = ‖u (Sum.inl ())‖ ^ 2 + ‖u (Sum.inr ())‖ ^ 2 := by
@@ -899,7 +893,7 @@ def projLineBundleExample : ProjectiveLineBundle 1 where
     ring
 
 /- English proof (translation)
-Simplify using `[exg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eval_exg (z : (Σ k, ExW k) → ℂ) :
     eval z (map (Int.castRingHom ℂ) exg) = z ⟨.det, ()⟩ *
@@ -907,21 +901,21 @@ theorem eval_exg (z : (Σ k, ExW k) → ℂ) :
   simp [exg]
 
 /- English proof (translation)
-Simplify using `[exh]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eval_exh (z : (Σ k, ExW k) → ℂ) : eval z (map (Int.castRingHom ℂ) exh) = z ⟨.base, ()⟩ ^ 3 := by
   simp [exh]
 
 /- English proof (translation)
-Establish `hd : z ⟨.det, ()⟩ ≠ 0`. Take `⟨i, hi⟩` from `hblk .det`. Conclude with `hi`. Establish `hU : 0 < ‖z ⟨.line0, Sum.inl ()⟩‖ ^ 2 + ‖z ⟨.line0, Sum.inr ()⟩‖ ^ 2`. Take `⟨i, hi⟩` from `hblk .line0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `i with ⟨⟩ | ⟨⟩` into its components or cases. Use `pow_pos (norm_pos_iff.2 hi) 2` as an intermediate fact. Check the signs of the components of the expression. Use `pow_pos (norm_pos_iff.2 hi) 2` as an intermediate fact. Check the signs of the components of the expression.
+Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Establish `hW : 0 < ‖z ⟨.line1, Sum.inl ()⟩‖ ^ 2 + ‖z ⟨.line1, Sum.inr ()⟩‖ ^ 2`. Take `⟨i, hi⟩` from `hblk .line1`. Break down `i with ⟨⟩ | ⟨⟩` into its components or cases. Use `pow_pos (norm_pos_iff.2 hi) 2` as an intermediate fact. Check the signs of the components of the expression.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Use `pow_pos (norm_pos_iff.2 hi) 2` as an intermediate fact. Check the signs of the components of the expression. Establish `hdn : 0 < ‖z ⟨.det, ()⟩‖` using `norm_pos_iff.2 hd`. Establish `hL` using `lagrange_identity_complex_two (z ⟨.line0, Sum.inl ()⟩) (z ⟨.line0, Sum.inr ()⟩) (z ⟨.line1, Sum.inl ()⟩) (z ⟨.line1, Sum.inr ()⟩)`. Establish `key : ‖z ⟨.line0, Sum.inl ()⟩ * z ⟨.line1, Sum.inr ()⟩ - z ⟨.line0, Sum.inr ()⟩ * z ⟨.line1, Sum.inl ()⟩‖ ^ 2 = (‖z ⟨.line0, Sum.inl ()⟩‖ ^ 2 + ‖z ⟨.line0, Sum.inr ()⟩‖ ^ 2) * (‖z ⟨.line1, Sum.inl ()⟩‖ ^ 2 + ‖z ⟨.line1, Sum.inr ()⟩‖ ^ 2) - ‖star (z ⟨.line0, Sum.inl ()⟩) * z ⟨.lin …`.
+Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[eval_exg, eval_exh, exXi_h, exXi_h, sinSqG, hermG_one, hermG_one_re, hermG_one_re]`. Simplify using `only [T.yyEmb, if_true, Fin.one_eq_zero_iff, OfNat.ofNat_ne_one, if_false]`. Rewrite using `[norm_mul, mul_pow, key, norm_pow]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem norm_sq_heights_eq_sine_sq_example (z : (Σ k, ExW k) → ℂ) (hblk : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) :
     ‖eval z (map (Int.castRingHom ℂ) exg)‖ ^ 2 * exXi.h (fun p => z (T.yyEmb 0 p)) *
@@ -961,13 +955,13 @@ theorem norm_sq_heights_eq_sine_sq_example (z : (Σ k, ExW k) → ℂ) (hblk : �
   field_simp
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, isSmoothHerm_ofMetrics_fs _, fun z hz => norm_sq_heights_eq_sine_sq_example z hz.1⟩`.
+Supply the required witnesses or components.
 -/
 theorem ex_isXi : projLineBundleExample.IsXi exXi :=
   ⟨rfl, isSmoothHerm_ofMetrics_fs _, fun z hz => norm_sq_heights_eq_sine_sq_example z hz.1⟩
 
 /- English proof (translation)
-Use `⟨by simp [exAL, HermLine.ofMetrics], fun z z' hb hd => ?_⟩` and prove the remaining obligations. Rewrite using `[exAL, ofMetrics_fs_h, ofMetrics_fs_h, prod_YBlk, prod_YBlk, sumY_base, sumY_base]`. Simplify using `[hb ()]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ex_fromBase : IsFromBase exAL := by
   refine ⟨by simp [exAL, HermLine.ofMetrics], fun z z' hb hd => ?_⟩
@@ -975,21 +969,21 @@ theorem ex_fromBase : IsFromBase exAL := by
   simp [hb ()]
 
 /- English proof (translation)
-Introduce `a b h`. Apply the tactic sequence `fin_cases j <;> cases a <;> cases b <;> simp_all [diagonalBlockIndex]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem segreBlockEmbedding_injective (j : Fin 2) : Function.Injective (diagonalBlockIndex j) := by
   intro a b h
   fin_cases j <;> cases a <;> cases b <;> simp_all [diagonalBlockIndex]
 
 /- English proof (translation)
-The claim follows from `(segreBlockEmbedding_injective j).extend_apply c 0 k`.
+A detailed English derivation is pending.
 -/
 theorem pullDeg_segreBlockEmbedding (j : Fin 2) (c : T.YBlk → ℤ) (k : T.YBlk) :
     I1.pullDeg (diagonalBlockIndex j) c (diagonalBlockIndex j k) = c k :=
   (segreBlockEmbedding_injective j).extend_apply c 0 k
 
 /- English proof (translation)
-Use `Function.extend_apply' _ _ _ ?_` and prove the remaining obligations. Introduce and unpack `⟨k, hk⟩`. Apply the tactic sequence `fin_cases j <;> cases k <;> simp [diagonalBlockIndex, otherLine] at hk`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pullDeg_otherLine (j : Fin 2) (c : T.YBlk → ℤ) : I1.pullDeg (diagonalBlockIndex j) c (otherLine j) = 0 := by
   refine Function.extend_apply' _ _ _ ?_
@@ -1000,9 +994,9 @@ def exPull (j : Fin 2) (c : T.YBlk → ℤ) : HermLine ExW :=
   HermLine.ofMetrics (fun k => fsMetric (ExW k)) (I1.pullDeg (diagonalBlockIndex j) c)
 
 /- English proof (translation)
-Use `⟨rfl, fun z => ?_⟩` and prove the remaining obligations. Establish `e1 : I1.pullDeg (diagonalBlockIndex 0) c .base = c .base` using `pullDeg_segreBlockEmbedding 0 c .base`. Establish `e2 : I1.pullDeg (diagonalBlockIndex 0) c .det = c .det` using `pullDeg_segreBlockEmbedding 0 c .det`. Establish `e3 : I1.pullDeg (diagonalBlockIndex 0) c .line0 = c .line` using `pullDeg_segreBlockEmbedding 0 c .line`. Establish `e4 : I1.pullDeg (diagonalBlockIndex 0) c .line1 = 0` using `pullDeg_otherLine 0 c`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[exPull, ofMetrics_fs_h, ofMetrics_fs_h, prod_WBlk, prod_YBlk, sumW_base, sumW_det, sumW_line0, sumW_line1, sumY_base, sumY_det, sumY_line, e1, e2, e3, e4]`. Simplify using `[T.yyEmb]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ex_isPull0 (c : T.YBlk → ℤ) :
     IsPullHerm (diagonalBlockIndex 0) (T.yyEmb 0) (HermLine.ofMetrics (fun k => fsMetric (ExY k)) c) (exPull 0 c) := by
@@ -1016,9 +1010,9 @@ theorem ex_isPull0 (c : T.YBlk → ℤ) :
   simp [T.yyEmb]
 
 /- English proof (translation)
-Use `⟨rfl, fun z => ?_⟩` and prove the remaining obligations. Establish `e1 : I1.pullDeg (diagonalBlockIndex 1) c .base = c .base` using `pullDeg_segreBlockEmbedding 1 c .base`. Establish `e2 : I1.pullDeg (diagonalBlockIndex 1) c .det = c .det` using `pullDeg_segreBlockEmbedding 1 c .det`. Establish `e3 : I1.pullDeg (diagonalBlockIndex 1) c .line1 = c .line` using `pullDeg_segreBlockEmbedding 1 c .line`. Establish `e4 : I1.pullDeg (diagonalBlockIndex 1) c .line0 = 0` using `pullDeg_otherLine 1 c`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[exPull, ofMetrics_fs_h, ofMetrics_fs_h, prod_WBlk, prod_YBlk, sumW_base, sumW_det, sumW_line0, sumW_line1, sumY_base, sumY_det, sumY_line, e1, e2, e3, e4]`. Simplify using `[T.yyEmb]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ex_isPull1 (c : T.YBlk → ℤ) :
     IsPullHerm (diagonalBlockIndex 1) (T.yyEmb 1) (HermLine.ofMetrics (fun k => fsMetric (ExY k)) c) (exPull 1 c) := by
@@ -1032,7 +1026,7 @@ theorem ex_isPull1 (c : T.YBlk → ℤ) :
   simp [T.yyEmb]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨projLineBundleExample, exXi, exAL, exPull 0 T.twoXiDegY, exPull 1 T.twoXiDegY, exPull 0 (Pi.single T.YBlk.base 1), ex_isXi, isSmoothHerm_ofMetrics_fs _, ex_fromBase, ex_isPull0 _, ex_isPull1 _, ex_isPull0 _, isSmoothHerm_ofMetrics_fs _, isSmoothHerm_ofMetrics_fs _, isSmoothHerm_ …`.
+Supply the required witnesses or components.
 -/
 theorem setting_inhabited :
     ∃ (S : ProjectiveLineBundle 1) (X A : HermLine S.YIdx) (X₀ X₁ A₀ : HermLine S.WIdx),

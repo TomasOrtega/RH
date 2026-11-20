@@ -12,7 +12,7 @@ open Matrix
 open scoped ComplexOrder
 
 /- English proof (translation)
-Establish `h : ∀ {a b : Type} (W : Matrix a b ℂ), W.map star = W.map (starRingEnd ℂ)` using `fun _ => rfl`. Rewrite using `[h (Xᵀ * Y * Z.map star), Matrix.map_mul, Matrix.map_mul]`. Simplify using `[Matrix.conjTranspose, Matrix.map_map, Function.comp_def]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem map_star_trip {m k l o : Type} [Fintype k] [Fintype l] (X : Matrix k m ℂ) (Y : Matrix k l ℂ)
     (Z : Matrix l o ℂ) : (Xᵀ * Y * Z.map star).map star = Xᴴ * Y.map star * Z := by
@@ -21,14 +21,14 @@ theorem map_star_trip {m k l o : Type} [Fintype k] [Fintype l] (X : Matrix k m �
   simp [Matrix.conjTranspose, Matrix.map_map, Function.comp_def]
 
 /- English proof (translation)
-Use `conv_rhs => rw [← mulVec_mulVec, ← mulVec_mulVec, dotProduct_mulVec, ← star_mulVec]`.
+A detailed English derivation is pending.
 -/
 theorem quad {n ι : Type} [Fintype n] [Fintype ι] (G : Matrix n n ℂ) (B : Matrix n ι ℂ) (w : ι → ℂ) :
     star (B *ᵥ w) ⬝ᵥ G *ᵥ (B *ᵥ w) = star w ⬝ᵥ (Bᴴ * G * B) *ᵥ w := by
   conv_rhs => rw [← mulVec_mulVec, ← mulVec_mulVec, dotProduct_mulVec, ← star_mulVec]
 
 /- English proof (translation)
-Simplify using `[fromBlocks_mulVec, dotProduct, Fintype.sum_sum_type]`.
+Simplify using the standard rewrite rules.
 -/
 theorem val_inl {p q : ℕ} (u : Fin p → ℂ) :
     star (Sum.elim u (0 : Fin q → ℂ)) ⬝ᵥ (fromBlocks 1 0 0 (-1) : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) *ᵥ
@@ -36,7 +36,7 @@ theorem val_inl {p q : ℕ} (u : Fin p → ℂ) :
   simp [fromBlocks_mulVec, dotProduct, Fintype.sum_sum_type]
 
 /- English proof (translation)
-Simplify using `[fromBlocks_mulVec, dotProduct, Fintype.sum_sum_type, neg_mulVec, Finset.sum_neg_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem val_inr {p q : ℕ} (v : Fin q → ℂ) :
     star (Sum.elim (0 : Fin p → ℂ) v) ⬝ᵥ (fromBlocks 1 0 0 (-1) : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) *ᵥ
@@ -44,15 +44,15 @@ theorem val_inr {p q : ℕ} (v : Fin q → ℂ) :
   simp [fromBlocks_mulVec, dotProduct, Fintype.sum_sum_type, neg_mulVec, Finset.sum_neg_distrib]
 
 /- English proof (translation)
-Establish `key : ∀ (u : Fin p → ℂ) (v : Fin s → ℂ), B *ᵥ Sum.elim u 0 = A *ᵥ Sum.elim 0 v → u = 0 ∧ v = 0`. Introduce `u v h`. Establish `h1` using `quad G B (Sum.elim u 0)`. Establish `h2` using `quad G A (Sum.elim 0 v)`. Rewrite `h1` using `[hB, val_inl]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[hA, val_inr, ← h, h1]`. Establish `hu` using `dotProduct_star_self_nonneg u`. Establish `hv` using `dotProduct_star_self_nonneg v`. Establish `h3 : star u ⬝ᵥ u = 0` using `le_antisymm (by rw [h2]; exact neg_nonpos.2 hv) hu`. Establish `h4 : star v ⬝ᵥ v = 0` using `by rw [h3] at h2; exact neg_eq_zero.1 h2.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨dotProduct_star_self_eq_zero.1 h3, dotProduct_star_self_eq_zero.1 h4⟩`. Set `f : (Fin p → ℂ) × (Fin s → ℂ) →ₗ[ℂ] (Fin n → ℂ)` to `B.mulVecLin ∘ₗ ((LinearEquiv.sumArrowLequivProdArrow (Fin p) (Fin q) ℂ ℂ).symm.toLinearMap ∘ₗ (LinearMap.inl ℂ _ _ ∘ₗ LinearMap.fst ℂ _ _)) - A.mulVecLin ∘ₗ ((LinearEquiv.sumArrowLequivProdArrow (Fin r) (Fin s) ℂ ℂ).symm.toLinearMap ∘ₗ (LinearMap.inr ℂ _ _ ∘ₗ LinearMap.snd ℂ _ _) …`. Establish `e1 : ∀ u : Fin p → ℂ, (LinearEquiv.sumArrowLequivProdArrow (Fin p) (Fin q) ℂ ℂ).symm (u, 0) = Sum.elim u 0`. Apply the tactic sequence `intro u; ext (i | i) <;> simp`. Establish `e2 : ∀ v : Fin s → ℂ, (LinearEquiv.sumArrowLequivProdArrow (Fin r) (Fin s) ℂ ℂ).symm ((0 : Fin r → ℂ), v) = Sum.elim (0 : Fin r → ℂ) v`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `intro v; ext (i | i) <;> simp`. Establish `hf : Function.Injective f`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce and unpack `⟨u, v⟩ huv`. Establish `h0 : B *ᵥ Sum.elim u 0 - A *ᵥ Sum.elim 0 v = 0`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Simplify `huv` using `[f, e1, e2, Matrix.mulVecLin_apply]`. Take `⟨hu, hv⟩` from `key u v (sub_eq_zero.1 h0)`. Simplify using `[hu, hv]`. Use `LinearMap.finrank_le_finrank_of_injective hf` as an intermediate fact. Simplify `this` using `[Module.finrank_prod]`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem inertia {n p q r s : ℕ} (G : Matrix (Fin n) (Fin n) ℂ) (B : Matrix (Fin n) (Fin p ⊕ Fin q) ℂ)
     (A : Matrix (Fin n) (Fin r ⊕ Fin s) ℂ) (hB : Bᴴ * G * B = fromBlocks 1 0 0 (-1))
@@ -88,7 +88,7 @@ theorem inertia {n p q r s : ℕ} (G : Matrix (Fin n) (Fin n) ℂ) (B : Matrix (
   simpa [Module.finrank_prod] using this
 
 /- English proof (translation)
-Establish `hi : Function.Injective Y.mulVecLin`. Introduce `u v huv`. Use `congrArg (fun w => X *ᵥ w) huv` as an intermediate fact. Simplify `this` using `[Matrix.mulVecLin_apply, mulVec_mulVec, h]`. Simplify using `using LinearMap.finrank_le_finrank_of_injective hi`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem card_le_of_mul_eq_one {m k : Type} [Fintype m] [Fintype k] [DecidableEq m] (X : Matrix m k ℂ)
     (Y : Matrix k m ℂ) (h : X * Y = 1) : Fintype.card m ≤ Fintype.card k := by
@@ -99,7 +99,7 @@ theorem card_le_of_mul_eq_one {m k : Type} [Fintype m] [Fintype k] [DecidableEq 
   simpa using LinearMap.finrank_le_finrank_of_injective hi
 
 /- English proof (translation)
-Simplify using `[dotProduct, mulVec, star_sum, Finset.mul_sum, mul_comm, mul_left_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem star_form {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (v y : Fin n → ℂ) :
     star (v ⬝ᵥ M *ᵥ star y) = star v ⬝ᵥ M.map star *ᵥ y := by
@@ -113,23 +113,23 @@ open Matrix GlobalTheory.RealLift.HermitianFrameExistence
 open scoped ComplexOrder
 
 /- English proof (translation)
-Introduce `n r s M θ hSig hC`. Take `⟨hrs, A0, hA0⟩` from `hSig`. Take `⟨hθθ, hiso, hpos⟩` from `hC`. Use `set G : Matrix (Fin n) (Fin n) ℂ := M.map star with hGdef`. Establish `hJ : ∀ p q : ℕ, (fromBlocks 1 0 0 (-1) : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ).map star = fromBlocks 1 0 0 (-1)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `intro p q; ext (i | i) (j | j) <;> simp [one_apply] <;> split_ifs <;> simp`. Establish `hA : A0ᴴ * G * A0 = fromBlocks 1 0 0 (-1)`. Rewrite using `[← map_star_trip, hA0, hJ]`. Take `⟨L, hLdef⟩ : ∃ L : Matrix (Fin r ⊕ Fin s) (Fin n) ℂ, L = (fromBlocks 1 0 0 (-1) : Matrix (Fin r ⊕ Fin s) (Fin r ⊕ Fin s) ℂ) * (A0ᴴ * G)` from `⟨_, rfl⟩`. Establish `hL : L * A0 = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hLdef]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [hA, fromBlocks_multiply]; simp`. Establish `e : Fin r ⊕ Fin s ≃ Fin n` using `finSumFinEquiv.trans (finCongr hrs)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR : A0 * L = 1` using `(mul_eq_one_comm_of_equiv e).1 hL`. Establish `hLc : Lᴴ * A0ᴴ = 1` using `by rw [← conjTranspose_mul, hR, conjTranspose_one]`. Establish `hJh : ((fromBlocks 1 0 0 (-1)) : Matrix (Fin r ⊕ Fin s) (Fin r ⊕ Fin s) ℂ)ᴴ = fromBlocks 1 0 0 (-1)`. Simplify using `[fromBlocks_conjTranspose]`. Establish `hA' : A0ᴴ * Gᴴ * A0 = A0ᴴ * G * A0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `Gherm : Gᴴ = G`. Combine the equalities or inequalities in the displayed calculation. Establish `hiso' : θᴴ * G * θ = G` using `by rw [← map_star_trip, hiso]`. Establish `hcomm : θᴴ * G = G * θ`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hherm : (G * θ).IsHermitian`. Unfold `IsHermitian`. Rewrite using `[conjTranspose_mul, Gherm, hcomm]`. Establish `hPD : (G * θ).PosDef`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Matrix.posDef_iff_dotProduct_mulVec.2 ⟨hherm, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hval : star x ⬝ᵥ (G * θ) *ᵥ x = star ((θ *ᵥ x) ⬝ᵥ M *ᵥ star x)`. Rewrite using `[← hcomm, star_form, ← hGdef, ← mulVec_mulVec, dotProduct_mulVec, ← star_mulVec]`. Use `Complex.pos_iff.2 ⟨?_, (hherm.im_star_dotProduct_mulVec_self x).symm⟩` and prove the remaining obligations. Rewrite using `[hval, Complex.star_def, Complex.conj_re]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hpos x hx`. Take `⟨p, q, B, B', h1, h2, h3, h4⟩` from `GlobalTheory.exists_basis_adapted_to_cartan_involution n G θ hθθ hiso' hPD`. Establish `i1` using `inertia G B A0 h3 hA`. Establish `i2` using `inertia G A0 B hA h3`. Establish `i3` using `card_le_of_mul_eq_one B B' h1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Fintype.card_fin, Fintype.card_sum] at i3`. Take `rfl : p = r` from `by omega`. Take `rfl : q = s` from `by omega`. Use `⟨B, ⟨?_, B', h1⟩, h4⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem frameEx_holds : FrameEx := by
   intro n r s M θ hSig hC

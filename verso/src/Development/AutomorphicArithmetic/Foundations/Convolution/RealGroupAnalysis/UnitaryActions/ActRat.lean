@@ -6,19 +6,17 @@ open scoped Classical
 open UpperTheory.ConvolutionTheory.R2
 
 /- English proof (translation)
-Set `m : F → F → E` to `fun u t => algebraMap F E u + algebraMap F E t * D.θ`. Establish `hm : ∀ u t : F, D.mkE (rt u) (rt t) = rt (m u t)` using `D.mkE_rt`. Set `M : Matrix (Fin 2) (Fin 2) E` to `!![m (ξ 1) 0, m (ξ 2) (ξ 3); m (ξ 2) (-ξ 3), m (ξ 0) 0]`. Establish `hM : D.herm (fun i => rt (ξ i)) = M.map (algebraMap E (A E))`. Establish `h0 : (0 : A F) = rt (0 : F)` using `(map_zero _).symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : -(rt (ξ 3) : A F) = rt (-ξ 3)` using `(map_neg _ _).symm`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j`. Express the relevant statement in the definitionally equal form `D.mkE (rt (ξ 1)) 0 = rt (m (ξ 1) 0)`. Rewrite using `[h0, hm]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hm _ _`. Express the relevant statement in the definitionally equal form `D.mkE (rt (ξ 2)) (-rt (ξ 3)) = rt (m (ξ 2) (-ξ 3))`. Rewrite using `[hn, hm]`. Express the relevant statement in the definitionally equal form `D.mkE (rt (ξ 0)) 0 = rt (m (ξ 0) 0)`. Rewrite using `[h0, hm]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hγ : (ratGL E 2 γ).val = γ.val.map (algebraMap E (A E))`. Use extensionality with `i j`. Conclude with `ratGL_apply 2 γ i j`. Establish `hs : D.star2 (ratGL E 2 γ).val = ((γ.val.map D.σ)ᵀ).map (algebraMap E (A E))`. Use extensionality with `i j`.
+By extensionality, compare the relevant components. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[D.conjTransposeGal_apply, ratGL_apply]`. Conclude with `D.bar_rt _`. Set `Y : Matrix (Fin 2) (Fin 2) E` to `γ.val * M * (γ.val.map D.σ)ᵀ`. Establish `hY : (ratGL E 2 γ).val * D.herm (fun i => rt (ξ i)) * D.star2 (ratGL E 2 γ).val = Y.map (algebraMap E (A E))`. Rewrite using `[hM, hs, hγ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Y, Matrix.map_mul]`. Use `⟨![D.b.repr (Y 1 1) 0, D.b.repr (Y 0 0) 0, D.b.repr (Y 0 1) 0, D.b.repr (Y 0 1) 1], ?_⟩` and prove the remaining obligations. Rewrite using `[D.act_def, hY]`. Use `ext1 i`. Use `fin_cases i`.
-
-Conclude with `D.co_rt _ _`. Conclude with `D.co_rt _ _`. Conclude with `D.co_rt _ _`. Conclude with `D.co_rt _ _`.
+A detailed English derivation is pending.
 -/
 private theorem act_rat {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (D : Dat F E) (γ : GL (Fin 2) E) (ξ : Fin 4 → F) :
@@ -59,11 +57,11 @@ private theorem act_rat {F E : Type} [Field F] [NumberField F] [Field E] [Number
   · exact D.co_rt _ _
 
 /- English proof (translation)
-Establish `h : ∀ j : Fin 4, ∃ ξ' : Fin 4 → F, D.act (ratGL E 2 γ) (Pi.single j 1) = fun i => rt (ξ' i)` using `fun j => by`. Take `⟨ξ', h⟩` from `act_rat D γ (Pi.single j 1)`. Use `⟨ξ', Eq.trans ?_ h⟩` and prove the remaining obligations. Use `congr 1`. Use `ext1 i`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne hij]`. Use `choose c hc using h`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use `⟨Matrix.of fun i j => c j i, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `D.act (ratGL E 2 γ) (Pi.single j 1) i = rt (c j i)`. Rewrite using `[hc]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem actM_rat {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (D : Dat F E) (γ : GL (Fin 2) E) :
@@ -84,13 +82,13 @@ private theorem actM_rat {F E : Type} [Field F] [NumberField F] [Field E] [Numbe
   rw [hc]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ D γ`. Use `haveI := AdeleBaseChange.nontrivial_adeleRing F`. Take `⟨N₀, h₀⟩` from `actM_rat D γ`. Take `⟨N₁, h₁⟩` from `actM_rat D γ⁻¹`. Establish `inj : Function.Injective (algebraMap F (A F))` using `(algebraMap F (A F)).injective`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `minj : Function.Injective fun X : Matrix (Fin 4) (Fin 4) F => X.map (algebraMap F (A F))` using `Matrix.map_injective inj`. Establish `one : (1 : Matrix (Fin 4) (Fin 4) F).map (algebraMap F (A F)) = 1` using `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `e₀₁ : N₀ * N₁ = 1` using `minj (by`. Express the relevant statement in the definitionally equal form `(N₀ * N₁).map (algebraMap F (A F)) = (1 : Matrix (Fin 4) (Fin 4) F).map (algebraMap F (A F))`. Rewrite using `[Matrix.map_mul, ← h₀, ← h₁, ← D.actM_mul, ← map_mul, mul_inv_cancel, map_one, D.actM_one, one])`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e₁₀ : N₁ * N₀ = 1` using `minj (by`. Express the relevant statement in the definitionally equal form `(N₁ * N₀).map (algebraMap F (A F)) = (1 : Matrix (Fin 4) (Fin 4) F).map (algebraMap F (A F))`. Rewrite using `[Matrix.map_mul, ← h₀, ← h₁, ← D.actM_mul, ← map_mul, inv_mul_cancel, map_one, D.actM_one, one])`. Use `⟨⟨N₀, N₁, e₀₁, e₁₀⟩, h₀, fun ξ => ?_⟩` and prove the remaining obligations. Rewrite using `[← D.actM_mulVec, h₀]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Conclude with `(RingHom.map_mulVec (algebraMap F (A F)) N₀ ξ i).symm`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.actRat :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (D : Dat F E) (γ : GL (Fin 2) E),

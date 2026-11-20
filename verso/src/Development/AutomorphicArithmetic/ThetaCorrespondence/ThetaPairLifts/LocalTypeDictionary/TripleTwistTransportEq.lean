@@ -17,21 +17,19 @@ namespace GlobalTheory.TripleAssembly.Transport
 end GlobalTheory.TripleAssembly.Transport
 open GlobalTheory.TripleAssembly.Transport in
 /- English proof (translation)
-Introduce `hHowe hPr D ψ θ hψ hθ W W₁ X A A₁ B α β hT ωA ωB hA hB e Bs Γ Xc om om' h htA htB R Rf hM`. Establish `hgood : Γ.M.IsGood ψ` using `h.ψ ▸ hM.triple.geo.hM`. Establish `hgood' : Γ.M'.IsGood ψ` using `h.ψ ▸ hM.triple.geo.hM'`. Establish `hstd : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ` using `h.ψ ▸ hM.triple.base.std`. Establish `hZ : Γ.W.J.det ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h.JX, Matrix.det_smul, Matrix.det_submatrix_equiv_self, Matrix.det_transpose]`. Conclude with `mul_ne_zero (pow_ne_zero _ (GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D)) (GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.gram_det_isUnit X).ne_zero`. Establish `hY : Γ.V.J.det ≠ 0`. Rewrite using `[h.JW, one_smul]`. Conclude with `(GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.gram_det_isUnit W).ne_zero`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hY' : Γ.V'.J.det ≠ 0`. Rewrite using `[h.JW₁, Matrix.det_smul]`. Conclude with `mul_ne_zero (pow_ne_zero _ (by norm_num)) (GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.gram_det_isUnit W₁).ne_zero`. Take `⟨T₁, hT₁, hi₁⟩` from `GlobalTheory.ThetaTransformInj.linear_injective D Γ.M ψ (sgn true W).gram e hgood hstd hY hZ (GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.gram_det_isUnit (sgn true W)).ne_zero`. Take `⟨T₂, hT₂, hi₂⟩` from `GlobalTheory.ThetaTransformInj.linear_injective D Γ.M' ψ (sgn false W₁).gram e hgood' hstd hY' hZ (GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.gram_det_isUnit (sgn false W₁)).ne_zero`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hle` using `GlobalTheory.TripleAssembly.darbAlg_le_schA _ _ _ Γ.M Bs.ψ Bs.emb hM.triple.geo.hM`. Establish `hle'` using `GlobalTheory.TripleAssembly.darbAlg_le_schA _ _ _ Γ.M' Bs.ψ Bs.emb hM.triple.geo.hM'`. Take `⟨hI, hI'⟩` from `_root_.GlobalTheory.T.theta_image_eq_span_darboux hHowe hPr D ψ θ hψ hθ W W₁ X A A₁ B α β hT ωA ωB hA hB e Bs Γ Xc om om' h htA htB R Rf hM`. Establish `ex1` using `exists_factor T₁ _ (fun Φ hΦ => hi₁ Φ (hle hΦ)) (GlobalTheory.TripleAssembly.liftPure Γ.M R.p Rf.p (GlobalTheory.TripleAssembly.vacIm Γ Rf))`. Establish `ex2` using `exists_factor T₂ _ (fun Φ hΦ => hi₂ Φ (hle' hΦ)) (GlobalTheory.TripleAssembly.liftPure Γ.M' R.p' Rf.p' (GlobalTheory.TripleAssembly.vacIm Γ Rf))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨⟨fun Ψ hΨ => ?_, fun Φ hΦ => ?_⟩, ⟨fun Ψ hΨ => ?_, fun Φ hΦ => ?_⟩⟩` and prove the remaining obligations. Establish `H : ∃ q : (Matrix (Fin X.rank) (Fin W.rank) (AE D) → ℂ) →ₗ[ℂ] _, ∀ Ψ ∈ GlobalTheory.TripleAssembly.darbAlg Γ.M Bs.ψ Bs.emb, q (GlobalTheory.TripleRead.thO Γ.M ψ (sgn true W).gram e Ψ) = GlobalTheory.TripleAssembly.liftPure Γ.M R.p Rf.p (GlobalTheory.TripleAssembly.vacIm Γ Rf) Ψ`. Take `⟨q, hq⟩` from `ex1`. Conclude with `⟨q, fun Ψ hΨ => by rw [← hT₁ Ψ (hle hΨ)]; exact hq Ψ hΨ⟩`. Unfold `GlobalTheory.TripleAssembly.mapA GlobalTheory.TripleAssembly.thetaLift`.
+Supply the required witnesses or components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[dif_pos H]`. Conclude with `H.choose_spec Ψ hΨ`. Rewrite `hΦ` using `[← hI T₁ hT₁]`. Take `⟨Ψ, hΨ, rfl⟩` from `Submodule.mem_map.1 hΦ`. Conclude with `⟨Ψ, hΨ, (hT₁ Ψ (hle hΨ)).symm⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Replace the relevant objects with their definitions.
 
-Establish `H : ∃ q : (Matrix (Fin X.rank) (Fin W₁.rank) (AE D) → ℂ) →ₗ[ℂ] _, ∀ Ψ ∈ GlobalTheory.TripleAssembly.darbAlg Γ.M' Bs.ψ Bs.emb, q (GlobalTheory.TripleRead.thO Γ.M' ψ (sgn false W₁).gram e Ψ) = GlobalTheory.TripleAssembly.liftPure Γ.M' R.p' Rf.p' (GlobalTheory.TripleAssembly.vacIm Γ …`. Take `⟨q, hq⟩` from `ex2`. Conclude with `⟨q, fun Ψ hΨ => by rw [← hT₂ Ψ (hle' hΨ)]; exact hq Ψ hΨ⟩`. Unfold `GlobalTheory.TripleAssembly.mapB GlobalTheory.TripleAssembly.thetaLift`. Rewrite using `[dif_pos H]`.
-
-Conclude with `H.choose_spec Ψ hΨ`. Rewrite `hΦ` using `[← hI' T₂ hT₂]`. Take `⟨Ψ, hΨ, rfl⟩` from `Submodule.mem_map.1 hΦ`. Conclude with `⟨Ψ, hΨ, (hT₂ Ψ (hle' hΨ)).symm⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.TripleAssembly.triple_twist_transport_eq : GlobalTheory.Published.HoweDualityReal → _root_.GlobalTheory.FunPr.ThetaLocalInputs →
     ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →
@@ -113,7 +111,7 @@ open GlobalTheory.SquareComm
 open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.TripleAssembly.triple_twist_transport_eq | exact _root_.GlobalTheory.TripleAssembly.triple_twist_transport_eq | (intros; apply _root_.GlobalTheory.TripleAssembly.triple_twist_transport_eq <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.triple_twist_transport : GlobalTheory.Published.HoweDualityReal → _root_.GlobalTheory.FunPr.ThetaLocalInputs →
     ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →

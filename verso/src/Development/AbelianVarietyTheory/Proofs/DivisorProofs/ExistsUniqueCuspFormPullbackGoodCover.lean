@@ -10,15 +10,15 @@ open NumberField Formalism.BasicNotions Formalism.L2.Pj ReciprocityTheory.ChartR
 namespace GlobalTheory.CoverPull
 
 /- English proof (translation)
-Introduce `D T j Y e o hT hj hG hu hm a n hD f hf`. Establish `hL` using `GlobalTheory.LevGeo.laws_core D T j hT hj`. Take `⟨hL', hbc⟩` from `GlobalTheory.T.moduliLaws_coefficientFieldChange D j _ _ _ _ _ Y.c' Y.hle _ _ hL`. Take `⟨hf', -⟩` from `hbc a n hD ⟨f, hf⟩`. Take `⟨hL₂, -, hP⟩` from `GlobalTheory.DeepLaws.laws_galois_pull D T j Y e o hT hj hG hu hm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hpq : (T.Q.Dw j).p ≠ (T.Q.Dw j).q ∧ 1 ≤ (T.Q.Dw j).p + (T.Q.Dw j).q`. Take `⟨hp, hq, -⟩` from `hL.dat`. Take `⟨h1, h2⟩` from `hj`. Establish `hk` using `D.R.m_add_three_le_k`. Rewrite using `[hp, hq]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Ranks.sigW]`. Use linear arithmetic over natural numbers and integers. Rewrite `hf`, `hf'` using `[cuspW_wtZ]`. Establish `hs` using `cusp_le_sec _ _ _ a n hf`. Establish `hs'` using `cusp_le_sec _ _ _ a n hf'`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨g, ⟨hg, hgP⟩, huniq⟩` from `(GlobalTheory.CoverSec.section_pullback_existsUnique _ _ _ _ _ _ Y.d hpq.2 hG.lev.1 (Or.inl ⟨hpq.1, hL.levA⟩) a n).1 _ hs'`. Use `⟨g, ⟨?_, (hP a n f hs g).2 hgP⟩, fun g' hg' => huniq g' ⟨?_, (hP a n f hs g').1 hg'.2⟩⟩` and prove the remaining obligations. Rewrite using `[Deep.V, cuspW_wtZ]`. Conclude with `(GlobalTheory.T.cuspForm_iff_levelCover_pullback D j _ _ _ _ _ _ _ Y.d _ _ hL' hL₂ hG.lev.1 a n hD hD.2 _ hs' g hg hgP).2 hf'`. Establish `h` using `hg'.1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[Deep.V, cuspW_wtZ]`. Conclude with `cusp_le_sec _ _ _ a n h`.
+A detailed English derivation is pending.
 -/
 theorem cusp_pullback_existsUnique : ∀ (D : D7) (T : CoreJ D) (j : ℕ) (Y : Deep T.toCore j) (e : ℕ) (o : ℝ), LawsJ T → InR D j → Y.Good e o → (∀ σ, GoodEmb Y.d.c₂ σ → ∀ g τ k, ‖dmin ((Y.U σ).X (Y.dict σ g).1).Gm (Y.dict σ g).2 τ k‖ = 1) → (∀ σ, GoodEmb Y.d.c₂ σ → ∃ hr : (D.sp.W j).rank = D.R.r, ∀ k, ModelW (D.sp.W j) hr ((Y.U σ).X k)) → ∀ (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ), Dom a n → ∀ f ∈ cuspW (T.Q.Xo j) T.Q.c (T.U j) (wtZ a n), ∃! g, g ∈ Y.V (wtZ a n) ∧ Y.Pull f g := by
   intro D T j Y e o hT hj hG hu hm a n hD f hf

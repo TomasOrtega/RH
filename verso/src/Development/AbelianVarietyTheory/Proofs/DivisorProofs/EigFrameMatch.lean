@@ -28,16 +28,16 @@ end Generic
 variable {S : Scheme.{0}} {t : SAB H S} {R : Type} [CommRing R] {x : Sp R ⟶ S}
 
 /- English proof (translation)
-The claim follows from `exists_congr fun _ => and_congr Iff.rfl ⟨fun h => by rw [h], fun h => Over.OverMorphism.ext h.symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem comb_iff {n : ℕ} (v : Fin n → (epsAt x ⟶ t.G)) (a : Fin n → R) (w : epsAt x ⟶ t.G) :
     IsCombAt x a v w ↔ IsCombAtG t x (fun i => (v i).left) a w.left :=
   exists_congr fun _ => and_congr Iff.rfl ⟨fun h => by rw [h], fun h => Over.OverMorphism.ext h.symm⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `⟨fun i => ⟨Over.w (v i), (h1 i).1⟩, fun i a => (h1 i).2 a, fun w hw he => ?_⟩` and prove the remaining obligations. Set `w' : epsAt x ⟶ t.G` to `Over.homMk w hw.1`. Conclude with `(existsUnique_congr fun a => comb_iff v a w').1 (h2 w' ⟨hw.2, he⟩)`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨h1, h2, h3⟩`. Use `⟨fun i => ⟨(h1 i).2, h2 i⟩, fun w hw => ?_⟩` and prove the remaining obligations. Conclude with `(existsUnique_congr fun a => comb_iff v a w).2 (h3 w.left ⟨Over.w w, hw.1⟩ hw.2)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem basis_iff (χ : 𝓞 E →+* R) {n : ℕ} (v : Fin n → (epsAt x ⟶ t.G)) :
     IsEigBasisAt t.act x χ v ↔ IsBasG t x χ (fun i => (v i).left) := by
@@ -51,7 +51,7 @@ theorem basis_iff (χ : 𝓞 E →+* R) {n : ℕ} (v : Fin n → (epsAt x ⟶ t.
     exact (existsUnique_congr fun a => comb_iff v a w).2 (h3 w.left ⟨Over.w w, hw.1⟩ hw.2)
 
 /- English proof (translation)
-Substitute `h` using the available equality. Use `⟨fun i => Over.homMk (u i) (hu.1 i).1, (basis_iff χ _).2 hu, fun i k e => ?_⟩` and prove the remaining obligations. Take `rfl : i = k` from `Fin.ext e`. Both sides reduce to the same expression.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem exists_over (χ : 𝓞 E →+* R) {m n : ℕ} (h : m = n) {u : Fin m → (Sp (DualNumber R) ⟶ t.G.left)}
     (hu : IsBasG t x χ u) :
@@ -63,7 +63,7 @@ theorem exists_over (χ : 𝓞 E →+* R) {m n : ℕ} (h : m = n) {u : Fin m →
   rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Use `⟨fun i => (v i).left, (basis_iff χ _).1 hv, fun i k e => ?_⟩` and prove the remaining obligations. Take `rfl : i = k` from `Fin.ext e`. Both sides reduce to the same expression.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem exists_left (χ : 𝓞 E →+* R) {m n : ℕ} (h : m = n) {v : Fin n → (epsAt x ⟶ t.G)}
     (hv : IsEigBasisAt t.act x χ v) :
@@ -75,19 +75,17 @@ theorem exists_left (χ : 𝓞 E →+* R) {m n : ℕ} (h : m = n) {v : Fin n →
   rfl
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c O _ β Y τ hτ V R _ j x hx hV f`. Establish `hp : D.mult τ = D.p` using `GlobalTheory.Harm.mult_of_mem D hτ`. Establish `hq : D.mult (conjEmb τ) = D.q` using `GlobalTheory.Harm.mult_conjEmb_of_mem D hτ`. Establish `hne : conjEmb τ ≠ τ` using `fun e => (GlobalTheory.Harm.not_mem_hostType_iff H τ).2 (by rw [e]; exact hτ) hτ`. Establish `hf : ∀ σ : E →+* ℂ, IsBasG Y.t (x ≫ genι Y) (FramedFlatCoordinates.chr c σ j) (f.v σ)` using `fun σ => ⟨f.tan σ, f.eig σ, f.basis σ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨?_, fun v w h => ?_⟩` and prove the remaining obligations. Take `⟨v, hv, hv'⟩` from `exists_over _ hp (hf τ)`. Take `⟨w, hw, hw'⟩` from `exists_over _ hq (hf (conjEmb τ))`. Use `⟨v, w, ⟨hx, hV, hv, ?_⟩, hv', hw'⟩` and prove the remaining obligations. Rewrite using `[comp_chi_bar]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hw`. Take `⟨-, -, hv, hw⟩` from `h`. Rewrite `hv` using `[comp_chi]`. Rewrite `hw` using `[comp_chi_bar]`. Take `⟨v₁, a, a'⟩` from `exists_left _ hp hv`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w₁, b, b'⟩` from `exists_left _ hq hw`. Set `g` to `Function.update (Function.update f.v τ v₁) (conjEmb τ) w₁`. Establish `g1 : g τ = v₁`. Simplify using `only [g, Function.update_of_ne hne.symm, Function.update_self]`. Establish `g2 : g (conjEmb τ) = w₁` using `Function.update_self _ _ _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg : ∀ σ : E →+* ℂ, IsBasG Y.t (x ≫ genι Y) (FramedFlatCoordinates.chr c σ j) (g σ)` using `fun σ => by`. Distinguish the cases in `e2 : σ = conjEmb τ`. Rewrite using `[e2, g2]`. Conclude with `b`. Distinguish the cases in `e1 : σ = τ`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e1, g1]`. Conclude with `a`. Establish `: g σ = f.v σ` using `by simp only [g, Function.update_of_ne e2, Function.update_of_ne e1]`. Rewrite using `[this]`. Conclude with `hf σ`.
-
-Use `⟨⟨g, fun σ => (hg σ).1, fun σ => (hg σ).2.1, fun σ => (hg σ).2.2⟩, fun i k e => ?_, fun i k e => ?_⟩` and prove the remaining obligations. Conclude with `(a' i k e).trans (congrFun g1 k).symm`. Conclude with `(b' i k e).trans (congrFun g2 k).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem eigFrame_match : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (τ : E →+* ℂ), τ (H.rt : E) = H.rt0 → ∀ (V : Set (gen Y)) (R : Type) [CommRing R] (j : c.F →+* R) (x : Sp R ⟶ gen Y), x ≫ genStr Y = spMap j → Set.range x ⊆ V → ∀ f : EigFrame Y j (x ≫ genι Y), (∃ v w, FrY Y V τ j x v w ∧ Match τ f v w) ∧ ∀ v w, FrY Y V τ j x v w → ∃ f' : EigFrame Y j (x ≫ genι Y), Match τ f' v w := by
   intro E _ _ _ H D l Xo c O _ β Y τ hτ V R _ j x hx hV f

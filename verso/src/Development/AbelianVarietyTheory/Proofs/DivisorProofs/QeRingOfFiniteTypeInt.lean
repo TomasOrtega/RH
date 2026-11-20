@@ -10,11 +10,9 @@ open IsLocalRing TensorProduct ReciprocityTheory.AnForm.R
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `A _ _`. Establish `hN : IsNoetherianRing A` using `Algebra.FiniteType.isNoetherianRing ℤ A`. Use `⟨hN, fun P _ => ⟨?_, ?_⟩, fun B _ _ _ => ?_⟩` and prove the remaining obligations. Conclude with `AdicCompletion.flat_of_isNoetherian _`. Apply `GlobalTheory.T.geomRegFib_of_isRegularRing_tensor_essFiniteType` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `K _ _ _`. Use `haveI : Algebra.EssFiniteType A (Localization.AtPrime P) := Algebra.EssFiniteType.of_isLocalization _ P.primeCompl`. Use `haveI : Algebra.EssFiniteType ℤ (Localization.AtPrime P) := Algebra.EssFiniteType.comp ℤ A (Localization.AtPrime P)`. Establish `hZ : @Algebra.EssFiniteType ℤ (Localization.AtPrime P) _ _ (Ring.toIntAlgebra _)`. Use `this` and compare the differences between its conclusion and the goal.
-
-Conclude with `Subsingleton.elim _ _`. Conclude with `@GlobalTheory.T.formalFibre_isRegularRing_essFiniteType_int (Localization.AtPrime P) K _ _ hZ _ _ _`. Use `haveI : Algebra.FiniteType ℤ B := Algebra.FiniteType.trans (inferInstance : Algebra.FiniteType ℤ A) ‹_› haveI : IsNoetherianRing B := Algebra.FiniteType.isNoetherianRing ℤ B`. Conclude with `GlobalTheory.T.isOpen_regularLocus_of_nagata' B (fun p _ => GlobalTheory.T.exists_regular_quotient_near_prime_finiteType_int B p)`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem qeRing_of_finiteType_int : ∀ (A : Type) [CommRing A] [Algebra.FiniteType ℤ A], FinalTheorems.QERing A := by
   intro A _ _

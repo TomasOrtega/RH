@@ -13,20 +13,20 @@ namespace ThetaZeroTaylorLemmas
 
 open PowerSeries in
 /- English proof (translation)
-The claim follows from `B.dz_prim f`.
+A detailed English derivation is pending.
 -/
 lemma derivative_prim (f : PowerSeries ℂ) : derivative ℂ (B.prim f) = f := B.dz_prim f
 
 open PowerSeries in
 
 /- English proof (translation)
-Establish `h1 : derivative ℂ (C (s / 2) * X ^ 2 : PowerSeries ℂ) = C s * X`. Establish `hs : (C s : PowerSeries ℂ) = C (s / 2) * 2`. Rewrite using `[show (2 : PowerSeries ℂ) = C 2 from (map_ofNat C 2).symm, ← map_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Derivation.leibniz, derivative_C, Derivation.leibniz_pow, derivative_X, hs]`. Simplify using `only [smul_eq_mul, nsmul_eq_mul, mul_zero, add_zero, mul_one, Nat.cast_ofNat]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : derivative ℂ (C s * X : PowerSeries ℂ) = C s`. Rewrite using `[Derivation.leibniz, derivative_C, derivative_X]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Use `derivative.ext (derivative.ext ?_ ?_) ?_` and prove the remaining obligations. Rewrite using `[B.sigS, map_neg, map_neg, derivative_prim, derivative_prim, map_add, map_add, map_neg, map_neg, map_neg, map_neg, derivative_prim, derivative_prim, h1, h2, neg_add]`. Rewrite using `[B.sigS, map_neg, map_neg, derivative_prim, map_add, map_neg, map_neg, derivative_prim, h1]`. Simplify using `[B.constantCoeff_prim]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[B.sigS, B.constantCoeff_prim]`.
+Simplify using the standard rewrite rules.
 -/
 lemma sigS_add_const (Q : PowerSeries ℂ) (s : ℂ) :
     B.sigS (Q + C s) = -B.prim (B.prim Q) + -(C (s / 2) * X ^ 2) := by
@@ -51,25 +51,25 @@ lemma sigS_add_const (Q : PowerSeries ℂ) (s : ℂ) :
 def v (L : PeriodPair) (t z : ℂ) : ℂ := wZeta L (z + t) - wZeta L t - s2 L * z
 
 /- English proof (translation)
-Simplify using `[v]`.
+Simplify using the standard rewrite rules.
 -/
 lemma v_zero (L : PeriodPair) (t : ℂ) : v L t 0 = 0 := by simp [v]
 
 /- English proof (translation)
-The claim follows from `L.isClosed_lattice.isOpen_compl.preimage (continuous_add_const t)`.
+A detailed English derivation is pending.
 -/
 lemma isOpen_dom (L : PeriodPair) (t : ℂ) : IsOpen {z : ℂ | z + t ∉ L.lattice} :=
   L.isClosed_lattice.isOpen_compl.preimage (continuous_add_const t)
 
 /- English proof (translation)
-The claim follows from `(isOpen_dom L t).mem_nhds (by simpa using ht)`.
+A detailed English derivation is pending.
 -/
 lemma dom_mem_nhds (L : PeriodPair) {t : ℂ} (ht : t ∉ L.lattice) :
     {z : ℂ | z + t ∉ L.lattice} ∈ 𝓝 (0 : ℂ) :=
   (isOpen_dom L t).mem_nhds (by simpa using ht)
 
 /- English proof (translation)
-Establish `h1 : HasDerivAt (fun x => wZeta L (x + t)) (-(L.weierstrassP (z + t))) z` using `(zetaHasDeriv L (z + t) h).comp_add_const z t`. Establish `h2 : HasDerivAt (fun x : ℂ => s2 L * x) (s2 L * 1) z` using `(hasDerivAt_id z).const_mul (s2 L)`. Rewrite `h2` using `[mul_one]`. Conclude with `(h1.sub_const (wZeta L t)).sub h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma hasDerivAt_v (L : PeriodPair) {t z : ℂ} (h : z + t ∉ L.lattice) :
     HasDerivAt (v L t) (-(L.weierstrassP (z + t)) - s2 L) z := by
@@ -80,14 +80,14 @@ lemma hasDerivAt_v (L : PeriodPair) {t z : ℂ} (h : z + t ∉ L.lattice) :
   exact (h1.sub_const (wZeta L t)).sub h2
 
 /- English proof (translation)
-The claim follows from `DifferentiableOn.analyticAt (fun _ hz => (hasDerivAt_v L hz).differentiableAt.differentiableWithinAt) (dom_mem_nhds L ht)`.
+A detailed English derivation is pending.
 -/
 lemma analyticAt_v (L : PeriodPair) {t : ℂ} (ht : t ∉ L.lattice) : AnalyticAt ℂ (v L t) 0 :=
   DifferentiableOn.analyticAt
     (fun _ hz => (hasDerivAt_v L hz).differentiableAt.differentiableWithinAt) (dom_mem_nhds L ht)
 
 /- English proof (translation)
-Use `filter_upwards [dom_mem_nhds L ht] with z hz`. Conclude with `(th0LogDeriv L ω₀ z hω ht hz).deriv`.
+A detailed English derivation is pending.
 -/
 lemma ode_th (L : PeriodPair) {ω₀ : ℂ} (hω : ω₀ ∈ L.lattice) (ht : ω₀ / 2 ∉ L.lattice) :
     deriv (th0 L (ω₀ / 2)) =ᶠ[𝓝 0] fun z => v L (ω₀ / 2) z * th0 L (ω₀ / 2) z := by
@@ -95,11 +95,11 @@ lemma ode_th (L : PeriodPair) {ω₀ : ℂ} (hω : ω₀ ∈ L.lattice) (ht : ω
   exact (th0LogDeriv L ω₀ z hω ht hz).deriv
 
 /- English proof (translation)
-Use `filter_upwards [dom_mem_nhds L ht, L.compl_lattice_sdiff_singleton_mem_nhds 0] with z h1 h2`. Rewrite using `[(hasDerivAt_v L h1).deriv]`. Distinguish the cases in `h0 : z = 0`. Simplify using `only [h0, zero_add, mul_zero, zero_mul, add_zero, one_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hzl : z ∉ L.lattice` using `fun h => h2 ⟨h, h0⟩`. Establish `hs` using `halfShift L t z ht h2t hzl h1`. Establish `h5` using `L.weierstrassPExcept_add 0 z`. Simplify using `only [ZeroMemClass.coe_zero, sub_zero, ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, div_zero] at h5`. Establish `hz2 : z * z * (1 / z ^ 2) = 1` using `by field_simp`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(-(z * z)) * hs - (z * z) * (L.weierstrassP (z + t) - L.weierstrassP t) * h5 + (L.weierstrassP (z + t) - L.weierstrassP t) * hz2`.
+A detailed English derivation is pending.
 -/
 lemma ode_v (L : PeriodPair) {t : ℂ} (ht : t ∉ L.lattice) (h2t : 2 * t ∈ L.lattice) :
     (fun z => (1 + z * z * L.weierstrassPExcept 0 z + -(L.weierstrassP t) * (z * z))
@@ -124,21 +124,19 @@ end ThetaZeroTaylorLemmas
 open ThetaZeroTaylorLemmas TaylorWp in
 
 /- English proof (translation)
-Introduce `L ω₀ hω ht`. Establish `hr` using `taylor_ring`. Use `set t := ω₀ / 2 with htdef`. Establish `h2t : 2 * t ∈ L.lattice`. Establish `: 2 * t = ω₀` using `by rw [htdef]; ring`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[this]` and apply the resulting hypothesis. Use `set e := L.weierstrassP t with he`. Use `set κ := 3 * e ^ 2 - L.g₂ / 4 with hκ`. Take `⟨hdiff, h0, -⟩` from `th0Basic L ω₀ hω ht`. Establish `hθ : AnalyticAt ℂ (th0 L t) 0` using `hdiff.analyticAt 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hv : AnalyticAt ℂ (v L t) 0` using `analyticAt_v L ht`. Establish `eU : PowerSeries.derivative ℂ (taylor0 (th0 L t)) = taylor0 (v L t) * taylor0 (th0 L t)`. Rewrite using `[← Taylor.taylor0_deriv, ← Taylor.taylor0_mul hv hθ]`. Conclude with `Taylor.taylor0_congr (ode_th L hω ht)`. Establish `Tid` using `T.id hr`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `Tzz` using `T.mul hr Tid Tid`. Establish `Tp : T (L.weierstrassPExcept 0) (pSeries L)` using `⟨TaylorSigmaUniqueness.analyticAt_pExcept L, rfl⟩`. Establish `Tdv : T (deriv (v L t)) (PowerSeries.derivative ℂ (taylor0 (v L t)))` using `⟨hv.deriv, Taylor.taylor0_deriv _⟩`. Establish `TL` using `T.mul hr (T.add hr (T.add hr (T.const hr 1) (T.mul hr Tzz Tp)) (T.mul hr (T.const hr (-e)) Tzz)) (T.add hr (T.add hr Tdv (T.const hr e)) (T.const hr (s2 L)))`. Establish `TR` using `T.mul hr (T.const hr (-κ)) Tzz`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hE` using `TL.2.symm.trans ((Taylor.taylor0_congr (ode_v L ht h2t)).trans TR.2)`. Rewrite `hE` using `[map_one, map_neg, map_neg]`. Use `set V := taylor0 (v L t) with hV`. Use `set P := pSeries L with hP`. Establish `hD0 : PowerSeries.constantCoeff (1 + PowerSeries.X ^ 2 * P - PowerSeries.C e * PowerSeries.X ^ 2 : PowerSeries ℂ) ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Take a linear combination of the given relations to obtain the conclusion.
 
-Simplify using the standard rewrite rules. Establish `hD` using `PowerSeries.mul_inv_cancel _ hD0`. Establish `eV : PowerSeries.derivative ℂ V = -(PowerSeries.C e + PowerSeries.C κ * B.wOf e P + PowerSeries.C (s2 L))`. Rewrite using `[B.wOf]`. Generalize the expression as in `(1 + PowerSeries.X ^ 2 * P - PowerSeries.C e * PowerSeries.X ^ 2 : PowerSeries ℂ)⁻¹ = Di at hD ⊢`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `Di * hE - (PowerSeries.derivative ℂ V + PowerSeries.C e + PowerSeries.C (s2 L)) * hD`. Establish `key` using `TaylorSigmaUniqueness.formal_unique (PowerSeries.C e + PowerSeries.C κ * B.wOf e P + PowerSeries.C (s2 L)) (taylor0 (th0 L t)) V (by rw [eV, mul_neg]) (by rw [TaylorSigmaUniqueness.constantCoeff_taylor0, v_zero]) (by rw [eU]) (by rw [TaylorSigmaUniqueness.constantCoeff_taylor0, h …`. Rewrite using `[key, sigS_add_const, B.sigma1, B.sigmaOneSeries]`. Use `B.fExp_add ?_ ?_` and prove the remaining obligations. Establish `: PowerSeries.constantCoeff (-B.prim (B.prim (PowerSeries.C e + PowerSeries.C κ * B.wOf e P)) : PowerSeries ℂ) = 0`.
-
-Rewrite using `[map_neg, B.constantCoeff_prim, neg_zero]`. Conclude with `this`. Establish `: PowerSeries.constantCoeff (-(PowerSeries.C (s2 L / 2) * PowerSeries.X ^ 2) : PowerSeries ℂ) = 0` using `by simp`. Conclude with `this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem taylor_even_theta : TaylorTh0 := by
   intro L ω₀ hω ht

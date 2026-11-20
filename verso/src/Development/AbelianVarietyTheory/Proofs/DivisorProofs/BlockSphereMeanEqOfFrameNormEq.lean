@@ -25,7 +25,7 @@ set_option autoImplicit false in
 open MvPolynomial NumberField Module MeasureTheory in
 
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.ChowHt.linSubst`. Rewrite using `[_root_.ReciprocityTheory.MultiplicativeHeights.eval_aeval_alt]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.SphereMeanFrame.eval_linSubst {B N n : ℕ} (M : Matrix (Fin N) (Fin n) ℂ)
     (f : MvPolynomial (Fin B × Fin N) ℂ) (u : Fin B × Fin n → ℂ) :
@@ -39,13 +39,13 @@ set_option autoImplicit false in
 open MvPolynomial NumberField Module MeasureTheory in
 
 /- English proof (translation)
-Set `T : EuclideanSpace ℂ (Fin (N + 1)) →ₗᵢ[ℂ] EuclideanSpace ℂ (Fin (N + 1))` to `{ toLinearMap := Matrix.toEuclideanLin Q, norm_map' := hQ }`. Set `U` to `T.toLinearIsometryEquiv rfl`. Set `V : EuclideanSpace ℂ (Fin (N + 1)) ≃ₗᵢ[ℝ] EuclideanSpace ℂ (Fin (N + 1))` to `{ toLinearEquiv := U.toLinearEquiv.restrictScalars ℝ, norm_map' := U.norm_map }`. Use `set μ : Measure (Fin B → _root_.ReciprocityTheory.MultiplicativeHeights.UnitSphereC (N + 1)) := Measure.pi fun _ => _root_.ReciprocityTheory.MultiplicativeHeights.sphereProb (N + 1) with hμ`. Use `set Φ : (Fin B → _root_.ReciprocityTheory.MultiplicativeHeights.UnitSphereC (N + 1)) → (Fin B → _root_.ReciprocityTheory.MultiplicativeHeights.UnitSphereC (N + 1)) := fun z b => _root_.ReciprocityTheory.MultiplicativeHeights.sphereMap V (z b) with hΦdef`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΦ : MeasurePreserving Φ μ μ` using `measurePreserving_pi _ _ (fun _ => _root_.ReciprocityTheory.MultiplicativeHeights.measurePreserving_sphereMap V)`. Use `set g : (Fin B → _root_.ReciprocityTheory.MultiplicativeHeights.UnitSphereC (N + 1)) → ℝ := fun z => Real.log ‖eval (_root_.ReciprocityTheory.MultiplicativeHeights.blockPoint z) f‖ with hg`. Establish `hcont : Continuous (fun z : Fin B → _root_.ReciprocityTheory.MultiplicativeHeights.UnitSphereC (N + 1) => _root_.ReciprocityTheory.MultiplicativeHeights.blockPoint z)`. Unfold `_root_.ReciprocityTheory.MultiplicativeHeights.blockPoint`. Conclude with `continuous_pi fun p => (continuous_apply p.2).comp ((_root_.ReciprocityTheory.MultiplicativeHeights.continuous_spherePoint (N + 1)).comp (continuous_apply p.1))`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hgm : Measurable g` using `Real.measurable_log.comp (((MvPolynomial.continuous_eval f).comp hcont).norm.measurable)`. Establish `hpt : ∀ z, eval (_root_.ReciprocityTheory.MultiplicativeHeights.blockPoint z) (_root_.GlobalTheory.ChowHt.linSubst Q f) = eval (_root_.ReciprocityTheory.MultiplicativeHeights.blockPoint (Φ z)) f`. Introduce `z`. Rewrite using `[_root_.GlobalTheory.SphereMeanFrame.eval_linSubst]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion repeatedly using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `∫ z, Real.log ‖eval (_root_.ReciprocityTheory.MultiplicativeHeights.blockPoint z) (_root_.GlobalTheory.ChowHt.linSubst Q f)‖ ∂μ = ∫ z, g z ∂μ`. Repeatedly rewrite using `[hpt]`. Express the relevant statement in the definitionally equal form `∫ z, g (Φ z) ∂μ = ∫ z, g z ∂μ`. Rewrite using `[← integral_map hΦ.measurable.aemeasurable hgm.aestronglyMeasurable, hΦ.map_eq]`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.SphereMeanFrame.blockSphereMean_linSubst {B N : ℕ} (Q : Matrix (Fin (N + 1)) (Fin (N + 1)) ℂ)
     (hQ : ∀ x : EuclideanSpace ℂ (Fin (N + 1)), ‖Matrix.toEuclideanLin Q x‖ = ‖x‖)
@@ -80,13 +80,13 @@ set_option autoImplicit false in
 open MvPolynomial NumberField Module MeasureTheory in
 
 /- English proof (translation)
-Introduce `B N A A' hA hA' hn f`. Consider the cases of `N with`. Consider the case `zero`. Establish `hAA : A = A'` using `Subsingleton.elim _ _`. Rewrite using `[hAA]`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `succ N`. Establish `hAu : IsUnit A.det` using `isUnit_iff_ne_zero.mpr hA`. Establish `hA'u : IsUnit A'.det` using `isUnit_iff_ne_zero.mpr hA'`. Establish `hAQ : A * (A⁻¹ * A') = A'`. Rewrite using `[← mul_assoc, Matrix.mul_nonsing_inv _ hAu, one_mul]`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : _root_.GlobalTheory.ChowHt.linSubst A' f = _root_.GlobalTheory.ChowHt.linSubst (A⁻¹ * A') (_root_.GlobalTheory.ChowHt.linSubst A f)`. Rewrite using `[_root_.GlobalTheory.HeightUnique.linSubst_linSubst, hAQ]`. Rewrite using `[key, _root_.GlobalTheory.SphereMeanFrame.blockSphereMean_linSubst (A⁻¹ * A')]`. Introduce `x`. Establish `h1` using `hn (A'.mulVec x.ofLp)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [_root_.GlobalTheory.ChowHt.frameNorm, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hA'u, Matrix.one_mulVec] at h1`. Rewrite using `[EuclideanSpace.norm_eq, EuclideanSpace.norm_eq]`. Use `h1 using 4 with i` and compare the differences between its conclusion and the goal. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Both sides reduce to the same expression.
 -/
 theorem _root_.GlobalTheory.SphereMeanFrame.blockSphereMean_eq_of_frameNorm_eq : ∀ (B N : ℕ) (A A' : Matrix (Fin N) (Fin N) ℂ),
     A.det ≠ 0 → A'.det ≠ 0 → (∀ z, _root_.GlobalTheory.ChowHt.frameNorm A z = _root_.GlobalTheory.ChowHt.frameNorm A' z) →

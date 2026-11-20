@@ -10,21 +10,19 @@ noncomputable section
 namespace GlobalTheory.InertFixVal
 
 /- English proof (translation)
-Use `haveI : NumberField M := NumberField.of_module_finite F M`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed F`. Use `haveI : IsAlgClosure M Ω := ⟨inferInstance, Algebra.IsAlgebraic.tower_top (K := F) M⟩`. Set `σ₁ : Ω ≃ₐ[F] Ω` to `τ.liftNormal Ω`. Establish `h₁ : ∀ x : M, σ₁ (algebraMap M Ω x) = algebraMap M Ω (τ x)` using `fun x => τ.liftNormal_commutes Ω x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Take `⟨g, hg⟩` from `GlobalTheory.InertiaLift.exists_smul_eq (F := M) (A := A) (A' := σ₁⁻¹ • A) (by`. Introduce `x`. Rewrite using `[smul_valuation_lt_one_iff, inv_inv]`. Express the relevant statement in the definitionally equal form `A.valuation (algebraMap M Ω (x : M)) < 1 ↔ A.valuation (σ₁ (algebraMap M Ω (x : M))) < 1`. Rewrite using `[h₁]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hx` using `h x`. Prove the components needed by the constructor for the conclusion. Introduce `hl`. Simplify using `using Valuation.map_add_lt _ hx hl`. Introduce `hl`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `using Valuation.map_sub_lt _ hl hx)`. Set `σ₂ : Ω ≃ₐ[F] Ω` to `σ₁ * g.restrictScalars F`. Establish `h₂ : ∀ x : M, σ₂ (algebraMap M Ω x) = algebraMap M Ω (τ x)` using `fun x => by`. Rewrite using `[← h₁]`. Conclude with `congrArg σ₁ (g.commutes x)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Establish `h₂' : ∀ y, A.valuation (σ₂ y) < 1 ↔ A.valuation y < 1` using `fun y => by`. Rewrite using `[← hg y, smul_valuation_lt_one_iff, inv_inv]`. Both sides reduce to the same expression. Take `⟨k, hk, hk'⟩` from `GlobalTheory.InertiaLift.exists_congr (F := M) (A := A) σ₂.toRingEquiv h₂' (by`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `A.valuation (σ₂ (algebraMap M Ω (x : M)) - algebraMap M Ω (x : M)) < 1`. Rewrite using `[h₂]`. Conclude with `h x)`. Establish `hkinv : ∀ y, A.valuation (k.symm y) < 1 ↔ A.valuation y < 1` using `fun y => by`. Rewrite using `[← valuation_apply_lt_one_iff hk, k.apply_symm_apply]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `⟨k.symm.restrictScalars F * σ₂, GlobalTheory.InertiaLift.mem_Ine_of_integral (GlobalTheory.InertiaLift.mem_Dec_of_lt fun y => ?_) fun b hb => ?_, fun x => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `A.valuation (k.symm (σ₂ y)) < 1 ↔ _`. Rewrite using `[hkinv, h₂']`. Express the relevant statement in the definitionally equal form `A.valuation (k.symm (σ₂ b) - b) < 1`. Rewrite using `[← valuation_apply_lt_one_iff hk, map_sub, k.apply_symm_apply, Valuation.map_sub_swap]`.
-
-Conclude with `hk' b hb`. Express the relevant statement in the definitionally equal form `k.symm (σ₂ (algebraMap M Ω x)) = _`. Rewrite using `[h₂]`. Conclude with `k.symm.commutes (τ x)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mem_Ine_lift_int {F Ω : Type*} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω]
     (A : ValuationSubring Ω) (M : Type*) [Field M] [Algebra F M]
@@ -78,7 +76,7 @@ def primeUnder {Ω : Type*} [Field Ω] (A : ValuationSubring Ω) (M : Type*) [Fi
     mem_of_isIntegral_int A (x.isIntegral_coe.map (algebraMap M Ω).toIntAlgHom)) (IsLocalRing.maximalIdeal A)
 
 /- English proof (translation)
-Rewrite using `[primeUnder, Ideal.mem_comap, ValuationSubring.valuation_lt_one_iff]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_primeUnder {Ω : Type*} [Field Ω] (A : ValuationSubring Ω) (M : Type*) [Field M] [NumberField M]
     [Algebra M Ω] (x : 𝓞 M) : x ∈ primeUnder A M ↔ A.valuation (algebraMap M Ω (x : M)) < 1 := by
@@ -86,33 +84,27 @@ theorem mem_primeUnder {Ω : Type*} [Field Ω] (A : ValuationSubring Ω) (M : Ty
   rfl
 
 /- English proof (translation)
-Set `N : IntermediateField K Ω` to `IntermediateField.normalClosure K L Ω`. Set `M : Type` to `N`. Use `haveI : FiniteDimensional K M := inferInstance`. Use `haveI : NumberField M := NumberField.of_module_finite K M`. Use `haveI : IsGalois K M := IsGalois.normalClosure K L Ω`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `haveI : IsGalois L M := IsGalois.tower_top_of_isGalois K L M`. Set `P : Ideal (𝓞 M)` to `primeUnder A M`. Use `haveI : P.IsPrime := Ideal.comap_isPrime _ _`. Establish `hPv : P.under (𝓞 K) = v.asIdeal`. Use extensionality with `x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Ideal.mem_comap, mem_primeUnder, ← hv x]`. Use `congr! 2`. Establish `hPw : P.under (𝓞 L) = w.asIdeal`. Use extensionality with `x`. Rewrite using `[Ideal.mem_comap, mem_primeUnder, ← hw x]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congr! 2`. Use `haveI hPv' : P.LiesOver v.asIdeal := ⟨hPv.symm⟩`. Use `haveI hPw' : P.LiesOver w.asIdeal := ⟨hPw.symm⟩`. Use `haveI hwv : w.asIdeal.LiesOver v.asIdeal := ⟨by rw [← hPw, Ideal.under_under, hPv]⟩`. Use `⟨hwv, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hv0` using `v.ne_bot`. Establish `hw0` using `w.ne_bot`. Establish `hP0 : P ≠ ⊥` using `Ideal.ne_bot_of_liesOver_of_ne_bot hv0 P`. Use `v.isMaximal` as an intermediate fact. Use `w.isMaximal` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `: Finite (𝓞 K ⧸ v.asIdeal)` using `Ideal.finiteQuotientOfFreeOfNeBot _ hv0`. Establish `: Finite (𝓞 L ⧸ w.asIdeal)` using `Ideal.finiteQuotientOfFreeOfNeBot _ hw0`. Establish `h1` using `Ideal.card_inertia_eq_ramificationIdxIn (G := M ≃ₐ[K] M) v.asIdeal P`. Establish `h2` using `Ideal.card_inertia_eq_ramificationIdxIn (G := M ≃ₐ[L] M) w.asIdeal P`. Rewrite `h1` using `[Ideal.ramificationIdxIn_eq_ramificationIdx _ P (M ≃ₐ[K] M)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h2` using `[Ideal.ramificationIdxIn_eq_ramificationIdx _ P (M ≃ₐ[L] M)]`. Establish `h3` using `Ideal.ramificationIdx_tower (R := 𝓞 K) w.asIdeal P`. Establish `hfix : ∀ τ ∈ P.toAddSubgroup.inertia (M ≃ₐ[K] M), ∀ x : L, τ (algebraMap L M x) = algebraMap L M x`. Introduce `τ hτ x`. Take `⟨σ, hσ, hστ⟩` from `exists_mem_Ine_lift_int A M τ fun y => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Use `(mem_primeUnder A M _).1 (hτ y)` as an intermediate fact. Establish `e : ((τ • y - y : 𝓞 M) : M) = τ (y : M) - (y : M)` using `rfl`. Rewrite using `[← map_sub, ← e]`. Conclude with `this`. Apply `(algebraMap M Ω).injective` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← hστ, ← IsScalarTower.algebraMap_apply, hI σ hσ x]`. Set `f : P.toAddSubgroup.inertia (M ≃ₐ[K] M) → P.toAddSubgroup.inertia (M ≃ₐ[L] M)` to `fun τ => ⟨{ (τ : M ≃ₐ[K] M).toRingEquiv with commutes' := hfix τ τ.2 }, fun y => τ.2 y⟩`. Establish `hf : Function.Injective f`. Introduce `a b hab`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply `AlgEquiv.ext` to reduce the goal to its premises. Introduce `y`. Conclude with `DFunLike.congr_fun (congrArg Subtype.val hab) y`. Establish `h4` using `Nat.card_le_card_of_injective f hf`. Rewrite `h4` using `[h1, h2, h3]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hpos : 0 < P.ramificationIdx (𝓞 K)` using `h1 ▸ Nat.card_pos`. Rewrite `hpos` using `[h3]`. Establish `ha : w.asIdeal.ramificationIdx (𝓞 K) ≠ 0`. Introduce `h0`. Rewrite `hpos` using `[h0]`.
-
-Simplify using `at hpos`. Establish `hb : P.ramificationIdx (𝓞 L) ≠ 0`. Introduce `h0`. Rewrite `hpos` using `[h0]`. Simplify using `at hpos`.
-
-Establish `hle : w.asIdeal.ramificationIdx (𝓞 K) ≤ 1`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `: 2 * P.ramificationIdx (𝓞 L) ≤ w.asIdeal.ramificationIdx (𝓞 K) * P.ramificationIdx (𝓞 L)` using `Nat.mul_le_mul_right _ hc`. Use linear arithmetic over natural numbers and integers.
-
-Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem ramificationIdx_eq_one {K Ω L : Type} [Field K] [NumberField K] [Field Ω] [Algebra K Ω] [IsAlgClosure K Ω]
     [Field L] [NumberField L] [Algebra K L] [Algebra L Ω] [IsScalarTower K L Ω] (A : ValuationSubring Ω)

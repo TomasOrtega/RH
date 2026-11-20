@@ -7,17 +7,15 @@ open Matrix GlobalTheory.KZ
 namespace GlobalTheory.KZ
 
 /- English proof (translation)
-Take `⟨k, hkN, hkl⟩` from `Nat.chineseRemainder hNl d 1`. Establish `hk1 : Nat.Coprime k N`. Unfold `Nat.Coprime`. Rewrite using `[Nat.ModEq.gcd_eq hkN]`. Conclude with `hd`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hk2 : Nat.Coprime k l`. Unfold `Nat.Coprime`. Rewrite using `[Nat.ModEq.gcd_eq hkl]`. Simplify using the standard rewrite rules. Establish `hk : Nat.Coprime k (N * l)` using `Nat.Coprime.mul_right hk1 hk2`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg : Int.gcd (k : ℤ) ((N * l : ℕ) : ℤ) = 1`. Rewrite using `[Int.gcd_natCast_natCast]`. Conclude with `hk`. Establish `hb` using `Int.gcd_eq_gcd_ab (k : ℤ) ((N * l : ℕ) : ℤ)`. Rewrite `hb` using `[hg]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdet : (!![Int.gcdA (k : ℤ) ((N * l : ℕ) : ℤ), -Int.gcdB (k : ℤ) ((N * l : ℕ) : ℤ); ((N * l : ℕ) : ℤ), (k : ℤ)] : Matrix (Fin 2) (Fin 2) ℤ).det = 1`. Rewrite using `[Matrix.det_fin_two_of]`. Move the coercions through the operations in `at hb ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨(⟨_, hdet⟩ : SL(2, ℤ)), Subgroup.mem_inf.2 ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `CongruenceSubgroup.Gamma0_mem.2 ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Use `CongruenceSubgroup.Gamma0_mem.2 ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using `only [en]`.
-
-Simplify using the standard rewrite rules. Conclude with `(ZMod.natCast_eq_natCast_iff _ _ _).2 hkN`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma exists_isDiam_of_coprime (N l d : ℕ) (hNl : Nat.Coprime N l) (hd : Nat.Coprime d N) :
     ∃ γ : SL(2, ℤ), IsDiam N l d γ := by
@@ -51,7 +49,7 @@ private lemma exists_isDiam_of_coprime (N l d : ℕ) (hNl : Nat.Coprime N l) (hd
     exact (ZMod.natCast_eq_natCast_iff _ _ _).2 hkN
 
 /- English proof (translation)
-Introduce `N l d _ _ hNl hd`. Conclude with `Classical.epsilon_spec (exists_isDiam_of_coprime N l d hNl hd)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isDiam_sgD_of_prime : ∀ (N l d : ℕ), l.Prime → 0 < N → Nat.Coprime N l → Nat.Coprime d N →
     IsDiam N l d (sgD N l d) := by

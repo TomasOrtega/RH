@@ -24,7 +24,7 @@ namespace GlobalTheory.CuspBlockLeft
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[hcm.2.2.2 τ, hcm.2.2.2 τ, star_star]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem sigma_sigma {σ : E →ₐ[F] E} (hcm : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
@@ -32,9 +32,9 @@ theorem sigma_sigma {σ : E →ₐ[F] E} (hcm : IsCMExt F E σ) (x : E) : σ (σ
   rw [hcm.2.2.2 τ, hcm.2.2.2 τ, star_star]
 
 /- English proof (translation)
-Establish `h` using `congrArg (cT (σ : E →+* E)) hW.xy`. Rewrite `h` using `[Formalism.UG.cT_mul, Formalism.UG.cT_mul, Formalism.UG.cT_one]`. Establish `e1 : cT (σ : E →+* E) (cT (σ : E →+* E) X) = X`. Use extensionality with `i j`. Simplify using `[cT, sigma_sigma hcm]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `e2 : cT (σ : E →+* E) J = J`. Use extensionality with `i j`. Simplify using `[cT, hJ.1]`. Rewrite `h` using `[e1, e2, ← Matrix.mul_assoc]`. Conclude with `h`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem yx_eq_one {σ : E →ₐ[F] E} (hcm : IsCMExt F E σ) {n r : ℕ} {J : Matrix (Fin n) (Fin n) E}
     (hJ : IsHermND σ J) {X Y : Matrix (Fin n) (Fin r) E} (hW : GlobalTheory.SiegelSet.IsWittFrame σ J X Y) :
@@ -55,9 +55,9 @@ section Frame
 variable (σ : E →ₐ[F] E) {n r : ℕ} (J : Matrix (Fin n) (Fin n) E) {l d : ℕ} (h : l + d ≤ r) (k : Fin r)
 
 /- English proof (translation)
-Use extensionality with `a i`. Use `congrFun (congrFun hM ⟨l + a.val, by omega⟩) (Fin.castLE k.2 i)` as an intermediate fact. Rewrite `this` using `[Matrix.one_apply]`. Use `Eq.trans ?_ (this.trans ?_)` and prove the remaining obligations. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression.
 
-Simplify using `[selMat, Fin.ext_iff]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blk_init_one {Y X : Matrix (Fin n) (Fin r) E} (hM : cT (σ : E →+* E) Y * J * X = 1) :
     cT (σ : E →+* E) (GlobalTheory.BlockForms.blkCols h Y) * J * GlobalTheory.StdPar.initCols X k = selMat l d k.val := by
@@ -69,7 +69,7 @@ theorem blk_init_one {Y X : Matrix (Fin n) (Fin r) E} (hM : cT (σ : E →+* E) 
   · simp [selMat, Fin.ext_iff]
 
 /- English proof (translation)
-Use extensionality with `a i`. Use `congrFun (congrFun hM ⟨l + a.val, by omega⟩) (Fin.castLE k.2 i)` as an intermediate fact. Conclude with `this`.
+By extensionality, compare the relevant components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem blk_init_zero {Y X : Matrix (Fin n) (Fin r) E} (hM : cT (σ : E →+* E) Y * J * X = 0) :
     cT (σ : E →+* E) (GlobalTheory.BlockForms.blkCols h Y) * J * GlobalTheory.StdPar.initCols X k = 0 := by
@@ -78,7 +78,7 @@ theorem blk_init_zero {Y X : Matrix (Fin n) (Fin r) E} (hM : cT (σ : E →+* E)
   exact this
 
 /- English proof (translation)
-Use extensionality with `a i`. Use `i.2` as an intermediate fact. Simplify using `only [selMat, Matrix.of_apply, Matrix.zero_apply]`. Rewrite using `[if_neg (by omega)]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem selMat_eq_zero (hk : k.val < l) : (selMat (E := E) l d k.val) = 0 := by
   ext a i
@@ -87,11 +87,9 @@ theorem selMat_eq_zero (hk : k.val < l) : (selMat (E := E) l d k.val) = 0 := by
   rw [if_neg (by omega)]
 
 /- English proof (translation)
-Use extensionality with `c a`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, selMat, Matrix.of_apply, mul_ite, mul_one, mul_zero]`. Rewrite using `[Finset.sum_eq_single (⟨l + a.val, by omega⟩ : Fin (k.val + 1))]`. Rewrite using `[if_pos rfl]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `i _ hi`. Rewrite using `[if_neg]`. Introduce `e`. Conclude with `hi (Fin.ext e.symm)`. Introduce `h`.
-
-Conclude with `absurd (Finset.mem_univ _) h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem init_mul_selMat (hk : l + d ≤ k.val + 1) (Z : Matrix (Fin n) (Fin r) E) :
     GlobalTheory.StdPar.initCols Z k * (selMat (E := E) l d k.val)ᵀ = GlobalTheory.BlockForms.blkCols h Z := by
@@ -106,11 +104,11 @@ theorem init_mul_selMat (hk : l + d ≤ k.val + 1) (Z : Matrix (Fin n) (Fin r) E
   · intro h; exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, selMat, Matrix.of_apply, Matrix.one_apply, mul_ite, mul_one, mul_zero]`. Rewrite using `[Finset.sum_eq_single (⟨l + b.val, by omega⟩ : Fin (k.val + 1))]`. Simplify using `only [if_true]`. Distinguish the cases in `hab : a = b`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Simplify using `[hab]`. Rewrite using `[if_neg hab, if_neg]`. Introduce `e; exact hab (Fin.ext (by simpa using e))`. Introduce `i _ hi`. Rewrite using `[if_neg]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `e`. Conclude with `hi (Fin.ext e.symm)`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem selMat_mul_transpose (hk : l + d ≤ k.val + 1) :
     (selMat (E := E) l d k.val) * (selMat (E := E) l d k.val)ᵀ = 1 := by
@@ -137,7 +135,7 @@ variable {σ : E →ₐ[F] E} {n r : ℕ} {J : Matrix (Fin n) (Fin n) E} {X Y : 
   (h : l + d ≤ r)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[cT, sigR, inclR]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_inclR {p q : Type} (M : Matrix p q E) :
     cT (sigR (AF F) σ) (M.map (inclR (F := F) (AF F))) = (cT (σ : E →+* E) M).map (inclR (F := F) (AF F)) := by
@@ -146,7 +144,7 @@ theorem cT_inclR {p q : Type} (M : Matrix p q E) :
 
 omit [NumberField E] in
 /- English proof (translation)
-Substitute `hM` using the available equality. Simplify using `only [GlobalTheory.SiegelSet.adMat, Matrix.map_mul, Matrix.add_mul, Matrix.one_mul, Matrix.mul_assoc]`.
+Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem mul_adMat_expand {m : ℕ} (M : Matrix (Fin n) (Fin n) (AF F ⊗[F] E)) (A A' : Matrix (Fin d) (Fin d) (AF F ⊗[F] E))
     (hM : M = 1 + adMat F (GlobalTheory.BlockForms.blkCols h X) * (A - 1) *
@@ -162,15 +160,15 @@ theorem mul_adMat_expand {m : ℕ} (M : Matrix (Fin n) (Fin n) (AF F ⊗[F] E)) 
 
 omit [NumberField E] in
 /- English proof (translation)
-Break down `hQ with hQ | ⟨hCQ, hQQ⟩` into its components or cases. Use `⟨1, Subgroup.mem_top _, ?_⟩` and prove the remaining obligations. Rewrite using `[hg, hQ]`. Simplify using the standard rewrite rules. Use `set P := adMat F Qᵀ with hP`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hQP : adMat F Q * P = 1`. Rewrite using `[hP, GlobalTheory.SiegelSet.adMat, GlobalTheory.SiegelSet.adMat, ← Matrix.map_mul, hQQ]`. Simplify using the standard rewrite rules. Establish `key : ∀ N N₁ : Matrix (Fin d) (Fin d) (AF F ⊗[F] E), N + N₁ + N * N₁ = 0 → (1 + P * N * adMat F Q) * (1 + P * N₁ * adMat F Q) = 1`. Introduce `N N₁ hN`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : P * N * adMat F Q * (P * N₁ * adMat F Q) = P * (N * N₁) * adMat F Q`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (adMat F Q) P, hQP, Matrix.one_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.add_mul, Matrix.mul_add, Matrix.mul_add, Matrix.one_mul, Matrix.mul_one, Matrix.one_mul, e, Matrix.mul_add, Matrix.mul_add, Matrix.add_mul, Matrix.add_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws. Use `_ = 1 := by rw [hN, Matrix.mul_zero, Matrix.zero_mul, add_zero]`. Establish `hN : (A - 1) + (A₁ - 1) + (A - 1) * (A₁ - 1) = 0`. Establish `: (A - 1) + (A₁ - 1) + (A - 1) * (A₁ - 1) = A * A₁ - 1` using `by noncomm_ring`. Rewrite using `[this, hA, sub_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hB` using `key _ _ hN`. Use `⟨⟨_, _, hB, mul_eq_one_comm.mp hB⟩, Subgroup.mem_top _, ?_⟩` and prove the remaining obligations. Use `show _ = adMat F C * (1 + P * (A - 1) * adMat F Q)`. Rewrite using `[hg, Matrix.mul_add, Matrix.mul_one, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hP, GlobalTheory.SiegelSet.adMat, GlobalTheory.SiegelSet.adMat, ← Matrix.map_mul, hCQ]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_frameStab_of {kk : ℕ} (g : GAd σ J) (C : Matrix (Fin n) (Fin kk) E) (Z : Matrix (Fin n) (Fin d) E)
     (Q : Matrix (Fin d) (Fin kk) E) (A A₁ : Matrix (Fin d) (Fin d) (AF F ⊗[F] E)) (hA : A * A₁ = 1)
@@ -205,13 +203,13 @@ theorem mem_frameStab_of {kk : ℕ} (g : GAd σ J) (C : Matrix (Fin n) (Fin kk) 
       GlobalTheory.SiegelSet.adMat, ← Matrix.map_mul, hCQ]
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.StdPar.levi, Subgroup.mem_iInf, Subgroup.mem_inf]`. Introduce `k hk`. Establish `hcase : k.val < l ∨ l + d ≤ k.val + 1`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `hS k hc.1 (by omega) hk`. Establish `hYX` using `yx_eq_one hcm hJ hW`. Prove the components needed by the constructor for the conclusion. Use `mem_frameStab_of g _ (GlobalTheory.BlockForms.blkCols h X) (selMat l d k.val) A A₁ hA ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_adMat_expand h _ _ _ hg, blk_init_one σ J h k hYX, blk_init_zero σ J h k hW.xx]`.
+Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using the standard rewrite rules. Break down `hcase with hc | hc` into its components or cases. Conclude with `Or.inl (selMat_eq_zero k hc)`. Conclude with `Or.inr ⟨init_mul_selMat h k hc X, selMat_mul_transpose k hc⟩`. Use `mem_frameStab_of g _ (GlobalTheory.BlockForms.blkCols h Y) (selMat l d k.val) (cT (sigR (AF F) σ) A₁) (cT (sigR (AF F) σ) A) (by rw [← Formalism.UG.cT_mul, hA, Formalism.UG.cT_one]) ?_ ?_` and prove the remaining obligations.
+Prove the first alternative. Prove the second alternative. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[mul_adMat_expand h _ _ _ hg, blk_init_zero σ J h k hW.yy, blk_init_one σ J h k hW.xy]`. Simplify using the standard rewrite rules. Break down `hcase with hc | hc` into its components or cases. Conclude with `Or.inl (selMat_eq_zero k hc)`. Conclude with `Or.inr ⟨init_mul_selMat h k hc Y, selMat_mul_transpose k hc⟩`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem mem_levi_of (hcm : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : GlobalTheory.SiegelSet.IsWittFrame σ J X Y)
     (S : Finset (Fin r)) (hS : ∀ j : Fin r, l ≤ j.val → j.val + 1 < l + d → j ∉ S) (g : GAd σ J)
@@ -244,13 +242,11 @@ theorem mem_levi_of (hcm : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : GlobalTheo
       · exact Or.inr ⟨init_mul_selMat h k hc Y, selMat_mul_transpose k hc⟩
 
 /- English proof (translation)
-Use `haveI : Nontrivial (AF F ⊗[F] E) := ⟨⟨inclR (F := F) (AF F) 0, inclR (F := F) (AF F) 1, fun e => zero_ne_one (hinj e)⟩⟩`. Establish `hdet : M.det ≠ 0`. Introduce `h0`. Establish `hu : IsUnit (M.map (inclR (F` using `F) (AF F))).det := by`. Rewrite using `[← hM]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Matrix.isUnits_det_units _`. Establish `h1` using `(inclR (F := F) (E := E) (AF F)).map_det M`. Rewrite `h1` using `[h0, map_zero, RingHom.mapMatrix_apply]`. Rewrite `hu` using `[← h1]`. Conclude with `not_isUnit_zero hu`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `⟨Matrix.GeneralLinearGroup.mkOfDetNeZero M hdet, ?_, Units.ext hM.symm⟩` and prove the remaining obligations. Use `show cT (σ : E →+* E) M * J * M = J`. Apply `Matrix.map_injective hinj` to reduce the goal to its premises. Establish `hg : cT (sigR (AF F) σ) (matHom _ σ J g).1 * JR (AF F) J * (matHom _ σ J g).1 = JR (AF F) J` using `g.2`. Rewrite `hg` using `[hM, cT_inclR, JR, ← Matrix.map_mul, ← Matrix.map_mul]`.
-
-Conclude with `hg`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_ratPts_of (g : GAd σ J) (M : Matrix (Fin n) (Fin n) E)
     (hM : (matHom _ σ J g).1 = M.map (inclR (F := F) (AF F)))
@@ -278,17 +274,15 @@ end GlobalTheory.CuspBlockLeft
 namespace GlobalTheory.CuspBlockLeft
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ σ hcm n J hJ r Xf Yf hW K _ S l d h ι hι _ hS _ _ ψ hψ g₀ _ γ g`. Take `⟨Φ, j, -, -, hj, hΦ, hmat⟩` from `hι`. Establish `hΦE : ∀ x : E, Φ (inclR (F` using `F) (AF F) x) = algebraMap E (AdeleRing (𝓞 E) E) x := fun x => by`. Rewrite using `[hΦ]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show j (GlobalTheory.LFun.infTens F E ((1 : AF F) ⊗ₜ[F] x)) = algebraMap E (InfiniteAdeleRing E) x`. Rewrite using `[← hj x]`. Use `congr 1`. Use `show GlobalTheory.LFun.finAdEquiv F E (GlobalTheory.LFun.finTens F E ((1 : AF F) ⊗ₜ[F] x)) = algebraMap E (FiniteAdeleRing (𝓞 E) E) x`. Establish `e : GlobalTheory.LFun.finTens F E ((1 : AF F) ⊗ₜ[F] x) = (1 : Af F) ⊗ₜ[F] x` using `by simp [GlobalTheory.LFun.finTens]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e, show GlobalTheory.LFun.finAdEquiv F E ((1 : Af F) ⊗ₜ[F] x) = _ from GlobalTheory.LFun.toFinAd_tmul 1 x, map_one, one_mul]`. Establish `hΦs : ∀ x : E, Φ.symm (algebraMap E (AdeleRing (𝓞 E) E) x) = inclR (F` using `F) (AF F) x := fun x => by`. Rewrite using `[RingEquiv.symm_apply_eq, hΦE]`. Establish `hinj : Function.Injective (inclR (F` using `F) (E := E) (AF F)) := by`. Introduce `x y hxy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨w⟩ : Nonempty (InfinitePlace E)` from `inferInstance`. Use `congrArg (fun z => (Φ z).1 w) hxy` as an intermediate fact. Simplify using `only [hΦE] at this`. Conclude with `(algebraMap E w.Completion).injective this`. Establish `hrat : ∀ δ : GL (Fin d) E, (GlobalTheory.CuspRep.ratGL E d δ).1.map Φ.symm = δ.1.map (inclR (F` using `F) (AF F)) := fun δ => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `a b`. Conclude with `hΦs (δ.1 a b)`. Establish `hlevi : ∀ g' : GlobalTheory.CuspRep.GA E d, ι g' ∈ GlobalTheory.StdPar.levi σ J Xf Yf S` using `fun g' => GlobalTheory.CuspBlockLeft.mem_levi_of h hcm hJ hW S hS (ι g') (g'.1.map Φ.symm) ((g'⁻¹).1.map Φ.symm) (by rw [← Matrix.map_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one]; simp) (hmat g')`. Establish `hratPt : ι (GlobalTheory.CuspRep.ratGL E d γ) ∈ ratPts σ J`. Use `GlobalTheory.CuspBlockLeft.mem_ratPts_of _ (1 + GlobalTheory.BlockForms.blkCols h Xf * (γ.1 - 1) * (cT (σ : E →+* E) (GlobalTheory.BlockForms.blkCols h Yf) * J) + GlobalTheory.BlockForms.blkCols h Yf * (cT (σ : E →+* E) (γ⁻¹).1 - 1) * (cT (σ : E →+* E) (GlobalTheory.BlockForms.bl …` and prove the remaining obligations.
-
-Rewrite using `[hmat, ← map_inv, hrat, hrat, GlobalTheory.CuspBlockLeft.cT_inclR]`. Simplify using `[Matrix.map_add, Matrix.map_sub, Matrix.map_mul, Matrix.map_one]`. Rewrite using `[map_mul, mul_assoc]`. Conclude with `hψ.1.leftM _ hratPt (hlevi _) _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cuspForm_blockEmb_left_invariant : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [IsTotallyComplex E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J →

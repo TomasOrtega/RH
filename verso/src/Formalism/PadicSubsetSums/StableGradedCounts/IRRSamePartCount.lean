@@ -5,11 +5,11 @@ open Finset
 namespace Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha⟩`. Establish `hg : z ^ (l ^ a).gcd n = 1` using `pow_gcd_eq_one.2 ⟨ha, hz⟩`. Take `⟨k, -, hk'⟩` from `(Nat.dvd_prime_pow hl).1 (Nat.gcd_dvd_left (l ^ a) n)`. Establish `hkn : l ^ k ∣ n`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← hk']`. Conclude with `Nat.gcd_dvd_right _ _`. Use `haveI := Fact.mk hl`. Establish `hkv : k ≤ padicValNat l n` using `(padicValNat_dvd_iff_le hn).1 hkn`. Take `⟨c, hc⟩` from `pow_dvd_pow l hkv`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hc, pow_mul, ← hk', hg, one_pow]`. Introduce `h`. Conclude with `⟨_, h⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lpow_order_iff {G : Type*} [Monoid G] {l n : ℕ} (hl : l.Prime) (hn : n ≠ 0) (z : G)
     (hz : z ^ n = 1) : (∃ a : ℕ, z ^ (l ^ a) = 1) ↔ z ^ (l ^ padicValNat l n) = 1 := by

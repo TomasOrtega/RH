@@ -10,9 +10,9 @@ section
 variable {R σ : Type} [CommSemiring R]
 
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on`. Simplify using the standard rewrite rules. Name the introduced variables `p q hp hq`. Simplify using `only [map_add, hp, hq]`. Name the introduced variables `p n hp`.
+Proceed by induction. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `h0 : ∀ a b : σ, pderiv a (Pi.single (M` using `fun _ => MvPolynomial σ R) b 1 n) = 0 := by`. Apply the tactic sequence `intro a b; rw [Pi.single_apply]; split_ifs <;> simp`. Simplify using `only [Derivation.leibniz, map_add, smul_eq_mul, pderiv_X, h0, hp, mul_zero, zero_add, add_zero]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pderiv_comm' (i j : σ) (p : MvPolynomial σ R) :
     pderiv i (pderiv j p) = pderiv j (pderiv i p) := by
@@ -34,13 +34,13 @@ Both sides reduce to the same expression.
 theorem Dp_apply (v : σ) (p : MvPolynomial σ R) : Dp v p = pderiv v p := rfl
 
 /- English proof (translation)
-Establish `hl : ∀ x y : MvPolynomial σ R, Dp v (x * y) = x * Dp v y + y * Dp v x` using `fun x y => by`. Simplify using `only [Dp_apply, Derivation.leibniz, smul_eq_mul]`. Establish `hs : ∀ (j : ℕ) (x : MvPolynomial σ R), (Dp v ^ (j + 1)) x = Dp v ((Dp v ^ j) x)`. Apply the tactic sequence `intro j x; rw [pow_succ'] <;> rfl`. Establish `key : ∀ n, (Dp v ^ n) (a * b) = ∑ ij ∈ Finset.HasAntidiagonal.antidiagonal n, n.choose ij.1 • ((Dp v ^ ij.1) a * (Dp v ^ ij.2) b)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[Finset.sum_antidiagonal_choose_succ_nsmul (fun i j => (Dp v ^ i) a * (Dp v ^ j) b), hs, ih, map_sum, ← Finset.sum_add_distrib]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun ij hij => ?_` and prove the remaining obligations. Rewrite `hij` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Establish `hsym : n.choose ij.2 = n.choose ij.1` using `by rw [← hij, Nat.choose_symm_add]`. Use `beta_reduce`. Rewrite using `[map_nsmul, hl, hs, hs, hsym]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key, Finset.Nat.sum_antidiagonal_eq_sum_range_succ (fun i j => m.choose i • ((Dp v ^ i) a * (Dp v ^ j) b))]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_Dp_mul (v : σ) (a b : MvPolynomial σ R) (m : ℕ) :
     (Dp v ^ m) (a * b) = ∑ i ∈ range (m + 1), m.choose i • ((Dp v ^ i) a * (Dp v ^ (m - i)) b) := by
@@ -65,13 +65,13 @@ theorem pow_Dp_mul (v : σ) (a b : MvPolynomial σ R) (m : ℕ) :
   rw [key, Finset.Nat.sum_antidiagonal_eq_sum_range_succ (fun i j => m.choose i • ((Dp v ^ i) a * (Dp v ^ j) b))]
 
 /- English proof (translation)
-Proceed by induction on `k generalizing s c with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[pow_succ]`. Use `show (Dp v ^ k) (Dp v (monomial s c)) = _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Dp_apply, pderiv_monomial, ih]`. Establish `h1 : s - Finsupp.single v 1 - Finsupp.single v k = s - Finsupp.single v (k + 1)`. Apply the tactic sequence `ext x; simp only [Finsupp.tsub_apply, Finsupp.single_apply]; split_ifs <;> omega`. Establish `h2 : c * ((s v : ℕ) : R) * ((((s - Finsupp.single v 1 : σ →₀ ℕ) v).descFactorial k : ℕ) : R) = c * (((s v).descFactorial (k + 1) : ℕ) : R)`. Rewrite using `[Finsupp.tsub_apply, Finsupp.single_eq_same]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Nat.eq_zero_or_pos (s v) with h | h` into its components or cases. Simplify using `[h]`. Take `⟨m, hm⟩ : ∃ m, s v = m + 1` from `⟨s v - 1, by omega⟩`. Rewrite using `[hm, Nat.add_sub_cancel, Nat.succ_descFactorial_succ]`. Use `push_cast`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, h2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_Dp_monomial (v : σ) (s : σ →₀ ℕ) (c : R) (k : ℕ) :
     (Dp v ^ k) (monomial s c) = monomial (s - Finsupp.single v k) (c * ((s v).descFactorial k : R)) := by
@@ -94,7 +94,7 @@ theorem pow_Dp_monomial (v : σ) (s : σ →₀ ℕ) (c : R) (k : ℕ) :
     rw [h1, h2]
 
 /- English proof (translation)
-Rewrite using `[X_pow_eq_monomial, pow_Dp_monomial, Finsupp.single_eq_same, ← Finsupp.single_tsub, X_pow_eq_monomial, one_mul, smul_monomial, nsmul_eq_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_Dp_X_pow (v : σ) (m t : ℕ) :
     (Dp v ^ t) (X v ^ m : MvPolynomial σ R) = m.descFactorial t • X v ^ (m - t) := by
@@ -102,7 +102,7 @@ theorem pow_Dp_X_pow (v : σ) (m t : ℕ) :
     X_pow_eq_monomial, one_mul, smul_monomial, nsmul_eq_mul, mul_one]
 
 /- English proof (translation)
-Use `conv_lhs => rw [q.as_sum]`. Rewrite using `[map_sum]`. Use `Finset.sum_eq_zero fun s hs => ?_` and prove the remaining obligations. Rewrite using `[pow_Dp_monomial, (Nat.descFactorial_eq_zero_iff_lt).2 (Nat.lt_succ_of_le (hq s hs))]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pow_Dp_eq_zero (v : σ) (q : MvPolynomial σ R) (K : ℕ) (hq : ∀ s ∈ q.support, s v ≤ K) :
     (Dp v ^ (K + 1)) q = 0 := by
@@ -126,15 +126,15 @@ variable (p : ℕ) [Fact p.Prime] {σ : Type} [Fintype σ] [DecidableEq σ]
 noncomputable def fw (m : σ →₀ ℕ) : ℚ_[p] := m.prod fun _ k => (k.factorial : ℚ_[p])
 
 /- English proof (translation)
-Rewrite using `[fw, Finsupp.prod_fintype _ _ (fun _ => by simp)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fw_eq (m : σ →₀ ℕ) : fw p m = ∏ x, ((m x).factorial : ℚ_[p]) := by
   rw [fw, Finsupp.prod_fintype _ _ (fun _ => by simp)]
 
 /- English proof (translation)
-Rewrite using `[fw_eq, fw_eq]`. Establish `key : ∀ x, (((m + Finsupp.single v 1 : σ →₀ ℕ) x).factorial : ℚ_[p]) = ((m x).factorial : ℚ_[p]) * (if x = v then ((m v + 1 : ℕ) : ℚ_[p]) else 1)`. Introduce `x`. Distinguish the cases in `h : x = v`. Substitute `h` using the available equality.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `only [Finsupp.add_apply, Finsupp.single_eq_same, if_true, Nat.factorial_succ, Nat.cast_mul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[Finsupp.single_apply, Ne.symm h, h]`. Repeatedly rewrite using `[key, Finset.prod_mul_distrib, Finset.prod_ite_eq']`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fw_add_single (m : σ →₀ ℕ) (v : σ) :
     fw p (m + Finsupp.single v 1) = fw p m * ((m v + 1 : ℕ) : ℚ_[p]) := by
@@ -151,7 +151,7 @@ theorem fw_add_single (m : σ →₀ ℕ) (v : σ) :
   simp
 
 /- English proof (translation)
-Simplify using `only [M.fock, fw]`. Use `Finset.sum_subset hs fun m _ hm => ?_` and prove the remaining obligations. Simplify using `only [MvPolynomial.mem_support_iff, not_not] at hm`. Simplify using `[hm]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem fock_eq_sum (F G : MvPolynomial σ ℚ_[p]) (s : Finset (σ →₀ ℕ)) (hs : F.support ⊆ s) :
     M.fock p F G = ∑ m ∈ s, F.coeff m * G.coeff m * fw p m := by
@@ -161,7 +161,7 @@ theorem fock_eq_sum (F G : MvPolynomial σ ℚ_[p]) (s : Finset (σ →₀ ℕ))
   simp [hm]
 
 /- English proof (translation)
-Rewrite using `[fock_eq_sum p F G (F.support ∪ G.support) (fun x hx => Finset.mem_union_left _ hx), fock_eq_sum p G F (F.support ∪ G.support) (fun x hx => Finset.mem_union_right _ hx)]`. Conclude with `Finset.sum_congr rfl fun m _ => by ring`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fock_comm (F G : MvPolynomial σ ℚ_[p]) : M.fock p F G = M.fock p G F := by
   rw [fock_eq_sum p F G (F.support ∪ G.support) (fun x hx => Finset.mem_union_left _ hx),
@@ -169,7 +169,7 @@ theorem fock_comm (F G : MvPolynomial σ ℚ_[p]) : M.fock p F G = M.fock p G F 
   exact Finset.sum_congr rfl fun m _ => by ring
 
 /- English proof (translation)
-Rewrite using `[fock_comm, fock_eq_sum p G F s hs]`. Conclude with `Finset.sum_congr rfl fun m _ => by ring`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fock_eq_sum' (F G : MvPolynomial σ ℚ_[p]) (s : Finset (σ →₀ ℕ)) (hs : G.support ⊆ s) :
     M.fock p F G = ∑ m ∈ s, F.coeff m * G.coeff m * fw p m := by
@@ -177,7 +177,7 @@ theorem fock_eq_sum' (F G : MvPolynomial σ ℚ_[p]) (s : Finset (σ →₀ ℕ)
   exact Finset.sum_congr rfl fun m _ => by ring
 
 /- English proof (translation)
-Rewrite using `[fock_eq_sum' p _ G G.support (Finset.Subset.refl _), fock_eq_sum' p F G G.support (Finset.Subset.refl _), fock_eq_sum' p F' G G.support (Finset.Subset.refl _), ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun m _ => by rw [coeff_add]; ring`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fock_add_left (F F' G : MvPolynomial σ ℚ_[p]) :
     M.fock p (F + F') G = M.fock p F G + M.fock p F' G := by
@@ -186,7 +186,7 @@ theorem fock_add_left (F F' G : MvPolynomial σ ℚ_[p]) :
   exact Finset.sum_congr rfl fun m _ => by rw [coeff_add]; ring
 
 /- English proof (translation)
-Rewrite using `[fock_eq_sum' p _ G G.support (Finset.Subset.refl _), fock_eq_sum' p F G G.support (Finset.Subset.refl _), Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun m _ => by rw [coeff_smul, smul_eq_mul]; ring`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fock_smul_left (c : ℚ_[p]) (F G : MvPolynomial σ ℚ_[p]) :
     M.fock p (c • F) G = c * M.fock p F G := by
@@ -195,14 +195,14 @@ theorem fock_smul_left (c : ℚ_[p]) (F G : MvPolynomial σ ℚ_[p]) :
   exact Finset.sum_congr rfl fun m _ => by rw [coeff_smul, smul_eq_mul]; ring
 
 /- English proof (translation)
-Rewrite using `[fock_eq_sum' p 0 G G.support (Finset.Subset.refl _)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fock_zero_left (G : MvPolynomial σ ℚ_[p]) : M.fock p 0 G = 0 := by
   rw [fock_eq_sum' p 0 G G.support (Finset.Subset.refl _)]
   simp
 
 /- English proof (translation)
-Use `Finset.induction_on t (by simp [fock_zero_left]) ?_` and prove the remaining obligations. Introduce `a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, fock_add_left, ih]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem fock_sum_left {ι : Type} (t : Finset ι) (F : ι → MvPolynomial σ ℚ_[p]) (G : MvPolynomial σ ℚ_[p]) :
     M.fock p (∑ i ∈ t, F i) G = ∑ i ∈ t, M.fock p (F i) G := by
@@ -212,21 +212,21 @@ theorem fock_sum_left {ι : Type} (t : Finset ι) (F : ι → MvPolynomial σ �
   rw [Finset.sum_insert ha, Finset.sum_insert ha, fock_add_left, ih]
 
 /- English proof (translation)
-Rewrite using `[fock_comm p F (G + G'), fock_add_left, fock_comm p G F, fock_comm p G' F]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fock_add_right (F G G' : MvPolynomial σ ℚ_[p]) :
     M.fock p F (G + G') = M.fock p F G + M.fock p F G' := by
   rw [fock_comm p F (G + G'), fock_add_left, fock_comm p G F, fock_comm p G' F]
 
 /- English proof (translation)
-Rewrite using `[fock_comm p F (c • G), fock_smul_left, fock_comm p G F]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fock_smul_right (c : ℚ_[p]) (F G : MvPolynomial σ ℚ_[p]) :
     M.fock p F (c • G) = c * M.fock p F G := by
   rw [fock_comm p F (c • G), fock_smul_left, fock_comm p G F]
 
 /- English proof (translation)
-Rewrite using `[fock_comm, fock_sum_left]`. Conclude with `Finset.sum_congr rfl fun i _ => fock_comm p _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fock_sum_right {ι : Type} (t : Finset ι) (F : MvPolynomial σ ℚ_[p]) (G : ι → MvPolynomial σ ℚ_[p]) :
     M.fock p F (∑ i ∈ t, G i) = ∑ i ∈ t, M.fock p F (G i) := by
@@ -234,13 +234,11 @@ theorem fock_sum_right {ι : Type} (t : Finset ι) (F : MvPolynomial σ ℚ_[p])
   exact Finset.sum_congr rfl fun i _ => fock_comm p _ _
 
 /- English proof (translation)
-Proceed by induction on `b using MvPolynomial.induction_on'`. Name the introduced variables `t d`. Rewrite using `[pderiv_monomial, coeff_monomial, coeff_monomial]`. Distinguish the cases in `h : t = m + Finsupp.single v 1`. Substitute `h` using the available equality.
+Proceed by induction. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos (add_tsub_cancel_right m _), if_pos rfl]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg h, zero_mul] split_ifs with h2`. Establish `ht : t v = 0`. Assume the negation of the conclusion as `hne`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `h` to reduce the goal to its premises. Rewrite using `[← h2, tsub_add_cancel_of_le (Finsupp.single_le_iff.2 (Nat.one_le_iff_ne_zero.2 hne))]`. Simplify using `[ht]`. Both sides reduce to the same expression. Name the introduced variables `f g hf hg`.
-
-Rewrite using `[map_add, coeff_add, coeff_add, hf, hg, add_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 private theorem coeff_pderiv_lemma_7 (v : σ) (b : MvPolynomial σ ℚ_[p]) (m : σ →₀ ℕ) :
     coeff m (pderiv v b) = coeff (m + Finsupp.single v 1) b * ((m v + 1 : ℕ) : ℚ_[p]) := by
@@ -263,9 +261,9 @@ private theorem coeff_pderiv_lemma_7 (v : σ) (b : MvPolynomial σ ℚ_[p]) (m :
     rw [map_add, coeff_add, coeff_add, hf, hg, add_mul]
 
 /- English proof (translation)
-Establish `hsupp : (X v * a).support ⊆ a.support.map (addRightEmbedding (Finsupp.single v 1))`. Apply the tactic sequence `rw [mul_comm, support_mul_X] <;> exact Finset.Subset.refl _`. Rewrite using `[fock_eq_sum p _ b _ hsupp, Finset.sum_map, fock_eq_sum p a _ a.support (Finset.Subset.refl _)]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Simplify using `only [addRightEmbedding_apply]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[mul_comm (X v) a, coeff_mul_X, coeff_pderiv_lemma_7, fw_add_single]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fock_X_mul (v : σ) (a b : MvPolynomial σ ℚ_[p]) :
     M.fock p (X v * a) b = M.fock p a (pderiv v b) := by
@@ -278,7 +276,7 @@ theorem fock_X_mul (v : σ) (a b : MvPolynomial σ ℚ_[p]) :
   ring
 
 /- English proof (translation)
-Proceed by induction on `k generalizing a with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Apply the tactic sequence `have h1 : (Dp v ^ (k + 1)) b = Dp v ((Dp v ^ k) b) := by rw [pow_succ'] <;> rfl`. Rewrite using `[h1, pow_succ, mul_assoc, ih, fock_X_mul, Dp_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem fock_X_pow_mul (v : σ) (k : ℕ) (a b : MvPolynomial σ ℚ_[p]) :
     M.fock p (X v ^ k * a) b = M.fock p a ((Dp v ^ k) b) := by
@@ -291,7 +289,7 @@ theorem fock_X_pow_mul (v : σ) (k : ℕ) (a b : MvPolynomial σ ℚ_[p]) :
 variable {r : ℕ} (w e : Fin r → σ)
 
 /- English proof (translation)
-Establish `hF : tieF w e b = ∑ c, pderiv (w c) (pderiv (e c) b)` using `by simp [tieF, LinearMap.sum_apply]`. Simplify using `only [tieE, LinearMap.mulLeft_apply, Finset.sum_mul, fock_sum_left]`. Rewrite using `[hF, fock_sum_right]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, fock_X_mul, fock_X_mul, pderiv_comm' (e c) (w c)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem fock_E (a b : MvPolynomial σ ℚ_[p]) :
     M.fock p (tieE w e a) b = M.fock p a (tieF w e b) := by
@@ -302,9 +300,9 @@ theorem fock_E (a b : MvPolynomial σ ℚ_[p]) :
   rw [mul_assoc, fock_X_mul, fock_X_mul, pderiv_comm' (e c) (w c)]
 
 /- English proof (translation)
-Proceed by induction on `j generalizing b with`. Consider the case `zero => simp`. Consider the case `succ j ih`. Apply the tactic sequence `have h1 : (tieE w e ^ (j + 1)) a = tieE w e ((tieE w e ^ j) a) := by rw [pow_succ'] <;> rfl`. Apply the tactic sequence `have h2 : (tieF w e ^ (j + 1)) b = (tieF w e ^ j) (tieF w e b) := by rw [pow_succ] <;> rfl`.
+Proceed by induction. Treat this case separately. Treat this case separately. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[h1, h2, fock_E, ih]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fock_E_pow (j : ℕ) (a b : MvPolynomial σ ℚ_[p]) :
     M.fock p ((tieE w e ^ j) a) b = M.fock p a ((tieF w e ^ j) b) := by
@@ -316,7 +314,7 @@ theorem fock_E_pow (j : ℕ) (a b : MvPolynomial σ ℚ_[p]) :
     rw [h1, h2, fock_E, ih]
 
 /- English proof (translation)
-Simplify using `only [tiePhi, LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.comp_apply]`. Rewrite using `[fock_sum_left, fock_sum_left]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[fock_smul_left, fock_smul_left, fock_E_pow, fock_E_pow, fock_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem fock_phi_symm (o n z : ℕ) (u v : MvPolynomial σ ℚ_[p]) :
     M.fock p (tiePhi w e o n z u) v = M.fock p (tiePhi w e o n z v) u := by
@@ -339,7 +337,7 @@ variable {k σ : Type} [Field k] [CharZero k] {r : ℕ} {w e : Fin r → σ}
 noncomputable def EW (w : Fin r → σ) (g : MvPolynomial σ k) : MvPolynomial σ k := ∑ c, X (w c) * pderiv (w c) g
 
 /- English proof (translation)
-Simplify using `only [EW, map_sum, Derivation.leibniz, pderiv_X, smul_eq_mul]`. Use `Finset.sum_congr rfl fun c' _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.single_apply, if_neg (hwe c' c), pderiv_comm' (w c') (e c)]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem EW_add_single (hwe : ∀ c d, w c ≠ e d) (c : Fin r) (g : MvPolynomial σ k) :
     EW w (pderiv (e c) g) = pderiv (e c) (EW w g) := by
@@ -350,9 +348,9 @@ theorem EW_add_single (hwe : ∀ c d, w c ≠ e d) (c : Fin r) (g : MvPolynomial
   simp
 
 /- English proof (translation)
-Establish `h : pderiv (w c) (EW w g) = EW w (pderiv (w c) g) + pderiv (w c) g`. Simplify using `only [EW, map_sum, Derivation.leibniz, pderiv_X, smul_eq_mul, Pi.single_apply, hw.eq_iff]`. Rewrite using `[Finset.sum_add_distrib]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun c' _ => by rw [pderiv_comm' (w c) (w c')]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem EW_pderiv_w (hw : Function.Injective w) (c : Fin r) (g : MvPolynomial σ k) :
     EW w (pderiv (w c) g) = pderiv (w c) (EW w g) - pderiv (w c) g := by
@@ -366,14 +364,14 @@ theorem EW_pderiv_w (hw : Function.Injective w) (c : Fin r) (g : MvPolynomial σ
   rw [h]; ring
 
 /- English proof (translation)
-Simplify using `[tieF, LinearMap.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem tieF_apply_lemma (g : MvPolynomial σ k) :
     tieF w e g = ∑ c, pderiv (w c) (pderiv (e c) g) := by
   simp [tieF, LinearMap.sum_apply]
 
 /- English proof (translation)
-Simplify using `only [EW, map_sum, Finset.mul_sum]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem EW_sum_lemma_2 (s : Finset (Fin r)) (f : Fin r → MvPolynomial σ k) :
     EW w (∑ c ∈ s, f c) = ∑ c ∈ s, EW w (f c) := by
@@ -381,7 +379,7 @@ private theorem EW_sum_lemma_2 (s : Finset (Fin r)) (f : Fin r → MvPolynomial 
   exact Finset.sum_comm
 
 /- English proof (translation)
-Rewrite using `[tieF_apply_lemma, EW_sum_lemma_2, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[EW_pderiv_w hw, EW_add_single hwe, h, Derivation.map_smul, Derivation.map_smul, sub_smul, one_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem EW_F (hw : Function.Injective w) (hwe : ∀ c d, w c ≠ e d) (α : k) (g : MvPolynomial σ k)
     (h : EW w g = α • g) : EW w (tieF w e g) = (α - 1) • tieF w e g := by
@@ -390,7 +388,7 @@ theorem EW_F (hw : Function.Injective w) (hwe : ∀ c d, w c ≠ e d) (α : k) (
   rw [EW_pderiv_w hw, EW_add_single hwe, h, Derivation.map_smul, Derivation.map_smul, sub_smul, one_smul]
 
 /- English proof (translation)
-Establish `hs : tieF w e g = tieF e w g`. Rewrite using `[tieF_apply_lemma, tieF_apply_lemma]`. Conclude with `Finset.sum_congr rfl fun c _ => pderiv_comm' _ _ _`. Rewrite using `[hs]`. Conclude with `EW_F he (fun c d => (hwe d c).symm) β g h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem EH_F (he : Function.Injective e) (hwe : ∀ c d, w c ≠ e d) (β : k) (g : MvPolynomial σ k)
     (h : EW e g = β • g) : EW e (tieF w e g) = (β - 1) • tieF w e g := by
@@ -401,7 +399,7 @@ theorem EH_F (he : Function.Injective e) (hwe : ∀ c d, w c ≠ e d) (β : k) (
   exact EW_F he (fun c d => (hwe d c).symm) β g h
 
 /- English proof (translation)
-Simplify using `only [tieE, LinearMap.mulLeft_apply]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun c _ => mul_comm _ _`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem E_swap (g : MvPolynomial σ k) : tieE w e g = tieE e w g := by
   simp only [tieE, LinearMap.mulLeft_apply]
@@ -409,13 +407,13 @@ theorem E_swap (g : MvPolynomial σ k) : tieE w e g = tieE e w g := by
   exact Finset.sum_congr rfl fun c _ => mul_comm _ _
 
 /- English proof (translation)
-Establish `hdE : ∀ c, pderiv (e c) (∑ c', X (w c') * X (e c') : MvPolynomial σ k) = X (w c)`. Introduce `c`. Simplify using `[map_sum, Derivation.leibniz, pderiv_X, Pi.single_apply, he.eq_iff, hwe]`. Establish `hdW : ∀ c, pderiv (w c) (∑ c', X (w c') * X (e c') : MvPolynomial σ k) = X (e c)`. Introduce `c`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[map_sum, Derivation.leibniz, pderiv_X, Pi.single_apply, hw.eq_iff, fun a b => (hwe a b).symm]`. Establish `key : ∀ c, pderiv (w c) (pderiv (e c) ((∑ c', X (w c') * X (e c')) * Y)) = (∑ c', X (w c') * X (e c')) * pderiv (w c) (pderiv (e c) Y) + X (e c) * pderiv (e c) Y + Y + X (w c) * pderiv (w c) Y`. Introduce `c`. Simplify using `only [Derivation.leibniz, smul_eq_mul, map_add, hdE, hdW, pderiv_X, Pi.single_eq_same]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[tieF_apply_lemma, tieF_apply_lemma]`. Simplify using `only [tieE, LinearMap.mulLeft_apply]`. Simplify using `only [key]`. Simplify using `only [Finset.sum_add_distrib, ← Finset.mul_sum]`. Establish `h1 : ∑ c, X (e c) * pderiv (e c) Y = β • Y` using `hE`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : ∑ c, X (w c) * pderiv (w c) Y = α • Y` using `hW`. Rewrite using `[h1, h2, Finset.sum_const, Finset.card_univ, Fintype.card_fin, add_smul, add_smul, ← Nat.cast_smul_eq_nsmul k]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem F_E_k (hw : Function.Injective w) (he : Function.Injective e) (hwe : ∀ c d, w c ≠ e d)
     (α β : k) (Y : MvPolynomial σ k) (hW : EW w Y = α • Y) (hE : EW e Y = β • Y) :
@@ -444,9 +442,9 @@ theorem F_E_k (hw : Function.Injective w) (he : Function.Injective e) (hwe : ∀
   abel
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => simpa using h`. Consider the case `succ j ih`. Rewrite using `[pow_succ']`. Use `show EW w (tieF w e ((tieF w e ^ j) g)) = _ • tieF w e ((tieF w e ^ j) g)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[EW_F hw hwe (α - j) _ ih]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem EW_Fpow (hw : Function.Injective w) (hwe : ∀ c d, w c ≠ e d) (α : k) (g : MvPolynomial σ k)
     (h : EW w g = α • g) (j : ℕ) : EW w ((tieF w e ^ j) g) = (α - j) • (tieF w e ^ j) g := by
@@ -459,9 +457,9 @@ theorem EW_Fpow (hw : Function.Injective w) (hwe : ∀ c d, w c ≠ e d) (α : k
     congr 1; push_cast; ring
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => simpa using h`. Consider the case `succ j ih`. Rewrite using `[pow_succ']`. Use `show EW e (tieF w e ((tieF w e ^ j) g)) = _ • tieF w e ((tieF w e ^ j) g)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[EH_F he hwe (β - j) _ ih]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem EH_Fpow (he : Function.Injective e) (hwe : ∀ c d, w c ≠ e d) (β : k) (g : MvPolynomial σ k)
     (h : EW e g = β • g) (j : ℕ) : EW e ((tieF w e ^ j) g) = (β - j) • (tieF w e ^ j) g := by
@@ -474,9 +472,9 @@ theorem EH_Fpow (he : Function.Injective e) (hwe : ∀ c d, w c ≠ e d) (β : k
     congr 1; push_cast; ring
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => simpa using F_E_k hw he hwe α β Z hW hE`. Consider the case `succ j ih`. Establish `hs : ∀ (i : ℕ) (x : MvPolynomial σ k), (tieF w e ^ (i + 1)) x = tieF w e ((tieF w e ^ i) x)`. Apply the tactic sequence `intro i x; rw [pow_succ'] <;> rfl`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[hs (j + 1), ih, map_add, map_smul, F_E_k hw he hwe (α - ((j + 1 : ℕ) : k)) (β - ((j + 1 : ℕ) : k)) _ (EW_Fpow hw hwe α Z hW (j + 1)) (EH_Fpow he hwe β Z hE (j + 1)), ← hs (j + 1), ← hs j]`. Rewrite using `[add_assoc, ← add_smul]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Fpow_E (hw : Function.Injective w) (he : Function.Injective e) (hwe : ∀ c d, w c ≠ e d)
     (α β : k) (Z : MvPolynomial σ k) (hW : EW w Z = α • Z) (hE : EW e Z = β • Z) (j : ℕ) :
@@ -495,11 +493,11 @@ theorem Fpow_E (hw : Function.Injective w) (he : Function.Injective e) (hwe : �
     ring
 
 /- English proof (translation)
-Rewrite using `[pderiv_monomial]`. Distinguish the cases in `ht : t v = 0`. Simplify using `[ht]`. Rewrite using `[MvPolynomial.X, monomial_mul, one_mul]`. Establish `h1 : Finsupp.single v 1 + (t - Finsupp.single v 1) = t`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `x`. Simplify using `only [Finsupp.add_apply, Finsupp.tsub_apply, Finsupp.single_apply]`. Use `split_ifs with hx`. Substitute `hx` using the available equality. Use linear arithmetic over natural numbers and integers.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Substitute using the available equality. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[h1]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem X_mul_pderiv_monomial_lemma_3 (v : σ) (t : σ →₀ ℕ) (c : k) :
     X v * pderiv v (monomial t c) = monomial t (c * (t v : k)) := by
@@ -517,9 +515,9 @@ private theorem X_mul_pderiv_monomial_lemma_3 (v : σ) (t : σ →₀ ℕ) (c : 
     rw [h1]
 
 /- English proof (translation)
-Proceed by induction on `g using MvPolynomial.induction_on'`. Name the introduced variables `t c`. Rewrite using `[X_mul_pderiv_monomial_lemma_3, coeff_monomial, coeff_monomial]`. Use `split_ifs with h`. Substitute `h` using the available equality.
+Proceed by induction. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Name the introduced variables `p q hp hq`. Rewrite using `[map_add, mul_add, coeff_add, hp, hq, coeff_add]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem coeff_X_mul_pderiv_lemma_4 (v : σ) (g : MvPolynomial σ k) (s : σ →₀ ℕ) :
     coeff s (X v * pderiv v g) = (s v : k) * coeff s g := by
@@ -534,7 +532,7 @@ private theorem coeff_X_mul_pderiv_lemma_4 (v : σ) (g : MvPolynomial σ k) (s :
     rw [map_add, mul_add, coeff_add, hp, hq, coeff_add]; ring
 
 /- English proof (translation)
-Rewrite using `[EW, coeff_sum]`. Simplify using `only [coeff_X_mul_pderiv_lemma_4, Nat.cast_sum, Finset.sum_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem coeff_EW_lemma_5 (g : MvPolynomial σ k) (s : σ →₀ ℕ) :
     coeff s (EW w g) = ((∑ c, s (w c) : ℕ) : k) * coeff s g := by
@@ -542,11 +540,11 @@ private theorem coeff_EW_lemma_5 (g : MvPolynomial σ k) (s : σ →₀ ℕ) :
   simp only [coeff_X_mul_pderiv_lemma_4, Nat.cast_sum, Finset.sum_mul]
 
 /- English proof (translation)
-Use extensionality with `s`. Establish `hs` using `congrArg (coeff s) h`. Rewrite `hs` using `[coeff_EW_lemma_5, coeff_smul, smul_eq_mul]`. Establish `hne : ((∑ c, s (w c) : ℕ) : k) ≠ (a : k) - b`. Introduce `heq`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2 : ((∑ c, s (w c) + b : ℕ) : k) = ((a : ℕ) : k)` using `by rw [Nat.cast_add, heq]; ring`. Establish `h3` using `Nat.cast_injective h2`. Use linear arithmetic over natural numbers and integers. Rewrite using `[coeff_zero]`. Assume the negation of the conclusion as `hc`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hne (mul_right_cancel₀ hc hs)`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_EW (a b : ℕ) (hab : a < b) (g : MvPolynomial σ k) (h : EW w g = ((a : k) - b) • g) :
     g = 0 := by
@@ -563,9 +561,9 @@ theorem eq_zero_of_EW (a b : ℕ) (hab : a < b) (g : MvPolynomial σ k) (h : EW 
   exact hne (mul_right_cancel₀ hc hs)
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih`. Rewrite using `[pow_succ']`. Use `show tieE w e ((tieE w e ^ j) g) = _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ih]`. Simplify using `only [tieE, LinearMap.mulLeft_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem tieE_pow_apply (j : ℕ) (g : MvPolynomial σ k) :
     (tieE w e ^ j) g = (∑ c, X (w c) * X (e c)) ^ j * g := by
@@ -593,13 +591,13 @@ noncomputable def cph (k : Type) [Field k] (A j : ℕ) : k :=
   ((-1 : k) ^ j) / (((j.factorial : k) ^ 2) * ((A.choose j : ℕ) : k))
 
 /- English proof (translation)
-Establish `htB : t ≤ B` using `by omega`. Establish `hc : ((B.choose t : ℕ) : k) ≠ 0` using `by exact_mod_cast (Nat.choose_pos htB).ne'`. Establish `ht1 : (t : k) + 1 ≠ 0` using `Nat.cast_add_one_ne_zero t`. Establish `hB1 : (B : k) + 1 ≠ 0` using `Nat.cast_add_one_ne_zero B`. Establish `hf : (t.factorial : k) ≠ 0` using `by exact_mod_cast Nat.factorial_ne_zero t`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : (B : k) + 1 - t ≠ 0`. Rewrite using `[← Nat.cast_add_one, ← Nat.cast_sub (by omega : t ≤ B + 1)]`. Conclude with `(by omega : B + 1 - t ≠ 0)` after adjusting the coercions. Establish `hd : (((B + 1).choose (t + 1) : ℕ) : k) = ((B : k) + 1) * (B.choose t : k) / ((t : k) + 1)`. Rewrite using `[eq_div_iff ht1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `Nat.add_one_mul_choose_eq B t`. Conclude with `h.symm` after adjusting the coercions. Establish `he : (((B + 1).choose t : ℕ) : k) = ((B : k) + 1) * (B.choose t : k) / ((B : k) + 1 - t)`. Rewrite using `[eq_div_iff hne, ← Nat.cast_add_one, ← Nat.cast_sub (by omega : t ≤ B + 1)]`. Establish `h` using `Nat.choose_mul_succ_eq B t`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `(by rw [← h, mul_comm] : (B + 1).choose t * (B + 1 - t) = (B + 1) * B.choose t)` after adjusting the coercions. Establish `hB' : (o' : k) + n' + r = (B : k) - z` using `by rw [hB]; push_cast; ring`. Simplify using `only [cph, hd, he, hB', Nat.factorial_succ, Nat.cast_mul, Nat.cast_add, Nat.cast_one]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem cph_step (B t o' n' z : ℕ) (hB : B = o' + n' + r + z) (ht : t ≤ o') :
     cph k (B + 1) t + cph k (B + 1) (t + 1) * (((t : k) + 1) * ((o' : k) + n' + r - t)) =
@@ -631,7 +629,7 @@ section
 variable {k σ : Type} [Field k] [CharZero k] {r : ℕ} {w e : Fin r → σ}
 
 /- English proof (translation)
-Use `first`. Consider the case `(simp only [tiePhi, cph, LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.comp_apply]; done)`. Consider the case `simp [tiePhi, cph, LinearMap.sum_apply]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem tiePhi_eq (o n z : ℕ) (u : MvPolynomial σ k) :
     tiePhi w e o n z u = ∑ j ∈ range (o + 1), cph k (o + n + r + z - 1) j • (tieE w e ^ j) ((tieF w e ^ j) u) := by
@@ -640,15 +638,15 @@ theorem tiePhi_eq (o n z : ℕ) (u : MvPolynomial σ k) :
   | simp [tiePhi, cph, LinearMap.sum_apply]
 
 /- English proof (translation)
-Establish `hE2 : ∀ (t : ℕ) (x : MvPolynomial σ k), tieE w e ((tieE w e ^ t) x) = (tieE w e ^ (t + 1)) x`. Apply the tactic sequence `intro t x; rw [pow_succ'] <;> rfl`. Establish `hE1 : ∀ (t : ℕ) (x : MvPolynomial σ k), (tieE w e ^ t) (tieE w e x) = (tieE w e ^ (t + 1)) x`. Apply the tactic sequence `intro t x; rw [pow_succ] <;> rfl`. Establish `hvan : (tieF w e ^ (o' + 1)) Z = 0` using `eq_zero_of_EW (w := w) o' (o' + 1) (by omega) _ (EW_Fpow hw hwe (o' : k) Z hW (o' + 1))`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hG : ∀ t : ℕ, (tieE w e ^ (t + 1)) ((tieF w e ^ (t + 1)) (tieE w e Z)) = (tieE w e ^ (t + 1 + 1)) ((tieF w e ^ (t + 1)) Z) + (((t : k) + 1) * ((o' : k) + n' + r - t)) • (tieE w e ^ (t + 1)) ((tieF w e ^ t) Z)`. Introduce `t`. Rewrite using `[Fpow_E hw he hwe (o' : k) (n' : k) Z hW hE t, map_add, map_smul, hE1]`. Establish `hA1 : o' + 1 + (n' + 1) + r + z - 1 = o' + n' + r + z + 1` using `by omega`. Establish `hA2 : o' + n' + r + (z + 1) - 1 = o' + n' + r + z` using `by omega`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[tiePhi_eq, tiePhi_eq, hA1, hA2, map_sum, Finset.smul_sum]`. Use `conv_lhs => rw [Finset.sum_range_succ']`. Use `beta_reduce`. Simplify using `only [hG, smul_add, smul_smul, Finset.sum_add_distrib, map_smul, hE2]`. Establish `h0 : (tieE w e ^ 0) ((tieF w e ^ 0) (tieE w e Z)) = (tieE w e ^ (0 + 1)) ((tieF w e ^ 0) Z)` using `by simp`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h0]`. Establish `hs2` using `Finset.sum_range_succ' (fun t => cph k (o' + n' + r + z + 1) t • (tieE w e ^ (t + 1)) ((tieF w e ^ t) Z)) (o' + 1)`. Rewrite `hs2` using `[Finset.sum_range_succ (fun t => cph k (o' + n' + r + z + 1) t • (tieE w e ^ (t + 1)) ((tieF w e ^ t) Z)) (o' + 1)]`. Use `beta_reduce at hs2`. Rewrite `hs2` using `[hvan, map_zero, smul_zero, add_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[add_right_comm, ← hs2, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun t ht => ?_` and prove the remaining obligations. Rewrite using `[← add_smul, cph_step (o' + n' + r + z) t o' n' z rfl (by have := Finset.mem_range.1 ht; omega)]`.
+A detailed English derivation is pending.
 -/
 theorem phi_E_step (hw : Function.Injective w) (he : Function.Injective e) (hwe : ∀ c d, w c ≠ e d)
     (o' n' z : ℕ) (Z : MvPolynomial σ k) (hW : EW w Z = (o' : k) • Z) (hE : EW e Z = (n' : k) • Z) :
@@ -689,11 +687,11 @@ section
 variable {k σ : Type} [Field k] [CharZero k] {r : ℕ} {w e : Fin r → σ}
 
 /- English proof (translation)
-Establish `hdW : ∀ c, pderiv (w c) (∑ c', X (w c') * X (e c') : MvPolynomial σ k) = X (e c)`. Introduce `c`. Simplify using `[map_sum, Derivation.leibniz, pderiv_X, Pi.single_apply, hw.eq_iff, fun a b => (hwe a b).symm]`. Establish `hEW : EW w Y = ∑ c, X (w c) * pderiv (w c) Y` using `rfl`. Simplify using `only [tieE, LinearMap.mulLeft_apply, EW, Derivation.leibniz, smul_eq_mul, hdW, mul_add, Finset.sum_add_distrib]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1 : ∑ c, X (w c) * ((∑ c', X (w c') * X (e c')) * pderiv (w c) Y) = (∑ c', X (w c') * X (e c')) * (α • Y)`. Rewrite using `[← h, hEW, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun c _ => by ring`. Establish `h2 : ∑ c, X (w c) * (Y * X (e c)) = (∑ c', X (w c') * X (e c')) * Y`. Rewrite using `[Finset.sum_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun c _ => by ring`. Rewrite using `[h1, h2, add_smul, one_smul, mul_smul_comm]`.
+A detailed English derivation is pending.
 -/
 private theorem EW_E_lemma_8 (hw : Function.Injective w) (hwe : ∀ c d, w c ≠ e d) (α : k) (Y : MvPolynomial σ k)
     (h : EW w Y = α • Y) : EW w (tieE w e Y) = (α + 1) • tieE w e Y := by
@@ -713,17 +711,17 @@ private theorem EW_E_lemma_8 (hw : Function.Injective w) (hwe : ∀ c d, w c ≠
   rw [h1, h2, add_smul, one_smul, mul_smul_comm]
 
 /- English proof (translation)
-Introduce `s`. Proceed by induction on `s with`. Consider the case `zero => intro o n z Z _ _ _ _`. Simplify using the standard rewrite rules. Consider the case `succ s ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `o n z Z hso hsn hW hE`. Establish `hW' : EW w (tieE w e Z) = ((o - s : ℕ) : k) • tieE w e Z`. Rewrite using `[EW_E_lemma_8 hw hwe _ Z hW]`. Use `congr 1`. Rewrite using `[show o - s = o - (s + 1) + 1 by omega, Nat.cast_add, Nat.cast_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Establish `hE' : EW e (tieE w e Z) = ((n - s : ℕ) : k) • tieE w e Z`. Rewrite using `[E_swap, EW_E_lemma_8 he (fun c d => (hwe d c).symm) _ Z hE]`. Use `congr 1`. Rewrite using `[show n - s = n - (s + 1) + 1 by omega, Nat.cast_add, Nat.cast_one]`. Apply the tactic sequence `have hE1 : (tieE w e ^ (s + 1)) Z = (tieE w e ^ s) (tieE w e Z) := by rw [pow_succ] <;> rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[hE1, ih o n z (tieE w e Z) (by omega) (by omega) hW' hE']`. Establish `ho : o - s = (o - (s + 1)) + 1` using `by omega`. Establish `hn : n - s = (n - (s + 1)) + 1` using `by omega`. Rewrite using `[ho, hn, phi_E_step hw he hwe (o - (s + 1)) (n - (s + 1)) (z + s) Z hW hE]`. Rewrite using `[map_smul, smul_smul, Finset.prod_range_succ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hE2 : (tieE w e ^ s) (tieE w e (tiePhi w e (o - (s + 1)) (n - (s + 1)) (z + s + 1) Z)) = (tieE w e ^ (s + 1)) (tiePhi w e (o - (s + 1)) (n - (s + 1)) (z + (s + 1)) Z)`. Rewrite using `[← add_assoc]`. Apply the tactic sequence `rw [pow_succ] <;> rfl`. Rewrite using `[hE2]`. Use `congr 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h3 : o - (s + 1) + (n - (s + 1)) + r + (z + s) + 1 = o + n + r + z - 1 - s` using `by omega`. Rewrite using `[h3]`. Apply the tactic sequence `push_cast <;> ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem phi_E_pow (hw : Function.Injective w) (he : Function.Injective e) (hwe : ∀ c d, w c ≠ e d) :
     ∀ (s o n z : ℕ) (Z : MvPolynomial σ k), s ≤ o → s ≤ n →
@@ -769,7 +767,7 @@ namespace Formalism.GM.GammaExpansion
 open MvPolynomial Finset
 
 /- English proof (translation)
-Break down `le_total a b with h | h` into its components or cases. Conclude with `Finset.sum_subset (Finset.range_subset_range.2 h) fun i _ hi => ha i (by simpa using hi)`. Conclude with `(Finset.sum_subset (Finset.range_subset_range.2 h) fun i _ hi => hb i (by simpa using hi)).symm`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem sum_range_eq_of_zero {M : Type} [AddCommMonoid M] (f : ℕ → M) (a b : ℕ)
     (ha : ∀ i, a ≤ i → f i = 0) (hb : ∀ i, b ≤ i → f i = 0) :
@@ -782,11 +780,11 @@ section
 variable {k σ : Type} [Field k] [CharZero k] {r : ℕ} {w e : Fin r → σ}
 
 /- English proof (translation)
-Establish `hD : pderiv (e ρ) (∑ c, X (w c) * X (e c) : MvPolynomial σ k) = X (w ρ)`. Simplify using `[map_sum, Derivation.leibniz, pderiv_X, Pi.single_apply, he.eq_iff, hwe]`. Establish `hX : pderiv (e ρ) (X (w ρ) : MvPolynomial σ k) = 0`. Rewrite using `[pderiv_X, Pi.single_apply, if_neg (hwe ρ ρ)]`. Proceed by induction on `i with`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `succ i ih`. Rewrite using `[pow_succ']`. Use `show Dp (e ρ) ((Dp (e ρ) ^ i) _) = _`. Rewrite using `[ih, map_nsmul, Dp_apply]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Derivation.leibniz, Derivation.leibniz_pow, hD, hX, smul_zero, add_zero, smul_eq_mul, nsmul_eq_mul, Nat.descFactorial_succ, Nat.cast_mul, Nat.sub_sub, mul_zero]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem pow_Dp_omega (he : Function.Injective e) (hwe : ∀ c d, w c ≠ e d) (ρ : Fin r) (s i : ℕ) :
     (Dp (e ρ) ^ i) ((∑ c, X (w c) * X (e c)) ^ s : MvPolynomial σ k) =
@@ -807,9 +805,9 @@ theorem pow_Dp_omega (he : Function.Injective e) (hwe : ∀ c d, w c ≠ e d) (�
     ring
 
 /- English proof (translation)
-Rewrite using `[pow_Dp_mul]`. Establish `hfe : ∀ i, m.choose i • ((Dp (e ρ) ^ i) ((∑ c, X (w c) * X (e c)) ^ s) * (Dp (e ρ) ^ (m - i)) V) = (m.choose i * s.descFactorial i) • (X (w ρ) ^ i * (∑ c, X (w c) * X (e c)) ^ (s - i) * (Dp (e ρ) ^ (m - i)) V)`. Introduce `i`. Rewrite using `[pow_Dp_omega he hwe, smul_mul_assoc, smul_smul]`. Simplify using `only [hfe]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `sum_range_eq_of_zero _ (m + 1) (s + 1) (fun i hi => by simp [Nat.choose_eq_zero_of_lt (show m < i by omega)]) (fun i hi => by simp [Nat.descFactorial_eq_zero_iff_lt.2 (show s < i by omega)])`.
+A detailed English derivation is pending.
 -/
 theorem pow_Dp_omega_mul (he : Function.Injective e) (hwe : ∀ c d, w c ≠ e d) (ρ : Fin r) (s m : ℕ)
     (V : MvPolynomial σ k) :
@@ -828,11 +826,11 @@ theorem pow_Dp_omega_mul (he : Function.Injective e) (hwe : ∀ c d, w c ≠ e d
     (fun i hi => by simp [Nat.descFactorial_eq_zero_iff_lt.2 (show s < i by omega)])
 
 /- English proof (translation)
-Establish `hz : ∀ i, K + 1 ≤ i → (Dp v ^ i) q = 0`. Introduce `i hi`. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hi`. Rewrite using `[show K + 1 + d = d + (K + 1) by ring, pow_add]`. Use `show (Dp v ^ d) ((Dp v ^ (K + 1)) q) = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_Dp_eq_zero v q K hq, map_zero]`. Rewrite using `[pow_Dp_mul]`. Establish `hfe : ∀ i, M.choose i • ((Dp v ^ i) q * (Dp v ^ (M - i)) (X v ^ m)) = (M.choose i * m.descFactorial (M - i)) • ((Dp v ^ i) q * X v ^ (m - (M - i)))`. Introduce `i`. Rewrite using `[pow_Dp_X_pow, mul_smul_comm, smul_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hfe]`. Conclude with `sum_range_eq_of_zero _ (M + 1) (K + 1) (fun i hi => by simp [Nat.choose_eq_zero_of_lt (show M < i by omega)]) (fun i hi => by simp [hz i hi])`.
+A detailed English derivation is pending.
 -/
 theorem pow_Dp_X_pow_mul (v : σ) (q : MvPolynomial σ k) (K M m : ℕ) (hq : ∀ s ∈ q.support, s v ≤ K) :
     (Dp v ^ M) (q * X v ^ m) =
@@ -854,7 +852,7 @@ theorem pow_Dp_X_pow_mul (v : σ) (q : MvPolynomial σ k) (K M m : ℕ) (hq : �
     (fun i hi => by simp [hz i hi])
 
 /- English proof (translation)
-Rewrite using `[tieF_apply_lemma, tieF_apply_lemma]`. Simplify using `only [Dp_apply, map_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[pderiv_comm' (e ρ) (w c), pderiv_comm' (e ρ) (e c)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem Dp_comm_F (ρ : Fin r) (g : MvPolynomial σ k) : Dp (e ρ) (tieF w e g) = tieF w e (Dp (e ρ) g) := by
   rw [tieF_apply_lemma, tieF_apply_lemma]
@@ -863,13 +861,11 @@ theorem Dp_comm_F (ρ : Fin r) (g : MvPolynomial σ k) : Dp (e ρ) (tieF w e g) 
   rw [pderiv_comm' (e ρ) (w c), pderiv_comm' (e ρ) (e c)]
 
 /- English proof (translation)
-Establish `h1 : ∀ (b : ℕ) (g : MvPolynomial σ k), Dp (e ρ) ((tieF w e ^ b) g) = (tieF w e ^ b) (Dp (e ρ) g)`. Introduce `b`. Proceed by induction on `b with`. Consider the case `zero => intro g`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `succ b ih`. Introduce `g`. Rewrite using `[pow_succ']`. Use `show Dp (e ρ) (tieF w e ((tieF w e ^ b) g)) = tieF w e ((tieF w e ^ b) (Dp (e ρ) g))`. Rewrite using `[Dp_comm_F, ih]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Proceed by induction on `a with`. Consider the case `zero => simp`. Consider the case `succ a ih`. Rewrite using `[pow_succ']`. Use `show Dp (e ρ) ((Dp (e ρ) ^ a) ((tieF w e ^ b) g)) = (tieF w e ^ b) (Dp (e ρ) ((Dp (e ρ) ^ a) g))`.
-
-Rewrite using `[ih, h1]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem powDp_comm_powF (ρ : Fin r) (a b : ℕ) (g : MvPolynomial σ k) :
     (Dp (e ρ) ^ a) ((tieF w e ^ b) g) = (tieF w e ^ b) ((Dp (e ρ) ^ a) g) := by
@@ -890,15 +886,15 @@ theorem powDp_comm_powF (ρ : Fin r) (a b : ℕ) (g : MvPolynomial σ k) :
     rw [ih, h1]
 
 /- English proof (translation)
-Rewrite using `[tieE_pow_apply, pow_Dp_omega_mul he hwe ρ s m, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[powDp_comm_powF, mul_comm (X (e ρ) ^ m) q, pow_Dp_X_pow_mul (e ρ) q K (m - i) m hq, map_sum, Finset.mul_sum, Finset.smul_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Simplify using `only [map_nsmul, mul_smul_comm, smul_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Nat.cast_smul_eq_nsmul k]`. Distinguish the cases in `him : i ≤ m`. Distinguish the cases in `hit : t ≤ m - i`. Establish `he1 : m - (m - i - t) = i + t` using `by omega`. Rewrite using `[he1, mul_comm ((Dp (e ρ) ^ t) q)]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Establish `hf` using `Nat.factorial_mul_descFactorial (show m - i - t ≤ m by omega)`. Rewrite `hf` using `[he1]`. Establish `hne : ((i + t).factorial : k) ≠ 0` using `by exact_mod_cast Nat.factorial_ne_zero _`. Rewrite using `[← hf]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Use `first`. Consider the case `(field_simp; ring)`. Consider the case `field_simp`. Establish `h0 : (m - i).choose t = 0` using `Nat.choose_eq_zero_of_lt (by omega)`.
+Move the embeddings inside the algebraic operations. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[h0]`. Establish `h0 : m.choose i = 0` using `Nat.choose_eq_zero_of_lt (by omega)`. Simplify using `[h0]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem main_expand (he : Function.Injective e) (hwe : ∀ c d, w c ≠ e d) (ρ : Fin r) (q : MvPolynomial σ k)
     (K : ℕ) (hq : ∀ s ∈ q.support, s (e ρ) ≤ K) (s j m : ℕ) :
@@ -947,20 +943,20 @@ def IsPD (N0 d : ℕ) (g : ℕ → k) : Prop :=
   ∃ P : Polynomial k, P.natDegree ≤ d ∧ ∀ n, N0 ≤ n → g n = P.eval (n : k)
 
 /- English proof (translation)
-Take `⟨P, hP, hP'⟩` from `h`. Conclude with `⟨P, hP.trans hd, hP'⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsPD.mono {N0 d d' : ℕ} {g : ℕ → k} (h : IsPD N0 d g) (hd : d ≤ d') : IsPD N0 d' g := by
   obtain ⟨P, hP, hP'⟩ := h
   exact ⟨P, hP.trans hd, hP'⟩
 
 /- English proof (translation)
-Conclude with `⟨Polynomial.C c, by simp, fun _ _ => by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsPD.const (N0 d : ℕ) (c : k) : IsPD N0 d (fun _ => c) := by
   exact ⟨Polynomial.C c, by simp, fun _ _ => by simp⟩
 
 /- English proof (translation)
-Take `⟨P, hP, hP'⟩` from `h`. Conclude with `⟨P, hP, fun n hn => (hg n hn).trans (hP' n hn)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsPD.congr {N0 d : ℕ} {g g' : ℕ → k} (h : IsPD N0 d g) (hg : ∀ n, N0 ≤ n → g' n = g n) :
     IsPD N0 d g' := by
@@ -968,7 +964,7 @@ theorem IsPD.congr {N0 d : ℕ} {g g' : ℕ → k} (h : IsPD N0 d g) (hg : ∀ n
   exact ⟨P, hP, fun n hn => (hg n hn).trans (hP' n hn)⟩
 
 /- English proof (translation)
-Take `⟨P, hP, hP'⟩` from `h`. Take `⟨Q, hQ, hQ'⟩` from `h'`. Use `⟨P + Q, (Polynomial.natDegree_add_le _ _).trans (max_le hP hQ), fun n hn => ?_⟩` and prove the remaining obligations. Simplify using `only [Polynomial.eval_add, hP' n hn, hQ' n hn]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem IsPD.add {N0 d : ℕ} {g g' : ℕ → k} (h : IsPD N0 d g) (h' : IsPD N0 d g') :
     IsPD N0 d (fun n => g n + g' n) := by
@@ -978,7 +974,7 @@ theorem IsPD.add {N0 d : ℕ} {g g' : ℕ → k} (h : IsPD N0 d g) (h' : IsPD N0
   simp only [Polynomial.eval_add, hP' n hn, hQ' n hn]
 
 /- English proof (translation)
-Take `⟨P, hP, hP'⟩` from `h`. Take `⟨Q, hQ, hQ'⟩` from `h'`. Use `⟨P * Q, Polynomial.natDegree_mul_le.trans (add_le_add hP hQ), fun n hn => ?_⟩` and prove the remaining obligations. Simplify using `only [Polynomial.eval_mul, hP' n hn, hQ' n hn]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem IsPD.mul {N0 d d' : ℕ} {g g' : ℕ → k} (h : IsPD N0 d g) (h' : IsPD N0 d' g') :
     IsPD N0 (d + d') (fun n => g n * g' n) := by
@@ -988,9 +984,9 @@ theorem IsPD.mul {N0 d d' : ℕ} {g g' : ℕ → k} (h : IsPD N0 d g) (h' : IsPD
   simp only [Polynomial.eval_mul, hP' n hn, hQ' n hn]
 
 /- English proof (translation)
-Use `revert h`. Use `Finset.induction_on t ?_ ?_` and prove the remaining obligations. Introduce `_`. Simplify using `using IsPD.const N0 d (0 : k)`. Introduce `a s ha ih h`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.sum_insert ha]`. Conclude with `IsPD.add (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+A detailed English derivation is pending.
 -/
 theorem IsPD.sum {ι : Type} (t : Finset ι) {N0 d : ℕ} (g : ι → ℕ → k) (h : ∀ i ∈ t, IsPD N0 d (g i)) :
     IsPD N0 d (fun n => ∑ i ∈ t, g i n) := by
@@ -1003,9 +999,9 @@ theorem IsPD.sum {ι : Type} (t : Finset ι) {N0 d : ℕ} (g : ι → ℕ → k)
     exact IsPD.add (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
 /- English proof (translation)
-Establish `hf : (t.factorial : k) ≠ 0` using `by exact_mod_cast Nat.factorial_ne_zero t`. Use `⟨Polynomial.C ((t.factorial : k)⁻¹) * (descPochhammer k t).comp (Polynomial.X - Polynomial.C (S : k)), (Polynomial.natDegree_C_mul_le _ _).trans (le_of_eq (by rw [Polynomial.natDegree_comp, descPochhammer_natDegree, Polynomial.natDegree_X_sub_C, mul_one])), ?_⟩` and prove the remaining obligations. Introduce `n hn`. Establish `h1 : (n : k) - S = ((n - S : ℕ) : k)` using `by rw [Nat.cast_sub hn]`. Simplify using `only [Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_comp, Polynomial.eval_sub, Polynomial.eval_X, h1, descPochhammer_eval_eq_descFactorial, Nat.descFactorial_eq_factorial_mul_choose, Nat.cast_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← mul_assoc, inv_mul_cancel₀ hf, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem IsPD.choose_sub (S t : ℕ) : IsPD S t (fun n => (((n - S).choose t : ℕ) : k)) := by
   have hf : (t.factorial : k) ≠ 0 := by exact_mod_cast Nat.factorial_ne_zero t
@@ -1018,7 +1014,7 @@ theorem IsPD.choose_sub (S t : ℕ) : IsPD S t (fun n => (((n - S).choose t : �
   rw [← mul_assoc, inv_mul_cancel₀ hf, one_mul]
 
 /- English proof (translation)
-Establish `hf : (t.factorial : k) ≠ 0` using `by exact_mod_cast Nat.factorial_ne_zero t`. Use `⟨Polynomial.C ((t.factorial : k)⁻¹) * (descPochhammer k t).comp (Polynomial.X + Polynomial.C (c : k)), (Polynomial.natDegree_C_mul_le _ _).trans (le_of_eq (by rw [Polynomial.natDegree_comp, descPochhammer_natDegree, Polynomial.natDegree_X_add_C, mul_one])), ?_⟩` and prove the remaining obligations. Introduce `n _`. Simplify using `only [Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_comp, Polynomial.eval_add, Polynomial.eval_X, ← Nat.cast_add, descPochhammer_eval_eq_descFactorial, Nat.descFactorial_eq_factorial_mul_choose, Nat.cast_mul]`. Rewrite using `[← mul_assoc, inv_mul_cancel₀ hf, one_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsPD.choose_add (N0 c t : ℕ) : IsPD N0 t (fun n => (((n + c).choose t : ℕ) : k)) := by
   have hf : (t.factorial : k) ≠ 0 := by exact_mod_cast Nat.factorial_ne_zero t
@@ -1030,11 +1026,11 @@ theorem IsPD.choose_add (N0 c t : ℕ) : IsPD N0 t (fun n => (((n + c).choose t 
   rw [← mul_assoc, inv_mul_cancel₀ hf, one_mul]
 
 /- English proof (translation)
-Take `⟨P1, hd1, h1⟩` from `IsPD.choose_sub (k := k) S i`. Take `⟨P2, hd2, h2⟩` from `IsPD.choose_sub (k := k) (S + i) t`. Establish `h1' : ∀ n, S ≤ n → ((((n - S).choose i : ℕ)) : k) = P1.eval (n : k)` using `h1`. Establish `h2' : ∀ n, S + i ≤ n → ((((n - S - i).choose t : ℕ)) : k) = P2.eval (n : k)`. Introduce `n hn`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Nat.sub_sub]`. Conclude with `h2 n hn`. Use `⟨P1 * P2, Polynomial.natDegree_mul_le.trans (add_le_add hd1 hd2), fun n hn => ?_⟩` and prove the remaining obligations. Use `show ((((n - S).choose i * (n - S - i).choose t : ℕ)) : k) = _`. Rewrite using `[Polynomial.eval_mul, ← h1' n hn]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : S + i ≤ n`. Rewrite using `[← h2' n h, Nat.cast_mul]`. Establish `h0 : (n - S).choose i = 0` using `Nat.choose_eq_zero_of_lt (by omega)`. Simplify using `[h0]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem IsPD.choose_prod (S i t : ℕ) :
     IsPD S (i + t) (fun n => ((((n - S).choose i * (n - S - i).choose t : ℕ)) : k)) := by
@@ -1063,7 +1059,7 @@ section
 variable {k : Type} [Field k] [CharZero k]
 
 /- English proof (translation)
-Proceed by induction on `b with`. Consider the case `zero => simp`. Consider the case `succ b ih`. Rewrite using `[← add_assoc, Nat.descFactorial_succ, ih, Nat.descFactorial_succ, Nat.sub_sub]`. Expand and normalize the polynomial expressions, which then agree.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem descF_add_lemma_6 (A a b : ℕ) :
     A.descFactorial (a + b) = A.descFactorial a * (A - a).descFactorial b := by
@@ -1074,9 +1070,9 @@ private theorem descF_add_lemma_6 (A a b : ℕ) :
     ring
 
 /- English proof (translation)
-Establish `e1 : ∀ n m : ℕ, n.choose m * m.factorial = n.descFactorial m` using `fun n m => by`. Rewrite using `[Nat.descFactorial_eq_factorial_mul_choose, mul_comm]`. Rewrite using `[e1, e1, e1]`. Establish `ho : o = s + (j + (o - s - j))` using `by omega`. Use `conv_lhs => rw [ho]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[descF_add_lemma_6, descF_add_lemma_6, Nat.sub_sub]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem coef_nat (A o s j : ℕ) (hsj : s + j ≤ o) :
     A.choose o * o.factorial =
@@ -1091,17 +1087,17 @@ theorem coef_nat (A o s j : ℕ) (hsj : s + j ≤ o) :
   ring
 
 /- English proof (translation)
-Establish `hK` using `(IsPD.choose_add (k := k) S (o + r + z - 1 - s - j) (o - s - j)).mul (IsPD.const S 0 (((o - s - j).factorial : k) * (∏ i ∈ range s, ((z : k) + 1 + i)) * (-1) ^ j / ((o.factorial : k) * (j.factorial : k))))`. Rewrite `hK` using `[add_zero]`. Use `hK.congr fun n hn => ?_` and prove the remaining obligations. Use `beta_reduce`. Establish `hA : (o - s) + (n - s) + r + (z + s) - 1 = o + n + r + z - 1 - s` using `by omega`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : o + n + r + z - 1 - s - j = n + (o + r + z - 1 - s - j)` using `by omega`. Establish `hnat` using `coef_nat (o + n + r + z - 1) o s j hsj`. Rewrite `hnat` using `[hc]`. Establish `hprod : ∏ i ∈ range s, (((z : k) + 1 + i) / ((o + n + r + z - 1 - i : ℕ) : k)) = (∏ i ∈ range s, ((z : k) + 1 + i)) / (((o + n + r + z - 1).descFactorial s : ℕ) : k)`. Rewrite using `[Finset.prod_div_distrib, Nat.descFactorial_eq_prod_range, Nat.cast_prod]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hA, hprod]`. Establish `ho : (o.factorial : k) ≠ 0` using `by exact_mod_cast Nat.factorial_ne_zero o`. Establish `hj : (j.factorial : k) ≠ 0` using `by exact_mod_cast Nat.factorial_ne_zero j`. Establish `hCj : (((o + n + r + z - 1 - s).choose j : ℕ) : k) ≠ 0`. Conclude with `(Nat.choose_pos (by omega)).ne'` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD : (((o + n + r + z - 1).descFactorial s : ℕ) : k) ≠ 0`. Establish `: (o + n + r + z - 1).descFactorial s ≠ 0` using `fun h0 => by`. Rewrite `h0` using `[Nat.descFactorial_eq_zero_iff_lt]`. Use linear arithmetic over natural numbers and integers. Conclude with `this` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Establish `hk` using `congrArg (Nat.cast : ℕ → k) hnat`. Move the coercions through the operations in `at hk`. Establish `hX : (((o + n + r + z - 1).choose o : ℕ) : k) = ((n + (o + r + z - 1 - s - j)).choose (o - s - j) : k) * ((o - s - j).factorial : k) * (((o + n + r + z - 1 - s).choose j : k) * (j.factorial : k)) * ((o + n + r + z - 1).descFactorial s : k) / (o.factorial : k)`. Rewrite using `[eq_div_iff ho]`. Conclude with `hk`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 
-Rewrite using `[hX]`. Simplify using `only [cph]`. Use `first`. Consider the case `(field_simp; ring)`. Consider the case `field_simp`.
+A detailed English derivation is pending.
 -/
 theorem coef_PD (o r z s j S : ℕ) (hr : 1 ≤ r) (hsj : s + j ≤ o) (hoS : o ≤ S) :
     IsPD S (o - s - j) (fun n => (((o + n + r + z - 1).choose o : ℕ) : k) *
@@ -1154,11 +1150,9 @@ section
 variable {R σ : Type} [CommSemiring R]
 
 /- English proof (translation)
-Use `⟨f.divMonomial (Finsupp.single v e), ?_, fun m hm => ?_⟩` and prove the remaining obligations. Establish `hmod : f.modMonomial (Finsupp.single v e) = 0`. Use extensionality with `m`. Rewrite using `[coeff_zero]`. Distinguish the cases in `h : Finsupp.single v e ≤ m`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Conclude with `coeff_modMonomial_of_le f h`. Rewrite using `[coeff_modMonomial_of_not_le f h]`. Assume the negation of the conclusion as `hc`. Conclude with `h (Finsupp.single_le_iff.2 (hf m (mem_support_iff.2 hc)))`. Use `conv_lhs => rw [← divMonomial_add_modMonomial f (Finsupp.single v e), hmod, add_zero]`.
-
-Rewrite using `[X_pow_eq_monomial]`. Rewrite `hm` using `[mem_support_iff, coeff_divMonomial]`. Conclude with `mem_support_iff.2 hm`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_X_pow_mul (v : σ) (e : ℕ) (f : MvPolynomial σ R) (hf : ∀ m ∈ f.support, e ≤ m v) :
     ∃ h : MvPolynomial σ R, f = X v ^ e * h ∧ ∀ m ∈ h.support, Finsupp.single v e + m ∈ f.support := by
@@ -1187,7 +1181,7 @@ def lowerLast (LL : M.Letters (N + 1)) (e : ℕ) : M.Letters (N + 1) where
   deg := Function.update LL.deg (Fin.last N) (LL.deg (Fin.last N) - e)
 
 /- English proof (translation)
-Simplify using `only [M.Letters.total, lowerLast, Fin.sum_univ_castSucc]`. Apply the tactic sequence `simp [Fin.castSucc_ne_last] <;> omega`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lowerLast_total (LL : M.Letters (N + 1)) (e : ℕ) (he : e ≤ LL.deg (Fin.last N)) :
     (lowerLast LL e).total = LL.total - e := by
@@ -1195,15 +1189,15 @@ theorem lowerLast_total (LL : M.Letters (N + 1)) (e : ℕ) (he : e ≤ LL.deg (F
   simp [Fin.castSucc_ne_last] <;> omega
 
 /- English proof (translation)
-Simplify using `only [M.Pol, MvPolynomial.mem_restrictSupport_iff] at hf ⊢`. Introduce `m hm`. Establish `h1 : M.MultiDeg LL (Finsupp.single (Fin.last N, ρ) e + m)` using `hf (hh m hm)`. Use `show M.MultiDeg (lowerLast LL e) m`. Introduce `i`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `h1 i`. Establish `hs : ∑ c, (Finsupp.single (Fin.last N, ρ) e + m : Fin (N + 1) × Fin r →₀ ℕ) (i, c) = (if i = Fin.last N then e else 0) + ∑ c, m (i, c)`. Simplify using `only [Finsupp.add_apply]`. Rewrite using `[Finset.sum_add_distrib]`. Use `congr 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hi : i = Fin.last N`. Substitute `hi` using the available equality. Rewrite using `[Finset.sum_eq_single ρ]`. Simplify using the standard rewrite rules. Introduce `c _ hc`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[Finsupp.single_apply, Ne.symm hc]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg hi]`. Conclude with `Finset.sum_eq_zero fun c _ => by simp [Finsupp.single_apply, Ne.symm hi]`. Rewrite `h2` using `[hs]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `show ∑ c, m (i, c) = Function.update LL.deg (Fin.last N) (LL.deg (Fin.last N) - e) i`. Distinguish the cases in `hi : i = Fin.last N`. Apply the tactic sequence `subst hi; simp at h2 ⊢ <;> omega`. Simplify `h2` using `[hi]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem quot_mem_pol (LL : M.Letters (N + 1)) (ρ : Fin r) (e : ℕ) (f h : MvPolynomial (Fin (N + 1) × Fin r) ℚ_[p])
     (hf : f ∈ M.Pol p r LL) (hh : ∀ m ∈ h.support, Finsupp.single (Fin.last N, ρ) e + m ∈ f.support) :
@@ -1240,7 +1234,7 @@ section
 variable (p : ℕ) [Fact p.Prime] {N r : ℕ}
 
 /- English proof (translation)
-Rewrite using `[Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp), Fintype.sum_prod_type_right]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem weight_ind {K : ℕ} (b0 : Fin K) (m : Fin K × Fin r →₀ ℕ) :
     Finsupp.weight (fun x : Fin K × Fin r => (if x.1 = b0 then 1 else 0)) m = ∑ c, m (b0, c) := by
@@ -1249,21 +1243,17 @@ theorem weight_ind {K : ℕ} (b0 : Fin K) (m : Fin K × Fin r →₀ ℕ) :
   simp
 
 /- English proof (translation)
-Establish `hXX : ∀ (i : Fin (N + 1)) (c₁ c₂ : Fin r), IsWeightedHomogeneous (fun y : Fin (N + 1 + 1) × Fin r => g y.1) (X (Fin.castSucc i, c₁) * X (Fin.last (N + 1), c₂) : MvPolynomial (Fin (N + 1 + 1) × Fin r) ℚ_[p]) (g (Fin.castSucc i) + g (Fin.last (N + 1)))` using `fun i c₁ c₂ => (isWeightedHomogeneous_X ℚ_[p] _ _).mul (isWeightedHomogeneous_X ℚ_[p] _ _)`. Establish `hXX' : ∀ (i : Fin (N + 1)) (c₁ c₂ : Fin r), IsWeightedHomogeneous (fun y : Fin (N + 1 + 1) × Fin r => g y.1) (X (Fin.last (N + 1), c₂) * X (Fin.castSucc i, c₁) : MvPolynomial (Fin (N + 1 + 1) × Fin r) ℚ_[p]) (g (Fin.castSucc i) + g (Fin.last (N + 1)))` using `fun i c₁ c₂ => by`. Rewrite using `[mul_comm]`. Conclude with `hXX i c₁ c₂`. Establish `hgen : ∀ x : Fin (N + 1) × Fin r, IsWeightedHomogeneous (fun y : Fin (N + 1 + 1) × Fin r => g y.1) (M.freezeSub p LL ρ x) (g (Fin.castSucc x.1) + g (Fin.last (N + 1)))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨i, c⟩`. Simplify using `only [M.freezeSub]`. Use `split_ifs`. Conclude with `IsWeightedHomogeneous.sum _ _ _ fun c' _ => hXX i c' c'`. Conclude with `hXX' i c ρ`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hXX' i ρ ρ`. Introduce `d hd`. Rewrite `hd` using `[coeff_sub]`. Distinguish the cases in `h1 : coeff d (X (Fin.last (N + 1), ρ) * X (Fin.castSucc i, c) : MvPolynomial (Fin (N + 1 + 1) × Fin r) ℚ_[p]) = 0`. Rewrite `hd` using `[h1, zero_sub, neg_ne_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hXX i ρ c hd`. Conclude with `hXX' i c ρ h1`. Establish `hsupp : ∀ m ∈ h.support, M.MultiDeg (lowerLast LL e) m`. Establish `h2` using `hh`. Simplify using `only [M.Pol, MvPolynomial.mem_restrictSupport_iff] at h2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `fun m hm => h2 hm`. Rewrite using `[h.as_sum, map_sum]`. Use `IsWeightedHomogeneous.sum _ _ _ fun m hm => ?_` and prove the remaining obligations. Rewrite using `[aeval_monomial]`. Establish `hmd` using `hsupp m hm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hprod` using `IsWeightedHomogeneous.prod m.support (fun x => M.freezeSub p LL ρ x ^ m x) (fun x => m x • (g (Fin.castSucc x.1) + g (Fin.last (N + 1)))) (fun x _ => (hgen x).pow (m x))`. Establish `hC` using `isWeightedHomogeneous_C (fun y : Fin (N + 1 + 1) × Fin r => g y.1) (coeff m h)`. Establish `key : ∑ b, (g (Fin.castSucc b) + g (Fin.last (N + 1))) * (lowerLast LL e).deg b = 0 + ∑ x ∈ m.support, m x • (g (Fin.castSucc x.1) + g (Fin.last (N + 1)))`. Rewrite using `[zero_add, Finset.sum_subset (Finset.subset_univ m.support) (fun x _ hx => by`. Rewrite `hx` using `[Finsupp.mem_support_iff, not_not]`.
-
-Simplify using `[hx])]`. Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← hmd b, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun c _ => by rw [smul_eq_mul, mul_comm]`.
-
-Rewrite using `[key]`. Conclude with `hC.mul hprod`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem q_isWH (LL : M.Letters (N + 1)) (ρ : Fin r) (e : ℕ) (h : MvPolynomial (Fin (N + 1) × Fin r) ℚ_[p])
     (hh : h ∈ M.Pol p r (lowerLast LL e)) (g : Fin (N + 1 + 1) → ℕ) :
@@ -1316,7 +1306,7 @@ theorem q_isWH (LL : M.Letters (N + 1)) (ρ : Fin r) (e : ℕ) (h : MvPolynomial
   exact hC.mul hprod
 
 /- English proof (translation)
-Establish `hne : Fin.last (N + 1) ≠ Fin.castSucc (Fin.last N)` using `(Fin.castSucc_lt_last _).ne'`. Simplify using `[lowerLast, hne, Fin.castSucc_inj]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem degW_eq (LL : M.Letters (N + 1)) (e : ℕ) :
     ∑ b, ((fun b' : Fin (N + 1 + 1) => if b' = Fin.castSucc (Fin.last N) then 1 else 0) (Fin.castSucc b) +
@@ -1326,7 +1316,7 @@ theorem degW_eq (LL : M.Letters (N + 1)) (e : ℕ) :
   simp [lowerLast, hne, Fin.castSucc_inj]
 
 /- English proof (translation)
-Use `first`. Consider the case `(simp only [Fin.castSucc_ne_last, eq_self_iff_true, ↓reduceIte, zero_add, one_mul]`. Rewrite using `[← lowerLast_total LL e he]`. Use the proof step `rfl)`. Consider the case `(simp [Fin.castSucc_ne_last]; rw [← lowerLast_total LL e he]; rfl)`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem degH_eq (LL : M.Letters (N + 1)) (e : ℕ) (he : e ≤ LL.deg (Fin.last N)) :
     ∑ b, ((fun b' : Fin (N + 1 + 1) => if b' = Fin.last (N + 1) then 1 else 0) (Fin.castSucc b) +
@@ -1338,13 +1328,13 @@ theorem degH_eq (LL : M.Letters (N + 1)) (e : ℕ) (he : e ≤ LL.deg (Fin.last 
   | (simp [Fin.castSucc_ne_last]; rw [← lowerLast_total LL e he]; rfl)
 
 /- English proof (translation)
-Introduce `m hm`. Rewrite `hm` using `[mem_support_iff, X_pow_eq_monomial, coeff_monomial_mul']`. Use `split_ifs at hm with hle`. Rewrite `hm` using `[one_mul]`. Take `⟨m', rfl⟩ : ∃ m', m = m' + Finsupp.single (Fin.last (N + 1), ρ) m0` from `⟨_, (tsub_add_cancel_of_le hle).symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hm` using `[add_tsub_cancel_right]`. Establish `hW : Finsupp.weight (fun x : Fin (N + 1 + 1) × Fin r => (if x.1 = Fin.castSucc (Fin.last N) then 1 else 0)) m' = LL.deg (Fin.last N) - e`. Rewrite using `[← degW_eq LL e]`. Conclude with `q_isWH p LL ρ e h hh (fun b' => if b' = Fin.castSucc (Fin.last N) then 1 else 0) hm`. Establish `hH : Finsupp.weight (fun x : Fin (N + 1 + 1) × Fin r => (if x.1 = Fin.last (N + 1) then 1 else 0)) m' = LL.total - e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← degH_eq LL e he]`. Conclude with `q_isWH p LL ρ e h hh (fun b' => if b' = Fin.last (N + 1) then 1 else 0) hm`. Rewrite `hW`, `hH` using `[weight_ind]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Finsupp.add_apply, Finset.sum_add_distrib, hW]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Finsupp.single_apply, (Fin.castSucc_lt_last (Fin.last N)).ne']`. Simplify using `only [Finsupp.add_apply, Finset.sum_add_distrib, hH]`. Simplify using `[Finsupp.single_apply, add_comm]`. Conclude with `absurd rfl hm`.
+A detailed English derivation is pending.
 -/
 theorem Z_biHom (LL : M.Letters (N + 1)) (ρ : Fin r) (e : ℕ) (he : e ≤ LL.deg (Fin.last N))
     (h : MvPolynomial (Fin (N + 1) × Fin r) ℚ_[p]) (hh : h ∈ M.Pol p r (lowerLast LL e)) (m0 : ℕ) :
@@ -1376,9 +1366,9 @@ theorem Z_biHom (LL : M.Letters (N + 1)) (ρ : Fin r) (e : ℕ) (he : e ≤ LL.d
   · exact absurd rfl hm
 
 /- English proof (translation)
-Introduce `s hs`. Establish `hw : Finsupp.weight (fun x : Fin (N + 1 + 1) × Fin r => (if x.1 = Fin.last (N + 1) then 1 else 0)) s = LL.total - e`. Rewrite using `[← degH_eq LL e he]`. Conclude with `q_isWH p LL ρ e h hh (fun b' => if b' = Fin.last (N + 1) then 1 else 0) (mem_support_iff.1 hs)`. Rewrite `hw` using `[weight_ind]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hw]`. Conclude with `Finset.single_le_sum (f := fun c => s (Fin.last (N + 1), c)) (fun c _ => Nat.zero_le _) (Finset.mem_univ ρ)`.
+A detailed English derivation is pending.
 -/
 theorem q_etaDeg (LL : M.Letters (N + 1)) (ρ : Fin r) (e : ℕ) (he : e ≤ LL.deg (Fin.last N))
     (h : MvPolynomial (Fin (N + 1) × Fin r) ℚ_[p]) (hh : h ∈ M.Pol p r (lowerLast LL e)) :
@@ -1404,9 +1394,9 @@ section
 variable (p : ℕ) [Fact p.Prime] {σ : Type} [Fintype σ] [DecidableEq σ] {r : ℕ} {w e : Fin r → σ}
 
 /- English proof (translation)
-Rewrite using `[fock_X_pow_mul, tiePhi_eq, map_sum, map_sum, fock_sum_right]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `hEE : (tieE w e ^ s) ((tieE w e ^ j) ((tieF w e ^ j) (X (e ρ) ^ m * q))) = (tieE w e ^ (s + j)) ((tieF w e ^ j) (X (e ρ) ^ m * q))`. Apply the tactic sequence `rw [pow_add] <;> rfl`. Rewrite using `[map_smul, map_smul, hEE, main_expand he hwe ρ q K hq (s + j) j m, fock_smul_right, fock_smul_right, fock_sum_right]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[fock_sum_right]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[fock_smul_right]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem fock_expand (he : Function.Injective e) (hwe : ∀ c d, w c ≠ e d) (ρ : Fin r)
     (q y : MvPolynomial σ ℚ_[p]) (K : ℕ) (hq : ∀ s ∈ q.support, s (e ρ) ≤ K) (o' n' z' s m : ℕ) :
@@ -1433,7 +1423,7 @@ theorem fock_expand (he : Function.Injective e) (hwe : ∀ c d, w c ≠ e d) (ρ
 end
 
 /- English proof (translation)
-Substitute `hI` using the available equality. Use `first`. Consider the case `(field_simp; ring)`. Consider the case `field_simp`.
+Substitute using the available equality. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem alg_step {K : Type} [Field K] (a b c G Den I I' : K) (hG : G ≠ 0) (hD : Den ≠ 0)
     (hI : I' = I / Den) : a * (b * (c * (G * I))) / (G * Den) = a * b * c * I' := by
@@ -1446,33 +1436,29 @@ section
 variable (p : ℕ) [Fact p.Prime]
 
 /- English proof (translation)
-Use `set S := LL.total with hS`. Use `set o := LL.deg (Fin.last N) with ho`. Establish `hoS : o ≤ S`. Simplify using `only [hS, ho, M.Letters.total]`. Conclude with `single_le_sum (f := LL.deg) (fun _ _ => Nat.zero_le _) (mem_univ _)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨h, hfh, hh⟩` from `exists_X_pow_mul (Fin.last N, ρ) e f hord`. Establish `hhP` using `quot_mem_pol p LL ρ e f h hf hh`. Use `set q := aeval (M.freezeSub p LL ρ) h with hq`. Use `set y := aeval (M.freezeSub p LL ρ) f' with hy`. Use `set w : Fin r → Fin (N + 1 + 1) × Fin r := fun c => (Fin.castSucc (Fin.last N), c) with hwdef`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set eη : Fin r → Fin (N + 1 + 1) × Fin r := fun c => (Fin.last (N + 1), c) with hedef`. Establish `hw : Function.Injective w` using `fun a b hab => by simpa [w] using hab`. Establish `he : Function.Injective eη` using `fun a b hab => by simpa [eη] using hab`. Establish `hwe : ∀ c d, w c ≠ eη d` using `fun c d h => by`. Simplify using `only [w, eη, Prod.mk.injEq] at h`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Conclude with `(Fin.castSucc_lt_last _).ne h.1`. Establish `hK : ∀ s ∈ q.support, s (eη ρ) ≤ S - e` using `q_etaDeg p LL ρ e heo h hhP`. Establish `hsub : M.freezeSub p LL ρ (Fin.last N, ρ) = ∑ c, X (w c) * X (eη c)`. Simplify using `[M.freezeSub, hvec, w, eη]`. Establish `hfreeze : ∀ n, M.freeze p LL ρ n f = (tieE w eη ^ e) (X (eη ρ) ^ (n - S) * q)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n`. Rewrite using `[tieE_pow_apply]`. Unfold `M.freeze`. Rewrite using `[hfh, map_mul, map_pow, aeval_X, hsub]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hfreeze' : ∀ n, M.freeze p LL ρ n f' = X (eη ρ) ^ (n - S) * y` using `fun n => rfl`. Establish `hphi : ∀ n, M.tiePhiAt p (LL.snoc n) (Fin.castSucc (Fin.last N)) (Fin.last (N + 1)) z = tiePhi w eη o n z`. Introduce `n`. Simplify using `[M.tiePhiAt, M.Letters.snoc, w, eη, o]`. Use `set T : ℕ → ℕ → ℕ → MvPolynomial (Fin (N + 1 + 1) × Fin r) ℚ_[p] := fun j i t => X (w ρ) ^ i * (∑ c, X (w c) * X (eη c)) ^ (e + j - i) * (tieF w eη ^ j) (X (eη ρ) ^ (i + t) * (Dp (eη ρ) ^ t) q) with hT`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set Den : ℚ_[p] := ((S.factorial : ℕ) : ℚ_[p]) * ∏ i, ((LL.deg i).factorial : ℚ_[p]) with hDen`. Establish `key : IsPD S (S + o - e) (fun n => ∑ j ∈ range (o - e + 1), ((((o + n + r + z - 1).choose o : ℕ) : ℚ_[p]) * (∏ i ∈ range e, (((z : ℚ_[p]) + 1 + i) / ((o + n + r + z - 1 - i : ℕ) : ℚ_[p]))) * cph ℚ_[p] ((o - e) + (n - e) + r + (z + e) - 1) j) * ∑ i ∈ range (e + j + 1), ∑ t ∈ range …`. Apply `IsPD.sum` to reduce the goal to its premises. Introduce `j hj`. Establish `hj' : j ≤ o - e` using `by simpa [Nat.lt_succ_iff] using hj`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `((coef_PD o r z e j S hr (by omega) hoS).mul (d' := e + j + (S - e)) ?_).mono (by omega)` and prove the remaining obligations. Apply `IsPD.sum` to reduce the goal to its premises. Introduce `i hi`. Apply `IsPD.sum` to reduce the goal to its premises. Introduce `t ht`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hi' : i ≤ e + j` using `by simpa [Nat.lt_succ_iff] using hi`. Establish `ht' : t ≤ S - e` using `by simpa [Nat.lt_succ_iff] using ht`. Conclude with `((IsPD.choose_prod S i t).mul (IsPD.const S 0 _)).mono (by omega)`. Use `key.congr (fun n hn => ?_)` and prove the remaining obligations. Establish `hen : e ≤ n` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hB` using `Z_biHom p LL ρ e heo h hhP (n - S)`. Rewrite `hB` using `[show n - S + (LL.total - e) = n - e by omega]`. Establish `hEW` using `euler_w_of_biHom w eη hB`. Establish `hEH` using `euler_e_of_biHom w eη hB`. Unfold `M.tieGam`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hphi n, hfreeze n, hfreeze' n, phi_E_pow hw he hwe e o n z _ heo hen hEW hEH, fock_smul_left, fock_comm, fock_expand p he hwe ρ q y (S - e) hK (o - e) (n - e) (z + e) e (n - S)]`. Establish `hm : (((n - S).factorial : ℕ) : ℚ_[p]) ≠ 0` using `Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero _)`. Establish `hD : Den ≠ 0`. Use `mul_ne_zero (Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero _)) ?_` and prove the remaining obligations. Conclude with `prod_ne_zero_iff.mpr (fun i _ => Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero _))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[show ((((n - S).factorial * S.factorial : ℕ) : ℚ_[p]) * ∏ i, ((LL.deg i).factorial : ℚ_[p])) = (((n - S).factorial : ℕ) : ℚ_[p]) * Den by rw [hDen, Nat.cast_mul]; ring]`. Rewrite using `[mul_sum, mul_sum, sum_div]`. Apply `sum_congr rfl` to reduce the goal to its premises. Introduce `j _`. Use `alg_step _ _ _ _ _ _ _ hm hD ?_` and prove the remaining obligations.
-
-Rewrite using `[sum_div]`. Apply `sum_congr rfl` to reduce the goal to its premises. Introduce `i _`. Rewrite using `[sum_div]`. Apply `sum_congr rfl` to reduce the goal to its premises.
-
-Introduce `t _`. Simplify using `only [hT]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem gam_oneSided (N r : ℕ) (LL : M.Letters (N + 1)) (ρ : Fin r) (z e : ℕ)
     (f f' : MvPolynomial (Fin (N + 1) × Fin r) ℚ_[p]) (hr : 1 ≤ r) (hvec : LL.vec (Fin.last N) = true)
@@ -1565,13 +1551,13 @@ namespace Formalism.GM
 open MvPolynomial Finset
 
 /- English proof (translation)
-Introduce `p _ N r LL ρ z e e' f f' hr hvec hf hf' ho ho'`. Establish `hsym : ∀ n, M.tieGam p LL ρ z n f f' = M.tieGam p LL ρ z n f' f`. Introduce `n`. Simplify using `only [M.tieGam, M.tiePhiAt]`. Rewrite using `[GammaExpansion.fock_phi_symm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hle : ∀ (g : MvPolynomial (Fin (N + 1) × Fin r) ℚ_[p]) (d : ℕ), g ∈ M.Pol p r LL → M.HasOrder (Fin.last N, ρ) d g → d ≤ LL.deg (Fin.last N)`. Introduce `g d hg hgo`. Take `⟨_, m, hm, hmd⟩` from `hgo`. Simplify using `only [M.Pol, MvPolynomial.mem_restrictSupport_iff] at hg`. Establish `h2 : ∑ c, m (Fin.last N, c) = LL.deg (Fin.last N)` using `hg hm (Fin.last N)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← hmd, ← h2]`. Conclude with `Finset.single_le_sum (f := fun c => m (Fin.last N, c)) (fun c _ => Nat.zero_le _) (Finset.mem_univ ρ)`. Break down `le_total e' e with h | h` into its components or cases. Take `⟨P, hP, hP'⟩` from `GammaExpansion.gam_oneSided p N r LL ρ z e f f' hr hvec hf ho.1 (hle f e hf ho)`. Conclude with `⟨P, by rw [max_eq_left h]; exact hP, hP'⟩`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨P, hP, hP'⟩` from `GammaExpansion.gam_oneSided p N r LL ρ z e' f' f hr hvec hf' ho'.1 (hle f' e' hf' ho')`. Conclude with `⟨P, by rw [max_eq_right h]; exact hP, fun n hn => (hsym n).trans (hP' n hn)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem gamma_degree_bound : M.GamDeg := by
   intro p _ N r LL ρ z e e' f f' hr hvec hf hf' ho ho'

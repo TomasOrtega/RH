@@ -4,7 +4,7 @@ import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula
 namespace PositivityTheory.SiegelWeilFormula.Ald
 
 /- English proof (translation)
-Introduce `hC hF` and use `smallS_of hC hF (subSplit_of hF) haarLc`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem smallS_of' : ChartFacts → SliceFacts → SmallS := fun hC hF => smallS_of hC hF (subSplit_of hF) haarLc
 

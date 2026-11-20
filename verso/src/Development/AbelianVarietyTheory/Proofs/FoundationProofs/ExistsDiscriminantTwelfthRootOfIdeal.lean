@@ -10,7 +10,7 @@ open NumberField Classical Formalism.BasicNotions Formalism.MainNotions Formalis
 namespace GlobalTheory.Glob.IntegralWittCoefficients
 
 /- English proof (translation)
-Take `⟨wq, hwq⟩` from `GlobalTheory.GenusOneDatum.exists_isWq (C • wModel lam Λ)`. Take `⟨ex, he0, he⟩` from `GlobalTheory.GenusOneDatum.exists_subst_eq_X _ (GlobalTheory.GenusOneDatum.constantCoeff_flog _ wq) (GlobalTheory.GenusOneDatum.coeff_one_flog hwq)`. Conclude with `⟨wq, ex, hC, hwq, he0, he⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_ok_of_isModelU (p : ℕ) [Fact p.Prime] (lam : Qbar →+* ℂ_[p]) (Λ : AddSubgroup ℂ)
     (C : WeierstrassCurve.VariableChange ℂ_[p]) (hC : IsModelU lam Λ C) :
@@ -21,7 +21,7 @@ theorem exists_ok_of_isModelU (p : ℕ) [Fact p.Prime] (lam : Qbar →+* ℂ_[p]
   exact ⟨wq, ex, hC, hwq, he0, he⟩
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `hM`. Take `⟨wq, ex, hok⟩` from `exists_ok_of_isModelU p lam _ C hC`. Conclude with `⟨⟨lam, lamOf D cc δ, C, wq, ex⟩, rfl, h1, h2, h3, rfl, hok⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_at_of_model (D : D7) (p : ℕ) [Fact p.Prime] (lam : Qbar →+* ℂ_[p])
     (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (h1 : IsCurveIdeal D cc)
@@ -33,7 +33,7 @@ theorem exists_at_of_model (D : D7) (p : ℕ) [Fact p.Prime] (lam : Qbar →+* �
   exact ⟨⟨lam, lamOf D cc δ, C, wq, ex⟩, rfl, h1, h2, h3, rfl, hok⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨top_ne_bot, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem isCurveIdeal_top (D : D7) : IsCurveIdeal D ⊤ :=
   ⟨top_ne_bot, by simp⟩
@@ -45,38 +45,38 @@ theorem coprime_absNorm_top (D : D7) (p : ℕ) :
     Nat.Coprime (Ideal.absNorm (⊤ : Ideal (𝓞 D.host.K))) p := by simp
 
 /- English proof (translation)
-The claim follows from `IsAlgClosed.exists_pow_nat_eq _ (by norm_num)`.
+A detailed English derivation is pending.
 -/
 theorem exists_discriminantTwelfthRoot_of_ideal (D : D7) (cc : Ideal (𝓞 D.host.K)) : ∃ δ, IsDiscriminantTwelfthRootOfIdealLattice D cc δ :=
   IsAlgClosed.exists_pow_nat_eq _ (by norm_num)
 
 /- English proof (translation)
-Establish `: Algebra.IsAlgebraic ℚ Qbar` using `algebraicClosure.isAlgebraic ℚ ℂ`. Conclude with `⟨(IsAlgClosed.lift (R := ℚ) (S := Qbar) (M := ℂ_[p])).toRingHom⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem nonempty_place (p : ℕ) [Fact p.Prime] : Nonempty (Qbar →+* ℂ_[p]) := by
   have : Algebra.IsAlgebraic ℚ Qbar := algebraicClosure.isAlgebraic ℚ ℂ
   exact ⟨(IsAlgClosed.lift (R := ℚ) (S := Qbar) (M := ℂ_[p])).toRingHom⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isModelU_iff {p : ℕ} [Fact p.Prime] (lam : Qbar →+* ℂ_[p]) (Λ : AddSubgroup ℂ)
     (C : WeierstrassCurve.VariableChange ℂ_[p]) : IsModelU lam Λ C ↔ GL3Theta.IsModelU lam Λ C := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem at_iff (D : D7) {p : ℕ} [Fact p.Prime] (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (g : G1 p) :
     At D cc δ g ↔ GL3Theta.At D cc δ ⟨g.lam, g.abelian₂, g.C, g.wq, g.ex⟩ := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem at_iff' (D : D7) {p : ℕ} [Fact p.Prime] (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (g : GL3Theta.G1 p) :
     GL3Theta.At D cc δ g ↔ At D cc δ ⟨g.lam, g.abelian₂, g.C, g.wq, g.ex⟩ := Iff.rfl
 
 /- English proof (translation)
-The claim follows from `exists_at_of_model D p lam cc δ h1 h2 h3 (hM p lam cc δ h1 h2 h3).1`.
+A detailed English derivation is pending.
 -/
 theorem exists_at_of_modelEx (D : D7) (hM : GL3Theta.modelEx D) (p : ℕ) [Fact p.Prime]
     (lam : Qbar →+* ℂ_[p]) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (h1 : IsCurveIdeal D cc)
@@ -85,7 +85,7 @@ theorem exists_at_of_modelEx (D : D7) (hM : GL3Theta.modelEx D) (p : ℕ) [Fact 
   exists_at_of_model D p lam cc δ h1 h2 h3 (hM p lam cc δ h1 h2 h3).1
 
 /- English proof (translation)
-The claim follows from `exists_at_of_modelEx D (GlobalTheory.UnitModel.modelEx_holds D) p lam cc δ h1 h2 h3`.
+A detailed English derivation is pending.
 -/
 theorem exists_at (D : D7) (p : ℕ) [Fact p.Prime]
     (lam : Qbar →+* ℂ_[p]) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (h1 : IsCurveIdeal D cc)
@@ -94,7 +94,7 @@ theorem exists_at (D : D7) (p : ℕ) [Fact p.Prime]
   exists_at_of_modelEx D (GlobalTheory.UnitModel.modelEx_holds D) p lam cc δ h1 h2 h3
 
 /- English proof (translation)
-Take `⟨lam⟩` from `nonempty_place p`. Take `⟨δ, hδ⟩` from `exists_discriminantTwelfthRoot_of_ideal D ⊤`. Take `⟨g, -, hg⟩` from `exists_at D p lam ⊤ δ (isCurveIdeal_top D) (coprime_absNorm_top D p) hδ`. Conclude with `⟨δ, g, hg⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_at_top (D : D7) (p : ℕ) [Fact p.Prime] : ∃ (δ : ℂ) (g : G1 p), At D ⊤ δ g := by
   obtain ⟨lam⟩ := nonempty_place p
@@ -103,7 +103,7 @@ theorem exists_at_top (D : D7) (p : ℕ) [Fact p.Prime] : ∃ (δ : ℂ) (g : G1
   exact ⟨δ, g, hg⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨exists_ok_of_isModelU p, nonempty_place p, fun D => ⟨exists_at D p, ⟨isCurveIdeal_top D, coprime_absNorm_top D p⟩, exists_discriminantTwelfthRoot_of_ideal D, ⟨⊤, exists_at_top D p⟩, at_iff D⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem genusOne_datum_inhabited (p : ℕ) [Fact p.Prime] :
     (∀ (lam : Qbar →+* ℂ_[p]) (Λ : AddSubgroup ℂ) (C : WeierstrassCurve.VariableChange ℂ_[p]),

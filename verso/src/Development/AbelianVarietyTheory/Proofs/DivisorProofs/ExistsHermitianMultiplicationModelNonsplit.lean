@@ -17,28 +17,28 @@ section Herm
 variable (w : Pl E) {n : ℕ}
 
 /- English proof (translation)
-Simplify using `[stdH, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem stdH_add_left (a b c : Fin n → w.adicCompletion E) :
     stdH w (a + b) c = stdH w a c + stdH w b c := by
   simp [stdH, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `[stdH, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem stdH_add_right (a b c : Fin n → w.adicCompletion E) :
     stdH w a (b + c) = stdH w a b + stdH w a c := by
   simp [stdH, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `[stdH, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem stdH_smul_left (r : w.adicCompletion E) (a b : Fin n → w.adicCompletion E) :
     stdH w (r • a) b = r * stdH w a b := by
   simp [stdH, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Simplify using `only [stdH, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem stdH_smul_right (r : w.adicCompletion E) (a b : Fin n → w.adicCompletion E) :
     stdH w a (r • b) = cj w r * stdH w a b := by
@@ -46,14 +46,14 @@ theorem stdH_smul_right (r : w.adicCompletion E) (a b : Fin n → w.adicCompleti
   exact Finset.sum_congr rfl fun k _ => by ring
 
 /- English proof (translation)
-Simplify using `[stdH, Pi.single_apply, apply_ite (cj w)]`.
+Simplify using the standard rewrite rules.
 -/
 theorem stdH_single (a : Fin n → w.adicCompletion E) (k : Fin n) :
     stdH w a (Pi.single k 1) = a k := by
   simp [stdH, Pi.single_apply, apply_ite (cj w)]
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `e.surjective z`. Rewrite using `[← hB.1, ← hB.1, K.c_c]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem cj_cj {K : GlobalTheory.UnitLemma.UQ} {e : K.E ≃+* w.adicCompletion E} (hB : Bridge w K e)
     (z : w.adicCompletion E) : cj w (cj w z) = z := by
@@ -61,7 +61,7 @@ theorem cj_cj {K : GlobalTheory.UnitLemma.UQ} {e : K.E ≃+* w.adicCompletion E}
   rw [← hB.1, ← hB.1, K.c_c]
 
 /- English proof (translation)
-Simplify using `only [stdH, map_sum, map_mul, cj_cj w hB]`. Conclude with `Finset.sum_congr rfl fun k _ => mul_comm _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem stdH_symm {K : GlobalTheory.UnitLemma.UQ} {e : K.E ≃+* w.adicCompletion E} (hB : Bridge w K e)
     (a b : Fin n → w.adicCompletion E) : stdH w b a = cj w (stdH w a b) := by
@@ -69,11 +69,11 @@ theorem stdH_symm {K : GlobalTheory.UnitLemma.UQ} {e : K.E ≃+* w.adicCompletio
   exact Finset.sum_congr rfl fun k _ => mul_comm _ _
 
 /- English proof (translation)
-Establish `h1 : γ.valᵀ * γ.val.map (cj w) = 1`. Establish `h0 : (γ.val.map (cj w))ᵀ * γ.val = 1` using `by simpa [cT] using hγ`. Establish `h2 : γ.val * (γ.val.map (cj w))ᵀ = 1` using `mul_eq_one_comm.mp h0`. Establish `h3 : γ.val.map (cj w) * γ.valᵀ = 1`. Use `congrArg Matrix.transpose h2` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[Matrix.transpose_mul]`. Conclude with `mul_eq_one_comm.mp h3`. Establish `hc : ∀ z : Fin n → w.adicCompletion E, (fun k => cj w ((γ.val *ᵥ z) k)) = γ.val.map (cj w) *ᵥ (fun k => cj w (z k))`. Introduce `z`. Use function extensionality and compare the values at `k`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Conclude with `RingHom.map_mulVec (cj w) γ.val z k`. Establish `hs : ∀ a b : Fin n → w.adicCompletion E, stdH w a b = a ⬝ᵥ (fun k => cj w (b k))` using `fun a b => rfl`. Rewrite using `[hs, hs, hc, Matrix.dotProduct_mulVec, ← Matrix.vecMul_transpose, Matrix.vecMul_vecMul, h1, Matrix.vecMul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stdH_unitary (γ : GLw n w) (hγ : cT (cj w) γ.val * 1 * γ.val = 1)
     (a b : Fin n → w.adicCompletion E) : stdH w (γ.val *ᵥ a) (γ.val *ᵥ b) = stdH w a b := by
@@ -99,7 +99,7 @@ section Alg
 variable {K : GlobalTheory.UnitLemma.UQ} {B : GlobalTheory.UnitLemma.InvAlg K} {n : ℕ}
 
 /- English proof (translation)
-Distinguish the cases in `h0 : p = 0`. Simplify using `[h0]`. Rewrite using `[aeval_eq_sum_range' ((natDegree_lt_iff_degree_lt h0).mpr hp) x, ← Fin.sum_univ_eq_sum_range (fun i => p.coeff i • x ^ i)]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem aeval_eq_sum_fin {R A : Type*} [CommSemiring R] [Semiring A] [Algebra R A] (x : A) (p : R[X])
     (hp : p.degree < n) : aeval x p = ∑ i : Fin n, p.coeff i • x ^ (i : ℕ) := by
@@ -111,7 +111,7 @@ theorem aeval_eq_sum_fin {R A : Type*} [CommSemiring R] [Semiring A] [Algebra R 
 variable {u : B.A} {Q' : K.E[X]}
 
 /- English proof (translation)
-Establish `hy : y ∈ Algebra.adjoin K.E {u}` using `hadj ▸ Algebra.mem_top`. Rewrite `hy` using `[Algebra.adjoin_singleton_eq_range_aeval]`. Take `⟨p, rfl⟩` from `hy`. Use `⟨p %ₘ Q', ?_, aeval_modByMonic_eq_self_of_root hroot⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 theorem exists_aeval_lt (hQm : Q'.Monic) (hdeg : Q'.natDegree = n)
     (hadj : Algebra.adjoin K.E {u} = ⊤) (hroot : aeval u Q' = 0) (y : B.A) :
@@ -124,7 +124,7 @@ theorem exists_aeval_lt (hQm : Q'.Monic) (hdeg : Q'.natDegree = n)
     _ = n := by rw [degree_eq_natDegree hQm.ne_zero, hdeg]
 
 /- English proof (translation)
-Introduce `y _`. Take `⟨p, hp, rfl⟩` from `exists_aeval_lt hQm hdeg hadj hroot y`. Rewrite using `[aeval_eq_sum_fin u p hp]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_pow (hQm : Q'.Monic) (hdeg : Q'.natDegree = n)
     (hadj : Algebra.adjoin K.E {u} = ⊤) (hroot : aeval u Q' = 0) :
@@ -135,9 +135,9 @@ theorem span_pow (hQm : Q'.Monic) (hdeg : Q'.natDegree = n)
   exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)
 
 /- English proof (translation)
-Rewrite using `[← modByMonic_eq_zero_iff_dvd hQm]`. Establish `hr : (p %ₘ Q').degree < n` using `(degree_modByMonic_lt p hQm).trans_eq (by rw [degree_eq_natDegree hQm.ne_zero, hdeg])`. Establish `h0 : ∑ i : Fin n, (p %ₘ Q').coeff i • u ^ (i : ℕ) = 0`. Rewrite using `[← aeval_eq_sum_fin u _ hr, aeval_modByMonic_eq_self_of_root hroot, hp]`. Establish `hc` using `Fintype.linearIndependent_iff.mp hli _ h0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `k`. Rewrite using `[coeff_zero]`. Distinguish the cases in `hk : k < n`. Conclude with `hc ⟨k, hk⟩`. Conclude with `coeff_eq_zero_of_degree_lt (hr.trans_le (by exact_mod_cast not_lt.mp hk))`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem dvd_of_aeval_eq_zero (hli : LinearIndependent K.E (fun i : Fin n => u ^ (i : ℕ)))
     (hQm : Q'.Monic) (hdeg : Q'.natDegree = n) (hroot : aeval u Q' = 0) (p : K.E[X])
@@ -155,7 +155,7 @@ theorem dvd_of_aeval_eq_zero (hli : LinearIndependent K.E (fun i : Fin n => u ^ 
   · exact coeff_eq_zero_of_degree_lt (hr.trans_le (by exact_mod_cast not_lt.mp hk))
 
 /- English proof (translation)
-Use `⟨fun a ⟨k, hk⟩ => ?_⟩` and prove the remaining obligations. Take `⟨p, -, rfl⟩` from `exists_aeval_lt hQm hdeg hadj hroot a`. Establish `hd : Q' ∣ p ^ k` using `dvd_of_aeval_eq_zero hli hQm hdeg hroot (p ^ k) (by rw [map_pow]; exact hk)`. Take `⟨r, rfl⟩` from `hsep.squarefree.isRadical k p hd`. Simplify using `[hroot]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem isReduced_of (hli : LinearIndependent K.E (fun i : Fin n => u ^ (i : ℕ)))
     (hQm : Q'.Monic) (hdeg : Q'.natDegree = n) (hadj : Algebra.adjoin K.E {u} = ⊤)
@@ -173,61 +173,59 @@ end GlobalTheory.KapLat.ExModel
 namespace GlobalTheory.KapLat.ExModel
 
 /- English proof (translation)
-Introduce `E _ _ _ w hsplit K e hB n Q B u hsep hF γ hγU hQ`. Take `⟨hadj, hroot, hrank, huσ⟩` from `hF`. Substitute `hQ` using the available equality. Establish `hU : cT (cj w) γ.val * 1 * γ.val = 1`. Establish `h` using `hγU`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [UL, hsplit, if_false] at h`. Conclude with `h`. Use `set Q' : K.E[X] := (γ.val.charpoly).map e.symm.toRingHom with hQ'`. Establish `hQm : Q'.Monic` using `(charpoly_monic _).map _`. Establish `hdeg : Q'.natDegree = n`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hQ', natDegree_map, charpoly_natDegree_eq_dim, Fintype.card_fin]`. Establish `hrank' : Module.finrank K.E B.A = n`. Rewrite using `[hrank, charpoly_natDegree_eq_dim, Fintype.card_fin]`. Establish `hsep' : Q'.Separable` using `hsep.map`. Establish `hspan` using `span_pow hQm hdeg hadj hroot`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hli : LinearIndependent K.E (fun i : Fin n => u ^ (i : ℕ))` using `linearIndependent_of_top_le_span_of_card_eq_finrank hspan (by simp [hrank'])`. Set `bA : Module.Basis (Fin n) K.E B.A` to `Module.Basis.mk hli hspan`. Establish `hbA : ∀ i, bA i = u ^ (i : ℕ)` using `fun i => Module.Basis.mk_apply hli hspan i`. Take `⟨v, hv⟩` from `GlobalTheory.ClassParam.exists_cyclic_field γ.val hsep`. Establish `hliV : LinearIndependent (w.adicCompletion E) (fun j : Fin n => (γ.val ^ (j : ℕ)) *ᵥ v)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `Matrix.linearIndependent_cols_iff_isUnit.mpr ((Matrix.isUnit_iff_isUnit_det _).mpr (isUnit_iff_ne_zero.mpr hv))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j i`. Both sides reduce to the same expression. Set `bV : Module.Basis (Fin n) (w.adicCompletion E) (Fin n → w.adicCompletion E)` to `basisOfLinearIndependentOfCardEqFinrank' _ hliV (by simp)`.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hbV : ∀ j, bV j = (γ.val ^ (j : ℕ)) *ᵥ v` using `fun j => by simp [bV]`. Set `ψ : B.A ≃+ (Fin n → w.adicCompletion E)` to `bA.equivFun.toAddEquiv.trans ((AddEquiv.piCongrRight fun _ : Fin n => e.toAddEquiv).trans bV.equivFun.symm.toAddEquiv)`. Establish `hψ : ∀ y, ψ y = bV.equivFun.symm (fun i => e (bA.equivFun y i))` using `fun y => rfl`. Establish `hψs : ∀ (c : K.E) (y : B.A), ψ (c • y) = e c • ψ y`. Introduce `c y`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hψ, hψ, ← map_smul]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Establish `hP1 : ∀ p : K.E[X], p.degree < n → ψ (aeval u p) = aeval γ.val (p.map e.toRingHom) *ᵥ v`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `p hp`. Establish `h1 : aeval u p = bA.equivFun.symm (fun i => p.coeff i)`. Rewrite using `[aeval_eq_sum_fin u p hp, Module.Basis.equivFun_symm_apply]`. Simplify using `[hbA]`. Establish `hp' : (p.map e.toRingHom).degree < n` using `(degree_map_le).trans_lt hp`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hψ, h1, LinearEquiv.apply_symm_apply, Module.Basis.equivFun_symm_apply, aeval_eq_sum_fin γ.val _ hp', Matrix.sum_mulVec]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hbV, coeff_map, Matrix.smul_mulVec]`. Both sides reduce to the same expression. Establish `hmapQ : Q'.map e.toRingHom = γ.val.charpoly`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `i`. Simplify using `[hQ']`. Establish `hP2 : ∀ p : K.E[X], ψ (aeval u p) = aeval γ.val (p.map e.toRingHom) *ᵥ v`. Introduce `p`. Establish `hr : (p %ₘ Q').degree < n` using `(degree_modByMonic_lt p hQm).trans_eq (by rw [degree_eq_natDegree hQm.ne_zero, hdeg])`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← aeval_modByMonic_eq_self_of_root hroot, hP1 _ hr, map_modByMonic _ hQm, hmapQ, aeval_modByMonic_eq_self_of_root (aeval_self_charpoly γ.val)]`. Establish `hψ1 : ψ 1 = v`. Simplify using `using hP2 1`. Establish `hmul : ∀ y, ψ (u * y) = γ.val *ᵥ ψ y`. Introduce `y`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨p, -, rfl⟩` from `exists_aeval_lt hQm hdeg hadj hroot y`. Establish `: u * aeval u p = aeval u (X * p)` using `by rw [map_mul, aeval_X]`. Rewrite using `[this, hP2, hP2, Polynomial.map_mul, map_X, map_mul, aeval_X, Matrix.mulVec_mulVec]`. Establish `hadjP : ∀ a y z, stdH w (ψ (a * y)) (ψ z) = stdH w (ψ y) (ψ (B.σ a * z))`. Introduce `a`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction.
 
-Establish `ha : a ∈ Algebra.adjoin K.E {u}` using `hadj ▸ Algebra.mem_top`. Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Rewrite `hx` using `[Set.mem_singleton_iff]`. Rewrite using `[hx]`.
+Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `y z`. Establish `h1 : ψ z = γ.val *ᵥ ψ (B.σ u * z)` using `by rw [← hmul, ← mul_assoc, huσ, one_mul]`. Rewrite using `[hmul, h1, stdH_unitary w γ hU]`. Consider the case `algebraMap r`. Introduce `y z`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[B.σ_alg, ← Algebra.smul_def, ← Algebra.smul_def, hψs, hψs, stdH_smul_left, stdH_smul_right, hB.1, cj_cj w hB]`. Consider the case `add a b _ _ ha hb`. Introduce `y z`. Rewrite using `[add_mul, map_add ψ, stdH_add_left, ha, hb, map_add B.σ, add_mul, map_add ψ, stdH_add_right]`. Consider the case `mul a b _ _ ha hb`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `y z`. Rewrite using `[mul_assoc, ha, hb, map_mul B.σ]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Set `lam : B.A →ₗ[K.E] K.E` to `{ toFun := fun a => e.symm (stdH w (ψ a) v) map_add' := by intro a b; rw [map_add, stdH_add_left, map_add] map_smul' := by`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `r a`. Rewrite using `[hψs, stdH_smul_left, map_mul, RingEquiv.symm_apply_apply]`. Use `rfl }`. Use `haveI := isReduced_of hli hQm hdeg hadj hroot hsep'`. Establish `hnd : ∀ a : B.A, (∀ y, Algebra.trace K.E B.A (a * y) = 0) → a = 0` using `fun a ha => GlobalTheory.RegSS.eq_zero_of_trace_mul_eq_zero a ha`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hinj : Function.Injective (Algebra.traceForm K.E B.A)`. Introduce `a b hab`. Rewrite using `[← sub_eq_zero]`. Apply `hnd` to reduce the goal to its premises. Introduce `y`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `LinearMap.congr_fun hab y` as an intermediate fact. Simplify using `only [Algebra.traceForm_apply] at this`. Rewrite using `[sub_mul, map_sub, this, sub_self]`. Establish `hsurj : Function.Surjective (Algebra.traceForm K.E B.A)` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank Subspace.dual_finrank_eq.symm).mp hinj`. Take `⟨x, hx⟩` from `hsurj lam`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hxa : ∀ a, Algebra.trace K.E B.A (x * a) = e.symm (stdH w (ψ a) v)` using `fun a => by`. Use `LinearMap.congr_fun hx a` as an intermediate fact. Simplify `this` using `[Algebra.traceForm_apply, lam]`. Establish `hform : ∀ y z, stdH w (ψ y) (ψ z) = e (B.herm x y z)`. Introduce `y z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `h1` using `hadjP (B.σ z) y 1`. Rewrite `h1` using `[B.σ_σ, mul_one]`. Rewrite using `[← h1, hψ1, GlobalTheory.UnitLemma.InvAlg.herm, show x * y * B.σ z = x * (B.σ z * y) by ring, hxa, RingEquiv.apply_symm_apply]`. Establish `htr : ∀ a, Algebra.trace K.E B.A (x * B.σ a) = K.c (Algebra.trace K.E B.A (x * a))`. Introduce `a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply `e.injective` to reduce the goal to its premises. Establish `e1 : B.herm x 1 a = Algebra.trace K.E B.A (x * B.σ a)`. Simplify using `[GlobalTheory.UnitLemma.InvAlg.herm]`. Establish `e2 : B.herm x a 1 = Algebra.trace K.E B.A (x * a)`. Simplify using `[GlobalTheory.UnitLemma.InvAlg.herm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← e1, ← e2, ← hform, hB.1, ← hform]`. Conclude with `stdH_symm w hB _ _`. Establish `htrσ : ∀ a : B.A, Algebra.trace K.E B.A (B.σ a) = K.c (Algebra.trace K.E B.A a)`. Introduce `a`. Establish `h` using `Algebra.trace_eq_of_equiv_equiv K.c B.σ (by ext r; simp [B.σ_alg]) a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[h, RingEquiv.apply_symm_apply]`. Establish `hσx : B.σ x = x`. Rewrite using `[← sub_eq_zero]`. Apply `hnd` to reduce the goal to its premises. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[sub_mul, map_sub, sub_eq_zero]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_mul B.σ, B.σ_σ]`. Use `_ = K.c (Algebra.trace K.E B.A (x * B.σ a)) := htrσ _`. Use `_ = K.c (K.c (Algebra.trace K.E B.A (x * a))) := by rw [htr]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `_ = Algebra.trace K.E B.A (x * a) := K.c_c _`. Establish `hxinj : Function.Injective (LinearMap.mulLeft K.E x)`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `a ha`. Simplify using `only [LinearMap.mulLeft_apply] at ha`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h0 : ψ a = 0`. Use function extensionality and compare the values at `k`. Take `⟨z, hz⟩` from `ψ.surjective (Pi.single k 1)`. Use `hform a z` as an intermediate fact. Rewrite `this` using `[hz, stdH_single]`.
-
-Rewrite using `[this, GlobalTheory.UnitLemma.InvAlg.herm, ha, zero_mul, map_zero, map_zero]`. Both sides reduce to the same expression. Conclude with `ψ.injective (h0.trans (map_zero ψ).symm)`. Take `⟨y, hy⟩` from `(LinearMap.injective_iff_surjective.mp hxinj) 1`. Conclude with `⟨x, hσx, ⟨⟨x, y, hy, by rw [mul_comm]; exact hy⟩, rfl⟩, ψ, hψs, hmul, hform⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isModel : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (w : Pl E), ¬ IsSplitAt w →
     ∀ (K : GlobalTheory.UnitLemma.UQ) (e : K.E ≃+* w.adicCompletion E), Bridge w K e → ∀ (n : ℕ)

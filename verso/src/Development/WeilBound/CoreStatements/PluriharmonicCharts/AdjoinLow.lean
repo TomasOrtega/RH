@@ -9,9 +9,9 @@ namespace PositivityTheory.Xgp.GenFam
 variable {G : Type} [Field G] {S : Type} {r : S → ℕ}
 
 /- English proof (translation)
-Use `le_antisymm (IntermediateField.adjoin_le_iff.2 ?_) (IntermediateField.adjoin.mono _ _ _ ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨s, a, b⟩, rfl⟩ show u s a b ∈ IntermediateField.adjoin F _`. Break down `lt_trichotomy a b with h | h | h` into its components or cases. Rewrite using `[h0 s a b h]`. Conclude with `zero_mem _`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, h1]`. Conclude with `one_mem _`. Conclude with `IntermediateField.subset_adjoin _ _ ⟨⟨s, (a, b), h⟩, rfl⟩`. Introduce and unpack `_ ⟨⟨s, ⟨a, b⟩, h⟩, rfl⟩`. Conclude with `⟨⟨s, a, b⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem adjoin_low (F : Type) [Field F] [Algebra F G] (u : ∀ s, Matrix (Fin (r s)) (Fin (r s)) G)
     (h1 : ∀ s a, u s a a = 1) (h0 : ∀ s a b, a < b → u s a b = 0) :
@@ -31,11 +31,9 @@ theorem adjoin_low (F : Type) [Field F] [Algebra F G] (u : ∀ s, Matrix (Fin (r
 variable {Ω : Type} [Field Ω] [Algebra Ω G]
 
 /- English proof (translation)
-Establish `htop : IntermediateField.adjoin Ω (Set.range fun q : Σ σ, Fin (r σ) × Fin (r σ) => v q.1 q.2.1 q.2.2) = ⊤`. Rewrite using `[eq_top_iff, ← hu.2.2.2]`. Use `IntermediateField.adjoin_le_iff.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨q, rfl⟩`. Conclude with `h _ _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨h1, h0, ?_, htop⟩` and prove the remaining obligations. Rewrite `htop` using `[adjoin_low Ω v h1 h0]`. Use `haveI : Algebra.IsAlgebraic (Algebra.adjoin Ω (Set.range fun q : Σ σ, {lk : Fin (r σ) × Fin (r σ) // lk.2 < lk.1} => v q.1 q.2.1.1 q.2.1.2)) G := by`. Use `IntermediateField.isAlgebraic_adjoin_iff_top.1 ⟨fun x => ?_⟩` and prove the remaining obligations. Conclude with `isAlgebraic_algebraMap (⟨x, by rw [htop]; trivial⟩ : IntermediateField.adjoin Ω _)`.
-
-Conclude with `(Algebra.IsAlgebraic.isTranscendenceBasis_of_le_trdeg_of_finite Ω _ hu.2.2.1.cardinalMk_le_trdeg).1`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem of_gen [Finite S] {u v : ∀ s, Matrix (Fin (r s)) (Fin (r s)) G} (hu : IsGenFam Ω G u)
     (h1 : ∀ s a, v s a a = 1) (h0 : ∀ s a b, a < b → v s a b = 0)
@@ -56,11 +54,11 @@ theorem of_gen [Finite S] {u v : ∀ s, Matrix (Fin (r s)) (Fin (r s)) G} (hu : 
   exact (Algebra.IsAlgebraic.isTranscendenceBasis_of_le_trdeg_of_finite Ω _ hu.2.2.1.cardinalMk_le_trdeg).1
 
 /- English proof (translation)
-Set `M' : Matrix (Fin n) (Fin n) F` to `fun a b => ⟨M a b, h a b⟩`. Establish `e : M = M'.map (algebraMap F G)` using `rfl`. Establish `hd' : IsUnit M'.det`. Rewrite `hd`, the goal using `[isUnit_iff_ne_zero]`. Introduce `h0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hd` to reduce the goal to its premises. Rewrite using `[e, ← RingHom.mapMatrix_apply, ← RingHom.map_det, h0, map_zero]`. Establish `: M⁻¹ = (M'⁻¹).map (algebraMap F G)`. Apply `Matrix.inv_eq_right_inv` to reduce the goal to its premises. Rewrite using `[e, ← Matrix.map_mul, Matrix.mul_nonsing_inv _ hd', Matrix.map_one _ (map_zero _) (map_one _)]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `(M'⁻¹ a b).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_mem {n : ℕ} (F : IntermediateField Ω G) (M : Matrix (Fin n) (Fin n) G) (hd : IsUnit M.det)
     (h : ∀ a b, M a b ∈ F) (a b : Fin n) : M⁻¹ a b ∈ F := by

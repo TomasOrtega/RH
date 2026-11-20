@@ -8,7 +8,7 @@ import Formalism.HermitianCurvature.HerGenC
 open BpJoin Formalism.FourierDecayAlt Formalism.FourierDecayAlt.P Formalism.FourierDecayAlt.P.CutBP Formalism.FourierDecayAlt.P.CutBP2 Formalism.FourierDecayAlt.P.CutBPEq Formalism.QuantumDeterminants
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.capelliEigenfunction_pointwiseBound_of_differentTypes.thmBp_eigen_different_types` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FJetHarmonics%2FCapelliEigenfunctionPointwiseBoundOfDifferentTyp.lean&line=33#L33)
 -/

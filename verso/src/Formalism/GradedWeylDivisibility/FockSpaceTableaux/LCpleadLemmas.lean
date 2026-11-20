@@ -8,7 +8,7 @@ noncomputable section
 namespace Formalism.GradedWeylDivisibility
 
 /- English proof (translation)
-Unfold `pairW`. Apply the tactic sequence `split_ifs <;> simp_all [Finsupp.single_apply]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma pairW_apply {r n : ℕ} (l j : Fin n) (v : Fin r × Fin n) (b : Fin r)
     (t : Fin n) :
@@ -19,13 +19,13 @@ private lemma pairW_apply {r n : ℕ} (l j : Fin n) (v : Fin r × Fin n) (b : Fi
   split_ifs <;> simp_all [Finsupp.single_apply]
 
 /- English proof (translation)
-Rewrite using `[Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp), Finsupp.finset_sum_apply]`. Simplify using `only [Finsupp.smul_apply, pairW_apply, smul_eq_mul]`. Use `split_ifs with h1 h2`. Substitute `h1` using the available equality. Rewrite using `[Fintype.sum_eq_add (b, t) (b, j) (by simp [hlj])]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[hlj]`. Introduce and unpack `⟨a, s⟩ ⟨ha1, ha2⟩`. Apply the tactic sequence `by_cases hs : s = j <;> simp_all [Prod.ext_iff]`. Substitute `h2` using the available equality. Use `Finset.sum_eq_zero fun x _ => ?_` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨a, s⟩` from `x`. Apply the tactic sequence `by_cases hs : s = t <;> simp_all [Prod.ext_iff]`. Rewrite using `[Fintype.sum_eq_single (b, t)]`. Simplify using `[h2]`. Introduce and unpack `⟨a, s⟩ hx`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h1' : l ≠ t` using `Ne.symm h1`. Apply the tactic sequence `by_cases hs : s = j <;> simp_all [Prod.ext_iff]`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem lcplead_weight_apply {r n : ℕ} (l j : Fin n) (hlj : l ≠ j) (d : Fin r × Fin n →₀ ℕ)
     (b : Fin r) (t : Fin n) :
@@ -54,7 +54,7 @@ section
 variable {B : Type*} [CommRing B] {r n : ℕ} {l j : Fin n}
 
 /- English proof (translation)
-Rewrite using `[← hg (mem_support_iff.mp hm), lcplead_weight_apply l j hlj m b l, if_pos rfl]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lcplead_hom_row (hlj : l ≠ j) {ω : Fin r × Fin n →₀ ℕ} {g : MvPolynomial (Fin r × Fin n) B}
     (hg : IsWeightedHomogeneous (pairW l j) g ω) {m : Fin r × Fin n →₀ ℕ} (hm : m ∈ g.support)
@@ -62,7 +62,7 @@ theorem lcplead_hom_row (hlj : l ≠ j) {ω : Fin r × Fin n →₀ ℕ} {g : Mv
   rw [← hg (mem_support_iff.mp hm), lcplead_weight_apply l j hlj m b l, if_pos rfl]
 
 /- English proof (translation)
-Rewrite using `[← hg (mem_support_iff.mp hm), lcplead_weight_apply l j hlj m b t, if_neg htl, if_neg htj]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lcplead_hom_off (hlj : l ≠ j) {ω : Fin r × Fin n →₀ ℕ} {g : MvPolynomial (Fin r × Fin n) B}
     (hg : IsWeightedHomogeneous (pairW l j) g ω) {m : Fin r × Fin n →₀ ℕ} (hm : m ∈ g.support)
@@ -70,9 +70,9 @@ theorem lcplead_hom_off (hlj : l ≠ j) {ω : Fin r × Fin n →₀ ℕ} {g : Mv
   rw [← hg (mem_support_iff.mp hm), lcplead_weight_apply l j hlj m b t, if_neg htl, if_neg htj]
 
 /- English proof (translation)
-Use extensionality with `v`. Distinguish the cases in `hv1 : v = (a0, l)`. Rewrite using `[hv1, h1]`. Distinguish the cases in `hv2 : v = (a0, j)`. Establish `e1` using `lcplead_hom_row hlj hg hm a0`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `e2` using `lcplead_hom_row hlj hg hm' a0`. Rewrite using `[hv2]`. Use linear arithmetic over natural numbers and integers. Use `congrArg (fun f => f v) h2` as an intermediate fact. Simplify `this` using `[Finsupp.erase_ne hv1, Finsupp.erase_ne hv2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private lemma support_eq_of_pairW_homogeneous_of_erase_eq (hlj : l ≠ j) (a0 : Fin r) {ω : Fin r × Fin n →₀ ℕ}
     {g : MvPolynomial (Fin r × Fin n) B}
@@ -90,11 +90,11 @@ private lemma support_eq_of_pairW_homogeneous_of_erase_eq (hlj : l ≠ j) (a0 : 
   simpa [Finsupp.erase_ne hv1, Finsupp.erase_ne hv2] using this
 
 /- English proof (translation)
-Unfold `peel`. Rewrite using `[coeff_sum]`. Simplify using `only [coeff_monomial]`. Rewrite using `[Finset.sum_eq_single m]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `m' hm' hne`. Rewrite `hm'` using `[Finset.mem_filter]`. Rewrite using `[if_neg]`. Introduce `heq`. Conclude with `hne (support_eq_of_pairW_homogeneous_of_erase_eq hlj a0 hg hm hm'.1 hm'.2 heq)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hnot`. Conclude with `(hnot (Finset.mem_filter.mpr ⟨hm, rfl⟩)).elim`.
+A detailed English derivation is pending.
 -/
 theorem lcplead_coeff_peel (hlj : l ≠ j) (a0 : Fin r) {ω : Fin r × Fin n →₀ ℕ}
     {g : MvPolynomial (Fin r × Fin n) B}
@@ -115,7 +115,7 @@ theorem lcplead_coeff_peel (hlj : l ≠ j) (a0 : Fin r) {ω : Fin r × Fin n →
     exact (hnot (Finset.mem_filter.mpr ⟨hm, rfl⟩)).elim
 
 /- English proof (translation)
-Unfold `peel at hp`. Take `⟨m, hm, hpm⟩` from `Finset.mem_biUnion.mp (MvPolynomial.support_sum hp)`. Rewrite `hm` using `[Finset.mem_filter]`. Conclude with `⟨m, hm.1, hm.2, Finset.mem_singleton.mp (support_monomial_subset hpm)⟩`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem lcplead_mem_support_peel (a0 : Fin r) (k : ℕ) {g : MvPolynomial (Fin r × Fin n) B}
     {p : Fin r × Fin n →₀ ℕ} (hp : p ∈ (peel l j a0 k g).support) :
@@ -127,11 +127,11 @@ theorem lcplead_mem_support_peel (a0 : Fin r) (k : ℕ) {g : MvPolynomial (Fin r
   exact ⟨m, hm.1, hm.2, Finset.mem_singleton.mp (support_monomial_subset hpm)⟩
 
 /- English proof (translation)
-Establish `h` using `lcplead_hom_row hlj hg hm a0`. Establish `hne : ((a0, l) : Fin r × Fin n) ≠ (a0, j)` using `by simp [hlj]`. Use extensionality with `v`. Simplify using `only [Finsupp.add_apply, Finsupp.single_apply, Finsupp.erase_apply]`. Distinguish the cases in `h1 : v = (a0, l)`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Substitute `h1` using the available equality. Simplify using `[hne, Ne.symm hlj]`. Distinguish the cases in `h2 : v = (a0, j)`. Substitute `h2` using the available equality. Simplify using `[hne]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Simplify using `[h1, h2, Ne.symm h1, Ne.symm h2]`.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 -/
 theorem lcplead_recon (hlj : l ≠ j) (a0 : Fin r) {ω : Fin r × Fin n →₀ ℕ}
     {g : MvPolynomial (Fin r × Fin n) B}
@@ -151,18 +151,18 @@ theorem lcplead_recon (hlj : l ≠ j) (a0 : Fin r) {ω : Fin r × Fin n →₀ �
 end
 
 /- English proof (translation)
-Simplify using `[cmIdx, finProdFinEquiv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lcplead_cmIdx_val {r n : ℕ} (b : Fin r) (t : Fin n) :
     ((cmIdx r n (b, t) : Fin (n * r)) : ℕ) = b + r * t := by
   simp [cmIdx, finProdFinEquiv]
 
 /- English proof (translation)
-Establish `h' : (b : ℕ) + r * t < a0 + r * l`. Use `Fin.lt_def.mp h` as an intermediate fact. Rewrite `this` using `[lcplead_cmIdx_val, lcplead_cmIdx_val]`. Then use the resulting hypothesis. Break down `lt_trichotomy (t : ℕ) l with h1 | h1 | h1` into its components or cases. Conclude with `Or.inl (Fin.lt_def.mpr h1)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Use `Or.inr ⟨Fin.ext h1, Fin.lt_def.mpr ?_⟩` and prove the remaining obligations. Rewrite `h'` using `[h1]`. Conclude with `Nat.lt_of_add_lt_add_right h'`. It suffices to derive a contradiction. Establish `h2` using `Nat.mul_le_mul_left r (show (l : ℕ) + 1 ≤ t from h1)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `a0.isLt`. Rewrite `h2` using `[Nat.mul_add, mul_one]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem lcplead_cmIdx_lt {r n : ℕ} {b a0 : Fin r} {t l : Fin n}
     (h : cmIdx r n (b, t) < cmIdx r n (a0, l)) : t < l ∨ (t = l ∧ b < a0) := by

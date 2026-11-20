@@ -10,11 +10,11 @@ open scoped ComplexConjugate
 noncomputable section
 
 /- English proof (translation)
-Establish `he0 : Set.EqOn z e e.source` using `he`. Establish `he0' : Set.EqOn z e' e'.source` using `he'`. Establish `hzp : z p = e' p` using `he0' hp'`. Establish `h2 : e'.target ∩ e'.symm ⁻¹' e.source ∈ nhds (z p)`. Rewrite using `[hzp]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(e'.isOpen_inter_preimage_symm e.open_source).mem_nhds ⟨e'.map_source hp', ?_⟩` and prove the remaining obligations. Rewrite using `[Set.mem_preimage, e'.left_inv hp']`. Conclude with `hp`. Use `filter_upwards [h2] with y hy`. Establish `hs : e'.symm y ∈ e'.source` using `e'.map_target hy.1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : e (e'.symm y) = y`. Rewrite using `[← he0 hy.2, he0' hs, e'.right_inv hy.1]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private lemma chart_symm_eventuallyEq_of_isChart {n : ℕ} {M : Type*} [TopologicalSpace M] (z : M → V n)
     (e e' : OpenPartialHomeomorph M (V n)) (he : IsChart n z e) (he' : IsChart n z e')
@@ -36,9 +36,9 @@ private lemma chart_symm_eventuallyEq_of_isChart {n : ℕ} {M : Type*} [Topologi
     _ = e'.symm y := e.left_inv hy.2
 
 /- English proof (translation)
-Establish `hex : ∃ e : OpenPartialHomeomorph M (V n), IsChart n z e ∧ p ∈ e.source` using `⟨e0, he0, hp⟩`. Establish `hspec` using `Classical.choose_spec hex`. Establish `hE : (g ∘ (Classical.choose hex).symm) =ᶠ[nhds (z p)] (g ∘ e0.symm)` using `(chart_symm_eventuallyEq_of_isChart z _ e0 hspec.1 he0 p hspec.2 hp).fun_comp g`. Rewrite using `[db, dif_pos hex]`. Unfold `wdb`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[hE.fderiv_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma db_eq_wdb_comp_chart_symm {n : ℕ} {M : Type*} [TopologicalSpace M] (z : M → V n)
     (e0 : OpenPartialHomeomorph M (V n)) (he0 : IsChart n z e0) (k : Fin n) (g : M → ℂ)
@@ -52,9 +52,9 @@ private lemma db_eq_wdb_comp_chart_symm {n : ℕ} {M : Type*} [TopologicalSpace 
   rw [hE.fderiv_eq]
 
 /- English proof (translation)
-Establish `hex : ∃ e : OpenPartialHomeomorph M (V n), IsChart n z e ∧ p ∈ e.source` using `⟨e0, he0, hp⟩`. Establish `hspec` using `Classical.choose_spec hex`. Establish `hE : (g ∘ (Classical.choose hex).symm) =ᶠ[nhds (z p)] (g ∘ e0.symm)` using `(chart_symm_eventuallyEq_of_isChart z _ e0 hspec.1 he0 p hspec.2 hp).fun_comp g`. Rewrite using `[d, dif_pos hex]`. Unfold `wd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[hE.fderiv_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma d_apply_eq_wd_of_mem_source {n : ℕ} {M : Type*} [TopologicalSpace M] (z : M → V n)
     (e0 : OpenPartialHomeomorph M (V n)) (he0 : IsChart n z e0) (k : Fin n) (g : M → ℂ)
@@ -68,11 +68,11 @@ private lemma d_apply_eq_wd_of_mem_source {n : ℕ} {M : Type*} [TopologicalSpac
   rw [hE.fderiv_eq]
 
 /- English proof (translation)
-Establish `hA` using `hd.hasFDerivAt.clm_apply (hasFDerivAt_const (bas n k) y0)`. Establish `hB` using `hd.hasFDerivAt.clm_apply (hasFDerivAt_const (Complex.I • bas n k) y0)`. Establish `hW` using `HasFDerivAt.const_mul (HasFDerivAt.add hA (HasFDerivAt.const_mul hB Complex.I)) ((2 : ℂ)⁻¹)`. Establish `heq : wdb n k h = fun y => (2 : ℂ)⁻¹ * (fderiv ℝ h y (bas n k) + Complex.I * fderiv ℝ h y (Complex.I • bas n k))`. Use function extensionality and compare the values at `y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[wdb, div_eq_inv_mul]`. Establish `hW' : HasFDerivAt (wdb n k h) ((2 : ℂ)⁻¹ • ((fderiv ℝ h y0).comp (0 : V n →L[ℝ] V n) + (fderiv ℝ (fderiv ℝ h) y0).flip (bas n k) + Complex.I • ((fderiv ℝ h y0).comp (0 : V n →L[ℝ] V n) + (fderiv ℝ (fderiv ℝ h) y0).flip (Complex.I • bas n k)))) y0`. Rewrite using `[heq]`. Conclude with `hW`. Use `⟨HasFDerivAt.differentiableAt hW', fun v => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[HasFDerivAt.fderiv hW']`. Simplify using `only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.add_apply, ContinuousLinearMap.comp_apply, ContinuousLinearMap.zero_apply, map_zero, zero_add, ContinuousLinearMap.flip_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private lemma differentiableAt_wdb_and_fderiv_wdb_eq {n : ℕ} (k : Fin n) (h : V n → ℂ) (y0 : V n)
     (hd : DifferentiableAt ℝ (fderiv ℝ h) y0) :
@@ -101,11 +101,11 @@ private lemma differentiableAt_wdb_and_fderiv_wdb_eq {n : ℕ} (k : Fin n) (h : 
   ring
 
 /- English proof (translation)
-Establish `hA` using `hd.hasFDerivAt.clm_apply (hasFDerivAt_const (bas n k) y0)`. Establish `hB` using `hd.hasFDerivAt.clm_apply (hasFDerivAt_const (Complex.I • bas n k) y0)`. Establish `hW` using `HasFDerivAt.const_mul (HasFDerivAt.sub hA (HasFDerivAt.const_mul hB Complex.I)) ((2 : ℂ)⁻¹)`. Establish `heq : wd n k h = fun y => (2 : ℂ)⁻¹ * (fderiv ℝ h y (bas n k) - Complex.I * fderiv ℝ h y (Complex.I • bas n k))`. Use function extensionality and compare the values at `y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[wd, div_eq_inv_mul]`. Establish `hW' : HasFDerivAt (wd n k h) ((2 : ℂ)⁻¹ • ((fderiv ℝ h y0).comp (0 : V n →L[ℝ] V n) + (fderiv ℝ (fderiv ℝ h) y0).flip (bas n k) - Complex.I • ((fderiv ℝ h y0).comp (0 : V n →L[ℝ] V n) + (fderiv ℝ (fderiv ℝ h) y0).flip (Complex.I • bas n k)))) y0`. Rewrite using `[heq]`. Conclude with `hW`. Use `⟨HasFDerivAt.differentiableAt hW', fun v => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[HasFDerivAt.fderiv hW']`. Simplify using `only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.add_apply, ContinuousLinearMap.sub_apply, ContinuousLinearMap.comp_apply, ContinuousLinearMap.zero_apply, map_zero, zero_add, ContinuousLinearMap.flip_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private lemma differentiableAt_wd_and_fderiv_wd_eq {n : ℕ} (k : Fin n) (h : V n → ℂ) (y0 : V n)
     (hd : DifferentiableAt ℝ (fderiv ℝ h) y0) :
@@ -135,27 +135,27 @@ private lemma differentiableAt_wd_and_fderiv_wd_eq {n : ℕ} (k : Fin n) (h : V 
   ring
 
 /- English proof (translation)
-Introduce `z hz ph j k u x hph hu`. Take `⟨e0, hx0, hze⟩` from `hz x`. Establish `he0 : IsChart n z e0`. Introduce `y _`. Rewrite using `[hze]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `he0' : Set.EqOn z e0 e0.source` using `he0`. Establish `hy0 : z x ∈ e0.target`. Rewrite using `[he0' hx0]`. Conclude with `e0.map_source hx0`. Establish `hnb : e0.target ∈ nhds (z x)` using `e0.open_target.mem_nhds hy0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcH : ContDiffAt ℝ 2 (u ∘ e0.symm) (z x)`. Use `(hu e0 he0).contDiffAt hnb` as an intermediate fact. Simplify using `using this`. Establish `hcP : ContDiffAt ℝ 2 ((fun y => ((ph y : ℝ) : ℂ)) ∘ e0.symm) (z x)`. Use `(hph e0 he0).contDiffAt hnb` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Establish `hdH : DifferentiableAt ℝ (fderiv ℝ (u ∘ e0.symm)) (z x)` using `(hcH.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)`. Establish `hdP : DifferentiableAt ℝ (fderiv ℝ ((fun y => ((ph y : ℝ) : ℂ)) ∘ e0.symm)) (z x)` using `(hcP.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)`. Establish `hH : DifferentiableAt ℝ (u ∘ e0.symm) (z x)` using `hcH.differentiableAt (by norm_num)`. Establish `hsymH : ∀ v w : V n, fderiv ℝ (fderiv ℝ (u ∘ e0.symm)) (z x) v w = fderiv ℝ (fderiv ℝ (u ∘ e0.symm)) (z x) w v`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v w`. Use `first`. Consider the case `exact hcH.isSymmSndFDerivAt (by simp) v w`. Consider the case `exact hcH.isSymmSndFDerivAt (by simp [minSmoothness_of_isRCLikeNormedField]) v w`. Establish `hsymP : ∀ v w : V n, fderiv ℝ (fderiv ℝ ((fun y => ((ph y : ℝ) : ℂ)) ∘ e0.symm)) (z x) v w = fderiv ℝ (fderiv ℝ ((fun y => ((ph y : ℝ) : ℂ)) ∘ e0.symm)) (z x) w v`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Introduce `v w`. Use `first`. Consider the case `exact hcP.isSymmSndFDerivAt (by simp) v w`. Consider the case `exact hcP.isSymmSndFDerivAt (by simp [minSmoothness_of_isRCLikeNormedField]) v w`. Establish `hloc1 : ((db n z j u) ∘ e0.symm) =ᶠ[nhds (z x)] wdb n j (u ∘ e0.symm)` using `by filter_upwards [hnb] with y hy`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Function.comp_apply, db_eq_wdb_comp_chart_symm z e0 he0 j u _ (e0.map_target hy), he0' (e0.map_target hy), e0.right_inv hy]`. Establish `hloc2 : ((db n z j (fun y => ((ph y : ℝ) : ℂ))) ∘ e0.symm) =ᶠ[nhds (z x)] wdb n j ((fun y => ((ph y : ℝ) : ℂ)) ∘ e0.symm)` using `by filter_upwards [hnb] with y hy`. Rewrite using `[Function.comp_apply, db_eq_wdb_comp_chart_symm z e0 he0 j _ _ (e0.map_target hy), he0' (e0.map_target hy), e0.right_inv hy]`. Establish `hloc3 : ((fun y => d n z k u y - u y * d n z k (fun y => ((ph y : ℝ) : ℂ)) y) ∘ e0.symm) =ᶠ[nhds (z x)] (fun y => wd n k (u ∘ e0.symm) y - (u ∘ e0.symm) y * wd n k ((fun y => ((ph y : ℝ) : ℂ)) ∘ e0.symm) y)` using `by filter_upwards [hnb] with y hy`. Establish `hp` using `e0.map_target hy`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[Function.comp_apply, d_apply_eq_wd_of_mem_source z e0 he0 k u _ hp, d_apply_eq_wd_of_mem_source z e0 he0 k _ _ hp, he0' hp, e0.right_inv hy]`. Both sides reduce to the same expression. Establish `hux : u x = (u ∘ e0.symm) (z x)`. Rewrite using `[Function.comp_apply, he0' hx0, e0.left_inv hx0]`. Establish `hW1` using `(differentiableAt_wdb_and_fderiv_wdb_eq j _ _ hdH).2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hW2` using `differentiableAt_wd_and_fderiv_wd_eq k _ _ hdH`. Establish `hW3` using `differentiableAt_wd_and_fderiv_wd_eq k _ _ hdP`. Establish `hW4` using `(differentiableAt_wdb_and_fderiv_wdb_eq j _ _ hdP).2`. Establish `hFG : fderiv ℝ (fun y => wd n k (u ∘ e0.symm) y - (u ∘ e0.symm) y * wd n k ((fun y => ((ph y : ℝ) : ℂ)) ∘ e0.symm) y) (z x) = fderiv ℝ (wd n k (u ∘ e0.symm)) (z x) - ((u ∘ e0.symm) (z x) • fderiv ℝ (wd n k ((fun y => ((ph y : ℝ) : ℂ)) ∘ e0.symm)) (z x) + wd n k ((fun y => ((ph y …`. Establish `h1` using `HasFDerivAt.sub (DifferentiableAt.hasFDerivAt hW2.1) (HasFDerivAt.mul (DifferentiableAt.hasFDerivAt hH) (DifferentiableAt.hasFDerivAt hW3.1))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `HasFDerivAt.fderiv h1`. Use `show (d n z k (db n z j u) x - db n z j u x * d n z k (fun y => ((ph y : ℝ) : ℂ)) x) - db n z j (fun y => d n z k u y - u y * d n z k (fun y => ((ph y : ℝ) : ℂ)) y) x = d n z k (db n z j (fun y => ((ph y : ℝ) : ℂ))) x * u x`. Rewrite using `[d_apply_eq_wd_of_mem_source z e0 he0 k (db n z j u) x hx0, db_eq_wdb_comp_chart_symm z e0 he0 j u x hx0, d_apply_eq_wd_of_mem_source z e0 he0 k (fun y => ((ph y : ℝ) : ℂ)) x hx0, db_eq_wdb_comp_chart_symm z e0 he0 j _ x hx0, d_apply_eq_wd_of_mem_source z e0 he0 k (db n z j (fun …`. Unfold `wd wdb`. Rewrite using `[hloc1.fderiv_eq, hloc2.fderiv_eq, hloc3.fderiv_eq, hFG]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [ContinuousLinearMap.sub_apply, ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul]`. Rewrite using `[hW1 (bas n k), hW1 (Complex.I • bas n k), hW2.2 (bas n j), hW2.2 (Complex.I • bas n j), hW3.2 (bas n j), hW3.2 (Complex.I • bas n j), hW4 (bas n k), hW4 (Complex.I • bas n k)]`. Unfold `wd`. Rewrite using `[hsymH (bas n k) (bas n j), hsymH (bas n k) (Complex.I • bas n j), hsymH (Complex.I • bas n k) (bas n j), hsymH (Complex.I • bas n k) (Complex.I • bas n j), hsymP (bas n k) (bas n j), hsymP (bas n k) (Complex.I • bas n j), hsymP (Complex.I • bas n k) (bas n j), hsymP (Complex.I • …`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem comm (n : ℕ) (M : Type*) [TopologicalSpace M] : CommStatement n M := by
   intro z hz ph j k u x hph hu

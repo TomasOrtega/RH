@@ -10,7 +10,7 @@ noncomputable section
 namespace GlobalTheory.HTGlue
 
 /- English proof (translation)
-Rewrite using `[GrpMor.pull_pull _ _ (homMor (dp0 k) (𝟙 _) (𝟙 A₀)) (fun r => rfl) (by simp)]`. Conclude with `Subtype.ext (IsMor.pullCohomologyOne_id _ c.1)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem red_pull_constMorV_pull {k : Type} [Field k] {d : ℕ} (A₀ : Over (Sp k)) [GrpObj A₀]
     (c : prim (dp0 k) (𝟙 _) A₀) :
@@ -20,9 +20,9 @@ theorem red_pull_constMorV_pull {k : Type} [Field k] {d : ℕ} (A₀ : Over (Sp 
   exact Subtype.ext (IsMor.pullCohomologyOne_id _ c.1)
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `hP c'`. Proceed by induction on `u using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add u v hu hv => rw [map_add, map_add, map_add, map_add, map_add, hu, hv]`. Consider the case `tmul r c`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite using `[liftSemi_tmul, LinearMap.map_smulₛₗ, hQ, map_smul, map_smul, smul_eq_mul, smul_eq_mul, map_mul, he]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_of_liftSemi_surj {K C : Type} [Field K] [CommRing C] [Algebra K C] {M M' : Type*} [AddCommGroup M]
     [Module K M] [AddCommGroup M'] [Module C M'] (P : M →ₛₗ[algebraMap K C] M')
@@ -37,7 +37,7 @@ theorem eq_of_liftSemi_surj {K C : Type} [Field K] [CommRing C] [Algebra K C] {M
     rw [liftSemi_tmul, LinearMap.map_smulₛₗ, hQ, map_smul, map_smul, smul_eq_mul, smul_eq_mul, map_mul, he]
 
 /- English proof (translation)
-The claim follows from `eq_of_liftSemi_surj _ (GlobalTheory.SqZeroCrys.isBC_trivSqZeroExt k (Fin d → k) A₀ hA (GlobalTheory.FODef.sqZero k (Fin d → k)) (GlobalTheory.FODef.constMorV k (Fin d → k) A₀)).2 _ _ e y (red_pull_constMorV_pull A₀) hc`.
+A detailed English derivation is pending.
 -/
 theorem corr_of_fst {k : Type} [Field k] {d : ℕ} (A₀ : Over (Sp k)) [GrpObj A₀] (hA : IsAbelianScheme A₀)
     (e : Crys (divided₂ (GlobalTheory.FODef.sqZero k (Fin d → k))) (spMap (TrivSqZeroExt.fstHom k k (Fin d → k)).toRingHom) A₀)
@@ -48,11 +48,11 @@ theorem corr_of_fst {k : Type} [Field k] {d : ℕ} (A₀ : Over (Sp k)) [GrpObj 
     (GlobalTheory.FODef.constMorV k (Fin d → k) A₀)).2 _ _ e y (red_pull_constMorV_pull A₀) hc
 
 /- English proof (translation)
-Introduce `p _ D R _ b N _ _ k _ _ t o₀ β _ φ _ d f _ y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Take `⟨e, he, hc⟩` from `exists_mem_glueFil o₀.A o₀.ab f hy`. Use `⟨e, he, corr_of_fst o₀.A o₀.ab e y fun c => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hc c]`. Simplify using the standard rewrite rules. Introduce and unpack `⟨e, ⟨x, hx, z, hz, he⟩, hcorr⟩`. Establish `hxy : y = x` using `LinearMap.ext fun c => by`. Establish `h1` using `hcorr ((GlobalTheory.FODef.constMorV k (Fin d → k) o₀.A).pull c)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[red_pull_constMorV_pull, he c]`. Simplify using `using h1`. Conclude with `hxy ▸ hx`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem fil_iff_red_glueFil : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (R : Type) [CommRing R] (b : GlobalTheory.UPel.HT.Base D R) (N : ℕ), 3 ≤ N → N.Coprime p → ∀ (k : Type) [Field k] [IsAlgClosed k] (t : Sp k ⟶ Sp R) (o₀ : GlobalTheory.UPel.HT.Obj b N t) (β : R →+* k), t = spMap β → ∀ φ : LinearMap.BilinForm k (HdR o₀.A), GlobalTheory.AbDual.IsCorrForm (dp0 k) (𝟙 _) o₀.A o₀.A o₀.P φ → ∀ (d : ℕ) (f : Fin d → (HdR o₀.A →ₗ[k] HdR o₀.A)), (∀ j, IsKS (GlobalTheory.HTCount.crysAct o₀) φ (Fil o₀.A) (GlobalTheory.HTCount.lieZ o₀ β) (f j)) → (∀ y : HdR o₀.A, y ∈ Fil o₀.A ↔ ∃ e ∈ (GlobalTheory.HTGlue.glueFil o₀.A f), (GlobalTheory.Published.GrothendieckMessing.crysRedMor (divided₂ (GlobalTheory.FODef.sqZero k (Fin d → k))) rfl o₀.A).Corr e y) := by
   intro p _ D R _ b N _ _ k _ _ t o₀ β _ φ _ d f _ y

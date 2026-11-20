@@ -9,15 +9,15 @@ noncomputable section
 namespace GlobalTheory.LeviIso.Size
 
 /- English proof (translation)
-Establish `hst : ∀ y ∈ W, Matrix.toLin' g y ∈ W`. Introduce `y hy`. Take `⟨u, rfl⟩` from `(hW y).1 hy`. Conclude with `(hW _).2 ⟨X *ᵥ u, by rw [Matrix.toLin'_apply, Matrix.mulVec_mulVec, hg, Matrix.mulVec_mulVec]⟩`. Set `f : (m → ℂ) →ₗ[ℂ] W` to `(Matrix.toLin' C).codRestrict W fun u => (hW _).2 ⟨u, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hf : Function.Bijective f`. Use `⟨fun u v h => ?_, fun y => ?_⟩` and prove the remaining obligations. Establish `h1 : C *ᵥ u = C *ᵥ v` using `congrArg Subtype.val h`. Establish `h2` using `congrArg (fun y => Cᴴ *ᵥ y) h1`. Simplify `h2` using `only [Matrix.mulVec_mulVec, hC, Matrix.one_mulVec]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu⟩` from `(hW y).1 y.2`. Conclude with `⟨u, Subtype.ext hu.symm⟩`. Set `e` to `LinearEquiv.ofBijective f hf`. Establish `he : (Matrix.toLin' g).restrict hst = (e : (m → ℂ) →ₗ[ℂ] W) ∘ₗ Matrix.toLin' X ∘ₗ (e.symm : W →ₗ[ℂ] (m → ℂ))`. Use `LinearMap.ext fun y => ?_` and prove the remaining obligations.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨u, rfl⟩` from `e.surjective y`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply]`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `g *ᵥ (C *ᵥ u) = C *ᵥ (X *ᵥ u)`. Rewrite using `[Matrix.mulVec_mulVec, hg, Matrix.mulVec_mulVec]`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `detOn`. Rewrite using `[dif_pos hst, he, LinearMap.det_conj, LinearMap.det_toLin']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem detOn_of_frame {n : ℕ} {m : Type} [Fintype m] [DecidableEq m] (g : Matrix (Fin n) (Fin n) ℂ)
     (C : Matrix (Fin n) m ℂ) (X : Matrix m m ℂ) (W : Submodule ℂ (Fin n → ℂ)) (hC : Cᴴ * C = 1)
@@ -47,21 +47,21 @@ theorem detOn_of_frame {n : ℕ} {m : Type} [Fintype m] [DecidableEq m] (g : Mat
   rw [dif_pos hst, he, LinearMap.det_conj, LinearMap.det_toLin']
 
 /- English proof (translation)
-Set `C : Matrix (Fin n) (Σ i : {i // p i}, Fin (j i)) ℂ` to `Matrix.of fun r s => B s.1 r s.2`. Establish `hCv : ∀ u, C *ᵥ u = ∑ i : {i // p i}, B i *ᵥ fun s => u ⟨i, s⟩`. Introduce `u`. Use function extensionality and compare the values at `r`. Simplify using `[C, Matrix.mulVec, dotProduct, Fintype.sum_sigma]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[detOn_of_frame g C (Matrix.blockDiagonal' fun i : {i // p i} => x i) W ?_ ?_ ?_]`. Rewrite using `[ReciprocityTheory.ChartRestriction.G.T0.HDiscLat.det_blockDiagonal', norm_prod, Finset.prod_subtype (Finset.univ.filter p) (p := p) (by simp)]`. Use extensionality with `⟨i, s⟩ ⟨k, t⟩`. Express the relevant statement in the definitionally equal form `((B i)ᴴ * B k) s t = _`. Distinguish the cases in `h : i = k`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Rewrite using `[h1]`. Simplify using `[Matrix.one_apply]`. Rewrite using `[h2 i k (fun e => h (Subtype.ext e)), Matrix.one_apply_ne (fun e => h (congrArg Sigma.fst e))]`. Both sides reduce to the same expression.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `y`. Rewrite using `[hW]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩`. Use `⟨fun s => u s.1 s.2, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hCv, ← Finset.sum_subtype (Finset.univ.filter p) (by simp) (fun i => B i *ᵥ u i), Finset.sum_filter]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Both sides reduce to the same expression. Rewrite using `[hu i h, Matrix.mulVec_zero]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨u, rfl⟩`. Use `⟨fun i => if h : p i then fun s => u ⟨⟨i, h⟩, s⟩ else 0, fun i h => dif_neg h, ?_⟩` and prove the remaining obligations. Rewrite using `[hCv, ← Finset.sum_subset (Finset.filter_subset p Finset.univ) ?_, Finset.sum_subtype (Finset.univ.filter p) (p := p) (by simp)]`. Use `Finset.sum_congr rfl fun i _ => ?_ beta_reduce` and prove the remaining obligations. Rewrite using `[dif_pos i.2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i _ hi beta_reduce`. Rewrite using `[dif_neg (by simpa using hi), Matrix.mulVec_zero]`. Use extensionality with `r ⟨k, t⟩`. Express the relevant statement in the definitionally equal form `(g * B k) r t = _`. Rewrite using `[hg, Matrix.mul_apply, Matrix.mul_apply, Fintype.sum_sigma, Finset.sum_eq_single k]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[C]`. Introduce `i _ hi`. Simplify using `[Matrix.blockDiagonal'_apply_ne _ _ _ hi]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem detOn_blocks {n a : ℕ} {j : Fin a → ℕ} (B : ∀ i, Matrix (Fin n) (Fin (j i)) ℂ)
     (p : Fin a → Prop) [DecidablePred p] (W : Submodule ℂ (Fin n → ℂ))
@@ -116,9 +116,9 @@ theorem detOn_blocks {n a : ℕ} {j : Fin a → ℕ} (B : ∀ i, Matrix (Fin n) 
     · simp
 
 /- English proof (translation)
-Introduce `n a j B W h1 h2 hW g x hx hg i`. Unfold `locSize`. Rewrite using `[detOn_blocks B _ _ h1 h2 (hW i.succ) g x hg, detOn_blocks B _ _ h1 h2 (hW i.castSucc) g x hg]`. Establish `e : (Finset.univ.filter fun k : Fin a => k.castSucc < i.succ) = insert i (Finset.univ.filter fun k : Fin a => k.castSucc < i.castSucc)`. Use extensionality with `k`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_insert, Fin.lt_def, Fin.ext_iff, Fin.val_succ, Fin.val_castSucc]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[e, Finset.prod_insert (by simp), mul_div_cancel_right₀]`. Conclude with `Finset.prod_ne_zero_iff.2 fun k _ => norm_ne_zero_iff.2 (hx k)`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locSize_blocks : ∀ (n a : ℕ) (j : Fin a → ℕ) (B : ∀ i, Matrix (Fin n) (Fin (j i)) ℂ) (W : Fin (a + 1) → Submodule ℂ (Fin n → ℂ)), (∀ i, (B i)ᴴ * B i = 1) → (∀ i k, i ≠ k → (B i)ᴴ * B k = 0) → SpansFlag B W → ∀ (g : Matrix (Fin n) (Fin n) ℂ) (x : ∀ i, Matrix (Fin (j i)) (Fin (j i)) ℂ), (∀ i, (x i).det ≠ 0) → (∀ i, g * B i = B i * x i) → ∀ i, locSize j W g i = ‖(x i).det‖ ^ (-(1 : ℝ) / j i) := by
   intro n a j B W h1 h2 hW g x hx hg i

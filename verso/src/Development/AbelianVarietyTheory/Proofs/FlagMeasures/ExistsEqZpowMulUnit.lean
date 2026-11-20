@@ -12,13 +12,13 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E]
 
 /- English proof (translation)
-Establish `h0 : (ϖ : F) ≠ 0` using `fun h => hϖ.ne_zero (Subtype.ext h)`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Assume the negation of the conclusion as `hk`. Take `⟨n, rfl⟩ : ∃ n : ℕ, k = -((n : ℤ) + 1)` from `⟨(-k - 1).toNat, by omega⟩`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Use `hϖ.not_isUnit (IsUnit.of_mul_eq_one (ϖ ^ n * ⟨_, h⟩ * ((u⁻¹ : (𝒪[F])ˣ) : 𝒪[F])) ?_)` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Establish `hu : ((u : 𝒪[F]) : F) * (((u⁻¹ : (𝒪[F])ˣ) : 𝒪[F]) : F) = 1`. Rewrite using `[← Subring.coe_mul, Units.mul_inv]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h1 : (ϖ : F) * (ϖ : F) ^ n * (ϖ : F) ^ (-((n : ℤ) + 1)) = 1`. Rewrite using `[zpow_neg, zpow_add_one₀ h0, zpow_natCast]`. Clear the denominators using the available nonvanishing facts. Simplify using `only [Subring.coe_mul, Subring.coe_pow, Subring.coe_one]`. Take the linear combination `(((u : 𝒪[F]) : F) * (((u⁻¹ : (𝒪[F])ˣ) : 𝒪[F]) : F)) * h1 + hu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Introduce `hk lift k to ℕ using hk`. Rewrite using `[zpow_natCast]`. Conclude with `Subring.mul_mem _ (Subring.pow_mem _ ϖ.2 k) (u : 𝒪[F]).2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zpow_mul_unit_mem_iff {ϖ : 𝒪[F]} (hϖ : Irreducible ϖ) (k : ℤ) (u : (𝒪[F])ˣ) :
     (ϖ : F) ^ k * ((u : 𝒪[F]) : F) ∈ 𝒪[F] ↔ 0 ≤ k := by
@@ -44,13 +44,13 @@ theorem zpow_mul_unit_mem_iff {ϖ : 𝒪[F]} (hϖ : Irreducible ϖ) (k : ℤ) (u
 variable [IsNonarchimedeanLocalField F]
 
 /- English proof (translation)
-Establish `h0 : (ϖ : F) ≠ 0` using `fun h => hϖ.ne_zero (Subtype.ext h)`. Establish `hset : {m : ℤ | ∃ y ∈ L.O, algebraMap F E ((ϖ : F) ^ k * ((u : 𝒪[F]) : F)) = algebraMap F E ((ϖ : F) ^ m) * y} = Set.Iic k`. Use extensionality with `m`. Establish `hsplit : (ϖ : F) ^ k * ((u : 𝒪[F]) : F) = (ϖ : F) ^ m * ((ϖ : F) ^ (k - m) * ((u : 𝒪[F]) : F))`. Rewrite using `[← mul_assoc, ← zpow_add₀ h0]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Establish `hun : IsUnit (algebraMap F E ((ϖ : F) ^ m))` using `(IsUnit.mk0 _ (zpow_ne_zero m h0)).map _`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_Iic]`. Rewrite using `[hsplit, map_mul, ← sub_nonneg, ← zpow_mul_unit_mem_iff hϖ (k - m) u, ← GlobalTheory.UnramOrder.algebraMap_mem_iff L]`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, h⟩`. Rewrite using `[hun.mul_left_cancel h]`. Conclude with `hy`. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨_, h, rfl⟩`. Rewrite using `[vE, hset, csSup_Iic]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vE_zpow_mul_unit (L : LocE F E) {ϖ : 𝒪[F]} (hϖ : Irreducible ϖ) (k : ℤ)
     (u : (𝒪[F])ˣ) : vE L ϖ (algebraMap F E ((ϖ : F) ^ k * ((u : 𝒪[F]) : F))) = k := by
@@ -73,7 +73,7 @@ theorem vE_zpow_mul_unit (L : LocE F E) {ϖ : 𝒪[F]} (hϖ : Irreducible ϖ) (k
   rw [vE, hset, csSup_Iic]
 
 /- English proof (translation)
-Take `⟨k, u, h⟩` from `IsDiscreteValuationRing.exists_units_eq_smul_zpow_of_irreducible hϖ hx`. Use `⟨k, u, ?_⟩` and prove the remaining obligations. Rewrite using `[h, mul_comm]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_eq_zpow_mul_unit {ϖ : 𝒪[F]} (hϖ : Irreducible ϖ) {x : F} (hx : x ≠ 0) :
     ∃ (k : ℤ) (u : (𝒪[F])ˣ), x = (ϖ : F) ^ k * ((u : 𝒪[F]) : F) := by
@@ -82,11 +82,11 @@ theorem exists_eq_zpow_mul_unit {ϖ : 𝒪[F]} (hϖ : Irreducible ϖ) {x : F} (h
   rw [h, mul_comm]; rfl
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ E _ _ _ L ϖ hϖ`. Establish `h0 : (ϖ : F) ≠ 0` using `fun h => hϖ.ne_zero (Subtype.ext h)`. Use `⟨fun x y hx hy => ?_, ?_, fun x hx => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨k, u, rfl⟩` from `exists_eq_zpow_mul_unit hϖ hx`. Take `⟨l, v, rfl⟩` from `exists_eq_zpow_mul_unit hϖ hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `: (ϖ : F) ^ k * ((u : 𝒪[F]) : F) * ((ϖ : F) ^ l * ((v : 𝒪[F]) : F)) = (ϖ : F) ^ (k + l) * (((u * v : (𝒪[F])ˣ) : 𝒪[F]) : F)`. Rewrite using `[zpow_add₀ h0, Units.val_mul, Subring.coe_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, vE_zpow_mul_unit L hϖ, vE_zpow_mul_unit L hϖ, vE_zpow_mul_unit L hϖ]`. Simplify using `using vE_zpow_mul_unit L hϖ 1 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨k, u, rfl⟩` from `exists_eq_zpow_mul_unit hϖ hx`. Rewrite using `[vE_zpow_mul_unit L hϖ, zpow_mul_unit_mem_iff hϖ]`. Take `⟨k, u, rfl⟩` from `exists_eq_zpow_mul_unit hϖ hx`. Conclude with `⟨u, by rw [vE_zpow_mul_unit L hϖ]⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem vE_valuation : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ ϖ : 𝒪[F], Irreducible ϖ → (∀ x y : F, x ≠ 0 → y ≠ 0 → vE L ϖ (algebraMap F E (x * y)) = vE L ϖ (algebraMap F E x) + vE L ϖ (algebraMap F E y)) ∧ vE L ϖ (algebraMap F E (ϖ : F)) = 1 ∧ (∀ x : F, x ≠ 0 → (0 ≤ vE L ϖ (algebraMap F E x) ↔ x ∈ 𝒪[F])) ∧ (∀ x : F, x ≠ 0 → ∃ u : (𝒪[F])ˣ, x = (ϖ : F) ^ (vE L ϖ (algebraMap F E x)) * ((u : 𝒪[F]) : F)) := by
   intro F _ _ _ _ _ E _ _ _ L ϖ hϖ

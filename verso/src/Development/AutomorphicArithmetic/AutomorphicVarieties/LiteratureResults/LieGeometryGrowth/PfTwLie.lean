@@ -6,9 +6,9 @@ open UpperTheory.V.Lit.Dr UpperTheory.V.Lit.Bor
 open scoped TensorProduct
 
 /- English proof (translation)
-Rewrite using `[isOpen_iff_forall_mem_open]`. Introduce `g hg`. Use `⟨(fun x => g⁻¹ * x) ⁻¹' S, fun x hx => ?_, hS.preimage (by fun_prop), by simpa using h1⟩` and prove the remaining obligations. Establish `e : x = g * (g⁻¹ * x)` using `by group`. Establish `hg' : ρ g v = v` using `hg`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show ρ x v = v`. Rewrite using `[e, map_mul, Module.End.mul_apply, h _ hx, hg']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem open_stab {G V : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup V] [Module ℂ V]
     (ρ : Representation ℂ G V) (v : V) {S : Set G} (hS : IsOpen S) (h1 : (1 : G) ∈ S) (h : ∀ g ∈ S, ρ g v = v) :
@@ -22,7 +22,7 @@ private theorem open_stab {G V : Type} [Group G] [TopologicalSpace G] [IsTopolog
   rw [e, map_mul, Module.End.mul_apply, h _ hx, hg']
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, smul_add, Finset.sum_add_distrib]`. Consider the case `tmul φ v`. Simplify using `only [LinearMap.lTensor_tmul, cmp_tmul, smul_smul, ← Finset.sum_smul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/
@@ -37,7 +37,7 @@ private theorem cmp_lT {W : Type} [AddCommGroup W] [Module ℂ W] {d : ℕ} (Q :
     rfl
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul φ v => simp only [LinearMap.rTensor_tmul, cmp_tmul, map_smul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 private theorem cmp_rT {W : Type} [AddCommGroup W] [Module ℂ W] {d : ℕ} (S : Module.End ℂ W)
     (y : W ⊗[ℂ] (Fin d → ℂ)) (j : Fin d) :
@@ -68,17 +68,15 @@ private def invSub (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a 
     exact (map_smul _ _ _).trans (congrArg (c • ·) e1)
 
 /- English proof (translation)
-Introduce `E _ _ _ a Ξ r χ hχ X x hx`. Set `N : Submodule ℂ (Sm E a)` to `(invSub E a).comap (mulChi a χ).toLinearMap`. Establish `hiff : ∀ y : Sm E a ⊗[ℂ] (Fin Ξ.d → ℂ), Pf.TwInv χ y ↔ y ∈ tens Ξ.d N` using `fun y => by`. Rewrite using `[mem_tens]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite `hx` using `[hiff]`. Rewrite using `[hiff, hiff]`. Establish `hA : smA Ξ X x ∈ tens Ξ.d N` using `mem_tens.2 fun j => by`. Rewrite using `[smA_apply, cmp_rT]`. Establish `h0 : cmp j x ∈ N` using `mem_tens.1 hx j`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : lie E a X (cmp j x) + ((r * ell E a X : ℝ) : ℂ) • cmp j x ∈ N`. Express the relevant statement in the definitionally equal form `Pf.SInv (mulChi a χ _)`. Rewrite using `[← hχ.2]`. Conclude with `(Pf.invLie E a _ h0).2 X`. Conclude with `(N.add_mem_iff_left (N.smul_mem _ h0)).1 h1`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hB : smB Ξ X x ∈ tens Ξ.d N` using `mem_tens.2 fun j => by`. Rewrite using `[smB_apply, cmp_lT]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (mem_tens.1 hx k)`. Prove the components needed by the constructor for the conclusion. Establish `: smLie Ξ X x = smA Ξ X x + smB Ξ X x`.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [smB, LinearMap.sub_apply, add_sub_cancel]`. Rewrite using `[this]`. Conclude with `Submodule.add_mem _ hA hB`. Rewrite using `[smAdj, adj_apply]`. Use `Submodule.sub_mem _ (Submodule.sub_mem _ hB hA) ?_` and prove the remaining obligations.
-
-Conclude with `Submodule.smul_of_tower_mem _ _ hx`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Lit.Geo.Pf.twLie :
     UpperTheory.V.Lit.Geo.Pf.TwLie := by

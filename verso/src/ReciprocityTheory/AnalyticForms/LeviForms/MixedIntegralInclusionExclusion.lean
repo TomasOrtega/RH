@@ -11,17 +11,15 @@ open scoped ContDiff
 noncomputable section
 
 /- English proof (translation)
-Take `⟨M, hM⟩` from `ReciprocityTheory.AnForm.A.exists_multilinearMap_eq_mdisc (D := e)`. Use `set a : Fin e → Matrix (Fin e) (Fin e) ℂ := fun k => hessC (fun y' => (P k).φ ((A.chart j).symm y) ((A.chart j).symm y')) y with ha`. Use `set b : Matrix (Fin e) (Fin e) ℂ := hessC (fun y' => Θ.φ ((A.chart j).symm y) ((A.chart j).symm y')) y with hb`. Establish `h1 : (fun k => hessC (fun y' => (P k + Θ.rsmul (-1)).φ ((A.chart j).symm y) ((A.chart j).symm y')) y) = fun k => a k + (fun _ => (-1 : ℂ) • b) k`. Use function extensionality and compare the values at `k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (fun y' => (P k + Θ.rsmul (-1)).φ ((A.chart j).symm y) ((A.chart j).symm y')) = fun y' => (P k).φ ((A.chart j).symm y) ((A.chart j).symm y') + (-1) * Θ.φ ((A.chart j).symm y) ((A.chart j).symm y')` using `rfl`. Rewrite using `[this, hessC_add' _ _ _ (potential_contDiffAt A (P k) (hP k) j hy) ((potential_contDiffAt A Θ hΘ j hy).const_smul (-1 : ℝ) |>.congr_of_eventuallyEq (Filter.Eventually.of_forall fun _ => by simp [smul_eq_mul])), hessC_const_mul']`. Simplify using `[ha, hb]`. Establish `h2 : ∀ S : Finset (Fin e), (fun k => hessC (fun y' => (if k ∈ S then P k else Θ).φ ((A.chart j).symm y) ((A.chart j).symm y')) y) = S.piecewise a (fun _ => b)`. Introduce `S`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Use function extensionality and compare the values at `k`. Apply the tactic sequence `by_cases hk : k ∈ S <;> simp [hk, Finset.piecewise, ha, hb]`. Establish `h2' : ∀ S : Finset (Fin e), mdisc (fun k => hessC (fun y' => (if k ∈ S then P k else Θ).φ ((A.chart j).symm y) ((A.chart j).symm y')) y) = M (S.piecewise a (fun _ => b))` using `fun S => by`. Rewrite using `[hM, ← h2 S]`. Unfold `locDens maDens`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [h2']`. Rewrite using `[h1, ← hM, show (fun k => a k + (fun _ => (-1 : ℂ) • b) k) = a + fun _ => (-1 : ℂ) • b from rfl, M.map_add_univ, Complex.re_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun S _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h3 : S.piecewise a (fun _ => (-1 : ℂ) • b) = Sᶜ.piecewise (fun k => (-1 : ℂ) • S.piecewise a (fun _ => b) k) (S.piecewise a (fun _ => b))`. Use function extensionality and compare the values at `k`. Apply the tactic sequence `by_cases hk : k ∈ S <;> simp [hk, Finset.piecewise]`. Rewrite using `[h3, M.map_piecewise_smul, Finset.prod_const, Finset.card_compl, Fintype.card_fin, smul_eq_mul]`. Establish `: ((-1 : ℂ) ^ (e - S.card)) = (((-1 : ℝ) ^ (e - S.card) : ℝ) : ℂ)` using `by push_cast; rfl`.
-
-Rewrite using `[this, Complex.re_ofReal_mul]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locDens_expand {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X)
     (Θ : LocPot X) (P : Fin e → LocPot X) (hΘ : IsPotential A Θ) (hP : ∀ i, IsPotential A (P i))
@@ -68,13 +66,13 @@ theorem locDens_expand {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtla
   rw [this, Complex.re_ofReal_mul]
 
 /- English proof (translation)
-Introduce `e X _ _ _ A Θ P hΘ hP g hg`. Establish `hpot : ∀ S : Finset (Fin e), ∀ i, IsPotential A (if i ∈ S then P i else Θ)`. Introduce `S i`. Use `split_ifs`. Use `exacts [hP i, hΘ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
-Unfold `mInt`. Use `split_ifs with h`. Unfold `integralWith`. Repeatedly rewrite using `[Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Repeatedly rewrite using `[← integral_const_mul]`. Rewrite using `[← integral_finsetSum _ fun S _ => ((integrableOn_weight A h.some _ g (mIntegrableCont A _ (hpot S) g hg) j).const_mul _)]`. Use `setIntegral_congr_fun (A.chart j).open_target.measurableSet fun y hy => ?_` and prove the remaining obligations. Rewrite using `[locDens_expand A Θ P hΘ hP j hy, Finset.mul_sum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun S _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem mixed_integral_inclusion_exclusion : ∀ {e : ℕ} {X : Type} [TopologicalSpace X] [CompactSpace X] [T2Space X] (A : FinHolAtlas e X)
     (Θ : LocPot X) (P : Fin e → LocPot X), IsPotential A Θ → (∀ i, IsPotential A (P i)) →
@@ -102,15 +100,13 @@ theorem mixed_integral_inclusion_exclusion : ∀ {e : ℕ} {X : Type} [Topologic
   · simp
 
 /- English proof (translation)
-Break down `isEmpty_or_nonempty Z with hZ | ⟨⟨z0⟩⟩` into its components or cases. Rewrite using `[Metric.tendstoUniformlyOn_iff]`. Introduce `ε _`. Conclude with `Filter.Eventually.of_forall fun t y _ => (IsEmpty.false (f y)).elim`. Take `⟨R, hR⟩` from `hb.subset_closedBall z0`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `huc` using `(isCompact_closedBall z0 (R + 1)).uniformContinuousOn_of_continuous hG.continuousOn`. Rewrite `h`, the goal using `[Metric.tendstoUniformlyOn_iff]`. Introduce `ε hε`. Take `⟨δ, hδ, hδG⟩` from `Metric.uniformContinuousOn_iff.1 huc ε hε`. Use `filter_upwards [h (min δ 1) (lt_min hδ one_pos)] with t ht y hy`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `ht y hy`. Establish `hfy : f y ∈ Metric.closedBall z0 R` using `hR ⟨y, hy, rfl⟩`. Establish `hfy' : f y ∈ Metric.closedBall z0 (R + 1)` using `Metric.closedBall_subset_closedBall (by linarith) hfy`. Establish `hFy : F t y ∈ Metric.closedBall z0 (R + 1)`. Rewrite `hfy`, the goal using `[Metric.mem_closedBall]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `dist_triangle (F t y) (f y) z0`. Establish `h2 : dist (F t y) (f y) < 1`. Rewrite using `[dist_comm]`. Conclude with `lt_of_lt_of_le h1 (min_le_right _ _)`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Conclude with `hδG _ hfy' _ hFy (lt_of_lt_of_le h1 (min_le_left _ _))`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem tendstoUniformlyOn_comp_continuous {α ι Z W : Type*} [PseudoMetricSpace Z] [ProperSpace Z]
     [PseudoMetricSpace W] {l : Filter ι} {K : Set α} (G : Z → W) (hG : Continuous G)
@@ -147,7 +143,7 @@ def hessL {D : ℕ} (H : (Fin D → ℂ) →L[ℝ] (Fin D → ℂ) →L[ℝ] ℝ
         H (Complex.I • Pi.single i 1) (Pi.single j 1) : ℝ))) / 4
 
 /- English proof (translation)
-Establish `hev : ∀ a b : Fin D → ℂ, Continuous fun H : (Fin D → ℂ) →L[ℝ] (Fin D → ℂ) →L[ℝ] ℝ => H a b` using `fun a b => (continuous_id.clm_apply continuous_const).clm_apply continuous_const`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Use `show Continuous fun H : (Fin D → ℂ) →L[ℝ] (Fin D → ℂ) →L[ℝ] ℝ => ((H (Pi.single i 1) (Pi.single j 1) + H (Complex.I • Pi.single i 1) (Complex.I • Pi.single j 1) : ℝ) + Complex.I * ((H (Pi.single i 1) (Complex.I • Pi.single j 1) - H (Complex.I • Pi.single i 1) (Pi.single j 1) : ℝ) …`. Use `Continuous.div_const ?_ _` and prove the remaining obligations. Conclude with `(Complex.continuous_ofReal.comp ((hev _ _).add (hev _ _))).add (continuous_const.mul (Complex.continuous_ofReal.comp ((hev _ _).sub (hev _ _))))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_hessL {D : ℕ} : Continuous (hessL (D := D)) := by
   have hev : ∀ a b : Fin D → ℂ,
@@ -169,7 +165,7 @@ private theorem hessC_eq_lemma_3 {D : ℕ} (φ : (Fin D → ℂ) → ℝ) (z : F
     hessC φ z = hessL (fderiv ℝ (fderiv ℝ φ) z) := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i k`. Simplify using `only [hessL, ContinuousLinearMap.add_apply, Pi.add_apply]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem hessL_add_lemma_2 {D : ℕ} (H1 H2 : (Fin D → ℂ) →L[ℝ] (Fin D → ℂ) →L[ℝ] ℝ) :
     hessL (H1 + H2) = hessL H1 + hessL H2 := by
@@ -179,9 +175,9 @@ private theorem hessL_add_lemma_2 {D : ℕ} (H1 H2 : (Fin D → ℂ) →L[ℝ] (
   ring
 
 /- English proof (translation)
-Take `⟨L, hL⟩ : ∃ L : ((Fin D → ℂ) →L[ℂ] ℂ) →L[ℝ] ((Fin D → ℂ) →L[ℝ] ℝ), ∀ T, L T = Complex.reCLM.comp (T.restrictScalars ℝ)` from `⟨(ContinuousLinearMap.compL ℝ (Fin D → ℂ) ℂ ℝ Complex.reCLM).comp (ContinuousLinearMap.restrictScalarsL ℂ (Fin D → ℂ) ℂ ℝ ℝ), fun T => rfl⟩`. Establish `h1 : fderiv ℝ (fun z => (h z).re) =ᶠ[𝓝 y] fun z => L (fderiv ℂ h z)` using `by filter_upwards [hh] with z hz`. Rewrite using `[hL]`. Establish `h3` using `(Complex.reCLM.hasFDerivAt.comp z (hz.differentiableAt.hasFDerivAt.restrictScalars ℝ)).fderiv`. Simplify `h3` using `[Function.comp_def]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2 : HasFDerivAt (fun z => L (fderiv ℂ h z)) (L.comp ((fderiv ℂ (fderiv ℂ h) y).restrictScalars ℝ)) y` using `L.hasFDerivAt.comp y (hh.self_of_nhds.fderiv.differentiableAt.hasFDerivAt.restrictScalars ℝ)`. Rewrite using `[h1.fderiv_eq, h2.fderiv]`. Use function extensionality and compare the values at `i k`. Simplify using `[hessL, hL, Complex.mul_re]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private theorem hessL_re_lemma {D : ℕ} (h : (Fin D → ℂ) → ℂ) (y : Fin D → ℂ)
     (hh : ∀ᶠ z in 𝓝 y, AnalyticAt ℂ h z) :
@@ -204,17 +200,15 @@ private theorem hessL_re_lemma {D : ℕ} (h : (Fin D → ℂ) → ℂ) (y : Fin 
   simp [hessL, hL, Complex.mul_re]
 
 /- English proof (translation)
-Take `⟨W, hWo, hxW, G, hG, hdiff⟩` from `hP.2 ((A.chart j).symm y) x ((A.chart j).symm y) ⟨P.mem_U _, hx⟩`. Establish `hN : (A.chart j).target ∩ (A.chart j).symm ⁻¹' (W ∩ P.U ((A.chart j).symm y) ∩ P.U x) ∈ 𝓝 y` using `((A.chart j).isOpen_inter_preimage_symm ((hWo.inter (P.isOpen_U _)).inter (P.isOpen_U _))).mem_nhds ⟨hy, ⟨hxW, P.mem_U _⟩, hx⟩`. Establish `hS1o : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' P.U x)` using `(A.chart j).isOpen_inter_preimage_symm (P.isOpen_U x)`. Establish `hS2 : (A.chart j).target ∩ (A.chart j).symm ⁻¹' W ∈ 𝓝 y` using `((A.chart j).isOpen_inter_preimage_symm hWo).mem_nhds ⟨hy, hxW⟩`. Establish `hcd : ∀ᶠ z in 𝓝 y, ContDiffAt ℝ ∞ (P.φ x ∘ (A.chart j).symm) z` using `by filter_upwards [hS1o.mem_nhds ⟨hy, hx⟩] with z hz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(hP.1 x j).contDiffAt (hS1o.mem_nhds hz)`. Establish `han : ∀ᶠ z in 𝓝 y, AnalyticAt ℂ (fun z => G ((A.chart j).symm z)) z` using `by filter_upwards [hS2] with z hz`. Conclude with `hG j z hz`. Apply the tactic sequence `have hd1 : ∀ᶠ z in 𝓝 y, DifferentiableAt ℝ (P.φ x ∘ (A.chart j).symm) z := hcd.mono fun z hz => hz.differentiableAt (by first | exact le_top | (simp; done) | (norm_num; done) | exact le_of_eq (by norm_num) | exact le_of_eq one_add_one_eq_two | (simp; exact le_of_eq one_add_one_eq …`. Establish `hd2 : ∀ᶠ z in 𝓝 y, DifferentiableAt ℝ (fun z => (G ((A.chart j).symm z)).re) z` using `han.mono fun z hz => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : ContDiffAt ℝ 1 (fun z => G ((A.chart j).symm z)) z` using `(hz.contDiffAt).restrict_scalars ℝ`. Conclude with `(Complex.reCLM.contDiff.contDiffAt.comp z h0).differentiableAt (by simp)`. Establish `hcd2 : ContDiffAt ℝ 2 (fun z => (G ((A.chart j).symm z)).re) y`. Establish `h0 : ContDiffAt ℝ 2 (fun z => G ((A.chart j).symm z)) y` using `(han.self_of_nhds.contDiffAt).restrict_scalars ℝ`. Conclude with `Complex.reCLM.contDiff.contDiffAt.comp y h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `heq : (fun y' => P.φ ((A.chart j).symm y) ((A.chart j).symm y')) =ᶠ[𝓝 y] fun z => (P.φ x ∘ (A.chart j).symm) z + (G ((A.chart j).symm z)).re` using `by filter_upwards [hN] with z hz`. Establish `h4` using `hdiff ((A.chart j).symm z) hz.2`. Simplify using `only [Function.comp_apply]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1 : fderiv ℝ (fun y' => P.φ ((A.chart j).symm y) ((A.chart j).symm y')) =ᶠ[𝓝 y] fun z => fderiv ℝ (P.φ x ∘ (A.chart j).symm) z + fderiv ℝ (fun z => (G ((A.chart j).symm z)).re) z` using `by filter_upwards [heq.eventuallyEq_nhds, hd1, hd2] with z hz hz1 hz2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz.fderiv_eq]`. Conclude with `fderiv_add hz1 hz2`. Establish `hF : fderiv ℝ (fderiv ℝ fun y' => P.φ ((A.chart j).symm y) ((A.chart j).symm y')) y = fderiv ℝ (fderiv ℝ (P.φ x ∘ (A.chart j).symm)) y + fderiv ℝ (fderiv ℝ fun z => (G ((A.chart j).symm z)).re) y`. Rewrite using `[h1.fderiv_eq]`. Apply the tactic sequence `exact fderiv_add (((contDiffAt_infty.1 hcd.self_of_nhds 2).fderiv_right (m := 1) (by first | exact le_top | (simp; done) | (norm_num; done) | exact le_of_eq (by norm_num) | exact le_of_eq one_add_one_eq_two | (simp; exact le_of_eq one_add_one_eq_two))).differentiableAt (by simp)) …`.
-
-Rewrite using `[hessC_eq_lemma_3, hessC_eq_lemma_3, hF, hessL_add_lemma_2, hessL_re_lemma _ y han, add_zero]`.
+A detailed English derivation is pending.
 -/
 theorem hessC_base {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X) (P : LocPot X)
     (hP : IsPotential A P) (j : Fin A.n) {y : Fin e → ℂ} (hy : y ∈ (A.chart j).target) (x : X)
@@ -270,9 +264,9 @@ theorem hessC_base {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e 
   rw [hessC_eq_lemma_3, hessC_eq_lemma_3, hF, hessL_add_lemma_2, hessL_re_lemma _ y han, add_zero]
 
 /- English proof (translation)
-Introduce `y0 hy0`. Apply `ContinuousAt.continuousWithinAt` to reduce the goal to its premises. Establish `hSo : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' P.U ((A.chart j).symm y0))` using `(A.chart j).isOpen_inter_preimage_symm (P.isOpen_U _)`. Establish `hS : (A.chart j).target ∩ (A.chart j).symm ⁻¹' P.U ((A.chart j).symm y0) ∈ 𝓝 y0` using `hSo.mem_nhds ⟨hy0, P.mem_U _⟩`. Establish `hcd : ContDiffAt ℝ ∞ (P.φ ((A.chart j).symm y0) ∘ (A.chart j).symm) y0` using `(hP.1 _ j).contDiffAt hS`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `have hc : ContinuousAt (fun y => fderiv ℝ (fderiv ℝ (P.φ ((A.chart j).symm y0) ∘ (A.chart j).symm)) y) y0 := (((contDiffAt_infty.1 hcd 2).fderiv_right (m := 1) (by first | exact le_top | (simp; done) | (norm_num; done) | exact le_of_eq (by norm_num) | exact le_of_eq one_add_one_e …`. Use `(continuous_hessL.continuousAt.comp hc).congr ?_` and prove the remaining obligations. Use `filter_upwards [hS] with y hy`. Simplify using `only [Function.comp_apply]`. Rewrite using `[hessC_base A P hP j hy.1 _ hy.2, hessC_eq_lemma_3]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hessC_base_continuousOn {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X)
     (P : LocPot X) (hP : IsPotential A P) (j : Fin A.n) :
@@ -295,7 +289,7 @@ theorem hessC_base_continuousOn {e : ℕ} {X : Type} [TopologicalSpace X] (A : F
   rw [hessC_base A P hP j hy.1 _ hy.2, hessC_eq_lemma_3]
 
 /- English proof (translation)
-Use `filter_upwards [hO.mem_nhds hy] with z hz`. Conclude with `contDiffAt_infty.1 (hg.contDiffAt (hO.mem_nhds hz)) 2`.
+A detailed English derivation is pending.
 -/
 private theorem evCD_lemma_5 {D : ℕ} {g : (Fin D → ℂ) → ℝ} {O : Set (Fin D → ℂ)}
     (hg : ContDiffOn ℝ ∞ g O) (hO : IsOpen O) {y : Fin D → ℂ} (hy : y ∈ O) :
@@ -304,7 +298,7 @@ private theorem evCD_lemma_5 {D : ℕ} {g : (Fin D → ℂ) → ℝ} {O : Set (F
   exact contDiffAt_infty.1 (hg.contDiffAt (hO.mem_nhds hz)) 2
 
 /- English proof (translation)
-Establish `h1 : fderiv ℝ (fun z => f z + g z) =ᶠ[𝓝 y] fun z => fderiv ℝ f z + fderiv ℝ g z` using `by filter_upwards [hf, hg] with z hz1 hz2`. Apply the tactic sequence `exact fderiv_add (hz1.differentiableAt (by first | exact le_top | (simp; done) | (norm_num; done) | exact le_of_eq (by norm_num) | exact le_of_eq one_add_one_eq_two | (simp; exact le_of_eq one_add_one_eq_two))) (hz2.differentiableAt (by first | exact le_top | (simp; done) | (norm …`. Apply the tactic sequence `have hsum : fderiv ℝ (fun z => fderiv ℝ f z + fderiv ℝ g z) y = fderiv ℝ (fderiv ℝ f) y + fderiv ℝ (fderiv ℝ g) y := (((hf.self_of_nhds.fderiv_right (m := 1) (by first | exact le_top | (simp; done) | (norm_num; done) | exact le_of_eq (by norm_num) | exact le_of_eq one_add_one_eq_ …`. Rewrite using `[hessC_eq_lemma_3, hessC_eq_lemma_3, hessC_eq_lemma_3, h1.fderiv_eq, hsum, hessL_add_lemma_2]`. Apply the tactic sequence `all_goals rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hessC_add_lemma_4 {D : ℕ} (f g : (Fin D → ℂ) → ℝ) (y : Fin D → ℂ)
     (hf : ∀ᶠ z in 𝓝 y, ContDiffAt ℝ (2 : ℕ) f z) (hg : ∀ᶠ z in 𝓝 y, ContDiffAt ℝ (2 : ℕ) g z) :
@@ -320,23 +314,21 @@ private theorem hessC_add_lemma_4 {D : ℕ} (f g : (Fin D → ℂ) → ℝ) (y :
   all_goals rfl
 
 /- English proof (translation)
-Establish `hKT : K ⊆ (A.chart j).target` using `fun y hy => (hK hy).1`. Establish `hO : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' (bdry s)ᶜ)` using `(A.chart j).isOpen_inter_preimage_symm hB.isOpen_compl`. Establish `hOt : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' Set.univ)` using `(A.chart j).isOpen_inter_preimage_symm isOpen_univ`. Establish `hpot : ∀ Q : LocPot X, IsPotential A Q → ∀ y ∈ (A.chart j).target, ∀ᶠ z in 𝓝 y, ContDiffAt ℝ (2 : ℕ) (fun y' => Q.φ ((A.chart j).symm y) ((A.chart j).symm y')) z` using `fun Q hQ y hy => evCD_lemma_5 (hQ.1 ((A.chart j).symm y) j) ((A.chart j).isOpen_inter_preimage_symm (Q.isOpen_U _)) ⟨hy, Q.mem_U _⟩`. Take `⟨Gm, hGm⟩ : ∃ Gm : (Fin e → Fin e → Fin e → ℂ) → ℝ, ∀ Ms, Gm Ms = (e.factorial : ℝ) * (2 / Real.pi) ^ e * (mdisc Ms).re` from `⟨_, fun _ => rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hGc : Continuous Gm`. Rewrite using `[show Gm = fun Ms => (e.factorial : ℝ) * (2 / Real.pi) ^ e * (mdisc Ms).re from funext hGm]`. Use `continuous_const.mul (Complex.continuous_re.comp ?_)` and prove the remaining obligations. Unfold `mdisc`. Use `continuous_const.mul (continuous_finset_sum _ fun T' _ => continuous_const.mul ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `first`. Consider the case `exact Continuous.matrix_det (continuous_finset_sum _ fun k _ => continuous_apply k)`. Consider the case `fun_prop`. Establish `hE : ∀ u : Fin e → X → ℝ, (∀ k, ∀ y ∈ K, ∀ᶠ z in 𝓝 y, ContDiffAt ℝ (2 : ℕ) (u k ∘ (A.chart j).symm) z) → ∀ y ∈ K, locDens A (fun i => th i + LocPot.ofFun (u i) + Θ) j y = Gm (fun k => hessL (fderiv ℝ (fderiv ℝ fun y' => (th k).φ ((A.chart j).symm y) ((A.chart j).symm y')) y) + he …`. Introduce `u hu y hy`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hM : (fun k => hessC (fun y' => (th k + LocPot.ofFun (u k) + Θ).φ ((A.chart j).symm y) ((A.chart j).symm y')) y) = fun k => hessL (fderiv ℝ (fderiv ℝ fun y' => (th k).φ ((A.chart j).symm y) ((A.chart j).symm y')) y) + hessL (fderiv ℝ (fderiv ℝ (u k ∘ (A.chart j).symm)) y) + hessL …`. Use function extensionality and compare the values at `k`. Establish `hfun : (fun y' => (th k + LocPot.ofFun (u k) + Θ).φ ((A.chart j).symm y) ((A.chart j).symm y')) = fun y' => ((th k).φ ((A.chart j).symm y) ((A.chart j).symm y') + (u k ∘ (A.chart j).symm) y') + Θ.φ ((A.chart j).symm y) ((A.chart j).symm y')` using `rfl`. Establish `h12 : ∀ᶠ z in 𝓝 y, ContDiffAt ℝ (2 : ℕ) (fun y' => (th k).φ ((A.chart j).symm y) ((A.chart j).symm y') + (u k ∘ (A.chart j).symm) y') z` using `((hpot (th k) (hth k) y (hKT hy)).and (hu k y hy)).mono fun z hz => hz.1.add hz.2`. Rewrite using `[hfun, hessC_add_lemma_4 (fun y' => (th k).φ ((A.chart j).symm y) ((A.chart j).symm y') + (u k ∘ (A.chart j).symm) y') (fun y' => Θ.φ ((A.chart j).symm y) ((A.chart j).symm y')) y h12 (hpot Θ hΘ y (hKT hy)), hessC_add_lemma_4 (fun y' => (th k).φ ((A.chart j).symm y) ((A.chart j). …`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hessC_eq_lemma_3, hessC_eq_lemma_3, hessC_eq_lemma_3]`. Apply the tactic sequence `all_goals rfl`. Rewrite using `[hGm]`. Use `show (e.factorial : ℝ) * (2 / Real.pi) ^ e * (mdisc fun k => hessC (fun y' => (th k + LocPot.ofFun (u k) + Θ).φ ((A.chart j).symm y) ((A.chart j).symm y')) y).re = (e.factorial : ℝ) * (2 / Real.pi) ^ e * (mdisc fun k => hessL (fderiv ℝ (fderiv ℝ fun y' => (th k).φ ((A.chart j).sy …`. Rewrite using `[hM]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `have hc2 : ∀ k, ContinuousOn (fderiv ℝ (fderiv ℝ (ph k ∘ (A.chart j).symm))) K := fun k y hy => (((contDiffAt_infty.1 ((hph k j).contDiffAt (hO.mem_nhds (hK hy))) 2).fderiv_right (m := 1) (by first | exact le_top | (simp; done) | (norm_num; done) | exact le_of_eq (by norm_num) | …`. Establish `hbk : ∀ k, Bornology.IsBounded ((fderiv ℝ (fderiv ℝ (ph k ∘ (A.chart j).symm))) '' K)` using `fun k => (hKc.image_of_continuousOn (hc2 k)).isBounded`. Establish `hcf : ContinuousOn (fun y k => hessL (fderiv ℝ (fderiv ℝ fun y' => (th k).φ ((A.chart j).symm y) ((A.chart j).symm y')) y) + hessL (fderiv ℝ (fderiv ℝ (ph k ∘ (A.chart j).symm)) y) + hessL (fderiv ℝ (fderiv ℝ fun y' => Θ.φ ((A.chart j).symm y) ((A.chart j).symm y')) y)) K` using `continuousOn_pi.2 fun k => ((((hessC_base_continuousOn A (th k) (hth k) j).mono hKT)).add (continuous_hessL.comp_continuousOn (hc2 k))).add ((hessC_base_continuousOn A Θ hΘ j).mono hKT)`. Establish `hG : TendstoUniformlyOn (fun t y k => hessL (fderiv ℝ (fderiv ℝ fun y' => (th k).φ ((A.chart j).symm y) ((A.chart j).symm y')) y) + hessL (fderiv ℝ (fderiv ℝ (phT k t ∘ (A.chart j).symm)) y) + hessL (fderiv ℝ (fderiv ℝ fun y' => Θ.φ ((A.chart j).symm y) ((A.chart j).symm y')) y)) …`. Rewrite using `[Metric.tendstoUniformlyOn_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `ε hε`. Establish `hk : ∀ k, ∀ᶠ t in nhdsWithin 0 (Set.Ioi 0), ∀ y ∈ K, dist (hessL (fderiv ℝ (fderiv ℝ (ph k ∘ (A.chart j).symm)) y)) (hessL (fderiv ℝ (fderiv ℝ (phT k t ∘ (A.chart j).symm)) y)) < ε` using `fun k => Metric.tendstoUniformlyOn_iff.1 (tendstoUniformlyOn_comp_continuous hessL continuous_hessL _ _ (hbk k) ((hC2 k j K hK hKc).2.2)) ε hε`. Use `filter_upwards [Filter.eventually_all.2 hk] with t ht y hy`. Rewrite using `[dist_pi_lt_iff hε]`. Introduce `k`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply the tactic sequence `try dsimp only`. Rewrite using `[dist_add_right, dist_add_left]`. Conclude with `ht k y hy`. Establish `hlim` using `tendstoUniformlyOn_comp_continuous Gm hGc _ _ (hKc.image_of_continuousOn hcf).isBounded hG`. Use `(hlim.congr ?_).congr_right ?_` and prove the remaining obligations.
-
-Use `filter_upwards [hT] with t ht y hy`. Conclude with `(hE (fun k => phT k t) (fun k y' hy' => evCD_lemma_5 (ht k j) hOt ⟨(hK hy').1, Set.mem_univ _⟩) y hy).symm`. Introduce `y hy`. Conclude with `(hE ph (fun k y' hy' => evCD_lemma_5 (hph k j) hO (hK hy')) y hy).symm`.
+A detailed English derivation is pending.
 -/
 theorem conv_dens_of_closed {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X)
     (Θ : LocPot X) (s : X → X → ℂ) (th : Fin e → LocPot X) (ph : Fin e → X → ℝ)

@@ -11,7 +11,7 @@ noncomputable def capelliMatrix : Matrix (Fin n) (Fin n) (U n) := fun i j => e (
 noncomputable def capelli (k : ℕ) : U n := Matrix.trace (capelliMatrix ^ k)
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Qk36.e_mul_sub_mul_capelliMatrix_pow a b k c d`.
+A detailed English derivation is pending.
 -/
 theorem e_mul_sub_mul_capelliMatrix_pow (a b : Fin n) (k : ℕ) (c d : Fin n) :
     e (a, b) * (capelliMatrix ^ k) c d - (capelliMatrix ^ k) c d * e (a, b) =
@@ -20,9 +20,9 @@ theorem e_mul_sub_mul_capelliMatrix_pow (a b : Fin n) (k : ℕ) (c d : Fin n) :
   _root_.UpperTheory.Reformulated.B.Qk36.e_mul_sub_mul_capelliMatrix_pow a b k c d
 
 /- English proof (translation)
-Apply `mem_center_of_commute_e` to reduce the goal to its premises. Introduce and unpack `⟨a, b⟩`. Rewrite using `[← sub_eq_zero]`. Simplify using `only [capelli, Matrix.trace, Matrix.diag]`. Rewrite using `[Finset.mul_sum, Finset.sum_mul, ← Finset.sum_sub_distrib]`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[e_mul_sub_mul_capelliMatrix_pow]`. Simplify using `[Finset.sum_sub_distrib]`.
+Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem capelli_mem_center (k : ℕ) : capelli (n := n) k ∈ Subalgebra.center ℂ (U n) := by
   apply mem_center_of_commute_e
@@ -34,11 +34,11 @@ theorem capelli_mem_center (k : ℕ) : capelli (n := n) k ∈ Subalgebra.center 
   simp [Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Proceed by induction on `m generalizing c with`. Consider the case `zero`. Rewrite using `[Fintype.sum_unique]`. Simplify using `[capelliMatrix, word, List.ofFn_succ, Fin.snoc]`. Consider the case `succ m ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Rewrite using `[pow_succ', Matrix.mul_apply]`. Repeatedly rewrite using `[ih, Finset.mul_sum]`. Rewrite using `[← (Fin.consEquiv fun _ : Fin (m + 1) => Fin n).sum_comp, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun f _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Fin.consEquiv, Equiv.coe_fn_mk]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Fin.cons_snoc_eq_snoc_cons, List.ofFn_succ, word_cons]`. Simplify using `[capelliMatrix]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem capelliMatrix_pow_succ_apply (m : ℕ) (c d : Fin n) :
     (capelliMatrix ^ (m + 1)) c d = ∑ i : Fin m → Fin n,
@@ -58,11 +58,11 @@ theorem capelliMatrix_pow_succ_apply (m : ℕ) (c d : Fin n) :
     simp [capelliMatrix]
 
 /- English proof (translation)
-Rewrite using `[capelli, Matrix.trace]`. Simplify using `only [Matrix.diag, capelliMatrix_pow_succ_apply]`. Rewrite using `[← (Fin.consEquiv fun _ : Fin (k + 1) => Fin n).sum_comp, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Fin.consEquiv_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `congr 2`. Use function extensionality and compare the values at `t`. Use `congr 1`. Proceed by induction on `t using Fin.lastCases with`. Consider the case `last => simp [finRotate_apply]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Proceed by induction. Treat this case separately.
 
-Consider the case `cast s => simp [finRotate_apply, Fin.coeSucc_eq_succ]`.
+Treat this case separately.
 -/
 theorem capelli_eq_sum_word (k : ℕ) :
     capelli (n := n) (k + 1) = ∑ i : Fin (k + 1) → Fin n,
@@ -80,7 +80,7 @@ theorem capelli_eq_sum_word (k : ℕ) :
   | cast s => simp [finRotate_apply, Fin.coeSucc_eq_succ]
 
 /- English proof (translation)
-Simplify using `[capelli, capelliMatrix, Matrix.trace]`.
+Simplify using the standard rewrite rules.
 -/
 theorem capelli_one : capelli (n := n) 1 = ∑ i, e (i, i) := by
   simp [capelli, capelliMatrix, Matrix.trace]

@@ -5,25 +5,25 @@ open scoped ComplexOrder
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hq : ∀ x : Fin g → ℝ, c * (x ⬝ᵥ x) ≤ x ⬝ᵥ (Y *ᵥ x)`. Introduce `x`. Establish `h` using `hY.dotProduct_mulVec_nonneg x`. Simplify using `only [star_trivial, sub_mulVec, smul_mulVec, one_mulVec, dotProduct_sub, dotProduct_smul, smul_eq_mul] at h`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hdet : IsUnit Y.det`. Rewrite using `[isUnit_iff_ne_zero]`. Introduce `h0`. Take `⟨v, hv, hYv⟩` from `(Matrix.exists_mulVec_eq_zero_iff).2 h0`. Establish `h1` using `hq v`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h1` using `[hYv, dotProduct_zero]`. Establish `h2 : v ⬝ᵥ v = 0` using `le_antisymm (by nlinarith [dotProduct_self_star_nonneg v]) (by`. Simplify using `using dotProduct_self_star_nonneg v)`. Conclude with `hv (by simpa using h2)`. Establish `hYinv : Y * Y⁻¹ = 1` using `Matrix.mul_nonsing_inv Y hdet`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmap : (Y.map Complex.ofReal)⁻¹ = (Y⁻¹).map Complex.ofReal`. Apply `Matrix.inv_eq_right_inv` to reduce the goal to its premises. Rewrite using `[show Y.map Complex.ofReal = Y.map Complex.ofRealHom from rfl, show Y⁻¹.map Complex.ofReal = Y⁻¹.map Complex.ofRealHom from rfl, ← Matrix.map_mul, hYinv]`. Simplify using the standard rewrite rules. Rewrite using `[hmap, Matrix.map_apply, Complex.norm_real, Real.norm_eq_abs]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set w : Fin g → ℝ := Y⁻¹ *ᵥ Pi.single j 1 with hw`. Establish `hYw : Y *ᵥ w = Pi.single j 1`. Rewrite using `[hw, mulVec_mulVec, hYinv, one_mulVec]`. Establish `hwi : ∀ k, w k = Y⁻¹ k j`. Introduce `k`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[hw, mulVec_single_one]`. Establish `hqw : c * (w ⬝ᵥ w) ≤ w j`. Use `hq w` as an intermediate fact. Rewrite `this` using `[hYw, dotProduct_single, mul_one]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hsq : ∀ k, w k ^ 2 ≤ w ⬝ᵥ w`. Introduce `k`. Rewrite using `[dotProduct]`. Use `Finset.single_le_sum (f := fun l => w l * w l) (fun l _ => mul_self_nonneg (w l)) (Finset.mem_univ k)` as an intermediate fact. Simplify `this` using `[sq]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hj1` using `hsq j`. Establish `hi1` using `hsq i`. Establish `hwj0 : 0 ≤ w j` using `by nlinarith [sq_nonneg (w j)]`. Establish `hcwj : c * w j ≤ 1`. Break down `hwj0.lt_or_eq with h | h` into its components or cases.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[← h]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hci1 : c * w i ^ 2 ≤ w j` using `le_trans (mul_le_mul_of_nonneg_left hi1 hc.le) hqw`. Establish `hci : (c * w i) ^ 2 ≤ 1`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `habs : |c * w i| ≤ 1` using `sq_le_one_iff_abs_le_one _ |>.1 hci`. Rewrite using `[← hwi i, le_div_iff₀ hc]`. Rewrite `habs` using `[abs_mul, abs_of_pos hc]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem inv_entry_norm_le_of_sub_posSemidef (g : ℕ) (Y : Matrix (Fin g) (Fin g) ℝ) (c : ℝ)
     (hc : 0 < c) (hY : (Y - c • (1 : Matrix (Fin g) (Fin g) ℝ)).PosSemidef) (i j : Fin g) :

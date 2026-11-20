@@ -52,21 +52,19 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
 
 /- English proof (translation)
-Introduce `hmode V _ _ H hn t₁ f₂ f₂' φ φ' hyp hDl Z₁ Z₂ hZ₁ hZ₂`. Take `⟨g, hg⟩` from `Option.isSome_iff_exists.mp hmode`. Establish `hminor : ∀ f f' : Fin (r + 1) → V, ((H.Zhat f f').submatrix Fin.castSucc Fin.castSucc).det = H.Dl f f' r`. Introduce `f f'`. Unfold `HermSp.Dl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Rewrite using `[dif_pos (Nat.le_succ r)]`. Both sides reduce to the same expression. Establish `hfull : ∀ f f' : Fin (r + 1) → V, H.Dl f f' (r + 1) = (H.Zhat f f').det`. Introduce `f f'`. Unfold `HermSp.Dl`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Rewrite using `[dif_pos le_rfl]`. Both sides reduce to the same expression. Establish `hyp'` using `hyp`. Take `⟨⟨hterm, _⟩, _, _, hid, _, _⟩` from `hyp'`. Take `⟨_, _, _, hD1, _, hsp⟩` from `hterm`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hTu, hTT, _⟩` from `hsp g hg`. Establish `hrel : H.Dl t₁.f t₁.f' r * H.Dl f₂ f₂' (r + 1) = H.Dl f₂ f₂' r * H.Dl t₁.f t₁.f' (r + 1)` using `hid.2.2.2.2.2`. Rewrite `hrel` using `[hDl, zero_mul]`. Establish `hD2r : H.Dl f₂ f₂' r = 0` using `hD1.mul_left_eq_zero.mp hrel.symm`. Establish `hZ₁' : Z₁.Z.map M.R.subtype = HermSp.ZZplusOf M (H.Zhat t₁.f t₁.f') t₁.T t₁.T'` using `hZ₁`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU₂ : IsUnit (HermSp.ZZplusOf M (H.Zhat f₂ f₂') t₁.T t₁.T').det` using `hZ₂ ▸ Z₂.unit`. Establish `hm₁ : ((H.Zhat t₁.f t₁.f').submatrix Fin.castSucc Fin.castSucc).det = 0`. Rewrite using `[hminor]`. Conclude with `hDl`. Establish `hm₂ : ((H.Zhat f₂ f₂').submatrix Fin.castSucc Fin.castSucc).det = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hminor]`. Conclude with `hD2r`. Establish `hd₁ : IsUnit (H.Zhat t₁.f t₁.f').det` using `by rw [← hfull]; exact hD1`. Establish `hd₂ : IsUnit (H.Zhat f₂ f₂').det` using `h0 F E M g hg r _ t₁.T t₁.T' hm₂ hU₂`. Establish `hR : ∀ a b, HermSp.ZZplusOf M (H.Zhat f₂ f₂') t₁.T t₁.T' a b ∈ M.R`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `a b`. Rewrite using `[← hZ₂]`. Conclude with `(Z₂.Z a b).2`. Establish `hc` using `h1 F E M g hg r n V H hn t₁ f₂ f₂' φ φ' hyp hDl (by rw [hfull]; exact hd₂) hR`. Rewrite using `[hc]`.
-
-Conclude with `h2 F E M g hg r t₁.T t₁.T' hTu hTT _ _ Z₁.Z Z₂.Z hZ₁' hZ₂ hd₁ hd₂ hm₁ hm₂`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaMbe0G_of (h0 : DetG) (h1 : CoordG) (h2 : SplitIsometryCountVanishes) (M : Model F E) (r n : ℕ) :
     ThetaMbe0 M r n true := by

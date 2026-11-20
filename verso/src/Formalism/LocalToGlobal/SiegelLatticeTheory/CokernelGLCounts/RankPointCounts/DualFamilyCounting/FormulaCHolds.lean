@@ -10,7 +10,7 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCou
 namespace Formalism.L2.SG.Pf.Cnt
 
 /- English proof (translation)
-The claim follows from `densAll_of' local_self_dual_holds (DualityBasisChange.gaPlusDiag_of hF jordan_decomposition_holds) (DualityBasisChange.notIntDens_of_steps local_self_dual_holds hF DualityBasisChange.locGlobIntE) (densProdVal_of hη)`.
+A detailed English derivation is pending.
 -/
 theorem densAll_of_leaves (hF : DualityBasisChange.FrameBasisL) (hη : EtaLocD) : DensAll :=
   densAll_of' local_self_dual_holds (DualityBasisChange.gaPlusDiag_of hF jordan_decomposition_holds)
@@ -18,7 +18,7 @@ theorem densAll_of_leaves (hF : DualityBasisChange.FrameBasisL) (hη : EtaLocD) 
 
 variable [Fact Formalism.HermitianLattices.Ext.L3.HermRepUnram] in
 /- English proof (translation)
-The claim follows from `formulaC_of local_self_dual_holds (DualityBasisChange.gaPlusDiag_of hF jordan_decomposition_holds) (DualityBasisChange.notIntDens_of_steps local_self_dual_holds hF DualityBasisChange.locGlobIntE) (densProdVal_of hη) (densMultInt_of local_self_dual_holds (DualityBasisChange.gaPlus …`.
+A detailed English derivation is pending.
 -/
 theorem formulaC_holds_of (hF : DualityBasisChange.FrameBasisL) (hη : EtaLocD) (hI : CntIsoInv) : Formalism.L2.SG.PoincareAmplitudeLowerBounds.FormulaC :=
   formulaC_of local_self_dual_holds (DualityBasisChange.gaPlusDiag_of hF jordan_decomposition_holds)

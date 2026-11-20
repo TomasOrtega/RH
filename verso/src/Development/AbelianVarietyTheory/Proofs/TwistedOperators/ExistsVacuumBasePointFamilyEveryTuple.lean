@@ -14,15 +14,15 @@ noncomputable section
 namespace GlobalTheory.RowBase
 
 /- English proof (translation)
-Use `GlobalTheory.RowReal.big_mono ?_ (Big.and GlobalTheory.T.representation_at_every_place GlobalTheory.T.exists_unitaryPoint_prescribed_localMatrices)` and prove the remaining obligations. Introduce `D Γ _ _ Pl0 T A Ks _ _ _ R ch ⟨hrep, hloc⟩ t`. Set `β0 : CosFam ch.G t` to `fun _ _ => DoubleCoset.mk _ _ 1`. Take `⟨b', hb'⟩` from `(hrep 1 t).1 β0`. Establish `H : ∀ j, ∃ x : GA D (ch.G.V (.grid D.R.m j)), (j ∈ idx D → ∃ δ, IsTilt ch.G j δ ∧ IsFinOf δ x) ∧ (j ∉ idx D → x = 1)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `j`. Distinguish the cases in `hj : j ∈ idx D`. Establish `hle : j ≤ D.R.m` using `by have := GlobalTheory.RowRep.idx_le hj; omega`. Take `⟨δ, -, hδ, -⟩` from `hb'.2 j hj hle`. Take `⟨x, hx⟩` from `GlobalTheory.RowRep.exists_isFinOf _ δ`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨x, fun _ => ⟨δ, hδ, hx⟩, fun h => absurd hj h⟩`. Conclude with `⟨1, fun h => absurd h hj, fun _ => rfl⟩`. Use `choose f hf using H`. Take `⟨r, hr⟩` from `hloc t 0 (Nat.zero_le _) (fun w => (stair (locGrid ch.G t w.1) (unifAt w.1) (cosExp ch.G w.1) 0)⁻¹)`. Use `⟨Function.update f 0 r, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Function.update_self]`. Conclude with `hr`. Introduce `j hj`. Establish `h0 : j ≠ 0` using `by have := GlobalTheory.RowRep.idx_le hj; omega`. Rewrite using `[Function.update_of_ne h0]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hf j).1 hj`. Introduce `j h0 hj`. Rewrite using `[Function.update_of_ne h0]`. Conclude with `(hf j).2 hj`.
+A detailed English derivation is pending.
 -/
 theorem exists_isBase : Big fun ch => ∀ t, ∃ b, IsBase t ch.S.B b := by
   refine GlobalTheory.RowReal.big_mono ?_ (Big.and GlobalTheory.T.representation_at_every_place GlobalTheory.T.exists_unitaryPoint_prescribed_localMatrices)

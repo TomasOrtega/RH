@@ -6,11 +6,11 @@ open Formalism.MainNotions.WeightAlgebra Formalism.BasicNotions
 namespace Formalism.MainNotions.Gaps.EtaleWeightGaps
 
 /- English proof (translation)
-Introduce `large₂ X K H Ch Ah Cq Aq C2 A2 CR CT j h1 h2 S ka wL wF T nP nW h0 nus hH lA sA mA qA _ _ _ G Gc PH Prw Pet Pd tW tTh tZ tQ _ dH dS dL pG sRd sRho sRhoP hP iZ iM hQf hDm hM`. Distinguish the cases in `hj : j < D.R.m`. Take `⟨Qf, iB, iC, iT, iLf, hB, hHt⟩` from `hQf hj`. Take `⟨hs, hb⟩` from `rLa_tsum_le_comb large₂ X K H Ch Ah Cq Aq C2 A2 CR CT h1 h2 S T nP nW h0 nus hH lA sA mA qA G Gc PH Prw Pet Pd tW tZ tQ dH dS dL (pageGd4_iff.mp pG) (polyDom4_iff.mp hP) Qf hHt`. Establish `hsum` using `hb.trans (sumGC4 large₂ (X j h1 h2) h1 K H Ch Ah Cq Aq C2 A2 CR CT S T nP nW h0 nus hH G Gc PH Prw Pet Pd tTh dL sRd sRho sRhoP hP Qf hHt)`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `concl_of_nat (X j h1 h2) S ka wL wF T nus _ (fun la => rLa (Qf la) K.CRm T (cc D large₂ C2 A2 CR wL)) hH.2.2.2.1.1 (fun la => rLa_nonneg_comb4 hB la _ _ _) hs hsum (fun la e he V' hV => ?_)` and prove the remaining obligations. Establish `hw : ∀ k, G.w k ∈ (X j h1 h2).WWc S.sW wL` using `fun k => tW.1 ▸ Submodule.subset_span ⟨k, rfl⟩`. Establish `hH2 : H2 (X j h1 h2) S ka wL wF` using `hH.2.2.2.2.1`. Establish `hth'M : ∀ i, G.th' i ∈ B.Mlat j wF` using `fun i => hH2.2.1 (tTh i).1`. Establish `hOk : (Qf la).Ok S K.CRm T (cc D large₂ C2 A2 CR wL)` using `⟨iB la, iC la, iT la, iZ la, iM la⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, hT0, hDT, -⟩` from `hH.2.1`. Conclude with `localBound G la (Qf la) S K.CRm _ e (nus la) (ka_eq_addL_of_setC hH.2.1) lA (theta_le_msup_of_hypC _ S hH) (span_Thc_of_hypC hH).2.2 hT0 hDT hw tW.2.1 (fun i => (tTh i).1) hth'M (fun k => (tZ.1 k).1) (fun k => (tZ.1 k).2.1) (fun k => (tZ.1 k).2.2.2) tZ.2.1 tZ.2.2 tQ.2.1 tQ.2.2.1 …`. Conclude with `hM (not_lt.1 hj) (hDm (not_lt.1 hj))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem theorem_zero_of_refined_inputs {D : D7} {B : Formalism.MainNotions.WeightFamilies.Prov D} {P : Formalism.MainNotions.ModuliIntegralCharts.Prov D} : Conclusion1OfComb4 (D := D) (B := B) (P := P) := by
   intro large₂ X K H Ch Ah Cq Aq C2 A2 CR CT j h1 h2 S ka wL wF T nP nW h0 nus hH lA sA mA qA _ _ _ G Gc PH Prw Pet Pd

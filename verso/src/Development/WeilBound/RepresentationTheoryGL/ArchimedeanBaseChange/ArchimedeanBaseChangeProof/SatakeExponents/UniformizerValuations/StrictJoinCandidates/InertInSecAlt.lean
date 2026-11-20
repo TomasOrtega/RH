@@ -10,7 +10,7 @@ open scoped Classical
 namespace PositivityTheory.Rg.BcB.F.FX
 
 /- English proof (translation)
-Introduce `E _ _ _ S hS w hw`. Take `⟨u, ⟨huS, hu⟩, -⟩` from `hS w`. Distinguish the cases in `h : u = w`. Conclude with `h ▸ huS`. Conclude with `absurd ⟨u, h, hu⟩ hw`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem inertInSec : InertInSec := by
   intro E _ _ _ S hS w hw

@@ -7,25 +7,23 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace GlobalTheory.EtC
 
 /- English proof (translation)
-Introduce `R _ F S Θ Θ' α hΘ hΘ' O _ s hs hα U hU g n`. Take `⟨I, _, _, G, π, ⟨hl⟩, hG⟩` from `GlobalTheory.T.exists_cofiltered_limit_affine_etale_of_isStalk' S O s hs`. Use `haveI : IsConnected I := IsCofiltered.isConnected I`. Establish `hcF : IsLimit ((Over.forget S).mapCone (Cone.mk _ π))` using `isLimitOfPreserves (Over.forget S) hl`. Use `haveI : ∀ i, IsAffine ((G ⋙ Over.forget S).obj i) := fun i => (hG i).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Use `haveI : ∀ {i j : I} (f : i ⟶ j), IsAffineHom ((G ⋙ Over.forget S).map f) := fun _ => inferInstance`. Use `haveI : LocallyOfFinitePresentation U.hom := inferInstance`. Set `t0 : G ⋙ Over.forget S ⟶ (Functor.const I).obj S` to `{ app := fun i => (G.obj i).hom, naturality := fun i j f => by simp }`. Take `⟨j, u0, hu0, hu1⟩` from `Scheme.exists_π_app_comp_eq_of_locallyOfFinitePresentation (G ⋙ Over.forget S) t0 U.hom _ hcF g.left (by`. Use extensionality with `i`.
+By extensionality, compare the relevant components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `(Over.w (π.app i)).trans (Over.w g).symm)`. Set `u : G.obj j ⟶ U` to `Over.homMk u0 hu1`. Establish `hu : π.app j ≫ u = g` using `Over.OverMorphism.ext hu0`. Establish `hπ : ∀ {i k : I} (f : k ⟶ i), π.app k ≫ G.map f = π.app i` using `fun f => by`. Simplify using `using (π.naturality f).symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnat : ∀ {A B : Over S} (f : A ⟶ B) (y : H R (Θ'.obj B) F n), pull R (Θ.map f) F n (pull R (α.app B) F n y) = pull R (α.app A) F n (pull R (Θ'.map f) F n y)`. Introduce `A B f y`. Rewrite using `[← pull_comp, ← pull_comp, α.naturality]`. Establish `cΘ` using `hΘ I G (Cone.mk _ π) hl (fun i => (hG i).1) n`. Establish `cΘ'` using `hΘ' I G (Cone.mk _ π) hl (fun i => (hG i).1) n`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Simplify using `only [Functor.mapCone_π_app, Functor.comp_obj, Functor.comp_map] at cΘ cΘ'`. Use `⟨fun x => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨w, hw⟩` from `(hα n).2 (pull R (Θ.map g) F n x)`. Take `⟨i, y0, hy0⟩` from `cΘ'.1 w`. Set `k` to `IsCofiltered.min i j`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `fi : k ⟶ i` to `IsCofiltered.minToLeft i j`. Set `fj : k ⟶ j` to `IsCofiltered.minToRight i j`. Set `y1` to `pull R (Θ'.map (G.map fi)) F n y0`. Establish `hgh : π.app k ≫ (G.map fj ≫ u) = g` using `by rw [← Category.assoc, hπ, hu]`. Establish `hd : pull R (Θ.map (π.app k)) F n (pull R (α.app (G.obj k)) F n y1 - pull R (Θ.map (G.map fj ≫ u)) F n x) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : pull R (Θ.map (π.app k)) F n (pull R (α.app (G.obj k)) F n y1) = pull R (Θ.map g) F n x`. Rewrite using `[hnat]`. Use `show pull R (α.app (Over.mk s)) F n (pull R (Θ'.map (π.app k)) F n (pull R (Θ'.map (G.map fi)) F n y0)) = _`. Rewrite using `[← pull_comp R (Θ'.map (π.app k)), ← Functor.map_comp, hπ, hy0]`. Conclude with `hw`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e2 : pull R (Θ.map (π.app k)) F n (pull R (Θ.map (G.map fj ≫ u)) F n x) = pull R (Θ.map g) F n x`. Rewrite using `[← pull_comp, ← Functor.map_comp, hgh]`. Rewrite using `[map_sub, e1, e2, sub_self]`. Take `⟨k', f', hf'⟩` from `cΘ.2 k _ hd`. Use `⟨G.obj k', π.app k', G.map f' ≫ G.map fj ≫ u, pull R (Θ'.map (G.map f')) F n y1, (hG k').2, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[← Category.assoc, hπ, hgh]`. Rewrite `hf'` using `[map_sub, sub_eq_zero, hnat]`. Rewrite using `[hf', ← pull_comp, ← Functor.map_comp]`. Establish `h0 : pull R (Θ'.map g) F n y = 0` using `(hα n).1 (by rw [map_zero, ← hnat, hy, map_zero])`. Rewrite `h0` using `[← hu, Functor.map_comp, pull_comp]`.
-
-Take `⟨k, f, hf⟩` from `cΘ'.2 j _ h0`. Conclude with `⟨G.obj k, π.app k, G.map f ≫ u, (hG k).2, by rw [← Category.assoc, hπ, hu], by rw [Functor.map_comp, pull_comp, hf]⟩`.
+A detailed English derivation is pending.
 -/
 theorem stalk_local_classes : ∀ (R : Type) [CommRing R] (F : Shv R) (S : Scheme.{0}) (Θ Θ₂ : Over S ⥤ Spc) (α : Θ ⟶ Θ₂), (∀ (I : Type) [SmallCategory I] [IsCofiltered I] (G : I ⥤ Over S) (c : Cone G), IsLimit c → (∀ i, IsAffine (G.obj i).left) → ContCone R F (Θ.mapCone c)) → (∀ (I : Type) [SmallCategory I] [IsCofiltered I] (G : I ⥤ Over S) (c : Cone G), IsLimit c → (∀ i, IsAffine (G.obj i).left) → ContCone R F (Θ₂.mapCone c)) → ∀ (O : Type) [CommRing O] (s : Spec (CommRingCat.of O) ⟶ S), IsStalk O s → Eqv R (α.app (Over.mk s)) F → ∀ (U : Over S), Etale U.hom → ∀ (g : Over.mk s ⟶ U) (n : ℤ), (∀ x : H R (Θ.obj U) F n, ∃ (V : Over S) (g₁ : Over.mk s ⟶ V) (h : V ⟶ U) (y : H R (Θ₂.obj V) F n), Etale V.hom ∧ g₁ ≫ h = g ∧ pull R (α.app V) F n y = pull R (Θ.map h) F n x) ∧ ∀ y : H R (Θ₂.obj U) F n, pull R (α.app U) F n y = 0 → ∃ (V : Over S) (g₁ : Over.mk s ⟶ V) (h : V ⟶ U), Etale V.hom ∧ g₁ ≫ h = g ∧ pull R (Θ₂.map h) F n y = 0 := by
   intro R _ F S Θ Θ' α hΘ hΘ' O _ s hs hα U hU g n

@@ -23,7 +23,7 @@ def UnfoldAlongSubgroup.Statement (G Y : Type*) [Group G] [MeasurableSpace G] [M
 section Inhabitants
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => MeasurableSpace.measurableSet_top⟩`.
+Supply the required witnesses or components.
 -/
 theorem measurableSingletonClass_cyclicTwo : MeasurableSingletonClass C2 :=
   ⟨fun _ => MeasurableSpace.measurableSet_top⟩

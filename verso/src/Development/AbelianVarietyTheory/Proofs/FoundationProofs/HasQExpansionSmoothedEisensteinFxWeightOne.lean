@@ -13,19 +13,19 @@ open GlobalTheory.Sieg GlobalTheory.QFam GlobalTheory.KummerEisensteinGalois
 namespace GlobalTheory.Sieg.EisQ
 
 /- English proof (translation)
-Simplify using `only [ee, ← Complex.exp_int_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ee_int_mul' (n : ℤ) (z : ℂ) : ee (n * z) = ee z ^ n := by
   simp only [ee, ← Complex.exp_int_mul]; congr 1; ring
 
 /- English proof (translation)
-Establish `hM' : (M : ℤ) ≠ 0` using `by exact_mod_cast hM.ne'`. Use `split_ifs with h`. Take `⟨n, hn⟩` from `h.symm.dvd`. Establish `hA : a + M * n = A` using `by linarith`. Use `hasSum_single (f := fun p : ℤ × ℤ => if p.2 = e ∧ a + M * p.1 = A then w (a + M * p.1) p.2 else 0) (n, e) (fun p hp => by` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg]`. Introduce and unpack `⟨h1, h2⟩`. Apply `hp` to reduce the goal to its premises. Use `Prod.ext ?_ h1` and prove the remaining obligations. Apply `mul_left_cancel₀ hM'` to reduce the goal to its premises.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `only`. Use the proof step `linarith)`. Simplify `this` using `[hA]`. Establish `: (fun p : ℤ × ℤ => if p.2 = e ∧ a + M * p.1 = A then w (a + M * p.1) p.2 else 0) = fun _ => 0`. Use function extensionality and compare the values at `p`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[if_neg]`. Introduce and unpack `⟨-, h2⟩`. Conclude with `h (Int.ModEq.symm (Int.modEq_iff_dvd.2 ⟨p.1, by linarith⟩))`. Rewrite using `[this]`. Conclude with `hasSum_zero`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasSum_point {M : ℕ} (hM : 0 < M) (a A e : ℤ) (w : ℤ → ℤ → ℂ) :
     HasSum (fun p : ℤ × ℤ => if p.2 = e ∧ a + M * p.1 = A then w (a + M * p.1) p.2 else 0)
@@ -53,17 +53,17 @@ theorem hasSum_point {M : ℕ} (hM : 0 < M) (a A e : ℤ) (w : ℤ → ℤ → �
     exact hasSum_zero
 
 /- English proof (translation)
-Establish `key : ∀ d ∈ m.divisors, (((m / d : ℕ) : ℤ)) * d = m ∧ 0 < (d : ℤ)` using `fun d hd => by`. Use `⟨?_, by exact_mod_cast Nat.pos_of_mem_divisors hd⟩` and prove the remaining obligations. Conclude with `Nat.div_mul_cancel (Nat.dvd_of_mem_divisors hd)` after adjusting the coercions. Use `split_ifs with h`. Establish `hd : e.natAbs ∈ m.divisors`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Nat.mem_divisors]`. Use `⟨?_, hm⟩` and prove the remaining obligations. Rewrite using `[← Int.natCast_dvd_natCast, Int.natAbs_dvd]`. Conclude with `⟨A, by rw [← h, mul_comm]⟩`. Rewrite using `[Finset.sum_eq_single_of_mem _ hd]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable.
 
-Take `⟨k1, k2⟩` from `key _ hd`. Generalize the expression as in `((m / e.natAbs : ℕ) : ℤ) = B at *`. Break down `Int.natAbs_eq e with he | he` into its components or cases. Rewrite `k1`, `k2`, the goal using `[← he]`. Establish `: A = B` using `mul_right_cancel₀ k2.ne' (by rw [h, k1])`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[if_pos ⟨rfl, this⟩, if_neg (by omega), add_zero]`. Establish `he' : (e.natAbs : ℤ) = -e` using `by omega`. Rewrite `k1`, `k2`, the goal using `[he']`. Establish `: A = -B` using `mul_right_cancel₀ (b := e) (by omega) (by rw [h, ← k1]; ring)`. Rewrite using `[if_neg (by omega), if_pos ⟨by ring, this⟩, zero_add]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `d _ hne`. Rewrite using `[if_neg (by omega), if_neg (by omega), add_zero]`. Use `Finset.sum_eq_zero fun d hd => ?_` and prove the remaining obligations. Take `⟨k1, k2⟩` from `key _ hd`. Rewrite using `[if_neg, if_neg, add_zero]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨h1, h2⟩`. Conclude with `h (by rw [h1, h2, ← k1]; ring)`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `h (by rw [h1, h2, ← k1])`.
+A detailed English derivation is pending.
 -/
 theorem sum_div_point {m : ℕ} (hm : m ≠ 0) (A e : ℤ) (v : ℂ) :
     ∑ d ∈ m.divisors, ((if e = (d : ℤ) ∧ A = ((m / d : ℕ) : ℤ) then v else 0) +
@@ -99,13 +99,13 @@ theorem sum_div_point {m : ℕ} (hm : m ≠ 0) (A e : ℤ) (v : ℂ) :
       exact h (by rw [h1, h2, ← k1])
 
 /- English proof (translation)
-Establish `hQ : (0 : ℚ) < M` using `by exact_mod_cast hM`. Establish `hC : (M : ℂ) ≠ 0` using `by exact_mod_cast hM.ne'`. Establish `hc : (0 < ((a : ℚ) / M + p.1) * p.2) ↔ 0 < (a + M * p.1) * p.2`. Establish `: ((a : ℚ) / M + p.1) * p.2 = (((a + M * p.1) * p.2 : ℤ) : ℚ) / M` using `by push_cast; field_simp`. Rewrite using `[this, div_pos_iff_of_pos_right hQ, Int.cast_pos]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `fTerm`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, hc]`. Use `split_ifs with h`. Rewrite using `[← ee_int_mul', mul_right_comm]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `congr 2 push_cast`. Clear the denominators using the available nonvanishing facts. Use `congr 1 push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1 push_cast`. Clear the denominators using the available nonvanishing facts. Both sides reduce to the same expression.
+Clear the denominators using the available nonvanishing facts. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem fTerm_eq (j : ℕ) {M : ℕ} (hM : 0 < M) (a b : ℤ) (τ : ℍ) (p : ℤ × ℤ) :
     fTerm j ![(a : ℚ) / M, (b : ℚ) / M] τ p =
@@ -134,17 +134,17 @@ theorem fTerm_eq (j : ℕ) {M : ℕ} (hM : 0 < M) (a b : ℤ) (τ : ℍ) (p : �
   · rfl
 
 /- English proof (translation)
-Use `split_ifs with hm`. Establish `: Set.indicator ((fun p : ℤ × ℤ => ((a + M * p.1) * p.2).toNat) ⁻¹' {m}) (fTerm j ![(a : ℚ) / M, (b : ℚ) / M] τ) = fun _ => 0`. Use function extensionality and compare the values at `p`. Rewrite using `[Set.indicator_apply_eq_zero]`. Introduce `hp`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff] at hp`. Rewrite using `[fTerm_eq j hM, if_neg (by omega)]`. Rewrite using `[this, zero_mul]`. Conclude with `hasSum_zero`. Use `set E := Complex.exp (2 * Real.pi * Complex.I * m * τ / M) with hE`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Set `w : ℤ → ℤ → ℂ` to `fun A e => (Int.sign e : ℂ) * ((A : ℂ) / M) ^ (j - 1) * ee (1 / (M : ℂ)) ^ (b * e) * E`. Establish `h1` using `hasSum_sum (s := m.divisors) fun d _ => (hasSum_point hM a ((m / d : ℕ) : ℤ) (d : ℤ) w).add (hasSum_point hM a (-((m / d : ℕ) : ℤ)) (-(d : ℤ)) w)`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `p classical`. Rewrite using `[sum_div_point hm, Set.indicator_apply, fTerm_eq j hM]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff]`. Distinguish the cases in `h : (a + M * p.1) * p.2 = m`. Rewrite using `[if_pos (by omega), if_pos (by omega), if_pos h, h]`. Simplify using `only [w, hE, ee]`. Use `congr 2`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg (by omega), if_neg h]`. Unfold `coefPos`. Rewrite using `[Finset.sum_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations. Establish `hd' : (0 : ℤ) < d` using `by exact_mod_cast Nat.pos_of_mem_divisors hd`. Establish `s1 : Int.sign (d : ℤ) = 1` using `Int.sign_eq_one_of_pos hd'`. Simplify using `only [w, Int.sign_neg, s1, mul_neg, Int.cast_neg, Int.cast_one, Int.cast_natCast, neg_div]`. Apply the tactic sequence `split_ifs <;> ring`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem hasSum_fibre (j : ℕ) {M : ℕ} (hM : 0 < M) (a b : ℤ) (τ : ℍ) (m : ℕ) :
     HasSum (Set.indicator ((fun p : ℤ × ℤ => ((a + M * p.1) * p.2).toNat) ⁻¹' {m})
@@ -185,20 +185,20 @@ theorem hasSum_fibre (j : ℕ) {M : ℕ} (hM : 0 < M) (a b : ℤ) (τ : ℍ) (m 
       split_ifs <;> ring
 
 /- English proof (translation)
-Unfold `frc`. Conclude with `Int.fract_div_intCast_eq_div_intCast_mod`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem fract_eq {M : ℕ} (a : ℤ) : Int.fract ((a : ℚ) / M) = frc M a := by
   unfold frc
   exact Int.fract_div_intCast_eq_div_intCast_mod
 
 /- English proof (translation)
-Establish `hQ : (M : ℚ) ≠ 0` using `by exact_mod_cast hM.ne'`. Establish `h0 : frc M a = 0 ↔ (M : ℤ) ∣ a`. Unfold `frc`. Rewrite using `[div_eq_zero_iff, or_iff_left hQ, Int.cast_eq_zero, Int.dvd_iff_emod_eq_zero]`. Establish `he : ee ((((b : ℚ) / M : ℚ)) : ℂ) = ee (1 / (M : ℂ)) ^ b`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← ee_int_mul']`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Unfold `f0 const0`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions.
 
-Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, fract_eq, h0, he]`. Use `split_ifs`. Both sides reduce to the same expression. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem eisensteinFxConstantTerm_rationalIndex_eq (j : ℕ) {M : ℕ} (hM : 0 < M) (a b : ℤ) :
     f0 j ![(a : ℚ) / M, (b : ℚ) / M] = const0 j M (ee (1 / (M : ℂ))) a b := by
@@ -216,11 +216,11 @@ theorem eisensteinFxConstantTerm_rationalIndex_eq (j : ℕ) {M : ℕ} (hM : 0 < 
   · push_cast; ring
 
 /- English proof (translation)
-Establish `h1 : HasQ M (fun τ => ∑' p : ℤ × ℤ, fTerm j ![(a : ℚ) / M, (b : ℚ) / M] τ p) (fun m => if m = 0 then 0 else coefPos j M (ee (1 / (M : ℂ))) a b m)` using `fun τ => by`. Use `(Model.summable_fTerm j ![(a : ℚ) / M, (b : ℚ) / M] τ).hasSum.tsum_fiberwise (fun p : ℤ × ℤ => ((a + M * p.1) * p.2).toNat)` as an intermediate fact. Establish `e : ∀ m : ℕ, ∑' q : ((fun p : ℤ × ℤ => ((a + M * p.1) * p.2).toNat) ⁻¹' {m}), fTerm j ![(a : ℚ) / M, (b : ℚ) / M] τ q = _` using `fun m => by`. Rewrite using `[tsum_subtype, (hasSum_fibre j hM a b τ m).tsum_eq]`. Simplify `this` using `only [e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2` using `(HasQ.const M (f0 j ![(a : ℚ) / M, (b : ℚ) / M])).add h1`. Establish `e : eisF j M (ee (1 / (M : ℂ))) a b = fun n => (if n = 0 then f0 j ![(a : ℚ) / M, (b : ℚ) / M] else 0) + (if n = 0 then 0 else coefPos j M (ee (1 / (M : ℂ))) a b n)`. Use function extensionality and compare the values at `n`. Unfold `eisF`. Use `split_ifs`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eisensteinFxConstantTerm_rationalIndex_eq j hM, add_zero]`. Rewrite using `[zero_add]`. Rewrite using `[e]`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasQ_F (j : ℕ) {M : ℕ} (hM : 0 < M) (a b : ℤ) :
     HasQ M (F j ![(a : ℚ) / M, (b : ℚ) / M]) (eisF j M (ee (1 / (M : ℂ))) a b) := by
@@ -244,9 +244,9 @@ theorem hasQ_F (j : ℕ) {M : ℕ} (hM : 0 < M) (a b : ℤ) :
   exact h2
 
 /- English proof (translation)
-Establish `hx : c • ![(a : ℚ) / M, (b : ℚ) / M] = ![(((c : ℤ) * a : ℤ) : ℚ) / M, (((c : ℤ) * b : ℤ) : ℚ) / M]`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp [mul_div_assoc]`. Use `((hasQ_F j hM a b).const_mul ((c : ℂ) ^ 2)).sub ((hasQ_F j hM (c * a) (c * b)).const_mul ((c : ℂ) ^ (2 - (j : ℤ))))` as an intermediate fact. Rewrite `this` using `[← hx]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Unfold `smF`. Simplify using `only [Int.cast_natCast]`. Conclude with `this`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasQ_cF_weight (c j : ℕ) {M : ℕ} (hM : 0 < M) (a b : ℤ) :
     HasQ M (cF c j ![(a : ℚ) / M, (b : ℚ) / M]) (smF (c : ℤ) j M (ee (1 / (M : ℂ))) a b) := by
@@ -261,7 +261,7 @@ theorem hasQ_cF_weight (c j : ℕ) {M : ℕ} (hM : 0 < M) (a b : ℤ) :
   exact this
 
 /- English proof (translation)
-Introduce `c _ a b hM` and use `hasQ_cF_weight c 1 hM a b`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hasQ_cF_one : ∀ (c M : ℕ) (a b : ℤ), 0 < M → GlobalTheory.QFam.HasQ M (GlobalTheory.Sieg.cF c 1 ![(a : ℚ) / M, (b : ℚ) / M])
     (GlobalTheory.KummerEisensteinGalois.smF (c : ℤ) 1 M (GlobalTheory.Sieg.ee (1 / (M : ℂ))) a b) :=

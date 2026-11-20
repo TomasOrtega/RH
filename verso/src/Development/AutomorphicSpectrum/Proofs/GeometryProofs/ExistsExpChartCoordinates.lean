@@ -27,19 +27,17 @@ open GlobalTheory.AbelianExp
 attribute [local instance] GlobalTheory.AbelianExp.pointTopology
 
 /- English proof (translation)
-Establish `h1` using `@valAt'_rules`. Establish `h2` using `@existsUnique_point_of_ringHom`. Take `⟨N, -, M, s, hcov, H⟩` from `hL ⊤ (isAffineOpen_top _)`. Set `Y : Over (Sp ℂ)` to `Over.mk ((A.hom ∣_ ⊤) ≫ (⊤ : (Sp ℂ).Opens).ι)`. Set `φ : Y ⟶ A` to `Over.homMk (A.hom ⁻¹ᵁ ⊤).ι (morphismRestrict_ι A.hom ⊤).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `c₀ : ℂ →+* Γ((⊤ : (Sp ℂ).Opens).toScheme, ⊤)` to `((⊤ : (Sp ℂ).Opens).ι.appTop).hom.comp (Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom`. Establish `hc₀ : Function.Surjective c₀`. Establish `: IsIso (⊤ : (Sp ℂ).Opens).ι` using `inferInstanceAs (IsIso (Sp ℂ).topIso.hom)`. Conclude with `(ConcreteCategory.bijective_of_isIso ((⊤ : (Sp ℂ).Opens).ι.app ⊤)).2.comp (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv).2`. Establish `hY : @CompactSpace _ (PointsCompact.pointTopology Y)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `PointsCompact.compact_of_sections h1 h2 Y (Out.powOver A L ⊤ N) s hcov fun i => ⟨(H i).1, ?_⟩` and prove the remaining obligations. Take `⟨r, hr, hs⟩` from `(H i).2`. Use `⟨r, hr, ((A.hom ∣_ ⊤).appLE ⊤ (Out.nonzeroLocus (s i)) le_top).hom.comp c₀, fun a => ?_, fun f => ?_⟩` and prove the remaining obligations. Use `Scheme.Hom.comp_appLE (A.hom ∣_ ⊤) (⊤ : (Sp ℂ).Opens).ι ⊤ (Out.nonzeroLocus (s i)) le_top` as an intermediate fact. Conclude with `(congrArg (fun u => u.hom ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom a)) this).symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨p, rfl⟩` from `hs f`. Take `⟨q, rfl⟩` from `MvPolynomial.map_surjective c₀ hc₀ p`. Conclude with `⟨q, (MvPolynomial.eval₂_map c₀ r _ q).symm⟩`. Use `letI := PointsCompact.pointTopology Y`. Use `letI := PointsCompact.pointTopology A`.
+Supply the required witnesses or components. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsurj : Function.Surjective fun x : 𝟙_ (Over (Sp ℂ)) ⟶ Y => x ≫ φ`. Introduce `x`. Establish `hrange : Set.range x.left ⊆ Set.range (A.hom ⁻¹ᵁ ⊤).ι`. Rewrite using `[Scheme.Opens.range_ι]`. Introduce `_ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Check the elementary cases of the proposition. Establish an intermediate fact.
 
-Discharge the goal by the elementary cases of `trivial`. Establish `hl` using `IsOpenImmersion.lift_fac (A.hom ⁻¹ᵁ ⊤).ι x.left hrange`. Use `⟨Over.homMk (IsOpenImmersion.lift (A.hom ⁻¹ᵁ ⊤).ι x.left hrange) ?_, ?_⟩` and prove the remaining obligations. Use `Over.w x` as an intermediate fact. Rewrite `this` using `[← hl, Category.assoc, ← morphismRestrict_ι]`.
-
-Conclude with `this`. Use `ext1`. Conclude with `hl`. Conclude with `hsurj.compactSpace (PointsCompact.continuous_comp h1 φ)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem compactSpace_points (A : Over (Sp ℂ)) [GrpObj A] (L : LB A.left) (hL : Out.RelAmple A L) :
     @CompactSpace _ (PointsCompact.pointTopology A) := by
@@ -84,11 +82,11 @@ theorem compactSpace_points (A : Over (Sp ℂ)) [GrpObj A] (L : LB A.left) (hL :
   exact hsurj.compactSpace (PointsCompact.continuous_comp h1 φ)
 
 /- English proof (translation)
-Take `⟨hfin, hflat⟩` from `GlobalTheory.AbTorsionAnyBase.isFinite_and_flat_mulA (Sp ℂ) A hA r hr`. Use `hA.smooth` as an intermediate fact. Use `hA.geomConnected` as an intermediate fact. Establish `: ConnectedSpace A.left` using `GeometricallyConnected.connectedSpace A.hom A.hom.isOpenMap`. Establish `: LocallyOfFinitePresentation ((Out.mulA A r).left ≫ A.hom)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Over.w]`. Use `infer_instance`. Establish `: LocallyOfFinitePresentation (Out.mulA A r).left` using `GlobalTheory.TangentCrit.locallyOfFinitePresentation_of_comp _ A.hom`. Establish `hcl : IsClosed (Set.range (Out.mulA A r).left)` using `(Out.mulA A r).left.isClosedMap.isClosed_range`. Establish `hop : IsOpen (Set.range (Out.mulA A r).left)` using `(Out.mulA A r).left.isOpenMap.isOpen_range`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : (Set.range (Out.mulA A r).left).Nonempty` using `Set.range_nonempty _`. Conclude with `⟨Set.range_eq_univ.1 (IsClopen.eq_univ ⟨hcl, hop⟩ hne)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem surjective_mulA (A : Over (Sp ℂ)) [GrpObj A] (hA : IsAbelianScheme A) (r : ℕ) (hr : 1 ≤ r) :
     Surjective (Out.mulA A r).left := by
@@ -106,11 +104,11 @@ theorem surjective_mulA (A : Over (Sp ℂ)) [GrpObj A] (hA : IsAbelianScheme A) 
   exact ⟨Set.range_eq_univ.1 (IsClopen.eq_univ ⟨hcl, hop⟩ hne)⟩
 
 /- English proof (translation)
-Take `⟨hfin, -⟩` from `GlobalTheory.AbTorsionAnyBase.isFinite_and_flat_mulA (Sp ℂ) A hA r hr`. Establish `hsurj` using `surjective_mulA A hA r hr`. Take `⟨t, ht⟩` from `H1.SectionDivision.exists_section (pullback.snd (Out.mulA A r).left a₀.left)`. Establish `hb' : (t ≫ pullback.fst (Out.mulA A r).left a₀.left) ≫ (Out.mulA A r).left = a₀.left`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, ht, Category.id_comp]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hw : (t ≫ pullback.fst (Out.mulA A r).left a₀.left) ≫ A.hom = (𝟙_ (Over (Sp ℂ))).hom`. Rewrite using `[← Over.w (Out.mulA A r), ← Category.assoc, hb', Over.w a₀]`. Use `⟨Over.homMk _ hw, ?_⟩` and prove the remaining obligations. Establish `e : ∀ b : 𝟙_ (Over (Sp ℂ)) ⟶ A, b ^ r = b ≫ Out.mulA A r` using `fun b => (congrArg (· ^ r) (Category.comp_id b).symm).trans (MonObj.comp_pow (𝟙 A) r b).symm`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Over.OverMorphism.ext hb'`.
+A detailed English derivation is pending.
 -/
 theorem exists_div (A : Over (Sp ℂ)) [GrpObj A] [IsCommMonObj A] (hA : IsAbelianScheme A)
     (a₀ : 𝟙_ (Over (Sp ℂ)) ⟶ A) (r : ℕ) (hr : 1 ≤ r) : ∃ b : 𝟙_ (Over (Sp ℂ)) ⟶ A, b ^ r = a₀ := by
@@ -128,21 +126,21 @@ theorem exists_div (A : Over (Sp ℂ)) [GrpObj A] [IsCommMonObj A] (hA : IsAbeli
   exact Over.OverMorphism.ext hb'
 
 /- English proof (translation)
-Introduce `A _ L g hA hL hdim`. Establish `hval` using `@valAt'_rules`. Establish `hprod` using `@holFamily_lift hval`. Establish `htop` using `@isTopologicalGroup_complexPoints hval`. Establish `hchart` using `@HolChart.exists_holomorphic_chart hval (@existsUnique_point_of_ringHom) (@exists_holomorphic_section_of_etale)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hA.comm` as an intermediate fact. Use `htop A` as an intermediate fact. Use `compactSpace_points A L hL` as an intermediate fact. Establish `hpost` using `fun X x => (hval X x).2.2.2.1`. Establish `hmulHol : ∀ (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E] (W : Set E) (a b : E → (𝟙_ (Over (Sp ℂ)) ⟶ A)), HolOn W a → HolOn W b → HolOn W fun w => a w * b w` using `fun E _ _ W a b ha hb => HolOn.post hpost (hprod E W _ _ a b ha hb) μ[A]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨W, σ, U, t, hW, h0, hσ0, hU, hσ, ht, ho, hD⟩` from `hchart A g hdim 1`. Set `φ : OpenPartialHomeomorph (Additive (𝟙_ (Over (Sp ℂ)) ⟶ A)) (Fin g → ℂ)` to `chart t hW hσ ht ho`. Establish `hU1 : ⊤ ≤ (1 : 𝟙_ (Over (Sp ℂ)) ⟶ A).left ⁻¹ᵁ U` using `hσ0 ▸ (ht 0 h0).1`. Establish `hφ : IsAnalyticGroupChart φ`. Use `⟨⟨0, h0, hσ0⟩, funext fun i => ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(ht 0 h0).2 i` as an intermediate fact. Rewrite `this` using `[hσ0]`. Then use the resulting hypothesis. Establish `hH` using `hmulHol _ (W ×ˢ W) _ _ (HolOn.comp hσ (hW.prod hW) differentiableOn_fst fun p hp => hp.1) (HolOn.comp hσ (hW.prod hW) differentiableOn_snd fun p hp => hp.2)`. Use `hH.analyticAt t (w := 0) ⟨h0, h0⟩ ?_` and prove the remaining obligations. Simplify `hU1` using `only [Prod.fst_zero, Prod.snd_zero, hσ0, _root_.mul_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hex0 : (hφ.exp 0).toMul = 1` using `by rw [map_zero]; rfl`. Establish `hsurj : Function.Surjective hφ.exp` using `hφ.exp_surjective fun n hn x => exists_div A hA x.toMul n (Nat.one_le_iff_ne_zero.mpr hn)`. Choose the witnesses or unpack the hypotheses as in `⟨W', large₂, hW', h0', hL', hLm, hLe⟩ : ∃ (W' : Set (Fin g → ℂ)) (large₂ : (Fin g → ℂ) → (Fin g → ℂ)), IsOpen W' ∧ 0 ∈ W' ∧ DifferentiableOn ℂ large₂ W' ∧ Set.MapsTo large₂ W' W ∧ ∀ᶠ v in 𝓝 0, (hφ.exp v).toMul = σ (large₂ v) := by`. Establish `ha` using `hφ.isLocalCommGroupLaw.analyticAt_logChart_symm`. Establish `h1 : ∀ᶠ v in 𝓝 0, hφ.isLocalCommGroupLaw.logChart.symm v ∈ W` using `ha.continuousAt.eventually (hW.mem_nhds (by simpa using h0))`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨W', h2, h3, h4⟩` from `eventually_nhds_iff.mp (ha.eventually_analyticAt.and h1)`. Conclude with `⟨W', _, h3, h4, fun v hv => (h2 v hv).1.differentiableAt.differentiableWithinAt, fun v hv => (h2 v hv).2, hφ.exp_eventuallyEq⟩`. Use `⟨⟨fun v => (hφ.exp v).toMul, fun z w => congrArg Additive.toMul (hφ.exp.map_add z w), hsurj, hφ.periodLattice, fun z => Iff.rfl, inferInstance, hφ.isZLattice_periodLattice.span_top, HolOn.of_local fun z => ?_, fun _ _ => 1, fun _ => differentiableOn_const _, fun _ _ _ => one_ne_z …` and prove the remaining obligations. Establish `hs : Continuous fun v : Fin g → ℂ => v - z` using `continuous_sub_right z`. Establish `hWz : IsOpen ((fun v => v - z) ⁻¹' W')` using `hW'.preimage hs`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨(fun v => v - z) ⁻¹' W', fun v => (hφ.exp z).toMul * σ (large₂ (v - z)), by simpa using h0', hmulHol _ _ _ _ (HolOn.const hWz _) (HolOn.comp (HolOn.comp hσ hW' hL' hLm) hWz (differentiableOn_id.sub_const z) fun v hv => hv), ?_⟩` and prove the remaining obligations. Use `filter_upwards [(hs.tendsto' z 0 (sub_self z)).eventually hLe] with v hv`. Rewrite using `[← hv, ← toMul_add, ← map_add, add_sub_cancel]`. Take `⟨e, he⟩` from `(hval _ _).2.1 _ hz`. Rewrite using `[he]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use `show ⊤ ≤ (hφ.exp 0).toMul.left ⁻¹ᵁ U`. Rewrite using `[hex0]` and apply the resulting hypothesis. Use `show ∀ D : Γ(A.left, U) →+ ℂ, _ → (∀ f f', D (f * f') = valAt' (hφ.exp 0).toMul.left U f * D f' + valAt' (hφ.exp 0).toMul.left U f' * D f) → _`. Rewrite using `[hex0]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_holUnif : ∀ (A : Over (Sp ℂ)) [GrpObj A] (L : LB A.left) (g : ℕ), IsAbelianScheme A → Out.RelAmple A L → SmoothOfRelativeDimension g A.hom → ∃ u : HolUnif A (⟨PUnit, fun _ => ⊤, fun _ _ => 1⟩ : LB A.left) g, ∃ (U : A.left.Opens) (t : Fin g → Γ(A.left, U)), IsAffineOpen U ∧ ⊤ ≤ (u.ex 0).left ⁻¹ᵁ U ∧ (∀ D : Γ(A.left, U) →+ ℂ, (∀ a, D (constFn A.hom U a) = 0) → (∀ f f', D (f * f') = valAt' (u.ex 0).left U f * D f' + valAt' (u.ex 0).left U f' * D f) → (∀ i, D (t i) = 0) → D = 0) ∧ HasFDerivAt (fun w i => valAt' (u.ex w).left U (t i)) (ContinuousLinearMap.id ℂ (Fin g → ℂ)) 0 := by
   intro A _ L g hA hL hdim

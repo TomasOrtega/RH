@@ -8,11 +8,9 @@ open scoped ContDiff
 namespace GlobalTheory.InjHol
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Establish `hd : DiffContOnCl ℂ (fun t => (φ t)⁻¹) (ball c r)`. Apply `DifferentiableOn.diffContOnCl` to reduce the goal to its premises. Rewrite using `[closure_ball c hr.ne']`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hφ.inv hne`. Take `⟨t, ht, hmax⟩` from `Complex.exists_mem_frontier_isMaxOn_norm isBounded_ball (nonempty_ball.mpr hr) hd`. Rewrite `ht` using `[frontier_ball c hr.ne']`. Establish `h1 : ‖(φ c)⁻¹‖ ≤ ‖(φ t)⁻¹‖` using `hmax (subset_closure (mem_ball_self hr))`. Rewrite `h1` using `[norm_inv, norm_inv]`.
-
-Establish `h2 : 0 < ‖φ c‖` using `norm_pos_iff.mpr (hne c (mem_closedBall_self hr.le))`. Conclude with `absurd (inv_strictAnti₀ h2 (h t ht)) (not_lt.mpr h1)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_zero_of_norm_lt {φ : ℂ → ℂ} {c : ℂ} {r : ℝ} (hr : 0 < r)
     (hφ : DifferentiableOn ℂ φ (closedBall c r)) (h : ∀ t ∈ sphere c r, ‖φ c‖ < ‖φ t‖) :
@@ -32,9 +30,9 @@ theorem exists_zero_of_norm_lt {φ : ℂ → ℂ} {c : ℂ} {r : ℝ} (hr : 0 < 
   exact absurd (inv_strictAnti₀ h2 (h t ht)) (not_lt.mpr h1)
 
 /- English proof (translation)
-Introduce `hinj`. Take `⟨r, hr, hb⟩` from `Metric.eventually_nhds_iff_ball.mp (hf.eventually_analyticAt.and (h0.and hs))`. Establish `hd : DifferentiableOn ℂ f (ball a r)` using `fun x hx => (hb x hx).1.differentiableAt.differentiableWithinAt`. Establish `hnb : (𝓝[≠] a).NeBot` using `Module.punctured_nhds_neBot ℂ E a`. Take `⟨x, hx, hxa⟩` from `((show ∀ᶠ x in 𝓝[≠] a, x ∈ ball a r from mem_nhdsWithin_of_mem_nhds (ball_mem_nhds a hr)).and self_mem_nhdsWithin).exists`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `hxa (hinj (hb x hx).2.2 (mem_of_mem_nhds hs) (isOpen_ball.is_const_of_fderiv_eq_zero (𝕜 := ℂ) (convex_ball a r).isPreconnected hd (fun y hy => (hb y hy).2.1) hx (mem_ball_self hr)))`.
+A detailed English derivation is pending.
 -/
 theorem not_injOn_of_fderiv_eq_zero {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     [NormedAddCommGroup F] [NormedSpace ℂ F] [CompleteSpace F] [Nontrivial E] {f : E → F} {a : E}
@@ -53,19 +51,17 @@ theorem not_injOn_of_fderiv_eq_zero {E F : Type*} [NormedAddCommGroup E] [Normed
       (fun y hy => (hb y hy).2.1) hx (mem_ball_self hr)))
 
 /- English proof (translation)
-Introduce `h0`. Take `⟨r, hr, hb⟩` from `nhds_basis_closedBall.eventually_iff.mp (hf.eventually_analyticAt.and hs)`. Establish `hd : DifferentiableOn ℂ f (closedBall a r)` using `fun x hx => (hb hx).1.differentiableAt.differentiableWithinAt`. Establish `hsym : ∀ w, dslope f w a = dslope f a w`. Introduce `w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hw : w = a`. Rewrite using `[hw]`. Rewrite using `[dslope_of_ne _ hw, dslope_of_ne _ (Ne.symm hw), slope_comm]`. Establish `h1 : ∀ᶠ w in 𝓝 a, ∀ z ∈ sphere a r, ‖dslope f w a‖ < ‖dslope f w z‖`. Use `(isCompact_sphere a r).eventually_forall_of_forall_eventually fun z hz => ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hza : z ≠ a` using `ne_of_mem_sphere hz hr.ne'`. Establish `hzc` using `(hb (sphere_subset_closedBall hz))`. Establish `c1 : ContinuousAt (fun p : ℂ × ℂ => ‖dslope f a p.1‖) (a, z)` using `(ContinuousAt.comp (f := Prod.fst) (x := (a, z)) (continuousAt_dslope_same.mpr hf.differentiableAt) continuousAt_fst).norm`. Establish `c2 : ContinuousAt (fun p : ℂ × ℂ => ‖(p.2 - p.1)⁻¹ * (f p.2 - f p.1)‖) (a, z)`. Use `ContinuousAt.norm (ContinuousAt.mul (ContinuousAt.inv₀ (by fun_prop) (sub_ne_zero.mpr hza)) (ContinuousAt.sub ?_ ?_))` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `ContinuousAt.comp (f := Prod.snd) (x := (a, z)) hzc.1.continuousAt continuousAt_snd`. Conclude with `ContinuousAt.comp (f := Prod.fst) (x := (a, z)) hf.continuousAt continuousAt_fst`. Establish `hlt : ‖dslope f a a‖ < ‖(z - a)⁻¹ * (f z - f a)‖`. Rewrite using `[dslope_same, h0, norm_zero, norm_pos_iff]`. Conclude with `mul_ne_zero (inv_ne_zero (sub_ne_zero.mpr hza)) (sub_ne_zero.mpr fun h => hza (hinj hzc.2 (mem_of_mem_nhds hs) h))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hne : ∀ᶠ p : ℂ × ℂ in 𝓝 (a, z), p.2 ≠ p.1` using `(isOpen_ne_fun continuous_snd continuous_fst).mem_nhds hza`. Use `filter_upwards [c1.eventually_lt c2 hlt, hne] with p hp hp'`. Rewrite using `[hsym, dslope_of_ne _ hp', slope_def_module, smul_eq_mul]`. Conclude with `hp`. Establish `h2 : ∀ᶠ w in 𝓝 a, fderiv ℂ f w = 0` using `by filter_upwards [h1, ball_mem_nhds a hr] with w hw hwb`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨z, hz, hz0⟩` from `exists_zero_of_norm_lt hr ((Complex.differentiableOn_dslope (mem_of_superset (isOpen_ball.mem_nhds hwb) ball_subset_closedBall)).mpr hd) hw`. Distinguish the cases in `hzw : z = w`. Rewrite `hz0` using `[hzw, dslope_same]`. Use `ext`. Simplify using `using hz0`.
-
-Rewrite `hz0` using `[dslope_of_ne _ hzw, slope_def_module, smul_eq_zero]`. Break down `hz0 with h | h` into its components or cases. Conclude with `absurd (sub_eq_zero.mp (inv_eq_zero.mp h)) hzw`. Conclude with `absurd (hinj (hb hz).2 (hb (ball_subset_closedBall hwb)).2 (sub_eq_zero.mp h)) hzw`. Conclude with `not_injOn_of_fderiv_eq_zero hf h2 hs hinj`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem deriv_ne_zero_of_injOn {f : ℂ → ℂ} {a : ℂ} (hf : AnalyticAt ℂ f a) {s : Set ℂ}
     (hs : s ∈ 𝓝 a) (hinj : InjOn f s) : deriv f a ≠ 0 := by
@@ -115,7 +111,7 @@ theorem deriv_ne_zero_of_injOn {f : ℂ → ℂ} {a : ℂ} (hf : AnalyticAt ℂ 
   exact not_injOn_of_fderiv_eq_zero hf h2 hs hinj
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨w, hw⟩ : ∃ w, L w ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `h (ContinuousLinearMap.ext hc)`. Conclude with `⟨(L w)⁻¹ • w, by simp [hw]⟩`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_apply_eq_one {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     {L : E →L[ℂ] ℂ} (h : L ≠ 0) : ∃ v, L v = 1 := by
@@ -126,19 +122,17 @@ theorem exists_apply_eq_one {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ 
   exact ⟨(L w)⁻¹ • w, by simp [hw]⟩
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `exists_apply_eq_one h0`. Set `R : ℂ →L[ℂ] E` to `ContinuousLinearMap.toSpanSingleton ℂ v`. Establish `hR : Function.RightInverse R L` using `fun t => by simp [R, hv]`. Set `p` to `L.projKerOfRightInverse R hR`. Set `e : E ≃L[ℂ] ℂ × L.ker` to `ContinuousLinearEquiv.equivOfRightInverse L R hR`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `G : E → ℂ × L.ker` to `fun x => (g x, p (x - b))`. Establish `hG : ContDiffAt ℂ ω G b` using `(hg.prod ((p.analyticAt _).comp (analyticAt_id.sub analyticAt_const))).contDiffAt`. Establish `hG' : HasFDerivAt G (e : E →L[ℂ] ℂ × L.ker) b`. Use `hL.prodMk (p.hasFDerivAt.comp b ((hasFDerivAt_id b).sub_const b))` as an intermediate fact. Conclude with `this`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hω : (ω : WithTop ℕ∞) ≠ 0` using `by simp`. Establish `hGb : G b = (g b, 0)` using `by simp [G]`. Set `I` to `hG.localInverse hG' hω`. Establish `hI : AnalyticAt ℂ I (g b, 0)` using `hGb ▸ (hG.to_localInverse hG' hω).analyticAt`. Establish `hI0 : I (g b, 0) = b` using `hGb ▸ hG.localInverse_apply_image hG' hω`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hI' : HasFDerivAt I (e.symm : ℂ × L.ker →L[ℂ] E) (g b, 0)` using `hGb ▸ (hG.hasStrictFDerivAt' hG' hω).to_localInverse.hasFDerivAt`. Establish `hri : ∀ᶠ y in 𝓝 (g b, (0 : L.ker)), G (I y) = y` using `hGb ▸ (hG.hasStrictFDerivAt' hG' hω).eventually_right_inverse`. Establish `hc : ContinuousAt (fun x : L.ker => (g b, x)) 0` using `by fun_prop`. Establish `hri'` using `hc.eventually hri`. Use `⟨fun x => I (g b, x), ?_, hI0, ?_, ?_, _, hri', ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hI.comp_of_eq (analyticAt_const.prod analyticAt_id) rfl`. Use `HasFDerivAt.comp (0 : L.ker) (f := fun x : L.ker => (g b, x)) hI' (hasFDerivAt_prodMk_right (𝕜 := ℂ) (g b) (0 : L.ker)) convert! this` as an intermediate fact. Use extensionality with `x`. Simplify using `[e]`. Use `filter_upwards [hri'] with x hx`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `congrArg Prod.fst hx`. Introduce `x hx y hy hxy`. Establish `h1 : G (I (g b, x)) = (g b, x)` using `hx`. Establish `h2 : G (I (g b, y)) = (g b, y)` using `hy`. Establish `h3 : I (g b, x) = I (g b, y)` using `hxy`.
-
-Rewrite `h1` using `[h3, h2]`. Conclude with `(congrArg Prod.snd h1).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_slice {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] [CompleteSpace E]
     {g : E → ℂ} {b : E} (hg : AnalyticAt ℂ g b) {L : E →L[ℂ] ℂ} (hL : HasFDerivAt g L b)
@@ -184,19 +178,19 @@ theorem exists_slice {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] [Com
     exact (congrArg Prod.snd h1).symm
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `exists_apply_eq_one h0`. Establish `hgb : g b = 0` using `hsub.self_of_nhds hb`. Establish `hT : Tendsto (fun q : E × ℂ => q.1 + q.2 • v) (𝓝 (b, 0)) (𝓝 b)`. Establish `: ContinuousAt (fun q : E × ℂ => q.1 + q.2 • v) (b, 0)` using `by fun_prop`. Simplify using `using this.tendsto`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hT1 : Tendsto (fun q : E × ℂ => q.1) (𝓝 (b, 0)) (𝓝 b)` using `continuous_fst.tendsto _`. Establish `hc : 0 < (2 * (‖v‖ + 1))⁻¹` using `by positivity`. Establish `hst` using `(hg.hasStrictFDerivAt.isLittleO.def hc)`. Rewrite `hst` using `[nhds_prod_eq]`. Establish `hQ : ∀ᶠ q : E × ℂ in 𝓝 (b, 0), AnalyticAt ℂ h (q.1 + q.2 • v) ∧ (g q.1 = 0 → h (q.1 + q.2 • v) = 0 → q.2 = 0)` using `by filter_upwards [hT.eventually hh.eventually_analyticAt, hT.eventually hsub, (hT.prodMk hT1).eventually hst] with q h1 h2 h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `⟨h1, fun h4 h5 => ?_⟩` and prove the remaining obligations. Simplify using `only [h2 h5, h4, add_sub_cancel_left, map_smul, hv, smul_eq_mul, mul_one, sub_self, zero_sub, norm_neg, norm_smul] at h3`. Establish `h6 : (2 * (‖v‖ + 1))⁻¹ * ‖v‖ ≤ 1 / 2`. Rewrite using `[inv_mul_le_iff₀ (by positivity)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h7 : ‖q.2‖ ≤ 0` using `by nlinarith [norm_nonneg q.2]`. Conclude with `norm_le_zero_iff.mp h7`. Establish `hc0 : ContinuousAt (fun t : ℂ => (b, t)) 0` using `by fun_prop`. Take `⟨r, hr, hball⟩` from `nhds_basis_closedBall.eventually_iff.mp (hc0.eventually hQ.eventually_nhds)`. Establish `h1` using `(isCompact_closedBall (0 : ℂ) r).eventually_forall_of_forall_eventually (x₀ := b) (P := fun z t => AnalyticAt ℂ h (z + t • v) ∧ (g z = 0 → h (z + t • v) = 0 → t = 0)) fun t ht => hball ht`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ∀ᶠ z in 𝓝 b, ∀ t ∈ sphere (0 : ℂ) r, ‖h z‖ < ‖h (z + t • v)‖`. Use `(isCompact_sphere (0 : ℂ) r).eventually_forall_of_forall_eventually fun t ht => ?_` and prove the remaining obligations. Establish `ht'` using `(hball (sphere_subset_closedBall ht)).self_of_nhds`. Establish `c1 : ContinuousAt (fun q : E × ℂ => ‖h q.1‖) (b, t)` using `(ContinuousAt.comp (f := Prod.fst) (x := (b, t)) hh.continuousAt continuousAt_fst).norm`. Establish `c2 : ContinuousAt (fun q : E × ℂ => ‖h (q.1 + q.2 • v)‖) (b, t)` using `(ContinuousAt.comp (f := fun q : E × ℂ => q.1 + q.2 • v) (x := (b, t)) ht'.1.continuousAt (by fun_prop)).norm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `c1.eventually_lt c2 ?_` and prove the remaining obligations. Simplify using `only [hb, norm_zero, norm_pos_iff]`. Conclude with `fun h5 => ne_of_mem_sphere ht hr.ne' (ht'.2 hgb h5)`. Use `filter_upwards [h1, h2] with z hz1 hz2 hgz`. Take `⟨t, ht, ht0⟩` from `exists_zero_of_norm_lt (φ := fun t => h (z + t • v)) hr (fun t ht => (DifferentiableAt.comp t (f := fun t : ℂ => z + t • v) (hz1 t ht).1.differentiableAt (by fun_prop)).differentiableWithinAt) (by simpa using hz2)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `(hz1 t ht).2 hgz ht0` as an intermediate fact. Simplify `ht0` using `[this]`.
+A detailed English derivation is pending.
 -/
 theorem eventually_zero_of_subset {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     [CompleteSpace E] {g h : E → ℂ} {b : E} (hg : AnalyticAt ℂ g b) (hh : AnalyticAt ℂ h b)
@@ -249,19 +243,17 @@ theorem eventually_zero_of_subset {E : Type*} [NormedAddCommGroup E] [NormedSpac
   simpa [this] using ht0
 
 /- English proof (translation)
-Take `⟨U, hU, hUo, haU⟩` from `_root_.eventually_nhds_iff.mp (hh.eventually_analyticAt.and hW)`. Establish `hUa : AnalyticOnNhd ℂ h U` using `fun z hz => (hU z hz).1`. Establish `hex : ∃ k, ∃ z ∈ U, h z = 0 ∧ iteratedFDeriv ℂ k h z ≠ 0`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨p, r, hp⟩` from `hh`. Apply `hne` to reduce the goal to its premises. Use `filter_upwards [eball_mem_nhds a hp.r_pos] with z hz`. Establish `hz' : z - a ∈ Metric.eball (0 : E) r`. Simplify `hz` using `[Metric.mem_eball, edist_eq_enorm_sub]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `hp.hasSum_iteratedFDeriv hz'` as an intermediate fact. Simplify using `only [hc _ a haU ha, ContinuousMultilinearMap.zero_apply, smul_zero, add_sub_cancel] at this`. Conclude with `this.unique hasSum_zero`. Take `⟨b, hbU, hb, hk⟩` from `Nat.find_spec hex`. Establish `hmin` using `fun j => Nat.find_min hex (m := j)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Generalize the expression as in `Nat.find hex = k at hk hmin`. Consider the cases of `k with`. Consider the case `zero => exact absurd (by ext; simp [hb]) hk`. Consider the case `succ j`. Choose the witnesses or unpack the hypotheses as in `⟨m, hm⟩ : ∃ m, iteratedFDeriv ℂ (j + 1) h b m ≠ 0 := by`.
+Treat this case separately. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `hk (ContinuousMultilinearMap.ext hc)`. Set `A` to `ContinuousMultilinearMap.apply ℂ (fun _ : Fin j => E) ℂ (Fin.tail m)`. Establish `hj` using `hUa.iteratedFDeriv j b hbU`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨b, (hU b hbU).2, hb, hUa b hbU, fun z => A (iteratedFDeriv ℂ j h z), (A.analyticAt _).comp hj, fun h0 => hm ?_, ?_⟩` and prove the remaining obligations. Use `(A.hasFDerivAt.comp b hj.differentiableAt.hasFDerivAt).fderiv` as an intermediate fact. Establish `h2 : A.comp (fderiv ℂ (iteratedFDeriv ℂ j h) b) = 0` using `this.symm.trans h0`. Rewrite using `[iteratedFDeriv_succ_apply_left]`. Conclude with `congrArg (fun T => T (m 0)) h2`.
-
-Use `filter_upwards [hUo.mem_nhds hbU] with z hz hz0`. Use `hmin j (Nat.lt_succ_self j)` as an intermediate fact. Use `push Not at this`. Simplify using `[this z hz hz0]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_regular_of_zero {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     {h : E → ℂ} {a : E} (hh : AnalyticAt ℂ h a) (ha : h a = 0) (hne : ¬ ∀ᶠ z in 𝓝 a, h z = 0)
@@ -307,9 +299,9 @@ theorem exists_regular_of_zero {E : Type*} [NormedAddCommGroup E] [NormedSpace �
       simp [this z hz hz0]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.AnalyticMatrixEntries.analyticAt_det`. Consider the case `exact _root_.GlobalTheory.AnalyticMatrixEntries.analyticAt_det`. Consider the case `(apply _root_.GlobalTheory.AnalyticMatrixEntries.analyticAt_det <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.AnalyticMatrixEntries.analyticAt_det <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.AnalyticMatrixEntries.analyticAt_det <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.AnalyticMatrixEntries.analyticAt_det ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem analyticAt_det {X E : Type*} [NormedAddCommGroup X] [NormedSpace ℂ X]
     [NormedAddCommGroup E] [NormedSpace ℂ E] [FiniteDimensional ℂ E] {A : X → E →L[ℂ] E} {a : X}
@@ -330,21 +322,19 @@ def LocalStatement (n : ℕ) : Prop :=
       (∃ s ∈ 𝓝 a, InjOn f s) → Function.Injective (fderiv ℂ f a)
 
 /- English proof (translation)
-Use `haveI : CompleteSpace E := FiniteDimensional.complete ℂ E`. Choose the witnesses or unpack the hypotheses as in `⟨w, hw⟩ : ∃ w, fderiv ℂ f a w ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `h0 (ContinuousLinearMap.ext hc)`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨l₀, hl₀⟩` from `Module.Projective.exists_dual_ne_zero ℂ hw`. Set `l : F →L[ℂ] ℂ` to `LinearMap.toContinuousLinearMap l₀`. Establish `hL0 : l.comp (fderiv ℂ f a) ≠ 0` using `fun h => hl₀ (congrArg (fun T => T w) h)`. Establish `hl0 : l ≠ 0` using `fun h => hL0 (by simp [h])`. Take `⟨ψ, hψ, hψ0, hψ', hψg, t, ht, hψi⟩` from `exists_slice (g := fun x => l (f x)) ((l.analyticAt _).comp hf) (l.hasFDerivAt.comp a hf.differentiableAt.hasFDerivAt) hL0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨u, hu⟩` from `exists_apply_eq_one hl0`. Set `R : ℂ →L[ℂ] F` to `ContinuousLinearMap.toSpanSingleton ℂ u`. Establish `hR : Function.RightInverse R l` using `fun t => by simp [R, hu]`. Set `p` to `l.projKerOfRightInverse R hR`. Establish `hK : Module.finrank ℂ (l.comp (fderiv ℂ f a)).ker = n`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use `Module.Dual.finrank_ker_add_one_of_ne_zero (f := (l.comp (fderiv ℂ f a) : E →ₗ[ℂ] ℂ)) (fun h => hL0 (ContinuousLinearMap.coe_injective h))` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hK' : Module.finrank ℂ l.ker = n`. Use `Module.Dual.finrank_ker_add_one_of_ne_zero (f := (l : F →ₗ[ℂ] ℂ)) (fun h => hl0 (ContinuousLinearMap.coe_injective h))` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hs' : ∀ᶠ x in 𝓝 0, ψ x ∈ s` using `hψ.continuousAt.eventually (by rw [hψ0]; exact hs)`. Establish `hfa : HasFDerivAt f (fderiv ℂ f a) (ψ 0)`. Rewrite using `[hψ0]`. Conclude with `hf.differentiableAt.hasFDerivAt`. Establish `key` using `ih _ _ hK hK' (fun x => p (f (ψ x))) 0 ((p.analyticAt _).comp (hf.comp_of_eq hψ hψ0)) ⟨_, inter_mem ht (hs'.and hψg), fun x hx y hy hxy => by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `hψi hx.1 hy.1 (hinj hx.2.1 hy.2.1 ?_)` and prove the remaining obligations. Establish `h1 : f (ψ x) - R (l (f (ψ x))) = f (ψ y) - R (l (f (ψ y)))` using `congrArg Subtype.val hxy`. Rewrite `h1` using `[hx.2.2, hy.2.2]`. Conclude with `sub_left_injective h1⟩`. Establish `hd` using `(p.hasFDerivAt.comp 0 (hfa.comp 0 hψ')).fderiv`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite `key` using `[show fderiv ℂ (fun x => p (f (ψ x))) 0 = _ from hd]`. Rewrite `key`, the goal using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Conclude with `congrArg Subtype.val (key ⟨x, by simp [hx]⟩ (by`. Express the relevant statement in the definitionally equal form `p (fderiv ℂ f a x) = 0`.
-
-Rewrite using `[hx, map_zero]))`.
+A detailed English derivation is pending.
 -/
 theorem injective_of_fderiv_ne_zero {n : ℕ} (ih : LocalStatement n) {E F : Type}
     [NormedAddCommGroup E] [NormedSpace ℂ E] [FiniteDimensional ℂ E]
@@ -395,25 +385,23 @@ theorem injective_of_fderiv_ne_zero {n : ℕ} (ih : LocalStatement n) {E F : Typ
     rw [hx, map_zero]))
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `E F _ _ _ _ _ _ hE _ f a _ _`. Use `haveI : Subsingleton E := Module.finrank_zero_iff.mp hE`. Conclude with `Function.injective_of_subsingleton _`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Assume the hypotheses and unpack their components.
 
-Consider the case `succ n ih`. Introduce and unpack `E F _ _ _ _ _ _ hE hF f a hf ⟨s, hs, hinj⟩`. Use `haveI : CompleteSpace E := FiniteDimensional.complete ℂ E`. Use `haveI : CompleteSpace F := FiniteDimensional.complete ℂ F`. Use `haveI : Nontrivial E := Module.nontrivial_of_finrank_eq_succ hE`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `injective_of_fderiv_ne_zero ih hE hF hf hs hinj fun h0 => ?_` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Take `⟨eE⟩ : Nonempty (ℂ ≃L[ℂ] E)` from `FiniteDimensional.nonempty_continuousLinearEquiv_of_finrank_eq (by simp [hE])`. Take `⟨eF⟩ : Nonempty (F ≃L[ℂ] ℂ)` from `FiniteDimensional.nonempty_continuousLinearEquiv_of_finrank_eq (by simp [hF])`. Take `⟨c, rfl⟩` from `eE.surjective a`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `deriv_ne_zero_of_injOn (f := fun t => eF (f (eE t))) (a := c) ((eF.analyticAt _).comp (hf.comp (eE.analyticAt _))) (eE.continuous.continuousAt.preimage_mem_nhds hs) (fun x hx y hy hxy => eE.injective (hinj hx hy (eF.injective hxy))) ?_` and prove the remaining obligations. Use `(eF.hasFDerivAt.comp c (hf.differentiableAt.hasFDerivAt.comp c eE.hasFDerivAt)).hasDerivAt.deriv` as an intermediate fact. Use `this.trans ?_` and prove the remaining obligations. Simplify using `[h0]`. Take `⟨e⟩ : Nonempty (F ≃L[ℂ] E)` from `FiniteDimensional.nonempty_continuousLinearEquiv_of_finrank_eq (hF.trans hE.symm)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `A : E → E →L[ℂ] E` to `fun z => (e : F →L[ℂ] E).comp (fderiv ℂ f z)`. Set `h : E → ℂ` to `fun z => LinearMap.det (A z : E →ₗ[ℂ] E)`. Establish `hh : AnalyticAt ℂ h a` using `analyticAt_det (((ContinuousLinearMap.compL ℂ E F E (e : F →L[ℂ] E)).analyticAt _).comp hf.fderiv)`. Establish `hW : ∀ᶠ z in 𝓝 a, AnalyticAt ℂ f z ∧ s ∈ 𝓝 z` using `hf.eventually_analyticAt.and (eventually_mem_nhds_iff.mpr hs)`. Establish `hZ : ∀ z, AnalyticAt ℂ f z ∧ s ∈ 𝓝 z → h z = 0 → fderiv ℂ f z = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `z hz hz0`. Assume the negation of the conclusion as `hne`. Establish `hi` using `injective_of_fderiv_ne_zero ih hE hF hz.1 hz.2 hinj hne`. Conclude with `LinearMap.det_eq_zero_iff_ker_ne_bot.mp hz0 (LinearMap.ker_eq_bot.mpr (e.injective.comp hi))`. Establish `ha : h a = 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `LinearMap.det_eq_zero_iff_ker_ne_bot.mpr ?_` and prove the remaining obligations. Simplify using `[A, h0]`. Establish `hne : ¬ ∀ᶠ z in 𝓝 a, h z = 0` using `fun hc => not_injOn_of_fderiv_eq_zero hf (by filter_upwards [hW, hc] using hZ) hs hinj`. Take `⟨b, hb, hb0, hhb, g, hg, hg0, hsub⟩` from `exists_regular_of_zero hh ha hne hW`. Establish `hgb : g b = 0` using `hsub.self_of_nhds hb0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hfill` using `eventually_zero_of_subset hg hhb hg0 hb0 hsub`. Take `⟨ψ, hψ, hψ0, -, hψg, t, ht, hψi⟩` from `exists_slice hg hg.differentiableAt.hasFDerivAt hg0`. Use `haveI : Nontrivial (fderiv ℂ g b).ker := by`. Use `Module.Dual.finrank_ker_add_one_of_ne_zero (f := (fderiv ℂ g b : E →ₗ[ℂ] ℂ)) (fun h => hg0 (ContinuousLinearMap.coe_injective h))` as an intermediate fact. Conclude with `Module.nontrivial_of_finrank_pos (R := ℂ) (by omega)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hT : Tendsto ψ (𝓝 0) (𝓝 b)`. Use `hψ.continuousAt.tendsto` as an intermediate fact. Rewrite `this` using `[hψ0]`. Then use the resulting hypothesis. Establish `hWb : ∀ᶠ z in 𝓝 b, AnalyticAt ℂ f z ∧ s ∈ 𝓝 z` using `hb.1.eventually_analyticAt.and (eventually_mem_nhds_iff.mpr hb.2)`. Use `not_injOn_of_fderiv_eq_zero (f := fun x => f (ψ x)) (hb.1.comp_of_eq hψ hψ0) ?_ (inter_mem ht (hT hb.2)) fun x hx y hy hxy => hψi hx.1 hy.1 (hinj hx.2 hy.2 hxy)` and prove the remaining obligations.
-
-Use `filter_upwards [hT.eventually hWb, hT.eventually hfill, hψg, hψ.eventually_analyticAt] with x h1 h2 h3 h4`. Use `(h1.1.differentiableAt.hasFDerivAt.comp x h4.differentiableAt.hasFDerivAt).fderiv` as an intermediate fact. Use `this.trans ?_` and prove the remaining obligations. Simplify using `[hZ _ h1 (h2 (h3.trans hgb))]`.
+A detailed English derivation is pending.
 -/
 theorem localStatement (n : ℕ) : LocalStatement n := by
   induction n with
@@ -484,7 +472,7 @@ theorem localStatement (n : ℕ) : LocalStatement n := by
       simp [hZ _ h1 (h2 (h3.trans hgb))]
 
 /- English proof (translation)
-Introduce `n U f hU hf hinj a ha`. Establish `han : AnalyticAt ℂ f a` using `analyticAt_pi_iff.mpr fun i => ReciprocityTheory.AnForm.Osgood.osgood n U (fun x => f x i) hU (differentiableOn_pi.mp hf i) a ha`. Establish `hi` using `localStatement n _ _ (by simp) (by simp) f a han ⟨U, hU.mem_nhds ha, hinj⟩`. Conclude with `⟨hi, LinearMap.injective_iff_surjective.mp (show Function.Injective (fderiv ℂ f a : (Fin n → ℂ) →ₗ[ℂ] (Fin n → ℂ)) from hi)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem bijective_fderiv_of_injOn :
     ∀ (n : ℕ) (U : Set (Fin n → ℂ)) (f : (Fin n → ℂ) → (Fin n → ℂ)), IsOpen U →

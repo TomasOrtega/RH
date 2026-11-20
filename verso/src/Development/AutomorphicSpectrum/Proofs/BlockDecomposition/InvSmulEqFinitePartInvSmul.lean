@@ -18,7 +18,7 @@ theorem ord_eq_ord_vw_finitePart {K : Type} [Field K] [NumberField K]
   rfl
 
 /- English proof (translation)
-Use `GlobalTheory.Idele.eq_of_count_eq (Units.ne_zero _) (GlobalTheory.Idele.smul_ne_zero _ (Units.ne_zero _)) fun v => ?_` and prove the remaining obligations. Rewrite using `[GroundTheory.Global.IdeleGroup.count_smul, GlobalTheory.Idele.count_smul _ (Units.ne_zero _), ord_eq_ord_vw_finitePart]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem coe_smul_eq_finitePart_smul {K : Type} [Field K] [NumberField K]
     (s : GroundTheory.Global.IdeleGroup K) (𝔞 : (FractionalIdeal (𝓞 K)⁰ K)ˣ) :
@@ -30,7 +30,7 @@ theorem coe_smul_eq_finitePart_smul {K : Type} [Field K] [NumberField K]
     ord_eq_ord_vw_finitePart]
 
 /- English proof (translation)
-The claim follows from `coe_smul_eq_finitePart_smul s⁻¹ 𝔞`.
+A detailed English derivation is pending.
 -/
 theorem inv_smul_eq_finitePart_inv_smul {K : Type} [Field K] [NumberField K]
     (s : GroundTheory.Global.IdeleGroup K) (𝔞 : (FractionalIdeal (𝓞 K)⁰ K)ˣ) :

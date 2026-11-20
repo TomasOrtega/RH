@@ -7,15 +7,15 @@ open NumberField Ideal Formalism.HC Formalism.FrobeniusOrbits
 open scoped Pointwise
 
 /- English proof (translation)
-Introduce `φ H f hf`. Rewrite using `[Formalism.HC.Der.Rd.rho_eq _ hf]`. Establish `h1` using `(H.art.ker.subgroupOf (H.unitsOne f)).card_mul_index`. Establish `h2 : (H.art.ker.subgroupOf (H.unitsOne f)).index = Nat.card (H.imgOne f)` using `Subgroup.relIndex_ker (H.unitsOne f) H.art`. Establish `h3 : Nat.card (H.unitsOne f) = (Formalism.HC.Der.Rd.KK H.condN f).card`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Nat.card_eq_finsetCard]`. Conclude with `Nat.card_congr (Equiv.subtypeEquivRight fun u => by`. Rewrite using `[Formalism.HC.Der.Rd.mem_KK, H.mem_unitsOne hf])`. Establish `h4 : Nat.card (H.art.ker.subgroupOf (H.unitsOne f)) = ((Formalism.HC.Der.Rd.KK H.condN f).filter fun u => u ∈ H.art.ker).card`. Rewrite using `[← Nat.card_eq_finsetCard]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Nat.card_congr ((Equiv.subtypeSubtypeEquivSubtypeInter (fun u => u ∈ H.unitsOne f) (fun u => u ∈ H.art.ker)).trans (Equiv.subtypeEquivRight fun u => ?_))` and prove the remaining obligations. Rewrite using `[Finset.mem_filter, Formalism.HC.Der.Rd.mem_KK, H.mem_unitsOne hf]`. Rewrite `h1` using `[h2, h3, h4]`. Establish `h5` using `Formalism.HC.Der.Rd.card_KK hf`. Rewrite `h5` using `[← h1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h6` using `congrArg (Nat.cast : ℕ → ℝ) h5`. Move the coercions through the operations in `at h6`. Establish `hN : (H.condN.totient : ℝ) ≠ 0` using `by exact_mod_cast (Nat.totient_pos.mpr (NeZero.pos H.condN)).ne'`. Establish `hI : (Nat.card (H.imgOne f) : ℝ) ≠ 0` using `by exact_mod_cast Nat.card_pos.ne'`. Use `congr 1`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[div_eq_div_iff hN hI, one_mul, ← h6]`. Rewrite using `[mul_right_comm]`. Use `congr!`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.HF.rho_art :
     ∀ {φ : Frame} (H : HostRaw φ) {f : ℕ}, f ∣ H.condN → Formalism.HC.Der.Rd.rho H.art.ker f = 1 - 1 / (Nat.card (H.imgOne f) : ℝ) := by

@@ -24,21 +24,21 @@ open GlobalTheory.Dict
 namespace GlobalTheory.Dict.VSetup
 
 /- English proof (translation)
-Take `⟨φ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Establish `hcc : ∀ x : E, φ (cc x) = conj (φ x)` using `fun x => by`. Simplify using `[cc, IsCMField.complexEmbedding_complexConj]`. Establish `hrt : ((H.rt : E)) ^ 2 = -(H.d : E)`. Use `congrArg (fun t : 𝓞 E => (t : E)) H.rt_sq` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `htw : 2 * (H.w0 : E) = 1 + H.rt`. Use `congrArg (algebraMap (𝓞 E) E) H.two_weight_eq_one_add_root` as an intermediate fact. Rewrite `this` using `[map_mul, map_add, map_one, map_ofNat]`. Conclude with `this`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hz : φ (H.rt : E) ^ 2 = -(H.d : ℂ)`. Simplify using `using congrArg φ hrt`. Establish `hzc : conj (φ (H.rt : E)) = -φ (H.rt : E)` using `by set z := φ (H.rt : E)`. Establish `hz' : conj z ^ 2 = -(H.d : ℂ)`. Rewrite using `[← map_pow, hz]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `h1 : (conj z - z) * (conj z + z) = 0`. Take the linear combination `hz' - hz`. Break down `mul_eq_zero.1 h1 with h | h` into its components or cases. It suffices to derive a contradiction.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Establish `him : z.im = 0`. Use `congrArg Complex.im h` as an intermediate fact. Simplify using `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hre` using `congrArg Complex.re hz`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[sq, him] at hre`. Establish `hd : (0 : ℝ) < H.d` using `by exact_mod_cast H.d_prime.pos`. Use polynomial arithmetic with `[mul_self_nonneg z.re]`. Take the linear combination `h`. Establish `hw : 2 * φ (H.w0 : E) = 1 + φ (H.rt : E)`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg φ htw` as an intermediate fact. Rewrite `this` using `[map_mul, map_add, map_one, map_ofNat]`. Conclude with `this`. Establish `hwc : 2 * conj (φ (H.w0 : E)) = 1 + conj (φ (H.rt : E))`. Use `congrArg conj hw` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `this` using `[map_mul, map_add, map_one, map_ofNat]`. Conclude with `this`. Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[map_add, map_one, hcc]`. Take the linear combination `(hw + hwc + hzc) / 2`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem hostHalfRoot_add_conj_eq_one {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) :
     (H.w0 : E) + cc (H.w0 : E) = 1 := by
@@ -84,17 +84,17 @@ theorem hostHalfRoot_add_conj_eq_one {E : Type} [Field E] [NumberField E] [IsCMF
   linear_combination (hw + hwc + hzc) / 2
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c σ r U hG hU hr a n hD k x hx`. Use `letI : Algebra c.F ℂ := σ.toAlgebra`. Establish `hn : Even n` using `by unfold Dom at hD; exact hD.2`. Establish `hrpq : r = Dw.p + Dw.q` using `by unfold Formalism.L2.PjFree.IsUnf at hU; exact hU.1`. Establish `hXk : (U.X k).p0 = Dw.q ∧ ∀ τ : E →+* ℂ, τ ∈ (U.X k).Ψ ↔ τ (H.rt : E) = H.rt0`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Formalism.L2.PjFree.IsUnf at hU`. Conclude with `hU.2.1 k`. Take `⟨W⟩` from `nonempty_uw hU`. Take `⟨-, hSD, hMk, -⟩` from `GlobalTheory.T.uniformisation_component_lattices_markings E H Dw l Xo c σ r U hG hU hr W k`. Take `⟨Dc, hDe, -⟩` from `GlobalTheory.T.exists_letterRowWeightDictionary E H Dw l c σ r W.g n (U.X k) a W.e hG hrpq hXk.1 hXk.2 hSD hD`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hper : ∀ y v j, pv (U.X k) Dc.idx y v j = perFr (U.X k) y v (relab c σ (W.e j).1) (W.e j).2`. Introduce `y v j`. Rewrite using `[← hDe]`. Conclude with `Dc.per_eq y v j`. Establish `hty : ∀ j, rowType (U.X k) (Dc.idx j) = relab c σ (W.e j).1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `j`. Rewrite using `[← hDe]`. Conclude with `Dc.ty_eq j`. Take `⟨A, hAm, θ, hAr, hM1⟩` from `GlobalTheory.T.analyticFibre_unitFrame_uniformisation E H Dw l Xo c σ r U hG hU hr W k Dc.bas Dc.idx Dc.sympl hper hty x hx`. Establish `hθ` using `GlobalTheory.T.framedPoint_generator_isThetaLevelOne E H Dw l Xo c r W.g (U.X k) Dc.bas Dc.idx W.e x.1 (U.X k).Λ (unC U k x) A Dc.sympl x.2 hSD θ hAr`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hw : (H.w0 : E) + cc (H.w0 : E) = 1` using `hostHalfRoot_add_conj_eq_one H`. Establish `hint : IsIntegral ℤ (H.w0 : E)` using `H.w0.isIntegral_coe`. Take `⟨v, hv⟩` from `(GlobalTheory.SW.TensVac.vacua E r (U.X k) W.g Dc.bas Dc.idx n Dc.sympl hn _ hint hw _ hSD 1 (stdL E n) (GlobalTheory.SW.Base.stdL_mem_Vset n 1)).1`. Take `⟨κ, hκ⟩` from `GlobalTheory.T.prod_levelOne_theta_eq_vacuum_theta E r (U.X k) W.g Dc.bas Dc.idx n Dc.sympl hn _ hint hw _ hSD v hv x.1 x.2 θ hθ`. Establish `hg : W.g = fdeg E * r`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Establish `hc` using `Fintype.card_congr Dc.idx`. Rewrite `hc` using `[Fintype.card_fin, Fintype.card_prod, Fintype.card_fin, ReciprocityTheory.ChartRestriction.G.FD.QuadraticCoefficientForms.card_Psi]`. Conclude with `hc`. Conclude with `⟨W, Dc, A, θ, v, κ, hDe, hg, hw, hSD, hMk, hAm, hAr, hθ, hM1, hv, hκ⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_setup : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (r : ℕ) (U : Unf Xo c σ r), GoodEmb c σ → IsUnf U → 1 ≤ r → ∀ (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ), Dom a n → ∀ k (x : (U.X k).dom), IsUnitFr (U.X k) x.1 → letI : Algebra c.F ℂ := σ.toAlgebra; ∃ (W : UW U) (Dc : Dic Dw c σ (U.X k) W.g Dw.p n a) (A : AnFib (U.X k) Dc.bas Dc.idx W.e x.1 (U.X k).Λ (unC U k x)) (θ : (Fin W.g → ℂ) → ℂ) (v : TF n W.g) (κ : ℂ), Dc.e = W.e ∧ W.g = fdeg E * r ∧ (H.w0 : E) + cc (H.w0 : E) = 1 ∧ SelfD (U.X k) (U.X k).Λ ∧ IsMark l (U.X k).Λ (W.mark k) ∧ A.Marked (W.mark k) ∧ A.Reads 1 (unC U k x).s θ ∧ IsTheta1 (U.X k) Dc.bas Dc.idx (H.w0 : E) x.1 (U.X k).Λ θ ∧ MeanOne (U.X k) Dc.bas Dc.idx x.1 (U.X k).Λ θ ∧ IsVac (U.X k) Dc.bas (H.w0 : E) (tens (stdL E n) (U.X k).Λ) v ∧ ∀ z : Fin n → Fin W.g → ℂ, ∏ b, θ (z b) = κ * thA (U.X k) Dc.bas Dc.idx v x.1 z := by
   intro E _ _ _ H Dw l Xo c σ r U hG hU hr a n hD k x hx

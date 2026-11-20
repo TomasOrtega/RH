@@ -14,11 +14,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hmem : ∀ a b, ∃ o : 𝓞 D.host.E, algebraMap (𝓞 D.host.E) D.host.E o = Zhat F F' a b`. Introduce `a b`. Establish `hx : F'.fvec b ∈ Formalism.HermitianLatticesTheory.dual (VS D).hT Λ`. Rewrite using `[show Formalism.HermitianLatticesTheory.dual (VS D).hT Λ = Λ from hun]`. Conclude with `hF' b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `Formalism.HermitianLatticesTheory.dual Formalism.E.hdual at hx`. Establish `h1` using `(Submodule.mem_iInf _).mp hx (F.fvec a)`. Establish `h2` using `(Submodule.mem_iInf _).mp h1 (hF a)`. Rewrite `h2` using `[Submodule.mem_comap]`. Conclude with `Submodule.mem_one.mp h2`.
-
-Use `choose FinalForm hZo using hmem`. Conclude with `⟨Matrix.of FinalForm, by ext a b; exact (hZo a b).symm⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem zhat_int {Λ : Submodule (𝓞 D.host.E) (VS D).V} (hun : Formalism.HermitianLatticesTheory.IsUnimodular (VS D).hT Λ)
     {T T' : D.host.E} (F : FlagG (VS D) D.R.rS T) (F' : FlagG (VS D) D.R.rS T')
@@ -39,13 +37,13 @@ theorem zhat_int {Λ : Submodule (𝓞 D.host.E) (VS D).V} (hun : Formalism.Herm
   exact ⟨Matrix.of FinalForm, by ext a b; exact (hZo a b).symm⟩
 
 /- English proof (translation)
-Take `⟨FinalForm, hZo⟩` from `zhat_int hun F F' hF hF'`. Establish `hadj : (Zhat F F').adjugate = FinalForm.adjugate.map (algebraMap (𝓞 D.host.E) D.host.E)`. Rewrite using `[hZo]`. Conclude with `(RingHom.map_adjugate _ _).symm`. Establish `hD : Dl F F' (D.R.rS + 1) = algebraMap (𝓞 D.host.E) D.host.E ((FinalForm.submatrix (Fin.castLE le_rfl) (Fin.castLE le_rfl)).det)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `Dl leadMinorE`. Rewrite using `[dif_pos le_rfl, hZo, Matrix.submatrix_map, RingHom.map_det]`. Both sides reduce to the same expression. Unfold `NormalVectorPairings.yv NormalVectorPairings.omp`. Use `Λ.add_mem ?_ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.cast_smul_eq_nsmul]`. Use `nsmul_mem (Λ.sum_mem fun b _ => ?_) n` and prove the remaining obligations. Rewrite using `[hadj, Matrix.map_apply, algebraMap_smul]`. Conclude with `Λ.smul_mem _ (hF' b)`. Rewrite using `[hD, algebraMap_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hz : F.z = F.fvec (Fin.last _)` using `by simp [FlagG.fvec]`. Rewrite using `[hz]`. Conclude with `Λ.smul_mem _ (hF _)`.
+A detailed English derivation is pending.
 -/
 theorem yv_mem {Λ : Submodule (𝓞 D.host.E) (VS D).V} (hun : Formalism.HermitianLatticesTheory.IsUnimodular (VS D).hT Λ)
     (n : ℕ) {T' : D.host.E} (F : FlagG (VS D) D.R.rS (n : D.host.E)) (F' : FlagG (VS D) D.R.rS T')
@@ -71,15 +69,15 @@ theorem yv_mem {Λ : Submodule (𝓞 D.host.E) (VS D).V} (hun : Formalism.Hermit
     exact Λ.smul_mem _ (hF _)
 
 /- English proof (translation)
-Establish `key : ∀ a : Fin D.R.rS, (VS D).hT (F.e a) (NormalVectorPairings.yv F F') = 0`. Introduce `a`. Establish `hz : ∀ b, (VS D).hT (F.e a) (F'.fvec b) = Zhat F F' a.castSucc b`. Introduce `b`. Simplify using `[Zhat, brS, FlagG.fvec, Fin.snoc_castSucc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hm` using `congrFun (congrFun (Matrix.mul_adjugate (Zhat F F')) a.castSucc) (Fin.last _)`. Rewrite `hm` using `[Matrix.mul_apply]`. Simplify using `only [Matrix.smul_apply, Matrix.one_apply, Fin.castSucc_ne_last, if_false, smul_zero] at hm`. Unfold `NormalVectorPairings.yv NormalVectorPairings.omp`. Rewrite using `[map_add, map_smul, map_smul, F.z_orth a, smul_zero, add_zero, map_sum]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_smul, smul_eq_mul, hz]`. Rewrite using `[show ∑ b, (Zhat F F').adjugate b (Fin.last D.R.rS) * Zhat F F' a.castSucc b = ∑ b, Zhat F F' a.castSucc b * (Zhat F F').adjugate b (Fin.last D.R.rS) from Finset.sum_congr rfl fun b _ => mul_comm _ _, hm, mul_zero]`. Introduce `x hx`. Simplify using `only [brS]`. Use `Submodule.span_induction (p := fun y _ => (VS D).hT y (NormalVectorPairings.yv F F') = 0) ?_ ?_ ?_ ?_ hx` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `key a`. Simplify using the standard rewrite rules. Introduce `y z _ _ hy hz`. Simplify using `[hy, hz]`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c y _ hy`. Simplify using `[hy]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem yv_orth_X {T T' : D.host.E} (F : FlagG (VS D) D.R.rS T) (F' : FlagG (VS D) D.R.rS T') :
     ∀ x ∈ F.X, brS (VS D) (NormalVectorPairings.yv F F') x = 0 := by
@@ -109,13 +107,13 @@ theorem yv_orth_X {T T' : D.host.E} (F : FlagG (VS D) D.R.rS T) (F' : FlagG (VS 
     simp [hy]
 
 /- English proof (translation)
-Introduce `x hx x' hx'`. Simplify using `only [brS]`. Use `Submodule.span_induction (p := fun y _ => (VS D).hT y x = 0) ?_ ?_ ?_ ?_ hx'` and prove the remaining obligations. Introduce and unpack `_ ⟨b, rfl⟩`. Use `Submodule.span_induction (p := fun y _ => (VS D).hT (F.e b) y = 0) ?_ ?_ ?_ ?_ hx` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `F.e_iso b a`. Simplify using the standard rewrite rules. Introduce `y z _ _ hy hz`. Simplify using `[hy, hz]`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c y _ hy`. Simplify using `[hy]`. Simplify using the standard rewrite rules. Introduce `y z _ _ hy hz`. Simplify using `[hy, hz]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c y _ hy`. Simplify using `[hy]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem X_iso {T : D.host.E} (F : FlagG (VS D) D.R.rS T) : ∀ x ∈ F.X, ∀ x' ∈ F.X, brS (VS D) x x' = 0 := by
   intro x hx x' hx'
@@ -137,7 +135,7 @@ theorem X_iso {T : D.host.E} (F : FlagG (VS D) D.R.rS T) : ∀ x ∈ F.X, ∀ x'
     simp [hy]
 
 /- English proof (translation)
-The claim follows from `|((Algebra.norm ℚ ((n : D.host.E) * g) : ℚ) : ℝ)| = (n : ℝ) ^ (2 * D.R.f) * (∏ w : InfinitePlace D.host.E, w g) ^ 2 := by have hc : ∀ w : InfinitePlace D.host.E, w.mult = 2 := by intro w have hnr : ¬ w.IsReal := by intro hw have hr := InfinitePlace.isReal_iff.mp hw have h2 : star …`.
+A detailed English derivation is pending.
 -/
 theorem abs_norm_TG (n : ℕ) (g : D.host.E) :
     |((Algebra.norm ℚ ((n : D.host.E) * g) : ℚ) : ℝ)| =

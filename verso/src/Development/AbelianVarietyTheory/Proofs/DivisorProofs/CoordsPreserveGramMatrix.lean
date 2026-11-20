@@ -9,7 +9,7 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.IndefiniteRowSideFullH
 namespace GlobalTheory.QhtUnip
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `h` using `GlobalTheory.T.adapted_basis_gram_eq F E σ hσ B W r s hW W₁ H i₀ i₁ hA (ixE m i) (ixE m j)`. Rewrite using `[Matrix.submatrix_apply, ← h]`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, form, dotProduct, Matrix.mulVec, basQ, Matrix.submatrix_apply, id, Finset.sum_mul, Finset.mul_sum, mul_assoc]`. Conclude with `Finset.sum_comm`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gram_basQ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hσ : ∀ e, σ (σ e) = e) (B : Base F E) {m : ℕ} (W : Spc F E (m + 2)) (r s : ℕ) (hW : W.IsSkew σ B r s)
@@ -23,26 +23,26 @@ theorem gram_basQ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField 
   exact Finset.sum_comm
 
 /- English proof (translation)
-Simplify using `[cA, inclR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cA_inclR {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) (e : E) :
     cA σ (inclR (F := F) (AF F) e) = inclR (F := F) (AF F) (σ e) := by
   simp [cA, inclR]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ B m W r s hW W₁ H i₀ i₁ hA g`. Use `set e := ixE m`. Use `set P := incM F (basQ H) with hP`. Establish `hdet : IsUnit P.det`. Rewrite using `[hP, incM, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(GlobalTheory.T.isUnit_det_adapted_basis F E σ B W r s hW W₁ H i₀ i₁ hA).map _`. Establish `hPP : P * P⁻¹ = 1` using `Matrix.mul_nonsing_inv P hdet`. Establish `hPPt : (P⁻¹)ᵀ * Pᵀ = 1` using `by rw [← Matrix.transpose_mul, hPP, Matrix.transpose_one]`. Establish `hPPc : P.map (cA σ) * (P⁻¹).map (cA σ) = 1`. Rewrite using `[← Matrix.map_mul, hPP, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hG : Pᵀ * incM F W.J * P.map (cA σ) = ((gI W₁.J).submatrix e e).map (inclR (F` using `F) (AF F)) := by`. Rewrite using `[← gram_basQ σ hσ B W r s hW W₁ H i₀ i₁ hA, hP]`. Simplify using `only [incM, Matrix.map_mul, Matrix.transpose_map, Matrix.map_map]`. Establish `hc : (⇑(cA σ) ∘ ⇑(inclR (F` using `F) (AF F))) = ⇑(inclR (F := F) (AF F)) ∘ ⇑σ := funext (cA_inclR σ)`. Rewrite using `[hc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hg : (mat g)ᵀ * incM F W.J * (mat g).map (cA σ) = incM F W.J` using `g.2`. Establish `hPPt' : ∀ X : Matrix (Fin (m + 2)) (Fin (m + 2)) (AE F E), (P⁻¹)ᵀ * (Pᵀ * X) = X` using `fun X => by`. Rewrite using `[← Matrix.mul_assoc, hPPt, Matrix.one_mul]`. Establish `hPPc' : ∀ X : Matrix (Fin (m + 2)) (Fin (m + 2)) (AE F E), P.map (cA σ) * ((P⁻¹).map (cA σ) * X) = X` using `fun X => by`. Rewrite using `[← Matrix.mul_assoc, hPPc, Matrix.one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hg' : ∀ X : Matrix (Fin (m + 2)) (Fin (m + 2)) (AE F E), (mat g)ᵀ * (incM F W.J * ((mat g).map (cA σ) * X)) = incM F W.J * X` using `fun X => by`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hg]`. Establish `key : (P⁻¹ * mat g * P)ᵀ * (Pᵀ * incM F W.J * P.map (cA σ)) * (P⁻¹ * mat g * P).map (cA σ) = Pᵀ * incM F W.J * P.map (cA σ)`. Simplify using `only [Matrix.transpose_mul, Matrix.map_mul, Matrix.mul_assoc]`. Rewrite using `[hPPt', hPPc', hg']`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite `key` using `[hG]`. Establish `hgI : (gI W₁.J).map (inclR (F` using `F) (AF F)) = (((gI W₁.J).submatrix e e).map (inclR (F := F) (AF F))).submatrix e.symm e.symm := by`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Establish `hcrd : crd H g = (P⁻¹ * mat g * P).submatrix e.symm e.symm` using `rfl`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hsub : ∀ A B C : Matrix (Fin (m + 2)) (Fin (m + 2)) (AE F E), (A.submatrix e.symm e.symm)ᵀ * B.submatrix e.symm e.symm * (C.submatrix e.symm e.symm).map (cA σ) = (Aᵀ * B * C.map (cA σ)).submatrix e.symm e.symm`. Introduce `A B C`. Rewrite using `[Matrix.transpose_submatrix, Matrix.submatrix_mul_equiv, ← Matrix.submatrix_map, Matrix.submatrix_mul_equiv]`. Rewrite using `[hgI, hcrd, hsub, key]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unit_crd : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), (∀ e, σ (σ e) = e) → ∀ (B : Base F E) {m : ℕ} (W : Spc F E (m + 2)) (r s : ℕ), W.IsSkew σ B r s →
     ∀ (W₁ : Spc F E m) (H : Plane E (m + 2) m) (i₀ i₁ : ℕ), H.IsAdapted σ B W W₁ i₀ i₁ → ∀ g : UA σ W.J, (crd H g)ᵀ * (gI W₁.J).map (inclR (F := F) (AF F)) * (crd H g).map (cA σ) =

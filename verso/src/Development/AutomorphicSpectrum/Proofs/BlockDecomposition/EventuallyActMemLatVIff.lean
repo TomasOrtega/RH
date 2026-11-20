@@ -14,9 +14,9 @@ section Gen
 variable {F E R : Type} [Field F] [Field E] [Algebra F E] [CommRing R] [Algebra F R]
 
 /- English proof (translation)
-Use `set B := Algebra.TensorProduct.basis R b with hB`. Use `conv_lhs => rw [← B.sum_repr x, ← B.sum_repr y]`. Simplify using `only [Finset.sum_mul, Finset.mul_sum, smul_mul_smul_comm, map_sum, map_smul, Finsupp.coe_finsetSum, Finset.sum_apply, Finsupp.smul_apply, smul_eq_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hB, Algebra.TensorProduct.basis_apply, Algebra.TensorProduct.basis_apply, Algebra.TensorProduct.tmul_mul_tmul, one_mul, Algebra.TensorProduct.basis_repr_tmul]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem repr_mul {d : ℕ} (b : Module.Basis (Fin d) F E) (x y : R ⊗[F] E) (k : Fin d) :
     (Algebra.TensorProduct.basis R b).repr (x * y) k =
@@ -40,7 +40,7 @@ section Adelic
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
 
 /- English proof (translation)
-Conclude with `(algebraMap F (FiniteAdeleRing (𝓞 F) F) c).2`.
+A detailed English derivation is pending.
 -/
 theorem eventually_integral (c : F) :
     ∀ᶠ v : HeightOneSpectrum (𝓞 F) in cofinite,
@@ -48,9 +48,7 @@ theorem eventually_integral (c : F) :
   exact (algebraMap F (FiniteAdeleRing (𝓞 F) F) c).2
 
 /- English proof (translation)
-Establish `h : ∀ᶠ v : HeightOneSpectrum (𝓞 F) in cofinite, ∀ i j k : Fin d, algebraMap F (Fv F v) (b.repr (b i * b j) k) ∈ v.adicCompletionIntegers F`. Simplify using `only [Filter.eventually_all]`. Conclude with `fun i j k => eventually_integral _`. Use `filter_upwards [h] with v hv x y hx hy k`. Rewrite using `[repr_mul]`.
-
-Conclude with `sum_mem fun i _ => sum_mem fun j _ => mul_mem (mul_mem (hx i) (hy j)) (hv i j k)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eventually_mul_closed {d : ℕ} (b : Module.Basis (Fin d) F E) :
     ∀ᶠ v : HeightOneSpectrum (𝓞 F) in cofinite, ∀ x y : Fv F v ⊗[F] E,

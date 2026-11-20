@@ -13,15 +13,15 @@ open GlobalTheory GlobalTheory.RunIn
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hl2 : 0 < Real.log 2` using `Real.log_pos (by norm_num)`. Establish `hl2' : Real.log 2 ≤ 1`. Use `Real.log_le_sub_one_of_pos (show (0:ℝ) < 2 by norm_num); linarith` as an intermediate fact. Establish `hfS : 1 ≤ f * S` using `one_le_mul_of_one_le_of_one_le hf hS`. Establish `hld : 0 ≤ Real.log d` using `Real.log_nonneg hd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlS : 0 ≤ Real.log S` using `Real.log_nonneg hS`. Establish `hpi` using `Real.pi_gt_three`. Establish `hD : 0 < M * (f * S + 2) * k0 * Real.log 2` using `by positivity`. Unfold `epStar`. Use `⟨lt_min one_pos (by positivity), min_le_left _ _, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `rcases min_choice 1 (Real.pi / (M * (f * S + 2) * k0 * Real.log 2)) with h1 | h1 <;> rw [h1]`. Rewrite using `[Real.log_one]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hMk : 0 < M * k0` using `by positivity`. Establish `e : M * (f * S + 2) * k0 * Real.log 2 = (M * k0) * ((f * S + 2) * Real.log 2)` using `by ring`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Real.log_div (by positivity) hD.ne', e, Real.log_mul hMk.ne' (by positivity)]`. Establish `h2 : 0 ≤ Real.log Real.pi` using `Real.log_nonneg (by linarith)`. Establish `h3 : Real.log ((f * S + 2) * Real.log 2) ≤ Real.log (3 * f * S)` using `Real.log_le_log (by positivity) (by nlinarith)`. Establish `h6 : Real.log (3 * f * S) = Real.log 3 + Real.log f + Real.log S`. Rewrite using `[Real.log_mul (by positivity) (by positivity), Real.log_mul (by positivity) (by positivity)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4` using `Real.log_le_sub_one_of_pos (show (0:ℝ) < 3 by norm_num)`. Establish `h5` using `Real.log_le_sub_one_of_pos (show (0:ℝ) < f by positivity)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem room_neg_log_epStar (f d L M k0 S : ℝ) (hf : 1 ≤ f) (hd : 1 ≤ d) (hL : 0 ≤ L)
     (hM : 0 < M) (hk : 0 < k0) (hS : 1 ≤ S)
@@ -53,13 +53,13 @@ theorem room_neg_log_epStar (f d L M k0 S : ℝ) (hf : 1 ≤ f) (hd : 1 ≤ d) (
     linarith
 
 /- English proof (translation)
-Establish `hf' : (0 : ℝ) < f` using `by exact_mod_cast hf`. Establish `hr' : (0 : ℝ) < r` using `by exact_mod_cast hr`. Establish `hS' : (0 : ℝ) < S` using `by linarith`. Establish `hd' : (0 : ℝ) < d` using `by linarith`. Establish `h1 : 0 < Real.sqrt e` using `Real.sqrt_pos.2 he`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : 0 < Real.sqrt f` using `Real.sqrt_pos.2 hf'`. Establish `h3 : 0 < Real.sqrt r` using `Real.sqrt_pos.2 hr'`. Establish `h4 : 0 < Real.sqrt (S * r)` using `Real.sqrt_pos.2 (by positivity)`. Establish `E : 2 * ReciprocityTheory.MultiplicativeHeights.approxR r (d5mu f r d (Real.sqrt e / Real.sqrt f)) (3 * frameRadius S r / 5) = 1600 / 3 * Real.sqrt r * Real.sqrt f * Real.sqrt (S * r) * ((f : ℝ) * r) ^ 3 * d / Real.sqrt e`. Unfold `ReciprocityTheory.MultiplicativeHeights.approxR d5mu frameRadius`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Clear the denominators using the available nonvanishing facts. Evaluate the numerical expressions. Rewrite using `[E]`. Use `⟨by positivity, ?_⟩` and prove the remaining obligations. Rewrite using `[Real.log_div (by positivity) h1.ne', Real.log_mul (by positivity) hd'.ne', Real.log_mul (by positivity) (by positivity), Real.log_mul (by positivity) h4.ne', Real.log_mul (by positivity) h2.ne', Real.log_mul (by positivity) h3.ne', Real.log_pow, Real.log_sqrt he.le, Real.log_sqr …`.
+Clear the denominators using the available nonvanishing facts. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem room_log_radius (f r : ℕ) (d e S : ℝ) (hf : 1 ≤ f) (hr : 1 ≤ r) (hd : 1 ≤ d)
     (he : 0 < e) (hS : 1 ≤ S) :
@@ -91,31 +91,29 @@ theorem room_log_radius (f r : ℕ) (d e S : ℝ) (hf : 1 ≤ f) (hr : 1 ≤ r) 
   ring
 
 /- English proof (translation)
-Use `⟨3000, by norm_num, ?_⟩` and prove the remaining obligations. Introduce `f r p0 d L Om M k0 S hf hr hp hd hL hM hk hS h`. Establish `hf' : (1 : ℝ) ≤ f` using `by exact_mod_cast hf`. Establish `hr' : (1 : ℝ) ≤ r` using `by exact_mod_cast hr`. Establish `hp' : (p0 : ℝ) ≤ r` using `by exact_mod_cast hp`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨he0, he1, he2⟩` from `room_neg_log_epStar f d L M k0 S hf' hd hL hM hk hS h`. Take `⟨hX0, hX⟩` from `room_log_radius f r d _ S hf hr hd he0 hS`. Unfold `frameBasisRadius`. Use `set X := 2 * ReciprocityTheory.MultiplicativeHeights.approxR r (d5mu f r d (Real.sqrt (epStar M f S k0) / Real.sqrt f)) (3 * frameRadius S r / 5) with hXdef`. Use `clear_value X`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : Real.log (epStar M f S k0) ≤ 0` using `Real.log_nonpos he0.le he1`. Establish `hn : (1 : ℝ) ≤ (f : ℝ) * r` using `one_le_mul_of_one_le_of_one_le hf' hr'`. Establish `hfn : (f : ℝ) ≤ (f : ℝ) * r` using `le_mul_of_one_le_right (by linarith) hr'`. Establish `hrn : (r : ℝ) ≤ (f : ℝ) * r` using `le_mul_of_one_le_left (by linarith) hf'`. Establish `a1 : 0 ≤ Real.log d` using `Real.log_nonneg hd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a2 : 0 ≤ Real.log S` using `Real.log_nonneg hS`. Establish `a3 : 0 ≤ Real.log (f : ℝ)` using `Real.log_nonneg hf'`. Establish `a4 : 0 ≤ Real.log (r : ℝ)` using `Real.log_nonneg hr'`. Establish `a5 : 0 ≤ Real.log ((f : ℝ) * r)` using `Real.log_nonneg hn`. Establish `a6 : 0 ≤ Real.log (1600 / 3 : ℝ)` using `Real.log_nonneg (by norm_num)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b3` using `Real.log_le_sub_one_of_pos (show (0:ℝ) < f by linarith)`. Establish `b4` using `Real.log_le_sub_one_of_pos (show (0:ℝ) < r by linarith)`. Establish `b5` using `Real.log_le_sub_one_of_pos (show (0:ℝ) < (f : ℝ) * r by linarith)`. Establish `b6` using `Real.log_le_sub_one_of_pos (show (0:ℝ) < 1600 / 3 by norm_num)`. Establish `hX1 : 0 ≤ Real.log X` using `by rw [hX]; linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hX1' : 1 ≤ X`. Assume the negation of the conclusion as `hc`. Use `Real.log_neg hX0 (not_le.1 hc)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨one_le_pow₀ hX1', ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `s t hs ht hst C A hC hA`. Establish `hOm` using `abs_nonneg Om`. Use `set Z : ℝ := (f : ℝ) * r + L + Real.log d + |Om| with hZ`. Establish `hZn : (f : ℝ) * r ≤ Z` using `by linarith`. Establish `hZ1 : 1 ≤ Z` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hXZ : Real.log X ≤ 600 * Z + Real.log S` using `by rw [hX]; linarith`. Establish `hXZ' : Real.log X ≤ 600 * (Z * (1 + Real.log S))`. Establish `: Real.log S ≤ Z * Real.log S` using `le_mul_of_one_le_left a2 hZ1`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpd : Formalism.L2.LamCM.pDeg Om ≤ Z` using `by unfold Formalism.L2.LamCM.pDeg; linarith`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `hlog : Real.log (X ^ (2 * p0 + 1)) ≤ 1800 * (Z ^ 2 * (1 + Real.log S))`. Rewrite using `[Real.log_pow]`. Use `push_cast`. Combine the equalities or inequalities in the displayed calculation. Establish `hlog0 : 0 ≤ Real.log (X ^ (2 * p0 + 1))` using `Real.log_nonneg (one_le_pow₀ hX1')`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Real.log_mul (by positivity) (by positivity)]`. Establish `hZW : Z ≤ Z ^ 2 * (1 + Real.log S)` using `(le_self_pow₀ hZ1 (by norm_num)).trans (le_mul_of_one_le_right (by positivity) (by linarith))`. Establish `hZA : Z ^ 2 ≤ Z ^ A`. Use `Real.rpow_le_rpow_of_exponent_le hZ1 hA` as an intermediate fact. Rewrite `this` using `[Real.rpow_two]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set W := Z ^ 2 * (1 + Real.log S) with hW`. Use `set Y := Real.log (X ^ (2 * p0 + 1)) with hY`. Establish `hW0 : 0 ≤ W` using `by linarith`. Establish `c1 : (Formalism.L2.LamCM.pDeg Om + 1 / 2 * Y) * (s + t) ≤ (901 * W) * S` using `mul_le_mul (by linarith) hst (by linarith) (by linarith)`. Establish `c2 : s * (Real.log r + Y) ≤ S * (1801 * W)` using `mul_le_mul (by linarith) (by linarith) (by linarith) (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c3 : 3000 * W ≤ C * Z ^ A * (1 + Real.log S)`. Establish `: 3000 * Z ^ 2 ≤ C * Z ^ A` using `mul_le_mul hC hZA (by positivity) (by linarith)`. Combine the equalities or inequalities in the displayed calculation. Establish `c4 : 3000 * W * S ≤ C * Z ^ A * (1 + Real.log S) * S` using `mul_le_mul_of_nonneg_right c3 (by linarith)`. Establish `c5 : 0 ≤ W * S` using `mul_nonneg hW0 (by linarith)`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem room_of_constants : ∃ C0 : ℝ, 0 < C0 ∧ ∀ (f r p0 : ℕ) (d L Om M k0 S : ℝ), 1 ≤ f → 1 ≤ r → p0 ≤ r → 1 ≤ d → 0 ≤ L → 0 < M → 0 < k0 → 1 ≤ S → Real.log (M * k0) ≤ 19 * L + 3 + Real.log d → 1 ≤ frameBasisRadius r p0 f d (Real.sqrt (epStar M f S k0)) (3 * frameRadius S r / 5) ∧ ∀ s t : ℝ, 0 ≤ s → 0 ≤ t → s + t ≤ S → ∀ C A : ℝ, C0 ≤ C → 2 ≤ A → (Formalism.L2.LamCM.pDeg Om + (1 / 2) * Real.log (frameBasisRadius r p0 f d (Real.sqrt (epStar M f S k0)) (3 * frameRadius S r / 5))) * (s + t) + s * Real.log ((r : ℝ) * frameBasisRadius r p0 f d (Real.sqrt (epStar M f S k0)) (3 * frameRadius S r / 5)) ≤ C * ((f : ℝ) * r + L + Real.log d + |Om|) ^ A * (1 + Real.log S) * S := by
   refine ⟨3000, by norm_num, ?_⟩

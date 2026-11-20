@@ -15,14 +15,14 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} (w : Point D.host.E (D.R.rS + 1))
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [qbar, pinv_pinv]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem qbar_qbar (q : FreeE w) : qbar w (qbar w q) = q := by
   apply Subtype.ext
   simp only [qbar, pinv_pinv]
 
 /- English proof (translation)
-Unfold `hgt qbar`. Establish `h1` using `pinv_add w q.1.1 q.1.2 q.2.2`. Establish `h2 : q.1.1.val < q.1.2.val` using `q.2.1`. Simplify using `only`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem hgt_qbar (q : FreeE w) : hgt w (qbar w q) = hgt w q := by
   unfold hgt qbar
@@ -32,9 +32,9 @@ theorem hgt_qbar (q : FreeE w) : hgt w (qbar w q) = hgt w q := by
   omega
 
 /- English proof (translation)
-Establish `h` using `sgm_pinv w a c hs`. Break down `sgm_cases a c with e | e` into its components or cases. Rewrite `h` using `[e, one_mul]`. Rewrite using `[h, e]`. Rewrite `h`, the goal using `[e]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Take the linear combination `-h`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem sgm_pinv_eq (a c : Fin (D.R.rS + 1)) (hs : blkOf w.1 a.val = blkOf w.1 c.val) :
     sgm (pinv w c) (pinv w a) = (sgm a c : D.host.E) := by
@@ -44,15 +44,15 @@ theorem sgm_pinv_eq (a c : Fin (D.R.rS + 1)) (hs : blkOf w.1 a.val = blkOf w.1 c
   · rw [e] at h ⊢; linear_combination -h
 
 /- English proof (translation)
-The claim follows from `sgm_pinv_eq w q.1.1 q.1.2 q.2.2`.
+A detailed English derivation is pending.
 -/
 theorem sgq_qbar (q : FreeE w) : sgq w (qbar w q) = sgq w q :=
   sgm_pinv_eq w q.1.1 q.1.2 q.2.2
 
 /- English proof (translation)
-Establish `h` using `inv_diff (Xmat_upU w y) (Xmat_upU w (trunc w y (hgt w q))) q.2.1 (fun i j hij hh => by`. Distinguish the cases in `hb : i < j ∧ blkOf w.1 i.val = blkOf w.1 j.val`. Simplify using `only [Xmat, ne_of_lt hij, if_false, dif_pos hb, trunc]`. Rewrite using `[if_pos (show hgt w ⟨(i, j), hb⟩ < hgt w q from hh)]`. Simplify using `only [Xmat, ne_of_lt hij, if_false, dif_neg hb])`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[Xmat_q, Xmat_q]`. Establish `h0 : trunc w y (hgt w q) q = 0` using `by unfold trunc; rw [if_neg (lt_irrefl _)]`. Rewrite `h` using `[h0]`. Unfold `cf`. Take the linear combination `h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem Xinv_q (y : FreeE w → D.host.E) (q : FreeE w) :
     (Xmat w y)⁻¹ q.1.1 q.1.2 = cf w y q - y q := by
@@ -68,9 +68,7 @@ theorem Xinv_q (y : FreeE w → D.host.E) (q : FreeE w) :
   linear_combination h
 
 /- English proof (translation)
-Unfold `cf`. Use `grD_inv (Xmat_upU w _) (Xmat_grD w _ fun p => ?_) q.1.1 q.1.2 (le_of_lt q.2.1)` and prove the remaining obligations. Unfold `trunc`. Use `split_ifs with h`. Conclude with `hy p h`.
-
-Conclude with `FractionalIdeal.zero_mem _`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem cf_mem (y : FreeE w → D.host.E) (q : FreeE w)
     (hy : ∀ p, hgt w p < hgt w q → y p ∈ ddPow D (hgt w p)) : cf w y q ∈ ddPow D (hgt w q) := by
@@ -82,7 +80,7 @@ theorem cf_mem (y : FreeE w → D.host.E) (q : FreeE w)
   · exact FractionalIdeal.zero_mem _
 
 /- English proof (translation)
-Rewrite using `[Matrix.sub_apply, Xmat_q]`. Establish `h` using `Xinv_q w y (qbar w q)`. Simplify using `only [Psi]`. Rewrite using `[show (Xmat w y)⁻¹ (pinv w q.1.2) (pinv w q.1.1) = cf w y (qbar w q) - y (qbar w q) from h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem E_q (y : FreeE w → D.host.E) (q : FreeE w) :
     (Xmat w y - Psi w (Xmat w y)⁻¹) q.1.1 q.1.2 =
@@ -94,7 +92,7 @@ theorem E_q (y : FreeE w → D.host.E) (q : FreeE w) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[Matrix.sub_apply]`. Simplify using `only [Psi, pinv_pinv]`. Rewrite using `[sgm_pinv_eq w a c hs]`. Simplify using `only [bt, sgm, map_mul, map_pow, map_neg, map_one]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem condX_third (X : MatR D) (a c : Fin (D.R.rS + 1)) (hs : blkOf w.1 a.val = blkOf w.1 c.val) :
     X (pinv w c) (pinv w a) - D.conjF (bt D X⁻¹ a c) = (X - Psi w X⁻¹) (pinv w c) (pinv w a) := by
@@ -105,9 +103,9 @@ theorem condX_third (X : MatR D) (a c : Fin (D.R.rS + 1)) (hs : blkOf w.1 a.val 
   ring
 
 /- English proof (translation)
-Establish `h` using `hG a c (le_of_lt hac)`. Rewrite using `[show bt D X a c = sgm a c * X a c by simp only [bt, sgm]; ring]`. Break down `sgm_cases a c with e | e` into its components or cases. Rewrite using `[e, one_mul]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, neg_one_mul]`. Conclude with `(ddPow D _ : Submodule (𝓞 D.host.E) D.host.E).neg_mem h`.
+A detailed English derivation is pending.
 -/
 theorem bt_mem {X : MatR D} (hG : GrD X) (a c : Fin (D.R.rS + 1)) (hac : a < c) :
     bt D X a c ∈ ddPow D (c.val - a.val) := by
@@ -118,17 +116,15 @@ theorem bt_mem {X : MatR D} (hG : GrD X) (a c : Fin (D.R.rS + 1)) (hac : a < c) 
   · rw [e, neg_one_mul]; exact (ddPow D _ : Submodule (𝓞 D.host.E) D.host.E).neg_mem h
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hy : ∀ q, y q ∈ ddPow D (hgt w q)`. Introduce `q`. Take `⟨h1, -, -⟩` from `h (qbar w q).1.1 (qbar w q).1.2 (qbar w q).2.1 (qbar w q).2.2`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `e` using `hgt_qbar w q`. Unfold `hgt at e`. Simplify using `only [qbar, pinv_pinv] at h1 e`. Rewrite `h1` using `[e, Xmat_q]`. Conclude with `h1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hy, fun q => ?_⟩` and prove the remaining obligations. Take `⟨-, -, h3⟩` from `h (qbar w q).1.1 (qbar w q).1.2 (qbar w q).2.1 (qbar w q).2.2`. Rewrite `h3` using `[condX_third w _ _ _ (qbar w q).2.2]`. Establish `e` using `hgt_qbar w q`. Unfold `hgt at e`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Simplify using `only [qbar, pinv_pinv] at h3 e`. Rewrite `h3` using `[e]`. Conclude with `h3`. Introduce and unpack `⟨hy, hE⟩ a c hac hs`. Establish `hG` using `grD_inv (Xmat_upU w y) (Xmat_grD w y hy)`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set p : FreeE w := qbar w ⟨(a, c), hac, hs⟩ with hp`. Establish `hpe : hgt w p = c.val - a.val` using `hgt_qbar w _`. Establish `hp1 : Xmat w y (pinv w c) (pinv w a) = y p` using `Xmat_q w y p`. Use `⟨?_, bt_mem hG a c hac, ?_⟩` and prove the remaining obligations. Rewrite using `[hp1, ← hpe]`.
-
-Conclude with `hy p`. Rewrite using `[condX_third w _ a c hs, ← hpe]`. Conclude with `hE p`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem condX_iff (y : FreeE w → D.host.E) :
     CondX w (Xmat w y) ↔ (∀ q, y q ∈ ddPow D (hgt w q)) ∧

@@ -11,13 +11,13 @@ namespace GlobalTheory.Mem.SStageInhab
 open Formalism.BasicNotions NumberField IsDedekindDomain GlobalTheory.Mem
 
 /- English proof (translation)
-Use `symm`. Apply `Set.ncard_congr (fun v _ => v.asIdeal)` to reduce the goal to its premises. Introduce `v hv`. Use `⟨v.isPrime, ⟨?_⟩⟩` and prove the remaining obligations. Establish `hm : (Ideal.span {(l : ℤ)}).IsMaximal` using `Ideal.IsPrime.isMaximal ((Ideal.span_singleton_prime (by exact_mod_cast hl.ne_zero)).2 (Nat.prime_iff_prime_int.1 hl)) (by simpa using hl.ne_zero)`.
+Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hm.eq_of_le (Ideal.IsPrime.ne_top (Ideal.IsPrime.under ℤ v.asIdeal)) ?_` and prove the remaining obligations. Rewrite using `[Ideal.span_singleton_le_iff_mem]`. Simplify `hv` using `[Ideal.under, placesOver]`. Introduce `a b _ _ h`. Conclude with `HeightOneSpectrum.ext h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `P ⟨hP, hP'⟩`. Establish `hmem : ((l:ℕ) : 𝓞 E) ∈ P`. Establish `: (l:ℤ) ∈ P.under ℤ` using `by rw [← hP'.over]; exact Ideal.mem_span_singleton_self _`. Simplify `this` using `[Ideal.under]`. Use `⟨⟨P, hP, ?_⟩, hmem, rfl⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Conclude with `hl.ne_zero (by simpa using hmem)`.
+A detailed English derivation is pending.
 -/
 theorem ncard_primesOver_eq (E : Type) [Field E] [NumberField E] (l : ℕ) (hl : l.Prime) :
     ((Ideal.span {(l : ℤ)}).primesOver (𝓞 E)).ncard = (placesOver E l).ncard := by
@@ -40,9 +40,9 @@ theorem ncard_primesOver_eq (E : Type) [Field E] [NumberField E] (l : ℕ) (hl :
     exact hl.ne_zero (by simpa using hmem)
 
 /- English proof (translation)
-Use `letI := B.host.cmStar`. Introduce `h`. Establish `h2` using `B.sp.cm.deg2`. Establish `hs : Function.Surjective (algebraMap B.host.F B.host.E)` using `fun a => by`. Establish `: B.toPre.conjF a = a` using `by rw [h]; rfl`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(B.sp.cm.fixed a).1 this`. Establish `: Module.finrank B.host.F B.host.E = 1`. Rewrite using `[← Algebra.finrank_eq_one_iff_bijective_algebraMap.symm]`. Conclude with `⟨(algebraMap B.host.F B.host.E).injective, hs⟩`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem conjF_ne_id (B : Base) : B.toPre.conjF ≠ AlgHom.id _ _ := by
   letI := B.host.cmStar
@@ -56,9 +56,9 @@ theorem conjF_ne_id (B : Base) : B.toPre.conjF ≠ AlgHom.id _ _ := by
   omega
 
 /- English proof (translation)
-Take `⟨L, hL⟩` from `GlobalTheory.LocalData.exists_locAt _ _ B.toPre.conjF h2 p`. Distinguish the cases in `h : Formalism.MainNotions.S.Loc.resChar p ∈ ({B.host.g 0, B.host.g 1} : Finset ℕ)`. Take `⟨S⟩` from `GlobalTheory.LocSplit.nonempty_splitAt _ _ _ h2 hne p L (by`. Rewrite using `[ncard_primesOver_eq _ _ L.ellPrime.out]`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at h`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `rcases h with h | h <;> rw [h] <;> exact B.toPre.g_split _)`. Conclude with `⟨{L with split := some S}, by simp [h]⟩`. Conclude with `⟨L, by simp [hL, h]⟩`.
+Apply the first step, then apply the next step to every resulting obligation. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem exists_locAt_split_iff (B : Base) (h2 : Module.finrank B.host.F B.host.E = 2) (hne : B.toPre.conjF ≠ AlgHom.id _ _) (p) :
     ∃ L : Formalism.MainNotions.S.Loc.LocAt B.host.F B.host.E B.toPre.conjF p, (L.split.isSome ↔
@@ -73,11 +73,11 @@ theorem exists_locAt_split_iff (B : Base) (h2 : Module.finrank B.host.F B.host.E
   · exact ⟨L, by simp [hL, h]⟩
 
 /- English proof (translation)
-Set `e` to `EuclideanSpace.basisFun (Fin D) ℂ`. Establish `ho : Orthonormal ℂ (fun i : Fin d => e (Fin.castLE h i))` using `e.orthonormal.comp _ (Fin.castLE_injective h)`. Set `f : EE →ₛₗ[starRingEnd ℂ] EuclideanSpace ℂ (Fin D)` to `{ toFun := fun x => ∑ i, (inner ℂ x (b i)) • e (Fin.castLE h i) map_add' := by intro x y; simp [inner_add_left, add_smul, Finset.sum_add_distrib] map_smul' := by intro c x; simp [Finset.smul_sum, smul_smul, mul_comm] }`. Use `⟨⟨f, fun x => ?_⟩⟩` and prove the remaining obligations. Establish `h1 : inner ℂ (f x) (f x) = ∑ i, (starRingEnd ℂ) (inner ℂ x (b i)) * inner ℂ x (b i)` using `ho.inner_sum _ _ _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2` using `b.sum_inner_mul_inner x x`. Establish `h3 : inner ℂ (f x) (f x) = inner ℂ x x`. Rewrite using `[h1, ← h2]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[inner_conj_symm, mul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h3` using `[inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K]`. Establish `h4 : ‖f x‖^2 = ‖x‖^2` using `by exact_mod_cast h3`. Conclude with `(pow_left_inj₀ (norm_nonneg _) (norm_nonneg _) two_ne_zero).1 h4`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nonempty_conj_embedding (EE : Type) [NormedAddCommGroup EE] [InnerProductSpace ℂ EE] (d D : ℕ) (h : d ≤ D)
     (b : OrthonormalBasis (Fin d) ℂ EE) : Nonempty (EE →ₗᵢ⋆[ℂ] EuclideanSpace ℂ (Fin D)) := by
@@ -99,11 +99,9 @@ theorem nonempty_conj_embedding (EE : Type) [NormedAddCommGroup EE] [InnerProduc
   exact (pow_left_inj₀ (norm_nonneg _) (norm_nonneg _) two_ne_zero).1 h4
 
 /- English proof (translation)
-Set `c : InnerProductSpace.Core ℂ V` to `{ inner := ip, conj_inner_symm := hs re_inner_nonneg := fun x => by`. Distinguish the cases in `h : x = 0`. Use `hm x x 0` as an intermediate fact. Substitute `h` using the available equality. Simplify using `at this`.
+Introduce a local definition for the expression. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[this]`. Conclude with `(hp x h).le`. Use `add_left := ha, smul_left := hm`. Use `definite := fun x h => by by_contra h'; have := hp x h'; rw [h] at this; simp at this }`. Use `letI n : NormedAddCommGroup V := c.toNormedAddCommGroup`.
-
-Use `letI i : InnerProductSpace ℂ V := InnerProductSpace.ofCore c.toCore`. Conclude with `⟨V, n, i, inferInstance, LinearEquiv.refl _ _, fun x y => rfl⟩`.
+Simplify using the standard rewrite rules. Equip the data with the indicated structure. Equip the data with the indicated structure. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_innerProductSpace (V : Type) [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V] (ip : V → V → ℂ)
     (hs : ∀ x y, (starRingEnd ℂ) (ip y x) = ip x y) (hp : ∀ x, x ≠ 0 → 0 < (ip x x).re)
@@ -123,11 +121,9 @@ theorem exists_innerProductSpace (V : Type) [AddCommGroup V] [Module ℂ V] [Fin
   exact ⟨V, n, i, inferInstance, LinearEquiv.refl _ _, fun x y => rfl⟩
 
 /- English proof (translation)
-Establish `hloc`. Use `letI := B.host.cmStar`. Conclude with `exists_locAt_split_iff B B.sp.cm.deg2 (conjF_ne_id B)`. Use `choose L hL using hloc`. Set `pt : Formalism.MainNotions.S.Point B.host.E (B.R.rS + 1)` to `⟨[(1, B.R.rS + 1)], by simp, by simp⟩`.
+Establish an intermediate fact. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hU` using `fun u => by haveI := (C.mem u).A.Mu0_fd`. Conclude with `exists_innerProductSpace (C.mem u).A.Mu0 (fun x y => (C.fm u).ipC 0 x.1 y.1) (fun x y => hs u _ x.2 _ y.2) (fun x hx => hp u _ x.2 (fun h => hx (Subtype.ext h))) (fun x y z => by simp [MemberForms.ipC, mul_add, Finset.sum_add_distrib]) (fun x y r => by simp [MemberForms.ipC, Fins …`. Use `choose U n i f e he using hU`. Take `⟨sE⟩` from `nonempty_conj_embedding W.EE _ _ hDD W.onb`. Set `s : Formalism.MainNotions.S.Draft.SData B.R B.host.F B.host.E B.toPre.conjF B.Word (Tau B.R) B.hcW` to `{ cdScale := fun _ _ => 1, cdScale_pos := fun _ _ => one_pos, Del := Del, Del_pos := hD, cloud_gap := gap letter := letter, letter_inj := hinj, u_letter := hu, HH := EuclideanSpace ℂ (Fin W.Dall) Cu := U, cuN := n, cuI := i, cuF := f, Pu := fun _ => 0, volN := fun _ => 1, volH := …`.
-
-Conclude with `⟨{ dsig := fun _ => 1, dsig_pos := fun _ => one_pos, s := s, s_split := hL, s_HH := by simp [s] s_Cu := e, s_PlF := Equiv.refl _, s_Cu_isom := he, sEE := sE }, rfl, rfl, fun _ _ => ⟨()⟩, fun _ _ => ⟨()⟩⟩`.
+Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_sStage (B : Base) (C : Cols B) (W : RowsRest B C)
     (Del : ℚ) (hD : 0 < Del)
@@ -169,7 +165,7 @@ theorem exists_sStage (B : Base) (C : Cols B) (W : RowsRest B C)
     rfl, rfl, fun _ _ => ⟨()⟩, fun _ _ => ⟨()⟩⟩
 
 /- English proof (translation)
-The claim follows from `(exists_sStage B C W Del hD gap letter hinj hu hs hp hDD).elim fun S _ => ⟨S⟩`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_sStage (B : Base) (C : Cols B) (W : RowsRest B C)
     (Del : ℚ) (hD : 0 < Del)

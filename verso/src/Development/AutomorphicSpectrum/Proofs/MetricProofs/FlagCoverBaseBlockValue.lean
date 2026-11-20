@@ -8,17 +8,15 @@ open GlobalTheory.CompanionTheory.Ar.PB.CovGraph
 namespace GlobalTheory.CompanionTheory.Ar.PB.CovGraph
 
 /- English proof (translation)
-Introduce `K _ ι _ Φ _ y Ψ _ _ N j M K' _ ι' _ Φ' _ y' M' Cv z₁ z₀ kb hz hO`. Take `⟨c₀, hc₀, e₀⟩` from `hO`. Take `⟨c, hc⟩` from `hz.1 (Cv.κ kb).1`. Take `⟨hy, hv⟩` from `GlobalTheory.T.coordinate_ratio_value_at_point K' ι' Φ' y' z₁ (Cv.κ kb).1 c hz hc`. Establish `hw : ∀ i : ι kb.1, ∃ m : ι' (Cv.κ kb).1, Cv.v ⟨kb, i⟩ = ⟨Cv.κ kb, m⟩` using `fun i => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `Cv.block.2.2.1 ⟨kb, i⟩`. Break down `hq : Cv.v ⟨kb, i⟩ with ⟨k, m⟩` into its components or cases. Rewrite `h1` using `[hq]`. Take `rfl : k = Cv.κ kb` from `h1`. Conclude with `⟨m, rfl⟩`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `choose w hw using hw`. Use `⟨y' ⟨(Cv.κ kb).1, c⟩, fun i => y' ⟨(Cv.κ kb).1, w i⟩ / y' ⟨(Cv.κ kb).1, c⟩, (c₀ kb * z₁ ⟨(Cv.κ kb).1, c⟩)⁻¹, hy, inv_ne_zero (mul_ne_zero (hc₀ kb) hc), fun i => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[mul_div_cancel₀ _ hy]`. Establish `h1` using `transPt_base Cv (⟨kb, i⟩ : Σ k, baseIdx ι M.blk k)`. Rewrite `h1` using `[← Cv.x_eq, hw i, ← M'.y_base]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h1`. Establish `h2 : z₀ ⟨kb.1, i⟩ = c₀ kb * z₁ ⟨(Cv.κ kb).1, w i⟩`. Establish `h3` using `congrFun e₀ (⟨kb, i⟩ : Σ k, baseIdx ι M.blk k)`. Simplify using `only [Function.comp, hw i] at h3`. Conclude with `h3`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h4 : (c₀ kb * z₁ ⟨(Cv.κ kb).1, c⟩)⁻¹ * z₀ ⟨kb.1, i⟩ = (z₁ ⟨(Cv.κ kb).1, c⟩)⁻¹ * z₁ ⟨(Cv.κ kb).1, w i⟩`. Rewrite using `[h2]`. Use `hc₀ kb` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite using `[h4]`.
-
-Conclude with `hv (w i)`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transPt_block_base : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (K' : Type) [Fintype K'] (ι' : K' → Type) [∀ k, Fintype (ι' k)] (Φ' : Type) [Field Φ'] (y' : (Σ k, ι' k) → Φ') (M' : FlagModel y' Ψ N j) (Cv : FlagCover M' M) (z₁ : (Σ k, ι' k) → ℂ) (z₀ : (Σ k, ι k) → ℂ) (kb : NonPluckerBlocks M.blk), z₁ ∈ mcPts (mCoordIdeal y') → SameOrbit (basePart M.blk z₀) (basePart M'.blk z₁ ∘ Cv.v) → ∃ (e : Φ') (s : ι kb.1 → Φ') (t : ℂ), e ≠ 0 ∧ t ≠ 0 ∧ ∀ i, transPt Cv ⟨kb.1, i⟩ = e * s i ∧ IsValueAt y' (s i) z₁ (t * z₀ ⟨kb.1, i⟩) := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M K' _ ι' _ Φ' _ y' M' Cv z₁ z₀ kb hz hO

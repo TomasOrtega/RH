@@ -24,7 +24,7 @@ structure MU (e : Fin 2 → Fin 2 → B) : Prop where
   sum : e 0 0 + e 1 1 = 1
 
 /- English proof (translation)
-Use extensionality with `⟨i, k⟩ ⟨j, l⟩`. Simplify using `only [E1, Matrix.of_apply, Matrix.sub_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem firstEmbed_sub (M N : M2 B) : E1 (M - N) = E1 M - E1 N := by
   ext ⟨i, k⟩ ⟨j, l⟩
@@ -32,7 +32,7 @@ theorem firstEmbed_sub (M N : M2 B) : E1 (M - N) = E1 M - E1 N := by
   split_ifs <;> simp
 
 /- English proof (translation)
-Use extensionality with `⟨i, k⟩ ⟨j, l⟩`. Simplify using `only [E2, Matrix.of_apply, Matrix.sub_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eval_two_sub (M N : M2 B) : E2 (M - N) = E2 M - E2 N := by
   ext ⟨i, k⟩ ⟨j, l⟩
@@ -40,7 +40,7 @@ theorem eval_two_sub (M N : M2 B) : E2 (M - N) = E2 M - E2 N := by
   split_ifs <;> simp
 
 /- English proof (translation)
-Use extensionality with `⟨i, k⟩ ⟨j, l⟩`. Simplify using `only [E1, Matrix.of_apply, Matrix.smul_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem kronecker_E1_smul (c : K) (M : M2 B) : E1 (c • M) = c • E1 M := by
   ext ⟨i, k⟩ ⟨j, l⟩
@@ -48,7 +48,7 @@ theorem kronecker_E1_smul (c : K) (M : M2 B) : E1 (c • M) = c • E1 M := by
   split_ifs <;> simp
 
 /- English proof (translation)
-Use extensionality with `⟨i, k⟩ ⟨j, l⟩`. Simplify using `only [E2, Matrix.of_apply, Matrix.smul_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eval_two_smul (c : K) (M : M2 B) : E2 (c • M) = c • E2 M := by
   ext ⟨i, k⟩ ⟨j, l⟩
@@ -56,7 +56,7 @@ theorem eval_two_smul (c : K) (M : M2 B) : E2 (c • M) = c • E2 M := by
   split_ifs <;> simp
 
 /- English proof (translation)
-Use extensionality with `⟨i, k⟩ ⟨j, l⟩`. Apply the tactic sequence `fin_cases i <;> fin_cases k <;> fin_cases j <;> fin_cases l <;>`. Simplify using `[E1, E2, Pf, Matrix.mul_apply, Fintype.sum_prod_type]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem swap_mul_firstEmbed (M : M2 B) : Pf B * E1 M = E2 M * Pf B := by
   ext ⟨i, k⟩ ⟨j, l⟩
@@ -64,7 +64,7 @@ theorem swap_mul_firstEmbed (M : M2 B) : Pf B * E1 M = E2 M * Pf B := by
     simp [E1, E2, Pf, Matrix.mul_apply, Fintype.sum_prod_type]
 
 /- English proof (translation)
-Use extensionality with `⟨i, k⟩ ⟨j, l⟩`. Apply the tactic sequence `fin_cases i <;> fin_cases k <;> fin_cases j <;> fin_cases l <;>`. Simplify using `[E1, E2, Pf, Matrix.mul_apply, Fintype.sum_prod_type]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem swap_mul_secondEmbed (M : M2 B) : Pf B * E2 M = E1 M * Pf B := by
   ext ⟨i, k⟩ ⟨j, l⟩
@@ -74,7 +74,7 @@ theorem swap_mul_secondEmbed (M : M2 B) : Pf B * E2 M = E1 M * Pf B := by
 variable {e : Fin 2 → Fin 2 → B}
 
 /- English proof (translation)
-Use extensionality with `⟨i, k⟩ ⟨j, l⟩`. Apply the tactic sequence `fin_cases i <;> fin_cases k <;> fin_cases j <;> fin_cases l <;>`. Simplify using `[E1, E2, Pf, PE, Matrix.mul_apply, Fintype.sum_prod_type, he.mul]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem PE_first_mul_second_eq_swap (he : MU e) : E1 (PE e) * E2 (PE e) = Pf B * E1 (PE e) := by
   ext ⟨i, k⟩ ⟨j, l⟩
@@ -82,7 +82,7 @@ theorem PE_first_mul_second_eq_swap (he : MU e) : E1 (PE e) * E2 (PE e) = Pf B *
     simp [E1, E2, Pf, PE, Matrix.mul_apply, Fintype.sum_prod_type, he.mul]
 
 /- English proof (translation)
-Use extensionality with `⟨i, k⟩ ⟨j, l⟩`. Apply the tactic sequence `fin_cases i <;> fin_cases k <;> fin_cases j <;> fin_cases l <;>`. Simplify using `[E1, E2, Pf, PE, Matrix.mul_apply, Fintype.sum_prod_type, he.mul]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem PE_second_mul_first_eq_swap (he : MU e) : E2 (PE e) * E1 (PE e) = Pf B * E2 (PE e) := by
   ext ⟨i, k⟩ ⟨j, l⟩
@@ -90,7 +90,7 @@ theorem PE_second_mul_first_eq_swap (he : MU e) : E2 (PE e) * E1 (PE e) = Pf B *
     simp [E1, E2, Pf, PE, Matrix.mul_apply, Fintype.sum_prod_type, he.mul]
 
 /- English proof (translation)
-Use extensionality with `⟨i, k⟩ ⟨j, l⟩`. Apply the tactic sequence `fin_cases i <;> fin_cases k <;> fin_cases j <;> fin_cases l <;>`. Simplify using `[E1, E2, Pf, QE, Matrix.mul_apply, Fintype.sum_prod_type, he.mul]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem QE_first_mul_second_eq_swap (he : MU e) : E1 (QE e) * E2 (QE e) = E1 (QE e) * Pf B := by
   ext ⟨i, k⟩ ⟨j, l⟩
@@ -98,7 +98,7 @@ theorem QE_first_mul_second_eq_swap (he : MU e) : E1 (QE e) * E2 (QE e) = E1 (QE
     simp [E1, E2, Pf, QE, Matrix.mul_apply, Fintype.sum_prod_type, he.mul]
 
 /- English proof (translation)
-Use extensionality with `⟨i, k⟩ ⟨j, l⟩`. Apply the tactic sequence `fin_cases i <;> fin_cases k <;> fin_cases j <;> fin_cases l <;>`. Simplify using `[E1, E2, Pf, QE, Matrix.mul_apply, Fintype.sum_prod_type, he.mul]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem QE_second_mul_first_eq_swap (he : MU e) : E2 (QE e) * E1 (QE e) = E2 (QE e) * Pf B := by
   ext ⟨i, k⟩ ⟨j, l⟩
@@ -106,7 +106,7 @@ theorem QE_second_mul_first_eq_swap (he : MU e) : E2 (QE e) * E1 (QE e) = E2 (QE
     simp [E1, E2, Pf, QE, Matrix.mul_apply, Fintype.sum_prod_type, he.mul]
 
 /- English proof (translation)
-Establish `tri : p12 * p13 * p23 = p12 * p23 * p12`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [sub_mul, mul_sub, smul_mul_assoc, mul_smul_comm, one_mul, mul_one, smul_sub, h1, h2, h3, h4, tri]`. Use `module`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ybe_alg {C : Type} [Ring C] [Algebra K C] (p12 p13 p23 : C) (u v : K)
     (h1 : p13 * p23 = p12 * p13) (h2 : p23 * p12 = p12 * p13)
@@ -122,7 +122,7 @@ theorem ybe_alg {C : Type} [Ring C] [Algebra K C] (p12 p13 p23 : C) (u v : K)
   module
 
 /- English proof (translation)
-Establish `tri : q23 * p12 * q23 = q23 * p12 * p12`. Rewrite using `[mul_assoc, g2, ← mul_assoc, g4]`. Simplify using `only [sub_mul, mul_sub, smul_mul_assoc, mul_smul_comm, one_mul, mul_one, smul_sub, g1, g2, g3, g4, tri]`. Use `module`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ybet_alg {C : Type} [Ring C] [Algebra K C] (p12 q13 q23 : C) (d' d : K)
     (g1 : p12 * q13 = q23 * p12) (g2 : p12 * q23 = q13 * p12)
@@ -136,7 +136,7 @@ theorem ybet_alg {C : Type} [Ring C] [Algebra K C] (p12 q13 q23 : C) (d' d : K)
   module
 
 /- English proof (translation)
-Rewrite using `[firstEmbed_sub, kronecker_E1_smul, first_embedding_one, eval_two_sub, eval_two_smul, entries_mem_one]`. Conclude with `ybe_alg _ _ _ u v (PE_first_mul_second_eq_swap he) (swap_mul_firstEmbed _).symm (PE_second_mul_first_eq_swap he) (swap_mul_secondEmbed _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rtt_PE (he : MU e) (u v : K) :
     ((u - v) • (1 : Matrix (Fin 2 × Fin 2) (Fin 2 × Fin 2) B) - Pf B) * E1 (u • (1 : M2 B) - PE e) *
@@ -147,7 +147,7 @@ theorem rtt_PE (he : MU e) (u v : K) :
   exact ybe_alg _ _ _ u v (PE_first_mul_second_eq_swap he) (swap_mul_firstEmbed _).symm (PE_second_mul_first_eq_swap he) (swap_mul_secondEmbed _).symm
 
 /- English proof (translation)
-Rewrite using `[firstEmbed_sub, kronecker_E1_smul, first_embedding_one, eval_two_sub, eval_two_smul, entries_mem_one]`. Conclude with `ybet_alg _ _ _ d' d (swap_mul_firstEmbed _) (swap_mul_secondEmbed _) (QE_first_mul_second_eq_swap he) (QE_second_mul_first_eq_swap he)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rtt_QE (he : MU e) (d' d : K) :
     ((d - d') • (1 : Matrix (Fin 2 × Fin 2) (Fin 2 × Fin 2) B) - Pf B) * E1 (d' • (1 : M2 B) - QE e) *
@@ -158,7 +158,7 @@ theorem rtt_QE (he : MU e) (d' d : K) :
   exact ybet_alg _ _ _ d' d (swap_mul_firstEmbed _) (swap_mul_secondEmbed _) (QE_first_mul_second_eq_swap he) (QE_second_mul_first_eq_swap he)
 
 /- English proof (translation)
-Establish `h` using `he.sum`. Establish `h' : e 1 1 = 1 - e 0 0` using `eq_sub_of_add_eq' h`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> (simp [YangianSpanCharacter.T.J, PE, QE, Matrix.mul_apply, Fin.sum_univ_two, h'] <;> first | rfl | abel)`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem J_PE (he : MU e) : YangianSpanCharacter.T.J B * PE e = YangianSpanCharacter.T.J B - QE e * YangianSpanCharacter.T.J B := by
   have h := he.sum
@@ -168,7 +168,7 @@ theorem J_PE (he : MU e) : YangianSpanCharacter.T.J B * PE e = YangianSpanCharac
     (simp [YangianSpanCharacter.T.J, PE, QE, Matrix.mul_apply, Fin.sum_univ_two, h'] <;> first | rfl | abel)
 
 /- English proof (translation)
-Establish `h` using `he.sum`. Establish `h' : e 1 1 = 1 - e 0 0` using `eq_sub_of_add_eq' h`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> (simp [YangianSpanCharacter.T.J, PE, QE, Matrix.mul_apply, Fin.sum_univ_two, h'] <;> first | rfl | abel)`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem J_QE (he : MU e) : YangianSpanCharacter.T.J B * QE e = YangianSpanCharacter.T.J B - PE e * YangianSpanCharacter.T.J B := by
   have h := he.sum
@@ -178,7 +178,7 @@ theorem J_QE (he : MU e) : YangianSpanCharacter.T.J B * QE e = YangianSpanCharac
     (simp [YangianSpanCharacter.T.J, PE, QE, Matrix.mul_apply, Fin.sum_univ_two, h'] <;> first | rfl | abel)
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[YangianSpanCharacter.T.J, PE, QE, Matrix.mul_apply, Fin.sum_univ_two, he.mul]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem QE_J_PE (he : MU e) : QE e * YangianSpanCharacter.T.J B * PE e = -(QE e * YangianSpanCharacter.T.J B) := by
   ext i j
@@ -186,7 +186,7 @@ theorem QE_J_PE (he : MU e) : QE e * YangianSpanCharacter.T.J B * PE e = -(QE e 
     simp [YangianSpanCharacter.T.J, PE, QE, Matrix.mul_apply, Fin.sum_univ_two, he.mul]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> (simp [YangianSpanCharacter.T.J, PE, QE, Matrix.mul_apply, Fin.sum_univ_two, he.mul]; rfl)`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem PE_J_QE (he : MU e) : PE e * YangianSpanCharacter.T.J B * QE e = -(YangianSpanCharacter.T.J B * QE e) := by
   ext i j
@@ -194,7 +194,7 @@ theorem PE_J_QE (he : MU e) : PE e * YangianSpanCharacter.T.J B * QE e = -(Yangi
     (simp [YangianSpanCharacter.T.J, PE, QE, Matrix.mul_apply, Fin.sum_univ_two, he.mul]; rfl)
 
 /- English proof (translation)
-Simplify using `only [sub_mul, mul_sub, smul_mul_assoc, mul_smul_comm, one_mul, mul_one, smul_sub, QE_J_PE he, J_PE he]`. Use `module`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem det1 (he : MU e) (D : K) :
     ((D + 1) • (1 : M2 B) - QE e) * YangianSpanCharacter.T.J B * (D • (1 : M2 B) - PE e) =
@@ -204,7 +204,7 @@ theorem det1 (he : MU e) (D : K) :
   module
 
 /- English proof (translation)
-Simplify using `only [sub_mul, mul_sub, smul_mul_assoc, mul_smul_comm, one_mul, mul_one, smul_sub, PE_J_QE he, J_QE he]`. Use `module`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem det2 (he : MU e) (D : K) :
     (D • (1 : M2 B) - PE e) * YangianSpanCharacter.T.J B * ((D + 1) • (1 : M2 B) - QE e) =
@@ -214,7 +214,7 @@ theorem det2 (he : MU e) (D : K) :
   module
 
 /- English proof (translation)
-Unfold `RhE`. Rewrite using `[Matrix.transpose_smul, Matrix.transpose_sub, Matrix.transpose_smul, Matrix.transpose_one]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem RhE_transpose (D : K) : (RhE e D)ᵀ = (D - 1)⁻¹ • (D • (1 : M2 B) - QE e) := by
   unfold RhE
@@ -222,7 +222,7 @@ theorem RhE_transpose (D : K) : (RhE e D)ᵀ = (D - 1)⁻¹ • (D • (1 : M2 B
   rfl
 
 /- English proof (translation)
-Unfold `RhtE`. Rewrite using `[Matrix.transpose_smul, Matrix.transpose_sub, Matrix.transpose_smul, Matrix.transpose_one]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem RhtE_transpose (d : K) : (RhtE e d)ᵀ = (d - 1)⁻¹ • (d • (1 : M2 B) - PE e) := by
   unfold RhtE
@@ -230,11 +230,11 @@ theorem RhtE_transpose (d : K) : (RhtE e d)ᵀ = (d - 1)⁻¹ • (d • (1 : M2
   rfl
 
 /- English proof (translation)
-Establish `h1' : D - 1 ≠ 0` using `sub_ne_zero.2 h1`. Establish `hs : (D + 1 - 1)⁻¹ * (D - 1)⁻¹ * ((D + 1) * (D - 1)) = (D + 1) / D`. Rewrite using `[add_sub_cancel_right]`. Clear the denominators using the available nonvanishing facts. Establish `hs' : (D - 1)⁻¹ * (D + 1 - 1)⁻¹ * ((D + 1) * (D - 1)) = (D + 1) / D`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Rewrite using `[add_sub_cancel_right]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[RhE_transpose]`. Unfold `RhE`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[smul_mul_assoc, smul_mul_assoc, mul_smul_comm, det1 he D, smul_smul, smul_smul, hs]`. Rewrite using `[smul_mul_assoc, smul_mul_assoc, mul_smul_comm, det2 he D, smul_smul, smul_smul, hs']`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_RhE (he : MU e) (D : K) (h0 : D ≠ 0) (h1 : D ≠ 1) :
     (RhE e (D + 1))ᵀ * YangianSpanCharacter.T.J B * RhE e D = ((D + 1) / D) • YangianSpanCharacter.T.J B ∧
@@ -251,13 +251,13 @@ theorem det_RhE (he : MU e) (D : K) (h0 : D ≠ 0) (h1 : D ≠ 1) :
   · rw [smul_mul_assoc, smul_mul_assoc, mul_smul_comm, det2 he D, smul_smul, smul_smul, hs']
 
 /- English proof (translation)
-Establish `h1' : d - 1 ≠ 0` using `sub_ne_zero.2 h1`. Establish `h2' : d - 1 - 1 ≠ 0` using `sub_ne_zero.2 h2`. Establish `hs : (d - 1 - 1)⁻¹ * (d - 1)⁻¹ * ((d - 1 + 1) * (d - 1 - 1)) = d / (d - 1)`. Rewrite using `[sub_add_cancel]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Establish `hs' : (d - 1)⁻¹ * (d - 1 - 1)⁻¹ * ((d - 1 + 1) * (d - 1 - 1)) = d / (d - 1)`. Rewrite using `[sub_add_cancel]`. Clear the denominators using the available nonvanishing facts. Establish `e1` using `det1 he (d - 1)`. Establish `e2` using `det2 he (d - 1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e1`, `e2` using `[sub_add_cancel]`. Rewrite `hs`, `hs'` using `[sub_add_cancel]`. Rewrite using `[RhtE_transpose]`. Unfold `RhtE`. Prove the components needed by the constructor for the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[smul_mul_assoc, smul_mul_assoc, mul_smul_comm, e2, smul_smul, smul_smul, hs]`. Rewrite using `[smul_mul_assoc, smul_mul_assoc, mul_smul_comm, e1, smul_smul, smul_smul, hs']`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_RhtE (he : MU e) (d : K) (h1 : d ≠ 1) (h2 : d - 1 ≠ 1) :
     (RhtE e (d - 1))ᵀ * YangianSpanCharacter.T.J B * RhtE e d = (d / (d - 1)) • YangianSpanCharacter.T.J B ∧
@@ -279,7 +279,7 @@ theorem det_RhtE (he : MU e) (d : K) (h1 : d ≠ 1) (h2 : d - 1 ≠ 1) :
   · rw [smul_mul_assoc, smul_mul_assoc, mul_smul_comm, e1, smul_smul, smul_smul, hs']
 
 /- English proof (translation)
-Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Conclude with `Commute.one_left _`. Conclude with `Commute.zero_left _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comm_one (b : B) (i j : Fin 2) : Commute ((1 : M2 B) i j) b := by
   rw [Matrix.one_apply]
@@ -288,7 +288,7 @@ theorem comm_one (b : B) (i j : Fin 2) : Commute ((1 : M2 B) i j) b := by
   · exact Commute.zero_left _
 
 /- English proof (translation)
-Unfold `RhE`. Rewrite using `[Matrix.smul_apply, Matrix.sub_apply, Matrix.smul_apply]`. Conclude with `(((comm_one b i j).smul_left D).sub_left (hb j i)).smul_left _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comm_RhE (D : K) (b : B) (hb : ∀ i j, Commute (e i j) b) (i j : Fin 2) :
     Commute (RhE e D i j) b := by
@@ -297,7 +297,7 @@ theorem comm_RhE (D : K) (b : B) (hb : ∀ i j, Commute (e i j) b) (i j : Fin 2)
   exact (((comm_one b i j).smul_left D).sub_left (hb j i)).smul_left _
 
 /- English proof (translation)
-Unfold `RhtE`. Rewrite using `[Matrix.smul_apply, Matrix.sub_apply, Matrix.smul_apply]`. Conclude with `(((comm_one b i j).smul_left d).sub_left (hb i j)).smul_left _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comm_RhtE (d : K) (b : B) (hb : ∀ i j, Commute (e i j) b) (i j : Fin 2) :
     Commute (RhtE e d i j) b := by
@@ -306,7 +306,7 @@ theorem comm_RhtE (d : K) (b : B) (hb : ∀ i j, Commute (e i j) b) (i j : Fin 2
   exact (((comm_one b i j).smul_left d).sub_left (hb i j)).smul_left _
 
 /- English proof (translation)
-Establish `h` using `rtt_PE he (Y' - Ya) (Y - Ya)`. Rewrite `h` using `[sub_sub_sub_cancel_right]`. Unfold `RTTat RhE`. Simplify using `only [kronecker_E1_smul, eval_two_smul, mul_smul_comm, smul_mul_assoc]`. Rewrite using `[h, smul_comm]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem rtt_RhE (he : MU e) (Ya Y Y' : K) : RTTat (fun Y => RhE e (Y - Ya)) Y Y' := by
   have h := rtt_PE he (Y' - Ya) (Y - Ya)
@@ -316,7 +316,7 @@ theorem rtt_RhE (he : MU e) (Ya Y Y' : K) : RTTat (fun Y => RhE e (Y - Ya)) Y Y'
   rw [h, smul_comm]
 
 /- English proof (translation)
-Establish `h` using `rtt_QE he (Yb - Y') (Yb - Y)`. Rewrite `h` using `[sub_sub_sub_cancel_left]`. Unfold `RTTat RhtE`. Simplify using `only [kronecker_E1_smul, eval_two_smul, mul_smul_comm, smul_mul_assoc]`. Rewrite using `[h, smul_comm]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem rtt_RhtE (he : MU e) (Yb Y Y' : K) : RTTat (fun Y => RhtE e (Yb - Y)) Y Y' := by
   have h := rtt_QE he (Yb - Y') (Yb - Y)
@@ -326,9 +326,9 @@ theorem rtt_RhtE (he : MU e) (Yb Y Y' : K) : RTTat (fun Y => RhtE e (Yb - Y)) Y 
   rw [h, smul_comm]
 
 /- English proof (translation)
-Unfold `RTTat at hM hN ⊢`. Use `set Rm := (Y' - Y) • (1 : Matrix (Fin 2 × Fin 2) (Fin 2 × Fin 2) B) - Pf B with hRm`. Establish `c1 : E1 (N Y') * E2 (M Y) = E2 (M Y) * E1 (N Y')` using `first_second_embedding_commute _ _ fun i j k l => ((hc Y Y' k l i j).eq).symm`. Establish `c2 : E1 (M Y') * E2 (N Y) = E2 (N Y) * E1 (M Y')` using `first_second_embedding_commute _ _ fun i j k l => (hc Y' Y i j k l).eq`. Use `show Rm * E1 (M Y' * N Y') * E2 (M Y * N Y) = E2 (M Y * N Y) * E1 (M Y' * N Y') * Rm`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[first_embedding_mul, entries_mem_mul]`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem rtt_mul_at (M N : K → M2 B) (Y Y' : K) (hM : RTTat M Y Y') (hN : RTTat N Y Y')
     (hc : ∀ Y Y' i j k l, Commute (M Y i j) (N Y' k l)) : RTTat (fun Y => M Y * N Y) Y Y' := by
@@ -351,7 +351,7 @@ theorem rtt_mul_at (M N : K → M2 B) (Y Y' : K) (hM : RTTat M Y Y') (hN : RTTat
     _ = (E2 (M Y) * E2 (N Y)) * (E1 (M Y') * E1 (N Y')) * Rm := by simp only [mul_assoc]
 
 /- English proof (translation)
-Simplify using `only [DetAt, algebraMap_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem detAt_iff (M : K → M2 B) (q : K → K) (Y : K) :
     DetAt M q Y ↔ (M (Y + 1))ᵀ * YangianSpanCharacter.T.J B * M Y = q Y • YangianSpanCharacter.T.J B ∧
@@ -359,11 +359,9 @@ theorem detAt_iff (M : K → M2 B) (q : K → K) (Y : K) :
   simp only [DetAt, algebraMap_smul]
 
 /- English proof (translation)
-Rewrite `hM`, `hN`, the goal using `[detAt_iff]`. Take `⟨hM1, hM2⟩` from `hM`. Take `⟨hN1, hN2⟩` from `hN`. Establish `ht : (M (Y + 1) * N (Y + 1))ᵀ = (N (Y + 1))ᵀ * (M (Y + 1))ᵀ` using `transpose_mul_of_comm _ _ fun i j k l => (hc (Y + 1) (Y + 1) i j k l).eq`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show (M (Y + 1) * N (Y + 1))ᵀ * YangianSpanCharacter.T.J B * (M Y * N Y) = (q Y * qN Y) • YangianSpanCharacter.T.J B`. Rewrite using `[ht]`. Combine the equalities or inequalities in the displayed calculation. Use `show M Y * N Y * YangianSpanCharacter.T.J B * (M (Y + 1) * N (Y + 1))ᵀ = (q Y * qN Y) • YangianSpanCharacter.T.J B`. Rewrite using `[ht]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem det_mul_at (M N : K → M2 B) (q qN : K → K) (Y : K) (hM : DetAt M q Y) (hN : DetAt N qN Y)
     (hc : ∀ Y Y' i j k l, Commute (M Y i j) (N Y' k l)) :
@@ -390,9 +388,9 @@ theorem det_mul_at (M N : K → M2 B) (q qN : K → K) (Y : K) (hM : DetAt M q Y
       _ = (q Y * qN Y) • YangianSpanCharacter.T.J B := by rw [hM2, smul_smul, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[detAt_iff]`. Establish `h0 : Y - Ya ≠ 0`. Introduce `h`. Apply `h2` to reduce the goal to its premises. Rewrite using `[add_sub_right_comm, h, zero_add]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hE : Y + 1 - Ya = Y - Ya + 1` using `by ring`. Use `show (RhE e (Y + 1 - Ya))ᵀ * YangianSpanCharacter.T.J B * RhE e (Y - Ya) = ((Y - Ya + 1) / (Y - Ya)) • YangianSpanCharacter.T.J B ∧ RhE e (Y - Ya) * YangianSpanCharacter.T.J B * (RhE e (Y + 1 - Ya))ᵀ = ((Y - Ya + 1) / (Y - Ya)) • YangianSpanCharacter.T.J B`. Rewrite using `[hE]`. Conclude with `det_RhE he (Y - Ya) h0 h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem detAt_RhE (he : MU e) (Ya Y : K) (h1 : Y - Ya ≠ 1) (h2 : Y + 1 - Ya ≠ 1) :
     DetAt (fun Y => RhE e (Y - Ya)) (fun Y => (Y - Ya + 1) / (Y - Ya)) Y := by
@@ -406,7 +404,7 @@ theorem detAt_RhE (he : MU e) (Ya Y : K) (h1 : Y - Ya ≠ 1) (h2 : Y + 1 - Ya �
   exact det_RhE he (Y - Ya) h0 h1
 
 /- English proof (translation)
-Rewrite using `[detAt_iff]`. Establish `hE : Yb - (Y + 1) = Yb - Y - 1` using `by ring`. Use `show (RhtE e (Yb - (Y + 1)))ᵀ * YangianSpanCharacter.T.J B * RhtE e (Yb - Y) = ((Yb - Y) / (Yb - Y - 1)) • YangianSpanCharacter.T.J B ∧ RhtE e (Yb - Y) * YangianSpanCharacter.T.J B * (RhtE e (Yb - (Y + 1)))ᵀ = ((Yb - Y) / (Yb - Y - 1)) • YangianSpanCharacter.T.J B`. Rewrite `h2`, the goal using `[hE]`. Conclude with `det_RhtE he (Yb - Y) h1 h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem detAt_RhtE (he : MU e) (Yb Y : K) (h1 : Yb - Y ≠ 1) (h2 : Yb - (Y + 1) ≠ 1) :
     DetAt (fun Y => RhtE e (Yb - Y)) (fun Y => (Yb - Y) / (Yb - Y - 1)) Y := by
@@ -419,7 +417,7 @@ theorem detAt_RhtE (he : MU e) (Yb Y : K) (h1 : Yb - Y ≠ 1) (h2 : Yb - (Y + 1)
   exact det_RhtE he (Yb - Y) h1 h2
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul]`. Conclude with `(h i j).eq`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comm_diag (X : M2 B) (b : B) (h : ∀ i j, Commute (X i j) b) :
     X * Matrix.diagonal (fun _ => b) = Matrix.diagonal (fun _ => b) * X := by
@@ -435,7 +433,7 @@ variable {K B : Type} [Field K] [StarRing K] [Ring B] [StarRing B] [Algebra K B]
   {e : Fin 2 → Fin 2 → B}
 
 /- English proof (translation)
-Establish `hP : (PE e)ᴴ = PE e`. Use extensionality with `i j`. Simplify using `[PE, hs]`. Unfold `RhE`. Rewrite using `[Matrix.conjTranspose_smul, Matrix.conjTranspose_sub, Matrix.conjTranspose_smul, Matrix.conjTranspose_one, star_inv₀, star_sub, star_one, hD, hP]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem RhE_herm (hs : ∀ i j, star (e i j) = e j i) (D : K) (hD : star D = D) :
     (RhE e D)ᴴ = RhE e D := by
@@ -447,7 +445,7 @@ theorem RhE_herm (hs : ∀ i j, star (e i j) = e j i) (D : K) (hD : star D = D) 
     Matrix.conjTranspose_one, star_inv₀, star_sub, star_one, hD, hP]
 
 /- English proof (translation)
-Establish `hQ : (QE e)ᴴ = QE e`. Use extensionality with `i j`. Simplify using `[QE, hs]`. Unfold `RhtE`. Rewrite using `[Matrix.conjTranspose_smul, Matrix.conjTranspose_sub, Matrix.conjTranspose_smul, Matrix.conjTranspose_one, star_inv₀, star_sub, star_one, hd, hQ]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem RhtE_herm (hs : ∀ i j, star (e i j) = e j i) (d : K) (hd : star d = d) :
     (RhtE e d)ᴴ = RhtE e d := by
@@ -459,9 +457,7 @@ theorem RhtE_herm (hs : ∀ i j, star (e i j) = e j i) (d : K) (hd : star d = d)
     Matrix.conjTranspose_one, star_inv₀, star_sub, star_one, hd, hQ]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul T0 Rh]`. Use `_ = Rh * (T0ᴴ * Gᴴ) * Ta := by rw [hRh, hGTa, hG]; simp only [mul_assoc]`. Use `_ = Rh * (G * T0) * Ta := by rw [← Matrix.conjTranspose_mul, hGT0]`. Use `_ = G * (Rh * T0 * Ta) := by rw [← mul_assoc, hc]; simp only [mul_assoc]`.
-
-Use `_ = G * Ta * (T0 * Rh) := by rw [← hex]; simp only [mul_assoc]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem herm_plus (G Ta T0 Rh : M2 B) (hG : Gᴴ = G) (hGTa : (G * Ta)ᴴ = G * Ta)
     (hGT0 : (G * T0)ᴴ = G * T0) (hRh : Rhᴴ = Rh) (hc : Rh * G = G * Rh)
@@ -474,9 +470,7 @@ theorem herm_plus (G Ta T0 Rh : M2 B) (hG : Gᴴ = G) (hGTa : (G * Ta)ᴴ = G * 
     _ = G * Ta * (T0 * Rh) := by rw [← hex]; simp only [mul_assoc]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul Rh T0]`. Use `_ = T0ᴴ * (Rh * G) * Tb := by rw [hRh, hGTb]; simp only [mul_assoc]`. Use `_ = (T0ᴴ * Gᴴ) * Rh * Tb := by rw [hc, hG]; simp only [mul_assoc]`. Use `_ = G * (T0 * Rh * Tb) := by rw [← Matrix.conjTranspose_mul, hGT0]; simp only [mul_assoc]`.
-
-Use `_ = G * Tb * (Rh * T0) := by rw [← hex]; simp only [mul_assoc]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem herm_minus (G Tb T0 Rh : M2 B) (hG : Gᴴ = G) (hGTb : (G * Tb)ᴴ = G * Tb)
     (hGT0 : (G * T0)ᴴ = G * T0) (hRh : Rhᴴ = Rh) (hc : Rh * G = G * Rh)
@@ -496,7 +490,7 @@ variable {K A S : Type} [Field K] [StarRing K] [Ring A] [StarRing A] [Algebra K 
   [Fintype S] [DecidableEq S]
 
 /- English proof (translation)
-The claim follows from `Wd1.eU_mul_eU a sum := by have h := Wd1.sum_eU_diag (A := A) a rwa [Fin.sum_univ_two] at h`.
+A detailed English derivation is pending.
 -/
 theorem eU_MU (a : S) : MU (eU a : Fin 2 → Fin 2 → SlopeTestRemainingChoices S A) where
   mul := Wd1.eU_mul_eU a
@@ -505,9 +499,7 @@ theorem eU_MU (a : S) : MU (eU a : Fin 2 → Fin 2 → SlopeTestRemainingChoices
     rwa [Fin.sum_univ_two] at h
 
 /- English proof (translation)
-Introduce `i j`. Unfold `d0`. Rewrite using `[Matrix.diagonal_apply]`. Use `split_ifs`. Conclude with `hb`.
-
-Conclude with `fun _ _ => Commute.zero_right _`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem freeOf_diagScalar {a : S} {b : SlopeTestRemainingChoices S A} (hb : FreeOf a b) : FreeOf2 a (d0 b) := by
   intro i j
@@ -518,7 +510,7 @@ theorem freeOf_diagScalar {a : S} {b : SlopeTestRemainingChoices S A} (hb : Free
   · exact fun _ _ => Commute.zero_right _
 
 /- English proof (translation)
-Introduce `i j k l`. Rewrite using `[Matrix.mul_apply]`. Conclude with `Commute.sum_right _ _ _ fun m _ => (hM i m k l).mul_right (hN m j k l)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem freeOf2_mul {a : S} {M N : M2 (SlopeTestRemainingChoices S A)} (hM : FreeOf2 a M) (hN : FreeOf2 a N) :
     FreeOf2 a (M * N) := by
@@ -527,14 +519,14 @@ theorem freeOf2_mul {a : S} {M N : M2 (SlopeTestRemainingChoices S A)} (hM : Fre
   exact Commute.sum_right _ _ _ fun m _ => (hM i m k l).mul_right (hN m j k l)
 
 /- English proof (translation)
-Unfold `d0`. Rewrite using `[Matrix.diagonal_mul_diagonal]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem diagScalar_mul (b c : SlopeTestRemainingChoices S A) : d0 (b * c) = d0 b * d0 c := by
   unfold d0
   rw [Matrix.diagonal_mul_diagonal]
 
 /- English proof (translation)
-Unfold `d0`. Rewrite using `[Matrix.diagonal_conjTranspose]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem diagScalar_conjTranspose (b : SlopeTestRemainingChoices S A) : (d0 b)ᴴ = d0 (star b) := by
   unfold d0
@@ -542,7 +534,7 @@ theorem diagScalar_conjTranspose (b : SlopeTestRemainingChoices S A) : (d0 b)ᴴ
   rfl
 
 /- English proof (translation)
-Establish `h1 : RR * ins a T = ins a (d0 RR * T)`. Rewrite using `[Wd1.ins_mul a _ _ (freeOf_diagScalar hRR), Wd1.insert_diagonal_extract]`. Rewrite using `[h1, Wd1.ins_star a _ (freeOf2_mul (freeOf_diagScalar hRR) hT), h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem form_herm {a : S} {RR : SlopeTestRemainingChoices S A} {T : M2 (SlopeTestRemainingChoices S A)} (hRR : FreeOf a RR) (hT : FreeOf2 a T)
     (h : (d0 RR * T)ᴴ = d0 RR * T) : star (RR * ins a T) = RR * ins a T := by
@@ -551,9 +543,7 @@ theorem form_herm {a : S} {RR : SlopeTestRemainingChoices S A} {T : M2 (SlopeTes
   rw [h1, Wd1.ins_star a _ (freeOf2_mul (freeOf_diagScalar hRR) hT), h]
 
 /- English proof (translation)
-Use `ext1 i j`. Establish `h'` using `congrFun (congrFun h j) i`. Unfold `d0 at h' ⊢`. Rewrite `h'`, the goal using `[Matrix.conjTranspose_apply, Matrix.diagonal_mul]`. Rewrite `h'`, the goal using `[Matrix.diagonal_mul]`.
-
-Conclude with `h'`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem herm_transpose {RR : SlopeTestRemainingChoices S A} {T : M2 (SlopeTestRemainingChoices S A)} (h : (d0 RR * T)ᴴ = d0 RR * T) :
     (d0 RR * Tᵀ)ᴴ = d0 RR * Tᵀ := by
@@ -573,13 +563,11 @@ namespace Formalism.FourierDecayAlt.P
 open Matrix Formalism.YangianSpanCharacter.T Formalism.FourierDecayAlt.W Formalism.FourierDecayAlt.Wd
 
 /- English proof (translation)
-Introduce `K A S _ _ _ _ _ _ _ _ Ω RR TT q a Ya hM hRR hTT hYa hsYa`. Establish `he : Wd4.MU (eU a : Fin 2 → Fin 2 → SlopeTestRemainingChoices S A)` using `Wd4.eU_MU a`. Establish `hform : star (RR * ins a (TT Ya)) = RR * ins a (TT Ya)` using `Wd4.form_herm hRR (hTT Ya) (hM.herm Ya hYa hsYa)`. Establish `hc : ∀ Y Y' i j k l, Commute (TT Y i j) (Wd4.RhE (eU a) (Y' - Ya) k l)` using `fun Y Y' i j k l => (Wd4.comm_RhE (Y' - Ya) (TT Y i j) (fun r s => hTT Y i j r s) k l).symm`. Use `⟨hform, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `Y ⟨hY, -⟩ hsY show (d0 (RR * ins a (TT Ya)) * (TT Y * Rh0 a (Y - Ya)))ᴴ = d0 (RR * ins a (TT Ya)) * (TT Y * Rh0 a (Y - Ya))`. Rewrite using `[Wd4.diagScalar_mul]`. Use `Wd4.herm_plus _ _ _ _ ?_ ?_ (hM.herm Y hY hsY) ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[Wd4.diagScalar_conjTranspose, hM.form_herm]`. Rewrite using `[← Wd4.diagScalar_mul, Wd4.diagScalar_conjTranspose, hform]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Wd4.RhE_herm (Wd1.star_eU a) (Y - Ya) (by rw [star_sub, hsY, hsYa])`. Conclude with `Wd4.comm_diag _ RR (Wd4.comm_RhE (Y - Ya) RR hRR)`. Conclude with `exchange_relation_plus K A S Ω RR TT q a Y Ya hM hTT hY hYa`. Introduce and unpack `Y ⟨hY, -⟩ Y' ⟨hY', -⟩`. Conclude with `Wd4.rtt_mul_at TT (fun Y => Wd4.RhE (eU a) (Y - Ya)) Y Y' (hM.rtt Y hY Y' hY') (Wd4.rtt_RhE he Ya Y Y') hc`.
-
-Introduce and unpack `Y ⟨hY, hY1⟩ ⟨hY', hY1'⟩`. Conclude with `Wd4.det_mul_at TT (fun Y => Wd4.RhE (eU a) (Y - Ya)) q _ Y (hM.det Y hY hY') (Wd4.detAt_RhE he Ya Y hY1 hY1') hc`. Introduce `Y hsY`. Simplify using `only [star_mul', star_div₀, star_add, star_sub, star_one, hsY, hsYa, hM.q_real Y hsY]`.
+Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem letter_module_plus : Formalism.FourierDecayAlt.Wd.LetterPlus := by
   intro K A S _ _ _ _ _ _ _ _ Ω RR TT q a Ya hM hRR hTT hYa hsYa
@@ -609,15 +597,13 @@ theorem letter_module_plus : Formalism.FourierDecayAlt.Wd.LetterPlus := by
     simp only [star_mul', star_div₀, star_add, star_sub, star_one, hsY, hsYa, hM.q_real Y hsY]
 
 /- English proof (translation)
-Introduce `K A S _ _ _ _ _ _ _ _ Ω RR TT q b Yb hM hRR hTT hYb hsYb`. Establish `he : Wd4.MU (eU b : Fin 2 → Fin 2 → SlopeTestRemainingChoices S A)` using `Wd4.eU_MU b`. Establish `hform : star (RR * ins b (TT Yb)ᵀ) = RR * ins b (TT Yb)ᵀ` using `Wd4.form_herm hRR (fun i j => hTT Yb j i) (Wd4.herm_transpose (hM.herm Yb hYb hsYb))`. Establish `hc : ∀ Y Y' i j k l, Commute (Wd4.RhtE (eU b) (Yb - Y) i j) (TT Y' k l)` using `fun Y Y' i j k l => Wd4.comm_RhtE (Yb - Y) (TT Y' k l) (fun r s => hTT Y' k l r s) i j`. Use `⟨hform, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `Y ⟨hY, -⟩ hsY show (d0 (RR * ins b (TT Yb)ᵀ) * (Rht0 b (Yb - Y) * TT Y))ᴴ = d0 (RR * ins b (TT Yb)ᵀ) * (Rht0 b (Yb - Y) * TT Y)`. Rewrite using `[Wd4.diagScalar_mul]`. Use `Wd4.herm_minus _ _ _ _ ?_ ?_ (hM.herm Y hY hsY) ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[Wd4.diagScalar_conjTranspose, hM.form_herm]`. Rewrite using `[← Wd4.diagScalar_mul, Wd4.diagScalar_conjTranspose, hform]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Wd4.RhtE_herm (Wd1.star_eU b) (Yb - Y) (by rw [star_sub, hsY, hsYb])`. Conclude with `Wd4.comm_diag _ RR (Wd4.comm_RhtE (Yb - Y) RR hRR)`. Conclude with `exchange_relation_minus K A S Ω RR TT q b Y Yb hM hTT hY hYb`. Introduce and unpack `Y ⟨hY, -⟩ Y' ⟨hY', -⟩`. Conclude with `Wd4.rtt_mul_at (fun Y => Wd4.RhtE (eU b) (Yb - Y)) TT Y Y' (Wd4.rtt_RhtE he Yb Y Y') (hM.rtt Y hY Y' hY') hc`.
+Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `Y ⟨hY, hY1⟩ ⟨hY', hY1'⟩`. Establish `h` using `Wd4.det_mul_at (fun Y => Wd4.RhtE (eU b) (Yb - Y)) TT _ q Y (Wd4.detAt_RhtE he Yb Y hY1 hY1') (hM.det Y hY hY') hc`. Simplify using `only [mul_comm _ (q _)] at h`. Conclude with `h`. Introduce `Y hsY`.
-
-Simplify using `only [star_mul', star_div₀, star_sub, star_one, hsY, hsYb, hM.q_real Y hsY]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem letter_module_minus : Formalism.FourierDecayAlt.Wd.LetterMinus := by
   intro K A S _ _ _ _ _ _ _ _ Ω RR TT q b Yb hM hRR hTT hYb hsYb

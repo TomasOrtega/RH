@@ -13,9 +13,9 @@ variable {A : Type*} [NormedRing A] [NormedAlgebra ℝ A] [FiniteDimensional ℝ
   {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
 
 /- English proof (translation)
-Set `e'` to `e.toContinuousLinearEquiv`. Establish `: (Measure.map e' μ).IsAddHaarMeasure` using `e'.isAddHaarMeasure_map μ`. Establish `h` using `exp_chart_haar hF hst (Measure.map e' μ)`. Establish `he` using `exp_chart_embedding (st := st) hF`. Simplify using `only [] at h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[Measure.map_map he.measurable e'.continuous.measurable]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem haar_of_equiv [MeasurableSpace A] [BorelSpace A] [MeasurableSpace E] [BorelSpace E]
     (hF : IsFil F L) (hst : IsAdj F st) (μ : Measure E) [μ.IsAddHaarMeasure]
@@ -35,13 +35,11 @@ theorem haar_of_equiv [MeasurableSpace A] [BorelSpace A] [MeasurableSpace E] [Bo
 
 omit [FiniteDimensional ℝ A] in
 /- English proof (translation)
-Take `⟨C, M, hC, h⟩` from `hF.log_growth`. Set `U` to `U0.toContinuousLinearEquiv`. Use `set a := ‖(U.symm : A →L[ℝ] E)‖ with ha`. Use `set b := ‖(U : E →L[ℝ] A)‖ with hb`. Establish `ha0 : 0 ≤ a` using `norm_nonneg _`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb0 : 0 ≤ b` using `norm_nonneg _`. Establish `h1 : ∀ X, ‖U0.symm X‖ ≤ a * ‖X‖` using `fun X => (U.symm : A →L[ℝ] E).le_opNorm X`. Establish `h2 : ∀ X, ‖X‖ ≤ b * ‖U0.symm X‖` using `fun X => by`. Use `(U : E →L[ℝ] A).le_opNorm (U.symm X)` as an intermediate fact. Rewrite `this` using `[ContinuousLinearEquiv.coe_coe, U.apply_symm_apply]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨a * C * b * (1 + b) ^ M, M, by positivity, fun Y hY => ?_⟩` and prove the remaining obligations. Use `set s := ‖U0.symm (NormedSpace.exp Y - 1)‖ with hs`. Establish `hs0 : 0 ≤ s` using `norm_nonneg _`. Establish `h3` using `h2 (NormedSpace.exp Y - 1)`. Establish `h4 : 1 + ‖NormedSpace.exp Y - 1‖ ≤ (1 + b) * (1 + s)` using `by nlinarith`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem growth_of_equiv (hF : IsFil F L) (U0 : E ≃ₗ[ℝ] A) : ∃ (C : ℝ) (M : ℕ), 0 ≤ C ∧ ∀ Y ∈ F 0,
     ‖U0.symm Y‖ ≤ C * ‖U0.symm (NormedSpace.exp Y - 1)‖ *
@@ -83,9 +81,9 @@ noncomputable def unrealL (m : ℕ) :
   right_inv X := by ext i j; apply Complex.ext <;> simp [unrealify, realifyFun]
 
 /- English proof (translation)
-Rewrite using `[EuclideanSpace.norm_eq, S7.hs]`. Use `congr 1`. Simplify using `only [Fintype.sum_prod_type, Fintype.sum_bool]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `show ‖X i j‖ ^ 2 = ‖(X i j).im‖ ^ 2 + ‖(X i j).re‖ ^ 2`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Complex.sq_norm, Complex.normSq_apply, Real.norm_eq_abs, Real.norm_eq_abs, sq_abs, sq_abs]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem sqrt_hs {m : ℕ} (X : Matrix (Fin m) (Fin m) ℂ) :
     Real.sqrt (S7.hs X) = ‖(unrealL m).symm X‖ := by
@@ -100,7 +98,7 @@ theorem sqrt_hs {m : ℕ} (X : Matrix (Fin m) (Fin m) ℂ) :
 variable {k r : ℕ}
 
 /- English proof (translation)
-Rewrite using `[lieE, lieOf_Nset_eq, ← Submodule.span_eq (Submodule.map _ _)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lieE_eq : lieE (Nset k r) =
     (lieN (levF (levB k r)) (adjH (Hpk k r))).map (unrealL _).symm.toLinearMap := by
@@ -108,15 +106,13 @@ theorem lieE_eq : lieE (Nset k r) =
   rfl
 
 /- English proof (translation)
-Establish `hmem : ∀ x : lieE (Nset k r), unrealL _ (x : EuclideanSpace ℝ _) ∈ lieN (levF (levB k r)) (adjH (Hpk k r))`. Introduce and unpack `⟨x, hx⟩`. Rewrite `hx` using `[lieE_eq]`. Take `⟨Y, hY, rfl⟩` from `hx`. Simplify using `using hY`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨fun Y hY Y' hY' h => ?_, fun g hg => ?_, fun x => ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite `hY`, `hY'` using `[lieOf_Nset_eq]`. Conclude with `exp_injOn isFilB (mem_lieN.mp hY).1 (mem_lieN.mp hY').1 h`. Rewrite `hg` using `[Nset_eq]`. Rewrite using `[lieOf_Nset_eq]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨_, lg_spec isFilB isAdjB hg⟩`. Rewrite using `[lieOf_Nset_eq]`. Conclude with `hmem x`. Set `e : lieE (Nset k r) ≃ₗ[ℝ] lieN (levF (levB k r)) (adjH (Hpk k r))` to `{ toFun := fun x => ⟨unrealL _ x, hmem x⟩ invFun := fun Y => ⟨(unrealL _).symm Y, by rw [lieE_eq]; exact ⟨Y, Y.2, rfl⟩⟩ map_add' := fun x y => Subtype.ext (map_add (unrealL _) _ _) map_smul' := fun c x => Subtype.ext (map_smul (unrealL _) _ _) left_inv := fun x => Subtype.ext ((u …`. Establish `h` using `@haar_of_equiv (Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra _ _ _ _ _ _ _ _ (inferInstance : MeasurableSpace (Mt k r)) (inferInstance : BorelSpace (Mt k r)) _ _ isFilB isAdjB volume _ e`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[← Nset_eq]`. Rewrite using `[haarLie, one_smul]`. Conclude with `h`. Take `⟨C, M, hC, h⟩` from `growth_of_equiv (isFilB (k := k) (r := r)) (unrealL (2 * r + k + 1))`. Use `⟨C, M, hC, fun Y hY => ?_⟩` and prove the remaining obligations.
-
-Rewrite `hY` using `[lieOf_Nset_eq]`. Rewrite using `[sqrt_hs, sqrt_hs]`. Conclude with `h Y (mem_lieN.mp hY).1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unipotent_exp_haar_sqrt_bound (k r : ℕ) :
     (∀ Y ∈ lieOf (Nset k r), ∀ Y' ∈ lieOf (Nset k r),
@@ -161,7 +157,7 @@ theorem unipotent_exp_haar_sqrt_bound (k r : ℕ) :
     exact h Y (mem_lieN.mp hY).1
 
 /- English proof (translation)
-The claim follows from `unipotent_exp_haar_sqrt_bound`.
+A detailed English derivation is pending.
 -/
 theorem b4 : NsetExpInjectiveSurjective := unipotent_exp_haar_sqrt_bound
 

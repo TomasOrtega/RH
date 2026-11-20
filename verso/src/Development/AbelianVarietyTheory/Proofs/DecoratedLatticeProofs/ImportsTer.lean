@@ -17,17 +17,15 @@ noncomputable section
 namespace GlobalTheory.CombThetaAny
 
 /- English proof (translation)
-Introduce `D ψ hψ S T C f hf`. Establish `e : comb ψ S T C f = fun u => ∑ x ∈ C.support, C x * (ψ (symplOH S T u x) * f (u + x))`. Use function extensionality and compare the values at `u`. Conclude with `GlobalTheory.FrComb.comb_apply C f u`. Use `⟨fun γ u => ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [GlobalTheory.FrComb.comb_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[add_assoc, hf.quasi, GlobalTheory.FinTranslate.symplOH_add_left, GlobalTheory.FinTranslate.symplOH_add_right]`. Establish `key : ψ (symplOH S T (ratW T S γ) x + symplOH S T u x) * ψ (-(symplOH S T (ratW T S γ) u + symplOH S T (ratW T S γ) x)) = ψ (-(symplOH S T (ratW T S γ) u)) * ψ (symplOH S T u x)`. Rewrite using `[← AddChar.map_add_eq_mul, ← AddChar.map_add_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Take the linear combination `(C x * f (u + x)) * key`. Take `⟨U, hU, hUf⟩` from `hf.level`. Take `⟨V, hV, hVf⟩` from `GlobalTheory.FrCombAny.exists_orth_any hψ C.support`.
+Expand and normalize the polynomial expressions, which then agree. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨U ⊓ V, hU.inter hV, fun a ha ha' => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.FrComb.heisO_comb (hVf a ha.2 ha') (hUf a ha.1 ha')`. Rewrite using `[e]`. Conclude with `continuous_finset_sum _ fun x _ => continuous_const.mul ((hψ.1.1.comp (GlobalTheory.FinTranslate.continuous_symplOH S T x)).mul (hf.cont.comp (continuous_id.add continuous_const)))`. Introduce `n L hL hLf w`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[e]`. Establish `e2 : (fun t => ∑ x ∈ C.support, C x * (ψ (symplOH S T (w + L t) x) * f (w + L t + x))) = fun t => ∑ x ∈ C.support, C x * (ψ (symplOH S T w x) * (ψ (symplOH S T (L t) x) * f (w + x + L t)))`. Use function extensionality and compare the values at `t`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.FinTranslate.symplOH_add_left, AddChar.map_add_eq_mul, add_right_comm, mul_assoc]`.
-
-Simplify using `only []`. Rewrite using `[e2]`. Conclude with `ContDiff.sum fun x _ => contDiff_const.mul (contDiff_const.mul ((GlobalTheory.FrCombAny.contDiff_psi hψ hL hLf x).mul (hf.smooth n L hL hLf (w + x))))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S T : HSp D) (C : WO S T →₀ ℂ)
     (f : WO S T → ℂ), IsThetaFunO ψ S T f → IsThetaFunO ψ S T (comb ψ S T C f) := by

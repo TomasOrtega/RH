@@ -16,29 +16,27 @@ noncomputable section
 namespace GlobalTheory.PtExt
 
 /- English proof (translation)
-Introduce `R _ X Y L _ q t ht`. Take `⟨hu, hn, hg⟩` from `ht`. Establish `hmul : ∀ {D : Type} [CommRing D] (x : Sp D ⟶ Y.left) (U : Y.left.Opens), ⊤ ≤ x ⁻¹ᵁ U → ∀ a b : Γ(Y.left, U), evU x U (a * b) = evU x U a * evU x U b`. Introduce `D _ x U h a b`. Unfold `evU`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Rewrite using `[dif_pos h, dif_pos h, dif_pos h, map_mul]`. Establish `hone : ∀ {D : Type} [CommRing D] (x : Sp D ⟶ Y.left) (U : Y.left.Opens), ⊤ ≤ x ⁻¹ᵁ U → evU x U (1 : Γ(Y.left, U)) = 1`. Introduce `D _ x U h`. Unfold `evU`. Rewrite using `[dif_pos h, map_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hch : ∀ (j : PUnit → L.ι) {E : Type} [CommRing E] [Algebra R E] (z : Pt Y E), ⊤ ≤ z.left ⁻¹ᵁ (L.pull q.left).U j → ⊤ ≤ (z ≫ q).left ⁻¹ᵁ L.U (j PUnit.unit)` using `fun j E _ _ z h p hp ↦ LB.wchart_le L (K := PUnit) (fun _ ↦ q.left) j PUnit.unit (h hp)`. Establish `huniq : ∀ (U : Y.left.Opens) (f : Fn0 Y), (∀ (E : Type) [CommRing E] [Algebra R E] (E' : Type) [CommRing E'] [Algebra R E'] (ψ : E →ₐ[R] E') (z : Pt Y E), ⊤ ≤ z.left ⁻¹ᵁ U → f E' (spOver ψ ≫ z) = ψ (f E z)) → ∀ c c' : Γ(Y.left, U), (∀ (E : Type) [CommRing E] [Algebra R E] (z : Pt …` using `fun U f hf c c' hc hc' ↦ (GlobalTheory.T.exists_unique_section_of_natural_pointwise_function R Y U f hf).unique hc hc'`. Establish `hnat : ∀ j : PUnit → L.ι, ∀ (E : Type) [CommRing E] [Algebra R E] (E' : Type) [CommRing E'] [Algebra R E'] (ψ : E →ₐ[R] E') (z : Pt Y E), ⊤ ≤ z.left ⁻¹ᵁ (L.pull q.left).U j → t E' (spOver ψ ≫ z) (j PUnit.unit) = ψ (t E z (j PUnit.unit))` using `fun j E _ _ E' _ _ ψ z h ↦ hn E E' ψ z _ (hch j z h)`. Establish `hnatI : ∀ j : PUnit → L.ι, ∀ (E : Type) [CommRing E] [Algebra R E] (E' : Type) [CommRing E'] [Algebra R E'] (ψ : E →ₐ[R] E') (z : Pt Y E), ⊤ ≤ z.left ⁻¹ᵁ (L.pull q.left).U j → Ring.inverse (t E' (spOver ψ ≫ z) (j PUnit.unit)) = ψ (Ring.inverse (t E z (j PUnit.unit)))`. Introduce `j E _ _ E' _ _ ψ z h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hnat j E E' ψ z h]`. Take `⟨u, hu'⟩` from `hu E z _ (hch j z h)`. Rewrite using `[← hu', Ring.inverse_unit]`. Establish `e : ψ (u : E) = ((Units.map (ψ : E →* E') u : E'ˣ) : E')` using `rfl`. Rewrite using `[e, Ring.inverse_unit]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `ex` using `fun j : PUnit → L.ι ↦ (GlobalTheory.T.exists_unique_section_of_natural_pointwise_function R Y ((L.pull q.left).U j) (fun E _ _ z ↦ t E z (j PUnit.unit)) (hnat j)).exists`. Establish `exI` using `fun j : PUnit → L.ι ↦ (GlobalTheory.T.exists_unique_section_of_natural_pointwise_function R Y ((L.pull q.left).U j) (fun E _ _ z ↦ Ring.inverse (t E z (j PUnit.unit))) (hnatI j)).exists`. Use `choose a ha using ex`. Use `choose b hb using exI`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hab : ∀ j, a j * b j = 1`. Introduce `j`. Use `huniq _ (fun _ _ _ _ ↦ 1) (fun E _ _ E' _ _ ψ z _ ↦ (map_one ψ).symm) _ _ ?_ ?_` and prove the remaining obligations. Introduce `E _ _ z h`. Rewrite using `[hmul _ _ h, ha j E z h, hb j E z h]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Ring.mul_inverse_cancel _ (hu E z _ (hch j z h))`. Introduce `E _ _ z h`. Conclude with `hone _ _ h`. Use `⟨⟨fun j ↦ ⟨a j, b j, hab j, by rw [mul_comm]; exact hab j⟩⟩, ?_⟩` and prove the remaining obligations. Introduce `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Apply `Units.ext` to reduce the goal to its premises. Establish `hVi : (L.pull q.left).U i ⊓ (L.pull q.left).U j ≤ (L.pull q.left).U i` using `inf_le_left`. Establish `hVj : (L.pull q.left).U i ⊓ (L.pull q.left).U j ≤ (L.pull q.left).U j` using `inf_le_right`. Use `huniq ((L.pull q.left).U i ⊓ (L.pull q.left).U j) (fun E _ _ z ↦ t E z (i PUnit.unit)) (fun E _ _ E' _ _ ψ z h ↦ hnat i E E' ψ z (fun p hp ↦ hVi (h hp))) _ _ ?_ ?_` and prove the remaining obligations. Introduce `E _ _ z h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e1` using `evalSectionAtPointOrZero_restriction Y.left E z.left _ _ hVi (a i) h`. Use `Eq.trans ?_ ((e1.trans (ha i E z (fun p hp ↦ hVi (h hp)))))` and prove the remaining obligations. Both sides reduce to the same expression. Introduce `E _ _ z h`. Establish `hzi : ⊤ ≤ z.left ⁻¹ᵁ (L.pull q.left).U i` using `fun p hp ↦ hVi (h hp)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hzj : ⊤ ≤ z.left ⁻¹ᵁ (L.pull q.left).U j` using `fun p hp ↦ hVj (h hp)`. Establish `hij : ⊤ ≤ (z.left ≫ q.left) ⁻¹ᵁ (L.U (i PUnit.unit) ⊓ L.U (j PUnit.unit))` using `fun p hp ↦ ⟨hch i z hzi hp, hch j z hzj hp⟩`. Rewrite using `[Units.val_mul, hmul _ _ h]`. Establish `e2` using `evalSectionAtPointOrZero_restriction Y.left E z.left _ _ hVj (a j) h`. Establish `e2' : evU z.left _ (ReciprocityTheory.ChartRestriction.G.Semi.res hVj (⟨a j, b j, hab j, by rw [mul_comm]; exact hab j⟩ : Γ(Y.left, (L.pull q.left).U j)ˣ)).val = t E z (j PUnit.unit)` using `e2.trans (ha j E z hzj)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e3 : evU z.left _ ((L.pull q.left).g i j).val = evU (z ≫ q).left (L.U (i PUnit.unit) ⊓ L.U (j PUnit.unit)) (L.g (i PUnit.unit) (j PUnit.unit)).val`. Unfold `evU`. Rewrite using `[dif_pos h]`. Establish `hij' : ⊤ ≤ (z ≫ q).left ⁻¹ᵁ (L.U (i PUnit.unit) ⊓ L.U (j PUnit.unit))` using `hij`. Rewrite using `[dif_pos hij']`.
-
-Conclude with `(evalAt_pull_g L q.left z.left i j hij h).symm`. Rewrite using `[e3, e2']`. Conclude with `(hg E z (i PUnit.unit) (j PUnit.unit) (hch i z hzi) (hch j z hzj)).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem triv_pull_of_isPtGen : ∀ (R : Type) [CommRing R] (X Y : Over (Sp R)) (L : LB X.left), L.IsLB →
     ∀ (q : Y ⟶ X) (t : ∀ (E : Type) [CommRing E] [Algebra R E], Pt Y E → L.ι → E), IsPtGen L q t →

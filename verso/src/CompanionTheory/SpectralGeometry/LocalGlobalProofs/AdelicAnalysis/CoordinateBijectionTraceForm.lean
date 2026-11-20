@@ -9,7 +9,7 @@ open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.SW GlobalT
 open scoped TensorProduct ENNReal NNReal Matrix
 
 /- English proof (translation)
-Establish `h : ofF b x u i = b.equivFun.symm (fun k => x (i, k))`. Simplify using `[ofF, Module.Basis.equivFun_symm_apply]`. Rewrite using `[h, ← Module.Basis.equivFun_apply, LinearEquiv.apply_symm_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem repr_ofF {F E : Type} [Field F] [Field E] [Algebra F E] {d M : ℕ}
     (b : Module.Basis (Fin d) F E) (x : Fin M × Fin d → F) (u : Fin 1) (i : Fin M) (k : Fin d) :
@@ -19,9 +19,9 @@ theorem repr_ofF {F E : Type} [Field F] [Field E] [Algebra F E] {d M : ℕ}
   rw [h, ← Module.Basis.equivFun_apply, LinearEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `x y hxy`. Use function extensionality and compare the values at `p`. Take `⟨i, k⟩` from `p`. Rewrite using `[← repr_ofF b x 0 i k, ← repr_ofF b y 0 i k, hxy]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce `Y`. Use `⟨fun p => b.repr (Y 0 p.1) p.2, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `u i`. Take `rfl : u = 0` from `Subsingleton.elim _ _`. Conclude with `b.sum_repr (Y 0 i)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ofF_bijective {F E : Type} [Field F] [Field E] [Algebra F E] {d M : ℕ}
     (b : Module.Basis (Fin d) F E) :
@@ -38,7 +38,7 @@ theorem ofF_bijective {F E : Type} [Field F] [Field E] [Algebra F E] {d M : ℕ}
     exact b.sum_repr (Y 0 i)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `u i`. Simplify using `[ofF]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem ofF_zero {F E : Type} [Field F] [Field E] [Algebra F E] {d M : ℕ}
     (b : Module.Basis (Fin d) F E) :
@@ -47,17 +47,17 @@ theorem ofF_zero {F E : Type} [Field F] [Field E] [Algebra F E] {d M : ℕ}
   simp [ofF]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `: FiniteDimensional F E` using `Module.finite_of_finrank_pos (by omega)`. Establish `li : LinearIndependent F ![(1 : E), h]`. Rewrite using `[LinearIndependent.pair_iff]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s t hst`. Establish `ht : t = 0`. Assume the negation of the conclusion as `ht`. Apply `hcon (-(s / t))` to reduce the goal to its premises. Establish `h1 : algebraMap F E t * h = -algebraMap F E s`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hst` using `[Algebra.smul_def, Algebra.smul_def, mul_one]`. Take the linear combination `hst`. Establish `ht' : algebraMap F E t ≠ 0` using `by simpa using ht`. Rewrite using `[map_neg, map_div₀]`. Clear the denominators using the available nonvanishing facts.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `h1`. Substitute `ht` using the available equality. Simplify using `using hst`. Establish `hspan : Submodule.span F (Set.range ![(1 : E), h]) = ⊤` using `li.span_eq_top_of_card_eq_finrank' (by simp [h2])`. Apply `hne` to reduce the goal to its premises.
+Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hlin : σ.toLinearMap = LinearMap.id`. Apply `LinearMap.ext_on_range hspan` to reduce the goal to its premises. Introduce `i`. Use `fin_cases i`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components.
 
-Simplify using `using hh`. Use extensionality with `y`. Conclude with `congrArg (fun f : E →ₗ[F] E => f y) hlin`.
+A detailed English derivation is pending.
 -/
 theorem exists_algebraMap_of_fixed {F E : Type} [Field F] [Field E] [Algebra F E]
     (h2 : Module.finrank F E = 2) {σ : E →ₐ[F] E} (hne : σ ≠ AlgHom.id F E) {h : E}
@@ -93,9 +93,9 @@ theorem exists_algebraMap_of_fixed {F E : Type} [Field F] [Field E] [Algebra F E
   exact congrArg (fun f : E →ₗ[F] E => f y) hlin
 
 /- English proof (translation)
-Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Introduce `hσ`. Use `h.2.1` as an intermediate fact. Establish `hc` using `IsTotallyComplex.complexEmbedding_not_isReal τ`. Apply `hc` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[ComplexEmbedding.isReal_iff]`. Use extensionality with `x`. Use `h.2.2.2 τ x` as an intermediate fact. Rewrite `this` using `[hσ]`. Simplify using `using this.symm`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sigma_ne_id {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} (h : IsCMExt F E σ) : σ ≠ AlgHom.id F E := by
@@ -111,7 +111,7 @@ theorem sigma_ne_id {F E : Type} [Field F] [NumberField F] [Field E] [NumberFiel
   simpa using this.symm
 
 /- English proof (translation)
-Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[h.2.2.2, h.2.2.2, star_star]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem sigma_sigma {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
@@ -120,9 +120,9 @@ theorem sigma_sigma {F E : Type} [Field F] [NumberField F] [Field E] [NumberFiel
   rw [h.2.2.2, h.2.2.2, star_star]
 
 /- English proof (translation)
-Simplify using `only [hE, hform, map_sum, map_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `h1 : (σ : E →+* E) (y j) = σ (y j)` using `rfl`. Establish `h2 : (σ : E →+* E) (y i) = σ (y i)` using `rfl`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h1, h2, sigma_sigma hσ, hJ.1 i j]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sigma_hE_self {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] {σ : E →ₐ[F] E} (hσ : IsCMExt F E σ) {M : ℕ}
@@ -137,19 +137,17 @@ theorem sigma_hE_self {F E : Type} [Field F] [NumberField F] [Field E] [NumberFi
   ring
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ M J hJ d b`. Use `⟨ofF_bijective b, ?_, ?_⟩` and prove the remaining obligations. Introduce `x`. Rewrite using `[not_iff_not]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Conclude with `(ofF_bijective b).1 (h.trans (ofF_zero b).symm)`. Introduce and unpack `rfl`. Conclude with `ofF_zero b`. Introduce `B hB β x`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `exists_algebraMap_of_fixed hσ.2.2.1 (sigma_ne_id hσ) (sigma_hE_self hσ hJ (ofF b x 0))`. Establish `hco : (fun p : Fin M × Fin d => b.repr (ofF b x 0 p.1) p.2) = x`. Use function extensionality and compare the values at `p`. Conclude with `repr_ofF b x 0 p.1 p.2`. Establish `htr` using `hB (ofF b x 0)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Rewrite `htr` using `[hco, hc, Algebra.trace_algebraMap, hσ.2.2.1]`. Establish `hgram : gramE σ J (ofF b x) = (fun _ _ => algebraMap F E β) ↔ c = β`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h0` using `congrFun (congrFun h 0) 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `h1 : hE σ J (ofF b x 0) (ofF b x 0) = algebraMap F E β` using `h0`. Rewrite `h1` using `[hc]`. Conclude with `(algebraMap F E).injective h1`. Introduce and unpack `rfl`. Use function extensionality and compare the values at `u v`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `rfl : u = 0` from `Subsingleton.elim _ _`. Take `rfl : v = 0` from `Subsingleton.elim _ _`. Conclude with `hc`. Rewrite using `[hgram, ← htr, nsmul_eq_mul]`. Establish `h2 : (2 : F) ≠ 0` using `two_ne_zero`.
-
-Establish `e : (1 / 2 : F) * (((2 : ℕ) : F) * c) = c`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ofF_gram_iff : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E),

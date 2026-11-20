@@ -19,11 +19,11 @@ open GlobalTheory.UU
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `V _ _ _ hV D hT hE hfin χ hχ`. Establish `: IsDiscreteValuationRing V` using `hV.1`. Take `⟨ga, a, ha⟩` from `exists_psiScal V D`. Establish `hc` using `GlobalTheory.T.psiScalars_relations_up_to_baseUnits V D ga a ha`. Establish `hm : IsLocalRing.maximalIdeal V ≠ ⊥` using `IsDiscreteValuationRing.not_a_field V`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hiff` using `fun x => psiIn_iff_scalar_mem V D ga a ha x _ hm`. Rewrite using `[hiff]`. Use `cubeRel_scalars_mem_maximalIdeal V D.X a (hc.1 hT) (hc.2 hE) ?_ χ hχ` and prove the remaining obligations. Use `hfin.subset ?_` and prove the remaining obligations. Introduce `x hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show ¬ _`. Rewrite using `[pow_one, hiff]`. Conclude with `hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiIn_maximalIdeal_of_ne_zero : ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], CDVR V → ∀ (D : DegPre V), D.TauBimult → D.PsiEven → {χ : D.X | ¬ D.PsiIn χ (IsLocalRing.maximalIdeal V ^ 1)}.Finite → ∀ χ : D.X, χ ≠ 0 → D.PsiIn χ (IsLocalRing.maximalIdeal V) := by
   intro V _ _ _ hV D hT hE hfin χ hχ

@@ -14,9 +14,9 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Dx cX ex t u μ w hg Lv I H X _ std J`. Introduce `j hj La hLa`. Consider the cases of `j with`. Consider the case `zero`. Establish `hp` using `(GlobalTheory.T.lattice_tuple_adelic_point_step_zero t std J La).1`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact.
 
-Conclude with `⟨hp, GlobalTheory.T.stepZero_point_mem_doubleCoset_classRep t std J La hLa, GlobalTheory.T.stepZero_kernelLattice_eq_pointKernelLattice t std J La, GlobalTheory.T.lattice_tuple_det_eq_adelic_point_det t std J 0 hj La _ hp⟩`. Consider the case `succ j`. Establish `hp` using `(GlobalTheory.T.lattice_tuple_adelic_point_step_succ t std J j hj La).1`. Conclude with `⟨hp, GlobalTheory.T.succStep_point_mem_doubleCoset_classRep t std J j hj La hLa, GlobalTheory.T.succStep_kernelLattice_eq_pointKernelLattice t std J j hj La hLa, GlobalTheory.T.lattice_tuple_det_eq_adelic_point_det t std J (j + 1) hj La _ hp⟩`.
+Supply the required witnesses or components. Treat this case separately. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.TwV.joint_dict : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : G.Inst D L} {Gl : G.LatInst D} {Kc : G.Consts} {Dx : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Dx cX} (t : KerEntTied ex) {u : D.what₂.Word} {μ : D.what₂.Tup} {w : D.what₂.places.Pl} {hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)} {Lv : Levels (Gl.Fl u w hg)} {I : CmpJIn ex.tw u μ w hg Lv} {H : CmpJHyp ex.cmp I} {X : LabIn I} [Fact (D.what₂.places.resChar w).Prime] (std : Lt.StdAtW D Gl u w hg) (J : Joint t H X), J.Dict std := by
   intro D L hT Gi Gl Kc Dx cX ex t u μ w hg Lv I H X _ std J

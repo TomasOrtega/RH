@@ -10,11 +10,11 @@ open GlobalTheory.ConeBumpB
 open scoped GlobalTheory.VacAny
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d n₁ d₁ X W M H H' hc v φ hφ`. Establish `hχl : IsLocallyConstant (GlobalTheory.LatVac.psiAt B.ψ v)` using `GlobalTheory.SchrSB.isLocallyConstant_addChar _ (GlobalTheory.SchrSB.continuous_psiAt B.ψ hc v)`. Establish `hχ0 : ∀ᶠ y in 𝓝 (0 : Fv F v), GlobalTheory.LatVac.psiAt B.ψ v y = 1` using `by simpa using hχl.eventually_eq 0`. Establish `hS` using `GlobalTheory.SchrLocConst.schr_isLocallyConstant _ hχ0 φ hφ`. Use `haveI : IsModuleTopology (Fv F v) (Fv F v ⊗[F] E) := ⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `L : (Fv F v ⊗[F] E) →ₗ[Fv F v] (Fin n × Fin d → Fv F v) × (Fin n × Fin d → Fv F v)` to `{ toFun := fun s => GlobalTheory.LatVac.locCo M.co v (uS σ H H' v s) map_add' := fun s t => by rw [uS, uS, uS, map_add, map_add, add_smul, map_add] map_smul' := fun a t => by`. Rewrite using `[RingHom.id_apply, ← GlobalTheory.VanishLocCont.locCo_smul, uS, uS, GlobalTheory.VanishLocCont.liftT_smul, map_smul (cA σ), smul_assoc] }`. Establish `hL : Continuous L` using `IsModuleTopology.continuous_of_linearMap L`. Establish `h` using `hS.comp_continuous hL`. Use `h using 1` and compare the differences between its conclusion and the goal.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `s`. Rewrite using `[(locOp_rho M.co hc v _ hφ).2]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.unipotent_schwartz_locally_constant :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d n₁ d₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W)

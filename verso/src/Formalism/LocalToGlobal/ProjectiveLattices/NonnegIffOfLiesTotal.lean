@@ -20,14 +20,14 @@ def valSet (la : HeightOneSpectrum (𝓞 c.F)) : Set (Rul Xo c → EReal) :=
 variable {Xo c cls}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨vAtV_zero y, vAtV_ne_bot y, vAtV_add y, fun a f ha => vAtV_smul y a f ha, vAtV_mul y⟩`.
+Supply the required witnesses or components.
 -/
 theorem isVal_vAt {PY : Type} {lies : ∀ (T : CDVR) (ι : c.F →+* T.Fr), IntFr Xo c T ι → PY → Prop}
     {la : HeightOneSpectrum (𝓞 c.F)} (y : PtV Xo c cls PY lies la) : IsVal la (vAtV y) :=
   ⟨vAtV_zero y, vAtV_ne_bot y, vAtV_add y, fun a f ha => vAtV_smul y a f ha, vAtV_mul y⟩
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨y, rfl⟩`. Conclude with `isVal_vAt y`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem isVal_valSet (la : HeightOneSpectrum (𝓞 c.F)) : ∀ v ∈ valSet Xo c cls la, IsVal la v := by
   rintro _ ⟨y, rfl⟩
@@ -43,9 +43,7 @@ def LiesTotal (PY : HeightOneSpectrum (𝓞 c.F) → Type)
 variable {Xo c cls}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `h0 la ⟨q, T, ι, e, ho, y, hy, η, hη, rfl⟩`. Conclude with `h0 la _ ⟨PtV.mk la ho y hy () trivial, rfl⟩`. Introduce and unpack `h0 la _ ⟨⟨q, T, ι, e, ho, y, hy, η, hη, rfl⟩, rfl⟩`. Take `⟨η', hη'⟩` from `h la T ι e ho y hy`.
-
-Conclude with `h0 la (PtV.mk la ho y hy η' hη')`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem nonneg_iff_of_liesTotal {PY : HeightOneSpectrum (𝓞 c.F) → Type}
     {lies : ∀ la (T : CDVR) (ι : c.F →+* T.Fr), IntFr Xo c T ι → PY la → Prop}

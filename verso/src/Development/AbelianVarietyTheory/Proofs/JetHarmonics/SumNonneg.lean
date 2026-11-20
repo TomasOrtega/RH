@@ -10,19 +10,19 @@ open scoped InnerProductSpace ENNReal
 namespace GlobalTheory.BesselDecay
 
 /- English proof (translation)
-Conclude with `PI.PolynomialProperness.GN.gN_mul_le a b`.
+A detailed English derivation is pending.
 -/
 theorem gN_mul_le' {k r : ℕ} (a b : Mx k r) : B.gN (a * b) ≤ B.gN a * B.gN b := by
   exact PI.PolynomialProperness.GN.gN_mul_le a b
 
 /- English proof (translation)
-Conclude with `PI.PolynomialProperness.GN.gN_pos ha`.
+A detailed English derivation is pending.
 -/
 theorem gN_pos' {k r : ℕ} {a : Mx k r} (ha : a ∈ GG k r) : 0 < B.gN a := by
   exact PI.PolynomialProperness.GN.gN_pos ha
 
 /- English proof (translation)
-Apply `List.sum_nonneg` to reduce the goal to its premises. Introduce `a ha`. Take `⟨w, -, rfl⟩` from `List.mem_map.mp ha`. Conclude with `hf w`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sum_nonneg' {α : Type} (f : α → ℝ) (hf : ∀ a, 0 ≤ f a) (L : List α) : 0 ≤ (L.map f).sum := by
   apply List.sum_nonneg
@@ -31,7 +31,7 @@ theorem sum_nonneg' {α : Type} (f : α → ℝ) (hf : ∀ a, 0 ≤ f a) (L : Li
   exact hf w
 
 /- English proof (translation)
-Establish `h4` using `hg.2.2.2`. Establish `: 0 ≤ AG k r` using `by unfold AG; positivity`. Establish `: 0 ≤ 9 * ((r : ℝ) + 1) * ((2 * r + k + 1 : ℕ) : ℝ) ^ 2` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem one_le_aOf {k r : ℕ} {h : ℝ} (hg : GapOK k r h) : 1 ≤ aOf r h := by
   have h4 := hg.2.2.2
@@ -40,31 +40,29 @@ theorem one_le_aOf {k r : ℕ} {h : ℝ} (hg : GapOK k r h) : 1 ≤ aOf r h := b
   linarith
 
 /- English proof (translation)
-Introduce `H k r ε mu h R hR hgap hok v hv`. Establish `hdec : DecInf` using `H.1.2.1`. Establish `ha` using `one_le_aOf hok`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Take `⟨g, hg, v₀, hv₀, rfl⟩` from `hv`. Take `⟨C, Ws, hWs, hb⟩` from `hdec k r ε mu h R.H R.σ hR.1 hR.2 hgap hok v₀ hv₀`. Use `⟨|C| * B.gN g ^ (aOf r h - 1), Ws, hWs, fun w hw x hx => ?_⟩` and prove the remaining obligations. Take `⟨hi, hgi, hig⟩` from `Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.uh_inv hg`. Establish `hy : g⁻¹ * x ∈ GG k r` using `Formalism.FourierDecayAlt.P.TranslationBesselVanishing.uh_mul hi hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hx' : x = g * (g⁻¹ * x)` using `by rw [← Matrix.mul_assoc, hgi, Matrix.one_mul]`. Establish `hunit` using `(Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.sigma_facts hR.2).2`. Establish `hiso : ∀ a b, ⟪R.σ g a, R.σ g b⟫_ℂ = ⟪a, b⟫_ℂ` using `(LinearMap.norm_map_iff_inner_map_map ((R.σ g : R.H →L[ℂ] R.H) : R.H →ₗ[ℂ] R.H)).1 (hunit g hg)`. Establish `e : ⟪R.σ g v₀, R.σ x w⟫_ℂ = ⟪v₀, R.σ (g⁻¹ * x) w⟫_ℂ`. Rewrite using `[← hiso v₀]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `conv_lhs => rw [hx', Formalism.FourierDecayAlt.P.TranslationBesselVanishing.sigma_mul hR.2 hg hy]`. Both sides reduce to the same expression. Rewrite using `[e]`. Establish `h1` using `hb w hw _ hy`.
+Reduce the equality to equality of the corresponding arguments. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set S := (Ws.map fun W => ‖PI.UpqRep.dsigW (k := k) (r := r) R.σ W w‖).sum with hS`. Establish `hS0 : 0 ≤ S` using `sum_nonneg' _ (fun _ => norm_nonneg _) _`. Establish `pg` using `gN_pos' hg`. Establish `px` using `gN_pos' hx`. Establish `py` using `gN_pos' hy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : B.gN x ≤ B.gN g * B.gN (g⁻¹ * x)` using `by conv_lhs => rw [hx']`. Conclude with `gN_mul_le' _ _`. Establish `h2 : (B.gN g * B.gN (g⁻¹ * x)) ^ (1 - aOf r h) ≤ B.gN x ^ (1 - aOf r h)` using `Real.rpow_le_rpow_of_nonpos px hle (by linarith)`. Rewrite `h2` using `[Real.mul_rpow pg.le py.le]`. Establish `h3 : B.gN g ^ (aOf r h - 1) * B.gN g ^ (1 - aOf r h) = 1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← Real.rpow_add pg]`. Simplify using the standard rewrite rules. Establish `pg' : 0 < B.gN g ^ (aOf r h - 1)` using `Real.rpow_pos_of_pos pg _`. Establish `h4 : B.gN (g⁻¹ * x) ^ (1 - aOf r h) ≤ B.gN g ^ (aOf r h - 1) * B.gN x ^ (1 - aOf r h)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Treat this case separately.
 
-Rewrite using `[← mul_assoc, h3, one_mul]`. Use `_ ≤ _ := mul_le_mul_of_nonneg_left h2 pg'.le`. Combine the equalities or inequalities in the displayed calculation. Consider the case `zero => exact ⟨0, [], by simp, fun w _ x _ => by simp⟩`. Consider the case `add u v _ _ hu hv`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨C, Ws, hWs, hb⟩` from `hu`. Take `⟨C', Ws', hWs', hb'⟩` from `hv`. Use `⟨|C| + |C'|, Ws ++ Ws', fun W hW => (List.mem_append.1 hW).elim (hWs W) (hWs' W), fun w hw x hx => ?_⟩` and prove the remaining obligations. Establish `h1` using `hb w hw x hx`. Establish `h2` using `hb' w hw x hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[List.map_append, List.sum_append, inner_add_left]`. Use `set S := (Ws.map fun W => ‖PI.UpqRep.dsigW (k := k) (r := r) R.σ W w‖).sum with hS`. Use `set S' := (Ws'.map fun W => ‖PI.UpqRep.dsigW (k := k) (r := r) R.σ W w‖).sum with hS'`. Establish `hS0 : 0 ≤ S` using `sum_nonneg' _ (fun _ => norm_nonneg _) _`. Establish `hS0' : 0 ≤ S'` using `sum_nonneg' _ (fun _ => norm_nonneg _) _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `px : 0 ≤ B.gN x ^ (1 - aOf r h)` using `(Real.rpow_pos_of_pos (gN_pos' hx) _).le`. Establish `h3 : C * S + C' * S' ≤ (|C| + |C'|) * (S + S')`. Establish `a1` using `mul_le_mul_of_nonneg_right (le_abs_self C) hS0`. Establish `a2` using `mul_le_mul_of_nonneg_right (le_abs_self C') hS0'`. Establish `a3` using `mul_nonneg (abs_nonneg C) hS0'`.
+Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `a4` using `mul_nonneg (abs_nonneg C') hS0`. Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation. Consider the case `smul c v _ hv`. Take `⟨C, Ws, hWs, hb⟩` from `hv`.
-
-Use `⟨‖c‖ * C, Ws, hWs, fun w hw x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[inner_smul_left, norm_mul, RCLike.norm_conj, mul_assoc, mul_assoc, ← mul_assoc C]`. Conclude with `mul_le_mul_of_nonneg_left (hb w hw x hx) (norm_nonneg c)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem decay_TK : Hyps → ∀ (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool) (mu : Fin (2 * r + k + 1) → ℝ) (h : ℝ) (R : Rep k r), R.IsDS ε mu → Formalism.QuantumDeterminants.GapAtLeast ε mu h → GapOK k r h → ∀ v ∈ R.TK, ∃ (C : ℝ) (Ws : List (List (Mx k r))), (∀ W ∈ Ws, ∀ X ∈ W, PI.UpqRep.InLieHpk k r X) ∧ ∀ w ∈ R.sm, ∀ x ∈ GG k r, ‖⟪v, R.σ x w⟫_ℂ‖ ≤ C * (Ws.map fun W => ‖PI.UpqRep.dsigW (k := k) (r := r) R.σ W w‖).sum * B.gN x ^ (1 - aOf r h) := by
   intro H k r ε mu h R hR hgap hok v hv

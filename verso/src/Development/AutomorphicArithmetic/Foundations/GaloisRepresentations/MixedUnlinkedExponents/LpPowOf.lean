@@ -7,43 +7,41 @@ open Polynomial
 namespace UpperTheory.Gal.GamX
 
 /- English proof (translation)
-Simplify using `[lp]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma lp_zero : lp 0 = 1 := by simp [lp]
 
 /- English proof (translation)
-Simplify using `[lp]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma lp_cons (a : ℂˣ) (A : Multiset ℂˣ) :
     lp (a ::ₘ A) = (1 - C ((a : ℂˣ) : ℂ) * X) * lp A := by
   simp [lp]
 
 /- English proof (translation)
-Simplify using `[lp, Multiset.map_nsmul, Multiset.prod_nsmul]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma lp_nsmul (f : ℕ) (B : Multiset ℂˣ) : lp (f • B) = lp B ^ f := by
   simp [lp, Multiset.map_nsmul, Multiset.prod_nsmul]
 
 /- English proof (translation)
-Use `set S := nthRootsFinset f (1 : ℂ) with hS`. Establish `hζ` using `Complex.isPrimitiveRoot_exp f hf.ne'`. Establish `mem : ∀ u, u ∈ S ↔ u ^ f = 1` using `fun u => mem_nthRootsFinset hf 1`. Establish `ne0 : ∀ u ∈ S, u ≠ 0`. Introduce `u hu h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hu` using `[mem, h0, zero_pow hf.ne']`. Conclude with `zero_ne_one hu`. Establish `h1 : ∀ w : ℂ[X], ∏ u ∈ S, (w - C u) = w ^ f - 1`. Introduce `w`. Establish `e` using `congrArg (aeval w) (X_pow_sub_one_eq_prod hf hζ)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [map_sub, map_one, aeval_X_pow, map_prod, aeval_X, aeval_C, Polynomial.algebraMap_eq] at e`. Conclude with `e.symm`. Establish `h3 : ∀ w : ℂ[X], ∏ u ∈ S, (w - C u⁻¹) = ∏ u ∈ S, (w - C u)`. Introduce `w`. Use `Finset.prod_nbij' (fun u => u⁻¹) (fun u => u⁻¹) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `u hu`. Rewrite `hu`, the goal using `[mem]`. Rewrite using `[inv_pow, hu, inv_one]`. Introduce `u hu`. Rewrite `hu`, the goal using `[mem]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[inv_pow, hu, inv_one]`. Introduce `u _`. Conclude with `inv_inv u`. Introduce `u _`. Conclude with `inv_inv u`.
+Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `u _`. Both sides reduce to the same expression. Establish `h2 : ∀ w : ℂ[X], ∏ u ∈ S, (1 - C u * w) = (∏ u ∈ S, (-C u)) * (w ^ f - 1)`. Introduce `w`. Rewrite using `[← h1, ← h3, ← Finset.prod_mul_distrib]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `Finset.prod_congr rfl ?_` and prove the remaining obligations. Introduce `u hu`. Establish `hc : C u * C u⁻¹ = (1 : ℂ[X])`. Rewrite using `[← C_mul, mul_inv_cancel₀ (ne0 u hu), C_1]`. Take the linear combination `-hc`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hc : (∏ u ∈ S, (-C u : ℂ[X])) = -1`. Establish `e` using `h2 0`. Simplify using `only [mul_zero, sub_zero, Finset.prod_const_one, zero_pow hf.ne', zero_sub] at e`. Take the linear combination `e`. Establish `key` using `h2 (C a * X)`.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite `key` using `[hc]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.prod_congr rfl ?_` and prove the remaining obligations. Introduce `u _`. Expand and normalize the polynomial expressions, which then agree.
-
-Use `_ = 1 - C (a ^ f) * X ^ f := by`. Rewrite using `[key, mul_pow, C_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private lemma prod_factor {f : ℕ} (hf : 0 < f) (a : ℂ) :
     ∏ u ∈ nthRootsFinset f (1 : ℂ), (1 - C a * (C u * X)) = 1 - C (a ^ f) * X ^ f := by
@@ -99,9 +97,9 @@ private lemma prod_factor {f : ℕ} (hf : 0 < f) (a : ℂ) :
         ring
 
 /- English proof (translation)
-Proceed by induction on `A using Multiset.induction_on with`. Consider the case `empty`. Simplify using `[lp_zero]`. Consider the case `cons b A ih`. Rewrite using `[Multiset.map_cons, lp_cons, lp_cons, mul_comp, ← ih]`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mul_comp, sub_comp, one_comp, C_comp, X_comp]`. Rewrite using `[Finset.prod_mul_distrib, prod_factor hf, Units.val_pow_eq_pow_val]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private lemma prod_lp {f : ℕ} (hf : 0 < f) (A : Multiset ℂˣ) :
     ∏ u ∈ nthRootsFinset f (1 : ℂ), (lp A).comp (C u * X) =
@@ -115,9 +113,9 @@ private lemma prod_lp {f : ℕ} (hf : 0 < f) (A : Multiset ℂˣ) :
     rw [Finset.prod_mul_distrib, prod_factor hf, Units.val_pow_eq_pow_val]
 
 /- English proof (translation)
-Introduce `hinj f hf A B h`. Apply `hinj` to reduce the goal to its premises. Establish `hζ` using `Complex.isPrimitiveRoot_exp f hf.ne'`. Apply `expand_injective hf` to reduce the goal to its premises. Rewrite using `[expand_eq_comp_X_pow, expand_eq_comp_X_pow, ← prod_lp hf, lp_nsmul, pow_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ∀ u ∈ nthRootsFinset f (1 : ℂ), (lp A).comp (C u * X) = (lp B).comp (X ^ f)`. Introduce `u hu`. Rewrite using `[h, comp_assoc, pow_comp, X_comp, mul_pow, ← C_pow, (mem_nthRootsFinset hf 1).1 hu, C_1, one_mul]`. Rewrite using `[Finset.prod_congr rfl e, Finset.prod_const, hζ.card_nthRootsFinset]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem lpPowOf : LpPowOf := by
   intro hinj f hf A B h

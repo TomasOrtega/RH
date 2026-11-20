@@ -12,11 +12,9 @@ open MeasureTheory Filter Topology Set
 namespace GlobalTheory.HeckeFamilyMatrices
 
 /- English proof (translation)
-Establish `hI : (1:ℝ) ≤ Complex.I.im` using `by simp`. Establish `i1` using `(GlobalTheory.T.integrableOn_vertical_ray_norm_integral_le g K c m Complex.I hg.continuousOn hc hb hI).1`. Establish `i2` using `(GlobalTheory.T.integrableOn_vertical_ray_norm_integral_le g K c m τ hg.continuousOn hc hb hτ).1`. Establish `t1` using `intervalIntegral_tendsto_integral_Ioi 0 i1 tendsto_id`. Establish `t2` using `intervalIntegral_tendsto_integral_Ioi 0 i2 tendsto_id`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `t3` using `GlobalTheory.T.tendsto_integral_shifted_segment_zero_of_exp_decay g K c m τ hg.continuousOn hc hb hτ`. Establish `hlim : Tendsto (fun S : ℝ => Complex.I * (∫ s in (0:ℝ)..S, g (Complex.I + s * Complex.I)) - Complex.I * (∫ s in (0:ℝ)..S, g (τ + s * Complex.I)) + (τ - Complex.I) * ∫ t in (0:ℝ)..1, g (Complex.I + t * (τ - Complex.I) + S * Complex.I)) atTop (𝓝 (Complex.I * (∫ s in Ioi (0:ℝ), g (C …` using `((t1.const_mul _).sub (t2.const_mul _)).add (t3.const_mul _)`. Rewrite `hlim` using `[mul_zero, add_zero]`. Use `tendsto_nhds_unique (tendsto_const_nhds.congr' ?_) hlim` and prove the remaining obligations. Use `filter_upwards [eventually_ge_atTop 0] with S hS`.
-
-Conclude with `GlobalTheory.T.integral_segment_eq_parallelogram_sides g τ S hg (by linarith) hS`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem eichler_tail_cauchy (g : ℂ → ℂ) (K c : ℝ) (m : ℕ) (τ : ℂ) (hg : DifferentiableOn ℂ g {z : ℂ | 0 < z.im}) (hc : 0 < c)
     (hb : ∀ z : ℂ, 1 ≤ z.im → ‖g z‖ ≤ K * Real.exp (-c * z.im) * (1 + ‖z‖) ^ m) (hτ : 1 ≤ τ.im) :
@@ -41,27 +39,25 @@ theorem eichler_tail_cauchy (g : ℂ → ℂ) (K c : ℝ) (m : ℕ) (τ : ℂ) (
   exact GlobalTheory.T.integral_segment_eq_parallelogram_sides g τ S hg (by linarith) hS
 
 /- English proof (translation)
-Introduce `w F C c hF hc hbd`. Use `set G : ℂ → ℂ := F ∘ UpperHalfPlane.ofComplex with hGdef`. Establish `hG : DifferentiableOn ℂ G {z : ℂ | 0 < z.im}` using `UpperHalfPlane.mdifferentiable_iff.mp hF`. Set `g : ℕ → ℂ → ℂ` to `fun j z => G z * (-z) ^ (w - j)`. Establish `hg : ∀ j, DifferentiableOn ℂ (g j) {z : ℂ | 0 < z.im}` using `fun j => hG.mul ((differentiable_id.neg.pow _).differentiableOn)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgb : ∀ j, ∀ z : ℂ, 1 ≤ z.im → ‖g j z‖ ≤ C * Real.exp (-c * z.im) * (1 + ‖z‖) ^ w`. Introduce `j z hz`. Establish `hz0 : 0 < z.im` using `by linarith`. Establish `h1 : ‖G z‖ ≤ C * Real.exp (-c * z.im)`. Use `hbd ⟨z, hz0⟩ hz` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[hGdef, Function.comp, UpperHalfPlane.ofComplex_apply_of_im_pos hz0]`. Establish `h2 : ‖(-z) ^ (w - j)‖ ≤ (1 + ‖z‖) ^ w`. Rewrite using `[norm_pow, norm_neg]`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Use `set M : ℝ := ∫ s in Ioi (0:ℝ), Real.exp (-c * s) * (1 + s) ^ w`. Use `set Lp : ℂ[X] := ∑ j ∈ Finset.range (w + 1), Polynomial.C ((w.choose j : ℂ) * (Complex.I * ∫ s in Ioi (0:ℝ), g j (Complex.I + s * Complex.I))) * X ^ j with hLp`. Use `⟨Lp, 2 ^ w * C * M, ?_⟩` and prove the remaining obligations. Introduce `τ hτ j hj`. Establish `hj' : j ∈ Finset.range (w + 1)` using `Finset.mem_range.mpr (Nat.lt_succ_of_le hj)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hc1 : (eichler w F τ).coeff j = (w.choose j : ℂ) * ∫ t in (0 : ℝ)..1, (F ∘ UpperHalfPlane.ofComplex) (Complex.I + t * ((τ : ℂ) - Complex.I)) * (-(Complex.I + t * ((τ : ℂ) - Complex.I))) ^ (w - j) * ((τ : ℂ) - Complex.I)`. Rewrite using `[eichler, Polynomial.finsetSum_coeff, Finset.sum_eq_single j]`. Rewrite using `[Polynomial.coeff_C_mul_X_pow, if_pos rfl]`. Introduce `b _ hb`. Rewrite using `[Polynomial.coeff_C_mul_X_pow, if_neg (Ne.symm hb)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `absurd hj' h`. Establish `hc2 : Lp.coeff j = (w.choose j : ℂ) * (Complex.I * ∫ s in Ioi (0:ℝ), g j (Complex.I + s * Complex.I))`. Rewrite using `[hLp, Polynomial.finsetSum_coeff, Finset.sum_eq_single j]`. Rewrite using `[Polynomial.coeff_C_mul_X_pow, if_pos rfl]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `b _ hb`. Rewrite using `[Polynomial.coeff_C_mul_X_pow, if_neg (Ne.symm hb)]`. Introduce `h`. Conclude with `absurd hj' h`. Establish `hint : (∫ t in (0 : ℝ)..1, (F ∘ UpperHalfPlane.ofComplex) (Complex.I + t * ((τ : ℂ) - Complex.I)) * (-(Complex.I + t * ((τ : ℂ) - Complex.I))) ^ (w - j) * ((τ : ℂ) - Complex.I)) = ((τ : ℂ) - Complex.I) * ∫ t in (0:ℝ)..1, g j (Complex.I + t * ((τ : ℂ) - Complex.I))`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← intervalIntegral.integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `t`. Simplify using `only [g, hGdef]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `hL5` using `eichler_tail_cauchy (g j) C c w (τ : ℂ) (hg j) hc (hgb j) hτ`. Establish `hkey : (eichler w F τ - Lp).coeff j = -((w.choose j : ℂ) * Complex.I * ∫ s in Ioi (0:ℝ), g j ((τ : ℂ) + s * Complex.I))`. Rewrite using `[Polynomial.coeff_sub, hc1, hc2, hint, hL5]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hkey, norm_neg, norm_mul, norm_mul, Complex.norm_I, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hb3` using `(GlobalTheory.T.integrableOn_vertical_ray_norm_integral_le (g j) C c w (τ : ℂ) (hg j).continuousOn hc (hgb j) hτ).2`. Establish `hch : ‖(w.choose j : ℂ)‖ ≤ 2 ^ w`. Rewrite using `[Complex.norm_natCast]`. Conclude with `Nat.choose_le_two_pow w j` after adjusting the coercions. Establish `hnn : 0 ≤ C * Real.exp (-c * τ.im) * (1 + ‖(τ:ℂ)‖) ^ w * M` using `(norm_nonneg _).trans hb3`.
-
-Combine the equalities or inequalities in the displayed calculation. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem eichler_tail : ∀ (w : ℕ) (F : ℍ → ℂ) (C c : ℝ), MDifferentiable 𝓘(ℂ) 𝓘(ℂ) F → 0 < c →
     (∀ τ : ℍ, 1 ≤ τ.im → ‖F τ‖ ≤ C * Real.exp (-c * τ.im)) →

@@ -15,21 +15,19 @@ namespace GlobalTheory.HeightCounting.TwistAny
 open Formalism.L2.NR
 
 /- English proof (translation)
-Introduce `hGA D cf jE A hGal l _ ι π hc hr`. Take `⟨ρ₁, c1, ss1, f1⟩` from `hGal l ι D.R.r (Formalism.L2.NR.one_le_r D) π hc hr`. Take `⟨n, hn⟩` from `(GlobalTheory.Mem.CharAlg.isAlg_even_odd D.R D.host).2 cf.eta cf.isEta.inf D.R.t D.R.t_odd`. Take `⟨art, ha⟩` from `hGA D.host.E D.nd.Om`. Take `⟨μ, hμc, hμ⟩` from `ha.exists_isLAdicOf ι (GlobalTheory.HeckeGal.isAlgPos_of_isAlg hn)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨Formalism.MainNotions.SumRepresentations.At.twGL ρ₁ μ, ?_, GlobalTheory.TwistLG.isSSRep_twGL _ _ ss1, ?_⟩` and prove the remaining obligations. Simplify using `only [GlobalTheory.TwistLG.twGL_val]`. Conclude with `(Units.continuous_val.comp hμc).smul c1`. Establish `hfin` using `placesOver_finite D.host.E l (Fact.out : l.Prime).ne_zero`. Use `filter_upwards [f1, D.naut.locG_unr_ae π, hfin.compl_mem_cofinite] with w hw1 hu hwl`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `B σ hB hσ`. Establish `hwl' : ((l : ℕ) : 𝓞 D.host.E) ∉ w.asIdeal` using `hwl`. Establish `hue : D.naut.unr (D.naut.locG D.naut.etaTinv w)` using `(D.naut.etaTinv_def w).1`. Establish `hU` using `(A.chr.unr_iff _ w).1 hue`. Establish `hf` using `A.chr.frob _ w hU`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hf`, `hU` using `[A.chr.etaTinv]`. Establish `hν` using `GlobalTheory.HeckeGal.Model.absPow_isAbsPow D.host.E (-(D.R.t : ℝ) / 2)`. Establish `hψu : (cf.eta⁻¹ * GlobalTheory.HeckeGal.Model.absPow D.host.E (-(D.R.t : ℝ) / 2)).UnrAt w`. Introduce `x hx`. Rewrite using `[HChar.loc_mul, hU x hx, hν.1 w x hx, one_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hμv` using `hμ.frob_unr ha (Or.inl hwl') hψu hB hσ`. Use `set u : ℂ := (((cf.eta⁻¹ * GlobalTheory.HeckeGal.Model.absPow D.host.E (-(D.R.t : ℝ) / 2)).val w : ℂˣ) : ℂ)⁻¹ with hu_def`. Establish `hu1 : D.naut.frobEig (D.naut.lpTw (D.naut.locG D.naut.etaTinv w) (-(D.R.t : ℝ) / 2)) = {u}`. Rewrite using `[D.naut.frobEig_tw _ _ hue, hf, Multiset.map_singleton]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu_def, HChar.val_mul, HChar.val_inv, Units.val_mul, hν.2.1 w]`. Establish `hn' : (Ideal.absNorm w.asIdeal : ℕ) = normV w` using `rfl`. Rewrite using `[hn', mul_inv, Units.val_inv_eq_inv_val, Complex.cpow_neg, inv_inv]`. Establish `hχu : ι ((μ σ : (Qbar l)ˣ) : Qbar l) = u`. Rewrite using `[hμv, map_inv₀, ι.apply_symm_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `hw1 B σ hB hσ`. Rewrite using `[GlobalTheory.TwistLG.twGL_val, ← Matrix.charpoly_map, GlobalTheory.ParamRep.map_smul_matrix, GlobalTheory.ParamRep.galPol_twist D.nd D.naut π hu u hu1]`. Establish `h2 : ((((ρ₁ σ : GL _ _) : Matrix (Fin D.R.r) (Fin D.R.r) _).map ι.toRingHom)).charpoly = ((D.naut.frobEig (D.naut.lpTw (D.naut.locG π w) ((1 - (D.R.r : ℝ)) / 2))).map fun α => X - C α).prod`. Rewrite using `[Matrix.charpoly_map]`. Conclude with `h1`.
-
-Establish `h3` using `GlobalTheory.ParamRep.charpoly_smul_of_prod _ u _ h2`. Establish `hχu' : ι.toRingHom ((μ σ : (Qbar l)ˣ) : Qbar l) = u` using `hχu`. Rewrite using `[hχu']`. Conclude with `h3`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isRepOf_tw : GlobalTheory.Published.GlobalArtinReciprocity → ∀ (D : D7) (cf : CharFrame D) (jE : D.host.E →+* Qb) (A : SideA D cf jE), GalEx D → ∀ (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (π : D.naut.CG D.R.r), D.naut.csd π → D.naut.ralg π → ∃ ρ : G D.host.E D.nd.Om →* GL (Fin D.R.r) (Qbar l), IsRepOf D l ι (D.naut.tw π D.naut.etaTinv) ((1 - (D.R.nV : ℝ)) / 2) ρ := by
   intro hGA D cf jE A hGal l _ ι π hc hr

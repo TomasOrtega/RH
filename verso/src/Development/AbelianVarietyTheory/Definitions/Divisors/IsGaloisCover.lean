@@ -32,7 +32,7 @@ variable {Z W : Scheme.{0}} {s : Z ⟶ Sp ℂ} {sW : W ⟶ Sp ℂ} {π : W ⟶ Z
   {act : G → (W ⟶ W)}
 
 /- English proof (translation)
-The claim follows from `hG one := by simp [hone] mul a c := by simp only [mul_inv_rev]; exact hmul c⁻¹ a⁻¹ inv a := hinv a⁻¹ fin := hfin etale := het onto := hon fibre K _ _ y y' e := by obtain ⟨g, hg, hu⟩ := hfib K y y' e refine ⟨g⁻¹, by simp [hg], fun a ha => ?_⟩ have := hu a⁻¹ (by simpa using ha.symm …`.
+A detailed English derivation is pending.
 -/
 theorem mk' (hG : Finite G) (hfin : IsFinite π) (het : Etale π) (hon : Surjective π) (hinv : ∀ g, act g ≫ π = π)
     (hmul : ∀ g h, act (g * h) = act h ≫ act g) (hone : act 1 = 𝟙 W)
@@ -52,44 +52,44 @@ theorem mk' (hG : Finite G) (hfin : IsFinite π) (het : Etale π) (hon : Surject
     simp [← this]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.ZM.IsGaloisCover.finite h`.
+A detailed English derivation is pending.
 -/
 theorem finite (h : IsGal π hπ G act) : Finite G := GlobalTheory.ZM.IsGaloisCover.finite h
 /- English proof (translation)
-The claim follows from `GlobalTheory.ZM.IsGaloisCover.fin h`.
+A detailed English derivation is pending.
 -/
 theorem isFinite (h : IsGal π hπ G act) : IsFinite π := GlobalTheory.ZM.IsGaloisCover.fin h
 /- English proof (translation)
-The claim follows from `GlobalTheory.ZM.IsGaloisCover.etale h`.
+A detailed English derivation is pending.
 -/
 theorem etale (h : IsGal π hπ G act) : Etale π := GlobalTheory.ZM.IsGaloisCover.etale h
 /- English proof (translation)
-The claim follows from `GlobalTheory.ZM.IsGaloisCover.onto h`.
+A detailed English derivation is pending.
 -/
 theorem surjective (h : IsGal π hπ G act) : Surjective π := GlobalTheory.ZM.IsGaloisCover.onto h
 
 /- English proof (translation)
-Simplify using `using GlobalTheory.ZM.IsGaloisCover.inv h g⁻¹`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem act_comp (h : IsGal π hπ G act) (g : G) : act g ≫ π = π := by
   simpa using GlobalTheory.ZM.IsGaloisCover.inv h g⁻¹
 
 /- English proof (translation)
-Simplify using `using GlobalTheory.ZM.IsGaloisCover.mul h g'⁻¹ g⁻¹`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem act_mul (h : IsGal π hπ G act) (g g' : G) : act (g * g') = act g' ≫ act g := by
   simpa using GlobalTheory.ZM.IsGaloisCover.mul h g'⁻¹ g⁻¹
 
 /- English proof (translation)
-Simplify using `using GlobalTheory.ZM.IsGaloisCover.one h`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem act_one (h : IsGal π hπ G act) : act 1 = 𝟙 W := by
   simpa using GlobalTheory.ZM.IsGaloisCover.one h
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `e`. Take `⟨g, hg, hu⟩` from `GlobalTheory.ZM.IsGaloisCover.fibre h K a b e`. Use `⟨g⁻¹, hg.symm, fun g' hg' => ?_⟩` and prove the remaining obligations. Use `hu g'⁻¹ (by simpa using hg'.symm)` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `[← this]`. Introduce and unpack `⟨g, hg, -⟩`. Rewrite using `[hg, Category.assoc, h.act_comp]`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 -/
 theorem fibre (h : IsGal π hπ G act) (K : Type) [Field K] [IsAlgClosed K] (a b : Sp K ⟶ W) :
     a ≫ π = b ≫ π ↔ ∃! g : G, b = a ≫ act g := by
@@ -103,7 +103,7 @@ theorem fibre (h : IsGal π hπ G act) (K : Type) [Field K] [IsAlgClosed K] (a b
     rw [hg, Category.assoc, h.act_comp]
 
 /- English proof (translation)
-The claim follows from `h.fibre ℂ a.1 b.1`.
+A detailed English derivation is pending.
 -/
 theorem fibre_cx (h : IsGal π hπ G act) (a b : CxPts sW (RingHom.id ℂ)) :
     a.1 ≫ π = b.1 ≫ π ↔ ∃! g : G, b.1 = a.1 ≫ act g :=
@@ -112,14 +112,14 @@ theorem fibre_cx (h : IsGal π hπ G act) (a b : CxPts sW (RingHom.id ℂ)) :
 end IsGal
 
 /- English proof (translation)
-The claim follows from `IsGal.mk' inferInstance inferInstance inferInstance inferInstance (fun _ => by simp) (fun _ _ => by simp) rfl (fun _ _ _ a b e => ⟨(), by simpa using e.symm, fun _ _ => rfl⟩)`.
+A detailed English derivation is pending.
 -/
 example : IsGal (Z := Sp ℂ) (W := Sp ℂ) (s := 𝟙 _) (sW := 𝟙 _) (𝟙 _) (by simp) Unit (fun _ => 𝟙 _) :=
   IsGal.mk' inferInstance inferInstance inferInstance inferInstance (fun _ => by simp) (fun _ _ => by simp) rfl
     (fun _ _ _ a b e => ⟨(), by simpa using e.symm, fun _ _ => rfl⟩)
 
 /- English proof (translation)
-Introduce `h`. Use `h.surjective` as an intermediate fact. Take `⟨x, -⟩` from `(Scheme.emptyTo (Sp ℂ)).surjective (IsLocalRing.closedPoint ℂ)`. Conclude with `isEmptyElim x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 example (G : Type) [Group G] : ¬ IsGal (Z := Sp ℂ) (W := (∅ : Scheme.{0})) (s := 𝟙 _) (sW := Scheme.emptyTo _)
     (Scheme.emptyTo _) (by simp) G (fun _ => 𝟙 _) := by
@@ -129,7 +129,7 @@ example (G : Type) [Group G] : ¬ IsGal (Z := Sp ℂ) (W := (∅ : Scheme.{0})) 
   exact isEmptyElim x
 
 /- English proof (translation)
-Introduce `h`. Take `⟨g, -, hu⟩` from `(h.fibre ℂ (𝟙 _) (𝟙 _)).1 rfl`. Use `(hu 1 (by simp)).trans (hu (-1) (by simp)).symm` as an intermediate fact. Conclude with `absurd this (by decide)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 example : ¬ IsGal (Z := Sp ℂ) (W := Sp ℂ) (s := 𝟙 _) (sW := 𝟙 _) (𝟙 _) (by simp) ℤˣ (fun _ => 𝟙 _) := by
   intro h

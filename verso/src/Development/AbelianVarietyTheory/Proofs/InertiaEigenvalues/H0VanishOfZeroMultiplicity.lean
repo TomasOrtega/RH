@@ -30,21 +30,21 @@ def qRep (ρ : Representation LL G V) (p : Submodule LL V) (hp : ∀ g, ∀ x �
 end Gen
 
 /- English proof (translation)
-Introduce `l _ P AI T K LL V _ _ _ _ _ ρ τ hdR hm`. Use `haveI := K.2`. Use `haveI := LL.2`. Assume the negation of the conclusion as `hne`. Take `⟨v, hv, hv0⟩` from `Submodule.ne_bot_iff _ |>.1 hne`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hinv : ∀ g, ρ g v = v`. Introduce `g`. Use `(Submodule.mem_iInf _).1 hv g` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `σ : Representation ↥LL.1 ↥(GK K) (Fin 1 → ↥LL.1)` to `1`. Set `ι : (Fin 1 → ↥LL.1) →ₗ[↥LL.1] V` to `(LinearMap.proj 0).smulRight v`. Establish `hι : ∀ u, ι u = u 0 • v` using `fun u => rfl`. Establish `hιeq : ∀ g x, ι (σ g x) = ρ g (ι x)`. Introduce `g x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[hι, hι, map_smul, hinv]`. Both sides reduce to the same expression. Establish `hιinj : Function.Injective ι`. Rewrite using `[← LinearMap.ker_eq_bot, Submodule.eq_bot_iff]`. Introduce `u hu`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite `hu` using `[LinearMap.mem_ker, hι]`. Establish `h0 : u 0 = 0` using `(smul_eq_zero.1 hu).resolve_right hv0`. Use function extensionality and compare the values at `c`. Rewrite using `[Subsingleton.elim c 0, h0]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Set `p : Submodule ↥LL.1 V` to `LinearMap.range ι`. Establish `hp : ∀ g, ∀ x ∈ p, ρ g x ∈ p`. Introduce and unpack `g _ ⟨u, rfl⟩`. Conclude with `⟨σ g u, hιeq g u⟩`. Set `ρ₂` to `GlobalTheory.InvJump.qRep ρ p hp`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hπeq : ∀ g x, p.mkQ (ρ g x) = ρ₂ g (p.mkQ x)` using `fun g x => rfl`. Take `⟨-, -, hadd⟩` from `GlobalTheory.Per.ExactMult.exact_hodge_add l P AI T K LL (Fin 1 → ↥LL.1) σ V ρ (V ⧸ p) ρ₂ ι p.mkQ hιeq hπeq hιinj (Submodule.mkQ_surjective p) (Submodule.ker_mkQ p).symm hdR`. Establish `h1 : multV (P.PD K) σ τ 0 = 1`. Use `GlobalTheory.PtCore.multV_cycPow_line (P.PD K) (GlobalTheory.DRFil.isField_dR T) (GlobalTheory.TopSteps.CrysRules.exists_inverse_fontaineElement_mem_fil_neg_one T K) σ 0 (fun g u => by simp [σ]) τ 0` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `h2` using `(GlobalTheory.Per.JumpMult.jump_iff_mult_ne_zero l P AI T K LL (V ⧸ p) ρ₂ τ 0).2.1`. Establish `h3` using `(hadd τ 0).2.1`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem h0V_eq_bot_of_multV_zero : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI → ∀ (K LL : FinExt l) (V : Type) [AddCommGroup V] [Module ↥LL.1 V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] ↥LL.1 V] [FiniteDimensional ↥LL.1 V] (ρ : Representation ↥LL.1 ↥(GK K) V) (τ : ↥K.1 →ₐ[ℚ_[l]] ↥LL.1), IsDR (P.PD K) ρ → multV (P.PD K) ρ τ 0 = 0 → H0V ρ = ⊥ := by
   intro l _ P AI T K LL V _ _ _ _ _ ρ τ hdR hm

@@ -11,9 +11,9 @@ open scoped ComplexOrder ENNReal Matrix
 namespace GlobalTheory.LineHeight
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_unique, Matrix.mul_apply, Complex.re_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Establish `h : (A * Matrix.of fun k (_ : Unit) => u k) a default = A.mulVec u a`. Simplify using `[Matrix.mul_apply, Matrix.mulVec, dotProduct]`. Rewrite using `[Matrix.conjTranspose_apply, h, Complex.star_def, Complex.conj_mul']`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `norm_cast`.
+Put the expressions in a common number system so they can be compared.
 -/
 theorem gramDet_column {r : ℕ} (A : Matrix (Fin r) (Fin r) ℂ) (u : Fin r → ℂ) :
     (((A * (Matrix.of fun k (_ : Unit) => u k))ᴴ * (A * (Matrix.of fun k (_ : Unit) => u k))).det.re)
@@ -26,11 +26,9 @@ theorem gramDet_column {r : ℕ} (A : Matrix (Fin r) (Fin r) ℂ) (u : Fin r →
   norm_cast
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Take `⟨i0⟩` from `‹Nonempty ι›`. Distinguish the cases in `hm0 : m ≤ 0`. Conclude with `absurd ((min_le_right _ _).trans (hm0.trans (hf i0))) (not_le.mpr (hcon i0))`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ∀ i, f i ≤ 1` using `fun i => ((hcon i).trans_le (min_le_left _ _)).le`. Establish `hp : ∏ i, f i ≤ f i0`. Rewrite using `[← Finset.mul_prod_erase Finset.univ f (Finset.mem_univ i0)]`. Conclude with `mul_le_of_le_one_right (hf i0) (Finset.prod_le_one (fun i _ => hf i) fun i _ => h1 i)`. Establish `h2 : f i0 < m` using `(hcon i0).trans_le (min_le_right _ _)`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_min_le_of_le_prod {ι : Type} [Fintype ι] [Nonempty ι] (f : ι → ℝ)
     (hf : ∀ i, 0 ≤ f i) (m : ℝ) (hm : m ≤ ∏ i, f i) : ∃ i, min 1 m ≤ f i := by
@@ -50,7 +48,7 @@ theorem exists_min_le_of_le_prod {ι : Type} [Fintype ι] [Nonempty ι] (f : ι 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Take `⟨τ⟩` from `(inferInstance : Nonempty (E →+* ℂ))`. Distinguish the cases in `h : τ ∈ X.Ψ`. Conclude with `⟨⟨τ, h⟩⟩`. Conclude with `⟨⟨_, not_not.mp (mt (X.cmType τ).2 h)⟩⟩`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem nonempty_cmType {r : ℕ} (X : Data E r) : Nonempty X.Ψ := by
   obtain ⟨τ⟩ := (inferInstance : Nonempty (E →+* ℂ))
@@ -59,27 +57,25 @@ theorem nonempty_cmType {r : ℕ} (X : Data E r) : Nonempty X.Ψ := by
   · exact ⟨⟨_, not_not.mp (mt (X.cmType τ).2 h)⟩⟩
 
 /- English proof (translation)
-The claim follows from `mul_pos two_pos (norm_pos_iff.mpr ((map_ne_zero τ.1).mpr X.ξ0_ne))`.
+A detailed English derivation is pending.
 -/
 theorem c_pos {r : ℕ} (X : Data E r) (τ : X.Ψ) : 0 < X.c τ :=
   mul_pos two_pos (norm_pos_iff.mpr ((map_ne_zero τ.1).mpr X.ξ0_ne))
 
 /- English proof (translation)
-Introduce `r X d hd hr m hm`. Use `nonempty_cmType X` as an intermediate fact. Take `⟨τ0, -, hτ0⟩` from `(Finset.univ : Finset X.Ψ).exists_min_image X.c Finset.univ_nonempty`. Establish `hmin : 0 < min 1 m` using `lt_min one_pos hm`. Establish `hδ : 0 < X.c τ0 * min 1 m` using `mul_pos (c_pos X τ0) hmin`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨Real.sqrt (X.c τ0 * min 1 m), Real.sqrt_pos.2 hδ, fun x hx hW => ?_⟩` and prove the remaining obligations. Take `⟨hdet, hmaj⟩` from `GlobalTheory.T.majorant_eq_sum_norm_sq_orthonormalFrame r X x hx`. Establish `key : ∀ v ∈ X.Λ, v ≠ 0 → X.c τ0 * min 1 m ≤ ∑ τ, X.c τ * X.maj x τ (Data.emb τ.1 v)`. Introduce `v hv hv0`. Establish `hli : LinearIndependent E (fun _ : Unit => v)` using `linearIndependent_unique_iff.mpr hv0`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hfin : Module.finrank E (Submodule.span E (Set.range fun _ : Unit => v)) = 1`. Rewrite using `[Set.range_const]`. Conclude with `finrank_span_singleton hv0`. Establish `hg : ∀ τ : X.Ψ, (((mat x τ)⁻¹ * Matrix.of fun k (_ : Unit) => τ.1 (v k))ᴴ * ((mat x τ)⁻¹ * Matrix.of fun k (_ : Unit) => τ.1 (v k))).det.re = X.maj x τ (Data.emb τ.1 v)` using `fun τ => (gramDet_column _ _).trans (hmaj τ _).symm`. Establish `hmaj0 : ∀ τ, 0 ≤ X.maj x τ (Data.emb τ.1 v)` using `fun τ => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hmaj]`. Check the signs of the components of the expression. Establish `hidx` using `GlobalTheory.SpanIndex.relIndex_span_ne_zero r X Unit (fun _ => v) hli fun _ => hv`. Establish `h1` using `hW _ hfin`. Rewrite `h1` using `[hd x hdet Unit (fun _ => v) hli (fun _ => hv)]`.
+Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hg] at h1`. Establish `h2 : m ≤ ∏ τ, X.maj x τ (Data.emb τ.1 v)` using `h1.trans (div_le_self (Finset.prod_nonneg fun τ _ => hmaj0 τ) (by exact_mod_cast Nat.one_le_iff_ne_zero.mpr hidx))`. Take `⟨τ, hτ⟩` from `exists_min_le_of_le_prod _ hmaj0 m h2`. Combine the equalities or inequalities in the displayed calculation. Establish `hne : ∃ v ∈ X.Λ, v ≠ 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `hbot : Submodule.span E (X.Λ : Set (Fin r → E)) = ⊥` using `Submodule.span_eq_bot.mpr fun v hv => hcon v hv`. Rewrite `hbot` using `[X.Λ_span]`. Establish `: Nonempty (Fin r)` using `⟨⟨0, hr⟩⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Conclude with `top_ne_bot hbot`. Take `⟨v0, hv0, hv00⟩` from `hne`. Unfold `Data.la1`. Use `Real.sqrt_le_sqrt ?_` and prove the remaining obligations. Unfold `Data.firstMinimumSq`.
-
-Use `le_csInf ⟨_, v0, hv0, hv00, rfl⟩ ?_` and prove the remaining obligations. Introduce and unpack `t ⟨v, hv, hv0', rfl⟩`. Conclude with `key v hv hv0'`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem exists_la1_lower_bound_of_line_heights : (∀ (r : ℕ) (X : Data E r) (d : Frame X.Ψ r → Submodule E (Fin r → E) → ℝ), (∀ x : Frame X.Ψ r, (∀ τ : X.Ψ, (mat x τ).det ≠ 0) → ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (w : ι → Fin r → E), LinearIndependent E w → (∀ a, w a ∈ X.Λ) → d x (Submodule.span E (Set.range w)) = ((∏ τ : X.Ψ, ((((mat x τ)⁻¹ * (Matrix.of fun k a => τ.1 (w a k)))ᴴ * ((mat x τ)⁻¹ * (Matrix.of fun k a => τ.1 (w a k)))).det.re)) / (((Submodule.span (𝓞 E) (Set.range w)).toAddSubgroup.relIndex (X.Λ.toAddSubgroup ⊓ (Submodule.span E (Set.range w)).toAddSubgroup)) : ℝ))) → 0 < r → ∀ m : ℝ, 0 < m → ∃ ε : ℝ, 0 < ε ∧ ∀ x, IsOrth X x → (∀ W : Submodule E (Fin r → E), Module.finrank E W = 1 → m ≤ d x W) → ε ≤ X.la1 x) := by
   intro r X d hd hr m hm

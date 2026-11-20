@@ -9,7 +9,7 @@ namespace GroundTheory.Heights₂.Heights.LowerBoundFree
 open MvPolynomial MeasureTheory ReciprocityTheory.ChartRestriction.G.Geo
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[segre, torusSmul, Finset.prod_mul_distrib]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem segre_torusSmul {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] (c : K → ℂ)
     (z : (Σ k, ι k) → ℂ) : segre (torusSmul c z) = (∏ k, c k) • segre z := by
@@ -17,14 +17,14 @@ theorem segre_torusSmul {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype
   simp [segre, torusSmul, Finset.prod_mul_distrib]
 
 /- English proof (translation)
-Rewrite using `[volume_pi]`. Conclude with `Measure.pi_hyperplane _ i 0`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem volume_coord_hyperplane {m : ℕ} (i : Fin m) : volume {t : Fin m → ℂ | t i = 0} = 0 := by
   rw [volume_pi]
   exact Measure.pi_hyperplane _ i 0
 
 /- English proof (translation)
-Use `differentiable_pi.2 fun i => ?_` and prove the remaining obligations. Unfold `segre`. Use `fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem differentiable_segre {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)] :
     Differentiable ℂ (segre : ((Σ k, ι k) → ℂ) → ((k : K) → ι k) → ℂ) := by
@@ -33,23 +33,21 @@ theorem differentiable_segre {K : Type} [Fintype K] [DecidableEq K] {ι : K → 
   fun_prop
 
 /- English proof (translation)
-Introduce `II T _ _ K _ ι _ Ω _ _ E _ _ D Ψ _`. Set `F : Fin D.nCharts → (Fin D.n → ℂ) → Fin D.n → ℂ` to `fun a t j => Ψ (segre ((D.chart a).γ t)) j.succ / Ψ (segre ((D.chart a).γ t)) 0`. Set `s : Fin D.nCharts → Fin D.n → Set (Fin D.n → ℂ)` to `fun a i => {t | ‖t‖ < 1 ∧ t i = 0 ∧ Ψ (segre ((D.chart a).γ t)) 0 ≠ 0}`. Use `measure_mono_null (t := ⋃ a, ⋃ i, F a '' s a i) ?_ (measure_iUnion_null fun a => measure_iUnion_null fun i => ?_)` and prove the remaining obligations. Introduce and unpack `y ⟨z, hz, hzB, hΨ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨a, t, ht, c, hc, rfl⟩` from `D.chart_cover z hz`. Establish `hγB : (D.chart a).γ t ∈ D.Bd`. Use `D.bd_torus _ hzB (fun k => (c k)⁻¹) (fun k => inv_ne_zero (hc k))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `p`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [torusSmul]`. Rewrite using `[inv_mul_cancel_left₀ (hc _)]`. Establish `ht1 : ‖t‖ < 1` using `by linarith`. Take `⟨i, -, hi⟩` from `((D.chart a).boundary t (mem_ball_zero_iff.2 ht1)).1 hγB`. Rewrite `hΨ` using `[segre_torusSmul, map_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0` using `congrFun hΨ 0`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Fin.cons_zero] at h0`. Establish `hv0 : Ψ (segre ((D.chart a).γ t)) 0 ≠ 0` using `fun h => by simp [h] at h0`. Use `Set.mem_iUnion.2 ⟨a, Set.mem_iUnion.2 ⟨i, t, ⟨ht1, hi, hv0⟩, ?_⟩⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hj` using `congrFun hΨ j.succ`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Fin.cons_succ] at hj`. Use `show Ψ (segre ((D.chart a).γ t)) j.succ / Ψ (segre ((D.chart a).γ t)) 0 = y j`. Rewrite using `[div_eq_iff hv0, ← hj]`. Take the linear combination `(-(Ψ (segre ((D.chart a).γ t)) j.succ)) * h0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Use `addHaar_image_eq_zero_of_differentiableOn_of_addHaar_eq_zero volume ?_ (measure_mono_null (fun t ht => ht.2.1) (volume_coord_hyperplane i))` and prove the remaining obligations. Introduce `t ht`. Establish `hγ : DifferentiableAt ℂ (D.chart a).γ t` using `((D.chart a).analytic t (mem_ball_zero_iff.2 ht.1)).differentiableAt`. Establish `hS : DifferentiableAt ℂ (fun t => segre ((D.chart a).γ t)) t`. Use `differentiable_segre.differentiableAt.comp t hγ` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this`. Establish `hG : DifferentiableAt ℂ (fun t => Ψ (segre ((D.chart a).γ t))) t`. Use `(LinearMap.toContinuousLinearMap Ψ).differentiableAt.comp t hS` as an intermediate fact. Conclude with `this`. Establish `hF : DifferentiableAt ℂ (F a) t`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `differentiableAt_pi.2 fun j => ?_` and prove the remaining obligations. Establish `hn : DifferentiableAt ℂ (fun t => Ψ (segre ((D.chart a).γ t)) j.succ) t` using `differentiableAt_pi.1 hG j.succ`. Establish `hd : DifferentiableAt ℂ (fun t => Ψ (segre ((D.chart a).γ t)) 0) t` using `differentiableAt_pi.1 hG 0`. Use `show DifferentiableAt ℂ (fun t => Ψ (segre ((D.chart a).γ t)) j.succ / Ψ (segre ((D.chart a).γ t)) 0) t`. Simplify using `only [div_eq_mul_inv]`.
-
-Conclude with `hn.mul (hd.inv ht.2.2)`. Conclude with `(hF.restrictScalars ℝ).differentiableWithinAt`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem BoundaryPtsNull.proof : BoundaryPtsNull.Statement := by
   intro II T _ _ K _ ι _ Ω _ _ E _ _ D Ψ _

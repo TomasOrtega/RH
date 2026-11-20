@@ -18,7 +18,7 @@ open Formalism.MainNotions.G Formalism.GradedWeylDivisibility Formalism.MainNoti
 open Formalism.MainNotions.TestSideWords.TwistedFiltration.G3 Formalism.MainNotions.G.GLWeightTheory
 
 /- English proof (translation)
-Consider the cases of `x with`. Consider the case `top => exact le_top`. Consider the case `coe k => exact WithTop.coe_le_coe.2 (Int.ceil_le.2 (h k rfl))`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem ceil_le_of_geZ {x : WithTop ℤ} {t : ℝ} (h : geZ x t) : ((⌈t⌉ : ℤ) : WithTop ℤ) ≤ x := by
   cases x with
@@ -26,7 +26,7 @@ theorem ceil_le_of_geZ {x : WithTop ℤ} {t : ℝ} (h : geZ x t) : ((⌈t⌉ : �
   | coe k => exact WithTop.coe_le_coe.2 (Int.ceil_le.2 (h k rfl))
 
 /- English proof (translation)
-Introduce `k hk`. Substitute `hk` using the available equality. Conclude with `Int.ceil_le.1 (WithTop.coe_le_coe.1 h)`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem geZ_of_ceil_le {x : WithTop ℤ} {t : ℝ} (h : ((⌈t⌉ : ℤ) : WithTop ℤ) ≤ x) : geZ x t := by
   intro k hk
@@ -34,7 +34,7 @@ theorem geZ_of_ceil_le {x : WithTop ℤ} {t : ℝ} (h : ((⌈t⌉ : ℤ) : WithT
   exact Int.ceil_le.1 (WithTop.coe_le_coe.1 h)
 
 /- English proof (translation)
-Use `Finset.sum_induction f (fun F => a ≤ valS LL S F) (fun F G hF hG => ?_) ?_ h` and prove the remaining obligations. Conclude with `le_trans (le_min hF hG) (flt_valS_add LL S F G)`. Rewrite using `[valS_zero_eq_top]`. Conclude with `le_top`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_valS_sum {Kf : Type} [Field Kf] {ι : Type} {n : ℕ} [NeZero n] (LL : Letters ι) (S : Set ι) {α : Type}
     (s : Finset α) (f : α → MvPolynomial (ι × Fin n) Kf) (a : WithTop ℤ) (h : ∀ i ∈ s, a ≤ valS LL S (f i)) :
@@ -44,7 +44,7 @@ theorem le_valS_sum {Kf : Type} [Field Kf] {ι : Type} {n : ℕ} [NeZero n] (LL 
   · rw [valS_zero_eq_top]; exact le_top
 
 /- English proof (translation)
-Rewrite using `[mem_supported]`. Introduce `v hv`. Take `⟨mo, hmo, hv'⟩` from `(mem_vars_iff_mem_support v).1 (Finset.mem_coe.1 hv)`. Conclude with `h mo hmo v hv'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_supported_of {R σ : Type*} [CommSemiring R] (F : MvPolynomial σ R) (s : Set σ)
     (h : ∀ mo ∈ F.support, ∀ v ∈ mo.support, v ∈ s) : F ∈ supported R s := by
@@ -54,16 +54,16 @@ theorem mem_supported_of {R σ : Type*} [CommSemiring R] (F : MvPolynomial σ R)
   exact h mo hmo v hv'
 
 /- English proof (translation)
-The claim follows from `(mem_supported.1 hF) (Finset.mem_coe.2 ((mem_vars_iff_mem_support v).2 ⟨mo, hmo, hv⟩))`.
+A detailed English derivation is pending.
 -/
 theorem of_mem_supported {R σ : Type*} [CommSemiring R] {F : MvPolynomial σ R} {s : Set σ} (hF : F ∈ supported R s)
     {mo : σ →₀ ℕ} (hmo : mo ∈ F.support) {v : σ} (hv : v ∈ mo.support) : v ∈ s :=
   (mem_supported.1 hF) (Finset.mem_coe.2 ((mem_vars_iff_mem_support v).2 ⟨mo, hmo, hv⟩))
 
 /- English proof (translation)
-Unfold `filtQ`. Rewrite using `[MvPolynomial.coeff_sum]`. Simplify using `only [coeff_monomial]`. Rewrite using `[Finset.sum_ite_eq']`. Distinguish the cases in `hq : Q (fun i => multideg mo i)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hs : mo ∈ F.support`. Simplify using `[Finset.mem_filter, hs, hq]`. Simplify using `[Finset.mem_filter, hs, hq, notMem_support_iff.1 hs]`. Simplify using `[Finset.mem_filter, hq]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem coeff_filtQ {Kf : Type} [Field Kf] {ι : Type} {n : ℕ} (Q : (ι → ℕ) → Prop) (F : MvPolynomial (ι × Fin n) Kf)
     (mo : ι × Fin n →₀ ℕ) : (filtQ Q F).coeff mo = if Q (fun i => multideg mo i) then F.coeff mo else 0 := by
@@ -78,7 +78,7 @@ theorem coeff_filtQ {Kf : Type} [Field Kf] {ι : Type} {n : ℕ} (Q : (ι → �
   · simp [Finset.mem_filter, hq]
 
 /- English proof (translation)
-Rewrite `h` using `[mem_support_iff, coeff_filtQ]`. Rewrite using `[mem_support_iff]`. Use `split_ifs at h`. Conclude with `h`. Conclude with `absurd rfl h`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem support_filtQ {Kf : Type} [Field Kf] {ι : Type} {n : ℕ} (Q : (ι → ℕ) → Prop) (F : MvPolynomial (ι × Fin n) Kf)
     {mo : ι × Fin n →₀ ℕ} (h : mo ∈ (filtQ Q F).support) : mo ∈ F.support := by
@@ -94,7 +94,7 @@ variable {n' r : ℕ} [NeZero n'] [NeZero r] {Fr : Frames n' r} {L₁ N₁ : ℕ
   [IsDomain O] [IsDiscreteValuationRing O] {J : ℕ} [NeZero J] (Dt : SignedChainData p O r J)
 
 /- English proof (translation)
-Unfold `mlOf`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mlOf_ne_tp (j : ZMod J) (y : ℤ) (j' : ZMod J) (m : Fin r) (h : 1 ≤ m.val) :
     mlOf Fr Dt.nL j y ≠ ML.tp j' m h := by
@@ -102,11 +102,11 @@ theorem mlOf_ne_tp (j : ZMod J) (y : ℤ) (j' : ZMod J) (m : Fin r) (h : 1 ≤ m
   split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `SignedChainData.chainML`. Rewrite using `[hT.2.2.2.2.2 j i]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Consider the cases of `y with`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data.
 
-Consider the case `inl l`. Break down `hy with hy | ⟨l', hl', hlt⟩` into its components or cases. Simplify using `at hy`. Establish `e` using `Sum.inl_injective hl'`. Substitute `e` using the available equality.
+Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Substitute using the available equality.
 
-Conclude with `Or.inr ⟨_, rfl, hlt⟩`. Consider the case `inr m => exact Or.inl ⟨m, rfl⟩`. Introduce and unpack `(⟨m, rfl⟩ | ⟨l, rfl, hlt⟩)`. Conclude with `⟨Sum.inr m, Or.inl (by simp), rfl⟩`. Conclude with `⟨Sum.inl l, Or.inr ⟨l, rfl, hlt⟩, rfl⟩`.
+Prove the second alternative. Treat this case separately. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem chain_mem (hT : TieS Fr Dt) (j : ZMod J) (i : Fin (Dt.nch j)) (x : ML J Dt.nL r) :
     x ∈ Dt.chainML j i ↔ (∃ m : Fin r, x = ML.wc (j - 1) m) ∨
@@ -128,9 +128,9 @@ theorem chain_mem (hT : TieS Fr Dt) (j : ZMod J) (i : Fin (Dt.nch j)) (x : ML J 
     · exact ⟨Sum.inl l, Or.inr ⟨l, rfl, hlt⟩, rfl⟩
 
 /- English proof (translation)
-Establish `hi : i.val < Dt.nL j + 1` using `by have := i.isLt; have h2 := hT.2.2.2.2.1 j; omega`. Unfold `posU`. Use `split_ifs with h`. Use `Formalism.MainNotions.NormalSetCounting.ll_between (Fr := Fr) (nL := Dt.nL) hT.2.1 j ⟨i.val, h⟩` as an intermediate fact. Conclude with `⟨this.1, this.2.le⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show i.val - Dt.nL j = 0 by omega]`. Conclude with `⟨Formalism.MainNotions.Proposition5Numerics.frame_end_lt_next_start hV (segZ j), le_rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem posU_bounds (hV : Fr.Valid L₁ N₁) (hT : TieS Fr Dt) (j : ZMod J) (i : Fin (Dt.nch j)) :
     Fr.fr (segZ j - 1) (r - 1) < posU Fr (Dt.nL j) (segZ j) i.val ∧
@@ -144,23 +144,17 @@ theorem posU_bounds (hV : Fr.Valid L₁ N₁) (hT : TieS Fr Dt) (j : ZMod J) (i 
     exact ⟨Formalism.MainNotions.Proposition5Numerics.frame_end_lt_next_start hV (segZ j), le_rfl⟩
 
 /- English proof (translation)
-Establish `hi : i.val < Dt.nL j + 1` using `by have := i.isLt; have h2 := hT.2.2.2.2.1 j; omega`. Establish `hpU` using `posU_bounds Dt hV hT j i`. Establish `hcard` using `hT.2.1 j`. Break down `restSpec n' r Fr L₁ N₁ hV J Dt.nL hT.2.1 j y hy with ⟨l, rfl, hm⟩ | ⟨m, rfl, hm⟩ | ⟨m, rfl, hm⟩` into its components or cases. Rewrite using `[hm, chain_mem Dt hT]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Establish `hl` using `l.isLt`. Use `⟨⟨fun h => Or.inr ⟨l, rfl, ?_⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hc push_neg at hc`. Establish `hi' : i.val < Dt.nL j` using `lt_of_le_of_lt hc hl`. Rewrite `h` using `[Formalism.MainNotions.Proposition5Numerics.posU_ll' (Fr := Fr) (segZ j) (Dt.nL j) i.val hi']`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `Nat.eq_or_lt_of_le hc with he | hlt` into its components or cases. Rewrite `h` using `[he]`. Conclude with `lt_irrefl _ h`. Conclude with `lt_asymm h (Formalism.MainNotions.Proposition5Numerics.llPos_lt (Fr := Fr) (segZ j) i.val l.val hlt (by rw [← hcard]; exact hl))`. Introduce and unpack `(⟨m, hm'⟩ | ⟨l', hl', hlt⟩)`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data. Establish an intermediate fact.
 
-Consider the cases of `hm'`. Establish `hll : l = l'` using `eq_of_heq (ML.ll.inj hl').2`. Substitute `hll` using the available equality. Distinguish the cases in `hi' : i.val < Dt.nL j`. Rewrite using `[Formalism.MainNotions.Proposition5Numerics.posU_ll' (Fr := Fr) (segZ j) (Dt.nL j) i.val hi']`.
+Substitute using the available equality. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `Formalism.MainNotions.Proposition5Numerics.llPos_lt (Fr := Fr) (segZ j) l.val i.val hlt (by rw [← hcard]; exact hi')`. Establish `he : posU Fr (Dt.nL j) (segZ j) i.val = Fr.fr (segZ j) 0`. Unfold `posU`. Rewrite using `[if_neg hi', show i.val - Dt.nL j = 0 by omega]`. Rewrite using `[he]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(Formalism.MainNotions.NormalSetCounting.ll_between (Fr := Fr) (nL := Dt.nL) hT.2.1 j l).2`. Use `show Dt.sgn j l = decide (Even (llPos Fr (segZ j) l.val))`. Conclude with `hT.2.2.1 j l`. Rewrite using `[hm, chain_mem Dt hT]`. Establish `hmr` using `m.isLt`.
-
-Use `⟨⟨fun h => absurd h (not_lt.2 ?_), fun h => ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `le_trans hpU.2 (Formalism.MainNotions.Proposition5Numerics.dg_fr_le hV (segZ j) (Nat.zero_le _) (by omega))`. Apply the tactic sequence `rcases h with ⟨m', h'⟩ | ⟨l', h', _⟩ <;> cases h'`. Use `show true = decide (Even (Fr.fr (segZ j) (r - 1 - m.val)))`. Conclude with `(decide_eq_true (hV.2.2.2.2.1 _ _ (by omega)).2).symm`.
-
-Rewrite using `[hm, chain_mem Dt hT]`. Establish `hmr` using `m.isLt`. Use `⟨⟨fun _ => Or.inl ⟨m, rfl⟩, fun _ => ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `lt_of_le_of_lt (Formalism.MainNotions.Proposition5Numerics.dg_fr_le hV (segZ j - 1) (by omega) (by omega)) hpU.1`. Use `show true = decide (Even (Fr.fr (segZ j - 1) (r - 1 - m.val)))`.
-
-Conclude with `(decide_eq_true (hV.2.2.2.2.1 _ _ (by omega)).2).symm`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem geo_chain (hV : Fr.Valid L₁ N₁) (hT : TieS Fr Dt) (j : ZMod J) (i : Fin (Dt.nch j)) (y : ℤ)
     (hy : y ∈ Fr.letters (segZ j)) :
@@ -210,9 +204,9 @@ theorem geo_chain (hV : Fr.Valid L₁ N₁) (hT : TieS Fr Dt) (j : ZMod J) (i : 
       exact (decide_eq_true (hV.2.2.2.2.1 _ _ (by omega)).2).symm
 
 /- English proof (translation)
-Rewrite using `[chain_mem Dt hT]`. Apply the tactic sequence `rcases restSpec n' r Fr L₁ N₁ hV J Dt.nL hT.2.1 j' y hy with ⟨l, _, hm⟩ | ⟨m, _, hm⟩ | ⟨m, _, hm⟩ <;> rw [hm]`. Introduce and unpack `(⟨m', h⟩ | ⟨l', h, _⟩)`. Consider the cases of `h`. Conclude with `hj (ML.ll.inj h).1`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rintro (⟨m', h⟩ | ⟨l', h, _⟩) <;> cases h`. Introduce and unpack `(⟨m', h⟩ | ⟨l', h, _⟩)`. Conclude with `hj (sub_left_inj.1 (ML.wc.inj h).1)`. Consider the cases of `h`.
+Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
 -/
 theorem chi_out (hV : Fr.Valid L₁ N₁) (hT : TieS Fr Dt) (j j' : ZMod J) (hj : j' ≠ j) (i : Fin (Dt.nch j)) (y : ℤ)
     (hy : y ∈ Fr.letters (segZ j')) : mlOf Fr Dt.nL j' y ∉ Dt.chainML j i := by
@@ -227,9 +221,7 @@ theorem chi_out (hV : Fr.Valid L₁ N₁) (hT : TieS Fr Dt) (j j' : ZMod J) (hj 
     · cases h
 
 /- English proof (translation)
-Use `Formalism.MainNotions.PairMembershipBlocks.T5.algHom_mem_supported _ s (fun v => ?_) F` and prove the remaining obligations. Unfold `chi`. Rewrite using `[aeval_X]`. Use `split_ifs with hv`. Conclude with `X_mem_supported.2 (h v.1 hv v.2)`.
-
-Conclude with `Subalgebra.zero_mem _`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chi_supp (j' : ZMod J) (F : MvPolynomial (ℤ × Fin r) (KK O)) (s : Set (ML J Dt.nL r × Fin r))
     (h : ∀ y ∈ Fr.letters (segZ j'), ∀ a : Fin r, (mlOf Fr Dt.nL j' y, a) ∈ s) :
@@ -242,9 +234,9 @@ theorem chi_supp (j' : ZMod J) (F : MvPolynomial (ℤ × Fin r) (KK O)) (s : Set
   · exact Subalgebra.zero_mem _
 
 /- English proof (translation)
-Unfold `chi`. Use `hVA (KK O) ℤ (ML J Dt.nL r) r LZ Dt.modelLet {y | y < posU Fr (Dt.nL j) (segZ j) i.val} {y | y ∈ Fr.letters (segZ j)} (Dt.chainML j i) (mlOf Fr Dt.nL j) _ F hF ?_ ?_` and prove the remaining obligations. Introduce `v hvL hvS`. Establish `hvL' : v.1 ∈ Fr.letters (segZ j)` using `hvL`. Establish `hg` using `geo_chain Dt hV hT j i v.1 hvL'`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨if_pos hvL', hg.1.1 hvS, hg.2⟩`. Introduce `v hvL hvS`. Establish `hvL' : v.1 ∈ Fr.letters (segZ j)` using `hvL`. Rewrite using `[if_pos hvL']`. Conclude with `X_mem_supported.2 (fun h => hvS ((geo_chain Dt hV hT j i v.1 hvL').1.2 h))`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_chi (hVA : ValAeval) (hV : Fr.Valid L₁ N₁) (hT : TieS Fr Dt) (j : ZMod J) (i : Fin (Dt.nch j))
     (F : MvPolynomial (ℤ × Fin r) (KK O))
@@ -271,31 +263,27 @@ variable {p : ℕ} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing
   (Dt : SignedChainData p O r J)
 
 /- English proof (translation)
-Take `⟨w, hw⟩ : ∃ w : Set (ML J Dt.nL r), w = {x | ∃ (j' : ZMod J) (m : Fin r), x = ML.lab j' m}` from `⟨_, rfl⟩`. Establish `hdisj : Disjoint (Dt.chainML j i) w`. Rewrite using `[Set.disjoint_left]`. Introduce `x hx hxw`. Rewrite `hxw` using `[hw]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨j', m', rfl⟩` from `hxw`. Apply the tactic sequence `rcases (hch _).1 hx with ⟨m, h⟩ | ⟨l, h, _⟩ <;> cases h`. Establish `e1 : Dt.ph Pi' = ∑ M ∈ Pi'.support.image (fun μ => μ.filter (fun v => v.1 ∈ w)), Dt.ph (monomial M 1) * Dt.ph (wCoeff w M Pi')` using `by conv_lhs => rw [sum_wCoeff w Pi']`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun M _ => map_mul _ _ _`.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, Finset.mul_sum, hFS]`. Use `le_valS_sum _ _ _ _ _ fun M hM => ?_` and prove the remaining obligations. Establish `hsM : wCoeff w M Pi' ∈ supported (KK O) {v | IsLW v.1}`. Use `mem_supported_of _ _ fun ν hν v hv => ?_` and prove the remaining obligations. Rewrite `hν` using `[mem_support_iff, coeff_wCoeff]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `split_ifs at hν with hc`. Establish `hnw : v.1 ∉ w`. Introduce `hvw`. Establish `h1 : (ν.filter (fun v => v.1 ∈ w)) v = ν v` using `Finsupp.filter_apply_pos _ _ hvw`. Rewrite `h1` using `[hc.1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(Finsupp.mem_support_iff.1 hv) h1.symm`. Establish `hMν : M + ν ∈ Pi'.support` using `mem_support_iff.2 hν`. Establish `hvM : v ∈ (M + ν).support`. Rewrite using `[Finsupp.mem_support_iff, Finsupp.add_apply]`. Use `Finsupp.mem_support_iff.1 hv` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use linear arithmetic over natural numbers and integers. Establish `htp` using `of_mem_supported hsupp hMν hvM`. Take `⟨x, a⟩` from `v`. Consider the cases of `x with`. Consider the case `ll j' l => trivial`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `lab j' m => exact absurd (show ML.lab j' m ∈ w by rw [hw]; exact ⟨j', m, rfl⟩) hnw`. Consider the case `wc j' m => trivial`. Consider the case `tp j' m h => exact absurd rfl (htp j' m h)`. Conclude with `absurd rfl hν`. Rewrite using `[hPM, ← mul_assoc, monomial_mul, one_mul, hFP p O r J Dt hP rho _ _ _ hsM]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `split_ifs with hd`. Use `le_trans ?_ (flt_valS_mul_ge _ _ _ _)` and prove the remaining obligations. Establish `h0 : (0 : WithTop ℤ) ≤ valS Dt.modelLet (Dt.chainML j i) (monomial (liftMon Dt (b + phExp Dt M)) (1 : KK O))`. Use `hNN (KK O) _ r Dt.modelLet _ _ fun v hv hvS => ?_` and prove the remaining obligations. Rewrite `hv` using `[vars_monomial one_ne_zero]`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Take `⟨x, a⟩` from `v`. Break down `(hch x).1 hvS with ⟨m, rfl⟩ | ⟨l, rfl, _⟩` into its components or cases. Both sides reduce to the same expression. Use `show Dt.sgn j l = true`. Assume the negation of the conclusion as `hs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs' : Dt.sgn j l = false` using `by simpa using hs`. Establish `h1` using `liftMon_w Dt (b + phExp Dt M) (⟨j, Sum.inl l⟩, a)`. Establish `h2 : Dt.liftVar (⟨j, Sum.inl l⟩, a) = (ML.ll j l, a)` using `rfl`. Establish `h3 : Pof Dt (⟨j, Sum.inl l⟩, a) = 1` using `rfl`. Establish `h4 : phExp Dt M (⟨j, Sum.inl l⟩, a) = M (ML.ll j l, a)` using `rfl`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data.
 
-Establish `h5 : M (ML.ll j l, a) = 0`. Take `⟨μ, _, rfl⟩` from `Finset.mem_image.1 hM`. Use `Finsupp.filter_apply_neg _ _ ?_` and prove the remaining obligations. Rewrite using `[hw]`. Introduce and unpack `⟨j', m', h⟩`.
-
-Consider the cases of `h`. Rewrite `h1` using `[h2, h3, Nat.div_one, Finsupp.add_apply, h4, h5, hb l a hs', add_zero]`. Conclude with `(Finsupp.mem_support_iff.1 hv) h1`. Establish `h1 : T ≤ valS Dt.modelLet (Dt.chainML j i) (wCoeff w M Pi')` using `le_trans hval (valS_wCoeff_of_disj _ _ w hdisj Pi' M)`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[valS_zero_eq_top]`. Conclude with `le_top`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chain_core (hNN : ValNN) (hPM : PhMon) (hFP : FdigPh) (hFS : FdigSum) (hP : ∀ j m, 0 < Dt.P j m)
     (j : ZMod J) (i : Fin (Dt.nch j))
@@ -377,21 +365,19 @@ theorem chain_core (hNN : ValNN) (hPM : PhMon) (hFP : FdigPh) (hFS : FdigSum) (h
 end Core
 
 /- English proof (translation)
-Introduce `p _ n' r K m _ _ _ O _ _ _ _ hk Fr L₁ N₁ hV hn J _ Dt hT hJ A hA l hl ga hga t ht dPl rho' j i`. Establish `hr : 1 ≤ r` using `NeZero.one_le`. Take `⟨hTr1, hTr2⟩` from `restTr p n' r K m O hk Fr L₁ N₁ hV hn J Dt hT A hA l hl ga hga`. Take `⟨b, hb⟩ : ∃ b, b = plMon Fr p hk Dt.nL (l.mapDomain (castV hk) + ga)` from `⟨_, rfl⟩`. Rewrite `hTr1`, `hTr2` using `[← hb]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨Pi, hPi⟩ : ∃ Pi, Pi = ∏ j' : ZMod J, chi Fr Dt.nL (KK O) j' (MvPolynomial.map (algebraMap O (KK O)) (A (segZ j')))` from `⟨_, rfl⟩`. Establish `hH : levP Fr p hk Dt.nL (zPl p O hk Fr A l ga) = monomial b 1 * Dt.ph Pi`. Rewrite using `[hTr1, hPi, map_prod]`. Rewrite using `[hH, hCP p O r J Dt dPl b 1 Pi]`. Establish `hJF : J = Fr.J` using `hT.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsuppA : ∀ j' : ZMod J, MvPolynomial.map (algebraMap O (KK O)) (A (segZ j')) ∈ supported (KK O) {v : ℤ × Fin r | v.1 ∈ Fr.letters (segZ j')}`. Introduce `j'`. Establish `hlt : j'.val < Fr.J` using `by rw [← hJF]; exact ZMod.val_lt j'`. Establish `h1 : A (segZ j') ∈ supported O {v : ℤ × Fin r | v.1 ∈ Fr.letters (segZ j')}` using `hA j'.val hlt`. Rewrite `h1`, the goal using `[mem_supported]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce `v hv`. Conclude with `h1 (Finset.mem_coe.2 ((vars_map _ _) (Finset.mem_coe.1 hv)))`. Establish `hPisupp : Pi ∈ supported (KK O) {v | ∀ (j' : ZMod J) (m : Fin r) (h : 1 ≤ m.val), v.1 ≠ ML.tp j' m h}`. Rewrite using `[hPi]`. Conclude with `Subalgebra.prod_mem _ fun j' _ => chi_supp (Fr := Fr) Dt j' _ _ fun y _ a => show ∀ (j'' : ZMod J) (m : Fin r) (h : 1 ≤ m.val), (mlOf Fr Dt.nL j' y, a).1 ≠ ML.tp j'' m h from fun j'' m h => mlOf_ne_tp (Fr := Fr) Dt j' y j'' m h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : i.val < Dt.nL j + r`. Use `i.isLt` as an intermediate fact. Establish `h2` using `hT.2.2.2.2.1 j`. Use linear arithmetic over natural numbers and integers. Establish `hPival : ((⌈t j i.val⌉ : ℤ) : WithTop ℤ) ≤ valS Dt.modelLet (Dt.chainML j i) Pi`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hPi, ← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ j)]`. Use `le_trans ?_ (flt_valS_mul_ge _ _ _ _)` and prove the remaining obligations. Establish `h1 : ((⌈t j i.val⌉ : ℤ) : WithTop ℤ) ≤ valS Dt.modelLet (Dt.chainML j i) (chi Fr Dt.nL (KK O) j (MvPolynomial.map (algebraMap O (KK O)) (A (segZ j))))`. Use `le_trans (ceil_le_of_geZ (ht j i.val hu)) ?_` and prove the remaining obligations. Rewrite using `[← Formalism.MainNotions.G.Joints.StandardMonomialSpace.valS_map (algebraMap O (KK O)) (IsFractionRing.injective O (KK O))]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `val_chi Dt hVA hV hT j i _ (hsuppA j)`. Establish `h2 : (0 : WithTop ℤ) ≤ valS Dt.modelLet (Dt.chainML j i) (∏ j' ∈ Finset.univ.erase j, chi Fr Dt.nL (KK O) j' (MvPolynomial.map (algebraMap O (KK O)) (A (segZ j'))))`. Establish `hs : (∏ j' ∈ Finset.univ.erase j, chi Fr Dt.nL (KK O) j' (MvPolynomial.map (algebraMap O (KK O)) (A (segZ j')))) ∈ supported (KK O) {v : ML J Dt.nL r × Fin r | v.1 ∉ Dt.chainML j i}` using `Subalgebra.prod_mem _ fun j' hj' => chi_supp Dt j' _ _ fun y hy a => chi_out Dt hV hT j j' (Finset.ne_of_mem_erase hj') i y hy`. Use `hNN (KK O) _ r Dt.modelLet _ _ fun v hv hvS => ?_` and prove the remaining obligations. Conclude with `absurd hvS ((mem_supported.1 hs) (Finset.mem_coe.2 hv))`.
-
-Combine the equalities or inequalities in the displayed calculation. Use `geZ_of_ceil_le (chain_core Dt hNN hPM hFP hFS ?_ j i (chain_mem Dt hT j i) rho' b (fun l a h => hTr2 j l a h) _ ?_ _ (le_trans hPival (hVF _ _ _ _ _ _ _)))` and prove the remaining obligations. Introduce `j' m' show 0 < p ^ Dt.gP j' m'`. Conclude with `pow_pos (Fact.out : p.Prime).pos _`. Conclude with `mem_supported_of _ _ fun mo hmo v hv => of_mem_supported hPisupp (support_filtQ _ _ hmo) hv`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem restChain_of (hVA : ValAeval) (hVF : ValFilt) (hNN : ValNN) (hPM : PhMon) (hCP : CompPh)
     (hFP : FdigPh) (hFS : FdigSum) : RestChain := by

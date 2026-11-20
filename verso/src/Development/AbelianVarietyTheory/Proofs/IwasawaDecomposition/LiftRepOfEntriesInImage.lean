@@ -5,11 +5,11 @@ open Formalism.ConjugateSelfDual Formalism.MainNotions.N Polynomial
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `k L Γ _ _ _ f b τ h`. Use `choose pre hpre using h`. Establish `hinj : Function.Injective (f.mapMatrix : Matrix (Fin b) (Fin b) k →+* Matrix (Fin b) (Fin b) L)` using `Matrix.map_injective f.injective`. Establish `key : ∀ g, f.mapMatrix (Matrix.of (pre g)) = ((τ g : GL (Fin b) L) : Matrix (Fin b) (Fin b) L)`. Introduce `g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Simplify using `[RingHom.mapMatrix_apply, Matrix.map_apply, hpre]`. Set `m : Γ →* Matrix (Fin b) (Fin b) k` to `{ toFun := fun g => Matrix.of (pre g) map_one' := hinj (by rw [key, map_one, map_one]; rfl) map_mul' := fun x y => hinj (by rw [map_mul, key, key, key, map_mul]; rfl) }`. Use `⟨MonoidHom.toHomUnits m, ?_⟩` and prove the remaining obligations. Use extensionality with `g i j`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [mapRep, MonoidHom.comp_apply, Units.coe_map, MonoidHom.coe_coe]`. Rewrite using `[MonoidHom.coe_toHomUnits]`. Conclude with `congrFun (congrFun (key g) i) j`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_rep_of_entries_in_image : ∀ {k L Γ : Type} [Field k] [Field L] [Group Γ] (f : k →+* L) {b : ℕ} (τ : Γ →* GL (Fin b) L), (∀ g i j, ∃ x, f x = ((τ g : GL (Fin b) L) : Matrix (Fin b) (Fin b) L) i j) → ∃ σ : Γ →* GL (Fin b) k, mapRep f σ = τ := by
   intro k L Γ _ _ _ f b τ h

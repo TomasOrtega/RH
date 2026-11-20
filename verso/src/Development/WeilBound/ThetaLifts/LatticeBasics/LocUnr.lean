@@ -29,7 +29,7 @@ def LocUnrInert : Prop :=
         (∫ u, f (e (u.1, 1)) ∂μ) * locD E n v z = ∏ i ∈ Finset.range n, Lv (charFam χ) v (z + n / 2 - i)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n Y r s hB hY χ hχ hr K e hK he v` and use `(GlobalTheory.KFinLoc.split_or_inert F E σ B hB v).elim (h₁ F E σ B n Y r s hB hY χ hχ hr K e hK he v) (h₂ F E σ B n Y r s hB hY χ hχ hr K e hK he v)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem locUnr_of (h₁ : LocUnrSplit) (h₂ : LocUnrInert) : LocUnr := fun F E _ _ _ _ _ σ B n Y r s hB hY χ hχ hr K e hK he v =>
   (GlobalTheory.KFinLoc.split_or_inert F E σ B hB v).elim (h₁ F E σ B n Y r s hB hY χ hχ hr K e hK he v)

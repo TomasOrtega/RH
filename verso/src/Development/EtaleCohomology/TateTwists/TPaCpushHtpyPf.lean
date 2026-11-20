@@ -5,9 +5,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace LateralTheory.EtaleFoundations
 
 /- English proof (translation)
-Introduce `R _ E I J u u' H n x`. Take `⟨α, rfl⟩` from `CohomologyClass.mk_surjective x`. Use `show CohomologyClass.mk (zcomp α (Cocycle.ofHom u) (add_zero n)) = CohomologyClass.mk (zcomp α (Cocycle.ofHom u') (add_zero n))`. Rewrite using `[← sub_eq_zero, ← CohomologyClass.mk_sub, CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ (n - 1) (by omega)]`. Use `⟨α.1.comp (Cochain.ofHomotopy H) (show n + -1 = n - 1 by omega), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[δ_comp _ _ _ (n + 1) 0 n (by omega) rfl (by omega), δ_ofHomotopy, Cocycle.δ_eq_zero]`. Simplify using `[zcomp, Cochain.comp_sub]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem t_pa_cpush_htpy_of : t_pa_cpush_htpy := by
   intro R _ E I J u u' H n x

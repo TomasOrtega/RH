@@ -4,23 +4,19 @@ open MeasureTheory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `H _ _ _ _ _ _ _ _ μ hμ P Q hP hQ hcomm hgen hdisj F hF`. Use `haveI : LocallyCompactSpace P := hP.locallyCompactSpace`. Use `haveI : LocallyCompactSpace Q := hQ.locallyCompactSpace`. Use `haveI : SecondCountableTopology P := TopologicalSpace.Subtype.secondCountableTopology (P : Set H)`. Use `haveI : SecondCountableTopology Q := TopologicalSpace.Subtype.secondCountableTopology (Q : Set H)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `haveI : BorelSpace P := Subtype.borelSpace (P : Set H)`. Use `haveI : BorelSpace Q := Subtype.borelSpace (Q : Set H)`. Set `m : P × Q →* H` to `{ toFun := fun x => (x.1 : H) * x.2 map_one' := by simp map_mul' := by`. Introduce and unpack `⟨p, q⟩ ⟨p', q'⟩`. Simplify using `only [Prod.mk_mul_mk, Subgroup.coe_mul]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `hcomm p' p'.2 q q.2`. Combine the equalities or inequalities in the displayed calculation. Establish `hm : ∀ x : P × Q, m x = (x.1 : H) * x.2` using `fun _ => rfl`. Establish `hcont : Continuous m` using `(continuous_subtype_val.comp continuous_fst).mul (continuous_subtype_val.comp continuous_snd)`. Establish `hsurj : Function.Surjective m`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce `h`. Take `⟨p, hp, q, hq, rfl⟩` from `hgen h`. Conclude with `⟨(⟨p, hp⟩, ⟨q, hq⟩), rfl⟩`. Establish `hinj : Function.Injective m`. Rewrite using `[injective_iff_map_eq_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `⟨p, q⟩ h`. Rewrite `h` using `[hm]`. Establish `h1 : (p : H) = (q : H)⁻¹` using `eq_inv_of_mul_eq_one_left h`. Establish `hp1 : (p : H) = 1` using `hdisj p p.2 (h1 ▸ Q.inv_mem q.2)`. Establish `hq1 : (q : H) = 1` using `by simpa [hp1] using h`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `Prod.ext (Subtype.ext hp1) (Subtype.ext hq1)`. Establish `hopen : IsOpenMap m` using `m.isOpenMap_of_sigmaCompact hsurj hcont`. Set `e : (P × Q) ≃* H` to `MulEquiv.ofBijective m ⟨hinj, hsurj⟩`. Set `φ : (P × Q) ≃ₜ H` to `e.toEquiv.toHomeomorphOfContinuousOpen hcont hopen`. Set `νP : Measure P` to `Measure.haar`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Set `νQ : Measure Q` to `Measure.haar`. Use `haveI : νP.IsHaarMeasure := inferInstance`. Use `haveI : νQ.IsHaarMeasure := inferInstance`. Use `haveI : (νP.prod νQ).IsHaarMeasure := inferInstance`. Use `haveI : ((νP.prod νQ).map e).IsHaarMeasure := e.isHaarMeasure_map (νP.prod νQ) φ.continuous φ.symm.continuous`.
-
-Establish `hμeq` using `Measure.isMulLeftInvariant_eq_smul μ ((νP.prod νQ).map e)`. Establish `hzero : ∫ h, F h ∂((νP.prod νQ).map e) = 0`. Establish `hemb : MeasurableEmbedding e` using `φ.measurableEmbedding`. Rewrite using `[hemb.integral_map]`. Distinguish the cases in `hint : Integrable (fun x => F (e x)) (νP.prod νQ)`.
-
-Rewrite using `[integral_prod_symm _ hint]`. Establish `: ∀ q : Q, ∫ p : P, F (e (p, q)) ∂νP = 0` using `fun q => hF νP inferInstance q q.2`. Simplify using `[this]`. Conclude with `integral_undef hint`. Rewrite using `[hμeq, integral_smul_nnreal_measure, hzero, smul_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_haar_eq_zero_of_fibre_integrals_eq_zero :
     ∀ (H : Type) [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [LocallyCompactSpace H] [SecondCountableTopology H] [T2Space H] [MeasurableSpace H] [BorelSpace H] (μ : Measure H), μ.IsHaarMeasure → ∀ (P Q : Subgroup H), IsClosed (P : Set H) → IsClosed (Q : Set H) → (∀ p ∈ P, ∀ q ∈ Q, p * q = q * p) → (∀ h, ∃ p ∈ P, ∃ q ∈ Q, h = p * q) → (∀ h, h ∈ P → h ∈ Q → h = 1) → ∀ F : H → ℂ, (∀ ν : Measure P, ν.IsHaarMeasure → ∀ q ∈ Q, ∫ p, F ((p : H) * q) ∂ν = 0) → ∫ h, F h ∂μ = 0 := by

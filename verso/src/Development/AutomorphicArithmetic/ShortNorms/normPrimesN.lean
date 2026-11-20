@@ -5,31 +5,31 @@ open GlobalTheory.Mem.An Filter Topology
 namespace UpperTheory.T3
 
 /- English proof (translation)
-Establish `ht0 : 0 < t` using `by linarith`. Establish `ht5 : 0 < t ^ 5` using `pow_pos ht0 5`. Establish `ht4 : 0 < t ^ 4` using `pow_pos ht0 4`. Establish `hL : 0 < Real.log Y` using `by linarith`. Establish `hY1 : 1 < Y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Use `Real.log_nonpos hY.le h` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `ht1 : 1 ≤ t` using `by linarith`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht13 : t ≤ t ^ 3`. Combine the equalities or inequalities in the displayed calculation. Establish `ht35 : t ^ 3 ≤ t ^ 5` using `pow_le_pow_right₀ ht1 (by norm_num)`. Use `⟨hY1.le, ?_, ?_⟩` and prove the remaining obligations. Establish `hS` using `Real.sq_sqrt hL.le`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS0` using `Real.sqrt_nonneg (Real.log Y)`. Establish `hc2 : 0 < c ^ 2` using `pow_pos hc 2`. Establish `hct : 13 ≤ c ^ 2 * t`. Rewrite `htc` using `[div_le_iff₀ hc2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hb : 10 * t ^ 2 ≤ c * Real.sqrt (Real.log Y)`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `h1` using `mul_self_lt_mul_self (mul_nonneg hc.le hS0) h`. Establish `h2' : c * Real.sqrt (Real.log Y) * (c * Real.sqrt (Real.log Y)) = c ^ 2 * Real.log Y`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h3 : c ^ 2 * (8 * t ^ 5) ≤ c ^ 2 * Real.log Y` using `mul_le_mul_of_nonneg_left hYt hc2.le`. Establish `h4 : t ^ 4 * 13 ≤ t ^ 4 * (c ^ 2 * t)` using `mul_le_mul_of_nonneg_left hct ht4.le`. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB0 : 0 < B` using `by linarith`. Establish `hc'0 : 0 < c'` using `lt_of_lt_of_le (by positivity) h2`. Establish `hlogc' : -(1 / 20) * t ≤ Real.log c'`. Establish `h` using `Real.log_le_log (by positivity) h2`. Rewrite `h` using `[Real.log_mul (by norm_num) (Real.exp_pos _).ne', Real.log_exp]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `: 0 < Real.log 40` using `Real.log_pos (by norm_num)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlogL : Real.log (Real.log Y) ≤ 38 + Real.log Y / 40`. Establish `h1` using `Real.log_le_sub_one_of_pos (div_pos hL (show (0:ℝ) < 40 by norm_num))`. Rewrite `h1` using `[Real.log_div hL.ne' (by norm_num)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h2'` using `Real.log_le_sub_one_of_pos (show (0:ℝ) < 40 by norm_num)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hAB : A * Real.log B ≤ t ^ 3 / 5`. Establish `a1 : A * Real.log B ≤ A * (10 * t ^ 2)` using `mul_le_mul_of_nonneg_left hBt hA.le`. Establish `a2 : A * (10 * t ^ 2) ≤ (t / 50) * (10 * t ^ 2)` using `mul_le_mul_of_nonneg_right (by linarith) (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `a3 : (t / 50) * (10 * t ^ 2) = t ^ 3 / 5` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hexpo : A * Real.log B + Real.log (Real.log Y) ≤ Real.log c' + Real.log Y / 10`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `lhs : B ^ A * Real.log Y = Real.exp (A * Real.log B + Real.log (Real.log Y))`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Real.exp_add, Real.exp_log hL, Real.rpow_def_of_pos hB0, mul_comm (Real.log B) A]`. Establish `rhs : c' * Y ^ ((1:ℝ) / 10) = Real.exp (Real.log c' + Real.log Y / 10)`. Rewrite using `[Real.exp_add, Real.exp_log hc'0, Real.rpow_def_of_pos hY]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmain : B ^ A * Real.log Y ≤ c' * Y ^ ((1:ℝ) / 10)`. Rewrite using `[lhs, rhs]`. Conclude with `Real.exp_le_exp.mpr hexpo`. Establish `hden : 0 < B ^ A * Real.log Y` using `mul_pos (Real.rpow_pos_of_pos hB0 A) hL`. Rewrite using `[le_div_iff₀ hden]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.rpow_add hY]`. Evaluate the numerical expressions.
+A detailed English derivation is pending.
 -/
 private lemma core_sqrt (A c c' t B Y : ℝ) (hA : 0 < A) (hc : 0 < c)
     (ht : 10000 ≤ t) (htA : 50 * A ≤ t) (htc : 13 / c ^ 2 ≤ t)
@@ -109,7 +109,7 @@ private lemma core_sqrt (A c c' t B Y : ℝ) (hA : 0 < A) (hc : 0 < c)
           norm_num
 
 /- English proof (translation)
-Use `filter_upwards [eventually_ge_atTop (-20 * Real.log (c' / 40))] with t ht`. Establish `h1 : -(1 / 20) * t ≤ Real.log (c' / 40)` using `by linarith`. Establish `h2` using `Real.exp_le_exp.mpr h1`. Rewrite `h2` using `[Real.exp_log (div_pos hc' (by norm_num))]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 private lemma eventually_exp_decay_le (c' : ℝ) (hc' : 0 < c') :
     ∀ᶠ t : ℝ in atTop, 40 * Real.exp (-(1 / 20) * t) ≤ c' := by
@@ -120,11 +120,11 @@ private lemma eventually_exp_decay_le (c' : ℝ) (hc' : 0 < c') :
   linarith
 
 /- English proof (translation)
-Establish `h1` using `(isLittleO_log_rpow_atTop (show 0 < eps / 10 by linarith)).bound one_pos`. Use `filter_upwards [h1, eventually_ge_atTop (1:ℝ)] with x hx hx1`. Establish `hxpos : 0 < x` using `by linarith`. Establish `hl : 0 ≤ Real.log x` using `Real.log_nonneg hx1`. Establish `hp : 0 < x ^ (eps / 10)` using `Real.rpow_pos_of_pos hxpos _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx` using `[Real.norm_eq_abs, Real.norm_eq_abs, abs_of_nonneg hl, abs_of_pos hp, one_mul]`. Establish `e : x ^ (eps / 5) = x ^ (eps / 10) * x ^ (eps / 10)`. Rewrite using `[← Real.rpow_add hxpos]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, sq]`. Conclude with `mul_le_mul hx hx hl hp.le`.
+A detailed English derivation is pending.
 -/
 private lemma ev_log_sq (eps : ℝ) (he : 0 < eps) :
     ∀ᶠ x : ℝ in atTop, Real.log x ^ 2 ≤ x ^ (eps / 5) := by
@@ -143,23 +143,23 @@ private lemma ev_log_sq (eps : ℝ) (he : 0 < eps) :
 
 set_option maxHeartbeats 800000 in
 /- English proof (translation)
-Introduce `hSN eps he`. Unfold `ShortNorm at hSN`. Take `⟨A, c, c', hA, hc, hc', hmain⟩` from `hSN`. Establish `ht : ∀ᶠ t : ℝ in atTop, 10000 ≤ t ∧ 50 * A ≤ t ∧ 13 / c ^ 2 ≤ t ∧ 40 * Real.exp (-(1 / 20) * t) ≤ c'` using `(eventually_ge_atTop 10000).and ((eventually_ge_atTop (50 * A)).and ((eventually_ge_atTop (13 / c ^ 2)).and (eventually_exp_decay_le c' hc')))`. Establish `hx` using `(tendsto_rpow_atTop (show 0 < eps / 5 by linarith)).eventually ht`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨x₀, hx₀⟩` from `eventually_atTop.mp (hx.and ((ev_log_sq eps he).and (eventually_ge_atTop (1:ℝ))))`. Use `⟨x₀, fun x hxx N d hMod Y hY hlogY => ?_⟩` and prove the remaining obligations. Take `⟨⟨t1, t2, t3, t4⟩, hls, hx1⟩` from `hx₀ x hxx`. Unfold `ModAt at hMod`. Take `⟨hdp, hd4, hd100, hN0, hdN, hlogN⟩` from `hMod`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Establish `hxpos : 0 < x` using `by linarith`. Establish `ht5 : (x ^ (eps / 5)) ^ 5 = x ^ eps`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hxpos.le]`. Use `congr 1`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hd0 : (0:ℝ) < d` using `by exact_mod_cast (show 0 < d by omega)`. Establish `hN0' : (0:ℝ) < N` using `by exact_mod_cast hN0`. Establish `hdN'` using `Nat.le_of_dvd hN0 hdN`. Establish `hdleN : (d:ℝ) ≤ N` using `by exact_mod_cast hdN'`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlogd : Real.log d ≤ Real.log N` using `Real.log_le_log hd0 hdleN`. Establish `hN3 : 3 ≤ N` using `by omega`. Establish `hd100' : (100:ℝ) ≤ d` using `by exact_mod_cast hd100`. Establish `hB1 : 1 < 4 * (d:ℝ) * (N:ℝ) ^ 2` using `by nlinarith`. Establish `hlogB : Real.log (4 * (d:ℝ) * (N:ℝ) ^ 2) = Real.log 4 + Real.log d + 2 * Real.log N`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Real.log_mul (mul_ne_zero (by norm_num) hd0.ne') (pow_ne_zero _ hN0'.ne'), Real.log_mul (by norm_num) hd0.ne', Real.log_pow]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hBt : Real.log (4 * (d:ℝ) * (N:ℝ) ^ 2) ≤ 10 * (x ^ (eps / 5)) ^ 2`. Rewrite using `[hlogB]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4` using `Real.log_le_sub_one_of_pos (show (0:ℝ) < 4 by norm_num)`. Establish `q` using `mul_le_mul_of_nonneg_left hls (show 0 ≤ 3 * x ^ (eps / 5) by linarith)`. Establish `big : 10000 * 10000 ≤ x ^ (eps / 5) * x ^ (eps / 5)` using `mul_le_mul t1 t1 (by norm_num) (by linarith)`. Use the polynomial consequences of the given equalities and inequalities. Establish `hYt : 8 * (x ^ (eps / 5)) ^ 5 ≤ Real.log Y` using `by rw [ht5]; exact hlogY`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Take `⟨hY1, hsq, hfin⟩` from `core_sqrt A c c' (x ^ (eps / 5)) (4 * (d:ℝ) * (N:ℝ) ^ 2) Y hA hc t1 t2 t3 t4 hB1 hBt hY hYt`. Establish `hexp : Real.exp (-c * Real.sqrt (Real.log Y)) ≤ 1`. Rewrite using `[Real.exp_le_one_iff]`. Use `Real.sqrt_nonneg (Real.log Y)` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `key` using `hmain d N Y 1 hdp hd4 hd100 hN3 hY1 hsq hexp le_rfl`. Establish `e : Y * (1 + 1) = 2 * Y` using `by ring`. Rewrite `key` using `[e]`. Conclude with `le_trans hfin key`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normPrimesN :
     ShortNorm → ∀ eps : ℝ, 0 < eps → ∃ x₀ : ℝ, ∀ x ≥ x₀, ∀ N d : ℕ, ModAt x eps N d → ∀ Y : ℝ, 0 < Y → 8 * x ^ eps ≤ Real.log Y →

@@ -24,7 +24,7 @@ set_option autoImplicit false
 namespace GlobalTheory.BigOn
 
 /- English proof (translation)
-Introduce `hCoh hTemp hHecke hCheb hDisc hGal hBC hBS hAbove hLL` and use `GlobalTheory.T.expansion_of_numerics_model GlobalTheory.T.weylLattice_exact_exponent_block_cut GlobalTheory.ExpTie.numSt GlobalTheory.T.sum_expansion_statement (GlobalTheory.T.model_statement_of_frame_galois hBS hCheb GlobalTheory.T.SmallStatement (GlobalTheory.T.FrameStatement G …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem expSt_of_hypotheses :
     GlobalTheory.Published.ClozelCohomological →

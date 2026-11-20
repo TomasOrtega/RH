@@ -12,21 +12,19 @@ section Analysis
 variable {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedAddCommGroup F] [NormedSpace ℂ F]
 
 /- English proof (translation)
-Introduce `z hz`. Establish `h0mem : (0 : E) ∈ ball (0 : E) (r / 2)` using `mem_ball_self (by linarith)`. Establish `hk0 : k 0 = 0`. Establish `h00` using `ha 0 h0mem 0 h0mem`. Rewrite `h00` using `[add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h00' : k 0 + k 0 = k 0 + 0` using `by rw [add_zero]; exact h00.symm`. Conclude with `add_left_cancel h00'`. Establish `hmul : ∀ N : ℕ, 0 < N → k z = (N : ℂ) • k ((N : ℂ)⁻¹ • z)`. Introduce `N hN`. Establish `hNc : (N : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr hN.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnorm : ∀ n : ℕ, n ≤ N → (n : ℂ) • ((N : ℂ)⁻¹ • z) ∈ ball (0 : E) (r / 2)`. Introduce `n hn`. Rewrite `hz`, the goal using `[mem_ball_zero_iff]`. Rewrite using `[smul_smul, norm_smul]`. Establish `hle : ‖(n : ℂ) * (N : ℂ)⁻¹‖ ≤ 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_mul, norm_inv, Complex.norm_natCast, Complex.norm_natCast, mul_inv_le_iff₀ (by exact_mod_cast hN), _root_.one_mul]`. Conclude with `hn` after adjusting the coercions. Combine the equalities or inequalities in the displayed calculation. Establish `h1 : (N : ℂ)⁻¹ • z ∈ ball (0 : E) (r / 2)`. Establish `h1'` using `hnorm 1 hN`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `h1'` using `[Nat.cast_one, one_smul]`. Then use the resulting hypothesis. Establish `hind : ∀ n : ℕ, n ≤ N → k ((n : ℂ) • ((N : ℂ)⁻¹ • z)) = (n : ℂ) • k ((N : ℂ)⁻¹ • z)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro _`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Simplify using `[hk0]`. Consider the case `succ n ih`. Introduce `hn`. Rewrite using `[Nat.cast_succ, add_smul, one_smul, ha _ (hnorm n (Nat.le_of_succ_le hn)) _ h1, ih (Nat.le_of_succ_le hn), add_smul, one_smul]`. Establish `hN'` using `hind N le_rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `hN'` using `[smul_smul, mul_inv_cancel₀ hNc, one_smul]`. Then use the resulting hypothesis. Establish `hdiff : DifferentiableAt ℂ k 0` using `hd.differentiableAt (ball_mem_nhds 0 hr)`. Establish `hlim` using `hdiff.hasFDerivAt.lim z (c := fun n : ℕ => (n : ℂ)) (l := atTop) (by`. Simplify using `only [Complex.norm_natCast]`. Conclude with `tendsto_natCast_atTop_atTop)`.
-
-Establish `hev : (fun n : ℕ => (n : ℂ) • (k (0 + ((n : ℂ))⁻¹ • z) - k 0)) =ᶠ[atTop] fun _ => k z` using `by filter_upwards [eventually_gt_atTop 0] with N hN`. Rewrite using `[zero_add, hk0, sub_zero, ← hmul N hN]`. Conclude with `tendsto_nhds_unique (tendsto_const_nhds.congr' hev.symm) hlim`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_fderiv_of_locally_additive {k : E → F} {r : ℝ} (hr : 0 < r)
     (hd : DifferentiableOn ℂ k (ball 0 r))
@@ -75,9 +73,9 @@ theorem eq_fderiv_of_locally_additive {k : E → F} {r : ℝ} (hr : 0 < r)
   exact tendsto_nhds_unique (tendsto_const_nhds.congr' hev.symm) hlim
 
 /- English proof (translation)
-Take `⟨N, hN⟩` from `exists_nat_gt (‖z‖ / ρ)`. Use `⟨N + 1, N.succ_pos, ?_⟩` and prove the remaining obligations. Establish `hpos : (0 : ℝ) < (N : ℝ) + 1` using `by positivity`. Establish `hz : ‖z‖ < N * ρ` using `(div_lt_iff₀ hρ).mp hN`. Rewrite using `[norm_smul, norm_inv, Complex.norm_natCast]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Rewrite using `[inv_mul_eq_div, div_lt_iff₀ hpos]`. Use the polynomial consequences of the given equalities and inequalities.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem exists_small_fraction (z : E) {ρ : ℝ} (hρ : 0 < ρ) :
     ∃ N : ℕ, 0 < N ∧ ‖((N : ℂ)⁻¹ • z)‖ < ρ := by
@@ -91,15 +89,15 @@ theorem exists_small_fraction (z : E) {ρ : ℝ} (hρ : 0 < ρ) :
   nlinarith
 
 /- English proof (translation)
-Rewrite using `[← Nat.cast_smul_eq_nsmul ℂ, smul_smul, mul_inv_cancel₀ (Nat.cast_ne_zero.mpr hN.ne'), one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem nsmul_inv_smul (z : E) {N : ℕ} (hN : 0 < N) : N • ((N : ℂ)⁻¹ • z) = z := by
   rw [← Nat.cast_smul_eq_nsmul ℂ, smul_smul, mul_inv_cancel₀ (Nat.cast_ne_zero.mpr hN.ne'), one_smul]
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero`. Rewrite using `[zero_nsmul, pow_zero]`. Establish `h0` using `h 0 0`. Rewrite `h0` using `[add_zero]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mul_left_cancel (h0.symm.trans (_root_.mul_one _).symm)`. Consider the case `succ N ih => rw [succ_nsmul, h, ih, pow_succ]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem map_nsmul_of_add {V M : Type*} [AddMonoid V] [Group M] (a : V → M)
     (h : ∀ x y, a (x + y) = a x * a y) (x : V) (N : ℕ) : a (N • x) = a x ^ N := by
@@ -112,11 +110,11 @@ theorem map_nsmul_of_add {V M : Type*} [AddMonoid V] [Group M] (a : V → M)
   | succ N ih => rw [succ_nsmul, h, ih, pow_succ]
 
 /- English proof (translation)
-Establish `ht : Tendsto h (𝓝 0) (𝓝 0)`. Simplify using `using (LinearMap.continuous_of_finiteDimensional h).tendsto 0`. Establish `ht' : Tendsto h' (𝓝 0) (𝓝 0)`. Simplify using `using (LinearMap.continuous_of_finiteDimensional h').tendsto 0`. Establish `hU` using `(ht.eventually_mem (ball_mem_nhds (0 : F) hr)).and (ht'.eventually_mem (ball_mem_nhds (0 : F) hr))`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Take `⟨δ, hδ, hδU⟩` from `Metric.eventually_nhds_iff.mp hU`. Use `LinearMap.ext fun z => ?_` and prove the remaining obligations. Take `⟨N, hNpos, hN⟩` from `exists_small_fraction z hδ`. Establish `hNc : (N : ℂ)⁻¹ ≠ 0` using `inv_ne_zero (Nat.cast_ne_zero.mpr hNpos.ne')`. Establish `hm` using `hδU (show dist ((N : ℂ)⁻¹ • z) 0 < δ by rwa [dist_zero_right])`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heq` using `hinj _ hm.1 _ hm.2 (H _)`. Rewrite `heq` using `[map_smul, map_smul]`. Conclude with `smul_right_injective F hNc heq`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linear_unique {M : Type*} [FiniteDimensional ℂ E] [FiniteDimensional ℂ F] (ex : F → M) {r : ℝ} (hr : 0 < r)
     (hinj : ∀ w ∈ ball (0 : F) r, ∀ w' ∈ ball (0 : F) r, ex w = ex w' → w = w')
@@ -137,7 +135,7 @@ theorem linear_unique {M : Type*} [FiniteDimensional ℂ E] [FiniteDimensional �
   exact smul_right_injective F hNc heq
 
 /- English proof (translation)
-Take `⟨u, hu, v, hv, huv⟩` from `mem_nhds_prod_iff.mp h`. Take `⟨r, hr, hrv⟩` from `Metric.mem_nhds_iff.mp hv`. Conclude with `⟨interior u, isOpen_interior, mem_interior_iff_mem_nhds.mpr hu, r, hr, fun b hb z hz => huv ⟨interior_subset hb, hrv hz⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem box_of_eventually {A : Type*} [TopologicalSpace A] {b₀ : A} {p : A × E → Prop}
     (h : ∀ᶠ bz in 𝓝 (b₀, (0 : E)), p bz) :
@@ -150,23 +148,21 @@ theorem box_of_eventually {A : Type*} [TopologicalSpace A] {b₀ : A} {p : A × 
 end Analysis
 
 /- English proof (translation)
-Establish `hr2 : 0 < r / 2` using `by linarith`. Establish `hsub : ∀ z ∈ ball (0 : E) (r / 2), z ∈ ball (0 : E) r` using `fun z hz => ball_subset_ball (by linarith) hz`. Establish `hdz : ∀ b ∈ W, DifferentiableOn ℂ (fun z => k (b, z)) (ball (0 : E) r)`. Introduce `b hb z hz`. Conclude with `((hk b hb z hz).1.comp z ((differentiableAt_const b).prodMk differentiableAt_id)).differentiableWithinAt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hadd : ∀ b ∈ W, ∀ z ∈ ball (0 : E) (r / 2), ∀ w ∈ ball (0 : E) (r / 2), k (b, z + w) = k (b, z) + k (b, w)`. Introduce `b hb z hz w hw`. Establish `hzw : z + w ∈ ball (0 : E) r`. Rewrite `hz`, `hw`, the goal using `[mem_ball_zero_iff]`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result.
 
-Take `⟨-, hu1, hb1⟩` from `hk b hb (z + w) hzw`. Take `⟨-, hu2, hb2⟩` from `hk b hb z (hsub z hz)`. Take `⟨-, hu3, hb3⟩` from `hk b hb w (hsub w hw)`. Use `hinj b hb _ (ball_subset_ball (by linarith) hb1) _ ?_ ?_` and prove the remaining obligations. Rewrite `hb2`, `hb3`, the goal using `[mem_ball_zero_iff]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hex b hb, ← hu1, ← hu2, ← hu3, hu b hb]`. Establish `hkfd : ∀ b ∈ W, ∀ z ∈ ball (0 : E) (r / 2), k (b, z) = fderiv ℂ (fun z => k (b, z)) 0 z` using `fun b hb => eq_fderiv_of_locally_additive (k := fun z => k (b, z)) hr (hdz b hb) (hadd b hb)`. Set `L : A → (E →L[ℂ] F)` to `fun b => fderiv ℂ (fun z => k (b, z)) 0`. Establish `hkey : ∀ b ∈ W, ∀ z : E, ∀ N : ℕ, 0 < N → (N : ℂ)⁻¹ • z ∈ ball (0 : E) (r / 2) → L b z = (N : ℂ) • k (b, (N : ℂ)⁻¹ • z)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b hb z N hN hz`. Establish `hNc : (N : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr hN.ne'`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_smul, mul_inv_cancel₀ hNc, one_smul]`. Use `_ = (N : ℂ) • L b ((N : ℂ)⁻¹ • z) := map_smul _ _ _`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `_ = (N : ℂ) • k (b, (N : ℂ)⁻¹ • z) := by rw [hkfd b hb _ hz]`. Use `⟨fun b => (L b : E →ₗ[ℂ] F), ?_, ?_⟩` and prove the remaining obligations. Introduce `b hb z`. Take `⟨N, hN, hNz⟩` from `exists_small_fraction z hr2`. Establish `hz' : (N : ℂ)⁻¹ • z ∈ ball (0 : E) (r / 2)` using `mem_ball_zero_iff.mpr hNz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨-, hue, -⟩` from `hk b hb _ (hsub _ hz')`. Use `show ex b (L b z) = u b z`. Rewrite using `[hkey b hb z N hN hz', Nat.cast_smul_eq_nsmul ℂ, map_nsmul_of_add (ex b) (hex b hb), ← hue, ← map_nsmul_of_add (u b) (hu b hb), nsmul_inv_smul z hN]`. Introduce `z`. Take `⟨N, hN, hNz⟩` from `exists_small_fraction z hr2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hz' : (N : ℂ)⁻¹ • z ∈ ball (0 : E) (r / 2)` using `mem_ball_zero_iff.mpr hNz`. Establish `hD : DifferentiableOn ℂ (fun b => (N : ℂ) • k (b, (N : ℂ)⁻¹ • z)) W`. Introduce `b hb`. Conclude with `(((hk b hb _ (hsub _ hz')).1.comp b (differentiableAt_id.prodMk (differentiableAt_const _))).const_smul (N : ℂ)).differentiableWithinAt`. Use `hD.congr fun b hb => ?_` and prove the remaining obligations.
-
-Use `show L b z = _`. Conclude with `hkey b hb z N hN hz'`.
+A detailed English derivation is pending.
 -/
 theorem lift_of_local {A E F : Type*} [NormedAddCommGroup A] [NormedSpace ℂ A]
     [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedAddCommGroup F] [NormedSpace ℂ F]
@@ -238,7 +234,7 @@ variable {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] {g n : ℕ}
   {M : LieModel G (𝟙 (Sp R)) (Fin g → R)} {B : Set (Fin n → ℂ)} {ψ : (Fin n → ℂ) → (R →+* ℂ)}
 
 /- English proof (translation)
-Establish `h` using `e.add b hb 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `mul_left_cancel (h.symm.trans (_root_.mul_one _).symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ex_zero (e : FamExp G M B ψ) {b : Fin n → ℂ} (hb : b ∈ B) : e.ex b 0 = 1 := by
   have h := e.add b hb 0 0
@@ -246,9 +242,9 @@ theorem ex_zero (e : FamExp G M B ψ) {b : Fin n → ℂ} (hb : b ∈ B) : e.ex 
   exact mul_left_cancel (h.symm.trans (_root_.mul_one _).symm)
 
 /- English proof (translation)
-Take `⟨V, N, f, L, -, -, hL, -⟩` from `e.log b₀ hb₀`. Take `⟨W, hW, hb₀W, r, hr, hWr⟩` from `box_of_eventually hL`. Use `⟨W, hW, hb₀W, r, hr, fun b hb w hw w' hw' hww' => ?_⟩` and prove the remaining obligations. Establish `h1 : L (b, fun j => valAt' (e.ex b w).left V (f j)) = w` using `hWr b hb w hw`. Establish `h2 : L (b, fun j => valAt' (e.ex b w').left V (f j)) = w'` using `hWr b hb w' hw'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← h1, ← h2, hww']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ex_inj_near (e : FamExp G M B ψ) {b₀ : Fin n → ℂ} (hb₀ : b₀ ∈ B) :
     ∃ W : Set (Fin n → ℂ), IsOpen W ∧ b₀ ∈ W ∧ ∃ r : ℝ, 0 < r ∧ ∀ b ∈ W, ∀ w ∈ ball (0 : Fin g → ℂ) r,
@@ -261,7 +257,7 @@ theorem ex_inj_near (e : FamExp G M B ψ) {b₀ : Fin n → ℂ} (hb₀ : b₀ �
   rw [← h1, ← h2, hww']
 
 /- English proof (translation)
-Take `⟨hS, hD⟩` from `e.hol U f`. Establish `hmem : (b, (0 : Fin g → ℂ)) ∈ B ×ˢ Set.univ ∧ ⊤ ≤ (e.ex b 0).left ⁻¹ᵁ U` using `⟨⟨hb, Set.mem_univ _⟩, h⟩`. Establish `hDa` using `(hD _ hmem).differentiableAt (hS.mem_nhds hmem)`. Conclude with `hDa.comp (0 : Fin g → ℂ) ((differentiableAt_const b).prodMk differentiableAt_id)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ex_differentiableAt (e : FamExp G M B ψ) {b : Fin n → ℂ} (hb : b ∈ B) (U : G.left.Opens)
     (f : Γ(G.left, U)) (h : ⊤ ≤ (e.ex b 0).left ⁻¹ᵁ U) :
@@ -273,17 +269,15 @@ theorem ex_differentiableAt (e : FamExp G M B ψ) {b : Fin n → ℂ} (hb : b �
   exact hDa.comp (0 : Fin g → ℂ) ((differentiableAt_const b).prodMk differentiableAt_id)
 
 /- English proof (translation)
-Take `⟨V, N, f, L, hV, hLan, hL3, hL4⟩` from `e.log b₀ (hsub hb₀)`. Establish `hu0 : u b₀ 0 = 1`. Establish `h0` using `hu b₀ hb₀ 0 0`. Rewrite `h0` using `[add_zero]`. Conclude with `mul_left_cancel (h0.symm.trans (_root_.mul_one _).symm)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hue : u b₀ 0 = e.ex b₀ 0` using `by rw [hu0, ex_zero e (hsub hb₀)]`. Establish `hV' : ⊤ ≤ (u b₀ 0).left ⁻¹ᵁ V` using `by rw [hue]; exact hV`. Set `Φ : (Fin n → ℂ) × (Fin m → ℂ) → (Fin n → ℂ) × (Fin N → ℂ)` to `fun bz => (bz.1, fun j => valAt' (u bz.1 bz.2).left V (f j))`. Establish `hΦd : ∀ bz : (Fin n → ℂ) × (Fin m → ℂ), bz ∈ B' ×ˢ Set.univ ∧ ⊤ ≤ (u bz.1 bz.2).left ⁻¹ᵁ V → DifferentiableAt ℂ Φ bz`. Introduce `bz hbz`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `differentiableAt_fst.prodMk (differentiableAt_pi.mpr fun j => ?_)` and prove the remaining obligations. Conclude with `((hhol V (f j)).2 bz hbz).differentiableAt ((hhol V (f j)).1.mem_nhds hbz)`. Establish `hmem : (b₀, (0 : Fin m → ℂ)) ∈ B' ×ˢ Set.univ ∧ ⊤ ≤ (u b₀ 0).left ⁻¹ᵁ V` using `⟨⟨hb₀, Set.mem_univ _⟩, hV'⟩`. Establish `hSn : ∀ᶠ bz in 𝓝 (b₀, (0 : Fin m → ℂ)), bz ∈ B' ×ˢ Set.univ ∧ ⊤ ≤ (u bz.1 bz.2).left ⁻¹ᵁ V` using `(hhol V 0).1.mem_nhds hmem`. Establish `hΦt : Tendsto Φ (𝓝 (b₀, 0)) (𝓝 (Φ (b₀, 0)))` using `(hΦd _ hmem).continuousAt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hΦ0 : Φ (b₀, 0) = (b₀, fun j => valAt' (e.ex b₀ 0).left V (f j))` using `by show (b₀, fun j => valAt' (u b₀ 0).left V (f j)) = _`. Rewrite using `[hue]`. Establish `hLd : ∀ᶠ p in 𝓝 (Φ (b₀, 0)), DifferentiableAt ℂ L p`. Rewrite using `[hΦ0]`. Conclude with `hLan.eventually_analyticAt.mono fun p hp => hp.differentiableAt`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hL4` using `[← hΦ0]`. Use `⟨fun bz => L (Φ bz), ?_, ?_⟩` and prove the remaining obligations. Use `show L (Φ (b₀, 0)) = 0`. Rewrite using `[hΦ0]`. Conclude with `hL3.self_of_nhds`.
-
-Use `filter_upwards [hSn, hΦt.eventually hL4, hΦt.eventually hLd] with bz hbz h4 hd`. Conclude with `⟨hd.comp bz (hΦd bz hbz), h4 (u bz.1 bz.2) hbz.2 (fun j => rfl), hbz.1.1⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_local_log (e : FamExp G M B ψ) {m : ℕ} {B' : Set (Fin n → ℂ)}
     (u : ∀ b : Fin n → ℂ, (Fin m → ℂ) → (Over.mk (spMap (ψ b)) ⟶ G)) (hsub : B' ⊆ B)
@@ -326,9 +320,9 @@ theorem exists_local_log (e : FamExp G M B ψ) {m : ℕ} {B' : Set (Fin n → �
     exact ⟨hd.comp bz (hΦd bz hbz), h4 (u bz.1 bz.2) hbz.2 (fun j => rfl), hbz.1.1⟩
 
 /- English proof (translation)
-Take `⟨k, hk0, hev⟩` from `exists_local_log e u hsub hu hhol hb₀`. Take `⟨W₁, hW₁, hb₀W₁, r₀, hr₀, hinj⟩` from `ex_inj_near e (hsub hb₀)`. Establish `hkc : ContinuousAt k (b₀, 0)` using `hev.self_of_nhds.1.continuousAt`. Establish `hsmall : ∀ᶠ bz in 𝓝 (b₀, (0 : Fin m → ℂ)), k bz ∈ ball (0 : Fin g → ℂ) (r₀ / 2)` using `hkc.eventually_mem (by rw [hk0]; exact ball_mem_nhds _ (half_pos hr₀))`. Take `⟨W₂, hW₂, hb₀W₂, r, hr, hbox⟩` from `box_of_eventually (hev.and hsmall)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hWB : ∀ b ∈ W₂, b ∈ B'` using `fun b hb => (hbox b hb 0 (mem_ball_self hr)).1.2.2`. Take `⟨hl, hl1, hl2⟩` from `lift_of_local (P := fun b => Over.mk (spMap (ψ b)) ⟶ G) e.ex u k (hW₁.inter hW₂) hr hr₀ (fun b hb => e.add b (hsub (hWB b hb.2))) (fun b hb => hu b (hWB b hb.2)) (fun b hb => hinj b hb.1) (fun b hb z hz => ⟨(hbox b hb.2 z hz).1.1, (hbox b hb.2 z hz).1.2.1, (hbox b hb.2 z hz).2⟩)`. Conclude with `⟨W₁ ∩ W₂, hW₁.inter hW₂, ⟨hb₀W₁, hb₀W₂⟩, fun b hb => hWB b hb.2, hl, hl1, hl2⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_local_linear (e : FamExp G M B ψ) {m : ℕ} {B' : Set (Fin n → ℂ)}
     (u : ∀ b : Fin n → ℂ, (Fin m → ℂ) → (Over.mk (spMap (ψ b)) ⟶ G)) (hsub : B' ⊆ B)
@@ -356,13 +350,13 @@ theorem exists_local_linear (e : FamExp G M B ψ) {m : ℕ} {B' : Set (Fin n →
 end Scheme
 
 /- English proof (translation)
-Establish `hL0 : L 0 = 0` using `map_zero L`. Establish `hchain : ∀ (U : X.Opens) (_ : ⊤ ≤ v ⁻¹ᵁ U) (f : Γ(X, U)), spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ v = e 0 → (fderiv ℂ (fun z => valAt' (e (L z)) U f) 0) w = (fderiv ℂ (fun z => valAt' (e z) U f) 0) (L w)`. Introduce `U h f hv`. Establish `hU : ⊤ ≤ e 0 ⁻¹ᵁ U`. Rewrite using `[← hv]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fun x _ => h (Set.mem_univ _)`. Establish `hd' : DifferentiableAt ℂ (fun z => valAt' (e z) U f) ((LinearMap.toContinuousLinearMap L) 0)`. Rewrite using `[map_zero]`. Conclude with `he U f hU`. Establish `hLc : (fun z => valAt' (e (L z)) U f) = (fun z => valAt' (e z) U f) ∘ (LinearMap.toContinuousLinearMap L)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `z`. Both sides reduce to the same expression. Rewrite using `[hLc, fderiv_comp 0 hd' (LinearMap.toContinuousLinearMap L).differentiableAt, ContinuousLinearMap.fderiv]`. Simplify using `only [ContinuousLinearMap.comp_apply, map_zero, LinearMap.coe_toContinuousLinearMap']`. Prove the components needed by the constructor for the conclusion.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨h1, h2⟩`. Establish `hv : spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ v = e 0` using `h1.trans (congrArg e hL0)`. Conclude with `⟨hv, fun U h f => (h2 U h f).trans (hchain U h f hv)⟩`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨h1.trans (congrArg e hL0).symm, fun U h f => (h2 U h f).trans (hchain U h f h1).symm⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isDerivAt0_comp_lin {g m : ℕ} {X : Scheme.{0}} (e : (Fin g → ℂ) → (Sp ℂ ⟶ X))
     (he : ∀ (U : X.Opens) (f : Γ(X, U)), ⊤ ≤ e 0 ⁻¹ᵁ U →
@@ -401,17 +395,15 @@ namespace GlobalTheory.CompanionTheory.Ar.Flat
 open ExpLift in
 
 /- English proof (translation)
-Introduce `R _ G _ _ g n M B ψ e m B' u hB' hsub hu hhol`. Establish `hloc` using `fun b (hb : b ∈ B') => exists_local_linear e u hsub hu hhol hb`. Establish `huniq : ∀ b ∈ B', ∀ h₁ h₂ : (Fin m → ℂ) →ₗ[ℂ] (Fin g → ℂ), (∀ z, e.ex b (h₁ z) = u b z) → (∀ z, e.ex b (h₂ z) = u b z) → h₁ = h₂`. Introduce `b hb h₁ h₂ e₁ e₂`. Take `⟨W, -, hbW, r, hr, hinj⟩` from `ex_inj_near e (hsub hb)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `linear_unique (e.ex b) hr (hinj b hbW) h₁ h₂ (fun z => (e₁ z).trans (e₂ z).symm)`. Establish `hexl : ∀ b ∈ B', ∃ L : (Fin m → ℂ) →ₗ[ℂ] (Fin g → ℂ), ∀ z, e.ex b (L z) = u b z`. Introduce `b hb`. Take `⟨W, -, hbW, -, hl, hl1, -⟩` from `hloc b hb`. Conclude with `⟨hl b, hl1 b hbW⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Set `h : (Fin n → ℂ) → ((Fin m → ℂ) →ₗ[ℂ] (Fin g → ℂ))` to `fun b => if hb : ∃ L : (Fin m → ℂ) →ₗ[ℂ] (Fin g → ℂ), ∀ z, e.ex b (L z) = u b z then hb.choose else 0`. Establish `hh : ∀ b ∈ B', ∀ z, e.ex b (h b z) = u b z`. Introduce `b hb`. Establish `hx` using `hexl b hb`. Rewrite using `[show h b = hx.choose from dif_pos hx]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hx.choose_spec`. Use `⟨h, ?_, fun b hb => ⟨hh b hb, fun h' hh' => huniq b hb h' (h b) hh' (hh b hb), fun z v => ?_⟩⟩` and prove the remaining obligations. Introduce `z b₀ hb₀`. Take `⟨W, hW, hb₀W, hWB, hl, hl1, hl2⟩` from `hloc b₀ hb₀`. Establish `heq : (fun b => hl b z) =ᶠ[𝓝 b₀] fun b => h b z` using `by filter_upwards [hW.mem_nhds hb₀W] with b hb`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[huniq b (hWB hb) (hl b) (h b) (hl1 b hb) (hh b (hWB hb))]`. Conclude with `(((hl2 z b₀ hb₀W).differentiableAt (hW.mem_nhds hb₀W)).congr_of_eventuallyEq heq.symm).differentiableWithinAt`. Establish `hfun : (fun z => (u b z).left) = fun z => (e.ex b (h b z)).left`. Use function extensionality and compare the values at `z`. Rewrite using `[hh b hb z]`.
-
-Rewrite using `[hfun]`. Conclude with `isDerivAt0_comp_lin (fun z => (e.ex b z).left) (fun U f hU => ex_differentiableAt e (hsub hb) U f hU) (h b) z v`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_linear_lift_of_additive_family : ∀ (R : Type) [CommRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (g n : ℕ) (M : LieModel G (𝟙 (Sp R)) (Fin g → R)) (B : Set (Fin n → ℂ)) (ψ : (Fin n → ℂ) → (R →+* ℂ)) (e : FamExp G M B ψ) (m : ℕ) (B' : Set (Fin n → ℂ)) (u : ∀ b : Fin n → ℂ, (Fin m → ℂ) → (Over.mk (spMap (ψ b)) ⟶ G)), IsOpen B' → B' ⊆ B → (∀ b ∈ B', ∀ z w, u b (z + w) = u b z * u b w) → IsHolTo (B' ×ˢ Set.univ) (fun bz : (Fin n → ℂ) × (Fin m → ℂ) => (u bz.1 bz.2).left) → ∃ h : (Fin n → ℂ) → ((Fin m → ℂ) →ₗ[ℂ] (Fin g → ℂ)), (∀ z, DifferentiableOn ℂ (fun b => h b z) B') ∧ ∀ b ∈ B', (∀ z, e.ex b (h b z) = u b z) ∧ (∀ h' : (Fin m → ℂ) →ₗ[ℂ] (Fin g → ℂ), (∀ z, e.ex b (h' z) = u b z) → h' = h b) ∧ ∀ z v, IsDerivAt0 (fun z => (u b z).left) z v ↔ IsDerivAt0 (fun z => (e.ex b z).left) (h b z) v := by
   intro R _ G _ _ g n M B ψ e m B' u hB' hsub hu hhol

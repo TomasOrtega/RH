@@ -11,9 +11,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.WeilSiegel.HypStep.Unf
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (Matrix.mulVecLin (A : Matrix (Fin M) (Fin M) E))`. Introduce `x y hxy`. Establish `h : ∀ z : Fin M → E, ((A⁻¹ : GL (Fin M) E) : Matrix (Fin M) (Fin M) E) *ᵥ ((A : Matrix (Fin M) (Fin M) E) *ᵥ z) = z`. Introduce `z`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hxy' : (A : Matrix (Fin M) (Fin M) E) *ᵥ x = (A : Matrix (Fin M) (Fin M) E) *ᵥ y` using `hxy`. Rewrite using `[← h x, ← h y, hxy']`. Conclude with `hX.map' (Matrix.mulVecLin (A : Matrix (Fin M) (Fin M) E)) (LinearMap.ker_eq_bot.2 hinj)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linearIndependent_mulVec_unit {E : Type} [Field E] {M n : ℕ} (A : GL (Fin M) E)
     {X : Fin n → Fin M → E} (hX : LinearIndependent E X) :
@@ -30,7 +30,7 @@ theorem linearIndependent_mulVec_unit {E : Type} [Field E] {M n : ℕ} (A : GL (
   exact hX.map' (Matrix.mulVecLin (A : Matrix (Fin M) (Fin M) E)) (LinearMap.ker_eq_bot.2 hinj)
 
 /- English proof (translation)
-The claim follows from `linearIndependent_mulVec_unit (g : GL (Fin M) E) hX`.
+A detailed English derivation is pending.
 -/
 theorem linearIndependent_gact_unitary {F E : Type} [Field F] [Field E] [Algebra F E]
     (σ : E →ₐ[F] E) {M n : ℕ} {J : Matrix (Fin M) (Fin M) E}
@@ -39,7 +39,7 @@ theorem linearIndependent_gact_unitary {F E : Type} [Field F] [Field E] [Algebra
   linearIndependent_mulVec_unit (g : GL (Fin M) E) hX
 
 /- English proof (translation)
-Use `conv_lhs => rw [← hw]`. Conclude with `gact_inv_gact σ w _`.
+A detailed English derivation is pending.
 -/
 theorem gact_inv_e0 {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) {M : ℕ}
     {J : Matrix (Fin M) (Fin M) E} {w : UJ (σ : E →+* E) (hypOne J)}
@@ -48,7 +48,7 @@ theorem gact_inv_e0 {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →�
   exact gact_inv_gact σ w _
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `((w : GL (Fin (M + 2)) E) : Matrix (Fin (M + 2)) (Fin (M + 2)) E) *ᵥ X 0 = ((w : GL (Fin (M + 2)) E) : Matrix (Fin (M + 2)) (Fin (M + 2)) E) *ᵥ e0 E M 0`. Rewrite using `[hX]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem gact_zero_of_first {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E)
     {M n : ℕ} {J : Matrix (Fin M) (Fin M) E} (w : UJ (σ : E →+* E) (hypOne J))
@@ -59,7 +59,7 @@ theorem gact_zero_of_first {F E : Type} [Field F] [Field E] [Algebra F E] (σ : 
   rw [hX]
 
 /- English proof (translation)
-Use `⟨⟨linearIndependent_gact_unitary σ w hX.1.1, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[gramE_gact]`. Conclude with `hX.1.2`. Rewrite using `[gact_zero_of_first σ w hX.2, hw]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gact_mem_framesOne {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E)
     {M n : ℕ} {J : Matrix (Fin M) (Fin M) E} {w : UJ (σ : E →+* E) (hypOne J)}
@@ -78,7 +78,7 @@ def framesOneEquiv {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ
   right_inv X := Subtype.ext (gact_gact_inv σ w X.1)
 
 /- English proof (translation)
-The claim follows from `(framesOneEquiv σ n hw).tsum_eq (fun X => f X.1)`.
+A detailed English derivation is pending.
 -/
 theorem tsum_gact_framesOne (F E : Type) [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) (M : ℕ)
     (J : Matrix (Fin M) (Fin M) E) (n : ℕ) (w : UJ (σ : E →+* E) (hypOne J))

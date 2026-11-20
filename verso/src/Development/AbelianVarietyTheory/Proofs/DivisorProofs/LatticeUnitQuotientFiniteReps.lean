@@ -38,7 +38,7 @@ def intAd : AddSubgroup (AF F) where
 def atPl (v : Pl F) : Fv F v →ₗ[F] AF F := (LinearMap.inr F (Ainf F) (Af F)).comp (singleFin v)
 
 /- English proof (translation)
-Use `show InfiniteAdeleRing.ringEquiv_mixedSpace F (0 : InfiniteAdeleRing F) = 0`. Conclude with `map_zero _`.
+A detailed English derivation is pending.
 -/
 theorem evI_atPl (v : Pl F) (β : Fv F v) : evI F (atPl v β) = 0 := by
   show InfiniteAdeleRing.ringEquiv_mixedSpace F (0 : InfiniteAdeleRing F) = 0
@@ -51,9 +51,9 @@ theorem evFin_atPl (v w : Pl F) (β : Fv F v) :
     evFin F w (atPl v β) = Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F w (singleFin v β) := rfl
 
 /- English proof (translation)
-Use `⟨evI_atPl v β, fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[evFin_atPl]`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[evalV_singleFin_self]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hβ`. Rewrite using `[evalV_singleFin_ne hw]`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem atPl_mem_intAd (v : Pl F) {β : Fv F v} (hβ : β ∈ v.adicCompletionIntegers F) : atPl v β ∈ intAd F := by
   refine ⟨evI_atPl v β, fun w => ?_⟩
@@ -63,9 +63,9 @@ theorem atPl_mem_intAd (v : Pl F) {β : Fv F v} (hβ : β ∈ v.adicCompletionIn
   · rw [evalV_singleFin_ne hw]; exact zero_mem _
 
 /- English proof (translation)
-Establish `h1 : x.1 = 0` using `(InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (by rw [map_zero]; exact hx)`. Use `Prod.ext h1 ?_` and prove the remaining obligations. Use `RestrictedProduct.ext _ _ fun w => ?_` and prove the remaining obligations. Use `show Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F w x.2 = Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F w (singleFin v (evFin F v x))`. Distinguish the cases in `hw : w = v`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hw` using the available equality. Rewrite using `[evalV_singleFin_self]`. Both sides reduce to the same expression. Rewrite using `[evalV_singleFin_ne hw]`. Conclude with `hxw w hw`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_atPl (v : Pl F) (x : AF F) (hx : evI F x = 0) (hxw : ∀ w : Pl F, w ≠ v → evFin F w x = 0) :
     x = atPl v (evFin F v x) := by
@@ -78,7 +78,7 @@ theorem eq_atPl (v : Pl F) (x : AF F) (hx : evI F x = 0) (hxw : ∀ w : Pl F, w 
   · rw [evalV_singleFin_ne hw]; exact hxw w hw
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [incV, Finset.sum_apply, Pi.smul_apply, map_sum, map_zsmul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem incV_sum {d r : ℕ} (c : Fin r → ℤ) (g : Fin r → Fin d → E) :
     incV F (∑ j, c j • g j) = ∑ j, c j • incV F (g j) := by
@@ -86,9 +86,9 @@ theorem incV_sum {d r : ℕ} (c : Fin r → ℤ) (g : Fin r → Fin d → E) :
   simp only [incV, Finset.sum_apply, Pi.smul_apply, map_sum, map_zsmul]
 
 /- English proof (translation)
-Establish `hfg : (L.restrictScalars ℤ).FG` using `hL.fg.restrictScalars`. Take `⟨r, g, hg⟩` from `Submodule.fg_iff_exists_fin_generating_family.1 hfg`. Use `⟨r, g, fun j => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Establish `: g j ∈ L.restrictScalars ℤ` using `hg ▸ Submodule.subset_span ⟨j, rfl⟩`. Conclude with `this`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: x ∈ Submodule.span ℤ (Set.range g)` using `hg ▸ hx`. Conclude with `(Submodule.mem_span_range_iff_exists_fun ℤ).1 this`.
+A detailed English derivation is pending.
 -/
 theorem exists_int_gens {d : ℕ} (L : Submodule (𝓞 E) (Fin d → E)) (hL : L.IsLattice E) :
     ∃ (r : ℕ) (g : Fin r → Fin d → E), (∀ j, g j ∈ L) ∧ ∀ x ∈ L, ∃ c : Fin r → ℤ, ∑ j, c j • g j = x := by
@@ -101,13 +101,13 @@ theorem exists_int_gens {d : ℕ} (L : Submodule (𝓞 E) (Fin d → E)) (hL : L
     exact (Submodule.mem_span_range_iff_exists_fun ℤ).1 this
 
 /- English proof (translation)
-Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨b, hb, hbv, x, hx, rfl⟩` from `hz`. Take `⟨c, rfl⟩` from `hg x hx`. Use `⟨fun j => c j • b, fun j => zsmul_mem (show b ∈ intAd F from ⟨hb, hbv⟩) _, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[incV_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[smul_assoc]`. Conclude with `smul_comm _ _ _`. Consider the case `zero => exact ⟨0, fun _ => zero_mem _, by simp⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨a, ha, rfl⟩` from `hx`. Take `⟨a', ha', rfl⟩` from `hy`. Conclude with `⟨a + a', fun j => add_mem (ha j) (ha' j), by simp [add_smul, Finset.sum_add_distrib]⟩`. Consider the case `neg x _ hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, rfl⟩` from `hx`. Conclude with `⟨-a, fun j => neg_mem (ha j), by simp [neg_smul, Finset.sum_neg_distrib]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem latHat_decomp {d r : ℕ} (W : Spc F E d) (g : Fin r → Fin d → E)
     (hg : ∀ x ∈ W.L, ∃ c : Fin r → ℤ, ∑ j, c j • g j = x) {z : Fin d → AE F E} (hz : z ∈ latHat W) :
@@ -131,17 +131,15 @@ theorem latHat_decomp {d r : ℕ} (W : Spc F E d) (g : Fin r → Fin d → E)
     exact ⟨-a, fun j => neg_mem (ha j), by simp [neg_smul, Finset.sum_neg_distrib]⟩
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.AdelicUnitaryTop.compactSpace_adicCompletionIntegers F v`. Establish `hm' : (m : Fv F v) ≠ 0`. Rewrite using `[← map_natCast (algebraMap F (Fv F v))]`. Conclude with `(map_ne_zero _).2 (Nat.cast_ne_zero.2 hm)`. Establish `hO : IsOpen (v.adicCompletionIntegers F : Set (Fv F v))` using `Valued.isOpen_valuationSubring _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `H : AddSubgroup (v.adicCompletionIntegers F)` to `(AddMonoidHom.mulLeft (m : v.adicCompletionIntegers F)).range`. Establish `hopen : IsOpen (H : Set (v.adicCompletionIntegers F))`. Use `AddSubgroup.isOpen_of_mem_nhds H (g := 0) ?_` and prove the remaining obligations. Establish `hS : IsOpen {x : v.adicCompletionIntegers F | (m : Fv F v)⁻¹ * (x : Fv F v) ∈ v.adicCompletionIntegers F}` using `hO.preimage (continuous_const.mul continuous_subtype_val)`. Use `Filter.mem_of_superset (hS.mem_nhds (by simp)) fun x hx => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `⟨⟨_, hx⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Simplify using `[mul_inv_cancel_left₀ hm']`. Use `haveI : Finite (v.adicCompletionIntegers F ⧸ H) := AddSubgroup.quotient_finite_of_isOpen H hopen`. Use `haveI := Fintype.ofFinite (v.adicCompletionIntegers F ⧸ H)`. Use `⟨Finset.univ.image fun q : v.adicCompletionIntegers F ⧸ H => ((Quotient.out q : v.adicCompletionIntegers F) : Fv F v), ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Introduce `ρ hρ`. Take `⟨q, _, rfl⟩` from `Finset.mem_image.1 hρ`. Conclude with `(Quotient.out q).2`. Introduce `β hβ`. Set `q : v.adicCompletionIntegers F ⧸ H` to `QuotientAddGroup.mk ⟨β, hβ⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hq : (QuotientAddGroup.mk (Quotient.out q) : v.adicCompletionIntegers F ⧸ H) = QuotientAddGroup.mk ⟨β, hβ⟩` using `QuotientAddGroup.out_eq' q`. Take `⟨γ, hγ⟩` from `QuotientAddGroup.eq.1 hq`. Use `⟨_, Finset.mem_image.2 ⟨q, Finset.mem_univ _, rfl⟩, γ, γ.2, ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg Subtype.val hγ`. Simplify using `only [AddMonoidHom.coe_mulLeft] at h2`.
-
-Establish `h3 : (((m : v.adicCompletionIntegers F)) : Fv F v) = m` using `by simp`. Establish `h4 : ((-Quotient.out q + ⟨β, hβ⟩ : v.adicCompletionIntegers F) : Fv F v) = -((Quotient.out q : v.adicCompletionIntegers F) : Fv F v) + β` using `rfl`. Rewrite `h2` using `[Subring.coe_mul, h3, h4]`. Take the linear combination `-h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem fin_reps (v : Pl F) (m : ℕ) (hm : m ≠ 0) :
     ∃ R : Finset (Fv F v), (∀ ρ ∈ R, ρ ∈ v.adicCompletionIntegers F) ∧
@@ -181,15 +179,15 @@ theorem fin_reps (v : Pl F) (m : ℕ) (hm : m ≠ 0) :
     linear_combination -h2
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ d W v u hL hu hw hv m hm`. Take `⟨r, g, hgL, hg⟩` from `exists_int_gens W.L hL`. Take `⟨R, hRO, hR⟩` from `fin_reps v m hm`. Establish `gen : ∀ β ∈ v.adicCompletionIntegers F, ∀ j, atPl v β • incV F (g j) ∈ latHat W` using `fun β hβ j => AddSubgroup.subset_closure ⟨atPl v β, (atPl_mem_intAd v hβ).1, (atPl_mem_intAd v hβ).2, g j, hgL j, rfl⟩`. Use `⟨(Fintype.piFinset fun _ : Fin r => R).image (fun ρ => ∑ j, atPl v (ρ j) • incV F (g j)), ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `s hs`. Take `⟨ρ, hρ, rfl⟩` from `Finset.mem_image.1 hs`. Conclude with `AddSubgroup.sum_mem _ fun j _ => gen _ (hRO _ (Fintype.mem_piFinset.1 hρ j)) j`. Introduce `z hz`. Take `⟨a, ha, rfl⟩` from `latHat_decomp W g hg hz`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hβ : ∀ j, evFin F v (u * a j) ∈ v.adicCompletionIntegers F` using `fun j => by`. Rewrite using `[map_mul]`. Conclude with `mul_mem hv ((ha j).2 v)`. Establish `hua : ∀ j, u * a j = atPl v (evFin F v (u * a j))` using `fun j => by`. Use `eq_atPl v _ ?_ fun w hw' => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : evI F (u * a j) = evI F u * evI F (a j)` using `map_mul (InfiniteAdeleRing.ringEquiv_mixedSpace F) u.1 (a j).1`. Rewrite using `[e, hu, zero_mul]`. Rewrite using `[map_mul, hw w hw', zero_mul]`. Use `choose ρ hρR γ hγ hsplit using fun j => hR _ (hβ j)`. Use `⟨∑ j, atPl v (ρ j) • incV F (g j), Finset.mem_image.2 ⟨ρ, Fintype.mem_piFinset.2 hρR, rfl⟩, ∑ j, atPl v (γ j) • incV F (g j), AddSubgroup.sum_mem _ fun j _ => gen _ (hγ j) j, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.smul_sum, Finset.smul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, hua j, hsplit j, map_add, add_smul, add_sub_cancel_left, ← nsmul_eq_mul, map_nsmul, smul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem smul_latHat_finite_mod : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (d : ℕ) (W : Spc F E d) (v : Pl F)
     (u : AF F), W.L.IsLattice E → evI F u = 0 → (∀ w : Pl F, w ≠ v → evFin F w u = 0) →

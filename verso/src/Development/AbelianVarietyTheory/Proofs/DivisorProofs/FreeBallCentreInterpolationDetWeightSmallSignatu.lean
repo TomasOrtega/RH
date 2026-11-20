@@ -31,7 +31,7 @@ namespace GlobalTheory.Up.OrbitInterpSmall
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Establish `hr : (2 : ℝ) ≤ r` using `by exact_mod_cast (show 2 ≤ r by omega)`. Conclude with `GlobalTheory.T.orbitSum_exp_potential_uniform_bound E r X x0 h0 hPD s (by linarith) (GlobalTheory.T.exists_uniform_bound_lintegral_flagDomain_ball_case E r X hp0 hp1 hq s hs)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sum_bound {r : ℕ} (X : Data E r) (x0 : Frame X.Ψ r) (h0 : IsOrth X x0) (hPD : PropDisc X)
     (hp0 : 0 < X.p0) (hp1 : X.p0 < r) (hq : X.p0 * (r - X.p0) ≤ 3) {s : ℝ} (hs : 2 * ((r : ℝ) - 1) ≤ s) :
@@ -41,9 +41,9 @@ theorem sum_bound {r : ℕ} (X : Data E r) (x0 : Frame X.Ψ r) (h0 : IsOrth X x0
   exact GlobalTheory.T.orbitSum_exp_potential_uniform_bound E r X x0 h0 hPD s (by linarith) (GlobalTheory.T.exists_uniform_bound_lintegral_flagDomain_ball_case E r X hp0 hp1 hq s hs)
 
 /- English proof (translation)
-Take `⟨hm, hpos, hinv, hch⟩` from `GlobalTheory.FramePotential.frame_potential_basic r X x0 h0`. Take `⟨C, hC, hS⟩` from `sum_bound X x0 h0 hPD hp0 hp1 hq (s := bb / 2) (by linarith)`. Use `GlobalTheory.kaFrame_of_delta X x0 bb hb0 _ (fun x => Finset.prod_nonneg fun τ _ => by positivity) hm hpos hinv hch (GlobalTheory.MinorRatioNear.minorRatio_near r X x0 h0) ⟨C, hC, fun x hx => ?_⟩` and prove the remaining obligations. Use `le_trans (le_of_eq (tsum_congr fun γ => ?_)) (hS x hx)` and prove the remaining obligations. Establish `hy : lact γ.1 x ∈ X.dom` using `MajInv.lact_mem_dom X (X.Γ_stab γ.1 γ.2) (IW.orth_mem_dom X x hx)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `congr 1`. Rewrite using `[← GlobalTheory.Up.exp_neg_rhX h0 hy, ← Real.exp_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem kappa_exists {r : ℕ} (X : Data E r) (x0 : Frame X.Ψ r) (h0 : IsOrth X x0) (hPD : PropDisc X)
     (hp0 : 0 < X.p0) (hp1 : X.p0 < r) (hq : X.p0 * (r - X.p0) ≤ 3) {bb : ℝ}
@@ -67,25 +67,23 @@ theorem kappa_exists {r : ℕ} (X : Data E r) (x0 : Frame X.Ψ r) (h0 : IsOrth X
 open GlobalTheory.Up.OrbitInterpolation in
 
 /- English proof (translation)
-Establish `hN : NfacRmulStatement (E` using `E) ∧ NfacLactStatement (E := E) ∧ PnormInvStatement (E := E) := ⟨normFactor_rightBorel_holds, normFactor_leftAction_holds, pointwiseNorm_invariance_holds⟩`. Establish `hbb0 : 0 ≤ bb` using `hb0.le`. Take `⟨κ, hκm, hκ1, hκB, hκF, ⟨Cs, hCs, hsum⟩, hloc⟩` from `kappa_exists X x0 h0 hPD hp0 hp1 hq hbb hb0`. Establish `hsumE` using `sum_bound X x0 h0 hPD hp0 hp1 hq (s := bb / 2) (by linarith)`. Take `⟨-, hW, hWl⟩` from `KronMetric.kronMetric hN r X la (fun _ => 0) (fun _ _ _ _ _ _ => rfl) (fun _ _ => contDiffOn_const) ⟨0, fun _ _ => le_rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨hz, hadd, hsmul⟩, -⟩` from `siegelSpaceAlgebra_holds r X la la 0`. Set `S : Submodule ℂ (Frame X.Ψ r → ℂ)` to `{ carrier := X.SS la add_mem' := fun {P Q} hP hQ => hadd P hP Q hQ zero_mem' := hz smul_mem' := fun a P hP => hsmul a P hP }`. Take `⟨T, hT⟩` from `X.Γ_index`. Establish `hx0` using `IW.orth_mem_dom X x0 h0`. Take `⟨u, hu, hu1, hu0⟩` from `exists_of_approx S x0 (fun s : {s : T // s.1⁻¹ ∈ G ∧ s.1⁻¹ ∉ X.Γ} => lact s.1.1⁻¹ x0) fun η hη => by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hη' : 0 < η / (Cs.toReal + 1)` using `by positivity`. Take `⟨F, P, hF, hIn, hP, hPF, hP1, hP0⟩` from `exists_approx hN extFStatement_holds measInv_holds GlobalTheory.PoleExistence.poleEx_holds (GlobalTheory.PoleDbar.poleSolve measInv_holds) GlobalTheory.Up.polePoint_holds h0 hd hρ0 hG hla hbb0 hm hcurv hκm hκ1 hκB hκF hloc hη'`. Take `⟨hs, hbd⟩` from `GlobalTheory.PoinSumBound.poin_conv_bdd E r X x0 h0 hPD la _ bb hW hWl hb0 hsumE F P hF hIn hP hPF`. Establish `hn : ∀ (γ : X.Γ) (y : Frame X.Ψ r), ‖(X.χ la γ.1)⁻¹ * P (lact γ.1 y)‖ = ‖P (lact γ.1 y)‖` using `fun γ y => by rw [norm_mul, norm_inv, OntoE.chi_norm X la γ.2, inv_one, one_mul]`. Establish `he : η / (Cs.toReal + 1) + η / (Cs.toReal + 1) * Cs.toReal = η` using `by field_simp; ring`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨poin X la P, hSS _ hbd, ?_, fun s => ?_⟩` and prove the remaining obligations. Establish `hs0` using `hs x0 hx0`. Unfold `poin`. Rewrite using `[hs0.of_norm.tsum_eq_add_tsum_ite 1]`. Simplify using `only [OneMemClass.coe_one, chi_one, FundSetPf.lact_one, inv_one, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hle : ∀ γ : X.Γ, ‖if γ = 1 then 0 else (X.χ la γ.1)⁻¹ * P (lact γ.1 x0)‖ ≤ ‖(X.χ la γ.1)⁻¹ * P (lact γ.1 x0)‖` using `fun γ => by split_ifs`. Rewrite using `[norm_zero]`. Conclude with `norm_nonneg _`. Conclude with `le_rfl`. Establish `hs1` using `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) hle hs0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `(norm_tsum_le_tsum_norm hs1).trans (tsum_le_of_le hs1 (fun _ => norm_nonneg _) hη'.le (fun γ => by split_ifs with h`. Rewrite using `[norm_zero]`. Check the signs of the components of the expression. Rewrite using `[hn]`. Conclude with `hP0 γ.1 (hG.1 γ.2) fun h' => h (Subtype.ext h')) hCs (hsum x0 hx0))`.
+Check the signs of the components of the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[add_sub_right_comm, ← he]`. Conclude with `(norm_add_le _ _).trans (add_le_add hP1 h2)`. Establish `hy` using `MajInv.lact_mem_dom X (hG.isUStab s.2.1) hx0`. Establish `h2` using `(norm_tsum_le_tsum_norm (hs _ hy)).trans (tsum_le_of_le (hs _ hy) (fun _ => norm_nonneg _) hη'.le (fun γ => by`. Rewrite using `[hn, ← FundSetPf.lact_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `hP0 _ (G.mul_mem (hG.1 γ.2) s.2.1) fun h => s.2.2 ?_` and prove the remaining obligations. Rewrite using `[eq_inv_of_mul_eq_one_right h]`. Conclude with `X.Γ.inv_mem γ.2) hCs (hsum _ hy))`. Conclude with `h2.trans (by linarith)`. Use `⟨u, hu, by rw [hu1]; exact one_ne_zero, fun γ hγ hγ' => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨s, hsT, hs⟩` from `hT γ⁻¹ (hG.isUStab (G.inv_mem hγ))`. Establish `e : s⁻¹ = (s⁻¹ * γ⁻¹) * γ` using `by group`. Establish `e' : γ = (s⁻¹ * γ⁻¹)⁻¹ * s⁻¹` using `by group`. Establish `h1 : s⁻¹ ∈ G` using `by rw [e]; exact G.mul_mem (hG.1 hs) hγ`. Establish `h2 : s⁻¹ ∉ X.Γ` using `fun h => hγ' (by rw [e']; exact X.Γ.mul_mem (X.Γ.inv_mem hs) h)`.
-
-Establish `h3 : u (lact s⁻¹ x0) = 0` using `hu0 ⟨⟨s, hsT⟩, h1, h2⟩`. Establish `hu' : u ∈ X.SS la` using `hu`. Rewrite using `[e', FundSetPf.lact_mul, hu'.1.1.2.2 _ (X.Γ.inv_mem hs) _ (MajInv.lact_mem_dom X (hG.isUStab h1) hx0), h3, mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orbitInterp_small {r : ℕ} (X : Data E r) (G : Subgroup (GL (Fin r) E)) (x0 : Frame X.Ψ r)
     (la : Wt X.Ψ r) (ρ0 bb m : ℝ) (hPD : PropDisc X) (h0 : IsOrth X x0) (hd : 1 ≤ dimX X)
@@ -167,13 +165,13 @@ end
 namespace GlobalTheory.Up.OrbitInterpSmall
 
 /- English proof (translation)
-Take `⟨k, rfl⟩` from `hs`. Establish `hk : (k + k) / 2 = k` using `by omega`. Introduce `τ`. Use `⟨fun i j hj hp => ?_, fun i0 i1 h0' h1' => ?_⟩` and prove the remaining obligations. Establish `e : ((j : ℕ) < X.p0 ↔ (i : ℕ) < X.p0)` using `by omega`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hj' : ((j : ℕ) : ℤ) = (i : ℕ) + 1` using `by exact_mod_cast hj`. Simplify using `only [Pi.sub_apply, deMul, kapW, hj']`. Distinguish the cases in `hi : (i : ℕ) < X.p0`. Rewrite using `[if_pos (e.2 hi), if_pos hi]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[if_neg (mt e.1 hi), if_neg hi]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [Pi.sub_apply, deMul, kapW, h0', h1', hk]`. Rewrite using `[if_pos h0, if_neg (by omega)]`. Establish `hr : ((r - 1 : ℕ) : ℤ) = (r : ℤ) - 1` using `by omega`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hr]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem gapsPairing_deMul' {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r)
     (h0 : 0 < X.p0) (h1 : X.p0 < r) {s : ℕ} (hs : Even s) :
@@ -196,17 +194,17 @@ theorem gapsPairing_deMul' {E : Type} [Field E] [NumberField E] [IsCMField E] {r
     linarith
 
 /- English proof (translation)
-Introduce `E _ _ _ r X _ G x0 hx0 hFB h0 h1 hq s hs hsb`. Establish `hd : 1 ≤ GlobalTheory.Up.dimX X` using `(GlobalTheory.Up.one_le_dimX_iff X).2 ⟨h0, h1⟩`. Establish `hD : GlobalTheory.Up.dimX X = X.Ψ.card * (X.p0 * (r - X.p0))` using `rfl`. Establish `hc : 0 < X.Ψ.card`. Break down `Nat.eq_zero_or_pos X.Ψ.card with h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `hd` using `[hD, h, zero_mul]`. Use linear arithmetic over natural numbers and integers. Conclude with `h`. Take `⟨τ, hτ⟩` from `Finset.card_pos.1 hc`. Establish `hr1 : (1 : ℝ) ≤ r` using `by exact_mod_cast (h0.trans h1)`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hρ : (0 : ℝ) < 1 / (49 * (r : ℝ) ^ 2)` using `by positivity`. Establish `hdR : (1 : ℝ) ≤ GlobalTheory.Up.dimX X` using `by exact_mod_cast hd`. Establish `hsR : 2 * (r : ℝ) + 50 * (r : ℝ) ^ 2 * (GlobalTheory.Up.dimX X : ℝ) + 1 ≤ s`. Rewrite using `[hD]`. Conclude with `hsb` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Establish `hq1 : (GlobalTheory.Up.dimX X : ℝ) / (1 / (49 * (r : ℝ) ^ 2)) = 49 * (r : ℝ) ^ 2 * GlobalTheory.Up.dimX X`. Clear the denominators using the available nonvanishing facts. Establish `hcurv` using `(GlobalTheory.DivisionVolume.margin_iff h0 h1 (deMul X.Ψ r X.p0 s) ((s : ℝ) - 2 * r + 2)).2 (gapsPairing_deMul' X h0 h1 hs) x0 hx0`. Use `orbitInterp_small X G x0 _ _ (4 * ((r : ℝ) - 1) + 1 / 2) ((s : ℝ) - 2 * r + 2) (GlobalTheory.ClosedDiscontinuity.propDisc_closed r X) hx0 hd h0 h1 hq hρ hFB (fun _ _ _ h => if_congr h rfl rfl) (by linarith) (by linarith) (by rw [hq1]; nlinarith [mul_le_mul_of_nonneg_left hdR (sq_ …` and prove the remaining obligations. Use `cuspStatement_holds r X _ ⟨τ, hτ⟩ h0 h1 (fun i j hj hp => ?_) (fun i0 i1 h0' h1' => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e : ((j : ℕ) < X.p0 ↔ (i : ℕ) < X.p0)` using `by omega`. Simplify using `only [deMul]`. Distinguish the cases in `hi : (i : ℕ) < X.p0`. Rewrite using `[if_pos (e.2 hi), if_pos hi]`. Rewrite using `[if_neg (mt e.1 hi), if_neg hi]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [deMul]`. Rewrite using `[if_pos (by omega), if_neg (by omega)]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem orbit_interp_small : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r),
     (∀ la, ∀ γ ∈ X.Γ, X.χ la γ = 1) → ∀ (G : Subgroup (GL (Fin r) E)) (x0 : Frame X.Ψ r), IsOrth X x0 →

@@ -4,7 +4,7 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeckeEigenfunct
 namespace PositivityTheory.jumpWindows
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.HeckeEigenspaces.hecke_eigenfunctions_closed`.
+A detailed English derivation is pending.
 -/
 theorem hecke_operator_of_automorphic : G0 → G2c :=
   GlobalTheory.CompanionTheory.HeckeEigenspaces.hecke_eigenfunctions_closed

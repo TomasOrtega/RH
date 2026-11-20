@@ -24,7 +24,7 @@ noncomputable section
 namespace GlobalTheory.DefectAdd
 
 /- English proof (translation)
-Take `⟨m, i, hi, rfl⟩` from `h`. Use `isProper_str R m` as an intermediate fact. Establish `: IsProper (i ≫ PSpace.str R m)` using `inferInstance`. Conclude with `QuasiCompact.compactSpace_of_compactSpace (i ≫ PSpace.str R m)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem compactSpace_of_projOver {R : Type} [CommRing R] {X : Scheme.{0}} {f : X ⟶ Sp R}
     (h : IsProjOver f) : CompactSpace X := by
@@ -34,7 +34,7 @@ theorem compactSpace_of_projOver {R : Type} [CommRing R] {X : Scheme.{0}} {f : X
   exact QuasiCompact.compactSpace_of_compactSpace (i ≫ PSpace.str R m)
 
 /- English proof (translation)
-Simplify using `only [Mix.int]`. Rewrite using `[integral_congr_ae (hh 1), integral_congr_ae (hh (-1)), integral_add hf.1 hg.1, integral_add hf.2 hg.2]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem int_eq_add_of_ae {k : Type} [CommRing k] {Y : Scheme.{0}} {q : Y ⟶ Sp k} {σ : k →+* ℂ} {D : ℕ}
     (L : Fin D → MLine q σ) {f g h : CxPts q σ → ℝ} (hf : Intg L f) (hg : Intg L g)
@@ -45,25 +45,21 @@ theorem int_eq_add_of_ae {k : Type} [CommRing k] {Y : Scheme.{0}} {q : Y ⟶ Sp 
   ring
 
 /- English proof (translation)
-Introduce `hP F _ X _ _ p σ e hproj hdim L M A N s hs a ha t ht hcod`. Take `⟨s₁, h₁, hloc, hmult, hlog⟩` from `GlobalTheory.T.tensor_product_sections_zeros_multiplicities_norms F X p σ M A s hs a ha`. Use `⟨s₁, h₁, hloc, ?_⟩` and prove the remaining obligations. Establish `hσ : Function.Injective σ` using `σ.injective`. Use `haveI : CompactSpace X := compactSpace_of_projOver hproj`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `iM` using `GlobalTheory.T.log_norm_section_integrable_mixedChern_projective hP F X p σ (e + 1) hproj hdim (Fin.cons N L) M s hs`. Establish `iA` using `GlobalTheory.T.log_norm_section_integrable_mixedChern_projective hP F X p σ (e + 1) hproj hdim (Fin.cons N L) A a ha`. Establish `iMh` using `GlobalTheory.T.log_norm_section_integrable_mixedChern_projective hP F X p σ (e + 1) hproj hdim (Fin.cons M L) N t ht`. Establish `iAh` using `GlobalTheory.T.log_norm_section_integrable_mixedChern_projective hP F X p σ (e + 1) hproj hdim (Fin.cons A L) N t ht`. Establish `e1 : Mix.int (Fin.cons N L : Fin (e + 1) → MLine p σ) ((M.tens A).logSec s₁) = Mix.int (Fin.cons N L : Fin (e + 1) → MLine p σ) (M.logSec s) + Mix.int (Fin.cons N L : Fin (e + 1) → MLine p σ) (A.logSec a)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `int_eq_add_of_ae _ iM iA fun ε => ?_` and prove the remaining obligations. Establish `h0` using `GlobalTheory.T.mixedChernFormSignedPartMeasure_compl_open_genericPoint_eq_zero F X p σ hσ hproj (e + 1) (Fin.cons N L) ε (nonzeroLocus s₁) h₁`. Use `filter_upwards [measure_eq_zero_iff_ae_notMem.1 h0] with y hy`. Conclude with `hlog y (by simpa using hy)`. Establish `e2 : Mix.int (Fin.cons (M.tens A) L : Fin (e + 1) → MLine p σ) (N.logSec t) = Mix.int (Fin.cons M L : Fin (e + 1) → MLine p σ) (N.logSec t) + Mix.int (Fin.cons A L : Fin (e + 1) → MLine p σ) (N.logSec t)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `key` using `GlobalTheory.T.mixedChernIntegral_additive_in_factor F X p σ hproj (e + 1) (Fin.cons M L) 0 M A (N.logSec t) (by simpa only [Fin.update_cons_zero] using iMh) (by simpa only [Fin.update_cons_zero] using iAh)`. Simplify `key.2` using `only [Fin.update_cons_zero]`. Establish `e3 : ∑ᶠ z, ((divOfSec (M.tens A).φ.isLB s₁ h₁).mult z : ℝ) * cycInt L (N.logSec t) z = ∑ᶠ z, ((divOfSec M.φ.isLB s hs).mult z : ℝ) * cycInt L (N.logSec t) z + ∑ᶠ z, ((divOfSec A.φ.isLB a ha).mult z : ℝ) * cycInt L (N.logSec t) z`. Rewrite using `[← finsum_add_distrib]`. Use `finsum_congr fun z => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hmult z]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Conclude with `(divOfSec M.φ.isLB s hs).finite_support_mult.subset fun z hz h0 => hz (by simp [h0])`. Conclude with `(divOfSec A.φ.isLB a ha).finite_support_mult.subset fun z hz h0 => hz (by simp [h0])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Establish `e4 : ∑ᶠ z, ((divOfSec N.φ.isLB t ht).mult z : ℝ) * cycInt L ((M.tens A).logSec s₁) z = ∑ᶠ z, ((divOfSec N.φ.isLB t ht).mult z : ℝ) * cycInt L (M.logSec s) z + ∑ᶠ z, ((divOfSec N.φ.isLB t ht).mult z : ℝ) * cycInt L (A.logSec a) z`. Rewrite using `[← finsum_add_distrib]`. Use `finsum_congr fun z => ?_` and prove the remaining obligations. Distinguish the cases in `hz : (divOfSec N.φ.isLB t ht).mult z = 0`. Simplify using `[hz]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← mul_add]`. Use `congr 1`. Establish `hco` using `CartierDiv.coheight_eq_one_of_mult_ne_zero hz`. Establish `hzt : z ∉ nonzeroLocus t` using `fun h => (notMem_supp_divOfSec.2 h) (CartierDiv.mem_supp_of_mult_ne_zero hz)`. Establish `hz1 : z ∈ nonzeroLocus s ⊓ nonzeroLocus a` using `(hcod z hco).resolve_right hzt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hz1'` using `TopologicalSpace.Opens.mem_inf.1 hz1`. Establish `hzs₁ : z ∈ nonzeroLocus s₁` using `hloc ▸ hz1`. Establish `hdimz` using `(GlobalTheory.T.coheight_eq_one_iff_closure_dim_projective F X p e hproj hdim z).1 hco`. Take `⟨-, -, hnull, hint⟩` from `GlobalTheory.T.mixedChernForm_finite_integrable_pointClosure hP F X p σ hproj e L z hdimz`. Use `int_eq_add_of_ae _ (hint M s hz1'.1) (hint A a hz1'.2) fun ε => ?_` and prove the remaining obligations.
-
-Use `filter_upwards [measure_eq_zero_iff_ae_notMem.1 (hnull _ hzs₁ ε)] with y hy`. Conclude with `hlog _ (by simpa using hy)`. Conclude with `(divOfSec N.φ.isLB t ht).finite_support_mult.subset fun z hz h0 => hz (by simp [h0])`. Conclude with `(divOfSec N.φ.isLB t ht).finite_support_mult.subset fun z hz h0 => hz (by simp [h0])`. Simplify using `only [side]`.
-
-Rewrite using `[e1, e2, e3, e4]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem defect_add : GlobalTheory.Published.Principalisation → ∀ (F : Type) [Field F] (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (p : X ⟶ Sp F) (σ : F →+* ℂ) (e : ℕ), IsProjOver p → topologicalKrullDim X = (e + 1 : ℕ) → ∀ (L : Fin e → MLine p σ) (M A N : MLine p σ) (s : M.B.Sec) (hs : genericPoint X ∈ nonzeroLocus s) (a : A.B.Sec) (ha : genericPoint X ∈ nonzeroLocus a) (t : N.B.Sec) (ht : genericPoint X ∈ nonzeroLocus t), (∀ z : X, Order.coheight z = 1 → z ∈ nonzeroLocus s ⊓ nonzeroLocus a ∨ z ∈ nonzeroLocus t) → ∃ (s₁ : (M.tens A).B.Sec) (h₁ : genericPoint X ∈ nonzeroLocus s₁), nonzeroLocus s₁ = nonzeroLocus s ⊓ nonzeroLocus a ∧ side N L ((M.tens A).logSec s₁) (N.logSec t) (divOfSec (M.tens A).φ.isLB s₁ h₁) - side (M.tens A) L (N.logSec t) ((M.tens A).logSec s₁) (divOfSec N.φ.isLB t ht) = (side N L (M.logSec s) (N.logSec t) (divOfSec M.φ.isLB s hs) - side M L (N.logSec t) (M.logSec s) (divOfSec N.φ.isLB t ht)) + (side N L (A.logSec a) (N.logSec t) (divOfSec A.φ.isLB a ha) - side A L (N.logSec t) (A.logSec a) (divOfSec N.φ.isLB t ht)) := by
   intro hP F _ X _ _ p σ e hproj hdim L M A N s hs a ha t ht hcod

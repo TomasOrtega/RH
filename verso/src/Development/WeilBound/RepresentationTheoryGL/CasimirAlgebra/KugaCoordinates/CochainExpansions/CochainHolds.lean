@@ -18,17 +18,17 @@ def hY (τ : E →+* ℂ) (j i : Fin a) (z : ℂ) : Herm E a :=
 
 omit [NumberField E] in
 /- English proof (translation)
-Establish `hc : ∀ z, coord τ' (atEmb τ z) = if τ' = τ then z else 0` using `fun z => by`. Rewrite using `[GlobalTheory.CuspRep.InfType.coord_atEmb', if_neg h, add_zero]`. Establish `he : ∀ z, coord τ' ((hY τ j i z).1 j' i') = (if j = j' ∧ i = i' then coord τ' (atEmb τ z) else 0) + (if j = i' ∧ i = j' then star (coord τ' (atEmb τ z)) else 0)`. Introduce `z`. Simplify using `only [hY, Matrix.add_apply, Matrix.star_apply, Matrix.single_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_add]`. Use `congr 1`. Apply the tactic sequence `split_ifs <;> simp`. Apply the tactic sequence `split_ifs <;> simp [PositivityTheory.Rg.Cz.J.coord_star]`. Rewrite using `[he, he, hc, hc]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use `clear he hc`. Distinguish the cases in `h1 : τ' = τ`. Substitute `h1 clear h` using the available equality. Establish `hP : (τ' = τ' ∧ j' = j ∧ i' = i) ↔ (j = j' ∧ i = i')` using `⟨fun h => ⟨h.2.1.symm, h.2.2.symm⟩, fun h => ⟨rfl, h.1.symm, h.2.symm⟩⟩`. Rewrite using `[if_congr hP rfl rfl]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `by_cases hp : j = j' ∧ i = i' <;> by_cases hq : j = i' ∧ i = j'`. Simplify using `only [if_pos hp, if_pos hq]`. Simplify using `[Complex.ext_iff]`. Evaluate the numerical expressions. Simplify using `only [if_pos hp, if_neg hq]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Evaluate the numerical expressions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Complex.ext_iff]`. Evaluate the numerical expressions. Simplify using `only [if_neg hp, if_pos hq]`. Simplify using `[Complex.ext_iff]`. Evaluate the numerical expressions.
+Evaluate the numerical expressions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Evaluate the numerical expressions. Simplify using the standard rewrite rules.
 
-Simplify using `only [if_neg hp, if_neg hq]`. Simplify using the standard rewrite rules. Simplify using `[h1]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hY_ent [IsTotallyComplex E] (τ τ' : E →+* ℂ) (h : τ' ≠ barE E τ) (j i j' i' : Fin a) :
     coord τ' ((hY τ j i (1 / 2)).1 j' i') - Complex.I * coord τ' ((hY τ j i (Complex.I / 2)).1 j' i') =
@@ -60,23 +60,21 @@ theorem hY_ent [IsTotallyComplex E] (τ τ' : E →+* ℂ) (h : τ' ≠ barE E �
   · simp [h1]
 
 /- English proof (translation)
-Introduce `h0`. Apply `h3` to reduce the goal to its premises. Use function extensionality and compare the values at `J`. Use `set I : Fin q → Fin a := fun p => J (Sum.inl p)`. Use `set P : Fin N → Fin a := fun j => J (Sum.inr (Sum.inl j))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `set Q : Fin N → Fin a := fun j => J (Sum.inr (Sum.inr j))`. Set `A : Fin N → Herm E a` to `fun j => hY (tl j) (Q j) (P j) (1 / 2)`. Set `B : Fin N → Herm E a` to `fun j => hY (tl j) (Q j) (P j) (Complex.I / 2)`. Establish `hz : cEv (fun v => om tl η v I) A B = 0`. Simplify using `only [h0, AlternatingMap.zero_apply, Pi.zero_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `cEv_zero (V := M) A B`. Establish `e2 : ∀ A B : Fin N → Herm E a, cEv (fun v => mm tl η v I) A B = ∑ x : Fin N → Fin a, ∑ y : Fin N → Fin a, (∏ k, (coord (tl k) ((A k).1 (y k) (x k)) - Complex.I * coord (tl k) ((B k).1 (y k) (x k)))) • η (Sum.elim I (Sum.elim x y))` using `fun A B => by`. Use `cEv_prod2 (V := M) (fun x y k (h : Herm E a) => coord (tl k) (h.1 (y k) (x k))) (fun x y => η (Sum.elim I (Sum.elim x y))) A B` as an intermediate fact. Rewrite using `[show (fun v => mm tl η v I) = fun v => ∑ x : Fin N → Fin a, ∑ y : Fin N → Fin a, (∏ k, (fun x y k (h : Herm E a) => coord (tl k) (h.1 (y k) (x k))) x y k (v k)) • (fun x y => η (Sum.elim I (Sum.elim x y))) x y from funext fun v => mm_apply tl η v I]`. Conclude with `this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e3 : ∀ σ : Equiv.Perm (Fin N), cEv (fun v => mm tl η (fun i => v (σ i)) I) A B = if ∀ k, tl k = tl (σ k) then η (Sum.elim I (Sum.elim (fun k => P (σ k)) (fun k => Q (σ k)))) else 0`. Introduce `σ`. Rewrite using `[cEv_perm (V := M) (fun v => mm tl η v I), e2]`. Establish `hp : ∀ x y : Fin N → Fin a, (∏ k, (coord (tl k) ((A (σ k)).1 (y k) (x k)) - Complex.I * coord (tl k) ((B (σ k)).1 (y k) (x k)))) = if (∀ k, tl k = tl (σ k)) ∧ x = (fun k => P (σ k)) ∧ y = (fun k => Q (σ k)) then 1 else 0`. Introduce `x y`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[Finset.prod_congr rfl fun k _ => hY_ent (tl (σ k)) (tl k) (h1 k (σ k)) (Q (σ k)) (P (σ k)) (y k) (x k), Finset.prod_boole]`. Use `congr 1`. Simplify using `only [Finset.mem_univ, true_implies, funext_iff]`. Conclude with `propext ⟨fun h => ⟨fun k => (h k).1, fun k => (h k).2.2, fun k => (h k).2.1⟩, fun ⟨h1, h2, h3⟩ k => ⟨h1 k, h3 k, h2 k⟩⟩`. Simplify using `only [hp, ite_and, ite_smul, one_smul, zero_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hσ : ∀ k, tl k = tl (σ k)`. Simplify using `only [eq_true hσ, if_true]`. Rewrite using `[Fintype.sum_eq_single (fun k => P (σ k)) (fun x hx => by simp only [if_neg hx, Finset.sum_const_zero])]`. Rewrite using `[Fintype.sum_eq_single (fun k => Q (σ k)) (fun y hy => by simp only [if_neg hy, ite_self])]`. Simplify using `only [if_true]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Use symmetry to reverse the relation.
 
-Simplify using `only [eq_false hσ, if_false, Finset.sum_const_zero]`. Establish `hJ : ∀ σ : Equiv.Perm (Fin N), J ∘ dbl σ = Sum.elim I (Sum.elim (fun k => P (σ k)) (fun k => Q (σ k)))`. Introduce `σ`. Use function extensionality and compare the values at `x`. Apply the tactic sequence `rcases x with x | x | x <;> rfl`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Use `symm`. Rewrite using `[Pi.zero_apply, ← hz, show (fun v => om tl η v I) = fun v => ∑ σ : Equiv.Perm (Fin N), ((Equiv.Perm.sign σ : ℤ)) • mm tl η (fun i => v (σ i)) I from funext fun v => om_apply tl η v I, cEv_sum (V := M)]`. Rewrite using `[altPair, LinearMap.sum_apply, Finset.sum_apply, colG, Finset.sum_filter]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[e3 σ]`.
-
-Distinguish the cases in `hσ : ∀ k, tl k = tl (σ k)`. Rewrite using `[if_pos hσ, if_pos fun p => (hσ p).symm, LinearMap.smul_apply, Pi.smul_apply, pm_apply, hJ, Int.cast_smul_eq_zsmul]`. Rewrite using `[if_neg hσ, if_neg fun h => hσ fun p => (h p).symm, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem om_ne [IsTotallyComplex E] (tl : Fin N → (E →+* ℂ)) (η : TV a M (Fin q ⊕ (Fin N ⊕ Fin N)))
     (h1 : ∀ k k', tl k ≠ barE E (tl k')) (h3 : altPair tl η ≠ 0) : om tl η ≠ 0 := by
@@ -137,7 +135,7 @@ theorem om_ne [IsTotallyComplex E] (tl : Fin N → (E →+* ℂ)) (η : TV a M (
   · rw [if_neg hσ, if_neg fun h => hσ fun p => (h p).symm, smul_zero]
 
 /- English proof (translation)
-Introduce `E _ _ _ a M _ _ _ _ ρ q N lab tl η h1 h2 h3`. Conclude with `⟨om tl η, om_ne tl η h1 h3, om_cochain lab tl ρ η h2, fun p p' h X => om_swap tl η p p' h X⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem cochain_holds : Cochain := by
   intro E _ _ _ a M _ _ _ _ ρ q N lab tl η h1 h2 h3

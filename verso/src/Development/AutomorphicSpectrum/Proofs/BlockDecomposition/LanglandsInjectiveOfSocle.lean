@@ -14,7 +14,7 @@ open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.Loc
 namespace GlobalTheory.CompanionTheory.Multisegment
 
 /- English proof (translation)
-Establish `h1 : Wd (prodIrr v hd) (wtW Δ)` using `GlobalTheory.T.word_occurs_of_subquotient (prodIrr v hd) π (isSmooth_prodIrr v hd) hc.isSubquotient _ hw`. Establish `h2` using `GlobalTheory.T.segment_product_word_in_shuffle hA hSeg v hd Γ hv (wtW Δ) (GlobalTheory.T.ordered_word_letters_cuspidal Δ) h1`. Rewrite `h2` using `[hΓ.1]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem inShW_of_wd_cosocle {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (hSeg : LSegJacquet k)
@@ -29,9 +29,9 @@ theorem inShW_of_wd_cosocle {k : Type} [Field k] [ValuativeRel k] [TopologicalSp
   rwa [hΓ.1] at h2
 
 /- English proof (translation)
-Introduce `𝔪 𝔫 x h𝔪 h𝔫`. Take `⟨h, u, hd, ⟨Δ, hΔ, hu⟩, hc⟩` from `id h𝔪`. Take `⟨h', v, hd', ⟨Γ, hΓ, hv⟩, hc'⟩` from `id h𝔫`. Establish `wΔ : Wd x.rep (wtW Δ)` using `GlobalTheory.T.langlands_rep_ordered_word_occurs hA hSoc hSeg 𝔪 x.rep h𝔪 h Δ hΔ`. Establish `wΓ : Wd x.rep (wtW Γ)` using `GlobalTheory.T.langlands_rep_ordered_word_occurs hA hSoc hSeg 𝔫 x.rep h𝔫 h' Γ hΓ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.T.ordered_forms_mutual_shuffle_eq hA 𝔪 𝔫 h h' Δ Γ hΔ hΓ (inShW_of_wd_cosocle hA hSeg Δ Γ v hd' hΓ hv hc' wΔ) (inShW_of_wd_cosocle hA hSeg Γ Δ u hd hΔ hu hc wΓ)`.
+A detailed English derivation is pending.
 -/
 theorem lInjective {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (hSoc : LSocleGL k) (hSeg : LSegJacquet k) : LInjective k := by

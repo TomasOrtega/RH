@@ -20,21 +20,21 @@ set_option synthInstance.maxHeartbeats 400000
 namespace GlobalTheory.RefSum.WFree
 
 /- English proof (translation)
-The claim follows from `_root_.GlobalTheory.ClosingLemmaFourth.main hd h`.
+A detailed English derivation is pending.
 -/
 theorem conj_eq_neg {z : ℂ} {d : ℕ} (hd : 0 < d) (h : z ^ 2 = -(d : ℂ)) : (starRingEnd ℂ) z = -z ∧ z ≠ 0 :=
   _root_.GlobalTheory.ClosingLemmaFourth.main hd h
 
 /- English proof (translation)
-Establish `key : ∀ τ : E →+* ℂ, Dw.mult τ + Dw.mult (ComplexEmbedding.conjugate τ) = Dw.p + Dw.q` using `fun τ => by`. Establish `hs : τ (H.rt : E) ^ 2 = -(H.d : ℂ)`. Use `congrArg (fun a : 𝓞 E => τ (a : E)) H.rt_sq` as an intermediate fact. Simplify using `using this`. Take `⟨h1, h2⟩` from `conj_eq_neg H.d_prime.pos hs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Establish `h3 : ComplexEmbedding.conjugate τ (H.rt : E) = -τ (H.rt : E)` using `h1`. Unfold `Datum.mult`. Rewrite using `[h3]`. Distinguish the cases in `h : τ (H.rt : E) = H.rt0`. Rewrite using `[if_pos h, if_neg fun e => h2 (by linear_combination (h - e) / 2)]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `: -τ (H.rt : E) = H.rt0`. Break down `sq_eq_sq_iff_eq_or_eq_neg.1 (hs.trans H.sqrt_neg_disc_sq.symm) with e | e` into its components or cases. Conclude with `absurd e h`. Rewrite using `[e, neg_neg]`. Rewrite using `[if_neg h, if_pos this, add_comm]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hinv : Function.Involutive (ComplexEmbedding.conjugate : (E →+* ℂ) → (E →+* ℂ))` using `fun τ => star_star τ`. Establish `e` using `Equiv.sum_comp hinv.toPerm Dw.mult`. Rewrite using `[two_mul]`. Use `nth_rewrite 2 [← e]`. Rewrite using `[← Finset.sum_add_distrib]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(Finset.sum_congr rfl fun τ _ => key τ).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_const, Finset.card_univ, Embeddings.card, smul_eq_mul]`.
+A detailed English derivation is pending.
 -/
 theorem two_mul_sum_mult {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     (Dw : Datum H) : 2 * ∑ τ : E →+* ℂ, Dw.mult τ = Module.finrank ℚ E * (Dw.p + Dw.q) := by
@@ -62,9 +62,9 @@ theorem two_mul_sum_mult {E : Type} [Field E] [NumberField E] [IsCMField E] {H :
   rw [Finset.sum_const, Finset.card_univ, Embeddings.card, smul_eq_mul]
 
 /- English proof (translation)
-Establish `h1 : w.valuation K (algebraMap (𝓞 K) K (q : 𝓞 K)) < 1` using `(w.valuation_lt_one_iff_mem (K := K) _).2 h`. Rewrite `h1` using `[map_natCast]`. Establish `h0 : w.valuation K (q : K) ≠ 0` using `(Valuation.ne_zero_iff _).2 (Nat.cast_ne_zero.2 hq)`. Use `WithZero.log_lt_log h0 one_ne_zero |>.2 h1` as an intermediate fact. Rewrite `this` using `[WithZero.log_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Unfold `vAdd`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem one_le_vAdd {K : Type} [Field K] [NumberField K] (w : HeightOneSpectrum (𝓞 K)) {q : ℕ} (hq : q ≠ 0)
     (h : ((q : ℕ) : 𝓞 K) ∈ w.asIdeal) : 1 ≤ vAdd w (q : K) := by
@@ -77,7 +77,7 @@ theorem one_le_vAdd {K : Type} [Field K] [NumberField K] (w : HeightOneSpectrum 
   omega
 
 /- English proof (translation)
-Introduce `h'` and use `by have hc : IsCoprime ((p : ℕ) : 𝓞 K) ((q : ℕ) : 𝓞 K) := ((Nat.coprime_primes hp hq).2 hne).cast obtain ⟨a, b, e⟩ := hc exact w.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (e ▸ add_mem (Ideal.mul_mem_left _ _ h') (Ideal.mul_mem_left _ _ h)))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem notMem_of_ne {K : Type} [Field K] [NumberField K] (w : HeightOneSpectrum (𝓞 K)) {p q : ℕ} (hp : p.Prime)
     (hq : q.Prime) (hne : p ≠ q) (h : ((q : ℕ) : 𝓞 K) ∈ w.asIdeal) : ((p : ℕ) : 𝓞 K) ∉ w.asIdeal := fun h' => by
@@ -86,7 +86,7 @@ theorem notMem_of_ne {K : Type} [Field K] [NumberField K] (w : HeightOneSpectrum
   exact w.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (e ▸ add_mem (Ideal.mul_mem_left _ _ h') (Ideal.mul_mem_left _ _ h)))
 
 /- English proof (translation)
-Establish `: ¬ q ∣ (discr E).natAbs` using `fun hd => h (Nat.mem_primeFactors.2 ⟨hq, (hd.mul_left _).mul_right _, mul_ne_zero (mul_ne_zero (mul_ne_zero two_ne_zero H.d_prime.ne_zero) (Int.natAbs_ne_zero.2 (discr_ne_zero E))) (Nat.lcm_ne_zero (by have := l.three_le; omega) l.A_pos.ne')⟩)`. Rewrite using `[different_vp, padicValNat.eq_zero_of_not_dvd this]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem different_vp_eq_zero {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     (l : Level H) {q : ℕ} (hq : q.Prime) (h : q ∉ badPrimes H l) : different_vp E q = 0 := by
@@ -97,15 +97,13 @@ theorem different_vp_eq_zero {E : Type} [Field E] [NumberField E] [IsCMField E] 
   simp
 
 /- English proof (translation)
-Take `⟨hK, ht⟩` from `GlobalTheory.T.exists_keySection_inverseRoot_twistingSection_spread E H Dw l Xo c r U hL.unf x hL.xi hL.geo hL.pos hL.good hN`. Establish `hz : ∀ Z : Comp Xo c, ∃ z : TwSec U x Z (wtOf Dw u 0 - wtOf Dw (u + parWt Dw w₀) m), IntOff (badPrimes H l) z.lo ∧ ∀ w, z.hi w - z.lo w ≤ m * ∑ τ : E →+* ℂ, (Dw.mult τ : ℝ) * (ord_vw w (conjDifferent (embF c τ)) : ℝ)` using `fun Z => by`. Take `⟨t, ht1, ht2⟩` from `ht Z`. Take `⟨s, -, -, -, hs1, hs2⟩` from `(GlobalTheory.FlatTwisting.twSec_of_flat E H Dw l Xo c r U x _ hK hL.unf hL.pos hN).1 Z (-w₀) _ (FlatSec.shift (hasPts U hL.pos hL.good hL.unf Z) (fun τ => (hF.nonempty Z τ).some) (-w₀)) ((Set.finite_iUnion fun τ => finite_flDefect_vw (Dw := Dw) (c := c) τ).subset fun w hw => by`. Assume the negation of the conclusion as `hn`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Simplify using `only [Set.mem_iUnion, Function.mem_support, not_exists, not_not] at hn`. Conclude with `hw (by simp [Finset.sum_apply, hn]))`. Conclude with `GlobalTheory.CombTw.exists_twSec_comb E H Dw l Xo c r U hL.unf x _ Z u w₀ m _ s t hs1 hs2 ht1 ht2`. Use `choose z hz1 hz2 using hz`. Establish `key` using `GlobalTheory.T.baseLocusExponent_twistingSection_mul_le E H Dw l Xo c r U hL.unf x (wtOf Dw (u + parWt Dw w₀) m) _ (even_two_mul (m : ℤ)) cst (if q ∈ badPrimes H l then (m * N * (different_vp E q : ℝ) + 1) else 0) q hq z fun Z w hw => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1` using `hz2 Z w`. Simplify using `only [fun τ => (GlobalTheory.DifferentGalois.ord_conjDifferent_and_sum E c.F (embF c τ) q w hq hw).1, ← Finset.sum_mul, hs] at h1`. Use `split_ifs with hb`. Establish `h2 : (1 : ℝ) ≤ (vAdd w (q : c.F) : ℝ)` using `by exact_mod_cast one_le_vAdd w hq.ne_zero hw`. Establish `h3` using `Int.lt_floor_add_one ((z Z).lo w)`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨n, hn⟩` from `hz1 Z w fun p hp => notMem_of_ne w (Nat.prime_of_mem_primeFactors hp) hq (fun e => hb (e ▸ hp)) hw`. Rewrite `h1` using `[different_vp_eq_zero l hq hb, hn]`. Rewrite using `[hn, Int.floor_intCast]`. Simplify using `using h1`.
-
-Rewrite `key` using `[add_sub_cancel]`. Then use the resulting hypothesis.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem refExp_vp_le_of_laws {E : Type} [Field E] [NumberField E] [IsCMField E] [IsGalois ℚ E]
     {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {r : ℕ}
@@ -143,11 +141,11 @@ theorem refExp_vp_le_of_laws {E : Type} [Field E] [NumberField E] [IsCMField E] 
   rwa [add_sub_cancel] at key
 
 /- English proof (translation)
-Introduce `hP D T j Y e o hT hj hY _ _ hF u w₀ m cst q hq`. Use `haveI : IsGalois ℚ D.host.E := D.host.hostE_isGalois`. Establish `hL` using `GlobalTheory.T.complexUniformizationLaws_of_goodDeepCover D T j Y e o hT hj hY`. Establish `hp` using `hT.pins`. Establish `hr : (T.Q.Dw j).p + (T.Q.Dw j).q = D.R.r`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hp.2.2.2 j hj).1, (hp.2.2.2 j hj).2.1]`. Use `hj.1` as an intermediate fact. Use `hj.2` as an intermediate fact. Simplify using `only [Ranks.sigW, Ranks.r]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `h2` using `two_mul_sum_mult (T.Q.Dw j)`. Rewrite `h2` using `[StandardLattice.finrank_host D, hr, mul_assoc]`. Conclude with `refExp_vp_le_of_laws hL (GlobalTheory.T.hasUnramifiedIntegralFramedPoints_of_goodPlaces hP.q18 hP.q1 hP.p5 _ _ _ _ _ _ hL.pos) hF u w₀ m cst hq (by exact_mod_cast Nat.eq_of_mul_eq_mul_left two_pos h2)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem refExp_vp_le_shift : Hypotheses2 → ∀ (D : D7) (T : CoreJ D) (j : ℕ) (Y : Deep T.toCore j) (e : ℕ) (o : ℝ), LawsJ T → InR D j → Y.Good e o → 1 ≤ (T.Q.Dw j).p → 1 ≤ (T.Q.Dw j).q → FlatExists Y.U (xiR D) → ∀ (u : GlobalTheory.AllWt.Weight (T.Q.Dw j)) (w₀ : Psi T.Q.H → ℤ) (m : ℕ) (cst : ℝ) (q : ℕ), q.Prime → refExp_vp Y.U cst (wtOf (T.Q.Dw j) u 0) q ≤ refExp_vp Y.U cst (wtOf (T.Q.Dw j) (u + parWt (T.Q.Dw j) w₀) m) q + (((if q ∈ badPrimes T.Q.H Y.d.l₂ then (m * (D.R.f * D.R.r) * (different_vp D.host.E q : ℝ) + 1) else 0 : ℝ)) : EReal) := by
   intro hP D T j Y e o hT hj hY _ _ hF u w₀ m cst q hq

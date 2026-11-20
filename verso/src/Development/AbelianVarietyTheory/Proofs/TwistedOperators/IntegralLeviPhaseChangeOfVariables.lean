@@ -26,9 +26,9 @@ def sandwichHomeo {m n : ℕ} (P : GL (Fin m) (AE D)) (Q : GL (Fin n) (AE D)) : 
   continuous_invFun := (continuous_const.matrix_mul continuous_id).matrix_mul continuous_const
 
 /- English proof (translation)
-Rewrite using `[phase_apply, phase_apply]`. Use `congr 3`. Establish `hu` using `GlobalTheory.MixModel.mt_unitary W h⁻¹`. Simplify using `only [GlobalTheory.MixModel.adj_mul, GlobalTheory.MixModel.adj_adj]`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Matrix.mul_assoc (GlobalTheory.MixModel.gA W) (Formalism.L2.Theta.mt W h⁻¹), ← Matrix.mul_assoc (GlobalTheory.MixModel.adj (Formalism.L2.Theta.mt W h⁻¹)), hu, Matrix.trace_mul_comm]`. Simplify using `only [Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem phase_sandwich (ψ : AddChar (AF D.host.F) ℂ) (W : HSp D) {r : ℕ} (h : GA D W) (a : GL (Fin r) (AE D))
     (y u : Mx D W.rank r) :
@@ -44,7 +44,7 @@ theorem phase_sandwich (ψ : AddChar (AF D.host.F) ℂ) (W : HSp D) {r : ℕ} (h
   simp only [Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]
 
 /- English proof (translation)
-Rewrite using `[map_inv, map_inv, map_inv, hh, inv_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem absE_det_matHom_inv {W : HSp D} (h : GA D W)
     (hh : GlobalTheory.Doubling.absE D.host.F D.host.E (Matrix.GeneralLinearGroup.det (Formalism.L2.Theta.matHom W h)) = 1) :
@@ -52,7 +52,7 @@ theorem absE_det_matHom_inv {W : HSp D} (h : GA D W)
   rw [map_inv, map_inv, map_inv, hh, inv_one]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨pow_ne_zero _ (ENNReal.coe_ne_zero.2 ((Group.isUnit (Matrix.GeneralLinearGroup.det a)).map (GlobalTheory.Doubling.absE D.host.F D.host.E)).ne_zero), ENNReal.pow_ne_top ENNReal.coe_ne_top⟩`.
+Supply the required witnesses or components.
 -/
 theorem absE_det_pow_ne {r : ℕ} (a : GL (Fin r) (AE D)) (k : ℕ) :
     ((GlobalTheory.Doubling.absE D.host.F D.host.E (Matrix.GeneralLinearGroup.det a) : ENNReal) ^ k) ≠ 0 ∧
@@ -63,13 +63,13 @@ theorem absE_det_pow_ne {r : ℕ} (a : GL (Fin r) (AE D)) (k : ℕ) :
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `D ψ _ W r μ hμ h hh a N _ hNi`. Use `haveI : BorelSpace (Mx D W.rank r) := ⟨rfl⟩`. Establish `hmod` using `GlobalTheory.T.addHaar_leftRightMul_adelicMatrices_module D W.rank r μ hμ (Formalism.L2.Theta.matHom W h⁻¹) a`. Establish `h1` using `absE_det_matHom_inv h hh`. Rewrite `hmod` using `[h1, ENNReal.coe_one, one_pow, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨hc0, hcT⟩` from `absE_det_pow_ne a W.rank`. Set `e` to `(sandwichHomeo (Formalism.L2.Theta.matHom W h⁻¹) a).toMeasurableEquiv`. Establish `he : ∀ u, e u = HMul.hMul (HMul.hMul (Formalism.L2.Theta.mt W h⁻¹) u) a.val` using `fun _ => rfl`. Establish `hmap : (Measure.map (fun u : Mx D W.rank r => (HMul.hMul (HMul.hMul (Formalism.L2.Theta.matHom W h⁻¹).val (u : Matrix (Fin W.rank) (Fin r) (AE D))) a.val : Mx D W.rank r)) μ) = Measure.map e μ` using `rfl`. Rewrite `hmod` using `[hmap]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, fun y => ?_⟩` and prove the remaining obligations. Rewrite `hNi` using `[hmod, integrable_smul_measure hc0 hcT, integrable_map_equiv]`. Conclude with `hNi`. Use `conv_lhs => rw [hmod]`. Rewrite using `[integral_smul_measure, integral_map_equiv]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Simplify using `only [he, phase_sandwich]`. Rewrite using `[ENNReal.toReal_pow, ENNReal.coe_toReal, Complex.real_smul]`. Use `push_cast`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem integral_phase_sandwich : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (W : HSp D) (r : ℕ) (μ : Measure (Mx D W.rank r)), μ.IsAddHaarMeasure → ∀ (h : GA D W), GlobalTheory.Doubling.absE D.host.F D.host.E (Matrix.GeneralLinearGroup.det (matHom W h)) = 1 → ∀ (a : GL (Fin r) (AE D)) (N : Mx D W.rank r → ℂ), Continuous N → Integrable N μ → Integrable (fun u : Mx D W.rank r => N (HMul.hMul (HMul.hMul (Formalism.L2.Theta.mt W h⁻¹) u) a.val)) μ ∧ ∀ y : Mx D W.rank r, ∫ u, GlobalTheory.LeviNorm.phase ψ W (HMul.hMul (HMul.hMul (Formalism.L2.Theta.mt W h⁻¹) y) (GlobalTheory.MixModel.adj (a⁻¹).val)) u * N u ∂μ = ((GlobalTheory.Doubling.absE D.host.F D.host.E (Matrix.GeneralLinearGroup.det a) : ℝ) : ℂ) ^ W.rank * ∫ u, GlobalTheory.LeviNorm.phase ψ W y u * N (HMul.hMul (HMul.hMul (Formalism.L2.Theta.mt W h⁻¹) u) a.val) ∂μ := by
   intro D ψ _ W r μ hμ h hh a N _ hNi

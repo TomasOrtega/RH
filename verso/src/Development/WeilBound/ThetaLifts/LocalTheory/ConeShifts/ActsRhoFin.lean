@@ -25,7 +25,7 @@ section Op
 variable {κ : Type} [Fintype κ]
 
 /- English proof (translation)
-Establish `ex : ∃ φ₁ ∈ SB (κ → Fv F v), Acts (evFin F v) S φ φ₁` using `⟨φ₁, h1, h⟩`. Rewrite using `[opF, dif_pos ex]`. Conclude with `GlobalTheory.TensUniq.eq_of_tens_eq v φ _ _ h0 fun r hr => (ex.choose_spec.2 r hr).symm.trans (h r hr)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem opF_eq {v : Pl F} {S : ((κ → AF F) → ℂ) → (κ → AF F) → ℂ} {φ φ₁ : (κ → Fv F v) → ℂ} (h0 : φ ∈ SB _) (h1 : φ₁ ∈ SB _)
     (h : Acts (evFin F v) S φ φ₁) : opF v S φ = φ₁ := by
@@ -34,7 +34,7 @@ theorem opF_eq {v : Pl F} {S : ((κ → AF F) → ℂ) → (κ → AF F) → ℂ
   exact GlobalTheory.TensUniq.eq_of_tens_eq v φ _ _ h0 fun r hr => (ex.choose_spec.2 r hr).symm.trans (h r hr)
 
 /- English proof (translation)
-Establish `ex : ∃ f₁ : SInf F κ, Acts (evI F) S f f₁` using `⟨f₁, h⟩`. Rewrite using `[opI, dif_pos ex]`. Conclude with `(hU F κ f _ _).1 S ex.choose_spec h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem opI_eq (hU : ArchUniq) {S : ((κ → AF F) → ℂ) → (κ → AF F) → ℂ} {f f₁ : SInf F κ} (h : Acts (evI F) S f f₁) : opI S f = f₁ := by
   have ex : ∃ f₁ : SInf F κ, Acts (evI F) S f f₁ := ⟨f₁, h⟩
@@ -42,7 +42,7 @@ theorem opI_eq (hU : ArchUniq) {S : ((κ → AF F) → ℂ) → (κ → AF F) �
   exact (hU F κ f _ _).1 S ex.choose_spec h
 
 /- English proof (translation)
-Introduce `r hr` and use `by show S' (S _) = _ rw [h r hr] exact h' r ⟨hr.1, h r hr ▸ hS _ hr.2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem acts_comp {R : Type} [Zero R] {ev : AF F → R} {S S' : ((κ → AF F) → ℂ) → (κ → AF F) → ℂ} {φ φ₁ φ₂ : (κ → R) → ℂ}
     (hS : ∀ Φ ∈ schA F κ, S Φ ∈ schA F κ) (h : Acts ev S φ φ₁) (h' : Acts ev S' φ₁ φ₂) : Acts ev (fun Φ => S' (S Φ)) φ φ₂ := fun r hr => by
@@ -51,9 +51,9 @@ theorem acts_comp {R : Type} [Zero R] {ev : AF F → R} {S S' : ((κ → AF F) �
   exact h' r ⟨hr.1, h r hr ▸ hS _ hr.2⟩
 
 /- English proof (translation)
-Use `h (fun x => ∏ᶠ v, φ v fun i => evFin F v (x i)) ⟨fun x z hz => ?_, GlobalTheory.TensUniq.pure_mem_schA f φ hSB hstd⟩` and prove the remaining obligations. Use `finprod_congr fun v => congrArg _ (funext fun i => ?_)` and prove the remaining obligations. Use `congrFun (hz (idem F v) (evI_idem v)) i` as an intermediate fact. Establish `h2` using `congrArg (evFin F v) this`. Rewrite `h2` using `[Pi.smul_apply, smul_eq_mul, map_mul, evFin_idem_self, one_mul, Pi.zero_apply, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Pi.add_apply, map_add, h2, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pure_real {S : ((κ → AF F) → ℂ) → (κ → AF F) → ℂ} {f f₁ : SInf F κ} (h : Acts (evI F) S f f₁) (φ : ∀ v : Pl F, (κ → Fv F v) → ℂ)
     (hSB : ∀ v, φ v ∈ SB _) (hstd : ∀ᶠ v in cofinite, φ v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1) :
@@ -66,7 +66,7 @@ theorem pure_real {S : ((κ → AF F) → ℂ) → (κ → AF F) → ℂ} {f f�
   rw [Pi.add_apply, map_add, h2, add_zero]
 
 /- English proof (translation)
-Introduce `g _` and use `⟨g (fun i => (x i).2) • ((BoundedContinuousFunction.evalCLM ℂ fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (x i).1).comp (SchwartzMap.toBoundedContinuousFunctionCLM ℂ _ ℂ)), fun f => by show f _ * g _ = g _ * f _ ring⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem proj_adm (x : κ → AF F) : (LinearMap.proj x : ((κ → AF F) → ℂ) →ₗ[ℂ] ℂ) ∈ (adeleClass F).adm κ := fun g _ =>
   ⟨g (fun i => (x i).2) • ((BoundedContinuousFunction.evalCLM ℂ fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (x i).1).comp
@@ -75,7 +75,7 @@ theorem proj_adm (x : κ → AF F) : (LinearMap.proj x : ((κ → AF F) → ℂ)
     ring⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Use `show f _ * ∏ᶠ u, _ = 0`. Rewrite using `[finprod_eq_zero _ v (by rw [h]; rfl) (GlobalTheory.PureFactor.mulSupport_finite φ hstd x), mul_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pure_zero (f : SInf F κ) (φ : ∀ v : Pl F, (κ → Fv F v) → ℂ)
     (hstd : ∀ᶠ v in cofinite, φ v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1) (v : Pl F) (h : φ v = 0) : pure f φ = 0 := by
@@ -84,11 +84,11 @@ theorem pure_zero (f : SInf F κ) (φ : ∀ v : Pl F, (κ → Fv F v) → ℂ)
   rw [finprod_eq_zero _ v (by rw [h]; rfl) (GlobalTheory.PureFactor.mulSupport_finite φ hstd x), mul_zero]
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.VacBridge.rho_acts_locCo co ψ v _ (at_idem v w) φ`. Establish `e : GlobalTheory.LatVac.locCo co v (idem F v • w) = PositivityTheory.KCo.locW v (co.e w)`. Use `Prod.ext (funext fun i => ?_) (funext fun i => ?_)` and prove the remaining obligations. Use `show evFin F v ((co.e (idem F v • w)).1 i) = evFin F v ((co.e w).1 i)`. Rewrite using `[map_smul, Prod.smul_fst, Pi.smul_apply, smul_eq_mul, map_mul, evFin_idem_self, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show evFin F v ((co.e (idem F v • w)).2 i) = evFin F v ((co.e w).2 i)`. Rewrite using `[map_smul, Prod.smul_snd, Pi.smul_apply, smul_eq_mul, map_mul, evFin_idem_self, one_mul]`. Rewrite `h` using `[e]`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`.
+Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using `only [schr, invOf_eq_inv]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem acts_rho_fin {W : Type} [AddCommGroup W] [Module (AF F) W] {B : W → W → AF F} (co : Darboux B κ) (ψ : AddChar (AF F) ℂ)
     (v : Pl F) (w : W) (φ : (κ → Fv F v) → ℂ) :
@@ -107,21 +107,19 @@ theorem acts_rho_fin {W : Type} [AddCommGroup W] [Module (AF F) W] {B : W → W 
   rfl
 
 /- English proof (translation)
-Introduce `r hr`. Use function extensionality and compare the values at `x`. Establish `hat : ∀ y : κ → AF F, At (evI F) (realAd F 1 • y)` using `fun y => at_real y`. Establish `hev : ∀ a : AF F, evI F (realAd F 1 * a) = evI F a` using `fun a => by rw [evI_mul, evI_real, one_mul]`. Use `show ψ (x ⬝ᵥ (co.e (realAd F 1 • w)).2 + ⅟(2 : AF F) * ((co.e (realAd F 1 • w)).1 ⬝ᵥ (co.e (realAd F 1 • w)).2)) * (f (fun i => evI F ((x + (co.e (realAd F 1 • w)).1) i)) * r (x + (co.e (realAd F 1 • w)).1)) = g _ * r x`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul, Prod.smul_fst, Prod.smul_snd, hr.1 x _ (hat _), hg, ← mul_assoc]`. Use `congr 1`. Establish `e : x ⬝ᵥ (realAd F 1 • (co.e w).2) + ⅟(2 : AF F) * ((realAd F 1 • (co.e w).1) ⬝ᵥ (realAd F 1 • (co.e w).2)) = realAd F 1 • (x ⬝ᵥ (co.e w).2 + ⅟(2 : AF F) * ((co.e w).1 ⬝ᵥ (co.e w).2))`. Simplify using `only [dotProduct_smul, smul_dotProduct, smul_eq_mul]`. Take the linear combination `(⅟(2 : AF F) * ((co.e w).1 ⬝ᵥ (co.e w).2)) * (real_mul_self (F := F))`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, hψ.2.2 _ (at_real _), smul_eq_mul, hev]`. Use `congr 1`. Use `congr 2`. Establish `h2 : evI F (⅟(2 : AF F)) = algebraMap ℝ _ (1 / 2 : ℝ)`. Establish `h3 : evI F (⅟(2 : AF F)) * 2 = 1`.
+Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (evI F) (invOf_mul_self (2 : AF F))` as an intermediate fact. Rewrite `this` using `[evI_mul, evI_one]`. Rewrite using `[← this]`. Use `congr 1`. Conclude with `(map_ofNat (evIH F) 2).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : algebraMap ℝ (mixedEmbedding.mixedSpace F) (1 / 2 : ℝ) * 2 = 1`. Rewrite using `[← map_ofNat (algebraMap ℝ (mixedEmbedding.mixedSpace F)) 2, ← map_mul]`. Evaluate the numerical expressions. Combine the equalities or inequalities in the displayed calculation. Establish `hd : ∀ a b : κ → AF F, evI F (a ⬝ᵥ b) = (fun i => evI F (a i)) ⬝ᵥ fun i => evI F (b i)` using `fun a b => by show evIH F _ = _`.
+Evaluate the numerical expressions. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using `only [dotProduct, map_sum, map_mul]`. Both sides reduce to the same expression. Rewrite using `[evI_add, evI_mul, h2, map_add, ← Algebra.smul_def, map_smul, hd, hd]`. Simplify using `only [PositivityTheory.Mix.beta, smul_eq_mul]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[one_div, inv_mul_eq_div]`. Both sides reduce to the same expression. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.add_apply, evI_add, Pi.smul_apply, smul_eq_mul, hev]`.
-
-Both sides reduce to the same expression.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem acts_rho_inf {W : Type} [AddCommGroup W] [Module (AF F) W] {B : W → W → AF F} (co : Darboux B κ) {ψ : AddChar (AF F) ℂ}
     (hψ : IsStd ψ) (w : W) {f g : SInf F κ} (hg : PositivityTheory.Mix.IsTr (co.e w) f g) : Acts (evI F) (co.rho ψ (realAd F 1 • w)) f g := by
@@ -169,7 +167,7 @@ end Op
 variable {n d : ℕ} {X : Spc F E n} {W : Spc F E d}
 
 /- English proof (translation)
-Take `⟨d', -, h, -⟩` from `hP.weil.2.1`. Conclude with `h.pres g`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem om_pres {B : Base F E} {M : Model σ X W} {χX χW om r s r' s'} (hP : IsPair B M χX χW om r s r' s') (g : UA σ X.J) :
     ∀ Φ ∈ schA F _, om (g, 1) Φ ∈ schA F _ := by
@@ -177,23 +175,21 @@ theorem om_pres {B : Base F E} {M : Model σ X W} {χX χW om r s r' s'} (hP : I
   exact h.pres g
 
 /- English proof (translation)
-Establish `one : ∀ v, (1 : UA σ W.J) ∈ UAt σ W (evFin F v)` using `fun v u _ => by show u • (mat (1 : UA σ W.J) - 1) = 0`. Rewrite using `[show mat (1 : UA σ W.J) = 1 from rfl, sub_self, smul_zero]`. Establish `ex` using `fun v => (hA F E σ B n d X W M χX χW om r s r' s' hP v).1 _ (partU_idem_mem v k) 1 (one v) (φ v) (hSB v)`. Use `choose φ₁ h₁ hu using ex`. Establish `hvac : ∀ v ∉ T, φ₁ v = M.vac v` using `fun v hv => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hu v _ ⟨(hP.good.vac v).1, ?_⟩).symm` and prove the remaining obligations. Rewrite using `[hT v hv]`. Conclude with `hV F E σ B n d X W M χX χW om r s r' s' hP K hK v (fun w hw => ⟨u1 w fun h => hv (hw ▸ h), u2 w fun h => hv (hw ▸ h)⟩) _ (partU_mem_kAt hK hk v)`. Establish `std : ∀ ξ : ∀ v : Pl F, Fl F v n d, (∀ v ∉ T, ξ v = M.vac v) → ∀ᶠ v in cofinite, ξ v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1` using `fun ξ h => by filter_upwards [hP.good.std, T.eventually_cofinite_notMem] with v a b using (h v b).trans a`. Use `⟨φ₁, h₁, hvac, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `step : ∀ S : Finset (Pl F), om (partU (aS_mul_self S) k, 1) (pure f φ) = pure f₁ fun v => if v ∈ S then φ₁ v else φ v`. Introduce `S`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Establish `: partU (aS_mul_self ∅) k = partU real_mul_self k` using `mat_inj (by rw [mat_partU, mat_partU, aS, Finset.sum_empty, add_zero])`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, pure_real h1 φ hSB (std φ hT)]`. Simplify using the standard rewrite rules. Consider the case `insert v S hv ih`. Establish `e : partU (aS_mul_self (insert v S)) k = partU (idem_mul_self v) k * partU (aS_mul_self S) k`. Rewrite using `[← partU_add (idem_mul_self v) (aS_mul_self S) (idem_mul_aS hv) (aS_insert hv ▸ aS_mul_self (insert v S))]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mat_inj (by rw [mat_partU, mat_partU, aS_insert hv])`. Establish `e2 : ((partU (idem_mul_self v) k * partU (aS_mul_self S) k, 1) : UA σ X.J × UA σ W.J) = (partU (idem_mul_self v) k, 1) * (partU (aS_mul_self S) k, 1)` using `by simp`. Rewrite using `[e, e2, map_mul, Module.End.mul_apply, ih]`. Use `(pureAct F _ v (om (partU (idem_mul_self v) k, 1)) f₁ (fun v => if v ∈ S then φ₁ v else φ v) (fun u => by split_ifs; exacts [(h₁ u).1, hSB u]) (std _ fun u hu => by split_ifs; exacts [hvac u hu, hT u hu])).2.2 (φ₁ v) (by` as an intermediate fact. Simplify using `only [if_neg hv]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `(h₁ v).2)`. Rewrite using `[this]`. Use `congr 1`. Use function extensionality and compare the values at `u`. Break down `eq_or_ne u v with rfl | h` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using the standard rewrite rules. Rewrite using `[Function.update_of_ne h]`. Simplify using `[h]`. Use function extensionality and compare the values at `x`. Establish `c` using `(hP.weil.2.2 _ (proj_adm x) _ (GlobalTheory.TensUniq.pure_mem_schA f φ hSB (std φ hT))).continuousAt (x := (k, 1))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `t` using `c.tendsto.comp ((tendsto_partU k).prodMk_nhds tendsto_const_nhds)`. Use `tendsto_nhds_unique t (tendsto_const_nhds.congr' ?_)` and prove the remaining obligations. Use `filter_upwards [eventually_ge_atTop T] with S hS`. Use `show _ = om (partU (aS_mul_self S) k, 1) (pure f φ) x`. Rewrite using `[step]`.
-
-Use `congr 2`. Use function extensionality and compare the values at `v`. Use `split_ifs with h`. Both sides reduce to the same expression. Rewrite using `[hvac v fun h' => h (hS h'), hT v fun h' => h (hS h')]`.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem om_pure (hA : ActsEx) (hV : VacFixX) {B : Base F E} {M : Model σ X W} {χX χW om r s r' s'} (hP : IsPair B M χX χW om r s r' s')
     {K : Subgroup (UA σ X.J)} (hK : IsStab B K) (T : Finset (Pl F)) (u1 : UnrOff χX (T : Set (Pl F))) (u2 : UnrOff χW (T : Set (Pl F)))
@@ -258,7 +254,7 @@ def VacShift : Prop :=
     ∀ v : Pl F, ∀ l, ev v (opF v (M.co.rho B.ψ (idem F v • u l)) (M.vac v)) = if idem F v • u l ∈ latAtV X W v then M₁.vac v else 0
 
 /- English proof (translation)
-Establish `e0 : a * (1 - a) = 0` using `by rw [mul_sub, mul_one, ha, sub_self]`. Establish `e1 : a • (l' : AE F E) = a • (l : AE F E)` using `by rw [hl, smul_add, smul_smul, smul_smul, ha, e0, zero_smul, add_zero]`. Break down `h.ev with ⟨-, rfl⟩ | ⟨-, rfl⟩` into its components or cases. Rewrite using `[shiftA, shiftA, ← smul_assoc, ← smul_assoc, e1]`. Rewrite using `[shiftB, shiftB, ← smul_assoc, ← smul_assoc, ← map_smul, ← map_smul, e1]`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem part_shift {B : Base F E} {n₁ d₁ : ℕ} {X₁ : Spc F E n₁} {W₁ : Spc F E d₁} {M : Model σ X W} {M₁ : Model σ X₁ W₁} {H H' e u}
     (h : Cfg B M M₁ H H' e u) {a : AF F} (ha : a * a = a) {l l' : (AE F E)ˣ} (hl : IsPart a l l') : a • u l' = a • u l := by
@@ -269,21 +265,17 @@ theorem part_shift {B : Base F E} {n₁ d₁ : ℕ} {X₁ : Spc F E n₁} {W₁ 
   · rw [shiftB, shiftB, ← smul_assoc, ← smul_assoc, ← map_smul, ← map_smul, e1]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d n₁ d₁ X W X₁ W₁ M M₁ H H' e u ei ev hC hE K hK χX χW om r s r' s' hP T u1 u2 f φ hSB hT k hk l ki kf li lf hki hkf hli hlf`. Take `rfl` from `hki.eq real_mul_self`. Establish `hkf' : ∀ v, kf v = partU (idem_mul_self v) k` using `fun v => (hkf v).eq _`. Establish `one : (1 : UA σ W.J) ∈ UAt σ W (evI F)` using `fun u _ => by show u • (mat (1 : UA σ W.J) - 1) = 0`. Rewrite using `[show mat (1 : UA σ W.J) = 1 from rfl, sub_self, smul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨Ti, hTi, -⟩` from `hO F E σ B n d X W M χX χW om r s r' s' hP _ (partU_real_mem k) 1 one`. Take `⟨φ₁, h₁, hvac, eq⟩` from `om_pure hA hV hP hK T u1 u2 f (Ti f) φ hSB hT hk (hTi.2 f)`. Establish `std : ∀ᶠ v in cofinite, φ₁ v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1` using `by filter_upwards [hP.good.std, T.eventually_cofinite_notMem] with v a b using (hvac v b).trans a`. Take `⟨⟨g, hg⟩, hp⟩` from `hPS F B.ψ hC.base.std _ (M.co.e (u l)) (Ti f)`. Take `⟨std2, eq2⟩` from `hp φ₁ std`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `set φ₂ : ∀ v : Pl F, Fl F v n d := fun v => schr (PositivityTheory.KCo.psiV B.ψ v) (PositivityTheory.KCo.locW v (M.co.e (u l))) (φ₁ v) with hφ₂`. Establish `a2 : ∀ v, Acts (evFin F v) (M.co.rho B.ψ (idem F v • u l)) (φ₁ v) (φ₂ v)` using `fun v => acts_rho_fin M.co B.ψ v (u l) (φ₁ v)`. Establish `sb2 : ∀ v, φ₂ v ∈ SB _` using `fun v => by`. Take `⟨ξ, hξ, -⟩` from `(hA F E σ B n d X W M χX χW om r s r' s' hP v).2.1 _ (at_idem v (u l)) (φ₁ v) (h₁ v).1`. Rewrite using `[GlobalTheory.TensUniq.eq_of_tens_eq v (φ₁ v) (φ₂ v) ξ (h₁ v).1 fun r hr => (a2 v r hr).symm.trans (hξ.2 r hr)]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hξ.1`. Establish `ev2 : ∀ᶠ v in cofinite, φ₂ v = M.vac v` using `by filter_upwards [hP.good.std, std2] with v a b using b.trans a.symm`. Establish `e3 : e (M.co.rho B.ψ (u l) (om (k, 1) (pure f φ))) = pure (ei g) fun v => ev v (φ₂ v)`. Rewrite using `[eq, ← hE.pure g φ₂ sb2 ev2]`. Conclude with `congrArg e (eq2 g hg)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `off : ∀ v ∉ T, ev v (φ₂ v) = if idem F v • u l ∈ latAtV X W v then M₁.vac v else 0` using `fun v hv => by`. Rewrite using `[← hS F E σ B n d n₁ d₁ X W X₁ W₁ M M₁ H H' e u ei ev hC hE v l, opF_eq (hP.good.vac v).1 (sb2 v) (hvac v hv ▸ a2 v)]`. Rewrite using `[e3]`. Use `split_ifs with hall`. Rewrite using `[one_smul, part_shift hC real_mul_self hli, opI_eq hU (acts_comp (om_pres hP _) (hTi.2 f) (acts_rho_inf M.co hC.base.std (u l) hg))]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `v`. Use `split_ifs with hv`. Rewrite using `[part_shift hC (idem_mul_self v) (hlf v), hkf' v, opF_eq (hSB v) (sb2 v) (acts_comp (om_pres hP _) (h₁ v).2 (a2 v))]`. Rewrite using `[off v hv, if_pos (hall v hv)]`.
-
-Use `push Not at hall`. Take `⟨v, hv, hn⟩` from `hall`. Rewrite using `[zero_smul]`. Use `pure_zero _ _ ?_ v (by rw [off v hv, if_neg hn])` and prove the remaining obligations. Use `filter_upwards [ev2, hC.good₁.std] with t a b`.
-
-Rewrite using `[a, (hE.vac t).1, b]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pureFac_of (hA : ActsEx) (hO : ArchOp) (hU : ArchUniq) (hV : VacFixX) (hS : VacShift) (hPS : PositivityTheory.Mix.PureSt) : PureFac := by
   intro F E _ _ _ _ _ σ B n d n₁ d₁ X W X₁ W₁ M M₁ H H' e u ei ev hC hE K hK χX χW om r s r' s' hP T u1 u2 f φ hSB hT k hk l ki kf li lf

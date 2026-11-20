@@ -25,13 +25,13 @@ def orbEquiv : Fin (nOrb z) ≃ G ⧸ Subgroup.zpowers z := (Finite.equivFin _).
 def orbRep (v : Fin (nOrb z)) : G := OrbSec.sec z (Quotient.out (orbEquiv z v))
 
 /- English proof (translation)
-The claim follows from `(QuotientGroup.eq.2 (OrbSec.sec_mem z _)).trans (QuotientGroup.out_eq' _)`.
+A detailed English derivation is pending.
 -/
 theorem orbRep_mk (v : Fin (nOrb z)) : (QuotientGroup.mk (orbRep z v) : G ⧸ Subgroup.zpowers z) = orbEquiv z v :=
   (QuotientGroup.eq.2 (OrbSec.sec_mem z _)).trans (QuotientGroup.out_eq' _)
 
 /- English proof (translation)
-Unfold `orbRep`. Apply `OrbSec.sec_const` to reduce the goal to its premises. Apply `QuotientGroup.eq.1` to reduce the goal to its premises. Rewrite using `[QuotientGroup.out_eq', h]`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem orbRep_of_mk (v : Fin (nOrb z)) (g : G) (h : (QuotientGroup.mk g : G ⧸ Subgroup.zpowers z) = orbEquiv z v) :
     orbRep z v = OrbSec.sec z g := by
@@ -41,15 +41,15 @@ theorem orbRep_of_mk (v : Fin (nOrb z)) (g : G) (h : (QuotientGroup.mk g : G ⧸
   rw [QuotientGroup.out_eq', h]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, s⟩ ⟨v', s'⟩ h`. Simplify using `only at h`. Establish `hv : v = v'`. Apply `(orbEquiv z).injective` to reduce the goal to its premises.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← orbRep_mk, ← orbRep_mk, QuotientGroup.eq]`. Establish `: (orbRep z v)⁻¹ * orbRep z v' = z ^ (s : ℕ) * (z ^ (s' : ℕ))⁻¹`. Rewrite using `[eq_mul_inv_iff_mul_eq, mul_assoc, ← h, inv_mul_cancel_left]`. Rewrite using `[this]`. Conclude with `Subgroup.mul_mem _ (Subgroup.npow_mem_zpowers z _) (Subgroup.inv_mem _ (Subgroup.npow_mem_zpowers z _))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Substitute `hv` using the available equality. Establish `hs : z ^ (s : ℕ) = z ^ (s' : ℕ)` using `mul_left_cancel h`. Establish `: (s : ℕ) = s'` using `pow_injOn_Iio_orderOf (Set.mem_Iio.2 s.2) (Set.mem_Iio.2 s'.2) hs`. Rewrite using `[Fin.ext this]`. Introduce `g classical set v := (orbEquiv z).symm (QuotientGroup.mk g) with hv`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hmem : (orbRep z v)⁻¹ * g ∈ Subgroup.zpowers z`. Rewrite using `[← QuotientGroup.eq, orbRep_mk, hv, Equiv.apply_symm_apply]`. Rewrite `hmem` using `[mem_zpowers_iff_mem_range_orderOf, Finset.mem_image]`. Take `⟨k, hk, hkz⟩` from `hmem`. Use `⟨⟨v, ⟨k, Finset.mem_range.1 hk⟩⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only`. Rewrite using `[hkz, mul_inv_cancel_left]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem posG_bij : Function.Bijective
     (fun x : (Σ _ : Fin (nOrb z), Fin (orderOf z)) => orbRep z x.1 * z ^ (x.2 : ℕ)) := by
@@ -86,7 +86,7 @@ Both sides reduce to the same expression.
 theorem posG_apply (v : Fin (nOrb z)) (s : Fin (orderOf z)) : posG z ⟨v, s⟩ = orbRep z v * z ^ (s : ℕ) := rfl
 
 /- English proof (translation)
-Rewrite using `[posG_apply, posG_apply, mul_assoc, ← pow_succ]`. Use `congr 1`. Simplify using `only [posAdd]`. Conclude with `pow_mod_orderOf z _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem posG_step (v : Fin (nOrb z)) (s : Fin (orderOf z)) : posG z ⟨v, posAdd s 1⟩ = posG z ⟨v, s⟩ * z := by
   rw [posG_apply, posG_apply, mul_assoc, ← pow_succ]
@@ -95,7 +95,7 @@ theorem posG_step (v : Fin (nOrb z)) (s : Fin (orderOf z)) : posG z ⟨v, posAdd
   exact pow_mod_orderOf z _
 
 /- English proof (translation)
-Unfold `nOrb`. Rewrite using `[← Nat.card_zpowers, mul_comm]`. Conclude with `(Subgroup.zpowers z).card_mul_index`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nOrb_mul_order : nOrb z * orderOf z = Nat.card G := by
   unfold nOrb
@@ -107,7 +107,7 @@ end Generic
 open Formalism.FrobeniusOrbits Formalism.BasicNotions
 
 /- English proof (translation)
-Proceed by induction on `i with`. Consider the case `zero => simp [Formalism.HC.Frame.iota_zero]`. Consider the case `succ n ih => rw [succ_nsmul, Formalism.HC.Frame.iota_add, ih]`. Conclude with `(pow_succ _ _).symm`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem iotaH_nsmul (φ : Formalism.HC.Frame) (h : φ.A) (i : ℕ) : φ.iota (i • h) = φ.iota h ^ i := by
   induction i with
@@ -115,7 +115,7 @@ theorem iotaH_nsmul (φ : Formalism.HC.Frame) (h : φ.A) (i : ℕ) : φ.iota (i 
   | succ n ih => rw [succ_nsmul, Formalism.HC.Frame.iota_add, ih]; exact (pow_succ _ _).symm
 
 /- English proof (translation)
-Proceed by induction on `i with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [succ_nsmul, ← add_assoc, Formalism.MainNotions.Inhab.bsC_step, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem bsC_add_nsmul {N : ℕ} [NeZero N] (h t : ZMod N) (i : ℕ) :
     Formalism.MainNotions.Inhab.bsC h (t + i • h) = Formalism.MainNotions.Inhab.bsC h t := by
@@ -124,7 +124,7 @@ theorem bsC_add_nsmul {N : ℕ} [NeZero N] (h t : ZMod N) (i : ℕ) :
   | succ n ih => rw [succ_nsmul, ← add_assoc, Formalism.MainNotions.Inhab.bsC_step, ih]
 
 /- English proof (translation)
-Proceed by induction on `i with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [succ_nsmul, ← add_assoc, Formalism.MainNotions.Inhab.bsA_step, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem bsA_add_nsmul {φ : Formalism.HC.Frame} (h t : φ.A) (i : ℕ) :
     Formalism.MainNotions.Inhab.bsA h (t + i • h) = Formalism.MainNotions.Inhab.bsA h t := by
@@ -137,9 +137,9 @@ def secPsi (φ : Formalism.HC.Frame) (z g : φ.Psi) : φ.Psi :=
     (Formalism.HC.Frame.mem_Psi_iff _).2 ((Formalism.HC.Frame.mem_Psi_iff _).1 g.2)⟩
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `Formalism.MainNotions.Inhab.bsA_orb (φ.iotaInv (z : φ.GG).2) (φ.iotaInv (g : φ.GG).2)`. Use `⟨i, Subtype.ext (Prod.ext ?_ ?_)⟩` and prove the remaining obligations. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_pow, Prod.fst_mul, Prod.pow_fst, hz, one_pow, mul_one]`. Both sides reduce to the same expression. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_pow, Prod.snd_mul, Prod.pow_snd] show φ.iota _ * (z : φ.GG).2 ^ i = _ conv_lhs => rw [← φ.iota_iotaInv (z : φ.GG).2]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Rewrite using `[Formalism.HC.Frame.iotaInv_iota, ← iotaH_nsmul, ← Formalism.HC.Frame.iota_add, hi, Formalism.HC.Frame.iota_iotaInv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem secPsi_mul_pow (φ : Formalism.HC.Frame) (z g : φ.Psi) (hz : (z : φ.GG).1 = 1) : ∃ i : ℕ, secPsi φ z g * z ^ i = g := by
   obtain ⟨i, hi⟩ := Formalism.MainNotions.Inhab.bsA_orb (φ.iotaInv (z : φ.GG).2) (φ.iotaInv (g : φ.GG).2)
@@ -152,9 +152,9 @@ theorem secPsi_mul_pow (φ : Formalism.HC.Frame) (z g : φ.Psi) (hz : (z : φ.GG
     rw [Formalism.HC.Frame.iotaInv_iota, ← iotaH_nsmul, ← Formalism.HC.Frame.iota_add, hi, Formalism.HC.Frame.iota_iotaInv]
 
 /- English proof (translation)
-Establish `h1 : ((g * z ^ i : φ.Psi) : φ.GG).1 = (g : φ.GG).1`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_pow, Prod.fst_mul, Prod.pow_fst, hz, one_pow, mul_one]`. Establish `h2 : φ.iotaInv ((g * z ^ i : φ.Psi) : φ.GG).2 = φ.iotaInv (g : φ.GG).2 + i • φ.iotaInv (z : φ.GG).2`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_pow, Prod.snd_mul, Prod.pow_snd]`. Use `conv_lhs => rw [← φ.iota_iotaInv (g : φ.GG).2, ← φ.iota_iotaInv (z : φ.GG).2, ← iotaH_nsmul, ← Formalism.HC.Frame.iota_add]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Formalism.HC.Frame.iotaInv_iota]`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (_, _) = (_, _)`. Rewrite using `[h1, h2, bsA_add_nsmul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem secPsi_const (φ : Formalism.HC.Frame) (z g : φ.Psi) (hz : (z : φ.GG).1 = 1) (i : ℕ) : secPsi φ z (g * z ^ i) = secPsi φ z g := by
   have h1 : ((g * z ^ i : φ.Psi) : φ.GG).1 = (g : φ.GG).1 := by
@@ -193,13 +193,13 @@ instance orbSecPsi (φ : Formalism.HC.Frame) : OrbSec φ.Psi where
 def zPsi (φ : Formalism.HC.Frame) (h : φ.MA) : φ.Psi := ⟨((1, 1), h), by rw [Formalism.HC.Frame.mem_Psi_iff]⟩
 
 /- English proof (translation)
-Simplify using `[zPsi, Formalism.HC.Frame.cc, c0]`.
+Simplify using the standard rewrite rules.
 -/
 theorem zPsi_eq (φ : Formalism.HC.Frame) (h : φ.MA) : ((zPsi φ h : φ.Psi) : φ.GG) = ((c0, h) : φ.GG) * φ.cc := by
   simp [zPsi, Formalism.HC.Frame.cc, c0]
 
 /- English proof (translation)
-Rewrite using `[← Subgroup.orderOf_coe]`. Establish `: ((zPsi φ h : φ.Psi) : φ.GG) = MonoidHom.inr G0 φ.MA h` using `rfl`. Rewrite using `[this]`. Conclude with `orderOf_injective _ (fun a b hab => (Prod.ext_iff.1 hab).2) h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orderOf_zPsi (φ : Formalism.HC.Frame) (h : φ.MA) : orderOf (zPsi φ h) = orderOf h := by
   rw [← Subgroup.orderOf_coe]

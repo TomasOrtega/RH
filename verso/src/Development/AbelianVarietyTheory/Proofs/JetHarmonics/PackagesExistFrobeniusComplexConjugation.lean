@@ -23,17 +23,15 @@ noncomputable def gaC (N : NumDatum) (Dw : Datum H) (pl : RPl N.R → (E →+* �
   gap (Dw.mult (tauC N pl z s)) fun i => a (tauC N pl z s, i)
 
 /- English proof (translation)
-Introduce `hstar N j pl a hj1 hjm hP hp hq hdom la h2 _ _ hM _ T io e hover y hy C3 nW ν hν hC`. Take `⟨C, _, _, V, ι, hVl, hι, hac, hcpl, hla, hunit, hconv⟩` from `GlobalTheory.PlaceClosedField.exists_closed_field_over_place E H Dw lv Xo c la T io e hover`. Take `⟨Y, hY⟩` from `GlobalTheory.ChartBaseChange.exists_baseChange E H Dw lv Xo c T io y C3 C V ι hι hac hcpl (hVl ▸ (fun h => h2 (h ▸ N.H.two_mem_small) : resCharOf la ≠ 2)) (GlobalTheory.QuadTrace.cmHost_idempotent_trace_eq_one E H hstar) lv.M (hunit _ hM)`. Take `⟨hA, hS⟩` from `GlobalTheory.LabSelf.arithS_tauC E H lv c N pl hP la T io C V ι hι hVl hla (hVl ▸ hC) (N.R.k - 1) j (N.R.m - j)`. Establish `hmk` using `N.R.m_add_three_le_k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hp' : Dw.p = N.R.k + j - 1` using `hp`. Establish `hq' : Dw.q = N.R.m - j` using `hq`. Establish `hpsi : ∀ z, InPsi H (pl z)` using `fun z => (hP.psi _).2 ⟨z, rfl⟩`. Establish `hrk : (⟨tauC N pl, N.R.k - 1, j, N.R.m - j⟩ : LabS E (RPl N.R)).RankOK Dw`. Introduce `z`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h10 : ¬ (1 : ZMod 2) = 0` using `by decide`. Establish `t0 : tauC N pl z 0 = pl z` using `if_pos rfl`. Establish `t1 : tauC N pl z 1 = ComplexEmbedding.conjugate (pl z)` using `if_neg h10`. Establish `m0 : Dw.mult (pl z) = Dw.p` using `if_pos (hpsi z)`. Establish `m1 : Dw.mult (ComplexEmbedding.conjugate (pl z)) = Dw.q` using `if_neg (GlobalTheory.LabSelf.not_inPsi_conj H (hpsi z))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show Dw.mult (tauC N pl z 0) = N.R.k - 1 + j`. Rewrite using `[t0, m0]`. Use linear arithmetic over natural numbers and integers. Use `show Dw.mult (tauC N pl z 1) = N.R.m - j`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[t1, m1, hq']`. Take `⟨I, J, fI, fJ, X, F, hX, hval⟩` from `GlobalTheory.T.rowData_supplied_at_selfConjugate_places hUp E H Dw lv Xo c hstar T io y C3 C V ι hι lv.M Y hY hy (RPl N.R) ⟨tauC N pl, N.R.k - 1, j, N.R.m - j⟩ hA hS hrk (by show N.R.m - j < N.R.k - 1; omega) a hdom nW ν (hconv y C3 lv.M a nW ν hν)`. Use `⟨⟨hA.inj, hS⟩, { C := C, V := V, hVl := hVl, I := I, J := J, fI := fI, fJ := fJ, X := X, F := F, hn := ?_ }, fun z => (hX z).2.2.1, fun z => (hX z).2.2.2, hval⟩` and prove the remaining obligations. Introduce `z`. Use `⟨(hX z).1, (hX z).2.1.trans ?_⟩` and prove the remaining obligations.
-
-Use `show j + (N.R.m - j) = N.R.m`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem exists_rowFam (hUp : ∀ (p : ℕ) [Fact p.Prime], ReciprocityTheory.ChartRestriction.G.Pdiv.ChartF.UpFSt p)
     {Dw : Datum H} {lv : Level H} (Xo : Moduli Dw lv) (c : Coeff lv) [StarRing (𝓞 E)] :
@@ -77,13 +75,13 @@ theorem exists_rowFam (hUp : ∀ (p : ℕ) [Fact p.Prime], ReciprocityTheory.Cha
   omega
 
 /- English proof (translation)
-Establish `e : (n : ℝ) * ga 0 n = ∑ s : ZMod 2, ∑ k ∈ Finset.Icc 1 K, if s = 0 ∧ k = n then (k : ℝ) * ga s k else 0`. Rewrite using `[Finset.sum_eq_single 0, Finset.sum_eq_single n]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[hb]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_Icc.2 ⟨h1, hK⟩) h`. Introduce `b _ hb`. Simplify using `[hb]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Use `push_cast`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> simp`.
+A detailed English derivation is pending.
 -/
 private theorem rest_add (n K : ℕ) (h1 : 1 ≤ n) (hK : n ≤ K) (ga : ZMod 2 → ℕ → ℕ) :
     ∑ s : ZMod 2, ∑ k ∈ Finset.Icc 1 K, (if s = 0 ∧ k = n then (0 : ℝ) else (k : ℝ) * ga s k) =
@@ -104,31 +102,29 @@ private theorem rest_add (n K : ℕ) (h1 : 1 ≤ n) (hK : n ≤ K) (ga : ZMod 2 
   split_ifs <;> simp
 
 /- English proof (translation)
-Introduce `hUp E _ _ _ H Dw lv Xo c _`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `hstar N j pl a hj1 hjm hP hp hq hdom la h2 hq2 hd hM hin T io e hover y hy C3 nW ν hν hC T0 θ0 C1 hdeg hrows`. Take `⟨hbij, R, halt, hrk, hval⟩` from `exists_rowFam hUp Xo c hstar N j pl a hj1 hjm hP hp hq hdom la h2 hq2 hd hM hin T io e hover y hy C3 nW ν hν hC`. Establish `hmk` using `N.R.m_add_three_le_k`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hp' : Dw.p = N.R.k + j - 1` using `hp`. Establish `hq' : Dw.q = N.R.m - j` using `hq`. Establish `hr : N.R.r = N.R.k + N.R.m - 1` using `rfl`. Establish `hpsi : ∀ z, InPsi H (pl z)` using `fun z => (hP.psi _).2 ⟨z, rfl⟩`. Establish `hmul : ∀ τ, Dw.mult τ ≤ N.R.r` using `fun τ => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `unfold Datum.mult; split_ifs <;> omega`. Establish `hgs` using `fun τ => gap_sums (Dw.mult τ) (fun i => a (τ, i)) (fun i i' hi hi' => hdom τ ⟨i, lt_of_le_of_lt hi hi'⟩ ⟨i', hi'⟩ hi)`. Establish `hmain : ∀ z, gaC N Dw pl a z 0 (N.R.k - 1) = gapW N pl a z`. Introduce `z`. Establish `t0 : tauC N pl z 0 = pl z` using `if_pos rfl`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hm : Dw.mult (pl z) = Dw.p` using `if_pos (hpsi _)`. Unfold `gaC`. Rewrite using `[t0, hm]`. Unfold `gap gapW`. Rewrite using `[if_pos (by omega), if_pos (by omega)]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hDF : DF Dw a = ∑ z, ∑ s : ZMod 2, ∑ k ∈ Finset.Icc 1 N.R.r, k * gaC N Dw pl a z s k`. Unfold `DF`. Rewrite using `[← hbij.sum_comp (fun τ => ∑ i : Fin (Dw.mult τ), a (τ, i)), Fintype.sum_prod_type]`. Conclude with `Finset.sum_congr rfl fun z _ => Finset.sum_congr rfl fun s _ => ((hgs _).2 _ (hmul _)).2.symm`.
+Both sides reduce to the same expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨{ R := R, alt := halt, gaC := gaC N Dw pl a, W := gapW N pl a, nW := nW, T := T0, θ0 := θ0, rest := restOf N Dw pl a, ν := ν, supp := ?_, main := hmain, rest_eq := ?_, what₂ := hrows, deg := hdeg, val := hval }, rfl, rfl⟩` and prove the remaining obligations. Introduce `z s k hk`. Rewrite using `[hrk]`. Conclude with `(hgs _).1 k hk`. Use `show restOf N Dw pl a = ∑ z : RPl N.R, ∑ s : ZMod 2, ∑ k ∈ Finset.Icc 1 N.R.r, (if s = 0 ∧ k = N.R.k - 1 then (0 : ℝ) else (k : ℝ) * gaC N Dw pl a z s k)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [rest_add (N.R.k - 1) N.R.r (by omega) (by omega), hmain]`. Unfold `restOf`. Rewrite using `[hDF, Finset.sum_sub_distrib, ← Finset.mul_sum]`. Move the coercions through the operations in `[Nat.cast_sub (show 1 ≤ N.R.k by omega)]`. Both sides reduce to the same expression.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `hstar N j pl a hj1 hjm hP hp hq hdom la h2 hq2 hd hM hin T io e hover y hy C3 nW ν hν hC hw s hfirst hrows`. Take `⟨-, R, -, hrk, hval⟩` from `exists_rowFam hUp Xo c hstar N j pl a hj1 hjm hP hp hq hdom la h2 hq2 hd hM hin T io e hover y hy C3 nW ν hν hC`. Establish `hmk` using `N.R.m_add_three_le_k`. Establish `hp' : Dw.p = N.R.k + j - 1` using `hp`. Establish `hq' : Dw.q = N.R.m - j` using `hq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hr : N.R.r = N.R.k + N.R.m - 1` using `rfl`. Establish `hmul : ∀ τ, Dw.mult τ ≤ N.R.r` using `fun τ => by`. Apply the tactic sequence `unfold Datum.mult; split_ifs <;> omega`. Establish `hgs` using `fun τ => gap_sums (Dw.mult τ) (fun i => a (τ, i)) (fun i i' hi hi' => hdom τ ⟨i, lt_of_le_of_lt hi hi'⟩ ⟨i', hi'⟩ hi)`. Establish `hcard : Fintype.card (RPl N.R) = N.R.f`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[RPl, Ranks.f, Ranks.n, ZMod.card, N.R.card_A]`. Use `⟨{ R := R, gaC := gaC N Dw pl a, K := N.R.r, s := s, nW := nW, T := 1, ν := ν, T_one := le_rfl, w_nonneg := hw, supp := ?_, first := ?_, what₂ := ?_, val := hval }, rfl⟩` and prove the remaining obligations. Introduce `z σ k hk`. Rewrite using `[hrk]`. Establish `h` using `(hgs _).1 k hk`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `⟨h.1, h.2, h.2.trans (hmul _)⟩`. Introduce `z σ`. Break down `Nat.eq_zero_or_pos (Dw.mult (tauC N pl z σ)) with h0 | h0` into its components or cases. Use `le_trans (le_of_eq (Finset.sum_eq_zero fun k _ => ?_)) (Nat.zero_le _)` and prove the remaining obligations. Assume the negation of the conclusion as `hk`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `(hgs _).1 k hk`. Use linear arithmetic over natural numbers and integers. Conclude with `le_trans (le_of_eq (((hgs _).2 _ (hmul _)).1 0 h0)) (hfirst _ h0)`. Use `show 4 * N.R.r * s * Fintype.card (RPl N.R) ≤ nW`. Rewrite using `[hcard]`.
-
-Conclude with `hrows`.
+A detailed English derivation is pending.
 -/
 theorem packages_conj : (∀ (p : ℕ) [Fact p.Prime], ReciprocityTheory.ChartRestriction.G.Pdiv.ChartF.UpFSt p) → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (lv : Level H) (Xo : Moduli Dw lv) (c : Coeff lv) [StarRing (𝓞 E)], PkgPhiCSt Xo c ∧ PkgZeroCSt Xo c := by
   intro hUp E _ _ _ H Dw lv Xo c _

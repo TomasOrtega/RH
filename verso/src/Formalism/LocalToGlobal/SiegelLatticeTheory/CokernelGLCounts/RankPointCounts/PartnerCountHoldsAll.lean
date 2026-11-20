@@ -6,7 +6,7 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCou
 namespace Formalism.L2.SG.Pf.PCount
 
 /- English proof (translation)
-The claim follows from `partnerCount_of_iso Zd (Formalism.L2.SG.LsDatumA.integralClosureRank_and_residueTrdegLe D) (intGenP_holds Zd) BI.integralIsomorphism_holds`.
+A detailed English derivation is pending.
 -/
 theorem partnerCount_holds_all {D : Formalism.BasicNotions.D7} (Zd : Formalism.L2.SG.TermLoc.LocDat D) : PartnerIsomorphismCount Zd :=
   partnerCount_of_iso Zd (Formalism.L2.SG.LsDatumA.integralClosureRank_and_residueTrdegLe D) (intGenP_holds Zd) BI.integralIsomorphism_holds

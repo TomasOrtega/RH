@@ -7,9 +7,9 @@ open AlgebraicGeometry CategoryTheory IsLocalRing ReciprocityTheory.ChartRestric
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `X Y π hπ V V' _ _ _ _ _ f fK hf ξ y hy`. Establish `hsq : jK V' ≫ spMap f = spMap fK ≫ jK V`. Establish `e : fK.comp (algebraMap V (FractionRing V)) = (algebraMap V' (FractionRing V')).comp f` using `RingHom.ext hf`. Conclude with `(spMap_comp f (algebraMap V' (FractionRing V'))).symm.trans ((congrArg spMap e.symm).trans (spMap_comp (algebraMap V (FractionRing V)) fK))`. Establish `h : y ≫ π = jK V' ≫ (spMap f ≫ ξ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hy, ← Category.assoc, ← hsq, Category.assoc]`. Take `⟨x, hx1, hx2⟩` from `val_exists (R := V') π y (spMap f ≫ ξ) h`. Conclude with `⟨x, hx2, hx1⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem proper_lift_trait : ∀ {X Y : Scheme.{0}} (π : Y ⟶ X), IsProper π → ∀ (V V' : Type) [CommRing V] [IsDomain V] [CommRing V'] [IsDomain V'] [IsDiscreteValuationRing V'] (f : V →+* V') (fK : FractionRing V →+* FractionRing V'), (∀ a, fK (algebraMap V _ a) = algebraMap V' _ (f a)) → ∀ (ξ : Sp V ⟶ X) (y : Sp (FractionRing V') ⟶ Y), y ≫ π = spMap fK ≫ jK V ≫ ξ → ∃ ξ' : Sp V' ⟶ Y, ξ' ≫ π = spMap f ≫ ξ ∧ jK V' ≫ ξ' = y := by
   intro X Y π hπ V V' _ _ _ _ _ f fK hf ξ y hy

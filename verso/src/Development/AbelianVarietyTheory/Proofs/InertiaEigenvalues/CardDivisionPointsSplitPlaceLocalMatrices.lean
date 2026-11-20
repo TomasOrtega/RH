@@ -45,7 +45,7 @@ theorem phi_apply (h : w.under (𝓞 D.host.F) = q) {m n : ℕ} (B : Matrix (Fin
     phi h B A y = B * y.map (cw h) * A := rfl
 
 /- English proof (translation)
-Take `⟨-, -, -, -, h4, -, -, -⟩` from `hι`. Use `h4 x 1` as an intermediate fact. Rewrite `this` using `[mul_one]`. Rewrite using `[← this, mul_comm, hx]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_iota_cw {h : w.under (𝓞 D.host.F) = q} {ι : w.adicCompletion D.host.E →+ AE D}
     (hι : GlobalTheory.DivPtLocal.IsIotaAt h ι) {x : AE D} (hx : ι 1 * x = x) : x = ι (cw h x) := by
@@ -55,14 +55,14 @@ theorem eq_iota_cw {h : w.under (𝓞 D.host.F) = q} {ι : w.adicCompletion D.ho
   rw [← this, mul_comm, hx]
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_assoc, ← Matrix.mul_assoc b.1, Units.mul_inv, Matrix.one_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.mul_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gl_cancel {k : Type} [Field k] {m n : ℕ} (b : GL (Fin m) k) (a : GL (Fin n) k) (Y : Matrix (Fin m) (Fin n) k) :
     b.1 * ((b⁻¹).1 * Y * a.1) * (a⁻¹).1 = Y := by
   simp only [Matrix.mul_assoc, ← Matrix.mul_assoc b.1, Units.mul_inv, Matrix.one_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.mul_one]
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_assoc, ← Matrix.mul_assoc (b⁻¹).1, Units.inv_mul, Matrix.one_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.mul_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gl_cancel' {k : Type} [Field k] {m n : ℕ} (b : GL (Fin m) k) (a : GL (Fin n) k) (Y : Matrix (Fin m) (Fin n) k) :
     (b⁻¹).1 * (b.1 * Y * (a⁻¹).1) * a.1 = Y := by
@@ -74,35 +74,31 @@ set_option maxHeartbeats 1000000 in
 open GlobalTheory.Core.Rk.SWQ in
 
 /- English proof (translation)
-Introduce `D S T ΛS ΛT hS hT P hs ι hι N hN`. Take `⟨e, ⟨⟨a, ha, -⟩, -⟩, -, -⟩` from `GlobalTheory.LFun.SplitChart.exists_isSplitChart (GlobalTheory.AdelicU.isCMExt_host D) (GlobalTheory.Doubling.isHermND_gram S) hS.1.fg hS.1.span_eq_top (rfl : P.under (𝓞 D.host.F) = _) hs (GlobalTheory.Core.Rk.IwSplit.isSelfDualAt_of_isSelfDualC hS _)`. Take `⟨b, hb⟩` from `GlobalTheory.Core.Rk.SWQ.LatHalf.mem_latO_iff_intM D _ P rfl hs S T ΛS ΛT hS hT a ha`. Establish `hP : P.under (𝓞 D.host.F) = P.under (𝓞 D.host.F)` using `rfl`. Establish `hι'` using `hι`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨-, h1, h2, h3, h4, -, -, -⟩` from `hι'`. Use `set Λ := latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) (fun v => v = P.under (𝓞 D.host.F)) with hΛ`. Use `set c := ι 1 with hc`. Use `set Φ := GlobalTheory.DivPtLocalCard.phi hP (b⁻¹).1 a.1 with hΦ`. Establish `hent : ∀ y : WO S T, c • y = y → ∀ i j, y i j = ι (cw hP (y i j))` using `fun y hy i j => GlobalTheory.DivPtLocalCard.eq_iota_cw hι (by simpa [Matrix.smul_apply] using congrFun (congrFun hy i) j)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Establish `hoff : ∀ y : WO S T, c • y = y → offM (P.under (𝓞 D.host.F)) y = 0`. Introduce `y hy`. Use extensionality with `i j`. Simplify using `only [offM, Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul, Matrix.zero_apply]`. Rewrite using `[hent y hy i j, h3, sub_self]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hcA : ∀ y : WO S T, c • y = y → ∀ i j, cw hP (cA D (y i j)) = 0`. Introduce `y hy i j`. Rewrite using `[hent y hy i j]`. Conclude with `h2 _`. Establish `hmem : ∀ y : WO S T, c • y = y → (y ∈ Λ ↔ GlobalTheory.Core.Rk.SWQ.IntM (Φ y))` using `fun y hy => hb y (hoff y hy) (hcA y hy)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hInt : ∀ Z, GlobalTheory.Core.Rk.SWQ.IntM Z ↔ Z ∈ GlobalTheory.DivPtLocal.locInt P T.rank S.rank` using `fun Z => Iff.rfl`. Establish `hIntN : ∀ Z, GlobalTheory.Core.Rk.SWQ.IntM (N • Z) ↔ Z ∈ GlobalTheory.DivPtLocal.locDiv P N T.rank S.rank`. Introduce `Z`. Use `forall_congr' fun i => forall_congr' fun j => ?_` and prove the remaining obligations. Rewrite using `[Matrix.smul_apply, nsmul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hcN : ∀ y : WO S T, c • y = y → c • (N • y) = N • y` using `fun y hy => by rw [smul_comm, hy]`. Set `Ψ : Matrix (Fin T.rank) (Fin S.rank) (P.adicCompletion D.host.E) → WO S T` to `fun Z => (b.1 * Z * (a⁻¹).1).map ι`. Establish `hΨc : ∀ Z, c • Ψ Z = Ψ Z`. Introduce `Z`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `i j`. Simplify using `only [Ψ, Matrix.smul_apply, smul_eq_mul, Matrix.map_apply, hc, h4, h1, one_mul]`. Establish `hΦΨ : ∀ Z, Φ (Ψ Z) = Z`. Introduce `Z`. Rewrite using `[hΦ, GlobalTheory.DivPtLocalCard.phi_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `: (Ψ Z).map (cw hP) = b.1 * Z * (a⁻¹).1`. Use extensionality with `i j`. Simplify using `only [Ψ, Matrix.map_apply, h1]`. Rewrite using `[this, GlobalTheory.DivPtLocalCard.gl_cancel']`. Establish `hinj : ∀ y y' : WO S T, c • y = y → c • y' = y' → Φ y = Φ y' → y = y'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Introduce `y y' hy hy' H`. Establish `H' : y.map (cw hP) = y'.map (cw hP)`. Rewrite using `[← GlobalTheory.DivPtLocalCard.gl_cancel b a (y.map (cw hP)), ← GlobalTheory.DivPtLocalCard.gl_cancel b a (y'.map (cw hP))]`. Conclude with `congrArg (fun M => b.1 * M * (a⁻¹).1) H`. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[hent y hy i j, hent y' hy' i j]`. Conclude with `congrArg ι (congrFun (congrFun H' i) j)`. Establish `hdiv : ∀ y : ↥(GlobalTheory.DivPtFourier.divPts Λ c N), Φ y ∈ GlobalTheory.DivPtLocal.locDiv P N T.rank S.rank`. Introduce and unpack `⟨y, hy1, hy2⟩`. Rewrite using `[← hIntN, ← map_nsmul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Conclude with `(hmem _ (hcN y hy1)).1 hy2`. Set `f : ↥(GlobalTheory.DivPtFourier.divPts Λ c N) →+ GlobalTheory.DivPtLocal.LocQ P N T.rank S.rank` to `(QuotientAddGroup.mk' _).comp ((Φ.comp (GlobalTheory.DivPtFourier.divPts Λ c N).subtype).codRestrict _ hdiv)`. Establish `hsurj : Function.Surjective f`. Introduce `x`. Proceed by induction on `x using QuotientAddGroup.induction_on with`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Consider the case `H Z`. Establish `hy2 : N • Ψ Z ∈ Λ`. Rewrite using `[hmem _ (hcN _ (hΨc Z)), map_nsmul, hΦΨ, hIntN]`. Conclude with `Z.2`. Use `⟨⟨Ψ Z, hΨc Z, hy2⟩, ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `QuotientAddGroup.mk _ = QuotientAddGroup.mk _`. Use `congr 1`. Conclude with `Subtype.ext (hΦΨ Z)`. Establish `hker : f.ker = (Λ ⊓ GlobalTheory.PlaceModel.half S T c).addSubgroupOf (GlobalTheory.DivPtFourier.divPts Λ c N)`. Use extensionality with `⟨y, hy1, hy2⟩`.
-
-Rewrite using `[AddMonoidHom.mem_ker, AddSubgroup.mem_addSubgroupOf, AddSubgroup.mem_inf]`. Express the relevant statement in the definitionally equal form `(QuotientAddGroup.mk _ : GlobalTheory.DivPtLocal.LocQ P N T.rank S.rank) = 0 ↔ _`. Rewrite using `[QuotientAddGroup.eq_zero_iff, AddSubgroup.mem_addSubgroupOf]`. Express the relevant statement in the definitionally equal form `Φ y ∈ GlobalTheory.DivPtLocal.locInt P T.rank S.rank ↔ y ∈ Λ ∧ y ∈ GlobalTheory.PlaceModel.half S T c`. Rewrite using `[← hInt, ← hmem y hy1]`.
-
-Conclude with `⟨fun h => ⟨h, hy1⟩, fun h => h.1⟩`. Conclude with `Nat.card_congr ((QuotientAddGroup.quotientAddEquivOfEq hker.symm).trans (QuotientAddGroup.quotientKerEquivOfSurjective f hsurj)).toEquiv`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.DivPtLocalCard.card_DQ_eq : ∀ (D : D7) (S T : HSp D) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)), IsSelfDualC S ΛS → IsSelfDualC T ΛT → ∀ (P : Formalism.L2.DIV.Pl D.host.E), Formalism.MainNotions.SchurIrreducible.IsSplit (E := D.host.E) (P.under (𝓞 D.host.F)) → ∀ ι : P.adicCompletion D.host.E →+ AE D, GlobalTheory.DivPtLocal.IsIotaAt (rfl : P.under (𝓞 D.host.F) = P.under (𝓞 D.host.F)) ι → ∀ N : ℕ, 0 < N → Nat.card (GlobalTheory.DivPtFourier.DQ (latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun v => v = P.under (𝓞 D.host.F)) (ι 1) N) = Nat.card (GlobalTheory.DivPtLocal.LocQ P N T.rank S.rank) := by
   intro D S T ΛS ΛT hS hT P hs ι hι N hN

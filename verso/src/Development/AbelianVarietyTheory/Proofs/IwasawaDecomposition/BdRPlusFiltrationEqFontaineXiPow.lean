@@ -14,9 +14,9 @@ section General
 variable {R : Type} [CommRing R] {I : Ideal R} {a : R}
 
 /- English proof (translation)
-Establish `hfg : I.FG` using `⟨{a}, by simp [h]⟩`. Establish `e : (I ^ n).map (algebraMap R (AdicCompletion I R)) = Ideal.span {algebraMap R (AdicCompletion I R) a ^ n}`. Establish `: I ^ n = Ideal.span {a ^ n}` using `by rw [h, Ideal.span_singleton_pow]`. Rewrite using `[this, Ideal.map_span, Set.image_singleton, map_pow]`. Rewrite using `[← Ideal.mem_span_singleton, ← e, ← Submodule.restrictScalars_mem R, ← Ideal.smul_top_eq_map, AdicCompletion.pow_smul_top_eq_ker_eval hfg, LinearMap.mem_ker]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h' : (I ^ n • ⊤ : Ideal R) = I ^ n` using `by ext x; simp`. Conclude with `map_eq_zero_iff _ (Ideal.quotientEquivAlgOfEq R h').injective`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem evalₐ_eq_zero_iff (h : I = Ideal.span {a}) (n : ℕ) (y : AdicCompletion I R) :
     AdicCompletion.evalₐ I n y = 0 ↔ algebraMap R (AdicCompletion I R) a ^ n ∣ y := by
@@ -31,14 +31,14 @@ theorem evalₐ_eq_zero_iff (h : I = Ideal.span {a}) (n : ℕ) (y : AdicCompleti
   exact map_eq_zero_iff _ (Ideal.quotientEquivAlgOfEq R h').injective
 
 /- English proof (translation)
-Rewrite using `[AlgHom.commutes]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem evalₐ_algebraMap (n : ℕ) (r : R) :
     AdicCompletion.evalₐ I n (algebraMap R (AdicCompletion I R) r) = Ideal.Quotient.mk _ r := by
   rw [AlgHom.commutes]; rfl
 
 /- English proof (translation)
-Introduce `x`. Take `⟨r, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Conclude with `⟨_, evalₐ_algebraMap n r⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem evalₐ_surj (n : ℕ) : Function.Surjective (AdicCompletion.evalₐ I n) := by
   intro x
@@ -46,11 +46,11 @@ theorem evalₐ_surj (n : ℕ) : Function.Surjective (AdicCompletion.evalₐ I n
   exact ⟨_, evalₐ_algebraMap n r⟩
 
 /- English proof (translation)
-Use `AdicCompletion.ext_evalₐ fun n => ?_` and prove the remaining obligations. Rewrite using `[map_zero, evalₐ_eq_zero_iff h]`. Take `⟨r, hr⟩` from `Ideal.Quotient.mk_surjective (AdicCompletion.evalₐ I (n + 1) y)`. Establish `h1 : algebraMap R (AdicCompletion I R) a ^ (n + 1) ∣ y - algebraMap R _ r`. Rewrite using `[← evalₐ_eq_zero_iff h, map_sub, evalₐ_algebraMap, hr, sub_self]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `congrArg (AdicCompletion.evalₐ I (n + 1)) hy`. Rewrite `h2` using `[map_mul, map_zero, evalₐ_algebraMap, ← hr, ← map_mul, Ideal.Quotient.eq_zero_iff_mem]`. Establish `h3 : I ^ (n + 1) = Ideal.span {a ^ (n + 1)}` using `by rw [h, Ideal.span_singleton_pow]`. Rewrite `h2` using `[h3, Ideal.mem_span_singleton, pow_succ', mul_dvd_mul_iff_left ha]`. Establish `h4 : algebraMap R (AdicCompletion I R) a ^ n ∣ algebraMap R _ r`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← map_pow]`. Conclude with `map_dvd _ h2`. Establish `h5` using `dvd_add ((pow_dvd_pow _ (Nat.le_succ n)).trans h1) h4`. Rewrite `h5` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem regular_of_isDomain [IsDomain R] (h : I = Ideal.span {a}) (ha : a ≠ 0) (y : AdicCompletion I R)
     (hy : algebraMap R (AdicCompletion I R) a * y = 0) : y = 0 := by
@@ -69,9 +69,9 @@ theorem regular_of_isDomain [IsDomain R] (h : I = Ideal.span {a}) (ha : a ≠ 0)
   rwa [sub_add_cancel] at h5
 
 /- English proof (translation)
-Establish `hfg : I.FG` using `⟨{a}, by simp [h]⟩`. Establish `e : I.map (algebraMap R (AdicCompletion I R)) = Ideal.span {algebraMap R (AdicCompletion I R) a}`. Establish `: ∀ J : Ideal R, J = Ideal.span {a} → J.map (algebraMap R (AdicCompletion I R)) = Ideal.span {algebraMap R (AdicCompletion I R) a}`. Introduce and unpack `J rfl`. Rewrite using `[Ideal.map_span, Set.image_singleton]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this I h`. Rewrite using `[← e, IsAdicComplete.map_algebraMap_iff]`. Conclude with `AdicCompletion.isAdicComplete hfg`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAdicComplete_span (h : I = Ideal.span {a}) :
     IsAdicComplete (Ideal.span {algebraMap R (AdicCompletion I R) a}) (AdicCompletion I R) := by
@@ -89,11 +89,11 @@ theorem isAdicComplete_span (h : I = Ideal.span {a}) :
 end General
 
 /- English proof (translation)
-Introduce `h0`. Use `set a := (frobeniusEquiv (Per.Fl l) l).symm e with ha`. Establish `h1 : xi e * (Per.tm a - 1) = Per.tm a ^ l - 1` using `geom_sum_mul _ _`. Rewrite `h1` using `[h0, zero_mul, eq_comm, sub_eq_zero, ← map_pow]`. Establish `h2` using `congrArg (fun w : Per.Ainf l => w.coeff 0) h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [WittVector.teichmuller_coeff_zero, WittVector.one_coeff_zero] at h2`. Establish `h3 : a = 1`. Apply `(frobeniusEquiv (Per.Fl l) l).injective` to reduce the goal to its premises. Rewrite using `[frobeniusEquiv_apply, frobenius_def, h2, map_one]`. Apply `he.2` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ha, h3, map_one]`.
+A detailed English derivation is pending.
 -/
 theorem xi_ne_zero {l : ℕ} [Fact l.Prime] (e : Per.Fl l) (he : IsEps e) : xi e ≠ 0 := by
   intro h0
@@ -113,11 +113,11 @@ end GlobalTheory.MemLoc.FilPrincipal
 open GlobalTheory.MemLoc.FilPrincipal in
 
 /- English proof (translation)
-Introduce `l _ e he`. Establish `hk` using `GlobalTheory.T.kerThetaLocalized_eq_span_fontaineXiElement l e he`. Take `⟨-, hd, hinj⟩` from `GlobalTheory.T.usage l`. Establish `hne : algebraMap (Per.Ainf l) (Per.AinfP l) (xi e) ≠ 0` using `fun h => xi_ne_zero e he (hinj (h.trans (map_zero _).symm))`. Take `⟨E, hE, hev⟩` from `GlobalTheory.RingIface.exists_bdRp_equiv l`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `ha : E (aDp l (xi e)) = algebraMap (Per.AinfP l) (AdicCompletion (Per.kerP l) (Per.AinfP l)) (algebraMap (Per.Ainf l) (Per.AinfP l) (xi e))`. Rewrite using `[aDp, RingHom.comp_apply, hE]`. Use `⟨fun n y => ?_, fun y hy => ?_, ?_, fun n => GlobalTheory.RingIface.ev_surj l n⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.RingIface.mem_filtration_iff_mem_kerTheta_pow, ← hev, evalₐ_eq_zero_iff hk n (E y), ← ha, ← map_pow]`. Conclude with `map_dvd_iff E`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `congrArg E hy`. Rewrite `h1` using `[map_mul, map_zero, ha]`. Conclude with `E.injective ((regular_of_isDomain hk hne (E y) h1).trans (map_zero E).symm)`. Rewrite using `[← IsAdicComplete.congr_ringEquiv _ E, Ideal.map_span, Set.image_singleton, ha]`. Conclude with `isAdicComplete_span hk`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.MemLoc.filtration_eq_xi_pow : ∀ (l : ℕ) [Fact l.Prime], ∀ e : Per.Fl l, IsEps e →
     (∀ (n : ℕ) (y : Per.BdRp l), y ∈ Per.FilP l n ↔ aDp l (xi e) ^ n ∣ y) ∧

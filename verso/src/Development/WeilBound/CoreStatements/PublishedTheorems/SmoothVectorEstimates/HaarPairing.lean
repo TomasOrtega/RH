@@ -12,9 +12,9 @@ namespace HaarPairing
 open scoped FourierTransform RealInnerProductSpace Real SchwartzMap
 
 /- English proof (translation)
-Establish `hI : Integrable (𝓕 g)`. Set `G : 𝓢(EuclideanSpace ℝ (Fin d), ℂ)` to `𝓕 (hc.toSchwartzMap hg)`. Establish `e : (𝓕 g) = ⇑G`. Simplify using `only [G, SchwartzMap.fourier_coe]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Rewrite using `[e]`. Conclude with `G.integrable`. Establish `h` using `congrFun (hg.continuous.fourierInv_fourier_eq (hg.continuous.integrable_of_hasCompactSupport hc) hI) v`. Rewrite `h` using `[Real.fourierInv_eq]`. Simplify `h` using `only [Real.fourier_eq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem inv_E {d : ℕ} (g : EuclideanSpace ℝ (Fin d) → ℂ) (hg : ContDiff ℝ ∞ g) (hc : HasCompactSupport g)
     (v : EuclideanSpace ℝ (Fin d)) :
@@ -30,9 +30,9 @@ theorem inv_E {d : ℕ} (g : EuclideanSpace ℝ (Fin d) → ℂ) (hg : ContDiff 
   simpa only [Real.fourier_eq] using h
 
 /- English proof (translation)
-Establish `: (μ.map e).IsAddHaarMeasure` using `e.isAddHaarMeasure_map μ`. Use `set c := Measure.addHaarScalarFactor (μ.map e) volume with hc`. Establish `hm : μ.map e = c • volume` using `Measure.isAddLeftInvariant_eq_smul _ _`. Use `⟨c, (Measure.addHaarScalarFactor_pos_of_isAddHaarMeasure _ _).ne', fun h => ?_⟩` and prove the remaining obligations. Establish `key : ∫ x, h (e x) ∂μ = ∫ z, h z ∂(μ.map e)` using `(e.toHomeomorph.measurableEmbedding.integral_map h).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key, hm, integral_smul_nnreal_measure, NNReal.smul_def, Complex.real_smul]`.
+A detailed English derivation is pending.
 -/
 theorem haar_E {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     [MeasurableSpace V] [BorelSpace V] (μ : Measure V) [μ.IsAddHaarMeasure] {d : ℕ}
@@ -48,17 +48,17 @@ theorem haar_E {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDime
   rw [key, hm, integral_smul_nnreal_measure, NNReal.smul_def, Complex.real_smul]
 
 /- English proof (translation)
-Set `T : V ≃L[ℝ] EuclideanSpace ℝ (Fin (Module.finrank ℝ V))` to `toEuclidean`. Set `φ : V → StrongDual ℝ (EuclideanSpace ℝ (Fin (Module.finrank ℝ V)))` to `fun y => (2 * π)⁻¹ • (β.flip y).comp (T.symm : EuclideanSpace ℝ (Fin (Module.finrank ℝ V)) →L[ℝ] V)`. Establish `φadd : ∀ y y', φ (y + y') = φ y + φ y'`. Introduce `y y'`. Simplify using `only [φ, map_add, ContinuousLinearMap.add_comp, smul_add]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `φsmul : ∀ (r : ℝ) y, φ (r • y) = r • φ y`. Introduce `r y`. Simplify using `only [φ, map_smul, ContinuousLinearMap.smul_comp, smul_comm r]`. Set `L : V →ₗ[ℝ] EuclideanSpace ℝ (Fin (Module.finrank ℝ V))` to `{ toFun := fun y => (InnerProductSpace.toDual ℝ _).symm (φ y) map_add' := fun y y' => by simp only [φadd, map_add] map_smul' := fun r y => by`. Simplify using `only [φsmul, LinearIsometryEquiv.map_smulₛₗ, RingHom.id_apply, RCLike.conj_to_real] }`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Simplify using the standard rewrite rules.
 
-Establish `hL : ∀ x y, ⟪T x, L y⟫ = (2 * π)⁻¹ * β x y`. Introduce `x y`. Rewrite using `[real_inner_comm]`. Express the relevant statement in the definitionally equal form `⟪(InnerProductSpace.toDual ℝ _).symm (φ y), T x⟫ = _`. Rewrite using `[InnerProductSpace.toDual_symm_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[φ]`. Establish `hinj : Function.Injective L`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `y hy`. Apply `hβ` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `x`. Establish `h1` using `hL x y`. Rewrite `h1` using `[hy, inner_zero_right]`. Establish `hp : (2 * π)⁻¹ ≠ 0` using `by positivity`. Conclude with `(mul_eq_zero.mp h1.symm).resolve_left hp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `A` to `(L.linearEquivOfInjective hinj finrank_euclideanSpace_fin.symm).toContinuousLinearEquiv`. Use `⟨T, A, fun x y => ?_⟩` and prove the remaining obligations. Establish `hA : A y = L y` using `rfl`. Rewrite using `[hA, hL]`. Clear the denominators using the available nonvanishing facts.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem pair {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     (β : V →L[ℝ] V →L[ℝ] ℝ) (hβ : ∀ y, (∀ x, β x y = 0) → y = 0) :
@@ -100,15 +100,15 @@ theorem pair {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimens
 end HaarPairing
 
 /- English proof (translation)
-Introduce `V _ _ _ _ _ μ _ β hβ`. Take `⟨T, A, hTA⟩` from `HaarPairing.pair β hβ`. Take `⟨c1, hc1, h1⟩` from `HaarPairing.haar_E μ T`. Take `⟨c2, hc2, h2⟩` from `HaarPairing.haar_E μ A`. Use `⟨((c1 : ℝ) : ℂ) * ((c2 : ℝ) : ℂ), mul_ne_zero (by exact_mod_cast hc1) (by exact_mod_cast hc2), fun f hf hc ξ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `set g : EuclideanSpace ℝ (Fin (Module.finrank ℝ V)) → ℂ := f ∘ T.symm with hg_def`. Establish `hgs : ContDiff ℝ ∞ g` using `hf.comp T.symm.contDiff`. Establish `hgc : HasCompactSupport g` using `hc.comp_homeomorph T.symm.toHomeomorph`. Establish `hFT : ∀ y, FT μ β f y = ((c1 : ℝ) : ℂ) * ∫ z, Real.fourierChar (-inner ℝ z (A y)) • g z`. Introduce `y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[FT, ← h1 (fun z => Real.fourierChar (-inner ℝ z (A y)) • g z)]`. Use `congr 1 with x`. Simplify using `only [g, Function.comp_apply, ContinuousLinearEquiv.symm_apply_apply, Circle.smul_def, Real.fourierChar_apply, smul_eq_mul, hTA]`. Use `push_cast`. Put the polynomial expressions in normal form.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form. Establish an intermediate fact.
 
-Establish `step : ∫ y, Complex.exp ((β ξ y : ℝ) * Complex.I) * FT μ β f y ∂μ = ((c1 : ℝ) : ℂ) * ∫ y, Real.fourierChar (inner ℝ (A y) (T ξ)) • (∫ z, Real.fourierChar (-inner ℝ z (A y)) • g z) ∂μ`. Rewrite using `[← integral_const_mul]`. Use `congr 1 with y`. Simplify using `only [hFT, Circle.smul_def, Real.fourierChar_apply, smul_eq_mul, hTA, real_inner_comm (A y)]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form.
 
-Put the polynomial expressions in normal form. Establish `h2'` using `h2 (fun w => Real.fourierChar (inner ℝ w (T ξ)) • ∫ z, Real.fourierChar (-inner ℝ z w) • g z)`. Rewrite using `[step, h2', HaarPairing.inv_E g hgs hgc]`. Simplify using `only [g, Function.comp_apply, ContinuousLinearEquiv.symm_apply_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem haar_measure_pairing : S5 := by
   intro V _ _ _ _ _ μ _ β hβ

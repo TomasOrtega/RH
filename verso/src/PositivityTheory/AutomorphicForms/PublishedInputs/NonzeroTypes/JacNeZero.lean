@@ -15,15 +15,15 @@ namespace Grp
 variable {n : ℕ} (G : Grp k n)
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `hun`. Establish `hJmul'` using `hJmul hcb hccB`. Establish `hJinv'` using `hJinv hcb hccB`. Establish `hΔU'` using `hΔU hccB`. Establish `hlM'` using `hlM hcb hΔU hΔM hccB`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hiw'` using `hiw hcb hccB hΔU hJmul hJinv`. Establish `hTE'` using `hTE hcb hccB hΔU hΔM hJmul hJinv hlM hlU hiw`. Establish `hPJ'` using `hPJ hcb hccB hΔU hΔM hJone hJmul hJinv hlM hlB hKC`. Establish `hTI'` using `hTI hcb hccB hΔU hΔM hJone hJmul hJinv hlM hlB hlU hiw hPJ hkill hni hTE hKC ϖ hϖ V π hs`. Establish `hTp'` using `hTp hcb hccB hΔU hΔM hJmul hJinv hlM hlU hiw hTE ϖ hϖ V π`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE : ∀ y ∈ G.Eig π, G.Tz π ϖ 1 y ∈ G.Eig π` using `fun y hy => (hTE' ϖ hϖ 1).2 V π y hy`. Establish `key : ∀ m : ℕ, ∀ y ∈ G.Eig π, (G.Tz π ϖ 1)^[m] y = 0 → y = 0`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro y _ h`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Simplify using `using h`. Consider the case `succ m ih`. Introduce `y hy h`. Rewrite `h` using `[Function.iterate_succ_apply]`. Conclude with `hTI' y hy (ih _ (hE y hy) h)`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Take `⟨m, hm⟩` from `hjK hcb hccB hΔU hΔM hJmul hJinv hlM hiw hTE hlU ϖ hϖ V π hs x hx h0`. Rewrite `hm` using `[hTp' x hx m]`. Conclude with `hx0 (key m x hx hm)`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jac_ne_zero (hcb : CompactConductorBasicProp (k := k)) (hccB : G.CompactConductorBoundProp) (hJone : G.JacquetOneProp) (hJmul : G.JacquetMultiplicativeProp)
     (hJinv : G.JacquetInverseProp) (hKC : G.CompactOpenKernelProp) (hΔU : G.ModulusOnUnitsProp) (hΔM : G.ModulusMultiplicativeProp) (hlM : G.LambdaMultiplicativeProp)
@@ -58,7 +58,7 @@ theorem jac_ne_zero (hcb : CompactConductorBasicProp (k := k)) (hccB : G.Compact
   exact hx0 (key m x hx hm)
 
 /- English proof (translation)
-Introduce `L V _ _ π hs hirr ⟨x, hx0, hx⟩`. Use `hjP L V π hs hirr ⟨_, G.jac_ne_zero hcb hccB hJone hJmul hJinv hKC hΔU hΔM hlM hlB hlU hiw hPJ hkill hni hTE hTp hjK hTI hun π hs x hx0 hx, fun m hm => hjI hlL hJone V π x hx m hm⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem cMain (hcb : CompactConductorBasicProp (k := k)) (hccB : G.CompactConductorBoundProp) (hJone : G.JacquetOneProp) (hJmul : G.JacquetMultiplicativeProp)
     (hJinv : G.JacquetInverseProp) (hKC : G.CompactOpenKernelProp) (hΔU : G.ModulusOnUnitsProp) (hΔM : G.ModulusMultiplicativeProp) (hlM : G.LambdaMultiplicativeProp)

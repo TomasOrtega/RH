@@ -26,7 +26,7 @@ def adL {g : GL (Fin n) k} (hg : g ∈ Gz Z) : (Fin (d Z) → k) →ₗ[k] (Fin 
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Simplify using `[adL, E]`.
+Simplify using the standard rewrite rules.
 -/
 theorem E_adL {g : GL (Fin n) k} (hg : g ∈ Gz Z) (u : Fin (d Z) → k) :
     E Z (adL hg u) = g.val * E Z u * g⁻¹.val := by
@@ -34,14 +34,14 @@ theorem E_adL {g : GL (Fin n) k} (hg : g ∈ Gz Z) (u : Fin (d Z) → k) :
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Rewrite using `[trace_mul_comm, ← mul_assoc, Units.inv_mul, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_conj (g : GL (Fin n) k) (A : Matrix (Fin n) (Fin n) k) : trace (g.val * A * g⁻¹.val) = trace A := by
   rw [trace_mul_comm, ← mul_assoc, Units.inv_mul, one_mul]
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Rewrite using `[dot_D, dot_D, E_adL]`. Establish `: g.val * E Z u * g⁻¹.val * (g.val * x * g⁻¹.val) = g.val * (E Z u * x) * g⁻¹.val`. Simplify using `only [mul_assoc, Units.inv_mul_cancel_left]`. Rewrite using `[this, trace_conj]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem dot_conj {g : GL (Fin n) k} (hg : g ∈ Gz Z) (u : Fin (d Z) → k) (x : Matrix (Fin n) (Fin n) k) :
     adL hg u ⬝ᵥ D Z (g.val * x * g⁻¹.val) = u ⬝ᵥ D Z x := by
@@ -54,23 +54,23 @@ def adM {g : GL (Fin n) k} (hg : g ∈ Gz Z) : Matrix (Fin (d Z)) (Fin (d Z)) k 
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-The claim follows from `LinearMap.toMatrix'_mulVec _ _`.
+A detailed English derivation is pending.
 -/
 theorem adM_mulVec {g : GL (Fin n) k} (hg : g ∈ Gz Z) (u : Fin (d Z) → k) : adM hg *ᵥ u = adL hg u :=
   LinearMap.toMatrix'_mulVec _ _
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Rewrite using `[← D_E, dot_D]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dot_G (u u' : Fin (d Z) → k) : u ⬝ᵥ (G Z *ᵥ u') = trace (E Z u * E Z u') := by
   rw [← D_E, dot_D]
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Establish `key : ∀ u u', u ⬝ᵥ (((adM hg)ᵀ * G Z * adM hg) *ᵥ u') = u ⬝ᵥ (G Z *ᵥ u')`. Introduce `u u'`. Rewrite using `[← mulVec_mulVec, ← mulVec_mulVec, dotProduct_mulVec, vecMul_transpose, adM_mulVec, adM_mulVec, dot_G, dot_G, E_adL, E_adL]`. Establish `: g.val * E Z u * g⁻¹.val * (g.val * E Z u' * g⁻¹.val) = g.val * (E Z u * E Z u') * g⁻¹.val`. Simplify using `only [mul_assoc, Units.inv_mul_cancel_left]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, trace_conj]`. Use extensionality with `i j`. Use `key (Pi.single i 1) (Pi.single j 1)` as an intermediate fact. Simplify `this` using `[single_dotProduct, mulVec_single_one]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem gram_adM {g : GL (Fin n) k} (hg : g ∈ Gz Z) : (adM hg)ᵀ * G Z * adM hg = G Z := by
   have key : ∀ u u', u ⬝ᵥ (((adM hg)ᵀ * G Z * adM hg) *ᵥ u') = u ⬝ᵥ (G Z *ᵥ u') := by
@@ -89,9 +89,9 @@ include hZ h
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Establish `h1` using `congrArg Matrix.det (gram_adM hg)`. Rewrite `h1` using `[det_mul, det_mul, det_transpose]`. Establish `h2 : ((adM hg).det ^ 2 - 1) * (G Z).det = 0` using `by linear_combination h1`. Break down `mul_eq_zero.1 h2 with h3 | h3` into its components or cases. Take the linear combination `h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Take a linear combination of the given relations to obtain the conclusion.
 
-Conclude with `absurd h3 (G_det hZ h)`.
+A detailed English derivation is pending.
 -/
 theorem det_adM_sq {g : GL (Fin n) k} (hg : g ∈ Gz Z) : (adM hg).det ^ 2 = 1 := by
   have h1 := congrArg Matrix.det (gram_adM hg)
@@ -108,9 +108,7 @@ def adU {g : GL (Fin n) k} (hg : g ∈ Gz Z) : GL (Fin (d Z)) k :=
     norm_num at this)
 
 /- English proof (translation)
-Use `set u := Matrix.GeneralLinearGroup.det (adU hZ h hg)`. Establish `hu : u ^ 2 = 1` using `Units.ext (by`. Simplify using `only [Units.val_pow_eq_pow_val, Units.val_one, u, Matrix.GeneralLinearGroup.val_det_apply]`. Conclude with `det_adM_sq hZ h hg)`. Establish `h2 : (distribHaarChar k u) ^ 2 = 1` using `by rw [← map_pow, hu, map_one]`.
-
-Conclude with `(pow_eq_one_iff_of_nonneg (by positivity) two_ne_zero).1 h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem distribHaarChar_adU {g : GL (Fin n) k} (hg : g ∈ Gz Z) :
     (distribHaarChar k (Matrix.GeneralLinearGroup.det (adU hZ h hg)) : NNReal) = 1 := by

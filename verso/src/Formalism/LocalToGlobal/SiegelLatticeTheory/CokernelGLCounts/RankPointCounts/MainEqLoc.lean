@@ -20,17 +20,15 @@ def LocalInputLeG {τ Rw I H H₁ : Type} [Fintype I] [NormedAddCommGroup H] [In
     0 < L.ngenTot ∧ L.ngenTot ≤ AAre * 2 * N.Hh γ ^ PN.eN r * N.n γ
 
 /- English proof (translation)
-Introduce `γ hγ S`. Take `⟨L, hB, hZ, hM, hU, ha, hH, hpos, hle⟩` from `h γ hγ S`. Take `⟨c, hc⟩ : ∃ c : ℝ, c = AAre * 2 * N.Hh γ ^ PN.eN r * N.n γ / L.ngenTot` from `⟨_, rfl⟩`. Establish `hc1 : 1 ≤ c`. Rewrite using `[hc, le_div_iff₀ hpos, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hle`. Establish `hV0 : 0 ≤ L.V0` using `hB.2.2.2.2.2.1`. Use `⟨{ L with V0 := L.V0 * c }, ?_, hZ, hM, ?_, ?_, hH, ?_⟩` and prove the remaining obligations. Take `⟨h1, h2, h3, h4, h5, h6, h7⟩` from `hB`. Unfold `Formalism.FourierDecayAlt.PN.LocalNG.Basic`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Supply the required witnesses or components.
 
-Conclude with `⟨h1, h2, h3, h4, h5, mul_nonneg h6 (by linarith), h7⟩`. Introduce `d S' hS'`. Establish `h0` using `hU d S' hS'`. Establish `hw : 0 ≤ L.V0 * ∏ p, L.wt p (d p)` using `mul_nonneg hV0 (Finset.prod_nonneg fun p _ => hB.1 p (d p))`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Rewrite using `[ha x hx]`. Use `first`. Consider the case `rfl`. Consider the case `(unfold Formalism.L2.SG.Pf.MainEqCut.weightedGenericAmplitudeSq Formalism.L2.SG.Pf.MainEqCut.ampGen; rfl)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `(cases hd : L.dat x.1 x.2 <;> simp [Formalism.L2.SG.Pf.MainEqCut.weightedGenericAmplitudeSq, Formalism.L2.SG.Pf.MainEqCut.ampGen, hd])`. Use `show N.ngen γ = L.V0 * c * ∏ p, L.ngen p`. Rewrite using `[hng γ]`. Establish `e : L.ngenTot = L.V0 * ∏ p, L.ngen p` using `rfl`. Establish `hne : L.ngenTot ≠ 0` using `hpos.ne'`.
-
-Rewrite using `[show L.V0 * c * ∏ p, L.ngen p = L.ngenTot * c by rw [e]; ring, hc, mul_div_assoc', mul_div_cancel_left₀ _ hne]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem localInputG_of_le {τ Rw I H H₁ : Type} [Fintype I] [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [NormedAddCommGroup H₁] [InnerProductSpace ℂ H₁] (X : PB.Terms τ Rw I H H₁) {E : Type} [Field E] {r : ℕ}
@@ -91,15 +89,13 @@ namespace Formalism.L2.SG.Pf
 open Formalism.L2.SG.Pf.MainEqLoc
 
 /- English proof (translation)
-Introduce `Cg cb Cw cT CT C0`. Take `⟨C1, C0n, CSt, hCSt, C'₀, Cl₀, H⟩` from `h Cg cb Cw cT CT C0`. Use `⟨C1, C0n, CSt, hCSt, C'₀, Cl₀, ?_⟩` and prove the remaining obligations. Introduce `C' Cl hC' hCl D large₂ X Y u hctx hb X0 ψ hbt sd C Th F0 what₂ vR Q i0 i0' νq Irat Ire hok ν hpin`. Take `⟨s, hs1, hs2, hs3, hloc⟩` from `H C' Cl hC' hCl D large₂ X Y u hctx hb X0 ψ hbt sd C Th F0 what₂ vR Q i0 i0' νq Irat Ire hok ν hpin`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Set `AAre : ℝ` to `PN.abelian₂ (2 * D.host.v) D.R.rS D.R.k D.R.f * (bkU X hb Y u u X0 ψ sd C Th vR Q i0 i0' νq).AA`. Set `N0` to `NOfG Y u (sc s ν) ν (fun _ => 0)`. Set `ng : PN.Pts D.host.E D.R.rS → ℝ` to `fun γ => AAre * 2 * N0.Hh γ ^ PN.eN D.R.rS * N0.n γ`. Use `⟨s, ng, 2, hs1, hs2, hs3, by norm_num, le_refl _, ?_, ?_⟩` and prove the remaining obligations. Conclude with `localInputG_of_le _ _ C1 C0n AAre hloc (fun γ => rfl)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `γ _`. Use `⟨?_, le_refl _⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `0 ≤ Formalism.L2.SG.RowsConc.nPt _ _ _ γ`. Unfold `Formalism.L2.SG.RowsConc.nPt`. Apply `Finset.prod_nonneg` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w _`. Apply `mul_nonneg` to reduce the goal to its premises. Conclude with `pow_nonneg (mul_nonneg (inv_nonneg.2 (Even.pow_nonneg (Even.mul_right (even_two_mul _) _) _)) (w.1.nonneg _)) _`. Apply `Finset.prod_nonneg` to reduce the goal to its premises. Introduce `a _`.
-
-Conclude with `Even.pow_nonneg (Even.mul_right (even_two_mul _) _) _`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem stepLocGenPinnedG_of_loc (h : StepLocPinnedG) : StepLocGenPinnedG := by
   intro Cg cb Cw cT CT C0

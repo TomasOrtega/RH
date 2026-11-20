@@ -31,9 +31,9 @@ def eigenLattice (hx : Chart.IsUnivChart G n x) {O : Type} [CommRing O] (act : O
   smul_mem' r c hc a := by rw [map_smul, hc a, smul_comm]
 
 /- English proof (translation)
-Use `forall_congr' fun a => ?_` and prove the remaining obligations. Use `act.hom a` as an intermediate fact. Rewrite using `[← Chart.tvec_tmap hx, ← Chart.tvec_smul hx]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `congrArg _ h`. Introduce `h`. Conclude with `(Chart.tcoord_tvec hx _).symm.trans ((Chart.tcoord_congr hx h _ (Chart.isTan_tvec hx _)).trans (Chart.tcoord_tvec hx _))`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_eigenLattice_iff (hx : Chart.IsUnivChart G n x) {O : Type} [CommRing O] (act : OAct O G) (τ : O →+* R)
     (c : Fin n → R) :
@@ -50,7 +50,7 @@ theorem mem_eigenLattice_iff (hx : Chart.IsUnivChart G n x) {O : Type} [CommRing
       ((Chart.tcoord_congr hx h _ (Chart.isTan_tvec hx _)).trans (Chart.tcoord_tvec hx _))
 
 /- English proof (translation)
-Introduce `a`. Use `h a` as an intermediate fact. Rewrite `this` using `[map_smul, smul_comm]`. Conclude with `smul_right_injective _ hr this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 example [IsDomain R] (hx : Chart.IsUnivChart G n x) {O : Type} [CommRing O] (act : OAct O G) (τ : O →+* R)
     (r : R) (hr : r ≠ 0) (c : Fin n → R) (h : r • c ∈ eigenLattice hx act τ) : c ∈ eigenLattice hx act τ := by
@@ -94,7 +94,7 @@ example {G : Over (Spec (CommRingCat.of R))} {n : ℕ}
     tvecOver x c = Chart.tvec (x := x) c := rfl
 
 /- English proof (translation)
-Simplify using `[extendLin]`.
+Simplify using the standard rewrite rules.
 -/
 example {n : ℕ} (T : (Fin n → R) →ₗ[R] (Fin n → R)) : extendLin R T = T := by
   simp [extendLin]

@@ -10,9 +10,9 @@ open HeckeCharacterZeroLocus.SiegelWeilU NumberField IsDedekindDomain MeasureThe
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ M J hJ n T hT hdet d bs ψ hψ`. Use `⟨(n : ℝ) ^ 2, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hA F E σ hσ M J hJ n T hT hdet d bs ψ hψ] with v hv`. Take `⟨S, σS, ϖ, ε, hε, hG⟩` from `hv`. Introduce `μv νv lam L hμ hν hlam hL z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hε]`. Conclude with `hC F E σ M n d J T hT bs v (psiV F ψ v) S σS ϖ ε hG μv νv lam L hμ hν hlam hL z hz`.
+A detailed English derivation is pending.
 -/
 theorem unrWhitX_of_parts (hC : LocC) (hA : AlmostGood) : UnrWhitX := by
   intro F E _ _ _ _ _ σ hσ M J hJ n T hT hdet d bs ψ hψ
@@ -24,7 +24,7 @@ theorem unrWhitX_of_parts (hC : LocC) (hA : AlmostGood) : UnrWhitX := by
   exact hC F E σ M n d J T hT bs v (psiV F ψ v) S σS ϖ ε hG μv νv lam L hμ hν hlam hL z hz
 
 /- English proof (translation)
-Unfold `eSp`. Use `split_ifs`. Conclude with `⟨-1, by simp⟩`. Conclude with `⟨1, by simp⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem eSp_eq (E : Type) [Field E] [NumberField E] [Algebra F E] (v : HeightOneSpectrum (𝓞 F)) :
     ∃ e : ℤˣ, ((e : ℤ) : ℂ) = eSp E v := by
@@ -34,9 +34,9 @@ theorem eSp_eq (E : Type) [Field E] [NumberField E] [Algebra F E] (v : HeightOne
   · exact ⟨1, by simp⟩
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ M J hJ n T hT hdet d bs ψ hψ`. Take `⟨t, ht⟩` from `h F E σ hσ M J hJ n T hT hdet d bs ψ hψ`. Use `⟨t, ?_⟩` and prove the remaining obligations. Use `filter_upwards [ht] with v hv`. Take `⟨e, he⟩` from `eSp_eq E v`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨e, fun μv νv lam L hμ hν hlam hL z hz => by rw [he]; exact hv μv νv lam L hμ hν hlam hL z hz⟩`.
+A detailed English derivation is pending.
 -/
 theorem unrWhitAll_of_X (h : UnrWhitX) : UnrWhitAll := by
   intro F E _ _ _ _ _ σ hσ M J hJ n T hT hdet d bs ψ hψ
@@ -47,18 +47,18 @@ theorem unrWhitAll_of_X (h : UnrWhitX) : UnrWhitAll := by
   exact ⟨e, fun μv νv lam L hμ hν hlam hL z hz => by rw [he]; exact hv μv νv lam L hμ hν hlam hL z hz⟩
 
 /- English proof (translation)
-The claim follows from `unrWhitAll_of_X (unrWhitX_of_parts hC hA)`.
+A detailed English derivation is pending.
 -/
 theorem unrWhitAll_of_parts (hC : LocC) (hA : AlmostGood) : UnrWhitAll := unrWhitAll_of_X (unrWhitX_of_parts hC hA)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ M J hJ n _ T hT hdet d bs ψ hψ` and use `h F E σ hσ M J hJ n T hT hdet d bs ψ hψ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem unrWhit_of_all (h : UnrWhitAll) : UnrWhit :=
   fun F E _ _ _ _ _ σ hσ M J hJ n _ T hT hdet d bs ψ hψ => h F E σ hσ M J hJ n T hT hdet d bs ψ hψ
 
 /- English proof (translation)
-The claim follows from `unrWhit_of_all (unrWhitAll_of_parts hC hA)`.
+A detailed English derivation is pending.
 -/
 theorem unrWhit_of_parts (hC : LocC) (hA : AlmostGood) : UnrWhit := unrWhit_of_all (unrWhitAll_of_parts hC hA)
 

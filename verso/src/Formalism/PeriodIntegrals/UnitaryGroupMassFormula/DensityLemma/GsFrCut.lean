@@ -19,29 +19,27 @@ def GsSliceP : Prop :=
         (Fl g).1 ∈ UWset k r z ∧ (Fl g).2 ∈ UWset k r z' ∧ (Fl g).1 * g * (Fl g).2 ∈ S)
 
 /- English proof (translation)
-Introduce `k r z z' hk hr hz hz'`. Take `⟨S, hsat, hstab, hloc⟩` from `hS k r z z' hk hr hz hz'`. Establish `Wz` using `Formalism.FourierDecayAlt.P.weyl_subgroup_closed k r z`. Establish `Wz'` using `Formalism.FourierDecayAlt.P.weyl_subgroup_closed k r z'`. Establish `Nc` using `Formalism.FourierDecayAlt.P.unipotent_radical_closed k r`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ (g : B.Mat k r) (p : B.Mat k r × B.Mat k r), p.1 ∈ UWset k r z → p.2 ∈ UWset k r z' → ∀ n ∈ Nset k r, ∀ n' ∈ Nset k r, p.1 * g * p.2 ∈ S → p.1 * (n⁻¹ * g * n') * p.2 ∈ S`. Introduce `g p ha hb n hn n' hn' hy`. Establish `hau` using `Wz.unit _ ha`. Establish `hbu` using `Wz'.unit _ hb`. Establish `hx : p.1 * n⁻¹ * p.1⁻¹ ∈ Nset k r` using `(unitary_weyl_normal_holds k r z hz.1 _ ha _ (Nc.inv_mem n hn)).1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy' : p.2⁻¹ * n' * p.2 ∈ Nset k r`. Use `(unitary_weyl_normal_holds k r z' hz'.1 _ (Wz'.inv_mem _ hb) _ hn').1` as an intermediate fact. Rewrite `this` using `[Matrix.nonsing_inv_nonsing_inv _ hbu]`. Then use the resulting hypothesis. Establish `e : p.1 * (n⁻¹ * g * n') * p.2 = (p.1 * n⁻¹ * p.1⁻¹) * (p.1 * g * p.2) * (p.2⁻¹ * n' * p.2)`. Simplify using `only [Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_left _ _ hau, Matrix.mul_nonsing_inv_cancel_left _ _ hbu]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Conclude with `hsat _ hy _ hx _ hy'`. Set `Fr : B.Mat k r → Set (B.Mat k r × B.Mat k r)` to `fun g => {p | p.1 ∈ UWset k r z ∧ p.2 ∈ UWset k r z' ∧ p.1 * g * p.2 ∈ S}`. Use `⟨Fr, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g hg hG`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨O, Fl, -, hgO, -, hFl⟩` from `hloc g hg hG`. Conclude with `⟨Fl g, hFl g hgO hg hG⟩`. Introduce `g _ _ p hp`. Conclude with `⟨hp.1, hp.2.1⟩`. Introduce `g _ _ n hn n' hn'`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use extensionality with `p`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨ha, hb, hy⟩`. Establish `hnu` using `Nc.unit n hn`. Establish `hnu'` using `Nc.unit n' hn'`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `key (n⁻¹ * g * n') p ha hb n⁻¹ (Nc.inv_mem n hn) n'⁻¹ (Nc.inv_mem n' hn') hy`. Establish `e : n⁻¹⁻¹ * (n⁻¹ * g * n') * n'⁻¹ = g`. Rewrite using `[Matrix.nonsing_inv_nonsing_inv n hnu]`. Simplify using `only [Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ hnu, Matrix.mul_nonsing_inv n' hnu', Matrix.mul_one]`. Rewrite `h2` using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨ha, hb, h2⟩`. Introduce and unpack `⟨ha, hb, hy⟩`. Conclude with `⟨ha, hb, key g p ha hb n hn n' hn' hy⟩`. Introduce `g _ _ c hc n hn n' hn' c' hc' p hp`. Establish `hcu` using `Wz.unit c hc`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcu'` using `Wz'.unit c' hc'`. Use `⟨Wz.mul_mem _ hp.1 _ (Wz.inv_mem c hc), Wz'.mul_mem _ (Wz'.inv_mem c' hc') _ hp.2.1, ?_⟩` and prove the remaining obligations. Use `show p.1 * c⁻¹ * (c * (n⁻¹ * g * n') * c') * (c'⁻¹ * p.2) ∈ S`. Establish `e : p.1 * c⁻¹ * (c * (n⁻¹ * g * n') * c') * (c'⁻¹ * p.2) = p.1 * (n⁻¹ * g * n') * p.2`. Simplify using `only [Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_left _ _ hcu, Matrix.mul_nonsing_inv_cancel_left _ _ hcu']`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[e]`. Conclude with `key g p hp.1 hp.2.1 n hn.1 n' hn'.1 hp.2.2`. Introduce `g _ _ p hp q hq`. Establish `hpu` using `Wz.unit _ hp.1`. Establish `hpu'` using `Wz'.unit _ hp.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e : q.1 * p.1⁻¹ * (p.1 * g * p.2) * (p.2⁻¹ * q.2) = q.1 * g * q.2`. Simplify using `only [Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_left _ _ hpu, Matrix.mul_nonsing_inv_cancel_left _ _ hpu']`. Establish `h` using `hstab _ hp.2.2 _ (Wz.mul_mem _ hq.1 _ (Wz.inv_mem _ hp.1)) _ (Wz'.mul_mem _ (Wz'.inv_mem _ hp.2.1) _ hq.2.1) (by rw [e]; exact hq.2.2)`. Rewrite `h` using `[e]`. Then use the resulting hypothesis. Introduce `g₀ hg₀ hG₀`.
-
-Take `⟨O, Fl, hO, hgO, hs, hFl⟩` from `hloc g₀ hg₀ hG₀`. Conclude with `⟨O, Fl, hO, hgO, hs, fun g h1 h2 h3 => hFl g h1 h2 h3⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem gsFrames_of_slice (hS : GsSliceP) : GsFrames := by
   intro k r z z' hk hr hz hz'
@@ -106,7 +104,7 @@ theorem gsFrames_of_slice (hS : GsSliceP) : GsFrames := by
     exact ⟨O, Fl, hO, hgO, hs, fun g h1 h2 h3 => hFl g h1 h2 h3⟩
 
 /- English proof (translation)
-The claim follows from `gramSlice_of gram_schmidt_witt (gsFrames_of_slice hS)`.
+A detailed English derivation is pending.
 -/
 theorem gramSlice_of_slice (hS : GsSliceP) : GramSlice := gramSlice_of gram_schmidt_witt (gsFrames_of_slice hS)
 

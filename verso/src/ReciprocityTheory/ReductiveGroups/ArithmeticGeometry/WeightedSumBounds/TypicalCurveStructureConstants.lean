@@ -87,7 +87,7 @@ def TypicalCurveRebasing : Prop :=
           ((∀ u, G.IsPTypical p (γ u)) → G.IsPTypical p γ')
 
 /- English proof (translation)
-Introduce `C _ _ _ v p hp hvp d G n hn gb hgb`. Conclude with `nsmul_coprime_bijective_curves G hp hvp n hn gb hgb`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem pt1 : CoprimeMultiplicationBijective := by
   intro C _ _ _ v p hp hvp d G n hn gb hgb

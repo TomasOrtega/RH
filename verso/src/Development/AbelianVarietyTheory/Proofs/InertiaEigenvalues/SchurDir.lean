@@ -24,7 +24,7 @@ def thetaZ {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ} (
     ((((ideleModule E (GeneralLinearGroup.det g) : ℝ) ^ (x : ℝ) : ℝ)) : ℂ) ∂μ
 
 /- English proof (translation)
-Simplify using `[eulD]`.
+Simplify using the standard rewrite rules.
 -/
 example (x : ℝ) : eulD (I := Empty) (fun _ => 2) (n := 1) (fun _ _ => 1) x = 1 := by simp [eulD]
 

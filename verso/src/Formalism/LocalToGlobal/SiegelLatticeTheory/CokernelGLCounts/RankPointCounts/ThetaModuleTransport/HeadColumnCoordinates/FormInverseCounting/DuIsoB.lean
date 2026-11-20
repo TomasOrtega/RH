@@ -12,9 +12,7 @@ variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableS
 variable {M : Model F E} {g : SplitG M.L} {r : ℕ}
 
 /- English proof (translation)
-Introduce `l l₂ w w₂ hl hw`. Apply `mem_O_of_comp g` to reduce the goal to its premises. Rewrite using `[map_sub, Prod.fst_sub, ← firstProj_apply, ← firstProj_apply, splitForm_iota_firstProj hs Zh₂ T T' hG₂, splitForm_iota_firstProj hs Zh₁ T T' hG₁]`. Conclude with `h l l₂ w w₂ hl hw`. Rewrite using `[map_sub, Prod.snd_sub, ← secondProj_apply, ← secondProj_apply, splitForm_iota_secondProj, splitForm_iota_secondProj, sub_zero]`.
-
-Conclude with `zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isoB_of (hs : M.split = some g) (Zh₁ Zh₂ : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (T T' : F)
     {Z₁ Z₂ Zσ₁ Zσ₂ : M.Mat (r + 1)} {TT : M.R}

@@ -15,7 +15,7 @@ variable {K F V : Type} [Field K] [NumberField K] [StarRing K] [Field F] [Number
   [Algebra F K] [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `e`. Rewrite using `[← Formalism.HermitianLatticesTheory.isomAct_gmap_symm g A, ← Formalism.HermitianLatticesTheory.isomAct_gmap_symm g B, e]`. Introduce and unpack `rfl`. Both sides reduce to the same expression.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Both sides reduce to the same expression.
 -/
 theorem gmap_eq_iff (g : V ≃ₗ[K] V) {A B : Submodule (𝓞 K) V} :
     Formalism.HermitianLatticesTheory.gmap g A = Formalism.HermitianLatticesTheory.gmap g B ↔ A = B := by
@@ -26,7 +26,7 @@ theorem gmap_eq_iff (g : V ≃ₗ[K] V) {A B : Submodule (𝓞 K) V} :
     rfl
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [Submodule.mem_inf, Formalism.HermitianLatticesTheory.isomAct_mem_gmap]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem gmap_inf (g : V ≃ₗ[K] V) (A B : Submodule (𝓞 K) V) :
     Formalism.HermitianLatticesTheory.gmap g (A ⊓ B) = Formalism.HermitianLatticesTheory.gmap g A ⊓ Formalism.HermitianLatticesTheory.gmap g B := by
@@ -34,11 +34,11 @@ theorem gmap_inf (g : V ≃ₗ[K] V) (A B : Submodule (𝓞 K) V) :
   simp only [Submodule.mem_inf, Formalism.HermitianLatticesTheory.isomAct_mem_gmap]
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[Formalism.HermitianLatticesTheory.isomAct_mem_gmap]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `e` using `hA _ hx`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `e` using `[LinearEquiv.apply_symm_apply]`. Rewrite using `[e]`. Conclude with `hx`. Introduce `hx`. Establish `e` using `hA _ hx`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: g.symm x = x` using `by conv_lhs => rw [← e]`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `hx`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gmap_eq_self_of_fix (g : V ≃ₗ[K] V) {A : Submodule (𝓞 K) V} (hA : ∀ x ∈ A, g x = x) :
     Formalism.HermitianLatticesTheory.gmap g A = A := by
@@ -59,14 +59,14 @@ theorem gmap_eq_self_of_fix (g : V ≃ₗ[K] V) {A : Submodule (𝓞 K) V} (hA :
     exact hx
 
 /- English proof (translation)
-Simplify using `[orthK, Submodule.mem_iInf, LinearMap.mem_ker]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_orthK {h : V →ₗ⋆[K] V →ₗ[K] K} {U : Submodule K V} {v : V} :
     v ∈ orthK h U ↔ ∀ u ∈ U, h u v = 0 := by
   simp [orthK, Submodule.mem_iInf, LinearMap.mem_ker]
 
 /- English proof (translation)
-Rewrite `hv`, the goal using `[mem_orthK]`. Introduce `u hu`. Establish `e1 : h (g u) (g v) = h u v` using `hg.1 u v`. Rewrite `e1` using `[hg.2 u hu]`. Rewrite using `[e1, hv u hu]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_mem_orthK {h : V →ₗ⋆[K] V →ₗ[K] K} {U : Submodule K V} {g : V ≃ₗ[K] V}
     (hg : g ∈ isomFix h U) {v : V} (hv : v ∈ orthK h U) : g v ∈ orthK h U := by
@@ -77,9 +77,9 @@ theorem map_mem_orthK {h : V →ₗ⋆[K] V →ₗ[K] K} {U : Submodule K V} {g 
   rw [e1, hv u hu]
 
 /- English proof (translation)
-Establish `hgi : g⁻¹ ∈ isomFix h U` using `(isomFix h U).inv_mem hg`. Use extensionality with `x`. Rewrite using `[Formalism.HermitianLatticesTheory.isomAct_mem_gmap, Submodule.restrictScalars_mem, Submodule.restrictScalars_mem]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `map_mem_orthK hg hx` as an intermediate fact. Simplify using `using this`. Introduce `hx`. Conclude with `map_mem_orthK hgi hx`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem gmap_orthK {h : V →ₗ⋆[K] V →ₗ[K] K} {U : Submodule K V} {g : V ≃ₗ[K] V}
     (hg : g ∈ isomFix h U) :
@@ -95,7 +95,7 @@ theorem gmap_orthK {h : V →ₗ⋆[K] V →ₗ[K] K} {U : Submodule K V} {g : V
     exact map_mem_orthK hgi hx
 
 /- English proof (translation)
-The claim follows from `gmap_eq_self_of_fix g fun x hx => hg.2 x hx`.
+A detailed English derivation is pending.
 -/
 theorem gmap_U {h : V →ₗ⋆[K] V →ₗ[K] K} {U : Submodule K V} {g : V ≃ₗ[K] V}
     (hg : g ∈ isomFix h U) :
@@ -103,11 +103,11 @@ theorem gmap_U {h : V →ₗ⋆[K] V →ₗ[K] K} {U : Submodule K V} {g : V ≃
   gmap_eq_self_of_fix g fun x hx => hg.2 x hx
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[Formalism.HermitianLatticesTheory.isomAct_mem_gmap]`. Express the relevant statement in the definitionally equal form `(∀ y ∈ Formalism.HermitianLatticesTheory.gmap g Λ, h y x ∈ _) ↔ ∀ y ∈ Λ, h y (g.symm x) ∈ _`. Prove the components needed by the constructor for the conclusion. Introduce `H y hy`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `H (g y) (by rw [Formalism.HermitianLatticesTheory.isomAct_mem_gmap]; simpa using hy)` as an intermediate fact. Establish `e : h (g y) (g (g.symm x)) = h y (g.symm x)` using `hg y (g.symm x)`. Rewrite `e` using `[LinearEquiv.apply_symm_apply]`. Rewrite `this` using `[e]`. Then use the resulting hypothesis. Introduce `H y hy`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hy` using `[Formalism.HermitianLatticesTheory.isomAct_mem_gmap]`. Use `H _ hy` as an intermediate fact. Establish `e : h (g (g.symm y)) (g (g.symm x)) = h (g.symm y) (g.symm x)` using `hg _ _`. Rewrite `e` using `[LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`. Rewrite using `[e]` and apply the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem dualF_gmap {h : V →ₗ⋆[K] V →ₗ[K] K} {g : V ≃ₗ[K] V} (hg : g ∈ Formalism.HermitianLatticesTheory.isom h)
     (𝔭 : Ideal (𝓞 F)) (Λ : Submodule (𝓞 K) V) :
@@ -129,7 +129,7 @@ theorem dualF_gmap {h : V →ₗ⋆[K] V →ₗ[K] K} {g : V ≃ₗ[K] V} (hg : 
     rwa [e]
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite using `[← hL.2]`. Conclude with `Submodule.subset_span hx`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_of_isLatIn {X : Submodule K V} {L : Submodule (𝓞 K) V} (hL : IsLatIn X L) :
     ∀ x ∈ L, x ∈ X := by
@@ -138,15 +138,15 @@ theorem le_of_isLatIn {X : Submodule K V} {L : Submodule (𝓞 K) V} (hL : IsLat
   exact Submodule.subset_span hx
 
 /- English proof (translation)
-Establish `hMg : Formalism.HermitianLatticesTheory.gmap g M = M` using `gmap_eq_self_of_fix g fun x hx => hg.2 x (le_of_isLatIn hM x hx)`. Set `e : Submodule (𝓞 K) V ≃ Submodule (𝓞 K) V` to `{ toFun := Formalism.HermitianLatticesTheory.gmap g invFun := Formalism.HermitianLatticesTheory.gmap g.symm left_inv := fun Λ => Formalism.HermitianLatticesTheory.isomAct_gmap_symm _ Λ right_inv := fun Λ => by`. Use `Formalism.HermitianLatticesTheory.isomAct_gmap_symm g.symm Λ` as an intermediate fact. Simplify using `using this }`. Unfold `fibP`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions.
 
-Use `(Nat.card_congr (Equiv.subtypeEquiv e ?_)).symm` and prove the remaining obligations. Introduce `Λ`. Express the relevant statement in the definitionally equal form `_ ↔ ((∃ Λ₀ : Submodule (𝓞 K) V, Submodule.IsLattice K Λ₀ ∧ locF 𝔭 Λ₀ = Formalism.HermitianLatticesTheory.gmap g Λ) ∧ dualF h 𝔭 (Formalism.HermitianLatticesTheory.gmap g Λ) = Formalism.HermitianLatticesTheory.gmap g Λ ∧ Formalism.HermitianLatticesTheory.gmap g Λ ⊓ U.restrictScalar …`. Establish `e1 : Formalism.HermitianLatticesTheory.gmap g Λ ⊓ U.restrictScalars (𝓞 K) = Formalism.HermitianLatticesTheory.gmap g (Λ ⊓ U.restrictScalars (𝓞 K))` using `by rw [gmap_inf, gmap_U hg]`. Establish `e2 : locF 𝔭 M = Formalism.HermitianLatticesTheory.gmap g (locF 𝔭 M)` using `by rw [LocalizedFibreSets.gmap_locF, hMg]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : Formalism.HermitianLatticesTheory.gmap g Λ ⊓ (orthK h U).restrictScalars (𝓞 K) = Formalism.HermitianLatticesTheory.gmap g (Λ ⊓ (orthK h U).restrictScalars (𝓞 K))` using `by rw [gmap_inf, gmap_orthK hg]`. Establish `e4 : locF 𝔭 (Formalism.HermitianLatticesTheory.gmap g T) = Formalism.HermitianLatticesTheory.gmap g (locF 𝔭 T)` using `(LocalizedFibreSets.gmap_locF g 𝔭 T).symm`. Rewrite using `[dualF_gmap hg.1, gmap_eq_iff, e1, e3, e4, gmap_eq_iff]`. Use `conv_rhs => rw [e2, gmap_eq_iff]`. Use `and_congr_left fun _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨Λ₀, h0, e0⟩`. Conclude with `⟨Formalism.HermitianLatticesTheory.gmap g Λ₀, LocalizedFibreSets.isLattice_gmap g h0, by rw [← LocalizedFibreSets.gmap_locF, e0]⟩`. Introduce and unpack `⟨Λ₀, h0, e0⟩`. Use `⟨Formalism.HermitianLatticesTheory.gmap g.symm Λ₀, LocalizedFibreSets.isLattice_gmap g.symm h0, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← LocalizedFibreSets.gmap_locF, e0, Formalism.HermitianLatticesTheory.isomAct_gmap_symm]`.
+A detailed English derivation is pending.
 -/
 theorem fibP_gmap [FiniteDimensional K V] {h : V →ₗ⋆[K] V →ₗ[K] K} {U : Submodule K V} {M : Submodule (𝓞 K) V}
     (hM : IsLatIn U M) (𝔭 : Ideal (𝓞 F)) (T : Submodule (𝓞 K) V) {g : V ≃ₗ[K] V}

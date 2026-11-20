@@ -16,7 +16,7 @@ section
 variable {F : Type} [Field F] {a t : ℕ}
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.toRows₁, Matrix.toBlocks₁₁, Matrix.toBlocks₁₂, Matrix.toRows₂, Matrix.mul_apply, Fintype.sum_sum_type]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem toRows₁_mul' (N : Matrix (Fin a ⊕ Fin t) (Fin a ⊕ Fin t) F)
     (x : Matrix (Fin a ⊕ Fin t) (Fin a) F) :
@@ -26,7 +26,7 @@ theorem toRows₁_mul' (N : Matrix (Fin a ⊕ Fin t) (Fin a ⊕ Fin t) F)
     Fintype.sum_sum_type]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.toRows₁, Matrix.toBlocks₂₁, Matrix.toBlocks₂₂, Matrix.toRows₂, Matrix.mul_apply, Fintype.sum_sum_type]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem toRows₂_mul' (N : Matrix (Fin a ⊕ Fin t) (Fin a ⊕ Fin t) F)
     (x : Matrix (Fin a ⊕ Fin t) (Fin a) F) :
@@ -36,7 +36,7 @@ theorem toRows₂_mul' (N : Matrix (Fin a ⊕ Fin t) (Fin a ⊕ Fin t) F)
     Fintype.sum_sum_type]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.toBlocks₁₁, Matrix.toBlocks₁₂, Matrix.toBlocks₂₁, Matrix.mul_apply, Fintype.sum_sum_type]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem toBlocks₁₁_mul' (N P : Matrix (Fin a ⊕ Fin t) (Fin a ⊕ Fin t) F) :
     (N * P).toBlocks₁₁ = N.toBlocks₁₁ * P.toBlocks₁₁ + N.toBlocks₁₂ * P.toBlocks₂₁ := by
@@ -45,7 +45,7 @@ theorem toBlocks₁₁_mul' (N P : Matrix (Fin a ⊕ Fin t) (Fin a ⊕ Fin t) F)
     Fintype.sum_sum_type]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.toBlocks₁₁, Matrix.toBlocks₂₂, Matrix.toBlocks₂₁, Matrix.mul_apply, Fintype.sum_sum_type]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem toBlocks₂₁_mul' (N P : Matrix (Fin a ⊕ Fin t) (Fin a ⊕ Fin t) F) :
     (N * P).toBlocks₂₁ = N.toBlocks₂₁ * P.toBlocks₁₁ + N.toBlocks₂₂ * P.toBlocks₂₁ := by
@@ -60,9 +60,9 @@ abbrev Supp (x : Matrix (Fin a ⊕ Fin t) (Fin a) F) : Prop :=
     toRows₂ x ∈ IIset O ϖ
 
 /- English proof (translation)
-Establish `h : (∃ k : J', ((k : GL (Fin a) F) : Matrix (Fin a) (Fin a) F) = toRows₁ x) ∧ toRows₂ x ∈ IIset O ϖ` using `⟨⟨k, hk⟩, hx⟩`. Unfold `phiU`. Rewrite using `[dif_pos h]`. Establish `hc` using `Classical.choose_spec h.1`. Establish `hck : Classical.choose h.1 = k` using `Subtype.ext (Units.ext (hc.trans hk.symm))`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hck]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem phiU_of (ρ : J' →* ℂˣ) (x : Matrix (Fin a ⊕ Fin t) (Fin a) F) (k : J')
     (hk : ((k : GL (Fin a) F) : Matrix (Fin a) (Fin a) F) = toRows₁ x)
@@ -76,7 +76,7 @@ theorem phiU_of (ρ : J' →* ℂˣ) (x : Matrix (Fin a ⊕ Fin t) (Fin a) F) (k
   rw [hck]
 
 /- English proof (translation)
-Unfold `phiU`. Conclude with `dif_neg h`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem phiU_zero (ρ : J' →* ℂˣ) (x : Matrix (Fin a ⊕ Fin t) (Fin a) F)
     (h : ¬ Supp O ϖ J' x) : phiU O ϖ J' ρ x = 0 := by
@@ -86,7 +86,7 @@ theorem phiU_zero (ρ : J' →* ℂˣ) (x : Matrix (Fin a ⊕ Fin t) (Fin a) F)
 variable {O ϖ J'}
 
 /- English proof (translation)
-Introduce `i j`. Rewrite using `[Matrix.mul_apply]`. Conclude with `O.sum_mem (fun l _ => O.mul_mem (hP i l) (hQ l j))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma mul_entries_mem_of_entries_mem {m n p : Type*} [Fintype n] {P : Matrix m n F} {Q : Matrix n p F}
     (hP : ∀ i j, P i j ∈ O) (hQ : ∀ i j, Q i j ∈ O) : ∀ i j, (P * Q) i j ∈ O := by
@@ -95,9 +95,9 @@ private lemma mul_entries_mem_of_entries_mem {m n p : Type*} [Fintype n] {P : Ma
   exact O.sum_mem (fun l _ => O.mul_mem (hP i l) (hQ l j))
 
 /- English proof (translation)
-Use `show (∀ i j, ∃ o ∈ O, y i j = ϖ * o) ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce `h i j`. Take `⟨o, ho, he⟩` from `h i j`. Rewrite using `[Matrix.smul_apply, he, smul_eq_mul, inv_mul_cancel_left₀ hϖ0]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `ho`. Introduce `h i j`. Use `⟨ϖ⁻¹ * y i j, h i j, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_inv_cancel_left₀ hϖ0]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma mem_IIset_iff_inv_smul_entries_mem (hϖ0 : ϖ ≠ 0) {p q : ℕ} (y : Matrix (Fin p) (Fin q) F) :
     y ∈ IIset O ϖ ↔ ∀ i j, (ϖ⁻¹ • y) i j ∈ O := by
@@ -112,29 +112,27 @@ private lemma mem_IIset_iff_inv_smul_entries_mem (hϖ0 : ϖ ≠ 0) {p q : ℕ} (
     rw [mul_inv_cancel_left₀ hϖ0]
 
 /- English proof (translation)
-Set `w : O` to `⟨ϖ, hϖ⟩`. Set `YO : Matrix (Fin a) (Fin a) O` to `fun i j => ⟨Y i j, hY i j⟩`. Set `UO : Matrix (Fin a) (Fin a) O` to `1 + w • YO`. Establish `hmap : O.subtype.mapMatrix UO = 1 + ϖ • Y`. Use extensionality with `i j`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `[UO, YO, w]`. Both sides reduce to the same expression. Simplify using `[UO, YO, w, Matrix.one_apply_ne hij]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Set `I : Ideal O` to `Ideal.span {w}`. Establish `hw : Ideal.Quotient.mk I w = 0` using `Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.subset_span rfl)`. Establish `hred : (Ideal.Quotient.mk I).mapMatrix UO = 1`. Use extensionality with `i j`.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `[UO, hw]`. Simplify using `[UO, hw, Matrix.one_apply_ne hij]`. Establish `hdet : UO.det - 1 ∈ I`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_one, RingHom.map_det, hred, Matrix.det_one, sub_self]`. Take `⟨o, ho⟩` from `Ideal.mem_span_singleton'.mp hdet`. Establish `h1 : (o : F) * ϖ = (UO.det : F) - 1`. Use `congrArg (fun r : O => (r : F)) ho` as an intermediate fact. Simplify `this` using `[w]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hdetmap : (1 + ϖ • Y).det = (UO.det : F)`. Rewrite using `[← hmap, ← RingHom.map_det]`. Both sides reduce to the same expression. Establish `hnd : ∀ o' ∈ O, (UO.det : F) ≠ ϖ * o'`. Introduce `o' ho' heq`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hL.1` to reduce the goal to its premises. Establish `h2 : ϖ * (o' - (o : F)) = 1` using `by linear_combination -h1 - heq`. Rewrite using `[← eq_inv_of_mul_eq_one_right h2]`. Conclude with `O.sub_mem ho' o.2`. Establish `hinv : (UO.det : F)⁻¹ ∈ O` using `hL.2 _ (UO.det).2 hnd`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : (1 + ϖ • Y).det ≠ 0`. Rewrite using `[hdetmap]`. Introduce `h0`. Conclude with `hnd 0 O.zero_mem (by rw [h0, mul_zero])`. Set `U0 : GL (Fin a) F` to `Matrix.GeneralLinearGroup.mkOfDetNeZero _ hne`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU0 : (U0 : Matrix (Fin a) (Fin a) F) = 1 + ϖ • Y` using `rfl`. Establish `hU0i : ((U0⁻¹ : GL (Fin a) F) : Matrix (Fin a) (Fin a) F) = (1 + ϖ • Y)⁻¹`. Rewrite using `[Matrix.coe_units_inv, hU0]`. Establish `hG : U0 ∈ GLint O a` using `by show IsInt O _ ∧ IsInt O _`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Rewrite using `[hU0, ← hmap]`. Conclude with `fun i j => (UO i j).2`. Rewrite using `[hU0i, Matrix.inv_def, Ring.inverse_eq_inv', hdetmap, ← hmap, ← RingHom.map_adjugate]`. Introduce `i j`. Rewrite using `[Matrix.smul_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `O.mul_mem hinv (UO.adjugate i j).2`. Use `⟨U0, ?_, rfl⟩` and prove the remaining obligations. Use `show U0 ∈ GLint O a ∧ _`. Use `⟨hG, ?_⟩` and prove the remaining obligations. Rewrite using `[hU0, add_sub_cancel_left, smul_smul, inv_mul_cancel₀ hϖ0, one_smul]`.
-
-Conclude with `hY`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma exists_mem_congSub_eq_one_add_smul (hϖ : ϖ ∈ O) (hϖ0 : ϖ ≠ 0) (hL : IsLocalAt O ϖ)
     (Y : Matrix (Fin a) (Fin a) F) (hY : IsInt O Y) :
@@ -201,17 +199,15 @@ private lemma exists_mem_congSub_eq_one_add_smul (hϖ : ϖ ∈ O) (hϖ0 : ϖ ≠
   exact hY
 
 /- English proof (translation)
-Take `⟨W, hWdef⟩ : ∃ W : GL (Fin a) F, W = ((n * m : J') : GL (Fin a) F)` from `⟨_, rfl⟩`. Establish `hWint : IsInt O (W : Matrix (Fin a) (Fin a) F) ∧ IsInt O ((W⁻¹ : GL (Fin a) F) : Matrix (Fin a) (Fin a) F)`. Rewrite using `[hWdef]`. Conclude with `hJ (n * m).2`. Establish `hmint : IsInt O ((m : GL (Fin a) F) : Matrix (Fin a) (Fin a) F) ∧ IsInt O (((m : GL (Fin a) F)⁻¹ : GL (Fin a) F) : Matrix (Fin a) (Fin a) F)` using `hJ m.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hWcoe : (W : Matrix (Fin a) (Fin a) F) = N.toBlocks₁₁ * toRows₁ x`. Rewrite using `[hWdef, Subgroup.coe_mul, Units.val_mul, hn, hm]`. Establish `hx'` using `(mem_IIset_iff_inv_smul_entries_mem hϖ0 (toRows₂ x)).mp hx`. Establish `hZ' : ∀ i j, (ϖ⁻¹ • (N.toBlocks₁₂ * toRows₂ x)) i j ∈ O`. Rewrite using `[← Matrix.mul_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `mul_entries_mem_of_entries_mem h12 hx'`. Take `⟨U, hU, hUc⟩` from `exists_mem_congSub_eq_one_add_smul hϖ hϖ0 hL (((W⁻¹ : GL (Fin a) F) : Matrix (Fin a) (Fin a) F) * (ϖ⁻¹ • (N.toBlocks₁₂ * toRows₂ x))) (mul_entries_mem_of_entries_mem hWint.2 hZ')`. Establish `hWW : (W : Matrix (Fin a) (Fin a) F) * ((W⁻¹ : GL (Fin a) F) : Matrix (Fin a) (Fin a) F) = 1`. Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`. Use `⟨n * m * ⟨U, hK hU⟩, ?_, ?_, ⟨U, hK hU⟩, hU, rfl⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Subgroup.coe_mul, Units.val_mul, ← hWdef]`. Use `_ = (W : Matrix (Fin a) (Fin a) F) + N.toBlocks₁₂ * toRows₂ x := by`. Rewrite using `[hUc, Matrix.mul_add, Matrix.mul_one, Matrix.mul_smul, ← Matrix.mul_assoc, hWW, Matrix.one_mul, smul_smul, mul_inv_cancel₀ hϖ0, one_smul]`. Use `_ = toRows₁ (N * x) := by rw [toRows₁_mul', ← hWcoe]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[toRows₂_mul']`. Apply `(mem_IIset_iff_inv_smul_entries_mem hϖ0 _).mpr` to reduce the goal to its premises. Establish `h21'` using `(mem_IIset_iff_inv_smul_entries_mem hϖ0 _).mp h21`. Rewrite using `[smul_add, ← Matrix.smul_mul, ← Matrix.mul_smul]`. Introduce `i j`.
-
-Conclude with `O.add_mem (mul_entries_mem_of_entries_mem h21' (by rw [← hm]; exact hmint.1) i j) (mul_entries_mem_of_entries_mem h22 hx' i j)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem good_mul (hϖ : ϖ ∈ O) (hϖ0 : ϖ ≠ 0) (hL : IsLocalAt O ϖ) (hK : congSub O ϖ a ≤ J')
     (hJ : J' ≤ GLint O a) (N : Matrix (Fin a ⊕ Fin t) (Fin a ⊕ Fin t) F) (n : J')
@@ -260,49 +256,45 @@ theorem good_mul (hϖ : ϖ ∈ O) (hϖ0 : ϖ ≠ 0) (hL : IsLocalAt O ϖ) (hK : 
 end
 
 /- English proof (translation)
-Unfold `PI.DatumBlockEigen`. Introduce `F _ O ϖ hϖ hϖ0 hL a t J' hK hJ ρ hρ h hb`. Unfold `PI.DatumBlockEigen.blockCond at hb`. Simplify using `only at hb ⊢`. Take `⟨M, hM⟩ : ∃ M : Matrix (Fin a ⊕ Fin t) (Fin a ⊕ Fin t) F, M = reindex finSumFinEquiv.symm finSumFinEquiv.symm (h : Matrix (Fin (a + t)) (Fin (a + t)) F)` from `⟨_, rfl⟩`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify by unfolding definitions. Extract witnesses or component facts from the available result.
 
-Take `⟨Mi, hMi⟩ : ∃ Mi : Matrix (Fin a ⊕ Fin t) (Fin a ⊕ Fin t) F, Mi = reindex finSumFinEquiv.symm finSumFinEquiv.symm ((h⁻¹ : GL (Fin (a + t)) F) : Matrix (Fin (a + t)) (Fin (a + t)) F)` from `⟨_, rfl⟩`. Rewrite `hb` using `[← hM]`. Rewrite using `[← hMi]`. Take `⟨⟨k, hkJ, hkA⟩, hBint, hCII, D0, hD0, hDD⟩` from `hb`. Establish `hMMi : M * Mi = 1`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hM, hMi, Matrix.reindex_apply, Matrix.reindex_apply, Matrix.submatrix_mul_equiv, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.submatrix_one_equiv]`. Take `⟨A, hA⟩ : ∃ A, A = M.toBlocks₁₁` from `⟨_, rfl⟩`. Take `⟨B, hB⟩ : ∃ B, B = M.toBlocks₁₂` from `⟨_, rfl⟩`. Take `⟨C, hC⟩ : ∃ C, C = M.toBlocks₂₁` from `⟨_, rfl⟩`. Take `⟨D, hD⟩ : ∃ D, D = M.toBlocks₂₂` from `⟨_, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hMb : M = fromBlocks A B C D`. Rewrite using `[hA, hB, hC, hD, Matrix.fromBlocks_toBlocks]`. Rewrite `hkA` using `[← hA]`. Rewrite `hBint` using `[← hB]`. Rewrite `hCII` using `[← hC]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hDD` using `[← hD]`. Establish `hkint : IsInt O (k : Matrix (Fin a) (Fin a) F) ∧ IsInt O ((k⁻¹ : GL (Fin a) F) : Matrix (Fin a) (Fin a) F)` using `hJ hkJ`. Establish `hDint : IsInt O (D0 : Matrix (Fin t) (Fin t) F) ∧ IsInt O ((D0⁻¹ : GL (Fin t) F) : Matrix (Fin t) (Fin t) F)` using `hD0`. Establish `hC'` using `(mem_IIset_iff_inv_smul_entries_mem hϖ0 C).mp hCII`. Take `⟨Ai, hAi⟩ : ∃ Ai : Matrix (Fin a) (Fin a) F, Ai = ((k⁻¹ : GL (Fin a) F) : Matrix (Fin a) (Fin a) F)` from `⟨_, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hAAi : A * Ai = 1`. Rewrite using `[← hkA, hAi, ← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `hAiint : ∀ i j, Ai i j ∈ O`. Rewrite using `[hAi]`. Conclude with `hkint.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨Di, hDi⟩ : ∃ Di : Matrix (Fin t) (Fin t) F, Di = ((D0⁻¹ : GL (Fin t) F) : Matrix (Fin t) (Fin t) F)` from `⟨_, rfl⟩`. Establish `hDDi : D * Di = 1`. Rewrite using `[← hDD, hDi, ← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `hDiint : ∀ i j, Di i j ∈ O`. Rewrite using `[hDi]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hDint.2`. Take `⟨Y, hY⟩ : ∃ Y : Matrix (Fin t) (Fin t) F, Y = -(Di * ((ϖ⁻¹ • C) * (Ai * B)))` from `⟨_, rfl⟩`. Establish `hYint : IsInt O Y`. Introduce `i j`. Rewrite using `[hY, Matrix.neg_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `O.neg_mem (mul_entries_mem_of_entries_mem hDiint (mul_entries_mem_of_entries_mem hC' (mul_entries_mem_of_entries_mem hAiint hBint)) i j)`. Take `⟨U, hU, hUc⟩` from `exists_mem_congSub_eq_one_add_smul (a := t) hϖ hϖ0 hL Y hYint`. Establish `hUG : U ∈ GLint O t` using `(hU : U ∈ GLint O t ∧ _).1`. Establish `hDY : D * Y = -((ϖ⁻¹ • C) * (Ai * B))`. Rewrite using `[hY, Matrix.mul_neg, ← Matrix.mul_assoc D Di, hDDi, Matrix.one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hS : ((D0 * U : GL (Fin t) F) : Matrix (Fin t) (Fin t) F) = D - C * Ai * B`. Rewrite using `[Units.val_mul, hUc, hDD, Matrix.mul_add, Matrix.mul_one, Matrix.mul_smul, hDY, Matrix.smul_mul, smul_neg, smul_smul, mul_inv_cancel₀ hϖ0, one_smul, ← Matrix.mul_assoc, sub_eq_add_neg]`. Establish `hSG : IsInt O ((D0 * U : GL (Fin t) F) : Matrix (Fin t) (Fin t) F) ∧ IsInt O (((D0 * U)⁻¹ : GL (Fin t) F) : Matrix (Fin t) (Fin t) F)` using `(GLint O t).mul_mem hD0 hUG`. Take `⟨Si, hSi⟩ : ∃ Si : Matrix (Fin t) (Fin t) F, Si = (((D0 * U)⁻¹ : GL (Fin t) F) : Matrix (Fin t) (Fin t) F)` from `⟨_, rfl⟩`. Establish `hSSi : (D - C * Ai * B) * Si = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hS, hSi, ← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `hSiint : ∀ i j, Si i j ∈ O`. Rewrite using `[hSi]`. Conclude with `hSG.2`. Establish `hDSi : D * Si = 1 + C * Ai * B * Si`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : D = (D - C * Ai * B) + C * Ai * B` using `by abel`. Rewrite using `[e, Matrix.add_mul, hSSi]`. Establish `hMX : M * fromBlocks (Ai + Ai * B * Si * (C * Ai)) (-(Ai * B * Si)) (-(Si * (C * Ai))) Si = 1`. Rewrite using `[hMb, Matrix.fromBlocks_multiply, ← Matrix.fromBlocks_one]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Simplify using `only [Matrix.mul_add, Matrix.mul_neg, ← Matrix.mul_assoc, hAAi, Matrix.one_mul]`. Normalize the expressions using the abelian group laws. Simplify using `only [Matrix.mul_neg, ← Matrix.mul_assoc, hAAi, Matrix.one_mul]`. Normalize the expressions using the abelian group laws. Simplify using `only [Matrix.mul_add, Matrix.mul_neg, ← Matrix.mul_assoc, hDSi, Matrix.add_mul, Matrix.one_mul]`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Normalize the expressions using the abelian group laws. Simplify using `only [Matrix.mul_neg, ← Matrix.mul_assoc, hDSi]`. Normalize the expressions using the abelian group laws. Establish `hMiX : Mi = fromBlocks (Ai + Ai * B * Si * (C * Ai)) (-(Ai * B * Si)) (-(Si * (C * Ai))) Si`. Rewrite using `[← Matrix.inv_eq_right_inv hMMi, Matrix.inv_eq_right_inv hMX]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hEII : ∀ i j, (ϖ⁻¹ • (C * Ai)) i j ∈ O`. Rewrite using `[← Matrix.smul_mul]`. Conclude with `mul_entries_mem_of_entries_mem hC' hAiint`. Take `⟨U2, hU2, hU2c⟩` from `exists_mem_congSub_eq_one_add_smul (a := a) hϖ hϖ0 hL (B * Si * (ϖ⁻¹ • (C * Ai))) (mul_entries_mem_of_entries_mem (mul_entries_mem_of_entries_mem hBint hSiint) hEII)`. Establish `hk'coe : (((⟨k⁻¹ * U2, J'.mul_mem (J'.inv_mem hkJ) (hK hU2)⟩ : J') : GL (Fin a) F) : Matrix (Fin a) (Fin a) F) = Mi.toBlocks₁₁`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hMiX, Matrix.toBlocks_fromBlocks₁₁]`. Use `show ((k⁻¹ * U2 : GL (Fin a) F) : Matrix (Fin a) (Fin a) F) = _`. Rewrite using `[Units.val_mul, ← hAi, hU2c]`. Simplify using `only [Matrix.mul_add, Matrix.mul_one, Matrix.mul_smul, smul_smul, mul_inv_cancel₀ hϖ0, one_smul, ← Matrix.mul_assoc]`. Establish `h12 : ∀ i j, Mi.toBlocks₁₂ i j ∈ O`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hMiX, Matrix.toBlocks_fromBlocks₁₂]`. Introduce `i j`. Rewrite using `[Matrix.neg_apply]`. Conclude with `O.neg_mem (mul_entries_mem_of_entries_mem (mul_entries_mem_of_entries_mem hAiint hBint) hSiint i j)`. Establish `h21 : Mi.toBlocks₂₁ ∈ IIset O ϖ`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hMiX, Matrix.toBlocks_fromBlocks₂₁]`. Apply `(mem_IIset_iff_inv_smul_entries_mem hϖ0 _).mpr` to reduce the goal to its premises. Rewrite using `[smul_neg, ← Matrix.mul_smul]`. Introduce `i j`. Rewrite using `[Matrix.neg_apply]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `O.neg_mem (mul_entries_mem_of_entries_mem hSiint hEII i j)`. Establish `h22 : ∀ i j, Mi.toBlocks₂₂ i j ∈ O`. Rewrite using `[hMiX, Matrix.toBlocks_fromBlocks₂₂]`. Conclude with `hSiint`. Use `⟨⟨k⁻¹ * U2, J'.mul_mem (J'.inv_mem hkJ) (hK hU2)⟩, hk'coe, fun x => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Distinguish the cases in `hs : Supp O ϖ J' x`. Take `⟨⟨m, hm⟩, hx⟩` from `hs`. Take `⟨g, hg, hg2, U3, hU3, hgeq⟩` from `good_mul hϖ hϖ0 hL hK hJ Mi _ hk'coe h12 h21 h22 x m hm hx`. Rewrite using `[phiU_of O ϖ J' ρ (Mi * x) g hg hg2, phiU_of O ϖ J' ρ x m hm hx, hgeq, map_mul, map_mul, hρ U3 hU3, mul_one, Units.val_mul]`. Rewrite using `[phiU_zero O ϖ J' ρ x hs, mul_zero]`.
-
-Apply `phiU_zero O ϖ J' ρ (Mi * x)` to reduce the goal to its premises. Introduce and unpack `⟨⟨m, hm⟩, hx⟩`. Apply `hs` to reduce the goal to its premises. Establish `hMx : M * (Mi * x) = x`. Rewrite using `[← Matrix.mul_assoc, hMMi, Matrix.one_mul]`.
-
-Take `⟨g, hg, hg2, -⟩` from `good_mul hϖ hϖ0 hL hK hJ M ⟨k, hkJ⟩ (hkA.trans hA) (by rw [← hB]; exact hBint) (by rw [← hC]; exact hCII) (by rw [← hD, ← hDD]; exact hDint.1) (Mi * x) m hm hx`. Rewrite `hg`, `hg2` using `[hMx]`. Conclude with `⟨⟨g, hg⟩, hg2⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem main : PI.DatumBlockEigen := by
   unfold PI.DatumBlockEigen

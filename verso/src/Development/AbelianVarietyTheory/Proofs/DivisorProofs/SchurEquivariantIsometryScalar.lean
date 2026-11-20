@@ -15,13 +15,11 @@ variable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℝ V] [FiniteDime
   [MeasurableSpace V] [BorelSpace V]
 
 /- English proof (translation)
-Use `ae_eq_zero_of_integral_contDiff_smul_eq_zero hD.locallyIntegrable fun g hg hgc => ?_` and prove the remaining obligations. Establish `hg₁ : HasCompactSupport (Complex.ofRealCLM ∘ g)` using `hgc.comp_left rfl`. Establish `hg₂ : ContDiff ℝ ∞ (Complex.ofRealCLM ∘ g)` using `by fun_prop`. Use `set ψ : 𝓢(V, ℂ) := hg₁.toSchwartzMap hg₂ with hψ`. Use `set φ : 𝓢(V, ℂ) := 𝓕⁻ ψ with hφ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : ∀ x, (𝓕 φ) x = (g x : ℂ)` using `fun x => by`. Rewrite using `[hφ, FourierTransform.fourier_fourierInv_eq, hψ]`. Simplify using the standard rewrite rules. Establish `h1 : ∫ x, g x • D x = ∫ x, (𝓕 φ) x * D x`. Use `integral_congr_ae (.of_forall fun x => ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [h0, Complex.real_smul]`. Establish `h2 : ∫ x, (𝓕 φ) x * D x = ∫ x, φ x * 𝓕 D x`. Use `VectorFourier.integral_bilin_fourierIntegral_eq_flip (ContinuousLinearMap.mul ℂ ℂ) (L := innerₗ V) Real.continuous_fourierChar continuous_inner (φ.integrable (μ := volume)) hD` as an intermediate fact. Simplify using `using! this`. Rewrite using `[h1, h2]`.
-
-Simplify using `[hF]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ae_eq_zero_of_fourier_eq_zero {D : V → ℂ} (hD : Integrable D) (hF : ∀ ξ, 𝓕 D ξ = 0) :
     D =ᵐ[volume] 0 := by
@@ -48,25 +46,25 @@ variable {l : Type} [Fintype l]
 def pt (p q : EuclideanSpace ℝ l) : l ⊕ l → ℝ := Sum.elim (fun i => p i) (fun i => q i)
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[pPart, pt]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem pPart_pt (p q : EuclideanSpace ℝ l) : pPart (pt p q) = p := by
   ext i; simp [pPart, pt]
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[qPart, pt]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem qPart_pt (p q : EuclideanSpace ℝ l) : qPart (pt p q) = q := by
   ext i; simp [qPart, pt]
 
 /- English proof (translation)
-Establish `h1` using `h (pt p (-ξ))`. Rewrite `h1` using `[L2.inner_def]`. Establish `h2 : ∫ x, conj (f x) * rhoFun (pt p (-ξ)) g x = 0`. Rewrite using `[← h1]`. Use `integral_congr_ae ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [coeFn_rho (pt p (-ξ)) g] with x hx`. Rewrite using `[hx, RCLike.inner_apply, mul_comm]`. Establish `h3 : ∫ x, conj (f x) * rhoFun (pt p (-ξ)) g x = cexp (((π * ⟪p, -ξ⟫ : ℝ) : ℂ) * I) * 𝓕 (fun x => conj (f x) * g (x + p)) ξ`. Rewrite using `[Real.fourier_eq', ← integral_const_mul]`. Use `integral_congr_ae (.of_forall fun x => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [rhoFun, phase, pPart_pt, qPart_pt, smul_eq_mul]`. Establish `e : (((2 * π * ⟪-ξ, x⟫ + π * ⟪p, -ξ⟫ : ℝ) : ℂ) * I) = ((π * ⟪p, -ξ⟫ : ℝ) : ℂ) * I + ((-2 * π * ⟪x, ξ⟫ : ℝ) : ℂ) * I`. Rewrite using `[inner_neg_left, real_inner_comm]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, Complex.exp_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h3` using `[h2]`. Conclude with `(mul_eq_zero.1 h3.symm).resolve_left (Complex.exp_ne_zero _)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fourier_conj_mul_eq_zero (f g : L2 l) (h : ∀ w, ⟪f, rho w g⟫_ℂ = 0) (p ξ : EuclideanSpace ℝ l) :
     𝓕 (fun x => conj (f x) * g (x + p)) ξ = 0 := by
@@ -93,7 +91,7 @@ theorem fourier_conj_mul_eq_zero (f g : L2 l) (h : ∀ w, ⟪f, rho w g⟫_ℂ =
   exact (mul_eq_zero.1 h3.symm).resolve_left (Complex.exp_ne_zero _)
 
 /- English proof (translation)
-Use `(L2.integrable_inner (𝕜 := ℂ) f (rho (pt p 0) g)).congr ?_` and prove the remaining obligations. Use `filter_upwards [coeFn_rho (pt p 0) g] with x hx`. Rewrite using `[hx, RCLike.inner_apply, mul_comm]`. Simplify using `[rhoFun, phase, pPart_pt, qPart_pt]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integrable_conj_mul_shift (f g : L2 l) (p : EuclideanSpace ℝ l) :
     Integrable (fun x => conj (f x) * g (x + p)) := by
@@ -103,19 +101,17 @@ theorem integrable_conj_mul_shift (f g : L2 l) (p : EuclideanSpace ℝ l) :
   simp [rhoFun, phase, pPart_pt, qPart_pt]
 
 /- English proof (translation)
-Establish `hz : ∀ p : EuclideanSpace ℝ l, ∀ᵐ x, ‖(f : _ → ℂ) x‖ₑ ^ 2 * ‖(g : _ → ℂ) (x + p)‖ₑ ^ 2 = 0`. Introduce `p`. Use `filter_upwards [ae_eq_zero_of_fourier_eq_zero (integrable_conj_mul_shift f g p) (fourier_conj_mul_eq_zero f g h p)] with x hx`. Establish `hx' : conj ((f : _ → ℂ) x) * (g : _ → ℂ) (x + p) = 0` using `hx`. Break down `mul_eq_zero.1 hx' with h0 | h0` into its components or cases.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h0` using `[map_eq_zero]`. Simplify using `[h0]`. Simplify using `[h0]`. Establish `hfm : Measurable fun x => ‖(f : _ → ℂ) x‖ₑ ^ 2` using `(Lp.stronglyMeasurable f).measurable.enorm.pow_const 2`. Establish `hgm : Measurable fun x => ‖(g : _ → ℂ) x‖ₑ ^ 2` using `(Lp.stronglyMeasurable g).measurable.enorm.pow_const 2`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hprod : (∫⁻ x, ‖(f : _ → ℂ) x‖ₑ ^ 2) * (∫⁻ x, ‖(g : _ → ℂ) x‖ₑ ^ 2) = 0`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← lintegral_mul_const _ hfm]`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[lintegral_add_left_eq_self (fun y => ‖(g : _ → ℂ) y‖ₑ ^ 2) x]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `_ = ∫⁻ x, ∫⁻ p, ‖(f : _ → ℂ) x‖ₑ ^ 2 * ‖(g : _ → ℂ) (x + p)‖ₑ ^ 2 := by`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Conclude with `(lintegral_const_mul _ (hgm.comp (measurable_const_add x))).symm`. Use `_ = ∫⁻ p, ∫⁻ x, ‖(f : _ → ℂ) x‖ₑ ^ 2 * ‖(g : _ → ℂ) (x + p)‖ₑ ^ 2 := by`. Use `lintegral_lintegral_swap ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `((hfm.comp measurable_fst).mul (hgm.comp measurable_add)).aemeasurable`. Use `_ = 0 := by`. Rewrite using `[← lintegral_zero]`. Conclude with `lintegral_congr fun p => lintegral_eq_zero_of_ae_eq_zero (hz p) |>.trans rfl`. Establish `key : ∀ u : L2 l, (∫⁻ x, ‖(u : _ → ℂ) x‖ₑ ^ 2) = 0 → u = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Introduce `u hu`. Establish `hum : Measurable fun x => ‖(u : _ → ℂ) x‖ₑ ^ 2` using `(Lp.stronglyMeasurable u).measurable.enorm.pow_const 2`. Rewrite `hu` using `[lintegral_eq_zero_iff hum]`. Rewrite using `[Lp.eq_zero_iff_ae_eq_zero]`. Use `filter_upwards [hu] with x hx`.
-
-Simplify using `using hx`. Break down `mul_eq_zero.1 hprod with h0 | h0` into its components or cases. Conclude with `Or.inl (key f h0)`. Conclude with `Or.inr (key g h0)`.
+Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem eq_zero_or_eq_zero_of_inner_rho (f g : L2 l) (h : ∀ w, ⟪f, rho w g⟫_ℂ = 0) : f = 0 ∨ g = 0 := by
   have hz : ∀ p : EuclideanSpace ℝ l, ∀ᵐ x, ‖(f : _ → ℂ) x‖ₑ ^ 2 * ‖(g : _ → ℂ) (x + p)‖ₑ ^ 2 = 0 := by
@@ -156,7 +152,7 @@ theorem eq_zero_or_eq_zero_of_inner_rho (f g : L2 l) (h : ∀ w, ⟪f, rho w g�
   · exact Or.inr (key g h0)
 
 /- English proof (translation)
-Rewrite using `[LinearIsometryEquiv.symm_apply_eq, map_smul, rho_rho, add_neg_cancel, rho_zero, inv_smul_smul₀ (Complex.exp_ne_zero _)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rho_symm_apply (w : l ⊕ l → ℝ) (v : L2 l) :
     (rho w).symm v = (cexp (((π * sympl w (-w) : ℝ) : ℂ) * I))⁻¹ • rho (-w) v := by
@@ -167,9 +163,9 @@ def opSet (l : Type) [Fintype l] : Set (L2 l →L[ℂ] L2 l) :=
   Set.range fun cw : ℂ × (l ⊕ l → ℝ) => cw.1 • ((rho cw.2).toContinuousLinearEquiv : L2 l →L[ℂ] L2 l)
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨⟨c, w⟩, rfl⟩`. Use `⟨⟨conj c * (cexp (((π * sympl w (-w) : ℝ) : ℂ) * I))⁻¹, -w⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[star_smul, ContinuousLinearMap.star_eq_adjoint]`. Use extensionality with `v`. Establish `e` using `congrArg (fun T : L2 l →L[ℂ] L2 l => T v) (LinearIsometryEquiv.adjoint_eq_symm (rho w))`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `only [ContinuousLinearMap.smul_apply, ContinuousLinearEquiv.coe_coe, LinearIsometryEquiv.coe_toContinuousLinearEquiv] at e ⊢`. Rewrite using `[e, rho_symm_apply, smul_smul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem star_mem_opSet : ∀ A ∈ opSet l, star A ∈ opSet l := by
   rintro _ ⟨⟨c, w⟩, rfl⟩
@@ -183,11 +179,11 @@ theorem star_mem_opSet : ∀ A ∈ opSet l, star A ∈ opSet l := by
   rfl
 
 /- English proof (translation)
-Distinguish the cases in `h0 : S = ⊥`. Conclude with `Or.inl h0`. Use `right`. Take `⟨g, hg, hg0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot h0`. Use `haveI : CompleteSpace S := hS.completeSpace_coe`.
+Consider separately whether the proposition holds or fails. Prove the first alternative. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Submodule.orthogonal_eq_bot_iff, Submodule.eq_bot_iff]`. Introduce `f hf`. Establish `hw : ∀ w, ⟪f, rho w g⟫_ℂ = 0`. Introduce `w`. Establish `hm : rho w g ∈ S`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `hst _ ⟨⟨1, w⟩, rfl⟩ g hg` as an intermediate fact. Simplify using `using this`. Conclude with `Submodule.inner_left_of_mem_orthogonal hm hf`. Conclude with `(eq_zero_or_eq_zero_of_inner_rho f g hw).resolve_right hg0`.
+A detailed English derivation is pending.
 -/
 theorem irreducible_opSet (S : Submodule ℂ (L2 l)) (hS : IsClosed (S : Set (L2 l)))
     (hst : ∀ A ∈ opSet l, ∀ v ∈ S, A v ∈ S) : S = ⊥ ∨ S = ⊤ := by
@@ -213,9 +209,9 @@ namespace GlobalTheory.RealWeil
 open GlobalTheory.RealWeil.FourierConjProductVanishing in
 
 /- English proof (translation)
-Introduce `l _ U hU`. Take `⟨c, hc⟩` from `Formalism.MainNotions.BridgeCSchur.schur_bounded (opSet l) star_mem_opSet (fun S hS hst => irreducible_opSet S hS hst) (U.toContinuousLinearEquiv : L2 l →L[ℂ] L2 l) (by`. Introduce and unpack `_ ⟨⟨c, w⟩, rfl⟩`. Use extensionality with `v`. Simplify using `[hU])`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `⟨c, fun v => ?_⟩` and prove the remaining obligations. Use `congrArg (fun T : L2 l →L[ℂ] L2 l => T v) hc` as an intermediate fact. Simplify using `using this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem schur_rho_l2 : ∀ (l : Type) [Fintype l] (U : L2 l ≃ₗᵢ[ℂ] L2 l), (∀ w v, U (rho w v) = rho w (U v)) →
     ∃ a : ℂ, ∀ v, U v = a • v := by

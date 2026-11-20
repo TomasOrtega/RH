@@ -9,7 +9,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 namespace GlobalTheory.CompanionTheory.Ar.Link
 
 /- English proof (translation)
-The claim follows from `ReciprocityTheory.ChartRestriction.G.Geo.goodProjExists`.
+A detailed English derivation is pending.
 -/
 theorem goodProjExistsStatement_holds : ReciprocityTheory.ChartRestriction.G.Geo.GoodProjExistsStatement :=
   ReciprocityTheory.ChartRestriction.G.Geo.goodProjExists

@@ -151,15 +151,15 @@ def EllFormula2 : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
     cutTr2 μ₁ μ₂ F₁ F₂ τ φ = ellSum2 μ₁ μ₂ φ
 
 /- English proof (translation)
-Introduce `E _ _ _ _ n`. Take `⟨C₁, h₁⟩` from `hE E n`. Take `⟨C₂, h₂⟩` from `hV E n`. Use `⟨max 0 (max C₁ C₂), le_max_left _ _, fun μ _ F τ r φ hF hφ hr hr0 hreg hvc hτ => ?_⟩` and prove the remaining obligations. Establish `l₁ : C₁ ≤ max 0 (max C₁ C₂)` using `(le_max_left _ _).trans (le_max_right _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `l₂ : C₂ ≤ max 0 (max C₁ C₂)` using `(le_max_right _ _).trans (le_max_right _ _)`. Rewrite using `[(hU E n μ F τ φ hF hφ).2, ellSum]`. Use `finsum_congr fun c => ?_` and prove the remaining obligations. Distinguish the cases in `he : IsRegEll (Quot.out c)`. Rewrite using `[finsum_eq_if, if_pos he, cutTerm, orbTerm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `x`. Distinguish the cases in `h0 : φ (twConj (thetaA E n) x (ratGL E n (Quot.out c))) = 0`. Simplify using `[h0]`. Establish `hx : x ∈ cutSet E n τ`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `h₁ τ x _ he (le_trans ?_ hτ)` and prove the remaining obligations. Establish `a0` using `(hS E n).2.1 (twConj (thetaA E n) x (ratGL E n (Quot.out c)))`. Establish `a1` using `hr _ h0`. Conclude with `mul_le_mul l₁ (by linarith) (by linarith) (le_max_left _ _)`. Simplify using `[chiT, hx]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[finsum_eq_if, if_neg he]`. Distinguish the cases in `hd : IsRegD (Quot.out c)`. Conclude with `h₂ μ τ r φ _ hφ hr hvc (le_trans (mul_le_mul_of_nonneg_right l₂ (by linarith)) hτ) hd he`. Establish `: ∀ x, φ (twConj (thetaA E n) x (ratGL E n (Quot.out c))) = 0` using `fun x => by_contra fun h => hd (hreg _ x h)`. Simplify using `[cutTerm, this, quotIntegral]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ellFormula_of (hU : Unfold) (hE : EllTerm) (hV : ClassVanish) (hS : SizeBasic) : EllFormula := by
   classical

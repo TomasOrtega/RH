@@ -25,13 +25,13 @@ namespace GlobalTheory.ThK.AdaptEv.VacuumBlock
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Introduce `γ hγ`. Proceed by induction on `hγ using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, -, x, -, y, -, rfl⟩` from `hz`. Introduce `k`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_smul]`. Conclude with `⟨GlobalTheory.VacAny.at_mul_right ha _, GlobalTheory.VacAny.at_mul_right ha _⟩`. Consider the case `zero`. Introduce `k`. Simplify using `only [map_zero, Prod.fst_zero, Prod.snd_zero, Pi.zero_apply]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `⟨GlobalTheory.VacAny.at_zero, GlobalTheory.VacAny.at_zero⟩`. Consider the case `add x y _ _ hx hy`. Introduce `k`. Rewrite using `[map_add]`. Conclude with `⟨GlobalTheory.VacAny.at_add (hx k).1 (hy k).1, GlobalTheory.VacAny.at_add (hx k).2 (hy k).2⟩`.
+Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Consider the case `neg x _ hx`. Introduce `k`. Rewrite using `[map_neg]`. Conclude with `⟨GlobalTheory.VacAny.at_neg (hx k).1, GlobalTheory.VacAny.at_neg (hx k).2⟩`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem at_of_mem {n d : ℕ} {X : Spc F E n} {W : Spc F E d}
     {Bf : Matrix (Fin n) (Fin d) (AE F E) → Matrix (Fin n) (Fin d) (AE F E) → AF F} {κ : Type} [Fintype κ]
@@ -58,15 +58,13 @@ theorem at_of_mem {n d : ℕ} {X : Spc F E n} {W : Spc F E d}
     exact ⟨GlobalTheory.VacAny.at_neg (hx k).1, GlobalTheory.VacAny.at_neg (hx k).2⟩
 
 /- English proof (translation)
-Introduce `γ hγ γ' hγ'`. Take `⟨θ, hθ⟩` from `GlobalTheory.exists_int_add_conj_eq_one_of_base_good B hB`. Establish `h1` using `GlobalTheory.VacCocycle.psi_half_symp_add B hB X W r s r' s' hX hW θ hθ v γ hγ γ' hγ'`. Establish `h2` using `GlobalTheory.VacCocycle.psi_half_symp_add B hB X W r s r' s' hX hW θ hθ v γ' hγ' γ hγ`. Rewrite `h2` using `[add_comm γ' γ]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set S := symp (R := AF F) (cA σ) (-1) (incM F X.J) (incM F W.J) γ γ' with hS`. Establish `hanti : symp (R` using `AF F) (cA σ) (-1) (incM F X.J) (incM F W.J) γ' γ = -S := by`. Rewrite using `[hS, co.form, co.form]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h2` using `[hanti]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hne : ∀ x : AF F, B.ψ x ≠ 0` using `fun x h => by`. Use `AddChar.map_add_eq_mul B.ψ x (-x)` as an intermediate fact. Rewrite `this` using `[add_neg_cancel, AddChar.map_zero_eq_one, h, zero_mul]`. Conclude with `one_ne_zero this`. Use `set a := B.ψ (⅟(2 : AF F) * symp (R := AF F) (cA σ) (inclR (F := F) (AF F) (θ : E)) (incM F X.J) (incM F W.J) γ γ)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set b := B.ψ (⅟(2 : AF F) * symp (R := AF F) (cA σ) (inclR (F := F) (AF F) (θ : E)) (incM F X.J) (incM F W.J) γ' γ')`. Establish `hab : a * b ≠ 0` using `mul_ne_zero (hne _) (hne _)`. Establish `h3 : B.ψ (-(⅟(2 : AF F) * S)) = B.ψ (⅟(2 : AF F) * S)`. Use `h1.symm.trans h2` as an intermediate fact. Rewrite `this` using `[mul_comm b a, mul_neg, neg_neg]`.
-
-Conclude with `mul_left_cancel₀ hab this`. Establish `h4 : S = ⅟(2 : AF F) * S + -(-(⅟(2 : AF F) * S))`. Rewrite using `[neg_neg, ← two_mul, ← mul_assoc, mul_invOf_self, one_mul]`. Rewrite using `[h4, AddChar.map_add_eq_mul, ← h3, ← AddChar.map_add_eq_mul, neg_neg, neg_add_cancel, AddChar.map_zero_eq_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_symp_eq_one {σ : E →ₐ[F] E} (B : Base F E) (hB : B.IsGood σ) {n d : ℕ} (X : Spc F E n) (W : Spc F E d)
     (r s r' s' : ℕ) (hX : X.IsHerm σ B r s) (hW : W.IsSkew σ B r' s')
@@ -104,9 +102,9 @@ namespace GlobalTheory.ThK.AdaptEv.VacuumBlock
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [schr, Pi.smul_apply, smul_eq_mul]`. Distinguish the cases in `hx : x ∈ P`. Rewrite using `[Set.indicator_of_mem (show x + a ∈ (P : Set (ι → R)) from P.add_mem hx ha), Set.indicator_of_mem (show x ∈ (P : Set (ι → R)) from hx), AddChar.map_add_eq_mul, hb x hx]`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hxa : x + a ∉ (P : Set (ι → R))` using `fun h => hx (by simpa using P.sub_mem h ha)`. Rewrite using `[Set.indicator_of_notMem hxa, Set.indicator_of_notMem (show x ∉ (P : Set (ι → R)) from hx)]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem schr_indicator {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddChar R ℂ) {ι : Type} [Fintype ι]
     (P : AddSubgroup (ι → R)) (a b : ι → R) (ha : a ∈ P) (hb : ∀ y ∈ P, ψ (y ⬝ᵥ b) = 1) :
@@ -122,7 +120,7 @@ theorem schr_indicator {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddCha
     simp
 
 /- English proof (translation)
-Rewrite using `[← eq.symm.sum_comp, Fintype.sum_sum_type]`. Simplify using `[hf]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_of_inr {M κ ι κ₁ : Type} [AddCommMonoid M] [Fintype κ] [Fintype ι] [Fintype κ₁] (eq : κ ≃ ι ⊕ κ₁)
     (f : κ → M) (hf : ∀ j, f (eq.symm (Sum.inr j)) = 0) : ∑ k, f k = ∑ i, f (eq.symm (Sum.inl i)) := by
@@ -130,14 +128,14 @@ theorem sum_of_inr {M κ ι κ₁ : Type} [AddCommMonoid M] [Fintype κ] [Fintyp
   simp [hf]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.VacAny.psiV_apply, ← GlobalTheory.SchrLoc.eq_atPlace_of_at hz]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem psi_eq_psiV (ψ : AddChar (AF F) ℂ) (v : Pl F) {z : AF F} (hz : At (evFin F v) z) :
     ψ z = GlobalTheory.VacAny.psiV ψ v (evFin F v z) := by
   rw [GlobalTheory.VacAny.psiV_apply, ← GlobalTheory.SchrLoc.eq_atPlace_of_at hz]
 
 /- English proof (translation)
-Simplify using `only [ext0]`. Apply the tactic sequence `rcases eq k with i | j <;> simp`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem finite_evaluation_extend_by_zero (v : Pl F) {κ ι κ₁ : Type} (eq : κ ≃ ι ⊕ κ₁) (a : κ₁ → AF F) (k : κ) :
     evFin F v (ext0 eq a k) = ext0 eq (fun j => evFin F v (a j)) k := by
@@ -145,7 +143,7 @@ theorem finite_evaluation_extend_by_zero (v : Pl F) {κ ι κ₁ : Type} (eq : �
   rcases eq k with i | j <;> simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [prodVac, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem prodVac_smul {κ ι κ₁ R : Type} (eq : κ ≃ ι ⊕ κ₁) (c₁ c₂ : ℂ) (A : (ι → R) → ℂ) (φ : (κ₁ → R) → ℂ) :
     prodVac eq (c₁ • A) (c₂ • φ) = (c₁ * c₂) • prodVac eq A φ := by
@@ -160,13 +158,13 @@ namespace GlobalTheory.ThK.AdaptEv.VacuumBlock
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Establish `hc` using `GlobalTheory.VacCocycle.psi_half_symp_add B hB X W r s r' s' hX hW θ hθ v`. Rewrite using `[hc _ (add_mem hpΓ hqΓ) _ hgΓ, hc _ hpΓ _ hqΓ]`. Take `⟨hiA, hiAd⟩` from `GlobalTheory.ThK.AdaptEv.VacIso.spans_isotropic σ B X W X₁ W₁ H H' r' s' i₀ i₁ j₀ j₁ (GlobalTheory.ThK.AdaptEv.VacIso.invol_of_isGood hB) hW hH hH'`. Establish `e1 : symp (R` using `AF F) (cA σ) (inclR (F := F) (AF F) (θ : E)) (incM F X.J) (incM F W.J) p p = 0 := by`. Unfold `symp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[hiA p hpA, mul_zero, map_zero]`. Establish `e2 : symp (R` using `AF F) (cA σ) (inclR (F := F) (AF F) (θ : E)) (incM F X.J) (incM F W.J) q q = 0 := by`. Unfold `symp`. Rewrite using `[hiAd q hqA, mul_zero, map_zero]`. Establish `e3 : symp (R` using `AF F) (cA σ) (inclR (F := F) (AF F) (θ : E)) (incM F X.J) (incM F W.J) (incM F H.ι * g * (incM F H'.ι)ᵀ) (incM F H.ι * g * (incM F H'.ι)ᵀ) = symp (R := AF F) (cA σ) (inclR (F := F) (AF F) (θ : E)) (incM F X₁.J) (incM F W₁.J) g g := by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `symp`. Rewrite using `[GlobalTheory.AdaptGram.hTens_adapted σ B X W X₁ W₁ H H' i₀ i₁ j₀ j₁ hH hH']`. Establish `e4 : symp (R` using `AF F) (cA σ) (-1) (incM F X.J) (incM F W.J) (p + q) (incM F H.ι * g * (incM F H'.ι)ᵀ) = 0 := by`. Rewrite using `[co.form, hι, map_add, Prod.fst_add, Prod.snd_add, hp.1, hq.1, zero_add, add_zero]`. Simplify using `only`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions.
 
-Rewrite using `[dotProduct_comm, ext0_dotProduct_of eq _ _ hq.2, ext0_dotProduct_of eq _ _ hp.2, sub_zero]`. Establish `e5 : symp (R` using `AF F) (cA σ) (-1) (incM F X.J) (incM F W.J) p q = -((co.e q).1 ⬝ᵥ (co.e p).2) := by`. Rewrite using `[co.form, hp.1, zero_dotProduct, zero_sub]`. Rewrite using `[e1, e2, e3, e4, e5]`. Simplify using `only [mul_zero, neg_zero, AddChar.map_zero_eq_one, mul_neg, neg_neg, one_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem phase {σ : E →ₐ[F] E} (B : Base F E) (hB : B.IsGood σ) {n d n₁ d₁ : ℕ} (X : Spc F E n) (W : Spc F E d)
     (X₁ : Spc F E n₁) (W₁ : Spc F E d₁) (H : Plane E n n₁) (H' : Plane E d d₁) (M₁ : Model σ X₁ W₁)
@@ -212,33 +210,29 @@ namespace GlobalTheory.ThK.AdaptEv.VacuumBlock
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Use `set P := latPos X W co eq v with hPdef`. Take `⟨hφSB, hφ0, θ, hθ, hφact⟩` from `hM₁.vac v`. Establish `hASB` using `GlobalTheory.ThK.AdaptEv.VacuumBlock.latPos_indicator_mem_SB σ B X W r s r' s' co eq hX hW hrat v`. Use `⟨(sb_restrL_prodVac eq).2 _ hASB _ hφSB, fun h0 => hφ0 ?_, θ, hθ, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `congrFun h0 (ext0 eq y)` as an intermediate fact. Rewrite `this` using `[prodVac_ext0, Set.indicator_of_mem (show (0 : ι → Fv F v) ∈ (P : Set (ι → Fv F v)) from P.zero_mem), Pi.one_apply, one_mul]`. Conclude with `this`. Introduce `γ hγ`. Take `⟨p, hpA, q, hqA, g, hg, hpΓ, hqΓ, rfl⟩` from `GlobalTheory.ThK.AdaptEv.VacuumBlock.latAtV_adapted_decomp σ B X W X₁ W₁ H H' i₀ i₁ j₀ j₁ hH hH' v γ hγ`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgΓ : incM F H.ι * g * (incM F H'.ι)ᵀ ∈ latAtV X W v`. Establish `e : incM F H.ι * g * (incM F H'.ι)ᵀ = (p + q + incM F H.ι * g * (incM F H'.ι)ᵀ) - p - q` using `by abel`. Rewrite using `[e]`. Conclude with `sub_mem (sub_mem hγ hpΓ) hqΓ`. Establish `hp : (co.e p).1 = 0 ∧ ∀ j, (co.e p).2 (eq.symm (Sum.inr j)) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨y, z, rfl⟩` from `hpA`. Establish `h1` using `hA _ (Or.inl ⟨y, rfl⟩)`. Establish `h2` using `hA _ (Or.inr ⟨z, rfl⟩)`. Rewrite using `[map_add]`. Conclude with `⟨by rw [Prod.fst_add, h1.1, h2.1, add_zero], fun j => by rw [Prod.snd_add, Pi.add_apply, h1.2, h2.2, add_zero]⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hq : (co.e q).2 = 0 ∧ ∀ j, (co.e q).1 (eq.symm (Sum.inr j)) = 0`. Take `⟨y, z, rfl⟩` from `hqA`. Establish `h1` using `hAd _ (Or.inl ⟨y, rfl⟩)`. Establish `h2` using `hAd _ (Or.inr ⟨z, rfl⟩)`. Rewrite using `[map_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨by rw [Prod.snd_add, h1.1, h2.1, add_zero], fun j => by rw [Prod.fst_add, Pi.add_apply, h1.2, h2.2, add_zero]⟩`. Establish `hAtγ` using `at_of_mem co v _ hγ`. Establish `hAtp` using `at_of_mem co v _ hpΓ`. Establish `hAtq` using `at_of_mem co v _ hqΓ`. Establish `hAtg` using `at_of_mem M₁.co v _ hg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set α : Fin n × Fin d → Fv F v := fun k => evFin F v ((co.e q).1 k) with hα`. Use `set β : Fin n × Fin d → Fv F v := fun k => evFin F v ((co.e p).2 k) with hβ`. Use `set a : Fin n₁ × Fin d₁ → Fv F v := fun j => evFin F v ((M₁.co.e g).1 j) with ha`. Use `set b : Fin n₁ × Fin d₁ → Fv F v := fun j => evFin F v ((M₁.co.e g).2 j) with hb`. Establish `hαr : ∀ j, α (eq.symm (Sum.inr j)) = 0` using `fun j => by simp only [hα, hq.2 j, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hβr : ∀ j, β (eq.symm (Sum.inr j)) = 0` using `fun j => by simp only [hβ, hp.2 j, map_zero]`. Establish `hw : ((fun i => evFin F v ((co.e (p + q + incM F H.ι * g * (incM F H'.ι)ᵀ)).1 i)), (fun i => evFin F v ((co.e (p + q + incM F H.ι * g * (incM F H'.ι)ᵀ)).2 i))) = (α + ext0 eq a, β + ext0 eq b)`. Use `Prod.ext (funext fun k => ?_) (funext fun k => ?_)` and prove the remaining obligations. Simplify using `only [map_add, hι, Prod.fst_add, Pi.add_apply, hp.1, Pi.zero_apply, zero_add, finite_evaluation_extend_by_zero, hα, ha]`. Simplify using `only [map_add, hι, Prod.snd_add, Pi.add_apply, hq.1, Pi.zero_apply, add_zero, finite_evaluation_extend_by_zero, hβ, hb]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hαP : (fun i => α (eq.symm (Sum.inl i))) ∈ P` using `mem_latPos.2 ⟨q, hqΓ, fun i => rfl⟩`. Establish `hβP : ∀ y ∈ P, GlobalTheory.VacAny.psiV B.ψ v (y ⬝ᵥ fun i => β (eq.symm (Sum.inl i))) = 1`. Introduce `y hy`. Take `⟨γ', hγ', hy⟩` from `mem_latPos.1 hy`. Establish `hAt'` using `at_of_mem co v _ hγ'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : y ⬝ᵥ (fun i => β (eq.symm (Sum.inl i))) = evFin F v ((co.e γ').1 ⬝ᵥ (co.e p).2)`. Simplify using `only [dotProduct, map_sum, map_mul, hβ, ← hy]`. Rewrite using `[sum_of_inr eq _ (fun j => by rw [hp.2 j, map_zero, mul_zero])]`. Establish `hz : At (evFin F v) ((co.e γ').1 ⬝ᵥ (co.e p).2)` using `GlobalTheory.VacAny.at_sum _ fun k _ => GlobalTheory.VacAny.at_mul_right (hAt' k).1 _`. Rewrite using `[e1, ← psi_eq_psiV B.ψ v hz]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : (co.e γ').1 ⬝ᵥ (co.e p).2 = symp (R` using `AF F) (cA σ) (-1) (incM F X.J) (incM F W.J) γ' p := by`. Rewrite using `[co.form, hp.1, zero_dotProduct, sub_zero]`. Rewrite using `[e2]`. Conclude with `psi_symp_eq_one B hB X W r s r' s' hX hW co v γ' hγ' p hpΓ`. Establish `hφ1 : schr (GlobalTheory.VacAny.psiV B.ψ v) (a, b) (M₁.vac v) = B.ψ (⅟(2 : AF F) * symp (R` using `AF F) (cA σ) (inclR (F := F) (AF F) (θ : E)) (incM F X₁.J) (incM F W₁.J) g g) • M₁.vac v := GlobalTheory.AdelicActs.schr_local_of_acts B.ψ v (M₁.co.e g) (fun i => (hAtg i).1) (fun i => (hAtg i).2) _ _ hφSB (hφact g hg)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hph` using `phase B hB X W X₁ W₁ H H' M₁ r s r' s' i₀ i₁ j₀ j₁ hX hW hH hH' co eq hι θ hθ v hpA hqA hp hq hpΓ hqΓ hgΓ`. Establish `hD : B.ψ (⅟(2 : AF F) * ((co.e q).1 ⬝ᵥ (co.e p).2)) = GlobalTheory.VacAny.psiV B.ψ v (⅟(2 : Fv F v) * ((fun i => α (eq.symm (Sum.inl i))) ⬝ᵥ fun i => β (eq.symm (Sum.inl i))))`. Establish `hz : At (evFin F v) (⅟(2 : AF F) * ((co.e q).1 ⬝ᵥ (co.e p).2))` using `GlobalTheory.VacAny.at_mul_left _ (GlobalTheory.VacAny.at_sum _ fun k _ => GlobalTheory.VacAny.at_mul_right (hAtq k).1 _)`. Rewrite using `[psi_eq_psiV B.ψ v hz, map_mul, GlobalTheory.VacAny.evFin_invOf_two]`. Use `congr 2`.
-
-Simplify using `only [dotProduct, map_sum, map_mul, hα, hβ]`. Rewrite using `[sum_of_inr eq _ (fun j => by rw [hp.2 j, map_zero, mul_zero])]`. Introduce `rr hrr`. Use `show schr B.ψ (co.e (p + q + incM F H.ι * g * (incM F H'.ι)ᵀ)) _ = _`. Rewrite using `[GlobalTheory.SchrLoc.schr_tens_of_at B.ψ v _ (fun i => (hAtγ i).1) (fun i => (hAtγ i).2) _ rr hrr.1]`.
-
-Use `congr 1`. Rewrite using `[hw, GlobalTheory.ThK.AdaptEv.schroedinger_ext_zero_product_vacuum _ eq α β a b _ _ hαr hβr, schr_indicator _ P _ _ hαP hβP, hφ1, prodVac_smul, hph, hD]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem local_vac {σ : E →ₐ[F] E} (B : Base F E) {n d n₁ d₁ : ℕ} (r s r' s' i₀ i₁ j₀ j₁ : ℕ)
     (X : Spc F E n) (W : Spc F E d) (X₁ : Spc F E n₁) (W₁ : Spc F E d₁)
@@ -336,13 +330,13 @@ theorem local_vac {σ : E →ₐ[F] E} (B : Base F E) {n d n₁ d₁ : ℕ} (r s
 end GlobalTheory.ThK.AdaptEv.VacuumBlock
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d n₁ d₁ r s r' s' i₀ i₁ j₀ j₁ X W X₁ W₁ H H' M₁ co eq hB hX hW hH hH' hM₁ hrat hι hA hAd`. Set `good : Pl F → Prop` to `fun v => M₁.vac v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1 ∧ (Model.mk (σ := σ) (X := X) (W := W) co (fun _ => 0) 0 ∅).IsVac B.ψ v (Set.indicator {x : Fin n × Fin d → Fv F v | ∀ k, x k ∈ v.adicCompletionIntegers F} 1)`. Use `⟨fun v => if good v then Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1 else Set.indicator (GlobalTheory.ThK.AdaptEv.VacuumBlock.latPos X W co eq v : Set (Fin (2 * (n + d₁)) → Fv F v)) 1, fun v => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hv : good v`. Simplify using `only [if_pos hv]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Use `⟨GlobalTheory.StdVacuum.indicator_mem_SB v, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.indicator_of_mem (show (0 : Fin (2 * (n + d₁)) → Fv F v) ∈ {x | ∀ i, x i ∈ v.adicCompletionIntegers F} from fun i => zero_mem _)]`. Both sides reduce to the same expression. Rewrite using `[hv.1]`. Use `hv.2 using 1` and compare the differences between its conclusion and the goal.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Conclude with `prodVac_indicator eq (v.adicCompletionIntegers F : Set (Fv F v))`. Simplify using `only [if_neg hv]`. Use `⟨GlobalTheory.ThK.AdaptEv.VacuumBlock.latPos_indicator_mem_SB σ B X W r s r' s' co eq hX hW hrat v, ?_, GlobalTheory.ThK.AdaptEv.VacuumBlock.local_vac B r s r' s' i₀ i₁ j₀ j₁ X W X₁ W₁ H H' M₁ co eq hB hX hW hH hH' hM₁ hrat hι hA hAd v⟩` and prove the remaining obligations. Rewrite using `[Set.indicator_of_mem (show (0 : Fin (2 * (n + d₁)) → Fv F v) ∈ ((GlobalTheory.ThK.AdaptEv.VacuumBlock.latPos X W co eq v : AddSubgroup _) : Set (Fin (2 * (n + d₁)) → Fv F v)) from (GlobalTheory.ThK.AdaptEv.VacuumBlock.latPos X W co eq v).zero_mem)]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Use `filter_upwards [hM₁.std, GlobalTheory.StdVacuum.eventually_isVac_indicator σ B X W r s r' s' hB hX hW (Model.mk (σ := σ) (X := X) (W := W) co (fun _ => 0) 0 ∅) hrat] with v h1 h2`. Simplify using `only [if_pos (show good v from ⟨h1, h2⟩)]`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ThK.AdaptEv.exists_vac_adapted_isoA : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d n₁ d₁ r s r' s' i₀ i₁ j₀ j₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (X₁ : Spc F E n₁) (W₁ : Spc F E d₁)

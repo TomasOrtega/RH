@@ -13,7 +13,7 @@ namespace GlobalTheory.Vert.Model.FlagPair.GrAgree
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {Z : GlobalTheory.Vert.Model O}
 
 /- English proof (translation)
-Rewrite using `[← cancel_epi (Z.genRes.map (P.fl.π k))]`. Rewrite using `[← Category.assoc, P.π_grIso_hom, Category.assoc, ← Functor.map_comp, hu', ← Functor.map_comp_assoc, hu, Functor.map_comp, Functor.map_comp_assoc, Q.π_grIso_hom, reassoc_of% hg]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem grIso_comm {E E' G G' : Z.X.Modules} {φ : Z.GenIso E E'} {χ : Z.GenIso G G'} {N M : ℕ}
     (P : GlobalTheory.Vert.Model.FlagPair φ N) (Q : GlobalTheory.Vert.Model.FlagPair χ M)
@@ -33,7 +33,7 @@ end GlobalTheory.Vert.Model.FlagPair.GrAgree
 open GlobalTheory.Vert.Model in
 
 /- English proof (translation)
-Introduce `O _ _ _ p _ _ _ Z E E' G G' φ χ N M P Q k i m m' u u' hg hu hu'`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.Vert.smallCls_eq_iff _ _).2 ((P.fl.isVB_gr k).lbIso_det_of_iso u)`. Conclude with `(GlobalTheory.Vert.smallCls_eq_iff _ _).2 ((P.fl'.isVB_gr k).lbIso_det_of_iso u')`. Conclude with `congrArg GlobalTheory.Vert.Model.toQ (GlobalTheory.T.generic_iso_divisor_class_iso_invariant O Z _ _ _ _ 1 _ _ _ _ _ _ u u' (GlobalTheory.Vert.Model.FlagPair.GrAgree.grIso_comm P Q k i m m' u u' hg hu hu'))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Vert.Model.FlagPair.GrAgree.toFPair_agree : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     (p : ℕ) [Fact p.Prime] [CharZero O] [CharP (ResidueField O) p]

@@ -10,23 +10,21 @@ noncomputable section
 namespace GlobalTheory.CharRankZ
 
 /- English proof (translation)
-Establish `hMA : Module.Finite A M` using `Module.Finite.of_restrictScalars_finite ℤ A M`. Establish `hmul : ∀ (a : A) (x : M), a ≠ 0 → ∃ c : ℤ, c ≠ 0 ∧ ∃ b : A, c • x = b • a • x`. Introduce `a x ha`. Take `⟨c, b, hc, hcb⟩` from `hA a ha`. Conclude with `⟨c, hc, b, by rw [← Int.cast_smul_eq_zsmul A, hcb, mul_comm, mul_smul]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `haveI : NoZeroSMulDivisors A M := ⟨fun {a x} h => by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Take `⟨c, hc0, b, hb⟩` from `hmul a x hc.1`. Rewrite `hb` using `[h, smul_zero]`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hc.2 ((smul_eq_zero.mp hb).resolve_left hc0)⟩`. Take `⟨s, hs, hmax⟩` from `exists_maximal_linearIndepOn A (id : M → M)`. Establish `hli : LinearIndependent A (fun x : s => (x : M))` using `hs`. Use `haveI : Finite s := hli.finite`. Use `haveI : Fintype s := Fintype.ofFinite s`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcard : Fintype.card s ≤ Module.finrank A M` using `hli.fintype_card_le_finrank`. Set `f : (s → A) →ₗ[A] M` to `Fintype.linearCombination A (fun x : s => (x : M))`. Set `S : Submodule ℤ M` to `LinearMap.range (f.restrictScalars ℤ)`. Establish `hS : ∀ x : M, ∃ c : ℤ, c ≠ 0 ∧ c • x ∈ S`. Introduce `x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hspan : Submodule.span A (id '' s) ≤ LinearMap.range f`. Rewrite using `[Set.image_id, Fintype.range_linearCombination]`. Conclude with `Submodule.span_le.2 fun y hy => Submodule.subset_span ⟨⟨y, hy⟩, rfl⟩`. Distinguish the cases in `hx : x ∈ s`. Use `⟨1, one_ne_zero, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[one_smul]`. Conclude with `hspan (Submodule.subset_span ⟨x, hx, rfl⟩)`. Take `⟨a, ha, hax⟩` from `hmax x hx`. Take `⟨c, hc, b, hb⟩` from `hmul a x ha`. Use `⟨c, hc, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hb]`. Conclude with `(LinearMap.range f).smul_mem b (hspan hax)`. Establish `hq : Module.finrank ℤ (M ⧸ S) = 0`. Rewrite using `[Module.finrank_eq_zero_iff]`. Introduce `y`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Proceed by induction on `y using Submodule.Quotient.induction_on with`. Consider the case `H x`. Take `⟨c, hc, hx⟩` from `hS x`. Conclude with `⟨c, hc, by rw [← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]; exact hx⟩`. Establish `h1 : Module.finrank ℤ (M ⧸ S) + Module.finrank ℤ S = Module.finrank ℤ M` using `Submodule.finrank_quotient_add_finrank S`.
-
-Establish `h2 : Module.finrank ℤ S ≤ Module.finrank ℤ (s → A)` using `LinearMap.finrank_range_le _`. Establish `h3 : Module.finrank ℤ (s → A) = Fintype.card s * Module.finrank ℤ A`. Simplify using `[Module.finrank_pi_fintype]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem finrank_int_le_mul {A M : Type} [CommRing A] [IsDomain A] [Module.Free ℤ A] [Module.Finite ℤ A]
     [AddCommGroup M] [Module A M] [Module.Free ℤ M] [Module.Finite ℤ M]
@@ -83,7 +81,7 @@ theorem finrank_int_le_mul {A M : Type} [CommRing A] [IsDomain A] [Module.Free �
     _ = _ := mul_comm _ _
 
 /- English proof (translation)
-Establish `hmem` using `Ideal.absNorm_mem (Ideal.span {a})`. Take `⟨b, hb⟩` from `Ideal.mem_span_singleton'.1 hmem`. Use `⟨(Ideal.absNorm (Ideal.span {a}) : ℤ), b, ?_, ?_⟩` and prove the remaining obligations. Conclude with `fun h => ha (Ideal.span_singleton_eq_bot.1 (Ideal.absNorm_eq_zero_iff.1 h))` after adjusting the coercions. Rewrite using `[Int.cast_natCast, ← hb, mul_comm]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_int_dvd {E : Type} [Field E] [NumberField E] (a : 𝓞 E) (ha : a ≠ 0) :
     ∃ (c : ℤ) (b : 𝓞 E), c ≠ 0 ∧ (c : 𝓞 E) = a * b := by
@@ -100,17 +98,15 @@ namespace GlobalTheory.CharRankZ
 open GlobalTheory.CharRank
 
 /- English proof (translation)
-Take `⟨hNoeth, -, -, hChar⟩` from `hCN`. Use `haveI := hNoeth`. Use `haveI := hChar`. Use `haveI := c.fin`. Use `haveI : NumberField c.F := {}`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨y, hy⟩` from `DomFine.exists_generic_point (𝓞 c.F) c.F Z.X (Xo.XF c) Z.s Z.jQ Z.flat Z.proj Z.jQ_open Z.jQ_dense ξ hEt.1`. Set `K` to `AlgebraicClosure (FractionRing R)`. Set `f : R →+* K` to `(algebraMap (FractionRing R) K).comp (algebraMap R (FractionRing R))`. Establish `hf : Function.Injective f` using `(algebraMap (FractionRing R) K).injective.comp (IsFractionRing.injective R (FractionRing R))`. Use `haveI : CharZero K := ⟨fun a b h => Nat.cast_injective (R := R) (hf (by simpa using h))⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Set `x' : Sp K ⟶ Xo.XF c` to `spMap (algebraMap (FractionRing R) K) ≫ y`. Establish `hx : x' ≫ Z.jQ ≫ pullback.fst _ _ = spMap f ≫ ξ`. Rewrite using `[← DomFine.spMap_comp', Category.assoc, hy]`. Both sides reduce to the same expression. Take `⟨β₀, hβ₀⟩` from `Spec.map_surjective (x' ≫ pullback.fst Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom) ≫ Xo.s)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hβ : x' ≫ pullback.fst Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom) ≫ Xo.s = spMap β₀.hom` using `hβ₀.symm`. Establish `hdet` using `(Z.oF.geom K x' β₀.hom hβ).1`. Establish `hr : (β₀.hom (baseKA l).ρ) ^ 2 = -(H.d : K)`. Rewrite using `[← map_pow, (baseKA l).ρ_sq, map_neg, map_natCast]`. Establish `bound : ∀ (τ : 𝓞 E →+* K) (N : ℕ), LieMult Z.oF.t.act x' τ N → Module.finrank (𝓞 E) P.D.toPre.X ≤ N`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `τ N hN`. Establish `h₅` using `(GlobalTheory.lieMult_iff_of_isGrpPullback Z.m.cart Z.oF.t.act Z.t.act Z.m.act x' τ N).1 hN`. Rewrite `h₅` using `[hx]`. Establish `h₆` using `(GlobalTheory.lieMult_iff_of_isGrpPullback m.cart t.act Z.t.act m.act (spMap f) τ N).2 h₅`. Take `⟨n, -, hn⟩` from `lieMult_unif_loc H R t P K f hf τ N h₆`.
-
-Use linear arithmetic over natural numbers and integers. Take `⟨τ₁, τ₂, h₁, h₂⟩` from `exists_chars H K _ hr`. Conclude with `le_min (bound τ₁ _ ((hdet τ₁).1 h₁)) (bound τ₂ _ ((hdet τ₂).2 h₂))`.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem finrank_oE_le_min {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
     {Xo : Moduli D l} {c : Coeff l} (Z : GMod Xo c) (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R]
@@ -152,7 +148,7 @@ theorem finrank_oE_le_min {E : Type} [Field E] [NumberField E] [IsCMField E] {H 
   exact le_min (bound τ₁ _ ((hdet τ₁).1 h₁)) (bound τ₂ _ ((hdet τ₂).2 h₂))
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c Z R _ _ _ ξ t m P hCN hEt _`. Establish `h1` using `finrank_oE_le_min Z R ξ t m P hCN hEt`. Establish `h2` using `finrank_int_le_mul (A := 𝓞 E) (M := P.D.toPre.X) (fun a ha => exists_int_dvd a ha)`. Rewrite `h2` using `[RingOfIntegers.rank]`. Conclude with `h2.trans (Nat.mul_le_mul_left _ h1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_int_le_min : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H} {Xo : Moduli D l} {c : Coeff l} (Z : GMod Xo c) (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (ξ : Sp R ⟶ Z.X) (t : SAB H (Sp R)), SABMap t Z.t ξ → ∀ (P : PELUnif (maximalIdeal R) t), IsCN R → IsEtaleCompletion (Scheme.stalkClosedPointTo ξ).hom → P.TorsionIso → Module.finrank ℤ P.D.toPre.X ≤ Module.finrank ℚ E * min D.p D.q := by
   intro E _ _ _ H D l Xo c Z R _ _ _ ξ t m P hCN hEt _

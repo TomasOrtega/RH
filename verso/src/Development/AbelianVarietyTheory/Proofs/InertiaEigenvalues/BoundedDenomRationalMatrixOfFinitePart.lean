@@ -27,7 +27,7 @@ open GlobalTheory.LevelSeries
 namespace GlobalTheory.LevelSeries
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `HeightOneSpectrum.mem_integers_of_valuation_le_one (R := 𝓞 E) E x fun Q => by`. Use `h Q` as an intermediate fact. Rewrite `this` using `[show (algebraMap E (FiniteAdeleRing (𝓞 E) E) x) Q = (x : Q.adicCompletion E) from rfl, HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`. Then use the resulting hypothesis. Rewrite using `[← hr]`. Conclude with `RingOfIntegers.isIntegral_coe r`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIntegral_of_finAdele_valuation_le_one {E : Type} [Field E] [NumberField E] (x : E)
     (h : ∀ Q : HeightOneSpectrum (𝓞 E), Valued.v ((algebraMap E (FiniteAdeleRing (𝓞 E) E) x) Q) ≤ 1) :
@@ -40,9 +40,9 @@ theorem isIntegral_of_finAdele_valuation_le_one {E : Type} [Field E] [NumberFiel
   exact RingOfIntegers.isIntegral_coe r
 
 /- English proof (translation)
-Establish `hf : (fin V γ).1 = finHom V γ` using `rfl`. Apply `Units.ext` to reduce the goal to its premises. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Rewrite using `[hf]`. Simplify using `only [finHom, MonoidHom.comp_apply]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[show matHom V γ = _ from hR]`. Simplify using `only [Formalism.UG.bc, Matrix.GeneralLinearGroup.map, incA, inclR, Units.coe_map, MonoidHom.coe_coe, RingHom.mapMatrix_apply, Matrix.map_apply, RingHom.coe_coe, Matrix.GeneralLinearGroup.map_apply]`. Express the relevant statement in the definitionally equal form `ι ((Algebra.TensorProduct.map (sndA D.host.F) (AlgHom.id D.host.F D.host.E)) (Algebra.TensorProduct.includeRight ((γ' : Matrix (Fin V.rank) (Fin V.rank) D.host.E) a b))) = algebraMap D.host.E _ ((γ' : Matrix (Fin V.rank) (Fin V.rank) D.host.E) a b)`. Rewrite using `[Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.map_tmul, map_one, AlgHom.id_apply]`. Conclude with `h1 _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_fin_eq_of_isRat (D : D7) (ι : (Af D.host.F ⊗[D.host.F] D.host.E) ≃+* FiniteAdeleRing (𝓞 D.host.E) D.host.E)
     (h1 : ∀ x : D.host.E, ι ((1 : Af D.host.F) ⊗ₜ[D.host.F] x) = algebraMap D.host.E _ x)
@@ -65,7 +65,7 @@ end GlobalTheory.LevelSeries
 namespace GlobalTheory.LevelSeries
 
 /- English proof (translation)
-Take `⟨m, hm, hv⟩` from `h`. Use `⟨m, hm, fun a b => isIntegral_of_finAdele_valuation_le_one _ fun Q => ?_⟩` and prove the remaining obligations. Use `hv a b Q` as an intermediate fact. Simplify `this` using `[Matrix.smul_apply, Matrix.map_apply, map_mul, mul_assoc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_coprime_isIntegral_of_bnd {E : Type} [Field E] [NumberField E] {n : ℕ} (l c : ℕ)
     (A : Matrix (Fin n) (Fin n) E)
@@ -82,11 +82,11 @@ end GlobalTheory.LevelSeries
 namespace GlobalTheory.LevelSeries
 
 /- English proof (translation)
-Introduce `D ι h1 V l c γ γ' hR hb1 hb2`. Establish `hM` using `map_fin_eq_of_isRat D ι h1 V γ γ' hR`. Rewrite `hb1`, `hb2` using `[hM]`. Rewrite `hb2` using `[← map_inv]`. Take `⟨m₁, hm₁, hi₁⟩` from `exists_coprime_isIntegral_of_bnd l c (γ' : Matrix (Fin V.rank) (Fin V.rank) D.host.E) hb1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨m₂, hm₂, hi₂⟩` from `exists_coprime_isIntegral_of_bnd l c ((γ'⁻¹ : GL (Fin V.rank) D.host.E) : Matrix (Fin V.rank) (Fin V.rank) D.host.E) hb2`. Establish `hn : ∀ k : ℕ, IsIntegral ℤ (k : D.host.E)` using `fun k => by`. Simplify using `using (isIntegral_algebraMap (R := ℤ) (A := D.host.E) (x := (k : ℤ)))`. Use `⟨m₁ * m₂, Nat.Coprime.mul hm₁ hm₂, fun a b => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Establish `e : (((m₁ * m₂ * l ^ c : ℕ) : D.host.E)) * (γ' : Matrix (Fin V.rank) (Fin V.rank) D.host.E) a b = (m₂ : D.host.E) * ((((m₁ * l ^ c : ℕ) : D.host.E)) * (γ' : Matrix (Fin V.rank) (Fin V.rank) D.host.E) a b)` using `by push_cast; ring`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `(hn m₂).mul (hi₁ a b)`. Establish `e : (((m₁ * m₂ * l ^ c : ℕ) : D.host.E)) * ((γ'⁻¹ : GL (Fin V.rank) D.host.E) : Matrix (Fin V.rank) (Fin V.rank) D.host.E) a b = (m₁ : D.host.E) * ((((m₂ * l ^ c : ℕ) : D.host.E)) * ((γ'⁻¹ : GL (Fin V.rank) D.host.E) : Matrix (Fin V.rank) (Fin V.rank) D.host.E) a b)` using `by push_cast; ring`. Rewrite using `[e]`. Conclude with `(hn m₁).mul (hi₂ a b)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem denomAt_of_isRat_of_bnd : ∀ (D : D7) (ι : (Af D.host.F ⊗[D.host.F] D.host.E) ≃+* FiniteAdeleRing (𝓞 D.host.E) D.host.E), (∀ x : D.host.E, ι ((1 : Af D.host.F) ⊗ₜ[D.host.F] x) = algebraMap D.host.E _ x) → ∀ (V : HSp D) (l c : ℕ) (γ : GA D V) (γ' : GL (Fin V.rank) D.host.E), GlobalTheory.Member.IsRat V γ γ' → GlobalTheory.StdAtPrime.Bnd l ((((l ^ c : ℕ) : FiniteAdeleRing (𝓞 D.host.E) D.host.E)) • (Matrix.GeneralLinearGroup.map ι.toRingHom (fin V γ).1).1) → GlobalTheory.StdAtPrime.Bnd l ((((l ^ c : ℕ) : FiniteAdeleRing (𝓞 D.host.E) D.host.E)) • (Matrix.GeneralLinearGroup.map ι.toRingHom (fin V γ).1)⁻¹.1) → DenomAt l c γ' := by
   intro D ι h1 V l c γ γ' hR hb1 hb2

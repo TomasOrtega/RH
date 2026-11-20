@@ -15,11 +15,11 @@ namespace CrystallineSemistableComparison.Pb.Kap
 variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)} {R : Per l K} {m : ℕ}
 
 /- English proof (translation)
-Use `OK_dvr (l := l) (K := K)` as an intermediate fact. Use `⟨inferInstance, OK_dvr, ?_⟩` and prove the remaining obligations. Introduce `a ha`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible (OK l K)`. Take `⟨n, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible ha hϖ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hlm : ((l : ℕ) : OK l K) ∈ IsLocalRing.maximalIdeal (OK l K)`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, isUnit_OK_iff]`. Establish `e : (((((l : ℕ) : OK l K) : K)) : PadicAlgCl l) = algebraMap ℚ_[l] (PadicAlgCl l) (l : ℚ_[l])` using `by simp`. Rewrite using `[e, PadicAlgCl.norm_extends]`. Conclude with `Padic.norm_p_lt_one.ne`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hlm` using `[hϖ.maximalIdeal_eq, Ideal.mem_span_singleton]`. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `h1 : a ∣ ϖ ^ n` using `⟨(↑u⁻¹ : OK l K), by rw [hu, mul_comm (u : OK l K), mul_assoc, Units.mul_inv, mul_one]⟩`. Conclude with `h1.trans (pow_dvd_pow_of_dvd hlm n)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ok_dvr_pf [FiniteDimensional ℚ_[l] K] : IsDomain (OK l K) ∧ IsDiscreteValuationRing (OK l K) ∧
     ∀ a : OK l K, a ≠ 0 → ∃ k : ℕ, a ∣ (l : OK l K) ^ k := by

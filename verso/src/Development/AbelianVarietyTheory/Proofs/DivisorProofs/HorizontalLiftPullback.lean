@@ -7,9 +7,9 @@ open scoped ContDiff
 namespace GlobalTheory.TorsionForm.HorChain
 
 /- English proof (translation)
-Rewrite using `[differentiableAt_pi]`. Introduce `i`. Simplify using `only [per, Pi.add_apply, Matrix.vecMul, dotProduct]`. Apply `DifferentiableAt.add _ (differentiableAt_const _)` to reduce the goal to its premises. Apply `DifferentiableAt.fun_sum` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `j _`. Conclude with `(differentiableAt_const _).mul (hτ j i)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem per_differentiableAt {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {g : ℕ}
     (τ : E → Matrix (Fin g) (Fin g) ℂ) (x : Fl g) (b : E)
@@ -24,9 +24,9 @@ theorem per_differentiableAt {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ 
   exact (differentiableAt_const _).mul (hτ j i)
 
 /- English proof (translation)
-Simplify using `only [hor]`. Use `congr 1`. Establish `hf : flat (τ ∘ φ) P = flat τ (φ P.1, P.2)` using `rfl`. Rewrite using `[hf]`. Establish `h` using `per_differentiableAt τ (flat τ (φ P.1, P.2)) (φ P.1) hτ`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `fderiv_comp (x := P.1) h hφ` as an intermediate fact. Rewrite using `[show (fun b => per ((τ ∘ φ) b) (flat τ (φ P.1, P.2))) = (fun c => per (τ c) (flat τ (φ P.1, P.2))) ∘ φ from rfl, this]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem hor_comp {E E' : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedAddCommGroup E']
     [NormedSpace ℂ E'] {g : ℕ} (τ : E → Matrix (Fin g) (Fin g) ℂ) (φ : E' → E) (P : Pt E' g) (v : E')

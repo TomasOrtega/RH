@@ -9,7 +9,7 @@ noncomputable section
 namespace GlobalTheory.Orb
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun g => by have : (fun x : G => x * g) = fun x => g * x := funext fun x => IsMulCommutative.is_comm.comm x g rw [this] exact map_mul_left_eq_self μ g⟩`.
+Supply the required witnesses or components.
 -/
 theorem isMulRightInvariant_of_isMulCommutative {G : Type*} [Group G] [IsMulCommutative G] [MeasurableSpace G]
     [MeasurableMul G] (μ : Measure G) [μ.IsMulLeftInvariant] : μ.IsMulRightInvariant :=
@@ -23,14 +23,14 @@ section Weight
 variable {H : Type} [Group H]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(p.1 * ⟨(p.2 : H) * q.1 * (p.2 : H)⁻¹, hnorm _ p.2.2 _ q.1.2⟩, p.2 * q.2), by simp [mul_assoc]⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_nt_mul {T N : Subgroup H} (hnorm : ∀ t ∈ T, ∀ n ∈ N, t * n * t⁻¹ ∈ N) (p q : N × T) :
     ∃ r : N × T, (r.1 : H) * r.2 = ((p.1 : H) * p.2) * ((q.1 : H) * q.2) :=
   ⟨(p.1 * ⟨(p.2 : H) * q.1 * (p.2 : H)⁻¹, hnorm _ p.2.2 _ q.1.2⟩, p.2 * q.2), by simp [mul_assoc]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(⟨(q.2 : H)⁻¹ * (q.1 : H)⁻¹ * (q.2 : H)⁻¹⁻¹, hnorm _ (inv_mem q.2.2) _ (inv_mem q.1.2)⟩, q.2⁻¹), by simp only [Subgroup.coe_inv, inv_inv, mul_inv_rev]; group⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_nt_inv {T N : Subgroup H} (hnorm : ∀ t ∈ T, ∀ n ∈ N, t * n * t⁻¹ ∈ N) (q : N × T) :
     ∃ r : N × T, (r.1 : H) * r.2 = ((q.1 : H) * q.2)⁻¹ :=
@@ -41,45 +41,39 @@ variable [TopologicalSpace H] [IsTopologicalGroup H] [SecondCountableTopology H]
   [T2Space H] [MeasurableSpace H] [BorelSpace H]
 
 /- English proof (translation)
-Use `haveI : LocallyCompactSpace T := hT.locallyCompactSpace`. Use `haveI : LocallyCompactSpace N := hN.locallyCompactSpace`. Use `set j : N × T → H := fun p => (p.1 : H) * p.2 with hjdef`. Establish `hjc : Continuous j` using `hj.continuous`. Set `K` to `CompactExhaustion.choice H`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `W : ℕ → Set H` to `fun k => interior (K (k + 1))`. Establish `hWo : ∀ k, IsOpen (W k)` using `fun k => isOpen_interior`. Set `U : ℕ → Set H` to `fun k => {x | ∃ p : N × T, j p * x ∈ W k}`. Establish `hUfwd : ∀ k q x, x ∈ U k → j q * x ∈ U k`. Introduce and unpack `k q x ⟨p, hp⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨r, hr⟩` from `exists_nt_inv hnorm q`. Take `⟨s, hs⟩` from `exists_nt_mul hnorm p r`. Use `⟨s, ?_⟩` and prove the remaining obligations. Establish `e : j s * (j q * x) = j p * x`. Rewrite using `[show j s = j p * j r from hs, show j r = (j q)⁻¹ from hr]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `group`. Rewrite using `[e]`. Conclude with `hp`. Establish `hU : ∀ k q x, j q * x ∈ U k ↔ x ∈ U k`. Use `fun k q x => ⟨fun h => ?_, hUfwd k q x⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨r, hr⟩` from `exists_nt_inv hnorm q`. Use `hUfwd k r _ h` as an intermediate fact. Rewrite `this` using `[show j r = (j q)⁻¹ from hr, inv_mul_cancel_left]`. Then use the resulting hypothesis. Establish `hUo : ∀ k, IsOpen (U k)` using `fun k => by`. Establish `: U k = ⋃ p : N × T, (fun x => j p * x) ⁻¹' W k` using `by ext x; simp [U]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Rewrite using `[this]`. Conclude with `isOpen_iUnion fun p => (hWo k).preimage (continuous_mul_left _)`. Establish `hcov : ∀ x, ∃ k, x ∈ U k` using `fun x => by`. Take `⟨k, hk⟩` from `K.exists_mem x`. Conclude with `⟨k, (1, 1), by simpa [j] using K.subset_interior_succ k hk⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `P : ℕ → Set H` to `disjointed U`. Establish `hPm : ∀ k, MeasurableSet (P k)` using `MeasurableSet.disjointed fun k => (hUo k).measurableSet`. Establish `hP : ∀ k q x, j q * x ∈ P k ↔ x ∈ P k` using `fun k q x => by`. Simplify using `only [P, disjointed_eq_inter_compl, mem_inter_iff, mem_iInter, mem_compl_iff, hU]`. Establish `hPcov : ∀ x, ∃ k, x ∈ P k` using `fun x => by`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: x ∈ ⋃ k, P k` using `by rw [iUnion_disjointed]; exact mem_iUnion.2 (hcov x)`. Conclude with `mem_iUnion.1 this`. Establish `hPd : ∀ k k' x, x ∈ P k → x ∈ P k' → k = k'` using `fun k k' x h h' => by`. Assume the negation of the conclusion as `hne`. Conclude with `Set.disjoint_left.1 (disjoint_disjointed U hne) h h'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `h : H → ℝ≥0∞` to `fun x => ∑' k, (P k).indicator ((W k).indicator 1) x`. Establish `hh : Measurable h` using `Measurable.ennreal_tsum fun k => (measurable_one.indicator (hWo k).measurableSet).indicator (hPm k)`. Establish `hval : ∀ k x, x ∈ P k → ∀ q, h (j q * x) = (W k).indicator 1 (j q * x)`. Introduce `k x hx q`. Establish `hx'` using `(hP k q x).2 hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `(tsum_eq_single k fun k' hk' => ?_).trans (indicator_of_mem hx' _)` and prove the remaining obligations. Conclude with `indicator_of_notMem (fun h' => hk' (hPd _ _ _ h' hx')) _`. Set `g : H → ℝ≥0∞` to `fun x => ∫⁻ n : N, h (n * x) ∂dn`. Set `I : H → ℝ≥0∞` to `fun x => ∫⁻ t : T, g (t * x) ∂dt`. Establish `hg : Measurable g` using `measurable_fiber hh`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hI : Measurable I` using `measurable_fiber hg`. Establish `hgN : ∀ n ∈ N, ∀ x, g (n * x) = g x` using `fun n hn x => by`. Simplify `lintegral_mul_right_eq_self (μ := dn) (fun m : N => h (m * x)) ⟨n, hn⟩` using `[g, mul_assoc]`. Establish `hIN : ∀ n ∈ N, ∀ x, I (n * x) = I x` using `fun n hn x => by`. Use `lintegral_congr fun t => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (t : H) * (n * x) = ((t : H) * n * (t : H)⁻¹) * (t * x)` using `by group`. Rewrite using `[e, hgN _ (hnorm _ t.2 _ hn)]`. Establish `hIT : ∀ s ∈ T, ∀ x, I (s * x) = I x` using `fun s hs x => by`. Simplify `lintegral_mul_right_eq_self (μ := dt) (fun t : T => g (t * x)) ⟨s, hs⟩` using `[I, mul_assoc]`. Establish `hIprod : ∀ x, I x = ∫⁻ p, h (j p * x) ∂(dn.prod dt)` using `fun x => by`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[lintegral_prod_symm (fun p => h (j p * x)) (hh.comp (hjc.measurable.mul_const x)).aemeasurable]`. Simplify using `[I, g, j, mul_assoc]`. Establish `hcpt : ∀ k x, IsCompact ((fun y => y * x) ⁻¹' K (k + 1))` using `fun k x => by`. Use `(Homeomorph.mulRight x).isCompact_preimage.2 (K.isCompact (k + 1))` as an intermediate fact. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hIpos : ∀ x, I x ≠ 0 ∧ I x ≠ ∞` using `fun x => by`. Take `⟨k, hk⟩` from `hPcov x`. Use `set E := (fun p => j p * x) ⁻¹' W k with hEdef`. Establish `hE : IsOpen E` using `(hWo k).preimage (hjc.mul continuous_const)`. Establish `e : I x = dn.prod dt E`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hIprod, ← lintegral_indicator_one hE.measurableSet]`. Conclude with `lintegral_congr fun p => by rw [hval k x hk p]; rfl`. Take `⟨p, hp⟩` from `disjointed_subset U k hk`. Use `⟨e ▸ hE.measure_ne_zero _ ⟨p, hp⟩, e ▸ ?_⟩` and prove the remaining obligations. Use `(measure_mono (μ := dn.prod dt) (s := E) (t := j ⁻¹' ((fun y => y * x) ⁻¹' K (k + 1))) ?_).trans_lt (hj.isCompact_preimage (hcpt k x)).measure_lt_top |>.ne` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Introduce `q hq`. Conclude with `interior_subset (s := K (k + 1)) hq`. Establish `hgfin : ∀ x, g x ≠ ∞` using `fun x => by`. Take `⟨k, hk⟩` from `hPcov x`. Use `set C : Set N := (↑) ⁻¹' ((fun y => y * x) ⁻¹' K (k + 1))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities.
 
-Establish `hC : IsCompact C` using `hN.isClosedEmbedding_subtypeVal.isCompact_preimage (hcpt k x)`. Use `ne_of_lt (lt_of_le_of_lt ?_ (hC.measure_lt_top (μ := dn)))` and prove the remaining obligations. Rewrite using `[← lintegral_indicator_one hC.measurableSet]`. Use `lintegral_mono fun n => ?_` and prove the remaining obligations. Establish `e : h ((n : H) * x) = (W k).indicator 1 ((n : H) * x)`.
-
-Simplify `hval k x hk (n, 1)` using `[j]`. Rewrite using `[e]`. Distinguish the cases in `hn : (n : H) * x ∈ W k`. Rewrite using `[indicator_of_mem hn, indicator_of_mem (show n ∈ C from interior_subset (s := K (k + 1)) hn)]`. Conclude with `le_rfl`.
-
-Rewrite using `[indicator_of_notMem hn]`. Conclude with `zero_le`. Use `⟨fun x => g x * (I x)⁻¹, hg.mul hI.inv, fun x => ENNReal.mul_ne_top (hgfin x) (ENNReal.inv_ne_top.2 (hIpos x).1), fun n hn x => by simp only [hgN n hn, hIN n hn], fun x => ?_⟩` and prove the remaining obligations. Establish `e : ∀ t : T, g (t * x) * (I (t * x))⁻¹ = g (t * x) * (I x)⁻¹` using `fun t => by rw [hIT _ t.2]`. Repeatedly rewrite using `[e]`.
-
-Rewrite using `[lintegral_mul_const' _ _ (ENNReal.inv_ne_top.2 (hIpos x).1)]`. Conclude with `ENNReal.mul_inv_cancel (hIpos x).1 (hIpos x).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_weight_nt (T N : Subgroup H) (hT : IsClosed (T : Set H)) (hN : IsClosed (N : Set H))
     (hnorm : ∀ t ∈ T, ∀ n ∈ N, t * n * t⁻¹ ∈ N)
@@ -188,15 +182,15 @@ theorem exists_weight_nt (T N : Subgroup H) (hT : IsClosed (T : Set H)) (hN : Is
 end Weight
 
 /- English proof (translation)
-Introduce `H _ _ _ _ _ _ _ _ T N hT hN hc hnorm hj dh _ dt _ dn _ _ φ hφ hφT hint h0`. Use `haveI : dt.IsMulRightInvariant := isMulRightInvariant_of_isMulCommutative dt`. Use `haveI : LocallyCompactSpace T := hT.locallyCompactSpace`. Use `haveI : LocallyCompactSpace N := hN.locallyCompactSpace`. Take `⟨β, hβm, hβf, hβN, hβ1⟩` from `exists_weight_nt T N hT hN hnorm hj dt dn`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hν : quotMeas T dt dh = (dh.withDensity β).map (mk T)` using `(isQuotMeasure_quotMeas dt dh hT).eq_map hβm hβ1`. Establish `hlt : ∀ᵐ x ∂dh, β x < ∞` using `.of_forall fun x => lt_top_iff_ne_top.2 (hβf x)`. Establish `hD : Measurable (descend T φ)` using `measurable_descend hφT hφ`. Establish `hcomp : descend T φ ∘ mk T = φ` using `funext hφT.descend_mk`. Establish `hφβ : Integrable φ (dh.withDensity β)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `hint` using `[hν]`. Use `(integrable_map_measure hD.aestronglyMeasurable measurable_mk.aemeasurable).1 hint` as an intermediate fact. Rewrite `this` using `[hcomp]`. Then use the resulting hypothesis. Establish `hF : Integrable (fun x => (β x).toReal • φ x) dh` using `(integrable_withDensity_iff_integrable_smul' hβm hlt).1 hφβ`. Establish `e1 : quotInt T dt dh φ = ∫ x, (β x).toReal • φ x ∂dh`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[quotInt, hν, integral_map measurable_mk.aemeasurable hD.aestronglyMeasurable, ← integral_withDensity_eq_integral_toReal_smul hβm hlt]`. Conclude with `integral_congr_ae (.of_forall fun x => hφT.descend_mk x)`. Establish `hW` using `(weil_integral (dt := dn) hN hF).2`. Establish `e2 : (fun x => ∫ n : N, (β (n * x)).toReal • φ (n * x) ∂dn) = fun _ => (0 : ℂ)` using `funext fun x => by`. Establish `e : ∀ n : N, (β (n * x)).toReal • φ (n * x) = (β x).toReal • φ (n * x)` using `fun n => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hβN _ n.2 x]`. Repeatedly rewrite using `[e]`. Rewrite using `[integral_smul, h0 x, smul_zero]`. Rewrite using `[e1, ← hW.2, e2]`. Simplify using `[quotInt, descend]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem quotInt_eq_zero_of_integral_coset_eq_zero : ∀ (H : Type) [Group H] [TopologicalSpace H] [IsTopologicalGroup H]
     [SecondCountableTopology H] [LocallyCompactSpace H] [T2Space H] [MeasurableSpace H] [BorelSpace H]

@@ -9,15 +9,15 @@ open MvPolynomial NumberField
 namespace GlobalTheory.ChowHt.Model
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `s hs b`. Rewrite `hs` using `[support_X, Finset.mem_singleton]`. Substitute `hs` using the available equality. Use `fin_cases b`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Fin.sum_univ_two, Finsupp.single_apply]`. Rewrite using `[map_X]`. Conclude with `X_prime.irreducible`. Introduce `u`. Rewrite using `[aeval_X]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨![1, 0], by simp, ?_, ?_⟩` and prove the remaining obligations. Introduce `g hg`. Take `⟨a, rfl⟩` from `Ideal.mem_span_singleton'.1 hg`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Introduce `i fin_cases i`. Simplify `h` using `[Fin.sum_univ_two]`. Introduce and unpack `⟨y, hy, hI, hu⟩`. Establish `h1 : y 1 = 0` using `by simpa using hI (X 1) (Ideal.subset_span rfl)`.
+Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `h0 : y 0 ≠ 0`. Apply the tactic sequence `intro h0; apply hy; funext j; fin_cases j <;> simp [h0, h1]`. Use `hu 0` as an intermediate fact. Simplify using `[Fin.sum_univ_two, h1, h0] at this`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isChowForm_point (k : Type) [Field k] :
     IsChowForm (Ideal.span {(X 1 : MvPolynomial (Fin 2) k)}) 0 1 (X (0, 0)) := by
@@ -51,7 +51,7 @@ def linForm {R : Type} [CommRing R] {N : ℕ} (c : Fin N → R) : MvPolynomial (
   ∑ j, C (c j) * X (0, j)
 
 /- English proof (translation)
-Simplify using `only [linSubst, linForm, map_sum, map_mul, aeval_C, aeval_X, algebraMap_eq, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun j _ => by ring` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem linSubst_linForm {R : Type} [CommRing R] {N n : ℕ} (M : Matrix (Fin N) (Fin n) R)
     (c : Fin N → R) : linSubst M (linForm c) = linForm (fun k => ∑ j, M j k * c j) := by
@@ -63,9 +63,9 @@ theorem linSubst_linForm {R : Type} [CommRing R] {N n : ℕ} (M : Matrix (Fin N)
 set_option autoImplicit false in
 open MvPolynomial NumberField in
 /- English proof (translation)
-Simplify using `only [_root_.GlobalTheory.ChowHt.Model.linForm, coeff_sum, coeff_C_mul, coeff_X']`. Establish `key : ∀ j : Fin N, (Finsupp.single ((0 : Fin 1), j) 1 = Finsupp.single ((0 : Fin 1), k) 1) ↔ j = k`. Introduce `j`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finsupp.single_left_injective (one_ne_zero) h` as an intermediate fact. Simplify using `using this`. Introduce and unpack `rfl`. Both sides reduce to the same expression. Simplify using `[key]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.ChowHt.Model.coeff_linForm {R : Type} [CommRing R] {N : ℕ} (c : Fin N → R)
     (k : Fin N) :
@@ -83,17 +83,17 @@ theorem _root_.GlobalTheory.ChowHt.Model.coeff_linForm {R : Type} [CommRing R] {
   simp [key]
 
 /- English proof (translation)
-Establish `hb : BddAbove (Set.range fun k => v (c k))` using `(Set.finite_range _).bddAbove`. Establish `hn : 0 ≤ ⨆ k, v (c k)` using `Real.iSup_nonneg fun k => apply_nonneg _ _`. Unfold `ReciprocityTheory.MultiplicativeHeights.gaussAbs`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[← Real.coe_toNNReal _ hn, NNReal.coe_le_coe]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sup_le fun s hs => Real.toNNReal_le_toNNReal ?_` and prove the remaining obligations. Distinguish the cases in `h : ∃ k, s = Finsupp.single (0, k) 1`. Take `⟨k, rfl⟩` from `h`. Rewrite using `[coeff_linForm]`. Conclude with `le_ciSup hb k`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction.
 
-It suffices to derive a contradiction. Rewrite `hs` using `[mem_support_iff]`. Apply `hs` to reduce the goal to its premises. Simplify using `only [linForm, coeff_sum, coeff_C_mul, coeff_X']`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg, mul_zero]`. Introduce `h'`. Conclude with `h ⟨j, h'.symm⟩`. Use `Real.iSup_le (fun k => ?_) (NNReal.coe_nonneg _)` and prove the remaining obligations. Distinguish the cases in `h : c k = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[h]`. Establish `hm : Finsupp.single ((0 : Fin 1), k) 1 ∈ (linForm c).support`. Rewrite using `[mem_support_iff, coeff_linForm]`. Conclude with `h`. Use `Finset.le_sup (f := fun s => (v ((linForm c).coeff s)).toNNReal) hm` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Simplify using `only [coeff_linForm] at this`. Establish `h2` using `NNReal.coe_le_coe.2 this`. Rewrite `h2` using `[Real.coe_toNNReal _ (apply_nonneg _ _)]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem gaussAbs_linForm {F : Type} [Field F] [NumberField F] {N : ℕ} (v : FinitePlace F)
     (c : Fin N → F) : ReciprocityTheory.MultiplicativeHeights.gaussAbs v (linForm c) = ⨆ k, v (c k) := by
@@ -125,9 +125,9 @@ theorem gaussAbs_linForm {F : Type} [Field F] [NumberField F] {N : ℕ} (v : Fin
       rwa [Real.coe_toNNReal _ (apply_nonneg _ _)] at h2
 
 /- English proof (translation)
-Establish `h` using `(ReciprocityTheory.MultiplicativeHeights.Closed.sphereLinLog N (WithLp.toLp 2 c) (by simpa using hc)).2`. Rewrite `h` using `[EuclideanSpace.norm_eq]`. Simplify using `only at h`. Rewrite using `[← h]`. Unfold `ReciprocityTheory.MultiplicativeHeights.blockSphereMean ReciprocityTheory.MultiplicativeHeights.blockSphereProb`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[← (MeasureTheory.measurePreserving_funUnique (ReciprocityTheory.MultiplicativeHeights.sphereProb N) (Fin 1)).integral_comp']`. Use `MeasureTheory.integral_congr_ae (Filter.Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Simplify using `[linForm, ReciprocityTheory.MultiplicativeHeights.blockPoint]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem blockSphereMean_linForm {N : ℕ} (c : Fin N → ℂ) (hc : c ≠ 0) :
     ReciprocityTheory.MultiplicativeHeights.blockSphereMean 1 N (linForm c) =
@@ -142,13 +142,13 @@ theorem blockSphereMean_linForm {N : ℕ} (c : Fin N → ℂ) (hc : c ≠ 0) :
   simp [linForm, ReciprocityTheory.MultiplicativeHeights.blockPoint]
 
 /- English proof (translation)
-Unfold `formHeight pointHeight`. Use `congr 2`. Simplify using `[linSubst_linForm, gaussAbs_linForm]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Establish `hm : MvPolynomial.map σ (linForm y) = linForm (fun j => σ (y j))`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `[linForm]`. Establish `hσ : σ.comp (algebraMap F F) = σ` using `by ext; simp`. Rewrite using `[hm, linSubst_linForm, blockSphereMean_linForm, hσ]`. Simplify using the standard rewrite rules. Introduce `h`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hy` to reduce the goal to its premises. Establish `: Matrix.vecMul (fun j => σ (y j)) (A σ) = 0`. Use function extensionality and compare the values at `k`. Use `congrFun h k` as an intermediate fact. Simplify `this` using `[Matrix.vecMul, dotProduct, mul_comm]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2` using `Matrix.eq_zero_of_vecMul_eq_zero (hA σ) this`. Use function extensionality and compare the values at `j`. Simplify using `using congrFun h2 j`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem formHeight_linForm {F : Type} [Field F] [NumberField F] {N n : ℕ}
     (w : Matrix (Fin N) (Fin n) F) (A : (F →+* ℂ) → Matrix (Fin N) (Fin N) ℂ)
@@ -174,17 +174,17 @@ theorem formHeight_linForm {F : Type} [Field F] [NumberField F] {N n : ℕ}
       simpa using congrFun h2 j
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `s hs b`. Rewrite `hs` using `[Matrix.det_fin_two]`. Simplify using `only [Matrix.of_apply, X, monomial_mul, mul_one] at hs`. Establish `h1` using `support_sub _ _ _ hs`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `h1` using `[Finset.mem_union]`. Apply the tactic sequence `rcases h1 with h | h <;>`. Use `support_monomial_subset h` as an intermediate fact. Rewrite `this` using `[Finset.mem_singleton]`. Substitute `this` using the available equality.
+Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Apply the tactic sequence `fin_cases b <;> simp [Fin.sum_univ_two, Finsupp.single_apply]`. Use `GlobalTheory.BorelAlg.irreducible_det' (R := AlgebraicClosure k) (k := 2) (by norm_num) id Function.injective_id` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[RingHom.map_det]`. Use `congr 1`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `i j`. Simplify using the standard rewrite rules. Introduce `u`. Establish `: MvPolynomial.aeval u (Matrix.of fun i j : Fin 2 => (X (i, j) : MvPolynomial (Fin 2 × Fin 2) k)).det = (Matrix.of fun i j : Fin 2 => u (i, j)).det`. Simplify using `[Matrix.det_fin_two]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, ← Matrix.exists_mulVec_eq_zero_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, h⟩`. Use `⟨y, hy, fun g hg => by simp [Ideal.mem_bot.1 hg], fun i => ?_⟩` and prove the remaining obligations. Simplify `congrFun h i` using `[Matrix.mulVec, dotProduct]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce and unpack `⟨y, hy, -, h⟩`. Use `⟨y, hy, funext fun i => ?_⟩` and prove the remaining obligations. Simplify `h i` using `[Matrix.mulVec, dotProduct]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isChowForm_line (k : Type) [Field k] :
     IsChowForm (⊥ : Ideal (MvPolynomial (Fin 2) k)) 1 1
@@ -223,11 +223,11 @@ theorem isChowForm_line (k : Type) [Field k] :
       simpa [Matrix.mulVec, dotProduct] using h i
 
 /- English proof (translation)
-Introduce `h`. Establish `hz : ∀ u : Fin (D + 1) × Fin N → AlgebraicClosure k, MvPolynomial.aeval u f ≠ 0`. Introduce `u hu`. Take `⟨y, -, hI, -⟩` from `(h.zero_iff u).1 hu`. Simplify using `using hI 1 trivial`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 
-Apply `h.irred.not_isUnit` to reduce the goal to its premises. Rewrite using `[← Ideal.span_singleton_eq_top]`. Assume the negation of the conclusion as `hne`. Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal _ hne`. Take `⟨x, rfl⟩` from `(MvPolynomial.isMaximal_iff_eq_vanishingIdeal_singleton).1 hM`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `hle (Ideal.subset_span rfl)` as an intermediate fact. Rewrite `this` using `[MvPolynomial.mem_vanishingIdeal_singleton_iff]`. Apply `hz x` to reduce the goal to its premises. Simplify `this` using `[MvPolynomial.aeval_map_algebraMap]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem not_isChowForm_top {k : Type} [Field k] {N D δ : ℕ}
     (f : MvPolynomial (Fin (D + 1) × Fin N) k) : ¬ IsChowForm (⊤ : Ideal (MvPolynomial (Fin N) k)) D δ f := by

@@ -51,7 +51,7 @@ def OneArc : Prop :=
         y ≫ Y₂.j = Out.jK (PowerSeries k) ≫ χ₂ ∧ SameWitness W₁ W₂
 
 /- English proof (translation)
-Take `⟨m, h', rfl, -⟩` from `h`. Conclude with `⟨rfl, HEq.rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 example {k : Type} [Field k] {bF : c.F →+* k} {a : ArcIn D l (RingHom.id c.F) k bF}
     {O₁ O₂ : Type} [CommRing O₁] [CommRing O₂] {β₁ : O₁ →+* c.F} {β₂ : O₂ →+* c.F}
@@ -64,7 +64,7 @@ example {k : Type} [Field k] {bF : c.F →+* k} {a : ArcIn D l (RingHom.id c.F) 
   exact ⟨rfl, HEq.rfl⟩
 
 /- English proof (translation)
-Use `⟨W₁.m, W₁.spec, rfl, ?_⟩` and prove the remaining obligations. Introduce `T g g₁ g₂ h₁ h₂ h₃`. Establish `: g₁ = g₂` using `Y₁.m0.toSABMap.cart.1.hom_ext h₂ h₃`. Rewrite using `[h₁, this]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 example {k : Type} [Field k] {bF : c.F →+* k} {a : ArcIn D l (RingHom.id c.F) k bF}
     {O₁ : Type} [CommRing O₁] {β₁ : O₁ →+* c.F} {Y₁ : Model Xo c β₁} {χ₁ : Sp (PowerSeries k) ⟶ Y₁.X}

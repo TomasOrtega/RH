@@ -4,7 +4,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.Map
 open IsLocalRing UpperTheory.V.Alg UpperTheory.V.GradeZeroInterpolatingElement
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih => rw [Nat.mul_succ, pow_add, pow_mul, ih, h]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem fix_mul {V : Type} [Monoid V] {l n : ℕ} {x : V} (h : x ^ l ^ n = x) (m : ℕ) : x ^ l ^ (n * m) = x := by
   induction m with
@@ -12,7 +12,7 @@ private theorem fix_mul {V : Type} [Monoid V] {l n : ℕ} {x : V} (h : x ^ l ^ n
   | succ m ih => rw [Nat.mul_succ, pow_add, pow_mul, ih, h]
 
 /- English proof (translation)
-Take `⟨a, ha, hxa⟩` from `hx`. Take `⟨b, hb, hzb⟩` from `hz`. Use `⟨a * b, Nat.mul_pos ha hb, fix_mul hxa b, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.mul_comm]`. Conclude with `fix_mul hzb a`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem fix_both {V : Type} [Monoid V] {l : ℕ} {x z : V} (hx : ∃ n : ℕ, 0 < n ∧ x ^ l ^ n = x)
     (hz : ∃ n : ℕ, 0 < n ∧ z ^ l ^ n = z) : ∃ n : ℕ, 0 < n ∧ x ^ l ^ n = x ∧ z ^ l ^ n = z := by
@@ -23,21 +23,21 @@ private theorem fix_both {V : Type} [Monoid V] {l : ℕ} {x z : V} (hx : ∃ n :
   exact fix_mul hzb a
 
 /- English proof (translation)
-Introduce `l _ O _ _ _ Γ _ R _ _ ρ V _ _ _ y hy u hu hum hu0`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `key : ∀ v ∈ Algebra.adjoin O (mono ρ 0), ∃ n : ℕ, 0 < n ∧ (y v) ^ l ^ n = y v`. Introduce `v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `hv using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Apply `hcon` to reduce the goal to its premises. Take `⟨L, hL, rfl⟩` from `hx`. Use `⟨L, hL, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_list_prod, List.map_map]`. Both sides reduce to the same expression. Consider the case `algebraMap r`. Set `g : O →+* V` to `y.comp (algebraMap O R)`. Establish `hg : ∀ a ∈ maximalIdeal O, g a = 0` using `hy`.
+Both sides reduce to the same expression. Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `f : ResidueField O →+* V` to `Ideal.Quotient.lift (maximalIdeal O) g hg`. Establish `hf : Function.Injective f` using `f.injective`. Use `haveI : CharP (ResidueField O) l := f.charP hf l`. Use `letI : Fintype (ResidueField O) := Fintype.ofFinite _`. Take `⟨m, -, hm⟩` from `FiniteField.card (ResidueField O) l`.
+Establish an intermediate fact. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨m, m.pos, ?_⟩` and prove the remaining obligations. Establish `h1 : y (algebraMap O R r) = f (IsLocalRing.residue O r)` using `(Ideal.Quotient.lift_mk (maximalIdeal O) g hg).symm`. Rewrite using `[h1, ← map_pow, ← hm, FiniteField.pow_card]`. Consider the case `add x z _ _ hx hz`. Take `⟨n, hn, hxn, hzn⟩` from `fix_both hx hz`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Conclude with `⟨n, hn, by rw [map_add, add_pow_char_pow, hxn, hzn]⟩`. Consider the case `mul x z _ _ hx hz`. Take `⟨n, hn, hxn, hzn⟩` from `fix_both hx hz`. Conclude with `⟨n, hn, by rw [map_mul, mul_pow, hxn, hzn]⟩`. Take `⟨n, hn, hun⟩` from `key u hu`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨k, hk⟩ : ∃ k, l ^ n = k + 1 + 1` from `⟨l ^ n - 2, by`. Use `Nat.one_lt_pow hn.ne' (Fact.out : l.Prime).one_lt` as an intermediate fact. Use the proof step `omega⟩`. Apply `hu0` to reduce the goal to its premises. Establish `hmem : y u ^ (k + 1) ∈ maximalIdeal V` using `Ideal.pow_mem_of_mem _ hum _ (Nat.succ_pos k)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hunit : IsUnit (1 - y u ^ (k + 1))` using `IsLocalRing.isUnit_one_sub_self_of_mem_nonunits _ ((mem_maximalIdeal _).mp hmem)`. Establish `h0 : y u * (1 - y u ^ (k + 1)) = 0`. Rewrite using `[mul_sub, mul_one, ← pow_succ', ← hk, hun, sub_self]`. Conclude with `hunit.mul_left_eq_zero.mp h0`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Po.nonAlg :
     ∀ (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsLocalRing O] [Finite (ResidueField O)] (Γ : Type) [Group Γ] (R : Type) [CommRing R] [Algebra O R]

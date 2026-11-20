@@ -25,7 +25,7 @@ lemma proj_apply (πA : G →* A) (πB : (i : ι) → G →* B i) (x : G) :
     proj πA πB x = (πA x, fun i => πB i x) := rfl
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons a l ih => rw [List.map_cons, List.prod_cons, mul_assoc, h, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 lemma list_inv {X : Type} (l : List X) (φ : X → G) (R : G → ℂ)
     (h : ∀ a x, R (φ a * x) = R x) (x : G) : R ((l.map φ).prod * x) = R x := by
@@ -34,9 +34,9 @@ lemma list_inv {X : Type} (l : List X) (φ : X → G) (R : G → ℂ)
   | cons a l ih => rw [List.map_cons, List.prod_cons, mul_assoc, h, ih]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons a l ih`. Rewrite `hl` using `[List.nodup_cons]`. Rewrite using `[List.map_cons, List.prod_cons, ih hl.2]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `ha : a = j`. Substitute `ha` using the available equality. Simplify using `[hl.1]`. Simplify using `[ha, Ne.symm ha]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma list_ite {X M : Type} [Monoid M] [DecidableEq X] (l : List X) (hl : l.Nodup) (j : X) (c : M) :
     (l.map (fun i => if i = j then c else 1)).prod = if j ∈ l then c else 1 := by
@@ -50,7 +50,7 @@ lemma list_ite {X M : Type} [Monoid M] [DecidableEq X] (l : List X) (hl : l.Nodu
     · simp [ha, Ne.symm ha]
 
 /- English proof (translation)
-Unfold `sec secB`. Rewrite using `[mul_assoc, hRA]`. Conclude with `list_inv _ (fun i => jB i (y.2 i)) R (fun a x => hRB a _ x) x`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma R_sec (jA : A → G) (jB : (i : ι) → B i → G) (R : G → ℂ)
     (hRA : ∀ (a : A) (x : G), R (jA a * x) = R x)
@@ -61,13 +61,13 @@ lemma R_sec (jA : A → G) (jB : (i : ι) → B i → G) (R : G → ℂ)
   exact list_inv _ (fun i => jB i (y.2 i)) R (fun a x => hRB a _ x) x
 
 /- English proof (translation)
-Rewrite using `[proj_apply]`. Unfold `sec secB`. Use `ext`. Simplify using `only [map_mul, h1, MonoidHom.map_list_prod, List.map_map]`. Rewrite using `[List.prod_eq_one, mul_one]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `z hz`. Take `⟨i, -, rfl⟩` from `List.mem_map.1 hz`. Conclude with `h2 i _`. Name the introduced variables `j`. Simplify using `only [map_mul, h3, MonoidHom.map_list_prod, List.map_map, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `: ((Finset.univ : Finset ι).toList.map ((πB j) ∘ fun i => jB i (y.2 i))) = (Finset.univ : Finset ι).toList.map (fun i => if i = j then y.2 j else 1)`. Apply `List.map_congr_left` to reduce the goal to its premises. Introduce `i _`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[h4]`. Simplify using `[hij, h5 j i _ hij]`. Rewrite using `[this, list_ite _ (Finset.nodup_toList _)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma proj_sec (πA : G →* A) (πB : (i : ι) → G →* B i) (jA : A → G) (jB : (i : ι) → B i → G)
     (h1 : ∀ (a : A), πA (jA a) = a) (h2 : ∀ (i : ι) (b : B i), πA (jB i b) = (1 : A))
@@ -97,7 +97,7 @@ lemma proj_sec (πA : G →* A) (πB : (i : ι) → G →* B i) (jA : A → G) (
     simp
 
 /- English proof (translation)
-Unfold `sec secB`. Conclude with `(hA.comp continuous_fst).mul (continuous_list_prod _ fun i _ => (hB i).comp ((continuous_apply i).comp continuous_snd))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma continuous_sec [TopologicalSpace G] [IsTopologicalGroup G] [TopologicalSpace A]
     [∀ i, TopologicalSpace (B i)] (jA : A → G) (jB : (i : ι) → B i → G) (hA : Continuous jA)
@@ -107,51 +107,41 @@ lemma continuous_sec [TopologicalSpace G] [IsTopologicalGroup G] [TopologicalSpa
     (hB i).comp ((continuous_apply i).comp continuous_snd))
 
 /- English proof (translation)
-Set `p : G →* A × ((i : ι) → B i)` to `proj πA πB`. Establish `hp : Continuous p` using `hπA.prodMk (continuous_pi hπB)`. Set `N : Subgroup G` to `p.ker`. Establish `hNc : IsClosed (N : Set G)`. Rewrite using `[MonoidHom.coe_ker]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isClosed_singleton.preimage hp`. Use `haveI : LocallyCompactSpace N := hNc.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Take `⟨ν, hν⟩ : ∃ ν : Measure N, ν = Measure.haar` from `⟨_, rfl⟩`. Use `haveI : IsHaarMeasure ν := hν ▸ inferInstance`. Use `haveI : SecondCountableTopology N := TopologicalSpace.Subtype.secondCountableTopology (N : Set G)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : SigmaCompactSpace N := sigmaCompactSpace_of_locallyCompact_secondCountable`. Use `haveI : SigmaFinite ν := IsHaarMeasure.sigmaFinite ν`. Set `lam : Measure (A × ((i : ι) → B i))` to `μA.prod (Measure.pi μB)`. Use `haveI : IsHaarMeasure lam := (inferInstance : IsHaarMeasure (μA.prod (Measure.pi μB)))`. Use `haveI : SigmaFinite lam := (inferInstance : SigmaFinite (μA.prod (Measure.pi μB)))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `s` to `sec jA jB`. Establish `hs : Continuous s` using `continuous_sec jA jB hjA hjB`. Establish `hps : ∀ y, p (s y) = y` using `proj_sec πA πB jA jB h1 h2 h3 h4 h5`. Establish `hpN : ∀ n : N, p n = 1` using `fun n => n.2`. Set `U : (A × ((i : ι) → B i)) × N → G` to `fun z => s z.1 * (z.2 : G)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hUc : Continuous U` using `(hs.comp continuous_fst).mul (continuous_subtype_val.comp continuous_snd)`. Establish `hpU : ∀ z, p (U z) = z.1`. Introduce `z`. Simplify using `only [U, map_mul, hps, hpN, mul_one]`. Establish `memV : ∀ x : G, (s (p x))⁻¹ * x ∈ N`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x`. Rewrite using `[MonoidHom.mem_ker, map_mul, map_inv, hps, inv_mul_cancel]`. Set `V : G → (A × ((i : ι) → B i)) × N` to `fun x => (p x, ⟨(s (p x))⁻¹ * x, memV x⟩)`. Establish `hVc : Continuous V` using `hp.prodMk (((hs.comp hp).inv.mul continuous_id).subtype_mk _)`. Establish `hUemb : MeasurableEmbedding U`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `MeasurableEmbedding.of_measurable_inverse hUc.measurable ?_ hVc.measurable ?_` and prove the remaining obligations. Establish `: Set.range U = Set.univ`. Use `Set.eq_univ_of_forall fun x => ⟨V x, ?_⟩` and prove the remaining obligations. Simplify using `only [U, V, mul_inv_cancel_left]`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `MeasurableSet.univ`. Introduce and unpack `⟨y, n⟩`. Establish `e1 : p (U (y, n)) = y` using `hpU _`. Use `Prod.ext e1 (Subtype.ext ?_)` and prove the remaining obligations. Use `show (s (p (U (y, n))))⁻¹ * U (y, n) = (n : G)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[e1]`. Simplify using `only [U, inv_mul_cancel_left]`. Set `m` to `lam.prod ν`. Set `μt` to `m.map U`. Use `haveI : IsMulLeftInvariant μt := by`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun g => ?_⟩` and prove the remaining obligations. Establish `memγ : ∀ y, (s (p g * y))⁻¹ * g * s y ∈ N`. Introduce `y`. Rewrite using `[MonoidHom.mem_ker, map_mul, map_mul, map_inv, hps, hps]`. Use `group`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `γ : (A × ((i : ι) → B i)) → N` to `fun y => ⟨(s (p g * y))⁻¹ * g * s y, memγ y⟩`. Establish `hγ : Continuous γ` using `(((hs.comp (continuous_const.mul continuous_id)).inv.mul continuous_const).mul hs).subtype_mk _`. Establish `hΦ : MeasurePreserving (fun z : (A × ((i : ι) → B i)) × N => (p g * z.1, γ z.1 * z.2)) m m` using `MeasurePreserving.skew_product (measurePreserving_mul_left lam (p g)) (show Measurable (Function.uncurry fun y (n : N) => γ y * n) from ((hγ.comp continuous_fst).mul continuous_snd).measurable) (Filter.Eventually.of_forall fun y => map_mul_left_eq_self ν (γ y))`. Establish `hcomp : (fun x => g * x) ∘ U = U ∘ (fun z : (A × ((i : ι) → B i)) × N => (p g * z.1, γ z.1 * z.2))`. Use function extensionality and compare the values at `z`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Function.comp, U, γ, Subgroup.coe_mul, mul_assoc, mul_inv_cancel_left]`. Use `show Measure.map (fun x => g * x) (Measure.map U m) = Measure.map U m`. Rewrite using `[Measure.map_map (measurable_const_mul g) hUc.measurable, hcomp, ← Measure.map_map hUc.measurable hΦ.measurable, hΦ.map_eq]`. Use `haveI : IsFiniteMeasureOnCompacts μt := by`. Use `⟨fun K hK => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Use `show Measure.map U m K < ⊤`. Rewrite using `[Measure.map_apply hUc.measurable hK.isClosed.measurableSet]`. Establish `hK1 : IsCompact (p '' K)` using `hK.image hp`. Establish `hK2' : IsCompact ((s '' (p '' K))⁻¹ * K)` using `(hK1.image hs).inv.mul hK`. Establish `hK2 : IsCompact (Subtype.val ⁻¹' ((s '' (p '' K))⁻¹ * K) : Set N)` using `hNc.isClosedEmbedding_subtypeVal.isCompact_preimage hK2'`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hsub : U ⁻¹' K ⊆ (p '' K) ×ˢ (Subtype.val ⁻¹' ((s '' (p '' K))⁻¹ * K) : Set N)`. Introduce and unpack `⟨y, n⟩ hz`. Simplify using `only [Set.mem_preimage] at hz`. Establish `hy : y ∈ p '' K` using `⟨U (y, n), hz, hpU _⟩`. Use `⟨hy, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Use `show (n : G) ∈ (s '' (p '' K))⁻¹ * K`. Use `⟨(s y)⁻¹, ?_, U (y, n), hz, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.mem_inv, inv_inv]`. Conclude with `⟨y, hy, rfl⟩`. Simplify using `only [U, inv_mul_cancel_left]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hk : μt = haarScalarFactor μt μ • μ` using `isMulLeftInvariant_eq_smul μt μ`. Use `set k := haarScalarFactor μt μ with hkdef`. Establish `hk0 : k ≠ 0`. Introduce `h0`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite `hk` using `[h0, zero_smul]`. Establish `h' : μt Set.univ = 0` using `by rw [hk]; rfl`. Establish `h'' : m Set.univ = 0`. Rewrite using `[← Set.preimage_univ (f := U), ← Measure.map_apply hUc.measurable MeasurableSet.univ]`. Conclude with `h'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h''` using `[← Set.univ_prod_univ, Measure.prod_prod]`. Break down `mul_eq_zero.1 h'' with h | h` into its components or cases. Conclude with `(isOpen_univ.measure_ne_zero lam ⟨1, Set.mem_univ _⟩) h`. Conclude with `(isOpen_univ.measure_ne_zero ν ⟨1, Set.mem_univ _⟩) h`. Establish `hkc : ((k : ℝ) : ℂ) ≠ 0`.
-
-Rewrite using `[Ne, Complex.ofReal_eq_zero, NNReal.coe_eq_zero]`. Conclude with `hk0`. Use `⟨((k : ℝ) : ℂ)⁻¹ * ∫ n, R (n : G) ∂ν, fun f g => ?_⟩` and prove the remaining obligations. Use `set H : G → ℂ := fun x => (f (πA x) * ∏ i : ι, g i (πB i x)) * R x with hH`. Establish `hint : ∫ x, H x ∂μt = ((k : ℝ) : ℂ) * ∫ x, H x ∂μ`.
-
-Rewrite using `[hk, integral_smul_nnreal_measure, NNReal.smul_def, Complex.real_smul]`. Establish `hHU : (fun z => H (U z)) = fun z : (A × ((i : ι) → B i)) × N => (fun y : A × ((i : ι) → B i) => f y.1 * ∏ i, g i (y.2 i)) z.1 * (fun n : N => R n) z.2`. Use function extensionality and compare the values at `z`. Establish `ha : πA (U z) = z.1.1` using `congrArg Prod.fst (hpU z)`. Establish `hb : ∀ i, πB i (U z) = z.1.2 i` using `fun i => congrFun (congrArg Prod.snd (hpU z)) i`.
-
-Simplify using `only [H, ha, hb]`. Use `congr 1`. Conclude with `R_sec jA jB R hRA hRB z.1 z.2`. Establish `hmain : ∫ x, H x ∂μt = ((∫ (a : A), f a ∂μA) * ∏ i : ι, ∫ (b : B i), g i b ∂μB i) * ∫ n, R (n : G) ∂ν` using `by show ∫ x, H x ∂(Measure.map U ((μA.prod (Measure.pi μB)).prod ν)) = _`. Rewrite using `[hUemb.integral_map, hHU]`.
-
-Rewrite using `[integral_prod_mul (μ := μA.prod (Measure.pi μB)) (ν := ν) (fun y : A × ((i : ι) → B i) => f y.1 * ∏ i, g i (y.2 i)) (fun n : N => R n)]`. Rewrite using `[integral_prod_mul (μ := μA) (ν := Measure.pi μB) (fun a => f a) (fun b : (i : ι) → B i => ∏ i, g i (b i)), integral_fintype_prod_eq_prod]`. Establish `: ∫ x, H x ∂μ = ((k : ℝ) : ℂ)⁻¹ * ∫ x, H x ∂μt`. Rewrite using `[hint, ← mul_assoc, inv_mul_cancel₀ hkc, one_mul]`. Rewrite using `[this, hmain]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem finiteRing_sq_sub_mul_sq_eq_of_card {G A ι : Type} [Fintype ι] {B : ι → Type} [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G]
@@ -297,7 +287,7 @@ theorem finiteRing_sq_sub_mul_sq_eq_of_card {G A ι : Type} [Fintype ι] {B : ι
   ring
 
 /- English proof (translation)
-The claim follows from `@finiteRing_sq_sub_mul_sq_eq_of_card`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ {G A ι : Type} [inst : Fintype ι] {B : ι → Type} [inst_1 : Group G] [inst_2 : TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G] [inst_7 : MeasurableSpace G] [BorelSpace G] [inst_9 : Group A] [inst_10 : TopologicalSpace A] [IsTopologicalGroup A] [LocallyCompactSpace A] [SecondCountableTopology A] [T2Space A] [inst_15 : MeasurableSpace A] [BorelSpace A] [inst_17 : (i : ι) → Group (B i)] [inst_18 : (i : ι) → TopologicalSpace (B i)] [∀ (i : ι), IsTopologicalGroup (B i)] [∀ (i : ι), LocallyCompactSpace (B i)] [∀ (i : ι), SecondCountableTopology (B i)] [∀ (i : ι), T2Space (B i)] [inst_23 : (i : ι) → MeasurableSpace (B i)] [∀ (i : ι), BorelSpace (B i)] (μ : MeasureTheory.Measure G) [MeasureTheory.Measure.IsHaarMeasure μ] (μA : MeasureTheory.Measure A) [MeasureTheory.Measure.IsHaarMeasure μA] (μB : (i : ι) → MeasureTheory.Measure (B i)) [∀ (i : ι), MeasureTheory.Measure.IsHaarMeasure (μB i)] (πA : G →* A), Continuous (⇑πA : G → A) → ∀ (πB : (i : ι) → G →* B i), (∀ (i : ι), Continuous (⇑(πB i) : G → B i)) → ∀ (jA : A → G), Continuous jA → ∀ (jB : (i : ι) → B i → G), (∀ (i : ι), Continuous (jB i)) → (∀ (a : A), (πA : G → A) (jA a) = a) → (∀ (i : ι) (b : B i), (πA : G → A) (jB i b) = (1 : A)) → (∀ (i : ι) (a : A), (πB i : G → B i) (jA a) = (1 : B i)) → (∀ (i : ι) (b : B i), (πB i : G → B i) (jB i b) = b) → (∀ (i i' : ι) (b : B i'), i' ≠ i → (πB i : G → B i) (jB i' b) = (1 : B i)) → ∀ (R : G → ℂ), (∀ (a : A) (x : G), R (jA a * x) = R x) → (∀ (i : ι) (b : B i) (x : G), R (jB i b * x) = R x) → ∃ (c : ℂ), ∀ (f : A → ℂ) (g : (i : ι) → B i → ℂ), ∫ (x : G), (f ((πA : G → A) x) * ∏ i : ι, g i ((πB i : G → B i) x)) * R x ∂μ = c * ((∫ (a : A), f a ∂μA) * ∏ i : ι, ∫ (b : B i), g i b ∂μB i) := @finiteRing_sq_sub_mul_sq_eq_of_card
 

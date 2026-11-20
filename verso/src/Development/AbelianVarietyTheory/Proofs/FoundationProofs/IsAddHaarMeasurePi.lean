@@ -11,7 +11,7 @@ noncomputable section
 namespace GlobalTheory.UnitaryTheta
 
 /- English proof (translation)
-The claim follows from `Measure.pi.isAddHaarMeasure _`.
+A detailed English derivation is pending.
 -/
 theorem isAddHaarMeasure_pi {ι G : Type} [Fintype ι] [NormedAddCommGroup G] [MeasureSpace G] [BorelSpace G]
     [SecondCountableTopology G] [SigmaFinite (volume : Measure G)] [(volume : Measure G).IsAddHaarMeasure] :
@@ -23,21 +23,21 @@ instance isAddHaarMeasure_VC (D : D7) (N N' : ℕ) : (volume : Measure (VC D N N
   exact isAddHaarMeasure_pi
 
 /- English proof (translation)
-Take `⟨L, hL⟩` from `GlobalTheory.CurveLattice.exists_periodPair_lamOf D cc δ hC`. Conclude with `(GlobalTheory.PlaneLattice.area_pos_and_selfDual L _ hL).1`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem area_pos (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (hC : Crv D cc δ) : 0 < area (lamOf D cc δ) := by
   obtain ⟨L, hL⟩ := GlobalTheory.CurveLattice.exists_periodPair_lamOf D cc δ hC
   exact (GlobalTheory.PlaneLattice.area_pos_and_selfDual L _ hL).1
 
 /- English proof (translation)
-The claim follows from `D.host.conjE_apply φ x`.
+A detailed English derivation is pending.
 -/
 theorem emb_conj (D : D7) (φ : D.host.E →+* ℂ) (x : D.host.E) :
     φ (D.host.conj x) = (starRingEnd ℂ) (φ x) :=
   D.host.conjE_apply φ x
 
 /- English proof (translation)
-Rewrite using `[hYY, ← GlobalTheory.InducedType.sum_eq_trace D]`. Simplify using `only [map_sum, map_mul, emb_conj]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem map_hYY (D : D7) {N N' : ℕ} (x y : Matrix (Fin N') (Fin N) D.host.E) :
     D.host.φ₀ ((hYY D x y : D.host.K) : D.host.E) =
@@ -46,7 +46,7 @@ theorem map_hYY (D : D7) {N N' : ℕ} (x y : Matrix (Fin N') (Fin N) D.host.E) :
   simp only [map_sum, map_mul, emb_conj]
 
 /- English proof (translation)
-Simplify using `only [map_hYY, map_sum, map_mul, Complex.conj_conj, mul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_hYY_symm (D : D7) {N N' : ℕ} (x y : Matrix (Fin N') (Fin N) D.host.E) :
     D.host.φ₀ ((hYY D y x : D.host.K) : D.host.E) =
@@ -54,7 +54,7 @@ theorem map_hYY_symm (D : D7) {N N' : ℕ} (x y : Matrix (Fin N') (Fin N) D.host
   simp only [map_hYY, map_sum, map_mul, Complex.conj_conj, mul_comm]
 
 /- English proof (translation)
-Simplify using `only [map_hYY, Finset.mul_sum, Matrix.smul_apply]`. Use `Finset.sum_congr rfl fun τ _ => Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← GlobalTheory.InducedType.restrict_K D τ z, ← mul_assoc, ← map_mul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem map_hYY_smul_left (D : D7) {N N' : ℕ} (z : D.host.K) (x y : Matrix (Fin N') (Fin N) D.host.E) :
     D.host.φ₀ ((hYY D (z • x) y : D.host.K) : D.host.E) =
@@ -65,7 +65,7 @@ theorem map_hYY_smul_left (D : D7) {N N' : ℕ} (z : D.host.K) (x y : Matrix (Fi
   rfl
 
 /- English proof (translation)
-Rewrite using `[map_hYY_symm, map_hYY_smul_left, map_mul, ← map_hYY_symm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_hYY_smul_right (D : D7) {N N' : ℕ} (z : D.host.K) (x y : Matrix (Fin N') (Fin N) D.host.E) :
     D.host.φ₀ ((hYY D x (z • y) : D.host.K) : D.host.E) =
@@ -73,11 +73,11 @@ theorem map_hYY_smul_right (D : D7) {N N' : ℕ} (z : D.host.K) (x y : Matrix (F
   rw [map_hYY_symm, map_hYY_smul_left, map_mul, ← map_hYY_symm]
 
 /- English proof (translation)
-Establish `hz0 : z ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hz`. Use `⟨fun i j => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hb.1 i j]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `D.host.φ₀.injective` to reduce the goal to its premises. Rewrite using `[map_hYY_smul_left, map_hYY_smul_right, ← mul_assoc, hz, one_mul]`. Rewrite using `[eq_top_iff, ← hb.2, Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `: b j = z⁻¹ • (z • b j)` using `by rw [smul_smul, inv_mul_cancel₀ hz0, one_smul]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem onB_smul (D : D7) {N N' r : ℕ} (b : Fin r → Matrix (Fin N') (Fin N) D.host.E) (hb : OnB D b)
     (z : D.host.K) (hz : D.host.φ₀ (z : D.host.E) * (starRingEnd ℂ) (D.host.φ₀ (z : D.host.E)) = 1) :

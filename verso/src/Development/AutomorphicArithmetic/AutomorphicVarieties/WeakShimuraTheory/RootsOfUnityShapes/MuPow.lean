@@ -6,9 +6,9 @@ import GroundTheory.GlobalFields.CyclotomicCharacters.PadicUnitsLog
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
 /- English proof (translation)
-Take `⟨-, a, ha⟩` from `hs`. Use `⟨a, ?_⟩` and prove the remaining obligations. Establish `hle : ⁅H, H⁆ ≤ f.ker`. Rewrite using `[Subgroup.commutator_le]`. Introduce `x _ y _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[MonoidHom.mem_ker, map_commutatorElement, commutatorElement_eq_one_iff_commute]`. Conclude with `Commute.all _ _`. Establish `hmem` using `Subgroup.topologicalClosure_minimal _ hle hf ha`. Rewrite `hmem` using `[MonoidHom.mem_ker, map_pow]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem mu_pow {Γ M : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [CommGroup M] {l : ℕ}
     (f : Γ →* M) (hf : IsClosed (f.ker : Set Γ)) {H : Subgroup Γ} {s : Γ} (hs : s ∈ muOf l H) :
@@ -24,7 +24,7 @@ private theorem mu_pow {Γ M : Type} [Group Γ] [TopologicalSpace Γ] [IsTopolog
   rwa [MonoidHom.mem_ker, map_pow] at hmem
 
 /- English proof (translation)
-Establish `hc : Nat.Coprime (l ^ a) m` using `Nat.Coprime.pow_left a h`. Establish `hd` using `Nat.dvd_gcd (orderOf_dvd_of_pow_eq_one h1) (orderOf_dvd_of_pow_eq_one h2)`. Rewrite `hd` using `[Nat.Coprime.gcd_eq_one hc, Nat.dvd_one, orderOf_eq_one_iff]`. Conclude with `hd`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem one_of {M : Type} [Monoid M] {x : M} {l a m : ℕ} (h : l.Coprime m) (h1 : x ^ l ^ a = 1)
     (h2 : x ^ m = 1) : x = 1 := by
@@ -34,27 +34,23 @@ private theorem one_of {M : Type} [Monoid M] {x : M} {l a m : ℕ} (h : l.Coprim
   exact hd
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ c D hD T hT H s hs i`. Use `haveI : IsAlgClosure T.F Ω := ⟨IsAlgClosure.isAlgClosed ℚ, Algebra.IsAlgebraic.tower_top (K := ℚ) T.F⟩`. Establish `hcont : Continuous (resQ T.F)` using `(galEmbTop ℚ T.F Ω).1.continuous`. Establish `hlp : l.Prime` using `Fact.out`. Establish `gen : ∀ (χ : G ℚ Ω →* (c.O)ˣ) (m : ℕ), l.Coprime m → IsClosed ((χ.comp (resQ T.F)).ker : Set (G T.F Ω)) → χ (resQ T.F s) ^ m = 1 → χ (resQ T.F s) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `χ m hm hcl h2`. Take `⟨a, ha⟩` from `mu_pow (χ.comp (resQ T.F)) hcl hs`. Conclude with `one_of hm ha h2`. Establish `closedOfOpen : ∀ χ : G ℚ Ω →* (c.O)ˣ, IsOpen (χ.ker : Set (G ℚ Ω)) → IsClosed ((χ.comp (resQ T.F)).ker : Set (G T.F Ω))`. Introduce `χ ho`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : IsClosed (χ.ker : Set (G ℚ Ω))` using `Subgroup.isClosed_of_isOpen _ ho`. Rewrite using `[← MonoidHom.comap_ker]`. Conclude with `hc.preimage hcont`. Establish `hcyc : cycZ T.F Ω l s = 1`. Establish `hcl : IsClosed ((cycZ T.F Ω l).ker : Set (G T.F Ω))` using `isClosed_singleton.preimage (continuous_cycZ T.F Ω l)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨a, ha⟩` from `mu_pow (cycZ T.F Ω l) hcl hs`. Establish `htor : cycZ T.F Ω l s ^ GroundTheory.Global.Cyclotomic.torsionExponent l = 1` using `(GroundTheory.Global.Cyclotomic.mem_torsion_iff l _).1 ((CommGroup.mem_torsion _).2 (isOfFinOrder_iff_pow_eq_one.2 ⟨l ^ a, pow_pos hlp.pos a, ha⟩))`. Establish `hcop : l.Coprime (GroundTheory.Global.Cyclotomic.torsionExponent l)`. Simplify using `only [GroundTheory.Global.Cyclotomic.torsionExponent, hD.l_odd, if_false]`. Conclude with `Nat.coprime_of_lt_prime (Nat.sub_pos_of_lt hlp.one_lt).ne' (Nat.sub_lt hlp.pos one_pos) hlp`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `one_of hcop ha htor`. Establish `hchi : chiO ℚ Ω l c.O (resQ T.F s) = 1`. Establish `e : cycZ ℚ Ω l (resQ T.F s) = cycZ T.F Ω l s` using `rfl`. Simplify using `only [chiO, MonoidHom.comp_apply]`. Rewrite using `[e, hcyc, map_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨m, hm, hkc⟩` from `hT.kc`. Establish `hψ : D.ψ (resQ T.F s) = 1` using `gen D.ψ m hm (closedOfOpen _ hD.psi_open) (hkc s hcyc)`. Take `⟨m', hm', hξm⟩` from `hD.xi_ord`. Establish `hξ : D.ξ (resQ T.F s) = 1` using `gen D.ξ m' hm' (closedOfOpen _ hD.xi_open) (by rw [← MonoidHom.pow_apply, hξm, MonoidHom.one_apply])`. Establish `hom : D.om (resQ T.F s) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hb` using `hD.om_bar (resQ T.F s)`. Establish `hb' : residue c.O ↑(D.om (resQ T.F s)) = residue c.O ↑(1 : (c.O)ˣ)`. Establish `e1 : Raw.bar D.om (resQ T.F s) = residue c.O ↑(D.om (resQ T.F s))` using `rfl`. Establish `e2 : Raw.bar (chiO ℚ Ω l c.O) (resQ T.F s) = residue c.O ↑(chiO ℚ Ω l c.O (resQ T.F s))` using `rfl`. Rewrite using `[← e1, hb, e2, hchi]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply `(congrFacts Ω l c).2.2.2.1 _ 1 (l - 1)` to reduce the goal to its premises. Conclude with `Nat.not_dvd_of_pos_of_lt (Nat.sub_pos_of_lt hlp.one_lt) (Nat.sub_lt hlp.pos one_pos)`. Rewrite using `[← MonoidHom.pow_apply, hD.om_pow, MonoidHom.one_apply]`. Conclude with `one_pow _`. Rewrite using `[← residue_eq_zero_iff, map_sub, hb', sub_self]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Establish `hal : D.al (resQ T.F s) = 1`. Simplify using `only [Raw.al, MonoidHom.mul_apply, MonoidHom.inv_apply, hchi, hom, hξ, inv_one, mul_one]`. Establish `hPsi : D.Psi (resQ T.F s) = 1`. Simplify using `only [Raw.Psi, UpperTheory.V.Chr.Psi, MonoidHom.mul_apply, MonoidHom.pow_apply, MonoidHom.zpow_apply, hψ, hchi, one_pow, one_zpow, mul_one]`. Establish `hth : D.th (resQ T.F s) = 1`.
-
-Simplify using `only [Raw.th, Raw.al, MonoidHom.mul_apply, MonoidHom.inv_apply, hchi, hom, hξ, hPsi, inv_one, mul_one]`. Use `fin_cases i`. Conclude with `hth`. Conclude with `hPsi`. Conclude with `hal`.
-
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Rq.muPs :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → ∀ T : Tower D, T.Ok →

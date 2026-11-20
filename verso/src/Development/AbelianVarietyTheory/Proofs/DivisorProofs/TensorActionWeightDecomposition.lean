@@ -5,7 +5,7 @@ open Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible GlobalTheo
 namespace GlobalTheory.SteepMult
 
 /- English proof (translation)
-Take `⟨⟨a, b⟩, h⟩` from `x`. Take `⟨⟨a', b'⟩, h'⟩` from `y`. Simplify using `only [adP, Eab, Matrix.single_apply, Subtype.mk.injEq, Prod.mk.injEq]`. Apply the tactic sequence `by_cases h1 : a = a' <;> by_cases h2 : b = b' <;> by_cases h3 : c = a' <;> by_cases h4 : c = b' <;>`. Apply the tactic sequence `simp_all [eq_comm] <;> grind`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma adP_Eab_self {R S : ℕ} (c : Ix R S) (y x : NC R S) :
     adP (Eab c c) y x = if x = y then ((if y.1.1 = c then 1 else 0) - (if y.1.2 = c then 1 else 0) : ℂ) else 0 := by
@@ -16,9 +16,9 @@ lemma adP_Eab_self {R S : ℕ} (c : Ix R S) (y x : NC R S) :
     simp_all [eq_comm] <;> grind
 
 /- English proof (translation)
-Rewrite using `[tAct_apply, Finset.sum_smul]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single (g i)]`. Simplify using `[adP_Eab_self]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `x _ hx`. Simplify using `[adP_Eab_self, hx]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma tAct_Eab_self_apply {R S k : ℕ} {W : Type} [AddCommGroup W] [Module ℂ W] (actW : Mat R S →ₗ[ℂ] Module.End ℂ W)
     (c : Ix R S) (Ψ : (Fin k → NC R S) → W) (g : Fin k → NC R S) :
@@ -34,11 +34,11 @@ lemma tAct_Eab_self_apply {R S k : ℕ} {W : Type} [AddCommGroup W] [Module ℂ 
   · simp
 
 /- English proof (translation)
-Rewrite `hw`, the goal using `[GlobalTheory.TensorHW.mem_wt]`. Introduce `c`. Use function extensionality and compare the values at `h`. Rewrite using `[tAct_Eab_self_apply]`. Distinguish the cases in `hh : h = g`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hh` using the available equality. Simplify using `only [Pi.single_eq_same, Pi.smul_apply, hw c, ← add_smul]`. Use `congr 1`. Use `push_cast`. Use `congr 1`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`. Simplify using `[hh]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 lemma single_mem_wtSub {R S k : ℕ} {W : Type} [AddCommGroup W] [Module ℂ W] (actW : Mat R S →ₗ[ℂ] Module.End ℂ W)
     (g : Fin k → NC R S) (μ : Ix R S → ℚ) (w : W) (hw : w ∈ wtSub actW μ) :
@@ -59,9 +59,9 @@ lemma single_mem_wtSub {R S k : ℕ} {W : Type} [AddCommGroup W] [Module ℂ W] 
   · simp [hh]
 
 /- English proof (translation)
-Rewrite using `[← Finset.univ_sum_single Ψ]`. Use `Submodule.sum_mem _ fun g _ => ?_` and prove the remaining obligations. Use `Submodule.iSup_induction (motive := fun w => (Pi.single g w : (Fin k → NC R S) → W) ∈ ⨆ μ : Ix R S → ℚ, wtSub (tAct k actW) μ) _ (hW (Ψ g)) ?_ ?_ ?_` and prove the remaining obligations. Introduce `μ w hw`. Conclude with `Submodule.mem_iSup_of_mem _ (single_mem_wtSub actW g μ w hw)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `x y hx hy`. Rewrite using `[Pi.single_add]`. Conclude with `Submodule.add_mem _ hx hy`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tAct_mem_iSup_wtSub (R S k : ℕ) (W : Type) [AddCommGroup W] [Module ℂ W]
     (actW : Mat R S →ₗ[ℂ] Module.End ℂ W) (hW : ∀ w, w ∈ ⨆ μ : Ix R S → ℚ, wtSub actW μ)

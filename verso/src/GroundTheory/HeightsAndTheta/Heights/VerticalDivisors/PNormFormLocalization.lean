@@ -10,9 +10,9 @@ open MvPolynomial
 noncomputable section
 
 /- English proof (translation)
-Introduce `R F A A' _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ n x`. Set `b` to `Module.Free.chooseBasis R A`. Set `b'` to `b.localizationLocalization F (nonZeroDivisors R) A'`. Establish `hM : ∀ j, Algebra.leftMulMatrix b' (algebraMap A A' (x j)) = (algebraMap R F).mapMatrix (Algebra.leftMulMatrix b (x j))` using `fun j => (Algebra.map_leftMulMatrix_localization R (nonZeroDivisors R) b (x j)).symm`. Rewrite using `[normForm_eq_det b, normForm_eq_det b', RingHom.map_det]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `i k`. Simplify using `only [hM, RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul, map_sum, map_mul, map_X, map_C]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem NormFormLocalization.proof : NormFormLocalization.Statement := by
   intro R F A A' _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ n x

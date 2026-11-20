@@ -20,7 +20,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.PairLift
 
 /- English proof (translation)
-Introduce `hDS hHC hDec hCW D X hX`. Conclude with `{ chosen := hX hc := hHC decay := hDec bridge := GlobalTheory.CoverModel.modelsAreCoverSeries_all hDS hHC D vacChar := GlobalTheory.VacuumCharacter.vacChar D lie := GlobalTheory.LieScalar.lieFockAll D cpt := GlobalTheory.CompactFockAction.compactFockAll D dense := GlobalTheory.Fo …`. Use extensionality with `:= GlobalTheory.T.gkMapCuspForms_extends_to_smoothVectors hHC hCW D }`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem inputs_of_chosenSeries :
     GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CuspRapidDecay →

@@ -26,9 +26,9 @@ section
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 variable (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (T : GlobalTheory.RowTie.WDTie D.nd D.naut)
 /- English proof (translation)
-Establish `hex : ∃ x, LocAt (clsA π).rep w x`. Take `⟨s, σ, hs, -, -⟩` from `hx`. Substitute `hs` using the available equality. Conclude with `locAt_of_split _ s`. Unfold `_root_.GlobalTheory.AutQuot.locOf_alt`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Substitute using the available equality. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos hex, locAt_unique (rep_iso π) hex.choose_spec hx]`.
+A detailed English derivation is pending.
 -/
 theorem locOf_eq_alt {π : NG.AutRep D.host.E D.R.nV} {w : PlE D.host} {x} (hx : LocAt π w x) :
     _root_.GlobalTheory.AutQuot.locOf_alt hL D T (clsA π).rep w = (T.e w).symm (_root_.GlobalTheory.CuspRep.ParLawsT.locRecT hL (D.nd.plOm.2 w) x) := by
@@ -45,9 +45,9 @@ section
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 variable (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (T : GlobalTheory.RowTie.WDTie D.nd D.naut)
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v', hv', hs⟩`. Rewrite using `[overPl_unique hv hv']`. Conclude with `_root_.UpperTheory.One.M.New.sphAt_iso (rep_iso π) hs`. Introduce `hs`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨v, hv, _root_.UpperTheory.One.M.New.sphAt_iso (autIso_symm (rep_iso π)) hs⟩`.
+A detailed English derivation is pending.
 -/
 theorem f_sph_alt (π : NG.AutRep D.host.E D.R.nV) (w : PlE D.host) (v : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)))
     (hv : NG.OverPl w v) : (∃ v', NG.OverPl w v' ∧ (clsA π).rep.SphericalAtPlace v') ↔ π.SphericalAtPlace v := by
@@ -58,7 +58,7 @@ theorem f_sph_alt (π : NG.AutRep D.host.E D.R.nV) (w : PlE D.host) (v : HeightO
   · intro hs
     exact ⟨v, hv, _root_.UpperTheory.One.M.New.sphAt_iso (autIso_symm (rep_iso π)) hs⟩
 /- English proof (translation)
-Take `⟨x, hx⟩` from `locAt_of_split π s`. Rewrite using `[_root_.GlobalTheory.AutQuot.locOf_eq_alt hL D T hx, T.unr, Equiv.apply_symm_apply]`. Conclude with `_root_.GlobalTheory.T.locRecT_unr_of_sphAt hL D π s x hx hs`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unr_locOf_of_sphAt (π : NG.AutRep D.host.E D.R.nV) (s : SplitPlace D.host.E) (hs : π.SphericalAtPlace s.v) :
     D.naut.unr (_root_.GlobalTheory.AutQuot.locOf_alt hL D T (clsA π).rep s.w) := by
@@ -66,9 +66,9 @@ theorem unr_locOf_of_sphAt (π : NG.AutRep D.host.E D.R.nV) (s : SplitPlace D.ho
   rw [_root_.GlobalTheory.AutQuot.locOf_eq_alt hL D T hx, T.unr, Equiv.apply_symm_apply]
   exact _root_.GlobalTheory.T.locRecT_unr_of_sphAt hL D π s x hx hs
 /- English proof (translation)
-Take `⟨x, hx⟩` from `GlobalTheory.T.exists_localComponent_conj_splitPlace D π s w hc`. Take `⟨hun, hpol⟩` from `_root_.GlobalTheory.T.spherical_vector_fixed_local_alt hL D π s w ϖ hc hu J hJ f hf hf0 hfix c hc' x hx`. Rewrite using `[_root_.GlobalTheory.AutQuot.locOf_eq_alt hL D T hx]`. Establish `hu2 : D.naut.unr (D.naut.lpTw ((T.e w).symm (_root_.GlobalTheory.CuspRep.ParLawsT.locRecT hL (D.nd.plOm.2 w) x)) ((1 - (D.R.nV : ℝ)) / 2))`. Rewrite using `[T.unr, T.tw, Equiv.apply_symm_apply]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hun`. Unfold `galPol`. Rewrite using `[T.frobEig _ _ hu2, T.tw, Equiv.apply_symm_apply]`. Conclude with `hpol`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem f_locPol_alt (π : NG.AutRep D.host.E D.R.nV) (s : SplitPlace D.host.E) (w : PlE D.host)
     (ϖ : s.v.adicCompletion (maximalRealSubfield D.host.E)) (hc : IsConjPl D.host w s.w) (hu : IsUnif D.host.E s.v ϖ)
@@ -89,7 +89,7 @@ theorem f_locPol_alt (π : NG.AutRep D.host.E D.R.nV) (s : SplitPlace D.host.E) 
   rw [T.frobEig _ _ hu2, T.tw, Equiv.apply_symm_apply]
   exact hpol
 /- English proof (translation)
-Rewrite using `[_root_.GlobalTheory.AutQuot.locOf_eq_alt hL D T ⟨s, σ, rfl, hσ, HEq.rfl⟩, Equiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem e_locOf_eq_locRecT_of_isLocS (π : NG.AutRep D.host.E D.R.nV) (s : SplitPlace D.host.E)
     (σ : GlobalTheory.SmGL.IrrRep (GL (Fin D.R.nV) (s.w.adicCompletion D.host.E))) (hσ : IsLocS π.S s σ) :
@@ -98,7 +98,7 @@ theorem e_locOf_eq_locRecT_of_isLocS (π : NG.AutRep D.host.E D.R.nV) (s : Split
   rw [_root_.GlobalTheory.AutQuot.locOf_eq_alt hL D T ⟨s, σ, rfl, hσ, HEq.rfl⟩, Equiv.apply_symm_apply]
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨{ _root_.GlobalTheory.AutQuot.boundaryConditionOfNoLocal hL D T hE with sphAU := fun _ X w => ∃ v, NG.OverPl w v ∧ (AUq.rep X).SphericalAtPlace v embAV_sph := fun i => isEmptyElim i }, { cls := fun _ _ _ π => clsA π surj := fun _ _ _ X => ⟨X.rep, AUq.cls_rep X⟩ iso := fun _ _ _ …`.
+Supply the required witnesses or components.
 -/
 theorem exists_nbc_auSide_true_of_empty (hE : IsEmpty D.nd.Loc) :
     ∃ (C : NBC D.naut) (A : _root_.GlobalTheory.HeightCounting.AUSideAlt (setBC D C)), _root_.GlobalTheory.HeightCounting.AutomorphicSideRealised hL (setBC D C) T A :=
@@ -123,7 +123,7 @@ end
 end GlobalTheory.AutQuot
 open Formalism.BasicNotions GlobalTheory.HeightCounting in
 /- English proof (translation)
-Introduce `hL D hE T` and use `_root_.GlobalTheory.AutQuot.exists_nbc_auSide_true_of_empty hL D T hE`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.AutQuot.exists_nbc_auSide_auTrue_of_isEmpty : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7), IsEmpty D.nd.Loc →
     ∀ T : GlobalTheory.RowTie.WDTie D.nd D.naut, ∃ (C : NBC D.naut) (A : _root_.GlobalTheory.HeightCounting.AUSideAlt (setBC D C)), _root_.GlobalTheory.HeightCounting.AutomorphicSideRealised hL (setBC D C) T A :=

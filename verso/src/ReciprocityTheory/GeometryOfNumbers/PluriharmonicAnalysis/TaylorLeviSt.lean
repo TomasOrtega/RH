@@ -8,7 +8,7 @@ section
 variable {D : ℕ}
 
 /- English proof (translation)
-Use extensionality with `j`. Simplify using `only [Pi.smul_apply, Pi.add_apply, smul_eq_mul, Complex.real_smul]`. Use `conv_lhs => rw [← Complex.re_add_im c]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma pgtl_smul_decomp (c : ℂ) (z : Fin D → ℂ) : c • z = c.re • z + c.im • (I • z) := by
   ext j
@@ -17,7 +17,7 @@ lemma pgtl_smul_decomp (c : ℂ) (z : Fin D → ℂ) : c • z = c.re • z + c.
   ring
 
 /- English proof (translation)
-Rewrite using `[pgtl_smul_decomp c x, hadd, hr, hr, hI]`. Use `conv_rhs => rw [← Complex.re_add_im c]`. Rewrite using `[add_smul, mul_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma pgtl_clin {F : Type*} [AddCommGroup F] [Module ℂ F] (f : (Fin D → ℂ) → F)
     (hadd : ∀ x y, f (x + y) = f x + f y) (hr : ∀ (r : ℝ) x, f (r • x) = (r : ℂ) • f x)
@@ -51,7 +51,7 @@ lemma pgtlCx_apply (d : (Fin D → ℂ) →L[ℝ] ℝ) (z : Fin D → ℂ) :
     pgtlCx d z = (d z : ℂ) - I * (d (I • z) : ℂ) := rfl
 
 /- English proof (translation)
-Simplify using `[pgtlCx_apply]`.
+Simplify using the standard rewrite rules.
 -/
 lemma pgtlCx_re (d : (Fin D → ℂ) →L[ℝ] ℝ) (z : Fin D → ℂ) : (pgtlCx d z).re = d z := by
   simp [pgtlCx_apply]
@@ -69,7 +69,7 @@ noncomputable def pgtlDz (B : (Fin D → ℂ) →L[ℝ] (Fin D → ℂ) →L[ℝ
   (1 / 4 : ℝ) • (B z - (B (I • z)).comp pgtlJ)
 
 /- English proof (translation)
-Simplify using `only [pgtlDz, ContinuousLinearMap.smul_apply, ContinuousLinearMap.sub_apply, ContinuousLinearMap.comp_apply, pgtlJ_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma pgtlDz_apply (B : (Fin D → ℂ) →L[ℝ] (Fin D → ℂ) →L[ℝ] ℝ) (z w : Fin D → ℂ) :
     pgtlDz B z w = (B z w - B (I • z) (I • w)) / 4 := by
@@ -112,7 +112,7 @@ lemma pgtlBil_apply (B : (Fin D → ℂ) →L[ℝ] (Fin D → ℂ) →L[ℝ] ℝ
     pgtlBil B z w = pgtlCx (pgtlDz B z) w := rfl
 
 /- English proof (translation)
-Rewrite using `[pgtlBil_apply, pgtlCx_re, pgtlDz_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma pgtlBil_re (B : (Fin D → ℂ) →L[ℝ] (Fin D → ℂ) →L[ℝ] ℝ) (z : Fin D → ℂ) :
     (pgtlBil B z z).re = (B z z - B (I • z) (I • z)) / 4 := by
@@ -121,7 +121,7 @@ lemma pgtlBil_re (B : (Fin D → ℂ) →L[ℝ] (Fin D → ℂ) →L[ℝ] ℝ) (
 end
 
 /- English proof (translation)
-The claim follows from `|φ z - φ 0 - fderiv ℝ φ 0 z - fderiv ℝ (fderiv ℝ φ) 0 z z / 2| ≤ K₃ * ‖z‖ ^ 3 := by have hzr : ‖z‖ < ρ₀ := mem_ball_zero_iff.mp hz have h0 : (0 : Fin D → ℂ) ∈ Metric.ball (0 : Fin D → ℂ) ρ₀ := Metric.mem_ball_self ((norm_nonneg z).trans_lt hzr) have hK : 0 ≤ K₃ := (norm_nonneg _) …`.
+A detailed English derivation is pending.
 -/
 lemma pgtl_taylor {D : ℕ} {ρ₀ K₃ : ℝ} (φ : (Fin D → ℂ) → ℝ)
     (hφ : ContDiffOn ℝ 3 φ (Metric.ball 0 ρ₀))
@@ -202,7 +202,7 @@ lemma pgtl_taylor {D : ℕ} {ρ₀ K₃ : ℝ} (φ : (Fin D → ℂ) → ℝ)
     _ = K₃ * ‖z‖ ^ 3 := by ring
 
 /- English proof (translation)
-The claim follows from `|φ z - φ 0 - (q z).re - (fderiv ℝ (fderiv ℝ φ) 0 z z + fderiv ℝ (fderiv ℝ φ) 0 (I • z) (I • z)) / 4| ≤ K₃ * ‖z‖ ^ 3 := by refine ⟨fun z => pgtlCx (fderiv ℝ φ 0) z + pgtlBil (fderiv ℝ (fderiv ℝ φ) 0) z z, ?_, ?_, ?_⟩ · exact (pgtlCx _).differentiable.add ((pgtlBil _).differentiabl …`.
+A detailed English derivation is pending.
 -/
 theorem exists_pluriharmonic_part {D : ℕ} {ρ₀ K₃ : ℝ} (φ : (Fin D → ℂ) → ℝ)
     (hφ : ContDiffOn ℝ 3 φ (Metric.ball 0 ρ₀))

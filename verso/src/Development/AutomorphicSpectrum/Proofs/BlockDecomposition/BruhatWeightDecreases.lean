@@ -15,7 +15,7 @@ section Basic
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))]
 
 /- English proof (translation)
-Establish `h : Valued.v x ≠ 0` using `(Valuation.ne_zero_iff _).2 hx`. Unfold `ordL`. Rewrite using `[dif_neg h]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem v_eq_ord {x : L} (hx : x ≠ 0) : Valued.v x =
     ((Multiplicative.ofAdd (-ordL x) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) := by
@@ -25,7 +25,7 @@ theorem v_eq_ord {x : L} (hx : x ≠ 0) : Valued.v x =
   simp
 
 /- English proof (translation)
-Establish `h` using `v_eq_ord (mul_ne_zero hx hy)`. Rewrite `h` using `[map_mul, v_eq_ord hx, v_eq_ord hy, ← WithZero.coe_mul, ← ofAdd_add]`. Use `Multiplicative.ofAdd.injective (WithZero.coe_injective h)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem ord_mul {x y : L} (hx : x ≠ 0) (hy : y ≠ 0) : ordL (x * y) = ordL x + ordL y := by
   have h := v_eq_ord (mul_ne_zero hx hy)
@@ -34,9 +34,9 @@ theorem ord_mul {x y : L} (hx : x ≠ 0) (hy : y ≠ 0) : ordL (x * y) = ordL x 
   omega
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.prod_empty, Finset.sum_empty]`. Use `v_eq_ord (one_ne_zero : (1 : L) ≠ 0)` as an intermediate fact. Rewrite `this` using `[map_one]`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : (1 : Multiplicative ℤ) = Multiplicative.ofAdd (-ordL (1 : L))` using `WithZero.coe_injective this`. Establish `h3 : (0 : ℤ) = -ordL (1 : L)` using `Multiplicative.ofAdd.injective h2`. Use linear arithmetic over natural numbers and integers. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha, ord_mul (h a (by simp)) (Finset.prod_ne_zero_iff.2 fun x hx => h x (by simp [hx])), ih fun x hx => h x (by simp [hx])]`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem ord_prod {ι : Type} (s : Finset ι) (c : ι → L) (h : ∀ x ∈ s, c x ≠ 0) :
     ordL (∏ x ∈ s, c x) = ∑ x ∈ s, ordL (c x) := by
@@ -54,7 +54,7 @@ theorem ord_prod {ι : Type} (s : Finset ι) (c : ι → L) (h : ∀ x ∈ s, c 
       (Finset.prod_ne_zero_iff.2 fun x hx => h x (by simp [hx])), ih fun x hx => h x (by simp [hx])]
 
 /- English proof (translation)
-Rewrite `h` using `[v_eq_ord hx, ← WithZero.coe_one, WithZero.coe_le_coe]`. Establish `: Multiplicative.ofAdd (-ordL x) ≤ Multiplicative.ofAdd (0 : ℤ)` using `h`. Use `Multiplicative.ofAdd_le.1 this` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem ord_nonneg {x : L} (hx : x ≠ 0) (h : Valued.v x ≤ 1) : 0 ≤ ordL x := by
   rw [v_eq_ord hx, ← WithZero.coe_one, WithZero.coe_le_coe] at h
@@ -63,7 +63,7 @@ theorem ord_nonneg {x : L} (hx : x ≠ 0) (h : Valued.v x ≤ 1) : 0 ≤ ordL x 
   omega
 
 /- English proof (translation)
-Rewrite `h` using `[v_eq_ord hx, ← WithZero.coe_one]`. Establish `h2 : Multiplicative.ofAdd (-ordL x) = Multiplicative.ofAdd (0 : ℤ)` using `WithZero.coe_injective h`. Use `Multiplicative.ofAdd.injective h2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem ord_eq_zero {x : L} (hx : x ≠ 0) (h : Valued.v x = 1) : ordL x = 0 := by
   rw [v_eq_ord hx, ← WithZero.coe_one] at h
@@ -72,13 +72,13 @@ theorem ord_eq_zero {x : L} (hx : x ≠ 0) (h : Valued.v x = 1) : ordL x = 0 := 
   omega
 
 /- English proof (translation)
-Rewrite using `[v_eq_ord hx, h]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem v_eq_one_of_ord {x : L} (hx : x ≠ 0) (h : ordL x = 0) : Valued.v x = 1 := by
   rw [v_eq_ord hx, h]; simp
 
 /- English proof (translation)
-Rewrite using `[← Finset.mul_prod_erase s c hx]`. Conclude with `(mul_le_of_le_one_right' (Finset.prod_le_one' fun y hy => h y (Finset.mem_of_mem_erase hy))).trans_lt hlt`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_lt_one {ι : Type} (s : Finset ι) (c : ι → WithZero (Multiplicative ℤ)) (h : ∀ x ∈ s, c x ≤ 1)
     {x : ι} (hx : x ∈ s) (hlt : c x < 1) : ∏ y ∈ s, c y < 1 := by
@@ -87,14 +87,14 @@ theorem prod_lt_one {ι : Type} (s : Finset ι) (c : ι → WithZero (Multiplica
   exact (mul_le_of_le_one_right' (Finset.prod_le_one' fun y hy => h y (Finset.mem_of_mem_erase hy))).trans_lt hlt
 
 /- English proof (translation)
-Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign s) with h | h <;> simp [h, Units.smul_def]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem v_sign_smul {ι : Type} [DecidableEq ι] [Fintype ι] (s : Equiv.Perm ι) (x : L) :
     Valued.v (Equiv.Perm.sign s • x) = Valued.v x := by
   rcases Int.units_eq_one_or (Equiv.Perm.sign s) with h | h <;> simp [h, Units.smul_def]
 
 /- English proof (translation)
-Establish `e : ∑ x, u (s x) = ∑ x, u x` using `Equiv.sum_comp s u`. Conclude with `(Finset.sum_eq_sum_iff_of_le fun i _ => h i).1 e x (Finset.mem_univ x)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem perm_sum_eq {ι : Type} [Fintype ι] (s : Equiv.Perm ι) (u : ι → ℤ) (h : ∀ x, u (s x) ≤ u x) (x : ι) :
     u (s x) = u x := by
@@ -113,13 +113,13 @@ def IwEnt (M : Matrix (Fin n) (Fin n) L) : Prop :=
   (∀ i j, Valued.v (M i j) ≤ 1) ∧ ∀ i j, j < i → Valued.v (M i j) < 1
 
 /- English proof (translation)
-Use `⟨fun i j => GlobalTheory.CompanionTheory.KUFactsU.iwGL_entries hg i j, fun i j hji => ?_⟩` and prove the remaining obligations. Establish `h` using `(Subgroup.mem_iInf.1 hg) ⟨i.val, by omega⟩`. Establish `hs : (Matrix.GeneralLinearGroup.toLin g) • latK L n i.val = latK L n i.val` using `h`. Establish `he : (Pi.single j (1 : L) : Fin n → L) ∈ latK L n i.val`. Introduce `k`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hk : k = j`. Substitute `hk` using the available equality. Establish `: k.val < i.val` using `hji`. Simplify using `[this]`. Establish `: (Pi.single j (1 : L) : Fin n → L) k = 0` using `Pi.single_eq_of_ne hk _`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[this]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hm` using `Set.smul_mem_smul_set (a := Matrix.GeneralLinearGroup.toLin g) he`. Rewrite `hm` using `[hs]`. Establish `hi` using `hm i`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hi` using `[if_neg (lt_irrefl _)]`. Establish `e : ((Matrix.GeneralLinearGroup.toLin g) • (Pi.single j (1 : L) : Fin n → L)) i = (g : Matrix (Fin n) (Fin n) L) i j` using `by show (Matrix.mulVec (g : Matrix (Fin n) (Fin n) L) (Pi.single j (1 : L) : Fin n → L)) i = _`. Simplify using the standard rewrite rules. Rewrite `hi` using `[e]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem iwEnt_of_mem {g : GL (Fin n) L} (hg : g ∈ IwGL L n) : IwEnt (g : Matrix (Fin n) (Fin n) L) := by
   refine ⟨fun i j => GlobalTheory.CompanionTheory.KUFactsU.iwGL_entries hg i j, fun i j hji => ?_⟩
@@ -145,7 +145,7 @@ theorem iwEnt_of_mem {g : GL (Fin n) L} (hg : g ∈ IwGL L n) : IwEnt (g : Matri
   rwa [e] at hi
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.IwahoriEntryBound.main hg i`.
+A detailed English derivation is pending.
 -/
 theorem diag_of_mem {g : GL (Fin n) L} (hg : g ∈ IwGL L n) (i : Fin n) :
     Valued.v ((g : Matrix (Fin n) (Fin n) L) i i) = 1 :=
@@ -154,7 +154,7 @@ theorem diag_of_mem {g : GL (Fin n) L} (hg : g ∈ IwGL L n) (i : Fin n) :
 variable {ι : Type} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Rewrite using `[v_sign_smul, map_prod]`. Conclude with `Finset.prod_le_one' fun x _ => hM.1 _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem term_le {M : Matrix (Fin n) (Fin n) L} (hM : IwEnt M) (f h : ι → Fin n) (s : Equiv.Perm ι) :
     Valued.v (Equiv.Perm.sign s • ∏ x, M (f (s x)) (h x)) ≤ 1 := by
@@ -162,7 +162,7 @@ theorem term_le {M : Matrix (Fin n) (Fin n) L} (hM : IwEnt M) (f h : ι → Fin 
   exact Finset.prod_le_one' fun x _ => hM.1 _ _
 
 /- English proof (translation)
-Rewrite using `[v_sign_smul, map_prod]`. Conclude with `prod_lt_one _ _ (fun x _ => hM.1 _ _) (Finset.mem_univ x) (hM.2 _ _ hx)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem term_lt {M : Matrix (Fin n) (Fin n) L} (hM : IwEnt M) (f h : ι → Fin n) (s : Equiv.Perm ι)
     {x : ι} (hx : h x < f (s x)) : Valued.v (Equiv.Perm.sign s • ∏ x, M (f (s x)) (h x)) < 1 := by
@@ -170,7 +170,7 @@ theorem term_lt {M : Matrix (Fin n) (Fin n) L} (hM : IwEnt M) (f h : ι → Fin 
   exact prod_lt_one _ _ (fun x _ => hM.1 _ _) (Finset.mem_univ x) (hM.2 _ _ hx)
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_apply]`. Conclude with `Valuation.map_sum_le _ fun s _ => term_le hM f h s`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem minor_le {M : Matrix (Fin n) (Fin n) L} (hM : IwEnt M) (f h : ι → Fin n) :
     Valued.v (M.submatrix f h).det ≤ 1 := by
@@ -178,13 +178,13 @@ theorem minor_le {M : Matrix (Fin n) (Fin n) L} (hM : IwEnt M) (f h : ι → Fin
   exact Valuation.map_sum_le _ fun s _ => term_le hM f h s
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_apply, ← Finset.add_sum_erase _ _ (Finset.mem_univ (1 : Equiv.Perm ι))]`. Establish `h1 : Valued.v (Equiv.Perm.sign (1 : Equiv.Perm ι) • ∏ x, (M.submatrix f f) ((1 : Equiv.Perm ι) x) x) = 1`. Rewrite using `[v_sign_smul, map_prod]`. Conclude with `Finset.prod_eq_one fun x _ => hd _`. Establish `h2 : Valued.v (∑ s ∈ Finset.univ.erase (1 : Equiv.Perm ι), Equiv.Perm.sign s • ∏ x, (M.submatrix f f) (s x) x) < 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Valuation.map_sum_lt _ one_ne_zero fun s hs => ?_` and prove the remaining obligations. Establish `hs1 : s ≠ 1` using `Finset.ne_of_mem_erase hs`. Distinguish the cases in `hex : ∃ x, f x < f (s x)`. Take `⟨x, hx⟩` from `hex`. Conclude with `term_lt hM f f s hx`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Use `exfalso push_neg at hex`. Apply `hs1` to reduce the goal to its premises. Use extensionality with `x`. Use `perm_sum_eq s (fun x => ((f x).val : ℤ)) (fun x => by exact_mod_cast hex x) x` as an intermediate fact. Establish `e : f (s x) = f x` using `Fin.ext (by exact_mod_cast this)`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hf e]`. Both sides reduce to the same expression. Rewrite using `[Valuation.map_add_eq_of_lt_left _ (by rw [h1]; exact h2), h1]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem minor_diag {M : Matrix (Fin n) (Fin n) L} (hM : IwEnt M) (hd : ∀ i, Valued.v (M i i) = 1)
     {f : ι → Fin n} (hf : Function.Injective f) : Valued.v (M.submatrix f f).det = 1 := by
@@ -209,9 +209,9 @@ theorem minor_diag {M : Matrix (Fin n) (Fin n) L} (hM : IwEnt M) (hd : ∀ i, Va
   rw [Valuation.map_add_eq_of_lt_left _ (by rw [h1]; exact h2), h1]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `: Valued.v (M.submatrix f h).det < 1`. Rewrite using `[Matrix.det_apply]`. Use `Valuation.map_sum_lt _ one_ne_zero fun s _ => ?_` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx⟩` from `hcon s`. Conclude with `term_lt hM f h s hx`. Conclude with `absurd h1 this.ne`.
+A detailed English derivation is pending.
 -/
 theorem minor_perm {M : Matrix (Fin n) (Fin n) L} (hM : IwEnt M) (f h : ι → Fin n)
     (h1 : Valued.v (M.submatrix f h).det = 1) : ∃ s : Equiv.Perm ι, ∀ x, f (s x) ≤ h x := by
@@ -233,13 +233,13 @@ variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {n : �
 abbrev Up (n m : ℕ) : Type := {a : Fin n // m ≤ a.val}
 
 /- English proof (translation)
-Establish `hm : R.submatrix (fun a : Up n m => π a.1) h * Matrix.diagonal (fun x => T (h x) (h x)) = B.submatrix (fun a : Up n m => a.1) (fun a : Up n m => a.1) * I.submatrix (fun a : Up n m => π' a.1) h`. Use extensionality with `a c`. Rewrite using `[Matrix.mul_diagonal, Matrix.mul_apply]`. Simplify using `only [Matrix.submatrix_apply]`. Rewrite using `[hg a.1 (h c), ← Finset.sum_filter_of_ne (p := fun x : Fin n => m ≤ x.val)]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_subtype _ (by simp) (fun x => B a.1 x * I (π' x) (h c))`. Introduce `x _ hx`. Assume the negation of the conclusion as `hlt`. Apply `hx` to reduce the goal to its premises. Establish `hxa : x < a.1`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `a.2` as an intermediate fact. Rewrite using `[Fin.lt_def]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hB a.1 x hxa, zero_mul]`. Establish `hdet` using `congrArg Matrix.det hm`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hdet` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_diagonal, Matrix.det_of_upperTriangular (M := B.submatrix (fun a : Up n m => a.1) (fun a : Up n m => a.1)) (fun i j hij => hB _ _ hij)]`. Simplify using `using hdet`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem up_det {R I B T : Matrix (Fin n) (Fin n) L} {π π' : Equiv.Perm (Fin n)}
     (hB : ∀ i j, j < i → B i j = 0)
@@ -268,23 +268,21 @@ theorem up_det {R I B T : Matrix (Fin n) (Fin n) L} {π π' : Equiv.Perm (Fin n)
   simpa using hdet
 
 /- English proof (translation)
-Establish `hf : Function.Injective (fun a : Up n m => π a.1)` using `fun a b e => Subtype.ext (π.injective e)`. Establish `hf' : Function.Injective (fun a : Up n m => π' a.1)` using `fun a b e => Subtype.ext (π'.injective e)`. Establish `h1` using `up_det hB hg m (fun a : Up n m => π' a.1)`. Establish `h2` using `up_det hB hg m (fun a : Up n m => π a.1)`. Establish `d1` using `minor_diag hI hId hf'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `d2` using `minor_diag hR hRd hf`. Establish `l1` using `minor_le hR (fun a : Up n m => π a.1) (fun a : Up n m => π' a.1)`. Establish `l2` using `minor_le hI (fun a : Up n m => π' a.1) (fun a : Up n m => π a.1)`. Use `set mm := (R.submatrix (fun a : Up n m => π a.1) (fun a : Up n m => π' a.1)).det with hmm`. Use `set e := (I.submatrix (fun a : Up n m => π' a.1) (fun a : Up n m => π a.1)).det with he`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set D1 := (I.submatrix (fun a : Up n m => π' a.1) (fun a : Up n m => π' a.1)).det with hD1`. Use `set D2 := (R.submatrix (fun a : Up n m => π a.1) (fun a : Up n m => π a.1)).det with hD2`. Establish `nD1 : D1 ≠ 0` using `(Valuation.ne_zero_iff _).1 (by rw [d1]; exact one_ne_zero)`. Establish `nD2 : D2 ≠ 0` using `(Valuation.ne_zero_iff _).1 (by rw [d2]; exact one_ne_zero)`. Establish `nB : (∏ a : Up n m, B a.1 a.1) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun a _ => hBz _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `nP' : (∏ a : Up n m, T (π' a.1) (π' a.1)) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun a _ => hTz _`. Establish `nP : (∏ a : Up n m, T (π a.1) (π a.1)) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun a _ => hTz _`. Establish `nm : mm ≠ 0` using `left_ne_zero_of_mul (h1 ▸ mul_ne_zero nB nD1)`. Establish `ne : e ≠ 0` using `right_ne_zero_of_mul (h2 ▸ mul_ne_zero nD2 nP)`. Establish `o1` using `congrArg ordL h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `o2` using `congrArg ordL h2`. Rewrite `o1` using `[ord_mul nm nP', ord_mul nB nD1, ord_eq_zero nD1 d1, ord_prod _ _ fun a _ => hTz _, ord_prod _ _ fun a _ => hBz _]`. Rewrite `o2` using `[ord_mul nD2 nP, ord_mul nB ne, ord_eq_zero nD2 d2, ord_prod _ _ fun a _ => hTz _, ord_prod _ _ fun a _ => hBz _]`. Establish `pm` using `ord_nonneg nm l1`. Establish `pe` using `ord_nonneg ne l2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨by omega, fun heq => ?_⟩` and prove the remaining obligations. Establish `zm : ordL mm = 0` using `by omega`. Establish `ze : ordL e = 0` using `by omega`. Use `⟨?_, by omega⟩` and prove the remaining obligations. Take `⟨s, hs⟩` from `minor_perm hR (fun a : Up n m => π a.1) (fun a : Up n m => π' a.1) (v_eq_one_of_ord nm zm)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hle : ∀ x : Up n m, ordL (T (π' x.1) (π' x.1)) ≤ ordL (T (π (s x).1) (π (s x).1))` using `fun x => by`. Break down `(hs x).lt_or_eq with h | h` into its components or cases. Conclude with `(hdom _ _ h).le`. Establish `h' : π (s x).1 = π' x.1` using `h`. Rewrite using `[h']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsum : ∑ x : Up n m, ordL (T (π' x.1) (π' x.1)) = ∑ x : Up n m, ordL (T (π (s x).1) (π (s x).1))`. Rewrite using `[heq]`. Conclude with `(Equiv.sum_comp s (fun a : Up n m => ordL (T (π a.1) (π a.1)))).symm`. Establish `hall` using `(Finset.sum_eq_sum_iff_of_le fun x _ => hle x).1 hsum`. Introduce `x`.
-
-Use `⟨s x, ?_⟩` and prove the remaining obligations. Break down `(hs x).lt_or_eq with h | h` into its components or cases. Conclude with `absurd (hall x (Finset.mem_univ x)) (hdom _ _ h).ne`. Conclude with `h`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem key {R I B T : Matrix (Fin n) (Fin n) L} {π π' : Equiv.Perm (Fin n)}
     (hR : IwEnt R) (hRd : ∀ i, Valued.v (R i i) = 1) (hI : IwEnt I) (hId : ∀ i, Valued.v (I i i) = 1)
@@ -348,16 +346,16 @@ theorem key {R I B T : Matrix (Fin n) (Fin n) L} {π π' : Equiv.Perm (Fin n)}
   · exact h
 
 /- English proof (translation)
-The claim follows from `(Finset.sum_subtype _ (by simp) F).symm`.
+A detailed English derivation is pending.
 -/
 theorem sum_up (F : Fin n → ℤ) (m : ℕ) :
     ∑ a : Up n m, F a.1 = ∑ a ∈ Finset.univ.filter (fun a : Fin n => m ≤ a.val), F a :=
   (Finset.sum_subtype _ (by simp) F).symm
 
 /- English proof (translation)
-Repeatedly rewrite using `[sum_up, Finset.sum_filter]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_filter, Finset.sum_const]`. Establish `e : (Finset.range n).filter (fun m => m ≤ a.val) = Finset.range (a.val + 1)`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `x`. Use `a.2` as an intermediate fact. Simplify using `only [Finset.mem_filter, Finset.mem_range]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[e]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -376,15 +374,15 @@ theorem sum_sum_up (F : Fin n → ℤ) :
   simp
 
 /- English proof (translation)
-Establish `split : ∀ F : Fin n → ℤ, ∑ x : Up n a.val, F x.1 = F a + ∑ x : Up n (a.val + 1), F x.1`. Introduce `F`. Rewrite using `[sum_up, sum_up, ← Finset.sum_insert (by simp)]`. Use `Finset.sum_congr ?_ fun _ _ => rfl` and prove the remaining obligations. Use extensionality with `x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_insert, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers. Establish `top : ∀ (F : Fin n → ℤ) (m : ℕ), ¬ m < n → ∑ x : Up n m, F x.1 = 0`. Introduce `F m hm`. Rewrite using `[sum_up]`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_eq_zero fun x hx => ?_` and prove the remaining obligations. Use `x.2` as an intermediate fact. Establish `h2` using `(Finset.mem_filter.1 hx).2`. Use linear arithmetic over natural numbers and integers. Establish `H' : ∀ m, ∑ x : Up n m, f x.1 = ∑ x : Up n m, h x.1` using `fun m => by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Distinguish the cases in `hm : m < n`. Conclude with `H m hm`. Rewrite using `[top f m hm, top h m hm]`. Establish `a1` using `split f`. Establish `a2` using `split h`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a3` using `H' a.val`. Establish `a4` using `H' (a.val + 1)`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem up_diff (f h : Fin n → ℤ) (H : ∀ m, m < n → ∑ a : Up n m, f a.1 = ∑ a : Up n m, h a.1) (a : Fin n) :
     f a = h a := by
@@ -413,9 +411,7 @@ theorem up_diff (f h : Fin n → ℤ) (H : ∀ m, m < n → ∑ a : Up n m, f a.
   omega
 
 /- English proof (translation)
-Use `Equiv.ext fun a => Fin.ext ?_` and prove the remaining obligations. Establish `h2 : -(((ξ a).val : ℕ) : ℤ) = -((a.val : ℕ) : ℤ)` using `perm_sum_eq ξ (fun x : Fin n => -((x.val : ℕ) : ℤ)) (fun x => by`. Establish `: x.val ≤ (ξ x).val` using `h x`. Use `show -(((ξ x).val : ℕ) : ℤ) ≤ -((x.val : ℕ) : ℤ)`. Use the proof step `omega) a`.
-
-Use `show (ξ a).val = a.val`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem perm_one_of_le (ξ : Equiv.Perm (Fin n)) (h : ∀ a, a ≤ ξ a) : ξ = 1 := by
   refine Equiv.ext fun a => Fin.ext ?_
@@ -428,7 +424,7 @@ theorem perm_one_of_le (ξ : Equiv.Perm (Fin n)) (h : ∀ a, a ≤ ξ a) : ξ = 
   omega
 
 /- English proof (translation)
-Establish `hdet : (g : Matrix (Fin n) (Fin n) L).det ≠ 0` using `((Matrix.isUnit_iff_isUnit_det _).1 g.isUnit).ne_zero`. Rewrite `hdet` using `[Matrix.det_of_upperTriangular (fun i j hij => h i j hij)]`. Conclude with `Finset.prod_ne_zero_iff.1 hdet a (Finset.mem_univ a)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem upper_diag_ne {g : GL (Fin n) L} (h : ∀ i j, j < i → (g : Matrix (Fin n) (Fin n) L) i j = 0) (a : Fin n) :
     (g : Matrix (Fin n) (Fin n) L) a a ≠ 0 := by
@@ -438,13 +434,13 @@ theorem upper_diag_ne {g : GL (Fin n) L} (h : ∀ i j, j < i → (g : Matrix (Fi
   exact Finset.prod_ne_zero_iff.1 hdet a (Finset.mem_univ a)
 
 /- English proof (translation)
-Establish `hk` using `key hR hRd hI hId hBz hTz hdom hB hg`. Rewrite using `[← sum_sum_up (fun a => ordL (T (π' a) (π' a))), ← sum_sum_up (fun a => ordL (T (π a) (π a)))]`. Distinguish the cases in `hlt : ∑ m ∈ Finset.range n, ∑ a : Up n m, ordL (T (π' a.1) (π' a.1)) < ∑ m ∈ Finset.range n, ∑ a : Up n m, ordL (T (π a.1) (π a.1))`. Conclude with `Or.inl hlt`. Use `right`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Prove the first alternative. Establish an intermediate fact.
 
-Establish `hle` using `Finset.sum_le_sum fun m (_ : m ∈ Finset.range n) => (hk m).1`. Establish `heq` using `(Finset.sum_eq_sum_iff_of_le fun m _ => (hk m).1).1 (le_antisymm hle (not_lt.1 hlt))`. Establish `hpp : π' = π`. Establish `h1 : π⁻¹ * π' = 1`. Use `perm_one_of_le _ fun a => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `((hk a.val).2 (heq a.val (Finset.mem_range.2 a.2))).1 ⟨a, le_rfl⟩`. Establish `e : (π⁻¹ * π') a = y.1`. Simplify using `only [Equiv.Perm.coe_mul, Function.comp_apply]`. Rewrite using `[← hy]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `y.2`. Combine the equalities or inequalities in the displayed calculation. Use `⟨hpp, up_diff (fun a => ordL (B a a)) (fun a => ordL (T (π a) (π a))) fun m hm => ?_⟩` and prove the remaining obligations. Conclude with `((hk m).2 (heq m (Finset.mem_range.2 hm))).2`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mat_triang {R I B T : Matrix (Fin n) (Fin n) L} {π π' : Equiv.Perm (Fin n)}
     (hR : IwEnt R) (hRd : ∀ i, Valued.v (R i i) = 1) (hI : IwEnt I) (hId : ∀ i, Valued.v (I i i) = 1)
@@ -481,7 +477,7 @@ theorem mat_triang {R I B T : Matrix (Fin n) (Fin n) L} {π π' : Equiv.Perm (Fi
 end Block
 
 /- English proof (translation)
-Simplify using `[Matrix.mul_apply, hW]`.
+Simplify using the standard rewrite rules.
 -/
 theorem perm_mul {L : Type} [Field L] {n : ℕ} {W : Matrix (Fin n) (Fin n) L} {π : Equiv.Perm (Fin n)}
     (hW : ∀ a c, W a c = if c = π a then 1 else 0) (M : Matrix (Fin n) (Fin n) L) (a c : Fin n) :
@@ -495,13 +491,13 @@ namespace GlobalTheory.CompanionTheory.SatPow
 open Triang in
 
 /- English proof (translation)
-Introduce `L _ _ σ n t w w' b r i π π' hD hS hW hW' hb hr hi h`. Establish `hr' : (r : GL (Fin n) L) ∈ IwGL L n` using `hr`. Establish `hi' : (i : GL (Fin n) L) ∈ IwGL L n` using `hi`. Establish `hmat : ((w : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * (((r : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * ((t : GL (Fin n) L) : Matrix (Fin n) (Fin n) L)) = ((b : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * (((w' : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * ((i : GL (Fin n) L) …`. Use `congrArg (fun g : GU σ n => ((g : GL (Fin n) L) : Matrix (Fin n) (Fin n) L)) h` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[mul_assoc]`. Establish `hg : ∀ a c, ((r : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) (π a) c * ((t : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) c c = ∑ x, ((b : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) a x * ((i : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) (π' x) c`. Introduce `a c`. Establish `e` using `congrFun (congrFun hmat a) c`. Rewrite `e` using `[perm_mul hW, Matrix.mul_apply, Matrix.mul_apply]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [perm_mul hW'] at e`. Rewrite using `[← e]`. Rewrite using `[Finset.sum_eq_single c]`. Introduce `y _ hy`. Rewrite using `[hD y c hy, mul_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Conclude with `mat_triang (iwEnt_of_mem hr') (diag_of_mem hr') (iwEnt_of_mem hi') (diag_of_mem hi') (upper_diag_ne hb) (upper_diag_ne fun i j hij => hD i j hij.ne') hS hb hg`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cell_triang : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (σ : L →+* L) (n : ℕ) (t w w' b r i : GU σ n) (π π' : Equiv.Perm (Fin n)), IsDiagM (t : GL (Fin n) L) → IsStrictDom (t : GL (Fin n) L) → IsPermW w π → IsPermW w' π' → IsBorelU b → r ∈ IwU σ n → i ∈ IwU σ n → w * r * t = b * w' * i → permWt t π' < permWt t π ∨ (π' = π ∧ ∀ a : Fin n, ordL (((b : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) a a) = ordL (((t : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) (π a) (π a))) := by
   intro L _ _ σ n t w w' b r i π π' hD hS hW hW' hb hr hi h

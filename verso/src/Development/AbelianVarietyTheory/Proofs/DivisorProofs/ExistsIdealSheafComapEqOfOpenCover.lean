@@ -10,7 +10,7 @@ universe u
 namespace GlobalTheory.IdealGlue
 
 /- English proof (translation)
-Introduce `X ι V f hf hcov J hJ`. Conclude with `idealSheaf_glue_of_openImmersions (fun 𝒜 h1 h2 k h3 => GlobalTheory.T.exists_idealSheafData_of_compatible_ideals 𝒜 h1 h2 k h3) V f hf (fun x => by obtain ⟨i, y, hy⟩ := hcov x; exact ⟨i, y, hy⟩) J hJ`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_comap_eq : ∀ {X : Scheme.{0}} {ι : Type u} (V : ι → Scheme.{0}) (f : ∀ i, V i ⟶ X),
     (∀ i, IsOpenImmersion (f i)) → (∀ x : X, ∃ i y, f i y = x) →

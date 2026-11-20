@@ -14,39 +14,35 @@ namespace GlobalTheory.DblDiag
 open Matrix
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J v f hQf hff hfc`. Use `set Q : AF F := GlobalTheory.LatVac.liftV v (1 : Fv F v) with hQdef`. Establish `hQQ : Q * Q = Q`. Establish `h` using `GlobalTheory.LatVac.at_liftV v (1 : Fv F v) (1 - Q) (by rw [map_sub, map_one, hQdef, GlobalTheory.LatVac.evFin_liftV, sub_self])`. Rewrite `h` using `[← hQdef, smul_eq_mul, sub_mul, one_mul, sub_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h.symm`. Use `set q : AE F E := algebraMap (AF F) (AE F E) Q with hqdef`. Use `set p : AE F E := algebraMap (AF F) (AE F E) (1 - Q) with hpdef`. Establish `hp : p = 1 - q` using `by rw [hpdef, map_sub, map_one]`. Establish `hqq : q * q = q` using `by rw [hqdef, ← map_mul, hQQ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hqf : q * f = f` using `by rw [hqdef, ← Algebra.smul_def]; exact hQf`. Establish `hcp : cA σ p = p` using `AlgHom.commutes _ _`. Establish `hpp : p * p = p` using `by rw [hp]; linear_combination hqq`. Establish `hpf : p * f = 0` using `by rw [hp]; linear_combination -hqf`. Establish `hpcf : p * cA σ f = 0` using `by rw [← hcp, ← map_mul, hpf, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Establish `hsm : ∀ (m : Type) [Fintype m] [DecidableEq m] (N : Matrix m m (AE F E)), (1 - Q) • N = p • N` using `fun m _ _ N => (algebraMap_smul (AE F E) (1 - Q) N).symm`. Establish `hmap : ∀ a : AE F E, (a • (1 : Matrix (Fin n) (Fin n) (AE F E))).map (cA σ) = cA σ a • 1`. Introduce `a`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul, Matrix.one_apply]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply the tactic sequence `split_ifs <;> simp`. Use `set M : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (AE F E) := Matrix.fromBlocks ((1 - GlobalTheory.LatVac.liftV v (1 : Fv F v)) • (1 : Matrix (Fin n) (Fin n) (AE F E))) (f • 1) (f • 1) ((1 - GlobalTheory.LatVac.liftV v (1 : Fv F v)) • 1) with hMdef`. Establish `hM : M = Matrix.fromBlocks (p • 1) (f • 1) (f • 1) (p • 1)`. Rewrite using `[hMdef, ← hQdef, hsm]`. Establish `hMM : M * M = 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[hM, Matrix.fromBlocks_multiply, ← Matrix.fromBlocks_one]`. Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, smul_smul]`. Apply the tactic sequence `congr 1 <;> ext i j <;> simp only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, Matrix.zero_apply]`. Take the linear combination `(1 : Matrix (Fin n) (Fin n) (AE F E)) i j * (hpp + hff + hp)`. Take the linear combination `(1 : Matrix (Fin n) (Fin n) (AE F E)) i j * (2 * hpf)`.
+Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take the linear combination `(1 : Matrix (Fin n) (Fin n) (AE F E)) i j * (2 * hpf)`. Take the linear combination `(1 : Matrix (Fin n) (Fin n) (AE F E)) i j * (hpp + hff + hp)`. Establish `hU : Mᵀ * dbl (incM F J) * M.map (cA σ) = dbl (incM F J)`. Rewrite using `[hM, dbl, Matrix.fromBlocks_transpose, Matrix.fromBlocks_map, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`. Simplify using `only [Matrix.transpose_smul, Matrix.transpose_one, hmap, hcp, Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, Matrix.mul_one, Matrix.zero_mul, Matrix.mul_zero, add_zero, zero_add, Matrix.mul_neg, Matrix.neg_mul, smul_smul, smul_neg]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Apply the tactic sequence `congr 1 <;> ext i j <;>`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, Matrix.zero_apply, Matrix.neg_apply]`. Apply the tactic sequence `all_goals first`. Consider the case `linear_combination incM F J i j * (hpp - hfc + hp)`. Consider the case `linear_combination incM F J i j * (hfc - hpp - hp)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `linear_combination incM F J i j * (hpcf - hpf)`. Consider the case `linear_combination incM F J i j * (hpf - hpcf)`. Consider the case `linear_combination incM F J i j * (hpcf + hpf)`. Consider the case `linear_combination incM F J i j * (-hpcf - hpf)`. Use `⟨⟨⟨M, M, hMM, hMM⟩, hU⟩, rfl, ?_, Subtype.ext (Units.ext hMM), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `u hu show u • (M - 1) = 0`. Establish `hQu : u * Q = 0`. Establish `h` using `GlobalTheory.LatVac.at_liftV v (1 : Fv F v) u hu`. Rewrite `h` using `[← hQdef, smul_eq_mul]`. Then use the resulting hypothesis. Use `set ua : AE F E := algebraMap (AF F) (AE F E) u with huadef`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately.
 
-Establish `huq : ua * q = 0` using `by rw [huadef, hqdef, ← map_mul, hQu, map_zero]`. Establish `huf : ua * f = 0` using `by rw [← hqf]; linear_combination f * huq`. Rewrite using `[← algebraMap_smul (AE F E) u, ← huadef, hM, ← Matrix.fromBlocks_one]`. Apply the tactic sequence `ext (i | i) (j | j) <;>`. Apply the tactic sequence `simp only [Matrix.smul_apply, Matrix.sub_apply, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.zero_apply, smul_eq_mul] <;>`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `first`. Consider the case `linear_combination 1 * ((ua * (1 : Matrix (Fin n) (Fin n) (AE F E)) i j) * hp - (1 : Matrix (Fin n) (Fin n) (AE F E)) i j * huq)`. Consider the case `linear_combination 1 * ((1 : Matrix (Fin n) (Fin n) (AE F E)) i j * huf)`. Consider the case `linear_combination 1 * (-((1 : Matrix (Fin n) (Fin n) (AE F E)) i j * huf))`. Consider the case `linear_combination 1 * (- (ua * (1 : Matrix (Fin n) (Fin n) (AE F E)) i j) * hp + (1 : Matrix (Fin n) (Fin n) (AE F E)) i j * huq)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Consider the case `linear_combination 1 * ((ua * (1 : Matrix (Fin n) (Fin n) (AE F E)) i j) * hp + (1 : Matrix (Fin n) (Fin n) (AE F E)) i j * huq)`. Consider the case `linear_combination 1 * (-(ua * (1 : Matrix (Fin n) (Fin n) (AE F E)) i j) * hp - (1 : Matrix (Fin n) (Fin n) (AE F E)) i j * huq)`. Introduce `k hk gd gd' hgd hgd'`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Use `show M * ((gd : GL (Fin n ⊕ Fin n) (AE F E)) : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (AE F E)) * M = ((gd' : GL (Fin n ⊕ Fin n) (AE F E)) : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (AE F E))`. Establish `hK : p • (mat k - 1) = 0`. Rewrite using `[← hsm]`. Conclude with `hk (1 - Q) (by rw [map_sub, map_one, hQdef, GlobalTheory.LatVac.evFin_liftV, sub_self])`. Establish `hKe : ∀ i j, p * mat k i j = p * (1 : Matrix (Fin n) (Fin n) (AE F E)) i j`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 
-Introduce `i j`. Establish `h` using `congrFun (congrFun hK i) j`. Simplify using `only [Matrix.smul_apply, Matrix.sub_apply, Matrix.zero_apply, smul_eq_mul] at h`. Take the linear combination `h`. Rewrite using `[hgd, hgd', hM, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`.
-
-Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, Matrix.mul_one, Matrix.zero_mul, Matrix.mul_zero, add_zero, zero_add, smul_smul, smul_zero]`. Apply the tactic sequence `congr 1 <;> ext i j <;>`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, Matrix.zero_apply]`. Apply the tactic sequence `all_goals first`. Consider the case `linear_combination 1 * (mat k i j * hpp + hKe i j + (1 : Matrix (Fin n) (Fin n) (AE F E)) i j * hff + (1 : Matrix (Fin n) (Fin n) (AE F E)) i j * hp)`.
-
-Consider the case `linear_combination 1 * (mat k i j * hpf + (1 : Matrix (Fin n) (Fin n) (AE F E)) i j * hpf)`. Consider the case `linear_combination 1 * (mat k i j * hff + (1 : Matrix (Fin n) (Fin n) (AE F E)) i j * hpp + mat k i j * hp - hKe i j)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem swap_at_place : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (v : Pl F) (f : AE F E),

@@ -21,7 +21,7 @@ def invSub (Γ : Subgroup G) : Submodule ℂ (G → ℂ) where
   smul_mem' := fun a F hF => ⟨hF.1.const_smul a, fun γ hγ g => by simp [hF.2 γ hγ g]⟩
 
 /- English proof (translation)
-Take `⟨C, -, hC⟩` from `hG.Λbd l hl`. Establish `h0` using `hC 0 0 continuous_const (fun _ _ _ => rfl) (fun x _ => by simp)`. Conclude with `norm_le_zero_iff.mp h0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lam_zero (hG : GlobData ε c sL ρ G Pp Γ ι s₀ Ht sec I Λ) (l : (G → ℂ) → ℂ) (hl : l ∈ Λ) : l 0 = 0 := by
   obtain ⟨C, -, hC⟩ := hG.Λbd l hl
@@ -29,9 +29,9 @@ theorem lam_zero (hG : GlobData ε c sL ρ G Pp Γ ι s₀ Ht sec I Λ) (l : (G 
   exact norm_le_zero_iff.mp h0
 
 /- English proof (translation)
-Establish `h` using `hG.Λadd l hl a F 0 hF continuous_const hFi (fun _ _ _ => rfl)`. Rewrite `h` using `[lam_zero hG l hl, add_zero, add_zero]`. Establish `hfun : (fun g => a * F g) = a • F`. Use function extensionality and compare the values at `g`. Simplify using `[Pi.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[hfun]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lam_smul (hG : GlobData ε c sL ρ G Pp Γ ι s₀ Ht sec I Λ) (l : (G → ℂ) → ℂ) (hl : l ∈ Λ) (a : ℂ) (F : G → ℂ)
     (hF : Continuous F) (hFi : ∀ γ ∈ Γ, ∀ g, F (γ * g) = F g) : l (fun g => a * F g) = a * l F := by
@@ -44,25 +44,25 @@ theorem lam_smul (hG : GlobData ε c sL ρ G Pp Γ ι s₀ Ht sec I Λ) (l : (G 
   exact h
 
 /- English proof (translation)
-Take `⟨C, hCc, hCb⟩` from `hG.Λbd l hl`. Take `⟨L, hL⟩` from `hFL G (invSub Γ) l C hCc (fun F hF => hF.1) (fun a F hF F' hF' => hG.Λadd l hl a F F' hF.1 hF'.1 hF.2 hF'.2) (fun F hF M hM => hCb F M hF.1 hF.2 hM)`. Use `haveI : CompactSpace C := isCompact_iff_compactSpace.mp hCc`. Establish `hEcont : ∀ z ∈ U, Continuous (E z)`. Introduce `z hzU`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `hEc.comp_continuous (continuous_const.prodMk continuous_id) (fun g => ⟨hzU, mem_univ g⟩)`. Take `⟨Φ, hΦd, hΦ⟩` from `hBH C U (fun z x => E z x) hUo (hEc.comp (continuous_fst.prodMk (continuous_subtype_val.comp continuous_snd)).continuousOn (fun y hy => ⟨hy.1, mem_univ _⟩)) (fun x => hEh x)`. Establish `hfeq : ∀ z ∈ U, l (E z) = L (Φ z)`. Introduce `z hzU`. Establish `hmem : E z ∈ invSub Γ` using `⟨hEcont z hzU, hEinv z hzU⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hL (E z) hmem (hEcont z hzU)]`. Use `congr 1`. Use extensionality with `x`. Rewrite using `[hΦ z hzU x]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hfan : AnalyticOnNhd ℂ (fun z => l (E z)) U` using `((L.differentiable.comp_differentiableOn hΦd).congr hfeq).analyticOnNhd hUo`. Take `⟨H, hHext, hHan, hHval⟩` from `hG.Λval l hl`. Use `⟨H, hHan, hHval, ?_⟩` and prove the remaining obligations. Establish `hext1 : GlobalTheory.Cont.IsExtAt (fun z => l (E z)) s₀ (fun z => l (E z))` using `(GlobalTheory.Cont.IsHolExt.isMerExt ⟨hUr, hfan, ⟨0, fun _ _ => rfl⟩⟩).isExtAt hs`. Establish `hpoly : GlobalTheory.Cont.IsExtAt (fun z => d.eval z) s₀ (fun z => d.eval z)` using `(GlobalTheory.Cont.IsHolExt.isMerExt ⟨hUr, fun z _ => (Polynomial.differentiable d).analyticAt z, ⟨0, fun _ _ => rfl⟩⟩).isExtAt hs`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmul` using `hpoly.mul hHext`. Establish `hright : GlobalTheory.Cont.EqRight (fun z => l (E z)) (fun s => d.eval s * l (GlobalTheory.Eis.cosetSum Pp Γ (fun x => ((Ht x : ℝ) : ℂ) ^ (s - s₀) * sec 1 x)))`. Take `⟨σ₁, hσ₁⟩` from `hUr.1`. Use `⟨max σ σ₁, fun z hzr => ?_⟩` and prove the remaining obligations. Establish `hzr' : max σ σ₁ < z.re` using `hzr`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz1 : σ < z.re` using `lt_of_le_of_lt (le_max_left _ _) hzr'`. Establish `hzU : z ∈ U` using `hσ₁ (show σ₁ < z.re from lt_of_le_of_lt (le_max_right _ _) hzr')`. Use `show l (E z) = d.eval z * l (GlobalTheory.Eis.cosetSum Pp Γ (hz Ht sec s₀ z))`. Take `⟨cs, hcsdef⟩ : ∃ cs, cs = GlobalTheory.Eis.cosetSum Pp Γ (hz Ht sec s₀ z)` from `⟨_, rfl⟩`. Rewrite using `[← hcsdef]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hE : ∀ g, E z g = d.eval z * cs g`. Introduce `g`. Rewrite using `[hEr z hz1 g, hcsdef]`. Distinguish the cases in `hd0 : d.eval z = 0`. Establish `hE0 : E z = 0` using `funext fun g => by rw [hE g, hd0, zero_mul]; rfl`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hE0, lam_zero hG l hl, hd0, zero_mul]`. Establish `hcs : cs = fun g => (d.eval z)⁻¹ * E z g`. Use function extensionality and compare the values at `g`. Rewrite using `[hE g, ← mul_assoc, inv_mul_cancel₀ hd0, one_mul]`. Establish `hcsc : Continuous cs`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hcs]`. Conclude with `continuous_const.mul (hEcont z hzU)`. Establish `hcsi : ∀ γ ∈ Γ, ∀ g, cs (γ * g) = cs g`. Introduce `γ hγ g`. Rewrite using `[hcs]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only`. Rewrite using `[hEinv z hzU γ hγ g]`. Establish `hEf : E z = fun g => d.eval z * cs g` using `funext hE`. Rewrite using `[hEf, lam_smul hG l hl _ cs hcsc hcsi]`. Conclude with `(hext1.congr hright).eventuallyEq hmul`.
+A detailed English derivation is pending.
 -/
 theorem lam_local (hBH : BanachHol) (hFL : FactorL) (hG : GlobData ε c sL ρ G Pp Γ ι s₀ Ht sec I Λ)
     {U : Set ℂ} {d : Polynomial ℂ} {E : ℂ → G → ℂ} {σ : ℝ} (hUo : IsOpen U) (hUr : GlobalTheory.Cont.IsRightDomain U)

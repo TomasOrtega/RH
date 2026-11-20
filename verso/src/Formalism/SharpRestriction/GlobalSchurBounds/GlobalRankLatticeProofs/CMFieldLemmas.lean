@@ -15,14 +15,14 @@ namespace Formalism.MainNotions.UnusedSlot33
 open Formalism.BasicNotions
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨second_proposition_every_localisation D, points_property_of_d7 D, generic_frames_letters D, no_three_consecutive_thick_places D, branching_interlacing_pairs D sc⟩`.
+Supply the required witnesses or components.
 -/
 theorem field_lemmas_two_to_six (D : D7) (sc : Scale) :
     Conclusion2 D ∧ PointsLemma D ∧ Conclusion4 D 100 ∧ TorusPairsWithVariant D ∧ Conclusion6 D sc :=
   ⟨second_proposition_every_localisation D, points_property_of_d7 D, generic_frames_letters D, no_three_consecutive_thick_places D, branching_interlacing_pairs D sc⟩
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `dropping_proposition_holds`. Use `⟨C, fun D sc => ?_⟩` and prove the remaining obligations. Take `⟨h2, h3, h4, h5c, h6⟩` from `field_lemmas_two_to_six D sc`. Conclude with `⟨ramification_two_and_conjugation_at_q_and_d D, h2, h3, h4, hC D, h5c, h6, lemma_one_eight_holds D⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem field_lemmas_except_seven : ∃ C₅ : ℝ, ∀ (D : D7) (sc : Scale),
     Conclusion1 D ∧ Conclusion2 D ∧ PointsLemma D ∧ Conclusion4 D 100 ∧ Conclusion5 D C₅ ∧ TorusPairsWithVariant D ∧ Conclusion6 D sc ∧ Conclusion8 D := by

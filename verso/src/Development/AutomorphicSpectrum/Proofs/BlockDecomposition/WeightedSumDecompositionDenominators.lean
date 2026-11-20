@@ -19,7 +19,7 @@ def IntW (l K : ℕ) {r : ℕ} (v : (Fin r → ℕ) → ℚ) : Prop :=
   ∀ m, ∃ z : ℤ, (l : ℚ) ^ K * v m = z
 
 /- English proof (translation)
-Introduce `m`. Take `⟨z, hz⟩` from `h m`. Use `⟨l * z, ?_⟩` and prove the remaining obligations. Use `push_cast`. Rewrite using `[← hz, pow_succ]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -32,7 +32,7 @@ theorem IntW.succ {l K r : ℕ} {v : (Fin r → ℕ) → ℚ} (h : IntW l K v) :
   ring
 
 /- English proof (translation)
-Proceed by induction on `K', hK using Nat.le_induction with`. Consider the case `base => exact h`. Consider the case `succ n _ ih => exact ih.succ`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem IntW.mono {l K K' r : ℕ} {v : (Fin r → ℕ) → ℚ} (h : IntW l K v) (hK : K ≤ K') :
     IntW l K' v := by
@@ -41,7 +41,7 @@ theorem IntW.mono {l K K' r : ℕ} {v : (Fin r → ℕ) → ℚ} (h : IntW l K v
   | succ n _ ih => exact ih.succ
 
 /- English proof (translation)
-Introduce `m`. Take `⟨z, hz⟩` from `h m`. Use `⟨(-1) ^ c * z, ?_⟩` and prove the remaining obligations. Use `push_cast`. Rewrite using `[← hz]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -55,7 +55,7 @@ theorem IntW.neg_one_pow_mul {l K r : ℕ} {v : (Fin r → ℕ) → ℚ} (h : In
   ring
 
 /- English proof (translation)
-Use `choose! g hg using h`. Use `⟨∑ a ∈ s, g a, ?_⟩` and prove the remaining obligations. Use `push_cast`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl hg`.
+Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem int_sum {α : Type} (s : Finset α) (q : ℚ) (f : α → ℚ)
     (h : ∀ a ∈ s, ∃ z : ℤ, q * f a = z) : ∃ z : ℤ, q * ∑ a ∈ s, f a = z := by
@@ -67,14 +67,14 @@ theorem int_sum {α : Type} (s : Finset α) (q : ℚ) (f : α → ℚ)
   exact Finset.sum_congr rfl hg
 
 /- English proof (translation)
-Introduce `m` and use `int_sum _ _ _ fun k _ => h _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem partialSum_int {l K r : ℕ} {i : Fin r} {v : (Fin r → ℕ) → ℚ} (h : IntW l K v) :
     IntW l K (partialSum i v) :=
   fun m => int_sum _ _ _ fun k _ => h _
 
 /- English proof (translation)
-Introduce `m`. Establish `hl' : (l : ℚ) ≠ 0` using `by exact_mod_cast hl.ne'`. Take `⟨z, hz⟩` from `int_sum (Finset.range l) ((l : ℚ) ^ K) (fun k => partialSum i v (Function.update m i k)) (fun k _ => partialSum_int h _)`. Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[← hz, meanP, pow_succ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Clear the denominators using the available nonvanishing facts.
 -/
@@ -89,9 +89,9 @@ theorem intW_partialSumMean {l K r : ℕ} {i : Fin r} {v : (Fin r → ℕ) → �
   field_simp
 
 /- English proof (translation)
-Introduce `m`. Take `⟨a, ha⟩` from `(partialSum_int (i := i) h).succ (m + Pi.single i 1)`. Take `⟨b, hb⟩` from `intW_partialSumMean (i := i) hl h m`. Use `⟨a - b, ?_⟩` and prove the remaining obligations. Use `push_cast`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[← ha, ← hb, Aop]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem aop_int {l K r : ℕ} {i : Fin r} {v : (Fin r → ℕ) → ℚ} (hl : 0 < l) (h : IntW l K v) :
     IntW l (K + 1) (Aop l i v) := by
@@ -104,7 +104,7 @@ theorem aop_int {l K r : ℕ} {i : Fin r} {v : (Fin r → ℕ) → ℚ} (hl : 0 
   ring
 
 /- English proof (translation)
-Introduce `m`. Distinguish the cases in `h0 : m i = 0`. Simplify `intW_partialSumMean (i := i) hl h m` using `[Bop, h0]`. Conclude with `⟨0, by simp [Bop, h0]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components.
 -/
 theorem bop_int {l K r : ℕ} {i : Fin r} {v : (Fin r → ℕ) → ℚ} (hl : 0 < l) (h : IntW l K v) :
     IntW l (K + 1) (Bop l i v) := by
@@ -114,7 +114,7 @@ theorem bop_int {l K r : ℕ} {i : Fin r} {v : (Fin r → ℕ) → ℚ} (hl : 0 
   · exact ⟨0, by simp [Bop, h0]⟩
 
 /- English proof (translation)
-Proceed by induction on `c with`. Consider the case `zero => simpa using h`. Consider the case `succ c ih`. Rewrite using `[Function.iterate_succ_apply']`. Conclude with `aop_int hl ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iterate_int {l K r : ℕ} {i : Fin r} {v : (Fin r → ℕ) → ℚ} (hl : 0 < l) (h : IntW l K v)
     (c : ℕ) : IntW l (K + c) ((Aop l i)^[c] v) := by
@@ -125,7 +125,7 @@ theorem iterate_int {l K r : ℕ} {i : Fin r} {v : (Fin r → ℕ) → ℚ} (hl 
     exact aop_int hl ih
 
 /- English proof (translation)
-Unfold `OneVar.uW`. Use `split_ifs with hc`. Establish `h1 : IntW l (K + c + 1) (Bop l i ((Aop l i)^[c] v))` using `bop_int hl (iterate_int hl h c)`. Conclude with `(h1.mono (by omega)).neg_one_pow_mul _`. Conclude with `((iterate_int hl h N).mono (by omega)).neg_one_pow_mul _`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem uW_int {l N K r : ℕ} {i : Fin r} {v : (Fin r → ℕ) → ℚ} (hl : 0 < l) (h : IntW l K v)
     (c : Fin (N + 1)) : IntW l (K + (N + 1)) (OneVar.uW l N i v c) := by
@@ -136,17 +136,15 @@ theorem uW_int {l N K r : ℕ} {i : Fin r} {v : (Fin r → ℕ) → ℚ} (hl : 0
   · exact ((iterate_int hl h N).mono (by omega)).neg_one_pow_mul _
 
 /- English proof (translation)
-Use `⟨fun c => ?_, fun c => ?_, fun c k hk hgk => ?_, fun c k hk hsk => ?_, fun g hs => ?_⟩` and prove the remaining obligations. Unfold `OneVar.uW beta_reduce split_ifs with h`. Establish `hc` using `OneVar.iterate_good_bdd hl hg hb c`. Conclude with `OneVar.bddW_sign _ (@GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.aop_props r l i _ hl hc.1 hc.2).2.1`. Conclude with `OneVar.bddW_sign _ (OneVar.iterate_good_bdd hl hg hb N).2`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `h : (c : ℕ) < N`. Use `Or.inr fun m hm => ?_` and prove the remaining obligations. Simplify using `[OneVar.uW, h, Bop, hm]`. Conclude with `Or.inl (by have := c.isLt; omega)`. Unfold `OneVar.uW beta_reduce split_ifs with h`.
+Simplify using the standard rewrite rules. Prove the first alternative. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Conclude with `OneVar.goodAt_smul _ ((@GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.OtherVar.otherVar_main r l i k _ hk).1 (OneVar.iterate_good_other hk hgk c)).2`. Conclude with `OneVar.goodAt_smul _ (OneVar.iterate_good_other hk hgk N)`. Introduce `m hm`. Unfold `OneVar.uW`. Use `beta_reduce`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `split_ifs with h`. Simplify using `[((@GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.OtherVar.otherVar_main r l i k _ hk).2 (OneVar.iterate_supp_other hk hsk c)).2 m hm]`. Simplify using `[OneVar.iterate_supp_other hk hsk N m hm]`. Rewrite using `[OneVar.tsum_iterate hl hg hb hs N, Fin.sum_univ_castSucc, Finset.sum_range]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Establish `hc : (c : ℕ) < N` using `c.isLt`. Rewrite using `[← tsum_mul_left]`. Use `tsum_congr fun m => ?_` and prove the remaining obligations. Simplify using `[OneVar.uW, hc, mul_assoc]`.
-
-Rewrite using `[← tsum_mul_left]`. Use `tsum_congr fun m => ?_` and prove the remaining obligations. Simplify using `[OneVar.uW, mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem abel_oneVar_uW (r l N : ℕ) (i : Fin r) (v : (Fin r → ℕ) → ℚ) (hl : 0 < l) (hg : GoodAt l i v)
     (hb : BddW v) :
@@ -191,21 +189,21 @@ theorem abel_oneVar_uW (r l N : ℕ) (i : Fin r) (v : (Fin r → ℕ) → ℚ) (
       simp [OneVar.uW, mul_assoc]
 
 /- English proof (translation)
-Proceed by induction on `I using Finset.induction_on with`. Consider the case `empty`. Use `⟨Unit, inferInstance, fun _ => [], fun _ => w, 0, fun _ => GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.GoodBdd.bddW_of_periodic r l w hl (fun i m => hw.1 m i), fun _ i _ => ⟨⟨fun m => hw.1 m i, fun m => hw.2 m i⟩, by simp⟩, fun _ i hi => absurd hi (by simp), fun _ m => …` and prove the remaining obligations. Take `⟨z, hz⟩` from `hz m`. Conclude with `⟨z, by simp [hz]⟩`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `insert a I ha ih`. Take `⟨Q, _, cs, u, K, hb, hg, hs, hi, hid⟩` from `ih`. Establish `hP` using `fun q => abel_oneVar_uW r l N a (u q) hl (hg q a ha).1 (hb q)`. Establish `h1` using `fun q => (hP q).1`. Establish `h2` using `fun q => (hP q).2.1`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `fun q => (hP q).2.2.1`. Establish `h4` using `fun q => (hP q).2.2.2.1`. Establish `h5` using `fun q => (hP q).2.2.2.2`. Use `⟨Q × Fin (N + 1), inferInstance, fun p => List.replicate (p.2 : ℕ) a ++ cs p.1, fun p => OneVar.uW l N a (u p.1) p.2, K + (N + 1), fun p => h1 p.1 p.2, ?_, ?_, fun p => uW_int hl (hi p.1) p.2, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨q, c⟩ k hk`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hka : k ≠ a` using `fun h => hk (h ▸ Finset.mem_insert_self _ _)`. Establish `hkI : k ∉ I` using `fun h => hk (Finset.mem_insert_of_mem h)`. Use `⟨h3 q c k hka (hg q k hkI).1, ?_⟩` and prove the remaining obligations. Simplify using `[List.count_append, List.count_replicate, (hg q k hkI).2, hka.symm]`. Introduce and unpack `⟨q, c⟩ k hk`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Distinguish the cases in `hka : k = a`. Substitute `hka` using the available equality. Establish `h0 : (cs q).count k = 0` using `(hg q k ha).2`. Break down `h2 q c with h | h` into its components or cases. Use `left`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using `[List.count_append, h0, h]`. Conclude with `Or.inr h`. Establish `hkI : k ∈ I` using `(Finset.mem_insert.1 hk).resolve_left hka`. Establish `hak : a ≠ k` using `fun h => hka h.symm`. Break down `hs q k hkI with h | h` into its components or cases.
+Prove the second alternative. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Use `left`. Simplify using `[List.count_append, List.count_replicate, hak, h]`. Conclude with `Or.inr (h4 q c k hka h)`. Introduce `g hgs`. Rewrite using `[hid g hgs, Fintype.sum_prod_type]`.
+Prove the second alternative. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[h5 q _ (GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.summable_DL r (cs q) g hgs)]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Simplify using `only [DL, List.foldr_append]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem expansion_on_finset_int (r l N : ℕ) (w : (Fin r → ℕ) → ℚ) (hl : 0 < l) (hw : GoodWeight l w)
     (hz : ∀ m, ∃ z : ℤ, w m = z) (I : Finset (Fin r)) :
@@ -261,7 +259,7 @@ theorem expansion_on_finset_int (r l N : ℕ) (w : (Fin r → ℕ) → ℚ) (hl 
       simp only [DL, List.foldr_append]
 
 /- English proof (translation)
-Introduce `r l N w hl hw hz`. Take `⟨Q, iQ, cs, u, K, hb, -, hs, hi, hid⟩` from `expansion_on_finset_int r l N w hl hw hz Finset.univ`. Conclude with `⟨Q, iQ, cs, u, K, hb, fun q i => hs q i (Finset.mem_univ i), hi, hid⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem expansion_all_variables_int : ∀ (r l N : ℕ) (w : (Fin r → ℕ) → ℚ), 0 < l → GoodWeight l w →
     (∀ m, ∃ z : ℤ, w m = z) →

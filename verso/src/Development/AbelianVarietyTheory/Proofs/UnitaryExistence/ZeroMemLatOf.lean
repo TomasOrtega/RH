@@ -13,11 +13,11 @@ open scoped TensorProduct Matrix nonZeroDivisors in
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {n : ℕ} in
 
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.AdLat.hat at hz ⊢`. Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨b, hb, x, hx, rfl⟩` from `hz`. Use `AddSubgroup.subset_closure ⟨b, hb, a • x, h x hx, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `((1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] a) * (b ⊗ₜ[F] x i) = b ⊗ₜ[F] (a * x i)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [smul_neg]`. Conclude with `neg_mem hx`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.AdLat.Scale.smul_mem_hat {L L' : Set (Fin n → E)} {a : E}
     (h : ∀ x ∈ L, a • x ∈ L')
@@ -46,7 +46,7 @@ open NumberField IsDedekindDomain in
 open scoped TensorProduct Matrix nonZeroDivisors in
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {n : ℕ} in
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `(1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] (c * v i) = ((1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] c) * ((1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] v i)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem fv_smul' (c : E) (v : Fin n → E) :
     _root_.GlobalTheory.AdLat.fv F (c • v) =
@@ -61,7 +61,7 @@ open NumberField IsDedekindDomain in
 open scoped TensorProduct Matrix nonZeroDivisors in
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {n : ℕ} in
 /- English proof (translation)
-Take `⟨z, hz, hzv⟩` from `hv`. Use `⟨_, _root_.GlobalTheory.AdLat.Scale.smul_mem_hat h hz, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_smul, hzv, fv_smul']`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem smul_mem_latOf_of_smul_mem {L L' : Set (Fin n → E)} {c : E}
     (h : ∀ x ∈ L, c • x ∈ L') (g : Matrix (Fin n) (Fin n) (_root_.GlobalTheory.AdLat.RA F E))
@@ -75,7 +75,7 @@ open NumberField IsDedekindDomain in
 open scoped TensorProduct Matrix nonZeroDivisors in
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {n : ℕ} in
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `(1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] (0 : E) = 0`. Rewrite using `[TensorProduct.tmul_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem fv_zero' :
     _root_.GlobalTheory.AdLat.fv F (0 : Fin n → E) = 0 := by
@@ -87,7 +87,7 @@ open NumberField IsDedekindDomain in
 open scoped TensorProduct Matrix nonZeroDivisors in
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {n : ℕ} in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, zero_mem _, by rw [Matrix.mulVec_zero, fv_zero']⟩`.
+Supply the required witnesses or components.
 -/
 private theorem zero_mem_latOf' {L : Set (Fin n → E)}
     (g : Matrix (Fin n) (Fin n) (_root_.GlobalTheory.AdLat.RA F E)) :
@@ -98,7 +98,7 @@ open NumberField IsDedekindDomain in
 open scoped TensorProduct Matrix nonZeroDivisors in
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {n : ℕ} in
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `(1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] (v i + w i) = _ ⊗ₜ[F] v i + _ ⊗ₜ[F] w i`. Rewrite using `[TensorProduct.tmul_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem fv_add' (v w : Fin n → E) :
     _root_.GlobalTheory.AdLat.fv F (v + w) =
@@ -111,7 +111,7 @@ open NumberField IsDedekindDomain in
 open scoped TensorProduct Matrix nonZeroDivisors in
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {n : ℕ} in
 /- English proof (translation)
-Take `⟨z, hz, hzv⟩` from `hv`. Take `⟨y, hy, hyw⟩` from `hw`. Conclude with `⟨z + y, add_mem hz hy, by rw [Matrix.mulVec_add, hzv, hyw, fv_add']⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem add_mem_latOf' {L : Set (Fin n → E)}
     (g : Matrix (Fin n) (Fin n) (_root_.GlobalTheory.AdLat.RA F E)) {v w : Fin n → E}
@@ -126,57 +126,49 @@ open NumberField IsDedekindDomain in
 open scoped TensorProduct Matrix nonZeroDivisors in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ n L g I L' hLfg hLspan hI hL'`. Use `set G : Matrix (Fin n) (Fin n) (_root_.GlobalTheory.AdLat.RA F E) := (g : Matrix (Fin n) (Fin n) (_root_.GlobalTheory.AdLat.RA F E)) with hG`. Establish `hgen : ∀ a ∈ I, ∀ x ∈ L, a • x ∈ L'` using `fun a ha x hx => by`. Rewrite using `[hL']`. Conclude with `Submodule.subset_span ⟨a, ha, x, hx, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hinv : ∀ b ∈ I⁻¹, ∀ x ∈ (L' : Set (Fin n → E)), b • x ∈ (L : Set (Fin n → E))`. Introduce `b hb x hx`. Rewrite `hx` using `[SetLike.mem_coe, hL']`. Rewrite using `[SetLike.mem_coe]`. Proceed by induction on `hx using Submodule.span_induction with`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `mem w hw`. Take `⟨a, ha, y, hy, rfl⟩` from `hw`. Take `⟨r, hr⟩` from `(FractionalIdeal.mem_one_iff _).1 ((FractionalIdeal.mem_inv_iff hI).1 hb a ha)`. Rewrite using `[smul_smul, ← hr, algebraMap_smul]`. Conclude with `L.smul_mem r hy`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => rw [smul_zero]`. Conclude with `L.zero_mem`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `L.add_mem hx hy`. Consider the case `smul r w _ hw`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← algebraMap_smul E r w, smul_comm, algebraMap_smul]`. Conclude with `L.smul_mem r hw`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Apply `Set.Subset.antisymm` to reduce the goal to its premises. Introduce `w hw`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Rewrite `hw` using `[SetLike.mem_coe]`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem w hw`. Take `⟨a, ha, v, hv, rfl⟩` from `hw`. Conclude with `smul_mem_latOf_of_smul_mem (fun x hx => hgen a ha x hx) G hv`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `zero => exact zero_mem_latOf' G`. Consider the case `add x y _ _ hx hy => exact add_mem_latOf' G hx hy`. Consider the case `smul r w _ hw`. Rewrite using `[← algebraMap_smul E r w]`. Use `smul_mem_latOf_of_smul_mem (fun x hx => ?_) G hw` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[algebraMap_smul]`. Conclude with `L'.smul_mem r hx`. Introduce `v hv`. Set `N : Submodule (𝓞 E) (Fin n → E)` to `Submodule.span (𝓞 E) {w | ∃ a ∈ I, ∃ v ∈ _root_.GlobalTheory.AdLat.latOf F G L, w = a • v}`. Set `S : Submodule (𝓞 E) E` to `{ carrier := {c | c • v ∈ N} add_mem' := fun {c d} hc hd => by`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(c + d) • v ∈ N`. Rewrite using `[add_smul]`. Conclude with `N.add_mem hc hd`. Use the proof step `zero_mem' := by`. Express the relevant statement in the definitionally equal form `(0 : E) • v ∈ N`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[zero_smul]`. Conclude with `N.zero_mem`. Use the proof step `smul_mem' := fun r c hc => by`. Express the relevant statement in the definitionally equal form `(r • c) • v ∈ N`. Rewrite using `[smul_assoc]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `N.smul_mem r hc }`. Establish `hle : (I : Submodule (𝓞 E) E) * ((I⁻¹ : FractionalIdeal (𝓞 E)⁰ E) : Submodule (𝓞 E) E) ≤ S` using `Submodule.mul_le.2 fun a ha b hb => by`. Express the relevant statement in the definitionally equal form `(a * b) • v ∈ N`. Rewrite using `[mul_smul]`. Conclude with `Submodule.subset_span ⟨a, ha, b • v, smul_mem_latOf_of_smul_mem (hinv b hb) G hv, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (1 : E) ∈ (I : Submodule (𝓞 E) E) * ((I⁻¹ : FractionalIdeal (𝓞 E)⁰ E) : Submodule (𝓞 E) E)`. Rewrite using `[← FractionalIdeal.coe_mul, mul_inv_cancel₀ hI]`. Conclude with `(FractionalIdeal.mem_one_iff _).2 ⟨1, map_one _⟩`. Establish `h2 : (1 : E) • v ∈ N` using `hle h1`. Rewrite `h2` using `[one_smul]`. Then use the resulting hypothesis.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Proceed by induction.
 
-Set `φ : (Fin n → _root_.GlobalTheory.AdLat.RA F E) →+ (Fin n → _root_.GlobalTheory.AdLat.RA F E)` to `AddMonoidHom.mk' (fun z => G *ᵥ z) (Matrix.mulVec_add G)`. Establish `himage : G.mulVec '' (_root_.GlobalTheory.AdLat.hat F (L' : Set (Fin n → E)) : Set (Fin n → _root_.GlobalTheory.AdLat.RA F E)) = ((_root_.GlobalTheory.AdLat.hat F (L' : Set (Fin n → E))).map φ : Set _)` using `(AddSubgroup.coe_map φ _).symm`. Rewrite using `[himage]`. Use `congr 1`. Apply `le_antisymm` to reduce the goal to its premises.
+Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `w ⟨a, ha, z, ⟨y, hy, rfl⟩, rfl⟩`. Use `⟨((1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] a : _root_.GlobalTheory.AdLat.RA F E) • y, _root_.GlobalTheory.AdLat.Scale.smul_mem_hat (fun x hx => hgen a ha x hx) hy, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `G *ᵥ (_ • y) = _`. Rewrite using `[Matrix.mulVec_smul]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Rewrite using `[AddSubgroup.map_le_iff_le_comap]`. Introduce `z hz`. Unfold `_root_.GlobalTheory.AdLat.hat at hz`. Proceed by induction on `hz using AddSubgroup.closure_induction with`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Consider the case `mem z hz`. Take `⟨b, hb, w, hw, rfl⟩` from `hz`. Rewrite `hw` using `[SetLike.mem_coe, hL']`. Rewrite using `[show w = (1 : 𝓞 E) • w from (one_smul _ _).symm]`. Generalize the expression as in `(1 : 𝓞 E) = r`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Proceed by induction on `hw using Submodule.span_induction generalizing r with`. Consider the case `mem w hw`. Take `⟨a, ha, x, hx, rfl⟩` from `hw`. Establish `hy : r • x ∈ L` using `L.smul_mem r hx`. Establish `heq : (fun i => b ⊗ₜ[F] (r • a • x) i) = ((1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] a : _root_.GlobalTheory.AdLat.RA F E) • fun i => b ⊗ₜ[F] (r • x) i`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `b ⊗ₜ[F] (r • a • x) i = ((1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] a) * (b ⊗ₜ[F] (r • x) i)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Use `congr 1`. Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_smul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Express the relevant statement in the definitionally equal form `G *ᵥ (fun i => b ⊗ₜ[F] (r • a • x) i) ∈ AddSubgroup.closure _`. Rewrite using `[heq, Matrix.mulVec_smul]`. Conclude with `AddSubgroup.subset_closure ⟨a, ha, _, ⟨_, AddSubgroup.subset_closure ⟨b, hb, r • x, hy, rfl⟩, rfl⟩, rfl⟩`. Consider the case `zero`. Establish `h0 : (fun i => b ⊗ₜ[F] (r • (0 : Fin n → E)) i) = 0`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Rewrite using `[h0]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hxy : (fun i => b ⊗ₜ[F] (r • (x + y)) i) = (fun i => b ⊗ₜ[F] (r • x) i) + fun i => b ⊗ₜ[F] (r • y) i`. Use function extensionality and compare the values at `i`. Simplify using `[smul_add, TensorProduct.tmul_add]`. Rewrite using `[hxy]`. Conclude with `add_mem (hx r) (hy r)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `smul s w _ hw`. Rewrite using `[smul_smul]`. Conclude with `hw (r * s)`. Consider the case `zero => exact zero_mem _`. Consider the case `add x y _ _ hx hy => exact add_mem hx hy`.
-
-Consider the case `neg x _ hx => exact neg_mem hx`. Take `⟨d, hd, hdI⟩` from `I.isFractional`. Establish `hd0 : algebraMap (𝓞 E) E d ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective (𝓞 E) E)).2 (nonZeroDivisors.ne_zero hd)`. Set `f : (Fin n → E) →ₗ[𝓞 E] (Fin n → E)` to `(((algebraMap (𝓞 E) E d)⁻¹ • LinearMap.id : (Fin n → E) →ₗ[E] (Fin n → E))).restrictScalars (𝓞 E)`. Establish `hle : L' ≤ L.map f`.
-
-Rewrite using `[hL', Submodule.span_le]`. Introduce and unpack `w ⟨a, ha, x, hx, rfl⟩`. Take `⟨r, hr⟩` from `hdI a ha`. Use `⟨r • x, L.smul_mem r hx, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(algebraMap (𝓞 E) E d)⁻¹ • (r • x) = a • x`.
-
-Rewrite using `[← algebraMap_smul E r x, hr, smul_smul, Algebra.smul_def d a, inv_mul_cancel_left₀ hd0]`. Conclude with `(hLfg.map f).of_le hle`. Take `⟨a, ha, ha0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot (FractionalIdeal.coeToSubmodule_ne_bot.2 hI)`. Rewrite using `[eq_top_iff, ← hLspan, Submodule.span_le]`. Introduce `x hx`.
-
-Establish `hax : a • x ∈ Submodule.span E (L' : Set (Fin n → E))` using `Submodule.subset_span (hgen a ha x hx)`. Use `Submodule.smul_mem _ a⁻¹ hax` as an intermediate fact. Rewrite `this` using `[smul_smul, inv_mul_cancel₀ ha0, one_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.AdLat.scale_latOf : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n : ℕ) (L : Submodule (𝓞 E) (Fin n → E)) (g : GL (Fin n) (_root_.GlobalTheory.AdLat.RA F E)) (I : FractionalIdeal (𝓞 E)⁰ E) (L' : Submodule (𝓞 E) (Fin n → E)), L.FG → Submodule.span E (L : Set (Fin n → E)) = ⊤ → I ≠ 0 → L' = Submodule.span (𝓞 E) {w | ∃ a ∈ I, ∃ x ∈ L, w = a • x} → ((Submodule.span (𝓞 E) {w | ∃ a ∈ I, ∃ v ∈ _root_.GlobalTheory.AdLat.latOf F (g : Matrix (Fin n) (Fin n) (_root_.GlobalTheory.AdLat.RA F E)) L, w = a • v} : Submodule (𝓞 E) (Fin n → E)) : Set (Fin n → E)) = _root_.GlobalTheory.AdLat.latOf F (g : Matrix (Fin n) (Fin n) (_root_.GlobalTheory.AdLat.RA F E)) L' ∧ (AddSubgroup.closure {w | ∃ a ∈ I, ∃ z ∈ (g : Matrix (Fin n) (Fin n) (_root_.GlobalTheory.AdLat.RA F E)).mulVec '' (_root_.GlobalTheory.AdLat.hat F (L : Set (Fin n → E))), w = fun i => ((1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] a) * z i} : Set (Fin n → _root_.GlobalTheory.AdLat.RA F E)) = (g : Matrix (Fin n) (Fin n) (_root_.GlobalTheory.AdLat.RA F E)).mulVec '' (_root_.GlobalTheory.AdLat.hat F (L' : Set (Fin n → E))) ∧ L'.FG ∧ Submodule.span E (L' : Set (Fin n → E)) = ⊤ := by
   intro F E _ _ _ _ _ n L g I L' hLfg hLspan hI hL'

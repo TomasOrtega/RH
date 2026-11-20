@@ -19,7 +19,7 @@ namespace GlobalTheory.Mum.LieTens
 open GlobalTheory.Serre Matrix
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.finrank_int_eq_finrank_ringOfIntegers_mul' E N`.
+A detailed English derivation is pending.
 -/
 theorem finrank_int_eq (E : Type) [Field E] [NumberField E] (N : Type) [AddCommGroup N]
     [Module (𝓞 E) N] [Module.Free ℤ N] [Module.Finite ℤ N] :
@@ -27,7 +27,7 @@ theorem finrank_int_eq (E : Type) [Field E] [NumberField E] (N : Type) [AddCommG
   GlobalTheory.T.finrank_int_eq_finrank_ringOfIntegers_mul' E N
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.isTorsionFree_ringOfIntegers_of_isTorsionFree_int' E N`.
+A detailed English derivation is pending.
 -/
 theorem isTorsionFree_of_int (E : Type) [Field E] [NumberField E] (N : Type) [AddCommGroup N]
     [Module (𝓞 E) N] [Module.IsTorsionFree ℤ N] : Module.IsTorsionFree (𝓞 E) N :=
@@ -77,7 +77,7 @@ instance : Module.Free ℤ (Lat ρ) := Module.Free.of_equiv (intEquiv ρ)
 instance : Module.Finite ℤ (Lat ρ) := Module.Finite.equiv (intEquiv ρ)
 
 /- English proof (translation)
-Rewrite using `[← LinearEquiv.finrank_eq (intEquiv ρ), Module.finrank_fin_fun]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_lat_int : Module.finrank ℤ (Lat ρ) = r := by
   rw [← LinearEquiv.finrank_eq (intEquiv ρ), Module.finrank_fin_fun]
@@ -94,7 +94,7 @@ namespace GlobalTheory.Mum.LieTens
 open GlobalTheory.Serre
 
 /- English proof (translation)
-Use `eq_top_iff.mpr fun v _ x => ?_` and prove the remaining obligations. Take `⟨n, rfl⟩ : ∃ n : ℤ, x = n` from `⟨Rat.ringOfIntegersEquiv x, Rat.ringOfIntegersEquiv.injective (by rw [map_intCast, Int.cast_id])⟩`. Rewrite using `[map_intCast, Int.cast_smul_eq_zsmul, Int.cast_smul_eq_zsmul]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem eig_eq_top {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G]
     (a : OAct (𝓞 ℚ) G) (τ₀ : 𝓞 ℚ →+* R) : Lie.eig a τ₀ = ⊤ := by
@@ -104,9 +104,9 @@ theorem eig_eq_top {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] [IsCommM
   rw [map_intCast, Int.cast_smul_eq_zsmul, Int.cast_smul_eq_zsmul]
 
 /- English proof (translation)
-Rewrite using `[Lie.lieMult_iff_finrank (isLinearPullback_pullback a t)]`. Establish `hs : SmoothOfRelativeDimension g ((Over.pullback t).obj G).hom` using `(smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback (IsPullback.of_hasPullback _ _) hG`. Take `⟨v, hv⟩` from `GlobalTheory.KeyPow.exists_isLieBasis ((Over.pullback t).obj G) hs`. Establish `b` using `Lie.basis (a.pullback t) hv`. Rewrite using `[eig_eq_top]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `haveI := Module.Finite.of_basis b`. Conclude with `Module.Finite.equiv (LinearEquiv.ofTop ⊤ rfl).symm`. Rewrite using `[finrank_top, Module.finrank_eq_card_basis b, Fintype.card_fin]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lieMult_int {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] (a : OAct (𝓞 ℚ) G)
     {g : ℕ} (hG : SmoothOfRelativeDimension g G.hom) {F : Type} [Field F] (t : Sp F ⟶ S)
@@ -129,7 +129,7 @@ namespace GlobalTheory.Mum.LieTens
 open GlobalTheory.Serre
 
 /- English proof (translation)
-Take `⟨_, _, _, _, _⟩` from `x`. Take `⟨_, _, _, _, _⟩` from `y`. Simplify using `only [OAct.mk.injEq]`. Conclude with `funext h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem act_eq {S : Scheme.{0}} {O : Type} [CommRing O] {G : Over S} [GrpObj G] (x y : OAct O G)
     (h : ∀ c, x.act c = y.act c) : x = y := by
@@ -139,7 +139,7 @@ theorem act_eq {S : Scheme.{0}} {O : Type} [CommRing O] {G : Over S} [GrpObj G] 
   exact funext h
 
 /- English proof (translation)
-Rewrite using `[comapAct_act, intAct_act, map_intCast, Int.cast_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comapAct_intCast {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] (n : ℤ) :
     (comapAct (intAct G) (Rat.ringOfIntegersEquiv : 𝓞 ℚ →+* ℤ)).act (n : 𝓞 ℚ) = (𝟙 G) ^ n := by
@@ -152,23 +152,21 @@ namespace GlobalTheory.Mum
 open GlobalTheory.Serre GlobalTheory.Mum.LieTens
 
 /- English proof (translation)
-Introduce `R _ _ _ hB E _ _ _ H D D' r W _ _ T ρ _ o hact s hrs`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `finrank_int_eq E D'.toPre.X`. Establish `h2 : Module.finrank ℤ D'.toPre.X = r * Module.finrank ℤ D.toPre.X`. Rewrite using `[LinearEquiv.finrank_eq T.xe.toIntLinearEquiv, Module.finrank_pi_fintype]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite `h1` using `[h2, hrs]`. Establish `hpos : 0 < Module.finrank ℚ E` using `Module.finrank_pos`. Apply `Nat.eq_of_mul_eq_mul_right hpos` to reduce the goal to its premises. Rewrite using `[← h1]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `F _ _ _ τ`. Use `letI := H.starRing`. Use `haveI : CharZero R := hB.2`. Use `haveI : CharZero F := charZero_of_injective_algebraMap (algebraMap (FractionRing R) F).injective`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `p : IsPowGrp D'.toPre.P.A D.toPre.P.A r` to `⟨T.pr, T.pr_hom, T.lim⟩`. Set `a₀ : OAct (𝓞 ℚ) D.toPre.P.A` to `comapAct (intAct D.toPre.P.A) (Rat.ringOfIntegersEquiv : 𝓞 ℚ →+* ℤ)`. Set `h₀` to `IsTensor.pow p a₀`. Set `h` to `h₀.congrLeft (latEquiv ρ)`. Establish `hn` using `lieMult_int a₀ D.toPre.P.smoothDim (spMap ((algebraMap (FractionRing R) F).comp (algebraMap R _))) (τ.comp (algebraMap (𝓞 ℚ) (𝓞 E)))`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm` using `h.lieMult (K := ℚ) _ τ hn`. Establish `key : ∀ c : 𝓞 E, (h.algAct (𝓞 E)).act c = o.onB.act c`. Introduce `c`. Establish `e1 : (h.algAct (𝓞 E)).act c = h₀.mapLeft h₀ (Matrix.toLin' ((ρ c).map (Int.cast : ℤ → 𝓞 ℚ)))` using `by haveI := (h.algAct (𝓞 E)).hom c`. Use `h.hom_ext fun m => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[IsTensor.tmul_algAct, IsTensor.congrLeft_tmul, IsTensor.congrLeft_tmul, IsTensor.tmul_mapLeft]`. Both sides reduce to the same expression. Use `pow_hom_ext p fun i => ?_` and prove the remaining obligations. Rewrite using `[e1, IsTensor.pow_mapLeft_pr]`. Rewrite using `[show p.pr i = T.pr i from rfl, hact.2 c i]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `show T.pr j ≫ a₀.act ((ρ c i j : ℤ) : 𝓞 ℚ) = T.pr j ^ ρ c i j`. Rewrite using `[comapAct_intCast, GrpObj.comp_zpow, Category.comp_id]`. Establish `hact' : h.algAct (𝓞 E) = (letI` using `H.starRing; ofRingAct o.onB.toRingAct) := act_eq _ _ key`. Establish `hfr : Module.finrank (𝓞 E) (Lat ρ) = s`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `finrank_int_eq E (Lat ρ)`. Rewrite `h1` using `[finrank_lat_int]`. Establish `h3 : s * Module.finrank ℚ E = Module.finrank (𝓞 E) (Lat ρ) * Module.finrank ℚ E`. Rewrite using `[← hrs]`. Conclude with `h1`.
-
-Establish `hpos : 0 < Module.finrank ℚ E` using `Module.finrank_pos`. Conclude with `(Nat.eq_of_mul_eq_mul_right hpos h3).symm`. Rewrite `hm` using `[hact', hfr, Nat.mul_comm]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem lieMult_tens : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) , ∀ (D D' : DegData R (maximalIdeal R)) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ), ((W + W.transpose).map (Int.cast : ℤ → ℝ)).PosDef → IsUnit (W + W.transpose).det → ∀ T : Tens D.toPre D'.toPre W, ∀ (ρ : 𝓞 E →+* Matrix (Fin r) (Fin r) ℤ) [Module (𝓞 E) D'.toPre.X] (o : letI := H.starRing; D'.toPre.OAct (𝓞 E)), (letI := H.starRing; T.IsAct o ρ) → ∀ s : ℕ, r = s * Module.finrank ℚ E → Module.finrank (𝓞 E) D'.toPre.X = s * Module.finrank ℤ D.toPre.X ∧ ∀ (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing R) F] (τ : 𝓞 E →+* F), LieMult (letI := H.starRing; ofRingAct o.onB.toRingAct) (spMap ((algebraMap (FractionRing R) F).comp (algebraMap R _))) τ (s * D.toPre.P.g) := by
   intro R _ _ _ hB E _ _ _ H D D' r W _ _ T ρ _ o hact s hrs

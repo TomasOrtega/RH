@@ -12,7 +12,7 @@ noncomputable section
 universe u
 
 /- English proof (translation)
-Unfold `divCycle at h`. Use `split_ifs at h with hW`. Conclude with `hW`. Conclude with `absurd rfl h`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem mem_minimalPrimes_of_divCycle_ne_zero {K : Type*} {ι : K → Type*} {R : Type*}
     [CommRing R] {P : Ideal (MRing ι R)} {f : MRing ι R} {W : Ideal (MRing ι R)}
@@ -23,7 +23,7 @@ theorem mem_minimalPrimes_of_divCycle_ne_zero {K : Type*} {ι : K → Type*} {R 
   · exact absurd rfl h
 
 /- English proof (translation)
-Use function extensionality and compare the values at `W`. Rewrite using `[ratDiv, divCycle_one, sub_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem ratDiv_one {K : Type*} {ι : K → Type*} {R : Type*} [CommRing R] (P : Ideal (MRing ι R))
     (f : MRing ι R) : ratDiv P f 1 = divCycle P f := by
@@ -31,7 +31,7 @@ theorem ratDiv_one {K : Type*} {ι : K → Type*} {R : Type*} [CommRing R] (P : 
   rw [ratDiv, divCycle_one, sub_zero]
 
 /- English proof (translation)
-Unfold `mixedDiff`. Rewrite using `[List.ofFn_succ, List.foldr_cons, Matrix.cons_val_zero]`. Use function extensionality and compare the values at `m`. Simplify using `[diffStep]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem mixedDiff_cons_zero {K : Type*} {n : ℕ} (L : Fin n → K → ℤ) (h : (K → ℤ) → ℤ) :
     mixedDiff (Matrix.vecCons 0 L) h = 0 := by
@@ -41,7 +41,7 @@ theorem mixedDiff_cons_zero {K : Type*} {n : ℕ} (L : Fin n → K → ℤ) (h :
   simp [diffStep]
 
 /- English proof (translation)
-Unfold `eventualValue`. Use `split_ifs with hc`. Take `⟨m, hm⟩` from `hc.choose_spec.exists`. Conclude with `hm.symm`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem eventualValue_zero {K : Type*} : eventualValue (0 : (K → ℤ) → ℤ) = 0 := by
   unfold eventualValue
@@ -51,7 +51,7 @@ theorem eventualValue_zero {K : Type*} : eventualValue (0 : (K → ℤ) → ℤ)
   · rfl
 
 /- English proof (translation)
-Rewrite using `[vNum, intNum, mixedDiff_cons_zero, eventualValue_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem vNum_cons_zero {K : Type*} [DecidableEq K] {ι : K → Type*} {O : Type*} [CommRing O]
     [IsDomain O] [IsDiscreteValuationRing O] (W : Ideal (MRing ι O)) {n : ℕ}
@@ -59,9 +59,9 @@ theorem vNum_cons_zero {K : Type*} [DecidableEq K] {ι : K → Type*} {O : Type*
   rw [vNum, intNum, mixedDiff_cons_zero, eventualValue_zero]
 
 /- English proof (translation)
-Use `(Submodule.eq_bot_iff _).mpr fun a ha => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `ha0`. Take `⟨n, v, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible ha0 hϖ`. Rewrite `ha` using `[Ideal.mem_comap, map_mul, map_pow]`. Break down `hH.mem_or_mem ha with hv | hp` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hH.ne_top (Ideal.eq_top_of_isUnit_mem _ hv ((Units.isUnit v).map C))`. Conclude with `hϖH (hH.mem_of_pow_mem n hp)`.
+A detailed English derivation is pending.
 -/
 theorem comap_C_eq_bot_of_not_mem {K : Type*} {ι : K → Type*} {O : Type*} [CommRing O]
     [IsDomain O] [IsDiscreteValuationRing O] {ϖ : O} (hϖ : Irreducible ϖ)
@@ -76,14 +76,14 @@ theorem comap_C_eq_bot_of_not_mem {K : Type*} {ι : K → Type*} {O : Type*} [Co
   · exact hϖH (hH.mem_of_pow_mem n hp)
 
 /- English proof (translation)
-Apply the tactic sequence `apply _root_.UpperTheory.Reformulated.B.Qn14.le_of_add_one_le_succ <;> assumption`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem withBot_le_of_add_one_le (x : WithBot ℕ∞) (N : ℕ)
     (hx : x + 1 ≤ ((N + 1 : ℕ) : WithBot ℕ∞)) : x ≤ ((N : ℕ) : WithBot ℕ∞) :=
   by apply _root_.UpperTheory.Reformulated.B.Qn14.le_of_add_one_le_succ <;> assumption
 
 /- English proof (translation)
-Use `lt_of_le_of_lt (withBot_le_of_add_one_le x N hx) ?_` and prove the remaining obligations. Conclude with `Nat.lt_succ_self N` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem withBot_lt_of_add_one_le (x : WithBot ℕ∞) (N : ℕ)
     (hx : x + 1 ≤ ((N + 1 : ℕ) : WithBot ℕ∞)) : x < ((N + 1 : ℕ) : WithBot ℕ∞) := by
@@ -91,21 +91,21 @@ theorem withBot_lt_of_add_one_le (x : WithBot ℕ∞) (N : ℕ)
   exact_mod_cast Nat.lt_succ_self N
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ hϖ K _ _ ι _ P d hP c s hs hsP L`. Establish `hdim : ringKrullDim (MRing ι O ⧸ P) = ((d + 1 + 1 + Fintype.card K : ℕ) : WithBot ℕ∞)` using `hP.dim`. Use `hP.multiProj.isPrime` as an intermediate fact. Establish `hL : cycEval (fun G => vNum G (Matrix.vecCons (fun k => (c k : ℤ)) L)) (ratDiv P (C ϖ) 1) = gNum P (Matrix.vecCons (fun k => (c k : ℤ)) L)`. Rewrite using `[ratDiv_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1 O ϖ hϖ K ι P (d + 1) hP.multiProj hP.noTorsion hdim.le _`. Take `⟨hGprime, hGhom, hGs⟩` from `h3 O K ι P hP.multiProj hP.noTorsion`. Take `⟨hsG, hsG'⟩` from `hGs s c hs hsP`. Establish `hGdim : ringKrullDim (MRing ι (FractionRing O) ⧸ genFib P) < ((d + 2 + Fintype.card K : ℕ) : WithBot ℕ∞)`. Establish `e : d + 2 + Fintype.card K = (d + 1 + Fintype.card K) + 1` using `by omega`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Use `withBot_lt_of_add_one_le _ _ ?_` and prove the remaining obligations. Use `h2 O K ι P hP.multiProj hP.noTorsion` as an intermediate fact. Rewrite `this` using `[hdim]`. Rewrite `this` using `[show d + 1 + 1 + Fintype.card K = d + 1 + Fintype.card K + 1 by omega]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hcut` using `h8 (FractionRing O) K ι d (genFib P) hGprime hGhom hGdim _ c hsG hsG' L`. Establish `hcorr` using `h4 O ϖ hϖ K ι P s hP.multiProj.isPrime hP.noTorsion hsP (fun V => intNum (FractionRing O) V L)`. Rewrite using `[cutIdentity, hL, gNum, hcut, ← hcorr]`. Unfold `cycEval`. Use `finsum_congr fun W => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hW : divCycle P s W = 0`. Rewrite using `[hW, zero_mul, zero_mul]`. Use `congr 1`. Simplify using `only`. Distinguish the cases in `hϖW : (C ϖ : MRing ι O) ∈ W`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify by unfolding definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos hϖW, if_pos hϖW, vNum_cons_zero]`. Rewrite using `[if_neg hϖW, if_neg hϖW]`. Take `⟨hWmin, hWrel⟩` from `mem_minimalPrimes_of_divCycle_ne_zero hW`. Take `⟨hWprime, hPW, -⟩` from `le_and_isRelevant_of_divCycle_ne_zero hW`. Use `hWprime` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hWhom : IsMultiHomogIdeal W` using `h5 O K ι (P ⊔ Ideal.span {s}) W (h6 O K ι P s c hP.multiProj.multiHomog hs) hWmin`. Establish `hlt : P < W` using `lt_of_le_of_ne hPW fun h => hsP (h ▸ hWmin.1.2 (Ideal.mem_sup_right (Ideal.subset_span rfl)))`. Establish `hWdim : ringKrullDim (MRing ι O ⧸ W) ≤ ((d + 1 + Fintype.card K : ℕ) : WithBot ℕ∞)`. Use `withBot_le_of_add_one_le _ _ ?_` and prove the remaining obligations. Use `h7 (MRing ι O) P W hlt` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hdim]`. Rewrite `this` using `[show d + 1 + 1 + Fintype.card K = d + 1 + Fintype.card K + 1 by omega]`. Then use the resulting hypothesis. Rewrite using `[ratDiv_one]`. Conclude with `(h1 O ϖ hϖ K ι W d ⟨hWprime, hWhom, hWrel⟩ (comap_C_eq_bot_of_not_mem hϖ W hϖW) hWdim L).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UniformiserCase.proof (h1 : ConservationOfNumberLE.Statement.{u})
     (h2 : GenericDimBound.Statement.{u}) (h3 : GenericFibProps.Statement.{u})

@@ -27,7 +27,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Fo
 namespace GlobalTheory.EX
 
 /- English proof (translation)
-Take `⟨A, B, h1, h2, h3⟩` from `h`. Conclude with `⟨(A, B), h1, h2, h3⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem normOne_of_pair {d M p : ℕ} (h : GlobalTheory.Mem.An.NormOne d M p) : GlobalTheory.EX.NormOne d M p := by
   obtain ⟨A, B, h1, h2, h3⟩ := h
@@ -36,19 +36,19 @@ theorem normOne_of_pair {d M p : ℕ} (h : GlobalTheory.Mem.An.NormOne d M p) : 
 open Filter Topology GlobalTheory.Mem.An.ManyNormPrimes in
 
 /- English proof (translation)
-Take `⟨C₀, Cr, cr, c, hC₀, hCr, hcr, hc, H⟩` from `GlobalTheory.T.norm_primes_short_interval_lower hTZ`. Establish `hT : Tendsto (fun x : ℝ => x ^ (eps / 5)) atTop atTop` using `tendsto_rpow_atTop (by positivity)`. Establish `E : ∀ᶠ t : ℝ in atTop, 10000 ≤ t ∧ C₀ ≤ t ∧ Cr * Real.exp (-cr * t) ≤ 1 / 200 ∧ 40 * Real.exp (-(1 / 20) * t) ≤ c` using `by filter_upwards [eventually_ge_atTop 10000, eventually_ge_atTop C₀, ev_exp Cr cr (1 / 200) hcr (by norm_num), ev_exp 40 (1 / 20) c (by norm_num) hc] with t a b c d`. Conclude with `⟨a, b, c, d⟩`. Establish `hsq : ∀ᶠ x : ℝ in atTop, Real.log x ^ 2 ≤ 1 / 2 * x ^ (eps / 5)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `h` using `(isLittleO_log_rpow_rpow_atTop (s := eps / 5) 2 (by positivity)).bound (c := 1 / 2) (by norm_num)`. Use `filter_upwards [h, eventually_ge_atTop (1 : ℝ)] with x hx h1`. Establish `h0 : (0 : ℝ) ≤ x ^ (eps / 5)` using `Real.rpow_nonneg (by linarith) _`. Rewrite `hx` using `[Real.rpow_two, Real.norm_of_nonneg (sq_nonneg _), Real.norm_of_nonneg h0]`. Conclude with `hx`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x₀, hx₀⟩` from `eventually_atTop.1 ((hT.eventually E).and (hsq.and (eventually_gt_atTop (0 : ℝ))))`. Use `⟨x₀, fun x hx M d hd hd4 hd100 hM0 hdM hN Y hY hYx => ?_⟩` and prove the remaining obligations. Take `⟨⟨t1, t2, t3, t4⟩, hl, hx0⟩` from `hx₀ x hx`. Establish `hxe : x ^ eps = (x ^ (eps / 5)) ^ 5`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hx0.le]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `set t := x ^ (eps / 5) with ht`. Establish `hMr : (d : ℝ) ≤ M` using `by exact_mod_cast Nat.le_of_dvd hM0 hdM`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdr : (100 : ℝ) ≤ d` using `by exact_mod_cast hd100`. Establish `hB1 : (1 : ℝ) < 4 * (d : ℝ) * (M : ℝ) ^ 2` using `by nlinarith`. Establish `hBt : Real.log (4 * (d : ℝ) * (M : ℝ) ^ 2) ≤ 8 * t ^ 2`. Establish `b1 : 4 * (d : ℝ) * (M : ℝ) ^ 2 ≤ 4 * (M : ℝ) ^ 3` using `by nlinarith [sq_nonneg (M : ℝ)]`. Establish `b2` using `Real.log_le_log (by linarith) b1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `hNp : (0 : ℝ) < M` using `by linarith`. Rewrite `b2` using `[Real.log_mul (x := 4) (y := (M : ℝ) ^ 3) (by norm_num) (by positivity), Real.log_pow]`. Move the coercions through the operations in `at b2`. Establish `b3 : Real.log 4 ≤ 4 - 1` using `Real.log_le_sub_one_of_pos (by norm_num)`. Establish `b4 : t * Real.log x ^ 2 ≤ t * (1 / 2 * t)` using `mul_le_mul_of_nonneg_left hl (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Take `⟨k1, k2, k3, k4⟩` from `core C₀ Cr cr c t _ Y hC₀ hCr hcr hc t1 t2 t3 t4 hB1 hBt hY (by rw [← hxe]; exact hYx)`. Use `H d M hd hd4 hd100 (by omega) Y 1 k1 le_rfl k2 k3` as an intermediate fact. Rewrite `this` using `[show Y * (1 + 1) = 2 * Y by ring]`. Conclude with `k4.trans this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem many_norm_primes_mod (hTZ : GlobalTheory.Mem.An.QuadraticHeckeZeroEstimates) (eps : ℝ) (he : 0 < eps) : ∃ x₀ : ℝ, ∀ x : ℝ, x₀ ≤ x →
     ∀ M d : ℕ, d.Prime → d % 4 = 3 → 100 ≤ d → 0 < M → d ∣ M → Real.log M ≤ 3 * x ^ (eps / 5) * Real.log x ^ 2 →
@@ -95,47 +95,43 @@ private theorem many_norm_primes_mod (hTZ : GlobalTheory.Mem.An.QuadraticHeckeZe
 open Filter Topology GlobalTheory.Mem.An.ShortWindow in
 
 /- English proof (translation)
-Take `⟨C₀, Cr, cr, c, hC₀, hCr, hcr, hc, H⟩` from `GlobalTheory.T.norm_primes_short_interval_lower hTZ`. Use `set CB : ℝ := 8 * CY + 12 with hCB`. Establish `hCB0 : 0 < CB` using `by positivity`. Establish `e1` using `ev_log_le (a := 2 * eps / 5) (k := 1) (by positivity) one_pos 0 1 one_pos`. Establish `e2` using `ev_log_le (a := 1 / 3) (k := cs) (by positivity) hcs (C₀ * CB) 1 one_pos`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3` using `ev_log_le (a := 1 / 3) (k := cr * cs / CB) (by positivity) (by positivity) (Real.log (200 * Cr)) 12 (by norm_num)`. Establish `e4` using `ev_log_le (a := 1 / 6) (k := cr * Real.sqrt cs) (by positivity) (by positivity) (Real.log (200 * Cr)) 12 (by norm_num)`. Establish `e5` using `ev_log_le (a := 1 / 3) (k := cs / 3) (by positivity) (by positivity) (7 * CB) 12 (by norm_num)`. Establish `e6` using `Real.tendsto_log_atTop.eventually_ge_atTop (100 : ℝ)`. Take `⟨x₀, hx₀⟩` from `eventually_atTop.1 (e1.and (e2.and (e3.and (e4.and (e5.and (e6.and (eventually_ge_atTop (1 : ℝ))))))))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨x₀, fun x hx N d g₁ g₂ m hd hd4 hd100 hN0 hdN hN hg₁ hg₂ hl₁ hl₂ hm W Ts hW hWx hTs hT => ?_⟩` and prove the remaining obligations. Take `⟨e1, e2, e3, e4, e5, e6, hx1⟩` from `hx₀ x hx`. Establish `hx0 : 0 < x` using `by linarith`. Establish `hW0 : 0 < W` using `by linarith`. Use `set L : ℝ := x ^ eps with hL`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set u : ℝ := x ^ ((1 : ℝ) / 3) with hu`. Establish `hL1 : 1 ≤ L` using `Real.one_le_rpow hx1 he.le`. Establish `hu1 : 1 ≤ u` using `Real.one_le_rpow hx1 (by norm_num)`. Establish `hlx : 0 ≤ Real.log x` using `by linarith`. Establish `hd1 : 1 ≤ d` using `hd.one_lt.le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set M : ℕ := N * (g₁ * g₂) ^ 2 with hM`. Establish `hM1 : 1 ≤ M` using `Nat.succ_le_of_lt (by positivity)`. Use `set B : ℝ := 4 * (d : ℝ) * (M : ℝ) ^ 2 with hB`. Establish `hNR : (1 : ℝ) ≤ N` using `by exact_mod_cast hN0`. Establish `hdNR : (d : ℝ) ≤ N` using `by exact_mod_cast Nat.le_of_dvd hN0 hdN`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdR : (1 : ℝ) ≤ d` using `by exact_mod_cast hd1`. Establish `hg₁R : (1 : ℝ) ≤ g₁` using `by exact_mod_cast hg₁`. Establish `hg₂R : (1 : ℝ) ≤ g₂` using `by exact_mod_cast hg₂`. Establish `hMR : (1 : ℝ) ≤ M` using `by exact_mod_cast hM1`. Establish `hB1 : 1 < B`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (1 : ℝ) ≤ (M : ℝ) ^ 2` using `one_le_pow₀ hMR`. Combine the equalities or inequalities in the displayed calculation. Establish `hB0 : 0 < B` using `by linarith`. Establish `hlB0 : 0 < Real.log B` using `Real.log_pos hB1`. Establish `hNL : Real.log N ≤ 3 * L`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h1 : Real.log x ^ 2 ≤ (x ^ (2 * eps / 5)) ^ 2` using `by gcongr; linarith`. Establish `h2 : x ^ (eps / 5) * (x ^ (2 * eps / 5)) ^ 2 = L`. Rewrite using `[hL, sq, ← Real.rpow_add hx0, ← Real.rpow_add hx0]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `h3 : 0 ≤ x ^ (eps / 5)` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Establish `hlB : Real.log B ≤ CB * L`. Establish `h1 : B ≤ 4 * (N : ℝ) ^ 3 * (g₁ : ℝ) ^ 4 * (g₂ : ℝ) ^ 4`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Rewrite using `[hB, hM]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ (4 * N : ℝ) * ((N : ℝ) ^ 2 * (g₁ : ℝ) ^ 4 * (g₂ : ℝ) ^ 4) := by gcongr`. Use `_ = _ := by ring`.
+Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h2` using `Real.log_le_log hB0 h1`. Generalize the expression as in `Real.log B = lB at h2 ⊢`. Rewrite `h2` using `[Real.log_mul (by positivity) (by positivity), Real.log_mul (by positivity) (by positivity), Real.log_mul (by positivity) (by positivity), Real.log_pow, Real.log_pow, Real.log_pow]`. Move the coercions through the operations in `at h2`. Establish `b3 : Real.log 4 ≤ 4 - 1` using `Real.log_le_sub_one_of_pos (by norm_num)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hCB]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hT' : cs * u * L ≤ Real.log Ts` using `le_trans (by gcongr) hT`. Establish `hT0 : 0 < Real.log Ts` using `lt_of_lt_of_le (by positivity) hT'`. Establish `a1 : B ^ C₀ ≤ Ts`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Real.rpow_def_of_pos hB0, ← Real.le_log_iff_exp_le hTs]`. Combine the equalities or inequalities in the displayed calculation. Establish `a2 : 1 / W ≤ 1` using `by rw [div_le_one hW0]; exact hW`. Establish `a3 : Formalism.HermitianLattices.GL2PrimeSums.rhoErr Cr cr B Ts ≤ 1 / W / 100`. Unfold `Formalism.HermitianLattices.GL2PrimeSums.rhoErr`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `b1 : Cr * Real.exp (-(cr * Real.log Ts / Real.log B)) ≤ 1 / W / 200`. Use `exp_term_le hCr hx0 hW hWx (e3.trans ?_)` and prove the remaining obligations. Rewrite using `[le_div_iff₀ hlB0]`. Combine the equalities or inequalities in the displayed calculation. Establish `b2 : Cr * Real.exp (-(cr * Real.sqrt (Real.log Ts))) ≤ 1 / W / 200`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Evaluate the numerical expressions.
 
-Use `exp_term_le hCr hx0 hW hWx (e4.trans ?_)` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Use `gcongr`. Apply `Real.le_sqrt_of_sq_le` to reduce the goal to its premises. Establish `: (x ^ ((1 : ℝ) / 6)) ^ 2 = u`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[hu, sq, ← Real.rpow_add hx0]`. Use `congr 1`. Evaluate the numerical expressions. Rewrite using `[mul_pow, Real.sq_sqrt hcs.le, this]`. Use `le_trans ?_ hT'` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Conclude with `le_mul_of_one_le_right (by positivity) hL1`. Rewrite using `[neg_mul, neg_mul, neg_div]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `a4 : B ^ (7 : ℝ) ≤ 1 / W * Ts ^ ((1 : ℝ) / 3)`. Establish `b1 : Real.log B * 7 + Real.log x * 12 ≤ Real.log Ts * (1 / 3)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c1 : Real.log x * 12 ≤ Real.log x * 12 * L` using `le_mul_of_one_le_right (by positivity) hL1`. Establish `c2 : (7 * CB + 12 * Real.log x) * L ≤ cs / 3 * u * L` using `by gcongr`. Combine the linear relations using `only [c1, c2, hlB, hT']`. Establish `b2` using `Real.exp_le_exp.2 b1`. Rewrite `b2` using `[Real.exp_add, ← Real.rpow_def_of_pos hB0, ← Real.rpow_def_of_pos hx0, ← Real.rpow_def_of_pos hTs]`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[one_div, ← div_eq_inv_mul, le_div_iff₀ hW0]`. Use `le_trans ?_ b2` and prove the remaining obligations. Use `gcongr`. Establish `key` using `H d M hd hd4 hd100 hM1 Ts (1 / W) a1 a2 a3 a4`. Establish `hpos : (0 : ℝ) < ((GlobalTheory.Mem.An.normPrimes d M Ts (Ts * (1 + 1 / W))).card : ℝ)` using `lt_of_lt_of_le (by positivity) key`.
-
-Take `⟨T, hTm⟩` from `Finset.card_pos.1 (by exact_mod_cast hpos)`. Unfold `GlobalTheory.Mem.An.normPrimes at hTm`. Simplify using `only [Finset.mem_filter, Finset.mem_Ioc] at hTm`. Take `⟨⟨t1, t2⟩, t3, t4⟩` from `hTm`. Use `⟨T, t3, Nat.lt_of_floor_lt t1, ?_, t4⟩` and prove the remaining obligations.
-
-Rewrite using `[mul_comm]`. Conclude with `(Nat.le_floor_iff (by positivity)).1 t2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_prime_normOne_mod (hTZ : GlobalTheory.Mem.An.QuadraticHeckeZeroEstimates) (eps : ℝ) (he : 0 < eps) (cs CY : ℝ) (hcs : 0 < cs)
     (hCY : 0 < CY) : ∃ x₀ : ℝ, ∀ x : ℝ, x₀ ≤ x → ∀ N d g₁ g₂ m : ℕ, d.Prime → d % 4 = 3 → 100 ≤ d → 0 < N → d ∣ N →
@@ -251,15 +247,15 @@ private theorem exists_prime_normOne_mod (hTZ : GlobalTheory.Mem.An.QuadraticHec
   exact (Nat.le_floor_iff (by positivity)).1 t2
 
 /- English proof (translation)
-Introduce `eps he0 he1`. Take `⟨x0, hx0⟩` from `many_norm_primes_mod hT eps he0`. Use `⟨x0, fun s R N d hs hx hR hq => ?_⟩` and prove the remaining obligations. Take `⟨hd, hd4, hd100, hN0, hdN, hN⟩` from `hq`. Establish `hk : (1 : ℝ) ≤ R.k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `R.m_add_three_le_k` as an intermediate fact. Conclude with `(by omega : 1 ≤ R.k)` after adjusting the coercions. Establish `hb : 0 < s.b` using `Real.exp_pos _`. Establish `hY : 0 < ((R.k : ℝ) * s.b) ^ 8` using `by positivity`. Establish `hlog : 8 * s.x ^ eps ≤ Real.log (((R.k : ℝ) * s.b) ^ 8)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Real.log_pow, Real.log_mul (by linarith) hb.ne']`. Establish `h1 : Real.log s.b = s.x ^ eps`. Rewrite using `[← hs]`. Conclude with `Real.log_exp _`. Establish `h2` using `Real.log_nonneg hk`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Use `(hx0 s.x hx N d hd hd4 hd100 hN0 hdN (hs ▸ hN) _ hY hlog).trans ?_` and prove the remaining obligations. Use `Nat.cast_le.mpr (Finset.card_le_card fun g hg => ?_)` and prove the remaining obligations. Simplify using `only [GlobalTheory.Mem.An.normPrimes, Finset.mem_filter, Finset.mem_Ioc, Finset.mem_range] at hg ⊢`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨⟨h1, h2⟩, h3, h4⟩` from `hg`. Conclude with `⟨Nat.lt_succ_of_le h2, h3, (Nat.lt_of_floor_lt h1).le, normOne_of_pair h4⟩`.
+A detailed English derivation is pending.
 -/
 theorem normPrimes_of_TZQuad (hT : GlobalTheory.Mem.An.QuadraticHeckeZeroEstimates) : NormPrimes := by
   intro eps he0 he1
@@ -285,17 +281,17 @@ theorem normPrimes_of_TZQuad (hT : GlobalTheory.Mem.An.QuadraticHeckeZeroEstimat
   exact ⟨Nat.lt_succ_of_le h2, h3, (Nat.lt_of_floor_lt h1).le, normOne_of_pair h4⟩
 
 /- English proof (translation)
-Introduce `eps c he0 he1 hc`. Take `⟨x0, hx0⟩` from `exists_prime_normOne_mod hT eps he0 c 9 hc (by norm_num)`. Take `⟨x1, hx1⟩` from `rank_basic_bounds eps he0 he1`. Use `⟨max x0 x1, fun s R N d g0 g1 Ts hs hx hR hq hg0 hg1 hb0 hb1 hTs hlog => ?_⟩` and prove the remaining obligations. Take `⟨hd, hd4, hd100, hN0, hdN, hN⟩` from `hq`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨hf, -, hr, hkr, -, -, -, -, -, -, -, -, -, -, -, hm, -⟩` from `hx1 s R hs (le_trans (le_max_right _ _) hx) hR`. Establish `hx1'` using `s.one_lt_alt`. Establish `hxp : 0 < s.x` using `by linarith`. Establish `hn : 1 ≤ R.n` using `Formalism.HC.Frame.ord_pos _`. Establish `hk : (1 : ℝ) ≤ R.k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `R.m_add_three_le_k` as an intermediate fact. Conclude with `(by omega : 1 ≤ R.k)` after adjusting the coercions. Establish `hf1 : (1 : ℝ) ≤ R.f`. Conclude with `(by unfold Ranks.f; omega : 1 ≤ R.f)` after adjusting the coercions. Establish `hL : s.L = s.x ^ eps` using `by rw [← hs]; rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hg : ∀ g : ℕ, 1 ≤ g → (g : ℝ) ≤ s.b ^ 9 → Real.log g ≤ 9 * s.x ^ eps`. Introduce `g h1 h2`. Establish `h3 : (0 : ℝ) < g` using `by exact_mod_cast h1`. Use `(Real.log_le_log h3 h2).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[Real.log_pow, Scale.b, Real.log_exp, hL]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Evaluate the numerical expressions. Establish `hm' : s.x ^ ((1 : ℝ) / 3) ≤ (R.m : ℝ)` using `(Real.rpow_le_rpow_of_exponent_le hx1'.le (by rw [hs]; linarith)).trans hm`. Establish `hW1 : (1 : ℝ) ≤ (R.f : ℝ) * R.k` using `one_le_mul_of_one_le_of_one_le hf1 hk`. Establish `hW2 : (R.f : ℝ) * R.k ≤ s.x ^ (12 : ℝ)`. Establish `hk5 : (R.k : ℝ) ≤ s.x ^ (5 : ℝ)` using `(Nat.cast_le.mpr hkr).trans hr`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `(rank_mul_le hxp (by linarith) hf hk5).trans (Real.rpow_le_rpow_of_exponent_le hx1'.le (by norm_num))`. Take `⟨T, hT1, hT2, hT3, hT4⟩` from `hx0 s.x (le_trans (le_max_left _ _) hx) N d g0 g1 R.m hd hd4 hd100 hN0 hdN (hs ▸ hN) hg0 hg1 (hg g0 hg0 hb0) (hg g1 hg1 hb1) hm' _ Ts hW1 hW2 hTs (hL ▸ hlog)`. Conclude with `⟨T, hT1, hT2.le, hT3, normOne_of_pair hT4⟩`.
+A detailed English derivation is pending.
 -/
 theorem levelPrime_of_quadratic (hT : GlobalTheory.Mem.An.QuadraticHeckeZeroEstimates) : LevelPrime := by
   intro eps c he0 he1 hc
@@ -332,7 +328,7 @@ theorem levelPrime_of_quadratic (hT : GlobalTheory.Mem.An.QuadraticHeckeZeroEsti
   exact ⟨T, hT1, hT2.le, hT3, normOne_of_pair hT4⟩
 
 /- English proof (translation)
-Introduce `hT` and use `⟨normPrimes_of_TZQuad hT, levelPrime_of_quadratic hT⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem normPrimes_and_levelPrime : GlobalTheory.Mem.An.QuadraticHeckeZeroEstimates → NormPrimes ∧ LevelPrime :=
   fun hT => ⟨normPrimes_of_TZQuad hT, levelPrime_of_quadratic hT⟩

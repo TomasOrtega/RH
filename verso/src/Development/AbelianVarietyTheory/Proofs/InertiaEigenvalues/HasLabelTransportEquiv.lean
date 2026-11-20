@@ -19,7 +19,7 @@ def permGL {α : Type} [Fintype α] [DecidableEq α] (π : α ≃ α) : GL α K 
     rw [PEquiv.toMatrix_toPEquiv_mul]; ext i j; simp [PEquiv.toMatrix_apply, Matrix.one_apply]⟩
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, Units.val_mul]`. Use `show Matrix.reindex π π (g : Matrix α α K) = π.symm.toPEquiv.toMatrix * (g : Matrix α α K) * π.toPEquiv.toMatrix`. Rewrite using `[PEquiv.toMatrix_toPEquiv_mul, PEquiv.mul_toMatrix_toPEquiv]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem glEquiv_perm {α : Type} [Fintype α] [DecidableEq α] (π : α ≃ α) (g : GL α K) :
     glEquiv K π g = permGL π * g * (permGL π)⁻¹ := by
@@ -46,7 +46,7 @@ def rhoEquiv {G : Type} [Group G] (σ : FDRep ℂ G) (P : G) : (σ : Type) ≃�
       rw [← map_mul, inv_mul_cancel, map_one]; rfl)
 
 /- English proof (translation)
-Rewrite using `[show σ.ρ (P * X * P⁻¹) (σ.ρ P w) = σ.ρ (P * X * P⁻¹ * P) w by rw [map_mul σ.ρ (P * X * P⁻¹) P]; rfl, inv_mul_cancel_right, map_mul]`. Both sides reduce to the same expression.
+Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rho_conj {G : Type} [Group G] (σ : FDRep ℂ G) (P X : G) (w : (σ : Type)) :
     σ.ρ P (σ.ρ X w) = σ.ρ (P * X * P⁻¹) (σ.ρ P w) := by
@@ -55,11 +55,9 @@ theorem rho_conj {G : Type} [Group G] (σ : FDRep ℂ G) (P X : G) (w : (σ : Ty
   rfl
 
 /- English proof (translation)
-Apply `O.lab_iso` to reduce the goal to its premises. Set `π : α ≃ α` to `e₁.trans (e.trans e₂).symm`. Establish `hA : ∀ γ : GL (Fin d) K, (glEquiv K e).symm ((glEquiv K e₂).symm γ) = glEquiv K π ((glEquiv K e₁).symm γ)`. Introduce `γ`. Apply `Units.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use extensionality with `i j`. Simplify using `[π, Formalism.L2.PT.coe_glEquiv_symm, Formalism.L2.PT.coe_glEquiv]`. Use `⟨repIsoOf _ _ (rhoEquiv σ (permGL π)) fun γ v => ?_⟩` and prove the remaining obligations. Use `show σ.ρ (permGL π) (σ.ρ ((glEquiv K e₁).symm γ) v) = σ.ρ ((glEquiv K e).symm ((glEquiv K e₂).symm γ)) (σ.ρ (permGL π) v)`. Rewrite using `[hA, glEquiv_perm]`.
-
-Conclude with `rho_conj σ _ _ v`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lab_transp_transp {C : LabelConv K} (O : LabelMap K C) {α β : Type} [Fintype α] [DecidableEq α]
     [Fintype β] [DecidableEq β] (σ : FDRep ℂ (GL α K)) (e : α ≃ β) (d : ℕ) (e₁ : α ≃ Fin d) (e₂ : β ≃ Fin d) :
@@ -79,11 +77,9 @@ theorem lab_transp_transp {C : LabelConv K} (O : LabelMap K C) {α β : Type} [F
   exact rho_conj σ _ _ v
 
 /- English proof (translation)
-Establish `key : ∀ (d : ℕ) (e₂ : β ≃ Fin d) (d' : ℕ) (e₁ : α ≃ Fin d'), O.lab d (transp e₂ (transp e σ)) = O.lab d' (transp e₁ σ)`. Introduce `d e₂ d' e₁`. Establish `hd : d = d'`. Establish `h1` using `Fintype.card_congr e₂`. Establish `h2` using `Fintype.card_congr e₁`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `Fintype.card_congr e`. Simplify using `only [Fintype.card_fin] at h1 h2`. Use linear arithmetic over natural numbers and integers. Substitute `hd` using the available equality. Conclude with `(lab_transp_transp O σ e d e₁ e₂).symm`.
-
-Conclude with `key _ _ _ _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem labO_transp {C : LabelConv K} (O : LabelMap K C) {α β : Type} [Fintype α] [DecidableEq α]
     [Fintype β] [DecidableEq β] (e : α ≃ β) (σ : FDRep ℂ (GL α K)) :

@@ -14,7 +14,7 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} {Ch : Chars X Pr R.m}
   {cst : LocCst X (rowSG Pr sel mu)}
 
 /- English proof (translation)
-The claim follows from `clXQ_xiLawQ_ofT cq_covT hok hd hb hD hi al be`.
+A detailed English derivation is pending.
 -/
 theorem clXQ_xiLawQ_holds {L : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K))} {G : ChGlob X R.m} {m2 : ℕ}
     (hok : L.Ok Ch sel mu cst G m2) (hd : ∀ w : rowSG Pr sel mu, w.1 ∉ Pr.vGs → TwDegOne X w.1)
@@ -24,7 +24,7 @@ theorem clXQ_xiLawQ_holds {L : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K))} {G 
   clXQ_xiLawQ_ofT cq_covT hok hd hb hD hi al be
 
 /- English proof (translation)
-The claim follows from `clXQ_chrOk_of cq_covT hc hw hd hi hD hba hbb hint hne`.
+A detailed English derivation is pending.
 -/
 theorem clXQ_chrOk_holds (hc : cst.Ok) {i : ℕ} {w : rowSG Pr sel mu} (hw : w.1 ∉ Pr.vGs) (hd : TwDegOne X w.1) (hi : i + 2 ≤ R.m)
     (hD : i + 1 ≤ cst.D w) {hal : AutY X R i} {h : AutY X R (i + 1)} (hba : TwBdd (Pr := Pr) i w.1 hal)

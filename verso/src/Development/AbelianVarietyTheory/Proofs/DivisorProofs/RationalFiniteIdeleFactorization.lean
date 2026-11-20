@@ -7,13 +7,13 @@ noncomputable section
 namespace GlobalTheory.RatIdele
 
 /- English proof (translation)
-Introduce `t`. Take `⟨k, u, hu, he⟩` from `GlobalTheory.TwV.Xc.ClsPow.exists_pow_eq_diag_mul t`. Establish `hc : Fintype.card (ClassGroup (𝓞 ℚ)) = 1`. Use `Rat.classNumber_eq` as an intermediate fact. Rewrite `this` using `[NumberField.classNumber]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `he` using `[hc, pow_one]`. Establish `hinv : ∀ P : HeightOneSpectrum (𝓞 ℚ), Valued.v (((u⁻¹ : (FiniteAdeleRing (𝓞 ℚ) ℚ)ˣ) : FiniteAdeleRing (𝓞 ℚ) ℚ) P) = 1`. Introduce `P`. Establish `e : (((u⁻¹ : (FiniteAdeleRing (𝓞 ℚ) ℚ)ˣ) : FiniteAdeleRing (𝓞 ℚ) ℚ) P) * ((u : FiniteAdeleRing (𝓞 ℚ) ℚ) P) = 1` using `congrArg (fun s : FiniteAdeleRing (𝓞 ℚ) ℚ => s P) (Units.inv_mul u)`. Establish `e2` using `congrArg Valued.v e`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e2` using `[map_mul, hu P, mul_one, map_one]`. Conclude with `e2`. Use `⟨k, u, ?_, ?_, he⟩` and prove the remaining obligations. Introduce `P show (u : FiniteAdeleRing (𝓞 ℚ) ℚ) P ∈ P.adicCompletionIntegers ℚ`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, hu P]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `P show ((u⁻¹ : (FiniteAdeleRing (𝓞 ℚ) ℚ)ˣ) : FiniteAdeleRing (𝓞 ℚ) ℚ) P ∈ P.adicCompletionIntegers ℚ`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, hinv P]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_rat_mul_intUnit : ∀ t : (FiniteAdeleRing (𝓞 ℚ) ℚ)ˣ, ∃ (r : ℚˣ) (u : (FiniteAdeleRing (𝓞 ℚ) ℚ)ˣ),
     (u : FiniteAdeleRing (𝓞 ℚ) ℚ) ∈ intAd ℚ ∧ ((u⁻¹ : (FiniteAdeleRing (𝓞 ℚ) ℚ)ˣ) : FiniteAdeleRing (𝓞 ℚ) ℚ) ∈ intAd ℚ ∧

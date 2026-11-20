@@ -18,19 +18,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.SemiNegFieldChange
 
 /- English proof (translation)
-Introduce `k _ C _ hC k' _ _`. Take `⟨h1, h2, h3⟩` from `hC`. Set `t : Sp k' ⟶ Sp k` to `spMap (algebraMap k k')`. Set `f` to `strHom k C`. Use `letI A' : Algebra k' Γ(pullback f t, ⊤) := algebraΓOfHom (pullback.snd f t)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Equip the data with the indicated structure.
 
-Establish `hs : strHom k' (pullback f t) = pullback.snd f t` using `strHom_eq fun _ => rfl`. Use `⟨pullback f t, A', pullback.fst f t, ⟨?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hs]`. Conclude with `(smoothOfRelativeDimension_isStableUnderBaseChange 1).of_isPullback (IsPullback.of_hasPullback f t) h1`. Rewrite using `[hs]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.ProjSpace.isProjOver_pullback_snd _ h2`. Rewrite using `[hs]`. Use `haveI := h3`. Use `infer_instance`. Introduce `F hF W r hW i hi`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `: IsProper f`. Take `⟨N, j, hj, e⟩` from `h2`. Use `isProper_str k N` as an intermediate fact. Express the relevant statement in the definitionally equal form `IsProper (strHom k C)`. Rewrite using `[← e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `infer_instance`. Establish `hinst : (‹Algebra k Γ(C, ⊤)›) = algebraΓOfHom f` using `Algebra.algebra_ext _ _ (algebraMap_eq_strHom k C)`. Use `haveI : Flat (pullback.fst f t) := inferInstance`. Establish `hm` using `GlobalTheory.T.mono_pullback_map_of_flat' _ _ (pullback.fst f t) W F i`. Establish `h` using `hF _ r (hW.pullback _) _ hm`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[← interNum_congr_lbIso k' _ (isLB_vecOne (LB.isLB_pull hW.isLB_det _)) (isLB_vecOne (hW.pullback _).isLB_det) (fun j => by fin_cases j; exact hW.lbIso_det_pullback _)]`. Establish `P` using `FieldChangeInter.interNum_pull (f := f) (f' := pullback.snd f t) (π := pullback.fst f t) (IsPullback.of_hasPullback f t) (L := ![det W r]) (isLB_vecOne hW.isLB_det)`. Establish `e₃ : (fun j => ((![det W r] : Fin 1 → LB C) j).pull (pullback.fst f t)) = ![(det W r).pull (pullback.fst f t)]`. Use function extensionality and compare the values at `fun j => by fin_cases j; rfl`. Rewrite `P` using `[e₃]`.
-
-Rewrite using `[hinst]`. Conclude with `P ▸ h`.
+A detailed English derivation is pending.
 -/
 theorem semiNeg_descends_baseChange : ∀ (k : Type) [Field k] (C : Scheme.{0}) [Algebra k Γ(C, ⊤)], IsCurve k C →
     ∀ (k' : Type) [Field k'] [Algebra k k'], ∃ (C' : Scheme.{0}) (_ : Algebra k' Γ(C', ⊤)) (π : C' ⟶ C), IsCurve k' C' ∧

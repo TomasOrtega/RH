@@ -13,7 +13,7 @@ open IsDedekindDomain NumberField
 namespace GlobalTheory.CompanionTheory.MuC
 
 /- English proof (translation)
-Unfold `blk4`. Conclude with `(continuous_const.matrix_fromBlocks hf continuous_const continuous_const).matrix_submatrix _ _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_unipotent_block_family {X R : Type} [TopologicalSpace X] [TopologicalSpace R] [Zero R] [One R] {n : ℕ}
     {f : X → Matrix (Fin n) (Fin n) R} (hf : Continuous f) :
@@ -22,7 +22,7 @@ theorem continuous_unipotent_block_family {X R : Type} [TopologicalSpace X] [Top
   exact (continuous_const.matrix_fromBlocks hf continuous_const continuous_const).matrix_submatrix _ _
 
 /- English proof (translation)
-Unfold `blk4`. Rewrite using `[Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]`. Simplify using `[add_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem unipotent_block_mul_add {R : Type} [CommRing R] {n : ℕ} (b c : Matrix (Fin n) (Fin n) R) :
     blk4 (1 : Matrix (Fin n) (Fin n) R) b 0 1 * blk4 1 c 0 1 = blk4 1 (b + c) 0 1 := by
@@ -31,11 +31,11 @@ theorem unipotent_block_mul_add {R : Type} [CommRing R] {n : ℕ} (b c : Matrix 
   simp [add_comm]
 
 /- English proof (translation)
-Establish `emb` using `isEmbedding_matHom (AF D.host.F) D.sp.cm.sig (Jst D p)`. Rewrite using `[emb.continuous_iff, Units.continuous_iff]`. Establish `hv : Continuous fun b : hermA D p => (b.1 : Mx D p p)` using `continuous_subtype_val`. Establish `hm : ∀ b, (AdelicU.matHom _ D.sp.cm.sig (Jst D p) (nb b)).1 = blk4 1 b.1 0 1` using `hnb`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Use `(continuous_unipotent_block_family hv).congr fun b => ?_` and prove the remaining obligations. Conclude with `(hm b).symm`. Use `(continuous_unipotent_block_family hv.neg).congr fun b => ?_` and prove the remaining obligations. Use `symm`. Use `Units.inv_eq_of_mul_eq_one_right ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.comp]`. Rewrite using `[hm b, unipotent_block_mul_add]`. Simplify using `[blk4]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_nb {D : D7} {p : ℕ} {nb : hermA D p → G D p} (hnb : IsNMap nb) : Continuous nb := by
   have emb := isEmbedding_matHom (AF D.host.F) D.sp.cm.sig (Jst D p)

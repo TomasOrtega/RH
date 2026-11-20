@@ -25,7 +25,7 @@ def FromDiag : Prop :=
       ∃ g : (Fin 4 → E) ≃ₗ[K] (Fin 4 × n → K), IsIsom cj g
 
 /- English proof (translation)
-Introduce `K E _ _ _ _ _ cj n _ h2 hn hc hpos`. Take `⟨b, q, hq, hb⟩` from `hA K E cj n h2 hn hc hpos`. Conclude with `hB K E cj n b q hq hb`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem fourSq_of (hA : OrthDiag) (hB : FromDiag) : FourSq := by
   intro K E _ _ _ _ _ cj n _ h2 hn hc hpos

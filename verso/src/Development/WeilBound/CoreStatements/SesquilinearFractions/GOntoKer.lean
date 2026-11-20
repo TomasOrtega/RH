@@ -19,7 +19,7 @@ def trHom {S X : Scheme.{0}} {G : Over S} [GrpObj G] {a b : X ⟶ S} (h : a = b)
   map_mul' x y := MonObj.comp_mul _ x y
 
 /- English proof (translation)
-Use `show ((Over.homMk (𝟙 X) (by simp [h]) : Over.mk b ⟶ Over.mk a) ≫ x).left = x.left`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem trHom_left {S X : Scheme.{0}} {G : Over S} [GrpObj G] {a b : X ⟶ S} (h : a = b) (x : Over.mk a ⟶ G) :
     (trHom h x).left = x.left := by
@@ -27,7 +27,7 @@ theorem trHom_left {S X : Scheme.{0}} {G : Over S} [GrpObj G] {a b : X ⟶ S} (h
   simp
 
 /- English proof (translation)
-Set `F : Multiplicative V →* M` to `MonoidHom.mk' (fun z => e z.toAdd) fun z w => he _ _`. Use `map_list_prod F (List.ofFn fun k => Multiplicative.ofAdd (v k))` as an intermediate fact. Rewrite `this` using `[List.map_ofFn, List.prod_ofFn, ← ofAdd_sum]`. Conclude with `this`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_sum_prod {V M : Type} [AddCommGroup V] [Group M] (e : V → M) (he : ∀ z w, e (z + w) = e z * e w) {n : ℕ}
     (v : Fin n → V) : e (∑ k, v k) = (List.ofFn fun k => e (v k)).prod := by
@@ -37,7 +37,7 @@ theorem map_sum_prod {V M : Type} [AddCommGroup V] [Group M] (e : V → M) (he :
   exact this
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun x y e => Over.OverMorphism.ext (h.1.hom_ext (congrArg (fun z => z.left) e) (by rw [Over.w, Over.w])), fun y => ⟨Over.homMk (h.1.lift y.left T.hom (Over.w y)) (h.1.lift_snd _ _ _), Over.OverMorphism.ext (h.1.lift_fst _ _ _)⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem pushHom_bij {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G'] {f : S' ⟶ S}
     {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) (T : Over S') : Function.Bijective (pushHom h T) :=
@@ -57,7 +57,7 @@ abbrev sC : Sp ℂ ⟶ Sp (𝓞 X.K) := spMap ((algebraMap X.K ℂ).comp (algebr
 abbrev TK : Over (Sp X.K) := Over.mk (spMap (algebraMap X.K ℂ))
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.spMap_comp_spMap _ _`.
+A detailed English derivation is pending.
 -/
 theorem hs : (TK X).hom ≫ spMap (algebraMap (𝓞 X.K) X.K) = sC X := GlobalTheory.spMap_comp_spMap _ _
 
@@ -68,31 +68,31 @@ def Ψ : (TK X ⟶ X.t.G) →* (Over.mk (FU.u i P) ⟶ Xo.univ.t.G) :=
   (trHom X.pt).toMonoidHom.comp (pushHom X.m.cart (TK X))
 
 /- English proof (translation)
-The claim follows from `trHom_left (hs X) (pushHom X.m'.cart (TK X) x)`.
+A detailed English derivation is pending.
 -/
 theorem Φ_left (x : TK X ⟶ X.t.G) : (Φ X x).left = x.left ≫ X.m'.φ :=
   trHom_left (hs X) (pushHom X.m'.cart (TK X) x)
 
 /- English proof (translation)
-The claim follows from `trHom_left X.pt (pushHom X.m.cart (TK X) x)`.
+A detailed English derivation is pending.
 -/
 theorem Ψ_left (x : TK X ⟶ X.t.G) : (Ψ X x).left = x.left ≫ X.m.φ :=
   trHom_left X.pt (pushHom X.m.cart (TK X) x)
 
 /- English proof (translation)
-The claim follows from `(MulEquiv.bijective (trHom (hs X))).comp (pushHom_bij X.m'.cart (TK X))`.
+A detailed English derivation is pending.
 -/
 theorem Φ_bij : Function.Bijective (Φ X) :=
   (MulEquiv.bijective (trHom (hs X))).comp (pushHom_bij X.m'.cart (TK X))
 
 /- English proof (translation)
-The claim follows from `(MulEquiv.injective (trHom X.pt)).comp (pushHom_bij X.m.cart (TK X)).1`.
+A detailed English derivation is pending.
 -/
 theorem Ψ_inj : Function.Injective (Ψ X) :=
   (MulEquiv.injective (trHom X.pt)).comp (pushHom_bij X.m.cart (TK X)).1
 
 /- English proof (translation)
-Rewrite using `[(X.map' b).2.1.2.1.1.w, ← Category.assoc, Over.w ((Z b).u.ex w)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hw (b : Bool) (w : Fin (Z b).C'.P.g → ℂ) :
     ((Z b).u.ex w).left ≫ X.π b ≫ (X.C b).P.A.hom = sC X := by
@@ -103,9 +103,9 @@ def qC (b : Bool) (z : ℂ) : Over.mk (sC X) ⟶ (X.C b).P.A :=
   Over.homMk (((Z b).u.ex (fun _ => (Z b).c * z)).left ≫ X.π b) (by rw [Category.assoc]; exact hw X b _)
 
 /- English proof (translation)
-Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Rewrite using `[Ψ_left]`. Use `X.tie b a z x.left (Over.w x) ?_` and prove the remaining obligations. Establish `e` using `congrArg (fun q => q.left) hx`. Simplify using `only [Φ_left, Over.comp_left, qC, Over.homMk_left] at e`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, Category.assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tie_pt (b : Bool) (a : PureType.lat hP (sgnRt H b)) (z : ℂ) (x : TK X ⟶ X.t.G)
     (hx : Φ X x = qC X b z ≫ X.ψ b a) : Ψ X x = FU.ex i P (z • P a) := by
@@ -117,11 +117,11 @@ theorem tie_pt (b : Bool) (a : PureType.lat hP (sgnRt H b)) (z : ℂ) (x : TK X 
   rw [e, Category.assoc]
 
 /- English proof (translation)
-Take `⟨x0, rfl⟩` from `(Φ_bij X).2 y`. Take `⟨z0, hz0⟩` from `FU.ex_onto i P hP (Ψ X x0)`. Take `⟨cc, hcc⟩` from `exists_coeffs hP b a N hN0 hN z0`. Use `choose xk hxk using fun k => (Φ_bij X).2 (qC X (b k) (cc k) ≫ X.ψ (b k) (a k))`. Use `⟨fun k => qC X (b k) (cc k), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e1 : x0 = (List.ofFn xk).prod`. Apply `Ψ_inj X` to reduce the goal to its premises. Rewrite using `[map_list_prod, List.map_ofFn, ← hz0, hcc, map_sum_prod (FU.ex i P) (FU.ex_add i P hP)]`. Use `congr 1`. Use `List.ofFn_inj.2 (funext fun k => ?_)` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(tie_pt X (b k) (a k) (cc k) (xk k) (hxk k)).symm`. Rewrite using `[e1, map_list_prod, List.map_ofFn]`. Use `congr 1`. Conclude with `List.ofFn_inj.2 (funext hxk)`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem onto (N : ℕ) (b : Fin g → Bool) (a : ∀ k, PureType.lat hP (sgnRt H (b k))) (hN0 : 0 < N)
     (hN : ∀ y : (FU.Di i).La, N • y ∈ Submodule.span (OK H) (Set.range fun k => (a k : (FU.Di i).La)))
@@ -165,7 +165,7 @@ def quadRing : Subring ℂ where
     exact ⟨-m, -n, by push_cast; ring⟩
 
 /- English proof (translation)
-Establish `hs : (Complex.I * Real.sqrt H.d) ^ 2 = -(H.d : ℂ)`. Rewrite using `[mul_pow, Complex.I_sq, ← Complex.ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg _)]`. Simplify using the standard rewrite rules. Conclude with `sq_eq_sq_iff_eq_or_eq_neg.1 (h.trans hs.symm)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sq_rt {ρ : ℂ} (h : ρ ^ 2 = -(H.d : ℂ)) : ρ = Complex.I * Real.sqrt H.d ∨ ρ = -(Complex.I * Real.sqrt H.d) := by
   have hs : (Complex.I * Real.sqrt H.d) ^ 2 = -(H.d : ℂ) := by
@@ -173,7 +173,7 @@ theorem sq_rt {ρ : ℂ} (h : ρ ^ 2 = -(H.d : ℂ)) : ρ = Complex.I * Real.sqr
   exact sq_eq_sq_iff_eq_or_eq_neg.1 (h.trans hs.symm)
 
 /- English proof (translation)
-Establish `h0 : (sgnRt H b) ^ 2 = -(H.d : ℂ)`. Apply the tactic sequence `unfold sgnRt; split_ifs <;> simp [H.sqrt_neg_disc_sq]`. Break down `sq_rt (H := H) h0 with h | h` into its components or cases. Conclude with `⟨0, 1, by rw [h]; simp⟩`. Conclude with `⟨1, -1, by rw [h]; push_cast; ring⟩`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem half_mem (b : Bool) : (1 + sgnRt H b) / 2 ∈ quadRing (H := H) := by
   have h0 : (sgnRt H b) ^ 2 = -(H.d : ℂ) := by
@@ -183,15 +183,13 @@ theorem half_mem (b : Bool) : (1 + sgnRt H b) / 2 ∈ quadRing (H := H) := by
   · exact ⟨1, -1, by rw [h]; push_cast; ring⟩
 
 /- English proof (translation)
-Unfold `kap`. Use `split_ifs with h`. Use `set j := h.choose`. Establish `hj : ty j (H.rt : E) = sgnRt H b` using `h.choose_spec`. Set `f : 𝓞 E →+* ℂ` to `(ty j).comp (algebraMap (𝓞 E) E)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw : f H.w0 = (1 + sgnRt H b) / 2`. Establish `e` using `congrArg f H.two_weight_eq_one_add_root`. Simplify using `only [map_mul, map_add, map_one, map_ofNat] at e`. Establish `: f H.rt = sgnRt H b` using `hj`. Rewrite `e` using `[this]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 
-Clear the denominators using the available nonvanishing facts. Take the linear combination `e`. Establish `hle : OK H ≤ (subalgebraOfSubring (quadRing (H` using `H))).comap f.toIntAlgHom := by`. Rewrite using `[OK, Algebra.adjoin_le_iff]`. Introduce `x hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Rewrite `hx` using `[Set.mem_singleton_iff]`. Substitute `hx` using the available equality. Use `show f H.w0 ∈ quadRing (H := H)`. Rewrite using `[hw]`. Conclude with `half_mem b`.
-
-Conclude with `hle α.2`. Conclude with `(quadRing (H := H)).zero_mem`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kap_mem (b : Bool) (α : OK H) : kap ty H b α ∈ quadRing (H := H) := by
   unfold kap
@@ -218,7 +216,7 @@ theorem kap_mem (b : Bool) (α : OK H) : kap ty H b α ∈ quadRing (H := H) := 
   · exact (quadRing (H := H)).zero_mem
 
 /- English proof (translation)
-The claim follows from `(X.map' b).2.1.2.1`.
+A detailed English derivation is pending.
 -/
 theorem hπ (b : Bool) : IsGrpPullback (Z b).C'.P.A (X.C b).P.A (sC X) (X.π b) := (X.map' b).2.1.2.1
 
@@ -228,7 +226,7 @@ Simplify using the standard rewrite rules.
 theorem h1 : (𝟙_ (Over (Sp ℂ))).hom ≫ sC X = sC X := by simp
 
 /- English proof (translation)
-Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Rewrite using `[trHom_left]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem qC_eq (b : Bool) (z : ℂ) :
     qC X b z = trHom (h1 X) (pushHom (hπ X b) (𝟙_ (Over (Sp ℂ))) ((Z b).u.ex (fun _ => (Z b).c * z))) := by
@@ -237,7 +235,7 @@ theorem qC_eq (b : Bool) (z : ℂ) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[qC_eq, qC_eq, qC_eq, ← map_mul, ← map_mul, ← (Z b).u.ex_add]`. Use `congr 3`. Use function extensionality and compare the values at `_`. Simplify using `only [Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem qC_add (b : Bool) (z z' : ℂ) : qC X b (z + z') = qC X b z * qC X b z' := by
   rw [qC_eq, qC_eq, qC_eq, ← map_mul, ← map_mul, ← (Z b).u.ex_add]
@@ -247,7 +245,7 @@ theorem qC_add (b : Bool) (z z' : ℂ) : qC X b (z + z') = qC X b z * qC X b z' 
   ring
 
 /- English proof (translation)
-Use `qC_add X b 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `(mul_eq_left.1 this.symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qC_zero (b : Bool) : qC X b 0 = 1 := by
   have := qC_add X b 0 0
@@ -255,7 +253,7 @@ theorem qC_zero (b : Bool) : qC X b 0 = 1 := by
   exact (mul_eq_left.1 this.symm)
 
 /- English proof (translation)
-The claim follows from `| 0 => by simp [qC_zero] | n + 1 => by rw [pow_succ, ← qC_npow b z n, ← qC_add] congr 1 push_cast ring`.
+A detailed English derivation is pending.
 -/
 theorem qC_npow (b : Bool) (z : ℂ) : ∀ n : ℕ, qC X b ((n : ℂ) * z) = qC X b z ^ n
   | 0 => by simp [qC_zero]
@@ -266,15 +264,15 @@ theorem qC_npow (b : Bool) (z : ℂ) : ∀ n : ℕ, qC X b ((n : ℂ) * z) = qC 
     ring
 
 /- English proof (translation)
-Rewrite using `[qC_eq, ((Z b).u.ker _).2 h, map_one, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem qC_one_of (b : Bool) (z : ℂ) (h : (fun _ => (Z b).c * z) ∈ (Z b).u.Λ) : qC X b z = 1 := by
   rw [qC_eq, ((Z b).u.ker _).2 h, map_one, map_one]
 
 /- English proof (translation)
-Take `⟨w', hw'⟩` from `(pushHom_bij (hπ X b) (𝟙_ (Over (Sp ℂ)))).2 ((trHom (h1 X)).symm x)`. Take `⟨w, rfl⟩` from `(Z b).u.ex_onto w'`. Establish `hg : (Z b).C'.P.g = 1` using `(Z b).C'.dim`. Set `j0 : Fin (Z b).C'.P.g` to `⟨0, by rw [hg]; exact Nat.one_pos⟩`. Use `⟨w j0 / (Z b).c, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hw : (fun _ => (Z b).c * (w j0 / (Z b).c)) = w`. Use function extensionality and compare the values at `j`. Establish `: j = j0` using `Fin.ext (by have h2 : j.1 < 1 := hg ▸ j.2; show j.1 = 0; omega)`. Rewrite using `[this, mul_div_cancel₀ _ (Z b).c_ne]`. Rewrite using `[qC_eq, hw, hw', MulEquiv.apply_symm_apply]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem qC_onto (b : Bool) (x : Over.mk (sC X) ⟶ (X.C b).P.A) : ∃ z, x = qC X b z := by
   obtain ⟨w', hw'⟩ := (pushHom_bij (hπ X b) (𝟙_ (Over (Sp ℂ)))).2 ((trHom (h1 X)).symm x)
@@ -289,13 +287,11 @@ theorem qC_onto (b : Bool) (x : Over.mk (sC X) ⟶ (X.C b).P.A) : ∃ z, x = qC 
   rw [qC_eq, hw, hw', MulEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Use `choose sk hsk using fun k => qC_onto X (b k) (x k)`. Use `choose xk hxk using fun k => (Φ_bij X).2 (x k ≫ X.ψ (b k) (a k))`. Establish `e1 : (List.ofFn xk).prod = 1`. Apply `(Φ_bij X).1` to reduce the goal to its premises. Rewrite using `[map_list_prod, List.map_ofFn, map_one, ← hx]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `congr 1`. Conclude with `List.ofFn_inj.2 (funext hxk)`. Establish `e2 : FU.ex i P (∑ k, sk k • P (a k)) = 1`. Rewrite using `[map_sum_prod (FU.ex i P) (FU.ex_add i P hP), ← map_one (Ψ X), ← e1, map_list_prod, List.map_ofFn]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `List.ofFn_inj.2 (funext fun k => ?_)` and prove the remaining obligations. Conclude with `(tie_pt X (b k) (a k) (sk k) (xk k) (by rw [hxk k, hsk k])).symm`. Take `⟨y, hy⟩` from `(FU.ex_ker i P hP _).1 e2`. Take `⟨α, hα⟩` from `coeff_of_period hP b a N hN0 hN sk y hy.symm`. Introduce `k`.
-
-Rewrite using `[hsk k, ← qC_npow, hα k]`. Take `⟨m, n, hmn⟩` from `kap_mem (ty := ty) (b k) (α k)`. Conclude with `qC_one_of X (b k) _ (((Z (b k)).lat _).2 ⟨m, n, by rw [hmn]⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ker_pow (N : ℕ) (b : Fin g → Bool) (a : ∀ k, PureType.lat hP (sgnRt H (b k))) (hN0 : 0 < N)
     (hN : ∀ y : (FU.Di i).La, N • y ∈ Submodule.span (OK H) (Set.range fun k => (a k : (FU.Di i).La)))
@@ -326,7 +322,7 @@ end PositivityTheory.Xgf.OntoKer
 
 open PositivityTheory.Xgf.OntoKer in
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c g ty FU i Z P hP X N b a hN0 hN`. Conclude with `⟨onto X N b a hN0 hN, ker_pow X N b a hN0 hN⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem PositivityTheory.Xgf.cm_pack_torsion_points : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (FU : FamilyUnif Xo (algebraMap (KA l) ℂ) ty) (i : Fin FU.n) (Z : ∀ b : Bool, Curve0 H (sgnRt H b)) (P : (FU.Di i).La →+ (Fin g → ℂ)) (hP : IsPeriod (FU.Di i) ty P) (X : CMPack Z c FU i hP) (N : ℕ) (b : Fin g → Bool) (a : ∀ k, PureType.lat hP (sgnRt H (b k))), 0 < N → (∀ y : (FU.Di i).La, N • y ∈ Submodule.span (OK H) (Set.range fun k => (a k : (FU.Di i).La))) → (∀ y : Over.mk (spMap ((algebraMap X.K ℂ).comp (algebraMap (𝓞 X.K) X.K))) ⟶ X.B.t.G, ∃ x : ∀ k, Over.mk (spMap ((algebraMap X.K ℂ).comp (algebraMap (𝓞 X.K) X.K))) ⟶ (X.C (b k)).P.A, y = (List.ofFn fun k => x k ≫ X.ψ (b k) (a k)).prod) ∧ ∀ x : ∀ k, Over.mk (spMap ((algebraMap X.K ℂ).comp (algebraMap (𝓞 X.K) X.K))) ⟶ (X.C (b k)).P.A, (List.ofFn fun k => x k ≫ X.ψ (b k) (a k)).prod = 1 → ∀ k, x k ^ N = 1 := by
   intro E _ _ _ H D l Xo c g ty FU i Z P hP X N b a hN0 hN

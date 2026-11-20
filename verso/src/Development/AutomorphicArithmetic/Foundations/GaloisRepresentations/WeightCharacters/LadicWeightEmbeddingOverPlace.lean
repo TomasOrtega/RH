@@ -37,140 +37,140 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Weigh
 namespace UpperTheory.Gal.Wt
 
 /- English proof (translation)
-The claim follows from `expBasic_of`.
+A detailed English derivation is pending.
 -/
 theorem expBasic_holds : ExpBasic := expBasic_of
 /- English proof (translation)
-The claim follows from `expDisj_of`.
+A detailed English derivation is pending.
 -/
 theorem expDisj_holds : ExpDisj := expDisj_of
 /- English proof (translation)
-The claim follows from `evLem_of`.
+A detailed English derivation is pending.
 -/
 theorem evLem_holds : EvLem := evLem_of
 /- English proof (translation)
-The claim follows from `pevExp_of expBasic_holds`.
+A detailed English derivation is pending.
 -/
 theorem pevExp_holds : PevExp := pevExp_of expBasic_holds
 /- English proof (translation)
-The claim follows from `dom_of`.
+A detailed English derivation is pending.
 -/
 theorem dom_holds : Dom := dom_of
 /- English proof (translation)
-The claim follows from `sqExp_h expBasic_holds evLem_holds dom_holds`.
+A detailed English derivation is pending.
 -/
 theorem sqExp_holds : SqExp := sqExp_h expBasic_holds evLem_holds dom_holds
 /- English proof (translation)
-The claim follows from `topUp_of`.
+A detailed English derivation is pending.
 -/
 theorem topUp_holds : TopUp := topUp_of
 /- English proof (translation)
-The claim follows from `torFacts_of`.
+A detailed English derivation is pending.
 -/
 theorem torFacts_holds : TorFacts := torFacts_of
 /- English proof (translation)
-The claim follows from `qR_of`.
+A detailed English derivation is pending.
 -/
 theorem qR_holds : QR := qR_of
 /- English proof (translation)
-The claim follows from `wtBd_of expBasic_holds expDisj_holds sqExp_holds topUp_holds torFacts_holds`.
+A detailed English derivation is pending.
 -/
 theorem wtBd_holds : WtBd := wtBd_of expBasic_holds expDisj_holds sqExp_holds topUp_holds torFacts_holds
 /- English proof (translation)
-The claim follows from `wExp_h expBasic_holds sqExp_holds torFacts_holds`.
+A detailed English derivation is pending.
 -/
 theorem wExp_holds : WExp := wExp_h expBasic_holds sqExp_holds torFacts_holds
 /- English proof (translation)
-The claim follows from `rFinEx_of`.
+A detailed English derivation is pending.
 -/
 theorem rFinEx_holds : RFinEx := rFinEx_of
 /- English proof (translation)
-The claim follows from `deltaNear_h`.
+A detailed English derivation is pending.
 -/
 theorem deltaNear_holds : DeltaNear := deltaNear_h
 /- English proof (translation)
-The claim follows from `autCrit_of`.
+A detailed English derivation is pending.
 -/
 theorem autCrit_holds : AutCrit := autCrit_of
 /- English proof (translation)
-The claim follows from `autMul_of`.
+A detailed English derivation is pending.
 -/
 theorem autMul_holds : AutMul := autMul_of
 /- English proof (translation)
-The claim follows from `nrmAut_of autCrit_holds`.
+A detailed English derivation is pending.
 -/
 theorem nrmAut_holds : NrmAut := nrmAut_of autCrit_holds
 /- English proof (translation)
-The claim follows from `famOfA_of autMul_holds nrmAut_holds rFinEx_holds`.
+A detailed English derivation is pending.
 -/
 theorem famOfA_holds : FamOfA := famOfA_of autMul_holds nrmAut_holds rFinEx_holds
 /- English proof (translation)
-The claim follows from `sumRep_of`.
+A detailed English derivation is pending.
 -/
 theorem sumRep_holds : SumRep := sumRep_of
 /- English proof (translation)
-The claim follows from `neatLev_of`.
+A detailed English derivation is pending.
 -/
 theorem neatLev_holds : NeatLev := neatLev_of
 /- English proof (translation)
-The claim follows from `ellC_of`.
+A detailed English derivation is pending.
 -/
 theorem ellC_holds : EllC := ellC_of
 /- English proof (translation)
-The claim follows from `twist_of autCrit_holds`.
+A detailed English derivation is pending.
 -/
 theorem twist_holds : Twist := twist_of autCrit_holds
 /- English proof (translation)
-The claim follows from `twistBd_of twist_holds`.
+A detailed English derivation is pending.
 -/
 theorem twistBd_holds : TwistBd := twistBd_of twist_holds
 /- English proof (translation)
-The claim follows from `ladic_weight_at_embedding_over_place`.
+A detailed English derivation is pending.
 -/
 theorem ladic_weight_embedding_over_place : Kap0 := ladic_weight_at_embedding_over_place
 /- English proof (translation)
-The claim follows from `kaplFin_of`.
+A detailed English derivation is pending.
 -/
 theorem kaplFin_holds : KaplFin := kaplFin_of
 /- English proof (translation)
-The claim follows from `kapl_of kaplFin_holds`.
+A detailed English derivation is pending.
 -/
 theorem kapl_holds : Kapl := kapl_of kaplFin_holds
 /- English proof (translation)
-The claim follows from `sepPoly_of kapl_holds`.
+A detailed English derivation is pending.
 -/
 theorem sepPoly_holds : SepPoly := sepPoly_of kapl_holds
 /- English proof (translation)
-The claim follows from `nearSub_of`.
+A detailed English derivation is pending.
 -/
 theorem nearSub_holds : NearSub := nearSub_of
 /- English proof (translation)
-The claim follows from `pieces_of sepPoly_holds nearSub_holds`.
+A detailed English derivation is pending.
 -/
 theorem pieces_holds : Pieces := pieces_of sepPoly_holds nearSub_holds
 /- English proof (translation)
-The claim follows from `famOf_of expBasic_holds pevExp_holds sqExp_holds topUp_holds wExp_holds famOfA_holds`.
+A detailed English derivation is pending.
 -/
 theorem famOf_holds : FamOf := famOf_of expBasic_holds pevExp_holds sqExp_holds topUp_holds wExp_holds famOfA_holds
 /- English proof (translation)
-The claim follows from `famEx_of neatLev_holds ellC_holds twist_holds twistBd_holds ladic_weight_embedding_over_place pieces_holds deltaNear_holds famOf_holds`.
+A detailed English derivation is pending.
 -/
 theorem famEx_holds : FamEx := famEx_of neatLev_holds ellC_holds twist_holds twistBd_holds ladic_weight_embedding_over_place pieces_holds deltaNear_holds famOf_holds
 /- English proof (translation)
-The claim follows from `famProj_of evLem_holds sumRep_holds`.
+A detailed English derivation is pending.
 -/
 theorem famProj_holds : FamProj := famProj_of evLem_holds sumRep_holds
 /- English proof (translation)
-The claim follows from `famSum_of expBasic_holds evLem_holds torFacts_holds qR_holds wtBd_holds embProj_holds`.
+A detailed English derivation is pending.
 -/
 theorem famSum_holds : FamSum := famSum_of expBasic_holds evLem_holds torFacts_holds qR_holds wtBd_holds embProj_holds
 /- English proof (translation)
-The claim follows from `famWt_of famOff_holds famSum_holds`.
+A detailed English derivation is pending.
 -/
 theorem famWt_holds : FamWt := famWt_of famOff_holds famSum_holds
 
 /- English proof (translation)
-The claim follows from `top_of famEx_holds famProj_holds famWt_holds`.
+A detailed English derivation is pending.
 -/
 theorem wtLacEx_holds : UpperTheory.Gal.Int.Cong.WtLacEx := top_of famEx_holds famProj_holds famWt_holds
 

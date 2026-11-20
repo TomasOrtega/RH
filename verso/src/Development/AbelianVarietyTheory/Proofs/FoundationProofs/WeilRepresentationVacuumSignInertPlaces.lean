@@ -29,7 +29,7 @@ noncomputable section
 namespace GlobalTheory.InertSign
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Simplify using `only [Iop, U, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[mul_left_comm a, ← smul_eq_mul a, smul_finsum]`. Use `congr 1`. Conclude with `finsum_congr fun q => by rw [smul_eq_mul]; ring`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem Iop_smul (D : D7) (T : Tor D) {N N' : ℕ} (A B : AddSubgroup (VC D N N')) (a : ℂ) (F : VC D N N' → ℂ) :
     Iop D T A B (a • F) = a • Iop D T A B F := by
@@ -40,7 +40,7 @@ theorem Iop_smul (D : D7) (T : Tor D) {N N' : ℕ} (A B : AddSubgroup (VC D N N'
   exact finsum_congr fun q => by rw [smul_eq_mul]; ring
 
 /- English proof (translation)
-Use `⟨h.1.const_smul a, fun x hx z => ?_⟩` and prove the remaining obligations. Use `h.2 x hx z` as an intermediate fact. Simplify using `only [U, Pi.smul_apply, smul_eq_mul] at this ⊢`. Rewrite using `[← this]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ThSp_smul {D : D7} {T : Tor D} {N N' : ℕ} {A : AddSubgroup (VC D N N')} (a : ℂ) {F : VC D N N' → ℂ}
     (h : F ∈ ThSp D T A) : a • F ∈ ThSp D T A := by
@@ -50,28 +50,28 @@ theorem ThSp_smul {D : D7} {T : Tor D} {N N' : ℕ} {A : AddSubgroup (VC D N N')
   rw [← this]; ring
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[h x, h' x]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem moves_unique {D : D7} {n : ℕ} {g : GL (Fin n) (AE D)} {L L' : Lat D n} (h : Moves D g L) (h' : Moves D g L') :
     L = L' := by
   ext x; rw [h x, h' x]
 
 /- English proof (translation)
-Take `⟨Lt, h1, -⟩` from `exists_lattice_of_adelic_point D n`. Rewrite using `[moves_unique h (h1 g).1]`. Conclude with `(h1 g).2`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sd_of_moves {D : D7} {n : ℕ} {g : GA D n} {L : Lat D n} (h : Moves D (g : GL (Fin n) (AE D)) L) : SD D L := by
   obtain ⟨Lt, h1, -⟩ := exists_lattice_of_adelic_point D n
   rw [moves_unique h (h1 g).1]; exact (h1 g).2
 
 /- English proof (translation)
-Take `⟨Lt, h1, h2, -⟩` from `exists_lattice_of_adelic_point D n`. Rewrite using `[← h2]`. Conclude with `(h1 1).1`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem moves_one (D : D7) (n : ℕ) : Moves D ((1 : GA D n) : GL (Fin n) (AE D)) (stdL D n) := by
   obtain ⟨Lt, h1, h2, -⟩ := exists_lattice_of_adelic_point D n
   rw [← h2]; exact (h1 1).1
 
 /- English proof (translation)
-Take `⟨Lt, h1, -, h3, -⟩` from `exists_lattice_of_adelic_point D n`. Conclude with `AdLattice.intG_of_mem D n _ ((h3 g g').1 ((moves_unique (h1 g).1 h).trans (moves_unique h' (h1 g').1)))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem intG_of_moves {D : D7} {n : ℕ} {g g' : GA D n} {L : Lat D n} (h : Moves D (g : GL (Fin n) (AE D)) L)
     (h' : Moves D (g' : GL (Fin n) (AE D)) L) : IntG D ((g⁻¹ * g' : GA D n) : GL (Fin n) (AE D)) := by
@@ -79,7 +79,7 @@ theorem intG_of_moves {D : D7} {n : ℕ} {g g' : GA D n} {L : Lat D n} (h : Move
   exact AdLattice.intG_of_mem D n _ ((h3 g g').1 ((moves_unique (h1 g).1 h).trans (moves_unique h' (h1 g').1)))
 
 /- English proof (translation)
-Take `⟨Lt, h1, -, -, -, h5⟩` from `exists_lattice_of_adelic_point D n`. Rewrite using `[moves_unique h (h1 g).1]`. Conclude with `h5 p g hp ht`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eqAt_of_moves {D : D7} {n p : ℕ} (hp : p.Prime) {g : GA D n} {L : Lat D n}
     (h : Moves D (g : GL (Fin n) (AE D)) L) (ht : TrivAt D p (g : GL (Fin n) (AE D))) : EqAt D p (stdL D n) L := by
@@ -87,29 +87,29 @@ theorem eqAt_of_moves {D : D7} {n p : ℕ} (hp : p.Prime) {g : GA D n} {L : Lat 
   rw [moves_unique h (h1 g).1]; exact h5 p g hp ht
 
 /- English proof (translation)
-Introduce `q hq _` and use `(GlobalTheory.T.trivialAtPrime_adelicGL_subgroup D n q hq).1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem suppInert_one (D : D7) (n : ℕ) : SuppInert D ((1 : GA D n) : GL (Fin n) (AE D)) :=
   fun q hq _ => (GlobalTheory.T.trivialAtPrime_adelicGL_subgroup D n q hq).1
 
 /- English proof (translation)
-Introduce `q hq hi` and use `(GlobalTheory.T.trivialAtPrime_adelicGL_subgroup D n q hq).2.1 _ _ (hg q hq hi) (hh q hq hi)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem suppInert_mul {D : D7} {n : ℕ} {g h : GA D n} (hg : SuppInert D (g : GL (Fin n) (AE D)))
     (hh : SuppInert D (h : GL (Fin n) (AE D))) : SuppInert D ((g * h : GA D n) : GL (Fin n) (AE D)) :=
   fun q hq hi => (GlobalTheory.T.trivialAtPrime_adelicGL_subgroup D n q hq).2.1 _ _ (hg q hq hi) (hh q hq hi)
 
 /- English proof (translation)
-Introduce `q hq hi` and use `(GlobalTheory.T.trivialAtPrime_adelicGL_subgroup D n q hq).2.2 _ (hg q hq hi)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem suppInert_inv {D : D7} {n : ℕ} {g : GA D n} (hg : SuppInert D (g : GL (Fin n) (AE D))) :
     SuppInert D ((g⁻¹ : GA D n) : GL (Fin n) (AE D)) :=
   fun q hq hi => (GlobalTheory.T.trivialAtPrime_adelicGL_subgroup D n q hq).2.2 _ (hg q hq hi)
 
 /- English proof (translation)
-Introduce `a ha`. Establish `h0 : P ≠ ⊥`. Introduce `h`. Rewrite `hqP` using `[h, Ideal.mem_bot]`. Conclude with `hq.ne_zero (by exact_mod_cast hqP)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `Ideal.smul_mem_pointwise_smul D.host.conj a P ha` as an intermediate fact. Rewrite `this` using `[hi P hP.isPrime h0 hqP]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stable_of_inert {D : D7} {q : ℕ} (hq : q.Prime) (hi : InertQ D q) {P : Ideal (𝓞 D.host.E)} (hP : P.IsMaximal)
     (hqP : (q : 𝓞 D.host.E) ∈ P) : ∀ a ∈ P, sgO D a ∈ P := by
@@ -122,15 +122,13 @@ theorem stable_of_inert {D : D7} {q : ℕ} (hq : q.Prime) (hi : InertQ D q) {P :
   exact this
 
 /- English proof (translation)
-Establish `hst` using `stable_of_inert hq hi hP hqP`. Take `⟨b, x', lam, m, hb, hx', hp, hθ, hw, hM, hl, hm, h1, h2⟩` from `GlobalTheory.T.exists_transvection_vectors_neighbour D n q hq P hP hqP hst B x hB hx`. Establish `hA : nbr D B (b + x') = nbM D B x ⊔ Submodule.span (𝓞 D.host.E) {b + x'}` using `by rw [nbr, hM]`. Take `⟨s, hs, hsA, hsB⟩` from `GlobalTheory.T.unitaryTransvection_moves_lattice_at_prime D n q P hst (nbM D B x) b x' lam m hp (fun y hy => by rw [← hM] at hy; exact hy.2) hw.2.2 hl hm h1 h2`. Rewrite `hsA` using `[← hA]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hsB` using `[← hb, ← hx']`. Take `⟨g, hg, hmv⟩` from `GlobalTheory.T.exists_local_component_unitary_matrix D n q hq s hs`. Establish `hqs : ∀ (v : Fin n → D.host.E) (L : Lat D n), (∀ p ∈ P, p • v ∈ nbM D B x) → L = nbM D B x ⊔ Submodule.span (𝓞 D.host.E) {v} → ∀ y ∈ L, ((q : D.host.E) ^ 1) • y ∈ nbM D B x`. Introduce `v L hv hL y hy`. Rewrite `hy` using `[hL]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨a, ha, c, hc, rfl⟩` from `Submodule.mem_sup.1 hy`. Take `⟨o, rfl⟩` from `Submodule.mem_span_singleton.1 hc`. Establish `e : ∀ u : Fin n → D.host.E, ((q : D.host.E) ^ 1) • u = (q : 𝓞 D.host.E) • u`. Introduce `u`. Rewrite using `[pow_one, ← algebraMap_smul D.host.E (q : 𝓞 D.host.E) u, map_natCast]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, smul_add, smul_comm]`. Conclude with `add_mem (Submodule.smul_mem _ _ ha) (Submodule.smul_mem _ _ (hv _ hqP))`. Use `⟨g, b + x', fun p hp hn => hg p hp (fun h => hn (h ▸ hi)), hw, fun h hh => hmv h B _ hh ⟨1, ?_, ?_⟩ hsB, fun h hh => hmv h _ _ hh ⟨0, by simp, by simp⟩ hsA, fun a c => ⟨a, hB, c, nbM D B x, b, x', hA, hb, hx', hp, hθ⟩⟩` and prove the remaining obligations. Introduce `y hy`. Conclude with `(le_sup_left : nbM D B x ≤ nbr D B x) (hqs b B (fun p h => (hp p h).1) hb y hy)`.
-
-Introduce `y hy`. Conclude with `(hqs x' _ (fun p h => (hp p h).2) hx' y hy).1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_move {D : D7} {n q : ℕ} (hq : q.Prime) (hi : InertQ D q) {P : Ideal (𝓞 D.host.E)} (hP : P.IsMaximal)
     (hqP : (q : 𝓞 D.host.E) ∈ P) {B : Lat D n} {x : Fin n → D.host.E} (hB : SD D B) (hx : NbD D P B x) :
@@ -170,41 +168,37 @@ variable {D : D7} {T : Tor D} {N N' n : ℕ} (Λ : Lat D n → AddSubgroup (VC D
   (ω : GA D n → (VC D N N' → ℂ) → (VC D N N' → ℂ)) (e0 : VC D N N' → ℂ) (σ : ℂ)
 
 /- English proof (translation)
-Establish `hsd0 : SD D (stdL D n)` using `sd_of_moves (moves_one D n)`. Establish `hwd : ∀ (h₁ h₂ : GA D n) L, SuppInert D (h₁ : GL (Fin n) (AE D)) → SuppInert D (h₂ : GL (Fin n) (AE D)) → Moves D (h₁ : GL (Fin n) (AE D)) L → Moves D (h₂ : GL (Fin n) (AE D)) L → ω h₂ e0 = ω h₁ e0`. Introduce `h₁ h₂ L s₁ s₂ m₁ m₂`. Use `hmul h₁ (h₁⁻¹ * h₂)` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_left, hin _ (intG_of_moves m₁ m₂) (suppInert_mul (suppInert_inv s₁) s₂)]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hone : ω 1 e0 = e0`. Use `intG_of_moves (moves_one D n) (moves_one D n)` as an intermediate fact. Rewrite `this` using `[inv_one, one_mul]`. Conclude with `hin 1 this (suppInert_one D n)`. Establish `hne : ∀ h, ω h e0 ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h h0`. Establish `h1` using `hmul h⁻¹ h`. Establish `h2` using `hsm h⁻¹ _ hsd0 e0 he0 0`. Rewrite `h2` using `[zero_smul, zero_smul]`. Rewrite `h1` using `[inv_mul_cancel, hone, h0, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hnz h1`. Establish `hstep : ∀ (q : ℕ) (P : Ideal (𝓞 D.host.E)) (B : Lat D n) (x : Fin n → D.host.E) (h : GA D n), q.Prime → InertQ D q → P.IsMaximal → (q : 𝓞 D.host.E) ∈ P → NbD D P B x → SuppInert D (h : GL (Fin n) (AE D)) → Moves D (h : GL (Fin n) (AE D)) B → ∃ k : GA D n, SuppInert D (k : GL (Fin …`. Introduce `q P B x h hq hi hP hqP hx sh mh`. Establish `hB` using `sd_of_moves mh`. Take `⟨g, w, sg, hw, mC, mA, htr⟩` from `exists_move hq hi hP hqP hB hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨g₂, -, sg₂, -, mA₂, -⟩` from `exists_move hq hi hP hqP hB hw`. Establish `mhA` using `mA₂ h mh`. Establish `shA` using `suppInert_mul sg₂ sh`. Use `set hA := g₂ * h`. Establish `hAsd` using `sd_of_moves mhA`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hCsd` using `sd_of_moves (mC h mh)`. Take `⟨w0, -, hw0⟩` from `GlobalTheory.T.exists_traceOne_integer_conj_diff_prime_to D q hq`. Establish `eA` using `hth hA _ mhA`. Establish `hIA` using `hI _ _ hAsd hB _ eA`. Establish `hIne : Iop D T (Λ (nbr D B w)) (Λ B) (ω hA e0) ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h0`. Establish `h2` using `hIA.2`. Establish `h3` using `Iop_smul D T (Λ B) (Λ (nbr D B w)) 0 0`. Rewrite `h3` using `[zero_smul, zero_smul]`. Rewrite `h2` using `[h0, h3]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hne hA h2.symm`. Take `⟨c, hc⟩` from `hline B hB _ (hth h B mh) _ hIA.1 hIne`. Establish `hfix : ω g (ω hA e0) = ω hA e0`. Rewrite using `[← hmul]`. Conclude with `hwd _ _ _ shA (suppInert_mul sg shA) mhA (mA hA mhA)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hC : ω (g * h) e0 = c • Iop D T (Λ (nbr D B w)) (Λ (nbr D B x)) (ω hA e0)`. Rewrite using `[hmul, hc, hsm g B hB _ hIA.1, heq g hA h _ _ _ _ mhA (mA hA mhA) mh (mC h mh) _ eA, hfix]`. Establish `hT` using `htri P _ _ _ hP (stable_of_inert hq hi hP hqP) ⟨w0, hw0 P hP.isPrime hqP⟩ (htr hAsd hCsd) _ eA (hne hA)`. Establish `hBC : Iop D T (Λ B) (Λ (nbr D B x)) (ω h e0) = σ • ω (g * h) e0`. Rewrite using `[hC, hc, Iop_smul, hT, smul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Use `⟨g * h, suppInert_mul sg sh, mC h mh, ?_⟩` and prove the remaining obligations. Rewrite using `[← Iop_smul, ← hBC, (hI _ _ hB hCsd _ (hth h B mh)).2]`. Introduce `h L`. Proceed by induction on `hl : lenQ D (stdL D n) L generalizing h L with`. Consider the case `zero`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `sh mh`. Distinguish the cases in `hL : stdL D n = L`. Substitute `hL` using the available equality. Rewrite using `[pow_zero, one_smul, hII _ hsd0 _ he0, hwd 1 h _ (suppInert_one D n) sh (moves_one D n) mh, hone]`. Take `⟨P, q, x, -, -, -, -, -, hlen⟩` from `GlobalTheory.T.self_dual_lattices_neighbour_chain D n _ L hsd0 (sd_of_moves mh) hL`.
+Use linear arithmetic over natural numbers and integers. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use linear arithmetic over natural numbers and integers. Consider the case `succ k ih`. Introduce `sh mh`. Establish `hL : stdL D n ≠ L`. Introduce `hL`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite `hl` using `[← hL, lenQ, Submodule.comap_subtype_self, Module.length_eq_zero]`. Simplify using `at hl`. Take `⟨P, q, x, hP, hq, hqP, hx0, hx, hlen⟩` from `GlobalTheory.T.self_dual_lattices_neighbour_chain D n _ L hsd0 (sd_of_moves mh) hL`. Establish `hi : InertQ D q`. Assume the negation of the conclusion as `hi`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨s, hs, h1, -⟩` from `eqAt_of_moves hq mh (sh q hq hi)`. Establish `h2` using `h1 x hx0`. Establish `h3` using `hx.2.1 _ hqP`. Take `⟨u, v, huv⟩` from `Nat.isCoprime_iff_coprime.2 hs`. Apply `hx.1` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : (s : D.host.E) • x = (s : 𝓞 D.host.E) • x`. Rewrite using `[← algebraMap_smul D.host.E (s : 𝓞 D.host.E) x, map_natCast]`. Rewrite `h2` using `[e1]`. Establish `e2 : x = (u : 𝓞 D.host.E) • (s : 𝓞 D.host.E) • x + (v : 𝓞 D.host.E) • (q : 𝓞 D.host.E) • x`. Rewrite using `[smul_smul, smul_smul, ← add_smul]`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `congrArg (Int.cast : ℤ → 𝓞 D.host.E) huv` as an intermediate fact. Move the coercions through the operations in `at this`. Rewrite using `[this, one_smul]`. Rewrite using `[e2]`. Conclude with `add_mem (L.smul_mem _ h2) (L.smul_mem _ h3)`.
-
-Take `⟨g, sg, mg, hg⟩` from `hstep q P L x h hq hi hP hqP hx sh mh`. Establish `hbt : Bet D (stdL D n) (nbr D L x) L`. Use `⟨sup_le ?_ ?_, fun y hy => (le_sup_left : nbM D L x ≤ nbr D L x) ⟨hy.2, ?_⟩⟩` and prove the remaining obligations. Conclude with `le_sup_of_le_right (le_inf le_sup_left fun y hy => hy.1)`. Conclude with `le_sup_of_le_left (le_inf ((Submodule.span_singleton_le_iff_mem _ _).2 hx0) le_sup_right)`.
-
-Conclude with `(((sd_iff D _).1 hsd0).2.2 y).1 hy.1 x hx0`. Rewrite using `[hg, ih g _ (by omega) sg mg, Iop_smul, hbet _ _ _ hsd0 (sd_of_moves mg) (sd_of_moves mh) hbt _ he0 hnz, smul_smul, pow_succ']`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem core (hσ : σ * σ = 1) (hnz : e0 ≠ 0) (he0 : e0 ∈ ThSp D T (Λ (stdL D n)))
     (hI : ∀ L₁ L₂, SD D L₁ → SD D L₂ → ∀ e ∈ ThSp D T (Λ L₁), Iop D T (Λ L₁) (Λ L₂) e ∈ ThSp D T (Λ L₂) ∧
@@ -321,9 +315,9 @@ theorem core (hσ : σ * σ = 1) (hnz : e0 ≠ 0) (he0 : e0 ∈ ThSp D T (Λ (st
 end Core
 
 /- English proof (translation)
-Take `⟨L, hL⟩` from `GlobalTheory.CurveLattice.exists_periodPair_lamOf D cc δ hc`. Introduce and unpack `rfl`. Establish `h1` using `(hL L.ω₁).2 L.ω₁_mem_lattice`. Establish `h2 : lamOf D cc 0 ≤ ⊥`. Rewrite using `[lamOf, AddSubgroup.closure_le]`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `w ⟨c, -, rfl⟩`. Simplify using the standard rewrite rules. Conclude with `L.indep.ne_zero 0 (by simpa using h2 h1)`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem delta_ne_zero {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (hc : Crv D cc δ) : δ ≠ 0 := by
   obtain ⟨L, hL⟩ := GlobalTheory.CurveLattice.exists_periodPair_lamOf D cc δ hc
@@ -340,23 +334,23 @@ end GlobalTheory.InertSign
 open GlobalTheory.InertSign in
 
 /- English proof (translation)
-Introduce `D cc δ hc N N' _ e0 he0 W g g' L₁ L₁' sg sg' mg mg'`. Establish `hδ` using `delta_ne_zero hc`. Establish `hK : ∀ {L : Lat D N} {L' : Lat D N'}, SD D L → SD D L' → KLat D (tor0 D cc δ) (La D (tor0 D cc δ) L L')` using `fun h h' => Or.inr ⟨_, _, h, h', rfl⟩`. Take `⟨-, -, hII, htp⟩` from `GlobalTheory.T.kernelLattices_form_selfDual_triples D cc δ hc N N'`. Take `⟨hTT, -⟩` from `GlobalTheory.T.thetaFunctions_all_levels_closure D cc δ hc N N'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨d1, d2, d3⟩` from `GlobalTheory.T.thetaLattice_triples_distributive D cc δ N N'`. Establish `huni` using `GlobalTheory.theta_translation_intertwiner_unitary D cc δ hc N N'`. Establish `hline` using `GlobalTheory.ThetaLine.theta_line D (GlobalTheory.InducedType.induced_type D).1 cc δ hc N N'`. Establish `s0 : SD D (stdL D N)` using `sd_of_moves (moves_one D N)`. Establish `s0' : SD D (stdL D N')` using `sd_of_moves (moves_one D N')`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `m1 : Moves D ((1 * 1 : GA D N) : GL (Fin N) (AE D)) (stdL D N)` using `by rw [one_mul]; exact moves_one D N`. Establish `m1' : Moves D ((1 * 1 : GA D N') : GL (Fin N') (AE D)) (stdL D N')` using `by rw [one_mul]; exact moves_one D N'`. Establish `i1 : IntG D ((1 : GA D N) : GL (Fin N) (AE D))`. Use `intG_of_moves (moves_one D N) (moves_one D N)` as an intermediate fact. Rewrite `this` using `[inv_one, one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `i1' : IntG D ((1 : GA D N') : GL (Fin N') (AE D))`. Use `intG_of_moves (moves_one D N') (moves_one D N')` as an intermediate fact. Rewrite `this` using `[inv_one, one_mul]`. Then use the resulting hypothesis. Establish `he0T` using `hTT _ _ s0 s0' e0 he0`. Establish `hdist : ∀ A₁ A₂ A₃, KLat D (tor0 D cc δ) A₁ → KLat D (tor0 D cc δ) A₂ → KLat D (tor0 D cc δ) A₃ → Dist A₁ A₂ A₃ → ∀ e ∈ ThSp D (tor0 D cc δ) (N` using `N) (N' := N') A₁, e ≠ 0 → Iop D (tor0 D cc δ) A₂ A₃ (Iop D (tor0 D cc δ) A₁ A₂ e) = Iop D (tor0 D cc δ) A₁ A₃ e := by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `A₁ A₂ A₃ k₁ k₂ k₃ hd e he hne`. Take `⟨μ, hμ⟩` from `htp A₁ A₂ A₃ k₁ k₂ k₃ e he hne`. Establish `h1` using `GlobalTheory.T.thetaTripleConstant_eq_one_distributive D _ N N' _ _ _ e μ hμ hd`. Rewrite using `[hμ.2.2.2.2.2.2.2.2.2, h1]`. Use function extensionality and compare the values at `z`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[one_mul]`. Establish `htr : ∀ A₁ A₂ A₃, KLat D (tor0 D cc δ) A₁ → KLat D (tor0 D cc δ) A₂ → KLat D (tor0 D cc δ) A₃ → ∀ (P : Ideal (𝓞 D.host.E)) (r : ℕ), P.IsMaximal → (∀ a ∈ P, sgO D a ∈ P) → (∃ a, a - sgO D a ∉ P) → TriDat D (tor0 D cc δ) A₁ A₂ A₃ P r → ∀ e ∈ ThSp D (tor0 D cc δ) (N` using `N) (N' := N') A₁, e ≠ 0 → Iop D (tor0 D cc δ) A₂ A₃ (Iop D (tor0 D cc δ) A₁ A₂ e) = ((-1 : ℂ) ^ r) • Iop D (tor0 D cc δ) A₁ A₃ e := by`. Introduce `A₁ A₂ A₃ k₁ k₂ k₃ P r hP hst ha hd e he hne`. Take `⟨μ, hμ⟩` from `htp A₁ A₂ A₃ k₁ k₂ k₃ e he hne`. Establish `h1` using `GlobalTheory.T.thetaTripleConstant_eq_neg_one_pow D _ N N' _ _ _ e μ hμ P r hP hst ha hd`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hμ.2.2.2.2.2.2.2.2.2, h1]`. Both sides reduce to the same expression. Establish `hsq : ∀ r : ℕ, (-1 : ℂ) ^ r * (-1) ^ r = 1` using `fun r => by rw [← mul_pow]; simp`. Establish `c1` using `core (T := tor0 D cc δ) (fun L => La D (tor0 D cc δ) L (stdL D N')) (fun h => W.Om h 1) e0 ((-1) ^ N') (hsq _) W.nz he0 (fun _ _ a b e he => ⟨(huni _ _ (hK a s0') (hK b s0') e he).2.1, (huni _ _ (hK a s0') (hK b s0') e he).2.2.2⟩) (fun _ a => hII _ (hK a s0')) (fun _ a => (hline …`. Establish `c2` using `core (T := tor0 D cc δ) (fun L => La D (tor0 D cc δ) (stdL D N) L) (fun h => W.Om 1 h) e0 ((-1) ^ N) (hsq _) W.nz he0 (fun _ _ a b e he => ⟨(huni _ _ (hK s0 a) (hK s0 b) e he).2.1, (huni _ _ (hK s0 a) (hK s0 b) e he).2.2.2⟩) (fun _ a => hII _ (hK s0 a)) (fun _ a => (hline _ (hK s …`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `sL` using `sd_of_moves mg`. Establish `sL'` using `sd_of_moves mg'`. Establish `h1 : W.Om g g' e0 = W.Om 1 g' (W.Om g 1 e0)` using `by rw [← W.mul 1 g g' 1 e0 he0T, one_mul, mul_one]`. Establish `hI1` using `(huni _ _ (hK s0 s0') (hK sL s0') e0 he0).2.1`. Establish `h2` using `GlobalTheory.T.weilRepresentation_comm_heisenbergIntertwiner D cc δ hc hδ N N' e0 W 1 1 g g' 1 1 _ _ _ _ _ _ _ _ (moves_one D N) (moves_one D N') m1 (by rw [mul_one]; exact mg') mg (moves_one D N') (by rw [one_mul]; exact mg) (by rw [mul_one]; exact mg') e0 he0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h1, c1, W.smul 1 g' _ _ (hTT _ _ sL s0' _ hI1), h2, c2, Iop_smul, hdist _ _ _ (hK s0 s0') (hK s0 sL') (hK sL sL') (d3 _ _ _ _ s0' sL') e0 he0 W.nz]`. Use function extensionality and compare the values at `z`. Simplify using `only [Pi.smul_apply, smul_eq_mul, La0, pow_add, pow_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem GlobalTheory.InertSign.vacuum_inert : ∀ D : D7, odd3 D := by
   intro D cc δ hc N N' _ e0 he0 W g g' L₁ L₁' sg sg' mg mg'

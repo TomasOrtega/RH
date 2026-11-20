@@ -14,14 +14,14 @@ def skewY (h : V →ₗ⋆[K] V →ₗ[K] K) (u w : V) (θ : K) : V →ₗ[K] V 
   (θ • h u - h w).smulRight u + (h u).smulRight w
 
 /- English proof (translation)
-Simplify using `[skewY]`.
+Simplify using the standard rewrite rules.
 -/
 theorem skewY_apply (h : V →ₗ⋆[K] V →ₗ[K] K) (u w : V) (θ : K) (z : V) :
     skewY h u w θ z = (θ * h u z - h w z) • u + h u z • w := by
   simp [skewY]
 
 /- English proof (translation)
-Establish `e1 : star (h u a) = h a u` using `hs.eq u a`. Establish `e2 : star (h w a) = h a w` using `hs.eq w a`. Rewrite using `[skewY_apply, skewY_apply]`. Simplify using `only [map_add, map_smul, map_smulₛₗ, LinearMap.add_apply, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply, star_sub, star_mul', e1, e2, hθ]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem skewY_skew {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (u w : V) {θ : K} (hθ : star θ = -θ)
     (a b : V) : h (skewY h u w θ a) b + h a (skewY h u w θ b) = 0 := by
@@ -33,11 +33,11 @@ theorem skewY_skew {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (u w : V) 
   ring
 
 /- English proof (translation)
-Apply `han` to reduce the goal to its premises. Establish `h1 : h z z = m * h z (Y z)`. Use `congrArg (h z) hz` as an intermediate fact. Rewrite `this` using `[map_smul, smul_eq_mul]`. Then use the resulting hypothesis. Establish `h2 : h z z = l * h (Y z) z`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `congrArg (fun t => h t z) hz` as an intermediate fact. Simplify using `only [map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply, hm] at this`. Conclude with `this`. Establish `h3` using `hY z z`. Establish `h4 : h z (Y z) = 0` using `by linear_combination (-(h z (Y z))) * hl - h1 + h2 + l * h3`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, h4, mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem laurent_adjoin_eq_of_image_eq {h : V →ₗ⋆[K] V →ₗ[K] K} (han : ∀ x, h x x = 0 → x = 0) {Y : V →ₗ[K] V}
     (hY : ∀ a b, h (Y a) b + h a (Y b) = 0) {l m : K} (hm : star m = l) (hl : l + m = 1) {z : V}
@@ -55,21 +55,19 @@ theorem laurent_adjoin_eq_of_image_eq {h : V →ₗ⋆[K] V →ₗ[K] K} (han : 
   rw [h1, h4, mul_zero]
 
 /- English proof (translation)
-Set `S : V →ₗ[K] V` to `LinearMap.id - star l • Y`. Set `T : V →ₗ[K] V` to `LinearMap.id + l • Y`. Establish `hS : Function.Injective S`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `z hz`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hz' : z - star l • Y z = 0` using `hz`. Conclude with `laurent_adjoin_eq_of_image_eq han hY (star_star l) hl (sub_eq_zero.1 hz')`. Establish `hT : Function.Injective T`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `z hz`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hz' : z + l • Y z = 0` using `hz`. Establish `hY' : ∀ a b, h ((-Y) a) b + h a ((-Y) b) = 0`. Introduce `a b`. Simplify using `only [LinearMap.neg_apply, map_neg]`. Take the linear combination `(-1 : K) * hY a b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Use `laurent_adjoin_eq_of_image_eq (l := star l) (m := l) han hY' rfl (by rw [add_comm]; exact hl) ?_` and prove the remaining obligations. Rewrite using `[LinearMap.neg_apply, smul_neg]`. Conclude with `eq_neg_of_add_eq_zero_left hz'`. Set `eS` to `LinearEquiv.ofInjectiveEndo S hS`. Set `eT` to `LinearEquiv.ofInjectiveEndo T hT`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heS : ∀ z, eS z = z - star l • Y z` using `fun z => rfl`. Establish `heT : ∀ z, eT z = z + l • Y z` using `fun z => rfl`. Use `⟨eS.symm.trans eT, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x y`. Take `⟨a, rfl⟩` from `eS.surjective x`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Take `⟨b, rfl⟩` from `eS.surjective y`. Simplify using `only [LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply]`. Rewrite using `[heS, heS, heT, heT]`. Simplify using `only [map_add, map_sub, map_smul, map_smulₛₗ, LinearMap.add_apply, LinearMap.sub_apply, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply, star_star]`. Take the linear combination `(l + star l) * hY a b`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `z`. Rewrite using `[← heS, LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply, heT]`. Introduce `z`. Conclude with `⟨eS.symm z, by rw [← heS, LinearEquiv.apply_symm_apply]⟩`. Introduce `z`.
-
-Conclude with `⟨eT.symm z, by rw [← heT, LinearEquiv.apply_symm_apply]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_cayley [FiniteDimensional K V] {h : V →ₗ⋆[K] V →ₗ[K] K}
     (han : ∀ x, h x x = 0 → x = 0) {Y : V →ₗ[K] V} (hY : ∀ a b, h (Y a) b + h a (Y b) = 0) {l : K}
@@ -125,7 +123,7 @@ variable {V : Type} [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarT
 variable {𝔭 : Ideal (𝓞 F)} {A : Submodule (𝓞 K) V}
 
 /- English proof (translation)
-Rewrite using `[skewY_apply]`. Use `InL.add hp ?_ ?_` and prove the remaining obligations. Use `(InL.smul hp (i := J) ?_ hu).mono (by omega)` and prove the remaining obligations. Conclude with `InI.sub hp ((hθ.mul hp (hu.form hp hF hA hz)).mono (by omega)) ((hw.form hp hF hA hz).mono (by omega))`. Conclude with `(InL.smul hp (hu.form hp hF hA hz) hw).mono (by omega)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem skewY_mem (hp : 𝔭.IsPrime) (hF : IsFixF K F) {h : V →ₗ⋆[K] V →ₗ[K] K}
     (hA : Formalism.HermitianLatticesTheory.IsIntegralLat h A) {J : ℕ} {u w z : V} {θ : K} (hu : InL 𝔭 A 0 u)
@@ -138,21 +136,21 @@ theorem skewY_mem (hp : 𝔭.IsPrime) (hF : IsFixF K F) {h : V →ₗ⋆[K] V �
   · exact (InL.smul hp (hu.form hp hF hA hz) hw).mono (by omega)
 
 /- English proof (translation)
-Establish `hp` using `h𝔭.isPrime`. Take `⟨b, hb⟩ : ∃ b : K, b = h u z'` from `⟨_, rfl⟩`. Take `⟨a, ha⟩ : ∃ a : K, a = θ * b - h w z'` from `⟨_, rfl⟩`. Establish `e' : z' = z + (c * a) • u + (c * b) • w`. Rewrite `e` using `[skewY_apply, ← hb, ← ha]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← e, smul_add, smul_smul, smul_smul]`. Normalize the expressions using the abelian group laws. Establish `eb : b = h u z + c * a * h u u + c * b * h u w` using `by conv_lhs => rw [hb, e']`. Rewrite using `[map_add, map_add, map_smul, map_smul, smul_eq_mul, smul_eq_mul]`. Establish `ew : h w z' = h w z + c * a * h w u + c * b * h w w` using `by conv_lhs => rw [e']`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_add, map_add, map_smul, map_smul, smul_eq_mul, smul_eq_mul]`. Establish `Iν : InI 𝔭 0 (h u u)` using `hu.form hp hF hA hu`. Establish `Ip : InI 𝔭 1 (h u w)` using `(hu.form hp hF hA hw).mono (by omega)`. Establish `Ir : InI 𝔭 1 (h w u)` using `(hw.form hp hF hA hu).mono (by omega)`. Establish `Is : InI 𝔭 1 (h w w)` using `(hw.form hp hF hA hw).mono (by omega)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `Iβ : InI 𝔭 0 (h u z)` using `hu.form hp hF hA hz`. Establish `Iγ : InI 𝔭 0 (h w z)` using `(hw.form hp hF hA hz).mono (by omega)`. Establish `m01 : ∀ {x y : K}, InI 𝔭 0 x → InI 𝔭 1 y → InI 𝔭 1 (x * y)` using `fun hx hy => (hx.mul hp hy).mono (by omega)`. Establish `m00 : ∀ {x y : K}, InI 𝔭 0 x → InI 𝔭 0 y → InI 𝔭 0 (x * y)` using `fun hx hy => hx.mul hp hy`. Establish `Icr : InI 𝔭 1 (c * h w u)` using `m01 hc Ir`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `Iκ : InI 𝔭 1 (θ - c * h w w)` using `hθ.sub hp (m01 hc Is)`. Take `⟨hE1, IE1⟩` from `InI.unit h𝔭 hF Icr`. Establish `Iε : InI 𝔭 1 (c * h w u - c * h u w - c * h u w * (c * h w u) - c * h u u * (θ - c * h w w))` using `((Icr.sub hp (m01 hc Ip)).sub hp (m01 (m00 hc (Ip.mono (by omega))) Icr)).sub hp (m01 (m00 hc Iν) Iκ)`. Take `⟨hD, ID⟩` from `InI.unit h𝔭 hF Iε`. Establish `ea : a * (1 + c * h w u) = b * (θ - c * h w w) - h w z`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take the linear combination `ha - ew`. Establish `ebD : b * (1 + (c * h w u - c * h u w - c * h u w * (c * h w u) - c * h u u * (θ - c * h w w))) = h u z * (1 + c * h w u) - c * h u u * h w z`. Take the linear combination `(1 + c * h w u) * eb + c * h u u * ea`. Establish `Ib : InI 𝔭 0 b`. Rewrite using `[(eq_mul_inv_iff_mul_eq₀ hD).2 ebD]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `m00 ((m00 Iβ ((InI.one hp).add hp (Icr.mono (by omega)))).sub hp (m00 (m00 hc Iν) Iγ)) ID`. Establish `Ia : InI 𝔭 0 a`. Rewrite using `[(eq_mul_inv_iff_mul_eq₀ hE1).2 ea]`. Conclude with `m00 ((m00 Ib (Iκ.mono (by omega))).sub hp Iγ) IE1`. Rewrite using `[e']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : InL 𝔭 A 0 ((c * a) • u)` using `(InL.smul hp (m00 hc Ia) hu).mono (by omega)`. Establish `h2 : InL 𝔭 A 0 ((c * b) • w)` using `(InL.smul hp (m00 hc Ib) hw).mono (by omega)`. Conclude with `(hz.add hp h1).add hp h2`.
+A detailed English derivation is pending.
 -/
 theorem mem_of_resolvent (h𝔭 : 𝔭.IsMaximal) (hF : IsFixF K F) {h : V →ₗ⋆[K] V →ₗ[K] K}
     (hA : Formalism.HermitianLatticesTheory.IsIntegralLat h A) {u w z z' : V} {θ c : K} (hu : InL 𝔭 A 0 u)

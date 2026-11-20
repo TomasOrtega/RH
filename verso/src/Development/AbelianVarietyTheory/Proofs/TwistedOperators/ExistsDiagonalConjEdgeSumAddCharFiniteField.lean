@@ -23,7 +23,7 @@ termination_by j.val
 decreasing_by all_goals (try simp_wf); exact hlt _ _ (Classical.choose_spec h)
 
 /- English proof (translation)
-Establish `hex : ∃ i, Ed i j` using `⟨i, h⟩`. Establish `hc : Classical.choose hex = i` using `huniq _ _ _ (Classical.choose_spec hex) h`. Establish `e : forestLift Ed hlt w j = forestLift Ed hlt w i * w i j`. Rewrite using `[forestLift, dif_pos hex, hc]`. Rewrite using `[e, inv_mul_cancel_left]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem forestLift_edge {G : Type} [Group G] {r : ℕ} (Ed : Fin r → Fin r → Prop) (hlt : ∀ i j, Ed i j → i < j)
     (huniq : ∀ i i' j, Ed i j → Ed i' j → i = i') (w : Fin r → Fin r → G) {i j : Fin r} (h : Ed i j) :
@@ -35,7 +35,7 @@ theorem forestLift_edge {G : Type} [Group G] {r : ℕ} (Ed : Fin r → Fin r →
   rw [e, inv_mul_cancel_left]
 
 /- English proof (translation)
-Introduce `i j h`. Use `show i.val < j.val`. Unfold `symEdge at h`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem symEdge_lt {r : ℕ} (ρ k : ℕ) : ∀ i j : Fin r, symEdge ρ k i j → i < j := by
   intro i j h
@@ -44,7 +44,7 @@ theorem symEdge_lt {r : ℕ} (ρ k : ℕ) : ∀ i j : Fin r, symEdge ρ k i j �
   omega
 
 /- English proof (translation)
-Introduce `i i' j h h'`. Apply `Fin.ext` to reduce the goal to its premises. Unfold `symEdge at h h'`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem symEdge_uniq {r : ℕ} (ρ k : ℕ) : ∀ i i' j : Fin r, symEdge ρ k i j → symEdge ρ k i' j → i = i' := by
   intro i i' j h h'
@@ -53,19 +53,19 @@ theorem symEdge_uniq {r : ℕ} (ρ k : ℕ) : ∀ i i' j : Fin r, symEdge ρ k i
   omega
 
 /- English proof (translation)
-Introduce `κf _ _ hF r ρ k ψ' ψ0 h1 h0 a`. Set `_ : Field κf` to `hF.toField`. Use `Fintype.ofFinite κf` as an intermediate fact. Establish `hprim : ψ0.IsPrimitive` using `AddChar.IsPrimitive.of_ne_one h0`. Establish `hinj : Function.Injective ψ0.mulShift` using `AddChar.to_mulShift_inj_of_isPrimitive hprim`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbij : Function.Bijective ψ0.mulShift` using `by classical`. Rewrite using `[Fintype.bijective_iff_injective_and_card]`. Conclude with `⟨hinj, (AddChar.card_eq).symm⟩`. Take `⟨c, hc⟩` from `hbij.2 ψ'`. Establish `hc0 : c ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Apply `h1` to reduce the goal to its premises. Rewrite using `[← hc]`. Conclude with `AddChar.mulShift_zero ψ0`. Set `w : Fin r → Fin r → κfˣ` to `fun i j => Units.mk0 c hc0 * a i j`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨forestLift (symEdge ρ k) (symEdge_lt ρ k) w, fun u _ => ?_⟩` and prove the remaining obligations. Rewrite using `[← hc, AddChar.mulShift_apply]`. Use `congr 1`. Unfold `edgeSum`. Rewrite using `[Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Rewrite using `[diagGL_conj_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e` using `congrArg Units.val (forestLift_edge (symEdge ρ k) (symEdge_lt ρ k) (symEdge_uniq ρ k) w h)`. Rewrite `e` using `[Units.val_mul]`. Establish `e2 : (((forestLift (symEdge ρ k) (symEdge_lt ρ k) w i)⁻¹ : κfˣ) : κf) * ((forestLift (symEdge ρ k) (symEdge_lt ρ k) w j : κfˣ) : κf) = c * (a i j : κf)`. Rewrite using `[e]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Use symmetry to reverse the relation. Chain the equalities or inequalities of the calculation.
 
-Use `symm`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scale_conj : ∀ {κf : Type} [CommRing κf] [Finite κf], IsField κf → ∀ {r : ℕ} (ρ k : ℕ) (ψ' ψ0 : AddChar κf ℂ), ψ' ≠ 1 → ψ0 ≠ 1 → ∀ a : Fin r → Fin r → κfˣ, ∃ d : Fin r → κfˣ, ∀ u : GL (Fin r) κf, u ∈ unipSym κf r ρ k → ψ' (∑ i, ∑ j, if symEdge ρ k i j then (a i j : κf) * u.val i j else 0) = ψ0 (edgeSum (symEdge ρ k) ((diagGL d)⁻¹ * u * diagGL d)) := by
   intro κf _ _ hF r ρ k ψ' ψ0 h1 h0 a

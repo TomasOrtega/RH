@@ -9,7 +9,7 @@ namespace GlobalTheory.AlmostEt
 open Topology
 
 /- English proof (translation)
-Establish `hopen : IsOpen {t : ℝ≥0 | r < t ^ k}` using `isOpen_lt continuous_const (continuous_pow k)`. Establish `hmem : {t : ℝ≥0 | r < t ^ k} ∈ 𝓝 (1 : ℝ≥0)` using `hopen.mem_nhds (by simpa using hr)`. Take `⟨l, hl, hsub⟩` from `exists_Ioc_subset_of_mem_nhds hmem ⟨0, zero_lt_one⟩`. Take `⟨t, hlt, ht1⟩` from `exists_between hl`. Conclude with `⟨t, ht1, hsub ⟨hlt, ht1.le⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma exists_lt_one_lt_pow (r : ℝ≥0) (hr : r < 1) (k : ℕ) : ∃ t : ℝ≥0, t < 1 ∧ r < t ^ k := by
   have hopen : IsOpen {t : ℝ≥0 | r < t ^ k} := isOpen_lt continuous_const (continuous_pow k)
@@ -19,9 +19,9 @@ lemma exists_lt_one_lt_pow (r : ℝ≥0) (hr : r < 1) (k : ℕ) : ∃ t : ℝ≥
   exact ⟨t, ht1, hsub ⟨hlt, ht1.le⟩⟩
 
 /- English proof (translation)
-Introduce `n`. Establish `hc : g⁻¹ * (n : G) * g ∈ N`. Use `hN.conj_mem (n : G) n.2 g⁻¹` as an intermediate fact. Simplify using `using this`. Establish `h1 : (g⁻¹ * (n : G) * g) • y = y` using `hy ⟨_, hc⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `show (n : G) • g • y = g • y`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_smul, smul_inv_smul]`. Use `_ = g • y := by rw [h1]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma smul_mem_fix {L : Type} [Field L] {G : Type} [Group G] [MulSemiringAction G L]
     (N : Subgroup G) [hN : N.Normal] (g : G) {y : L} (hy : y ∈ Fix L N) : g • y ∈ Fix L N := by
@@ -36,32 +36,28 @@ lemma smul_mem_fix {L : Type} [Field L] {G : Type} [Group G] [MulSemiringAction 
     _ = g • y := by rw [h1]
 
 /- English proof (translation)
-The claim follows from `hy ⟨σ, hσ⟩`.
+A detailed English derivation is pending.
 -/
 lemma fix_smul {L : Type} [Field L] {G : Type} [Group G] [MulSemiringAction G L]
     (N : Subgroup G) {y : L} (hy : y ∈ Fix L N) {σ : G} (hσ : σ ∈ N) : σ • y = y :=
   hy ⟨σ, hσ⟩
 
 /- English proof (translation)
-Introduce `L _ v G _ _ hv N hN hfi hmov r hr`. Use `haveI : Finite (G ⧸ N) := inferInstance`. Use `letI : Fintype (G ⧸ N) := Fintype.ofFinite _`. Use `set s : Finset (G ⧸ N) := Finset.univ.erase 1 with hs`. Take `⟨t, ht1, hrt⟩` from `exists_lt_one_lt_pow r hr s.card`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hex : ∀ q : G ⧸ N, ∃ y : L, y ∈ Fix L N ∧ v y ≤ 1 ∧ (q ≠ 1 → t < v (q.out • y - y))`. Introduce `q`. Distinguish the cases in `hq : q = 1`. Conclude with `⟨0, zero_mem _, by simp, fun h => absurd hq h⟩`. Establish `hout : q.out ∉ N`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `hm`. Apply `hq` to reduce the goal to its premises. Rewrite using `[← QuotientGroup.out_eq' q]`. Conclude with `(QuotientGroup.eq_one_iff _).2 hm`. Take `⟨y, hyF, hyv, hyt⟩` from `hmov _ hout t ht1`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `⟨y, hyF, hyv, fun _ => hyt⟩`. Use `choose y hyF hyv hyt using hex`. Set `x : G ⧸ N → L` to `fun q => q.out • y q`. Establish `hxF : ∀ q, x q ∈ Fix L N` using `fun q => smul_mem_fix N _ (hyF q)`. Establish `hxv : ∀ q, v (x q) ≤ 1` using `fun q => by simp only [x, hv]; exact hyv q`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨n, a, b, hab, hsum⟩` from `GlobalTheory.T.separating_family_sum_closed_under_prod L v G (Fix L N) (G ⧸ N) s x y (fun j _ => ⟨hxF j, hyF j, hxv j, hyv j⟩)`. Use `⟨n, a, b, ∏ q ∈ s, (x q - y q), ?_, ?_⟩` and prove the remaining obligations. Use `{ a_mem := fun i => (hab i).1 b_mem := fun i => (hab i).2.1 c_mem := ?_ a_le := fun i => (hab i).2.2.1 b_le := fun i => (hab i).2.2.2 c_le := ?_ sum_in := ?_ sum_out := ?_ }` and prove the remaining obligations. Conclude with `prod_mem fun q _ => sub_mem (hxF q) (hyF q)`. Rewrite using `[map_prod]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_le_one (fun _ _ => zero_le) fun q _ => ?_` and prove the remaining obligations. Conclude with `(Valuation.map_sub v _ _).trans (max_le (hxv q) (hyv q))`. Introduce `σ hσ`. Rewrite using `[hsum σ]`. Use `Finset.prod_congr rfl fun q _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[fix_smul N (hyF q) hσ]`. Introduce `σ hσ`. Rewrite using `[hsum σ]`. Establish `hq : (σ : G ⧸ N) ∈ s`. Rewrite using `[hs, Finset.mem_erase]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, Finset.mem_univ _⟩` and prove the remaining obligations. Introduce `h`. Conclude with `hσ ((QuotientGroup.eq_one_iff σ).1 h)`. Use `Finset.prod_eq_zero hq ?_` and prove the remaining obligations. Take `⟨m, hm⟩` from `QuotientGroup.mk_out_eq_mul N σ`.
-
-Simplify using `only [x]`. Rewrite using `[hm, mul_smul, fix_smul N (hyF _) m.2, sub_self]`. Rewrite using `[map_prod]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.prod_le_prod (fun _ _ => zero_le) fun q hq => ?_` and prove the remaining obligations.
-
-Conclude with `(hyt q (Finset.ne_of_mem_erase hq)).le`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem almostSep_of_moves : ∀ (L : Type) [Field L] (v : Valuation L ℝ≥0) (G : Type) [Group G]
     [MulSemiringAction G L], (∀ (g : G) (x : L), v (g • x) = v x) → ∀ N : Subgroup G, N.Normal →

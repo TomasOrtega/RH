@@ -24,7 +24,7 @@ def kl (L : PeriodPair) (z : ℂ) : ℂ := opU L z (sgStar L) 0
 def JetLe (ι : ℂ ≃+* ℂ_[p]) (B : ℝ) (F : ℂ → ℂ) : Prop := ∀ n : ℕ, ‖ι (iteratedDeriv n F 0)‖ ≤ B ^ n
 
 /- English proof (translation)
-Introduce `h'` and use `h'.1 h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_red_of_mem (ι : ℂ ≃+* ℂ_[p]) (L : PeriodPair) (r : ℂ) {z : ℂ} (h : z ∈ L.lattice) : ¬ Red ι L r z :=
   fun h' => h'.1 h

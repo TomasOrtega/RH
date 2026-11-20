@@ -14,7 +14,7 @@ open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj Alg
 open scoped CategoryTheory.Obj CategoryTheory.MonObj TensorProduct in
 attribute [local instance] Over.cartesianMonoidalCategory in
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp [_root_.GlobalTheory.HTLat.Tate.lev_zero]`. Consider the case `succ k ih => rw [succ_nsmul, _root_.GlobalTheory.HTLat.Tate.lev_add, ih, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem tate_nsmul_lev {p : ℕ} {M : Type} [CommGroup M]
     (s : _root_.GlobalTheory.HTLat.Tate p M) (k m : ℕ) :
@@ -28,17 +28,17 @@ open scoped CategoryTheory.Obj CategoryTheory.MonObj TensorProduct in
 attribute [local instance] Over.cartesianMonoidalCategory in
 
 /- English proof (translation)
-Introduce `K _ l hl A n`. Establish `hlpos : l ≠ 0` using `(Fact.out : l.Prime).ne_zero`. Use `⟨fun x hx => _root_.GlobalTheory.Published.tate_lev_surj l _ (_root_.GlobalTheory.AV.AbVar.pt_divisible K A l hlpos) n x hx, fun t => ?_⟩` and prove the remaining obligations. Establish `hcast : ∀ s : _root_.GlobalTheory.AV.AbVar.Tl l A, (l : ℤ_[l]) ^ n • s = (l ^ n : ℕ) • s`. Introduce `s`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Nat.cast_smul_eq_nsmul ℤ_[l]]`. Use `push_cast`. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Introduce `ht`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `u : ℕ → A.Pt` to `fun m => t.lev (m + n)`. Establish `hu : ∀ m, u m ^ l ^ m = 1 ∧ u (m + 1) ^ l = u m`. Introduce `m`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only [u]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[Nat.add_comm, _root_.GlobalTheory.HTLat.Tate.lev_add_pow, ht]`. Simplify using `only [u]`. Rewrite using `[show m + 1 + n = m + n + 1 by omega, _root_.GlobalTheory.HTLat.Tate.lev_succ]`. Use `⟨_root_.GlobalTheory.HTLat.Tate.mk u hu, ?_⟩` and prove the remaining obligations. Rewrite using `[hcast]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `_root_.GlobalTheory.HTLat.Tate.ext fun m => ?_` and prove the remaining obligations. Rewrite using `[tate_nsmul_lev, _root_.GlobalTheory.HTLat.Tate.lev_mk]`. Simplify using `only [u]`. Rewrite using `[_root_.GlobalTheory.HTLat.Tate.lev_add_pow]`. Introduce and unpack `⟨s, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hcast, tate_nsmul_lev, _root_.GlobalTheory.HTLat.Tate.lev_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.AV.AbVar.tl_lev_surj_ker : ∀ (K : Type) [Field K]
     (l : ℕ) [Fact l.Prime] (A : _root_.GlobalTheory.AV.AbVar K) (n : ℕ),

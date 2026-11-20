@@ -18,7 +18,7 @@ namespace ReciprocityTheory.ChartRestriction.G.H1
 open ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.DVR ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
 /- English proof (translation)
-Introduce `α j`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 -/
 private theorem oneC_of_lemma {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) (F : Type) [Field F]
     [Algebra (FractionRing R) F] (k : ℕ) (ζ : F) (s : Fam D F k) : Fam.IsSmul D F ζ s (ζ • s) := by
@@ -26,7 +26,7 @@ private theorem oneC_of_lemma {R : Type} [CommRing R] [IsDomain R] (D : DegPre R
   rfl
 
 /- English proof (translation)
-The claim follows from `ClosedPointWeilPower.gen_local_linComb (V := F) D.P.L D.P.isLB _ _`.
+A detailed English derivation is pending.
 -/
 private theorem oneC_of_lemma_2 {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) (F : Type) [Field F]
     [Algebra (FractionRing R) F] (k : ℕ) (p : QkPt D F k) :
@@ -34,7 +34,7 @@ private theorem oneC_of_lemma_2 {R : Type} [CommRing R] [IsDomain R] (D : DegPre
   ClosedPointWeilPower.gen_local_linComb (V := F) D.P.L D.P.isLB _ _
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Units.map (Scheme.ΓSpecIso (CommRingCat.of F)).hom.hom.toMonoidHom c, by ext simp [unitOn]⟩`.
+Supply the required witnesses or components.
 -/
 private theorem oneC_of_lemma_3 (F : Type) [Field F] (c : (Γ(Sp F, ⊤))ˣ) : ∃ z : Fˣ, unitOn z = c :=
   ⟨Units.map (Scheme.ΓSpecIso (CommRingCat.of F)).hom.hom.toMonoidHom c, by
@@ -42,13 +42,13 @@ private theorem oneC_of_lemma_3 (F : Type) [Field F] (c : (Γ(Sp F, ⊤))ˣ) : �
     simp [unitOn]⟩
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `s`. Take `⟨s', hs'⟩` from `s'`. Establish `key : ∀ α, s α = s' α`. Introduce `α`. Establish `hab : (s α).f = (s' α).f` using `funext (h α)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `revert hab`. Generalize the expression as in `s α = a`. Generalize the expression as in `s' α = b`. Consider the cases of `a`. Consider the cases of `b`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hab`. Consider the cases of `hab`. Both sides reduce to the same expression. Establish `e : s = s'` using `funext key`. Substitute `e` using the available equality.
+Split into cases according to the possible forms of the given data. Both sides reduce to the same expression. Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 private theorem oneC_of_lemma_4 {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) (F : Type) [Field F]
     [Algebra (FractionRing R) F] (k : ℕ) (s s' : Fam D F k)
@@ -71,7 +71,7 @@ private theorem oneC_of_lemma_4 {R : Type} [CommRing R] [IsDomain R] (D : DegPre
   rfl
 
 /- English proof (translation)
-The claim follows from `oneC_of_lemma_4 D F k s' (ζ • s) fun α j => (h α j).trans (oneC_of_lemma D F k ζ s α j).symm`.
+A detailed English derivation is pending.
 -/
 private theorem oneC_of_lemma_5 {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) (F : Type) [Field F]
     [Algebra (FractionRing R) F] (k : ℕ) (ζ : F) (s s' : Fam D F k) (h : Fam.IsSmul D F ζ s s') :
@@ -79,9 +79,9 @@ private theorem oneC_of_lemma_5 {R : Type} [CommRing R] [IsDomain R] (D : DegPre
   oneC_of_lemma_4 D F k s' (ζ • s) fun α j => (h α j).trans (oneC_of_lemma D F k ζ s α j).symm
 
 /- English proof (translation)
-Establish `key : ∀ u : Fˣ, Units.map (Scheme.ΓSpecIso (CommRingCat.of F)).hom.hom.toMonoidHom (unitOn u) = u`. Introduce `u`. Use `ext`. Simplify using `[unitOn]`. Establish `e` using `congrArg (Units.map (Scheme.ΓSpecIso (CommRingCat.of F)).hom.hom.toMonoidHom) h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `e` using `[map_pow, key, map_one]`. Simplify using `using congrArg Units.val e`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem oneC_of_lemma_6 (F : Type) [Field F] (z : Fˣ) (n : ℕ) (h : unitOn z ^ n = 1) :
     (z : F) ^ n = 1 := by
@@ -95,39 +95,31 @@ private theorem oneC_of_lemma_6 (F : Type) [Field F] (z : Fˣ) (n : ℕ) (h : un
   simpa using congrArg Units.val e
 
 /- English proof (translation)
-Introduce `E _ _ _ H V _ _ _ t P hT α N hN hαN hcop hNu ϖ hϖ Q hQ F _ _ _ v hv Dw I θ hθ hprim θα hpull s hs`. Use `letI := H.starRing`. Establish `hk : 1 ≤ 1 * N` using `by omega`. Establish `hαN' : star α * α = (N : 𝓞 E)` using `by rw [_root_.mul_comm]; exact hαN`. Establish `htor : ∀ (a b : 𝓞 E) (y : TFK (R` using `V) F ⟶ P.A.A), a * b = (N : 𝓞 E) → y ≫ P.oA.act b = 1 → y ^ (1 * N) = 1 := by`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a b y hab hy`. Rewrite using `[_root_.one_mul, ← ClosedPointWeilPower.comp_act_nat P.oA.toRingAct y N hN, ← hab, P.oA.map_mul, ← Category.assoc, hy]`. Conclude with `ClosedPointWeilPower.one_comp_hom _ (P.oA.hom a)`. Take `⟨p, x, hpx, hxα, hinj, -⟩` from `hB E H V t P hT α N hN hαN hcop hNu F Dw I`. Establish `hcop' : ∃ u u' : 𝓞 E, u * star α + u' * star (star α) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨u, u', h⟩` from `hcop`. Conclude with `⟨u', u, by rw [star_star, _root_.add_comm]; exact h⟩`. Take `⟨p', x', hpx', hxα', -, hsurj'⟩` from `hB E H V t P hT (star α) N hN (by rw [star_star]; exact hαN') hcop' hNu F Dw I`. Establish `hxa : ∀ gm, x' gm ≫ P.oA.act α = 1` using `fun gm => by simpa only [star_star] using hxα' gm`. Take `⟨f, hfToA, -, -, -, -, hfW⟩` from `hT F (1 * N) hk`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hfp : ∀ i, x i = f (p i)` using `fun i => (hfToA (p i) (x i)).mp (hpx i)`. Establish `hfq : ∀ gm, x' gm = f (p' gm)` using `fun gm => (hfToA (p' gm) (x' gm)).mp (hpx' gm)`. Establish `htx : ∀ i, x i ^ (1 * N) = 1` using `fun i => htor α (star α) (x i) hαN (hxα i)`. Establish `htx' : ∀ gm, x' gm ^ (1 * N) = 1` using `fun gm => htor (star α) α (x' gm) hαN' (hxa gm)`. Establish `hw : ∀ b, ∃ w : LB.Gen (LB.LinComb P.D.toPre.P.L (DegPre.lineφ P.D.toPre F (p b).g.b) (DegPre.lineε (1 * N))), w.IsGen` using `fun b => oneC_of_lemma_2 P.D.toPre F (1 * N) (p b)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose w hwg using hw`. Establish `hz : ∀ b, ∃ ζ : F, ζ ≠ 0 ∧ FinOrd P.D F (1 * N) (p b) (w b) ζ` using `fun b => hE V P.D F (1 * N) hk (p b) (w b) (hwg b)`. Use `choose ζ hζ0 hfin using hz`. Use `choose Φ hΦb using fun b => hΦ V (maximalIdeal V) P.D F (1 * N) hk (p b) (w b) (hwg b)`. Use `choose wq hwqg hwq1 hfix using fun gm => hC E H V t P hT α N hN hαN hcop hNu F θ θα hpull (p' gm) (x' gm) (hpx' gm) (hxa gm)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `choose Φq hΦq using fun gm => hΦ V (maximalIdeal V) P.D F (1 * N) hk (p' gm) (wq gm) (hwqg gm)`. Establish `hWex : ∀ i gm, ∃ z : Fˣ, WeilIs P.A.A P.A.L ((1 * N : ℕ) : ℤ) (x' gm) (x i) (unitOn z)`. Introduce `i gm`. Take `⟨c, hc, -⟩` from `(hL.weil _ P.A (1 * N) _).1 (x' gm) (x i) (htx' gm) (htx i)`. Take `⟨z, rfl⟩` from `oneC_of_lemma_3 F c`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨z, hc⟩`. Use `choose χz hχz using hWex`. Establish `hEig : ∀ i gm, Φq gm (Φ i θα) = (χz i gm : F) • Φ i θα`. Introduce `i gm`. Apply `oneC_of_lemma_5` to reduce the goal to its premises.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hW' : WeilQkIs P.D.toPre F (1 * N) (p' gm) (p i) (χz i gm)` using `(hfW (p' gm) (p i) (χz i gm)).mpr (by rw [← hfq gm, ← hfp i]; exact hχz i gm)`. Conclude with `hW' (wq gm) (w i) (hwqg gm) (hwg i) θα (Φ i θα) (Φq gm (Φ i θα)) θα (Φ i θα) ((hΦb i θα _).mpr rfl) ((hΦq gm (Φ i θα) _).mpr rfl) (hfix gm) ((hΦb i θα _).mpr rfl)`. Establish `hvN : v (((1 * N : ℕ)) : F) = 0`. Establish `h` using `hv ((N : ℕ) : FractionRing V) 0 ⟨hNu.unit, by simp⟩`. Simplify using `using h`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hπ : ∃ π : F, 0 < v π`. Use `⟨algebraMap (FractionRing V) F (algebraMap V (FractionRing V) ϖ), ?_⟩` and prove the remaining obligations. Rewrite using `[hv _ 1 ⟨1, by simp⟩]`. Conclude with `(show (0 : ℚ) < ((1 : ℤ) : ℚ) by norm_num)` after adjusting the coercions. Establish `hθα0 : NuGe P.D Q F v (1 * N) θα 0` using `h2 V ϖ hϖ P.D Q hQ F v hv (𝓞 E) P.oD H.w0 P.w0 α N hN hαN hαN' 1 le_rfl θ θα hpull 0 hθ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hsm1 : ∀ {k : ℕ} (u : Fam P.D.toPre F k), Fam.IsSmul P.D.toPre F 1 u u`. Introduce `k u`. Establish `h` using `oneC_of_lemma P.D.toPre F k 1 u`. Rewrite `h` using `[one_smul]`. Then use the resulting hypothesis. Establish `hnotpos : ∀ r : ℚ, 0 < r → ¬ NuGe P.D Q F v (1 * N) θα r`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `r hr h`. Take `⟨σ, σF, hscal, hσ, hnd⟩` from `hprim`. Establish `hb` using `h2f V ϖ hϖ P.D Q hQ F v hv (𝓞 E) P.oD H.w0 P.w0 α N hN hαN 1 le_rfl θ θα hpull 0 σ σF 1 hscal (fun j => by rw [← hσ j]; exact hsm1 θ 0 j) hnd r h`. Rewrite `hb` using `[AddValuation.map_one, QForm.Q_zero (hϖ := hϖ) (D := P.D) (Q := Q) (hQ := hQ)]`. Establish `h' : ((r : ℚ) : WithTop ℚ) ≤ ((0 : ℚ) : WithTop ℚ)` using `by simpa using hb`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `WithTop.coe_le_coe.mp h'` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hN3 : ∀ i r, NuGe P.D Q F v (1 * N) θα r ↔ NuGe P.D Q F v (1 * N) (ζ i • Φ i θα) r` using `fun i r => h3 V ϖ hϖ P.D Q hQ F v hv (1 * N) hk (p i) (w i) (hwg i) (ζ i) (hζ0 i) (hfin i) θα (Φ i θα) (ζ i • Φ i θα) ((hΦb i θα _).mpr rfl) (oneC_of_lemma _ _ _ _ _) r`. Take `⟨bb, hbli, -, hbspan⟩` from `hU V ϖ hϖ P.D Q hQ F v hv (Or.inl inferInstance) (1 * N) hk`. Establish `hcard : Fintype.card (Fin (N ^ P.A.g)) = (1 * N) ^ (P.D.toPre.rank + P.D.toPre.P.g)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Fintype.card_fin, hdim E H V t P, _root_.one_mul]`. Take `⟨a, ha0, hsa⟩` from `IntegralRingEmbedding.span_of_eigen (F := F) (v := v) (b := bb) (n := _) (fun u => NuGe P.D Q F v (1 * N) u 0) (fun u => ∃ r : ℚ, 0 < r ∧ NuGe P.D Q F v (1 * N) u r) hbli hbspan (fun s0 hs0 ζ0 s' hζ hs' he => (h1c V ϖ hϖ P.D Q hQ F v hv (1 * N) hk s0 hs0).mpr ⟨ζ0, s', hζ, hs', by …`. Take `⟨r, hr, hr'⟩` from `hp`. Conclude with `hnotpos r hr ((hN3 i r).mpr hr'))`. Use `Φq`.
-
-Use the proof step `(fun gm s0 hs0 => (h3 V ϖ hϖ P.D Q hQ F v hv (1 * N) hk (p' gm) (wq gm) (hwqg gm) 1 one_ne_zero (hwq1 gm) s0 (Φq gm s0) (Φq gm s0) ((hΦq gm s0 _).mpr rfl) (hsm1 _) 0).mp hs0)`. Use `hk hvN (fun i gm => (χz i gm : F))`. Use the proof step `(fun i gm => oneC_of_lemma_6 F (χz i gm) (1 * N) (ClosedPointWeilPower.weil_pow_eq_one hL.weil P.A (1 * N) (x' gm) (x i) (htx' gm) (htx i) _ (hχz i gm)))`. Use the proof step `(fun i gm => by show Φq gm (ζ i • Φ i θα) = (χz i gm : F) • (ζ i • Φ i θα)`. Rewrite using `[map_smul, hEig i gm, smul_comm])`.
-
-Use the proof step `(fun i j hij => by`. Take `⟨z, hz, c, c', hc, hc', hne⟩` from `hD E H V t P hT α N hN hαN hcop hNu F Dw I (x i) (x j) (hxα i) (hxα j) (fun h => hij (hinj h))`. Take `⟨gm, rfl⟩` from `hsurj' z (by rw [star_star]; exact hz)`. Use `⟨gm, fun heq => hne ?_⟩` and prove the remaining obligations. Establish `hc1 : WeilIs P.A.A P.A.L ((1 * N : ℕ) : ℤ) (x' gm) (x i) c` using `by rw [_root_.one_mul]; exact hc`.
-
-Establish `hc1' : WeilIs P.A.A P.A.L ((1 * N : ℕ) : ℤ) (x' gm) (x j) c'`. Rewrite using `[_root_.one_mul]`. Conclude with `hc'`. Rewrite using `[ClosedPointWeilPower.weil_unique hL.weil P.A (1 * N) (x' gm) (x i) (htx' gm) (htx i) _ _ hc1 (hχz i gm), ClosedPointWeilPower.weil_unique hL.weil P.A (1 * N) (x' gm) (x j) (htx' gm) (htx j) _ _ hc1' (hχz j gm), Units.ext heq])`. Use `s hs`.
-
-Conclude with `⟨N ^ P.A.g, p, x, w, ζ, fun i => ζ i • Φ i θα, a, hpx, hxα, fun i => ⟨hwg i, hζ0 i, hfin i⟩, fun i => ⟨Φ i θα, (hΦb i θα _).mpr rfl, oneC_of_lemma _ _ _ _ _⟩, ha0, hsa⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem oneC_of (hL : Laws) (hΦ : PhiFunStatement) (h1c : PositiveValuationMaximalIdeal) (h2 : PullbackValuationForwardBound)
     (h2f : DvrLevelFrame) (h3 : FiniteOrderValuationInvariance) (hU : UUStatement) (hE : FinOrdExistsStatement) (hB : AlphaBarEnumStatement)

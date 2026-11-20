@@ -24,7 +24,7 @@ def iN {Y X : Scheme.{0}} (f : Y ⟶ X) : sch.obj Y ⟶ cech f where
       exact Category.id_comp _
 
 /- English proof (translation)
-Use `NatTrans.ext (funext fun x => ?_)` and prove the remaining obligations. Use `erw [NatTrans.comp_app, WidePullback.lift_base]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem iN_aug {Y X : Scheme.{0}} (f : Y ⟶ X) : iN f ≫ cechAug f = sch.map f := by
   refine NatTrans.ext (funext fun x => ?_)
@@ -32,9 +32,9 @@ theorem iN_aug {Y X : Scheme.{0}} (f : Y ⟶ X) : iN f ≫ cechAug f = sch.map f
   rfl
 
 /- English proof (translation)
-Use `⟨⟨WidePullback.π (fun _ : Fin 1 => yoneda.map f) 0, ?_, ?_⟩⟩` and prove the remaining obligations. Use `erw [WidePullback.lift_π]`. Apply `WidePullback.hom_ext` to reduce the goal to its premises. Introduce `j`. Establish `hj : j = 0` using `Fin.fin_one_eq_zero j`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `hj` using the available equality. Use `erw [Category.assoc, WidePullback.lift_π, Category.id_comp]`. Conclude with `Category.comp_id _`. Use `erw [Category.assoc, WidePullback.lift_base, Category.id_comp]`. Conclude with `WidePullback.π_arrow _ _`.
+A detailed English derivation is pending.
 -/
 theorem iN_app_zero_iso {Y X : Scheme.{0}} (f : Y ⟶ X) : IsIso ((iN f).app (op ⦋0⦌)) := by
   refine ⟨⟨WidePullback.π (fun _ : Fin 1 => yoneda.map f) 0, ?_, ?_⟩⟩
@@ -49,7 +49,7 @@ theorem iN_app_zero_iso {Y X : Scheme.{0}} (f : Y ⟶ X) : IsIso ((iN f).app (op
       exact WidePullback.π_arrow _ _
 
 /- English proof (translation)
-Use `NatTrans.ext (funext fun x => ?_)` and prove the remaining obligations. Use `erw [NatTrans.comp_app, WidePullback.lift_base]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem gN_aug {D Y' E Y'' : CommRingCat.{0}} (φ' : D ⟶ Y') (e : D ⟶ E) (u : Y' ⟶ Y'') (φ'' : E ⟶ Y'')
     (h : φ' ≫ u = e ≫ φ'') :
@@ -59,9 +59,9 @@ theorem gN_aug {D Y' E Y'' : CommRingCat.{0}} (φ' : D ⟶ Y') (e : D ⟶ E) (u 
   rfl
 
 /- English proof (translation)
-Establish `hw : yoneda.map (Spec.map φ'') ≫ yoneda.map (Spec.map e) = yoneda.map (Spec.map u) ≫ yoneda.map (Spec.map φ')`. Rewrite using `[← Functor.map_comp, ← Functor.map_comp, ← Spec.map_comp, ← Spec.map_comp, h]`. Use `NatTrans.ext (funext fun x => ?_)` and prove the remaining obligations. Apply `WidePullback.hom_ext` to reduce the goal to its premises. Introduce `j erw [Category.assoc, WidePullback.lift_π, Category.assoc, WidePullback.lift_π, ← Category.assoc, WidePullback.lift_π, Category.id_comp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Category.comp_id _`. Use `erw [Category.assoc, WidePullback.lift_base, Category.assoc, WidePullback.lift_base, ← Category.assoc, WidePullback.lift_base]`. Conclude with `hw`.
+A detailed English derivation is pending.
 -/
 theorem gN_iN {D Y' E Y'' : CommRingCat.{0}} (φ' : D ⟶ Y') (e : D ⟶ E) (u : Y' ⟶ Y'') (φ'' : E ⟶ Y'')
     (h : φ' ≫ u = e ≫ φ'') :
@@ -97,7 +97,7 @@ def LvlRel : Prop := Hyp → ∀ (q : ℕ) [NeZero q] (i n : ℤ) {A Y : CommRin
     Function.Surjective (pull (ZMod q) (disc.map ((gN φ' e u φ'' hpo.w).app (op ⦋p⦌))) (tw q i) (m - 1))
 
 /- English proof (translation)
-Introduce `hH q _ i n A Y φ hq P hP hE hB D d hD Y' w φ' hpo E e Y'' u φ'' he hs hPE hpo'`. Use `⟨gN φ' e u φ'' hpo'.w, gN_aug _ _ _ _ _, iN (Spec.map e), iN (Spec.map u), gN_iN _ _ _ _ _, iN_aug _, iN_aug _, ?_⟩` and prove the remaining obligations. Conclude with `hF hH (ZMod q) (tw q i) n (gN φ' e u φ'' hpo'.w) (yoneda.map (Spec.map φ'')) (iN (Spec.map e)) (iN (Spec.map u)) (gN_iN _ _ _ _ _) (iN_app_zero_iso _) (iN_app_zero_iso _) (hL hH q i n φ hq P hP hE hB D d hD Y' w φ' hpo E e Y'' u φ'' he hs hPE hpo')`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem LevelInj_of (hF : Filt) (hL : LvlRel) : LateralTheory.E.RelDescPf.LevelInj := by
   intro hH q _ i n A Y φ hq P hP hE hB D d hD Y' w φ' hpo E e Y'' u φ'' he hs hPE hpo'

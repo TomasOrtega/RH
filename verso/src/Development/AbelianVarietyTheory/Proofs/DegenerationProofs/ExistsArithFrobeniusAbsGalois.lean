@@ -7,21 +7,17 @@ open IsLocalRing
 open IsLocalRing in
 
 /- English proof (translation)
-Use `haveI : Algebra.IsIntegral K Ω := inferInstance`. Use `letI : TopologicalSpace (integralClosure V Ω) := ⊥`. Use `haveI : DiscreteTopology (integralClosure V Ω) := ⟨rfl⟩`. Use `haveI : ContinuousSMul (Ω ≃ₐ[K] Ω) (integralClosure V Ω) := by`. Rewrite using `[continuousSMul_iff_stabilizer_isOpen]`.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Introduce `x`. Use `stabilizer_isOpen_of_isIntegral (K := K) (L := Ω) (x : Ω) using 2` and compare the differences between its conclusion and the goal. Use extensionality with `g`. Simplify using `[MulAction.mem_stabilizer_iff, Subtype.ext_iff]`. Use `haveI : Algebra.IsInvariant V (integralClosure V Ω) (Ω ≃ₐ[K] Ω) := by`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨fun x hx => ?_⟩` and prove the remaining obligations. Establish `hmem : (x : Ω) ∈ IntermediateField.fixedField (⊤ : Subgroup (Ω ≃ₐ[K] Ω))`. Introduce and unpack `⟨g, -⟩`. Conclude with `congrArg Subtype.val (hx g)`. Rewrite `hmem` using `[InfiniteGalois.fixedField_bot, IntermediateField.mem_bot]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `hmem`. Establish `hx2 : IsIntegral V (x : Ω)` using `x.2`. Rewrite `hx2` using `[← hk]`. Establish `hint : IsIntegral V k` using `(isIntegral_algHom_iff (IsScalarTower.toAlgHom V K Ω) (algebraMap K Ω).injective).mp hx2`. Take `⟨v, hv⟩` from `IsIntegrallyClosed.isIntegral_iff.mp hint`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `⟨v, Subtype.ext ?_⟩` and prove the remaining obligations. Simplify using `[IsScalarTower.algebraMap_apply V K Ω, hv, hk]`. Use `haveI : (maximalIdeal (integralClosure V Ω)).LiesOver (maximalIdeal V) := by`. Use `⟨(IsLocalRing.eq_maximalIdeal ?_).symm⟩` and prove the remaining obligations. Conclude with `Ideal.isMaximal_comap_of_isIntegral_of_isMaximal _`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `letI : Fintype (V ⧸ maximalIdeal V) := @Fintype.ofFinite _ hfin`. Use `letI : Field (V ⧸ maximalIdeal V) := Ideal.Quotient.field _`. Use `letI : Field (integralClosure V Ω ⧸ maximalIdeal (integralClosure V Ω)) := Ideal.Quotient.field _`. Use `haveI : Algebra.IsIntegral (V ⧸ maximalIdeal V) (integralClosure V Ω ⧸ maximalIdeal (integralClosure V Ω)) := inferInstance`. Use `haveI : Algebra.IsAlgebraic (V ⧸ maximalIdeal V) (integralClosure V Ω ⧸ maximalIdeal (integralClosure V Ω)) := Algebra.IsIntegral.isAlgebraic`.
-
-Take `⟨g, hg⟩` from `Ideal.Quotient.stabilizerHom_surjective_of_profinite (G := Ω ≃ₐ[K] Ω) (maximalIdeal V) (maximalIdeal (integralClosure V Ω)) (FiniteField.frobeniusAlgEquivOfAlgebraic (V ⧸ maximalIdeal V) _)`. Use `⟨g.1, fun x => ⟨g.1 • x, rfl, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq]`. Establish `h` using `congrArg (fun e => e (Ideal.Quotient.mk (maximalIdeal (integralClosure V Ω)) x)) hg`. Simplify using `only [Ideal.Quotient.stabilizerHom_apply, FiniteField.frobeniusAlgEquivOfAlgebraic_apply] at h`.
-
-Rewrite `h` using `[Fintype.card_eq_nat_card]`. Rewrite using `[map_pow]`. Conclude with `h`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.exists_arithFrobenius_absGalois (V K : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Field K] [CharZero K] [Algebra V K] [IsFractionRing V K] (hfin : Finite (IsLocalRing.ResidueField V)) (Ω : Type) [Field Ω] [Algebra K Ω] [IsAlgClosure K Ω] [Algebra V Ω] [IsScalarTower V K Ω] [IsLocalRing (integralClosure V Ω)] : ∃ φ : Ω ≃ₐ[K] Ω, ∀ x : integralClosure V Ω, ∃ y : integralClosure V Ω, (y : Ω) = φ x ∧ y - x ^ Nat.card (IsLocalRing.ResidueField V) ∈ IsLocalRing.maximalIdeal (integralClosure V Ω) := by
   classical

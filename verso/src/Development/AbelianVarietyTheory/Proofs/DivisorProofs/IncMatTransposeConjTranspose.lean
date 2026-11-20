@@ -46,14 +46,14 @@ def extMat (r₀ : Fin (R + 1)) (s₀ : Fin (S + 1)) (Y : Mat R S) : Mat (R + 1)
 variable (r₀ : Fin (R + 1)) (s₀ : Fin (S + 1))
 
 /- English proof (translation)
-Simplify using `[Matrix.mul_apply, incMat]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mul_incMat_apply {m : Type} (M : Matrix m (Ix (R + 1) (S + 1)) ℂ) (i : m) (c : Ix R S) :
     (M * incMat r₀ s₀) i c = M i (skipIx r₀ s₀ c) := by
   simp [Matrix.mul_apply, incMat]
 
 /- English proof (translation)
-Use extensionality with `c d`. Rewrite using `[mul_incMat_apply]`. Simplify using `[incMat, Matrix.one_apply, (skipIx_injective r₀ s₀).eq_iff, eq_comm]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem incMat_transpose_mul : (incMat r₀ s₀)ᵀ * incMat r₀ s₀ = 1 := by
   ext c d
@@ -61,25 +61,25 @@ theorem incMat_transpose_mul : (incMat r₀ s₀)ᵀ * incMat r₀ s₀ = 1 := b
   simp [incMat, Matrix.one_apply, (skipIx_injective r₀ s₀).eq_iff, eq_comm]
 
 /- English proof (translation)
-Rewrite using `[extMat, Matrix.mul_assoc, incMat_transpose_mul, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem extMat_mul_incMat (Y : Mat R S) : extMat r₀ s₀ Y * incMat r₀ s₀ = incMat r₀ s₀ * Y := by
   rw [extMat, Matrix.mul_assoc, incMat_transpose_mul, Matrix.mul_one]
 
 /- English proof (translation)
-Rewrite using `[extMat, Matrix.trace_mul_comm, ← Matrix.mul_assoc, incMat_transpose_mul, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_extMat (Y : Mat R S) : (extMat r₀ s₀ Y).trace = Y.trace := by
   rw [extMat, Matrix.trace_mul_comm, ← Matrix.mul_assoc, incMat_transpose_mul, Matrix.one_mul]
 
 /- English proof (translation)
-Apply the tactic sequence `rcases c with c | c <;> rcases d with d | d <;> simp [skipIx, sameBlock]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sameBlock_skipIx (c d : Ix R S) : sameBlock (skipIx r₀ s₀ c) (skipIx r₀ s₀ d) ↔ sameBlock c d := by
   rcases c with c | c <;> rcases d with d | d <;> simp [skipIx, sameBlock]
 
 /- English proof (translation)
-Simplify using `only [extMat, Matrix.mul_apply, incMat, Matrix.of_apply, Matrix.transpose_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem extMat_apply (Y : Mat R S) (a b : Ix (R + 1) (S + 1)) :
     extMat r₀ s₀ Y a b = ∑ c, ∑ d, (if a = skipIx r₀ s₀ c then 1 else 0) * Y c d * (if b = skipIx r₀ s₀ d then 1 else 0) := by
@@ -87,9 +87,9 @@ theorem extMat_apply (Y : Mat R S) (a b : Ix (R + 1) (S + 1)) :
   rw [Finset.sum_comm]
 
 /- English proof (translation)
-Introduce `a b hab`. Rewrite using `[extMat_apply]`. Use `Finset.sum_eq_zero fun c _ => Finset.sum_eq_zero fun d _ => ?_` and prove the remaining obligations. Distinguish the cases in `ha : a = skipIx r₀ s₀ c`. Distinguish the cases in `hb : b = skipIx r₀ s₀ d`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails.
 
-Substitute `ha hb` using the available equality. Rewrite using `[hY c d fun h => hab ((sameBlock_skipIx r₀ s₀ c d).2 h)]`. Simplify using the standard rewrite rules. Simplify using `[hb]`. Simplify using `[ha]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem isKC_extMat {Y : Mat R S} (hY : IsKC Y) : IsKC (extMat r₀ s₀ Y) := by
   intro a b hab
@@ -104,16 +104,16 @@ theorem isKC_extMat {Y : Mat R S} (hY : IsKC Y) : IsKC (extMat r₀ s₀ Y) := b
   · simp [ha]
 
 /- English proof (translation)
-Apply the tactic sequence `rcases a with i | i <;> rcases b with j | j <;>`. Apply the tactic sequence `simp [Jm, Formalism.UG.Jpq, Matrix.fromBlocks, Matrix.one_apply] <;> split_ifs <;> simp_all`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Jm_apply (a b : Ix R S) : Jm R S a b = if a = b then Sum.elim (fun _ => (1 : ℂ)) (fun _ => -1) a else 0 := by
   rcases a with i | i <;> rcases b with j | j <;>
     simp [Jm, Formalism.UG.Jpq, Matrix.fromBlocks, Matrix.one_apply] <;> split_ifs <;> simp_all
 
 /- English proof (translation)
-Use extensionality with `a c`. Rewrite using `[mul_incMat_apply, Matrix.mul_apply]`. Simplify using `only [Jm_apply, incMat, Matrix.of_apply]`. Rewrite using `[Finset.sum_eq_single c]`. Distinguish the cases in `h : a = skipIx r₀ s₀ c`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Apply the tactic sequence `subst h; rcases c with c | c <;> simp [skipIx]`. Simplify using `[h]`. Introduce `d _ hd`. Simplify using `[hd]`. Simplify using the standard rewrite rules.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem Jm_mul_incMat : Jm (R + 1) (S + 1) * incMat r₀ s₀ = incMat r₀ s₀ * Jm R S := by
   ext a c
@@ -127,7 +127,7 @@ theorem Jm_mul_incMat : Jm (R + 1) (S + 1) * incMat r₀ s₀ = incMat r₀ s₀
   · simp
 
 /- English proof (translation)
-Use extensionality with `c a`. Simplify using `only [Matrix.conjTranspose_apply, Matrix.transpose_apply, incMat, Matrix.of_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem incMat_conjTranspose : (incMat r₀ s₀)ᴴ = (incMat r₀ s₀)ᵀ := by
   ext c a
@@ -135,7 +135,7 @@ theorem incMat_conjTranspose : (incMat r₀ s₀)ᴴ = (incMat r₀ s₀)ᵀ := 
   split_ifs <;> simp
 
 /- English proof (translation)
-Use extensionality with `a c`. Simplify using `only [Matrix.conjTranspose_apply, Matrix.transpose_apply, incMat, Matrix.of_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem incMat_transpose_conjTranspose : ((incMat r₀ s₀)ᵀ)ᴴ = incMat r₀ s₀ := by
   ext a c
@@ -143,9 +143,9 @@ theorem incMat_transpose_conjTranspose : ((incMat r₀ s₀)ᵀ)ᴴ = incMat r�
   split_ifs <;> simp
 
 /- English proof (translation)
-Use extensionality with `a b`. Rewrite using `[Matrix.transpose_apply, Jm_apply, Jm_apply]`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[h, Ne.symm h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Jm_transpose (R S : ℕ) : (Jm R S)ᵀ = Jm R S := by
   ext a b
@@ -155,16 +155,16 @@ theorem Jm_transpose (R S : ℕ) : (Jm R S)ᵀ = Jm R S := by
   · simp [h, Ne.symm h]
 
 /- English proof (translation)
-Use `congrArg Matrix.transpose (Jm_mul_incMat r₀ s₀)` as an intermediate fact. Simplify `this` using `[Matrix.transpose_mul, Jm_transpose]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem incMat_transpose_mul_Jm : (incMat r₀ s₀)ᵀ * Jm (R + 1) (S + 1) = Jm R S * (incMat r₀ s₀)ᵀ := by
   have := congrArg Matrix.transpose (Jm_mul_incMat r₀ s₀)
   simpa [Matrix.transpose_mul, Jm_transpose] using this
 
 /- English proof (translation)
-Establish `hY' : Yᴴ * Jm R S + Jm R S * Y = 0` using `hY`. Use `show (extMat r₀ s₀ Y)ᴴ * Jm (R + 1) (S + 1) + Jm (R + 1) (S + 1) * extMat r₀ s₀ Y = 0`. Establish `e : (extMat r₀ s₀ Y)ᴴ = incMat r₀ s₀ * Yᴴ * (incMat r₀ s₀)ᵀ`. Rewrite using `[extMat, Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, incMat_conjTranspose, incMat_transpose_conjTranspose, Matrix.mul_assoc]`. Rewrite using `[e, extMat, Matrix.mul_assoc, Matrix.mul_assoc, incMat_transpose_mul_Jm, ← Matrix.mul_assoc (Jm _ _), ← Matrix.mul_assoc (Jm _ _), Jm_mul_incMat]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc]`. Use `_ = 0 := by rw [hY']; simp`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem extMat_mem_upq {Y : Mat R S} (hY : Y ∈ upq R S) : extMat r₀ s₀ Y ∈ upq (R + 1) (S + 1) := by
   have hY' : Yᴴ * Jm R S + Jm R S * Y = 0 := hY
@@ -184,11 +184,11 @@ open scoped Matrix.Norms.Operator in
 set_option backward.isDefEq.respectTransparency false in
 
 /- English proof (translation)
-Establish `hp : ∀ k : ℕ, A ^ k * ι = ι * B ^ k`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ, Matrix.mul_assoc, h, ← Matrix.mul_assoc, ih, Matrix.mul_assoc, ← pow_succ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Set `fR : Matrix m m ℂ →+ Matrix m n ℂ` to `{ toFun := fun X => X * ι, map_zero' := Matrix.zero_mul ι, map_add' := fun X Y => Matrix.add_mul X Y ι }`. Set `fL : Matrix n n ℂ →+ Matrix m n ℂ` to `{ toFun := fun X => ι * X, map_zero' := Matrix.mul_zero ι, map_add' := fun X Y => Matrix.mul_add ι X Y }`. Establish `h1` using `(NormedSpace.exp_series_hasSum_exp' (𝕂 := ℂ) A).map fR (continuous_id.matrix_mul continuous_const)`. Establish `h2` using `(NormedSpace.exp_series_hasSum_exp' (𝕂 := ℂ) B).map fL (continuous_const.matrix_mul continuous_id)`. Establish `e : (fR ∘ fun k : ℕ => ((k.factorial : ℂ)⁻¹) • A ^ k) = (fL ∘ fun k : ℕ => ((k.factorial : ℂ)⁻¹) • B ^ k)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `k`. Simplify using `only [Function.comp_apply, fR, fL, AddMonoidHom.coe_mk, ZeroHom.coe_mk, Matrix.smul_mul, Matrix.mul_smul, hp]`. Rewrite `h1` using `[e]`. Conclude with `h1.unique h2`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exp_mul_of_mul {m n : Type} [Fintype m] [DecidableEq m] [Fintype n] [DecidableEq n]
     {A : Matrix m m ℂ} {B : Matrix n n ℂ} {ι : Matrix m n ℂ} (h : A * ι = ι * B) :

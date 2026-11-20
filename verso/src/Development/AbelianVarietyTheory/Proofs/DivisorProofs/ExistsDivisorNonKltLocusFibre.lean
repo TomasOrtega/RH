@@ -29,7 +29,7 @@ open GlobalTheory.Adelic.LinSys
 namespace GlobalTheory.BoundaryFibre
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [zero_nsmul]`. Conclude with `CartierDiv.eff_zero`. Consider the case `succ n ih => rw [succ_nsmul]`. Conclude with `ih.add h`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem eff_nsmul {X : Scheme.{0}} [IsIntegral X] {D : CartierDiv X} (h : D.Eff) (n : ℕ) :
     (n • D).Eff := by

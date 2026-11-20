@@ -54,7 +54,7 @@ def pairMat (u : EigFrame Z φ x) (h : ⊤ ≤ x ⁻¹ᵁ U) (m : Fin n → Γ(o
     Matrix (Fin (Dw.mult τ)) (Fin n) R := of fun i a => tanEv Z.t (u.tan τ i) h (m a)
 
 /- English proof (translation)
-Use extensionality with `i a`. Conclude with `tanEv_comb E H Z.X Z.t R x U h _ _ (f.tan τ) _ _ (g.tan τ i) (f.co_spec g τ i) (m a)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem pairMat_co (f g : EigFrame Z φ x) (h : ⊤ ≤ x ⁻¹ᵁ U) (m : Fin n → Γ(omega Z.t.G, U)) (τ : E →+* ℂ) :
     pairMat g h m τ = (f.co g τ)ᵀ * pairMat f h m τ := by
@@ -62,7 +62,7 @@ theorem pairMat_co (f g : EigFrame Z φ x) (h : ⊤ ≤ x ⁻¹ᵁ U) (m : Fin n
   exact tanEv_comb E H Z.X Z.t R x U h _ _ (f.tan τ) _ _ (g.tan τ i) (f.co_spec g τ i) (m a)
 
 /- English proof (translation)
-Use extensionality with `i a`. Establish `key : ∀ v (hv : IsTanAtG Z.t x' v), v = spMap (Formalism.L2.Pj.dualMap ψ) ≫ f.v τ i → tanEv Z.t hv h' (m a) = ψ (tanEv Z.t (f.tan τ i) h (m a))`. Introduce and unpack `_ hv rfl`. Conclude with `TopChart.tanEv_map h (f.tan τ i) ψ hx h' (m a)`. Conclude with `key _ _ (hf τ i)`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem pairMat_map {f : EigFrame Z φ x} {g : EigFrame Z φ' x'} {ψ : R →+* R'} (hf : f.IsMap ψ g) (hx : spMap ψ ≫ x = x')
     (h : ⊤ ≤ x ⁻¹ᵁ U) (h' : ⊤ ≤ x' ⁻¹ᵁ U) (m : Fin n → Γ(omega Z.t.G, U)) (τ : E →+* ℂ) :
@@ -75,7 +75,7 @@ theorem pairMat_map {f : EigFrame Z φ x} {g : EigFrame Z φ' x'} {ψ : R →+* 
   exact key _ _ (hf τ i)
 
 /- English proof (translation)
-Take `⟨Φ, -⟩` from `TanPair.exists_tanM_equiv E H Z.X Z.t R x U h n m hm`. Simplify using `using Φ.finrank_eq.symm.trans (Module.finrank_eq_card_basis (eigBasis u))`.
+Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem card_eq [Nontrivial R] (u : EigFrame Z φ x) (h : ⊤ ≤ x ⁻¹ᵁ U) {m : Fin n → Γ(omega Z.t.G, U)} (hm : VB.IsFrame m) :
     n = ∑ τ : E →+* ℂ, Dw.mult τ := by
@@ -83,9 +83,9 @@ theorem card_eq [Nontrivial R] (u : EigFrame Z φ x) (h : ⊤ ≤ x ⁻¹ᵁ U) 
   simpa using Φ.finrank_eq.symm.trans (Module.finrank_eq_card_basis (eigBasis u))
 
 /- English proof (translation)
-Take `⟨Φ, hΦ⟩` from `TanPair.exists_tanM_equiv E H Z.X Z.t R x U h n m hm`. Set `L : ReciprocityTheory.ChartRestriction.G.PullbackSections.TanM x Z.t.G →ₗ[R] R` to `(dotProductBilin R R).flip v ∘ₗ Φ.toLinearMap`. Establish `hL : L = 0` using `(eigBasis u).ext fun p => by`. Rewrite using `[eigBasis_apply]`. Use `Eq.trans ?_ (congrFun (hv p.1) p.2)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `Φ (u.vec p.1 p.2) ⬝ᵥ v = _`. Conclude with `congrArg (· ⬝ᵥ v) (funext (hΦ _))`. Use function extensionality and compare the values at `a`. Use `LinearMap.congr_fun hL (Φ.symm (Pi.single a 1))` as an intermediate fact. Simplify `this` using `[L]`.
+Express the relevant assertion in an equivalent form by its definition. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_pairMat (u : EigFrame Z φ x) (h : ⊤ ≤ x ⁻¹ᵁ U) {m : Fin n → Γ(omega Z.t.G, U)} (hm : VB.IsFrame m)
     {v : Fin n → R} (hv : ∀ τ, pairMat u h m τ *ᵥ v = 0) : v = 0 := by
@@ -106,9 +106,9 @@ def dualMat (u : EigFrame Z σ (y.1 ≫ genι Z)) (h : ⊤ ≤ (y.1 ≫ genι Z)
     Matrix (Fin n) (Fin n) ℂ := ∑ τ : E →+* ℂ, chg (pairMat u h m τ) (G.gram y u τ)⁻¹
 
 /- English proof (translation)
-Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `hT` using `f.isUnit_det_co g τ`. Establish `hT' : IsUnit (f.co g τ)ᴴ.det` using `by rw [det_conjTranspose]; exact hT.star`. Rewrite using `[pairMat_co f g, G.change y f g, ← chg_chg]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[chg, transpose_transpose, show (f.co g τ)ᵀᴴᵀ = (f.co g τ)ᴴ from rfl, Matrix.mul_inv_rev, Matrix.mul_inv_rev, mul_nonsing_inv_cancel_left _ _ hT, nonsing_inv_mul_cancel_right _ _ hT']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dualMat_eq (f g : EigFrame Z σ (y.1 ≫ genι Z)) (h : ⊤ ≤ (y.1 ≫ genι Z) ⁻¹ᵁ U) (m : Fin n → Γ(omega Z.t.G, U)) :
     dualMat G g h m = dualMat G f h m := by
@@ -121,7 +121,7 @@ theorem dualMat_eq (f g : EigFrame Z σ (y.1 ≫ genι Z)) (h : ⊤ ≤ (y.1 ≫
     mul_nonsing_inv_cancel_left _ _ hT, nonsing_inv_mul_cancel_right _ _ hT']
 
 /- English proof (translation)
-Simplify using `only [form_eq_sum, Matrix.sum_apply, Finset.mul_sum, Finset.sum_mul]`. Conclude with `(Finset.sum_congr rfl fun _ _ => Finset.sum_comm).trans Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem form_sum {ι m : Type} [Fintype ι] [Fintype m] (M : ι → Matrix m m ℂ) (v w : m → ℂ) :
     form (∑ i, M i) v w = ∑ i, form (M i) v w := by
@@ -129,9 +129,9 @@ theorem form_sum {ι m : Type} [Fintype ι] [Fintype m] (M : ι → Matrix m m �
   exact (Finset.sum_congr rfl fun _ _ => Finset.sum_comm).trans Finset.sum_comm
 
 /- English proof (translation)
-Use `posDef_iff.2 ⟨?_, fun v hv => ?_⟩` and prove the remaining obligations. Use `Finset.sum_induction _ IsHermitian (fun _ _ => IsHermitian.add) isHermitian_zero fun τ _ => ?_` and prove the remaining obligations. Conclude with `isHermitian_mul_mul_conjTranspose (pairMat u h m τ)ᵀ (G.pos y u τ).inv.isHermitian`. Take `⟨τ, hτ⟩` from `not_forall.1 fun h0 => hv (eq_zero_of_pairMat u h hm h0)`. Rewrite using `[dualMat, form_sum]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [form_chg]`. Use `Finset.sum_pos' (fun τ _ => ?_) ⟨τ, Finset.mem_univ _, (posDef_iff.1 (G.pos y u τ).inv).2 _ hτ⟩` and prove the remaining obligations. Distinguish the cases in `h0 : pairMat u h m τ *ᵥ v = 0`. Simplify using `[h0, form_eq_sum]`. Conclude with `((posDef_iff.1 (G.pos y u τ).inv).2 _ h0).le`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem posDef_dualMat (u : EigFrame Z σ (y.1 ≫ genι Z)) (h : ⊤ ≤ (y.1 ≫ genι Z) ⁻¹ᵁ U) {m : Fin n → Γ(omega Z.t.G, U)}
     (hm : VB.IsFrame m) : (dualMat G u h m).PosDef := by
@@ -147,11 +147,11 @@ theorem posDef_dualMat (u : EigFrame Z σ (y.1 ≫ genι Z)) (h : ⊤ ≤ (y.1 �
     · exact ((posDef_iff.1 (G.pos y u τ).inv).2 _ h0).le
 
 /- English proof (translation)
-Substitute `e` using the available equality. Use function extensionality and compare the values at `i`. Establish `hW : z ∈ ptsIn Z.s σ₀ (U ⊓ ch.U)` using `mem_ptsIn_inf.2 ⟨hU, h⟩`. Set `L : Γ(omega Z.t.G, U ⊓ ch.U) →+ ℂ` to `AddMonoidHom.mk' (tanEv Z.t (u.tan τ i) hW) (tanEv_add Z.t _ hW)`. Use `Eq.trans ?_ (tanEv_resM Z.t (u.tan τ i) hW inf_le_left s)` and prove the remaining obligations.
+Substitute using the available equality. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← (ch.isFrame.basis inf_le_right).sum_repr (resM _ inf_le_left s)]`. Use `Eq.trans ?_ (map_sum L _ _).symm` and prove the remaining obligations. Rewrite using `[mulVec, dotProduct]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `Eq.trans ?_ (tanEv_smul Z.t _ hW _ _).symm` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[IsFrame.basis_apply, tanEv_resM Z.t (u.tan τ i) hW inf_le_right, mul_comm, Chart.crd, ev_eq hW]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pairMat_mulVec_crd {σ₀ : Oz →+* ℂ} {z : CxPts Z.s σ₀} {x : Sp ℂ ⟶ Z.X} (e : z.1 = x) (u : EigFrame Z σ x)
     (ch : Chart (omega Z.t.G) n) (h : ⊤ ≤ x ⁻¹ᵁ ch.U) (hU : ⊤ ≤ x ⁻¹ᵁ U) (s : Γ(omega Z.t.G, U)) (τ : E →+* ℂ) :
@@ -170,7 +170,7 @@ theorem pairMat_mulVec_crd {σ₀ : Oz →+* ℂ} {z : CxPts Z.s σ₀} {x : Sp 
   rfl
 
 /- English proof (translation)
-Rewrite using `[dualMat, dualMat, chg, Matrix.mul_sum, Matrix.sum_mul]`. Use `Finset.sum_congr rfl fun τ _ => Eq.trans ?_ (chg_chg _ _ _).symm` and prove the remaining obligations. Use `congr 1`. Use extensionality with `i a`. Conclude with `(congrFun (pairMat_mulVec_crd e u ch h h' (ch'.e a) τ) i).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem dualMat_chg {σ₀ : Oz →+* ℂ} {z : CxPts Z.s σ₀} (e : z.1 = y.1 ≫ genι Z) (u : EigFrame Z σ (y.1 ≫ genι Z))
     (ch ch' : Chart (omega Z.t.G) n) (h : ⊤ ≤ (y.1 ≫ genι Z) ⁻¹ᵁ ch.U) (h' : ⊤ ≤ (y.1 ≫ genι Z) ⁻¹ᵁ ch'.U) :
@@ -186,7 +186,7 @@ end Pair
 variable {Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c (algebraMap (𝓞 c.F) c.F)}
 
 /- English proof (translation)
-The claim follows from `have : FiniteDimensional ℚ c.F := c.fin have : NumberField c.F := {} MorphismProperty.of_isPullback (P := @IsPreimmersion) (IsPullback.of_hasPullback _ _).flip (IsPreimmersion.of_isLocalization (R := 𝓞 c.F) (S := c.F) (nonZeroDivisors (𝓞 c.F)))`.
+A detailed English derivation is pending.
 -/
 theorem isPreimmersion_genι (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c (algebraMap (𝓞 c.F) c.F)) : IsPreimmersion (genι Z) :=
   have : FiniteDimensional ℚ c.F := c.fin
@@ -195,9 +195,9 @@ theorem isPreimmersion_genι (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.M
     (IsPreimmersion.of_isLocalization (R := 𝓞 c.F) (S := c.F) (nonZeroDivisors (𝓞 c.F)))
 
 /- English proof (translation)
-Establish `hσ : Function.Injective σ`. Rewrite using `[RingHom.injective_iff_ker_eq_bot]`. Use `Ideal.eq_bot_of_comap_eq_bot (R := ℤ) ?_` and prove the remaining obligations. Rewrite using `[RingHom.comap_ker, ← RingHom.injective_iff_ker_eq_bot]`. Conclude with `RingHom.injective_int _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨IsFractionRing.lift (K := F) hσ, RingHom.ext fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, IsFractionRing.lift_algebraMap]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ext {F : Type} [Field F] [NumberField F] (σ : 𝓞 F →+* ℂ) :
     ∃ σ' : F →+* ℂ, σ = σ'.comp (algebraMap (𝓞 F) F) := by
@@ -210,7 +210,7 @@ theorem exists_ext {F : Type} [Field F] [NumberField F] (σ : 𝓞 F →+* ℂ) 
   rw [RingHom.comp_apply, IsFractionRing.lift_algebraMap]
 
 /- English proof (translation)
-Establish `: FiniteDimensional ℚ c.F` using `c.fin`. Establish `: NumberField c.F` using `{}`. Take `⟨σ', rfl⟩` from `exists_ext σ`. Establish `e : z.1 ≫ Z.s = spMap σ' ≫ spMap (algebraMap (𝓞 c.F) c.F)` using `z.2.trans (ReciprocityTheory.ChartRestriction.G.PullbackSections.spMap_comp_spMap _ _).symm`. Conclude with `⟨σ', ⟨Limits.pullback.lift _ _ e, Limits.pullback.lift_snd _ _ _⟩, (Limits.pullback.lift_fst _ _ _).symm⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_lift {σ : 𝓞 c.F →+* ℂ} (z : CxPts Z.s σ) :
     ∃ (σ' : c.F →+* ℂ) (y : CxPts (genStr Z) σ'), z.1 = y.1 ≫ genι Z := by
@@ -224,7 +224,7 @@ theorem exists_lift {σ : 𝓞 c.F →+* ℂ} (z : CxPts Z.s σ) :
 variable (G : ∀ σ', EigMet Z σ') {n : ℕ}
 
 /- English proof (translation)
-Use `isPreimmersion_genι Z` as an intermediate fact. Establish `e'` using `(cancel_mono _).1 e`. Take `rfl : σ = σ'` from `EigLoc.spMap_inj (y.2.symm.trans (e' ▸ y'.2))`. Take `rfl : y = y'` from `Subtype.ext e'`. Conclude with `dualMat_eq _ _ _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem dualMat_congr {σ σ' : c.F →+* ℂ} {y : CxPts (genStr Z) σ} {y' : CxPts (genStr Z) σ'}
     (e : y.1 ≫ genι Z = y'.1 ≫ genι Z) (u : EigFrame Z σ (y.1 ≫ genι Z)) (u' : EigFrame Z σ' (y'.1 ≫ genι Z))
@@ -242,9 +242,7 @@ def HasDual {σ : 𝓞 c.F →+* ℂ} (h : Met Z.s σ (omega Z.t.G) n) : Prop :=
       h.G ch z = dualMat (G σ') u hy ch.e
 
 /- English proof (translation)
-Use `choose σ' y hy using fun z : CxPts Z.s σ => exists_lift z`. Establish `u` using `fun z => (EigLoc.exists_eigFrame _ _ _ _ _ _ _ _ Z ℂ _ _ (y z).2).some`. Establish `hm : ∀ z, ⊤ ≤ ((y z).1 ≫ genι Z) ⁻¹ᵁ (hV.pick z).U` using `fun z => hy z ▸ hV.mem_pick z`. Use `⟨.ofPt hV hV.pick hV.mem_pick (fun z => dualMat (G _) (u z) (hm z) (hV.pick z).e) fun z => posDef_dualMat _ _ _ (hV.pick z).isFrame, fun z σ'' y' e u' ch h => ?_⟩` and prove the remaining obligations. Establish `h' : ⊤ ≤ ((y z).1 ≫ genι Z) ⁻¹ᵁ ch.U` using `by rw [← hy, e]; exact h`.
-
-Conclude with `(dualMat_chg _ (hy z) _ _ _ _ h').symm.trans (dualMat_congr G ((hy z).symm.trans e) _ _ _ _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_hasDual (hV : IsVB (omega Z.t.G) n) (σ : 𝓞 c.F →+* ℂ) : ∃ h : Met Z.s σ (omega Z.t.G) n, HasDual G h := by
   choose σ' y hy using fun z : CxPts Z.s σ => exists_lift z
@@ -258,7 +256,7 @@ theorem exists_hasDual (hV : IsVB (omega Z.t.G) n) (σ : 𝓞 c.F →+* ℂ) : �
 variable {G}
 
 /- English proof (translation)
-The claim follows from `Met.isConj_of_exists fun z z₁ e => by obtain ⟨σ', y, hy⟩ := exists_lift z obtain ⟨u⟩ := EigLoc.exists_eigFrame _ _ _ _ _ _ _ _ Z ℂ _ _ y.2 let y₁ : CxPts (genStr Z) ((starRingEnd ℂ).comp σ') := ⟨spMap (starRingEnd ℂ) ≫ y.1, by rw [Category.assoc, y.2, ReciprocityTheory.ChartRestr …`.
+A detailed English derivation is pending.
 -/
 theorem HasDual.isConj (hG : GlobalTheory.ArLieBase.EigConj Z G) {σ σ₁ : 𝓞 c.F →+* ℂ} {h : Met Z.s σ (omega Z.t.G) n}
     {h₁ : Met Z.s σ₁ (omega Z.t.G) n} (k : HasDual G h) (k₁ : HasDual G h₁) : h.IsConj h₁ :=
@@ -281,9 +279,9 @@ theorem HasDual.isConj (hG : GlobalTheory.ArLieBase.EigConj Z G) {σ σ₁ : �
     exact congrArg _ (congrArg transpose (dualGram_map_star _))
 
 /- English proof (translation)
-Introduce `σ' y z e u U W hU f f' hz`. Establish `hc` using `h.isVB.mem_pick z`. Establish `hm : ⊤ ≤ (y.1 ≫ genι Z) ⁻¹ᵁ (h.isVB.pick z).U` using `e ▸ hc`. Establish `hU' : ⊤ ≤ (y.1 ≫ genι Z) ⁻¹ᵁ U` using `e ▸ hz`. Rewrite using `[Met.form_eq _ _ hc _ _ hz, k _ z _ y e u _ hm, dualMat, form_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[form_chg, pairMat_mulVec_crd e u _ hm hU', pairMat_mulVec_crd e u _ hm hU']`. Simplify using `only [(tanEv_dUnit_eq _ _ _ _).2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isDualEig_of_hasDual {h : VMetric Z.s (omega Z.t.G) n} (k : ∀ σ, HasDual G (h.met σ)) : IsDualEig G h := by
   intro σ' y z e u U W hU f f' hz
@@ -296,7 +294,7 @@ theorem isDualEig_of_hasDual {h : VMetric Z.s (omega Z.t.G) n} (k : ∀ σ, HasD
   simp only [(tanEv_dUnit_eq _ _ _ _).2]
 
 /- English proof (translation)
-Simplify using `using ((vInfAt_iff_cInfAt.2 h₁).prodMk (vInfAt_iff_cInfAt.2 h₂)).comp_contDiff (Ψ := fun x => (x.1 : ℂ) + (x.2 : ℂ) * Complex.I) ((Complex.ofRealCLM.contDiff.comp contDiff_fst).add ((Complex.ofRealCLM.contDiff.comp contDiff_snd).mul contDiff_const))`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem vInfAt_of_re_im {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+* ℂ} {g : CxPts p σ → ℂ}
     {y : CxPts p σ} (h₁ : CInfAt (fun z => (g z).re) y) (h₂ : CInfAt (fun z => (g z).im) y) : VInfAt g y := by
@@ -306,9 +304,9 @@ theorem vInfAt_of_re_im {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k
       ((Complex.ofRealCLM.contDiff.comp contDiff_snd).mul contDiff_const))
 
 /- English proof (translation)
-Take `⟨V₀, hV₀, φ, F, hw₀, hφ, -⟩` from `EigSpread.exists_stable_eigFrame _ _ _ _ _ _ _ _ Z w`. Take `⟨V, hV, hwV, hle⟩` from `exists_isAffineOpen_mem_and_subset (x := w) (U := V₀ ⊓ U) ⟨hw₀, hw⟩`. Establish `h₀ : V ≤ V₀` using `fun z hz => (hle hz).1`. Establish `hρ : spMap (resG _ h₀) ≫ affPt hV₀ = LogKS.chart ⟨V, hV⟩` using `spMap_affPt hV₀ hV h₀`. Take `⟨F', -⟩` from `F.exists_isMap (resG _ h₀) rfl (x' := LogKS.chart ⟨V, hV⟩ ≫ genι Z) (by rw [← hρ]; exact Category.assoc _ _ _)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨⟨V, hV⟩, _, F', hwV, fun z hz => (hle hz).2, ?_⟩` and prove the remaining obligations. Rewrite using `[← hρ, Category.assoc, ← ReciprocityTheory.ChartRestriction.G.PullbackSections.spMap_comp_spMap]`. Conclude with `congrArg _ hφ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_frame (w : gen Z) (U : (gen Z).Opens) (hw : w ∈ U) : ∃ (V : (gen Z).affineOpens) (φ : c.F →+* Γ(gen Z, V.1))
     (_ : EigFrame Z φ (LogKS.chart V ≫ genι Z)), w ∈ V.1 ∧ V.1 ≤ U ∧ LogKS.chart V ≫ genStr Z = spMap φ := by
@@ -323,21 +321,19 @@ theorem exists_frame (w : gen Z) (U : (gen Z).Opens) (hw : w ∈ U) : ∃ (V : (
   exact congrArg _ hφ
 
 /- English proof (translation)
-Establish `: FiniteDimensional ℚ c.F` using `c.fin`. Establish `: NumberField c.F` using `{}`. Introduce `ch z hz`. Take `⟨σ', y, hy⟩` from `exists_lift z`. Establish `hσ : ∀ w : CxPts (genStr Z) σ', (w.1 ≫ genι Z) ≫ Z.s = spMap σ` using `fun w => by`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← z.2, hy, Category.assoc, Category.assoc, Limits.pullback.condition, reassoc_of% w.2, reassoc_of% y.2]`. Set `m : CxPts (genStr Z) σ' → CxPts Z.s σ` to `fun w => ⟨_, hσ w⟩`. Take `rfl : m y = z` from `Subtype.ext hy.symm`. Take `⟨V, φ, F, hyV, hle, hφ⟩` from `exists_frame (y.1 (IsLocalRing.closedPoint ℂ)) (genι Z ⁻¹ᵁ ch.U) (mem_ptsIn.1 hz)`. Establish `hyV' : y ∈ ptsIn (genStr Z) σ' V.1` using `mem_ptsIn.2 hyV`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hF : ⊤ ≤ (LogKS.chart V ≫ genι Z) ⁻¹ᵁ ch.U` using `(le_preimage_affPt V.2).trans ((LogKS.chart V).preimage_mono hle)`. Use `choose g hre him hg using fun τ a b => hG σ' V φ F τ a b hφ`. Establish `ho : IsOpen (Set.univ ∩ ptsIn (genStr Z) σ' V.1)` using `isOpen_univ.inter (isOpen_ptsIn _)`. Establish `key : ∀ w ∈ ptsIn (genStr Z) σ' V.1, (∀ τ, IsUnit (of (g τ · · w)).det) ∧ h.G ch (m w) = ∑ τ : E →+* ℂ, chg (of fun i a => CxPts.ev (genStr Z) σ' V.1 (pairMat F hF ch.e τ i a) w) (of (g τ · · w))⁻¹`. Introduce `w hw`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hov : σ' = (evHom hw).comp φ` using `EigLoc.spMap_inj (w.2.symm.trans (by`. Rewrite using `[← ReciprocityTheory.ChartRestriction.G.PullbackSections.spMap_comp_spMap, ← hφ, ← Category.assoc, spMap_evHom hw]))`. Establish `hx : w.1 ≫ genι Z = spMap (evHom hw) ≫ LogKS.chart V ≫ genι Z` using `by rw [← Category.assoc, spMap_evHom hw]`. Take `⟨f, hf⟩` from `F.exists_isMap (evHom hw) hov hx`. Establish `hgr : ∀ τ, (G σ').gram w f τ = of (g τ · · w)` using `fun τ => Matrix.ext fun a b => hg τ a b w trivial hw f hf`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : ⊤ ≤ (w.1 ≫ genι Z) ⁻¹ᵁ ch.U` using `le_trans hw (w.1.preimage_mono hle)`. Use `⟨fun τ => hgr τ ▸ ((G σ').pos w f τ).det_pos.ne'.isUnit, ?_⟩` and prove the remaining obligations. Rewrite using `[k (m w) σ' w rfl f ch hm, dualMat]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[hgr, pairMat_map hf hx.symm hF]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use extensionality with `i a`. Conclude with `(ev_eq hw _).symm`. Establish `hM : MInfAt (fun w => h.G ch (m w)) y`. Use `MInfAt.congr (fun a b => ?_) (Filter.eventually_of_mem ((isOpen_ptsIn _).mem_nhds hyV') fun w hw => (key w hw).2)` and prove the remaining obligations.
+By extensionality, compare the relevant components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Matrix.sum_apply]`. Use `(vInfAt_pi fun τ => ?_).comp_contDiff (Ψ := fun v : (E →+* ℂ) → ℂ => ∑ τ, v τ) (ContDiff.sum fun τ _ => contDiff_apply _ _ τ)` and prove the remaining obligations. Establish `h₁ : MInfAt (fun w => of (g τ · · w)) y` using `fun a b => vInfAt_of_re_im ((cInfAt_iff_smoothOn _ ho).2 (hre τ a b) y ⟨trivial, hyV'⟩) ((cInfAt_iff_smoothOn _ ho).2 (him τ a b) y ⟨trivial, hyV'⟩)`. Conclude with `MInfAt.chg (A := fun w => of fun i a => CxPts.ev (genStr Z) σ' V.1 (pairMat F hF ch.e τ i a) w) (H := fun w => (of (g τ · · w))⁻¹) (fun i a => vInfAt_ev _ hyV') (fun i j => h₁.dualGram ((key y hyV').1 τ) j i) a b`. Introduce `a b`.
-
-Establish `hb` using `OnModelCInf.baseChange_cInfAt c.F Z.X (gen Z) Z.s (genStr Z) (genι Z) (IsPullback.of_hasPullback _ _) σ' σ m fun _ => rfl`. Conclude with `vInfAt_of_re_im (hb _ y ((hM a b).comp_contDiff Complex.reCLM.contDiff)) (hb _ y ((hM a b).comp_contDiff Complex.imCLM.contDiff))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem HasDual.isCInf [SmoothOfRelativeDimension Dw.dim (genStr Z)] (hG : ∀ σ', (G σ').SmoothOn (manifold Z σ') Set.univ)
     {σ : 𝓞 c.F →+* ℂ} {h : Met Z.s σ (omega Z.t.G) n} (k : HasDual G h) : h.IsCInf := by
@@ -388,15 +384,15 @@ theorem HasDual.isCInf [SmoothOfRelativeDimension Dw.dim (genStr Z)] (hG : ∀ �
     (hb _ y ((hM a b).comp_contDiff Complex.imCLM.contDiff))
 
 /- English proof (translation)
-Establish `: FiniteDimensional ℚ c.F` using `c.fin`. Establish `: NumberField c.F` using `{}`. Use `Z.t.semi` as an intermediate fact. Use `Z.t.semi.smooth` as an intermediate fact. Use `Z.flat` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x`. Take `⟨U, n, m, hx, hm⟩` from `LieVB.exists_isFrame_omega Z.t.G x`. Set `η` to `spMap (algebraMap (𝓞 c.F) c.F) (IsLocalRing.closedPoint c.F)`. Establish `hη : η ⤳ Z.s x` using `(PrimeSpectrum.le_iff_specializes _ _).1 fun a ha => by`. Take `rfl : a = 0` from `IsFractionRing.injective (𝓞 c.F) c.F (by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Simplify using `using (IsLocalRing.maximalIdeal_eq_bot (R := c.F)).le ha)`. Conclude with `zero_mem _`. Take `⟨x', hx', e⟩` from `Flat.generalizingMap Z.s hη`. Choose the witnesses or unpack the hypotheses as in `⟨w, rfl⟩ : x' ∈ Set.range (genι Z) := by`. Rewrite using `[Scheme.Pullback.range_fst]`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨_, e.symm⟩`. Take `⟨K, _, _, p, t, rfl⟩` from `GlobalTheory.FlagCptBase.exists_geomPt _ w`. Take `⟨u⟩` from `EigLoc.exists_eigFrame _ _ _ _ _ _ _ _ Z K (Spec.preimage (p ≫ genStr Z)).hom p (Spec.map_preimage _).symm`. Establish `hU : ⊤ ≤ (p ≫ genι Z) ⁻¹ᵁ U` using `fun t' _ => by`. Rewrite using `[Subsingleton.elim (α := PrimeSpectrum K) t' t]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hx'.mem_open U.2 hx`. Take `rfl` from `card_eq u hU hm`. Conclude with `⟨U, m, hx, hm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isVB_omega (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c (algebraMap (𝓞 c.F) c.F)) :
     IsVB (omega Z.t.G) (∑ τ : E →+* ℂ, Dw.mult τ) := by
@@ -425,7 +421,7 @@ theorem isVB_omega (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c 
   exact ⟨U, m, hx, hm⟩
 
 /- English proof (translation)
-Use `choose h k using exists_hasDual G hV`. Conclude with `⟨⟨hV, h, fun σ σ' => (k σ).isConj hc (k σ')⟩, fun σ => (k σ).isCInf hG, isDualEig_of_hasDual k⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isDualEig [SmoothOfRelativeDimension Dw.dim (genStr Z)] (hV : IsVB (omega Z.t.G) n)
     (hc : GlobalTheory.ArLieBase.EigConj Z G) (hG : ∀ σ', (G σ').SmoothOn (manifold Z σ') Set.univ) :
@@ -436,13 +432,13 @@ theorem exists_isDualEig [SmoothOfRelativeDimension Dw.dim (genStr Z)] (hV : IsV
 end Free
 
 /- English proof (translation)
-Establish `hsm` using `O.s.T.smooth`. Take `⟨X, j, hoi, hj, hr⟩` from `GlobalTheory.CompOfVar.exists_var_comp _ _ _ _ _ _ _ _ O.s.T.Z _ O.κ.e hsm (O.Φ.C c).Y (O.Φ.C c).π (O.Φ.C c).π_str`. Set `f : (O.Φ.C c).Y.X ⟶ X.X` to `IsOpenImmersion.lift j (O.Φ.C c).π hr`. Establish `hf : f ≫ j = (O.Φ.C c).π` using `IsOpenImmersion.lift_fac _ _ _`. Establish `hrange : Set.range j = Set.range (O.Φ.C c).π`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Set.Subset.antisymm ?_ hr` and prove the remaining obligations. Introduce and unpack `_ ⟨z, rfl⟩`. Take `⟨K, _, _, x, t, rfl⟩` from `GlobalTheory.FlagCptBase.exists_geomPt _ z`. Set `χ : O.κ.c.F →+* K` to `(Spec.preimage (x ≫ j ≫ genStr O.s.T.Z)).hom`. Establish `hχ : x ≫ j ≫ genStr O.s.T.Z = spMap χ` using `(Spec.map_preimage _).symm`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨g⟩` from `GlobalTheory.ShFam.EigLoc.exists_eigFrame _ _ _ _ _ _ _ _ O.s.T.Z K χ (x ≫ j) (by rw [Category.assoc, hχ])`. Rewrite `g` using `[Category.assoc]`. Take `⟨p, ⟨hp, -⟩, -⟩` from `GlobalTheory.CarryAll.carries_everywhere _ _ _ _ _ _ _ _ O.s.T.Z _ O.κ.e _ _ _ O.Φ c X j hoi hj f hf K χ x hχ g`. Use `⟨p t, ?_⟩` and prove the remaining obligations. Rewrite using `[← hf, ← hp]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Scheme.Hom.comp_apply]`. Establish `h : SmoothOfRelativeDimension (0 + O.S.Dw.dim) (j ≫ genStr O.s.T.Z)` using `inferInstance`. Rewrite using `[topologicalKrullDim_eq_of_isEmbedding j.isEmbedding hrange, GlobalTheory.HSApp.BigMoving.dim_eq _ X.X _ _ h, zero_add, Datum.dim, dimGr, GlobalTheory.ShFam.CmDim.card_tau, O.S.p_eq, show O.S.Dw.q = O.N - O.j by have := O.S.rank_eq; have := O.S.p_eq; omega, mul_assoc]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem dim_range {D : D7} (O : Setup D) (c : O.s.Comp) :
     topologicalKrullDim (Set.range (O.Φ.C c).π) = (dimGr D.what₂.Tau O.N O.j : ℕ) := by
@@ -470,11 +466,11 @@ theorem dim_range {D : D7} (O : Setup D) (c : O.s.Comp) :
     show O.S.Dw.q = O.N - O.j by have := O.S.rank_eq; have := O.S.p_eq; omega, mul_assoc]
 
 /- English proof (translation)
-Use `set j := Limits.pullback.fst s (spMap (algebraMap (𝓞 F) F)) with hj`. Use `set b := redι (clo (j w)) with hb`. Establish `: IsPreimmersion j` using `MorphismProperty.of_isPullback (P := @IsPreimmersion) (IsPullback.of_hasPullback _ _).flip (IsPreimmersion.of_isLocalization (R := 𝓞 F) (S := F) (nonZeroDivisors (𝓞 F)))`. Establish `hpb : IsPullback (Limits.pullback.fst b j) (Limits.pullback.snd b j ≫ Limits.pullback.snd _ _) (b ≫ s) (spMap (algebraMap (𝓞 F) F))` using `(IsPullback.of_hasPullback b j).paste_vert (IsPullback.of_hasPullback _ _)`. Establish `hr : Set.range (Limits.pullback.snd b j) = closure {w}`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Scheme.Pullback.range_snd, hb, range_redι, j.isEmbedding.isInducing.closure_eq_preimage_closure_image, Set.image_singleton]`. Both sides reduce to the same expression. Take `⟨v, -⟩ : w ∈ Set.range (Limits.pullback.snd b j)` from `hr ▸ subset_closure rfl`. Establish `: Nonempty (⊤ : (Limits.pullback b j).Opens)` using `⟨⟨v, trivial⟩⟩`. Establish `hc : CharZero Γ(Limits.pullback b j, ⊤)` using `charZero_of_injective_ringHom ((Limits.pullback.snd b j ≫ Limits.pullback.snd _ _).appTop.hom.comp (Scheme.ΓSpecIso (.of F)).inv.hom).injective`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc'` using `(Limits.pullback.fst b j).appTop.hom.charZero`. Establish `hproj : IsProjOver (b ≫ s)`. Take `⟨N, i, _, hi⟩` from `hs`. Conclude with `⟨N, b ≫ i, inferInstance, by rw [Category.assoc, hi]⟩`. Conclude with `⟨inferInstance, inferInstance, inferInstance, hproj, (flat_int_iff_charZero _).2 hc', CurveClosure.dim_eq_of_genFibre F _ _ _ _ _ d hproj hc' hpb ((topologicalKrullDim_eq_of_isEmbedding (Limits.pullback.snd b j).isEmbedding hr).symm.trans hd)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isArithVar_clo {F : Type} [Field F] [NumberField F] {T : Scheme.{0}} (s : T ⟶ Sp (𝓞 F)) (hs : IsProjOver s)
     (w : ↥(Limits.pullback s (spMap (algebraMap (𝓞 F) F)))) {d : ℕ}
@@ -503,7 +499,7 @@ theorem isArithVar_clo {F : Type} [Field F] [NumberField F] {T : Scheme.{0}} (s 
       ((topologicalKrullDim_eq_of_isEmbedding (Limits.pullback.snd b j).isEmbedding hr).symm.trans hd)⟩
 
 /- English proof (translation)
-Establish `h` using `(genericPoint_spec (Scheme.IdealSheafData.vanishingIdeal (clo z)).subscheme).image (redι (clo z)).continuous`. Rewrite `h` using `[Set.image_univ, range_redι]`. Conclude with `h.eq (closure_closure (s := {z})).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem redι_genericPoint {T : Scheme.{0}} (z : T) : redι (clo z) (genericPoint _) = z := by
   have h := (genericPoint_spec (Scheme.IdealSheafData.vanishingIdeal (clo z)).subscheme).image (redι (clo z)).continuous
@@ -511,9 +507,9 @@ theorem redι_genericPoint {T : Scheme.{0}} (z : T) : redι (clo z) (genericPoin
   exact h.eq (closure_closure (s := {z})).symm
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.LetterCount.two_mul_sum_mult O.S.Dw`. Rewrite `h` using `[Embeddings.card, O.S.rank_eq, IsTotallyComplex.finrank]`. Establish `h₁` using `GlobalTheory.ShFam.CmDim.card_tau D`. Establish `h₂ : Fintype.card D.what₂.Tau = D.R.f`. Rewrite using `[← Nat.card_eq_fintype_card, Nat.card_congr D.eTau]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(factCardPsi D.R D.host).1`. Rewrite `h₁` using `[IsTotallyComplex.finrank, Nat.mul_div_cancel_left _ two_pos, h₂]`. Rewrite `h` using `[← h₁, mul_assoc]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem sum_mult {D : D7} (O : Setup D) : ∑ τ, O.S.Dw.mult τ = D.R.f * O.N := by
   have h := GlobalTheory.LetterCount.two_mul_sum_mult O.S.Dw
@@ -527,13 +523,13 @@ theorem sum_mult {D : D7} (O : Setup D) : ∑ τ, O.S.Dw.mult τ = D.R.f * O.N :
   omega
 
 /- English proof (translation)
-Take `⟨x, P, hc⟩` from `h`. Establish `: FiniteDimensional ℚ O.κ.c.F` using `O.κ.c.fin`. Establish `: NumberField O.κ.c.F` using `{}`. Establish `hsm` using `O.s.T.smooth`. Set `w` to `(O.Φ.C c).π (genericPoint (O.Φ.C c).Y.X)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hw : closure {w} = Set.range (O.Φ.C c).π`. Establish `h` using `(genericPoint_spec (O.Φ.C c).Y.X).image (O.Φ.C c).π.continuous`. Rewrite `h` using `[Set.image_univ, (GlobalTheory.FlagCptBase.isClosed_range_π (O.Φ.C c)).closure_eq]`. Then use the resulting hypothesis. Establish `har` using `isArithVar_clo O.s.T.Z.s O.s.T.Z.proj w (hw ▸ dim_range O c)`. Establish `hV : IsVB (omega O.s.T.Z.t.G) (D.R.f * O.N)` using `sum_mult O ▸ isVB_omega O.s.T.Z`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose h H hd using fun R : ℝ => exists_isDualEig (G := fun σ' => x.eigMetAt σ' (some R)) hV (fun σ σ' y y' g g' τ hσ e hg => GlobalTheory.ShFam.ConjMet.eigMetAt_conj x hσ e hg τ _) fun σ' => by`. Establish `e : x.eigMetAt σ' (some R) = x.eigMetAt σ' (some (max R 2))`. Establish `e' : x.wt σ' R = x.wt σ' (max R 2)` using `funext fun y => by simp only [ToroidalCompactificationData.wt, max_assoc, max_self]`. Simplify using `only [ToroidalCompactificationData.eigMetAt, e']`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `ToroidalCompactificationData.smoothOn_eigMetAt_some _ _ _ _ _ _ _ x σ' _ (le_max_right _ _) (ToroidalCompactificationData.hodge_smoothOn _ _ _ _ _ _ _ x σ')`. Use `har.isLocallyNoetherian` as an intermediate fact. Take `⟨⟨F⟩, -⟩` from `GlobalTheory.T.flag_variety_arith_dimension _ _ _ _ har _ _ (hV.pullback (redι (clo (genι O.s.T.Z w))))`. Conclude with `⟨⟨x, P, hc, _, redι (clo (genι O.s.T.Z w)), redι_genericPoint _, har, h, H, hd, F⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonempty_drBase {D : D7} (O : Setup D) (h : O.Core) (c : O.s.Comp) : Nonempty (DRBase O c) := by
   obtain ⟨x, P, hc⟩ := h
@@ -558,7 +554,7 @@ theorem nonempty_drBase {D : D7} (O : Setup D) (h : O.Core) (c : O.s.Comp) : Non
   exact ⟨⟨x, P, hc, _, redι (clo (genι O.s.T.Z w)), redι_genericPoint _, har, h, H, hd, F⟩⟩
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ O h _ _ _ _ _ c` and use `nonempty_drBase O h c`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem main : GlobalTheory.CovTop.HypothesesXH → Hypotheses2 → HypothesesH → RegularAlteration →
     OnObj fun _ O _ _ _ _ => ∀ c, Nonempty (DRBase O c) :=

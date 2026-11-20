@@ -16,7 +16,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.TopVol GlobalTheory.FinPl
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.TopVol.levSph_bT_compact_open_alt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAutomorphicArithmetic%2FThetaCorrespondence%2FThetaPairLifts%2FThirdPlaceSeries%2FLevSphBTCompactOpen.lean&line=20#L20)
 -/

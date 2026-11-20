@@ -15,9 +15,9 @@ open Opposite
 namespace GlobalTheory.LiftSys.Coh
 
 /- English proof (translation)
-Use `⟨fun (x : PrimeSpectrum A) ↦ ?_⟩` and prove the remaining obligations. Establish `: x ∈ Set.range (PrimeSpectrum.comap f)`. Rewrite using `[range_comap_of_surjective _ _ hf]`. Introduce `a ha`. Apply `x.isPrime.mem_of_pow_mem 2` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hk a ha]`. Conclude with `zero_mem _`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem surjective_spMap_of_sq {A A₀ : Type} [CommRing A] [CommRing A₀] (f : A →+* A₀)
     (hf : Function.Surjective f) (hk : ∀ a, f a = 0 → a ^ 2 = 0) : Surjective (spMap f) := by
@@ -31,7 +31,7 @@ theorem surjective_spMap_of_sq {A A₀ : Type} [CommRing A] [CommRing A₀] (f :
   exact this
 
 /- English proof (translation)
-The claim follows from `congrArg CommRingCat.Hom.hom (Spec.map_injective ((cancel_mono z).1 h))`.
+A detailed English derivation is pending.
 -/
 theorem ringHom_eq_of_spMap {A B : Type} [CommRing A] [CommRing B] {Y : Scheme.{0}} (z : Sp A ⟶ Y) [Mono z]
     {g g' : A →+* B} (h : spMap g ≫ z = spMap g' ≫ z) : g = g' :=
@@ -42,7 +42,7 @@ instance isOpenImmersion_affPt {R : Type} [CommRing R] {X : Scheme.{0}} (s : X �
   IsAffineOpen.isOpenImmersion_fromSpec V.2
 
 /- English proof (translation)
-The claim follows from `V.2.range_fromSpec`.
+A detailed English derivation is pending.
 -/
 theorem range_affPt {R : Type} [CommRing R] {X : Scheme.{0}} (s : X ⟶ Sp R) (V : X.affineOpens) :
     Set.range (affPt s V) = V.1 :=
@@ -56,14 +56,14 @@ def W (P : S.Presents s i) (U : AffOp X₀) : X.affineOpens :=
   ⟨(P.y U).opensRange, isAffineOpen_opensRange _⟩
 
 /- English proof (translation)
-Use `haveI := P.isOpen U`. Conclude with `(Scheme.Hom.coe_opensRange _).symm`.
+A detailed English derivation is pending.
 -/
 theorem range_y (P : S.Presents s i) (U : AffOp X₀) : Set.range (P.y U) = (W P U).1 := by
   haveI := P.isOpen U
   exact (Scheme.Hom.coe_opensRange _).symm
 
 /- English proof (translation)
-Establish `e` using `congrArg (fun f : Sp (Sec s₀ U.unop.1) ⟶ X ↦ f z) (P.red U)`. Simplify `e` using `only [Scheme.Hom.comp_apply]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem y_apply_red (P : S.Presents s i) (U : AffOp X₀) (z : Sp (Sec s₀ U.unop.1)) :
     P.y U (spMap (S.p U) z) = i (affPt s₀ U.unop z) := by
@@ -71,7 +71,7 @@ theorem y_apply_red (P : S.Presents s i) (U : AffOp X₀) (z : Sp (Sec s₀ U.un
   simpa only [Scheme.Hom.comp_apply] using e
 
 /- English proof (translation)
-Rewrite using `[← SetLike.mem_coe, ← range_y]`. Rewrite `hx` using `[← SetLike.mem_coe, ← range_affPt s₀]`. Take `⟨z, rfl⟩` from `hx`. Conclude with `⟨_, y_apply_red P U z⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem mem_W (P : S.Presents s i) (U : AffOp X₀) {x : X₀} (hx : x ∈ U.unop.1) : i x ∈ (W P U).1 := by
   rw [← SetLike.mem_coe, ← range_y]
@@ -80,9 +80,9 @@ theorem mem_W (P : S.Presents s i) (U : AffOp X₀) {x : X₀} (hx : x ∈ U.uno
   exact ⟨_, y_apply_red P U z⟩
 
 /- English proof (translation)
-Rewrite `hw` using `[← SetLike.mem_coe, ← range_y]`. Take `⟨t, rfl⟩` from `hw`. Establish `hs` using `(surjective_spMap_of_sq (S.p U) (S.surj U) fun b hb ↦ by`. Establish `hb' : b ∈ I.map (algebraMap R (S.F.obj U))` using `(S.ker U b).1 hb`. Establish `h2 : b ^ 2 ∈ I.map (algebraMap R (S.F.obj U)) ^ 2` using `Ideal.pow_mem_pow hb' 2`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_sq hI] at h2).surj` and apply the resulting hypothesis. Take `⟨z, rfl⟩` from `hs t`. Use `⟨affPt s₀ U.unop z, ?_, (y_apply_red P U z).symm⟩` and prove the remaining obligations. Rewrite using `[← SetLike.mem_coe, ← range_affPt s₀]`. Conclude with `⟨z, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_mem_affineOpen_of_mem_liftSystemChartImage (hI : I ^ 2 = 0) (P : S.Presents s i) (U : AffOp X₀) {w : X} (hw : w ∈ (W P U).1) :
     ∃ x ∈ U.unop.1, i x = w := by
@@ -98,7 +98,7 @@ theorem exists_mem_affineOpen_of_mem_liftSystemChartImage (hI : I ^ 2 = 0) (P : 
   exact ⟨z, rfl⟩
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(W P V).1 ≤ (W P U).1`. Rewrite using `[← SetLike.coe_subset_coe, ← range_y, ← range_y, ← P.nat a]`. Introduce and unpack `_ ⟨z, rfl⟩`. Conclude with `⟨_, (Scheme.Hom.comp_apply _ _ z).symm⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem W_le (P : S.Presents s i) {U V : AffOp X₀} (a : U ⟶ V) : W P V ≤ W P U := by
   change (W P V).1 ≤ (W P U).1
@@ -127,7 +127,7 @@ def fwd (P : S.Presents s i) (U : AffOp X₀) : Sec s (W P U).1 →+* S.F.obj U 
 def bwd (P : S.Presents s i) (U : AffOp X₀) : S.F.obj U →+* Sec s (W P U).1 := (Spec.preimage (ofW P U)).hom
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Spec.map (Spec.preimage (toW P U)) ≫ _ = _`. Rewrite using `[Spec.map_preimage]`. Conclude with `IsOpenImmersion.lift_fac _ _ _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spMap_fwd (P : S.Presents s i) (U : AffOp X₀) : spMap (fwd P U) ≫ affPt s (W P U) = P.y U := by
   change Spec.map (Spec.preimage (toW P U)) ≫ _ = _
@@ -135,7 +135,7 @@ theorem spMap_fwd (P : S.Presents s i) (U : AffOp X₀) : spMap (fwd P U) ≫ af
   exact IsOpenImmersion.lift_fac _ _ _
 
 /- English proof (translation)
-Use `haveI := P.isOpen U`. Express the relevant statement in the definitionally equal form `Spec.map (Spec.preimage (ofW P U)) ≫ _ = _`. Rewrite using `[Spec.map_preimage]`. Conclude with `IsOpenImmersion.lift_fac _ _ _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spMap_bwd (P : S.Presents s i) (U : AffOp X₀) : spMap (bwd P U) ≫ P.y U = affPt s (W P U) := by
   haveI := P.isOpen U
@@ -144,7 +144,7 @@ theorem spMap_bwd (P : S.Presents s i) (U : AffOp X₀) : spMap (bwd P U) ≫ P.
   exact IsOpenImmersion.lift_fac _ _ _
 
 /- English proof (translation)
-Use `haveI := P.isOpen U`. Use `ringHom_eq_of_spMap (P.y U) ?_` and prove the remaining obligations. Rewrite using `[Cris.spMap_comp, Category.assoc, spMap_bwd, spMap_fwd, Cris.spMap_id, Category.id_comp]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fwd_bwd (P : S.Presents s i) (U : AffOp X₀) : (fwd P U).comp (bwd P U) = RingHom.id _ := by
   haveI := P.isOpen U
@@ -152,14 +152,14 @@ theorem fwd_bwd (P : S.Presents s i) (U : AffOp X₀) : (fwd P U).comp (bwd P U)
   rw [Cris.spMap_comp, Category.assoc, spMap_bwd, spMap_fwd, Cris.spMap_id, Category.id_comp]
 
 /- English proof (translation)
-Use `ringHom_eq_of_spMap (affPt s (W P U)) ?_` and prove the remaining obligations. Rewrite using `[Cris.spMap_comp, Category.assoc, spMap_fwd, spMap_bwd, Cris.spMap_id, Category.id_comp]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem bwd_fwd (P : S.Presents s i) (U : AffOp X₀) : (bwd P U).comp (fwd P U) = RingHom.id _ := by
   refine ringHom_eq_of_spMap (affPt s (W P U)) ?_
   rw [Cris.spMap_comp, Category.assoc, spMap_fwd, spMap_bwd, Cris.spMap_id, Category.id_comp]
 
 /- English proof (translation)
-Establish `h : spMap ((fwd P U).comp (algebraMap R (Sec s (W P U).1))) = spMap (algebraMap R (S.F.obj U))`. Rewrite using `[Cris.spMap_comp, ← affPt_w, ← Category.assoc, spMap_fwd, P.base]`. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective h)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fwd_algebraMap (P : S.Presents s i) (U : AffOp X₀) :
     (fwd P U).comp (algebraMap R (Sec s (W P U).1)) = algebraMap R (S.F.obj U) := by
@@ -180,7 +180,7 @@ Both sides reduce to the same expression.
 theorem e_apply (P : S.Presents s i) (U : AffOp X₀) (b : Sec s (W P U).1) : e P U b = fwd P U b := rfl
 
 /- English proof (translation)
-Establish `: (fwd P V).comp (Sec.res s (W_le P a) : Sec s (W P U).1 →+* Sec s (W P V).1) = (mp S.F a : S.F.obj U →+* S.F.obj V).comp (fwd P U)`. Use `ringHom_eq_of_spMap (affPt s (W P U)) ?_` and prove the remaining obligations. Rewrite using `[Cris.spMap_comp, Cris.spMap_comp, Category.assoc, Category.assoc, affPt_res, spMap_fwd, spMap_fwd, P.nat a]`. Rewrite using `[e_apply, e_apply]`. Conclude with `RingHom.congr_fun this b`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem e_res (P : S.Presents s i) {U V : AffOp X₀} (a : U ⟶ V) (b : Sec s (W P U).1) :
     e P V (Sec.res s (W_le P a) b) = mp S.F a (e P U b) := by
@@ -212,7 +212,7 @@ def toSys (P : S.Presents s i) : CoefMap (RingHom.id R) (OAff s) S.F where
 def pre (i : X₀ ⟶ X) [IsAffineHom i] (V : X.affineOpens) : X₀.affineOpens := ⟨i ⁻¹ᵁ V.1, V.2.preimage i⟩
 
 /- English proof (translation)
-The claim follows from `fun x hx ↦ show i x ∈ V'.1 from Subtype.coe_le_coe.2 h hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem pre_mono (i : X₀ ⟶ X) [IsAffineHom i] {V V' : X.affineOpens} (h : V ≤ V') : pre i V ≤ pre i V' :=
   fun x hx ↦ show i x ∈ V'.1 from Subtype.coe_le_coe.2 h hx
@@ -221,7 +221,7 @@ def preF (i : X₀ ⟶ X) [IsAffineHom i] : AffOp X ⥤ AffOp X₀ :=
   (Monotone.functor (f := pre i) fun _ _ h ↦ pre_mono i h).op
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨x₀, rfl⟩` from `hi x`. Conclude with `mem_W P (op (pre i V)) hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem le_W_pre [IsAffineHom i] (P : S.Presents s i) (hi : Function.Surjective i) (V : X.affineOpens) :
     V ≤ W P (op (pre i V)) := by
@@ -234,14 +234,14 @@ def back [IsAffineHom i] (P : S.Presents s i) (hi : Function.Surjective i) (V : 
   (Sec.res s (le_W_pre P hi V)).comp (e P (op (pre i V))).symm.toAlgHom
 
 /- English proof (translation)
-Simplify using `[back]`.
+Simplify using the standard rewrite rules.
 -/
 theorem back_e [IsAffineHom i] (P : S.Presents s i) (hi : Function.Surjective i) (V : X.affineOpens)
     (c : Sec s (W P (op (pre i V))).1) : back P hi V (e P _ c) = Sec.res s (le_W_pre P hi V) c := by
   simp [back]
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `(e P (op (pre i V))).surjective b`. Rewrite using `[← e_res P (homOfLE (pre_mono i h)).op c, back_e, back_e, ← Sec.res_res, ← Sec.res_res]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem back_naturality [IsAffineHom i] (P : S.Presents s i) (hi : Function.Surjective i) {V V' : X.affineOpens}
     (h : V' ≤ V) (b : S.F.obj (op (pre i V))) :
@@ -257,7 +257,7 @@ def ofSys [IsAffineHom i] (P : S.Presents s i) (hi : Function.Surjective i) :
   smul V r b := map_smul (back P hi V.unop) r b
 
 /- English proof (translation)
-Rewrite using `[← CoefMap.pullCohomologyOne_comp]`. Use `((toSys P).comp (ofSys P hi)).pullCohomologyOne_eq_of_natTrans (CoefMap.id _) { app := fun V ↦ (homOfLE (le_W_pre P hi V.unop)).op, naturality := fun _ _ _ ↦ rfl } (fun V b ↦ (back_e P hi V.unop b).symm) c |>.trans (CoefMap.pullCohomologyOne_id c)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem ofSys_toSys [IsAffineHom i] (P : S.Presents s i) (hi : Function.Surjective i) (c : HO1 s) :
     (ofSys P hi).pull1 ((toSys P).pull1 c) = c := by
@@ -267,7 +267,7 @@ theorem ofSys_toSys [IsAffineHom i] (P : S.Presents s i) (hi : Function.Surjecti
     (fun V b ↦ (back_e P hi V.unop b).symm) c |>.trans (CoefMap.pullCohomologyOne_id c)
 
 /- English proof (translation)
-Rewrite using `[← CoefMap.pullCohomologyOne_comp]`. Use `((ofSys P hi).comp (toSys P)).pullCohomologyOne_eq_of_natTrans (CoefMap.id _) { app := fun U ↦ (homOfLE (show U.unop ≤ pre i (W P U) from fun _ hx ↦ mem_W P U hx)).op, naturality := fun _ _ _ ↦ rfl } (fun U b ↦ ?_) c |>.trans (CoefMap.pullCohomologyOne_id c)` and prove the remaining obligations. Take `⟨c, rfl⟩` from `(e P (op (pre i (W P U)))).surjective b`. Conclude with `(e_res P _ c).symm.trans (congrArg (e P U) (back_e P hi (W P U) c).symm)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem toSys_ofSys [IsAffineHom i] (P : S.Presents s i) (hi : Function.Surjective i) (c : CatCoh.H1 S.F) :
     (toSys P).pull1 ((ofSys P hi).pull1 c) = c := by
@@ -288,7 +288,7 @@ variable {R R₀ : Type} [CommRing R] [CommRing R₀] {I : Ideal R} {π : R →+
   {s₀ : X₀ ⟶ Sp R₀} {S : Sys I π s₀} {X : Scheme.{0}} {s : X ⟶ Sp R} {i : X₀ ⟶ X}
 
 /- English proof (translation)
-Introduce `w hw`. Take `⟨x, hx, rfl⟩` from `exists_mem_affineOpen_of_mem_liftSystemChartImage hI P (op p.1.1) hw`. Conclude with `p.2 hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem W_le_snd (hI : I ^ 2 = 0) (P : S.Presents s i) (p : Pair i) : W P (op p.1.1) ≤ p.1.2 := by
   intro w hw
@@ -296,7 +296,7 @@ theorem W_le_snd (hI : I ^ 2 = 0) (P : S.Presents s i) (p : Pair i) : W P (op p.
   exact p.2 hx
 
 /- English proof (translation)
-Establish `: (S.p (op p.1.1)).comp ((fwd P (op p.1.1)).comp (Sec.res s hle : Sec s p.1.2.1 →+* Sec s (W P (op p.1.1)).1)) = GlobalTheory.CechDR.secPull s s₀ p`. Use `ringHom_eq_of_spMap (affPt s p.1.2) ?_` and prove the remaining obligations. Rewrite using `[Cris.spMap_comp, Cris.spMap_comp, Category.assoc, Category.assoc, affPt_res, spMap_fwd, P.red, GlobalTheory.CechDR.secPull_affPt]`. Conclude with `RingHom.congr_fun this b`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem p_e_res (P : S.Presents s i) (p : Pair i) (hle : W P (op p.1.1) ≤ p.1.2) (b : Sec s p.1.2.1) :
     S.p (op p.1.1) (e P (op p.1.1) (Sec.res s hle b)) = GlobalTheory.CechDR.secPull s s₀ p b := by
@@ -312,13 +312,11 @@ end GlobalTheory.LiftSys.Coh
 open Opposite in
 
 /- English proof (translation)
-Introduce `R R₀ _ _ I hI π hπ hk X₀ s₀ S X s i h P`. Use `haveI : IsClosedImmersion i := MorphismProperty.of_isPullback (P := @IsClosedImmersion) h.flip (IsClosedImmersion.spec_of_surjective _ hπ)`. Establish `hsurj : Surjective i` using `MorphismProperty.of_isPullback (P := @Surjective) h.flip (Coh.surjective_spMap_of_sq π hπ fun a ha ↦ by`. Establish `ha' : a ∈ I` using `hk ▸ RingHom.mem_ker.2 ha`. Establish `h2 : a ^ 2 ∈ I ^ 2` using `Ideal.pow_mem_pow ha' 2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[hI, Ideal.zero_eq_bot, Ideal.mem_bot]`. Conclude with `h2)`. Use `⟨LinearEquiv.ofLinear (Coh.toSys P).pull1 (Coh.ofSys P hsurj.surj).pull1 (LinearMap.ext fun c ↦ Coh.toSys_ofSys P hsurj.surj c) (LinearMap.ext fun c ↦ Coh.ofSys_toSys P hsurj.surj c), fun m c ↦ ?_, fun c ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[LinearEquiv.ofLinear_apply, structureSheaf_comparison_comm, cmpO, toH1O, Sys.r, IsMor.pull1, ← CoefMap.pullCohomologyOne_comp, ← CoefMap.pullCohomologyOne_comp, ← CoefMap.pullCohomologyOne_comp]`. Use `CoefMap.pullCohomologyOne_eq_of_natTrans _ _ { app := fun U ↦ Thick.trivHom (T := m.obj (S.thickObj hI U)) { Coh.fwd P U with commutes' := fun r ↦ RingHom.congr_fun (Coh.fwd_algebraMap P U) r } (by` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `spMap ((S.p U).comp (Coh.fwd P U)) ≫ affPt s (Coh.W P U) = affPt s₀ U.unop ≫ i`. Rewrite using `[Cris.spMap_comp, Category.assoc, Coh.spMap_fwd, P.red])`. Use `naturality := fun U U' a ↦ Thick.hom_ext fun b ↦ Coh.e_res P a b } (fun _ _ ↦ rfl) c`. Rewrite using `[LinearEquiv.ofLinear_apply]`. Unfold `IsPullO`.
-
-Rewrite using `[← CoefMap.pullCohomologyOne_comp, ← CoefMap.pullCohomologyOne_comp]`. Conclude with `CoefMap.pullCohomologyOne_eq_of_natTrans _ _ { app := fun p ↦ (homOfLE (Coh.W_le_snd hI P p.unop)).op, naturality := fun _ _ _ ↦ rfl } (fun p b ↦ Coh.p_e_res P p.unop _ b) c`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LiftSys.cohomology_presents : ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (I : Ideal R) (hI : I ^ 2 = 0) (π : R →+* R₀) (hπ : Function.Surjective π) (hk : RingHom.ker π = I) (X₀ : Scheme.{0}) (s₀ : X₀ ⟶ Sp R₀), ∀ (S : Sys I π s₀) (X : Scheme.{0}) (s : X ⟶ Sp R) (i : X₀ ⟶ X) (h : IsPullback i s₀ s (spMap π)), S.Presents s i → ∃ e : HO1 s ≃ₗ[R] GlobalTheory.CatCoh.H1 S.F, (∀ (m : IsMor (dp0 R) s (divided₂ hI) (s₀ ≫ spMap π) (RingHom.id R) i) (c : FirstDeRham s), e (toHO1 s (cmp1 s c)) = S.r hI (m.pull1 c)) ∧ ∀ c : HO1 s, IsPullO h.w c (S.redO.pull1 (e c)) := by
   intro R R₀ _ _ I hI π hπ hk X₀ s₀ S X s i h P

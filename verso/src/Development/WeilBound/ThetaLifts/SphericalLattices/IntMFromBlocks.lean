@@ -11,7 +11,7 @@ variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {ϖ : L
 def IntM {α β : Type} (X : Matrix α β L) : Prop := ∀ i j, X i j ∈ intL L
 
 /- English proof (translation)
-Introduce `i j`. Rewrite using `[Matrix.mul_apply]`. Conclude with `sum_mem fun k _ => mul_mem (hX i k) (hY k j)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IntM.mul {α β γ : Type} [Fintype β] {X : Matrix α β L} {Y : Matrix β γ L} (hX : IntM X) (hY : IntM Y) :
     IntM (X * Y) := by
@@ -20,14 +20,14 @@ theorem IntM.mul {α β γ : Type} [Fintype β] {X : Matrix α β L} {Y : Matrix
   exact sum_mem fun k _ => mul_mem (hX i k) (hY k j)
 
 /- English proof (translation)
-Introduce `i j`. Conclude with `c_int h (hX j i)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem IntM.conjT (h : IsUnramInv ϖ c q) {α β : Type} {X : Matrix α β L} (hX : IntM X) : IntM (X.map c)ᵀ := by
   intro i j
   exact c_int h (hX j i)
 
 /- English proof (translation)
-Introduce `i j`. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intM_one {α : Type} [DecidableEq α] : IntM (1 : Matrix α α L) := by
   intro i j
@@ -37,16 +37,16 @@ theorem intM_one {α : Type} [DecidableEq α] : IntM (1 : Matrix α α L) := by
   · exact zero_mem _
 
 /- English proof (translation)
-Introduce `i j`. Conclude with `zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem intM_zero {α β : Type} : IntM (0 : Matrix α β L) := by
   intro i j
   exact zero_mem _
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hM`. Conclude with `⟨fun i j => hM (Sum.inl i) (Sum.inl j), fun i j => hM (Sum.inl i) (Sum.inr j), fun i j => hM (Sum.inr i) (Sum.inl j), fun i j => hM (Sum.inr i) (Sum.inr j)⟩`. Introduce and unpack `⟨ha, hb, hc, hd⟩ i j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `exacts [ha i j, hb i j, hc i j, hd i j]`.
+A detailed English derivation is pending.
 -/
 theorem intM_fromBlocks {α : Type} {a b c' d : Matrix α α L} :
     IntM (fromBlocks a b c' d) ↔ IntM a ∧ IntM b ∧ IntM c' ∧ IntM d := by
@@ -59,15 +59,15 @@ theorem intM_fromBlocks {α : Type} {a b c' d : Matrix α α L} :
     exacts [ha i j, hb i j, hc i j, hd i j]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hg`. Take `⟨g', rfl⟩` from `MonoidHom.mem_range.mp hg`. Conclude with `⟨fun i j => (g'.val i j).2, fun i j => ((g'⁻¹).val i j).2⟩`. Introduce and unpack `⟨h1, h2⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use `MonoidHom.mem_range.mpr ⟨⟨Matrix.of fun i j => ⟨g.val i j, h1 i j⟩, Matrix.of fun i j => ⟨(g⁻¹).val i j, h2 i j⟩, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Establish `e` using `congrFun (congrFun (Units.mul_inv g) i) j`. Rewrite `e` using `[Matrix.mul_apply]`. Rewrite using `[Matrix.mul_apply, AddSubmonoidClass.coe_finsetSum]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [MulMemClass.coe_mul, Matrix.of_apply]`. Rewrite using `[e, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> rfl`. Use extensionality with `i j`. Establish `e` using `congrFun (congrFun (Units.inv_mul g) i) j`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Rewrite `e` using `[Matrix.mul_apply]`. Rewrite using `[Matrix.mul_apply, AddSubmonoidClass.coe_finsetSum]`. Simplify using `only [MulMemClass.coe_mul, Matrix.of_apply]`. Rewrite using `[e, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Use extensionality with `i j`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem mem_IntGL {g : GL (Fin m ⊕ Fin m) L} : g ∈ IntGL L m ↔ IntM g.val ∧ IntM (g⁻¹).val := by
   constructor
@@ -95,11 +95,11 @@ theorem mem_IntGL {g : GL (Fin m ⊕ Fin m) L} : g ∈ IntGL L m ↔ IntM g.val 
       rfl
 
 /- English proof (translation)
-Establish `hcc : ∀ y, c (c y) = y` using `h.1`. Establish `hW : (Wm L (Fin m)).map c = Wm L (Fin m)` using `by show (fromBlocks 0 1 1 0 : Matrix (Fin m ⊕ Fin m) (Fin m ⊕ Fin m) L).map c = fromBlocks 0 1 1 0`. Rewrite using `[Matrix.fromBlocks_map]`. Simplify using the standard rewrite rules. Establish `hgg : (g.val.map c).map c = g.val`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Matrix.map_map]`. Use extensionality with `i j`. Conclude with `hcc _`. Establish `hg' : g.valᵀ * Wm L (Fin m) * g.val.map c = Wm L (Fin m)` using `hg`. Establish `h2 : (g.val.map c)ᵀ * Wm L (Fin m) * g.val = Wm L (Fin m)`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `congrArg (fun M => M.map c) hg'`. Rewrite `e` using `[Matrix.map_mul, Matrix.map_mul, hW, hgg, Matrix.transpose_map]`. Conclude with `e`. Apply `Units.inv_eq_of_mul_eq_one_left` to reduce the goal to its premises. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc (g.val.map c)ᵀ, h2, Wm_mul_self]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_of_iso (h : IsUnramInv ϖ c q) {g : GL (Fin m ⊕ Fin m) L} (hg : Iso c (Wm L (Fin m)) (Wm L (Fin m)) g.val) :
     (g⁻¹).val = Wm L (Fin m) * (g.val.map c)ᵀ * Wm L (Fin m) := by
@@ -121,15 +121,11 @@ theorem inv_of_iso (h : IsUnramInv ϖ c q) {g : GL (Fin m ⊕ Fin m) L} (hg : Is
   rw [Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc (g.val.map c)ᵀ, h2, Wm_mul_self]
 
 /- English proof (translation)
-Establish `hB : g ∈ GlobalTheory.LGrp.blockQ L (GlobalTheory.LGrp.twoBlocks (Fin m) (Fin m)) ↔ g.val.toBlocks₂₁ = 0` using `by show (g.val).BlockTriangular (GlobalTheory.LGrp.twoBlocks (Fin m) (Fin m)) ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce `hb`. Use extensionality with `i j`. Conclude with `@hb (Sum.inr i) (Sum.inl j) (show (0:ℕ) < 1 from Nat.one_pos)`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0 i j hij`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`. Conclude with `absurd hij (lt_irrefl _)`. Conclude with `absurd hij (Nat.not_lt_zero _)`. Conclude with `congrFun (congrFun h0 i) j`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `absurd hij (lt_irrefl _)`. Establish `hWint : IntM (Wm L (Fin m))` using `by show IntM (fromBlocks 0 1 1 0 : Matrix (Fin m ⊕ Fin m) (Fin m ⊕ Fin m) L)`. Conclude with `intM_fromBlocks.mpr ⟨intM_zero, intM_one, intM_one, intM_zero⟩`. Use `show g ∈ (GW L c m ⊓ GlobalTheory.LGrp.blockQ L (GlobalTheory.LGrp.twoBlocks (Fin m) (Fin m))) ⊓ (GW L c m ⊓ IntGL L m) ↔ _`. Simplify using `only [Subgroup.mem_inf, hB, mem_IntGL]`.
-
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨hG, hC⟩, -, hI, -⟩`. Conclude with `⟨hG, hC, hI⟩`. Introduce and unpack `⟨hG, hC, hI⟩`. Use `⟨⟨hG, hC⟩, hG, hI, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[inv_of_iso h hG]`. Conclude with `IntM.mul (IntM.mul hWint (IntM.conjT h hI)) hWint`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_KPW (h : IsUnramInv ϖ c q) {g : GL (Fin m ⊕ Fin m) L} :
     g ∈ KPW L c m ↔ g ∈ GW L c m ∧ g.val.toBlocks₂₁ = 0 ∧ IntM g.val := by
@@ -159,9 +155,9 @@ theorem mem_KPW (h : IsUnramInv ϖ c q) {g : GL (Fin m ⊕ Fin m) L} :
     exact IntM.mul (IntM.mul hWint (IntM.conjT h hI)) hWint
 
 /- English proof (translation)
-Establish `hcx : c (x : L) = x` using `by rw [hx]; exact h.2.2.1`. Establish `hx0 : (x : L) ≠ 0` using `x.ne_zero`. Establish `hcx' : c (x : L)⁻¹ = (x : L)⁻¹` using `by rw [map_inv₀, hcx]`. Use `show (fromBlocks ((x : L) • (1 : Matrix (Fin m) (Fin m) L)) 0 0 (((x⁻¹ : Lˣ) : L) • 1))ᵀ * fromBlocks 0 1 1 0 * (fromBlocks ((x : L) • (1 : Matrix (Fin m) (Fin m) L)) 0 0 (((x⁻¹ : Lˣ) : L) • 1)).map c = fromBlocks 0 1 1 0`. Rewrite using `[Matrix.fromBlocks_transpose, Matrix.fromBlocks_map, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Units.val_inv_eq_inv_val, Matrix.smul_one_eq_diagonal, Matrix.diagonal_map, Matrix.diagonal_transpose, Matrix.diagonal_mul_diagonal, hcx, hcx', hx0]`.
+A detailed English derivation is pending.
 -/
 theorem zW_mem (h : IsUnramInv ϖ c q) {x : Lˣ} (hx : (x : L) = ϖ) : zW L m x ∈ GW L c m := by
   have hcx : c (x : L) = x := by rw [hx]; exact h.2.2.1
@@ -174,9 +170,7 @@ theorem zW_mem (h : IsUnramInv ϖ c q) {x : Lˣ} (hx : (x : L) = ϖ) : zW L m x 
     Matrix.diagonal_mul_diagonal, hcx, hcx', hx0]
 
 /- English proof (translation)
-Establish `hx0 : (x : L) ≠ 0` using `x.ne_zero`. Establish `hg : g.val = fromBlocks g.val.toBlocks₁₁ g.val.toBlocks₁₂ g.val.toBlocks₂₁ g.val.toBlocks₂₂` using `(Matrix.fromBlocks_toBlocks _).symm`. Use `show fromBlocks (((x⁻¹ : Lˣ) : L) • (1 : Matrix (Fin m) (Fin m) L)) 0 0 ((x : L) • 1) * g.val * fromBlocks ((x : L) • (1 : Matrix (Fin m) (Fin m) L)) 0 0 (((x⁻¹ : Lˣ) : L) • 1) = _`. Use `conv_lhs => rw [hg]`. Rewrite using `[Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`.
-
-Simplify using `[Units.val_inv_eq_inv_val, Matrix.smul_mul, Matrix.mul_smul, smul_smul, hx0]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conj_val (x : Lˣ) (g : GL (Fin m ⊕ Fin m) L) :
     ((zW L m x)⁻¹ * g * zW L m x).val = fromBlocks g.val.toBlocks₁₁ (((x : L)⁻¹ * (x : L)⁻¹) • g.val.toBlocks₁₂)
@@ -191,17 +185,17 @@ theorem conj_val (x : Lˣ) (g : GL (Fin m ⊕ Fin m) L) :
   simp [Units.val_inv_eq_inv_val, Matrix.smul_mul, Matrix.mul_smul, smul_smul, hx0]
 
 /- English proof (translation)
-Establish `hz` using `zW_mem (m := m) h hx`. Establish `key : g ∈ (KPW L c m).map (MulAut.conj (zW L m x)).toMonoidHom ↔ (zW L m x)⁻¹ * g * zW L m x ∈ KPW L c m`. Prove the components needed by the constructor for the conclusion. Introduce `hg`. Take `⟨k, hk, rfl⟩` from `Subgroup.mem_map.mp hg`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Simplify `hk` using `[mul_assoc]`. Introduce `hk`. Conclude with `Subgroup.mem_map.mpr ⟨_, hk, by simp [mul_assoc]⟩`. Establish `hGW : (zW L m x)⁻¹ * g * zW L m x ∈ GW L c m ↔ g ∈ GW L c m`. Prove the components needed by the constructor for the conclusion.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h1`. Use `(GW L c m).mul_mem ((GW L c m).mul_mem hz h1) ((GW L c m).inv_mem hz)` as an intermediate fact. Simplify `this` using `[mul_assoc]`. Introduce `h1`. Conclude with `(GW L c m).mul_mem ((GW L c m).mul_mem ((GW L c m).inv_mem hz) h1) hz`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hp : ϖ ≠ 0` using `pi_ne h`. Rewrite using `[key, mem_KPW h, hGW, conj_val, Matrix.toBlocks_fromBlocks₂₁, intM_fromBlocks, hx]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hG, hC, hA, hB, -, hD⟩`. Establish `hC' : g.val.toBlocks₂₁ = 0`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hC` using `[smul_eq_zero]`. Conclude with `hC.resolve_left (mul_ne_zero hp hp)`. Use `⟨hG, hC', hA, hD, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_MA]`. Introduce `i j`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hB i j`. Introduce and unpack `⟨hG, hC, hA, hD, hB⟩`. Rewrite `hB` using `[mem_MA]`. Use `⟨hG, by rw [hC, smul_zero], hA, fun i j => hB i j, by rw [hC, smul_zero]; exact intM_zero, hD⟩` and prove the remaining obligations.
+A detailed English derivation is pending.
 -/
 theorem mem_conj (h : IsUnramInv ϖ c q) {x : Lˣ} (hx : (x : L) = ϖ) {g : GL (Fin m ⊕ Fin m) L} :
     g ∈ (KPW L c m).map (MulAut.conj (zW L m x)).toMonoidHom ↔ g ∈ GW L c m ∧ g.val.toBlocks₂₁ = 0 ∧
@@ -238,11 +232,11 @@ theorem mem_conj (h : IsUnramInv ϖ c q) {x : Lˣ} (hx : (x : L) = ϖ) {g : GL (
     refine ⟨hG, by rw [hC, smul_zero], hA, fun i j => hB i j, by rw [hC, smul_zero]; exact intM_zero, hD⟩
 
 /- English proof (translation)
-Introduce `g hg`. Rewrite `hg` using `[mem_conj h hx]`. Take `⟨hG, hC, hA, hD, hB⟩` from `hg`. Rewrite using `[mem_KPW h]`. Use `⟨hG, hC, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Matrix.fromBlocks_toBlocks g.val, intM_fromBlocks]`. Use `⟨hA, ?_, by rw [hC]; exact intM_zero, hD⟩` and prove the remaining obligations. Introduce `i j`. Rewrite `hB` using `[mem_MA]`. Establish `hp : ϖ ≠ 0` using `pi_ne h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e : g.val.toBlocks₁₂ i j = (ϖ * ϖ) * ((ϖ⁻¹ * ϖ⁻¹) * g.val.toBlocks₁₂ i j)`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Conclude with `mul_mem (mul_mem (pi_int h) (pi_int h)) (hB i j)`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_le (h : IsUnramInv ϖ c q) {x : Lˣ} (hx : (x : L) = ϖ) :
     (KPW L c m).map (MulAut.conj (zW L m x)).toMonoidHom ≤ KPW L c m := by
@@ -266,9 +260,9 @@ def nU (X : Matrix (Fin m) (Fin m) L) : GL (Fin m ⊕ Fin m) L :=
     by simp [fromBlocks_multiply, fromBlocks_one]⟩
 
 /- English proof (translation)
-Take `⟨hXi, hXs⟩` from `hX`. Rewrite using `[mem_KPW h]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `show Iso c (Wm L (Fin m)) (Wm L (Fin m)) (fromBlocks 1 X 0 1)`. Apply `iso_n` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Conclude with `hXs i j`. Conclude with `Matrix.toBlocks_fromBlocks₂₁ _ _ _ _`. Use `show IntM (fromBlocks 1 X 0 1 : Matrix (Fin m ⊕ Fin m) (Fin m ⊕ Fin m) L)`. Conclude with `intM_fromBlocks.mpr ⟨intM_one, hXi, intM_zero, intM_one⟩`.
+A detailed English derivation is pending.
 -/
 theorem nU_mem (h : IsUnramInv ϖ c q) {X : Matrix (Fin m) (Fin m) L} (hX : X ∈ NA c m) : nU X ∈ KPW L c m := by
   obtain ⟨hXi, hXs⟩ := hX
@@ -288,15 +282,15 @@ def nHom (h : IsUnramInv ϖ c q) (m : ℕ) : Multiplicative (NA c m) →* KPW L 
   map_mul' X Y := Subtype.ext (Units.ext (by simp [nU, fromBlocks_multiply, add_comm]))
 
 /- English proof (translation)
-Establish `hcc : ∀ y, c (c y) = y` using `h.1`. Establish `hmm : ∀ M : Matrix (Fin m) (Fin m) L, (M.map c).map c = M`. Introduce `M`. Rewrite using `[Matrix.map_map]`. Use extensionality with `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Conclude with `hcc _`. Establish `hg' : (fromBlocks a b 0 d)ᵀ * fromBlocks 0 1 1 0 * (fromBlocks a b 0 d).map c = (fromBlocks 0 1 1 0 : Matrix (Fin m ⊕ Fin m) (Fin m ⊕ Fin m) L)` using `hg`. Rewrite `hg'` using `[Matrix.fromBlocks_transpose, Matrix.fromBlocks_map, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`. Simplify using `only [Matrix.transpose_zero, Matrix.map_zero, map_zero, Matrix.mul_zero, Matrix.zero_mul, Matrix.mul_one, Matrix.one_mul, add_zero, zero_add] at hg'`. Take `⟨-, h12, h21, h22⟩` from `Matrix.fromBlocks_inj.mp hg'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e1 : (a.map c)ᵀ * d = 1`. Establish `e` using `congrArg (fun M => M.map c) h12`. Simplify using `only [Matrix.map_mul, hmm, Matrix.map_one (⇑c) (map_zero c) (map_one c)] at e`. Rewrite using `[← Matrix.transpose_map]`. Conclude with `e`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : a.map c * dᵀ = 1` using `mul_eq_one_comm.mp h21`. Establish `hD : d.map c * aᵀ = 1` using `mul_eq_one_comm.mp h12`. Establish `h22' : dᵀ * b.map c = -(bᵀ * d.map c)` using `eq_neg_of_add_eq_zero_left h22`. Use `⟨e1, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.map_mul, Matrix.transpose_map, hmm, Matrix.transpose_mul, Matrix.transpose_transpose]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h22']`. Simplify using `only [Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_assoc]`. Use `_ = -(a.map c * bᵀ) := by rw [hD, Matrix.mul_one]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem skew_of_iso (h : IsUnramInv ϖ c q) {a b d : Matrix (Fin m) (Fin m) L}
     (hg : Iso c (Wm L (Fin m)) (Wm L (Fin m)) (fromBlocks a b 0 d)) :
@@ -332,19 +326,17 @@ theorem skew_of_iso (h : IsUnramInv ϖ c q) {a b d : Matrix (Fin m) (Fin m) L}
     _ = -(a.map c * bᵀ) := by rw [hD, Matrix.mul_one]
 
 /- English proof (translation)
-Establish `hk` using `(mem_KPW h).mp k.2`. Take `⟨hG, hC, hI⟩` from `hk`. Take `⟨A, hA'⟩ : ∃ A, A = (k : GL (Fin m ⊕ Fin m) L).val.toBlocks₁₁` from `⟨_, rfl⟩`. Take `⟨B, hB'⟩ : ∃ B, B = (k : GL (Fin m ⊕ Fin m) L).val.toBlocks₁₂` from `⟨_, rfl⟩`. Take `⟨D, hD'⟩ : ∃ D, D = (k : GL (Fin m ⊕ Fin m) L).val.toBlocks₂₂` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hv : (k : GL (Fin m ⊕ Fin m) L).val = fromBlocks A B 0 D`. Rewrite using `[hA', hB', hD', ← hC, Matrix.fromBlocks_toBlocks]`. Establish `hiso : Iso c (Wm L (Fin m)) (Wm L (Fin m)) (fromBlocks A B 0 D)`. Rewrite using `[← hv]`. Conclude with `hG`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨e1, e2⟩` from `skew_of_iso h hiso`. Establish `hIfb : IntM (fromBlocks A B 0 D)`. Rewrite using `[← hv]`. Conclude with `hI`. Take `⟨hA, hB, -, hD⟩` from `intM_fromBlocks.mp hIfb`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨X, hXdef⟩ : ∃ X : Matrix (Fin m) (Fin m) L, X = B * (A.map c)ᵀ` from `⟨_, rfl⟩`. Establish `hXNA : X ∈ NA c m`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hXdef]`. Conclude with `IntM.mul hB (IntM.conjT h hA)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `i j`. Rewrite using `[hXdef]`. Conclude with `congrFun (congrFun e2 i) j`. Establish `hXD : X * D = B`. Rewrite using `[hXdef, Matrix.mul_assoc, e1, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨Multiplicative.ofAdd ⟨X, hXNA⟩, ?_⟩` and prove the remaining obligations. Establish `hprod : (((nHom h m (Multiplicative.ofAdd ⟨X, hXNA⟩))⁻¹ * k : KPW L c m) : GL (Fin m ⊕ Fin m) L).val = fromBlocks A 0 0 D` using `by show fromBlocks 1 (-X) 0 1 * (k : GL (Fin m ⊕ Fin m) L).val = _`. Rewrite using `[hv, Matrix.fromBlocks_multiply]`. Simplify using `[hXD]`. Rewrite using `[Subgroup.mem_subgroupOf, mem_conj h hx, hprod, Matrix.toBlocks_fromBlocks₂₁, Matrix.toBlocks_fromBlocks₁₁, Matrix.toBlocks_fromBlocks₂₂, Matrix.toBlocks_fromBlocks₁₂]`.
-
-Conclude with `⟨((nHom h m (Multiplicative.ofAdd ⟨X, hXNA⟩))⁻¹ * k).2.1.1, rfl, hA, hD, zero_mem _⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cover (h : IsUnramInv ϖ c q) {x : Lˣ} (hx : (x : L) = ϖ) (k : KPW L c m) :
     ∃ X, (nHom h m X)⁻¹ * k ∈ ((KPW L c m).map (MulAut.conj (zW L m x)).toMonoidHom).subgroupOf (KPW L c m) := by
@@ -384,9 +376,9 @@ theorem cover (h : IsUnramInv ϖ c q) {x : Lˣ} (hx : (x : L) = ϖ) (k : KPW L c
   exact ⟨((nHom h m (Multiplicative.ofAdd ⟨X, hXNA⟩))⁻¹ * k).2.1.1, rfl, hA, hD, zero_mem _⟩
 
 /- English proof (translation)
-Use extensionality with `X`. Rewrite using `[Subgroup.mem_comap, Subgroup.mem_subgroupOf, mem_conj h hx]`. Use `show _ ↔ ((Multiplicative.toAdd X : NA c m) : Matrix (Fin m) (Fin m) L) ∈ MA m (ϖ⁻¹ * ϖ⁻¹)`. Establish `hv : ((nHom h m X : KPW L c m) : GL (Fin m ⊕ Fin m) L).val = fromBlocks 1 ((Multiplicative.toAdd X : NA c m) : Matrix (Fin m) (Fin m) L) 0 1` using `rfl`. Rewrite using `[hv, Matrix.toBlocks_fromBlocks₂₁, Matrix.toBlocks_fromBlocks₁₁, Matrix.toBlocks_fromBlocks₂₂, Matrix.toBlocks_fromBlocks₁₂]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, -, -, -, hM⟩`. Conclude with `hM`. Introduce `hM`. Conclude with `⟨(nHom h m X).2.1.1, rfl, intM_one, intM_one, hM⟩`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem comap_eq (h : IsUnramInv ϖ c q) {x : Lˣ} (hx : (x : L) = ϖ) :
     (((KPW L c m).map (MulAut.conj (zW L m x)).toMonoidHom).subgroupOf (KPW L c m)).comap (nHom h m) =
@@ -409,7 +401,7 @@ end PositivityTheory.Sph.M2.ZC
 namespace PositivityTheory.Sph.M2
 
 /- English proof (translation)
-Introduce `L _ _ ϖ c q h m x hx`. Use `⟨ZC.conj_le h hx, ?_⟩` and prove the remaining obligations. Use `show (((KPW L c m).map (MulAut.conj (zW L m x)).toMonoidHom).subgroupOf (KPW L c m)).index = q ^ (2 * m * m)`. Rewrite using `[← ZC.index_comap_of_cover (ZC.nHom h m) _ (ZC.cover h hx), ZC.comap_eq h hx, AddSubgroup.index_toSubgroup]`. Conclude with `ZC.relIndex_NA h m`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zCount : ZCountSt := by
   intro L _ _ ϖ c q h m x hx

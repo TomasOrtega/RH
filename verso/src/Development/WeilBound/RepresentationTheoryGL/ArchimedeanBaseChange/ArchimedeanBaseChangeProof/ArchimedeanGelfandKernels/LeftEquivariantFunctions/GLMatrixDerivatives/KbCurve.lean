@@ -15,21 +15,21 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `hasDerivAt_pi.1 (hasDerivAt_pi.1 h a) b`.
+A detailed English derivation is pending.
 -/
 theorem hasDerivAt_entry {A : ℝ → Mat n} {A' : Mat n} {t : ℝ} (h : HasDerivAt A A' t) (a b : Fin n) :
     HasDerivAt (fun s => A s a b) (A' a b) t :=
   hasDerivAt_pi.1 (hasDerivAt_pi.1 h a) b
 
 /- English proof (translation)
-The claim follows from `hasDerivAt_pi.2 fun a => hasDerivAt_pi.2 fun b => h a b`.
+A detailed English derivation is pending.
 -/
 theorem hasDerivAt_of_entry {A : ℝ → Mat n} {A' : Mat n} {t : ℝ} (h : ∀ a b, HasDerivAt (fun s => A s a b) (A' a b) t) :
     HasDerivAt A A' t :=
   hasDerivAt_pi.2 fun a => hasDerivAt_pi.2 fun b => h a b
 
 /- English proof (translation)
-Apply `hasDerivAt_of_entry` to reduce the goal to its premises. Introduce `a b`. Apply the tactic sequence `have hsum : HasDerivAt (fun s => ∑ k, A s a k * B s k b) (∑ k, (A' a k * B t k b + A t a k * B' k b)) t := HasDerivAt.fun_sum fun k _ => (hasDerivAt_entry hA a k).mul (hasDerivAt_entry hB k b)`. Simplify `hsum` using `[Matrix.mul_apply, Finset.sum_add_distrib]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem hasDerivAt_matmul {A B : ℝ → Mat n} {A' B' : Mat n} {t : ℝ} (hA : HasDerivAt A A' t) (hB : HasDerivAt B B' t) :
     HasDerivAt (fun s => A s * B s) (A' * B t + A t * B') t := by
@@ -41,7 +41,7 @@ theorem hasDerivAt_matmul {A B : ℝ → Mat n} {A' B' : Mat n} {t : ℝ} (hA : 
   simpa [Matrix.mul_apply, Finset.sum_add_distrib] using hsum
 
 /- English proof (translation)
-Establish `h` using `((hasDerivAt_id (0 : ℝ)).smul_const X).const_add (1 : Mat n)`. Simplify using `only [id, one_smul] at h`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_line (X : Mat n) : HasDerivAt (fun t : ℝ => 1 + t • X) X 0 := by
   have h := ((hasDerivAt_id (0 : ℝ)).smul_const X).const_add (1 : Mat n)
@@ -49,7 +49,7 @@ theorem hasDerivAt_line (X : Mat n) : HasDerivAt (fun t : ℝ => 1 + t • X) X 
   exact h
 
 /- English proof (translation)
-Establish `hc : Continuous fun t : ℝ => (1 + t • X).det` using `(continuous_const.add (continuous_id.smul continuous_const)).matrix_det`. Establish `h0 : (1 + (0:ℝ) • X).det ≠ 0` using `by simp`. Conclude with `hc.continuousAt.eventually_ne h0`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem det_line_ne (X : Mat n) : ∀ᶠ t : ℝ in 𝓝 0, (1 + t • X).det ≠ 0 := by
   have hc : Continuous fun t : ℝ => (1 + t • X).det :=
@@ -58,13 +58,13 @@ theorem det_line_ne (X : Mat n) : ∀ᶠ t : ℝ in 𝓝 0, (1 + t • X).det �
   exact hc.continuousAt.eventually_ne h0
 
 /- English proof (translation)
-Use `set B : ℝ → Mat n := fun t => (1 + t • X)⁻¹ with hB`. Establish `hB0 : B 0 = 1` using `by simp [hB]`. Establish `hcont : ContinuousAt B 0`. Establish `hline : Continuous fun t : ℝ => (1 : Mat n) + t • X` using `continuous_const.add (continuous_id.smul continuous_const)`. Establish `hdet : ContinuousAt Ring.inverse ((1 : Mat n) + (0:ℝ) • X).det`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ring.inverse_eq_inv']`. Conclude with `continuousAt_inv₀ (by simp)`. Establish `h2 : ContinuousAt (fun t : ℝ => (1 : Mat n) + t • X) 0` using `hline.continuousAt`. Conclude with `ContinuousAt.comp (g := Inv.inv) (f := fun t : ℝ => (1 : Mat n) + t • X) (continuousAt_matrix_inv _ hdet) h2`. Establish `hlim : Tendsto (fun t => -(B t * X)) (𝓝[≠] (0:ℝ)) (𝓝 (-X))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : Tendsto (fun t => -(B t * X)) (𝓝 (0:ℝ)) (𝓝 (-(B 0 * X)))` using `((hcont.mul continuousAt_const).neg)`. Rewrite `h1` using `[hB0, one_mul]`. Conclude with `h1.mono_left nhdsWithin_le_nhds`. Use `hasDerivAt_iff_tendsto_slope.mpr (hlim.congr' ?_)` and prove the remaining obligations. Establish `hne : ∀ᶠ t in 𝓝[≠] (0:ℝ), (1 + t • X).det ≠ 0` using `(det_line_ne X).filter_mono nhdsWithin_le_nhds`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `filter_upwards [hne, self_mem_nhdsWithin] with t ht ht0`. Establish `hinv : B t * (1 + t • X) = 1` using `Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.mpr ht)`. Rewrite `hinv` using `[mul_add, mul_one, Matrix.mul_smul]`. Establish `ht0' : t ≠ 0` using `ht0`. Rewrite using `[slope_def_module, hB0, sub_zero, ← hinv, sub_add_cancel_left, smul_neg, smul_smul, inv_mul_cancel₀ ht0', one_smul]`.
+A detailed English derivation is pending.
 -/
 theorem hasDerivAt_lineInv (X : Mat n) : HasDerivAt (fun t : ℝ => (1 + t • X)⁻¹) (-X) 0 := by
   set B : ℝ → Mat n := fun t => (1 + t • X)⁻¹ with hB
@@ -94,11 +94,9 @@ theorem hasDerivAt_lineInv (X : Mat n) : HasDerivAt (fun t : ℝ => (1 + t • X
     inv_mul_cancel₀ ht0', one_smul]
 
 /- English proof (translation)
-Use `set p : Polynomial ℂ := (1 + (Polynomial.X : Polynomial ℂ) • X.map Polynomial.C).det with hp`. Establish `hev : ∀ t : ℝ, (1 + t • X).det = p.eval (t : ℂ)`. Introduce `t`. Rewrite using `[hp, ← Polynomial.coe_evalRingHom, RingHom.map_det]`. Use `congr 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Apply the tactic sequence `by_cases hij : i = j <;> simp [hij, Matrix.one_apply, Complex.real_smul] <;> ring`. Establish `hd : HasDerivAt (fun y : ℝ => p.eval (y : ℂ)) (p.derivative.eval ((0:ℝ) : ℂ)) 0` using `(p.hasDerivAt ((0:ℝ) : ℂ)).comp_ofReal`. Rewrite `hd` using `[Complex.ofReal_zero, hp, Matrix.derivative_det_one_add_X_smul]`. Rewrite using `[show (fun t : ℝ => (1 + t • X).det) = fun y : ℝ => p.eval (y : ℂ) from funext hev]`.
-
-Conclude with `hd`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_detLine (X : Mat n) : HasDerivAt (fun t : ℝ => (1 + t • X).det) X.trace 0 := by
   set p : Polynomial ℂ := (1 + (Polynomial.X : Polynomial ℂ) • X.map Polynomial.C).det with hp

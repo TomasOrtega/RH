@@ -12,9 +12,9 @@ open scoped Pointwise ENNReal Classical
 namespace GlobalTheory.HL.LatCard
 
 /- English proof (translation)
-Establish `hA' : A = (⊤ : AddSubgroup G).map f`. Use extensionality with `w`. Simplify using `[hA]`. Establish `hT : A.map T = H.map f`. Use extensionality with `w`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[hA, hH, ht]`. Rewrite using `[hT, hA', AddSubgroup.relIndex_map_map_of_injective _ _ hf, AddSubgroup.relIndex_top_right]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem relIndex_map_of_param {G W : Type*} [AddCommGroup G] [AddCommGroup W] (f : G →+ W)
     (hf : Function.Injective f) (A : AddSubgroup W) (hA : ∀ w, w ∈ A ↔ ∃ g, f g = w)
@@ -29,13 +29,13 @@ theorem relIndex_map_of_param {G W : Type*} [AddCommGroup G] [AddCommGroup W] (f
   rw [hT, hA', AddSubgroup.relIndex_map_map_of_injective _ _ hf, AddSubgroup.relIndex_top_right]
 
 /- English proof (translation)
-Rewrite using `[← Nat.card_eq_fintype_card]`. Establish `e1 : {p : Fin m × Fin m // p.1 < p.2} ≃ {p : Fin m × Fin m // p.2 < p.1}` using `Equiv.subtypeEquiv (Equiv.prodComm _ _) (fun p => Iff.rfl)`. Establish `e2 : {p : Fin m × Fin m // p.1 = p.2} ≃ Fin m` using `{ toFun := fun p => p.1.1 invFun := fun a => ⟨(a, a), rfl⟩ left_inv := fun p => by`. Take `⟨⟨a, b⟩, h⟩` from `p`. Simplify using `only at h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Substitute `h` using the available equality. Both sides reduce to the same expression. Use `right_inv := fun a => rfl }`. Establish `e3 : {p : Fin m × Fin m // ¬ p.1 = p.2} ≃ {p : Fin m × Fin m // p.1 < p.2} ⊕ {p : Fin m × Fin m // p.2 < p.1}` using `(Equiv.subtypeEquivRight (fun p => ne_iff_lt_or_gt)).trans (subtypeOrEquiv _ _ (by`. Introduce `r h1 h2 x hx`.
+Substitute using the available equality. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(lt_asymm (h1 x hx) (h2 x hx)).elim))`. Establish `hcard : Nat.card (Fin m × Fin m) = m + (Nat.card {p : Fin m × Fin m // p.1 < p.2} + Nat.card {p : Fin m × Fin m // p.1 < p.2})`. Rewrite using `[Nat.card_congr (Equiv.sumCompl (fun p : Fin m × Fin m => p.1 = p.2)).symm, Nat.card_sum, Nat.card_congr e2, Nat.card_congr e3, Nat.card_sum, ← Nat.card_congr e1]`. Simplify using the standard rewrite rules. Rewrite `hcard` using `[Nat.card_prod]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Nat.card_eq_fintype_card, Fintype.card_fin] at hcard ⊢`. Rewrite using `[sq, hcard]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem card_pairs (m : ℕ) :
     m + 2 * Fintype.card {p : Fin m × Fin m // p.1 < p.2} = m ^ 2 := by
@@ -91,9 +91,9 @@ theorem hermOf_apply (L : LocE F E) (m : ℕ) (x) (a b : Fin m) : hermOf L m x a
     else if h' : b < a then L.cj (x.2 ⟨(b, a), h'⟩ : E) else algebraMap F E (x.1 a : F) := rfl
 
 /- English proof (translation)
-Establish `key : ∀ x : Fin n → E, hf L Hm x y = ∑ i, x i * ∑ j, Hm i j * L.cj (y j)`. Introduce `x`. Simplify using `only [hf, Finset.mul_sum, mul_assoc]`. Take `⟨v, hv⟩ : ∃ v : Fin n → E, ∀ x, hf L Hm x y = ∑ i, x i * v i` from `⟨_, key⟩`. Simplify using `only [hv, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul, Finset.mul_sum, mul_assoc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_comm`.
+A detailed English derivation is pending.
 -/
 theorem hf_sum_smul (L : LocE F E) {n k : ℕ} (Hm : Matrix (Fin n) (Fin n) E)
     (c : Fin k → E) (b : Fin k → Fin n → E) (y : Fin n → E) :
@@ -123,9 +123,9 @@ theorem tupOf_apply (L : LocE F E) {n : ℕ} (b : Fin n → Fin n → E) (m : �
     tupOf L b m x a = ∑ i, (x a i : E) • b i := rfl
 
 /- English proof (translation)
-Establish `h : (DistribMulAction.toAddMonoidHom (ι → M) r).range = AddSubgroup.pi Set.univ (fun _ => (DistribMulAction.toAddMonoidHom M r).range)`. Use extensionality with `x`. Simplify using `only [AddMonoidHom.mem_range, DistribMulAction.toAddMonoidHom_apply, AddSubgroup.mem_pi, Set.mem_univ, true_imp_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩ i`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨y i, rfl⟩`. Introduce `hx choose y hy using hx`. Conclude with `⟨y, funext hy⟩`. Rewrite using `[h, AddSubgroup.index_pi, Finset.prod_const, Finset.card_univ]`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 private theorem index_range_smul_pi {R M ι : Type*} [Monoid R] [AddCommGroup M]
     [DistribMulAction R M] [Fintype ι] (r : R) :
@@ -145,13 +145,13 @@ private theorem index_range_smul_pi {R M ι : Type*} [Monoid R] [AddCommGroup M]
   rw [h, AddSubgroup.index_pi, Finset.prod_const, Finset.card_univ]
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero`. Rewrite using `[pow_zero, pow_zero]`. Use `AddSubgroup.index_top` and compare the differences between its conclusion and the goal. Use extensionality with `x`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Simplify using `only [AddMonoidHom.mem_range, AddSubgroup.mem_top, iff_true]`. Conclude with `⟨x, one_smul R x⟩`. Consider the case `succ j ih`. Establish `hinj : Function.Injective (DistribMulAction.toAddMonoidHom R r)` using `fun x y h => mul_left_cancel₀ hr (by simpa using h)`. Establish `hmap : (DistribMulAction.toAddMonoidHom R (r ^ (j + 1))).range = (DistribMulAction.toAddMonoidHom R (r ^ j)).range.map (DistribMulAction.toAddMonoidHom R r)`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `x`. Simplify using `only [AddMonoidHom.mem_range, AddSubgroup.mem_map, DistribMulAction.toAddMonoidHom_apply, smul_eq_mul]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨r ^ j * y, ⟨y, rfl⟩, by ring⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨_, ⟨y, rfl⟩, rfl⟩`. Conclude with `⟨y, by ring⟩`. Rewrite using `[hmap, AddSubgroup.index_map_of_injective _ hinj, ih, pow_succ]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 private theorem index_range_smul_pow {R : Type*} [CommRing R] [IsDomain R] {r : R} (hr : r ≠ 0)
     (j : ℕ) : (DistribMulAction.toAddMonoidHom R (r ^ j)).range.index =
@@ -180,7 +180,7 @@ private theorem index_range_smul_pow {R : Type*} [CommRing R] [IsDomain R] {r : 
     rw [hmap, AddSubgroup.index_map_of_injective _ hinj, ih, pow_succ]
 
 /- English proof (translation)
-Establish `h : (DistribMulAction.toAddMonoidHom R r).range = (Ideal.span {r}).toAddSubgroup`. Use extensionality with `x`. Simplify using `only [AddMonoidHom.mem_range, DistribMulAction.toAddMonoidHom_apply, smul_eq_mul, Submodule.mem_toAddSubgroup, Ideal.mem_span_singleton']`. Apply the tactic sequence `constructor <;> rintro ⟨y, rfl⟩ <;> exact ⟨y, mul_comm _ _⟩`. Rewrite using `[h, AddSubgroup.index_eq_card]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -195,53 +195,49 @@ private theorem index_range_smul_eq_card_quotient {R : Type*} [CommRing R] (r : 
   rfl
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ E _ _ _ L ϖ hϖ n Hm hH Λs hΛ m j`. Take `⟨b, hbo, hΛb⟩` from `GlobalTheory.HL.SelfDual.exists_orthonormal L hH hΛ`. Establish `hmemO : ∀ c : 𝒪[F], algebraMap F E (c : F) ∈ L.O` using `fun c => (GlobalTheory.UnramOrder.algebraMap_mem_iff L c).2 c.2`. Establish `cj_alg : ∀ c : F, L.cj (algebraMap F E c) = algebraMap F E c` using `fun c => L.cj.commutes c`. Establish `hsmem : algebraMap F E ((ϖ : F) ^ j) ∈ L.O` using `by exact_mod_cast hmemO (ϖ ^ j)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨sO, hsO⟩ : ∃ sO : L.O, (sO : E) = algebraMap F E ((ϖ : F) ^ j)` from `⟨⟨_, hsmem⟩, rfl⟩`. Establish `hord` using `(GlobalTheory.UnramOrder.order_facts L ϖ hϖ).2.2.2.2.2.1 j`. Establish `hset : ({y : L.O | (y : E) = algebraMap F E ((ϖ : F) ^ j)} : Set L.O) = {sO}`. Use extensionality with `y`. Simplify using `only [Set.mem_setOf_eq, Set.mem_singleton_iff, Subtype.ext_iff, hsO]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite `hord` using `[hset]`. Establish `hqO : (DistribMulAction.toAddMonoidHom L.O sO).range.index = resQ ϖ ^ (2 * j)`. Rewrite using `[index_range_smul_eq_card_quotient, hord]`. Establish `hqF : (DistribMulAction.toAddMonoidHom 𝒪[F] (ϖ ^ j)).range.index = resQ ϖ ^ j`. Rewrite using `[index_range_smul_pow hϖ.ne_zero, index_range_smul_eq_card_quotient]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hpair : ∀ (x : Fin n → L.O) (k : Fin n), hf L Hm (∑ i, (x i : E) • b i) (b k) = x k`. Introduce `x k`. Rewrite using `[hf_sum_smul]`. Simplify using `[hbo]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hinj1 : Function.Injective (tupOf L b m)`. Introduce `x x' h`. Use function extensionality and compare the values at `a k`. Apply `Subtype.ext` to reduce the goal to its premises. Use `congrArg (fun w => hf L Hm (w a) (b k)) h` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Simplify `this` using `only [tupOf_apply, hpair]`. Establish `hA1 : ∀ w, w ∈ tupLat L Λs m ↔ ∃ g, tupOf L b m g = w`. Introduce `w`. Simplify using `only [tupLat, AddSubgroup.mem_pi, Set.mem_univ, true_imp_iff, Submodule.mem_toAddSubgroup, hΛb, Submodule.mem_span_range_iff_exists_fun, Subring.smul_def]`. Prove the components needed by the constructor for the conclusion.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hw choose g hg using hw`. Conclude with `⟨g, funext fun a => by rw [tupOf_apply]; exact hg a⟩`. Introduce and unpack `⟨g, rfl⟩ a`. Conclude with `⟨g a, (tupOf_apply L b m g a).symm⟩`. Establish `ht1 : ∀ g, tupOf L b m (DistribMulAction.toAddMonoidHom _ sO g) = DistribMulAction.toAddMonoidHom _ (algebraMap F E ((ϖ : F) ^ j)) (tupOf L b m g)`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `g`. Use function extensionality and compare the values at `a`. Simplify using `only [DistribMulAction.toAddMonoidHom_apply, tupOf_apply, Pi.smul_apply, smul_eq_mul, MulMemClass.coe_mul, hsO, mul_smul, Finset.smul_sum]`. Establish `P1` using `relIndex_map_of_param (tupOf L b m) hinj1 (tupLat L Λs m) hA1 (DistribMulAction.toAddMonoidHom _ (algebraMap F E ((ϖ : F) ^ j))) (DistribMulAction.toAddMonoidHom _ sO) ht1 _ (fun g => AddMonoidHom.mem_range)`. Rewrite `P1` using `[index_range_smul_pi, index_range_smul_pi, hqO, Fintype.card_fin, Fintype.card_fin]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `herm_iff : ∀ X : Matrix (Fin m) (Fin m) E, IsHerm L X ↔ ∀ a b, L.cj (X b a) = X a b` using `fun X => ⟨fun h a b => congrFun (congrFun h a) b, fun h => Matrix.ext h⟩`. Establish `hermMem : ∀ X, X ∈ hermLat L m ↔ IsHerm L X ∧ IsIntM L X`. Introduce `X`. Prove the components needed by the constructor for the conclusion. Introduce `hX`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `hermLat at hX`. Proceed by induction on `hX using AddSubgroup.closure_induction with`. Consider the case `mem x hx => exact hx`. Consider the case `zero`. Use `⟨(herm_iff _).2 fun a b => ?_, fun a b => ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Simplify using `only [Matrix.zero_apply]`. Conclude with `L.O.zero_mem`. Consider the case `add x y _ _ hx hy`. Use `⟨(herm_iff _).2 fun a b => ?_, fun a b => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[(herm_iff _).1 hx.1 a b, (herm_iff _).1 hy.1 a b]`. Simplify `add_mem (hx.2 a b) (hy.2 a b)` using `only [Matrix.add_apply]`. Consider the case `neg x _ hx`. Use `⟨(herm_iff _).2 fun a b => ?_, fun a b => ?_⟩` and prove the remaining obligations. Simplify using `[(herm_iff _).1 hx.1 a b]`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `neg_mem (hx.2 a b)` using `only [Matrix.neg_apply]`. Introduce `hX`. Conclude with `AddSubgroup.subset_closure hX`. Establish `hinj2 : Function.Injective (hermOf L m)`. Introduce `x y h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hd : ∀ a b, hermOf L m x a b = hermOf L m y a b` using `fun a b => by rw [h]`. Use `Prod.ext (funext fun a => ?_) (funext fun p => ?_)` and prove the remaining obligations. Use `hd a a` as an intermediate fact. Rewrite `this` using `[hermOf_apply, hermOf_apply, dif_neg (lt_irrefl a), dif_neg (lt_irrefl a), dif_neg (lt_irrefl a), dif_neg (lt_irrefl a)]`. Conclude with `Subtype.ext (GlobalTheory.UnramOrder.algebraMap_inj L this)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `hd p.1.1 p.1.2` as an intermediate fact. Rewrite `this` using `[hermOf_apply, hermOf_apply, dif_pos p.2, dif_pos p.2]`. Conclude with `Subtype.ext this`. Establish `hA2 : ∀ X, X ∈ hermLat L m ↔ ∃ g, hermOf L m g = X`. Introduce `X`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[hermMem]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hHX, hIX⟩`. Establish `diag : ∀ a, ∃ c : 𝒪[F], X a a = algebraMap F E c` using `fun a => GlobalTheory.UnramOrder.exists_int_of_fixed L (hIX a a) ((herm_iff X).1 hHX a a)`. Use `choose d hd using diag`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `⟨(d, fun p => ⟨X p.1.1 p.1.2, hIX _ _⟩), ?_⟩` and prove the remaining obligations. Use extensionality with `a b`. Rewrite using `[hermOf_apply]`. Use `split_ifs with h h'`. Both sides reduce to the same expression.
+Substitute using the available equality. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Conclude with `(herm_iff X).1 hHX a b`. Establish `hab : a = b` using `le_antisymm (not_lt.1 h') (not_lt.1 h)`. Substitute `hab` using the available equality. Conclude with `(hd a).symm`. Introduce and unpack `⟨g, rfl⟩`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨(herm_iff _).2 fun a b => ?_, fun a b => ?_⟩` and prove the remaining obligations. Break down `lt_trichotomy a b with h | rfl | h` into its components or cases. Simplify using `[hermOf_apply, h, not_lt.2 h.le, L.cj_cj]`. Simplify using `[hermOf_apply, cj_alg]`. Simplify using `[hermOf_apply, h, not_lt.2 h.le]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[hermOf_apply] split_ifs`. Conclude with `Subtype.prop _`. Conclude with `GlobalTheory.UnramOrder.cj_mem L (Subtype.prop _)`. Conclude with `hmemO _`. Establish `ht2 : ∀ g, hermOf L m (((DistribMulAction.toAddMonoidHom (Fin m → 𝒪[F]) (ϖ ^ j)).prodMap (DistribMulAction.toAddMonoidHom ({p : Fin m × Fin m // p.1 < p.2} → L.O) sO)) g) = DistribMulAction.toAddMonoidHom _ (algebraMap F E ((ϖ : F) ^ j)) (hermOf L m g)`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce `g`. Use extensionality with `a b`. Simplify using `only [DistribMulAction.toAddMonoidHom_apply, Matrix.smul_apply, hermOf_apply, AddMonoidHom.coe_prodMap, Prod.map_fst, Prod.map_snd, Prod.map_apply]`. Apply the tactic sequence `split_ifs <;> simp [smul_eq_mul, MulMemClass.coe_mul, hsO, cj_alg, map_mul]`. Establish `hR2 : ((DistribMulAction.toAddMonoidHom (Fin m → 𝒪[F]) (ϖ ^ j)).prodMap (DistribMulAction.toAddMonoidHom ({p : Fin m × Fin m // p.1 < p.2} → L.O) sO)).range = (DistribMulAction.toAddMonoidHom (Fin m → 𝒪[F]) (ϖ ^ j)).range.prod (DistribMulAction.toAddMonoidHom ({p : Fin m × Fin m …`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `⟨x, y⟩`. Simplify using `only [AddMonoidHom.mem_range, AddSubgroup.mem_prod, AddMonoidHom.coe_prodMap, Prod.exists, Prod.map_apply, Prod.mk.injEq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, v, h1, h2⟩`. Conclude with `⟨⟨u, h1⟩, ⟨v, h2⟩⟩`.
-
-Introduce and unpack `⟨⟨u, h1⟩, ⟨v, h2⟩⟩`. Conclude with `⟨u, v, h1, h2⟩`. Establish `P2` using `relIndex_map_of_param (hermOf L m) hinj2 (hermLat L m) hA2 (DistribMulAction.toAddMonoidHom _ (algebraMap F E ((ϖ : F) ^ j))) _ ht2 _ (fun g => AddMonoidHom.mem_range)`. Rewrite `P2` using `[hR2, AddSubgroup.index_prod, index_range_smul_pi, index_range_smul_pi, hqF, hqO, Fintype.card_fin]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[P1]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[P2, ← card_pairs m]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem relIndex_tupLat_hermLat : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ (ϖ : 𝒪[F]), Irreducible ϖ → ∀ {n : ℕ} (Hm : Matrix (Fin n) (Fin n) E), IsHermND L Hm → ∀ Λs, IsSD L Hm Λs → ∀ m j : ℕ, ((tupLat L Λs m).map (DistribMulAction.toAddMonoidHom _ (algebraMap F E ((ϖ : F) ^ j)))).relIndex (tupLat L Λs m) = resQ ϖ ^ (2 * n * m * j) ∧ ((hermLat L m).map (DistribMulAction.toAddMonoidHom _ (algebraMap F E ((ϖ : F) ^ j)))).relIndex (hermLat L m) = resQ ϖ ^ (m ^ 2 * j) := by
   intro F _ _ _ _ _ E _ _ _ L ϖ hϖ n Hm hH Λs hΛ m j

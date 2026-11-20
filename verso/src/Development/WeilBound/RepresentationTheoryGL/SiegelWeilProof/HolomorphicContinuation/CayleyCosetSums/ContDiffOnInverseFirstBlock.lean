@@ -16,9 +16,9 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `hL : HasDerivAt (fun t : ℝ => x * II.cE W t) (x * W) 0`. Set `L : M2 n →L[ℝ] M2 n` to `LinearMap.toContinuousLinearMap (LinearMap.mulLeft ℝ x)`. Conclude with `L.hasFDerivAt.comp_hasDerivAt (0 : ℝ) (II.cE_hasDerivAt0 W)`. Establish `h` using `(hF.hasFDerivAt.restrictScalars ℝ).comp_hasDerivAt_of_eq (0 : ℝ) hL (by simp [II.cE])`. Establish `he : (fun t : ℝ => F (x * NormedSpace.exp ((t : ℂ) • W))) = fun t => F (x * II.cE W t)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `t`. Simplify using `only [II.cE, Complex.coe_smul]`. Rewrite using `[he]`. Conclude with `h.deriv`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem deriv_comp_mul_exp_smul_eq_fderiv (F : M2 n → ℂ) (x W : M2 n) (hF : DifferentiableAt ℂ F x) :
     deriv (fun t : ℝ => F (x * NormedSpace.exp ((t : ℂ) • W))) 0 = fderiv ℂ F x (x * W) := by
@@ -33,7 +33,7 @@ private theorem deriv_comp_mul_exp_smul_eq_fderiv (F : M2 n → ℂ) (x W : M2 n
   exact h.deriv
 
 /- English proof (translation)
-Unfold `rC`. Rewrite using `[deriv_comp_mul_exp_smul_eq_fderiv F x _ hF, deriv_comp_mul_exp_smul_eq_fderiv F x _ hF, ← smul_eq_mul Complex.I, ← map_smul, ← map_add, ← Matrix.mul_smul, ← Matrix.mul_add, smul_smul]`. Establish `hI : Complex.I * (1 / (2 * Complex.I)) = 1 / 2`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hI, ← smul_add, add_add_sub_cancel, ← two_smul ℂ Z, smul_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
 Evaluate the numerical expressions.
 -/
@@ -47,14 +47,14 @@ theorem rC_eq (F : M2 n → ℂ) (x Z : M2 n) (hF : DifferentiableAt ℂ F x) : 
   norm_num
 
 /- English proof (translation)
-Introduce `i j`. Conclude with `LVs.contDiffOn_inverse_first_block _ (fun x hx => isUnit_iff_ne_zero.2 hx) i j`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem contDiffOn_inverse_first_block : ∀ i j, ContDiffOn ℂ ∞ (fun x : M2 n => ub1 x i j) {x | x.det ≠ 0} := by
   intro i j
   exact LVs.contDiffOn_inverse_first_block _ (fun x hx => isUnit_iff_ne_zero.2 hx) i j
 
 /- English proof (translation)
-The claim follows from `isOpen_ne_fun (continuous_id.matrix_det) continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_det_ne : IsOpen {x : M2 n | x.det ≠ 0} :=
   isOpen_ne_fun (continuous_id.matrix_det) continuous_const

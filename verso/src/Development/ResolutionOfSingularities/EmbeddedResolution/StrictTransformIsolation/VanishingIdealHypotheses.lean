@@ -21,7 +21,7 @@ namespace FunctorialResolution.EmbeddedResolution
 namespace OpenImmersionRestriction
 
 /- English proof (translation)
-Introduce `W T U T' hT'`. Simplify using `only [vanishingIdealAssignment_apply]`. Conclude with `comap_vanishingIdeal_of_isOpenImmersion U.ι T T' hT'`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem vanishingComapOpens : VanishingComapOpens.{u} := by
   intro W T U T' hT'
@@ -29,13 +29,13 @@ theorem vanishingComapOpens : VanishingComapOpens.{u} := by
   exact comap_vanishingIdeal_of_isOpenImmersion U.ι T T' hT'
 
 /- English proof (translation)
-The claim follows from `idealSheafGeometryHypotheses_of_vanishingOrderOneOnSmoothDivisor vanishingOrderOneOnSmoothDivisor agreeNearVanishingComapSubscheme vanishingComapOpens`.
+A detailed English derivation is pending.
 -/
 theorem idealSheafGeometryHypotheses_vanishingIdealAssignment : IdealSheafGeometryHypotheses (vanishingIdealAssignment.{u}) :=
   idealSheafGeometryHypotheses_of_vanishingOrderOneOnSmoothDivisor vanishingOrderOneOnSmoothDivisor agreeNearVanishingComapSubscheme vanishingComapOpens
 
 /- English proof (translation)
-Introduce `k _ _ W p hp T hirr hsm hcomp x hx`. Rewrite `hsm`, the goal using `[vanishingIdealAssignment_apply]`. Conclude with `orderAt_vanishingIdeal_eq_one p hp T hirr hsm hcomp x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem orderAt_vanishingIdealAssignment_eq_one :
     ∀ (k : Type u) [Field k] [CharZero k] (W : Scheme.{u})
@@ -49,7 +49,7 @@ private theorem orderAt_vanishingIdealAssignment_eq_one :
   exact orderAt_vanishingIdeal_eq_one p hp T hirr hsm hcomp x hx
 
 /- English proof (translation)
-Introduce `k _ _ W p U hp`. Establish `: Smooth p` using `hp`. Use `infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem smooth_opens_ι_comp_of_smooth :
     ∀ (k : Type u) [Field k] [CharZero k] (W : Scheme.{u})
@@ -59,7 +59,7 @@ private theorem smooth_opens_ι_comp_of_smooth :
   infer_instance
 
 /- English proof (translation)
-Introduce `k _ _ W p U H hH T S hS hTsubH hT`. Rewrite `hT`, the goal using `[vanishingIdealAssignment_apply]`. Conclude with `smooth_vanishingIdeal_comap_subschemeι p U H hH T S hS hTsubH hT`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem smooth_vanishingIdealAssignment_of_isSmoothDivisor :
     ∀ (k : Type u) [Field k] [CharZero k] (W : Scheme.{u})
@@ -75,7 +75,7 @@ private theorem smooth_vanishingIdealAssignment_of_isSmoothDivisor :
   exact smooth_vanishingIdeal_comap_subschemeι p U H hH T S hS hTsubH hT
 
 /- English proof (translation)
-Introduce `k _ _ W p U T S hS hT`. Rewrite `hT`, the goal using `[vanishingIdealAssignment_apply]`. Conclude with `smooth_subschemeι_comp_of_eq (U.ι ≫ p) (comap_vanishingIdeal_of_isOpenImmersion U.ι T S hS).symm (smooth_comap_subschemeι_of_isOpenImmersion U.ι (Scheme.IdealSheafData.vanishingIdeal T) p hT)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem smooth_vanishingIdealAssignment_restrict_opens :
     ∀ (k : Type u) [Field k] [CharZero k] (W : Scheme.{u})
@@ -92,7 +92,7 @@ private theorem smooth_vanishingIdealAssignment_restrict_opens :
       (Scheme.IdealSheafData.vanishingIdeal T) p hT)
 
 /- English proof (translation)
-The claim follows from `orderAt_vanishingIdealAssignment_eq_one smooth_opens_ι_comp := smooth_opens_ι_comp_of_smooth smooth_vanishing_hypersurface := smooth_vanishingIdealAssignment_of_isSmoothDivisor smooth_vanishing_opens := smooth_vanishingIdealAssignment_restrict_opens`.
+A detailed English derivation is pending.
 -/
 theorem smoothVanishingHypotheses_vanishingIdealAssignment : SmoothVanishingHypotheses (vanishingIdealAssignment.{u}) where
   orderAt_vanishing_eq_one := orderAt_vanishingIdealAssignment_eq_one
@@ -101,7 +101,7 @@ theorem smoothVanishingHypotheses_vanishingIdealAssignment : SmoothVanishingHypo
   smooth_vanishing_opens := smooth_vanishingIdealAssignment_restrict_opens
 
 /- English proof (translation)
-The claim follows from `smoothOrderOneCentersIsolated_of_principalizationCertificate idealSheafGeometryHypotheses_vanishingIdealAssignment smoothVanishingHypotheses_vanishingIdealAssignment h`.
+A detailed English derivation is pending.
 -/
 theorem smoothOrderOneCentersIsolated_vanishingIdealAssignment_of_principalizationCertificate {k : Type u} [Field k] [CharZero k]
     {W : Scheme.{u}} {p : W ⟶ Spec (CommRingCat.of k)} {I : W.IdealSheafData} {m : ℕ}
@@ -112,9 +112,9 @@ theorem smoothOrderOneCentersIsolated_vanishingIdealAssignment_of_principalizati
 end OpenImmersionRestriction
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `V W f hf J hJ`. Establish `: IsOpenImmersion f` using `hf`. Conclude with `NonzeroOnComponents.comap_of_isOpenImmersion hJ f`. Introduce `V W f hf D`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: IsOpenImmersion f` using `hf`. Conclude with `OpenImmersionRestriction.isOpenImmersion_subschemeMap f D (comapSubscheme f D) (comapSubscheme_comp f D)`. Introduce `V W f hf p D hD`. Establish `: IsOpenImmersion f` using `hf`. Conclude with `OpenImmersionRestriction.isSmoothDivisor_comap f p D hD`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem openImmersionStability (k : Type u) [Field k] : OpenImmersionStability.{u} k := by
   refine ⟨?_, ?_, ?_⟩
@@ -129,7 +129,7 @@ theorem openImmersionStability (k : Type u) [Field k] : OpenImmersionStability.{
     exact OpenImmersionRestriction.isSmoothDivisor_comap f p D hD
 
 /- English proof (translation)
-The claim follows from `h.comap_of_openImmersionStability (openImmersionStability k) f`.
+A detailed English derivation is pending.
 -/
 theorem PrincipalizationCertificate.comap_of_isOpenImmersion {k : Type u} [Field k] {W : Scheme.{u}}
     {p : W ⟶ Spec (CommRingCat.of k)} {I : W.IdealSheafData} {m : ℕ} {Mem : Set ↥W}

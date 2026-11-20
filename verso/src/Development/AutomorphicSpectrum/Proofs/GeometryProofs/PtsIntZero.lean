@@ -19,9 +19,9 @@ def root (r : Unit × Fin 2) : ReciprocityTheory.ChartRestriction.G.Geo.HermLine
   if r.2 = 0 then ProjLine.fsLine1.inv else ProjLine.fsLine1.tensor two
 
 /- English proof (translation)
-Introduce `z hz`. Establish `hz0 : (WithLp.toLp 2 z : EuclideanSpace ℂ (ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.Ix (Fin 2))) ≠ 0`. Take `⟨i, hi⟩` from `hz ()`. Introduce `h0`. Apply `hi` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h1` using `congrArg (fun w : EuclideanSpace ℂ (ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.Ix (Fin 2)) => w ⟨(), i⟩) h0`. Simplify using `using h1`. Establish `hL` using `(PiLp.continuousLinearEquiv 2 ℝ (fun _ : ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.Ix (Fin 2) => ℂ)).symm.contDiff (n := ((⊤ : ℕ∞) : WithTop ℕ∞))`. Conclude with `((contDiffAt_norm ℂ hz0).comp z hL.contDiffAt).contDiffWithinAt`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sm1 : IsSmoothHerm ProjLine.fsLine1 := by
   intro z hz
@@ -36,7 +36,7 @@ theorem sm1 : IsSmoothHerm ProjLine.fsLine1 := by
   exact ((contDiffAt_norm ℂ hz0).comp z hL.contDiffAt).contDiffWithinAt
 
 /- English proof (translation)
-Introduce `z`. Use `show ‖WithLp.toLp 2 (fun p => (starRingEnd ℂ) (z p))‖ = ‖WithLp.toLp 2 z‖`. Simplify using `[EuclideanSpace.norm_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cj1 : IsConjInvariantH ProjLine.fsLine1 := by
   intro z
@@ -44,7 +44,7 @@ theorem cj1 : IsConjInvariantH ProjLine.fsLine1 := by
   simp [EuclideanSpace.norm_eq]
 
 /- English proof (translation)
-Use `show ContDiffOn ℝ _ (fun _ => (2 : ℝ)) _`. Conclude with `contDiffOn_const`.
+A detailed English derivation is pending.
 -/
 theorem sm2 : IsSmoothHerm two := by
   show ContDiffOn ℝ _ (fun _ => (2 : ℝ)) _
@@ -77,14 +77,14 @@ def model : RootModel Unit 2 where
   δ_pos := one_pos
 
 /- English proof (translation)
-Simplify using `[ReciprocityTheory.ChartRestriction.G.Geo.ptsIntegral, ReciprocityTheory.ChartRestriction.G.Geo.ptsIntegralAt, ReciprocityTheory.ChartRestriction.G.Geo.sheetDensity]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ptsInt_zero {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {e : ℕ} (P : Ideal (ReciprocityTheory.ChartRestriction.G.Geo.MRing ι)) (φ : Fin e → ((Σ k, ι k) → ℂ) → ℝ) :
     ReciprocityTheory.ChartRestriction.G.Geo.ptsIntegral P φ (fun _ => 0) = 0 := by
   simp [ReciprocityTheory.ChartRestriction.G.Geo.ptsIntegral, ReciprocityTheory.ChartRestriction.G.Geo.ptsIntegralAt, ReciprocityTheory.ChartRestriction.G.Geo.sheetDensity]
 
 /- English proof (translation)
-Introduce `h`. Rewrite `h` using `[ReciprocityTheory.ChartRestriction.G.Geo.mCoordIdeal, RingHom.mem_ker, map_one]`. Conclude with `one_ne_zero h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_not : (1 : ReciprocityTheory.ChartRestriction.G.Geo.MRing (GlobalTheory (Fin 2))) ∉ ReciprocityTheory.ChartRestriction.G.Geo.mCoordIdeal ProjLine.y := by
   intro h
@@ -92,7 +92,7 @@ theorem one_not : (1 : ReciprocityTheory.ChartRestriction.G.Geo.MRing (GlobalThe
   exact one_ne_zero h
 
 /- English proof (translation)
-Introduce `m hm k`. Rewrite `hm` using `[MvPolynomial.support_one, Finset.mem_singleton]`. Substitute `hm` using the available equality. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem hom1 : ReciprocityTheory.ChartRestriction.G.Geo.IsMultiHomog (1 : ReciprocityTheory.ChartRestriction.G.Geo.MRing (GlobalTheory (Fin 2))) 0 := by
   intro m hm k
@@ -121,9 +121,9 @@ def S : FlatHerm ProjLine.y phi two where
   norm σ z _ := by simp [evC, two]
 
 /- English proof (translation)
-Use `⟨fun k => ⟨(0 : Fin 2), ?_⟩, fun c _ a => ?_⟩` and prove the remaining obligations. Simplify using `[ProjLine.y]`. Establish `ha : IsIntegral ℤ (a : ℚ)` using `a.2`. Take `⟨n, hn⟩` from `IsIntegrallyClosed.isIntegral_iff.1 ha`. Establish `e : phi (a : ℚ) = algebraMap ℤ ProjLine.FnField n`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← hn]`. Simplify using `[phi]`. Rewrite using `[e]`. Conclude with `Subalgebra.algebraMap_mem _ n`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ovi : OverInt ProjLine.y phi := by
   refine ⟨fun k => ⟨(0 : Fin 2), ?_⟩, fun c _ a => ?_⟩
@@ -137,7 +137,7 @@ theorem ovi : OverInt ProjLine.y phi := by
     exact Subalgebra.algebraMap_mem _ n
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `[root, two, Fin.sum_univ_two, HermLine.inv, HermLine.tensor, ProjLine.fsLine1, HermLine.ofCone]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem dg : ∑ i : Fin 2, (root ((), i)).a = two.a := by
   funext k

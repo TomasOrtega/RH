@@ -18,7 +18,7 @@ noncomputable section
 namespace GlobalTheory.SiegTh.CmpUnif
 
 /- English proof (translation)
-Establish `hfn : ∀ u v : K, GlobalTheory.ZH.fn (u * v) = GlobalTheory.ZH.fn u * GlobalTheory.ZH.fn v` using `fun u v => map_mul _ u v`. Use `⟨h.1, fun b => ?_, h.2.2⟩` and prove the remaining obligations. Rewrite using `[hfn]`. Conclude with `ThG.smul hL hθ (h.2.1 b)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thList_smul {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] {L : LB G.left}
     {ρ : LB.Gen (L.pull (eSec G))} (hL : L.IsLB) {m : ℕ} {K : Type} [Field K] {x : Sp K ⟶ S} {θ θ' : SecAt G L x}
@@ -31,15 +31,15 @@ theorem thList_smul {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] {L
   exact ThG.smul hL hθ (h.2.1 b)
 
 /- English proof (translation)
-Introduce `W _ _ _ _ hW D A G _ _ hG U ρ hρ K _ _ io m m' N N' d d' hm hm3 hmu hm' hm3' hmu' hd`. Use `letI := A.isAb.comm`. Take `⟨-, -, w, hp, -, hw, -⟩` from `GlobalTheory.Ex.GenericFibre.exists_isoData W _ D A G U.toUnifPre`. Establish `h₁` using `(GlobalTheory.UMin.ThMove.hasTh₂_move _ G U.LG.L U.LG.rig U.LG.isLB U.LG.rigGen _ A.A A.L ρ (jK W) _ A.isLB hρ hp ⟨w, hw⟩ m m' N N' K (spMap io) d d').1 hd`. Use `set i : W →+* K := io.comp (algebraMap W (FractionRing W)) with hi`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective i` using `io.injective.comp (IsFractionRing.injective W (FractionRing W))`. Establish `ex : spMap io ≫ jK W = spMap i ≫ 𝟙 (Sp W)`. Rewrite using `[Category.comp_id, hi, ← Spec.map_comp]`. Both sides reduce to the same expression. Rewrite `h₁` using `[ex]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨θ, pt, pt', hθ, hl, hl'⟩` from `h₁`. Take `⟨σ, hσ⟩` from `GlobalTheory.T.exists_section_nonzero_uniformised_model_dvr W hW D A G hG U`. Take `⟨r, hr⟩` from `(isGenSec_iff θ).1 hθ (SecM.ofSec G (SecAt.pull G U.LG.L σ i))`. Take `⟨u, rfl⟩` from `(fnR (spMap i ≫ 𝟙 (Sp W))).surjective r`. Establish `hP` using `GlobalTheory.T.theta_constants_integral_unit_member_uniformised_trait W hW D A G hG U σ hσ m N hm hm3 hmu K i pt _ hinj (thList_smul U.LG.isLB (a := u) hr hl)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP'` using `GlobalTheory.T.theta_constants_integral_unit_member_uniformised_trait W hW D A G hG U σ hσ m' N' hm' hm3' hmu' K i pt' _ hinj (thList_smul U.LG.isLB (a := u) hr hl')`. Establish `hu : u ≠ 0`. Take `⟨-, b, hb, -⟩` from `hP`. Conclude with `left_ne_zero_of_mul hb`. Use `⟨u⁻¹, inv_ne_zero hu, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hP` using `only [div_inv_eq_mul, _root_.mul_comm]`. Simplify `hP'` using `only [div_inv_eq_mul, _root_.mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem cmp_unif : ∀ (W : Type) [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [CharZero W], IsAdicComplete (IsLocalRing.maximalIdeal W) W → ∀ (D : DegData W (IsLocalRing.maximalIdeal W)) (A : PolAV (Sp (FractionRing W))) (G : Over (Sp W)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (_ : Unif (IsLocalRing.maximalIdeal W) D A G) (ρ : LB.Gen (A.L.pull (eSec A.A))), ρ.IsGen → ∀ (K : Type) [Field K] [IsAlgClosed K] (io : FractionRing W →+* K) (m m' N N' : ℕ) (d : Fin N → K) (d' : Fin N' → K), Odd m → 3 ≤ m → IsUnit (m : W) → Odd m' → 3 ≤ m' → IsUnit (m' : W) → (letI := A.isAb.comm; HasTh₂ A.A A.L ρ m m' (spMap io) d d') → ∃ a : K, a ≠ 0 ∧ Prim (io.comp (algebraMap W (FractionRing W))) (fun b => d b / a) ∧ Prim (io.comp (algebraMap W (FractionRing W))) (fun b => d' b / a) := by
   intro W _ _ _ _ hW D A G _ _ hG U ρ hρ K _ _ io m m' N N' d d' hm hm3 hmu hm' hm3' hmu' hd

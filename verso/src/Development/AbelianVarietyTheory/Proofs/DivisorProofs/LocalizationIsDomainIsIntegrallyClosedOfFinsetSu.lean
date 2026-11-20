@@ -9,7 +9,7 @@ namespace LocalizationIntegrallyClosedDomain
 variable {B : Type} [CommRing B] (Q : Ideal B) [Q.IsPrime]
 
 /- English proof (translation)
-Rewrite `h` using `[IsLocalization.map_eq_zero_iff (Q.comap C.subtype).primeCompl]`. Take `⟨⟨m, hm⟩, hmc⟩` from `h`. Rewrite using `[IsLocalization.map_eq_zero_iff Q.primeCompl]`. Use `⟨⟨(m : B), by exact hm⟩, ?_⟩` and prove the remaining obligations. Simplify using `using congrArg Subtype.val hmc`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma algebraMap_eq_zero_of_sub (C : Subring B) (c : C)
     (h : algebraMap C (Localization.AtPrime (Q.comap C.subtype)) c = 0) :
@@ -21,7 +21,7 @@ lemma algebraMap_eq_zero_of_sub (C : Subring B) (c : C)
   simpa using congrArg Subtype.val hmc
 
 /- English proof (translation)
-Rewrite using `[IsLocalization.map_eq_zero_iff (Q.comap C.subtype).primeCompl]`. Conclude with `⟨⟨u, by exact hu⟩, h⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 lemma algebraMap_eq_zero_of_witness (C : Subring B) (u e : C) (hu : (u : B) ∉ Q)
     (h : u * e = 0) :
@@ -32,15 +32,13 @@ lemma algebraMap_eq_zero_of_witness (C : Subring B) (u e : C) (hu : (u : B) ∉ 
 variable {Q}
 
 /- English proof (translation)
-Use `⟨fun {x y} hxy => ?_⟩` and prove the remaining obligations. Take `⟨⟨a, s⟩, rfl⟩` from `IsLocalization.mk'_surjective Q.primeCompl x`. Take `⟨⟨c, t⟩, rfl⟩` from `IsLocalization.mk'_surjective Q.primeCompl y`. Rewrite `hxy` using `[← IsLocalization.mk'_mul, IsLocalization.mk'_eq_zero_iff]`. Take `⟨u, hu⟩` from `hxy`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨C, hC, hCq⟩` from `H {a, c, (u : B)}`. Establish `ha : a ∈ C` using `hC (by simp)`. Establish `hc : c ∈ C` using `hC (by simp)`. Establish `hu' : (u : B) ∈ C` using `hC (by simp)`. Use `haveI := (hCq (Q.comap C.subtype)).1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : algebraMap C (Localization.AtPrime (Q.comap C.subtype)) ((⟨a, ha⟩ : C) * ⟨c, hc⟩) = 0` using `algebraMap_eq_zero_of_witness Q C ⟨u, hu'⟩ _ u.2 (Subtype.ext (by simpa using hu))`. Rewrite `h0` using `[map_mul]`. Break down `mul_eq_zero.mp h0 with h | h` into its components or cases. Use `left`. Establish `h1` using `algebraMap_eq_zero_of_sub Q C _ h`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[IsLocalization.map_eq_zero_iff Q.primeCompl]`. Rewrite using `[IsLocalization.mk'_eq_zero_iff]`. Conclude with `h1`. Use `right`. Establish `h1` using `algebraMap_eq_zero_of_sub Q C _ h`.
-
-Rewrite `h1` using `[IsLocalization.map_eq_zero_iff Q.primeCompl]`. Rewrite using `[IsLocalization.mk'_eq_zero_iff]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma noZeroDivisors
     (H : ∀ s : Finset B, ∃ C : Subring B, (↑s : Set B) ⊆ (C : Set B) ∧
@@ -87,47 +85,41 @@ variable {B : Type} [CommRing B] {Q : Ideal B} [Q.IsPrime]
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Rewrite using `[isIntegrallyClosed_iff (FractionRing (Localization.AtPrime Q))]`. Introduce `z hz`. Establish `hf : ∀ x ∈ Q.primeCompl, algebraMap B (FractionRing (Localization.AtPrime Q)) x ≠ 0`. Introduce `x hx`. Rewrite using `[IsScalarTower.algebraMap_apply B (Localization.AtPrime Q) (FractionRing (Localization.AtPrime Q))]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((IsLocalization.map_units (Localization.AtPrime Q) (⟨x, hx⟩ : Q.primeCompl)).map (algebraMap (Localization.AtPrime Q) (FractionRing (Localization.AtPrime Q)))).ne_zero`. Establish `key : ∀ (b : B) (v : Q.primeCompl), algebraMap (Localization.AtPrime Q) (FractionRing (Localization.AtPrime Q)) (IsLocalization.mk' (Localization.AtPrime Q) b v) * algebraMap B (FractionRing (Localization.AtPrime Q)) v = algebraMap B (FractionRing (Localization.AtPrime Q)) b`. Introduce `b v`. Rewrite using `[IsScalarTower.algebraMap_apply B (Localization.AtPrime Q) (FractionRing (Localization.AtPrime Q)) v, IsScalarTower.algebraMap_apply B (Localization.AtPrime Q) (FractionRing (Localization.AtPrime Q)) b, ← map_mul, IsLocalization.mk'_spec]`. Choose the witnesses or unpack the hypotheses as in `⟨D, A0, hD, hDz⟩ : ∃ D A0 : B, algebraMap B (FractionRing (Localization.AtPrime Q)) D ≠ 0 ∧ algebraMap B (FractionRing (Localization.AtPrime Q)) D * z = algebraMap B (FractionRing (Localization.AtPrime Q)) A0 := by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x, y, hy, rfl⟩` from `IsFractionRing.div_surjective (A := (Localization.AtPrime Q)) z`. Take `⟨⟨a, s⟩, rfl⟩` from `IsLocalization.mk'_surjective Q.primeCompl x`. Take `⟨⟨c, t⟩, rfl⟩` from `IsLocalization.mk'_surjective Q.primeCompl y`. Establish `hyK : algebraMap (Localization.AtPrime Q) (FractionRing (Localization.AtPrime Q)) (IsLocalization.mk' (Localization.AtPrime Q) c t) ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hy`. Establish `hcK : algebraMap B (FractionRing (Localization.AtPrime Q)) c ≠ 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Apply `hyK` to reduce the goal to its premises. Establish `h1` using `key c t`. Rewrite `h1` using `[h0]`. Conclude with `(mul_eq_zero.mp h1).resolve_right (hf _ t.2)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨c * s, a * t, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `mul_ne_zero hcK (hf _ s.2)`. Establish `k1` using `key a s`. Establish `k2` using `key c t`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_mul, map_mul, ← k1, ← k2]`. Clear the denominators using the available nonvanishing facts. Take `⟨m, hm⟩` from `IsIntegral.exists_multiple_integral_of_isLocalization Q.primeCompl z hz`. Take `⟨p, hpm, hp⟩` from `hm`. Use `set A : B := (m : B) * A0 with hA`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hDA : algebraMap B (FractionRing (Localization.AtPrime Q)) D * (m • z) = algebraMap B (FractionRing (Localization.AtPrime Q)) A`. Rewrite using `[Submonoid.smul_def, Algebra.smul_def, hA, map_mul, ← hDz]`. Expand and normalize the polynomial expressions, which then agree. Establish `hE : algebraMap B (Localization.AtPrime Q) (p.scaleRoots D |>.eval A) = 0`. Establish `h1` using `Polynomial.scaleRoots_eval₂_mul (p := p) (algebraMap B (FractionRing (Localization.AtPrime Q))) (m • z) D`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h1` using `[hp, mul_zero, hDA, Polynomial.eval₂_at_apply, IsScalarTower.algebraMap_apply B (Localization.AtPrime Q) (FractionRing (Localization.AtPrime Q))]`. Conclude with `(map_eq_zero_iff _ (IsFractionRing.injective (Localization.AtPrime Q) (FractionRing (Localization.AtPrime Q)))).mp h1`. Take `⟨u, hu⟩` from `(IsLocalization.map_eq_zero_iff Q.primeCompl (Localization.AtPrime Q) _).mp hE`. Take `⟨C, hC, hCq⟩` from `H (insert A (insert D (insert (u : B) p.coeffs)))`. Establish `hAC : A ∈ C` using `hC (Finset.mem_coe.mpr (Finset.mem_insert_self _ _))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hDC : D ∈ C` using `hC (Finset.mem_coe.mpr (Finset.mem_insert_of_mem (Finset.mem_insert_self _ _)))`. Establish `huC : (u : B) ∈ C` using `hC (Finset.mem_coe.mpr (Finset.mem_insert_of_mem (Finset.mem_insert_of_mem (Finset.mem_insert_self _ _))))`. Establish `hcoef : (↑p.coeffs : Set B) ⊆ (C : Set B)` using `fun x hx => hC (Finset.mem_coe.mpr (Finset.mem_insert_of_mem (Finset.mem_insert_of_mem (Finset.mem_insert_of_mem hx))))`. Use `set p' := p.toSubring C hcoef with hp'`. Establish `hp'm : p'.Monic` using `(Polynomial.monic_toSubring p C hcoef).mpr hpm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `set A' : C := ⟨A, hAC⟩`. Use `set D' : C := ⟨D, hDC⟩`. Use `set u' : C := ⟨u, huC⟩`. Use `haveI : Nontrivial B := (algebraMap B (Localization.AtPrime Q)).domain_nontrivial`. Establish `hlc : C.subtype p'.leadingCoeff ≠ 0`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hp'm.leadingCoeff, map_one]`. Conclude with `one_ne_zero`. Establish `hsub : C.subtype ((p'.scaleRoots D').eval A') = (p.scaleRoots D).eval A`. Rewrite using `[← Polynomial.eval₂_at_apply, ← Polynomial.eval_map, Polynomial.map_scaleRoots _ _ _ hlc, Polynomial.map_toSubring]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hE' : u' * (p'.scaleRoots D').eval A' = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `: (u : B) * C.subtype ((p'.scaleRoots D').eval A') = 0` using `by rw [hsub]; exact hu`. Simplify using `using this`. Use `haveI := (hCq (Q.comap C.subtype)).1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI := (hCq (Q.comap C.subtype)).2`. Establish `hgE : algebraMap C (Localization.AtPrime (Q.comap C.subtype)) ((p'.scaleRoots D').eval A') = 0` using `algebraMap_eq_zero_of_witness Q C u' _ u.2 hE'`. Establish `hgD : algebraMap C (Localization.AtPrime (Q.comap C.subtype)) D' ≠ 0`. Introduce `h0`. Establish `h1 : algebraMap B (Localization.AtPrime Q) D = 0` using `algebraMap_eq_zero_of_sub Q C D' h0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Apply `hD` to reduce the goal to its premises. Rewrite using `[IsScalarTower.algebraMap_apply B (Localization.AtPrime Q) (FractionRing (Localization.AtPrime Q)), h1, map_zero]`. Establish `hhD : algebraMap (Localization.AtPrime (Q.comap C.subtype)) (FractionRing (Localization.AtPrime (Q.comap C.subtype))) (algebraMap C (Localization.AtPrime (Q.comap C.subtype)) D') ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective (Localization.AtPrime (Q.comap C.subtype)) (FractionRing (Localization.AtPrime (Q.comap C.subtype))))).mpr hgD`. Use `set x : (FractionRing (Localization.AtPrime (Q.comap C.subtype))) := algebraMap (Localization.AtPrime (Q.comap C.subtype)) (FractionRing (Localization.AtPrime (Q.comap C.subtype))) (algebraMap C (Localization.AtPrime (Q.comap C.subtype)) A') / algebraMap (Localization.AtPrime (Q. …`. Establish `hxD : algebraMap (Localization.AtPrime (Q.comap C.subtype)) (FractionRing (Localization.AtPrime (Q.comap C.subtype))) (algebraMap C (Localization.AtPrime (Q.comap C.subtype)) D') * x = algebraMap (Localization.AtPrime (Q.comap C.subtype)) (FractionRing (Localization.AtPrime (Q.co …`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hx]`. Clear the denominators using the available nonvanishing facts. Establish `hlc2 : algebraMap C (Localization.AtPrime (Q.comap C.subtype)) p'.leadingCoeff ≠ 0`. Rewrite using `[hp'm.leadingCoeff, map_one]`. Conclude with `one_ne_zero`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hxint : IsIntegral (Localization.AtPrime (Q.comap C.subtype)) x`. Use `⟨p'.map (algebraMap C (Localization.AtPrime (Q.comap C.subtype))), hp'm.map _, ?_⟩` and prove the remaining obligations. Establish `h2` using `Polynomial.scaleRoots_eval₂_mul (p := p'.map (algebraMap C (Localization.AtPrime (Q.comap C.subtype)))) (algebraMap (Localization.AtPrime (Q.comap C.subtype)) (FractionRing (Localization.AtPrime (Q.comap C.subtype)))) x (algebraMap C (Localization.AtPrime (Q.comap C.subtype)) D')`. Rewrite `h2` using `[hxD, ← Polynomial.map_scaleRoots _ _ _ hlc2, Polynomial.eval₂_at_apply, Polynomial.eval_map, Polynomial.eval₂_at_apply, hgE, map_zero]`. Conclude with `(mul_eq_zero.mp h2.symm).resolve_left (pow_ne_zero _ hhD)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨w, hw⟩` from `(IsIntegrallyClosed.isIntegral_iff (R := Localization.AtPrime (Q.comap C.subtype)) (K := FractionRing (Localization.AtPrime (Q.comap C.subtype)))).mp hxint`. Establish `hwD : w * algebraMap C (Localization.AtPrime (Q.comap C.subtype)) D' = algebraMap C (Localization.AtPrime (Q.comap C.subtype)) A'`. Apply `IsFractionRing.injective (Localization.AtPrime (Q.comap C.subtype)) (FractionRing (Localization.AtPrime (Q.comap C.subtype)))` to reduce the goal to its premises. Rewrite using `[map_mul, hw, mul_comm, hxD]`. Take `⟨⟨e, v⟩, rfl⟩` from `IsLocalization.mk'_surjective (Q.comap C.subtype).primeCompl w`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hev : algebraMap C (Localization.AtPrime (Q.comap C.subtype)) (e * D') = algebraMap C (Localization.AtPrime (Q.comap C.subtype)) (A' * v)`. Rewrite using `[map_mul, map_mul, ← hwD, ← IsLocalization.mk'_spec (Localization.AtPrime (Q.comap C.subtype)) e v]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨n, hn⟩` from `(IsLocalization.eq_iff_exists (Q.comap C.subtype).primeCompl (Localization.AtPrime (Q.comap C.subtype))).mp hev`. Establish `hnB : ((n : C) : B) * ((e : B) * D) = ((n : C) : B) * (A * ((v : C) : B))`.
-
-Simplify using `using congrArg Subtype.val hn`. Establish `hK` using `congrArg (algebraMap B (FractionRing (Localization.AtPrime Q))) hnB`. Simplify using `only [map_mul, hA] at hK`. Establish `hfn : algebraMap B (FractionRing (Localization.AtPrime Q)) ((n : C) : B) ≠ 0` using `hf _ (by exact n.2)`. Establish `hfv : algebraMap B (FractionRing (Localization.AtPrime Q)) ((v : C) : B) ≠ 0` using `hf _ (by exact v.2)`.
-
-Establish `hfm : algebraMap B (FractionRing (Localization.AtPrime Q)) (m : B) ≠ 0` using `hf _ m.2`. Set `v'' : Q.primeCompl` to `⟨((v : C) : B), by exact v.2⟩`. Use `⟨IsLocalization.mk' (Localization.AtPrime Q) (e : B) (m * v''), ?_⟩` and prove the remaining obligations. Establish `key2` using `key (e : B) (m * v'')`. Simplify using `only [Submonoid.coe_mul, map_mul] at key2`.
-
-Apply `mul_left_cancel₀ (mul_ne_zero (mul_ne_zero hfn hD) (mul_ne_zero hfm hfv))` to reduce the goal to its premises. Take the linear combination `(algebraMap B (FractionRing (Localization.AtPrime Q)) ((n : C) : B) * algebraMap B (FractionRing (Localization.AtPrime Q)) D) * key2 - (algebraMap B (FractionRing (Localization.AtPrime Q)) ((n : C) : B) * algebraMap B (FractionRing (Localization.AtPrime Q)) (m : B) * algebraMap B …`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma isIntegrallyClosed
     (H : ∀ s : Finset B, ∃ C : Subring B, (↑s : Set B) ⊆ (C : Set B) ∧
@@ -249,7 +241,7 @@ lemma isIntegrallyClosed
 end LocalizationIntegrallyClosedDomain
 
 /- English proof (translation)
-Introduce `B _ Q _ H`. Use `haveI : NoZeroDivisors (Localization.AtPrime Q) := LocalizationIntegrallyClosedDomain.noZeroDivisors H`. Use `haveI : IsDomain (Localization.AtPrime Q) := NoZeroDivisors.to_isDomain _`. Conclude with `⟨inferInstance, LocalizationIntegrallyClosedDomain.isIntegrallyClosed H⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem localization_isDomain_isIntegrallyClosed_of_finset_subring :
     ∀ (B : Type) [CommRing B] (Q : Ideal B) [Q.IsPrime], (∀ s : Finset B, ∃ C : Subring B, (↑s : Set B) ⊆ (C : Set B) ∧ ∀ (q : Ideal C) [q.IsPrime], IsDomain (Localization.AtPrime q) ∧ IsIntegrallyClosed (Localization.AtPrime q)) → IsDomain (Localization.AtPrime Q) ∧ IsIntegrallyClosed (Localization.AtPrime Q) := by

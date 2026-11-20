@@ -3,7 +3,7 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Set `b` to `Pi.basis (fun _ : X => Module.finBasis ℂ W)`. Rewrite using `[LinearMap.trace_eq_matrix_trace ℂ b, Matrix.trace]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.diag_apply, LinearMap.toMatrix_apply, Pi.basis_repr, Pi.basis_apply, hM, Pi.single_eq_of_ne (hπ i.1), map_zero, map_zero, Finsupp.zero_apply]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_eq_zero_of_coord_move {X W : Type} [Fintype X] [DecidableEq X] [AddCommGroup W]
     [Module ℂ W] [FiniteDimensional ℂ W] (π : X → X) (hπ : ∀ c, π c ≠ c)
@@ -18,27 +18,23 @@ theorem trace_eq_zero_of_coord_move {X W : Type} [Fintype X] [DecidableEq X] [Ad
     Pi.single_eq_of_ne (hπ i.1), map_zero, map_zero, Finsupp.zero_apply]
 
 /- English proof (translation)
-Introduce `Y X B W _ _ _ _ _ _ cls ev S hcls hinj hcls_eq hfree`. Use `haveI : Fintype X := Fintype.ofFinite X`. Take `⟨s, hs⟩ : ∃ s : X → Y, ∀ x, cls (s x) = x` from `⟨fun x => (hcls x).choose, fun x => (hcls x).choose_spec⟩`. Set `Φ : S →ₗ[ℂ] (X → W)` to `LinearMap.pi (fun x => (ev (s x)).comp S.subtype)`. Establish `hΦ : ∀ (T : S) x, Φ T x = ev (s x) T` using `fun _ _ => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzero : ∀ T ∈ S, (∀ x, ev (s x) T = 0) → T = 0`. Introduce `T hT h0`. Apply `hinj` to reduce the goal to its premises. Introduce `h`. Take `⟨φ, hφ⟩` from `hcls_eq (s (cls h)) h (hs _)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hφ T hT, h0, map_zero]`. Establish `hΦinj : Function.Injective Φ`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `T hT`. Use `Subtype.ext (hzero T T.2 (fun x => ?_))` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hx` using `congrFun hT x`. Rewrite `hx` using `[hΦ]`. Conclude with `hx`. Establish `hΦsurj : Function.Surjective Φ`. Introduce `g`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `choose T hTS hTg hT0 using fun x => hfree (s x) (g x)`. Use `⟨⟨∑ x, T x, Submodule.sum_mem _ (fun x _ => hTS x)⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `y`. Use `show ev (s y) (∑ x, T x) = g y`. Rewrite using `[map_sum, Finset.sum_eq_single y]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hTg y`. Introduce `x _ hxy`. Apply `hT0` to reduce the goal to its premises. Rewrite using `[hs, hs]`. Conclude with `Ne.symm hxy`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ y) h`. Set `Ψ : S ≃ₗ[ℂ] (X → W)` to `LinearEquiv.ofBijective Φ ⟨hΦinj, hΦsurj⟩`. Establish `hfd : FiniteDimensional ℂ S` using `LinearEquiv.finiteDimensional Ψ.symm`. Use `⟨hfd, ?_, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Ψ.finrank_eq, Module.finrank_pi_fintype, Finset.sum_const, Finset.card_univ, smul_eq_mul, Nat.card_eq_fintype_card]`. Introduce `H _ _ e he hrange A t hA ht`. Set `eS : H ≃ₗ[ℂ] S` to `(LinearEquiv.ofInjective e he).trans (LinearEquiv.ofEq _ _ hrange)`. Set `Θ : H ≃ₗ[ℂ] (X → W)` to `eS.trans Ψ`. Establish `hΘ : ∀ x c, Θ x c = ev (s c) (e x)` using `fun _ _ => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : FiniteDimensional ℂ H := LinearEquiv.finiteDimensional Θ.symm`. Rewrite using `[← LinearMap.trace_conj' A Θ]`. Use `choose φ hφ using fun c => hcls_eq (s (cls (t (s c)))) (t (s c)) (hs _)`. Use `trace_eq_zero_of_coord_move (fun c => cls (t (s c))) (fun c => by have h := ht (s c); rwa [hs] at h) φ _ ?_` and prove the remaining obligations. Introduce `g c`.
-
-Take `⟨x, rfl⟩` from `Θ.surjective g`. Rewrite using `[LinearEquiv.conj_apply_apply, LinearEquiv.symm_apply_apply, hΘ, hΘ, hA]`. Establish `hmem : e x ∈ S`. Rewrite using `[← hrange]`. Conclude with `LinearMap.mem_range_self e x`.
-
-Conclude with `hφ c (e x) hmem`.
+A detailed English derivation is pending.
 -/
 theorem finrank_eq_card_mul_and_trace_eq_zero_of_free_values :
     ∀ (Y X B W : Type) [Finite X] [AddCommGroup B] [Module ℂ B] [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W] (cls : Y → X) (ev : Y → (B →ₗ[ℂ] W)) (S : Submodule ℂ B), Function.Surjective cls → (∀ T : B, (∀ h, ev h T = 0) → T = 0) → (∀ h h', cls h = cls h' → ∃ φ : Module.End ℂ W, ∀ T ∈ S, ev h' T = φ (ev h T)) → (∀ h (ℓ : W), ∃ T ∈ S, ev h T = ℓ ∧ ∀ h', cls h' ≠ cls h → ev h' T = 0) → FiniteDimensional ℂ S ∧ Module.finrank ℂ S = Nat.card X * Module.finrank ℂ W ∧ ∀ (H : Type) [AddCommGroup H] [Module ℂ H] (e : H →ₗ[ℂ] B), Function.Injective e → LinearMap.range e = S → ∀ (A : Module.End ℂ H) (t : Y → Y), (∀ x h, ev h (e (A x)) = ev (t h) (e x)) → (∀ h, cls (t h) ≠ cls h) → LinearMap.trace ℂ H A = 0 := by

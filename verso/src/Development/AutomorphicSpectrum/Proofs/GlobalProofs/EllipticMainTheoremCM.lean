@@ -17,13 +17,13 @@ open scoped nonZeroDivisors GlobalTheory.Idele
 namespace GlobalTheory.CompanionTheory.Hypotheses₂
 
 /- English proof (translation)
-Introduce `K _ _ _ _ h2 Art hArt σ s hs X _ 𝔞 h𝔞 ξ hξ`. Take `⟨Art₀, hArt₀, hlink⟩` from `GlobalTheory.CompanionTheory.EllipticCM.exists_globalArtinMap_tied K h2`. Establish `hEq : Art = Art₀` using `MonoidHom.ext fun c => GlobalTheory.CompanionTheory.GaloisAb.abelianization_eq_of_forall_abRestrict_eq K _ _ fun L h => GlobalTheory.T.artin_map_abelian_unique K Art Art₀ hArt hArt₀ L h c`. Substitute `hEq` using the available equality. Establish `hfound` using `hlink σ s hs`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Set `𝔞u : (FractionalIdeal (𝓞 K)⁰ K)ˣ` to `Units.mk0 𝔞 h𝔞`. Establish `hf` using `GlobalTheory.CompanionTheory.EllipticCM.isAnalyticUniformization_of_isAnalyticIso h2 X 𝔞 h𝔞 ξ hξ`. Take `⟨f', ⟨hf', hrel⟩, -⟩` from `GroundTheory.Global.Elliptic.main_theorem_complexMultiplication h2 σ s hfound 𝔞u hf`. Establish `hid : ((s⁻¹ • 𝔞u : (FractionalIdeal (𝓞 K)⁰ K)ˣ) : FractionalIdeal (𝓞 K)⁰ K) = (GlobalTheory.EllipticCM.finitePart (K` using `K) s)⁻¹ • 𝔞 := GlobalTheory.CompanionTheory.EllipticCM.inv_smul_eq_finitePart_inv_smul s 𝔞u`. Rewrite `hf'` using `[hid]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hex` using `GlobalTheory.CompanionTheory.EllipticUniformization.exists_analyticIso_of_isAnalyticUniformization _ _ f' hf'`. Rewrite `hex` using `[GlobalTheory.CompanionTheory.EllipticDict.idealLattice_toAddSubgroup_eq_idealSub]`. Take `⟨ξ', hξ', hξf⟩` from `hex`. Use `GlobalTheory.EllipticCM.transports_of_exists h𝔞 rfl hξ' fun x => ?_` and prove the remaining obligations. Take `⟨t, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `Submodule.Quotient.mk_surjective _ (GlobalTheory.Idele.mulEquiv (GlobalTheory.EllipticCM.finitePart (K := K) s)⁻¹ h𝔞 rfl (Submodule.Quotient.mk t))`. Rewrite using `[← hy]`. Establish `hq` using `(GlobalTheory.CompanionTheory.IdeleQuot.smulQuotient_inv_mk_eq_mk_iff_mulEquiv s 𝔞u t y).2 hy.symm`. Establish `h3` using `hrel t y hq`. Rewrite using `[GlobalTheory.CompanionTheory.ConjPointDict.mapPoint_eq_pointMapRing, GlobalTheory.EllipticCM.torsionIncl_mk, GlobalTheory.EllipticCM.torsionIncl_mk, hξf, h3]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/

@@ -13,9 +13,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Mem.JIota
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite using `[heq_iff_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `e`. Substitute `e` using the available equality.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Both sides reduce to the same expression. Introduce `e`. Substitute `e` using the available equality. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem heq_iota_iff_eq_trans_castAdelicGroup (D : D7) (I : Formalism.MainNotions.S.AutInst) (h : I = Formalism.L2.SG.InstExistsPf.instOf D)
     (ι : GA D (D.sp.Y 0) ≃* I.GA) :
@@ -28,7 +28,7 @@ theorem heq_iota_iff_eq_trans_castAdelicGroup (D : D7) (I : Formalism.MainNotion
   · intro e; subst e; rfl
 
 /- English proof (translation)
-Introduce `D St h ι` and use `heq_iota_iff_eq_trans_castAdelicGroup D St.B.I h ι`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem heq_iota_iff : ∀ (D : D7) (St : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : St.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (ι : GA D (D.sp.Y 0) ≃* St.B.I.GA), HEq ι (Formalism.IndefR.RationalEmbedding.iota D).toMulEquiv ↔ ι = (Formalism.L2.SG.RowsJoinPinned.iotaX St h).toMulEquiv :=
   fun D St h ι => heq_iota_iff_eq_trans_castAdelicGroup D St.B.I h ι

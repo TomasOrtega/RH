@@ -21,9 +21,9 @@ def eqB {A : Type} [CommRing A] (f g : A) : Set (MvPolynomial (Fin 3) A) :=
   {X 0 * X 0 - X 0, X 0 * C f - X 1 * C g, (1 - X 0) * C g - X 2 * C f}
 
 /- English proof (translation)
-Establish `e : ∀ y : Fin 3 → B, MvPolynomial.eval₂ φ y (Polynomial.aeval (MvPolynomial.X 0) P) = (P.map φ).eval (y 0)`. Introduce `y`. Proceed by induction on `P using Polynomial.induction_on' with`. Consider the case `add a b ha hb => simp [ha, hb]`. Consider the case `monomial n a => simp [Polynomial.aeval_monomial]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy⟩`. Conclude with `⟨y 0, (e y).symm.trans (hy _ rfl)⟩`. Introduce and unpack `⟨x, hx⟩`. Conclude with `⟨fun _ => x, fun q hq => by rw [show q = _ from hq, e]; exact hx⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem pt_eqA {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) (P : Polynomial A) :
     Pt φ (eqA P) ↔ ∃ x, (P.map φ).IsRoot x := by
@@ -39,11 +39,11 @@ theorem pt_eqA {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) (P : Poly
     exact ⟨fun _ => x, fun q hq => by rw [show q = _ from hq, e]; exact hx⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy⟩`. Establish `h1` using `hy _ (Or.inl rfl)`. Establish `h2` using `hy _ (Or.inr (Or.inl rfl))`. Establish `h3` using `hy _ (Or.inr (Or.inr rfl))`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [MvPolynomial.eval₂_sub, MvPolynomial.eval₂_mul, MvPolynomial.eval₂_X, MvPolynomial.eval₂_C, MvPolynomial.eval₂_one, sub_eq_zero] at h1 h2 h3`. Conclude with `⟨y 0, h1, Ideal.mem_span_singleton'.2 ⟨_, h2.symm⟩, Ideal.mem_span_singleton'.2 ⟨_, h3.symm⟩⟩`. Introduce and unpack `⟨e, h1, h2, h3⟩`. Take `⟨u, hu⟩` from `Ideal.mem_span_singleton'.1 h2`. Take `⟨v, hv⟩` from `Ideal.mem_span_singleton'.1 h3`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨![e, u, v], ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rintro q (rfl | rfl | rfl) <;>`. Simplify using `[MvPolynomial.eval₂_sub, MvPolynomial.eval₂_mul, hu, hv, h1.eq]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem pt_eqB {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) (f g : A) :
     Pt φ (eqB f g) ↔ ∃ e : B, IsIdempotentElem e ∧ e * φ f ∈ Ideal.span {φ g} ∧ (1 - e) * φ g ∈ Ideal.span {φ f} := by
@@ -63,7 +63,7 @@ theorem pt_eqB {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) (f g : A)
       simp [MvPolynomial.eval₂_sub, MvPolynomial.eval₂_mul, hu, hv, h1.eq]
 
 /- English proof (translation)
-Introduce `P hP hd`. Break down `subsingleton_or_nontrivial B with _ | _` into its components or cases. Conclude with `⟨0, Subsingleton.elim _ _⟩`. Conclude with `h _ (hP.map φ) (by rwa [hP.natDegree_map])`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem root_map {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) (h : AIC B) : AICm φ := by
   intro P hP hd
@@ -72,7 +72,7 @@ theorem root_map {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) (h : AI
   · exact h _ (hP.map φ) (by rwa [hP.natDegree_map])
 
 /- English proof (translation)
-Take `⟨a, b, e⟩` from `Ideal.mem_span_pair.1 h`. Conclude with `Ideal.mem_span_pair.2 ⟨φ a, φ b, by rw [← map_pow, ← e, map_add, map_mul, map_mul]⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem span_map {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) {π f g : A} {N : ℕ} (h : π ^ N ∈ Ideal.span {f, g}) :
     φ π ^ N ∈ Ideal.span {φ f, φ g} := by
@@ -80,13 +80,11 @@ theorem span_map {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) {π f g
   exact Ideal.mem_span_pair.2 ⟨φ a, φ b, by rw [← map_pow, ← e, map_add, map_mul, map_mul]⟩
 
 /- English proof (translation)
-Introduce `p _ A _ r hA hr`. Set `𝓔 : Set (Set (MvPolynomial (Fin 3) A))` to `{E | (∃ P : Polynomial A, P.Monic ∧ 0 < P.natDegree ∧ E = eqA P) ∨ ∃ f g : A, (∃ N : ℕ, r 0 ^ N ∈ Ideal.span {f, g}) ∧ E = eqB f g}`. Take `⟨B, _, _, hB, hc, hE, hs⟩` from `Leaf.big_step p A r 𝓔 hA (fin_step p A r 𝓔 hA hr (by`. Introduce and unpack `E (⟨P, hP, hd, rfl⟩ | ⟨f, g, ⟨N, hN⟩, rfl⟩) B _ _ hB`. Break down `subsingleton_or_nontrivial B with _ | _` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `⟨B, inferInstance, inferInstance, hB, (Leaf.cov_mono p B _).1, (pt_eqA _ _).2 ⟨0, Subsingleton.elim _ _⟩⟩`. Take `⟨B₁, _, _, h1, h2, x, hx⟩` from `Leaf.cov_root p B (fun k => algebraMap A B (r k)) (P.map (algebraMap A B)) hB (hP.map _) (by rwa [hP.natDegree_map])`. Use `⟨B₁, inferInstance, inferInstance, h1, h2, (pt_eqA _ _).2 ⟨x, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← Polynomial.map_map, Polynomial.IsRoot, Polynomial.eval_map, ← Polynomial.aeval_def]`. Conclude with `hx`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨B₁, _, _, h1, h2, e, u, v, he, hu, hv⟩` from `cov_blow p B (fun k => algebraMap A B (r k)) (algebraMap A B f) (algebraMap A B g) N hB (fun k => by rw [← map_pow, hr k]) (span_map _ hN)`. Conclude with `⟨B₁, inferInstance, inferInstance, h1, h2, (pt_eqB _ _ _).2 ⟨e, he, Ideal.mem_span_singleton'.2 ⟨u, hu.symm⟩, Ideal.mem_span_singleton'.2 ⟨v, hv.symm⟩⟩⟩))`. Use `⟨B, inferInstance, inferInstance, hB, hc, fun P hP hd => (pt_eqA _ _).1 (hE _ (Or.inl ⟨P, hP, hd, rfl⟩)), fun f g h => (pt_eqB _ _ _).1 (hE _ (Or.inr ⟨f, g, h, rfl⟩)), fun T _ x hT h1 h2 => hs T x hT ?_⟩` and prove the remaining obligations. Introduce and unpack `E (⟨P, hP, hd, rfl⟩ | ⟨f, g, ⟨N, hN⟩, rfl⟩)`. Conclude with `(pt_eqA _ _).2 (root_map x h1 P hP hd)`.
-
-Conclude with `(pt_eqB _ _ _).2 (h2 _ _ ⟨N, span_map x hN⟩)`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem cov_step : ∀ (p : ℕ) [Fact p.Prime] (A : Type) [CommRing A] (r : ℕ → A), Pf p A → IsRt p r → ∃ (B : Type) (_ : CommRing B) (_ : Algebra A B), Pf p B ∧ Cov p r B ∧ AICm (algebraMap A B) ∧ VALm (r 0) (algebraMap A B) ∧ Splits p (r 0) (algebraMap A B) := by
   intro p _ A _ r hA hr

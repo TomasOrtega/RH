@@ -16,20 +16,20 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7}
 
 /- English proof (translation)
-Unfold `Formalism.L2.Theta.mt`. Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mt_mul (V : HSp D) (g h : GA D V) :
     Formalism.L2.Theta.mt V (g * h) = Formalism.L2.Theta.mt V g * Formalism.L2.Theta.mt V h := by
   unfold Formalism.L2.Theta.mt; rw [map_mul]; rfl
 
 /- English proof (translation)
-Unfold `Formalism.L2.Theta.mt`. Rewrite using `[map_one]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mt_one (V : HSp D) : Formalism.L2.Theta.mt V 1 = 1 := by
   unfold Formalism.L2.Theta.mt; rw [map_one]; rfl
 
 /- English proof (translation)
-Unfold `actO`. Rewrite using `[mul_inv_rev, mt_mul, mt_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem actO_actO (S T : HSp D) (g g' : GA D S) (h h' : GA D T) (x : WO S T) :
     actO S T g h (actO S T g' h' x) = actO S T (g * g') (h * h') x := by
@@ -38,7 +38,7 @@ theorem actO_actO (S T : HSp D) (g g' : GA D S) (h h' : GA D T) (x : WO S T) :
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Unfold `actO`. Rewrite using `[inv_one, mt_one, mt_one]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem actO_one (S T : HSp D) (x : WO S T) : actO S T 1 1 x = x := by
   unfold actO
@@ -46,7 +46,7 @@ theorem actO_one (S T : HSp D) (x : WO S T) : actO S T 1 1 x = x := by
   simp
 
 /- English proof (translation)
-Unfold `actO`. Rewrite using `[Matrix.mul_add, Matrix.add_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem actO_add (S T : HSp D) (g : GA D S) (h : GA D T) (x y : WO S T) :
     actO S T g h (x + y) = actO S T g h x + actO S T g h y := by
@@ -54,14 +54,14 @@ theorem actO_add (S T : HSp D) (g : GA D S) (h : GA D T) (x y : WO S T) :
   rw [Matrix.mul_add, Matrix.add_mul]
 
 /- English proof (translation)
-Rewrite using `[actO_actO, mul_inv_cancel, mul_inv_cancel, actO_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem actO_inv_actO (S T : HSp D) (g : GA D S) (h : GA D T) (x : WO S T) :
     actO S T g h (actO S T g⁻¹ h⁻¹ x) = x := by
   rw [actO_actO, mul_inv_cancel, mul_inv_cancel, actO_one]
 
 /- English proof (translation)
-Rewrite using `[actO_actO, inv_mul_cancel, inv_mul_cancel, actO_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem actO_actO_inv (S T : HSp D) (g : GA D S) (h : GA D T) (x : WO S T) :
     actO S T g⁻¹ h⁻¹ (actO S T g h x) = x := by
@@ -73,7 +73,7 @@ def actOHom (S T : HSp D) (g : GA D S) (h : GA D T) : WO S T →+ WO S T where
   map_add' := actO_add S T g h
 
 /- English proof (translation)
-Break down `le_or_gt S.rank T.rank with hr | hr` into its components or cases. Take `⟨h1, h2⟩` from `Brg.bridgeSmall S T hr`. Rewrite using `[h1, h1, h2, h2, sympl_actHom]`. Take `⟨h1, h2⟩` from `Brg.bridgeLarge' S T hr`. Rewrite using `[h1, h1, h2, h2, sympl_actHom]`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem symplO_actO (S T : HSp D) (g : GA D S) (h : GA D T) (x y : WO S T) :
     symplO S T (actO S T g h x) (actO S T g h y) = symplO S T x y := by
@@ -84,7 +84,7 @@ theorem symplO_actO (S T : HSp D) (g : GA D S) (h : GA D T) (x y : WO S T) :
     rw [h1, h1, h2, h2, sympl_actHom]
 
 /- English proof (translation)
-Unfold `symplOH`. Rewrite using `[symplO_actO]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem symplOH_actO (S T : HSp D) (g : GA D S) (h : GA D T) (x y : WO S T) :
     symplOH S T (actO S T g h x) (actO S T g h y) = symplOH S T x y := by
@@ -100,22 +100,22 @@ theorem pull_apply (S T : HSp D) (g : GA D S) (h : GA D T) (f : WO S T → ℂ) 
     pull S T g h f w = f (actO S T g h w) := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Simplify using `only [pull_apply, actO_actO]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem pull_pull (S T : HSp D) (g g' : GA D S) (h h' : GA D T) (f : WO S T → ℂ) :
     pull S T g h (pull S T g' h' f) = pull S T (g' * g) (h' * h) f := by
   funext w; simp only [pull_apply, actO_actO]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Simplify using `only [pull_apply, actO_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem pull_one (S T : HSp D) (f : WO S T → ℂ) : pull S T 1 1 f = f := by
   funext w; simp only [pull_apply, actO_one]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Simplify using `only [pull_apply, heisO]`. Rewrite using `[actO_add, actO_inv_actO]`. Use `congr 2`. Use `conv_lhs => rw [← actO_inv_actO S T g h w₀]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[symplOH_actO]`.
+A detailed English derivation is pending.
 -/
 theorem pull_heisO (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (g : GA D S) (h : GA D T) (w₀ : WO S T)
     (f : WO S T → ℂ) :
@@ -128,7 +128,7 @@ theorem pull_heisO (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (g : GA D S) (
   rw [symplOH_actO]
 
 /- English proof (translation)
-Simplify using `only [GQ, HFinIn, HFin, Subgroup.mem_subgroupOf] at hγ`. Take `⟨u, -, hu⟩` from `hγ`. Conclude with `⟨u.1, (congrArg Units.val hu).symm⟩`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem mt_GQ (V : HSp D) {γ : GA D V} (hγ : γ ∈ GQ V) :
     ∃ M : Matrix (Fin V.rank) (Fin V.rank) D.host.E, Formalism.L2.Theta.mt V γ = M.map (incA D) := by
@@ -137,7 +137,7 @@ theorem mt_GQ (V : HSp D) {γ : GA D V} (hγ : γ ∈ GQ V) :
   exact ⟨u.1, (congrArg Units.val hu).symm⟩
 
 /- English proof (translation)
-Take `⟨M, hM⟩` from `mt_GQ S (inv_mem hγ)`. Take `⟨M', hM'⟩` from `mt_GQ T hγ'`. Use `⟨M' * ξ * M, ?_⟩` and prove the remaining obligations. Unfold `actO ratW`. Rewrite using `[hM, hM', Matrix.map_mul, Matrix.map_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem actO_ratW (S T : HSp D) {γ : GA D S} {γ' : GA D T} (hγ : γ ∈ GQ S) (hγ' : γ' ∈ GQ T)
     (ξ : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
@@ -149,7 +149,7 @@ theorem actO_ratW (S T : HSp D) {γ : GA D S} {γ' : GA D T} (hγ : γ ∈ GQ S)
   rw [hM, hM', Matrix.map_mul, Matrix.map_mul]
 
 /- English proof (translation)
-Unfold `actO`. Rewrite using `[Matrix.map_mul, Matrix.map_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem actO_map {R : Type*} [Semiring R] (S T : HSp D) (g : GA D S) (h : GA D T) (x : WO S T)
     (φ : AE D →+* R) :
@@ -158,22 +158,20 @@ theorem actO_map {R : Type*} [Semiring R] (S T : HSp D) (g : GA D S) (h : GA D T
   rw [Matrix.map_mul, Matrix.map_mul]
 
 /- English proof (translation)
-Unfold `actO`. Conclude with `(continuous_const.matrix_mul continuous_id).matrix_mul continuous_const`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_actO (S T : HSp D) (g : GA D S) (h : GA D T) : Continuous (actO S T g h) := by
   unfold actO
   exact (continuous_const.matrix_mul continuous_id).matrix_mul continuous_const
 
 /- English proof (translation)
-Introduce `ξ w`. Take `⟨ξ', hξ'⟩` from `actO_ratW S T hγ hγ' ξ`. Simplify using `only [pull_apply]`. Rewrite using `[actO_add, hξ', hf.quasi ξ' (actO S T γ γ' w), ← hξ', symplOH_actO]`. Use `level := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨U, hU, hUf⟩` from `hf.level`. Use `⟨U.comap (actOHom S T γ γ'), hU.preimage (continuous_actO S T γ γ'), fun u hu h0 => ?_⟩` and prove the remaining obligations. Establish `h1 : (actO S T γ γ' u).map (infPart D) = 0` using `by rw [actO_map, h0]; simp`. Establish `h2` using `hUf (actO S T γ γ' u) (AddSubgroup.mem_comap.1 hu) h1`. Establish `h3` using `pull_heisO ψ S T γ γ' (actO S T γ γ' u) f`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[actO_actO_inv]`. Rewrite using `[← h3, h2]`. Use `cont := hf.cont.comp (continuous_actO S T γ γ')`. Use `smooth := by`. Introduce `k L hL hL0 w`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `hf.smooth k ((actOHom S T γ γ').comp L) ((continuous_actO S T γ γ').comp hL) (fun t => by show (actO S T γ γ' (L t)).map (finPart D) = 0`. Rewrite using `[actO_map, hL0 t]`. Use the proof step `simp) (actO S T γ γ' w)`. Establish `e : (fun t => f (actO S T γ γ' w + ((actOHom S T γ γ').comp L) t)) = fun t => pull S T γ γ' f (w + L t)`. Use function extensionality and compare the values at `t`.
-
-Simplify using `only [pull_apply, actO_add]`. Both sides reduce to the same expression. Rewrite `h` using `[e]`. Conclude with `h`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isThetaFunO_pull (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) {γ : GA D S} {γ' : GA D T}
     (hγ : γ ∈ GQ S) (hγ' : γ' ∈ GQ T) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) :

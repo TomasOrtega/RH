@@ -12,47 +12,45 @@ noncomputable section
 namespace GlobalTheory.LocalNormSplit
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hns`. Use `push_neg at hns`. Take `⟨w, w', hne, hw, hw'⟩` from `hv`. Take `⟨ψ, -, hb, -⟩` from `GlobalTheory.TraceClasses.exists_finite_decomp (maximalRealSubfield E) E`. Establish `hθF : ∀ a : maximalRealSubfield E, (a : E) ≠ θ`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha`. Establish `h1 : IsCMField.complexConj E (a : E) = a` using `(IsCMField.complexConj_eq_self_iff E _).2 a.2`. Rewrite `h1` using `[ha, hθ]`. Conclude with `hθ0 (by linear_combination -h1 / 2)`. Establish `hli : LinearIndependent (maximalRealSubfield E) ![(1 : E), θ]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[LinearIndependent.pair_iff]`. Introduce `p q hpq`. Distinguish the cases in `hq : q = 0`. Substitute `hq` using the available equality. Simplify using `using hpq`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. It suffices to derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-It suffices to derive a contradiction. Use `hθF (-p / q) ?_` and prove the remaining obligations. Rewrite `hpq` using `[Algebra.smul_def, Algebra.smul_def, mul_one]`. Establish `hq' : (q : E) ≠ 0` using `by simpa using hq`. Express the relevant statement in the definitionally equal form `((-p / q : maximalRealSubfield E) : E) = θ`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite `hpq` using `[show algebraMap _ E p = p from rfl, show algebraMap _ E q = q from rfl]`. Take the linear combination `-hpq`. Set `b` to `basisOfLinearIndependentOfCardEqFinrank hli (by rw [Fintype.card_fin, Algebra.IsQuadraticExtension.finrank_eq_two])`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `set K := v.adicCompletion (maximalRealSubfield E)`. Set `bA` to `Algebra.TensorProduct.basis K b`. Set `t : K ⊗[maximalRealSubfield E] E` to `1 ⊗ₜ θ`. Establish `hb0 : bA 0 = 1`. Simplify using `[bA, b, Algebra.TensorProduct.basis_apply, Algebra.TensorProduct.one_def]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hb1 : bA 1 = t`. Simplify using `[bA, b, Algebra.TensorProduct.basis_apply, t]`. Establish `li : ∀ p q : K, algebraMap K _ p + algebraMap K _ q * t = 0 → p = 0 ∧ q = 0`. Introduce `p q h`. Use `Fintype.linearIndependent_iff.1 bA.linearIndependent ![p, q] (by` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components.
 
-Rewrite using `[Fin.sum_univ_two, hb0, hb1]`. Simplify `h)` using `[Algebra.smul_def]`. Conclude with `⟨by simpa using this 0, by simpa using this 1⟩`. Establish `sp : ∀ y, y = algebraMap K _ (bA.repr y 0) + algebraMap K _ (bA.repr y 1) * t`. Introduce `y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [← bA.sum_repr y]`. Rewrite using `[Fin.sum_univ_two, hb0, hb1, Algebra.smul_def, Algebra.smul_def, mul_one]`. Establish `htt : t * t = algebraMap K _ (algebraMap (maximalRealSubfield E) K d)`. Rewrite using `[← IsScalarTower.algebraMap_apply]`. Express the relevant statement in the definitionally equal form `(1 : K) ⊗ₜ θ * (1 : K) ⊗ₜ θ = _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul, ← hd]`. Conclude with `(Algebra.TensorProduct.includeRight.commutes d)`. Set `W` to `{u : HeightOneSpectrum (𝓞 E) // u.under (𝓞 (maximalRealSubfield E)) = v}`. Set `w₀ : W` to `⟨w, hw⟩`. Set `w₁ : W` to `⟨w', hw'⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h01 : w₀ ≠ w₁` using `fun h => hne (congrArg Subtype.val h)`. Set `e₀ : ∀ u : W, u.1.adicCompletion E` to `Pi.single (M := fun u : W => u.1.adicCompletion E) w₀ 1`. Set `e₁ : ∀ u : W, u.1.adicCompletion E` to `Pi.single (M := fun u : W => u.1.adicCompletion E) w₁ 1`. Take `⟨u₀, hu₀⟩` from `(hb v).2 e₀`. Take `⟨u₁, hu₁⟩` from `(hb v).2 e₁`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hprod : u₀ * u₁ = 0`. Apply `(hb v).1` to reduce the goal to its premises. Use function extensionality and compare the values at `u`. Simplify using `only [map_mul, map_zero]`. Rewrite using `[show ψ v u u₀ = e₀ u from congrFun hu₀ u, show ψ v u u₁ = e₁ u from congrFun hu₁ u]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Distinguish the cases in `h : u = w₀`. Substitute `h` using the available equality. Simplify using `[e₁, Pi.single_apply, h01]`. Simplify using `[e₀, Pi.single_apply, h]`. Establish `hn₀ : u₀ ≠ 0`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Use `congrFun hu₀ w₀` as an intermediate fact. Simplify using `[e₀] at this`. Establish `hn₁ : u₁ ≠ 0`. Introduce and unpack `rfl`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `congrFun hu₁ w₁` as an intermediate fact. Simplify using `[e₁] at this`. Take `⟨a, b', hu0⟩ : ∃ a b' : K, u₀ = algebraMap K _ a + algebraMap K _ b' * t` from `⟨_, _, sp u₀⟩`. Take `⟨c, e, hu1⟩ : ∃ c e : K, u₁ = algebraMap K _ c + algebraMap K _ e * t` from `⟨_, _, sp u₁⟩`. Use `set d' := algebraMap (maximalRealSubfield E) K d`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `ha : ¬ (a = 0 ∧ b' = 0)`. Introduce and unpack `⟨h1, h2⟩`. Apply `hn₀` to reduce the goal to its premises. Rewrite using `[hu0, h1, h2]`. Simplify using the standard rewrite rules.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hc : ¬ (c = 0 ∧ e = 0)`. Introduce and unpack `⟨h1, h2⟩`. Apply `hn₁` to reduce the goal to its premises. Rewrite using `[hu1, h1, h2]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `heq` using `li (a * c + d' * b' * e) (a * e + b' * c) (by`. Rewrite using `[← hprod, hu0, hu1]`. Simplify using `only [map_add, map_mul]`. Take the linear combination `(-(algebraMap K _ b' * algebraMap K _ e)) * htt)`. Establish `hz : c * c - d' * e * e = 0`.
+Reduce the claim to the hypotheses of an applicable result. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `hz`. Apply `ha` to reduce the goal to its premises. Prove the components needed by the constructor for the conclusion. Use `(mul_eq_zero.1 (?_ : a * (c * c - d' * e * e) = 0)).resolve_right hz` and prove the remaining obligations. Take the linear combination `c * heq.1 - d' * e * heq.2`.
+Take a linear combination of the given relations to obtain the conclusion. Consider separately whether the proposition holds or fails. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(mul_eq_zero.1 (?_ : b' * (c * c - d' * e * e) = 0)).resolve_right hz` and prove the remaining obligations. Take the linear combination `-(e * heq.1) + c * heq.2`. Distinguish the cases in `he : e = 0`. Apply `hc` to reduce the goal to its premises. Use `⟨?_, he⟩` and prove the remaining obligations.
-
-Rewrite `hz` using `[he]`. Simplify using `using hz`. Apply `hns (c / e)` to reduce the goal to its premises. Clear the denominators using the available nonvanishing facts. Take the linear combination `hz`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_sq_of_split (E : Type) [Field E] [NumberField E] [IsCMField E]
     (θ : E) (hθ0 : θ ≠ 0) (hθ : IsCMField.complexConj E θ = -θ)
@@ -171,23 +169,23 @@ theorem exists_sq_of_split (E : Type) [Field E] [NumberField E] [IsCMField E]
     linear_combination hz
 
 /- English proof (translation)
-Introduce `E _ _ _ r Q x hx v hv`. Take `⟨θ, hθ0, hθ⟩` from `GlobalTheory.Published.exists_cc_eq_neg E`. Establish `hθ' : IsCMField.complexConj E θ = -θ` using `hθ`. Establish `hdmem : θ * θ ∈ maximalRealSubfield E` using `(IsCMField.complexConj_eq_self_iff E _).1 (by rw [map_mul, hθ']; ring)`. Set `K` to `v.adicCompletion (maximalRealSubfield E)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Take `⟨d, hd⟩ : ∃ d : maximalRealSubfield E, (d : E) = θ * θ` from `⟨⟨_, hdmem⟩, rfl⟩`. Take `⟨s, hs⟩` from `exists_sq_of_split E θ hθ0 hθ' v hv d hd`. Set `B` to `K ⊗[maximalRealSubfield E] GlobalTheory.IndefiniteRowSideFullHecke.SelfReciprocalLocalField.Fld Q`. Establish `hs0 : s ≠ 0`. Introduce `h0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hs` using `[h0, mul_zero, eq_comm]`. Establish `h1` using `(_root_.map_eq_zero (algebraMap (maximalRealSubfield E) K)).1 hs`. Rewrite `hd` using `[h1]`. Conclude with `hθ0 (mul_self_eq_zero.1 (by simpa using hd.symm))`. Set `uT : B` to `1 ⊗ₜ algebraMap E _ θ`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hTT : uT * uT = algebraMap K B (s * s)`. Rewrite using `[hs, ← IsScalarTower.algebraMap_apply]`. Express the relevant statement in the definitionally equal form `(1 : K) ⊗ₜ algebraMap E _ θ * (1 : K) ⊗ₜ algebraMap E _ θ = _`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul, ← map_mul, ← hd, show (d : E) = algebraMap (maximalRealSubfield E) E d from rfl, ← IsScalarTower.algebraMap_apply]`. Conclude with `(Algebra.TensorProduct.includeRight.commutes _)`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `uc : B` to `algebraMap K B s⁻¹ * uT`. Establish `hc : uc * uc = 1`. Establish `: uc * uc = algebraMap K B (s⁻¹ * s⁻¹ * (s * s))`. Rewrite using `[map_mul, map_mul, ← hTT]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, show s⁻¹ * s⁻¹ * (s * s) = 1 by rw [← mul_inv, inv_mul_cancel₀ (mul_ne_zero hs0 hs0)], map_one]`. Establish `hiT : GlobalTheory.IndefiniteRowSideFullHecke.SelfReciprocalLocalField.involBase Q K uT = -uT`. Express the relevant statement in the definitionally equal form `Algebra.TensorProduct.map _ _ ((1 : K) ⊗ₜ algebraMap E _ θ) = _`. Rewrite using `[Algebra.TensorProduct.map_tmul, AlgHom.id_apply, GlobalTheory.IndefiniteRowSideFullHecke.SelfReciprocalLocalField.invol_algebraMap, hθ', map_neg, TensorProduct.tmul_neg]`. Establish `hic : GlobalTheory.IndefiniteRowSideFullHecke.SelfReciprocalLocalField.involBase Q K uc = -uc`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `GlobalTheory.IndefiniteRowSideFullHecke.SelfReciprocalLocalField.involBase Q K (algebraMap K B s⁻¹ * uT) = -(algebraMap K B s⁻¹ * uT)`. Rewrite using `[map_mul, AlgHom.commutes, hiT, mul_neg]`. Establish `hiX : GlobalTheory.IndefiniteRowSideFullHecke.SelfReciprocalLocalField.involBase Q K (1 ⊗ₜ x) = 1 ⊗ₜ x`. Express the relevant statement in the definitionally equal form `Algebra.TensorProduct.map _ _ ((1 : K) ⊗ₜ x) = _`. Rewrite using `[Algebra.TensorProduct.map_tmul, AlgHom.id_apply, hx]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2K : (2 : K) ≠ 0`. Rewrite using `[← map_ofNat (algebraMap (maximalRealSubfield E) K) 2]`. Conclude with `(_root_.map_ne_zero _).2 two_ne_zero`. Set `hf : B` to `algebraMap K B 2⁻¹`. Establish `hh : hf * 2 = 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← map_ofNat (algebraMap K B) 2, ← map_mul, inv_mul_cancel₀ h2K, map_one]`. Establish `hih : GlobalTheory.IndefiniteRowSideFullHecke.SelfReciprocalLocalField.involBase Q K hf = hf` using `AlgHom.commutes _ _`. Use `⟨hf * (1 + uc) * (1 ⊗ₜ x) + hf * (1 - uc), ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_mul, map_mul, map_mul, map_add, map_sub, map_one, hic, hiX, hih]`. Take the linear combination `(hf ^ 2 * (2 * (1 ⊗ₜ x : B) - (1 ⊗ₜ x : B) ^ 2 - 1)) * hc + ((2 * hf + 1) * (1 ⊗ₜ x : B)) * hh`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_norm_of_split : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (Q : GlobalTheory.IndefiniteRowSideFullHecke.SelfReciprocalLocalField.SelfRecip E r) (x : GlobalTheory.IndefiniteRowSideFullHecke.SelfReciprocalLocalField.Fld Q), GlobalTheory.IndefiniteRowSideFullHecke.SelfReciprocalLocalField.invol Q x = x → ∀ v : HeightOneSpectrum (𝓞 (maximalRealSubfield E)), (∃ w w' : Pl E, w ≠ w' ∧ w.under (𝓞 (maximalRealSubfield E)) = v ∧ w'.under (𝓞 (maximalRealSubfield E)) = v) → ∃ z : v.adicCompletion (maximalRealSubfield E) ⊗[maximalRealSubfield E] GlobalTheory.IndefiniteRowSideFullHecke.SelfReciprocalLocalField.Fld Q, z * GlobalTheory.IndefiniteRowSideFullHecke.SelfReciprocalLocalField.involBase Q _ z = 1 ⊗ₜ x := by
   intro E _ _ _ r Q x hx v hv

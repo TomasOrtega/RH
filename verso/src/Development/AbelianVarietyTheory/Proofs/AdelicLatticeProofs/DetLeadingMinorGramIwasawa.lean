@@ -6,19 +6,17 @@ open scoped Kronecker ComplexOrder TensorProduct
 namespace GlobalTheory.ClassFin
 
 /- English proof (translation)
-Introduce `N k a n hk hd hn j h`. Establish `h1 : (k * diagonal a * n)ᵀ * (k * diagonal a * n) = nᵀ * diagonal (fun i => a i ^ 2) * n`. Establish `: diagonal (fun i => a i ^ 2) = diagonal a * diagonal a`. Rewrite using `[diagonal_mul_diagonal]`. Simplify using `[sq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, transpose_mul, transpose_mul, diagonal_transpose]`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : (nᵀ * diagonal (fun i => a i ^ 2) * n).submatrix (Fin.castLE h) (Fin.castLE h) = (n.submatrix (Fin.castLE h) (Fin.castLE h))ᵀ * diagonal (fun i : Fin j => a (Fin.castLE h i) ^ 2) * n.submatrix (Fin.castLE h) (Fin.castLE h)`. Use extensionality with `p q`. Rewrite using `[submatrix_apply, Matrix.mul_apply, Matrix.mul_apply]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `symm`. Use `Fintype.sum_of_injective (Fin.castLE h) (Fin.castLE_injective h) _ _ ?_ ?_` and prove the remaining obligations. Introduce `r hr`. Establish `hr' : j ≤ r.val`. Assume the negation of the conclusion as `hlt`.
+Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hr ⟨⟨r.val, not_le.mp hlt⟩, Fin.ext rfl⟩`. Establish `: n r (Fin.castLE h q) = 0` using `hn _ _ (by`. Rewrite using `[Fin.lt_def]`. Use `q.2` as an intermediate fact. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `omega)`. Rewrite using `[this, mul_zero]`. Introduce `r`. Simplify using `[Matrix.mul_diagonal]`. Establish `h3 : (n.submatrix (Fin.castLE h) (Fin.castLE h)).det = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[det_of_isUpperTriangular]`. Simplify using `[hd]`. Introduce `p q hpq`. Conclude with `hn _ _ (by`. Establish `h' : q < p` using `hpq`.
-
-Conclude with `h')`. Rewrite using `[h1, h2, det_mul, det_mul, det_transpose, h3, det_diagonal]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem det_leading_gram_iwasawa : ∀ (N : ℕ) (k : Matrix (Fin N) (Fin N) ℝ) (a : Fin N → ℝ) (n : Matrix (Fin N) (Fin N) ℝ), kᵀ * k = 1 → (∀ i, n i i = 1) → (∀ i j, j < i → n i j = 0) → ∀ (j : ℕ) (h : j ≤ N), (((k * diagonal a * n)ᵀ * (k * diagonal a * n)).submatrix (Fin.castLE h) (Fin.castLE h)).det = ∏ i : Fin j, a (Fin.castLE h i) ^ 2 := by
   intro N k a n hk hd hn j h

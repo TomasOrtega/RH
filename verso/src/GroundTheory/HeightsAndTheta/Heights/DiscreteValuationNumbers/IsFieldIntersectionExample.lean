@@ -23,7 +23,7 @@ namespace Numbers
 abbrev Statement : Prop := IntNumIsFieldIntersection.Statement.{u}
 
 /- English proof (translation)
-The claim follows from `IntNumIsFieldIntersection.proof VocabMultiHomog.proof (VocabMultiHomogIdeal.proof VocabMultiHomog.proof) VocabDivCycle.proof (IntNumPoint.proof hBase) (IntNumRatSection.proof hCut)`.
+A detailed English derivation is pending.
 -/
 theorem proof (hBase : FieldNumbers.IntNumBase.Statement.{u})
     (hCut : FieldNumbers.CutRational.Statement.{u}) : Statement.{u} :=
@@ -35,7 +35,7 @@ variable {F : Type u} [Field F] {K : Type} [Fintype K] [DecidableEq K] {ι : K �
   [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Take `⟨I₀, -, h₀⟩` from `hU`. Conclude with `(h₀ I hI V n L hV).trans (h₀ _ (hN F K ι) V n L hV).symm`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem agree_of_existsUnique (hN : Statement.{u}) (hU : ExistsUniqueStatement F ι)
     (I : IFamily F ι) (hI : IsFieldIntersection I) (V : Ideal (MRingOver F ι)) (n : ℕ)
@@ -44,7 +44,7 @@ theorem agree_of_existsUnique (hN : Statement.{u}) (hU : ExistsUniqueStatement F
   exact (h₀ I hI V n L hV).trans (h₀ _ (hN F K ι) V n L hV).symm
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun hU I hI V n L hV => agree_of_existsUnique hN hU I hI V n L hV, fun h => ⟨fun V _ L => intNum F V L, hN F K ι, h⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem existsUnique_iff (hN : Statement.{u}) :
     ExistsUniqueStatement F ι ↔ ∀ I : IFamily F ι, IsFieldIntersection I →
@@ -56,13 +56,13 @@ theorem existsUnique_iff (hN : Statement.{u}) :
 omit [DecidableEq K] [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Unfold `FieldNumbers.relDim at h`. Generalize the expression as in `ringKrullDim (MRing ι F ⧸ V) = d at h ⊢`. Proceed by induction on `d using WithBot.recBotCoe with`. Consider the case `bot => exact absurd h (by simp)`. Consider the case `coe e`.
+Replace the relevant objects with their definitions. Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `e using ENat.recTopCoe with`. Consider the case `top`. Establish `h₁ : ((⊤ : WithTop ℤ) : WithBot (WithTop ℤ)) = (n : WithBot (WithTop ℤ))` using `h`. Establish `h' : (⊤ : WithTop ℤ) = (n : WithTop ℤ)` using `by exact_mod_cast h₁`. Conclude with `absurd h' (WithTop.top_ne_coe)`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `coe m`. Establish `h₁ : ((((m : ℤ) - Fintype.card K : ℤ) : WithTop ℤ) : WithBot (WithTop ℤ)) = (n : WithBot (WithTop ℤ))` using `h`. Establish `h' : (m : ℤ) - Fintype.card K = n` using `by exact_mod_cast h₁`. Establish `hm : m = n + Fintype.card K` using `by omega`. Rewrite using `[hm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem ringKrullDim_eq_of_relDim (V : Ideal (MRing ι F)) (n : ℕ)
     (h : FieldNumbers.relDim V = (n : WithBot (WithTop ℤ))) :
@@ -86,9 +86,9 @@ theorem ringKrullDim_eq_of_relDim (V : Ideal (MRing ι F)) (n : ℕ)
       rfl
 
 /- English proof (translation)
-Rewrite using `[Finsupp.sum, finsum_eq_sum_of_support_subset]`. Introduce `W hW`. Rewrite `hW` using `[Function.mem_support]`. Rewrite using `[Finset.mem_coe, Finsupp.mem_support_iff]`. Introduce `h0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hW (by rw [h0, zero_mul])`.
+A detailed English derivation is pending.
 -/
 theorem finsum_mul_eq_sum {α : Type*} (D : α →₀ ℤ) (J : α → ℤ) :
     ∑ᶠ W, D W * J W = D.sum fun W m => m * J W := by
@@ -101,11 +101,11 @@ theorem finsum_mul_eq_sum {α : Type*} (D : α →₀ ℤ) (J : α → ℤ) :
   exact hW (by rw [h0, zero_mul])
 
 /- English proof (translation)
-Establish `hdim` using `ringKrullDim_eq_of_relDim P 0 (by rw [h0]; rfl)`. Use `choose i hi using hP.relevant`. Rewrite using `[hI.1 P ![] i ⟨(Objects.isMultiProjPrime_iff P).mp hP, hdim⟩ hi, ← hPt F K ι P i hP hdim hi]`. Take `⟨-, h2⟩` from `hBase F K ι P hP h0`. Rewrite using `[h2, FieldNumbers.resDeg, dif_pos hP.isPrime]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `cut P n hP hdim bf bg f g hf hg hfP hgP bs := by`. Establish `hd` using `ringKrullDim_eq_of_relDim P (n + 1) hdim`. Establish `hs : IsRatSection P (fun k => (bf k : ℤ) - bg k) f g` using `⟨bf, bg, (Objects.isMultiHomog_iff f bf).mp hf, (Objects.isMultiHomog_iff g bg).mp hg, hfP, hgP, fun k => rfl⟩`. Rewrite using `[hI.2 P n bs _ f g ⟨(Objects.isMultiProjPrime_iff P).mp hP, hd⟩ hs]`. Establish `hD : ∀ W, ReciprocityTheory.ChartRestriction.G.AI.I1.ratDiv P f g W = ratDiv P f g W`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `W`. Simplify using `only [ratDiv, ReciprocityTheory.ChartRestriction.G.AI.I1.ratDiv, Finsupp.sub_apply, Finsupp.mapRange_apply]`. Rewrite using `[VocabDivCycle.proof F K ι P f W, VocabDivCycle.proof F K ι P g W]`. Simplify using `only [cycEval, ReciprocityTheory.ChartRestriction.G.AI.I1.cycEval, ← hD]`. Conclude with `(finsum_mul_eq_sum _ _).symm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isIntersectionTheory (hPt : IntNumPoint.Statement.{u})
     (hBase : FieldNumbers.IntNumBase.Statement.{u}) {I : IFamily F ι}
@@ -131,7 +131,7 @@ theorem isIntersectionTheory (hPt : IntNumPoint.Statement.{u})
     exact (finsum_mul_eq_sum _ _).symm
 
 /- English proof (translation)
-The claim follows from `hUq F K ι I (isIntersectionTheory hPt hBase hI) V ((Objects.isMultiProjPrime_iff V).mpr hV.1) n (relDim_eq_of_ringKrullDim V n hV.2) L`.
+A detailed English derivation is pending.
 -/
 theorem agree (hUq : FieldNumbers.IntNumUnique.Statement.{u}) (hPt : IntNumPoint.Statement.{u})
     (hBase : FieldNumbers.IntNumBase.Statement.{u}) (I : IFamily F ι)
@@ -141,7 +141,7 @@ theorem agree (hUq : FieldNumbers.IntNumUnique.Statement.{u}) (hPt : IntNumPoint
     (relDim_eq_of_ringKrullDim V n hV.2) L
 
 /- English proof (translation)
-The claim follows from `(existsUnique_iff hN).mpr (agree hUq hPt hBase)`.
+A detailed English derivation is pending.
 -/
 theorem existsUnique (hN : Statement.{u}) (hUq : FieldNumbers.IntNumUnique.Statement.{u})
     (hPt : IntNumPoint.Statement.{u}) (hBase : FieldNumbers.IntNumBase.Statement.{u}) :
@@ -149,7 +149,7 @@ theorem existsUnique (hN : Statement.{u}) (hUq : FieldNumbers.IntNumUnique.State
   (existsUnique_iff hN).mpr (agree hUq hPt hBase)
 
 /- English proof (translation)
-The claim follows from `agree (FieldNumbers.IntNumUnique.proof hCut hBase hEx hDiv) (IntNumPoint.proof hBase) hBase I hI V n L hV`.
+A detailed English derivation is pending.
 -/
 theorem agree_of (hBase : FieldNumbers.IntNumBase.Statement.{u})
     (hCut : FieldNumbers.CutRational.Statement.{u}) (hEx : FieldNumbers.ExistsForm.Statement.{u})

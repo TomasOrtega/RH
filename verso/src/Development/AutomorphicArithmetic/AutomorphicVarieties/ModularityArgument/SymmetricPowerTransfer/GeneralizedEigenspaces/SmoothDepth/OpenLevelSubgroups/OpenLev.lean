@@ -8,9 +8,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open UpperTheory.V.Z.Sym.Al
 
 /- English proof (translation)
-Introduce `L _ _ _ n V _ _ _ π hπ φ hc`. Set `U : Subgroup (UA L n)` to `{ carrier := {u | ∀ g, φ (g * u) = φ g} one_mem' := fun g => by rw [mul_one] mul_mem' := fun {a b} ha hb g => by rw [← mul_assoc, hb, ha] inv_mem' := fun {a} ha g => by rw [← ha, inv_mul_cancel_right] }`. Use `⟨U, ?_, fun u hu => hu⟩` and prove the remaining obligations. Set `b` to `Module.finBasis ℂ V`. Establish `e : {x : finU L n | (x : UA L n) ∈ U} = ⋂ i, {k : finU L n | RU L n k (b.coord i ∘ φ) = b.coord i ∘ φ}`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use extensionality with `x`. Simplify using `only [Set.mem_setOf_eq, Set.mem_iInter]`. Use `⟨fun h i => funext fun g => congrArg (b.coord i) (h g), fun h g => b.ext_elem fun i => congrFun (h i) g⟩` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `isOpen_iInter_of_finite fun i => (hπ.aut _ (hc _)).level`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Al.openLev :
     ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V] (π : Submodule ℂ (UA L n → ℂ)), IsAutRepU π → ∀ φ : UA L n → V, CoefIn φ π →

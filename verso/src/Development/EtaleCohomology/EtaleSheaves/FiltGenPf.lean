@@ -10,9 +10,9 @@ universe u v
 variable {C : Type u} [Category.{v} C] [Abelian C]
 
 /- English proof (translation)
-Use extensionality with `p q' hpq`. Rewrite using `[Cochain.zero_cochain_comp_v, Cochain.ofHom_v]`. Distinguish the cases in `hp : p = k`. Substitute `hp` using the available equality. Take `rfl : q' = q` from `by lia`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Cochain.fromSingleMk_v, Cochain.fromSingleMk_v]`. Express the relevant statement in the definitionally equal form `((HomologicalComplex.single C (ComplexShape.up ℤ) p).map h).f p ≫ _ = _`. Simplify using `[HomologicalComplex.single_map_f_self]`. Conclude with `(HomologicalComplex.isZero_single_obj_X _ _ _ _ hp).eq_of_src _ _`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma ofHom_comp_fromSingleMk {X Y : C} {I : CochainComplex C ℤ} (k : ℤ) (h : X ⟶ Y) {q m : ℤ}
     (g : Y ⟶ I.X q) (hq : k + m = q) :
@@ -29,7 +29,7 @@ lemma ofHom_comp_fromSingleMk {X Y : C} {I : CochainComplex C ℤ} (k : ℤ) (h 
   · exact (HomologicalComplex.isZero_single_obj_X _ _ _ _ hp).eq_of_src _ _
 
 /- English proof (translation)
-Apply the tactic sequence `rcases Int.units_eq_one_or ε with h | h <;> subst h <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma smul_fromSingleMk {X : C} {I : CochainComplex C ℤ} (k : ℤ) (ε : ℤˣ) {q m : ℤ}
     (g : X ⟶ I.X q) (hq : k + m = q) :
@@ -37,7 +37,7 @@ lemma smul_fromSingleMk {X : C} {I : CochainComplex C ℤ} (k : ℤ) (ε : ℤˣ
   rcases Int.units_eq_one_or ε with h | h <;> subst h <;> simp
 
 /- English proof (translation)
-Rewrite using `[mappingCone.ext_cochain_from_iff φ m n hmn]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma desc_eta {K L I : CochainComplex C ℤ} (φ : K ⟶ L) {m n : ℤ} (hmn : m + 1 = n)
     (c : Cochain (mappingCone φ) I n) :
@@ -47,7 +47,7 @@ lemma desc_eta {K L I : CochainComplex C ℤ} (φ : K ⟶ L) {m n : ℤ} (hmn : 
   simp
 
 /- English proof (translation)
-Rewrite using `[mappingCone.δ_descCochain _ _ _ _ m' hm, Cochain.δ_fromSingleMk _ _ m qb hb, Cochain.δ_fromSingleMk _ _ m' qc hc, ofHom_comp_fromSingleMk, smul_fromSingleMk, ← Cochain.fromSingleMk_add]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma δ_desc_fromSingle {X Y : C} {I : CochainComplex C ℤ} (k : ℤ) (h : X ⟶ Y) {m m' qa qb qc : ℤ}
     (hm : m + 1 = m') (a : X ⟶ I.X qa) (b : Y ⟶ I.X qb) (ha : k + (m - 1) = qa) (hb : k + m = qb)
@@ -63,15 +63,15 @@ lemma δ_desc_fromSingle {X Y : C} {I : CochainComplex C ℤ} (k : ℤ) (h : X �
   rfl
 
 /- English proof (translation)
-Establish `hk' : Subsingleton (CohomologyClass (mappingCone ((singleFunctor C k).map (φ.f k))) I n)` using `hk`. Set `w : Cochain (mappingCone ((singleFunctor C k).map (φ.f k))) I n` to `mappingCone.descCochain ((singleFunctor C k).map (φ.f k)) (Cochain.fromSingleMk f (show k + (n - 1) = k + (n - 1) from rfl)) (Cochain.fromSingleMk g (show k + n = k + n from rfl)) (by lia)`. Establish `hw : δ n (n + 1) w = 0`. Simplify using `only [w]`. Rewrite using `[δ_desc_fromSingle k (φ.f k) rfl f g rfl rfl rfl, hf, hg]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[mappingCone.descCochain]`. Establish `h0` using `Subsingleton.elim (CohomologyClass.mk (Cocycle.mk w (n + 1) rfl hw)) 0`. Rewrite `h0` using `[CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ (n - 1) (by lia)]`. Take `⟨c, hc⟩` from `h0`. Take `⟨a, ha⟩` from `Cochain.fromSingleMk_surjective ((mappingCone.inl ((singleFunctor C k).map (φ.f k))).comp c (show -1 + (n - 1) = n - 1 - 1 by lia)) (k + (n - 1 - 1)) rfl`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `Cochain.fromSingleMk_surjective ((Cochain.ofHom (mappingCone.inr ((singleFunctor C k).map (φ.f k)))).comp c (zero_add (n - 1))) (k + (n - 1)) rfl`. Rewrite `hc` using `[desc_eta ((singleFunctor C k).map (φ.f k)) (show n - 1 - 1 + 1 = n - 1 by lia) c, ← ha, ← hb, δ_desc_fromSingle k (φ.f k) (show n - 1 + 1 = n by lia) a b (by lia) rfl rfl]`. Use `⟨a, b, ?_, ?_⟩` and prove the remaining obligations. Use `congrArg (fun x => (mappingCone.inl ((singleFunctor C k).map (φ.f k))).comp x (show -1 + n = n - 1 by lia)) hc` as an intermediate fact. Simplify using `only [w, Cocycle.mk_coe, mappingCone.inl_descCochain] at this`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congrArg (Cochain.fromSingleEquiv (show k + (n - 1) = k + (n - 1) from rfl)) this` as an intermediate fact. Simplify using `using this.symm`. Use `congrArg (fun x => (Cochain.ofHom (mappingCone.inr ((singleFunctor C k).map (φ.f k)))).comp x (zero_add n)) hc` as an intermediate fact. Simplify using `only [w, Cocycle.mk_coe, mappingCone.inr_descCochain] at this`. Use `congrArg (Cochain.fromSingleEquiv (show k + n = k + n from rfl)) this` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `using this.symm`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma level_of {K L I : CochainComplex C ℤ} (φ : K ⟶ L) (k n : ℤ)
     (hk : Subsingleton (CohomologyClass (mappingCone
@@ -109,7 +109,7 @@ lemma level_of {K L I : CochainComplex C ℤ} (φ : K ⟶ L) (k n : ℤ)
     simpa using this.symm
 
 /- English proof (translation)
-The claim follows from `mappingCone.δ_descCochain φ α β h n' hn'`.
+A detailed English derivation is pending.
 -/
 lemma δ_desc {K L I : CochainComplex C ℤ} (φ : K ⟶ L) {m n n' : ℤ} (h : m + 1 = n) (hn' : n + 1 = n')
     (α : Cochain K I m) (β : Cochain L I n) :
@@ -124,23 +124,23 @@ def V {K L I : CochainComplex C ℤ} (φ : K ⟶ L) (k n : ℤ) (z : Cochain (ma
     ((Cochain.ofHom (mappingCone.inr φ)).comp z (zero_add n)).v p q hpq = 0)
 
 /- English proof (translation)
-Take `⟨hV1, hV2⟩` from `hV`. Establish `hzd` using `desc_eta φ (show n - 1 + 1 = n by omega) z`. Generalize the expression as in `hα : (mappingCone.inl φ).comp z (show -1 + n = n - 1 by omega) = α at hV1 hzd`. Generalize the expression as in `hβ : (Cochain.ofHom (mappingCone.inr φ)).comp z (zero_add n) = β at hV2 hzd`. Establish `hV1' : ∀ p q (hpq : p + (n - 1) = q), k < p → α.v p q hpq = 0` using `fun p q hpq h => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Rewrite using `[← hα]`. Conclude with `hV1 p q hpq h`. Establish `hδ` using `hz`. Rewrite `hδ` using `[hzd, δ_desc φ (by omega) rfl]`. Establish `e1 : δ (n - 1) n α + (n + 1).negOnePow • (Cochain.ofHom φ).comp β (zero_add n) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (fun x => (mappingCone.inl φ).comp x (show -1 + (n + 1) = n by omega)) hδ` as an intermediate fact. Simplify `this` using `only [mappingCone.inl_descCochain, Cochain.comp_zero]`. Establish `e2 : δ n (n + 1) β = 0`. Use `congrArg (fun x => (Cochain.ofHom (mappingCone.inr φ)).comp x (zero_add (n + 1))) hδ` as an intermediate fact. Simplify `this` using `only [mappingCone.inr_descCochain, Cochain.comp_zero]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hg : β.v k (k + n) rfl ≫ I.d (k + n) (k + (n + 1)) = 0`. Use `Cochain.congr_v e2 k (k + (n + 1)) rfl` as an intermediate fact. Rewrite `this` using `[δ_v n (n + 1) rfl β k (k + (n + 1)) rfl (k + n) (k + 1) (by omega) rfl, Cochain.zero_v, hV2 (k + 1) (k + (n + 1)) (by omega) (by omega), comp_zero, smul_zero, add_zero]`. Conclude with `this`. Establish `hf : α.v k (k + (n - 1)) rfl ≫ I.d (k + (n - 1)) (k + n) + (n + 1).negOnePow • (φ.f k ≫ β.v k (k + n) rfl) = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Cochain.congr_v e1 k (k + n) rfl` as an intermediate fact. Rewrite `this` using `[Cochain.add_v, Cochain.units_smul_v, δ_v (n - 1) n (by omega) α k (k + n) rfl (k + (n - 1)) (k + 1) (by omega) rfl, Cochain.zero_cochain_comp_v, Cochain.ofHom_v, Cochain.zero_v, hV1' (k + 1) (k + n) (by omega) (by omega), comp_zero, smul_zero, add_zero]`. Conclude with `this`. Take `⟨a, b, ha, hb⟩` from `level_of φ k n hk _ _ hg hf`. Use `⟨mappingCone.descCochain φ (Cochain.single a (n - 1 - 1)) (Cochain.single b (n - 1)) (by omega), ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `p q hpq hp`. Rewrite using `[Cochain.comp_sub, δ_desc φ (by omega) (by omega), mappingCone.inl_descCochain, Cochain.sub_v, Cochain.add_v, Cochain.units_smul_v, δ_v (n - 1 - 1) (n - 1) (by omega) _ p q hpq (p + (n - 1 - 1)) (p + 1) (by omega) rfl, Cochain.zero_cochain_comp_v, Cochain.ofHom_v, Cochain.single_ …`. Break down `eq_or_lt_of_le (show k ≤ p by omega) with hkp | hkp` into its components or cases. Substitute `hkp` using the available equality. Take `rfl : q = k + (n - 1)` from `by omega`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h1 : ((mappingCone.inl φ).comp z (show -1 + n = n - 1 by omega)).v k (k + (n - 1)) hpq = α.v k (k + (n - 1)) hpq` using `by rw [hα]`. Rewrite using `[Cochain.single_v, Cochain.single_v, h1, ha]`. Simplify using the standard rewrite rules. Rewrite using `[hV1 p q hpq hkp, Cochain.single_v_eq_zero a _ p _ _ (by omega), Cochain.single_v_eq_zero b _ p _ _ (by omega)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `p q hpq hp`. Rewrite using `[Cochain.comp_sub, δ_desc φ (by omega) (by omega), mappingCone.inr_descCochain, Cochain.sub_v, δ_v (n - 1) n (by omega) _ p q hpq (p + (n - 1)) (p + 1) (by omega) rfl, Cochain.single_v_eq_zero b _ (p + 1) q _ (by omega)]`. Break down `eq_or_lt_of_le (show k ≤ p by omega) with hkp | hkp` into its components or cases. Substitute `hkp` using the available equality. Take `rfl : q = k + n` from `by omega`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h2 : ((Cochain.ofHom (mappingCone.inr φ)).comp z (zero_add n)).v k (k + n) hpq = β.v k (k + n) hpq` using `by rw [hβ]`. Rewrite using `[Cochain.single_v, h2, hb]`. Simplify using the standard rewrite rules. Rewrite using `[(show ((Cochain.ofHom (mappingCone.inr φ)).comp z (zero_add n)).v p q hpq = 0 by rw [hβ]; exact hV2 p q hpq hkp), Cochain.single_v_eq_zero b _ p _ _ (by omega)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma step {K L I : CochainComplex C ℤ} (φ : K ⟶ L) (k n : ℤ)
     (hk : Subsingleton (CohomologyClass (mappingCone
@@ -209,23 +209,19 @@ lemma step {K L I : CochainComplex C ℤ} (φ : K ⟶ L) (k n : ℤ)
       simp
 
 /- English proof (translation)
-Introduce `C _ _ K L I φ n hK hL hI hlev`. Establish `claim : ∀ m : ℕ, ∀ z : Cochain (mappingCone φ) I n, δ n (n + 1) z = 0 → ∃ c : Cochain (mappingCone φ) I (n - 1), V φ (-(m : ℤ)) n (z - δ (n - 1) n c)`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `z hz`. Use `⟨0, ?_, ?_⟩` and prove the remaining obligations. Introduce `p q hpq hp`. Conclude with `(hK p (by omega)).eq_of_src _ _`. Introduce `p q hpq hp`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Conclude with `(hL p (by omega)).eq_of_src _ _`. Consider the case `succ m ih`. Introduce `z hz`. Take `⟨c, hc⟩` from `ih z hz`. Take `⟨c', hc'⟩` from `step φ (-(m : ℤ)) n (hlev _ (by omega)) (z - δ (n - 1) n c) (by rw [δ_sub, δ_δ, sub_zero]; exact hz) hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨c + c', ?_⟩` and prove the remaining obligations. Establish `e : (-((m + 1 : ℕ) : ℤ)) = -(m : ℤ) - 1` using `by push_cast; ring`. Rewrite using `[e, δ_add, ← sub_sub]`. Conclude with `hc'`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x y`. It suffices to establish `h : ∀ x : CohomologyClass (mappingCone φ) I n, x = 0 by rw [h x, h y]`. Introduce `x`. Take `⟨z, rfl⟩` from `CohomologyClass.mk_surjective x`. Take `⟨c, hc1, hc2⟩` from `claim (n.toNat + 1) z (Cocycle.δ_eq_zero z (n + 1))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ (n - 1) (by omega)]`. Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `h0 : (z : Cochain (mappingCone φ) I n) - δ (n - 1) n c = 0`. Rewrite using `[mappingCone.ext_cochain_from_iff φ (n - 1) n (by omega)]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Use extensionality with `p q hpq`. Simplify using `only [Cochain.comp_zero, Cochain.zero_v]`. Break down `lt_or_ge (-((n.toNat + 1 : ℕ) : ℤ)) p with hp | hp` into its components or cases. Conclude with `hc1 p q hpq hp`. Conclude with `(hI q (by omega)).eq_of_tgt _ _`.
-
-Use extensionality with `p q hpq`. Simplify using `only [Cochain.comp_zero, Cochain.zero_v]`. Break down `lt_or_ge (-((n.toNat + 1 : ℕ) : ℤ)) p with hp | hp` into its components or cases. Conclude with `hc2 p q hpq hp`. Conclude with `(hI q (by omega)).eq_of_tgt _ _`.
-
-Rewrite `h0` using `[sub_eq_zero]`. Conclude with `h0.symm`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FiltGen_of : LateralTheory.E.CechFiltPf.FiltGen.{u, v} := by
   intro C _ _ K L I φ n hK hL hI hlev

@@ -20,9 +20,9 @@ def StepIntG : Prop :=
       TermOp.OOInt (Formalism.L2.SG.ProjRows.muInf X.B.I) Set.univ (X.Wu u) (X.Wu u') γ
 
 /- English proof (translation)
-Establish `hm : ∀ v, Measurable (fun x : Formalism.REAL.UJ (X.B.I.ε v) => ‖X.Wloc u v x‖ₑ * ‖X.Wloc u' v ((γ v)⁻¹ * x)‖ₑ)`. Introduce `v`. Conclude with `((X.Wloc_cont u v).enorm.measurable).mul (((X.Wloc_cont u' v).comp (continuous_const.mul continuous_id)).enorm.measurable)`. Rewrite using `[← Formalism.L2.SG.RealObj.InfCut.ProductExactness.PiM.lintegral_pi_prod (fun v => Formalism.REAL.muG (X.B.I.ε v)) _ hm]`. Repeatedly rewrite using `[Formalism.L2.SG.Pf.WuDec.enorm_Wu, ← Finset.prod_mul_distrib]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem lint_prod {D : D7} (X : HidaSetting D) (u u' : D.what₂.Word) (γ : X.B.I.Ginf) :
     ∫⁻ x, ‖X.Wu u x‖ₑ * ‖X.Wu u' (γ⁻¹ * x)‖ₑ ∂(Formalism.L2.SG.ProjRows.muInf X.B.I) =
@@ -37,7 +37,7 @@ theorem lint_prod {D : D7} (X : HidaSetting D) (u u' : D.what₂.Word) (γ : X.B
   rfl
 
 /- English proof (translation)
-Introduce `D hG X u u' sc hsc c hc γ hγ`. Apply `Formalism.L2.SG.RealObj.StepIntOf.Steps.stIntOfLint D X u u' γ` to reduce the goal to its premises. Rewrite using `[lint_prod]`. Conclude with `ENNReal.prod_lt_top fun v _ => h D hG X u u' sc hsc c hc γ hγ v`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stepIntG_of_loc (h : LocOrbG) : StepIntG := by
   intro D hG X u u' sc hsc c hc γ hγ

@@ -10,13 +10,13 @@ noncomputable section
 namespace GlobalTheory.Shin.Mass
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[gal]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem gal_id (F : Type) [Field F] (n : ℕ) (y : GL (Fin n) F) : gal (RingHom.id F) n y = y := by
   ext i j; simp [gal]
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_fiberwise Finset.univ π (fun h => g (π h)), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_congr rfl (fun h hh => by rw [(Finset.mem_filter.1 hh).2]), Finset.sum_const, nsmul_eq_mul, MonoidHom.card_fiber_eq_of_mem_range π (hs z) (hs 1)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_comp_surj {G M : Type} [Group G] [Group M] [Fintype G] [Fintype M]
     (π : G →* M) (hs : Function.Surjective π) (g : M → ℂ) :
@@ -27,28 +27,26 @@ theorem sum_comp_surj {G M : Type} [Group G] [Group M] [Fintype G] [Fintype M]
     MonoidHom.card_fiber_eq_of_mem_range π (hs z) (hs 1)]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem aux (A B k N s : ℂ) (h : k * (A * B) ≠ 0) : A * B * ((k * (A * B))⁻¹ * (N * (k * s))) = N * s := by
   calc A * B * ((k * (A * B))⁻¹ * (N * (k * s))) = (k * (A * B)) * (k * (A * B))⁻¹ * (N * s) := by ring
     _ = N * s := by rw [mul_inv_cancel₀ h, one_mul]
 
 /- English proof (translation)
-Introduce `F _ _ a b n hn α β S`. Take `⟨H, π, hH, hsurj, hπ, -, hchar⟩` from `GlobalTheory.T.exists_blockParabolic_subgroup_levi_projection F a b n hn`. Establish `hcl : IsCl (chG S n)` using `((GlobalTheory.T.twistedHarishChandraInductionGL_isTwistedClassFunction F (RingHom.id F) a b n α β).2.2 S).2`. Use `haveI : Fintype F := Fintype.ofFinite F`. Use `set g : GL (Fin a) F × GL (Fin b) F → ℂ := fun z => α z.1 * β z.2 * star (S (Matrix.charpoly (z.1 : Matrix (Fin a) (Fin a) F) * Matrix.charpoly (z.2 : Matrix (Fin b) (Fin b) F))) with hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hT : ∀ y : GL (Fin n) F, ∑ x : GL (Fin n) F, (if InPar a (y⁻¹ * x * y) then α (tlG a (y⁻¹ * x * y)) * β (brG a b (y⁻¹ * x * y)) else 0) * star (chG S n x) = ∑ p : H, g (π p)`. Introduce `y`. Rewrite using `[Fintype.sum_equiv (MulAut.conj y⁻¹).toEquiv _ (fun p => (if InPar a p then α (tlG a p) * β (brG a b p) else 0) * star (chG S n p)) (fun x => by simp [MulAut.conj_apply, show ∀ x y, chG S n (y⁻¹ * x * y) = chG S n x from hcl])]`. Establish `h1 : ∀ p : GL (Fin n) F, (if InPar a p then α (tlG a p) * β (brG a b p) else 0) * star (chG S n p) = if p ∈ H then α (tlG a p) * β (brG a b p) * star (chG S n p) else 0`. Apply the tactic sequence `intro p; rw [hH p]; split_ifs <;> simp`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [h1]`. Rewrite using `[← Finset.sum_filter, Finset.sum_subtype (Finset.univ.filter (· ∈ H)) (p := (· ∈ H)) (by simp)]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Simplify using `only [hg]`. Rewrite using `[← hchar p, hπ p]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hL : ∑ᶠ x, hc a b α β n x * star (chG S n x) = (Nat.card {p : GL (Fin n) F // InPar a p} : ℂ)⁻¹ * ∑ y : GL (Fin n) F, ∑ x : GL (Fin n) F, (if InPar a (y⁻¹ * x * y) then α (tlG a (y⁻¹ * x * y)) * β (brG a b (y⁻¹ * x * y)) else 0) * star (chG S n x)`. Rewrite using `[finsum_eq_sum_of_fintype]`. Simplify using `only [hc, hcTw, gal_id, finsum_eq_sum_of_fintype]`. Rewrite using `[Finset.sum_comm, Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, Finset.sum_mul]`. Establish `hR : ∑ᶠ x : GL (Fin a) F, ∑ᶠ y : GL (Fin b) F, α x * β y * star (S (Matrix.charpoly (x : Matrix (Fin a) (Fin a) F) * Matrix.charpoly (y : Matrix (Fin b) (Fin b) F))) = ∑ z, g z`. Simplify using `only [finsum_eq_sum_of_fintype]`. Rewrite using `[← Fintype.sum_prod_type']`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP : Nat.card {p : GL (Fin n) F // InPar a p} = Nat.card H` using `Nat.card_congr (Equiv.subtypeEquivRight (fun x => (hH x).symm))`. Establish `hS` using `sum_comp_surj π hsurj g`. Establish `hC` using `sum_comp_surj π hsurj (fun _ => (1 : ℂ))`. Simplify using `only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_one, Fintype.card_prod] at hC`. Rewrite using `[hL, hR, hP]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [hT, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, hS]`. Simplify using `only [Nat.card_eq_fintype_card]`. Establish `hne : (Fintype.card H : ℂ) ≠ 0` using `by exact_mod_cast Fintype.card_ne_zero`. Rewrite `hne`, the goal using `[hC]`. Move the coercions through the operations in `at hne ⊢`.
-
-Conclude with `aux _ _ _ _ _ hne`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem mass : ∀ (F : Type) [Field F] [Finite F], ∀ (a b n : ℕ), n = a + b → ∀ (α : GL (Fin a) F → ℂ) (β : GL (Fin b) F → ℂ) (S : F[X] → ℂ), (Nat.card (GL (Fin a) F) : ℂ) * (Nat.card (GL (Fin b) F) : ℂ) * ∑ᶠ x, hc a b α β n x * star (chG S n x) = (Nat.card (GL (Fin n) F) : ℂ) * ∑ᶠ x : GL (Fin a) F, ∑ᶠ y : GL (Fin b) F, α x * β y * star (S (Matrix.charpoly (x : Matrix (Fin a) (Fin a) F) * Matrix.charpoly (y : Matrix (Fin b) (Fin b) F))) := by
   intro F _ _ a b n hn α β S

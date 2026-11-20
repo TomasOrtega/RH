@@ -3,9 +3,9 @@ import Mathlib
 namespace GlobalTheory.NatCastStrictBound
 
 /- English proof (translation)
-Introduce `a n h`. Assume the negation of the conclusion as `hc`. Establish `hle : (↑n : WithBot ℕ∞) ≤ a` using `not_lt.mp hc`. Establish `h2 : (↑n : WithBot ℕ∞) + 1 ≤ a + 1` using `by gcongr`. Rewrite `h` using `[Nat.cast_add, Nat.cast_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd h (not_lt.mpr h2)`.
+A detailed English derivation is pending.
 -/
 theorem lt_natCast_of_add_one_lt_succ :
     ∀ {a : WithBot ℕ∞} {n : ℕ}, a + (1 : WithBot ℕ∞) < (↑(n + (1 : ℕ)) : WithBot ℕ∞) →

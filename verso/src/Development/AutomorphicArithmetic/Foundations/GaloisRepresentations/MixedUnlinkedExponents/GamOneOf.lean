@@ -13,15 +13,13 @@ attribute [-instance] Formalism.DoubleCosetMeasures.instMeasGL
 namespace UpperTheory.Gal.GamX
 
 /- English proof (translation)
-Unfold `GamOneOf GamOne`. Introduce `hC hV hS K L _ _ _ _ _ _ _ _ hp n hn π P hW v w hw s s' hs hs'`. Establish `hsub : Subsingleton (PlacesOver L v)` using `⟨fun a b => (hw a).trans (hw b).symm⟩`. Establish `key : ∀ (u : PlacesOver L v) (h : w = u), SuppAt P u.1 (h ▸ s')`. Introduce and unpack `u rfl`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `hs'`. Establish `hval : ∀ θ : (v.adicCompletion K)ˣ →* ℂˣ, IsSmoothChar θ → vals (chs s') (θ.comp (nm w)) = vals (up w s) (θ.comp (nm w))`. Introduce `θ hθ`. Establish `h` using `hS K L hp n hn π P hW v s (fun u => (hw u).symm ▸ s') hs (fun u => key u (hw u).symm) θ hθ`. Rewrite `h` using `[Fintype.sum_subsingleton _ w, Fintype.sum_subsingleton _ w]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h`. Use `Multiset.ext.2 fun ζ => ?_` and prove the remaining obligations. Distinguish the cases in `hT : Thru w ζ`. Take `⟨χ, hχ, hu⟩` from `id hT`. Establish `hf` using `hV (w.1.adicCompletion L) (chs s') (up w s) (χ.comp (nm w)) (hval χ hχ)`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hc` using `congrArg (Multiset.count ζ) hf`. Rewrite `hc` using `[Multiset.count_filter_of_pos (p := fun ξ => IsUnram (ξ * χ.comp (nm w))) hu, Multiset.count_filter_of_pos (p := fun ξ => IsUnram (ξ * χ.comp (nm w))) hu]`. Rewrite using `[Multiset.count_filter_of_pos hT]`. Conclude with `hc`. Rewrite using `[Multiset.count_filter_of_neg hT, eq_comm, Multiset.count_eq_zero]`.
-
-Introduce `hm`. Take `⟨ξ, hξ, rfl⟩` from `Multiset.mem_map.1 hm`. Conclude with `hT ⟨ξ⁻¹, ((hC _ s).2.1 ξ hξ).inv, fun x _ => by simp⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem gamOneOf : GamOneOf := by
   unfold GamOneOf GamOne

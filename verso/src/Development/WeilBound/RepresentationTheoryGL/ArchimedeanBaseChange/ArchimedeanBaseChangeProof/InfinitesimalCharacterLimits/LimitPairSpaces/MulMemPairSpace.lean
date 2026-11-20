@@ -13,7 +13,7 @@ open PositivityTheory.Rg.BcB.SpectralAccumulation PositivityTheory.Rg.BcB.E
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i x`. Simplify using `only [heckeAct, Pi.smul_apply, smul_eq_mul, Finsupp.sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem heckeAct_smul {a b : ℕ} {ι : Type} [Fintype ι] (h : HeckeM E a b ι) (c : ℂ) (f : ι → H E a b → ℂ) :
     heckeAct h (c • f) = c • heckeAct h f := by
@@ -23,7 +23,7 @@ theorem heckeAct_smul {a b : ℕ} {ι : Type} [Fintype ι] (h : HeckeM E a b ι)
   ring
 
 /- English proof (translation)
-Simplify using `only [heckeAct, Finsupp.sum]`. Conclude with `tendsto_finsetSum _ fun j _ => tendsto_finsetSum _ fun g _ => (hF j _).const_mul _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tendsto_heckeAct {a b : ℕ} {ι : Type} [Fintype ι] (h : HeckeM E a b ι) {F : ℕ → ι → H E a b → ℂ}
     {F₀ : ι → H E a b → ℂ} (hF : ∀ i x, Tendsto (fun k => F k i x) atTop (𝓝 (F₀ i x))) (i : ι) (x : H E a b) :
@@ -32,7 +32,7 @@ theorem tendsto_heckeAct {a b : ℕ} {ι : Type} [Fintype ι] (h : HeckeM E a b 
   exact tendsto_finsetSum _ fun j _ => tendsto_finsetSum _ fun g _ => (hF j _).const_mul _
 
 /- English proof (translation)
-Set `B : W₁ →ₗ[ℂ] W₂ →ₗ[ℂ] (X × Y → ℂ)` to `LinearMap.mk₂ ℂ (fun w₁ w₂ k => (w₁ : X → ℂ) k.1 * (w₂ : Y → ℂ) k.2) (fun _ _ _ => by funext k; simp [add_mul]) (fun _ _ _ => by funext k; simp [mul_assoc]) (fun _ _ _ => by funext k; simp [mul_add]) (fun _ _ _ => by funext k; simp [mul_left_comm])`. Use `Submodule.finiteDimensional_of_le (S₂ := LinearMap.range (TensorProduct.lift B)) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨w₁, h₁, w₂, h₂, rfl⟩`. Conclude with `⟨TensorProduct.tmul ℂ (⟨w₁, h₁⟩ : W₁) (⟨w₂, h₂⟩ : W₂), by simp [B]⟩`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem fd_prodSpan {X Y : Type} (W₁ : Submodule ℂ (X → ℂ)) (W₂ : Submodule ℂ (Y → ℂ)) [FiniteDimensional ℂ W₁]
     [FiniteDimensional ℂ W₂] :
@@ -46,15 +46,15 @@ theorem fd_prodSpan {X Y : Type} (W₁ : Submodule ℂ (X → ℂ)) (W₂ : Subm
   exact ⟨TensorProduct.tmul ℂ (⟨w₁, h₁⟩ : W₁) (⟨w₂, h₂⟩ : W₂), by simp [B]⟩
 
 /- English proof (translation)
-Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem F hF`. Take `⟨φ₁, hφ₁, φ₂, hφ₂, rfl⟩` from `hF`. Take `⟨ψ₁, hψ₁, e₁⟩` from `h₁ φ₁ hφ₁`. Take `⟨ψ₂, hψ₂, e₂⟩` from `h₂ φ₂ hφ₂`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `Submodule.subset_span ⟨ψ₁, hψ₁, ψ₂, hψ₂, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Rewrite using `[e₁, e₂]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `zero`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Establish `e : (fun x : H E a b => (M₁ x.1 * M₂ x.2) * (0 : H E a b → ℂ) x) = 0` using `by funext x; simp`. Rewrite using `[e]`. Conclude with `Submodule.zero_mem _`. Consider the case `add F G _ _ hF hG`. Establish `e : (fun x : H E a b => (M₁ x.1 * M₂ x.2) * (F + G) x) = (fun x => (M₁ x.1 * M₂ x.2) * F x) + fun x => (M₁ x.1 * M₂ x.2) * G x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Simplify using `[mul_add]`. Rewrite using `[e]`. Conclude with `Submodule.add_mem _ hF hG`. Consider the case `smul c F _ hF`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e : (fun x : H E a b => (M₁ x.1 * M₂ x.2) * (c • F) x) = c • fun x => (M₁ x.1 * M₂ x.2) * F x`. Use function extensionality and compare the values at `x`. Simplify using `[mul_left_comm]`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ c hF`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_mem_pairSpace {a b : ℕ} {U₁ U₁' : Submodule ℂ (Sm E a)} {U₂ U₂' : Submodule ℂ (Sm E b)}
     (M₁ : GA E a → ℂ) (M₂ : GA E b → ℂ) (h₁ : ∀ φ ∈ U₁, ∃ ψ ∈ U₁', ψ.1 = fun x => M₁ x * φ.1 x)
@@ -86,65 +86,59 @@ theorem mul_mem_pairSpace {a b : ℕ} {U₁ U₁' : Submodule ℂ (Sm E a)} {U�
     exact Submodule.smul_mem _ c hF
 
 /- English proof (translation)
-Simplify using `[InducedTensorMap.cf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cf_one_left (n : ℕ) (c : GL (Fin n) (Af E)) : InducedTensorMap.cf n 1 c = finGL E n c := by
   simp [InducedTensorMap.cf]
 
 /- English proof (translation)
-Simplify using `[InducedTensorMap.cf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cf_one_right (n : ℕ) (k : Kinf E n) : InducedTensorMap.cf n k 1 = infGL E n (Unitary.toUnits k) := by
   simp [InducedTensorMap.cf]
 
 /- English proof (translation)
-Introduce `hA E _ _ _ a b ι _ t₁ t₂ s₁ s₂ K₁ K₂ W₁ W₂ C lam lam₀ f hK₁ hK₂ hW₁ hW₂ _hC hs₁ hs₂ ht₁ ht₂ hst₁ hst₂ hz₁ hz₂ hf0 hfP hfT hEig hLam`. Establish `et₁ : ∀ k, t₁ k = s₁.strip.addTw fun i => (t₁ k).twists.getD i 0` using `fun k => (eq_addTw (t₁ k)).trans (by rw [hst₁ k])`. Establish `et₂ : ∀ k, t₂ k = s₂.strip.addTw fun i => (t₂ k).twists.getD i 0` using `fun k => (eq_addTw (t₂ k)).trans (by rw [hst₂ k])`. Establish `es₁ : s₁ = s₁.strip.addTw fun i => s₁.twists.getD i 0` using `eq_addTw s₁`. Establish `es₂ : s₂ = s₂.strip.addTw fun i => s₂.twists.getD i 0` using `eq_addTw s₂`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd₁ : s₁.Disc` using `disc_of_good s₁ hs₁`. Establish `hd₂ : s₂.Disc` using `disc_of_good s₂ hs₂`. Establish `hb₁ : s₁.strip.AllLeaves fun _ V => IsStable V` using `(allLeaves_strip s₁ _).2 (allLeaves_stable_of_disc s₁ hd₁)`. Establish `hb₂ : s₂.strip.AllLeaves fun _ V => IsStable V` using `(allLeaves_strip s₂ _).2 (allLeaves_stable_of_disc s₂ hd₂)`. Set `γ₁ : ℕ → ℕ → ℂ` to `fun k i => s₁.twists.getD i 0 - (t₁ k).twists.getD i 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `γ₂ : ℕ → ℕ → ℂ` to `fun k i => s₂.twists.getD i 0 - (t₂ k).twists.getD i 0`. Establish `hγ₁ : ∀ i, Tendsto (fun k => γ₁ k i) atTop (𝓝 0)` using `fun i => by`. Use `(tendsto_const_nhds (x := s₁.twists.getD i 0)).sub (hz₁ i)` as an intermediate fact. Rewrite `this` using `[sub_self]`. Then use the resulting hypothesis. Establish `hγ₂ : ∀ i, Tendsto (fun k => γ₂ k i) atTop (𝓝 0)` using `fun i => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `(tendsto_const_nhds (x := s₂.twists.getD i 0)).sub (hz₂ i)` as an intermediate fact. Rewrite `this` using `[sub_self]`. Then use the resulting hypothesis. Set `Φ : ℕ → H E a b → ℂ` to `fun k x => mult s₁.strip (γ₁ k) x.1 * mult s₂.strip (γ₂ k) x.2`. Establish `hΦne : ∀ k x, Φ k x ≠ 0` using `fun k x => mul_ne_zero (mult_ne _ _ _) (mult_ne _ _ _)`. Establish `hΦlim : ∀ x, Tendsto (fun k => Φ k x) atTop (𝓝 1)` using `fun x => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(mult_tendsto s₁.strip γ₁ hγ₁ x.1).mul (mult_tendsto s₂.strip γ₂ hγ₂ x.2)` as an intermediate fact. Rewrite `this` using `[one_mul]`. Then use the resulting hypothesis. Set `K₁' : Subgroup (GL (Fin a) (Af E))` to `K₁ ⊓ Cint E a`. Set `K₂' : Subgroup (GL (Fin b) (Af E))` to `K₂ ⊓ Cint E b`. Establish `hK₁' : IsOpen (K₁' : Set (GL (Fin a) (Af E)))` using `hK₁.inter (GroundTheory.Automorphic.AdelicGLn.isOpen_integralFiniteGL E a)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hK₂' : IsOpen (K₂' : Set (GL (Fin b) (Af E)))` using `hK₂.inter (GroundTheory.Automorphic.AdelicGLn.isOpen_integralFiniteGL E b)`. Use `haveI := hW₁`. Use `haveI := hW₂`. Use `haveI : FiniteDimensional ℂ (TypSp K₁' W₁ s₁.space) := fd_typSp hA s₁ hd₁ K₁' hK₁' W₁`. Use `haveI : FiniteDimensional ℂ (TypSp K₂' W₂ s₂.space) := fd_typSp hA s₂ hd₂ K₂' hK₂' W₂`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Set `X₀ : Submodule ℂ (H E a b → ℂ)` to `pairSpace (TypSp K₁' W₁ s₁.space) (TypSp K₂' W₂ s₂.space)`. Use `haveI : FiniteDimensional ℂ X₀ := fd_tens2 _ _`. Establish `hmul₁ : ∀ k, ∀ φ ∈ (t₁ k).space, ∃ ψ ∈ s₁.space, ψ.1 = fun x => mult s₁.strip (γ₁ k) x * φ.1 x`. Introduce `k φ hφ`. Rewrite `hφ` using `[et₁ k]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨ψ, hψ, e⟩` from `flat s₁.strip hb₁ _ (fun i => s₁.twists.getD i 0) φ hφ`. Conclude with `⟨ψ, by rw [es₁]; exact hψ, e⟩`. Establish `hmul₂ : ∀ k, ∀ φ ∈ (t₂ k).space, ∃ ψ ∈ s₂.space, ψ.1 = fun x => mult s₂.strip (γ₂ k) x * φ.1 x`. Introduce `k φ hφ`. Rewrite `hφ` using `[et₂ k]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨ψ, hψ, e⟩` from `flat s₂.strip hb₂ _ (fun i => s₂.twists.getD i 0) φ hφ`. Conclude with `⟨ψ, by rw [es₂]; exact hψ, e⟩`. Establish `hg : ∀ k i, (fun x => Φ k x * f k i x) ∈ X₀`. Introduce `k i`. Use `pair_typ (mul_mem_pairSpace _ _ (hmul₁ k) (hmul₂ k) (hfP k i)) ⟨fun u₁ hu₁ u₂ hu₂ x => ?_, fun x => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e₁ : x.1 * finGL E a u₁ = x.1 * InducedTensorMap.cf a 1 u₁` using `by rw [cf_one_left]`. Establish `e₂ : x.2 * finGL E b u₂ = x.2 * InducedTensorMap.cf b 1 u₂` using `by rw [cf_one_left]`. Use `show mult s₁.strip (γ₁ k) (x.1 * finGL E a u₁) * mult s₂.strip (γ₂ k) (x.2 * finGL E b u₂) * f k i (x * (finGL E a u₁, finGL E b u₂)) = Φ k x * f k i x`. Rewrite using `[e₁, e₂, mult_rinv _ _ _ _ hu₁.2, mult_rinv _ _ _ _ hu₂.2, (hfT k i).1 u₁ hu₁.1 u₂ hu₂.1 x]`. Establish `e : (fun kk : Kinf E a × Kinf E b => Φ k (x * (infGL E a (Unitary.toUnits kk.1), infGL E b (Unitary.toUnits kk.2))) * f k i (x * (infGL E a (Unitary.toUnits kk.1), infGL E b (Unitary.toUnits kk.2)))) = Φ k x • fun kk : Kinf E a × Kinf E b => f k i (x * (infGL E a (Unitary.toUnits …`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `kk`. Establish `e₁ : x.1 * infGL E a (Unitary.toUnits kk.1) = x.1 * InducedTensorMap.cf a kk.1 1` using `by rw [cf_one_right]`. Establish `e₂ : x.2 * infGL E b (Unitary.toUnits kk.2) = x.2 * InducedTensorMap.cf b kk.2 1` using `by rw [cf_one_right]`. Use `show mult s₁.strip (γ₁ k) (x.1 * infGL E a (Unitary.toUnits kk.1)) * mult s₂.strip (γ₂ k) (x.2 * infGL E b (Unitary.toUnits kk.2)) * _ = _`. Rewrite using `[e₁, e₂, mult_rinv _ _ _ _ (one_mem _), mult_rinv _ _ _ _ (one_mem _)]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ ((hfT k i).2 x)`. Set `V` to `ι → X₀`. Set `e : V ≃ₗ[ℂ] (Fin (Module.finrank ℂ V) → ℂ)` to `(Module.finBasis ℂ V).equivFun`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `gk : ℕ → V` to `fun k i => ⟨fun x => Φ k x * f k i x, hg k i⟩`. Establish `hgk0 : ∀ k, gk k ≠ 0`. Introduce `k h0`. Apply `hf0 k` to reduce the goal to its premises. Use function extensionality and compare the values at `i x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg (fun v : V => ((v i : X₀) : H E a b → ℂ) x) h0` as an intermediate fact. Simplify using `only [gk] at this`. Conclude with `(mul_eq_zero.1 this).resolve_left (hΦne k x)`. Set `c : ℕ → ℂ` to `fun k => ((‖e (gk k)‖⁻¹ : ℝ) : ℂ)`. Set `v : ℕ → (Fin (Module.finrank ℂ V) → ℂ)` to `fun k => c k • e (gk k)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hv : ∀ k, v k ∈ Metric.sphere (0 : Fin (Module.finrank ℂ V) → ℂ) 1`. Introduce `k`. Establish `hne : e (gk k) ≠ 0` using `(LinearEquiv.map_ne_zero_iff e).2 (hgk0 k)`. Rewrite using `[mem_sphere_zero_iff_norm, norm_smul, Complex.norm_real, Real.norm_of_nonneg (inv_nonneg.2 (norm_nonneg _)), inv_mul_cancel₀ (norm_ne_zero_iff.2 hne)]`. Take `⟨w, hw, φ, hφ, hlim⟩` from `(isCompact_sphere (0 : Fin (Module.finrank ℂ V) → ℂ) 1).tendsto_subseq hv`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Set `u : V` to `e.symm w`. Establish `hu0 : u ≠ 0`. Introduce `h0`. Establish `: w = 0` using `by simpa [u] using congrArg e h0`. Rewrite `hw` using `[this, mem_sphere_zero_iff_norm, norm_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `zero_ne_one hw`. Set `F : ι → H E a b → ℂ` to `fun i x => ((u i : X₀) : H E a b → ℂ) x`. Establish `hA' : ∀ i x, Tendsto (fun k => c (φ k) * (Φ (φ k) x * f (φ k) i x)) atTop (𝓝 (F i x))`. Introduce `i x`. Set `L : (Fin (Module.finrank ℂ V) → ℂ) →ₗ[ℂ] ℂ` to `(LinearMap.proj x) ∘ₗ X₀.subtype ∘ₗ (LinearMap.proj i) ∘ₗ e.symm.toLinearMap`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hL : Continuous L` using `LinearMap.continuous_of_finiteDimensional L`. Establish `h1` using `(hL.tendsto w).comp hlim`. Use `h1.congr fun k => ?_` and prove the remaining obligations. Use `show L (v (φ k)) = _`. Use `show ((e.symm (c (φ k) • e (gk (φ k)))) i : H E a b → ℂ) x = _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[map_smul, LinearEquiv.symm_apply_apply]`. Both sides reduce to the same expression. Establish `hconv : ∀ i x, Tendsto (fun k => c (φ k) * f (φ k) i x) atTop (𝓝 (F i x))`. Introduce `i x`. Establish `h1` using `(hA' i x).div ((hΦlim x).comp hφ.tendsto_atTop) one_ne_zero`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite `h1` using `[div_one]`. Use `h1.congr fun k => ?_` and prove the remaining obligations. Use `show c (φ k) * (Φ (φ k) x * f (φ k) i x) / Φ (φ k) x = _`. Rewrite using `[mul_left_comm, mul_div_cancel_left₀ _ (hΦne _ x)]`. Use `⟨F, ?_, fun i => ?_, fun i => ⟨fun u₁ hu₁ u₂ hu₂ x => ?_, fun x => ?_⟩, fun h hh => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `hF0`. Apply `hu0` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Conclude with `Subtype.ext (funext fun x => congrFun (congrFun hF0 i) x)`. Conclude with `tensor_span_mono (typSp_le _ _ _) (typSp_le _ _ _) (u i).2`.
-
-Use `tendsto_nhds_unique ((hconv i _).congr fun k => ?_) (hconv i x)` and prove the remaining obligations. Rewrite using `[(hfT (φ k) i).1 u₁ hu₁ u₂ hu₂ x]`. Set `Z : Submodule ℂ (Kinf E a × Kinf E b → ℂ)` to `Submodule.span ℂ {f | ∃ w₁ ∈ W₁, ∃ w₂ ∈ W₂, f = fun k => w₁ k.1 * w₂ k.2} haveI : FiniteDimensional ℂ Z := fd_prodSpan W₁ W₂`. Use `(Submodule.closed_of_finiteDimensional Z).mem_of_tendsto (tendsto_pi_nhds.2 fun kk => hconv i (x * (infGL E a (Unitary.toUnits kk.1), infGL E b (Unitary.toUnits kk.2)))) (Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Conclude with `Z.smul_mem (c (φ k)) ((hfT (φ k) i).2 x)`.
-
-Use function extensionality and compare the values at `i x`. Establish `h1` using `tendsto_heckeAct h hconv i x`. Establish `h2 : ∀ k, heckeAct h (fun i x => c (φ k) * f (φ k) i x) i x = lam (φ k) h * (c (φ k) * f (φ k) i x)`. Introduce `k`. Rewrite using `[show (fun i x => c (φ k) * f (φ k) i x) = c (φ k) • f (φ k) from rfl, heckeAct_smul, hEig (φ k) h hh]`.
-
-Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `h3` using `((hLam h hh).comp hφ.tendsto_atTop).mul (hconv i x)`. Use `tendsto_nhds_unique (h1.congr h2) h3` as an intermediate fact. Simplify `this` using `only [Pi.smul_apply, smul_eq_mul]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem limVec : LimVec := by
   intro hA E _ _ _ a b ι _ t₁ t₂ s₁ s₂ K₁ K₂ W₁ W₂ C lam lam₀ f hK₁ hK₂ hW₁ hW₂ _hC hs₁ hs₂ ht₁ ht₂ hst₁ hst₂

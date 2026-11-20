@@ -20,15 +20,15 @@ open Formalism Formalism.MainNotions Formalism.BasicNotions Formalism.BasicNotio
 namespace GlobalTheory.ClosingLocalInputs
 
 /- English proof (translation)
-Introduce `i r hr` and use `(h41 i).2.2 r hr`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem galoisFamilyConditions_of_sumRepresentations (D : D7) (h41 : SumRepresentations.Conclusion41 D) : GaloisFamilyConditions (D := D) :=
   fun i r hr => (h41 i).2.2 r hr
 
 /- English proof (translation)
-Introduce `hGAR hBS hFB hBKL hLTD hLEC D HW F Cm C CT hCT hC hP htie0 hadm1 hadm2 hadm5 h41 hG5 hG6 hN9 hSer hO hIne hChi`. Take `⟨P, hDZ, hEig⟩` from `hP`. Establish `hT : admT (D` using `D) CT := GlobalTheory.T.crystallinePeriodBound_all_constant_ge_forty hBS hFB hBKL hLTD hLEC D HW F Cm CT hCT`. Establish `hLOC : LocalPushoutProposition (D` using `D) := GlobalTheory.T.local_absorption_length_bound_of_blochKato hBKL hLTD hLEC D HW F Cm`. Establish `hRbar : ResidualAbsIrreducible (D` using `D) := GlobalTheory.Pass.residualRep_spans_matrixAlgebra_of_goodPoint D hN9`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN5g : TypePrimeChoiceLemmas (D` using `D) := GlobalTheory.supplier_type_prime_all D ⟨hadm5, h41, hN9, hO⟩`. Establish `hTB : admTB (D` using `D) HW F := GlobalTheory.T.theorem_tb_of_local_blochKato_duality_euler hBKL hLTD hLEC D HW F Cm`. Establish `hBK : admBK (D` using `D) := GlobalTheory.T.blochKatoLocal_all_of_tateDuality_eulerChar hBKL hLTD hLEC D`. Conclude with `GlobalTheory.T.conclusion_of_local_conditions hGAR D P HW F C CT hC hadm5 hEig hIne hT hLOC hRbar hN5g hDZ (galoisFamilyConditions_of_sumRepresentations D h41) hG5 hG6 hSer hTB hBK hadm1 hadm2 htie0 hChi`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem main : GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.Published.BhattScholzeIntegral → GlobalTheory.Published.FontaineBcris →
     GlobalTheory.Published.BlochKatoLocal → Formalism.GaloisCohomology.LocalTateDualityK → Formalism.GaloisCohomology.LocalEulerCharK →

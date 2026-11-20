@@ -2,11 +2,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.De
 open Matrix IsLocalRing UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `key : (if p i ∧ q j then (A * Z * B) i j else 0) = ∑ m, ∑ k, if p i ∧ q j then A i k * Z k m * B m j else 0` using `by split_ifs`. Simplify using `only [Matrix.mul_apply, Finset.sum_mul]`. Simplify using the standard rewrite rules. Rewrite using `[Matrix.of_apply, key]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_apply, Finset.sum_mul, Matrix.of_apply]`. Use `Finset.sum_congr rfl fun m _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `h1 : p i ↔ p k`. Distinguish the cases in `h2 : q m ↔ q j`. Distinguish the cases in `h : p i ∧ q j`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos h, if_pos ⟨h1.1 h.1, h2.2 h.2⟩]`. Rewrite using `[if_neg h, if_neg (fun h' => h ⟨h1.2 h'.1, h2.1 h'.2⟩)]`. Simplify using the standard rewrite rules. Simplify using `[hB m j h2]`. Simplify using `[hA i k h1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem cut_conj {F : Type} [Field F] {n : ℕ} (p q : Fin n → Prop) [DecidablePred p] [DecidablePred q]
     [∀ i j, Decidable (p i ∧ q j)] (A Z B : Matrix (Fin n) (Fin n) F)
@@ -31,7 +31,7 @@ private theorem cut_conj {F : Type} [Field F] {n : ℕ} (p q : Fin n → Prop) [
   · simp [hA i k h1]
 
 /- English proof (translation)
-Establish `hA' : ∀ i k : Fin n, ¬ ((i : ℕ) < a ↔ (k : ℕ) < a) → A i k = 0` using `fun i k h => by`. Simplify using `using (hA i k).2 h`. Establish `hB' : ∀ i k : Fin n, ¬ ((i : ℕ) < a ↔ (k : ℕ) < a) → B i k = 0` using `fun i k h => by`. Simplify using `using (hB i k).2 h`. Conclude with `⟨cut_conj (fun i => (i : ℕ) < a) (fun i => ¬ (i : ℕ) < a) A Z B hA' (fun i k h => hB' i k (fun e => h (not_congr e))), cut_conj (fun i => ¬ (i : ℕ) < a) (fun i => (i : ℕ) < a) A Z B (fun i k h => hA' i k (fun e => h (not_congr e))) hB'⟩`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components.
 -/
 private theorem cV_conj {F : Type} [Field F] {n a : ℕ} {A B : Matrix (Fin n) (Fin n) F}
     (hA : A ∈ Ev F F n a) (hB : B ∈ Ev F F n a) (Z : Matrix (Fin n) (Fin n) F) :
@@ -46,7 +46,7 @@ private theorem cV_conj {F : Type} [Field F] {n a : ℕ} {A B : Matrix (Fin n) (
       (fun i k h => hA' i k (fun e => h (not_congr e))) hB'⟩
 
 /- English proof (translation)
-Apply the tactic sequence `refine ⟨⟨?_, ?_⟩, ?_, ?_⟩ <;> ext i j <;>`. Apply the tactic sequence `simp only [cV, cV', Matrix.of_apply, Matrix.add_apply, Matrix.sub_apply, Matrix.smul_apply] <;>`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem cV_lin {F : Type} [Field F] {n : ℕ} (a : ℕ) (c : F) (Y Z : Matrix (Fin n) (Fin n) F) :
     (cV a (Y + c • Z) = cV a Y + c • cV a Z ∧ cV' a (Y + c • Z) = cV' a Y + c • cV' a Z) ∧
@@ -56,17 +56,15 @@ private theorem cV_lin {F : Type} [Field F] {n : ℕ} (a : ℕ) (c : F) (Y Z : M
     split_ifs <;> simp
 
 /- English proof (translation)
-Introduce `F G _ _ n D χ S z hz`. Use `⟨fun g hg h hh => ?_, fun g hg h hh => ?_, fun Y g => ⟨?_, ?_⟩, fun Z => ⟨?_, ?_, ?_, fun hZ => ?_⟩⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[hz g hg h hh, (cV_lin _ _ _ _).1.1, (cV_conj (D.ev _) (D.ev _) _).1]`. Use `beta_reduce`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[hz g hg h hh, (cV_lin _ _ _ _).1.2, (cV_conj (D.ev _) (D.ev _) _).2]`. Unfold `dTw`. Rewrite using `[(cV_lin _ _ _ _).2.1, (cV_conj (D.ev _) (D.ev _) _).1]`. Unfold `dTw`. Rewrite using `[(cV_lin _ _ _ _).2.2, (cV_conj (D.ev _) (D.ev _) _).2]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i j`. Use `⟨fun e => ?_, fun _ => Submodule.mem_top⟩` and prove the remaining obligations. Rewrite using `[Submodule.mem_bot, cV, Matrix.of_apply, if_neg (fun h => h.2 (e.1 h.1))]`. Introduce `i j`. Use `⟨fun e => ?_, fun _ => Submodule.mem_top⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[Submodule.mem_bot, cV', Matrix.of_apply, if_neg (fun h => h.1 (e.2 h.2))]`. Use extensionality with `i j`. Simplify using `only [cV, cV', Matrix.of_apply, Matrix.transpose_apply, and_comm]`. Use extensionality with `i j`. Establish `h0 : ((i : ℕ) < D.a ↔ (j : ℕ) < D.a) → Z i j = 0` using `fun e => by simpa using (hZ i j).1 e`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [cV, cV', Matrix.of_apply, Matrix.add_apply]`. Apply the tactic sequence `by_cases hi : (i : ℕ) < D.a <;> by_cases hj : (j : ℕ) < D.a`. Simplify using `[hi, hj, h0 (iff_of_true hi hj)]`. Rewrite using `[if_pos ⟨hi, hj⟩, if_neg (fun h => h.1 hi), add_zero]`. Rewrite using `[if_neg (fun h => hi h.1), if_pos ⟨hi, hj⟩, zero_add]`.
-
-Rewrite using `[if_neg (fun h => hi h.1), if_neg (fun h => hj h.2), add_zero, h0 (iff_of_false hi hj)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.Det.cornerCoc :
     ∀ {F G : Type} [Field F] [Group G] {n : ℕ} (D : DetFr F G n) (χ : G → F) (S : Set G) (z : G → Matrix (Fin n) (Fin n) F), TwCoc χ D.r S z → (TwCoc χ D.r S fun g => cV D.a (z g)) ∧ (TwCoc χ D.r S fun g => cV' D.a (z g)) ∧ (∀ Y g, cV D.a (dTw χ D.r Y g) = dTw χ D.r (cV D.a Y) g ∧ cV' D.a (dTw χ D.r Y g) = dTw χ D.r (cV' D.a Y) g) ∧ ∀ Z : Matrix (Fin n) (Fin n) F, cV D.a Z ∈ Od F F n D.a ∧ cV' D.a Z ∈ Od F F n D.a ∧ (cV D.a Z)ᵀ = cV' D.a Zᵀ ∧ (Z ∈ Od F F n D.a → cV D.a Z + cV' D.a Z = Z) := by

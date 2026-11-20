@@ -19,7 +19,7 @@ namespace JetIntegrality
 variable {K : Type} [Field K] {n : Type}
 
 /- English proof (translation)
-Establish `ha : ∀ j : n, MvPowerSeries.constantCoeff (at1 j linv : MvPowerSeries n K) = 0` using `fun j => constantCoeff_inVar_eq_zero j h0`. Establish `h` using `MvPowerSeries.hasSubst_of_constantCoeff_zero ha`. Unfold `at1 at ha h ⊢`. Rewrite using `[Formalism.L2.Th1.C.Pts.substMv_subst (MvPowerSeries.constantCoeff_X i) ha, MvPowerSeries.subst_X h, Formalism.L2.Th1.C.Pts.subst_subst h0 (MvPowerSeries.constantCoeff_X i)]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem subst_single_var [Finite n] {linv : PowerSeries K} (h0 : PowerSeries.constantCoeff linv = 0) (i : n)
     (g : PowerSeries K) :

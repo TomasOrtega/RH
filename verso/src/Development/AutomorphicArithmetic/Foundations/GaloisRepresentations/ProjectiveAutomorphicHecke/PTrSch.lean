@@ -12,9 +12,9 @@ namespace UpperTheory.Gal.CertificateRingHomMap
 
 open UpperTheory.Gal.Schur in
 /- English proof (translation)
-Establish `hm : (Matrix.of fun i j : Fin n => t i ^ (n - 1 - (j : ℕ))) = Matrix.projVandermonde (fun _ => (1 : ℂ)) t`. Use extensionality with `i j`. Simplify using `only [Matrix.projVandermonde_apply, one_pow, one_mul, Matrix.of_apply, Fin.val_rev]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[hm, Matrix.det_projVandermonde]`. Simplify using `only [one_mul, vdm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem den_eq {n : ℕ} (t : Fin n → ℂ) :
     (Matrix.of fun i j : Fin n => t i ^ (n - 1 - (j : ℕ))).det = vdm t := by
@@ -29,9 +29,9 @@ private theorem den_eq {n : ℕ} (t : Fin n → ℂ) :
 
 open UpperTheory.Gal.Schur in
 /- English proof (translation)
-Rewrite using `[← Matrix.det_transpose]`. Unfold `altnZ`. Use `congr 1`. Use extensionality with `i j`. Simplify using `only [Matrix.transpose_apply, Matrix.of_apply]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use `i.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 private theorem num_eq' {n : ℕ} (l : Fin n → ℤ) (t : Fin n → ℂ) :
     (Matrix.of fun i j : Fin n => t i ^ (l j + (n - 1 - (j : ℕ) : ℕ))).det =
@@ -46,15 +46,15 @@ private theorem num_eq' {n : ℕ} (l : Fin n → ℤ) (t : Fin n → ℂ) :
   omega
 
 /- English proof (translation)
-Introduce `n lam m hpos g t ht hchar`. Take `⟨d, hd0, hdchar, htr⟩` from `GlobalTheory.ContraChar.exists_eig lam g`. Establish `key : ∀ e : Fin n → ℂ, (∏ i, (X - C (e i))).roots = Multiset.map e Finset.univ.val`. Introduce `e`. Establish `he : (∏ i, (X - C (e i))) = ((Finset.univ.val.map e).map fun a => X - C a).prod`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Multiset.map_map]`. Both sides reduce to the same expression. Rewrite using `[he, Polynomial.roots_multiset_prod_X_sub_C]`. Establish `hroots : Multiset.map d Finset.univ.val = Multiset.map t Finset.univ.val`. Rewrite using `[← key d, ← key t, ← hdchar, ← hchar]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨π, hπ⟩` from `GlobalTheory.ContraChar.exists_perm_of_map_eq d t hroots`. Establish `ht0 : ∀ i, t i ≠ 0` using `fun i => by rw [← hπ i]; exact hd0 _`. Establish `hgt : ReciprocityTheory.ChartRestriction.TR.Weyl.gtChar n lam.w t = ReciprocityTheory.ChartRestriction.TR.Weyl.gtChar n lam.w d`. Rewrite using `[← GlobalTheory.ContraChar.gtChar_perm lam d hd0 π]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `i`. Conclude with `(hπ i).symm`. Establish `hw` using `GlobalTheory.CompanionTheory.RmCharacter.weylChar_eq_gtChar lam.w lam.anti t ht0 ht`. Rewrite using `[htr, ← hgt, ← hw]`. Unfold `PositivityTheory.RgBcC.weylChar`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[num_eq' lam.w t, den_eq t]`. Rewrite using `[UpperTheory.Gal.Schur.WeylTie_holds ℂ n lam.w m (fun i => (lam.w i + m).toNat) t (fun i => (Int.toNat_of_nonneg (hpos i)).symm) ht ht0]`. Establish `hp : (∏ k, t k) ^ m ≠ 0` using `pow_ne_zero _ (Finset.prod_ne_zero_iff.mpr fun i _ => ht0 i)`. Conclude with `div_mul_cancel₀ _ hp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pTrSch_of : TrSch := by
   intro n lam m hpos g t ht hchar

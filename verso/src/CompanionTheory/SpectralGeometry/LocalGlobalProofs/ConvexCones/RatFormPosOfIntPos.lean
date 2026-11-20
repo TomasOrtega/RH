@@ -8,15 +8,15 @@ namespace GlobalTheory.CompanionTheory.Ar.Fan
 open Matrix in
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors ℤ) w`. Use `choose v hv using hb`. Establish `hb0 : ((b : ℤ) : ℚ) ≠ 0`. Conclude with `nonZeroDivisors.ne_zero b.2` after adjusting the coercions. Establish `hv' : ∀ i, (v i : ℚ) = (b : ℤ) * w i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i`. Use `hv i` as an intermediate fact. Simplify `this` using `[Algebra.smul_def]`. Establish `hv0 : v ≠ 0`. Introduce `h`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply `hw` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Establish `h1` using `hv' i`. Rewrite `h1` using `[h]`. Simplify using `only [Pi.zero_apply, Int.cast_zero] at h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `(mul_eq_zero.1 h1.symm).resolve_left hb0` as an intermediate fact. Simplify using `using this`. Establish `h` using `hQ v hv0`. Establish `h2 : ∑ i, ∑ j, Q i j * (v i : ℚ) * (v j : ℚ) = ((b : ℤ) : ℚ) ^ 2 * ∑ i, ∑ j, Q i j * w i * w j`. Simplify using `only [Finset.mul_sum, hv']`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[h2]`. Establish `hb2 : 0 < ((b : ℤ) : ℚ) ^ 2` using `by positivity`. Conclude with `(pos_iff_pos_of_mul_pos h).1 hb2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ratForm_pos_of_int_pos {n : ℕ} (Q : Matrix (Fin n) (Fin n) ℚ)
     (hQ : ∀ v : Fin n → ℤ, v ≠ 0 → 0 < ∑ i, ∑ j, Q i j * v i * v j)
@@ -51,23 +51,23 @@ theorem ratForm_pos_of_int_pos {n : ℕ} (Q : Matrix (Fin n) (Fin n) ℚ)
 open Matrix in
 
 /- English proof (translation)
-Establish `hrat` using `ratForm_pos_of_int_pos Q hQ`. Use `set R : Matrix (Fin n) (Fin n) ℝ := Q.map (Rat.cast : ℚ → ℝ) with hR`. Establish `hRh : R.IsHermitian`. Use extensionality with `i j`. Simplify `congrArg (Rat.cast : ℚ → ℝ) (hs.apply i j)` using `[hR]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hform : ∀ x : Fin n → ℝ, x ⬝ᵥ (R *ᵥ x) = ∑ i, ∑ j, R i j * x i * x j`. Introduce `x`. Simplify using `only [dotProduct, mulVec, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hcast : ∀ w : Fin n → ℚ, ((fun i => (w i : ℝ)) ⬝ᵥ (R *ᵥ fun i => (w i : ℝ))) = ((∑ i, ∑ j, Q i j * w i * w j : ℚ) : ℝ)`. Introduce `w`. Rewrite using `[hform]`. Use `push_cast`. Simplify using `[hR]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hdense : DenseRange (fun (w : Fin n → ℚ) (i : Fin n) => (w i : ℝ))` using `DenseRange.piMap (fun _ => Rat.denseRange_cast)`. Establish `hcont : Continuous fun x : Fin n → ℝ => x ⬝ᵥ (R *ᵥ x)`. Simplify using `only [hform]`. Use `fun_prop`. Establish `hnonneg : ∀ x : Fin n → ℝ, 0 ≤ x ⬝ᵥ (R *ᵥ x)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcl : IsClosed {x : Fin n → ℝ | 0 ≤ x ⬝ᵥ (R *ᵥ x)}` using `isClosed_le continuous_const hcont`. Introduce `x`. Use `hdense.induction_on (p := fun x => 0 ≤ x ⬝ᵥ (R *ᵥ x)) x hcl fun w => ?_` and prove the remaining obligations. Use `show 0 ≤ (fun i => (w i : ℝ)) ⬝ᵥ (R *ᵥ fun i => (w i : ℝ))`. Rewrite using `[hcast]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Distinguish the cases in `hw : w = 0`. Simplify using `[hw]`. Conclude with `(hrat w hw).le` after adjusting the coercions. Establish `hpsd : R.PosSemidef`. Use `Matrix.PosSemidef.of_dotProduct_mulVec_nonneg hRh fun x => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `using hnonneg x`. Rewrite using `[hpsd.posDef_iff_det_ne_zero]`. Introduce `h0`. Establish `hRQ : R = (Rat.castHom ℝ).mapMatrix Q`. Use extensionality with `i j`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `[hR]`. Rewrite `h0` using `[hRQ, ← RingHom.map_det, map_eq_zero]`. Take `⟨w, hw, hQw⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr h0`. Establish `h1` using `hrat w hw`. Establish `h2 : ∑ i, ∑ j, Q i j * w i * w j = w ⬝ᵥ (Q *ᵥ w)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [dotProduct, mulVec, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite `h1` using `[h2, hQw, dotProduct_zero]`. Conclude with `lt_irrefl _ h1`.
+A detailed English derivation is pending.
 -/
 theorem posDef_of_int_pos (n : ℕ) (Q : Matrix (Fin n) (Fin n) ℚ) (hs : Q.IsSymm)
     (hQ : ∀ v : Fin n → ℤ, v ≠ 0 → 0 < ∑ i, ∑ j, Q i j * v i * v j) :

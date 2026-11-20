@@ -11,13 +11,13 @@ open Classical ValuativeRel
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Rewrite using `[Valuation.mem_integer_iff, Valuation.Compatible.vle_iff_le (v := ValuativeRel.valuation K), map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem memO_iff {K : Type} [Field K] [ValuativeRel K] (x : K) : x ∈ 𝒪[K] ↔ x ≤ᵥ 1 := by
   rw [Valuation.mem_integer_iff, Valuation.Compatible.vle_iff_le (v := ValuativeRel.valuation K), map_one]
 
 /- English proof (translation)
-Establish `hfin` using `IsDedekindDomain.HeightOneSpectrum.Support.finite (𝓞 D.host.F) x`. Use `hfin.eventually_cofinite_notMem.mono fun p hp => ?_` and prove the remaining obligations. Rewrite using `[memO_iff, ← map_one (D.s.atP p).ιF, (D.s.atP p).val, map_one]`. Conclude with `not_lt.mp hp`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iotaF_mem_cof (D : Formalism.BasicNotions.D7) (x : D.host.F) :
     ∀ᶠ p in Filter.cofinite, (D.s.atP p).ιF x ∈ 𝒪[(D.s.atP p).Fp] := by
@@ -27,13 +27,13 @@ theorem iotaF_mem_cof (D : Formalism.BasicNotions.D7) (x : D.host.F) :
   exact not_lt.mp hp
 
 /- English proof (translation)
-Establish `hinv : M * M⁻¹ = 1` using `Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.mpr hd)`. Establish `hc' : c = Matrix.vecMul (Matrix.vecMul c M) M⁻¹`. Rewrite using `[Matrix.vecMul_vecMul, hinv, Matrix.vecMul_one]`. Establish `hMinv : ∀ i j, M⁻¹ i j ∈ R`. Introduce `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Matrix.inv_def, Matrix.smul_apply, smul_eq_mul]`. Use `R.mul_mem ?_ ?_` and prove the remaining obligations. Simplify `hdi` using `[Ring.inverse_eq_inv']`. Rewrite using `[Matrix.adjugate_apply, Matrix.det_apply]`. Use `R.sum_mem fun σ _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `R.zsmul_mem (R.prod_mem fun k _ => ?_) _` and prove the remaining obligations. Rewrite using `[Matrix.updateRow_apply]`. Use `split_ifs`. Rewrite using `[Pi.single_apply] split_ifs`. Conclude with `R.one_mem`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `R.zero_mem`. Conclude with `hM _ _`. Introduce `i`. Rewrite using `[hc', Matrix.vecMul, dotProduct]`. Conclude with `R.sum_mem fun j _ => R.mul_mem (hc j) (hMinv j i)`.
+A detailed English derivation is pending.
 -/
 theorem vec_mem_of {K : Type} [Field K] (R : Subring K) {ι : Type} [Fintype ι] [DecidableEq ι]
     (M : Matrix ι ι K) (hM : ∀ i j, M i j ∈ R) (hd : M.det ≠ 0) (hdi : (M.det)⁻¹ ∈ R) (c : ι → K)
@@ -61,7 +61,7 @@ theorem vec_mem_of {K : Type} [Field K] (R : Subring K) {ι : Type} [Fintype ι]
   exact R.sum_mem fun j _ => R.mul_mem (hc j) (hMinv j i)
 
 /- English proof (translation)
-Rewrite using `[(D.s.atP p).O_def]`. Conclude with `(hw.map (D.s.atP p).ιE.toIntAlgHom).tower_top`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iotaE_mem_of_int (D : Formalism.BasicNotions.D7) (p : PlF D) {w : D.host.E} (hw : IsIntegral ℤ w) :
     (D.s.atP p).ιE w ∈ (D.s.atP p).O := by
@@ -69,7 +69,7 @@ theorem iotaE_mem_of_int (D : Formalism.BasicNotions.D7) (p : PlF D) {w : D.host
   exact (hw.map (D.s.atP p).ιE.toIntAlgHom).tower_top
 
 /- English proof (translation)
-Rewrite using `[(D.s.atP p).O_def]`. Conclude with `isIntegral_algebraMap (R := 𝒪[(D.s.atP p).Fp]) (x := ⟨c, hc⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem alg_mem_O (D : Formalism.BasicNotions.D7) (p : PlF D) {c : (D.s.atP p).Fp} (hc : c ∈ 𝒪[(D.s.atP p).Fp]) :
     algebraMap (D.s.atP p).Fp (D.s.atP p).Ep c ∈ (D.s.atP p).O := by
@@ -77,13 +77,13 @@ theorem alg_mem_O (D : Formalism.BasicNotions.D7) (p : PlF D) {c : (D.s.atP p).F
   exact isIntegral_algebraMap (R := 𝒪[(D.s.atP p).Fp]) (x := ⟨c, hc⟩)
 
 /- English proof (translation)
-Use `haveI := D.host.isCMField_hostE`. Take `⟨φ⟩ : Nonempty (D.host.E →+* ℂ)` from `inferInstance`. Establish `hc : (NumberField.InfinitePlace.mk φ).IsComplex` using `NumberField.IsTotallyComplex.isComplex _`. Establish `hnr : ¬ NumberField.ComplexEmbedding.IsReal φ`. Rewrite using `[← NumberField.InfinitePlace.isReal_mk_iff, NumberField.InfinitePlace.not_isReal_iff_isComplex]` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x, star (φ x) ≠ φ x := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hnr (RingHom.ext h)`. Establish `hxF : x ∉ (algebraMap D.host.F D.host.E).range`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Introduce and unpack `⟨f, rfl⟩`. Conclude with `hx ((NumberField.mem_maximalRealSubfield_iff _).1 f.2 φ)`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 D.host.E) x`. Distinguish the cases in `ha : algebraMap (𝓞 D.host.E) D.host.E a ∈ (algebraMap D.host.F D.host.E).range`. Use `⟨algebraMap (𝓞 D.host.E) D.host.E b, NumberField.RingOfIntegers.isIntegral_coe b, fun hbF => hxF ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Take `⟨f1, hf1⟩` from `ha`. Take `⟨f2, hf2⟩` from `hbF`. Conclude with `⟨f1 / f2, by rw [map_div₀, hf1, hf2]⟩`. Conclude with `⟨algebraMap (𝓞 D.host.E) D.host.E a, NumberField.RingOfIntegers.isIntegral_coe a, ha⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_theta (D : Formalism.BasicNotions.D7) :
     ∃ θ : D.host.E, IsIntegral ℤ θ ∧ θ ∉ (algebraMap D.host.F D.host.E).range := by
@@ -108,27 +108,25 @@ theorem exists_theta (D : Formalism.BasicNotions.D7) :
   · exact ⟨algebraMap (𝓞 D.host.E) D.host.E a, NumberField.RingOfIntegers.isIntegral_coe a, ha⟩
 
 /- English proof (translation)
-Introduce `D`. Use `haveI := D.host.isCMField_hostE`. Establish `h2 : Module.finrank D.host.F D.host.E = 2` using `(NumberField.IsCMField.isQuadraticExtension D.host.E).finrank_eq_two`. Use `haveI : FiniteDimensional D.host.F D.host.E := Module.finite_of_finrank_eq_succ h2`. Take `⟨θ, hθ, hθF⟩` from `exists_theta D`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hli : LinearIndependent D.host.F ![(1 : D.host.E), θ]`. Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t hst`. Establish `ht : t = 0`. Assume the negation of the conclusion as `ht`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `hθF` to reduce the goal to its premises. Use `⟨-s / t, ?_⟩` and prove the remaining obligations. Establish `hta : algebraMap D.host.F D.host.E t ≠ 0` using `(map_ne_zero _).mpr ht`. Rewrite `hst` using `[Algebra.smul_def, Algebra.smul_def, mul_one]`. Rewrite using `[map_div₀, map_neg, div_eq_iff hta]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Substitute using the available equality.
 
-Take the linear combination `-hst`. Substitute `ht` using the available equality. Simplify using `only [zero_smul, add_zero, smul_eq_zero, one_ne_zero, or_false] at hst`. Conclude with `⟨hst, rfl⟩`. Set `b` to `basisOfLinearIndependentOfCardEqFinrank hli (by rw [Fintype.card_fin, h2])`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hb : ∀ i, b i = ![(1 : D.host.E), θ] i` using `fun i => by`. Simplify using `[b, coe_basisOfLinearIndependentOfCardEqFinrank]`. Establish `hbint : ∀ i, IsIntegral ℤ (b i)`. Introduce `i`. Rewrite using `[hb]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `fin_cases i`. Conclude with `isIntegral_one`. Conclude with `hθ`. Establish `hdisc : (Algebra.traceMatrix D.host.F b).det ≠ 0` using `Algebra.discr_not_zero_of_basis D.host.F b`. Establish `hev : ∀ᶠ p in Filter.cofinite, (∀ i j, (D.s.atP p).ιF (Algebra.traceMatrix D.host.F b i j) ∈ 𝒪[(D.s.atP p).Fp]) ∧ (D.s.atP p).ιF ((Algebra.traceMatrix D.host.F b).det)⁻¹ ∈ 𝒪[(D.s.atP p).Fp]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `h1 : ∀ᶠ p in Filter.cofinite, ∀ i j, (D.s.atP p).ιF (Algebra.traceMatrix D.host.F b i j) ∈ 𝒪[(D.s.atP p).Fp]`. Simplify using `only [Filter.eventually_all]`. Conclude with `fun i j => iotaF_mem_cof D _`. Conclude with `h1.and (iotaF_mem_cof D _)`. Use `hev.mono fun p hp z hz => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨hT, hTd⟩` from `hp`. Establish `hbL : ∀ i, PI.ProdFormulaE.Base.basisE (D.s.atP p) b h2 i = (D.s.atP p).ιE (b i)` using `fun i => PI.ProdFormulaE.Base.basisE_apply (D.s.atP p) b h2 i`. Establish `hM : ∀ i j, Algebra.trace (D.s.atP p).Fp (D.s.atP p).Ep (PI.ProdFormulaE.Base.basisE (D.s.atP p) b h2 i * PI.ProdFormulaE.Base.basisE (D.s.atP p) b h2 j) = (D.s.atP p).ιF (Algebra.traceMatrix D.host.F b i j)`. Introduce `i j`. Rewrite using `[hbL, hbL, ← map_mul, PI.ProdFormulaE.Base.trace_ιE (D.s.atP p) h2, Algebra.traceMatrix_apply, Algebra.traceForm_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hdet : ((Algebra.traceMatrix D.host.F b).map (D.s.atP p).ιF).det = (D.s.atP p).ιF (Algebra.traceMatrix D.host.F b).det`. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply]`. Establish `hc` using `vec_mem_of 𝒪[(D.s.atP p).Fp] ((Algebra.traceMatrix D.host.F b).map (D.s.atP p).ιF) (fun i j => hT i j) (by rw [hdet]; exact (map_ne_zero _).mpr hdisc) (by rw [hdet, ← map_inv₀]; exact hTd) (fun i => (PI.ProdFormulaE.Base.basisE (D.s.atP p) b h2).repr z i) (fun j => by`. Establish `hsum : Algebra.trace (D.s.atP p).Fp (D.s.atP p).Ep (z * PI.ProdFormulaE.Base.basisE (D.s.atP p) b h2 j) = ∑ i, (PI.ProdFormulaE.Base.basisE (D.s.atP p) b h2).repr z i * Algebra.trace (D.s.atP p).Fp (D.s.atP p).Ep (PI.ProdFormulaE.Base.basisE (D.s.atP p) b h2 i * PI.ProdFormulaE.B …` using `by conv_lhs => rw [← (PI.ProdFormulaE.Base.basisE (D.s.atP p) b h2).sum_repr z]`. Rewrite using `[Finset.sum_mul, map_sum]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [smul_mul_assoc, map_smul, smul_eq_mul]`. Establish `hmem` using `hz (PI.ProdFormulaE.Base.basisE (D.s.atP p) b h2 j) (by rw [hbL]; exact iotaE_mem_of_int D p (hbint j))`. Rewrite `hmem` using `[hsum]`. Simplify using `only [hM] at hmem`. Simplify `hmem)` using `[Matrix.vecMul, dotProduct, Matrix.map_apply]`.
-
-Rewrite using `[← (PI.ProdFormulaE.Base.basisE (D.s.atP p) b h2).sum_repr z]`. Use `Subring.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def]`. Conclude with `Subring.mul_mem _ (alg_mem_O D p (hc i)) (by rw [hbL]; exact iotaE_mem_of_int D p (hbint i))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem epsilonDual_almost_all : EpDualCof := by
   intro D

@@ -8,7 +8,7 @@ noncomputable section
 namespace PI.HookSteps
 
 /- English proof (translation)
-Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => N - 1 - i) N]`. Establish `h` using `Finset.sum_range_reflect (fun i => i) N`. Rewrite using `[h, Finset.sum_range_id]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_rev_eq (N : ℕ) : ∑ i : Fin N, (N - 1 - (i : ℕ)) = N * (N - 1) / 2 := by
   rw [Fin.sum_univ_eq_sum_range (fun i => N - 1 - i) N]
@@ -16,9 +16,9 @@ theorem sum_rev_eq (N : ℕ) : ∑ i : Fin N, (N - 1 - (i : ℕ)) = N * (N - 1) 
   rw [h, Finset.sum_range_id]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Establish `ih'` using `ih (by omega)`. Rewrite using `[← add_assoc, Nat.factorial_succ, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem factorial_add_le (a k B : ℕ) (h : a + k ≤ B) : (a + k).factorial ≤ a.factorial * B ^ k := by
   induction k with
@@ -31,7 +31,7 @@ theorem factorial_add_le (a k B : ℕ) (h : a + k ≤ B) : (a + k).factorial ≤
       _ = a.factorial * (B ^ k * B) := by ring
 
 /- English proof (translation)
-Establish `hB : ∀ i : Fin N, ν i + (N - 1 - i) ≤ ν ⟨0, hN⟩ + N` using `fun i => by`. Use `hν (show (⟨0, hN⟩ : Fin N) ≤ i from Nat.zero_le _)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, sum_rev_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_factorial_le (N : ℕ) (hN : 0 < N) (ν : Fin N → ℕ) (hν : Antitone ν) :
     ∏ i : Fin N, (ν i + (N - 1 - i)).factorial ≤
@@ -46,15 +46,15 @@ theorem prod_factorial_le (N : ℕ) (hN : 0 < N) (ν : Fin N → ℕ) (hν : Ant
         rw [Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, sum_rev_eq]
 
 /- English proof (translation)
-Unfold `HookBoundOf PI.HookBound`. Introduce `hH N hN ν hν`. Establish `h1` using `PI.HookLower.one_le_cNu ν hν`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Establish `hD : (0 : ℝ) < ∏ l, ((ν l).factorial : ℝ)` using `Finset.prod_pos fun l _ => by exact_mod_cast (ν l).factorial_pos`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Unfold `PI.cNu at h1 ⊢`. Establish `hF0r : (0 : ℝ) ≤ (fockQ (hw ℚ le_rfl ν) (hw ℚ le_rfl ν) : ℝ)`. Use `(one_le_div hD).1 h1` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hF0 : (0 : ℚ) ≤ fockQ (hw ℚ le_rfl ν) (hw ℚ le_rfl ν)` using `by exact_mod_cast hF0r`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hP : (1 : ℚ) ≤ ∏ i : Fin N, ∏ j ∈ Finset.Ioi i, ((ν i - ν j + (j - i) : ℕ) : ℚ)`. Combine the equalities or inequalities in the displayed calculation. Establish `hij' : i < j` using `Finset.mem_Ioi.1 hj`. Establish `hij : (i : ℕ) < j` using `hij'`. Conclude with `(show 1 ≤ ν i - ν j + (j - i) by omega)` after adjusting the coercions.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQ` using `hH N ν hν`. Establish `hFQ : fockQ (hw ℚ le_rfl ν) (hw ℚ le_rfl ν) ≤ ∏ i : Fin N, (((ν i + (N - 1 - i)).factorial : ℕ) : ℚ)`. Rewrite using `[← hQ]`. Conclude with `le_mul_of_one_le_right hF0 hP`. Establish `hFQr : (fockQ (hw ℚ le_rfl ν) (hw ℚ le_rfl ν) : ℝ) ≤ ∏ i : Fin N, (((ν i + (N - 1 - i)).factorial : ℕ) : ℝ)` using `by exact_mod_cast hFQ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hle : (∏ i : Fin N, (((ν i + (N - 1 - i)).factorial : ℕ) : ℝ)) ≤ (∏ i, ((ν i).factorial : ℝ)) * ((ν ⟨0, hN⟩ : ℝ) + N) ^ (N * (N - 1) / 2)`. Conclude with `prod_factorial_le N hN ν hν` after adjusting the coercions. Rewrite using `[div_le_iff₀ hD]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem hook_bound : HookBoundOf := by
   unfold HookBoundOf PI.HookBound

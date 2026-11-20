@@ -5,7 +5,7 @@ open scoped Classical
 namespace GlobalTheory.CompanionTheory.RealAdele
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun a => by have h : a.1 = Ad3.GP.wR := Subsingleton.elim _ _ have h2 := a.2 rw [h] at h2 exact InfinitePlace.not_isReal_iff_isComplex.mpr h2 Ad3.GP.wR_isReal⟩`.
+Supply the required witnesses or components.
 -/
 theorem isEmpty_isComplex : IsEmpty {w : InfinitePlace ℚ // w.IsComplex} :=
   ⟨fun a => by

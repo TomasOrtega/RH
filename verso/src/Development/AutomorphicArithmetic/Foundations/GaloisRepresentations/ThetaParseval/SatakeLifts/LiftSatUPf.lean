@@ -7,9 +7,9 @@ open NumberField IsDedekindDomain ValuativeRel Formalism.MainNotions.GlobalTheor
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `hPS hCU E _ _ _ n d hnd Bs χX χW mX mW lam U U' hU hL w hw hX hW B hB`. Take `⟨v, hvw⟩ : ∃ v, w.under (𝓞 (maximalRealSubfield E)) = v` from `⟨_, rfl⟩`. Establish `hv : Formalism.MainNotions.SchurIrreducible.IsSplit (E` using `E) v := by`. Take `⟨u, hne, hu⟩` from `id hw`. Substitute `hvw` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Substitute using the available equality.
 
-Conclude with `⟨w, u, hne.symm, rfl, congrArg HeightOneSpectrum.asIdeal hu⟩`. Take `⟨t, rfl⟩` from `GlobalTheory.LFun.SplitChart.exists_splitPrime_eq (GlobalTheory.GalOfCusp.isCMExt_real E) hv hvw`. Take `⟨τ, hτ, hs⟩` from `hB`. Take `⟨⟨τ', hτ'⟩, -⟩` from `GlobalTheory.T.exists_unique_splitPlaceComponent_definiteUnitary E d U' hL.aut _ hw`. Conclude with `⟨τ', hτ', hPS E n d hnd v t χX χW τ τ' (hL.loc v t τ τ' hτ hτ') (hCU E n U hU _ hw τ hτ) hX hW B hs⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.Gal.TP.Loc.liftSatU :
     UpperTheory.Gal.TP.Loc.PairSat → UpperTheory.Gal.TP.Loc.CompUnit → UpperTheory.Gal.TP.Loc.LiftSatU := by

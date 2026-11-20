@@ -12,7 +12,7 @@ namespace GlobalTheory.MomOne.SmallTranslate
 variable {q : ℕ} [Fact q.Prime]
 
 /- English proof (translation)
-Rewrite using `[coeff_mul]`. Apply `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg hB` to reduce the goal to its premises. Introduce `p hp`. Conclude with `h _ _ (by simpa using hp)`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma norm_coeff_mul_le (f g : ℂ_[q]⟦X⟧) (n : ℕ) {B : ℝ} (hB : 0 ≤ B)
     (h : ∀ i j, i + j = n → ‖coeff i f * coeff j g‖ ≤ B) : ‖coeff n (f * g)‖ ≤ B := by
@@ -22,14 +22,14 @@ lemma norm_coeff_mul_le (f g : ℂ_[q]⟦X⟧) (n : ℕ) {B : ℝ} (hB : 0 ≤ B
   exact h _ _ (by simpa using hp)
 
 /- English proof (translation)
-Use `⟨‖c‖, fun n => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rw [coeff_C]; split_ifs <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma bdd_C (c : ℂ_[q]) : Bdd (C c : ℂ_[q]⟦X⟧) := by
   refine ⟨‖c‖, fun n => ?_⟩
   rw [coeff_C]; split_ifs <;> simp
 
 /- English proof (translation)
-Take `⟨A, hA⟩` from `hf`. Take `⟨B, hB⟩` from `hg`. Use `⟨A + B, fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[map_add]`. Conclude with `(norm_add_le _ _).trans (add_le_add (hA n) (hB n))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma bdd_add {f g : ℂ_[q]⟦X⟧} (hf : Bdd f) (hg : Bdd g) : Bdd (f + g) := by
   obtain ⟨A, hA⟩ := hf
@@ -39,9 +39,9 @@ lemma bdd_add {f g : ℂ_[q]⟦X⟧} (hf : Bdd f) (hg : Bdd g) : Bdd (f + g) := 
   exact (norm_add_le _ _).trans (add_le_add (hA n) (hB n))
 
 /- English proof (translation)
-Take `⟨A, hA⟩` from `hf`. Take `⟨B, hB⟩` from `hg`. Establish `hA0 : 0 ≤ A` using `(norm_nonneg _).trans (hA 0)`. Establish `hB0 : 0 ≤ B` using `(norm_nonneg _).trans (hB 0)`. Use `⟨A * B, fun n => norm_coeff_mul_le f g n (mul_nonneg hA0 hB0) fun i j _ => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (hA i) (hB j) (norm_nonneg _) hA0`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma bdd_mul {f g : ℂ_[q]⟦X⟧} (hf : Bdd f) (hg : Bdd g) : Bdd (f * g) := by
   obtain ⟨A, hA⟩ := hf
@@ -53,11 +53,11 @@ lemma bdd_mul {f g : ℂ_[q]⟦X⟧} (hf : Bdd f) (hg : Bdd g) : Bdd (f * g) := 
   exact mul_le_mul (hA i) (hB j) (norm_nonneg _) hA0
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C c`. Simplify using `only [MvPolynomial.aeval_C]`. Conclude with `⟨bdd_C c, Shift.shiftS_C ζ c⟩`. Consider the case `add p r hp hr`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Supply the required witnesses or components. Treat this case separately.
 
-Simplify using `only [map_add]`. Conclude with `⟨bdd_add hp.1 hr.1, by rw [Shift.shiftS_add h hp.1 hr.1, hp.2, hr.2]⟩`. Consider the case `mul_X p i hp`. Establish `hi : Bdd (![u, w] i)` using `by fin_cases i`. Conclude with `hu`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Treat this case separately. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `hw`. Apply the tactic sequence `have hi2 : shiftS ζ (![u, w] i) = ![shiftS ζ u, shiftS ζ w] i := by fin_cases i <;> rfl`. Simplify using `only [map_mul, MvPolynomial.aeval_X]`. Conclude with `⟨bdd_mul hp.1 hi, by rw [Shift.shiftS_mul h hp.1 hi, hp.2, hi2]⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma shift_aeval {ζ : ℂ_[q]} (h : ‖ζ - 1‖ < 1) {u w : ℂ_[q]⟦X⟧} (hu : Bdd u) (hw : Bdd w)
     (P : MvPolynomial (Fin 2) ℂ_[q]) :
@@ -81,13 +81,13 @@ lemma shift_aeval {ζ : ℂ_[q]} (h : ‖ζ - 1‖ < 1) {u w : ℂ_[q]⟦X⟧} (
     exact ⟨bdd_mul hp.1 hi, by rw [Shift.shiftS_mul h hp.1 hi, hp.2, hi2]⟩
 
 /- English proof (translation)
-Take `⟨h1, h2, -⟩` from `TaylorRead.hat_laws q ι ℓ hℓ`. Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C c`. Simplify using `only [MvPolynomial.aeval_C, MvPolynomial.eval₂_C]`. Use `⟨analyticAt_const, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h2]`. Simplify using the standard rewrite rules. Consider the case `add p r hp hr`. Simplify using `only [map_add, MvPolynomial.eval₂_add]`. Conclude with `⟨hp.1.add hr.1, by rw [(h1 _ _ hp.1 hr.1).1, hp.2, hr.2]⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Consider the case `mul_X p i hp`. Establish `hi : AnalyticAt ℂ (fun z => ![F z, G z] i) 0` using `by fin_cases i`. Conclude with `hF`. Conclude with `hG`. Apply the tactic sequence `have hi2 : hat ι ℓ (fun z => ![F z, G z] i) = ![hat ι ℓ F, hat ι ℓ G] i := by fin_cases i <;> rfl`.
+Treat this case separately. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Simplify using `only [map_mul, MvPolynomial.aeval_X, MvPolynomial.eval₂_mul, MvPolynomial.eval₂_X]`. Conclude with `⟨hp.1.mul hi, by rw [(h1 _ _ hp.1 hi).2.1, hp.2, hi2]⟩`.
+A detailed English derivation is pending.
 -/
 lemma hat_eval (ι : ℂ ≃+* ℂ_[q]) {ℓ : ℂ_[q]⟦X⟧} (hℓ : constantCoeff ℓ = 0) {F G : ℂ → ℂ}
     (hF : AnalyticAt ℂ F 0) (hG : AnalyticAt ℂ G 0) (P : MvPolynomial (Fin 2) ℂ_[q]) :
@@ -115,11 +115,11 @@ lemma hat_eval (ι : ℂ ≃+* ℂ_[q]) {ℓ : ℂ_[q]⟦X⟧} (hℓ : constantC
     exact ⟨hp.1.mul hi, by rw [(h1 _ _ hp.1 hi).2.1, hp.2, hi2]⟩
 
 /- English proof (translation)
-Establish `hc : ∀ n, coeff n (derivative ℂ_[q] (logS : ℂ_[q]⟦X⟧)) = (-1) ^ n`. Introduce `n`. Establish `hk : ((n : ℂ_[q]) + 1) ≠ 0` using `by exact_mod_cast Nat.succ_ne_zero n`. Rewrite using `[coeff_derivative, logS, coeff_mk, if_neg (Nat.succ_ne_zero n)]`. Use `push_cast`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Use extensionality with `n`. Rewrite using `[add_mul, one_mul, map_add]`. Consider the cases of `n with`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data.
 
-Consider the case `zero => rw [coeff_zero_X_mul, hc]`. Simplify using the standard rewrite rules. Consider the case `succ n => rw [coeff_succ_X_mul, hc, hc, coeff_one, if_neg (Nat.succ_ne_zero n)]`. Expand and normalize the polynomial expressions, which then agree.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma one_add_X_mul_derivative_logS : (1 + X) * derivative ℂ_[q] (logS : ℂ_[q]⟦X⟧) = 1 := by
   have hc : ∀ n, coeff n (derivative ℂ_[q] (logS : ℂ_[q]⟦X⟧)) = (-1) ^ n := by
@@ -136,15 +136,15 @@ lemma one_add_X_mul_derivative_logS : (1 + X) * derivative ℂ_[q] (logS : ℂ_[
   | succ n => rw [coeff_succ_X_mul, hc, hc, coeff_one, if_neg (Nat.succ_ne_zero n)]; ring
 
 /- English proof (translation)
-Rewrite using `[map_mul, ← coeff_zero_eq_constantCoeff_apply logS, logS, coeff_mk]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma constantCoeff_chart (ω : ℂ_[q]) : constantCoeff (C ω * logS : ℂ_[q]⟦X⟧) = 0 := by
   rw [map_mul, ← coeff_zero_eq_constantCoeff_apply logS, logS, coeff_mk]; simp
 
 /- English proof (translation)
-Take `⟨-, -, -, -, h5, -⟩` from `TaylorRead.hat_laws q ι _ (constantCoeff_chart ω)`. Establish `hd : derivative ℂ_[q] (C ω * logS : ℂ_[q]⟦X⟧) = C ω * derivative ℂ_[q] logS`. Rewrite using `[Derivation.leibniz]`. Simplify using the standard rewrite rules. Rewrite using `[DT, h5 G hG, hd]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(C ω * hat ι (C ω * logS) (deriv G)) * one_add_X_mul_derivative_logS (q := q)`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 lemma DT_hat (ι : ℂ ≃+* ℂ_[q]) (ω : ℂ_[q]) {G : ℂ → ℂ} (hG : AnalyticAt ℂ G 0) :
     DT (hat ι (C ω * logS) G) = C ω * hat ι (C ω * logS) (deriv G) := by
@@ -164,19 +164,19 @@ def Pw (W : WeierstrassCurve ℂ_[q]) (c : ℂ_[q]) : MvPolynomial (Fin 2) ℂ_[
   MvPolynomial.C c * (3 * MvPolynomial.X 0 ^ 2 + MvPolynomial.C W.a₁ * MvPolynomial.X 1 + 2 * MvPolynomial.C W.a₂ * MvPolynomial.X 0 * MvPolynomial.X 1 + MvPolynomial.C W.a₄ * MvPolynomial.X 1 ^ 2)
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, -, -, -, h⟩` from `uw_elliptic_flow q M hM`. Take `⟨hu, hw, -, -, -, hev⟩` from `h p hp`. Establish `ht : Filter.Tendsto (fun z : ℂ => z + p) (𝓝 0) (𝓝 p)`. Establish `: Continuous (fun z : ℂ => z + p)` using `by fun_prop`. Simplify using `using this.tendsto 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hev'` using `(ht.eventually hev).filter_mono (nhdsWithin_le_nhds (s := ({0}ᶜ : Set ℂ)))`. Establish `ha : AnalyticAt ℂ (fun z : ℂ => z + p) 0` using `by fun_prop`. Establish `hu' : AnalyticAt ℂ (fun z => M.u (z + p)) 0` using `AnalyticAt.comp_of_eq hu ha (by simp)`. Establish `hw' : AnalyticAt ℂ (fun z => M.w (z + p)) 0` using `AnalyticAt.comp_of_eq hw ha (by simp)`. Take `⟨h1, -⟩` from `TaylorRead.hat_laws q M.ι _ (constantCoeff_chart ω)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `e` using `hat_eval M.ι (constantCoeff_chart ω) hu' hw'`. Establish `c2 : MvPolynomial.C (σ` using `Fin 2) (2 : ℂ_[q]) = 2 := rfl`. Establish `c3 : MvPolynomial.C (σ` using `Fin 2) (3 : ℂ_[q]) = 3 := rfl`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← (e _).2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(h1 _ _ hw' (e _).1).2.2.1 (hev'.mono fun z hz => ?_)` and prove the remaining obligations. Use `hz.1` as an intermediate fact. Simplify `this` using `[Peq, MvPolynomial.eval₂_add, MvPolynomial.eval₂_mul, MvPolynomial.eval₂_pow]`. Rewrite using `[DT_hat _ _ hu', map_mul, MvPolynomial.aeval_C, ← (e _).2]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `(h1 _ _ hu'.deriv (e _).1).2.2.1 (hev'.mono fun z hz => ?_)` and prove the remaining obligations. Use `hz.2.1` as an intermediate fact. Rewrite using `[deriv_comp_add_const]`. Simplify using `only [Pu, ← c2, ← c3]`. Simplify `this` using `[MvPolynomial.eval₂_add, MvPolynomial.eval₂_mul, MvPolynomial.eval₂_pow, MvPolynomial.eval₂_sub, map_ofNat]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[DT_hat _ _ hw', map_mul, MvPolynomial.aeval_C, ← (e _).2]`. Use `congr 1`. Use `(h1 _ _ hw'.deriv (e _).1).2.2.1 (hev'.mono fun z hz => ?_)` and prove the remaining obligations. Use `hz.2.2` as an intermediate fact. Rewrite using `[deriv_comp_add_const]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pw, ← c2, ← c3]`. Simplify `this` using `[MvPolynomial.eval₂_add, MvPolynomial.eval₂_mul, MvPolynomial.eval₂_pow, MvPolynomial.eval₂_sub, map_ofNat]`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma flow (M : Mdl q) (ω : ℂ_[q]) (p : ℂ) (hM : M.Ok) (hp : M.Small p) :
     hat M.ι (C ω * logS) (fun z => M.w (z + p)) =
@@ -224,7 +224,7 @@ lemma flow (M : Mdl q) (ω : ℂ_[q]) (p : ℂ) (hM : M.Ok) (hp : M.Small p) :
 def IntLt (n : ℕ) (f : ℂ_[q]⟦X⟧) : Prop := ∀ m < n, ‖coeff m f‖ ≤ 1
 
 /- English proof (translation)
-Introduce `m hm`. Rewrite using `[map_add]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hf m hm) (hg m hm))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma intLt_add {n : ℕ} {f g : ℂ_[q]⟦X⟧} (hf : IntLt n f) (hg : IntLt n g) : IntLt n (f + g) := by
   intro m hm
@@ -232,7 +232,7 @@ lemma intLt_add {n : ℕ} {f g : ℂ_[q]⟦X⟧} (hf : IntLt n f) (hg : IntLt n 
   exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hf m hm) (hg m hm))
 
 /- English proof (translation)
-Introduce `m hm`. Use `norm_coeff_mul_le f g m zero_le_one fun i j hij => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ (hf i (by omega)) (norm_nonneg _) (hg j (by omega))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma intLt_mul {n : ℕ} {f g : ℂ_[q]⟦X⟧} (hf : IntLt n f) (hg : IntLt n g) : IntLt n (f * g) := by
   intro m hm
@@ -241,7 +241,7 @@ lemma intLt_mul {n : ℕ} {f g : ℂ_[q]⟦X⟧} (hf : IntLt n f) (hg : IntLt n 
   exact mul_le_one₀ (hf i (by omega)) (norm_nonneg _) (hg j (by omega))
 
 /- English proof (translation)
-Introduce `m _`. Rewrite using `[coeff_C]`. Use `split_ifs`. Conclude with `hc`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma intLt_C {n : ℕ} {c : ℂ_[q]} (hc : ‖c‖ ≤ 1) : IntLt n (C c : ℂ_[q]⟦X⟧) := by
   intro m _
@@ -250,9 +250,9 @@ lemma intLt_C {n : ℕ} {c : ℂ_[q]} (hc : ‖c‖ ≤ 1) : IntLt n (C c : ℂ_
   · simp
 
 /- English proof (translation)
-Introduce `m hm`. Use `norm_coeff_mul_le f g m zero_le_one fun i j hij => ?_` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos i with rfl | hi` into its components or cases. Simplify using `[hf0]`. Break down `Nat.eq_zero_or_pos j with rfl | hj` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `[hg0]`. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ (hf i (by omega)) (norm_nonneg _) (hg j (by omega))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma intLt_succ_mul {n : ℕ} {f g : ℂ_[q]⟦X⟧} (hf : IntLt n f) (hg : IntLt n g)
     (hf0 : constantCoeff f = 0) (hg0 : constantCoeff g = 0) : IntLt (n + 1) (f * g) := by
@@ -266,13 +266,13 @@ lemma intLt_succ_mul {n : ℕ} {f g : ℂ_[q]⟦X⟧} (hf : IntLt n f) (hg : Int
   exact mul_le_one₀ (hf i (by omega)) (norm_nonneg _) (hg j (by omega))
 
 /- English proof (translation)
-Establish `e : w = u * u * u + w * (C W.a₁ * u + C W.a₂ * (u * u) + C W.a₃ * w + C W.a₄ * (u * w) + C W.a₆ * (w * w))`. Use `h.trans ?_` and prove the remaining obligations. Establish `hC : ∀ a : ℂ_[q], algebraMap ℂ_[q] ℂ_[q]⟦X⟧ a = C a` using `fun _ => rfl`. Simplify using `[Peq, hC]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hU : ∀ n, IntLt n u` using `fun n m _ => hu m`. Establish `key : ∀ n, IntLt n w`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro m hm`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Use linear arithmetic over natural numbers and integers. Consider the case `succ n ih`. Rewrite using `[e]`. Use `intLt_add (intLt_mul (intLt_mul (hU _) (hU _)) (hU _)) (intLt_succ_mul ih ?_ hw0 ?_)` and prove the remaining obligations. Conclude with `intLt_add (intLt_add (intLt_add (intLt_add (intLt_mul (intLt_C h1) (hU _)) (intLt_mul (intLt_C h2) (intLt_mul (hU _) (hU _)))) (intLt_mul (intLt_C h3) ih)) (intLt_mul (intLt_C h4) (intLt_mul (hU _) ih))) (intLt_mul (intLt_C h6) (intLt_mul ih ih))`.
+Use linear arithmetic over natural numbers and integers. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[hu0, hw0]`. Conclude with `fun n => key (n + 1) n (Nat.lt_succ_self n)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 lemma bd_of_equation (W : WeierstrassCurve ℂ_[q]) (h1 : ‖W.a₁‖ ≤ 1) (h2 : ‖W.a₂‖ ≤ 1)
     (h3 : ‖W.a₃‖ ≤ 1) (h4 : ‖W.a₄‖ ≤ 1) (h6 : ‖W.a₆‖ ≤ 1) {u w : ℂ_[q]⟦X⟧} (hu : Bd 1 u)
@@ -299,9 +299,9 @@ lemma bd_of_equation (W : WeierstrassCurve ℂ_[q]) (h1 : ‖W.a₁‖ ≤ 1) (h
   exact fun n => key (n + 1) n (Nat.lt_succ_self n)
 
 /- English proof (translation)
-Take `⟨g, rfl⟩` from `X_dvd_iff.mpr h0`. Establish `hg : Bd 1 g` using `fun n => by simpa [coeff_succ_X_mul] using hf (n + 1)`. Apply the tactic sequence `have hX : Bdd (X : ℂ_[q]⟦X⟧) := ⟨1, fun n => by rw [coeff_X]; split_ifs <;> simp⟩`. Establish `hs` using `Shift.bd_shiftS h hg 0`. Rewrite using `[Shift.shiftS_mul h hX ⟨1, hg⟩, Shift.shiftS_X, map_mul, norm_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hs` using `[coeff_zero_eq_constantCoeff_apply]`. Establish `: constantCoeff (C ζ * (1 + X) - 1 : ℂ_[q]⟦X⟧) = ζ - 1` using `by simp`. Rewrite using `[this]`. Conclude with `(mul_le_of_le_one_right (norm_nonneg _) hs).trans_lt h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma norm_constantCoeff_shift_lt {ζ : ℂ_[q]} (h : ‖ζ - 1‖ < 1) {f : ℂ_[q]⟦X⟧} (hf : Bd 1 f)
     (h0 : constantCoeff f = 0) : ‖constantCoeff (shiftS ζ f)‖ < 1 := by
@@ -316,11 +316,11 @@ lemma norm_constantCoeff_shift_lt {ζ : ℂ_[q]} (h : ‖ζ - 1‖ < 1) {f : ℂ
   exact (mul_le_of_le_one_right (norm_nonneg _) hs).trans_lt h
 
 /- English proof (translation)
-Establish `ad : ∀ {x y : ℂ_[q]}, ‖x‖ < 1 → ‖y‖ < 1 → ‖x + y‖ < 1` using `fun hx hy => (IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt hx hy)`. Establish `mu : ∀ {x y : ℂ_[q]}, ‖x‖ ≤ 1 → ‖y‖ < 1 → ‖x * y‖ < 1` using `fun hx hy => by`. Rewrite using `[norm_mul]`. Conclude with `(mul_le_of_le_one_left (norm_nonneg _) hx).trans_lt hy`. Establish `hk : ‖a₁ * u + a₂ * (u * u) + a₃ * (w + w') + a₄ * (u * (w + w')) + a₆ * (w * w + w * w' + w' * w')‖ < 1` using `ad (ad (ad (ad (mu h1 hu) (mu h2 (mu hu.le hu))) (mu h3 (ad hw hw'))) (mu h4 (mu hu.le (ad hw hw')))) (mu h6 (ad (ad (mu hw.le hw) (mu hw.le hw')) (mu hw'.le hw')))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : 1 - (a₁ * u + a₂ * (u * u) + a₃ * (w + w') + a₄ * (u * (w + w')) + a₆ * (w * w + w * w' + w' * w')) ≠ 0`. Introduce `h`. Rewrite `hk` using `[← sub_eq_zero.mp h]`. Simplify using `at hk`. Apply `mul_left_cancel₀ hne` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `e - e'`.
+A detailed English derivation is pending.
 -/
 lemma solution_unique {a₁ a₂ a₃ a₄ a₆ u w w' : ℂ_[q]} (h1 : ‖a₁‖ ≤ 1) (h2 : ‖a₂‖ ≤ 1)
     (h3 : ‖a₃‖ ≤ 1) (h4 : ‖a₄‖ ≤ 1) (h6 : ‖a₆‖ ≤ 1) (hu : ‖u‖ < 1) (hw : ‖w‖ < 1) (hw' : ‖w'‖ < 1)
@@ -345,7 +345,7 @@ lemma solution_unique {a₁ a₂ a₃ a₄ a₆ u w w' : ℂ_[q]} (h1 : ‖a₁�
   linear_combination e - e'
 
 /- English proof (translation)
-Establish `hC : ∀ a : ℂ_[q], algebraMap ℂ_[q] ℂ_[q]⟦X⟧ a = C a` using `fun _ => rfl`. Use `congrArg constantCoeff h` as an intermediate fact. Simplify `this` using `[Peq, hC]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma constantCoeff_equation (W : WeierstrassCurve ℂ_[q]) {U V : ℂ_[q]⟦X⟧}
     (h : V = MvPolynomial.aeval ![U, V] (Peq W)) :
@@ -357,17 +357,17 @@ lemma constantCoeff_equation (W : WeierstrassCurve ℂ_[q]) {U V : ℂ_[q]⟦X�
   simpa [Peq, hC] using this
 
 /- English proof (translation)
-Introduce `q _ M ω ζ p hM hA`. Take `⟨hOk, hℓ, hu, -⟩` from `hM`. Take `⟨hp, hζ, hev⟩` from `hA`. Take `⟨f0, f1, f2⟩` from `flow M ω p hOk hp`. Take `⟨g0, g1, g2⟩` from `flow M ω 0 hOk (Or.inl (zero_mem _))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `only [add_zero] at g0 g1 g2`. Take `⟨-, -, -, -, u0, w0, -, -, hs⟩` from `uw_elliptic_flow q M hOk`. Take `⟨-, -, hup, hwp, -⟩` from `hs p hp`. Take `⟨-, -, -, hc, -⟩` from `TaylorRead.hat_laws q M.ι _ hℓ`. Take `⟨-, h1, h2, h3, h4, h6, -⟩` from `hOk`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `cu : constantCoeff (hat M.ι (C ω * logS) M.u) = 0` using `by rw [hc, u0, map_zero]`. Establish `cw : constantCoeff (hat M.ι (C ω * logS) M.w) = 0` using `by rw [hc, w0, map_zero]`. Establish `hw : Bd 1 (hat M.ι (C ω * logS) M.w)` using `bd_of_equation M.W h1 h2 h3 h4 h6 hu cu cw g0`. Establish `sh` using `shift_aeval hζ ⟨1, hu⟩ ⟨1, hw⟩`. Establish `eu : constantCoeff (hat M.ι (C ω * logS) (fun z => M.u (z + p))) = constantCoeff (shiftS ζ (hat M.ι (C ω * logS) M.u))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hc, Shift.constantCoeff_shiftS, hev, zero_add]`. Use `ode_unique q _ _ _ _ _ _ f1 f2 ?_ ?_ eu ?_` and prove the remaining obligations. Rewrite using `[← (sh _).2, ← g1, Shift.DT_shiftS hζ ⟨1, hu⟩]`. Rewrite using `[← (sh _).2, ← g2, Shift.DT_shiftS hζ ⟨1, hw⟩]`. Establish `e1` using `constantCoeff_equation M.W f0`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2` using `constantCoeff_equation M.W (U := shiftS ζ (hat M.ι (C ω * logS) M.u)) (V := shiftS ζ (hat M.ι (C ω * logS) M.w)) (by rw [← (sh _).2, ← g0])`. Rewrite `e2` using `[← eu]`. Use `solution_unique h1 h2 h3 h4 h6 ?_ ?_ (norm_constantCoeff_shift_lt hζ hw cw) e1 e2` and prove the remaining obligations. Rewrite using `[hc, zero_add]`. Conclude with `hup`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc, zero_add]`. Conclude with `hwp`.
+A detailed English derivation is pending.
 -/
 theorem shift_eq_translate : ∀ (q : ℕ) [Fact q.Prime] (M : Mdl q) (ω ζ : ℂ_[q]) (p : ℂ), M.MChart ω → M.At ω ζ p → hat M.ι (C ω * logS) (fun z => M.u (z + p)) = shiftS ζ (hat M.ι (C ω * logS) M.u) ∧ hat M.ι (C ω * logS) (fun z => M.w (z + p)) = shiftS ζ (hat M.ι (C ω * logS) M.w) := by
   intro q _ M ω ζ p hM hA

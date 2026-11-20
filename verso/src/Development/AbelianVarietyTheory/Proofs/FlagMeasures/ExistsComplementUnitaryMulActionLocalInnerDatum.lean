@@ -17,7 +17,7 @@ def FixesFrame (H : HermSp M V) (f : Fin (r + 1) → V) (g : V ≃ₗ[E] V) : Pr
   IsUnitary H g ∧ ∀ b, g (f b) = f b
 
 /- English proof (translation)
-Use `⟨fun x y => ?_, fun b => ?_⟩` and prove the remaining obligations. Use `hg.1 (g.symm x) (g.symm y)` as an intermediate fact. Simplify using `only [LinearEquiv.apply_symm_apply] at this`. Conclude with `this.symm`. Rewrite using `[LinearEquiv.symm_apply_eq, hg.2 b]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma FixesFrame.symm {f : Fin (r + 1) → V} {g : V ≃ₗ[E] V} (hg : FixesFrame H f g) :
     FixesFrame H f g.symm := by
@@ -28,9 +28,9 @@ lemma FixesFrame.symm {f : Fin (r + 1) → V} {g : V ≃ₗ[E] V} (hg : FixesFra
   · rw [LinearEquiv.symm_apply_eq, hg.2 b]
 
 /- English proof (translation)
-Establish `hle : H.X f ≤ (H.X f).comap (g : V →ₗ[E] V)`. Unfold `HermSp.X`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, rfl⟩`. Simplify using `only [SetLike.mem_coe, Submodule.mem_comap, LinearEquiv.coe_coe, hg.2]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Conclude with `Submodule.subset_span ⟨a, rfl⟩`. Conclude with `hle hv`.
+A detailed English derivation is pending.
 -/
 lemma FixesFrame.mem_X {f : Fin (r + 1) → V} {g : V ≃ₗ[E] V} (hg : FixesFrame H f g)
     {v : V} (hv : v ∈ H.X f) : g v ∈ H.X f := by
@@ -43,9 +43,9 @@ lemma FixesFrame.mem_X {f : Fin (r + 1) → V} {g : V ≃ₗ[E] V} (hg : FixesFr
   exact hle hv
 
 /- English proof (translation)
-Use `show ∀ x ∈ H.X f, H.h (g v) x = 0`. Introduce `x hx`. Establish `hx'` using `hg.symm.mem_X hx`. Establish `h1` using `hg.1 v (g.symm x)`. Rewrite `h1` using `[LinearEquiv.apply_symm_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Conclude with `(hv : ∀ x ∈ H.X f, H.h v x = 0) _ hx'`.
+A detailed English derivation is pending.
 -/
 lemma FixesFrame.mem_perp {f : Fin (r + 1) → V} {g : V ≃ₗ[E] V} (hg : FixesFrame H f g)
     {v : V} (hv : v ∈ H.perp (H.X f)) : g v ∈ H.perp (H.X f) := by
@@ -73,28 +73,28 @@ lemma wMap_mk {f : Fin (r + 1) → V} {g : V ≃ₗ[E] V} (hg : FixesFrame H f g
     (x : ↥(H.perp (H.X f))) : wMap hg (H.mkW f x) = H.mkW f ⟨g x, hg.mem_perp x.2⟩ := rfl
 
 /- English proof (translation)
-Rewrite using `[Subtype.ext h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma mkW_congr {f : Fin (r + 1) → V} {x y : ↥(H.perp (H.X f))} (h : (x : V) = y) :
     H.mkW f x = H.mkW f y := by
   rw [Subtype.ext h]
 
 /- English proof (translation)
-Rewrite using `[wMap_mk]`. Conclude with `mkW_congr h.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma wMap_of_eq {f : Fin (r + 1) → V} {g : V ≃ₗ[E] V} (hg : FixesFrame H f g)
     {x y : ↥(H.perp (H.X f))} (h : (y : V) = g x) : wMap hg (H.mkW f x) = H.mkW f y := by
   rw [wMap_mk]; exact mkW_congr h.symm
 
 /- English proof (translation)
-Rewrite using `[wMap_mk]`. Apply `mkW_congr` to reduce the goal to its premises. Simplify using `[h]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 lemma wMap_symm_of_eq {f : Fin (r + 1) → V} {g : V ≃ₗ[E] V} (hg : FixesFrame H f g)
     {x y : ↥(H.perp (H.X f))} (h : (y : V) = g x) : wMap hg.symm (H.mkW f y) = H.mkW f x := by
   rw [wMap_mk]; apply mkW_congr; simp [h]
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `Submodule.mkQ_surjective _ w`. Conclude with `(congrArg (wMap hg.symm) (wMap_of_eq hg (y := ⟨g x, hg.mem_perp x.2⟩) rfl)).trans (wMap_symm_of_eq hg rfl)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 lemma wMap_symm_wMap {f : Fin (r + 1) → V} {g : V ≃ₗ[E] V} (hg : FixesFrame H f g)
     (w : H.Wb f) : wMap hg.symm (wMap hg w) = w := by
@@ -103,7 +103,7 @@ lemma wMap_symm_wMap {f : Fin (r + 1) → V} {g : V ≃ₗ[E] V} (hg : FixesFram
     (wMap_symm_of_eq hg rfl)
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `Submodule.mkQ_surjective _ w`. Establish `e : (x : V) = g (g.symm x)` using `by simp`. Conclude with `(congrArg (wMap hg) (wMap_symm_of_eq hg (x := ⟨g.symm x, hg.symm.mem_perp x.2⟩) e)).trans (wMap_of_eq hg e)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma wMap_wMap_symm {f : Fin (r + 1) → V} {g : V ≃ₗ[E] V} (hg : FixesFrame H f g)
     (w : H.Wb f) : wMap hg (wMap hg.symm w) = w := by
@@ -113,9 +113,9 @@ lemma wMap_wMap_symm {f : Fin (r + 1) → V} {g : V ≃ₗ[E] V} (hg : FixesFram
     (wMap_of_eq hg e)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩ show wMap hg.symm (wMap hg u) ∈ L`. Rewrite using `[wMap_symm_wMap]`. Conclude with `hu`. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨_, h, wMap_wMap_symm hg w⟩`.
+A detailed English derivation is pending.
 -/
 lemma mem_map_wMap {f : Fin (r + 1) → V} {g : V ≃ₗ[E] V} (hg : FixesFrame H f g)
     (L : Submodule M.L.O (H.Wb f)) (w : H.Wb f) :
@@ -130,11 +130,11 @@ lemma mem_map_wMap {f : Fin (r + 1) → V} {g : V ≃ₗ[E] V} (hg : FixesFrame 
 def InU (P : FPair H r) (g : V ≃ₗ[E] V) : Prop := FixesFrame H P.A.f g ∧ FixesFrame H P.B.f g
 
 /- English proof (translation)
-Unfold `FPair.UW0 at hg`. Proceed by induction on `hg using Subgroup.closure_induction with`. Consider the case `mem x hx => exact ⟨⟨hx.1, fun b => (hx.2 b).1⟩, ⟨hx.1, fun b => (hx.2 b).2⟩⟩`. Consider the case `one => exact ⟨⟨fun _ _ => rfl, fun _ => rfl⟩, ⟨fun _ _ => rfl, fun _ => rfl⟩⟩`. Consider the case `mul x y _ _ hx hy`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Apply the tactic sequence `refine ⟨⟨fun a b => ?_, fun b => ?_⟩, ⟨fun a b => ?_, fun b => ?_⟩⟩ <;>`. Simplify using `only [LinearEquiv.mul_apply]`. Rewrite using `[hx.1.1, hy.1.1]`. Rewrite using `[hy.1.2, hx.1.2]`. Rewrite using `[hx.1.1, hy.1.1]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hy.2.2, hx.2.2]`. Consider the case `inv x _ hx => exact ⟨hx.1.symm, hx.2.symm⟩`.
+Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 lemma inU_of_mem {P : FPair H r} {g : V ≃ₗ[E] V} (hg : g ∈ P.UW0) : InU P g := by
   unfold FPair.UW0 at hg
@@ -151,19 +151,17 @@ lemma inU_of_mem {P : FPair H r} {g : V ≃ₗ[E] V} (hg : g ∈ P.UW0) : InU P 
   | inv x _ hx => exact ⟨hx.1.symm, hx.2.symm⟩
 
 /- English proof (translation)
-Take `⟨hfg, hdual, xz, hxz, hxzL, hprim⟩` from `hL`. Establish `hz : g.symm xz = xz`. Rewrite using `[hxz]`. Conclude with `hg.symm.2 (Fin.last r)`. Use `⟨hfg.map _, fun x => ?_, xz, hxz, ?_, fun c y hy heq => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_map_wMap, wMap_mk, hdual]`. Prove the components needed by the constructor for the conclusion. Introduce `h y hy`. Rewrite `hy` using `[mem_map_wMap, wMap_mk]`. Establish `h1` using `h _ hy`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hg.symm.1 x y`. Simplify using `only at h1`. Rewrite `h1` using `[h2]`. Conclude with `h1`. Introduce `h y hy`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hy' : H.mkW Fr.f ⟨g y, hg.mem_perp y.2⟩ ∈ L.map ((wMap hg).restrictScalars M.L.O)`. Rewrite using `[mem_map_wMap, wMap_symm_of_eq hg rfl]`. Conclude with `hy`. Establish `h1` using `h _ hy'`. Establish `h2` using `hg.symm.1 x (g y)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [LinearEquiv.symm_apply_apply] at h2`. Use `show H.h (g.symm x) y ∈ M.L.O`. Rewrite using `[h2]`. Conclude with `h1`. Rewrite using `[mem_map_wMap, wMap_mk]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mkW_congr (y := xz) hz]`. Conclude with `hxzL`. Rewrite `hy` using `[mem_map_wMap]`. Use `hprim c ⟨g.symm y, hg.symm.mem_perp y.2⟩ ?_ ?_` and prove the remaining obligations. Rewrite using `[← wMap_mk]`.
-
-Conclude with `hy`. Establish `h3` using `congrArg (wMap hg.symm) heq`. Rewrite `h3` using `[LinearMap.map_smul, wMap_mk, wMap_mk, mkW_congr (y := xz) hz]`. Conclude with `h3`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma isInner_map (Fr : FrameD H r) {g : V ≃ₗ[E] V} (hg : FixesFrame H Fr.f g)
     {L : Submodule M.L.O (H.Wb Fr.f)} (hL : Fr.IsInner L) :
@@ -209,7 +207,7 @@ def act {P : FPair H r} {g : V ≃ₗ[E] V} (hg : InU P g) (d : Datum P) : Datum
     simp [d.io_L h]
 
 /- English proof (translation)
-Consider the cases of `d₁`. Consider the cases of `d₂`. Simplify using `only at hL hL' hio`. Substitute `hL hL' hio` using the available equality. Both sides reduce to the same expression.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 lemma datum_ext {P : FPair H r} {d₁ d₂ : Datum P} (hL : d₁.L = d₂.L) (hL' : d₁.L' = d₂.L')
     (hio : d₁.io = d₂.io) : d₁ = d₂ := by
@@ -219,9 +217,7 @@ lemma datum_ext {P : FPair H r} {d₁ d₂ : Datum P} (hL : d₁.L = d₂.L) (hL
   rfl
 
 /- English proof (translation)
-Use `⟨fun x y hxy => ?_, fun x y hxy => ?_, fun x' y' x y hx' hx => ?_⟩` and prove the remaining obligations. Use `show _ ↔ _ ∈ d.L.map _`. Rewrite using `[mem_map_wMap, wMap_symm_of_eq hg.1 hxy]`. Use `show _ ↔ _ ∈ d.L'.map _`. Rewrite using `[mem_map_wMap, wMap_symm_of_eq hg.2 hxy]`.
-
-Use `show _ ↔ (wMap hg.2.symm _, wMap hg.1.symm _) ∈ d.io`. Rewrite using `[wMap_symm_of_eq hg.2 hx', wMap_symm_of_eq hg.1 hx]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma moves_act {P : FPair H r} {g : V ≃ₗ[E] V} (hg : InU P g) (d : Datum P) :
     Datum.Moves g d (act hg d) := by
@@ -234,11 +230,11 @@ lemma moves_act {P : FPair H r} {g : V ≃ₗ[E] V} (hg : InU P g) (d : Datum P)
     rw [wMap_symm_of_eq hg.2 hx', wMap_symm_of_eq hg.1 hx]
 
 /- English proof (translation)
-Use `datum_ext ?_ ?_ ?_` and prove the remaining obligations. Use extensionality with `w`. Take `⟨y, rfl⟩` from `Submodule.mkQ_surjective _ w`. Establish `e : (y : V) = g (g.symm y)` using `by simp`. Conclude with `(h₁.1 ⟨g.symm y, hg.1.symm.mem_perp y.2⟩ y e).symm.trans (h₂.1 ⟨g.symm y, hg.1.symm.mem_perp y.2⟩ y e)`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `w`. Take `⟨y, rfl⟩` from `Submodule.mkQ_surjective _ w`. Establish `e : (y : V) = g (g.symm y)` using `by simp`. Conclude with `(h₁.2.1 ⟨g.symm y, hg.2.symm.mem_perp y.2⟩ y e).symm.trans (h₂.2.1 ⟨g.symm y, hg.2.symm.mem_perp y.2⟩ y e)`. Use extensionality with `⟨w', w⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y', rfl⟩` from `Submodule.mkQ_surjective _ w'`. Take `⟨y, rfl⟩` from `Submodule.mkQ_surjective _ w`. Establish `e' : (y' : V) = g (g.symm y')` using `by simp`. Establish `e : (y : V) = g (g.symm y)` using `by simp`. Conclude with `(h₁.2.2 ⟨g.symm y', hg.2.symm.mem_perp y'.2⟩ y' ⟨g.symm y, hg.1.symm.mem_perp y.2⟩ y e' e).symm.trans (h₂.2.2 ⟨g.symm y', hg.2.symm.mem_perp y'.2⟩ y' ⟨g.symm y, hg.1.symm.mem_perp y.2⟩ y e' e)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma moves_unique {P : FPair H r} {g : V ≃ₗ[E] V} (hg : InU P g) {d d₁ d₂ : Datum P}
     (h₁ : Datum.Moves g d d₁) (h₂ : Datum.Moves g d d₂) : d₁ = d₂ := by
@@ -263,7 +259,7 @@ lemma moves_unique {P : FPair H r} {g : V ≃ₗ[E] V} (hg : InU P g) {d d₁ d�
         ⟨g.symm y, hg.1.symm.mem_perp y.2⟩ y e' e)
 
 /- English proof (translation)
-Use `⟨fun x y hxy => ?_, fun x y hxy => ?_, fun x' y' x y hx' hx => ?_⟩` and prove the remaining obligations. Rewrite using `[Subtype.ext hxy]`. Rewrite using `[Subtype.ext hxy]`. Rewrite using `[Subtype.ext hx, Subtype.ext hx']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 lemma moves_one {P : FPair H r} (d : Datum P) : Datum.Moves (1 : V ≃ₗ[E] V) d d := by
   refine ⟨fun x y hxy => ?_, fun x y hxy => ?_, fun x' y' x y hx' hx => ?_⟩
@@ -272,7 +268,7 @@ lemma moves_one {P : FPair H r} (d : Datum P) : Datum.Moves (1 : V ≃ₗ[E] V) 
   · rw [Subtype.ext hx, Subtype.ext hx']
 
 /- English proof (translation)
-Use `⟨fun x y hxy => ?_, fun x y hxy => ?_, fun x' y' x y hx' hx => ?_⟩` and prove the remaining obligations. Conclude with `(h₁₂.1 x ⟨g x, hg.1.mem_perp x.2⟩ rfl).trans (h₂₃.1 _ y (by rw [hxy, LinearEquiv.mul_apply]))`. Conclude with `(h₁₂.2.1 x ⟨g x, hg.2.mem_perp x.2⟩ rfl).trans (h₂₃.2.1 _ y (by rw [hxy, LinearEquiv.mul_apply]))`. Conclude with `(h₁₂.2.2 x' ⟨g x', hg.2.mem_perp x'.2⟩ x ⟨g x, hg.1.mem_perp x.2⟩ rfl rfl).trans (h₂₃.2.2 _ y' _ y (by rw [hx', LinearEquiv.mul_apply]) (by rw [hx, LinearEquiv.mul_apply]))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma moves_comp {P : FPair H r} {g g' : V ≃ₗ[E] V} (hg : InU P g) {d₁ d₂ d₃ : Datum P}
     (h₁₂ : Datum.Moves g d₁ d₂) (h₂₃ : Datum.Moves g' d₂ d₃) : Datum.Moves (g' * g) d₁ d₃ := by
@@ -285,15 +281,15 @@ lemma moves_comp {P : FPair H r} {g g' : V ≃ₗ[E] V} (hg : InU P g) {d₁ d�
       (h₂₃.2.2 _ y' _ y (by rw [hx', LinearEquiv.mul_apply]) (by rw [hx, LinearEquiv.mul_apply]))
 
 /- English proof (translation)
-Introduce `F _ _ _ E _ _ _ _ M _ V _ _ H r k P _ _`. Set `sm : P.UW0 → Datum P → Datum P` to `fun g d => act (inU_of_mem g.2) d`. Establish `key : ∀ (g : P.UW0) d d', Datum.Moves g.1 d d' ↔ sm g d = d'` using `fun g d d' => ⟨fun h => moves_unique (inU_of_mem g.2) (moves_act _ d) h, fun h => h ▸ moves_act _ d⟩`. Use `letI act' : MulAction P.UW0 (Datum P) := { smul := sm one_smul := fun d => (key 1 d d).1 (moves_one d) mul_smul := fun g g' d => (key (g * g') d _).1 (moves_comp (inU_of_mem g'.2) ((key g' d _).2 rfl) ((key g _ _).2 rfl)) }`. Use `⟨act', key, fun d g => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hS : Datum.Stab d = (MulAction.stabilizer P.UW0 d).map P.UW0.subtype`. Unfold `Datum.Stab`. Establish `hset : {g | g ∈ P.UW0 ∧ Datum.Moves g d d} = ((MulAction.stabilizer P.UW0 d).map P.UW0.subtype : Set (V ≃ₗ[E] V))`. Use extensionality with `g`. Simplify using `only [Set.mem_setOf_eq, SetLike.mem_coe, Subgroup.mem_map, MulAction.mem_stabilizer_iff, Subgroup.coe_subtype]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hg, hm⟩`. Conclude with `⟨⟨g, hg⟩, (key ⟨g, hg⟩ d d).1 hm, rfl⟩`. Introduce and unpack `⟨g', hg', rfl⟩`. Conclude with `⟨g'.2, (key g' d d).2 hg'⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Rewrite using `[hset, Subgroup.closure_eq]`. Rewrite using `[hS, Subgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g', hg', he⟩`. Establish `: g' = g` using `Subtype.ext he`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Substitute `this` using the available equality. Conclude with `MulAction.mem_stabilizer_iff.1 hg'`. Introduce `h`. Conclude with `⟨g, MulAction.mem_stabilizer_iff.2 h, rfl⟩`.
+Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_mulAction : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E] (M : Model F E), M.OK → ∀ {V : Type} [AddCommGroup V] [Module E V] (H : HermSp M V) (r k : ℕ) (P : LocNG.FPair H r), Module.finrank E V = k + 2 * r + 1 → P.RelG (LocNG.theta M) → ∃ act : MulAction P.UW0 (LocNG.Datum P), (∀ (g : P.UW0) d d', LocNG.Datum.Moves g.1 d d' ↔ act.smul g d = d') ∧ ∀ d (g : P.UW0), g.1 ∈ LocNG.Datum.Stab d ↔ act.smul g d = d := by
   intro F _ _ _ E _ _ _ _ M _ V _ _ H r k P _ _

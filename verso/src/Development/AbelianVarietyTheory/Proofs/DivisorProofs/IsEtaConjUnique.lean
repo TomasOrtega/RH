@@ -16,7 +16,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.UnramCharUnique
 
 /- English proof (translation)
-Use `HeckeFinTrivial.eq_one_of_trivial_on_finite D χ h.1 (fun y hy => ?_) x` and prove the remaining obligations. Take `⟨j, h1, h2, h3⟩` from `HostAdeleIso.exists_finiteAdele_equiv D`. Take `⟨N, hN, hprod⟩` from `CharLocProd.char_eq_prod_locK D j h1 h2 (PlaceIdem.exists_isPlIdem D j h1 h2 h3) χ 1 h`. Take `⟨S, k, hS, hS'⟩` from `finiteIdele_exists_local_approx D.host.E N hN (Units.map ((j : _ →+* _).comp (finPart D)).toMonoidHom y)`. Conclude with `Subtype.ext ((hprod y hy S k (fun P hP => ⟨(hS P hP).1, (hS P hP).2.1⟩) hS').trans (Finset.prod_eq_one fun P _ => rfl))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eq_one_of_loc {D : D7} {χ : (AE D)ˣ →* Circle} (h : ChrEq χ 1) (x : (AE D)ˣ) : χ x = 1 := by
   refine HeckeFinTrivial.eq_one_of_trivial_on_finite D χ h.1 (fun y hy => ?_) x
@@ -28,11 +28,11 @@ theorem eq_one_of_loc {D : D7} {χ : (AE D)ˣ →* Circle} (h : ChrEq χ 1) (x :
     (Finset.prod_eq_one fun P _ => rfl))
 
 /- English proof (translation)
-Take `⟨ι, hι, hint, -⟩` from `GlobalTheory.HostAdeleIso.exists_finiteAdele_equiv D`. Take `⟨h1, h2, h3⟩` from `HeckeTensorRead.isPlIdem_parts D ι hι hint he`. Use `⟨(HeckeTensorRead.map_loc (infPart D) e _).trans (by rw [h1, zero_mul, add_zero]), (hint _).2 fun Q => ?_⟩` and prove the remaining obligations. Establish `h4 : ι (finPart D (incA D k)) = algebraMap D.host.E _ k` using `hι k`. Establish `h5 : ι (finPart D (locE D e k)) = 1 + ι (finPart D e) * (algebraMap D.host.E _ k - 1)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← h4]`. Conclude with `HeckeTensorRead.map_loc (ι.toRingHom.comp (finPart D)) e _`. Rewrite using `[h5]`. Express the relevant statement in the definitionally equal form `Valued.v (1 + ι (finPart D e) Q * (algebraMap D.host.E (Q.adicCompletion D.host.E) k - 1)) ≤ 1`. Distinguish the cases in `hQ : Q = P`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hQ` using the available equality. Rewrite using `[h2, one_mul, add_sub_cancel, GlobalTheory.CharLocProd.val_algebraMap]`. Conclude with `hk`. Rewrite using `[h3 Q hQ, zero_mul, add_zero, map_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem loc_parts {D : D7} {e : AE D} {P : HeightOneSpectrum (𝓞 D.host.E)} (he : IsPlIdem D e P) (k : D.host.E)
     (hk : P.valuation D.host.E k ≤ 1) : infPart D (locE D e k) = 1 ∧ finPart D (locE D e k) ∈ intAE D := by
@@ -58,13 +58,13 @@ noncomputable def locHom {D : D7} {e : AE D} (he : e * e = e) : D.host.Eˣ →* 
       map_mul' := fun k l => (locE_mul_locE he k l).symm }
 
 /- English proof (translation)
-Use `eq_one_of_loc ⟨hc, fun P e he k y hy => ?_⟩ x` and prove the remaining obligations. Take `rfl : y = locHom he.1 k` from `Units.ext hy`. Establish `hπ : P.valuation D.host.E ((Formalism.L2.Host.unif P : D.host.Eˣ) : D.host.E) = WithZero.exp (-1 : ℤ)` using `(GlobalTheory.CharLocProd.val_algebraMap P _).symm.trans (Formalism.L2.Host.unif_spec P)`. Establish `h0 : P.valuation D.host.E (k : D.host.E) ≠ 0` using `by simp`. Take `⟨n, hn⟩ : ∃ n : ℤ, P.valuation D.host.E (k : D.host.E) = WithZero.exp n` from `⟨_, (WithZero.exp_log h0).symm⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `u : D.host.Eˣ` to `k * Formalism.L2.Host.unif P ^ n`. Establish `hv : P.valuation D.host.E (u : D.host.E) = 1`. Simplify using `only [u, Units.val_mul, Units.val_zpow_eq_zpow_val, map_mul, map_zpow₀, hn, hπ]`. Rewrite using `[← WithZero.exp_zsmul, ← WithZero.exp_add]`. Simplify using the standard rewrite rules.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hv' : P.valuation D.host.E ((u⁻¹ : D.host.Eˣ) : D.host.E) = 1`. Rewrite using `[Units.val_inv_eq_inv_val, map_inv₀, hv, inv_one]`. Establish `h1 : c (locHom he.1 u) = 1` using `hu _ (loc_parts he _ hv.le).1 (loc_parts he _ hv.le).2 (by`. Rewrite using `[← map_inv]`. Conclude with `(loc_parts he _ hv'.le).2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[map_mul, map_mul, map_zpow, map_zpow, h P e he (locHom he.1 (Formalism.L2.Host.unif P)) rfl, one_zpow, mul_one]`. Rewrite using `[h1]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem eq_one_of_unif {D : D7} {c : (AE D)ˣ →* Circle} (hc : IsHeckeChar D c) (hu : UnramEverywhere D c)
     (h : ∀ (P : HeightOneSpectrum (𝓞 D.host.E)) (e : AE D), IsPlIdem D e P → ∀ x : (AE D)ˣ,
@@ -91,9 +91,9 @@ theorem eq_one_of_unif {D : D7} {c : (AE D)ˣ →* Circle} (hc : IsHeckeChar D c
   rfl
 
 /- English proof (translation)
-Introduce and unpack `D σ η η' η'' ⟨h1, h2, h3⟩ ⟨g1, g2, g3⟩`. Use `MonoidHom.ext fun x => mul_inv_eq_one.1 (eq_one_of_unif (c := η' * η''⁻¹) ⟨h1.1.mul g1.1.inv, fun k => mul_inv_eq_one.2 ((h1.2 k).trans (g1.2 k).symm)⟩ (fun y a b c => mul_inv_eq_one.2 ((h2 y a b c).trans (g2 y a b c).symm)) (fun P e he y hy => mul_inv_eq_one.2 ?_) x)` and prove the remaining obligations. Take `⟨a, ha, ha'⟩` from `h3 P e he y hy`. Take `⟨b, hb, hb'⟩` from `g3 P e he y hy`. Take `rfl : a = b` from `D.what₂.embLL.injective (ha.trans hb.symm)`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `: Finite (kP P)` using `Ideal.finiteQuotientOfFreeOfNeBot P.asIdeal P.ne_bot`. Establish `hpos : (0 : ℝ) < (Nat.card (kP P) : ℝ)` using `Nat.cast_pos.2 Nat.card_pos`. Conclude with `Subtype.ext (mul_right_cancel₀ (Complex.ofReal_ne_zero.2 (inv_ne_zero (Real.sqrt_pos.2 hpos).ne')) (ha'.symm.trans hb'))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isEtaConj_unique : ∀ (D : D7) (σ : D.what₂.LL →+* ℂ) (η η' η'' : (AE D)ˣ →* Circle), GlobalTheory.IndefiniteRowSideFullHecke.WeilGramSignature.IsEtaConj σ η η' → GlobalTheory.IndefiniteRowSideFullHecke.WeilGramSignature.IsEtaConj σ η η'' → η' = η'' := by
   rintro D σ η η' η'' ⟨h1, h2, h3⟩ ⟨g1, g2, g3⟩

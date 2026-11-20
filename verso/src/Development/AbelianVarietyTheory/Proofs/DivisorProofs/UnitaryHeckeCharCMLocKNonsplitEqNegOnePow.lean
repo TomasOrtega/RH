@@ -10,11 +10,11 @@ open ValuativeRel
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Establish `h0 : Valued.v (x : v.adicCompletion F) ≠ 0` using `(_root_.map_ne_zero _).2 x.ne_zero`. Rewrite using `[← WithZero.exp_log h0]`. Use `congr 1`. Unfold `Formalism.UG.ordL`. Rewrite using `[dif_neg h0, neg_neg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ (z : WithZero (Multiplicative ℤ)) (h : z ≠ 0), WithZero.log z = Multiplicative.toAdd (WithZero.unzero h)`. Introduce `z h`. Consider the cases of `z with`. Consider the case `zero => exact absurd rfl h`. Consider the case `coe a => rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Conclude with `key _ h0`.
+A detailed English derivation is pending.
 -/
 theorem valued_eq_exp_ordL (v : HeightOneSpectrum (𝓞 F)) (x : (v.adicCompletion F)ˣ) :
     Valued.v (x : v.adicCompletion F) = WithZero.exp (-Formalism.UG.ordL (x : v.adicCompletion F)) := by
@@ -31,23 +31,21 @@ theorem valued_eq_exp_ordL (v : HeightOneSpectrum (𝓞 F)) (x : (v.adicCompleti
   exact key _ h0
 
 /- English proof (translation)
-Use `haveI : (Valued.v : Valuation (v.adicCompletion F) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _`. Establish `hE` using `ValuativeRel.isEquiv (valuation (v.adicCompletion F)) (Valued.v : Valuation (v.adicCompletion F) (WithZero (Multiplicative ℤ)))`. Take `⟨p, hp⟩` from `HeightOneSpectrum.valuedAdicCompletion_surjective F v (WithZero.exp (-1 : ℤ))`. Establish `hp0 : p ≠ 0`. Introduce and unpack `rfl`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hp` using `[map_zero]`. Conclude with `WithZero.exp_ne_zero hp.symm`. Take `⟨y, hy⟩` from `ValuativeRel.valuation_surjective (uniformizer (v.adicCompletion F))`. Establish `hpu : valuation (v.adicCompletion F) p = uniformizer (v.adicCompletion F)`. Use `le_antisymm (le_uniformizer_iff.2 (hE.lt_one_iff_lt_one.2 ?_)) ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[hp, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Use linear arithmetic over natural numbers and integers. Establish `h1 : Valued.v y < 1` using `hE.lt_one_iff_lt_one.1 (hy ▸ uniformizer_lt_one)`. Rewrite using `[← hy, hE.le_iff_le, hp]`. Break down `eq_or_ne (Valued.v y) 0 with h0 | h0` into its components or cases.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[h0]`. Conclude with `zero_le`. Rewrite `h1`, the goal using `[← WithZero.exp_log h0]`. Rewrite `h1` using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Rewrite using `[WithZero.exp_le_exp]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Use `set P : (v.adicCompletion F)ˣ := Units.mk0 p hp0`. Establish `hP1 : GlobalTheory.SmGL.ord (v.adicCompletion F) P = 1` using `GlobalTheory.SmGL.ord_eq_one hpu`. Use `set m := Formalism.UG.ordL (x : v.adicCompletion F)`. Use `set U : (v.adicCompletion F)ˣ := x * P ^ (-m)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hU : Valued.v (U : v.adicCompletion F) = 1`. Simplify using `only [U, Units.val_mul, Units.val_zpow_eq_zpow_val, map_mul, map_zpow₀, P, Units.val_mk0, hp]`. Rewrite using `[valued_eq_exp_ordL v x, ← WithZero.exp_zsmul, ← WithZero.exp_add]`. Simplify using `[m]`. Establish `hU' : valuation (v.adicCompletion F) (U : v.adicCompletion F) = 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[← map_one (valuation (v.adicCompletion F)), hE.le_iff_le, hU, map_one]`. Rewrite using `[← map_one (valuation (v.adicCompletion F)), hE.le_iff_le, hU, map_one]`. Establish `hU0 : GlobalTheory.SmGL.ord (v.adicCompletion F) U = 0` using `GlobalTheory.SmGL.ord_eq_zero hU'`. Set `o : (v.adicCompletion F)ˣ →* Multiplicative ℤ` to `MonoidHom.mk' (fun z => .ofAdd (GlobalTheory.SmGL.ord (v.adicCompletion F) z)) fun a b => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[GlobalTheory.SmGL.ord_mul, ofAdd_add]`. Establish `hx : x = U * P ^ m` using `by simp [U]`. Establish `: o x = o U * o P ^ m` using `by rw [hx, map_mul, map_zpow]`. Establish `e2 : GlobalTheory.SmGL.ord (v.adicCompletion F) x = GlobalTheory.SmGL.ord (v.adicCompletion F) U + m * GlobalTheory.SmGL.ord (v.adicCompletion F) P`. Use `congrArg Multiplicative.toAdd this` as an intermediate fact.
-
-Simplify `this` using `[o, mul_comm]`. Rewrite using `[e2, hU0, hP1]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem ord_eq_ordL (v : HeightOneSpectrum (𝓞 F)) (x : (v.adicCompletion F)ˣ) :
     GlobalTheory.SmGL.ord (v.adicCompletion F) x = Formalism.UG.ordL (x : v.adicCompletion F) := by
@@ -99,9 +97,9 @@ end GlobalTheory.BCT.InertChar
 
 open GlobalTheory.BCT.InertChar in
 /- English proof (translation)
-Introduce `E _ _ _ μ e hμ w hw k`. Establish `h` using `hμ.2.2.1 w hw`. Use `show ((μ.loc w (atFin w k) : ℂˣ) : ℂ) = _`. Rewrite using `[h, GlobalTheory.SmGL.unrChar_apply, ord_eq_ordL]`. Use `push_cast`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.BCT.inertChar_muLocK : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (μ : HChar E) (e : InfinitePlace E → ℤ), IsMu μ e → ∀ w : Pl E, ¬ IsSplitAt w → ∀ k : Eˣ, ((μ.locK w k : ℂˣ) : ℂ) = (-1) ^ ordL (algebraMap E (w.adicCompletion E) (k : E)) := by
   intro E _ _ _ μ e hμ w hw k

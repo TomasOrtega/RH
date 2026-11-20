@@ -30,7 +30,7 @@ open Polynomial
 open scoped IntermediateField
 
 /- English proof (translation)
-Introduce `h` and use `by have := congrArg (InfinitePlace.embedding_of_isReal hv) h rw [map_pow, map_neg, map_one] at this nlinarith [sq_nonneg (InfinitePlace.embedding_of_isReal hv x)]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem QCM.sq_ne_neg_one_of_isReal {E : Type} [Field E] {v : InfinitePlace E} (hv : v.IsReal) (x : E) : x ^ 2 ≠ -1 := fun h => by
   have := congrArg (InfinitePlace.embedding_of_isReal hv) h
@@ -40,13 +40,13 @@ theorem QCM.sq_ne_neg_one_of_isReal {E : Type} [Field E] {v : InfinitePlace E} (
 omit [NumberField F] in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨X ^ 2 - C (-1), monic_X_pow_sub_C _ two_ne_zero, by simp [hi]⟩`.
+Supply the required witnesses or components.
 -/
 theorem QCM.isIntegral_sqrt_neg_one {i : Ω} (hi : i ^ 2 = -1) : IsIntegral F i :=
   ⟨X ^ 2 - C (-1), monic_X_pow_sub_C _ two_ne_zero, by simp [hi]⟩
 
 /- English proof (translation)
-Take `⟨v⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Establish `hirr : Irreducible (X ^ 2 - C (-1) : F[X])` using `X_pow_sub_C_irreducible_of_prime Nat.prime_two (QCM.sq_ne_neg_one_of_isReal (IsTotallyReal.isReal v))`. Rewrite using `[IntermediateField.adjoin.finrank (QCM.isIntegral_sqrt_neg_one hi), ← minpoly.eq_of_irreducible_of_monic hirr (by simp [hi]) (monic_X_pow_sub_C _ two_ne_zero), natDegree_X_pow_sub_C]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem QCM.finrank_adjoin_sqrt_neg_one [IsTotallyReal F] {i : Ω} (hi : i ^ 2 = -1) : Module.finrank F F⟮i⟯ = 2 := by
   obtain ⟨v⟩ : Nonempty (InfinitePlace F) := inferInstance
@@ -73,7 +73,7 @@ Both sides reduce to the same expression.
 theorem QCM.gauss_K [IsTotallyReal F] {i : Ω} (hi : i ^ 2 = -1) : (QCM.gauss (F := F) hi).K = F⟮i⟯ := rfl
 
 /- English proof (translation)
-Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed F`. Take `⟨i, hi⟩` from `IsAlgClosed.exists_pow_nat_eq (-1 : Ω) two_pos`. Conclude with `⟨QCM.gauss hi⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem QCM.nonempty [IsTotallyReal F] [IsAlgClosure F Ω] : Nonempty (QCM F Ω) := by
   haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed F
@@ -96,7 +96,7 @@ Both sides reduce to the same expression.
 example : (QCM.gauss (F := ℚ) Complex.I_sq).K = ℚ⟮Complex.I⟯ := rfl
 
 /- English proof (translation)
-The claim follows from `QCM.nonempty`.
+A detailed English derivation is pending.
 -/
 example [IsTotallyReal F] : Nonempty (QCM F (AlgebraicClosure F)) := QCM.nonempty
 
@@ -112,7 +112,7 @@ section Att
 variable {L : Type} [Field L] [NumberField L] [Algebra F L]
 
 /- English proof (translation)
-Establish `: w.asIdeal.LiesOver (w.under (𝓞 F)).asIdeal` using `⟨rfl⟩`. Use `w.isMaximal` as an intermediate fact. Use `(w.under (𝓞 F)).isMaximal` as an intermediate fact. Use `show Ideal.absNorm w.asIdeal = Ideal.absNorm (w.under (𝓞 F)).asIdeal ^ w.asIdeal.inertiaDeg (𝓞 F)`. Rewrite using `[← Ideal.absNorm_relNorm (𝓞 F) (𝓞 L) w.asIdeal, Ideal.relNorm_eq_pow_of_isMaximal w.asIdeal (w.under (𝓞 F)).asIdeal, map_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem AttRes.normV_eq_pow (w : HeightOneSpectrum (𝓞 L)) :
     normV w = normV (w.under (𝓞 F)) ^ w.asIdeal.inertiaDeg (𝓞 F) := by
@@ -126,7 +126,7 @@ theorem AttRes.normV_eq_pow (w : HeightOneSpectrum (𝓞 L)) :
 omit [Algebra F Ω] in
 
 /- English proof (translation)
-Use `Filter.eventually_congr (Filter.Eventually.of_forall fun w => ⟨fun h => h _ (AttRes.normV_eq_pow w), fun h f hf => ?_⟩)` and prove the remaining obligations. Take `rfl : f = w.asIdeal.inertiaDeg (𝓞 F)` from `Nat.pow_right_injective (NumberField.HeightOneSpectrum.one_lt_absNorm (w.under (𝓞 F))) (hf.symm.trans (AttRes.normV_eq_pow w))`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem AttRes.iff_inertiaDeg [IsTotallyReal F] [Algebra L Ω] {l : ℕ} [Fact l.Prime] {a : ℕ} (π : TR.CuspSub F a)
     (ι : Qbar l ≃+* ℂ) (r : G L Ω →* GL (Fin a) (Qbar l)) :
@@ -140,11 +140,11 @@ theorem AttRes.iff_inertiaDeg [IsTotallyReal F] [Algebra L Ω] {l : ℕ} [Fact l
   exact h
 
 /- English proof (translation)
-Establish `hact : ∀ g y, (TR.CuspSub.triv F (le_refl 1)).locRep v g y = y` using `fun g y => by`. Take `⟨c, hc⟩` from `Submodule.mem_span_singleton.1 y.2`. Take `⟨y, hy⟩` from `y`. Take `rfl : c • TR.oneFn F 1 = y` from `hc`. Both sides reduce to the same expression.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 
-Set `e` to `LinearEquiv.toSpanNonzeroSingleton ℂ _ (TR.oneFn F 1) TR.oneFn_ne_zero`. Use `⟨(Submodule.ne_bot_iff _).2 ⟨⟨TR.oneFn F 1, Submodule.mem_span_singleton_self _⟩, GlobalTheory.LGrp.mem_fixed.2 fun k _ => hact k _, fun h => TR.oneFn_ne_zero (congrArg Subtype.val h)⟩, fun x _ h0 => ?_⟩` and prove the remaining obligations. Set `f : (TR.CuspSub.triv F (le_refl 1)).V →ₗ[ℂ] (GL (Fin 1) (v.adicCompletion F) → ℂ)` to `(LinearMap.toSpanSingleton ℂ _ (fun _ => 1)).comp e.symm.toLinearMap`. Establish `hi : Function.Injective f` using `fun a b h => by`. Use `congrFun h 1` as an intermediate fact.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : e.symm a • (1 : ℂ) = e.symm b • (1 : ℂ)` using `this`. Conclude with `e.symm.injective (smul_left_injective ℂ one_ne_zero h2)`. Use `GlobalTheory.LFun.IsSatVecGL.of_map (ρ' := GlobalTheory.PRep.rightReg ℂ _ ℂ) f (fun g y => by rw [hact]; rfl) hi ?_` and prove the remaining obligations. Use `GlobalTheory.LFun.isSatVecGL_of_isSpherical (w := v) (α := fun _ : Fin 1 => 1) (φ := f x) (fun b g k _ _ => by simp [f, Formalism.UG.chiDelta]; rfl) (fun h => h0 (hi (by rw [h, map_zero])))` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem AttRes.hasSat_trivial [IsTotallyReal F] (v : HeightOneSpectrum (𝓞 F)) :
     (TR.CuspSub.triv F (le_refl 1)).HasSat v {1} := by
@@ -170,7 +170,7 @@ theorem AttRes.hasSat_trivial [IsTotallyReal F] (v : HeightOneSpectrum (𝓞 F))
 omit [Algebra F Ω] in
 
 /- English proof (translation)
-Use `Filter.Eventually.of_forall fun w f _ => ⟨{1}, AttRes.hasSat_trivial _, fun A _ => ⟨fun _ _ => rfl, fun σ _ => ?_⟩⟩` and prove the remaining obligations. Simplify using `[algSat, Matrix.charpoly_one]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem AttRes.one_triv [IsTotallyReal F] [Algebra L Ω] {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) :
     AttRes (Ω := Ω) (TR.CuspSub.triv F (le_refl 1)) ι L 1 := by
@@ -179,7 +179,7 @@ theorem AttRes.one_triv [IsTotallyReal F] [Algebra L Ω] {l : ℕ} [Fact l.Prime
   simp [algSat, Matrix.charpoly_one]
 
 /- English proof (translation)
-The claim follows from `AttRes.one_triv ι`.
+A detailed English derivation is pending.
 -/
 example [IsTotallyReal F] (Q : QCM F Ω) {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) :
     AttRes (Ω := Ω) (TR.CuspSub.triv F (le_refl 1)) ι Q.K 1 := AttRes.one_triv ι

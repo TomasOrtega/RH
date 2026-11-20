@@ -12,11 +12,11 @@ namespace DiscreteGroups.T1.G
 variable (X : Ctx)
 
 /- English proof (translation)
-Establish `hfin` using `(hb X φ hφ).1 x y`. Use `set s := hfin.toFinset`. Establish `hs : (Function.support fun γ : X.Γ => ‖φ (x⁻¹ * (γ : X.G) * y)‖ₑ) ⊆ s`. Introduce `γ hγ`. Rewrite using `[Finset.mem_coe, Set.Finite.mem_toFinset, Function.mem_support]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hγ`. Establish `hs' : (Function.support fun γ : X.Γ => ((‖φ (x⁻¹ * (γ : X.G) * y)‖ : ℝ) : ℂ)) ⊆ s`. Introduce `γ hγ`. Rewrite using `[Finset.mem_coe, Set.Finite.mem_toFinset, Function.mem_support]`. Simplify using `using hγ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[tsum_eq_sum' hs]`. Unfold `ker`. Rewrite using `[finsum_eq_sum_of_support_subset _ hs', ← Complex.ofReal_sum, ← ofReal_norm, Complex.norm_real, Real.norm_of_nonneg (Finset.sum_nonneg fun _ _ => norm_nonneg _), ENNReal.ofReal_sum_of_nonneg fun _ _ => norm_nonneg _]`. Simplify using `[ofReal_norm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tsum_enorm_eq (hb : KerBasic) {φ : X.G → ℂ} (hφ : Tst φ) (x y : X.G) :
     ∑' γ : X.Γ, ‖φ (x⁻¹ * (γ : X.G) * y)‖ₑ = ‖ker X.Γ (fun w => ((‖φ w‖ : ℝ) : ℂ)) x y‖ₑ := by
@@ -38,9 +38,9 @@ theorem tsum_enorm_eq (hb : KerBasic) {φ : X.G → ℂ} (hφ : Tst φ) (x y : X
   simp [ofReal_norm]
 
 /- English proof (translation)
-Rewrite using `[← lintegral_tsum]`. Use `lintegral_congr fun y => ?_` and prove the remaining obligations. Simplify using `only [enorm_mul]`. Rewrite using `[ENNReal.tsum_mul_right, tsum_enorm_eq X hb hφ x y]`. Introduce `γ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `((hφ.1.comp (continuous_const.mul continuous_id)).aestronglyMeasurable.mul hf).enorm`.
+A detailed English derivation is pending.
 -/
 theorem lint_unfold (hb : KerBasic) {φ : X.G → ℂ} (hφ : Tst φ) {f : X.G → ℂ}
     (hinv : ∀ γ : X.Γ, ∀ y, f ((γ : X.G) * y) = f y) (hf : AEStronglyMeasurable f X.ν) (x : X.G) :
@@ -54,17 +54,17 @@ theorem lint_unfold (hb : KerBasic) {φ : X.G → ℂ} (hφ : Tst φ) {f : X.G �
     exact ((hφ.1.comp (continuous_const.mul continuous_id)).aestronglyMeasurable.mul hf).enorm
 
 /- English proof (translation)
-Establish `hfm : AEStronglyMeasurable f X.μ` using `aesm_of_inv X hinv hf.1`. Establish `hk` using `(hl2 X _ (tst_norm X hφ)).2 x`. Establish `hint : Integrable (fun y => ker X.Γ (fun w => ((‖φ w‖ : ℝ) : ℂ)) x y * f y) X.ν` using `hk.integrable_mul hf`. Establish `hlu` using `lint_unfold X hb hφ hinv hf.1 x`. Establish `hgm : AEStronglyMeasurable (fun y => φ (x⁻¹ * y) * f y) X.μ` using `(hφ.1.comp (continuous_const.mul continuous_id)).aestronglyMeasurable.mul hfm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlin : ∫⁻ y, ‖φ (x⁻¹ * y) * f y‖ₑ ∂X.μ = ∑' γ : X.Γ, ∫⁻ y, ‖φ (x⁻¹ * (γ : X.G) * y) * f y‖ₑ ∂X.ν`. Rewrite using `[X.fd.lintegral_eq_tsum'']`. Use `tsum_congr fun γ => ?_` and prove the remaining obligations. Use `lintegral_congr fun y => ?_` and prove the remaining obligations. Simplify using `only [Subgroup.smul_def, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[hinv γ y, mul_assoc]`. Establish `hgi : Integrable (fun y => φ (x⁻¹ * y) * f y) X.μ` using `⟨hgm, by rw [HasFiniteIntegral, hlin, hlu]; exact hint.2⟩`. Use `⟨hgi, ?_⟩` and prove the remaining obligations. Rewrite using `[X.fd.integral_eq_tsum'' _ hgi]`. Establish `h1 : ∀ γ : X.Γ, ∫ y in X.F, φ (x⁻¹ * ((γ : X.Γ) • y)) * f ((γ : X.Γ) • y) ∂X.μ = ∫ y, φ (x⁻¹ * (γ : X.G) * y) * f y ∂X.ν` using `fun γ => by show _ = ∫ y in X.F, _ ∂X.μ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only [Subgroup.smul_def, smul_eq_mul]`. Rewrite using `[hinv γ y, mul_assoc]`. Repeatedly rewrite using `[h1]`. Rewrite using `[← integral_tsum]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[tsum_mul_right, tsum_eq_finsum ((hb X φ hφ).1 x y)]`. Both sides reduce to the same expression. Introduce `γ`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hφ.1.comp (continuous_const.mul continuous_id)).aestronglyMeasurable.mul hf.1`. Rewrite using `[lint_unfold X hb hφ hinv hf.1 x]`. Conclude with `hint.2.ne`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unfold (hb : KerBasic) (hl2 : KernelL2RowsColumns) {φ : X.G → ℂ} (hφ : Tst φ) {f : X.G → ℂ}
     (hinv : ∀ γ : X.Γ, ∀ y, f ((γ : X.G) * y) = f y) (hf : MemLp f 2 X.ν) (x : X.G) :

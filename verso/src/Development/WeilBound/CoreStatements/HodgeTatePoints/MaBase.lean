@@ -14,15 +14,15 @@ open AlgebraicGeometry CategoryTheory GlobalTheory.CompanionTheory.Ar NumberFiel
 namespace PositivityTheory.HtPt.Ma
 
 /- English proof (translation)
-Introduce `_ _ _ ξ p a ha` and use `exists_open_mem_regAt ξ p a ha`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem reg_open : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (p : Cpt ξ) (a : Ω), a ∈ regAt ξ p → ∃ U : X.Opens, p.1 ∈ U ∧ ∀ q : Cpt ξ, q.1 ∈ U → a ∈ regAt ξ q :=
   fun _ _ _ ξ p a ha => exists_open_mem_regAt ξ p a ha
 
 /- English proof (translation)
-Introduce `X Ω _ ξ`. Use `⟨fun p => ?_, fun p q h => (RegAtMono.regAt_mono X Ω ξ p q h).1, fun hg p a => ?_⟩` and prove the remaining obligations. Unfold `regAt`. Conclude with `IsLocalRing.of_surjective' (genMap ξ p).rangeRestrict (RingHom.rangeRestrict_surjective _)`. Use `haveI := (regAt_isLocalRing_isFractionRing_stalk X Ω ξ hg p).2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨u, v, hv, rfl⟩` from `IsFractionRing.div_surjective (A := regAt ξ p) a`. Use `⟨u, u.2, v, v.2, fun h => ?_, rfl⟩` and prove the remaining obligations. Conclude with `nonZeroDivisors.ne_zero hv (Subtype.ext h)`.
+A detailed English derivation is pending.
 -/
 theorem reg_local : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X), (∀ p : Cpt ξ, IsLocalRing (regAt ξ p)) ∧ (∀ p q : Cpt ξ, q.1 ⤳ p.1 → regAt ξ p ≤ regAt ξ q) ∧ (IsCptGen ξ → ∀ (p : Cpt ξ) (a : Ω), ∃ u ∈ regAt ξ p, ∃ v ∈ regAt ξ p, v ≠ 0 ∧ a = u / v) := by
   intro X Ω _ ξ
@@ -35,9 +35,9 @@ theorem reg_local : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (Comm
     exact nonZeroDivisors.ne_zero hv (Subtype.ext h)
 
 /- English proof (translation)
-Introduce `o _ Ω _ _ κ _ x M c p hp`. Establish `h1 : ∀ a ∈ chRing o x c, a ∈ regAt M.ξ p` using `fun a ha => (M.tie.ring c hp.1 a).1 ha p hp`. Use `⟨h1, fun a => ⟨fun ha => ?_, ?_⟩⟩` and prove the remaining obligations. Take `⟨s, hs, hu, hsa⟩` from `(regAt_iff_exists_chart_fraction M.X Ω M.ξ o κ x M.tie c p hp a).1 ha`. Conclude with `⟨s * a, hsa, s, hs, hu, by field_simp [hu.1]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨u, hu, v, -, hv, rfl⟩`. Rewrite using `[div_eq_mul_inv]`. Conclude with `mul_mem (h1 u hu) hv.2.2`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem regat_loc : ∀ (o : Type) [CommRing o] (Ω : Type) [Field Ω] [Algebra o Ω] (κ : Type) [Finite κ] (x : κ → Ω) (M : PModel o x) (c : κ) (p : Cpt M.ξ), InChart M.ξ x c p → (∀ a ∈ chRing o x c, a ∈ regAt M.ξ p) ∧ ∀ a : Ω, a ∈ regAt M.ξ p ↔ ∃ u ∈ chRing o x c, ∃ v ∈ chRing o x c, unitAt M.ξ p v ∧ a = u / v := by
   intro o _ Ω _ _ κ _ x M c p hp
@@ -50,7 +50,7 @@ theorem regat_loc : ∀ (o : Type) [CommRing o] (Ω : Type) [Field Ω] [Algebra 
     exact mul_mem (h1 u hu) hv.2.2
 
 /- English proof (translation)
-Introduce `o _ Ω _ _ κ _ x M c hc P hP`. Take `⟨p, ⟨h1, h2⟩, h3⟩` from `chart_point_of_prime M.X Ω M.ξ o κ x M.tie c hc P hP`. Use `⟨p, ⟨h1, fun u => ?_⟩, fun q hq => h3 q ⟨hq.1, fun u => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← h2 u, not_not]`. Rewrite using `[hq.2 u, not_not]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem prime_pt : ∀ (o : Type) [CommRing o] (Ω : Type) [Field Ω] [Algebra o Ω] (κ : Type) [Finite κ] (x : κ → Ω) (M : PModel o x) (c : κ), x c ≠ 0 → ∀ P : Ideal (chRing o x c), P.IsPrime → ∃! p : Cpt M.ξ, InChart M.ξ x c p ∧ ∀ u : chRing o x c, u ∈ P ↔ ¬ unitAt M.ξ p (u : Ω) := by
   intro o _ Ω _ _ κ _ x M c hc P hP
@@ -61,11 +61,11 @@ theorem prime_pt : ∀ (o : Type) [CommRing o] (Ω : Type) [Field Ω] [Algebra o
 
 open ChartPrimes in
 /- English proof (translation)
-Introduce `o _ Ω _ _ κ _ x M c p U hp hpU`. Establish `T` using `M.tie`. Establish `hc` using `hp.1`. Take `⟨W, hW, hmem⟩` from `T.affine c hc`. Establish `hg : genPt M.ξ ∈ W` using `(hmem _).2 ⟨specializes_rfl, inChart_genPt T.gen x c hc⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hpW : p.1 ∈ W` using `(hmem _).2 ⟨p.2, hp⟩`. Take `⟨f, hf, hpf⟩` from `hW.exists_basicOpen_le (V := U) ⟨p.1, hpU⟩ hpW`. Establish `key : ∀ (q : Cpt M.ξ) (hq : q.1 ∈ W), q.1 ∈ M.X.basicOpen f ↔ unitAt M.ξ q (secVal M.ξ W hg f)`. Introduce `q hq`. Rewrite using `[M.X.mem_basicOpen f _ hq, ← genMap_germ_eq W hg q hq f]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isUnit_iff_unitAt q (T.gen.inj _) _`. Use `⟨secVal M.ξ W hg f, ?_, (key p hpW).1 hpf, fun q hq hu => hf ((key q ((hmem _).2 ⟨q.2, hq⟩)).2 hu)⟩` and prove the remaining obligations. Conclude with `(T.ring c hc _).2 fun q hq => ⟨_, genMap_germ_eq W hg q ((hmem _).2 ⟨q.2, hq⟩) f⟩`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem basic : ∀ (o : Type) [CommRing o] (Ω : Type) [Field Ω] [Algebra o Ω] (κ : Type) [Finite κ] (x : κ → Ω) (M : PModel o x) (c : κ) (p : Cpt M.ξ) (U : M.X.Opens), InChart M.ξ x c p → p.1 ∈ U → ∃ f ∈ chRing o x c, unitAt M.ξ p f ∧ ∀ q : Cpt M.ξ, InChart M.ξ x c q → unitAt M.ξ q f → q.1 ∈ U := by
   intro o _ Ω _ _ κ _ x M c p U hp hpU
@@ -83,9 +83,9 @@ theorem basic : ∀ (o : Type) [CommRing o] (Ω : Type) [Field Ω] [Algebra o Ω
   exact (T.ring c hc _).2 fun q hq => ⟨_, genMap_germ_eq W hg q ((hmem _).2 ⟨q.2, hq⟩) f⟩
 
 /- English proof (translation)
-Introduce `o _ Ω _ _ κ _ x M p q`. Use `⟨fun h => ?_, (reg_local M.X Ω M.ξ).2.1 p q⟩` and prove the remaining obligations. Rewrite using `[specializes_iff_forall_open]`. Introduce `s hs hp`. Take `⟨c, hc⟩` from `M.tie.cover p`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨f, -, hu, hf⟩` from `basic o Ω κ x M c p ⟨s, hs⟩ hc hp`. Conclude with `hf q ⟨hc.1, fun j => h (hc.2 j)⟩ ⟨hu.1, h hu.2.1, h hu.2.2⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem reg_le_spec : ∀ (o : Type) [CommRing o] (Ω : Type) [Field Ω] [Algebra o Ω] (κ : Type) [Finite κ] (x : κ → Ω) (M : PModel o x) (p q : Cpt M.ξ), regAt M.ξ p ≤ regAt M.ξ q ↔ q.1 ⤳ p.1 := by
   intro o _ Ω _ _ κ _ x M p q

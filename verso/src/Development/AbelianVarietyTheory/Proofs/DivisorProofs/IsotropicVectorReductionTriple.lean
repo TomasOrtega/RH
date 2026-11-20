@@ -21,15 +21,15 @@ noncomputable section
 namespace GlobalTheory.ConeSmallMidJB
 
 /- English proof (translation)
-Take `⟨-, A, hA⟩` from `h`. Establish `hm1 : (-1 : Matrix (Fin 0) (Fin 0) ℂ) = 1` using `Subsingleton.elim _ _`. Rewrite `hA` using `[hm1, Matrix.fromBlocks_one]`. Establish `h1 : Aᵀ * (M * A.map star) = 1` using `by rw [← Matrix.mul_assoc]; exact hA`. Establish `h2 : (M * A.map star) * Aᵀ = 1` using `(Matrix.mul_eq_one_comm_of_equiv (Equiv.sumEmpty (Fin n) (Fin 0))).1 h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set y := (M * A.map star)ᵀ *ᵥ x with hy`. Establish `hxy : A *ᵥ y = x`. Rewrite using `[hy, Matrix.mulVec_mulVec, ← Matrix.transpose_transpose A, ← Matrix.transpose_mul, Matrix.transpose_transpose, h2, Matrix.transpose_one, Matrix.one_mulVec]`. Establish `hy0 : y ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hx` to reduce the goal to its premises. Rewrite using `[← hxy, h0, Matrix.mulVec_zero]`. Establish `hsx : star x = A.map star *ᵥ star y`. Rewrite using `[← hxy]`. Use extensionality with `i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.mulVec, dotProduct, star_sum, mul_comm]`. Establish `key : x ⬝ᵥ M *ᵥ star x = y ⬝ᵥ star y`. Rewrite using `[hsx, Matrix.mulVec_mulVec, ← hxy, ← Matrix.vecMul_transpose, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, h1, Matrix.one_mulVec]`. Rewrite using `[key]`. Introduce `h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hy0` to reduce the goal to its premises. Conclude with `dotProduct_self_star_eq_zero.1 h0`.
+A detailed English derivation is pending.
 -/
 theorem dot_ne_zero_of_hasSig_pos {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (h : HasSig M n 0)
     (x : Fin n → ℂ) (hx : x ≠ 0) : x ⬝ᵥ M *ᵥ star x ≠ 0 := by
@@ -55,7 +55,7 @@ theorem dot_ne_zero_of_hasSig_pos {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (h 
   exact dotProduct_self_star_eq_zero.1 h0
 
 /- English proof (translation)
-Simplify using `[form, dotProduct, Matrix.mulVec, map_sum, map_mul, hτ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_form_self {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) (τ : E →+* ℂ)
     (hτ : ∀ x, τ (σ x) = star (τ x)) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (z : Fin n → E) :
@@ -63,21 +63,21 @@ theorem map_form_self {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →
   simp [form, dotProduct, Matrix.mulVec, map_sum, map_mul, hτ]
 
 /- English proof (translation)
-Introduce `hK F E _ _ _ _ _ σ B a b G₁ X om₁ om₁' hT hz`. Take `⟨hTA, hTB⟩` from `GlobalTheory.T.theta_tower_properties hK.base`. Establish `hg` using `hT.geo`. Establish `hlt` using `hg.lt`. Establish `hab` using `hg.aBig`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hq : 1 ≤ G₁.q`. Take `⟨b', rfl⟩ : ∃ b', b = b' + 2` from `⟨b - 2, by omega⟩`. Take `⟨V, V', W, hT', G₂, H, H', hC, -⟩` from `hTB F E σ B a b' G₁ X om₁ om₁' hT hq`. Conclude with `⟨V, V', W, hT', a + b', G₂.W, H', a, a + b' + 1, hC.hH'⟩`. Establish `hq0 : G₁.q = 0` using `by omega`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hp : 1 ≤ G₁.p`. Assume the negation of the conclusion as `hp0`. Establish `hp0 : G₁.p = 0` using `by omega`. Take `⟨z, hz0, hzz⟩` from `hz`. Take `⟨φ⟩ : Nonempty (F →+* ℂ)` from `inferInstance`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `w : NumberField.InfinitePlace F` to `NumberField.InfinitePlace.mk φ`. Establish `hs` using `hg.hW.sig w`. Rewrite `hs` using `[hp0, hq0]`. Simplify using `only [add_zero, Nat.sub_zero] at hs`. Set `τ : E →+* ℂ` to `(B.emb w).1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Establish `hτ : ∀ x, τ (σ x) = star (τ x)` using `fun x => hT.base.cm.2.2.2 τ x`. Establish `hx : (fun i => τ (z i)) ≠ 0`. Introduce `h0`. Apply `hz0` to reduce the goal to its premises. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congrFun h0 i` as an intermediate fact. Simplify using `using this`. Apply `dot_ne_zero_of_hasSig_pos _ hs _ hx` to reduce the goal to its premises. Establish `hsm : ∀ (c : ℂ) (M : Matrix (Fin (a + b)) (Fin (a + b)) ℂ) (v : Fin (a + b) → ℂ), (c • M) *ᵥ v = c • (M *ᵥ v)`. Introduce `c M v`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `i`. Simplify using `[Matrix.mulVec, dotProduct, Finset.mul_sum, mul_assoc]`. Rewrite using `[hsm, dotProduct_smul, ← map_form_self σ τ hτ, hzz, map_zero, smul_zero]`. Take `⟨a₀, rfl⟩ : ∃ a₀, a = a₀ + 2` from `⟨a - 2, by omega⟩`. Take `⟨V, V', W, hT', G₂, H, H', hC, -⟩` from `hTA F E σ B a₀ b G₁ X om₁ om₁' hT hq0 hp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨V, V', W, hT', a₀ + b, G₂.W, H', 0, a₀ + 1, hC.hH'⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_adapted_plane_of_isotropic : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a b : ℕ) (G₁ : Geo σ a b) X om₁ om₁', IsTriple B G₁ X om₁ om₁' →
     (∃ z : Fin (a + b) → E, z ≠ 0 ∧ form σ G₁.W.J z z = 0) →

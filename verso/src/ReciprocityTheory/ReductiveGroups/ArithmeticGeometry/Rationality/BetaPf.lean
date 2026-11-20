@@ -5,7 +5,7 @@ namespace ReciprocityTheory.ChartRestriction.G.FreeQuotientRank
 open Finset
 
 /- English proof (translation)
-Simplify using `only [pairR, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `conv_lhs => rw [Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl (fun j _ => Finset.sum_congr rfl (fun i _ => by ring))`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pairR_sum_right {f : ℕ} {ι : Type*} (s : Finset ι) (v : Fin f → ℝ) (g : ι → ℝ)
     (w : ι → Fin f → ℝ) : pairR v (∑ j ∈ s, g j • w j) = ∑ j ∈ s, g j * pairR v (w j) := by
@@ -14,7 +14,7 @@ theorem pairR_sum_right {f : ℕ} {ι : Type*} (s : Finset ι) (v : Fin f → �
   exact Finset.sum_congr rfl (fun j _ => Finset.sum_congr rfl (fun i _ => by ring))
 
 /- English proof (translation)
-Simplify using `only [pairR, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul, Finset.mul_sum]`. Use `conv_lhs => rw [Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl (fun j _ => Finset.sum_congr rfl (fun i _ => by ring))`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pairR_sum_left {f : ℕ} {ι : Type*} (s : Finset ι) (v : Fin f → ℝ) (g : ι → ℝ)
     (w : ι → Fin f → ℝ) : pairR (∑ j ∈ s, g j • w j) v = ∑ j ∈ s, g j * pairR (w j) v := by
@@ -23,35 +23,35 @@ theorem pairR_sum_left {f : ℕ} {ι : Type*} (s : Finset ι) (v : Fin f → ℝ
   exact Finset.sum_congr rfl (fun j _ => Finset.sum_congr rfl (fun i _ => by ring))
 
 /- English proof (translation)
-Simplify using `only [pairR, Pi.sub_apply, sub_mul, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pairR_sub_left {f : ℕ} (u v w : Fin f → ℝ) : pairR (u - v) w = pairR u w - pairR v w := by
   simp only [pairR, Pi.sub_apply, sub_mul, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Unfold `pairR`. Simplify using `only [Pi.add_apply, mul_add, Finset.sum_add_distrib]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem pairR_add_right {f : ℕ} (u v w : Fin f → ℝ) : pairR u (v + w) = pairR u v + pairR u w := by
   unfold pairR
   simp only [Pi.add_apply, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [pairR, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl (fun i _ => by ring)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pairR_smul_right {f : ℕ} (a : ℝ) (u v : Fin f → ℝ) : pairR u (a • v) = a * pairR u v := by
   simp only [pairR, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
   exact Finset.sum_congr rfl (fun i _ => by ring)
 
 /- English proof (translation)
-Set `P : (Fin f → ℝ) → Polynomial ℝ` to `fun z => ∑ j, Polynomial.C (z j) * Polynomial.X ^ (j : ℕ)`. Establish `hP : ∀ z ∈ Z, P z ≠ 0`. Introduce `z hz h0`. Apply `hZ z hz` to reduce the goal to its premises. Use function extensionality and compare the values at `j`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h1` using `congrArg (fun p => Polynomial.coeff p (j : ℕ)) h0`. Simplify using `only [P, Polynomial.finset_sum_coeff, Polynomial.coeff_C_mul, Polynomial.coeff_X_pow, Polynomial.coeff_zero] at h1`. Rewrite using `[Finset.sum_eq_single j (fun i _ hij => by`. Rewrite `h1` using `[if_neg (fun h => hij (Fin.ext h.symm)), mul_zero]) (by simp)]`. Simplify using `using h1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Choose the witnesses or unpack the hypotheses as in `⟨T, hT⟩ : ∃ T : ℕ, (T : ℝ) ∉ Z.biUnion (fun z => (P z).roots.toFinset) := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `hinf : Set.Infinite (Set.range (fun n : ℕ => (n : ℝ)))` using `Set.infinite_range_of_injective Nat.cast_injective`. Conclude with `hinf ((Z.biUnion (fun z => (P z).roots.toFinset)).finite_toSet.subset (by rintro _ ⟨n, rfl⟩; exact h n))`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨fun j => (T : ℤ) ^ (j : ℕ), fun z hz h0 => ?_⟩` and prove the remaining obligations. Apply `hT` to reduce the goal to its premises. Rewrite using `[Finset.mem_biUnion]`. Use `⟨z, hz, ?_⟩` and prove the remaining obligations. Rewrite using `[Multiset.mem_toFinset, Polynomial.mem_roots (hP z hz), Polynomial.IsRoot]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Simplify using `only [P, Polynomial.eval_finset_sum, Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_pow, Polynomial.eval_X]`. Move the coercions through the operations in `at h0`. Conclude with `h0`.
+A detailed English derivation is pending.
 -/
 theorem exists_int_avoid {f : ℕ} (Z : Finset (Fin f → ℝ)) (hZ : ∀ z ∈ Z, z ≠ 0) :
     ∃ t : Fin f → ℤ, ∀ z ∈ Z, ∑ j, z j * (t j : ℝ) ≠ 0 := by
@@ -85,77 +85,73 @@ theorem exists_int_avoid {f : ℕ} (Z : Finset (Fin f → ℝ)) (hZ : ∀ z ∈ 
   exact h0
 
 /- English proof (translation)
-Introduce `f b m hm SS χ₀ hχ₀ hχ₀nn`. Break down `Nat.eq_zero_or_pos f with rfl | hf` into its components or cases. Use `⟨0, fun i => i.elim0, fun χ _ => ⟨0, by simp [pairR]⟩, fun χ _ _ _ => Subsingleton.elim _ _⟩` and prove the remaining obligations. Establish `: Nonempty (Fin f)` using `⟨⟨0, hf⟩⟩`. Set `B : Matrix (Fin f) (Fin f) ℝ` to `Matrix.of fun i k => b i k`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hBunit : IsUnit B`. Rewrite using `[← Matrix.linearIndependent_rows_iff_isUnit]`. Conclude with `b.linearIndependent`. Set `c : Fin f → (Fin f → ℝ)` to `fun j k => B⁻¹ k j`. Establish `hpc : ∀ i j, pairR (b i) (c j) = if i = j then 1 else 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j`. Establish `h` using `congrFun (congrFun (Matrix.mul_nonsing_inv B ((Matrix.isUnit_iff_isUnit_det B).mp hBunit)) i) j`. Rewrite `h` using `[Matrix.mul_apply, Matrix.one_apply]`. Simplify `h` using `[pairR, B, c]`. Establish `hSS : ∀ χ ∈ SS, ∃ z : Fin f → ℤ, χ = ∑ i, (z i : ℝ) • b i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `χ hχ`. Take `⟨z, hz⟩` from `(Submodule.mem_span_range_iff_exists_fun ℤ).mp hχ`. Conclude with `⟨z, by rw [← hz]; simp [Int.cast_smul_eq_zsmul]⟩`. Establish `hcoord : ∀ (z : Fin f → ℤ) j, pairR (∑ i, (z i : ℝ) • b i) (c j) = z j`. Introduce `z j`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pairR_sum_left]`. Simplify using `[hpc]`. Establish `hint : ∀ χ ∈ SS, ∀ n : Fin f → ℤ, ∃ k : ℤ, pairR χ (∑ j, (n j : ℝ) • c j) = k`. Introduce `χ hχ n`. Take `⟨z, rfl⟩` from `hSS χ hχ`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨∑ j, n j * z j, ?_⟩` and prove the remaining obligations. Rewrite using `[pairR_sum_right]`. Simplify using `[hcoord]`. Establish `hcli : LinearIndependent ℝ c`. Rewrite using `[linearIndependent_iff']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s g hg i hi`. Use `congrArg (fun v => pairR (b i) v) hg` as an intermediate fact. Simplify using `only [pairR_sum_right, hpc] at this`. Simplify `this` using `[pairR, Finset.sum_ite_eq, hi]`. Set `cb : Module.Basis (Fin f) ℝ (Fin f → ℝ)` to `basisOfLinearIndependentOfCardEqFinrank hcli (by simp)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hcb : ∀ j, cb j = c j` using `fun j => by simp [cb]`. Use `set D : ℝ := ∑ j, ‖cb j‖ with hD`. Set `v : Fin f → ℝ` to `fun _ => D + 1`. Set `fl` to `ZSpan.floor cb v`. Establish `hfl : ((fl : Fin f → ℝ)) = v - ZSpan.fract cb v` using `by rw [ZSpan.fract_apply]; abel`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfrac : ‖ZSpan.fract cb v‖ ≤ D` using `ZSpan.norm_fract_le cb v`. Establish `hβ₀pos : ∀ k, 1 ≤ (fl : Fin f → ℝ) k`. Introduce `k`. Rewrite using `[hfl]`. Establish `h1 : |ZSpan.fract cb v k| ≤ ‖ZSpan.fract cb v‖`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `norm_le_pi_norm (ZSpan.fract cb v) k` using `[Real.norm_eq_abs]`. Establish `h2` using `le_abs_self (ZSpan.fract cb v k)`. Establish `h3 : (v - ZSpan.fract cb v) k = D + 1 - ZSpan.fract cb v k` using `rfl`. Rewrite using `[h3]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨n₀, hn₀⟩ : ∃ n₀ : Fin f → ℤ, (fl : Fin f → ℝ) = ∑ j, (n₀ j : ℝ) • c j := by`. Take `⟨z, hz⟩` from `(Submodule.mem_span_range_iff_exists_fun ℤ).mp fl.2`. Conclude with `⟨z, by rw [← hz]; simp [Int.cast_smul_eq_zsmul, hcb]⟩`. Take `⟨β₀, hβ₀fl⟩ : ∃ β₀ : Fin f → ℝ, β₀ = (fl : Fin f → ℝ)` from `⟨_, rfl⟩`. Rewrite `hβ₀pos`, `hn₀` using `[← hβ₀fl]`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set J : ℝ := pairR χ₀ β₀ with hJ`. Establish `hpair_nonneg : ∀ χ : Fin f → ℝ, (∀ i, 0 ≤ χ i) → 0 ≤ pairR χ β₀`. Introduce `χ hχ`. Conclude with `Finset.sum_nonneg fun i _ => mul_nonneg (hχ i) (le_trans zero_le_one (hβ₀pos i))`. Establish `hcomp_le : ∀ χ : Fin f → ℝ, (∀ i, 0 ≤ χ i) → ∀ i, χ i ≤ pairR χ β₀`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `χ hχ i`. Combine the equalities or inequalities in the displayed calculation. Set `sl : Set (Fin f → ℝ)` to `{χ | ∀ i, 0 ≤ χ i ∧ χ i ≤ J}`. Establish `hslb : Bornology.IsBounded sl`. Use `(Metric.isBounded_closedBall (x := (0 : Fin f → ℝ)) (r := |J|)).subset ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `χ hχ`. Rewrite using `[Metric.mem_closedBall, dist_zero_right]`. Use `(pi_norm_le_iff_of_nonneg (abs_nonneg J)).mpr fun i => ?_` and prove the remaining obligations. Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (hχ i).1]`. Conclude with `le_trans (hχ i).2 (le_abs_self J)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hfin : ((SS : Set (Fin f → ℝ)) ∩ sl).Finite`. Simplify `ZSpan.setFinite_inter b hslb` using `[Set.inter_comm]`. Set `w : (Fin f → ℝ) → (Fin f → ℝ)` to `fun χ j => pairR (χ - χ₀) (c j)`. Set `Z : Finset (Fin f → ℝ)` to `(hfin.toFinset.filter (fun χ => χ ≠ χ₀)).image w`. Establish `hZ : ∀ z ∈ Z, z ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `z hz hz0`. Take `⟨χ, hχ, rfl⟩` from `Finset.mem_image.mp hz`. Rewrite `hχ` using `[Finset.mem_filter, Set.Finite.mem_toFinset]`. Take `⟨⟨hχSS, -⟩, hne⟩` from `hχ`. Take `⟨z, hz'⟩` from `hSS (χ - χ₀) (SS.sub_mem hχSS hχ₀)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply `hne` to reduce the goal to its premises. Establish `: ∀ j, z j = 0`. Introduce `j`. Use `congrFun hz0 j` as an intermediate fact. Simplify using `only [w, Pi.zero_apply] at this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[hz', hcoord]`. Conclude with `this` after adjusting the coercions. Establish `: χ - χ₀ = 0` using `by rw [hz']; simp [this]`. Conclude with `sub_eq_zero.mp this`. Take `⟨t, ht⟩` from `exists_int_avoid Z hZ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `set β' : Fin f → ℝ := ∑ j, (t j : ℝ) • c j with hβ'`. Use `set M' : ℝ := ∑ i, |β' i| with hM'`. Establish `hM'nn : 0 ≤ M'` using `Finset.sum_nonneg fun i _ => abs_nonneg _`. Establish `hβ'le : ∀ i, |β' i| ≤ M'` using `fun i => Finset.single_le_sum (f := fun k => |β' k|) (fun k _ => abs_nonneg _) (Finset.mem_univ i)`. Establish `hbound : ∀ χ : Fin f → ℝ, (∀ i, 0 ≤ χ i) → |pairR χ β'| ≤ M' * pairR χ β₀`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `χ hχ`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[abs_mul, abs_of_nonneg (hχ i)]`. Use `_ ≤ ∑ i, χ i * (M' * β₀ i) := by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Finset.sum_le_sum fun i _ => mul_le_mul_of_nonneg_left ?_ (hχ i)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `_ = M' * pairR χ β₀ := by`. Simplify using `only [pairR, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => by ring` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result.
 
-Establish `hJnn : 0 ≤ J` using `hpair_nonneg χ₀ hχ₀nn`. Take `⟨R, hR⟩ : ∃ R : ℕ, M' * (2 * J + 1) < R` from `exists_nat_gt _`. Use `set β'' : Fin f → ℝ := (R : ℝ) • β₀ + β' with hβ''`. Use `⟨(m : ℝ) • β'', fun i => ?_, fun χ hχ => ?_, fun χ hχ hχnn heq => ?_⟩` and prove the remaining obligations. Establish `h1` using `hβ₀pos i`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : -M' ≤ β' i` using `le_trans (neg_le_neg (hβ'le i)) (neg_abs_le _)`. Establish `h3 : M' ≤ M' * (2 * J + 1)` using `le_mul_of_one_le_right hM'nn (by linarith)`. Establish `h4 : (0 : ℝ) < m` using `by exact_mod_cast hm`. Simplify using `only [Pi.smul_apply, smul_eq_mul, hβ'', Pi.add_apply]`. Apply `mul_pos h4` to reduce the goal to its premises.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Take `⟨k₁, hk₁⟩` from `hint χ hχ n₀`. Take `⟨k₂, hk₂⟩` from `hint χ hχ t`. Use `⟨R * k₁ + k₂, ?_⟩` and prove the remaining obligations. Establish `e1 : pairR χ β₀ = k₁` using `by rw [hn₀]; exact hk₁`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : pairR χ β' = k₂` using `by rw [hβ']; exact hk₂`. Rewrite using `[pairR_smul_right, hβ'', pairR_add_right, pairR_smul_right, e1, e2]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hm0 : (m : ℝ) ≠ 0` using `by exact_mod_cast hm.ne'`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `heq` using `[pairR_smul_right, pairR_smul_right]`. Establish `heq'` using `mul_left_cancel₀ hm0 heq`. Rewrite `heq'` using `[hβ'', pairR_add_right, pairR_add_right, pairR_smul_right, pairR_smul_right]`. Take `⟨i₁, hi₁⟩` from `hint χ hχ n₀`. Take `⟨j₁, hj₁⟩` from `hint χ₀ hχ₀ n₀`.
+Combine the linear equalities and inequalities to obtain the conclusion. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hi₁`, `hj₁` using `[← hn₀]`. Establish `hinn : (0 : ℝ) ≤ i₁` using `hi₁ ▸ hpair_nonneg χ hχnn`. Establish `hjnn : (0 : ℝ) ≤ j₁` using `hj₁ ▸ hJnn`. Distinguish the cases in `hij : i₁ = j₁`. Establish `hpe : pairR χ β' = pairR χ₀ β'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `: pairR χ β₀ = pairR χ₀ β₀` using `by rw [hi₁, hj₁, hij]`. Rewrite `heq'` using `[this]`. Combine the linear equalities and inequalities to obtain the conclusion. Assume the negation of the conclusion as `hne`. Establish `hmem : χ ∈ hfin.toFinset.filter (fun χ => χ ≠ χ₀)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Rewrite using `[Finset.mem_filter, Set.Finite.mem_toFinset]`. Use `⟨⟨hχ, fun i => ⟨hχnn i, ?_⟩⟩, hne⟩` and prove the remaining obligations. Use `hcomp_le χ hχnn i` as an intermediate fact. Rewrite `this` using `[hi₁, hij, ← hj₁]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hwz` using `ht (w χ) (Finset.mem_image_of_mem w hmem)`. Apply `hwz` to reduce the goal to its premises. Establish `: ∑ j, w χ j * (t j : ℝ) = pairR (χ - χ₀) β'`. Rewrite using `[hβ', pairR_sum_right]`. Use `Finset.sum_congr rfl fun j _ => by simp [w]; ring` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[this, pairR_sub_left, hpe, sub_self]`. It suffices to derive a contradiction. Establish `hdiff : (R : ℝ) * ((i₁ : ℝ) - j₁) = pairR χ₀ β' - pairR χ β'`. Rewrite using `[← hi₁, ← hj₁]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hb1` using `hbound χ hχnn`. Establish `hb2` using `hbound χ₀ hχ₀nn`. Rewrite `hb1` using `[hi₁]`. Rewrite `hb2` using `[hj₁]`. Establish `hJ' : J = j₁` using `by rw [hJ, hj₁]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `habs : |(R : ℝ) * ((i₁ : ℝ) - j₁)| ≤ M' * (i₁ + j₁)`. Rewrite using `[hdiff]`. Combine the equalities or inequalities in the displayed calculation. Establish `hne : (1 : ℝ) ≤ |(i₁ : ℝ) - j₁|`. Establish `: (i₁ - j₁ : ℤ) ≠ 0` using `sub_ne_zero.mpr hij`.
+Use the polynomial consequences of the given equalities and inequalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `h` using `Int.one_le_abs this`. Conclude with `h` after adjusting the coercions. Establish `hkey : (i₁ : ℝ) + j₁ ≤ (2 * j₁ + 1) * |(i₁ : ℝ) - j₁|`. Break down `lt_or_gt_of_ne hij with h | h` into its components or cases. Establish `h1 : (i₁ : ℝ) + 1 ≤ j₁` using `by exact_mod_cast h`.
-
-Rewrite using `[abs_of_nonpos (by linarith)]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left (show (1 : ℝ) ≤ j₁ - i₁ by linarith) (show (0 : ℝ) ≤ 2 * j₁ + 1 by linarith)]`. Establish `h1 : (j₁ : ℝ) + 1 ≤ i₁` using `by exact_mod_cast h`. Rewrite using `[abs_of_pos (by linarith)]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left (show (1 : ℝ) ≤ i₁ - j₁ by linarith) (show (0 : ℝ) ≤ 2 * j₁ by linarith)]`.
-
-Rewrite `habs` using `[abs_mul, abs_of_nonneg (Nat.cast_nonneg R)]`. Rewrite `hR` using `[hJ']`. Establish `: (R : ℝ) * |(i₁ : ℝ) - j₁| ≤ M' * ((2 * j₁ + 1) * |(i₁ : ℝ) - j₁|)` using `le_trans habs (mul_le_mul_of_nonneg_left hkey hM'nn)`. Use polynomial arithmetic with `[abs_nonneg ((i₁ : ℝ) - j₁)]`.
+A detailed English derivation is pending.
 -/
 theorem beta_holds : BetaStatement := by
   intro f b m hm SS χ₀ hχ₀ hχ₀nn

@@ -18,7 +18,7 @@ namespace GlobalTheory.QFinGrp
 open GlobalTheory.FinPl
 
 /- English proof (translation)
-The claim follows from `| 0, _, i, _ => i.elim0 | r + 1, a, i, h => by rw [List.ofFn_succ, List.prod_cons, map_mul] by_cases hi : i = 0 · subst hi have h1 : φ (List.ofFn fun j : Fin r => a j.succ).prod = 1 := by rw [map_list_prod] refine List.prod_eq_one fun x hx => ?_ rw [List.map_ofFn, List.mem_ofFn] …`.
+A detailed English derivation is pending.
 -/
 theorem map_ofFn_prod_eq {G M : Type*} [Group G] [Monoid M] (φ : G →* M) :
     ∀ {r : ℕ} (a : Fin r → G) (i : Fin r), (∀ j, j ≠ i → φ (a j) = 1) → φ (List.ofFn a).prod = φ (a i)
@@ -41,19 +41,17 @@ theorem map_ofFn_prod_eq {G M : Type*} [Group G] [Monoid M] (φ : G →* M) :
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hd : j + 1 + ((F.Q i).s - j) = (F.Q i).s + 1` using `by have := (F.Q i).hs; omega`. Take `⟨hce, hrange, -⟩` from `GlobalTheory.T.splitPlace_local_group_closedEmbedding_integral D (F.Q i).k (F.Q i).q (c.V (j + 1)) ((F.Q i).X (j + 1) ⊕ Fin ((F.Q i).s - j)) ((F.Q i).FY (j + 1) ((F.Q i).s - j) hd) ((F.Q i).gl (j + 1) ((F.Q i).s - j) hd) ((F.Q i).gl_loc _ _ hd)`. Establish `hr : ((F.Q i).gl (j + 1) ((F.Q i).s - j) hd).range = grpAt (c.V (j + 1)) (· ∈ ({(F.Q i).q.v} : Finset (Pl D)))`. Rewrite using `[hrange]`. Use `congr 1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `p`. Conclude with `propext Finset.mem_singleton.symm`. Take `⟨hJo, hJc, -⟩` from `(F.Q i).reg.2.2 (j + 1) ((F.Q i).s - j) hd`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hr]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Take `⟨g, -, rfl⟩` from `Subgroup.mem_map.1 hx`. Conclude with `⟨g, rfl⟩`. Rewrite using `[GlobalTheory.QuotientFiniteLevel.locK, Subgroup.coe_map]`. Conclude with `hJc.image hce.continuous`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Take `⟨U, hU, hUe⟩` from `hce.isInducing.isOpen_iff.1 hJo`. Use `hU.preimage continuous_subtype_val using 1` and compare the differences between its conclusion and the goal. Use extensionality with `⟨x, hx⟩`. Rewrite `hx` using `[← hr]`. Take `⟨g, rfl⟩` from `hx`.
+By extensionality, compare the relevant components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Set.mem_setOf_eq, Set.mem_preimage]`. Rewrite using `[GlobalTheory.QuotientFiniteLevel.locK, Subgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g', hg', e⟩`. Establish `: g' ∈ ((F.Q i).gl (j + 1) ((F.Q i).s - j) hd) ⁻¹' U` using `hUe.symm ▸ hg'`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← e]`. Conclude with `this`. Introduce `hU'`. Establish `hg : g ∈ ((F.Q i).gl (j + 1) ((F.Q i).s - j) hd) ⁻¹' U` using `hU'`. Rewrite `hg` using `[hUe]`.
-
-Conclude with `⟨g, hg, rfl⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem loc_facts {c : Comm D} {v : VCom c} {t : Tup c} (F : QFam v t) (j σ : ℕ) (h : j + 2 * (σ + 1) + 2 = D.R.m)
     (i : Fin F.r) :
@@ -89,37 +87,33 @@ theorem loc_facts {c : Comm D} {v : VCom c} {t : Tup c} (F : QFam v t) (j σ : �
       exact ⟨g, hg, rfl⟩
 
 /- English proof (translation)
-Introduce `D c v t w F hF j σ h`. Establish `hloc` using `loc_facts F j σ h`. Establish `hv : ∀ i, (F.Q i).q.v ∈ w.Q` using `fun i => (hF.places _).2 ⟨i, rfl⟩`. Establish `hle : ∀ i, GlobalTheory.QuotientFiniteLevel.locK F j σ h i ≤ grpAt (c.V (j + 1)) (· ∈ w.Q)` using `fun i => (hloc i).1.trans (GlobalTheory.CellLevels.grpAt_le_of_imp _ fun p hp => (Finset.mem_singleton.1 hp) ▸ hv i)`. Establish `hoff : ∀ i i', i ≠ i' → GlobalTheory.QuotientFiniteLevel.locK F j σ h i' ≤ grpAt (c.V (j + 1)) (· ∉ ({(F.Q i).q.v} : Finset (Pl D)))` using `fun i i' hii' => (hloc i').1.trans (GlobalTheory.CellLevels.grpAt_le_of_imp _ fun p hp hp' => hii' (hF.inj ((Finset.mem_singleton.1 hp').symm.trans (Finset.mem_singleton.1 hp))))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcomm : Pairwise fun i i' => ∀ x y : GA D (c.V (j + 1)), x ∈ GlobalTheory.QuotientFiniteLevel.locK F j σ h i → y ∈ GlobalTheory.QuotientFiniteLevel.locK F j σ h i' → Commute x y`. Introduce `i i' hii' x y hx hy`. Conclude with `(GlobalTheory.FinPl.SetCut.grp_split D (c.V (j + 1)) {(F.Q i).q.v}).2.2.2.2.1 x ((hloc i).1 hx) y (hoff i i' hii' hy)`. Establish `hqK : GlobalTheory.QuotientFiniteLevel.qK F j σ h = ⨆ i, GlobalTheory.QuotientFiniteLevel.locK F j σ h i` using `rfl`. Establish `hQle : GlobalTheory.QuotientFiniteLevel.qK F j σ h ≤ grpAt (c.V (j + 1)) (· ∈ w.Q)` using `iSup_le hle`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hQle, ?_, ?_⟩` and prove the remaining obligations. Establish `hrange` using `Subgroup.noncommPiCoprod_range (hcomm := hcomm)`. Establish `hcont : Continuous (Subgroup.noncommPiCoprod hcomm)`. Establish `e : ⇑(Subgroup.noncommPiCoprod hcomm) = fun x => ((List.finRange F.r).map fun i => ((x i : GlobalTheory.QuotientFiniteLevel.locK F j σ h i) : GA D (c.V (j + 1)))).prod`. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[Subgroup.noncommPiCoprod, MonoidHom.noncommPiCoprod, Finset.noncommProd, List.ofFn_eq_map]`. Rewrite using `[e]`. Conclude with `continuous_list_prod _ fun i _ => continuous_subtype_val.comp (continuous_apply i)`. Use `haveI : ∀ i, CompactSpace (GlobalTheory.QuotientFiniteLevel.locK F j σ h i) := fun i => isCompact_iff_compactSpace.1 (hloc i).2.1`. Establish `: (GlobalTheory.QuotientFiniteLevel.qK F j σ h : Set (GA D (c.V (j + 1)))) = Set.range (Subgroup.noncommPiCoprod hcomm)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hqK, ← hrange, MonoidHom.coe_range]`. Rewrite using `[this]`. Conclude with `isCompact_range hcont`. Use `set V := c.V (j + 1) with hVdef set K := GlobalTheory.QuotientFiniteLevel.locK F j σ h with hKdef`. Take `⟨-, -, hQf, -, -, ⟨eQ, heQ⟩, -⟩` from `GlobalTheory.FinPl.SetCut.grp_split D V w.Q`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hbot : ∀ a, a ∈ grpAt V (· ∈ w.Q) → a ∈ grpAt V (· ∉ w.Q) → a = 1`. Introduce `a h1 h2`. Establish `: eQ (⟨a, h1⟩, 1) = eQ (1, ⟨a, h2⟩)`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[heQ, heQ]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Simplify using the standard rewrite rules. Conclude with `congrArg (fun p => (p.1 : GA D V)) (eQ.injective this)`. Use `choose e he using fun i => (GlobalTheory.FinPl.SetCut.grp_split D V {(F.Q i).q.v}).2.2.2.2.2.1`. Establish `he' : ∀ i (z : GfC V), (z : GA D V) = (((e i).symm z).1 : GA D V) * (((e i).symm z).2 : GA D V)`. Introduce `i z`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← he i, Homeomorph.apply_symm_apply]`. Set `ι : grpAt V (· ∈ w.Q) → GfC V` to `fun x => ⟨x.1, hQf x.2⟩`. Establish `hι : Continuous ι` using `continuous_subtype_val.subtype_mk _`. Set `U : Set (grpAt V (· ∈ w.Q))` to `⋂ i, {x | ((((e i).symm (ι x)).1 : _) : GA D V) ∈ K i}`. Establish `hUo : IsOpen U` using `isOpen_iInter_of_finite fun i => (hloc i).2.2.preimage (continuous_fst.comp ((e i).symm.continuous.comp hι))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h1U : (1 : grpAt V (· ∈ w.Q)) ∈ U`. Use `Set.mem_iInter.2 fun i => ?_` and prove the remaining obligations. Establish `: (e i).symm (ι 1) = 1`. Rewrite using `[Homeomorph.symm_apply_eq]`. Apply `Subtype.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[he]`. Simplify using `[ι]`. Use `show ((((e i).symm (ι 1)).1 : _) : GA D V) ∈ K i`. Rewrite using `[this]`. Conclude with `(K i).one_mem`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hprj : ∀ i, ∀ b ∈ grpAt V (· ∉ ({(F.Q i).q.v} : Finset (Pl D))), GlobalTheory.AdelicU.proj D.sp.cm.sig V.gram (F.Q i).q.v b = 1` using `fun i b hb => ((GlobalTheory.FinPl.KOpen.mem_grpAt_iff V _ b).1 hb).2 _ (by simp)`. Establish `hUsub : U ⊆ (((GlobalTheory.QuotientFiniteLevel.qK F j σ h).subgroupOf (grpAt V (· ∈ w.Q)) : Subgroup _) : Set _)`. Introduce `x hx`. Establish `hx'` using `Set.mem_iInter.1 hx`. Set `a : Fin F.r → GA D V` to `fun i => (((e i).symm (ι x)).1 : GA D V)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha : ∀ i, a i ∈ K i` using `fun i => hx' i`. Establish `hp : (List.ofFn a).prod ∈ GlobalTheory.QuotientFiniteLevel.qK F j σ h`. Use `Subgroup.list_prod_mem _ fun y hy => ?_` and prove the remaining obligations. Rewrite `hy` using `[List.mem_ofFn]`. Take `⟨i, rfl⟩` from `hy`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(le_iSup K i) (ha i)`. Establish `hy1 : ∀ i, GlobalTheory.AdelicU.proj D.sp.cm.sig V.gram (F.Q i).q.v ((x : GA D V) * ((List.ofFn a).prod)⁻¹) = 1`. Introduce `i`. Establish `hxi : GlobalTheory.AdelicU.proj D.sp.cm.sig V.gram (F.Q i).q.v (x : GA D V) = GlobalTheory.AdelicU.proj D.sp.cm.sig V.gram (F.Q i).q.v (a i)`. Use `he' i (ι x)` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(x : GA D V) = a i * _ at this`. Rewrite using `[this, map_mul, hprj i _ (((e i).symm (ι x)).2).2, mul_one]`. Establish `hpi : GlobalTheory.AdelicU.proj D.sp.cm.sig V.gram (F.Q i).q.v (List.ofFn a).prod = GlobalTheory.AdelicU.proj D.sp.cm.sig V.gram (F.Q i).q.v (a i)` using `map_ofFn_prod_eq _ a i fun j' hj' => hprj i _ (hoff i j' (Ne.symm hj') (ha j'))`. Rewrite using `[map_mul, map_inv, hxi, hpi, mul_inv_cancel]`. Establish `hyQ : (x : GA D V) * ((List.ofFn a).prod)⁻¹ ∈ grpAt V (· ∈ w.Q)` using `mul_mem x.2 (inv_mem (hQle hp))`.
-
-Establish `hyN : (x : GA D V) * ((List.ofFn a).prod)⁻¹ ∈ grpAt V (· ∉ w.Q)`. Use `(GlobalTheory.FinPl.KOpen.mem_grpAt_iff V _ _).2 ⟨hQf hyQ, fun p hp' => ?_⟩` and prove the remaining obligations. Take `⟨i, rfl⟩` from `(hF.places p).1 (not_not.1 hp')`. Conclude with `hy1 i`. Establish `hxp : (x : GA D V) = (List.ofFn a).prod` using `mul_inv_eq_one.1 (hbot _ hyQ hyN)`.
-
-Use `show (x : GA D V) ∈ GlobalTheory.QuotientFiniteLevel.qK F j σ h`. Rewrite using `[hxp]`. Conclude with `hp`. Conclude with `Subgroup.isOpen_of_mem_nhds _ (Filter.mem_of_superset (hUo.mem_nhds h1U) hUsub)`.
+A detailed English derivation is pending.
 -/
 theorem qK_grp : ∀ (D : D7) (c : Comm D) (v : VCom c) (t : Tup c) (w : VTup t) (F : QFam v t), F.Pins w →
     ∀ j σ (h : j + 2 * (σ + 1) + 2 = D.R.m), GlobalTheory.QuotientFiniteLevel.qK F j σ h ≤ GlobalTheory.FinPl.grpAt _ (· ∈ w.Q) ∧

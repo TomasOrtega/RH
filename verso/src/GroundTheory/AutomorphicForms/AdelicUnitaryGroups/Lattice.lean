@@ -15,14 +15,14 @@ variable {R : Type*} [CommRing R] [Algebra K R]
 variable {κ : Type*} [Fintype κ] (b : Basis κ K E)
 
 /- English proof (translation)
-Rewrite using `[Algebra.TensorProduct.basis_repr_tmul, one_smul, Finsupp.mapRange_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem repr_one_tmul (e : E) (m : κ) :
     (Algebra.TensorProduct.basis R b).repr ((1 : R) ⊗ₜ e) m = algebraMap K R (b.repr e m) := by
   rw [Algebra.TensorProduct.basis_repr_tmul, one_smul, Finsupp.mapRange_apply]
 
 /- English proof (translation)
-Use `set B := Algebra.TensorProduct.basis R b`. Use `conv_lhs => rw [← B.sum_repr z, ← B.sum_repr w]`. Simplify using `only [Finset.sum_mul, Finset.mul_sum, smul_mul_smul_comm, B, Algebra.TensorProduct.basis_apply, Algebra.TensorProduct.tmul_mul_tmul, one_mul, map_sum, map_smul, Finsupp.coe_finsetSum, Finset.sum_apply, Finsupp.smul_apply, smul_eq_mul, repr_one_tmul]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem repr_mul (z w : R ⊗[K] E) (m : κ) :
     (Algebra.TensorProduct.basis R b).repr (z * w) m =
@@ -72,7 +72,7 @@ def IsAdapted (O : Subring R) : Prop :=
   (∀ k, algebraMap K R (b.repr 1 k) ∈ O) ∧ ∀ k l m, algebraMap K R (b.repr (b k * b l) m) ∈ O
 
 /- English proof (translation)
-Rewrite using `[repr_mul]`. Conclude with `O.sum_mem fun k _ => O.sum_mem fun l _ => O.mul_mem (O.mul_mem (hz k) (hw l)) (hO.2 k l m)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem repr_mul_mem {O : Subring R} (hO : IsAdapted b O) {z w : R ⊗[K] E}
     (hz : ∀ k, (Algebra.TensorProduct.basis R b).repr z k ∈ O)
@@ -83,9 +83,9 @@ theorem repr_mul_mem {O : Subring R} (hO : IsAdapted b O) {z w : R ⊗[K] E}
     O.mul_mem (O.mul_mem (hz k) (hw l)) (hO.2 k l m)
 
 /- English proof (translation)
-Introduce `i k`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Rewrite using `[Pi.single_eq_same, Algebra.TensorProduct.one_def, repr_one_tmul]`. Conclude with `hO.1 k`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.single_eq_of_ne h, map_zero]`. Conclude with `O.zero_mem`.
+A detailed English derivation is pending.
 -/
 theorem single_one_mem_stdLattice {O : Subring R} (hO : IsAdapted b O) (j : ι) :
     (Pi.single j 1 : ι → R ⊗[K] E) ∈ stdLattice ι R b O := by
@@ -98,7 +98,7 @@ theorem single_one_mem_stdLattice {O : Subring R} (hO : IsAdapted b O) (j : ι) 
     exact O.zero_mem
 
 /- English proof (translation)
-Introduce `i k`. Simplify using `only [Matrix.mulVec, dotProduct, map_sum, Finsupp.coe_finsetSum, Finset.sum_apply]`. Conclude with `O.sum_mem fun j _ => repr_mul_mem hO (hM i j) (hx j) k`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mulVec_mem_stdLattice {O : Subring R} (hO : IsAdapted b O) {M : Matrix ι ι (R ⊗[K] E)}
     (hM : ∀ i j k, (Algebra.TensorProduct.basis R b).repr (M i j) k ∈ O) {x : ι → R ⊗[K] E}
@@ -108,9 +108,9 @@ theorem mulVec_mem_stdLattice {O : Subring R} (hO : IsAdapted b O) {M : Matrix �
   exact O.sum_mem fun j _ => repr_mul_mem hO (hM i j) (hx j) k
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hg`. Use `⟨fun ⟨i, j, k⟩ => ?_, fun ⟨i, j, k⟩ => ?_⟩` and prove the remaining obligations. Use `(hg _ (single_one_mem_stdLattice hO j)).1 i k` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_single_one]`. Then use the resulting hypothesis.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `(hg _ (single_one_mem_stdLattice hO j)).2 i k` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_single_one]`. Then use the resulting hypothesis. Introduce and unpack `⟨h₁, h₂⟩ x hx`. Conclude with `⟨mulVec_mem_stdLattice hO (fun i j k => h₁ (i, j, k)) hx, mulVec_mem_stdLattice hO (fun i j k => h₂ (i, j, k)) hx⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_latticeStabilizer_iff {O : Subring R} (hO : IsAdapted b O)
     (g : unitaryPoints K E H R) :

@@ -15,7 +15,7 @@ def EInt (k r' : ℕ) (A : ℝ) (c : ℂ) (g : Mat k r') : ℝ≥0∞ :=
   ∫⁻ x : HPar k r', ENNReal.ofReal (gN (w0 k r' c * ιLev k 1 r' g * heis0 k r' x) ^ (-A))
 
 /- English proof (translation)
-Conclude with `ReciprocityTheory.ChartRestriction.DS.Xi.RankOneLeviIdentities.eInt_bound' hGL hHA hCL hCM k r' A hA`.
+A detailed English derivation is pending.
 -/
 theorem eInt_bound (hGL : GNLower) (hHA : HeisAct) (hHC : HeisClosed) (hCL : HeisConjLev) (hCM : HeisConjLevMeas)
     (k r' : ℕ) (hk : 1 ≤ k) (A : ℝ) (hA : ((4 * r' + 2 * k + 3 : ℕ) : ℝ) < A) :
@@ -25,19 +25,19 @@ theorem eInt_bound (hGL : GNLower) (hHA : HeisAct) (hHC : HeisClosed) (hCL : Hei
   exact ReciprocityTheory.ChartRestriction.DS.Xi.RankOneLeviIdentities.eInt_bound' hGL hHA hCL hCM k r' A hA
 
 /- English proof (translation)
-Establish `hF0 : IntegrableOn (fun y : ℝ => y * (y ^ (2 * (n : ℝ) - σ) * min (y ^ (-((2 * n + 1 : ℕ) : ℝ))) y⁻¹)) (Set.Ioc 0 1)`. Use `Integrable.mono' (intervalIntegral.intervalIntegrable_rpow' (a := 0) (b := 1) (r := 2 * (n : ℝ) - σ) (by linarith)).1 ?_ ?_` and prove the remaining obligations. Use `first`. Consider the case `exact (by measurability : Measurable fun y : ℝ => y * (y ^ (2 * (n : ℝ) - σ) * min (y ^ (-((2 * n + 1 : ℕ) : ℝ))) y⁻¹)).aestronglyMeasurable`. Consider the case `exact (by fun_prop : Measurable fun y : ℝ => y * (y ^ (2 * (n : ℝ) - σ) * min (y ^ (-((2 * n + 1 : ℕ) : ℝ))) y⁻¹)).aestronglyMeasurable`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Use `(ae_restrict_iff' measurableSet_Ioc).2 (ae_of_all _ fun y hy => ?_)` and prove the remaining obligations. Establish `hy0 : 0 < y` using `hy.1`. Establish `hA : 0 ≤ y ^ (2 * (n : ℝ) - σ)` using `Real.rpow_nonneg hy0.le _`. Establish `hmin : 0 ≤ min (y ^ (-((2 * n + 1 : ℕ) : ℝ))) y⁻¹` using `le_min (Real.rpow_nonneg hy0.le _) (inv_nonneg.2 hy0.le)`. Rewrite using `[Real.norm_of_nonneg (mul_nonneg hy0.le (mul_nonneg hA hmin))]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hF1 : IntegrableOn (fun y : ℝ => y * (y ^ (2 * (n : ℝ) - σ) * min (y ^ (-((2 * n + 1 : ℕ) : ℝ))) y⁻¹)) (Set.Ioi 1)`. Use `Integrable.mono' (integrableOn_Ioi_rpow_of_lt (a := -σ) (by linarith) zero_lt_one) ?_ ?_` and prove the remaining obligations. Use `first`. Consider the case `exact (by measurability : Measurable fun y : ℝ => y * (y ^ (2 * (n : ℝ) - σ) * min (y ^ (-((2 * n + 1 : ℕ) : ℝ))) y⁻¹)).aestronglyMeasurable`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `exact (by fun_prop : Measurable fun y : ℝ => y * (y ^ (2 * (n : ℝ) - σ) * min (y ^ (-((2 * n + 1 : ℕ) : ℝ))) y⁻¹)).aestronglyMeasurable`. Use `(ae_restrict_iff' measurableSet_Ioi).2 (ae_of_all _ fun y hy => ?_)` and prove the remaining obligations. Establish `hy0 : 0 < y` using `zero_lt_one.trans hy`. Establish `hA : 0 ≤ y ^ (2 * (n : ℝ) - σ)` using `Real.rpow_nonneg hy0.le _`. Establish `hmin : 0 ≤ min (y ^ (-((2 * n + 1 : ℕ) : ℝ))) y⁻¹` using `le_min (Real.rpow_nonneg hy0.le _) (inv_nonneg.2 hy0.le)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Real.norm_of_nonneg (mul_nonneg hy0.le (mul_nonneg hA hmin))]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, mul_comm y, ← Real.rpow_add_one hy0.ne', ← Real.rpow_add hy0]`. Use `congr 1`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hY : IntegrableOn (fun y : ℝ => y * (y ^ (2 * (n : ℝ) - σ) * min (y ^ (-((2 * n + 1 : ℕ) : ℝ))) y⁻¹)) (Set.Ioi 0)`. Rewrite using `[← Set.Ioc_union_Ioi_eq_Ioi zero_le_one]`. Conclude with `hF0.union hF1`. Establish `hI : Integrable (fun c : ℂ => ‖c‖ ^ (2 * (n : ℝ) - σ) * min (‖c‖ ^ (-((2 * n + 1 : ℕ) : ℝ))) ‖c‖⁻¹) volume` using `by first`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Treat this case separately. Treat this case separately. Chain the equalities or inequalities of the calculation.
 
-Consider the case `exact (integrable_fun_norm_addHaar volume (f := fun y : ℝ => (y ^ (2 * (n : ℝ) - σ) * min (y ^ (-((2 * n + 1 : ℕ) : ℝ))) y⁻¹))).2 (hY.congr_fun (fun y _ => by simp) measurableSet_Ioi)`. Consider the case `exact (integrable_fun_norm_addHaar (μ := volume) (f := fun y : ℝ => (y ^ (2 * (n : ℝ) - σ) * min (y ^ (-((2 * n + 1 : ℕ) : ℝ))) y⁻¹))).2 (hY.congr_fun (fun y _ => by simp) measurableSet_Ioi)`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem cInt_fin (n : ℕ) (σ : ℝ) (h1 : 1 < σ) (h2 : σ < 2 * (n : ℝ) + 1) :
     (∫⁻ c : ℂ, ENNReal.ofReal (‖c‖ ^ (2 * (n : ℝ) - σ)) *

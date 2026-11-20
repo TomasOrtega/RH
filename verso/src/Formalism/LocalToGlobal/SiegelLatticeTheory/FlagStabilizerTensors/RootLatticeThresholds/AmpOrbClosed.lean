@@ -19,7 +19,7 @@ open Formalism.BasicNotions Formalism.MainNotions.S
 variable [Fact Formalism.FourierDecayAlt.ThreeDimData.DecLow] [Fact Formalism.L2.SG.LitS.PfNVG.BesselNVG] in
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.SG.AmpOrbPf.amplitudeOrbit_of_local D large₂ C' Cl Cg cb Cu cT CT C0 0 (Formalism.MainNotions.BridgeCS3dClosed.inputs_of Formalism.L2.SG.BesselDiscreteSeries.decInf hJ) Formalism.FourierDecayAlt.P.discrete_series_form_one Formalism.FourierDecayAlt.P.admissible_atomic …`.
+A detailed English derivation is pending.
 -/
 theorem ampOrb0_of (hJ : PI.BesselMapUniq.BesselMapUniq) (hKD : Formalism.MainNotions.S.Pv.AmpDD.KDense)
     (hKF : Formalism.MainNotions.S.Pv.AmpDD.AmpKF) (D : D7) (large₂ : SizeData₂ D) (C' Cl Cg cb Cu cT CT C0 : ℝ) (hCl : 1000 ≤ Cl) :
@@ -33,7 +33,7 @@ theorem ampOrb0_of (hJ : PI.BesselMapUniq.BesselMapUniq) (hKD : Formalism.MainNo
 variable [Fact Formalism.FourierDecayAlt.ThreeDimData.DecLow] in
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.SG.AmpOrbPf.amplitudeOrbit_of_local D large₂ C' Cl Cg cb Cu cT CT C0 Cn (Formalism.MainNotions.BridgeCS3dClosed.inputs_of Formalism.L2.SG.BesselDiscreteSeries.decInf hJ) Formalism.FourierDecayAlt.P.discrete_series_form_one Formalism.FourierDecayAlt.P.admissible_atomi …`.
+A detailed English derivation is pending.
 -/
 theorem ampOrb_of (hJ : PI.BesselMapUniq.BesselMapUniq) (hKD : Formalism.MainNotions.S.Pv.AmpDD.KDense)
     (hKF : Formalism.MainNotions.S.Pv.AmpDD.AmpKF) (D : D7) (large₂ : SizeData₂ D) (C' Cl Cg cb Cu cT CT C0 Cn : ℝ)
@@ -45,7 +45,7 @@ theorem ampOrb_of (hJ : PI.BesselMapUniq.BesselMapUniq) (hKD : Formalism.MainNot
     (fun h1 h2 => Formalism.MainNotions.S.Pv.AmpDDPf.gap_of_hypotheses D large₂ C' Cl Cg cb Cu cT CT C0 Cn h1 h2) hNV
 
 /- English proof (translation)
-The claim follows from `Formalism.MainNotions.S.Pv.AmpDDPf.amplitude_K_finite_decay Formalism.FourierDecayAlt.P.schur_hermitian Formalism.FourierDecayAlt.P.norm_inverse_bound Formalism.FourierDecayAlt.P.growth_group_bound Formalism.FourierDecayAlt.P.double_coset_decomposition Formalism.FourierDecayAlt.P …`.
+A detailed English derivation is pending.
 -/
 theorem amplitude_K_finite : Formalism.MainNotions.S.Pv.AmpDD.AmpKF :=
   Formalism.MainNotions.S.Pv.AmpDDPf.amplitude_K_finite_decay Formalism.FourierDecayAlt.P.schur_hermitian Formalism.FourierDecayAlt.P.norm_inverse_bound
@@ -53,7 +53,7 @@ theorem amplitude_K_finite : Formalism.MainNotions.S.Pv.AmpDD.AmpKF :=
     Formalism.MainNotions.S.Pv.AmpDDPf.right_stabilizer_invariance
 
 /- English proof (translation)
-The claim follows from `Formalism.MainNotions.S.Pv.AmpDDPf.amplitude_orbital_integral Formalism.FourierDecayAlt.P.schur_hermitian Formalism.FourierDecayAlt.P.norm_inverse_bound Formalism.FourierDecayAlt.P.growth_group_bound Formalism.FourierDecayAlt.P.double_coset_decomposition Formalism.MainNotions.S.P …`.
+A detailed English derivation is pending.
 -/
 theorem ampDD_thm : Formalism.MainNotions.S.Pv.AmpDD.AmpDD :=
   Formalism.MainNotions.S.Pv.AmpDDPf.amplitude_orbital_integral Formalism.FourierDecayAlt.P.schur_hermitian Formalism.FourierDecayAlt.P.norm_inverse_bound
@@ -62,7 +62,7 @@ theorem ampDD_thm : Formalism.MainNotions.S.Pv.AmpDD.AmpDD :=
 variable [Fact Formalism.FourierDecayAlt.ThreeDimData.DecLow] [Fact Formalism.L2.SG.LitS.PfNVG.BesselNVG] in
 
 /- English proof (translation)
-The claim follows from `ampOrb0_of hJ hKD amplitude_K_finite D large₂ C' Cl Cg cb Cu cT CT C0 hCl`.
+A detailed English derivation is pending.
 -/
 theorem ampOrb0 (hJ : PI.BesselMapUniq.BesselMapUniq) (hKD : Formalism.MainNotions.S.Pv.AmpDD.KDense)
     (D : D7) (large₂ : SizeData₂ D) (C' Cl Cg cb Cu cT CT C0 : ℝ) (hCl : 1000 ≤ Cl) :
@@ -72,7 +72,7 @@ theorem ampOrb0 (hJ : PI.BesselMapUniq.BesselMapUniq) (hKD : Formalism.MainNotio
 variable [Fact Formalism.FourierDecayAlt.ThreeDimData.DecLow] in
 
 /- English proof (translation)
-The claim follows from `ampOrb_of hJ hKD amplitude_K_finite D large₂ C' Cl Cg cb Cu cT CT C0 Cn hNV`.
+A detailed English derivation is pending.
 -/
 theorem ampOrbNV (hJ : PI.BesselMapUniq.BesselMapUniq) (hKD : Formalism.MainNotions.S.Pv.AmpDD.KDense)
     (D : D7) (large₂ : SizeData₂ D) (C' Cl Cg cb Cu cT CT C0 Cn : ℝ)

@@ -9,7 +9,7 @@ namespace GlobalTheory.CompanionTheory.PTIso.Places
 variable {R S : Type} [CommRing R] [CommRing S]
 
 /- English proof (translation)
-Rewrite using `[Ideal.mem_map_of_equiv]`. Prove the components needed by the constructor for the conclusion. Conclude with `fun h => ⟨x, h, rfl⟩`. Introduce and unpack `⟨y, hy, e⟩`. Rewrite using `[← f.injective e]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem mem_iff_apply_mem_map (f : R ≃+* S) (I : Ideal R) (x : R) :
     x ∈ I ↔ f x ∈ I.map f := by
@@ -38,7 +38,7 @@ theorem placeMap_asIdeal (f : R ≃+* S) (v : HeightOneSpectrum R) :
     (placeMap f v).asIdeal = v.asIdeal.map f := rfl
 
 /- English proof (translation)
-Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Rewrite using `[placeMap_asIdeal, placeMap_asIdeal, Ideal.map_symm]`. Use extensionality with `x`. Rewrite using `[Ideal.mem_comap]`. Conclude with `(mem_iff_apply_mem_map f _ x).symm`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem placeMap_symm_placeMap (f : R ≃+* S) (v : HeightOneSpectrum R) :
     placeMap f.symm (placeMap f v) = v := by
@@ -55,11 +55,9 @@ noncomputable def placeEquiv (f : R ≃+* S) : HeightOneSpectrum R ≃ HeightOne
   right_inv := placeMap_symm_placeMap f.symm
 
 /- English proof (translation)
-Introduce `F F' _ _ _ _ e`. Use `⟨RingOfIntegers.mapRingEquiv e, placeEquiv (RingOfIntegers.mapRingEquiv e), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x`. Rewrite using `[RingOfIntegers.mapRingEquiv_apply]`. Introduce `v x`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `mem_iff_apply_mem_map _ _ x`. Introduce `v x`. Express the relevant statement in the definitionally equal form `x ∈ v.asIdeal ^ 2 ↔ _ ∈ (v.asIdeal.map (RingOfIntegers.mapRingEquiv e)) ^ 2`. Rewrite using `[← Ideal.map_pow]`. Conclude with `mem_iff_apply_mem_map _ _ x`.
-
-Introduce `v`. Conclude with `(Nat.card_congr (Ideal.quotientEquiv v.asIdeal _ (RingOfIntegers.mapRingEquiv e) rfl).toEquiv).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_places_of_ringEquiv : ∀ (F F' : Type) [Field F] [NumberField F] [Field F'] [NumberField F'] (e : F ≃+* F'), ∃ (eO : 𝓞 F ≃+* 𝓞 F') (eV : HeightOneSpectrum (𝓞 F) ≃ HeightOneSpectrum (𝓞 F')), (∀ x : 𝓞 F, ((eO x : 𝓞 F') : F') = e (x : F)) ∧ (∀ (v : HeightOneSpectrum (𝓞 F)) (x : 𝓞 F), x ∈ v.asIdeal ↔ eO x ∈ (eV v).asIdeal) ∧ (∀ (v : HeightOneSpectrum (𝓞 F)) (x : 𝓞 F), x ∈ v.asIdeal ^ 2 ↔ eO x ∈ (eV v).asIdeal ^ 2) ∧ ∀ v : HeightOneSpectrum (𝓞 F), normV (eV v) = normV v := by
   intro F F' _ _ _ _ e

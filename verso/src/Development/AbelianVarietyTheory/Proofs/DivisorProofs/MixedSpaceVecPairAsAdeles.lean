@@ -59,9 +59,9 @@ def schrInf (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ) {κ : Type} [Fintype κ]
 variable {F}
 
 /- English proof (translation)
-Simplify using `only [dotProduct, infE]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show (x i).1 * _ = _ * _`. Rewrite using `[RingEquiv.symm_apply_apply]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show (x i).2 * 0 = (0 : FiniteAdeleRing (𝓞 F) F) * 0`. Rewrite using `[mul_zero, mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem dot_infE {κ : Type} [Fintype κ] (x : κ → AdeleRing (𝓞 F) F) (z : κ → mixedEmbedding.mixedSpace F) :
     x ⬝ᵥ infE F z = infE F (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (x i).1) ⬝ᵥ infE F z := by
@@ -74,11 +74,11 @@ theorem dot_infE {κ : Type} [Fintype κ] (x : κ → AdeleRing (𝓞 F) F) (z :
     rw [mul_zero, mul_zero]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [GlobalTheory.WeilM.pureA, schrInf, GlobalTheory.WeilM.schr, mixedSpaceVecPairAsAdeles]`. Rewrite using `[dot_infE x v.2, mul_assoc]`. Establish `h1 : (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (x i).1) + v.1 = fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F ((x + infE F v.1) i).1`. Use function extensionality and compare the values at `i`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show InfiniteAdeleRing.ringEquiv_mixedSpace F (x i).1 + v.1 i = InfiniteAdeleRing.ringEquiv_mixedSpace F ((x i).1 + (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (v.1 i))`. Rewrite using `[map_add, RingEquiv.apply_symm_apply]`. Establish `h2 : (fun i => (x i).2) = fun i => ((x + infE F v.1) i).2`. Use function extensionality and compare the values at `i`. Use `show (x i).2 = (x i).2 + 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[add_zero]`. Rewrite using `[h1, h2]`.
+A detailed English derivation is pending.
 -/
 theorem pureA_schrInf (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ) {κ : Type} [Fintype κ]
     (v : (κ → mixedEmbedding.mixedSpace F) × (κ → mixedEmbedding.mixedSpace F))
@@ -100,11 +100,9 @@ theorem pureA_schrInf (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ) {κ : Type} [Fin
   rw [h1, h2]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Simplify using `only [slice, schrInf, GlobalTheory.WeilM.schr, mixedSpaceVecPairAsAdeles]`. Use `congr 2`. Use `congr 1`. Use `(dot_infE _ v.2).trans ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 2`. Use function extensionality and compare the values at `i`. Conclude with `RingEquiv.apply_symm_apply _ _`. Use function extensionality and compare the values at `i`. Use `Prod.ext ?_ ?_` and prove the remaining obligations.
-
-Conclude with `(map_add (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm _ _).symm`. Conclude with `add_zero _`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem slice_schr (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ) {κ : Type} [Fintype κ]
     (v : (κ → mixedEmbedding.mixedSpace F) × (κ → mixedEmbedding.mixedSpace F))
@@ -124,7 +122,7 @@ theorem slice_schr (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ) {κ : Type} [Fintyp
     · exact add_zero _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [GlobalTheory.WeilM.pureA, Pi.add_apply, add_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem pureA_add {κ : Type} (f f' : (κ → mixedEmbedding.mixedSpace F) → ℂ) (g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ) :
     GlobalTheory.WeilM.pureA F (f + f') g = GlobalTheory.WeilM.pureA F f g + GlobalTheory.WeilM.pureA F f' g := by
@@ -132,7 +130,7 @@ theorem pureA_add {κ : Type} (f f' : (κ → mixedEmbedding.mixedSpace F) → �
   simp only [GlobalTheory.WeilM.pureA, Pi.add_apply, add_mul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [GlobalTheory.WeilM.pureA, Pi.smul_apply, smul_eq_mul, mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem pureA_smul {κ : Type} (a : ℂ) (f : (κ → mixedEmbedding.mixedSpace F) → ℂ) (g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ) :
     GlobalTheory.WeilM.pureA F (a • f) g = a • GlobalTheory.WeilM.pureA F f g := by
@@ -140,11 +138,11 @@ theorem pureA_smul {κ : Type} (a : ℂ) (f : (κ → mixedEmbedding.mixedSpace 
   simp only [GlobalTheory.WeilM.pureA, Pi.smul_apply, smul_eq_mul, mul_assoc]
 
 /- English proof (translation)
-Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, g, -, rfl⟩` from `hx`. Use `⟨g y • f, fun z => ?_⟩` and prove the remaining obligations. Simplify using `only [SchwartzMap.smul_apply, smul_eq_mul, slice, GlobalTheory.WeilM.pureA, RingEquiv.apply_symm_apply]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `mul_comm _ _`. Consider the case `zero => exact ⟨0, fun z => rfl⟩`. Consider the case `add x x' _ _ hx hx'`. Take `⟨s, hs⟩` from `hx`. Take `⟨s', hs'⟩` from `hx'`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨s + s', fun z => by rw [SchwartzMap.add_apply, hs, hs']; rfl⟩`. Consider the case `smul a x _ hx`. Take `⟨s, hs⟩` from `hx`. Conclude with `⟨a • s, fun z => by rw [SchwartzMap.smul_apply, hs]; rfl⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_schwartz_slice {κ : Type} [Fintype κ] (Φ : (κ → AdeleRing (𝓞 F) F) → ℂ)
     (hΦ : Φ ∈ GlobalTheory.WeilM.schA F κ) (y : κ → FiniteAdeleRing (𝓞 F) F) :

@@ -10,9 +10,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.FlatCodimOne
 
 /- English proof (translation)
-Establish `hy'` using `(Order.coheight_le_coe_iff (n := 1)).1 hy`. Use `(Order.coheight_le_coe_iff (n := 1)).2 fun z hz ↦ ?_` and prove the remaining obligations. Take `⟨y', h₁, rfl⟩` from `hq (show z ⤳ q y from hz.le)`. Establish `hlt : y < y'` using `⟨h₁, fun h ↦ hz.not_ge (Specializes.map h q.continuous)⟩`. Establish `hm : IsMax y'` using `by simpa using hy' y' hlt`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsMax (q y')` using `fun w hw ↦ by`. Take `⟨y'', h₂, rfl⟩` from `hq (show w ⤳ q y' from hw)`. Conclude with `Specializes.map (hm (show y' ≤ y'' from h₂)) q.continuous`. Simplify using `using this`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem coheight_map_le_one {X Y : Scheme.{0}} (q : Y ⟶ X) (hq : GeneralizingMap q) (y : Y)
     (hy : Order.coheight y ≤ 1) : Order.coheight (q y) ≤ 1 := by
@@ -27,9 +27,9 @@ theorem coheight_map_le_one {X Y : Scheme.{0}} (q : Y ⟶ X) (hq : GeneralizingM
   simpa using this
 
 /- English proof (translation)
-Introduce `X Y q _ W hW y hy`. Use `show q y ∈ W`. Apply `hW` to reduce the goal to its premises. Rewrite `hy`, the goal using `[ringKrullDim_stalk_eq_coheight]`. Establish `h1 : Order.coheight y ≤ 1` using `by exact_mod_cast hy`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `coheight_map_le_one q (Flat.generalizingMap q) y h1` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem preimage_contains_codim_le_one : ∀ (X Y : Scheme.{0}) (q : Y ⟶ X) [Flat q] (W : X.Opens), (∀ z : X, ringKrullDim ((X).presheaf.stalk z) ≤ 1 → z ∈ W) → (∀ z : Y, ringKrullDim ((Y).presheaf.stalk z) ≤ 1 → z ∈ q ⁻¹ᵁ W) := by
   intro X Y q _ W hW y hy

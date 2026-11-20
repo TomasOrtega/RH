@@ -23,7 +23,7 @@ open ReciprocityTheory.ChartRestriction.G.Geo (MRing PBlk IsArithVar IsHorizonta
 variable {n : ℕ}
 
 /- English proof (translation)
-Take `⟨c, hc, g, hg, rfl⟩` from `hf`. Conclude with `mul_ne_zero (C_ne_zero.mpr hc) (Finset.prod_ne_zero_iff.mpr fun W hW => pow_ne_zero _ (hg W hW).1)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ne_zero_of_isChowFormCycle {F : Type*} [Field F] {Z : ProjCycle F n} {k : ℕ}
     {f : MvPolynomial (Fin k × Fin n) F} (hf : IsChowFormCycle Z k f) : f ≠ 0 := by
@@ -32,9 +32,9 @@ theorem ne_zero_of_isChowFormCycle {F : Type*} [Field F] {Z : ProjCycle F n} {k 
     (Finset.prod_ne_zero_iff.mpr fun W hW => pow_ne_zero _ (hg W hW).1)
 
 /- English proof (translation)
-Take `⟨a, rfl⟩ : f ∣ g` from `(hf.2 g).mp ((hg.2 g).mpr dvd_rfl)`. Take `⟨b, hb⟩ : f * a ∣ f` from `(hg.2 f).mp ((hf.2 f).mpr dvd_rfl)`. Establish `hab : a * b = 1`. Apply `mul_left_cancel₀ hf.1` to reduce the goal to its premises. Rewrite using `[mul_one, ← mul_assoc, ← hb]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨r, hr, rfl⟩` from `(isUnit_iff_eq_C_of_isReduced (P := a)).mp (isUnit_iff_exists_inv.mpr ⟨b, hab⟩)`. Conclude with `⟨r, hr.ne_zero, mul_comm _ _⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_C_mul_of_isChowForm {F : Type*} [Field F] {I : Ideal (MvPolynomial (Fin n) F)} {k : ℕ}
     {f g : MvPolynomial (Fin k × Fin n) F} (hf : IsChowForm I k f) (hg : IsChowForm I k g) :
@@ -48,7 +48,7 @@ theorem exists_C_mul_of_isChowForm {F : Type*} [Field F] {I : Ideal (MvPolynomia
   exact ⟨r, hr.ne_zero, mul_comm _ _⟩
 
 /- English proof (translation)
-Establish `h : (MvPolynomial.map (Rat.castHom ℂ)).comp (MvPolynomial.map (Int.castRingHom ℚ)) = (MvPolynomial.map (Int.castRingHom ℂ) : MvPolynomial (Fin n) ℤ →+* MvPolynomial (Fin n) ℂ)`. Use `RingHom.ext fun p => ?_` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, MvPolynomial.map_map]`. Use `congr 1`. Rewrite using `[ObjectsChow.genericIdeal, Ideal.map_map, h]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -63,7 +63,7 @@ theorem map_genericIdeal (P : Ideal (MRing (PBlk n))) :
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Simplify using `[IndefiniteRowSideFullHecke.ArithBezout.logFormNorm, ReciprocityTheory.ChartRestriction.G.Geo.logNorm, IndefiniteRowSideFullHecke.ArithBezout.linForm, ReciprocityTheory.ChartRestriction.G.Geo.Xc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem logFormNorm_eq (S : Matrix (Fin n) (Fin n) ℂ) (hS : IsUnit S) (u : Fin n → ℤ) :
     IndefiniteRowSideFullHecke.ArithBezout.logFormNorm S hS (fun i => (u i : ℂ)) =
@@ -88,9 +88,9 @@ def archData (S : Matrix (Fin n) (Fin n) ℂ) (hS : IsUnit S)
   conj_norm _ u := by rw [ObjectsHeight.ofPointMatrix_norm, ObjectsHeight.ofPointMatrix_norm, hconj]
 
 /- English proof (translation)
-Establish `hu : (fun j => (Rat.castHom ℂ) (u j : ℚ)) = fun j => (u j : ℂ)` using `funext fun j => by simp`. Rewrite using `[Fintype.sum_subsingleton _ (Rat.castHom ℂ), hu, map_genericIdeal]`. Establish `hW : ∀ W ∈ (fundCycle (complexFibreIdeal P)).support, linForm (fun j => (u j : ℂ)) ∉ W`. Use `((hC n e δ P _ hP hf).2.2 _).mp ?_` and prove the remaining obligations. Establish `h : IndefiniteRowSideFullHecke.ArithBezout.specFirst (fun j => (u j : ℂ)) (map (Rat.castHom ℂ) f) = map (Rat.castHom ℂ) (specFirst f fun j => (u j : ℚ))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[ObjectsChow.specFirst_eq, ObjectsChow.map_specFirst, ← hu]`. Both sides reduce to the same expression. Rewrite using `[h]`. Conclude with `fun h0 => hsf (map_injective _ (Rat.castHom ℂ).injective (by rw [h0, map_zero]))`. Conclude with `(hI n e S hS P _ hP hW).trans (by rw [logFormNorm_eq]; rfl)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem integral_eq (hC : ComplexFibreCycle.Statement) (hI : ConeIntegralPts.Statement)
     (S : Matrix (Fin n) (Fin n) ℂ) (hS : IsUnit S)
@@ -118,9 +118,9 @@ theorem integral_eq (hC : ComplexFibreCycle.Statement) (hI : ConeIntegralPts.Sta
   exact (hI n e S hS P _ hP hW).trans (by rw [logFormNorm_eq]; rfl)
 
 /- English proof (translation)
-Establish `hprime` using `VerticalPartGauss.isProjPrime_genericIdeal hP`. Establish `hfA` using `VerticalPartGauss.isChowForm_genericIdeal hP hf`. Establish `huA` using `VerticalPartGauss.linForm_not_mem_genericIdeal hP hu`. Establish `hcyc` using `hSec ℚ n e (ObjectsChow.genericIdeal P) f _ hprime hfA huA`. Establish `hcast : ∀ j, (((u j : ℤ) : 𝓞 ℚ) : ℚ) = (u j : ℚ)` using `fun j => by simp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `hRec n e δ (archData S hS hconj) (ObjectsChow.genericIdeal P) f (fun j => ((u j : ℤ) : 𝓞 ℚ)) hprime hfA (ObjectsChow.isMultiHomog_of_isChowForm hf) (by simp only [hcast]; exact huA)`. Simplify using `only [hcast] at key`. Use `⟨?_, hcyc⟩` and prove the remaining obligations. Rewrite using `[← ObjectsHeight.chowHt_eq_chowHeight (archData S hS hconj) S hS (fun _ u => ObjectsHeight.ofPointMatrix_norm S hS u), key, hV n e P u hP hu, integral_eq hC hI S hS hconj hP hf (ne_zero_of_isChowFormCycle hcyc), Module.finrank_self]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem step (hRec : ChowHeightRecursionRat.Statement) (hSec : ChowFormSection.Statement)
     (hV : ObjectsChow.VertPartEq.Statement) (hC : ComplexFibreCycle.Statement)
@@ -156,25 +156,23 @@ theorem step (hRec : ChowHeightRecursionRat.Statement) (hSec : ChowFormSection.S
 open Classical in
 
 /- English proof (translation)
-Use `set s := IndefiniteRowSideFullHecke.ArithBezout.linForm u`. Use `set Zh := (ReciprocityTheory.ChartRestriction.G.Geo.divCycle P s).filter IsHorizontal with hZh`. Establish `hmem : ∀ W ∈ Zh.support, W ∈ divSupp P s ∧ IsHorizontal W`. Introduce `W hW`. Rewrite `hW` using `[hZh, Finsupp.support_filter, Finset.mem_filter, Finsupp.mem_support_iff, divCycle_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨by_contra fun h => hW.1 (if_neg h), hW.2⟩`. Establish `hgA : ∀ W ∈ Zh.support, IsChowForm (ObjectsChow.genericIdeal W) (e + 1) (g W)` using `fun W hW => VerticalPartGauss.isChowForm_genericIdeal (ObjectsChow.DivSuppHorizontalArithVar.proof n (e + 1) P u W hP hu (hmem W hW).1 (hmem W hW).2) (hg W (hmem W hW).1 (hmem W hW).2)`. Establish `hsfne` using `ne_zero_of_isChowFormCycle hcyc`. Take `⟨c, hc, g', hg', hsf⟩` from `hcyc`. Establish `hD` using `ObjectsChow.DivCycleGeneric.proof n (e + 1) P u hP hu`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hsf`, `hg'` using `[hD]`. Establish `hpos : ∀ W ∈ Zh.support, ObjectsChow.genericIdeal W ∈ (Zh.mapDomain ObjectsChow.genericIdeal).support`. Introduce `W hW`. Rewrite using `[Finsupp.mem_support_iff, Finsupp.mapDomain, Finsupp.sum_apply]`. Establish `h1` using `Finset.single_le_sum (f := fun a => Finsupp.single (ObjectsChow.genericIdeal a) (Zh a) (ObjectsChow.genericIdeal W)) (fun _ _ => Nat.zero_le _) hW`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Finsupp.single_eq_same] at h1`. Conclude with `(lt_of_lt_of_le (Nat.pos_of_ne_zero (Finsupp.mem_support_iff.mp hW)) h1).ne'`. Establish `hr : ∀ W ∈ Zh.support, ∃ r : ℚ, r ≠ 0 ∧ g' (ObjectsChow.genericIdeal W) = C r * g W` using `fun W hW => exists_C_mul_of_isChowForm (hgA W hW) (hg' _ (hpos W hW))`. Use `choose! r hr0 hr using hr`. Establish `hsf' : specFirst f (fun j => (u j : ℚ)) = C (c * ∏ W ∈ Zh.support, r W ^ Zh W) * ∏ W ∈ Zh.support, g W ^ Zh W`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hprod : ∏ W ∈ (Zh.mapDomain ObjectsChow.genericIdeal).support, g' W ^ (Zh.mapDomain ObjectsChow.genericIdeal) W = Zh.prod fun W m => g' (ObjectsChow.genericIdeal W) ^ m` using `Finsupp.prod_mapDomain_index (fun _ => pow_zero _) (fun _ _ _ => pow_add _ _ _)`. Rewrite using `[hsf, hprod, Finsupp.prod, Finset.prod_congr rfl (fun W hW => show g' (ObjectsChow.genericIdeal W) ^ Zh W = C (r W ^ Zh W) * g W ^ Zh W by`. Rewrite using `[hr W hW, mul_pow, map_pow]), Finset.prod_mul_distrib, ← map_prod, map_mul, mul_assoc]`. Establish `hgne : ∀ W ∈ Zh.support, g W ≠ 0` using `fun W hW => (hgA W hW).1`. Establish `hgm : ∀ W ∈ Zh.support, IsMultiHomog (d W) (g W)` using `fun W hW => ObjectsChow.isMultiHomog_of_isChowForm (hg W (hmem W hW).1 (hmem W hW).2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc' : c * ∏ W ∈ Zh.support, r W ^ Zh W ≠ 0` using `mul_ne_zero hc (Finset.prod_ne_zero_iff.mpr fun W hW => pow_ne_zero _ (hr0 W hW))`. Establish `hδ : δ = ∑ W ∈ Zh.support, Zh W * d W`. Establish `h1 : IsMultiHomog δ (specFirst f fun j => (u j : ℚ))` using `(ObjectsChow.isMultiHomog_of_isChowForm hf).specFirst _`. Establish `h2 : IsMultiHomog (∑ W ∈ Zh.support, Zh W * d W) (specFirst f fun j => (u j : ℚ))`. Rewrite using `[hsf']`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Unfold `IsMultiHomog`. Use `(isWeightedHomogeneous_C (groupWeight (e + 1) n) (c * ∏ W ∈ Zh.support, r W ^ Zh W)).mul (IsWeightedHomogeneous.prod Zh.support (fun W => g W ^ Zh W) (fun W => Zh W • fun _ : Fin (e + 1) => d W) fun W hW => (hgm W hW).pow (Zh W))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using `[Finset.sum_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrFun (IsWeightedHomogeneous.inj_right hsfne h1 h2) 0`. Rewrite using `[hsf', hδ, chowHt_C_mul_prod hMul _ Zh.support (⇑Zh) d g hgne hc']`. Repeatedly rewrite using `[ObjectsHeight.chowHt_eq_chowHeight (archData S hS hconj) S hS (fun _ u => ObjectsHeight.ofPointMatrix_norm S hS u)]`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ (ReciprocityTheory.ChartRestriction.G.Geo.divSupp_finite P s)]`. Use `(Finset.sum_subset (fun W hW => (ReciprocityTheory.ChartRestriction.G.Geo.divSupp_finite P s).mem_toFinset.mpr (hmem W hW).1) ?_).trans (Finset.sum_congr rfl fun W hW => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `W _ hW`. Rewrite `hW` using `[Finsupp.mem_support_iff, not_not]`. Rewrite using `[hW, Nat.cast_zero, zero_mul]`. Establish `hWd : W ∈ divSupp P s` using `(ReciprocityTheory.ChartRestriction.G.Geo.divSupp_finite P s).mem_toFinset.mp hW`. Rewrite using `[hZh, Finsupp.filter_apply, divCycle_apply, if_pos hWd]`.
-
-Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem horizontal (hMul : ChowHeightMul.Statement) (S : Matrix (Fin n) (Fin n) ℂ) (hS : IsUnit S)
     (hconj : ∀ u : Fin n → ℂ, IndefiniteRowSideFullHecke.ArithBezout.formNorm S (star u) = IndefiniteRowSideFullHecke.ArithBezout.formNorm S u)
@@ -263,9 +261,9 @@ end RecQOfRecursion
 open RecQOfRecursion in
 
 /- English proof (translation)
-Introduce `hRec n S hS hconj`. Use `⟨fun δ P f u hP hf hu => ?_, fun e δ P f u g d hP hf hu hg => ?_⟩` and prove the remaining obligations. Take `⟨h, hcyc⟩` from `step hRec hSec hV hC hI S hS hconj hP hf hu`. Rewrite using `[h, chowHt_zero_groups_eq_zero _ _ (ne_zero_of_isChowFormCycle hcyc), zero_add]`. Take `⟨h, hcyc⟩` from `step hRec hSec hV hC hI S hS hconj hP hf hu`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h, horizontal (chowHeightMul_of_mahlerMul mahlerMul) S hS hconj hP hf hu hg hcyc, IndefiniteRowSideFullHecke.ArithBezout.vertPart, ← add_sub_assoc, ← finsum_mem_add_distrib (ReciprocityTheory.ChartRestriction.G.Geo.divSupp_finite _ _)]`. Use `congr 1`. Use `finsum_mem_congr rfl fun W _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> ring`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem RecQOfRecursion.proof (hSec : ChowFormSection.Statement)
     (hV : ObjectsChow.VertPartEq.Statement) (hC : ComplexFibreCycle.Statement)

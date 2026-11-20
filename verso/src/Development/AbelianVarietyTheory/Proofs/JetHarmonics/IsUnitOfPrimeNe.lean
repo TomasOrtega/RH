@@ -25,9 +25,7 @@ open ReciprocityTheory.ChartRestriction.G.TB (colM dAct)
 namespace GlobalTheory.GeneratorsAtPoint
 
 /- English proof (translation)
-Establish `hz : IsCoprime (g : ℤ) (g' : ℤ)` using `Nat.isCoprime_iff_coprime.2 ((Nat.coprime_primes hg hg').2 hne)`. Choose the witnesses or unpack the hypotheses as in `⟨a, b, hab⟩ : IsCoprime ((g : ℕ) : V) ((g' : ℕ) : V) := by`. Simplify using `using hz.map (Int.castRingHom V)`. Break down `IsLocalRing.isUnit_or_isUnit_of_add_one hab with h₁ | h₁` into its components or cases. Conclude with `absurd (isUnit_of_mul_isUnit_right h₁) hn`.
-
-Conclude with `isUnit_of_mul_isUnit_right h₁`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem isUnit_of_prime_ne {V : Type} [CommRing V] [IsLocalRing V] {g g' : ℕ} (hg : g.Prime) (hg' : g'.Prime)
     (hne : g ≠ g') (hn : ¬ IsUnit ((g : ℕ) : V)) : IsUnit ((g' : ℕ) : V) := by
@@ -42,13 +40,13 @@ section Cast
 variable {R : Type} [CommRing R] [IsDomain R] {Dp : DegPre R} {F : Type} [Field F] [Algebra (FractionRing R) F]
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem famCast_symm {k k' : ℕ} (e : k = k') (s : Fam Dp F k') : famCast e (famCast e.symm s) = s := by
   subst e; rfl
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem famCast_sum {k k' : ℕ} (e : k = k') {m : ℕ} (a : Fin m → F) (b : Fin m → Fam Dp F k) :
     famCast e (∑ i, a i • b i) = ∑ i, a i • famCast e (b i) := by
@@ -57,7 +55,7 @@ theorem famCast_sum {k k' : ℕ} (e : k = k') {m : ℕ} (a : Fin m → F) (b : F
 end Cast
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `h`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem nuGe_famCast {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
     {Dd : DegData V (maximalIdeal V)} {Q : Dd.toPre.X → ℤ} {K : Type} [Field K] [Algebra (FractionRing V) K]
@@ -66,9 +64,9 @@ theorem nuGe_famCast {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRi
   subst e; exact h
 
 /- English proof (translation)
-Set `_` to `H.starRing`. Introduce `oD' oA' t' P' hP e₁ e₂ e₃ e₄ e₅ e₆ e₇ e₈ e₉`. Substitute `e₁ e₄ e₇` using the available equality. Consider the cases of `e₂`. Consider the cases of `e₃`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `e₅`. Consider the cases of `e₆`. Consider the cases of `e₈`. Consider the cases of `e₉`. Conclude with `ReciprocityTheory.ChartRestriction.G.H1.cmLiftCondition_of_laws hL n1c (GlobalTheory.twisting_statements_of_laws hL hT).1 (GlobalTheory.UnitBallFree.main hL.globalFns hT) E H V t' P' hP`.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
 -/
 theorem unitBall_spanned (hL : Laws) (hT : TwistBaseChangeStatement)
     (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (V : Type) [CommRing V] [IsDomain V]
@@ -112,19 +110,19 @@ theorem unitBall_spanned (hL : Laws) (hT : TwistBaseChangeStatement)
     (GlobalTheory.UnitBallFree.main hL.globalFns hT) E H V t' P' hP
 
 /- English proof (translation)
-Introduce `hL hL2 hL3 hL4 hL5 hT E _ _ _ H Dw l Xo c`. Set `_` to `H.starRing`. Introduce `T io y C hTr P hP hy ϖ hϖ Q hQ g g' hg hg' hne hgo hg'o π π' hπ hπ' hcop hcop' hgnu F _ _ _ _ _ _ v hv I n D' A' G' _ _ pD pA pG U' PU _ oD' hx hact s s₂ p w ζ x t₀ t σ' h hbox`. Take `⟨hs, hs₂, ⟨hw, hζ, hfo⟩, hqx, hxk, hphi, hsm, hexp, hgerm⟩` from `hbox`. Establish `hq : 1 ≤ g' * g` using `Nat.mul_pos hg'.pos hg.pos`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hπb : star π * star (star π) = (g : 𝓞 E)` using `by rw [star_star, _root_.mul_comm]; exact hπ`. Establish `hπb' : star π' * star (star π') = (g' : 𝓞 E)` using `by rw [star_star, _root_.mul_comm]; exact hπ'`. Establish `hw0 : TraceFormTwistIso D'.toPre oD' H.w0` using `GlobalTheory.PsiWZeroProd.main T.V n P.D.toPre D'.toPre pD (𝓞 E) (fun a x => funext fun i => hx a x i) P.oD oD' hact H.w0 P.w0`. Take `⟨pl, -, hpl⟩` from `PullLin.exists_pull_linearMap hL T.V D' F (𝓞 E) oD' H.w0 hw0 (star π) g g' hg.pos hg'.pos hπb`. Take `⟨pl₂, -, hpl₂⟩` from `PullLin.exists_pull_linearMap hL T.V D' F (𝓞 E) oD' H.w0 hw0 (star π * star π') (g' * g) 1 hq le_rfl (by rw [star_mul', Nat.cast_mul, ← hπb, ← hπb']; ring)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Φ, hΦ⟩` from `phiFun_of hL T.V _ D' F (g' * g) hq p w hw`. Take `⟨τ, hτ, hτT, hiff⟩` from `frameNSt_holds E H T.V C.I.G P _ C.FT C.actT C.ph1T C.ph2T C.syT C.adT C.tgT C.xT C.eT C.wPT C.chartT C.frameT C.primT n D' A' G' pD pA pG U' PU`. Establish `hz` using `GlobalTheory.T.universalJets_power_product T.V C.I.G.G G' n _ pG C.xT (GlobalTheory.T.universal_statement E H Dw l Xo c T io y C)`. Take `⟨gm, hgm, hgmex⟩` from `PairingLinear.exists_germ_linearMap hL hL2 hL4 hT T.V D' A' G' U' _ _ hz τ hτ (hτT hTr) F (g' * g) hq`. Take `⟨θ, θα, hθν, hθF, hθα⟩` from `PowThetaFrame.main hL hL2 hL4 hT E H Dw l Xo c n T io y hy C P hP g g' hg hg' hne hgo hg'o π π' hπ hπ' hcop hcop' hgnu F v ϖ hϖ hv Q hQ D' A' G' pD pA pG U' PU oD' hx hact`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨oA', hoA, hQ', ⟨Dw', ⟨I'⟩⟩, t', P', hP', e₁, e₂, e₃, e₄, e₅, e₆, e₇, e₈, e₉⟩` from `powPEL_of_laws hL hL2 hL3 hL4 hL5 hT E H Dw l Xo c n T io y hy C P hP g g' hg hg' hne hgo hg'o π π' hπ hπ' hcop hcop' hgnu F v ϖ hϖ hv I Q hQ D' A' G' pD pA pG U' PU oD' hx hact`. Establish `hcopb : ∃ u u' : 𝓞 E, u * star π' + u' * star (star π') = 1`. Take `⟨u, u', hu⟩` from `hcop'`. Conclude with `⟨u', u, by rw [star_star, ← hu]; ring⟩`. Take `⟨m, pb, xb, wb, ζb, tb, a, hpx, hxb, hwb, htb, ha, hsum⟩` from `unitBall_spanned hL hT E H T.V D' A' G' U' oD' oA' t' P' hP' e₁ e₂ e₃ e₄ e₅ e₆ e₇ e₈ e₉ (star π') g' hg'.pos hπb' hcopb (isUnit_of_prime_ne hg hg' hne hgnu) ϖ hϖ _ hQ' F v hv Dw' I' θ hθν hθF θα hθα (famCast (Dp := D'.toPre) (F := F) (one_mul g').symm s) (nuGe_famCast _ hs)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `hs' : s = ∑ i, a i • famCast (Dp` using `D'.toPre) (F := F) (one_mul g') (tb i) := by`. Rewrite using `[← famCast_sum, ← hsum, famCast_symm]`. Set `Λ : Fam D'.toPre F g' →ₗ[F] Fam D'.toPre F (g' * g)` to `(ζ • Φ) ∘ₗ pl`. Use `⟨θ, pl₂ θ, m, a, fun i => gm (Λ (famCast (Dp := D'.toPre) (F := F) (one_mul g') (tb i))), hθν, hθF, (hpl₂ _ _).2 rfl, ha, ?_, fun i => ?_⟩` and prove the remaining obligations. Establish `ht : t = Λ s`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[(DVR.isSmul_iff _ _ _).1 hsm, (hΦ _ _).1 hphi, (hpl _ _).1 hs₂]`. Both sides reduce to the same expression. Rewrite using `[hgm t σ' h hexp ((hiff F _ σ' h).1 hgerm), ht, hs', map_sum, map_sum]`. Simplify using `only [map_smul]`. Take `⟨tb₀, h₁, h₂⟩` from `htb i`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨θα₂, p₂, w₂, ζ₂, x₂, r₀, r₂, k₁, k₂, k₃, k₄, k₅, k₆, k₇, k₈, k₉⟩` from `PowDescent.descentIdF_of_laws hL hL2 hL3 hL4 hL5 hT E H Dw l Xo c n T io y hy C P hP g g' hg hg' hne hgo hg'o π π' hπ hπ' hcop hcop' hgnu F v ϖ hϖ hv Q hQ D' A' G' pD pA pG U' PU oD' hx hact oA' hoA θ θα hθα (pb i) (wb i) (ζb i) (xb i) tb₀ (tb i) (hpx i) (hxb i) (hwb i).1 (hwb i) …`. Take `⟨σ₂, j₁, j₂⟩` from `hgmex (Λ (famCast (Dp := D'.toPre) (F := F) (one_mul g') (tb i)))`. Use `⟨p₂, w₂, ζ₂, x₂, r₀, r₂, σ₂, k₂, fun b => ?_, k₄, k₅, k₆, (hpl₂ _ _).1 k₁ ▸ k₇, k₈, k₉ ▸ j₁, (hiff F _ σ₂ _).2 j₂⟩` and prove the remaining obligations. Use `pA.hom b` as an intermediate fact. Rewrite using `[← hoA, ← Category.assoc, k₃, MonObj.one_comp]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem main : Laws → Laws2 → Laws3 → Laws4 → Laws5 → TwistBaseChangeStatement → GenPointT := by
   intro hL hL2 hL3 hL4 hL5 hT E _ _ _ H Dw l Xo c

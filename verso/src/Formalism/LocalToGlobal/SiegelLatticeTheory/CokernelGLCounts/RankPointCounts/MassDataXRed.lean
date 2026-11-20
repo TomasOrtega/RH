@@ -6,33 +6,33 @@ namespace Formalism.L2.SG.Pf.MassDataX
 open Formalism.BasicNotions Formalism.L2.SG.HidaSetting Formalism.L2.SG.AdBridge Formalism.L2.SG.TypedSets
 
 /- English proof (translation)
-The claim follows from `MassDataIdxSteps.stK_holds X p`.
+A detailed English derivation is pending.
 -/
 theorem stK_holds {D : D7} (X : HidaSetting D) (p : TypX X) : MassDataIdxSteps.StK X p :=
   MassDataIdxSteps.stK_holds X p
 
 /- English proof (translation)
-The claim follows from `MassDataIdxSteps.stRed_of_embP X p (MassDataIdxSteps.embP_holds X p)`.
+A detailed English derivation is pending.
 -/
 theorem stRed_holds {D : D7} (X : HidaSetting D) (p : TypX X) : MassDataIdxSteps.StRed X p :=
   MassDataIdxSteps.stRed_of_embP X p (MassDataIdxSteps.embP_holds X p)
 
 /- English proof (translation)
-The claim follows from `MassDataIdxSteps.stImA_of X hb p (MassDataIdxSteps.reduction_image_every_place X hb p)`.
+A detailed English derivation is pending.
 -/
 theorem stImA_holds {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (p : TypX X) :
     MassDataIdxSteps.StImA X hb p :=
   MassDataIdxSteps.stImA_of X hb p (MassDataIdxSteps.reduction_image_every_place X hb p)
 
 /- English proof (translation)
-The claim follows from `MassDataIdxSteps.stImB_of_adaptQ X u p (MassDataIdxSteps.stAdaptQ_holds X hb u p)`.
+A detailed English derivation is pending.
 -/
 theorem stImB_holds {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (u : D.what₂.Word) (p : TypX X) :
     MassDataIdxSteps.StImB X u p :=
   MassDataIdxSteps.stImB_of_adaptQ X u p (MassDataIdxSteps.stAdaptQ_holds X hb u p)
 
 /- English proof (translation)
-The claim follows from `local_indices_at_instance`.
+A detailed English derivation is pending.
 -/
 theorem inIndicesAt_holds :
     ∀ {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (hK : X.LevelSubgroupCharacter) (FdN FdN' : Set X.B.I.Ginf)

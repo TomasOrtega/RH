@@ -11,7 +11,7 @@ namespace UpperTheory.TNZ.P_spLat
 variable {Γ V : Type} [Group Γ] [AddCommGroup V] [Module ℂ V] {I : Representation ℂ Γ V}
 
 /- English proof (translation)
-The claim follows from `Representation.IntertwiningMap.isIntertwining _ _ e.toIntertwiningMap g v`.
+A detailed English derivation is pending.
 -/
 theorem eqvInt {A B : Type} [AddCommGroup A] [Module ℂ A] [AddCommGroup B] [Module ℂ B]
     {α : Representation ℂ Γ A} {β : Representation ℂ Γ B} (e : α.Equiv β) (g : Γ) (v : A) :
@@ -27,15 +27,13 @@ def eqvTrans {A B C : Type} [AddCommGroup A] [Module ℂ A] [AddCommGroup B] [Mo
     rw [eqvInt e, eqvInt f])
 
 /- English proof (translation)
-Set `T : Subrepresentation α` to `⟨((S.toSubmodule.comap Y.toSubmodule.subtype).map (X.toSubmodule.comap Y.toSubmodule.subtype).mkQ).map e.toLinearMap, by`. Introduce and unpack `g _ ⟨_, ⟨v, hv, rfl⟩, rfl⟩`. Use `⟨_, ⟨Y.toRepresentation g v, S.apply_mem_toSubmodule g hv, rfl⟩, ?_⟩` and prove the remaining obligations. Conclude with `eqvInt e g (Submodule.Quotient.mk v)⟩`. Break down `hα.eq_bot_or_eq_top T with hT | hT` into its components or cases.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `left`. Introduce `v hv`. Take `⟨hvY, hvS⟩` from `hv`. Establish `hm : e (Submodule.Quotient.mk (⟨v, hvY⟩ : Y.toSubmodule)) ∈ T.toSubmodule` using `⟨_, ⟨⟨v, hvY⟩, hvS, rfl⟩, rfl⟩`. Rewrite `hm` using `[hT]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0 : e (Submodule.Quotient.mk (⟨v, hvY⟩ : Y.toSubmodule)) = 0` using `(Submodule.mem_bot ℂ).1 hm`. Rewrite `h0` using `[map_eq_zero_iff e (EquivLike.injective e), Submodule.Quotient.mk_eq_zero]`. Conclude with `h0`. Use `right`. Introduce `v hvY`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hm : e (Submodule.Quotient.mk (⟨v, hvY⟩ : Y.toSubmodule)) ∈ T.toSubmodule`. Rewrite using `[hT]`. Conclude with `Submodule.mem_top`. Take `⟨_, ⟨w, hwS, rfl⟩, hw⟩` from `hm`. Establish `hw'` using `EquivLike.injective e hw`.
-
-Establish `hx0` using `(Submodule.Quotient.eq (X.toSubmodule.comap Y.toSubmodule.subtype)).1 hw'`. Establish `hx : (w : V) - v ∈ X.toSubmodule` using `hx0`. Use `show v ∈ S.toSubmodule ⊔ X.toSubmodule`. Use `Submodule.mem_sup.2 ⟨w, hwS, v - w, ?_, by abel⟩` and prove the remaining obligations. Simplify using `using X.toSubmodule.neg_mem hx`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem dich {A : Type} [AddCommGroup A] [Module ℂ A] {α : Representation ℂ Γ A} (hα : α.IsIrreducible)
     (X Y S : Subrepresentation I) (e : (subQuot Y X).Equiv α) :
@@ -109,21 +107,19 @@ namespace UpperTheory.TNZ
 
 open P_spLat in
 /- English proof (translation)
-Introduce `Γ V _ _ _ I d hmono hmod htop A B _ _ _ _ α β hα hβ h₁ h₂`. Take `⟨X₁, Y₁, hXY₁, hd₁, ⟨e₁⟩⟩` from `h₁`. Take `⟨X₂, Y₂, hXY₂, hd₂, ⟨e₂⟩⟩` from `h₂`. Establish `hY₁ : d Y₁ ≤ 1` using `(hmono le_top).trans htop`. Establish `hY₂ : d Y₂ ≤ 1` using `(hmono le_top).trans htop`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hZ : d (Y₁ ⊓ Y₂) = 1`. Use `hmod Y₁ Y₂` as an intermediate fact. Use `(hmono (le_top : Y₁ ⊔ Y₂ ≤ ⊤)).trans htop` as an intermediate fact. Use `hmono (inf_le_left : Y₁ ⊓ Y₂ ≤ Y₁)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `hN : d (X₁ ⊔ X₂) = 0`. Use `hmod X₁ X₂` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `set Z := Y₁ ⊓ Y₂ with hZdef`. Use `set N := X₁ ⊔ X₂ with hNdef`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `side : ∀ (C : Type) [AddCommGroup C] [Module ℂ C] (γ : Representation ℂ Γ C), γ.IsIrreducible → ∀ X Y : Subrepresentation I, X ≤ Y → X ≤ N → Z ≤ Y → d X = 0 → (subQuot Y X).Equiv γ → Y ≤ Z ⊔ X ∧ Z ⊓ N = Z ⊓ X`. Introduce `C _ _ γ hγ X Y hXY hXN hZY hX e`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Break down `dich hγ X Y Z e with h | h` into its components or cases. It suffices to derive a contradiction.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h' : Z ≤ X`. Establish `: Y ⊓ Z = Z` using `inf_eq_right.2 hZY`. Rewrite using `[← this]`. Conclude with `h`. Use `hmono h'` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result.
 
-Use linear arithmetic over natural numbers and integers. Conclude with `h`. Break down `dich hγ X Y N e with h | h` into its components or cases. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `le_inf inf_le_left ((inf_le_inf_right N hZY).trans h)`.
+It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Conclude with `inf_le_inf_left Z hXN`. It suffices to derive a contradiction. Establish `h' : Z ≤ N` using `hZY.trans (h.trans (sup_le le_rfl hXN))`. Use `hmono h'` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
-
-Establish `hd1 : d X₁ = 0` using `by omega`. Establish `hd2 : d X₂ = 0` using `by omega`. Take `⟨s₁, t₁⟩` from `side A α hα X₁ Y₁ hXY₁ le_sup_left inf_le_left hd1 e₁`. Take `⟨s₂, t₂⟩` from `side B β hβ X₂ Y₂ hXY₂ le_sup_right inf_le_right hd2 e₂`. Conclude with `⟨eqvTrans (eqvTrans e₁.symm (eqv Z N Y₁ X₁ inf_le_left s₁ t₁).symm) (eqvTrans (eqv Z N Y₂ X₂ inf_le_right s₂ t₂) e₂)⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem step_spLat : SpecialLatticeProp := by
   intro Γ V _ _ _ I d hmono hmod htop A B _ _ _ _ α β hα hβ h₁ h₂

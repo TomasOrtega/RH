@@ -6,9 +6,9 @@ namespace GlobalTheory.SepAverage
 variable {C : Type} [CommRing C] {H : Type*} [AddCommGroup H] [Module C H]
 
 /- English proof (translation)
-Use `⟨M.projection E' h.symm, fun e he => Submodule.projection_apply_of_mem_right h.symm he, ?_⟩` and prove the remaining obligations. Introduce `u`. Use `Submodule.projection_add_projection_eq_self h u` as an intermediate fact. Establish `e : u - M.projection E' h.symm u = E'.projection M h u`. Conclude with `(eq_sub_of_add_eq this).symm`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `Submodule.projection_apply_mem _ _`.
+A detailed English derivation is pending.
 -/
 theorem exists_proj (E' M : Submodule C H) (h : IsCompl E' M) :
     ∃ σ : Module.End C H, (∀ e ∈ E', σ e = 0) ∧ ∀ u, u - σ u ∈ E' := by
@@ -20,9 +20,9 @@ theorem exists_proj (E' M : Submodule C H) (h : IsCompl E' M) :
   rw [e]; exact Submodule.projection_apply_mem _ _
 
 /- English proof (translation)
-Introduce `w hw`. Establish `: Submodule.map f (I • (⊤ : Submodule C H)) ≤ I • P`. Rewrite using `[Submodule.map_smul'']`. Apply `Submodule.smul_mono le_rfl` to reduce the goal to its premises. Introduce and unpack `_ ⟨v, -, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Conclude with `hf v`. Conclude with `this ⟨w, hw, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem map_smul_top_le (I : Ideal C) (f : Module.End C H) (P : Submodule C H)
     (hf : ∀ w, f w ∈ P) : ∀ w ∈ I • (⊤ : Submodule C H), f w ∈ I • P := by
@@ -38,9 +38,9 @@ end GlobalTheory.SepAverage
 namespace GlobalTheory.SepAverage
 
 /- English proof (translation)
-Set `B : O →ₗ[ℤ] O →ₗ[ℤ] Module.End C H` to `LinearMap.mk₂ ℤ (fun a b => ρ a * g * ρ b) (by intros; simp [add_mul]) (by intros; simp only [map_zsmul, smul_mul_assoc]) (by intros; simp [mul_add]) (by intros; simp only [map_zsmul, mul_smul_comm])`. Establish `h` using `congrArg (TensorProduct.lift B) (hsep c)`. Simplify using `only [map_sum, TensorProduct.lift.tmul, B, LinearMap.mk₂_apply] at h`. Combine the equalities or inequalities in the displayed calculation. Simplify using `[Finset.mul_sum, map_mul, mul_assoc]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use `_ = ∑ j, ρ (x j) * g * ρ (y j * c) := h`. Use `_ = _ := by simp [Finset.sum_mul, map_mul, mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem avg_comm {C : Type} [CommRing C] {H : Type*} [AddCommGroup H] [Module C H]
     {O : Type} [Ring O] (ρ : O →+* Module.End C H) {k : ℕ} (x y : Fin k → O)
@@ -59,7 +59,7 @@ theorem avg_comm {C : Type} [CommRing C] {H : Type*} [AddCommGroup H] [Module C 
     _ = _ := by simp [Finset.sum_mul, map_mul, mul_assoc]
 
 /- English proof (translation)
-Establish `hc : Commute a p` using `h`. Conclude with `(((hc.mul_right hc).mul_right (Commute.ofNat_right a 3)).sub_right (((hc.mul_right hc).mul_right hc).mul_right (Commute.ofNat_right a 2))).eq`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem comm_poly {C : Type} [CommRing C] {H : Type*} [AddCommGroup H] [Module C H]
     (a p : Module.End C H) (h : a * p = p * a) :
@@ -69,41 +69,39 @@ theorem comm_poly {C : Type} [CommRing C] {H : Type*} [AddCommGroup H] [Module C
     (((hc.mul_right hc).mul_right hc).mul_right (Commute.ofNat_right a 2))).eq
 
 /- English proof (translation)
-Introduce `C O _ _ I hI N k x y hxy hsep hN H _ _ ρ ε hε hρε F hIF hρF hεF hEM`. Take `⟨E', M, hc, hEF⟩` from `hEM`. Take `⟨σ, hσE, hσ⟩` from `exists_proj E' M hc`. Take `⟨n, hn⟩` from `hN.exists_left_inv`. Establish `hE'F : E' ≤ F` using `hEF ▸ le_sup_left`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hpres : ∀ f : Module.End C H, ∀ w ∈ I • (⊤ : Submodule C H), f w ∈ I • (⊤ : Submodule C H)` using `fun f => map_smul_top_le I f ⊤ (fun _ => trivial)`. Establish `hερ : ∀ c v, ε (ρ c v) = ρ c (ε v)` using `fun c v => (LinearMap.congr_fun (hρε c) v).symm`. Use `set q : Module.End C H := ε * σ * ε with hq`. Establish `hεq : ε * q = q` using `by simp only [hq, ← mul_assoc, hε]`. Establish `hqε : q * ε = q` using `by simp only [hq, mul_assoc, hε]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set p : Module.End C H := n • ∑ j, ρ (x j) * q * ρ (y j) with hp`. Establish `hpc : ∀ c, ρ c * p = p * ρ c`. Introduce `c`. Rewrite using `[hp, mul_smul_comm, smul_mul_assoc, avg_comm ρ x y hsep]`. Establish `hεp : ε * p = p`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hp, mul_smul_comm, Finset.mul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← mul_assoc, ← hρε, mul_assoc (ρ (x j)) ε q, hεq]`. Establish `hpε : p * ε = p`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hp, smul_mul_assoc, Finset.sum_mul]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc (ρ (x j) * q), hρε, ← mul_assoc, mul_assoc (ρ (x j)) q ε, hqε]`. Establish `hsum : ∀ z, ∑ j, ρ (x j) (ρ (y j) z) = (N : C) • z`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `z`. Use `LinearMap.congr_fun (congrArg ρ hxy) z` as an intermediate fact. Simplify using `only [map_sum, map_mul, map_intCast, LinearMap.sum_apply, Module.End.mul_apply, Module.End.intCast_apply] at this`. Rewrite using `[this, Int.cast_smul_eq_zsmul]`. Establish `hpz : ∀ z, p z = n • ∑ j, ρ (x j) (ε (σ (ε (ρ (y j) z))))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `z`. Simplify using `[hp, hq, LinearMap.sum_apply, Module.End.mul_apply]`. Establish `ha : ∀ z, ε z = z → z - p z ∈ F`. Introduce `z hz`. Establish `key : z - p z = n • ∑ j, ρ (x j) (ε (ρ (y j) z - σ (ρ (y j) z)))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hw : ∀ j, ε (ρ (y j) z) = ρ (y j) z` using `fun j => by rw [hερ, hz]`. Rewrite using `[hpz]`. Simplify using `only [hw, map_sub, Finset.sum_sub_distrib, hsum, smul_sub, smul_smul, hn, one_smul]`. Rewrite using `[key]`. Use `F.smul_mem _ (F.sum_mem fun j _ => hρF _ _ (hεF _ (hE'F (hσ _))))` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hb : ∀ z ∈ F, p z ∈ I • (⊤ : Submodule C H)`. Introduce `z hzF`. Rewrite using `[hpz]`. Use `Submodule.smul_mem _ _ (Submodule.sum_mem _ fun j _ => hpres _ _ (hpres _ _ ?_))` and prove the remaining obligations. Establish `hv : ε (ρ (y j) z) ∈ F` using `hεF _ (hρF _ _ hzF)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hv` using `[← hEF]`. Take `⟨e, he, t, ht, het⟩` from `Submodule.mem_sup.mp hv`. Rewrite using `[← het, map_add, hσE e he, zero_add]`. Conclude with `hpres σ t ht`. Use `set u : Module.End C H := p * p - p with hu_def`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : ∀ z, u z ∈ I • (⊤ : Submodule C H)`. Introduce `z`. Establish `h1 : p z = p (ε z)` using `by rw [← Module.End.mul_apply, hpε]`. Establish `h2 : ε (ε z - p (ε z)) = ε z - p (ε z)`. Rewrite using `[map_sub, ← Module.End.mul_apply ε ε, hε, ← Module.End.mul_apply ε p, hεp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `hb _ (ha (ε z) (by rw [← Module.End.mul_apply, hε]))`. Establish `e : u z = -(p (ε z - p (ε z)))`. Simplify using `only [hu_def, LinearMap.sub_apply, Module.End.mul_apply, map_sub, h1]`. Rewrite using `[← h1]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `Submodule.neg_mem _ h3`. Establish `huu : u * u = 0`. Use extensionality with `z`. Establish `h` using `map_smul_top_le I u (I • ⊤) hu _ (hu z)`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[← Submodule.mul_smul, ← pow_two, hI, Submodule.bot_smul, Submodule.mem_bot]`. Simplify using `using h`. Use `⟨p * p * 3 - p * p * p * 2, ?_, fun c => comm_poly _ _ (hpc c), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `e : (p * p * 3 - p * p * p * 2) * (p * p * 3 - p * p * p * 2) - (p * p * 3 - p * p * p * 2) = (p * p - p) * (p * p - p) * (4 * (p * p) - 4 * p - 3)` using `by noncomm_ring`. Rewrite `e` using `[← hu_def, huu, zero_mul]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `sub_eq_zero.mp e`. Simplify using `only [sub_mul, mul_assoc, hpε]`. Simplify using `only [← mul_assoc, Commute.ofNat_left 3 ε |>.eq, Commute.ofNat_left 2 ε |>.eq]`. Simplify using `only [mul_assoc, hpε]`. Simplify using `only [mul_sub, ← mul_assoc, hεp]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `all_goals`. Establish `hd : ∀ z, (p * p * 3 - p * p * p * 2) z - p z ∈ I • (⊤ : Submodule C H)`. Introduce `z`. Establish `e : p * p * 3 - p * p * p * 2 - p = -((p * p - p) * (2 * p - 1))` using `by noncomm_ring`. Rewrite using `[← LinearMap.sub_apply, e, LinearMap.neg_apply, ← hu_def, Module.End.mul_apply]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Normalize the expressions using the abelian group laws. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Conclude with `Submodule.neg_mem _ (hu _)`. Introduce `z hz`. Use `F.sub_mem (ha z hz) (hIF (hd z))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws.
-
-Introduce `z hzF _`. Use `Submodule.add_mem _ (hb z hzF) (hd z)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem exists_idempotent_average : ∀ (C O : Type) [CommRing C] [Ring O] (I : Ideal C), I ^ 2 = ⊥ → ∀ (N : ℤ) (k : ℕ) (x y : Fin k → O), ∑ j, x j * y j = (N : O) → (∀ c : O, ∑ j, (c * x j) ⊗ₜ[ℤ] y j = ∑ j, x j ⊗ₜ[ℤ] (y j * c)) → IsUnit (N : C) → ∀ (H : Type*) [AddCommGroup H] [Module C H] (ρ : O →+* Module.End C H) (ε : Module.End C H), ε * ε = ε → (∀ c, ρ c * ε = ε * ρ c) → ∀ F : Submodule C H, I • ⊤ ≤ F → (∀ c, ∀ x ∈ F, ρ c x ∈ F) → (∀ x ∈ F, ε x ∈ F) → (∃ E' M : Submodule C H, IsCompl E' M ∧ E' ⊔ I • ⊤ = F) → ∃ π : Module.End C H, π * π = π ∧ (∀ c, ρ c * π = π * ρ c) ∧ π * ε = π ∧ ε * π = π ∧ (∀ z, ε z = z → z - π z ∈ F) ∧ (∀ z ∈ F, ε z = z → π z ∈ I • (⊤ : Submodule C H)) := by
   intro C O _ _ I hI N k x y hxy hsep hN H _ _ ρ ε hε hρε F hIF hρF hεF hEM

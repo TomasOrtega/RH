@@ -14,25 +14,25 @@ open GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.SandwichMaps 
 namespace GlobalTheory.DetInv
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ _ _ hv ε hε Λ _ _ _ _ _ _ N h hh D ψ Φ σ f hf`. Take `⟨-, -, -, hθ, -⟩` from `GlobalTheory.T.fontaineAinf_localDomain_xiAdic_order p C v O hv ε hε`. Establish `hinj : Function.Injective (algebraMap O C)` using `hv.hom_inj`. Establish `hfs : Function.Surjective f`. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨a, rfl⟩` from `hθ y`. Conclude with `⟨a ⊗ₜ (1 : Λ), by rw [hf]; simp⟩`. Take `⟨⟨indT, supT, dimT⟩, ⟨-, supH, dimH⟩⟩` from `GlobalTheory.T.sandwich_datum_eigen_multiplicity p C v O hv ε hε Λ N h hh D`. Take `⟨πT, hπT⟩` from `GlobalTheory.T.exists_theta_projection p O C Λ N h σ f Φ.eT hf`. Take `⟨πH, hπH⟩` from `GlobalTheory.T.exists_theta_projection p O C Λ N h σ f Φ.eM hf`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hT : (fun l => (rhoTA D l).map (WittVector.fontaineTheta O p)) = actT D`. Use function extensionality and compare the values at `l`. Rewrite using `[rhoTA, Matrix.map_map]`. Both sides reduce to the same expression. Establish `hH : (fun l => (D.ρM l).map (WittVector.fontaineTheta O p)) = actH D` using `rfl`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `keyT` using `GlobalTheory.T.theta_projection_surjective_eigen p O C Λ N h σ f (rhoTA D) Φ.eT πT hinj hθ hfs hf Φ.frameT hπT`. Rewrite `keyT` using `[hT]`. Take `⟨qT, hqT, -⟩` from `keyT supT (dimT σ)`. Establish `keyH` using `GlobalTheory.T.theta_projection_surjective_eigen p O C Λ N h σ f (fun l => D.ρM l) Φ.eM πH hinj hθ hfs hf Φ.frameM hπH`. Rewrite `keyH` using `[hH]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨qH, hqH, -⟩` from `keyH supH (dimH σ)`. Take `⟨-, -, hGρ, -, -⟩` from `GlobalTheory.T.sandwich_datum_scalar_action p C v O hv ε hε Λ h D`. Establish `hX : ∀ l, D.G.map (WittVector.fontaineTheta O p) * actH D l = actT D l * D.G.map (WittVector.fontaineTheta O p)`. Introduce `l`. Rewrite using `[← congrFun hT l, ← congrFun hH l]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.map_mul, ← Matrix.map_mul, hGρ l]`. Take `⟨hle, hrange⟩` from `GlobalTheory.T.intertwiner_maps_eigenspaces C O Λ h (actH D) (actT D) (D.G.map (WittVector.fontaineTheta O p)) hX`. Establish `hb : Matrix.toLin' ((D.G.map (WittVector.fontaineTheta O p)).map (algebraMap O C)) = bC C D`. Rewrite using `[Matrix.map_map]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite `hle`, `hrange` using `[hb]`. Establish `hlie` using `GlobalTheory.T.lie_rank_eq_finrank_eigen_inter p C v O hv ε Λ h D σ`. Rewrite `hlie` using `[hrange supH indT σ]`. Set `g : eig C (actH D) σ →ₗ[C] eig C (actT D) σ` to `(bC C D).restrict (fun x hx => hle σ (Submodule.mem_map_of_mem hx))`. Establish `hmat` using `GlobalTheory.T.theta_projection_intertwining p O C Λ N h f Φ.eM Φ.eT πH πT D.G Φ.G hπH hπT Φ.matG`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hcomm : qT.toLinearMap ∘ₗ g = (Φ.G.map ((algebraMap O C).comp f)).mulVecLin ∘ₗ qH.toLinearMap`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, Matrix.mulVecLin_apply]`. Rewrite using `[hqT, hqH]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hmat x`. Establish `e1 : (eig C (actH D) σ).map (bC C D) = (LinearMap.range g).map (eig C (actT D) σ).subtype`. Establish `: bC C D ∘ₗ (eig C (actH D) σ).subtype = (eig C (actT D) σ).subtype ∘ₗ g` using `LinearMap.ext fun x => rfl`. Rewrite using `[← LinearMap.range_comp, ← this, LinearMap.range_comp, Submodule.range_subtype]`. Rewrite using `[hlie, e1, ← (Submodule.equivMapOfInjective _ (eig C (actT D) σ).injective_subtype (LinearMap.range g)).finrank_eq, ← qT.finrank_map_eq (LinearMap.range g), ← LinearMap.range_comp, hcomm, LinearMap.range_comp_of_range_eq_top _ (LinearEquiv.range qH)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem rank_G_map_eq_lieRank : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O], v.Integers O → ∀ (ε : PreTilt O p), IsPrimitiveRoot (root ε).untilt p → ∀ (Λ : Type) [CommRing Λ] [IsDomain Λ] [IsDiscreteValuationRing Λ] [Algebra ℤ_[p] Λ] [Module.Finite ℤ_[p] Λ] [FaithfulSMul ℤ_[p] Λ], ∀ (N h : ℕ) , h = Module.finrank ℤ_[p] Λ * N → ∀ (D : Datum ε h Λ) (ψ : RL p O Λ →+* RL p O Λ) (Φ : FreeForm D N ψ) (σ : Λ →+* O) (f : RL p O Λ →+* O), IsTheta σ f → (Φ.G.map ((algebraMap O C).comp f)).rank = D.lieRank σ := by
   intro p _ C _ _ _ v O _ _ _ _ hv ε hε Λ _ _ _ _ _ _ N h hh D ψ Φ σ f hf

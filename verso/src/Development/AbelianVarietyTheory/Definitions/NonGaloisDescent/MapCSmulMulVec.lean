@@ -74,19 +74,19 @@ def valTop (l : ℕ) {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRi
   if c = 0 then ⊤ else (val l c : ℝ)
 
 /- English proof (translation)
-The claim follows from `if_pos rfl`.
+A detailed English derivation is pending.
 -/
 theorem valTop_zero (l : ℕ) {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] :
     valTop l (0 : O) = ⊤ := if_pos rfl
 
 /- English proof (translation)
-The claim follows from `if_neg hc`.
+A detailed English derivation is pending.
 -/
 theorem valTop_of_ne (l : ℕ) {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     {c : O} (hc : c ≠ 0) : valTop l c = (val l c : ℝ) := if_neg hc
 
 /- English proof (translation)
-Use `div_self ?_` and prove the remaining obligations. Rewrite using `[Nat.cast_ne_zero, Ne, ENat.toNat_eq_zero, not_or, IsDiscreteValuationRing.addVal_eq_zero_iff, IsDiscreteValuationRing.addVal_eq_top_iff]`. Conclude with `⟨h1, h0⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem val_natCast_self (l : ℕ) {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     (h0 : (l : O) ≠ 0) (h1 : ¬ IsUnit (l : O)) : val l (l : O) = 1 := by
@@ -127,7 +127,7 @@ def IsCyc : Prop :=
     constantCoeff (γ₀ X) = 0 ∧ coeff 1 (γ₀ X) = (R.χ : O)
 
 /- English proof (translation)
-Rewrite using `[isUnit_iff_constantCoeff, R.χ_zero]`. Conclude with `R.χ.isUnit.pow _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_γX_div_X : IsUnit (1 + (R.κ : O⟦X⟧) * R.E) := by
   rw [isUnit_iff_constantCoeff, R.χ_zero]
@@ -358,7 +358,7 @@ def comp (F' : Hom S' S'') (F : Hom S S') : Hom S S'' where
     rw [Matrix.map_mul, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, F.γ_comm, F'.γ_comm]
 
 /- English proof (translation)
-Establish `hc : R.ι (C c) = algebraMap O R.EE c` using `(IsScalarTower.algebraMap_apply O O⟦X⟧ R.EE c).symm`. Use function extensionality and compare the values at `k`. Simplify using `[Matrix.mulVec, dotProduct, hc, Algebra.smul_def, Finset.mul_sum, mul_assoc]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem map_C_smul_mulVec (c : O) (B : Matrix (Fin r') (Fin r) O⟦X⟧) (x : Fin r → R.EE) :
     (((C c : O⟦X⟧) • B).map R.ι).mulVec x = c • (B.map R.ι).mulVec x := by

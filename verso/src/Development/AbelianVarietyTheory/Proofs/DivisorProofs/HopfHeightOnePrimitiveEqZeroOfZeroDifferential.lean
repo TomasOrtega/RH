@@ -12,9 +12,9 @@ noncomputable section
 namespace GlobalTheory.PDiv.HeightOnePrim
 
 /- English proof (translation)
-Establish `hp` using `isPrimitiveElem_of_mem_ker (R := K) (A := CartierDual K H) (b := φ) hφ`. Establish `hmul : ∀ x y : H, φ (x * y) = φ x * counit (R` using `K) y + counit (R := K) x * φ y := by`. Introduce `x y`. Rewrite using `[← CartierDual.pair_comul_tmul, show comul φ = _ from hp, map_add, LinearMap.add_apply, CartierDual.pair_tmul_tmul, CartierDual.pair_tmul_tmul, CartierDual.one_apply, CartierDual.one_apply]`. Rewrite `hb` using `[pow_two]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Submodule.mul_induction_on hb (fun x hx y hy => ?_) (fun x y hx hy => ?_)` and prove the remaining obligations. Establish `hx' : counit (R` using `K) x = 0 := hx`. Establish `hy' : counit (R` using `K) y = 0 := hy`. Rewrite using `[hmul, hx', hy', mul_zero, zero_mul, add_zero]`. Rewrite using `[map_add, hx, hy, add_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem apply_eq_zero_of_mem_sq {K H : Type} [Field K] [CommRing H] [HopfAlgebra K H]
     [IsCocomm K H] [Module.Finite K H] {φ : CartierDual K H} (hφ : cobOne K (CartierDual K H) φ = 0) {b : H}
@@ -33,15 +33,15 @@ theorem apply_eq_zero_of_mem_sq {K H : Type} [Field K] [CommRing H] [HopfAlgebra
   · rw [map_add, hx, hy, add_zero]
 
 /- English proof (translation)
-Introduce `p _ K H _ _ _ _ _ _ hpow b hb hd`. Establish `hcb : counit (R` using `K) b = 0 := (mulBy_of_cobOne_eq_zero hb 0).2`. Establish `hsq : b ∈ augIdeal K H ^ 2`. Use `(AugCot.d_eq_zero_iff (counitAlgHom K H) b).1 hd` as an intermediate fact. Simplify `this` using `[hcb]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hgen` using `GlobalTheory.T.cartierDual_height_one_adjoin_primitive_eq_top p K H hpow`. Establish `hall : ∀ φ : CartierDual K H, φ b = 0`. Introduce `φ`. Establish `hφ : φ ∈ Algebra.adjoin K {φ : CartierDual K H | cobOne K (CartierDual K H) φ = 0}`. Rewrite using `[hgen]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hφ using Algebra.adjoin_induction with`. Consider the case `mem x hx => exact apply_eq_zero_of_mem_sq hx hsq`. Consider the case `algebraMap r`. Rewrite using `[Algebra.algebraMap_eq_smul_one]`.
+Check the elementary cases of the proposition. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `r • (1 : CartierDual K H) b = 0`. Rewrite using `[CartierDual.one_apply, hcb, smul_zero]`. Consider the case `add x y _ _ hx hy => rw [WithConv.ofConv_add, LinearMap.add_apply, hx, hy, add_zero]`. Consider the case `mul x y _ _ hx hy`. Use `evalAt_mul (R := K) (A := H) ⟨b, hb⟩ x y` as an intermediate fact.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Simplify using `only [CartierDual.evalAt_apply] at this`. Rewrite using `[this, hx, hy, smul_zero, smul_zero, add_zero]`. Conclude with `CartierDual.eq_of_forall_apply (R := K) fun φ => by rw [hall φ, map_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_cobOne_eq_zero_of_dUnit_eq_zero : ∀ (p : ℕ) [Fact p.Prime] (K H : Type) [Field K] [CharP K p] [CommRing H]
     [HopfAlgebra K H] [IsCocomm K H] [Module.Finite K H], (∀ a ∈ augIdeal K H, a ^ p = 0) →

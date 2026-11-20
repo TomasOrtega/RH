@@ -12,9 +12,9 @@ namespace Formalism.L2.S.Pv.EnergyAbs
 variable {G : Type} [Group G] [MeasurableSpace G]
 
 /- English proof (translation)
-Establish `hsec : ∀ s, Measurable (f s)` using `fun s => hf.comp (by fun_prop : Measurable (fun s' : G => (s, s')))`. Establish `hin : ∀ s ∈ E, c * μS' E' ≤ ∫⁻ s', f s s' ∂μS'`. Introduce `s hs`. Combine the equalities or inequalities in the displayed calculation. Establish `hg : Measurable (fun s => ∫⁻ s', f s s' ∂μS')` using `hf.lintegral_prod_right'`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem lintegral_ge_rect {μS μS' : Measure G} [SFinite μS'] (f : G → G → ℝ≥0∞)
     (hf : Measurable (fun p : G × G => f p.1 p.2)) (E E' : Set G) (c : ℝ≥0∞)
@@ -34,7 +34,7 @@ theorem lintegral_ge_rect {μS μS' : Measure G} [SFinite μS'] (f : G → G →
 def folInt (Ω K : Set G) : Set G := {t | t ∈ Ω ∧ ∀ k ∈ K, k * t ∈ Ω}
 
 /- English proof (translation)
-Establish `e : (μS.map (MeasurableEquiv.inv G)) B = μS ((MeasurableEquiv.inv G) ⁻¹' B)` using `MeasurableEquiv.map_apply _ _`. Establish `hm : μS.map (MeasurableEquiv.inv G) = μS` using `hinv`. Rewrite `e` using `[hm]`. Conclude with `e.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measure_inv_preimage {μS : Measure G} [MeasurableInv G] (hinv : μS.map (fun x => x⁻¹) = μS)
     (B : Set G) : μS {s | s⁻¹ ∈ B} = μS B := by
@@ -45,9 +45,9 @@ theorem measure_inv_preimage {μS : Measure G} [MeasurableInv G] (hinv : μS.map
   exact e.symm
 
 /- English proof (translation)
-Establish `hfin : ∀ n, a n / b n ≠ ⊤` using `fun n => ENNReal.div_ne_top (ne_top_of_le_ne_top (hbt n).ne (hab n)) (hb0 n).ne'`. Establish `hfun : (fun n => a n / b n) = fun n => ENNReal.ofReal ((a n).toReal / (b n).toReal)`. Use function extensionality and compare the values at `n`. Rewrite using `[← ENNReal.toReal_div, ENNReal.ofReal_toReal (hfin n)]`. Rewrite using `[hfun, ← ENNReal.ofReal_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ENNReal.tendsto_ofReal h`.
+A detailed English derivation is pending.
 -/
 theorem tendsto_ratio_ennreal {a b : ℕ → ℝ≥0∞} (hb0 : ∀ n, 0 < b n) (hbt : ∀ n, b n < ⊤)
     (hab : ∀ n, a n ≤ b n) (h : Tendsto (fun n => (a n).toReal / (b n).toReal) atTop (𝓝 1)) :
@@ -61,15 +61,15 @@ theorem tendsto_ratio_ennreal {a b : ℕ → ℝ≥0∞} (hb0 : ∀ n, 0 < b n) 
   exact ENNReal.tendsto_ofReal h
 
 /- English proof (translation)
-Use `set L := liminf (fun n => (μS (Ω n) * μS' (Ω' n))⁻¹ * ∫⁻ s, ∫⁻ s', f n s s' ∂μS' ∂μS) atTop with hL`. Establish `step : ∀ ε : ℝ, 0 < ε → ENNReal.ofReal ((max (Real.sqrt h - ε) 0) ^ 2) ≤ L`. Introduce `ε hε`. Take `⟨K, K', hK, hK', hf'⟩` from `key ε hε`. Use `set c := ENNReal.ofReal ((max (Real.sqrt h - ε) 0) ^ 2) with hc`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlim : Tendsto (fun n => c * ((μS (folInt (Ω n) K) / μS (Ω n)) * (μS' (folInt (Ω' n) K') / μS' (Ω' n)))) atTop (𝓝 c)`. Establish `h1` using `ENNReal.Tendsto.mul hK (Or.inl one_ne_zero) hK' (Or.inl one_ne_zero)`. Establish `h2` using `ENNReal.Tendsto.const_mul h1 (a := c) (Or.inr ENNReal.ofReal_ne_top)`. Rewrite `h2` using `[mul_one, mul_one]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hL, ← hlim.liminf_eq]`. Use `liminf_le_liminf (Eventually.of_forall fun n => ?_)` and prove the remaining obligations. Establish `hA0` using `(hΩ0 n).ne'`. Establish `hAt` using `(hΩt n).ne`. Establish `hmain` using `lintegral_ge_rect (μS := μS) (μS' := μS') (f n) (hf n) {s | s⁻¹ ∈ folInt (Ω n) K} {s' | s'⁻¹ ∈ folInt (Ω' n) K'} c (fun s hs s' hs' => hf' n s s' hs hs')`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite `hmain` using `[measure_inv_preimage hinv, measure_inv_preimage hinv']`. Rewrite using `[ENNReal.mul_inv (Or.inl hA0) (Or.inl hAt), div_eq_mul_inv, div_eq_mul_inv]`. Combine the equalities or inequalities in the displayed calculation. Establish `hcont : Continuous (fun ε : ℝ => ENNReal.ofReal ((max (Real.sqrt h - ε) 0) ^ 2))` using `ENNReal.continuous_ofReal.comp (((continuous_const.sub continuous_id).max continuous_const).pow 2)`. Establish `h0 : ENNReal.ofReal ((max (Real.sqrt h - 0) 0) ^ 2) = ENNReal.ofReal h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sub_zero, max_eq_left (Real.sqrt_nonneg h), Real.sq_sqrt hh]`. Establish `hg : Tendsto (fun ε : ℝ => ENNReal.ofReal ((max (Real.sqrt h - ε) 0) ^ 2)) (𝓝[>] 0) (𝓝 (ENNReal.ofReal h))`. Rewrite using `[← h0]`. Conclude with `(hcont.tendsto 0).mono_left nhdsWithin_le_nhds`. Conclude with `le_of_tendsto hg (eventually_nhdsWithin_of_forall fun ε hε => step ε hε)`.
+A detailed English derivation is pending.
 -/
 theorem liminf_lower {μS μS' : Measure G} [SFinite μS'] [MeasurableInv G]
     (hinv : μS.map (fun x => x⁻¹) = μS) (hinv' : μS'.map (fun x => x⁻¹) = μS')

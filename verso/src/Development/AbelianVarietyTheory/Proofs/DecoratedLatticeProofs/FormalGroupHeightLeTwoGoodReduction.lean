@@ -24,7 +24,7 @@ open Formalism.L2.Th1.F Formalism.L2.Th1.F.Taylor Formalism.L2.Th1.C Formalism.L
 def shiftFn (L : PeriodPair) (c z : ℂ) : ℂ := 1 + z * z * (L.weierstrassPExcept 0 z + -c)
 
 /- English proof (translation)
-Establish `h` using `L.analyticAt_weierstrassPExcept 0`. Unfold `shiftFn`. Use `fun_prop`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem analyticAt_shiftFn (L : PeriodPair) (c : ℂ) : AnalyticAt ℂ (shiftFn L c) 0 := by
   have h := L.analyticAt_weierstrassPExcept 0
@@ -32,7 +32,7 @@ theorem analyticAt_shiftFn (L : PeriodPair) (c : ℂ) : AnalyticAt ℂ (shiftFn 
   fun_prop
 
 /- English proof (translation)
-Establish `h` using `L.analyticAt_weierstrassPExcept 0`. Unfold `shiftFn`. Rewrite using `[taylor0_add (by fun_prop) (by fun_prop), taylor0_mul (by fun_prop) (by fun_prop), taylor0_mul (by fun_prop) (by fun_prop), taylor0_add h (by fun_prop), taylor0_const, taylor0_const, taylor0_id]`. Unfold `wpShift pSeries`. Simplify using `only [map_one, map_neg]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -46,7 +46,7 @@ theorem taylor0_shiftFn (L : PeriodPair) (c : ℂ) : taylor0 (shiftFn L c) = wpS
   ring
 
 /- English proof (translation)
-Establish `h` using `L.weierstrassPExcept_add 0 z`. Simplify using `only [ZeroMemClass.coe_zero, sub_zero] at h`. Unfold `shiftFn`. Rewrite using `[← h]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -60,7 +60,7 @@ theorem shiftFn_eq (L : PeriodPair) (c z : ℂ) (hz : z ≠ 0) :
   ring
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simp only [Finset.prod_empty]; exact ⟨analyticAt_const, by rw [taylor0_const, map_one]⟩`. Consider the case `insert P S hP ih`. Simplify using `only [Finset.prod_insert hP]`. Conclude with `⟨(analyticAt_shiftFn L _).mul ih.1, by rw [taylor0_mul (analyticAt_shiftFn L _) ih.1, ih.2, taylor0_shiftFn]⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem taylor0_prod_shiftFn (L : PeriodPair) (S : Finset ℂ) (a : ℂ → ℂ) :
     AnalyticAt ℂ (fun z => ∏ P ∈ S, shiftFn L (a P) z) 0 ∧
@@ -74,11 +74,11 @@ theorem taylor0_prod_shiftFn (L : PeriodPair) (S : Finset ℂ) (a : ℂ → ℂ)
       by rw [taylor0_mul (analyticAt_shiftFn L _) ih.1, ih.2, taylor0_shiftFn]⟩
 
 /- English proof (translation)
-Establish `hc : Filter.Tendsto (fun z : ℂ => n * z) (nhds 0) (nhds 0)`. Establish `: Continuous fun z : ℂ => n * z` using `by fun_prop`. Simplify using `using this.tendsto 0`. Establish `ha : AnalyticAt ℂ (fun z => shiftFn L e (n * z)) 0` using `AnalyticAt.comp_of_eq (g := shiftFn L e) (f := fun z : ℂ => n * z) (analyticAt_shiftFn L e) (by fun_prop) (by simp)`. Rewrite using `[← (taylor0_prod_shiftFn L S a).2, ← (taylor0_prod_shiftFn L S b).2, ← taylor0_shiftFn, ← taylor0_rescale n (analyticAt_shiftFn L e), ← taylor0_mul ha (taylor0_prod_shiftFn L S a).1, ← taylor0_mul (analyticAt_shiftFn L e) (taylor0_prod_shiftFn L S b).1]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `taylor0_congr` to reduce the goal to its premises. Use `filter_upwards [hc.eventually (L.compl_lattice_sdiff_singleton_mem_nhds 0)] with z hz`. Distinguish the cases in `h0 : z = 0`. Simplify using `[h0, shiftFn]`. Establish `hnz : n * z ≠ 0` using `mul_ne_zero hn h0`.
+Reduce the claim to the hypotheses of an applicable result. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : n * z ∉ L.lattice` using `fun hm => hz ⟨hm, hnz⟩`. Simplify using `only [shiftFn_eq L _ _ h0, shiftFn_eq L _ _ hnz, Finset.prod_mul_distrib]`. Take the linear combination `(z ^ 2 * ∏ P ∈ S, z ^ 2) * h z h1`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem weierstrassP_nat_mul_product_series_identity (L : PeriodPair) (n e : ℂ) (hn : n ≠ 0) (S : Finset ℂ) (a b : ℂ → ℂ)
     (h : ∀ z, n * z ∉ L.lattice →
@@ -108,14 +108,14 @@ section Formal
 variable {K : Type} [Field K]
 
 /- English proof (translation)
-Simplify using `[wpShift]`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_wpShift {K' : Type} [Field K'] (φ : K →+* K') (p : K⟦X⟧) (c : K) :
     PowerSeries.map φ (wpShift p c) = wpShift (PowerSeries.map φ p) (φ c) := by
   simp [wpShift]
 
 /- English proof (translation)
-Use extensionality with `n`. Simplify using `[coeff_rescale]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_rescale' {K' : Type} [Field K'] (φ : K →+* K') (p : K⟦X⟧) (c : K) :
     PowerSeries.map φ (rescale c p) = rescale (φ c) (PowerSeries.map φ p) := by
@@ -123,15 +123,15 @@ theorem map_rescale' {K' : Type} [Field K'] (φ : K →+* K') (p : K⟦X⟧) (c 
   simp [coeff_rescale]
 
 /- English proof (translation)
-Use `set v := mulBy l linv n with hv`. Establish `hsl` using `hs_of hL.1`. Establish `hsv : HasSubst v` using `hs_of (cc_mulBy hL n)`. Establish `h1 : ∀ x : K, X ^ 2 * subst l (wpShift p x) = (A - C x * X ^ 2) * l ^ 2` using `fun x => by`. Simplify using `using subst_wpShift hL.1 hX x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (substAlgHom hsl) h`. Simplify using `only [map_mul, map_prod, coe_substAlgHom] at h2`. Rewrite `h2` using `[subst_rescale hL, ← hv]`. Establish `h3 : v ^ 2 * subst v (subst l (wpShift p e)) = (A.subst v - C e * v ^ 2) * (C n * l) ^ 2`. Use `congrArg (subst v) (h1 e)` as an intermediate fact.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC : subst v (C e : K⟦X⟧) = (C e : K⟦X⟧)` using `subst_C _`. Rewrite `this` using `[subst_mul hsv, subst_mul hsv, subst_sub hsv, subst_mul hsv, subst_pow hsv, subst_pow hsv, subst_X hsv, hC, hv, subst_mulBy_l hL, ← hv]`. Then use the resulting hypothesis. Establish `h4 : ∀ c : σ → K, (∏ _P ∈ S, (X : K⟦X⟧) ^ 2) * ∏ P ∈ S, subst l (wpShift p (c P)) = (∏ P ∈ S, (A - C (c P) * X ^ 2)) * ∏ _P ∈ S, l ^ 2` using `fun c => by`. Rewrite using `[← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun P _ => h1 _`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hl0 : l ^ 2 * ∏ _P ∈ S, l ^ 2 ≠ 0` using `mul_ne_zero (pow_ne_zero _ (l_ne_zero hL)) (Finset.prod_ne_zero_iff.2 fun _ _ => pow_ne_zero _ (l_ne_zero hL))`. Apply `mul_right_cancel₀ hl0` to reduce the goal to its premises. Establish `ha` using `h4 a`. Establish `hb` using `h4 b`. Establish `he` using `h1 e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[map_pow]`. Use `set T := ∏ _P ∈ S, (X : K⟦X⟧) ^ 2`. Use `set Sa := ∏ P ∈ S, subst l (wpShift p (a P))`. Use `set Sb := ∏ P ∈ S, subst l (wpShift p (b P))`. Take the linear combination `(v ^ 2 * X ^ 2 * T) * h2 - X ^ 2 * T * Sa * h3 - X ^ 2 * ((A.subst v - C e * v ^ 2) * (C n * l) ^ 2) * ha + v ^ 2 * T * Sb * he + v ^ 2 * ((A - C e * X ^ 2) * l ^ 2) * hb`.
+A detailed English derivation is pending.
 -/
 theorem series_u {σ : Type} {p l linv A : K⟦X⟧} (hL : IsLogPair l linv) (hX : XIsWp p l A 0) (n e : K)
     (S : Finset σ) (a b : σ → K)
@@ -170,7 +170,7 @@ theorem series_u {σ : Type} {p l linv A : K⟦X⟧} (hL : IsLogPair l linv) (hX
     + v ^ 2 * ((A - C e * X ^ 2) * l ^ 2) * hb
 
 /- English proof (translation)
-Rewrite using `[Polynomial.eval₂_eq_sum_range' φ (Nat.lt_succ_of_le hq), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `hi' : i ≤ m` using `Nat.lt_succ_iff.1 (Finset.mem_range.1 hi)`. Rewrite using `[pow_sub₀ _ hy hi', div_pow]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem homog_field {F : Type} [Field F] (φ : K →+* F) (q : Polynomial K) (m : ℕ) (hq : q.natDegree ≤ m) (a y : F)
     (hy : y ≠ 0) :
@@ -182,13 +182,13 @@ theorem homog_field {F : Type} [Field F] (φ : K →+* F) (q : Polynomial K) (m 
   field_simp
 
 /- English proof (translation)
-Set `ψ` to `algebraMap K⟦X⟧ (FractionRing K⟦X⟧)`. Establish `hψ : Function.Injective ψ` using `IsFractionRing.injective _ _`. Establish `hy : ψ (X ^ 2) ≠ 0` using `(map_ne_zero_iff ψ hψ).2 (pow_ne_zero _ X_ne_zero)`. Establish `hd : (Polynomial.C d * ∏ P ∈ S, (Polynomial.X - Polynomial.C (c P))).natDegree ≤ m`. Use `(Polynomial.natDegree_C_mul_le _ _).trans ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Polynomial.natDegree_finsetProd_X_sub_C_eq_card, hm]`. Use `homog_field (ψ.comp C) _ m hd (ψ A) _ hy` as an intermediate fact. Apply `hψ` to reduce the goal to its premises. Simplify using `only [map_sum, map_mul, map_pow, map_prod, map_sub, pow_mul]`. Simplify using `only [RingHom.comp_apply, map_pow] at this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, Polynomial.eval₂_mul, Polynomial.eval₂_finsetProd, Polynomial.eval₂_C, ← hm, ← Finset.prod_const, mul_left_comm, ← Finset.prod_mul_distrib]`. Use `congr 1`. Use `Finset.prod_congr rfl fun P _ => ?_` and prove the remaining obligations. Rewrite `hy` using `[map_pow]`. Simplify using `only [Polynomial.eval₂_sub, Polynomial.eval₂_X, Polynomial.eval₂_C, RingHom.comp_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[mul_sub, mul_div_cancel₀ _ hy, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem homog_prod {σ : Type} (S : Finset σ) (d : K) (c : σ → K) (A : K⟦X⟧) (m : ℕ) (hm : S.card = m) :
     ∑ i ∈ Finset.range (m + 1),
@@ -215,11 +215,11 @@ theorem homog_prod {σ : Type} (S : Finset σ) (d : K) (c : σ → K) (A : K⟦X
 end Formal
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `_ ∈ Formalism.G.unitBall K`. Proceed by induction on `S using Finset.induction_on generalizing i with`. Consider the case `empty`. Rewrite using `[Finset.prod_empty, Polynomial.coeff_one]`. Use `split_ifs`.
+Express the relevant assertion in an equivalent form by its definition. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Use `exacts [one_mem _, zero_mem _]`. Consider the case `insert P S hP ih`. Rewrite using `[Finset.prod_insert hP, Polynomial.coeff_mul]`. Use `Subring.sum_mem _ fun x _ => mul_mem ?_ (ih (fun Q hQ => hc Q (Finset.mem_insert_of_mem hQ)) _)` and prove the remaining obligations. Establish `h : c P ∈ Formalism.G.unitBall K` using `hc P (Finset.mem_insert_self _ _)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[Polynomial.coeff_sub, Polynomial.coeff_X, Polynomial.coeff_C]`. Apply the tactic sequence `refine sub_mem ?_ ?_ <;> split_ifs`. Use `exacts [one_mem _, zero_mem _, h, zero_mem _]`.
+A detailed English derivation is pending.
 -/
 theorem coeff_prod_le {K : Type} [NormedField K] [IsUltrametricDist K] {σ : Type} (S : Finset σ) (c : σ → K)
     (hc : ∀ P ∈ S, ‖c P‖ ≤ 1) (i : ℕ) : ‖(∏ P ∈ S, (Polynomial.X - Polynomial.C (c P))).coeff i‖ ≤ 1 := by
@@ -239,7 +239,7 @@ theorem coeff_prod_le {K : Type} [NormedField K] [IsUltrametricDist K] {σ : Typ
     exacts [one_mem _, zero_mem _, h, zero_mem _]
 
 /- English proof (translation)
-Establish `h1 : ‖((2 : ℕ) : ℚ_[l])‖ = 1`. Rewrite using `[Padic.norm_natCast_eq_one_iff, Nat.coprime_primes Fact.out Nat.prime_two]`. Use linear arithmetic over natural numbers and integers. Establish `h2 : (2 : ℂ_[l]) = algebraMap ℚ_[l] ℂ_[l] ((2 : ℕ) : ℚ_[l])` using `by simp [map_ofNat]`. Rewrite using `[h2, norm_algebraMap', h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_two (l : ℕ) [Fact l.Prime] (hl : 5 ≤ l) : ‖(2 : ℂ_[l])‖ = 1 := by
   have h1 : ‖((2 : ℕ) : ℚ_[l])‖ = 1 := by
@@ -249,9 +249,9 @@ theorem norm_two (l : ℕ) [Fact l.Prime] (hl : 5 ≤ l) : ‖(2 : ℂ_[l])‖ =
   rw [h2, norm_algebraMap', h1]
 
 /- English proof (translation)
-Establish `hL` using `logPair W`. Establish `h0` using `((Formalism.L2.Th1.A.zSerSpec K W).1 (n : ℤ)).1`. Establish `h1` using `Formalism.L2.Th1.A.zSerLog K W (n : ℤ)`. Rewrite `h1` using `[Int.cast_natCast]`. Unfold `mulBy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[← h1, ← subst_comp_subst_apply (hs_of hL.1) (hs_of h0), hL.2.2.2.1, subst_X (hs_of h0)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mulBy_eq_zSer {K : Type} [Field K] [CharZero K] (W : WeierstrassCurve K) (n : ℕ) :
     mulBy (Formalism.L2.Th1.A.logSer W) (Formalism.L2.Th1.A.expSer W) (n : K) = Formalism.L2.Th1.A.zSer W (n : ℤ) := by
@@ -263,9 +263,9 @@ theorem mulBy_eq_zSer {K : Type} [Field K] [CharZero K] (W : WeierstrassCurve K)
   rw [← h1, ← subst_comp_subst_apply (hs_of hL.1) (hs_of h0), hL.2.2.2.1, subst_X (hs_of h0)]
 
 /- English proof (translation)
-Take `⟨j, rfl⟩` from `hk`. Establish `: ((2 * j + 1 : ℕ) : ℂ) * (s + P) - s = (j : ℤ) • (2 * s) + ((2 * j + 1 : ℕ) : ℂ) * P`. Simplify using `only [zsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[this]`. Conclude with `add_mem (Submodule.smul_mem _ _ hs) hP`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem odd_mul_sub_mem (L : PeriodPair) {k : ℕ} (hk : Odd k) {s P : ℂ} (hs : 2 * s ∈ L.lattice)
     (hP : (k : ℂ) * P ∈ L.lattice) : (k : ℂ) * (s + P) - s ∈ L.lattice := by
@@ -276,56 +276,50 @@ theorem odd_mul_sub_mem (L : PeriodPair) {k : ℕ} (hk : Odd k) {s P : ℂ} (hs 
   exact add_mem (Submodule.smul_mem _ _ hs) hP
 
 /- English proof (translation)
-Use `L.weierstrassP_add_coe w ⟨z - w, h⟩` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem wp_congr (L : PeriodPair) {z w : ℂ} (h : z - w ∈ L.lattice) : L.weierstrassP z = L.weierstrassP w := by
   have := L.weierstrassP_add_coe w ⟨z - w, h⟩
   simpa using this
 
 /- English proof (translation)
-Simplify `L.lattice.smul_mem (k : ℤ) h` using `[zsmul_eq_mul]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem nat_mul_mem (L : PeriodPair) (k : ℕ) {z : ℂ} (h : z ∈ L.lattice) : (k : ℂ) * z ∈ L.lattice := by
   simpa [zsmul_eq_mul] using L.lattice.smul_mem (k : ℤ) h
 
 /- English proof (translation)
-Use `set W := Formalism.L2.Th1.A.shortW (ι L.g₂) (ι L.g₃) with hW`. Establish `hodd : Odd l` using `(Fact.out : l.Prime).odd_of_ne_two (by omega)`. Establish `hl0 : (l : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Establish `h4 : ‖(4 : ℂ_[l])‖ = 1`. Rewrite using `[show (4 : ℂ_[l]) = 2 * 2 by norm_num, norm_mul, norm_two l hl, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ha4 : ‖W.a₄‖ ≤ 1`. Express the relevant statement in the definitionally equal form `‖-ι L.g₂ / 4‖ ≤ 1`. Rewrite using `[norm_div, norm_neg, h4, div_one]` and apply the resulting hypothesis. Establish `ha6 : ‖W.a₆‖ ≤ 1`. Express the relevant statement in the definitionally equal form `‖-ι L.g₃ / 4‖ ≤ 1`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[norm_div, norm_neg, h4, div_one]` and apply the resulting hypothesis. Establish `hz : ‖(0 : ℂ_[l])‖ ≤ 1` using `by simp`. Take `⟨hb2, -, -, hD⟩` from `Formalism.L2.Th1.A.shortInv ℂ_[l] (ι L.g₂) (ι L.g₃)`. Establish `hInt : Formalism.L2.Th1.E.IntCurve (Formalism.L2.Th1.E.curveL l L ι)` using `⟨hz, hz, hz, ha4, ha6, by rw [← hΔ, ← hD]; rfl⟩`. Take `⟨-, hx, -, -, -, -, -, hzs, -⟩` from `Formalism.L2.Th1.A.coeffMem ℂ_[l] W (Formalism.G.unitBall ℂ_[l]) hz hz hz ha4 ha6`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key : ∀ s P : ℂ, s ∉ L.lattice → 2 * s ∈ L.lattice → (l : ℂ) * P ∈ L.lattice → s + P ∉ L.lattice ∧ ‖ι (L.weierstrassP (s + P))‖ ≤ 1`. Introduce `s P hs h2s hP`. Establish `hm` using `odd_mul_sub_mem L hodd h2s hP`. Establish `hn : (l : ℂ) * (s + P) ∉ L.lattice` using `fun h => hs (by simpa using sub_mem h hm)`. Use `⟨fun h => hn (nat_mul_mem L l h), GlobalTheory.T.weierstrassP_integral_of_mul_integral_good_reduction L l hl ι h2 h3 hΔ _ l hn ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[wp_congr L hm, ← Formalism.L2.Th1.E.AnaSys.px_ptOf l L ι s hs]`. Conclude with `(Formalism.L2.Th1.E.ptOfInt l L ι hInt s 2 two_pos (fun h => by have := Nat.le_of_dvd two_pos h; omega) (by simpa using h2s) hs).1`. Use `set t := L.ω₁ / 2 with ht`. Use `set t' := L.ω₂ / 2 with ht'`. Establish `ht0 : t ∉ L.lattice` using `L.ω₁_div_two_notMem_lattice`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht0' : t' ∉ L.lattice` using `L.ω₂_div_two_notMem_lattice`. Establish `ht2 : 2 * t ∈ L.lattice` using `by rw [ht, mul_div_cancel₀ _ two_ne_zero]; exact L.ω₁_mem_lattice`. Establish `ht2' : 2 * t' ∈ L.lattice` using `by rw [ht', mul_div_cancel₀ _ two_ne_zero]; exact L.ω₂_mem_lattice`. Establish `hp0 : t' + t ∉ L.lattice` using `fun h => by`. Use `(PeriodPair.mul_ω₁_add_mul_ω₂_mem_lattice (L := L) (α := 1 / 2) (β := 1 / 2)).1 (by convert h using 1; rw [ht, ht']; push_cast; ring)` as an intermediate fact.
+Establish an intermediate fact. Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Evaluate the numerical expressions using `at this`. Establish `hm0 : t' - t ∉ L.lattice` using `fun h => hp0 (by convert add_mem h ht2 using 1; ring)`. Establish `hp2 : 2 * (t' + t) ∈ L.lattice` using `by rw [mul_add]; exact add_mem ht2' ht2`. Establish `hm2 : 2 * (t' - t) ∈ L.lattice` using `by rw [mul_sub]; exact sub_mem ht2' ht2`. Establish `hk0 : (l : ℂ) * 0 ∈ L.lattice` using `by simp`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `unit : ∀ P : ℂ, (l : ℂ) * P ∈ L.lattice → ‖ι (L.weierstrassP t') - ι (L.weierstrassP (t + P))‖ = 1`. Introduce `P hP`. Establish `k1` using `key t' 0 ht0' ht2' hk0`. Establish `k2` using `key t P ht0 ht2 hP`. Establish `k3` using `key _ P hp0 hp2 hP`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `k4` using `key _ (-P) hm0 hm2 (by simpa using hP)`. Rewrite `k1` using `[add_zero]`. Rewrite `k3` using `[add_assoc]`. Rewrite `k4` using `[show t' - t + -P = t' - (t + P) by ring]`. Conclude with `GlobalTheory.Honda.norm_weierstrassP_sub_eq_one_of_good L l hl ι h2 h3 hΔ _ _ k1.1 k2.1 k3.1 k4.1 k1.2 k2.2 k3.2 k4.2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hst : MulStable L l` using `fun ω h => nat_mul_mem L l h`. Take `⟨S, hS⟩` from `kerRepsExist L l hl0 hst`. Establish `hcard : S.card + 1 = l ^ 2`. Use `kerRepsCard L l S hl0 hst hS` as an intermediate fact. Rewrite `this` using `[Complex.normSq_natCast, ← sq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `this` after adjusting the coercions. Establish `h0S : (0 : ℂ) ∉ S` using `fun h => (hS.1 0 h).2 (zero_mem _)`. Establish `hprod` using `GlobalTheory.T.weierstrassP_odd_mul_sub_twoTorsion_product L l S t hodd hS ht0 ht2`. Establish `hins : ∀ P ∈ insert (0 : ℂ) S, (l : ℂ) * P ∈ L.lattice`. Introduce `P hP`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `Finset.mem_insert.1 hP with rfl | hP` into its components or cases. Use `exacts [hk0, (hS.1 P hP).1]`. Establish `hzser` using `congrArg (PowerSeries.map (ι : ℂ →+* ℂ_[l])) (weierstrassP_nat_mul_product_series_identity L l _ hl0 S _ _ hprod)`. Establish `hbr : Formalism.L2.Th1.A.wpReg W = PowerSeries.map (ι : ℂ →+* ℂ_[l]) (pSeries L)` using `Formalism.L2.Th1.E.wpBridge l L ι`. Simplify using `only [map_mul, map_prod, map_rescale', map_wpShift, ← hbr, map_natCast] at hzser`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hX : XIsWp (Formalism.L2.Th1.A.wpReg W) (Formalism.L2.Th1.A.logSer W) (Formalism.L2.Th1.A.xS W) 0`. Use `xIsWp W` as an intermediate fact. Rewrite `this` using `[hb2, zero_div]`. Then use the resulting hypothesis. Establish `hu` using `series_u (logPair W) hX _ _ S _ _ hzser`. Rewrite using `[← hcard]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `GlobalTheory.T.multiplication_series_unit_coeff_norm_le ℂ_[l] (Formalism.L2.Th1.A.xS W) _ (ι (L.weierstrassP t)) (ι (L.weierstrassP t')) S.card (Polynomial.C ((l : ℂ_[l]) ^ 2) * ∏ P ∈ S, (Polynomial.X - Polynomial.C (ι (L.weierstrassP P)))) (Polynomial.C 1 * ∏ P ∈ insert 0 S, (Po …` and prove the remaining obligations. Rewrite using `[mulBy_eq_zSer]`. Conclude with `hzs l`. Simplify using `using (key t 0 ht0 ht2 hk0).2`. Simplify using `using (key t' 0 ht0' ht2' hk0).2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_one, one_mul]`. Conclude with `Polynomial.monic_prod_of_monic _ _ fun _ _ => Polynomial.monic_X_sub_C _`. Rewrite using `[map_one, one_mul, Polynomial.natDegree_finsetProd_X_sub_C_eq_card, Finset.card_insert_of_notMem h0S]`. Rewrite using `[map_one, one_mul]`. Conclude with `coeff_prod_le _ _ fun P hP => (key t P ht0 ht2 (hins P hP)).2`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `(Polynomial.natDegree_C_mul_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[Polynomial.natDegree_finsetProd_X_sub_C_eq_card]`. Establish `hm` using `odd_mul_sub_mem L hodd ht2' hk0`. Rewrite `hm` using `[add_zero]`. Establish `h` using `congrArg ι (hprod t' fun h => ht0' (by simpa using sub_mem h hm))`.
-
-Rewrite `h` using `[wp_congr L hm]`. Simplify using `only [map_mul, map_sub, map_prod, map_pow, map_natCast] at h`. Establish `hu0` using `unit 0 hk0`. Rewrite `hu0` using `[add_zero]`. Establish `hne : ι (L.weierstrassP t') - ι (L.weierstrassP t) ≠ 0` using `fun h => by simp [h] at hu0`.
-
-Rewrite `h` using `[mul_right_comm, mul_comm]`. Simplify using `only [Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_prod, Polynomial.eval_sub, Polynomial.eval_X]`. Rewrite using `[mul_left_cancel₀ hne h, norm_prod]`. Conclude with `Finset.prod_eq_one fun P hP => unit P (hS.1 P hP).1`. Rewrite using `[homog_prod S _ _ _ _ rfl, homog_prod (insert 0 S) _ _ _ (S.card + 1) (Finset.card_insert_of_notMem h0S), Finset.prod_insert h0S, add_zero, map_one, one_mul]`.
-
-Conclude with `hu`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem height_le_two (L : PeriodPair) (l : ℕ) [Fact l.Prime] (hl : 5 ≤ l) (ι : ℂ ≃+* ℂ_[l])
     (h2 : ‖ι L.g₂‖ ≤ 1) (h3 : ‖ι L.g₃‖ ≤ 1) (hΔ : ‖ι L.g₂ ^ 3 - 27 * ι L.g₃ ^ 2‖ = 1) :

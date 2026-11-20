@@ -19,9 +19,9 @@ end Kernel
 end Extra
 
 /- English proof (translation)
-Introduce `K _ _ R l linv ph a b hl hu h0 h3 hN h2 hAdj hinv hab`. Use `jetExp' K R l linv ph hl h0 ?_` and prove the remaining obligations. Introduce `i hi`. Break down `Nat.lt_or_ge i 3 with h | h` into its components or cases. Establish `: i = 1 ∨ i = 2` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Break down `this with rfl | rfl` into its components or cases. Conclude with `jetOne' K R l linv ph hl hu h0 hN h2`. Establish `e` using `R.mul_mem hinv (jetAdjoint' K R l linv ph a b hl h0 hAdj)`. Rewrite `e` using `[← mul_assoc, inv_mul_cancel₀ (sub_ne_zero.2 hab), one_mul]`. Then use the resulting hypothesis. Conclude with `h3 i h`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem all_jets_integral : JetsAll := by
   intro K _ _ R l linv ph a b hl hu h0 h3 hN h2 hAdj hinv hab

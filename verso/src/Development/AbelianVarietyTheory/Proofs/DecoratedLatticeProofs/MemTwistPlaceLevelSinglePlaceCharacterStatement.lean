@@ -12,7 +12,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.StepData GlobalTheory.SplitWeil ValuativeRel
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.LevGlue.mem_levS_datY_single` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FMemTwistPlaceLevelSinglePlaceCharacter.lean&line=16#L16)
 -/

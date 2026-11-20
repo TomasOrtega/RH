@@ -10,11 +10,11 @@ open MvPolynomial MeasureTheory Filter Topology Matrix ComplexSets
 open scoped ContDiff
 
 /- English proof (translation)
-Introduce `n e h W g ℓ A F G hW hg hℓ hA hF0 hG0 hF hG`. Take `⟨C, hC0, hC⟩` from `hB n e h W g ℓ A F G hW hg hℓ hA hF0 hG0 hF hG`. Take `⟨D, hDk⟩` from `hD n e h W g ℓ A hW hg hℓ hA`. Establish `h1 : Tendsto (fun k : ℕ => D / ((k : ℝ) + 1)) atTop (𝓝 0)` using `tendsto_const_nhds.div_atTop (tendsto_natCast_atTop_atTop.atTop_add tendsto_const_nhds)`. Establish `hlim : Tendsto (fun k : ℕ => C * (D / ((k : ℝ) + 1) + Real.sqrt (D / ((k : ℝ) + 1)))) atTop (𝓝 0)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using (h1.add h1.sqrt).const_mul C`. Use `squeeze_zero_norm (fun k => ?_) hlim` and prove the remaining obligations. Rewrite using `[Real.norm_eq_abs]`. Use `(hC _ (SliceCut.contDiff h k) (SliceCut.hasCompactSupport h k)).trans ?_` and prove the remaining obligations. Take `⟨hm, he⟩` from `hDk k`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `gcongr`.
+A detailed English derivation is pending.
 -/
 theorem SliceCutBoundary.proof (hB : SliceBoundaryBound.Statement) (hD : SliceCutDecay.Statement) :
     SliceCutBoundary.Statement := by

@@ -14,15 +14,13 @@ namespace PowerBlockArith
 variable {K : Type} [Fintype K] {ι : K → Type}
 
 /- English proof (translation)
-Establish `hZ : ∀ s ∈ chartRingZ y c, s ∈ blockFnField y`. Introduce `s hs`. Establish `: chartRingZ y c ≤ (blockFnField y).toSubalgebra.restrictScalars ℤ`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨p, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `IntermediateField.subset_adjoin ℚ _ ⟨p, ⟨p.1, c p.1⟩, rfl, rfl⟩`. Conclude with `this hs`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[blockFnField, IntermediateField.adjoin_le_iff]`. Introduce and unpack `t ⟨⟨_ | k, i⟩, ⟨_ | k', i'⟩, hpq, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP0 : (∏ k, y ⟨k, c k⟩ ^ (-((m : ℤ) * a k))) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => zpow_ne_zero _ (hc k)`. Establish `e : addBlock y v ⟨none, i⟩ / addBlock y v ⟨none, i'⟩ = (v i * ∏ k, y ⟨k, c k⟩ ^ (-((m : ℤ) * a k))) / (v i' * ∏ k, y ⟨k, c k⟩ ^ (-((m : ℤ) * a k)))`. Rewrite using `[mul_div_mul_right _ _ hP0]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `div_mem (hZ _ (hv i c hc)) (hZ _ (hv i' c hc))`. Conclude with `absurd hpq (by simp)`. Conclude with `absurd hpq (by simp)`. Take `rfl : k = k'` from `Option.some_injective _ hpq`. Conclude with `IntermediateField.subset_adjoin ℚ _ ⟨⟨k, i⟩, ⟨k, i'⟩, rfl, rfl⟩`.
-
-Rewrite using `[blockFnField, IntermediateField.adjoin_le_iff]`. Introduce and unpack `t ⟨p, q, hpq, rfl⟩`. Conclude with `IntermediateField.subset_adjoin ℚ _ ⟨(⟨some p.1, p.2⟩ : Σ k, addIdx ι N k), (⟨some q.1, (hpq ▸ q.2 : ι q.1)⟩ : Σ k, addIdx ι N k), by simp [hpq], by cases p; cases q; simp at hpq; subst hpq; rfl⟩`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem blockFnField_addBlock {Ω : Type} [Field Ω] [CharZero Ω] {y : (Σ k, ι k) → Ω} {a : K → ℤ} {m N : ℕ}
     {v : Fin N → Ω} (c : ∀ k, ι k) (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) (hv : ∀ j, v j ∈ chartLat y a m) :
@@ -60,13 +58,11 @@ end PowerBlockArith
 open PowerBlockArith in
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ _ y D a m N v hy hv hgen`. Establish `hnz : ∀ k, ∃ i, y ⟨k, i⟩ ≠ 0` using `fun k => by`. Take `⟨i, hi⟩` from `hy.2.1.2.2 k`. Use `⟨i, fun h0 => hi ?_⟩` and prove the remaining obligations. Use `show mConeMap _ (X _) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[mConeMap, h0]`. Use `choose c hc using hnz`. Choose the witnesses or unpack the hypotheses as in `⟨j₀, hj₀⟩ : ∃ j, v j ≠ 0 := by`. Take `⟨u, -, hu⟩` from `hgen c hc`. Assume the negation of the conclusion as `h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [not_exists, not_not] at h`. Simplify using `[h] at hu`. Conclude with `hF K ι (Option K) (addIdx ι N) Ω y (addBlock y v) (D + 1) ⟨none⟩ (fun k => by`. Consider the cases of `k with`. Consider the case `none => exact ⟨j₀, hj₀⟩`.
-
-Consider the case `some k => exact ⟨c k, hc k⟩)`. Use the proof step `(blockFnField_addBlock c hc hv).symm hy`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem PowerBlockArith.proof (hF : CoordArithOfFnField.Statement) : PowerBlockArith.Statement := by
   intro K _ ι _ Ω _ _ y D a m N v hy hv hgen

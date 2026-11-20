@@ -10,19 +10,17 @@ def Pins (l : ℕ) {G : Type} [Group G] [TopologicalSpace G] (I : Subgroup G) (S
     (∀ g ∈ S, ψ g = 1) → ∀ g ∈ I, ψ g = 1
 
 /- English proof (translation)
-Use `haveI : CharP R l := (CharP.charP_iff_prime_eq_zero hl.out).2 h0`. Take `⟨k, M, hlM, rfl⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hN l hl.out.ne_one`. Establish `hz1 : x ^ l ^ k - 1 = (x - 1) ^ l ^ k` using `by rw [sub_pow_char_pow, one_pow]`. Establish `hzM : (x ^ l ^ k) ^ M = 1` using `by rw [← pow_mul]; exact h`. Establish `hMu : IsUnit (M : R)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : IsUnit (M : ZMod l)` using `isUnit_iff_ne_zero.mpr (by rwa [Ne, ZMod.natCast_eq_zero_iff])`. Simplify using `using hu.map (ZMod.castHom (dvd_refl l) R)`. Establish `hzm : x ^ l ^ k - 1 ∈ maximalIdeal R`. Rewrite using `[hz1]`. Conclude with `Ideal.pow_mem_of_mem _ hx _ (pow_pos hl.out.pos _)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS : IsUnit (∑ i ∈ Finset.range M, (x ^ l ^ k) ^ i)`. Establish `key : (∑ i ∈ Finset.range M, (x ^ l ^ k) ^ i) - (M : R) ∈ maximalIdeal R`. Establish `e : (∑ i ∈ Finset.range M, (x ^ l ^ k) ^ i) - (M : R) = ∑ i ∈ Finset.range M, ((x ^ l ^ k) ^ i - 1)`. Simplify using `[Finset.sum_sub_distrib]`. Rewrite using `[e]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `Ideal.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `sub_dvd_pow_sub_pow (x ^ l ^ k) 1 i`. Rewrite `hc` using `[one_pow]`. Rewrite using `[hc]`. Conclude with `Ideal.mul_mem_right _ _ hzm`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `hns`. Establish `hmem : (∑ i ∈ Finset.range M, (x ^ l ^ k) ^ i) ∈ maximalIdeal R`. Rewrite using `[mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `hns`. Establish `hM : (M : R) ∈ maximalIdeal R`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `Ideal.sub_mem _ hmem key` as an intermediate fact. Simplify using `using this`. Rewrite `hM` using `[mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `hM hMu`. Establish `hz1' : x ^ l ^ k = 1`.
-
-Establish `h2 : (x ^ l ^ k - 1) * ∑ i ∈ Finset.range M, (x ^ l ^ k) ^ i = 0`. Rewrite using `[mul_comm, geom_sum_mul, hzM, sub_self]`. Conclude with `sub_eq_zero.mp (hS.mul_left_eq_zero.mp h2)`. Establish `h3 : (x - 1) ^ l ^ k = 0` using `by rw [← hz1, hz1', sub_self]`. Conclude with `sub_eq_zero.mp (pow_eq_zero_iff (pow_ne_zero _ hl.out.ne_zero) |>.mp h3)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_one_of_pow {l : ℕ} [hl : Fact l.Prime] {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] (h0 : (l : R) = 0)
     {x : R} (hx : x - 1 ∈ maximalIdeal R) {N : ℕ} (hN : N ≠ 0) (h : x ^ N = 1) : x = 1 := by
@@ -62,9 +60,9 @@ theorem eq_one_of_pow {l : ℕ} [hl : Fact l.Prime] {R : Type} [CommRing R] [IsD
   exact sub_eq_zero.mp (pow_eq_zero_iff (pow_ne_zero _ hl.out.ne_zero) |>.mp h3)
 
 /- English proof (translation)
-Unfold `AdicCont`. Use `forall_congr' fun N => ⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Use `IsLocallyConstant.desc _ Units.val ?_ fun a b hab => Units.ext hab` and prove the remaining obligations. Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Use `h.comp Units.val using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem adicCont_units {G R : Type} [TopologicalSpace G] [CommRing R] (m : Ideal R) (f : G → Rˣ) :
     AdicCont m (fun g => ((f g : Rˣ) : R)) ↔
@@ -80,15 +78,15 @@ theorem adicCont_units {G R : Type} [TopologicalSpace G] [CommRing R] (m : Ideal
     simp
 
 /- English proof (translation)
-Introduce `g hg`. Take `⟨χ, hχ⟩ : ∃ χ : G →* Rˣ, ∀ g, χ g = ψ g / ψ' g` from `⟨ψ / ψ', fun g => rfl⟩`. Establish `hres : ∀ u : Rˣ, (u : R) - 1 ∈ maximalIdeal R ↔ Units.map (Ideal.Quotient.mk (maximalIdeal R) : R →* R ⧸ maximalIdeal R) u = 1`. Introduce `u`. Rewrite using `[Units.ext_iff, ← Ideal.Quotient.eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hcχ : AdicCont (maximalIdeal R) fun g => ((χ g : Rˣ) : R)`. Rewrite `hc`, `hc'`, the goal using `[adicCont_units]`. Introduce `N`. Use `(hc N).comp₂ (hc' N) (· / ·)` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`. Simplify using `[hχ, map_div]`. Establish `h1χ : ∀ g ∈ I, ((χ g : Rˣ) : R) - 1 ∈ maximalIdeal R`. Introduce `g hg`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hres, hχ, map_div, (hres _).1 (h1 g hg), (hres _).1 (h1' g hg), div_one]`. Establish `hSχ : ∀ g ∈ S, χ g = 1`. Introduce `g hg`. Rewrite using `[hχ, hS g hg, div_self']`. Establish `key` using `h R h0 χ hcχ h1χ hSχ g hg`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `key` using `[hχ, div_eq_one]`. Conclude with `key`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Pins.eq {l : ℕ} {G : Type} [Group G] [TopologicalSpace G] {I : Subgroup G} {S : Set G} (h : Pins l I S)
     {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] (h0 : (l : R) = 0) (ψ ψ' : G →* Rˣ)
@@ -120,11 +118,11 @@ theorem Pins.eq {l : ℕ} {G : Type} [Group G] [TopologicalSpace G] {I : Subgrou
   exact key
 
 /- English proof (translation)
-Establish `hK` using `Ideal.iInf_pow_eq_bot_of_isLocalRing (maximalIdeal R) Ideal.IsPrime.ne_top'`. Establish `e : (ψ.ker : Set G) = ⋂ N, {g | Ideal.Quotient.mk (maximalIdeal R ^ N) ((ψ g : Rˣ) : R) = Ideal.Quotient.mk (maximalIdeal R ^ N) 1}`. Use extensionality with `g`. Simplify using `only [SetLike.mem_coe, MonoidHom.mem_ker, Set.mem_iInter, Set.mem_setOf_eq, Ideal.Quotient.eq]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h N`. Simplify using `[h]`. Introduce `h`. Establish `hm : ((ψ g : Rˣ) : R) - 1 ∈ ⨅ N, maximalIdeal R ^ N` using `(Submodule.mem_iInf _).2 h`. Rewrite `hm` using `[hK, Ideal.mem_bot, sub_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Units.ext hm`. Rewrite using `[e]`. Conclude with `isClosed_iInter fun N => (hc N).isClosed_fiber _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_ker_of_adicCont {G R : Type} [Group G] [TopologicalSpace G] [CommRing R] [IsLocalRing R] [IsNoetherianRing R]
     (ψ : G →* Rˣ) (hc : AdicCont (maximalIdeal R) fun g => ((ψ g : Rˣ) : R)) : IsClosed (ψ.ker : Set G) := by

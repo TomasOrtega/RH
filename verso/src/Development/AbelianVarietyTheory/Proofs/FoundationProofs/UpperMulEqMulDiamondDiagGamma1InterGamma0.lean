@@ -8,23 +8,21 @@ open GlobalTheory.HeckeFamilyMatrices
 namespace GlobalTheory.Hk
 
 /- English proof (translation)
-Introduce `N l q j σ γ _ _ hσ _ hγ hdiv`. Take `⟨t, ht⟩` from `hdiv`. Take `⟨hσ10, hσ11⟩` from `hσ`. Establish `hγ1` using `(Gamma1_mem N γ).1 (Subgroup.mem_inf.1 hγ).1`. Establish `hcl` using `Gamma0_mem.1 (Subgroup.mem_inf.1 hγ).2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨ha, hd, hc⟩` from `hγ1`. Establish `hdγ : γ 0 0 * γ 1 1 - γ 0 1 * γ 1 0 = 1`. Use `γ.2` as an intermediate fact. Rewrite `this` using `[Matrix.det_fin_two]`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hdσ : σ 0 0 * σ 1 1 - σ 0 1 * σ 1 0 = 1`. Use `σ.2` as an intermediate fact. Rewrite `this` using `[Matrix.det_fin_two]`. Conclude with `this`. Establish `ht' : γ 0 0 + (j : ℤ) * γ 1 0 = q * t` using `ht`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hM : Matrix.det !![t * σ 1 1 - (γ 0 1 + j * γ 1 1) * σ 1 0, (γ 0 1 + j * γ 1 1) * σ 0 0 - t * σ 0 1; γ 1 0 * σ 1 1 - q * γ 1 1 * σ 1 0, q * γ 1 1 * σ 0 0 - γ 1 0 * σ 0 1] = 1`. Rewrite using `[Matrix.det_fin_two_of]`. Take the linear combination `(q * t * γ 1 1 - (γ 0 1 + j * γ 1 1) * γ 1 0) * hdσ + hdγ - γ 1 1 * ht'`. Establish `hdvd : ((N * l : ℕ) : ℤ) ∣ σ 1 0` using `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).1 hσ10`. Establish `h10N : ((σ 1 0 : ℤ) : ZMod N) = 0` using `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).2 (dvd_trans ⟨l, by push_cast; ring⟩ hdvd)`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h10l : ((σ 1 0 : ℤ) : ZMod l) = 0` using `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).2 (dvd_trans ⟨N, by push_cast; ring⟩ hdvd)`. Establish `hdN` using `congrArg (fun x : ℤ => (x : ZMod N)) hdσ`. Establish `htN` using `congrArg (fun x : ℤ => (x : ZMod N)) ht'`. Simplify using `only [Int.cast_sub, Int.cast_mul, Int.cast_add, Int.cast_one, Int.cast_natCast, h10N, hσ11, ha, hc] at hdN htN`. Use `⟨⟨_, hM⟩, Subgroup.mem_inf.2 ⟨(Gamma1_mem N _).2 ⟨?_, ?_, ?_⟩, Gamma0_mem.2 ?_⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `show ((t * σ 1 1 - (γ 0 1 + j * γ 1 1) * σ 1 0 : ℤ) : ZMod N) = 1`. Simplify using `only [Int.cast_sub, Int.cast_mul, Int.cast_add, Int.cast_natCast, h10N, hσ11]`. Take the linear combination `-htN`. Use `show ((q * γ 1 1 * σ 0 0 - γ 1 0 * σ 0 1 : ℤ) : ZMod N) = 1`. Simplify using `only [Int.cast_sub, Int.cast_mul, Int.cast_natCast, hc, hd]`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Take the linear combination `hdN`. Use `show ((γ 1 0 * σ 1 1 - q * γ 1 1 * σ 1 0 : ℤ) : ZMod N) = 0`. Simplify using `only [Int.cast_sub, Int.cast_mul, hc, h10N]`. Expand and normalize the polynomial expressions, which then agree. Use `show ((γ 1 0 * σ 1 1 - q * γ 1 1 * σ 1 0 : ℤ) : ZMod l) = 0`.
+Expand and normalize the polynomial expressions, which then agree. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion.
 
-Simplify using `only [Int.cast_sub, Int.cast_mul, hcl, h10l]`. Expand and normalize the polynomial expressions, which then agree. Apply the tactic sequence `ext i k fin_cases i <;> fin_cases k <;>`. Simplify using `[mat, dg, Matrix.mul_apply, Fin.sum_univ_two]`. Take the linear combination `ht' - q * t * hdσ`.
-
-Take the linear combination `-(γ 0 1 + j * γ 1 1) * hdσ`. Take the linear combination `-(q * γ 1 0) * hdσ`. Take the linear combination `-(q * γ 1 1) * hdσ`.
+Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem upper_mul_eq_mul_diamond_diag : ∀ (N l q j : ℕ) (σ γ : SL(2, ℤ)), q.Prime → ¬ q ∣ N * l → GlobalTheory.Hk.IsDia N l q σ →
     j < q → γ ∈ GlobalTheory.Hk.lev N l → (q : ℤ) ∣ mat γ 0 0 + j * mat γ 1 0 →

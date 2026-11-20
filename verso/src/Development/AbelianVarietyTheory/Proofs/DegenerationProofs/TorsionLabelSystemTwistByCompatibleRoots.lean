@@ -13,11 +13,11 @@ section
 variable {O : Type} [CommRing O] {N : NumD O} {k : ℕ} {β : N.Form k} {u r : Oˣ} {j : ℕ}
 
 /- English proof (translation)
-Establish `a : p'.1.2.s q'.1.1.toAdd = p.1.2.s q.1.1.toAdd * r ^ β.be p.1.1.toAdd q.1.1.toAdd`. Rewrite using `[hq.1]`. Conclude with `hp.2.2 _`. Establish `b : q'.1.2.s p'.1.1.toAdd = q.1.2.s p.1.1.toAdd * r ^ β.be p.1.1.toAdd q.1.1.toAdd`. Rewrite using `[hp.1, β.symm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Conclude with `hq.2.2 _`. Unfold `NumD.wp NumD.tk`. Rewrite using `[a, b, hp.2.1, hq.2.1]`. Express the relevant statement in the definitionally equal form `_ * _ * cubN N.θ j 1 q.1.2.b p.1.2.b / (_ * _ * cubN N.θ j 1 p.1.2.b q.1.2.b) = _`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Simplify using `only [ofMul_mul, ofMul_div]`. Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem wp_eq {p q : N.QT j} {p' q' : (N.twist β u).QT j} (hp : TwRel β u r p p') (hq : TwRel β u r q q') :
     (N.twist β u).wp p' q' = N.wp p q := by
@@ -33,11 +33,11 @@ theorem wp_eq {p q : N.QT j} {p' q' : (N.twist β u).QT j} (hp : TwRel β u r p 
   abel
 
 /- English proof (translation)
-Use `⟨?_, ?_, fun z => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `p'.1.1 * q'.1.1 = p.1.1 * q.1.1`. Rewrite using `[hp.1, hq.1]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `p'.1.2.b * q'.1.2.b = p.1.2.b * q.1.2.b`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hp.2.1, hq.2.1]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `p'.1.2.s z * q'.1.2.s z / N.θ (N.c z) p'.1.2.b q'.1.2.b = p.1.2.s z * q.1.2.s z / N.θ (N.c z) p.1.2.b q.1.2.b * r ^ β.be (p.1.1.toAdd + q.1.1.toAdd) z`. Rewrite using `[hp.2.2, hq.2.2, hp.2.1, hq.2.1, map_add, LinearMap.add_apply, zpow_add]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [ofMul_mul, ofMul_div]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem rel_mul {p q : N.QT j} {p' q' : (N.twist β u).QT j} (hp : TwRel β u r p p') (hq : TwRel β u r q q') :
     TwRel β u r (p * q) (p' * q') := by
@@ -54,7 +54,7 @@ theorem rel_mul {p q : N.QT j} {p' q' : (N.twist β u).QT j} (hp : TwRel β u r 
     abel
 
 /- English proof (translation)
-Establish `e : p.1.1 = q.1.1` using `hp.1.symm.trans hq.1`. Use `Subtype.ext (Prod.ext e (NumD.Gt.ext (hp.2.1.symm.trans hq.2.1) (funext fun z => ?_)))` and prove the remaining obligations. Use `(hp.2.2 z).symm.trans (hq.2.2 z)` as an intermediate fact. Rewrite `this` using `[e]`. Conclude with `mul_right_cancel this`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rel_inj {p q : N.QT j} {p' : (N.twist β u).QT j} (hp : TwRel β u r p p') (hq : TwRel β u r q p') : p = q := by
   have e : p.1.1 = q.1.1 := hp.1.symm.trans hq.1
@@ -64,14 +64,14 @@ theorem rel_inj {p q : N.QT j} {p' : (N.twist β u).QT j} (hp : TwRel β u r p p
   exact mul_right_cancel this
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (Prod.ext (hp.1.trans hq.1.symm) (NumD.Gt.ext (hp.2.1.trans hq.2.1.symm) (funext fun z => (hp.2.2 z).trans (hq.2.2 z).symm)))`.
+A detailed English derivation is pending.
 -/
 theorem rel_fun {p : N.QT j} {p' q' : (N.twist β u).QT j} (hp : TwRel β u r p p') (hq : TwRel β u r p q') : p' = q' :=
   Subtype.ext (Prod.ext (hp.1.trans hq.1.symm) (NumD.Gt.ext (hp.2.1.trans hq.2.1.symm)
     (funext fun z => (hp.2.2 z).trans (hq.2.2 z).symm)))
 
 /- English proof (translation)
-Use `⟨rfl, rfl, fun χ => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(N.twist β u).τ z χ = N.τ z χ * r ^ β.be (j • z) χ`. Rewrite using `[N.twist_τ, map_nsmul, LinearMap.smul_apply, nsmul_eq_mul, zpow_mul, zpow_natCast, h]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem rel_triv (h : r ^ j = u) (z : N.X) : TwRel β u r (N.qTriv j z) ((N.twist β u).qTriv j z) := by
   refine ⟨rfl, rfl, fun χ => ?_⟩
@@ -79,7 +79,7 @@ theorem rel_triv (h : r ^ j = u) (z : N.X) : TwRel β u r (N.qTriv j z) ((N.twis
   rw [N.twist_τ, map_nsmul, LinearMap.smul_apply, nsmul_eq_mul, zpow_mul, zpow_natCast, h]
 
 /- English proof (translation)
-Rewrite using `[NumD.qEq_iff, NumD.qEq_iff]`. Use `exists_congr fun (z : N.X) => ?_` and prove the remaining obligations. Establish `t` using `rel_mul hp (rel_triv (β := β) h z)`. Conclude with `⟨fun e => rel_inj hq (e ▸ t), fun e => rel_fun hq (e ▸ t)⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem qEq_iff (h : r ^ j = u) {p q : N.QT j} {p' q' : (N.twist β u).QT j} (hp : TwRel β u r p p')
     (hq : TwRel β u r q q') : (N.twist β u).QEq p' q' ↔ N.QEq p q := by
@@ -89,7 +89,7 @@ theorem qEq_iff (h : r ^ j = u) {p q : N.QT j} {p' q' : (N.twist β u).QT j} (hp
   exact ⟨fun e => rel_inj hq (e ▸ t), fun e => rel_fun hq (e ▸ t)⟩
 
 /- English proof (translation)
-Establish `a` using `g.pow_s m z`. Establish `b` using `g'.pow_s m z`. Rewrite `b` using `[hs, hb, mul_pow, ← a, mul_right_comm]`. Conclude with `mul_right_cancel b`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_s_eq (g : N.Gt) (g' : (N.twist β u).Gt) (hb : g'.b = g.b) (z : N.X) (t : Oˣ) (hs : g'.s z = g.s z * t)
     (m : ℕ) : (g' ^ m).s z = (g ^ m).s z * t ^ m := by
@@ -99,17 +99,17 @@ theorem pow_s_eq (g : N.Gt) (g' : (N.twist β u).Gt) (hb : g'.b = g.b) (z : N.X)
   exact mul_right_cancel b
 
 /- English proof (translation)
-Rewrite using `[← zpow_natCast, ← zpow_natCast, ← zpow_mul, ← zpow_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem zpow_pow_comm (x : Oˣ) (n : ℤ) (m : ℕ) : (x ^ n) ^ m = (x ^ m) ^ n := by
   rw [← zpow_natCast, ← zpow_natCast, ← zpow_mul, ← zpow_mul, mul_comm]
 
 /- English proof (translation)
-Set `y : N.X` to `p'.1.1.toAdd`. Set `g : N.Gt` to `⟨p'.1.2.b, fun z => p'.1.2.s z / r ^ β.be y z, fun χ χ' => by`. Establish `a : p'.1.2.s (χ + χ') * N.θ (N.c χ) (N.c χ') p'.1.2.b = p'.1.2.s χ * p'.1.2.s χ'` using `p'.1.2.mult χ χ'`. Rewrite using `[map_add, zpow_add, div_mul_eq_mul_div, a, div_mul_div_comm]⟩`. Establish `hs : ∀ z : N.X, p'.1.2.s z = g.s z * r ^ β.be y z` using `fun z => (div_mul_cancel _ _).symm`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hp : p'.1.2 ^ j = (N.twist β u).io y` using `p'.2`. Use `⟨⟨(Multiplicative.ofAdd y, g), ?_⟩, rfl, rfl, hs⟩` and prove the remaining obligations. Use `NumD.Gt.ext ?_ (funext fun z => ?_)` and prove the remaining obligations. Conclude with `(g.pow_b j).trans ((N.twist β u).QT_pow_b p')`. Establish `a` using `pow_s_eq g p'.1.2 rfl z _ (hs z) j`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `a` using `[hp, zpow_pow_comm, h]`. Conclude with `mul_right_cancel (a.symm.trans (N.twist_τ β u y z))`.
+A detailed English derivation is pending.
 -/
 theorem rel_surj (h : r ^ j = u) (p' : (N.twist β u).QT j) : ∃ p : N.QT j, TwRel β u r p p' := by
   let y : N.X := p'.1.1.toAdd
@@ -127,13 +127,11 @@ theorem rel_surj (h : r ^ j = u) (p' : (N.twist β u).QT j) : ∃ p : N.QT j, Tw
 end
 
 /- English proof (translation)
-Introduce `C _ N La _ EF ζ lab k₀ β u r hr ⟨h1, h2, h3, h4, h5⟩ p hp`. Use `⟨fun k hk a b => ?_, fun k hk a b => ?_, fun k hk q' => ?_, fun k m hk hm a q' e1 e2 => ?_, fun k hk a b => ?_⟩` and prove the remaining obligations. Conclude with `(qEq_iff (hr.pow hk) (rel_mul (hp k hk a) (hp k hk b)) (hp k hk (a + b))).2 (h1 k hk a b)`. Conclude with `(qEq_iff (hr.pow hk) (hp k hk a) (hp k hk b)).trans (h2 k hk a b)`. Take `⟨q, hq⟩` from `rel_surj (hr.pow hk) q'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨a, ha⟩` from `h3 k hk q`. Conclude with `⟨a, (qEq_iff (hr.pow hk) (hp k hk a) hq).2 ha⟩`. Take `⟨q, hq⟩` from `rel_surj (hr.pow hk) q'`. Establish `t` using `hp (k * m) (Nat.mul_pos hk hm) a`. Establish `e : q.1.1 = (lab (k * m) a).1.1` using `hq.1.symm.trans (e1.trans t.1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(qEq_iff (hr.pow hk) hq (hp k hk a)).2 (h4 k m hk hm a q e (NumD.Gt.ext ?_ (funext fun z => ?_)))` and prove the remaining obligations. Rewrite using `[← hq.2.1, e2, NumD.Gt.pow_b, NumD.Gt.pow_b, t.2.1]`. Both sides reduce to the same expression. Establish `s` using `pow_s_eq _ _ t.2.1 z _ (t.2.2 z) m`. Rewrite `s` using `[← e2, hq.2.2, e, zpow_pow_comm, hr.2 k m hk hm]`.
-
-Conclude with `mul_right_cancel s`. Conclude with `(wp_eq (hp k hk a) (hp k hk b)).trans (h5 k hk a b)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem labels_twist : ∀ (C : Type) [Field C] (N : NumD C) (La : Type) [AddCommGroup La] (EF : LinearMap.BilinForm ℤ La) (ζ : ℕ → Cˣ) (lab : ∀ k : ℕ, La → N.QT k) (k₀ : ℕ) (β : N.Form k₀) (u : Cˣ) (r : ℕ → Cˣ), Roots u r → Labels N EF ζ lab → ∀ p : ∀ k : ℕ, La → (N.twist β u).QT k, (∀ k, 0 < k → ∀ x, TwRel β u (r k) (lab k x) (p k x)) → Labels (N.twist β u) EF ζ p := by
   intro C _ N La _ EF ζ lab k₀ β u r hr ⟨h1, h2, h3, h4, h5⟩ p hp

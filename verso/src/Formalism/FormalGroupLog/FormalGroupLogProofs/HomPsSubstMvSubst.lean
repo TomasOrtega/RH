@@ -7,7 +7,7 @@ open PowerSeries
 namespace Formalism.G
 
 /- English proof (translation)
-Establish `hG' : MvPowerSeries.HasSubst (fun _ : Unit => G)` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun _ => hG`. Unfold `PowerSeries.subst`. Rewrite using `[MvPowerSeries.subst_comp_subst_apply hG' hv]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem hom_ps_subst_mv_subst {R : Type*} [CommRing R] {σ τ : Type*}
     (g : PowerSeries R) (G : MvPowerSeries σ R) (v : σ → MvPowerSeries τ R)
@@ -19,7 +19,7 @@ private theorem hom_ps_subst_mv_subst {R : Type*} [CommRing R] {σ τ : Type*}
   rw [MvPowerSeries.subst_comp_subst_apply hG' hv]
 
 /- English proof (translation)
-The claim follows from `MvPowerSeries.hasSubst_of_constantCoeff_zero fun s => by fin_cases s <;> simp [ha, hb]`.
+A detailed English derivation is pending.
 -/
 private theorem hom_hasSubst_pair {R : Type*} [CommRing R] {τ : Type*}
     (a b : MvPowerSeries τ R) (ha : MvPowerSeries.constantCoeff a = 0)
@@ -27,7 +27,7 @@ private theorem hom_hasSubst_pair {R : Type*} [CommRing R] {τ : Type*}
   MvPowerSeries.hasSubst_of_constantCoeff_zero fun s => by fin_cases s <;> simp [ha, hb]
 
 /- English proof (translation)
-The claim follows from `PowerSeries.constantCoeff_subst_eq_zero (MvPowerSeries.constantCoeff_X t) f hf`.
+A detailed English derivation is pending.
 -/
 private theorem hom_cc_at {R : Type*} [CommRing R] {τ : Type*} (f : PowerSeries R) (t : τ)
     (hf : constantCoeff f = 0) :
@@ -35,29 +35,29 @@ private theorem hom_cc_at {R : Type*} [CommRing R] {τ : Type*} (f : PowerSeries
   PowerSeries.constantCoeff_subst_eq_zero (MvPowerSeries.constantCoeff_X t) f hf
 
 /- English proof (translation)
-Set `H : MvPowerSeries (Fin 2) R` to `fun m => coeff (m 0 + m 1 + 1) f`. Establish `cH : ∀ m, MvPowerSeries.coeff m H = coeff (m 0 + m 1 + 1) f` using `fun m => rfl`. Establish `cX : ∀ (s : Fin 2) (m : Fin 2 →₀ ℕ), MvPowerSeries.coeff m (f.subst (MvPowerSeries.X s : MvPowerSeries (Fin 2) R)) = if m = Finsupp.single s (m s) then coeff (m s) f else 0`. Introduce `s m`. Rewrite using `[PowerSeries.coeff_subst (PowerSeries.HasSubst.X s)]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[MvPowerSeries.coeff_X_pow]`. Rewrite using `[finsum_eq_single _ (m s)]`. Apply the tactic sequence `split_ifs <;> simp`. Introduce `d hd`. Rewrite using `[if_neg]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `hm`. Apply `hd` to reduce the goal to its premises. Rewrite using `[hm]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `key : (MvPowerSeries.X 0 - MvPowerSeries.X 1) * H = f.subst (MvPowerSeries.X 0 : MvPowerSeries (Fin 2) R) - f.subst (MvPowerSeries.X 1)`. Use extensionality with `m`. Establish `e0 : m = Finsupp.single 0 (m 0) ↔ m 1 = 0`. Prove the components needed by the constructor for the conclusion. Introduce `hm`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hm]`. Simplify using the standard rewrite rules. Introduce `hm`. Use extensionality with `k`. Apply the tactic sequence `fin_cases k <;> simp [hm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `e1 : m = Finsupp.single 1 (m 1) ↔ m 0 = 0`. Prove the components needed by the constructor for the conclusion. Introduce `hm`. Rewrite using `[hm]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `hm`. Use extensionality with `k`. Apply the tactic sequence `fin_cases k <;> simp [hm]`. Establish `s00 : (m - Finsupp.single 0 1 : Fin 2 →₀ ℕ) 0 = m 0 - 1` using `by simp`. Establish `s01 : (m - Finsupp.single 0 1 : Fin 2 →₀ ℕ) 1 = m 1` using `by simp`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s10 : (m - Finsupp.single 1 1 : Fin 2 →₀ ℕ) 0 = m 0` using `by simp`. Establish `s11 : (m - Finsupp.single 1 1 : Fin 2 →₀ ℕ) 1 = m 1 - 1` using `by simp`. Rewrite using `[sub_mul, map_sub, map_sub, cX, cX, MvPowerSeries.X, MvPowerSeries.X, MvPowerSeries.coeff_monomial_mul, MvPowerSeries.coeff_monomial_mul, cH, cH, s00, s01, s10, s11]`. Simplify using `only [Finsupp.single_le_iff, one_mul, e0, e1]`. Generalize the expression as in `m 0 = i`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `m 1 = j`. Apply the tactic sequence `rcases i with _ | i <;> rcases j with _ | j <;> simp <;> ring_nf`. Establish `hv : MvPowerSeries.HasSubst ![a, b]` using `hom_hasSubst_pair a b ha hb`. Establish `hsx : ∀ s : Fin 2, MvPowerSeries.subst ![a, b] (f.subst (MvPowerSeries.X s : MvPowerSeries (Fin 2) R)) = f.subst (![a, b] s)`. Introduce `s`.
+Replace the chosen expression with an arbitrary variable. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hom_ps_subst_mv_subst f (MvPowerSeries.X s) ![a, b] (MvPowerSeries.constantCoeff_X s) hv, MvPowerSeries.subst_X hv]`. Establish `key2` using `congrArg (MvPowerSeries.substAlgHom hv) key`. Simplify using `only [map_mul, map_sub, MvPowerSeries.coe_substAlgHom] at key2`. Rewrite `key2` using `[hsx 0, hsx 1, MvPowerSeries.subst_X hv, MvPowerSeries.subst_X hv]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] at key2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `key2` using `[h, sub_self]`. Establish `c1 : MvPowerSeries.constantCoeff (H - 1) = 0`. Rewrite using `[map_sub, map_one, ← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, cH]`. Simplify using `[h1]`. Establish `hU : IsUnit (MvPowerSeries.subst ![a, b] H)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[MvPowerSeries.isUnit_iff_constantCoeff]`. Establish `hsplit : H = 1 + (H - 1)` using `by ring`. Apply the tactic sequence `rw [hsplit, ← MvPowerSeries.coe_substAlgHom hv, map_add, map_one, MvPowerSeries.coe_substAlgHom, map_add, map_one, MvPowerSeries.constantCoeff_subst_eq_zero hv (fun i => by fin_cases i <;> simp [ha, hb]) c1, add_zero]`. Conclude with `isUnit_one`. Conclude with `sub_eq_zero.1 (hU.mul_left_eq_zero.1 key2)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private theorem hom_substInj {R : Type*} [CommRing R] {ι : Type*} (f : PowerSeries R)
     (a b : MvPowerSeries ι R) (h0 : constantCoeff f = 0) (h1 : coeff 1 f = 1)
@@ -137,9 +137,9 @@ private theorem hom_substInj {R : Type*} [CommRing R] {ι : Type*} (f : PowerSer
   exact sub_eq_zero.1 (hU.mul_left_eq_zero.1 key2)
 
 /- English proof (translation)
-Unfold `HomId`. Introduce `R _ F`. Use `⟨by simp, ?_⟩` and prove the remaining obligations. Rewrite using `[PowerSeries.subst_X (PowerSeries.HasSubst.of_constantCoeff_zero F.zero_constantCoeff)]`. Establish `hXY : ![atX (PowerSeries.X : PowerSeries R), atY PowerSeries.X] = MvPowerSeries.X`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `s`. Apply the tactic sequence `fin_cases s <;> simp [atX, atY, PowerSeries.subst_X (PowerSeries.HasSubst.X _)]`. Rewrite using `[hXY, MvPowerSeries.subst_self]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem homId_statement : HomId := by
   unfold HomId
@@ -153,13 +153,13 @@ theorem homId_statement : HomId := by
   rfl
 
 /- English proof (translation)
-Unfold `HomComp`. Introduce `R _ F G H f g hf hg`. Take `⟨hf0, hfe⟩` from `hf`. Take `⟨hg0, hge⟩` from `hg`. Establish `hF` using `PowerSeries.HasSubst.of_constantCoeff_zero F.zero_constantCoeff`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hvf : MvPowerSeries.HasSubst ![atX f, atY f]` using `hom_hasSubst_pair _ _ (hom_cc_at f 0 hf0) (hom_cc_at f 1 hf0)`. Establish `hvg : MvPowerSeries.HasSubst ![atX g, atY g]` using `hom_hasSubst_pair _ _ (hom_cc_at g 0 hg0) (hom_cc_at g 1 hg0)`. Establish `hfs : PowerSeries.HasSubst f` using `PowerSeries.HasSubst.of_constantCoeff_zero' hf0`. Use `⟨PowerSeries.constantCoeff_subst_eq_zero hf0 g hg0, ?_⟩` and prove the remaining obligations. Rewrite using `[PowerSeries.subst_comp_subst_apply hfs hF, hfe, ← hom_ps_subst_mv_subst g G.toPowerSeries _ G.zero_constantCoeff hvf, hge, MvPowerSeries.subst_comp_subst_apply hvg hvf]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `s`. Establish `hcoord : ∀ t : Fin 2, MvPowerSeries.subst ![atX f, atY f] (g.subst (MvPowerSeries.X t : MvPowerSeries (Fin 2) R)) = PowerSeries.subst (MvPowerSeries.X t : MvPowerSeries (Fin 2) R) (PowerSeries.subst f g)`. Introduce `t`. Rewrite using `[hom_ps_subst_mv_subst g _ _ (MvPowerSeries.constantCoeff_X t) hvf, MvPowerSeries.subst_X hvf, PowerSeries.subst_comp_subst_apply hfs (PowerSeries.HasSubst.X t)]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `fin_cases t <;> rfl`. Use `fin_cases s`. Conclude with `hcoord 0`. Conclude with `hcoord 1`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem homComp_statement : HomComp := by
   unfold HomComp
@@ -191,11 +191,11 @@ theorem homComp_statement : HomComp := by
   · exact hcoord 1
 
 /- English proof (translation)
-Unfold `LogIffHomGa`. Introduce `R _ F f`. Establish `ga : constantCoeff f = 0 → MvPowerSeries.subst ![atX f, atY f] (FormalGroup.𝔾ₐ (R` using `R)).toPowerSeries = atX f + atY f := by`. Introduce `h0`. Establish `hv : MvPowerSeries.HasSubst ![atX f, atY f]` using `hom_hasSubst_pair _ _ (hom_cc_at f 0 h0) (hom_cc_at f 1 h0)`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `show MvPowerSeries.subst _ (MvPowerSeries.X 0 + MvPowerSeries.X 1) = _`. Rewrite using `[← MvPowerSeries.coe_substAlgHom hv, map_add, MvPowerSeries.coe_substAlgHom, MvPowerSeries.subst_X hv, MvPowerSeries.subst_X hv]`. Both sides reduce to the same expression. Unfold `IsLog IsHom`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨h0, h1, h2⟩`. Conclude with `⟨⟨h0, by rw [h2, ga h0]⟩, h1⟩`. Introduce and unpack `⟨⟨h0, h2⟩, h1⟩`. Conclude with `⟨h0, h1, by rw [h2, ga h0]⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem log_iff_hom_additive : LogIffHomGa := by
   unfold LogIffHomGa
@@ -218,7 +218,7 @@ theorem log_iff_hom_additive : LogIffHomGa := by
     exact ⟨h0, h1, by rw [h2, ga h0]⟩
 
 /- English proof (translation)
-Unfold `SubstInjective`. Introduce `R _ ι f a b h0 h1 ha hb h`. Conclude with `hom_substInj f a b h0 h1 ha hb h`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem substInjective_statement : SubstInjective := by
   unfold SubstInjective
@@ -226,7 +226,7 @@ theorem substInjective_statement : SubstInjective := by
   exact hom_substInj f a b h0 h1 ha hb h
 
 /- English proof (translation)
-Unfold `LogDeterminesLaw`. Introduce `R _ F G f hF hG`. Apply `FormalGroup.ext` to reduce the goal to its premises. Apply `hom_substInj f _ _ hF.1 hF.2.1 F.zero_constantCoeff G.zero_constantCoeff` to reduce the goal to its premises. Rewrite using `[hF.2.2, hG.2.2]`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem log_determines_law : LogDeterminesLaw := by
   unfold LogDeterminesLaw

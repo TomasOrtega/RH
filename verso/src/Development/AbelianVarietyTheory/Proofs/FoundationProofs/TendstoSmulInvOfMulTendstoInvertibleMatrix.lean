@@ -7,13 +7,13 @@ open scoped MatrixGroups ModularForm Manifold Topology
 namespace GlobalTheory.OddFrame
 
 /- English proof (translation)
-Establish `hdet : Tendsto (fun τ => (A τ * U τ).det) atImInfty (𝓝 L.det)` using `((continuous_id.matrix_det).tendsto L).comp hAU`. Establish `hev : ∀ᶠ τ in atImInfty, (A τ * U τ).det ≠ 0` using `hdet.eventually_ne hL`. Establish `hinvdet : Tendsto (fun τ => Ring.inverse (A τ * U τ).det) atImInfty (𝓝 (Ring.inverse L.det))`. Simplify using `only [Ring.inverse_eq_inv']`. Conclude with `hdet.inv₀ hL`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hadj : Tendsto (fun τ => (A τ * U τ).adjugate) atImInfty (𝓝 L.adjugate)` using `((continuous_id.matrix_adjugate).tendsto L).comp hAU`. Establish `hinv : Tendsto (fun τ => (A τ * U τ)⁻¹) atImInfty (𝓝 L⁻¹)`. Simplify using `only [Matrix.inv_def]`. Conclude with `hinvdet.smul hadj`. Establish `hlim : Tendsto (fun τ => (d τ • U τ) * (A τ * U τ)⁻¹) atImInfty (𝓝 0)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `hdU.mul hinv` as an intermediate fact. Simplify using `using this`. Use `hlim.congr' ?_` and prove the remaining obligations. Use `filter_upwards [hev] with τ hτ`. Establish `hu : IsUnit (A τ * U τ).det` using `isUnit_iff_ne_zero.mpr hτ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : A τ * (U τ * (A τ * U τ)⁻¹) = 1`. Rewrite using `[← mul_assoc]`. Conclude with `Matrix.mul_nonsing_inv _ hu`. Rewrite using `[Matrix.inv_eq_right_inv h1, Matrix.smul_mul]`.
+A detailed English derivation is pending.
 -/
 theorem tendsto_smul_inv_of_mul_tendsto_invertible (r : ℕ) (A U : ℍ → Matrix (Fin r) (Fin r) ℂ)
     (L : Matrix (Fin r) (Fin r) ℂ) (d : ℍ → ℂ) (hL : L.det ≠ 0)

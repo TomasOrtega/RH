@@ -7,7 +7,7 @@ namespace LateralTheory.DivDb.FiniteSubrepresentation
 variable {K : Type} [Field K] {N n : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ, pow_succ, Matrix.mul_assoc, h, ← Matrix.mul_assoc, ih, Matrix.mul_assoc]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem pow_tw (X : Matrix (Fin N) (Fin N) K) (Y : Matrix (Fin n) (Fin n) K) (T : Matrix (Fin N) (Fin n) K)
     (h : X * T = T * Y) (k : ℕ) : X ^ k * T = T * Y ^ k := by
@@ -16,7 +16,7 @@ theorem pow_tw (X : Matrix (Fin N) (Fin N) K) (Y : Matrix (Fin n) (Fin n) K) (T 
   | succ k ih => rw [pow_succ, pow_succ, Matrix.mul_assoc, h, ← Matrix.mul_assoc, ih, Matrix.mul_assoc]
 
 /- English proof (translation)
-Proceed by induction on `q using Polynomial.induction_on' with`. Consider the case `add p q hp hq => rw [map_add, map_add, Matrix.add_mul, Matrix.mul_add, hp, hq]`. Consider the case `monomial k c`. Rewrite using `[Polynomial.aeval_monomial, Polynomial.aeval_monomial, Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, smul_mul_assoc, smul_mul_assoc, one_mul, one_mul, Matrix.smul_mul, Matrix.mul_smul, pow_tw X Y T h]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem aeval_tw (X : Matrix (Fin N) (Fin N) K) (Y : Matrix (Fin n) (Fin n) K) (T : Matrix (Fin N) (Fin n) K)
     (h : X * T = T * Y) (q : Polynomial K) : Polynomial.aeval X q * T = T * Polynomial.aeval Y q := by
@@ -30,25 +30,25 @@ theorem aeval_tw (X : Matrix (Fin N) (Fin N) K) (Y : Matrix (Fin n) (Fin n) K) (
 end LateralTheory.DivDb.FiniteSubrepresentation
 
 /- English proof (translation)
-Introduce `Γ K _ _ N n ρ r A B hS hρ`. Take `⟨hBA, hAr, hspan⟩` from `hS`. Establish `hinj : ∀ w : Fin n → K, A *ᵥ w = 0 → w = 0`. Introduce `w hw`. Use `congrArg (B *ᵥ ·) hw` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `this` using `[Matrix.mulVec_mulVec, hBA]`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `W hW`. Take `⟨W'', hc, hs⟩` from `hρ (W.map (Matrix.mulVecLin A)) (by`. Introduce and unpack `g _ ⟨w, hw, rfl⟩`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components.
 
-Use `⟨(r g : Matrix (Fin n) (Fin n) K) *ᵥ w, hW g w hw, ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, hAr g])`. Use `⟨W''.comap (Matrix.mulVecLin A), ?_, ?_⟩` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Rewrite using `[Submodule.disjoint_def]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Introduce `w hw hw'`. Apply `hinj` to reduce the goal to its premises. Establish `h1 : A *ᵥ w ∈ W.map (Matrix.mulVecLin A)` using `⟨w, hw, rfl⟩`. Conclude with `(Submodule.disjoint_def.mp hc.disjoint) _ h1 hw'`. Rewrite using `[codisjoint_iff, eq_top_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v _`. Establish `hv : A *ᵥ v ∈ W.map (Matrix.mulVecLin A) ⊔ W''` using `by rw [hc.sup_eq_top]; trivial`. Take `⟨y, ⟨w, hw, rfl⟩, z, hz, hyz⟩` from `Submodule.mem_sup.mp hv`. Rewrite using `[Submodule.mem_sup]`. Use `⟨w, hw, v - w, ?_, by abel⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show A *ᵥ (v - w) ∈ W''`. Rewrite using `[Matrix.mulVec_sub, ← hyz]`. Simplify `hz` using `[Matrix.mulVecLin_apply]`. Introduce `g v hv show A *ᵥ ((r g : Matrix (Fin n) (Fin n) K) *ᵥ v) ∈ W''`. Rewrite using `[Matrix.mulVec_mulVec, ← hAr g, ← Matrix.mulVec_mulVec]`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `hs g _ hv`. Apply `le_antisymm` to reduce the goal to its premises. Simplify using `using Matrix.rank_le_width A`. Use `Matrix.rank_mul_le_right B A` as an intermediate fact. Rewrite `this` using `[hBA, Matrix.rank_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using this`. Introduce `g`. Rewrite using `[Matrix.mul_assoc, hAr g, ← Matrix.mul_assoc, hBA, Matrix.one_mul]`. Introduce `g q`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h`. Establish `h2` using `aeval_tw _ _ A (hAr g) q`. Rewrite `h2` using `[h, Matrix.zero_mul]`. Establish `h3` using `congrArg (B * ·) h2`. Simplify `h3.symm` using `[← Matrix.mul_assoc, hBA]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Apply `hspan` to reduce the goal to its premises. Introduce `T hT`. Rewrite using `[aeval_tw _ _ T (hT g) q, h, Matrix.mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LateralTheory.DivDb.FiniteSubrepresentation.FinSub_of : LateralTheory.DivDb.FinSub := by
   intro Γ K _ _ N n ρ r A B hS hρ

@@ -9,11 +9,11 @@ noncomputable section
 namespace Formalism.ZeroFreeDirichlet
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `Complex.abs_re_le_norm (s - 2)`. Rewrite `h` using `[hs]`. Establish `e : (s - 2).re = s.re - 2` using `by simp`. Rewrite `h` using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the linear relations using `[(abs_le.mp h).1]`. Establish `h` using `norm_add_le (s - 2) (2 : ℂ)`. Rewrite `h` using `[sub_add_cancel, hs]`. Establish `e : ‖(2 : ℂ)‖ = 2` using `by simp`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h` using `norm_add_le (s - 1) (-1 : ℂ)`. Establish `e : s - 1 + -1 = s - 2` using `by ring`. Rewrite `h` using `[e, hs]`. Establish `e1 : ‖(-1 : ℂ)‖ = 1` using `by simp`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma circle_about_two_geometry {s : ℂ} (hs : ‖s - 2‖ = 3 / 2) :
     1 / 2 ≤ s.re ∧ ‖s‖ ≤ 7 / 2 ∧ 1 / 2 ≤ ‖s - 1‖ := by
@@ -34,11 +34,11 @@ lemma circle_about_two_geometry {s : ℂ} (hs : ‖s - 2‖ = 3 / 2) :
     linarith
 
 /- English proof (translation)
-Apply the tactic sequence `obtain ⟨hre, hn, h1⟩ := circle_about_two_geometry hs`. Establish `hs1 : s ≠ 1`. Introduce `h`. Rewrite `h1` using `[h, sub_self, norm_zero]`. Evaluate the numerical expressions using `at h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions.
 
-Establish `hg` using `Formalism.ZF.growthBound s (by linarith) hs1`. Establish `ha : 1 / ‖s - 1‖ ≤ 2`. Rewrite using `[div_le_iff₀ (by linarith)]; linarith`. Establish `hb : 1 / s.re ≤ 2`. Rewrite using `[div_le_iff₀ (by linarith)]; linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hp : 0 ≤ 1 + 1 / s.re`. Apply the tactic sequence `have : 0 < 1 / s.re := by apply div_pos <;> linarith`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hc : ‖s‖ * (1 + 1 / s.re) ≤ 7 / 2 * 3`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -62,15 +62,15 @@ lemma zeta_norm_le_on_circle {s : ℂ} (hs : ‖s - 2‖ = 3 / 2) : ‖riemannZe
   linarith
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `lfunction_polynomial_growth`. Use `⟨14 * (9 / 2 * |C|) ^ 3, 3, ?_⟩` and prove the remaining obligations. Introduce `q₁ q₂ _ _ _ χ₁ χ₂ ψ h1 h2 h3 s hs`. Apply the tactic sequence `obtain ⟨hre, hn, -⟩ := circle_about_two_geometry hs`. Establish `hz` using `zeta_norm_le_on_circle hs`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `L : ∀ (q : ℕ) [NeZero q] (χ : DirichletCharacter ℂ q), χ ≠ 1 → ‖DirichletCharacter.LFunction χ s‖ ≤ 9 / 2 * |C| * q`. Introduce `q _ χ hχ`. Establish `h` using `hC q χ hχ s hre`. Establish `hq : (0 : ℝ) ≤ q` using `Nat.cast_nonneg _`. Establish `hCq : C * q ≤ |C| * q` using `mul_le_mul_of_nonneg_right (le_abs_self C) hq`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : 0 ≤ |C| * q` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Establish `e1` using `L q₁ χ₁ h1`. Establish `e2` using `L q₂ χ₂ h2`. Establish `e3` using `L (q₁ * q₂) ψ h3`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq1 : (q₁ : ℝ) ≤ ((q₁ * q₂ : ℕ) : ℝ)`. Conclude with `Nat.le_mul_of_pos_right q₁ (Nat.pos_of_ne_zero (NeZero.ne q₂))` after adjusting the coercions. Establish `hq2 : (q₂ : ℝ) ≤ ((q₁ * q₂ : ℕ) : ℝ)`. Conclude with `Nat.le_mul_of_pos_left q₂ (Nat.pos_of_ne_zero (NeZero.ne q₁))` after adjusting the coercions. Establish `ha : 0 ≤ 9 / 2 * |C|` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[show (3 : ℝ) = ((3 : ℕ) : ℝ) by norm_num, Real.rpow_natCast]`. Unfold `Fbq`. Rewrite using `[norm_mul, norm_mul, norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem product_lfunction_growth_bound : BqGrowth := by
   obtain ⟨C, hC⟩ := lfunction_polynomial_growth

@@ -148,7 +148,7 @@ structure LocMod [StarRing (𝓞 E)] (z : CMPt Xo c) (T : CDVR) (iK : z.K →+* 
   h2 : m2.φ ≫ n.φ = n'.φ ≫ z.m'.φ
 
 /- English proof (translation)
-Introduce `m1 m2 hL hS`. Take `⟨θ, hθ, w2, σ, θ2, hr2, hm2, hp, w1, s1, hr1, hm1, hg1⟩` from `hS`. Unfold `Integral`. Conclude with `⟨G, t', m1, m2, hL, θ, hθ, w1, w2, σ, s1, θ2, hr1, hr2, hm1, hm2, hp, hg1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 theorem integral_of (T : CDVR) (io : c.F →+* T.Fr) (y : letI := io.toAlgebra; FrPt Xo c T.Fr)
     {G : SAB H (Sp T.V)} {t' : SAB H (Sp T.Fr)} :

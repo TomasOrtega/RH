@@ -7,7 +7,7 @@ open scoped ENNReal Pointwise
 namespace GlobalTheory.ResLine.LowerAverage
 
 /- English proof (translation)
-Use `Function.Injective.countable (f := fun x : Λ.subgroupOf N => (⟨x.1.1, Subgroup.mem_subgroupOf.1 x.2⟩ : Λ)) ?_` and prove the remaining obligations. Introduce `x y h`. Conclude with `Subtype.ext (Subtype.ext (congrArg (fun z : Λ => (z : G)) h))`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem countable_subgroupOf {G : Type} [Group G] (Λ N : Subgroup G) [Countable Λ] :
     Countable (Λ.subgroupOf N) := by
@@ -17,7 +17,7 @@ theorem countable_subgroupOf {G : Type} [Group G] (Λ N : Subgroup G) [Countable
   exact Subtype.ext (Subtype.ext (congrArg (fun z : Λ => (z : G)) h))
 
 /- English proof (translation)
-Use `haveI : BorelSpace N := Subtype.borelSpace (N : Set G)`. Use `haveI : LocallyCompactSpace N := hN.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI := countable_subgroupOf Λ N`. Conclude with `RightUnfold.isMulRightInvariant_of_lattice ν (Λ.subgroupOf N) D hD hfin`.
+A detailed English derivation is pending.
 -/
 theorem right_of_closed {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [LocallyCompactSpace G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G]
@@ -30,21 +30,17 @@ theorem right_of_closed {G : Type} [Group G] [TopologicalSpace G] [IsTopological
   exact RightUnfold.isMulRightInvariant_of_lattice ν (Λ.subgroupOf N) D hD hfin
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ _ _ N M Λ _ ν π DN DM H μ hμ C hC`. Use `haveI : BorelSpace N := Subtype.borelSpace (N : Set G)`. Use `haveI : BorelSpace M := Subtype.borelSpace (M : Set G)`. Use `haveI := H.haarN`. Use `haveI := H.haarM`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI := right_of_closed N Λ H.closedN ν H.haarN DN H.domN H.finN`. Use `haveI := right_of_closed M Λ H.closedM π H.haarM DM H.domM H.finM`. Take `⟨K, hK, hCK⟩` from `exists_compact_superset hC`. Take `⟨W, hW, hWC⟩` from `compact_open_separated_mul_left hC isOpen_interior hCK`. Take `⟨V, hVo, hV1, hVW⟩` from `exists_open_nhds_one_mul_subset hW`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hVN : IsOpen ((↑) ⁻¹' V : Set N)` using `hVo.preimage continuous_subtype_val`. Establish `hVM : IsOpen ((↑) ⁻¹' V : Set M)` using `hVo.preimage continuous_subtype_val`. Use `⟨interior K, ν ((↑) ⁻¹' V) * π ((↑) ⁻¹' V), isOpen_interior, ((measure_mono interior_subset).trans_lt hK.measure_lt_top).ne, mul_ne_zero (hVN.measure_ne_zero ν ⟨1, hV1⟩) (hVM.measure_ne_zero π ⟨1, hV1⟩), ?_⟩` and prove the remaining obligations. Introduce `u₀ hu₀ m₀ hm₀ y hy`. Establish `h1 : ∀ m : M, ∫⁻ u : N, (interior K).indicator (1 : G → ℝ≥0∞) ((u : G) * m * (u₀ * m₀ * y)) ∂ν = ∫⁻ u : N, (interior K).indicator (1 : G → ℝ≥0∞) ((u : G) * ((m * ⟨m₀, hm₀⟩ : M) : G) * y) ∂ν`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities.
 
-Introduce `m`. Rewrite using `[← lintegral_mul_right_eq_self (fun u : N => (interior K).indicator (1 : G → ℝ≥0∞) ((u : G) * ((m * ⟨m₀, hm₀⟩ : M) : G) * y)) ⟨m * u₀ * (m : G)⁻¹, H.norm m m.2 u₀ hu₀⟩]`. Use `lintegral_congr fun u => ?_` and prove the remaining obligations. Use `congr 1`. Simplify using `only [Subgroup.coe_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `group`. Repeatedly rewrite using `[h1]`. Rewrite using `[lintegral_mul_right_eq_self (fun m : M => ∫⁻ u : N, (interior K).indicator (1 : G → ℝ≥0∞) ((u : G) * (m : G) * y) ∂ν) ⟨m₀, hm₀⟩, ← lintegral_indicator_const hVM.measurableSet]`. Use `lintegral_mono fun m => ?_` and prove the remaining obligations. Distinguish the cases in `hm : m ∈ ((↑) ⁻¹' V : Set M)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `swap`. Rewrite using `[Set.indicator_of_notMem hm]`. Conclude with `bot_le`. Rewrite using `[Set.indicator_of_mem hm]`. Rewrite using `[← lintegral_indicator_one hVN.measurableSet]`.
-
-Use `lintegral_mono fun u => ?_` and prove the remaining obligations. Distinguish the cases in `hu : u ∈ ((↑) ⁻¹' V : Set N)`. Use `swap`. Rewrite using `[Set.indicator_of_notMem hu]`. Conclude with `bot_le`.
-
-Rewrite using `[Set.indicator_of_mem hu]`. Establish `: (u : G) * m * y ∈ interior K` using `hWC (Set.mul_mem_mul (hVW (Set.mul_mem_mul hu hm)) hy)`. Rewrite using `[Set.indicator_of_mem this]`. Conclude with `le_rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem average_lower : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G] (N M Λ : Subgroup G) [Countable Λ] (ν : Measure N) (π : Measure M) (DN : Set N) (DM : Set M), SemiLat N M Λ ν π DN DM → ∀ (μ : Measure G), μ.IsHaarMeasure → ∀ C : Set G, IsCompact C → ∃ (U : Set G) (c : ℝ≥0∞), IsOpen U ∧ μ U ≠ ⊤ ∧ c ≠ 0 ∧ ∀ u₀ ∈ N, ∀ m₀ ∈ M, ∀ y ∈ C, c ≤ ∫⁻ m : M, ∫⁻ u : N, U.indicator 1 ((u : G) * m * (u₀ * m₀ * y)) ∂ν ∂π := by
   intro G _ _ _ _ _ _ _ _ N M Λ _ ν π DN DM H μ hμ C hC

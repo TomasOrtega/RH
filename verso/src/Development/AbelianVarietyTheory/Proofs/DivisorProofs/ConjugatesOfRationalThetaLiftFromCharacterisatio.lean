@@ -26,9 +26,9 @@ namespace GlobalTheory.ConjRatLiftFive
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A T _ R F κ v₀ hR tie i O hO h hh gramR c0R c0L _ hc σ hσ hV μ' η' hμ hη c c₁ H j hj ω f₀ f B io thP hL`. Use `hh.elim fun J' hJ => (exists_ext (O i) hO.1 hO.2 σ).elim fun σ' hσ' => ?_` and prove the remaining obligations. Establish `hth : IsThetaFunO R.ψ (Vc D i) (Wc D i) f`. Establish `h1` using `hL.2.1.theta 1`. Establish `e : (1 : PolF D (Wc D i).rank (Vc D i).rank) = MvPolynomial.basisMonomials _ ℂ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[MvPolynomial.coe_basisMonomials]`. Both sides reduce to the same expression. Rewrite `h1` using `[e, ptAt, pureTensorO, pureTensorL, Module.Basis.constr_basis]`. Simplify `h1` using `[opPow]`. Conclude with `oneMap_of_ext_ofFive hR tie (O i) hO.2 hJ.1 hc hσ' (GlobalTheory.GalOne.Facts.factsAt_ofFive T R F κ v₀ hR tie i (O i) hO.2 σ σ' hσ' hσ).1 hV hj ⟨hσ, hμ, hη, hL.1, hL.2.1.vec, hth⟩ hL`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem oneMapConj5 : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A) (κw : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec), GlobalTheory.Core5 R F → ∀ (fw : FWTie T R κw v₀) (i : Fin D.R.m), ∀ (O : ∀ i, OMDat T.toCore R i Unit (fun _ => A.μ0)), OMPins T R κw v₀ O i → ∀ h, RepsAt (O i) (v₀ i (sg0 D A)) h → ∀ gramR c0R c0L, Comparison₂ R gramR c0R c0L → CoefficientBaseChange R i (O i).jL (inC (O i).c') (c0L i) (O i).c0' → ∀ (σ : D.what₂.LL →+* ℂ), OverK σ → ∀ (hV : T.V ((i : ℕ) + 1) (res T σ) = Wc D i) (μ' η' : (AE D)ˣ →* Circle), ChiAt R i σ μ' → IsEtaConj σ R.eta η' → ∀ (c : CoefA (Vc D i)) (c₁ : VsV D i D.what₂.LL →ₛₗ[σ] c.W) (H : HMod (Bridge.Gf (Vc D i) → c.W)) (j : A.fam.amb.FL i A.μ0 →ₛₗ[σ] H.H), IsConjForms R i σ (c0L i) c c₁ H j → ∀ (ω : GA D (Vc D i) × GA D (Wc D i) →* Module.End ℂ (WO (Vc D i) (Wc D i) → ℂ)) (f₀ f : WO (Vc D i) (Wc D i) → ℂ) (B : D.what₂.Tau → Matrix (Fin (Wc D i).rank) (Fin (Wc D i).rank) ℂ) (io : LowT (R.MW i σ) →ₗ[ℂ] c.W →ₗ[ℂ] PolF D (Wc D i).rank (Vc D i).rank) (thP : LinearMap.range (c.ext ∘ₗ H.e) →ₗ[ℂ] (LowT (R.MW i σ) →ₗ[ℂ] (GA D (Wc D i) → ℂ))), LiftData R i σ μ' η' c H ω f₀ f B io thP → ∃ (u : GA D (Wc D i) → ℂ) (z : G) (κ : ℂ), PhaseFun R i u ∧ z ∈ Subgroup.center G ∧ ‖κ‖ = 1 ∧ EquivBy (O i) κw σ hV u ∧ ∀ x₀ (n : ℕ) (a : Fin n → D.what₂.LL) (fs : Fin n → Cu T κw i), IsClassSum (O i) κw h x₀ a fs → ∀ v : ∀ ρ, lowT (R.MW i σ) ρ, (fun ρ => (v ρ : (R.MW i σ).sm ρ)) = v₀ i σ → ∀ g, κ * thP ((c.ext ∘ₗ H.e).rangeRestrict (j x₀)) (PiTensorProduct.tprod ℂ v) g = ∑ k, σ (a k) * (u g * phiC T hV (wtA (κw i)) (actG (O i) z (fs k : T.R ((i : ℕ) + 1))) g) := by
   intro D G _ _ Pl0 T0 A T _ R F κ v₀ hR tie i O hO h hh gramR c0R c0L _ hc σ hσ hV μ' η' hμ hη c c₁ H j hj ω f₀ f B io thP hL
@@ -49,11 +49,11 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.
   {κw : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)} {v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec}
 
 /- English proof (translation)
-Use `choose act hact hj using (GlobalTheory.T.conjugateLift_unique_and_baseDatum).2.2.2.1 T R F κw v₀ hR fw i hE hI O hO.1`. Establish `hq1` using `(GlobalTheory.T.conjugateLift_unique_and_baseDatum).2.2.2.2 T R F κw v₀ hR fw i hE hI O ph hP hO h hh`. Take `⟨z, hz, ze, hze, hx⟩` from `hq1`. Use `⟨act, z, ze, hact, hz, hze, fun x₀ => ?_⟩` and prove the remaining obligations. Establish `hq2` using `hx x₀`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨n, a, f, hc, he⟩` from `hq2`. Use `⟨n, a, f, hc, ?_⟩` and prove the remaining obligations. Establish `hs : ∀ b, D.what₂.embLL b = sg0 D A b` using `fun b => by rw [sign_at_base_place_eq_embedding R]`. Establish `h1` using `he (fun k => act z (f k)) (fun k => hact z (f k))`. Establish `h2` using `read_sum (sg0 D A) ((R.FW i).j (sg0 D A)) (crdF fw i) act (R.FW i).chi (R.gW i (sg0 D A)) (fun g f => by rw [← hs]; exact hj g f) (fun g => (idemOf A.X).coeff g) (fun k => ze * a k) (fun k => act z (f k))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `h2.trans (Eq.trans ?_ h1.symm)` and prove the remaining obligations. Simplify using `only [hs]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem base_lift5 (hR : GlobalTheory.Core5 R F) (fw : FWTie T R κw v₀) (i : Fin D.R.m) (hE : fw.Evaluates) (hI : EvInj T R v₀)
     (O : ∀ i, OMDat T.toCore R i Unit (fun _ => A.μ0)) (ph : ℂ) (hP : OMPins T R κw v₀ O i)
@@ -81,23 +81,23 @@ theorem base_lift5 (hR : GlobalTheory.Core5 R F) (fw : FWTie T R κw v₀) (i : 
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Use `(exists_reps hP).elim fun h hh => ?_` and prove the remaining obligations. Establish `hg : GoodEmb T.Q.c (res T σ)` using `(GlobalTheory.GalLift.overK_iff_good_ofFive T R F κw v₀ hR fw i σ).1 hσ`. Establish `hV : T.V ((i : ℕ) + 1) (res T σ) = Wc D i` using `fw.laws.toLawsM.spaceW _ (inR i) _ hg`. Establish `hq3` using `base_lift5 hR fw i hE hI O ph hP hO h hh`. Take `⟨act, z₀, ze, hact, hz₀, ⟨m, hm, hze⟩, hx⟩` from `hq3`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hq4` using `oneMapConj5 T R F κw v₀ hR fw i O hP h hh gramR c0R c0L hT hC σ hσ hV μ' η' hμ hη c c₁ H j hF ω f₀ f B io thP hL`. Take `⟨u, z, κ, hu, hz, hκ, hEq, hid⟩` from `hq4`. Establish `hq5` using `(GlobalTheory.T.centralShift_phase_conjReadings_fiveClauses).2.1 R F hR i σ u hu`. Take `⟨U, hU⟩` from `hq5`. Establish `hq6` using `(GlobalTheory.T.conjugateLift_unique_and_baseDatum).2.2.1 R F hR i`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hlift, htr⟩` from `hq6`. Establish `hq7` using `htr σ`. Take `⟨htr, hW⟩` from `hq7`. Set `J : (Fin (R.nW i) → D.what₂.LL) →ₛₗ[σ] (R.HW i σ).H` to `U.toLinearEquiv.toLinearMap.comp ((R.FW i).j σ)`. Set `ev : (R.HW i σ).H →ₗ[ℂ] (GA D (Wc D i) → ℂ)` to `evL (R.HW i σ).e (v₀ i σ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hev : Function.Injective ev` using `hI i σ hg`. Establish `hJ : ∀ (f : Cu T κw i) g, ev (J (crdF fw i f)) g = u g * phiC T hV (wtA (κw i)) (f : T.R ((i : ℕ) + 1)) g` using `fun f g => (hU.2.2.2.2 _ _ _).trans (congrArg (u g * ·) (congrFun (hE i σ hg hV f) g))`. Establish `hJa : ∀ z (f : Cu T κw i) g, ev (J (crdF fw i (act z f))) g = u g * phiC T hV (wtA (κw i)) (actG (O i) z (f : T.R ((i : ℕ) + 1))) g` using `fun z f g => (hJ (act z f) g).trans (congrArg (fun w => u g * phiC T hV (wtA (κw i)) w g) (hact z f))`. Establish `hJe : ∀ g f, J (crdF fw i (act g f)) = σ (((R.FW i).chi g : D.what₂.LLˣ) : D.what₂.LL) • R.gW i σ g (J (crdF fw i f))`. Introduce `g f`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hk` using `hlift g`. Take `⟨k, hk⟩` from `hk`. Use `hev (Eq.trans (funext fun x => ?_) (ev.map_smul _ _).symm)` and prove the remaining obligations. Conclude with `(hJa g f x).trans ((hEq g k hk f x).trans (congrArg (σ (((R.FW i).chi g : D.what₂.LLˣ) : D.what₂.LL) * ·) ((hJ f (x * k)).symm.trans (htr g k hk _ _ x).symm)))`. Set `v : ∀ ρ, lowT (R.MW i σ) ρ` to `fun ρ => ⟨v₀ i σ ρ, ((fw.hv₀ i σ).1 ρ).2.1⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hS : ∀ x₀ (n : ℕ) (a : Fin n → D.what₂.LL) (fs : Fin n → Cu T κw i), IsClassSum (O i) κw h x₀ a fs → κ • thP ((c.ext ∘ₗ H.e).rangeRestrict (j x₀)) (PiTensorProduct.tprod ℂ v) = ∑ k, σ (a k) • ev (J (crdF fw i (act z (fs k))))`. Introduce `x₀ n a fs hc`. Use function extensionality and compare the values at `g`. Use `(hid x₀ n a fs hc v rfl g).trans (Eq.trans (Finset.sum_congr rfl fun k _ => ?_) (Finset.sum_apply g Finset.univ fun k => σ (a k) • ev (J (crdF fw i (act z (fs k))))).symm)` and prove the remaining obligations. Conclude with `congrArg (σ (a k) * ·) (hJa z (fs k) g).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hex : ∀ x, ∃ t : (R.HW i σ).H, (R.HW i σ).e t (fun ρ => v ρ) = thP ((c.ext ∘ₗ H.e).rangeRestrict (j x)) (PiTensorProduct.tprod ℂ v)` using `fun x => by`. Establish `h1` using `hx x`. Take `⟨n, a, fs, hc, -⟩` from `h1`. Conclude with `exists_ev ev hκ _ _ _ (hS x n a fs hc)`. Establish `h2` using `(GlobalTheory.T.conjugateLift_of_characterisationClauses).2.2.2.2.2 R F hR i gramR c0R c0L hT σ hσ μ' η' c c₁ H j hF ω f₀ f B io thP hL v (fw.hv₀ i σ).1 hex`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨th, hth⟩` from `h2`. Use `⟨th, u, U, z₀ * z⁻¹, σ ze * σ (((R.FW i).chi z₀ : D.what₂.LLˣ) : D.what₂.LL) * (σ (((R.FW i).chi z : D.what₂.LLˣ) : D.what₂.LL))⁻¹ * κ, hth, hU, mul_mem hz₀ (inv_mem hz), ?_, fun x y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[norm_mul, norm_mul, norm_mul, norm_inv, norm_chi, norm_chi, hκ, norm_of_pow hm (a := σ ze) (by rw [← map_pow, hze, map_one])]`. Evaluate the numerical expressions. Establish `h1` using `hx x`.
+Evaluate the numerical expressions. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨n, a, fs, hc, hy'⟩` from `h1`. Establish `hyy : y = ratOf fw i act z₀ ze a fs` using `hinj (Eq.trans hy (Eq.symm hy'))`. Use `(congrArg J hyy).trans ?_` and prove the remaining obligations. Conclude with `conj_abstract σ J (crdF fw i) act (R.FW i).chi (R.gW i σ) hJe (fun g => (idemOf A.X).coeff g) ev hev (R.eWf i σ) (fun y => hW y (v₀ i σ)) hz₀ hz ze κ a fs _ (hS x n a fs hc) (th (j x)) (hth (j x) v)`.
+A detailed English derivation is pending.
 -/
 theorem conj_lift5 (hR : GlobalTheory.Core5 R F) (fw : FWTie T R κw v₀) (i : Fin D.R.m) (hE : fw.Evaluates)
     (hI : EvInj T R v₀) (hinj : Function.Injective ((R.FW i).j (sg0 D A)))
@@ -169,7 +169,7 @@ theorem conj_lift5 (hR : GlobalTheory.Core5 R F) (fw : FWTie T R κw v₀) (i : 
       (fun y => hW y (v₀ i σ)) hz₀ hz ze κ a fs _ (hS x n a fs hc) (th (j x)) (hth (j x) v)
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.GalLift.hypConj_of_chars_ofFive R F hR i σ ((GlobalTheory.GalLift.labels_overK σ).1 hσ).1 ((GlobalTheory.GalLift.labels_overK σ).1 hσ).2).2 μ' η' hμ hη (GlobalTheory.EtaConjType.resEta_hasInfExp_of_isEtaConj_ofFive R F hR i σ hσ η' hη).1 (GlobalTheory.EtaConjType.re …`.
+A detailed English derivation is pending.
 -/
 theorem hypConj5 (hR : GlobalTheory.Core5 R F) (i : Fin D.R.m) {σ : D.what₂.LL →+* ℂ} (hσ : OverK σ) {μ' η' : (AE D)ˣ →* Circle}
     (hμ : ChiAt R i σ μ') (hη : IsEtaConj σ R.eta η') : HypConj R i σ μ' η' :=
@@ -177,11 +177,11 @@ theorem hypConj5 (hR : GlobalTheory.Core5 R F) (i : Fin D.R.m) {σ : D.what₂.L
     (GlobalTheory.EtaConjType.resEta_hasInfExp_of_isEtaConj_ofFive R F hR i σ hσ η' hη).1 (GlobalTheory.EtaConjType.resEta_hasInfExp_of_isEtaConj_ofFive R F hR i σ hσ η' hη).2
 
 /- English proof (translation)
-Establish `e1 : μ'' = μ'` using `(GlobalTheory.ConjCharUnique.conjChar_unique_ofFive R F hR i σ).1 _ _ h'.1 h.1`. Establish `e2 : η'' = η'` using `(GlobalTheory.ConjCharUnique.conjChar_unique_ofFive R F hR i σ).2 _ _ h'.2.1 h.2.1`. Substitute `e1 e2` using the available equality. Establish `h1` using `(isConjLift_iff R i σ _ _ _ _ _).1 h.2.2.2`. Take `⟨ω, f₀, f, B, io, thP, hL, hp⟩` from `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h2` using `(isConjLift_iff R i σ _ _ _ _ _).1 h'.2.2.2`. Take `⟨ω', f₀', f', B', io', thP', hL', hp'⟩` from `h2`. Establish `h3` using `(GlobalTheory.T.conjugateLift_unique_and_baseDatum).1 R F hR i gramR c0R c0L hT σ hσ _ _ c c₁ H j c' c₁' H' j' h.2.2.1 h'.2.2.1 ω f₀ f B io thP ω' f₀' f' B' io' thP' hL hL'`. Take `⟨κ, hκ, he⟩` from `h3`. Establish `hg : GoodEmb T.Q.c (res T σ)` using `(GlobalTheory.GalLift.overK_iff_good_ofFive T R F κw v₀ hR fw i σ).1 hσ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `v : ∀ ρ, lowT (R.MW i σ) ρ` to `fun ρ => ⟨v₀ i σ ρ, ((fw.hv₀ i σ).1 ρ).2.1⟩`. Set `ev : (R.HW i σ).H →ₗ[ℂ] (GA D (Wc D i) → ℂ)` to `evL (R.HW i σ).e (v₀ i σ)`. Establish `hev : Function.Injective ev` using `hI i σ hg`. Use `⟨κ, hκ, fun x => hev (Eq.trans ?_ (ev.map_smul _ _).symm)⟩` and prove the remaining obligations. Conclude with `(hp' (j' x) v).trans ((congrArg (R.eWf i σ) (he x _)).trans (((R.eWf i σ).map_smul _ _).trans (congrArg (κ • ·) (hp (j x) v).symm)))`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem lift_unique5 (hR : GlobalTheory.Core5 R F) (fw : FWTie T R κw v₀) (hI : EvInj T R v₀) (i : Fin D.R.m) {gramR c0R c0L}
     (hT : Comparison₂ R gramR c0R c0L) {σ : D.what₂.LL →+* ℂ} (hσ : OverK σ) {μ' η' c c₁ H j th μ'' η'' c' c₁' H' j' th'}
@@ -206,9 +206,9 @@ theorem lift_unique5 (hR : GlobalTheory.Core5 R F) (fw : FWTie T R κw v₀) (hI
     (((R.eWf i σ).map_smul _ _).trans (congrArg (κ • ·) (hp (j x) v).symm)))
 
 /- English proof (translation)
-Establish `h1` using `(GlobalTheory.T.centralShift_phase_conjReadings_fiveClauses).1 R F hR i σ z hz`. Take `⟨ζ, hζ⟩` from `h1`. Use `⟨(GlobalTheory.GalLift.hypConj_of_chars_ofFive R F hR i σ ((GlobalTheory.GalLift.labels_overK σ).1 hσ).1 ((GlobalTheory.GalLift.labels_overK σ).1 hσ).2).1, ⟨_, _, _, _, _, _, _, h⟩, u, U, z, ζ, hU, hu, hζ, fun μ'' η'' c' c₁' H' j' th' h' => ⟨hypConj5 hR i hσ h'.1 h'.2.1, ?_⟩⟩` and prove the remaining obligations. Establish `h2` using `lift_unique5 hR fw hI i hT hσ h h'`. Take `⟨κ', hκ', e⟩` from `h2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨κ * κ'⁻¹, by rw [norm_mul, norm_inv, hκ, hκ']; norm_num, fun x y hy => ?_⟩` and prove the remaining obligations. Conclude with `(he x y hy).trans (smul_inv_of (R.gW i σ z) hκ' (e x))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem conjugateRationalLift_at_embedding_of_datum (hR : GlobalTheory.Core5 R F) (fw : FWTie T R κw v₀) (hI : EvInj T R v₀) (i : Fin D.R.m) {gramR c0R c0L}
     (hT : Comparison₂ R gramR c0R c0L) {σ : D.what₂.LL →+* ℂ} (hσ : OverK σ) (ph : ℂ) {μ' η' c c₁ H j th}
@@ -225,9 +225,9 @@ theorem conjugateRationalLift_at_embedding_of_datum (hR : GlobalTheory.Core5 R F
   exact (he x y hy).trans (smul_inv_of (R.gW i σ z) hκ' (e x))
 
 /- English proof (translation)
-Establish `hσ : OverK (sg0 D A)` using `fun x _ => congrArg (fun s : D.what₂.LL →+* ℂ => s (D.embE x)) (sign_at_base_place_eq_embedding R)`. Establish `h1` using `(GlobalTheory.T.conjugateLift_unique_and_baseDatum).2.1 T R F κw v₀ hR fw i gramR c0R c0L hT ((GlobalTheory.T.conjugateCharacters_embeddings_of_characterisation).2.1 R F hR i)`. Take `⟨c₁, j, hd, hj⟩` from `h1`. Use `conjugateRationalLift_at_embedding_of_datum hR fw hI i hT hσ ph hd (u := fun _ => 1) (U := LinearIsometryEquiv.refl ℂ _) ⟨fun _ => norm_one, fun _ _ _ => rfl, fun _ _ _ => rfl, fun _ _ _ => rfl, fun y v h => (one_mul _).symm⟩ (fun _ _ => rfl) (one_mem _) hph fun x y hy => ?_` and prove the remaining obligations. Use `Eq.trans hy (congrArg (ph • ·) ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(congrArg (R.thG i A.μ0) (hj x).symm).trans (LinearMap.congr_fun (map_one (R.gW i (sg0 D A))) _).symm`.
+A detailed English derivation is pending.
 -/
 theorem conjAt_base5 (hR : GlobalTheory.Core5 R F) (fw : FWTie T R κw v₀) (hI : EvInj T R v₀) (i : Fin D.R.m) {gramR c0R c0L}
     (hT : Comparison₂ R gramR c0R c0L) {ph : ℂ} (hph : ‖ph‖ = 1) : ConjAt R i (sg0 D A) ph (c0L i) := by
@@ -241,15 +241,15 @@ theorem conjAt_base5 (hR : GlobalTheory.Core5 R F) (fw : FWTie T R κw v₀) (hI
   exact (congrArg (R.thG i A.μ0) (hj x).symm).trans (LinearMap.congr_fun (map_one (R.gW i (sg0 D A))) _).symm
 
 /- English proof (translation)
-Establish `h0` using `hP.2.lift.c0`. Take `⟨gramR', c0R', c0L', hT', hC⟩` from `h0`. Establish `hg : GoodEmb T.Q.c (res T σ)` using `(GlobalTheory.GalLift.overK_iff_good_ofFive T R F κw v₀ hR fw i σ).1 hσ`. Establish `hμ` using `fw.chiR i σ hg`. Establish `h1` using `(GlobalTheory.T.conjugateCharacters_embeddings_of_characterisation).2.2.1 R F hR i ((GlobalTheory.T.conjugateCharacters_embeddings_of_characterisation).2.1 R F hR i) σ hσ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨η', hη⟩` from `h1`. Establish `hH` using `hypConj5 hR i hσ hμ hη`. Establish `h2` using `(GlobalTheory.T.conjugateLift_of_characterisationClauses).1 R F hR i gramR' c0R' c0L' hT' σ hσ`. Take `⟨c, c₁, hc⟩` from `h2`. Establish `h3` using `(GlobalTheory.T.conjugateLift_of_characterisationClauses).2.1 R F hR i gramR' c0R' c0L' hT' σ c c₁ hc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨H, j, hF⟩` from `h3`. Establish `h4` using `(GlobalTheory.T.conjugateCharacters_embeddings_of_characterisation).2.2.2.2.2.2.1 R F hR i σ _ η' hμ hη hH`. Take `⟨ω, hω⟩` from `h4`. Establish `h5` using `(GlobalTheory.T.conjugateLift_of_characterisationClauses).2.2.2.1 R F hR i σ hσ`. Take `⟨f₀, f, B, hv⟩` from `h5`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h6` using `GlobalTheory.MovedWeights.exists_io_conj_ofFive R F hR i σ hσ _ η' hμ hH c c₁ hc ω f₀ f B hω hv`. Take `⟨io, hio⟩` from `h6`. Establish `h7` using `(GlobalTheory.T.conjugateLift_of_characterisationClauses).2.2.2.2.1 R F hR i σ _ η' _ c c₁ H j hF ω f₀ f B io hω hv`. Take `⟨thP, hth⟩` from `h7`. Establish `hL : LiftData R i σ _ η' c H ω f₀ f B io thP` using `⟨hω, hv, hio, hth⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h8` using `conj_lift5 hR fw i hE hI hinj O ph hP hO hT' hC σ hσ hμ hη hF hL`. Take `⟨th, u, U, z, κ, hp, hU, hz, hκ, he⟩` from `h8`. Establish `h9` using `(GlobalTheory.T.conjugateLift_of_characterisationClauses).2.2.1 R F hR i gramR c0R c0L hT gramR' c0R' c0L' hT' σ c c₁ H j hF`. Take `⟨c₁', hF'⟩` from `h9`. Conclude with `conjugateRationalLift_at_embedding_of_datum hR fw hI i hT hσ ph ⟨hμ, hη, hF', (isConjLift_iff R i σ _ _ _ _ _).2 ⟨ω, f₀, f, B, io, thP, hL, hp⟩⟩ hU (fun h => absurd h hne) hz hκ he`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem conjugateRationalLift_at_nonBaseEmbedding (hR : GlobalTheory.Core5 R F) (fw : FWTie T R κw v₀) (i : Fin D.R.m) (hE : fw.Evaluates)
     (hI : EvInj T R v₀) (hinj : Function.Injective ((R.FW i).j (sg0 D A)))
@@ -287,11 +287,11 @@ theorem conjugateRationalLift_at_nonBaseEmbedding (hR : GlobalTheory.Core5 R F) 
 end Main
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A T _ R F κw v₀ O ph hR _ fw hb _ hLU hP i hO`. Establish `hJ'` using `GlobalTheory.ConjReading.jEvExists_and_jEvBar T R κw v₀ O hR.lev hR.models fw hP`. Establish `hI : EvInj T R v₀` using `GlobalTheory.EvalAtUnitVectorFinal.evInj_of_isModels_of_tie T R κw v₀ hR.models fw`. Establish `hE : fw.Evaluates` using `fw.evaluates hJ'.1`. Establish `hinj : Function.Injective ((R.FW i).j (sg0 D A))` using `GlobalTheory.GalOne.inj_of_indep _ (hLU i (sg0 D A)).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun x => ?_, fun gramR c0R c0L hT σ hσ => ?_, fun σ hσ => ⟨(GlobalTheory.GalLift.labels_overK σ).2 hσ, ?_⟩⟩` and prove the remaining obligations. Take `⟨h, hh⟩` from `exists_reps (hP i)`. Take `⟨act, z, ze, -, -, -, hx⟩` from `base_lift5 hR fw i hE hI O ph (hP i) hO h hh`. Take `⟨n, a, f, -, hy⟩` from `hx x`. Conclude with `⟨_, hy, fun y hy' => hinj (Eq.trans hy' (Eq.symm hy))⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Distinguish the cases in `hs : σ = sg0 D A`. Substitute `hs` using the available equality. Conclude with `conjAt_base5 hR fw hI i hT hO.2.1.2.2.2.2.1`. Conclude with `conjugateRationalLift_at_nonBaseEmbedding hR fw i hE hI hinj O ph (hP i) hO hT hσ hs`. Conclude with `(GlobalTheory.T.centralShift_phase_conjReadings_fiveClauses).2.2 T R F κw v₀ hR fw i hJ'.1 hJ'.2 hb σ fun hg => hσ ((GlobalTheory.GalLift.overK_iff_good_ofFive T R F κw v₀ hR fw i σ).2 hg)`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem conjRatLift5 : GlobalTheory.LowRow.ConjRatLift5 := by
   intro D G _ _ Pl0 T0 A T _ R F κw v₀ O ph hR _ fw hb _ hLU hP i hO

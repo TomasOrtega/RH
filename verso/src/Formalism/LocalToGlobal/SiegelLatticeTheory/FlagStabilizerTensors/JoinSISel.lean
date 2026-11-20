@@ -36,7 +36,7 @@ variable {𝒜 : FamClass} {sel : Formalism.L2.TSel 𝒜} {selS : SelS 𝒜 sel}
   {selC : ColumnCompatibleSelection 𝒜 sel selP} {selK : SelK 𝒜 sel} {selI : IndefiniteRealisationChoice 𝒜 sel selS selP selDH selC selK}
 
 /- English proof (translation)
-The claim follows from `hG.imp fun Fm _ _ H hc => by obtain ⟨x0, H'⟩ := H hc exact ⟨x0, fun x hx h hx0 i => hFXC _ (selS Fm hc x hx h i).toSTies (H' x hx h hx0 i)⟩`.
+A detailed English derivation is pending.
 -/
 theorem finXRow_of_gap (hFXC : Formalism.L2.SG.PoincareAmplitudeLowerBounds.FinXC)
     (hG : Closed 𝒜 fun Fm _ => ∀ hc : 𝒜 Fm, EvSel sel Fm hc fun x _ _ i => Formalism.L2.SG.ConcreteSettingExists.GapHyp (Fm.D x i)) :

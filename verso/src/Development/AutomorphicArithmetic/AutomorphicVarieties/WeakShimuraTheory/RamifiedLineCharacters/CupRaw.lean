@@ -4,21 +4,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
 /- English proof (translation)
-Introduce `O Γ k _ _ _ _ _ _ Φ a l _ _ hfin hok 𝒩 hG w w' J _ y hy`. Take `⟨M, i1, i2, i3, i4, i5, ρ, p, q, m0, hc, hN, hp, hq, hm0, hpm⟩` from `Gys.extRep Φ a l hfin hok.lc w w' J y hy`. Take `⟨N', hN', c, hcZ, hc0, hloc, g, hg1, hcg, hspan⟩` from `hG M ρ hc (fun g hg => hN g (hok.kill g hg) (fun j => (hy j).kill g hg)) m0 hm0`. Take `⟨hcont, hcoc⟩` from `(mem_Z1_iff_cocycle ρ c).1 hcZ`. Establish `hlc : IsLocallyConstant c` using `(IsLocallyConstant.iff_continuous c).2 hcont`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hrt : ∀ u, (Φ.wN N').rt u = Φ.rt u` using `fun u => rfl`. Use `choose mm hmm using hloc`. Establish `hpg : p (c g) ≠ 0` using `hpm _ hspan hcg`. Use `⟨N', hN', fun s => p (c s), fun v => -p (mm v), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `⟨hlc.comp p, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s t`. Rewrite using `[hrt, hcoc, map_add, hp]`. Introduce `s hs`. Simplify using `[hc0 s hs]`. Introduce `v s hs show p (c s) = -p (mm v) - a ↑((Φ.rt w) s) * -p (mm v)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hmm v s hs, map_sub, hp]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨g, ?_, hpg⟩` and prove the remaining obligations. Establish `h` using `hp g (c g)`. Rewrite `h` using `[hg1]`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `p (c g) = _ at h`. Establish `h2 : (a ↑((Φ.rt w) g) - 1) * p (c g) = 0` using `by linear_combination -h`. Break down `mul_eq_zero.1 h2 with h3 | h3` into its components or cases. Conclude with `sub_eq_zero.1 h3`. Conclude with `absurd h3 hpg`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Use `⟨fun s => q j (c s), hlc.comp (q j), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `s t`. Simplify using `only [hrt]`. Rewrite using `[hcoc, map_add, hq]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `s hs`. Simplify using `[hc0 s hs]`. Introduce `v`. Use `⟨-q j (mm v), fun s hs => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [hrt]`. Rewrite using `[hmm v s hs, map_sub, hq]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Gys.cupRaw :
     ∀ {O Γ k : Type} [CommRing O] [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [CompactSpace Γ] [Field k] (Φ : Fr O Γ) (a : O →+* k) (l : ℕ) [Fact l.Prime] [CharP k l], (Set.range a).Finite → Φ.Ok a → ∀ 𝒩 : Set Γ → Prop, Φ.Gys l 𝒩 → ∀ (w w' : ℤ × ℤ) (J : Type) [Finite J] (y : J → Γ → k), (∀ j, Φ.Coc a w' (y j)) →

@@ -39,9 +39,9 @@ Both sides reduce to the same expression.
     ((reImCoord g).symm p i).im = p (Sum.inr i) := rfl
 
 /- English proof (translation)
-Establish `h : ZSpan.fundamentalDomain (Module.Basis.ofEquivFun (reImCoord g)) = Set.pi Set.univ fun _ : Fin g => Complex.measurableEquivRealProd ⁻¹' (Set.Ico (0 : ℝ) 1 ×ˢ Set.Ico (0 : ℝ) 1)`. Use extensionality with `z`. Simplify using `[ZSpan.fundamentalDomain, forall_and]`. The claim follows by propositional logic. Rewrite using `[h, volume_pi_pi]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. The claim follows by propositional logic. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_eq_one fun _ _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.volume_preserving_equiv_real_prod.measure_preimage (measurableSet_Ico.prod measurableSet_Ico).nullMeasurableSet]`. Simplify using `[Measure.volume_eq_prod]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem volume_fundamentalDomain_reImCoord (g : ℕ) :
     volume (ZSpan.fundamentalDomain (Module.Basis.ofEquivFun (reImCoord g))) = 1 := by
@@ -63,7 +63,7 @@ def periodMap {g : ℕ} (τ : Matrix (Fin g) (Fin g) ℂ) : (Fin g → ℂ) →�
       ((reImCoord g).symm.symm : (Fin g → ℂ) →ₗ[ℝ] (Fin g ⊕ Fin g → ℝ))
 
 /- English proof (translation)
-Rewrite using `[periodMap, LinearMap.det_conj, LinearMap.det_toLin', Matrix.det_fromBlocks_zero₂₁, Matrix.det_one, _root_.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem det_periodMap {g : ℕ} (τ : Matrix (Fin g) (Fin g) ℂ) :
     LinearMap.det (periodMap τ) = (τ.map Complex.im).det := by
@@ -71,7 +71,7 @@ theorem det_periodMap {g : ℕ} (τ : Matrix (Fin g) (Fin g) ℂ) :
     Matrix.det_one, _root_.one_mul]
 
 /- English proof (translation)
-Use extensionality with `i`. Apply the tactic sequence `apply Complex.ext <;>`. Simplify using `[periodMap, Matrix.mulVec, dotProduct, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem periodMap_apply {g : ℕ} (τ : Matrix (Fin g) (Fin g) ℂ) (z : Fin g → ℂ) :
     periodMap τ z = (fun i => ((z i).re : ℂ)) + τ.mulVec (fun i => ((z i).im : ℂ)) := by
@@ -86,19 +86,19 @@ namespace GlobalTheory
 open PeriodVol
 
 /- English proof (translation)
-Introduce `g Λ φ τ hτ hΛ Fd hFd`. Establish `hpos` using `hτ.det_pos`. Set `S : (Fin g → ℂ) ≃ₗ[ℝ] (Fin g → ℂ)` to `LinearMap.equivOfDetNeZero (periodMap τ) (by rw [det_periodMap]; exact hpos.ne')`. Establish `hS : ∀ z, S z = periodMap τ z` using `fun z => rfl`. Set `T : (Fin g → ℂ) ≃ₗ[ℝ] (Fin g → ℂ)` to `S.trans (φ.restrictScalars ℝ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `b₀` to `Module.Basis.ofEquivFun (reImCoord g)`. Establish `hspan : Λ = Submodule.span ℤ (Set.range (b₀.map T))`. Use extensionality with `w`. Take `⟨z, rfl⟩` from `T.surjective w`. Rewrite using `[Module.Basis.mem_span_iff_repr_mem]`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `φ (S z) ∈ Λ ↔ _`. Rewrite using `[hΛ]`. Simplify using `only [Module.Basis.map_repr, LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply, b₀, Module.Basis.ofEquivFun_repr_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, n, h⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `: z = fun i => ⟨m i, n i⟩` using `S.injective (by rw [h, hS, periodMap_apply]; simp)`. Substitute `this` using the available equality. Introduce and unpack `(i | i)`. Conclude with `⟨m i, rfl⟩`. Conclude with `⟨n i, rfl⟩`.
+Establish an intermediate fact. Substitute using the available equality. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Introduce `h choose k hk using h`. Use `⟨fun i => k (Sum.inl i), fun i => k (Sum.inr i), ?_⟩` and prove the remaining obligations. Establish `h1 : ∀ i, (z i).re = k (Sum.inl i)` using `fun i => (hk (Sum.inl i)).symm`. Establish `h2 : ∀ i, (z i).im = k (Sum.inr i)` using `fun i => (hk (Sum.inr i)).symm`. Rewrite using `[hS, periodMap_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[h1, h2]`. Substitute `hspan` using the available equality. Establish `hdet : b₀.det (b₀.map T) = ‖LinearMap.det (φ : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ))‖ ^ 2 * (τ.map Complex.im).det`. Establish `hT : (T : (Fin g → ℂ) →ₗ[ℝ] (Fin g → ℂ)) = (φ : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)).restrictScalars ℝ ∘ₗ periodMap τ` using `rfl`. Establish `: ⇑(b₀.map T) = (T : (Fin g → ℂ) →ₗ[ℝ] (Fin g → ℂ)) ∘ b₀` using `by ext1 i; simp`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this, Module.Basis.det_comp, Module.Basis.det_self, _root_.mul_one, hT, LinearMap.det_comp, det_periodMap, LinearMap.det_restrictScalars, Algebra.norm_complex_apply, Complex.normSq_eq_norm_sq]`. Establish `: VAddInvariantMeasure (Submodule.span ℤ (Set.range (b₀.map T))) (Fin g → ℂ) volume` using `⟨fun c s _ => measure_preimage_add volume (c : Fin g → ℂ) s⟩`. Rewrite using `[hFd.measure_eq (ZSpan.isAddFundamentalDomain (b₀.map T) volume), ZSpan.measure_fundamentalDomain _ volume b₀, volume_fundamentalDomain_reImCoord, _root_.mul_one, hdet, ENNReal.toReal_ofReal (abs_nonneg _), abs_of_nonneg (by positivity)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem volume_fundamentalDomain_periodLattice :
     ∀ (g : ℕ) (Λ : Submodule ℤ (Fin g → ℂ)) (φ : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ)) (τ : Matrix (Fin g) (Fin g) ℂ),

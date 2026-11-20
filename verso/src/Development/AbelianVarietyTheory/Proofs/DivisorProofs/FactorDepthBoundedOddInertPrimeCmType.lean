@@ -13,9 +13,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.FactorDepthInertBounds (boundAll bo
 namespace GlobalTheory.RefSum
 
 /- English proof (translation)
-Establish `hn : ∀ n : ℕ, InPsi H (lab (n : ZMod h)) ↔ Even n`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simpa using h0`. Consider the case `succ n ih => rw [Nat.cast_succ, hstep, ih, Nat.even_add_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Use `haveI : NeZero h := ⟨hh.ne'⟩`. Use `⟨(hn h).1 (by simpa [ZMod.natCast_self] using h0), fun s => ?_⟩` and prove the remaining obligations. Use `hn s.val` as an intermediate fact. Rewrite `this` using `[ZMod.natCast_zmod_val]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem inPsi_orbit_parity {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {h : ℕ}
     (hh : 0 < h) (lab : ZMod h → (E →+* ℂ)) (hstep : ∀ s, InPsi H (lab (s + 1)) ↔ ¬ InPsi H (lab s))
@@ -31,25 +31,25 @@ theorem inPsi_orbit_parity {E : Type} [Field E] [NumberField E] [IsCMField E] {H
   rwa [ZMod.natCast_zmod_val] at this
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c p _ la hp2 hdisc hin f k hf hk`. Use `letI := H.starRing`. Establish `hp : p.Prime` using `Fact.out`. Establish `hp3 : 3 ≤ p` using `by have := hp.two_le; omega`. Establish `hp1 : (1 : ℝ) < p` using `by exact_mod_cast hp.one_lt`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpp : (0 : ℝ) < (p : ℝ) ^ 2 - 1` using `by nlinarith`. Establish `hL : 0 ≤ Real.logb p k` using `Real.logb_nonneg hp1 (by exact_mod_cast hk)`. Use `⟨((rk f : ℝ) - Dw.q * (3 / 2 + Real.logb p k / 2)) * k * p / ((p : ℝ) ^ 2 - 1) - (rk f : ℝ) ^ 2 * (Real.logb p k + 1), k * (Dw.q / ((p : ℝ) - 1) + ((Dw.p : ℝ) - Dw.q) * p / ((p : ℝ) ^ 2 - 1)), ?_, ?_⟩` and prove the remaining obligations. Introduce `T io e ho y`. Use `⟨le_nuFac fun Ch X => ?_, fun halg => (GlobalTheory.T.factorDepth_upperBound_oddUnramifiedPrime E H Dw l Xo c p T io y (not_isUnit_of_overLa la ho) halg hp2 hdisc f k hf).2 hin⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hfrob, hty⟩` from `GlobalTheory.T.formalGroup_rootsOfUnity_typed_lieRanks E H Dw l Xo c (fun _ => rfl) p hdisc T io X`. Take `⟨h, hh0, -, lab, horb, d', G', ty, I, P, -, ⟨mu⟩, -, hcard, hfr⟩` from `hty y Ch f.1`. Establish `hstep : ∀ s, InPsi H (lab (s + 1)) ↔ ¬ InPsi H (lab s)`. Introduce `s`. Rewrite using `[((hfrob _ _ (horb.2.1 s)).2 hin)]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h1 h2`. Conclude with `ReciprocityTheory.ChartRestriction.G.PullbackSections.CVA.not_inPsi_both H (lab s) ⟨h2, h1⟩`. Introduce `h1`. Conclude with `(ReciprocityTheory.ChartRestriction.G.PullbackSections.CVA.inPsi_or H (lab s)).resolve_left h1`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hev, hpar⟩` from `inPsi_orbit_parity hh0 lab hstep (by rw [horb.1]; exact hf)`. Establish `hodd : ∀ s : ZMod h, Odd s.val → (Finset.univ.filter fun a => ty a = s).card ≤ Dw.q`. Introduce `s hs`. Establish `hn : ¬ InPsi H (lab s)` using `fun h1 => (Nat.not_even_iff_odd.2 hs) ((hpar s).1 h1)`. Establish `h2` using `hcard s`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h2` using `[if_neg hn]`. Rewrite using `[← h2, Fintype.card_subtype]`. Take `⟨hsat, hzero, hdep⟩` from `hfr 0 f horb.1.symm`. Take `⟨cr, -, hcr, hlow⟩` from `GlobalTheory.T.detDepth_lower_bound_saturated_even_type X.C (vX_vp X) p hp (vX_vp_p X) hp3 d' h hh0 hev ty G' mu Dw.q hodd (0 : ZMod h) (by simp) (rk f) k hk (fun a => P.mulVec (frame Ch X f a)) hsat hzero`. Rewrite `*` using `[nuFacC, ← hdep]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `le_trans (EReal.coe_le_coe_iff.2 ?_) hlow` and prove the remaining obligations. Establish `h3 : ((rk f : ℝ) - Dw.q * (3 / 2 + Real.logb p k / 2)) * k * p ≤ ((rk f : ℝ) - cr) * k * p`. Apply `mul_le_mul_of_nonneg_right _ (by positivity)` to reduce the goal to its premises. Apply `mul_le_mul_of_nonneg_right _ (by positivity)` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h4` using `div_le_div_of_nonneg_right h3 hpp.le`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hab : (p : ℝ) / ((p : ℝ) ^ 2 - 1) ≤ 1 / ((p : ℝ) - 1)`. Rewrite using `[div_le_div_iff₀ hpp (by linarith)]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hkey : boundFine p (Dw.p + Dw.q) Dw.q (rk f) k - (k * (Dw.q / ((p : ℝ) - 1) + ((Dw.p : ℝ) - Dw.q) * p / ((p : ℝ) ^ 2 - 1)) - (((rk f : ℝ) - Dw.q * (3 / 2 + Real.logb p k / 2)) * k * p / ((p : ℝ) ^ 2 - 1) - (rk f : ℝ) ^ 2 * (Real.logb p k + 1))) = (k : ℝ) * Dw.q * (1 / 2 * (1 / (( …`. Unfold `boundFine`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hpos : 0 ≤ (k : ℝ) * Dw.q * (1 / 2 * (1 / ((p : ℝ) - 1)) + (3 / 2 + Real.logb p k / 2) * (1 / ((p : ℝ) - 1) - (p : ℝ) / ((p : ℝ) ^ 2 - 1)))`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `have hb : 0 ≤ 1 / ((p : ℝ) - 1) := by apply div_nonneg <;> linarith`. Use `mul_nonneg (by positivity : (0 : ℝ) ≤ 3 / 2 + Real.logb p k / 2) (sub_nonneg.2 hab)` as an intermediate fact. Check the signs of the components of the expression. Combine the linear equalities and inequalities to obtain the conclusion.
+Check the signs of the components of the expression. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem facBetween_fine : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), ∀ (p : ℕ) [Fact p.Prime] (la : PointsOfFlagModel.abelian₂ p c), p ≠ 2 → ¬ (p : ℤ) ∣ discr E → InertInK H p → ∀ (f : Lt1 Dw) (k : ℕ), InPsi H f.1 → 1 ≤ k → ∃ A B : ℝ, FacBetween Xo la f k A B ∧ B - A ≤ boundFine p (Dw.p + Dw.q) Dw.q (rk f) k := by
   intro E _ _ _ H Dw l Xo c p _ la hp2 hdisc hin f k hf hk

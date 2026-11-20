@@ -26,7 +26,7 @@ open GlobalTheory.Models GlobalTheory.ZM
 namespace GlobalTheory.AmpleGlobal
 
 /- English proof (translation)
-Take `⟨z, -, hz⟩` from `Scheme.Pullback.exists_preimage_pullback q a h`. Use `⟨(pullback f x).residueField z, inferInstance, (Spec.preimage ((pullback f x).fromSpecResidueField z ≫ pullback.snd f x)).hom, (pullback f x).fromSpecResidueField z ≫ pullback.fst f x, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = Spec.map (CommRingCat.ofHom _) ≫ x`. Rewrite using `[CommRingCat.ofHom_hom, Spec.map_preimage, Category.assoc, Category.assoc, pullback.condition]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_lift_fieldExtension {S S' : Scheme.{0}} (f : S' ⟶ S) {K₀ : Type} [Field K₀] (x : Sp K₀ ⟶ S)
     (a : Sp K₀) (q : S') (h : f q = x a) :
@@ -39,23 +39,21 @@ theorem exists_lift_fieldExtension {S S' : Scheme.{0}} (f : S' ⟶ S) {K₀ : Ty
   rw [CommRingCat.ofHom_hom, Spec.map_preimage, Category.assoc, Category.assoc, pullback.condition]
 
 /- English proof (translation)
-Use `GlobalTheory.AmpleLocal.relAmple_of_locally S G M hM inferInstance inferInstance (fun s => ?_)` and prove the remaining obligations. Apply the tactic sequence `obtain ⟨V, hV, hsV, -⟩ := (TopologicalSpace.Opens.isBasis_iff_nbhd.mp (by first | exact AlgebraicGeometry.isBasis_affine_open S | exact S.isBasis_affineOpens | exact AlgebraicGeometry.Scheme.isBasis_affineOpens S | exact isBasis_affineOpens S)) (show s ∈ (⊤ : S.Opens) from trivia …`. Establish `hV' : IsAffineOpen V` using `hV`. Establish `: IsNoetherianRing Γ(S, V)` using `IsLocallyNoetherian.component_noetherian ⟨V, hV'⟩`. Set `y : Spec (CommRingCat.of Γ(S, V)) ⟶ S` to `hV'.fromSpec`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `q` to `hV'.primeIdealOf ⟨s, hsV⟩`. Establish `hq : hV'.fromSpec q = s` using `hV'.fromSpec_primeIdealOf ⟨s, hsV⟩`. Set `g : Γ(S, V) →+* q.asIdeal.ResidueField` to `algebraMap _ _`. Set `B : Over (Spec (CommRingCat.of Γ(S, V)))` to `Over.mk (pullback.snd G.hom y)`. Establish `hB : IsPullback (pullback.fst G.hom y) B.hom G.hom y` using `IsPullback.of_hasPullback _ _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hLB : (M.pull (pullback.fst G.hom y)).IsLB` using `pull_isLB hM _`. Apply the tactic sequence `have hflat : Flat B.hom := by first | (show Flat (pullback.snd G.hom y); infer_instance) | exact MorphismProperty.pullback_snd _ _ inferInstance`. Establish `hprojB` using `(GlobalTheory.ProjSpace.isProjBy_iff_isProjOver _).2 (hproj _ y B _ hB)`. Establish `hfib : Out.RelAmple ((Over.pullback (Spec.map (CommRingCat.ofHom g))).obj B) ((M.pull (pullback.fst G.hom y)).pull (pullback.fst B.hom (Spec.map (CommRingCat.ofHom g))))`. Take `⟨S', f, G', φ, L', hφ, hL', e, ⟨s', hs'⟩, hA'⟩` from `hpt s`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `x : Sp q.asIdeal.ResidueField ⟶ S` to `Spec.map (CommRingCat.ofHom g) ≫ y`. Set `a : Sp q.asIdeal.ResidueField` to `IsLocalRing.closedPoint _`. Establish `ha : x a = s`. Establish `hpt' : (Spec.map (CommRingCat.ofHom g)) a = q`. Apply `PrimeSpectrum.ext` to reduce the goal to its premises.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Express the relevant statement in the definitionally equal form `Ideal.comap g (IsLocalRing.maximalIdeal _) = q.asIdeal`. Rewrite using `[IsLocalRing.maximalIdeal_eq_bot, ← RingHom.ker_eq_comap_bot, Ideal.ker_algebraMap_residueField]`. Use `first`. Consider the case `(show y ((Spec.map (CommRingCat.ofHom g)) a) = s`. Rewrite using `[hpt']`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `hq)`. Consider the case `exact (Scheme.comp_base_apply _ _ _).trans (by rw [hpt']; exact hq)`. Take `⟨K, _, i, u, hu⟩` from `exists_lift_fieldExtension f x a s' (hs'.trans ha.symm)`. Establish `h₂ : IsPullback (pullback.fst G.hom (spMap i ≫ x)) (pullback.snd G.hom (spMap i ≫ x)) G.hom (spMap i ≫ x)` using `IsPullback.of_hasPullback _ _`. Establish `hA₂` using `GlobalTheory.FibreAmple.relAmple_of_factor hM hφ h₂ u hu hL' e hA'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Conclude with `GlobalTheory.FibreAmple.relAmple_of_fieldExtension hM i ((IsPullback.of_hasPullback B.hom (Spec.map (CommRingCat.ofHom g))).paste_horiz hB) h₂ (pull_isLB hLB _) (GlobalTheory.FibreAmple.lbIso_pull_pull hM _ _) hA₂`. Take `⟨r, hr, hA⟩` from `GlobalTheory.AmpleNear.relAmple_near_fibre Γ(S, V) B (M.pull (pullback.fst G.hom y)) hflat hprojB hLB q.asIdeal.ResidueField g (GlobalTheory.FibreAmple.residueField_fraction q.asIdeal) hfib`. Set `U₀ : (Spec (CommRingCat.of Γ(S, V))).Opens` to `PrimeSpectrum.basicOpen r`. Set `j` to `U₀.ι`. Establish `: IsOpenImmersion y` using `by dsimp only [y]; infer_instance`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: IsOpenImmersion j` using `by dsimp only [j]; exact inferInstance`. Establish `hqr : q ∈ PrimeSpectrum.basicOpen r` using `(PrimeSpectrum.mem_basicOpen _ _).2 fun h => hr ((Ideal.algebraMap_residueField_eq_zero).2 h)`. Use `⟨(j ≫ y).opensRange, ⟨⟨q, hqr⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← hq]`. Both sides reduce to the same expression.
-
-Establish `hu : (j ≫ y).isoOpensRange.inv ≫ (j ≫ y) = (j ≫ y).opensRange.ι`. Rewrite using `[Iso.inv_comp_eq, Scheme.Hom.isoOpensRange_hom_ι]`. Conclude with `GlobalTheory.FibreAmple.relAmple_of_factor hM ((IsPullback.of_hasPullback B.hom j).paste_horiz hB) (isPullback_morphismRestrict G.hom _).flip _ hu (pull_isLB hLB _) (GlobalTheory.FibreAmple.lbIso_pull_pull hM _ _) hA`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relAmple_of_pointwise {S : Scheme.{0}} [IsLocallyNoetherian S] (G : Over S) [IsProper G.hom] [Flat G.hom]
     (M : LB G.left) (hM : M.IsLB)
@@ -117,11 +115,11 @@ theorem relAmple_of_pointwise {S : Scheme.{0}} [IsLocallyNoetherian S] (G : Over
       (isPullback_morphismRestrict G.hom _).flip _ hu (pull_isLB hLB _) (GlobalTheory.FibreAmple.lbIso_pull_pull hM _ _) hA
 
 /- English proof (translation)
-Introduce `E _ _ _ H S _ t hP hproj hpt`. Establish `hflat : Flat t.G.hom` using `by first`. Consider the case `exact inferInstance`. Consider the case `(haveI := t.semi.smooth; infer_instance)`. Use `relAmple_of_pointwise t.G t.PP.L t.PP.isLB hproj (fun p => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨S', f, t', m, hp, hA, -⟩` from `hpt p`. Use `⟨S', f, t'.G, m.cm.F, t'.PP.L, m.cart.1, t'.PP.isLB, ?_, hp, hA⟩` and prove the remaining obligations. Use `first`. Consider the case `(obtain ⟨w, hw, -⟩ := m.lin; exact ⟨w, hw⟩)`. Consider the case `(obtain ⟨w, hw⟩ := m.lin; exact ⟨w, hw⟩)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(obtain ⟨w, hw, -⟩ := m.lin; exact ⟨w, hw.1⟩)`. Consider the case `(obtain ⟨w, -, hw, -⟩ := m.lin; exact ⟨w, hw⟩)`. Consider the case `(obtain ⟨w, hw, -⟩ := m.lin; exact (hw : False))`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem relAmple_of_polarised_at_points : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (S : Scheme.{0}) [IsLocallyNoetherian S] (t : SAB H S), IsProper t.G.hom → (∀ (A : Type) [CommRing A] (y : Sp A ⟶ S) (B : Over (Sp A)) (φ : B.left ⟶ t.G.left), IsPullback φ B.hom t.G.hom y → IsProjOver B.hom) → (∀ p : S, ∃ (S' : Scheme.{0}) (f : S' ⟶ S) (t' : SAB H S') (_ : SABMap t' t f), p ∈ Set.range f ∧ Out.RelAmple t'.G t'.PP.L ∧ Out.KTriv t'.G t'.PP.L) → Out.RelAmple t.G t.PP.L := by
   intro E _ _ _ H S _ t hP hproj hpt

@@ -15,7 +15,7 @@ namespace GlobalTheory.SplitValue
 open WithZero GlobalTheory.CharVal GlobalTheory.Formalism.L2.Col.HostOk
 
 /- English proof (translation)
-Take `⟨Q, hQ⟩` from `exists_pull φ w`. Use `val_emb_eq_one hQ (hz Q fun e => hφ ?_)` and prove the remaining obligations. Substitute `e` using the available equality. Conclude with `GlobalTheory.ringHom_eq_of_comap_eq_unramified_degree_one E E φ (RingHom.id E) Q Q p hp hN hsq hQ (fun r => Iff.rfl)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem val_map_eq_one {E : Type} [Field E] [NumberField E] {p : ℕ} (hp : p.Prime) {w : HeightOneSpectrum (𝓞 E)}
     (hN : Ideal.absNorm w.asIdeal = p) (hsq : ((p : ℕ) : 𝓞 E) ∉ w.asIdeal ^ 2) {z : E}
@@ -27,25 +27,25 @@ theorem val_map_eq_one {E : Type} [Field E] [NumberField E] {p : ℕ} (hp : p.Pr
   exact GlobalTheory.ringHom_eq_of_comap_eq_unramified_degree_one E E φ (RingHom.id E) Q Q p hp hN hsq hQ (fun r => Iff.rfl)
 
 /- English proof (translation)
-Introduce `D χ n p ht hinf hn hp w hw hfin`. Take `⟨hN, hsq⟩` from `hp.2 w hw`. Take `⟨M, z, hM, h1, h2, h3⟩` from `GlobalTheory.TamePow.exists_pow_locK_mul_inf D.host.E χ (GlobalTheory.Mem.UnrAe.unr_ae_and_level _ χ).1.toFinset (GlobalTheory.HeckeProduct.hchar_productRule _ χ) (fun v hv => by simpa using hv) ht w (Formalism.L2.Host.unif w)`. Take `⟨a, ha, hpow⟩` from `isOfFinOrder_iff_pow_eq_one.1 hfin`. Establish `h4 : χ.inf z ^ a = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `congrArg (· ^ a) h3` as an intermediate fact. Simplify using `only [mul_pow, one_pow] at this`. Rewrite `this` using `[← pow_mul, mul_comm M a, pow_mul]`. Express the relevant statement in the definitionally equal form `χ.val w ^ a = 1 at hpow`. Unfold `Formalism.L2.Host.HChar.val at hpow`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions.
 
-Rewrite `this` using `[hpow, one_pow, one_mul]`. Then use the resulting hypothesis. Establish `h5 : ((χ.inf z : ℂˣ) : ℂ) ^ 2 = D.host.φ₀ (∏ g : D.R.Psi, (D.host.sigmaOf g z / D.host.sigmaOf g (D.host.conj z)) ^ n g)`. Rewrite using `[hinf z, map_prod, ← Finset.prod_pow]`. Use `Finset.prod_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[map_zpow₀, ← zpow_natCast, ← zpow_mul, mul_comm, zpow_mul, zpow_natCast]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Establish `e : D.host.φ₀ (D.host.sigmaOf g (D.host.conj z)) = starRingEnd ℂ (D.host.φ₀ (D.host.sigmaOf g z))`. Rewrite using `[sigma_conj]`. Conclude with `D.host.conjE_apply D.host.φ₀ _`. Establish `e' : Formalism.L2.Host.embPsi D.host g z = D.host.φ₀ (D.host.sigmaOf g z)` using `rfl`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : D.host.φ₀ (D.host.sigmaOf g z) ≠ 0` using `by simp`. Rewrite using `[map_div₀, e, e', div_pow, div_eq_div_iff (pow_ne_zero _ (by simpa using h0)) (by simpa using h0), sq, mul_assoc, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `push_cast`. Both sides reduce to the same expression. Establish `h6 : (∏ g : D.R.Psi, (D.host.sigmaOf g z / D.host.sigmaOf g (D.host.conj z)) ^ n g) ^ a = 1`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `D.host.φ₀.injective` to reduce the goal to its premises. Rewrite using `[map_pow, ← h5, ← pow_mul, mul_comm, pow_mul, ← Units.val_pow_eq_pow_val, h4, map_one]`. Simplify using the standard rewrite rules. Establish `h7` using `unit_of_pow (w := w) ha (by rw [h6, map_one])`. Establish `hc : ∀ g : D.R.Psi, w.valuation _ (D.host.sigmaOf g (D.host.conj z)) = 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g`. Use `val_map_eq_one hp.1 hN hsq h2 ((D.host.sigmaOf g : D.host.E →+* D.host.E).comp (D.host.conj : D.host.E →+* D.host.E)) fun e => ?_` and prove the remaining obligations. Use `RingHom.congr_fun e D.host.sqrtMinusD` as an intermediate fact. Express the relevant statement in the definitionally equal form `D.host.sigmaOf g (D.host.conj D.host.sqrtMinusD) = D.host.sqrtMinusD at this`. Rewrite `this` using `[conj_b, map_neg, sigmaOf_b]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `b_ne D.host this.symm`. Establish `hone : D.host.sigmaOf ((1 : D.R.Psi) : D.R.GG) = 1` using `map_one (D.host.gal).symm`. Establish `hg : ∀ g : D.R.Psi, g ≠ 1 → w.valuation _ (D.host.sigmaOf g z) = 1`. Introduce `g hg`. Use `val_map_eq_one hp.1 hN hsq h2 (D.host.sigmaOf g : D.host.E →+* D.host.E) fun e => hg ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : D.host.sigmaOf g = D.host.sigmaOf ((1 : D.R.Psi) : D.R.GG)`. Rewrite using `[hone]`. Conclude with `AlgEquiv.ext fun x => RingHom.congr_fun e x`. Conclude with `Subtype.ext ((D.host.gal).symm.injective e1)`. Rewrite `h7` using `[map_prod, Finset.prod_eq_single 1 (fun g _ h => by rw [map_zpow₀, map_div₀, hg g h, hc g, div_one, one_zpow]) (by simp), map_zpow₀, map_div₀, hc, div_one, hone, AlgEquiv.one_apply, h1, val_unif, ← exp_nsmul, ← exp_zsmul, ← exp_zero, exp_inj]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `only [nsmul_eq_mul, smul_eq_mul, mul_eq_zero] at h7`. Break down `h7 with h | h | h` into its components or cases. Conclude with `hn 1 h`. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem not_isOfFinOrder_val : ∀ (D : D7) (χ : Formalism.L2.Host.HChar D.host.E) (n : D.R.Psi → ℤ) (p : ℕ), (∀ v, χ.TameAt v) → χ.HasInf (Formalism.L2.Host.embPsi D.host) n → (∀ g, n g ≠ 0) → SplitsCompletely D p → ∀ w : HeightOneSpectrum (𝓞 D.host.E), (p : 𝓞 D.host.E) ∈ w.asIdeal → ¬ IsOfFinOrder (χ.val w) := by
   intro D χ n p ht hinf hn hp w hw hfin

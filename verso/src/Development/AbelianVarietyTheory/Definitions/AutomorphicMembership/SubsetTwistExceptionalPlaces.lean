@@ -27,20 +27,20 @@ def lowAll (D : D7) : Finset ℕ := lowPr D ∪ {D.host.g 0, D.host.g 1, D.host.
 def OverSet (D : D7) (S : Finset (PlE D.host)) (s : Finset ℕ) : Prop := ∀ P ∈ S, ∃ p ∈ s, P ∈ placesOver D.host.E p
 
 /- English proof (translation)
-Introduce `P hP` and use `(h P hP).imp fun _ hp => ⟨hs hp.1, hp.2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem OverSet.mono {D : D7} {S : Finset (PlE D.host)} {s s' : Finset ℕ} (h : OverSet D S s) (hs : s ⊆ s') : OverSet D S s' :=
   fun P hP => (h P hP).imp fun _ hp => ⟨hs hp.1, hp.2⟩
 
 /- English proof (translation)
-Introduce `P hP` and use `(h P hP).elim fun p hp => hs p hp.1 hp.2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem OverSet.subset {D : D7} {S S' : Finset (PlE D.host)} {s : Finset ℕ} (h : OverSet D S s)
     (hs : ∀ p ∈ s, placesOver D.host.E p ⊆ ↑S') : S ⊆ S' :=
   fun P hP => (h P hP).elim fun p hp => hs p hp.1 hp.2
 
 /- English proof (translation)
-The claim follows from `h.subset fun p hp P hP => by rw [T.ringSpec_excludedPlaces_eq i] exact Or.inr (T.concreteTwistFrame_extraExcluded_over_smallPrimes i p (hs hp) hP)`.
+A detailed English derivation is pending.
 -/
 theorem OverSet.subset_twistExceptionalPlaces {D : D7} {S : Finset (PlE D.host)} {s low : Finset ℕ} (h : OverSet D S s) (hs : s ⊆ low)
     {F : TwFrameC D} (T : TwistFrameLowIndexCompatibility D F low) (i : D.ntw.Tw) : S ⊆ D.ntw.S0 i :=
@@ -49,17 +49,17 @@ theorem OverSet.subset_twistExceptionalPlaces {D : D7} {S : Finset (PlE D.host)}
     exact Or.inr (T.concreteTwistFrame_extraExcluded_over_smallPrimes i p (hs hp) hP)
 
 /- English proof (translation)
-Simplify using `[lowAll]`.
+Simplify using the standard rewrite rules.
 -/
 example (D : D7) : D.host.pde ∈ lowAll D := by simp [lowAll]
 
 /- English proof (translation)
-Simplify using `[lowAll, lowPr]`.
+Simplify using the standard rewrite rules.
 -/
 example (D : D7) : 2 ∈ lowAll D := by simp [lowAll, lowPr]
 
 /- English proof (translation)
-Introduce `_ h` and use `absurd h (Finset.notMem_empty _)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example (D : D7) (s : Finset ℕ) : OverSet D ∅ s := fun _ h => absurd h (Finset.notMem_empty _)
 
@@ -96,7 +96,7 @@ def hkNorm (i : Fin D.R.m) (k : ℕ) (P : PlE D.host) : ℂ :=
   (((R.C.mu0 i).val P : ℂˣ) : ℂ)⁻¹ ^ k * (((Nat.card (kP P) : ℕ) : ℂ) ^ (k * (D.R.nV / 2)))⁻¹
 
 /- English proof (translation)
-Simplify using `[hkNorm]`.
+Simplify using the standard rewrite rules.
 -/
 example (i : Fin D.R.m) (P : PlE D.host) : hkNorm R i 0 P = 1 := by simp [hkNorm]
 

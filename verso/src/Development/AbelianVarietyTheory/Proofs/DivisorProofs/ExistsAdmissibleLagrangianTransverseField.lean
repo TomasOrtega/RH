@@ -4,11 +4,9 @@ open Matrix
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun M => u ⬝ᵥ (M *ᵥ (c ∘ w))) hiso`. Simplify using `only [add_mulVec, dotProduct_add, dotProduct_mulVec, zero_mulVec, dotProduct_zero] at h`. Establish `e1 : u ᵥ* (Aᵀ * S * C.map c) = 0`. Rewrite using `[← vecMul_vecMul, ← vecMul_vecMul, vecMul_transpose, hu, zero_vecMul, zero_vecMul]`. Establish `e2 : u ᵥ* (Cᵀ * S * A.map c) ⬝ᵥ (c ∘ w) = ((C *ᵥ u) ᵥ* S) ⬝ᵥ (c ∘ (A *ᵥ w))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← vecMul_vecMul, ← dotProduct_mulVec, ← vecMul_vecMul, vecMul_transpose]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `(RingHom.map_mulVec c A w i).symm`. Rewrite `h` using `[e1, zero_dotProduct, zero_add, e2]`.
-
-Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lagr_functional_kills_image {k : Type} [Field k] (c : k →+* k) {n : ℕ}
     (S A C : Matrix (Fin n) (Fin n) k)
@@ -32,9 +30,9 @@ def lagrRankOne {k : Type} [Field k] {n : ℕ} (S : Matrix (Fin n) (Fin n) k) (j
   Matrix.of fun a b => if a = j then S b j else 0
 
 /- English proof (translation)
-Use extensionality with `a b`. Establish `h1 : c (S b j) = - S j b`. Establish `h2 : Sᵀ b j = (-S.map c) b j` using `by rw [hS]`. Rewrite `h2` using `[transpose_apply, Matrix.neg_apply, Matrix.map_apply]`. Rewrite using `[h2, neg_neg]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : ∀ l, c (if l = j then S b j else 0) = if l = j then c (S b j) else 0`. Apply the tactic sequence `intro l; split_ifs <;> simp`. Simplify using `[Matrix.mul_apply, lagrRankOne, h3, h1]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem lagrRankOne_adm {k : Type} [Field k] (c : k →+* k) {n : ℕ}
     (S : Matrix (Fin n) (Fin n) k) (hS : Sᵀ = -S.map c) (j : Fin n) :
@@ -49,7 +47,7 @@ theorem lagrRankOne_adm {k : Type} [Field k] (c : k →+* k) {n : ℕ}
   simp [Matrix.mul_apply, lagrRankOne, h3, h1]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Distinguish the cases in `h : a = j`. Substitute `h` using the available equality. Simplify using `[lagrRankOne, mulVec, vecMul, dotProduct, mul_comm]`. Simplify using `[lagrRankOne, mulVec, dotProduct, h]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem lagrRankOne_mulVec {k : Type} [Field k] {n : ℕ}
     (S : Matrix (Fin n) (Fin n) k) (j : Fin n) (v : Fin n → k) :
@@ -60,19 +58,19 @@ theorem lagrRankOne_mulVec {k : Type} [Field k] {n : ℕ}
   · simp [lagrRankOne, mulVec, dotProduct, h]
 
 /- English proof (translation)
-Establish `hx : C *ᵥ u ≠ 0` using `fun h => hu0 (hinj u hu h)`. Establish `hxS : (C *ᵥ u) ᵥ* S ≠ 0`. Introduce `h`. Establish `hI : Function.Injective fun v : Fin n → k => v ᵥ* S` using `vecMul_injective_iff_isUnit.mpr ((isUnit_iff_isUnit_det S).mpr hSu)`. Apply `hx` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hI` to reduce the goal to its premises. Simplify using `only [h, zero_vecMul]`. Take `⟨j, hj⟩` from `Function.ne_iff.mp hxS`. Simplify using `only [Pi.zero_apply] at hj`. Use `⟨j, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `w hw`. Rewrite `hw` using `[add_mulVec, ← mulVec_mulVec, lagrRankOne_mulVec]`. Use `set t := ((C *ᵥ w) ᵥ* S) j with ht`. Establish `hAw : A *ᵥ w = - Pi.single j t` using `eq_neg_of_add_eq_zero_left hw`. Establish `hφ` using `lagr_functional_kills_image c S A C hiso u hu w`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : (c ∘ (A *ᵥ w)) = Pi.single j (-(c t))`. Rewrite using `[hAw]`. Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i = j`. Substitute `hi` using the available equality.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `[hi]`. Rewrite `hφ` using `[hc, dotProduct_single]`. Establish `hct : c t = 0`. Break down `mul_eq_zero.mp hφ with h | h` into its components or cases.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `absurd h hj`. Conclude with `neg_eq_zero.mp h`. Establish `ht0 : t = 0` using `(map_eq_zero c).mp hct`. Rewrite using `[hAw, ht0, Pi.single_zero, neg_zero]`. Rewrite using `[add_mulVec, ← mulVec_mulVec, lagrRankOne_mulVec, hu, zero_add]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `h`. Use `congrFun h j` as an intermediate fact. Simplify using `only [Pi.single_eq_same, Pi.zero_apply] at this`. Conclude with `hj this`.
+A detailed English derivation is pending.
 -/
 theorem lagr_step {k : Type} [Field k] (c : k →+* k) {n : ℕ}
     (S : Matrix (Fin n) (Fin n) k) (hSu : IsUnit S.det)
@@ -118,7 +116,7 @@ theorem lagr_step {k : Type} [Field k] (c : k →+* k) {n : ℕ}
     exact hj this
 
 /- English proof (translation)
-Establish `e : (A + X * C)ᵀ * S * C.map c + Cᵀ * S * (A + X * C).map c = (Aᵀ * S * C.map c + Cᵀ * S * A.map c) + Cᵀ * (Xᵀ * S + S * X.map c) * C.map c`. Rewrite using `[Matrix.map_add c (map_add c)]`. Simplify using `only [transpose_add, transpose_mul, Matrix.map_mul, Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, hiso, hX, Matrix.mul_zero, Matrix.zero_mul, add_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 -/
 theorem lagr_iso_update {k : Type} [Field k] (c : k →+* k) {n : ℕ}
     (S A C X : Matrix (Fin n) (Fin n) k)
@@ -134,7 +132,7 @@ theorem lagr_iso_update {k : Type} [Field k] (c : k →+* k) {n : ℕ}
   rw [e, hiso, hX, Matrix.mul_zero, Matrix.zero_mul, add_zero]
 
 /- English proof (translation)
-Establish `e : (X + Y)ᵀ * S + S * (X + Y).map c = (Xᵀ * S + S * X.map c) + (Yᵀ * S + S * Y.map c)`. Rewrite using `[Matrix.map_add c (map_add c)]`. Simplify using `only [transpose_add, Matrix.mul_add, Matrix.add_mul]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, hX, hY, add_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 -/
 theorem transpose_mul_add_mul_map_eq_zero_add {k : Type} [Field k] (c : k →+* k) {n : ℕ}
     (S X Y : Matrix (Fin n) (Fin n) k)
@@ -147,19 +145,19 @@ theorem transpose_mul_add_mul_map_eq_zero_add {k : Type} [Field k] (c : k →+* 
   rw [e, hX, hY, add_zero]
 
 /- English proof (translation)
-Introduce `k _ c _ _ n S hSu hS A C hinj hiso`. It suffices to establish `H : ∀ m : ℕ, ∀ A : Matrix (Fin n) (Fin n) k, Module.finrank k (LinearMap.ker A.mulVecLin) < m → (∀ u : Fin n → k, A *ᵥ u = 0 → C *ᵥ u = 0 → u = 0) → Aᵀ * S * C.map c + Cᵀ * S * A.map c = 0 → ∃ X : Matrix (Fin n) (Fin n) k, Xᵀ * S + S * X.map c = 0 ∧ IsUnit (A + X * C).det from H …`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro A h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Conclude with `absurd h (Nat.not_lt_zero _)`. Consider the case `succ m ih`. Introduce `A hm hinj hiso`. Distinguish the cases in `hdet : IsUnit A.det`. Conclude with `⟨0, by simp, by simpa using hdet⟩`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hd : A.det = 0` using `by simpa [isUnit_iff_ne_zero] using hdet`. Take `⟨u, hu0, hu⟩` from `exists_mulVec_eq_zero_iff.mpr hd`. Take `⟨j, hker, hne⟩` from `lagr_step c S hSu A C hinj hiso u hu0 hu`. Establish `hX1` using `lagrRankOne_adm c S hS j`. Establish `hlt : LinearMap.ker (A + lagrRankOne S j * C).mulVecLin < LinearMap.ker A.mulVecLin`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `lt_of_le_of_ne ?_ ?_` and prove the remaining obligations. Introduce `w hw`. Simplify using `only [LinearMap.mem_ker, mulVecLin_apply] at hw ⊢`. Conclude with `hker w hw`. Introduce `heq`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `hne` to reduce the goal to its premises. Establish `hmem : u ∈ LinearMap.ker A.mulVecLin`. Simplify `hu` using `[LinearMap.mem_ker, mulVecLin_apply]`. Rewrite `hmem` using `[← heq]`. Rewrite `hmem` using `[LinearMap.mem_ker, mulVecLin_apply]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hmem`. Establish `hfin` using `Submodule.finrank_lt_finrank_of_lt hlt`. Establish `hinj' : ∀ w : Fin n → k, (A + lagrRankOne S j * C) *ᵥ w = 0 → C *ᵥ w = 0 → w = 0`. Introduce `w h1 h2`. Apply `hinj w _ h2` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h1` using `[add_mulVec, ← mulVec_mulVec, h2, mulVec_zero, add_zero]`. Conclude with `h1`. Take `⟨X2, hX2, hdet2⟩` from `ih (A + lagrRankOne S j * C) (by omega) hinj' (lagr_iso_update c S A C _ hX1 hiso)`. Use `⟨lagrRankOne S j + X2, transpose_mul_add_mul_map_eq_zero_add c S _ _ hX1 hX2, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.add_mul, ← add_assoc]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem lagrangian_transverse_field :
     ∀ {k : Type} [Field k] (c : k →+* k), (∀ x, c (c x) = x) → (2 : k) ≠ 0 →

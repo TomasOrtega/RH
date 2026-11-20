@@ -25,7 +25,7 @@ open GlobalTheory.Ker
 variable {D : D7}
 
 /- English proof (translation)
-Simplify using `only [fmt, Formalism.L2.Theta.mt]`. Rewrite using `[← Matrix.map_mul, ← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fmt_mul_inv (V : HSp D) (g : GA D V) : fmt V g * fmt V g⁻¹ = 1 := by
   simp only [fmt, Formalism.L2.Theta.mt]
@@ -33,13 +33,13 @@ theorem fmt_mul_inv (V : HSp D) (g : GA D V) : fmt V g * fmt V g⁻¹ = 1 := by
   exact Matrix.map_one _ (map_zero _) (map_one _)
 
 /- English proof (translation)
-Establish `hs : Submodule.span D.host.E (stdL D.host.E V.rank : Set (Fin V.rank → D.host.E)) = ⊤`. Rewrite using `[eq_top_iff, ← (Pi.basisFun D.host.E (Fin V.rank)).span_eq]`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `Submodule.subset_span ⟨i, (Pi.basisFun_apply _ _ i).symm⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨L, hL', hm⟩, h2⟩` from `(isMov_laws D V.rank _ ⟨Submodule.fg_span (Set.finite_range _), hs⟩).2.2.2 _ _ (fmt_mul_inv V g)`. Establish `h3` using `(isMov_laws D V.rank L hL').1`. Establish `h4 : fmt V g⁻¹ * fmt V g = 1` using `mul_eq_one_comm.1 (fmt_mul_inv V g)`. Establish `key : Bridge.hLat V (fin V g) = L`. Rewrite using `[Bridge.hLat, ← GlobalTheory.Equiv.StdSpace.identityClassLattice_eq_selfDualFrameLattice, hL, ← Submodule.span_eq L]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `fmt V g⁻¹ *ᵥ toAf x ∈ hatV (stdL D.host.E V.rank) ↔ x ∈ L`. Rewrite using `[← h3, hm]`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hx`. Conclude with `⟨_, hx, by rw [Matrix.mulVec_mulVec, fmt_mul_inv, Matrix.one_mulVec]⟩`. Introduce and unpack `⟨u, hu, e⟩`. Rewrite using `[e, Matrix.mulVec_mulVec, h4, Matrix.one_mulVec]` and apply the resulting hypothesis. Rewrite using `[key]` and apply the resulting hypothesis.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem isMov_hLat (V : HSp D) (hL : Bridge.hLat V 1 = stdL D.host.E V.rank) (g : GA D V) :
     IsMov (fmt V g) (stdL D.host.E V.rank) (Bridge.hLat V (fin V g)) := by
@@ -68,7 +68,7 @@ theorem isMov_hLat (V : HSp D) (hL : Bridge.hLat V 1 = stdL D.host.E V.rank) (g 
 noncomputable abbrev cf (D : D7) : AfE D →+* AfE D := sigR (Af D.host.F) D.sp.cm.sig
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => rw [RingHom.map_zero, RingHom.map_zero]`. Consider the case `tmul a x => exact congrArg (fun t => a ⊗ₜ[D.host.F] t) (star_star x)`. Consider the case `add x y hx hy => rw [RingHom.map_add, RingHom.map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem cf_cf (x : AfE D) : cf D (cf D x) = x := by
   induction x using TensorProduct.induction_on with
@@ -77,7 +77,7 @@ theorem cf_cf (x : AfE D) : cf D (cf D x) = x := by
   | add x y hx hy => rw [RingHom.map_add, RingHom.map_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => rw [RingHom.map_zero, RingHom.map_zero, RingHom.map_zero]`. Consider the case `tmul a x => rfl`. Consider the case `add x y hx hy => rw [RingHom.map_add, RingHom.map_add, RingHom.map_add, RingHom.map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem finPart_cA (x : AE D) : finPart D (cA D x) = cf D (finPart D x) := by
   induction x using TensorProduct.induction_on with
@@ -86,11 +86,9 @@ theorem finPart_cA (x : AE D) : finPart D (cA D x) = cf D (finPart D x) := by
   | add x y hx hy => rw [RingHom.map_add, RingHom.map_add, RingHom.map_add, RingHom.map_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `hu using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨a, ha, x, hx, rfl⟩` from `hy`. Conclude with `AddSubgroup.subset_closure ⟨a, ha, _, h x hx, rfl⟩`. Consider the case `zero => convert (hatV L').zero_mem`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_zero _`. Consider the case `add a b _ _ ha hb => convert add_mem ha hb`. Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_add _ _ _`.
-
-Consider the case `neg a _ ha => convert neg_mem ha`. Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_neg _ _`.
+Treat this case separately. Apply function extensionality and compare values at an arbitrary argument. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem conj_mem_hatV {k : ℕ} {L L' : Lt D.host.E k} (h : ∀ v ∈ L, (fun j => cc (v j)) ∈ L') {u : Fin k → AfE D}
     (hu : u ∈ hatV L) : cf D ∘ u ∈ hatV L' := by
@@ -103,13 +101,13 @@ theorem conj_mem_hatV {k : ℕ} {L L' : Lt D.host.E k} (h : ∀ v ∈ L, (fun j 
   | neg a _ ha => convert neg_mem ha; funext i; exact RingHom.map_neg _ _
 
 /- English proof (translation)
-Establish `c4 : fmtC V g = (fmt V g).map (cf D)` using `by ext i j; exact finPart_cA _`. Establish `c5 : ∀ v ∈ stdL D.host.E V.rank, (fun j => cc (v j)) ∈ stdL D.host.E V.rank` using `fun v hv => by`. Rewrite `hv`, the goal using `[← GenLatCmp.std_eq, GenLatCmp.mem_std]`. Conclude with `fun i => Base.isIntegral_cc (hv i)`. Establish `c6 (u : Fin V.rank → AfE D) : cf D ∘ cf D ∘ u = u` using `funext fun i => cf_cf _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Establish `c7 (u : Fin V.rank → AfE D) : fmtC V g *ᵥ (cf D ∘ u) = cf D ∘ (fmt V g *ᵥ u)`. Rewrite using `[c4]`. Use function extensionality and compare the values at `i`. Conclude with `(RingHom.map_mulVec (cf D) _ _ i).symm`. Introduce `u`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hu`. Take `⟨u₀, h0, e⟩` from `(h _).1 (conj_mem_hatV (fun v hv => (hc v).1 hv) hu)`. Conclude with `⟨_, conj_mem_hatV c5 h0, by rw [c7, ← e, c6]⟩`. Introduce and unpack `⟨u₀, h0, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← c6 u₀, c7]`. Use `conj_mem_hatV (fun v hv => (hc _).2 ?_) ((h _).2 ⟨_, conj_mem_hatV c5 h0, rfl⟩)` and prove the remaining obligations. Simplify `hv` using `[cc]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isMov_conj {V : HSp D} {g : GA D V} {L L' : Lt D.host.E V.rank} (h : IsMov (fmt V g) (stdL D.host.E V.rank) L)
     (hc : ∀ v, v ∈ L' ↔ (fun j => cc (v j)) ∈ L) : IsMov (fmtC V g) (stdL D.host.E V.rank) L' := by
@@ -131,7 +129,7 @@ theorem isMov_conj {V : HSp D} {g : GA D V} {L L' : Lt D.host.E V.rank} (h : IsM
     simpa [cc] using hv
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Units.mkOfMulEqOne (e * (Formalism.L2.Theta.mt V g).det + (1 - e)) (e * cA D (Formalism.L2.Theta.mt V g).det + (1 - e)) (by linear_combination (e * e) * det_conj_mul V g + (2 - (Formalism.L2.Theta.mt V g).det - cA D (Formalism.L2.Theta.mt V g).det) * he), Units.val_mkOfMulEqOne …`.
+Supply the required witnesses or components.
 -/
 theorem exists_isDetAt {e : AE D} (he : e * e = e) (V : HSp D) (g : GA D V) : ∃ y, IsDetAt e V g y :=
   ⟨Units.mkOfMulEqOne (e * (Formalism.L2.Theta.mt V g).det + (1 - e)) (e * cA D (Formalism.L2.Theta.mt V g).det + (1 - e)) (by
@@ -141,11 +139,11 @@ theorem exists_isDetAt {e : AE D} (he : e * e = e) (V : HSp D) (g : GA D V) : �
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce and unpack `D G _ _ Pl0 T0 A T _ R F κ v₀ hC ⟨tie⟩ i Tp tup O hO t h J' hR k`. Take `⟨-, hbad, -, -, -, -, hk⟩` from `hR`. Take `⟨⟨-, e, P, he, hP, hs⟩, hLh, -⟩` from `hk k`. Take `⟨r1, -, -, r4, -, -⟩` from `(hO.reps t).1 k`. Take `⟨x, hx⟩` from `exists_isDetAt (GlobalTheory.PlaceDatum.idemSum_mul_self he) (Vc D i) (h k)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨?_, ?_, e, P, x, he, hs, hx, ?_⟩` and prove the remaining obligations. Establish `hU` using `(GenLatCmp.unimod_iff (O.La t k).La).1 r1`. Establish `h4 : ∀ u ∈ stdL D.host.E (Vc D i).rank, (O.Nc t k : D.host.E) • u ∈ (O.La t k).La` using `fun u hu => ((GenLatCmp.span_smul_le _ _ _).1 r4.2.2 u (GenLatCmp.std_eq (E := D.host.E) ▸ hu)).1`. Establish `h5` using `GenLatCmp.smul_mem_std hU h4`. Conclude with `⟨GenLatCmp.fg_of_smul_le r4.1.pos h5, hU, _, r4.1.pos, Nat.coprime_one_right _, h5, h4⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Use `isMov_conj (isMov_hLat _ (hO.lift.std.2.trans GenLatCmp.std_eq) (h k)) fun v => ?_` and prove the remaining obligations. Rewrite using `[← hLh]`. Conclude with `(hO.reps t).2 k v`. Rewrite using `[GlobalTheory.T.oscillator_model_values_third D G Pl0 T0 A T R F κ v₀ hC ⟨tie.laws, tie.alg_eq, tie.kap, tie.hv₀, tie.chiR, tie.x0⟩ i Tp tup O hO t k (h k) e P x he hP hs hx hLh hbad, Circle.coe_inv, Nat.cast_pow, GenLatCmp.std_eq]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem class_lattice_scalar : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec), R.Char F → Nonempty (FWTie T R κ v₀) → ∀ (i : Fin D.R.m) (Tp : Type) (tup : Tp → T0) (O : OMDat T.toCore R i Tp tup), O.Pins (κ i) (v₀ i (sg0 D A)) (iotaW T i) (T.x₀ ((i : ℕ) + 1) O.s0) → ∀ (t : Tp) (h : O.Cl' t → GA D (Vc D i)) (J' : Subgroup (Bridge.Gf (Vc D i))), RepsR R i (tup t) h (O.bad t) J' (O.Lh t) (O.gam t) (O.vol t) → ∀ k, (O.La t k).La ∈ Vset D.host.E (Vc D i).rank 1 ∧ GlobalTheory.Ker.IsMov (GlobalTheory.Ker.fmtC (Vc D i) (h k)) (stdL D.host.E (Vc D i).rank) (O.La t k).La ∧ ∃ (e : AE D) (P : Finset (Pl D.host.E)) (x : (AE D)ˣ), IsIdemSum e P ∧ SuppAt e (Vc D i) (h k) ∧ IsDetAt e (Vc D i) (h k) x ∧ inC O.c' (O.ep t k * (((O.La t k).mIdx (O.Nc t k) D.R.r : O.c'.F))⁻¹ * ((O.La t k).zCard (O.Nc t k) D.R.r : O.c'.F)) = ((((Lift.chrTh (R.toLevCh.mu (tup t)) R.eta ((i : ℕ) + 1)).2 x)⁻¹ : Circle) : ℂ) * ((Real.sqrt ((((((O.La t k).La ⊓ stdL D.host.E (Vc D i).rank).toAddSubgroup.addSubgroupOf (O.La t k).La.toAddSubgroup).index ^ D.R.r : ℕ) : ℝ)) : ℝ) : ℂ) := by
   rintro D G _ _ Pl0 T0 A T _ R F κ v₀ hC ⟨tie⟩ i Tp tup O hO t h J' hR k

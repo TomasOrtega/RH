@@ -18,9 +18,9 @@ def latCo (V : HSp D) : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E) :=
   V.L0.map (V.frame.equivFun.toLinearMap.restrictScalars (𝓞 D.host.E))
 
 /- English proof (translation)
-Unfold `latHat GlobalTheory.AdLat.hat`. Use `congr 1`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, x, hx, rfl⟩`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨a, ha, _, ⟨x, hx, rfl⟩, rfl⟩`. Introduce and unpack `⟨a, ha, _, ⟨x, hx, rfl⟩, rfl⟩`. Conclude with `⟨a, ha, x, hx, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem latHat_eq (V : HSp D) :
     latHat V = GlobalTheory.AdLat.hat D.host.F (latCo V : Set (Fin V.rank → D.host.E)) := by
@@ -34,12 +34,12 @@ theorem latHat_eq (V : HSp D) :
     exact ⟨a, ha, x, hx, rfl⟩
 
 /- English proof (translation)
-The claim follows from `V.standardTuple_isLattice.fg.map _`.
+A detailed English derivation is pending.
 -/
 theorem latCo_fg (V : HSp D) : (latCo V).FG := V.standardTuple_isLattice.fg.map _
 
 /- English proof (translation)
-Establish `h` using `V.standardTuple_isLattice.span_eq_top`. Establish `: (latCo V : Set (Fin V.rank → D.host.E)) = V.frame.equivFun.toLinearMap '' (V.L0 : Set V.V)` using `rfl`. Rewrite using `[this, Submodule.span_image, h, Submodule.map_top, LinearEquiv.range]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem latCo_span (V : HSp D) :
     Submodule.span D.host.E (latCo V : Set (Fin V.rank → D.host.E)) = ⊤ := by
@@ -48,11 +48,11 @@ theorem latCo_span (V : HSp D) :
   rw [this, Submodule.span_image, h, Submodule.map_top, LinearEquiv.range]
 
 /- English proof (translation)
-Introduce `h`. Take `⟨v, hv, hm⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h`. Apply `hv` to reduce the goal to its premises. Establish `h0 : V.frame.equivFun.symm v = 0`. Use `V.nondeg.2 _ fun x => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: V.hT.flip (V.frame.equivFun.symm v) = 0`. Use `V.frame.ext fun i => ?_` and prove the remaining obligations. Use `congrFun hm i` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct, HSpace.gram, Pi.zero_apply] at this`. Simplify using `only [LinearMap.flip_apply, Module.Basis.equivFun_symm_apply, map_sum, map_smul, smul_eq_mul, LinearMap.zero_apply, LinearMap.sum_apply, LinearMap.smul_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `Eq.trans (Finset.sum_congr rfl fun j _ => ?_) this` and prove the remaining obligations. Conclude with `mul_comm (v j) _`. Conclude with `congrArg (fun f => f x) this`. Conclude with `(LinearEquiv.map_eq_zero_iff _).1 h0`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gram_det_ne_zero (V : HSp D) : V.gram.det ≠ 0 := by
   intro h
@@ -75,9 +75,9 @@ def conjEquiv (D : D7) : D.host.E ≃ₐ[D.host.F] D.host.E :=
   AlgEquiv.ofAlgHom D.sp.cm.sig D.sp.cm.sig (AlgHom.ext fun x => star_star x) (AlgHom.ext fun x => star_star x)
 
 /- English proof (translation)
-Establish `h1` using `congrArg Matrix.det h`. Rewrite `h1` using `[Matrix.det_mul, Matrix.det_mul, Formalism.UG.cT, Matrix.det_transpose]`. Establish `h2 : (g.map σ).det = σ g.det` using `(RingHom.map_det _ _).symm`. Establish `h5 : (g.map φ).det = φ g.det` using `(RingHom.map_det _ _).symm`. Rewrite `h1` using `[h2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h4 : g.det * σ g.det = 1`. Apply `hJ.mul_left_cancel` to reduce the goal to its premises. Take the linear combination `h1`. Rewrite using `[h5, hφ, ← map_mul, h4, map_one]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_norm_one_gen {A B : Type} [CommRing A] [CommRing B] {n : ℕ} (σ : A →+* A) (τ : B → B) (φ : A →+* B)
     (hφ : ∀ x, τ (φ x) = φ (σ x)) (J g : Matrix (Fin n) (Fin n) A) (hJ : IsUnit J.det)
@@ -93,7 +93,7 @@ theorem det_norm_one_gen {A B : Type} [CommRing A] [CommRing B] {n : ℕ} (σ : 
   rw [h5, hφ, ← map_mul, h4, map_one]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero, map_zero, map_zero]`. Consider the case `tmul a e => rfl`. Consider the case `add x y hx hy => rw [map_add, map_add, map_add, map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem sg_fin {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] (c : E ≃ₐ[F] E)
     (x : AF F ⊗[F] E) :
@@ -105,7 +105,7 @@ theorem sg_fin {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] (c
   | add x y hx hy => rw [map_add, map_add, map_add, map_add, hx, hy]
 
 /- English proof (translation)
-Establish `h3 : (JR (F` using `F) (AF F) J).det = inclR (F := F) (AF F) J.det := (RingHom.map_det _ _).symm`. Rewrite using `[h3]`. Conclude with `(Ne.isUnit h).map _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_det_JR {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {n : ℕ}
     (J : Matrix (Fin n) (Fin n) E) (h : J.det ≠ 0) : IsUnit (JR (F := F) (AF F) J).det := by
@@ -114,7 +114,7 @@ theorem isUnit_det_JR {F E : Type} [Field F] [NumberField F] [Field E] [Algebra 
   exact (Ne.isUnit h).map _
 
 /- English proof (translation)
-The claim follows from `det_norm_one_gen (sigR (AF D.host.F) D.sp.cm.sig) (GlobalTheory.AdLat.sg (Af D.host.F) (conjEquiv D)) _ (sg_fin (conjEquiv D)) (JR (AF D.host.F) V.gram) (matHom V k).1 (isUnit_det_JR _ (gram_det_ne_zero V)) k.2`.
+A detailed English derivation is pending.
 -/
 theorem det_norm_one (V : HSp D) (k : GA D V) :
     (finHom V k).1.det * GlobalTheory.AdLat.sg (Af D.host.F) (conjEquiv D) (finHom V k).1.det = 1 :=
@@ -122,7 +122,7 @@ theorem det_norm_one (V : HSp D) (k : GA D V) :
     (sg_fin (conjEquiv D)) (JR (AF D.host.F) V.gram) (matHom V k).1 (isUnit_det_JR _ (gram_det_ne_zero V)) k.2
 
 /- English proof (translation)
-Introduce `z hz`. Take `⟨y, hy, h⟩` from `hk.2 z hz`. Rewrite using `[eq_add_of_sub_eq h]`. Conclude with `add_mem (nsmul_mem hy N) hz`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulVec_mem {V : HSp D} {N : ℕ} {k : GA D V} (hk : k ∈ levSet V N) :
     ∀ z ∈ latHat V, (finHom V k).1 *ᵥ z ∈ latHat V := by
@@ -132,7 +132,7 @@ theorem mulVec_mem {V : HSp D} {N : ℕ} {k : GA D V} (hk : k ∈ levSet V N) :
   exact add_mem (nsmul_mem hy N) hz
 
 /- English proof (translation)
-Rewrite using `[map_inv]`. Rewrite `hk`, the goal using `[latHat_eq]`. Conclude with `GlobalTheory.AdLat.inv_mulVec_mem_hat D.host.F D.host.E V.rank (latCo V) (finHom V k) (conjEquiv D) (latCo_fg V) (latCo_span V) hk (det_norm_one V k)`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_mulVec_mem {V : HSp D} {k : GA D V} (hk : ∀ z ∈ latHat V, (finHom V k).1 *ᵥ z ∈ latHat V) :
     ∀ z ∈ latHat V, (finHom V k⁻¹).1 *ᵥ z ∈ latHat V := by
@@ -166,7 +166,7 @@ def finSign (F E : Type) [Field F] [NumberField F] [Field E] [Algebra F E] : AF 
   pairA F 1 (-1) ⊗ₜ 1
 
 /- English proof (translation)
-Rewrite using `[finSign, Algebra.TensorProduct.tmul_mul_tmul, Algebra.TensorProduct.one_def, mul_one]`. Use `congr 1`. Conclude with `Prod.ext (mul_one (1 : Ainf F)) (neg_mul_neg (1 : Af F) 1 |>.trans (mul_one _))`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem finSign_sq (F E : Type) [Field F] [NumberField F] [Field E] [Algebra F E] :
     finSign F E * finSign F E = 1 := by
@@ -179,11 +179,11 @@ def finSignGL (F E : Type) [Field F] [NumberField F] [Field E] [Algebra F E] (n 
     by rw [smul_mul_smul_comm, finSign_sq, mul_one, one_smul]⟩
 
 /- English proof (translation)
-Establish `h : sigR (AF F) σ (finSign F E) = finSign F E`. Express the relevant statement in the definitionally equal form `pairA F 1 (-1) ⊗ₜ σ 1 = _`. Rewrite using `[map_one]`. Both sides reduce to the same expression. Establish `h2 : Formalism.UG.cT (sigR (AF F) σ) (finSign F E • (1 : Matrix (Fin n) (Fin n) _)) = finSign F E • 1`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `[Formalism.UG.cT, h]`. Simplify using `[Formalism.UG.cT, hij, Ne.symm hij]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `Formalism.UG.cT (sigR (AF F) σ) (finSign F E • 1) * JR (AF F) J * (finSign F E • 1) = JR (AF F) J`. Rewrite using `[h2, Matrix.smul_mul, Matrix.one_mul, Matrix.mul_smul, Matrix.mul_one, smul_smul, finSign_sq, one_smul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem finSignGL_mem {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {n : ℕ} (σ : E →ₐ[F] E)
     (J : Matrix (Fin n) (Fin n) E) : finSignGL F E n ∈ HR (AF F) σ J := by

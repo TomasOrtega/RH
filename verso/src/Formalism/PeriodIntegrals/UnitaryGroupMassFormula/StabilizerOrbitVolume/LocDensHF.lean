@@ -17,9 +17,9 @@ variable {V X Y : Type} [AddCommGroup V] [TopologicalSpace V] [IsTopologicalAddG
   [MeasurableSpace X] [BorelSpace X]
 
 /- English proof (translation)
-Establish `h1` using `h.lintegral_lt_top`. Establish `e : (fun x => ENNReal.ofReal (s.indicator (1 : W → ℝ) x)) = s.indicator 1`. Use function extensionality and compare the values at `x`. Apply the tactic sequence `by_cases hx : x ∈ s <;> simp [hx]`. Rewrite `h1` using `[e, lintegral_indicator_one hs]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1.ne`.
+A detailed English derivation is pending.
 -/
 private lemma module_finite_F_E {W : Type} [MeasurableSpace W] (m : Measure W) (s : Set W)
     (hs : MeasurableSet s) (h : Integrable (s.indicator (1 : W → ℝ)) m) : m s ≠ ⊤ := by
@@ -31,61 +31,57 @@ private lemma module_finite_F_E {W : Type} [MeasurableSpace W] (m : Measure W) (
   exact h1.ne
 
 /- English proof (translation)
-Take `⟨hconc, hdis, hcont⟩` from `hfib`. Take `⟨S, hSdef⟩ : ∃ S : ℕ → Set X, S = fun n => {z | z - T ∈ H n}` from `⟨_, rfl⟩`. Establish `hmemS : ∀ n z, z ∈ S n ↔ z - T ∈ H n`. Introduce `n z`. Rewrite using `[hSdef]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hSo : ∀ n, IsOpen (S n)`. Introduce `n`. Rewrite using `[hSdef]`. Conclude with `(hHo n).preimage (continuous_id.sub continuous_const)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hScl : ∀ n, IsClosed (S n)`. Introduce `n`. Rewrite using `[hSdef]`. Conclude with `(AddSubgroup.isClosed_of_isOpen (H n) (hHo n)).preimage (continuous_id.sub continuous_const)`. Establish `hSm : ∀ n, MeasurableSet (S n)` using `fun n => (hSo n).measurableSet`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hSc : ∀ n, IsCompact (S n)`. Introduce `n`. Establish `e : S n = (fun z => z + T) '' (H n : Set X)`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce `hz`. Conclude with `⟨z - T, (hmemS n z).1 hz, sub_add_cancel z T⟩`. Introduce and unpack `⟨w, hw, rfl⟩`. Rewrite using `[hmemS]`. Simplify using `using hw`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `(hHc n).image (continuous_add_right T)`. Establish `hνS : ∀ n, ν (S n) = ν (H n)`. Introduce `n`. Establish `e : S n = (fun z => -T + z) ⁻¹' (H n : Set X)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use extensionality with `z`. Rewrite using `[hmemS]`. Simplify using `[neg_add_eq_sub]`. Rewrite using `[e]`. Conclude with `measure_preimage_add ν (-T) (H n : Set X)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hTS : ∀ n, T ∈ S n` using `fun n => (hmemS n T).2 (by rw [sub_self]; exact (H n).zero_mem)`. Establish `hsmall : ∀ N ∈ 𝓝 T, ∃ n, S n ⊆ N`. Introduce `N hN`. Establish `h0 : (fun x : X => T + x) ⁻¹' N ∈ 𝓝 (0 : X)` using `(continuous_const.add continuous_id).continuousAt.preimage_mem_nhds (by simpa using hN)`. Take `⟨n, hn⟩` from `hHb _ h0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Use `⟨n, fun z hz => ?_⟩` and prove the remaining obligations. Establish `h` using `hn ((hmemS n z).1 hz)`. Simplify using `using h`. Take `⟨n₀, hn₀⟩` from `hsmall (Nb ∩ B) (Filter.inter_mem hNb hB)`. Establish `hQ'o : IsOpen (Q ∩ G ⁻¹' S n₀)` using `hQo.inter ((hSo n₀).preimage hGc)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQ'cl : IsClosed (Q ∩ G ⁻¹' S n₀)` using `hQcl.inter ((hScl n₀).preimage hGc)`. Establish `hQ'c : IsCompact (Q ∩ G ⁻¹' S n₀)` using `hQc.of_isClosed_subset hQ'cl Set.inter_subset_left`. Establish `hQ'm : MeasurableSet (Q ∩ G ⁻¹' S n₀)` using `hQ'o.measurableSet`. Establish `hQ'U : Q ∩ G ⁻¹' S n₀ ⊆ U` using `fun x hx => hNbU x (hn₀ hx.2).1`. Establish `hS0B : S n₀ ⊆ B` using `fun z hz => (hn₀ hz).2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hfr : frontier (Q ∩ G ⁻¹' S n₀) = ∅`. Rewrite using `[frontier, hQ'cl.closure_eq, hQ'o.interior_eq, Set.diff_self]`. Establish `hφc : Continuous ((Q ∩ G ⁻¹' S n₀).indicator (1 : V → ℝ))`. Rewrite using `[← Set.piecewise_eq_indicator]`. Conclude with `continuous_one.piecewise (fun a ha => by rw [hfr] at ha; simp at ha) continuous_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hts : tsupport ((Q ∩ G ⁻¹' S n₀).indicator (1 : V → ℝ)) ⊆ Q ∩ G ⁻¹' S n₀` using `closure_minimal Set.support_indicator_subset hQ'cl`. Establish `hφcs : HasCompactSupport ((Q ∩ G ⁻¹' S n₀).indicator (1 : V → ℝ))` using `hQ'c.of_isClosed_subset (isClosed_tsupport _) hts`. Take `⟨hint, hFc0⟩` from `hcont _ hφc hφcs (hts.trans hQ'U)`. Take `⟨F, hFdef⟩ : ∃ F : X → ℝ, F = fun b => ∫ v, (Q ∩ G ⁻¹' S n₀).indicator (1 : V → ℝ) v ∂(fib b)` from `⟨_, rfl⟩`. Establish `hFc : ContinuousOn F B`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hFdef]`. Conclude with `hFc0`. Establish `hFval : ∀ b, F b = (fib b (Q ∩ G ⁻¹' S n₀)).toReal`. Introduce `b`. Simplify using `only [hFdef]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[integral_indicator_one hQ'm, measureReal_def]`. Establish `hF0 : ∀ b, 0 ≤ F b` using `fun b => by`. Rewrite using `[hFval]`. Conclude with `ENNReal.toReal_nonneg`. Establish `hGb : ∀ b x, x ∈ f ⁻¹' {ι b} ∩ U → G x = b` using `fun b x hx => hι ((hfG x).symm.trans (Set.mem_singleton_iff.1 hx.1))`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Establish `hfibS : ∀ b (R : Set V), fib b R = fib b (R ∩ (f ⁻¹' {ι b} ∩ U))` using `fun b R => (measure_inter_conull (hconc b)).symm`. Establish `hcut : ∀ b m, b ∈ S m → (Q ∩ G ⁻¹' S m) ∩ (f ⁻¹' {ι b} ∩ U) = Q ∩ (f ⁻¹' {ι b} ∩ U)`. Introduce `b m hb`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `⟨⟨hxQ, _⟩, hxA⟩`. Conclude with `⟨hxQ, hxA⟩`. Introduce and unpack `⟨hxQ, hxA⟩`. Use `⟨⟨hxQ, ?_⟩, hxA⟩` and prove the remaining obligations. Use `show G x ∈ S m`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hGb b x hxA]`. Conclude with `hb`. Establish `hfin : ∀ b ∈ B, fib b (Q ∩ G ⁻¹' S n₀) ≠ ⊤` using `fun b hb => module_finite_F_E (fib b) _ hQ'm (hint b hb)`. Establish `hmain : ∀ n, S n ⊆ S n₀ → ∫ b in S n, F b ∂ν = κ * ν.real (H n)`. Introduce `n hn`.
+Rewrite the indicated hypotheses repeatedly using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hSvm : MeasurableSet (Q ∩ G ⁻¹' S n)` using `(hQo.inter ((hSo n).preimage hGc)).measurableSet`. Establish `hSvU : Q ∩ G ⁻¹' S n ⊆ U` using `fun x hx => hQ'U ⟨hx.1, hn hx.2⟩`. Establish `h1` using `hdis ((Q ∩ G ⁻¹' S n).indicator 1) (measurable_one.indicator hSvm)`. Rewrite `h1` using `[lintegral_indicator_one hSvm, Measure.restrict_apply hSvm, Set.inter_eq_left.2 hSvU]`. Rewrite `h1` using `[lintegral_indicator_one hSvm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hpt : ∀ b, fib b (Q ∩ G ⁻¹' S n) = (S n).indicator (fun b => ENNReal.ofReal (F b)) b`. Introduce `b`. Simplify using `only [Set.indicator_apply]`. Use `split_ifs with hb`. Rewrite using `[hfibS b, hcut b n hb, ← hcut b n₀ (hn hb), ← hfibS b, hFval, ENNReal.ofReal_toReal (hfin b (hS0B (hn hb)))]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hfibS b]`. Establish `e : (Q ∩ G ⁻¹' S n) ∩ (f ⁻¹' {ι b} ∩ U) = ∅` using `Set.subset_empty_iff.1 fun x hx => hb (by rw [← hGb b x hx.2]; exact hx.1.2)`. Rewrite using `[e, measure_empty]`. Establish `h2 : μ (Q ∩ G ⁻¹' S n) = ∫⁻ b in S n, ENNReal.ofReal (F b) ∂ν`. Rewrite using `[h1, lintegral_congr hpt, lintegral_indicator (hSm n)]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hFint : IntegrableOn F (S n) ν` using `(hFc.mono fun z hz => hS0B (hn hz)).integrableOn_compact (hSc n)`. Rewrite `h2` using `[← ofReal_integral_eq_lintegral_ofReal hFint (ae_of_all _ hF0)]`. Establish `hr : μ.real (Q ∩ G ⁻¹' S n) = κ * ν.real (H n)`. Rewrite using `[hSdef]`. Conclude with `hratio n`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hr` using `[measureReal_def, h2, ENNReal.toReal_ofReal (integral_nonneg hF0)]`. Conclude with `hr`. Establish `hcT : ContinuousAt F T` using `hFc.continuousAt hB`. Establish `hrpos : ∀ n, 0 < ν.real (H n)`. Introduce `n`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[measureReal_def]`. Conclude with `ENNReal.toReal_pos ((hHo n).measure_ne_zero ν ⟨0, (H n).zero_mem⟩) (hHc n).measure_lt_top.ne`. Establish `key : ∀ ε > 0, |κ - F T| ≤ ε`. Introduce `ε hε`. Establish `hW : F ⁻¹' Metric.ball (F T) ε ∈ 𝓝 T` using `hcT (Metric.ball_mem_nhds _ hε)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take `⟨n, hnW⟩` from `hsmall _ (Filter.inter_mem hW ((hSo n₀).mem_nhds (hTS n₀)))`. Establish `hsub : S n ⊆ S n₀` using `fun z hz => (hnW hz).2`. Establish `hI` using `hmain n hsub`. Establish `hFint : IntegrableOn F (S n) ν` using `(hFc.mono fun z hz => hS0B (hsub hz)).integrableOn_compact (hSc n)`. Establish `hclose : ∀ b ∈ S n, |F b - F T| < ε` using `fun b hb => by`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h` using `(hnW hb).1`. Rewrite `h` using `[Set.mem_preimage, Metric.mem_ball, Real.dist_eq]`. Then use the resulting hypothesis. Establish `hup : ∫ b in S n, F b ∂ν ≤ ∫ b in S n, (F T + ε) ∂ν` using `setIntegral_mono_on hFint (continuousOn_const.integrableOn_compact (hSc n)) (hSm n) fun b hb => by linarith [(abs_sub_lt_iff.1 (hclose b hb)).1]`. Establish `hlo : ∫ b in S n, (F T - ε) ∂ν ≤ ∫ b in S n, F b ∂ν` using `setIntegral_mono_on (continuousOn_const.integrableOn_compact (hSc n)) hFint (hSm n) fun b hb => by linarith [(abs_sub_lt_iff.1 (hclose b hb)).2]`. Rewrite `hup` using `[setIntegral_const, hI]`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hlo` using `[setIntegral_const, hI]`. Simplify using `only [smul_eq_mul, measureReal_def, hνS n] at hup hlo`. Establish `hr` using `hrpos n`. Rewrite `hr` using `[measureReal_def]`. Rewrite using `[abs_le]`.
-
-Apply the tactic sequence `constructor <;> nlinarith`. Establish `hk : κ = F T`. Assume the negation of the conclusion as `hne`. Establish `hpos : 0 < |κ - F T|` using `abs_pos.2 (sub_ne_zero.2 hne)`. Use `key (|κ - F T| / 2) (half_pos hpos)` as an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hQQ : fib T Q = fib T (Q ∩ G ⁻¹' S n₀)`. Rewrite using `[hfibS T (Q ∩ G ⁻¹' S n₀), hcut T n₀ (hTS n₀), ← hfibS T Q]`. Apply the tactic sequence `have hint' : ∫ x, Q.indicator (1 : V → ℂ) x ∂(fib T) = ∫ x, ((Q.indicator (1 : V → ℝ) x : ℝ) : ℂ) ∂(fib T) := integral_congr_ae (ae_of_all _ fun x => by by_cases hx : x ∈ Q <;> simp [hx])`. Rewrite using `[hint', integral_complex_ofReal, integral_indicator_one hQo.measurableSet, measureReal_def, hQQ, ← hFval, ← hk]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fib_of_ratio (μ : Measure V) (ν : Measure X) [ν.IsAddHaarMeasure]
     (f : V → Y) (ι : X → Y) (hι : Function.Injective ι) (G : V → X) (hGc : Continuous G)
@@ -270,7 +266,7 @@ variable {V X : Type} [AddCommGroup V] [TopologicalSpace V] [IsTopologicalAddGro
 omit [TopologicalSpace V] [IsTopologicalAddGroup V] [MeasurableSpace V] [BorelSpace V]
   [TopologicalSpace X] [IsTopologicalAddGroup X] [MeasurableSpace X] [BorelSpace X] in
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[hlev, neg_add_eq_sub]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cos_inter_eq (Λ0 : AddSubgroup V) (Hn : AddSubgroup X) (G : V → X) (y : V) (T : X) :
     {x | x - y ∈ Λ0} ∩ G ⁻¹' {z | z - T ∈ Hn} = (fun x => -y + x) ⁻¹' hlev Λ0 Hn G y T := by
@@ -278,7 +274,7 @@ theorem cos_inter_eq (Λ0 : AddSubgroup V) (Hn : AddSubgroup X) (G : V → X) (y
   simp [hlev, neg_add_eq_sub]
 
 /- English proof (translation)
-Establish `hset : {x | x - y ∈ Λ 0} ∩ G ⁻¹' {z | z - T ∈ H n} = (fun x => -y + x) ⁻¹' hlev (Λ 0) (H n) G y T` using `cos_inter_eq (Λ 0) (H n) G y T`. Rewrite using `[hset, measure_preimage_add]`. Conclude with `hensel_main μ ν Λ H hΛo hΛa hHo hHc D hD G y hG T (by simpa [neg_sub] using (H 0).neg_mem hyT) n`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cos_ratio (μ : Measure V) (ν : Measure X) [μ.IsAddHaarMeasure] [ν.IsAddHaarMeasure]
     (Λ : ℕ → AddSubgroup V) (H : ℕ → AddSubgroup X) (hΛo : ∀ n, IsOpen (Λ n : Set V))
@@ -304,13 +300,13 @@ variable {V X Y : Type} [AddCommGroup V] [TopologicalSpace V] [IsTopologicalAddG
   [MeasurableSpace X] [BorelSpace X]
 
 /- English proof (translation)
-Establish `hQo : IsOpen {x | x - y ∈ Λ 0}` using `(hΛo 0).preimage (continuous_id.sub continuous_const)`. Establish `hQcl : IsClosed {x | x - y ∈ Λ 0}` using `(AddSubgroup.isClosed_of_isOpen (Λ 0) (hΛo 0)).preimage (continuous_id.sub continuous_const)`. Establish `hQc : IsCompact {x | x - y ∈ Λ 0}`. Establish `e : {x | x - y ∈ Λ 0} = (fun z => z + y) '' (Λ 0 : Set V)`. Use extensionality with `x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Conclude with `⟨x - y, hx, sub_add_cancel x y⟩`. Introduce and unpack `⟨z, hz, rfl⟩`. Simplify using `using hz`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[e]`. Conclude with `(hΛc 0).image (continuous_add_right y)`. Establish `hH0 : ν (H 0) ≠ 0` using `(hHo 0).measure_ne_zero ν ⟨0, (H 0).zero_mem⟩`. Establish `hH0' : ν (H 0) ≠ ⊤` using `(hHc 0).measure_lt_top.ne`. Use `fib_of_ratio μ ν f ι hι G hGc hfG U B fib hfib T hB Nb hNb hNbU _ hQo hQcl hQc H hHo hHc hHb _ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n`. Establish `h` using `cos_ratio μ ν Λ H hΛo hΛa hHo hHc D hD G y hG T hyT n`. Establish `h2 : μ ({x | x - y ∈ Λ 0} ∩ G ⁻¹' {z | z - T ∈ H n}) = μ (Λ 0) / ν (H 0) * ν (H n)`. Rewrite using `[div_eq_mul_inv, mul_right_comm, ← div_eq_mul_inv, ENNReal.eq_div_iff hH0 hH0', mul_comm, h]`. Rewrite using `[measureReal_def, measureReal_def, h2, ENNReal.toReal_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fibCos (μ : Measure V) (ν : Measure X) [μ.IsAddHaarMeasure] [ν.IsAddHaarMeasure]
     (f : V → Y) (ι : X → Y) (hι : Function.Injective ι) (G : V → X) (hGc : Continuous G)
@@ -351,7 +347,7 @@ theorem fibCos (μ : Measure V) (ν : Measure X) [μ.IsAddHaarMeasure] [ν.IsAdd
 end Fin
 
 /- English proof (translation)
-Establish `h1 : a = b * c / c` using `(ENNReal.eq_div_iff h0 ht).2 (by rw [mul_comm]; exact h)`. Establish `h2 : b = b * c / c` using `(ENNReal.eq_div_iff h0 ht).2 (mul_comm c b)`. Rewrite using `[h1, ← h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private lemma eq_of_mul_mul_eq_of_det_ne_zero {a b c : ENNReal} (h0 : c ≠ 0) (ht : c ≠ ⊤) (h : a * c = b * c) :
     a = b := by
@@ -360,45 +356,41 @@ private lemma eq_of_mul_mul_eq_of_det_ne_zero {a b c : ENNReal} (h0 : c ≠ 0) (
   rw [h1, ← h2]
 
 /- English proof (translation)
-Unfold `FibLat`. Introduce `V X Y i1 i2 i3 i4 i5 i6 i7 i8 j1 j2 j3 j4 j5 j6 j7 j8 μ ν hμ hν f ι hι G hGc hfG U B fib hfib T hB Nb hNb hNbU L hLo hLc Λ H hΛL hΛo hΛc hΛa hHo hHc hHb hhens`. Use `haveI := hμ`. Use `haveI := hν`. Establish `hLcl : IsClosed (L : Set V)` using `AddSubgroup.isClosed_of_isOpen L hLo`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hgood : ∃ y ∈ L, G y - T ∈ H 0`. Take `⟨y₀, hy₀L, hy₀⟩` from `hgood`. Take `⟨D₀, hD₀, -⟩` from `hhens y₀ hy₀L hy₀`. Establish `hHsub : ∀ n, H n ≤ H 0`. Introduce `n`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hD₀ n, ← hD₀ 0]`. Conclude with `AddSubgroup.map_mono (hΛa (Nat.zero_le n))`. Establish `hcos_open : ∀ x, IsOpen {z | z - x ∈ Λ 0}` using `fun x => (hΛo 0).preimage (continuous_id.sub continuous_const)`. Establish `hAo : ∀ n, IsOpen (G ⁻¹' {z | z - T ∈ H n})` using `fun n => ((hHo n).preimage (continuous_id.sub continuous_const)).preimage hGc`. Establish `hsame : ∀ x x', x' - x ∈ Λ 0 → {z | z - x ∈ Λ 0} = {z | z - x' ∈ Λ 0}`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Introduce `x x' hxx'`. Use extensionality with `z`. Simplify using `only [Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using (Λ 0).sub_mem h hxx'`. Introduce `h`. Simplify using `using (Λ 0).add_mem h hxx'`. Take `⟨C, hCdef⟩ : ∃ C : Set (Set V), C = {c | ∃ x ∈ L, c = {z | z - x ∈ Λ 0}}` from `⟨_, rfl⟩`. Establish `hmemC : ∀ c, c ∈ C ↔ ∃ x ∈ L, c = {z | z - x ∈ Λ 0}`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `c`. Rewrite using `[hCdef]`. Both sides reduce to the same expression. Establish `hdisj : C.PairwiseDisjoint id`. Introduce `c₁ h₁ c₂ h₂ hne`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨x₁, -, rfl⟩` from `(hmemC c₁).1 h₁`. Take `⟨x₂, -, rfl⟩` from `(hmemC c₂).1 h₂`. Express the relevant statement in the definitionally equal form `Disjoint {z | z - x₁ ∈ Λ 0} {z | z - x₂ ∈ Λ 0}`. Rewrite using `[Set.disjoint_left]`. Introduce `z hz1 hz2`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Apply `hne` to reduce the goal to its premises. Conclude with `hsame x₁ x₂ (by simpa using (Λ 0).sub_mem hz1 hz2)`. Establish `hcount : C.Countable` using `hdisj.countable_of_isOpen (fun c hc => by`. Take `⟨x, -, rfl⟩` from `(hmemC c).1 hc`. Conclude with `hcos_open x)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use the proof step `(fun c hc => by`. Take `⟨x, -, rfl⟩` from `(hmemC c).1 hc`. Conclude with `⟨x, by show x - x ∈ Λ 0; rw [sub_self]; exact (Λ 0).zero_mem⟩)`. Establish `hunion : ∀ n, (L : Set V) ∩ G ⁻¹' {z | z - T ∈ H n} = ⋃ c ∈ C, c ∩ G ⁻¹' {z | z - T ∈ H n}`. Introduce `n`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use extensionality with `z`. Simplify using `only [Set.mem_inter_iff, Set.mem_iUnion, exists_prop]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hzL, hzA⟩`. Conclude with `⟨{w | w - z ∈ Λ 0}, (hmemC _).2 ⟨z, hzL, rfl⟩, by show z - z ∈ Λ 0; rw [sub_self]; exact (Λ 0).zero_mem, hzA⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce and unpack `⟨c, hc, hzc, hzA⟩`. Take `⟨x, hxL, rfl⟩` from `(hmemC c).1 hc`. Use `⟨?_, hzA⟩` and prove the remaining obligations. Establish `h` using `L.add_mem (hΛL hzc) hxL`. Simplify using `using h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmeas : ∀ n, μ ((L : Set V) ∩ G ⁻¹' {z | z - T ∈ H n}) = ∑' p : C, μ ((p : Set V) ∩ G ⁻¹' {z | z - T ∈ H n})`. Introduce `n`. Rewrite using `[hunion n]`. Conclude with `measure_biUnion hcount (fun c₁ h₁ c₂ h₂ hne => by`. Express the relevant statement in the definitionally equal form `Disjoint (c₁ ∩ _) (c₂ ∩ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Conclude with `Disjoint.mono Set.inter_subset_left Set.inter_subset_left (hdisj h₁ h₂ hne))`. Use the proof step `(fun c hc => by`. Take `⟨x, -, rfl⟩` from `(hmemC c).1 hc`. Conclude with `((hcos_open x).inter (hAo n)).measurableSet)`. Establish `hH0 : ν (H 0) ≠ 0` using `(hHo 0).measure_ne_zero ν ⟨0, (H 0).zero_mem⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hH0' : ν (H 0) ≠ ⊤` using `(hHc 0).measure_lt_top.ne`. Establish `hcos : ∀ c ∈ C, ∀ n, μ (c ∩ G ⁻¹' {z | z - T ∈ H n}) * ν (H 0) = μ (c ∩ G ⁻¹' {z | z - T ∈ H 0}) * ν (H n)`. Introduce `c hc n`. Take `⟨x, hxL, rfl⟩` from `(hmemC c).1 hc`. Distinguish the cases in `hex : ∃ y ∈ {z | z - x ∈ Λ 0}, G y - T ∈ H 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨y, hy, hyT⟩` from `hex`. Establish `hyL : y ∈ L` using `by simpa using L.add_mem (hΛL hy) hxL`. Rewrite using `[hsame x y hy]`. Take `⟨D, hD, hG⟩` from `hhens y hyL hyT`. Establish `h0` using `cos_ratio μ ν Λ H hΛo hΛa hHo hHc D hD G y hG T hyT 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hn` using `cos_ratio μ ν Λ H hΛo hΛa hHo hHc D hD G y hG T hyT n`. Rewrite using `[hn, eq_of_mul_mul_eq_of_det_ne_zero hH0 hH0' h0]`. Establish `e : ∀ m, {z | z - x ∈ Λ 0} ∩ G ⁻¹' {z | z - T ∈ H m} = ∅` using `fun m => Set.subset_empty_iff.1 fun z hz => hex ⟨z, hz.1, hHsub m hz.2⟩`. Rewrite using `[e n, e 0]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hL : ∀ n, μ ((L : Set V) ∩ G ⁻¹' {z | z - T ∈ H n}) * ν (H 0) = μ ((L : Set V) ∩ G ⁻¹' {z | z - T ∈ H 0}) * ν (H n)`. Introduce `n`. Rewrite using `[hmeas n, hmeas 0, ← ENNReal.tsum_mul_right, ← ENNReal.tsum_mul_right]`. Conclude with `tsum_congr fun p => hcos p.1 p.2 n`. Use `fib_of_ratio μ ν f ι hι G hGc hfG U B fib hfib T hB Nb hNb hNbU (L : Set V) hLo hLcl hLc H hHo hHc hHb _ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `n`. Establish `h2 : μ ((L : Set V) ∩ G ⁻¹' {z | z - T ∈ H n}) = μ ((L : Set V) ∩ G ⁻¹' {z | z - T ∈ H 0}) / ν (H 0) * ν (H n)`. Rewrite using `[div_eq_mul_inv, mul_right_comm, ← div_eq_mul_inv, ENNReal.eq_div_iff hH0 hH0', mul_comm, hL n]`. Rewrite using `[measureReal_def, measureReal_def, h2, ENNReal.toReal_mul]`. Use `push_neg at hgood`.
-
-Establish `hTL : fib T (L : Set V) = 0`. Rewrite using `[← measure_inter_conull (hfib.1 T)]`. Establish `e : (L : Set V) ∩ (f ⁻¹' {ι T} ∩ U) = ∅` using `Set.subset_empty_iff.1 fun z hz => by`. Establish `hGz : G z = T` using `hι ((hfG z).symm.trans (Set.mem_singleton_iff.1 hz.2.1))`. Conclude with `hgood z hz.1 (by rw [hGz, sub_self]; exact (H 0).zero_mem)`.
-
-Rewrite using `[e, measure_empty]`. Establish `hempty : (L : Set V) ∩ G ⁻¹' {z | z - T ∈ H 0} = ∅` using `Set.subset_empty_iff.1 fun z hz => hgood z hz.1 hz.2`. Rewrite using `[integral_indicator hLo.measurableSet, Measure.restrict_eq_zero.2 hTL, integral_zero_measure, hempty]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fibLat_holds : FibLat := by
   unfold FibLat

@@ -21,14 +21,14 @@ def semiComp {T S R : Type} [CommRing T] [CommRing S] [CommRing R] {I : GlobalTh
   comm U s t a := by simp only [AddMonoidHom.comp_apply]; rw [ρ.comm, τ.comm]
 
 /- English proof (translation)
-Unfold `pick`. Conclude with `dif_neg h`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem pick_neg' {α : Type*} [Zero α] {P : α → Prop} (h : ¬ ∃ a, P a) : pick P = 0 := by
   unfold pick
   exact dif_neg h
 
 /- English proof (translation)
-Take `⟨α, rfl⟩` from `x.mk_surjective`. Rewrite using `[SemiMap.op_spec (0 : SemiMap I J) E n α 0 (fun p s h U x => ?_)]`. Both sides reduce to the same expression. Rewrite using `[Cocycle.coe_zero, CupSpec.ev_zero]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem op_zero {S R : Type} [CommRing S] [CommRing R] {I : GlobalTheory.EtC.Cx S} {J : GlobalTheory.EtC.Cx R} (E : Spc) (n : ℤ)
     (x : CohomologyClass ((chains S).obj E) I n) : (0 : SemiMap I J).op.app E n x = 0 := by
@@ -41,17 +41,17 @@ theorem op_zero {S R : Type} [CommRing S] [CommRing R] {I : GlobalTheory.EtC.Cx 
 end CyclicComplexMaps
 
 /- English proof (translation)
-Introduce `Q q _ _ h i π hπ E n z`. Distinguish the cases in `hρ : ∃ ρ : SemiMap (res (ZMod q) (tw q i)) (res (ZMod Q) ((restr (ZMod.castHom h (ZMod q))).obj (tw q i))), ∀ (U : Scheme.{0}) (a : Sec (tw q i) U), ρ.app U 0 (Sec.map (resι (ZMod q) (tw q i)) a) = Sec.map (resι (ZMod Q) ((restr (ZMod.castHom h (ZMod q))).obj (tw q i))) (show Sec …`. Establish `hρ' : ∀ (U : Scheme.{0}) (a : Sec (tw q i) U), (restrMap (ZMod.castHom h (ZMod q)) (tw q i)).app U 0 (Sec.map (resι (ZMod q) (tw q i)) a) = Sec.map (resι (ZMod Q) ((restr (ZMod.castHom h (ZMod q))).obj (tw q i))) (show Sec ((restr (ZMod.castHom h (ZMod q))).obj (tw q i)) U from a …` using `pick_spec hρ`. Establish `hτ` using `hF.et.red Q q h i`. Set `σ` to `CyclicComplexMaps.semiComp (redMap Q q i) (restrMap (ZMod.castHom h (ZMod q)) (tw q i))`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hg : resι (ZMod Q) (tw Q i) ≫ (CyclicComplexMaps.cxHom σ).f 0 = π ≫ resι (ZMod Q) ((restr (ZMod.castHom h (ZMod q))).obj (tw q i))`. Use `CyclicComplexMaps.tw_ext _ _ (fun U ζ => ?_)` and prove the remaining obligations. Take `⟨ξ, hξ⟩` from `CyclicComplexMaps.prim_pow h ζ`. Express the relevant statement in the definitionally equal form `(restrMap (ZMod.castHom h (ZMod q)) (tw q i)).app U 0 ((redMap Q q i).app U 0 (resGen i ζ)) = Sec.map (resι (ZMod Q) ((restr (ZMod.castHom h (ZMod q))).obj (tw q i))) (Sec.map π (twGen i ζ))`. Rewrite using `[hτ U ζ ξ hξ, hπ U ζ ξ hξ]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hρ' U (twGen i ξ)`. Take `⟨α, rfl⟩` from `z.mk_surjective`. Take `⟨β, hβ⟩` from `SemiMap.image_exists (redMap Q q i) E n α`. Take `⟨γ, hγ⟩` from `SemiMap.image_exists (restrMap (ZMod.castHom h (ZMod q)) (tw q i)) E n β`. Express the relevant statement in the definitionally equal form `(restrMap (ZMod.castHom h (ZMod q)) (tw q i)).op.app E n ((redMap Q q i).op.app E n (CohomologyClass.mk α)) = _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[SemiMap.op_spec _ E n α β hβ, SemiMap.op_spec _ E n β γ hγ, ← CyclicComplexMaps.cpost_of_aug _ π (CyclicComplexMaps.cxHom σ) hg n (CohomologyClass.mk α), cpost_mk]`. Use `congr 1`. Apply `Cocycle.ext` to reduce the goal to its premises. Apply `CupSpec.ev_ext` to reduce the goal to its premises. Introduce `p s hs U x`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hγ, hβ]`. Conclude with `(CyclicComplexMaps.ev_comp α.1 (CyclicComplexMaps.cxHom σ) p s hs U x).symm`. Establish `h0 : restrMap (ZMod.castHom h (ZMod q)) (tw q i) = 0` using `CyclicComplexMaps.pick_neg' hρ`. Take `⟨y, hy⟩` from `(hF.a8 (ZMod Q) (ZMod q) (ZMod.castHom h (ZMod q)) E (tw q i) n).2 (HK.post _ ((chains _).obj E) π n z)`. Rewrite using `[← hy]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(restrMap (ZMod.castHom h (ZMod q)) (tw q i)).op.app E n _ = (restrMap (ZMod.castHom h (ZMod q)) (tw q i)).op.app E n _`. Rewrite using `[h0, CyclicComplexMaps.op_zero, CyclicComplexMaps.op_zero]`.
+A detailed English derivation is pending.
 -/
 theorem redSh (hF : FormalIn) : InRedSh := by
   intro Q q _ _ h i π hπ E n z
@@ -93,7 +93,7 @@ theorem redSh (hF : FormalIn) : InRedSh := by
     rw [h0, CyclicComplexMaps.op_zero, CyclicComplexMaps.op_zero]
 
 /- English proof (translation)
-Introduce `hF` and use `bock_of hS (redSh hF) hF`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem bock_tw (hS : InTwSeq) : BocksteinInputFromFormal := fun hF => bock_of hS (redSh hF) hF
 

@@ -13,9 +13,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.PeriodFamily
 
 /- English proof (translation)
-Use `eq_top_iff.2 fun c _ ↦ ?_` and prove the remaining obligations. Take `⟨z, rfl⟩` from `h c`. Proceed by induction on `z with`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y hx hy => rw [map_add]`. Conclude with `add_mem (hx trivial) (hy trivial)`. Consider the case `tmul x c => rw [liftSemi_tmul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨c, rfl⟩)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem span_range_eq_top_of_liftSemi {R R' : Type} [CommRing R] [CommRing R'] [Algebra R R'] {M M' : Type*}
     [AddCommGroup M] [Module R M] [AddCommGroup M'] [Module R' M'] (f : M →ₛₗ[algebraMap R R'] M')
@@ -28,9 +28,9 @@ theorem span_range_eq_top_of_liftSemi {R R' : Type} [CommRing R] [CommRing R'] [
   | tmul x c => rw [liftSemi_tmul]; exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨c, rfl⟩)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Proceed by induction on `z with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [Function.comp_apply, map_add] at hx hy ⊢`. Rewrite using `[hx, hy]`.
+Apply function extensionality and compare values at an arbitrary argument. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `tmul x c => simp only [Function.comp_apply, liftSemi_tmul, map_smul, e]`.
+Treat this case separately.
 -/
 theorem liftSemi_comp_eq {R R' : Type} [CommRing R] [CommRing R'] [Algebra R R'] {M M' M'' : Type*}
     [AddCommGroup M] [Module R M] [AddCommGroup M'] [Module R' M'] [AddCommGroup M''] [Module R' M'']
@@ -43,9 +43,9 @@ theorem liftSemi_comp_eq {R R' : Type} [CommRing R] [CommRing R'] [Algebra R R']
   | tmul x c => simp only [Function.comp_apply, liftSemi_tmul, map_smul, e]
 
 /- English proof (translation)
-Introduce `hB hR A₀ _ g hA hg D _ _ π κ hκ hπ k`. Take `⟨A', _, q, i, hA', hg', hq, hi, e⟩` from `GlobalTheory.T.abelian_scheme_deformation_complex A₀ g hA hg D π hπ`. Establish `h1 : Function.Bijective (liftSemi (GlobalTheory.Published.AbelianDeRham.bcMor hq).pull)` using `(hB ℂ A₀ g hA hg D A' q hq).1`. Establish `h2` using `hR D A' g hA' hg' _ κ hκ ℂ π (fun a ↦ ⟨_, hπ a⟩) rfl A₀ i hi`. Establish `h3 : Function.Bijective (liftSemi k.pull)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[liftSemi_comp_eq (GlobalTheory.Published.AbelianDeRham.bcMor hq).pull (liftMor κ hi).pull k.pull (GrpMor.pull_pull _ _ k (fun _ ↦ rfl) e)]`. Conclude with `h2.comp h1`. Conclude with `⟨h3, span_range_eq_top_of_liftSemi _ h3.2⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isBC_augmented : GlobalTheory.Published.AbelianDeRham.BaseChange → GlobalTheory.Published.AbelianDeRham.Rigid → ∀ (A₀ : Over (Sp ℂ)) [GrpObj A₀] (g : ℕ), IsAbelianScheme A₀ → SmoothOfRelativeDimension g A₀.hom → ∀ (D : Type) [CommRing D] [Algebra ℂ D] (π : D →+* ℂ) (κ : DividedPowers (RingHom.ker π)), IsNilDP κ → (∀ a : ℂ, π (algebraMap ℂ D a) = a) → ∀ (k : GrpMor (dp0 ℂ) (𝟙 _) A₀ κ (spMap π) A₀ (algebraMap ℂ D) (𝟙 _) (Over.Hom.left (𝟙 A₀))), k.IsBC ∧ Submodule.span D (Set.range k.pull) = ⊤ := by
   intro hB hR A₀ _ g hA hg D _ _ π κ hκ hπ k

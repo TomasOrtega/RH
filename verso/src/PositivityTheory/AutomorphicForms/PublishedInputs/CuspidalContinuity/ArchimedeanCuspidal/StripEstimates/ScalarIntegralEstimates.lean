@@ -13,20 +13,20 @@ namespace Ad3.S
 namespace ScalarIntegralEstimates
 
 /- English proof (translation)
-Unfold `ee`. Rewrite using `[← Complex.exp_add]`. Put the polynomial expressions in normal form.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form.
 -/
 lemma ee_add (x y : ℂ) : ee (x + y) = ee x * ee y := by
   unfold ee; rw [← Complex.exp_add]; ring_nf
 
 /- English proof (translation)
-Unfold `ee; rw [show 2 * (π : ℂ) * I * (k : ℂ) = k * (2 * π * I) by ring]`. Conclude with `Complex.exp_int_mul_two_pi_mul_I k`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma ee_int (k : ℤ) : ee (k : ℂ) = 1 := by
   unfold ee; rw [show 2 * (π : ℂ) * I * (k : ℂ) = k * (2 * π * I) by ring]
   exact Complex.exp_int_mul_two_pi_mul_I k
 
 /- English proof (translation)
-Establish `hr' : (r : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.mpr hr.ne'`. Rewrite using `[Complex.cpow_def_of_ne_zero (mul_ne_zero hr' hx), Complex.log_ofReal_mul hr hx, Complex.cpow_def_of_ne_zero hr', Complex.cpow_def_of_ne_zero hx, ← Complex.exp_add, ← Complex.ofReal_log hr.le]`. Put the polynomial expressions in normal form.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form.
 -/
 lemma cpow_rmul (r : ℝ) (hr : 0 < r) (x : ℂ) (hx : x ≠ 0) (y : ℂ) :
     ((r : ℂ) * x) ^ y = (r : ℂ) ^ y * x ^ y := by
@@ -37,20 +37,20 @@ lemma cpow_rmul (r : ℝ) (hr : 0 < r) (x : ℂ) (hx : x ≠ 0) (y : ℂ) :
   ring_nf
 
 /- English proof (translation)
-Rewrite using `[Complex.inv_cpow X _ (by rw [Ne, Complex.arg_eq_pi_iff]; intro h; linarith [h.1]), Complex.cpow_neg, inv_inv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma inv_cpow_half (X : ℂ) (hX : 0 < X.re) : X⁻¹ ^ (-(1 / 2 : ℂ)) = X ^ (1 / 2 : ℂ) := by
   rw [Complex.inv_cpow X _ (by rw [Ne, Complex.arg_eq_pi_iff]; intro h; linarith [h.1]),
     Complex.cpow_neg, inv_inv]
 
 /- English proof (translation)
-Rewrite using `[← Complex.cpow_add _ _ hx]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 lemma sq_half (x : ℂ) (hx : x ≠ 0) : x ^ (1 / 2 : ℂ) * x ^ (1 / 2 : ℂ) = x := by
   rw [← Complex.cpow_add _ _ hx]; norm_num
 
 /- English proof (translation)
-Rewrite using `[Complex.cpow_def_of_ne_zero hx]`. Conclude with `Complex.exp_ne_zero _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma cpow_ne (x y : ℂ) (hx : x ≠ 0) : x ^ y ≠ 0 := by
   rw [Complex.cpow_def_of_ne_zero hx]; exact Complex.exp_ne_zero _
@@ -60,31 +60,29 @@ end ScalarIntegralEstimates
 namespace ScalarIntegralEstimates
 
 /- English proof (translation)
-Establish `hz0 : z ≠ 0` using `by intro h; rw [h] at hz; simp at hz`. Establish `hcz' : z * c + d ≠ 0` using `by rw [mul_comm]; exact hcz`. Establish `hMC : (M : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr hM.ne'`. Establish `hdC : (d : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr hd.ne'`. Establish `hwim : 0 < (-1 / z).im`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (-1 / z).im = z.im / Complex.normSq z` using `by simp [Complex.div_im]; ring`. Rewrite using `[this]`. Conclude with `div_pos hz (Complex.normSq_pos.mpr hz0)`. Establish `hPre : 0 < (-I * (d * (-1 / z) - c)).re` using `by simp; positivity`. Establish `hP0re : 0 < (-I * (-1 / z)).re` using `by simp; simpa using hwim`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set w := -1 / z with hw`. Use `set P := -I * (d * w - c) with hP`. Use `set P0 := -I * w with hP0`. Establish `hPne : P ≠ 0` using `fun h => by rw [h] at hPre; simp at hPre`. Establish `hP0ne : P0 ≠ 0` using `fun h => by rw [h] at hP0re; simp at hP0re`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hwne : w ≠ 0` using `by rw [hw]; exact div_ne_zero (by norm_num) hz0`. Establish `hdwc : (d : ℂ) * w - c ≠ 0` using `by intro h; apply hPne; rw [hP, h, mul_zero]`. Establish `e1 : -2 * I * τ = (((d / 2 : ℝ) : ℂ) * P)⁻¹`. Apply `eq_inv_of_mul_eq_one_left` to reduce the goal to its premises. Rewrite using `[hτ, hP, hw]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Put the polynomial expressions in normal form. Rewrite using `[I_sq]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `e2 : -2 * I * z = (((1 / 2 : ℝ) : ℂ) * P0)⁻¹`. Apply `eq_inv_of_mul_eq_one_left` to reduce the goal to its premises. Rewrite using `[hP0, hw]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Put the polynomial expressions in normal form. Rewrite using `[I_sq]`. Expand and normalize the polynomial expressions, which then agree. Establish `hX1 : 0 < (((d / 2 : ℝ) : ℂ) * P).re`. Rewrite using `[Complex.re_ofReal_mul]; exact mul_pos (by positivity) hPre`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hX2 : 0 < (((1 / 2 : ℝ) : ℂ) * P0).re`. Rewrite using `[Complex.re_ofReal_mul]; exact mul_pos (by norm_num) hP0re`. Rewrite using `[e1, e2, inv_cpow_half _ hX1, inv_cpow_half _ hX2, cpow_rmul _ (by positivity) _ hPne, cpow_rmul _ (by norm_num) _ hP0ne]`. Rewrite using `[show ((d / 2 : ℝ) : ℂ) = ((d : ℝ) : ℂ) * ((1 / 2 : ℝ) : ℂ) by push_cast; ring, mul_cpow_ofReal_nonneg (by positivity) (by norm_num), Complex.ofReal_natCast]`. Establish `hτne : τ ≠ 0` using `by rw [hτ]; exact div_ne_zero hz0 (mul_ne_zero hdC hcz)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Establish `hK : (2 * z * M : ℂ) = 2 * τ * ((M * d : ℕ) : ℂ) * ((d * w - c) / w)`. Rewrite using `[hτ, hw]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hK, mul_pow (2 * τ * ((M * d : ℕ) : ℂ)) ((d * w - c) / w) ν, Complex.cpow_neg, Complex.cpow_neg P0]`. Establish `hs` using `sq_half (d : ℂ) hdC`. Establish `hsne` using `cpow_ne (d : ℂ) (1 / 2) hdC`. Establish `hqne` using `cpow_ne P0 (1 / 2) hP0ne`. Establish `htne` using `cpow_ne ((1 / 2 : ℝ) : ℂ) (1 / 2) (by norm_num)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Establish `hKne : (2 * τ * ((M * d : ℕ) : ℂ)) ^ ν ≠ 0` using `pow_ne_zero _ (mul_ne_zero (mul_ne_zero two_ne_zero hτne) (by push_cast; exact mul_ne_zero hMC hdC))`. Establish `hRne : ((d * w - c) / w) ^ ν ≠ 0` using `pow_ne_zero _ (div_ne_zero hdwc hwne)`. Generalize the expression as in `(d : ℂ) ^ (1 / 2 : ℂ) = s at *`. Generalize the expression as in `P0 ^ (1 / 2 : ℂ) = q at *`. Generalize the expression as in `(2 * τ * ((M * d : ℕ) : ℂ)) ^ ν = K at *`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Move the embeddings inside the algebraic operations.
 
-Generalize the expression as in `((d * w - c) / w) ^ ν = R at *`. Generalize the expression as in `((1 / 2 : ℝ) : ℂ) ^ (1 / 2 : ℂ) = t at *`. Generalize the expression as in `P ^ (1 / 2 : ℂ) = p at *`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
-
-Take the linear combination `p * hs`.
+Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma scal (z : ℂ) (c : ℤ) (d M ν : ℕ) (hz : 0 < z.im) (hd : 0 < d) (hM : 0 < M)
     (hcz : (c : ℂ) * z + d ≠ 0) (τ : ℂ) (hτ : τ = z / (d * ((c : ℂ) * z + d))) :
@@ -148,37 +146,35 @@ end ScalarIntegralEstimates
 
 open ScalarIntegralEstimates in
 /- English proof (translation)
-Introduce `h1 h2 M d ν _ ψ c' γ z hd hν hc hdd`. Establish `hMpos : 0 < M` using `Nat.pos_of_ne_zero (NeZero.ne M)`. Establish `hM : (M : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr (NeZero.ne M)`. Establish `hdC : (d : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr hd.ne'`. Establish `hdet : γ 0 0 * d - γ 0 1 * (4 * (M : ℤ) ^ 2 * c') = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Matrix.SpecialLinearGroup.det_coe γ` as an intermediate fact. Rewrite `this` using `[Matrix.det_fin_two]`. Rewrite using `[← hc, ← hdd]`. Conclude with `this`. Establish `hdetC : (γ 0 0 : ℂ) * d - (γ 0 1 : ℂ) * (γ 1 0 : ℂ) = 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc]`. Conclude with `hdet` after adjusting the coercions. Establish `hzC : (z : ℂ) ≠ 0` using `z.ne_zero`. Establish `hzim : 0 < (z : ℂ).im` using `z.im_pos`. Establish `hcz : (γ 1 0 : ℂ) * z + d ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h`. Establish `h'` using `congrArg Complex.im h`. Simplify using `at h'`. Break down `h' with h0 | h0` into its components or cases. Rewrite `h` using `[h0]`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `at h`. Conclude with `hd.ne' h`. Conclude with `z.im_pos.ne' h0`. Use `set τ : ℂ := (z : ℂ) / (d * ((γ 1 0 : ℂ) * z + d)) with hτ`. Establish `hγz : ((γ • z : ℍ) : ℂ) = (γ 0 1 : ℂ) / d + τ`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Rewrite using `[UpperHalfPlane.coe_specialLinearGroup_apply]`. Simplify using `only [algebraMap_int_eq, Int.coe_castRingHom, Complex.ofReal_intCast]`. Rewrite using `[hτ, hdd]`. Use `push_cast`. Establish `hcz' : (z : ℂ) * (γ 1 0 : ℂ) + d ≠ 0` using `by rw [mul_comm]; exact hcz`.
+Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Take the linear combination `(z : ℂ) * hdetC`. Establish `hτim : 0 < τ.im`. Use `(γ • z).im_pos` as an intermediate fact. Rewrite using `[show τ = ((γ • z : ℍ) : ℂ) - (γ 0 1 : ℂ) / d by rw [hγz]; ring]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `using this`. Use `set Q : ℤ → ℂ := fun n => ψ (n : ZMod M) * ee ((γ 0 1 : ℂ) * (n : ℂ) ^ 2 / d) with hQ`. Establish `hQper : ∀ x, Q (x + ((M * d : ℕ) : ℤ)) = Q x`. Introduce `x`. Simplify using `only [hQ]`.
+Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `congr 1`. Use `push_cast`. Simplify using the standard rewrite rules. Rewrite using `[show (γ 0 1 : ℂ) * (((x + ((M * d : ℕ) : ℤ) : ℤ) : ℂ)) ^ 2 / d = (γ 0 1 : ℂ) * (x : ℂ) ^ 2 / d + ((γ 0 1 * (2 * x * M + M ^ 2 * d) : ℤ) : ℂ) by push_cast; field_simp; ring, ee_add, ee_int, mul_one]`. Establish `hth : th (fun n => ψ (n : ZMod M)) ν (γ • z : ℍ) = th Q ν τ`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Unfold `th`. Rewrite using `[hγz]`. Use `congr 1`. Use extensionality with `n`. Simplify using `only [hQ]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[show (n : ℂ) ^ 2 * ((γ 0 1 : ℂ) / d + τ) = (γ 0 1 : ℂ) * (n : ℂ) ^ 2 / d + (n : ℂ) ^ 2 * τ by ring, ee_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hth, h1 Q (M * d) ν τ (by positivity) hν hτim hQper, h1 (fun n => ψ (n : ZMod M)) M ν z hMpos hν hzim (by intro x; push_cast; simp)]`. Establish `hin : ∀ n : ℤ, ∑ x ∈ Finset.range (M * d), Q x * ee (n * x / ((M * d : ℕ) : ℂ)) = ψ d * GS (γ 0 1) d * ee (c' * (n : ℂ) ^ 2 / d) * ∑ x ∈ Finset.range M, ψ (((x : ℕ) : ℤ) : ZMod M) * ee (n * x / M)`. Introduce `n`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Int.cast_natCast]`. Rewrite using `[← h2 M d ψ (γ 0 0) (γ 0 1) c' n hd hdet]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `x _`. Simplify using `[hQ]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hcC : ((γ 1 0 : ℤ) : ℂ) = 4 * (M : ℂ) ^ 2 * c'` using `by rw [hc]; push_cast; ring`. Establish `hcz2 : 4 * (M : ℂ) ^ 2 * c' * z + d ≠ 0` using `by rw [← hcC]; exact hcz`. Establish `hex : ∀ n : ℤ, ee (c' * (n : ℂ) ^ 2 / d) * ee (-((n : ℂ) ^ 2 / (4 * ((M * d : ℕ) : ℂ) ^ 2 * τ))) = ee (-((n : ℂ) ^ 2 / (4 * (M : ℂ) ^ 2 * z)))`. Introduce `n`. Rewrite using `[← ee_add]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `congr 1`. Rewrite using `[hτ, hcC]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hsum : ∑' n : ℤ, (∑ x ∈ Finset.range (M * d), Q x * ee (n * x / ((M * d : ℕ) : ℂ))) * (n : ℂ) ^ ν * ee (-((n : ℂ) ^ 2 / (4 * ((M * d : ℕ) : ℂ) ^ 2 * τ))) = ψ d * GS (γ 0 1) d * ∑' n : ℤ, (∑ x ∈ Finset.range M, ψ (((x : ℕ) : ℤ) : ZMod M) * ee (n * x / M)) * (n : ℂ) ^ ν * ee (-((n …`. Rewrite using `[← tsum_mul_left]`. Use `congr 1`. Use extensionality with `n`. Rewrite using `[hin n, ← hex n]`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsum, scal z (γ 1 0) d M ν hzim hd hMpos hcz τ hτ]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem third_estimate_of_first_two : T1 → T2 → T3 := by
   intro h1 h2 M d ν _ ψ c' γ z hd hν hc hdd

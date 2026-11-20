@@ -8,15 +8,15 @@ namespace UpperTheory.Gal.LocalSmoothExtension
 open UpperTheory.Gal.CertificateRingHomMap Module
 
 /- English proof (translation)
-Set `G : Submodule ℂ M` to `⨅ j, (S j).maxGenEigenspace (θ j)`. Establish `hyG : y ∈ G` using `(Submodule.mem_iInf _).2 hG`. Establish `hGne : G ≠ ⊥` using `fun h => hy (by rw [h] at hyG; simpa using hyG)`. Establish `hst : ∀ j, ∀ x ∈ G, S j x ∈ G`. Introduce `j x hx`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(Submodule.mem_iInf _).2 fun i => ?_` and prove the remaining obligations. Conclude with `Module.End.mapsTo_maxGenEigenspace_of_comm (show Commute (S i) (S j) from hS i j) (θ i) ((Submodule.mem_iInf _).1 hx i)`. Take `⟨v, hvG, hv0, hv⟩` from `UpperTheory.V.LinAlg.simEig S hS _ G rfl hGne hst`. Use `⟨v, hv0, fun j => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `hv j`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `(Module.End.mem_maxGenEigenspace _ _ _).1 ((Submodule.mem_iInf _).1 hvG j)`. Establish `h1 : (S j - θ j • (1 : End ℂ M)) v = (c - θ j) • v`. Simplify using `[hc, sub_smul]`. Establish `hp : ∀ n : ℕ, ((S j - θ j • (1 : End ℂ M)) ^ n) v = (c - θ j) ^ n • v`. Introduce `n`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ, Module.End.mul_apply, h1, map_smul, ih, smul_smul, pow_succ']`. Rewrite `hk` using `[hp]`. Break down `smul_eq_zero.1 hk with h | h` into its components or cases.
+Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `: c = θ j` using `sub_eq_zero.1 (by_contra fun h' => pow_ne_zero k h' h)`. Rewrite using `[hc, this]`. Conclude with `absurd h hv0`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma common_eig {M J : Type} [AddCommGroup M] [Module ℂ M] [FiniteDimensional ℂ M]
     (S : J → End ℂ M) (hS : ∀ i j, S i * S j = S j * S i) (θ : J → ℂ) (y : M) (hy : y ≠ 0)
@@ -47,9 +47,9 @@ private lemma common_eig {M J : Type} [AddCommGroup M] [Module ℂ M] [FiniteDim
   · exact absurd h hv0
 
 /- English proof (translation)
-Establish `hw : ∀ (w : List J) (x : U), (((w.map fun j => (T j).restrict (h j)).prod x : U) : M) = (w.map T).prod (x : M)`. Introduce `w`. Proceed by induction on `w with`. Consider the case `nil => intro x`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `cons j w ih`. Introduce `x`. Simplify using `only [List.map_cons, List.prod_cons, Module.End.mul_apply, LinearMap.restrict_coe_apply, ih]`. Unfold `wop`. Simplify using `only [Finsupp.sum, LinearMap.sum_apply, Submodule.coe_sum, LinearMap.smul_apply, Submodule.coe_smul, hw]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 private lemma wop_restrict {M J : Type} [AddCommGroup M] [Module ℂ M] (U : Submodule ℂ M)
     (T : J → End ℂ M) (h : ∀ j, ∀ x ∈ U, T j x ∈ U) (s : List J →₀ ℂ) (x : U) :
@@ -69,29 +69,27 @@ private lemma wop_restrict {M J : Type} [AddCommGroup M] [Module ℂ M] (U : Sub
 end UpperTheory.Gal.LocalSmoothExtension
 
 /- English proof (translation)
-Use `open UpperTheory.Gal.CertificateRingHomMap Module in`. Introduce `hP B J _ W _ _ _ T u θ hc`. Set `U : ∀ b, Submodule ℂ (W b)` to `fun b => Submodule.span ℂ {x | ∃ (w : List J) (z : W b), x = ((w.map (T b)).prod * u b) z}`. Establish `hst : ∀ b j, ∀ x ∈ U b, T b j x ∈ U b`. Introduce `b j x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x h`. Take `⟨w, z, rfl⟩` from `h`. Conclude with `Submodule.subset_span ⟨j :: w, z, by simp [Module.End.mul_apply]⟩`. Consider the case `zero => simp`.
+Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx => rw [map_smul]`. Conclude with `Submodule.smul_mem _ _ hx`. Establish `hcm : ∀ b j j', ∀ x ∈ U b, T b j (T b j' x) = T b j' (T b j x)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Introduce `b j j' x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x h`. Take `⟨w, z, rfl⟩` from `h`. Use `LinearMap.congr_fun (hc b j j' w) z` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Simplify `this` using `[Module.End.mul_apply]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => simp only [map_add, hx, hy]`. Consider the case `smul a x _ hx => simp only [map_smul, hx]`. Set `S : ∀ b, J → End ℂ (U b)` to `fun b j => (T b j).restrict (hst b j)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Introduce a local definition for the expression.
 
-Establish `hS : ∀ b j j', S b j * S b j' = S b j' * S b j`. Introduce `b j j'`. Use extensionality with `⟨x, hx⟩`. Conclude with `hcm b j j' x hx`. Set `T' : J → ∀ b, End ℂ (U b)` to `fun j b => S b j`.
+Split into cases according to the possible forms of the given data. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Consider the cases of `nonempty_fintype B`. Take `⟨s, h1, -, h3⟩` from `hP ℂ (∀ b, End ℂ (U b)) J T' (fun i j => funext fun b => hS b i j) θ`. Use `⟨s, h1, fun b hne => ?_⟩` and prove the remaining obligations. Establish `hev : (wop T' s) b = wop (S b) s` using `map_wop (Pi.evalAlgHom ℂ (fun b => End ℂ (U b)) b) T' s`. Choose the witnesses or unpack the hypotheses as in `⟨z, hz⟩ : ∃ z, (wop (T b) s * u b) z ≠ 0 := by`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hne (LinearMap.ext h)`. Establish `hu : u b z ∈ U b` using `Submodule.subset_span ⟨[], z, by simp⟩`. Establish `hcoe : ((wop (S b) s ⟨u b z, hu⟩ : U b) : W b) = wop (T b) s (u b z)` using `wop_restrict (U b) (T b) (hst b) s ⟨u b z, hu⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hy : wop (S b) s ⟨u b z, hu⟩ ≠ 0`. Introduce `h`. Apply `hz` to reduce the goal to its premises. Rewrite using `[Module.End.mul_apply, ← hcoe, h]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hyG : ∀ j, wop (S b) s ⟨u b z, hu⟩ ∈ (S b j).maxGenEigenspace (θ j)`. Introduce `j`. Take `⟨N, hN⟩` from `h3 j`. Establish `hN'` using `congrArg (Pi.evalAlgHom ℂ (fun b => End ℂ (U b)) b) hN`. Rewrite `hN'` using `[map_mul, map_pow, map_sub, AlgHom.commutes, map_zero]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Module.End.mem_maxGenEigenspace _ _ _).2 ⟨N, ?_⟩` and prove the remaining obligations. Establish `h2 : (S b j - θ j • (1 : End ℂ (U b))) ^ N * wop (S b) s = 0`. Rewrite `*` using `[← hev, Algebra.algebraMap_eq_smul_one]`. Conclude with `hN'`. Use `LinearMap.congr_fun h2 ⟨u b z, hu⟩` as an intermediate fact.
-
-Simplify `this` using `[Module.End.mul_apply]`. Take `⟨x, hx0, hx⟩` from `common_eig (S b) (hS b) θ _ hy hyG`. Use `⟨(x : W b), fun h => hx0 (Subtype.ext h), fun j => ?_⟩` and prove the remaining obligations. Conclude with `congrArg Subtype.val (hx j)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.LocalSmoothExtension.eigOf_of :
     UpperTheory.Gal.CertificateRingHomMap.ProjOne.{0} → EigOf := by

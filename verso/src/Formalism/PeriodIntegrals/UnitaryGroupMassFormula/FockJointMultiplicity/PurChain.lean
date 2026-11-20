@@ -9,11 +9,9 @@ namespace PI.FJMB
 variable {R : Type*} [CommRing R] {σ : Type*}
 
 /- English proof (translation)
-Establish `key : ∀ v, aeval φ (pderiv v (X w : MvPolynomial σ R)) * D (φ v) = if w = v then D (φ v) else 0`. Introduce `v`. Rewrite using `[pderiv_X]`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, h]`. Rewrite using `[Finset.sum_congr rfl (fun v _ => key v), Finset.sum_ite_eq]`. Use `split_ifs with h`. Both sides reduce to the same expression.
-
-Conclude with `(hS w h).symm`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem sum_aeval_pderiv_X_mul_derivation {B : Type*} [CommRing B] [Algebra R B] (D : Derivation R B B)
     (φ : σ → B) (S : Finset σ) (hS : ∀ v, v ∉ S → D (φ v) = 0) (w : σ) :
@@ -33,13 +31,13 @@ private theorem sum_aeval_pderiv_X_mul_derivation {B : Type*} [CommRing B] [Alge
   · exact (hS w h).symm
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on`. Name the introduced variables `a`. Simplify using `[aeval_C]`. Name the introduced variables `p q hp hq`. Simplify using `only [map_add, hp, hq, add_mul, Finset.sum_add_distrib]`.
+Proceed by induction. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Name the introduced variables `p w hp`. Establish `h1 : ∀ v, pderiv v (p * X w) = pderiv v p * X w + p * pderiv v (X w)`. Introduce `v`. Simplify using `only [Derivation.leibniz, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities.
 
-Simplify using `only [h1, map_add, map_mul, aeval_X, add_mul, Finset.sum_add_distrib]`. Establish `h2 : ∑ v ∈ S, aeval φ p * aeval φ (pderiv v (X w : MvPolynomial σ R)) * D (φ v) = aeval φ p * D (φ w)`. Repeatedly rewrite using `[mul_assoc]`. Rewrite using `[← Finset.mul_sum, sum_aeval_pderiv_X_mul_derivation D φ S hS w]`. Establish `h3 : ∑ v ∈ S, aeval φ (pderiv v p) * φ w * D (φ v) = φ w * ∑ v ∈ S, aeval φ (pderiv v p) * D (φ v)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl (fun v _ => by ring)`. Rewrite using `[Derivation.leibniz, smul_eq_mul, smul_eq_mul, h2, h3, ← hp]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem deriv_aeval {B : Type*} [CommRing B] [Algebra R B] (D : Derivation R B B) (φ : σ → B)
     (S : Finset σ) (hS : ∀ v, v ∉ S → D (φ v) = 0) (f : MvPolynomial σ R) :
@@ -68,19 +66,17 @@ theorem deriv_aeval {B : Type*} [CommRing B] [Algebra R B] (D : Derivation R B B
     ring
 
 /- English proof (translation)
-Use `set φ : σ → Polynomial K := fun w => Polynomial.C (y w) + Polynomial.X * Polynomial.C (z w) with hφ`. Set `D : Derivation R (Polynomial K) (Polynomial K)` to `(Polynomial.derivative' : Derivation K (Polynomial K) (Polynomial K)).restrictScalars R`. Establish `hD : ∀ q, D q = Polynomial.derivative q` using `fun q => rfl`. Establish `hDφ : ∀ v, D (φ v) = Polynomial.C (z v)`. Introduce `v`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hD, hφ]`. Simplify using the standard rewrite rules. Establish `hS : ∀ v, v ∉ S → D (φ v) = 0`. Introduce `v hv`. Rewrite using `[hDφ, hz v hv, map_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hder : Polynomial.derivative (aeval φ f) = 0`. Rewrite using `[← hD, deriv_aeval D φ S hS f]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl (fun v hv => ?_)` and prove the remaining obligations. Rewrite using `[hDφ, map_mul, ← hc v hv, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `_ = aeval φ (∑ v ∈ S, c v * pderiv v f) := by rw [map_sum]`. Use `_ = 0 := by rw [hf, map_zero]`. Establish `hconst : aeval φ f = Polynomial.C ((aeval φ f).coeff 0)` using `Polynomial.eq_C_of_natDegree_eq_zero (Polynomial.natDegree_eq_zero_of_derivative_eq_zero hder)`. Establish `heval : ∀ (s : K) (g : MvPolynomial σ R), (aeval φ g).eval s = aeval (fun w => y w + s * z w) g`. Introduce `s g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Proceed by induction on `g using MvPolynomial.induction_on`. Name the introduced variables `a`. Simplify using `[aeval_C, Polynomial.algebraMap_apply]`. Name the introduced variables `p q hp hq`. Simplify using `only [map_add, Polynomial.eval_add, hp, hq]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Name the introduced variables `p n hp`. Rewrite using `[map_mul, aeval_X, Polynomial.eval_mul, hp, map_mul, aeval_X]`. Use `congr 1`. Simplify using `only [hφ, Polynomial.eval_add, Polynomial.eval_C, Polynomial.eval_mul, Polynomial.eval_X]`. Establish `h0 : (aeval φ f).eval 0 = aeval y f`.
-
-Establish `hy : (fun w => y w + 0 * z w) = y`. Use function extensionality and compare the values at `w`. Simplify using the standard rewrite rules. Rewrite using `[heval 0 f, hy]`. Rewrite using `[← heval t f, ← h0, hconst, Polynomial.eval_C, Polynomial.eval_C]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aeval_translate_eq {K : Type*} [Field K] [CharZero K] [Algebra R K] (f : MvPolynomial σ R)
     (S : Finset σ) (c : σ → MvPolynomial σ R) (hf : ∑ v ∈ S, c v * pderiv v f = 0) (y z : σ → K)

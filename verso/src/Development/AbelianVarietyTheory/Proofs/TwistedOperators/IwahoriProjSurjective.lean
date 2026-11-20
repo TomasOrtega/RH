@@ -14,17 +14,15 @@ variable {G V W : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [A
   [AddCommGroup W] [Module ℂ W]
 
 /- English proof (translation)
-Establish `hlc : IsLocallyConstant fun g : G => π g u`. Use `(IsLocallyConstant.iff_eventually_eq _).2 fun g => ?_` and prove the remaining obligations. Establish `ho : IsOpen ((fun x => g⁻¹ * x) ⁻¹' {x : G | π x u = u})` using `(hπ u).preimage (by fun_prop)`. Use `filter_upwards [ho.mem_nhds (by simp)] with x hx`. Establish `hx' : π (g⁻¹ * x) u = u` using `hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `conv_rhs => rw [← hx']`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel_left]`. Use `haveI : CompactSpace H := isCompact_iff_compactSpace.1 hH`. Establish `hfin : (Set.range fun h : H => π h u).Finite` using `(hlc.comp_continuous continuous_subtype_val).range_finite`. Use `set S := hfin.toFinset with hS`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmem : ∀ w, w ∈ S ↔ ∃ h : H, π h u = w` using `fun w => by simp [hS]`. Establish `hne : (S.card : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (Finset.card_ne_zero.2 ⟨u, (hmem u).2 ⟨1, by simp⟩⟩)`. Establish `hst : ∀ (h : H) w, w ∈ S → π h w ∈ S`. Introduce `h w hw`. Take `⟨h', rfl⟩` from `(hmem w).1 hw`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hmem _).2 ⟨h * h', by simp⟩`. Establish `hc : ∀ (g : G) w, π g⁻¹ (π g w) = w` using `fun g w => by`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Simplify using the standard rewrite rules. Use `⟨(S.card : ℂ)⁻¹ • ∑ w ∈ S, w, fun h => ?_, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [MonoidHom.one_apply, Units.val_one, one_smul, map_smul, map_sum]`. Use `congr 1`. Use `Finset.sum_nbij' (π h) (π (h⁻¹ : H)) (hst h) (hst h⁻¹) (fun w _ => hc _ w) (fun w _ => ?_) fun _ _ => rfl` and prove the remaining obligations. Simplify using `using hc (h : G)⁻¹ w`. Rewrite using `[map_smul, map_sum, Finset.sum_congr rfl (g := fun _ => f u), Finset.sum_const, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ hne, one_smul]`.
-
-Introduce `w hw`. Take `⟨h, rfl⟩` from `(hmem w).1 hw`. Conclude with `hu h h.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_fixed_map_eq {π : Representation ℂ G V} (hπ : IsSmooth π) {H : Subgroup G}
     (hH : IsCompact (H : Set G)) (f : V →ₗ[ℂ] W) (u : V) (hu : ∀ h ∈ H, f (π h u) = f u) :
@@ -63,17 +61,15 @@ theorem exists_fixed_map_eq {π : Representation ℂ G V} (hπ : IsSmooth π) {H
     exact hu h h.2
 
 /- English proof (translation)
-Use `set p := (twKer π N 1).mkQ with hp`. Use `set σ := jacquet π N s hs with hσ`. Establish `hps : ∀ m v, p (π (s m) v) = σ m (p v)` using `fun _ _ => rfl`. Establish `hpN : ∀ x ∈ N, ∀ v, p (π x v) = p v` using `fun x hx v => (Submodule.Quotient.eq _).2 (Submodule.subset_span ⟨⟨x, hx⟩, v, by simp⟩)`. Take `⟨u, rfl⟩ : ∃ u, p u = y` from `Submodule.mkQ_surjective _ y`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨t, ht⟩` from `hcon _ ((ho.inter (hπ.1 u)).mem_nhds ⟨one_mem I, by simp⟩)`. Use `set Y := (fixed π I).map p with hY`. Use `haveI := hπ.2 I ho hc`. Establish `key : ∀ w, (∀ c ∈ C, π ((s t)⁻¹ * c * s t) w = w) → (∀ d ∈ M₀, σ d (p w) = p w) → σ t (p w) ∈ Y`. Introduce `w h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `exists_fixed_map_eq hπ.1 hc p (π (s t) w) fun g hg => ?_` and prove the remaining obligations. Take `⟨d, hd, x, hx, c, hcC, rfl⟩` from `hfac g hg`. Establish `h3 : π c (π (s t) w) = π (s t) w` using `by conv_rhs => rw [← h1 c hcC]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul]`. Use `congr 2`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `group`. Rewrite using `[map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, h3, hps, hpN x hx, hps, ← Module.End.mul_apply, ← map_mul, mul_comm, map_mul, Module.End.mul_apply, h2 d hd]`. Establish `hinj : Function.Injective (σ t)`. Introduce `a b hab`. Use `congrArg (σ t⁻¹) hab` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[← Module.End.mul_apply, ← map_mul]`. Establish `hst : ∀ z ∈ Y, σ t z ∈ Y`. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Establish `hw' : ∀ g ∈ I, π g w = w` using `fun g hg => by simpa using hw ⟨g, hg⟩`. Conclude with `key w (fun c hcC => hw' _ (ht c hcC).1) fun d hd => by rw [← hps, hw' _ (hM₀ d hd)]`.
-
-Establish `hsurj : Function.Surjective ((σ t).restrict hst)` using `LinearMap.surjective_of_injective fun a b hab => Subtype.ext (hinj (congrArg Subtype.val hab))`. Take `⟨z, hz⟩` from `hsurj ⟨_, key u (fun c hcC => (ht c hcC).2) fun d hd => by simpa using hy ⟨d, hd⟩⟩`. Establish `: (z : Jacquet π N) = p u` using `hinj (congrArg Subtype.val hz)`. Conclude with `this ▸ z.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_fixed_mk_eq {π : Representation ℂ G V} (hπ : IsAdmissible π) {I N : Subgroup G}
     (ho : IsOpen (I : Set G)) (hc : IsCompact (I : Set G)) {M : Type} [CommGroup M] (s : M →* G)
@@ -124,19 +120,19 @@ section Factor
 variable {R n : Type} [CommRing R] [IsLocalRing R] [Fintype n] [DecidableEq n] [LinearOrder n]
 
 /- English proof (translation)
-Establish `hup : ∀ i j, j < i → IsLocalRing.residue R ((h : Matrix n n R) i j) = 0` using `hh`. Establish `hdiag : ∀ i, IsLocalRing.residue R ((h : Matrix n n R) i i) ≠ 0`. Introduce `i`. Establish `h1` using `(GeneralLinearGroup.det (GeneralLinearGroup.map (IsLocalRing.residue R) h)).ne_zero`. Rewrite `h1` using `[GeneralLinearGroup.val_det_apply, det_of_upperTriangular (mem_borel _ |>.1 hh)]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Finset.prod_ne_zero_iff.1 h1 i (Finset.mem_univ i)`. Set `A : n → Matrix n n R` to `fun j => Matrix.of fun i l => if j < i then (h : Matrix n n R) i l else (1 : Matrix n n R) i l`. Establish `hA : ∀ j, IsUnit (A j).det`. Introduce `j`. Rewrite using `[← IsLocalRing.residue_ne_zero_iff_isUnit, RingHom.map_det, det_of_upperTriangular]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_ne_zero_iff.2 fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hji : j < i`. Simplify `hdiag i` using `[A, hji]`. Simplify using `[A, hji]`. Introduce `i l hl`.
+Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hl' : l < i` using `hl`. Distinguish the cases in `hji : j < i`. Simplify `hup i l hl'` using `[A, hji]`. Simplify using `[A, hji, one_apply_ne hl'.ne']`. Set `L : Matrix n n R` to `Matrix.of fun i j => (A j)⁻¹ i j`.
+Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hAL : ∀ i j, ∑ l, A j i l * L l j = (1 : Matrix n n R) i j` using `fun i j => congrFun (congrFun (mul_nonsing_inv (A j) (hA j)) i) j`. Establish `hL : ∀ i j, i ≤ j → L i j = (1 : Matrix n n R) i j`. Introduce `i j hij`. Use `hAL i j` as an intermediate fact. Simplify `this` using `[A, hij.not_gt, ← Matrix.mul_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hL0 : ∀ i j, i < j → L i j = 0` using `fun i j hij => by rw [hL i j hij.le, one_apply_ne hij.ne]`. Establish `hL1 : ∀ i, L i i = 1` using `fun i => by rw [hL i i le_rfl, one_apply_eq]`. Establish `hdet : L.det = 1`. Rewrite using `[det_of_lowerTriangular L fun i j hij => hL0 i j hij]`. Simplify using `[hL1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨GeneralLinearGroup.mk'' L (by rw [hdet]; exact isUnit_one), hL0, hL1, fun i j hij => ?_⟩` and prove the remaining obligations. Establish `hij' : j < i` using `hij`. Use `hAL i j` as an intermediate fact. Rewrite `this` using `[one_apply_ne hij'.ne']`. Simplify `this` using `[A, hij', Matrix.mul_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_mul_mem_borel (h : GL n R)
     (hh : GeneralLinearGroup.map (IsLocalRing.residue R) h ∈ borel (IsLocalRing.ResidueField R) n) :
@@ -192,9 +188,9 @@ def lowerInt : Set (GL n k) :=
     ∀ i, (c : Matrix n n k) i i = 1}
 
 /- English proof (translation)
-Establish `e : (iwahori k n : Set (GL n k)) = (KO k n : Set (GL n k)) ∩ ⋂ i, ⋂ j, ⋂ _ : j < i, (fun g : GL n k => g.val i j) ⁻¹' {x | valuation k x < 1}`. Use extensionality with `g`. Simplify using `only [SetLike.mem_coe, mem_iwahori, Set.mem_inter_iff, Set.mem_iInter]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `SplitFlip.isOpen_KO.inter (isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => isOpen_iInter_of_finite fun _ => IsOpen.preimage ?_ ?_)` and prove the remaining obligations. Conclude with `Units.continuous_val.matrix_elem i j`. Simplify using `using (valuation k).isOpen_ball 1`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isOpen_iwahori : IsOpen (iwahori k n : Set (GL n k)) := by
   have e : (iwahori k n : Set (GL n k)) = (KO k n : Set (GL n k)) ∩ ⋂ i, ⋂ j, ⋂ _ : j < i,
@@ -207,22 +203,22 @@ theorem isOpen_iwahori : IsOpen (iwahori k n : Set (GL n k)) := by
   · simpa using (valuation k).isOpen_ball 1
 
 /- English proof (translation)
-The claim follows from `SplitFlip.isCompact_KO.of_isClosed_subset (Subgroup.isClosed_of_isOpen _ (isOpen_iwahori k n)) (iwahori_le_KO k n)`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_iwahori : IsCompact (iwahori k n : Set (GL n k)) :=
   SplitFlip.isCompact_KO.of_isClosed_subset (Subgroup.isClosed_of_isOpen _ (isOpen_iwahori k n))
     (iwahori_le_KO k n)
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨h, hh, rfl⟩`. Take `⟨L, hL0, hL1, hb⟩` from `exists_mul_mem_borel h hh`. Take `⟨u, hu, e⟩` from `exists_levi_mul_unip 𝒪[k] (points n) ⟨_, hb⟩`. Take `⟨d, hd⟩` from `(leviTorus 𝒪[k] n).surjective (leviProj 𝒪[k] (points n) ⟨_, hb⟩)`. Rewrite `e` using `[← hd]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e' : h * L = diagT 𝒪[k] n d * u` using `e`. Establish `hLl : L ∈ unipBLower 𝒪[k] n` using `(mem_unipB (n := nᵒᵈ) 𝒪[k]).2 ⟨fun i j hij => hL0 i j hij, hL1⟩`. Establish `hLi` using `(mem_unipB (n := nᵒᵈ) 𝒪[k]).1 (inv_mem hLl)`. Establish `hu'` using `(mem_unipB 𝒪[k]).1 hu`. Set `f` to `GeneralLinearGroup.map (n := n) (algebraMap 𝒪[k] k)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hf : ∀ (g : GL n 𝒪[k]) i j, (f g : Matrix n n k) i j = algebraMap 𝒪[k] k ((g : Matrix n n 𝒪[k]) i j)` using `fun _ _ _ => rfl`. Use `⟨fun i => Units.map (algebraMap 𝒪[k] k : 𝒪[k] →* k) (d i), fun i => (Valuation.integer.integers (valuation k)).one_of_isUnit (Units.isUnit _), f u, (mem_unipB k).2 ⟨fun i j hij => by rw [hf, hu'.1 i j hij, map_zero], fun i => by rw [hf, hu'.2 i, map_one]⟩, f L⁻¹, ⟨fun i j => ((L⁻ …` and prove the remaining obligations. Rewrite using `[hf]`. Conclude with `(congrArg _ (hLi.1 i j hij)).trans (map_zero _)`. Rewrite using `[hf]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(congrArg _ (hLi.2 i)).trans (map_one _)`. Establish `: diagT k n (fun i => Units.map (algebraMap 𝒪[k] k : 𝒪[k] →* k) (d i)) = f (diagT 𝒪[k] n d)`. Use extensionality with `i j`. Rewrite using `[hf, val_diagT, val_diagT, diagonal_apply, diagonal_apply]`. Use `split_ifs`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite using `[this, ← map_mul, ← map_mul, ← e', mul_inv_cancel_right]`.
+A detailed English derivation is pending.
 -/
 theorem iwahori_factor : ∀ g ∈ iwahori k n, ∃ d ∈ torusO k n, ∃ x ∈ unipB k n, ∃ c ∈ lowerInt k n,
     g = diagT k n d * x * c := by
@@ -254,21 +250,19 @@ theorem iwahori_factor : ∀ g ∈ iwahori k n, ∃ d ∈ torusO k n, ∃ x ∈ 
     rw [this, ← map_mul, ← map_mul, ← e', mul_inv_cancel_right]
 
 /- English proof (translation)
-Introduce `U hU`. Set `r : n → ℕ` to `fun i => (Finset.univ.filter fun j => j < i).card`. Establish `hr : ∀ i j, j < i → r j < r i` using `fun i j hij => Finset.card_lt_card ⟨fun l hl => by`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hl ⊢`. Conclude with `hl.trans hij, fun hs => by simpa using hs (show j ∈ _ by simpa using hij)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `T : kˣ → n → kˣ` to `fun x i => (x ^ r i)⁻¹`. Set `F : Filter (kˣ × lowerInt k n)` to `(comap (fun x : kˣ => (x : k)) (𝓝 0)) ×ˢ ⊤`. Establish `hent : ∀ (x : kˣ) (c : GL n k) i j, ((diagT k n (T x))⁻¹ * c * diagT k n (T x)).val i j = (x : k) ^ r i * c.val i j * ((x : k) ^ r j)⁻¹`. Introduce `x c i j`. Rewrite using `[← map_inv, Units.val_mul, Units.val_mul, val_diagT, val_diagT, mul_diagonal, diagonal_mul]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[T]`. Establish `hT : Tendsto (fun p : kˣ × lowerInt k n => (diagT k n (T p.1))⁻¹ * p.2.1 * diagT k n (T p.1)) F (𝓝 1)`. Rewrite using `[SplitFlip.isEmbedding_val_GL.tendsto_nhds_iff]`. Use `tendsto_pi_nhds.2 fun i => tendsto_pi_nhds.2 fun j => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_def, hent]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `lt_trichotomy i j with hij | rfl | hij` into its components or cases. Simplify using `[fun p : kˣ × lowerInt k n => p.2.2.2.1 i j hij, one_apply_ne hij.ne, tendsto_const_nhds]`. Simplify using `[fun p : kˣ × lowerInt k n => p.2.2.2.2 i, tendsto_const_nhds]`. Rewrite using `[Units.val_one, one_apply_ne hij.ne', (IsValuativeTopology.hasBasis_nhds_zero k).tendsto_right_iff]`. Introduce `γ _`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : {x : k | valuation k x < γ} ∈ 𝓝 (0 : k)` using `(IsValuativeTopology.mem_nhds_zero_iff _).2 ⟨γ, fun _ h => h⟩`. Establish `h2 : {x : k | valuation k x < 1} ∈ 𝓝 (0 : k)` using `(IsValuativeTopology.mem_nhds_zero_iff _).2 ⟨1, fun _ h => h⟩`. Use `filter_upwards [prod_mem_prod (preimage_mem_comap (inter_mem h1 h2)) univ_mem] with p hp`. Take `⟨m, hm⟩` from `Nat.exists_eq_add_of_lt (hr i j hij)`. Establish `: (p.1 : k) ^ r i * p.2.1.val i j * ((p.1 : k) ^ r j)⁻¹ = p.1 * (p.1 ^ m * p.2.1.val i j)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[hm]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Use `show valuation k _ < _`. Rewrite using `[this, map_mul, map_mul, map_pow]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `(mul_le_of_le_one_right' (mul_le_one' (pow_le_one' hp.1.2.le _) (p.2.2.1 i j))).trans_lt hp.1.1`. Use `haveI : (comap (fun x : kˣ => (x : k)) (𝓝 0)).NeBot := by`. Use `comap_neBot fun s hs => ?_` and prove the remaining obligations. Take `⟨γ, hγ⟩` from `(IsValuativeTopology.mem_nhds_zero_iff s).1 hs`. Take `⟨δ, hδ0, hδ⟩ : ∃ δ : ValueGroupWithZero k, δ ≠ 0 ∧ δ < γ` from `⟨uniformizer k * γ, by simp, mul_lt_of_lt_one_left γ.zero_lt uniformizer_lt_one⟩`.
-
-Take `⟨x, rfl⟩` from `valuation_surjective δ`. Conclude with `⟨Units.mk0 x (by simpa using hδ0), hγ hδ⟩`. Take `⟨x, hx⟩` from `Filter.nonempty_of_mem (mem_prod_top.1 (hT hU))`. Conclude with `⟨T x, fun c hc => hx ⟨c, hc⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lowerInt_contract : ∀ U ∈ 𝓝 (1 : GL n k), ∃ t : n → kˣ, ∀ c ∈ lowerInt k n,
     (diagT k n t)⁻¹ * c * diagT k n t ∈ U := by
@@ -319,7 +313,7 @@ theorem lowerInt_contract : ∀ U ∈ 𝓝 (1 : GL n k), ∃ t : n → kˣ, ∀ 
 end Local
 
 /- English proof (translation)
-Introduce and unpack `⟨y, hy⟩`. Take `⟨v, hv, e⟩` from `exists_fixed_mk_eq hπ (isOpen_iwahori k n) (isCompact_iwahori k n) (diagT k n) (N := unipB k n) (fun _ => leviEmb_mem_normalizer k (points n) _) (torusO k n) (fun _ => diagT_mem_iwahori) (lowerInt k n) (iwahori_factor k n) (lowerInt_contract k n) y hy`. Conclude with `⟨⟨v, hv⟩, Subtype.ext e⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem iwahoriProj_surjective (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (n : Type) [Fintype n] [DecidableEq n] [LinearOrder n] (V : Type)

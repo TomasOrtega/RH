@@ -23,13 +23,13 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.AnForm ReciprocityTheory
 namespace GlobalTheory.RegCurv
 
 /- English proof (translation)
-Introduce `hH hC D O x P hcore hN hex`. Take `⟨C, t₀, -, ht₀, hH⟩` from `hH D O x P hcore hN hex`. Establish `hC` using `hC D O x P hcore hN hex`. Use `⟨t₀, ht₀, fun t ht htt c σ u j => ?_⟩` and prove the remaining obligations. Establish `hf : ∀ τ (i : Fin O.N), ((O.var c).an σ).SmoothOn Set.univ (P.regFund c σ τ i t)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `τ i`. Distinguish the cases in `hi : (i : ℕ) + 1 < O.N`. Conclude with `(hH t ht htt c σ τ i hi).1`. Establish `hi' : (i : ℕ) + 1 = O.N` using `by omega`. Use `(hC c σ τ i hi').1` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : P.regFund c σ τ i t = extBd O.Φ (HeightParts.psi O x c σ τ i)`. Use function extensionality and compare the values at `y`. Simplify using `only [PolDat.regFund, if_neg hi]`. Rewrite using `[e]`. Conclude with `this`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression.
 
-Use `(ContDiffOn.sum (s := Finset.univ) fun τ _ => ContDiffOn.sum (s := Finset.univ) fun i _ => (contDiffOn_const (c := coef u τ i)).mul (hf τ i j)).congr fun v _ => ?_` and prove the remaining obligations. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem smooth_alg : HessSt → CentSt → OnCore fun _ O x P => ∃ t₀ : ℝ, 0 < t₀ ∧ ∀ t : ℝ, 0 < t → t ≤ t₀ →
     ∀ c σ u, ((O.var c).an σ).SmoothOn Set.univ (P.reg c σ u t) := by
@@ -57,37 +57,33 @@ end GlobalTheory.RegCurv
 namespace GlobalTheory.RegCurv
 
 /- English proof (translation)
-Introduce `hH hC D O hO hN A T H h c`. Take `⟨x, P, hcore⟩` from `hO`. Establish `hex : ∃ (A : SlopeTestRemainingChoices O.Y) (T : Real0 O.Y) (H : Ht O.Y), Nonempty (O.Reads A T H)` using `⟨A, T, H, ⟨h⟩⟩`. Take `⟨t₁, ht₁, hsm₁⟩` from `smooth_alg hH hC D O x P hcore hN hex`. Take `⟨C₂, t₂, hC₂, ht₂, hk⟩` from `GlobalTheory.T.regularized_metric_lower_bound hH hC D O x P hcore hN hex`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `set I := h.man c with hI`. Establish `hd : (O.var c).dim = Formalism.MainNotions.WeightThresholdDefs.dimY O.Y` using `by rw [O.dim_eq c]; rfl`. Use `choose K hK hOm using fun a => GlobalTheory.T.kaehler_form_bounded_by_levi I hd a (P.om c (I.ε a)) (P.om_kaehler c _)`. Use `set Km := ∑ a, K a with hKm_def`. Establish `hKm : ∀ a, K a ≤ Km` using `fun a => Finset.single_le_sum (f := K) (fun b _ => (hK b).le) (Finset.mem_univ a)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `set L₀ := max 1 (-Real.log (min t₁ t₂)) with hL₀`. Establish `hL₀1 : 1 ≤ L₀` using `le_max_left _ _`. Use `⟨(L₀ + 1)⁻¹, by positivity, Real.pi / 2 * C₂ * Km, fun C hCC u hu s hs hss l hl a => ?_⟩` and prove the remaining obligations. Use `set t := Real.exp (-(s ^ 2)⁻¹) with ht_def`. Establish `hs2 : s ^ 2 ≤ (L₀ + 1)⁻¹`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : s ≤ 1` using `hss.trans (inv_le_one_of_one_le₀ (by linarith))`. Use the polynomial consequences of the given equalities and inequalities. Establish `hl1 : L₀ + 1 ≤ l`. Rewrite using `[hl]`. Use `(inv_le_inv₀ (by positivity) (by positivity)).2 hs2` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis. Establish `ht0 : 0 < t` using `Real.exp_pos _`. Establish `htle : t ≤ min t₁ t₂`. Rewrite using `[ht_def, ← hl]`. Establish `hm : 0 < min t₁ t₂` using `lt_min ht₁ ht₂`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[← Real.exp_log hm]`. Use `Real.exp_le_exp.2 ?_` and prove the remaining obligations. Use `le_max_right 1 (-Real.log (min t₁ t₂))` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlogt : Real.log (1 / t) = l`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[ht_def, one_div, ← Real.exp_neg, Real.log_exp, neg_neg, hl]`. Establish `hreg : ∀ z, (T.F c).phS u s a z = P.reg c (I.ε a) u t (I.pt a z) / 2` using `fun z => by`. Rewrite using `[(h.an c).phS u s hs a z, hcore.reg_eq]`. Establish `hsm` using `hsm₁ t ht0 (htle.trans (min_le_left _ _)) c (I.ε a) u`. Establish `hgs : ((O.var c).an (I.ε a)).SmoothOn Set.univ (fun y => P.reg c (I.ε a) u t y / 2)` using `fun j => (hsm j).div_const 2`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Establish `hF : (T.F c).phS u s a = fun z => (fun y => P.reg c (I.ε a) u t y / 2) (I.pt a z)` using `funext hreg`. Prove the components needed by the constructor for the conclusion. Use `GlobalTheory.HodgeChgSmooth.smoothOn_of_manIs I hd a isOpen_univ hgs (f := (T.F c).phS u s a) (fun z _ => hreg z) show ((T.M c).A a).SmoothOn Set.univ _` as an intermediate fact. Simplify using `using this`. Rewrite using `[hF]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hm0 : ∀ xx, (O.var c).mSmooth (I.ε a) _ (O.met.h0 c (I.ε a) (O.ex xx))`. Introduce `xx`. Rewrite using `[hcore.h0_eq]`. Conclude with `(FlagCpt.smoothOn_met_of_eigMet _ _ _ _ _ _ _ _ _ _ _ (O.Φ.C c) (I.ε a) (x.eigMet _) Set.univ isOpen_univ (x.smoothOn_eigMet _) _).2`. Use `GlobalTheory.T.potential_smooth_bound_kappa I hd a (fun xx σ' => O.met.h0 c σ' (O.ex xx)) hm0 (fun xx => -u xx.1 xx.2) ((h.an c).th u) (T.th_pot c u a) _ hgs _ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `ch y hy x' hx' ξ`. Take `⟨hL0, hLK⟩` from `hOm a ch y hy x' hx' ξ`. Use `set L := ch.levi (fun z => (T.M c).Om a |>.φ x' ((I.pt a).symm z)) y ξ with hL`. Establish `hk'` using `hk t ht0 (htle.trans (min_le_right _ _)) c (I.ε a) u hu ch y hy ξ`. Rewrite `hk'` using `[hlogt]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hc2` using `hsm.contDiffAt_two isOpen_univ hy trivial`. Establish `e1 : ch.levi (fun y => P.reg c (I.ε a) u t y / 2) y ξ = 1 / 2 * ch.levi (P.reg c (I.ε a) u t) y ξ`. Rewrite using `[← AlgChart.levi_const_mul _ hc2]`. Use `congr 1`. Use function extensionality and compare the values at `z`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `e2 : ddcForm (P.reg c (I.ε a) u t) ch y ξ = ch.levi (P.reg c (I.ε a) u t) y ξ / Real.pi` using `rfl`. Establish `e3 : ∑ xx : DV.Rt D.what₂.Tau O.N, -u xx.1 xx.2 * (Real.pi / 2 * curvMet (O.met.h0 c (I.ε a) (O.ex xx)) ch y ξ) = Real.pi / 2 * thW (refMet x O.Φ) c (I.ε a) u ch y ξ`. Simplify using `only [thW, ← hcore.h0_eq, Finset.mul_sum, mul_neg]`. Rewrite using `[← Finset.sum_neg_distrib]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun xx _ => ?_` and prove the remaining obligations. Use `show _ = -(Real.pi / 2 * (u xx.1 xx.2 * curvMet (O.met.h0 c (I.ε a) (O.ex xx)) ch y ξ))`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, e3]`. Establish `hq : 0 ≤ Real.log l / l` using `div_nonneg (Real.log_nonneg (by linarith)) (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpi` using `Real.pi_pos`. Use `set q := Real.log l / l`. Establish `hnu : 0 ≤ ‖u‖` using `norm_nonneg _`. Establish `hB : C₂ * ‖u‖ * q * P.om c (I.ε a) ch y ξ ≤ C₂ * ‖u‖ * q * (K a * L)` using `mul_le_mul_of_nonneg_left hLK (by positivity)`. Establish `hCK : Real.pi / 2 * C₂ * K a ≤ C` using `le_trans (by gcongr; exact hKm a) hCC`.
-
-Establish `hX : Real.pi / 2 * C₂ * K a * (‖u‖ * q * L) ≤ C * (‖u‖ * q * L)` using `mul_le_mul_of_nonneg_right hCK (by positivity)`. Establish `hk2 : -(C₂ * ‖u‖ * q * P.om c (I.ε a) ch y ξ) ≤ thW (refMet x O.Φ) c (I.ε a) u ch y ξ + ch.levi (P.reg c (I.ε a) u t) y ξ / Real.pi` using `hk'`. Establish `hk3 : -(Real.pi * (C₂ * ‖u‖ * q * P.om c (I.ε a) ch y ξ)) ≤ Real.pi * thW (refMet x O.Φ) c (I.ε a) u ch y ξ + ch.levi (P.reg c (I.ε a) u t) y ξ`. Use `mul_le_mul_of_nonneg_left hk2 hpi.le` as an intermediate fact. Rewrite `this` using `[mul_add, mul_div_cancel₀ _ hpi.ne']`.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem curvPart : HessSt → CentSt → OnObj fun _ _ _ T _ _ => ∀ c, GlobalTheory.RegEst.CurvPart (T.F c) := by
   intro hH hC D O hO hN A T H h c

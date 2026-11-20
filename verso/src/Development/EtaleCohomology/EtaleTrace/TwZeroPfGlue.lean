@@ -6,7 +6,7 @@ open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC Opposite
 namespace LateralTheory.EtaleTrace
 
 /- English proof (translation)
-Take `⟨S, hS, hP⟩` from `h`. Conclude with `Sheaf.isSeparated F U S hS y z (fun _ g hg => hP _ g hg)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem tz_sec_eq_of_loc {R : Type} [CommRing R] {F : Shv R} {U : Scheme.{0}} (y z : Sec F U)
     (h : Loc U fun V g => Sec.res g y = Sec.res g z) : y = z := by
@@ -14,7 +14,7 @@ theorem tz_sec_eq_of_loc {R : Type} [CommRing R] {F : Shv R} {U : Scheme.{0}} (y
   exact Sheaf.isSeparated F U S hS y z (fun _ g hg => hP _ g hg)
 
 /- English proof (translation)
-Unfold `twGen`. Use `congr 1`. Use `(Submodule.Quotient.eq _).2 (Submodule.subset_span ⟨ζ, ξ, a, h, ?_⟩)` and prove the remaining obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem tz_twGen_eq_of_pow {q : ℕ} {U : Scheme.{0}} (ζ ξ : Prim q Γ(U, ⊤)) (a : (ZMod q)ˣ)
     (h : ξ.1 = ζ.1 ^ (a : ZMod q).val) : twGen (q := q) 0 ξ = twGen 0 ζ := by
@@ -28,9 +28,9 @@ def PrimLoc : Prop := ∀ (q : ℕ) [NeZero q] (U : Scheme.{0}) (ζ ξ : Prim q 
   Loc U fun V g => ∃ a : (ZMod q)ˣ, (ξ.map g.appTop.hom).1 = (ζ.map g.appTop.hom).1 ^ (a : ZMod q).val
 
 /- English proof (translation)
-Introduce `q _ U ζ ξ`. Take `⟨-, -, T3⟩` from `hTw q 0`. Apply `tz_sec_eq_of_loc` to reduce the goal to its premises. Take `⟨S, hS, hP'⟩` from `hP q U ζ ξ`. Use `⟨S, hS, fun _ g hg => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, ha⟩` from `hP' _ g hg`. Rewrite using `[T3, T3]`. Conclude with `(tz_twGen_eq_of_pow _ _ a ha).symm`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem TwZero_of_primLoc (hTw : LateralTheory.EtaleFoundations.CongruenceLocalDecomposition.TwLoc) (hP : PrimLoc) : TwZero := by
   intro q _ U ζ ξ

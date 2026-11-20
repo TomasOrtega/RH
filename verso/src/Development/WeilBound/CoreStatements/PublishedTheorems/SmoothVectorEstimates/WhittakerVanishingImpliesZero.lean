@@ -34,7 +34,7 @@ Both sides reduce to the same expression.
 @[simp] theorem Rt_apply (h g : GA E a) (φ : XB E a) : Rt E a h φ g = φ (g * h) := rfl
 
 /- English proof (translation)
-Establish `key : ∀ (h : GA E a) (φ : XB E a), ‖Rt E a h φ‖ ≤ ‖φ‖` using `fun h φ => norm_compContinuous_le _ _`. Use `le_antisymm (key h φ) ?_` and prove the remaining obligations. Establish `e : Rt E a h⁻¹ (Rt E a h φ) = φ` using `by ext g; simp`. Simplify `key h⁻¹ (Rt E a h φ)` using `only [e]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem norm_Rt (h : GA E a) (φ : XB E a) : ‖Rt E a h φ‖ = ‖φ‖ := by
   have key : ∀ (h : GA E a) (φ : XB E a), ‖Rt E a h φ‖ ≤ ‖φ‖ := fun h φ => norm_compContinuous_le _ _

@@ -7,19 +7,19 @@ open UpperTheory.V.Af (algSat)
 open UpperTheory.Gal.TP.Sub
 
 /- English proof (translation)
-Introduce `E _ _ _ emb`. Establish `hcj : ∀ (φ : E →+* ℂ), (ComplexEmbedding.conjugate φ).comp (algebraMap (maximalRealSubfield E) E) = ComplexEmbedding.conjugate (φ.comp (algebraMap (maximalRealSubfield E) E))`. Introduce `φ`. Use extensionality with `x`. Simplify using `[ComplexEmbedding.conjugate_coe_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hinj : ∀ (w w' : InfinitePlace (maximalRealSubfield E)), w.embedding = w'.embedding → w = w'`. Introduce `w w' h`. Rewrite using `[← InfinitePlace.mk_embedding w, ← InfinitePlace.mk_embedding w', h]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `τ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `w` to `InfinitePlace.mk (τ.comp (algebraMap (maximalRealSubfield E) E))`. Use `⟨w, ?_⟩` and prove the remaining obligations. Establish `hw : (InfinitePlace.mk τ).comap (algebraMap (maximalRealSubfield E) E) = (InfinitePlace.mk (emb w).1).comap (algebraMap (maximalRealSubfield E) E)`. Rewrite using `[InfinitePlace.comap_mk, InfinitePlace.comap_mk, (emb w).2, InfinitePlace.mk_embedding]`. Establish `hmk : InfinitePlace.mk τ = InfinitePlace.mk (emb w).1` using `(IsCMField.equivInfinitePlace E).injective hw`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Break down `InfinitePlace.mk_eq_iff.1 hmk with h | h` into its components or cases. Conclude with `Or.inl h`. Use `right`. Rewrite using `[← h]`. Use extensionality with `x`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[ComplexEmbedding.conjugate_coe_eq]`. Introduce `w w' h`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[← (emb w).2, ← (emb w').2, h]`. Introduce `w w' h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : w.embedding = ComplexEmbedding.conjugate w'.embedding`. Rewrite using `[← (emb w).2, ← (emb w').2, h, hcj]`. Establish `hww : w = w'`. Rewrite using `[← InfinitePlace.mk_embedding w, ← InfinitePlace.mk_embedding w', h1, InfinitePlace.mk_conjugate_eq]`. Substitute `hww` using the available equality.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `IsTotallyComplex.complexEmbedding_not_isReal (emb w).1` to reduce the goal to its premises. Conclude with `h.symm`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.TP.Sub.embSplit_holds :
     EmbSplit := by

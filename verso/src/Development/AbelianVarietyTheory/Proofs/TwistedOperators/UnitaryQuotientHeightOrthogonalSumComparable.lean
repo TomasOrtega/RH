@@ -18,35 +18,33 @@ open GlobalTheory.Asc
 namespace GlobalTheory.HtOrth
 
 /- English proof (translation)
-Introduce `D S A B o`. Take `⟨C1, b, hM1⟩` from `lemM1 D A`. Take `⟨c, N, hc, hM2⟩` from `lemM2 D S`. Take `⟨C3, hM3⟩` from `lemM3 D S A B o`. Take `⟨C2, a2, hH⟩` from `lemH D S A B o`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `set K : ℝ := max (max C3 c) 1 with hK`. Establish `hK1 : 1 ≤ K` using `le_max_right _ _`. Establish `hK0 : 0 < K` using `zero_lt_one.trans_le hK1`. Establish `hC3K : C3 ≤ K` using `(le_max_left _ _).trans (le_max_left _ _)`. Establish `hcK : c ≤ K` using `(le_max_right _ _).trans (le_max_left _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `first : ∀ h, quotHeight A h ≤ C1 * (K / c) ^ b * quotHeight S (o.emb (h, 1)) ^ (N * b)`. Introduce `h`. Use `set H := quotHeight S (o.emb (h, 1))`. Establish `hH1 : 1 ≤ H` using `one_le_quotHeight S _`. Establish `hHN : 1 ≤ H ^ N` using `one_le_pow₀ hH1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hKH : 0 < K * H ^ N` using `mul_pos hK0 (zero_lt_one.trans_le hHN)`. Use `set t := c / (K * H ^ N)`. Establish `ht0 : 0 < t` using `div_pos hc hKH`. Establish `ht1 : t ≤ 1` using `(div_le_one hKH).2 (hcK.trans (le_mul_of_one_le_right hK0.le hHN))`. Establish `hshort : ∀ η : Fin A.rank → D.host.E, η ≠ 0 → t ≤ GlobalTheory.HtOrth.vsize (GlobalTheory.HtOrth.seen A h η)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `η hη`. Establish `hne : o.iA *ᵥ η ≠ 0`. Introduce `h0`. Apply `hη` to reduce the goal to its premises. Use `congrArg (fun x => o.qA *ᵥ x) h0` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[Matrix.mulVec_mulVec, o.qA_iA]`. Establish `h2` using `hM2 (o.emb (h, 1)) _ hne`. Establish `h3` using `hM3 h η`. Establish `hv` using `GlobalTheory.HtOrth.vsize_nonneg (GlobalTheory.HtOrth.seen A h η)`. Rewrite using `[div_le_iff₀ hKH]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h1` using `hM1 h t ht0 ht1 hshort`. Establish `htb : 0 < t ^ b` using `pow_pos ht0 b`. Establish `e : t ^ b * ((K / c) ^ b * H ^ (N * b)) = 1`. Rewrite using `[← mul_assoc, ← mul_pow, pow_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Establish `: t * (K / c) = (H ^ N)⁻¹`. Simplify using `only [t]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this, ← mul_pow, inv_mul_cancel₀ (zero_lt_one.trans_le hHN).ne', one_pow]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[mul_assoc, e, mul_one]`. Use `_ ≤ C1 * ((K / c) ^ b * H ^ (N * b)) := mul_le_mul_of_nonneg_right h1 (by positivity)`. Use `_ = _ := by ring`. Establish `second : ∀ h, quotHeight S (o.emb (h, 1)) ≤ C2 * 2 ^ a2 * quotHeight A h ^ a2`. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Establish `hC2 : 0 ≤ C2`. Use `hH 1` as an intermediate fact. Rewrite `this` using `[show ((1 : GA D A), (1 : GA D B)) = 1 from rfl, map_one, height_one, height_one, one_pow, mul_one]`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨γ, hγ, h2⟩` from `exists_height_le_two_mul_quotHeight A h`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hγS : o.emb (γ, 1) ∈ GQ S`. Rewrite `hγ`, the goal using `[mem_GQ_iff]`. Rewrite using `[o.mt_emb, mt_one, Matrix.mul_one]`. Conclude with `add_mem (ratMx_mul (ratMx_mul (rat_mem _) hγ) (rat_mem _)) (ratMx_mul (rat_mem _) (rat_mem _))`. Establish `e : o.emb (γ * h, 1) = o.emb (γ, 1) * o.emb (h, 1)`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← map_mul, Prod.mk_mul_mk, mul_one]`. Combine the equalities or inequalities in the displayed calculation. Use `⟨max (C1 * (K / c) ^ b) (C2 * 2 ^ a2), max (N * b) a2, fun h => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Establish `hx : 1 ≤ quotHeight S (o.emb (h, 1))` using `one_le_quotHeight S _`. Establish `hq` using `first h`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hpos : 0 ≤ C1 * (K / c) ^ b`. Assume the negation of the conclusion as `hneg`. Use `push_neg at hneg`. Use `mul_neg_of_neg_of_pos hneg (pow_pos (zero_lt_one.trans_le hx) (N * b))` as an intermediate fact. Combine the linear relations using `[quotHeight_pos A h]`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hx : 1 ≤ quotHeight A h` using `one_le_quotHeight A h`. Establish `hq` using `second h`. Establish `hpos : 0 ≤ C2 * 2 ^ a2`. Assume the negation of the conclusion as `hneg`.
-
-Use `push_neg at hneg`. Use `mul_neg_of_neg_of_pos hneg (pow_pos (zero_lt_one.trans_le hx) a2)` as an intermediate fact. Combine the linear relations using `[quotHeight_pos S (o.emb (h, 1))]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem of_sizes (lemM1 : ∀ (D : D7) (V : HSp D), ∃ (C : ℝ) (b : ℕ), ∀ (g : GA D V) (t : ℝ), 0 < t → t ≤ 1 → (∀ ξ : Fin V.rank → D.host.E, ξ ≠ 0 → t ≤ GlobalTheory.HtOrth.vsize (GlobalTheory.HtOrth.seen V g ξ)) → GlobalTheory.Grow.quotHeight V g * t ^ b ≤ C)
   (lemM2 : ∀ (D : D7) (V : HSp D), ∃ (c : ℝ) (N : ℕ), 0 < c ∧ ∀ (g : GA D V) (ξ : Fin V.rank → D.host.E), ξ ≠ 0 → c ≤ GlobalTheory.HtOrth.vsize (GlobalTheory.HtOrth.seen V g ξ) * GlobalTheory.Grow.quotHeight V g ^ N)
@@ -148,7 +146,7 @@ theorem of_sizes (lemM1 : ∀ (D : D7) (V : HSp D), ∃ (C : ℝ) (b : ℕ), ∀
             (hpos.trans (le_max_right _ _))
 
 /- English proof (translation)
-The claim follows from `of_sizes GlobalTheory.T.unitaryQuotientHeight_le_of_no_short_vector GlobalTheory.T.le_adelicVectorSizeProduct_mul_unitaryQuotientHeight_pow GlobalTheory.T.adelicVectorSize_seen_orthogonalSummand_le GlobalTheory.T.unitaryAdelicHeight_orthogonalEmbedding_le_pow`.
+A detailed English derivation is pending.
 -/
 theorem quotHeight_orthDec_cmp : ∀ (D : D7) (S A B : HSp D) (o : OrthDec S A B), ∃ (C : ℝ) (a : ℕ), ∀ h,
     quotHeight A h ≤ C * quotHeight S (o.emb (h, 1)) ^ a ∧ quotHeight S (o.emb (h, 1)) ≤ C * quotHeight A h ^ a :=

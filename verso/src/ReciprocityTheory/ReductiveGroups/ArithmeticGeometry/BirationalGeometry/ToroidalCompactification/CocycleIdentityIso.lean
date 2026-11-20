@@ -16,7 +16,7 @@ variable {X : Scheme.{0}}
 def idIso (L : LB X) : LB.Iso L L := ⟨fun p => L.g p.1 p.2⟩
 
 /- English proof (translation)
-Use `ext`. Simplify using `only [res, Units.coe_map, MonoidHom.coe_coe]`. Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem res_res_lemma {X : Scheme.{0}} {U V W : X.Opens} (h₁ : V ≤ U) (h₂ : W ≤ V) (x : Γ(X, U)ˣ) :
     res h₂ (res h₁ x) = res (h₂.trans h₁) x := by
@@ -26,7 +26,7 @@ private theorem res_res_lemma {X : Scheme.{0}} {U V W : X.Opens} (h₁ : V ≤ U
   rfl
 
 /- English proof (translation)
-Establish `h1` using `congrArg (res (le_inf inf_le_left (inf_le_right.trans inf_le_right) : L.U p₁ ⊓ L.U p₂ ⊓ (L.U q₁ ⊓ L.U q₂) ≤ L.U p₁ ⊓ L.U p₂ ⊓ L.U q₂)) (hL.cocycle p₁ p₂ q₂)`. Establish `h2` using `congrArg (res (le_inf (le_inf (inf_le_left.trans inf_le_left) (inf_le_right.trans inf_le_left)) (inf_le_right.trans inf_le_right) : L.U p₁ ⊓ L.U p₂ ⊓ (L.U q₁ ⊓ L.U q₂) ≤ L.U p₁ ⊓ L.U q₁ ⊓ L.U q₂)) (hL.cocycle p₁ q₁ q₂)`. Simplify using `only [map_mul, res_res_lemma] at h1 h2`. Rewrite using `[eq_mul_inv_of_mul_eq h1, ← h2]`. Conclude with `mul_right_comm _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cocycle_identity_iso {L : LB X} (hL : L.IsLB) (p₁ p₂ q₁ q₂ : L.ι) :
     res (inf_le_left : L.U p₁ ⊓ L.U p₂ ⊓ (L.U q₁ ⊓ L.U q₂) ≤ L.U p₁ ⊓ L.U p₂) (L.g p₁ p₂) =
@@ -43,20 +43,20 @@ theorem cocycle_identity_iso {L : LB X} (hL : L.IsLB) (p₁ p₂ q₁ q₂ : L.�
   exact mul_right_comm _ _ _
 
 /- English proof (translation)
-Introduce `i j`. Conclude with `cocycle_identity_iso hL i.1 i.2 j.1 j.2`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem idIso_isGen {L : LB X} (hL : L.IsLB) : (idIso L).IsGen := by
   intro i j
   exact cocycle_identity_iso hL i.1 i.2 j.1 j.2
 
 /- English proof (translation)
-Introduce `p` and use `L.rigGen p.1 p.2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem idIso_maps {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] (L : RigLB G) :
     LB.Gen.Maps (LB.linCombIso (idIso L.L) (K := PUnit) (fun _ => eSec G) (fun _ => 1)) L.rig L.rig := fun p => L.rigGen p.1 p.2
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `⟨idIso L₁.L, idIso_isGen L₁.isLB, idIso_maps L₁⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem exists_iso_of_eq {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] {L₁ L₂ : RigLB G} (h : L₁ = L₂) :
     ∃ w : LB.Iso L₁.L L₂.L, w.IsGen ∧
@@ -68,9 +68,9 @@ def gv {L' L : LB X} (w : LB.Iso L' L) {Y : Scheme.{0}} (f : Y ⟶ X) (y : Y) (j
   gm f y _ (w.s (j, k))
 
 /- English proof (translation)
-Establish `hV : f y ∈ (L.U j ⊓ L'.U k) ⊓ (L.U j' ⊓ L'.U k')` using `⟨⟨hj, hk⟩, ⟨hj', hk'⟩⟩`. Establish `hw' : res (inf_le_left : (L.U j ⊓ L'.U k) ⊓ (L.U j' ⊓ L'.U k') ≤ L.U j ⊓ L'.U k) (w.s (j, k)) = res (le_inf (inf_le_left.trans inf_le_left) (inf_le_right.trans inf_le_left) : (L.U j ⊓ L'.U k) ⊓ (L.U j' ⊓ L'.U k') ≤ L.U j ⊓ L.U j') (L.g j j') * (res (le_inf (inf_le_left.trans inf_ …` using `hw (j, k) (j', k')`. Establish `key` using `congrArg (gm f y ((L.U j ⊓ L'.U k) ⊓ (L.U j' ⊓ L'.U k'))) hw'`. Simplify using `only [map_mul, map_inv, gm_res f y _ hV] at key`. Rewrite `key` using `[gm_res f y (U := L.U j ⊓ L'.U k) _ hV (w.s (j, k)), gm_res f y (U := L.U j' ⊓ L'.U k') _ hV (w.s (j', k'))]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem gm_isGen {L' L : LB X} {w : LB.Iso L' L} (hw : w.IsGen) {Y : Scheme.{0}} (f : Y ⟶ X) (y : Y) (j j' : L.ι)
     (k k' : L'.ι) (hj : f y ∈ L.U j) (hj' : f y ∈ L.U j') (hk : f y ∈ L'.U k) (hk' : f y ∈ L'.U k') :
@@ -94,7 +94,7 @@ def isoPullId {L' L : LB X} (w : LB.Iso L' L) {F : X ⟶ X} (hF : F = 𝟙 X) : 
     (LB.pull L F).U p.1 ⊓ L'.U p.2 ≤ L.U (p.1 PUnit.unit) ⊓ L'.U p.2) (w.s (p.1 PUnit.unit, p.2))⟩
 
 /- English proof (translation)
-Establish `hmem : f y ∈ (L.pull F).U (fun _ => j) ⊓ L'.U k` using `⟨mem_pull.2 (by rw [hF]; exact hj), hk⟩`. Conclude with `gm_res f y _ hmem (w.s (j, k))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gw_isoPullId {L' L : LB X} (w : LB.Iso L' L) {F : X ⟶ X} (hF : F = 𝟙 X) {Y : Scheme.{0}} (f : Y ⟶ X) (y : Y)
     (j : L.ι) (k : L'.ι) (hj : f y ∈ L.U j) (hk : f y ∈ L'.U k) :
@@ -103,7 +103,7 @@ theorem gw_isoPullId {L' L : LB X} (w : LB.Iso L' L) {F : X ⟶ X} (hF : F = �
   exact gm_res f y _ hmem (w.s (j, k))
 
 /- English proof (translation)
-Introduce `Y f y j j' k k' hj hj' hk hk'`. Substitute `hF` using the available equality. Rewrite using `[gw_isoPullId w rfl f y j k hj hk, gw_isoPullId w rfl f y j' k' hj' hk', Category.comp_id]`. Conclude with `gm_isGen hw f y j j' k k' hj hj' hk hk'`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isoPullId_pgen {L' L : LB X} {w : LB.Iso L' L} (hw : w.IsGen) {F : X ⟶ X} (hF : F = 𝟙 X) :
     PGen (isoPullId w hF) := by
@@ -113,9 +113,9 @@ theorem isoPullId_pgen {L' L : LB X} {w : LB.Iso L' L} (hw : w.IsGen) {F : X ⟶
   exact gm_isGen hw f y j j' k k' hj hj' hk hk'
 
 /- English proof (translation)
-Establish `h₁ : r z ∈ φ ⁻¹ᵁ U` using `h`. Establish `h₂ : (r ≫ φ) z ∈ U` using `h`. Simplify using `only [gm, dif_pos h₁, dif_pos h₂, MonoidHom.comp_apply]`. Use `ext`. Simplify using `only [Units.coe_map, pullU, MonoidHom.coe_coe]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `first`. Consider the case `rfl`. Consider the case `(rw [Scheme.comp_app]; rfl)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem gm_pullU_eq_gm_comp {X Y Z : Scheme.{0}} (φ : Y ⟶ X) (r : Z ⟶ Y) (z : Z) {U : X.Opens}
     (h : φ (r z) ∈ U) (x : Γ(X, U)ˣ) :
@@ -130,9 +130,9 @@ private theorem gm_pullU_eq_gm_comp {X Y Z : Scheme.{0}} (φ : Y ⟶ X) (r : Z �
     | (rw [Scheme.comp_app]; rfl)
 
 /- English proof (translation)
-Establish `hV : r z ∈ LB.wchart L (fun _ => φ) (fun _ => p) ⊓ LB.wchart L' (fun _ => φ) (fun _ => q)` using `⟨mem_pull.2 hp, mem_pull.2 hq⟩`. Establish `h' : res (U` using `LB.wchart L (fun _ => φ) (fun _ => p)) (V := LB.wchart L (fun _ => φ) (fun _ => p) ⊓ LB.wchart L' (fun _ => φ) (fun _ => q)) inf_le_left (b.s (fun _ => p)) = (∏ _k : PUnit, (res (U := φ ⁻¹ᵁ (L.U p ⊓ L'.U q)) (V := LB.wchart L (fun _ => φ) (fun _ => p) ⊓ LB.wchart L' (fun _ => φ) …`. Rewrite `h'` using `[Fintype.prod_unique, zpow_one]`. Establish `key` using `congrArg (gm r z (LB.wchart L (fun _ => φ) (fun _ => p) ⊓ LB.wchart L' (fun _ => φ) (fun _ => q))) h'`. Rewrite `key` using `[map_mul, gm_res r z (U := LB.wchart L (fun _ => φ) (fun _ => p)) _ hV (b.s (fun _ => p))]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `key.trans (congrArg₂ (· * ·) ((gm_res r z _ hV _).trans (gm_pullU_eq_gm_comp φ r z (U := L.U p ⊓ L'.U q) ⟨hp, hq⟩ (w.s (p, q)))) (gm_res r z _ hV _))` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem gm_maps_pt {L' L : LB X} {w : LB.Iso L' L} {Y : Scheme.{0}} {φ : Y ⟶ X} {a : LB.Gen (L'.pull φ)}
     {b : LB.Gen (L.pull φ)} (h : LB.Gen.Maps (LB.linCombIso w (K := PUnit) (fun _ => φ) (fun _ => 1)) a b)
@@ -159,9 +159,9 @@ theorem gm_maps_pt {L' L : LB X} {w : LB.Iso L' L} {Y : Scheme.{0}} {φ : Y ⟶ 
     (gm_pullU_eq_gm_comp φ r z (U := L.U p ⊓ L'.U q) ⟨hp, hq⟩ (w.s (p, q)))) (gm_res r z _ hV _))
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use `TopCat.Presheaf.section_ext Y.sheaf V _ _ (fun y hy => ?_)` and prove the remaining obligations. Establish `key` using `H y hy`. Rewrite `key` using `[← gm_res (𝟙 Y) y h₁ hy a, ← gm_res (𝟙 Y) y h₃ hy c, ← map_mul]`. Establish `hy' : (𝟙 Y) y ∈ V` using `hy`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [gm, dif_pos hy', MonoidHom.comp_apply] at key`. Establish `key2` using `congrArg Units.val key`. Conclude with `key2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem res_eq_mul_res_of_gm_id_eq_mul {Y : Scheme.{0}} {V U₁ U₃ : Y.Opens} {h₁ : V ≤ U₁} {h₃ : V ≤ U₃}
     {a : Γ(Y, U₁)ˣ} {m : Γ(Y, V)ˣ} {c : Γ(Y, U₃)ˣ}
@@ -177,13 +177,13 @@ private theorem res_eq_mul_res_of_gm_id_eq_mul {Y : Scheme.{0}} {V U₁ U₃ : Y
   exact key2
 
 /- English proof (translation)
-Substitute `hF he₀` using the available equality. Introduce and unpack `⟨j, i⟩`. Establish `hmid : (LB.linCombIso (isoPullId w (rfl : 𝟙 G.left = 𝟙 G.left)) (K` using `PUnit) (fun _ => eSec G) (fun _ => 1)).s (j, i) = res (U := eSec G ⁻¹ᵁ ((L.L.pull (𝟙 G.left)).U (j PUnit.unit) ⊓ L'.L.U (i PUnit.unit))) (V := LB.wchart (L.L.pull (𝟙 G.left)) (fun _ => eSec G) j ⊓ LB.wchart L'.L (fun _ => eSec G) i) (le_inf (inf_le_left.trans (LB.wchart_le (L.L.p …`. Simplify using `only [LB.linCombIso, zpow_one]`. Use `first`.
+Substitute using the available equality. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `exact Fintype.prod_unique _`. Consider the case `exact Fintype.prod_unique`. Consider the case `simp`. Use `res_eq_mul_res_of_gm_id_eq_mul (fun z hz => ?_)` and prove the remaining obligations. Establish `hz1'` using `mem_pull.1 (mem_pull.1 hz.1)`.
+Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz2'` using `mem_pull.1 hz.2`. Establish `hz1 : eSec G z ∈ L.L.U (j PUnit.unit PUnit.unit)` using `hz1'`. Establish `hz2 : eSec G z ∈ L'.L.U (i PUnit.unit)` using `hz2'`. Establish `eL` using `(gm_res (𝟙 _) z (rigPull_le (𝟙 G.left) (𝟙 _) he L.L j) hz.1 (pullU (𝟙 _) _ (L.rig.s (fun _ => j PUnit.unit PUnit.unit)))).trans (gm_pullU_eq_gm_comp (𝟙 _) (𝟙 _) z (U := (L.L.pull (eSec G)).U (fun _ => j PUnit.unit PUnit.unit)) (mem_pull.2 hz1) (L.rig.s (fun _ => j PUnit.unit PUni …`. Rewrite `eL` using `[Category.comp_id]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `eM` using `(congrArg (gm (𝟙 _) z _) hmid).trans ((gm_res (𝟙 _) z _ hz _).trans ((gm_pullU_eq_gm_comp (eSec G) (𝟙 _) z (U := (L.L.pull (𝟙 G.left)).U (j PUnit.unit) ⊓ L'.L.U (i PUnit.unit)) ⟨mem_pull.2 hz1, hz2⟩ ((isoPullId w (rfl : 𝟙 G.left = 𝟙 G.left)).s (j PUnit.unit, i PUnit.unit))).trans …`. Establish `eR` using `gm_maps_pt hm (𝟙 _) z (j PUnit.unit PUnit.unit) (i PUnit.unit) hz1 hz2`. Conclude with `eL.trans (eR.trans (congrArg (· * _) eM.symm))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isoPullId_maps {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] {L' L : RigLB G} {w : LB.Iso L'.L L.L}
     (hm : LB.Gen.Maps (LB.linCombIso w (K := PUnit) (fun _ => eSec G) (fun _ => 1)) L'.rig L.rig)
@@ -231,7 +231,7 @@ section Unif
 open ReciprocityTheory.ChartRestriction.G.Out
 
 /- English proof (translation)
-Establish `key` using `congrArg (gm (𝟙 Y) y V) H`. Simplify using `only [map_mul, gm_res (𝟙 Y) y _ hy] at key`. Conclude with `key`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gm_of_res_eq {Y : Scheme.{0}} {V U₁ U₂ U₃ U₄ : Y.Opens} {h₁ : V ≤ U₁} {h₂ : V ≤ U₂} {h₃ : V ≤ U₃}
     {h₄ : V ≤ U₄} {a : Γ(Y, U₁)ˣ} {b : Γ(Y, U₂)ˣ} {c : Γ(Y, U₃)ˣ} {d : Γ(Y, U₄)ˣ}
@@ -242,9 +242,9 @@ theorem gm_of_res_eq {Y : Scheme.{0}} {V U₁ U₂ U₃ U₄ : Y.Opens} {h₁ : 
   exact key
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use `TopCat.Presheaf.section_ext Y.sheaf V _ _ (fun y hy => ?_)` and prove the remaining obligations. Establish `key` using `H y hy`. Rewrite `key` using `[← gm_res (𝟙 Y) y h₁ hy a, ← gm_res (𝟙 Y) y h₂ hy b, ← gm_res (𝟙 Y) y h₃ hy c, ← gm_res (𝟙 Y) y h₄ hy d, ← map_mul, ← map_mul]`. Establish `hy' : (𝟙 Y) y ∈ V` using `hy`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [gm, dif_pos hy', MonoidHom.comp_apply] at key`. Establish `key2` using `congrArg Units.val key`. Conclude with `key2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem res_eq_of_gm {Y : Scheme.{0}} {V U₁ U₂ U₃ U₄ : Y.Opens} {h₁ : V ≤ U₁} {h₂ : V ≤ U₂} {h₃ : V ≤ U₃}
     {h₄ : V ≤ U₄} {a : Γ(Y, U₁)ˣ} {b : Γ(Y, U₂)ˣ} {c : Γ(Y, U₃)ˣ} {d : Γ(Y, U₄)ˣ}
@@ -261,15 +261,15 @@ theorem res_eq_of_gm {Y : Scheme.{0}} {V U₁ U₂ U₃ U₄ : Y.Opens} {h₁ : 
   exact key2
 
 /- English proof (translation)
-Substitute `hF` using the available equality. Introduce and unpack `⟨J, k⟩ ⟨J', k'⟩`. Establish `hpg : (L.pull (𝟙 X)).g J J' = res (U` using `(𝟙 X) ⁻¹ᵁ (L.U (J PUnit.unit) ⊓ L.U (J' PUnit.unit))) (V := LB.wchart L (fun _ => 𝟙 X) J ⊓ LB.wchart L (fun _ => 𝟙 X) J') (le_inf (inf_le_left.trans (LB.wchart_le L (fun _ => 𝟙 X) J PUnit.unit)) (inf_le_right.trans (LB.wchart_le L (fun _ => 𝟙 X) J' PUnit.unit))) (pullU (𝟙 X) (L.U …`. Express the relevant statement in the definitionally equal form `(∏ _k : PUnit, _) = _`. Use `first`.
+Substitute using the available equality. Assume the hypotheses and unpack their components. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Treat this case separately.
 
-Consider the case `(rw [Fintype.prod_unique]; exact zpow_one _)`. Consider the case `exact (Fintype.prod_unique _).trans (zpow_one _)`. Consider the case `simp`. Use `res_eq_mul_res_of_gm_id_eq_mul (fun z hz => ?_)` and prove the remaining obligations. Establish `hz' : (𝟙 X) z ∈ ((L.pull (𝟙 X)).U J ⊓ L'.U k) ⊓ ((L.pull (𝟙 X)).U J' ⊓ L'.U k')` using `hz`.
+Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJa'` using `mem_pull.1 hz'.1.1`. Establish `hJb'` using `mem_pull.1 hz'.2.1`. Establish `hJa : (𝟙 X) z ∈ L.U (J PUnit.unit)` using `hJa'`. Establish `hJb : (𝟙 X) z ∈ L.U (J' PUnit.unit)` using `hJb'`. Establish `hk : (𝟙 X) z ∈ L'.U k` using `hz'.1.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk' : (𝟙 X) z ∈ L'.U k'` using `hz'.2.2`. Establish `hzJJ : (𝟙 X) z ∈ LB.wchart L (fun _ => 𝟙 X) J ⊓ LB.wchart L (fun _ => 𝟙 X) J'` using `⟨hz'.1.1, hz'.2.1⟩`. Establish `eA : gm (𝟙 X) z ((L.pull (𝟙 X)).U J ⊓ (L.pull (𝟙 X)).U J') ((L.pull (𝟙 X)).g J J') = gm (𝟙 X) z (L.U (J PUnit.unit) ⊓ L.U (J' PUnit.unit)) (L.g (J PUnit.unit) (J' PUnit.unit))` using `(congrArg (gm (𝟙 X) z _) hpg).trans ((gm_res (𝟙 X) z _ hzJJ _).trans ((gm_pullU_eq_gm_comp (𝟙 X) (𝟙 X) z (U := L.U (J PUnit.unit) ⊓ L.U (J' PUnit.unit)) ⟨hJa, hJb⟩ (L.g (J PUnit.unit) (J' PUnit.unit))).trans (by rw [Category.comp_id])))`. Establish `hdiv : (LB.div (L.pull (𝟙 X)) L').g (J, k) (J', k') = res (V` using `((L.pull (𝟙 X)).U J ⊓ L'.U k) ⊓ ((L.pull (𝟙 X)).U J' ⊓ L'.U k')) (U := (L.pull (𝟙 X)).U J ⊓ (L.pull (𝟙 X)).U J') (le_inf (inf_le_left.trans inf_le_left) (inf_le_right.trans inf_le_left)) ((L.pull (𝟙 X)).g J J') * (res (V := ((L.pull (𝟙 X)).U J ⊓ L'.U k) ⊓ ((L.pull (𝟙 X)).U J' ⊓ L …`. Establish `eB : gm (𝟙 X) z (((L.pull (𝟙 X)).U J ⊓ L'.U k) ⊓ ((L.pull (𝟙 X)).U J' ⊓ L'.U k')) ((LB.div (L.pull (𝟙 X)) L').g (J, k) (J', k')) = gm (𝟙 X) z (L.U (J PUnit.unit) ⊓ L.U (J' PUnit.unit)) (L.g (J PUnit.unit) (J' PUnit.unit)) * (gm (𝟙 X) z (L'.U k ⊓ L'.U k') (L'.g k k'))⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hdiv, map_mul, map_inv, gm_res (𝟙 X) z _ hz', gm_res (𝟙 X) z _ hz', eA]`. Establish `eL` using `gw_isoPullId w rfl (𝟙 X) z (J PUnit.unit) k hJa hk`. Establish `eR` using `gw_isoPullId w rfl (𝟙 X) z (J' PUnit.unit) k' hJb hk'`. Conclude with `eL.trans ((gm_isGen hw (𝟙 X) z (J PUnit.unit) (J' PUnit.unit) k k' hJa hJb hk hk').trans (congrArg₂ (· * ·) eB.symm eR.symm))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem isoPullId_isGen_of_isGen {X : Scheme.{0}} {L' L : LB X} {w : LB.Iso L' L} (hw : w.IsGen)
     {F : X ⟶ X} (hF : F = 𝟙 X) : (isoPullId w hF).IsGen := by
@@ -317,15 +317,15 @@ private theorem isoPullId_isGen_of_isGen {X : Scheme.{0}} {L' L : LB X} {w : LB.
     (congrArg₂ (· * ·) eB.symm eR.symm))
 
 /- English proof (translation)
-Establish `he₀ : specOf (RingHom.id R) = 𝟙 _` using `by first`. Consider the case `simp [specOf]`. Consider the case `exact Spec.map_id _`. Consider the case `rfl`. Establish `he : eSec G ≫ bc.hom.left ≫ pullback.fst G.hom (specOf (RingHom.id R)) = specOf (RingHom.id R) ≫ eSec G`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[hbc, Category.comp_id, he₀]`. Conclude with `(Category.id_comp _).symm`. Use `⟨⟨isoPullId wL hbc, isoPullId_isGen_of_isGen hwg hbc, he, isoPullId_maps hwm hbc he₀ he, fun n => ⟨𝟙 _, ?_, ?_, (hlev n).2.1, ?_⟩⟩⟩` and prove the remaining obligations. Rewrite using `[hbc, Category.comp_id, Category.id_comp]`. Rewrite using `[Category.id_comp]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hlev n).1`. Introduce `jM jM' jL' jL`. Use `res_eq_of_gm (fun y hy => ?_)` and prove the remaining obligations. Establish `h4' : (fstG I n G).left y ∈ (U.LG.L.pull (bc.hom.left ≫ pullback.fst G.hom (specOf (RingHom.id R)))).U jL ⊓ U'.LG.L.U jL'` using `hy.2`. Establish `h4a'` using `mem_pull.1 h4'.1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h4a : (fstG I n G).left y ∈ U.LG.L.U (jL PUnit.unit)`. Rewrite `h4a'` using `[hbc]`. Conclude with `h4a'`. Establish `h4y : (fstG I n G).left y ∈ U'.LG.L.U jL'` using `h4'.2`. Establish `hyh4 : (fstG I n G).left y ∈ U.LG.L.U (jL PUnit.unit) ⊓ U'.LG.L.U jL'` using `⟨h4a, h4y⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `key` using `gm_of_res_eq ((hlev n).2.2 jM jM' jL' (jL PUnit.unit)) (y := y) ⟨⟨⟨hy.1.1.1, hy.1.1.2⟩, hy.1.2⟩, hyh4⟩`. Use `key.trans (congrArg₂ (· * ·) ?_ ?_)` and prove the remaining obligations. Apply the tactic sequence `exact ((gm_pullU_eq_gm_comp (𝟙 _) (𝟙 _) y (U := (LB.div (D.toPre.P.L.pull (U.gt n).pG.left) (U.LG.L.pull (fstG I n G).left)).U (jM, jL)) hy.1.2 ((U.w n).s (jM, jL))).trans (by rw [Category.comp_id] <;> rfl)).symm`. Conclude with `(gm_pullU_eq_gm_comp (fstG I n G).left (𝟙 _) y (U := (LB.div U.LG.L U'.LG.L).U (jL PUnit.unit, jL')) hyh4 (wL.s (jL PUnit.unit, jL'))).trans ((gw_isoPullId wL hbc (𝟙 _ ≫ (fstG I n G).left) y (jL PUnit.unit) jL' h4a h4y).symm.trans (gm_pullU_eq_gm_comp (fstG I n G).left (𝟙 _) y (U …`.
+A detailed English derivation is pending.
 -/
 theorem isPullUnif_of_uniq {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D D' : DegData R I}
     {A A' : PolAV (Spec (CommRingCat.of (FractionRing R)))} {G : Over (Spec (CommRingCat.of R))} [GrpObj G]

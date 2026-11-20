@@ -16,9 +16,9 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestric
 open Formalism.MainNotions
 namespace GlobalTheory.CovTop.MeasRd
 /- English proof (translation)
-Introduce `h`. Establish `h2` using `_root_.GlobalTheory.T.normalized_covolume_eq_one h`. Use `Closed.imp (Closed.and (_root_.GlobalTheory.T.exists_log_ratAt_le_mul_unitE h2) (_root_.GlobalTheory.T.exists_neg_unitE_le_log_ratAt h)) ?_` and prove the remaining obligations. Introduce `_ Fm _ _ hh`. Take `⟨⟨K1, hK1, a, ha⟩, ⟨K2, hK2, b, hb⟩⟩` from `hh`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨(K1 + K2) / 2, by positivity, max a b, fun x hx hle ι p hp i => ?_⟩` and prove the remaining obligations. Take `⟨hr, hu⟩` from `ha x hx ((le_max_left _ _).trans hle) ι p hp i`. Establish `hl` using `hb x hx ((le_max_right _ _).trans hle) ι p hp i`. Conclude with `measAt_of p i (_root_.GlobalTheory.T.exactAt_of_oneMeasure p hp.1 (h2 _) i) hr hK1 hK2 hu hl`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem covering_measure_reduction_alt : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → _root_.GlobalTheory.CovTop.MeasureCondition := by
   intro h
@@ -37,7 +37,7 @@ section
 open GlobalTheory.CovTop GlobalTheory.BigTop
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.CovTop.MeasRd.covering_measure_reduction_alt | exact _root_.GlobalTheory.CovTop.MeasRd.covering_measure_reduction_alt | (intros; apply _root_.GlobalTheory.CovTop.MeasRd.covering_measure_reduction_alt <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.covering_meas_of_prints : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → _root_.GlobalTheory.CovTop.MeasureCondition := by
   first | exact @_root_.GlobalTheory.CovTop.MeasRd.covering_measure_reduction_alt | exact _root_.GlobalTheory.CovTop.MeasRd.covering_measure_reduction_alt | (intros; apply _root_.GlobalTheory.CovTop.MeasRd.covering_measure_reduction_alt <;> assumption)

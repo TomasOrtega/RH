@@ -5,9 +5,9 @@ namespace GlobalTheory.ContinuousHomDifferentiable
 open intervalIntegral
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `h1 : HasDerivAt (fun u => ∫ x in (0:ℝ)..u, χ x) (χ 0) 0` using `(hc.integral_hasStrictDerivAt 0 0).hasDerivAt`. Establish `hfun : (fun u => ∫ x in (0:ℝ)..u, χ x) = fun _ => (0:ℂ)` using `funext h`. Rewrite `h1` using `[hfun]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : HasDerivAt (fun _ : ℝ => (0:ℂ)) 0 0` using `hasDerivAt_const _ _`. Use `h1.unique h2` as an intermediate fact. Rewrite `this` using `[h0]`. Conclude with `one_ne_zero this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_integral_ne_zero (χ : ℝ → ℂ) (hc : Continuous χ) (h0 : χ 0 = 1) :
     ∃ δ : ℝ, (∫ x in (0:ℝ)..δ, χ x) ≠ 0 := by
@@ -23,15 +23,13 @@ theorem exists_integral_ne_zero (χ : ℝ → ℂ) (hc : Continuous χ) (h0 : χ
   exact one_ne_zero this
 
 /- English proof (translation)
-Introduce `χ hc h0 hmul`. Take `⟨δ, hδ⟩` from `exists_integral_ne_zero χ hc h0`. Use `set c : ℂ := ∫ x in (0:ℝ)..δ, χ x with hcdef`. Use `set F : ℝ → ℂ := fun u => ∫ x in (0:ℝ)..u, χ x with hF`. Establish `hFd : Differentiable ℝ F` using `fun u => (hc.integral_hasStrictDerivAt 0 u).hasDerivAt.differentiableAt`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ s, χ s = c⁻¹ * (F (s + δ) - F s)`. Introduce `s`. Establish `e1 : χ s * c = ∫ x in (0:ℝ)..δ, χ (s + x)`. Rewrite using `[hcdef, ← intervalIntegral.integral_const_mul]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `x`. Rewrite using `[hmul]`. Establish `e2 : (∫ x in (0:ℝ)..δ, χ (s + x)) = ∫ x in s..s + δ, χ x`. Rewrite using `[intervalIntegral.integral_comp_add_left (fun x => χ x) s]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e3 : F (s + δ) - F s = ∫ x in s..s + δ, χ x`. Simplify using `only [hF]`. Conclude with `intervalIntegral.integral_interval_sub_left (hc.intervalIntegrable _ _) (hc.intervalIntegrable _ _)`. Rewrite using `[e3, ← e2, ← e1]`. Clear the denominators using the available nonvanishing facts.
-
-Establish `hfun : χ = fun s => c⁻¹ * (F (s + δ) - F s)` using `funext key`. Rewrite using `[hfun]`. Use `fun_prop`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_hom_differentiable :
     ∀ (χ : ℝ → ℂ), Continuous χ → χ (0 : ℝ) = (1 : ℂ) →

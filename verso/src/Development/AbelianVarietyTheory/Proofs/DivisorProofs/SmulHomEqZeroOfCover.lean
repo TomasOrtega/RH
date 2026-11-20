@@ -16,9 +16,9 @@ namespace GlobalTheory.LocFreeProj
 variable {X : Scheme.{0}}
 
 /- English proof (translation)
-Use `Scheme.Modules.hom_ext _ _ fun W => ?_` and prove the remaining obligations. Use extensionality with `s`. Use `Twist.sec_ext_of_cover (fun U : {U : X.affineOpens // U.1 ≤ W} => U.1.1) (fun U => U.2) (fun x hW => ?_) fun U => ?_` and prove the remaining obligations. Take `⟨_, ⟨U, hU, rfl⟩, hx, hle⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open hW W.2`. Conclude with `Opens.mem_iSup.2 ⟨⟨⟨U, hU⟩, hle⟩, hx⟩`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Twist.app_resM, ← Twist.app_resM, h _ U.1.2]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_affine {F G : X.Modules} (φ : F ⟶ G)
     (h : ∀ W : X.Opens, IsAffineOpen W → ∀ s, φ.app W s = 0) : φ = 0 := by
@@ -31,13 +31,13 @@ theorem eq_zero_of_affine {F G : X.Modules} (φ : F ⟶ G)
     rfl
 
 /- English proof (translation)
-Use `eq_zero_of_locally _ fun x => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `Opens.mem_iSup.1 (show x ∈ iSup V by rw [hc]; trivial)`. Use `⟨V i, hi, ?_⟩` and prove the remaining obligations. Rewrite using `[VB.pullback_map_smulHom]`. Use `eq_zero_of_affine _ fun W hW s => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : W ≤ (V i).ι ⁻¹ᵁ V i` using `fun y _ => y.2`. Rewrite using `[smulHom_app_apply]`. Establish `e₀ : restrictGlobal _ W ((V i).ι.appTop g) = (V i).ι.appLE (V i) W e (resG X (le_top : V i ≤ ⊤) g)`. Express the relevant statement in the definitionally equal form `((V i).ι.appTop ≫ (V i).toScheme.presheaf.map _) g = (X.presheaf.map _ ≫ (V i).ι.appLE (V i) W e) g`. Rewrite using `[Scheme.Hom.map_appLE]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[e₀]`. Use `letI := appLEAlgebra (V i).ι e`. Use `letI := appLEModule (V i).ι ((Scheme.Modules.pullback (V i).ι).obj F) e`. Use `haveI := appLE_isScalarTower (V i).ι ((Scheme.Modules.pullback (V i).ι).obj F) e`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Equip the data with the indicated structure. Proceed by induction.
 
-Proceed by induction on `s using (isBaseChange_pullbackSections (V i).ι F hW (hV i) e).inductionOn with`. Consider the case `zero => exact smul_zero _`. Consider the case `tmul m => rw [← pullbackSections_smul, h, map_zero]`. Consider the case `smul a m hm => rw [smul_comm, hm, smul_zero]`. Consider the case `add m n hm hn => rw [smul_add, hm, hn, add_zero]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem smulHom_eq_zero_of_cover (F : X.Modules) [F.IsQuasicoherent] (g : Γ(X, ⊤)) {ι : Type} (V : ι → X.Opens)
     (hV : ∀ i, IsAffineOpen (V i)) (hc : iSup V = ⊤)
@@ -64,7 +64,7 @@ theorem smulHom_eq_zero_of_cover (F : X.Modules) [F.IsQuasicoherent] (g : Γ(X, 
   | add m n hm hn => rw [smul_add, hm, hn, add_zero]
 
 /- English proof (translation)
-Use `letI : Algebra (A ⧸ I) B := (Ideal.Quotient.lift I (algebraMap A B) hI).toAlgebra`. Use `haveI : IsScalarTower A (A ⧸ I) B := .of_algebraMap_eq fun _ => rfl`. Conclude with `.of_equiv (TensorProduct.AlgebraTensorModule.cancelBaseChange A (A ⧸ I) B B M)`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem projective_of_quot {A B M : Type} [CommRing A] [CommRing B] [Algebra A B] [AddCommGroup M] [Module A M] (I : Ideal A)
     (hI : ∀ a ∈ I, algebraMap A B a = 0) [Module.Projective (A ⧸ I) ((A ⧸ I) ⊗[A] M)] :
@@ -74,13 +74,11 @@ theorem projective_of_quot {A B M : Type} [CommRing A] [CommRing B] [Algebra A B
   exact .of_equiv (TensorProduct.AlgebraTensorModule.cancelBaseChange A (A ⧸ I) B B M)
 
 /- English proof (translation)
-Set `ι` to `(idl g).subschemeι`. Establish `e : ι ⁻¹ᵁ U ≤ ι ⁻¹ᵁ U` using `le_rfl`. Establish `hW : IsAffineOpen (ι ⁻¹ᵁ U)` using `hU.preimage ι`. Use `letI := appLEAlgebra ι e`. Use `letI := appLEModule ι ((Scheme.Modules.pullback ι).obj F) e`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `haveI := appLE_isScalarTower ι ((Scheme.Modules.pullback ι).obj F) e`. Establish `hb` using `isBaseChange_pullbackSections ι F hW hU e`. Use `haveI := finite_sections_pullback ι F hW hU e`. Establish `h0 : ι.appLE U _ e (resG X (le_top : U ≤ ⊤) g) = 0`. Establish `e₀ : ι.appLE U _ e (resG X (le_top : U ≤ ⊤) g) = restrictGlobal _ (ι ⁻¹ᵁ U) (ι.appTop g)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(X.presheaf.map _ ≫ ι.appLE U _ e) g = (ι.appTop ≫ (idl g).subscheme.presheaf.map _) g`. Rewrite using `[Scheme.Hom.map_appLE]`. Both sides reduce to the same expression. Rewrite using `[e₀, appTop_idl, map_zero]`. Use `haveI := projective_of_quot (B := Γ((idl g).subscheme, ι ⁻¹ᵁ U)) (M := Γ(F, U)) (Ideal.span {resG X (le_top : U ≤ ⊤) g}) fun a ha => by`.
-
-Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 ha`. Rewrite using `[map_mul]`. Conclude with `mul_eq_zero_of_right _ h0`. Use `haveI := Module.Projective.of_equiv hb.equiv`. Conclude with `VB.Summand.exists_frame_of_projective (G := (Scheme.Modules.pullback ι).obj F) hW ⟨z, hz⟩`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_frame (F : X.Modules) [F.IsQuasicoherent] (g : Γ(X, ⊤)) {U : X.Opens} (hU : IsAffineOpen U)
     [Module.Finite Γ(X, U) Γ(F, U)]
@@ -112,15 +110,15 @@ theorem exists_frame (F : X.Modules) [F.IsQuasicoherent] (g : Γ(X, ⊤)) {U : X
   exact VB.Summand.exists_frame_of_projective (G := (Scheme.Modules.pullback ι).obj F) hW ⟨z, hz⟩
 
 /- English proof (translation)
-Take `⟨e₁⟩` from `nonempty_iso_pushforward g F hk`. Set `ι` to `(idl g).subschemeι`. Establish `key (x : X) (U : X.Opens) (r : ℕ) (hx : x ∈ U) (T : Scheme.{0}) (j : T ⟶ (idl g).subscheme) [IsOpenImmersion j] (hj : ι ⁻¹ᵁ U ≤ j.opensRange) (e : (Scheme.Modules.pullback j).obj ((Scheme.Modules.pullback ι).obj F) ≅ (Scheme.Modules.pullback j).obj ((Scheme.Modules.pullback ι).ob …`. Take `⟨e₂⟩` from `nonempty_iso_pushforward g (quot r g) (smulHom_quot r g)`. Take `⟨e₃⟩` from `nonempty_pullback_pushforward ι j U hj e`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨U, r, hx, ⟨(Scheme.Modules.pullback U.ι).mapIso e₁ ≪≫ e₃ ≪≫ ((Scheme.Modules.pullback U.ι).mapIso e₂).symm⟩⟩`. Establish `hfree (r : ℕ) : Nonempty ((Scheme.Modules.pullback ι).obj (quot r g) ≅ freeModule _ (Fin r))`. Take `⟨e⟩` from `nonempty_pullback_quot ι r g 0 (appTop_idl g)`. Conclude with `⟨e ≪≫ cokernelIsoOfEq (smulHom_zero _) ≪≫ cokernelZeroIsoTarget⟩`. Introduce `x`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hx : x ∈ Set.range ι`. Take `⟨z, rfl⟩` from `hx`. Take `⟨V, n, s, hzV, hs⟩` from `hf z`. Establish `e₄` using `hs.restrictIso ((VB.isFrame_freeFrame _ (Fin n)).res le_top) V.ι V.opensRange_ι.le`. Take `⟨e₅⟩` from `hfree n`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨W, hW, hWe⟩` from `ι.isClosedEmbedding.isInducing.isOpen_iff.1 V.ι.opensRange.isOpen`. Use `key _ ⟨W, hW⟩ n ?_ _ V.ι hWe.le ?_` and prove the remaining obligations. Establish `: z ∈ ι ⁻¹' W`. Rewrite using `[hWe]`. Conclude with `⟨⟨z, hzV⟩, rfl⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `this`. Conclude with `((Scheme.Modules.restrictFunctorIsoPullback V.ι).app _).symm ≪≫ e₄ ≪≫ (Scheme.Modules.restrictFunctor V.ι).mapIso e₅.symm ≪≫ (Scheme.Modules.restrictFunctorIsoPullback V.ι).app _`. Establish `hz (G : (⊥ : (idl g).subscheme.Opens).toScheme.Modules) : IsZero G` using `support_eq_empty_iff.1 (Set.eq_empty_of_forall_notMem fun y _ => y.2)`. Use `key x ⟨(Set.range ι)ᶜ, ι.isClosedEmbedding.isClosed_range.isOpen_compl⟩ 0 hx _ (⊥ : (idl g).subscheme.Opens).ι (fun y hy => (hy ⟨y, rfl⟩).elim) ((hz _).iso (hz _))` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem locFreeMod_of_frame (F : X.Modules) [F.IsQuasicoherent] (g : Γ(X, ⊤)) (hk : smulHom F g = 0)
     (hf : ∀ z : (idl g).subscheme, ∃ (W : (idl g).subscheme.Opens) (n : ℕ)
@@ -161,9 +159,7 @@ theorem locFreeMod_of_frame (F : X.Modules) [F.IsQuasicoherent] (g : Γ(X, ⊤))
       (⊥ : (idl g).subscheme.Opens).ι (fun y hy => (hy ⟨y, rfl⟩).elim) ((hz _).iso (hz _))
 
 /- English proof (translation)
-Introduce `X F _ g ι V hV hc h`. Use `locFreeMod_of_frame F g (smulHom_eq_zero_of_cover F g V hV hc fun i => (h i).2.1) fun z => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `Opens.mem_iSup.1 (show (idl g).subschemeι z ∈ iSup V by rw [hc]; trivial)`. Use `haveI := (h i).1`. Use `haveI := (h i).2.2`.
-
-Conclude with `exists_frame F g (hV i) z hi`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem main : ∀ (X : Scheme.{0}) (F : X.Modules) [F.IsQuasicoherent] (g : Γ(X, ⊤)) (ι : Type) (V : ι → X.Opens), (∀ i, IsAffineOpen (V i)) → iSup V = ⊤ → (∀ i, Module.Finite Γ(X, V i) Γ(F, V i) ∧ (∀ s : Γ(F, V i), resG X (le_top : V i ≤ ⊤) g • s = 0) ∧ Module.Projective (Γ(X, V i) ⧸ Ideal.span {resG X (le_top : V i ≤ ⊤) g}) ((Γ(X, V i) ⧸ Ideal.span {resG X (le_top : V i ≤ ⊤) g}) ⊗[Γ(X, V i)] Γ(F, V i))) → LocFreeMod g F := by
   intro X F _ g ι V hV hc h

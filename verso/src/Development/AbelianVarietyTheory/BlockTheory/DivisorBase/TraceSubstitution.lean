@@ -20,13 +20,13 @@ def substTrO {r r' : ℕ} (n : ℕ) (x : Matrix (Fin r') (Fin r) ℂ) :
   aeval fun o => Option.elim o (X none) (fun v => ∑ b : Fin r', C (x b v.1) * X (some (b, v.2)))
 
 /- English proof (translation)
-Rewrite `hf`, the goal using `[rowst_mem_dualWeyl_iff]`. Use `⟨isWH_algHom (substTr n x) (colW r n) (colW r' n) (fun v => ?_) hf.1, ?_⟩` and prove the remaining obligations. Rewrite using `[substTr, aeval_X]`. Conclude with `IsWeightedHomogeneous.sum _ _ _ fun b _ => (isWeightedHomogeneous_X ℂ _ (b, v.2)).C_mul _`. Introduce `l j hlj`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : (colAddGen ℂ l j).comp (substTr n x) = (substTrO n x).comp (colAddGen ℂ l j)`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Distinguish the cases in `h : v.2 = j`. Simplify using `[substTr, colAddGen, substTrO, h, mul_add, Finset.sum_add_distrib, Finset.mul_sum, mul_left_comm]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[substTr, colAddGen, substTrO, h]`. Establish `h2 : (rename (R` using `ℂ) (some : Fin r' × Fin n → Option (Fin r' × Fin n))).comp (substTr n x) = (substTrO n x).comp (rename some) := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Simplify using `[substTr, substTrO]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e1` using `DFunLike.congr_fun h1 f`. Establish `e2` using `DFunLike.congr_fun h2 f`. Simplify using `only [AlgHom.comp_apply] at e1 e2`. Rewrite using `[e1, e2, hf.2 l j hlj]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem substTr_mem {r r' n : ℕ} (ν : Fin n → ℕ) (x : Matrix (Fin r') (Fin r) ℂ)
     {f : MvPolynomial (Fin r × Fin n) ℂ} (hf : f ∈ dualWeyl ℂ r n ν) : substTr n x f ∈ dualWeyl ℂ r' n ν := by
@@ -71,7 +71,7 @@ def PolyFunctorOpNorm : Prop :=
     IsOpNorm le_rfl h ν (x.map (starRingEnd ℂ)) (∏ i, singVal x i ^ ν i)
 
 /- English proof (translation)
-Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Simplify using `only [substTr, AlgHom.comp_apply, aeval_X, map_sum, map_mul, algHom_C, Matrix.mul_apply, algebraMap_eq, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -86,7 +86,7 @@ theorem substTr_mul {r r' r'' n : ℕ} (x' : Matrix (Fin r'') (Fin r') ℂ) (x :
   ring
 
 /- English proof (translation)
-Simplify using `only [substTr, aeval_X, map_sum, map_mul, algHom_C, algebraMap_eq, Matrix.mulVec, dotProduct, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem substTr_vec {r r' n : ℕ} (x : Matrix (Fin r') (Fin r) ℂ) (v : Fin r → ℂ) (s : Fin n) :
     substTr n x (∑ a, C (v a) * X (a, s)) = ∑ b, C ((x *ᵥ v) b) * X (b, s) := by
@@ -97,9 +97,9 @@ theorem substTr_vec {r r' n : ℕ} (x : Matrix (Fin r') (Fin r) ℂ) (v : Fin r 
   ring
 
 /- English proof (translation)
-Unfold `fockS`. Rewrite using `[Complex.re_sum]`. Use `Finset.sum_pos (fun m hm => ?_) (support_nonempty.mpr hf)` and prove the remaining obligations. Establish `hc : f.coeff m ≠ 0` using `mem_support_iff.mp hm`. Establish `hm0 : 0 < mfact m` using `Finset.prod_pos fun k _ => Nat.factorial_pos _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : star (f.coeff m) * f.coeff m * (mfact m : ℂ) = ((Complex.normSq (f.coeff m) * mfact m : ℝ) : ℂ)`. Rewrite using `[Complex.ofReal_mul, Complex.normSq_eq_conj_mul_self]`. Simplify using the standard rewrite rules. Rewrite using `[e, Complex.ofReal_re]`. Conclude with `mul_pos (Complex.normSq_pos.mpr hc) (by exact_mod_cast hm0)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fockS_re_pos {σ : Type} {f : MvPolynomial σ ℂ} (hf : f ≠ 0) : 0 < (fockS f f).re := by
   unfold fockS
@@ -113,7 +113,7 @@ theorem fockS_re_pos {σ : Type} {f : MvPolynomial σ ℂ} (hf : f ≠ 0) : 0 < 
   exact mul_pos (Complex.normSq_pos.mpr hc) (by exact_mod_cast hm0)
 
 /- English proof (translation)
-Rewrite using `[invNorm, div_self (fockS_re_pos (hwNe ℂ r n hn ν)).ne', Real.sqrt_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem invNorm_hw {r n : ℕ} (hn : n ≤ r) (ν : Fin n → ℕ) (hν : Antitone ν) :
     invNorm hn ν ⟨hw ℂ hn ν, hwMem ℂ r n hn ν hν⟩ = 1 := by

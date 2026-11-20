@@ -16,7 +16,7 @@ def Cover : Prop := QAClosed → MV → A1 → ∀ (q : ℕ) [NeZero q] (i n : �
     pull _ (spMap (algebraMap S (Localization.Away f))) _ _ x = 0) → x = 0
 
 /- English proof (translation)
-Introduce `k hk S _ hS hq`. Use `subsingleton_of_forall_eq 0 fun x => ?_` and prove the remaining obligations. Use `hC hQ hM h1 q i k hk S hS hq x fun p => ?_` and prove the remaining obligations. Conclude with `hZ b1 b2 q S (hQ S hS).1 hq _ i (by omega) x p`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem step (hQ : QAClosed) (hZ : ZarLocal) (hM : MV) (hC : Cover) (h1 : A1) (b1 : B1) (b2 : B2) (q : ℕ) [NeZero q] (i : ℤ) :
     ∀ k : ℕ, MVHyp q i k → ∀ (S : Type) [CommRing S], QA S → IsUnit (q : S) →
@@ -27,15 +27,15 @@ theorem step (hQ : QAClosed) (hZ : ZarLocal) (hM : MV) (hC : Cover) (h1 : A1) (b
   exact hZ b1 b2 q S (hQ S hS).1 hq _ i (by omega) x p
 
 /- English proof (translation)
-Introduce `h1 h9 b1 b2 q _ S _ hS hq`. Establish `key : ∀ k : ℕ, MVHyp q 0 k ∧ ∀ (i : ℤ), MVHyp q i k`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => exact ⟨by simpa using hD hQ hH hL h9 q 0, fun i => by simpa using hD hQ hH hL h9 q i⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ k ih`. Establish `hv : ∀ (i : ℤ), MVHyp q i ((k + 1 : ℕ) : ℤ)`. Introduce `i S' _ hS' hq' f g _ c`. Establish `hfg : QA (Localization.Away (f * g))` using `(hQ S' hS').2.1 (f * g)`. Establish `hqfg : IsUnit (q : Localization.Away (f * g))`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using hq'.map (algebraMap S' (Localization.Away (f * g)))`. Establish `hs` using `step hQ hZ hM hC h1 b1 b2 q i k (ih.2 i) _ hfg hqfg`. Use `⟨0, 0, ?_⟩` and prove the remaining obligations. Establish `: c = 0`. Establish `e : ((k + 1 : ℕ) : ℤ) = (k : ℤ) + 1` using `by push_cast; ring`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `revert c`. Rewrite using `[e]`. Introduce `c`. Conclude with `Subsingleton.elim _ _`. Simplify using `[this]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨hv 0, hv⟩`. Introduce `n i hn`. Take `⟨k, rfl⟩ : ∃ k : ℕ, n = (k : ℤ) + 1` from `⟨(n - 1).toNat, by omega⟩`. Conclude with `step hQ hZ hM hC h1 b1 b2 q i k ((key k).2 i) S hS hq`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem AcycQA_of (hQ : QAClosed) (hZ : ZarLocal) (hM : MV) (hH : EtaleDegreeZeroCohomologyEquivLocallyConstantFunctions) (hL : LCSplit) (hD : Deg0) (hC : Cover) :
     AcycQA := by

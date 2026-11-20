@@ -20,7 +20,7 @@ def eb_J (F : MvPowerSeries σ K) (Q : MvPolynomial σ (MvPolynomial τ K)) : Mv
   ∑ n ∈ Q.support, eb_w F n • MvPolynomial.coeff n Q
 
 /- English proof (translation)
-Unfold `eb_J`. Apply `Finset.sum_subset h` to reduce the goal to its premises. Introduce `n _ hn`. Rewrite using `[MvPolynomial.notMem_support_iff.1 hn, smul_zero]`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem eb_J_subset (F : MvPowerSeries σ K) (Q : MvPolynomial σ (MvPolynomial τ K)) (S : Finset (σ →₀ ℕ))
     (h : Q.support ⊆ S) : eb_J F Q = ∑ n ∈ S, eb_w F n • MvPolynomial.coeff n Q := by
@@ -30,7 +30,7 @@ theorem eb_J_subset (F : MvPowerSeries σ K) (Q : MvPolynomial σ (MvPolynomial 
   rw [MvPolynomial.notMem_support_iff.1 hn, smul_zero]
 
 /- English proof (translation)
-Rewrite using `[eb_J_subset F _ P.support (MvPolynomial.support_map_subset _ _)]`. Unfold `applyD eb_w`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `n _`. Rewrite using `[MvPolynomial.coeff_map]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem eb_applyD (P : MvPolynomial σ (MvPolynomial τ ℤ)) (F : MvPowerSeries σ K) :
     applyD P F = eb_J F (MvPolynomial.map (MvPolynomial.map (Int.castRingHom K)) P) := by
@@ -41,9 +41,9 @@ theorem eb_applyD (P : MvPolynomial σ (MvPolynomial τ ℤ)) (F : MvPowerSeries
   rw [MvPolynomial.coeff_map]
 
 /- English proof (translation)
-Rewrite using `[eb_J_subset F (MvPolynomial.C r * Q) Q.support (by`. Rewrite using `[MvPolynomial.C_mul']`. Conclude with `MvPolynomial.support_smul)]`. Unfold `eb_J`. Rewrite using `[Finset.mul_sum]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `n _`. Rewrite using `[MvPolynomial.coeff_C_mul, mul_smul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eb_J_C_mul (F : MvPowerSeries σ K) (r : MvPolynomial τ K) (Q : MvPolynomial σ (MvPolynomial τ K)) :
     eb_J F (MvPolynomial.C r * Q) = r * eb_J F Q := by
@@ -57,9 +57,9 @@ theorem eb_J_C_mul (F : MvPowerSeries σ K) (r : MvPolynomial τ K) (Q : MvPolyn
   rw [MvPolynomial.coeff_C_mul, mul_smul_comm]
 
 /- English proof (translation)
-Unfold `eb_w`. Rewrite using `[Finsupp.mapDomain_support_of_injective hε, Finset.prod_image (fun a _ b _ h => hε h)]`. Use `congr 1`. Apply `Finset.prod_congr rfl` to reduce the goal to its premises. Introduce `y _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finsupp.mapDomain_apply hε]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eb_w_mapDomain (ε : κ → σ) (hε : Function.Injective ε) (F : MvPowerSeries σ K) (n : κ →₀ ℕ) :
     eb_w F (n.mapDomain ε) = eb_w (resV ε F) n := by
@@ -72,7 +72,7 @@ theorem eb_w_mapDomain (ε : κ → σ) (hε : Function.Injective ε) (F : MvPow
   rw [Finsupp.mapDomain_apply hε]
 
 /- English proof (translation)
-Unfold `eb_J`. Rewrite using `[MvPolynomial.support_rename_of_injective hε, Finset.sum_image (fun a _ b _ h => Finsupp.mapDomain_injective hε h)]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `n _`. Rewrite using `[MvPolynomial.coeff_rename_mapDomain ε hε, eb_w_mapDomain ε hε]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem eb_J_rename (ε : κ → σ) (hε : Function.Injective ε) (F : MvPowerSeries σ K)
     (Q : MvPolynomial κ (MvPolynomial τ K)) : eb_J F (MvPolynomial.rename ε Q) = eb_J (resV ε F) Q := by
@@ -85,9 +85,9 @@ theorem eb_J_rename (ε : κ → σ) (hε : Function.Injective ε) (F : MvPowerS
   rw [MvPolynomial.coeff_rename_mapDomain ε hε, eb_w_mapDomain ε hε]
 
 /- English proof (translation)
-Rewrite using `[eb_J_subset G _ Pc.support (MvPolynomial.support_map_subset _ _)]`. Unfold `Formalism.DworkPowerSeriesWeights.jetPairPoly`. Rewrite using `[map_sum]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `n _`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[MvPolynomial.coeff_map, map_mul, MvPolynomial.rename_C, MvPolynomial.smul_eq_C_mul, mul_comm]`. Use `congr 2`. Unfold `eb_w Formalism.DworkPowerSeriesWeights.mfact Finsupp.prod`. Rewrite using `[Nat.cast_prod]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem eb_J_map (φ : τ' → τ) (G : MvPowerSeries κ K) (Pc : MvPolynomial κ (MvPolynomial τ' K)) :
     eb_J G (MvPolynomial.map (MvPolynomial.rename φ : MvPolynomial τ' K →ₐ[K] MvPolynomial τ K).toRingHom Pc) =
@@ -110,7 +110,7 @@ def eb_phi (v : X.Pl) (j : ℕ) : ea_S X v × Fin (NN X.G.P.m X.t j) × Fin (NN 
   fun y => ⟨v, ((ea_e X v).symm y.1, y.2.1.val, y.2.2)⟩
 
 /- English proof (translation)
-Introduce and unpack `⟨a1, a2, a3⟩ ⟨b1, b2, b3⟩ h`. Simplify using `only [eb_phi, Sigma.mk.injEq, heq_eq_eq, true_and, Prod.mk.injEq, EmbeddingLike.apply_eq_iff_eq] at h`. Take `⟨h1, h2, h3⟩` from `h`. Rewrite using `[h1, Fin.ext h2, h3]`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem eb_phi_inj (v : X.Pl) (j : ℕ) : Function.Injective (eb_phi X v j) := by
   rintro ⟨a1, a2, a3⟩ ⟨b1, b2, b3⟩ h
@@ -119,7 +119,7 @@ theorem eb_phi_inj (v : X.Pl) (j : ℕ) : Function.Injective (eb_phi X v j) := b
   rw [h1, Fin.ext h2, h3]
 
 /- English proof (translation)
-Introduce and unpack `⟨a1, a2, a3⟩ ⟨b1, b2, b3⟩ h`. Simplify using `only [ea_eps, Sigma.mk.injEq, heq_eq_eq, true_and, Prod.mk.injEq, EmbeddingLike.apply_eq_iff_eq] at h`. Take `⟨h1, h2, h3⟩` from `h`. Rewrite using `[h1, h2, h3]`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem eb_eps_inj (v : X.Pl) (j : ℕ) : Function.Injective (ea_eps X v j) := by
   rintro ⟨a1, a2, a3⟩ ⟨b1, b2, b3⟩ h
@@ -128,7 +128,7 @@ theorem eb_eps_inj (v : X.Pl) (j : ℕ) : Function.Injective (ea_eps X v j) := b
   rw [h1, h2, h3]
 
 /- English proof (translation)
-Unfold `Sys.colFac`. Rewrite using `[RingHom.map_det, AlgHom.map_det, RingHom.map_det]`. Use `congrArg Matrix.det (Matrix.ext fun r r' => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = MvPolynomial.map (MvPolynomial.map (Int.castRingHom K')) (∑ a : Fin (NN X.G.P.m X.t j), MvPolynomial.C (MvPolynomial.X (⟨v, ((ea_e X v).symm s, r.val, a)⟩ : X.FrI j)) * MvPolynomial.X (⟨v, ((ea_e X v).symm s, a, I v ((ea_e X v).symm s) c.val r'.val)⟩ : X.ZA j))`. Simplify using `only [RingHom.mapMatrix_apply, AlgHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, map_sum, map_mul, MvPolynomial.map_C, MvPolynomial.map_X, MvPolynomial.rename_C, MvPolynomial.rename_X, AlgHom.toRingHom_eq_coe, RingHom.coe_coe]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/

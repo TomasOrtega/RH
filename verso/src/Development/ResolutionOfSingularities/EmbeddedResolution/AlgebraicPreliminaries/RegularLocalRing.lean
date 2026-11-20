@@ -7,9 +7,9 @@ open IsLocalRing
 universe u
 
 /- English proof (translation)
-Establish `h2 : (Ideal.span (s : Set R)).FG` using `Submodule.fg_span s.finite_toSet`. Establish `h1 : (Ideal.span (s : Set R)).spanRank ≤ Cardinal.mk ((s : Set R))` using `Submodule.spanRank_span_le_card _`. Rewrite `h1` using `[Submodule.FG.spanRank_eq_spanFinrank h2]`. Establish `h3 : Cardinal.mk ((s : Set R)) = (s.card : Cardinal)` using `by simp`. Rewrite `h1` using `[h3]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 private theorem spanFinrank_span_finset_le_card {R : Type*} [CommRing R] (s : Finset R) :
     Submodule.spanFinrank (Ideal.span (s : Set R)) ≤ s.card := by
@@ -22,9 +22,9 @@ private theorem spanFinrank_span_finset_le_card {R : Type*} [CommRing R] (s : Fi
   exact_mod_cast h1
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `push Not at h`. Establish `h0 : b.repr v = 0`. Use extensionality with `j`. Simplify using `[h j]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hv` to reduce the goal to its premises. Establish `h1` using `congrArg (b.repr.symm) h0`. Simplify using `using h1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem exists_repr_ne_zero {K V ι : Type*} [Field K] [AddCommGroup V] [Module K V]
     (b : Module.Basis ι K V) {v : V} (hv : v ≠ 0) : ∃ j, b.repr v j ≠ 0 := by
@@ -38,13 +38,13 @@ private theorem exists_repr_ne_zero {K V ι : Type*} [Field K] [AddCommGroup V] 
   simpa using h1
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff, ← b.span_eq, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Simplify using `only [SetLike.mem_coe]`. Distinguish the cases in `hij : i = j`. Rewrite using `[hij]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem1 : v ∈ Submodule.span K (insert v (⇑b '' ↑(Finset.univ.erase j)))` using `Submodule.subset_span (Set.mem_insert _ _)`. Establish `hmem2 : ∑ l ∈ Finset.univ.erase j, b.repr v l • b l ∈ Submodule.span K (insert v (⇑b '' ↑(Finset.univ.erase j)))`. Use `Submodule.sum_mem _ fun l hl => Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Conclude with `Submodule.subset_span (Set.mem_insert_of_mem _ ⟨l, Finset.mem_coe.mpr hl, rfl⟩)`. Establish `hsub : v - ∑ l ∈ Finset.univ.erase j, b.repr v l • b l = b.repr v j • b j`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_erase_eq_sub (Finset.mem_univ j), b.sum_repr v]`. Normalize the expressions using the abelian group laws. Establish `hkey : b.repr v j • b j ∈ Submodule.span K (insert v (⇑b '' ↑(Finset.univ.erase j)))`. Rewrite using `[← hsub]`. Conclude with `Submodule.sub_mem _ hmem1 hmem2`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h2` using `Submodule.smul_mem _ (b.repr v j)⁻¹ hkey`. Rewrite `h2` using `[smul_smul, inv_mul_cancel₀ hj, one_smul]`. Then use the resulting hypothesis. Conclude with `Submodule.subset_span (Set.mem_insert_of_mem _ ⟨i, by simp [hij], rfl⟩)`.
+A detailed English derivation is pending.
 -/
 private theorem span_insert_image_erase_eq_top {K V : Type*} [Field K] [AddCommGroup V]
     [Module K V] {N : ℕ} (b : Module.Basis (Fin N) K V) (v : V) {j : Fin N}
@@ -73,11 +73,11 @@ private theorem span_insert_image_erase_eq_top {K V : Type*} [Field K] [AddCommG
   · exact Submodule.subset_span (Set.mem_insert_of_mem _ ⟨i, by simp [hij], rfl⟩)
 
 /- English proof (translation)
-Establish `hIle : Ideal.span ({x} : Set R) ≤ maximalIdeal R`. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `hx`. Establish `hIne : Ideal.span ({x} : Set R) ≠ ⊤`. Introduce `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hIle` using `[h, top_le_iff]`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal R).ne_top hIle`. Establish `hone : (1 : R ⧸ Ideal.span ({x} : Set R)) ≠ 0`. Introduce `h`. Establish `h1 : (1 : R) ∈ Ideal.span ({x} : Set R)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_one]` and apply the resulting hypothesis. Conclude with `hIne ((Ideal.eq_top_iff_one _).mpr h1)`. Establish `: Nontrivial (R ⧸ Ideal.span ({x} : Set R))` using `⟨⟨1, 0, hone⟩⟩`. Conclude with `IsLocalRing.of_surjective' (Ideal.Quotient.mk _) Ideal.Quotient.mk_surjective`.
+A detailed English derivation is pending.
 -/
 private theorem isLocalRing_quotient_span_singleton {R : Type*} [CommRing R] [IsLocalRing R]
     {x : R} (hx : x ∈ maximalIdeal R) : IsLocalRing (R ⧸ Ideal.span ({x} : Set R)) := by
@@ -97,29 +97,25 @@ private theorem isLocalRing_quotient_span_singleton {R : Type*} [CommRing R] [Is
   exact IsLocalRing.of_surjective' (Ideal.Quotient.mk _) Ideal.Quotient.mk_surjective
 
 /- English proof (translation)
-Establish `hv0 : (maximalIdeal R).toCotangent ⟨x, hx⟩ ≠ 0`. Rewrite using `[Ne, Ideal.toCotangent_eq_zero]`. Conclude with `hx2`. Take `⟨j, hj⟩` from `exists_repr_ne_zero (Module.finBasis (ResidueField R) (CotangentSpace R)) hv0`. Choose the witnesses or unpack the hypotheses as in `⟨z, hz⟩ : ∃ z : Fin (Module.finrank (ResidueField R) (CotangentSpace R)) → (maximalIdeal R), ∀ i, (maximalIdeal R).toCotangent (z i) = Module.finBasis (ResidueField R) (CotangentSpace R) i := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsurj : Function.Surjective (maximalIdeal R).toCotangent` using `Ideal.toCotangent_surjective _`. Use `choose z hz using fun i => hsurj (Module.finBasis (ResidueField R) (CotangentSpace R) i)`. Conclude with `⟨z, hz⟩`. Use `set s : Set (maximalIdeal R) := insert (⟨x, hx⟩ : maximalIdeal R) (z '' ↑(Finset.univ.erase j)) with hsdef`. Establish `htop : Submodule.span R s = ⊤`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← IsLocalRing.CotangentSpace.span_image_eq_top_iff]`. Establish `himg : (maximalIdeal R).toCotangent '' s = insert ((maximalIdeal R).toCotangent ⟨x, hx⟩) (⇑(Module.finBasis (ResidueField R) (CotangentSpace R)) '' ↑(Finset.univ.erase j))`. Rewrite using `[hsdef, Set.image_insert_eq, Set.image_image]`. Simplify using `[hz]`. Rewrite using `[himg]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `span_insert_image_erase_eq_top _ _ hj`. Establish `hmspan : Ideal.span ((Subtype.val : maximalIdeal R → R) '' s) = maximalIdeal R`. Establish `h` using `congrArg (Submodule.map (maximalIdeal R).subtype) htop`. Rewrite `h` using `[Submodule.map_span, Submodule.map_subtype_top]`. Simplify using `using h`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hIle : Ideal.span ({x} : Set R) ≤ maximalIdeal R`. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `hx`. Establish `hmapS : maximalIdeal (R ⧸ Ideal.span ({x} : Set R)) = Ideal.map (Ideal.Quotient.mk (Ideal.span ({x} : Set R))) (maximalIdeal R)`. Apply `le_antisymm` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `y hy`. Take `⟨r, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Use `Ideal.mem_map_of_mem _ ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hr`. Rewrite `hr` using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, not_not]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hy` using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `hy (hr.map (Ideal.Quotient.mk (Ideal.span ({x} : Set R))))`. Use `IsLocalRing.le_maximalIdeal ?_` and prove the remaining obligations. Introduce `h`. Rewrite `h` using `[Ideal.eq_top_iff_one, Ideal.mem_map_iff_of_surjective _ Ideal.Quotient.mk_surjective]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨r, hrm, hr1⟩` from `h`. Establish `h2 : r - 1 ∈ Ideal.span ({x} : Set R)`. Rewrite using `[← Ideal.Quotient.eq]`. Simplify using `using hr1`. Establish `h3 : (1 : R) ∈ maximalIdeal R`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h4` using `sub_mem hrm (hIle h2)`. Simplify using `at h4`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal R).ne_top ((Ideal.eq_top_iff_one _).mpr h3)`. Establish `hx0 : Ideal.Quotient.mk (Ideal.span ({x} : Set R)) x = 0` using `Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.mem_span_singleton_self x)`. Establish `himg : (Ideal.Quotient.mk (Ideal.span ({x} : Set R))) '' ((Subtype.val : maximalIdeal R → R) '' s) = insert 0 ((fun i => Ideal.Quotient.mk (Ideal.span ({x} : Set R)) ((z i : R))) '' ↑(Finset.univ.erase j))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsdef, Set.image_image, Set.image_insert_eq, Set.image_image]`. Simplify using `[hx0]`. Establish `hquot : maximalIdeal (R ⧸ Ideal.span ({x} : Set R)) = Ideal.span ((fun i => Ideal.Quotient.mk (Ideal.span ({x} : Set R)) ((z i : R))) '' ↑(Finset.univ.erase j))`. Rewrite using `[hmapS]`. Use `conv_lhs => rw [← hmspan]`.
-
-Rewrite using `[Ideal.map_span, himg]`. Conclude with `Submodule.span_insert_zero`. Establish `hcard : Submodule.spanFinrank (maximalIdeal (R ⧸ Ideal.span ({x} : Set R))) ≤ (Finset.univ.erase j).card`. Rewrite using `[hquot, ← Finset.coe_image]`. Conclude with `le_trans (spanFinrank_span_finset_le_card _) Finset.card_image_le`.
-
-Establish `hjpos : 0 < Module.finrank (ResidueField R) (CotangentSpace R)` using `Fin.pos j`. Establish `hcard2 : (Finset.univ.erase j).card = Module.finrank (ResidueField R) (CotangentSpace R) - 1`. Rewrite using `[Finset.card_erase_of_mem (Finset.mem_univ j), Finset.card_univ, Fintype.card_fin]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem spanFinrank_maximalIdeal_quotient_add_one_le_finrank (R : Type*) [CommRing R] [IsLocalRing R]
     [IsNoetherianRing R] {x : R} (hx : x ∈ maximalIdeal R) (hx2 : x ∉ maximalIdeal R ^ 2)
@@ -204,15 +200,15 @@ private theorem spanFinrank_maximalIdeal_quotient_add_one_le_finrank (R : Type*)
   omega
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨m, rfl⟩ : ∃ m : ℕ, a = ((m : ℕ) : WithBot ℕ∞) := by`. Proceed by induction on `a using WithBot.recBotCoe with`. Consider the case `bot`. It suffices to derive a contradiction. Rewrite `h1` using `[WithBot.bot_add, le_bot_iff]`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `WithBot.natCast_ne_bot n h1`. Consider the case `coe e`. Proceed by induction on `e using ENat.recTopCoe with`. Consider the case `top`. It suffices to derive a contradiction.
+Treat this case separately. Proceed by induction. Treat this case separately. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Establish `h2' : (⊤ : ℕ∞) ≤ (d : ℕ∞)` using `by exact_mod_cast h2`. Simplify using `at h2'`. Consider the case `coe m => exact ⟨m, by norm_cast⟩`. Establish `hmd : m ≤ d` using `by exact_mod_cast h2`. Establish `hnm : n ≤ m + 1` using `by exact_mod_cast h1`.
+Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : m = d` using `by omega`. Establish `hn : n = m + 1` using `by omega`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hm]`. Rewrite using `[hn]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared.
 
-Use `norm_cast`.
+A detailed English derivation is pending.
 -/
 private theorem eq_natCast_and_add_one_eq_of_le {a : WithBot ℕ∞} {d n : ℕ}
     (h1 : ((n : ℕ) : WithBot ℕ∞) ≤ a + 1) (h2 : a ≤ ((d : ℕ) : WithBot ℕ∞)) (h3 : d + 1 ≤ n) :
@@ -240,13 +236,13 @@ private theorem eq_natCast_and_add_one_eq_of_le {a : WithBot ℕ∞} {d n : ℕ}
     norm_cast
 
 /- English proof (translation)
-Establish `hdn` using `spanFinrank_maximalIdeal_quotient_add_one_le_finrank R hx hx2`. Establish `hRdim : ((Module.finrank (ResidueField R) (CotangentSpace R) : ℕ) : WithBot ℕ∞) = ringKrullDim R`. Rewrite using `[← IsLocalRing.spanFinrank_maximalIdeal_eq_finrank_cotangentSpace]`. Conclude with `IsRegularLocalRing.spanFinrank_maximalIdeal` after adjusting the coercions. Establish `hdimQuot : ringKrullDim (R ⧸ Ideal.span ({x} : Set R)) ≤ ((Submodule.spanFinrank (maximalIdeal (R ⧸ Ideal.span ({x} : Set R))) : ℕ) : WithBot ℕ∞)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `ringKrullDim_le_spanFinrank_maximalIdeal (R ⧸ Ideal.span ({x} : Set R))` after adjusting the coercions. Establish `hIj : Ideal.span ({x} : Set R) ≤ Ring.jacobson R`. Use `le_trans ?_ (IsLocalRing.ringJacobson_eq_maximalIdeal R).ge` and prove the remaining obligations. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdimLe` using `ringKrullDim_le_ringKrullDim_quotient_add_spanFinrank (Ideal.span ({x} : Set R)) hIj`. Establish `h1 : Submodule.spanFinrank (Ideal.span ({x} : Set R)) ≤ 1`. Establish `h` using `spanFinrank_span_finset_le_card ({x} : Finset R)`. Simplify using `using h`. Establish `hcast : ((Submodule.spanFinrank (Ideal.span ({x} : Set R)) : ℕ) : WithBot ℕ∞) ≤ 1`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h1` after adjusting the coercions. Establish `hdimSucc : ringKrullDim R ≤ ringKrullDim (R ⧸ Ideal.span ({x} : Set R)) + 1` using `hdimLe.trans (add_le_add le_rfl hcast)`. Take `⟨hA, hB⟩` from `eq_natCast_and_add_one_eq_of_le (d := Submodule.spanFinrank (maximalIdeal (R ⧸ Ideal.span ({x} : Set R)))) (n := Module.finrank (ResidueField R) (CotangentSpace R)) (by rw [hRdim]; exact hdimSucc) hdimQuot hdn`. Use `⟨hA.symm, ?_⟩` and prove the remaining obligations. Rewrite using `[hB, hRdim]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem spanFinrank_quotient_eq_ringKrullDim_and_add_one_eq (R : Type*) [CommRing R]
     [IsRegularLocalRing R] {x : R} (hx : x ∈ maximalIdeal R)
@@ -284,20 +280,20 @@ private theorem spanFinrank_quotient_eq_ringKrullDim_and_add_one_eq (R : Type*) 
   rw [hB, hRdim]
 
 /- English proof (translation)
-The claim follows from `hp.1.1`.
+A detailed English derivation is pending.
 -/
 private theorem isPrime_of_mem_minimalPrimes {R : Type*} [CommRing R] {p : Ideal R}
     (hp : p ∈ minimalPrimes R) : p.IsPrime := hp.1.1
 
 /- English proof (translation)
-The claim follows from `hp.2 ⟨hq, bot_le⟩ hle`.
+A detailed English derivation is pending.
 -/
 private theorem le_of_le_of_mem_minimalPrimes {R : Type*} [CommRing R] {p q : Ideal R}
     (hp : p ∈ minimalPrimes R) (hq : q.IsPrime) (hle : q ≤ p) : p ≤ q :=
   hp.2 ⟨hq, bot_le⟩ hle
 
 /- English proof (translation)
-Establish `hp : (maximalIdeal R).IsPrime` using `(maximalIdeal.isMaximal R).isPrime`. Rewrite `hp` using `[h]`. Use `hp` as an intermediate fact. Conclude with `IsDomain.of_bot_isPrime R`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem isDomain_of_maximalIdeal_eq_bot (R : Type*) [CommRing R] [IsLocalRing R]
     (h : maximalIdeal R = ⊥) : IsDomain R := by
@@ -307,7 +303,7 @@ private theorem isDomain_of_maximalIdeal_eq_bot (R : Type*) [CommRing R] [IsLoca
   exact IsDomain.of_bot_isPrime R
 
 /- English proof (translation)
-Use `Submodule.eq_bot_of_le_smul_of_le_jacobson_bot (maximalIdeal R) (maximalIdeal R) (IsNoetherian.noetherian _) ?_ (IsLocalRing.maximalIdeal_le_jacobson ⊥)` and prove the remaining obligations. Use `show maximalIdeal R ≤ maximalIdeal R * maximalIdeal R`. Rewrite using `[← pow_two]`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem maximalIdeal_eq_bot_of_le_sq (R : Type*) [CommRing R] [IsLocalRing R]
     [IsNoetherianRing R] (h : maximalIdeal R ≤ maximalIdeal R ^ 2) : maximalIdeal R = ⊥ := by
@@ -318,17 +314,15 @@ private theorem maximalIdeal_eq_bot_of_le_sq (R : Type*) [CommRing R] [IsLocalRi
   exact h
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `(minimalPrimes.finite_of_isNoetherianRing R).exists_finset_coe`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `hsub : (maximalIdeal R : Set R) ⊆ ⋃ i ∈ ((insert (maximalIdeal R ^ 2) t : Finset (Ideal R)) : Set (Ideal R)), (i : Set R)`. Introduce `y hy`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `em (y ∈ maximalIdeal R ^ 2) with hm2 | hm2` into its components or cases. Conclude with `Set.mem_biUnion (Finset.mem_coe.mpr (Finset.mem_insert_self _ _)) hm2`. Take `⟨p, hp, hyp⟩` from `hcon y hy hm2`. Establish `hpt : p ∈ insert (maximalIdeal R ^ 2) t`. Apply `Finset.mem_insert_of_mem` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Finset.mem_coe, ht]`. Conclude with `hp`. Conclude with `Set.mem_biUnion (Finset.mem_coe.mpr hpt) hyp`. Establish `hp : ∀ i ∈ (insert (maximalIdeal R ^ 2) t : Finset (Ideal R)), i ≠ maximalIdeal R ^ 2 → i ≠ maximalIdeal R ^ 2 → i.IsPrime`. Introduce `i hi h1 _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hit : i ∈ t`. Break down `Finset.mem_insert.mp hi with hh | hh` into its components or cases. Conclude with `absurd hh h1`. Conclude with `hh`. Use `isPrime_of_mem_minimalPrimes ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ht]`. Conclude with `Finset.mem_coe.mpr hit`. Take `⟨i, hi, hle⟩` from `(Ideal.subset_union_prime _ _ hp).mp hsub`. Break down `Finset.mem_insert.mp hi with hh | hh` into its components or cases. Substitute `hh` using the available equality.
-
-Conclude with `hsq hle`. Use `hmin ⟨i, ?_, hle⟩` and prove the remaining obligations. Rewrite using `[← ht]`. Conclude with `Finset.mem_coe.mpr hh`.
+A detailed English derivation is pending.
 -/
 private theorem exists_mem_maximalIdeal_notMem_sq_notMem_minimalPrimes (R : Type*) [CommRing R]
     [IsLocalRing R] [IsNoetherianRing R] (hsq : ¬ maximalIdeal R ≤ maximalIdeal R ^ 2)
@@ -368,7 +362,7 @@ private theorem exists_mem_maximalIdeal_notMem_sq_notMem_minimalPrimes (R : Type
     exact Finset.mem_coe.mpr hh
 
 /- English proof (translation)
-Use `isLocalRing_quotient_span_singleton hx` as an intermediate fact. Rewrite using `[isRegularLocalRing_iff]`. Conclude with `(spanFinrank_quotient_eq_ringKrullDim_and_add_one_eq R hx hx2).1` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isRegularLocalRing_quotient_span_singleton {R : Type*} [CommRing R]
     [IsRegularLocalRing R] {x : R} (hx : x ∈ IsLocalRing.maximalIdeal R)
@@ -379,7 +373,7 @@ theorem isRegularLocalRing_quotient_span_singleton {R : Type*} [CommRing R]
   exact_mod_cast (spanFinrank_quotient_eq_ringKrullDim_and_add_one_eq R hx hx2).1
 
 /- English proof (translation)
-Use `isLocalRing_quotient_span_singleton hx` as an intermediate fact. Conclude with `(spanFinrank_quotient_eq_ringKrullDim_and_add_one_eq R hx hx2).2`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ringKrullDim_quotient_span_singleton_add_one {R : Type*} [CommRing R]
     [IsRegularLocalRing R] {x : R} (hx : x ∈ IsLocalRing.maximalIdeal R)
@@ -389,27 +383,23 @@ theorem ringKrullDim_quotient_span_singleton_add_one {R : Type*} [CommRing R]
   exact (spanFinrank_quotient_eq_ringKrullDim_and_add_one_eq R hx hx2).2
 
 /- English proof (translation)
-Distinguish the cases in `hsq : maximalIdeal R ≤ maximalIdeal R ^ 2`. Conclude with `isDomain_of_maximalIdeal_eq_bot R (maximalIdeal_eq_bot_of_le_sq R hsq)`. Distinguish the cases in `hmin : ∃ p ∈ minimalPrimes R, maximalIdeal R ≤ p`. It suffices to derive a contradiction. Take `⟨p, hp, hple⟩` from `hmin`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hpp : p.IsPrime` using `isPrime_of_mem_minimalPrimes hp`. Establish `hpm : p = maximalIdeal R` using `le_antisymm (IsLocalRing.le_maximalIdeal hpp.ne_top) hple`. Establish `hallideal : ∀ q : Ideal R, q.IsPrime → q = maximalIdeal R`. Introduce `q hq`. Use `le_antisymm (IsLocalRing.le_maximalIdeal hq.ne_top) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hpm]`. Conclude with `le_of_le_of_mem_minimalPrimes hp hq (by rw [hpm]; exact IsLocalRing.le_maximalIdeal hq.ne_top)`. Establish `h2 : ringKrullDim R ≤ 0`. Establish `hPQ : ∀ P Q : PrimeSpectrum R, P = Q`. Introduce `P Q`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Rewrite using `[hallideal P.asIdeal P.isPrime, hallideal Q.asIdeal Q.isPrime]`. Establish `: Subsingleton (PrimeSpectrum R)` using `⟨hPQ⟩`. Conclude with `Order.krullDim_nonpos_of_subsingleton`. Choose the witnesses or unpack the hypotheses as in `⟨x, hx, hx2⟩ : ∃ x, x ∈ maximalIdeal R ∧ x ∉ maximalIdeal R ^ 2 := by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `hsq fun y hy => hc y hy`. Use `isLocalRing_quotient_span_singleton hx` as an intermediate fact. Establish `hpos` using `spanFinrank_maximalIdeal_quotient_add_one_le_finrank R hx hx2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Establish `hdim : ringKrullDim R = (Module.finrank (ResidueField R) (CotangentSpace R) : WithBot ℕ∞)` using `((IsRegularLocalRing.iff_finrank_cotangentSpace R).mp inferInstance).symm`. Rewrite `h2` using `[hdim]`. Establish `hle0 : Module.finrank (ResidueField R) (CotangentSpace R) ≤ 0` using `by exact_mod_cast h2`. Use linear arithmetic over natural numbers and integers. Take `⟨x, hx, hx2, hxp⟩` from `exists_mem_maximalIdeal_notMem_sq_notMem_minimalPrimes R hsq hmin`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `isLocalRing_quotient_span_singleton hx` as an intermediate fact. Establish `hrq : IsRegularLocalRing (R ⧸ Ideal.span ({x} : Set R))` using `isRegularLocalRing_quotient_span_singleton hx hx2`. Establish `hlt : Submodule.spanFinrank (maximalIdeal (R ⧸ Ideal.span ({x} : Set R))) < Submodule.spanFinrank (maximalIdeal R)`. Establish `h1` using `spanFinrank_maximalIdeal_quotient_add_one_le_finrank R hx hx2`. Establish `h2 : Submodule.spanFinrank (maximalIdeal R) = Module.finrank (ResidueField R) (CotangentSpace R)`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[IsLocalRing.spanFinrank_maximalIdeal_eq_finrank_cotangentSpace]`. Use linear arithmetic over natural numbers and integers. Establish `hdom` using `IH (R ⧸ Ideal.span ({x} : Set R)) hlt`. Establish `hprime : (Ideal.span ({x} : Set R)).IsPrime` using `(Ideal.Quotient.isDomain_iff_prime _).mp hdom`. Take `⟨p, hp, hple⟩` from `Ideal.exists_minimalPrimes_le (bot_le : (⊥ : Ideal R) ≤ Ideal.span ({x} : Set R))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hpp : p.IsPrime` using `isPrime_of_mem_minimalPrimes hp`. Establish `hpbot : p = ⊥`. Use `Submodule.eq_bot_of_le_smul_of_le_jacobson_bot (maximalIdeal R) p (IsNoetherian.noetherian p) ?_ (IsLocalRing.maximalIdeal_le_jacobson ⊥)` and prove the remaining obligations. Introduce `y hy`. Take `⟨a, rfl⟩` from `Ideal.mem_span_singleton.mp (hple hy)`.
-
-Establish `ha : a ∈ p`. Break down `hpp.mem_or_mem hy with hh | hh` into its components or cases. Conclude with `absurd hh (hxp p hp)`. Conclude with `hh`. Conclude with `Ideal.mul_mem_mul hx ha`.
-
-Rewrite `hpp` using `[hpbot]`. Use `hpp` as an intermediate fact. Conclude with `IsDomain.of_bot_isPrime R`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem isDomain_of_forall_spanFinrank_lt (R : Type u) [CommRing R]
     [IsRegularLocalRing R]
@@ -483,11 +473,11 @@ private theorem isDomain_of_forall_spanFinrank_lt (R : Type u) [CommRing R]
     exact IsDomain.of_bot_isPrime R
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `R _ _ h`. Use `isDomain_of_forall_spanFinrank_lt R ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `S _ _ hS`. Conclude with `absurd (lt_of_lt_of_le hS h) (Nat.not_lt_zero _)`. Consider the case `succ n IH`. Introduce `R _ _ h`. Use `isDomain_of_forall_spanFinrank_lt R ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `S _ _ hS`. Conclude with `IH S (by omega)`.
+A detailed English derivation is pending.
 -/
 private theorem isDomain_of_spanFinrank_le :
     ∀ (n : ℕ) (R : Type u) [CommRing R] [IsRegularLocalRing R],
@@ -506,7 +496,7 @@ private theorem isDomain_of_spanFinrank_le :
     exact IH S (by omega)
 
 /- English proof (translation)
-The claim follows from `isDomain_of_spanFinrank_le (Submodule.spanFinrank (IsLocalRing.maximalIdeal R)) R le_rfl`.
+A detailed English derivation is pending.
 -/
 theorem isDomain (R : Type*) [CommRing R]
     [IsRegularLocalRing R] : IsDomain R :=
@@ -517,7 +507,7 @@ instance (priority := 100) instIsDomain {R : Type*} [CommRing R]
   IsRegularLocalRing.isDomain R
 
 /- English proof (translation)
-Establish `key : ∑ k ∈ ({i, j} : Finset ι), (fun k => if k = i then c else if k = j then (-1 : K) else 0) k • v k = 0`. Rewrite using `[Finset.sum_pair hij]`. Simplify using `[Ne.symm hij, he]`. Establish `h2` using `linearIndependent_iff'.mp h {i, j} (fun k => if k = i then c else if k = j then (-1 : K) else 0) key j (by simp)`. Simplify using `[Ne.symm hij] at h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 private theorem false_of_eq_smul_of_linearIndependent {K M : Type*} {ι : Type*} [Field K]
     [AddCommGroup M] [Module K M] {v : ι → M} (h : LinearIndependent K v) {i j : ι}
@@ -532,7 +522,7 @@ private theorem false_of_eq_smul_of_linearIndependent {K M : Type*} {ι : Type*}
   simp [Ne.symm hij] at h2
 
 /- English proof (translation)
-Establish `h1 : (⟨r * a, hra⟩ : IsLocalRing.maximalIdeal R) = r • (⟨a, ha⟩ : IsLocalRing.maximalIdeal R)` using `Subtype.ext rfl`. Rewrite using `[algebraMap_smul, h1, map_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem toCotangent_mul_eq_smul {R : Type*} [CommRing R] [IsLocalRing R] (r a : R)
     (ha : a ∈ IsLocalRing.maximalIdeal R) (hra : r * a ∈ IsLocalRing.maximalIdeal R) :
@@ -544,7 +534,7 @@ private theorem toCotangent_mul_eq_smul {R : Type*} [CommRing R] [IsLocalRing R]
   rw [algebraMap_smul, h1, map_smul]
 
 /- English proof (translation)
-Introduce `hmem`. Establish `h0 : ((IsLocalRing.maximalIdeal R).toCotangent ⟨x i, hx i⟩ : IsLocalRing.CotangentSpace R) = 0`. Rewrite using `[Ideal.toCotangent_eq_zero]`. Conclude with `hmem`. Conclude with `hli.ne_zero i h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem notMem_maximalIdeal_sq {R : Type*} [CommRing R] [IsRegularLocalRing R] {ι : Type*}
     (x : ι → R) (hx : ∀ i, x i ∈ IsLocalRing.maximalIdeal R)
@@ -560,7 +550,7 @@ theorem notMem_maximalIdeal_sq {R : Type*} [CommRing R] [IsRegularLocalRing R] {
   exact hli.ne_zero i h0
 
 /- English proof (translation)
-Establish `: IsRegularLocalRing (R ⧸ Ideal.span ({x i} : Set R))` using `isRegularLocalRing_quotient_span_singleton (hx i) (notMem_maximalIdeal_sq x hx hli i)`. Rewrite using `[← Ideal.Quotient.isDomain_iff_prime]`. Conclude with `IsRegularLocalRing.isDomain _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPrime_span_singleton {R : Type*} [CommRing R] [IsRegularLocalRing R] {ι : Type*}
     (x : ι → R) (hx : ∀ i, x i ∈ IsLocalRing.maximalIdeal R)
@@ -574,9 +564,9 @@ theorem isPrime_span_singleton {R : Type*} [CommRing R] [IsRegularLocalRing R] {
   exact IsRegularLocalRing.isDomain _
 
 /- English proof (translation)
-Introduce `hmem`. Take `⟨r, hr⟩` from `Ideal.mem_span_singleton'.mp hmem`. Establish `hmem2 : r * x i ∈ IsLocalRing.maximalIdeal R`. Rewrite using `[hr]`. Conclude with `hx j`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : ((IsLocalRing.maximalIdeal R).toCotangent ⟨x j, hx j⟩ : IsLocalRing.CotangentSpace R) = algebraMap R (IsLocalRing.ResidueField R) r • ((IsLocalRing.maximalIdeal R).toCotangent ⟨x i, hx i⟩ : IsLocalRing.CotangentSpace R)`. Establish `hsub : (⟨x j, hx j⟩ : IsLocalRing.maximalIdeal R) = ⟨r * x i, hmem2⟩` using `Subtype.ext hr.symm`. Rewrite using `[hsub]`. Conclude with `toCotangent_mul_eq_smul r (x i) (hx i) hmem2`. Conclude with `false_of_eq_smul_of_linearIndependent hli hij _ key`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem notMem_span_singleton {R : Type*} [CommRing R] [IsRegularLocalRing R] {ι : Type*}
     (x : ι → R) (hx : ∀ i, x i ∈ IsLocalRing.maximalIdeal R)
@@ -601,7 +591,7 @@ theorem notMem_span_singleton {R : Type*} [CommRing R] [IsRegularLocalRing R] {�
   exact false_of_eq_smul_of_linearIndependent hli hij _ key
 
 /- English proof (translation)
-Conclude with `FunctorialResolution.EmbeddedResolution.isRadical_span_singleton_prod_finset x Finset.univ (fun i _ => isPrime_span_singleton x hx hli i) (fun i _ j _ hij => notMem_span_singleton x hx hli hij)`.
+A detailed English derivation is pending.
 -/
 theorem isRadical_span_singleton_prod {R : Type*} [CommRing R] [IsRegularLocalRing R] {ι : Type*}
     [Fintype ι] (x : ι → R) (hx : ∀ i, x i ∈ IsLocalRing.maximalIdeal R)

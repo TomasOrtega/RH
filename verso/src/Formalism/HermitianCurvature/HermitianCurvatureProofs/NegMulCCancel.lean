@@ -49,9 +49,9 @@ variable {k p ρ n : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSp
   [InnerProductSpace ℂ Wq]
 
 /- English proof (translation)
-Unfold `pbF`. Rewrite using `[← integral_smul]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Unfold `pbI`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions.
 
-Rewrite using `[← Matrix.mul_assoc, PBG.kr_rightEq B0 H _ m hm, ContinuousLinearMap.comp_smul, smul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pbF_right (Bj : B.RealPlaceData k ρ Wp Wq) (B0 : B.RealPlaceData k n Wp Wq) (e : p + ρ = n)
     (H : B.Mat k n → (Wq →L[ℂ] Wp)) (g m : B.Mat k n) (hm : m ∈ QuantumDeterminants.Nset k n) :
@@ -74,7 +74,7 @@ local instance bsRC : BorelSpace (U.RC k p ρ) := Prod.borelSpace
 local instance bsRC2 : BorelSpace (U.RC k p ρ × U.RC k p ρ) := Prod.borelSpace
 
 /- English proof (translation)
-Rewrite using `[← StabilizerDisintegration.HC.rn_mul]`. Conclude with `PBG.psi_mul_nset _ (LeftFubiniLemmas.inWb_liftVec hz) _ (LeftFubiniLemmas.rn_nset x) (LeftFubiniLemmas.rn_nset y)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_rn_mulC (z : Fin (2 * ρ + k + 1) → ℂ) (hz : inWb k ρ z) (x y : U.RC k p ρ) :
     psi k (p + ρ) (liftVec k p ρ z) cStd (U.Rn k p ρ (StabilizerDisintegration.HC.mulC x y)) =
@@ -83,9 +83,9 @@ theorem psi_rn_mulC (z : Fin (2 * ρ + k + 1) → ℂ) (hz : inWb k ρ z) (x y :
   exact PBG.psi_mul_nset _ (LeftFubiniLemmas.inWb_liftVec hz) _ (LeftFubiniLemmas.rn_nset x) (LeftFubiniLemmas.rn_nset y)
 
 /- English proof (translation)
-Unfold `StabilizerDisintegration.HC.kap StabilizerDisintegration.HC.skc`. Establish `hM : Continuous (fun c : Fin (2 * ρ + k + 1) → Fin p → ℂ => (1 / 2 : ℂ) • ((Matrix.of c)ᴴ * Hpk k ρ * c1 - c1ᴴ * Hpk k ρ * Matrix.of c))`. Establish `hof : Continuous (fun c : Fin (2 * ρ + k + 1) → Fin p → ℂ => (Matrix.of c : Matrix (Fin (2 * ρ + k + 1)) (Fin p) ℂ))` using `continuous_id`. Establish `h1 : Continuous (fun c : Fin (2 * ρ + k + 1) → Fin p → ℂ => (Matrix.of c)ᴴ * Hpk k ρ * c1)` using `((hof.matrix_conjTranspose).matrix_mul (continuous_const (y := Hpk k ρ))).matrix_mul (continuous_const (y := c1))`. Establish `h2 : Continuous (fun c : Fin (2 * ρ + k + 1) → Fin p → ℂ => c1ᴴ * Hpk k ρ * Matrix.of c)` using `(continuous_const (y := c1ᴴ * Hpk k ρ)).matrix_mul hof`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(h1.sub h2).const_smul (1 / 2 : ℂ)`. Use `Continuous.prodMk ?_ ?_` and prove the remaining obligations. Conclude with `continuous_pi fun q => (continuous_apply _).comp ((continuous_apply _).comp hM)`. Conclude with `continuous_pi fun a => Complex.continuous_im.comp ((continuous_apply _).comp ((continuous_apply _).comp hM))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cont_kap (c1 : Matrix (Fin (2 * ρ + k + 1)) (Fin p) ℂ) :
     Continuous (fun c : Fin (2 * ρ + k + 1) → Fin p → ℂ => StabilizerDisintegration.HC.kap c1 (Matrix.of c)) := by
@@ -105,11 +105,11 @@ theorem cont_kap (c1 : Matrix (Fin (2 * ρ + k + 1)) (Fin p) ℂ) :
   · exact continuous_pi fun a => Complex.continuous_im.comp ((continuous_apply _).comp ((continuous_apply _).comp hM))
 
 /- English proof (translation)
-Unfold `U.muRC`. Rewrite using `[Measure.volume_eq_prod]`. Establish `hf : MeasurePreserving (fun c : Fin (2 * ρ + k + 1) → Fin p → ℂ => d.1 + c) volume volume` using `measurePreserving_add_left volume d.1`. Establish `hg : Measurable (Function.uncurry fun (c : Fin (2 * ρ + k + 1) → Fin p → ℂ) (S : (G.UT p → ℂ) × (Fin p → ℝ)) => (d.2 + StabilizerDisintegration.HC.kap (Matrix.of d.1) (Matrix.of c)) + S)`. Use `Continuous.measurable ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `((continuous_const.add ((cont_kap _).comp continuous_fst)).add continuous_snd)`. Use `hf.skew_product hg (Filter.Eventually.of_forall fun c => map_add_left_eq_self volume _)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Simplify using `only [StabilizerDisintegration.HC.mulC]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem mp_mulC (d : U.RC k p ρ) :
     MeasurePreserving (StabilizerDisintegration.HC.mulC d) (U.muRC k p ρ) (U.muRC k p ρ) := by
@@ -129,11 +129,9 @@ theorem mp_mulC (d : U.RC k p ρ) :
   abel
 
 /- English proof (translation)
-Unfold `StabilizerDisintegration.HC.mulC StabilizerDisintegration.HC.kap StabilizerDisintegration.HC.skc`. Establish `hc1 : Continuous (fun q : X × U.RC k p ρ => (Matrix.of (d q.1).1 : Matrix (Fin (2 * ρ + k + 1)) (Fin p) ℂ))` using `(hd.comp continuous_fst).fst`. Establish `hc2 : Continuous (fun q : X × U.RC k p ρ => (Matrix.of q.2.1 : Matrix (Fin (2 * ρ + k + 1)) (Fin p) ℂ))` using `continuous_snd.fst`. Establish `hM : Continuous (fun q : X × U.RC k p ρ => (1 / 2 : ℂ) • ((Matrix.of q.2.1)ᴴ * Hpk k ρ * Matrix.of (d q.1).1 - (Matrix.of (d q.1).1)ᴴ * Hpk k ρ * Matrix.of q.2.1))`. Establish `h1` using `((hc2.matrix_conjTranspose).matrix_mul (continuous_const (y := Hpk k ρ))).matrix_mul hc1`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `((hc1.matrix_conjTranspose).matrix_mul (continuous_const (y := Hpk k ρ))).matrix_mul hc2`. Conclude with `(h1.sub h2).const_smul (1 / 2 : ℂ)`. Use `Continuous.prodMk ((continuous_fst.comp (hd.comp continuous_fst)).add continuous_snd.fst) ?_` and prove the remaining obligations. Use `((continuous_snd.comp (hd.comp continuous_fst)).add continuous_snd.snd).add (Continuous.prodMk ?_ ?_)` and prove the remaining obligations. Conclude with `continuous_pi fun q => (continuous_apply _).comp ((continuous_apply _).comp hM)`.
-
-Conclude with `continuous_pi fun a => Complex.continuous_im.comp ((continuous_apply _).comp ((continuous_apply _).comp hM))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cont_mulC_left {X : Type*} [TopologicalSpace X] {d : X → U.RC k p ρ} (hd : Continuous d) :
     Continuous (fun q : X × U.RC k p ρ => StabilizerDisintegration.HC.mulC (d q.1) q.2) := by
@@ -153,26 +151,26 @@ theorem cont_mulC_left {X : Type*} [TopologicalSpace X] {d : X → U.RC k p ρ} 
   · exact continuous_pi fun a => Complex.continuous_im.comp ((continuous_apply _).comp ((continuous_apply _).comp hM))
 
 /- English proof (translation)
-The claim follows from `(Matrix.inv_eq_right_inv (PBM.rn_mul_neg x)).symm`.
+A detailed English derivation is pending.
 -/
 theorem rn_neg_eq_inv (x : U.RC k p ρ) : U.Rn k p ρ (-x) = (U.Rn k p ρ x)⁻¹ :=
   (Matrix.inv_eq_right_inv (PBM.rn_mul_neg x)).symm
 
 /- English proof (translation)
-The claim follows from `(Formalism.FourierDecayAlt.P.radical_parametrisation k p ρ).1 h`.
+A detailed English derivation is pending.
 -/
 theorem rn_inj {x y : U.RC k p ρ} (h : U.Rn k p ρ x = U.Rn k p ρ y) : x = y :=
   (Formalism.FourierDecayAlt.P.radical_parametrisation k p ρ).1 h
 
 /- English proof (translation)
-Apply `rn_inj` to reduce the goal to its premises. Rewrite using `[← StabilizerDisintegration.HC.rn_mul, ← StabilizerDisintegration.HC.rn_mul, ← Matrix.mul_assoc, PBM.rn_mul_neg, Matrix.one_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem mulC_neg_cancel (d x : U.RC k p ρ) : StabilizerDisintegration.HC.mulC d (StabilizerDisintegration.HC.mulC (-d) x) = x := by
   apply rn_inj
   rw [← StabilizerDisintegration.HC.rn_mul, ← StabilizerDisintegration.HC.rn_mul, ← Matrix.mul_assoc, PBM.rn_mul_neg, Matrix.one_mul]
 
 /- English proof (translation)
-Use `mulC_neg_cancel (-d) x` as an intermediate fact. Rewrite `this` using `[neg_neg]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem neg_mulC_cancel (d x : U.RC k p ρ) : StabilizerDisintegration.HC.mulC (-d) (StabilizerDisintegration.HC.mulC d x) = x := by
   have := mulC_neg_cancel (-d) x
@@ -191,9 +189,9 @@ def yA (q : Mt k ρ × Mt k ρ) : B.Mat k ρ :=
 def dOf (d0 : U.RC k p ρ) (q : Mt k ρ × Mt k ρ) : U.RC k p ρ := LeftFubiniLemmas.rcAct (yA q) d0
 
 /- English proof (translation)
-Unfold `dOf LeftFubiniLemmas.rcAct yA`. Use `Continuous.prodMk ?_ continuous_const` and prove the remaining obligations. Use `continuous_pi fun v => continuous_pi fun a => ?_` and prove the remaining obligations. Establish `hq1 : Continuous (fun q : Mt k ρ × Mt k ρ => (Matrix.of q.1 : B.Mat k ρ))` using `continuous_fst`. Establish `hq2 : Continuous (fun q : Mt k ρ × Mt k ρ => (Matrix.of q.2 : B.Mat k ρ))` using `continuous_snd`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h : Continuous (fun q : Mt k ρ × Mt k ρ => ((Hpk k ρ * (Matrix.of q.1 : B.Mat k ρ)ᴴ * Hpk k ρ) * (Hpk k ρ * (Matrix.of q.2 : B.Mat k ρ)ᴴ * Hpk k ρ)) * Matrix.of d0.1)` using `(((continuous_const.matrix_mul hq1.matrix_conjTranspose).matrix_mul continuous_const).matrix_mul ((continuous_const.matrix_mul hq2.matrix_conjTranspose).matrix_mul continuous_const)).matrix_mul continuous_const`. Conclude with `(h.matrix_elem v a)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cont_dOf (d0 : U.RC k p ρ) : Continuous (dOf (k := k) d0) := by
   unfold dOf LeftFubiniLemmas.rcAct yA
@@ -226,9 +224,9 @@ theorem shearE_apply (d0 : U.RC k p ρ) (x : XP k p ρ) :
     shearE d0 x = (x.1, StabilizerDisintegration.HC.mulC (-(dOf d0 x.1)) x.2) := rfl
 
 /- English proof (translation)
-Use `Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite Bj.haarW` as an intermediate fact. Use `Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite Bj.haarN` as an intermediate fact. Use `Formalism.FourierDecayAlt.P.Dx2.SplitF.sf_RC (k := k) p ρ` as an intermediate fact. Use `bsRC (k := k) (p := p) (ρ := ρ)` as an intermediate fact. Establish `hg : Measurable (Function.uncurry fun (q : Mt k ρ × Mt k ρ) (c : U.RC k p ρ) => StabilizerDisintegration.HC.mulC (-(dOf d0 q)) c)` using `(cont_mulC_left (cont_dOf d0).neg).measurable`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(MeasurePreserving.id (Bj.μW.prod Bj.μN)).skew_product hg (Filter.Eventually.of_forall fun q => (mp_mulC (-(dOf d0 q))).map_eq)` as an intermediate fact. Unfold `muXP`. Conclude with `this`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem mp_shearE (Bj : B.RealPlaceData k ρ Wp Wq) (d0 : U.RC k p ρ) :
     MeasurePreserving (shearE d0) (muXP Bj) (muXP Bj) := by
@@ -246,7 +244,7 @@ theorem mp_shearE (Bj : B.RealPlaceData k ρ Wp Wq) (d0 : U.RC k p ρ) :
 variable {Bj : B.RealPlaceData k ρ Wp Wq}
 
 /- English proof (translation)
-Unfold `yA`. Rewrite using `[Formalism.FourierDecayAlt.P.B6.inv_eq_hermitian_form_conjTranspose hq.1.1, Formalism.FourierDecayAlt.P.B6.inv_eq_hermitian_form_conjTranspose hq.2.1]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem yA_eq {q : Mt k ρ × Mt k ρ}
     (hq : (Matrix.of q.1 : B.Mat k ρ) ∈ UWset k ρ Bj.z ∧ (Matrix.of q.2 : B.Mat k ρ) ∈ Nset k ρ) :
@@ -255,7 +253,7 @@ theorem yA_eq {q : Mt k ρ × Mt k ρ}
   rw [Formalism.FourierDecayAlt.P.B6.inv_eq_hermitian_form_conjTranspose hq.1.1, Formalism.FourierDecayAlt.P.B6.inv_eq_hermitian_form_conjTranspose hq.2.1]
 
 /- English proof (translation)
-Rewrite using `[yA_eq hq]`. Conclude with `Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul (Formalism.QuantumDeterminants.WeylGroupFacts.uh_inv hq.1.1) (Formalism.QuantumDeterminants.WeylGroupFacts.uh_inv hq.2.1)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem yA_unitary {q : Mt k ρ × Mt k ρ}
     (hq : (Matrix.of q.1 : B.Mat k ρ) ∈ UWset k ρ Bj.z ∧ (Matrix.of q.2 : B.Mat k ρ) ∈ Nset k ρ) :
@@ -264,13 +262,13 @@ theorem yA_unitary {q : Mt k ρ × Mt k ρ}
   exact Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul (Formalism.QuantumDeterminants.WeylGroupFacts.uh_inv hq.1.1) (Formalism.QuantumDeterminants.WeylGroupFacts.uh_inv hq.2.1)
 
 /- English proof (translation)
-Establish `hsplit : dOf d0 q = LeftFubiniLemmas.rcAct ((Matrix.of q.1 : B.Mat k ρ)⁻¹) (LeftFubiniLemmas.rcAct ((Matrix.of q.2 : B.Mat k ρ)⁻¹) d0)`. Unfold `dOf`. Rewrite using `[yA_eq hq]`. Unfold `LeftFubiniLemmas.rcAct`. Simplify using `only [Matrix.of_apply, Matrix.mul_assoc]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Rewrite using `[hsplit, LeftFubiniLemmas.psi_right_action_comm k p ρ Bj.z _ _ hz (Formalism.FourierDecayAlt.P.BigCellInversePair.uw_inv hq.1)]`. Use `set ν := (Matrix.of q.2 : B.Mat k ρ) with hν`. Establish `hνi : ν⁻¹ ∈ Nset k ρ` using `Formalism.QuantumDeterminants.WeylGroupFacts.mem_n_inv hq.2`. Establish `hu : (ν⁻¹)ᴴ * Hpk k ρ * ν⁻¹ = Hpk k ρ` using `Formalism.QuantumDeterminants.WeylGroupFacts.uh_inv hq.2.1`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `LeftFubiniLemmas.embedded_group_right_action k p ρ ν⁻¹ d0 hu`. Establish `hz0` using `LeftFubiniLemmas.inWb_liftVec (p := p) hz`. Establish `hE : U.embG k p ρ ν⁻¹ ∈ QuantumDeterminants.Nset k (p + ρ)` using `LeftFubiniLemmas.embG_nset hνi`. Establish `h1` using `congrArg (psi k (p + ρ) (liftVec k p ρ Bj.z) cStd) e`. Rewrite `h1` using `[PBG.psi_mul_nset _ hz0 _ hE (LeftFubiniLemmas.rn_nset d0), PBG.psi_mul_nset _ hz0 _ (LeftFubiniLemmas.rn_nset _) hE]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hne : psi k (p + ρ) (liftVec k p ρ Bj.z) cStd (U.embG k p ρ ν⁻¹) ≠ 0` using `Complex.exp_ne_zero _`. Use `mul_left_cancel₀ hne (h1.trans (mul_comm _ _))` as an intermediate fact. Conclude with `this.symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem psi_dOf (hz : inWb k ρ Bj.z) {q : Mt k ρ × Mt k ρ}
     (hq : (Matrix.of q.1 : B.Mat k ρ) ∈ UWset k ρ Bj.z ∧ (Matrix.of q.2 : B.Mat k ρ) ∈ Nset k ρ) (d0 : U.RC k p ρ) :
@@ -297,9 +295,9 @@ theorem psi_dOf (hz : inWb k ρ Bj.z) {q : Mt k ρ × Mt k ρ}
   exact this.symm
 
 /- English proof (translation)
-Rewrite using `[shearE_apply]`. Establish `hx' : GoodP Bj (x.1, StabilizerDisintegration.HC.mulC (-(dOf d0 x.1)) x.2)` using `hx`. Unfold `sP`. Rewrite using `[if_pos hx, if_pos hx']`. Simplify using `only []`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.mul_assoc, ← yA_eq hx, LeftFubiniLemmas.embedded_group_right_action k p ρ _ d0 (yA_unitary hx), ← Matrix.mul_assoc]`. Use `congr 1`. Rewrite using `[rn_neg_eq_inv x.2, rn_neg_eq_inv (StabilizerDisintegration.HC.mulC _ x.2), ← StabilizerDisintegration.HC.rn_mul, Matrix.mul_inv_rev, rn_neg_eq_inv (dOf d0 x.1), Matrix.nonsing_inv_nonsing_inv _ (Formalism.QuantumDeterminants.WeylGroupFacts.isUnit_of_uh (LeftFubiniLemmas.rn_nset …`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem leftFactor_mul_eq_shear {x : XP k p ρ} (hx : GoodP Bj x) (d0 : U.RC k p ρ) :
     sP Bj x * U.Rn k p ρ d0 = sP Bj (shearE d0 x) := by
@@ -315,9 +313,9 @@ theorem leftFactor_mul_eq_shear {x : XP k p ρ} (hx : GoodP Bj x) (d0 : U.RC k p
   rfl
 
 /- English proof (translation)
-Rewrite using `[shearE_apply]`. Unfold `cP`. Simplify using `only []`. Rewrite using `[psi_rn_mulC _ hz, ← psi_dOf hz hx d0]`. Establish `hz0` using `LeftFubiniLemmas.inWb_liftVec (p := p) hz`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : psi k (p + ρ) (liftVec k p ρ Bj.z) cStd (U.Rn k p ρ (dOf d0 x.1)) * psi k (p + ρ) (liftVec k p ρ Bj.z) cStd (U.Rn k p ρ (-(dOf d0 x.1))) = 1`. Rewrite using `[← PBG.psi_mul_nset _ hz0 _ (LeftFubiniLemmas.rn_nset _) (LeftFubiniLemmas.rn_nset _), PBM.rn_mul_neg, Formalism.FourierDecayAlt.P.BesselCapelliCommutation.psi_one hz0]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1, one_mul]`. Use `_ = _ := by ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem characterProduct_shear (hz : inWb k ρ Bj.z) {x : XP k p ρ} (hx : GoodP Bj x) (d0 : U.RC k p ρ) :
     cP Bj x = psi k (p + ρ) (liftVec k p ρ Bj.z) cStd (U.Rn k p ρ d0) * cP Bj (shearE d0 x) := by
@@ -337,9 +335,9 @@ theorem characterProduct_shear (hz : inWb k ρ Bj.z) {x : XP k p ρ} (hx : GoodP
     _ = _ := by ring
 
 /- English proof (translation)
-Use `Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite Bj.haarW` as an intermediate fact. Use `Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite Bj.haarN` as an intermediate fact. Use `Formalism.FourierDecayAlt.P.Dx2.SplitF.sf_RC (k := k) p ρ` as an intermediate fact. Establish `w1` using `Formalism.FourierDecayAlt.P.B5.haar_ae Bj.haarW`. Establish `w2` using `Formalism.FourierDecayAlt.P.B5.haar_ae Bj.haarN`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `muXP`. Use `filter_upwards [Measure.quasiMeasurePreserving_fst.ae (Measure.quasiMeasurePreserving_fst.ae w1), Measure.quasiMeasurePreserving_fst.ae (Measure.quasiMeasurePreserving_snd.ae w2)] with x a b`. Conclude with `⟨a, b⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ae_goodP (Bj : B.RealPlaceData k ρ Wp Wq) : ∀ᵐ x ∂(muXP (p := p) Bj), GoodP Bj x := by
   have := Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite Bj.haarW
@@ -353,15 +351,15 @@ theorem ae_goodP (Bj : B.RealPlaceData k ρ Wp Wq) : ∀ᵐ x ∂(muXP (p := p) 
   exact ⟨a, b⟩
 
 /- English proof (translation)
-Substitute `e` using the available equality. Simplify using `[Formalism.FourierDecayAlt.P.Dx2.MN.castM_rfl]`.
+Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem castM_mul {a b : ℕ} (e : a = b) (g h : B.Mat k a) : D.castM e (g * h) = D.castM e g * D.castM e h := by
   subst e; simp [Formalism.FourierDecayAlt.P.Dx2.MN.castM_rfl]
 
 /- English proof (translation)
-Unfold `pbF`. Rewrite using `[← (mp_shearE Bj d0).integral_comp' (pbI Bj B0 e H g), ← integral_smul]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [ae_goodP Bj] with x hx`. Unfold `pbI`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.mul_assoc, ← castM_mul, leftFactor_mul_eq_shear hx d0, characterProduct_shear hz hx d0, mul_smul]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem pbF_left_rn (B0 : B.RealPlaceData k n Wp Wq) (e : p + ρ = n) (hz : inWb k ρ Bj.z)
     (H : B.Mat k n → (Wq →L[ℂ] Wp)) (d0 : U.RC k p ρ) (g : B.Mat k n) :

@@ -18,7 +18,7 @@ variable (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ)
 
 omit [Fintype Ψ] [DecidableEq Ψ] in
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 -/
 theorem weylAct_comp (v w : Ψ → Perm (Fin N)) : weylAct Ψ N v ∘ weylAct Ψ N w = weylAct Ψ N (v * w) := by
   funext p
@@ -26,7 +26,7 @@ theorem weylAct_comp (v w : Ψ → Perm (Fin N)) : weylAct Ψ N v ∘ weylAct Ψ
 
 omit [DecidableEq Ψ] in
 /- English proof (translation)
-Unfold `weylSign`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.mul_apply, Perm.sign_mul]`. Use `push_cast`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -40,7 +40,7 @@ theorem weylSign_mul (v w : Ψ → Perm (Fin N)) : weylSign Ψ N (v * w) = weylS
 
 omit [DecidableEq Ψ] in
 /- English proof (translation)
-Unfold `weylSign`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_eq_one fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[← Int.cast_mul, ← Units.val_mul, Int.units_mul_self]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem weylSign_mul_self (w : Ψ → Perm (Fin N)) : weylSign Ψ N w * weylSign Ψ N w = 1 := by
   unfold weylSign
@@ -50,9 +50,9 @@ theorem weylSign_mul_self (w : Ψ → Perm (Fin N)) : weylSign Ψ N w * weylSign
   simp
 
 /- English proof (translation)
-Unfold `flagInt antisym`. Repeatedly rewrite using `[rename_rename, weylAct_comp]`. Establish `hs : ∀ v, weylSign Ψ N v = weylSign Ψ N w * weylSign Ψ N (v * w)` using `fun v => by`. Rewrite using `[weylSign_mul, mul_comm (weylSign Ψ N v), ← mul_assoc, weylSign_mul_self, one_mul]`. Rewrite using `[Finset.sum_congr rfl fun v _ => by rw [hs v, mul_smul], ← Finset.smul_sum, coeff_smul, smul_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Conclude with `Equiv.sum_comp (Equiv.mulRight w) (fun u => weylSign Ψ N u • rename (weylAct Ψ N u) Q)`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem flagInt_rename (w : Ψ → Perm (Fin N)) (Q : RootPoly Ψ N) :
     flagInt Ψ N (rename (weylAct Ψ N w) Q) = weylSign Ψ N w * flagInt Ψ N Q := by
@@ -67,9 +67,9 @@ theorem flagInt_rename (w : Ψ → Perm (Fin N)) (Q : RootPoly Ψ N) :
 variable (j : ℕ)
 
 /- English proof (translation)
-Unfold `muPoly`. Rewrite using `[map_sum, Finset.sum_filter, Finset.sum_filter]`. Simplify using `only [rename_X]`. Rewrite using `[← (Equiv.prodCongrRight fun τ => w τ).sum_comp (fun q => if ¬ (q.2 : ℕ) < j then (X q : RootPoly Ψ N) else 0)]`. Use `Finset.sum_congr rfl fun ⟨τ, i⟩ _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [weylAct, Equiv.prodCongrRight_apply, hw τ i]`.
+Simplify using the standard rewrite rules.
 -/
 theorem muPoly_rename (w : Ψ → Perm (Fin N)) (hw : IsBlockPerm Ψ N j w) :
     rename (weylAct Ψ N w) (muPoly Ψ N j) = muPoly Ψ N j := by
@@ -94,11 +94,11 @@ end FlagIntProjection
 open FlagIntProjection in
 
 /- English proof (translation)
-Introduce `Ψ _ _ N j hj P`. Establish `key` using `hU Ψ N j hj (flagIntMul Ψ N (muPoly Ψ N j ^ dimN Ψ N j)) (fun w hw P => by show flagInt Ψ N (_ * rename _ P) = _ * flagInt Ψ N (_ * P)`. Establish `h : muPoly Ψ N j ^ dimN Ψ N j * rename (weylAct Ψ N w) P = rename (weylAct Ψ N w) (muPoly Ψ N j ^ dimN Ψ N j * P)`. Rewrite using `[map_mul, map_pow, muPoly_rename Ψ N j w hw]`. Rewrite using `[h, flagInt_rename])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(fun b hb => hD Ψ N j hj b hb) P`. Express the relevant statement in the definitionally equal form `flagInt Ψ N (_ * P) = flagInt Ψ N (_ * monomial _ 1) * blockInt Ψ N j P at key`. Rewrite using `[key, hP Ψ N j hj, hO N j hj]`. Unfold `grassProdDeg dimN`. Rewrite using `[mul_pow, ← pow_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form.
 
-Put the polynomial expressions in normal form.
+A detailed English derivation is pending.
 -/
 theorem FlagIntProjection.proof (hU : BlockAltUnique.Statement) (hD : FlagIntMuDegree.Statement)
     (hP : FlagIntMuProd.Statement) (hO : FlagIntMuOne.Statement) : FlagIntProjection.Statement := by

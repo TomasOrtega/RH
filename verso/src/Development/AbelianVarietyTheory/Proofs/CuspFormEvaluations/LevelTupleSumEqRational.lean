@@ -19,14 +19,14 @@ def Gen (Λ : Submodule (𝓞 E) (Fin r → E)) (t : Fin r → Fin r → E) : Pr
 
 omit [IsCMField E] in
 /- English proof (translation)
-The claim follows from `Λ.smul_mem c hv`.
+A detailed English derivation is pending.
 -/
 theorem coe_smul_mem (Λ : Submodule (𝓞 E) (Fin r → E)) (c : 𝓞 E) {v : Fin r → E} (hv : v ∈ Λ) :
     (c : E) • v ∈ Λ := Λ.smul_mem c hv
 
 omit [IsCMField E] in
 /- English proof (translation)
-Rewrite using `[Nat.cast_smul_eq_nsmul]`. Conclude with `nsmul_mem hv n`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nat_smul_mem (Λ : Submodule (𝓞 E) (Fin r → E)) (n : ℕ) {v : Fin r → E} (hv : v ∈ Λ) :
     (n : E) • v ∈ Λ := by
@@ -35,11 +35,9 @@ theorem nat_smul_mem (Λ : Submodule (𝓞 E) (Fin r → E)) (n : ℕ) {v : Fin 
 
 omit [IsCMField E] in
 /- English proof (translation)
-Use `⟨fun j => ?_, fun u hu => ?_⟩` and prove the remaining obligations. Establish `h1 : (25 : E) • (t j - t' j) ∈ Λ` using `by simpa using nat_smul_mem Λ 25 (hs j)`. Establish `: (25 : E) • t' j = (25 : E) • t j - (25 : E) • (t j - t' j)` using `by module`. Rewrite using `[this]`. Conclude with `Λ.sub_mem (h.1 j) h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨c, y, hy, rfl⟩` from `h.2 u hu`. Use `⟨c, y + ∑ j, (c j : E) • ((5 : E) • (t j - t' j)), Λ.add_mem hy (Λ.sum_mem fun j _ => coe_smul_mem Λ _ (by simpa using nat_smul_mem Λ 5 (hs j))), ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add, Finset.smul_sum, add_comm ((5 : E) • y), ← add_assoc, ← Finset.sum_add_distrib]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
-
-Use `module`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem Gen.of_sub {Λ : Submodule (𝓞 E) (Fin r → E)} {t t' : Fin r → Fin r → E} (h : Gen Λ t)
     (hs : ∀ j, t j - t' j ∈ Λ) : Gen Λ t' := by
@@ -58,11 +56,11 @@ theorem Gen.of_sub {Λ : Submodule (𝓞 E) (Fin r → E)} {t t' : Fin r → Fin
 
 omit [IsCMField E] in
 /- English proof (translation)
-Establish `: Module.Finite (𝓞 E) Λ` using `Module.Finite.iff_fg.2 hΛ`. Establish `: Module.Finite ℤ Λ` using `Module.Finite.trans (𝓞 E) Λ`. Establish `: AddGroup.FG Λ` using `Module.Finite.iff_addGroup_fg.1 inferInstance`. Use `AddSubgroup.finiteIndex_range_nsmulAddMonoidHom_of_fg Λ (n := 25) (by norm_num)` as an intermediate fact. Use `⟨Set.range fun q : Λ ⧸ (nsmulAddMonoidHom (α := Λ) 25).range => (25 : E)⁻¹ • ((q.out : Λ) : Fin r → E), Set.finite_range _, fun v hv => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨⟨z, y, hy⟩, hz⟩` from `QuotientAddGroup.mk_out_eq_mul (nsmulAddMonoidHom (α := Λ) 25).range ⟨_, hv⟩`. Use `⟨_, ⟨QuotientAddGroup.mk ⟨_, hv⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [hz]`. Substitute `hy` using the available equality. Establish `: v - (25 : E)⁻¹ • ((25 : E) • v + (25 : ℕ) • (y : Fin r → E)) = -(y : Fin r → E)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Substitute using the available equality. Establish an intermediate fact.
 
-Rewrite using `[← Nat.cast_smul_eq_nsmul E, Nat.cast_ofNat, ← smul_add, inv_smul_smul₀ (by norm_num)]`. Normalize the expressions using the abelian group laws. Simplify using `only [nsmulAddMonoidHom_apply, Submodule.coe_add, AddSubmonoidClass.coe_nsmul]`. Rewrite using `[this]`. Conclude with `Λ.neg_mem y.2`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_finite_res (Λ : Submodule (𝓞 E) (Fin r → E)) (hΛ : Λ.FG) :
     ∃ S : Set (Fin r → E), S.Finite ∧ ∀ v, (25 : E) • v ∈ Λ → ∃ s ∈ S, v - s ∈ Λ := by
@@ -85,11 +83,11 @@ theorem exists_finite_res (Λ : Submodule (𝓞 E) (Fin r → E)) (hΛ : Λ.FG) 
 
 omit [IsCMField E] in
 /- English proof (translation)
-Take `⟨S, hS, hres⟩` from `exists_finite_res Λ hΛ`. Set `ρ : (Fin r → E) → (Fin r → E)` to `fun v => (Submodule.Quotient.mk (p := Λ) v).out`. Establish `hρ : ∀ v, v - ρ v ∈ Λ` using `fun v => (Submodule.Quotient.eq Λ).1 (Submodule.Quotient.mk_out _).symm`. Establish `hρe : ∀ v w, v - w ∈ Λ → ρ v = ρ w` using `fun v w h => by`. Simplify using `only [ρ, (Submodule.Quotient.eq Λ).2 h]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hfin : {t : Fin r → Fin r → E | Gen Λ t ∧ ∀ j, ρ (t j) = t j}.Finite`. Use `(Set.Finite.pi' fun _ : Fin r => hS.image ρ).subset ?_` and prove the remaining obligations. Introduce and unpack `t ⟨hg, ht⟩ j`. Take `⟨s, hs, h⟩` from `hres _ (hg.1 j)`. Conclude with `⟨s, hs, by rw [← hρe _ _ h, ht]⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `⟨hfin.toFinset, fun t ht => (hfin.mem_toFinset.1 ht).1, fun t ht => ⟨fun j => ρ (t j), ⟨hfin.mem_toFinset.2 ⟨ht.of_sub fun j => hρ _, fun j => (hρe _ _ (hρ _)).symm⟩, fun j => hρ _⟩, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `t' ⟨h1, h2⟩`. Use function extensionality and compare the values at `j`. Rewrite using `[hρe _ _ (h2 j), (hfin.mem_toFinset.1 h1).2 j]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_reps (Λ : Submodule (𝓞 E) (Fin r → E)) (hΛ : Λ.FG) :
     ∃ 𝒯 : Finset (Fin r → Fin r → E), (∀ t ∈ 𝒯, Gen Λ t) ∧
@@ -111,7 +109,7 @@ theorem exists_reps (Λ : Submodule (𝓞 E) (Fin r → E)) (hΛ : Λ.FG) :
   rw [hρe _ _ (h2 j), (hfin.mem_toFinset.1 h1).2 j]
 
 /- English proof (translation)
-Take `⟨τ⟩ : Nonempty X.Ψ` from `Fintype.card_pos_iff.1 (QuadraticCoefficientForms.card_Psi_pos (X := X))`. Establish `h` using `A.T.dim_conj τ.1`. Rewrite `h` using `[A.dim_pos τ, A.dim_neg τ]`. Use `X.p0_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem torus_r {X : Data E r} {x : Frame X.Ψ r} (A : TorusAt X x) : A.T.r = r := by
   obtain ⟨τ⟩ : Nonempty X.Ψ := Fintype.card_pos_iff.1 (QuadraticCoefficientForms.card_Psi_pos (X := X))
@@ -121,11 +119,11 @@ theorem torus_r {X : Data E r} {x : Frame X.Ψ r} (A : TorusAt X x) : A.T.r = r 
   omega
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `v hv`. Assume the negation of the conclusion as `hne`. Establish `: Nonempty X.Ψ` using `Fintype.card_pos_iff.1 (QuadraticCoefficientForms.card_Psi_pos (X := X))`. Establish `h` using `TorusAtDataPf.norm_sq_eq X x A v`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpos : 0 < ∑ τ : X.Ψ, X.c τ * X.maj x τ (Data.emb τ.1 v)`. Use `Finset.sum_pos (fun τ _ => mul_pos ?_ ?_) Finset.univ_nonempty` and prove the remaining obligations. Establish `: τ.1 X.ξ0 ≠ 0` using `(map_ne_zero τ.1).2 X.ξ0_ne`. Unfold `Data.c`. Check the signs of the components of the expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 
-Use `X.maj_pos hx τ fun h0 => hne (funext fun a => ?_)` and prove the remaining obligations. Conclude with `(map_eq_zero τ.1).1 (congrFun h0 a)`. Rewrite `hpos` using `[← h, hv]`. Simplify using `at hpos`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem map_injective {X : Data E r} {x : Frame X.Ψ r} (hx : x ∈ X.dom) (A : TorusAt X x) :
     Function.Injective A.φ := by
@@ -145,21 +143,21 @@ theorem map_injective {X : Data E r} {x : Frame X.Ψ r} (hx : x ∈ X.dom) (A : 
   simp at hpos
 
 /- English proof (translation)
-Rewrite using `[Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul, map_nsmul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_nat_smul {X : Data E r} {x : Frame X.Ψ r} (A : TorusAt X x) (n : ℕ) (v : Fin r → E) :
     A.φ ((n : E) • v) = (n : ℂ) • A.φ v := by
   rw [Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul, map_nsmul]
 
 /- English proof (translation)
-Simplify `map_nat_smul A 5 v` using `only [Nat.cast_ofNat]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem map_five {X : Data E r} {x : Frame X.Ψ r} (A : TorusAt X x) (v : Fin r → E) :
     A.φ ((5 : E) • v) = (5 : ℂ) • A.φ v := by
   simpa only [Nat.cast_ofNat] using map_nat_smul A 5 v
 
 /- English proof (translation)
-Rewrite using `[show (5 : ℂ) ^ 2 = 25 by norm_num]`. Simplify `map_nat_smul A 25 v` using `only [Nat.cast_ofNat]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem map_twentyfive {X : Data E r} {x : Frame X.Ψ r} (A : TorusAt X x) (v : Fin r → E) :
     A.φ ((25 : E) • v) = ((5 : ℂ) ^ 2) • A.φ v := by
@@ -167,7 +165,7 @@ theorem map_twentyfive {X : Data E r} {x : Frame X.Ψ r} (A : TorusAt X x) (v : 
   simpa only [Nat.cast_ofNat] using map_nat_smul A 25 v
 
 /- English proof (translation)
-Rewrite using `[A.lat]`. Conclude with `⟨fun ⟨w, hw, h⟩ => map_injective hx A h ▸ hw, fun h => ⟨v, h, rfl⟩⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem map_mem_iff {X : Data E r} {x : Frame X.Ψ r} (hx : x ∈ X.dom) (A : TorusAt X x) (v : Fin r → E) :
     A.φ v ∈ A.T.L ↔ v ∈ X.Λ := by
@@ -175,11 +173,11 @@ theorem map_mem_iff {X : Data E r} {x : Frame X.Ψ r} (hx : x ∈ X.dom) (A : To
   exact ⟨fun ⟨w, hw, h⟩ => map_injective hx A h ▸ hw, fun h => ⟨v, h, rfl⟩⟩
 
 /- English proof (translation)
-Establish `key : ∀ (c : Fin r → 𝓞 E) (y : Fin r → E), A.φ (∑ j, (c j : E) • ((25 : E) • t j) + (5 : E) • y) = ∑ j, act (c j) (((5 : ℂ) ^ 2) • A.φ (t j)) + (5 : ℂ) • A.φ y`. Introduce `c y`. Rewrite using `[map_add, map_sum, map_five]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [A.act_eq, map_twentyfive]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `and_congr (forall_congr' fun j => by rw [← map_twentyfive, map_mem_iff hx]) ⟨fun h z hz => ?_, fun h u hu => ?_⟩` and prove the remaining obligations. Take `⟨u, hu, rfl⟩` from `(A.lat z).1 hz`. Take `⟨c, y, hy, rfl⟩` from `h u hu`. Conclude with `⟨c, A.φ y, (map_mem_iff hx A y).2 hy, key c y⟩`. Take `⟨c, y, hy, e⟩` from `h _ ((map_mem_iff hx A u).2 hu)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw, rfl⟩` from `(A.lat y).1 hy`. Conclude with `⟨c, w, hw, map_injective hx A (by rw [key, e])⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem gen_iff {X : Data E r} {x : Frame X.Ψ r} (hx : x ∈ X.dom) (A : TorusAt X x)
     (t : Fin r → Fin r → E) :
@@ -201,21 +199,19 @@ theorem gen_iff {X : Data E r} {x : Frame X.Ψ r} (hx : x ∈ X.dom) (A : TorusA
     exact ⟨c, w, hw, map_injective hx A (by rw [key, e])⟩
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Rewrite using `[← finsum_mem_coe_finset]`. Use `symm`. Use `finsum_mem_eq_of_bijOn (fun t j => ZSpan.fract A.T.b (A.φ (t j))) ⟨?_, ?_, ?_⟩ ?_` and prove the remaining obligations. Introduce `t ht`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hl : ∀ j, ∃ v ∈ X.Λ, A.φ v = (ZSpan.floor A.T.b (A.φ (t j)) : Vsp A.T.dim)` using `fun j => (A.lat _).1 (ZSpan.floor A.T.b (A.φ (t j))).2`. Use `choose v hv hv' using hl`. Establish `e : ∀ j, ZSpan.fract A.T.b (A.φ (t j)) = A.φ (t j - v j)` using `fun j => by`. Rewrite using `[ZSpan.fract_apply, map_sub, hv']`. Use `⟨fun j => ZSpan.fract_mem_fundamentalDomain _ _, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [e]`. Conclude with `(gen_iff hx A _).1 ((h1 t ht).of_sub fun j => by simpa using hv j)`. Introduce `t ht t' ht' h`. Use `((h2 t (h1 t ht)).unique ⟨ht, fun j => by simp⟩ ⟨ht', fun j => ?_⟩)` and prove the remaining obligations. Use `(ZSpan.fract_eq_fract A.T.b _ _).1 (congrFun h j).symm` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← map_mem_iff hx A, map_sub, sub_eq_neg_add]`. Conclude with `this`. Introduce and unpack `a ⟨ha, hb, hc⟩ choose v hv hv' using fun j => (A.lat _).1 (hb j)`. Establish `e : ∀ j, A.φ ((25 : E)⁻¹ • v j) = a j` using `fun j => by`. Establish `h5 : ((5 : ℂ) ^ 2) ≠ 0` using `by norm_num`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `smul_right_injective _ h5 ?_` and prove the remaining obligations. Simplify using `only`. Rewrite using `[← map_twentyfive, smul_inv_smul₀ (by norm_num), hv']`. Establish `hg : Gen X.Λ fun j => (25 : E)⁻¹ • v j` using `(gen_iff hx A _).2 (by simp only [e]; exact ⟨hb, hc⟩)`. Take `⟨t', ⟨ht', hs⟩, -⟩` from `h2 _ hg`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨t', ht', funext fun j => ?_⟩` and prove the remaining obligations. Use `show ZSpan.fract A.T.b (A.φ (t' j)) = a j`. Rewrite using `[← (ZSpan.fract_eq_self (b := A.T.b)).2 (ha j), ZSpan.fract_eq_fract, ← e j, ← sub_eq_neg_add, ← map_sub]`. Conclude with `(map_mem_iff hx A _).2 (hs j)`. Introduce `t _`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `congr 1`. Use `pointwiseNormSq_add_period A.T (n := 1) A.s_mem (γ := fun _ => (ZSpan.floor A.T.b (A.φ (t j)) : Vsp A.T.dim)) (fun _ => (ZSpan.floor A.T.b (A.φ (t j))).2) (fun _ => ZSpan.fract A.T.b (A.φ (t j)))` as an intermediate fact. Rewrite using `[← this]`. Use `congr 1`.
-
-Use function extensionality and compare the values at `k`. Simplify using `[ZSpan.fract_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_eq {X : Data E r} {x : Frame X.Ψ r} (hx : x ∈ X.dom) (A : TorusAt X x)
     (𝒯 : Finset (Fin r → Fin r → E)) (h1 : ∀ t ∈ 𝒯, Gen X.Λ t)

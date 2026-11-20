@@ -7,11 +7,11 @@ namespace GlobalTheory
 open MeasureTheory Filter Topology in
 
 /- English proof (translation)
-Use `haveI : CompleteSpace R := FiniteDimensional.complete F R`. Use `⟨⟨Units.isOpenEmbedding_val⟩, ?_⟩` and prove the remaining obligations. Establish `hd` using `hasStrictFDerivAt_pow (𝕜 := F) 2 (x := (1 : R))`. Establish `h2 : (2 : F) ≠ 0` using `two_ne_zero`. Establish `hsurj : LinearMap.range ((((2 : ℕ) • (1 : R) ^ (2 - 1)) • ContinuousLinearMap.id F R : R →L[F] R) : R →ₗ[F] R) = ⊤`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `LinearMap.range_eq_top.2 fun v => ⟨(2 : F)⁻¹ • v, ?_⟩` and prove the remaining obligations. Establish `hc : ((2 : ℕ) • (1 : R) ^ (2 - 1)) = algebraMap F R 2`. Simplify using `[two_smul, map_ofNat, one_add_one_eq_two]`. Simplify using `only [ContinuousLinearMap.coe_smul', ContinuousLinearMap.coe_id', Pi.smul_apply, id_eq, hc, ContinuousLinearMap.coe_coe, smul_eq_mul]`. Rewrite using `[← Algebra.smul_def, smul_smul, mul_inv_cancel₀ h2, one_smul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmap` using `hd.map_nhds_eq_of_surj hsurj`. Rewrite `hmap` using `[one_pow]`. Rewrite using `[← hmap, Filter.eventually_map]`. Conclude with `Filter.Eventually.of_forall fun s => ⟨s, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.isOpenUnits_and_eventually_sq_normed (F : Type) [NontriviallyNormedField F]
     [CompleteSpace F] [CharZero F] (R : Type) [NormedCommRing R] [NormedAlgebra F R]
@@ -38,7 +38,7 @@ theorem _root_.GlobalTheory.isOpenUnits_and_eventually_sq_normed (F : Type) [Non
 open MeasureTheory Filter Topology in
 
 /- English proof (translation)
-Use `haveI : IsModuleTopology F R := isModuleTopologyOfFiniteDimensional`. Conclude with `eq_moduleTopology F R`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.finiteNormedAlgebra_eq_moduleTopology (F : Type) [NontriviallyNormedField F]
     [CompleteSpace F] (R : Type) [N : NormedCommRing R] [NormedAlgebra F R]
@@ -51,11 +51,11 @@ theorem _root_.GlobalTheory.finiteNormedAlgebra_eq_moduleTopology (F : Type) [No
 open MeasureTheory Filter Topology in
 
 /- English proof (translation)
-Establish `h` using `eq_moduleTopology F R`. Set `b` to `Module.finBasis F R`. Use `letI : NormedRing (Matrix (Fin (Module.finrank F R)) (Fin (Module.finrank F R)) F) := Matrix.linftyOpNormedRing`. Use `letI : NormedAlgebra F (Matrix (Fin (Module.finrank F R)) (Fin (Module.finrank F R)) F) := Matrix.linftyOpNormedAlgebra`. Use `letI N : NormedCommRing R := NormedCommRing.induced R _ (Algebra.leftMulMatrix b) (Algebra.leftMulMatrix_injective b)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `letI : NormedAlgebra F R := NormedAlgebra.induced F R _ (Algebra.leftMulMatrix b)`. Establish `key` using `_root_.GlobalTheory.isOpenUnits_and_eventually_sq_normed F R`. Establish `h2` using `_root_.GlobalTheory.finiteNormedAlgebra_eq_moduleTopology F R`. Establish `h3 : τ = N.toMetricSpace.toPseudoMetricSpace.toUniformSpace.toTopologicalSpace` using `h.trans h2.symm`. Rewrite using `[h3]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.isOpenUnits_and_eventually_sq (F : Type) [NontriviallyNormedField F]
     [CompleteSpace F] [CharZero F] (R : Type) [CommRing R] [Algebra F R] [Module.Finite F R]

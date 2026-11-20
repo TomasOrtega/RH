@@ -18,15 +18,15 @@ noncomputable section
 namespace GlobalTheory.AdelicRestrict
 
 /- English proof (translation)
-Use `set h₀ := GlobalTheory.AdelicScalar.finLift V ((finHom V).rangeRestrict h) with eh₀`. Establish `m₀ : h₀ ∈ GfC V` using `GlobalTheory.AdelicScalar.finLift_mem V _`. Establish `s₀ : finHom V h₀ = finHom V h` using `congrArg Subtype.val (GlobalTheory.AdelicScalar.finLift_spec V ((finHom V).rangeRestrict h))`. Use `set k := h₀⁻¹ * h with ek`. Establish `hk1 : finHom V k = 1` using `by rw [ek, map_mul, map_inv, s₀, inv_mul_cancel]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hkE : Lev.finE V k = 1`. Unfold `Lev.finE`. Rewrite using `[MonoidHom.comp_apply, hk1, map_one]`. Establish `hkL : Lev.finE V k ∈ lev D.sp.cm V.gram β L` using `by rw [hkE]; exact Subgroup.one_mem _`. Establish `hχ : Lev.levChi V β L k = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `Lev.levChi`. Rewrite using `[hkE]`. Use `map_one (levChar D.sp.cm V.gram β L)` as an intermediate fact. Establish `e : levFn β L 1 = (levChar D.sp.cm V.gram β L 1 : ℂˣ)` using `rfl`. Rewrite using `[e, this]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hlaw` using `hΨ 1 (Subgroup.one_mem _) k hkL h₀`. Establish `eh : 1 * h₀ * k = h` using `by rw [ek, one_mul, mul_inv_cancel_left]`. Rewrite `hlaw` using `[eh, hχ, one_smul]`. Express the relevant statement in the definitionally equal form `c.ρ h⁻¹ (Ψ (GlobalTheory.AdelicScalar.finLift V ((finHom V).rangeRestrict h))) = Ψ h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← eh₀, hlaw]`. Establish `hρ : c.ρ h⁻¹ = c.ρ k⁻¹`. Rewrite using `[← eh, one_mul, _root_.mul_inv_rev, map_mul, hc.1 _ (inv_mem m₀), mul_one]`. Rewrite using `[hρ]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ext_restrict {D : D7} {V : HSp D} (c : CoefA V) (hc : c.Is) (β : GL (Fin V.rank) (Lev.EAf D))
     (L : LevDat D.host.E ℂ V.rank) (Ψ : GA D V → c.W)

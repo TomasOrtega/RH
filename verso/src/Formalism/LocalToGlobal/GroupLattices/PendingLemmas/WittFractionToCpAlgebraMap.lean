@@ -21,7 +21,7 @@ def zW : ℤ_[p] →+* WW p :=
   (WittVector.map (algebraMap (ZMod p) (kb p))).comp (WittVector.equiv p).symm.toRingHom
 
 /- English proof (translation)
-The claim follows from `(WittVector.map_injective _ (algebraMap (ZMod p) (kb p)).injective).comp (WittVector.equiv p).symm.injective`.
+A detailed English derivation is pending.
 -/
 theorem zW_injective : Function.Injective (zW p) :=
   (WittVector.map_injective _ (algebraMap (ZMod p) (kb p)).injective).comp (WittVector.equiv p).symm.injective
@@ -29,7 +29,7 @@ theorem zW_injective : Function.Injective (zW p) :=
 def zK : ℤ_[p] →+* K0 p := (algebraMap (WW p) (K0 p)).comp (zW p)
 
 /- English proof (translation)
-The claim follows from `(IsFractionRing.injective (WW p) (K0 p)).comp (zW_injective p)`.
+A detailed English derivation is pending.
 -/
 theorem zK_injective : Function.Injective (zK p) :=
   (IsFractionRing.injective (WW p) (K0 p)).comp (zW_injective p)
@@ -37,7 +37,7 @@ theorem zK_injective : Function.Injective (zK p) :=
 def qK : ℚ_[p] →+* K0 p := IsFractionRing.lift (zK_injective p)
 
 /- English proof (translation)
-The claim follows from `IsFractionRing.lift_algebraMap (zK_injective p) x`.
+A detailed English derivation is pending.
 -/
 theorem qK_alg (x : ℤ_[p]) : qK p (algebraMap ℤ_[p] ℚ_[p] x) = zK p x :=
   IsFractionRing.lift_algebraMap (zK_injective p) x
@@ -49,7 +49,7 @@ theorem qK_alg (x : ℤ_[p]) : qK p (algebraMap ℤ_[p] ℚ_[p] x) = zK p x :=
 attribute [local instance] algZW algQK
 
 /- English proof (translation)
-The claim follows from `IsScalarTower.algebraMap_apply ℤ_[p] (WW p) (K0 p) x`.
+A detailed English derivation is pending.
 -/
 theorem algZK_apply (x : ℤ_[p]) : algebraMap ℤ_[p] (K0 p) x = zK p x :=
   IsScalarTower.algebraMap_apply ℤ_[p] (WW p) (K0 p) x
@@ -60,37 +60,35 @@ local instance towerZQK : IsScalarTower ℤ_[p] ℚ_[p] (K0 p) :=
     exact (qK_alg p x).symm
 
 /- English proof (translation)
-The claim follows from `(WittVector.irreducible p).ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem p_ne_zero_alt : (p : WW p) ≠ 0 := (WittVector.irreducible p).ne_zero
 
 /- English proof (translation)
-Rewrite using `[← map_natCast (algebraMap (WW p) (K0 p))]`. Conclude with `fun h => p_ne_zero_alt p ((IsFractionRing.injective (WW p) (K0 p)) (h.trans (map_zero _).symm))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem p_ne_zero_K : (p : K0 p) ≠ 0 := by
   rw [← map_natCast (algebraMap (WW p) (K0 p))]
   exact fun h => p_ne_zero_alt p ((IsFractionRing.injective (WW p) (K0 p)) (h.trans (map_zero _).symm))
 
 /- English proof (translation)
-Use `set β := algebraMap (WW p) (K0 p) b with hβ`. Distinguish the cases in `h0 : β = 0`. Rewrite using `[h0]`. Conclude with `isIntegral_zero`. Set `L : IntermediateField ℚ_[p] (K0 p)` to `IntermediateField.adjoin ℚ_[p] {β}`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: FiniteDimensional ℚ_[p] L` using `IntermediateField.adjoin.finiteDimensional hb.isIntegral`. Establish `hD : IsDiscreteValuationRing (integralClosure ℤ_[p] L)` using `IntCl.isDVR ℤ_[p] ℚ_[p] L inferInstance`. Establish `: IsFractionRing (integralClosure ℤ_[p] L) L` using `IntCl.frac ℤ_[p] ℚ_[p] L`. Set `g : L` to `IntermediateField.AdjoinSimple.gen ℚ_[p] β`. Establish `hg : (g : K0 p) = β` using `IntermediateField.AdjoinSimple.coe_gen ℚ_[p] β`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ρ : integralClosure ℤ_[p] L →+* K0 p` to `(algebraMap L (K0 p)).comp (algebraMap (integralClosure ℤ_[p] L) L)`. Establish `: IsScalarTower ℤ_[p] L (K0 p)` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Establish `key : ∀ c : integralClosure ℤ_[p] L, IsIntegral ℤ_[p] (ρ c)` using `fun c => (c.2 : IsIntegral ℤ_[p] (c : L)).map (IsScalarTower.toAlgHom ℤ_[p] L (K0 p))`. Break down `ValuationRing.isInteger_or_isInteger (integralClosure ℤ_[p] L) g with ⟨c, hc⟩ | ⟨c, hc⟩` into its components or cases. Establish `: ρ c = β` using `by rw [← hg, ← hc]; rfl`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← this]`. Conclude with `key c`. Establish `hρc : ρ c = β⁻¹`. Establish `: ρ c = algebraMap L (K0 p) (g⁻¹)` using `by rw [← hc]; rfl`. Rewrite using `[this, map_inv₀]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `congrArg _ hg`. Distinguish the cases in `hu : IsUnit c`. Take `⟨u, rfl⟩` from `hu`. Establish `: ρ ((u⁻¹ : (integralClosure ℤ_[p] L)ˣ) : integralClosure ℤ_[p] L) = β`. Rewrite using `[map_units_inv, hρc, inv_inv]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← this]`. Conclude with `key _`. It suffices to derive a contradiction. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible (integralClosure ℤ_[p] L)`. Establish `hp0 : ((p : ℕ) : integralClosure ℤ_[p] L) ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `h`. Use `congrArg ρ h` as an intermediate fact. Rewrite `this` using `[map_natCast, map_zero]`. Conclude with `p_ne_zero_K p this`. Take `⟨e, u, hpe⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hp0 hϖ`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hcm : c ∈ maximalIdeal (integralClosure ℤ_[p] L)` using `(mem_maximalIdeal c).2 hu`. Rewrite `hcm` using `[hϖ.maximalIdeal_eq, Ideal.mem_span_singleton]`. Take `⟨d, rfl⟩` from `hcm`. Establish `hz : (ϖ * d) ^ e = ((p : ℕ) : integralClosure ℤ_[p] L) * (((u⁻¹ : (integralClosure ℤ_[p] L)ˣ) : integralClosure ℤ_[p] L) * d ^ e)`. Rewrite using `[hpe, mul_pow]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hζ : IsIntegral (WW p) (ρ (((u⁻¹ : (integralClosure ℤ_[p] L)ˣ) : integralClosure ℤ_[p] L) * d ^ e))` using `(key _).tower_top`. Take `⟨z', hz'⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hζ`. Establish `h1` using `congrArg ρ hz`. Rewrite `h1` using `[map_pow, hρc, map_mul, map_natCast, ← hz', ← map_natCast (algebraMap (WW p) (K0 p)), ← map_mul]`.
-
-Establish `h2 : algebraMap (WW p) (K0 p) (b ^ e * ((p : WW p) * z')) = 1`. Rewrite using `[map_mul, ← h1, map_pow, ← hβ, inv_pow, mul_inv_cancel₀ (pow_ne_zero _ h0)]`. Establish `h3 : b ^ e * ((p : WW p) * z') = 1` using `IsFractionRing.injective (WW p) (K0 p) (h2.trans (map_one _).symm)`. Establish `h4 : (p : WW p) * (b ^ e * z') = 1` using `by rw [← h3]; ring`. Conclude with `(WittVector.irreducible p).not_isUnit (IsUnit.of_mul_eq_one _ h4)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integral_of_alg (b : WW p) (hb : IsAlgebraic ℚ_[p] (algebraMap (WW p) (K0 p) b)) :
     IsIntegral ℤ_[p] (algebraMap (WW p) (K0 p) b) := by
@@ -149,7 +147,7 @@ theorem integral_of_alg (b : WW p) (hb : IsAlgebraic ℚ_[p] (algebraMap (WW p) 
       exact (WittVector.irreducible p).not_isUnit (IsUnit.of_mul_eq_one _ h4)
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact Bl.general_b_fact_third.goal1 .. | (apply Bl.general_b_fact_third.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_third.goal1 <;> assumption) | (apply @Bl.general_b_fact_third.goal1 <;> assumption) | (intros; apply @Bl.general_b_fact_third.goal1 <;> assumpt …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem norm_le_one_of_root {K : Type*} [NormedField K] [IsUltrametricDist K] (P : K[X]) (hm : P.Monic)
     (hc : ∀ i, ‖P.coeff i‖ ≤ 1) (x : K) (hx : P.eval x = 0) : ‖x‖ ≤ 1 := by
@@ -160,7 +158,7 @@ abbrev Kalg : IntermediateField ℚ_[p] (K0 p) := algebraicClosure ℚ_[p] (K0 p
 def phi : Kalg p →ₐ[ℚ_[p]] ℂ_[p] := IsAlgClosed.lift
 
 /- English proof (translation)
-Establish `h` using `PadicComplex.norm_extends' p (p : ℚ_[p])`. Rewrite `h` using `[Padic.norm_p]`. Rewrite using `[← h]`. Use `congr 1`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem norm_p_C : ‖(p : ℂ_[p])‖ = (p : ℝ)⁻¹ := by
   have h := PadicComplex.norm_extends' p (p : ℚ_[p])
@@ -170,15 +168,15 @@ theorem norm_p_C : ‖(p : ℂ_[p])‖ = (p : ℝ)⁻¹ := by
   simp
 
 /- English proof (translation)
-Establish `hi : IsIntegral ℤ_[p] (algebraMap (WW p) (K0 p) b)` using `integral_of_alg p b (by rw [← h]; exact mem_algebraicClosure_iff.1 z.2)`. Take `⟨P, hm, he⟩` from `hi`. Set `f' : ℤ_[p] →+* Kalg p` to `(algebraMap ℚ_[p] (Kalg p)).comp (algebraMap ℤ_[p] ℚ_[p])`. Set `f : ℤ_[p] →+* ℂ_[p]` to `(algebraMap ℚ_[p] ℂ_[p]).comp (algebraMap ℤ_[p] ℚ_[p])`. Establish `e1 : (algebraMap (Kalg p) (K0 p)).comp f' = algebraMap ℤ_[p] (K0 p)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use extensionality with `x`. Conclude with `(IsScalarTower.algebraMap_apply ℤ_[p] ℚ_[p] (K0 p) x).symm`. Establish `e2 : eval₂ f' z P = 0`. Apply `(algebraMap (Kalg p) (K0 p)).injective` to reduce the goal to its premises. Rewrite using `[hom_eval₂, e1, map_zero]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: algebraMap (Kalg p) (K0 p) z = algebraMap (WW p) (K0 p) b` using `h`. Rewrite using `[this]`. Conclude with `he`. Establish `e3 : ((phi p : Kalg p →+* ℂ_[p])).comp f' = f`. Use extensionality with `x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(phi p).commutes _`. Establish `e4 : eval₂ f (phi p z) P = 0`. Use `congrArg (phi p : Kalg p →+* ℂ_[p]) e2` as an intermediate fact. Rewrite `this` using `[hom_eval₂, e3, map_zero]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `norm_le_one_of_root (P.map f) (hm.map f) (fun i => ?_) _ (by rw [eval_map]; exact e4)` and prove the remaining obligations. Rewrite using `[coeff_map]`. Establish `: ‖f (P.coeff i)‖ = ‖((P.coeff i : ℤ_[p]) : ℚ_[p])‖` using `PadicComplex.norm_extends' p _`. Rewrite using `[this]`. Conclude with `PadicInt.norm_le_one _`.
+A detailed English derivation is pending.
 -/
 theorem norm_phi_le (z : Kalg p) (b : WW p) (h : (z : K0 p) = algebraMap (WW p) (K0 p) b) : ‖phi p z‖ ≤ 1 := by
   have hi : IsIntegral ℤ_[p] (algebraMap (WW p) (K0 p) b) :=
@@ -208,13 +206,13 @@ theorem norm_phi_le (z : Kalg p) (b : WW p) (h : (z : K0 p) = algebraMap (WW p) 
   exact PadicInt.norm_le_one _
 
 /- English proof (translation)
-Establish `hpK : ((p : ℕ) : Kalg p) ≠ 0`. Introduce `h0`. Use `congrArg (algebraMap (Kalg p) (K0 p)) h0` as an intermediate fact. Rewrite `this` using `[map_natCast, map_zero]`. Conclude with `p_ne_zero_K p this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Set `z' : Kalg p` to `z * (((p : ℕ) : Kalg p) ^ N)⁻¹`. Establish `hz : z = ((p : ℕ) : Kalg p) ^ N * z'`. Simplify using `only [z']`. Clear the denominators using the available nonvanishing facts. Establish `hz' : (z' : K0 p) = algebraMap (WW p) (K0 p) b`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : algebraMap (Kalg p) (K0 p) z = algebraMap (Kalg p) (K0 p) (((p : ℕ) : Kalg p) ^ N * z')` using `congrArg _ hz`. Rewrite `h1` using `[map_mul, map_pow, map_natCast]`. Establish `h2 : algebraMap (Kalg p) (K0 p) z = (p : K0 p) ^ N * algebraMap (WW p) (K0 p) b`. Rewrite using `[← map_natCast (algebraMap (WW p) (K0 p)), ← map_pow, ← map_mul]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[h2]`. Conclude with `(mul_left_cancel₀ (pow_ne_zero N (p_ne_zero_K p)) h1).symm`. Rewrite using `[hz, map_mul, map_pow, map_natCast, norm_mul, norm_pow, norm_p_C]`. Conclude with `mul_le_of_le_one_right (by positivity) (norm_phi_le p z' b hz')`.
+A detailed English derivation is pending.
 -/
 theorem norm_phi_pow (N : ℕ) (z : Kalg p) (b : WW p)
     (h : (z : K0 p) = algebraMap (WW p) (K0 p) ((p : WW p) ^ N * b)) : ‖phi p z‖ ≤ ((p : ℝ)⁻¹) ^ N := by
@@ -257,7 +255,7 @@ theorem id_sub {R : Type*} [CommRing R] (x b b' π : R) (N k : ℕ) :
     (x + π ^ N * b) - (x + π ^ (N + k) * b') = π ^ N * (b - π ^ k * b') := by ring
 
 /- English proof (translation)
-Establish `: S = x - π ^ (N + 1) * c` using `by rw [← h]; ring`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem id_app {R : Type*} [CommRing R] (x S c π : R) (N : ℕ) (h : x - S = π ^ (N + 1) * c) :
     S = x + π ^ N * -(π * c) := by
@@ -268,9 +266,9 @@ def Approx (N : ℕ) (x : WW p) (z : Kalg p) : Prop :=
   ∃ b : WW p, (z : K0 p) = algebraMap (WW p) (K0 p) (x + (p : WW p) ^ N * b)
 
 /- English proof (translation)
-Establish `hy : IsIntegral (ZMod p) y` using `Algebra.IsIntegral.isIntegral y`. Set `F` to `IntermediateField.adjoin (ZMod p) {y}`. Establish `: FiniteDimensional (ZMod p) F` using `IntermediateField.adjoin.finiteDimensional hy`. Establish `: Finite F` using `Module.finite_of_finite (ZMod p)`. Use `Fintype.ofFinite F` as an intermediate fact.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨Fintype.card F, Fintype.one_lt_card, ?_⟩` and prove the remaining obligations. Establish `h1` using `FiniteField.pow_card (IntermediateField.AdjoinSimple.gen (ZMod p) y)`. Establish `h2` using `congrArg (Subtype.val) h1`. Simplify using `using h2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_pow_eq (y : kb p) : ∃ q : ℕ, 1 < q ∧ y ^ q = y := by
   have hy : IsIntegral (ZMod p) y := Algebra.IsIntegral.isIntegral y
@@ -284,7 +282,7 @@ theorem exists_pow_eq (y : kb p) : ∃ q : ℕ, 1 < q ∧ y ^ q = y := by
   simpa using h2
 
 /- English proof (translation)
-Take `⟨q, hq, hy⟩` from `exists_pow_eq p y`. Rewrite using `[mem_algebraicClosure_iff]`. Use `⟨X ^ q - X, FiniteField.X_pow_card_sub_X_ne_zero _ hq, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_pow, aeval_X, ← map_pow, ← map_pow, hy, sub_self]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem teich_mem (y : kb p) : algebraMap (WW p) (K0 p) (WittVector.teichmuller p y) ∈ Kalg p := by
   obtain ⟨q, hq, hy⟩ := exists_pow_eq p y
@@ -293,9 +291,9 @@ theorem teich_mem (y : kb p) : algebraMap (WW p) (K0 p) (WittVector.teichmuller 
   rw [map_sub, map_pow, aeval_X, ← map_pow, ← map_pow, hy, sub_self]
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `WittVector.dvd_sub_sum_teichmuller_iterateFrobeniusEquiv_coeff x N`. Use `set S := ∑ i ∈ Finset.Iic N, (WittVector.teichmuller p (((_root_.frobeniusEquiv (kb p) p).symm ^ i) (x.coeff i)) * (p : WW p) ^ i) with hS`. Establish `hmem : algebraMap (WW p) (K0 p) S ∈ Kalg p`. Rewrite using `[hS, map_sum]`. Use `sum_mem fun i _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_pow, map_natCast]`. Conclude with `mul_mem (teich_mem p _) (pow_mem (natCast_mem _ p) i)`. Conclude with `⟨⟨_, hmem⟩, -((p : WW p) * c), congrArg (algebraMap (WW p) (K0 p)) (id_app x S c (p : WW p) N hc)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_approx (x : WW p) (N : ℕ) : ∃ z, Approx p N x z := by
   obtain ⟨c, hc⟩ := WittVector.dvd_sub_sum_teichmuller_iterateFrobeniusEquiv_coeff x N
@@ -309,21 +307,21 @@ theorem exists_approx (x : WW p) (N : ℕ) : ∃ z, Approx p N x z := by
   exact ⟨⟨_, hmem⟩, -((p : WW p) * c), congrArg (algebraMap (WW p) (K0 p)) (id_app x S c (p : WW p) N hc)⟩
 
 /- English proof (translation)
-The claim follows from `(PadicComplex.isNonarchimedean p a b).trans (max_le ha hb)`.
+A detailed English derivation is pending.
 -/
 theorem nadd {a b : ℂ_[p]} {c : ℝ} (ha : ‖a‖ ≤ c) (hb : ‖b‖ ≤ c) : ‖a + b‖ ≤ c :=
   (PadicComplex.isNonarchimedean p a b).trans (max_le ha hb)
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact Bl.FirstBlockLemmaF.goal1 .. | (apply Bl.FirstBlockLemmaF.goal1 <;> assumption) | (intros; apply Bl.FirstBlockLemmaF.goal1 <;> assumption) | (apply @Bl.FirstBlockLemmaF.goal1 <;> assumption) | (intros; apply @Bl.FirstBlockLemmaF.goal1 <;> assumption) | (apply @Bl.Fi …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem nsub {a b : ℂ_[p]} {c : ℝ} (ha : ‖a‖ ≤ c) (hb : ‖b‖ ≤ c) : ‖a - b‖ ≤ c := by
   first | exact Bl.FirstBlockLemmaF.goal1 .. | (apply Bl.FirstBlockLemmaF.goal1 <;> assumption) | (intros; apply Bl.FirstBlockLemmaF.goal1 <;> assumption) | (apply @Bl.FirstBlockLemmaF.goal1 <;> assumption) | (intros; apply @Bl.FirstBlockLemmaF.goal1 <;> assumption) | (apply @Bl.FirstBlockLemmaF.goal1 <;> first | assumption | infer_instance) | exact @Bl.FirstBlockLemmaF.goal1 p hp a b c ha hb | exact @Bl.FirstBlockLemmaF.goal1 p hp a b c ha | exact @Bl.FirstBlockLemmaF.goal1 p hp a b c | exact @Bl.FirstBlockLemmaF.goal1 p hp a b | exact @Bl.FirstBlockLemmaF.goal1 p hp a | exact @Bl.FirstBlockLemmaF.goal1 p hp | exact @Bl.FirstBlockLemmaF.goal1 p
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `h`. Take `⟨b', hb'⟩` from `h'`. Rewrite using `[← map_sub]`. Use `norm_phi_pow p N (z - z') (b - (p : WW p) ^ (M - N) * b') ?_` and prove the remaining obligations. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hNM`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[AddSubgroupClass.coe_sub, hb, hb', ← map_sub, Nat.add_sub_cancel_left]`. Conclude with `congrArg _ (id_sub x b b' (p : WW p) N k)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem approx_close {N M : ℕ} (hNM : N ≤ M) {x : WW p} {z z' : Kalg p} (h : Approx p N x z)
     (h' : Approx p M x z') : ‖phi p z - phi p z'‖ ≤ ((p : ℝ)⁻¹) ^ N := by
@@ -336,7 +334,7 @@ theorem approx_close {N M : ℕ} (hNM : N ≤ M) {x : WW p} {z z' : Kalg p} (h :
   exact congrArg _ (id_sub x b b' (p : WW p) N k)
 
 /- English proof (translation)
-The claim follows from `inv_lt_one_of_one_lt₀ (by exact_mod_cast hp.out.one_lt)`.
+A detailed English derivation is pending.
 -/
 theorem r_lt_one : ((p : ℝ)⁻¹) < 1 := inv_lt_one_of_one_lt₀ (by exact_mod_cast hp.out.one_lt)
 
@@ -346,9 +344,9 @@ Check the signs of the components of the expression.
 theorem r_nonneg : 0 ≤ ((p : ℝ)⁻¹) := by positivity
 
 /- English proof (translation)
-Use `choose zs hzs using fun N => exists_approx p x N`. Establish `hc : CauchySeq fun N => phi p (zs N)` using `cauchySeq_of_le_geometric ((p : ℝ)⁻¹) 1 (r_lt_one p) fun n => by`. Rewrite using `[dist_eq_norm, one_mul]`. Conclude with `approx_close p (Nat.le_succ n) (hzs n) (hzs (n + 1))`. Take `⟨y, hy⟩` from `cauchySeq_tendsto_of_complete hc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨y, fun N z hz => ?_⟩` and prove the remaining obligations. Use `le_of_tendsto ((hy.sub_const (phi p z)).norm) ?_` and prove the remaining obligations. Use `filter_upwards [eventually_ge_atTop N] with M hM`. Rewrite using `[norm_sub_rev]`. Conclude with `approx_close p hM hz (hzs M)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lim (x : WW p) :
     ∃ y : ℂ_[p], ∀ N z, Approx p N x z → ‖y - phi p z‖ ≤ ((p : ℝ)⁻¹) ^ N := by
@@ -367,13 +365,13 @@ theorem exists_lim (x : WW p) :
 def wFun (x : WW p) : ℂ_[p] := Classical.choose (exists_lim p x)
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (exists_lim p x) N z h`.
+A detailed English derivation is pending.
 -/
 theorem wFun_spec (x : WW p) {N : ℕ} {z : Kalg p} (h : Approx p N x z) :
     ‖wFun p x - phi p z‖ ≤ ((p : ℝ)⁻¹) ^ N := Classical.choose_spec (exists_lim p x) N z h
 
 /- English proof (translation)
-Establish `h0 : ‖a - b‖ ≤ 0` using `ge_of_tendsto' (tendsto_pow_atTop_nhds_zero_of_lt_one (r_nonneg p) (r_lt_one p)) h`. Conclude with `sub_eq_zero.1 (norm_le_zero_iff.1 h0)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_of_close {a b : ℂ_[p]} (h : ∀ N : ℕ, ‖a - b‖ ≤ ((p : ℝ)⁻¹) ^ N) : a = b := by
   have h0 : ‖a - b‖ ≤ 0 :=
@@ -381,7 +379,7 @@ theorem eq_of_close {a b : ℂ_[p]} (h : ∀ N : ℕ, ‖a - b‖ ≤ ((p : ℝ)
   exact sub_eq_zero.1 (norm_le_zero_iff.1 h0)
 
 /- English proof (translation)
-Use `eq_of_close p fun N => ?_` and prove the remaining obligations. Take `⟨z, hz, hy⟩` from `h N`. Establish `: wFun p x - y = (wFun p x - phi p z) - (y - phi p z)` using `by ring`. Rewrite using `[this]`. Conclude with `nsub p (wFun_spec p x hz) hy`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wFun_eq {x : WW p} {y : ℂ_[p]}
     (h : ∀ N : ℕ, ∃ z, Approx p N x z ∧ ‖y - phi p z‖ ≤ ((p : ℝ)⁻¹) ^ N) : wFun p x = y := by
@@ -392,16 +390,16 @@ theorem wFun_eq {x : WW p} {y : ℂ_[p]}
   exact nsub p (wFun_spec p x hz) hy
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `h`. Conclude with `norm_phi_le p z _ hb`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem norm_phi_approx {N : ℕ} {x : WW p} {z : Kalg p} (h : Approx p N x z) : ‖phi p z‖ ≤ 1 := by
   obtain ⟨b, hb⟩ := h
   exact norm_phi_le p z _ hb
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `exists_approx p x 0`. Establish `h1` using `wFun_spec p x hz`. Rewrite `h1` using `[pow_zero]`. Establish `: wFun p x = (wFun p x - phi p z) + phi p z` using `by ring`. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `nadd p h1 (norm_phi_approx p hz)`.
+A detailed English derivation is pending.
 -/
 theorem norm_wFun_le (x : WW p) : ‖wFun p x‖ ≤ 1 := by
   obtain ⟨z, hz⟩ := exists_approx p x 0
@@ -412,7 +410,7 @@ theorem norm_wFun_le (x : WW p) : ‖wFun p x‖ ≤ 1 := by
   exact nadd p h1 (norm_phi_approx p hz)
 
 /- English proof (translation)
-The claim follows from `wFun_eq p fun N => ⟨z, ⟨0, by rw [h, mul_zero, add_zero]⟩, by rw [sub_self, norm_zero]; positivity⟩`.
+A detailed English derivation is pending.
 -/
 theorem wFun_alg (x : WW p) (z : Kalg p) (h : (z : K0 p) = algebraMap (WW p) (K0 p) x) : wFun p x = phi p z :=
   wFun_eq p fun N => ⟨z, ⟨0, by rw [h, mul_zero, add_zero]⟩, by rw [sub_self, norm_zero]; positivity⟩
@@ -456,14 +454,14 @@ def wToC : WW p →+* ℂ_[p] where
         exact (mul_le_of_le_one_right (norm_nonneg _) (norm_phi_approx p hz')).trans (wFun_spec p x hz)
 
 /- English proof (translation)
-The claim follows from `norm_wFun_le p x`.
+A detailed English derivation is pending.
 -/
 theorem norm_wToC_le (x : WW p) : ‖wToC p x‖ ≤ 1 := norm_wFun_le p x
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Assume the negation of the conclusion as `h0`. Take `⟨m, b, hb, rfl⟩` from `WittVector.exists_eq_pow_p_mul x h0`. Establish `hu : IsUnit b` using `WittVector.isUnit_of_coeff_zero_ne_zero b hb`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hx` using `[map_mul, map_pow, map_natCast]`. Establish `hpC : (p : ℂ_[p]) ≠ 0` using `Nat.cast_ne_zero.2 hp.out.ne_zero`. Conclude with `(mul_ne_zero (pow_ne_zero m hpC) (hu.map (wToC p)).ne_zero) hx`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem wToC_injective : Function.Injective (wToC p) := by
   rw [injective_iff_map_eq_zero]
@@ -478,21 +476,21 @@ theorem wToC_injective : Function.Injective (wToC p) := by
 def k0ToC : K0 p →+* ℂ_[p] := IsFractionRing.lift (wToC_injective p)
 
 /- English proof (translation)
-The claim follows from `IsFractionRing.lift_algebraMap (wToC_injective p) x`.
+A detailed English derivation is pending.
 -/
 theorem witt_fraction_to_Cp_algebraMap (x : WW p) : k0ToC p (algebraMap (WW p) (K0 p) x) = wToC p x :=
   IsFractionRing.lift_algebraMap (wToC_injective p) x
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Distinguish the cases in `hx0 : x = 0`. Conclude with `⟨0, by rw [map_zero, hx0]⟩`. Break down `ValuationRing.isInteger_or_isInteger (WW p) x with ⟨c, hc⟩ | ⟨c, hc⟩` into its components or cases.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `⟨c, hc⟩`. Distinguish the cases in `hu : IsUnit c`. Take `⟨u, rfl⟩` from `hu`. Conclude with `⟨((u⁻¹ : (WW p)ˣ) : WW p), by rw [map_units_inv (algebraMap (WW p) (K0 p)), hc, inv_inv]⟩`. It suffices to derive a contradiction.
+Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. It suffices to derive a contradiction.
 
-Establish `hcm : c ∈ maximalIdeal (WW p)` using `(mem_maximalIdeal c).2 hu`. Rewrite `hcm` using `[(WittVector.irreducible p).maximalIdeal_eq, Ideal.mem_span_singleton]`. Take `⟨d, rfl⟩` from `hcm`. Establish `h1 : ‖k0ToC p x⁻¹‖ ≤ (p : ℝ)⁻¹`. Rewrite using `[← hc, witt_fraction_to_Cp_algebraMap, map_mul, map_natCast, norm_mul, norm_p_C]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_of_le_one_right (r_nonneg p) (norm_wToC_le p d)`. Establish `hne : k0ToC p x ≠ 0` using `(map_ne_zero (k0ToC p)).2 hx0`. Rewrite `h1` using `[map_inv₀, norm_inv]`. Establish `h2 : 1 ≤ ‖k0ToC p x‖⁻¹` using `(one_le_inv₀ (norm_pos_iff.2 hne)).2 h`. Conclude with `absurd (h2.trans h1) (not_le.2 (r_lt_one p))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨y, rfl⟩`. Rewrite using `[witt_fraction_to_Cp_algebraMap]`. Conclude with `norm_wToC_le p y`.
+A detailed English derivation is pending.
 -/
 theorem norm_k0ToC_le_iff (x : K0 p) : ‖k0ToC p x‖ ≤ 1 ↔ x ∈ Set.range (algebraMap (WW p) (K0 p)) := by
   constructor

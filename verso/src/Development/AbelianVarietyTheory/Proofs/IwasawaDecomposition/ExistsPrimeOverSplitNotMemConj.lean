@@ -6,9 +6,9 @@ open scoped BigOperators
 namespace GlobalTheory.Mem.Col2.SplitPrime
 
 /- English proof (translation)
-Establish `hnot : ¬ (a ∈ P ∧ a' ∈ P)`. Introduce and unpack `⟨h1, h2⟩`. Establish `h3 : (t : A) ∈ P` using `ht ▸ P.add_mem h1 h2`. Take `⟨u, v, huv⟩` from `hc`. Establish `h4 : (u : A) * p + (v : A) * t = 1` using `by exact_mod_cast congrArg (Int.cast : ℤ → A) huv`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hP.ne_top ((Ideal.eq_top_iff_one P).2 (h4 ▸ P.add_mem (P.mul_mem_left _ hp) (P.mul_mem_left _ h3)))`. Establish `h5 : a * a' ∈ P` using `hm ▸ P.mul_mem_right _ hp`. Break down `hP.mem_or_mem h5 with h | h` into its components or cases. Conclude with `Or.inl ⟨h, fun h' => hnot ⟨h, h'⟩⟩`. Conclude with `Or.inr ⟨h, fun h' => hnot ⟨h', h⟩⟩`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem mem_xor {A : Type*} [CommRing A] (P : Ideal A) (hP : P.IsPrime) (p t m : ℤ) (hp : (p : A) ∈ P) (a a' : A)
     (hm : a * a' = (p : A) * m) (ht : a + a' = t) (hc : IsCoprime p t) :
@@ -25,9 +25,9 @@ theorem mem_xor {A : Type*} [CommRing A] (P : Ideal A) (hP : P.IsPrime) (p t m :
   · exact Or.inr ⟨h, fun h' => hnot ⟨h', h⟩⟩
 
 /- English proof (translation)
-Establish `hpr : (Ideal.span {(p : ℤ)}).IsPrime` using `(Ideal.span_singleton_prime (by exact_mod_cast hp.ne_zero)).2 (Nat.prime_iff_prime_int.1 hp)`. Take `⟨Q, -, hQ, hQc⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral (S := 𝓞 K) (Ideal.span {(p : ℤ)}) ⊥ (by`. Rewrite using `[Ideal.comap_bot_of_injective _ (FaithfulSMul.algebraMap_injective ℤ (𝓞 K))]`. Conclude with `bot_le)`. Establish `hmem : (p : 𝓞 K) ∈ Q`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (p : ℤ) ∈ Q.comap (algebraMap ℤ (𝓞 K))` using `hQc ▸ Ideal.mem_span_singleton_self _`. Simplify using `using this`. Use `⟨⟨Q, hQ, ?_⟩, hmem⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `(Nat.cast_ne_zero.2 hp.ne_zero) ((Ideal.mem_bot).1 hmem)`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem exists_over (K : Type*) [Field K] [NumberField K] (p : ℕ) (hp : p.Prime) :
     ∃ 𝔭 : HeightOneSpectrum (𝓞 K), (p : 𝓞 K) ∈ 𝔭.asIdeal := by
@@ -44,25 +44,23 @@ theorem exists_over (K : Type*) [Field K] [NumberField K] (p : ℕ) (hp : p.Prim
   exact (Nat.cast_ne_zero.2 hp.ne_zero) ((Ideal.mem_bot).1 hmem)
 
 /- English proof (translation)
-Use `set θ : H.K := ⟨H.sqrtMinusD, HostK.sqrt_mem H⟩ with hθ`. Establish `hsq : θ ^ 2 = -(H.d : H.K)` using `Subtype.ext (by simpa [hθ] using H.sqrtMinusD_sq)`. Establish `hcj : HostK.conjK H θ = -θ` using `Subtype.ext (by simpa [hθ, HostK.coe_conjK] using H.conj_sqrtMinusD)`. Distinguish the cases in `h2 : p = 2`. Substitute `h2` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨m, hm⟩ : ∃ m : ℕ, H.d + 1 = 8 * m := by`. Use `H.hyp.2.2.2.1` as an intermediate fact. Conclude with `⟨(H.d + 1) / 8, by omega⟩`. Establish `hm' : (H.d : H.K) + 1 = 8 * m` using `by exact_mod_cast hm`. Use `⟨(1 + θ) / 2, 1, m, HostK.isIntegral_half H, ?_, ?_, isCoprime_one_right⟩` and prove the remaining obligations.
+Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_div₀, map_add, map_one, hcj, map_ofNat]`. Use `push_cast`. Take the linear combination `(-1 / 4 : H.K) * hsq + (1 / 4 : H.K) * hm'`. Rewrite using `[map_div₀, map_add, map_one, hcj, map_ofNat]`. Use `push_cast`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hj : jacobiSym (-(H.d : ℤ)) p = 1` using `hs.resolve_left h2 haveI : Fact p.Prime := ⟨hp⟩`. Rewrite `hj` using `[← jacobiSym.legendreSym.to_jacobiSym]`. Establish `hne : ((-(H.d : ℤ) : ℤ) : ZMod p) ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hj` using `[(legendreSym.eq_zero_iff p _).2 h]`. Conclude with `zero_ne_one hj`. Take `⟨s, hs'⟩` from `(legendreSym.eq_one_iff p hne).1 hj`. Take `⟨r, rfl⟩` from `ZMod.intCast_surjective s`. Establish `hr : ¬ (p : ℤ) ∣ r`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h`. Rewrite `hne` using `[hs', (ZMod.intCast_zmod_eq_zero_iff_dvd r p).2 h]`. Conclude with `hne (mul_zero _)`. Establish `hdiv : (p : ℤ) ∣ r * r + H.d`. Rewrite using `[← ZMod.intCast_zmod_eq_zero_iff_dvd]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Move the coercions through the operations in `at hs' ⊢`. Take the linear combination `-hs'`. Take `⟨m, hm⟩` from `hdiv`. Establish `hm' : (r : H.K) * r + H.d = (p : H.K) * m` using `by exact_mod_cast congrArg (Int.cast : ℤ → H.K) hm`. Establish `hθi : IsIntegral ℤ θ`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `IsIntegral.of_pow two_pos ?_` and prove the remaining obligations. Rewrite using `[hsq]`. Conclude with `(isIntegral_natCast H.d).neg`. Establish `hpi : Prime (p : ℤ)` using `Nat.prime_iff_prime_int.1 hp`. Use `⟨r + θ, 2 * r, m, (isIntegral_intCast r).add hθi, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[map_add, map_intCast, hcj]`. Take the linear combination `hm' - hsq`. Rewrite using `[map_add, map_intCast, hcj]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
-
-Use `(hpi.coprime_iff_not_dvd).2 fun h => ?_` and prove the remaining obligations. Break down `hpi.dvd_or_dvd h with h | h` into its components or cases. Establish `h' : p ∣ 2` using `by exact_mod_cast h`. Conclude with `h2 ((Nat.prime_dvd_prime_iff_eq hp Nat.prime_two).1 h')`. Conclude with `hr h`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_elt {R : Ranks} (H : Host R) (p : ℕ) (hp : p.Prime) (hs : Th.SplitK H p) :
     ∃ (a : H.K) (t m : ℤ), IsIntegral ℤ a ∧ a * HostK.conjK H a = (p : H.K) * m ∧ a + HostK.conjK H a = t ∧
@@ -120,13 +118,13 @@ theorem exists_elt {R : Ranks} (H : Host R) (p : ℕ) (hp : p.Prime) (hs : Th.Sp
       · exact hr h
 
 /- English proof (translation)
-Take `⟨a, t, m, hai, hm, ht, hc⟩` from `exists_elt H p hp hs`. Establish `hai' : IsIntegral ℤ (HostK.conjK H a)`. Establish `: HostK.conjK H a = t - a` using `by linear_combination ht`. Rewrite using `[this]`. Conclude with `(isIntegral_intCast t).sub hai`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨𝔭, h𝔭⟩` from `exists_over H.K p hp`. Set `x : 𝓞 H.K` to `⟨a, hai⟩`. Set `y : 𝓞 H.K` to `⟨HostK.conjK H a, hai'⟩`. Establish `hx : (x : H.K) = a` using `rfl`. Establish `hy : (y : H.K) = HostK.conjK H a` using `rfl`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : x * y = ((p : ℤ) : 𝓞 H.K) * m`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Simplify `hm` using `[hx, hy]`. Establish `h2 : x + y = t`. Apply `RingOfIntegers.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `ht` using `[hx, hy]`. Break down `mem_xor 𝔭.asIdeal 𝔭.isPrime p t m (by exact_mod_cast h𝔭) x y h1 h2 hc with h | h` into its components or cases. Conclude with `⟨𝔭, x, y, h𝔭, h.1, h.2, rfl⟩`. Conclude with `⟨𝔭, y, x, h𝔭, h.1, h.2, by rw [hx, hy, HostK.conjK_conjK]⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_prime_not_conj (R : Ranks) (H : Host R) (p : ℕ) (hp : p.Prime) (hs : Th.SplitK H p) :
     ∃ (𝔭 : HeightOneSpectrum (𝓞 H.K)) (α β : 𝓞 H.K), (p : 𝓞 H.K) ∈ 𝔭.asIdeal ∧ α ∈ 𝔭.asIdeal ∧ β ∉ 𝔭.asIdeal ∧

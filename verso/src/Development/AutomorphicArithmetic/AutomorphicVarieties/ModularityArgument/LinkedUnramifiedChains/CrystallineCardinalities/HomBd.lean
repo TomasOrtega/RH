@@ -5,29 +5,27 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr UpperTheory.V.Z.J
 
 /- English proof (translation)
-Introduce `l _ O _ _ _ _ _ D _ ε k N _ ρ e χ s₀ hl hρ hc`. Take `⟨hfinOk, hfinQ, hkill, -, -, hsm, -⟩` from `okFin l O hl`. Use `haveI : Finite (Ok l O k) := hfinOk k`. Use `haveI : NeZero (l ^ k) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Use `set c := χ s₀ - algebraMap ℤ_[l] O (ε s₀) with hcdef`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : Finite (O ⧸ Ideal.span {c}) := hfinQ c hc`. Set `I' : Ideal (Ok l O k)` to `Ideal.span {algebraMap O (Ok l O k) c}`. Set `π` to `Ideal.Quotient.mk I'`. Establish `hπ : Function.Surjective π` using `Ideal.Quotient.mk_surjective`. Establish `kill : ∀ f ∈ HomMu l k ε ρ, ∀ a : Ok l O k, f (e (c • a)) = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `f hf a`. Establish `hf' : ∀ s x, f (ρ s x) = PadicInt.toZModPow k (ε s : ℤ_[l]) * f x` using `hf`. Rewrite using `[hcdef, sub_smul, map_sub, map_sub, ← hρ, hf', hsm, map_nsmul, map_nsmul, nsmul_eq_mul, ZMod.natCast_zmod_val, sub_self]`. Establish `wd : ∀ f ∈ HomMu l k ε ρ, ∀ y y' : Ok l O k, π y = π y' → f (e y) = f (e y')`. Introduce `f hf y y' h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h' : y - y' ∈ I'` using `Ideal.Quotient.eq.mp h`. Take `⟨a, ha⟩` from `Ideal.mem_span_singleton'.mp h'`. Establish `h2 : y - y' = c • a` using `by rw [← ha, Algebra.smul_def, mul_comm]`. Establish `h3` using `kill f hf a`. Rewrite `h3` using `[← h2, map_sub, map_sub]`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sub_eq_zero.mp h3`. Set `Φ : HomMu l k ε ρ → (Ok l O k ⧸ I' →+ ZMod (l ^ k))` to `fun f => { toFun := fun q => f.1 (e (Function.surjInv hπ q)) map_zero' := by`. Rewrite using `[wd f.1 f.2 _ 0 (by rw [Function.surjInv_eq hπ, map_zero]), map_zero, map_zero]`. Use the proof step `map_add' := by`. Introduce `q q'`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← map_add f.1, ← map_add e]`. Apply `wd f.1 f.2` to reduce the goal to its premises. Rewrite using `[map_add, Function.surjInv_eq hπ, Function.surjInv_eq hπ, Function.surjInv_eq hπ] }`. Establish `hΦ : Function.Injective Φ`. Introduce `f g hfg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h1 : ∀ y, f.1 (e y) = g.1 (e y)`. Introduce `y`. Use `congrArg (fun φ : Ok l O k ⧸ I' →+ ZMod (l ^ k) => φ (π y)) hfg` as an intermediate fact. Express the relevant statement in the definitionally equal form `f.1 (e (Function.surjInv hπ (π y))) = g.1 (e (Function.surjInv hπ (π y))) at this`. Rewrite using `[wd f.1 f.2 y _ (Function.surjInv_eq hπ _).symm, this, ← wd g.1 g.2 y _ (Function.surjInv_eq hπ _).symm]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `x`. Use `h1 (e.symm x)` as an intermediate fact. Rewrite `this` using `[AddEquiv.apply_symm_apply]`. Then use the resulting hypothesis. Use `haveI : Finite (Ok l O k ⧸ I') := Finite.of_surjective π hπ`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hQk : ∀ q : Ok l O k ⧸ I', l ^ k • q = 0`. Introduce `q`. Take `⟨y, rfl⟩` from `hπ q`. Rewrite using `[← map_nsmul, hkill, map_zero]`. Take `⟨hfin2, hcard2⟩` from `dualCard l k (Ok l O k ⧸ I') hQk`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `ψ : O ⧸ Ideal.span {c} →+* Ok l O k ⧸ I'` to `Ideal.Quotient.lift (Ideal.span {c}) (π.comp (Ideal.Quotient.mk (Ideal.span {(l : O) ^ k}))) (by`. Introduce `a ha`. Take `⟨b, rfl⟩` from `Ideal.mem_span_singleton'.mp ha`. Rewrite using `[RingHom.comp_apply, map_mul, map_mul]`. Establish `: π (Ideal.Quotient.mk (Ideal.span {(l : O) ^ k}) c) = 0` using `Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.subset_span (by rw [Set.mem_singleton_iff]; rfl))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[this, mul_zero])`. Establish `hψ : Function.Surjective ψ`. Introduce `q`. Take `⟨y, rfl⟩` from `hπ q`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective y`.
-
-Conclude with `⟨Ideal.Quotient.mk _ x, rfl⟩`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.J.homBd :
     ∀ (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O] (D : Type) [Group D] (ε : D →* ℤ_[l]ˣ) (k : ℕ) (N : Type) [AddCommGroup N] (ρ : Representation ℤ D N) (e : Ok l O k ≃+ N) (χ : D → O) (s₀ : D), (l : O) ≠ 0 → (∀ s x, ρ s (e x) = e (χ s • x)) → χ s₀ - algebraMap ℤ_[l] O (ε s₀) ≠ 0 → (HomMu l k ε ρ).ncard ≤ Nat.card (O ⧸ Ideal.span {χ s₀ - algebraMap ℤ_[l] O (ε s₀)}) := by

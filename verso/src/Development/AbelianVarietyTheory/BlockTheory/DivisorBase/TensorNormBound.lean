@@ -46,11 +46,11 @@ def TensorNormEq : Prop :=
       IsLeast {d : ℝ | NormLeAll T d} (∏ τ, c τ)
 
 /- English proof (translation)
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce and unpack `⟨F, hF⟩`. Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem P hP`. Take `⟨f, hf, rfl⟩` from `hP`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `(h fun τ => ⟨f τ, hf τ⟩).trans (h' fun τ => ⟨f τ, hf τ⟩).symm`. Consider the case `zero => exact (map_zero T).trans (map_zero T').symm`. Consider the case `add x y hx hy ihx ihy`. Establish `e : T (⟨x, hx⟩ + ⟨y, hy⟩) = T' (⟨x, hx⟩ + ⟨y, hy⟩)` using `by rw [map_add, map_add, ihx, ihy]`. Conclude with `e`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `smul a x hx ih`. Establish `e : T (a • ⟨x, hx⟩) = T' (a • ⟨x, hx⟩)` using `by rw [map_smul, map_smul, ih]`. Conclude with `e`.
+A detailed English derivation is pending.
 -/
 theorem IsTensorMap.unique {lam : ι → DomWeight n} {lam' : ι → DomWeight n'}
     {A : ∀ τ, nablaSq ℂ n (lam τ) →ₗ[ℂ] nablaSq ℂ n' (lam' τ)} {T T' : VV ℂ lam →ₗ[ℂ] VV ℂ lam'}
@@ -70,13 +70,13 @@ theorem IsTensorMap.unique {lam : ι → DomWeight n} {lam' : ι → DomWeight n
     exact e
 
 /- English proof (translation)
-Introduce `_` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 example (lam : ι → DomWeight n) : IsTensorMap (lam := lam) (lam' := lam) (fun _ => LinearMap.id) LinearMap.id :=
   fun _ => rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨zero_le_one, fun f => by simp⟩`.
+Supply the required witnesses or components.
 -/
 example (lam : DomWeight n) : NormLeOne (lam := lam) (lam' := lam) LinearMap.id 1 :=
   ⟨zero_le_one, fun f => by simp⟩

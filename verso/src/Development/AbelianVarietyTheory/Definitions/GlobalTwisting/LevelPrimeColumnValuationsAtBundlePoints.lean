@@ -29,7 +29,7 @@ structure All (𝒜 : FamClass) : Prop where
   aAtG : H_aAtG 𝒜
 
 /- English proof (translation)
-The claim follows from `Row.imp (Row.and aP10 aAtG) fun _ _ _ ⟨a0, a1⟩ => ⟨a0, a1⟩`.
+A detailed English derivation is pending.
 -/
 theorem row_all {Bd : BdT} {Q : V4.Slot} {Lk : LkT Bd}
     (aP10 : LevelPrimeColumnValuationsAtBundlePoints Q Lk) (aAtG : ArithmeticConditionAtBundlePoints Q Lk) :
@@ -38,20 +38,20 @@ theorem row_all {Bd : BdT} {Q : V4.Slot} {Lk : LkT Bd}
     fun _ _ _ ⟨a0, a1⟩ => ⟨a0, a1⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Row.imp h fun _ _ _ t => t.aP10, Row.imp h fun _ _ _ t => t.aAtG⟩`.
+Supply the required witnesses or components.
 -/
 theorem row_of_all {Bd : BdT} {Q : V4.Slot} {Lk : LkT Bd} (h : Row Q Lk fun 𝒜 _ => All 𝒜) :
     LevelPrimeColumnValuationsAtBundlePoints Q Lk ∧ ArithmeticConditionAtBundlePoints Q Lk :=
   ⟨Row.imp h fun _ _ _ t => t.aP10, Row.imp h fun _ _ _ t => t.aAtG⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 example (𝒜 : FamClass) : LevelPrimeColumnValuationsClosed 𝒜 ↔
     EvC (fun D O => ∀ u, Formalism.MainNotions.product_first_zeroth_parts.Conclusion5Sharp D u ∧ Formalism.L2.G.Adm2InU.TwistedColumnBoundAtT O.X O.ex.tw u) 𝒜 := Iff.rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.row Lk, h'.row Lk⟩`.
+Supply the required witnesses or components.
 -/
 example {Bd : BdT} {Q : V4.Slot} (Lk : LkT Bd) (h : Row0 Q LevelPrimeColumnValuationsClosed) (h' : Row0 Q H_aAtG) : LevelPrimeColumnValuationsAtBundlePoints Q Lk ∧ ArithmeticConditionAtBundlePoints Q Lk :=
   ⟨h.row Lk, h'.row Lk⟩

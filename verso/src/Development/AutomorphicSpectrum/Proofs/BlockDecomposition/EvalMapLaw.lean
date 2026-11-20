@@ -20,13 +20,13 @@ def evalMap {π : Representation ℂ (GL (Fin (a + b)) k) V} {σ : Representatio
   φ.toLinearMap ∘ₗ (twKer π (unipRad k (two (stdSum (rfl : a + b = a + b)))) 1).mkQ
 
 /- English proof (translation)
-Use `set xy := (leviTwo k (Fin a) (Fin b)).symm (leviProj k _ q) with hxy`. Establish `hL : leviProj k (two (stdSum (rfl : a + b = a + b))) q = leviTwo k _ _ xy` using `(MulEquiv.apply_symm_apply _ _).symm`. Take `⟨u, hu, hpu⟩` from `exists_levi_mul_unip k (two (stdSum (rfl : a + b = a + b))) q`. Rewrite `hpu`, the goal using `[hL]`. Establish `hpu' : (q : GL (Fin (a + b)) k) = leviEmb k (two (stdSum (rfl : a + b = a + b))) (leviTwo k _ _ xy) * u` using `hpu`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmk : (Submodule.Quotient.mk (π u w) : Jacquet π (unipRad k (two (stdSum (rfl : a + b = a + b))))) = Submodule.Quotient.mk w`. Rewrite using `[Submodule.Quotient.eq]`. Use `Submodule.subset_span ⟨⟨u, hu⟩, w, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `key : ∀ (M : Levi k (Two (Fin a) (Fin b))) (x : V), (Submodule.Quotient.mk (π (leviEmb k (two (stdSum (rfl : a + b = a + b))) M) x) : Jacquet π (unipRad k (two (stdSum (rfl : a + b = a + b))))) = (deltaHalf k (Two (Fin a) (Fin b)) M : ℂ) • jac (two (stdSum (rfl : a + b = a + b))) …`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `M x`. Rewrite using `[jac_mk, smul_smul, ← Units.val_mul, mul_inv_cancel, Units.val_one, one_smul]`. Establish `hint` using `Representation.IntertwiningMap.isIntertwining _ _ φ xy (Submodule.Quotient.mk w : Jacquet π (unipRad k (two (stdSum (rfl : a + b = a + b)))))`. Simplify using `only [evalMap, LinearMap.coe_comp, Function.comp_apply, Submodule.mkQ_apply]`. Rewrite using `[hpu', map_mul, Module.End.mul_apply, key, hmk, map_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `_ • φ (jac₂ (stdSum (rfl : a + b = a + b)) π xy (Submodule.Quotient.mk w)) = _`. Rewrite using `[hint]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem evalMap_law {π : Representation ℂ (GL (Fin (a + b)) k) V}
     {σ : Representation ℂ (GL (Fin a) k) W} {ρ : Representation ℂ (GL (Fin b) k) W'}
@@ -86,7 +86,7 @@ def frobMap {π : Representation ℂ (GL (Fin (a + b)) k) V} (hs : IsSmooth π)
       rw [map_mul, Module.End.mul_apply])) }
 
 /- English proof (translation)
-Use `show evalMap φ (π 1 v) = _`. Rewrite using `[map_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem frobMap_one {π : Representation ℂ (GL (Fin (a + b)) k) V} (hs : IsSmooth π)
     {σ : Representation ℂ (GL (Fin a) k) W} {ρ : Representation ℂ (GL (Fin b) k) W'}
@@ -97,9 +97,9 @@ theorem frobMap_one {π : Representation ℂ (GL (Fin (a + b)) k) V} (hs : IsSmo
   rfl
 
 /- English proof (translation)
-Introduce `k _ _ _ _ a b V W W' _ _ _ _ _ _ π σ ρ hs hπ φ hφ`. Use `⟨frobMap hs φ, ?_⟩` and prove the remaining obligations. Use `haveI := hπ`. Use `(Representation.IsIrreducible.injective_or_eq_zero (frobMap hs φ)).resolve_right fun h0 => hφ ?_` and prove the remaining obligations. Use extensionality with `v`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `show φ (Submodule.Quotient.mk v) = 0`. Rewrite using `[← frobMap_one hs φ v, h0]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_injective_of_jac₂ : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (a b : ℕ) (V W W' : Type) [AddCommGroup V] [Module ℂ V]

@@ -26,15 +26,15 @@ open GroundTheory.Heights₂.Heights.PtsSheetOnlyNull (ratio inv_smul_eq_cons se
 variable {m : ℕ} {n : Fin (m + 1) → ℕ} {D : ℕ}
 
 /- English proof (translation)
-Establish `hτa : AnalyticAt ℂ τ v₀` using `GroundTheory.Heights₂.Heights.SheetOnlyNull.analyticOnNhd_of_differentiableOn hO hτ v₀ hv`. Establish `hτc : ContDiffAt ℂ 1 τ v₀` using `hτa.contDiffAt`. Establish `hinj : Function.Injective (fderiv ℂ τ v₀ : (Fin D → ℂ) →ₗ[ℂ] (Fin D → ℂ))` using `((Module.End.isUnit_iff _).1 ((LinearMap.isUnit_iff_isUnit_det _).2 (isUnit_iff_ne_zero.2 hdet))).1`. Use `set L := (LinearEquiv.ofInjectiveEndo (fderiv ℂ τ v₀ : (Fin D → ℂ) →ₗ[ℂ] (Fin D → ℂ)) hinj).toContinuousLinearEquiv with hLdef`. Establish `hτL : HasFDerivAt τ (L : (Fin D → ℂ) →L[ℂ] (Fin D → ℂ)) v₀` using `hτa.differentiableAt.hasFDerivAt.congr_fderiv (ContinuousLinearMap.ext fun v => rfl)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set φ := hτc.toOpenPartialHomeomorph τ hτL one_ne_zero with hφdef`. Establish `hφτ : ∀ v, φ v = τ v` using `fun v => rfl`. Establish `hsrc : v₀ ∈ φ.source` using `hτc.mem_toOpenPartialHomeomorph_source hτL one_ne_zero`. Establish `htgt : τ v₀ ∈ φ.target` using `hτc.image_mem_toOpenPartialHomeomorph_target hτL one_ne_zero`. Establish `hsymm : φ.symm (τ v₀) = v₀` using `φ.left_inv hsrc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsymmc : ContDiffAt ℂ 1 φ.symm (τ v₀)` using `φ.contDiffAt_symm (f₀' := L) htgt (by rw [hsymm]; exact hτL) (by rw [hsymm]; exact hτc)`. Establish `hev_O : ∀ᶠ t in 𝓝 (τ v₀), φ.symm t ∈ O` using `hsymmc.continuousAt.preimage_mem_nhds (by rw [hsymm]; exact hO.mem_nhds hv)`. Establish `hev_d : ∀ᶠ t in 𝓝 (τ v₀), DifferentiableAt ℂ φ.symm t` using `(hsymmc.eventually (by simp)).mono fun t ht => ht.differentiableAt one_ne_zero`. Use `set T : Set (Fin D → ℂ) := interior {t | φ.symm t ∈ O ∧ DifferentiableAt ℂ φ.symm t} with hT`. Establish `hTo : IsOpen T` using `isOpen_interior`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hτT : τ v₀ ∈ T` using `mem_interior_iff_mem_nhds.2 (hev_O.and hev_d)`. Establish `hTs : ∀ t ∈ T, φ.symm t ∈ O ∧ DifferentiableAt ℂ φ.symm t` using `fun t ht => (interior_subset ht : t ∈ {t | φ.symm t ∈ O ∧ DifferentiableAt ℂ φ.symm t})`. Use `⟨(φ.symm.restrOpen T hTo).symm, ?_, ?_, fun v => rfl, ?_⟩` and prove the remaining obligations. Conclude with `⟨hsrc, hτT⟩`. Introduce and unpack `v ⟨hv1, hv2⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components.
 
-Use `(hTs _ hv2).1` as an intermediate fact. Rewrite `this` using `[φ.symm.right_inv hv1]`. Then use the resulting hypothesis. Introduce and unpack `t ⟨-, ht⟩`. Conclude with `(hTs t ht).2.differentiableWithinAt`.
+A detailed English derivation is pending.
 -/
 theorem exists_localInverse {O : Set (Fin D → ℂ)} (hO : IsOpen O) {τ : (Fin D → ℂ) → Fin D → ℂ}
     (hτ : DifferentiableOn ℂ τ O) {v₀ : Fin D → ℂ} (hv : v₀ ∈ O)
@@ -82,7 +82,7 @@ def vecAt {X : Scheme.{0}} (i : X ⟶ MP ℤ m n) (p : ∀ k, Bk n k) (y : Globa
   fun q => ev (i ≫ mpStr ℤ m n) σ₀ _ (ratioFn i p q) y
 
 /- English proof (translation)
-The claim follows from `ev_app i rfl _ _ y`.
+A detailed English derivation is pending.
 -/
 theorem vecAt_apply {X : Scheme.{0}} (i : X ⟶ MP ℤ m n) (p : ∀ k, Bk n k)
     (y : GlobalTheory.CxPts (i ≫ mpStr ℤ m n) σ₀) (q : Σ k, Bk n k) :
@@ -91,9 +91,7 @@ theorem vecAt_apply {X : Scheme.{0}} (i : X ⟶ MP ℤ m n) (p : ∀ k, Bk n k)
   ev_app i rfl _ _ y
 
 /- English proof (translation)
-Use function extensionality and compare the values at `⟨k, j⟩`. Use `show z ⟨k, p k⟩ * vecAt i p y ⟨k, j⟩ = z ⟨k, j⟩`. Rewrite using `[vecAt_apply]`. Use `show z ⟨k, p k⟩ * ev (mpStr ℤ m n) σ₀ (blockChart n k (p k)) (pullRatio (prB n k) _ (p k) le_rfl j) (PtsOver.map i rfl _ y) = _`. Rewrite using `[(h k (p k)).2 j ((h k (p k)).1.2 (hp k))]`.
-
-Clear denominators, using `[hp k]` for the nonvanishing conditions.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem eq_scale_vecAt {X : Scheme.{0}} {i : X ⟶ MP ℤ m n} {p : ∀ k, Bk n k}
     {y : GlobalTheory.CxPts (i ≫ mpStr ℤ m n) σ₀} {z : (Σ k, Bk n k) → ℂ} (h : Over i y z)
@@ -107,11 +105,11 @@ theorem eq_scale_vecAt {X : Scheme.{0}} {i : X ⟶ MP ℤ m n} {p : ∀ k, Bk n 
   field_simp [hp k]
 
 /- English proof (translation)
-Take `⟨z', hz', hU⟩` from `GlobalTheory.T.complex_point_lifts_to_multicone m n X i y`. Establish `hne : ∀ k, z' ⟨k, p k⟩ ≠ 0` using `fun k => (hU k (p k)).1.1 (hy k)`. Establish `hc : ∀ k, b k / z' ⟨k, p k⟩ ≠ 0` using `fun k => div_ne_zero (hb k) (hne k)`. Establish `e : (fun q : Σ k, Bk n k => b q.1 * vecAt i p y q) = fun q : Σ k, Bk n k => (fun k => b k / z' ⟨k, p k⟩) q.1 * z' q`. Use function extensionality and compare the values at `q`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h1` using `eq_scale_vecAt (p := p) hU hne`. Establish `h2` using `congrFun h1 q`. Establish `h3` using `hne q.1`. Simplify using `only [] at h2 ⊢`. Rewrite using `[← h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Conclude with `⟨GlobalTheory.T.isUnder_of_same_orbit m n _ z' _ hU ⟨_, hc, rfl⟩, GroundTheory.Heights₂.Heights.SegreChartZeroSet.scaleAll_mem _ (isMultiProjPrime_ptIdeal m n _).2.1 _ hc hz'⟩`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem over_scale_vecAt {X : Scheme.{0}} [IsIntegral X] (i : X ⟶ MP ℤ m n) [IsClosedImmersion i]
     (p : ∀ k, Bk n k) {y : GlobalTheory.CxPts (i ≫ mpStr ℤ m n) σ₀}
@@ -136,7 +134,7 @@ theorem over_scale_vecAt {X : Scheme.{0}} [IsIntegral X] (i : X ⟶ MP ℤ m n) 
     GroundTheory.Heights₂.Heights.SegreChartZeroSet.scaleAll_mem _ (isMultiProjPrime_ptIdeal m n _).2.1 _ hc hz'⟩
 
 /- English proof (translation)
-Establish `hex : ∃ z, Over i y z` using `⟨z, h⟩`. Rewrite using `[liftOf, dif_pos hex]`. Conclude with `hex.choose_spec`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem over_liftOf {X : Scheme.{0}} {i : X ⟶ MP ℤ m n} {y : GlobalTheory.CxPts (i ≫ mpStr ℤ m n) σ₀}
     {z : (Σ k, Bk n k) → ℂ} (h : Over i y z) : Over i y (liftOf i y) := by
@@ -145,7 +143,7 @@ theorem over_liftOf {X : Scheme.{0}} {i : X ⟶ MP ℤ m n} {y : GlobalTheory.Cx
   exact hex.choose_spec
 
 /- English proof (translation)
-Use `differentiableOn_pi.2 fun q => ?_` and prove the remaining obligations. Establish `h` using `(c.analyticOnNhd_finChart_iff (isOpen_ptsIn (i ⁻¹ᵁ blockChart n q.1 (p q.1))) (ev (i ≫ mpStr ℤ m n) σ₀ _ (ratioFn i p q))).2 (c.holo _ _)`. Use `h.differentiableOn.mono fun v hv => ⟨hv.1, ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.CxPts.ptsIn_mono (Scheme.Hom.preimage_mono i (mchart_le p q.1)) hv.2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem differentiableOn_vecAt {X : Scheme.{0}} (i : X ⟶ MP ℤ m n) (p : ∀ k, Bk n k)
     (c : GlobalTheory.AlgChart (i ≫ mpStr ℤ m n) σ₀ D) :
@@ -158,47 +156,37 @@ theorem differentiableOn_vecAt {X : Scheme.{0}} (i : X ⟶ MP ℤ m n) (p : ∀ 
   exact GlobalTheory.CxPts.ptsIn_mono (Scheme.Hom.preimage_mono i (mchart_le p q.1)) hv.2
 
 /- English proof (translation)
-Introduce `m n X _ i _ D Ψ N a hN c y z hyc hz hNz h0 hreg`. Use `choose p hp using fun k => GlobalTheory.CompanionTheory.MixZ.Orbit.exists_ne_zero_of_isUnder hz k`. Establish `hyk : ∀ k, PtsOver.map i rfl _ y ∈ ptsIn (mpStr ℤ m n) σ₀ (blockChart n k (p k))` using `fun k => (hz k (p k)).1.2 (hp k)`. Establish `hy0 : y ∈ ptsIn (i ≫ mpStr ℤ m n) σ₀ (i ⁻¹ᵁ mchart p)`. Use `GlobalTheory.CxPts.mem_ptsIn.2 (Set.mem_iInter.2 fun k => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.CxPts.mem_ptsIn.1 (hyk k)`. Use `set v₀ := c.finChart y with hv₀`. Establish `hsymm0 : c.finChart.symm v₀ = y` using `c.finChart.left_inv hyc`. Set `lam : (Fin D → ℂ) → (Σ k, Bk n k) → ℂ` to `fun v q => z ⟨q.1, p q.1⟩ * vecAt i p (c.finChart.symm v) q`. Set `S : Set (Fin D → ℂ)` to `c.finChart.target ∩ c.finChart.symm ⁻¹' ptsIn (i ≫ mpStr ℤ m n) σ₀ (i ⁻¹ᵁ mchart p)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hSo : IsOpen S` using `c.finChart.isOpen_inter_preimage_symm (isOpen_ptsIn _)`. Establish `hv₀S : v₀ ∈ S` using `⟨c.finChart.map_source hyc, by`. Express the relevant statement in the definitionally equal form `c.finChart.symm v₀ ∈ ptsIn (i ≫ mpStr ℤ m n) σ₀ (i ⁻¹ᵁ mchart p)`. Rewrite using `[hsymm0]`. Conclude with `hy0⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hlamd : ∀ v ∈ S, DifferentiableAt ℂ lam v`. Introduce `v hv`. Establish `h1` using `(differentiableOn_vecAt i p c).differentiableAt (hSo.mem_nhds hv)`. Use `differentiableAt_pi.2 fun q => ?_` and prove the remaining obligations. Conclude with `(differentiableAt_const _).fun_mul (differentiableAt_pi.1 h1 q)`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hlam0 : lam v₀ = z`. Use `eq_scale_vecAt (p := p) hz hp` as an intermediate fact. Use function extensionality and compare the values at `q`. Establish `h2` using `congrFun this q`. Use `show z ⟨q.1, p q.1⟩ * vecAt i p (c.finChart.symm v₀) q = z q`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hsymm0]`. Conclude with `h2`. Set `F : (Fin D → ℂ) → ℂ` to `fun v => Ψ (segre (lam v)) 0 * eval (lam v) (map (Int.castRingHom ℂ) N)`. Establish `hFc : ContinuousOn F S`. Introduce `v hv`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `ContinuousAt.continuousWithinAt ?_` and prove the remaining obligations. Establish `h1 : DifferentiableAt ℂ (fun v => Ψ (segre (lam v))) v` using `GroundTheory.Heights₂.Heights.PtsSheetOnlyNull.differentiableAt_proj_segre Ψ (hlamd v hv)`. Establish `h2 : ContinuousAt (fun v => Ψ (segre (lam v)) 0) v` using `(differentiableAt_pi.1 h1 0).continuousAt`. Establish `h3 : ContinuousAt (fun v => eval (lam v) (map (Int.castRingHom ℂ) N)) v` using `(MvPolynomial.continuous_eval _).continuousAt.comp (hlamd v hv).continuousAt`. Conclude with `h2.mul h3`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `O : Set (Fin D → ℂ)` to `S ∩ F ⁻¹' {0}ᶜ`. Establish `hOo : IsOpen O` using `hFc.isOpen_inter_preimage hSo isOpen_compl_singleton`. Establish `hv₀O : v₀ ∈ O` using `⟨hv₀S, by show F v₀ ≠ 0`. Simplify using `only [F, hlam0]`. Conclude with `mul_ne_zero h0 hNz⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΨ0 : ∀ v ∈ O, Ψ (segre (lam v)) 0 ≠ 0` using `fun v hv => left_ne_zero_of_mul hv.2`. Establish `hNv : ∀ v ∈ O, eval (lam v) (map (Int.castRingHom ℂ) N) ≠ 0` using `fun v hv => right_ne_zero_of_mul hv.2`. Establish `hchart : ∀ v ∈ S, ∀ k, PtsOver.map i rfl _ (c.finChart.symm v) ∈ ptsIn (mpStr ℤ m n) σ₀ (blockChart n k (p k))` using `fun v hv k => GlobalTheory.CxPts.ptsIn_mono (mchart_le p k) hv.2`. Establish `hlamU : ∀ v ∈ S, Over i (c.finChart.symm v) (lam v) ∧ lam v ∈ mcPts (ptIdeal (i (genericPoint X)))` using `fun v hv => over_scale_vecAt i p (hchart v hv) (fun k => z ⟨k, p k⟩) hp`. Establish `hτ : ∀ v ∈ O, projCoord i Ψ (c.finChart.symm v) = ratios Ψ (lam v)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `v hv`. Establish `h1` using `(hlamU v hv.1).1`. Establish `h2` using `over_liftOf h1`. Conclude with `ratios_eq_of_sameOrbit Ψ ((GlobalTheory.T.points_eq_iff_same_torus_orbit m n X i _ _ _ _ h2 h1).1 rfl) (hΨ0 v hv)`. Establish `hτd : DifferentiableOn ℂ (projCoord i Ψ ∘ c.finChart.symm) O`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `v hv`. Establish `h1 : DifferentiableAt ℂ (fun v' => ratio (Ψ (segre (lam v')))) v` using `differentiableAt_ratio Ψ (hlamd v hv.1) (hΨ0 v hv)`. Use `(h1.congr_of_eventuallyEq ?_).differentiableWithinAt` and prove the remaining obligations. Use `filter_upwards [hOo.mem_nhds hv] with v' hv'`. Conclude with `hτ v' hv'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨φ, hφ0, hφO, hφτ, hφd⟩` from `exists_localInverse hOo hτd hv₀O hreg`. Establish `hφt : ∀ t ∈ φ.target, φ.symm t ∈ O` using `fun t ht => hφO (φ.map_target ht)`. Establish `hφr : ∀ t ∈ φ.target, ratios Ψ (lam (φ.symm t)) = t`. Introduce `t ht`. Establish `h1` using `hτ _ (hφt t ht)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hφτ (φ.symm t)`. Rewrite `h2` using `[φ.right_inv ht]`. Conclude with `(h2.trans h1).symm`. Use `⟨c.finChart.trans φ, fun t => scaleBlock 0 (Ψ (segre (lam (φ.symm t))) 0)⁻¹ (lam (φ.symm t)), ⟨⟨c, fun w hw => ?_⟩, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite `hw` using `[OpenPartialHomeomorph.trans_source]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hw.1`. Introduce `t ht`. Rewrite `ht` using `[OpenPartialHomeomorph.trans_target]`. Establish `htt` using `ht.1`. Establish `hO'` using `hφt t htt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hd1 : DifferentiableAt ℂ φ.symm t` using `(hφd t htt).differentiableAt (φ.open_target.mem_nhds htt)`. Establish `hg : DifferentiableAt ℂ (fun t => lam (φ.symm t)) t` using `(hlamd _ hO'.1).comp t hd1`. Establish `hp1 : DifferentiableAt ℂ (fun v => Ψ (segre (lam v))) (φ.symm t)` using `GroundTheory.Heights₂.Heights.PtsSheetOnlyNull.differentiableAt_proj_segre Ψ (hlamd _ hO'.1)`. Establish `hc : DifferentiableAt ℂ (fun t => (Ψ (segre (lam (φ.symm t))) 0)⁻¹) t` using `((differentiableAt_pi.1 hp1 0).fun_inv (hΨ0 _ hO')).comp t hd1`. Use `DifferentiableAt.differentiableWithinAt (differentiableAt_pi.2 fun q => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Simplify using the standard rewrite rules.
 
-Simplify using `only [scaleBlock]`. Use `split_ifs`. Conclude with `hc.fun_mul (differentiableAt_pi.1 hg q)`. Conclude with `(differentiableAt_const _).fun_mul (differentiableAt_pi.1 hg q)`. Introduce `t ht`.
-
-Rewrite `ht` using `[OpenPartialHomeomorph.trans_target]`. Establish `htt` using `ht.1`. Establish `hO'` using `hφt t htt`. Establish `hsy : (c.finChart.trans φ).symm t = c.finChart.symm (φ.symm t)` using `rfl`. Establish `hcne` using `inv_ne_zero (hΨ0 _ hO')`.
-
-Take `⟨hU, hM⟩` from `hlamU _ hO'.1`. Establish `hG : scaleBlock (0 : Fin (m + 1)) (Ψ (segre (lam (φ.symm t))) 0)⁻¹ (lam (φ.symm t)) = fun q => (fun k : Fin (m + 1) => if k = 0 then (Ψ (segre (lam (φ.symm t))) 0)⁻¹ else 1) q.1 * lam (φ.symm t) q` using `rfl`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hsy]`. Use `GlobalTheory.T.isUnder_of_same_orbit m n _ _ _ hU ⟨fun k : Fin (m + 1) => if k = 0 then (Ψ (segre (lam (φ.symm t))) 0)⁻¹ else 1, fun k => ?_, hG⟩` and prove the remaining obligations.
-
-Simplify using `only`. Use `split_ifs`. Conclude with `hcne`. Conclude with `one_ne_zero`. Conclude with `scaleBlock_mem_zeroLocus _ (isMultiProjPrime_ptIdeal m n _).2.1 0 hcne hM`.
-
-Simplify using `only [segre_scaleBlock, map_smul]`. Rewrite using `[inv_smul_eq_cons _ (hΨ0 _ hO')]`. Conclude with `congrArg _ (hφr t htt)`. Rewrite using `[eval_scaleBlock 0 _ _ N a hN]`. Conclude with `mul_ne_zero (pow_ne_zero _ hcne) (hNv _ hO')`.
-
-Rewrite using `[OpenPartialHomeomorph.trans_source]`. Conclude with `⟨hyc, hφ0⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_pieceSet : ∀ (m : ℕ) (n : Fin (m + 1) → ℕ) (X : Scheme.{0}) [IsIntegral X] (i : X ⟶ MP ℤ m n) [IsClosedImmersion i] (D : ℕ)
     (Ψ : GlobalTheory.CompanionTheory.MixZ.ArchEq.LinProj n D) (N : Pol n) (a : Fin (m + 1) → ℕ), IsMultiHomog N a →

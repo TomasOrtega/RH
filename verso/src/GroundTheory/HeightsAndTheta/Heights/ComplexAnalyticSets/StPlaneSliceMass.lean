@@ -13,7 +13,7 @@ def PlaneSliceMass.Statement : Prop :=
     (fun _ x => Real.log ((HermNorm.std (e + 1)).dualNorm x)) = 1
 
 /- English proof (translation)
-The claim follows from `H 1`.
+A detailed English derivation is pending.
 -/
 theorem PlaneSliceMass.line (H : PlaneSliceMass.Statement) : LineSliceMass.Statement := H 1
 

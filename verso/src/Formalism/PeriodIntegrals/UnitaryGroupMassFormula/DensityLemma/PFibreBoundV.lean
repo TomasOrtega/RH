@@ -16,7 +16,7 @@ def piI (k r : ℕ) (i : Fin (2 * r + k + 1)) : Fin (2 * r + k + 1) :=
 def epsI (k r : ℕ) (i : Fin (2 * r + k + 1)) : ℂ := if i.val = r + k then -1 else 1
 
 /- English proof (translation)
-Unfold `piI`. Apply the tactic sequence `split_ifs <;> rfl`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma piI_val (i : Fin (2 * r + k + 1)) :
     (piI k r i).val = if r ≤ i.val ∧ i.val ≤ r + k then i.val else 2 * r + k - i.val := by
@@ -24,7 +24,7 @@ lemma piI_val (i : Fin (2 * r + k + 1)) :
   split_ifs <;> rfl
 
 /- English proof (translation)
-Establish `hp` using `piI_val (k := k) (r := r) i`. Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`. Simplify using `only [Hpk, epsI, Fin.ext_iff, hp]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma Hpk_apply (i j : Fin (2 * r + k + 1)) :
     Hpk k r i j = if j = piI k r i then epsI k r i else 0 := by
@@ -35,21 +35,21 @@ lemma Hpk_apply (i j : Fin (2 * r + k + 1)) :
   split_ifs <;> first | rfl | (exfalso; omega)
 
 /- English proof (translation)
-Simplify using `[Matrix.mul_apply, Hpk_apply]`.
+Simplify using the standard rewrite rules.
 -/
 lemma Hpk_mul_apply (X : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (i j) :
     (Hpk k r * X) i j = epsI k r i * X (piI k r i) j := by
   simp [Matrix.mul_apply, Hpk_apply]
 
 /- English proof (translation)
-Simplify using `[Matrix.mulVec, dotProduct, Hpk_apply]`.
+Simplify using the standard rewrite rules.
 -/
 lemma Hpk_mulVec (v : Fin (2 * r + k + 1) → ℂ) (i : Fin (2 * r + k + 1)) :
     (Hpk k r *ᵥ v) i = epsI k r i * v (piI k r i) := by
   simp [Matrix.mulVec, dotProduct, Hpk_apply]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_assoc, Matrix.mul_apply]`. Simplify using `only [Hpk_mul_apply, Matrix.conjTranspose_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma uh_entry (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (p q) :
     (gᴴ * Hpk k r * g) p q = ∑ i, star (g i p) * (epsI k r i * g (piI k r i) q) := by
@@ -70,11 +70,11 @@ Both sides reduce to the same expression.
 lemma esI_val (a : Fin r) : (esI k r a).val = 2 * r + k - a.val := rfl
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (Sum.elim (eI k r) (Sum.elim (wI k r) (esI k r)) : Fin r ⊕ (Fin (k + 1) ⊕ Fin r) → Fin (2 * r + k + 1))`. Apply the tactic sequence `rintro (a | j | a) (b | i | b) h <;>`. Apply the tactic sequence `simp only [Sum.elim_inl, Sum.elim_inr, Fin.ext_iff, eI_val, wI_val, esI_val, Sum.inl.injEq, Sum.inr.injEq, reduceCtorEq] at h ⊢ <;>`. Use linear arithmetic over natural numbers and integers. Establish `hbij : Function.Bijective (Sum.elim (eI k r) (Sum.elim (wI k r) (esI k r)) : Fin r ⊕ (Fin (k + 1) ⊕ Fin r) → Fin (2 * r + k + 1))`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Rewrite using `[Fintype.bijective_iff_injective_and_card]`. Use `⟨hinj, ?_⟩` and prove the remaining obligations. Simplify using `only [Fintype.card_sum, Fintype.card_fin]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[← Fintype.sum_bijective _ hbij (fun x => f (Sum.elim (eI k r) (Sum.elim (wI k r) (esI k r)) x)) f (fun _ => rfl)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Fintype.sum_sum_type, Sum.elim_inl, Sum.elim_inr, add_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 lemma sum_split {M : Type*} [AddCommMonoid M] (f : Fin (2 * r + k + 1) → M) :
     ∑ i, f i = ∑ a : Fin r, f (eI k r a) + ∑ j : Fin (k + 1), f (wI k r j) + ∑ a : Fin r, f (esI k r a) := by
@@ -95,11 +95,9 @@ lemma sum_split {M : Type*} [AddCommMonoid M] (f : Fin (2 * r + k + 1) → M) :
   simp only [Fintype.sum_sum_type, Sum.elim_inl, Sum.elim_inr, add_assoc]
 
 /- English proof (translation)
-Establish `hi` using `i.isLt`. Break down `Nat.lt_or_ge i.val r with h | h` into its components or cases. Establish `e : i = eI k r ⟨i.val, h⟩` using `Fin.ext rfl`. Rewrite using `[e]`. Conclude with `h1 _`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Nat.lt_or_ge (r + k) i.val with h' | h'` into its components or cases. Establish `e : i = esI k r ⟨2 * r + k - i.val, by omega⟩` using `Fin.ext (by simp only [esI_val, Fin.val_mk]; omega)`. Rewrite using `[e]`. Conclude with `h3 _`. Establish `e : i = wI k r ⟨i.val - r, by omega⟩` using `Fin.ext (by simp only [wI_val, Fin.val_mk]; omega)`.
-
-Rewrite using `[e]`. Conclude with `h2 _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma cases3 {P : Fin (2 * r + k + 1) → Prop} (h1 : ∀ a, P (eI k r a)) (h2 : ∀ j, P (wI k r j))
     (h3 : ∀ a, P (esI k r a)) (i : Fin (2 * r + k + 1)) : P i := by
@@ -114,21 +112,21 @@ lemma cases3 {P : Fin (2 * r + k + 1) → Prop} (h1 : ∀ a, P (eI k r a)) (h2 :
       rw [e]; exact h2 _
 
 /- English proof (translation)
-The claim follows from `Fin.ext (by rw [piI_val] have h1 : ¬ (r ≤ (eI k r a).val ∧ (eI k r a).val ≤ r + k) := by rw [eI_val]; omega rw [if_neg h1, eI_val, esI_val])`.
+A detailed English derivation is pending.
 -/
 lemma piI_eI (a : Fin r) : piI k r (eI k r a) = esI k r a := Fin.ext (by
   rw [piI_val]
   have h1 : ¬ (r ≤ (eI k r a).val ∧ (eI k r a).val ≤ r + k) := by rw [eI_val]; omega
   rw [if_neg h1, eI_val, esI_val])
 /- English proof (translation)
-The claim follows from `Fin.ext (by rw [piI_val] have h1 : r ≤ (wI k r j).val ∧ (wI k r j).val ≤ r + k := by rw [wI_val]; omega rw [if_pos h1])`.
+A detailed English derivation is pending.
 -/
 lemma piI_wI (j : Fin (k + 1)) : piI k r (wI k r j) = wI k r j := Fin.ext (by
   rw [piI_val]
   have h1 : r ≤ (wI k r j).val ∧ (wI k r j).val ≤ r + k := by rw [wI_val]; omega
   rw [if_pos h1])
 /- English proof (translation)
-The claim follows from `Fin.ext (by rw [piI_val] have h1 : ¬ (r ≤ (esI k r a).val ∧ (esI k r a).val ≤ r + k) := by rw [esI_val]; omega rw [if_neg h1, esI_val, eI_val] omega)`.
+A detailed English derivation is pending.
 -/
 lemma piI_esI (a : Fin r) : piI k r (esI k r a) = eI k r a := Fin.ext (by
   rw [piI_val]
@@ -136,23 +134,23 @@ lemma piI_esI (a : Fin r) : piI k r (esI k r a) = eI k r a := Fin.ext (by
   rw [if_neg h1, esI_val, eI_val]
   omega)
 /- English proof (translation)
-Establish `h1 : ¬ ((eI k r a).val = r + k)` using `by rw [eI_val]; omega`. Unfold `epsI`. Rewrite using `[if_neg h1]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma epsI_eI (a : Fin r) : epsI k r (eI k r a) = 1 := by
   have h1 : ¬ ((eI k r a).val = r + k) := by rw [eI_val]; omega
   unfold epsI
   rw [if_neg h1]
 /- English proof (translation)
-Establish `h1 : ¬ ((esI k r a).val = r + k)` using `by rw [esI_val]; omega`. Unfold `epsI`. Rewrite using `[if_neg h1]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma epsI_esI (a : Fin r) : epsI k r (esI k r a) = 1 := by
   have h1 : ¬ ((esI k r a).val = r + k) := by rw [esI_val]; omega
   unfold epsI
   rw [if_neg h1]
 /- English proof (translation)
-Unfold `epsI hW`. Distinguish the cases in `h : j.val = k`. Establish `h1 : (wI k r j).val = r + k` using `by rw [wI_val]; omega`. Rewrite using `[if_pos h1, if_pos h]`. Establish `h1 : ¬ (wI k r j).val = r + k` using `by rw [wI_val]; omega`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[if_neg h1, if_neg h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma epsI_wI (j : Fin (k + 1)) : epsI k r (wI k r j) = hW k j := by
   unfold epsI hW
@@ -163,37 +161,37 @@ lemma epsI_wI (j : Fin (k + 1)) : epsI k r (wI k r j) = hW k j := by
     rw [if_neg h1, if_neg h]
 
 /- English proof (translation)
-Unfold `hW`. Apply the tactic sequence `split_ifs <;> norm_num`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma hW_sq (j : Fin (k + 1)) : hW k j * hW k j = 1 := by
   unfold hW
   split_ifs <;> norm_num
 /- English proof (translation)
-Unfold `hW`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma star_hW (j : Fin (k + 1)) : star (hW k j) = hW k j := by
   unfold hW
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[Fin.ext_iff, Fin.ext_iff, eI_val, eI_val]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma eI_inj (a b : Fin r) : eI k r a = eI k r b ↔ a = b := by
   rw [Fin.ext_iff, Fin.ext_iff, eI_val, eI_val]
 /- English proof (translation)
-Rewrite using `[Fin.ext_iff, Fin.ext_iff, wI_val, wI_val]`. Apply the tactic sequence `constructor <;> intro h <;> omega`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma wI_inj (i j : Fin (k + 1)) : wI k r i = wI k r j ↔ i = j := by
   rw [Fin.ext_iff, Fin.ext_iff, wI_val, wI_val]
   constructor <;> intro h <;> omega
 /- English proof (translation)
-Rewrite using `[Fin.ext_iff, Fin.ext_iff, esI_val, esI_val]`. Apply the tactic sequence `constructor <;> intro h <;> omega`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma esI_inj (a b : Fin r) : esI k r a = esI k r b ↔ a = b := by
   rw [Fin.ext_iff, Fin.ext_iff, esI_val, esI_val]
   constructor <;> intro h <;> omega
 /- English proof (translation)
-Introduce `h`. Establish `h'` using `congrArg Fin.val h`. Simplify using `only [eI_val, wI_val] at h'`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 lemma eI_ne_wI (a : Fin r) (j : Fin (k + 1)) : eI k r a ≠ wI k r j := by
   intro h
@@ -201,7 +199,7 @@ lemma eI_ne_wI (a : Fin r) (j : Fin (k + 1)) : eI k r a ≠ wI k r j := by
   simp only [eI_val, wI_val] at h'
   omega
 /- English proof (translation)
-Introduce `h`. Establish `h'` using `congrArg Fin.val h`. Simplify using `only [eI_val, esI_val] at h'`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 lemma eI_ne_esI (a b : Fin r) : eI k r a ≠ esI k r b := by
   intro h
@@ -209,7 +207,7 @@ lemma eI_ne_esI (a b : Fin r) : eI k r a ≠ esI k r b := by
   simp only [eI_val, esI_val] at h'
   omega
 /- English proof (translation)
-Introduce `h`. Establish `h'` using `congrArg Fin.val h`. Simplify using `only [wI_val, esI_val] at h'`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 lemma wI_ne_esI (j : Fin (k + 1)) (b : Fin r) : wI k r j ≠ esI k r b := by
   intro h
@@ -218,23 +216,23 @@ lemma wI_ne_esI (j : Fin (k + 1)) (b : Fin r) : wI k r j ≠ esI k r b := by
   omega
 
 /- English proof (translation)
-Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma star_ite_one_zero (p : Prop) [Decidable p] : star (if p then (1 : ℂ) else 0) = if p then 1 else 0 := by
   split_ifs <;> simp
 
 /- English proof (translation)
-Simplify using `[Hpk_apply, piI_eI, eI_ne_esI]`.
+Simplify using the standard rewrite rules.
 -/
 lemma Hpk_ee (a b : Fin r) : Hpk k r (eI k r a) (eI k r b) = 0 := by
   simp [Hpk_apply, piI_eI, eI_ne_esI]
 /- English proof (translation)
-Simplify using `[Hpk_apply, piI_eI, wI_ne_esI]`.
+Simplify using the standard rewrite rules.
 -/
 lemma Hpk_ew (a : Fin r) (j : Fin (k + 1)) : Hpk k r (eI k r a) (wI k r j) = 0 := by
   simp [Hpk_apply, piI_eI, wI_ne_esI]
 /- English proof (translation)
-Simplify using `only [Hpk_apply, piI_eI, esI_inj, epsI_eI]`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg h, if_neg (Ne.symm h)]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma Hpk_es (a b : Fin r) : Hpk k r (eI k r a) (esI k r b) = if a = b then 1 else 0 := by
   simp only [Hpk_apply, piI_eI, esI_inj, epsI_eI]
@@ -242,12 +240,12 @@ lemma Hpk_es (a b : Fin r) : Hpk k r (eI k r a) (esI k r b) = if a = b then 1 el
   · subst h; simp
   · rw [if_neg h, if_neg (Ne.symm h)]
 /- English proof (translation)
-Simplify using `[Hpk_apply, piI_wI, eI_ne_wI]`.
+Simplify using the standard rewrite rules.
 -/
 lemma Hpk_we (j : Fin (k + 1)) (b : Fin r) : Hpk k r (wI k r j) (eI k r b) = 0 := by
   simp [Hpk_apply, piI_wI, eI_ne_wI]
 /- English proof (translation)
-Simplify using `only [Hpk_apply, piI_wI, wI_inj, epsI_wI]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg h, if_neg (Ne.symm h)]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma Hpk_ww (i j : Fin (k + 1)) : Hpk k r (wI k r i) (wI k r j) = if i = j then hW k i else 0 := by
   simp only [Hpk_apply, piI_wI, wI_inj, epsI_wI]
@@ -255,12 +253,12 @@ lemma Hpk_ww (i j : Fin (k + 1)) : Hpk k r (wI k r i) (wI k r j) = if i = j then
   · subst h; simp
   · rw [if_neg h, if_neg (Ne.symm h)]
 /- English proof (translation)
-Simplify using `[Hpk_apply, piI_wI, (wI_ne_esI j b).symm]`.
+Simplify using the standard rewrite rules.
 -/
 lemma Hpk_ws (j : Fin (k + 1)) (b : Fin r) : Hpk k r (wI k r j) (esI k r b) = 0 := by
   simp [Hpk_apply, piI_wI, (wI_ne_esI j b).symm]
 /- English proof (translation)
-Simplify using `only [Hpk_apply, piI_esI, eI_inj, epsI_esI]`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg h, if_neg (Ne.symm h)]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma Hpk_se (a b : Fin r) : Hpk k r (esI k r a) (eI k r b) = if a = b then 1 else 0 := by
   simp only [Hpk_apply, piI_esI, eI_inj, epsI_esI]
@@ -268,12 +266,12 @@ lemma Hpk_se (a b : Fin r) : Hpk k r (esI k r a) (eI k r b) = if a = b then 1 el
   · subst h; simp
   · rw [if_neg h, if_neg (Ne.symm h)]
 /- English proof (translation)
-Simplify using `[Hpk_apply, piI_esI, (eI_ne_wI a j).symm]`.
+Simplify using the standard rewrite rules.
 -/
 lemma Hpk_sw (a : Fin r) (j : Fin (k + 1)) : Hpk k r (esI k r a) (wI k r j) = 0 := by
   simp [Hpk_apply, piI_esI, (eI_ne_wI a j).symm]
 /- English proof (translation)
-Simplify using `[Hpk_apply, piI_esI, (eI_ne_esI a b).symm]`.
+Simplify using the standard rewrite rules.
 -/
 lemma Hpk_ss (a b : Fin r) : Hpk k r (esI k r a) (esI k r b) = 0 := by
   simp [Hpk_apply, piI_esI, (eI_ne_esI a b).symm]
@@ -281,15 +279,15 @@ lemma Hpk_ss (a b : Fin r) : Hpk k r (esI k r a) (esI k r b) = 0 := by
 variable (Bm : Matrix (Fin r) (Fin (k + 1)) ℂ) (S : Matrix (Fin r) (Fin r) ℂ)
 
 /- English proof (translation)
-The claim follows from `Fin.ext rfl`.
+A detailed English derivation is pending.
 -/
 lemma eI_back (a : Fin r) (h) : (⟨(eI k r a).val, h⟩ : Fin r) = a := Fin.ext rfl
 /- English proof (translation)
-The claim follows from `Fin.ext (by simp only [Fin.val_mk, wI_val]; omega)`.
+A detailed English derivation is pending.
 -/
 lemma wI_back (j : Fin (k + 1)) (h) : (⟨(wI k r j).val - r, h⟩ : Fin (k + 1)) = j := Fin.ext (by simp only [Fin.val_mk, wI_val]; omega)
 /- English proof (translation)
-The claim follows from `Fin.ext (by simp only [Fin.val_mk, esI_val]; have := b.isLt; omega)`.
+A detailed English derivation is pending.
 -/
 lemma esI_back (b : Fin r) (h) : (⟨2 * r + k - (esI k r b).val, h⟩ : Fin r) = b := Fin.ext (by simp only [Fin.val_mk, esI_val]; have := b.isLt; omega)
 
@@ -297,54 +295,54 @@ macro "nbt" : tactic => `(tactic| (simp only [unipotentBlockMatrix, Matrix.of_ap
   (try (exfalso; simp only [Fin.ext_iff, eI_val, wI_val, esI_val] at *; omega)) <;> simp [eI_back, wI_back, esI_back]))
 
 /- English proof (translation)
-Use `nbt`.
+A detailed English derivation is pending.
 -/
 lemma nb_ee (a b : Fin r) : unipotentBlockMatrix k r Bm S (eI k r a) (eI k r b) = if a = b then 1 else 0 := by
   nbt
 /- English proof (translation)
-Use `nbt`.
+A detailed English derivation is pending.
 -/
 lemma nb_we (j : Fin (k + 1)) (b : Fin r) : unipotentBlockMatrix k r Bm S (wI k r j) (eI k r b) = 0 := by
   nbt
 /- English proof (translation)
-Use `nbt`.
+A detailed English derivation is pending.
 -/
 lemma nb_se (a b : Fin r) : unipotentBlockMatrix k r Bm S (esI k r a) (eI k r b) = 0 := by
   nbt
 /- English proof (translation)
-Use `nbt`.
+A detailed English derivation is pending.
 -/
 lemma nb_ew (a : Fin r) (j : Fin (k + 1)) : unipotentBlockMatrix k r Bm S (eI k r a) (wI k r j) = Bm a j := by
   nbt
 /- English proof (translation)
-Use `nbt`.
+A detailed English derivation is pending.
 -/
 lemma nb_ww (i j : Fin (k + 1)) : unipotentBlockMatrix k r Bm S (wI k r i) (wI k r j) = if i = j then 1 else 0 := by
   nbt
 /- English proof (translation)
-Use `nbt`.
+A detailed English derivation is pending.
 -/
 lemma nb_sw (a : Fin r) (j : Fin (k + 1)) : unipotentBlockMatrix k r Bm S (esI k r a) (wI k r j) = 0 := by
   nbt
 /- English proof (translation)
-Use `nbt`.
+A detailed English derivation is pending.
 -/
 lemma nb_es (a b : Fin r) : unipotentBlockMatrix k r Bm S (eI k r a) (esI k r b) = cmOf k r Bm S a b := by
   nbt
 /- English proof (translation)
-Use `nbt`.
+A detailed English derivation is pending.
 -/
 lemma nb_ws (j : Fin (k + 1)) (b : Fin r) :
     unipotentBlockMatrix k r Bm S (wI k r j) (esI k r b) = -(hW k j) * star (Bm b j) := by
   nbt
 /- English proof (translation)
-Use `nbt`.
+A detailed English derivation is pending.
 -/
 lemma nb_ss (a b : Fin r) : unipotentBlockMatrix k r Bm S (esI k r a) (esI k r b) = if a = b then 1 else 0 := by
   nbt
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Simplify using `only [Matrix.mul_diagonal, Matrix.conjTranspose_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma X_apply (a b : Fin r) :
     (Bm * Matrix.diagonal (hW k) * Bmᴴ) a b = ∑ j, Bm a j * hW k j * star (Bm b j) := by
@@ -352,7 +350,7 @@ lemma X_apply (a b : Fin r) :
   simp only [Matrix.mul_diagonal, Matrix.conjTranspose_apply]
 
 /- English proof (translation)
-Rewrite using `[X_apply, X_apply, star_sum]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[star_mul', star_mul', star_star, star_hW]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma X_herm (a b : Fin r) :
     star ((Bm * Matrix.diagonal (hW k) * Bmᴴ) b a) = (Bm * Matrix.diagonal (hW k) * Bmᴴ) a b := by
@@ -362,9 +360,9 @@ lemma X_herm (a b : Fin r) :
   ring
 
 /- English proof (translation)
-Establish `h1 : star (S b a) = -S a b`. Establish `h` using `congrFun (congrFun hS a) b`. Rewrite `h` using `[Matrix.conjTranspose_apply, Matrix.neg_apply]`. Conclude with `h`. Establish `h2` using `X_herm (k := k) Bm a b`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : star (1 / 2 : ℂ) = 1 / 2` using `by simp`. Simplify using `only [cmOf, Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul, star_sub, star_mul', h1, h2, h3]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma cm_skew (hS : Sᴴ = -S) (a b : Fin r) :
     cmOf k r Bm S a b + star (cmOf k r Bm S b a) + (Bm * Matrix.diagonal (hW k) * Bmᴴ) a b = 0 := by
@@ -378,7 +376,7 @@ lemma cm_skew (hS : Sᴴ = -S) (a b : Fin r) :
   ring
 
 /- English proof (translation)
-Rewrite using `[X_apply]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[star_mul', star_neg, star_star, star_hW]`. Take the linear combination `(Bm a j * star (Bm b j) * hW k j) * hW_sq j`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 lemma mid_sum (a b : Fin r) :
     ∑ j, star (-(hW k j) * star (Bm a j)) * (hW k j * (-(hW k j) * star (Bm b j))) =
@@ -389,19 +387,19 @@ lemma mid_sum (a b : Fin r) :
   linear_combination (Bm a j * star (Bm b j) * hW k j) * hW_sq j
 
 /- English proof (translation)
-Take the linear combination `(-x) * hW_sq j`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 lemma aux1 (x : ℂ) (j : Fin (k + 1)) : x + hW k j * (-hW k j * x) = 0 := by
   linear_combination (-x) * hW_sq j
 /- English proof (translation)
-Rewrite using `[star_mul', star_neg, star_star, star_hW]`. Take the linear combination `(-x) * hW_sq j`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 lemma aux2 (x : ℂ) (j : Fin (k + 1)) : star (-hW k j * star x) * hW k j + x = 0 := by
   rw [star_mul', star_neg, star_star, star_hW]
   linear_combination (-x) * hW_sq j
 
 /- English proof (translation)
-The claim follows from `cases3 (P := fun i => (∃ a, i = eI k r a) ∨ (∃ j, i = wI k r j) ∨ (∃ a, i = esI k r a)) (fun a => Or.inl ⟨a, rfl⟩) (fun j => Or.inr (Or.inl ⟨j, rfl⟩)) (fun a => Or.inr (Or.inr ⟨a, rfl⟩)) i`.
+A detailed English derivation is pending.
 -/
 private theorem fin_eq_eI_or_wI_or_esI (i : Fin (2 * r + k + 1)) :
     (∃ a, i = eI k r a) ∨ (∃ j, i = wI k r j) ∨ (∃ a, i = esI k r a) :=
@@ -409,11 +407,9 @@ private theorem fin_eq_eI_or_wI_or_esI (i : Fin (2 * r + k + 1)) :
     (fun a => Or.inl ⟨a, rfl⟩) (fun j => Or.inr (Or.inl ⟨j, rfl⟩)) (fun a => Or.inr (Or.inr ⟨a, rfl⟩)) i
 
 /- English proof (translation)
-Use `show (unipotentBlockMatrix k r Bm S)ᴴ * Hpk k r * unipotentBlockMatrix k r Bm S = Hpk k r`. Use extensionality with `p q`. Rewrite using `[uh_entry, sum_split]`. Apply the tactic sequence `rcases fin_eq_eI_or_wI_or_esI p with ⟨a, rfl⟩ | ⟨j, rfl⟩ | ⟨a, rfl⟩ <;>`. Apply the tactic sequence `rcases fin_eq_eI_or_wI_or_esI q with ⟨b, rfl⟩ | ⟨i, rfl⟩ | ⟨b, rfl⟩ <;>`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Simplify using `only [piI_eI, piI_wI, piI_esI, epsI_eI, epsI_wI, epsI_esI, one_mul, mul_one, mul_zero, zero_mul, nb_ee, nb_we, nb_se, nb_ew, nb_ww, nb_sw, nb_es, nb_ws, nb_ss, star_ite_one_zero, star_zero, Finset.sum_const_zero, add_zero, zero_add, Hpk_ee, Hpk_ew, Hpk_es, Hpk_we, Hpk_ww, Hpk_ws, …`. Apply the tactic sequence `all_goals first`. Consider the case `exact aux1 _ _`. Consider the case `exact aux2 _ _`. Consider the case `(rw [mid_sum]; linear_combination cm_skew Bm S hS _ _)`.
-
-Consider the case `(split_ifs <;> simp_all; done)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem nb_UH (hS : Sᴴ = -S) : unipotentBlockMatrix k r Bm S ∈ UH (Hpk k r) := by
   show (unipotentBlockMatrix k r Bm S)ᴴ * Hpk k r * unipotentBlockMatrix k r Bm S = Hpk k r
@@ -432,16 +428,16 @@ theorem nb_UH (hS : Sᴴ = -S) : unipotentBlockMatrix k r Bm S ∈ UH (Hpk k r) 
     | (split_ifs <;> simp_all; done)
 
 /- English proof (translation)
-The claim follows from `hz _ (Or.inl (by rw [eI_val]; exact a.isLt))`.
+A detailed English derivation is pending.
 -/
 lemma inWb_eI {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (a : Fin r) : z (eI k r a) = 0 := hz _ (Or.inl (by rw [eI_val]; exact a.isLt))
 /- English proof (translation)
-The claim follows from `hz _ (Or.inr (by rw [esI_val]; have := a.isLt; omega))`.
+A detailed English derivation is pending.
 -/
 lemma inWb_esI {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (a : Fin r) : z (esI k r a) = 0 := hz _ (Or.inr (by rw [esI_val]; have := a.isLt; omega))
 
 /- English proof (translation)
-Simplify using `only [herm, dotProduct, Pi.star_apply, Hpk_mulVec]`. Rewrite using `[sum_split]`. Simplify using `only [inWb_eI hz, inWb_esI hz, star_zero, zero_mul, Finset.sum_const_zero, zero_add, add_zero, piI_wI, epsI_wI]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma herm_Hpk_of_inWb_eq_sum_wI {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (v : Fin (2 * r + k + 1) → ℂ) :
     herm (Hpk k r) v z = ∑ j, star (z (wI k r j)) * (hW k j * v (wI k r j)) := by
@@ -451,7 +447,7 @@ lemma herm_Hpk_of_inWb_eq_sum_wI {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k 
     piI_wI, epsI_wI]
 
 /- English proof (translation)
-Simplify using `only [herm, dotProduct, Pi.star_apply, bvec, Pi.single_apply, star_ite_one_zero, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, ↓reduceIte, Hpk_mulVec, piI_esI, epsI_esI]`.
+Simplify using the standard rewrite rules.
 -/
 lemma herm_esI (v : Fin (2 * r + k + 1) → ℂ) (a : Fin r) :
     herm (Hpk k r) v (bvec (esI k r a)) = v (eI k r a) := by
@@ -459,7 +455,7 @@ lemma herm_esI (v : Fin (2 * r + k + 1) → ℂ) (a : Fin r) :
     Finset.sum_ite_eq', Finset.mem_univ, ↓reduceIte, Hpk_mulVec, piI_esI, epsI_esI]
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct, bvec, Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, ↓reduceIte]`.
+Simplify using the standard rewrite rules.
 -/
 lemma mulVec_bvec (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (x i : Fin (2 * r + k + 1)) :
     (g *ᵥ bvec x) i = g i x := by
@@ -467,7 +463,7 @@ lemma mulVec_bvec (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (
     Finset.sum_ite_eq', Finset.mem_univ, ↓reduceIte]
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct]`. Rewrite using `[sum_split]`. Simplify using `only [nb_ew, inWb_eI hz, inWb_esI hz, mul_zero, Finset.sum_const_zero, zero_add, add_zero, zW]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma nb_z_eI {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (a : Fin r) :
     (unipotentBlockMatrix k r Bm S *ᵥ z) (eI k r a) = (Bm *ᵥ zW k r z) a := by
@@ -476,7 +472,7 @@ lemma nb_z_eI {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (a : Fin r) :
   simp only [nb_ew, inWb_eI hz, inWb_esI hz, mul_zero, Finset.sum_const_zero, zero_add, add_zero, zW]
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct]`. Rewrite using `[sum_split]`. Simplify using `only [nb_we, nb_ww, nb_ws, inWb_esI hz, zero_mul, mul_zero, Finset.sum_const_zero, zero_add, add_zero, ite_mul, one_mul, Finset.sum_ite_eq, Finset.mem_univ, ↓reduceIte]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma nb_z_wI {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (j : Fin (k + 1)) :
     (unipotentBlockMatrix k r Bm S *ᵥ z) (wI k r j) = z (wI k r j) := by
@@ -486,19 +482,19 @@ lemma nb_z_wI {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (j : Fin (k + 
     add_zero, ite_mul, one_mul, Finset.sum_ite_eq, Finset.mem_univ, ↓reduceIte]
 
 /- English proof (translation)
-Take `⟨hzW, hT⟩` from `hz`. Establish `hne : herm (Hpk k r) z z ≠ 0`. Introduce `h0`. Simplify using `only [Formalism.QuantumDeterminants.Tz, h0, Complex.zero_re, neg_zero, lt_self_iff_false] at hT`. Use extensionality with `a b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Establish `ha'` using `a.isLt`. Establish `hb'` using `b.isLt`. Rewrite using `[Matrix.one_apply]`. Simplify using `only [C2.uMap]`. Distinguish the cases in `ha : a.val < r`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[dif_pos ha, herm_esI]`. Distinguish the cases in `hb : b.val < r`. Simplify using `only [fvec, dif_pos hb, mulVec_bvec, nb_ee]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Rewrite using `[if_neg hab, if_neg]`. Introduce `h; exact hab (Fin.ext (by simpa using congrArg Fin.val h))`. Simplify using `only [fvec, dif_neg hb, nb_z_eI Bm S hzW, hB, Pi.zero_apply]`. Rewrite using `[if_neg]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Apply `hb` to reduce the goal to its premises. Rewrite using `[← h]`. Conclude with `ha`. Rewrite using `[dif_neg ha, herm_Hpk_of_inWb_eq_sum_wI hzW (unipotentBlockMatrix k r Bm S *ᵥ fvec k r z b)]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hb : b.val < r`. Simplify using `only [fvec, dif_pos hb, mulVec_bvec, nb_we, mul_zero, Finset.sum_const_zero, zero_div]`. Rewrite using `[if_neg]`. Introduce `h`. Apply `ha` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Conclude with `hb`. Simplify using `only [fvec, dif_neg hb, nb_z_wI Bm S hzW]`. Rewrite using `[← herm_Hpk_of_inWb_eq_sum_wI hzW z, div_self hne, if_pos]`. Conclude with `Fin.ext (by omega)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nb_uMap {z : Fin (2 * r + k + 1) → ℂ} (hz : C2.StdZ k r z) (hB : Bm *ᵥ zW k r z = 0) :
     C2.uMap k r z (unipotentBlockMatrix k r Bm S) = 1 := by
@@ -532,11 +528,11 @@ theorem nb_uMap {z : Fin (2 * r + k + 1) → ℂ} (hz : C2.StdZ k r z) (hB : Bm 
       exact Fin.ext (by omega)
 
 /- English proof (translation)
-Use `show _ ∧ _ ∧ _`. Use `⟨nb_UH Bm S hS, ?_, ?_⟩` and prove the remaining obligations. Introduce `a i _`. Break down `fin_eq_eI_or_wI_or_esI i with ⟨c, rfl⟩ | ⟨j, rfl⟩ | ⟨c, rfl⟩` into its components or cases. Rewrite using `[nb_ee]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [eI_inj]`. Rewrite using `[nb_we, if_neg (eI_ne_wI a j).symm]`. Rewrite using `[nb_se, if_neg (eI_ne_esI a c).symm]`. Introduce `i j hj1 hj2 hi`. Simplify using `only [unipotentBlockMatrix, Matrix.of_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> first | (exfalso; omega) | simp`.
+A detailed English derivation is pending.
 -/
 theorem nb_Nset (hS : Sᴴ = -S) : unipotentBlockMatrix k r Bm S ∈ Nset k r := by
   show _ ∧ _ ∧ _
@@ -551,7 +547,7 @@ theorem nb_Nset (hS : Sᴴ = -S) : unipotentBlockMatrix k r Bm S ∈ Nset k r :=
     split_ifs <;> first | (exfalso; omega) | simp
 
 /- English proof (translation)
-Use `show _ ∧ _`. Conclude with `⟨nb_Nset Bm S hS, nb_uMap Bm S hz hB⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nb_mem {z : Fin (2 * r + k + 1) → ℂ} (hz : C2.StdZ k r z) (hB : Bm *ᵥ zW k r z = 0) (hS : Sᴴ = -S) :
     unipotentBlockMatrix k r Bm S ∈ C2.N0set k r z := by
@@ -560,7 +556,7 @@ theorem nb_mem {z : Fin (2 * r + k + 1) → ℂ} (hz : C2.StdZ k r z) (hB : Bm *
 
 omit Bm S in
 /- English proof (translation)
-Simplify using `only [C2.uMap]`. Rewrite using `[dif_pos a.isLt, herm_esI]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma um_lt (z : Fin (2 * r + k + 1) → ℂ) (n : B.Mat k r) (a : Fin r) (b : Fin (r + 1)) :
     C2.uMap k r z n ⟨a.val, by omega⟩ b = (n *ᵥ fvec k r z b) (eI k r a) := by
@@ -569,7 +565,7 @@ lemma um_lt (z : Fin (2 * r + k + 1) → ℂ) (n : B.Mat k r) (a : Fin r) (b : F
 
 omit Bm S in
 /- English proof (translation)
-Simplify using `only [fvec]`. Rewrite using `[dif_pos b.isLt]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma fvec_lt (z : Fin (2 * r + k + 1) → ℂ) (b : Fin r) : fvec k r z ⟨b.val, by omega⟩ = bvec (eI k r b) := by
   simp only [fvec]
@@ -577,14 +573,14 @@ lemma fvec_lt (z : Fin (2 * r + k + 1) → ℂ) (b : Fin r) : fvec k r z ⟨b.va
 
 omit Bm S in
 /- English proof (translation)
-Simplify using `[fvec]`.
+Simplify using the standard rewrite rules.
 -/
 lemma fvec_last (z : Fin (2 * r + k + 1) → ℂ) : fvec k r z (Fin.last r) = z := by
   simp [fvec]
 
 omit Bm S in
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct]`. Rewrite using `[sum_split]`. Simplify using `only [inWb_eI hz, inWb_esI hz, mul_zero, Finset.sum_const_zero, zero_add, add_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma gz_eI {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (g : B.Mat k r) (a : Fin r) :
     (g *ᵥ z) (eI k r a) = ∑ j, g (eI k r a) (wI k r j) * z (wI k r j) := by
@@ -594,45 +590,45 @@ lemma gz_eI {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (g : B.Mat k r) 
 
 omit Bm S in
 /- English proof (translation)
-Establish `hzW : inWb k r z` using `hz.1`. Establish `hu : C2.uMap k r z n = 1` using `hn.2`. Establish `hN : n ∈ Nset k r` using `hn.1`. Establish `hU : nᴴ * Hpk k r * n = Hpk k r` using `hN.1`. Establish `hcol` using `hN.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmid` using `hN.2.2`. Establish `hE : ∀ p q, ∑ i, star (n i p) * (epsI k r i * n (piI k r i) q) = Hpk k r p q`. Introduce `p q`. Establish `h` using `congrFun (congrFun hU p) q`. Rewrite `h` using `[uh_entry]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hee : ∀ a b : Fin r, n (eI k r a) (eI k r b) = if a = b then 1 else 0`. Introduce `a b`. Establish `h1` using `congrFun (congrFun hu ⟨a.val, by omega⟩) ⟨b.val, by omega⟩`. Rewrite `h1` using `[um_lt, fvec_lt, mulVec_bvec, Matrix.one_apply]`. Rewrite using `[h1]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg hab, if_neg]`. Introduce `h; exact hab (Fin.ext (by simpa using congrArg Fin.val h))`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hlast : ∀ a : Fin r, (n *ᵥ z) (eI k r a) = 0`. Introduce `a`. Establish `h1` using `congrFun (congrFun hu ⟨a.val, by omega⟩) (Fin.last r)`. Rewrite `h1` using `[um_lt, fvec_last, Matrix.one_apply, if_neg]`. Conclude with `h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Establish `h2` using `congrArg Fin.val h`. Simplify using `only [Fin.val_last, Fin.val_mk] at h2`. Use `a.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Take `⟨B0, hB0⟩ : ∃ B0 : Matrix (Fin r) (Fin (k + 1)) ℂ, ∀ a j, B0 a j = n (eI k r a) (wI k r j)` from `⟨Matrix.of fun a j => n (eI k r a) (wI k r j), fun _ _ => rfl⟩`. Take `⟨C0, hC0⟩ : ∃ C0 : Matrix (Fin r) (Fin r) ℂ, ∀ a b, C0 a b = n (eI k r a) (esI k r b)` from `⟨Matrix.of fun a b => n (eI k r a) (esI k r b), fun _ _ => rfl⟩`. Take `⟨S0, hS0⟩ : ∃ S0 : Matrix (Fin r) (Fin r) ℂ, ∀ a b, S0 a b = C0 a b + (1 / 2 : ℂ) * (B0 * Matrix.diagonal (hW k) * B0ᴴ) a b` from `⟨C0 + (1 / 2 : ℂ) • (B0 * Matrix.diagonal (hW k) * B0ᴴ), fun a b => by`. Rewrite using `[Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]⟩`. Establish `hwe : ∀ j b, n (wI k r j) (eI k r b) = 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j b`. Use `b.isLt` as an intermediate fact. Rewrite using `[hcol b (wI k r j) (by rw [wI_val]; omega), if_neg (eI_ne_wI b j).symm]`. Establish `hse : ∀ a b, n (esI k r a) (eI k r b) = 0`. Introduce `a b`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `a.isLt` as an intermediate fact. Use `b.isLt` as an intermediate fact. Rewrite using `[hcol b (esI k r a) (by rw [esI_val]; omega), if_neg (eI_ne_esI b a).symm]`. Establish `hww : ∀ i j, n (wI k r i) (wI k r j) = if i = j then 1 else 0`. Introduce `i j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `i.isLt` as an intermediate fact. Use `j.isLt` as an intermediate fact. Rewrite using `[hmid (wI k r i) (wI k r j) (by rw [wI_val]; omega) (by rw [wI_val]; omega) (by rw [wI_val]; omega)]`. Simplify using `only [wI_inj]`. Establish `hsw : ∀ a j, n (esI k r a) (wI k r j) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a j`. Use `a.isLt` as an intermediate fact. Use `j.isLt` as an intermediate fact. Rewrite using `[hmid (esI k r a) (wI k r j) (by rw [wI_val]; omega) (by rw [wI_val]; omega) (by rw [esI_val]; omega), if_neg (wI_ne_esI j a).symm]`. Establish `hss : ∀ a b, n (esI k r a) (esI k r b) = if a = b then 1 else 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b`. Establish `h` using `hE (eI k r a) (esI k r b)`. Rewrite `h` using `[sum_split]`. Simplify using `only [piI_eI, piI_wI, piI_esI, epsI_eI, epsI_wI, epsI_esI, one_mul, hee, hwe, hse, star_ite_one_zero, star_zero, zero_mul, ite_mul, Finset.sum_const_zero, add_zero, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, ↓reduceIte, Hpk_es] at h`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hws : ∀ j b, n (wI k r j) (esI k r b) = -(hW k j) * star (B0 b j)`. Introduce `j b`. Establish `h` using `hE (wI k r j) (esI k r b)`. Rewrite `h` using `[sum_split]`. Simplify using `only [piI_eI, piI_wI, piI_esI, epsI_eI, epsI_wI, epsI_esI, one_mul, hss, hww, hsw, star_ite_one_zero, star_zero, zero_mul, mul_zero, mul_one, ite_mul, mul_ite, Finset.sum_const_zero, add_zero, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, ↓reduceIte, Hpk_ws] at h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[hB0]`. Take the linear combination `(hW k j) * h - n (wI k r j) (esI k r b) * hW_sq j`. Establish `hcm : ∀ a b, C0 a b + star (C0 b a) + (B0 * Matrix.diagonal (hW k) * B0ᴴ) a b = 0`. Introduce `a b`. Establish `h` using `hE (esI k r a) (esI k r b)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[sum_split]`. Simplify using `only [piI_eI, piI_wI, piI_esI, epsI_eI, epsI_wI, epsI_esI, one_mul, hss, hws, star_ite_one_zero, mul_one, mul_zero, zero_mul, ite_mul, mul_ite, Finset.sum_const_zero, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, ↓reduceIte, Hpk_ss] at h`. Rewrite `h` using `[mid_sum]`. Rewrite using `[hC0, hC0]`. Take the linear combination `h`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h12 : star (1 / 2 : ℂ) = 1 / 2` using `by simp`. Use `⟨B0, S0, ?_, ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a`. Establish `h` using `hlast a`. Rewrite `h` using `[gz_eI hzW]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Simplify using `only [Matrix.mulVec, dotProduct, zW, hB0, Pi.zero_apply]`. Conclude with `h`. Use extensionality with `a b`. Rewrite using `[Matrix.conjTranspose_apply, Matrix.neg_apply, hS0, hS0, star_add, star_mul', X_herm, h12]`. Take the linear combination `hcm a b`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Separate the alternatives or extract the components of the hypothesis.
 
-Use extensionality with `p q`. Apply the tactic sequence `rcases fin_eq_eI_or_wI_or_esI p with ⟨a, rfl⟩ | ⟨j, rfl⟩ | ⟨a, rfl⟩ <;>`. Break down `fin_eq_eI_or_wI_or_esI q with ⟨b, rfl⟩ | ⟨i, rfl⟩ | ⟨b, rfl⟩` into its components or cases. Rewrite using `[nb_ee, hee]`. Rewrite using `[nb_ew, hB0]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[nb_es]`. Simplify using `only [cmOf, Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul, hS0, hC0]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[nb_we, hwe]`. Rewrite using `[nb_ww, hww]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[nb_ws, hws]`. Rewrite using `[nb_se, hse]`. Rewrite using `[nb_sw, hsw]`. Rewrite using `[nb_ss, hss]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nb_fwd {z : Fin (2 * r + k + 1) → ℂ} (hz : C2.StdZ k r z) (n : B.Mat k r) (hn : n ∈ C2.N0set k r z) :
     ∃ (Bm : Matrix (Fin r) (Fin (k + 1)) ℂ) (S : Matrix (Fin r) (Fin r) ℂ),
@@ -750,21 +746,21 @@ theorem nb_fwd {z : Fin (2 * r + k + 1) → ℂ} (hz : C2.StdZ k r z) (n : B.Mat
 end NBk
 
 /- English proof (translation)
-Introduce `k r z hz Bm S hB hS` and use `NBk.nb_mem Bm S hz hB hS`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem unipotentBlock_mem : ∀ (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ), C2.StdZ k r z →
     ∀ (Bm : Matrix (Fin r) (Fin (k + 1)) ℂ) (S : Matrix (Fin r) (Fin r) ℂ),
       Bm *ᵥ zW k r z = 0 → Sᴴ = -S → unipotentBlockMatrix k r Bm S ∈ C2.N0set k r z := fun k r z hz Bm S hB hS => NBk.nb_mem Bm S hz hB hS
 
 /- English proof (translation)
-Introduce `k r z hz n hn` and use `NBk.nb_fwd hz n hn`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem unipotent_eq_block : ∀ (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ), C2.StdZ k r z →
     ∀ n ∈ C2.N0set k r z, ∃ (Bm : Matrix (Fin r) (Fin (k + 1)) ℂ) (S : Matrix (Fin r) (Fin r) ℂ),
       Bm *ᵥ zW k r z = 0 ∧ Sᴴ = -S ∧ n = unipotentBlockMatrix k r Bm S := fun k r z hz n hn => NBk.nb_fwd hz n hn
 
 /- English proof (translation)
-Introduce `k r z hz`. Conclude with `⟨unipotent_eq_block k r z hz, unipotentBlock_mem k r z hz⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem unipotent_block_form : UnipotentBlockCoordinates := by
   intro k r z hz

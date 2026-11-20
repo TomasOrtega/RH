@@ -22,14 +22,14 @@ theorem listDiff_cons (k : K) (L : List K) (g : (K → ℕ) → ℚ) (t : K → 
     listDiff (k :: L) g t = listDiff L g (t + Pi.single k 1) - listDiff L g t := rfl
 
 /- English proof (translation)
-Simplify using `[listDiff, List.foldr_append]`.
+Simplify using the standard rewrite rules.
 -/
 theorem listDiff_append (L₁ L₂ : List K) (g : (K → ℕ) → ℚ) :
     listDiff (L₁ ++ L₂) g = listDiff L₁ (listDiff L₂ g) := by
   simp [listDiff, List.foldr_append]
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => rfl`. Consider the case `succ j ih => rw [List.replicate_succ, Function.iterate_succ_apply', ← ih]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Both sides reduce to the same expression.
 -/
 theorem listDiff_replicate (j : ℕ) (k : K) (g : (K → ℕ) → ℚ) :
     listDiff (List.replicate j k) g = (Δ_[(Pi.single k 1 : K → ℕ)])^[j] g := by
@@ -38,7 +38,7 @@ theorem listDiff_replicate (j : ℕ) (k : K) (g : (K → ℕ) → ℚ) :
   | succ j ih => rw [List.replicate_succ, Function.iterate_succ_apply', ← ih]; rfl
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => rfl`. Consider the case `cons k L ih`. Use function extensionality and compare the values at `t`. Rewrite using `[listDiff_cons, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -51,7 +51,7 @@ theorem listDiff_zero (L : List K) : listDiff L (0 : (K → ℕ) → ℚ) = 0 :=
     simp
 
 /- English proof (translation)
-Rewrite using `[← List.take_append_drop (L.length - (n + 1)) L, listDiff_append, hg _ (by simp; omega), listDiff_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem listDiff_long {n : ℕ} {g : (K → ℕ) → ℚ}
     (hg : ∀ L : List K, L.length = n + 1 → listDiff L g = 0) (L : List K) (hL : n + 1 ≤ L.length) :
@@ -64,7 +64,7 @@ def binomPoly (c : ℕ) (k : K) (j : ℕ) : MvPolynomial K ℚ :=
 
 omit [DecidableEq K] in
 /- English proof (translation)
-Unfold `binomPoly`. Use `(totalDegree_mul _ _).trans ?_` and prove the remaining obligations. Rewrite using `[totalDegree_C, zero_add]`. Use `(totalDegree_finsetProd _ _).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 theorem binomPoly_totalDegree (c : ℕ) (k : K) (j : ℕ) : (binomPoly c k j).totalDegree ≤ j := by
   unfold binomPoly
@@ -78,7 +78,7 @@ theorem binomPoly_totalDegree (c : ℕ) (k : K) (j : ℕ) : (binomPoly c k j).to
 
 omit [DecidableEq K] in
 /- English proof (translation)
-Unfold `binomPoly`. Simplify using `only [map_mul, eval_C, map_prod, map_sub, eval_X, hx]`. Establish `: ∏ i ∈ range j, ((m : ℚ) + c - ((c + i : ℕ) : ℚ)) = ∏ i ∈ range j, ((m : ℚ) - i)` using `prod_congr rfl fun i _ => by push_cast; ring`. Rewrite using `[this, ← descPochhammer_eval_eq_prod_range, descPochhammer_eval_eq_descFactorial, Nat.descFactorial_eq_factorial_mul_choose, Nat.cast_mul, ← mul_assoc, inv_mul_cancel₀ (by positivity), one_mul]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem eval_binomPoly (c : ℕ) (k : K) (j : ℕ) (x : K → ℚ) (m : ℕ) (hx : x k = (m : ℚ) + c) :
     eval x (binomPoly c k j) = (m.choose j : ℚ) := by
@@ -91,31 +91,31 @@ theorem eval_binomPoly (c : ℕ) (k : K) (j : ℕ) (x : K → ℚ) (m : ℕ) (hx
     inv_mul_cancel₀ (by positivity), one_mul]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `n g _`. Use `⟨C (g 0), by rw [totalDegree_C]; exact Nat.zero_le _, fun x y _ => by simp, fun t ht => ?_⟩` and prove the remaining obligations. Establish `: t = 0` using `funext fun i => ht i (Finset.notMem_empty i)`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `[this]`. Consider the case `insert k s hk ih`. Introduce `n g hg`. Establish `hg'` using `listDiff_long hg`. Establish `hsub : ∀ j, ∀ L : List K, L.length = n - j + 1 → listDiff L ((Δ_[(Pi.single k 1 : K → ℕ)])^[j] g) = 0`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `j L hL`. Rewrite using `[← listDiff_replicate, ← listDiff_append]`. Conclude with `hg' _ (by simp; omega)`. Use `choose P hPdeg hPloc hPval using fun j => ih (n - j) _ (hsub j)`. Establish `hzero : ∀ j, n + 1 ≤ j → (Δ_[(Pi.single k 1 : K → ℕ)])^[j] g = 0` using `fun j hj => by`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← listDiff_replicate]; exact hg' _ (by simp; omega)`. Use `⟨∑ j ∈ range (n + 1), binomPoly c k j * P j, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `totalDegree_finsetSum_le fun j hj => ?_` and prove the remaining obligations. Use `mem_range.mp hj` as an intermediate fact. Use `(totalDegree_mul _ _).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `binomPoly_totalDegree c k j`. Establish `h2` using `hPdeg j`. Use linear arithmetic over natural numbers and integers. Introduce `x y hxy`. Simplify using `only [map_sum, map_mul]`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hPloc j x y fun i hi => hxy i (mem_insert_of_mem hi)]`. Use `congr 1`. Unfold `binomPoly`. Simplify using `[hxy k (mem_insert_self k s)]`.
+Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `t ht set y : K → ℕ := Function.update t k 0 with hy`. Establish `hyt : t = y + t k • (Pi.single k 1 : K → ℕ)`. Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = k`. Substitute `h` using the available equality.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[hy]`. Simplify using `[hy, h]`. Establish `hys : ∀ i ∉ s, y i = 0`. Introduce `i hi`. Distinguish the cases in `h : i = k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Substitute `h` using the available equality. Simplify using `[hy]`. Simplify using `only [hy, Function.update_of_ne h]; exact ht i (by simp [h, hi])`. Establish `hty : ∀ i ∈ s, (t i : ℚ) + c = (y i : ℚ) + c`. Introduce `i hi`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `: i ≠ k` using `fun h => hk (h ▸ hi)`. Simplify using `[hy, Function.update_of_ne this]`. Establish `e1 : ∑ j ∈ range (t k + 1), (t k).choose j • (Δ_[(Pi.single k 1 : K → ℕ)])^[j] g y = ∑ j ∈ range (n + t k + 1), ((t k).choose j : ℚ) * (Δ_[(Pi.single k 1 : K → ℕ)])^[j] g y`. Simplify using `only [nsmul_eq_mul]`. Use `sum_subset (s₁ := range (t k + 1)) (fun j hj => by rw [mem_range] at hj ⊢; omega) fun j _ hj => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hj` using `[mem_range, not_lt]`. Rewrite using `[Nat.choose_eq_zero_of_lt (by omega)]`. Simplify using the standard rewrite rules. Establish `e2 : eval (fun i => (t i : ℚ) + c) (∑ j ∈ range (n + 1), binomPoly c k j * P j) = ∑ j ∈ range (n + t k + 1), ((t k).choose j : ℚ) * (Δ_[(Pi.single k 1 : K → ℕ)])^[j] g y`. Rewrite using `[map_sum]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ (sum_subset (s₁ := range (n + 1)) (fun j hj => by rw [mem_range] at hj ⊢; omega) fun j _ hj => ?_)` and prove the remaining obligations. Use `sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, eval_binomPoly c k j _ (t k) rfl, hPval j y hys, hPloc j _ (fun i => (y i : ℚ) + c) hty]`. Rewrite `hj` using `[mem_range, not_lt]`. Rewrite using `[hzero j hj]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem newton (c : ℕ) (s : Finset K) : ∀ (n : ℕ) (g : (K → ℕ) → ℚ),
     (∀ L : List K, L.length = n + 1 → listDiff L g = 0) →
@@ -193,13 +193,13 @@ theorem newton (c : ℕ) (s : Finset K) : ∀ (n : ℕ) (g : (K → ℕ) → ℚ
         _ = _ := by rw [e1, e2]
 
 /- English proof (translation)
-Proceed by induction on `L generalizing t with`. Consider the case `nil => simp [listDiff]`. Consider the case `cons k L ih`. Rewrite using `[listDiff_cons, ih, ih, List.map_cons, List.foldr_cons, diffStep, Int.cast_sub]`. Establish `a1 : (fun i => (c : ℤ) + (((t + Pi.single k 1 : K → ℕ) i : ℕ) : ℤ) + (L.count i : ℤ)) = fun i => (c : ℤ) + t i + ((k :: L).count i : ℤ)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = k`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `[h, Ne.symm h]`. Establish `a2 : (fun i => (c : ℤ) + t i + (L.count i : ℤ)) = (fun i => (c : ℤ) + t i + ((k :: L).count i : ℤ)) - Pi.single k 1`. Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = k`. Substitute `h` using the available equality.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using `[h, Ne.symm h]`. Rewrite using `[a1, a2]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem listDiff_eq_mixedDiff (f : (K → ℤ) → ℤ) (c : ℕ) (L : List K) (t : K → ℕ) :
     listDiff L (fun t => (f (fun k => (c : ℤ) + t k) : ℚ)) t =
@@ -228,17 +228,17 @@ end EventualPolynomial
 open EventualPolynomial in
 
 /- English proof (translation)
-Introduce `K _ _ n f hf`. Establish `hall : ∀ᶠ m in Filter.atTop, ∀ v : Fin (n + 1) → K, mixedDiff (fun i => (Pi.single (v i) 1 : K → ℤ)) f m = 0` using `Filter.eventually_all.mpr fun v => hf _`. Take `⟨m₁, hm₁⟩` from `Filter.eventually_atTop.mp hall`. Use `set c : ℕ := ∑ k, (m₁ k).toNat with hcdef`. Establish `hc : ∀ k, m₁ k ≤ (c : ℤ)` using `fun k => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (m₁ k).toNat ≤ c` using `single_le_sum (f := fun k => (m₁ k).toNat) (fun _ _ => Nat.zero_le _) (mem_univ k)`. Establish `h2` using `Int.self_le_toNat (m₁ k)`. Use linear arithmetic over natural numbers and integers. Establish `hL : ∀ L : List K, L.length = n + 1 → listDiff L (fun t => (f (fun k => (c : ℤ) + t k) : ℚ)) = 0`. Introduce `L hlen`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `t`. Rewrite using `[listDiff_eq_mixedDiff]`. Take `⟨v, rfl⟩ : ∃ v : Fin (n + 1) → K, List.ofFn v = L` from `⟨fun i => L[i.val]'(by have := i.isLt; omega), List.ext_getElem (by simp [hlen]) fun j _ _ => by rw [List.getElem_ofFn]⟩`. Establish `hv` using `hm₁ (fun k => (c : ℤ) + t k + (List.ofFn v).count k) (fun k => by have := hc k; dsimp; omega) v`. Establish `hmap : (List.ofFn v).map (fun k => (Pi.single k 1 : K → ℤ)) = List.ofFn (fun i => (Pi.single (v i) 1 : K → ℤ))` using `by rw [List.map_ofFn]; rfl`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hmap]`. Express the relevant statement in the definitionally equal form `((mixedDiff (fun i => (Pi.single (v i) 1 : K → ℤ)) f _ : ℤ) : ℚ) = 0`. Rewrite using `[hv]`. Simplify using the standard rewrite rules. Take `⟨P, hdeg, -, hval⟩` from `newton c univ n _ hL`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨P, c, hdeg, fun a ha => ?_⟩` and prove the remaining obligations. Establish `h1 : ((f fun k => (c : ℤ) + ((a k - c : ℕ) : ℤ) : ℤ) : ℚ) = eval (fun i => ((a i - c : ℕ) : ℚ) + c) P` using `hval (fun k => a k - c) fun i hi => absurd (mem_univ i) hi`. Establish `e1 : (fun k => (c : ℤ) + ((a k - c : ℕ) : ℤ)) = fun k => (a k : ℤ)`. Use function extensionality and compare the values at `fun k => by have := ha k; omega`. Establish `e2 : (fun i => ((a i - c : ℕ) : ℚ) + c) = fun k => (a k : ℚ)`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `fun k => by rw [Nat.cast_sub (ha k)]; ring`. Rewrite `h1` using `[e1, e2]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem EventualPolynomial.proof : EventualPolynomial.Statement := by
   intro K _ _ n f hf

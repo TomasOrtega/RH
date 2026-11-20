@@ -12,9 +12,7 @@ namespace Formalism.L2.SG.Pf.WittFlags
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `u u' p s hs`. Establish `h2 : (Formalism.L2.SG.TermTieOf.tc hI (D.s.pfst p)).lam = s.lam` using `(congrArg (fun t => t.lam) hs).symm`. Use `show Formalism.MainNotions.S.wRow D (Formalism.L2.SG.TermTieOf.FlagOfWord W u) (Formalism.L2.SG.TermTieOf.lamOf W hI (D.s.pfst p)) = _`. Unfold `Formalism.L2.SG.TermTieOf.lamOf`. Rewrite using `[h2]`.
-
-Conclude with `WRowIso_holds D (W.δ u) (W.isom u) (X.Fu u) s.lam`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem WRowPin_holds {D : D7} {X : HidaSetting D} {Y : Formalism.L2.SG.Full.Full X} (hF : FinX Y)
     (hI : SIso D.s (sOf hF)) (W : Formalism.L2.SG.TermTieOf.WittDat X) (H : Formalism.L2.SG.TermTieOf.TieHyp W hI)

@@ -7,13 +7,11 @@ open ReciprocityTheory.Gal Formalism.RepresentationBoundsCohomology.LOC Reciproc
 namespace GlobalTheory.NatQuot
 
 /- English proof (translation)
-Introduce `p O _ _ _ _ _ hO k`. Use `haveI : CompactSpace O := hO.compact`. Use `set I : Ideal O := IsLocalRing.maximalIdeal O ^ k with hI`. Establish `hopen : IsOpen ((I : Ideal O) : Set O)` using `(isAdic_iff.mp hO.adic).1 k`. Establish `hdisc : DiscreteTopology (O ⧸ I)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[discreteTopology_iff_isOpen_singleton_zero]`. Establish `himg : (Ideal.Quotient.mk I) '' (I : Set O) = {0}`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components.
 
-Simplify `hx` using `[Ideal.Quotient.eq_zero_iff_mem]`. Introduce and unpack `rfl`. Conclude with `⟨0, I.zero_mem, map_zero _⟩`. Rewrite using `[← himg]`. Conclude with `QuotientRing.isOpenMap_coe I _ hopen`.
-
-Use `⟨hdisc, ?_⟩` and prove the remaining obligations. Use `haveI : CompactSpace (O ⧸ I) := Quotient.compactSpace`. Conclude with `finite_of_compact_of_discrete`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem quot_pow_maximalIdeal_discrete_finite :
     ∀ {p : ℕ} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [TopologicalSpace O]

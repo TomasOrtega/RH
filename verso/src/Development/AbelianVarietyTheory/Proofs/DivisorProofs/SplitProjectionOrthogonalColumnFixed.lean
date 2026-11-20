@@ -19,15 +19,15 @@ open Matrix
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ h n J hJ v τ r X I y hy i hi`. Simplify using `only [GlobalTheory.StdPar.colPerp, Submodule.mem_iInf, LinearMap.mem_ker] at hy`. Establish `h0` using `hy i hi`. Simplify using `only [LinearMap.coe_comp, Function.comp_apply, Matrix.mulVecLin_apply, LinearMap.proj_apply] at h0`. Establish `h1` using `congrArg (fun z => splitProj (τ.comp σ) (compFin F E v z)) h0`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul, map_zero, Matrix.map_apply] at h1`. Establish `hc : ∀ e : E, compFin F E v (inclR (AF F) e) = inclR (Fv F v) e`. Introduce `e`. Simplify using `[compFin, inclR]`. Establish `hcc` using `comp_conj_conj h τ`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hs : ∀ e : E, τ (σ (σ e)) = τ e` using `fun e => by`. Simplify using `using congrArg (fun f : E →ₐ[F] Fv F v => f e) hcc`. Simplify using `only [hc, splitProj_inclR] at h1`. Simplify using `only [Formalism.UG.cT, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, map_sum, map_mul] at h1`. Simplify using `only [AlgHom.comp_apply, RingHom.coe_coe, hs, hJ.1] at h1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h1]`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `Finset.sum_congr rfl fun a _ => mul_comm _ _`.
+A detailed English derivation is pending.
 -/
 theorem colPerp_conj_place_pair : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} (h : IsCMExt F E σ) {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (hJ : IsHermND σ J)

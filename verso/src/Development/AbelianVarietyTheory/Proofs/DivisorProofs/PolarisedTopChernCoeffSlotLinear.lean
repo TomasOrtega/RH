@@ -9,7 +9,7 @@ open scoped ContDiff Matrix
 namespace GlobalTheory.GoodTop
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[intersection_update_fsHerm_neg_one]`. Simplify using `[intersection_update_fsHerm_neg_one, Function.update_of_ne h, h]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem position_eq_update {n : ℕ} {α : Type} [Zero α] (K₁ L K₀ : α) (j : Fin n) :
     intersection_update_fsHerm_neg_one K₁ L K₀ j = Function.update (intersection_update_fsHerm_neg_one K₁ 0 K₀ j) j L := by
@@ -19,7 +19,7 @@ theorem position_eq_update {n : ℕ} {α : Type} [Zero α] (K₁ L K₀ : α) (j
   · simp [intersection_update_fsHerm_neg_one, Function.update_of_ne h, h]
 
 /- English proof (translation)
-Rewrite using `[position_eq_update, position_eq_update K₁ L, position_eq_update K₁ L', GlobalTheory.T.polarisedTopChernCoeff_update_add, GlobalTheory.T.polarisedTopChernCoeff_update_smul, GlobalTheory.T.polarisedTopChernCoeff_update_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mixTop_position_linear {n : ℕ} {r : Type} [Fintype r] [DecidableEq r] (K₁ K₀ L L' : EndValuedForm11Coeffs n r)
     (s t : ℂ) (j : Fin n) :

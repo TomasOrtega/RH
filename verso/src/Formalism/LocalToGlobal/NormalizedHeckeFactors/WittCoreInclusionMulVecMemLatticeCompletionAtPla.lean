@@ -33,9 +33,9 @@ def ConjPreservesLL0 (D : D7) : Prop :=
   ∀ x : ↥D.LL0, ∃ y : ↥D.LL0, (y : D.what₂.LL) = star (x : D.what₂.LL)
 
 /- English proof (translation)
-Introduce `x`. Set `σ : D.what₂.LL →ₐ[ℚ] D.what₂.LL` to `(starRingEnd D.what₂.LL).toRatAlgHom`. Establish `hmap : D.LL0.map σ = D.LL0` using `(IntermediateField.normal_iff_forall_map_eq.1 h) σ`. Establish `hx : σ (x : D.what₂.LL) ∈ D.LL0`. Establish `h1 : σ (x : D.what₂.LL) ∈ D.LL0.map σ` using `⟨x, x.2, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[hmap]`. Then use the resulting hypothesis. Conclude with `⟨⟨σ x, hx⟩, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Supply the required witnesses or components.
 -/
 theorem ll0Conj_of_normal (D : D7) (h : Normal ℚ D.LL0) : ConjPreservesLL0 D := by
   intro x
@@ -109,13 +109,13 @@ structure TwChoiceTied (D : D7) (c : NChoice D) : Prop where
   twSide : ∀ a, D.ntw.twSide a = c.sd (D.nd.w a)
 
 /- English proof (translation)
-The claim follows from `Finset.coe_injective ((D.ntw.pD_eq i).trans (coe_pDC D.host _).symm)`.
+A detailed English derivation is pending.
 -/
 theorem pD_eq_pDC (D : D7) (i : D.ntw.Tw) : D.ntw.pD i = pDC D.host (D.ntw.l i) :=
   Finset.coe_injective ((D.ntw.pD_eq i).trans (coe_pDC D.host _).symm)
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `hc x`. Conclude with `⟨y, hy, D.ntw.restX_coefficientEmbedding_conj i x y hy⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem NTwTied.emb0b_eq_emb0_conj {D : D7} {F : TwFrame D} (_T : NTwTied D F) (hc : ConjPreservesLL0 D) (i : D.ntw.Tw)
     (x : ↥D.LL0) :
@@ -124,9 +124,9 @@ theorem NTwTied.emb0b_eq_emb0_conj {D : D7} {F : TwFrame D} (_T : NTwTied D F) (
   exact ⟨y, hy, D.ntw.restX_coefficientEmbedding_conj i x y hy⟩
 
 /- English proof (translation)
-Introduce `x hx`. Use `⟨?_, hx.2⟩` and prove the remaining obligations. Establish `hm : F.toSubalgebra.toSubring.map (algebraMap (PadicAlgCl l) ℂ_[l]) ≤ F'.toSubalgebra.toSubring.map (algebraMap (PadicAlgCl l) ℂ_[l])`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `⟨y, h hy, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `Subring.topologicalClosure_minimal _ (hm.trans (Subring.le_topologicalClosure _)) (Subring.isClosed_topologicalClosure _) hx.1`.
+A detailed English derivation is pending.
 -/
 theorem clC_mono (l : ℕ) [Fact l.Prime] {F F' : IntermediateField ℚ_[l] (PadicAlgCl l)} (h : F ≤ F') :
     clC l F ≤ clC l F' := by
@@ -140,11 +140,11 @@ theorem clC_mono (l : ℕ) [Fact l.Prime] {F F' : IntermediateField ℚ_[l] (Pad
     (Subring.isClosed_topologicalClosure _) hx.1
 
 /- English proof (translation)
-Introduce and unpack `⟨u, hu⟩`. Use `set v : clC l F := ((u⁻¹ : (clC l F)ˣ) : clC l F) with hv`. Establish `h1 : v * ((l : ℕ) : clC l F) = 1` using `by rw [hv, ← hu]; exact u.inv_mul`. Establish `h1' : (v : ℂ_[l]) * ((l : ℕ) : ℂ_[l]) = 1`. Establish `h` using `congrArg (fun y : clC l F => (y : ℂ_[l])) h1`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Subring.coe_mul, Subring.coe_one] at h`. Rewrite using `[← h]`. Use `congr 1`. Establish `h2 : Valued.v (v : ℂ_[l]) ≤ 1` using `(Subring.mem_inf.mp v.2).2`. Establish `h3` using `congrArg Valued.v h1'`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[map_mul, PadicComplex.valuation_p, map_one]`. Establish `hl : (1 : ℝ≥0) < (l : ℝ≥0)` using `by exact_mod_cast (Fact.out : l.Prime).one_lt`. Establish `h4 : Valued.v (v : ℂ_[l]) * (1 / (l : ℝ≥0)) < 1`. Combine the equalities or inequalities in the displayed calculation. Conclude with `absurd h3 (ne_of_lt h4)`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem l_not_unit_clC (l : ℕ) [Fact l.Prime] (F : IntermediateField ℚ_[l] (PadicAlgCl l)) :
     ¬ IsUnit ((l : ℕ) : clC l F) := by
@@ -166,7 +166,7 @@ theorem l_not_unit_clC (l : ℕ) [Fact l.Prime] (F : IntermediateField ℚ_[l] (
   exact absurd h3 (ne_of_lt h4)
 
 /- English proof (translation)
-Take `⟨⟨j, hj⟩, _⟩` from `D.ntw.cc_cm`. Use `⟨(fr.eOm.symm.trans D.ntw.cc).trans fr.eOm, j.comp fr.eOm.symm.toRingHom, fun x => ?_, fun x => ?_⟩` and prove the remaining obligations. Simplify using `[hj]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem cc_frame (D : D7) (fr : OmFrame D) : ∃ (c : AlgebraicClosure ℚ ≃+* AlgebraicClosure ℚ) (j : AlgebraicClosure ℚ →+* ℂ),
     (∀ x, j (c x) = starRingEnd ℂ (j x)) ∧ ∀ x, fr.eOm (D.ntw.cc x) = c (fr.eOm x) := by
@@ -176,16 +176,14 @@ theorem cc_frame (D : D7) (fr : OmFrame D) : ∃ (c : AlgebraicClosure ℚ ≃+*
   · simp
 
 /- English proof (translation)
-Rewrite using `[← D.ntw.twOf_l a, T.twOf a, c.twI_l]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem TwChoiceTied.l_eq (D : D7) (c : NChoice D) (T : TwChoiceTied D c) (a : D.nd.Loc) :
     D.nd.l a = D.what₂.places.resChar (D.nd.w a) := by
   rw [← D.ntw.twOf_l a, T.twOf a, c.twI_l]
 
 /- English proof (translation)
-Use `T.sig_inj i s s' hj hb fun k P _ _ _ hP => ?_` and prove the remaining obligations. Establish `h2` using `(h k P hP).1.symm.trans (h k P hP).2`. Establish `h3 : (algebraMap (D.ntw.O i) (FractionRing (D.ntw.O i)) (D.ntw.hEig i s k P) - algebraMap (D.ntw.O i) (FractionRing (D.ntw.O i)) (D.ntw.hEig i s' k P)) • x = 0`. Conclude with `(sub_smul _ _ x).trans (by rw [h2, sub_self])`. Break down `smul_eq_zero.mp h3 with h4 | h4` into its components or cases.
-
-Conclude with `IsFractionRing.injective (D.ntw.O i) (FractionRing (D.ntw.O i)) (sub_eq_zero.mp h4)`. Conclude with `absurd h4 hx`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem NTwTied.sig_unique {D : D7} {F : TwFrame D} (T : NTwTied D F) (i : D.ntw.Tw) (s s' : D.ntw.Sig i)
     (hj : D.ntw.jS i s = D.ntw.jS i s') (hb : D.ntw.side i s = D.ntw.side i s')
@@ -206,7 +204,7 @@ theorem NTwTied.sig_unique {D : D7} {F : TwFrame D} (T : NTwTied D F) (i : D.ntw
   · exact absurd h4 hx
 
 /- English proof (translation)
-Unfold `NForms.eG`. Rewrite using `[← map_mul, D.nexp.eAlg_idem]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem eG_mul_self (D : D7) (i : D.ntw.Tw) (j : ℕ) (b : Bool) :
     NForms.eG D i j b * NForms.eG D i j b = NForms.eG D i j b := by
@@ -214,7 +212,7 @@ theorem eG_mul_self (D : D7) (i : D.ntw.Tw) (j : ℕ) (b : Bool) :
   rw [← map_mul, D.nexp.eAlg_idem]
 
 /- English proof (translation)
-Establish `h` using `congrArg (MonoidAlgebra.lift (FractionRing (D.ntw.O i)) (Module.End (FractionRing (D.ntw.O i)) (D.nexp.Fm i j b)) (G0g D.nd) (LinearEquiv.automorphismGroup.toLinearMapMonoidHom.comp (D.nexp.actG i j b))) (D.nexp.eAlg_central i b (MonoidAlgebra.of (FractionRing (D.ntw.O i)) (G0g D …`. Rewrite `h` using `[map_mul, map_mul, MonoidAlgebra.lift_of]`. Conclude with `LinearMap.congr_fun h f`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eG_actG (D : D7) (i : D.ntw.Tw) (j : ℕ) (b : Bool) (g : G0g D.nd) (f : D.nexp.Fm i j b) :
     NForms.eG D i j b (D.nexp.actG i j b g f) = D.nexp.actG i j b g (NForms.eG D i j b f) := by
@@ -226,7 +224,7 @@ theorem eG_actG (D : D7) (i : D.ntw.Tw) (j : ℕ) (b : Bool) (g : G0g D.nd) (f :
   exact LinearMap.congr_fun h f
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨y, hy0, rfl⟩`. Establish `hy : y ∈ NForms.Fm0 D i j b` using `hy0`. Simplify using `only [NForms.Fm0, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, LinearEquiv.coe_coe, sub_eq_zero] at hy ⊢`. Introduce `u`. Rewrite using `[← eG_actG, hy u, map_smul]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem goodPart_le_typeSubspace (D : D7) (i : D.ntw.Tw) (j : ℕ) (b : Bool) : NForms.V0 D i j b ≤ NForms.Fm0 D i j b := by
   rintro _ ⟨y, hy0, rfl⟩
@@ -237,9 +235,9 @@ theorem goodPart_le_typeSubspace (D : D7) (i : D.ntw.Tw) (j : ℕ) (b : Bool) : 
   rw [← eG_actG, hy u, map_smul]
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Conclude with `le_inf (goodPart_le_typeSubspace D i j b) LinearMap.map_le_range`. Introduce `x hx`. Take `⟨hx0, z, rfl⟩` from `Submodule.mem_inf.mp hx`. Use `⟨NForms.eG D i j b z, hx0, ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show NForms.eG D i j b (NForms.eG D i j b z) = NForms.eG D i j b z`. Rewrite using `[← Module.End.mul_apply, eG_mul_self]`.
+A detailed English derivation is pending.
 -/
 theorem V0_eq_type_inf_range (D : D7) (i : D.ntw.Tw) (j : ℕ) (b : Bool) :
     NForms.V0 D i j b = NForms.Fm0 D i j b ⊓ LinearMap.range (NForms.eG D i j b) := by
@@ -252,7 +250,7 @@ theorem V0_eq_type_inf_range (D : D7) (i : D.ntw.Tw) (j : ℕ) (b : Bool) :
     rw [← Module.End.mul_apply, eG_mul_self]
 
 /- English proof (translation)
-Rewrite using `[T.B_range i j b]`. Conclude with `fun x hx => goodPart_le_typeSubspace D i j b (Submodule.mem_inf.mp hx).2`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem NTwTied.range_embB_le_type_forms {D : D7} {F : TwFrame D} (T : NTwTied D F) (i : D.ntw.Tw) (j : ℕ) (b : Bool) :
     LinearMap.range (D.nexp.embB i j b) ≤ (NForms.Fm0 D i j b).restrictScalars (D.ntw.O i) := by
@@ -260,7 +258,7 @@ theorem NTwTied.range_embB_le_type_forms {D : D7} {F : TwFrame D} (T : NTwTied D
   exact fun x hx => goodPart_le_typeSubspace D i j b (Submodule.mem_inf.mp hx).2
 
 /- English proof (translation)
-Rewrite using `[T.B_range i j b, V0_eq_type_inf_range]`. Use extensionality with `x`. Simplify using `only [Submodule.mem_inf, Submodule.restrictScalars_mem]`. The claim follows by propositional logic.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. The claim follows by propositional logic.
 -/
 theorem NTwTied.range_eq_all {D : D7} {F : TwFrame D} (T : NTwTied D F) (i : D.ntw.Tw) (j : ℕ) (b : Bool) :
     LinearMap.range (D.nexp.embB i j b) =
@@ -272,9 +270,9 @@ theorem NTwTied.range_eq_all {D : D7} {F : TwFrame D} (T : NTwTied D F) (i : D.n
   tauto
 
 /- English proof (translation)
-Rewrite using `[T.range_eq_all i j b]`. Simplify using `only [Submodule.mem_inf, Submodule.restrictScalars_mem, LinearMap.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨h1, h2⟩, z, hz⟩`. Use `⟨h1, h2, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hz, ← Module.End.mul_apply, eG_mul_self]`. Introduce and unpack `⟨h1, h2, h3⟩`. Conclude with `⟨⟨h1, h2⟩, f, h3⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem NTwTied.mem_range_iff {D : D7} {F : TwFrame D} (T : NTwTied D F) (i : D.ntw.Tw) (j : ℕ) (b : Bool)
     (f : D.nexp.Fm i j b) :
@@ -290,7 +288,7 @@ theorem NTwTied.mem_range_iff {D : D7} {F : TwFrame D} (T : NTwTied D F) (i : D.
     exact ⟨⟨h1, h2⟩, f, h3⟩
 
 /- English proof (translation)
-Rewrite using `[T.mem_range_iff]`. Use `⟨hB, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← algebraMap_smul (FractionRing (D.ntw.O i))]`. Conclude with `(NForms.Fm0 D i j b).smul_mem _ (goodPart_le_typeSubspace D i j b ⟨f, hf, rfl⟩)`. Rewrite using `[← algebraMap_smul (FractionRing (D.ntw.O i)), map_smul, ← Module.End.mul_apply, eG_mul_self]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem NTwTied.smul_eG_mem {D : D7} {F : TwFrame D} (T : NTwTied D F) (i : D.ntw.Tw) (j : ℕ) (b : Bool)
     (c : D.ntw.O i) (f : D.nexp.Fm i j b) (hf : f ∈ NForms.Fm0 D i j b)
@@ -303,7 +301,7 @@ theorem NTwTied.smul_eG_mem {D : D7} {F : TwFrame D} (T : NTwTied D F) (i : D.nt
   · rw [← algebraMap_smul (FractionRing (D.ntw.O i)), map_smul, ← Module.End.mul_apply, eG_mul_self]
 
 /- English proof (translation)
-Rewrite using `[T.ringSpec_excludedPlaces_eq i]`. Introduce and unpack `P (hP | hP)`. Conclude with `Or.inl (Or.inl (Or.inr hP))`. Conclude with `Or.inl (Or.inr hP)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Prove the first alternative. Prove the first alternative.
 -/
 theorem NTwTied.delta_prime_places_subset_S0 {D : D7} {F : TwFrame D} (T : NTwTied D F) (i : D.ntw.Tw) :
     placesOver D.host.E D.host.pde ∪ placesOver D.host.E D.host.pde' ⊆ ↑(D.ntw.S0 i) := by
@@ -313,9 +311,9 @@ theorem NTwTied.delta_prime_places_subset_S0 {D : D7} {F : TwFrame D} (T : NTwTi
   · exact Or.inl (Or.inr hP)
 
 /- English proof (translation)
-Establish `hpD` using `D.ntw.pD_eq i`. Rewrite using `[T.ringSpec_excludedPlaces_eq i]`. Introduce and unpack `P ((hP | hP) | hP)`. Conclude with `Or.inl (Or.inl (Or.inl (Or.inl hP)))`. Conclude with `Or.inl (Or.inl (Or.inl (Or.inr hP)))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Prove the first alternative. Prove the first alternative.
 
-Rewrite `hP` using `[hpD] at hP split_ifs`. Conclude with `Or.inl (Or.inr hP)`. Conclude with `Or.inl (Or.inl (Or.inr hP))`.
+Rewrite the indicated hypotheses using the stated equalities. Prove the first alternative. Prove the first alternative.
 -/
 theorem NTwTied.S0_contains_record_minimum {D : D7} {F : TwFrame D} (T : NTwTied D F) (i : D.ntw.Tw) :
     placesOver D.host.E (D.ntw.l i) ∪ (⋃ k, placesOver D.host.E (D.host.g k)) ∪ ↑(D.ntw.pD i) ⊆ ↑(D.ntw.S0 i) := by
@@ -330,11 +328,9 @@ theorem NTwTied.S0_contains_record_minimum {D : D7} {F : TwFrame D} (T : NTwTied
     · exact Or.inl (Or.inl (Or.inr hP))
 
 /- English proof (translation)
-Take `⟨⟨y, z⟩, hyz⟩` from `IsLocalization.surj (nonZeroDivisors (D.ntw.O0 i)) (D.ntw.emb0 i x)`. Establish `hz : (z : D.ntw.O0 i) ≠ 0` using `nonZeroDivisors.ne_zero z.2`. Establish `h` using `(T.ringSpec_baseEmbedding_compatible i x y z hz).mp hyz`. Establish `hz' : ((F.eO0 i z : intOf (D.ntw.l i) (F.K0 i).1) : PadicAlgCl (D.ntw.l i)) ≠ 0`. Introduce `h0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hz` to reduce the goal to its premises. Conclude with `(F.eO0 i).map_eq_zero_iff.mp (Subtype.ext h0)`. Establish `hx : F.j0 i x = (F.eO0 i y : PadicAlgCl (D.ntw.l i)) / (F.eO0 i z : PadicAlgCl (D.ntw.l i))`. Rewrite using `[eq_div_iff hz', h]`. Rewrite using `[hx]`.
-
-Conclude with `(F.K0 i).1.div_mem (F.eO0 i y).2.1 (F.eO0 i z).2.1`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem NTwTied.wittCoreInclusion_mulVec_mem_latticeCompletionAtPlace {D : D7} {F : TwFrame D} (T : NTwTied D F) (i : D.ntw.Tw) (x : ↥D.LL0) :
     F.j0 i x ∈ (F.K0 i).1 := by
@@ -351,9 +347,9 @@ theorem NTwTied.wittCoreInclusion_mulVec_mem_latticeCompletionAtPlace {D : D7} {
   exact (F.K0 i).1.div_mem (F.eO0 i y).2.1 (F.eO0 i z).2.1
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `h2 i lam`. Apply `(F.iCq i).injective` to reduce the goal to its premises. Rewrite using `[T.qs_pos i lam P hP, map_zpow₀, map_natCast, hm]`. Establish `e1 : (-((m + m : ℤ) : ℝ) / 2) = ((-m : ℤ) : ℝ)` using `by push_cast; ring`. Establish `e2 : (m + m) / 2 = m` using `by omega`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e1, Real.rpow_intCast, e2]`. Use `push_cast`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem NTwTied.qs_eq {D : D7} {F : TwFrame D} (T : NTwTied D F) (h2 : DoubleSEven D) (i : D.ntw.Tw)
     (lam : D.ntw.abelian₂ i) (P : HeightOneSpectrum (𝓞 D.host.E)) (hP : P ∉ D.ntw.S0 i) :
@@ -369,9 +365,9 @@ theorem NTwTied.qs_eq {D : D7} {F : TwFrame D} (T : NTwTied D F) (h2 : DoubleSEv
   rfl
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `h2 i lam`. Rewrite using `[h, map_zpow₀, map_natCast, hm]`. Establish `e1 : (-((m + m : ℤ) : ℝ) / 2) = ((-m : ℤ) : ℝ)` using `by push_cast; ring`. Establish `e2 : (m + m) / 2 = m` using `by omega`. Rewrite using `[e1, Real.rpow_intCast, e2]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Both sides reduce to the same expression.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem qs_pos_of_eq (D : D7) (h2 : DoubleSEven D) (i : D.ntw.Tw) (ι : FractionRing (D.ntw.O i) →+* ℂ)
     (lam : D.ntw.abelian₂ i) (P : HeightOneSpectrum (𝓞 D.host.E))
@@ -388,7 +384,7 @@ theorem qs_pos_of_eq (D : D7) (h2 : DoubleSEven D) (i : D.ntw.Tw) (ι : Fraction
   rfl
 
 /- English proof (translation)
-Establish `h : (((p : 𝓞 D.host.E)) : D.host.E) = D.host.conj (((p : 𝓞 D.host.E)) : D.host.E)`. Simplify using `only [map_natCast]`. Conclude with `(hc _ _ h).1 hP`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem placesOver_conj (D : D7) (p : ℕ) {P P' : HeightOneSpectrum (𝓞 D.host.E)} (hP : P ∈ placesOver D.host.E p)
     (hc : IsConjPl D.host P P') : P' ∈ placesOver D.host.E p := by
@@ -401,9 +397,7 @@ def lowPr (D : D7) : Finset ℕ :=
     ((Ideal.absNorm D.host.ccK).primeFactors ∪ (NumberField.discr D.host.E).natAbs.primeFactors))
 
 /- English proof (translation)
-Introduce `p hp`. Simplify using `only [lowPr, Finset.mem_insert, Finset.mem_union] at hp`. Break down `hp with rfl | rfl | hp | hp` into its components or cases. Evaluate the numerical expressions. Conclude with `(Formalism.L2.Host.leastSplitAuxiliaryPrimeThetaChain_spec D).1.ne_zero`.
-
-Conclude with `(Nat.prime_of_mem_primeFactors hp).ne_zero`. Conclude with `(Nat.prime_of_mem_primeFactors hp).ne_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem lowPr_ne_zero (D : D7) : ∀ p ∈ lowPr D, p ≠ 0 := by
   intro p hp
@@ -415,21 +409,19 @@ theorem lowPr_ne_zero (D : D7) : ∀ p ∈ lowPr D, p ≠ 0 := by
   · exact (Nat.prime_of_mem_primeFactors hp).ne_zero
 
 /- English proof (translation)
-The claim follows from `Set.Finite.biUnion (Finset.finite_toSet _) fun p hp => placesOver_finite' D.host.E p (lowPr_ne_zero D p hp)`.
+A detailed English derivation is pending.
 -/
 theorem low_prime_places_finite (D : D7) : (⋃ p ∈ (lowPr D : Set ℕ), placesOver D.host.E p).Finite :=
   Set.Finite.biUnion (Finset.finite_toSet _) fun p hp => placesOver_finite' D.host.E p (lowPr_ne_zero D p hp)
 
 /- English proof (translation)
-Establish `hN : Ideal.absNorm D.host.ccK ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `D.host.ccK_ne_bot`. Establish `hd : (NumberField.discr D.host.E).natAbs ≠ 0` using `Int.natAbs_ne_zero.2 (NumberField.discr_ne_zero D.host.E)`. Establish `hmem : ∀ p ∈ lowPr D, placesOver D.host.E p ⊆ ↑(S ∪ (low_prime_places_finite D).toFinset)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p hp P hP`. Use `Finset.mem_union_right _ ?_` and prove the remaining obligations. Rewrite using `[Set.Finite.mem_toFinset]`. Conclude with `Set.mem_biUnion hp hP`. Use `⟨S ∪ (low_prime_places_finite D).toFinset, Finset.subset_union_left, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `P P' hP hc`. Break down `Finset.mem_union.1 hP with h | h` into its components or cases. Conclude with `Finset.mem_union_left _ (hS P P' h hc)`. Use `Finset.mem_union_right _ ?_` and prove the remaining obligations. Rewrite `h`, the goal using `[Set.Finite.mem_toFinset]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨p, hp⟩` from `Set.mem_iUnion.1 h`. Take `⟨hp1, hp2⟩` from `Set.mem_iUnion.1 hp`. Conclude with `Set.mem_biUnion hp1 (placesOver_conj D p hp2 hc)`. Introduce `p hp hdvd`. Conclude with `hmem p (by simp [lowPr, Nat.mem_primeFactors, hp, hdvd, hN])`.
-
-Conclude with `hmem _ (by simp [lowPr])`. Conclude with `hmem _ (by simp [lowPr])`. Introduce `p hp hdvd`. Conclude with `hmem p (by simp [lowPr, Nat.mem_primeFactors, hp, hdvd, hd])`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem S0x_enlarge_closed (D : D7) (S : Finset (HeightOneSpectrum (𝓞 D.host.E)))
     (hS : ∀ P P', P ∈ S → IsConjPl D.host P P' → P' ∈ S) :
@@ -463,7 +455,7 @@ theorem S0x_enlarge_closed (D : D7) (S : Finset (HeightOneSpectrum (𝓞 D.host.
     exact hmem p (by simp [lowPr, Nat.mem_primeFactors, hp, hdvd, hd])
 
 /- English proof (translation)
-Rewrite using `[T.ringSpec_excludedPlaces_eq i]`. Conclude with `fun P hP => Or.inr (T.S0x_contains_q0_places i hP)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. Prove the second alternative.
 -/
 theorem NTwTied.q0_places_subset_S0 {D : D7} {F : TwFrame D} (T : NTwTied D F) (i : D.ntw.Tw) :
     placesOver D.host.E (Formalism.MainNotions.AbsolutelyIrreducibleSpan.q0 D) ⊆ ↑(D.ntw.S0 i) := by
@@ -471,7 +463,7 @@ theorem NTwTied.q0_places_subset_S0 {D : D7} {F : TwFrame D} (T : NTwTied D F) (
   exact fun P hP => Or.inr (T.S0x_contains_q0_places i hP)
 
 /- English proof (translation)
-Rewrite using `[T.ringSpec_excludedPlaces_eq i]`. Conclude with `fun P hP => Or.inr (T.S0x_contains_ccK_places i p hp hdvd hP)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. Prove the second alternative.
 -/
 theorem NTwTied.norm_ccK_places_subset_S0 {D : D7} {F : TwFrame D} (T : NTwTied D F) (i : D.ntw.Tw) (p : ℕ) (hp : p.Prime)
     (hdvd : p ∣ Ideal.absNorm D.host.ccK) : placesOver D.host.E p ⊆ ↑(D.ntw.S0 i) := by
@@ -479,7 +471,7 @@ theorem NTwTied.norm_ccK_places_subset_S0 {D : D7} {F : TwFrame D} (T : NTwTied 
   exact fun P hP => Or.inr (T.S0x_contains_ccK_places i p hp hdvd hP)
 
 /- English proof (translation)
-Rewrite using `[T.ringSpec_excludedPlaces_eq i]`. Conclude with `⟨fun P hP => Or.inr (T.S0x_contains_two_places i hP), fun p hp hdvd P hP => Or.inr (T.S0x_contains_ramified_places i p hp hdvd hP)⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem NTwTied.two_ramified_places_subset_S0 {D : D7} {F : TwFrame D} (T : NTwTied D F) (i : D.ntw.Tw) :
     placesOver D.host.E 2 ⊆ ↑(D.ntw.S0 i) ∧ ∀ (p : ℕ), p.Prime → p ∣ (NumberField.discr D.host.E).natAbs →

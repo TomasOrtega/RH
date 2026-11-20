@@ -9,15 +9,15 @@ namespace PI.HostPsiFactsWork
 variable {R : Ranks}
 
 /- English proof (translation)
-The claim follows from `H.φ₀_mem`.
+A detailed English derivation is pending.
 -/
 theorem phi_sqrt_neg_discriminant (H : Host R) :
     H.φ₀ (H.sqd) = Complex.I * (Real.sqrt (H.d : ℝ) : ℂ) := H.φ₀_mem
 
 /- English proof (translation)
-Introduce `h0`. Establish `hm` using `phi_sqrt_neg_discriminant H`. Rewrite `hm` using `[h0, map_zero]`. Establish `hd : (0 : ℝ) < Real.sqrt (H.d : ℝ)` using `Real.sqrt_pos.2 (by exact_mod_cast H.hyp.2.1.pos)`. Break down `mul_eq_zero.1 hm.symm with h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `Complex.I_ne_zero h`. Conclude with `hd.ne' (by exact_mod_cast h)`.
+A detailed English derivation is pending.
 -/
 theorem host_sqd_ne_zero (H : Host R) : H.sqd ≠ 0 := by
   intro h0
@@ -29,7 +29,7 @@ theorem host_sqd_ne_zero (H : Host R) : H.sqd ≠ 0 := by
   · exact hd.ne' (by exact_mod_cast h)
 
 /- English proof (translation)
-Apply `H.φ₀.injective` to reduce the goal to its premises. Rewrite using `[H.conjE_apply, H.conjE_apply, Complex.conj_conj]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_conj (H : Host R) (x : H.E) :
     H.conj (H.conj x) = x := by
@@ -37,7 +37,7 @@ theorem conj_conj (H : Host R) (x : H.E) :
   rw [H.conjE_apply, H.conjE_apply, Complex.conj_conj]
 
 /- English proof (translation)
-Apply `H.φ₀.injective` to reduce the goal to its premises. Rewrite using `[H.conjE_apply, map_neg, phi_sqrt_neg_discriminant, map_mul, Complex.conj_I, Complex.conj_ofReal]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem conj_bE (H : Host R) :
     H.conj (H.sqd) = - H.sqd := by
@@ -46,13 +46,13 @@ theorem conj_bE (H : Host R) :
   ring
 
 /- English proof (translation)
-Establish `hb0` using `host_sqd_ne_zero H`. Establish `hcb` using `conj_bE H`. Establish `hcc` using `conj_conj H`. Use `set c := H.conj with hc`. Use `set b := H.sqd with hb`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use extensionality with `x`. Establish `hu : (x + c x) / 2 ∈ H.F`. Apply `(H.conjE_mem_hostF_iff _).2` to reduce the goal to its premises. Rewrite using `[← hc, map_div₀, map_add, hcc, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hv : (x - c x) / (2 * b) ∈ H.F`. Apply `(H.conjE_mem_hostF_iff _).2` to reduce the goal to its premises. Rewrite using `[← hc, map_div₀, map_sub, map_mul, hcc, map_ofNat, hcb, mul_neg, div_neg, ← neg_div, neg_sub]`. Establish `hx : x = (x + c x) / 2 + (x - c x) / (2 * b) * b`. Rewrite using `[div_mul_eq_mul_div, mul_div_mul_right _ _ hb0]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hφb : φ b = Complex.I * (Real.sqrt (H.d : ℝ) : ℂ)` using `hφ`. Establish `hψb : ψ b = Complex.I * (Real.sqrt (H.d : ℝ) : ℂ)` using `hψ`. Rewrite using `[hx, map_add, map_add, map_mul, map_mul, hF _ hu, hF _ hv, hφb, hψb]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_cm_of_agree (H : Host R) (φ ψ : H.E →+* ℂ)
     (hφ : φ ∈ H.cmType) (hψ : ψ ∈ H.cmType)
@@ -79,9 +79,9 @@ theorem eq_of_cm_of_agree (H : Host R) (φ ψ : H.E →+* ℂ)
   rw [hx, map_add, map_add, map_mul, map_mul, hF _ hu, hF _ hv, hφb, hψb]
 
 /- English proof (translation)
-Rewrite `h` using `[InfinitePlace.comap_mk, InfinitePlace.comap_mk, InfinitePlace.mk_eq_iff]`. Introduce `x hx`. Break down `h with h | h` into its components or cases. Conclude with `RingHom.congr_fun h ⟨x, hx⟩`. Establish `h1` using `RingHom.congr_fun h ⟨x, hx⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[ComplexEmbedding.conjugate_coe_eq]`. Establish `hr : star (φ x) = φ x` using `(show ∀ f : H.E →+* ℂ, star (f x) = f x from hx) φ`. Express the relevant statement in the definitionally equal form `starRingEnd ℂ (φ x) = ψ x at h1`. Rewrite `h1` using `[starRingEnd_apply, hr]`. Conclude with `h1`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem agree_of_comap (H : Host R) (φ ψ : H.E →+* ℂ)
     (h : (InfinitePlace.mk φ).comap (algebraMap H.F H.E) =
@@ -99,7 +99,7 @@ theorem agree_of_comap (H : Host R) (φ ψ : H.E →+* ℂ)
     exact h1
 
 /- English proof (translation)
-Establish `: (starRingEnd ℂ).comp φ = ComplexEmbedding.conjugate φ`. Use extensionality with `x`. Both sides reduce to the same expression. Rewrite using `[this, InfinitePlace.mk_conjugate_eq]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem mk_conj_comp (H : Host R) (φ : H.E →+* ℂ) :
     InfinitePlace.mk ((starRingEnd ℂ).comp φ) = InfinitePlace.mk φ := by
@@ -109,15 +109,15 @@ theorem mk_conj_comp (H : Host R) (φ : H.E →+* ℂ) :
 
 open Classical in
 /- English proof (translation)
-Introduce `_hc he R H w`. Establish `hcm` using `H.der.cmType`. Establish `: Algebra.IsAlgebraic H.F H.E` using `inferInstance`. Take `⟨w', hw'⟩` from `InfinitePlace.comap_surjective (k := H.F) (K := H.E) w`. Choose the witnesses or unpack the hypotheses as in `⟨φ, hφcm, hφw⟩ : ∃ φ : H.E →+* ℂ, φ ∈ H.cmType ∧ InfinitePlace.mk φ = w' := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `h0 : w'.embedding ∈ H.cmType`. Conclude with `⟨w'.embedding, h0, InfinitePlace.mk_embedding w'⟩`. Use `⟨(starRingEnd ℂ).comp w'.embedding, ?_, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h1`. Conclude with `h0 ((hcm.1 _).2 h1)`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mk_conj_comp H, InfinitePlace.mk_embedding]`. Take `⟨g, hg⟩` from `(he R H).1.2 φ`. Establish `hgPsi : g ∈ R.Psi` using `((he R H).2 g).1 (hg ▸ hφcm)`. Rewrite using `[Finset.card_eq_one]`. Use `⟨⟨g, hgPsi⟩, Finset.eq_singleton_iff_unique_mem.2 ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, aboveInf]`. Rewrite using `[hg, hφw]`. Conclude with `hw'`. Introduce and unpack `⟨i, hi⟩ hmem`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, aboveInf] at hmem`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hagree` using `agree_of_comap H (H.emb i) φ (by rw [hmem, hφw]; exact hw'.symm)`. Establish `heq` using `eq_of_cm_of_agree H (H.emb i) φ (emb_mem_cmType H i hi) hφcm hagree`. Rewrite `heq` using `[← hg]`. Conclude with `Subtype.ext ((he R H).1.1 heq)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem onePsi : PI.EtaHostFacts.OnePsi := by
   intro _hc he R H w

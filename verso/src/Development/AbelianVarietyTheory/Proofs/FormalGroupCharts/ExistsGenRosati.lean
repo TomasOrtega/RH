@@ -13,11 +13,11 @@ namespace GlobalTheory.NormRos
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `H`. Establish `le : ∀ j : K' ⊕ K → L.ι, LB.wchart L (Sum.elim φ' φ) j ≤ LB.wchart L φ' (j ∘ Sum.inl) ⊓ LB.wchart L φ (j ∘ Sum.inr)` using `fun j y hy => ⟨Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy (Sum.inl k), Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy (Sum.inr k)⟩`. Use `⟨⟨fun j => res (le j) (w.s (j ∘ Sum.inl, j ∘ Sum.inr))⟩, fun (p q : K' ⊕ K → L.ι) => unit_ext fun y hy => ?_⟩` and prove the remaining obligations. Establish `hm : (𝟙 Y : Y ⟶ Y) y ∈ LB.wchart L φ' (p ∘ Sum.inl) ⊓ LB.wchart L φ (p ∘ Sum.inr) ⊓ (LB.wchart L φ' (q ∘ Sum.inl) ⊓ LB.wchart L φ (q ∘ Sum.inr))` using `⟨le p hy.1, le q hy.2⟩`. Establish `e` using `congrArg (gm (𝟙 Y) y (LB.wchart L φ' (p ∘ Sum.inl) ⊓ LB.wchart L φ (p ∘ Sum.inr) ⊓ (LB.wchart L φ' (q ∘ Sum.inl) ⊓ LB.wchart L φ (q ∘ Sum.inr)))) (hw (p ∘ Sum.inl, p ∘ Sum.inr) (q ∘ Sum.inl, q ∘ Sum.inr))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e'` using `(gm_res (𝟙 Y) y _ hm _).symm.trans (e.trans ((map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_div (LB.LinComb L φ ε) (LB.LinComb L φ' ε') (𝟙 Y) y (p ∘ Sum.inl, p ∘ Sum.inr) (q ∘ Sum.inl, q ∘ Sum.inr) hm) (gm_res (𝟙 Y) y _ hm _))))`. Use `((gm_res (𝟙 Y) y _ hy _).trans (gm_res (𝟙 Y) y (le p) hy.1 _)).trans (e'.trans (Eq.symm ?_))` and prove the remaining obligations. Use `(map_mul _ _ _).trans (congrArg₂ (· * ·) ((gm_linComb L _ _ (𝟙 Y) y p q hy.1 hy.2).trans ?_) ((gm_res (𝟙 Y) y _ hy _).trans (gm_res (𝟙 Y) y (le q) hy.2 _)))` and prove the remaining obligations. Use `(Fintype.prod_sum_type _).trans (congrArg₂ (· * ·) (gm_linComb L φ' ε' (𝟙 Y) y _ _ hm.1.1 hm.2.1).symm ?_)` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg (·⁻¹) (gm_linComb L φ ε (𝟙 Y) y _ _ hm.1.2 hm.2.2).symm)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Sum.elim_inr, zpow_neg, Finset.prod_inv_distrib, Function.comp_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem exists_gen_of_lbIso {X Y : Scheme.{0}} {L : LB X} {K K' : Type} [Fintype K] [Fintype K']
     {φ : K → (Y ⟶ X)} {ε : K → ℤ} {φ' : K' → (Y ⟶ X)} {ε' : K' → ℤ}
@@ -46,7 +46,7 @@ theorem exists_gen_of_lbIso {X Y : Scheme.{0}} {L : LB X} {K K' : Type} [Fintype
   simp only [Sum.elim_inr, zpow_neg, Finset.prod_inv_distrib, Function.comp_apply]
 
 /- English proof (translation)
-The claim follows from `funext fun j => Units.ext (sec_ext_val hL (s := genSec u hu) (s' := genSec u' hu') (fun y J hJ => by rw [sval_genSec u hu _ y hJ, sval_genSec u' hu' _ y hJ, h y J hJ]) j)`.
+A detailed English derivation is pending.
 -/
 theorem gen_s_ext {X Y : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     {u u' : LB.Gen (LB.LinComb L φ ε)} (hu : u.IsGen) (hu' : u'.IsGen)
@@ -57,11 +57,11 @@ theorem gen_s_ext {X Y : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K : Type} [Fintyp
 variable {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G]
 
 /- English proof (translation)
-Use `(Fintype.prod_equiv (Equiv.ulift : ULift.{0} (Finset (Fin 2)) ≃ Finset (Fin 2)) _ (fun I => h (psum G ![x, y] I).left ^ ((-1 : ℤ) ^ (2 - I.card))) (fun I => rfl)).trans ?_` and prove the remaining obligations. Rewrite using `[show (Finset.univ : Finset (Finset (Fin 2))) = {∅, {0}, {1}, {0, 1}} by decide, Finset.prod_insert (by decide), Finset.prod_insert (by decide), Finset.prod_insert (by decide), Finset.prod_singleton]`. Establish `p₀ : psum G ![x, y] ∅ = 1` using `rfl`. Establish `p₁ : psum G ![x, y] {0} = x` using `_root_.mul_one x`. Establish `p₂ : psum G ![x, y] {1} = y` using `_root_.mul_one y`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `p₄ : psum G ![x, y] {0, 1} = x * y` using `congrArg (x * ·) (_root_.mul_one y)`. Rewrite using `[p₀, p₁, p₂, p₄]`. Establish `q₀ : (-1 : ℤ) ^ (2 - (∅ : Finset (Fin 2)).card) = 1` using `by decide`. Establish `q₁ : ∀ i : Fin 2, (-1 : ℤ) ^ (2 - ({i} : Finset (Fin 2)).card) = -1` using `by decide`. Establish `q₄ : (-1 : ℤ) ^ (2 - ({0, 1} : Finset (Fin 2)).card) = 1` using `by decide`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[q₀, q₁, q₁, q₄]`. Simplify using `only [zpow_neg, zpow_one]`. The two sides agree by associativity and commutativity.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. The two sides agree by associativity and commutativity.
 -/
 theorem prod_square {T : Over S} (x y : T ⟶ G) {U : Type} [CommGroup U] (h : (T.left ⟶ G.left) → U) :
     ∏ I : ULift.{0} (Finset (Fin 2)), h (psum G ![x, y] I.down).left ^ ((-1 : ℤ) ^ (2 - I.down.card)) =
@@ -84,11 +84,11 @@ theorem prod_square {T : Over S} (x y : T ⟶ G) {U : Type} [CommGroup U] (h : (
   ac_rfl
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `exists_gen_of_lbIso H`. Take `⟨u, hu, -⟩` from `exists_gen hL (φ' := rosatiφ G f g) (ε' := rosatiε) (fun V _ k => by`. Establish `p` using `prod_ros f g (fst G G) (snd G G) k`. Rewrite `p` using `[lift_fst_snd]`. Simplify using `only [Over.id_left, Category.id_comp] at p`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[p]`. Use `(DVR.prod_neg _ _ (DVR.prod_sum₂ (K := ULift.{0} (Finset (Fin 2))) (K' := ULift.{0} (Finset (Fin 2))) (U := V) _ (prod_square (fst G G) (snd G G ≫ g) k) (DVR.prod_neg _ _ (prod_square (fst G G ≫ f) (snd G G) k)))).trans ?_` and prove the remaining obligations. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Use the proof step `abel)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Use the proof step `(LB.invGen L _ _ t) (DVR.invGen_isGen _ _ _ _ ht)`. Conclude with `⟨u, hu⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_gen_rosati {L : LB G.left} (hL : L.IsLB) (f g : G ⟶ G)
     (H : LBIso (cubeLB G ![fst G G ≫ f, snd G G] L) (cubeLB G ![fst G G, snd G G ≫ g] L)) :
@@ -109,11 +109,9 @@ theorem exists_gen_rosati {L : LB G.left} (hL : L.IsLB) (f g : G ⟶ G)
   exact ⟨u, hu⟩
 
 /- English proof (translation)
-Take `⟨u, hu, hv⟩` from `exists_gen hL (φ' := rosatiφ G f g) (ε' := rosatiε) (fun V _ k => by`. Establish `p` using `prod_ros f g (1 : G ⊗ G ⟶ G) (1 : G ⊗ G ⟶ G) k`. Rewrite `p` using `[MonObj.one_comp, MonObj.one_comp, _root_.mul_one]`. Use `Eq.trans (DVR.prod_sum₂ (K := Fin 6) (K' := Fin 6) (U := V) _ (c := ∏ i, k (rosatiφ G f g i) ^ rosatiε i) rfl (DVR.prod_neg _ _ p)) ?_` and prove the remaining obligations. Use the proof step `simp)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `(LB.mulGen L _ _ _ _ t (LB.invGen L _ _ (LB.pullGen L _ _ t (lift (1 : G ⊗ G ⟶ G) (1 : G ⊗ G ⟶ G)).left)))`. Use the proof step `(DVR.mulGen_isGen _ _ _ _ _ _ _ ht (DVR.invGen_isGen _ _ _ _ (DVR.pullGen_isGen _ _ _ _ ht _)))`. Use `⟨u, hu, corr_of_val hL fun y J hJ => ?_⟩` and prove the remaining obligations. Establish `e : zero2 G ≫ (lift (1 : G ⊗ G ⟶ G) (1 : G ⊗ G ⟶ G)).left = zero2 G`. Rewrite using `[← Over.comp_left, comp_lift, MonObj.comp_one]`.
-
-Use `congr 1`. Rewrite using `[val_one, val_pull hJ, Category.id_comp, hv _ _ y J hJ, val_mul hJ, val_inv, val_pull hJ, e, mul_inv_cancel]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isNormRos {L : LB G.left} (hL : L.IsLB) (f g : G ⟶ G) [IsMonHom f] [IsMonHom g]
     (t : LB.Gen (LB.LinComb L (rosatiφ G f g) rosatiε)) (ht : t.IsGen) : ∃ u, IsNormRos L f g u := by
@@ -135,9 +133,9 @@ theorem exists_isNormRos {L : LB G.left} (hL : L.IsLB) (f g : G ⟶ G) [IsMonHom
 omit [IsCommMonObj G] in
 
 /- English proof (translation)
-Establish `z2 : zero2 G ≫ (G ⊗ G).hom = 𝟙 S` using `Over.w (lift η[G] η[G])`. Use `gen_s_ext hL h.1 h'.1 fun y J hJ => gen_unique hL (S₀ := S) (G ⊗ G).hom (zero2 G) z2 hs h.1 h'.1 (fun s I hI => ?_) _ _ y J hJ` and prove the remaining obligations. Establish `a` using `val_corr hI h.2 (𝟙 _)`. Establish `b` using `val_corr hI h'.2 (𝟙 _)`. Rewrite `a`, `b` using `[val_pull hI, Category.id_comp, val_one]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `a.trans b.symm`.
+A detailed English derivation is pending.
 -/
 theorem isNormRos_unique {L : LB G.left} (hL : L.IsLB) (f g : G ⟶ G)
     (hs : Function.Surjective (G ⊗ G).hom.appTop.hom) {u u' : LB.Gen (LB.LinComb L (rosatiφ G f g) rosatiε)}
@@ -151,7 +149,7 @@ theorem isNormRos_unique {L : LB G.left} (hL : L.IsLB) (f g : G ⟶ G)
   exact a.trans b.symm
 
 /- English proof (translation)
-Introduce `S G _ _ L hL f g _ _ H`. Take `⟨t, ht⟩` from `exists_gen_rosati hL f g H`. Conclude with `⟨exists_isNormRos hL f g t ht, fun hs u u' h h' => isNormRos_unique hL f g hs h h'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem normRos_of_lbIso : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (L : LB G.left), L.IsLB →
     ∀ (f g : G ⟶ G) [IsMonHom f] [IsMonHom g],

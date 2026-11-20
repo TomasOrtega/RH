@@ -12,34 +12,34 @@ namespace GlobalTheory.Amp.USplit
 def coords {r : ℕ} (A : Matrix (Fin r) (Fin r) ℂ) : UT r → ℂ := fun p => A p.1.1 p.1.2
 
 /- English proof (translation)
-Unfold `upper`. Rewrite using `[dif_pos h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem upper_of_lt {r : ℕ} (x : UT r → ℂ) {a b : Fin r} (h : a < b) : upper x a b = x ⟨(a, b), h⟩ := by
   unfold upper
   rw [dif_pos h]
 
 /- English proof (translation)
-Unfold `upper`. Rewrite using `[dif_neg (lt_irrefl a), if_pos rfl]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem upper_diag {r : ℕ} (x : UT r → ℂ) (a : Fin r) : upper x a a = 1 := by
   unfold upper
   rw [dif_neg (lt_irrefl a), if_pos rfl]
 
 /- English proof (translation)
-Unfold `upper`. Rewrite using `[dif_neg (lt_asymm h), if_neg (ne_of_gt h)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem upper_of_gt {r : ℕ} (x : UT r → ℂ) {a b : Fin r} (h : b < a) : upper x a b = 0 := by
   unfold upper
   rw [dif_neg (lt_asymm h), if_neg (ne_of_gt h)]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Establish `key : ∀ c, upper x a c * upper y c b = ((if c = a then y ⟨(a, b), h⟩ else 0) + (if c = b then x ⟨(a, b), h⟩ else 0)) + (if a < c ∧ c < b then upper x a c * upper y c b else 0)`. Introduce `c`. Break down `lt_trichotomy c a with hca | hca | hac` into its components or cases. Establish `hcb : c ≠ b` using `ne_of_lt (hca.trans h)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Rewrite using `[upper_of_gt x hca, zero_mul, if_neg (ne_of_lt hca), if_neg hcb, if_neg (fun k => lt_asymm hca k.1)]`. Simplify using the standard rewrite rules. Substitute `hca` using the available equality. Rewrite using `[upper_diag, one_mul, upper_of_lt y h, if_pos rfl, if_neg (ne_of_lt h), if_neg (fun k => lt_irrefl _ k.1)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Break down `lt_trichotomy c b with hcb | hcb | hbc` into its components or cases. Rewrite using `[if_neg (ne_of_gt hac), if_neg (ne_of_lt hcb), if_pos ⟨hac, hcb⟩]`. Simplify using the standard rewrite rules. Substitute `hcb` using the available equality. Rewrite using `[upper_diag, mul_one, upper_of_lt x h, if_neg (ne_of_gt h), if_pos rfl, if_neg (fun k => lt_irrefl _ k.2)]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[upper_of_gt y hbc, mul_zero, if_neg (ne_of_gt hac), if_neg (ne_of_gt hbc), if_neg (fun k => lt_asymm hbc k.2)]`. Simplify using the standard rewrite rules. Rewrite using `[Finset.sum_congr rfl (fun c _ => key c), Finset.sum_add_distrib, Finset.sum_add_distrib, Finset.sum_ite_eq' Finset.univ a, Finset.sum_ite_eq' Finset.univ b]`. Simplify using `only [Finset.mem_univ, if_true]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -76,13 +76,13 @@ theorem mul_apply_lt {r : ℕ} (x y : UT r → ℂ) {a b : Fin r} (h : a < b) :
   ring
 
 /- English proof (translation)
-Use extensionality with `a b`. Break down `lt_trichotomy a b with hab | hab | hba` into its components or cases. Rewrite using `[upper_of_lt _ hab]`. Both sides reduce to the same expression. Substitute `hab` using the available equality.
+By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Substitute using the available equality.
 
-Rewrite using `[upper_diag, Matrix.mul_apply, Finset.sum_eq_single a]`. Rewrite using `[upper_diag, upper_diag, mul_one]`. Introduce `c _ hc`. Break down `lt_or_gt_of_ne hc with hlt | hgt` into its components or cases. Rewrite using `[upper_of_gt x hlt, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[upper_of_gt y hgt, mul_zero]`. Introduce `ha`. Conclude with `absurd (Finset.mem_univ a) ha`. Rewrite using `[upper_of_gt _ hba, Matrix.mul_apply]`. Use `(Finset.sum_eq_zero fun c _ => ?_).symm` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `lt_or_ge c a with hca | hac` into its components or cases. Rewrite using `[upper_of_gt x hca, zero_mul]`. Rewrite using `[upper_of_gt y (lt_of_lt_of_le hba hac), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem upper_coords_mul {r : ℕ} (x y : UT r → ℂ) : upper (coords (upper x * upper y)) = upper x * upper y := by
   ext a b
@@ -105,9 +105,7 @@ theorem upper_coords_mul {r : ℕ} (x y : UT r → ℂ) : upper (coords (upper x
     · rw [upper_of_gt y (lt_of_lt_of_le hba hac), mul_zero]
 
 /- English proof (translation)
-Use `continuous_pi fun a => continuous_pi fun b => ?_` and prove the remaining obligations. Distinguish the cases in `h : a < b`. Simplify using `only [upper, dif_pos h]`. Conclude with `continuous_apply _`. Simplify using `only [upper, dif_neg h]`.
-
-Conclude with `continuous_const`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_upper (r : ℕ) : Continuous (upper : (UT r → ℂ) → Matrix (Fin r) (Fin r) ℂ) := by
   refine continuous_pi fun a => continuous_pi fun b => ?_
@@ -118,9 +116,9 @@ theorem continuous_upper (r : ℕ) : Continuous (upper : (UT r → ℂ) → Matr
     exact continuous_const
 
 /- English proof (translation)
-Establish `hg : Continuous fun (x : UTin β → ℂ) (p : UT r) => if h : β p.1.1 = β p.1.2 then x ⟨p, h⟩ else 0`. Use `continuous_pi fun p => ?_` and prove the remaining obligations. Distinguish the cases in `h : β p.1.1 = β p.1.2`. Simplify using `only [dif_pos h]`. Conclude with `continuous_apply _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [dif_neg h]`. Conclude with `continuous_const`. Conclude with `(continuous_upper r).comp hg`.
+A detailed English derivation is pending.
 -/
 theorem continuous_upperIn {r : ℕ} (β : Fin r → ℕ) : Continuous (upperIn β) := by
   have hg : Continuous fun (x : UTin β → ℂ) (p : UT r) =>
@@ -134,9 +132,9 @@ theorem continuous_upperIn {r : ℕ} (β : Fin r → ℕ) : Continuous (upperIn 
   exact (continuous_upper r).comp hg
 
 /- English proof (translation)
-Establish `hg : Continuous fun (x : UToff β → ℂ) (p : UT r) => if h : β p.1.1 ≠ β p.1.2 then x ⟨p, h⟩ else 0`. Use `continuous_pi fun p => ?_` and prove the remaining obligations. Distinguish the cases in `h : β p.1.1 ≠ β p.1.2`. Simplify using `only [dif_pos h]`. Conclude with `continuous_apply _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [dif_neg h]`. Conclude with `continuous_const`. Conclude with `(continuous_upper r).comp hg`.
+A detailed English derivation is pending.
 -/
 theorem continuous_upperOff {r : ℕ} (β : Fin r → ℕ) : Continuous (upperOff β) := by
   have hg : Continuous fun (x : UToff β → ℂ) (p : UT r) =>
@@ -153,7 +151,7 @@ def prodMap {r : ℕ} (β : Fin r → ℕ) (u : UT r → ℂ) : UT r → ℂ :=
   coords (upperIn β (fun p => u p.1) * upperOff β (fun p => u p.1))
 
 /- English proof (translation)
-Establish `h1 : Continuous fun u : UT r → ℂ => upperIn β (fun p => u p.1)` using `(continuous_upperIn β).comp (continuous_pi fun p => continuous_apply _)`. Establish `h2 : Continuous fun u : UT r → ℂ => upperOff β (fun p => u p.1)` using `(continuous_upperOff β).comp (continuous_pi fun p => continuous_apply _)`. Conclude with `continuous_pi fun p => (h1.matrix_mul h2).matrix_elem p.1.1 p.1.2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_prodMap {r : ℕ} (β : Fin r → ℕ) : Continuous (prodMap β) := by
   have h1 : Continuous fun u : UT r → ℂ => upperIn β (fun p => u p.1) :=
@@ -163,17 +161,17 @@ theorem continuous_prodMap {r : ℕ} (β : Fin r → ℕ) : Continuous (prodMap 
   exact continuous_pi fun p => (h1.matrix_mul h2).matrix_elem p.1.1 p.1.2
 
 /- English proof (translation)
-Introduce `q x y hxy`. Take `⟨⟨a, b⟩, h⟩` from `q`. Establish `e : ∀ u : UT r → ℂ, prodMap β u ⟨(a, b), h⟩ - u ⟨(a, b), h⟩ = ∑ c, if a < c ∧ c < b then upper (fun p => if β p.1.1 = β p.1.2 then u p else 0) a c * upper (fun p => if β p.1.1 ≠ β p.1.2 then u p else 0) c b else 0`. Introduce `u`. Establish `hin : upperIn β (fun p => u p.1) = upper (fun p => if β p.1.1 = β p.1.2 then u p else 0)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Unfold `upperIn`. Use `congr 1`. Establish `hoff : upperOff β (fun p => u p.1) = upper (fun p => if β p.1.1 ≠ β p.1.2 then u p else 0)`. Unfold `upperOff`. Use `congr 1`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Use `show (upperIn β (fun p => u p.1) * upperOff β (fun p => u p.1)) a b - _ = _`. Rewrite using `[hin, hoff, mul_apply_lt _ _ h]`. Distinguish the cases in `hb : β a = β b`. Establish `hb' : ¬ β a ≠ β b` using `not_not.mpr hb`. Simplify using `only [if_pos hb, if_neg hb', add_zero, add_sub_cancel_left]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [if_neg hb, if_pos hb, zero_add, add_sub_cancel_left]`. Rewrite using `[e x, e y]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Use `split_ifs with hc`. Establish `h1 : c.val - a.val < b.val - a.val`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hc.1` as an intermediate fact. Use `hc.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `h2 : b.val - c.val < b.val - a.val`. Use `hc.1` as an intermediate fact.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `hc.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[upper_of_lt _ hc.1, upper_of_lt _ hc.2, upper_of_lt _ hc.1, upper_of_lt _ hc.2, hxy ⟨(a, c), hc.1⟩ h1, hxy ⟨(c, b), hc.2⟩ h2]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem shearCond_prodMap {r : ℕ} (β : Fin r → ℕ) :
     Formalism.FourierDecayAlt.P.ShearMeasurability.ShearCond (fun p : UT r => p.1.2.val - p.1.1.val) (prodMap β) := by
@@ -208,18 +206,16 @@ private theorem shearCond_prodMap {r : ℕ} (β : Fin r → ℕ) :
   · rfl
 
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.ShearMeasurability.shear_mp _ (prodMap β) (continuous_prodMap β).measurable (shearCond_prodMap β)`.
+A detailed English derivation is pending.
 -/
 theorem prodMap_mp {r : ℕ} (β : Fin r → ℕ) : MeasurePreserving (prodMap β) volume volume := Formalism.FourierDecayAlt.P.ShearMeasurability.shear_mp _ (prodMap β) (continuous_prodMap β).measurable (shearCond_prodMap β)
 
 /- English proof (translation)
-Introduce `r β _`. Use `⟨fun x y => ⟨coords (upperIn β x * upperOff β y), ?_⟩, fun f hf => ?_⟩` and prove the remaining obligations. Unfold `upperIn upperOff`. Conclude with `upper_coords_mul _ _`. Establish `hc : Continuous fun u : UT r → ℂ => (Matrix.of.symm (upper u) : Fin r → Fin r → ℂ)` using `continuous_upper r`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : Measurable fun u : UT r → ℂ => f (Matrix.of.symm (upper u))` using `hf.comp hc.measurable`. Establish `hM : Continuous fun z : (UTin β → ℂ) × (UToff β → ℂ) => (Matrix.of.symm (upperIn β z.1 * upperOff β z.2) : Fin r → Fin r → ℂ)` using `((continuous_upperIn β).comp continuous_fst).matrix_mul ((continuous_upperOff β).comp continuous_snd)`. Establish `hG : Measurable fun z : (UTin β → ℂ) × (UToff β → ℂ) => f (Matrix.of.symm (upperIn β z.1 * upperOff β z.2))` using `hf.comp hM.measurable`. Establish `hsplit` using `MeasureTheory.volume_preserving_piEquivPiSubtypeProd (fun _ : UT r => ℂ) (fun p : UT r => β p.1.1 = β p.1.2)`. Establish `key : ∀ v : UT r → ℂ, f (Matrix.of.symm (upper (prodMap β v))) = f (Matrix.of.symm (upperIn β (fun p => v p.1) * upperOff β (fun p => v p.1)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v`. Establish `hp : upper (prodMap β v) = upperIn β (fun p => v p.1) * upperOff β (fun p => v p.1)`. Unfold `prodMap upperIn upperOff`. Conclude with `upper_coords_mul _ _`. Rewrite using `[hp]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem lebesgue_split : ∀ (r : ℕ) (β : Fin r → ℕ), Monotone β → (∀ (x : UTin β → ℂ) (y : UToff β → ℂ), ∃ u : UT r → ℂ, upper u = upperIn β x * upperOff β y) ∧ ∀ f : (Fin r → Fin r → ℂ) → ℝ≥0∞, Measurable f → ∫⁻ u : UT r → ℂ, f (Matrix.of.symm (upper u)) = ∫⁻ y : UToff β → ℂ, ∫⁻ x : UTin β → ℂ, f (Matrix.of.symm (upperIn β x * upperOff β y)) := by
   intro r β _

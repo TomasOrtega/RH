@@ -20,7 +20,7 @@ namespace GlobalTheory.DualCon.Assemble
 variable {S : Scheme.{0}} {A : Over S} [GrpObj A]
 
 /- English proof (translation)
-Establish `hN : (ev M (fst A Y) (snd A Y ≫ u)).IsLB` using `pull_isLB h.isLB _`. Use `⟨hN, (isAdditive_iff hN).2 fun Z a a' t ↦ ?_⟩` and prove the remaining obligations. Simplify using `only [evc_ev h.isLB, lift_fst, lift_snd_assoc]`. Conclude with `(isAdditive_iff h.isLB).1 h.add Z a a' _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fam_ev {U Y : Over S} {M : LB (A ⊗ U).left} (h : Fam A M) (u : Y ⟶ U) :
     Fam A (ev M (fst A Y) (snd A Y ≫ u)) := by
@@ -32,7 +32,7 @@ theorem fam_ev {U Y : Over S} {M : LB (A ⊗ U).left} (h : Fam A M) (u : Y ⟶ U
 omit [GrpObj A] in
 
 /- English proof (translation)
-Establish `e` using `congrArg (CechPic.pull (lift (fst A Z) (snd A Z ≫ z)).left) ((same_iff hN hM y u).1 h)`. Simplify `e` using `only [pull_evc, lift_fst, lift_snd_assoc, Category.assoc]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem same_comp {T U Y Z : Over S} {N : LB (A ⊗ T).left} {M : LB (A ⊗ U).left} (hN : N.IsLB) (hM : M.IsLB)
     {y : Y ⟶ T} {u : Y ⟶ U} (h : Same A N M y u) (z : Z ⟶ Y) :
@@ -41,7 +41,7 @@ theorem same_comp {T U Y Z : Over S} {N : LB (A ⊗ T).left} {M : LB (A ⊗ U).l
   simpa only [pull_evc, lift_fst, lift_snd_assoc, Category.assoc] using e
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `exists_lift_pt S'.hom s`. Conclude with `⟨Over.homMk t ht⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_lift {S' : Over S} [IsFinite S'.hom] [Surjective S'.hom] {K : Type} [Field K] [IsAlgClosed K]
     (s : Sp K ⟶ S) : Nonempty (Over.mk s ⟶ S') := by
@@ -49,11 +49,11 @@ theorem exists_lift {S' : Over S} [IsFinite S'.hom] [Surjective S'.hom] {K : Typ
   exact ⟨Over.homMk t ht⟩
 
 /- English proof (translation)
-Introduce `K _ _ s Y y u u' huu`. Take `⟨t⟩` from `exists_lift (S' := S') s`. Establish `: Mono j` using `(Over.forget S).mono_of_mono_map (show Mono j.left from inferInstance)`. Establish `k : ∀ v : Y ⟶ U, evc hM.isLB (fst A Y) (snd A Y ≫ v) = evc hP.fam.isLB (fst A Y) (snd A Y ≫ lift v (y ≫ t) ≫ j)` using `fun v ↦ by`. Simplify `same_comp hM.isLB hP.fam.isLB h (lift v (y ≫ t))` using `only [lift_fst]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hN` using `fam_ev hM u`. Establish `e : lift u (y ≫ t) ≫ j = lift u' (y ≫ t) ≫ j`. Use `(hP.univ Y (y ≫ t) _ hN).unique ⟨by rw [Category.assoc, hj, lift_snd], ?_⟩ ⟨by rw [Category.assoc, hj, lift_snd], ?_⟩` and prove the remaining obligations. Conclude with `(cls_eq_iff hN.isLB (pull_isLB hP.fam.isLB _)).1 (k u)`. Conclude with `(cls_eq_iff hN.isLB (pull_isLB hP.fam.isLB _)).1 (((same_iff hM.isLB hM.isLB u u').1 huu).trans (k u'))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `e'` using `congrArg (· ≫ fst U S') ((cancel_mono j).1 e)`. Simplify `e'` using `only [lift_fst]`.
+A detailed English derivation is pending.
 -/
 theorem fibInj {B S' U : Over S} [IsFinite S'.hom] [Surjective S'.hom] {b : B ⟶ S'} {P : LB (A ⊗ B).left}
     (hP : Rep A b P) {M : LB (A ⊗ U).left} (hM : Fam A M) {j : U ⊗ S' ⟶ B} (hj : j ≫ b = snd U S')
@@ -75,9 +75,9 @@ theorem fibInj {B S' U : Over S} [IsFinite S'.hom] [Surjective S'.hom] {b : B �
   simpa only [lift_fst] using e'
 
 /- English proof (translation)
-Establish `hr' : Set.range x.left ⊆ Set.range j.left`. Introduce and unpack `_ ⟨z, rfl⟩`. Rewrite using `[Subsingleton.elim (α := PrimeSpectrum K) z default]` and apply the resulting hypothesis. Establish `fac` using `IsOpenImmersion.lift_fac j.left x.left hr'`. Set `v : Over.mk s ⟶ U ⊗ S'` to `Over.homMk (IsOpenImmersion.lift j.left x.left hr') (by`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Rewrite using `[← Over.w j, ← Category.assoc, fac]`. Conclude with `Over.w x)`. Establish `hv : v ≫ j = x` using `Over.OverMorphism.ext fac`. Use `⟨v ≫ fst U S', (same_id_iff hN hM _).2 ((cls_eq_iff hN (pull_isLB hM _)).1 ?_)⟩` and prove the remaining obligations. Rewrite using `[(cls_eq_iff hN (pull_isLB hP _)).2 hx, cls_ev hP, cls_ev hM, same_comp hM hP h v, hv]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_point {B S' U : Over S} {P : LB (A ⊗ B).left} (hP : P.IsLB) {M : LB (A ⊗ U).left} (hM : M.IsLB)
     {j : U ⊗ S' ⟶ B} [IsOpenImmersion j.left] (h : Same A M P (fst U S') j) {K : Type} [Field K]
@@ -95,14 +95,14 @@ theorem exists_point {B S' U : Over S} {P : LB (A ⊗ B).left} (hP : P.IsLB) {M 
   rw [(cls_eq_iff hN (pull_isLB hP _)).2 hx, cls_ev hP, cls_ev hM, same_comp hM hP h v, hv]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨toUnit_unique _ _⟩, ⟨PullbackCone.IsLimit.mk _ (fun c ↦ lift c.fst c.snd) (fun _ ↦ lift_fst _ _) (fun _ ↦ lift_snd _ _) fun c m h₁ h₂ ↦ by ext <;> simp [h₁, h₂]⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem isPullback_prod (X Y : Over S) : IsPullback (fst X Y) (snd X Y) (toUnit X) (toUnit Y) :=
   ⟨⟨toUnit_unique _ _⟩, ⟨PullbackCone.IsLimit.mk _ (fun c ↦ lift c.fst c.snd) (fun _ ↦ lift_fst _ _)
     (fun _ ↦ lift_snd _ _) fun c m h₁ h₂ ↦ by ext <;> simp [h₁, h₂]⟩⟩
 
 /- English proof (translation)
-The claim follows from `(Category.comp_id _).symm.trans (Over.w (toUnit X))`.
+A detailed English derivation is pending.
 -/
 theorem toUnit_left (X : Over S) : (toUnit X).left = X.hom :=
   (Category.comp_id _).symm.trans (Over.w (toUnit X))
@@ -113,13 +113,11 @@ namespace GlobalTheory.DualCon
 open Assemble
 
 /- English proof (translation)
-Use `choose U M j hM hU hj ho hx h using hl`. Establish `hc : ∀ x, IsChart A (M x)` using `fun x ↦ GlobalTheory.T.openChart_of_smoothFamily_geomFibreInjective R A g hA hg (U x) (M x) (hU x) (hM x) (fibInj hP (hM x) (hj x) (h x))`. Take `⟨B₀, P₀, i, hP₀, hi, hcov, -⟩` from `GlobalTheory.T.glue_openCharts_additiveFamilies_representing (Sp R) A hA B.left U M hc (by`. Introduce `K _ _ s N hN`. Take `⟨t⟩` from `exists_lift (S' := S') s`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x, ⟨-, hxN⟩, -⟩` from `hP.univ _ t N hN`. Conclude with `⟨_, exists_point hP.fam.isLB (hM _).isLB (h _) hN.isLB x hxN (hx _)⟩)`. Establish `hsm : SmoothOfRelativeDimension g B₀.hom`. Establish `: IsZariskiLocalAtSource (@SmoothOfRelativeDimension g)` using `HasRingHomProperty.instIsZariskiLocalAtSource`. Use `IsZariskiLocalAtSource.of_openCover (P := @SmoothOfRelativeDimension g) (Scheme.Cover.mkOfCovers B.left (fun x ↦ (U x).left) (fun x ↦ (i x).left) hcov hi) fun x ↦ ?_` and prove the remaining obligations.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : (i x).left ≫ B₀.hom = (U x).hom` using `Over.w _`. Conclude with `(congrArg (@SmoothOfRelativeDimension g _ _) e).mpr (hU x)`. Establish `hpb` using `isPullback_prod B₀ S'`. Take `⟨e, he, -⟩` from `rep_unique (Sp R) A B (B₀ ⊗ S') S' b P _ _ hP (GlobalTheory.T.rep_ev_of_isPullback (Sp R) A B₀ _ S' _ _ P₀ _ _ _ hP₀ hpb)`. Establish `hpb' : IsPullback (e.hom ≫ fst B₀ S') b (toUnit B₀) (toUnit S')` using `hpb.of_iso e.symm (Iso.refl _) (Iso.refl _) (Iso.refl _) (by simp) (by simp [← he]) (by simp) (by simp)`.
-
-Use `⟨B₀, toUnit B₀, P₀, hP₀, GlobalTheory.T.properSmoothGeomConnected_descend_finite_surjective _ _ _ _ _ _ _ _ g (hpb'.map (Over.forget _)) ?_ ?_ ?_ hb⟩` and prove the remaining obligations. Conclude with `(congrArg (@IsFinite _ _) (toUnit_left S')).mpr hf`. Conclude with `(congrArg (@Surjective _ _) (toUnit_left S')).mpr hs`. Conclude with `(congrArg (@SmoothOfRelativeDimension g _ _) (toUnit_left B₀)).mpr hsm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem hasRep_of_liftAt (R : Type) [CommRing R] [IsNoetherianRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ)
     (hA : IsAbelianScheme A) (hg : SmoothOfRelativeDimension g A.hom) (B S' : Over (Sp R)) (b : B ⟶ S')

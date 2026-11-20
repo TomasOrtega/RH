@@ -37,9 +37,9 @@ def ordF (v : HeightOneSpectrum (𝓞 L)) (k : Lˣ) : ℤ := -WithZero.log (v.va
 def infDiag : Lˣ →* Ideles L := ∏ w : InfinitePlace L, (infIdele L w).comp (atInf w)
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `v.valuation_exists_uniformizer L`. Establish `h0 : π ≠ 0`. Introduce and unpack `rfl`. Rewrite `hπ` using `[map_zero]`. Conclude with `WithZero.exp_ne_zero hπ.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Units.mk0 π h0, ?_⟩` and prove the remaining obligations. Use `show Valued.v ((algebraMap L (v.adicCompletion L)) π) = _`. Rewrite using `[← hπ]`. Conclude with `v.valuedAdicCompletion_eq_valuation' π`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unif (v : HeightOneSpectrum (𝓞 L)) : ∃ k : Lˣ, IsUnifAt v (atFin v k) := by
   obtain ⟨π, hπ⟩ := v.valuation_exists_uniformizer L
@@ -55,7 +55,7 @@ theorem exists_unif (v : HeightOneSpectrum (𝓞 L)) : ∃ k : Lˣ, IsUnifAt v (
 def unif (v : HeightOneSpectrum (𝓞 L)) : Lˣ := Classical.choose (exists_unif v)
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (exists_unif v)`.
+A detailed English derivation is pending.
 -/
 theorem unif_spec (v : HeightOneSpectrum (𝓞 L)) : IsUnifAt v (atFin v (unif v)) :=
   Classical.choose_spec (exists_unif v)
@@ -119,9 +119,9 @@ def ProductRule : Prop :=
     χ.inf k * (∏ v ∈ S, χ.locK v k) * (∏ᶠ (v : HeightOneSpectrum (𝓞 L)) (_ : v ∉ S), χ.val v ^ ordF v k) = 1
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h x hx _`. Conclude with `h x hx`. Introduce `h x hx`. Apply `h x hx` to reduce the goal to its premises.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hx' : Valued.v (x : v.adicCompletion L) = 1` using `hx`. Establish `h1 : Valued.v ((x : v.adicCompletion L) - 1) ≤ max (Valued.v (x : v.adicCompletion L)) (Valued.v (1 : v.adicCompletion L))` using `Valued.v.map_sub _ _`. Rewrite `h1` using `[hx', map_one, max_self]`. Simplify using `using h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem unrAt_iff (v : HeightOneSpectrum (𝓞 L)) : χ.UnrAt v ↔ χ.LevelLe v 0 := by
   constructor
@@ -137,9 +137,9 @@ theorem unrAt_iff (v : HeightOneSpectrum (𝓞 L)) : χ.UnrAt v ↔ χ.LevelLe v
     simpa using h1
 
 /- English proof (translation)
-Establish `hu : IsUnifAt v (atFin v (unif v))` using `unif_spec v`. Establish `hunit : IsUnitAt v (x * (atFin v (unif v))⁻¹)`. Unfold `IsUnitAt`. Unfold `IsUnifAt at hx hu`. Rewrite using `[Units.val_mul, map_mul, hx, Units.val_inv_eq_inv_val, map_inv₀, hu, mul_inv_cancel₀ WithZero.exp_ne_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `h _ hunit`. Use `show χ.loc v x = χ.loc v (atFin v (unif v))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← map_mul, inv_mul_cancel_right]`. Use `_ = χ.loc v (atFin v (unif v)) := by rw [h1, one_mul]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_eq {v : HeightOneSpectrum (𝓞 L)} (h : χ.UnrAt v) (x : (v.adicCompletion L)ˣ) (hx : IsUnifAt v x) :
     χ.loc v x = χ.val v := by
@@ -206,9 +206,9 @@ section Res
 variable (F : Type) [Field F] [NumberField F] [Algebra F L]
 
 /- English proof (translation)
-Establish `hne : Ideal.map (algebraMap (𝓞 F) (𝓞 L)) v.asIdeal ≠ 0`. Rewrite using `[Ideal.zero_eq_bot, Ne, Ideal.map_eq_bot_iff_of_injective (FaithfulSMul.algebraMap_injective (𝓞 F) (𝓞 L))]`. Conclude with `v.ne_bot`. Use `(Ideal.finite_factors hne).subset ?_` and prove the remaining obligations. Introduce `P hP`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_setOf_eq] at hP ⊢`. Rewrite using `[Ideal.dvd_iff_le, Ideal.map_le_iff_le_comap, ← hP, IsDedekindDomain.HeightOneSpectrum.under_asIdeal]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_aboveF (v : HeightOneSpectrum (𝓞 F)) :
     {P : HeightOneSpectrum (𝓞 L) | P.under (𝓞 F) = v}.Finite := by

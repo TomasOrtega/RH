@@ -9,9 +9,9 @@ open scoped TensorProduct
 namespace GlobalTheory.CompanionTheory.Rodier.LowerOpen
 
 /- English proof (translation)
-Establish `h1 : (((GroundTheory.Automorphic.permGL k w)⁻¹ : GL (Fin N) k) : Matrix (Fin N) (Fin N) k) = w.permMatrix k`. Rewrite using `[← map_inv]`. Use `show ((w⁻¹)⁻¹).permMatrix k = w.permMatrix k`. Rewrite using `[inv_inv]`. Establish `h2 : ((GroundTheory.Automorphic.permGL k w : GL (Fin N) k) : Matrix (Fin N) (Fin N) k) = (w⁻¹).permMatrix k` using `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.val_mul, Units.val_mul, h1, h2, Equiv.Perm.permMatrix, Equiv.Perm.permMatrix, PEquiv.toMatrix_toPEquiv_mul, PEquiv.mul_toMatrix_toPEquiv]`. Simplify using `[Equiv.Perm.inv_def]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inv_conj_apply {k : Type} [Field k] {N : ℕ} (w : Equiv.Perm (Fin N)) (x : GL (Fin N) k)
     (p q : Fin N) :
@@ -29,9 +29,9 @@ theorem inv_conj_apply {k : Type} [Field k] {N : ℕ} (w : Equiv.Perm (Fin N)) (
   simp [Equiv.Perm.inv_def]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hpq`. Establish `h1` using `Tuple.monotone_sort (GlobalTheory.CompanionTheory.Rodier.wKey d hd) (not_lt.mp hpq)`. Simplify using `only [Function.comp_apply, GlobalTheory.CompanionTheory.Rodier.wKey] at h1`. Establish `hb' : blk (stdBlocks d hd) (Tuple.sort (GlobalTheory.CompanionTheory.Rodier.wKey d hd) q) < blk (stdBlocks d hd) (Tuple.sort (GlobalTheory.CompanionTheory.Rodier.wKey d hd) p)` using `hb`. Rewrite `h1` using `[Prod.Lex.toLex_le_toLex]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `h1 with h | ⟨h, -⟩` into its components or cases. Conclude with `lt_asymm hb' (OrderDual.toDual_lt_toDual.mp h)`. Conclude with `(ne_of_lt hb') (OrderDual.toDual.injective h)`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem lt_of_blk_lt {h N : ℕ} (d : Fin h → ℕ) (hd : ∑ a, d a = N) {p q : Fin N}
     (hb : blk (stdBlocks d hd) (wOpen d hd q) < blk (stdBlocks d hd) (wOpen d hd p)) : p < q := by
@@ -46,9 +46,9 @@ theorem lt_of_blk_lt {h N : ℕ} (d : Fin h → ℕ) (hd : ∑ a, d a = N) {p q 
   · exact (ne_of_lt hb') (OrderDual.toDual.injective h)
 
 /- English proof (translation)
-Take `⟨hpl, hdiag⟩` from `(GlobalTheory.SmGL.mem_unipRadLower k).mp hx`. Rewrite `hpl` using `[GlobalTheory.SmGL.mem_parabLower_iff]`. Take `⟨⟨a, i'⟩, rfl⟩` from `(stdBlocks d hd).surjective i`. Take `⟨⟨b, j'⟩, rfl⟩` from `(stdBlocks d hd).surjective j`. Rewrite using `[GlobalTheory.SmGL.blk_apply, GlobalTheory.SmGL.blk_apply]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun hab => hpl a b i' j' hab, fun hab => ?_⟩` and prove the remaining obligations. Substitute `hab` using the available equality. Rewrite using `[hdiag a i' j', Matrix.one_apply, Matrix.one_apply]`. Simplify using `[(stdBlocks d hd).apply_eq_iff_eq]`.
+Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lower_entries {k : Type} [Field k] {h N : ℕ} {d : Fin h → ℕ} {hd : ∑ a, d a = N}
     {x : GL (Fin N) k} (hx : x ∈ unipRadLower k (stdBlocks d hd)) (i j : Fin N) :
@@ -66,11 +66,11 @@ theorem lower_entries {k : Type} [Field k] {h N : ℕ} {d : Fin h → ℕ} {hd :
   simp [(stdBlocks d hd).apply_eq_iff_eq]
 
 /- English proof (translation)
-Use extensionality with `i j`. Break down `lt_trichotomy (blk (stdBlocks d hd) i) (blk (stdBlocks d hd) j) with hlt | heq | hgt` into its components or cases. Establish `hij : i ≠ j`. Introduce and unpack `rfl`. Conclude with `lt_irrefl _ hlt`.
+By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(lower_entries hx i j).1 hlt]`. Simplify using `[Matrix.one_apply, hij]`. Rewrite using `[(lower_entries hx i j).2 heq]`. Simplify using the standard rewrite rules. Establish `hij : i ≠ j`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Conclude with `lt_irrefl _ hgt`. Rewrite using `[GlobalTheory.SmGL.mem_parab.mp hp i j hgt]`. Simplify using `[Matrix.one_apply, hij]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem parab_inf_lower {k : Type} [Field k] {h N : ℕ} {d : Fin h → ℕ} {hd : ∑ a, d a = N}
     {x : GL (Fin N) k} (hp : x ∈ parab k (stdBlocks d hd))
@@ -96,7 +96,7 @@ variable (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 variable {k d hd} in
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.CompanionTheory.Rodier.unipU, Subgroup.mem_inf, Subgroup.mem_comap]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_unipU_iff {u : GL (Fin N) k} :
     u ∈ unipU k d hd ↔ u ∈ unipB k (Fin N) ∧
@@ -105,13 +105,11 @@ theorem mem_unipU_iff {u : GL (Fin N) k} :
   rfl
 
 /- English proof (translation)
-Rewrite using `[mem_unipU_iff]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.SmGL.mem_unipB]`. Establish `hent : ∀ p q, (((pm k (wOpen d hd))⁻¹ * x * pm k (wOpen d hd) : GL (Fin N) k) : Matrix (Fin N) (Fin N) k) p q = (x : Matrix (Fin N) (Fin N) k) (wOpen d hd p) (wOpen d hd q)` using `fun p q => inv_conj_apply (wOpen d hd) x p q`. Use `⟨fun i j hji => ?_, fun i => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hent]`. Break down `lt_trichotomy (blk (stdBlocks d hd) (wOpen d hd i)) (blk (stdBlocks d hd) (wOpen d hd j)) with hlt | heq | hgt` into its components or cases. Conclude with `(lower_entries hx _ _).1 hlt`. Rewrite using `[(lower_entries hx _ _).2 heq, Matrix.one_apply, if_neg]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hji.ne' ((wOpen d hd).injective h)`. Conclude with `absurd (lt_of_blk_lt d hd hgt) (not_lt.mpr hji.le)`. Rewrite using `[hent, (lower_entries hx _ _).2 rfl]`. Simplify using the standard rewrite rules. Establish `he : pm k (wOpen d hd) * ((pm k (wOpen d hd))⁻¹ * x * pm k (wOpen d hd)) * (pm k (wOpen d hd))⁻¹ = x` using `by group`.
-
-Rewrite using `[he]`. Conclude with `hx`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_conj_mem_unipU {x : GL (Fin N) k} (hx : x ∈ unipRadLower k (stdBlocks d hd)) :
     (pm k (wOpen d hd))⁻¹ * x * pm k (wOpen d hd) ∈ unipU k d hd := by
@@ -138,9 +136,9 @@ theorem inv_conj_mem_unipU {x : GL (Fin N) k} (hx : x ∈ unipRadLower k (stdBlo
     exact hx
 
 /- English proof (translation)
-Establish `hv : u' * u⁻¹ ∈ unipU k d hd` using `(unipU k d hd).mul_mem hu' ((unipU k d hd).inv_mem hu)`. Establish `hlow` using `(mem_unipU_iff.mp hv).2`. Establish `hpeq : pm k (wOpen d hd) * (u' * u⁻¹) * (pm k (wOpen d hd))⁻¹ = p`. Combine the equalities or inequalities in the displayed calculation. Rewrite `hlow` using `[hpeq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `parab_inf_lower hp hlow`. Rewrite `e` using `[h1]`. Simplify using `using e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eq_of_mul_eq {p u u' : GL (Fin N) k} (hp : p ∈ parab k (stdBlocks d hd))
     (hu : u ∈ unipU k d hd) (hu' : u' ∈ unipU k d hd)
@@ -158,13 +156,13 @@ theorem eq_of_mul_eq {p u u' : GL (Fin N) k} (hp : p ∈ parab k (stdBlocks d hd
   simpa using e
 
 /- English proof (translation)
-Establish `hent : ∀ (i j : Fin N) (c : k), IsClosed {g : GL (Fin N) k | (g : Matrix (Fin N) (Fin N) k) i j = c}` using `fun i j c => isClosed_eq (Units.continuous_val.matrix_elem i j) continuous_const`. Establish `hB : IsClosed (unipB k (Fin N) : Set (GL (Fin N) k))`. Establish `hs : (unipB k (Fin N) : Set (GL (Fin N) k)) = (⋂ i, ⋂ j, ⋂ (_ : j < i), {g : GL (Fin N) k | (g : Matrix (Fin N) (Fin N) k) i j = 0}) ∩ ⋂ i, {g : GL (Fin N) k | (g : Matrix (Fin N) (Fin N) k) i i = 1}`. Use extensionality with `g`. Simplify using `[GlobalTheory.SmGL.mem_unipB]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[hs]`. Conclude with `(isClosed_iInter fun i => isClosed_iInter fun j => isClosed_iInter fun _ => hent i j 0).inter (isClosed_iInter fun i => hent i i 1)`. Establish `hL : IsClosed (unipRadLower k (stdBlocks d hd) : Set (GL (Fin N) k))`. Establish `hs : (unipRadLower k (stdBlocks d hd) : Set (GL (Fin N) k)) = (⋂ a, ⋂ b, ⋂ i, ⋂ j, ⋂ (_ : a < b), {g : GL (Fin N) k | (g : Matrix (Fin N) (Fin N) k) (stdBlocks d hd ⟨a, i⟩) (stdBlocks d hd ⟨b, j⟩) = 0}) ∩ ⋂ a, ⋂ i, ⋂ j, {g : GL (Fin N) k | (g : Matrix (Fin N) (Fin N) k) (stdBlock …`. Use extensionality with `g`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[GlobalTheory.SmGL.mem_unipRadLower, GlobalTheory.SmGL.mem_parabLower_iff]`. Rewrite using `[hs]`. Conclude with `(isClosed_iInter fun a => isClosed_iInter fun b => isClosed_iInter fun i => isClosed_iInter fun j => isClosed_iInter fun _ => hent _ _ _).inter (isClosed_iInter fun a => isClosed_iInter fun i => isClosed_iInter fun j => hent _ _ _)`. Establish `hc : Continuous fun u : GL (Fin N) k => pm k (wOpen d hd) * u * (pm k (wOpen d hd))⁻¹` using `(continuous_const.mul continuous_id).mul continuous_const`. Establish `hs : (unipU k d hd : Set (GL (Fin N) k)) = (unipB k (Fin N) : Set (GL (Fin N) k)) ∩ (fun u : GL (Fin N) k => pm k (wOpen d hd) * u * (pm k (wOpen d hd))⁻¹) ⁻¹' (unipRadLower k (stdBlocks d hd) : Set (GL (Fin N) k))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `u`. Simplify using `only [Set.mem_inter_iff, Set.mem_preimage, SetLike.mem_coe]`. Conclude with `mem_unipU_iff`. Rewrite using `[hs]`. Conclude with `hB.inter (hL.preimage hc)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_unipU : IsClosed (unipU k d hd : Set (GL (Fin N) k)) := by
   have hent : ∀ (i j : Fin N) (c : k),
@@ -209,7 +207,7 @@ end GlobalTheory.CompanionTheory.Rodier.LowerOpen
 namespace GlobalTheory.CompanionTheory.Rodier
 
 /- English proof (translation)
-Introduce `k _ _ _ _ h N d hd`. Conclude with `⟨fun x hx => LowerOpen.inv_conj_mem_unipU k d hd hx, fun p hp u hu u' hu' e => LowerOpen.eq_of_mul_eq k d hd hp hu hu' e, LowerOpen.isClosed_unipU k d hd⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem unipU_open_cell : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (h N : ℕ) (d : Fin h → ℕ) (hd : ∑ a, d a = N), (∀ x ∈ unipRadLower k (stdBlocks d hd), (pm k (wOpen d hd))⁻¹ * x * pm k (wOpen d hd) ∈ unipU k d hd) ∧ (∀ p ∈ parab k (stdBlocks d hd), ∀ u ∈ unipU k d hd, ∀ u' ∈ unipU k d hd, p * pm k (wOpen d hd) * u = pm k (wOpen d hd) * u' → u = u') ∧ IsClosed (unipU k d hd : Set (GL (Fin N) k)) := by
   intro k _ _ _ _ h N d hd

@@ -22,9 +22,9 @@ variable (K Ω : Type) [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarc
   [ValuativeRel Ω] [TopologicalSpace Ω] [IsValuativeTopology Ω] [ValuativeExtension K Ω]
 
 /- English proof (translation)
-Rewrite using `[localInv_apply]`. Establish `: IsSepClosure (fixedField ((⊤ : OpenSubgroup Gal(Ω/K)) : Subgroup Gal(Ω/K))) Ω` using `⟨IsSepClosure.sep_closed K, Algebra.isSeparable_tower_top_of_isSeparable K _ Ω⟩`. Establish `: IsGalois (fixedField ((⊤ : OpenSubgroup Gal(Ω/K)) : Subgroup Gal(Ω/K))) Ω` using `IsGalois.tower_top_of_isGalois K _ Ω`. Establish `hres : (openCohomologyIso (⊤ : OpenSubgroup Gal(Ω/K)) 2).hom.hom ((cohomologyRes (galUnits.{0} K Ω) ((⊤ : OpenSubgroup Gal(Ω/K)) : Subgroup Gal(Ω/K)) 2).hom y) = (brauerRes K (fixedField ((⊤ : OpenSubgroup Gal(Ω/K)) : Subgroup Gal(Ω/K))) Ω).hom y`. Rewrite using `[openCohomologyIso_hom, cohomologyRes_eq, ← ModuleCat.comp_apply, ← cohomologyMapAlong_comp, brauerRes_eq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Establish `hrank : Module.finrank K (fixedField ((⊤ : OpenSubgroup Gal(Ω/K)) : Subgroup Gal(Ω/K))) = 1`. Rewrite using `[← index_openSubgroup]`. Conclude with `Subgroup.index_top`. Rewrite using `[hres, brauerInv_brauerRes, hrank, one_smul]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem brauerInv_eq_localInv_top (y : galoisBrauerGroup K Ω) :
     brauerInv K Ω y = localInv K Ω ⊤
@@ -63,7 +63,7 @@ def brauerInvOfIsSepClosure : galoisBrauerGroup K Ksep →+ QZ :=
   brauerInv K Ksep
 
 /- English proof (translation)
-The claim follows from `letI := algebraicValuativeRel K Ksep letI := algebraicTopology K Ksep haveI := algebraicTopology_isValuativeTopology K Ksep haveI := algebraicValuativeRel_valuativeExtension K Ksep brauerInv_bijective K Ksep`.
+A detailed English derivation is pending.
 -/
 theorem brauerInvOfIsSepClosure_bijective :
     Function.Bijective (brauerInvOfIsSepClosure K Ksep) :=
@@ -85,7 +85,7 @@ theorem brauerInvEquivOfIsSepClosure_apply (y : galoisBrauerGroup K Ksep) :
   rfl
 
 /- English proof (translation)
-The claim follows from `letI := algebraicValuativeRel K Ksep letI := algebraicTopology K Ksep haveI := algebraicTopology_isValuativeTopology K Ksep haveI := algebraicValuativeRel_valuativeExtension K Ksep brauerInv_eq_localInv_top K Ksep y`.
+A detailed English derivation is pending.
 -/
 theorem brauerInvOfIsSepClosure_eq_inv_top (y : galoisBrauerGroup K Ksep) :
     brauerInvOfIsSepClosure K Ksep y = (localClassFormationOfIsSepClosure K Ksep).inv ⊤

@@ -14,11 +14,11 @@ open GlobalTheory.Models
 namespace GlobalTheory
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `x`. Establish `hη : (spMap β) (IsLocalRing.closedPoint F) ⤳ s x`. Use `(PrimeSpectrum.le_iff_specializes (R := O) (PrimeSpectrum.comap β (IsLocalRing.closedPoint F)) (s x)).mp ?_` and prove the remaining obligations. Introduce `a ha`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `ha' : β a ∈ IsLocalRing.maximalIdeal F` using `ha`. Rewrite `ha'` using `[IsLocalRing.maximalIdeal_eq_bot, Ideal.mem_bot]`. Establish `: a = 0` using `hβ (by rw [ha', map_zero])`. Rewrite using `[this]`. Conclude with `Ideal.zero_mem _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy, hy'⟩` from `Flat.generalizingMap s hη`. Use `closure_mono (Set.singleton_subset_iff.mpr ?_) hy.mem_closure` and prove the remaining obligations. Rewrite using `[Scheme.Pullback.range_fst]`. Conclude with `⟨_, hy'.symm⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isDominant_pullback_fst_of_flat_of_injective {O F : Type} [CommRing O] [Field F] (β : O →+* F)
     (hβ : Function.Injective β) {X : Scheme.{0}} (s : X ⟶ Sp O) [Flat s] :
@@ -39,7 +39,7 @@ theorem isDominant_pullback_fst_of_flat_of_injective {O F : Type} [CommRing O] [
   exact ⟨_, hy'.symm⟩
 
 /- English proof (translation)
-Establish `: NeZero (A : k)` using `⟨by simpa using (hu.map ψ).ne_zero⟩`. Rewrite using `[← Polynomial.isRoot_cyclotomic_iff, ← Polynomial.map_cyclotomic A ψ]`. Conclude with `(hz.isRoot_cyclotomic hA).map`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPrimitiveRoot_map_of_isUnit {O k : Type} [CommRing O] [IsDomain O] [Field k] (ψ : O →+* k)
     {z : O} {A : ℕ} (hA : 0 < A) (hz : IsPrimitiveRoot z A) (hu : IsUnit (A : O)) :
@@ -49,31 +49,27 @@ theorem isPrimitiveRoot_map_of_isUnit {O k : Type} [CommRing O] [IsDomain O] [Fi
   exact (hz.isRoot_cyclotomic hA).map
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo S β C r ρ σ hinc hS ⟨e, he⟩ hj hρ hr k _ x hx`. Establish `hA` using `l.A_pos`. Establish `: NeZero l.A` using `⟨hA.ne'⟩`. Establish `hβ : Function.Injective β` using `fun a b h => Subtype.ext (by`. Establish `h1` using `hinc a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[h, hinc b]`. Conclude with `h1.symm)`. Set `z : RZ H S l.A` to `⟨zeta l.A, Subring.subset_closure (by simp)⟩`. Set `t : RZ H S l.A` to `⟨(S : ℂ)⁻¹, Subring.subset_closure (by simp)⟩`. Establish `hβz : β z = (baseKA l).ζ` using `Subtype.ext (hinc z)`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hζ : IsPrimitiveRoot (baseKA l).ζ l.A` using `(baseKA l).ζ_prim`. Establish `hz : IsPrimitiveRoot z l.A` using `IsPrimitiveRoot.of_map_of_injective (hβz ▸ hζ) hβ`. Establish `hSu : IsUnit (S : RZ H S l.A)` using `IsUnit.of_mul_eq_one t (Subtype.ext (by`. Establish `: (S : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr hS.ne'`. Simplify using `[t, this]))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hAu : IsUnit (l.A : RZ H S l.A)`. Use `isUnit_of_dvd_unit (Nat.cast_dvd_cast he) ?_` and prove the remaining obligations. Rewrite using `[Nat.cast_pow]`. Conclude with `hSu.pow e`. Take `⟨a, -, ha⟩` from `hζ.eq_pow_of_pow_eq_one (ξ := σ (baseKA l).ζ) (by rw [← map_pow, hζ.pow_eq_one, map_one])`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `C.flat` as an intermediate fact. Establish `hd₁` using `isDominant_pullback_fst_of_flat_of_injective β hβ C.s`. Establish `hd₂ : IsDominant C.jQ` using `⟨C.jQ_dense⟩`. Establish `hd : IsDominant C.j` using `by unfold Cpt.j; infer_instance`. Establish `hred : IsReduced C.X`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `fun y => (C.normal y).1` as an intermediate fact. Conclude with `isReduced_of_isReduced_stalk _`. Establish `hjs : C.j ≫ C.s = Xo.s ≫ spMap β`. Rewrite using `[Cpt.j, Category.assoc, pullback.condition, ← Category.assoc, C.jQ_over]`. Set `ev : RZ H S l.A → (Polynomial ℤ →+* RZ H S l.A)` to `fun y => (Polynomial.aeval y).toRingHom`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hev : σ.toRingHom.comp (β.comp (ev z)) = β.comp (ev (z ^ a))`. Use `Polynomial.ringHom_ext' (RingHom.ext_int _ _) ?_` and prove the remaining obligations. Simplify using `[ev, hβz, ha]`. Establish `key : ρ.hom ≫ C.s ≫ spMap (ev z) = C.s ≫ spMap (ev (z ^ a))`. Use `ext_of_isDominant C.j ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[reassoc_of% hj, reassoc_of% hjs, reassoc_of% hjs, reassoc_of% hr]`. Simplify using `only [← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Rewrite using `[← hev]`. Take `⟨ψ, hψ⟩` from `Spec.map_surjective (x ≫ C.s)`. Establish `key₂ : CommRingCat.ofHom (ev z) ≫ ψ = CommRingCat.ofHom (ev (z ^ a)) ≫ ψ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[Spec.map_comp, Spec.map_comp, hψ, Category.assoc, Category.assoc, ← key, reassoc_of% hx]`. Establish `key₃ : ψ.hom z = ψ.hom z ^ a`. Use `congrArg (fun f => f.hom Polynomial.X) key₂` as an intermediate fact. Simplify `this` using `[ev]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : IsPrimitiveRoot (ψ.hom z) l.A` using `isPrimitiveRoot_map_of_isUnit ψ.hom hA hz hAu`. Establish `hmod : a ≡ 1 [MOD l.A]`. Establish `hfin : IsOfFinOrder (ψ.hom z)` using `hp.isOfFinOrder hA.ne'`. Rewrite using `[hp.eq_orderOf, ← hfin.pow_eq_pow_iff_modEq, pow_one]`. Conclude with `key₃.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hσζ : σ (baseKA l).ζ = (baseKA l).ζ`. Rewrite using `[← ha]`. Establish `hfin : IsOfFinOrder (baseKA l).ζ` using `hζ.isOfFinOrder hA.ne'`. Rewrite `hmod` using `[hζ.eq_orderOf, ← hfin.pow_eq_pow_iff_modEq, pow_one]`. Conclude with `hmod`.
-
-Establish `hfinal : σ.toRingHom.toRatAlgHom = AlgHom.id ℚ (KA l)`. Use `IntermediateField.algHom_ext_of_eq_adjoin ℚ (S := KA l) (s := {H.rt0, zeta l.A}) rfl ?_` and prove the remaining obligations. Introduce and unpack `y (rfl | rfl)`. Conclude with `hρ`. Conclude with `hσζ`.
-
-Use `ext1 y`. Conclude with `DFunLike.congr_fun hfinal y`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem galoisPart_eq_refl_of_fixes_point : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (S : ℕ) (β : RZ H S l.A →+* KA l) (C : Cpt Xo.s Xo.univ.t β) (r : Xo.X ≅ Xo.X) (ρ : C.X ≅ C.X) (σ : KA l ≃+* KA l), IsInc (RZ H S l.A).subtype (KA l).val.toRingHom β → 0 < S → (∃ e, l.A ∣ S ^ e) → C.j ≫ ρ.hom = r.hom ≫ C.j → σ (baseKA l).ρ = (baseKA l).ρ → r.hom ≫ Xo.s = Xo.s ≫ spMap σ.toRingHom → ∀ (k : Type) [Field k] (x : Sp k ⟶ C.X), x ≫ ρ.hom = x → σ = RingEquiv.refl _ := by
   intro E _ _ _ H D l Xo S β C r ρ σ hinc hS ⟨e, he⟩ hj hρ hr k _ x hx

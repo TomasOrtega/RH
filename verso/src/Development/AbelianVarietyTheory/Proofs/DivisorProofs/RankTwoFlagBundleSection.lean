@@ -13,9 +13,9 @@ open CategoryTheory AlgebraicGeometry Limits ReciprocityTheory.ChartRestriction.
 namespace GlobalTheory.CovTest.Multisection
 
 /- English proof (translation)
-Establish `key : ∀ (G : (Spec (CommRingCat.of K)).Modules) (r : ℕ), VB.IsVB G r → ∃ e : Fin r → Γ(G, ⊤), VB.IsFrame e`. Introduce `G r h`. Take `⟨U, e, hx, he⟩` from `h (IsLocalRing.closedPoint K)`. Establish `hU : ⊤ ≤ U` using `fun x _ => (Subsingleton.elim x (IsLocalRing.closedPoint K)) ▸ hx`. Conclude with `⟨_, he.res hU⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `hO` using `VB.isVB_structureModule (Spec (CommRingCat.of K))`. Take `⟨e, he⟩` from `key F 2 hF`. Take `⟨e', he'⟩` from `key _ 2 (hO.biprod hO)`. Conclude with `⟨(Vert.Flag.ofBiprod hO hO).ofIso (he'.iso he)⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nonempty_flag_of_field (K : Type) [Field K] (F : (Spec (CommRingCat.of K)).Modules)
     (hF : VB.IsVB F 2) : Nonempty (Vert.Flag F 2) := by
@@ -31,17 +31,15 @@ theorem nonempty_flag_of_field (K : Type) [Field K] (F : (Spec (CommRingCat.of K
   exact ⟨(Vert.Flag.ofBiprod hO hO).ofIso (he'.iso he)⟩
 
 /- English proof (translation)
-Introduce `k _ B Y _ _ q p d hq hp π w E hE fl hfl`. Set `K : Type` to `B.residueField (genericPoint B)`. Set `g : Spec (CommRingCat.of K) ⟶ B` to `B.fromSpecResidueField (genericPoint B)`. Take `⟨fl'⟩` from `nonempty_flag_of_field K ((Scheme.Modules.pullback g).obj E) (hE.pullback g)`. Take `⟨g', ⟨hg', -⟩, -⟩` from `hfl _ g (fun _ => fl')`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hc` using `Scheme.descResidueField_stalkClosedPointTo_fromSpecResidueField K Y g'`. Take `⟨e₁, d₁⟩` from `ProjDrop.deg_eq_of_fieldPoint π (g' (IsLocalRing.closedPoint K)) (genericPoint B) (Ω := K) _ (𝟙 (B.residueField (genericPoint B)) : B.residueField (genericPoint B) ⟶ CommRingCat.of K) (by rw [hc, hg', Spec.map_id]; exact (Category.id_comp _).symm)`. Establish `h1 : ProjDrop.deg (𝟙 (B.residueField (genericPoint B)) : B.residueField (genericPoint B) ⟶ CommRingCat.of K).hom = 1`. Rewrite using `[CommRingCat.hom_id]`. Conclude with `ProjDrop.deg_equiv (RingEquiv.refl K)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hn : π.residueDegree (g' (IsLocalRing.closedPoint K)) ≠ 0`. Introduce `h`. Rewrite `d₁` using `[h1, h, zero_mul]`. Conclude with `one_ne_zero d₁`. Take `⟨Z, i, _, _, hi⟩` from `exists_isClosedImmersion_genericPoint (g' (IsLocalRing.closedPoint K))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `g₁ : (i ≫ π) (genericPoint Z) = genericPoint B` using `by rw [Scheme.Hom.comp_apply, hi, e₁]`. Establish `n₁ : (i ≫ π).residueDegree (genericPoint Z) ≠ 0`. Rewrite using `[CurveDegreesCompare.residueDegree_comp, residueDegree_of_isClosedImmersion i, mul_one, hi]`. Conclude with `hn`. Establish `hproj : IsProjOver (i ≫ p)` using `ProjSpace.isProjOver_comp_of_isClosedImmersion i hp.isProjOver`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hflat : Flat ((i ≫ p) ≫ spMap (Int.castRingHom k))`. Rewrite using `[flat_int_iff_charZero]`. Use `haveI := hq.flat`. Use `haveI : CharZero (B.residueField ((i ≫ π) (genericPoint Z))) := g₁.symm ▸ DimCover.charZero_residueField (q ≫ spMap (Int.castRingHom k))`. Use `haveI := (RingHom.charZero_iff ((i ≫ π).residueFieldMap (genericPoint Z)).hom.injective).mp this`.
-
-Conclude with `ProjDrop.charZero_of_residueField (genericPoint Z)`. Use `⟨Z, inferInstance, i, ⟨hq.isDomain, hq.finite, inferInstance, hproj, hflat, DimCover.topologicalKrullDim_eq k B Z q (i ≫ p) d hq hproj hflat (i ≫ π) (by rw [Category.assoc, w]) g₁ n₁⟩, g₁, n₁⟩` and prove the remaining obligations.
+A detailed English derivation is pending.
 -/
 theorem exists_multisection : ∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) [IsIntegral B] [IsIntegral Y] (q : B ⟶ Sp k)
     (p : Y ⟶ Sp k) (d : ℕ), IsArithVar q d → IsArithVar p (d + 1) → ∀ (π : Y ⟶ B) (_ : π ≫ q = p) (E : B.Modules),

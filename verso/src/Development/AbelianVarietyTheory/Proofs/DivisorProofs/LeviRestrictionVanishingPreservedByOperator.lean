@@ -10,11 +10,9 @@ namespace GlobalTheory.LeviDeriv
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a r : ℕ}
 
 /- English proof (translation)
-Introduce `i j`. Distinguish the cases in `h : ((i : ℕ) < r ↔ (j : ℕ) < r)`. Conclude with `Or.inl h`. Use `right`. Rewrite using `[Matrix.mul_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Prove the first alternative. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Break down `hM i k with h1 | h1` into its components or cases. Break down `hN k j with h2 | h2` into its components or cases. Conclude with `absurd (h1.trans h2) h`. Rewrite using `[h2, mul_zero]`.
-
-Rewrite using `[h1, zero_mul]`.
+Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem block_mul {R : Type} [CommRing R] {M N : Matrix (Fin a) (Fin a) R}
     (hM : ∀ i j : Fin a, ((i : ℕ) < r ↔ (j : ℕ) < r) ∨ M i j = 0)
@@ -33,9 +31,9 @@ theorem block_mul {R : Type} [CommRing R] {M N : Matrix (Fin a) (Fin a) R}
     · rw [h1, zero_mul]
 
 /- English proof (translation)
-Introduce `i j`. Distinguish the cases in `h' : ((i : ℕ) < r ↔ (j : ℕ) < r)`. Conclude with `Or.inl h'`. Use `right`. Establish `h` using `(hy i j).resolve_left h'`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Prove the first alternative. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hij : i ≠ j` using `fun e => h' (by rw [e])`. Express the relevant statement in the definitionally equal form `(1 : Matrix (Fin a) (Fin a) (Ad E)) i j - sInf E ((1 : Matrix (Fin a) (Fin a) (Cinf E)) i j) + sInf E ((y : Matrix (Fin a) (Fin a) (Cinf E)) i j) = 0`. Rewrite using `[h, Matrix.one_apply_ne hij, Matrix.one_apply_ne hij, map_zero, sub_zero, zero_add]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem block_infGL (y : GL (Fin a) (Cinf E))
     (hy : ∀ i j : Fin a, ((i : ℕ) < r ↔ (j : ℕ) < r) ∨ (y : Matrix (Fin a) (Fin a) (Cinf E)) i j = 0) :
@@ -51,21 +49,17 @@ theorem block_infGL (y : GL (Fin a) (Cinf E))
     rw [h, Matrix.one_apply_ne hij, Matrix.one_apply_ne hij, map_zero, sub_zero, zero_add]
 
 /- English proof (translation)
-Use `set m := GlobalTheory.LeviGA.blkGL hr (m₁, m₂)`. Use `set X : Lie E a := toL (Matrix.single i j x)`. Establish `hz : ∀ t : ℝ, chart f.1 m (oneL E a + t • X) = 0`. Introduce `t`. Unfold `chart`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `split_ifs with hu`. Establish `hyb : ∀ k l : Fin a, ((k : ℕ) < r ↔ (l : ℕ) < r) ∨ ((hu.unit : GL (Fin a) (Cinf E)) : Matrix (Fin a) (Fin a) (Cinf E)) k l = 0`. Introduce `k l`. Rewrite using `[hu.unit_spec]`. Distinguish the cases in `hkl : ((k : ℕ) < r ↔ (l : ℕ) < r)`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Prove the first alternative. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Or.inl hkl`. Use `right`. Establish `hne : k ≠ l` using `fun e => hkl (by rw [e])`. Establish `hs : Matrix.single i j x k l = 0`. Rewrite using `[Matrix.single_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg]`. Introduce and unpack `⟨e1, e2⟩`. Conclude with `hkl (by rw [← e1, ← e2]; exact hij)`. Express the relevant statement in the definitionally equal form `(1 : Matrix (Fin a) (Fin a) (Cinf E)) k l + t • Matrix.single i j x k l = 0`. Rewrite using `[hs, Matrix.one_apply_ne hne, smul_zero, add_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨p, hp⟩` from `GlobalTheory.LeviGA.exists_blkGL hr (m * infGL E a hu.unit) (by rw [Units.val_mul]; exact block_mul (GlobalTheory.LeviGA.blkGL_block hr _) (block_infGL _ hyb))`. Rewrite using `[← hp]`. Conclude with `hf p.1 p.2`. Both sides reduce to the same expression. Establish `hline : HasDerivAt (fun t : ℝ => oneL E a + t • X) X 0`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `((hasDerivAt_id' (0 : ℝ)).smul_const X).const_add (oneL E a)` as an intermediate fact. Rewrite `this` using `[one_smul]`. Then use the resulting hypothesis. Establish `hd : HasFDerivAt (chart f.1 m) (fderiv ℝ (chart f.1 m) (oneL E a)) (oneL E a + (0 : ℝ) • X)`. Rewrite using `[zero_smul, add_zero]`. Conclude with `(differentiableAt_chart f.2 m).hasFDerivAt`.
-
-Establish `h1` using `hd.comp_hasDerivAt (0 : ℝ) hline`. Establish `h2 : HasDerivAt (chart f.1 m ∘ fun t : ℝ => oneL E a + t • X) 0 0`. Establish `e : (chart f.1 m ∘ fun t : ℝ => oneL E a + t • X) = fun _ => 0` using `funext hz`. Rewrite using `[e]`. Conclude with `hasDerivAt_const _ _`.
-
-Conclude with `h1.unique h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lieD_single_blkGL (hr : r ≤ a) (f : Sm E a)
     (hf : ∀ (m₁ : GA E r) (m₂ : GA E (a - r)), f.1 (GlobalTheory.LeviGA.blkGL hr (m₁, m₂)) = 0)
@@ -111,7 +105,7 @@ theorem lieD_single_blkGL (hr : r ≤ a) (f : Sm E a)
   exact h1.unique h2
 
 /- English proof (translation)
-Introduce `E _ _ _ a r hr f hf τ i j hij m₁ m₂`. Establish `k` using `fun x => lieD_single_blkGL hr f hf i j hij x m₁ m₂`. Express the relevant statement in the definitionally equal form `(1 / 2 : ℂ) * ((lieS E a i j (atEmb τ 1) f).1 (GlobalTheory.LeviGA.blkGL hr (m₁, m₂)) - Complex.I * (lieS E a i j (atEmb τ Complex.I) f).1 (GlobalTheory.LeviGA.blkGL hr (m₁, m₂))) = 0`. Rewrite using `[lieS_apply, lieS_apply, lie_apply, lie_apply, k, k]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Eop_blkGL_eq_zero : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a r : ℕ) (hr : r ≤ a)
     (f : Sm E a), (∀ (m₁ : GA E r) (m₂ : GA E (a - r)), f.1 (GlobalTheory.LeviGA.blkGL hr (m₁, m₂)) = 0) →

@@ -9,7 +9,7 @@ open MvPolynomial
 noncomputable section
 
 /- English proof (translation)
-Proceed by induction on `t using Multiset.induction_on with`. Consider the case `empty => simpa using isHomogeneous_one σ ℤ`. Consider the case `cons a t ih`. Rewrite using `[Multiset.map_cons, Multiset.prod_cons, Multiset.sum_cons]`. Conclude with `(hφ a).mul ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHomogeneous_multiset_prod_map {σ : Type*} (φ : ℕ → MvPolynomial σ ℤ)
     (hφ : ∀ b, (φ b).IsHomogeneous b) (t : Multiset ℕ) : ((t.map φ).prod).IsHomogeneous t.sum := by
@@ -20,9 +20,9 @@ theorem isHomogeneous_multiset_prod_map {σ : Type*} (φ : ℕ → MvPolynomial 
     exact (hφ a).mul ih
 
 /- English proof (translation)
-Establish `h : ∀ t : Multiset (Fin N), ((t.map X).prod : MvPolynomial (Fin N) ℤ).IsHomogeneous (Multiset.card t)`. Introduce `t`. Proceed by induction on `t using Multiset.induction_on with`. Consider the case `empty => simpa using isHomogeneous_one (Fin N) ℤ`. Consider the case `cons b t ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[Multiset.map_cons, Multiset.prod_cons, Multiset.card_cons, add_comm]`. Conclude with `(isHomogeneous_X ℤ b).mul ih`. Unfold `hsymm`. Use `IsHomogeneous.sum _ _ _ fun s _ => ?_` and prove the remaining obligations. Simplify `h s.1` using `[s.2]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isHomogeneous_hsymm (N a : ℕ) : (hsymm (Fin N) ℤ a).IsHomogeneous a := by
   have h : ∀ t : Multiset (Fin N),
@@ -38,47 +38,43 @@ theorem isHomogeneous_hsymm (N a : ℕ) : (hsymm (Fin N) ℤ a).IsHomogeneous a 
   simpa [s.2] using h s.1
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ hϖ Ω _ _ K _ _ ι _ y d hV N E _ _ B B' hBB' w w' v v' x x' u u' f g f₂ g₂ hF1 hF2 m G hGm hGsym Gs Hs hGs hHs Q hQ`. Establish `hvert : ∀ i, IsVerticalDivisor (pointIdeal O y) ϖ (Fin.append x u i - Fin.append x' u' i) (Fin.append f f₂ i) (Fin.append g g₂ i)`. Introduce `i`. Use `Fin.addCases (fun i => ?_) (fun i => ?_) i` and prove the remaining obligations. Simplify using `only [Fin.append_left]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `hF1.vertical i`. Simplify using `only [Fin.append_right]`. Conclude with `hF2.vertical i`. Establish `hind : ∀ (A : MvPolynomial (Fin (N + N)) ℤ) As Bs, A.IsHomogeneous m → IsPairExpansion m A As → IsPairExpansion m A Bs → pairNum (pointIdeal O y) (Fin.append x u) (Fin.append x' u') (Fin.append f f₂) (Fin.append g g₂) As Q = pairNum (pointIdeal O y) (Fin.append x u) (Fin.append x …` using `fun A As Bs hA h1 h2 => hExp O ϖ hϖ K ι _ d hV (N + N) _ _ _ _ hvert m A hA As Bs h1 h2 Q hQ`. Set `ex : MvPolynomial (Fin (N + N)) ℤ → Fin (N + N) → MvPolynomial (Fin (N + N) ⊕ Fin (N + N)) ℤ` to `fun A => Classical.choose (exists_isPairExpansion (homogeneousComponent_isHomogeneous m A))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hex : ∀ A, IsPairExpansion m (homogeneousComponent m A) (ex A)` using `fun A => Classical.choose_spec (exists_isPairExpansion (homogeneousComponent_isHomogeneous m A))`. Set `pn : MvPolynomial (Fin (N + N)) ℤ →+ ℤ` to `AddMonoidHom.mk' (fun A => pairNum (pointIdeal O y) (Fin.append x u) (Fin.append x' u') (Fin.append f f₂) (Fin.append g g₂) (ex A) Q) (by`. Introduce `A B'`. Establish `h2 : IsPairExpansion m (homogeneousComponent m (A + B')) (ex A + ex B')`. Rewrite using `[map_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `isPairExpansion_add (hex A) (hex B')`. Rewrite using `[hind _ _ _ (homogeneousComponent_isHomogeneous m _) (hex (A + B')) h2]`. Conclude with `map_add (pairNumHom (pointIdeal O y) (Fin.append x u) (Fin.append x' u') (Fin.append f f₂) (Fin.append g g₂) Q) (ex A) (ex B'))`. Establish `pn_eq : ∀ (A : MvPolynomial (Fin (N + N)) ℤ) As, A.IsHomogeneous m → IsPairExpansion m A As → pn A = pairNum (pointIdeal O y) (Fin.append x u) (Fin.append x' u') (Fin.append f f₂) (Fin.append g g₂) As Q`. Introduce `A As hA h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `hex A`. Rewrite `h1` using `[homogeneousComponent_eq_self hA]`. Conclude with `hind A _ _ hA h1 h`. Establish `seg : ∀ (a r : ℕ) (R : MvPolynomial (Fin (N + N)) ℤ), R.IsHomogeneous r → a + r = m → pn (rename (Fin.castAdd N) (hsymm (Fin N) ℤ a) * R) = pn (rename (Fin.natAdd N) (hsymm (Fin N) ℤ a) * R)`. Introduce `a r R hR har`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hH : (hsymmTimes N (N + N) a R).IsHomogeneous (a + r)` using `(isHomogeneous_hsymm N a).rename_isHomogeneous.mul hR.rename_isHomogeneous`. Take `⟨As, hAs⟩` from `exists_isPairExpansion hH`. Establish `key` using `hSeg O ϖ hϖ Ω K ι y d hV N E B B' hBB' w w' v v' x x' u u' f g f₂ g₂ hF1 hF2 (N + N) _ _ _ _ hvert a r R hR As As hAs hAs Q (by rw [har]; exact hQ)`. Set `σx : Fin (N + (N + N)) → Fin (N + N)` to `Fin.append (Fin.castAdd N) id`. Set `σu : Fin (N + (N + N)) → Fin (N + N)` to `Fin.append (Fin.natAdd N) id`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Establish `cx : ∀ {α : Type} (a₁ a₂ : Fin N → α), Fin.append a₁ a₂ ∘ σx = Fin.append a₁ (Fin.append a₁ a₂)`. Introduce `α a₁ a₂`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `refine Fin.addCases (fun i => ?_) (fun i => ?_) i <;>`. Simplify using `only [σx, Function.comp_apply, Fin.append_left, Fin.append_right, id_eq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Establish `cu : ∀ {α : Type} (a₁ a₂ : Fin N → α), Fin.append a₁ a₂ ∘ σu = Fin.append a₂ (Fin.append a₁ a₂)`. Introduce `α a₁ a₂`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `refine Fin.addCases (fun i => ?_) (fun i => ?_) i <;>`. Simplify using `only [σu, Function.comp_apply, Fin.append_left, Fin.append_right, id_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `rx : rename σx (hsymmTimes N (N + N) a R) = rename (Fin.castAdd N) (hsymm (Fin N) ℤ a) * R`. Establish `e1 : σx ∘ Fin.castAdd (N + N) = Fin.castAdd N`. Use function extensionality and compare the values at `i`. Simplify using `only [σx, Function.comp_apply, Fin.append_left]`. Establish `e2 : σx ∘ Fin.natAdd N = id`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Simplify using `only [σx, Function.comp_apply, Fin.append_right, id_eq]`. Simplify using `only [hsymmTimes, map_mul, rename_rename, e1, e2, rename_id, AlgHom.id_apply]`. Establish `ru : rename σu (hsymmTimes N (N + N) a R) = rename (Fin.natAdd N) (hsymm (Fin N) ℤ a) * R`. Establish `e1 : σu ∘ Fin.castAdd (N + N) = Fin.natAdd N`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `i`. Simplify using `only [σu, Function.comp_apply, Fin.append_left]`. Establish `e2 : σu ∘ Fin.natAdd N = id`. Use function extensionality and compare the values at `i`. Simplify using `only [σu, Function.comp_apply, Fin.append_right, id_eq]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [hsymmTimes, map_mul, rename_rename, e1, e2, rename_id, AlgHom.id_apply]`. Establish `hpx` using `isPairExpansion_push σx hAs`. Establish `hpu` using `isPairExpansion_push σu hAs`. Rewrite `hpx` using `[rx, har]`. Rewrite `hpu` using `[ru, har]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[pn_eq _ _ (har ▸ ((isHomogeneous_hsymm N a).rename_isHomogeneous.mul hR)) hpx, pn_eq _ _ (har ▸ ((isHomogeneous_hsymm N a).rename_isHomogeneous.mul hR)) hpu, pairNum_pushExpansion, pairNum_pushExpansion, cx, cx, cx, cx, cu, cu, cu, cu]`. Conclude with `key`. Establish `hX : ∀ b, (rename (Fin.castAdd N) (hsymm (Fin N) ℤ b) : MvPolynomial (Fin (N + N)) ℤ).IsHomogeneous b` using `fun b => (isHomogeneous_hsymm N b).rename_isHomogeneous`. Establish `hU : ∀ b, (rename (Fin.natAdd N) (hsymm (Fin N) ℤ b) : MvPolynomial (Fin (N + N)) ℤ).IsHomogeneous b` using `fun b => (isHomogeneous_hsymm N b).rename_isHomogeneous`. Establish `tele : ∀ (t : Multiset ℕ) (s : ℕ) (S : MvPolynomial (Fin (N + N)) ℤ), S.IsHomogeneous s → s + t.sum = m → pn (S * (t.map fun b => rename (Fin.castAdd N) (hsymm (Fin N) ℤ b)).prod) = pn (S * (t.map fun b => rename (Fin.natAdd N) (hsymm (Fin N) ℤ b)).prod)`.
+Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t`. Proceed by induction on `t using Multiset.induction_on with`. Consider the case `empty => intros`. Both sides reduce to the same expression. Consider the case `cons a t ih`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Introduce `s S hS hst`. Rewrite `hst` using `[Multiset.sum_cons]`. Simplify using `only [Multiset.map_cons, Multiset.prod_cons]`. Establish `hpX` using `isHomogeneous_multiset_prod_map _ hX t`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[mul_left_comm]`. Use `_ = pn (rename (Fin.natAdd N) (hsymm (Fin N) ℤ a) * (S * (t.map fun b => rename (Fin.castAdd N) (hsymm (Fin N) ℤ b)).prod)) := seg a (s + t.sum) _ (hS.mul hpX) (by omega)`. Use `_ = pn ((S * rename (Fin.natAdd N) (hsymm (Fin N) ℤ a)) * (t.map fun b => rename (Fin.castAdd N) (hsymm (Fin N) ℤ b)).prod) := by`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `_ = pn ((S * rename (Fin.natAdd N) (hsymm (Fin N) ℤ a)) * (t.map fun b => rename (Fin.natAdd N) (hsymm (Fin N) ℤ b)).prod) := ih (s + a) _ (hS.mul (hU a)) (by omega)`. Use `_ = pn (S * (rename (Fin.natAdd N) (hsymm (Fin N) ℤ a) * (t.map fun b => rename (Fin.natAdd N) (hsymm (Fin N) ℤ b)).prod)) := by`. Rewrite using `[mul_assoc]`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun ℤ).mp (hSym N m G hGm hGsym)`. Establish `hren : ∀ (φ : Fin N → Fin (N + N)), rename φ G = ∑ μ, c μ • (μ.parts.map fun b => rename φ (hsymm (Fin N) ℤ b)).prod`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `φ`. Rewrite using `[← hc, map_sum]`. Use `Finset.sum_congr rfl fun μ _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, hsymmPart, map_multiset_prod, Multiset.map_map]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hLHS : pairNum (pointIdeal O y) x x' f g Gs Q = pn (rename (Fin.castAdd N) G)`. Rewrite using `[pn_eq _ _ hGm.rename_isHomogeneous (isPairExpansion_push (Fin.castAdd N) hGs), pairNum_pushExpansion]`. Simplify using `only [Function.comp_def, Fin.append_left]`. Establish `hRHS : pairNum (pointIdeal O y) u u' f₂ g₂ Hs Q = pn (rename (Fin.natAdd N) G)`. Rewrite using `[pn_eq _ _ hGm.rename_isHomogeneous (isPairExpansion_push (Fin.natAdd N) hHs), pairNum_pushExpansion]`.
-
-Simplify using `only [Function.comp_def, Fin.append_right]`. Rewrite using `[hLHS, hRHS, hren, hren, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun μ _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, map_zsmul]`. Use `congr 1`.
-
-Establish `h` using `tele μ.parts 0 1 (isHomogeneous_one _ _) (by rw [μ.parts_sum, zero_add])`. Simplify `h` using `only [one_mul]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem FlagIndependence.proof (hExp : PairNumberExpansionIndependence.Statement)
     (hSeg : HsymmPairFlagIndependence.Statement) (hSym : SymmetricSpanHsymm.Statement) :

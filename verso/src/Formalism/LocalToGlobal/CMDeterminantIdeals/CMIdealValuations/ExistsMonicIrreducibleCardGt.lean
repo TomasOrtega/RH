@@ -7,17 +7,17 @@ namespace Formalism.L2.LamCM
 open Polynomial IsLocalRing
 
 /- English proof (translation)
-Establish `hcard : ∀ f : k[X], f.Monic → Nat.card (AdjoinRoot f) = Nat.card k ^ f.natDegree`. Introduce `f hf`. Rewrite using `[Nat.card_congr (AdjoinRoot.powerBasis hf.ne_zero).basis.equivFun.toEquiv, Nat.card_fun]`. Simplify using `[AdjoinRoot.powerBasis_dim]`. Assume the negation of the conclusion as `hcon`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at hcon`. Establish `hq : 2 ≤ Nat.card k` using `Finite.one_lt_card`. Establish `hdeg : ∀ α : AlgebraicClosure k, (minpoly k α).natDegree ≤ N`. Introduce `α`. Establish `hint : IsIntegral k α` using `(Algebra.IsAlgebraic.isAlgebraic α).isIntegral`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hcon _ (minpoly.monic hint) (minpoly.irreducible hint)`. Rewrite `h1` using `[hcard _ (minpoly.monic hint)]`. Establish `h2 : (minpoly k α).natDegree < 2 ^ (minpoly k α).natDegree` using `Nat.lt_two_pow_self`. Establish `h3 : 2 ^ (minpoly k α).natDegree ≤ Nat.card k ^ (minpoly k α).natDegree` using `Nat.pow_le_pow_left hq _`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hsub : (Set.univ : Set (AlgebraicClosure k)) ⊆ ⋃ c : Fin (N + 1) → k, (∑ i : Fin (N + 1), Polynomial.C (c i) * Polynomial.X ^ (i : ℕ)).rootSet (AlgebraicClosure k)`. Introduce `α _`. Establish `hint : IsIntegral k α` using `(Algebra.IsAlgebraic.isAlgebraic α).isIntegral`. Use `Set.mem_iUnion.2 ⟨fun i => (minpoly k α).coeff i, ?_⟩` and prove the remaining obligations. Establish `hp : (∑ i : Fin (N + 1), Polynomial.C ((minpoly k α).coeff i) * Polynomial.X ^ (i : ℕ)) = minpoly k α`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => Polynomial.C ((minpoly k α).coeff i) * Polynomial.X ^ i)]`. Use `conv_rhs => rw [Polynomial.as_sum_range' (minpoly k α) (N + 1) (by have := hdeg α; omega)]`. Simplify using `only [Polynomial.C_mul_X_pow_eq_monomial]`. Rewrite using `[hp, Polynomial.mem_rootSet]`. Conclude with `⟨minpoly.ne_zero hint, minpoly.aeval k α⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin : (Set.univ : Set (AlgebraicClosure k)).Finite` using `Set.Finite.subset (Set.finite_iUnion fun c => Polynomial.rootSet_finite _ _) hsub`. Establish `: Finite (AlgebraicClosure k)` using `Set.finite_univ_iff.1 hfin`. Conclude with `not_finite (AlgebraicClosure k)`.
+A detailed English derivation is pending.
 -/
 theorem exists_monic_irreducible_card_gt (k : Type) [Field k] [Finite k] (N : ℕ) :
     ∃ f : k[X], f.Monic ∧ Irreducible f ∧ N < Nat.card (AdjoinRoot f) := by
@@ -56,9 +56,9 @@ theorem exists_monic_irreducible_card_gt (k : Type) [Field k] [Finite k] (N : �
   exact not_finite (AlgebraicClosure k)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx i`. Use `Submodule.smul_induction_on (p := fun x => b.repr x i ∈ J) hx (fun r hr m _ => ?_) (fun x y hx hy => ?_)` and prove the remaining obligations. Simplify using `only [map_smul, Finsupp.smul_apply, smul_eq_mul]`. Conclude with `J.mul_mem_right _ hr`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_add, Finsupp.add_apply]`. Conclude with `J.add_mem hx hy`. Introduce `h`. Rewrite using `[← b.sum_repr x]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem_smul (h i) Submodule.mem_top`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_smul_top_iff_repr {R M ι : Type} [CommRing R] [AddCommGroup M] [Module R M] [Fintype ι]
     (b : Module.Basis ι R M) (J : Ideal R) (x : M) :
@@ -75,20 +75,18 @@ theorem mem_smul_top_iff_repr {R M ι : Type} [CommRing R] [AddCommGroup M] [Mod
     exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem_smul (h i) Submodule.mem_top
 
 /- English proof (translation)
-Rewrite using `[Ideal.smul_eq_mul, Ideal.mul_top]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_smul_top_self_iff {R : Type} [CommRing R] (J : Ideal R) (y : R) :
     y ∈ J • (⊤ : Submodule R R) ↔ y ∈ J := by
   rw [Ideal.smul_eq_mul, Ideal.mul_top]
 
 /- English proof (translation)
-Establish `key : ∀ (n : ℕ) (x y : M), x ≡ y [SMOD (I ^ n • ⊤ : Submodule R M)] ↔ ∀ i, b.repr x i ≡ b.repr y i [SMOD (I ^ n • ⊤ : Submodule R R)]`. Introduce `n x y`. Rewrite using `[SModEq.sub_mem, mem_smul_top_iff_repr b]`. Simplify using `only [map_sub, Finsupp.sub_apply, SModEq.sub_mem, mem_smul_top_self_iff]`. Use `haveI := h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hH : IsHausdorff I M`. Use `⟨fun x hx => ?_⟩` and prove the remaining obligations. Establish `h0 : ∀ i, b.repr x i = 0` using `fun i => IsHausdorff.haus' (I := I) (b.repr x i) fun n => by simpa using (key n x 0).1 (hx n) i`. Conclude with `b.repr.injective (Finsupp.ext fun i => by simpa using h0 i)`. Establish `hP : IsPrecomplete I M`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨fun f hf => ?_⟩` and prove the remaining obligations. Establish `hc : ∀ i, ∃ L : R, ∀ n, b.repr (f n) i ≡ L [SMOD (I ^ n • ⊤ : Submodule R R)]` using `fun i => IsPrecomplete.prec' (I := I) (fun n => b.repr (f n) i) fun hmn => (key _ _ _).1 (hf hmn) i`. Use `choose L hL using hc`. Use `⟨b.equivFun.symm L, fun n => (key n _ _).2 fun i => ?_⟩` and prove the remaining obligations. Establish `hr : b.repr (b.equivFun.symm L) i = L i`.
-
-Rewrite using `[← Module.Basis.equivFun_apply, LinearEquiv.apply_symm_apply]`. Rewrite using `[hr]`. Conclude with `hL i n`. Conclude with `{ toIsHausdorff := hH, toIsPrecomplete := hP }`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAdicComplete_of_basis {R M ι : Type} [CommRing R] [AddCommGroup M] [Module R M] [Fintype ι]
     (I : Ideal R) (b : Module.Basis ι R M) (h : IsAdicComplete I R) : IsAdicComplete I M := by
@@ -122,27 +120,23 @@ def quotResidueEquiv {V : Type} [CommRing V] [IsLocalRing V] (g : V[X]) :
   AdjoinRoot.quotAdjoinRootEquivQuotPolynomialQuot (maximalIdeal V) g
 
 /- English proof (translation)
-Introduce `V _ _ _ hV _ N`. Take `⟨gb, hgbm, hgbi, hN⟩` from `exists_monic_irreducible_card_gt (ResidueField V) N`. Take `⟨g, hgmap, hgdeg, hg⟩` from `lifts_and_natDegree_eq_and_monic ((mem_lifts _).2 (map_surjective (residue V) residue_surjective gb)) hgbm`. Substitute `hgmap` using the available equality. Use `set W := AdjoinRoot g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hirr : Irreducible g` using `Monic.irreducible_of_irreducible_map (residue V) g hg hgbi`. Establish `hdom : IsDomain W` using `AdjoinRoot.isDomain_of_prime (UniqueFactorizationMonoid.irreducible_iff_prime.1 hirr)`. Set `pb` to `AdjoinRoot.powerBasis' hg`. Establish `: Module.Finite V W` using `pb.finite`. Establish `: Algebra.IsIntegral V W` using `Algebra.IsIntegral.of_finite V W`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsNoetherianRing W` using `IsNoetherianRing.of_finite V W`. Use `set M0 : Ideal W := Ideal.map (algebraMap V W) (maximalIdeal V) with hM0def`. Establish `: Fact (Irreducible (g.map (residue V)))` using `⟨hgbi⟩`. Establish `hM0 : M0.IsMaximal` using `(Ideal.Quotient.maximal_ideal_iff_isField_quotient _).2 (MulEquiv.isField (Field.toIsField (AdjoinRoot (g.map (residue V)))) (quotResidueEquiv g).toMulEquiv)`. Establish `hloc : IsLocalRing W` using `IsLocalRing.of_unique_max_ideal ⟨M0, hM0, fun M hM => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : (M.comap (algebraMap V W)).IsMaximal` using `Ideal.isMaximal_comap_of_isIntegral_of_isMaximal M`. Establish `h1` using `eq_maximalIdeal hc`. Establish `hle : M0 ≤ M`. Rewrite using `[hM0def, ← h1]`. Conclude with `Ideal.map_comap_le`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hM0.eq_of_le hM.ne_top hle).symm⟩`. Establish `hmax : maximalIdeal W = M0` using `(eq_maximalIdeal hM0).symm`. Establish `hdeg : g.degree ≠ 0`. Introduce `h`. Establish `h0 : g.natDegree = 0` using `by rw [natDegree_eq_zero_iff_degree_le_zero, h]`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `hgbi.natDegree_pos` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hinj : Function.Injective (algebraMap V W)`. Rewrite using `[AdjoinRoot.algebraMap_eq]`. Conclude with `AdjoinRoot.of.injective_of_degree_ne_zero hdeg`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨⟨ϖ, hϖ⟩⟩` from `IsPrincipalIdealRing.principal (maximalIdeal V)`. Establish `hprin : (maximalIdeal W).IsPrincipal`. Use `⟨⟨algebraMap V W ϖ, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hmax, hM0def, hϖ, Ideal.submodule_span_eq, Ideal.map_span, Set.image_singleton]`. Establish `hnf : ¬ IsField W`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `hf`. Establish `h1 : maximalIdeal W = ⊥` using `(IsLocalRing.isField_iff_maximalIdeal_eq).1 hf`. Rewrite `h1` using `[hmax, hM0def, Ideal.map_eq_bot_iff_of_injective hinj]`. Conclude with `IsDiscreteValuationRing.not_a_field V h1`. Establish `hdvr : IsDiscreteValuationRing W` using `((IsDiscreteValuationRing.TFAE W hnf).out 0 4).2 hprin`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `ecard : Nat.card (ResidueField W) = Nat.card (AdjoinRoot (g.map (residue V)))` using `Nat.card_congr ((Ideal.quotEquivOfEq hmax).trans (quotResidueEquiv g)).toEquiv`. Use `⟨W, inferInstance, hdom, hdvr, inferInstance, ?_, ?_, ?_, hinj, ?_⟩` and prove the remaining obligations. Rewrite using `[hmax, hM0def, IsAdicComplete.map_algebraMap_iff]`. Conclude with `isAdicComplete_of_basis _ pb.basis hV`. Conclude with `Nat.finite_of_card_ne_zero (by omega)`.
-
-Use linear arithmetic over natural numbers and integers. Use `⟨fun a ha => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hna`. Establish `h1 : a ∈ maximalIdeal V` using `(mem_maximalIdeal a).2 hna`. Establish `h2 : algebraMap V W a ∈ maximalIdeal W`.
-
-Rewrite using `[hmax]`. Conclude with `Ideal.mem_map_of_mem _ h1`. Conclude with `(mem_maximalIdeal _).1 h2 ha`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem largeResidueExtension : BigResExt := by
   intro V _ _ _ hV _ N

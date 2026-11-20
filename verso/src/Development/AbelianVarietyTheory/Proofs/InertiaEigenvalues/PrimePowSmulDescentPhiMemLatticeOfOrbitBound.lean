@@ -16,13 +16,11 @@ variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebr
 
 omit [IsUnitBall O K] [Fact l.Prime] in
 /- English proof (translation)
-Distinguish the cases in `h : q + s ≤ l * q`. Conclude with `wS_anti e h`. Use `push_neg at h`. Establish `he : 0 < e`. Break down `Nat.eq_zero_or_pos e with h0 | h0` into its components or cases.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact.
 
-Substitute `h0` using the available equality. Establish `: s = 0` using `by omega`. Substitute `this` using the available equality. Use the polynomial consequences of the given equalities and inequalities. Conclude with `h0`.
+Substitute using the available equality. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `h1 : (q + s) / e < 2`. Rewrite using `[Nat.div_lt_iff_lt_mul he]`. Use the polynomial consequences of the given equalities and inequalities. Apply the tactic sequence `have h2 : ((q + s) / e).factorial = 1 := by interval_cases ((q + s) / e) <;> rfl`. Establish `h3 : wS K e (q + s) = 1`.
-
-Rewrite using `[wS, h2, Nat.cast_one, norm_one]`. Rewrite using `[h3]`. Conclude with `wS_le_one e _`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wS_mul_le_add {s : ℕ} (hl : 2 ≤ l) (hs : s ≤ e) (q : ℕ) :
     wS K e (l * q) ≤ wS K e (q + s) := by
@@ -47,17 +45,17 @@ theorem wS_mul_le_add {s : ℕ} (hl : 2 ≤ l) (hs : s ≤ e) (q : ℕ) :
     exact wS_le_one e _
 
 /- English proof (translation)
-Establish `hl` using `(Fact.out : l.Prime).two_le`. Use `⟨PowerSeries.mk fun n => coeff (n + s * l) (frob K l F), ?_, ?_⟩` and prove the remaining obligations. Establish `key : ∀ n, ‖coeff n (PowerSeries.mk fun n => coeff (n + s * l) (frob K l F))‖ * wS K e n ≤ ‖coeff (n / l + s) F‖ * wS K e (n / l + s)`. Introduce `n`. Rewrite using `[coeff_mk, coeff_frob]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with h`. Establish `h2 : l ∣ n` using `(Nat.dvd_add_left (dvd_mul_left l s)).1 h`. Establish `h1 : (n + s * l) / l = n / l + s` using `Nat.add_mul_div_right _ _ (by omega)`. Rewrite using `[h1]`. Use `mul_le_mul_of_nonneg_left ?_ (norm_nonneg _)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨q, rfl⟩` from `h2`. Rewrite using `[Nat.mul_div_cancel_left q (by omega)]`. Conclude with `wS_mul_le_add hl hs q`. Rewrite using `[norm_zero, zero_mul]`. Conclude with `mul_nonneg (norm_nonneg _) (wS_nonneg e _)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `⟨fun n => (key n).trans (hF.1 _), ?_⟩` and prove the remaining obligations. Establish `ht : Tendsto (fun n : ℕ => n / l + s) atTop atTop` using `tendsto_atTop_mono (fun n => Nat.le_add_right _ _) (Nat.tendsto_div_const_atTop (by omega))`. Conclude with `squeeze_zero (fun n => mul_nonneg (norm_nonneg _) (wS_nonneg e n)) key (hF.2.comp ht)`. Use extensionality with `n`. Rewrite using `[coeff_X_pow_mul']`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with h`. Rewrite using `[coeff_mk, Nat.sub_add_cancel h]`. Rewrite using `[coeff_frob] split_ifs with h'`. Take `⟨G, rfl⟩` from `hd`. Rewrite using `[coeff_X_pow_mul', if_neg]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression.
 
-Introduce `h''`. Establish `: s * l ≤ n / l * l` using `Nat.mul_le_mul_right l h''`. Use `Nat.div_mul_le_self n l` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem exists_frob_eq_X_pow_mul {F : K⟦X⟧} (hF : F ∈ S O K e) {s : ℕ} (hs : s ≤ e)
     (hd : (X : K⟦X⟧) ^ s ∣ F) : ∃ G ∈ S O K e, frob K l F = X ^ (s * l) * G := by
@@ -108,19 +106,17 @@ namespace Descent
 variable {P : PhiMod O K l e a ι} (Δ : Descent P)
 
 /- English proof (translation)
-Take `⟨w', rfl⟩` from `mem_uPow_iff_exists.1 hw`. Establish `key : ∀ ζ τ i, C ((TameGal.inertia ζ : TameGal K l e a).root τ) ^ j * Δ.act (TameGal.inertia ζ) w' τ i = w' τ i`. Introduce `ζ τ i`. Establish `h` using `Δ.act_smul_tot (TameGal.inertia ζ) ((fun _ => X) ^ j) w'`. Rewrite `h` using `[map_pow, ringAct_X]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `congrFun (congrFun ((show Δ.act _ ((X : K⟦X⟧) ^ j • w') = _ from h).symm.trans (hinv ζ)) τ) i`. Simplify using `only [Pi.smul_apply', Pi.smul_apply, Pi.pow_apply, smul_eq_mul, mul_pow] at h2`. Conclude with `mul_left_cancel₀ (pow_ne_zero j X_ne_zero) (by linear_combination h2)`. Establish `hred : ∀ ζ τ, ((TameGal.inertia ζ : TameGal K l e a).root τ) ^ j • Δ.actD (TameGal.inertia ζ) (red w') τ = red w' τ`. Introduce `ζ τ`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use extensionality with `i`. Establish `h` using `congrArg constantCoeff (key ζ τ i)`. Rewrite `h` using `[map_mul, map_pow, constantCoeff_C]`. Rewrite using `[← Δ.red_act]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hzero : ∀ τ, red w' τ = 0`. Introduce `τ`. Assume the negation of the conclusion as `hne`. Use `hc τ ⟨red w', hne, fun ζ => ?_⟩` and prove the remaining obligations. Establish `hdvd : e ∣ (-(j : ZMod e)).val + j`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[← ZMod.natCast_eq_zero_iff]`. Use `push_cast`. Rewrite using `[ZMod.natCast_zmod_val]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨k, hk⟩` from `hdvd`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hred ζ τ, smul_smul, ← pow_add, hk, pow_mul, TameGal.root_pow, one_pow, one_smul]`. Introduce `τ i`. Establish `h0 : constantCoeff (w' τ i) = 0` using `congrFun (hzero τ) i`. Express the relevant statement in the definitionally equal form `(X : K⟦X⟧) ^ (j + 1) ∣ X ^ j * w' τ i`. Rewrite using `[pow_succ]`.
-
-Conclude with `mul_dvd_mul_left _ (X_dvd_iff.2 h0)`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_uPow_succ_of_inertia {j : ℕ} {w : Vec K a ι} (hw : w ∈ uPow K a ι j)
     (hinv : ∀ ζ, Δ.act (TameGal.inertia ζ) w = w) (hc : ∀ τ, -(j : ZMod e) ∉ Δ.chars τ) :
@@ -165,15 +161,13 @@ end Descent
 omit [NeZero e] in
 
 /- English proof (translation)
-Establish `hl` using `(Fact.out : l.Prime).two_le`. Use `set c : ZMod e := -(j : ZMod e)`. Establish `hper : Function.IsPeriodicPt (fun x : ZMod e => (l : ZMod e) * x) b c`. Express the relevant statement in the definitionally equal form `(fun x : ZMod e => (l : ZMod e) * x)^[b] c = c`. Rewrite using `[mul_left_iterate]`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[hlb]`. Establish `hpos : 0 < frobPeriod l c` using `hper.minimalPeriod_pos hb`. Establish `hfix` using `Function.isPeriodicPt_minimalPeriod (fun x : ZMod e => (l : ZMod e) * x) c`. Use `set ρ := frobPeriod l c with hρ`. Establish `hfix' : (l : ZMod e) ^ ρ * c = c`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hfix.eq` as an intermediate fact. Rewrite `this` using `[mul_left_iterate]`. Conclude with `this`. Establish `hlρ : 2 ≤ l ^ ρ` using `le_trans hl (Nat.le_self_pow (by omega) l)`. Establish `hdvd : e ∣ (l ^ ρ - 1) * j`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Rewrite using `[← ZMod.natCast_eq_zero_iff]`. Move the coercions through the operations in `[Nat.cast_sub (by omega : 1 ≤ l ^ ρ)]`. Establish `: ((l : ZMod e) ^ ρ - 1) * c = 0` using `by rw [sub_mul, hfix', one_mul, sub_self]`. Simplify using `only [c] at this`. Take the linear combination `-this`.
-
-Establish `h1` using `Nat.le_of_dvd (Nat.mul_pos (by omega) hj) hdvd`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem le_mul_pow_of_frobPeriod_le {j r b : ℕ} (hb : 0 < b) (hlb : (l : ZMod e) ^ b = 1) (hj : 0 < j)
     (hc : frobPeriod l (-(j : ZMod e)) ≤ r) : e ≤ j * l ^ r := by
@@ -208,15 +202,13 @@ namespace Descent
 variable {P : PhiMod O K l e a ι} (Δ : Descent P)
 
 /- English proof (translation)
-Establish `he` using `NeZero.pos e`. Establish `hl` using `(Fact.out : l.Prime).two_le`. It suffices to establish `H : ∀ k j, e - j = k → 1 ≤ j → j ≤ e → w ∈ uPow K a ι j → ∃ s, s ≤ e ∧ e ≤ s * l ^ r ∧ w ∈ uPow K a ι s from H _ 1 rfl le_rfl he hw`. Introduce `k`. Proceed by induction on `k with`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero`. Introduce `j hk hj hje hwj`. Use `⟨j, hje, ?_, hwj⟩` and prove the remaining obligations. Establish `: j = e` using `by omega`. Substitute `this` using the available equality.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Substitute using the available equality.
 
-Conclude with `Nat.le_mul_of_pos_right _ (pow_pos (by omega) r)`. Consider the case `succ k ih`. Introduce `j hk hj hje hwj`. Distinguish the cases in `h : ∃ τ, -(j : ZMod e) ∈ Δ.chars τ`. Take `⟨τ, hτ⟩` from `h`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hla : (l : ZMod e) ^ a = 1`. Establish `h` using `congrArg (fun n : ℕ => (n : ZMod e)) (TameDescentExponentData.succ_eq (K := K) (l := l) (e := e) (a := a))`. Simplify using `only [Nat.cast_add, ZMod.natCast_self, zero_add, Nat.cast_one, Nat.cast_pow] at h`. Conclude with `h.symm`. Conclude with `⟨j, hje, le_mul_pow_of_frobPeriod_le (NeZero.pos a) hla (by omega) (hr τ _ hτ), hwj⟩`.
-
-Use `push_neg at h`. Conclude with `ih (j + 1) (by omega) (by omega) (by omega) (Δ.mem_uPow_succ_of_inertia hwj hinv h)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_mem_uPow_of_inertia (r : ℕ) (hr : ∀ τ, ∀ c ∈ Δ.chars τ, frobPeriod l c ≤ r)
     {w : Vec K a ι} (hw : w ∈ uPow K a ι 1) (hinv : ∀ ζ, Δ.act (TameGal.inertia ζ) w = w) :
@@ -256,9 +248,9 @@ variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebr
   [Fact l.Prime] [NormedAlgebra ℚ_[l] K]
 
 /- English proof (translation)
-Proceed by induction on `t with`. Consider the case `zero => simp`. Consider the case `succ t ih`. Break down `Nat.eq_zero_or_pos t with rfl | ht` into its components or cases. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Establish `h1 : l ≤ l ^ t` using `Nat.le_self_pow (by omega) l`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem mul_le_pow_of_two_le_base {l : ℕ} (hl : 2 ≤ l) (t : ℕ) : t * l ≤ l ^ t := by
   induction t with
@@ -274,7 +266,7 @@ theorem mul_le_pow_of_two_le_base {l : ℕ} (hl : 2 ≤ l) (t : ℕ) : t * l ≤
 
 omit [IsUltrametricDist K] [IsUnitBall O K] [Fintype ι] [DecidableEq ι] [Fact l.Prime] [NormedAlgebra ℚ_[l] K] in
 /- English proof (translation)
-Use extensionality with `τ i`. Simplify using `only [Pi.smul_apply, smul_eq_mul, smul_eq_C_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem C_smul_vec (c : K) (v : Vec K a ι) : (C c : K⟦X⟧) • v = c • v := by
   ext τ i
@@ -285,9 +277,9 @@ namespace PhiMod
 variable (P : PhiMod O K l e a ι)
 
 /- English proof (translation)
-Use `mem_tot.2 fun τ => P.mem_extc_iff.2 fun i => mem_S_of_approx (l := l) fun k => ?_` and prove the remaining obligations. Take `⟨s, hs, H⟩` from `h k`. Use `⟨_, P.mem_extc_iff.1 (mem_tot.1 hs τ) i, fun m => ?_⟩` and prove the remaining obligations. Take `⟨g, hg, H'⟩` from `H m`. Use `⟨_, P.mem_extc_iff.1 (mem_tot.1 hg τ) i, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `dvd_mulVec (P.mxInv τ) (H' τ) i` as an intermediate fact. Simplify `this` using `only [Pi.sub_apply, Pi.add_apply, Pi.smul_apply, Matrix.mulVec_sub, Matrix.mulVec_add, Matrix.mulVec_smul]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_MM_of_l_approx {w : Vec K a ι} (h : ∀ k : ℕ, ∃ s ∈ P.MM, ∀ m, ∃ g ∈ P.MM,
     w - (s + (l : K) ^ k • g) ∈ uPow K a ι m) : w ∈ P.MM := by
@@ -301,7 +293,7 @@ theorem mem_MM_of_l_approx {w : Vec K a ι} (h : ∀ k : ℕ, ∃ s ∈ P.MM, �
     Matrix.mulVec_smul] using this
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[pow_succ', Module.End.mul_apply, ih, pow_succ' P.phi, Module.End.mul_apply, lphi_apply, map_smul, smul_smul, ← pow_succ']`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem lphi_pow_eq_smul_phi_pow (n : ℕ) (v : Vec K a ι) :
     (P.lphi ^ n) v = (l : K) ^ n • (P.phi ^ n) v := by
@@ -312,7 +304,7 @@ theorem lphi_pow_eq_smul_phi_pow (n : ℕ) (v : Vec K a ι) :
       map_smul, smul_smul, ← pow_succ']
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[pow_succ', Module.End.mul_apply, ih, phi_smul, map_pow, frob_X, ← pow_mul, Module.End.mul_apply]`. Use `congr 2`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -328,9 +320,9 @@ theorem phi_pow_X_pow_smul_eq (n k : ℕ) (v : Vec K a ι) :
 
 omit [NormedAlgebra ℚ_[l] K] in
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simpa using hv`. Consider the case `succ n ih`. Use `hη _ ih` as an intermediate fact. Rewrite `this` using `[map_smul, smul_smul, ← pow_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[pow_succ', Module.End.mul_apply, show (n + 1) * η = η + n * η by ring]`. Conclude with `this`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem l_pow_smul_phi_pow_mem_MM {η : ℕ} (hη : ∀ v ∈ P.MM, (l : K) ^ η • P.phi v ∈ P.MM)
     (n : ℕ) {v : Vec K a ι} (hv : v ∈ P.MM) : (l : K) ^ (n * η) • (P.phi ^ n) v ∈ P.MM := by
@@ -345,11 +337,11 @@ theorem l_pow_smul_phi_pow_mem_MM {η : ℕ} (hη : ∀ v ∈ P.MM, (l : K) ^ η
 variable [NeZero e]
 
 /- English proof (translation)
-Establish `hF : ∀ i τ, (P.mxInv τ *ᵥ w τ) i ∈ S O K e` using `fun i τ => P.mem_extc_iff.1 (mem_tot.1 hw τ) i`. Establish `hd : ∀ i τ, (X : K⟦X⟧) ^ s ∣ (P.mxInv τ *ᵥ w τ) i` using `fun i τ => dvd_mulVec _ (hws τ) i`. Use `choose G hG hGe using fun i τ => exists_frob_eq_X_pow_mul (l := l) (hF i τ) hs (hd i τ)`. Use `⟨∑ i, (fun τ => G i (τ - 1)) • P.phi (P.phi (bas i)), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.smul_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_comm]`. Conclude with `P.smul_tot_mem_ext (fun τ => hG i _) (hη _ (P.ext_mono (A_le_S l e) (P.phi_mem_L (P.bas_mem_M i))))`. Use `conv_lhs => rw [P.eq_sum_phi_bas w]`. Rewrite using `[map_sum, Finset.smul_sum]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[phi_smul_tot]`. Use extensionality with `τ j`. Simplify using `only [Pi.smul_apply', Pi.smul_apply, frobTot_apply, hGe, smul_eq_mul, mul_assoc]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_phi_eq_X_pow_smul_of_mem_uPow {η : ℕ}
     (hη : ∀ v ∈ P.MM, (l : K) ^ η • P.phi v ∈ P.MM) {s : ℕ} (hs : s ≤ e) {w : Vec K a ι}
@@ -376,41 +368,39 @@ end PhiMod
 end Series
 
 /- English proof (translation)
-Introduce `O K _ _ _ _ _ _ l e a ι _ _ _ _ _ _ _ η H D r hr1 hr hηl _ m hm`. Establish `hl` using `(Fact.out : l.Prime).two_le`. Establish `hηle : η ≤ l` using `by nlinarith`. Establish `hη : ∀ v ∈ D.MM, (l : K) ^ η • D.phi v ∈ D.MM` using `PhiMod.pow_smul_phi_mem_MM O K l e a ι D.toPhiMod η D.upper`. Use `set w := D.conn (D.phi m) with hwdef`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hwMM : w ∈ D.MM` using `D.conn_mem_MM (D.ext_mono (A_le_S l e) (D.phi_mem_L hm.1))`. Establish `hw1 : w ∈ uPow K a ι 1` using `D.conn_mem_uPow _`. Establish `hinv : ∀ ζ, D.desc.act (TameGal.inertia ζ) w = w` using `fun ζ => by`. Rewrite using `[hwdef, Descent.act_conn, Descent.act_phi, hm.2]`. Take `⟨s, hse, hes, hws⟩` from `D.desc.exists_mem_uPow_of_inertia r hr hw1 hinv`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx, hφw⟩` from `D.exists_phi_eq_X_pow_smul_of_mem_uPow hη hse hwMM hws`. Establish `hterm : ∀ n, (D.lphi ^ (n + 1)) w = (l : K) ^ (n + 1) • (X : K⟦X⟧) ^ (s * l ^ (n + 1)) • (D.phi ^ n) x`. Introduce `n`. Rewrite using `[PhiMod.lphi_pow_eq_smul_phi_pow, pow_succ D.phi n, Module.End.mul_apply, hφw, PhiMod.phi_pow_X_pow_smul_eq]`. Use `congr 3`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hy : ∀ n, (l : K) ^ ((n + 1) * η) • (D.phi ^ n) x ∈ D.MM` using `fun n => by`. Use `D.l_pow_smul_phi_pow_mem_MM hη n hx` as an intermediate fact. Rewrite `this` using `[map_smul, smul_smul, ← pow_add]`. Rewrite using `[show (n + 1) * η = n * η + η by ring]` and apply the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hcancel : ∀ (T z : Vec K a ι) (A B t : ℕ), z ∈ D.MM → B + t ≤ A → (l : K) ^ B • T = (l : K) ^ A • z → ∃ g ∈ D.MM, T = (l : K) ^ t • g`. Introduce `T z A B t hz hBA h`. Use `⟨(l : K) ^ (A - B - t) • z, D.l_pow_smul_mem_MM _ hz, ?_⟩` and prove the remaining obligations. Apply `smul_right_injective _ (pow_ne_zero B (l_ne_zero (K := K) l))` to reduce the goal to its premises. Simplify using `only`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, smul_smul, smul_smul, ← pow_add, ← pow_add]`. Use `congr 2`. Use linear arithmetic over natural numbers and integers. Establish `hT : ∀ n, ∃ g ∈ D.MM, (l : K) ^ (η * (r + 1)) • (D.lphi ^ (n + 1)) w = (l : K) ^ (n - r) • g`. Introduce `n`.
+Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hterm]`. Distinguish the cases in `hn : n ≤ r`. Use `hcancel _ ((X : K⟦X⟧) ^ (s * l ^ (n + 1)) • ((l : K) ^ ((n + 1) * η) • (D.phi ^ n) x)) (η * (r + 1) + (n + 1)) ((n + 1) * η) (n - r) (D.smul_mem_MM (pow_mem HasU.X_mem _) (hy n)) ?_ ?_` and prove the remaining obligations. Establish `: n - r = 0` using `by omega`. Rewrite using `[this]`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[smul_comm ((X : K⟦X⟧) ^ _) ((l : K) ^ _), smul_smul, smul_smul, smul_smul, ← pow_add, ← pow_add, ← pow_add]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Use `push_neg at hn`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨t, rfl⟩ : ∃ t, n = r + t` from `⟨n - r, by omega⟩`. Establish `hle : e * l ^ (t + 1) ≤ s * l ^ (r + t + 1)`. Combine the equalities or inequalities in the displayed calculation. Establish `hl0 : (l : K) ≠ 0` using `l_ne_zero l`. Establish `hμ : monomial (e * l ^ (t + 1)) (((l : K) ^ (l ^ t))⁻¹) ∈ S O K e`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `monomial_mem_S ?_` and prove the remaining obligations. Rewrite using `[wS, Nat.mul_div_cancel_left _ (NeZero.pos e), norm_inv, norm_pow, inv_mul_le_one₀ (pow_pos (norm_pos_iff.2 hl0) _)]`. Use `(norm_factorial_le l _).trans ?_` and prove the remaining obligations. Rewrite using `[show l ^ (t + 1) / l = l ^ t by rw [pow_succ, Nat.mul_div_cancel _ (by omega)]]`. Establish `hX : (X : K⟦X⟧) ^ (s * l ^ (r + t + 1)) = C ((l : K) ^ (l ^ t)) * (X ^ (s * l ^ (r + t + 1) - e * l ^ (t + 1)) * monomial (e * l ^ (t + 1)) ((l : K) ^ (l ^ t))⁻¹)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : C ((l : K) ^ (l ^ t)) * C (((l : K) ^ (l ^ t))⁻¹) = 1`. Rewrite using `[← map_mul, mul_inv_cancel₀ (pow_ne_zero _ hl0), map_one]`. Rewrite using `[monomial_eq_C_mul_X_pow]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← pow_add, Nat.sub_add_cancel hle]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `_ = _ := by linear_combination (X ^ (s * l ^ (r + t + 1) - e * l ^ (t + 1)) * (X : K⟦X⟧) ^ (e * l ^ (t + 1))) * hc.symm`. Use `hcancel _ ((X ^ (s * l ^ (r + t + 1) - e * l ^ (t + 1)) * monomial (e * l ^ (t + 1)) ((l : K) ^ (l ^ t))⁻¹) • ((l : K) ^ ((r + t + 1) * η) • (D.phi ^ (r + t)) x)) (η * (r + 1) + (r + t + 1) + l ^ t) ((r + t + 1) * η) (r + t - r) (D.smul_mem_MM (mul_mem (pow_mem HasU.X_mem _) hμ) …` and prove the remaining obligations. Establish `h1` using `mul_le_pow_of_two_le_base hl t`. Establish `h2 : t * η ≤ t * l` using `Nat.mul_le_mul_left t hηle`. Rewrite using `[Nat.add_sub_cancel_left]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[show r + t + 1 = r + t + 1 from rfl, hX, mul_smul, C_smul_vec, smul_comm (_ : K⟦X⟧) ((l : K) ^ ((r + t + 1) * η))]`. Simplify using `only [smul_smul, ← pow_add]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose g hg hgeq using hT`. Apply `D.mem_MM_of_l_approx` to reduce the goal to its premises. Introduce `k`. Use `⟨-∑ n ∈ Finset.range (k + r), (l : K) ^ (n - r) • g n, neg_mem (Submodule.sum_mem _ fun n _ => D.l_pow_smul_mem_MM _ (hg n)), fun mm => ?_⟩` and prove the remaining obligations. Use `⟨-∑ n ∈ Finset.Ico (k + r) (k + r + mm), (l : K) ^ (n - r - k) • g n, neg_mem (Submodule.sum_mem _ fun n _ => D.l_pow_smul_mem_MM _ (hg n)), ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsplit : (l : K) ^ k • (-∑ n ∈ Finset.Ico (k + r) (k + r + mm), (l : K) ^ (n - r - k) • g n) = -∑ n ∈ Finset.Ico (k + r) (k + r + mm), (l : K) ^ (n - r) • g n`. Rewrite using `[smul_neg, Finset.smul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun n hn => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, ← pow_add]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Use `(Finset.mem_Ico.1 hn).1` as an intermediate fact. Use `congr 2`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hsplit, ← neg_add, Finset.sum_range_add_sum_Ico _ (by omega : k + r ≤ k + r + mm), sub_neg_eq_add]`. Establish `hsum : ∑ n ∈ Finset.range (k + r + mm), (l : K) ^ (n - r) • g n = (l : K) ^ (η * (r + 1)) • ∑ n ∈ Finset.range (k + r + mm), (D.lphi ^ (n + 1)) w`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun n _ => (hgeq n).symm`. Rewrite using `[hsum, ← smul_add]`. Establish `h` using `(uPow K a ι _).smul_mem (C ((l : K) ^ (η * (r + 1)))) (D.zeta_add_sum_mem (D.phi m) (k + r + mm))`. Rewrite `h` using `[C_smul_vec]`.
-
-Conclude with `uPow_anti (by omega) h`.
+A detailed English derivation is pending.
 -/
 theorem l_pow_smul_zeta_phi_mem_MM : ∀ (O K : Type) [CommRing O] [NormedField K] [IsUltrametricDist K]
     [CompleteSpace K] [Algebra O K] [IsUnitBall O K] (l e a : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι]

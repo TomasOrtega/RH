@@ -41,7 +41,7 @@ theorem h1Map_mk_alt (c : coZ1s ρ) :
     h1MapAlt ρ ρ' φ hφ (Submodule.Quotient.mk c) = Submodule.Quotient.mk (cocycleMap ρ ρ' φ hφ c) := rfl
 
 /- English proof (translation)
-Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `H c => rfl`.
+Proceed by induction. Treat this case separately.
 -/
 theorem res_h1MapX (Dg : Subgroup G) (x : H1z ρ) :
     resH1 ρ' Dg (h1MapAlt ρ ρ' φ hφ x) =
@@ -50,7 +50,7 @@ theorem res_h1MapX (Dg : Subgroup G) (x : H1z ρ) :
   | H c => rfl
 
 /- English proof (translation)
-Unfold `unrH1 at hx ⊢`. Rewrite `hx`, the goal using `[LinearMap.mem_ker]`. Rewrite using `[res_h1MapX, hx, map_zero]`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem h1Map_mem_unramified {Dg : Subgroup G} {x : H1z ρ} (hx : x ∈ unrH1 ρ Dg) : h1MapAlt ρ ρ' φ hφ x ∈ unrH1 ρ' Dg := by
   unfold unrH1 at hx ⊢
@@ -58,16 +58,14 @@ theorem h1Map_mem_unramified {Dg : Subgroup G} {x : H1z ρ} (hx : x ∈ unrH1 ρ
   rw [res_h1MapX, hx, map_zero]
 
 /- English proof (translation)
-Take `⟨c, hc, rfl⟩` from `hx`. Conclude with `⟨cocycleMap ρ ρ' φ hφ c, IsLocallyConstant.comp hc φ, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem h1Map_mem_locally_constant [TopologicalSpace G] {x : H1z ρ} (hx : x ∈ lcH1 ρ) : h1MapAlt ρ ρ' φ hφ x ∈ lcH1 ρ' := by
   obtain ⟨c, hc, rfl⟩ := hx
   exact ⟨cocycleMap ρ ρ' φ hφ c, IsLocallyConstant.comp hc φ, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[res_h1MapX]`. Unfold `Fsha at hx ⊢`. Use `split_ifs at hx ⊢ with hw`. Conclude with `h1Map_mem_unramified _ _ _ _ hx`. Rewrite `hx`, the goal using `[Submodule.mem_bot]`.
-
-Rewrite using `[hx, map_zero]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem h1Map_mem_local_condition (D : ℕ → Subgroup G) (Iq : ∀ w, Subgroup (D w)) (qs : Finset ℕ) (w : ℕ) {x : H1z ρ}
     (hx : resH1 ρ (D w) x ∈ Fsha ρ D Iq qs w) : resH1 ρ' (D w) (h1MapAlt ρ ρ' φ hφ x) ∈ Fsha ρ' D Iq qs w := by
@@ -79,7 +77,7 @@ theorem h1Map_mem_local_condition (D : ℕ → Subgroup G) (Iq : ∀ w, Subgroup
     rw [hx, map_zero]
 
 /- English proof (translation)
-Simplify using `only [selRep2, Submodule.mem_inf, Submodule.mem_iInf, Submodule.mem_comap] at hx ⊢`. Take `⟨⟨⟨h1, h2⟩, h3⟩, h4⟩` from `hx`. Conclude with `⟨⟨⟨h1Map_mem_locally_constant _ _ _ _ h1, fun v => h1Map_mem_unramified _ _ _ _ (h2 v)⟩, fun v => h1Map_mem_unramified _ _ _ _ (h3 v)⟩, fun w hw => h1Map_mem_local_condition _ _ _ _ D Iq qs w (h4 w hw)⟩`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem h1Map_mem_selmer [TopologicalSpace G] {V VS : Type} (J : V → Subgroup G) (JS : VS → Subgroup G)
     (D : ℕ → Subgroup G) (Iq : ∀ w, Subgroup (D w)) (qs P : Finset ℕ) {x : H1z ρ}
@@ -98,17 +96,15 @@ variable {R S G M M' : Type} [CommRing R] [CommRing S] [Algebra S R] [Group G] [
   [AddCommGroup M] [Module R M] [Module S M] [IsScalarTower S R M] [AddCommGroup M'] [Module S M']
 
 /- English proof (translation)
-Set `π : ι → (M →ₗ[S] M')` to `fun j => (LinearMap.proj j).comp Φ.toLinearMap`. Establish `hπ : ∀ j g m, π j (ρ g m) = ρ' g (π j m)` using `fun j g m => hΦ g m j`. Set `Fm : ↥(selRep2 ρ J JS D (Fsha ρ D Iq qs) P) →ₗ[S] (ι → ↥(selRep2 ρ' J JS D (Fsha ρ' D Iq qs) P))` to `{ toFun := fun x j => ⟨h1MapAlt ρ ρ' (π j) (hπ j) x, h1Map_mem_selmer ρ ρ' (π j) (hπ j) J JS D Iq qs P x.2⟩ map_add' := fun x y => funext fun j => Subtype.ext (map_add (h1MapAlt ρ ρ' (π j) (hπ j)) (x : H1z ρ) (y : H1z ρ)) map_smul' := fun a x => funext fun j => Subtype.ext (map_s …`. Establish `hinj : Function.Injective Fm`. Rewrite using `[← LinearMap.ker_eq_bot, Submodule.eq_bot_iff]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨x, hx⟩ h0`. Rewrite `h0` using `[LinearMap.mem_ker]`. Establish `h0' : ∀ j, h1MapAlt ρ ρ' (π j) (hπ j) x = 0` using `fun j => congrArg Subtype.val (congrFun h0 j)`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show x = 0`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Proceed by induction.
 
-Use `clear h0 hx`. Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `H c`. Establish `hj : ∀ j, ∃ v : M', ∀ g, ρ' g v - v = π j ((c : G → M) g)`. Introduce `j`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `h0' j` as an intermediate fact. Rewrite `this` using `[h1Map_mk_alt, Submodule.Quotient.mk_eq_zero]`. Take `⟨v, hv⟩` from `this`. Conclude with `⟨v, fun g => congrFun hv g⟩`. Use `choose v hv using hj`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Use `⟨Φ.symm v, funext fun g => ?_⟩` and prove the remaining obligations. Use `show ρ g (Φ.symm v) - Φ.symm v = (c : G → M) g`. Apply `Φ.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `j`.
-
-Rewrite using `[map_sub, Pi.sub_apply, hΦ, LinearEquiv.apply_symm_apply]`. Conclude with `hv j g`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Module.length_pi_of_fintype, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem len_sel_le_of_equiv (ρ : Representation R G M) (ρ' : Representation S G M') {ι : Type} [Fintype ι]
     (Φ : M ≃ₗ[S] (ι → M')) (hΦ : ∀ g m j, Φ (ρ g m) j = ρ' g (Φ m j)) {V VS : Type} (J : V → Subgroup G)
@@ -158,7 +154,7 @@ variable (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscre
     [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O]
 
 /- English proof (translation)
-Rewrite `ha` using `[PadicInt.maximalIdeal_eq_span_p, Ideal.mem_span_singleton']`. Take `⟨t, rfl⟩` from `ha`. Rewrite using `[Algebra.smul_def, map_mul, map_natCast, hl, mul_zero, zero_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_eq_zero_of_mem_max (hl : ((l : ℕ) : O) = 0) {a : ℤ_[l]} (ha : a ∈ maximalIdeal ℤ_[l]) (x : O) :
     a • x = 0 := by
@@ -167,15 +163,13 @@ theorem smul_eq_zero_of_mem_max (hl : ((l : ℕ) : O) = 0) {a : ℤ_[l]} (ha : a
   rw [Algebra.smul_def, map_mul, map_natCast, hl, mul_zero, zero_mul]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hni`. Establish `hl : ((l : ℕ) : O) = 0`. Rewrite `hni` using `[injective_iff_map_eq_zero]`. Use `push Not at hni`. Take `⟨a, hfa, ha⟩` from `hni`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h` using `congrArg (algebraMap ℤ_[l] O) (PadicInt.unitCoeff_spec ha)`. Rewrite `h` using `[hfa, map_mul, map_pow, map_natCast]`. Establish `hu : IsUnit (algebraMap ℤ_[l] O (PadicInt.unitCoeff ha : ℤ_[l]))` using `(Units.isUnit _).map _`. Assume the negation of the conclusion as `hl0`. Conclude with `pow_ne_zero _ hl0 ((hu.mul_right_eq_zero).mp h.symm)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: NeZero l` using `⟨(Fact.out : l.Prime).ne_zero⟩`. Take `⟨k, s, hs⟩` from `Module.Finite.exists_fin (R := ℤ_[l]) (M := O)`. Establish `hsurj : Function.Surjective (fun v : Fin k → ZMod l => ∑ i, ((v i).cast : ℤ_[l]) • s i)`. Introduce `x`. Establish `hx : x ∈ Submodule.span ℤ_[l] (Set.range s)` using `hs ▸ Submodule.mem_top`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun ℤ_[l]).mp hx`. Use `⟨fun i => PadicInt.toZMod (c i), Finset.sum_congr rfl fun i _ => ?_⟩` and prove the remaining obligations. Establish `h` using `smul_eq_zero_of_mem_max l O hl (PadicInt.toZMod_spec (c i)) (s i)`. Rewrite `h` using `[sub_smul, sub_eq_zero]`. Conclude with `h.symm`.
-
-Establish `: Finite O` using `Finite.of_surjective _ hsurj`. Conclude with `IsDiscreteValuationRing.not_a_field O ((IsLocalRing.isField_iff_maximalIdeal_eq).mp (Finite.isField_of_domain O))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem alg_inj : Function.Injective (algebraMap ℤ_[l] O) := by
   by_contra hni
@@ -203,17 +197,17 @@ theorem alg_inj : Function.Injective (algebraMap ℤ_[l] O) := by
     ((IsLocalRing.isField_iff_maximalIdeal_eq).mp (Finite.isField_of_domain O))
 
 /- English proof (translation)
-The claim follows from `(faithfulSMul_iff_algebraMap_injective _ _).mpr (alg_inj l O)`.
+A detailed English derivation is pending.
 -/
 theorem faithful : FaithfulSMul ℤ_[l] O := (faithfulSMul_iff_algebraMap_injective _ _).mpr (alg_inj l O)
 
 /- English proof (translation)
-The claim follows from `Module.isTorsionFree_iff_algebraMap_injective.mpr (alg_inj l O)`.
+A detailed English derivation is pending.
 -/
 theorem torsionFree : Module.IsTorsionFree ℤ_[l] O := Module.isTorsionFree_iff_algebraMap_injective.mpr (alg_inj l O)
 
 /- English proof (translation)
-Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, ← map_natCast (algebraMap ℤ_[l] O)]`. Introduce `hu`. Use `(isUnit_map_iff (algebraMap ℤ_[l] O) _).mp hu` as an intermediate fact. Conclude with `(IsLocalRing.mem_maximalIdeal _).mp (by rw [PadicInt.maximalIdeal_eq_span_p]; exact Ideal.mem_span_singleton_self _) this`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem l_mem_max [IsLocalHom (algebraMap ℤ_[l] O)] : ((l : ℕ) : O) ∈ maximalIdeal O := by
   rw [IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, ← map_natCast (algebraMap ℤ_[l] O)]
@@ -223,7 +217,7 @@ theorem l_mem_max [IsLocalHom (algebraMap ℤ_[l] O)] : ((l : ℕ) : O) ∈ maxi
     (by rw [PadicInt.maximalIdeal_eq_span_p]; exact Ideal.mem_span_singleton_self _) this
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Take `⟨m, hm⟩` from `IsDiscreteValuationRing.associated_pow_irreducible ht hϖ`. Establish `hl` using `l_mem_max l O`. Rewrite `hl` using `[hϖ.maximalIdeal_eq, Ideal.mem_span_singleton]`. Conclude with `⟨m, hm.dvd.trans (pow_dvd_pow_of_dvd hl m)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem dvd_pow_l [IsLocalHom (algebraMap ℤ_[l] O)] {t : O} (ht : t ≠ 0) : ∃ m : ℕ, t ∣ ((l : ℕ) : O) ^ m := by
   obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible O
@@ -233,15 +227,15 @@ theorem dvd_pow_l [IsLocalHom (algebraMap ℤ_[l] O)] {t : O} (ht : t ≠ 0) : �
   exact ⟨m, hm.dvd.trans (pow_dvd_pow_of_dvd hl m)⟩
 
 /- English proof (translation)
-Set `b` to `Module.finBasis ℤ_[l] O`. Establish `hmap : (Submodule.restrictScalars ℤ_[l] (Ideal.span {((l : ℕ) : O)})).map b.equivFun.toLinearMap = Submodule.pi Set.univ (fun _ => maximalIdeal ℤ_[l])`. Use extensionality with `v`. Simplify using `only [Submodule.mem_map, Submodule.restrictScalars_mem, Ideal.mem_span_singleton', Submodule.mem_pi, Set.mem_univ, true_implies, PadicInt.maximalIdeal_eq_span_p]`. Prove the components needed by the constructor for the conclusion.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨x, ⟨y, rfl⟩, rfl⟩ j`. Use `⟨b.equivFun y j, ?_⟩` and prove the remaining obligations. Establish `: y * ((l : ℕ) : O) = (l : ℤ_[l]) • y` using `by rw [Algebra.smul_def, map_natCast, mul_comm]`. Rewrite using `[LinearEquiv.coe_coe, this, map_smul, Pi.smul_apply, smul_eq_mul, mul_comm]`. Introduce `hv choose w hw using hv`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨b.equivFun.symm w * ((l : ℕ) : O), ⟨_, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `: b.equivFun.symm w * ((l : ℕ) : O) = (l : ℤ_[l]) • b.equivFun.symm w`. Rewrite using `[Algebra.smul_def, map_natCast, mul_comm]`. Rewrite using `[LinearEquiv.coe_coe, this, map_smul, LinearEquiv.apply_symm_apply]`. Use function extensionality and compare the values at `j`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Pi.smul_apply, smul_eq_mul, mul_comm, hw j]`. Rewrite using `[((Submodule.Quotient.restrictScalarsEquiv ℤ_[l] (Ideal.span {((l : ℕ) : O)})).symm.trans ((Submodule.Quotient.equiv _ _ b.equivFun hmap).trans (Submodule.quotientPi (fun _ => maximalIdeal ℤ_[l])))).length_eq, Module.length_pi_of_fintype]`. Establish `h1 : Module.length ℤ_[l] (ℤ_[l] ⧸ maximalIdeal ℤ_[l]) = 1`. Use `IsDiscreteValuationRing.length_quotient_pow_maximalIdeal ℤ_[l] 1` as an intermediate fact. Rewrite `this` using `[pow_one, Nat.cast_one]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Simplify using `only [h1, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, mul_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem len_quot_l [Module.Free ℤ_[l] O] :
     Module.length ℤ_[l] (O ⧸ Ideal.span {((l : ℕ) : O)}) = Module.finrank ℤ_[l] O := by
@@ -285,14 +279,14 @@ def iotaK : ℚ_[l] →+* FractionRing O :=
     ((IsFractionRing.injective O (FractionRing O)).comp (alg_inj l O))
 
 /- English proof (translation)
-The claim follows from `IsFractionRing.lift_algebraMap _ _`.
+A detailed English derivation is pending.
 -/
 theorem iotaK_alg (a : ℤ_[l]) :
     iotaK l O (algebraMap ℤ_[l] ℚ_[l] a) = algebraMap O (FractionRing O) (algebraMap ℤ_[l] O a) :=
   IsFractionRing.lift_algebraMap _ _
 
 /- English proof (translation)
-Rewrite using `[← algebraMap_smul O a z, Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smulK (a : ℤ_[l]) (z : FractionRing O) :
     a • z = algebraMap O (FractionRing O) (algebraMap ℤ_[l] O a) * z := by
@@ -324,25 +318,23 @@ theorem PsiJ_mk (j : ι) (x : ℚ_[l]) :
 def Psi : (ι → QZ l) →ₗ[ℤ_[l]] KO O := ∑ j, (PsiJ l O b j).comp (LinearMap.proj j)
 
 /- English proof (translation)
-Simplify using `[Psi]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Psi_apply (v : ι → QZ l) : Psi l O b v = ∑ j, PsiJ l O b j (v j) := by
   simp [Psi]
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.ker_eq_bot, Submodule.eq_bot_iff]`. Introduce `v hv`. Rewrite `hv` using `[LinearMap.mem_ker]`. Use `choose x hx using fun j => Submodule.Quotient.mk_surjective (ZlSub l) (v j)`. Take `⟨s, hs⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors ℤ_[l]) x`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hs' : ∀ j, ∃ cj : ℤ_[l], algebraMap ℤ_[l] ℚ_[l] cj = (s : ℤ_[l]) • x j` using `fun j => hs j`. Use `choose c hc using hs'`. Establish `h1 : (∑ j, iotaK l O (x j) * algebraMap O (FractionRing O) (b j)) ∈ (1 : Submodule O (FractionRing O))`. Rewrite using `[← Submodule.Quotient.mk_eq_zero, ← Submodule.mkQ_apply, map_sum, ← hv, Psi_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← hx j]`. Both sides reduce to the same expression. Take `⟨o, ho⟩` from `Submodule.mem_one.mp h1`. Establish `h2 : algebraMap O (FractionRing O) ((s : ℤ_[l]) • o) = algebraMap O (FractionRing O) (∑ j, c j • b j)`. Rewrite using `[Algebra.smul_def, map_mul, ho, Finset.mul_sum, map_sum]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, map_mul, ← mul_assoc]`. Use `congr 1`. Rewrite using `[← iotaK_alg, ← map_mul, ← Algebra.smul_def, ← hc j, iotaK_alg]`. Establish `h3` using `IsFractionRing.injective O (FractionRing O) h2`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h3` using `[← Module.Basis.equivFun_symm_apply]`. Establish `hs0 : algebraMap ℤ_[l] ℚ_[l] (s : ℤ_[l]) ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective ℤ_[l] ℚ_[l])).mpr (nonZeroDivisors.coe_ne_zero s)`. Use function extensionality and compare the values at `j`. Establish `h4 : (s : ℤ_[l]) * b.equivFun o j = c j`. Use `congrArg (fun y => b.equivFun y j) h3` as an intermediate fact.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Simplify `this` using `only [map_smul, LinearEquiv.apply_symm_apply, Pi.smul_apply, smul_eq_mul]`. Use `show v j = 0`. Rewrite using `[← hx j]`. Use `show Submodule.Quotient.mk (p := ZlSub l) (x j) = (0 : ℚ_[l] ⧸ ZlSub l)`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`.
-
-Use `⟨b.equivFun o j, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.linearMap_apply]`. Conclude with `mul_left_cancel₀ hs0 (by rw [← map_mul, h4, hc j, Algebra.smul_def])`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Psi_inj : Function.Injective (Psi l O b) := by
   rw [← LinearMap.ker_eq_bot, Submodule.eq_bot_iff]
@@ -382,17 +374,17 @@ theorem Psi_inj : Function.Injective (Psi l O b) := by
   exact mul_left_cancel₀ hs0 (by rw [← map_mul, h4, hc j, Algebra.smul_def])
 
 /- English proof (translation)
-Introduce `y`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Take `⟨a, t, ht, rfl⟩` from `IsFractionRing.div_surjective (A := O) z`. Take `⟨m, w, hw⟩` from `dvd_pow_l l O (nonZeroDivisors.ne_zero ht)`. Use `⟨fun j => QZ.mk l (algebraMap ℤ_[l] ℚ_[l] (b.equivFun (a * w) j) / ((l : ℕ) : ℚ_[l]) ^ m), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Psi_apply]`. Simplify using `only [PsiJ_mk, ← Submodule.mkQ_apply]`. Rewrite using `[← map_sum]`. Use `congr 1`. Establish `hl0 : ((l : ℕ) : O) ≠ 0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Rewrite using `[← map_natCast (algebraMap ℤ_[l] O)]`. Conclude with `(map_ne_zero_iff _ (alg_inj l O)).mpr (Nat.cast_ne_zero.mpr (Fact.out : l.Prime).ne_zero)`. Establish `hw0 : w ≠ 0`. Introduce and unpack `rfl`. Rewrite `hw` using `[mul_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `pow_ne_zero m hl0 hw`. Establish `hwK : algebraMap O (FractionRing O) w ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective O (FractionRing O))).mpr hw0`. Establish `hlK : ((l : ℕ) : FractionRing O) ^ m = algebraMap O (FractionRing O) t * algebraMap O (FractionRing O) w`. Rewrite using `[← map_mul, ← hw, map_pow, map_natCast]`. Establish `hsum : ∑ j, algebraMap O (FractionRing O) (algebraMap ℤ_[l] O (b.equivFun (a * w) j)) * algebraMap O (FractionRing O) (b j) = algebraMap O (FractionRing O) (a * w)` using `by conv_rhs => rw [← b.sum_equivFun (a * w), map_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, map_mul (algebraMap O (FractionRing O))]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_div]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_div₀, map_pow, map_natCast, iotaK_alg, div_mul_eq_mul_div]`. Use `_ = algebraMap O (FractionRing O) a / algebraMap O (FractionRing O) t := by`. Rewrite using `[hsum, hlK, map_mul (algebraMap O (FractionRing O)), mul_div_mul_right _ _ hwK]`.
+A detailed English derivation is pending.
 -/
 theorem Psi_surj [IsLocalHom (algebraMap ℤ_[l] O)] : Function.Surjective (Psi l O b) := by
   intro y
@@ -434,17 +426,15 @@ theorem Psi_surj [IsLocalHom (algebraMap ℤ_[l] O)] : Function.Surjective (Psi 
 end Iso
 
 /- English proof (translation)
-Introduce `G _ _ ψ V VS J JS D Iq qs P ψO ρO ρZ`. Establish `: FaithfulSMul ℤ_[l] O` using `faithful l O`. Establish `: Module.IsTorsionFree ℤ_[l] O` using `torsionFree l O`. Establish `: Module.Free ℤ_[l] O` using `Module.free_of_finite_type_torsion_free'`. Establish `: IsLocalHom (algebraMap ℤ_[l] O)` using `inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `b` to `Module.finBasis ℤ_[l] O`. Set `Φ : KO O ≃ₗ[ℤ_[l]] (Fin (Module.finrank ℤ_[l] O) → QZ l)` to `(LinearEquiv.ofBijective (Psi l O b) ⟨Psi_inj l O b, Psi_surj l O b⟩).symm`. Establish `hΦ : ∀ g m j, Φ (ρO g m) j = ρZ g (Φ m j)`. Introduce `g m j`. Simplify using `only [ρO, ρZ, ψO, scalRep_apply, MonoidHom.coe_comp, Function.comp_apply, Units.coe_map, RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe, algebraMap_smul, map_smul, Pi.smul_apply]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `h1` using `len_sel_le_of_equiv ρO ρZ Φ hΦ J JS D Iq qs P`. Establish `h2` using `IsLocalRing.length_restrictScalars ℤ_[l] (B := O) (M := ↥(selRep2 ρO J JS D (Fsha ρO D Iq qs) P))`. Establish `h3` using `IsLocalRing.length_restrictScalars ℤ_[l] (B := O) (M := O ⧸ Ideal.span {((l : ℕ) : O)})`. Rewrite `h3` using `[len_quot_l l O]`. Establish `hn0 : Module.finrank ℤ_[l] O ≠ 0` using `Module.finrank_pos.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hf0 : Module.length (ResidueField ℤ_[l]) (ResidueField O) ≠ 0` using `Module.length_pos.ne'`. Establish `hft : Module.length (ResidueField ℤ_[l]) (ResidueField O) ≠ ⊤`. Introduce `hf`. Rewrite `h3` using `[hf]`. Break down `eq_or_ne (Module.length O (O ⧸ Ideal.span {((l : ℕ) : O)})) 0 with he | he` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `h3` using `[he, zero_mul, Nat.cast_eq_zero]`. Conclude with `hn0 h3`. Rewrite `h3` using `[ENat.mul_top he]`. Conclude with `ENat.natCast_ne_top _ h3`. Rewrite using `[← ENat.mul_le_mul_right_iff hf0 hft, ← h2]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem coefChange (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] : CoefChange l O := by

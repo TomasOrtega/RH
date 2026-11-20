@@ -15,11 +15,11 @@ open Set Filter Topology
 namespace GlobalTheory.LogNormIntGen
 
 /- English proof (translation)
-Introduce `k _ X _ p D hX hs M N r hr σ`. Use `hX.compactSpace σ` as an intermediate fact. Use `CxPts.secondCountableTopology_of_isProjOver σ hX.isProjOver` as an intermediate fact. Take `⟨R⟩` from `hs σ`. Establish `hσ : Function.Injective σ` using `ChernNull.injective_of_arithVar hX σ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key (ε : ℤˣ) : IntegrableOn (logNorm (N.φ σ) r) (offSupp p σ (N.div hr)) ((M.φ σ).chernPart D ε)`. Establish `h (y : CxPts p σ) : ∃ O ∈ 𝓝 y, IntegrableOn (logNorm (N.φ σ) r) (offSupp p σ (N.div hr) ∩ O) ((M.φ σ).chernPart D ε)`. Establish `⟨_, hi⟩` using `R.cover y`. Use the proof step `LogNormInt.exists_integrableOn hσ (M.cInf σ) (N.cInf σ) hr ε _ hi`. Use `choose O hO hint using h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨t, -, ht⟩` from `isCompact_univ.elim_nhds_subcover O fun y _ => hO y`. Use `((integrableOn_finset_iUnion (s := t)).2 fun y _ => hint y).mono_set fun z hz => ?_` and prove the remaining obligations. Take `⟨y, hy, hz'⟩` from `mem_iUnion₂.1 (ht (mem_univ z))`. Conclude with `mem_iUnion₂.2 ⟨y, hy, hz, hz'⟩`. Conclude with `⟨key 1, key (-1)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem archIntegrable : ∀ {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k}
     {D : ℕ}, IsArithVar p D → GenSmooth p D → ∀ (M N : HermLB p) {r : N.B.ι → X.functionFieldˣ}

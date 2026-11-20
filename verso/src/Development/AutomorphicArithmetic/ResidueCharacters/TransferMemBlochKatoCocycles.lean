@@ -23,23 +23,21 @@ variable {G G' : Type} [Group G] [TopologicalSpace G] [Group G'] [TopologicalSpa
 open GlobalTheory.InducedSectionsSpanStatement
 
 /- English proof (translation)
-Establish `hinj : Function.Injective ι` using `he.injective`. Establish `hinv : ∀ a : G, Function.invFun ι (ι a) = a` using `fun a => Function.leftInverse_invFun hinj a`. Establish `hmem` using `GlobalTheory.transfer_cocycle_formula LL G' T.V T.ρ ι.range`. Take `⟨hzc, x, hx⟩` from `hz`. Take `⟨hzcont, hzcoc⟩` from `hzc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `set f : G' → T.V := fun h => z (Function.invFun ι h) with hf`. Establish `htr : ∀ g, trCochain ι T z g = ∑ q : G' ⧸ ι.range, T.ρ (Quotient.out (g • q)) (f ((Quotient.out (g • q))⁻¹ * g * Quotient.out q))`. Introduce `g`. Rewrite using `[trCochain_apply]`. Use `⟨⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `haveI : IsTopologicalAddGroup T.V := { continuous_neg := by`. Use `continuous_const_smul (-1 : LL) (T := T.V)` as an intermediate fact. Simplify using `using this }`. Establish `hρc : ∀ g : G', Continuous (T.ρ g)` using `fun g => IsModuleTopology.continuous_of_linearMap (R := LL) (T.ρ g)`. Establish `hfc : ContinuousOn f (ι.range : Set G')`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[continuousOn_iff_continuous_restrict]`. Use `(hzcont.comp (he.toHomeomorph).symm.continuous).congr ?_` and prove the remaining obligations. Introduce and unpack `⟨h, a, rfl⟩`. Simplify using `only [Function.comp_apply, hf, hinv]`. Use `congr 1`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc` using `GlobalTheory.transfer_continuous_of_continuousOn LL G' T.V T.ρ ι.range ho hρc f hfc`. Establish `hfun : (trCochain ι T z : G' → T.V) = fun g => ∑ q : G' ⧸ ι.range, T.ρ (Quotient.out (g • q)) (f ((Quotient.out (g • q))⁻¹ * g * Quotient.out q))` using `funext htr`. Rewrite using `[hfun]`. Conclude with `hc`. Introduce `a b`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite using `[htr, htr, htr]`. Use `hmem.2.1 f ?_ a b` and prove the remaining obligations. Introduce and unpack `_ ⟨a', rfl⟩ _ ⟨b', rfl⟩`. Simplify using `only [hf, ← map_mul, hinv]`. Conclude with `hzcoc a' b'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hW` using `GlobalTheory.transfer_cocycle_formula LL G' (T.V ⊗[Qp] B) (repVB PD' T) ι.range`. Use `⟨∑ q : G' ⧸ ι.range, repVB PD' T (Quotient.out q) x, fun g => ?_⟩` and prove the remaining obligations. Establish `key` using `hW.2.2.1 (fun h => f h ⊗ₜ[Qp] (1 : B)) x (by`. Introduce and unpack `_ ⟨a, rfl⟩`. Simplify using `only [hf, hinv]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hx a, actVB_res PD PD' ι hι hact T a x]`. Use the proof step `rfl) g`. Simplify using `only at key`. Rewrite using `[htr, TensorProduct.sum_tmul]`. Establish `hstep : ∀ (h : G') (v : T.V), (T.ρ h v) ⊗ₜ[Qp] (1 : B) = repVB PD' T h (v ⊗ₜ[Qp] 1)`.
-
-Introduce `h v`. Conclude with `(actVB_tmul_one PD' T h v).symm`. Simplify using `only [hstep]`. Rewrite using `[key]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem transfer_mem_blochKato_cocycles [IsTopologicalGroup G'] (PD : PeriodData G Qp K₀ K B BdR) (PD' : PeriodData G' Qp K₀' K' B BdR)
     (ι : G →* G') (hι : Continuous ι) (he : Topology.IsEmbedding ι) (ho : IsOpen (ι.range : Set G'))
@@ -96,21 +94,21 @@ theorem transfer_mem_blochKato_cocycles [IsTopologicalGroup G'] (PD : PeriodData
     rfl
 
 /- English proof (translation)
-Use `haveI : Fintype (G' ⧸ ι.range) := Subgroup.fintypeQuotientOfFiniteIndex`. Establish `hinj : Function.Injective ι` using `he.injective`. Establish `hinv : ∀ a : G, Function.invFun ι (ι a) = a` using `fun a => Function.leftInverse_invFun hinj a`. Take `⟨y, hy, bb, hbb, hsum⟩` from `Submodule.mem_sup.mp hres`. Take `⟨z, hz, rfl⟩` from `hy`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w, rfl⟩` from `hbb`. Establish `hzf : z ∈ finiteCocycles PD (LiftingTheory.resLoc ι hι T).ρ` using `hz`. Establish `htrz` using `transfer_mem_blochKato_cocycles PD PD' ι hι he ho hact T z hzf`. Establish `hD` using `GlobalTheory.transfer_cocycle_formula O G' (T.V ⧸ T.L.T) (repD T.L) ι.range`. Use `set S' : T.V ⧸ T.L.T := ∑ q : G' ⧸ ι.range, c (Quotient.out q) with hS'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set S : T.V ⧸ T.L.T := ∑ q : G' ⧸ ι.range, repD T.L (Quotient.out q) w with hS`. Establish `hcsplit : ∀ a : G, c (ι a) = T.L.T.mkQ (z a) + (actD T.L (ι a) w - w)`. Introduce `a`. Use `congrFun hsum a` as an intermediate fact. Rewrite using `[← this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `h4` using `hD.2.2.2 c (fun a b => hc a b)`. Establish `h3` using `hD.2.2.1 (fun h => actD T.L h w - w) w (fun h _ => rfl)`. Establish `hkey : ∀ g : G', ((ι.range.index : ℕ) : O) • c g = T.L.T.mkQ (trCochain ι T z g) + (repD T.L g (S - S') - (S - S'))`. Introduce `g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify by unfolding definitions.
 
-Establish `h4g` using `h4 g`. Establish `h3g` using `h3 g`. Simplify using `only at h4g h3g`. Establish `e1 : (∑ q : G' ⧸ ι.range, repD T.L (Quotient.out (g • q)) (c ((Quotient.out (g • q))⁻¹ * g * Quotient.out q))) = T.L.T.mkQ (trCochain ι T z g) + ∑ q : G' ⧸ ι.range, repD T.L (Quotient.out (g • q)) (actD T.L ((Quotient.out (g • q))⁻¹ * g * Quotient.out q) w - w)`. Rewrite using `[trCochain_apply, map_sum, ← Finset.sum_add_distrib]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `MonoidHom.mem_range.mp (hD.1 g q)`. Rewrite using `[← ha, hcsplit a, hinv, map_add]`. Both sides reduce to the same expression. Rewrite using `[Nat.cast_smul_eq_nsmul]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Establish `hh : ι.range.index • c g = (∑ q : G' ⧸ ι.range, repD T.L (Quotient.out (g • q)) (c ((Quotient.out (g • q))⁻¹ * g * Quotient.out q))) - (repD T.L g S' - S')`. Rewrite using `[h4g]`. Normalize the expressions using the abelian group laws. Rewrite using `[hh, e1, h3g, map_sub]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.mem_sup.mpr ⟨T.L.T.mkQ.compLeft G' (trCochain ι T z), ⟨_, htrz, rfl⟩, fun g => repD T.L g (S - S') - (S - S'), ⟨S - S', rfl⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Rewrite using `[Pi.add_apply, Pi.smul_apply, hkey g]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem index_smul_mem [IsTopologicalGroup G'] (PD : PeriodData G Qp K₀ K B BdR) (PD' : PeriodData G' Qp K₀' K' B BdR)
     (ι : G →* G') (hι : Continuous ι) (he : Topology.IsEmbedding ι) (ho : IsOpen (ι.range : Set G'))

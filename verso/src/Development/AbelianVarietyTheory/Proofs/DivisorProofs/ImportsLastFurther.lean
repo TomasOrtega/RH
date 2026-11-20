@@ -20,9 +20,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.PsiCoordRescaleLocal
 
 /- English proof (translation)
-Introduce `R _ _ _ D q y h s hs`. Take `⟨v, hv⟩` from `GlobalTheory.LocM.FJ.MultiData.exists_unit_psiCoord D y h`. Establish `h2` using `GlobalTheory.LocM.FJ.MultiData.psiCoord_rescale D q hv hs`. Use `⟨v, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (D : DegPre R) (q : D.X → (FractionRing R)ˣ) (y : D.X),
     PsiUnitOn D y Set.univ → ∀ s : R, (q y : FractionRing R) = algebraMap R (FractionRing R) s →

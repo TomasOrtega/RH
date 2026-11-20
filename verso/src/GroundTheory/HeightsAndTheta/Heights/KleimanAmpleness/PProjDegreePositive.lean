@@ -19,23 +19,21 @@ namespace ProjDegreePositive
 variable {F : Type u} [Field F] {ι₀ : Type} [Fintype ι₀]
 
 /- English proof (translation)
-Establish `hWprime : W.IsPrime` using `hmin.1.1`. Establish `hIW : q ≤ W` using `le_sup_left.trans hmin.1.2`. Establish `hxW : x ∈ W` using `(le_sup_right.trans hmin.1.2) (Ideal.mem_span_singleton_self _)`. Use `set B := MRing (fun _ : Unit => ι₀) F ⧸ q`. Establish `_ : Algebra.FiniteType F B` using `Algebra.FiniteType.of_surjective (Ideal.Quotient.mkₐ F q) (Ideal.Quotient.mkₐ_surjective F q)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set W' : Ideal B := W.map (Ideal.Quotient.mk q)`. Establish `hW'prime : W'.IsPrime` using `Ideal.map_isPrime_of_surjective Ideal.Quotient.mk_surjective (by rwa [Ideal.mk_ker])`. Establish `hW'ne : W' ≠ ⊥`. Introduce `h`. Apply `hx` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Establish `: Ideal.Quotient.mk q x ∈ W'` using `Ideal.mem_map_of_mem _ hxW`. Rewrite `this` using `[h, Ideal.mem_bot]`. Conclude with `this`. Establish `hht : W'.height ≤ 1` using `Ideal.map_height_le_one_of_mem_minimalPrimes hmin`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hquot : ringKrullDim (B ⧸ W') = ringKrullDim (MRing (fun _ : Unit => ι₀) F ⧸ W)` using `ringKrullDim_eq_of_ringEquiv (DoubleQuot.quotQuotEquivQuotOfLE hIW)`. Establish `hform` using `GroundTheory.Arith.Abelian.Jacobian.height_add_ringKrullDim_quotient F W'`. Establish `hdrop` using `GroundTheory.Arith.Abelian.Jacobian.ringKrullDim_quotient_add_one_le W' hW'ne`. Rewrite `hform`, `hdrop` using `[hquot]`. Express the relevant statement in the definitionally equal form `ringKrullDim B = _ at hdim`.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data.
 
-Rewrite `hform`, `hdrop` using `[hdim]`. Choose the witnesses or unpack the hypotheses as in `⟨y, hy⟩ : ∃ y : ℕ∞, ringKrullDim (MRing (fun _ : Unit => ι₀) F ⧸ W) = y := by`. Consider the cases of `h : ringKrullDim (MRing (fun _ : Unit => ι₀) F ⧸ W) with`. Consider the case `bot`. Use `ringKrullDim_nonneg_of_nontrivial (R := MRing (fun _ : Unit => ι₀) F ⧸ W)` as an intermediate fact.
+Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `this` using `[h]`. Conclude with `absurd this (by simp)`. Consider the case `coe y => exact ⟨y, rfl⟩`. Rewrite `hform`, `hdrop`, the goal using `[hy]`. Establish `h1 : y + 1 ≤ ((e + 1 : ℕ) : ℕ∞)` using `by exact_mod_cast hdrop`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h2 : W'.height + y = ((e + 1 : ℕ) : ℕ∞)` using `by exact_mod_cast hform`. Establish `hyle : y ≤ e`. Establish `: y + 1 ≤ (e : ℕ∞) + 1` using `by exact_mod_cast h1`. Conclude with `(ENat.add_le_add_iff_right ENat.one_ne_top).mp this`. Take `⟨m, rfl⟩ : ∃ m : ℕ, (m : ℕ∞) = y` from `ENat.ne_top_iff_exists.mp (ne_top_of_le_ne_top (ENat.natCast_ne_top e) hyle)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `h3 : ((e + 1 : ℕ) : ℕ∞) ≤ 1 + m` using `by rw [← h2]; gcongr`. Establish `h4 : e + 1 ≤ 1 + m` using `by exact_mod_cast h3`. Establish `h5 : m ≤ e` using `by exact_mod_cast hyle`. Establish `: m = e` using `by omega`. Substitute `this` using the available equality.
-
-Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ringKrullDim_of_mem_minimalPrimes (q W : Ideal (MRing (fun _ : Unit => ι₀) F)) [q.IsPrime]
     (x : MRing (fun _ : Unit => ι₀) F) (hx : x ∉ q) (e : ℕ)
@@ -91,15 +89,15 @@ theorem ringKrullDim_of_mem_minimalPrimes (q W : Ideal (MRing (fun _ : Unit => �
 omit [Fintype ι₀] in
 
 /- English proof (translation)
-Introduce `k`. Assume the negation of the conclusion as `h`. Simplify using `only [not_exists, not_not] at h`. Establish `hX : ∀ v : (Σ _ : Unit, ι₀), (X v : MRing (fun _ : Unit => ι₀) F) ∈ W`. Introduce and unpack `⟨⟨⟩, i⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Consider the cases of `k`. Conclude with `h i`. Establish `hsurj : Function.Surjective (algebraMap F (MRing (fun _ : Unit => ι₀) F ⧸ W))`. Introduce `z`. Take `⟨p, rfl⟩` from `Ideal.Quotient.mk_surjective z`.
+Split into cases according to the possible forms of the given data. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Proceed by induction.
 
-Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a`. Conclude with `⟨a, by rw [← MvPolynomial.algebraMap_eq, Ideal.Quotient.mk_algebraMap]⟩`. Consider the case `add p r hp hr`. Take `⟨a, ha⟩` from `hp`.
+Treat this case separately. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `hr`. Conclude with `⟨a + b, by rw [map_add, ha, hb, map_add]⟩`. Consider the case `mul_X p v _`. Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zero, map_mul, Ideal.Quotient.eq_zero_iff_mem.mpr (hX v), mul_zero]`.
+Supply the required witnesses or components. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hle` using `ringKrullDim_le_of_surjective _ hsurj`. Rewrite `hle` using `[hW, ringKrullDim_eq_zero_of_field]`. Establish `: e + 1 ≤ 0` using `by exact_mod_cast hle`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem isRelevant_of_ringKrullDim (W : Ideal (MRing (fun _ : Unit => ι₀) F)) [W.IsPrime] (e : ℕ)
     (hW : ringKrullDim (MRing (fun _ : Unit => ι₀) F ⧸ W) = ((e + 1 : ℕ) : WithBot ℕ∞)) :
@@ -132,15 +130,15 @@ theorem isRelevant_of_ringKrullDim (W : Ideal (MRing (fun _ : Unit => ι₀) F))
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `hq.relevant ()`. Establish `hqp` using `hq.isPrime`. Take `⟨hfin, heq⟩` from `GroundTheory.Heights₂.Heights.FieldNumbers.GradedFinite.full F Unit (fun _ => ι₀) q (fun _ => n)`. Establish `heq' : hilbFn q (fun _ => (n : ℤ)) = (Module.finrank F (gradedPiece q (fun _ : Unit => n)) : ℤ)` using `heq`. Rewrite using `[heq']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : Ideal.Quotient.mk q ((X ⟨(), i⟩ : MRing (fun _ : Unit => ι₀) F) ^ n) ∈ gradedPiece q (fun _ : Unit => n)`. Use `⟨(X ⟨(), i⟩ : MRing (fun _ : Unit => ι₀) F) ^ n, ?_, rfl⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ ∈ weightedHomogeneousSubmodule F (blockWeight (fun _ : Unit => ι₀)) (fun _ : Unit => n)`. Rewrite using `[mem_weightedHomogeneousSubmodule]`. Establish `hp` using `(isWeightedHomogeneous_X F (blockWeight (fun _ : Unit => ι₀)) ⟨(), i⟩).pow n`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hp using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`. Consider the cases of `k`. Simplify using `[blockWeight]`. Establish `hne : Ideal.Quotient.mk q ((X ⟨(), i⟩ : MRing (fun _ : Unit => ι₀) F) ^ n) ≠ 0`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Ne, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `fun h => hi (hqp.mem_of_pow_mem n h)`. Use `hfin` as an intermediate fact. Establish `: Nontrivial (gradedPiece q (fun _ : Unit => n))` using `⟨⟨⟨_, hmem⟩, 0, fun h => hne (congrArg Subtype.val h)⟩⟩`. Establish `hpos : 0 < Module.finrank F (gradedPiece q (fun _ : Unit => n))` using `Module.finrank_pos`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hpos` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem hilbFn_pos (q : Ideal (MRing (fun _ : Unit => ι₀) F)) (hq : IsMultiProjPrime q) (n : ℕ) :
     0 < hilbFn q (fun _ => (n : ℤ)) := by
@@ -173,11 +171,11 @@ theorem hilbFn_pos (q : Ideal (MRing (fun _ : Unit => ι₀) F)) (hq : IsMultiPr
 omit [Fintype ι₀] in
 
 /- English proof (translation)
-Introduce `p hp`. Rewrite using `[RingHom.mem_ker]`. Assume the negation of the conclusion as `h`. Establish `h0` using `hq.multiHomog p hp 0`. Rewrite using `[weightedHomogeneousComponent_zero p (fun v => by`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨⟨⟩, _⟩` from `v`. Introduce `h'`. Use `congrFun h' ()` as an intermediate fact. Simplify using `[blockWeight] at this)] at h0`. Establish `hu : IsUnit (C (coeff 0 p) : MRing (fun _ : Unit => ι₀) F)` using `(isUnit_iff_ne_zero.mpr (by rwa [← constantCoeff_eq])).map C`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `hq.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ h0 hu)`.
+A detailed English derivation is pending.
 -/
 theorem le_ker_constantCoeff (q : Ideal (MRing (fun _ : Unit => ι₀) F)) (hq : IsMultiProjPrime q) :
     q ≤ RingHom.ker (constantCoeff : MRing (fun _ : Unit => ι₀) F →+* F) := by
@@ -195,33 +193,31 @@ theorem le_ker_constantCoeff (q : Ideal (MRing (fun _ : Unit => ι₀) F)) (hq :
   exact hq.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ h0 hu)
 
 /- English proof (translation)
-Proceed by induction on `D with`. Consider the case `zero`. Introduce `q hq hd`. Take `⟨a₀, ha⟩` from `HilbertSamuel.HilbertDimZero.proof F Unit (fun _ => ι₀) q hq (by rw [Fintype.card_unit]; exact hd)`. Establish `h` using `ha (fun _ => a₀) (fun _ => le_rfl)`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : (fun _ : Fin 0 => fun _ : Unit => (1 : ℤ)) = (![] : Fin 0 → Unit → ℤ)`. Use function extensionality and compare the values at `fun j => j.elim0`. Rewrite using `[e, ← h]`. Conclude with `hilbFn_pos q hq a₀`. Consider the case `succ D ih`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `q hq hd`. Establish `hqp : q.IsPrime` using `hq.isPrime`. Take `⟨i, hX⟩` from `hq.relevant ()`. Use `set x : MRing (fun _ : Unit => ι₀) F := X ⟨(), i⟩ with hxdef`. Establish `hx : IsMultiHomog x (blockWeight (fun _ : Unit => ι₀) ⟨(), i⟩)` using `isWeightedHomogeneous_X F _ _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hlt : ringKrullDim (MRing (fun _ : Unit => ι₀) F ⧸ q) < ((D + 2 + Fintype.card Unit : ℕ) : WithBot ℕ∞)`. Rewrite using `[hd, Fintype.card_unit]`. Conclude with `(by omega : D + 1 + 1 < D + 2 + 1)` after adjusting the coercions. Establish `hcut` using `CutByForm.full F Unit (fun _ => ι₀) D q hqp hq.multiHomog hlt x _ hx hX (fun _ : Fin D => fun _ : Unit => (1 : ℤ))`. Establish `e1 : Matrix.vecCons (fun k => ((blockWeight (fun _ : Unit => ι₀) ⟨(), i⟩ k : ℕ) : ℤ)) (fun _ : Fin D => fun _ : Unit => (1 : ℤ)) = fun _ : Fin (D + 1) => fun _ : Unit => (1 : ℤ)`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data. Apply the first step, then apply the next step to every resulting obligation.
 
-Use function extensionality and compare the values at `j k`. Consider the cases of `k`. Apply the tactic sequence `refine Fin.cases ?_ (fun j => ?_) j <;> simp [blockWeight]`. Rewrite `hcut` using `[e1]`. Rewrite using `[hcut, cycEval]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set J := q ⊔ Ideal.span {x} with hJdef`. Establish `hJh : IsMultiHomogIdeal J` using `isMultiHomogIdeal_sup_span_of_form hq.multiHomog hx`. Establish `hterm : ∀ W, divCycle q x W ≠ 0 → 0 < divCycle q x W ∧ 0 < intNum F W (fun _ : Fin D => fun _ : Unit => (1 : ℤ))`. Introduce `W hW`. Unfold `divCycle at hW ⊢`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hc : W ∈ J.minimalPrimes ∧ IsRelevant W`. Rewrite `hW`, the goal using `[dif_pos hc]`. Establish `hWp : W.IsPrime` using `hc.1.1.1`. Establish `hWd` using `ringKrullDim_of_mem_minimalPrimes q W x hX (D + 1) hd hc.1`. Establish `hWq : IsMultiProjPrime W` using `⟨hWp, MinimalPrimeMultiHomog.full F Unit (fun _ => ι₀) J W hJh hc.1, hc.2⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨lt_of_le_of_ne (by positivity) (Ne.symm hW), ih W hWq hWd⟩`. Rewrite `hW` using `[dif_neg hc]`. Conclude with `absurd rfl hW`. Establish `hfin` using `DivCycleFiniteSupport.full F Unit (fun _ => ι₀) q x`. Rewrite using `[finsum_eq_sum_of_support_subset _ ((Function.support_mul_subset_left _ _).trans hfin.coe_toFinset.symm.subset)]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_pos' (fun W _ => ?_) ?_` and prove the remaining obligations. Distinguish the cases in `hW : divCycle q x W = 0`. Rewrite using `[hW, zero_mul]`. Conclude with `(mul_pos (hterm W hW).1 (hterm W hW).2).le`. Establish `hJm : J ≤ RingHom.ker (constantCoeff : MRing (fun _ : Unit => ι₀) F →+* F)`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `sup_le (le_ker_constantCoeff q hq) ?_` and prove the remaining obligations. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Express the relevant statement in the definitionally equal form `constantCoeff x = 0`. Rewrite using `[hxdef, constantCoeff_X]`. Establish `hmax : (RingHom.ker (constantCoeff : MRing (fun _ : Unit => ι₀) F →+* F)).IsPrime` using `(RingHom.ker_isMaximal_of_surjective _ fun a => ⟨C a, by simp⟩).isPrime`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Take `⟨W, hmin, -⟩` from `Ideal.exists_minimalPrimes_le hJm`. Establish `hWp : W.IsPrime` using `hmin.1.1`. Establish `hWd` using `ringKrullDim_of_mem_minimalPrimes q W x hX (D + 1) hd hmin`. Establish `hrel` using `isRelevant_of_ringKrullDim W D hWd`. Establish `hne : divCycle q x W ≠ 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `divCycle`. Rewrite using `[dif_pos ⟨hmin, hrel⟩]`. Establish `htop` using `length_localizedQuot_ne_top J W hmin`. Establish `hzero : multAt J W ≠ 0`. Unfold `multAt`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ne, Module.length_eq_zero_iff, LocalizedModule.subsingleton_iff]`. Introduce `hs`. Take `⟨r, hr, hr1⟩` from `hs (1 : MRing (fun _ : Unit => ι₀) F ⧸ J)`. Rewrite `hr1` using `[Algebra.smul_def, mul_one, Ideal.Quotient.algebraMap_eq, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hr (hmin.1.2 hr1)`.
-
-Establish `: (multAt J W).toNat ≠ 0`. Rewrite using `[Ne, ENat.toNat_eq_zero]`. Conclude with `not_or.mpr ⟨hzero, htop⟩`. Conclude with `this` after adjusting the coercions. Use `⟨W, hfin.mem_toFinset.mpr hne, mul_pos (hterm W hne).1 (hterm W hne).2⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem pos (D : ℕ) : ∀ q : Ideal (MRing (fun _ : Unit => ι₀) F), IsMultiProjPrime q →
     ringKrullDim (MRing (fun _ : Unit => ι₀) F ⧸ q) = ((D + 1 : ℕ) : WithBot ℕ∞) →
@@ -311,7 +307,7 @@ theorem pos (D : ℕ) : ∀ q : Ideal (MRing (fun _ : Unit => ι₀) F), IsMulti
 end ProjDegreePositive
 
 /- English proof (translation)
-Introduce `F _ ι₀ _ q D hq hd`. Conclude with `ProjDegreePositive.pos D q hq hd`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ProjDegreePositive.proof : ProjDegreePositive.Statement.{u} := by
   intro F _ ι₀ _ q D hq hd

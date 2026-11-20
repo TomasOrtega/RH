@@ -27,7 +27,7 @@ def levelOfField (L : IntermediateField K.1 (maxUnramifiedOutside K.1 ℚ̄ S)) 
 variable (L : IntermediateField K.1 (maxUnramifiedOutside K.1 ℚ̄ S)) [FiniteDimensional K.1 L]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_levelOfField {z : ℚ̄} :
     z ∈ (levelOfField L).1 ↔ ∃ w ∈ L, ((w : maxUnramifiedOutside K.1 ℚ̄ S) : ℚ̄) = z :=
@@ -37,7 +37,7 @@ instance fact_le_levelOfField : Fact (K ≤ levelOfField L) :=
   ⟨fun z hz => (mem_levelOfField L).2 ⟨algebraMap K.1 _ ⟨z, hz⟩, L.algebraMap_mem _, rfl⟩⟩
 
 /- English proof (translation)
-Take `⟨w, -, rfl⟩` from `(mem_levelOfField L).1 hz`. Conclude with `w.2`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_maxUnramifiedOutside_of_mem_levelOfField {z : ℚ̄} (hz : z ∈ (levelOfField L).1) :
     z ∈ maxUnramifiedOutside K.1 ℚ̄ S := by

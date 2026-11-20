@@ -13,25 +13,23 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.RoadU
 
 /- English proof (translation)
-Introduce `hI hC E Ω _ _ _ _ _ _ l _ ι a ha π χ hs r hr w hw B hB`. Establish `hF` using `GlobalTheory.automorphicFormsFiniteGL`. Establish `hA` using `hI.hk`. Take `⟨κ, m, hκ, hu, hcs⟩` from `GlobalTheory.T.exists_good_conjSelfDual_twist_split_unramified hF E l a ha π χ hs w hw`. Take `⟨art, hart, hμ⟩` from `(GlobalTheory.Published.GlobalArtinReciprocity.heckeLAdicCharacter_and_principalIdealSt GlobalTheory.globalArtinReciprocity_holds).1 E Ω`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hκp : GlobalTheory.HeckeGal.IsAlgPos κ m` using `GlobalTheory.HeckeGal.isAlgPos_of_isAlg hκ`. Take `⟨μ, ⟨hμc, hL⟩, -⟩` from `hμ l ι κ m hκp`. Establish `htc : Continuous (UpperTheory.V.Af.tw r μ)` using `UpperTheory.galoisRep_irreducibility_criterion.2 _ _ a r μ hr.1 hμc`. Establish `hW : Weak (π.twist κ) ι (UpperTheory.V.Af.tw r μ)` using `⟨htc, UpperTheory.V.Af.Cq.attTwist E Ω l ι a r π hr.2 art κ m μ hart hL⟩`. Establish `hB' : (CG.mk (π.twist κ)).HasSat w (B.map (· * κ.val w))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hB`, the goal using `[CG.hasSat_mk]`. Conclude with `GlobalTheory.SphGal.hasSatGL_twist E a π κ w B hu hB`. Establish `hcl : ClauseAt .dR (π.twist κ) ι (UpperTheory.V.Af.tw r μ) w` using `hC E Ω l ι a ha (π.twist κ) _ hcs (UpperTheory.V.Af.tw r μ) hW w hw _ hB'`. Use `show ClauseAt .dR π ι r w`. Introduce `P AI hT A hAw O _ _ _ Bw hj`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hdR', hJ'⟩` from `hcl P AI hT A hAw O Bw hj`. Establish `hμic : Continuous (μ⁻¹)` using `hμc.inv`. Establish `hch` using `GlobalTheory.Published.heckeLAdicCharacterAbove_iff.1 hA E Ω l P AI hT ι art hart κ⁻¹ (-m) μ⁻¹ (GlobalTheory.GalChar.isAlgPos_inv hκp) hμic hL.inv w A hAw O Bw hj`. Establish `key` using `GlobalTheory.TwistAbove.twist_above l P AI hT E Ω (Dec (F := E) A) O Bw a ((UpperTheory.V.Af.tw r μ).comp (Dec (F := E) A).subtype) (r.comp (Dec (F := E) A).subtype) (μ⁻¹.comp (Dec (F := E) A).subtype) (fun g => by`. Express the relevant statement in the definitionally equal form `((r g.1 : GL (Fin a) (Qbar l)) : Matrix (Fin a) (Fin a) (Qbar l)) = (((μ g.1)⁻¹ : (Qbar l)ˣ) : Qbar l) • ((UpperTheory.V.Af.tw r μ g.1 : GL (Fin a) (Qbar l)) : Matrix (Fin a) (Fin a) (Qbar l))`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[UpperTheory.V.Af.tw_val, smul_smul, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_smul])`. Use `⟨key.1 hdR' hch.1, fun τ LL' τ' hτ J hJ => ?_⟩` and prove the remaining obligations. Use `set m0 := m (ι.toRingHom.comp τ) with hm0`. Establish `e : expo κ (ι.toRingHom.comp τ) = m0` using `(GlobalTheory.CuspRep.InfType.expo_of_infType E κ).1 m hκ _`. Establish `hinf : (CG.mk (π.twist κ)).infChar (ι.toRingHom.comp τ) = ((CG.mk π).infChar (ι.toRingHom.comp τ)).map (· + (m0 : ℂ))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e]`. Conclude with `((GlobalTheory.CuspRep.ParLaws.hasInfChar_infChar (CG.mk π) _).twist κ).infChar_eq`. Establish `h1` using `hJ' τ LL' τ' hτ (J.map (· - m0)) (by`. Rewrite using `[hinf, Multiset.map_map, Multiset.map_map]`. Establish `e1 : ((CG.mk π).infChar (ι.toRingHom.comp τ)).map ((fun z : ℂ => ((a : ℂ) - 1) / 2 - z) ∘ (· + (m0 : ℂ))) = (((CG.mk π).infChar (ι.toRingHom.comp τ)).map (fun z : ℂ => ((a : ℂ) - 1) / 2 - z)).map (· - (m0 : ℂ))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Multiset.map_map]`. Use `Multiset.map_congr rfl fun z _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, ← hJ, Multiset.map_map]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Use `Multiset.map_congr rfl fun n _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Use `push_cast`. Use the proof step `ring)`. Establish `h2` using `key.2.2.2 τ _ _ h1 (hch.2.2.2 τ LL' τ' hτ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e2 : (J.map (· - m0)).map (· + -((-m) (ι.toRingHom.comp τ))) = J`. Rewrite using `[Multiset.map_map]`. Use `conv_rhs => rw [← Multiset.map_id J]`. Use `Multiset.map_congr rfl fun n _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, Pi.neg_apply, neg_neg, id, hm0]`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite `h2` using `[e2]`. Conclude with `h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem holdsS_good_dR_of_csd : Inputs → SphericalLevelCondition .csd .dR → SphericalLevelCondition .good .dR := by
   intro hI hC E Ω _ _ _ _ _ _ l _ ι a ha π χ hs r hr w hw B hB

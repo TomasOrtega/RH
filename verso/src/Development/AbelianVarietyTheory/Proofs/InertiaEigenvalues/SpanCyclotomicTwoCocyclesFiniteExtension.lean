@@ -9,17 +9,15 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨z0, ⟨hc0, hz0⟩, H⟩` from `H`. Use `haveI : ContinuousSMul F E := IsModuleTopology.toContinuousSMul F E`. Establish `hA : Continuous (algebraMap F E)`. Establish `: (algebraMap F E : F → E) = fun a => a • (1 : E)`. Use function extensionality and compare the values at `a`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.algebraMap_eq_smul_one]`. Rewrite using `[this]`. Use `fun_prop`. Use `⟨fun p => algebraMap F E (z0 p), ⟨hA.comp hc0, fun g h k => ?_⟩, fun z hc hz => ?_⟩` and prove the remaining obligations. Use `congrArg (algebraMap F E) (hz0 g h k)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Simplify using `using this`. Set `b` to `Module.finBasis F E`. Establish `hb : ∀ i, Continuous (b.coord i)` using `fun i => IsModuleTopology.continuous_of_linearMap (b.coord i)`. Establish `key : ∀ i, ∃ x : F, ∃ f : G → F, Continuous f ∧ ∀ g h, χ g * f h - f (g * h) + f g = b.coord i (z (g, h)) - x * z0 (g, h)`. Introduce `i`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `H (fun p => b.coord i (z p)) ((hb i).comp hc) (fun g h k => ?_)` and prove the remaining obligations. Use `congrArg (b.coord i) (hz g h k)` as an intermediate fact. Rewrite `this` using `[← Algebra.smul_def, map_sub, map_add, map_sub, map_smul, map_zero, smul_eq_mul]`. Conclude with `this`. Use `choose x f hf hxf using key`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `⟨∑ i, x i • b i, fun g => ∑ i, f i g • b i, ?_, fun g h => ?_⟩` and prove the remaining obligations. Conclude with `continuous_finsetSum _ (fun i _ => (hf i).smul continuous_const)`. Establish `hs : z (g, h) = ∑ i, b.coord i (z (g, h)) • b i`. Simplify using `[b.sum_repr]`. Rewrite using `[hs, ← Algebra.smul_def, mul_comm, ← Algebra.smul_def, Finset.smul_sum, Finset.smul_sum, ← Finset.sum_sub_distrib, ← Finset.sum_add_distrib, ← Finset.sum_sub_distrib]`.
-
-Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[smul_smul, smul_smul, ← sub_smul, ← add_smul, ← sub_smul, hxf i g h, mul_comm (x i)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_cocycles_ext {G F E : Type} [Group G] [TopologicalSpace G] [Field F]
     [TopologicalSpace F] [IsTopologicalRing F] [Field E] [Algebra F E] [TopologicalSpace E]
@@ -66,13 +64,13 @@ theorem span_cocycles_ext {G F E : Type} [Group G] [TopologicalSpace G] [Field F
       rw [smul_smul, smul_smul, ← sub_smul, ← add_smul, ← sub_smul, hxf i g h, mul_comm (x i)]
 
 /- English proof (translation)
-Introduce `l _ P K LL _ _ _ O _ _ hO H`. Take `⟨-, hfd, hmt, htr, -⟩` from `hO`. Take `⟨z0, hz0, H⟩` from `H`. Use `span_cocycles_ext (F := ℚ_[l]) (E := LL) (fun g : ↥(GK K) => ((cycLL (P.PD K) ℚ_[l] g : ℚ_[l]ˣ) : ℚ_[l])) ⟨z0, hz0, fun z hc hz => by` as an intermediate fact. Take `⟨x, f, hf, hd⟩` from `H z hc hz`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨x, f, hf, fun g h => ?_⟩` and prove the remaining obligations. Use `congrFun hd (g, h)` as an intermediate fact. Simplify `this⟩` using `[ReciprocityTheory.Def.d1, Formalism.WeaklyAdmissibleFiltrations.charRep]`. Establish `e : ∀ g : ↥(GK K), algebraMap ℚ_[l] LL ((cycLL (P.PD K) ℚ_[l] g : ℚ_[l]ˣ) : ℚ_[l]) = ((cycLL (P.PD K) LL g : LLˣ) : LL)` using `fun g => by simp [cycLL]`. Simplify using `only [e] at this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨w0, hw0, H'⟩` from `this`. Use `⟨w0, hw0, fun z hc hz => ?_⟩` and prove the remaining obligations. Take `⟨x, f, hf, hd⟩` from `H' z hc hz`. Use `⟨x, f, hf, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `⟨g, h⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify `hd g h` using `[ReciprocityTheory.Def.d1, Formalism.WeaklyAdmissibleFiltrations.charRep]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem span_cocycles_cyc_ext : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K : FinExt l) (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O] [Algebra O LL], GoodO (Qp := ℚ_[l]) LL O → (∃ z0 : ↥(GK K) × ↥(GK K) → ℚ_[l], (Continuous z0 ∧ ∀ g h k, ((cycLL (P.PD K) ℚ_[l] g : ℚ_[l]ˣ) : ℚ_[l]) * z0 (h, k) - z0 (g * h, k) + z0 (g, h * k) - z0 (g, h) = 0) ∧ ∀ z : ↥(GK K) × ↥(GK K) → ℚ_[l], Continuous z → (∀ g h k, ((cycLL (P.PD K) ℚ_[l] g : ℚ_[l]ˣ) : ℚ_[l]) * z (h, k) - z (g * h, k) + z (g, h * k) - z (g, h) = 0) → ∃ x : ℚ_[l], CobL (P.PD K) (z - x • z0)) → ∃ z0 : ↥(GK K) × ↥(GK K) → LL, (Continuous z0 ∧ ∀ g h k, ((cycLL (P.PD K) LL g : LLˣ) : LL) * z0 (h, k) - z0 (g * h, k) + z0 (g, h * k) - z0 (g, h) = 0) ∧ ∀ z : ↥(GK K) × ↥(GK K) → LL, Continuous z → (∀ g h k, ((cycLL (P.PD K) LL g : LLˣ) : LL) * z (h, k) - z (g * h, k) + z (g, h * k) - z (g, h) = 0) → ∃ x : LL, CobL (P.PD K) (z - x • z0) := by
   intro l _ P K LL _ _ _ O _ _ hO H

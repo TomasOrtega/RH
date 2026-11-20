@@ -15,7 +15,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace PositivityTheory.Rg.BcB.F.FX.Bo
 
 /- English proof (translation)
-Introduce `E _ _ _ n P w K hKo hKle`. Establish `hadm` using `GlobalTheory.CompanionTheory.ProdAdm.isAdmissible_multiProd_smIrr (w.adicCompletion E) P.N P.h (fun i => P.σ i w)`. Establish `hKc : IsCompact (K : Set (GLw n w))` using `(GlobalTheory.CompanionTheory.IwLevels.isCompact_KGL w n).of_isClosed_subset (K.isClosed_of_isOpen hKo) hKle`. Conclude with `hadm.2 K hKo hKc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem AdmProd_holds : AdmProd := by
   intro E _ _ _ n P w K hKo hKle

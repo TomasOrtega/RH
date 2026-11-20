@@ -6,7 +6,7 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo NumberField GlobalThe
 namespace GlobalTheory.CompanionTheory.Ar.CancelBound
 
 /- English proof (translation)
-Establish `hne : ∀ k, ‖c k‖ ^ A.a k ≠ 0` using `fun k => zpow_ne_zero _ (norm_ne_zero_iff.mpr (hc k))`. Rewrite using `[A.smul c z hc, Real.log_mul (Finset.prod_ne_zero_iff.mpr fun k _ => hne k) (A.pos z hz).ne', Real.log_prod (fun k _ => hne k)]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun k _ => Real.log_zpow _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem log_h_scale {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] (A : HermLine ι) (c : K → ℂ)
     (z : (Σ k, ι k) → ℂ) (hc : ∀ k, c k ≠ 0) (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) :
@@ -18,7 +18,7 @@ theorem log_h_scale {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι
   exact Finset.sum_congr rfl fun k _ => Real.log_zpow _ _
 
 /- English proof (translation)
-The claim follows from `ContinuousOn.log (ContDiffOn.continuousOn hA) fun z hz => (A.pos z hz).ne'`.
+A detailed English derivation is pending.
 -/
 theorem continuousOn_log_h {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] (A : HermLine ι)
     (hA : IsSmoothHerm A) :
@@ -26,7 +26,7 @@ theorem continuousOn_log_h {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fint
   ContinuousOn.log (ContDiffOn.continuousOn hA) fun z hz => (A.pos z hz).ne'
 
 /- English proof (translation)
-The claim follows from `|Real.log (A.h z) + ∑ j ∈ T, Real.log ((B j).h z)| ≤ C := by classical let f : ((Σ k, ι k) → ℂ) → ℝ := fun z => Real.log (A.h z) + ∑ j ∈ T, Real.log ((B j).h z) let n : K → ((Σ k, ι k) → ℂ) → ℝ := fun k z => ∑ i, ‖z ⟨k, i⟩‖ let S : Set ((Σ k, ι k) → ℂ) := {z | ∀ k, n k z = 1} hav …`.
+A detailed English derivation is pending.
 -/
 theorem log_metrics_bounded (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (J : Type) (A : HermLine ι)
     (B : J → HermLine ι) (T : Finset J) (hA : IsSmoothHerm A) (hB : ∀ j, IsSmoothHerm (B j))

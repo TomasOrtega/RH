@@ -10,7 +10,7 @@ noncomputable section
 namespace GlobalTheory.BKReal.PiSys
 
 /- English proof (translation)
-Rewrite using `[iD, glue_const, Ehat, iHat_ofAl]`. Conclude with `(ϖ.iAl_of_mem O K (E_mem l e _) _).trans (congrArg (toOD l O) (ϖ.iA_E a O K))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iD_const_Ehat_eq_tmul (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (O K : Type)
     [CommRing O] [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] [NormedField K]
@@ -27,9 +27,7 @@ namespace GlobalTheory.BKReal.EhatShift
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Establish `hsp` using `(ϖ.span_ev_eis a).trans (GlobalTheory.MemLoc.ker_theta_eq_span_xi hE)`. Use `⟨Ideal.mem_span_singleton'.1 ?_, Ideal.mem_span_singleton'.1 ?_⟩` and prove the remaining obligations. Rewrite using `[← hsp]`. Conclude with `Ideal.mem_span_singleton_self _`. Rewrite using `[hsp]`.
-
-Conclude with `Ideal.mem_span_singleton_self _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ev_eis_assoc_xi {a e : ℕ} [NeZero a] [NeZero e] (ϖ : PiSys l e) {ε : Per.Fl l} (hE : GlobalTheory.MemLoc.IsEps ε) :
     (∃ c : Per.Ainf l, c * GlobalTheory.MemLoc.xi ε = ϖ.ev a (eis l a e)) ∧
@@ -40,19 +38,17 @@ theorem ev_eis_assoc_xi {a e : ℕ} [NeZero a] [NeZero e] (ϖ : PiSys l e) {ε :
   · rw [hsp]; exact Ideal.mem_span_singleton_self _
 
 /- English proof (translation)
-Take `⟨ζ, ε, h0, -, h1, hr⟩` from `GlobalTheory.MemLoc.exists_zeta_eps l`. Establish `he : ε.untilt = 1` using `Subtype.ext (by`. Use `hr 0` as an intermediate fact. Rewrite `this` using `[h0, map_one]`. Conclude with `this)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hE : GlobalTheory.MemLoc.IsEps ε` using `⟨he, fun hh => h1 (by`. Apply `(algebraMap (Om l) ℂ_[l]).injective` to reduce the goal to its premises. Rewrite using `[← hr 1, map_one]`. Conclude with `congrArg Subtype.val hh)⟩`. Take `⟨⟨c, hc⟩, ⟨c', hc'⟩⟩` from `ev_eis_assoc_xi (a := a) ϖ hE`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set U := (GlobalTheory.MemLoc.TiedUnif.isUnit_xi hE).unit with hUdef`. Establish `hU : (U : Per.BdR l) = algebraMap (Per.BdRp l) (Per.BdR l) (GlobalTheory.MemLoc.aDp l (GlobalTheory.MemLoc.xi ε))` using `IsUnit.unit_spec _`. Establish `hα : algebraMap (Per.BdRp l) (Per.BdR l) (GlobalTheory.MemLoc.aDp l (ϖ.ev a (eis l a e))) = algebraMap (Per.BdRp l) (Per.BdR l) (GlobalTheory.MemLoc.aDp l c) * (U : Per.BdR l)`. Rewrite using `[hU, ← map_mul, ← map_mul, hc]`. Establish `hβ : algebraMap (Per.BdRp l) (Per.BdR l) (GlobalTheory.MemLoc.aDp l c') * algebraMap (Per.BdRp l) (Per.BdR l) (GlobalTheory.MemLoc.aDp l (ϖ.ev a (eis l a e))) = (U : Per.BdR l)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hU, ← map_mul, ← map_mul, hc']`. Use `⟨IsUnit.of_mul_eq_one (algebraMap (Per.BdRp l) (Per.BdR l) (GlobalTheory.MemLoc.aDp l c') * ((U⁻¹ : (Per.BdR l)ˣ) : Per.BdR l)) ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc, mul_comm _ (algebraMap _ _ (GlobalTheory.MemLoc.aDp l c')), hβ, Units.mul_inv]`. Introduce `j x`. Rewrite using `[GlobalTheory.MemLoc.TiedUnif.mem_FilD_iff hE, GlobalTheory.MemLoc.TiedUnif.mem_FilD_iff hE, ← hUdef]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, rfl⟩`. Use `⟨GlobalTheory.MemLoc.aDp l c * w, ?_⟩` and prove the remaining obligations. Rewrite using `[hα, _root_.zpow_add_one, Units.val_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce and unpack `⟨w, hw⟩`. Use `⟨GlobalTheory.MemLoc.aDp l c' * w, ?_⟩` and prove the remaining obligations. Establish `h2 : (U : Per.BdR l) * x = (U : Per.BdR l) * (((U ^ j : (Per.BdR l)ˣ) : Per.BdR l) * algebraMap (Per.BdRp l) (Per.BdR l) (GlobalTheory.MemLoc.aDp l c' * w))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, hβ]`.
-
-Use `_ = algebraMap (Per.BdRp l) (Per.BdR l) (GlobalTheory.MemLoc.aDp l c') * (((U ^ (j + 1) : (Per.BdR l)ˣ) : Per.BdR l) * algebraMap (Per.BdRp l) (Per.BdR l) w) := by rw [hw]`. Use `_ = _ := by rw [_root_.zpow_add_one, Units.val_mul, map_mul]; ring`. Conclude with `U.isUnit.mul_left_cancel h2`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_and_mem_FilD_iff {a e : ℕ} [NeZero a] [NeZero e] (ϖ : PiSys l e) :
     IsUnit (algebraMap (Per.BdRp l) (Per.BdR l) (GlobalTheory.MemLoc.aDp l (ϖ.ev a (eis l a e)))) ∧
@@ -102,9 +98,9 @@ theorem isUnit_and_mem_FilD_iff {a e : ℕ} [NeZero a] [NeZero e] (ϖ : PiSys l 
 variable {Pl : LocPrime l} {AI : LocAinf l Pl} (Td : LocTied l Pl AI)
 
 /- English proof (translation)
-Take `⟨hu, hF⟩` from `isUnit_and_mem_FilD_iff (l := l) (a := a) ϖ`. Establish `hc : Td.eD (GlobalTheory.BKGal.JumpDR.cD Td (GlobalTheory.MemLoc.aDp l (ϖ.ev a (eis l a e)))) = algebraMap (Per.BdRp l) (Per.BdR l) (GlobalTheory.MemLoc.aDp l (ϖ.ev a (eis l a e)))` using `RingEquiv.apply_symm_apply _ _`. Use `⟨?_, fun j x => ?_⟩` and prove the remaining obligations. Use `hu.map (Td.eD.symm : Per.BdR l →+* Pl.R.BdR)` as an intermediate fact. Rewrite `this` using `[← hc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using this`. Rewrite using `[Td.fil, Td.fil, map_mul, hc]`. Conclude with `hF j _`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_and_mem_Fil_iff {a e : ℕ} [NeZero a] [NeZero e] (ϖ : PiSys l e) (K : FinExt l) :
     IsUnit (GlobalTheory.BKGal.JumpDR.cD Td (GlobalTheory.MemLoc.aDp l (ϖ.ev a (eis l a e)))) ∧
@@ -127,9 +123,9 @@ variable {LL : Type} [Field LL] [Algebra ℚ_[l] LL]
     {V : Type} [AddCommGroup V] [Module LL V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] LL V]
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `hx`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `tmul v b => exact ⟨v ⊗ₜ ⟨g b.1, hg _ b.2⟩, rfl⟩`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add y z hy hz => simp only [map_add]`. Conclude with `Submodule.add_mem _ hy hz`.
+A detailed English derivation is pending.
 -/
 theorem map_mem_FilV (K : FinExt l) (j k : ℤ) (g : Pl.R.BdR →ₗ[ℚ_[l]] Pl.R.BdR)
     (hg : ∀ b ∈ (Pl.PD K).Fil j, g b ∈ (Pl.PD K).Fil k) (x : V ⊗[ℚ_[l]] Pl.R.BdR)
@@ -142,7 +138,7 @@ theorem map_mem_FilV (K : FinExt l) (j k : ℤ) (g : Pl.R.BdR →ₗ[ℚ_[l]] Pl
   | add y z hy hz => simp only [map_add]; exact Submodule.add_mem _ hy hz
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul v b => simp [mul_assoc]`. Consider the case `add y z hy hz => simp only [map_add, hy, hz]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem map_mulLeft_comp (r s : Pl.R.BdR) (x : V ⊗[ℚ_[l]] Pl.R.BdR) :
     AlgebraTensorModule.map (LinearMap.id : V →ₗ[LL] V) (LinearMap.mulLeft ℚ_[l] r)
@@ -154,7 +150,7 @@ theorem map_mulLeft_comp (r s : Pl.R.BdR) (x : V ⊗[ℚ_[l]] Pl.R.BdR) :
   | add y z hy hz => simp only [map_add, hy, hz]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul v b => simp`. Consider the case `add y z hy hz => simp only [map_add, hy, hz]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem map_mulLeft_one (x : V ⊗[ℚ_[l]] Pl.R.BdR) :
     AlgebraTensorModule.map (LinearMap.id : V →ₗ[LL] V) (LinearMap.mulLeft ℚ_[l] (1 : Pl.R.BdR)) x = x := by
@@ -174,13 +170,13 @@ variable {l : ℕ} [Fact l.Prime] {Pl : LocPrime l}
     {V : Type} [AddCommGroup V] [Module LL V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] LL V]
 
 /- English proof (translation)
-Establish `hAM : ∀ y, f y = AlgebraTensorModule.map (LinearMap.id : V →ₗ[LL] V) (LinearMap.mulLeft ℚ_[l] ξ) y`. Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul v c => rw [hf, AlgebraTensorModule.map_tmul, LinearMap.id_apply, LinearMap.mulLeft_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add y z hy hz => simp only [map_add, hy, hz]`. Establish `hl : ∀ y, AlgebraTensorModule.map (LinearMap.id : V →ₗ[LL] V) (LinearMap.mulLeft ℚ_[l] ((hu.unit⁻¹ : (Pl.R.BdR)ˣ) : Pl.R.BdR)) (f y) = y` using `fun y => by`. Rewrite using `[hAM, map_mulLeft_comp, IsUnit.val_inv_mul, map_mulLeft_one]`. Establish `hr : ∀ y, f (AlgebraTensorModule.map (LinearMap.id : V →ₗ[LL] V) (LinearMap.mulLeft ℚ_[l] ((hu.unit⁻¹ : (Pl.R.BdR)ˣ) : Pl.R.BdR)) y) = y` using `fun y => by`. Rewrite using `[hAM, map_mulLeft_comp, IsUnit.mul_val_inv, map_mulLeft_one]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Function.bijective_iff_has_inverse.2 ⟨_, hl, hr⟩, fun y j => ⟨fun h => ?_, fun h => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hAM]`. Conclude with `map_mem_FilV K j (j + 1) _ (fun b hb => (hF j b).1 hb) y h`. Use `map_mem_FilV K (j + 1) j (LinearMap.mulLeft ℚ_[l] ((hu.unit⁻¹ : (Pl.R.BdR)ˣ) : Pl.R.BdR)) (fun b hb => by` as an intermediate fact. Rewrite using `[hF j, LinearMap.mulLeft_apply, ← mul_assoc, IsUnit.mul_val_inv, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `hb) _ h`. Rewrite `this` using `[hl]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem bijective_and_mem_FilV_iff_of_mul (K : FinExt l) (ξ : Pl.R.BdR) (hu : IsUnit ξ)
     (hF : ∀ (j : ℤ) (x : Pl.R.BdR), x ∈ (Pl.PD K).Fil j ↔ ξ * x ∈ (Pl.PD K).Fil (j + 1))
@@ -213,7 +209,7 @@ end GlobalTheory.BKReal.EhatShift
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `l _ a e _ _ ϖ LL _ _ T Pl AI Td A hA`. Rewrite using `[GlobalTheory.BKReal.PiSys.iD_const_Ehat_eq_tmul l a e ↥(OL LL) ↥LL.1 (thetaW a LL) ϖ]`. Take `⟨hu, hF⟩` from `GlobalTheory.BKReal.EhatShift.isUnit_and_mem_Fil_iff Td (a := a) ϖ (Formalism.MainNotions.ElementDenominator.qlExt l)`. Use `GlobalTheory.BKReal.EhatShift.bijective_and_mem_FilV_iff_of_mul _ _ hu hF _ fun v c => ?_` and prove the remaining obligations. Rewrite using `[hA]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/

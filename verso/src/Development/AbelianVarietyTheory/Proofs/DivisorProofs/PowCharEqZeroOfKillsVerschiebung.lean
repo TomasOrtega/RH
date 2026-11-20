@@ -7,7 +7,7 @@ open CategoryTheory TensorProduct Coalgebra Bialgebra GlobalTheory GlobalTheory.
 namespace GlobalTheory.PDivGroup
 
 /- English proof (translation)
-Proceed by induction on `x using frobTwist_induction h n with`. Consider the case `h0 => simp only [map_zero]`. Consider the case `h2 x y hx hy => simp only [map_add, hx, hy]`. Consider the case `h1 r a`. Rewrite using `[SemiBialgHom.smul_map, SemiBialgHom.smul_map, SemiHom.frobTwist_app_frobProj]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem frobProj_frobTwist_app {p : ℕ} [Fact p.Prime] {R : Type} [CommRing R] (h : (p : R) = 0)
     (G : PDivGroup p R) (n : ℕ) (x : (frobTwist h G).A n) :
@@ -19,9 +19,9 @@ theorem frobProj_frobTwist_app {p : ℕ} [Fact p.Prime] {R : Type} [CommRing R] 
     rw [SemiBialgHom.smul_map, SemiBialgHom.smul_map, SemiHom.frobTwist_app_frobProj]
 
 /- English proof (translation)
-Use `CartierDual.ext_apply fun y => ?_` and prove the remaining obligations. Proceed by induction on `y using frobTwist_induction h n with`. Consider the case `h0 => simp only [map_zero]`. Consider the case `h2 x y hx hy => rw [map_add, hx, hy, map_add]`. Consider the case `h1 r a`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite using `[map_smul, ← frobTwistDual_verschiebung h (G := frobTwist h G) n χ, ← SemiHom.app_verschiebung h h (frobProj h G), frobProj_frobTwist_app, frobTwistDual_frobProj, hχ, zero_pow (Fact.out : p.Prime).ne_zero, smul_zero]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pow_char_eq_zero_of_verschiebung (p : ℕ) [Fact p.Prime] (R : Type) [CommRing R]
     (h : (p : R) = 0) (G : PDivGroup p R) (n : ℕ) (χ : CartierDual R ((frobTwist h G).A n))

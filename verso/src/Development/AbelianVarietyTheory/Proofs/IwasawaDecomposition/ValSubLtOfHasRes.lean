@@ -13,7 +13,7 @@ namespace GlobalTheory.Mem.Col2.PtStab
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Take `⟨r, hr, hv⟩` from `h`. Use `⟨r, hr, ?_⟩` and prove the remaining obligations. Establish `e : b - algebraMap E _ (algebraMap (𝓞 E) E r) = (a - algebraMap E _ (algebraMap (𝓞 E) E r)) - (a - b)` using `by ring`. Rewrite using `[e]`. Conclude with `Valuation.map_sub_lt _ hv hab`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasRes_of_sub {P : HeightOneSpectrum (𝓞 E)} {a b : P.adicCompletion E} {c : 𝓞 E ⧸ P.asIdeal}
     (h : HasRes P a c) (hab : Valued.v (a - b) < 1) : HasRes P b c := by
@@ -24,9 +24,9 @@ theorem hasRes_of_sub {P : HeightOneSpectrum (𝓞 E)} {a b : P.adicCompletion E
   exact Valuation.map_sub_lt _ hv hab
 
 /- English proof (translation)
-Take `⟨r, hr, hv⟩` from `h`. Take `⟨r', hr', hv'⟩` from `h'`. Establish `hmem : r - r' ∈ P.asIdeal` using `Ideal.Quotient.eq.1 (hr.trans hr'.symm)`. Establish `e : a - b = (a - algebraMap E _ (algebraMap (𝓞 E) E r)) - (b - algebraMap E _ (algebraMap (𝓞 E) E r')) + algebraMap E (P.adicCompletion E) (algebraMap (𝓞 E) E (r - r'))`. Simplify using `only [map_sub]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `Valuation.map_add_lt _ (Valuation.map_sub_lt _ hv hv') ?_` and prove the remaining obligations. Rewrite using `[valued_algebraMap]`. Conclude with `(HeightOneSpectrum.valuation_lt_one_iff_mem _ _).2 hmem`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_sub_lt_of_hasRes {P : HeightOneSpectrum (𝓞 E)} {a b : P.adicCompletion E} {c : 𝓞 E ⧸ P.asIdeal}
     (h : HasRes P a c) (h' : HasRes P b c) : Valued.v (a - b) < 1 := by
@@ -43,13 +43,13 @@ theorem val_sub_lt_of_hasRes {P : HeightOneSpectrum (𝓞 E)} {a b : P.adicCompl
   exact (HeightOneSpectrum.valuation_lt_one_iff_mem _ _).2 hmem
 
 /- English proof (translation)
-Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨v, hv, rfl⟩` from `hx`. Conclude with `h v hv`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Establish `e : (a *ᵥ (x + y)) i - (b *ᵥ (x + y)) i = ((a *ᵥ x) i - (b *ᵥ x) i) + ((a *ᵥ y) i - (b *ᵥ y) i)`. Simplify using `only [Matrix.mulVec_add, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, map_add (adAt F P)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `Valuation.map_add_lt _ hx hy`. Consider the case `smul c x _ hx`. Establish `e0 : c • x = (c : AfE F E) • x` using `rfl`. Establish `e : (a *ᵥ (c • x)) i - (b *ᵥ (c • x)) i = (c : AfE F E) * ((a *ᵥ x) i - (b *ᵥ x) i)`. Rewrite using `[e0, Matrix.mulVec_smul, Matrix.mulVec_smul, Pi.smul_apply, Pi.smul_apply, smul_eq_mul, smul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, map_mul, map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' ((mem_rInt_iff F E _).1 c.2 P)) hx`.
+A detailed English derivation is pending.
 -/
 theorem val_sub_lt_of_hatL {n : ℕ} (a b : Matrix (Fin n) (Fin n) (AfE F E)) (P : HeightOneSpectrum (𝓞 E)) (i : Fin n)
     {N : Submodule (𝓞 E) (Fin n → E)}
@@ -79,7 +79,7 @@ theorem val_sub_lt_of_hatL {n : ℕ} (a b : Matrix (Fin n) (Fin n) (AfE F E)) (P
 variable [StarRing E] {hc : Formalism.BasicNotions.CMData F E} {n : ℕ} {ST SG Q : Finset (HeightOneSpectrum (𝓞 E))}
 
 /- English proof (translation)
-Unfold `GlobalTheory.Mem.Col2.pullV`. Simplify using `only [Matrix.mulVec_mulVec, ← Units.val_mul, _root_.mul_inv_rev, inv_inv, mul_assoc]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem pullV_mul_stab (g g' h : GL (Fin n) (AfE F E)) (x : Sp E n) :
     GlobalTheory.Mem.Col2.pullV (h * (g⁻¹ * g')) x =
@@ -89,7 +89,7 @@ theorem pullV_mul_stab (g g' h : GL (Fin n) (AfE F E)) (x : Sp E n) :
   simp only [Matrix.mulVec_mulVec, ← Units.val_mul, _root_.mul_inv_rev, inv_inv, mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pullV_eq_of_mul (g h : GL (Fin n) (AfE F E)) (x : Sp E n) :
     GlobalTheory.Mem.Col2.pullV h x = ((g⁻¹ : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) *ᵥ
@@ -97,9 +97,9 @@ theorem pullV_eq_of_mul (g h : GL (Fin n) (AfE F E)) (x : Sp E n) :
   rw [Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]
 
 /- English proof (translation)
-Establish `hu : GlobalTheory.Mem.Col2.pullV h x ∈ Formalism.L2.Herm.hatL (F` using `F) (stdLat E n) := (hh.lat _).1 (Submodule.subset_span ⟨x, hx, rfl⟩)`. Establish `hz : (g : Matrix (Fin n) (Fin n) (AfE F E)) *ᵥ GlobalTheory.Mem.Col2.pullV h x ∈ Formalism.L2.Herm.hatL (F` using `F) p.deco.1.N := by`. Use `(hg.lat _).2 ?_` and prove the remaining obligations. Rewrite using `[← pullV_eq_of_mul]` and apply the resulting hypothesis. Use `val_sub_lt_of_hatL _ _ P i (fun y hy => hP y hy) hz` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `this` using `[← pullV_eq_of_mul, ← pullV_mul_stab]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem val_sub_pullV_lt {g g' h : GL (Fin n) (AfE F E)} {p q : DecoF E n ST SG Q}
     (hg : IsPtOf hc g p) (hh : IsPtOf hc h q) {P : HeightOneSpectrum (𝓞 E)} (i : Fin n)
@@ -115,15 +115,15 @@ theorem val_sub_pullV_lt {g g' h : GL (Fin n) (AfE F E)} {p q : DecoF E n ST SG 
   rwa [← pullV_eq_of_mul, ← pullV_mul_stab] at this
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ hc n ST SG Q g g' h p q hg hg' hh`. Use `⟨mul_mem hh.uni (mul_mem (inv_mem hg.uni) hg'.uni), fun x => ?_, fun P x hx i hi => ?_, fun w x hx i => ?_, fun P i j => ?_⟩` and prove the remaining obligations. Establish `e : (((h * (g⁻¹ * g'))⁻¹ : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) *ᵥ x = ((g'⁻¹ : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) *ᵥ ((g : Matrix (Fin n) (Fin n) (AfE F E)) *ᵥ (((h⁻¹ : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) *ᵥ x))`. Simplify using `only [Matrix.mulVec_mulVec, ← Units.val_mul, _root_.mul_inv_rev, inv_inv, mul_assoc]`. Rewrite using `[e, hh.lat x, ← hg'.lat, hg.lat, Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `hasRes_of_sub (hh.f P x hx i hi) ?_` and prove the remaining obligations. Rewrite using `[← map_sub]`. Use `val_sub_pullV_lt hg hh i (fun y hy => ?_) hx` and prove the remaining obligations. Rewrite using `[map_sub]`. Conclude with `val_sub_lt_of_hasRes (hg.f P y hy i hi) (hg'.f P y hy i hi)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `hasRes_of_sub (hh.be w x hx i) ?_` and prove the remaining obligations. Rewrite using `[← map_sub]`. Use `val_sub_pullV_lt hg hh i (fun y hy => ?_) hx` and prove the remaining obligations. Rewrite using `[map_sub]`. Conclude with `val_sub_lt_of_hasRes (hg.be w y hy i) (hg'.be w y hy i)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hgg : (g : Matrix (Fin n) (Fin n) (AfE F E)).map (adAt F P.1) = (g' : Matrix (Fin n) (Fin n) (AfE F E)).map (adAt F P.1)`. Use extensionality with `a b`. Simplify using `only [Matrix.map_apply]`. Rewrite using `[hg.fr, hg'.fr]`. Establish `hs : (((g⁻¹ * g' : GL (Fin n) (AfE F E))) : Matrix (Fin n) (Fin n) (AfE F E)).map (adAt F P.1) = 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Units.val_mul, Matrix.map_mul, ← hgg, ← Matrix.map_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `e : adAt F P.1 (((h * (g⁻¹ * g') : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) i j) = ((((h * (g⁻¹ * g') : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E))).map (adAt F P.1)) i j` using `rfl`. Rewrite using `[e, Units.val_mul, Matrix.map_mul, hs, mul_one, Matrix.map_apply]`. Conclude with `hh.fr P i j`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPtOf_mul_stab : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [StarRing E] (hc : Formalism.BasicNotions.CMData F E) (n : ℕ) (ST SG Q : Finset (HeightOneSpectrum (𝓞 E))), ∀ (g g' h : GL (Fin n) (AfE F E)) (p q : DecoF E n ST SG Q), IsPtOf hc g p → IsPtOf hc g' p → IsPtOf hc h q → IsPtOf hc (h * (g⁻¹ * g')) q := by
   intro F E _ _ _ _ _ _ hc n ST SG Q g g' h p q hg hg' hh

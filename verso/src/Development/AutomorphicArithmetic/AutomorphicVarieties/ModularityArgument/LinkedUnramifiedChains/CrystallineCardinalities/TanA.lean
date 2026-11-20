@@ -5,7 +5,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CurveDVRSpecializa
 open UpperTheory.V
 
 /- English proof (translation)
-The claim follows from `UpperTheory.V.J.tanA_of hP UpperTheory.V.Pr.degEq (UpperTheory.V.Z.J.unitOf hL)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.J.tanA (hP : GC.Hypotheses₂) (hL : Loc.LocalPublishedTheorems) : UpperTheory.V.J.TanA :=
   UpperTheory.V.J.tanA_of hP UpperTheory.V.Pr.degEq (UpperTheory.V.Z.J.unitOf hL)

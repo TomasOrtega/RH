@@ -18,7 +18,7 @@ variable {k p ρ : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpac
 def psiH {p : ℕ} (σ : Equiv.Perm (Fin p)) (v : U.LW σ → ℂ) : ℂ := G.psi U.betaU (U.subS (lhOf σ v))
 
 /- English proof (translation)
-Rewrite using `[Measure.volume_eq_prod, measureReal_def, ← Set.univ_prod_univ, Measure.prod_prod]`. Rewrite using `[volume_pi, volume_pi, Measure.pi_univ, Measure.pi_univ]`. Simplify using `[volume_pi, Measure.pi_univ]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem volume_empty_blocks_real (p : ℕ) : (volume : Measure ((Fin 0 → Fin p → ℂ) × (Fin p → Fin 0 → ℂ))).real Set.univ = 1 := by
   rw [Measure.volume_eq_prod, measureReal_def, ← Set.univ_prod_univ, Measure.prod_prod]
@@ -35,7 +35,7 @@ Both sides reduce to the same expression.
 theorem regroup_apply (σ : Equiv.Perm (Fin p)) (x : XL k p ρ σ) : regroup σ x = ((x.1, x.2.1), x.2.2) := rfl
 
 /- English proof (translation)
-Use `Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite Bj.haarW` as an intermediate fact. Use `Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite Bj.haarN` as an intermediate fact. Use `Formalism.FourierDecayAlt.P.Dx2.SplitF.sf_RC (k := k) p ρ` as an intermediate fact. Conclude with `(measurePreserving_prodAssoc (Bj.μW.prod Bj.μN) (U.muRC k p ρ) ((volume : Measure ((Fin 0 → Fin p → ℂ) × (Fin p → Fin 0 → ℂ))).prod (volume : Measure (U.LW σ → ℂ)))).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem regroup_mp (Bj : B.RealPlaceData k ρ Wp Wq) (σ : Equiv.Perm (Fin p)) :
     MeasurePreserving (regroup σ) (muL Bj σ)
@@ -53,11 +53,11 @@ def fH (Bj : B.RealPlaceData k ρ Wp Wq) (B0 : B.RealPlaceData k (p + ρ) Wp Wq)
   psiH σ q.2.2 • PBQ.pbI Bj B0 rfl H (U.mMap k p ρ (lhOf σ q.2.2 * U.hMat σ d) g) q.1
 
 /- English proof (translation)
-Establish `hP : PBQ.GoodP Bj (x.1, x.2.1)` using `hx`. Establish `hs : sxL Bj σ x * U.mMap k p ρ (U.hMat σ d) g = D.castM rfl (PBQ.sP Bj (x.1, x.2.1)) * U.mMap k p ρ (lhOf σ x.2.2.2 * U.hMat σ d) g`. Rewrite using `[Formalism.FourierDecayAlt.P.Dx2.MN.castM_rfl, sxL, if_pos hx, PBQ.sP, if_pos hP]`. Establish `e` using `embedding_map_lower_unipotent k p ρ (lhOf σ x.2.2.2) (U.hMat σ d) 1 g (lh_unit σ x.2.2.2)`. Rewrite `e` using `[Matrix.mul_one, Formalism.FourierDecayAlt.P.PBM.muP_one, Matrix.mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[e]`. Establish `e2` using `embedded_group_measure_preserving k p ρ ((Matrix.of x.1.1 : B.Mat k ρ)⁻¹ * (Matrix.of x.1.2 : B.Mat k ρ)⁻¹) ((lhOf σ x.2.2.2)ᴴ⁻¹)`. Simplify using `only [Matrix.mul_assoc] at e2 ⊢`. Rewrite using `[← Matrix.mul_assoc (U.muP k p ρ _) (U.embG k p ρ _), ← e2, Matrix.mul_assoc]`. Rewrite using `[hs, regroup_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Unfold `fH ellL PBQ.pbI cL PBQ.cP psiH`. Simplify using `only [_root_.smul_apply, ContinuousLinearMap.compL_apply, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ellL_eq (Bj : B.RealPlaceData k ρ Wp Wq) (B0 : B.RealPlaceData k (p + ρ) Wp Wq) (σ : Equiv.Perm (Fin p))
     (d : Fin p → ℂ) (H : B.Mat k (p + ρ) → (Wq →L[ℂ] Wp)) (g : B.Mat k ρ) (x : XL k p ρ σ) (hx : GoodL Bj σ x) :
@@ -82,15 +82,15 @@ theorem ellL_eq (Bj : B.RealPlaceData k ρ Wp Wq) (B0 : B.RealPlaceData k (p + �
 variable [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Take `⟨hint, hJ⟩` from `core_lf hp σ d hd Bj B0 hz' hπ' hW' hW0' hNj hN0 g hg H hHc R hR`. Use `Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite Bj.haarW` as an intermediate fact. Use `Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite Bj.haarN` as an intermediate fact. Use `Formalism.FourierDecayAlt.P.Dx2.SplitF.sf_RC (k := k) p ρ` as an intermediate fact. Establish `hsf : SigmaFinite (PBQ.muXP (p` using `p) Bj) := by unfold PBQ.muXP; infer_instance`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hae : (fun x => ellL Bj σ x (PBG.Kr B0 H (sxL Bj σ x * U.mMap k p ρ (U.hMat σ d) g))) =ᵐ[muL Bj σ] fun x => fH Bj B0 σ d H g (regroup σ x)` using `by filter_upwards [ae_goodL Bj σ] with x hx`. Conclude with `ellL_eq Bj B0 σ d H g x hx`. Establish `mp` using `regroup_mp Bj σ`. Establish `hint2 : Integrable (fH Bj B0 σ d H g) ((PBQ.muXP Bj).prod ((volume : Measure ((Fin 0 → Fin p → ℂ) × (Fin p → Fin 0 → ℂ))).prod (volume : Measure (U.LW σ → ℂ))))` using `(mp.integrable_comp_emb (regroup σ).measurableEmbedding).1 ((hint.congr hae))`. Establish `hJ2 : B.JF Bj (U.PhiFun (s` using `0) k ρ σ d (liftVec k p ρ Bj.z) (liftVec k p ρ Bj.z') H (fun a => a.elim0)) g = ∫ q, fH Bj B0 σ d H g q ∂((PBQ.muXP Bj).prod ((volume : Measure ((Fin 0 → Fin p → ℂ) × (Fin p → Fin 0 → ℂ))).prod (volume : Measure (U.LW σ → ℂ)))) := by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hJ, integral_congr_ae hae, mp.integral_comp' (fH Bj B0 σ d H g)]`. Establish `hin : ∀ c : ((Fin 0 → Fin p → ℂ) × (Fin p → Fin 0 → ℂ)) × (U.LW σ → ℂ), ∫ xP, fH Bj B0 σ d H g (xP, c) ∂(PBQ.muXP Bj) = psiH σ c.2 • PBQ.pbF Bj B0 rfl H (U.mMap k p ρ (lhOf σ c.2 * U.hMat σ d) g)`. Introduce `c`. Unfold `fH PBQ.pbF`. Conclude with `integral_smul (psiH σ c.2) _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hR1` using `hint2.integral_prod_right`. Simplify using `only [hin] at hR1`. Establish `hR2` using `hR1.integral_prod_right`. Simplify using `only [integral_const, volume_empty_blocks_real, one_smul] at hR2`. Use `⟨hR2, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hJ2, integral_prod_symm _ hint2]`. Simplify using `only [hin]`. Rewrite using `[integral_fun_snd (fun v : U.LW σ → ℂ => psiH σ v • PBQ.pbF Bj B0 rfl H (U.mMap k p ρ (lhOf σ v * U.hMat σ d) g)), volume_empty_blocks_real, one_smul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jfSliceInt (hp : 1 ≤ p) (σ : Equiv.Perm (Fin p)) (d : Fin p → ℂ) (hd : ∀ i, d i ≠ 0)
     (Bj : B.RealPlaceData k ρ Wp Wq) (B0 : B.RealPlaceData k (p + ρ) Wp Wq) (hz' : B0.z' = liftVec k p ρ Bj.z')
@@ -147,7 +147,7 @@ namespace Formalism.FourierDecayAlt.P
 open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants MeasureTheory
 
 /- English proof (translation)
-The claim follows from `SliceIntegralLemmas.jfSliceInt hp σ d hd Bj B0 hz' hπ' hW' hW0' hNj hN0 g hg H hHc R hR`.
+A detailed English derivation is pending.
 -/
 theorem slice_integral_jacobian_factor {k p ρ : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]

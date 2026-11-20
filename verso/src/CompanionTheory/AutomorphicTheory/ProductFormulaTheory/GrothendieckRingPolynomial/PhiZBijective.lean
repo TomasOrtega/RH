@@ -15,15 +15,15 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 variable [Fact (Assoc k)] [Fact (Comm k)] [Fact (One k)]
 
 /- English proof (translation)
-Establish `hm : ∀ s : Segment k →₀ ℕ, ell Δ (toR.symm (phiOf Lseg (MvPolynomial.monomial s 1))) = if s = Finsupp.single Δ 1 then (-1) ^ (Δ.len - 1) else 0`. Introduce `s`. Take `⟨h, Γ, hΓ⟩` from `exists_enum s`. Rewrite using `[← prod_X_of_map s Γ hΓ, hprod h _ Γ rfl, AddEquiv.symm_apply_apply, ell_prod hA hj hJ hAlt Lseg hL, hΓ]`. Distinguish the cases in `hs : s = Finsupp.single Δ 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos ((toMultiset_eq_single_iff s Δ).2 hs), if_pos hs]`. Rewrite using `[if_neg (fun h => hs ((toMultiset_eq_single_iff s Δ).1 h)), if_neg hs]`. Establish `hm' : ∀ v, ell Δ (toR.symm (phiOf Lseg (MvPolynomial.monomial v (p.coeff v)))) = p.coeff v * (if v = Finsupp.single Δ 1 then (-1) ^ (Δ.len - 1) else 0)`. Introduce `v`. Establish `: MvPolynomial.monomial v (p.coeff v) = p.coeff v • MvPolynomial.monomial v (1 : ℤ)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[MvPolynomial.smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[this, map_zsmul, map_zsmul, map_zsmul, hm, smul_eq_mul]`. Use `conv_lhs => rw [p.as_sum]`. Simplify using `only [map_sum, hm']`. Rewrite using `[Finset.sum_eq_single (Finsupp.single Δ 1)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[hb]`. Introduce `hn`. Rewrite using `[MvPolynomial.notMem_support_iff.1 hn]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem ell_phiOf (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (hj : LSegJacquet k) (hJ : JCls k) (hAlt : AltSum k)
     (Lseg : Segment k → IrrGL k) (hL : ∀ Δ, IsLSeg Δ (Lseg Δ).rep)
@@ -63,19 +63,17 @@ variable [Fact (Assoc k)] [Fact (Comm k)] [Fact (One k)]
 open GrothendieckPhiBijection in
 
 /- English proof (translation)
-Establish `hA` using `CompanionTheory.Tls2.BZGL.irreducibleAdmissibleGL_top`. Take `⟨Lseg, hL, hbij, hpre, hprod⟩` from `phiL_main hk h2`. Take `⟨hcls, -, -, -, -, -, -, -, hJ, hS, hAlt⟩` from `hk`. Establish `key : ∀ Δ : Segment k, ∃ p : MvPolynomial (Segment k) ℤ, phiOf Lseg p = toR (sg (⟨Δ.len * Δ.d, Z Δ⟩ : IrrGL k)) ∧ ∃ (ε : ℤˣ) (q : MvPolynomial (Segment k) ℤ), (∀ t ∈ q.vars, t.len < Δ.len) ∧ p = (ε : ℤ) • MvPolynomial.X Δ + q`. Introduce `Δ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨𝔫, h𝔫⟩` from `hcls.exh ⟨Δ.len * Δ.d, Z Δ⟩`. Take `⟨p, hp, hsupp⟩` from `hpre 𝔫 _ h𝔫`. Establish `hms` using `msupp_seg hA hcls.jac Z hZ hS Δ h𝔫`. Establish `hce : p.coeff (Finsupp.single Δ 1) * (-1) ^ (Δ.len - 1) = 1`. Rewrite using `[← ell_phiOf hA hcls.jac hJ hAlt Lseg hL hprod Δ p, hp, AddEquiv.symm_apply_apply, ell_sg (hS Z hZ Δ).1 (hS Z hZ Δ).2]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : p.coeff (Finsupp.single Δ 1) = (-1) ^ (Δ.len - 1)`. Establish `hsq : ((-1 : ℤ) ^ (Δ.len - 1)) * (-1) ^ (Δ.len - 1) = 1`. Rewrite using `[← mul_pow]`. Evaluate the numerical expressions. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Chain the equalities or inequalities of the calculation.
 
-Use `⟨p, hp, (-1) ^ (Δ.len - 1), p - MvPolynomial.monomial (Finsupp.single Δ 1) (p.coeff (Finsupp.single Δ 1)), vars_lt hA p (fun s hs => (hsupp s hs).trans hms), ?_⟩` and prove the remaining obligations. Establish `hX : (((-1 : ℤˣ) ^ (Δ.len - 1) : ℤˣ) : ℤ) • (MvPolynomial.X Δ : MvPolynomial (Segment k) ℤ) = MvPolynomial.monomial (Finsupp.single Δ 1) (p.coeff (Finsupp.single Δ 1))`. Rewrite using `[hc, MvPolynomial.X, MvPolynomial.smul_monomial, smul_eq_mul, mul_one]`. Use `push_cast`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Rewrite using `[hX]`. Expand and normalize the polynomial expressions, which then agree. Use `choose p hp ε q hq hpq using key`. Establish `hψ : Function.Bijective (MvPolynomial.eval₂Hom (Int.castRingHom (MvPolynomial (Segment k) ℤ)) p)` using `h1 (Segment k) Segment.len _ fun Δ => ⟨ε Δ, q Δ, hq Δ, by rw [MvPolynomial.eval₂Hom_X']; exact hpq Δ⟩`. Establish `heq : phiOf (k` using `k) (fun Δ => ⟨Δ.len * Δ.d, Z Δ⟩) = (phiOf Lseg).comp (MvPolynomial.eval₂Hom (Int.castRingHom (MvPolynomial (Segment k) ℤ)) p) := by`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Conclude with `RingHom.congr_fun (RingHom.ext_int ((phiOf (k := k) (fun Δ => ⟨Δ.len * Δ.d, Z Δ⟩)).comp MvPolynomial.C) (((phiOf Lseg).comp (MvPolynomial.eval₂Hom (Int.castRingHom (MvPolynomial (Segment k) ℤ)) p)).comp MvPolynomial.C)) r`. Introduce `Δ`. Rewrite using `[phiOf_X, RingHom.comp_apply, MvPolynomial.eval₂Hom_X', hp Δ]`.
-
-Rewrite using `[heq]`. Conclude with `hbij.comp hψ`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phiZ_bijective (hk : Steps k) (h1 : TriAut) (h2 : UniTri)
     (Z : ∀ Δ : Segment k, IrrCl (GL (Fin (Δ.len * Δ.d)) k)) (hZ : IsSegmentClass k Z) :

@@ -10,7 +10,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace LateralTheory.E.ChernClassEdgeValuesFromKummerTorsor
 
 /- English proof (translation)
-Introduce `q _`. Unfold `kumT`. Conclude with `pick_spec (hk q)`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem kumT_ex_of (hk : LateralTheory.E.CupProductRingLaws.LeafKumTExists) : LateralTheory.EtaleFoundations.EtaleKummerTriangleExists := by
   intro q _
@@ -18,13 +18,13 @@ theorem kumT_ex_of (hk : LateralTheory.E.CupProductRingLaws.LeafKumTExists) : La
   exact pick_spec (hk q)
 
 /- English proof (translation)
-The claim follows from `LateralTheory.EtaleFoundations.etale_locally_roots_of_unity_structure_of_exists_and_kummer LateralTheory.EtaleFoundations.etale_locally_exists_primitive_root_of_unity_of_invertible_order hr`.
+A detailed English derivation is pending.
 -/
 theorem prim_loc_of (hr : LateralTheory.E.ChernClassRootLocalization.LeafRootLoc) : LateralTheory.EtaleFoundations.EtalePrimitiveRootsExistLocally :=
   LateralTheory.EtaleFoundations.etale_locally_roots_of_unity_structure_of_exists_and_kummer LateralTheory.EtaleFoundations.etale_locally_exists_primitive_root_of_unity_of_invertible_order hr
 
 /- English proof (translation)
-The claim follows from `LateralTheory.EtaleFoundations.exists_natural_etale_kummer_degree_one_value_of_roots_kummer_gluing (prim_loc_of hr) (kumT_ex_of hk) LateralTheory.EtaleFoundations.etale_sheaf_sections_glue_of_forget_isSheaf`.
+A detailed English derivation is pending.
 -/
 theorem etale_kummer_chern_edge_values_exist_of_local_roots_and_kummer_torsor (hr : LateralTheory.E.ChernClassRootLocalization.LeafRootLoc) (hk : LateralTheory.E.CupProductRingLaws.LeafKumTExists) :
     LateralTheory.E.ChernClassExistence.EtaleKummerChernEdgeValuesExistNatural :=

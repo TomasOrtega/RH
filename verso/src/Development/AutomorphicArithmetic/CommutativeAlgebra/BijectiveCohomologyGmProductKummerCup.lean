@@ -15,45 +15,43 @@ namespace UpperTheory.Kun
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Establish `hz : Sec.map (P.d 1 2) (sg κ) = 0` using `((GlobalTheory.T.cocycle_ev_d_eq_zero_and_mk_eq_zero_iff R W P 0 1 2 (by omega) (by omega)).2 κ).1`. Establish `hmono` using `GlobalTheory.T.etaleLocal_property_calculus_rules.2.1`. Use `haveI := LL_ge I Q`. Establish `key : ∀ (T : Scheme.{0}) (n' : ℤ) (a₁ : Sec (I.X n') T) (a₂ : Sec (Q.X (n' + -1)) T), psi W μ (sg κ) T n' (cc a₁ (n'.negOnePow • a₂)) = Sec.res (prod.snd : W ⨯ T ⟶ T) a₁ + μ.mul (W ⨯ T) (n' + -1) 1 n' (by omega) (Sec.res (prod.snd : W ⨯ T ⟶ T) a₂) (Sec.res (prod.fst : W ⨯ T ⟶ W) …`. Introduce `T n' a₁ a₂`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `Sec.res (prod.snd : W ⨯ T ⟶ T) (c₁ (cc a₁ (n'.negOnePow • a₂))) + n'.negOnePow • μ.mul (W ⨯ T) (n' + -1) 1 n' (by omega) (Sec.res (prod.snd : W ⨯ T ⟶ T) (c₂ (cc a₁ (n'.negOnePow • a₂)))) (Sec.res (prod.fst : W ⨯ T ⟶ W) (sg κ)) = _`. Rewrite using `[c₁_cc, c₂_cc]`. Generalize the expression as in `n'.negOnePow = ε`. Apply the tactic sequence `rcases Int.units_eq_one_or ε with rfl | rfl <;> simp`. Take `⟨Φ, hΦ, hΦv⟩` from `UpperTheory.injectiveComplex_productSection_map_quasiIso R W (LL I Q) I (LL_inj hI hQ) hI (psi W μ (sg κ)) (fun g s a => psi_nat W μ _ g s a) (fun T s t a => UpperTheory.psi_comm_differential_of_cocycle R W μ _ hz T s t a) Z hZ (by`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `T hT n' b hb`. Take `⟨y, hy0, -⟩` from `(GlobalTheory.T.cocycle_ev_d_eq_zero_and_mk_eq_zero_iff R (W ⨯ T) I (n' - 1) n' (n' + 1) (by omega) rfl).1 b hb`. Establish `hsy : sg y = b` using `(hy0 _ (𝟙 _)).trans (res_id _)`. Use `hmono _ _ _ (hS T hT (n' + -1) n' (by omega) (CohomologyClass.mk y)) ?_` and prove the remaining obligations. Introduce and unpack `V g ⟨a, b', e⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨α₁, rfl⟩` from `a.mk_surjective`. Take `⟨α₂, rfl⟩` from `b'.mk_surjective`. Take `⟨β, hβ, hσ⟩` from `UpperTheory.exists_cocycle_product_eq_pull_add_cup R W _ μ κ (by omega : n' + -1 + 1 = n') α₁ α₂`. Establish `e2 : CohomologyClass.mk (β - zcomp (Cocycle.ofHom ((chains R).map (sch.map (prod.map (𝟙 W) g)))) y (zero_add n')) = 0`. Rewrite using `[CohomologyClass.mk_sub, hβ, e, sub_eq_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Take `⟨c, hc⟩` from `((GlobalTheory.T.cocycle_ev_d_eq_zero_and_mk_eq_zero_iff R (W ⨯ V) I (n' - 1) n' (n' + 1) (by omega) rfl).2 _).2.1 e2`. Use `⟨cc (sg α₁) (n'.negOnePow • sg α₂), c, ?_, ?_⟩` and prove the remaining obligations. Apply `LLsec_ext` to reduce the goal to its premises. Rewrite using `[c₁_d, c₁_cc, map_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((GlobalTheory.T.cocycle_ev_d_eq_zero_and_mk_eq_zero_iff R V I (n' - 1) n' (n' + 1) (by omega) rfl).2 α₁).1`. Rewrite using `[c₂_d, c₂_cc, map_zero]`. Establish `h0` using `((GlobalTheory.T.cocycle_ev_d_eq_zero_and_mk_eq_zero_iff R V Q (n' + -1 - 1) (n' + -1) (n' + 1 + -1) (by omega) (by omega)).2 α₂).1`. Generalize the expression as in `n'.negOnePow = ε`. Apply the tactic sequence `rcases Int.units_eq_one_or ε with rfl | rfl <;> simp [sg, h0]`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[key, ← hσ]`. Establish `h3 : sg (β - zcomp (Cocycle.ofHom ((chains R).map (sch.map (prod.map (𝟙 W) g)))) y (zero_add n')) = Sec.map (I.d (n' - 1) n') c` using `hc.symm`. Rewrite `h3` using `[sg_sub, sg_pull, hsy]`. Rewrite using `[← h3]`. Use the proof step `abel)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `(by`. Introduce and unpack `T hT n' a ha ⟨c, hc⟩`. Establish `h1 : Sec.map (I.d n' (n' + 1)) (c₁ a) = 0` using `by rw [← c₁_d, ha, map_zero]`. Establish `h2 : Sec.map (Q.d (n' + -1) (n' + 1 + -1)) (c₂ a) = 0`. Use `c₂_d n' (n' + 1) a` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite `this` using `[ha, map_zero]`. Conclude with `neg_eq_zero.1 this.symm`. Establish `h2' : Sec.map (Q.d (n' + -1) (n' + 1 + -1)) (n'.negOnePow • c₂ a) = 0`. Generalize the expression as in `n'.negOnePow = ε`. Apply the tactic sequence `rcases Int.units_eq_one_or ε with rfl | rfl <;> simp [h2]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨α₁, hα₁, -⟩` from `(GlobalTheory.T.cocycle_ev_d_eq_zero_and_mk_eq_zero_iff R T I (n' - 1) n' (n' + 1) (by omega) rfl).1 _ h1`. Take `⟨α₂, hα₂, -⟩` from `(GlobalTheory.T.cocycle_ev_d_eq_zero_and_mk_eq_zero_iff R T Q (n' + -1 - 1) (n' + -1) (n' + 1 + -1) (by omega) (by omega)).1 _ h2'`. Establish `hs₁ : sg α₁ = c₁ a` using `(hα₁ _ (𝟙 _)).trans (res_id _)`. Establish `hs₂ : sg α₂ = n'.negOnePow • c₂ a` using `(hα₂ _ (𝟙 _)).trans (res_id _)`. Take `⟨β, hβ, hσ⟩` from `UpperTheory.exists_cocycle_product_eq_pull_add_cup R W _ μ κ (by omega : n' + -1 + 1 = n') α₁ α₂`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Establish `ha' : a = cc (sg α₁) (n'.negOnePow • sg α₂)`. Apply `LLsec_ext` to reduce the goal to its premises. Rewrite using `[c₁_cc, hs₁]`. Rewrite using `[c₂_cc, hs₂]`. Generalize the expression as in `n'.negOnePow = ε`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Apply the tactic sequence `rcases Int.units_eq_one_or ε with rfl | rfl <;> simp`. Establish `e0 : CohomologyClass.mk β = 0`. Use `((GlobalTheory.T.cocycle_ev_d_eq_zero_and_mk_eq_zero_iff R (W ⨯ T) I (n' - 1) n' (n' + 1) (by omega) rfl).2 β).2.2 ⟨c, ?_⟩` and prove the remaining obligations. Rewrite using `[← hc]`. Express the relevant statement in the definitionally equal form `_ = sg β`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hσ, ← key, ← ha']`. Use `hmono _ _ _ (hJ T hT (n' + -1) n' (by omega) (CohomologyClass.mk α₁) (CohomologyClass.mk α₂) (by rw [← hβ, e0])) ?_` and prove the remaining obligations. Introduce and unpack `V g ⟨e₁, e₂⟩`. Take `⟨y₁, hy₁⟩` from `((GlobalTheory.T.cocycle_ev_d_eq_zero_and_mk_eq_zero_iff R V I (n' - 1) n' (n' + 1) (by omega) rfl).2 (zcomp (Cocycle.ofHom ((chains R).map (sch.map g))) α₁ (zero_add n'))).2.1 e₁`. Take `⟨y₂, hy₂⟩` from `((GlobalTheory.T.cocycle_ev_d_eq_zero_and_mk_eq_zero_iff R V Q (n' - 1 + -1) (n' + -1) (n' + 1 + -1) (by omega) (by omega)).2 (zcomp (Cocycle.ofHom ((chains R).map (sch.map g))) α₂ (zero_add (n' + -1)))).2.1 e₂`.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `_ = sg _ at hy₁`. Express the relevant statement in the definitionally equal form `_ = sg _ at hy₂`. Rewrite `hy₁` using `[sg_pull, hs₁]`. Rewrite `hy₂` using `[sg_pull, hs₂]`. Use `⟨cc y₁ (-(n'.negOnePow • y₂)), ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply `LLsec_ext` to reduce the goal to its premises. Rewrite using `[c₁_d, c₁_cc, c₁_res, hy₁]`. Rewrite using `[c₂_d, c₂_cc, c₂_res]`. Generalize the expression as in `n'.negOnePow = ε at hy₂ ⊢`. Apply the tactic sequence `rcases Int.units_eq_one_or ε with rfl | rfl <;> simp [hy₂])`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Use `E hE`. Establish `hf : ∀ (α₁ : Cocycle ((chains R).obj E) I n) (α₂ : Cocycle ((chains R).obj E) Q m), Φ n (CohomologyClass.mk (inL h α₁ α₂)) = cpull ((chains R).map (prod.snd : sch.obj W ⨯ E ⟶ E)) I n (CohomologyClass.mk α₁) + μ.cup (sch.obj W ⨯ E) h (cpull ((chains R).map (prod.snd : sch.obj W ⨯ …`. Introduce `α₁ α₂`. Take `⟨β, hβ, hv⟩` from `hΦv n (inL h α₁ α₂)`. Rewrite using `[hβ]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `UpperTheory.exteriorCup_cocycle_exists_of_pairing R W μ κ h α₁ α₂ β hv`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, b⟩ ⟨a', b'⟩ hpp`. Take `⟨α₁, rfl⟩` from `a.mk_surjective`. Take `⟨α₂, rfl⟩` from `b.mk_surjective`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨α₁', rfl⟩` from `a'.mk_surjective`. Take `⟨α₂', rfl⟩` from `b'.mk_surjective`. Establish `h0 : Φ n (CohomologyClass.mk (inL h (α₁ - α₁') (α₂ - α₂'))) = 0`. Rewrite using `[hf, CohomologyClass.mk_sub, CohomologyClass.mk_sub, map_sub, map_sub, map_sub, AddMonoidHom.sub_apply]`. Use `beta_reduce at hpp`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[sub_add_sub_comm, hpp, sub_self]`. Establish `h1` using `(hΦ n).1 (h0.trans (map_zero _).symm)`. Take `⟨e₁, e₂⟩` from `(UpperTheory.cohomologyClass_inL_surjective_and_injective R h).2 _ _ h1`. Rewrite `e₁`, `e₂` using `[CohomologyClass.mk_sub, sub_eq_zero]`. Rewrite using `[e₁, e₂]`.
-
-Introduce `y`. Take `⟨x, rfl⟩` from `(hΦ n).2 y`. Take `⟨x, rfl⟩` from `x.mk_surjective`. Take `⟨α₁, α₂, e⟩` from `(UpperTheory.cohomologyClass_inL_surjective_and_injective R h).1 x`. Conclude with `⟨(CohomologyClass.mk α₁, CohomologyClass.mk α₂), by rw [e]; exact (hf α₁ α₂).symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem genK (W : Scheme.{0}) (I Q P : Cx R) [I.IsStrictlyGE 0] [Q.IsStrictlyGE 0]
     (hI : ∀ s, Injective (I.X s)) (hQ : ∀ s, Injective (Q.X s)) (μ : Pair Q P I)
@@ -189,13 +187,11 @@ private theorem genK (W : Scheme.{0}) (I Q P : Cx R) [I.IsStrictlyGE 0] [Q.IsStr
 end UpperTheory.Kun
 
 /- English proof (translation)
-Take `⟨κ, hκ⟩` from `(kappa q).mk_surjective`. Establish `hr` using `fun i : ℤ => GlobalTheory.T.chosenInjectiveResolution_etaleSheaf_properties (ZMod q) (tw q i)`. Use `haveI := (hr (j + 1)).2.2.1`. Use `haveI := (hr j).2.2.1`. Establish `hmono` using `GlobalTheory.T.etaleLocal_property_calculus_rules.2.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `UpperTheory.Kun.genK (Gq q) (res _ (tw q (j + 1))) (res _ (tw q j)) (res _ (tw q 1)) (hr (j + 1)).2.1 (hr j).2.1 (twPair q j 1) κ (fun T => IsUnit (q : Γ(T, ⊤))) (fun {T' T} f hT => by simpa using hT.map f.appTop.hom) (by`. Introduce `T hT m' n' h' y`. Substitute `h'` using the available equality. Use `hmono _ _ _ ((UpperTheory.locally_surjective_multiplicativeGroupKunnethMap q T hT m' j).1 y) ?_` and prove the remaining obligations. Introduce and unpack `V g ⟨p, e⟩`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨p.1, p.2, by rw [hκ]; exact e⟩)`. Use the proof step `(by`. Introduce `T hT m' n' h' a b e`. Substitute `h'` using the available equality. Conclude with `(UpperTheory.locally_surjective_multiplicativeGroupKunnethMap q T hT m' j).2 (a, b) (by rw [hκ] at e; exact e))`.
-
-Use `E hE m (m + 1) rfl`. Rewrite `h` using `[hκ]`. Conclude with `h`.
+Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Kun.main (q : ℕ) [NeZero q] (E : Spc) (hE : Inv q E) (m j : ℤ) :
     Function.Bijective fun p : Ht q E (m + 1) (j + 1) × Ht q E m j =>
@@ -224,9 +220,7 @@ private theorem UpperTheory.Kun.main (q : ℕ) [NeZero q] (E : Spc) (hE : Inv q 
   exact h
 
 /- English proof (translation)
-Introduce `q _ E hE n i`. Establish `key : ∀ (m j n' i' : ℤ) (hn : m + 1 = n') (hi : j + 1 = i'), Function.Bijective fun p : Ht q E n' i' × Ht q E m j => pull _ (prod.snd : sch.obj (Gq q) ⨯ E ⟶ E) _ _ p.1 + ((cup q (pull _ (prod.snd : sch.obj (Gq q) ⨯ E ⟶ E) _ _ p.2) (pull _ (prod.fst : sch.obj (Gq q) ⨯ E ⟶ _) _ _ ( …`. Introduce `m j n' i' hn hi`. Substitute `hn hi` using the available equality. Conclude with `UpperTheory.Kun.main q E hE m j`.
-
-Conclude with `key (n - 1) (i - 1) n i (by ring) (by ring)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem UpperTheory.bijective_cohomology_gm_product_kummer_cup :
     ∀ (q : ℕ) [NeZero q] (E : Spc), Inv q E → ∀ n i : ℤ, Function.Bijective fun p : Ht q E n i × Ht q E (n - 1) (i - 1) =>

@@ -12,11 +12,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.HolDict.BackHol
 
 /- English proof (translation)
-Establish `: IsModuleTopology (AF F) (AF F ⊗[F] L)` using `⟨rfl⟩`. Establish `: Module.Finite F L` using `Module.Finite.of_restrictScalars_finite ℚ _ _`. Set `b` to `Module.finBasis F L`. Set `B` to `Algebra.TensorProduct.basis (AF F) b`. Establish `he : (fun z : AF F ⊗[F] L => θ (Algebra.TensorProduct.map (fstA F) (AlgHom.id F L) z)) = fun z => ∑ i, θ (fstA F (B.coord i z) ⊗ₜ[F] (1 : L)) * τ (b i)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `z`. Use `conv_lhs => rw [← B.sum_repr z, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul', smul_eq_mul, mul_one, ← hθ.1, ← map_mul, Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul, Algebra.TensorProduct.map_tmul]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he]`. Use `continuous_finset_sum _ fun i _ => Continuous.mul ?_ continuous_const` and prove the remaining obligations. Establish `h1 : Continuous (B.coord i)` using `IsModuleTopology.continuous_of_linearMap _`. Establish `h2 : Continuous (fstA F)` using `continuous_fst`. Conclude with `hθ.2.comp (h2.comp h1)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_place {F L : Type} [Field F] [NumberField F] [Field L] [NumberField L] [Algebra F L]
     {τ : L →+* ℂ} {θ : Ainf F ⊗[F] L →+* ℂ} (hθ : Formalism.MainNotions.StandardLattice.IsInfEmb τ θ) :
@@ -42,7 +42,7 @@ theorem continuous_place {F L : Type} [Field F] [NumberField F] [Field L] [Numbe
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hm : Continuous fun g : GA D V => ((matHom V g).1 : Matrix (Fin V.rank) (Fin V.rank) (AF D.host.F ⊗[D.host.F] D.host.E))` using `Units.continuous_val.comp continuous_subtype_val`. Use `continuous_pi fun a => continuous_pi fun c => ?_` and prove the remaining obligations. Conclude with `(continuous_place hθ).comp (hm.matrix_elem a c)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_archM (V : HSp D) {τ : D.host.E →+* ℂ} {θ : Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ}
     (hθ : Formalism.MainNotions.StandardLattice.IsInfEmb τ θ) : Continuous (archM V θ) := by
@@ -53,7 +53,7 @@ theorem continuous_archM (V : HSp D) {τ : D.host.E →+* ℂ} {θ : Ainf D.host
   exact (continuous_place hθ).comp (hm.matrix_elem a c)
 
 /- English proof (translation)
-Unfold `archM`. Rewrite using `[map_mul, Units.val_mul, Matrix.map_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem archM_mul (V : HSp D) (θ : Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ) (a b : GA D V) :
     archM V θ (a * b) = archM V θ a * archM V θ b := by
@@ -61,7 +61,7 @@ theorem archM_mul (V : HSp D) (θ : Ainf D.host.F ⊗[D.host.F] D.host.E →+* �
   rw [map_mul, Units.val_mul, Matrix.map_mul]
 
 /- English proof (translation)
-Establish `hk' : infHom V k = 1` using `hk`. Rewrite using `[archM, hk', Units.val_one, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem archM_of_fin (V : HSp D) (θ : Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ) {k : GA D V}
     (hk : k ∈ GfC V) : archM V θ k = 1 := by
@@ -69,7 +69,7 @@ theorem archM_of_fin (V : HSp D) (θ : Ainf D.host.F ⊗[D.host.F] D.host.E →+
   rw [archM, hk', Units.val_one, Matrix.map_one _ (map_zero _) (map_one _)]
 
 /- English proof (translation)
-Establish `: IsModuleTopology (AF D.host.F) (AF D.host.F ⊗[D.host.F] D.host.E)` using `⟨rfl⟩`. Establish `: Module.Finite D.host.F D.host.E` using `Module.Finite.of_restrictScalars_finite ℚ _ _`. Establish `: IsTopologicalRing (AF D.host.F ⊗[D.host.F] D.host.E)` using `IsModuleTopology.isTopologicalRing (AF D.host.F) _`. Conclude with `inferInstanceAs (IsTopologicalGroup (HR (AF D.host.F) D.sp.cm.sig V.gram))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem topGroup (V : HSp D) : IsTopologicalGroup (GA D V) := by
   have : IsModuleTopology (AF D.host.F) (AF D.host.F ⊗[D.host.F] D.host.E) := ⟨rfl⟩
@@ -79,23 +79,21 @@ theorem topGroup (V : HSp D) : IsTopologicalGroup (GA D V) := by
   exact inferInstanceAs (IsTopologicalGroup (HR (AF D.host.F) D.sp.cm.sig V.gram))
 
 /- English proof (translation)
-Use `haveI := topGroup V`. Take `⟨L, hL1, -, hLc, hUG, hLa, -, hdec, hcomm, -⟩` from `GlobalTheory.RealLift.exists_real_lift D θ V hθ`. Establish `horth : ∀ τ, OrthFr (gramAt D V τ) (nNeg (M.ε τ)) (x0Mat M τ)` using `fun τ => ((GlobalTheory.T.discreteSeriesModel_unitary_irreducible_orthonormal D V S M τ).2.2.2 hM).1`. Take `⟨-, -, hst, hx0⟩` from `GlobalTheory.HolDict.frDoms_open_preconnected_stable V.rank D.what₂.Tau (gramAt D V) (fun τ => nNeg (M.ε τ)) (x0Mat M) horth`. Rewrite using `[continuous_iff_continuousAt]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Take `⟨f, ⟨P, ⟨hPd, -⟩, hfP⟩, hf⟩` from `hφ h`. Set `A : GA D V → D.what₂.Tau → Mt V.rank` to `fun g τ => archM V (θ τ) (h⁻¹ * g)`. Establish `hA : Continuous A` using `continuous_pi fun τ => (continuous_archM V (hθ τ)).comp (continuous_const.mul continuous_id)`. Establish `hAU : ∀ g, A g ∈ UG (gramAt D V)` using `fun g => hUG _`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : Continuous fun g => L (A g)` using `hLc.comp_continuous hA hAU`. Establish `ha : Continuous fun g => (L (A g))⁻¹ * (h⁻¹ * g)` using `hu.inv.mul (continuous_const.mul continuous_id)`. Establish `hafin : ∀ g, (L (A g))⁻¹ * (h⁻¹ * g) ∈ GfC V`. Introduce `g`. Take `⟨a, ha, u, hu, e⟩` from `hdec (h⁻¹ * g)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e1 : A g = fun τ => archM V (θ τ) u`. Use function extensionality and compare the values at `τ`. Use `show archM V (θ τ) (h⁻¹ * g) = _`. Rewrite using `[e, archM_mul, archM_of_fin V _ ha, one_mul]`. Rewrite using `[e1, hLa u hu, e, hcomm a ha u hu, inv_mul_cancel_left]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `ha`. Establish `hah : (L (A h))⁻¹ * (h⁻¹ * h) ∈ U`. Establish `e1 : A h = fun τ => archM V (θ τ) 1`. Use function extensionality and compare the values at `τ`. Use `show archM V (θ τ) (h⁻¹ * h) = _`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[inv_mul_cancel]`. Rewrite using `[e1, hLa 1 (one_mem _)]`. Simplify using `using U.one_mem`. Establish `hN : {g | (L (A g))⁻¹ * (h⁻¹ * g) ∈ U} ∈ 𝓝 h` using `(hU.preimage ha).mem_nhds hah`. Establish `hx : Continuous fun g => (fun τ => (A g τ * x0Mat M τ : Mt V.rank) : D.what₂.Tau → Fin V.rank → Fin V.rank → ℂ)` using `continuous_pi fun τ => ((continuous_apply τ).comp hA).matrix_mul continuous_const`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hmem : ∀ g, (fun τ => (A g τ * x0Mat M τ : Mt V.rank) : D.what₂.Tau → Fin V.rank → Fin V.rank → ℂ) ∈ frDoms (gramAt D V) (fun τ => nNeg (M.ε τ))`. Introduce `g`. Use `hst _ (hAU g) (fun _ => 1) (fun _ => ⟨by simp, fun a c hac => Matrix.one_apply_ne hac.ne'⟩) _ hx0` as an intermediate fact. Simplify using `only [Matrix.mul_one] at this`. Conclude with `this`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Both sides reduce to the same expression.
 
-Establish `hc` using `hPd.continuousOn.comp_continuous hx hmem`. Use `hc.continuousAt.congr ?_` and prove the remaining obligations. Use `filter_upwards [hN] with g hg`. Establish `e : g = h * L (A g) * ((L (A g))⁻¹ * (h⁻¹ * g))` using `by group`. Establish `e2 : (fun τ => archM V (θ τ) (L (A g))) = A g` using `funext (hL1 _ (hAU g)).2`.
-
-Use `conv_rhs => rw [e, hl _ hg (hafin g), hf _ (hL1 _ (hAU g)).1, e2, hfP _ (hAU g)]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem continuous_of_holAd {θ : InfFam D} (hθ : IsInfFam θ) {V : HSp D} {S : D.what₂.Tau → SPar} {M : DSModel V S}
     (hM : HolShape M) {w : D.what₂.Tau → Fin V.rank → ℤ} {φ : GA D V → ℂ} (hφ : HolAd θ M w φ)
@@ -150,7 +148,7 @@ theorem continuous_of_holAd {θ : InfFam D} (hθ : IsInfFam θ) {V : HSp D} {S :
   rfl
 
 /- English proof (translation)
-Proceed by induction on `u using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a u ha ih`. Simplify using `only [Finset.prod_insert ha]`. Conclude with `(h a (Finset.mem_insert_self _ _)).mul (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem differentiableOn_prod {F : Type} [NormedAddCommGroup F] [NormedSpace ℂ F] {ι : Type} {s : Set F} (u : Finset ι)
     (f : ι → F → ℂ) (h : ∀ i ∈ u, DifferentiableOn ℂ (f i) s) : DifferentiableOn ℂ (fun x => ∏ i ∈ u, f i x) s := by
@@ -168,23 +166,21 @@ noncomputable def trFr {E : Type} [Field E] {Ψ : Finset (E →+* ℂ)} {n : ℕ
 open ReciprocityTheory.ChartRestriction.G.FD in
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `DifferentiableOn.mul (DifferentiableOn.const_mul ?_ κ) ?_` and prove the remaining obligations. Use `differentiableOn_prod _ (fun (ρ : ι) (x : ι → Fin n → Fin n → ℂ) => (Matrix.of (x ρ)).det ^ m ρ) fun ρ _ => ?_` and prove the remaining obligations. Use `DifferentiableOn.zpow (f := fun x : ι → Fin n → Fin n → ℂ => (Matrix.of (x ρ)).det) ?_ (Or.inl fun x hx => (hx ρ).1)` and prove the remaining obligations. Simplify using `only [Matrix.det_apply', Matrix.of_apply]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `DifferentiableOn.fun_sum fun σ _ => DifferentiableOn.const_mul (differentiableOn_prod _ (fun (i : Fin n) (x : ι → Fin n → Fin n → ℂ) => x ρ (σ i) i) fun i _ => ?_) _` and prove the remaining obligations. Use `fun_prop`. Use `hP.1.comp (f := trFr e A) ?_ hA` and prove the remaining obligations. Use `Differentiable.differentiableOn ?_` and prove the remaining obligations. Use `differentiable_pi.2 fun τ => differentiable_pi.2 fun a => differentiable_pi.2 fun c => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [trFr, Matrix.mul_apply, Matrix.of_apply]`. Use `fun_prop`. Introduce `x hx b hb`. Establish `hbB : (fun τ => b (e.symm τ) : Frame X.Ψ n) ∈ Bor X.Ψ n` using `fun τ => hb (e.symm τ)`. Establish `h1` using `hP.2.1 _ (hA x hx) _ hbB`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e1 : trFr e A (fun τ => (Matrix.of (x τ) * b τ : Mt n)) = rmul (trFr e A x) (fun τ => b (e.symm τ))`. Use function extensionality and compare the values at `τ`. Conclude with `(Matrix.mul_assoc (A (e.symm τ)) (Matrix.of (x (e.symm τ))) (b (e.symm τ))).symm`. Establish `hdet : ∀ ρ, (b ρ).det = ∏ a, b ρ a a` using `fun ρ => Matrix.det_of_upperTriangular (fun a c hac => (hb ρ).2 a c hac)`. Establish `hne : ∀ ρ a, b ρ a a ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `ρ a`. Use `(hb ρ).1` as an intermediate fact. Rewrite `this` using `[hdet, Finset.prod_ne_zero_iff]`. Conclude with `this a (Finset.mem_univ a)`. Establish `e2 : bchar la (fun τ => b (e.symm τ) : Frame X.Ψ n) = ∏ ρ, ∏ a, b ρ a a ^ la (e ρ) a`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Unfold `bchar`. Rewrite using `[← Equiv.prod_comp e]`. Simplify using `only [Equiv.symm_apply_apply]`. Establish `e3 : ∀ ρ, (Matrix.of (Matrix.of (x ρ) * b ρ : Mt n)).det ^ m ρ = (Matrix.of (x ρ)).det ^ m ρ * ∏ a, b ρ a a ^ m ρ`. Introduce `ρ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (Matrix.of (Matrix.of (x ρ) * b ρ : Mt n)).det = (Matrix.of (x ρ)).det * (b ρ).det` using `Matrix.det_mul _ _`. Rewrite using `[this, mul_zpow, hdet, Finset.prod_zpow]`. Establish `e4 : (∏ ρ, ∏ a, b ρ a a ^ w ρ a) = (∏ ρ, ∏ a, b ρ a a ^ la (e ρ) a) * ∏ ρ, ∏ a, b ρ a a ^ m ρ`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun ρ _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[hw, zpow_add₀ (hne ρ a)]`. Use `show κ * (∏ ρ, (Matrix.of (Matrix.of (x ρ) * b ρ : Mt n)).det ^ m ρ) * P (trFr e A (fun τ => (Matrix.of (x τ) * b τ : Mt n))) = _`. Rewrite using `[e1, h1, e2, e4]`.
-
-Simplify using `only [e3, Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem holSec_of_isSec {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} (X : Data E n) (la : Wt X.Ψ n)
     (P : Frame X.Ψ n → ℂ) (hP : X.IsSec la P) {ι : Type} [Fintype ι] [DecidableEq ι] (e : ι ≃ X.Ψ) (Hm : ι → Mt n)
@@ -243,35 +239,31 @@ theorem holSec_of_isSec {E : Type} [Field E] [NumberField E] [IsCMField E] {n : 
     ring
 
 /- English proof (translation)
-Introduce `D θ V S M w r hr Comp X la dict mu c Kf hM G P hP`. Establish `hfd` using `GlobalTheory.T.flagDomain_frames_eq_gramFrames_unitary D θ V S M w r hr Comp X la dict mu c Kf hM G`. Substitute `hr` using the available equality. Take `⟨th, -, hl, hk, -, hdom, -⟩` from `G.unif`. Take `⟨hmul, hnorm, hrat, hunit⟩` from `G.muUnit`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hsec : ∀ k, (X k).IsSec (la k) (P k)` using `fun k => (hP k).1`. Establish `hinv : ∀ k, ∀ γ ∈ (X k).Γ, ∀ x ∈ (X k).dom, P k (ReciprocityTheory.ChartRestriction.G.FD.lact γ x) = P k x`. Introduce `k γ hγ x hx`. Rewrite using `[(hsec k).2.2 γ hγ x hx, G.chi k γ hγ, one_mul]`. Establish `hlev : ∀ k ∈ Kf, ∀ g, adel V dict (muPin V dict mu c) P (g * k) = adel V dict (muPin V dict mu c) P g`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `k hk' g`. Take `⟨γ', hγ', he⟩` from `hk k hk' g`. Rewrite using `[adel_muPin, adel_muPin, he, hmul, G.muK k hk', mul_one]`. Conclude with `congrArg _ (hinv _ γ' hγ' _ (hdom g))`. Establish `hhol : HolAd θ M w (adel V dict (muPin V dict mu c) P)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨L, -, -, -, hUG, -⟩` from `GlobalTheory.RealLift.exists_real_lift D θ V G.inf`. Establish `horth : ∀ τ, OrthFr (gramAt D V τ) (nNeg (M.ε τ)) (x0Mat M τ)` using `fun τ => ((GlobalTheory.T.discreteSeriesModel_unitary_irreducible_orthonormal D V S M τ).2.2.2 hM).1`. Take `⟨-, -, hst, hx0⟩` from `GlobalTheory.HolDict.frDoms_open_preconnected_stable V.rank D.what₂.Tau (gramAt D V) (fun τ => nNeg (M.ε τ)) (x0Mat M) horth`. Establish `hst' : ∀ u ∈ UG (gramAt D V), ∀ x ∈ frDoms (gramAt D V) (fun τ => nNeg (M.ε τ)), (fun τ => (u τ * Matrix.of (x τ) : Mt V.rank)) ∈ frDoms (gramAt D V) (fun τ => nNeg (M.ε τ))`. Introduce `u hu x hx`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `hst u hu (fun _ => 1) (fun _ => ⟨by simp, fun a c hac => Matrix.one_apply_ne hac.ne'⟩) _ hx` as an intermediate fact. Simplify using `only [Matrix.mul_one] at this`. Conclude with `this`. Take `⟨m, hmu, hw⟩` from `G.wt`. Introduce `h`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨γ, -, -, hγ⟩` from `G.base.2.2 h`. Take `⟨e, he, hed, -⟩` from `hfd (dict h).1`. Establish `hA : ∀ x ∈ frDoms (gramAt D V) (fun τ => nNeg (M.ε τ)), trFr e (fun ρ => archM V (θ ρ) (γ * h)) x ∈ (X (dict h).1).dom`. Introduce `x hx`. Rewrite using `[hed]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hst' _ (hUG (γ * h)) x hx`. Establish `h2 : (fun ρ a b => trFr e (fun ρ => archM V (θ ρ) (γ * h)) x (e ρ) (Fin.cast rfl a) (Fin.cast rfl b)) = fun τ => (archM V (θ τ) (γ * h) * Matrix.of (x τ) : Mt V.rank)`. Use function extensionality and compare the values at `ρ a b`. Simplify using `only [trFr, Equiv.symm_apply_apply, Fin.cast_eq_self]`. Rewrite using `[h2]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h1`. Establish `hs` using `holSec_of_isSec (X (dict h).1) (la _) (P _) (hsec _) e (gramAt D V) (fun τ => nNeg (M.ε τ)) (fun ρ => archM V (θ ρ) (γ * h)) hA m w (fun ρ a => hw _ ρ (e ρ) (he ρ) a) (c (dict h).1 * mu h * (∏ ρ, (x0Mat M ρ).det ^ m ρ)⁻¹)`. Use `⟨_, ⟨_, hs, fun _ _ => rfl⟩, fun u hu => ?_⟩` and prove the remaining obligations. Take `⟨γ', hγ', x, hx, hxe⟩` from `hγ u hu`. Establish `hxe' : x = trFr e (fun ρ => archM V (θ ρ) (γ * h)) (fun ρ => (archM V (θ ρ) u * x0Mat M ρ : Mt V.rank))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use function extensionality and compare the values at `τ`. Establish `h1` using `hxe (e.symm τ) τ (by rw [← he, Equiv.apply_symm_apply])`. Rewrite `h1` using `[archM_mul, Matrix.mul_assoc]`. Use function extensionality and compare the values at `a b`. Conclude with `congrFun (congrFun h1 a) b`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxd : x ∈ (X (dict h).1).dom`. Rewrite using `[hxe']`. Conclude with `hA _ (hst' _ (hUG u) _ hx0)`. Establish `hne : (∏ ρ, (x0Mat M ρ).det ^ m ρ) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun ρ _ => zpow_ne_zero _ (hx0 ρ).1`. Establish `e3 : (∏ ρ, (Matrix.of (archM V (θ ρ) u * x0Mat M ρ : Mt V.rank)).det ^ m ρ) = mu u * ∏ ρ, (x0Mat M ρ).det ^ m ρ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hmu u hu, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun ρ _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_zpow, ← Matrix.det_mul]`. Both sides reduce to the same expression. Rewrite using `[adel_muPin, hx, hmul]`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show c (dict h).1 * (mu h * mu u) * P (dict h).1 (ReciprocityTheory.ChartRestriction.G.FD.lact γ' x) = c (dict h).1 * mu h * (∏ ρ, (x0Mat M ρ).det ^ m ρ)⁻¹ * (∏ ρ, (Matrix.of (archM V (θ ρ) u * x0Mat M ρ : Mt V.rank)).det ^ m ρ) * P (dict h).1 (trFr e (fun ρ => archM V (θ ρ) (γ * …`. Rewrite using `[hinv _ γ' hγ' x hxd, ← hxe', e3]`. Clear the denominators using the available nonvanishing facts. Take `⟨U, hU, hUK⟩` from `G.levOpen`. Establish `hlU : ∀ k ∈ U, k ∈ GfC V → ∀ g, adel V dict (muPin V dict mu c) P (g * k) = adel V dict (muPin V dict mu c) P g` using `fun k h1 h2 => hlev k (hUK k h1 h2)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨fun γ hγ g => ?_, ⟨U, hU, hlU⟩, continuous_of_holAd G.inf hM hhol U hU hlU⟩, ?_, fun k hk' g => by rw [hlev k hk' g, one_mul], hhol⟩` and prove the remaining obligations. Take `⟨γ', hγ', he⟩` from `hl γ hγ g`. Rewrite using `[adel_muPin, adel_muPin, he, hmul, hrat γ hγ, one_mul]`. Conclude with `congrArg _ (hinv _ γ' hγ' _ (hdom g))`. Use `haveI := G.fin choose B hB using fun k => (hP k).2`.
-
-Take `⟨B₀, hB₀⟩` from `(Set.finite_range B).bddAbove`. Take `⟨C, hC⟩` from `G.cBdd`. Use `⟨C * B₀, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[adel_muPin, norm_mul, norm_mul, hnorm, mul_one, ← pnorm_eq_of_unit (X (dict g).1) (la (dict g).1) (P (dict g).1) (dict g).2 (hunit g)]`. Establish `h0 : 0 ≤ (X (dict g).1).pnorm (la (dict g).1) (P (dict g).1) (dict g).2`.
-
-Rewrite using `[pnorm_eq_of_unit _ _ _ _ (hunit g)]`. Conclude with `norm_nonneg _`. Conclude with `mul_le_mul (hC _) ((hB _ _ (hdom g)).trans (hB₀ ⟨_, rfl⟩)) h0 ((norm_nonneg _).trans (hC (dict g).1))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem holForm_adel : ∀ (D : D7) (θ : InfFam D) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (w : D.what₂.Tau → Fin V.rank → ℤ) (r : ℕ) (hr : V.rank = r) (Comp : Type) (X : Comp → ReciprocityTheory.ChartRestriction.G.FD.Data D.host.E r) (la : ∀ k, ReciprocityTheory.ChartRestriction.G.FD.Wt (X k).Ψ r) (dict : GA D V → Σ k, ReciprocityTheory.ChartRestriction.G.FD.Frame (X k).Ψ r) (mu : GA D V → ℂ) (c : Comp → ℂ) (Kf : Subgroup (GA D V)), HolShape M → GoodDict θ M w hr X la dict mu c Kf → ∀ P : FDSec X, (∀ k, (X k).IsBddSec (la k) (P k)) → HolForm θ M w (Kf : Set (GA D V)) (fun _ => 1) (adel V dict (muPin V dict mu c) P) := by
   classical

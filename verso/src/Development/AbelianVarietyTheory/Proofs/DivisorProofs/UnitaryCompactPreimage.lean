@@ -7,11 +7,11 @@ open NumberField IsDedekindDomain MeasureTheory Formalism.MainNotions.GlobalTheo
 namespace GlobalTheory.ThK.UnipDom
 
 /- English proof (translation)
-Use `haveI : T2Space (AF F) := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`. Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Take `⟨e⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (AF F)`. Use `haveI : T2Space (AE F E) := e.isEmbedding.t2Space`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : Continuous (cA σ)` using `IsModuleTopology.continuous_of_linearMap (cA σ).toLinearMap`. Establish `hM : Continuous fun M : Matrix (Fin n) (Fin n) (AE F E) => Mᵀ * incM F J * M.map (cA σ)` using `(continuous_id.matrix_transpose.matrix_mul continuous_const).matrix_mul (continuous_id.matrix_map hc)`. Establish `hclosed : IsClosed ((UG (cA σ) (incM F J) : Subgroup (GL (Fin n) (AE F E))) : Set (GL (Fin n) (AE F E)))` using `isClosed_eq (hM.comp Units.continuous_val) continuous_const`. Establish `hφ : Topology.IsClosedEmbedding (fun g : UA σ J => Units.embedProduct (Matrix (Fin n) (Fin n) (AE F E)) g.1)` using `Units.isClosedEmbedding_embedProduct.comp hclosed.isClosedEmbedding_subtypeVal`. Establish `hK` using `hφ.isCompact_preimage (hC.prod (hC.image MulOpposite.continuous_op))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite `hK` using `[show MulOpposite.op '' C = MulOpposite.unop ⁻¹' C from Set.ext fun x => ⟨by rintro ⟨y, hy, rfl⟩; exact hy, fun h => ⟨x.unop, h, rfl⟩⟩]`. Use `hK using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_preimage, Set.mem_prod, Units.embedProduct_apply, MulOpposite.unop_op]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isCompact_setOf_mat_mem (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (C : Set (Matrix (Fin n) (Fin n) (AE F E))) (hC : IsCompact C) :

@@ -21,7 +21,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Loca
 open Matrix IsLocalRing UpperTheory.V.U3 UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.U3.Mop
 
 /- English proof (translation)
-Introduce `n hn` and use `by rw [MvPowerSeries.coeff_rename] refine Finset.sum_eq_zero fun d hd => hg d fun hj => hn ?_ have hd' : Finsupp.mapDomain u d = n := by simpa using hd rw [← hd', ← hj, Finsupp.weight_apply, Finsupp.weight_apply, Finsupp.sum_mapDomain_index (fun _ => by simp) (fun _ _ _ => by rw …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem mop_rename_mem {O : Type} [CommRing O] {X : Type} [AddCommGroup X] {σ τ : Type} [Finite σ]
     (u : σ → τ) (wt : τ → X) (ws : σ → X) (h : ∀ s, wt (u s) = ws s) {j : X} {g : MvPowerSeries σ O}
@@ -34,7 +34,7 @@ private theorem mop_rename_mem {O : Type} [CommRing O] {X : Type} [AddCommGroup 
   simp [h]
 
 /- English proof (translation)
-Establish `hp : ∀ i, g i ∈ (WPres.free O wt).part (c i)` using `fun i => ⟨g i, hg i, rfl⟩`. Conclude with `(homog_span O _ X (WPres.free O wt) κ (fun i => ⟨g i, (WPres.free O wt).part_le_A (hp i)⟩) c hp).1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem mop_homog {O : Type} [CommRing O] {X : Type} [AddCommGroup X] {σ : Type} [Fintype σ]
     (wt : σ → X) {κ : Type} [Finite κ] (g : κ → MvPowerSeries σ O) (c : κ → X)
@@ -43,27 +43,23 @@ private theorem mop_homog {O : Type} [CommRing O] {X : Type} [AddCommGroup X] {�
   exact (homog_span O _ X (WPres.free O wt) κ (fun i => ⟨g i, (WPres.free O wt).part_le_A (hp i)⟩) c hp).1
 
 /- English proof (translation)
-Take `⟨he1, -, hf, hker⟩` from `hrel`. Use `set J : Ideal (MvPowerSeries W.σ O) := (RingHom.ker WB.π).map (MvPowerSeries.rename fun s => e (.inl s)) with hJ`. Establish `hJh : IsHomog O W.wt J`. Take `⟨k, f0, c0, hf0, h0⟩` from `ker_gen O ℤ WB.σ WB.wt _ WB.homog`. Rewrite using `[hJ, h0, Ideal.map_span, ← Set.range_comp]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mop_homog W.wt _ c0 fun t => mop_rename_mem _ W.wt WB.wt he1 (hf0 t)`. Establish `hle : ∀ F ∈ J, (p.comp W.π) F = 0` using `fun F hF => by`. Establish `: W.π F = 0` using `(hker ▸ Ideal.mem_sup_left hF : F ∈ RingHom.ker W.π)`. Rewrite using `[AlgHom.comp_apply, this, map_zero]`. Set `qh : (MvPowerSeries W.σ O ⧸ J) →ₐ[O] S` to `Ideal.Quotient.liftₐ J (p.comp W.π) hle`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hqh : ∀ F, qh (Ideal.Quotient.mk J F) = p (W.π F)` using `fun _ => rfl`. Use `haveI : Nontrivial (MvPowerSeries W.σ O ⧸ J) := qh.toRingHom.domain_nontrivial`. Use `haveI := co_mvps O O W.σ`. Use `haveI : IsCO O (MvPowerSeries W.σ O ⧸ J) := co_quot O _ _ (Ideal.Quotient.mkₐ O J) (Ideal.Quotient.mkₐ_surjective O J)`. Establish `hkm : RingHom.ker (Ideal.Quotient.mkₐ O J) = J` using `Ideal.Quotient.mkₐ_ker O J`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `WA : WPres O ℤ (MvPowerSeries W.σ O ⧸ J)` to `{ σ := W.σ, wt := W.wt, π := Ideal.Quotient.mkₐ O J, surj := Ideal.Quotient.mkₐ_surjective O J homog := by rw [hkm]; exact hJh }`. Use `choose N hN hN' using hn`. Establish `hG : ∀ k : κ ⊕ κ', Sum.elim f N k ∈ wtPart O W.wt (Sum.elim wf wn k)`. Introduce and unpack `(k | k)`. Conclude with `hf k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hN k`. Establish `hG' : ∀ k : κ ⊕ κ', Ideal.Quotient.mk J (Sum.elim f N k) ∈ WA.part (Sum.elim wf wn k)` using `fun k => ⟨_, hG k, rfl⟩`. Use `⟨_, inferInstance, inferInstance, inferInstance, WA, e, qh, fun k => ⟨_, WA.part_le_A (hG' k)⟩, fun _ => rfl, fun _ => rfl, hkm, ?_, hG', ?_, ?_⟩` and prove the remaining obligations. Introduce `y`. Take `⟨y, rfl⟩` from `hp y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨F, rfl⟩` from `W.surj y`. Conclude with `⟨_, hqh F⟩`. Use `le_antisymm (fun y hy => ?_) (Ideal.span_le.2 ?_)` and prove the remaining obligations. Take `⟨F, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Establish `h1 : W.π F ∈ (Ideal.span (Set.range N)).map W.π`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : W.π ∘ N = n` using `funext hN'`. Rewrite using `[Ideal.map_span, ← Set.range_comp, h2, ← hk]`. Conclude with `hy`. Take `⟨G, hG1, hG2⟩` from `(Ideal.mem_map_iff_of_surjective _ W.surj).1 h1`. Establish `h3 : F - G ∈ J ⊔ Ideal.span (Set.range f)`.
+Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← hker, RingHom.mem_ker, map_sub, hG2, sub_self]`. Establish `h4 : (J ⊔ Ideal.span (Set.range f)) ⊔ Ideal.span (Set.range N) ≤ (Ideal.span (Set.range fun k => Ideal.Quotient.mk J (Sum.elim f N k))).comap (Ideal.Quotient.mk J)`. Use `sup_le (sup_le (fun y hy => ?_) (Ideal.span_le.2 ?_)) (Ideal.span_le.2 ?_)` and prove the remaining obligations. Rewrite using `[Ideal.mem_comap, Ideal.Quotient.eq_zero_iff_mem.2 hy]`. Conclude with `zero_mem _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `Ideal.subset_span ⟨.inl k, rfl⟩`. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `Ideal.subset_span ⟨.inr k, rfl⟩`. Establish `h5` using `h4 (Ideal.add_mem _ (Ideal.mem_sup_left h3) (Ideal.mem_sup_right hG1))`.
-
-Rewrite `h5` using `[sub_add_cancel]`. Conclude with `h5`. Introduce and unpack `_ ⟨k | k, rfl⟩`. Establish `: W.π (f k) = 0` using `(hker ▸ Ideal.mem_sup_right (Ideal.subset_span ⟨k, rfl⟩) : f k ∈ RingHom.ker W.π) show p (W.π (f k)) = 0`. Rewrite using `[this, map_zero]`.
-
-Establish `: n k ∈ RingHom.ker p` using `hk ▸ Ideal.subset_span ⟨k, rfl⟩`. Rewrite `this` using `[← hN' k]`. Conclude with `this`. Introduce and unpack `j _ ⟨F, hF, rfl⟩`. Conclude with `⟨Ideal.Quotient.mk J F, ⟨F, hF, rfl⟩, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem mop_cover {O Bl B S : Type} [CommRing O] [IsLocalRing O] [IsNoetherianRing O]
     [IsAdicComplete (maximalIdeal O) O] [CommRing Bl] [Algebra O Bl] [CommRing B] [Algebra O B] [CommRing S]
@@ -143,7 +139,7 @@ private theorem mop_cover {O Bl B S : Type} [CommRing O] [IsLocalRing O] [IsNoet
     exact ⟨Ideal.Quotient.mk J F, ⟨F, hF, rfl⟩, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[Nat.card_congr Equiv.subtypeSum, Nat.card_sum]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem mop_card {α β : Type} [Finite α] [Finite β] (a : α → ℤ) (b : β → ℤ) (j : ℤ) :
     Nat.card {i // Sum.elim a b i = j} = Nat.card {i // a i = j} + Nat.card {i // b i = j} := by
@@ -151,7 +147,7 @@ private theorem mop_card {α β : Type} [Finite α] [Finite β] (a : α → ℤ)
   rfl
 
 /- English proof (translation)
-Simplify using `only [Nat.card_eq_fintype_card]`. Evaluate the decidable proposition.
+Simplify using the standard rewrite rules. Evaluate the decidable proposition.
 -/
 private theorem mop_nWt : Nat.card {i // nWt i = -1} = 2 ∧ Nat.card {i // nWt i = -2} = 1 ∧
     Nat.card {i // nWt i = 1} = 2 ∧ Nat.card {i // nWt i = 2} = 1 ∧ Nat.card {i // nWt i = 0} = 2 := by
@@ -159,7 +155,7 @@ private theorem mop_nWt : Nat.card {i // nWt i = -1} = 2 ∧ Nat.card {i // nWt 
   decide
 
 /- English proof (translation)
-Rewrite using `[mat_eq_emb]`. Conclude with `add_mem (h g (.inl a) (.inl b)) (h g (.inl a) (.inr b))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mop_mat_mem {O G R : Type} [CommRing O] [Group G] [CommRing R] [Algebra O R] {r : G →* GG 3 R}
     {W : WPres O ℤ R} (h : EntHomog r W) (g : G) (a b : Fin 3) : (r g).mat a b ∈ W.part (wt a b) := by
@@ -167,11 +163,7 @@ private theorem mop_mat_mem {O G R : Type} [CommRing O] [Group G] [CommRing R] [
   exact add_mem (h g (.inl a) (.inl b)) (h g (.inl a) (.inr b))
 
 /- English proof (translation)
-Establish `h1 : (1 : R) ∈ W.part 0` using `SetLike.GradedOne.one_mem`. Establish `hm` using `mop_mat_mem h`. Use `fin_cases k`. Conclude with `sub_mem (hm c 0 0) h1`. Conclude with `sub_mem (hm c 1 1) h1`.
-
-Conclude with `hm c 0 1`. Conclude with `hm c 1 0`. Conclude with `hm c 0 2`. Conclude with `hm c 2 0`. Conclude with `sub_mem (hm g₁ 0 1) (hm _ 0 1)`.
-
-Conclude with `sub_mem (hm g₁ 1 0) (hm _ 1 0)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem mop_nEq_mem {O G R : Type} [CommRing O] [Group G] [CommRing R] [Algebra O R] {r : G →* GG 3 R}
     {W : WPres O ℤ R} (h : EntHomog r W) (c g₁ : G) (k : Fin 8) : nEq c g₁ r k ∈ W.part (nWt k) := by
@@ -188,7 +180,7 @@ private theorem mop_nEq_mem {O G R : Type} [CommRing O] [Group G] [CommRing R] [
   · exact sub_mem (hm g₁ 1 0) (hm _ 1 0)
 
 /- English proof (translation)
-Apply the tactic sequence `obtain ⟨u, a', b', h1, h2⟩ := UpperTheory.exists_pointDerivation_emb_entry_eq_smul_mat_entry s t a b`. Use `⟨u, a', b', h1, fun x D hD y hy c => ?_⟩` and prove the remaining obligations. Establish `h3 : D 1 = 0` using `by simpa using hD 1 1`. Rewrite using `[map_sub, h2 x D hD y hy, Algebra.algebraMap_eq_smul_one, map_smul, h3, smul_zero, sub_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem mop_der_coord {O : Type} [CommRing O] (s : ℤˣ) (t : Oˣ) (a b : Fin 3 ⊕ Fin 3) :
     ∃ (u : O) (a' b' : Fin 3), wt a' b' = wt6 a - wt6 b ∧
@@ -201,49 +193,43 @@ private theorem mop_der_coord {O : Type} [CommRing O] (s : ℤˣ) (t : Oˣ) (a b
   rw [map_sub, h2 x D hD y hy, Algebra.algebraMap_eq_smul_one, map_smul, h3, smul_zero, sub_zero]
 
 /- English proof (translation)
-Take `⟨W, i, τ, κ, _, _, e, f, wf, hrel, hi, hcoord, hent, hcount⟩` from `hbox`. Take `⟨x, τ₀, _, w, φ, hx, hφ, hdim⟩` from `hL.chart`. Take `⟨hB, hBx, φb, hφb⟩` from `UpperTheory.exists_origin_and_chart_of_isLocPres U I x w φ WB hx hφ hWB`. Take `⟨p, hp, hpr, hpk⟩` from `UpperTheory.exists_surjection_univ_normCond_ker_span_nEq cc g₁ B S hM.csq hM.ηc`. Establish `hIx : I ≤ RingHom.ker x` using `fun y hy => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← hBx]`. Use `show WB.origin hB (Ideal.Quotient.mk I y) = 0`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem.2 hy, map_zero]`. Take `⟨x₀, hx₀, -⟩` from `(S.rep O).2 (baseLift O η Ψ hΨ) ⟨baseRepGL3_normalised_of_psi_eq_one η Ψ g₁ hM.Ψc, hN, x, GLift.ext hx, hIx⟩`. Establish `hbase : IsBase η Ψ S.r.hom x₀` using `congrArg GLift.hom hx₀`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSr : S.r.hom = push p B.r.hom` using `(congrArg GLift.hom hpr).symm`. Establish `hnorm : Normalised cc g₁ S.r.hom` using `((S.rep S.R).1 (AlgHom.id _ _)).1`. Take `⟨R, _, _, _, WA, ε, qh, g, hw, hz, hkA, hq, hg, hkq, hpart⟩` from `mop_cover WB i W e f wf hrel p hp (nEq cc g₁ B.r.hom) nWt (mop_nEq_mem hent cc g₁) hpk`. Establish `hwl : ∀ s, WA.wt (ε (.inl s)) = WB.wt s` using `fun s => (hw _).trans (hrel.1 s)`. Establish `hl : ∀ s, ∃ h a b, WB.wt s = wt6 a - wt6 b ∧ WB.z s = Ideal.Quotient.mk I (emb (U.r.hom h) a b - algebraMap O U.R (emb (r0 η Ψ (ι h)) a b)) ∧ qh (WA.z (ε (.inl s))) = emb (S.r.hom (ι h)) a b - algebraMap O S.R (emb (r0 η Ψ (ι h)) a b)` using `fun s => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨h, a, b, h1, h2⟩` from `hWB.1 s`. Establish `h3 : WB.z s = Ideal.Quotient.mkₐ O I (emb (U.r.hom h) a b - algebraMap O U.R (emb (r0 η Ψ (ι h)) a b))`. Rewrite using `[h2, map_sub, AlgHom.commutes, emb_push]`. Both sides reduce to the same expression. Use `⟨h, a, b, h1, h3, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h4 : W.z (e (.inl s)) = i (WB.z s)`. Rewrite using `[WPres.z, WPres.z, ← hrel.2.1, MvPowerSeries.rename_X]`. Rewrite using `[hz, h4, h3, ← AlgHom.comp_apply i, map_sub, AlgHom.commutes, ← emb_push, hi, map_sub, AlgHom.commutes, hSr, emb_push]`. Both sides reduce to the same expression. Establish `hco : ∀ s, ∃ γ a b, WA.wt s = wt6 a - wt6 b ∧ qh (WA.z s) = emb (S.r.hom γ) a b - algebraMap O S.R (emb (r0 η Ψ γ) a b)` using `fun s => by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨s | t, rfl⟩` from `ε.surjective s`. Take `⟨h, a, b, h1, -, h3⟩` from `hl s`. Conclude with `⟨ι h, a, b, (hwl s).trans h1, h3⟩`. Take `⟨γ, a, b, h1, h2⟩` from `hcoord t`. Use `⟨γ, a, b, (hw _).trans h1, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz, h2, map_sub, AlgHom.commutes, hSr, emb_push]`. Establish `hz0 : ∀ s, x₀ (qh (WA.z s)) = 0` using `fun s => by`. Take `⟨γ, a, b, -, h2⟩` from `hco s`. Rewrite using `[h2]`. Conclude with `base_coord hbase γ a b`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨h, hor⟩` from `origin_of WA (x₀.comp qh) hz0`. Establish `hbd : ∀ s, -2 ≤ WA.wt s ∧ WA.wt s ≤ 2` using `fun s => by`. Take `⟨γ, a, b, h1, -⟩` from `hco s`. Rewrite using `[h1]`. Conclude with `blockWeight_sub_mem_Icc a b`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set a : ℤ → ℕ := fun j => Nat.card {t // W.wt (e (.inr t)) = j} with ha`. Establish `ha0 : ∀ j, ¬ (-2 ≤ j ∧ j ≤ 2) → a j = 0` using `fun j hj => by haveI : IsEmpty {t // W.wt (e (.inr t)) = j} := ⟨fun t => hj (by rw [← t.2, ← hw]; exact hbd _)⟩`. Conclude with `Nat.card_of_isEmpty`. Establish `hcnt : ∀ j, Nat.card {u // wf u = j} = a j + boxDef j` using `hcount`. Establish `hgb : ∀ k, -2 ≤ Sum.elim wf nWt k ∧ Sum.elim wf nWt k ≤ 2`.
+Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `(k | k)`. Assume the negation of the conclusion as `hj`. Establish `h1` using `hcnt (wf k)`. Establish `h2 : boxDef (wf k) = 0` using `if_neg fun h3 => hj (by`. Use `abs_le.1 h3` as an intermediate fact.
+Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Evaluate the decidable proposition. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨by show -2 ≤ wf k; omega, by show wf k ≤ 2; omega⟩)`. Rewrite `h1` using `[ha0 (wf k) hj, h2]`. Use `haveI : Nonempty {u // wf u = wf k} := ⟨⟨k, rfl⟩⟩`. Conclude with `Nat.card_pos.ne' h1`. Use `revert k show ∀ k, -2 ≤ nWt k ∧ nWt k ≤ 2`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Evaluate the decidable proposition. Establish `hgq : ∀ k, qh (g k) = 0` using `fun k => (hkq ▸ Ideal.subset_span ⟨k, rfl⟩ : (g k : R) ∈ RingHom.ker qh)`. Take `⟨n1, n2, n3, n4, n5⟩` from `mop_nWt`. Take `⟨Q, hQ⟩` from `UpperTheory.exists_eqns_of_weighted_generators WA.gr (WA.originA h) (a (-1) + 2) (a (-2) + 1) (a 1 + 3) (a 2 + 1) (a 0 + 3) g (Sum.elim wf nWt) hg (fun k => by show WA.origin h (g k) = 0`. Rewrite using `[hor, AlgHom.comp_apply, hgq, map_zero]) hgb`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(by rw [mop_card, hcnt, n1]; rfl) (by rw [mop_card, hcnt, n2]; rfl) (by rw [mop_card, hcnt, n3]; rfl)`. Use the proof step `(by rw [mop_card, hcnt, n4]; rfl) (by rw [mop_card, hcnt, n5]; rfl)`. Take `⟨h', ψ, hψ, -⟩` from `chart_add O ℤ _ WB hB τ₀ w φb hφb R WA τ ε hwl hkA`. Use `⟨{ A := WA.A 𝒜 := WA.gr x := WA.originA h wring := isWRing O R WA h hbd r := a (-1) + 2 s := a (-2) + 1 r' := a 1 + 3 s' := a 2 + 1 m := a 0 + 3 Q := Q one_le := by omega smooth := ⟨τ₀ ⊕ τ, inferInstance, _, _, chart_gr O ℤ R WA h _ _ ψ hψ, fun j => ?_⟩ q := qh.comp WA.A.val ker_ …` and prove the remaining obligations. Simplify using `only [hw]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mop_card, hdim]`. Use `show locDims j + a j = _`. Use `ha0 j` as an intermediate fact. Unfold `locDims mDims`. Apply the tactic sequence `split_ifs <;> first | omega | (subst_vars; omega)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hQ]`. Use extensionality with `y`. Rewrite using `[← (homog_span O R ℤ WA _ g _ hg).2 y, ← hkq]`. Both sides reduce to the same expression. Take `⟨y, hy, hy'⟩` from `hpart _ _ (mop_mat_mem hent γ a b)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Introduce a local definition for the expression.
 
-Use `⟨⟨y, WA.part_le_A hy⟩, hy, ?_⟩` and prove the remaining obligations. Rewrite using `[hSr]`. Conclude with `hy'`. Take `⟨F, hF, hFy⟩` from `hy`. Establish `h1 : (qh.comp WA.A.val) y = (qh.comp WA.π) F` using `congrArg qh hFy.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h1]`. Conclude with `UpperTheory.exists_span_entMon_approx_of_mem_wtPart η Ψ S.r.hom cc ((S.r.hasMult cc).trans hM.ηc) hnorm.atc WA.wt (qh.comp WA.π) _ (fun s => mem_max_of_zero x₀ (hz0 s)) hco j F hF n`. Rewrite using `[hQ]`. Conclude with `hpts WA h qh hq g _ hg hkq`. Rewrite using `[hQ]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hder WA h qh hq g _ hg hkq`. Introduce `a₀ _ D hD hDw xl hxl D₁ hD₁ hD₁I hD₁w hcomp`. Establish `hxx : xl = x` using `((U.rep O).2 (U.r.map x) trivial).unique (GLift.ext (hxl.trans hx.symm)) rfl`. Substitute `hxx` using the available equality. Set `Db : (U.R ⧸ I) →ₗ[O] O` to `(Submodule.liftQ (I.restrictScalars O) D₁ hD₁I) ∘ₗ (Submodule.Quotient.restrictScalarsEquiv O I).symm.toLinearMap`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hDb : ∀ y, Db (Ideal.Quotient.mk I y) = D₁ y` using `fun _ => rfl`. Establish `hxo : ∀ y, WB.origin hB (Ideal.Quotient.mk I y) = xl y` using `fun y => DFunLike.congr_fun hBx y`. Use `UpperTheory.exists_base_pointDerivation_of_weight_homogeneous WB hB WA h ε hwl hkA qh x₀ hor.symm (Ideal.Quotient.mkₐ O _).toLinearMap (Ideal.Quotient.mkₐ_surjective O _) (-1) D hD (fun s hs => ?_) Db (fun y y' => ?_) (fun s hs => ?_) fun s => ?_` and prove the remaining obligations. Take `⟨γ, a, b, h1, h2⟩` from `hco s`. Take `⟨u, a', b', h3, h4⟩` from `mop_der_coord (η γ) (Ψ γ) a b`.
-
-Rewrite using `[h2, h4 x₀ D hD _ (DFunLike.congr_fun hbase γ), hDw γ a' b' (by rwa [h3, ← h1]), smul_zero]`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Take `⟨y', rfl⟩` from `Ideal.Quotient.mk_surjective y'`. Rewrite using `[← map_mul, hDb, hDb, hDb, hxo, hxo]`. Conclude with `hD₁ y y'`.
-
-Take `⟨γ, a, b, h1, h2, -⟩` from `hl s`. Take `⟨u, a', b', h3, h4⟩` from `mop_der_coord (η (ι γ)) (Ψ (ι γ)) a b`. Rewrite using `[h2, hDb, h4 xl D₁ hD₁ _ (DFunLike.congr_fun hxl γ), hD₁w γ a' b' (by rwa [h3, ← h1]), smul_zero]`. Take `⟨γ, a, b, -, h2, h5⟩` from `hl s`. Take `⟨u, a', b', -, h4⟩` from `mop_der_coord (η (ι γ)) (Ψ (ι γ)) a b`.
-
-Rewrite using `[h2, h5, hDb, h4 xl D₁ hD₁ _ (DFunLike.congr_fun hxl γ), h4 x₀ D hD _ (DFunLike.congr_fun hbase (ι γ)), map_smul, ← hcomp]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem mop_main {O : Type} [CommRing O] [IsDomain O] [IsLocalRing O] [IsNoetherianRing O]
     [IsAdicComplete (maximalIdeal O) O] {K : Type} [NormedField K] [Algebra O K]
@@ -411,7 +397,7 @@ private theorem mop_main {O : Type} [CommRing O] [IsDomain O] [IsLocalRing O] [I
       rfl
 
 /- English proof (translation)
-Introduce `l _ c Γ H _ _ _ _ _ _ η Ψ N ι hι U I cc g₁ S B WB _ hM hL hΨ hN hWB hbox`. Use `haveI := (UpperTheory.V.abelian₂.dvr_finite l c.O).1`. Use `haveI : IsNoetherianRing c.O := PrincipalIdealRing.isNoetherianRing`. Conclude with `mop_main (@UpperTheory.exists_torus_twist_eq_localPoint_of_weightedPres l _ c) (@UpperTheory.exists_dualNumber_point_of_pointDerivation_vanishing l _ c) S B WB hM hL hΨ hN hWB hbox`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.U3.model_of_pres :
     ∀ {l : ℕ} [Fact l.Prime] {c : Coef l} {Γ H : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [Group H] [TopologicalSpace H] [IsTopologicalGroup H]

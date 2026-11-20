@@ -4,7 +4,7 @@ import Formalism.LocalRingCardinality.DataSpaces
 open NumberField IsDedekindDomain
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.exists_ideal_coprime_conj_mul_eq_spanSingleton` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FExistsIdealCoprimeConjMulEqSpanSingleton.lean&line=10#L10)
 -/

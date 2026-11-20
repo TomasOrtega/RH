@@ -23,15 +23,15 @@ def dlogSub (p : ℕ) [Fact p.Prime] (n : ℕ) : Subalgebra (O0 p) (On p n) wher
     exact zero_mem _
 
 /- English proof (translation)
-Take `⟨f, rfl⟩` from `Ideal.Quotient.mk_surjective w`. Establish `hx : xn p n ∈ dlogSub p n` using `Submodule.subset_span (Set.mem_insert _ _)`. Establish `hy : yn p n ∈ dlogSub p n` using `Submodule.subset_span (Set.mem_insert_of_mem _ (Set.mem_singleton _))`. Establish `hC : ∀ a : Polynomial (O0 p), Ideal.Quotient.mk (towerIdeal p n) (C a) ∈ dlogSub p n`. Introduce `a`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `a using Polynomial.induction_on with`. Consider the case `C r`. Establish `: Ideal.Quotient.mk (towerIdeal p n) (C (C r)) = algebraMap (O0 p) (On p n) r` using `rfl`. Rewrite using `[this]`. Conclude with `Subalgebra.algebraMap_mem _ r`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add a b ha hb => rw [Polynomial.C_add, map_add]`. Conclude with `add_mem ha hb`. Consider the case `monomial k r _`. Rewrite using `[Polynomial.C_mul, Polynomial.C_pow, map_mul, map_pow]`. Use `mul_mem ?_ (pow_mem hx _)` and prove the remaining obligations.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: Ideal.Quotient.mk (towerIdeal p n) (C (C r)) = algebraMap (O0 p) (On p n) r` using `rfl`. Rewrite using `[this]`. Conclude with `Subalgebra.algebraMap_mem _ r`. Proceed by induction on `f using Polynomial.induction_on with`. Consider the case `C a => exact hC a`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add a b ha hb => rw [map_add]`. Conclude with `add_mem ha hb`. Consider the case `monomial k a _`. Rewrite using `[map_mul, map_pow]`. Conclude with `mul_mem (hC a) (pow_mem hy _)`.
+A detailed English derivation is pending.
 -/
 theorem mem_dlogSub (p : ℕ) [Fact p.Prime] (n : ℕ) (w : On p n) : w ∈ dlogSub p n := by
   obtain ⟨f, rfl⟩ := Ideal.Quotient.mk_surjective w
@@ -59,11 +59,11 @@ theorem mem_dlogSub (p : ℕ) [Fact p.Prime] (n : ℕ) (w : On p n) : w ∈ dlog
     exact mul_mem (hC a) (pow_mem hy _)
 
 /- English proof (translation)
-Introduce `p _ n w`. Establish `h : KaehlerDifferential.D (O0 p) (On p n) (w : On p n) ∈ Submodule.span (On p n) ({KaehlerDifferential.D (O0 p) (On p n) (xn p n), KaehlerDifferential.D (O0 p) (On p n) (yn p n)} : Set _)` using `mem_dlogSub p n (w : On p n)`. Take `⟨P, Q, hPQ⟩` from `Submodule.mem_span_pair.mp h`. Use `⟨yn p n * Q * ((w⁻¹ : (On p n)ˣ) : On p n), xn p n * P * ((w⁻¹ : (On p n)ˣ) : On p n), ?_⟩` and prove the remaining obligations. Unfold `IsDlog`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Rewrite using `[← hPQ, smul_add, smul_smul, smul_smul, add_comm]`. Use `congr 1`. Use `congr 1`. Use `w.mul_inv` as an intermediate fact. Take the linear combination `(xn p n * yn p n * Q) * (-this)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `congr 1`. Use `w.mul_inv` as an intermediate fact. Take the linear combination `(xn p n * yn p n * P) * (-this)`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem exists_isDlog : ∀ (p : ℕ) [Fact p.Prime] (n : ℕ) (w : (On p n)ˣ), ∃ α β : On p n, IsDlog p n (w : On p n) α β := by
   intro p _ n w

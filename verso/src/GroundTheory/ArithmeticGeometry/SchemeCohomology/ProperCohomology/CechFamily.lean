@@ -40,7 +40,7 @@ lemma cochain_apply (Φ : CechFamily U P P') (n : ℕ) (σ : Cochain P U n) (i :
     Φ.cochain n σ i = Φ.φ i (σ i) := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[cochain_apply, d_apply, d_apply, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, Φ.res_comm]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma cochain_d (Φ : CechFamily U P P') (n : ℕ) (σ : Cochain P U n) :
     Φ.cochain (n + 1) (d P U n σ) = d P' U n (Φ.cochain n σ) := by
@@ -51,7 +51,7 @@ lemma cochain_d (Φ : CechFamily U P P') (n : ℕ) (σ : Cochain P U n) :
   rfl
 
 /- English proof (translation)
-Rewrite `hσ`, the goal using `[mem_cocycles]`. Rewrite using `[← cochain_d, hσ, map_zero]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 lemma cochain_mem_cocycles (Φ : CechFamily U P P') {n : ℕ} {σ : Cochain P U n}
     (hσ : σ ∈ cocycles P U n) : Φ.cochain n σ ∈ cocycles P' U n := by
@@ -59,9 +59,9 @@ lemma cochain_mem_cocycles (Φ : CechFamily U P P') {n : ℕ} {σ : Cochain P U 
   rw [← cochain_d, hσ, map_zero]
 
 /- English proof (translation)
-Consider the cases of `n with`. Consider the case `zero`. Rewrite `hσ`, the goal using `[coboundaries_zero, AddSubgroup.mem_bot]`. Rewrite using `[hσ, map_zero]`. Consider the case `succ n`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite `hσ`, the goal using `[coboundaries_succ]`. Take `⟨τ, rfl⟩` from `hσ`. Conclude with `⟨Φ.cochain n τ, (cochain_d Φ n τ).symm⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma cochain_mem_coboundaries (Φ : CechFamily U P P') {n : ℕ} {σ : Cochain P U n}
     (hσ : σ ∈ coboundaries P U n) : Φ.cochain n σ ∈ coboundaries P' U n := by
@@ -95,7 +95,7 @@ def ofHom (f : P ⟶ P') : CechFamily U P P' where
   res_comm i j h x := app_res f h x
 
 /- English proof (translation)
-Take `⟨σ, hσ, rfl⟩` from `exists_cls x`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 lemma ofHom_cechH (f : P ⟶ P') (n : ℕ) (x : GroundTheory.Arith.SchemeCoh.cechH P U n) :
     (ofHom (U := U) f).cechH n x = cechHMap U f n x := by
@@ -109,7 +109,7 @@ def comp (Φ : CechFamily U P P') (Ψ : CechFamily U P' P'') : CechFamily U P P'
     rw [Φ.res_comm, Ψ.res_comm]
 
 /- English proof (translation)
-Take `⟨σ, hσ, rfl⟩` from `exists_cls x`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 lemma comp_cechH (Φ : CechFamily U P P') (Ψ : CechFamily U P' P'') (n : ℕ)
     (x : GroundTheory.Arith.SchemeCoh.cechH P U n) :
@@ -124,7 +124,7 @@ def add (Φ Ψ : CechFamily U P P') : CechFamily U P P' where
     rw [Φ.res_comm, Ψ.res_comm]
 
 /- English proof (translation)
-Take `⟨σ, hσ, rfl⟩` from `exists_cls x`. Rewrite using `[cechH_cls, cechH_cls, cechH_cls]`. Conclude with `cls_congr U (by funext i; rfl) _ (by`. Rewrite using `[map_add, ← cochain_d, ← cochain_d, hσ, map_zero, map_zero, add_zero])`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma add_cechH (Φ Ψ : CechFamily U P P') (n : ℕ) (x : GroundTheory.Arith.SchemeCoh.cechH P U n) :
     (Φ.add Ψ).cechH n x = Φ.cechH n x + Ψ.cechH n x := by
@@ -134,7 +134,7 @@ lemma add_cechH (Φ Ψ : CechFamily U P P') (n : ℕ) (x : GroundTheory.Arith.Sc
     rw [map_add, ← cochain_d, ← cochain_d, hσ, map_zero, map_zero, add_zero])
 
 /- English proof (translation)
-Take `⟨σ, hσ, rfl⟩` from `exists_cls x`. Rewrite using `[cechH_cls, cechH_cls]`. Conclude with `cls_congr U (by funext i; exact h i _) _ _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma cechH_congr {Φ Ψ : CechFamily U P P'} (h : ∀ {n : ℕ} (i : Fin (n + 1) → ι) x, Φ.φ i x = Ψ.φ i x)
     (n : ℕ) (x : GroundTheory.Arith.SchemeCoh.cechH P U n) : Φ.cechH n x = Ψ.cechH n x := by

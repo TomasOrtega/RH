@@ -9,16 +9,14 @@ namespace GlobalTheory.CompanionTheory.PresRho.LowMeet
 variable {n : ℕ}
 
 /- English proof (translation)
-Introduce and unpack `⟨a, ha, hne⟩`. Conclude with `not_lower_of_upper ha (hm a (Finsupp.mem_support_iff.2 hne))`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem not_hasUpper {m : Fin n × Fin n →₀ ℕ} (hm : LowExp m) : ¬ HasUpper m := by
   rintro ⟨a, ha, hne⟩
   exact not_lower_of_upper ha (hm a (Finsupp.mem_support_iff.2 hne))
 
 /- English proof (translation)
-Use extensionality with `a`. Simplify using `only [lowPart, Finsupp.filter_apply]`. Use `split_ifs with h`. Both sides reduce to the same expression. Assume the negation of the conclusion as `hne`.
-
-Conclude with `h (hm a (Finsupp.mem_support_iff.2 (Ne.symm hne)))`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem lowPart_eq {m : Fin n × Fin n →₀ ℕ} (hm : LowExp m) : lowPart m = m := by
   ext a
@@ -29,7 +27,7 @@ theorem lowPart_eq {m : Fin n × Fin n →₀ ℕ} (hm : LowExp m) : lowPart m =
     exact h (hm a (Finsupp.mem_support_iff.2 (Ne.symm hne)))
 
 /- English proof (translation)
-Use extensionality with `i`. Rewrite using `[diagExp_apply]`. Assume the negation of the conclusion as `hne`. Conclude with `not_lower_of_diag (a := (i, i)) rfl (hm (i, i) (Finsupp.mem_support_iff.2 hne))`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem diagExp_eq {m : Fin n × Fin n →₀ ℕ} (hm : LowExp m) : diagExp m = 0 := by
   ext i
@@ -38,9 +36,9 @@ theorem diagExp_eq {m : Fin n × Fin n →₀ ℕ} (hm : LowExp m) : diagExp m =
   exact not_lower_of_diag (a := (i, i)) rfl (hm (i, i) (Finsupp.mem_support_iff.2 hne))
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨m, hm, rfl⟩` from `hx`. Rewrite using `[vermaCoord_canon_of_not lam (not_hasUpper hm), lowPart_eq hm, diagExp_eq hm]`. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add, map_add, hx, hy]`. Consider the case `smul r x _ hx => rw [map_smul, map_smul, hx]`.
+Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem recover (lam : Fin n → ℂ) {x : U n} (hx : x ∈ lowSpan n) :
     Finsupp.linearCombination ℂ (canon (n := n)) (vermaCoord lam x) = x := by
@@ -54,14 +52,14 @@ theorem recover (lam : Fin n → ℂ) {x : U n} (hx : x ∈ lowSpan n) :
   | smul r x _ hx => rw [map_smul, map_smul, hx]
 
 /- English proof (translation)
-Rewrite using `[← recover lam hx, vermaCoord_vermaIdeal lam hJ, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_zero_of_mem (lam : Fin n → ℂ) {x : U n} (hx : x ∈ lowSpan n)
     (hJ : x ∈ vermaIdeal lam) : x = 0 := by
   rw [← recover lam hx, vermaCoord_vermaIdeal lam hJ, map_zero]
 
 /- English proof (translation)
-Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨m, hm, -, -, rfl⟩`. Conclude with `⟨m, hm, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem canonSpan_lower_le (lo hi : ℕ) : canonSpan (IsLower (n := n)) lo hi ≤ lowSpan n := by
   refine Submodule.span_mono ?_
@@ -69,26 +67,24 @@ theorem canonSpan_lower_le (lo hi : ℕ) : canonSpan (IsLower (n := n)) lo hi �
   exact ⟨m, hm, rfl⟩
 
 /- English proof (translation)
-The claim follows from `canonSpan_lower_le _ _ (word_mem_canonSpan closed_lower w hw)`.
+A detailed English derivation is pending.
 -/
 theorem word_mem_lowSpan {w : List (Fin n × Fin n)} (hw : ∀ a ∈ w, IsLower a) :
     word w ∈ lowSpan n :=
   canonSpan_lower_le _ _ (word_mem_canonSpan closed_lower w hw)
 
 /- English proof (translation)
-Simplify using `only [IsLower]`. Rewrite using `[Fin.lt_def, hij]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem isLower_simple {i j : Fin n} (hij : (j : ℕ) = i + 1) : IsLower (j, i) := by
   simp only [IsLower]; rw [Fin.lt_def, hij]; omega
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨m, hm, rfl⟩` from `hx`. Establish `h : canon m * e a ^ 2 = word (expand m ++ [a, a])`. Rewrite using `[word_append, word_cons, word_singleton, pow_two]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[h]`. Use `word_mem_lowSpan fun b hb => ?_` and prove the remaining obligations. Break down `List.mem_append.1 hb with hb | hb` into its components or cases. Conclude with `hm b (mem_support_of_mem_expand hb)`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using `only [List.mem_cons, List.not_mem_nil, or_false, or_self] at hb`. Rewrite using `[hb]`. Conclude with `ha`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [add_mul]`.
-
-Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul r x _ hx => rw [smul_mul_assoc]`. Conclude with `Submodule.smul_mem _ r hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mul_sq_mem_lowSpan {a : Fin n × Fin n} (ha : IsLower a) {x : U n} (hx : x ∈ lowSpan n) :
     x * e a ^ 2 ∈ lowSpan n := by
@@ -112,7 +108,7 @@ def lowSq (n : ℕ) : Submodule ℂ (U n) :=
     v * e (j, i) ^ 2 = x}
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨v, i, j, hv, hij, rfl⟩`. Conclude with `mul_sq_mem_lowSpan (isLower_simple hij) hv`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem lowSq_le_lowSpan : lowSq n ≤ lowSpan n := by
   refine Submodule.span_le.2 ?_
@@ -120,7 +116,7 @@ theorem lowSq_le_lowSpan : lowSq n ≤ lowSpan n := by
   exact mul_sq_mem_lowSpan (isLower_simple hij) hv
 
 /- English proof (translation)
-Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨v, i, j, -, hij, rfl⟩`. Conclude with `⟨v, i, j, hij, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem lowSq_le_sqSpan : lowSq n ≤ sqSpan n := by
   refine Submodule.span_mono ?_
@@ -128,13 +124,11 @@ theorem lowSq_le_sqSpan : lowSq n ≤ sqSpan n := by
   exact ⟨v, i, j, hij, rfl⟩
 
 /- English proof (translation)
-Distinguish the cases in `h : HasUpper m`. Use `Submodule.mem_sup_right ?_` and prove the remaining obligations. Conclude with `mul_pow_mem_vermaIdeal hij (rhoVec n) 1 (by rw [rhoVec_sub hij]; simp) (canon_mem_nPlusU h)`. Establish `hup : ∀ a ∈ upL n, m a = 0` using `fun a ha => by`. Assume the negation of the conclusion as `hne`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `h ⟨a, mem_upL.1 ha, hne⟩`. Use `set low := word (blockW (lowL n) m) with hlow`. Establish `hlowS : low ∈ lowSpan n` using `word_mem_lowSpan fun a ha => mem_lowL.1 (mem_of_mem_blockW ha).1`. Use `set p := MvPolynomial.monomial (diagExp m) (1 : ℂ)`. Use `set q := translate (fun k => ((2 : ℕ) : ℂ) * rootAt (j, i) k) p`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Establish `hc : canon m * e (j, i) ^ 2 = low * e (j, i) ^ 2 * hcEmb q`. Rewrite using `[canon_eq_triangular, blockW_eq_nil hup, word_nil, mul_one, mul_assoc, hcEmb_mul_e_pow, mul_assoc]`. Establish `hs : canon m * e (j, i) ^ 2 = MvPolynomial.eval (rhoVec n) q • (low * e (j, i) ^ 2) + low * e (j, i) ^ 2 * (hcEmb q - algebraMap ℂ (U n) (MvPolynomial.eval (rhoVec n) q))`. Rewrite using `[hc, mul_sub, ← Algebra.commutes, ← Algebra.smul_def]`. Normalize the expressions using the abelian group laws.
-
-Rewrite using `[hs]`. Use `Submodule.add_mem _ (Submodule.mem_sup_left (Submodule.smul_mem _ _ ?_)) (Submodule.mem_sup_right (mul_mem_vermaIdeal _ _ (hcEmb_sub_eval_mem_vermaIdeal (rhoVec n) q)))` and prove the remaining obligations. Conclude with `Submodule.subset_span ⟨low, i, j, hlowS, hij, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem canon_mul_sq_mem (m : Fin n × Fin n →₀ ℕ) {i j : Fin n} (hij : (j : ℕ) = i + 1) :
     canon m * e (j, i) ^ 2 ∈ lowSq n ⊔ vermaIdeal (rhoVec n) := by
@@ -164,11 +158,9 @@ theorem canon_mul_sq_mem (m : Fin n × Fin n →₀ ℕ) {i j : Fin n} (hij : (j
     exact Submodule.subset_span ⟨low, i, j, hlowS, hij, rfl⟩
 
 /- English proof (translation)
-Establish `hu : u ∈ Submodule.span ℂ (Set.range (canon (n` using `n))) := by`. Rewrite using `[span_canon_eq_top]`. Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨m, rfl⟩ := hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Proceed by induction. Treat this case separately.
 
-Conclude with `canon_mul_sq_mem m hij`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [add_mul]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul r x _ hx => rw [smul_mul_assoc]`.
-
-Conclude with `Submodule.smul_mem _ r hx`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mul_sq_mem (u : U n) {i j : Fin n} (hij : (j : ℕ) = i + 1) :
     u * e (j, i) ^ 2 ∈ lowSq n ⊔ vermaIdeal (rhoVec n) := by
@@ -181,7 +173,7 @@ theorem mul_sq_mem (u : U n) {i j : Fin n} (hij : (j : ℕ) = i + 1) :
   | smul r x _ hx => rw [smul_mul_assoc]; exact Submodule.smul_mem _ r hx
 
 /- English proof (translation)
-Use `sup_le le_sup_right (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨u, i, j, hij, rfl⟩`. Conclude with `mul_sq_mem u hij`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem Jp_le : Jp n ≤ lowSq n ⊔ vermaIdeal (rhoVec n) := by
   refine sup_le le_sup_right (Submodule.span_le.2 ?_)
@@ -189,9 +181,9 @@ theorem Jp_le : Jp n ≤ lowSq n ⊔ vermaIdeal (rhoVec n) := by
   exact mul_sq_mem u hij
 
 /- English proof (translation)
-Introduce `n x hx hJ`. Take `⟨s, hs, t, ht, rfl⟩` from `Submodule.mem_sup.1 (Jp_le hJ)`. Establish `ht0 : t = 0`. Use `eq_zero_of_mem (rhoVec n) ?_ ht` and prove the remaining obligations. Use `Submodule.sub_mem _ hx (lowSq_le_lowSpan hs)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[add_sub_cancel_left]`. Then use the resulting hypothesis. Rewrite using `[ht0, add_zero]`. Conclude with `lowSq_le_sqSpan hs`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_sqSpan_of_mem_lowSpan_of_mem_Jp : ∀ {n : ℕ} (x : U n), x ∈ lowSpan n → x ∈ Jp n →
     x ∈ sqSpan n := by

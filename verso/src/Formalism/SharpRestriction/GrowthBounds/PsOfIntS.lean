@@ -47,20 +47,20 @@ section Lem
 variable {V : VF C}
 
 /- English proof (translation)
-Introduce `μ` and use `by have hμ : μ = Finsupp.single () (μ ()) := Finsupp.ext fun u => by cases u; simp rw [hμ]; exact hf (μ ())`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem intS_of_ps {f : PowerSeries C} (hf : ∀ n, V.Ge 0 (PowerSeries.coeff n f)) : IntS V f := fun μ => by
   have hμ : μ = Finsupp.single () (μ ()) := Finsupp.ext fun u => by cases u; simp
   rw [hμ]; exact hf (μ ())
 
 /- English proof (translation)
-Introduce `n` and use `hf (Finsupp.single () n)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ps_of_intS {f : PowerSeries C} (hf : IntS V f) : ∀ n, V.Ge 0 (PowerSeries.coeff n f) :=
   fun n => hf (Finsupp.single () n)
 
 /- English proof (translation)
-Use `⟨constantCoeff_subst_zero (σ := Unit) (fun _ => ha) hf0, ?_⟩` and prove the remaining obligations. Conclude with `PartialDerivEval.intS_subst (fun _ => ha) (fun _ => hai) (intS_of_ps hf)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem subst_ps {τ : Type} {a : MvPowerSeries τ C} (ha : MvPowerSeries.constantCoeff a = 0)
     (hai : IntS V a) {f : PowerSeries C} (hf0 : PowerSeries.constantCoeff f = 0)
@@ -70,7 +70,7 @@ theorem subst_ps {τ : Type} {a : MvPowerSeries τ C} (ha : MvPowerSeries.consta
   exact PartialDerivEval.intS_subst (fun _ => ha) (fun _ => hai) (intS_of_ps hf)
 
 /- English proof (translation)
-The claim follows from `subst_ps (MvPowerSeries.constantCoeff_X j) (PartialDerivEval.intS_X j) hf0 hf`.
+A detailed English derivation is pending.
 -/
 theorem inV_pt (j : Fin 2) {f : PowerSeries C} (hf0 : PowerSeries.constantCoeff f = 0)
     (hf : ∀ n, V.Ge 0 (PowerSeries.coeff n f)) :
@@ -78,9 +78,7 @@ theorem inV_pt (j : Fin 2) {f : PowerSeries C} (hf0 : PowerSeries.constantCoeff 
   subst_ps (MvPowerSeries.constantCoeff_X j) (PartialDerivEval.intS_X j) hf0 hf
 
 /- English proof (translation)
-Introduce `i`. Use `⟨?_, fun n => ?_⟩` and prove the remaining obligations. Use `show PowerSeries.constantCoeff (PowerSeries.rescale c (γ i)) = 0`. Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_rescale, pow_zero, one_mul, PowerSeries.coeff_zero_eq_constantCoeff_apply, (hγ i).1]`. Use `show V.Ge 0 (PowerSeries.coeff n (PowerSeries.rescale c (γ i)))`.
-
-Rewrite using `[PowerSeries.coeff_rescale]`. Conclude with `(hc.pow n).mul_int ((hγ i).2 n)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rc_cv {c : C} (hc : V.Ge 0 c) {γ : κ → PowerSeries C} (hγ : IsCv V γ) : IsCv V (rc c γ) := by
   intro i
@@ -93,9 +91,9 @@ theorem rc_cv {c : C} (hc : V.Ge 0 c) {γ : κ → PowerSeries C} (hγ : IsCv V 
     exact (hc.pow n).mul_int ((hγ i).2 n)
 
 /- English proof (translation)
-Introduce `i`. Establish `hX : PowerSeries.constantCoeff ((PowerSeries.X : PowerSeries C) ^ n) = 0`. Rewrite using `[map_pow, PowerSeries.constantCoeff_X, zero_pow (by omega)]`. Establish `hXi : IntS V ((PowerSeries.X : PowerSeries C) ^ n)` using `PartialDerivEval.intS_pow (intS_of_ps fun m => by`. Rewrite using `[PowerSeries.coeff_X]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs`. Use `exacts [VF.Ge.one, VF.Ge.zero 0]) n`. Take `⟨h0, hI⟩` from `subst_ps (τ := Unit) hX hXi (hδ i).1 (hδ i).2`. Conclude with `⟨h0, ps_of_intS hI⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem pw_cv {n : ℕ} (hn : 0 < n) {δ : κ → PowerSeries C} (hδ : IsCv V δ) : IsCv V (pw n δ) := by
   intro i
@@ -108,7 +106,7 @@ theorem pw_cv {n : ℕ} (hn : 0 < n) {δ : κ → PowerSeries C} (hδ : IsCv V �
   exact ⟨h0, ps_of_intS hI⟩
 
 /- English proof (translation)
-Unfold `inV alongCv`. Simplify using `only [PowerSeries.subst]`. Rewrite using `[MvPowerSeries.subst_comp_subst_apply (MvPowerSeries.hasSubst_of_constantCoeff_zero hx) (MvPowerSeries.hasSubst_of_constantCoeff_zero (fun _ : Unit => MvPowerSeries.constantCoeff_X j))]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem subst_inV (j : Fin 2) {x : κ → PowerSeries C} (hx : ∀ i, PowerSeries.constantCoeff (x i) = 0)
     (F : MvPowerSeries κ C) :
@@ -119,7 +117,7 @@ theorem subst_inV (j : Fin 2) {x : κ → PowerSeries C} (hx : ∀ i, PowerSerie
     (MvPowerSeries.hasSubst_of_constantCoeff_zero (fun _ : Unit => MvPowerSeries.constantCoeff_X j))]
 
 /- English proof (translation)
-Unfold `inV`. Establish `hS : PowerSeries.HasSubst (MvPowerSeries.X j : MvPowerSeries (Fin 2) C)` using `PowerSeries.HasSubst.of_constantCoeff_zero (MvPowerSeries.constantCoeff_X j)`. Rewrite using `[← PowerSeries.coe_substAlgHom hS, map_sum]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem inV_sum (j : Fin 2) {ι : Type} (s : Finset ι) (f : ι → PowerSeries C) :
     inV j (∑ k ∈ s, f k) = ∑ k ∈ s, inV j (f k) := by
@@ -129,13 +127,13 @@ theorem inV_sum (j : Fin 2) {ι : Type} (s : Finset ι) (f : ι → PowerSeries 
   rw [← PowerSeries.coe_substAlgHom hS, map_sum]
 
 /- English proof (translation)
-Establish `hX : PowerSeries.constantCoeff ((PowerSeries.X : PowerSeries C) ^ n) = 0`. Rewrite using `[map_pow, PowerSeries.constantCoeff_X, zero_pow (by omega)]`. Establish `hpw0 : ∀ i, PowerSeries.constantCoeff (pw n δ i) = 0` using `fun i => constantCoeff_subst_zero (σ := Unit) (fun _ => hX) (hδ i)`. Establish `hrc0 : ∀ (c : C) i, PowerSeries.constantCoeff (rc c γ i) = 0` using `fun c i => by show PowerSeries.constantCoeff (PowerSeries.rescale c (γ i)) = 0`. Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_rescale, pow_zero, one_mul, PowerSeries.coeff_zero_eq_constantCoeff_apply, hγ i]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[subst_inV j hpw0]`. Simplify using `only [subst_inV j (hrc0 _)]`. Rewrite using `[← inV_sum]`. Use `congr 1`. Rewrite using `[show alongCv (pw n δ) (X.lg i) = PowerSeries.subst ((PowerSeries.X : PowerSeries C) ^ n) (alongCv δ (X.lg i)) from alongCv_repar hδ hX (X.lg i), hN i]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `hc : PowerSeries.constantCoeff ((ζ ^ k) • (PowerSeries.X : PowerSeries C)) = 0` using `by simp`. Use `show PowerSeries.rescale (ζ ^ k) (alongCv γ (X.lg i)) = alongCv (fun i => PowerSeries.rescale (ζ ^ k) (γ i)) (X.lg i)`. Rewrite using `[PowerSeries.rescale_eq_subst]`. Simplify using `only [PowerSeries.rescale_eq_subst]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[alongCv_repar hγ hc]`.
+A detailed English derivation is pending.
 -/
 theorem log_rel (X : RawChart C d I κ) (j : Fin 2) {l n : ℕ} (hn : 0 < n) {ζ : C} {γ δ : κ → PowerSeries C}
     (hγ : ∀ i, PowerSeries.constantCoeff (γ i) = 0) (hδ : ∀ i, PowerSeries.constantCoeff (δ i) = 0)
@@ -166,9 +164,9 @@ theorem log_rel (X : RawChart C d I κ) (j : Fin 2) {l n : ℕ} (hn : 0 < n) {ζ
 end Lem
 
 /- English proof (translation)
-Establish `hζint : V.Ge 0 ζ` using `V.ge_of_pow_eq_one V.l_prime.ne_zero hζ`. Establish `hrc : ∀ k, IsCv V (rc (ζ ^ k) γ)` using `fun k => rc_cv (hζint.pow k) hγ`. Establish `hpw : IsCv V (pw n δ)` using `pw_cv hn hδ`. Establish `pt : ∀ (j : Fin 2) (x : κ → PowerSeries C), IsCv V x → IsPt V (fun i => inV j (x i))` using `fun j x hx i => inV_pt j (hx i).1 (hx i).2`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hBi (Fin 2) V.l (fun k i => inV 0 (rc (ζ ^ k) γ i)) (fun i => inV 0 (pw n δ i)) (fun i => inV 1 (c i)) (fun k => pt 0 _ (hrc k)) (pt 0 _ hpw) (pt 1 _ hc) (log_rel X 0 hn (fun i => (hγ i).1) (fun i => (hδ i).1) hN)).1`. Conclude with `(hBi (Fin 2) V.l (fun k i => inV 1 (rc (ζ ^ k) γ i)) (fun i => inV 1 (pw n δ i)) (fun i => inV 0 (c i)) (fun k => pt 1 _ (hrc k)) (pt 1 _ hpw) (pt 0 _ hc) (log_rel X 1 hn (fun i => (hγ i).1) (fun i => (hδ i).1) hN)).2`.
+A detailed English derivation is pending.
 -/
 theorem hInt_core [CharZero C] (V : VF C) (X : RawChart C d I κ) (hBi : BiInt X V) (ζ : C) (hζ : ζ ^ V.l = 1)
     (n : ℕ) (hn : 0 < n) (γ δ c : κ → PowerSeries C) (hγ : IsCv V γ) (hδ : IsCv V δ) (hc : IsCv V c)

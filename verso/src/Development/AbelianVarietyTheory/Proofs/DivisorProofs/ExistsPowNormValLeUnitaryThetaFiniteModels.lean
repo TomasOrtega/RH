@@ -13,13 +13,13 @@ noncomputable section
 namespace GlobalTheory.UPoinc.ValBound
 
 /- English proof (translation)
-Apply `Ideal.exists_pow_le_of_le_radical_of_fg _ (IsNoetherian.noetherian _)` to reduce the goal to its premises. Rewrite using `[Ideal.radical_eq_sInf, le_sInf_iff]`. Introduce and unpack `P ⟨hP, hPp⟩`. Set `q : Sp (X.presheaf.stalk x)` to `⟨P, hPp⟩`. Establish `hcomap : P.comap (f.stalkMap x).hom = maximalIdeal _` using `((maximalIdeal.isMaximal _).eq_of_le (Ideal.comap_ne_top _ hPp.ne_top) (Ideal.map_le_iff_le_comap.1 hP)).symm`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h1 : Spec.map (f.stalkMap x) q = closedPoint (Y.presheaf.stalk (f x))`. Conclude with `PrimeSpectrum.ext hcomap`. Establish `e₁` using `Scheme.SpecMap_stalkMap_fromSpecStalk f (x := x)`. Establish `hy : f (X.fromSpecStalk x q) = f x`. Use `congrArg (fun g => g q) e₁` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Scheme.Hom.comp_apply, h1, Scheme.fromSpecStalk_closedPoint] at this`. Conclude with `this.symm`. Establish `hs : X.fromSpecStalk x q ⤳ x`. Establish `: X.fromSpecStalk x q ∈ Set.range (X.fromSpecStalk x)` using `⟨_, rfl⟩`. Rewrite `this` using `[Scheme.range_fromSpecStalk]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd` using `(f.isDiscrete_preimage_singleton (f x)).to_subtype`. Establish `h2 : (⟨_, hy⟩ : f ⁻¹' {f x}) ⤳ ⟨x, rfl⟩` using `(subtype_specializes_iff _ _).mpr hs`. Establish `h3 : X.fromSpecStalk x q = X.fromSpecStalk x (closedPoint _)` using `(congrArg Subtype.val h2.eq).trans Scheme.fromSpecStalk_closedPoint.symm`. Establish `h4 : q = closedPoint _` using `(X.fromSpecStalk x).isEmbedding.injective h3`. Conclude with `(congrArg PrimeSpectrum.asIdeal h4).ge`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_maximalIdeal_pow_le_map_stalkMap (X Y : Scheme.{0}) (f : X ⟶ Y) [IsFinite f] (x : X) [IsNoetherianRing (X.presheaf.stalk x)] :
     ∃ e : ℕ, maximalIdeal (X.presheaf.stalk x) ^ e ≤
@@ -51,7 +51,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l} {C : UCompact Xo c}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(OO p).subtype.comp ((RatModel.valLoc t.y z₁ (specializes_of_eq t.cen)).comp (X₁.M.stalkEquiv z₁).toRingHom), fun a => by show X₁.M.val _ ((X₁.M.stalkEquiv z₁ a : X₁.Ω₁)) = _ rw [RatModel.val_gPt t.cen] rfl, fun a => (mem_OO_iff _).1 (Subtype.prop _)⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_valHom {X₁ : USetup C} {p : ℕ} [Fact p.Prime] {z₁ : X₁.M.Z} (t : UCTrait X₁ p z₁) :
     ∃ φ : X₁.M.Z.presheaf.stalk z₁ →+* PadicAlgCl p, (∀ a, t.val a = φ a) ∧ ∀ a, ‖φ a‖ ≤ 1 :=
@@ -63,7 +63,7 @@ theorem exists_valHom {X₁ : USetup C} {p : ℕ} [Fact p.Prime] {z₁ : X₁.M.
     fun a => (mem_OO_iff _).1 (Subtype.prop _)⟩
 
 /- English proof (translation)
-Rewrite using `[UCTrait.val, RatModel.stalkHom_germ]`. Use `RatModel.val_valF ?_ g` and prove the remaining obligations. Introduce and unpack `_ ⟨w, rfl⟩`. Conclude with `(RatModel.gPt_specializes t.cen w).mem_open V.isOpen hz`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem val_germ {X : USetup C} {p : ℕ} [Fact p.Prime] {z : X.M.Z} (t : UCTrait X p z) {V : X.M.Z.Opens}
     (hz : z ∈ V) (g : Γ(X.M.Z, V)) :
@@ -74,7 +74,7 @@ theorem val_germ {X : USetup C} {p : ℕ} [Fact p.Prime] {z : X.M.Z} (t : UCTrai
   exact (RatModel.gPt_specializes t.cen w).mem_open V.isOpen hz
 
 /- English proof (translation)
-Rewrite using `[Scheme.Hom.germ_stalkMap_apply, val_germ t' (V := X'.π ⁻¹ᵁ U) hU', val_germ t hU₁]`. Establish `e1` using `GlobalTheory.Points.valR_comp (gPt p ≫ t'.y) X'.π U s`. Establish `e2` using `GlobalTheory.Points.valR_comp (gPt p ≫ t.y) X₁.π U s`. Rewrite `e1` using `[Category.assoc, ← hc, ← Category.assoc]`. Conclude with `e1.symm.trans e2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_stalkMap_germ {X₁ X' : USetup C} {p : ℕ} [Fact p.Prime] {z₁ : X₁.M.Z} {z' : X'.M.Z}
     (t : UCTrait X₁ p z₁) (t' : UCTrait X' p z') (hc : t.y ≫ X₁.π = t'.y ≫ X'.π)
@@ -88,29 +88,25 @@ theorem val_stalkMap_germ {X₁ X' : USetup C} {p : ℕ} [Fact p.Prime] {z₁ : 
   exact e1.symm.trans e2
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c C X₁ X' z₁`. Establish `hnoeth : ∀ z' : X'.M.Z, IsNoetherianRing (X'.M.Z.presheaf.stalk z')` using `fun z' => by`. Establish `: IsDedekindDomain X'.o₁` using `ArithBase.ded (Ω := X'.Ω₁)`. Use `X'.M.lft` as an intermediate fact. Establish `: IsLocallyNoetherian X'.M.Z` using `LocallyOfFiniteType.isLocallyNoetherian X'.M.s`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `infer_instance`. Use `haveI := X'.fin`. Establish `hfin` using `X'.π.finite_preimage_singleton (X₁.π z₁)`. Use `choose e he using fun z' : X'.M.Z => haveI := hnoeth z'`. Use `exists_maximalIdeal_pow_le_map_stalkMap X'.M.Z C.Z X'.π z'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hfin.toFinset.sup e + 1, by omega, ?_⟩` and prove the remaining obligations. Introduce `p _ t z' t' hc h' hh'`. Establish `hz' : X'.π z' = X₁.π z₁`. Use `congrArg (fun g : Sp (OO p) ⟶ C.Z => g (cPt p)) hc` as an intermediate fact. Simplify using `only [Scheme.Hom.comp_apply, t.cen, t'.cen] at this`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `this.symm`. Establish `hmem : z' ∈ hfin.toFinset` using `by simp [hz']`. Establish `hle : e z' ≤ hfin.toFinset.sup e + 1` using `(Finset.le_sup hmem).trans (Nat.le_succ _)`. Establish `hpow : h' ^ (hfin.toFinset.sup e + 1) ∈ (maximalIdeal _).map (X'.π.stalkMap z').hom` using `he z' (Ideal.pow_le_pow_right hle (Ideal.pow_mem_pow hh' _))`. Take `⟨φ', hφ', hφ'1⟩` from `exists_valHom t'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Proceed by induction.
 
-Take `⟨φ₁, hφ₁, -⟩` from `exists_valHom t`. Establish `key : ∀ x ∈ (maximalIdeal (C.Z.presheaf.stalk (X'.π z'))).map (X'.π.stalkMap z').hom, ∃ h ∈ maximalIdeal (X₁.M.Z.presheaf.stalk z₁), ‖φ' x‖ ≤ ‖φ₁ h‖`. Introduce `x hx`. Express the relevant statement in the definitionally equal form `x ∈ Ideal.span _ at hx`. Proceed by induction on `hx using Submodule.span_induction with`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `mem x hx`. Take `⟨g, hg, rfl⟩` from `hx`. Take `⟨U, hU, s, rfl⟩` from `C.Z.presheaf.germ_exist g`. Establish `hU₁ : X₁.π z₁ ∈ U` using `hz' ▸ hU`. Use `⟨X₁.M.Z.presheaf.germ (X₁.π ⁻¹ᵁ U) z₁ hU₁ (X₁.π.app U s), ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`. Establish `h1 : z₁ ∈ X₁.M.Z.basicOpen (X₁.π.app U s)` using `(X₁.M.Z.mem_basicOpen _ z₁ hU₁).2 hu`. Rewrite `h1` using `[← Scheme.preimage_basicOpen]`. Establish `h2 : X₁.π z₁ ∈ C.Z.basicOpen s` using `h1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Rewrite `h2` using `[← hz']`. Conclude with `(mem_nonunits_iff.1 ((mem_maximalIdeal _).1 hg)) ((C.Z.mem_basicOpen s _ hU).1 h2)`. Rewrite using `[← hφ', ← hφ₁, val_stalkMap_germ t t' hc hU hU₁ s]`. Consider the case `zero => exact ⟨0, zero_mem _, by simp⟩`. Consider the case `add x y _ _ hx hy`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Take `⟨a, ha, hxa⟩` from `hx`. Take `⟨b, hb, hyb⟩` from `hy`. Break down `le_total ‖φ₁ a‖ ‖φ₁ b‖ with hab | hab` into its components or cases. Conclude with `⟨b, hb, by`. Rewrite using `[map_add]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hxa.trans hab) hyb)⟩`. Conclude with `⟨a, ha, by`. Rewrite using `[map_add]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le hxa (hyb.trans hab))⟩`. Consider the case `smul b x _ hx`.
-
-Take `⟨a, ha, hxa⟩` from `hx`. Use `⟨a, ha, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_eq_mul, map_mul, norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨h, hh, hnorm⟩` from `key _ hpow`.
-
-Use `⟨h, hh, ?_⟩` and prove the remaining obligations. Rewrite using `[hφ', hφ₁, ← norm_pow, ← map_pow]`. Conclude with `hnorm`.
+Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_norm_val_le : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (C : UCompact Xo c) (X₁ X' : USetup C) (z₁ : X₁.M.Z), ∃ e : ℕ, 1 ≤ e ∧ ∀ (p : ℕ) [Fact p.Prime] (t : UCTrait X₁ p z₁) (z' : X'.M.Z) (t' : UCTrait X' p z'), t.y ≫ X₁.π = t'.y ≫ X'.π → ∀ h' ∈ maximalIdeal (X'.M.Z.presheaf.stalk z'), ∃ h ∈ maximalIdeal (X₁.M.Z.presheaf.stalk z₁), ‖t'.val h'‖ ^ e ≤ ‖t.val h‖ := by
   intro E _ _ _ H Dw l Xo c C X₁ X' z₁

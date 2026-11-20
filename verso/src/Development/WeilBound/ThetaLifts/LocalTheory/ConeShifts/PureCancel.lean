@@ -17,17 +17,15 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 /- English proof (translation)
-Set `s` to `hf.toFinset.erase 0`. Establish `e : ∀ y a, G a y * w a = ∑ g ∈ s, g y * ({a | G a = g} : Set α).indicator w a` using `fun y a => by`. Distinguish the cases in `h0 : G a = 0`. Rewrite using `[h0, Pi.zero_apply, zero_mul, Finset.sum_eq_zero]`. Introduce `g hg`.
+Introduce a local definition for the expression. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Set.indicator_of_notMem, mul_zero]`. Conclude with `fun h => (Finset.mem_erase.1 hg).1 (h.symm.trans h0)`. Rewrite using `[Finset.sum_eq_single (G a), Set.indicator_of_mem (by rfl)]`. Introduce `g _ hne`. Rewrite using `[Set.indicator_of_notMem (s := {a | G a = g}) (fun h => hne (Eq.symm h)), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_erase.2 ⟨h0, hf.mem_toFinset.2 ⟨a, rfl⟩⟩) h`. Establish `hi : ∀ g ∈ s, Integrable (({a | G a = g} : Set α).indicator w) μ` using `fun g hg => (integrable_indicator_iff (hm g)).2 (hw.mono_set fun a ha => by`. Assume the negation of the conclusion as `hn`. Conclude with `(Finset.mem_erase.1 hg).1 (Eq.trans (Eq.symm ha) (hD a hn)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `⟨fun y => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [e y]`. Conclude with `integrable_finset_sum _ fun g hg => (hi g hg).const_mul _`. Establish `: (fun y => ∫ a, G a y * w a ∂μ) = ∑ g ∈ s, (∫ a, ({a | G a = g} : Set α).indicator w a ∂μ) • g`. Use function extensionality and compare the values at `y`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [e y, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[integral_finset_sum _ fun g hg => (hi g hg).const_mul _]`. Conclude with `Finset.sum_congr rfl fun g _ => by rw [integral_const_mul, mul_comm]`. Rewrite using `[this]`. Use `S.sum_mem fun g hg => S.smul_mem _ ?_` and prove the remaining obligations.
-
-Take `⟨a, rfl⟩` from `hf.mem_toFinset.1 (Finset.mem_erase.1 hg).2`. Conclude with `hS a`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem int_fin {α Y : Type} [MeasurableSpace α] (μ : Measure α) (G : α → Y → ℂ) (w : α → ℂ) (hf : (Set.range G).Finite)
     (hm : ∀ g, MeasurableSet {a | G a = g}) (D : Set α) (hD : ∀ a ∉ D, G a = 0) (hw : IntegrableOn w D μ)
@@ -68,7 +66,7 @@ variable {k κ : Type} [CommRing k] [Invertible (2 : k)] [TopologicalSpace k] [I
 
 omit [TopologicalSpace k] [IsTopologicalRing k] in
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [schr, Pi.smul_apply, smul_eq_mul, Prod.fst_add, Prod.snd_add, add_assoc, ← mul_assoc, ← AddChar.map_add_eq_mul, add_dotProduct, dotProduct_add]`. Use `congr 2`. Use `invOf_two_add_invOf_two (R := k)` as an intermediate fact. Take the linear combination `(-(w.1 ⬝ᵥ w'.2)) * this`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem schr_mul (w w' : (κ → k) × (κ → k)) (φ : (κ → k) → ℂ) :
     schr ψ w (schr ψ w' φ) = ψ (⅟(2 : k) * (w.1 ⬝ᵥ w'.2 - w'.1 ⬝ᵥ w.2)) • schr ψ (w + w') φ := by
@@ -80,15 +78,15 @@ theorem schr_mul (w w' : (κ → k) × (κ → k)) (φ : (κ → k) → ℂ) :
   linear_combination (-(w.1 ⬝ᵥ w'.2)) * this
 
 /- English proof (translation)
-Establish `h : ∀ᶠ w in 𝓝 (0 : (κ → k) × (κ → k)), ∀ x ∈ tsupport φ, ψ (x ⬝ᵥ w.2 + ⅟(2 : k) * (w.1 ⬝ᵥ w.2)) = 1 ∧ φ (x + w.1) = φ x ∧ φ (x - w.1) = φ x`. Use `IsCompact.eventually_forall_of_forall_eventually hφ.2 fun x _ => ?_` and prove the remaining obligations. Establish `c1 : Continuous fun z : ((κ → k) × (κ → k)) × (κ → k) => z.2 ⬝ᵥ z.1.2 + ⅟(2 : k) * (z.1.1 ⬝ᵥ z.1.2)`. Unfold `dotProduct`. Use `fun_prop`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `c2 : Continuous fun z : ((κ → k) × (κ → k)) × (κ → k) => z.2 + z.1.1` using `by fun_prop`. Establish `c3 : Continuous fun z : ((κ → k) × (κ → k)) × (κ → k) => z.2 - z.1.1` using `by fun_prop`. Establish `e1` using `(hψ.comp_continuous c1).eventually_eq (0, x)`. Establish `e2` using `(hφ.1.comp_continuous c2).eventually_eq (0, x)`. Establish `e3` using `(hφ.1.comp_continuous c3).eventually_eq (0, x)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e4` using `(hφ.1.comp_continuous (continuous_snd (X := (κ → k) × (κ → k)))).eventually_eq (0, x)`. Use `filter_upwards [e1, e2, e3, e4] with z a b c d`. Simplify using `only [Function.comp_apply, Prod.snd_zero, Prod.fst_zero, dotProduct_zero, mul_zero, add_zero, sub_zero, AddChar.map_zero_eq_one] at a b c d`. Conclude with `⟨a, b.trans d.symm, c.trans d.symm⟩`. Use `filter_upwards [h] with w hw`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : x ∈ tsupport φ`. Rewrite using `[schr, (hw x hx).1, (hw x hx).2.1, one_mul]`. Establish `h0 : φ x = 0` using `image_eq_zero_of_notMem_tsupport hx`. Rewrite using `[schr, h0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Distinguish the cases in `h1 : x + w.1 ∈ tsupport φ`. Use `(hw _ h1).2.2` as an intermediate fact. Rewrite `this` using `[add_sub_cancel_right, h0]`. Rewrite using `[← this, mul_zero]`. Rewrite using `[image_eq_zero_of_notMem_tsupport h1, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem schr_fix (hψ : IsLocallyConstant ψ) {φ : (κ → k) → ℂ} (hφ : φ ∈ SB (κ → k)) :
     ∀ᶠ w in 𝓝 (0 : (κ → k) × (κ → k)), schr ψ w φ = φ := by
@@ -120,11 +118,11 @@ theorem schr_fix (hψ : IsLocallyConstant ψ) {φ : (κ → k) → ℂ} (hφ : �
     · rw [image_eq_zero_of_notMem_tsupport h1, mul_zero]
 
 /- English proof (translation)
-Use `(IsLocallyConstant.iff_eventually_eq _).2 fun w₀ => ?_` and prove the remaining obligations. Establish `c : Continuous fun w : (κ → k) × (κ → k) => ⅟(2 : k) * (w.1 ⬝ᵥ w₀.2 - w₀.1 ⬝ᵥ w.2)`. Unfold `dotProduct`. Use `fun_prop`. Establish `h : ∀ᶠ w in 𝓝 (0 : (κ → k) × (κ → k)), schr ψ (w + w₀) φ = schr ψ w₀ φ` using `by filter_upwards [schr_fix hψ (hs w₀), (hψ.comp_continuous c).eventually_eq 0] with w a b`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.comp_apply, Prod.snd_zero, Prod.fst_zero, dotProduct_zero, zero_dotProduct, sub_zero, mul_zero, AddChar.map_zero_eq_one] at b`. Rewrite `a` using `[schr_mul, b, one_smul]`. Conclude with `a`. Establish `t : Tendsto (fun w : (κ → k) × (κ → k) => w - w₀) (𝓝 w₀) (𝓝 0)`. Use `(continuous_sub_right w₀).tendsto w₀` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[sub_self]`. Then use the resulting hypothesis. Use `filter_upwards [t.eventually h] with w hw`. Rewrite `hw` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem schr_lc (hψ : IsLocallyConstant ψ) {φ : (κ → k) → ℂ} (hs : ∀ w, schr ψ w φ ∈ SB (κ → k)) :
     IsLocallyConstant fun w => schr ψ w φ := by
@@ -145,7 +143,7 @@ theorem schr_lc (hψ : IsLocallyConstant ψ) {φ : (κ → k) → ℂ} (hs : ∀
 
 omit [TopologicalSpace k] [IsTopologicalRing k] in
 /- English proof (translation)
-Rewrite using `[schr_mul, schr_mul, smul_smul, ← AddChar.map_add_eq_mul, add_comm w' w]`. Use `congr 2`. Use `invOf_two_add_invOf_two (R := k)` as an intermediate fact. Take the linear combination `(w.1 ⬝ᵥ w'.2 - w'.1 ⬝ᵥ w.2) * this`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem schr_comm (w w' : (κ → k) × (κ → k)) (φ : (κ → k) → ℂ) :
     schr ψ w (schr ψ w' φ) = ψ (w.1 ⬝ᵥ w'.2 - w'.1 ⬝ᵥ w.2) • schr ψ w' (schr ψ w φ) := by
@@ -156,7 +154,7 @@ theorem schr_comm (w w' : (κ → k) × (κ → k)) (φ : (κ → k) → ℂ) :
 
 omit [TopologicalSpace k] [IsTopologicalRing k] in
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [schr, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem schr_lin (w : (κ → k) × (κ → k)) (φ φ' : (κ → k) → ℂ) (c : ℂ) :
     schr ψ w (φ + c • φ') = schr ψ w φ + c • schr ψ w φ' := by
@@ -167,14 +165,14 @@ end Schr
 variable {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.TensUniq.eq_of_tens_eq v φ φ₁ φ₂ hφ fun r hr => (h₁ r hr).symm.trans (h₂ r hr)`.
+A detailed English derivation is pending.
 -/
 theorem acts_uniq {v : Pl F} {T} {φ φ₁ φ₂ : (κ → Fv F v) → ℂ} (hφ : φ ∈ SB _) (h₁ : Acts (evFin F v) T φ φ₁)
     (h₂ : Acts (evFin F v) T φ φ₂) : φ₁ = φ₂ :=
   GlobalTheory.TensUniq.eq_of_tens_eq v φ φ₁ φ₂ hφ fun r hr => (h₁ r hr).symm.trans (h₂ r hr)
 
 /- English proof (translation)
-Establish `ex : ∃ φ₁ ∈ SB (κ → Fv F v), Acts (evFin F v) T φ φ₁` using `⟨φ₁, h₁, h⟩`. Rewrite using `[opF, dif_pos ex]`. Conclude with `acts_uniq hφ ex.choose_spec.2 h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem opF_eq {v : Pl F} {T} {φ φ₁ : (κ → Fv F v) → ℂ} (hφ : φ ∈ SB _) (h₁ : φ₁ ∈ SB _) (h : Acts (evFin F v) T φ φ₁) :
     opF v T φ = φ₁ := by
@@ -183,7 +181,7 @@ theorem opF_eq {v : Pl F} {T} {φ φ₁ : (κ → Fv F v) → ℂ} (hφ : φ ∈
   exact acts_uniq hφ ex.choose_spec.2 h
 
 /- English proof (translation)
-Introduce `r hr` and use `by show S (T _) = _ rw [h₁ r hr] exact h₂ r ⟨hr.1, h₁ r hr ▸ hT _ hr.2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem acts_comp {v : Pl F} {S T : ((κ → AF F) → ℂ) → (κ → AF F) → ℂ} {φ φ₁ φ₂ : (κ → Fv F v) → ℂ}
     (hT : ∀ Φ ∈ schA F κ, T Φ ∈ schA F κ) (h₁ : Acts (evFin F v) T φ φ₁) (h₂ : Acts (evFin F v) S φ₁ φ₂) :
@@ -193,15 +191,13 @@ theorem acts_comp {v : Pl F} {S T : ((κ → AF F) → ℂ) → (κ → AF F) �
   exact h₂ r ⟨hr.1, h₁ r hr ▸ hT _ hr.2⟩
 
 /- English proof (translation)
-Use `PositivityTheory.ThKF.tensInj F κ w hne hstd {v} 2 ![1, -1] ![g, g] ![Function.update w v a, Function.update w v b] (fun i u hu => by` as an intermediate fact. Establish `: u ≠ v` using `fun e => hu (Finset.mem_singleton.2 e)`. Apply the tactic sequence `fin_cases i <;> simp [Function.update_of_ne this]) (by simp [Fin.sum_univ_two, h])`. Choose the witnesses or unpack the hypotheses as in `⟨z, hz⟩ : ∃ z, g z ≠ 0 := by`. Assume the negation of the conclusion as `hn`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push Not at hn`. Conclude with `hg (SchwartzMap.ext hn)`. Use function extensionality and compare the values at `y`. Set `y' : ∀ u : ({v} : Finset (Pl F)), κ → Fv F u` to `fun u => (Finset.mem_singleton.1 u.2).symm ▸ y`. Set `m : MultilinearMap ℂ (fun u : ({v} : Finset (Pl F)) => (κ → Fv F u) → ℂ) ℂ` to `(MultilinearMap.mkPiAlgebra ℂ _ ℂ).compLinearMap fun u => LinearMap.proj (y' u)`.
+Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ez : SInf F κ →ₗ[ℂ] ℂ` to `⟨⟨fun f => f z, fun _ _ => rfl⟩, fun _ _ => rfl⟩`. Establish `h2` using `congrArg (TensorProduct.lift ((LinearMap.mul ℂ ℂ).compl₁₂ ez (PiTensorProduct.lift m))) this`. Establish `hm : ∀ c : (κ → Fv F v) → ℂ, m (fun u => Function.update w v c u) = c y` using `fun c => by`. Simplify using `only [m, MultilinearMap.compLinearMap_apply, MultilinearMap.mkPiAlgebra_apply, LinearMap.proj_apply]`. Rewrite using `[Fintype.prod_eq_single (⟨v, Finset.mem_singleton_self v⟩ : ({v} : Finset (Pl F))) fun u hu => absurd (Subtype.ext (Finset.mem_singleton.1 u.2)) hu]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[y']`. Simplify using `only [Fin.sum_univ_two, map_add, map_smul, TensorProduct.lift.tmul, LinearMap.compl₁₂_apply, PiTensorProduct.lift.tprod, Matrix.cons_val_zero, Matrix.cons_val_one, map_zero, LinearMap.mul_apply', hm] at h2`. Establish `h3 : g z * (a y - b y) = 0`. Express the relevant statement in the definitionally equal form `(1 : ℂ) • (g z * a y) + (-1 : ℂ) • (g z * b y) = 0 at h2`. Simplify using `only [smul_eq_mul] at h2`.
-
-Take the linear combination `h2`. Conclude with `sub_eq_zero.1 ((mul_eq_zero.1 h3).resolve_left hz)`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem pure_cancel {w : ∀ v : Pl F, (κ → Fv F v) → ℂ} (hne : ∀ v, w v ≠ 0)
     (hstd : ∀ᶠ v in cofinite, w v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1) (v : Pl F) {g : SInf F κ}

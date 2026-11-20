@@ -9,7 +9,7 @@ open GlobalTheory GlobalTheory.CxPts GlobalTheory.VB
 namespace GlobalTheory.Vert.Flag
 
 /- English proof (translation)
-Use `hi.mono` as an intermediate fact. Take `⟨s, hs⟩` from `hi.isVB_cokernel`. Take `⟨h, -⟩` from `VBExt.isVB_and_cls_det_of_shortExact X _ _ _ (Vert.shortExact_cokernel_comp (fl.ι j) i) (fl.isVB_cokernel j) hs`. Conclude with `⟨inferInstance, _, h⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isSubbundle_ι_comp {X : Scheme.{0}} {E K : X.Modules} {i : K ⟶ E} {r : ℕ}
     (hi : IsSubbundle i) (fl : Vert.Flag K r) (j : Fin (r + 1)) : IsSubbundle (fl.ι j ≫ i) := by
@@ -20,17 +20,15 @@ theorem isSubbundle_ι_comp {X : Scheme.{0}} {E K : X.Modules} {i : K ⟶ E} {r 
   exact ⟨inferInstance, _, h⟩
 
 /- English proof (translation)
-Introduce `X E K i r hi hE fl`. Set `G : Fin (r + 2) → Σ A : X.Modules, (A ⟶ E)` to `fun j => Fin.lastCases (motive := fun _ => Σ A : X.Modules, (A ⟶ E)) ⟨E, 𝟙 E⟩ (fun k => ⟨fl.F k, fl.ι k ≫ i⟩) j`. Establish `hlast : G (Fin.last (r + 1)) = ⟨E, 𝟙 E⟩` using `Fin.lastCases_last ..`. Establish `hcast (k : Fin (r + 1)) : G k.castSucc = ⟨fl.F k, fl.ι k ≫ i⟩` using `Fin.lastCases_castSucc ..`. Establish `hsub (j : Fin (r + 2)) : IsSubbundle (G j).2`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => rw [hlast]`. Conclude with `VB.isSubbundle_of_isIso _`. Consider the case `cast k => rw [hcast]`. Conclude with `isSubbundle_ι_comp hi fl k`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Proceed by induction.
 
-Establish `hvb (j : Fin (r + 2)) : IsVB (G j).1 j`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => rw [hlast]`. Conclude with `hE`. Consider the case `cast k => rw [hcast]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Conclude with `fl.isVB k`. Establish `hstep (k : Fin (r + 1)) : ∃ f : (G k.castSucc).1 ⟶ (G k.succ).1, f ≫ (G k.succ).2 = (G k.castSucc).2`. Proceed by induction on `k using Fin.lastCases with`. Consider the case `last`. Rewrite using `[Fin.succ_last, hlast, hcast]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Treat this case separately. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨fl.ι _ ≫ i, Category.comp_id _⟩`. Consider the case `cast k`. Rewrite using `[← Fin.castSucc_succ, hcast, hcast]`. Conclude with `⟨fl.step k, fl.step_ι_assoc k i⟩`. Use `choose step step_ι using hstep`.
-
-Establish `hiso : IsIso (G (Fin.last (r + 1))).2`. Rewrite using `[hlast]`. Conclude with `IsIso.id E`. Conclude with `⟨{ F := fun j => (G j).1 ι := fun j => (G j).2 isSubbundle := hsub isVB := hvb step := step step_ι := step_ι isIso_last := hiso }⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonempty_extend : ∀ (X : Scheme.{0}) (E K : X.Modules) (i : K ⟶ E) (r : ℕ),
     IsSubbundle i → IsVB E (r + 1) → Vert.Flag K r → Nonempty (Vert.Flag E (r + 1)) := by

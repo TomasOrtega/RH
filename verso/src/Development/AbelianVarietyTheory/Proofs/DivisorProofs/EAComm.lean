@@ -20,9 +20,9 @@ def eA (M : AM B Λ) {n : ℕ} (c : Fin n → Γ(B.X, ⊤)) (a : Fin n → Λ) :
   ∑ k, smulHom M.V (c k) ≫ (M.ρ (a k) : M.V ⟶ M.V)
 
 /- English proof (translation)
-Simplify using `only [eA, Preadditive.sum_comp, Preadditive.comp_sum, Category.assoc]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `h1 : (M.ρ (a k) : M.V ⟶ M.V) ≫ f.hom = f.hom ≫ (N.ρ (a k) : N.V ⟶ N.V)` using `f.comm (a k)`. Rewrite using `[h1, ← Category.assoc, ← Category.assoc]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Apply the tactic sequence `first | exact (smulHom_comp _ _).symm | exact smulHom_comp _ _`.
+A detailed English derivation is pending.
 -/
 theorem eA_comm {M N : AM B Λ} (f : M ⟶ N) {n : ℕ} (c : Fin n → Γ(B.X, ⊤)) (a : Fin n → Λ) :
     eA M c a ≫ f.hom = f.hom ≫ eA N c a := by

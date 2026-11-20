@@ -7,7 +7,7 @@ import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.TwoMulChainStartI
 open Formalism.L2.FormalSeriesBounds Formalism.IncomingBounds GlobalTheory.MainTerm Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.exists_unimodular_mul_eq_neg_of_indepMod` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUnramifiedDepth%2FExistsUnimodularMulEqNegOfIndependentModMaximal.lean&line=54#L54)
 -/

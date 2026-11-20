@@ -15,9 +15,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.HeightCounting.Up
 /- English proof (translation)
-Introduce `hP hS hL`. Use `StepW.trans (StepW.and (_root_.GlobalTheory.T.levelI_same_gal_transfer_to_levelB1_list hP hS hL) (_root_.GlobalTheory.T.exists_levelB2_carried_of_levelB1 hP hS hL)) (StepW.of_all fun K B' f' T' w' _ _ h => ?_)` and prove the remaining obligations. Take `⟨h, h'⟩` from `h`. Introduce `B f T w hE hf hSt hpx hsel hJ hδ P x l P' hExt x' l' hG`. Take `⟨x₁, ⟨l₁⟩, hC₁, hL₁⟩` from `h B f T w hE hf hSt hpx hsel hJ hδ P x l P' hExt x' l' hG`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨x₂, hl₂, hC₂, hL₂⟩` from `h' P' x₁ (Dof x) l₁ hC₁`. Conclude with `⟨x₂, hl₂, hC₂, fun c hc => hL₂ c (hL₁ c hc)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem multiplicity_bound_of_local_components_alt : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → SerN → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root_.GlobalTheory.HeightCounting.Up.MoveToBase hL := by
   intro hP hS hL
@@ -34,7 +34,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.HeightCounting.Up.multiplicity_bound_of_local_components_alt | exact _root_.GlobalTheory.HeightCounting.Up.multiplicity_bound_of_local_components_alt | (intros; apply _root_.GlobalTheory.HeightCounting.Up.multiplicity_bound_of_local_components_a …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.moveToBase_of_inputs_serN : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → SerN → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root_.GlobalTheory.HeightCounting.Up.MoveToBase hL := by
   first | exact @_root_.GlobalTheory.HeightCounting.Up.multiplicity_bound_of_local_components_alt | exact _root_.GlobalTheory.HeightCounting.Up.multiplicity_bound_of_local_components_alt | (intros; apply _root_.GlobalTheory.HeightCounting.Up.multiplicity_bound_of_local_components_alt <;> assumption)

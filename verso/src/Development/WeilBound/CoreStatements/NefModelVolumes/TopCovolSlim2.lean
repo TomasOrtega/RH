@@ -58,7 +58,7 @@ namespace SelfIntersectionVolumeEstimates
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `h₁ h₂ hPL hHS hBig hFar hZar hRR hS hK hN hSep hDeg hP hSW hGD` and use `have hX : GlobalTheory.CovTop.HypothesesX := ⟨hK, hN, GlobalTheory.GreenBridge.green_of_regular GlobalTheory.greenRegularCharacters_holds, hSep, FubiniStudyChowHeightFormula₂.fubiniStudyChowHeight_of_hypotheses hP⟩ have hF := PositivityTheory.Prw.toroidalChartsForFan_of hK have h …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem topCovolSlim2 : GlobalTheory.CompanionTheory.Hypotheses₂.ResolutionCharZero → GlobalTheory.CompanionTheory.Hypotheses₂.PrincipalisationCharZero → GlobalTheory.CompanionTheory.Hypotheses₂.PoincareLelongInv → ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.MoriwakiHSStatement → ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.MoriwakiBigStatement → HT.FarguesExact → GR.ZarhinStatement → Pub.NefRR → GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalForFanKS → GlobalTheory.Published.SemiAbelianLieSeminegative → GlobalTheory.Published.PointSeparationPair → GlobalTheory.Published.ArDegree → GlobalTheory.CovTop.Hypotheses2 → GlobalTheory.Published.ScholzeWeinsteinB → GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.CovTop.CovolX :=
   fun h₁ h₂ hPL hHS hBig hFar hZar hRR hS hK hN hSep hDeg hP hSW hGD =>

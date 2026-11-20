@@ -15,11 +15,11 @@ noncomputable section
 namespace ChartEnergyDifferenceBound
 
 /- English proof (translation)
-Establish `hsp` using `Real.sq_sqrt hp`. Establish `hsG` using `Real.sq_sqrt hG`. Establish `h0 : 0 ≤ |u|` using `abs_nonneg u`. Establish `hua : -(u * a) ≤ |u| * |a|`. Rewrite using `[← abs_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `neg_le_abs _`. Establish `h1 : -(u * (χ * a + χ * a)) ≤ 2 * χ * (|u| * |a|)`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hua hχ]`. Establish `hb : |u| * |a| ≤ U * (Real.sqrt p * Real.sqrt G)` using `mul_le_mul hU ha (abs_nonneg a) (h0.trans hU)`. Establish `h2 : 2 * χ * (|u| * |a|) ≤ 2 * χ * (U * (Real.sqrt p * Real.sqrt G))` using `mul_le_mul_of_nonneg_left hb (by positivity)`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : 2 * χ * (U * (Real.sqrt p * Real.sqrt G)) ≤ 2 * U ^ 2 * p + χ * χ * G / 2`. Use polynomial arithmetic with `[sq_nonneg (2 * U * Real.sqrt p - χ * Real.sqrt G)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem cross_le {u U χ a p G : ℝ} (hU : |u| ≤ U) (hχ : 0 ≤ χ) (hp : 0 ≤ p) (hG : 0 ≤ G)
     (ha : |a| ≤ Real.sqrt p * Real.sqrt G) :
@@ -44,37 +44,33 @@ end ChartEnergyDifferenceBound
 open ChartIntegrationByPartsSymmetry ChartEnergyDifferenceBound
 
 /- English proof (translation)
-Introduce `n A B T hA hB hT`. Use `set φ : Fin n → (Fin (n + 1) → ℂ) → ℝ := fun i => hermChartPot (T i) with hφdef`. Use `set u : (Fin (n + 1) → ℂ) → ℝ := fun y => hermChartPot A y - hermChartPot B y with hudef`. Establish `hφ3 : ∀ i, ContDiff ℝ 3 (φ i)` using `fun i => contDiff_hermChartPot_of_le 3 (hT i)`. Establish `hφ2 : ∀ i, ContDiff ℝ 2 (φ i)` using `fun i => contDiff_hermChartPot_of_le 2 (hT i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu3 : ContDiff ℝ 3 u` using `(contDiff_hermChartPot_of_le 3 hA).sub (contDiff_hermChartPot_of_le 3 hB)`. Establish `hu1 : ContDiff ℝ 1 u` using `hu3.of_le (by norm_num)`. Establish `hGc : Continuous (gradDens φ u u)` using `continuous_gradDens hφ2 hu1 hu1`. Establish `hG0 : ∀ y, 0 ≤ gradDens φ u u y` using `gradDens_chart_nonneg hT u`. Take `⟨U, hU⟩` from `ChartEnergyIntegrableAlt.pot_sub_bound HermFormCompare.proof hA hB`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hUa : ∀ y, |u y| ≤ U` using `fun y => by`. Use `hU y` as an intermediate fact. Rewrite `this` using `[Real.norm_eq_abs]`. Then use the resulting hypothesis. Take `⟨K, hK⟩` from `hE n T hT`. Establish `hI : Integrable (fun y => u y * maDens (Fin.cons u φ) y)` using `integrable_pot_mul_maDensity hA hB hA hB hT`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set I : ℝ := ∫ y, |u y * maDens (Fin.cons u φ) y| with hIdef`. Establish `hψG : ∀ k : ℕ, Integrable (fun y => chartCutoff k y * chartCutoff k y * gradDens φ u u y)` using `fun k => (((contDiff_chartCutoff k 0).continuous.mul (contDiff_chartCutoff k 0).continuous).mul hGc).integrable_of_hasCompactSupport (hasCompactSupport_chartCutoff k).mul_right.mul_right`. Establish `hX : ∀ k : ℕ, ∫ y, chartCutoff k y * chartCutoff k y * gradDens φ u u y ≤ 2 * I + 4 * U ^ 2 * K`. Introduce `k`. Use `set χ : (Fin (n + 1) → ℂ) → ℝ := chartCutoff k with hχdef`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hχ3 : ContDiff ℝ 3 χ` using `contDiff_chartCutoff k 3`. Establish `hχ1 : ContDiff ℝ 1 χ` using `contDiff_chartCutoff k 1`. Establish `hψ3 : ContDiff ℝ 3 (fun y => χ y * χ y)` using `hχ3.mul hχ3`. Establish `hψc : HasCompactSupport (fun y => χ y * χ y)` using `(hasCompactSupport_chartCutoff k).mul_right`. Take `⟨i1, i2, i3, heq⟩` from `parts_cutoff hφ3 hψ3 hψc hu3 hu3`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hP : Integrable (gradDens φ χ χ)` using `(continuous_gradDens hφ2 hχ1 hχ1).integrable_of_hasCompactSupport (hasCompactSupport_gradDens_left φ χ (hasCompactSupport_chartCutoff k))`. Establish `hL : ∀ y, gradDens φ (fun y => χ y * χ y) u y = χ y * gradDens φ χ u y + χ y * gradDens φ χ u y` using `fun y => (gradDensLeibniz_thm n φ χ χ u y (hχ1.differentiable one_ne_zero y) (hχ1.differentiable one_ne_zero y)).1`. Establish `hpt : ∀ y, -(χ y * χ y * u y * maDens (Fin.cons u φ) y) - u y * gradDens φ (fun y => χ y * χ y) u y ≤ |u y * maDens (Fin.cons u φ) y| + (2 * U ^ 2 * gradDens φ χ χ y + χ y * χ y * gradDens φ u u y / 2)`. Introduce `y`. Rewrite using `[hL y]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : 0 ≤ χ y` using `chartCutoff_nonneg k y`. Establish `h1 : χ y ≤ 1` using `chartCutoff_le_one k y`. Establish `hψ0 : 0 ≤ χ y * χ y` using `mul_nonneg h0 h0`. Establish `hψ1 : χ y * χ y ≤ 1` using `by nlinarith`. Establish `ht` using `neg_abs_le (u y * maDens (Fin.cons u φ) y)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `ht0` using `abs_nonneg (u y * maDens (Fin.cons u φ) y)`. Establish `ha : -(χ y * χ y * u y * maDens (Fin.cons u φ) y) ≤ |u y * maDens (Fin.cons u φ) y|`. Use polynomial arithmetic with `[mul_nonneg hψ0 (by linarith : 0 ≤ |u y * maDens (Fin.cons u φ) y| + u y * maDens (Fin.cons u φ) y), mul_nonneg (by linarith : 0 ≤ 1 - χ y * χ y) ht0]`. Establish `hb` using `cross_le (hUa y) h0 (gradDens_chart_nonneg hT χ y) (hG0 y) (abs_gradDens_chart_le hT χ u y)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `i1n : Integrable (fun y => -(χ y * χ y * u y * maDens (Fin.cons u φ) y))` using `i1.neg`. Establish `iL : Integrable (fun y => -(χ y * χ y * u y * maDens (Fin.cons u φ) y) - u y * gradDens φ (fun y => χ y * χ y) u y)` using `i1n.sub i3`. Establish `iA : Integrable (fun y => |u y * maDens (Fin.cons u φ) y|)` using `hI.abs`. Establish `iP : Integrable (fun y => 2 * U ^ 2 * gradDens φ χ χ y)` using `hP.const_mul _`. Establish `iG : Integrable (fun y => χ y * χ y * gradDens φ u u y / 2)` using `i2.div_const 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `iPG : Integrable (fun y => 2 * U ^ 2 * gradDens φ χ χ y + χ y * χ y * gradDens φ u u y / 2)` using `iP.add iG`. Establish `iR : Integrable (fun y => |u y * maDens (Fin.cons u φ) y| + (2 * U ^ 2 * gradDens φ χ χ y + χ y * χ y * gradDens φ u u y / 2))` using `iA.add iPG`. Establish `hXeq : ∫ y, χ y * χ y * gradDens φ u u y = ∫ y, (-(χ y * χ y * u y * maDens (Fin.cons u φ) y) - u y * gradDens φ (fun y => χ y * χ y) u y)`. Rewrite using `[integral_sub i1n i3, integral_neg]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hmono` using `integral_mono iL iR hpt`. Rewrite `hmono` using `[← hXeq, integral_add iA iPG, integral_add iP iG, integral_const_mul, integral_div]`. Establish `hKk : 2 * U ^ 2 * ∫ y, gradDens φ χ χ y ≤ 2 * U ^ 2 * K` using `mul_le_mul_of_nonneg_left (hK k) (by positivity)`. Combine the linear equalities and inequalities to obtain the conclusion. Use `set f : ℕ → (Fin (n + 1) → ℂ) → ENNReal := fun k y => ENNReal.ofReal (chartCutoff k y * chartCutoff k y * gradDens φ u u y) with hfdef`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmono : ∀ y, Monotone fun k => f k y`. Introduce `y a b hab`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Establish `h1` using `chartCutoff_mono y hab`. Establish `h0` using `chartCutoff_nonneg a y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul h1 h1 h0 (h0.trans h1)) (hG0 y)`. Establish `htend : ∀ y, Tendsto (fun k => f k y) atTop (𝓝 (ENNReal.ofReal (gradDens φ u u y)))`. Introduce `y`. Establish `h` using `((tendsto_chartCutoff y).mul (tendsto_chartCutoff y)).mul_const (gradDens φ u u y)`. Rewrite `h` using `[one_mul, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(ENNReal.continuous_ofReal.tendsto _).comp h`. Establish `hfm : ∀ k, AEMeasurable (f k) volume` using `fun k => (hψG k).1.aemeasurable.ennreal_ofReal`. Establish `hlim` using `lintegral_tendsto_of_tendsto_of_monotone hfm (Eventually.of_forall hmono) (Eventually.of_forall htend)`. Establish `hbd : ∀ k, ∫⁻ y, f k y ≤ ENNReal.ofReal (2 * I + 4 * U ^ 2 * K)`. Introduce `k`.
-
-Establish `hnn : ∀ y, 0 ≤ chartCutoff k y * chartCutoff k y * gradDens φ u u y` using `fun y => mul_nonneg (mul_nonneg (chartCutoff_nonneg k y) (chartCutoff_nonneg k y)) (hG0 y)`. Rewrite using `[hfdef, ← ofReal_integral_eq_lintegral_ofReal (hψG k) (Eventually.of_forall hnn)]`. Conclude with `ENNReal.ofReal_le_ofReal (hX k)`. Use `⟨hGc.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Rewrite using `[hasFiniteIntegral_iff_ofReal (Eventually.of_forall hG0)]`.
-
-Conclude with `lt_of_le_of_lt (le_of_tendsto' hlim hbd) ENNReal.ofReal_lt_top`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ChartDiffEnergy.proof (hE : ChartCutoffEnergy.Statement) : ChartDiffEnergy.Statement := by
   intro n A B T hA hB hT

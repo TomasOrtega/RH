@@ -22,9 +22,7 @@ noncomputable section
 namespace GlobalTheory.ChainQuotFree
 
 /- English proof (translation)
-Use `haveI := C.finite n`. Use `haveI := C.lfree n hn`. Use `⟨Module.Finite.equiv e, fun s => ?_, .of_equiv (TensorProduct.AlgebraTensorModule.congr (LinearEquiv.refl _ _) e)⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `e.surjective s`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`.
-
-Rewrite using `[← map_smul, ← Submodule.Quotient.mk_smul, (Submodule.Quotient.mk_eq_zero _).2, map_zero]`. Conclude with `C.gam n hn (Submodule.smul_mem_pointwise_smul _ _ _ x.2)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem of_equiv {p : ℕ} {A : Type} [CommRing A] {h o : ℕ} {π : A} {γ : ℕ → A} {Lie Om : Type} [AddCommGroup Lie]
     [Module A Lie] [AddCommGroup Om] [Module A Om] (C : RChain p A h o π γ Lie Om) {n : ℕ} (hn : n < o) {N : Type}
@@ -41,9 +39,7 @@ theorem of_equiv {p : ℕ} {A : Type} [CommRing A] {h o : ℕ} {π : A} {γ : �
   exact C.gam n hn (Submodule.smul_mem_pointwise_smul _ _ _ x.2)
 
 /- English proof (translation)
-Introduce `O _ _ _ p _ B Λ _ h o Lie Om π γ M E ι I V D k n hn Q t q`. Take `⟨hV, hc, -, hE, hF, -⟩` from `k`. Use `haveI := q.1`. Use `haveI := (hE n).2`. Use `GlobalTheory.LocFreeProj.main B.X Q.V (γ n) I V hV (eq_top_iff.2 fun x _ => TopologicalSpace.Opens.mem_iSup.2 (hc x)) fun i => ?_` and prove the remaining obligations.
-
-Take `⟨e, -⟩` from `q.exists_equiv (hV i) (hF i n hn.le) (hF i (n + 1) hn)`. Conclude with `of_equiv (D i) hn e`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem main : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) [Fact p.Prime] (B : GlobalTheory.Vert.Model O) (Λ : Type) [CommRing Λ] (h o : ℕ) (Lie Om : AM B Λ) (π : Γ(B.X, ⊤)) (γ : ℕ → Γ(B.X, ⊤)) (M : Λ →+* Matrix (Fin h) (Fin h) ℤ) (E : ℕ → B.X.Modules) (ι : ∀ n, E n ⟶ freeModule B.X (Fin h)) (I : Type) (V : I → B.X.Opens) (D : ∀ i, ChainOn p h o Lie Om π γ (V i)), IsLoc M ι V D → ∀ n < o, ∀ (Q : AM B Λ) (t : E n ⟶ Q.V), IsQuot M (ι n) (latOf (ι (n + 1))) Q t → LocFreeMod (γ n) Q.V := by
   intro O _ _ _ p _ B Λ _ h o Lie Om π γ M E ι I V D k n hn Q t q

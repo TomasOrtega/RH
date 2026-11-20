@@ -15,19 +15,19 @@ variable {O : Type} [CommRing O] {d : ℕ}
 def yZero : Fin d ⊕ Fin d → MvPowerSeries (Fin d) O := Sum.elim (fun i => X i) (fun _ => 0)
 
 /- English proof (translation)
-Apply the tactic sequence `intro s; cases s <;> simp [yZero]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem yZero_const : ∀ s, constantCoeff (yZero (O := O) (d := d) s) = 0 := by
   intro s; cases s <;> simp [yZero]
 
 /- English proof (translation)
-The claim follows from `hasSubst_of_constantCoeff_zero yZero_const`.
+A detailed English derivation is pending.
 -/
 theorem hasSubst_yZero : HasSubst (yZero (O := O) (d := d)) :=
   hasSubst_of_constantCoeff_zero yZero_const
 
 /- English proof (translation)
-Establish `hs : HasSubst a` using `hasSubst_of_constantCoeff_zero ha`. Establish `h1 : f = (f - C (constantCoeff f)) + C (constantCoeff f)` using `by ring`. Use `conv_lhs => rw [h1]`. Rewrite using `[subst_add hs, map_add, constantCoeff_subst_eq_zero hs ha (by simp), subst_C, zero_add]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem constantCoeff_subst_of {σ τ : Type} [Finite σ] {a : σ → MvPowerSeries τ O}
     (ha : ∀ i, constantCoeff (a i) = 0) (f : MvPowerSeries σ O) :
@@ -39,25 +39,25 @@ theorem constantCoeff_subst_of {σ τ : Type} [Finite σ] {a : σ → MvPowerSer
   simp
 
 /- English proof (translation)
-Rewrite using `[← coeff_zero_eq_constantCoeff_apply, coeff_pderiv]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem constantCoeff_pderiv {σ : Type} (i : σ) (f : MvPowerSeries σ O) :
     constantCoeff (pderiv O i f) = coeff (Finsupp.single i 1) f := by
   rw [← coeff_zero_eq_constantCoeff_apply, coeff_pderiv]; simp
 
 /- English proof (translation)
-Rewrite using `[← map_algebraMap_eq_subst_X]`. Simplify using `[Algebra.algebraMap_self, map_id]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem subst_X_self {σ : Type} (f : MvPowerSeries σ O) : subst (fun i => (X i : MvPowerSeries σ O)) f = f := by
   rw [← map_algebraMap_eq_subst_X]
   simp [Algebra.algebraMap_self, map_id]
 
 /- English proof (translation)
-Establish `hl : ∀ s : Fin d, constantCoeff (X (Sum.inl s) : MvPowerSeries (Fin d ⊕ Fin d) O) = 0` using `fun s => constantCoeff_X _`. Establish `hr : ∀ s : Fin d, constantCoeff (X (Sum.inr s) : MvPowerSeries (Fin d ⊕ Fin d) O) = 0` using `fun s => constantCoeff_X _`. Unfold `cob1 inL inR`. Rewrite using `[map_sub, map_sub, ReciprocityTheory.ChartRestriction.G.TB.ChartChgPfTP.pderiv_subst μ hμ, ReciprocityTheory.ChartRestriction.G.TB.ChartChgPfTP.pderiv_subst _ hl, ReciprocityTheory.ChartRestriction.G.TB.ChartChgPfTP.pderiv_subst _ hr]`. Establish `e1 : ∑ s : Fin d, subst (fun i => (X (Sum.inl i) : MvPowerSeries (Fin d ⊕ Fin d) O)) (pderiv O s t) * pderiv O (Sum.inr j) (X (Sum.inl s)) = 0` using `Finset.sum_eq_zero fun s _ => by rw [pderiv_X_of_ne (by simp), mul_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : ∑ s : Fin d, subst (fun i => (X (Sum.inr i) : MvPowerSeries (Fin d ⊕ Fin d) O)) (pderiv O s t) * pderiv O (Sum.inr j) (X (Sum.inr s)) =`. Substitute `(fun i => (X (Sum.inr i) : MvPowerSeries (Fin d ⊕ Fin d) O)) (pderiv O j t) := by` using the available equality. Rewrite using `[Finset.sum_eq_single j]`. Rewrite using `[pderiv_X_self, mul_one]`. Introduce `s _ hs; rw [pderiv_X_of_ne (by simpa using hs), mul_zero]`.
+Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Rewrite using `[e1, e2, sub_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem pderiv_right_formalGroupLawCoboundaryOne (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) O) (hμ : ∀ i, constantCoeff (μ i) = 0)
     (t : MvPowerSeries (Fin d) O) (j : Fin d) :
@@ -90,9 +90,9 @@ namespace GlobalTheory.Katz.SmallDeriv
 variable {O : Type} [CommRing O] {d : ℕ}
 
 /- English proof (translation)
-Rewrite using `[subst_comp_subst_apply (hasSubst_of_constantCoeff_zero hμ.const) hasSubst_yZero]`. Establish `: (fun s => subst (yZero (O` using `O) (d := d)) (μ s)) = fun i => X i := by`. Establish `h` using `hμ.unit`. Use function extensionality and compare the values at `i`. Establish `hi` using `congrFun h i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify `hi` using `[op, at2, yZero]`. Rewrite using `[this, subst_X_self]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem yZero_subst (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) O) (hμ : IsLaw μ) (g : MvPowerSeries (Fin d) O) :
     subst yZero (subst μ g) = g := by
@@ -105,9 +105,9 @@ theorem yZero_subst (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) O) (hμ : Is
   rw [this, subst_X_self]
 
 /- English proof (translation)
-Establish `hr : HasSubst (fun i => (X (Sum.inr i) : MvPowerSeries (Fin d ⊕ Fin d) O))` using `hasSubst_of_constantCoeff_zero fun s => constantCoeff_X _`. Unfold `inR`. Rewrite using `[subst_comp_subst_apply hr hasSubst_yZero]`. Establish `: (fun s => subst (yZero (O` using `O) (d := d)) (X (Sum.inr s) : MvPowerSeries (Fin d ⊕ Fin d) O)) = 0 := by`. Use function extensionality and compare the values at `s`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[subst_X hasSubst_yZero]`. Both sides reduce to the same expression. Rewrite using `[this, subst_zero_eq_C_constantCoeff]`. Simplify using `[Algebra.algebraMap_self, map_id]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem yZero_inR (g : MvPowerSeries (Fin d) O) :
     subst yZero (inR g) = C (constantCoeff g) := by
@@ -121,13 +121,13 @@ theorem yZero_inR (g : MvPowerSeries (Fin d) O) :
   simp [Algebra.algebraMap_self, map_id]
 
 /- English proof (translation)
-Establish `hx : constantCoeff (pderiv O (Sum.inl j) (μ s)) = if s = j then 1 else 0`. Establish `h` using `congrFun hμ.unit s`. Express the relevant statement in the definitionally equal form `subst yZero (μ s) = X s at h`. Establish `h2` using `congrArg (fun f => constantCoeff (pderiv O j f)) h`. Rewrite `h2` using `[ReciprocityTheory.ChartRestriction.G.TB.ChartChgPfTP.pderiv_subst _ yZero_const, map_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [map_mul, constantCoeff_subst_of yZero_const] at h2`. Simplify using `only [Fintype.sum_sum_type, yZero, Sum.elim_inl, Sum.elim_inr, map_zero, mul_zero, Finset.sum_const_zero, add_zero, pderiv_X, map_sum, map_mul] at h2`. Simplify using `only [Pi.single_apply, apply_ite, map_one, map_zero, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at h2`. Apply the tactic sequence `split_ifs at h2 ⊢ <;> exact h2`. Establish `hsw : ∀ k : Fin d ⊕ Fin d, constantCoeff ((Sum.elim (fun i => (X (Sum.inr i) : MvPowerSeries (Fin d ⊕ Fin d) O)) (fun i => X (Sum.inl i))) k) = 0`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `intro k; cases k <;> simp`. Establish `h` using `hμ.comm s`. Unfold `swap at2 at h`. Establish `h2` using `congrArg (fun f => constantCoeff (pderiv O (Sum.inr j) f)) h`. Rewrite `h2` using `[ReciprocityTheory.ChartRestriction.G.TB.ChartChgPfTP.pderiv_subst _ hsw, map_sum]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [map_mul, constantCoeff_subst_of hsw] at h2`. Simplify using `only [Fintype.sum_sum_type, Sum.elim_inl, Sum.elim_inr, pderiv_X, Pi.single_apply, Sum.inr.injEq, reduceCtorEq, if_false, map_zero, mul_zero, Finset.sum_const_zero, add_zero, apply_ite, map_one, mul_ite, mul_one, Finset.sum_ite_eq', Finset.mem_univ, if_true] at h2`. Rewrite using `[← h2, hx]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem linear_coeff_law (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) O) (hμ : IsLaw μ) (s j : Fin d) :
     constantCoeff (pderiv O (Sum.inr j) (μ s)) = if s = j then 1 else 0 := by
@@ -162,9 +162,9 @@ end GlobalTheory.Katz.SmallDeriv
 namespace GlobalTheory.Katz.SmallDeriv
 
 /- English proof (translation)
-Use `haveI : Nontrivial O := (algebraMap O C).domain_nontrivial`. Use `IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun a => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `h1 : v (algebraMap O C a) < 1` using `lt_of_le_of_ne (hv.map_le_one a) (fun e => h.1 (hv.isUnit_of_one' e))`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : v (algebraMap O C (1 - a)) < 1` using `lt_of_le_of_ne (hv.map_le_one _) (fun e => h.2 (hv.isUnit_of_one' e))`. Establish `h3` using `v.map_add (algebraMap O C a) (algebraMap O C (1 - a))`. Establish `h4 : algebraMap O C a + algebraMap O C (1 - a) = 1` using `by rw [← map_add]; simp`. Rewrite `h3` using `[h4, v.map_one]`. Conclude with `lt_irrefl _ (lt_of_le_of_lt h3 (max_lt h1 h2))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLocalRing_of_integers {C : Type} [Field C] (v : Valuation C NNReal) (O : Type) [CommRing O]
     [Algebra O C] (hv : v.Integers O) : IsLocalRing O := by
@@ -186,31 +186,29 @@ end GlobalTheory.Katz.SmallDeriv
 open GlobalTheory.Katz.SmallDeriv in
 
 /- English proof (translation)
-Introduce `p hpr C _ _ _ v O _ _ hpO _ _ hv d μ hμ t hlin hcob α ⟨i, hi⟩`. Use `haveI : IsLocalRing O := isLocalRing_of_integers v O hv`. Set `π` to `IsLocalRing.residue O`. Establish `hmem : ∀ a : O, π a = 0 ↔ ¬IsUnit a`. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Establish `hp0 : (p : IsLocalRing.ResidueField O) = 0`. Rewrite using `[← map_natCast π, hmem]`. Conclude with `hpO.out`. Establish `hG : ∀ j, map π (pderiv O (Sum.inr j) (cob1 μ t)) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Introduce `j`. Use extensionality with `n`. Rewrite using `[coeff_map, coeff_pderiv, map_mul, coeff_zero]`. Distinguish the cases in `hn : p ∣ n (Sum.inr j) + 1`. Take `⟨m, hm⟩` from `hn`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : π ((n (Sum.inr j) : O) + 1) = 0`. Establish `: ((n (Sum.inr j) : O) + 1) = ((n (Sum.inr j) + 1 : ℕ) : O)` using `by push_cast; ring`. Rewrite using `[this, hm, Nat.cast_mul, map_mul, map_natCast, hp0, zero_mul]`. Rewrite using `[e, mul_zero]`. Use `hcob (n + Finsupp.single (Sum.inr j) 1) ⟨Sum.inr j, by simpa using hn⟩` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[(hmem _).2 this, zero_mul]`. Set `N : Matrix (Fin d) (Fin d) (MvPowerSeries (Fin d) (IsLocalRing.ResidueField O))` to `Matrix.of fun s j => map π (subst yZero (pderiv O (Sum.inr j) (μ s)))`. Set `w : Fin d → MvPowerSeries (Fin d) (IsLocalRing.ResidueField O)` to `fun s => map π (pderiv O s t)`. Establish `hvec : Matrix.vecMul w N = 0`. Use function extensionality and compare the values at `j`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e` using `congrArg (fun F => map π (subst yZero F)) (pderiv_right_formalGroupLawCoboundaryOne μ hμ.const t j)`. Rewrite `e` using `[map_subst hasSubst_yZero, hG j, ← coe_substAlgHom (hasSubst_yZero.map π), map_zero, ← coe_substAlgHom hasSubst_yZero, map_sub, map_sum]`. Simplify using `only [map_mul, coe_substAlgHom, yZero_subst μ hμ, yZero_inR, constantCoeff_pderiv, map_sub, map_sum, map_C] at e`. Establish `hl : π (coeff (Finsupp.single j 1) t) = 0` using `(hmem _).2 (hlin j)`. Rewrite `e` using `[hl, map_zero, sub_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Matrix.vecMul, dotProduct, Pi.zero_apply, N, w, Matrix.of_apply]`. Conclude with `e.symm`. Establish `hN0 : (constantCoeff : MvPowerSeries (Fin d) (IsLocalRing.ResidueField O) →+* _).mapMatrix N = 1`. Use extensionality with `s j`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, N, Matrix.of_apply, constantCoeff_map, constantCoeff_subst_of yZero_const, linear_coeff_law μ hμ, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> simp`. Establish `hdet : IsUnit N.det`. Rewrite using `[isUnit_iff_constantCoeff, RingHom.map_det, hN0, Matrix.det_one]`. Conclude with `isUnit_one`. Establish `hw : w i = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1` using `congrArg (fun u => Matrix.vecMul u N.adjugate) hvec`. Simplify using `only [Matrix.vecMul_vecMul, Matrix.mul_adjugate, Matrix.zero_vecMul] at h1`. Establish `h2` using `congrFun h1 i`. Simplify using `only [Matrix.vecMul, dotProduct, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true, Pi.zero_apply] at h2`. Conclude with `(hdet.mul_right_eq_zero).1 (by rw [mul_comm]; exact h2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hαi : 1 ≤ α i` using `Nat.pos_of_ne_zero (fun h => hi (h ▸ dvd_zero p))`. Establish `hsub : α - Finsupp.single i 1 + Finsupp.single i 1 = α` using `tsub_add_cancel_of_le (Finsupp.single_le_iff.2 hαi)`. Establish `hc` using `congrArg (coeff (α - Finsupp.single i 1)) hw`. Simplify using `only [w] at hc`. Rewrite `hc` using `[coeff_map, coeff_pderiv, coeff_zero, hsub, map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hcast : (((α - Finsupp.single i 1 : Fin d →₀ ℕ) i : ℕ) : O) + 1 = ((α i : ℕ) : O)`. Rewrite using `[Finsupp.tsub_apply, Finsupp.single_eq_same]`. Rewrite using `[← Nat.cast_add_one, Nat.sub_add_cancel hαi]`. Rewrite `hc` using `[hcast, map_natCast]`. Establish `hne : ((α i : ℕ) : IsLocalRing.ResidueField O) ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨u, u', h⟩` from `Nat.isCoprime_iff_coprime.2 ((Nat.Prime.coprime_iff_not_dvd hpr.out).2 hi)`. Establish `h'` using `congrArg (Int.cast : ℤ → IsLocalRing.ResidueField O) h`. Move the coercions through the operations in `at h'`. Rewrite `h'` using `[hp0]`. Introduce `h0`.
-
-Rewrite `h'` using `[h0]`. Simplify using `at h'`. Conclude with `(hmem _).1 ((mul_eq_zero.1 hc).resolve_right hne)`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Katz.not_isUnit_coeff_of_coboundary_small : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O], v.Integers O → ∀ (d : ℕ) (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) O), IsLaw μ → ∀ t : MvPowerSeries (Fin d) O, (∀ i, ¬IsUnit (lin t i)) → (∀ α : Fin d ⊕ Fin d →₀ ℕ, (∃ i, ¬ p ∣ α i) → ¬IsUnit (coeff α (cob1 μ t))) → ∀ α : Fin d →₀ ℕ, (∃ i, ¬ p ∣ α i) → ¬IsUnit (coeff α t) := by
   intro p hpr C _ _ _ v O _ _ hpO _ _ hv d μ hμ t hlin hcob α ⟨i, hi⟩

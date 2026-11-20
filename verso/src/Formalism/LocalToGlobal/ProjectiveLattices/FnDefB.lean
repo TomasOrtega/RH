@@ -17,7 +17,7 @@ open Classical in
 def toGoodR (c : Coeff l) (σ : c.F →+* ℂ) : ℂ →+* ℂ := if GoodEmb c σ then RingHom.id ℂ else starRingEnd ℂ
 
 /- English proof (translation)
-Unfold `toGoodR goodOf`. Apply the tactic sequence `split_ifs <;> rfl`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem toGoodR_apply (c : Coeff l) (σ : c.F →+* ℂ) (x : c.F) : toGoodR c σ (σ x) = goodOf c σ x := by
   unfold toGoodR goodOf
@@ -27,9 +27,9 @@ def toGood (c : Coeff l) (σ : c.F →+* ℂ) : CAt σ →ₐ[c.F] CAt (goodOf c
   { (toGoodR c σ : ℂ →+* ℂ) with commutes' := fun x => toGoodR_apply c σ x }
 
 /- English proof (translation)
-Distinguish the cases in `h : GoodEmb c σ`. Use `left`. Introduce `z show toGoodR c σ (toC z) = toC z`. Unfold `toGoodR`. Rewrite using `[if_pos h]`.
+Consider separately whether the proposition holds or fails. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use `right`. Introduce `z show toGoodR c σ (toC z) = _`. Unfold `toGoodR`. Rewrite using `[if_neg h]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIdOrConj_toGood (c : Coeff l) (σ : c.F →+* ℂ) : IsIdOrConj (toGood c σ) := by
   by_cases h : GoodEmb c σ
@@ -41,9 +41,9 @@ theorem isIdOrConj_toGood (c : Coeff l) (σ : c.F →+* ℂ) : IsIdOrConj (toGoo
     unfold toGoodR; rw [if_neg h]
 
 /- English proof (translation)
-Establish `: IsReduced (CAt σ)` using `inferInstanceAs (IsReduced ℂ)`. Take `⟨p, ψ, y0, hy0⟩` from `hA (CAt σ) y`. Establish `hg` using `goodEmb_goodOf c σ`. Take `⟨z, hz⟩` from `hB _ hg p y0 ((toGood c σ).comp ψ)`. Establish `hm : FrMap (toGood c σ) y z` using `frMap_cancel _ _ _ ψ (toGood c σ) y0 y z hy0 hz`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨k, x, t, ht⟩` from `(hU _ hg).2.2.1 z`. Conclude with `⟨⟨k, x, t⟩, z, toGood c σ, isIdOrConj_toGood c σ, hm, ht⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem rdEx_of (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (hU : ∀ σ, GoodEmb c σ → IsUnf (U σ)) (hA : AllTest Xo c)
     (hB : ∀ σ, GoodEmb c σ → BCEx Xo c σ) (σ : c.F →+* ℂ) (y : FrPt Xo c (CAt σ)) : ∃ q, RdAt U σ y q := by

@@ -16,17 +16,15 @@ variable {V Y X : Type} [TopologicalSpace V] [MeasurableSpace V] [BorelSpace V]
   [TopologicalSpace X] [MeasurableSpace X]
 
 /- English proof (translation)
-Use `set em := e.toMeasurableEquiv with hem`. Establish `hU' : em ⁻¹' U = U` using `hU`. Use `⟨fun b => ?_, fun φ hφ => ?_, fun φ hc hcs hts => ?_⟩` and prove the remaining obligations. Rewrite using `[MeasurableEquiv.map_apply]`. Establish `: em ⁻¹' (f ⁻¹' {ι b} ∩ U)ᶜ = (f ⁻¹' {ι b} ∩ U)ᶜ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Establish `hx : e x ∈ U ↔ x ∈ U` using `Set.ext_iff.1 hU x`. Simplify using `only [Set.mem_preimage, Set.mem_compl_iff, Set.mem_inter_iff, Set.mem_singleton_iff]`. Express the relevant statement in the definitionally equal form `¬ (f (e x) = ι b ∧ e x ∈ U) ↔ ¬ (f x = ι b ∧ x ∈ U)`. Rewrite using `[hf x, hx]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `hfib.1 b`. Establish `key : ∫⁻ x in U, φ (em x) ∂μ = ∫⁻ x in U, φ x ∂μ`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← key, hfib.2.1 (fun x => φ (em x)) (hφ.comp em.measurable)]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `lintegral_congr fun b => ?_` and prove the remaining obligations. Conclude with `(lintegral_map_equiv _ _).symm`. Establish `hts' : tsupport (φ ∘ e) ⊆ U`. Rewrite using `[tsupport, Function.support_comp_eq_preimage, ← e.preimage_closure, ← hU]`. Conclude with `Set.preimage_mono hts`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Take `⟨h1, h2⟩` from `hfib.2.2 (φ ∘ e) (hc.comp e.continuous) (hcs.comp_homeomorph e) hts'`. Use `⟨fun b hb => (integrable_map_equiv em φ).2 (h1 b hb), ?_⟩` and prove the remaining obligations. Establish `e2 : (fun b => ∫ x, φ x ∂((fib b).map em)) = fun b => ∫ x, (φ ∘ e) x ∂(fib b)`. Use function extensionality and compare the values at `fun b => integral_map_equiv _ _`. Rewrite using `[e2]`.
-
-Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFibreFamily_map (e : V ≃ₜ V) {μ : Measure V} {f : V → Y} {ι : X → Y} {U : Set V}
     {ν : Measure X} {B : Set X} {fib : X → Measure V} (hfib : IsFibreFamily μ f ι U ν B fib)
@@ -71,7 +69,7 @@ variable {F E : Type} [Field F] [Field E] [Algebra F E] [FiniteDimensional F E]
   (σ : E →ₐ[F] E) {M a : ℕ} (J : Matrix (Fin M) (Fin M) E)
 
 /- English proof (translation)
-Establish `hg : Formalism.UG.cT (sigR R σ) ((HA.mat R σ J h : GL (Fin M) (R ⊗[F] E)) : Matrix (Fin M) (Fin M) _) * JR R J * ((HA.mat R σ J h : GL (Fin M) (R ⊗[F] E)) : Matrix (Fin M) (Fin M) _) = JR R J` using `h.2`. Use function extensionality and compare the values at `x y`. Express the relevant statement in the definitionally equal form `hR R σ J (((HA.mat R σ J h : GL (Fin M) (R ⊗[F] E)) : Matrix (Fin M) (Fin M) _) *ᵥ X x) (((HA.mat R σ J h : GL (Fin M) (R ⊗[F] E)) : Matrix (Fin M) (Fin M) _) *ᵥ X y) = hR R σ J (X x) (X y)`. Rewrite using `[hR, TopoGram.hform_mulVec, hg]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gramR_smul (h : HA R σ J) (X : Fin a → Fin M → R ⊗[F] E) :
     gramR R σ J (h • X) = gramR R σ J X := by
@@ -86,11 +84,11 @@ theorem gramR_smul (h : HA R σ J) (X : Fin a → Fin M → R ⊗[F] E) :
   rfl
 
 /- English proof (translation)
-Establish `inj : ∀ H : GL (Fin M) A, LinearMap.ker (mulVecLin (H : Matrix (Fin M) (Fin M) A)) = ⊥` using `fun H => by`. Use `LinearMap.ker_eq_bot.2 fun x y hxy => ?_` and prove the remaining obligations. Use `congrArg (fun z => ((H⁻¹ : GL (Fin M) A) : Matrix (Fin M) (Fin M) A) *ᵥ z) hxy` as an intermediate fact. Simplify `this` using `[mulVecLin_apply, mulVec_mulVec]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hl`. Establish `h2` using `hl.map' (mulVecLin ((G⁻¹ : GL (Fin M) A) : Matrix (Fin M) (Fin M) A)) (inj G⁻¹)`. Establish `e : (⇑(mulVecLin ((G⁻¹ : GL (Fin M) A) : Matrix (Fin M) (Fin M) A)) ∘ fun x => (G : Matrix (Fin M) (Fin M) A) *ᵥ X x) = X`. Use function extensionality and compare the values at `x`. Simplify using `[mulVec_mulVec]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite `h2` using `[e]`. Conclude with `h2`. Introduce `hl`. Conclude with `hl.map' (mulVecLin (G : Matrix (Fin M) (Fin M) A)) (inj G)`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem linIndep_mulVec {A : Type} [CommRing A] (G : GL (Fin M) A) (X : Fin a → Fin M → A) :
     LinearIndependent A (fun x => (G : Matrix (Fin M) (Fin M) A) *ᵥ X x) ↔ LinearIndependent A X := by
@@ -112,7 +110,7 @@ theorem linIndep_mulVec {A : Type} [CommRing A] (G : GL (Fin M) A) (X : Fin a �
     exact hl.map' (mulVecLin (G : Matrix (Fin M) (Fin M) A)) (inj G)
 
 /- English proof (translation)
-The claim follows from `linIndep_mulVec (HA.mat R σ J h) X`.
+A detailed English derivation is pending.
 -/
 theorem linIndep_smul (h : HA R σ J) (X : Fin a → Fin M → R ⊗[F] E) :
     LinearIndependent (R ⊗[F] E) (h • X) ↔ LinearIndependent (R ⊗[F] E) X :=
@@ -136,9 +134,9 @@ def MuInvV : Prop := InCtx fun F E _ _ _ _ _ σ M J a _X0 _hT =>
     ∀ h : HA (Fv F v) σ J, μv.map (fun X => h • X) = μv
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet ψ hψ μinf hμ νinf hν fibInf hfi h Φinf hcΦ hcs`. Establish `: FiniteDimensional F E` using `Module.finite_of_finrank_pos (by rw [hCM.2.2.1]; norm_num)`. Set `e` to `smulHomeo (Ainf F) σ (a := a) J h`. Establish `hfam` using `TopoFibInv.isFibreFamily_map e hfi (hM F E σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet ψ hψ μinf hμ h) (fun x => TopoFibInv.gramR_smul (Ainf F) σ J h x) (Set.ext fun X => TopoFibInv.linIndep_smul (Ainf F) σ J h X)`. Use `(hP F E σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet ψ hψ).1 μinf hμ νinf hν _ _ hfam hfi Φinf hcΦ hcs` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[integral_map_equiv]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fibInvInf_of (hP : FibPin) (hM : MuInvInf) : FibInvInf := by
   intro F E _ _ _ _ _ σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet ψ hψ μinf hμ νinf hν fibInf hfi h Φinf
@@ -155,9 +153,9 @@ theorem fibInvInf_of (hP : FibPin) (hM : MuInvInf) : FibInvInf := by
   exact this
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet ψ hψ v μv hμ νv hν fibV hfv h Φv hSB`. Establish `: FiniteDimensional F E` using `Module.finite_of_finrank_pos (by rw [hCM.2.2.1]; norm_num)`. Set `e` to `smulHomeo (Fv F v) σ (a := a) J h`. Establish `hfam` using `TopoFibInv.isFibreFamily_map e hfv (hM F E σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet ψ hψ v μv hμ h) (fun x => TopoFibInv.gramR_smul (Fv F v) σ J h x) (Set.ext fun X => TopoFibInv.linIndep_smul (Fv F v) σ J h X)`. Use `(hP F E σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet ψ hψ).2 v μv hμ νv hν _ _ hfam hfv Φv hSB` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[integral_map_equiv]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fibInvV_of (hP : FibPin) (hM : MuInvV) : FibInvV := by
   intro F E _ _ _ _ _ σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet ψ hψ v μv hμ νv hν fibV hfv h Φv hSB
@@ -172,7 +170,7 @@ theorem fibInvV_of (hP : FibPin) (hM : MuInvV) : FibInvV := by
   exact this
 
 /- English proof (translation)
-The claim follows from `nuInv_of_loc gramPres_holds (pullLoc_of hC (fibInvInf_of hP hMI) (fibInvV_of hP hMV)) hD`.
+A detailed English derivation is pending.
 -/
 theorem nuInv_of_steps (hD : DetAdm) (hC : CompG) (hP : FibPin) (hMI : MuInvInf) (hMV : MuInvV) :
     NuInv :=

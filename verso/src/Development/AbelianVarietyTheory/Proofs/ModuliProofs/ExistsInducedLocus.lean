@@ -16,13 +16,11 @@ namespace GlobalTheory.LevCover
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {S : Scheme.{0}}
 
 /- English proof (translation)
-Use `R₁.1` as an intermediate fact. Use `R₁.2.1` as an intermediate fact. Use `R₂.1` as an intermediate fact. Use `R₂.2.1` as an intermediate fact. Take `⟨h1, h2⟩` from `finiteEtale_tensor Z₁ Z₂`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨Z₁ ⊗ Z₂, fun a => fst _ _ ≫ e₁ a, fun a => snd _ _ ≫ e₂ a, h1, h2, fun a c => ?_, fun a => ?_, fun a c => ?_, fun a => ?_, fun T u u' hu hu' => ?_, fun T χ' θ' a1 p1 a2 p2 => ?_⟩` and prove the remaining obligations. Simplify using `only [R₁.2.2.1, MonObj.comp_mul]`. Use `beta_reduce`. Rewrite using `[← MonObj.comp_pow, R₁.2.2.2.1, MonObj.comp_one]`. Simplify using `only [R₂.2.2.1, MonObj.comp_mul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `beta_reduce`. Rewrite using `[← MonObj.comp_pow, R₂.2.2.2.1, MonObj.comp_one]`. Conclude with `CartesianMonoidalCategory.hom_ext _ _ (R₁.ext fun a => by simpa using hu a) (R₂.ext fun a => by simpa using hu' a)`. Take `⟨z₁, hz₁, -⟩` from `R₁.2.2.2.2 T χ' a1 p1`. Take `⟨z₂, hz₂, -⟩` from `R₂.2.2.2.2 T θ' a2 p2`.
-
-Conclude with `⟨lift z₁ z₂, fun a => by simpa using hz₁ a, fun a => by simpa using hz₂ a⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_pair {G : Over S} [GrpObj G] {n m : ℕ} {La : Type} [AddCommGroup La] {Z₁ Z₂ : Over S}
     {e₁ : La → (Z₁ ⟶ G)} {e₂ : La → (Z₂ ⟶ G)} (R₁ : RepTors G n La Z₁ e₁) (R₂ : RepTors G m La Z₂ e₂) :
@@ -52,23 +50,21 @@ theorem exists_pair {G : Over S} [GrpObj G] {n m : ℕ} {La : Type} [AddCommGrou
 variable {l : Level H}
 
 /- English proof (translation)
-Establish `: CharZero B` using `⟨fun m n h => by`. Assume the negation of the conclusion as `hne`. Use `wlog hlt : n < m generalizing m n`. Conclude with `this n m h.symm (Ne.symm hne) (lt_of_le_of_ne (not_lt.1 hlt) hne)`. Use `(b.unit (m - n) (by omega)).ne_zero` as an intermediate fact.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[Nat.cast_sub hlt.le, h, sub_self]`. Conclude with `this rfl⟩`. Establish `hN : 0 < l₂.M'` using `Nat.lcm_pos (M_pos l₂) l₂.A_pos`. Establish `hAN : l₂.A ∣ l₂.M'` using `Nat.dvd_lcm_right _ _`. Establish `hMN : l₂.M ∣ l₂.M'` using `Nat.dvd_lcm_left _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Generalize the expression as in `l₂.M' = N at hN hAN hMN`. Take `⟨L, _, _, ξ, _, hξ, hξA⟩` from `exists_root_ext B hN hAN b₂.ζ_prim`. Take `⟨ZN, et, R⟩` from `hT N hN`. Take `⟨W, α, _, _, hadd, hpow, HW⟩` from `exists_full o.t s hN hξ.pow_eq_one R (hW N hN)`. Take `⟨p, hp1, hp2⟩` from `hex W (fun a => α (e • a) ^ (N / l₂.M)) (fun a => α a ^ (N / l₂.A)) (fun a c => by rw [smul_add, hadd, mul_pow]) (fun a => by rw [← pow_mul, Nat.div_mul_cancel hMN, hpow]) (fun a c => by rw [hadd, mul_pow]) (fun a => by rw [← pow_mul, Nat.div_mul_cancel hAN, hpow])`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨U, hU, HU⟩` from `exists_image p`. Use `⟨U, hU, fun k _ _ x β hx z => (HU k x z).trans ?_⟩` and prove the remaining obligations. Establish `hprim : ∀ β' : L →+* k, IsPrimitiveRoot (Units.map β'.toMonoidHom ξ) N` using `fun β' => hξ.map_of_injective (Units.map_injective β'.injective)`. Establish `hval : ∀ β' : L →+* k, β'.comp (algebraMap B L) = β → ((Units.map β'.toMonoidHom ξ ^ (N / l₂.A) : kˣ) : k) = β b₂.ζ` using `fun β' h => by`. Rewrite using `[← h, RingHom.comp_apply, ← hξA, map_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, rfl⟩`. Establish `a1 : ∀ a c, w ≫ α (a + c) = w ≫ α a * w ≫ α c` using `fun a c => by rw [hadd, MonObj.comp_mul]`. Establish `p1 : ∀ a, (w ≫ α a) ^ N = 1` using `fun a => by rw [← MonObj.comp_pow, hpow, MonObj.comp_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨β', hβ', h1, h2⟩` from `(HW k x β hx (fun a => w ≫ α a) a1 p1).1 ⟨w, fun _ => rfl⟩`. Take `⟨-, I₀, -⟩` from `o.geom k x β hx`. Take `⟨I, hI, hI'⟩` from `exists_of_level hν N (hL N) (fun y y' c c' => weilIs_unique_fieldPoint _ _ _ o.t.PP.isLB k x N y y' c c') I₀ hN (hprim β') (fun a => w ≫ α a) a1 p1 h1 h2`. Use `⟨I, ?_, fun a => ?_, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[← zeta_pow_div I hN hAN, hI, hval β' hβ']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Category.assoc, hp2, MonObj.comp_pow, ← hI', ev_pow_div I hN hAN]`. Rewrite using `[Category.assoc, hp1, MonObj.comp_pow, ← hI', ev_pow_div I hN hMN]`. Introduce and unpack `⟨I, h1, h2, h3⟩`. Choose the witnesses or unpack the hypotheses as in `⟨β', hβ'⟩ : ∃ β' : L →+* k, β'.comp (algebraMap B L) = β := by`. Use `letI : Algebra B k := β.toAlgebra`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨(IsAlgClosed.lift : L →ₐ[B] k).toRingHom, (IsAlgClosed.lift : L →ₐ[B] k).comp_algebraMap⟩`. Take `⟨I', g1, g2, g3⟩` from `exists_adjust hν l₂ N (hM l₂ N) I hN hAN (hprim β') (Units.ext ((hval β' hβ').trans h1.symm))`. Take `⟨w, hw⟩` from `(HW k x β hx (I'.ev N) (I'.add N) (tateIso_ev_pow I' hN)).2 ⟨β', hβ', I'.lin N, fun a c => g1 ▸ I'.isom N hN a c⟩`. Use `⟨w, hext _ _ _ (fun a => ?_) fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hp1, MonObj.comp_pow, hw, ev_pow_div I' hN hMN, h3, g3 _ (Submodule.smul_mem_smul he Submodule.mem_top)]`.
-
-Rewrite using `[Category.assoc, hp2, MonObj.comp_pow, hw, ev_pow_div I' hN hAN, h2, g2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_induced_locus {B : Type} [Field B] {b : Base l B} {s : S ⟶ Sp B} (o : Obj D l b s) (l₂ : Level H)
     (b₂ : Base l₂ B)
@@ -157,7 +153,7 @@ structure LevStr {B : Type} [CommRing B] {b : Base l B} {s : S ⟶ Sp B} (o : Ob
       ∀ a ∈ Mc l₂ • (⊤ : Submodule (𝓞 E) D.La), y ≫ χ a = I.ev l₂.M a
 
 /- English proof (translation)
-Establish `: a = e • a + (1 - e) • a` using `by rw [← add_smul, add_sub_cancel, one_smul]`. Use `conv_rhs => rw [this, hf, hk _ (Submodule.smul_mem_smul he' Submodule.mem_top), _root_.mul_one]`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem add_map_idem {Q : Type} [Group Q] {l₂ : Level H} {e : 𝓞 E} (he' : 1 - e ∈ l₂.Mb) {f : D.La → Q}
     (hf : ∀ a c, f (a + c) = f a * f c) (hk : ∀ a ∈ l₂.Mb • (⊤ : Submodule (𝓞 E) D.La), f a = 1) (a : D.La) :
@@ -166,31 +162,27 @@ theorem add_map_idem {Q : Type} [Group Q] {l₂ : Level H} {e : 𝓞 E} (he' : 1
   conv_rhs => rw [this, hf, hk _ (Submodule.smul_mem_smul he' Submodule.mem_top), _root_.mul_one]
 
 /- English proof (translation)
-Take `⟨hMM, hb, hAA⟩` from `hl`. Take `⟨e, he, he'⟩` from `exists_idem l₂`. Take `⟨Z₁, e₁, R₁⟩` from `hT _ (M_pos l₂)`. Take `⟨Z₂, e₂, R₂⟩` from `hT _ l₂.A_pos`. Take `⟨Z, χ, θ, _, _, a1, p1, a2, p2, hext, hex⟩` from `exists_pair R₁ R₂`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨U, hU, HU⟩` from `exists_induced_locus o l₂ b₂ hν hL hM hT hW he χ θ hext hex`. Establish `q1 : ∀ a, o.eta a ^ l₂.M = 1` using `fun a => by`. Rewrite using `[← Nat.mul_div_cancel' hMM, pow_mul, ← add_map_nsmul o.eta_add, o.eta_ker _ (nsmul_M_mem l a), one_pow]`. Establish `q2 : ∀ a, o.etaA a ^ l₂.A = 1` using `fun a => by`. Rewrite using `[← Nat.mul_div_cancel' hAA, pow_mul, ← add_map_nsmul o.etaA_add, o.etaA_ker, one_pow]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `c1` using `R₁.clopenCond (fun a => χ (e • a)) χ (fun a c => by rw [smul_add, a1]) (fun a => p1 _) a1 p1`. Establish `c2` using `R₁.clopenCond (fun a => χ a ^ (l₂.M / l.M)) (fun a => toUnit Z ≫ o.eta a) (fun a c => by rw [a1, mul_pow]) (fun a => by rw [pow_right_comm, p1, one_pow]) (fun a c => by rw [o.eta_add, MonObj.comp_mul]) (fun a => by rw [← MonObj.comp_pow, q1, MonObj.comp_one])`. Establish `c3` using `R₂.clopenCond (fun a => θ a ^ (l₂.A / l.A)) (fun a => toUnit Z ≫ o.etaA a) (fun a c => by rw [a2, mul_pow]) (fun a => by rw [pow_right_comm, p2, one_pow]) (fun a c => by rw [o.etaA_add, MonObj.comp_mul]) (fun a => by rw [← MonObj.comp_pow, q2, MonObj.comp_one])`. Take `⟨U', hU', HU'⟩` from `c1.and (c2.and c3)`. Take `⟨V, i, hV1, hV2, hi, Hi⟩` from `exists_sub (U ⊓ U') (hU.inter hU')`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hir : Set.range i.left ⊆ (U : Set Z.left) ∩ U'` using `(Hi V i).2 ⟨𝟙 _, Category.id_comp _⟩`. Take `⟨i1, i2, i3⟩` from `(HU' V i).2 (hir.trans Set.inter_subset_right)`. Establish `ia : ∀ a c, i ≫ χ (a + c) = i ≫ χ a * i ≫ χ c` using `fun a c => by rw [a1, MonObj.comp_mul]`. Establish `univ : ∀ (T : Over S) (χ' θ' : D.La → (T ⟶ o.t.G)), LevStr o b₂ T χ' θ' → ∃ h : T ⟶ V, (∀ a, h ≫ i ≫ χ a = χ' a) ∧ ∀ a, h ≫ i ≫ θ a = θ' a`. Introduce `T χ' θ' h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨z, z1, z2⟩` from `hex T χ' θ' h.add (fun a => by rw [← add_map_nsmul h.add, h.ker _ (nsmul_M_mem l₂ a)]) h.addA (fun a => by rw [← add_map_nsmul h.addA, h.kerA])`. Take `⟨w, rfl⟩` from `(Hi T z).1 (Set.subset_inter (range_subset_of_geom z U fun k _ _ x y => by`. Take `⟨β, hβ⟩` from `exists_spMap (x ≫ s)`. Take `⟨I, h1, h2, h3⟩` from `h.geom k x β hβ y`. Use `(HU k x β hβ _).2 ⟨I, h1, fun a => by rw [Category.assoc, z2, h2], fun a => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Category.assoc, z1, ← h3 _ (Submodule.smul_mem_smul he Submodule.mem_top), add_map_idem he' h.add h.ker])`. Use the proof step `((HU' T z).1 ⟨fun a => by rw [z1, z1, add_map_idem he' h.add h.ker], fun a => by rw [MonObj.comp_pow, z1, h.low, comp_toUnit_assoc], fun a => by rw [MonObj.comp_pow, z2, h.lowA, comp_toUnit_assoc]⟩))`. Conclude with `⟨w, fun a => by rw [← z1, Category.assoc], fun a => by rw [← z2, Category.assoc]⟩`. Use `⟨V, fun a => i ≫ χ a, fun a => i ≫ θ a, hV1, hV2, ⟨fun pt => ?_⟩, ⟨ia, fun a ha => ?_, fun a c => ?_, fun a => ?_, fun a => ?_, fun a => ?_, fun k _ _ x β hx y => ?_⟩, fun T u u' h h' => ?_, univ⟩` and prove the remaining obligations. Take `⟨k, _, _, x, hx⟩` from `FinEt.exists_algClosed_point S pt`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨β, hβ⟩` from `exists_spMap (x ≫ s)`. Take `⟨-, I, h1, h2, h3⟩` from `o.geom k x β hβ`. Establish `hprim : IsPrimitiveRoot (β b₂.ζ) l₂.A` using `b₂.ζ_prim.map_of_injective β.injective`. Take `⟨I', g1, g2, g3⟩` from `exists_adjust hν l l₂.A (hM l l₂.A) I l₂.A_pos hAA (ξ := (hprim.isUnit l₂.A_pos.ne').unit) (IsPrimitiveRoot.coe_units_iff.1 (by simpa using hprim)) (Units.ext (by rw [h1, hζ, map_pow, Units.val_pow_eq_pow_val, IsUnit.unit_spec]))`. Establish `hc : Mc l₂ ≤ Mc l` using `Ideal.map_mono hb`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨z, z1, z2⟩` from `hex (Over.mk x) (fun a => I'.ev l₂.M (e • a)) (I'.ev l₂.A) (fun a c => by rw [smul_add, I'.add]) (fun a => tateIso_ev_pow I' (M_pos l₂) _) (I'.add _) (tateIso_ev_pow I' l₂.A_pos)`. Take `⟨w, -⟩` from `(Hi _ z).1 (Set.subset_inter ((HU k x β hβ z).2 ⟨I', by rw [g1, IsUnit.unit_spec], z2, z1⟩) ((HU' _ z).1 ⟨fun a => by`. Rewrite using `[z1, z1]`. Conclude with `add_map_idem he' (f := fun a => I'.ev l₂.M (e • a)) (fun a c => by rw [smul_add, I'.add]) (fun a ha => (I'.ker _ (M_pos l₂) _).2 (modN_smul_Mb l₂ he ha)) a,`. Use `fun a => by`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hm : e • a ∈ Mc l • (⊤ : Submodule (𝓞 E) D.La)` using `Submodule.smul_mem_smul (hc he) Submodule.mem_top`. Rewrite using `[MonObj.comp_pow, z1, ev_pow_div I' (M_pos l₂) hMM, g3 _ hm, ← h3 _ hm, add_map_idem (hb he') o.eta_add o.eta_ker, comp_toUnit_assoc],`. Use `fun a => by rw [MonObj.comp_pow, z2, ev_pow_div I' l₂.A_pos hAA, g2, ← h2, comp_toUnit_assoc]⟩))`. Take `⟨p, hp⟩ : pt ∈ Set.range x` from `by rw [hx]; rfl`. Conclude with `⟨w.left p, by rw [← Scheme.Hom.comp_apply, Over.w w]; exact hp⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, hc⟩` from `modN_smul_Mb l₂ he ha beta_reduce`. Rewrite using `[← i1, hc, add_map_nsmul a1, p1, MonObj.comp_one]`. Use `beta_reduce`. Rewrite using `[a2, MonObj.comp_mul]`. Use `beta_reduce`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[add_map_nsmul a2, p2, MonObj.comp_one]`. Use `beta_reduce`. Rewrite using `[← MonObj.comp_pow, i2, comp_toUnit_assoc]`. Use `beta_reduce`. Rewrite using `[← MonObj.comp_pow, i3, comp_toUnit_assoc]`.
-
-Take `⟨I, h1, h2, h3⟩` from `(HU k x β hx (y ≫ i)).1 (by`. Introduce and unpack `_ ⟨p, rfl⟩`. Conclude with `(hir ⟨y.left p, by simp⟩).1)`. Use `⟨I, h1, fun a => by rw [← h2, Category.assoc], fun a ha => ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, h3]`.
-
-Use `LevelTwist.ev_congr I (M_pos l₂) ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `modN_smul_Mc l₂ he' ha`. Conclude with `⟨-c, by rw [smul_neg, ← hc, sub_smul, one_smul, neg_sub]⟩`. Conclude with `(cancel_mono i).1 (hext _ _ _ (fun a => by simpa using h a) fun a => by simpa using h' a)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_levStr_rep {B : Type} [Field B] {b : Base l B} {s : S ⟶ Sp B} (o : Obj D l b s) (l₂ : Level H)
     (b₂ : Base l₂ B) (hl : l.Dvd l₂) (hζ : b.ζ = b₂.ζ ^ (l₂.A / l.A))

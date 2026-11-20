@@ -13,7 +13,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatticeValueIsAlgeb
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatticeValueConjugationOfEllipticCMTheoremsStatement
 
 /- English proof (translation)
-Introduce `hEM hHJ hSK hPZ hHT` and use `GlobalTheory.T.toricPeriodZetaStatements_of_jetIntegrality_algebraicity hEM hHJ hSK hPZ hHT (GlobalTheory.T.cmLatticeDividedPowerJetIntegrality_of_ellipticCM hSK hPZ hHJ hEM) (GlobalTheory.T.latticeValueIsAlgebraic_of_ellipticCM_theorems hSK hPZ hHJ hEM) (GlobalTheory.T.latticeVa …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.JoinFun.joinOut_of_five : GlobalTheory.Published.EllipticMainTheoremCM → GlobalTheory.Published.HilbertClassFieldJ → GlobalTheory.Published.SiegelKlingenDeligneRibet → GlobalTheory.Published.PartialZetaFunctionalEquation → GlobalTheory.Published.HeckeTateFunctionalEquation → GlobalTheory.Mem.LiteralAutomorphy.JoinOut :=
   fun hEM hHJ hSK hPZ hHT => GlobalTheory.T.toricPeriodZetaStatements_of_jetIntegrality_algebraicity hEM hHJ hSK hPZ hHT (GlobalTheory.T.cmLatticeDividedPowerJetIntegrality_of_ellipticCM hSK hPZ hHJ hEM)

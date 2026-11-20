@@ -15,9 +15,9 @@ namespace CrystallineSemistableComparison.Pb.Mid
 variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero`. Express the relevant statement in the definitionally equal form `y.1.2 = F.Pt.map (CommRingCat.ofHom (RingHom.id _)) y.1.2`. Rewrite using `[CommRingCat.ofHom_id, F.Pt.map_id]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Consider the case `succ N ih`. Express the relevant statement in the definitionally equal form `F.Pt.map (CommRingCat.ofHom (B.frb h)) ((IterG.PtN (B.phiPt F κ n) N).app B₀ y).1.2 = _`. Rewrite using `[ih]`. Establish `e : CommRingCat.ofHom (frbN h (N + 1)) = CommRingCat.ofHom (frbN h N) ≫ CommRingCat.ofHom (B.frb h)` using `CommRingCat.hom_ext (RingHom.ext fun _ => rfl)`. Rewrite using `[e, F.Pt.map_comp]`.
+Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -38,7 +38,7 @@ theorem frobenius_iterate_point {O : Type} [CommRing O] (F : B.Fn O) (κ : O →
     rfl
 
 /- English proof (translation)
-Unfold `mu nu muMor nuMor mIn mOut B.phiHc B.phiMorC phiP phiA`. Conclude with `IterG.gen_mu_nu (b := B.bs l true n) (ht := rfl) (F := B.schFn M.p) (κ := B.κb (okToOC l K) true n) (κ' := κm r n) ((base l).cris n) _ (B.phiPt (B.schFn M.p) (okToOC l K) n) _ _ N _ (ptIn (B.schFn M.p) n hT) _ _ _ (ptOut (B.schFn M.p) n hT) _ _ (fun B₀ y => (frobenius_iterate_poi …`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem frobenius_mu_nu_iterate (r : Res l K) (N : ℕ) (hT : TeichmullerCongruence r N) (M : Model l K) (n j : ℕ)
     (x : B.Hc (B.schFn M.p) (okToOC l K) true n j) :

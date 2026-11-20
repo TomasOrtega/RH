@@ -16,9 +16,9 @@ def cM (n k : ℕ) (x : Fin (k + 1) → F) : Matrix (Fin n) (Fin n) F :=
   Matrix.of fun i j => if h : (j : ℕ) = k + 1 ∧ (i : ℕ) < k + 1 then x ⟨i, h.2⟩ else 0
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Matrix.zero_apply]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Simplify using `only [cM, Matrix.of_apply]`. Distinguish the cases in `h1 : (l : ℕ) = k + 1`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Establish `h2 : ¬ ((l : ℕ) < k + 1)` using `by omega`. Rewrite using `[dif_neg (show ¬ ((j : ℕ) = k + 1 ∧ (l : ℕ) < k + 1) from fun h => h2 h.2), mul_zero]`. Rewrite using `[dif_neg (show ¬ ((l : ℕ) = k + 1 ∧ (i : ℕ) < k + 1) from fun h => h1 h.1), zero_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem cM_mul (k : ℕ) (x y : Fin (k + 1) → F) : cM n k x * cM n k y = 0 := by
   ext i j

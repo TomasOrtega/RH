@@ -15,7 +15,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.ChF
 
 /- English proof (translation)
-Unfold `sub`. Rewrite using `[MvPowerSeries.map_subst (MvPowerSeries.hasSubst_of_constantCoeff_zero (a := fun q : Fin m × Fin d => a q.1 q.2) (fun q => ha q.1 q.2))]`. Simplify using `only [h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma map_sub' {R S : Type} [CommRing R] [CommRing S] (β : R →+* S) {m n d e : ℕ}
     (a : Fin m → Fin d → PS R n e) (ha : ∀ i j, MvPowerSeries.constantCoeff (a i j) = 0) (f : PS R m d)
@@ -26,7 +26,7 @@ private lemma map_sub' {R S : Type} [CommRing R] [CommRing S] (β : R →+* S) {
   simp only [h]
 
 /- English proof (translation)
-Unfold `sub`. Conclude with `MvPowerSeries.constantCoeff_subst_eq_zero (MvPowerSeries.hasSubst_of_constantCoeff_zero (a := fun q : Fin m × Fin d => a q.1 q.2) (fun q => ha q.1 q.2)) (fun q => ha q.1 q.2) hf`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private lemma cc_sub {R : Type} [CommRing R] {m n d e : ℕ}
     (a : Fin m → Fin d → PS R n e) (ha : ∀ i j, MvPowerSeries.constantCoeff (a i j) = 0) (f : PS R m d)
@@ -43,19 +43,19 @@ private lemma ev_eq {R : Type} [CommRing R] {m n d : ℕ} (a : Fin m → Fin d �
     ev a f = sub a f := rfl
 
 /- English proof (translation)
-Simplify using `[pt]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma map_pt {R S : Type} [CommRing R] [CommRing S] (β : R →+* S) {n d : ℕ} (j : Fin n) (i : Fin d) :
     MvPowerSeries.map β (pt R d j i) = pt S d j i := by simp [pt]
 
 /- English proof (translation)
-Simplify using `[pt]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma cc_pt {R : Type} [CommRing R] {n d : ℕ} (j : Fin n) (i : Fin d) :
     MvPowerSeries.constantCoeff (pt R d j i) = 0 := by simp [pt]
 
 /- English proof (translation)
-The claim follows from `map_sub' β _ (fun i j => by fin_cases i; exact hx j) f _ (fun i j => by fin_cases i; rfl)`.
+A detailed English derivation is pending.
 -/
 private lemma map_subst_single {R S : Type} [CommRing R] [CommRing S] (β : R →+* S) {n d e : ℕ}
     (x : Fin d → PS R n e) (hx : ∀ j, MvPowerSeries.constantCoeff (x j) = 0) (f : PS R 1 d) :
@@ -64,7 +64,7 @@ private lemma map_subst_single {R S : Type} [CommRing R] [CommRing S] (β : R �
   map_sub' β _ (fun i j => by fin_cases i; exact hx j) f _ (fun i j => by fin_cases i; rfl)
 
 /- English proof (translation)
-The claim follows from `map_sub' β _ (fun i j => by fin_cases i · exact hx j · exact hy j) f _ (fun i j => by fin_cases i <;> rfl)`.
+A detailed English derivation is pending.
 -/
 private lemma map_sub_pair_eq_sub_map_of_constantCoeff_eq_zero {R S : Type} [CommRing R] [CommRing S] (β : R →+* S) {n d e : ℕ}
     (x y : Fin d → PS R n e) (hx : ∀ j, MvPowerSeries.constantCoeff (x j) = 0)
@@ -77,7 +77,7 @@ private lemma map_sub_pair_eq_sub_map_of_constantCoeff_eq_zero {R S : Type} [Com
     · exact hy j) f _ (fun i j => by fin_cases i <;> rfl)
 
 /- English proof (translation)
-The claim follows from `cc_sub _ (fun i j => by fin_cases i; exact hx j) f hf`.
+A detailed English derivation is pending.
 -/
 private lemma constCoeff_subst_single {R : Type} [CommRing R] {n d e : ℕ}
     (x : Fin d → PS R n e) (hx : ∀ j, MvPowerSeries.constantCoeff (x j) = 0) (f : PS R 1 d)
@@ -85,7 +85,7 @@ private lemma constCoeff_subst_single {R : Type} [CommRing R] {n d e : ℕ}
   cc_sub _ (fun i j => by fin_cases i; exact hx j) f hf
 
 /- English proof (translation)
-The claim follows from `cc_sub _ (fun i j => by fin_cases i · exact hx j · exact hy j) f hf`.
+A detailed English derivation is pending.
 -/
 private lemma constantCoeff_sub2_eq_zero {R : Type} [CommRing R] {n d e : ℕ}
     (x y : Fin d → PS R n e) (hx : ∀ j, MvPowerSeries.constantCoeff (x j) = 0)
@@ -97,9 +97,9 @@ private lemma constantCoeff_sub2_eq_zero {R : Type} [CommRing R] {n d e : ℕ}
     · exact hy j) f hf
 
 /- English proof (translation)
-Take `⟨h0, h1⟩` from `h`. Use `⟨fun j => by simp [MvPowerSeries.constantCoeff_map, h0], fun j => ?_⟩` and prove the remaining obligations. Use `congrArg (MvPowerSeries.map β) (h1 j)` as an intermediate fact. Simplify using `only [ev_eq] at this ⊢`. Rewrite `this` using `[map_subst_single β _ hF, map_sub_pair_eq_sub_map_of_constantCoeff_eq_zero β _ _ (fun i => constCoeff_subst_single _ (cc_pt _) _ (h0 i)) (fun i => constCoeff_subst_single _ (cc_pt _) _ (h0 i))]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [map_subst_single β _ (cc_pt _), map_pt] at this`. Conclude with `this`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma isHomF_map {R S : Type} [CommRing R] [CommRing S] (β : R →+* S) {d e : ℕ}
     (F : Fin d → PS R 2 d) (F' : Fin e → PS R 2 e) (φ : Fin e → PS R 1 d)
@@ -116,7 +116,7 @@ private lemma isHomF_map {R S : Type} [CommRing R] [CommRing S] (β : R →+* S)
   exact this
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[lin, MvPowerSeries.coeff_map]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private lemma lin_map {R S : Type} [CommRing R] [CommRing S] (β : R →+* S) {d e : ℕ} (φ : Fin e → PS R 1 d) :
     lin (fun j => MvPowerSeries.map β (φ j)) = (lin φ).map β := by
@@ -148,13 +148,13 @@ private noncomputable def mapLaw {R S : Type} [CommRing R] [CommRing S] (β : R 
     exact this
 
 /- English proof (translation)
-Introduce `R S _ _ β`. Use `⟨fun d F => ⟨mapLaw β F, rfl⟩, fun d e φ => lin_map β φ, fun d g r F FB J Q h => ⟨?_, ?_, ?_⟩⟩` and prove the remaining obligations. Establish `hg : (fun j => MvPowerSeries.map β (gmF R r j)) = gmF S r`. Use function extensionality and compare the values at `j`. Simplify using `[gmF]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hg]`. Conclude with `isHomF_map β _ _ _ (fun j => by simp [gmF]) h.homI`. Conclude with `isHomF_map β _ _ _ F.const h.homQ`. Rewrite using `[lin_map, lin_map]`. Take `⟨h0, A', B', h1, h2, h3⟩` from `h.exact`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, A'.map β, B'.map β, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.map_mul, h0]`. Simplify using the standard rewrite rules. Rewrite using `[← Matrix.map_mul, h1]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Matrix.map_mul, h2]`. Simplify using the standard rewrite rules. Rewrite using `[← Matrix.map_mul, ← Matrix.map_mul, ← Matrix.map_add _ (map_add β), h3]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem changeCoeff_law_lin_extSer : ∀ (R S : Type) [CommRing R] [CommRing S] (β : R →+* S), (∀ (d : ℕ) (F : FGLaw R d), ∃ F' : FGLaw S d, F'.F = F.mapF β) ∧ (∀ (d e : ℕ) (φ : Fin e → PS R 1 d), lin (fun j => MvPowerSeries.map β (φ j)) = (lin φ).map β) ∧ ∀ (d g r : ℕ) (F : FGLaw R d) (FB : FGLaw R g) (J : Fin d → PS R 1 r) (Q : Fin g → PS R 1 d), ExtSer F.F FB.F J Q → ExtSer (F.mapF β) (FB.mapF β) (fun j => MvPowerSeries.map β (J j)) (fun j => MvPowerSeries.map β (Q j)) := by
   intro R S _ _ β

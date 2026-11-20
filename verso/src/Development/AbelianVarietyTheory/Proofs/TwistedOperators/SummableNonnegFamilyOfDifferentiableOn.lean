@@ -5,43 +5,37 @@ open Filter Topology
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hr : 0 < r` using `lt_of_le_of_lt hx0 hxr`. Use `set t0 : ℝ := ε / 2 with ht0`. Establish `ht0pos : 0 < t0` using `by positivity`. Establish `ht0ε : t0 < ε` using `by linarith`. Establish `hnt0 : ‖(t0 : ℂ)‖ = t0` using `by simp [abs_of_pos ht0pos]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsum0 : Summable (fun i => c i * t0 ^ n i)`. Establish `h` using `(hser (t0 : ℂ) (by rw [hnt0]; exact ht0pos) (by rw [hnt0]; exact ht0ε)).summable`. Establish `e : (fun i => (c i : ℂ) * (t0 : ℂ) ^ n i) = fun i => ((c i * t0 ^ n i : ℝ) : ℂ)`. Use function extensionality and compare the values at `i`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite `h` using `[e]`. Conclude with `Complex.summable_ofReal.mp h`. Establish `hfib : ∀ m : ℕ, Summable (fun i : n ⁻¹' {m} => c i)`. Introduce `m`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `(hsum0.subtype (n ⁻¹' {m})).mul_right (t0 ^ m)⁻¹`. Use `h1.congr fun i => ?_` and prove the remaining obligations. Establish `hi : n i.val = m` using `i.2`. Simplify using `only [Function.comp_apply]`. Rewrite using `[hi, mul_assoc, mul_inv_cancel₀ (pow_ne_zero _ ht0pos.ne'), mul_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set C : ℕ → ℝ := fun m => ∑' i : n ⁻¹' {m}, c i with hC`. Establish `hCnn : ∀ m, 0 ≤ C m` using `fun m => tsum_nonneg (fun i => hc i)`. Establish `hgroup : ∀ z : ℂ, 0 < ‖z‖ → ‖z‖ < ε → HasSum (fun m => (C m : ℂ) * z ^ m) (R z)`. Introduce `z hz1 hz2`. Use `((hser z hz1 hz2).tsum_fiberwise n).congr_fun fun m => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : (∑' i : n ⁻¹' {m}, (c i : ℂ) * z ^ n i) = ∑' i : n ⁻¹' {m}, (c i : ℂ) * z ^ m` using `tsum_congr fun i => by rw [show n i = m from i.2]`. Rewrite using `[e1, tsum_mul_right, hC, Complex.ofReal_tsum]`. Establish `hCt0 : Summable (fun m => C m * t0 ^ m)`. Establish `h` using `(hgroup (t0 : ℂ) (by rw [hnt0]; exact ht0pos) (by rw [hnt0]; exact ht0ε)).summable`. Establish `e : (fun m => (C m : ℂ) * (t0 : ℂ) ^ m) = fun m => ((C m * t0 ^ m : ℝ) : ℂ)`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Use function extensionality and compare the values at `m`. Use `push_cast`. Both sides reduce to the same expression. Rewrite `h` using `[e]`. Conclude with `Complex.summable_ofReal.mp h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set q : FormalMultilinearSeries ℂ ℂ ℂ := FormalMultilinearSeries.ofScalars ℂ (fun m => (C m : ℂ)) with hq`. Establish `hqapply : ∀ (m : ℕ) (z : ℂ), q m (fun _ => z) = (C m : ℂ) * z ^ m`. Introduce `m z`. Rewrite using `[hq, FormalMultilinearSeries.ofScalars_apply_eq, smul_eq_mul]`. Use `set t0n : NNReal := ⟨t0, ht0pos.le⟩ with ht0n`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hrad : (t0n : ENNReal) ≤ q.radius`. Use `q.le_radius_of_bound (∑' m, C m * t0 ^ m) fun m => ?_` and prove the remaining obligations. Rewrite using `[show ((t0n : ℝ)) = t0 from rfl]`. Establish `hn : ‖q m‖ = C m`. Rewrite using `[hq, FormalMultilinearSeries.ofScalars_norm, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (hCnn m)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hn]`. Conclude with `hCt0.le_tsum m (fun j _ => mul_nonneg (hCnn j) (pow_nonneg ht0pos.le _))`. Establish `hradpos : 0 < q.radius` using `lt_of_lt_of_le (ENNReal.coe_pos.mpr (NNReal.coe_pos.mp (show (0:ℝ) < (t0n : ℝ) from ht0pos))) hrad`. Establish `hqball` using `q.hasFPowerSeriesOnBall hradpos`. Establish `hRan : AnalyticAt ℂ R 0` using `hR.analyticAt (Metric.ball_mem_nhds 0 hr)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Establish `hfreq : ∃ᶠ z in 𝓝[≠] (0 : ℂ), R z = q.sum z`. Apply `Eventually.frequently` to reduce the goal to its premises. Establish `hb : ∀ᶠ z in 𝓝[≠] (0 : ℂ), z ∈ Metric.ball (0 : ℂ) ε` using `nhdsWithin_le_nhds (Metric.ball_mem_nhds 0 hε)`. Use `filter_upwards [hb, self_mem_nhdsWithin] with z hz hz0`. Establish `hz0' : 0 < ‖z‖` using `norm_pos_iff.mpr hz0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hz` using `[mem_ball_zero_iff]`. Rewrite using `[FormalMultilinearSeries.sum]`. Repeatedly rewrite using `[hqapply]`. Conclude with `((hgroup z hz0' hz).tsum_eq).symm`. Establish `hev` using `(hRan.frequently_eq_iff_eventually_eq hqball.analyticAt).mp hfreq`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hRq : HasFPowerSeriesAt R q 0` using `hqball.hasFPowerSeriesAt.congr (hev.mono fun z h => h.symm)`. Use `set ρ : ℝ := (x + r) / 2 with hρ`. Establish `hρpos : 0 < ρ` using `by linarith`. Use `set ρn : NNReal := ⟨ρ, hρpos.le⟩ with hρn`. Establish `hcl : DifferentiableOn ℂ R (Metric.closedBall 0 (ρn : ℝ))` using `hR.mono (Metric.closedBall_subset_ball (by show ρ < r; linarith))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses repeatedly using the stated equalities. Establish an intermediate fact.
 
-Establish `hp` using `hcl.hasFPowerSeriesOnBall (by exact_mod_cast hρpos)`. Establish `hpq` using `hp.hasFPowerSeriesAt.eq_formalMultilinearSeries hRq`. Rewrite `hp` using `[hpq]`. Establish `hxn : ‖(x : ℂ)‖₊ < ρn`. Rewrite using `[← NNReal.coe_lt_coe, coe_nnnorm, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg hx0]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `show x < ρ`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hxmem : (x : ℂ) ∈ EMetric.ball (0 : ℂ) (ρn : ENNReal)` using `by show edist (x : ℂ) 0 < ρn`. Rewrite using `[edist_zero_right, enorm_eq_nnnorm]`. Conclude with `hxn` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsx` using `(hp.hasSum hxmem).summable`. Rewrite `hsx` using `[hqapply]`. Establish `hCx : Summable (fun m => C m * x ^ m)`. Establish `e : (fun m => (C m : ℂ) * (x : ℂ) ^ m) = fun m => ((C m * x ^ m : ℝ) : ℂ)`. Use function extensionality and compare the values at `m`.
-
-Use `push_cast`. Both sides reduce to the same expression. Rewrite `hsx` using `[e]`. Conclude with `Complex.summable_ofReal.mp hsx`. Rewrite using `[← (Equiv.sigmaFiberEquiv n).summable_iff]`.
-
-Use `(summable_sigma_of_nonneg fun p => ?_).mpr ⟨fun m => ?_, ?_⟩` and prove the remaining obligations. Conclude with `mul_nonneg (hc _) (pow_nonneg hx0 _)`. Use `((hfib m).mul_right (x ^ m)).congr fun i => ?_` and prove the remaining obligations. Simplify using `[Equiv.sigmaFiberEquiv, show n i = m from i.2]`. Use `hCx.congr fun m => ?_` and prove the remaining obligations.
-
-Establish `e1 : (∑' i : {i // n i = m}, ((fun i => c i * x ^ n i) ∘ (Equiv.sigmaFiberEquiv n)) ⟨m, i⟩) = ∑' i : n ⁻¹' {m}, c i * x ^ m` using `tsum_congr fun i => by simp [Equiv.sigmaFiberEquiv, show n i = m from i.2]`. Rewrite using `[e1, tsum_mul_right]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem summable_nonneg_family_of_differentiableOn {ι : Type} (c : ι → ℝ) (n : ι → ℕ)
     (R : ℂ → ℂ) (r ε : ℝ) (hc : ∀ i, 0 ≤ c i) (hε : 0 < ε)

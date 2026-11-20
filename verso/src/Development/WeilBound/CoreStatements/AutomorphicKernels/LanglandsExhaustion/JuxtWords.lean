@@ -10,11 +10,9 @@ namespace PositivityTheory.Exh
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Use `show List.ofFn (fun i : Fin (Δ.len + 1) => (up Δ).term (Fin.rev i)) = _`. Rewrite using `[List.ofFn_succ]`. Use `congr 1`. Simplify using `only [decW]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Use `show Δ.first.nu (((Fin.rev i.succ : Fin (Δ.len + 1)) : ℕ) : ℂ) = Δ.first.nu (((Fin.rev i : Fin Δ.len) : ℕ) : ℂ)`. Establish `h : ((Fin.rev i.succ : Fin (Δ.len + 1)) : ℕ) = ((Fin.rev i : Fin Δ.len) : ℕ)`. Simplify using `only [Fin.val_rev, Fin.val_succ]`. Use linear arithmetic over natural numbers and integers.
-
-Rewrite using `[h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem decW_up (Δ : Segment k) : decW (up Δ) = nxt Δ :: decW Δ := by
   show List.ofFn (fun i : Fin (Δ.len + 1) => (up Δ).term (Fin.rev i)) = _
@@ -30,7 +28,7 @@ theorem decW_up (Δ : Segment k) : decW (up Δ) = nxt Δ :: decW Δ := by
   rw [h]
 
 /- English proof (translation)
-Introduce `h`. Rewrite `h` using `[decW, List.mem_ofFn]`. Take `⟨i, hi⟩` from `h`. Establish `h2` using `GlobalTheory.T.cuspidal_twist_injective hA Δ.first Δ.isCusp_first _ _ hi`. Establish `h3` using `(Fin.rev i).isLt`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -43,9 +41,9 @@ theorem nxt_not_mem (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (Δ : 
   omega
 
 /- English proof (translation)
-Break down `Q.eq_nil_or_concat' with rfl | ⟨Q', q, rfl⟩` into its components or cases. Rewrite using `[h1, List.append_nil]`. Conclude with `(List.append_inj' h2 rfl).1`. It suffices to derive a contradiction. Establish `h3 : u ++ [nxt Δ] = (P ++ nxt Δ :: Q') ++ [q]` using `by simpa using h2`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `(List.append_inj' h3 rfl).2`. Establish `hq : q = nxt Δ` using `by simpa using h4.symm`. Apply `nxt_not_mem hA Δ` to reduce the goal to its premises. Rewrite using `[h1, ← hq]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_decW_of_append (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (Δ : Segment k) (u P Q : List (IrrGL k))
     (h1 : decW Δ = P ++ Q) (h2 : u ++ [nxt Δ] = P ++ nxt Δ :: Q) : u = decW Δ := by

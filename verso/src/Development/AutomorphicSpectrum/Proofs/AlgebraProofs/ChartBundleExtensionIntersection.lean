@@ -13,11 +13,11 @@ open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundl
 namespace GlobalTheory.CompanionTheory.Ar.Num.QuotAdd
 
 /- English proof (translation)
-Introduce `O _ _ _ Ω _ _ K _ _ ι _ x d N₀ N N₂ V₀ _ _ V _ _ V₂ _ _ A A' E E' C C' hM hA hE hC hX k hk1 hk2 q L Q hQ`. Take `⟨E'', h1, h2, h3, h4⟩` from `GlobalTheory.T.chart_bundle_extension_comparison O Ω K ι x N₀ N N₂ V₀ V V₂ A.lat A'.lat E E' C C' hX`. Establish `hEE'' : SameGeneric O x E E''` using `fun s hs => ⟨fun v hv => by`. Take `⟨c, hc, hcv⟩` from `(hE s hs).1 v hv`. Conclude with `⟨c, hc, h1 s hs hcv⟩,`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `fun v hv => ⟨1, one_ne_zero, by simpa using h2 s hs hv⟩⟩`. Establish `hE''E' : SameGeneric O x E'' E'` using `fun s hs => ⟨fun v hv => (hE s hs).1 v (h2 s hs hv), fun v hv => ⟨1, one_ne_zero, by simpa using h1 s hs hv⟩⟩`. Establish `hcoc` using `(GlobalTheory.T.dvr_bundle_statement_a O Ω K ι x d N V E E'' E' hM hEE'' hE''E' k hk1 hk2 q L Q hQ).1`. Apply the tactic sequence `have hAe := GlobalTheory.T.chart_bundle_intersection_symmetry O Ω K ι x d N₀ N V₀ V A A' E'' E' hM hA hE''E' h3 k hk1 hk2 q L Q hQ`. Apply the tactic sequence `have hCe := GlobalTheory.T.chart_bundle_intersection_symmetry O Ω K ι x d N N₂ V V₂ E E'' C C' hM hEE'' hC h4 k hk1 hk2 q L Q hQ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcoc, hAe, hCe, add_comm]`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (Ω : Type) [Field Ω] [Algebra O Ω] (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (x : (Σ k, ι k) → Ω) (d N₀ N N₂ : ℕ) (V₀ : Type) [AddCommGroup V₀] [Module Ω V₀] (V : Type) [AddCommGroup V] [Module Ω V] (V₂ : Type) [AddCommGroup V₂] [Module Ω V₂] (A A' : ChartBundle O (mseg x) N₀ V₀) (E E' : ChartBundle O (mseg x) N V) (C C' : ChartBundle O (mseg x) N₂ V₂), GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles.IsModelOver O (mcIdeal O x) d → SameGeneric O x A A' → SameGeneric O x E E' → SameGeneric O x C C' → QuotExact O x A.lat A'.lat E.lat E'.lat C.lat C'.lat → ∀ (k : ℕ), 1 ≤ k → k ≤ d + 1 → ∀ (q : ℕ) (L : Fin q → K → ℤ) (Q : MvPolynomial (Fin q) ℤ), Q.IsHomogeneous (d + 1 - k) → ck O x d N E E' k L Q = ck O x d N₀ A A' k L Q + ck O x d N₂ C C' k L Q := by
   intro O _ _ _ Ω _ _ K _ _ ι _ x d N₀ N N₂ V₀ _ _ V _ _ V₂ _ _ A A' E E' C C' hM hA hE hC hX k hk1 hk2 q L Q hQ

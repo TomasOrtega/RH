@@ -23,11 +23,11 @@ variable {D : D7}
 open GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition
 
 /- English proof (translation)
-Establish `hadj : adj D B = Bᴴ` using `GlobalTheory.MixModel.cT_sig B`. Establish `hP : (V'.gram⁻¹ * adj D B * V.gram).map (incA D) = GlobalTheory.MixModel.giA V' * GlobalTheory.MixModel.adj (GlobalTheory.MixModel.rat B) * GlobalTheory.MixModel.gA V`. Rewrite using `[hadj]`. Express the relevant statement in the definitionally equal form `GlobalTheory.MixModel.rat (V'.gram⁻¹ * Bᴴ * V.gram) = _`. Rewrite using `[GlobalTheory.MixModel.rat_mul, GlobalTheory.MixModel.rat_mul, GlobalTheory.MixModel.rat_conjTranspose]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hB' : mt V m * GlobalTheory.MixModel.rat B = GlobalTheory.MixModel.rat B * mt V' g'` using `hB`. Establish `key : GlobalTheory.MixModel.adj (GlobalTheory.MixModel.rat B) * GlobalTheory.MixModel.adj (mt V m) = GlobalTheory.MixModel.adj (mt V' g') * GlobalTheory.MixModel.adj (GlobalTheory.MixModel.rat B)`. Rewrite using `[← GlobalTheory.MixModel.adj_mul, ← GlobalTheory.MixModel.adj_mul, hB']`. Rewrite using `[hP, GlobalTheory.MixModel.mt_inv, GlobalTheory.MixModel.mt_inv]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc, GlobalTheory.MixModel.gA_giA_cancel]`. Rewrite using `[← Matrix.mul_assoc (GlobalTheory.MixModel.adj (GlobalTheory.MixModel.rat B)), key, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem proj_mul_mt_inv (V V' : HSp D) (B : Matrix (Fin V.rank) (Fin V'.rank) D.host.E) (g' : GA D V') (m : GA D V)
     (hB : HMul.hMul (mt V m) (B.map (incA D)) = HMul.hMul (B.map (incA D)) (mt V' g')) :
@@ -49,9 +49,9 @@ theorem proj_mul_mt_inv (V V' : HSp D) (B : Matrix (Fin V.rank) (Fin V'.rank) D.
   rw [← Matrix.mul_assoc (GlobalTheory.MixModel.adj (GlobalTheory.MixModel.rat B)), key, Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `hq` using `proj_mul_mt_inv V V' B g' m hB`. Unfold `midPart`. Rewrite using `[GlobalTheory.MixModel.actO_eq, GlobalTheory.MixModel.actO_eq]`. Generalize the expression as in `(V'.gram⁻¹ * adj D B * V.gram).map (incA D) = P at hq ⊢`. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Simplify using the standard rewrite rules.
 
-Rewrite using `[hq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem actO_midPart (V V' W : HSp D) (B : Matrix (Fin V.rank) (Fin V'.rank) D.host.E) (g' : GA D V') (m : GA D V)
     (hB : HMul.hMul (mt V m) (B.map (incA D)) = HMul.hMul (B.map (incA D)) (mt V' g')) (h : GA D W) (x : WO V' W) :
@@ -64,7 +64,7 @@ theorem actO_midPart (V V' W : HSp D) (B : Matrix (Fin V.rank) (Fin V'.rank) D.h
   rw [hq]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.MixModel.actO_eq, GlobalTheory.MixModel.actO_eq, inv_inv]`. Simplify using `only [Matrix.mul_assoc, GlobalTheory.MixModel.mt_inv_mul, Matrix.mul_one]`. Rewrite using `[← Matrix.mul_assoc, GlobalTheory.MixModel.mt_inv_mul, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem actO_inv_actO (S T : HSp D) (g : GA D S) (h : GA D T) (x : WO S T) :
     actO S T g⁻¹ h⁻¹ (actO S T g h x) = x := by
@@ -73,7 +73,7 @@ theorem actO_inv_actO (S T : HSp D) (g : GA D S) (h : GA D T) (x : WO S T) :
   rw [← Matrix.mul_assoc, GlobalTheory.MixModel.mt_inv_mul, Matrix.one_mul]
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [heisO, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem heisO_smul (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (w : WO S T) (c : ℂ) (f : WO S T → ℂ) :
     heisO ψ S T w (c • f) = c • heisO ψ S T w f := by
@@ -82,23 +82,23 @@ theorem heisO_smul (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (w : WO S T) (
   ring
 
 /- English proof (translation)
-The claim follows from `((Group.isUnit u).map (GlobalTheory.Doubling.absE D.host.F D.host.E)).ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem absE_ne_zero (u : (AE D)ˣ) : GlobalTheory.Doubling.absE D.host.F D.host.E u ≠ 0 := ((Group.isUnit u).map (GlobalTheory.Doubling.absE D.host.F D.host.E)).ne_zero
 
 /- English proof (translation)
-Unfold `GlobalTheory.IndefiniteRowSideFullHecke.WittDecompositions.detPow`. Conclude with `Real.rpow_pos_of_pos (NNReal.coe_pos.2 (pos_iff_ne_zero.2 (absE_ne_zero _))) _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem detPow_pos {t : ℕ} (a : GL (Fin t) (AE D)) (n : ℕ) : 0 < GlobalTheory.IndefiniteRowSideFullHecke.WittDecompositions.detPow a n := by
   unfold GlobalTheory.IndefiniteRowSideFullHecke.WittDecompositions.detPow
   exact Real.rpow_pos_of_pos (NNReal.coe_pos.2 (pos_iff_ne_zero.2 (absE_ne_zero _))) _
 
 /- English proof (translation)
-Establish `ht : (0 : ℝ) < (GlobalTheory.Doubling.absE D.host.F D.host.E (Matrix.GeneralLinearGroup.det a) : ℝ)` using `NNReal.coe_pos.2 (pos_iff_ne_zero.2 (absE_ne_zero _))`. Establish `hd : 0 < GlobalTheory.IndefiniteRowSideFullHecke.WittDecompositions.detPow a n` using `detPow_pos a n`. Establish `hsq : (GlobalTheory.IndefiniteRowSideFullHecke.WittDecompositions.detPow a n) ^ 2 = (GlobalTheory.Doubling.absE D.host.F D.host.E (Matrix.GeneralLinearGroup.det a) : ℝ) ^ n`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.WittDecompositions.detPow`. Rewrite using `[← Real.rpow_natCast _ 2, ← Real.rpow_mul ht.le, ← Real.rpow_natCast _ n]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hn : ‖((GlobalTheory.IndefiniteRowSideFullHecke.WittDecompositions.detPow a n : ℂ))⁻¹‖ₑ = ENNReal.ofReal (GlobalTheory.IndefiniteRowSideFullHecke.WittDecompositions.detPow a n)⁻¹`. Rewrite using `[← ofReal_norm_eq_enorm, norm_inv, Complex.norm_real, Real.norm_of_nonneg hd.le]`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hn, ← ENNReal.ofReal_coe_nnreal, ← ENNReal.ofReal_pow (inv_nonneg.2 hd.le), ← ENNReal.ofReal_pow ht.le, ← ENNReal.ofReal_mul (pow_nonneg (inv_nonneg.2 hd.le) _), ← hsq, inv_pow, inv_mul_cancel₀ (pow_ne_zero _ hd.ne'), ENNReal.ofReal_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem enorm_inv_detPow_sq {t : ℕ} (a : GL (Fin t) (AE D)) (n : ℕ) :
     ‖((GlobalTheory.IndefiniteRowSideFullHecke.WittDecompositions.detPow a n : ℂ))⁻¹‖ₑ ^ 2 *
@@ -126,9 +126,9 @@ def thetaSpace (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) : Submodule ℂ (W
   smul_mem' := fun c _ hf => GlobalTheory.OrientedHeis.theta_smul c hf
 
 /- English proof (translation)
-Apply `GlobalTheory.ThetaSchurBdd.thetaFunction_eq_zero_of_meanSquare_zero hψ hcv hf` to reduce the goal to its premises. Unfold `nrm2`. Rewrite using `[integral_eq_lintegral_of_nonneg_ae (Filter.Eventually.of_forall fun w => by positivity) (GlobalTheory.ThetaSchurBdd.integrable_sq hψ hcv.2.2 hf).aestronglyMeasurable]`. Establish `h2 : ∫⁻ w in 𝓕, ENNReal.ofReal (‖f w‖ ^ 2) ∂μ = ∫⁻ w in 𝓕, ‖f w‖ₑ ^ 2 ∂μ`. Use `congr 1`.
+Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `w`. Rewrite using `[ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm_eq_enorm]`. Rewrite using `[h2, h0, ENNReal.toReal_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_zero_of_lintegral {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {S T : HSp D}
     {μ : Measure (WO S T)} {𝓕 : Set (WO S T)} (hcv : IsCovolOne (ratL T S) μ 𝓕) {f : WO S T → ℂ}
@@ -144,41 +144,35 @@ theorem eq_zero_of_lintegral {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D
   rw [h2, h0, ENNReal.toReal_zero]
 
 /- English proof (translation)
-Introduce `D V V' W r C B hs ψ χS χT ω hω χS' χT' ω' hω' μ 𝓨 hcv a g' m hC hB h`. Establish `hψ : IsStdChar D ψ (-1)` using `hω.std`. Establish `hres` using `GlobalTheory.TowerRestrict.res_theta D V V' W r C B hs ψ hψ μ 𝓨 hcv`. Establish `hheis` using `(GlobalTheory.HeisThetaLaws.heis_theta_laws D ψ hψ V W).1`. Take `⟨μ', 𝓕', hcv'⟩` from `GlobalTheory.MixModel.exists_isCovolOne D W.rank V'.rank`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `hcv'` using `[← GlobalTheory.MixModel.ratL_eq]`. Set `Θ` to `thetaSpace ψ V W`. Set `R : Θ →ₗ[ℂ] (WO V' W → ℂ)` to `{ toFun := fun f => res V V' W C B μ 𝓨 f map_add' := fun f g => by`. Use function extensionality and compare the values at `x`. Use `show ∫ y in 𝓨, ((f : WO V W → ℂ) + g) (isoPart V W C y + midPart V V' W B x) ∂μ = (∫ y in 𝓨, (f : WO V W → ℂ) (isoPart V W C y + midPart V V' W B x) ∂μ) + ∫ y in 𝓨, (g : WO V W → ℂ) (isoPart V W C y + midPart V V' W B x) ∂μ`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.add_apply]`. Conclude with `integral_add ((hres.1 f f.2).1 x) ((hres.1 g g.2).1 x)`. Use the proof step `map_smul' := fun c f => by`. Use function extensionality and compare the values at `x`. Use `show ∫ y in 𝓨, (c • (f : WO V W → ℂ)) (isoPart V W C y + midPart V V' W B x) ∂μ = c * ∫ y in 𝓨, (f : WO V W → ℂ) (isoPart V W C y + midPart V V' W B x) ∂μ`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Conclude with `integral_const_mul c _ }`. Set `Φ : Θ →ₗ[ℂ] (WO V' W → ℂ)` to `R ∘ₗ (ω (m, h)).restrict (p := Θ) (q := Θ) (fun f hf => hω.om_pres (m, h) f hf)`. Establish `hker : LinearMap.ker R ≤ LinearMap.ker Φ`. Introduce `f hf`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hf`, the goal using `[LinearMap.mem_ker]`. Establish `hf0 : res V V' W C B μ 𝓨 f = 0` using `hf`. Establish `hθ : IsThetaFunO ψ V' W (res V V' W C B μ 𝓨 (ω (m, h) f))` using `(hres.1 _ (hω.om_pres (m, h) f f.2)).2.1`. Establish `hsq` using `GlobalTheory.T.leviElement_scales_restrictionNormSq_absDet D V V' W r C B hs ψ χS χT ω hω μ 𝓨 hcv μ' 𝓕' hcv'.1 hcv'.2.1 a g' m hC hB h f f.2`. Rewrite `hsq` using `[hf0]`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Pi.zero_apply, enorm_zero, ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, MeasureTheory.lintegral_const, zero_mul, mul_zero] at hsq`. Conclude with `eq_zero_of_lintegral hψ hcv' hθ hsq`. Set `N₀ : LinearMap.range R →ₗ[ℂ] (WO V' W → ℂ)` to `(LinearMap.ker R).liftQ Φ hker ∘ₗ R.quotKerEquivRange.symm.toLinearMap`. Take `⟨Nf, hN⟩` from `LinearMap.exists_extend N₀`. Establish `hNf : ∀ f, IsThetaFunO ψ V W f → Nf (res V V' W C B μ 𝓨 f) = res V V' W C B μ 𝓨 (ω (m, h) f)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Introduce `f hf`. Set `F : Θ` to `⟨f, hf⟩`. Establish `e1 : Nf (R F) = N₀ ⟨R F, LinearMap.mem_range_self R F⟩`. Rewrite using `[← hN]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `show Nf (R F) = Φ F`. Rewrite using `[e1]`. Use `show (LinearMap.ker R).liftQ Φ hker (R.quotKerEquivRange.symm ⟨R F, LinearMap.mem_range_self R F⟩) = Φ F`. Rewrite using `[LinearMap.quotKerEquivRange_symm_apply_image]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `d : ℂ` to `(GlobalTheory.IndefiniteRowSideFullHecke.WittDecompositions.detPow a W.rank : ℂ)`. Establish `hd0 : d ≠ 0` using `Complex.ofReal_ne_zero.2 (detPow_pos a W.rank).ne'`. Set `M : Module.End ℂ (WO V' W → ℂ)` to `d⁻¹ • (ω' (g'⁻¹, h⁻¹) * Nf)`. Establish `hMres : ∀ f, IsThetaFunO ψ V W f → M (res V V' W C B μ 𝓨 f) = d⁻¹ • ω' (g'⁻¹, h⁻¹) (res V V' W C B μ 𝓨 (ω (m, h) f))`. Introduce `f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show d⁻¹ • ω' (g'⁻¹, h⁻¹) (Nf (res V V' W C B μ 𝓨 f)) = _`. Rewrite using `[hNf f hf]`. Establish `hθω : ∀ f, IsThetaFunO ψ V W f → IsThetaFunO ψ V' W (res V V' W C B μ 𝓨 (ω (m, h) f))` using `fun f hf => (hres.1 _ (hω.om_pres (m, h) f hf)).2.1`. Establish `hM1 : ∀ f', IsThetaFunO ψ V' W f' → IsThetaFunO ψ V' W (M f')`. Introduce `f' hf'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨f, hf, rfl⟩` from `GlobalTheory.T.theta_restriction_down_witt_tower_surjective D V V' W r C B hs ψ hψ μ 𝓨 hcv f' hf'`. Rewrite using `[hMres f hf]`. Conclude with `GlobalTheory.OrientedHeis.theta_smul _ (hω'.om_pres _ _ (hθω f hf))`. Establish `hM2 : ∀ x f', IsThetaFunO ψ V' W f' → M (heisO ψ V' W x f') = heisO ψ V' W x (M f')`. Introduce `x f' hf'`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Take `⟨f, hf, rfl⟩` from `GlobalTheory.T.theta_restriction_down_witt_tower_surjective D V V' W r C B hs ψ hψ μ 𝓨 hcv f' hf'`. Establish `hx : heisO ψ V' W x (res V V' W C B μ 𝓨 f) = res V V' W C B μ 𝓨 (heisO ψ V W (midPart V V' W B x) f)` using `(GlobalTheory.TowerRestrict.res_heis_mid hs μ 𝓨 f x).symm`. Rewrite using `[hx, hMres _ (hheis _ _ hf), hMres f hf, hω.om_heis m h _ f hf, actO_midPart V V' W B g' m hB h x, GlobalTheory.TowerRestrict.res_heis_mid hs, hω'.om_heis _ _ _ _ (hθω f hf), actO_inv_actO, heisO_smul]`. Establish `hM3 : ∀ (μ₀ : Measure (WO V' W)) (𝓕₀ : Set (WO V' W)), μ₀.IsAddHaarMeasure → IsAddFundamentalDomain (ratL W V') 𝓕₀ μ₀ → ∀ f', IsThetaFunO ψ V' W f' → ∫⁻ w in 𝓕₀, ‖M f' w‖ₑ ^ 2 ∂μ₀ = ∫⁻ w in 𝓕₀, ‖f' w‖ₑ ^ 2 ∂μ₀`. Introduce `μ₀ 𝓕₀ hH hF f' hf'`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨f, hf, rfl⟩` from `GlobalTheory.T.theta_restriction_down_witt_tower_surjective D V V' W r C B hs ψ hψ μ 𝓨 hcv f' hf'`. Rewrite using `[hMres f hf]`. Establish `hpt : ∀ w, ‖(d⁻¹ • ω' (g'⁻¹, h⁻¹) (res V V' W C B μ 𝓨 (ω (m, h) f))) w‖ₑ ^ 2 = ‖d⁻¹‖ₑ ^ 2 * ‖ω' (g'⁻¹, h⁻¹) (res V V' W C B μ 𝓨 (ω (m, h) f)) w‖ₑ ^ 2`. Introduce `w`. Rewrite using `[Pi.smul_apply, smul_eq_mul, enorm_mul, mul_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [hpt]`. Rewrite using `[lintegral_const_mul' _ _ (ENNReal.pow_ne_top enorm_ne_top), hω'.om_unit μ₀ 𝓕₀ hH hF _ _ (hθω f hf), GlobalTheory.T.leviElement_scales_restrictionNormSq_absDet D V V' W r C B hs ψ χS χT ω hω μ 𝓨 hcv μ₀ 𝓕₀ hH hF a g' m hC hB h f hf, ← mul_assoc, enorm_inv_detPow_sq, one_mul]`. Take `⟨c₀, hc₀, hM⟩` from `GlobalTheory.ThetaSchur.schur D ψ hψ V' W M hM1 hM2 hM3`. Establish `hinv : ∀ X, ω' (g', h) (ω' (g'⁻¹, h⁻¹) X) = X`. Introduce `X`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Chain the equalities or inequalities of the calculation.
 
-Establish `e : ω' (g', h) * ω' (g'⁻¹, h⁻¹) = 1`. Rewrite using `[← map_mul]`. Use `show ω' ((g', h) * (g', h)⁻¹) = 1`. Rewrite using `[mul_inv_cancel, map_one]`. Conclude with `congrArg (fun L : Module.End ℂ (WO V' W → ℂ) => L X) e`.
-
-Use `⟨⟨c₀, mem_sphere_zero_iff_norm.2 hc₀⟩, fun f hf => ?_⟩` and prove the remaining obligations. Establish `e2 : d⁻¹ • ω' (g'⁻¹, h⁻¹) (res V V' W C B μ 𝓨 (ω (m, h) f)) = c₀ • res V V' W C B μ 𝓨 f`. Rewrite using `[← hMres f hf]`. Conclude with `hM _ (hres.1 f hf).2.1`. Establish `e3 : d⁻¹ • res V V' W C B μ 𝓨 (ω (m, h) f) = c₀ • ω' (g', h) (res V V' W C B μ 𝓨 f)`.
-
-Establish `e4` using `congrArg (ω' (g', h)) e2`. Rewrite `e4` using `[map_smul, map_smul, hinv]`. Then use the resulting hypothesis. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_smul, mul_inv_cancel₀ hd0, one_smul]`. Use `_ = _ := by`.
-
-Rewrite using `[e3, smul_smul]`. Use `congr 1`. Conclude with `mul_comm _ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem main : ∀ (D : D7) (V V' W : HSp D) (r : ℕ) (C : Matrix (Fin V.rank) (Fin r) D.host.E) (B : Matrix (Fin V.rank) (Fin V'.rank) D.host.E), GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.IsIsoSplit V V' C B → ∀ (ψ : AddChar (AF D.host.F) ℂ) (χS χT : (AE D)ˣ →* Circle) (ω : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)), IsWeilDatumO ψ V W χS χT ω → ∀ (χS' χT' : (AE D)ˣ →* Circle) (ω' : GA D V' × GA D W →* Module.End ℂ (WO V' W → ℂ)), IsWeilDatumO ψ V' W χS' χT' ω' → ∀ (μ : Measure (Mx D W.rank r)) (𝓨 : Set (Mx D W.rank r)), IsCovolOne (GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.ratMx D W.rank r) μ 𝓨 → ∀ (a : GL (Fin r) (AE D)) (g' : GA D V') (m : GA D V), HMul.hMul (Formalism.L2.Theta.mt V m) (C.map (incA D)) = HMul.hMul (C.map (incA D)) a.val → HMul.hMul (Formalism.L2.Theta.mt V m) (B.map (incA D)) = HMul.hMul (B.map (incA D)) (Formalism.L2.Theta.mt V' g') → ∀ h : GA D W, ∃ c : Circle, ∀ f, IsThetaFunO ψ V W f → GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.res V V' W C B μ 𝓨 (ω (m, h) f) = ((c : ℂ) * (GlobalTheory.IndefiniteRowSideFullHecke.WittDecompositions.detPow a W.rank : ℂ)) • ω' (g', h) (GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.res V V' W C B μ 𝓨 f) := by
   intro D V V' W r C B hs ψ χS χT ω hω χS' χT' ω' hω' μ 𝓨 hcv a g' m hC hB h

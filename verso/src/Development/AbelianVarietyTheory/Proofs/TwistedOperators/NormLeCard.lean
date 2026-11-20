@@ -16,11 +16,11 @@ section Abstract
 variable {G X V : Type} [Group G] [AddCommGroup X] [Module ℂ X] [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Take `⟨B, b1, b2, b3⟩` from `hπ`. Use `letI : InnerProductSpace.Core ℂ V := UnitInd.core B b1 b2`. Use `letI : NormedAddCommGroup V := InnerProductSpace.Core.toNormedAddCommGroup (𝕜 := ℂ)`. Use `letI : InnerProductSpace ℂ V := InnerProductSpace.ofCore _`. Establish `hn : ∀ x : G, ‖π x v‖ = ‖v‖` using `fun x => by`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Rewrite using `[norm_eq_sqrt_re_inner (𝕜 := ℂ), norm_eq_sqrt_re_inner (𝕜 := ℂ) v]`. Conclude with `congrArg (fun z : ℂ => √(RCLike.re z)) (b3 x v v)`. Establish `h1 : ‖l‖ * ‖v‖ ≤ S.card * ‖v‖`. Rewrite using `[← norm_smul, ← h]`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[hn]`. Conclude with `le_of_mul_le_mul_right h1 (norm_pos_iff.2 hv)`.
+A detailed English derivation is pending.
 -/
 theorem norm_le_card {ι : Type} {π : Representation ℂ G V} (hπ : IsUnitarisable π) {v : V} (hv : v ≠ 0)
     (S : Finset ι) (g : ι → G) (l : ℂ) (h : ∑ c ∈ S, π (g c) v = l • v) : ‖l‖ ≤ S.card := by
@@ -38,9 +38,9 @@ theorem norm_le_card {ι : Type} {π : Representation ℂ G V} (hπ : IsUnitaris
   exact le_of_mul_le_mul_right h1 (norm_pos_iff.2 hv)
 
 /- English proof (translation)
-Rewrite using `[map_sum]`. Use `Finset.sum_nbij' (fun c => x • c) (fun c => x⁻¹ • c) (hS x hx) (hS _ (inv_mem hx)) (fun c _ => by simp) (fun c _ => by simp) fun c _ => ?_` and prove the remaining obligations. Establish `h1 : x • c = ((x * c.out : G) : G ⧸ K)` using `by conv_lhs => rw [← QuotientGroup.out_eq' c]`. Both sides reduce to the same expression. Take `⟨y, hy⟩` from `QuotientGroup.mk_out_eq_mul K (x * c.out)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h1, hy, map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, hw y y.2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_fixed (ρ : Representation ℂ G X) (K : Subgroup G) {w : X} (hw : ∀ x ∈ K, ρ x w = w)
     (S : Finset (G ⧸ K)) (hS : ∀ x ∈ K, ∀ c ∈ S, x • c ∈ S) (x : G) (hx : x ∈ K) :
@@ -55,13 +55,13 @@ theorem sum_fixed (ρ : Representation ℂ G X) (K : Subgroup G) {w : X} (hw : �
   rw [h1, hy, map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, hw y y.2]
 
 /- English proof (translation)
-Take `⟨v, hv, hv0⟩` from `(Submodule.ne_bot_iff _).1 hs`. Take `⟨u, rfl⟩` from `hf v`. Take `⟨w, hw, hfw⟩` from `IwahoriOnto.exists_fixed_map_eq hρ hK f.toLinearMap u fun h hh => by show f (ρ h u) = f u`. Rewrite using `[f.isIntertwining]`. Simplify using `using hv ⟨h, hh⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hw' : ∀ x ∈ K, ρ x w = w` using `fun x hx => by simpa using hw ⟨x, hx⟩`. Establish `hfw0 : f w ≠ 0` using `fun h => hv0 (hfw.symm.trans h)`. Establish `hEw : E w ≠ 0` using `fun h => hfw0 (by rw [hE w hw' h, map_zero])`. Take `⟨z, hz, hEz, hfz⟩ : ∃ z : X, (∀ x ∈ K, ρ x z = z) ∧ E z = 1 ∧ f z ≠ 0` from `⟨(E w)⁻¹ • w, fun x hx => by rw [map_smul, hw' x hx], by simp [hEw], by`. Rewrite using `[map_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `smul_ne_zero (inv_ne_zero hEw) hfw0⟩`. Use `⟨z, hz, hEz, fun S hS => norm_le_card hπ hfz S (fun c => c.out) _ ?_⟩` and prove the remaining obligations. Establish `h1` using `hE (∑ c ∈ S, ρ c.out z - (∑ c ∈ S, E (ρ c.out z)) • z) (fun x hx => by rw [map_sub, sum_fixed ρ K hz S hS x hx, map_smul, hz x hx]) (by rw [map_sub, map_sum, map_smul, hEz, smul_eq_mul, mul_one, sub_self])`. Establish `h2` using `congrArg f (sub_eq_zero.1 h1)`. Rewrite `h2` using `[map_sum, map_smul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h2]`. Conclude with `Finset.sum_congr rfl fun c _ => (f.isIntertwining _ _ _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_vector [TopologicalSpace G] [IsTopologicalGroup G] {ρ : Representation ℂ G X}
     {π : Representation ℂ G V} (hρ : IsSmooth ρ) (hπ : IsUnitarisable π) {K : Subgroup G}
@@ -95,13 +95,13 @@ end Abstract
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
 
 /- English proof (translation)
-Use `(parInd_law _ _ f ⟨b, hb⟩ g).trans ?_` and prove the remaining obligations. Use `show _ • ofChar _ _ (f.1.1 g) = _`. Rewrite using `[ofChar_apply, torusChar_apply, deltaHalf_apply, smul_eq_mul, ← mul_assoc, Units.coe_prod, Units.coe_prod, ← Finset.prod_mul_distrib]`. Use `congr 1`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : Matrix.GeneralLinearGroup.det (leviProj _ (points (Fin n)) ⟨b, hb⟩ i) = t i`. Use `ext`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_unique]`. Conclude with `ht i`. Use `show _ * ((unrChar k (α i) (Matrix.GeneralLinearGroup.det (leviProj _ (points (Fin n)) ⟨b, hb⟩ i)) : ℂˣ) : ℂ) = _`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `e2 : ((modExp (fun _ : Fin n => Unit) i : ℂ) / 2) = ((-(((i : ℕ) : ℝ) - ((n : ℝ) - 1) / 2) : ℝ) : ℂ)`. Rewrite using `[modExp_fin _ (fun _ => by simp)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hq : (0 : ℝ) ≤ resCard k` using `Nat.cast_nonneg _`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[e, e2, val_absPow_ofReal, unrChar_apply, Units.val_zpow_eq_zpow_val, mul_zpow, mul_comm, GlobalTheory.LGrp.nabs_eq_zpow, ← Complex.ofReal_zpow, ← Real.rpow_intCast, ← Real.rpow_intCast, ← Real.rpow_mul hq, ← Real.rpow_mul hq]`. Use `congr 3`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem law (α : Fin n → ℂˣ)
     (f : IndSp (points (Fin n)) ((ofChar (torusChar fun i => unrChar k (α i))).comp
@@ -136,13 +136,13 @@ theorem law (α : Fin n → ℂˣ)
   ring
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n V _ _ π α hu ⟨_, hs, S, f, hf⟩`. Establish `hsm : IsSmooth S.toRepresentation` using `IsSubquotient.isSmooth ⟨S, .id _, Function.surjective_id⟩ (isSmooth_parInd _ _)`. Set `E : S.toSubmodule →ₗ[ℂ] ℂ` to `⟨⟨fun u => u.1.1.1 1, fun _ _ => rfl⟩, fun _ _ => rfl⟩`. Establish `hr : ∀ u : S.toSubmodule, (∀ x ∈ KO k (Fin n), S.toRepresentation x u = u) → ∀ g, ∀ x ∈ KO k (Fin n), u.1.1.1 (g * x) = u.1.1.1 g` using `fun u h g x hx => congrArg (fun z : S.toSubmodule => z.1.1.1 g) (h x hx)`. Take `⟨w, hw, hw1, hb⟩` from `exists_vector hsm hu SplitFlip.isCompact_KO f hf hs E fun u h h0 => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `Subtype.ext (Subtype.ext (Subtype.ext (funext fun g => ?_)))` and prove the remaining obligations. Take `⟨b, hb, x, hx, rfl⟩` from `iwasawa_blockTriangular k (Fin n) Fin.val g`. Establish `h1` using `parInd_law _ _ u.1 ⟨b, (mem_borel _).2 hb⟩ 1`. Establish `h2 : u.1.1.1 1 = 0` using `h0`. Rewrite `h1` using `[h2, map_zero, smul_zero, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(hr u h b x hx).trans h1`. Use `⟨w.1.1.1, ⟨hr w hw, fun b hb t ht => ?_⟩, fun T hT => ?_⟩` and prove the remaining obligations. Establish `h1` using `law α w.1 b hb t ht 1`. Establish `h2 : w.1.1.1 1 = 1` using `hw1`. Rewrite `h1` using `[h2, mul_one, mul_one]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_of_eq_of_le ?_ (hb T hT)` and prove the remaining obligations. Use `congr 1`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Use `show _ = w.1.1.1 (1 * c.out)`. Rewrite using `[one_mul]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sph : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin n) k) V) (α : Fin n → ℂˣ), IsUnitarisable π → HasSatake π α → ∃ φ : GL (Fin n) k → ℂ, IsBorelSph k (fun i : Fin n => (α i : ℂ) * (((resCard k : ℝ) ^ (((i : ℕ) : ℝ) - ((n : ℝ) - 1) / 2) : ℝ) : ℂ)) φ ∧ HasBoundedSums k φ := by
   intro k _ _ _ _ n V _ _ π α hu ⟨_, hs, S, f, hf⟩

@@ -16,19 +16,19 @@ open GlobalTheory.BesselCompare GlobalTheory.RootExch GlobalTheory.BesselClosed
 variable {D : D7} {L A B : HSp D} {ι : A.V →ₗ[D.host.E] B.V}
 
 /- English proof (translation)
-Set `Φ : ((Fin d.ρ → D.host.E) × A.V × (Fin d.ρ → D.host.E)) →ₗ[D.host.E] B.V` to `(Fintype.linearCombination D.host.E d.e).coprod (ι.coprod (Fintype.linearCombination D.host.E d.f))`. Establish `hΦ : ∀ c a c', Φ (c, a, c') = ∑ l, c l • d.e l + ι a + ∑ l, c' l • d.f l` using `fun c a c' => by`. Simplify using `[Φ, Fintype.linearCombination_apply, add_assoc]`. Establish `sw : ∀ x y : B.V, B.hT y x = star (B.hT x y)` using `fun x y => (B.herm.eq _ _).symm`. Establish `ef : ∀ i l, B.hT (d.f i) (d.e l) = if l = i then 1 else 0` using `fun i l => d.ef l i`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `fe : ∀ i l, B.hT (d.e i) (d.f l) = if l = i then 1 else 0` using `fun i l => by`. Rewrite using `[sw, ef]`. Distinguish the cases in `h : i = l`. Simplify using `[h]`. Simplify using `[h, Ne.symm h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `ee : ∀ i l, B.hT (d.e i) (d.e l) = 0` using `fun i l => d.ee l i`. Establish `ff : ∀ i l, B.hT (d.f i) (d.f l) = 0` using `fun i l => d.ff l i`. Establish `eA : ∀ i x, B.hT (d.e i) (ι x) = 0` using `fun i x => hD_swap_zero (d.eA i x)`. Establish `fA : ∀ i x, B.hT (d.f i) (ι x) = 0` using `fun i x => hD_swap_zero (d.fA i x)`. Establish `hinj : Function.Injective Φ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(injective_iff_map_eq_zero Φ).2 ?_` and prove the remaining obligations. Introduce and unpack `⟨c, a, c'⟩ h`. Rewrite `h` using `[hΦ]`. Establish `h1 : c = 0` using `funext fun i => by simpa [map_sum, ef, ff, fA] using congrArg (B.hT (d.f i)) h`. Establish `h2 : c' = 0` using `funext fun i => by simpa [map_sum, fe, ee, eA] using congrArg (B.hT (d.e i)) h`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Substitute `h1 h2` using the available equality. Establish `h3 : ι a = 0` using `by simpa using h`. Establish `h4 : a = 0` using `A.nondeg.1 a fun y => by rw [← d.isom a y, h3]; simp`. Rewrite using `[h4]`. Both sides reduce to the same expression.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `Module.Finite.of_basis A.frame` as an intermediate fact. Use `Module.Finite.of_basis B.frame` as an intermediate fact. Establish `hs : Function.Surjective Φ` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank (by`. Use `d.codim` as an intermediate fact. Simplify using `only [Module.finrank_prod, Module.finrank_fin_fun, A.rank_eq, B.rank_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use the proof step `omega)).1 hinj`. Take `⟨⟨c, a, c'⟩, h⟩` from `hs v`. Conclude with `⟨c, a, c', by rw [← h, hΦ]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem rat_decomp (d : FJDat L A B ι) (v : B.V) :
     ∃ (c : Fin d.ρ → D.host.E) (a : A.V) (c' : Fin d.ρ → D.host.E), v = ∑ l, c l • d.e l + ι a + ∑ l, c' l • d.f l := by
@@ -66,26 +66,26 @@ theorem rat_decomp (d : FJDat L A B ι) (v : B.V) :
   exact ⟨c, a, c', by rw [← h, hΦ]⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `[vecA]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem vecA_add (v w : B.V) : vecA B (v + w) = vecA B v + vecA B w := by
   funext k; simp [vecA]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `[vecA, map_sum]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem vecA_sum {ρ : ℕ} (c : Fin ρ → D.host.E) (e : Fin ρ → B.V) :
     vecA B (∑ l, c l • e l) = ∑ l, incA D (c l) • vecA B (e l) := by
   funext k; simp [vecA, map_sum]
 
 /- English proof (translation)
-Rewrite using `[iA, frameMat_eq, eMat_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem iA_eq (s : Fin A.rank → AE D) : iA ι s = ∑ l, s l • vecA B (ι (A.frame l)) := by
   rw [iA, frameMat_eq, eMat_mulVec]
 
 /- English proof (translation)
-Rewrite using `[iA_eq]`. Use `conv_lhs => rw [← A.frame.sum_repr a]`. Simplify using `only [map_sum, map_smul]`. Rewrite using `[vecA_sum]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem vecA_iota (a : A.V) : vecA B (ι a) = iA ι (vecA A a) := by
   rw [iA_eq]
@@ -95,18 +95,18 @@ theorem vecA_iota (a : A.V) : vecA B (ι a) = iA ι (vecA A a) := by
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `[vecA, Finsupp.single_apply, apply_ite (incA D)]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem eq_sum_frame (x : Fin B.rank → AE D) : x = ∑ k, x k • vecA B (B.frame k) := by
   funext j
   simp [vecA, Finsupp.single_apply, apply_ite (incA D)]
 
 /- English proof (translation)
-Set `Φ : ((Fin d.ρ → AE D) × (Fin A.rank → AE D) × (Fin d.ρ → AE D)) →ₗ[AE D] (Fin B.rank → AE D)` to `(Fintype.linearCombination (AE D) fun l => vecA B (d.e l)).coprod (((frameMat B A ι).map (incA D)).mulVecLin.coprod (Fintype.linearCombination (AE D) fun l => vecA B (d.f l)))`. Establish `hΦ : ∀ c a c', Φ (c, a, c') = ∑ l, c l • vecA B (d.e l) + iA ι a + ∑ l, c' l • vecA B (d.f l)` using `fun c a c' => by`. Simplify using `only [Φ, LinearMap.coprod_apply, Fintype.linearCombination_apply, add_assoc, Matrix.mulVecLin_apply, iA]`. Establish `hx : x ∈ LinearMap.range Φ`. Rewrite using `[eq_sum_frame x]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Take `⟨c, a, c', h⟩` from `rat_decomp d (B.frame k)`. Use `⟨(fun l => incA D (c l), vecA A a, fun l => incA D (c' l)), ?_⟩` and prove the remaining obligations. Rewrite using `[hΦ, h, vecA_add, vecA_add, vecA_sum, vecA_sum, vecA_iota]`. Take `⟨⟨c, a, c'⟩, h⟩` from `hx`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨c, a, c', by rw [← h, hΦ]⟩`.
+Supply the required witnesses or components.
 -/
 theorem ad_decomp (d : FJDat L A B ι) (x : Fin B.rank → AE D) :
     ∃ (c : Fin d.ρ → AE D) (a : Fin A.rank → AE D) (c' : Fin d.ρ → AE D),
@@ -128,15 +128,15 @@ theorem ad_decomp (d : FJDat L A B ι) (x : Fin B.rank → AE D) :
 variable (d : FJDat L A B ι)
 
 /- English proof (translation)
-Rewrite using `[← closure_NS, SetLike.mem_coe, ← NFlag_eMat]`. Conclude with `hn`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_NS {n : GA D B} (hn : n ∈ d.N) : n ∈ NS B d.e := by
   rw [← closure_NS, SetLike.mem_coe, ← NFlag_eMat]; exact hn
 
 /- English proof (translation)
-Take `⟨c, hc, rfl⟩` from `hv`. Rewrite using `[← Matrix.mulVecLin_apply, map_sum, ← Finset.sum_sub_distrib]`. Use `Submodule.sum_mem _ fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, ← smul_sub]`. Break down `lt_or_ge l.1 (k + 1) with hl | hl` into its components or cases.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `Submodule.smul_mem _ _ (spanLt_mono (by omega) ((mem_NS_iff.1 (mem_NS d hn)).1 l))`. Rewrite using `[hc l hl, zero_smul]`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lower {n : GA D B} (hn : n ∈ d.N) {k : ℕ} {v} (hv : v ∈ spanLt B d.e (k + 1)) :
     (mt B n).mulVec v - v ∈ spanLt B d.e k := by
@@ -149,7 +149,7 @@ theorem lower {n : GA D B} (hn : n ∈ d.N) {k : ℕ} {v} (hv : v ∈ spanLt B d
   · rw [hc l hl, zero_smul]; exact zero_mem _
 
 /- English proof (translation)
-Rewrite using `[iA_eq, ← Matrix.mulVecLin_apply, map_sum, ← Finset.sum_sub_distrib]`. Use `Submodule.sum_mem _ fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, ← smul_sub]`. Conclude with `Submodule.smul_mem _ _ ((mem_NS_iff.1 (mem_NS d hn)).2 _ fun i => hD_swap_zero (d.eA i _))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lower_iA {n : GA D B} (hn : n ∈ d.N) (a) : (mt B n).mulVec (iA ι a) - iA ι a ∈ spanLt B d.e d.ρ := by
   rw [iA_eq, ← Matrix.mulVecLin_apply, map_sum, ← Finset.sum_sub_distrib]
@@ -158,15 +158,15 @@ theorem lower_iA {n : GA D B} (hn : n ∈ d.N) (a) : (mt B n).mulVec (iA ι a) -
   exact Submodule.smul_mem _ _ ((mem_NS_iff.1 (mem_NS d hn)).2 _ fun i => hD_swap_zero (d.eA i _))
 
 /- English proof (translation)
-Rewrite using `[← hA_herm, h, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hA_zero_swap {x y : Fin B.rank → AE D} (h : hA B x y = 0) : hA B y x = 0 := by
   rw [← hA_herm, h, map_zero]
 
 /- English proof (translation)
-Take `⟨c, hc, rfl⟩` from `hv`. Rewrite using `[hA_sum]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Rewrite using `[hA_smul]`. Break down `lt_or_ge l.1 k with hl | hl` into its components or cases.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[h l hl, mul_zero]`. Rewrite using `[hc l hl, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem hA_span_of {k : ℕ} {v y} (hv : v ∈ spanLt B d.e k) (h : ∀ l : Fin d.ρ, l.1 < k → hA B (vecA B (d.e l)) y = 0) :
     hA B v y = 0 := by
@@ -179,21 +179,21 @@ theorem hA_span_of {k : ℕ} {v y} (hv : v ∈ spanLt B d.e k) (h : ∀ l : Fin 
   · rw [hc l hl, zero_mul]
 
 /- English proof (translation)
-The claim follows from `hA_span_of d hv fun l _ => hA_vec_iA (d.eA l) a`.
+A detailed English derivation is pending.
 -/
 theorem hA_span_iA {k : ℕ} {v} (hv : v ∈ spanLt B d.e k) (a) : hA B v (iA ι a) = 0 :=
   hA_span_of d hv fun l _ => hA_vec_iA (d.eA l) a
 
 /- English proof (translation)
-The claim follows from `hA_span_of d hv fun l _ => hA_zero_swap (hA_span_of d hw fun j _ => by rw [hA_vec, d.ee, map_zero])`.
+A detailed English derivation is pending.
 -/
 theorem hA_span_span {k k' : ℕ} {v w} (hv : v ∈ spanLt B d.e k) (hw : w ∈ spanLt B d.e k') : hA B v w = 0 :=
   hA_span_of d hv fun l _ => hA_zero_swap (hA_span_of d hw fun j _ => by rw [hA_vec, d.ee, map_zero])
 
 /- English proof (translation)
-Establish `ef : ∀ i, B.hT (d.f i) (d.e l) = if l = i then 1 else 0` using `fun i => d.ef l i`. Unfold `HSpace.hD`. Rewrite using `[FJDat.fTop, map_sum, LinearMap.sum_apply, Finset.sum_eq_single l]`. Use `split_ifs`. Rewrite using `[ef, if_pos rfl]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_zero, LinearMap.zero_apply]`. Introduce `i _ hi split_ifs`. Rewrite using `[ef, if_neg hi.symm]`. Rewrite using `[map_zero, LinearMap.zero_apply]`. Conclude with `fun hl => absurd (Finset.mem_univ l) hl`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem hD_e_fTop (l : Fin d.ρ) : B.hD (d.e l) d.fTop = if l.1 + 1 = d.ρ then 1 else 0 := by
   have ef : ∀ i, B.hT (d.f i) (d.e l) = if l = i then 1 else 0 := fun i => d.ef l i
@@ -209,25 +209,25 @@ theorem hD_e_fTop (l : Fin d.ρ) : B.hD (d.e l) d.fTop = if l.1 + 1 = d.ρ then 
   · exact fun hl => absurd (Finset.mem_univ l) hl
 
 /- English proof (translation)
-The claim follows from `hA_span_of d hv fun l hl => by rw [hA_vec, hD_e_fTop, if_neg (by omega), map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem hA_span_fTop {v} (hv : v ∈ spanLt B d.e (d.ρ - 1)) : hA B v (vecA B d.fTop) = 0 :=
   hA_span_of d hv fun l hl => by rw [hA_vec, hD_e_fTop, if_neg (by omega), map_zero]
 
 /- English proof (translation)
-The claim follows from `hA_vec_iA (fun x => d.hD_fTop _ fun l => d.fA l x) a`.
+A detailed English derivation is pending.
 -/
 theorem hA_fTop_iA (a) : hA B (vecA B d.fTop) (iA ι a) = 0 :=
   hA_vec_iA (fun x => d.hD_fTop _ fun l => d.fA l x) a
 
 /- English proof (translation)
-Rewrite using `[hA_vec, d.hD_fTop _ fun i => hD_swap_zero (d.hD_fTop _ fun j => d.ff j i), map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hA_fTop_fTop : hA B (vecA B d.fTop) (vecA B d.fTop) = 0 := by
   rw [hA_vec, d.hD_fTop _ fun i => hD_swap_zero (d.hD_fTop _ fun j => d.ff j i), map_zero]
 
 /- English proof (translation)
-Apply the tactic sequence `have : d.fTop = ∑ l : Fin d.ρ, (if l.1 + 1 = d.ρ then (1 : D.host.E) else 0) • d.f l := Finset.sum_congr rfl fun l _ => by split_ifs <;> simp`. Rewrite using `[this, vecA_sum]`. Apply the tactic sequence `exact Finset.sum_congr rfl fun l _ => by split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem vecA_fTop : vecA B d.fTop = ∑ l : Fin d.ρ, (if l.1 + 1 = d.ρ then (1 : AE D) else 0) • vecA B (d.f l) := by
   have : d.fTop = ∑ l : Fin d.ρ, (if l.1 + 1 = d.ρ then (1 : D.host.E) else 0) • d.f l :=
@@ -236,19 +236,19 @@ theorem vecA_fTop : vecA B d.fTop = ∑ l : Fin d.ρ, (if l.1 + 1 = d.ρ then (1
   exact Finset.sum_congr rfl fun l _ => by split_ifs <;> simp
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨b, fun l hl => absurd l.2 (by omega), rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem sum_mem_span (b : Fin d.ρ → AE D) : ∑ l, b l • vecA B (d.e l) ∈ spanLt B d.e d.ρ :=
   ⟨b, fun l hl => absurd l.2 (by omega), rfl⟩
 
 /- English proof (translation)
-Take `⟨c, a, c', h⟩` from `ad_decomp d (actV B n d.fTop)`. Establish `fe : ∀ i j, B.hD (d.f i) (d.e j) = if i = j then 1 else 0` using `fun i j => by`. Establish `h1 : B.hD (d.f i) (d.e j) = star (B.hD (d.e j) (d.f i))` using `(B.herm.eq _ _).symm`. Rewrite using `[h1, d.ef]`. Distinguish the cases in `h : i = j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Simplify using `[h]`. Simplify using `[h, Ne.symm h]`. Establish `hc : ∀ j : Fin d.ρ, c' j = if j.1 + 1 = d.ρ then 1 else 0` using `fun j => by`. Establish `h1 : hA B (actV B n d.fTop) (vecA B (d.e j)) = c' j`. Rewrite using `[h, hA_add, hA_add, hA_coeff B d.f d.e fe, hA_zero_swap (hA_vec_iA (d.eA j) a), hA_span_span d (sum_mem_span d c) (vec_mem_spanLt j.2), zero_add, zero_add]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `hA_span_fTop d (spanLt_mono (by have := j.2; omega) (lower d (inv_mem hn) (vec_mem_spanLt (B := B) (e := d.e) (l := j) (Nat.lt_succ_self _))))`. Rewrite `h2` using `[hA_sub, sub_eq_zero, hA_vec, hD_e_fTop]`. Rewrite using `[← h1, actV, hA_mt_left, ← hA_herm, h2]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `h' : actV B n d.fTop = vecA B d.fTop + iA ι a + ∑ l, c l • vecA B (d.e l)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[h, vecA_fTop]`. Simplify using `only [hc]`. Normalize the expressions using the abelian group laws. Conclude with `⟨c, by rw [(d.coords_of n a c h').1]; exact h'⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Supply the required witnesses or components.
 -/
 theorem act_fTop {n : GA D B} (hn : n ∈ d.N) : ∃ b : Fin d.ρ → AE D,
     actV B n d.fTop = vecA B d.fTop + iA ι (d.aCo n) + ∑ l, b l • vecA B (d.e l) := by
@@ -273,16 +273,16 @@ theorem act_fTop {n : GA D B} (hn : n ∈ d.N) : ∃ b : Fin d.ρ → AE D,
   exact ⟨c, by rw [(d.coords_of n a c h').1]; exact h'⟩
 
 /- English proof (translation)
-The claim follows from `lower d hn (spanLt_mono (by omega) hv)`.
+A detailed English derivation is pending.
 -/
 theorem span_pred {n : GA D B} (hn : n ∈ d.N) {v} (hv : v ∈ spanLt B d.e d.ρ) :
     (mt B n).mulVec v - v ∈ spanLt B d.e (d.ρ - 1) :=
   lower d hn (spanLt_mono (by omega) hv)
 
 /- English proof (translation)
-Take `⟨b, h⟩` from `act_fTop d hn`. Take `⟨b', h'⟩` from `act_fTop d hn'`. Take `⟨c, -, hc⟩` from `add_mem (add_mem (sum_mem_span d b) (lower_iA d hn (d.aCo n'))) (add_mem (spanLt_mono (Nat.sub_le _ _) (span_pred d hn (sum_mem_span d b'))) (sum_mem_span d b'))`. Use `(d.coords_of _ _ c ?_).1` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = _ + iA ι _ + _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Unfold `actV at h h' ⊢`. Rewrite using `[mulVec_mul, h', Matrix.mulVec_add, Matrix.mulVec_add, h, ← hc, iA_add]`. Normalize the expressions using the abelian group laws.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem aCo_mul {n n' : GA D B} (hn : n ∈ d.N) (hn' : n' ∈ d.N) : d.aCo (n * n') = d.aCo n + d.aCo n' := by
   obtain ⟨b, h⟩ := act_fTop d hn
@@ -296,13 +296,13 @@ theorem aCo_mul {n n' : GA D B} (hn : n ∈ d.N) (hn' : n' ∈ d.N) : d.aCo (n *
   abel
 
 /- English proof (translation)
-Take `⟨b, h⟩` from `act_fTop d hn`. Take `⟨b', h'⟩` from `act_fTop d hn'`. Establish `hs` using `lower_iA d hn (d.aCo n')`. Establish `h1` using `hA_span_fTop d (span_pred d hn (sum_mem_span d b'))`. Rewrite `h1` using `[hA_sub, sub_eq_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : d.tCo n' = hA B (∑ l, b' l • vecA B (d.e l)) (vecA B d.fTop)`. Rewrite using `[FJDat.tCo, h', hA_add, hA_add, hA_fTop_fTop, hA_zero_swap (hA_fTop_iA d _), zero_add, zero_add]`. Establish `h3` using `hA_mt n (iA ι (d.aCo n')) (vecA B d.fTop)`. Establish `h4` using `hA_span_iA d hs (d.aCo n)`. Establish `h5` using `hA_span_span d hs (sum_mem_span d b)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h4`, `h5` using `[hA_sub, sub_eq_zero]`. Rewrite `h4` using `[hA_iA d.isom]`. Rewrite `h5` using `[hA_zero_swap (hA_span_iA d (sum_mem_span d b) _)]`. Unfold `actV at h`. Rewrite `h3` using `[h, hA_add_right, hA_add_right, h4, h5, hA_zero_swap (hA_fTop_iA d _)]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h6 : d.tCo (n * n') = d.tCo n + hA B ((mt B n).mulVec (iA ι (d.aCo n'))) (vecA B d.fTop) + d.tCo n'`. Unfold `actV at h'`. Rewrite using `[h2, ← h1, FJDat.tCo, FJDat.tCo, actV, actV, mulVec_mul, h', Matrix.mulVec_add, Matrix.mulVec_add, hA_add, hA_add]`. Take the linear combination `h6 + h3`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem tCo_mul {n n' : GA D B} (hn : n ∈ d.N) (hn' : n' ∈ d.N) :
     d.tCo (n * n') = d.tCo n + d.tCo n' - hA A (d.aCo n') (d.aCo n) := by
@@ -327,9 +327,9 @@ theorem tCo_mul {n n' : GA D B} (hn : n ∈ d.N) (hn' : n' ∈ d.N) :
   linear_combination h6 + h3
 
 /- English proof (translation)
-Establish `h1` using `(mem_NS_iff.1 (mem_NS d hn')).1 j`. Rewrite `h1` using `[hij]`. Establish `h2` using `((mem_spanLt_iff d.ef).1 (lower d hn h1)).1 i le_rfl`. Rewrite `h2` using `[hA_sub, hA_sub, hA_vec, d.ef, if_neg (fun e => by subst e; omega), map_zero, Matrix.mulVec_sub, hA_sub]`. Unfold `actV at h2 ⊢`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[mulVec_mul]`. Take the linear combination `h2`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem simple_mul {n n' : GA D B} (hn : n ∈ d.N) (hn' : n' ∈ d.N) (i j : Fin d.ρ) (hij : j.1 = i.1 + 1) :
     hA B (actV B (n * n') (d.e j)) (vecA B (d.f i)) =
@@ -343,7 +343,7 @@ theorem simple_mul {n n' : GA D B} (hn : n ∈ d.N) (hn' : n' ∈ d.N) (i j : Fi
   linear_combination h2
 
 /- English proof (translation)
-Unfold `FJDat.chr`. Rewrite using `[← AddChar.map_add_eq_mul, ← map_add, ← Finset.sum_add_distrib]`. Use `congr 2`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [simple_mul d hn hn' _ _ rfl, mul_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem chr_mul {n n' : GA D B} (hn : n ∈ d.N) (hn' : n' ∈ d.N) (ψ : AddChar (AF D.host.F) ℂ) :
     d.chr ψ (n * n') = d.chr ψ n * d.chr ψ n' := by
@@ -353,7 +353,7 @@ theorem chr_mul {n n' : GA D B} (hn : n ∈ d.N) (hn' : n' ∈ d.N) (ψ : AddCha
   exact Finset.sum_congr rfl fun i _ => by rw [simple_mul d hn hn' _ _ rfl, mul_add]
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ d _ hn _ hn'` and use `⟨aCo_mul d hn hn', tCo_mul d hn hn', chr_mul d hn hn', act_fTop d hn⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem law : ∀ (D : D7) (L A B : HSp D) (ι : A.V →ₗ[D.host.E] B.V) (d : FJDat L A B ι), ∀ n ∈ d.N, ∀ n' ∈ d.N,
     d.aCo (n * n') = d.aCo n + d.aCo n' ∧ d.tCo (n * n') = d.tCo n + d.tCo n' - hA A (d.aCo n') (d.aCo n) ∧

@@ -16,7 +16,7 @@ open scoped TensorProduct Matrix Topology
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Use extensionality with `v`. Establish `h` using `(GlobalTheory.AdLat.hat_rational_points_and_approx F E n L h1 h2).1 v`. Simplify using `only [GlobalTheory.AdLat.latOf, Set.mem_ofPred_eq, Set.mem_image, Matrix.one_mulVec, exists_eq_right, SetLike.mem_coe]`. Conclude with `h`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem latOf_one_eq (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n : ℕ)
     (L : Submodule (𝓞 E) (Fin n → E)) (h1 : L.FG) (h2 : Submodule.span E (L : Set (Fin n → E)) = ⊤) :
@@ -28,7 +28,7 @@ theorem latOf_one_eq (F E : Type) [Field F] [NumberField F] [Field E] [NumberFie
   exact h
 
 /- English proof (translation)
-Establish `hh` using `(latHat_eq_hat_and_gram D V).1`. Unfold `latG gLat`. Rewrite using `[hh]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem latG_eq_span_latOf (D : D7) (V : HSp D) (g : GA D V) :
     latG V g = Submodule.span (𝓞 D.host.E) {w | ∃ a ∈ D.host.AA,
@@ -39,7 +39,7 @@ theorem latG_eq_span_latOf (D : D7) (V : HSp D) (g : GA D V) :
   rfl
 
 /- English proof (translation)
-Establish `hh` using `(latHat_eq_hat_and_gram D V).1`. Unfold `latGHat gLat`. Rewrite using `[hh]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem latGHat_eq_closure (D : D7) (V : HSp D) (g : GA D V) :
     latGHat V g = AddSubgroup.closure {w | ∃ a ∈ D.host.AA,
@@ -50,13 +50,13 @@ theorem latGHat_eq_closure (D : D7) (V : HSp D) (g : GA D V) :
   rw [hh]
 
 /- English proof (translation)
-Introduce `D V g`. Take `⟨-, -, hfg, hsp, -⟩` from `latHat_eq_hat_and_gram D V`. Establish `hA : D.host.AA ≠ 0` using `AA_ne_zero Formalism.IndefR.Fin.factPrincipalDatum D`. Establish `h6 : latG V 1 = Submodule.span (𝓞 D.host.E) {w | ∃ a ∈ D.host.AA, ∃ x ∈ latC V, w = a • x}`. Rewrite using `[latG_eq_span_latOf, map_one, Units.val_one, latOf_one_eq _ _ _ _ hfg hsp]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Take `⟨s1, s2, s3, s4⟩` from `GlobalTheory.AdLat.scale_latOf D.host.F D.host.E V.rank (latC V) (finHom V g) D.host.AA (latG V 1) hfg hsp hA h6`. Establish `h3 : (latG V g : Set (Fin V.rank → D.host.E)) = GlobalTheory.AdLat.latOf D.host.F (finHom V g).1 (latG V 1 : Set (Fin V.rank → D.host.E))`. Rewrite using `[latG_eq_span_latOf D V g]`. Conclude with `s1`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h4 : (latGHat V g : Set (Fin V.rank → Af D.host.F ⊗[D.host.F] D.host.E)) = (finHom V g).1.mulVec '' (GlobalTheory.AdLat.hat D.host.F (latG V 1 : Set (Fin V.rank → D.host.E)))`. Rewrite using `[latGHat_eq_closure D V g]`. Conclude with `s2`. Take `⟨Λ, l1, l2, l3, l4⟩` from `GlobalTheory.AdLat.exists_lattice_latOf D.host.F D.host.E V.rank (latG V 1) (finHom V g) s3 s4`. Establish `hΛ : Λ = latG V g` using `SetLike.coe_injective (l1.trans h3.symm)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components.
 
-Substitute `hΛ` using the available equality. Conclude with `⟨l2, l3, h3, h4, SetLike.coe_injective (h4.trans l4.symm), h6⟩`.
+A detailed English derivation is pending.
 -/
 theorem latG_lattice_and_completion : ∀ (D : D7) (V : HSp D), ∀ g : GA D V, (latG V g).FG ∧ Submodule.span D.host.E (latG V g : Set (Fin V.rank → D.host.E)) = ⊤ ∧ (latG V g : Set (Fin V.rank → D.host.E)) = GlobalTheory.AdLat.latOf D.host.F (finHom V g).1 (latG V 1 : Set (Fin V.rank → D.host.E)) ∧ (latGHat V g : Set (Fin V.rank → Af D.host.F ⊗[D.host.F] D.host.E)) = (finHom V g).1.mulVec '' (GlobalTheory.AdLat.hat D.host.F (latG V 1 : Set (Fin V.rank → D.host.E))) ∧ latGHat V g = GlobalTheory.AdLat.hat D.host.F (latG V g : Set (Fin V.rank → D.host.E)) ∧ latG V 1 = Submodule.span (𝓞 D.host.E) {w | ∃ a ∈ D.host.AA, ∃ x ∈ latC V, w = a • x} := by
   intro D V g

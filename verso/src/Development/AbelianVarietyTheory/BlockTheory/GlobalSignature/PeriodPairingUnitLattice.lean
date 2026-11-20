@@ -29,7 +29,7 @@ def IsClassSumPairing (n : ℕ) : Prop :=
 def Nondegenerate : Prop := (∀ x, (∀ z, per x z = 0) → x = 0) ∧ ∀ z, (∀ x, per x z = 0) → z = 0
 
 /- English proof (translation)
-Take `⟨k, rfl⟩` from `hn`. Introduce `w x hx z hz y hy`. Establish `h1` using `(intW Pl w).mul_mem (natCast_mem (intW Pl w) k) (h w x hx z hz y hy)`. Establish `e : ((n * k : ℕ) : LL) * y = (k : LL) * ((n : LL) * y)` using `by push_cast; ring`. Rewrite using `[e]` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem IntegralUpTo.of_dvd {n n' : ℕ} (h : IntegralUpTo emb Pl Λ Λ' per n) (hn : n ∣ n') :
     IntegralUpTo emb Pl Λ Λ' per n' := by
@@ -47,9 +47,9 @@ def unitLat (LL : Type) [Field LL] [NumberField LL] [StarRing LL] : HLat LL wher
   L := LinearMap.range (Algebra.linearMap (𝓞 LL) LL)
 
 /- English proof (translation)
-Use `⟨fun x z => ⟨_, rfl⟩, fun v (x : LL) (z : LL) y hy => ?_⟩` and prove the remaining obligations. Establish `hy' : y = x * z` using `emb.injective hy`. Establish `key : ∀ a : LL, Formalism.HermitianLatticesTheory.normAt (unitLat LL).b (unitLat LL).X v a = v a`. Introduce `a`. Use `show Real.sqrt (∑ i : Unit, ‖Matrix.mulVec (1 : Matrix Unit Unit ℂ)⁻¹ (Formalism.HermitianLatticesTheory.vecAt (Module.Basis.singleton Unit LL) v a) i‖ ^ 2) = v a`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inv_one, Matrix.one_mulVec]`. Simplify using `[Formalism.HermitianLatticesTheory.vecAt, InfinitePlace.norm_embedding_eq]`. Rewrite using `[hy', key, key, map_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 example : Rational emb (unitLat LL) (unitLat LL) (fun x z : LL => emb (x * z)) ∧
     CauchySchwarz emb (unitLat LL) (unitLat LL) (fun x z : LL => emb (x * z)) := by
@@ -88,7 +88,7 @@ def PeriodPairing (Tw : TwForms D) (A : AmbForm D (RowSide.sharp D)) (u : D.what
   PeriodPairing0 D A u ∧ PeriodPairingTw D Tw A u
 
 /- English proof (translation)
-The claim follows from `(Subgroup.card_dvd_of_injective _ ((Tw.fm u μ).stabMap_inj c)).trans ((D.chTw u μ).dvd_DGam _ le_rfl _)`.
+A detailed English derivation is pending.
 -/
 theorem card_stabilizer_dvd₂ (Tw : TwForms D) (u : D.what₂.Word) (μ : D.what₂.Tup) (c : (Tw.fm u μ).clsP) :
     Nat.card ((Tw.fm u μ).stabilizer₂ c) ∣ (D.chTw u μ).DGam :=

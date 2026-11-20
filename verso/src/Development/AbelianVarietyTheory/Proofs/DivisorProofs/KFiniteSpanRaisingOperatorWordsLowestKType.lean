@@ -16,11 +16,11 @@ open scoped InnerProductSpace
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `n ε H _ _ σ D E lam hHC hCh hDS hK`. Take `⟨_, hKS, hne, hkill⟩` from `GlobalTheory.T.lowestKTypeSpace_holomorphicKModule_killed n ε H σ D E lam hHC hCh hDS hK`. Use `haveI : CompleteSpace H := hDS.1`. Use `set L := (lowKSub ε lam σ).comap D.subtype with hL`. Use `set S := Submodule.span ℂ {y : D | ∃ l : List (Fin n × Fin n), (∀ p ∈ l, ε p.1 = true ∧ ε p.2 = false) ∧ ∃ x ∈ L, y = (l.map fun p : Fin n × Fin n => E p.1 p.2).prod x} with hS`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hstab : ∀ a b, ∀ x ∈ S, E a b x ∈ S` using `fun a b x hx => GlobalTheory.T.raisingWordSpan_stable_of_lowering_kill n ε D E hK.gl L hKS hkill a b x hx`. Establish `hLS : L ≤ S`. Introduce `x hx`. Apply `Submodule.subset_span` to reduce the goal to its premises. Conclude with `⟨[], by simp, x, hx, by simp⟩`.
+Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Break down `GlobalTheory.T.kFiniteModule_irreducible_of_irreducible_unitaryRep n ε H σ D E hDS.1 hDS.2.2.1 hDS.2.2.2.1 hK S hstab with h | h` into its components or cases. It suffices to derive a contradiction. Apply `hne` to reduce the goal to its premises. Conclude with `le_bot_iff.mp (h ▸ hLS)`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem kfin_span_raising_words_lowK : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (D : Submodule ℂ H) (E : Fin n → Fin n → Module.End ℂ D) (lam : Fin n → ℝ), IsHCParam lam → IsHolChamber ε lam → IsDS ε lam σ → IsKMod ε σ D E → Submodule.span ℂ {y : D | ∃ l : List (Fin n × Fin n), (∀ p ∈ l, ε p.1 = true ∧ ε p.2 = false) ∧ ∃ x ∈ (lowKSub ε lam σ).comap D.subtype, y = (l.map fun p : Fin n × Fin n => E p.1 p.2).prod x} = ⊤ := by
   intro n ε H _ _ σ D E lam hHC hCh hDS hK

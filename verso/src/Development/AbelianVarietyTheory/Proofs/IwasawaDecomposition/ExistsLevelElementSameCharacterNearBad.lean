@@ -15,7 +15,7 @@ noncomputable section
 namespace GlobalTheory.Mem.Col2.AdT.LevelElt
 
 /- English proof (citation)
-Apply `GlobalTheory.Mem.Col2.AdT.OnePrime.exists_level_elt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FExistsLevelElt.lean&line=106#L106)
 -/
@@ -23,7 +23,7 @@ theorem one_prime : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.
   first | exact @GlobalTheory.Mem.Col2.AdT.OnePrime.exists_level_elt | exact GlobalTheory.Mem.Col2.AdT.OnePrime.exists_level_elt | (intros; apply GlobalTheory.Mem.Col2.AdT.OnePrime.exists_level_elt <;> assumption)
 
 /- English proof (citation)
-Apply `GlobalTheory.Mem.Col2.AdT.PlaceUnder.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FExistsStarNe.lean&line=21#L21)
 -/
@@ -31,13 +31,13 @@ theorem place_under : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → T
   first | exact @GlobalTheory.Mem.Col2.AdT.PlaceUnder.main | exact GlobalTheory.Mem.Col2.AdT.PlaceUnder.main | (intros; apply GlobalTheory.Mem.Col2.AdT.PlaceUnder.main <;> assumption)
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mem.Col2.AdSupport.adAt_entry_eq_one_of_not_over | exact GlobalTheory.Mem.Col2.AdSupport.adAt_entry_eq_one_of_not_over | (intros; apply GlobalTheory.Mem.Col2.AdSupport.adAt_entry_eq_one_of_not_over <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem support_one : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ} (z : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) (v : HeightOneSpectrum (𝓞 F)), (∀ v', v' ≠ v → bc (prV (E := E) v') z = 1) → ∀ P : HeightOneSpectrum (𝓞 E), ¬ Formalism.L2.Col.IsOver v P → ∀ r s, adAt F P ((z : Matrix (Fin n) (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) r s) = (1 : Matrix (Fin n) (Fin n) (P.adicCompletion E)) r s := by
   first | exact @GlobalTheory.Mem.Col2.AdSupport.adAt_entry_eq_one_of_not_over | exact GlobalTheory.Mem.Col2.AdSupport.adAt_entry_eq_one_of_not_over | (intros; apply GlobalTheory.Mem.Col2.AdSupport.adAt_entry_eq_one_of_not_over <;> assumption)
 
 /- English proof (citation)
-Apply `GlobalTheory.Mem.Col2.RatFrPt.exists_isPtOf_of_rat` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FExistsIsPtOfOfRat.lean&line=91#L91)
 -/
@@ -45,14 +45,14 @@ theorem point_of_rat : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [Num
   first | exact @GlobalTheory.Mem.Col2.RatFrPt.exists_isPtOf_of_rat | exact GlobalTheory.Mem.Col2.RatFrPt.exists_isPtOf_of_rat | (intros; apply GlobalTheory.Mem.Col2.RatFrPt.exists_isPtOf_of_rat <;> assumption)
 
 /- English proof (translation)
-Simplify using `only [map_mul, h, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mul_comp_eq {M N : Type} [Monoid M] [Monoid N] (f : M →* N) (y a b c k : M) (h : f b = f c) :
     f (y * (a * b) * k) = f (y * a * c * k) := by
   simp only [map_mul, h, mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem entry_eq_of_eq {M : Type} [Monoid M] {n : ℕ} {R : Type} [Semiring R] (f : M →* Matrix (Fin n) (Fin n) R) (b c : M)
     (h : f b = f c) (r s : Fin n) : f b r s = f c r s := by rw [h]
@@ -60,35 +60,33 @@ theorem entry_eq_of_eq {M : Type} [Monoid M] {n : ℕ} {R : Type} [Semiring R] (
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `B X I hOk hPins l Z u a i hi bad Ch chOf K k hR c hChi κ`. Establish `: NeZero (B.R.N i)` using `⟨(B.R.N_pos i).ne'⟩`. Establish `hg : gramN (I.rec7 l Z) i hi = 1` using `((GlobalTheory.Mem.Col2.TC.spaces_in_coordinates I hOk hPins l Z).2.2.2 i hi).1`. Establish `eU : UPts (sigD (I.rec7 l Z)) (gramN (I.rec7 l Z) i hi) (FiniteAdeleRing (𝓞 (I.rec7 l Z).host.F) (I.rec7 l Z).host.F) = UAd B.sp.cm (B.R.N i)` using `by rw [hg]; rfl`. Use `set y : GA B (B.R.N i) := ((K (chOf c)).y ⟨c, rfl⟩).1 with hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set kk : GA B (B.R.N i) := k (chOf c) with hkk`. Establish `hsel : ∀ P : SBof I a, ∃ z : (K (chOf c)).lev.U, (K (chOf c)).lev.chi z = 1 ∧ (∀ P' : SBof I a, P' ≠ P → ∀ r s, adAt B.host.F P'.1 (((show GA B (B.R.N i) from z.1) : Matrix (Fin (B.R.N i)) (Fin (B.R.N i)) (AfE B.host.F B.host.E)) r s) = (1 : Matrix (Fin (B.R.N i)) (Fin (B.R.N i)) …`. Introduce `P`. Distinguish the cases in `hP : P.1 ∈ I.Q a`. Take `⟨v, hv, hv'⟩` from `place_under I hOk hPins l Z a P hP`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨z, hz1, hz2, hz3, hz4⟩` from `one_prime I hOk hPins l Z a _ i hi bad (K (chOf c)).lev hChi P hP v hv ((I.cst a).D P) (y * (show GA B (B.R.N i) from κ.1)) kk`. Use `⟨z, hz1, fun P' hP' r s => ?_, hz3, fun _ => hz4⟩` and prove the remaining obligations. Establish `e` using `(GlobalTheory.T.adelicMatrixCongruenceBadPrime_iff_completion I hOk l Z a (B.R.N i) 0 P' z.1).1`. Establish `h2` using `hv' P' hP'`. Rewrite `h2` using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `support_one z.1 v hz2 P'.1 h2 r s`. Use `⟨1, map_one _, fun P' _ r s => ?_, GlobalTheory.TwU.congAt_one _ _, fun h => absurd h hP⟩ show adAt B.host.F P'.1 ((1 : Matrix (Fin (B.R.N i)) (Fin (B.R.N i)) (AfE B.host.F B.host.E)) r s) = _` and prove the remaining obligations. Simplify using `only [Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Use `choose zf hzf1 hzf2 hzf3 hzf4 using hsel`.
+Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `cP : ∀ P : HeightOneSpectrum (𝓞 B.fields.E), GA B (B.R.N i) →* Matrix (Fin (B.R.N i)) (Fin (B.R.N i)) (P.adicCompletion B.fields.E)` to `fun P => (RingHom.mapMatrix (adAt B.host.F P)).toMonoidHom.comp (Units.coeHom _)`. Establish `cP_apply : ∀ P (g : GA B (B.R.N i)) r s, cP P g r s = adAt B.host.F P ((g : Matrix (Fin (B.R.N i)) (Fin (B.R.N i)) (AfE B.host.F B.host.E)) r s)` using `fun _ _ _ _ => rfl`. Set `ι : (K (chOf c)).lev.U →* GA B (B.R.N i)` to `(K (chOf c)).lev.U.subtype`. Establish `hone : ∀ P P' : SBof I a, P' ≠ P → cP P'.1 (ι (zf P)) = 1` using `fun P P' h => Matrix.ext fun r s => by`. Rewrite using `[cP_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Conclude with `hzf2 P P' h r s`. Establish `hlist : ∀ (L : List (SBof I a)), L.Nodup → ∀ P' : SBof I a, cP P'.1 (ι (L.map zf).prod) = if P' ∈ L then cP P'.1 (ι (zf P')) else 1`. Introduce `L`. Proceed by induction on `L with`. Consider the case `nil => intro _ P'`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Consider the case `cons P L ih`. Introduce `hL P'`. Rewrite `hL` using `[List.nodup_cons]`. Rewrite using `[List.map_cons, List.prod_cons, map_mul, map_mul, ih hL.2]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h : P = P'`. Substitute `h` using the available equality. Simplify using `[hL.1]`. Rewrite using `[hone P P' (Ne.symm h)]`. Simplify using `[Ne.symm h]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨w, hw⟩ : ∃ w : (K (chOf c)).lev.U, w = ((Finset.univ : Finset (SBof I a)).toList.map zf).prod` from `⟨_, rfl⟩`. Establish `hwP : ∀ P : SBof I a, cP P.1 (ι w) = cP P.1 (ι (zf P))` using `fun P => by`. Rewrite using `[hw, hlist _ (Finset.nodup_toList _) P, if_pos (Finset.mem_toList.2 (Finset.mem_univ _))]`. Establish `hchiw : (K (chOf c)).lev.chi w = 1`. Rewrite using `[hw, map_list_prod]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `List.prod_eq_one fun x hx => ?_` and prove the remaining obligations. Rewrite `hx` using `[List.mem_map]`. Take `⟨z, hz, rfl⟩` from `hx`. Rewrite `hz` using `[List.mem_map]`. Take `⟨P, -, rfl⟩` from `hz`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hzf1 P`. Establish `hpt : ∀ g : GA B (B.R.N i), g ∈ UAd B.sp.cm (B.R.N i) → (∀ P ∈ I.Q a, ∃ γ : GL (Fin (B.R.N i)) B.fields.E, ∀ r s, adAt B.host.F P ((g : Matrix (Fin (B.R.N i)) (Fin (B.R.N i)) (AfE B.host.F B.host.E)) r s) = algebraMap B.fields.E (P.adicCompletion B.fields.E) ((γ : Matrix (Fin (B. …` using `B.primes X) (R := B.R) I.sel (I.tup a) u i, PtOf g q := fun g hg hr => point_of_rat B.sp.cm _ _ _ g hg hr`. Establish `hQsub : ∀ P ∈ I.Q a, P ∈ SBof I a` using `fun P hP => by show P ∈ uSG _ _`. Conclude with `Finset.mem_union_right _ hP`. Use `⟨κ * w, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Conclude with `(map_mul (K (chOf c)).lev.chi κ w).trans ((congrArg _ hchiw).trans (mul_one _))`. Take `⟨p0, hp0, -⟩` from `hR.k_std (chOf c)`. Establish `hyU : y ∈ UAd B.sp.cm (B.R.N i)` using `eU ▸ ((K (chOf c)).y ⟨c, rfl⟩).2`. Establish `hxU : (show GA B (B.R.N i) from (κ * w).1) ∈ UAd B.sp.cm (B.R.N i)` using `eU ▸ (((K (chOf c)).lev.U_eq _).1 (κ * w).2).1`. Establish `hkU : kk ∈ UAd B.sp.cm (B.R.N i)` using `hp0.uni`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `hpt _ (mul_mem (mul_mem hyU hxU) hkU) fun P hP => ?_` and prove the remaining obligations. Set `P' : SBof I a` to `⟨P, hQsub P hP⟩`. Take `⟨γ, hγ⟩` from `hzf4 P' hP`. Use `⟨γ, fun r s => ?_⟩` and prove the remaining obligations. Establish `e1` using `mul_comp_eq (cP P) y (show GA B (B.R.N i) from κ.1) (show GA B (B.R.N i) from w.1) (show GA B (B.R.N i) from (zf P').1) kk (hwP P')`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `e2` using `congrFun (congrFun e1 r) s`. Conclude with `(cP_apply P _ r s).symm.trans (e2.trans ((cP_apply P _ r s).trans (hγ r s)))`. Introduce `P`. Establish `e : κ.1⁻¹ * (κ * w).1 = w.1` using `inv_mul_cancel_left κ.1 w.1`. Use `(congrArg (GlobalTheory.TwU.CongAt (GlobalTheory.TwU.seamP (sm I l Z) P.1) ((I.cst a).D P)) e).mpr ?_` and prove the remaining obligations.
-
-Use `((GlobalTheory.T.adelicMatrixCongruenceBadPrime_iff_completion I hOk l Z a (B.R.N i) ((I.cst a).D P) P w.1).2.2).mpr fun r s => ?_` and prove the remaining obligations. Establish `e` using `entry_eq_of_eq (cP P.1) _ _ (hwP P) r s`. Establish `D2` using `((GlobalTheory.T.adelicMatrixCongruenceBadPrime_iff_completion I hOk l Z a (B.R.N i) ((I.cst a).D P) P (zf P).1).2.2.1 (hzf3 P)) r s`. Use `D2 using 3` and compare the differences between its conclusion and the goal. Conclude with `e`.
+A detailed English derivation is pending.
 -/
 theorem exists_level_elt : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) (a : I.ι) (i : ℕ) (hi : i ≤ B.R.m) (bad : Set (HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F))) (Ch : Type) (chOf : (I.stp u a i).Cl → Ch) (K : Charts I l Z u a i hi bad chOf) (k : Ch → GA B (B.R.N i)), ReadsAt I l Z K k → ∀ (c : (I.stp u a i).Cl), ChiFin I l Z (K (chOf c)).lev → ∀ κ : (K (chOf c)).lev.U, ∃ x : (K (chOf c)).lev.U, (K (chOf c)).lev.chi x = (K (chOf c)).lev.chi κ ∧ (∃ q : ChPt (Pr := B.primes X) (R := B.R) I.sel (I.tup a) u i, PtOf ((show GA B (B.R.N i) from ((K (chOf c)).y ⟨c, rfl⟩).1) * (show GA B (B.R.N i) from x.1) * k (chOf c)) q) ∧ ∀ P : SBof I a, GlobalTheory.TwU.CongAt (GlobalTheory.TwU.seamP (sm I l Z) P.1) ((I.cst a).D P) (κ.1⁻¹ * x.1) := by
   intro B X I hOk hPins l Z u a i hi bad Ch chOf K k hR c hChi κ

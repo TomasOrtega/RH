@@ -3,9 +3,9 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `letI : Algebra L F := (g.comp φ.symm.toRingHom).toAlgebra`. Set `g' : M →ₐ[L] F` to `IsAlgClosed.lift`. Use `⟨g'.toRingHom, RingHom.ext fun x => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `g' (algebraMap L _ (φ x)) = g x`. Rewrite using `[g'.commutes]`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `g (φ.symm (φ x)) = g x`. Rewrite using `[φ.symm_apply_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_extend_of_ringEquiv_of_isAlgebraic {K L M F : Type} [Field K] [Field L] [Field M] [Field F]
     [IsAlgClosed F] [Algebra L M] [Algebra.IsAlgebraic L M] (φ : K ≃+* L) (g : K →+* F) :
@@ -19,19 +19,17 @@ theorem exists_extend_of_ringEquiv_of_isAlgebraic {K L M F : Type} [Field K] [Fi
   rw [φ.symm_apply_apply]
 
 /- English proof (translation)
-Introduce `R _ _ _ _ _ s`. Establish `: CharZero (FractionRing R)` using `IsFractionRing.charZero_of_isFractionRing R`. Set `L : IntermediateField (FractionRing R) (AlgebraicClosure (FractionRing R))` to `IntermediateField.adjoin (FractionRing R) {s}`. Establish `: FiniteDimensional (FractionRing R) L` using `IntermediateField.adjoin.finiteDimensional (Algebra.IsIntegral.isIntegral s)`. Establish `: Algebra.IsSeparable (FractionRing R) L` using `inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin : Module.Finite R (integralClosure R L)` using `IsIntegralClosure.finite R (FractionRing R) L (integralClosure R L)`. Establish `hfr : IsFractionRing (integralClosure R L) L` using `integralClosure.isFractionRing_of_finite_extension (FractionRing R) L`. Set `φ : FractionRing (integralClosure R L) ≃+* L` to `(FractionRing.algEquiv (integralClosure R L) L).toRingEquiv`. Establish `hφ : ∀ x : integralClosure R L, φ (algebraMap (integralClosure R L) _ x) = algebraMap (integralClosure R L) L x` using `fun x => (FractionRing.algEquiv (integralClosure R L) L).commutes x`. Use `⟨integralClosure R L, inferInstance, inferInstance, algebraMap R _, φ.symm.toRingHom.comp (algebraMap (FractionRing R) L), (algebraMap L (AlgebraicClosure (FractionRing R))).comp φ.toRingHom, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a b hab`. Establish `h1 : algebraMap R L a = algebraMap R L b`. Rewrite using `[IsScalarTower.algebraMap_apply R (integralClosure R L) L, IsScalarTower.algebraMap_apply R (integralClosure R L) L b, hab]`. Rewrite `h1` using `[IsScalarTower.algebraMap_apply R (FractionRing R) L, IsScalarTower.algebraMap_apply R (FractionRing R) L b]`. Conclude with `IsFractionRing.injective R (FractionRing R) ((algebraMap (FractionRing R) L).injective h1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `RingHom.finite_algebraMap.2 hfin`. Conclude with `(isIntegrallyClosed_iff_isIntegrallyClosedIn L).2 inferInstance`. Introduce `r`. Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[hφ, ← IsScalarTower.algebraMap_apply R (integralClosure R L) L, IsScalarTower.algebraMap_apply R (FractionRing R) L]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `φ.apply_symm_apply _`. Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap L _ (φ (φ.symm (algebraMap (FractionRing R) L x))) = _`. Rewrite using `[φ.apply_symm_apply, ← IsScalarTower.algebraMap_apply]`. Use `⟨φ.symm ⟨s, IntermediateField.mem_adjoin_simple_self _ s⟩, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `algebraMap L _ (φ (φ.symm _)) = _`. Rewrite using `[φ.apply_symm_apply]`. Both sides reduce to the same expression. Introduce `F _ _ g`. Establish `: Algebra.IsAlgebraic L (AlgebraicClosure (FractionRing R))` using `Algebra.IsAlgebraic.tower_top (K := FractionRing R) L`.
-
-Conclude with `exists_extend_of_ringEquiv_of_isAlgebraic φ g`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_finite_normal_adjoin_algebraic :
     ∀ (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [IsIntegrallyClosed R] [CharZero R]

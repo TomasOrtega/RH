@@ -31,28 +31,28 @@ namespace GlobalTheory.LambdaValuationPowers.ZetaCoef
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Rewrite using `[IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] (Qbar l), norm_algebraMap']`. Conclude with `a.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_algebraMap_le (a : ℤ_[l]) : ‖algebraMap ℤ_[l] (Qbar l) a‖ ≤ 1 := by
   rw [IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] (Qbar l), norm_algebraMap']
   exact a.2
 
 /- English proof (translation)
-Establish `hp : l.Prime` using `Fact.out`. Establish `: IsAlgClosed Ω` using `IsAlgClosure.isAlgClosed ℚ`. Establish `: CharZero Ω` using `charZero_of_injective_algebraMap (algebraMap ℚ Ω).injective`. Establish `: NeZero (l : Ω)` using `⟨Nat.cast_ne_zero.2 hp.ne_zero⟩`. Take `⟨a, ha, hlam⟩` from `exists_lamv_eq hs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hmn`. Establish `h3 : 3 ≤ l` using `by have := hp.two_le; omega`. Take `⟨y, hy⟩` from `ZMod.exists_one_add_mul_pow_prime_pow_eq (R := ℤ_[l]) (u := (l : ℤ_[l]) ^ m * a) (v := (l : ℤ_[l]) ^ m) hp (dvd_mul_right _ _) (by`. Take `⟨q, hq⟩` from `Nat.exists_eq_add_of_le h3`. Take `⟨m', rfl⟩` from `Nat.exists_eq_add_of_le hm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨((l : ℤ_[l]) ^ (1 + m') * a) ^ q * a ^ 2 * (l : ℤ_[l]) ^ m', ?_⟩` and prove the remaining obligations. Rewrite using `[show ((l : ℤ_[l]) ^ (1 + m') * a) ^ l = ((l : ℤ_[l]) ^ (1 + m') * a) ^ (3 + q) by rw [← hq]]`. Use the proof step `ring) 1 k`. Use `set T : ℤ_[l] := a * (1 + (l : ℤ_[l]) ^ m * y) with hT`. Use `set tt : ZMod (l ^ (m + k)) := PadicInt.toZModPow (m + k) T with htt`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : ((tt.val : ℕ) : ℤ_[l]) - T ∈ RingHom.ker (PadicInt.toZModPow (m + k) : ℤ_[l] →+* ZMod (l ^ (m + k)))`. Rewrite using `[RingHom.mem_ker, map_sub, map_natCast, ZMod.natCast_zmod_val, htt, sub_self]`. Rewrite `h2` using `[PadicInt.ker_toZModPow, Ideal.mem_span_singleton]`. Take `⟨u, hu⟩` from `h2`. Use `⟨tt, ?_, algebraMap ℤ_[l] (Qbar l) y, algebraMap ℤ_[l] (Qbar l) u, norm_algebraMap_le _, norm_algebraMap_le _, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hz` using `GlobalTheory.Glue.Roots.isPrimitiveRoot_zt ε hp.ne_zero (2 * (m + k))`. Establish `hn : GlobalTheory.Glue.zt ε l (m + k) = GlobalTheory.Glue.zt ε l (2 * (m + k)) ^ l ^ (m + k)`. Rewrite using `[two_mul, GlobalTheory.Glue.Roots.zt_add_pow ε hp.ne_zero]`. Express the relevant statement in the definitionally equal form `(s ^ (l ^ (m + k - m))) (GlobalTheory.Glue.zt ε l (2 * (m + k))) = GlobalTheory.Glue.zt ε l (m + k) ^ tt.val * GlobalTheory.Glue.zt ε l (2 * (m + k))`. Establish `h1 : (s ^ (l ^ k)) (GlobalTheory.Glue.zt ε l (2 * (m + k))) = GlobalTheory.Glue.zt ε l (2 * (m + k)) ^ (PadicInt.toZModPow (2 * (m + k)) ((cycZ ℚ Ω l (s ^ (l ^ k)) : ℤ_[l]ˣ) : ℤ_[l])).val` using `cyclotomicCharacter.spec (L := Ω) l (MulSemiringAction.toRingAut (G ℚ Ω) Ω (s ^ (l ^ k))) _ hz.pow_eq_one`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h4 : ((cycZ ℚ Ω l (s ^ (l ^ k)) : ℤ_[l]ˣ) : ℤ_[l]) = ((l ^ (m + k) * tt.val + 1 : ℕ) : ℤ_[l]) - ((l ^ (2 * (m + k)) : ℕ) : ℤ_[l]) * u`. Rewrite using `[map_pow, Units.val_pow_eq_pow_val, ha]`. Rewrite `hy` using `[mul_one]`. Rewrite using `[hy]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_add_of_sub_eq hu, hT]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Nat.add_sub_cancel_left, h1, h4, map_sub, map_mul, map_natCast, map_natCast, ZMod.natCast_self, zero_mul, sub_zero, ZMod.val_natCast, ← pow_eq_pow_mod _ hz.pow_eq_one, hn, ← pow_mul, pow_succ]`. Use `congrArg (algebraMap ℤ_[l] (Qbar l)) (eq_add_of_sub_eq hu)` as an intermediate fact. Rewrite `this` using `[map_natCast]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[this, hlam, hT]`. Simplify using `only [map_add, map_mul, map_pow, map_natCast, map_one]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem exists_isLamG [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (hl : l ≠ 2) {m n : ℕ} (hm : 1 ≤ m) (hmn : m ≤ n) {s : G ℚ Ω}
     (hs : cycMod ℚ Ω l m s = 1) :
@@ -110,7 +110,7 @@ abbrev pushB {ε : Ω →+* ℂ} (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (n m
       (bB ((repM (topM l n m (N * N)) y')⁻¹ * s' * repM (topM l n m (N * N)) (y' * (cycM (topM l n m (N * N)) s')⁻¹)))) s y
 
 /- English proof (translation)
-Establish `hmem : ∀ y' : (ZMod (topM l n m (N * N)))ˣ, bB ((repM (topM l n m (N * N)) y')⁻¹ * s * repM (topM l n m (N * N)) (y' * (cycM (topM l n m (N * N)) s)⁻¹)) ∈ X.B N l w` using `fun y' => hB _ (shArg_mem_fixMu (topM l n m (N * N)) s y')`. Use `⟨Submodule.sum_mem _ fun y' _ => hgal _ _ (hmem y'), ?_⟩` and prove the remaining obligations. Use `(map_sum (AddMonoidHom.mk' pr hadd) _ _).trans ?_` and prove the remaining obligations. Conclude with `Finset.sum_congr rfl fun y' _ => heq _ _ (hmem y')`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem pushB_spec [IsAlgClosure ℚ Ω] {ε : Ω →+* ℂ} (X : Tower Ω ε) {N : ℕ} [NeZero N] (w n m : ℕ)
     (pr : X.Fn l → Fin 2 → Qbar l) (W : R2 Ω l) (e : ℕ) (ψ : ZMod l → Qbar l)
@@ -126,9 +126,9 @@ theorem pushB_spec [IsAlgClosure ℚ Ω] {ε : Ω →+* ℂ} (X : Tower Ω ε) {
   exact Finset.sum_congr rfl fun y' _ => heq _ _ (hmem y')
 
 /- English proof (translation)
-Take `⟨a, ha, -⟩` from `exists_lamv_eq hs`. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hm`. Use `ext`. Express the relevant statement in the definitionally equal form `PadicInt.toZModPow 1 ((cycZ ℚ Ω l s : ℤ_[l]ˣ) : ℤ_[l]) = 1`. Establish `e : (l : ℤ_[l]) ^ (1 + k) * a = ((l ^ 1 : ℕ) : ℤ_[l]) * ((l : ℤ_[l]) ^ k * a)` using `by push_cast; ring`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Rewrite using `[ha, e, map_add, map_one, map_mul, map_natCast, ZMod.natCast_self, zero_mul, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cycMod_one_of {m : ℕ} (hm : 1 ≤ m) {s : G ℚ Ω} (hs : cycMod ℚ Ω l m s = 1) : cycMod ℚ Ω l 1 s = 1 := by
   obtain ⟨a, ha, -⟩ := exists_lamv_eq hs
@@ -139,9 +139,9 @@ theorem cycMod_one_of {m : ℕ} (hm : 1 ≤ m) {s : G ℚ Ω} (hs : cycMod ℚ �
   rw [ha, e, map_add, map_one, map_mul, map_natCast, ZMod.natCast_self, zero_mul, add_zero]
 
 /- English proof (translation)
-Proceed by induction on `n, hmn using Nat.le_induction with`. Consider the case `base => simp [Cg]`. Consider the case `succ n hn ih`. Establish `h1 : Cg m (per (n + 1)) (per n)` using `GlobalTheory.KummerEisensteinGalois.cg_mono hn (h n)`. Unfold `Cg at *`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[← sub_add_sub_cancel _ (per n)]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le h1 ih)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cg_per {per : ℕ → Qbar l} (h : ∀ n, Cg n (per (n + 1)) (per n)) {m n : ℕ} (hmn : m ≤ n) : Cg m (per n) (per m) := by
   induction n, hmn using Nat.le_induction with
@@ -153,15 +153,15 @@ theorem cg_per {per : ℕ → Qbar l} (h : ∀ n, Cg n (per (n + 1)) (per n)) {m
     exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le h1 ih)
 
 /- English proof (translation)
-Establish `add : ∀ {r : ℝ} {x y : Qbar l}, ‖x‖ ≤ r → ‖y‖ ≤ r → ‖x + y‖ ≤ r` using `fun hx hy => (IsUltrametricDist.norm_add_le_max _ _).trans (max_le hx hy)`. Establish `mul : ∀ {r : ℝ} {x y : Qbar l}, ‖x‖ ≤ 1 → ‖y‖ ≤ r → ‖x * y‖ ≤ r` using `fun hx hy => by`. Rewrite using `[norm_mul]`. Conclude with `(mul_le_of_le_one_left (norm_nonneg _) hx).trans hy`. Establish `neg : ∀ {r : ℝ} {x : Qbar l}, ‖x‖ ≤ r → ‖-x‖ ≤ r` using `fun hx => by rwa [norm_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hunit : ‖1 + μ * v‖ = 1`. Establish `h : ‖μ * v‖ < ‖(1 : Qbar l)‖`. Rewrite using `[norm_one, mul_comm]`. Conclude with `(mul hv le_rfl).trans_lt hμ`. Rewrite using `[IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm h.ne', max_eq_left h.le, norm_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG : ‖lc * E * a‖ ≤ 1`. Establish `e : lc * E * a * (1 + μ * v) = lc * ((F - pn * P) + pn * P) + -C + -(lc * F - (lc * (E * t) + C)) + -(lc * (u * (E * ν)))` using `by rw [ht]; ring`. Establish `h` using `add (add (add (mul hlc (add (h2.trans hμ.le) (mul hpn.le hP))) (neg hC)) (neg (h3.trans hμ.le))) (neg (mul hlc (mul hu (h5.trans hμ.le))))`. Rewrite `h` using `[← e, norm_mul, hunit, mul_one]`. Then use the resulting hypothesis. Establish `hn0 : pn ≠ 0` using `fun h => by simp [h] at hpn`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm0 : pm ≠ 0` using `fun h => by simp [h] at hpm`. Establish `e : pn * (pm * (lc * Y - (lc * (pm⁻¹ * E) * a + pn⁻¹ * C))) = pm * (pn * (lc * (Y - P))) + -(pm * (lc * (F - pn * P))) + pm * (lc * F - (lc * (E * t) + C)) + pm * (lc * E * a * (v * μ)) + pm * (lc * (u * (E * ν))) + -(lc * E * a * (pn - pm))`. Rewrite using `[ht]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h` using `add (add (add (add (add (mul hpm.le (mul hpn.le (mul hlc h1))) (neg (mul hpm.le (mul hlc h2)))) (mul hpm.le h3)) (mul hpm.le (mul hG (mul hv le_rfl)))) (mul hpm.le (mul hlc (mul hu h5)))) (neg (mul hG h4))`. Rewrite `h` using `[← e, norm_mul, norm_mul, hpn, hpm, one_mul, one_mul]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem chain {Y P F pn pm E t a v u C lc μ ν : Qbar l} (hμ : ‖μ‖ < 1) (hlc : ‖lc‖ ≤ 1) (hP : ‖P‖ ≤ 1) (hC : ‖C‖ ≤ 1)
     (hv : ‖v‖ ≤ 1) (hu : ‖u‖ ≤ 1) (hpn : ‖pn‖ = 1) (hpm : ‖pm‖ = 1) (ht : t = a * (1 + μ * v) + ν * u)
@@ -193,7 +193,7 @@ theorem chain {Y P F pn pm E t a v u C lc μ ν : Qbar l} (hμ : ‖μ‖ < 1) (
   rwa [← e, norm_mul, norm_mul, hpn, hpm, one_mul, one_mul] at h
 
 /- English proof (translation)
-Establish `hl0 : l ≠ 0` using `(Fact.out : l.Prime).ne_zero`. Establish `hpos : ∀ g : SL(2, ℤ), 0 < (g : Matrix (Fin 2) (Fin 2) ℤ).det` using `fun g => by rw [g.det_coe]; exact one_pos`. Establish `h` using `isDiam_mul (isDiam_sgD_of_coprime (l := l) hl0 ha) (isDiam_sgD_of_coprime (l := l) hl0 hb)`. Establish `h' : IsDiam N l k (sgD N l a * sgD N l b)` using `⟨h.1, h.2.trans ((ZMod.natCast_eq_natCast_iff _ _ _).2 (by rw [mul_comm]; exact hk.symm))⟩`. Rewrite using `[Tower.diam, Tower.diam, Tower.diam, Tower.act_act Ω ε X l _ _ (hpos _) (hpos _) f, ← X.act_isDiam_eq hf h', Matrix.SpecialLinearGroup.coe_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem diam_diam {ε : Ω →+* ℂ} (X : Tower Ω ε) {N w a b k : ℕ} (ha : Nat.Coprime a N) (hb : Nat.Coprime b N)
     (hk : k ≡ a * b [MOD N]) {f : X.Fn l} (hf : f ∈ X.B N l w) : X.diam N l b (X.diam N l a f) = X.diam N l k f := by
@@ -206,11 +206,11 @@ theorem diam_diam {ε : Ω →+* ℂ} (X : Tower Ω ε) {N w a b k : ℕ} (ha : 
     Matrix.SpecialLinearGroup.coe_mul]
 
 /- English proof (translation)
-Use `⟨Submodule.sum_mem _ fun δ _ => Submodule.smul_mem _ _ (GlobalTheory.CyclotomicQExpansion.ThnEx.diam_B X N l w _ (NeZero.pos N) hNl (ZMod.val_coe_unit_coprime δ) f hf), fun d hd => ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum, Finset.smul_sum, ← Equiv.sum_comp (Equiv.mulRight (ZMod.unitOfCoprime d hd)) (fun δ => χ d • u δ • X.diam N l (δ : ZMod N).val f)]`. Use `Finset.sum_congr rfl fun δ _ => ?_` and prove the remaining obligations. Establish `hk : ((δ * ZMod.unitOfCoprime d hd : (ZMod N)ˣ) : ZMod N).val ≡ (δ : ZMod N).val * d [MOD N]`. Rewrite using `[← ZMod.natCast_eq_natCast_iff]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `h1` using `hχ _ _ _ (ZMod.val_coe_unit_coprime δ) hd hk`. Establish `h2` using `hu (δ * ZMod.unitOfCoprime d hd)`. Establish `h3 : χ d * u (δ * ZMod.unitOfCoprime d hd) = u δ`. Rewrite `h2` using `[h1]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take the linear combination `(-(χ d * u (δ * ZMod.unitOfCoprime d hd))) * hu δ + u δ * h2`. Rewrite using `[map_smul, diam_diam X (ZMod.val_coe_unit_coprime δ) hd hk hf, Equiv.coe_mulRight, smul_smul, h3]`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 -/
 theorem inChi_avg {ε : Ω →+* ℂ} (X : Tower Ω ε) {N : ℕ} [NeZero N] (hNl : Nat.Coprime N l) {w : ℕ} {χ : ℕ → ℤ_[l]}
     (hχ : ∀ a b k : ℕ, Nat.Coprime a N → Nat.Coprime b N → k ≡ a * b [MOD N] → χ k = χ a * χ b)
@@ -231,17 +231,17 @@ theorem inChi_avg {ε : Ω →+* ℂ} (X : Tower Ω ε) {N : ℕ} [NeZero N] (hN
   rw [map_smul, diam_diam X (ZMod.val_coe_unit_coprime δ) hd hk hf, Equiv.coe_mulRight, smul_smul, h3]
 
 /- English proof (translation)
-Establish `hint : ∀ {b : X.Fn l} {Φ : HahnSeries ℚ Ω}, GlobalTheory.Glue.IsThB X A N l n b Φ → ∀ r, ‖j (Φ.coeff r)‖ ≤ 1` using `fun ⟨_, _, _, _, h, _⟩ r => (hj _).1 (h r)`. Establish `happ : ∀ (a : ℤ_[l]) (z : Qbar l), ‖z‖ ≤ 1 → ‖((a.appr n : ℕ) : Qbar l) * z - algebraMap ℤ_[l] (Qbar l) a * z‖ ≤ ‖(l : Qbar l) ^ n‖` using `fun a z hz => by`. Take `⟨q, hq⟩` from `Ideal.mem_span_singleton.1 (PadicInt.appr_spec n a)`. Establish `h` using `congrArg (algebraMap ℤ_[l] (Qbar l)) hq`. Rewrite `h` using `[map_sub, map_natCast, map_mul, map_pow, map_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← sub_mul, norm_mul, norm_sub_rev, h]`. Use `(mul_le_of_le_one_right (norm_nonneg _) hz).trans ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_of_le_one_right (norm_nonneg _) (norm_algebraMap_le q)`. Establish `key : ∀ (a a' : ℤ_[l]) {b b' : X.Fn l} {Φ Φ' : HahnSeries ℚ Ω}, b ∈ X.B N l w → b' ∈ X.B N l w → GlobalTheory.Glue.IsThB X A N l n b Φ → GlobalTheory.Glue.IsThB X A N l n b' Φ' → ∃ Ψ, GlobalTheory.Glue.IsThB X A N l n (a • b + a' • b') Ψ ∧ ∀ r, ‖j (Ψ.coeff r) - (algebraMap ℤ_[l] …`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a a' b b' Φ Φ' hb hb' h h'`. Use `⟨_, GlobalTheory.ThAdd.isThB_add Ω ε X A N l n w b b' hnon hb hb' a a' Φ Φ' h h', fun r => ?_⟩` and prove the remaining obligations. Simplify using `only [HahnSeries.coeff_add, HahnSeries.coeff_smul, smul_eq_mul, map_add, map_mul, map_natCast]`. Rewrite using `[add_sub_add_comm]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (happ _ _ (hint h r)) (happ _ _ (hint h' r)))`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `hT using Finset.Nonempty.cons_induction with`. Consider the case `singleton i`. Take `⟨Ψ, h1, h2⟩` from `key (u i) 0 (hf i) (hf i) (hφ i) (hφ i)`. Conclude with `⟨Ψ, by simpa using h1, fun r => by simpa [Cg] using h2 r⟩`. Consider the case `cons i T hi _ ih`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Φ, h1, h2⟩` from `ih`. Take `⟨Ψ, h3, h4⟩` from `key (u i) 1 (hf i) (Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (hf i)) (hφ i) h1`. Use `⟨Ψ, by simpa [Finset.sum_cons, -Finset.cons_eq_insert] using h3, fun r => ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_cons]`. Unfold `Cg`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← sub_add_sub_cancel _ (algebraMap ℤ_[l] (Qbar l) (u i) * j ((φ i).coeff r) + algebraMap ℤ_[l] (Qbar l) 1 * j (Φ.coeff r))]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (h4 r) ?_)` and prove the remaining obligations. Rewrite using `[add_sub_add_left_eq_sub, map_one, one_mul]`. Conclude with `h2 r`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isThB_sum [IsAlgClosed Ω] {ε : Ω →+* ℂ} (X : Tower Ω ε) {A : ValuationSubring Ω} {j : Ω →+* Qbar l}
     (hj : ∀ z : Ω, z ∈ A ↔ ‖j z‖ ≤ 1) (hnon : (l : Ω) ∈ A.nonunits) {N w n : ℕ} {ι : Type} (T : Finset ι) (hT : T.Nonempty)
@@ -285,7 +285,7 @@ theorem exists_isThB_sum [IsAlgClosed Ω] {ε : Ω →+* ℂ} (X : Tower Ω ε) 
     exact h2 r
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Fintype.card ι, fun i => o ((Fintype.equivFin ι).symm i), fun i => w ((Fintype.equivFin ι).symm i), fun _ => how _, fun s hs hc => by rw [(Fintype.equivFin ι).symm.sum_comp fun i => o i * (j (s (w i)) - j (w i))] exact H s hs hc⟩`.
+Supply the required witnesses or components.
 -/
 theorem htCoL_of_fintype {A : ValuationSubring Ω} {c : Coef l} {j : Ω →+* Qbar l}
     {Z : ∀ r : ℕ, G ℚ Ω → (ZMod (l ^ r))ˣ → Qbar l} {m c₀ : ℕ} {y : (ZMod (l ^ m))ˣ} {h : Qbar l} {ι : Type} [Fintype ι]
@@ -299,7 +299,7 @@ theorem htCoL_of_fintype {A : ValuationSubring Ω} {c : Coef l} {j : Ω →+* Qb
       exact H s hs hc⟩
 
 /- English proof (translation)
-Establish `h2` using `GlobalTheory.KummerEisensteinGalois.l_pow_mul_norm (l := l) (le_refl k)`. Rewrite `h2` using `[Nat.sub_self, pow_zero, norm_one]`. Rewrite using `[norm_mul, mul_comm, ← h2]`. Conclude with `mul_le_mul_of_nonneg_right h (norm_nonneg _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_pow_mul_le {a : Qbar l} {k : ℕ} (h : ‖a‖ ≤ (l : ℝ) ^ k) : ‖(l : Qbar l) ^ k * a‖ ≤ 1 := by
   have h2 := GlobalTheory.KummerEisensteinGalois.l_pow_mul_norm (l := l) (le_refl k)

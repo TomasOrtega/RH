@@ -6,23 +6,21 @@ open Ad3 Ad3.S
 namespace GlobalTheory.CompanionTheory.LocalSeries
 
 /- English proof (translation)
-Introduce `hE2a hE2b k N χ a hEig hk p hp α β y s hα hβ hsum hprod hr hy hs`. Establish `hp0 : (p : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr hp.ne_zero`. Establish `hpos : 0 < p` using `hp.pos`. Use `set c : ℂ := χ p with hc`. Use `set P : ℂ := (p : ℂ) ^ (k - 1) with hP`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcP : c * P ≠ 0` using `by rw [← hprod]; exact mul_ne_zero hα hβ`. Establish `hc0 : c ≠ 0` using `left_ne_zero_of_mul hcP`. Establish `hP0 : P ≠ 0` using `right_ne_zero_of_mul hcP`. Establish `hX : ‖y * (p : ℂ) ^ (-s)‖ < 1`. Rewrite using `[norm_mul, Complex.norm_natCast_cpow_of_pos hpos]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h1 : (p : ℝ) ^ (-s).re < 1`. Apply `Real.rpow_lt_one_of_one_lt_of_neg` to reduce the goal to its premises. Conclude with `hp.one_lt` after adjusting the coercions. Simplify using `using hs`. Establish `h2 : 0 ≤ (p : ℝ) ^ (-s).re` using `by positivity`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hpow : (p : ℂ) ^ (-(s + k - 1)) = (p : ℂ) ^ (-s) * P⁻¹`. Establish `hk1 : ((k : ℂ) - 1) = ((k - 1 : ℕ) : ℂ)`. Rewrite using `[Nat.cast_sub hk]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `: -(s + k - 1) = -s + -(((k - 1 : ℕ) : ℂ))`. Rewrite using `[← hk1]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, Complex.cpow_add _ _ hp0, Complex.cpow_neg (p : ℂ) ((k - 1 : ℕ) : ℂ), Complex.cpow_natCast]`. Establish `hmain` using `hE2b (α / β) (y * (p : ℂ) ^ (-s)) hr hX`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hinv : c⁻¹ * β ^ 2 * P⁻¹ = (α / β)⁻¹`. Establish `h1 : c⁻¹ * P⁻¹ = (α * β)⁻¹` using `by rw [hprod, mul_inv]`. Combine the equalities or inequalities in the displayed calculation. Establish `hterm : ∀ j : ℕ, c⁻¹ ^ j * a (p ^ (2 * j)) * (y * (p : ℂ) ^ (-(s + k - 1))) ^ j = (∑ i ∈ Finset.range (2 * j + 1), (α / β) ^ i) * ((α / β)⁻¹ * (y * (p : ℂ) ^ (-s))) ^ j`. Introduce `j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcoef : a (p ^ (2 * j)) = β ^ (2 * j) * ∑ i ∈ Finset.range (2 * j + 1), (α / β) ^ i`. Rewrite using `[(hE2a k N χ a hEig).2 p hp α β hsum hprod (2 * j), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `hi' : i ≤ 2 * j` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hi)`. Establish `hb : β ^ (2 * j) = β ^ (2 * j - i) * β ^ i`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[← pow_add, Nat.sub_add_cancel hi']`. Rewrite using `[hb, div_pow]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hcoef, hpow, ← hinv, pow_mul β 2 j]`. Simplify using `only [mul_pow]`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[funext hterm]`. Conclude with `hmain`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_prime_local_series : E2a → E2b → ∀ (k N : ℕ) (χ : DirichletCharacter ℂ N) (a : ℕ → ℂ), IsEig k N χ a → 1 ≤ k → ∀ p : ℕ, p.Prime → ∀ α β y s : ℂ, α ≠ 0 → β ≠ 0 → α + β = a p → α * β = χ p * (p : ℂ) ^ (k - 1) → ‖α / β‖ = 1 → ‖y‖ ≤ 1 → 0 < s.re → HasSum (fun j : ℕ => (χ p)⁻¹ ^ j * a (p ^ (2 * j)) * (y * (p : ℂ) ^ (-(s + k - 1))) ^ j) ((1 - (y * (p : ℂ) ^ (-s)) ^ 2) * ((1 - α / β * (y * (p : ℂ) ^ (-s)))⁻¹ * (1 - y * (p : ℂ) ^ (-s))⁻¹ * (1 - (α / β)⁻¹ * (y * (p : ℂ) ^ (-s)))⁻¹)) := by
   intro hE2a hE2b k N χ a hEig hk p hp α β y s hα hβ hsum hprod hr hy hs

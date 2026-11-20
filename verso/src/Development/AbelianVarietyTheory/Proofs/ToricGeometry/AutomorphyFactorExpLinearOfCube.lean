@@ -6,19 +6,17 @@ open scoped BigOperators Real
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `set B : V →L[ℂ] ℂ := fderiv ℂ h 0 with hB`. Establish `hder : ∀ w, HasFDerivAt h (h w • B) w`. Introduce `w`. Establish `e : h = fun u => h w * h (u - w)`. Use function extensionality and compare the values at `u`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hadd]`. Use `congr 1`. Normalize the expressions using the abelian group laws. Establish `h1 : HasFDerivAt h B (w - w)`. Rewrite using `[sub_self]`.
+Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(hd 0).hasFDerivAt`. Establish `h2 : HasFDerivAt (fun u => h (u - w)) B w`. Use `HasFDerivAt.comp (f := fun u => u - w) w h1 ((hasFDerivAt_id w).sub_const w)` as an intermediate fact. Simplify `this` using `[Function.comp_def]`. Establish `h3` using `h2.const_mul (h w)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h3` using `[← e]`. Conclude with `h3`. Establish `hφ : ∀ w, HasFDerivAt (fun u => h u * cexp (-(B u))) (0 : V →L[ℂ] ℂ) w`. Introduce `w`. Establish `h1 : HasFDerivAt (fun u => cexp (-(B u))) (cexp (-(B w)) • (-B)) w` using `(B.hasFDerivAt.neg).cexp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `(hder w).mul h1`. Establish `e : h w • cexp (-B w) • -B + cexp (-B w) • h w • B = 0`. Rewrite using `[smul_comm (h w) (cexp (-B w)), smul_neg, smul_neg, neg_add_cancel]`. Rewrite `h2` using `[e]`. Conclude with `h2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hc` using `is_const_of_fderiv_eq_zero (𝕜 := ℂ) (f := fun u => h u * cexp (-(B u))) (fun w => (hφ w).differentiableAt) (fun w => (hφ w).fderiv) z 0`. Simplify using `only [h0, map_zero, neg_zero, Complex.exp_zero, mul_one] at hc`. Rewrite `hc` using `[Complex.exp_neg]`. Use `Complex.exp_ne_zero (B z)` as an intermediate fact. Clear denominators, using `at hc` for the nonvanishing conditions.
-
-Conclude with `hc`.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem entire_hom_eq_cexp_fderiv {V : Type*} [NormedAddCommGroup V] [NormedSpace ℂ V]
     (h : V → ℂ) (hd : Differentiable ℂ h) (h0 : h 0 = 1) (hadd : ∀ y z, h (y + z) = h y * h z)
@@ -55,7 +53,7 @@ theorem entire_hom_eq_cexp_fderiv {V : Type*} [NormedAddCommGroup V] [NormedSpac
   exact hc
 
 /- English proof (translation)
-Establish `h1 : HasFDerivAt (fun u => cexp (B u)) (cexp (B 0) • B) 0` using `B.hasFDerivAt.cexp`. Establish `h2 : HasFDerivAt (fun u => cexp (C u)) (cexp (C 0) • C) 0` using `C.hasFDerivAt.cexp`. Establish `e : (fun u => cexp (B u)) = fun u => cexp (C u)` using `funext h`. Rewrite `h1` using `[e]`. Simplify using `using h1.unique h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem clm_eq_of_cexp_eq {V : Type*} [NormedAddCommGroup V] [NormedSpace ℂ V]
     (B C : V →L[ℂ] ℂ) (h : ∀ z, cexp (B z) = cexp (C z)) : B = C := by
@@ -66,7 +64,7 @@ theorem clm_eq_of_cexp_eq {V : Type*} [NormedAddCommGroup V] [NormedSpace ℂ V]
   simpa using h1.unique h2
 
 /- English proof (translation)
-Establish `e : (Finset.univ : Finset (Finset (Fin 3))) = {∅, {0}, {1}, {2}, {0, 1}, {0, 2}, {1, 2}, {0, 1, 2}}` using `by decide`. Rewrite using `[e]`. Repeat the step `rw [Finset.prod_insert (by decide)]` while it applies. Rewrite using `[Finset.prod_singleton]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_finset_fin_three {M : Type*} [CommMonoid M] (f : Finset (Fin 3) → M) :
     ∏ I, f I = f ∅ * (f {0} * (f {1} * (f {2} * (f {0, 1} * (f {0, 2} * (f {1, 2} *
@@ -78,59 +76,53 @@ theorem prod_finset_fin_three {M : Type*} [CommMonoid M] (f : Finset (Fin 3) →
   rw [Finset.prod_singleton]
 
 /- English proof (translation)
-Introduce `g ι W c hWo hcov _ _ _ T _ hT0 _ Λ _ _ hWp hcp hTp fr κ ⟨hfd, hf0, hfc⟩ hcube`. Use `choose σ hσ using hcov`. Establish `hf0' : ∀ i z, z ∈ W i → fr i z ≠ 0` using `fun i z hz => hf0 i z hz (Set.mem_univ _)`. Establish `hfa : ∀ i z, z ∈ W i → DifferentiableAt ℂ (fr i) z` using `fun i z hz => by`. Use `hfd i` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[Set.inter_univ]`. Conclude with `this.differentiableAt ((hWo i).mem_nhds hz)`. Set `α : Λ → (Fin g → ℂ) → ℂ` to `fun l z => fr (σ z) z / fr (σ z) (z + l)`. Establish `hα : ∀ (l : Λ) i z, z ∈ W i → α l z = fr i z / fr i (z + l)`. Introduce `l i z hz`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzl : z + l ∈ W i` using `(hWp i z l l.2).2 hz`. Establish `hzl' : z + l ∈ W (σ z)` using `(hWp _ z l l.2).2 (hσ z)`. Establish `e1` using `hfc (σ z) i z (hσ z) hz (Set.mem_univ _)`. Establish `e2` using `hfc (σ z) i (z + l) hzl' hzl (Set.mem_univ _)`. Rewrite `e2` using `[hcp _ _ z l l.2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc0 : c (σ z) i z ≠ 0`. Introduce `h`. Rewrite `e1` using `[h, zero_mul]`. Conclude with `hf0' _ _ (hσ z) e1`. Use `show fr (σ z) z / fr (σ z) (z + l) = _`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[e1, e2, mul_div_mul_left _ _ hc0]`. Establish `hα0 : ∀ (l : Λ) z, α l z ≠ 0` using `fun l z => div_ne_zero (hf0' _ _ (hσ z)) (hf0' _ _ ((hWp _ z l l.2).2 (hσ z)))`. Establish `hαd : ∀ l : Λ, Differentiable ℂ (α l)`. Introduce `l z`. Establish `hzl' : z + l ∈ W (σ z)` using `(hWp _ z l l.2).2 (hσ z)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : DifferentiableAt ℂ (fun w => fr (σ z) (w + l)) z` using `(hfa _ _ hzl').comp z (differentiableAt_id.add_const _)`. Establish `h2 : DifferentiableAt ℂ (fun w => fr (σ z) w / fr (σ z) (w + l)) z`. Simplify using `only [div_eq_mul_inv]`. Conclude with `(hfa _ _ (hσ z)).mul (h1.inv (hf0' _ _ hzl'))`. Use `h2.congr_of_eventuallyEq ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `filter_upwards [(hWo (σ z)).mem_nhds (hσ z)] with w hw`. Conclude with `hα l _ w hw`. Establish `hαc : ∀ (l m : Λ) z, α (l + m) z = α l z * α m (z + l)`. Introduce `l m z`. Establish `hzl' : z + l ∈ W (σ z)` using `(hWp _ z l l.2).2 (hσ z)`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite using `[hα (l + m) _ z (hσ z), hα l _ z (hσ z), hα m _ (z + l) hzl', Submodule.coe_add, ← add_assoc]`. Use `hf0' _ _ hzl'` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish `hcubeα : ∀ (l : Λ) y z, α l (y + z) * α l 0 = α l y * α l z`. Introduce `l y z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `x : Fin 3 → Fin g → ℂ` to `![0, y, z]`. Set `L : Fin 3 → Fin g → ℂ` to `![l, 0, 0]`. Establish `hL : ∀ a, L a ∈ Λ`. Introduce `a`. Use `fin_cases a`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `l.2`. Conclude with `Λ.zero_mem`. Conclude with `Λ.zero_mem`. Set `j : Finset (Fin 3) → ι` to `fun I => σ (∑ a ∈ I, x a)`. Establish `hj : ∀ I : Finset (Fin 3), ∑ a ∈ I, x a ∈ W (j I)` using `fun I => hσ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hs : ∀ I : Finset (Fin 3), ∑ a ∈ I, (x + L) a = ∑ a ∈ I, x a + ∑ a ∈ I, L a`. Introduce `I`. Simplify using `only [Pi.add_apply, Finset.sum_add_distrib]`. Establish `hj' : ∀ I : Finset (Fin 3), ∑ a ∈ I, (x + L) a ∈ W (j I)`. Introduce `I`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[hs]`. Conclude with `(hWp _ _ _ (Λ.sum_mem fun a _ => hL a)).2 (hj I)`. Establish `e1` using `hcube j x hj`. Establish `e2` using `hcube j (x + L) hj'`. Establish `hκ : κ ≠ 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `h`. Rewrite `e1` using `[h, zero_mul]`. Conclude with `hT0 j x hj e1`. Rewrite `e2` using `[hTp j x L hL, e1]`. Establish `e3` using `mul_left_cancel₀ hκ e2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e4 : ∏ I : Finset (Fin 3), (fr (j I) (∑ a ∈ I, x a) / fr (j I) (∑ a ∈ I, x a + ∑ a ∈ I, L a)) ^ ((-1 : ℤ) ^ (3 - I.card)) = 1`. Simplify using `only [div_zpow, Finset.prod_div_distrib]`. Simplify using `only [hs] at e3`. Rewrite using `[← e3]`. Conclude with `div_self (Finset.prod_ne_zero_iff.2 fun I _ => zpow_ne_zero _ (hf0' _ _ (hj I)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : ∀ (m : Λ) w, (m : Fin g → ℂ) = 0 → α m w = 1`. Introduce `m w hm`. Use `show fr (σ w) w / fr (σ w) (w + m) = 1`. Rewrite using `[hm, add_zero]`. Conclude with `div_self (hf0' _ _ (hσ w))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hl : ∀ (m : Λ) w w', (m : Fin g → ℂ) = l → w = w' → α m w = α l w'`. Introduce `m w w' hm hw`. Rewrite using `[Subtype.ext hm, hw]`. Set `F : Finset (Fin 3) → ℂ` to `fun I => α ⟨∑ a ∈ I, L a, Λ.sum_mem fun a _ => hL a⟩ (∑ a ∈ I, x a)`. Establish `e6 : ∏ I : Finset (Fin 3), F I ^ ((-1 : ℤ) ^ (3 - I.card)) = 1` using `e4`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions.
 
-Establish `f0 : F ∅ = 1` using `hz _ _ (by simp)`. Establish `f1 : F {0} = α l 0` using `hl _ _ _ (by simp [L]) (by simp [x])`. Establish `f2 : F {1} = 1` using `hz _ _ (by simp [L])`. Establish `f3 : F {2} = 1` using `hz _ _ (by simp [L])`. Establish `f4 : F {0, 1} = α l y` using `hl _ _ _ (by simp [L]) (by simp [x])`.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Introduce a local definition for the expression.
 
-Establish `f5 : F {0, 2} = α l z` using `hl _ _ _ (by simp [L]) (by simp [x])`. Establish `f6 : F {1, 2} = 1` using `hz _ _ (by simp [L])`. Establish `f7 : F {0, 1, 2} = α l (y + z)` using `hl _ _ _ (by simp [L]) (by simp [x])`. Use `clear e4`. Establish `e4` using `e6`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e4` using `[prod_finset_fin_three, f0, f1, f2, f3, f4, f5, f6, f7]`. Establish `c1 : ({0} : Finset (Fin 3)).card = 1` using `rfl`. Establish `c2 : ({0, 1} : Finset (Fin 3)).card = 2` using `rfl`. Establish `c3 : ({0, 2} : Finset (Fin 3)).card = 2` using `rfl`. Establish `c4 : ({0, 1, 2} : Finset (Fin 3)).card = 3` using `rfl`.
+Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Rewrite `e4` using `[c1, c2, c3, c4]`. Evaluate the numerical expressions using `at e4`. Use `hα0 l y` as an intermediate fact. Use `hα0 l z` as an intermediate fact. Clear denominators, using `at e4` for the nonvanishing conditions.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take the linear combination `e4`. Set `B₀ : Λ → ((Fin g → ℂ) →L[ℂ] ℂ)` to `fun l => fderiv ℂ (fun z => α l z / α l 0) 0`. Establish `hexp : ∀ (l : Λ) z, α l z = α l 0 * cexp (B₀ l z)`. Introduce `l z`. Establish `h0` using `hα0 l 0`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `entire_hom_eq_cexp_fderiv (fun z => α l z / α l 0) (by simp only [div_eq_mul_inv]; exact (hαd l).mul_const _) (div_self h0) (fun y z => by` as an intermediate fact. Use `hcubeα l y z` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Take the linear combination `this) z`. Use `show _ = _ * cexp (fderiv ℂ (fun z => α l z / α l 0) 0 z)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← this]`. Clear the denominators using the available nonvanishing facts. Establish `ha : ∀ l m : Λ, α (l + m) 0 = α l 0 * α m 0 * cexp (B₀ l m)`. Introduce `l m`. Rewrite using `[add_comm, hαc, zero_add, hexp l m]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hBadd : ∀ l m : Λ, B₀ (l + m) = B₀ l + B₀ m`. Introduce `l m`. Apply `clm_eq_of_cexp_eq` to reduce the goal to its premises. Introduce `z`.
-
-Establish `e` using `hαc m l z`. Rewrite `e` using `[add_comm m l, hexp (l + m), hexp m, hexp l, ha, map_add, Complex.exp_add]`. Rewrite using `[ContinuousLinearMap.add_apply, Complex.exp_add]`. Establish `h1 : α l 0 * α m 0 * cexp (B₀ l m) ≠ 0` using `mul_ne_zero (mul_ne_zero (hα0 _ _) (hα0 _ _)) (Complex.exp_ne_zero _)`. Apply `mul_left_cancel₀ h1` to reduce the goal to its premises.
-
-Take the linear combination `e`. Use `⟨fun l => α l 0, AddMonoidHom.mk' (fun l => (B₀ l).toLinearMap) ?_, fun l => hα0 l 0, ha, ?_⟩` and prove the remaining obligations. Introduce `l m`. Rewrite using `[hBadd]`. Both sides reduce to the same expression.
-
-Introduce `l i z hz`. Establish `e` using `hexp l z`. Rewrite `e` using `[hα l i z hz, div_eq_iff (hf0' _ _ ((hWp _ z l l.2).2 hz))]`. Conclude with `e`.
+A detailed English derivation is pending.
 -/
 theorem automorphyFactor_exp_linear_of_cube :
     (∀ (g : ℕ) {ι : Type} (W : ι → Set (Fin g → ℂ)) (c : ι → ι → (Fin g → ℂ) → ℂ), (∀ i, IsOpen (W i)) → (∀ z, ∃ i, z ∈ W i) → (∀ i j, DifferentiableOn ℂ (c i j) (W i ∩ W j)) → (∀ i j z, z ∈ W i → z ∈ W j → c i j z ≠ 0) → (∀ i j k z, z ∈ W i → z ∈ W j → z ∈ W k → c i j z * c j k z = c i k z) → ∀ (T : (Finset (Fin 3) → ι) → (Fin 3 → Fin g → ℂ) → ℂ), (∀ j, DifferentiableOn ℂ (T j) {x | (∀ I : Finset (Fin 3), ∑ a ∈ I, x a ∈ W (j I))}) → (∀ j x, (∀ I : Finset (Fin 3), ∑ a ∈ I, x a ∈ W (j I)) → T j x ≠ 0) → (∀ j j' x, (∀ I : Finset (Fin 3), ∑ a ∈ I, x a ∈ W (j I)) → (∀ I : Finset (Fin 3), ∑ a ∈ I, x a ∈ W (j' I)) → T j x = (∏ I : Finset (Fin 3), c (j I) (j' I) (∑ a ∈ I, x a) ^ ((-1 : ℤ) ^ (3 - I.card))) * T j' x) → ∀ (Λ : Submodule ℤ (Fin g → ℂ)), DiscreteTopology Λ → Submodule.span ℝ (Λ : Set (Fin g → ℂ)) = ⊤ → (∀ i z, ∀ l ∈ Λ, z + l ∈ W i ↔ z ∈ W i) → (∀ i j z, ∀ l ∈ Λ, c i j (z + l) = c i j z) → (∀ j x (l : Fin 3 → Fin g → ℂ), (∀ a, l a ∈ Λ) → T j (x + l) = T j x) → ∀ (fr : ι → (Fin g → ℂ) → ℂ) (κ : ℂ), ((∀ i, DifferentiableOn ℂ (fr i) (W i ∩ Set.univ)) ∧ (∀ i z, z ∈ W i → z ∈ Set.univ → fr i z ≠ 0) ∧ (∀ i j z, z ∈ W i → z ∈ W j → z ∈ Set.univ → fr i z = c i j z * fr j z)) → (∀ j x, (∀ I : Finset (Fin 3), ∑ a ∈ I, x a ∈ W (j I)) → T j x = κ * ∏ I : Finset (Fin 3), fr (j I) (∑ a ∈ I, x a) ^ ((-1 : ℤ) ^ (3 - I.card))) → ∃ (a : Λ → ℂ) (B : Λ →+ ((Fin g → ℂ) →ₗ[ℂ] ℂ)), (∀ l, a l ≠ 0) ∧ (∀ l m : Λ, a (l + m) = a l * a m * cexp (B l m)) ∧ ∀ (l : Λ) i z, z ∈ W i → fr i z = a l * cexp (B l z) * fr i (z + l)) := by

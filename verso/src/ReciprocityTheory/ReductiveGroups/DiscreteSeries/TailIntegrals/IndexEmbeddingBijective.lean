@@ -12,13 +12,13 @@ open Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.Fourier
 namespace FormulaFAux
 
 /- English proof (translation)
-Take `⟨j', hj'⟩` from `Fin.exists_succAbove_eq hij.symm`. Set `e` to `MeasurableEquiv.piFinSuccAbove (fun _ : Fin (n + 1) => ℂ) i`. Establish `he : MeasurePreserving e volume ((volume : Measure ℂ).prod (volume : Measure (Fin n → ℂ)))` using `measurePreserving_piFinSuccAbove (fun _ : Fin (n + 1) => (volume : Measure ℂ)) i`. Establish `h1 : MeasurePreserving (fun p : (Fin n → ℂ) × ℂ => (p.1, p.2 + c * p.1 j')) ((volume : Measure (Fin n → ℂ)).prod (volume : Measure ℂ)) ((volume : Measure (Fin n → ℂ)).prod (volume : Measure ℂ))`. Use `(MeasurePreserving.id (volume : Measure (Fin n → ℂ))).skew_product (g := fun x a => a + c * x j') ?_ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `measurable_snd.add (measurable_const.mul ((measurable_pi_apply j').comp measurable_fst))`. Conclude with `Filter.Eventually.of_forall fun x => map_add_right_eq_self (volume : Measure ℂ) (c * x j')`. Establish `hS : MeasurePreserving (fun p : ℂ × (Fin n → ℂ) => (p.1 + c * p.2 j', p.2)) ((volume : Measure ℂ).prod (volume : Measure (Fin n → ℂ))) ((volume : Measure ℂ).prod (volume : Measure (Fin n → ℂ)))` using `(Measure.measurePreserving_swap).comp (h1.comp Measure.measurePreserving_swap)`. Establish `key : (fun y : Fin (n + 1) → ℂ => Function.update y i (y i + c * y j)) = e.symm ∘ (fun p : ℂ × (Fin n → ℂ) => (p.1 + c * p.2 j', p.2)) ∘ e`. Use function extensionality and compare the values at `y`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `e.injective` to reduce the goal to its premises. Rewrite using `[Function.comp_apply, MeasurableEquiv.apply_symm_apply]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show Function.update y i (y i + c * y j) i = y i + c * y (i.succAbove j')`. Rewrite using `[hj']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use function extensionality and compare the values at `m show Function.update y i (y i + c * y j) (i.succAbove m) = y (i.succAbove m)`. Simplify using `[Function.update_apply, Fin.succAbove_ne]`. Rewrite using `[key]`. Conclude with `(MeasurePreserving.symm e he).comp (hS.comp he)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem shear_mp {n : ℕ} (i j : Fin (n + 1)) (hij : i ≠ j) (c : ℂ) :
     MeasurePreserving (fun y : Fin (n + 1) → ℂ => Function.update y i (y i + c * y j)) volume volume := by
@@ -53,12 +53,12 @@ theorem shear_mp {n : ℕ} (i j : Fin (n + 1)) (hij : i ≠ j) (c : ℂ) :
   exact (MeasurePreserving.symm e he).comp (hS.comp he)
 
 /- English proof (translation)
-Introduce `e` and use `h (congrArg Fin.val e)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem fne {n : ℕ} (a b : Fin n) (h : a.val ≠ b.val) : a ≠ b := fun e => h (congrArg Fin.val e)
 
 /- English proof (translation)
-Introduce `h`. Establish `h'` using `congrArg Fin.val h`. Simplify using `[wI, Fin.last] at h'`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem w_ne (k r' : ℕ) (hk : 1 ≤ k) : wI k r' 0 ≠ wI k r' (Fin.last k) := by
   intro h
@@ -71,15 +71,15 @@ def rotF (k r' : ℕ) (y : Fin (2 * r' + k + 1) → ℂ) : Fin (2 * r' + k + 1) 
     (wI k r' (Fin.last k)) (cc * (y (wI k r' 0) + y (wI k r' (Fin.last k))))
 
 /- English proof (translation)
-Take `⟨q, hqdef⟩ : ∃ q : ℂ, q = ((Real.sqrt 2 : ℝ) : ℂ)` from `⟨_, rfl⟩`. Establish `hq : q ^ 2 = 2`. Rewrite using `[hqdef, ← Complex.ofReal_pow, Real.sq_sqrt (by norm_num : (0 : ℝ) ≤ 2)]`. Evaluate the numerical expressions. Establish `hq0 : q ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Introduce `h`. Rewrite `hq` using `[h]`. Evaluate the numerical expressions using `at hq`. Establish `hcc : cc = q / 2`. Establish `hinv : cc = q⁻¹`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hqdef]`. Rewrite using `[hinv, eq_div_iff two_ne_zero, ← hq, pow_two, ← mul_assoc, inv_mul_cancel₀ hq0, one_mul]`. Establish `key : (fun y : Fin (N + 1) → ℂ => Function.update (Function.update y a (cc * (y a - y b))) b (cc * (y a + y b))) = (fun y : Fin (N + 1) → ℂ => Function.update y a (y a + -(q - 1) * y b)) ∘ ((fun y : Fin (N + 1) → ℂ => Function.update y b (y b + q / 2 * y a)) ∘ (fun y : Fin (N + 1 …`. Use function extensionality and compare the values at `y m`. Distinguish the cases in `hma : m = a`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Simplify using `[Function.update_apply, hma, hne, hne.symm, hcc]`. Take the linear combination `(y a - (q - 2) * y b) / 2 * hq`. Distinguish the cases in `hmb : m = b`. Simplify using `[Function.update_apply, hmb, hne, hne.symm, hcc]`. Take the linear combination `y b / 2 * hq`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Simplify using `[Function.update_apply, hma, hmb]`. Rewrite using `[key]`. Conclude with `(shear_mp a b hne _).comp ((shear_mp b a hne.symm _).comp (shear_mp a b hne _))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma measurePreserving_update_update_cc_rotation_of_ne {N : ℕ} (a b : Fin (N + 1)) (hne : a ≠ b) :
     MeasurePreserving (fun y : Fin (N + 1) → ℂ =>
@@ -113,7 +113,7 @@ private lemma measurePreserving_update_update_cc_rotation_of_ne {N : ℕ} (a b :
   exact (shear_mp a b hne _).comp ((shear_mp b a hne.symm _).comp (shear_mp a b hne _))
 
 /- English proof (translation)
-Conclude with `measurePreserving_update_update_cc_rotation_of_ne (wI k r' 0) (wI k r' (Fin.last k)) (w_ne k r' hk)`.
+A detailed English derivation is pending.
 -/
 theorem rot_mp (k r' : ℕ) (hk : 1 ≤ k) : MeasurePreserving (rotF k r') volume volume := by
   exact measurePreserving_update_update_cc_rotation_of_ne (wI k r' 0) (wI k r' (Fin.last k)) (w_ne k r' hk)
@@ -124,7 +124,7 @@ def ix2 (k r' : ℕ) : Fin (1 + r') ⊕ (Fin (1 + r') ⊕ Fin (k - 1)) → Fin (
   | Sum.inr (Sum.inr i) => ⟨r' + i.val + 1, by omega⟩
 
 /- English proof (translation)
-Rewrite using `[Fintype.bijective_iff_injective_and_card]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rintro (a | a | a) (b | b | b) h <;> (have := a.isLt; have := b.isLt; simp [ix2, Fin.ext_iff] at h ⊢ <;> omega)`. Simplify using `only [Fintype.card_sum, Fintype.card_fin]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem index_embedding_bijective (k r' : ℕ) (hk : 1 ≤ k) : Function.Bijective (ix2 k r') := by
   rw [Fintype.bijective_iff_injective_and_card]
@@ -139,9 +139,9 @@ def permF (k r' : ℕ) (z : Fin (2 * r' + k + 1) → ℂ) : (Fin (1 + r') → �
     fun i => z (ix2 k r' (Sum.inr (Sum.inr i))))
 
 /- English proof (translation)
-Set `E` to `Equiv.ofBijective (ix2 k r') (index_embedding_bijective k r' hk)`. Establish `h1` using `MeasurePreserving.symm _ (measurePreserving_piCongrLeft (fun _ : Fin (2 * r' + k + 1) => (volume : Measure ℂ)) E)`. Establish `h2` using `measurePreserving_sumPiEquivProdPi (fun _ : Fin (1 + r') ⊕ (Fin (1 + r') ⊕ Fin (k - 1)) => (volume : Measure ℂ))`. Establish `h3` using `measurePreserving_sumPiEquivProdPi (fun _ : Fin (1 + r') ⊕ Fin (k - 1) => (volume : Measure ℂ))`. Establish `h4` using `(MeasurePreserving.id (volume : Measure (Fin (1 + r') → ℂ))).prod h3`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5` using `h4.comp (h2.comp h1)`. Use `first`. Consider the case `exact h5`. Consider the case `(convert h5 using 1; funext z; rfl)`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem perm_mp (k r' : ℕ) (hk : 1 ≤ k) : MeasurePreserving (permF k r') volume volume := by
   let E := Equiv.ofBijective (ix2 k r') (index_embedding_bijective k r' hk)
@@ -157,17 +157,15 @@ theorem perm_mp (k r' : ℕ) (hk : 1 ≤ k) : MeasurePreserving (permF k r') vol
     | (convert h5 using 1; funext z; rfl)
 
 /- English proof (translation)
-Establish `hne` using `w_ne k r' hk`. Use `Prod.ext (funext fun j => ?_) (Prod.ext (funext fun j => ?_) (funext fun i => ?_))` and prove the remaining obligations. Use `j.isLt show rotF k r' y ⟨j.val, by omega⟩ = (hcoord k r' (y, 0)).1 j` as an intermediate fact. Rewrite using `[hc1 k r' hk, AN, dif_pos (by omega), aF]`. Use `split_ifs with hj`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hj' : j.val < r'` using `hj`. Establish `n1 : (⟨j.val, by omega⟩ : Fin (2 * r' + k + 1)) ≠ wI k r' (Fin.last k)` using `fne _ _ (by simp only [wI, Fin.val_last]; omega)`. Establish `n0 : (⟨j.val, by omega⟩ : Fin (2 * r' + k + 1)) ≠ wI k r' 0` using `fne _ _ (by simp only [wI, Fin.val_zero]; omega)`. Rewrite using `[rotF, Function.update_of_ne n1, Function.update_of_ne n0]`. Apply the tactic sequence `try rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hj' : ¬ j.val < r'` using `hj`. Establish `e : (⟨j.val, by omega⟩ : Fin (2 * r' + k + 1)) = wI k r' 0` using `Fin.ext (by simp only [wI, Fin.val_zero]; omega)`. Rewrite using `[e, rotF, Function.update_of_ne hne, Function.update_self]`. Use `j.isLt show rotF k r' y ⟨2 * r' + k - j.val, by omega⟩ = (hcoord k r' (y, 0)).2.1 j` as an intermediate fact. Rewrite using `[hc2, AN', dif_pos (by omega), aF']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `split_ifs with hj`. Establish `hj' : j.val < r'` using `hj`. Establish `n1 : (⟨2 * r' + k - j.val, by omega⟩ : Fin (2 * r' + k + 1)) ≠ wI k r' (Fin.last k)` using `fne _ _ (by simp only [wI, Fin.val_last]; omega)`. Establish `n0 : (⟨2 * r' + k - j.val, by omega⟩ : Fin (2 * r' + k + 1)) ≠ wI k r' 0` using `fne _ _ (by simp only [wI, Fin.val_zero]; omega)`. Rewrite using `[rotF, Function.update_of_ne n1, Function.update_of_ne n0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `try rfl`. Establish `hj' : ¬ j.val < r'` using `hj`. Establish `e : (⟨2 * r' + k - j.val, by omega⟩ : Fin (2 * r' + k + 1)) = wI k r' (Fin.last k)` using `Fin.ext (by simp only [wI, Fin.val_last]; omega)`. Rewrite using `[e, rotF, Function.update_self]`. Use `i.isLt show rotF k r' y ⟨r' + i.val + 1, by omega⟩ = (hcoord k r' (y, 0)).2.2.1 i` as an intermediate fact.
-
-Establish `n1 : (⟨r' + i.val + 1, by omega⟩ : Fin (2 * r' + k + 1)) ≠ wI k r' (Fin.last k)` using `fne _ _ (by simp only [wI, Fin.val_last]; omega)`. Establish `n0 : (⟨r' + i.val + 1, by omega⟩ : Fin (2 * r' + k + 1)) ≠ wI k r' 0` using `fne _ _ (by simp only [wI, Fin.val_zero]; omega)`. Rewrite using `[rotF, Function.update_of_ne n1, Function.update_of_ne n0]`. Apply the tactic sequence `try rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lin_eq (k r' : ℕ) (hk : 1 ≤ k) (y : Fin (2 * r' + k + 1) → ℂ) :
     permF k r' (rotF k r' y) = ((hcoord k r' (y, 0)).1, (hcoord k r' (y, 0)).2.1, (hcoord k r' (y, 0)).2.2.1) := by
@@ -216,7 +214,7 @@ def imF (k r' : ℕ) (q : (Fin (1 + r') → ℂ) × (Fin (1 + r') → ℂ) × (F
   (∑ j, q.2.1 j * star (q.1 j)).im
 
 /- English proof (translation)
-Apply `Continuous.measurable` to reduce the goal to its premises. Unfold `imF`. Use `fun_prop`.
+Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem imF_meas (k r' : ℕ) : Measurable (imF k r') := by
   apply Continuous.measurable
@@ -224,13 +222,13 @@ theorem imF_meas (k r' : ℕ) : Measurable (imF k r') := by
   fun_prop
 
 /- English proof (translation)
-Establish `hL : MeasurePreserving (fun y => permF k r' (rotF k r' y)) volume volume` using `(perm_mp k r' hk).comp (rot_mp k r' hk)`. Establish `hP` using `hL.prod (MeasurePreserving.id (volume : Measure ℝ))`. Establish `hSk : MeasurePreserving (fun z : ((Fin (1 + r') → ℂ) × (Fin (1 + r') → ℂ) × (Fin (k - 1) → ℂ)) × ℝ => (z.1, z.2 + imF k r' z.1)) volume volume`. Use `(MeasurePreserving.id (volume : Measure ((Fin (1 + r') → ℂ) × (Fin (1 + r') → ℂ) × (Fin (k - 1) → ℂ)))).skew_product (g := fun q t => t + imF k r' q) ?_ ?_` and prove the remaining obligations. Conclude with `measurable_snd.add ((imF_meas k r').comp measurable_fst)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `Filter.Eventually.of_forall fun q => map_add_right_eq_self (volume : Measure ℝ) (imF k r' q)`. Establish `hA1` using `measurePreserving_prodAssoc (volume : Measure (Fin (1 + r') → ℂ)) (volume : Measure ((Fin (1 + r') → ℂ) × (Fin (k - 1) → ℂ))) (volume : Measure ℝ)`. Establish `hA2` using `measurePreserving_prodAssoc (volume : Measure (Fin (1 + r') → ℂ)) (volume : Measure (Fin (k - 1) → ℂ)) (volume : Measure ℝ)`. Establish `hA3` using `(MeasurePreserving.id (volume : Measure (Fin (1 + r') → ℂ))).prod hA2`. Establish `hAll` using `hA3.comp (hA1.comp (hSk.comp hP))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `key : hcoord k r' = fun x : HPar k r' => ((permF k r' (rotF k r' x.1)).1, (permF k r' (rotF k r' x.1)).2.1, (permF k r' (rotF k r' x.1)).2.2, x.2 + imF k r' (permF k r' (rotF k r' x.1)))`. Use function extensionality and compare the values at `x`. Take `⟨y, t⟩` from `x`. Simplify using `only`. Rewrite using `[lin_eq k r' hk y]`.
+Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[key]`. Conclude with `hAll`.
+A detailed English derivation is pending.
 -/
 theorem hcoord_mp (k r' : ℕ) (hk : 1 ≤ k) : MeasurePreserving (hcoord k r') volume volume := by
   have hL : MeasurePreserving (fun y => permF k r' (rotF k r' y)) volume volume :=
@@ -262,7 +260,7 @@ theorem hcoord_mp (k r' : ℕ) (hk : 1 ≤ k) : MeasurePreserving (hcoord k r') 
   exact hAll
 
 /- English proof (translation)
-Introduce `k r' hk` and use `⟨fun x l => del_formula k r' hk x l, hcoord_mp k r' hk⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem formulaF_all : FormulaF := fun k r' hk => ⟨fun x l => del_formula k r' hk x l, hcoord_mp k r' hk⟩
 

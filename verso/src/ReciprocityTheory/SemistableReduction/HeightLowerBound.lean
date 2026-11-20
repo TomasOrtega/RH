@@ -5,13 +5,13 @@ namespace ReciprocityTheory.MultiplicativeHeights
 open MeasureTheory MvPolynomial NumberField
 
 /- English proof (translation)
-Introduce `K _ _ B n a f hn hf hmh`. Take `⟨s, hs⟩ : ∃ s, s ∈ f.support` from `Finset.nonempty_iff_ne_empty.mpr (by rwa [Ne, MvPolynomial.support_eq_empty])`. Establish `hc : f.coeff s ≠ 0` using `MvPolynomial.mem_support_iff.mp hs`. Establish `h1` using `neg_log_norm_coeff_le_finitePlaces f s hs`. Establish `h2 : ∀ σ : K →+* ℂ, Real.log ‖σ (f.coeff s)‖ - ∑ b, (a b : ℝ) * (Real.log n + 1 / 2) ≤ blockSphereMean B n (MvPolynomial.map σ f)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `σ`. Establish `hmap : IsMultiHomogeneous a (MvPolynomial.map σ f)`. Introduce `t ht b`. Rewrite `ht` using `[MvPolynomial.support_map_of_injective _ σ.injective]`. Conclude with `hmh t ht b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `log_norm_coeff_sub_le_blockSphereLogMean hSJ hInt hn hmap s (by rw [MvPolynomial.coeff_map]; exact (map_ne_zero σ).mpr hc)`. Establish `h3` using `Finset.sum_le_sum fun (σ : K →+* ℂ) (_ : σ ∈ Finset.univ) ↦ h2 σ`. Rewrite `h3` using `[Finset.sum_sub_distrib, sum_log_norm_embedding_eq _ hc, Finset.sum_const, Finset.card_univ, NumberField.Embeddings.card, nsmul_eq_mul]`. Establish `hd : (0 : ℝ) < Module.finrank ℚ K` using `by exact_mod_cast Module.finrank_pos`. Unfold `h0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[le_div_iff₀ hd]`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem heightLowerBound_of_sj_of_sphereLogIntegrable (hSJ : SJStatement) (hInt : SphereLogIntegrableStatement) :
     HeightLowerBoundStatement := by

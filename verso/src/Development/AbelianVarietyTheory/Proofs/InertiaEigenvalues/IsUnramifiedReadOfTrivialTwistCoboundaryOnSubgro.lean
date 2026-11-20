@@ -12,7 +12,7 @@ section Gen
 variable {G : Type} [Group G] {O LL : Type} [CommRing O] [Field LL] [Algebra O LL]
 
 /- English proof (translation)
-Use extensionality with `t`. Express the relevant statement in the definitionally equal form `Formalism.WeaklyAdmissibleFiltrations.charRep (tableLineDegreeTwo.charL (LL := LL) ψ) g (t : LL) = (((ψ g : Oˣ) : O) • t : LL)`. Simplify using `[Formalism.WeaklyAdmissibleFiltrations.charRep, tableLineDegreeTwo.charL, Algebra.smul_def]`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem actT_latOne (hinj : Function.Injective (algebraMap O LL)) (ψ : G →* Oˣ) (g : G) :
     actT (latOne (LL := LL) hinj ψ) g = ((ψ g : Oˣ) : O) • LinearMap.id := by
@@ -21,7 +21,7 @@ theorem actT_latOne (hinj : Function.Injective (algebraMap O LL)) (ψ : G →* O
   simp [Formalism.WeaklyAdmissibleFiltrations.charRep, tableLineDegreeTwo.charL, Algebra.smul_def]
 
 /- English proof (translation)
-Rewrite using `[tableLineDegreeTwo.actTw, actT_latOne, LinearMap.rTensor_smul, LinearMap.rTensor_id, smul_smul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem actTw_latOne [TopologicalSpace G] (hinj : Function.Injective (algebraMap O LL)) (ψ : G →* Oˣ) (X : Type)
     [AddCommGroup X] [Module O X] (g : G) :
@@ -30,7 +30,7 @@ theorem actTw_latOne [TopologicalSpace G] (hinj : Function.Injective (algebraMap
   simp
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `h`. Introduce `g hg`. Rewrite using `[hm g hg, actTw_latOne, LinearMap.id_apply, sub_self]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_zero_of_isUnr_latOne [TopologicalSpace G] (hinj : Function.Injective (algebraMap O LL)) (ψ : G →* Oˣ)
     (X : Type) [AddCommGroup X] [Module O X] (I : Subgroup G) (z : G → ↥(latOne (LL := LL) hinj ψ).T ⊗[O] X)
@@ -40,7 +40,7 @@ theorem eq_zero_of_isUnr_latOne [TopologicalSpace G] (hinj : Function.Injective 
   rw [hm g hg, actTw_latOne, LinearMap.id_apply, sub_self]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, fun g hg => by rw [h g hg, map_zero, sub_zero]⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_Z1urD_of_eq_zero {V : Type} [AddCommGroup V] [Module LL V] [Module O V] [IsScalarTower O LL V]
     {ρ : Representation LL G V} (L : Lattice (O := O) ρ) (I : Subgroup G) (c : G → V ⧸ L.T)
@@ -52,7 +52,7 @@ end Gen
 end GlobalTheory.UseLoc.Cases
 
 /- English proof (translation)
-Introduce `D i w hw C lam θ a I z' h`. Conclude with `GlobalTheory.UseLoc.Cases.mem_Z1urD_of_eq_zero _ I _ (fun g hg => (congrArg (iotaC ↥C.LL.1 lam a) (GlobalTheory.UseLoc.Cases.eq_zero_of_isUnr_latOne _ _ _ I z' h g hg)).trans (map_zero _))`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.UseLoc.Cases.readU_unr : ∀ (D : D7) (i : D.nd.Loc) (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i))
     (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw) (lam : ↥(OL C.LL)) (θ : Br.G D.nbr i w hw →* (↥(OL C.LL))ˣ) (a : ℕ) (I : Subgroup (Br.G D.nbr i w hw))

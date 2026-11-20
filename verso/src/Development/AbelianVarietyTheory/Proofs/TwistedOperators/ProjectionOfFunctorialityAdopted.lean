@@ -22,7 +22,7 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.
   [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {F : Face D A}
 
 /- English proof (translation)
-Establish `hS : ∀ t j, j < D.R.m → SchurMult R.θ (R.MY j) (levS _ (R.βY j) (R.datYt t j R.triv)) (levChi _ (R.βY j) (R.datYt t j R.triv)) (R.νY t j) (R.fdY t j)` using `fun t j _ => @GlobalTheory.MultFinite.schurMult D R.θ _ _ (R.MY j) (levS _ (R.βY j) (R.datYt t j R.triv)) (levChi _ (R.βY j) (R.datYt t j R.triv)) hP (R.νY t j) (R.fdY t j)`. Use `(GlobalTheory.FormAction.act_eq_translate R hC.grp.red_R hC.models.jX t g x).elim fun κ hκ => ?_` and prove the remaining obligations. Establish `hrel : Rel R t (R.eG g) 0 (thCC t (R.jX t x)) (thCC t (R.jX t ((A.fam.R t).r g x)))` using `rel_dnFrom hC.lev hC.models.inf hC.models.νY hC.models.νY' hC.chain hS t (R.eG g) (D.R.m - 1) (by have := D.R.two_le_m; omega) _ _ (rel_ioX hC.lev hC.models.inf hC.models.νY hC.models.νY' hC.chain hC.models.νX hC.models.cX hC.models.HX hS t (R.eG g) κ hκ.1 _ _ hκ.2)`. Conclude with `act_of_rel hC.lev t _ _ _ hrel v`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem thDn_act (hP : GlobalTheory.Published.CuspRapidDecay) (hC : GlobalTheory.Hk3.Core R F) (t : T0) (g : G) (x : (A.fam.R t).S.Forms)
     (v : SmT (R.MY 0)) :
@@ -40,7 +40,7 @@ theorem thDn_act (hP : GlobalTheory.Published.CuspRapidDecay) (hC : GlobalTheory
   exact act_of_rel hC.lev t _ _ _ hrel v
 
 /- English proof (translation)
-Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smulₛₗ, RingHom.id_apply, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sum_act {K V H M W G : Type} [Field K] [AddCommGroup V] [Module K V] [AddCommGroup H] [Module ℂ H]
     [AddCommGroup M] [Module ℂ M] [AddCommGroup W] [Module ℂ W] [Fintype G] {σ : K →+* ℂ} (j : V →ₛₗ[σ] H)
@@ -50,9 +50,7 @@ theorem sum_act {K V H M W G : Type} [Field K] [AddCommGroup V] [Module K V] [Ad
   simp only [LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smulₛₗ, RingHom.id_apply, h]
 
 /- English proof (translation)
-Establish `h1 : R.HE.e y ∈ R.EEat R.triv`. Rewrite using `[← hC.models.HE.2.1]`. Conclude with `LinearMap.mem_range_self _ y`. Establish `h2 : postOn (R.MY 0) R.e0 (R.HE.e y) - R.HE.e y = 0` using `h1.2`. Establish `h3` using `congrArg (fun u : MMap (R.MY 0) => u f) (sub_eq_zero.1 h2)`.
-
-Conclude with `(postOn_apply _ _ _ _).symm.trans h3`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem heckeProjector_fixes_heckeEigenVector (hC : GlobalTheory.Hk3.Core R F) (y : R.HE.H) (f : (R.MY 0).Vec) : R.e0 (R.HE.e y f) = R.HE.e y f := by
   have h1 : R.HE.e y ∈ R.EEat R.triv := by
@@ -63,7 +61,7 @@ theorem heckeProjector_fixes_heckeEigenVector (hC : GlobalTheory.Hk3.Core R F) (
   exact (postOn_apply _ _ _ _).symm.trans h3
 
 /- English proof (translation)
-Proceed by induction on `v using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r f => rw [map_smul, map_smul, map_smul]`. Conclude with `congrArg (fun z => r • z) (h f)`. Consider the case `add a b ha hb => rw [map_add, map_add, map_add, ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem idem_ind {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) (e : (GA D V → ℂ) →ₗ[ℂ] (GA D V → ℂ))
     (u : SmT M →ₗ[ℂ] (GA D V → ℂ))
@@ -76,7 +74,7 @@ theorem idem_ind {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) (e :
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Rewrite using `[thDn_eq]`. Use `idem_ind (R.MY 0) R.e0 _ (fun f => ?_) v` and prove the remaining obligations. Establish `h5` using `e_Th hC.chain.Th t y f`. Conclude with `(congrArg R.e0 h5).symm.trans ((heckeProjector_fixes_heckeEigenVector hC (R.Th t y) f).trans h5)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem heckeProjector_idempotent_compositeLift (hC : GlobalTheory.Hk3.Core R F) (t : T0) (y : (R.HX t).H) (v : SmT (R.MY 0)) :
     R.e0 (R.e0 (R.thDn t y v)) = R.e0 (R.thDn t y v) := by
@@ -87,9 +85,9 @@ theorem heckeProjector_idempotent_compositeLift (hC : GlobalTheory.Hk3.Core R F)
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Take `⟨y, hy⟩` from `hx`. Rewrite `hy` using `[goodAt, level_idempotent_bot, mul_one]`. Establish `h : R.thDn t (R.jX t x) v = R.e0 (R.thDn t (R.jX t y) v)`. Rewrite using `[← hy]`. Conclude with `sum_act (R.jX t) (R.thDn t) (fun g => (A.fam.R t).r g) _ (fun g => (idemOf A.X).coeff g) y v fun g => thDn_act hP hC t g y v`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Conclude with `heckeProjector_idempotent_compositeLift hC t _ v`.
+A detailed English derivation is pending.
 -/
 theorem proj_thDn (hP : GlobalTheory.Published.CuspRapidDecay) (hC : GlobalTheory.Hk3.Core R F) (t : T0) (x : A.fam.amb.FR t)
     (hx : x ∈ (A.fam.R t).goodF A.fam.X) (v : SmT (R.MY 0)) :
@@ -106,7 +104,7 @@ theorem proj_thDn (hP : GlobalTheory.Published.CuspRapidDecay) (hC : GlobalTheor
 end CompanionTheory.Member.ThetaDownProjection
 
 /- English proof (translation)
-Introduce `hP`. Use `⟨0, fun ε CF _ => ⟨0, ?_⟩⟩` and prove the remaining obligations. Introduce `D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F s ch _ _ t x hx`. Rewrite using `[← ch.cv.thDn_w s.core.chain]`. Conclude with `CompanionTheory.Member.ThetaDownProjection.proj_thDn hP.cuspRapidDecay s.core t x hx _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem CompanionTheory.Member.projection_of_functoriality : GlobalTheory.FunPr.Hypotheses₂ → StepProj := by
   intro hP
@@ -121,7 +119,7 @@ end ThetaProjectionIdempotent
 section
 open GlobalTheory.RowClaim
 /- English proof (translation)
-Apply the tactic sequence `first | exact @ThetaProjectionIdempotent.CompanionTheory.Member.projection_of_functoriality | exact ThetaProjectionIdempotent.CompanionTheory.Member.projection_of_functoriality | (intros; apply ThetaProjectionIdempotent.CompanionTheory.Member.projection_of_functoriality <;> assum …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.Adopt.projection_of_functoriality_adopted : GlobalTheory.FunPr.Hypotheses₂ → StepProj := by
   first | exact @ThetaProjectionIdempotent.CompanionTheory.Member.projection_of_functoriality | exact ThetaProjectionIdempotent.CompanionTheory.Member.projection_of_functoriality | (intros; apply ThetaProjectionIdempotent.CompanionTheory.Member.projection_of_functoriality <;> assumption)

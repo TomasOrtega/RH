@@ -9,9 +9,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 namespace PositivityTheory.SiegelWeilFormula.kunf
 
 /- English proof (translation)
-Introduce `u hu`. Establish `hu1 : u.1 = 0` using `(RingEquiv.map_eq_zero_iff _).mp hu`. Take `⟨a, b⟩` from `u`. Simplify using `only at hu1`. Substitute `hu1` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Use `show ((0 : Ainf F) * _, b * 0) = ((0 : Ainf F), (0 : Af F))`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem at_realAd_ks {F : Type} [Field F] [NumberField F] (t : ℝ) : At (evI F) (realAd F t) := by
   intro u hu
@@ -23,20 +23,18 @@ theorem at_realAd_ks {F : Type} [Field F] [NumberField F] (t : ℝ) : At (evI F)
   simp
 
 /- English proof (translation)
-Simplify using `[evI, realAd]`.
+Simplify using the standard rewrite rules.
 -/
 theorem evI_realAd_ks {F : Type} [Field F] [NumberField F] (t : ℝ) :
     evI F (realAd F t) = algebraMap ℝ (mixedEmbedding.mixedSpace F) t := by
   simp [evI, realAd]
 
 /- English proof (translation)
-Use `set c : ℝ := (Module.finrank ℚ F : ℝ) with hc`. Establish `hcpos : 0 < c`. Rewrite using `[hc]`. Conclude with `Module.finrank_pos` after adjusting the coercions. Use `set t : ℝ := 1 / (2 * c) with ht`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨-(realAd F t) * algebraMap F (AF F) x⁻¹, ?_⟩` and prove the remaining obligations. Establish `hl : -(-(realAd F t) * algebraMap F (AF F) x⁻¹ * algebraMap F (AF F) x) = realAd F t`. Rewrite using `[neg_mul, neg_mul, neg_neg, mul_assoc, ← map_mul, inv_mul_cancel₀ hx, map_one, mul_one]`. Rewrite using `[hl, hψ.2.2 _ (at_realAd_ks t), evI_realAd_ks, Algebra.trace_algebraMap, mixedEmbedding.finrank]`. Establish `: ((Module.finrank ℚ F • t : ℝ) : ℂ) = 1 / 2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[nsmul_eq_mul, ← hc, ht]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Conclude with `div_self (by exact_mod_cast hcpos.ne')`. Rewrite using `[this]`.
-
-Establish `h2 : -(2 * (Real.pi : ℂ) * Complex.I) * (1 / 2) = -(Real.pi * Complex.I)` using `by ring`. Rewrite using `[h2, Complex.exp_neg, Complex.exp_pi_mul_I]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem psi_moves_pf {F : Type} [Field F] [NumberField F] {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (x : F) (hx : x ≠ 0) :
     ∃ l : AF F, ψ (-(l * algebraMap F (AF F) x)) ≠ 1 := by

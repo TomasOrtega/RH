@@ -3,11 +3,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.Ar
 open Matrix Filter ReciprocityTheory.Gal UpperTheory.V.W UpperTheory.V.Pa UpperTheory.V.Pa.B2
 
 /- English proof (translation)
-Establish `key : ∀ (p q : x.A) (y : Y), u (algebraMap x.A Y p * y * algebraMap x.A Y q) = algebraMap x.A Z p * u y * algebraMap x.A Z q`. Introduce `p q y`. Establish `h1 : algebraMap x.A Y p * y * algebraMap x.A Y q = (p * q) • y`. Rewrite using `[Algebra.smul_def, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h2 : algebraMap x.A Z p * u y * algebraMap x.A Z q = (p * q) • u y`. Rewrite using `[Algebra.smul_def, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, h2, map_smul]`. Use extensionality with `i j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `only [Matrix.map_apply, Matrix.mul_apply, Finset.sum_mul, map_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun m _ => key _ _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem map_algebraMap_mul_mul_map_linearMap {l : ℕ} [Fact l.Prime] {F : GFrame l} {n : ℕ} (x : NP F n) {Y Z : Type} [CommRing Y] [Algebra x.A Y] [CommRing Z] [Algebra x.A Z] (u : Y →ₗ[x.A] Z) (P Q : Matrix (Fin n) (Fin n) x.A) (N : Matrix (Fin n) (Fin n) Y) :
     (P.map (algebraMap x.A Y) * N * Q.map (algebraMap x.A Y)).map u = P.map (algebraMap x.A Z) * N.map u * Q.map (algebraMap x.A Z) := by
@@ -23,9 +23,9 @@ private theorem map_algebraMap_mul_mul_map_linearMap {l : ℕ} [Fact l.Prime] {F
   exact Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun m _ => key _ _ _
 
 /- English proof (translation)
-Use `⟨Matrix.of fun i j => if h : S i j then 0 else (hr i j h).choose, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j hij`. Simplify using `[hij]`. Use extensionality with `i j`. Distinguish the cases in `hij : S i j`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Simplify using `[hij, h0 i j hij]`. Simplify using `[hij, (hr i j hij).choose_spec]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem exists_matrix_map_eq_of_zero_on_of_mem_range {n : ℕ} {R Y Z : Type} [CommRing R] [AddCommGroup Y] [Module R Y] [AddCommGroup Z] [Module R Z] (w : Y →ₗ[R] Z) (S : Fin n → Fin n → Prop) (N : Matrix (Fin n) (Fin n) Z) (h0 : ∀ i j, S i j → N i j = 0) (hr : ∀ i j, ¬ S i j → N i j ∈ Set.range w) :
     ∃ N' : Matrix (Fin n) (Fin n) Y, (∀ i j, S i j → N' i j = 0) ∧ N'.map w = N := by
@@ -39,7 +39,7 @@ private theorem exists_matrix_map_eq_of_zero_on_of_mem_range {n : ℕ} {R Y Z : 
     · simp [hij, (hr i j hij).choose_spec]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hN i j hij`. Conclude with `(Submodule.mem_bot _).1 ((hN i j).1 hij)`. Introduce `hN i j`. Conclude with `⟨fun hij => (Submodule.mem_bot _).2 (hN i j hij), fun _ => Submodule.mem_top⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem mem_od_iff_entry_eq_zero_of_same_block {A R : Type} [CommRing A] [CommRing R] [Algebra A R] {n a : ℕ} (N : Matrix (Fin n) (Fin n) R) :
     N ∈ Od A R n a ↔ ∀ i j : Fin n, ((i : ℕ) < a ↔ (j : ℕ) < a) → N i j = 0 := by
@@ -50,15 +50,15 @@ private theorem mem_od_iff_entry_eq_zero_of_same_block {A R : Type} [CommRing A]
     exact ⟨fun hij => (Submodule.mem_bot _).2 (hN i j hij), fun _ => Submodule.mem_top⟩
 
 /- English proof (translation)
-Use `set W : Matrix (Fin n) (Fin n) (PowerSeries x.K) := ((x.w v : GL (Fin n) (PowerSeries x.K)) : Matrix (Fin n) (Fin n) (PowerSeries x.K)) with hW`. Use `set B : Matrix (Fin n) (Fin n) (PowerSeries x.K) := (((x.w v)⁻¹ : GL (Fin n) (PowerSeries x.K)) : Matrix (Fin n) (Fin n) (PowerSeries x.K)) with hB`. Establish `hBW : B * W = 1` using `Units.inv_mul (x.w v)`. Establish `hWB : W * B = 1` using `Units.mul_inv (x.w v)`. Set `β : Bool → PowerSeries x.K` to `fun b => if b then 1 else 0`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hpat : W * Matrix.diagonal (fun j : Fin n => β (x.ty v j)) = Matrix.diagonal (fun i : Fin n => β (decide ((i : ℕ) < x.a))) * W`. Use extensionality with `i j`. Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul]`. Distinguish the cases in `h : decide ((i : ℕ) < x.a) = x.ty v j`. Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities.
 
-Put the polynomial expressions in normal form. Rewrite using `[show W i j = 0 from x.w_blk v i j h]`. Simplify using the standard rewrite rules. Establish `key : Matrix.diagonal (fun j : Fin n => β (x.ty v j)) * B = B * Matrix.diagonal (fun i : Fin n => β (decide ((i : ℕ) < x.a)))`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hBW, Matrix.one_mul]`. Use `_ = B * (W * Matrix.diagonal (fun j : Fin n => β (x.ty v j))) * B := by rw [Matrix.mul_assoc B]`. Use `_ = B * Matrix.diagonal (fun i : Fin n => β (decide ((i : ℕ) < x.a))) * (W * B) := by`. Rewrite using `[hpat]`. Simplify using `only [Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `_ = _ := by rw [hWB, Matrix.mul_one]`. Establish `e` using `congrArg (fun M : Matrix (Fin n) (Fin n) (PowerSeries x.K) => M j k) key`. Simplify using `only [Matrix.diagonal_mul, Matrix.mul_diagonal] at e`. Express the relevant statement in the definitionally equal form `B j k = 0`. Apply the tactic sequence `cases h1 : x.ty v j <;> cases h2 : decide ((k : ℕ) < x.a) <;> simp only [h1, h2, β] at e hjk <;> simp_all`.
+A detailed English derivation is pending.
 -/
 private theorem inv_w_entry_eq_zero_of_ty_ne_lt_a {l : ℕ} [Fact l.Prime] {F : GFrame l} {n : ℕ} (x : NP F n) (v : F.Vl) (j k : Fin n) (hjk : x.ty v j ≠ decide ((k : ℕ) < x.a)) :
     (((x.w v)⁻¹ : GL (Fin n) (PowerSeries x.K)) : Matrix (Fin n) (Fin n) (PowerSeries x.K)) j k = 0 := by
@@ -87,9 +87,9 @@ private theorem inv_w_entry_eq_zero_of_ty_ne_lt_a {l : ℕ} [Fact l.Prime] {F : 
   cases h1 : x.ty v j <;> cases h2 : decide ((k : ℕ) < x.a) <;> simp only [h1, h2, β] at e hjk <;> simp_all
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `h1 : x.ty v i = decide ((k : ℕ) < x.a)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h2 : decide ((l : ℕ) < x.a) = x.ty v j`. Rewrite using `[hN k l (decide_eq_decide.mp (by rw [← h1, hij, ← h2]))]; simp`. Simplify using `[NP.wX, x.w_blk v l j h2]`. Simplify using `only [NP.wiX, Matrix.map_apply]`. Rewrite using `[inv_w_entry_eq_zero_of_ty_ne_lt_a x v i k h1]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -107,11 +107,11 @@ private theorem wiX_mul_mul_wX_eq_zero_of_ty_eq {l : ℕ} [Fact l.Prime] {F : GF
     rw [inv_w_entry_eq_zero_of_ty_ne_lt_a x v i k h1]; simp
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `h1 : decide ((i : ℕ) < x.a) = x.ty v k`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h2 : x.ty v l = decide ((j : ℕ) < x.a)`. Rewrite using `[hP k l (by rw [← h1, h2]; exact decide_eq_decide.mpr hij)]; simp`. Simplify using `only [NP.wiX, Matrix.map_apply]`. Rewrite using `[inv_w_entry_eq_zero_of_ty_ne_lt_a x v l j h2]`. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[NP.wX, x.w_blk v i k h1]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem wX_mul_mul_wiX_eq_zero_of_same_block {l : ℕ} [Fact l.Prime] {F : GFrame l} {n : ℕ} (x : NP F n) (v : F.Vl) {Y : Type} [CommRing Y] [Algebra x.A Y] (P : Matrix (Fin n) (Fin n) Y) (hP : ∀ k l : Fin n, x.ty v k = x.ty v l → P k l = 0) (i j : Fin n) (hij : ((i : ℕ) < x.a ↔ (j : ℕ) < x.a)) :
     (x.wX Y v * P * x.wiX Y v) i j = 0 := by
@@ -127,7 +127,7 @@ private theorem wX_mul_mul_wiX_eq_zero_of_same_block {l : ℕ} [Fact l.Prime] {F
   · simp [NP.wX, x.w_blk v i k h1]
 
 /- English proof (translation)
-Unfold `NP.wX NP.wiX`. Conclude with `⟨map_algebraMap_mul_mul_map_linearMap x u _ _ N, map_algebraMap_mul_mul_map_linearMap x u _ _ N⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 private theorem map_wiX_mul_mul_wX_and_wX_mul_mul_wiX {l : ℕ} [Fact l.Prime] {F : GFrame l} {n : ℕ} (x : NP F n) (v : F.Vl) {Y Z : Type} [CommRing Y] [Algebra x.A Y] [CommRing Z] [Algebra x.A Z] (u : Y →ₗ[x.A] Z) (N : Matrix (Fin n) (Fin n) Y) :
     (x.wiX Y v * N * x.wX Y v).map u = x.wiX Z v * N.map u * x.wX Z v ∧
@@ -136,7 +136,7 @@ private theorem map_wiX_mul_mul_wX_and_wX_mul_mul_wiX {l : ℕ} [Fact l.Prime] {
   exact ⟨map_algebraMap_mul_mul_map_linearMap x u _ _ N, map_algebraMap_mul_mul_map_linearMap x u _ _ N⟩
 
 /- English proof (translation)
-Unfold `NP.wX NP.wiX`. Prove the components needed by the constructor for the conclusion. Rewrite using `[← Matrix.map_mul, Units.inv_mul]`. Simplify using the standard rewrite rules. Rewrite using `[← Matrix.map_mul, Units.mul_inv]`.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -148,41 +148,39 @@ private theorem wiX_mul_wX_eq_one_and_wX_mul_wiX_eq_one {l : ℕ} [Fact l.Prime]
   · rw [← Matrix.map_mul, Units.mul_inv]; simp
 
 /- English proof (translation)
-Introduce `l _ L G G0 h n x X' _ _ X _ _ X'' _ _ D' D D'' o' o o'' u v f g hf hg hu hex hv`. Establish `inj : Function.Injective f.f`. Introduce `m1 m2 h12`. Apply `o'.e.injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `e1` using `hf m1`. Rewrite `e1` using `[h12, hf m2]`. Use extensionality with `i j`. Conclude with `hu (by simpa using congrArg (fun M : Matrix (Fin n) (Fin n) X => M i j) e1.symm)`. Establish `ex : Function.Exact f.f g.f`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m`. Prove the components needed by the constructor for the conclusion. Introduce `hgm`. Establish `h0 : (↑(o.e m) : Matrix (Fin n) (Fin n) X).map v = 0`. Rewrite using `[← hg m, hgm]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Take `⟨N', hN'0, hN'⟩` from `exists_matrix_map_eq_of_zero_on_of_mem_range u (fun i j : Fin n => ((i : ℕ) < x.a ↔ (j : ℕ) < x.a)) (↑(o.e m)) (fun i j hij => (mem_od_iff_entry_eq_zero_of_same_block _).1 (o.e m).2 i j hij) (fun i j _ => (hex _).1 (by simpa using congrArg (fun M : Matrix (Fin n) (Fin n) X'' => M …`. Use `⟨o'.e.symm ⟨N', (mem_od_iff_entry_eq_zero_of_same_block _).2 hN'0⟩, ?_⟩` and prove the remaining obligations. Apply `o.e.injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hf, LinearEquiv.apply_symm_apply]`. Conclude with `hN'`. Introduce and unpack `⟨m', rfl⟩`. Apply `o''.e.injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[hg, hf, map_zero]`. Use extensionality with `i j`. Simplify using `using (hex _).2 ⟨_, rfl⟩`. Establish `surj : Function.Surjective g.f`. Introduce `m''`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨N, hN0, hN⟩` from `exists_matrix_map_eq_of_zero_on_of_mem_range v (fun i j : Fin n => ((i : ℕ) < x.a ↔ (j : ℕ) < x.a)) (↑(o''.e m'')) (fun i j hij => (mem_od_iff_entry_eq_zero_of_same_block _).1 (o''.e m'').2 i j hij) (fun i j _ => hv _)`. Use `⟨o.e.symm ⟨N, (mem_od_iff_entry_eq_zero_of_same_block _).2 hN0⟩, ?_⟩` and prove the remaining obligations. Apply `o''.e.injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hg, LinearEquiv.apply_symm_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hN`. Use `⟨inj, ex, surj, ?_, ?_⟩` and prove the remaining obligations. Introduce `w`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `q hq`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Take `⟨m, rfl⟩` from `D'.surj w q`. Rewrite `hq` using `[f.comm]`. Break down `w with w | w` into its components or cases. Rewrite using `[o'.kerV]`. Rewrite `hq` using `[o.kerV]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `i j hji`. Establish `e` using `hq i j hji`. Rewrite `e` using `[hf, ← (map_wiX_mul_mul_wX_and_wX_mul_mul_wiX x w u _).1, Matrix.map_apply]`. Conclude with `hu (by rw [map_zero]; exact e)`. Establish `h1 : f.f m = 0` using `o.kerU w (by rw [hq, map_zero])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[inj (h1.trans (map_zero f.f).symm), map_zero]`. Introduce `w q`. Prove the components needed by the constructor for the conclusion. Introduce `hq`. Take `⟨m, rfl⟩` from `D.surj w q`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `hq` using `[g.comm]`. Break down `w with w | w` into its components or cases. Establish `hlow` using `(o''.kerV w (g.f m)).1 hq`. Take `⟨P, hP0, hP⟩` from `exists_matrix_map_eq_of_zero_on_of_mem_range v (fun i j : Fin n => j < i ∨ x.ty w i = x.ty w j) (x.wiX X'' w * (↑(o''.e (g.f m)) : Matrix (Fin n) (Fin n) X'') * x.wX X'' w) (fun i j hij => hij.elim (hlow i j) (wiX_mul_mul_wX_eq_zero_of_ty_eq x w _ ((mem_od_iff_entry_eq_zero_of_sa …`. Establish `hN : x.wX X w * P * x.wiX X w ∈ Od x.A X n x.a` using `(mem_od_iff_entry_eq_zero_of_same_block _).2 (fun i j hij => wX_mul_mul_wiX_eq_zero_of_same_block x w P (fun k l hkl => hP0 k l (Or.inr hkl)) i j hij)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨h1, h2⟩` from `wiX_mul_wX_eq_one_and_wX_mul_wiX_eq_one x w (Y := X)`. Take `⟨h1'', h2''⟩` from `wiX_mul_wX_eq_one_and_wX_mul_wiX_eq_one x w (Y := X'')`. Establish `hconj : x.wiX X w * (↑(o.e (o.e.symm ⟨_, hN⟩)) : Matrix (Fin n) (Fin n) X) * x.wX X w = P`. Rewrite using `[LinearEquiv.apply_symm_apply]`. Use `show x.wiX X w * (x.wX X w * P * x.wiX X w) * x.wX X w = P`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [Matrix.mul_assoc, h1, Matrix.mul_one]`. Rewrite using `[← Matrix.mul_assoc, h1, Matrix.one_mul]`. Establish `hk : D.π (Sum.inl w) (o.e.symm ⟨_, hN⟩) = 0` using `(o.kerV w _).2 (fun i j hji => by rw [hconj]; exact hP0 i j (Or.inl hji))`. Establish `hg0 : g.f (o.e.symm ⟨_, hN⟩) = g.f m`. Apply `o''.e.injective` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hg (o.e.symm ⟨_, hN⟩), LinearEquiv.apply_symm_apply]`. Use `show (x.wX X w * P * x.wiX X w).map v = _`. Rewrite using `[(map_wiX_mul_mul_wX_and_wX_mul_mul_wiX x w v P).2, hP]`. Simplify using `only [Matrix.mul_assoc, h2'', Matrix.mul_one]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.mul_assoc, h2'', Matrix.one_mul]`. Establish `hdiff : g.f (m - o.e.symm ⟨_, hN⟩) = 0` using `by rw [map_sub, hg0, sub_self]`. Take `⟨m', hm'⟩` from `(ex _).1 hdiff`. Use `⟨D'.π _ m', (f.comm _ m').trans ?_⟩` and prove the remaining obligations. Rewrite using `[hm', map_sub, hk, sub_zero]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : g.f m = 0` using `o''.kerU w (by rw [hq, map_zero])`. Take `⟨m', hm'⟩` from `(ex m).1 h1`. Conclude with `⟨D'.π _ m', (f.comm _ m').trans (congrArg _ hm')⟩`. Introduce and unpack `⟨q', rfl⟩`. Take `⟨m', rfl⟩` from `D'.surj w q'`.
-
-Rewrite using `[f.comm, g.comm, (ex (f.f m')).2 ⟨m', rfl⟩, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.B2.odSES :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G G0 : Glob l L) (h : G.Hom G0) (n : ℕ) (x : NP G0.frame n) (X' : Type) [CommRing X'] [Algebra x.A X'] (X : Type) [CommRing X] [Algebra x.A X] (X'' : Type) [CommRing X''] [Algebra x.A X''] (D' D D'' : Dat x.A (plOf G)) (o' : IsOd h x X' D') (o : IsOd h x X D) (o'' : IsOd h x X'' D'') (u : X' →ₗ[x.A] X) (v : X →ₗ[x.A] X'') (f : D'.Hom D) (g : D.Hom D''), Induced o' o u f → Induced o o'' v g → Function.Injective u → Function.Exact u v → Function.Surjective v → Dat.SES f g := by

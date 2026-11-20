@@ -5,7 +5,7 @@ open NumberField IsDedekindDomain GlobalTheory.QNorm
 open scoped WithZero
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.QNorm.index_sqs_top_of_fg` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FAdelicLatticeProofs%2FIndexSqsTopOfFg.lean&line=69#L69)
 -/

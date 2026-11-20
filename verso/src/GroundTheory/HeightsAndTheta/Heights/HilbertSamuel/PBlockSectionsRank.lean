@@ -25,14 +25,14 @@ def blockSubst (k₀ : K) (N : Matrix (ι k₀) (Ix (Fin r)) ℤ) : (Σ k, ι k)
   fun p => if h : p.1 = k₀ then ∑ j, C (N (h ▸ p.2) j) * X j else 0
 
 /- English proof (translation)
-Simplify using `[blockSubst]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blockSubst_block (k₀ : K) (N : Matrix (ι k₀) (Ix (Fin r)) ℤ) (i : ι k₀) :
     blockSubst k₀ N ⟨k₀, i⟩ = ∑ j, C (N i j) * X j := by
   simp [blockSubst]
 
 /- English proof (translation)
-Unfold `blockSubst`. Use `split_ifs`. Conclude with `IsHomogeneous.sum _ _ _ fun j _ => (isHomogeneous_X ℤ j).C_mul _`. Conclude with `isHomogeneous_zero _ _ _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem isHomogeneous_blockSubst (k₀ : K) (N : Matrix (ι k₀) (Ix (Fin r)) ℤ) (p : Σ k, ι k) :
     (blockSubst k₀ N p).IsHomogeneous 1 := by
@@ -51,7 +51,7 @@ def back (k₀ : K) (M : Matrix (Ix (Fin r)) (ι k₀) ℤ) : MvPolynomial (Ix (
   bind₁ (blockLin k₀ M)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `h` using `hf c (mem_support_iff.mpr hc) p.1`. Rewrite `h` using `[blockDeg, if_neg hne, Finset.sum_eq_zero_iff]`. Conclude with `(Finsupp.mem_support_iff.mp hp) (h p.2 (Finset.mem_univ _))`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fst_eq_of_mem_support {f : MRing ι} {k₀ : K} {n : ℕ} (hf : IsMultiHomog f (blockDeg k₀ n))
     {c : (Σ k, ι k) →₀ ℕ} (hc : coeff c f ≠ 0) {p : Σ k, ι k} (hp : p ∈ c.support) : p.1 = k₀ := by
@@ -61,7 +61,7 @@ theorem fst_eq_of_mem_support {f : MRing ι} {k₀ : K} {n : ℕ} (hf : IsMultiH
   exact (Finsupp.mem_support_iff.mp hp) (h p.2 (Finset.mem_univ _))
 
 /- English proof (translation)
-Introduce `c hc`. Establish `h` using `hf c (mem_support_iff.mpr hc)`. Rewrite using `[Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp), Fintype.sum_sigma]`. Simplify using `only [Pi.one_apply, smul_eq_mul, mul_one, h, blockDeg, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isHomogeneous_of_blockDeg {f : MRing ι} {k₀ : K} {n : ℕ} (hf : IsMultiHomog f (blockDeg k₀ n)) :
     f.IsHomogeneous n := by
@@ -71,7 +71,7 @@ theorem isHomogeneous_of_blockDeg {f : MRing ι} {k₀ : K} {n : ℕ} (hf : IsMu
   simp only [Pi.one_apply, smul_eq_mul, mul_one, h, blockDeg, Finset.sum_ite_eq', Finset.mem_univ, if_true]
 
 /- English proof (translation)
-Use `(isHomogeneous_of_blockDeg hf).aeval (blockSubst k₀ N) (isHomogeneous_blockSubst k₀ N)` as an intermediate fact. Rewrite `this` using `[one_mul, aeval_eq_bind₁]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHomogeneous_fwd (k₀ : K) (N : Matrix (ι k₀) (Ix (Fin r)) ℤ) {f : MRing ι} {n : ℕ}
     (hf : IsMultiHomog f (blockDeg k₀ n)) : (fwd k₀ N f).IsHomogeneous n := by
@@ -82,7 +82,7 @@ theorem isHomogeneous_fwd (k₀ : K) (N : Matrix (ι k₀) (Ix (Fin r)) ℤ) {f 
 def wB : (Σ k, ι k) → (K → ℕ) := fun p => Pi.single p.1 1
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Rewrite using `[Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp), Finset.sum_apply, Fintype.sum_sigma, Finset.sum_eq_single k (fun k' _ hk' => ?_) (by simp)]`. Simplify using `[wB]`. Simplify using `[wB, Ne.symm hk']`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem weight_wB (c : (Σ k, ι k) →₀ ℕ) : Finsupp.weight wB c = fun k => ∑ i, c ⟨k, i⟩ := by
   funext k
@@ -92,9 +92,9 @@ theorem weight_wB (c : (Σ k, ι k) →₀ ℕ) : Finsupp.weight wB c = fun k =>
   · simp [wB, Ne.symm hk']
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h c hc`. Rewrite using `[weight_wB]`. Use function extensionality and compare the values at `k`. Conclude with `h c (mem_support_iff.mpr hc) k`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h c hc k`. Use `h (mem_support_iff.mp hc)` as an intermediate fact. Rewrite `this` using `[weight_wB]`. Conclude with `congrFun this k`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMultiHomog_iff_wB (f : MRing ι) (a : K → ℕ) :
     IsMultiHomog f a ↔ IsWeightedHomogeneous wB f a := by
@@ -109,13 +109,13 @@ theorem isMultiHomog_iff_wB (f : MRing ι) (a : K → ℕ) :
     exact congrFun this k
 
 /- English proof (translation)
-Establish `hbf : ∀ j, IsWeightedHomogeneous wB (blockLin k₀ M j) (Pi.single k₀ 1)` using `fun j => IsWeightedHomogeneous.sum _ _ _ fun i _ => (isWeightedHomogeneous_X ℤ wB (⟨k₀, i⟩ : Σ k, ι k)).C_mul _`. Rewrite using `[isMultiHomog_iff_wB, show blockDeg k₀ n = n • Pi.single k₀ 1 by`. Apply the tactic sequence `funext k; by_cases hk : k = k₀ <;> simp [blockDeg, hk]]`. Rewrite using `[back, ← aeval_eq_bind₁, aeval_def]`. Apply `IsWeightedHomogeneous.sum` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `d hd`. Rewrite using `[← zero_add (n • Pi.single k₀ 1)]`. Apply `IsWeightedHomogeneous.mul (by rw [MvPolynomial.algebraMap_eq]; exact isWeightedHomogeneous_C _ _)` to reduce the goal to its premises. Rewrite `hd` using `[Finsupp.mem_support_iff]`. Establish `hn : ∑ j ∈ d.support, d j = n`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `hg hd` as an intermediate fact. Rewrite `this` using `[Finsupp.weight_apply]`. Simplify `this` using `[Finsupp.sum]`. Establish `hp` using `IsWeightedHomogeneous.prod d.support (fun j => blockLin k₀ M j ^ d j) (fun j => d j • Pi.single k₀ 1) fun j _ => (hbf j).pow (d j)`. Rewrite `hp` using `[← Finset.sum_smul, hn]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hp`.
+A detailed English derivation is pending.
 -/
 theorem isMultiHomog_back (k₀ : K) (M : Matrix (Ix (Fin r)) (ι k₀) ℤ) {g : MvPolynomial (Ix (Fin r)) ℤ} {n : ℕ}
     (hg : g.IsHomogeneous n) : IsMultiHomog (back k₀ M g) (blockDeg k₀ n) := by
@@ -147,7 +147,7 @@ variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintyp
   {N : Matrix (ι k₀) (Ix (Fin r)) ℤ} {x : Ix (Fin r) → Ω}
 
 /- English proof (translation)
-Establish `hx : (fun j => aeval y (blockLin k₀ M j)) = x` using `funext fun j => by simp [blockLin, h.1 j]`. Rewrite using `[back, aeval_bind₁, hx]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem aeval_back (h : IsBlockImage y k₀ M N x) (g : MvPolynomial (Ix (Fin r)) ℤ) :
     aeval y (back k₀ M g) = aeval x g := by
@@ -155,9 +155,9 @@ theorem aeval_back (h : IsBlockImage y k₀ M N x) (g : MvPolynomial (Ix (Fin r)
   rw [back, aeval_bind₁, hx]
 
 /- English proof (translation)
-Rewrite using `[fwd, aeval_bind₁, aeval_def, aeval_def]`. Use `eval₂_congr _ _ _ fun {p} {c} hp hc => ?_` and prove the remaining obligations. Take `⟨k, i⟩` from `p`. Establish `hk : k = k₀` using `fst_eq_of_mem_support hf hc hp`. Substitute `hk` using the available equality.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Rewrite using `[blockSubst_block, h.2 i]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem aeval_fwd (h : IsBlockImage y k₀ M N x) {f : MRing ι} {n : ℕ} (hf : IsMultiHomog f (blockDeg k₀ n)) :
     aeval x (fwd k₀ N f) = aeval y f := by
@@ -170,11 +170,11 @@ theorem aeval_fwd (h : IsBlockImage y k₀ M N x) {f : MRing ι} {n : ℕ} (hf :
   simp
 
 /- English proof (translation)
-Unfold `secM`. Use `congr 1`. Establish `hset : {s | ∃ g : MRing ι, IsMultiHomog g (blockDeg k₀ n) ∧ aeval y g = s} = ((sec ℤ x n : Submodule ℤ Ω) : Set Ω)`. Use extensionality with `s`. Simplify using `only [Set.mem_ofPred_eq, sec, Submodule.map_coe, Set.mem_image, SetLike.mem_coe, mem_homogeneousSubmodule, AlgHom.toLinearMap_apply]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg, rfl⟩`. Conclude with `⟨fwd k₀ N g, isHomogeneous_fwd k₀ N hg, aeval_fwd h hg⟩`. Introduce and unpack `⟨g, hg, rfl⟩`. Conclude with `⟨back k₀ M g, isMultiHomog_back k₀ M hg, aeval_back h g⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Rewrite using `[hset, Submodule.span_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem secM_eq (h : IsBlockImage y k₀ M N x) (n : ℕ) :
     secM y (blockDeg k₀ n) = (sec ℤ x n).toAddSubgroup := by
@@ -195,13 +195,11 @@ theorem secM_eq (h : IsBlockImage y k₀ M N x) (n : ℕ) :
 end Values
 
 /- English proof (translation)
-Use `set W : Submodule ℤ Ω := Submodule.span ℤ (Set.range fun i : ι k₀ => y ⟨k₀, i⟩) with hW`. Establish `: Module.Finite ℤ W` using `Module.Finite.span_of_finite ℤ (Set.finite_range _)`. Use `set b := (Module.Free.chooseBasis ℤ W).reindex (Fintype.equivFin _) with hb`. Establish `hc : ∀ j, ∃ c : ι k₀ → ℤ, ∑ i, c i • y ⟨k₀, i⟩ = (b j : Ω)` using `fun j => (Submodule.mem_span_range_iff_exists_fun ℤ).mp (b j).2`. Use `choose c hc using hc`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨_, fun j i => c j.2 i, fun i j => b.repr ⟨y ⟨k₀, i⟩, Submodule.subset_span (Set.mem_range_self i)⟩ j.2, fun j => (b j.2 : Ω), ⟨fun j => ?_, fun i => ?_⟩, ?_⟩` and prove the remaining obligations. Use `show (b j.2 : Ω) = ∑ i, (c j.2 i : Ω) * y ⟨k₀, i⟩`. Rewrite using `[← hc j.2]`. Simplify using `[zsmul_eq_mul]`. Establish `h2` using `congrArg Subtype.val (b.sum_repr ⟨y ⟨k₀, i⟩, Submodule.subset_span (Set.mem_range_self i)⟩)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at h2`. Use `show y ⟨k₀, i⟩ = ∑ j : Ix (Fin _), ((b.repr ⟨y ⟨k₀, i⟩, Submodule.subset_span (Set.mem_range_self i)⟩ j.2 : ℤ) : Ω) * (b j.2 : Ω)`. Use `conv_lhs => rw [← h2]`. Simplify using `[Fintype.sum_sigma, zsmul_eq_mul]`. Establish `h1` using `b.linearIndependent.map' W.subtype (Submodule.ker_subtype W)`.
-
-Use `h1.comp (fun j : Ix (Fin _) => j.2) ?_` and prove the remaining obligations. Introduce and unpack `⟨⟨⟩, a⟩ ⟨⟨⟩, a'⟩ h`. Consider the cases of `h`. Both sides reduce to the same expression.
+Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_blockBasis {K : Type} {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω] [CharZero Ω]
     (y : (Σ k, ι k) → Ω) (k₀ : K) :
@@ -235,13 +233,13 @@ end BlockSectionsRank
 open BlockSectionsRank in
 
 /- English proof (translation)
-Introduce `D K _ _ ι _ Ω _ _ y k₀ hD hY hB`. Take `⟨r, M, N, x, hx, hind⟩` from `exists_blockBasis y k₀`. Establish `hX : IsArithVar (ι` using `GlobalTheory (Fin r)) (coordIdeal ℤ x) (D + 1) := hArith D K ι Ω y k₀ r M N x hY hB hx hind`. Take `⟨hprime, hdim⟩` from `hGF Ω (Fin r) x D hX`. Take `⟨C, hC⟩` from `hRank (Fin r) _ D hprime hdim`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hdeg` using `hDeg D K ι Ω (Fin r) y k₀ M N x hY hB hx`. Use `⟨C, fun n => ?_⟩` and prove the remaining obligations. Establish `hrank : (Module.finrank ℤ (secM y (blockDeg k₀ n)) : ℝ) = (GroundTheory.Heights₂.Heights.NumbersDVR.hilbFn (ι` using `GlobalTheory (Fin r)) ((coordIdeal ℤ x).map (MvPolynomial.map (Int.castRingHom ℚ))) (fun _ => (n : ℤ)) : ℝ) := by`. Rewrite using `[hSR Ω (Fin r) x n, secM_eq hx n]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hpow : ((n : ℝ) + 1) ^ ((D : ℝ) - 1) = ((n : ℝ) + 1) ^ (D - 1)`. Rewrite using `[← Real.rpow_natCast, Nat.cast_sub hD, Nat.cast_one]`. Establish `hgd : (genDeg (mCoordIdeal y) D (ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.unitDeg k₀) : ℝ) = (GroundTheory.Heights₂.Heights.NumbersDVR.intNum ℚ ((coordIdeal ℤ x).map (MvPolynomial.map (Int.castRingHom ℚ))) (fun _ : Fin D => fun _ => (1 : ℤ)) : ℝ)`. Rewrite using `[← hdeg]`. Unfold `genDeg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `congr!`. Use `hC n` as an intermediate fact. Rewrite `this` using `[hpow]`. Rewrite using `[hrank, hgd]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem BlockSectionsRank.proof (hRank : RankOfSections.Statement) (hGF : GenericFibre.Statement)
     (hSR : SectionsRank.Statement) (hArith : BlockImageArith.Statement) (hDeg : BlockImageGenDeg.Statement) :

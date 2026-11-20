@@ -10,11 +10,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `K _ _ k₀ hk₀ x hfix`. Assume the negation of the conclusion as `hx`. Establish `htr : Transcendental k₀ x`. Introduce `halg`. Establish `hint : IsIntegral k₀ x` using `halg.isIntegral`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hdeg : (minpoly k₀ x).degree = 1` using `IsAlgClosed.degree_eq_one_of_irreducible k₀ (minpoly.irreducible hint)`. Take `⟨r, hr⟩` from `minpoly.mem_range_of_degree_eq_one k₀ x hdeg`. Apply `hx` to reduce the goal to its premises. Rewrite using `[← hr]`. Conclude with `r.2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨σ, hσk, hσx⟩` from `GlobalTheory.FixedRoots.exists_ringEquiv_add_one k₀ x htr`. Establish `h` using `hfix σ hσk`. Rewrite `h` using `[hσx]`. Simplify using `at h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_subfield_of_forall_ringEquiv_fixed_of_isAlgClosed :
     ∀ (K : Type) [Field K] [IsAlgClosed K] (k₀ : Subfield K), IsAlgClosed k₀ → ∀ x : K,

@@ -12,29 +12,27 @@ open scoped Pointwise
 open GlobalTheory.RealGal.AttConj in
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ K _ _ _ _ _ _ l _ ι a sat r g c hc hsurj h`. Establish `hcs : ∀ s y, c s y = g (s ((g⁻¹ : Formalism.ConjugateSelfDual.G F Ω) y))` using `fun s y => DFunLike.congr_fun (hc s) y`. Establish `hfwd : ∀ x : K, ∃ y : K, algebraMap K Ω y = g (algebraMap K Ω x)` using `fun x => by`. Apply `exists_of_fixed` to reduce the goal to its premises. Introduce `t`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨s, rfl⟩` from `hsurj t`. Rewrite using `[hcs, inv_apply_apply, s.commutes]`. Establish `hbwd : ∀ x : K, ∃ y : K, algebraMap K Ω y = (g⁻¹ : Formalism.ConjugateSelfDual.G F Ω) (algebraMap K Ω x)` using `fun x => by`. Apply `exists_of_fixed` to reduce the goal to its premises. Introduce `t`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `hcs t (algebraMap K Ω x)`. Rewrite `h1` using `[(c t).commutes]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨γ, hγ⟩` from `exists_ringEquiv g hfwd hbwd`. Establish `hγinv : ∀ x : K, algebraMap K Ω (γ.symm x) = (g⁻¹ : Formalism.ConjugateSelfDual.G F Ω) (algebraMap K Ω x)` using `fun x => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `hγ (γ.symm x)`. Rewrite `h1` using `[RingEquiv.apply_symm_apply]`. Rewrite using `[h1, inv_apply_apply]`. Establish `hγF : ∀ x : F, γ.symm (algebraMap F K x) = algebraMap F K x` using `fun x => by`. Apply `(algebraMap K Ω).injective` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hγinv, ← IsScalarTower.algebraMap_apply, AlgEquiv.commutes]`. Use `set e : 𝓞 K ≃+* 𝓞 K := RingOfIntegers.mapRingEquiv γ with he`. Establish `heγ : ∀ y : 𝓞 K, ((e.symm y : 𝓞 K) : K) = γ.symm (y : K)` using `fun y => rfl`. Set `P : HeightOneSpectrum (𝓞 K) → HeightOneSpectrum (𝓞 K)` to `fun w => w.comap (e.symm : 𝓞 K →+* 𝓞 K) e.symm.surjective`. Establish `hPmem : ∀ w y, y ∈ (P w).asIdeal ↔ e.symm y ∈ w.asIdeal` using `fun _ _ => Iff.rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPinj : Function.Injective P`. Introduce `w1 w2 h12`. Use `HeightOneSpectrum.ext (Ideal.ext fun x => ?_)` and prove the remaining obligations. Establish `h3` using `congrArg (fun w : HeightOneSpectrum (𝓞 K) => e x ∈ w.asIdeal) h12`. Simplify using `only [hPmem, RingEquiv.symm_apply_apply] at h3`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `Iff.of_eq h3`. Establish `hPunder : ∀ w, (P w).under (𝓞 F) = w.under (𝓞 F)`. Introduce `w`. Use `HeightOneSpectrum.ext (Ideal.ext fun x => ?_)` and prove the remaining obligations. Use `show algebraMap (𝓞 F) (𝓞 K) x ∈ (P w).asIdeal ↔ algebraMap (𝓞 F) (𝓞 K) x ∈ w.asIdeal`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hPmem]`. Establish `h4 : e.symm (algebraMap (𝓞 F) (𝓞 K) x) = algebraMap (𝓞 F) (𝓞 K) x` using `RingOfIntegers.ext (by rw [heγ]; exact hγF x)`. Rewrite using `[h4]`. Establish `hPnorm : ∀ w, normV (P w) = normV w`. Introduce `w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Unfold `normV`. Use `Nat.card_congr (Ideal.quotientEquiv (P w).asIdeal w.asIdeal e.symm ?_).toEquiv` and prove the remaining obligations. Conclude with `(Ideal.map_comap_of_surjective _ e.symm.surjective w.asIdeal).symm`. Establish `hPplace : ∀ w (A : ValuationSubring Ω), IsPlaceOver A w → IsPlaceOver (g • A) (P w)`. Introduce `w A hA y`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[val_lt_one_smul, hPmem, ← hA (e.symm y), heγ, hγinv]`. Unfold `AttOne at h ⊢`. Use `filter_upwards [hPinj.tendsto_cofinite.eventually h] with w hw hp`. Take `⟨B, hB, hE⟩` from `hw (by rw [hPnorm]; exact hp)`. Rewrite `hB` using `[hPunder]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hE` using `[hPnorm]`. Use `⟨B, hB, fun A hA => ?_⟩` and prove the remaining obligations. Take `⟨hI, hF⟩` from `hE (g • A) (hPplace w A hA)`. Use `⟨fun s hs => hI (c s) (ine_conj g c hc A s hs), fun σ hσ => ?_⟩` and prove the remaining obligations. Establish `h5` using `hF (c σ) (by rw [hPnorm]; exact frob_conj g c hc A _ σ hσ)`.
-
-Rewrite using `[MonoidHom.comp_apply, map_inv]`. Conclude with `h5`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Int.Core.oneConj_holds :
     OneConj := by

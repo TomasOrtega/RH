@@ -13,11 +13,11 @@ section Loc
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Establish `hle : Ideal.span {t} ≤ P` using `(Ideal.span_singleton_le_iff_mem _).2 ht`. Take `⟨I, hI⟩` from `Ideal.dvd_iff_le.mpr hle`. Establish `hIP : ¬ I ≤ P`. Introduce `h`. Apply `ht2` to reduce the goal to its premises.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h2 : Ideal.span {t} ≤ P ^ 2`. Rewrite using `[hI, pow_two]`. Conclude with `Ideal.mul_mono_right h`. Conclude with `h2 (Ideal.subset_span (Set.mem_singleton t))`. Take `⟨c, hcI, hcP⟩` from `SetLike.not_le_iff_exists.mp hIP`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨c, hcP, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[hI, mul_comm c x]`. Conclude with `Ideal.mul_mem_mul hx hcI`.
+A detailed English derivation is pending.
 -/
 theorem exists_not_mem_mul_mem_span {P : Ideal (𝓞 E)} (hP : P.IsMaximal) {t : 𝓞 E} (ht : t ∈ P) (ht2 : t ∉ P ^ 2) :
     ∃ c : 𝓞 E, c ∉ P ∧ ∀ x ∈ P, c * x ∈ Ideal.span {t} := by
@@ -39,7 +39,7 @@ def quotientSpanToQuotientPrime (P : Ideal (𝓞 E)) (t : 𝓞 E) (ht : t ∈ P)
   Submodule.mapQ (Ideal.span {t}) P LinearMap.id ((Ideal.span_singleton_le_iff_mem _).2 ht)
 
 /- English proof (translation)
-The claim follows from `hP.isPrime IsLocalizedModule P.primeCompl (quotientSpanToQuotientPrime P t ht) := by constructor · intro s have hs : (s : 𝓞 E) ∉ P := s.2 rw [Module.End.isUnit_iff] constructor · intro y1 y2 h obtain ⟨a1, rfl⟩ := Submodule.Quotient.mk_surjective P y1 obtain ⟨a2, rfl⟩ := Submodule …`.
+A detailed English derivation is pending.
 -/
 theorem isLocalizedModule_quotient_prime {P : Ideal (𝓞 E)} (hP : P.IsMaximal) {t : 𝓞 E} (ht : t ∈ P) (ht2 : t ∉ P ^ 2) :
     haveI := hP.isPrime
@@ -83,7 +83,7 @@ section Idx
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E}
 
 /- English proof (translation)
-The claim follows from `hP.isPrime; Formalism.HermitianLatticesTheory.locLen P A B = 1 := by have := hP.isPrime unfold Formalism.HermitianLatticesTheory.locLen have := isLocalizedModule_quotient_prime hP ht ht2 have eq := IsLocalizedModule.linearEquiv P.primeCompl (i_g P A B) (quotientSpanToQuotientPrim …`.
+A detailed English derivation is pending.
 -/
 theorem localLength_cyclic_mem {A B : Submodule (𝓞 E) S.V} {t : 𝓞 E}
     (e : (A ⧸ B.comap A.subtype) ≃ₗ[𝓞 E] (𝓞 E ⧸ Ideal.span {t})) (P : Ideal (𝓞 E)) (hP : P.IsMaximal) (ht : t ∈ P)
@@ -98,15 +98,13 @@ theorem localLength_cyclic_mem {A B : Submodule (𝓞 E) S.V} {t : 𝓞 E}
   rfl
 
 /- English proof (translation)
-Establish `htA : ∀ x ∈ A, t • x ∈ B`. Introduce `x hx`. Establish `h1 : e (Submodule.Quotient.mk (t • (⟨x, hx⟩ : A))) = 0`. Rewrite using `[Submodule.Quotient.mk_smul, map_smul]`. Take `⟨a, ha⟩` from `Submodule.Quotient.mk_surjective _ (e (Submodule.Quotient.mk ⟨x, hx⟩))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← ha, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, smul_eq_mul]`. Conclude with `Ideal.mul_mem_right a _ (Ideal.mem_span_singleton_self t)`. Establish `h2` using `(LinearEquiv.map_eq_zero_iff e).mp h1`. Rewrite `h2` using `[Submodule.Quotient.mk_eq_zero, Submodule.mem_comap]`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsub : Subsingleton ((Formalism.HermitianLatticesTheory.localization₂ P A) ⧸ (Formalism.HermitianLatticesTheory.localization₂ P B).comap (Formalism.HermitianLatticesTheory.localization₂ P A).subtype)`. Rewrite using `[Submodule.Quotient.subsingleton_iff, eq_top_iff]`. Introduce and unpack `⟨x, hx⟩ -`. Establish `hx' : ∃ s ∈ P.primeCompl, s • x ∈ A` using `hx`. Take `⟨s, hs, hsx⟩` from `hx'`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Use `show ∃ s ∈ P.primeCompl, s • x ∈ B`. Use `⟨t * s, Ideal.mem_primeCompl_iff.mpr fun h => ?_, ?_⟩` and prove the remaining obligations. Break down `‹P.IsPrime›.mem_or_mem h with h | h` into its components or cases. Conclude with `ht h`. Conclude with `Ideal.mem_primeCompl_iff.mp hs h`.
-
-Rewrite using `[mul_smul]`. Conclude with `htA _ hsx`. Unfold `Formalism.HermitianLatticesTheory.locLen`. Rewrite using `[Module.length_eq_zero_iff.mpr hsub]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem localLength_cyclic_not_mem {A B : Submodule (𝓞 E) S.V} {t : 𝓞 E}
     (e : (A ⧸ B.comap A.subtype) ≃ₗ[𝓞 E] (𝓞 E ⧸ Ideal.span {t})) (P : Ideal (𝓞 E)) [P.IsPrime] (ht : t ∉ P) :
@@ -138,11 +136,11 @@ theorem localLength_cyclic_not_mem {A B : Submodule (𝓞 E) S.V} {t : 𝓞 E}
   rfl
 
 /- English proof (translation)
-Unfold `genIdxH`. Establish `h1 : ∀ P : HeightOneSpectrum (𝓞 E), ((Ideal.absNorm P.asIdeal : ℕ) : ℝ) ^ (haveI` using `P.isPrime; Formalism.HermitianLatticesTheory.lidx P.asIdeal A B) = ∏ᶠ (_ : P ∈ plOver E T), ((Ideal.absNorm P.asIdeal : ℕ) : ℝ) := by`. Introduce `P`. Use `P.isPrime` as an intermediate fact. Rewrite using `[i_lidx_of_le P.asIdeal hBA]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hP : P ∈ plOver E T`. Establish `hmax` using `P.isPrime.isMaximal P.ne_bot`. Rewrite using `[finprod_eq_if, if_pos hP, localLength_cyclic_mem e P.asIdeal hmax hP (hs P.asIdeal hmax hP).2]`. Simplify using the standard rewrite rules. Rewrite using `[finprod_eq_if, if_neg hP, localLength_cyclic_not_mem e P.asIdeal hP]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[finprod_congr h1]`. Conclude with `finprod_plOver E hT hs id`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem genIdx_cyclic_split_prime {A B : Submodule (𝓞 E) S.V} (hBA : B ≤ A) {T : ℕ} (hT : T.Prime) (hs : SplitsCompl E T)
     (e : (A ⧸ B.comap A.subtype) ≃ₗ[𝓞 E] (𝓞 E ⧸ Ideal.span {((T : ℕ) : 𝓞 E)})) :
@@ -165,15 +163,15 @@ theorem genIdx_cyclic_split_prime {A B : Submodule (𝓞 E) S.V} (hBA : B ≤ A)
   exact finprod_plOver E hT hs id
 
 /- English proof (translation)
-Establish `hA : Formalism.HermitianLatticesTheory.dual S.hT M ⊓ Submodule.restrictScalars (𝓞 E) (Submodule.span E (M : Set S.V)) = Formalism.HermitianLatticesTheory.dual S.hT M`. Rewrite using `[hl.span_eq_top, Submodule.restrictScalars_top, inf_top_eq]`. Establish `hφ : ∀ a : 𝓞 E, LinearMap.toSpanSingleton (𝓞 E) _ (Submodule.Quotient.mk (p` using `M.comap (Formalism.HermitianLatticesTheory.dual S.hT M).subtype) ⟨w₁, hw⟩) a = Submodule.Quotient.mk ⟨a • w₁, (Formalism.HermitianLatticesTheory.dual S.hT M).smul_mem a hw⟩ := by`. Introduce `a`. Rewrite using `[LinearMap.toSpanSingleton_apply, ← Submodule.Quotient.mk_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hsurj : Function.Surjective (LinearMap.toSpanSingleton (𝓞 E) _ (Submodule.Quotient.mk (p` using `M.comap (Formalism.HermitianLatticesTheory.dual S.hT M).subtype) ⟨w₁, hw⟩)) := by`. Introduce `y`. Take `⟨⟨w, hwA⟩, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Take `⟨a, ha⟩` from `hgen w hwA`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨-a, ?_⟩` and prove the remaining obligations. Rewrite using `[hφ, Submodule.Quotient.eq, Submodule.mem_comap, map_sub, Submodule.subtype_apply, Submodule.subtype_apply]`. Establish `h1 : -a • w₁ - w = -(w + a • w₁)` using `by rw [neg_smul]; abel`. Rewrite using `[h1]`. Conclude with `M.neg_mem ha`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hK : LinearMap.ker (LinearMap.toSpanSingleton (𝓞 E) _ (Submodule.Quotient.mk (p` using `M.comap (Formalism.HermitianLatticesTheory.dual S.hT M).subtype) ⟨w₁, hw⟩)) = Ideal.span {((T : ℕ) : 𝓞 E)} := by`. Use extensionality with `a`. Rewrite using `[LinearMap.mem_ker, hφ, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, Submodule.subtype_apply, Ideal.mem_span_singleton]`. Conclude with `hker a`. Unfold `latDetH dualInH`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hA]`. Use `congr 1`. Conclude with `genIdx_cyclic_split_prime hint hT hs ((Submodule.quotEquivOfEq _ _ hK).symm.trans (LinearMap.quotKerEquivOfSurjective _ hsurj)).symm`.
+A detailed English derivation is pending.
 -/
 theorem latDet_sq_of_cyclic_dual_quotient (M : Submodule (𝓞 E) S.V) (hl : Submodule.IsLattice E M)
     (hint : M ≤ Formalism.HermitianLatticesTheory.dual S.hT M) {T : ℕ} (hT : T.Prime) (hs : SplitsCompl E T) (w₁ : S.V)
@@ -220,7 +218,7 @@ section Record
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Rewrite using `[D.host.der.finrank_E]`. Use `show 4 * D.R.toFrame.ord = 2 * (2 * D.R.toFrame.ord)`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem finrank_rat_E_eq_two_f (D : D7) : finrank ℚ D.host.E = 2 * D.R.f := by
   rw [D.host.der.finrank_E]
@@ -228,7 +226,7 @@ theorem finrank_rat_E_eq_two_f (D : D7) : finrank ℚ D.host.E = 2 * D.R.f := by
   ring
 
 /- English proof (translation)
-Rewrite using `[latDet_sq_of_cyclic_dual_quotient M hl hint hT hs w₁ hw hgen hker, finrank_rat_E_eq_two_f, pow_mul', Real.sqrt_sq (by positivity)]`. Use `norm_cast`.
+Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared.
 -/
 theorem latDet_of_cyclic_dual_quotient (D : D7) (M : Submodule (𝓞 D.host.E) (D.sp.X 0).V) (hl : Submodule.IsLattice D.host.E M)
     (hint : M ≤ Formalism.HermitianLatticesTheory.dual (D.sp.X 0).hT M) {T : ℕ} (hT : T.Prime) (hs : SplitsCompl D.host.E T)

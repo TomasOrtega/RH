@@ -13,7 +13,7 @@ namespace InducedTensorMap.Main
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Simplify using `[cf]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem act_fin_val {a : ℕ} (g : GL (Fin a) (Af E)) (F : Sm E a) :
     (act (.fin g) F).1 = fun y => F.1 (y * cf a 1 g) := by
@@ -22,7 +22,7 @@ theorem act_fin_val {a : ℕ} (g : GL (Fin a) (Af E)) (F : Sm E a) :
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Simplify using `[cf]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem act_cpt_val {a : ℕ} (k : Kinf E a) (F : Sm E a) :
     (act (.cpt k) F).1 = fun y => F.1 (y * cf a k 1) := by
@@ -31,7 +31,7 @@ theorem act_cpt_val {a : ℕ} (k : Kinf E a) (F : Sm E a) :
   rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun k => cptRep E N k (T φ)))`. Use `Submodule.finiteDimensional_of_le (S₂ := (Submodule.span ℂ (Set.range fun k => cptRep E N k φ)).map T) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Use `⟨cptRep E N k φ, Submodule.subset_span ⟨k, rfl⟩, ?_⟩` and prove the remaining obligations. Conclude with `hT (.cpt k) φ hφ`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem finVec_of_equiv {N : ℕ} {V : Submodule ℂ (Sm E N)} {T : Sm E N →ₗ[ℂ] Sm E N}
     (hT : ∀ o, ∀ φ ∈ V, T (act o φ) = act o (T φ)) {φ : Sm E N} (hφ : φ ∈ V)
@@ -48,23 +48,21 @@ end InducedTensorMap.Main
 
 open InducedTensorMap InducedTensorMap.Main in
 /- English proof (translation)
-Introduce `E _ _ _ r s V U₁ U₂ T f₁ f₂ hV hVa hU₁ hU₂ hT hTi hf₁ hf₂`. Establish `H : Good U₁ U₂ f₁ f₂` using `⟨hU₁, hU₂, hf₁, hf₂⟩`. Establish `hI : ∀ φ ∈ V, T φ ∈ indSub U₁ U₂` using `fun φ hφ => ⟨(hTi φ hφ).1, fun k g => (hTi φ hφ).2 k g⟩`. Establish `hK : ∀ φ ∈ V, T φ ∈ finVec (cptRep E (r + s))` using `fun φ hφ => finVec_of_equiv hT hφ (hVa φ hφ).kfin`. Set `L : V →ₗ[ℂ] Sm E (r + s)` to `{ toFun := fun φ => ⟨ind f₁ f₂ (T φ.1).1, ind_mem_Sm H (hI _ φ.2) (hK _ φ.2)⟩ map_add' := fun φ ψ => Subtype.ext (by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Express the relevant statement in the definitionally equal form `ind f₁ f₂ (T (φ.1 + ψ.1)).1 = ind f₁ f₂ (T φ.1).1 + ind f₁ f₂ (T ψ.1).1`. Rewrite using `[map_add, Submodule.coe_add, map_add])`. Use the proof step `map_smul' := fun c φ => Subtype.ext (by`. Express the relevant statement in the definitionally equal form `ind f₁ f₂ (T (c • φ.1)).1 = c • ind f₁ f₂ (T φ.1).1`. Rewrite using `[map_smul, Submodule.coe_smul, map_smul]) }`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨T', hT'⟩` from `LinearMap.exists_extend L`. Establish `e : ∀ φ (hφ : φ ∈ V), (T' φ).1 = ind f₁ f₂ (T φ).1` using `fun φ hφ => congrArg Subtype.val (LinearMap.congr_fun hT' ⟨φ, hφ⟩)`. Use `⟨T', fun o φ hφ => ?_, fun φ hφ x g => ?_, fun φ hφ k g n ψ₁ ψ₂ _ _ hs m => ?_⟩` and prove the remaining obligations. Establish `ho` using `hV o φ hφ`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e _ ho, hT o φ hφ]`. Consider the cases of `o with`. Consider the case `fin g`. Rewrite using `[act_fin_val, act_fin_val, e _ hφ]`. Use function extensionality and compare the values at `x`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Treat this case separately.
 
-Conclude with `ind_rt H (hI φ hφ) 1 g x`. Consider the case `cpt k`. Rewrite using `[act_cpt_val, act_cpt_val, e _ hφ]`. Use function extensionality and compare the values at `x`. Conclude with `ind_rt H (hI φ hφ) k 1 x`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `lie X`. Establish `hX : lie E (r + s) X (T φ) ∈ indSub U₁ U₂`. Use `hT (.lie X) φ hφ` as an intermediate fact. Express the relevant statement in the definitionally equal form `T (lie E (r + s) X φ) = lie E (r + s) X (T φ) at this`. Rewrite using `[← this]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hI _ (hV (.lie X) φ hφ)`. Express the relevant statement in the definitionally equal form `ind f₁ f₂ (lie E (r + s) X (T φ)).1 = lieD X (T' φ).1`. Rewrite using `[e _ hφ]`. Conclude with `ind_lie H (hI φ hφ) (hK φ hφ) X hX`. Rewrite using `[e φ hφ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `ind_left H (hI φ hφ) x g`. Rewrite using `[e φ hφ]`. Establish `hres : res (cf (r + s) k g) (T φ).1 = fun m => ∑ i, (ψ₁ i).1 m.1 * (ψ₂ i).1 m.2` using `funext hs`. Establish `h1` using `congrFun (ind_levi H (hI φ hφ) k g) m`. Rewrite `h1` using `[res_apply]`.
-
-Express the relevant statement in the definitionally equal form `ind f₁ f₂ (T φ).1 (lev (Ad E) r s m * cf (r + s) k g) = _`. Rewrite using `[h1, hres, tensOp_sum]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem indMap_holds : IndMap := by
   intro E _ _ _ r s V U₁ U₂ T f₁ f₂ hV hVa hU₁ hU₂ hT hTi hf₁ hf₂

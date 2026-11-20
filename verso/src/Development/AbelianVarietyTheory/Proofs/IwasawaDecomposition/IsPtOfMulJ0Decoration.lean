@@ -11,9 +11,9 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Ho
 namespace GlobalTheory.Mem.Col2.TopCh
 
 /- English proof (translation)
-Establish `h` using `decoRaw_rawSm hc ST SG 1 (⟨z, hz⟩⁻¹ : J0 hc n ST) g`. Rewrite `h` using `[map_one, map_inv]`. Establish `e : Formalism.UG.bc (iA F E) ((1 : URat hc n) : GL (Fin n) E) * g * (((⟨z, hz⟩⁻¹ : J0 hc n ST) : J0 hc n ST) : GL (Fin n) (AfE F E))⁻¹ = g * z`. Simplify using the standard rewrite rules. Rewrite `h` using `[e]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem decoRaw_mul_levelIwahori_reduction {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] (hc : CMData F E)
     {n : ℕ} [NeZero n] (ST SG : Finset (HeightOneSpectrum (𝓞 E))) (g z : GL (Fin n) (AfE F E)) (hz : z ∈ J0 hc n ST) :
@@ -27,15 +27,15 @@ theorem decoRaw_mul_levelIwahori_reduction {F E : Type} [Field F] [NumberField F
   exact h
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ hc n _ ST SG Q g z p p' h`. Use `⟨fun hp hp' => ⟨?_, fun he => ?_⟩, fun hQ hp hz hr => ?_, fun hQ hg => ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨hz, hr⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h1` using `decoRaw_mul_levelIwahori_reduction hc ST SG g z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite `h1` using `[hr, inv_inv, (near_of_isPtOf hp 0).deco, (near_of_isPtOf hp' 0).deco]`. Conclude with `h1`. Establish `hx : decoRaw ST SG (g * z) = (decoRaw ST SG g).act 1 h`. Rewrite using `[(near_of_isPtOf hp 0).deco, (near_of_isPtOf hp' 0).deco, he]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Take `⟨hJ, hr⟩` from `mem_congruence_of_action hc ST SG hp'.uni hp.uni h hx`. Establish `e : (g * z)⁻¹ * g = z⁻¹` using `by group`. Establish `hz : z ∈ J0 hc n ST`. Establish `h1` using `inv_mem hJ`. Rewrite `h1` using `[e, inv_inv]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hz, ?_⟩` and prove the remaining obligations. Establish `e' : (⟨(g * z)⁻¹ * g, hJ⟩ : J0 hc n ST) = (⟨z, hz⟩ : J0 hc n ST)⁻¹` using `Subtype.ext e`. Rewrite `hr` using `[e', map_inv]`. Rewrite using `[← hr, inv_inv]`. Use `(GlobalTheory.Mem.Col2.PtDeco.isPtOf_iff_decoRaw F E hc n ST SG Q (g * z) _ hQ).2 ⟨mul_mem hp.uni (congruence_le_adelic_unitary hc n ST hz), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `decoRaw_mul_levelIwahori_reduction hc ST SG g z hz`. Rewrite `h1` using `[hr, inv_inv, (near_of_isPtOf hp 0).deco]`. Conclude with `h1.symm`. Take `⟨q, hq⟩` from `exists_near (ST := ST) (SG := SG) (Q := Q) hc 0 hg`. Conclude with `⟨q, (GlobalTheory.Mem.Col2.PtDeco.isPtOf_iff_decoRaw F E hc n ST SG Q g q hQ).2 ⟨hg, hq.deco.symm⟩⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isPtOf_mul_J0 : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] (hc : CMData F E) (n : ℕ) [NeZero n] (ST SG Q : Finset (HeightOneSpectrum (𝓞 E))) (g z : GL (Fin n) (AfE F E)) (p p' : DecoF E n ST SG Q) (h : GLG E n SG), (IsPtOf hc g p → IsPtOf hc (g * z) p' → ((∃ hz : z ∈ J0 hc n ST, redG hc n ST SG ⟨z, hz⟩ = h⁻¹) ↔ p'.deco = ((1, h) : UF E n × GLG E n SG) • p.deco)) ∧ (Q = ∅ → IsPtOf hc g p → ∀ hz : z ∈ J0 hc n ST, redG hc n ST SG ⟨z, hz⟩ = h⁻¹ → IsPtOf hc (g * z) (((1, h, 1) : UF E n × GLG E n SG × GLQ E n Q) • p)) ∧ (Q = ∅ → g ∈ UAd hc n → ∃ q : DecoF E n ST SG Q, IsPtOf hc g q) := by
   intro F E _ _ _ _ _ _ hc n _ ST SG Q g z p p' h

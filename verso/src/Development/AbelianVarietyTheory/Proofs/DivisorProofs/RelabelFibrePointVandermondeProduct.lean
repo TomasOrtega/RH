@@ -13,7 +13,7 @@ open GlobalTheory.BcEigen
 namespace GlobalTheory.BcEigen.Relabel
 
 /- English proof (translation)
-Establish `h' : j + (N - j) = N` using `by omega`. Rewrite using `[← Equiv.prod_comp (finCongr h') f, Fin.prod_univ_add]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem prod_two_blocks {M : Type} [CommMonoid M] {N j : ℕ} (h : j ≤ N) (f : Fin N → M) :
     ∏ x, f x = (∏ i : Fin j, f ⟨i, by have := i.isLt; omega⟩) *
@@ -23,7 +23,7 @@ private theorem prod_two_blocks {M : Type} [CommMonoid M] {N j : ℕ} (h : j ≤
   rfl
 
 /- English proof (translation)
-Unfold `rootIdx`. Rewrite using `[dif_pos (show ((⟨i, hi⟩ : Fin N) : ℕ) < j from i.isLt)]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem rootIdx_low (ι : Type) {N j : ℕ} (τ : ι) (i : Fin j) (hi : (i : ℕ) < N) :
     rootIdx ι N j (τ, ⟨i, hi⟩) = ⟨(τ, true), i⟩ := by
@@ -32,7 +32,7 @@ private theorem rootIdx_low (ι : Type) {N j : ℕ} (τ : ι) (i : Fin j) (hi : 
   rfl
 
 /- English proof (translation)
-Unfold `rootIdx`. Rewrite using `[dif_neg (show ¬ ((⟨j + i, hi⟩ : Fin N) : ℕ) < j by simp)]`. Use `congr 1`. Conclude with `Fin.ext (by simp)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 private theorem rootIdx_high (ι : Type) {N j : ℕ} (τ : ι) (i : Fin (N - j)) (hi : j + (i : ℕ) < N) :
     rootIdx ι N j (τ, ⟨j + i, hi⟩) = ⟨(τ, false), i⟩ := by
@@ -42,7 +42,7 @@ private theorem rootIdx_high (ι : Type) {N j : ℕ} (τ : ι) (i : Fin (N - j))
   exact Fin.ext (by simp)
 
 /- English proof (translation)
-Rewrite using `[← Finset.prod_filter]`. Use `Finset.prod_congr ?_ fun _ _ => rfl` and prove the remaining obligations. Use extensionality with `b`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem prod_Ioi_eq_ite {M : Type} [CommMonoid M] {n : ℕ} (i : Fin n) (f : Fin n → M) :
     ∏ b ∈ Finset.Ioi i, f b = ∏ b, if i < b then f b else 1 := by
@@ -52,13 +52,13 @@ private theorem prod_Ioi_eq_ite {M : Type} [CommMonoid M] {n : ℕ} (i : Fin n) 
   simp
 
 /- English proof (translation)
-Rewrite using `[prod_two_blocks h]`. Establish `h2 : (∏ i : Fin (N - j), ∏ b : Fin N, if (⟨j + i, by have` using `i.isLt; omega⟩ : Fin N) < b ∧ (b : ℕ) < j then g ⟨j + i, by have := i.isLt; omega⟩ b else 1) = 1 := by`. Use `Finset.prod_eq_one fun i _ => Finset.prod_eq_one fun b _ => if_neg ?_` and prove the remaining obligations. Rewrite using `[Fin.lt_def]`. Simplify using `only`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[h2, mul_one]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[prod_two_blocks h, prod_Ioi_eq_ite]`. Rewrite using `[Finset.prod_eq_one (s := (Finset.univ : Finset (Fin (N - j)))), mul_one]`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun b _ => if_congr ?_ rfl rfl` and prove the remaining obligations. Use `b.isLt` as an intermediate fact. Rewrite using `[Fin.lt_def, Fin.lt_def]`. Simplify using `only`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Introduce `b _`. Conclude with `if_neg (by simp)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem prod_low_pairs {M : Type} [CommMonoid M] {N j : ℕ} (h : j ≤ N) (g : Fin N → Fin N → M) :
     (∏ a : Fin N, ∏ b : Fin N, if a < b ∧ (b : ℕ) < j then g a b else 1) =
@@ -85,13 +85,13 @@ private theorem prod_low_pairs {M : Type} [CommMonoid M] {N j : ℕ} (h : j ≤ 
     exact if_neg (by simp)
 
 /- English proof (translation)
-Rewrite using `[prod_two_blocks h]`. Establish `h2 : (∏ i : Fin j, ∏ b : Fin N, if (⟨i, by have` using `i.isLt; omega⟩ : Fin N) < b ∧ j ≤ (i : ℕ) then g ⟨i, by have := i.isLt; omega⟩ b else 1) = 1 := by`. Use `Finset.prod_eq_one fun i _ => Finset.prod_eq_one fun b _ => if_neg ?_` and prove the remaining obligations. Use `i.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[h2, one_mul]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[prod_two_blocks h, prod_Ioi_eq_ite]`. Rewrite using `[Finset.prod_eq_one (s := (Finset.univ : Finset (Fin j))), one_mul]`. Use `Finset.prod_congr rfl fun b _ => if_congr ?_ rfl rfl` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Fin.lt_def, Fin.lt_def]`. Simplify using `only`. Use linear arithmetic over natural numbers and integers. Introduce `b _`. Use `if_neg ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `b.isLt` as an intermediate fact. Rewrite using `[Fin.lt_def]`. Simplify using `only`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 private theorem prod_high_pairs {M : Type} [CommMonoid M] {N j : ℕ} (h : j ≤ N) (g : Fin N → Fin N → M) :
     (∏ a : Fin N, ∏ b : Fin N, if a < b ∧ j ≤ (a : ℕ) then g a b else 1) =
@@ -120,11 +120,11 @@ private theorem prod_high_pairs {M : Type} [CommMonoid M] {N j : ℕ} (h : j ≤
     omega
 
 /- English proof (translation)
-Unfold `GlobalTheory.FlagPoly.fibPt`. Rewrite using `[map_prod, Fintype.prod_prod_type, Fintype.prod_prod_type]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.prod_bool, prod_two_blocks h]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Unfold `monPt`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow, map_neg, rename_X, rootIdx_low, if_pos (show ((i : ℕ)) < j from i.isLt)]`. Both sides reduce to the same expression. Unfold `monPt`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions.
 
-Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow, map_neg, rename_X, rootIdx_high, if_neg (by simp)]`. Use `congr 1`. Use `show N - 1 - (j + (i : ℕ)) = N - j - 1 - (i : ℕ)`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem rename_fibPt (ι : Type) [Fintype ι] (N j : ℕ) (h : j ≤ N) :
     rename (rootIdx ι N j) (fibPt ι N j) = ∏ a, monPt (rkB ι N j) a := by
@@ -145,7 +145,7 @@ private theorem rename_fibPt (ι : Type) [Fintype ι] (N j : ℕ) (h : j ≤ N) 
     omega
 
 /- English proof (translation)
-Unfold `vdmCl`. Rewrite using `[map_prod, Fintype.prod_prod_type]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.prod_bool, prod_low_pairs h (fun a b => (X (τ, b) - X (τ, a) : Pol ι N)), prod_high_pairs h (fun a b => (X (τ, b) - X (τ, a) : Pol ι N))]`. Simplify using `only [map_mul, map_prod, map_sub, rename_C, rename_X, rootIdx_low, rootIdx_high]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/
@@ -161,7 +161,7 @@ private theorem rename_vdmCl (ι : Type) [Fintype ι] (N j : ℕ) (h : j ≤ N) 
   rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rename_fibPt ι N j h, rename_vdmCl ι N j h⟩`.
+Supply the required witnesses or components.
 -/
 private theorem relabel_prods (ι : Type) [Fintype ι] [DecidableEq ι] (N j : ℕ) (h : j ≤ N) :
     rename (rootIdx ι N j) (fibPt ι N j) = ∏ a, monPt (rkB ι N j) a ∧
@@ -172,7 +172,7 @@ private theorem relabel_prods (ι : Type) [Fintype ι] [DecidableEq ι] (N j : �
 end GlobalTheory.BcEigen.Relabel
 
 /- English proof (translation)
-Introduce `ι _ _ N j h` and use `GlobalTheory.BcEigen.Relabel.relabel_prods ι N j h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.relabel_fibre_point_vandermonde_product : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (N j : ℕ), j ≤ N →
     rename (rootIdx ι N j) (fibPt ι N j) = ∏ a, monPt (rkB ι N j) a ∧

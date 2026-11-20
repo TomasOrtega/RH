@@ -16,41 +16,37 @@ noncomputable section
 universe u
 
 /- English proof (translation)
-Introduce `O _ _ _ K _ _ ι _ J _ P n hP N u hu hu' c x hx hxP W hWmin hWrel`. Use `hP.multiProj.isPrime` as an intermediate fact. Introduce `W' hW'p hmh hW'rel hbl hW'W`. Establish `hW'fam : W'.IsPrime ∧ IsMultiHomogIdeal W' ∧ IsRelevant W' ∧ blowUpOf P u ≤ W' ∧ W'.comap (liftForm (ι` using `ι) (J := J) (R := O)) ≤ W := ⟨hW'p, hmh, hW'rel, hbl, hW'W⟩`. Establish `hBR : blowUpOverLoc P W u ≤ blowUpLocRing P u W'` using `iInf₂_le W' hW'fam`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨e, L, hL, he, hLQ⟩` from `MultiHomogPrimeAvoid.proof O (Option K) (extIdx ι J) _ (hfam O K ι J P n hP N u hu hu' c x hx hxP W hWmin hWrel) (fun Q hQ => ⟨hQ.1, hQ.2.1, hQ.2.2.1⟩)`. Establish `: (blowUpOf P u).IsPrime` using `RingHom.ker_isPrime _`. Take `⟨φ, hφ⟩` from `BlowUpLocRingIso.proof O K ι J P u W' hbl`. Take `⟨hlocT, -⟩` from `HomLocRingIsLocal.proof HomLocRingMem.proof O (Option K) (extIdx ι J) (blowUpOf P u) W' hW'p hbl`. Establish `: IsLocalRing (blowUpLocRing P u W')` using `φ.isLocalRing`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hne : ∀ (d : Option K → ℕ) (H : MRing (extIdx ι J) O), IsMultiHomog H d → H ∉ W' → algebraMap (MRing ι O ⧸ P) (FractionRing (MRing ι O ⧸ P)) (blowUpEval P u H) ≠ 0`. Introduce `d H hH hHW h0`. Establish `h1` using `hφ d H H hH hH hHW`. Rewrite `h1` using `[h0, div_zero]`. Establish `h2 : (⟨_, Subring.subset_closure ⟨d, H, H, hH, hH, hHW, rfl⟩⟩ : homLocRing (blowUpOf P u) W') = 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show _ / _ = (1 : FractionRing (MRing (extIdx ι J) O ⧸ blowUpOf P u))`. Apply `div_self` to reduce the goal to its premises. Rewrite using `[Ne, map_eq_zero_iff _ (IsFractionRing.injective _ _), Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `fun h => hHW (hbl h)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[h2, map_one]`. Conclude with `one_ne_zero h1`. Establish `hgen : ∀ (b : Option K → ℕ) (F G : MRing (extIdx ι J) O), IsMultiHomog F b → IsMultiHomog G b → G ∉ W' → ∃ bb ∈ blowUpOverLoc P W u, ∃ s ∈ blowUpOverLoc P W u, (∃ t ∈ blowUpLocRing P u W', s * t = 1) ∧ algebraMap (MRing ι O ⧸ P) (FractionRing (MRing ι O ⧸ P)) (blowUpEval P u F) / …`. Introduce `b F G hF hG hGW`. Use `set k := ∑ o, b o with hk`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Take `⟨M, hM, hMW⟩` from `homLocRing_form_not_mem hW'p hW'rel (fun o => k * e o - b o)`. Establish `hdeg : b + (fun o => k * e o - b o) = k • e`. Use function extensionality and compare the values at `o`. Establish `: b o ≤ k * e o` using `le_trans (Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ o)) (Nat.le_mul_of_pos_right _ (he o))`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hFM : IsMultiHomog (F * M) (k • e)` using `hdeg ▸ hF.mul hM`. Establish `hGM : IsMultiHomog (G * M) (k • e)` using `hdeg ▸ hG.mul hM`. Establish `hLk : IsMultiHomog (L ^ k) (k • e)` using `hL.pow k`. Establish `hLkQ : ∀ Q : Ideal (MRing (extIdx ι J) O), Q.IsPrime ∧ IsMultiHomogIdeal Q ∧ IsRelevant Q ∧ blowUpOf P u ≤ Q ∧ Q.comap (liftForm (ι` using `ι) (J := J) (R := O)) ≤ W → L ^ k ∉ Q := fun Q hQ h => hLQ Q hQ (hQ.1.mem_of_pow_mem k h)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmemB : ∀ H, IsMultiHomog H (k • e) → algebraMap (MRing ι O ⧸ P) (FractionRing (MRing ι O ⧸ P)) (blowUpEval P u H) / algebraMap (MRing ι O ⧸ P) (FractionRing (MRing ι O ⧸ P)) (blowUpEval P u (L ^ k)) ∈ blowUpOverLoc P W u` using `fun H hH => Subring.mem_iInf.mpr fun Q => Subring.mem_iInf.mpr fun hQ => Subring.subset_closure ⟨k • e, H, L ^ k, hH, hLk, hLkQ Q hQ, rfl⟩`. Establish `hGMW : G * M ∉ W'` using `fun h => (hW'p.mem_or_mem h).elim hGW hMW`. Establish `hLkW : L ^ k ∉ W'` using `hLkQ W' hW'fam`. Establish `hG0` using `hne _ _ hG hGW`. Establish `hGM0` using `hne _ _ hGM hGMW`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hLk0` using `hne _ _ hLk hLkW`. Use `⟨_, hmemB _ hFM, _, hmemB _ hGM, ⟨_, Subring.subset_closure ⟨k • e, L ^ k, G * M, hLk, hGM, hGMW, rfl⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[div_mul_div_comm, mul_comm]`. Conclude with `div_self (mul_ne_zero hLk0 hGM0)`. Rewrite `hGM0`, the goal using `[map_mul, map_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_mul, map_mul]`. Clear the denominators using the available nonvanishing facts. Establish `hfrac : ∀ z ∈ blowUpLocRing P u W', ∃ b ∈ blowUpOverLoc P W u, ∃ s ∈ blowUpOverLoc P W u, (∃ t ∈ blowUpLocRing P u W', s * t = 1) ∧ z * s = b`. Introduce `z hz`. Proceed by induction on `hz using Subring.closure_induction with`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `mem z hz`. Take `⟨b, F, G, hF, hG, hGW, rfl⟩` from `hz`. Conclude with `hgen b F G hF hG hGW`. Consider the case `zero => exact ⟨0, zero_mem _, 1, one_mem _, ⟨1, one_mem _, mul_one 1⟩, zero_mul 1⟩`. Consider the case `one => exact ⟨1, one_mem _, 1, one_mem _, ⟨1, one_mem _, mul_one 1⟩, one_mul 1⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add x y _ _ h₁ h₂`. Take `⟨b₁, hb₁, s₁, hs₁, ⟨t₁, ht₁, hst₁⟩, hx₁⟩` from `h₁`. Take `⟨b₂, hb₂, s₂, hs₂, ⟨t₂, ht₂, hst₂⟩, hx₂⟩` from `h₂`. Use `⟨b₁ * s₂ + b₂ * s₁, add_mem (mul_mem hb₁ hs₂) (mul_mem hb₂ hs₁), s₁ * s₂, mul_mem hs₁ hs₂, ⟨t₁ * t₂, mul_mem ht₁ ht₂, by rw [mul_mul_mul_comm, hst₁, hst₂, one_mul]⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← hx₁, ← hx₂]`.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Expand and normalize the polynomial expressions, which then agree. Consider the case `neg x _ h`. Take `⟨b₁, hb₁, s₁, hs₁, ht, hx₁⟩` from `h`. Conclude with `⟨-b₁, neg_mem hb₁, s₁, hs₁, ht, by rw [← hx₁]; ring⟩`. Consider the case `mul x y _ _ h₁ h₂`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Take `⟨b₁, hb₁, s₁, hs₁, ⟨t₁, ht₁, hst₁⟩, hx₁⟩` from `h₁`. Take `⟨b₂, hb₂, s₂, hs₂, ⟨t₂, ht₂, hst₂⟩, hx₂⟩` from `h₂`. Use `⟨b₁ * b₂, mul_mem hb₁ hb₂, s₁ * s₂, mul_mem hs₁ hs₂, ⟨t₁ * t₂, mul_mem ht₁ ht₂, by rw [mul_mul_mul_comm, hst₁, hst₂, one_mul]⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← hx₁, ← hx₂]`. Expand and normalize the polynomial expressions, which then agree.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations.
 
-Set `𝔭 : Ideal (blowUpOverLoc P W u)` to `(IsLocalRing.maximalIdeal (blowUpLocRing P u W')).comap (Subring.inclusion hBR)`. Establish `h𝔭 : 𝔭.IsPrime` using `Ideal.comap_isPrime _ _`. Use `⟨hBR, 𝔭, h𝔭, ?_⟩` and prove the remaining obligations. Use `letI := (Subring.inclusion hBR).toAlgebra`. Use `(isLocalization_iff _ _).mpr ⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨s, hs⟩`. Assume the negation of the conclusion as `h`. Conclude with `hs ((IsLocalRing.mem_maximalIdeal _).mpr h)`. Introduce and unpack `⟨z, hz⟩`. Take `⟨b, hb, s, hs, ⟨t, ht, hst⟩, hzs⟩` from `hfrac z hz`.
-
-Use `⟨(⟨b, hb⟩, ⟨⟨s, hs⟩, ?_⟩), Subtype.ext hzs⟩` and prove the remaining obligations. Introduce `hm`. Establish `hm'` using `(IsLocalRing.mem_maximalIdeal _).mp hm`. Conclude with `hm' (IsUnit.of_mul_eq_one (⟨t, ht⟩ : blowUpLocRing P u W') (Subtype.ext hst))`. Introduce `a a' h`.
-
-Conclude with `⟨1, by rw [Subring.inclusion_injective hBR h]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem BlowUpOverLocLocalization.proof (hfam : BlowUpOverLocFamilyFinite.Statement.{u}) :
     BlowUpOverLocLocalization.Statement.{u} := by

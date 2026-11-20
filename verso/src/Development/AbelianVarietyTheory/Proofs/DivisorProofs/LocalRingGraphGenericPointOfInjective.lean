@@ -23,33 +23,29 @@ namespace GlobalTheory.FieldPair
 open GlobalTheory.DiagLoc in
 
 /- English proof (translation)
-Introduce `K κ κ' L _ _ _ _ _ _ _ _ _ _ _ n k k' x τ' R π ρ hx hτ' hz hπc hπf hπi hRf hR hκ' hk`. Take `⟨e, he⟩` from `GlobalTheory.T.exists_algEquiv_fractionField_of_localRingOfVarietyPoint R π hR hπc hπf hπi`. Take `⟨z, hz⟩` from `hz`. Take `rfl : n = k` from `GlobalTheory.T.card_transcendenceBasisOverConst_eq_of_algEquiv e n k x z hx hz`. Establish `hK : Algebra.EssFiniteType ℂ K` using `GlobalTheory.T.essFiniteType_of_localRingOfVarietyPoint R hR`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨O', hO'⟩` from `hκ'`. Establish `hκ'f : Algebra.EssFiniteType ℂ κ'` using `GlobalTheory.T.essFiniteType_of_localRingOfVarietyPoint O' hO'`. Use `set σ : K →ₐ[ℂ] κ' := ρ.comp e.toAlgHom with hσ`. Establish `hQ : IsLocModel (algebraMap ℂ L) (loc L σ)` using `GlobalTheory.T.isLocalRingOfVarietyPoint_tensorGraphLocalization σ hK hκ'f`. Take `⟨hm, hdim⟩` from `GlobalTheory.T.graphLocalRing_regular_params_and_dim (L := L) σ n x hK hκ'f hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsum : ∀ (l : ℕ) (a : Fin l → R) (b : Fin l → κ'), algebraMap (K ⊗[ℂ] κ') L (∑ i, (a i : K) ⊗ₜ[ℂ] b i) = ∑ i, algebraMap (K ⊗[ℂ] κ') L ((a i : K) ⊗ₜ b i)` using `fun l a b => map_sum _ _ _`. Establish `hprod : ∀ (l : ℕ) (a : Fin l → R) (b : Fin l → κ'), Algebra.TensorProduct.productMap σ (AlgHom.id ℂ κ') (∑ i, (a i : K) ⊗ₜ[ℂ] b i) = ∑ i, ρ (π (a i)) * b i`. Introduce `l a b`. Simplify using `[map_sum, σ, he]`. Use `⟨loc L σ, hQ, fun i => toLoc L σ (x i ⊗ₜ[ℂ] 1 - 1 ⊗ₜ[ℂ] σ (x i)), hm, hdim, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg`. Use `⟨toLoc L σ (g ⊗ₜ 1), ?_, rfl⟩` and prove the remaining obligations. Use `IsUnit.map _ ?_` and prove the remaining obligations. Conclude with `((IsUnit.mk0 g hg).map (Algebra.TensorProduct.includeLeft (R := ℂ) (S := ℂ) (B := κ')))`. Introduce `b hb`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨toLoc L σ (1 ⊗ₜ b), ?_, rfl⟩` and prove the remaining obligations. Use `IsUnit.map _ ?_` and prove the remaining obligations. Conclude with `((IsUnit.mk0 b hb).map (Algebra.TensorProduct.includeRight (R := ℂ) (A := K)))`. Introduce `l a b hne`. Use `⟨toLoc L σ (∑ i, (a i : K) ⊗ₜ[ℂ] b i), ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hs : (∑ i, (a i : K) ⊗ₜ[ℂ] b i) ∈ (ker σ).primeCompl`. Introduce `hmem`. Conclude with `hne ((hprod l a b).symm.trans hmem)`. Conclude with `IsLocalization.map_units (loc L σ) (⟨_, hs⟩ : (ker σ).primeCompl)`. Simplify using `only [coe_toLoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `hsum l a b`. Introduce `M l a b hJ`. Use `⟨toLoc L σ (∑ i, (a i : K) ⊗ₜ[ℂ] b i), by simp only [coe_toLoc]; exact hsum l a b, ?_⟩` and prove the remaining obligations. Set `E : K ⊗[ℂ] κ' ≃ₐ[ℂ] κ ⊗[ℂ] κ'` to `Algebra.TensorProduct.congr e AlgEquiv.refl`. Establish `hE : (Algebra.TensorProduct.productMap ρ (AlgHom.id ℂ κ')).comp E.toAlgHom = Algebra.TensorProduct.productMap σ (AlgHom.id ℂ κ')`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Apply `Algebra.TensorProduct.ext'` to reduce the goal to its premises. Introduce `g b`. Simplify using `[E, σ]`. Establish `hker : ker σ = (RingHom.ker (Algebra.TensorProduct.productMap ρ (AlgHom.id ℂ κ'))).comap (E : K ⊗[ℂ] κ' →+* κ ⊗[ℂ] κ')`. Use extensionality with `s`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [mem_ker, Ideal.mem_comap, RingHom.mem_ker]`. Rewrite using `[← hE]`. Both sides reduce to the same expression. Establish `hEs : E (∑ i, (a i : K) ⊗ₜ[ℂ] b i) = ∑ i, π (a i) ⊗ₜ[ℂ] b i`. Simplify using `[E, he]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hmem : (∑ i, (a i : K) ⊗ₜ[ℂ] b i) ∈ ker σ ^ M`. Establish `h1 : (∑ i, (a i : K) ⊗ₜ[ℂ] b i) = E.symm (∑ i, π (a i) ⊗ₜ[ℂ] b i)`. Rewrite using `[← hEs, AlgEquiv.symm_apply_apply]`. Establish `h2` using `Ideal.mem_map_of_mem (E.symm : κ ⊗[ℂ] κ' →+* K ⊗[ℂ] κ') hJ`. Establish `h3 : (RingHom.ker (Algebra.TensorProduct.productMap ρ (AlgHom.id ℂ κ'))).comap (E : K ⊗[ℂ] κ' →+* κ ⊗[ℂ] κ') = (RingHom.ker (Algebra.TensorProduct.productMap ρ (AlgHom.id ℂ κ'))).map (E.symm : κ ⊗[ℂ] κ' →+* K ⊗[ℂ] κ')`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use extensionality with `s`. Rewrite using `[Ideal.mem_comap, Ideal.mem_map_iff_of_surjective (E.symm : κ ⊗[ℂ] κ' →+* K ⊗[ℂ] κ') E.symm.surjective]`. Prove the components needed by the constructor for the conclusion. Introduce `hs`. Conclude with `⟨E s, hs, by simp⟩`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨t, ht, rfl⟩`. Simplify using `using ht`. Rewrite using `[h1, hker, h3, ← Ideal.map_pow]`. Conclude with `h2`. Use `Ideal.mem_map_of_mem (toLoc L σ) hmem` as an intermediate fact.
-
-Rewrite `this` using `[Ideal.map_pow, map_ker]`. Conclude with `this`. Use `⟨_, 1, GlobalTheory.T.topForms_graphLocalRing_freelyGenerated σ n k' x τ' hQ.const_mem hK hκ'f hx hτ', isUnit_one, ?_⟩` and prove the remaining obligations. Rewrite using `[Submonoid.coe_one, one_smul]`. Use `congr 1`.
-
-Use function extensionality and compare the values at `i`. Apply the tactic sequence `refine Fin.addCases (fun j => ?_) (fun j => ?_) i <;> simp`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem localRing_graph_of_injective : ∀ {K κ κ' L : Type} [Field K] [Field κ] [Field κ'] [Field L] [Algebra ℂ K] [Algebra ℂ κ] [Algebra ℂ κ'] [Algebra ℂ L]
     [Algebra (K ⊗[ℂ] κ') L] [IsScalarTower ℂ (K ⊗[ℂ] κ') L] [IsFractionRing (K ⊗[ℂ] κ') L]

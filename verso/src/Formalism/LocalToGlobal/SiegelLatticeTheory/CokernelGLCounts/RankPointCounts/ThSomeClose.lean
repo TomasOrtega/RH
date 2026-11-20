@@ -11,7 +11,7 @@ open NumberField Formalism.MainNotions.S Formalism.MainNotions.S.Lat Formalism.M
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Use `thSome_holds_of hA hNR fun γ w hγ p a b => ?_` and prove the remaining obligations. Take `⟨Λ, hΛ, F', hF'⟩` from `dnInDens_of hNR hrows γ w hγ`. Conclude with `PI.CntNotIntW.integral_on_pairs_holds D δ M hA u u' hT F0 what₂ hrows Λ hΛ (zT γ) F' hF' p a b`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem thSome_holds {D : Formalism.BasicNotions.D7} {δ : ∀ p : PlF D, (D.s.atP p).Fp}
     {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep} (hA : ∀ p, Agree δ M p) {u u' : D.what₂.Word}

@@ -20,7 +20,7 @@ open GlobalTheory.Discrepancy GlobalTheory.EtaleKlt
 namespace GlobalTheory.Discrepancy
 
 /- English proof (translation)
-Introduce `X Y _ _ p s _ hs E`. Conclude with `DivOver.exists_over ℂ X Y p s hs E`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem DivOver.exists_over_complex : ∀ {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y] (p : X ⟶ Sp ℂ) (s : Y ⟶ X) [IsDominant s],
     Function.Bijective (functionFieldMap s) → ∀ E : DivOver p, ∃ E' : DivOver (s ≫ p), DivOver.Over s E' E := by

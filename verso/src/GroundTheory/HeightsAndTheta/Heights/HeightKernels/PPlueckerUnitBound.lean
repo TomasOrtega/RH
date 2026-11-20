@@ -10,16 +10,16 @@ open scoped ComplexOrder
 namespace PlueckerUnitBoundAlt
 
 /- English proof (translation)
-The claim follows from `Matrix.PosSemidef.one.add (Matrix.posSemidef_self_mul_conjTranspose Z)`.
+A detailed English derivation is pending.
 -/
 theorem posSemidef_one_add {j m : ℕ} (Z : Matrix (Fin j) (Fin m) ℂ) :
     (1 + Z * Zᴴ).PosSemidef :=
   Matrix.PosSemidef.one.add (Matrix.posSemidef_self_mul_conjTranspose Z)
 
 /- English proof (translation)
-Establish `hb : ∀ b, Z a b * Zᴴ b a = 1`. Introduce `b`. Rewrite using `[Matrix.conjTranspose_apply, Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq, hZ a b]`. Evaluate the numerical expressions. Rewrite using `[Matrix.add_apply, Matrix.one_apply_eq, Matrix.mul_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hb, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, mul_one]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem diag_eq {j m : ℕ} (Z : Matrix (Fin j) (Fin m) ℂ) (hZ : ∀ a b, ‖Z a b‖ = 1) (a : Fin j) :
     (1 + Z * Zᴴ : Matrix (Fin j) (Fin j) ℂ) a a = (((1 + m : ℝ)) : ℂ) := by
@@ -38,9 +38,9 @@ end PlueckerUnitBoundAlt
 open PlueckerUnitBoundAlt in
 
 /- English proof (translation)
-Introduce `j m Z hZ`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[diag_eq Z hZ a, Complex.norm_real, Real.norm_of_nonneg (by positivity)]`. Use `_ = (1 + m : ℝ) ^ j := by`.
+Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_const, Finset.card_univ, Fintype.card_fin]`.
+A detailed English derivation is pending.
 -/
 theorem PlueckerUnitBound.proof (h : HadamardPSD.Statement) : PlueckerUnitBound.Statement := by
   intro j m Z hZ

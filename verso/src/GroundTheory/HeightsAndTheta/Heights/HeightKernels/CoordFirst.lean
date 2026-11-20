@@ -9,21 +9,21 @@ open Matrix
 namespace KCoord
 
 /- English proof (translation)
-Establish `hU : IsUnit Y.det` using `(Matrix.isUnit_iff_isUnit_det Y).1 hY.isUnit`. Establish `hsymm : Yᵀ = Y`. Use `hY.1` as an intermediate fact. Rewrite `this` using `[Matrix.IsHermitian, Matrix.conjTranspose_eq_transpose_of_trivial]`. Then use the resulting hypothesis. Use `set w : ι → ℝ := Y⁻¹ *ᵥ Pi.single i 1 with hw`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hYw : Y *ᵥ w = Pi.single i 1`. Rewrite using `[hw, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hU, Matrix.one_mulVec]`. Establish `hwY : ∀ x : ι → ℝ, w ⬝ᵥ (Y *ᵥ x) = x i`. Introduce `x`. Rewrite using `[Matrix.dotProduct_mulVec, ← Matrix.mulVec_transpose, hsymm, hYw]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[dotProduct, Pi.single_apply]`. Establish `hxY : ∀ x : ι → ℝ, x ⬝ᵥ (Y *ᵥ w) = x i`. Introduce `x`. Rewrite using `[hYw]`. Simplify using `[dotProduct, Pi.single_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hwi : w i = Y⁻¹ i i`. Rewrite using `[hw]`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`. Establish `hpos : 0 < Y⁻¹ i i` using `hY.inv.diag_pos`. Establish `hnn : ∀ t : ℝ, 0 ≤ qf Y v - 2 * t * v i + t ^ 2 * Y⁻¹ i i`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t`. Establish `h0 : 0 ≤ (v - t • w) ⬝ᵥ (Y *ᵥ (v - t • w))`. Use `hY.posSemidef.dotProduct_mulVec_nonneg (v - t • w)` as an intermediate fact. Simplify using `using this`. Establish `hexp : (v - t • w) ⬝ᵥ (Y *ᵥ (v - t • w)) = qf Y v - 2 * t * v i + t ^ 2 * Y⁻¹ i i`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mulVec_sub, Matrix.mulVec_smul, dotProduct_sub, sub_dotProduct, dotProduct_smul, smul_dotProduct, smul_eq_mul]`. Rewrite using `[hwY, hwY, hxY, hwi]`. Simplify using `only [qf]`. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h` using `hnn (v i / Y⁻¹ i i)`. Establish `hne : Y⁻¹ i i ≠ 0` using `ne_of_gt hpos`. Establish `e : qf Y v - 2 * (v i / Y⁻¹ i i) * v i + (v i / Y⁻¹ i i) ^ 2 * Y⁻¹ i i = qf Y v - v i ^ 2 / Y⁻¹ i i`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[e]`. Establish `h2 : v i ^ 2 / Y⁻¹ i i ≤ qf Y v` using `by linarith`. Rewrite `h2` using `[div_le_iff₀ hpos, mul_comm]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem sq_coord_le {ι : Type*} [Fintype ι] [DecidableEq ι] (Y : Matrix ι ι ℝ) (hY : Y.PosDef)
     (i : ι) (v : ι → ℝ) : v i ^ 2 ≤ Y⁻¹ i i * qf Y v := by
@@ -72,7 +72,7 @@ theorem sq_coord_le {ι : Type*} [Fintype ι] [DecidableEq ι] (Y : Matrix ι ι
 end KCoord
 
 /- English proof (translation)
-Introduce `g _ Y hY v`. Establish `h` using `KCoord.sq_coord_le Y hY 0 v`. Rewrite using `[div_le_iff₀ hY.inv.diag_pos, mul_comm]`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FirstCoordinateBound.intersectionNumber_baseChange : FirstCoordinateBound.Statement := by
   intro g _ Y hY v

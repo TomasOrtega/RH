@@ -6,11 +6,11 @@ open Polynomial GlobalTheory.CuspGL GlobalTheory.BI
 namespace GlobalTheory.CuspGL
 
 /- English proof (translation)
-Establish `hi : IsIntegral F α` using `Algebra.IsIntegral.isIntegral α`. Rewrite using `[(minpoly.irreducible hi).natDegree_dvd_iff_dvd_X_pow_card_pow_sub_X, minpoly.dvd_iff]`. Establish `hq : 0 < Nat.card F ^ n` using `pow_pos Nat.card_pos _`. Simplify using `only [map_sub, map_pow, aeval_X, sub_eq_zero]`. Take `⟨k, hk⟩ : ∃ k, Nat.card F ^ n = k + 1` from `⟨_, (Nat.succ_pred_eq_of_pos hq).symm⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hk, Nat.add_sub_cancel, pow_succ]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[h, one_mul]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `mul_right_cancel₀ h0 (h.trans (one_mul α).symm)`.
+A detailed English derivation is pending.
 -/
 private theorem torus_iff {F : Type} [Field F] [Finite F] (n : ℕ) (α : AlgebraicClosure F) (h0 : α ≠ 0) :
     α ^ (Nat.card F ^ n - 1) = 1 ↔ (minpoly F α).natDegree ∣ n := by
@@ -25,7 +25,7 @@ private theorem torus_iff {F : Type} [Field F] [Finite F] (n : ℕ) (α : Algebr
   · intro h; exact mul_right_cancel₀ h0 (h.trans (one_mul α).symm)
 
 /- English proof (translation)
-Establish `: Finite (Polynomial.degreeLT F (n + 1))` using `Finite.of_equiv _ (degreeLTEquiv F (n + 1)).symm.toEquiv`. Establish `h : (Polynomial.degreeLT F (n + 1) : Set F[X]).Finite` using `Set.toFinite _`. Use `h.subset fun P hP => ?_` and prove the remaining obligations. Simplify using `only [SetLike.mem_coe, mem_degreeLT]`. Conclude with `(degree_le_of_natDegree_le hP.2.1.le).trans_lt (by exact_mod_cast Nat.lt_succ_self n)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem finite_monic_natDegree {F : Type} [Field F] [Finite F] (n : ℕ) :
     {P : F[X] | P.Monic ∧ P.natDegree = n ∧ P.coeff 0 ≠ 0}.Finite := by
@@ -36,7 +36,7 @@ private theorem finite_monic_natDegree {F : Type} [Field F] [Finite F] (n : ℕ)
   exact (degree_le_of_natDegree_le hP.2.1.le).trans_lt (by exact_mod_cast Nat.lt_succ_self n)
 
 /- English proof (translation)
-Establish `hq : 1 < Nat.card F ^ n` using `Nat.one_lt_pow hn.ne' Finite.one_lt_card`. Use `(Polynomial.nthRootsFinset (Nat.card F ^ n - 1) (1 : AlgebraicClosure F)).finite_toSet.subset fun α hα => ?_` and prove the remaining obligations. Conclude with `Finset.mem_coe.2 ((Polynomial.mem_nthRootsFinset (by omega) _).2 hα)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem finite_torus {F : Type} [Field F] [Finite F] (n : ℕ) (hn : 0 < n) :
     {α : AlgebraicClosure F | α ^ (Nat.card F ^ n - 1) = 1}.Finite := by
@@ -46,27 +46,27 @@ private theorem finite_torus {F : Type} [Field F] [Finite F] (n : ℕ) (hn : 0 <
   exact Finset.mem_coe.2 ((Polynomial.mem_nthRootsFinset (by omega) _).2 hα)
 
 /- English proof (translation)
-Introduce `F _ _ θ n hn c l hc`. Establish `hq : 1 < Nat.card F ^ n` using `Nat.one_lt_pow hn.ne' Finite.one_lt_card`. Establish `hi : ∀ α : AlgebraicClosure F, IsIntegral F α` using `fun α => Algebra.IsIntegral.isIntegral α`. Establish `hne : ∀ α : AlgebraicClosure F, α ^ (Nat.card F ^ n - 1) = 1 → α ≠ 0`. Introduce and unpack `α h rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite `h` using `[zero_pow (by omega)]`. Conclude with `zero_ne_one h`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ (finite_monic_natDegree n), finsum_mem_eq_finite_toFinset_sum _ (finite_torus n hn), ← Finset.sum_fiberwise_of_maps_to (s := (finite_torus (F := F) n hn).toFinset) (t := (finite_monic_natDegree (F := F) n).toFinset) (g := fun α => minpoly F α …`. Use `swap`. Introduce `α hα`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Set.Finite.mem_toFinset, Set.mem_setOf_eq] at hα ⊢`. Establish `hm` using `minpoly.monic (hi α)`. Use `⟨hm.pow _, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hm.natDegree_pow, Nat.div_mul_cancel ((torus_iff n α (hne α hα)).1 hα)]`. Rewrite using `[coeff_zero_eq_eval_zero, eval_pow, ← coeff_zero_eq_eval_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `pow_ne_zero _ (minpoly.coeff_zero_ne_zero (hi α) (hne α hα))`. Use `Finset.sum_congr rfl fun P hP => ?_` and prove the remaining obligations. Simplify using `only [Set.Finite.mem_toFinset, Set.mem_setOf_eq] at hP`. Take `⟨hP, hd, h0⟩` from `hP`. Distinguish the cases in `hex : ∃ (f : F[X]) (m : ℕ), f.Monic ∧ Irreducible f ∧ 0 < m ∧ P = f ^ m`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `swap`. Rewrite using `[hc P hP hd hex, zero_mul]`. Use `(Finset.sum_eq_zero fun α hα => ?_).symm` and prove the remaining obligations. Rewrite using `[(Finset.mem_filter.1 hα).2, hc P hP hd hex, mul_zero, zero_mul]`. Take `⟨f, m, hf, hirr, hm, rfl⟩` from `hex`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hd` using `[hf.natDegree_pow]`. Establish `hdiv : n / f.natDegree = m`. Rewrite using `[← hd, Nat.mul_div_cancel _ hirr.natDegree_pos]`. Establish `hmp : ∀ α : AlgebraicClosure F, aeval α f = 0 → minpoly F α = f` using `fun α h => (minpoly.eq_of_irreducible_of_monic hirr h hf).symm`. Establish `hfib : Finset.filter (fun α : AlgebraicClosure F => minpoly F α ^ (n / (minpoly F α).natDegree) = f ^ m) (finite_torus (F` using `F) n hn).toFinset = (f.map (algebraMap F (AlgebraicClosure F))).roots.toFinset := by`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Use extensionality with `α`. Simplify using `only [Finset.mem_filter, Set.Finite.mem_toFinset, Set.mem_setOf_eq, Multiset.mem_toFinset]`. Rewrite using `[mem_roots (hf.map _).ne_zero, IsRoot.def, eval_map_algebraMap]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h3 : n / (minpoly F α).natDegree ≠ 0` using `(Nat.div_pos (Nat.le_of_dvd hn ((torus_iff n α (hne α h1)).1 h1)) (minpoly.natDegree_pos (hi α))).ne'`. Establish `h4` using `congrArg (aeval α) h2`. Rewrite `h4` using `[map_pow, map_pow, minpoly.aeval, zero_pow h3]`. Conclude with `pow_eq_zero_iff hm.ne' |>.1 h4.symm`. Introduce `h`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hα : α ≠ 0`. Introduce and unpack `rfl`. Apply `h0` to reduce the goal to its premises. Rewrite using `[coeff_zero_eq_eval_zero, eval_pow, ← coeff_zero_eq_eval_zero]`. Rewrite `h` using `[aeval_def, eval₂_at_zero, map_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h, zero_pow hm.ne']`. Rewrite using `[torus_iff n α hα, hmp α h, hdiv]`. Conclude with `⟨Dvd.intro_left _ hd, rfl⟩`. Establish `hsep : f.Separable` using `PerfectField.separable_of_irreducible hirr`. Establish `hnd : (f.map (algebraMap F (AlgebraicClosure F))).roots.Nodup` using `nodup_roots hsep.map`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hfib, rootSum, Polynomial.map_pow, roots_pow, Multiset.map_nsmul, Multiset.sum_nsmul, ← Multiset.dedup_eq_self.2 hnd, ← Multiset.toFinset_val, ← Finset.sum_eq_multiset_sum, Finset.val_toFinset, Finset.smul_sum, star_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun α hα => ?_` and prove the remaining obligations. Rewrite `hα` using `[Multiset.mem_toFinset, mem_roots (hf.map _).ne_zero, IsRoot.def, eval_map_algebraMap]`. Rewrite using `[hmp α hα, hdiv, star_nsmul, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem sum_poly_eq_sum_torus : ∀ (F : Type) [Field F] [Finite F] (θ : AlgebraicClosure F →* ℂ) (n : ℕ), 0 < n → ∀ (c : F[X] → ℂ) (l : ℕ), (∀ P : F[X], P.Monic → P.natDegree = n → (¬ ∃ (f : F[X]) (m : ℕ), f.Monic ∧ Irreducible f ∧ 0 < m ∧ P = f ^ m) → c P = 0) → ∑ᶠ P ∈ {P : F[X] | P.Monic ∧ P.natDegree = n ∧ P.coeff 0 ≠ 0}, c P * star (rootSum θ l P) = ∑ᶠ α ∈ {α : AlgebraicClosure F | α ^ (Nat.card F ^ n - 1) = 1}, ((n / (minpoly F α).natDegree : ℕ) : ℂ) * c (minpoly F α ^ (n / (minpoly F α).natDegree)) * star (θ α ^ l) := by
   intro F _ _ θ n hn c l hc

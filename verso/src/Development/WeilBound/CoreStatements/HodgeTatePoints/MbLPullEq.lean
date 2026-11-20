@@ -11,13 +11,13 @@ open AlgebraicGeometry CategoryTheory GlobalTheory.CompanionTheory.Ar NumberFiel
 namespace PositivityTheory.HtPt.Mb.LPullEq
 
 /- English proof (translation)
-Introduce `o _ Ω _ _ κ _ x M E _ _ L X' Ω' _ ξ' i F _ _ j f hL hd`. Establish `dl` using `PositivityTheory.HtPt.Mb.dom_local M.X Ω M.ξ X' Ω' ξ' i f hd`. Use `⟨?_, fun p' => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `p'`. Take `⟨h, hc⟩` from `dl p'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Rewrite using `[PositivityTheory.HtPt.Mb.pullloc_centre o Ω κ x M E L X' Ω' ξ' i F j ⟨f p'.1, h⟩ p' hL hc]`. Unfold `Lat.pull`. Use `congr 1`. Use extensionality with `e'`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨_, e, he, rfl⟩`. Conclude with `⟨e, he, rfl⟩`. Introduce and unpack `⟨e, he, rfl⟩`. Conclude with `⟨h, e, he, rfl⟩`. Take `⟨h, h1, -⟩` from `dl p'`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `M.tie.cover ⟨f p'.1, h⟩`. Conclude with `⟨c, hc.1, fun a ha => h1 a (((M.tie.ring c hc.1) a).1 ha _ hc)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem pull_eq_pullLoc_of_dominates : ∀ (o : Type) [CommRing o] (Ω : Type) [Field Ω] [Algebra o Ω] (κ : Type) [Finite κ]
     (x : κ → Ω) (M : PModel o x) (E : Type) [AddCommGroup E] [Module Ω E] (L : Lat M.ξ E) (X' : Scheme.{0}) (Ω' : Type)
@@ -47,7 +47,7 @@ end PositivityTheory.HtPt.Mb.LPullEq
 open AlgebraicGeometry CategoryTheory GlobalTheory.CompanionTheory.Ar NumberField in
 
 /- English proof (translation)
-The claim follows from `@PositivityTheory.HtPt.Mb.LPullEq.pull_eq_pullLoc_of_dominates`.
+A detailed English derivation is pending.
 -/
 theorem PositivityTheory.HtPt.Mb.pull_eq : ∀ (o : Type) [CommRing o] (Ω : Type) [Field Ω] [Algebra o Ω] (κ : Type) [Finite κ] (x : κ → Ω) (M : PModel o x) (E : Type) [AddCommGroup E] [Module Ω E] (L : Lat M.ξ E) (X' : Scheme.{0}) (Ω' : Type) [Field Ω'] (ξ' : Spec (CommRingCat.of Ω') ⟶ X') (i : Ω →+* Ω') (F : Type) [AddCommGroup F] [Module Ω' F] (j : E →+ F) (f : X' ⟶ M.X), L.IsCohOn Set.univ → Dominates ξ' M.ξ f i → L.pull ξ' f j = L.pullLoc ξ' i j ∧ ∀ p', p' ∈ ctrSet o x i ξ' :=
   @PositivityTheory.HtPt.Mb.LPullEq.pull_eq_pullLoc_of_dominates

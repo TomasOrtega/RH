@@ -12,13 +12,13 @@ open NumberField IsDedekindDomain GlobalTheory.AdelicU GlobalTheory.Doubling For
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ v x hx`. Establish `hN` using `GlobalTheory.Doubling.algebraMap_norm_eq hσ (R := Fv F v) x`. Establish `e1 : absFin F v (algebraMap (Fv F v) (Fv F v ⊗[F] E) (Algebra.norm (Fv F v) x)) = ‖Algebra.norm (Fv F v) x‖₊`. Rewrite using `[Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply]`. Conclude with `absFin_tmul_one F v _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hs : absFin F v (sigR (Fv F v) σ x) ≤ absFin F v x`. Use `(absFin_le_iff F v).2 fun τ => ?_` and prove the remaining obligations. Establish `e2 : ∀ w, finEmb F v τ (sigR (Fv F v) σ w) = finEmb F v ((τ : E →ₐ[F] FvBar F v).comp σ) w`. Introduce `w`. Proceed by induction on `w using TensorProduct.induction_on with`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `tmul a b => simp [sigR]`. Consider the case `add y z hy hz => simp only [map_add, hy, hz]`. Rewrite using `[e2]`. Conclude with `le_absFin F v _ x`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← e1, hN]`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem absNorm_le_one_of_absFin_le_one : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}, IsCMExt F E σ → ∀ (v : HeightOneSpectrum (𝓞 F)) (x : Fv F v ⊗[F] E), absFin F v x ≤ 1 → ‖Algebra.norm (Fv F v) x‖₊ ≤ 1 := by
   intro F E _ _ _ _ _ σ hσ v x hx
@@ -43,7 +43,7 @@ theorem absNorm_le_one_of_absFin_le_one : ∀ {F E : Type} [Field F] [NumberFiel
     _ = 1 := one_mul 1
 
 /- English proof (translation)
-Simplify using `only [absFin, map_mul, finEmb_tmul, map_one, mul_one, absBar_mul, absBar_algebraMap]`. Rewrite using `[NNReal.mul_finset_sup]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem absFin_tmul_one_mul (v : HeightOneSpectrum (𝓞 F)) (c : Fv F v) (y : Fv F v ⊗[F] E) :
     absFin F v (c ⊗ₜ[F] (1 : E) * y) = ‖c‖₊ * absFin F v y := by
@@ -51,11 +51,11 @@ theorem absFin_tmul_one_mul (v : HeightOneSpectrum (𝓞 F)) (c : Fv F v) (y : F
   rw [NNReal.mul_finset_sup]
 
 /- English proof (translation)
-Use `(absFin_le_iff F v).2 fun τ => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Take `⟨k, hk⟩` from `((tendsto_pow_atTop_atTop_of_one_lt hlt).eventually_gt_atTop C).exists`. Use `(le_absFin F v τ (x ^ k)).trans (h k)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpw : ∀ (z : FvBar F v) (m : ℕ), absBar F v (z ^ m) = absBar F v z ^ m`. Introduce `z m`. Proceed by induction on `m with`. Consider the case `zero => simpa using absBar_algebraMap F v 1`. Consider the case `succ m ih => rw [pow_succ, absBar_mul, ih, pow_succ]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[map_pow, hpw]`. Conclude with `absurd this (not_le.2 hk)`.
+A detailed English derivation is pending.
 -/
 theorem absFin_le_one_of_pow_le {v : HeightOneSpectrum (𝓞 F)} {x : Fv F v ⊗[F] E} {C : ℝ≥0}
     (h : ∀ k : ℕ, absFin F v (x ^ k) ≤ C) : absFin F v x ≤ 1 := by
@@ -73,9 +73,9 @@ theorem absFin_le_one_of_pow_le {v : HeightOneSpectrum (𝓞 F)} {x : Fv F v ⊗
   exact absurd this (not_le.2 hk)
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_apply]`. Use `absFin_sum_le F v _ _ fun s _ => ?_` and prove the remaining obligations. Establish `hp : absFin F v (∏ i, M (s i) i) ≤ normFin F v M ^ n`. Combine the equalities or inequalities in the displayed calculation. Break down `Int.units_eq_one_or (Equiv.Perm.sign s) with h | h` into its components or cases.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[h, one_smul]`. Conclude with `hp`. Rewrite using `[h, Units.neg_smul, one_smul, absFin_neg]`. Conclude with `hp`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absFin_det_le (v : HeightOneSpectrum (𝓞 F)) {n : ℕ} (M : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) :
     absFin F v M.det ≤ normFin F v M ^ n := by
@@ -91,15 +91,13 @@ theorem absFin_det_le (v : HeightOneSpectrum (𝓞 F)) {n : ℕ} (M : Matrix (Fi
   · rw [h, Units.neg_smul, one_smul, absFin_neg]; exact hp
 
 /- English proof (translation)
-Take `⟨c, hc, hcL⟩` from `GlobalTheory.T.exists_single_mem_localLatticeCompletion L v`. Take `⟨C, hC⟩` from `GlobalTheory.T.exists_bound_abs_localLatticeCompletion_entries L v`. Establish `hpow : ∀ k : ℕ, ∀ x ∈ latLoc F L v, (M ^ k) *ᵥ x ∈ latLoc F L v`. Introduce `k`. Proceed by induction on `k with`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => intro x hx`. Simplify using `using hx`. Consider the case `succ k ih => intro x hx`. Rewrite using `[pow_succ, ← Matrix.mulVec_mulVec]`. Conclude with `ih _ (hM _ hx)`.
+Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hent : ∀ k i j, absFin F v ((M ^ k) i j) ≤ C / ‖c‖₊`. Introduce `k i j`. Establish `h1` using `hC _ (hpow k _ (hcL j)) i`. Rewrite `h1` using `[Matrix.mulVec_single]`. Express the relevant statement in the definitionally equal form `absFin F v ((M ^ k) i j * c ⊗ₜ[F] (1 : E)) ≤ C at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[mul_comm, absFin_tmul_one_mul]`. Rewrite using `[le_div_iff₀ (nnnorm_pos.2 hc), mul_comm]`. Conclude with `h1`. Establish `hdet : ∀ k : ℕ, absFin F v (M.det ^ k) ≤ (C / ‖c‖₊) ^ n` using `fun k => by`. Rewrite using `[← Matrix.det_pow]`.
-
-Conclude with `(absFin_det_le v _).trans (pow_le_pow_left' ((normFin_le_iff F v).2 (hent k)) n)`. Conclude with `absNorm_le_one_of_absFin_le_one hσ v _ (absFin_le_one_of_pow_le hdet)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normDet_le_one {σ : E →ₐ[F] E} (hσ : IsCMExt F E σ) {n : ℕ} (L : Submodule (𝓞 E) (Fin n → E))
     [Submodule.IsLattice E L] (v : HeightOneSpectrum (𝓞 F)) (M : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E))
@@ -125,11 +123,11 @@ theorem normDet_le_one {σ : E →ₐ[F] E} (hσ : IsCMExt F E σ) {n : ℕ} (L 
   exact absNorm_le_one_of_absFin_le_one hσ v _ (absFin_le_one_of_pow_le hdet)
 
 /- English proof (translation)
-Establish `hp : KeepsDiag finSumFinEquiv (matHom (Fv F v) σ Q p).1` using `(mem_siegelOf (e := finSumFinEquiv) (mat := matHom (Fv F v) σ Q)).1 p.2`. Establish `hk'` using `inv_mem hk`. Establish `ek : k⁻¹ = ioH _ σ hQ (y⁻¹, 1) * p`. Establish `: k = (p : GLoc σ Q v)⁻¹ * ioH _ σ hQ (y, 1)` using `by rw [e, ← mul_assoc, inv_mul_cancel, one_mul]`. Rewrite using `[this, mul_inv_rev, inv_inv, ← map_inv, Prod.inv_mk, inv_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : pairVec finSumFinEquiv x x ∈ latLoc F (sumLat finSumFinEquiv L L) v`. Rewrite using `[latLoc_sumLat]`. Conclude with `(pairVec_mem_sumLat _).2 ⟨hx, hx⟩`. Establish `h2` using `(mem_stabLoc.1 hk' _).1 h1`. Establish `e3 : (matHom _ σ Q (ioH _ σ hQ (y⁻¹, 1))).1 = blkMat finSumFinEquiv (matHom _ σ J y⁻¹).1 (matHom _ σ J 1).1` using `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[ek, map_mul, Units.val_mul, ← Matrix.mulVec_mulVec, hp.mulVec_diag, e3, blkMat_mulVec, latLoc_sumLat, pairVec_mem_sumLat]`. Simplify using `using h2.2`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem levi_mulVec_mem (σ : E →ₐ[F] E) {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {Q : Matrix (Fin (n + n)) (Fin (n + n)) E}
     (hQ : Q = dblGram finSumFinEquiv J) (L : Submodule (𝓞 E) (Fin n → E)) (v : HeightOneSpectrum (𝓞 F))
@@ -152,9 +150,7 @@ theorem levi_mulVec_mem (σ : E →ₐ[F] E) {n : ℕ} {J : Matrix (Fin n) (Fin 
   simpa using h2.2
 
 /- English proof (translation)
-Distinguish the cases in `h : ∃ p : siegelH (Fv F v) σ Q, ∃ k ∈ KFin σ Q L v, ioH _ σ hQ (y, 1) = p * k`. Take `⟨p, k, hk, e⟩` from `h`. Rewrite using `[e, hgtFin_mul p hk, absEv_apply]`. Conclude with `normDet_le_one hσ L v _ fun x hx => levi_mulVec_mem σ hQ L v y p hk e hx`. Use `show iwAbs _ _ _ ≤ 1`.
-
-Rewrite using `[iwAbs, dif_neg h]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hgtFin_ioH_le_one {σ : E →ₐ[F] E} (hσ : IsCMExt F E σ) {n : ℕ} {J : Matrix (Fin n) (Fin n) E}
     {Q : Matrix (Fin (n + n)) (Fin (n + n)) E} (hQ : Q = dblGram finSumFinEquiv J) (L : Submodule (𝓞 E) (Fin n → E))
@@ -179,7 +175,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Core.Rk.IP
 
 /- English proof (translation)
-Introduce `D A L hL v y`. Use `haveI := hL.1`. Conclude with `GlobalTheory.Core.Rk.HgtFin.hgtFin_ioH_le_one (isCMExt_host D) (gram_hdbl A) L v y`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem hgtFin_ioAt_le_one : ∀ (D : D7) (A : HSp D) (L : Lat A), IsSelfDualC A L → ∀ (v : FinPl D) (y : Gv A v), hgtFin D.sp.cm.sig (dblSp A).gram L v (ioAt A v y) ≤ 1 := by
   intro D A L hL v y

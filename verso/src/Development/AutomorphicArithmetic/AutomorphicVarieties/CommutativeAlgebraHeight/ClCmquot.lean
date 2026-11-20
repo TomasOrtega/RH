@@ -6,13 +6,13 @@ import ReciprocityTheory.CommutativeAlgebra.PolynomialHeights.PolyCM
 open IsLocalRing UpperTheory.V.Alg UpperTheory.V.CA ReciprocityTheory.CA
 
 /- English proof (translation)
-Use `letI := φ.toAlgebra`. Take `⟨n, g, hg⟩` from `Algebra.FiniteType.iff_quotient_mvPolynomial''.mp hf.finiteType`. Set `N : Ideal (MvPolynomial (Fin n) P)` to `Ideal.comap g.toRingHom (maximalIdeal R)`. Use `haveI : N.IsMaximal := Ideal.comap_isMaximal_of_surjective g.toRingHom hg`. Establish `hgC : g.toRingHom.comp MvPolynomial.C = φ`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Use `show g (MvPolynomial.C x) = φ x`. Rewrite using `[← MvPolynomial.algebraMap_eq, g.commutes]`. Both sides reduce to the same expression. Establish `hC : Ideal.comap MvPolynomial.C N = maximalIdeal P`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `congrArg PrimeSpectrum.asIdeal (IsLocalRing.comap_closedPoint φ)`. Use `show Ideal.comap MvPolynomial.C (Ideal.comap g.toRingHom (maximalIdeal R)) = maximalIdeal P`. Rewrite using `[Ideal.comap_comap, hgC]`. Conclude with `h`. Take `⟨hcm, -⟩` from `isCM_localization_mvPolynomial hP n N hC`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hu : ∀ y : N.primeCompl, IsUnit (g.toRingHom y)` using `fun y => IsLocalRing.notMem_maximalIdeal.mp y.2`. Use `⟨Localization.AtPrime N, inferInstance, inferInstance, IsLocalization.lift hu, hcm, ?_⟩` and prove the remaining obligations. Introduce `r`. Take `⟨p, rfl⟩` from `hg r`. Conclude with `⟨algebraMap _ _ p, IsLocalization.lift_eq hu p⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.CA.cmquot_of_finite {P R : Type} [CommRing P] [IsLocalRing P] [CommRing R]
     [IsLocalRing R] (hP : IsCM P) (φ : P →+* R) (hf : φ.Finite) [IsLocalHom φ] : IsCMQuot R := by
@@ -39,11 +39,9 @@ private theorem UpperTheory.V.CA.cmquot_of_finite {P R : Type} [CommRing P] [IsL
   exact ⟨algebraMap _ _ p, IsLocalization.lift_eq hu p⟩
 
 /- English proof (translation)
-Introduce `O _ _ _ _ R _ _ _ hR`. Use `haveI := hR.noeth`. Take `⟨n, a, ha⟩` from `Submodule.fg_iff_exists_fin_generating_family.mp (IsNoetherian.noetherian (maximalIdeal R))`. Establish `hspan : Ideal.span (Set.range a) = maximalIdeal R` using `ha`. Establish `hmem : ∀ s, a s ∈ maximalIdeal R`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s`. Rewrite using `[← hspan]`. Conclude with `Ideal.subset_span ⟨s, rfl⟩`. Establish `hrad : maximalIdeal R ≤ (Ideal.span (Set.range a) ⊔ Ideal.map (algebraMap O R) (maximalIdeal O)).radical`. Rewrite using `[hspan]`.
-
-Conclude with `le_sup_left.trans Ideal.le_radical`. Take `⟨φ, -, hfin, hloc⟩` from `cl_mvps O R hR (Fin n) a hmem hrad`. Use `haveI := hloc`. Conclude with `cmquot_of_finite (cl_cm.1 O n).1 φ hfin`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.CA.cl_cmquot :
     ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O] (R : Type) [CommRing R] [Algebra O R] [IsLocalRing R], IsCL O R → IsCMQuot R := by

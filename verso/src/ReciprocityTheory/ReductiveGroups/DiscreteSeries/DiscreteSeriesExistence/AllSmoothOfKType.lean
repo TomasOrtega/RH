@@ -10,25 +10,23 @@ open Finset Matrix
 namespace ReciprocityTheory.ChartRestriction.DS
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hlam.1, h, hh, hlt⟩`.
+Supply the required witnesses or components.
 -/
 theorem stdGap_of_mir {n : ℕ} {ε : Fin n → Bool} {lam : Fin n → ℝ} {h : ℝ} (hlam : Formalism.QuantumDeterminants.IsHCParam lam)
     (hh : Formalism.QuantumDeterminants.GapAtLeast ε lam h) (hlt : (n : ℝ) * (pOf ε : ℝ) * (qOf ε : ℝ) + 1 < h) : StdGap ε lam := ⟨hlam.1, h, hh, hlt⟩
 
 /- English proof (translation)
-Take `⟨-, -, hσ, hirr, -, ⟨S, hS⟩, -⟩` from `hDS`. Establish `hinv : ∀ g ∈ Formalism.MainNotions.S.UJset ε, ∀ w ∈ smD ε σ, σ g w ∈ smD ε σ`. Introduce `g hg w hw`. Rewrite `hw`, the goal using `[mem_smD_iff]`. Unfold `IsSmoothVecU at hw ⊢`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Set `_ : NormedAddCommGroup (Matrix (Fin n) (Fin n) ℂ)` to `Matrix.normedAddCommGroup`. Set `_ : NormedSpace ℝ (Matrix (Fin n) (Fin n) ℂ)` to `Matrix.normedSpace`. Introduce `g₀ hg₀`. Take `⟨U, F, hU, hmem, hF, hEq⟩` from `hw (g₀ * g) (pdA_inUJ_mul hg₀ hg)`. Set `L : Matrix (Fin n) (Fin n) ℂ →L[ℝ] Matrix (Fin n) (Fin n) ℂ` to `LinearMap.toContinuousLinearMap (LinearMap.mulRight ℝ g)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hL : ∀ x, L x = x * g` using `fun x => rfl`. Use `⟨L ⁻¹' U, F ∘ L, hU.preimage L.continuous, by simpa [hL] using hmem, hF.comp L.contDiff.contDiffOn (fun x hx => hx), ?_⟩` and prove the remaining obligations. Introduce `x hx hxUJ`. Establish `hx' : x * g ∈ U` using `by simpa [hL] using hx`. Establish `hrep` using `hσ.1.2 x hxUJ g hg`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Function.comp_apply, hL]`. Rewrite using `[← hEq (x * g) hx' (pdA_inUJ_mul hxUJ hg)]`. Use `show σ x (σ g w) = σ (x * g) w`. Rewrite using `[hrep]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hne : smD ε σ ≠ ⊥`. Take `⟨V, -, hV0, -⟩` from `exists_datum_of_isKTypeOf hσ hS`. Introduce `hbot`. Apply `hV0` to reduce the goal to its premises. Establish `: Subsingleton (smD ε σ)`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hbot]`. Use `infer_instance`. Conclude with `Subsingleton.elim _ _`. Establish `hcl : IsClosed ((smD ε σ : Submodule ℂ T.V) : Set T.V)` using `Submodule.closed_of_finiteDimensional _`. Break down `hirr (smD ε σ) hcl hinv with h | h` into its components or cases.
-
-Conclude with `absurd h hne`. Establish `hv : v ∈ smD ε σ`. Rewrite using `[h]`. Conclude with `Submodule.mem_top`. Conclude with `(mem_smD_iff ε σ v).mp hv`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem all_smooth_of_kType {n : ℕ} {ε : Fin n → Bool} {lam : Fin n → ℝ} {Λ : Fin n → ℝ} (T : S7.KType ε Λ)
     {σ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)} (hDS : Formalism.MainNotions.S.IsDS ε lam σ)
@@ -72,19 +70,17 @@ theorem all_smooth_of_kType {n : ℕ} {ε : Fin n → Bool} {lam : Fin n → ℝ
     exact (mem_smD_iff ε σ v).mp hv
 
 /- English proof (translation)
-Introduce `n ε lam hlam h hh hmax`. Establish `h1 : (n : ℝ) * (pOf ε : ℝ) * (qOf ε : ℝ) + 1 < h` using `lt_of_le_of_lt (le_max_left _ _) hmax`. Establish `h2 : 16 * (n : ℝ) * (S7.q0 ε : ℝ) + 8 * Real.sqrt (2 * (S7.q0 ε : ℝ)) < h` using `lt_of_le_of_lt (le_max_right _ _) hmax`. Establish `hgap : StdGap ε lam` using `stdGap_of_mir hlam hh h1`. Take `⟨T⟩` from `HW.kType_exists ε lam hlam`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Break down `Nat.eq_zero_or_pos (S7.q0 ε) with hq | hq` into its components or cases. Establish `hm : min (pOf ε) (qOf ε) = 0` using `hq`. Establish `hpq : pOf ε = 0 ∨ qOf ε = 0` using `by omega`. Take `⟨σ, hDS, hcas, hK⟩` from `isDS_compact hpq hlam T`. Use `⟨T.V, inferInstance, inferInstance, σ, hDS, hcas, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `S S' hS hS'`. Conclude with `lowKMultOne_of_cas hDS hgap hcas S S' hS hS'`. Introduce `μ infer_instance`. Introduce `S _ _ v _`. Conclude with `all_smooth_of_kType T hDS hK v`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h8 : 8 * (n : ℝ) * S7.q0 ε < h`. Establish `hs : 0 ≤ Real.sqrt (2 * (S7.q0 ε : ℝ))` using `Real.sqrt_nonneg _`. Establish `hn : 0 ≤ (n : ℝ) * S7.q0 ε` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Take `⟨Ψ, hP, -⟩` from `exists_isPsiFor (hS7 n) T hlam hh hq h8`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hv₀ : T.w ≠ 0`. Introduce `h0`. Establish `h1'` using `T.w_norm`. Rewrite `h1'` using `[h0, norm_zero]`. Conclude with `zero_ne_one h1'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨Hlam ε Ψ T.w, inferInstance, inferInstance, sigLam ε Ψ T.w, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `isDS_sigLam hgap hP hv₀`. Conclude with `sigLam_casOnSmooth hgap hP hv₀`. Introduce `S S' hS hS'`. Take `⟨-, huniq⟩` from `sigLam_lowK hgap hP hv₀`.
-
-Rewrite using `[huniq S hS, huniq S' hS']`. Conclude with `sigLam_admissible hgap hP hv₀`. Introduce `S hSf hSK v hv`. Conclude with `sigLam_kfin_smooth hgap hP hv₀ v (sigLam_kfin hgap hP hv₀ S hSf hSK hv)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem dsExistsG (hS7 : ∀ m : ℕ, S7.PsiExistsStatement m) :
     ∀ (n : ℕ) (ε : Fin n → Bool) (lam : Fin n → ℝ), Formalism.QuantumDeterminants.IsHCParam lam →
@@ -138,7 +134,7 @@ theorem dsExistsG (hS7 : ∀ m : ℕ, S7.PsiExistsStatement m) :
       exact sigLam_kfin_smooth hgap hP hv₀ v (sigLam_kfin hgap hP hv₀ S hSf hSK hv)
 
 /- English proof (translation)
-Introduce `n ε lam H _ _ σ hlam hDS h hh hlt hcas S S' hS hS'`. Establish `: CompleteSpace H` using `hDS.1`. Conclude with `lowKMultOne_of_cas hDS (stdGap_of_mir hlam hh hlt) hcas S S' hS hS'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lowKMultOneG_of_cas :
     ∀ (n : ℕ) (ε : Fin n → Bool) (lam : Fin n → ℝ) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H]

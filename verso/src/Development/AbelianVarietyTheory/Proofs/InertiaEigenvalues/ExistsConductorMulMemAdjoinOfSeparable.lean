@@ -11,21 +11,21 @@ namespace GlobalTheory.UnitLemma
 open Polynomial
 
 /- English proof (translation)
-Introduce `K B hP hg`. Take `⟨e, he⟩` from `exists_basis_pow_of_separable K B hP`. Establish `hint : ∀ x : B.A, IsIntegral K.O x → ∃ t : K.O, algebraMap K.O K.E t = Algebra.trace K.E B.A x` using `fun x hx => IsIntegrallyClosed.isIntegral_iff.1 (GlobalTheory.DiscConductor.isIntegral_trace_of_isIntegral K.O K.E B.A x hx)`. Establish `he_int : ∀ i, IsIntegral K.O (e i)` using `fun i => by rw [he]; exact hg.pow _`. Establish `hG : ∀ i j, ∃ t : K.O, algebraMap K.O K.E t = Algebra.trace K.E B.A (e i * e j)` using `fun i j => hint _ ((he_int i).mul (he_int j))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose t ht using hG`. Set `c : K.O` to `(Matrix.of t).det`. Establish `hc : algebraMap K.O K.E c = (Algebra.traceMatrix K.E e).det`. Rewrite using `[RingHom.map_det]`. Use `congr 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Simplify using `[ht, Algebra.traceMatrix_apply, Algebra.traceForm_apply]`. Establish `hgen : ∀ a : B.A, ∃ f : K.E[X], a = aeval B.g f`. Introduce `a`. Use `⟨∑ i : Fin (Module.finrank K.E B.A), monomial (i : ℕ) (e.repr a i), ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hdet : (Algebra.traceMatrix K.E e).det ≠ 0`. Introduce `h0`. Take `⟨v, hv0, hv⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h0`. Apply `hv0` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hwv : e.equivFun (∑ j, v j • e j) = v`. Rewrite using `[← e.equivFun_symm_apply, LinearEquiv.apply_symm_apply]`. Establish `hti : ∀ i, Algebra.trace K.E B.A ((∑ j, v j • e j) * e i) = 0`. Introduce `i`. Use `congrFun (Algebra.traceMatrix_of_basis_mulVec e (∑ j, v j • e j)) i` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hwv, hv]`. Conclude with `this.symm`. Establish `hw` using `GlobalTheory.UnitLemma.TraceNondeg.eq_zero_of_trace_mul_eq_zero K B hP hgen (∑ j, v j • e j) (fun y => by`. Rewrite using `[← e.sum_repr y, Finset.mul_sum, map_sum]`. Simplify using `[mul_smul_comm, hti])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `funext (Fintype.linearIndependent_iff.1 e.linearIndependent v hw)`. Use `⟨c, fun h0 => hdet (by rw [← hc, h0, map_zero]), fun u hu => ?_⟩` and prove the remaining obligations. Take `⟨w, hw⟩` from `GlobalTheory.DiscConductor.det_smul_eq_sum K.O K.E B.A _ e u (fun i j => ⟨_, ht i j⟩) (fun i => hint _ (hu.mul (he_int i)))`. Establish `h1 : algebraMap K.O B.A c * u = ∑ j, w j • B.g ^ (j : ℕ)`. Rewrite using `[IsScalarTower.algebraMap_apply K.O K.E B.A, ← Algebra.smul_def, hc, hw]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[algebraMap_smul, he]`. Rewrite using `[h1]`. Conclude with `Subalgebra.sum_mem _ fun j _ => Subalgebra.smul_mem _ (Subalgebra.pow_mem _ (Algebra.subset_adjoin (Set.mem_singleton _)) _) _`.
+A detailed English derivation is pending.
 -/
 theorem exists_conductor_mul_mem_adjoin : ∀ (K : UQ) (B : InvAlg K), B.P.Separable → IsIntegral K.O B.g →
     ∃ c : K.O, c ≠ 0 ∧ ∀ u : B.A, IsIntegral K.O u →

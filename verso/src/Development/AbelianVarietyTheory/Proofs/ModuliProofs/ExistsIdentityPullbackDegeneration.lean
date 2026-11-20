@@ -13,7 +13,7 @@ noncomputable section
 namespace GlobalTheory.TorsionFormCompare
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `⟨a, fun _ _ _ _ => rfl, fun _ _ _ _ => rfl⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem exists_gen_of_eq {X Y : Scheme.{0}} (L : LB X) {p q : Y ⟶ X} (h : q = p) (n : ℤ)
     (a : LB.Gen (LB.LinComb L (K := PUnit) (fun _ => p) (fun _ => n))) :
@@ -25,11 +25,11 @@ theorem exists_gen_of_eq {X Y : Scheme.{0}} (L : LB X) {p q : Y ⟶ X} (h : q = 
   exact ⟨a, fun _ _ _ _ => rfl, fun _ _ _ _ => rfl⟩
 
 /- English proof (translation)
-Take `⟨b, hb, hv⟩` from `exists_gen_of_eq L (q := p ≫ F) (p := p) (by rw [hF, Category.comp_id]) n a`. Use `⟨b, fun jN jL => unit_ext fun y hy => ?_, hv⟩` and prove the remaining obligations. Establish `hL : p y ∈ L.U jL` using `hy.2`. Establish `hN : p y ∈ L.U (jN PUnit.unit)`. Use `mem_pull.1 hy.1` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[hF]`. Conclude with `this`. Establish `m₁ : (𝟙 Y : Y ⟶ Y) y ∈ LB.wchart L (fun _ : PUnit => p) jN` using `Set.mem_iInter.2 fun _ => hN`. Establish `m₂ : (𝟙 Y : Y ⟶ Y) y ∈ LB.wchart L (fun _ : PUnit => p) (fun _ => jL)` using `Set.mem_iInter.2 fun _ => hL`. Use `(gm_res _ y _ hy _).trans ((hb _ _ y jN).trans ((gen_trans ha (𝟙 Y) y m₁ m₂).trans ?_))` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.symm ((map_mul _ _ _).trans (congrArg₂ (· * ·) ((map_zpow _ _ _).trans ?_) (gm_res _ y _ hy _)))` and prove the remaining obligations. Rewrite using `[trF, Fintype.prod_unique]`. Use `congrArg (· ^ n) ((gm_pull (𝟙 Y) p y _ hy _).trans ?_)` and prove the remaining obligations. Conclude with `gw_isoPullId (idIso L) hF (𝟙 Y ≫ p) y (jN PUnit.unit) jL hN hL`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_mapsAt_id {X Y : Scheme.{0}} {L : LB X} {F : X ⟶ X} (hF : F = 𝟙 X) (p : Y ⟶ X) (n : ℤ)
     (a : LB.Gen (LB.LinComb L (K := PUnit) (fun _ => p) (fun _ => n))) (ha : a.IsGen) :
@@ -52,21 +52,19 @@ theorem exists_mapsAt_id {X Y : Scheme.{0}} {L : LB X} {F : X ⟶ X} (hF : F = �
   exact gw_isoPullId (idIso L) hF (𝟙 Y ≫ p) y (jN PUnit.unit) jL hN hL
 
 /- English proof (translation)
-Introduce and unpack `R _ _ D W hW ⟨ψ⟩`. Establish `hs` using `specOf_id R`. Establish `mR : IsMonHom (Iso.refl D.P.A).hom` using `by show IsMonHom (𝟙 _); infer_instance`. Establish `gp : IsGrpPullback D.P.A D.P.A (specOf (RingHom.id R)) (Iso.refl D.P.A).hom.left` using `(isGrpPullback_of_iso (Iso.refl D.P.A)).congr hs.symm rfl`. Take `⟨e, me, he⟩` from `grpPullback_iso gp (isGrpPullback_pullback D.P.A (specOf (RingHom.id R)))`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hF : e.hom.left ≫ pullback.fst D.P.A.hom (specOf (RingHom.id R)) = 𝟙 _` using `he`. Establish `hz : eSec D.P.A ≫ e.hom.left ≫ pullback.fst D.P.A.hom (specOf (RingHom.id R)) = specOf (RingHom.id R) ≫ eSec D.P.A`. Rewrite using `[hF, hs, Category.comp_id]`. Conclude with `(Category.id_comp _).symm`. Establish `hgen : ∀ z : Sp (FractionRing R), jK R z ∈ W`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z`. Establish `: jK R z = genericPoint (Sp R)`. Rewrite using `[genericPoint_eq_bot_of_affine]`. Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Use `show Ideal.comap (algebraMap R (FractionRing R)) z.asIdeal = ⊥`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hz0 : z.asIdeal = ⊥` using `@Ideal.eq_bot_of_prime _ _ _ z.isPrime`. Rewrite using `[hz0]`. Conclude with `Ideal.comap_bot_of_injective _ (IsFractionRing.injective R _)`. Rewrite using `[this]`. Conclude with `hW`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hr : Set.range (𝟙 (Sp (FractionRing R)) : _ ⟶ _) ⊆ Set.range (jK R ⁻¹ᵁ W).ι`. Introduce and unpack `_ ⟨z, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `hgen z`. Set `l` to `IsOpenImmersion.lift (jK R ⁻¹ᵁ W).ι (𝟙 _) hr`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hl : l ≫ (jK R ⁻¹ᵁ W).ι = 𝟙 _` using `IsOpenImmersion.lift_fac _ _ _`. Use `⟨{ e := e, e_hom := me, w := isoPullId (idIso D.P.L) hF w_gen := (isGen_iff _).2 (isoPullId_pgen (idIso_isGen D.P.isLB) hF) he := hz w_rig := isoPullId_maps (idIso_maps (⟨D.P.L, D.rig, D.P.isLB, D.rig_gen⟩ : RigLB D.P.A)) hF hs hz xe := AddEquiv.refl _ c_pr := fun x => by rw [hF, …` and prove the remaining obligations. Rewrite using `[hs, Category.comp_id]`. Conclude with `(Category.assoc _ _ _).trans ((congrArg (l ≫ ·) (morphismRestrict_ι (jK R) W)).trans ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ jK R) hl).trans (Category.id_comp _))))`. Use `psi_pr := fun x => ?_ }, fun _ => rfl, hF, fun Y f y j k hj hk => ?_⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨b, hb, hv⟩` from `exists_mapsAt_id hF (D.xK x) (-1) (D.psi x) (D.psi_gen x)`. Use `⟨b, hb, corr_of_val D.P.isLB fun y J hJ => ?_⟩` and prove the remaining obligations. Establish `c` using `val_corr hJ (ψ.psi_eq x) l`. Establish `c₁` using `val_pull hJ (ψ.psi x) (jK R ∣_ W) l`. Establish `c₂` using `val_pull hJ (D.psi x) (jK R ⁻¹ᵁ W).ι l`.
-
-Establish `c₃` using `val_pull hJ (ψ.psi x) (l ≫ jK R ∣_ W) (𝟙 _)`. Use `(hv _ _ y J).trans (Eq.trans ?_ c₃.symm)` and prove the remaining obligations. Use `(congrArg (fun r => val (D.psi x) r y J) hl).symm.trans (c₂.symm.trans (c.symm.trans (c₁.trans ?_)))` and prove the remaining obligations. Conclude with `congrArg (fun r => val (ψ.psi x) r y J) (Category.id_comp _).symm`. Conclude with `gw_isoPullId (idIso D.P.L) hF f y j k hj hk`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_isIdPull : ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) (W : (Sp R).Opens), genericPoint (Sp R) ∈ W → Nonempty (PsiOn D W) → ∃ hD : IsPullDeg (RingHom.id R) D D, IsIdPull hD := by
   rintro R _ _ D W hW ⟨ψ⟩

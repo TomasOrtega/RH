@@ -13,7 +13,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {v : HeightOneSpectrum (𝓞 F)} (spl : E ⊗[F] (v.adicCompletion F) ≃+* (v.adicCompletion F) × (v.adicCompletion F))
 
 /- English proof (translation)
-Establish `h : e ⊗ₜ[F] a = (e ⊗ₜ[F] (1 : (v.adicCompletion F))) * ((1 : E) ⊗ₜ[F] a)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Rewrite using `[h, map_mul, spl_tmul_one, hspl]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma spl_tmul (hspl : ∀ a : (v.adicCompletion F), spl ((1 : E) ⊗ₜ[F] a) = (a, a)) (e : E) (a : (v.adicCompletion F)) :
     spl (e ⊗ₜ[F] a) =
@@ -24,26 +24,24 @@ lemma spl_tmul (hspl : ∀ a : (v.adicCompletion F), spl ((1 : E) ⊗ₜ[F] a) =
   rfl
 
 /- English proof (translation)
-Take `⟨π, hπ0, hπ⟩` from `exists_unif v`. Conclude with `⟨_, (map_ne_zero_iff _ (algebraMap F (v.adicCompletion F)).injective).2 hπ0, hπ⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma exists_small : ∃ ϖ : (v.adicCompletion F), ϖ ≠ 0 ∧ Valued.v ϖ < 1 := by
   obtain ⟨π, hπ0, hπ⟩ := exists_unif v
   exact ⟨_, (map_ne_zero_iff _ (algebraMap F (v.adicCompletion F)).injective).2 hπ0, hπ⟩
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ0, hϖ⟩` from `exists_small (v := v)`. Establish `key : ∀ w : (v.adicCompletion F), w ∈ (v.adicCompletionIntegers F) → Valued.v (ϖ * w) < 1` using `fun w hw =>`. Establish `hw' : Valued.v w ≤ 1` using `hw`. Combine the equalities or inequalities in the displayed calculation. Proceed by induction on `z using TensorProduct.induction_on with`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Proceed by induction.
 
-Consider the case `zero => exact ⟨0, by simp, by simp⟩`. Consider the case `tmul e a`. Set `U : Set (v.adicCompletion F)` to `(fun x => ϖ⁻¹ * emb spl (RingHom.fst (v.adicCompletion F) (v.adicCompletion F)) e * (a - x)) ⁻¹' ((v.adicCompletionIntegers F) : Set (v.adicCompletion F)) ∩ (fun x => ϖ⁻¹ * emb spl (RingHom.snd (v.adicCompletion F) (v.adicCompletion F)) e * (a - x)) ⁻¹' ((v.adicCompletionIntegers …`. Establish `hU : IsOpen U`. Apply the tactic sequence `refine IsOpen.inter ?_ ?_ <;>`.
+Treat this case separately. Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `(Valued.isOpen_integer (v.adicCompletion F)).preimage (continuous_const.mul (continuous_const.sub continuous_id))`. Establish `hU' : U.Nonempty` using `⟨a, by`. Simplify using `only [U, Set.mem_inter_iff, Set.mem_preimage, sub_self, mul_zero, SetLike.mem_coe]`. Conclude with `⟨zero_mem _, zero_mem _⟩⟩`. Take `⟨f, hf⟩` from `(denseRange_algebraMap F v).exists_mem_open hU hU'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsmall : ∀ c : (v.adicCompletion F), ϖ⁻¹ * c * (a - algebraMap F (v.adicCompletion F) f) ∈ (v.adicCompletionIntegers F) → Valued.v (c * a - algebraMap F (v.adicCompletion F) f * c) < 1` using `fun c hc => by`. Establish `h : c * a - algebraMap F (v.adicCompletion F) f * c = ϖ * (ϖ⁻¹ * c * (a - algebraMap F (v.adicCompletion F) f))`. Rewrite using `[show ϖ * (ϖ⁻¹ * c * (a - algebraMap F (v.adicCompletion F) f)) = (ϖ * ϖ⁻¹) * (c * (a - algebraMap F (v.adicCompletion F) f)) by ring, mul_inv_cancel₀ hϖ0, one_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `key _ hc`. Use `⟨algebraMap F E f * e, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[spl_tmul spl hspl, map_mul, emb_algebraMap spl hspl _ (fun _ => rfl)]`. Conclude with `hsmall _ hf.1`. Rewrite using `[spl_tmul spl hspl, map_mul, emb_algebraMap spl hspl _ (fun _ => rfl)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hsmall _ hf.2`. Consider the case `add x y hx hy`. Take `⟨y1, h1, h1'⟩` from `hx`. Take `⟨y2, h2, h2'⟩` from `hy`. Use `⟨y1 + y2, ?_, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[map_add, map_add, Prod.fst_add, show (spl x).1 + (spl y).1 - (emb spl (RingHom.fst (v.adicCompletion F) (v.adicCompletion F)) y1 + emb spl (RingHom.fst (v.adicCompletion F) (v.adicCompletion F)) y2) = ((spl x).1 - emb spl (RingHom.fst (v.adicCompletion F) (v.adicCompletion F)) y …`. Conclude with `Valuation.map_add_lt _ h1 h2`. Rewrite using `[map_add, map_add, Prod.snd_add, show (spl x).2 + (spl y).2 - (emb spl (RingHom.snd (v.adicCompletion F) (v.adicCompletion F)) y1 + emb spl (RingHom.snd (v.adicCompletion F) (v.adicCompletion F)) y2) = ((spl x).2 - emb spl (RingHom.snd (v.adicCompletion F) (v.adicCompletion F)) y …`. Conclude with `Valuation.map_add_lt _ h1' h2'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma approx (hspl : ∀ a : (v.adicCompletion F), spl ((1 : E) ⊗ₜ[F] a) = (a, a)) (z : E ⊗[F] (v.adicCompletion F)) :
     ∃ y : E, Valued.v ((spl z).1 - emb spl (RingHom.fst (v.adicCompletion F) (v.adicCompletion F)) y) < 1 ∧
@@ -98,13 +96,13 @@ lemma approx (hspl : ∀ a : (v.adicCompletion F), spl ((1 : E) ⊗ₜ[F] a) = (
       exact Valuation.map_add_lt _ h1' h2'
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ0, hϖ⟩` from `exists_small (v := v)`. Take `⟨y, h1, h2⟩` from `approx spl hspl (spl.symm (ϖ⁻¹, 0))`. Rewrite `h1`, `h2` using `[RingEquiv.apply_symm_apply]`. Simplify using `only at h1 h2`. Establish `hinv : 1 < Valued.v ϖ⁻¹`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Simplify by unfolding definitions. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_lt]`. Establish `h3 : Valued.v ϖ * Valued.v ϖ⁻¹ < 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite `h3` using `[← map_mul, mul_inv_cancel₀ hϖ0, map_one]`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `lt_irrefl _ h3`. Use `⟨y, ?_, ?_⟩` and prove the remaining obligations. Establish `hlt : Valued.v (emb spl (RingHom.fst (v.adicCompletion F) (v.adicCompletion F)) y - ϖ⁻¹) < Valued.v ϖ⁻¹`. Rewrite using `[Valuation.map_sub_swap]`. Conclude with `h1.trans hinv`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Valuation.map_eq_of_sub_lt _ hlt]`. Conclude with `hinv`. Rewrite `h2` using `[zero_sub, Valuation.map_neg]`. Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 lemma exists_sep (hspl : ∀ a : (v.adicCompletion F), spl ((1 : E) ⊗ₜ[F] a) = (a, a)) :
     ∃ y : E, 1 < Valued.v (emb spl (RingHom.fst (v.adicCompletion F) (v.adicCompletion F)) y) ∧
@@ -132,11 +130,9 @@ lemma exists_sep (hspl : ∀ a : (v.adicCompletion F), spl ((1 : E) ⊗ₜ[F] a)
     exact h2
 
 /- English proof (translation)
-Establish `hu : IsUnit (phi spl p s)`. Assume the negation of the conclusion as `h`. Apply `hs` to reduce the goal to its premises. Use `show phi spl p s ∈ IsLocalRing.maximalIdeal (v.adicCompletionIntegers F)`. Rewrite using `[IsLocalRing.mem_maximalIdeal]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `h`. Take `⟨w, hw⟩` from `hu.exists_right_inv`. Establish `h2 : (phi spl p s : (v.adicCompletion F)) * (w : (v.adicCompletion F)) = 1` using `congrArg Subtype.val hw`. Establish `h3 : emb spl p z = (phi spl p a : (v.adicCompletion F)) * (w : (v.adicCompletion F))`. Rewrite using `[coe_phi, ← hz, map_mul, ← coe_phi, mul_assoc, h2, mul_one]`.
-
-Rewrite using `[h3]`. Conclude with `(phi spl p a * w).2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma emb_mem_of_mul (p : (v.adicCompletion F) × (v.adicCompletion F) →+* (v.adicCompletion F)) (a s : 𝓞 E) (hs : s ∉ P spl p) (z : E)
     (hz : z * algebraMap (𝓞 E) E s = algebraMap (𝓞 E) E a) : emb spl p z ∈ (v.adicCompletionIntegers F) := by
@@ -165,15 +161,15 @@ instance (Q : Ideal (𝓞 E)) [Q.IsPrime] : IsFractionRing (Dloc Q) E :=
     (Localization.subalgebra E Q.primeCompl Q.primeCompl_le_nonZeroDivisors) E)
 
 /- English proof (translation)
-Introduce `hPP`. Take `⟨y, hy1, hy2⟩` from `exists_sep spl hspl`. Establish `hQ0 : P spl (RingHom.fst (v.adicCompletion F) (v.adicCompletion F)) ≠ ⊥` using `prime_ne_bot spl hspl _ (fun _ => rfl)`. Establish `: IsDiscreteValuationRing (Dloc (P spl (RingHom.fst (v.adicCompletion F) (v.adicCompletion F))))` using `IsLocalization.AtPrime.isDiscreteValuationRing_of_dedekind_domain (𝓞 E) hQ0 _`. Establish `hloc : ∀ p : (v.adicCompletion F) × (v.adicCompletion F) →+* (v.adicCompletion F), P spl p = P spl (RingHom.fst (v.adicCompletion F) (v.adicCompletion F)) → ∀ z : E, IsLocalization.IsInteger (Dloc (P spl (RingHom.fst (v.adicCompletion F) (v.adicCompletion F)))) z → emb spl p z ∈ …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `p hp z ⟨d, hd⟩`. Take `⟨⟨a, s⟩, rfl⟩` from `IsLocalization.mk'_surjective (P spl (RingHom.fst (v.adicCompletion F) (v.adicCompletion F))).primeCompl d`. Establish `hs : (s : 𝓞 E) ∉ P spl p` using `by rw [hp]; exact s.2`. Establish `hspec` using `congrArg (algebraMap (Dloc (P spl (RingHom.fst (v.adicCompletion F) (v.adicCompletion F)))) E) (IsLocalization.mk'_spec (Dloc (P spl (RingHom.fst (v.adicCompletion F) (v.adicCompletion F)))) a s)`. Rewrite `hspec` using `[map_mul, hd, ← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `emb_mem_of_mul spl p a s hs z hspec`. Break down `ValuationRing.isInteger_or_isInteger (Dloc (P spl (RingHom.fst (v.adicCompletion F) (v.adicCompletion F)))) y with h | h` into its components or cases. Establish `h' : Valued.v (emb spl (RingHom.fst (v.adicCompletion F) (v.adicCompletion F)) y) ≤ 1` using `hloc _ rfl y h`. Conclude with `absurd h' (not_le.2 hy1)`. Establish `h' : Valued.v (emb spl (RingHom.snd (v.adicCompletion F) (v.adicCompletion F)) y⁻¹) ≤ 1` using `hloc _ hPP.symm y⁻¹ h`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hy0 : y ≠ 0`. Introduce and unpack `rfl`. Rewrite `hy1` using `[map_zero, Valuation.map_zero]`. Conclude with `absurd hy1 (not_lt.2 zero_le)`. Establish `hu0 : emb spl (RingHom.snd (v.adicCompletion F) (v.adicCompletion F)) y ≠ 0` using `(map_ne_zero_iff _ (emb spl (RingHom.snd (v.adicCompletion F) (v.adicCompletion F))).injective).2 hy0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite `h'` using `[map_inv₀]`. Establish `h3 : Valued.v (emb spl (RingHom.snd (v.adicCompletion F) (v.adicCompletion F)) y) * Valued.v (emb spl (RingHom.snd (v.adicCompletion F) (v.adicCompletion F)) y)⁻¹ < 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite `h3` using `[← map_mul, mul_inv_cancel₀ hu0, map_one]`. Conclude with `lt_irrefl _ h3`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma prime_fst_ne_prime_snd (hspl : ∀ a : (v.adicCompletion F), spl ((1 : E) ⊗ₜ[F] a) = (a, a)) :
     P spl (RingHom.fst (v.adicCompletion F) (v.adicCompletion F)) ≠ P spl (RingHom.snd (v.adicCompletion F) (v.adicCompletion F)) := by
@@ -210,13 +206,13 @@ lemma prime_fst_ne_prime_snd (hspl : ∀ a : (v.adicCompletion F), spl ((1 : E) 
     exact lt_irrefl _ h3
 
 /- English proof (translation)
-Establish `h1 : (P spl (RingHom.fst (v.adicCompletion F) (v.adicCompletion F))).IsMaximal` using `Ideal.IsPrime.isMaximal inferInstance (prime_ne_bot spl hspl _ (fun _ => rfl))`. Establish `h2 : (P spl (RingHom.snd (v.adicCompletion F) (v.adicCompletion F))).IsMaximal` using `Ideal.IsPrime.isMaximal inferInstance (prime_ne_bot spl hspl _ (fun _ => rfl))`. Establish `htop` using `Ideal.IsMaximal.coprime_of_ne h1 h2 (prime_fst_ne_prime_snd spl hspl)`. Establish `h1mem : (1 : 𝓞 E) ∈ P spl (RingHom.fst (v.adicCompletion F) (v.adicCompletion F)) ⊔ P spl (RingHom.snd (v.adicCompletion F) (v.adicCompletion F))`. Rewrite using `[htop]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.mem_top`. Take `⟨a, ha, b, hb, hab⟩` from `Submodule.mem_sup.1 h1mem`. Use `⟨b, ?_⟩` and prove the remaining obligations. Establish `hsum` using `congrArg (phi spl (RingHom.fst (v.adicCompletion F) (v.adicCompletion F))) hab`. Rewrite `hsum` using `[map_add, map_one]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `heq : phi spl (RingHom.fst (v.adicCompletion F) (v.adicCompletion F)) b - phi spl (RingHom.snd (v.adicCompletion F) (v.adicCompletion F)) b = 1 - (phi spl (RingHom.fst (v.adicCompletion F) (v.adicCompletion F)) a + phi spl (RingHom.snd (v.adicCompletion F) (v.adicCompletion F)) b …`. Rewrite using `[← hsum]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[heq]`. Apply `IsLocalRing.isUnit_one_sub_self_of_mem_nonunits` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← IsLocalRing.mem_maximalIdeal]`. Establish `ha' : phi spl (RingHom.fst (v.adicCompletion F) (v.adicCompletion F)) a ∈ IsLocalRing.maximalIdeal (v.adicCompletionIntegers F)` using `ha`. Establish `hb' : phi spl (RingHom.snd (v.adicCompletion F) (v.adicCompletion F)) b ∈ IsLocalRing.maximalIdeal (v.adicCompletionIntegers F)` using `hb`. Conclude with `Ideal.add_mem _ ha' hb'`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma exists_unit_diff (hspl : ∀ a : (v.adicCompletion F), spl ((1 : E) ⊗ₜ[F] a) = (a, a)) :
     ∃ b : 𝓞 E, IsUnit (phi spl (RingHom.fst (v.adicCompletion F) (v.adicCompletion F)) b - phi spl (RingHom.snd (v.adicCompletion F) (v.adicCompletion F)) b) := by
@@ -242,15 +238,13 @@ lemma exists_unit_diff (hspl : ∀ a : (v.adicCompletion F), spl ((1 : E) ⊗ₜ
   exact Ideal.add_mem _ ha' hb'
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `exists_unit_diff spl hspl`. Take `⟨u, hu⟩` from `hb.exists_right_inv`. Establish `hu' : ((phi spl (RingHom.fst (v.adicCompletion F) (v.adicCompletion F)) b : (v.adicCompletion F)) - (phi spl (RingHom.snd (v.adicCompletion F) (v.adicCompletion F)) b : (v.adicCompletion F))) * (u : (v.adicCompletion F)) = 1` using `congrArg Subtype.val hu`. Establish `hE : ∀ e : 𝓞 E, (algebraMap (𝓞 E) E e) ⊗ₜ[F] (1 : (v.adicCompletion F)) ∈ tensInt (F` using `F) (v.adicCompletion F) (intOE E) ((v.adicCompletionIntegers F)).toSubring := fun e => Subring.subset_closure (Or.inl ⟨⟨_, RingHom.mem_range.2 ⟨e, rfl⟩⟩, rfl⟩)`. Establish `hK : ∀ c : (v.adicCompletionIntegers F), (1 : E) ⊗ₜ[F] (c : (v.adicCompletion F)) ∈ tensInt (F` using `F) (v.adicCompletion F) (intOE E) ((v.adicCompletionIntegers F)).toSubring := fun c => Subring.subset_closure (Or.inr ⟨⟨c, c.2⟩, rfl⟩)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨w, hw_def⟩ : ∃ w : E ⊗[F] (v.adicCompletion F), w = (algebraMap (𝓞 E) E b ⊗ₜ[F] (1 : (v.adicCompletion F)) - (1 : E) ⊗ₜ[F] (phi spl (RingHom.snd (v.adicCompletion F) (v.adicCompletion F)) b : (v.adicCompletion F))) * ((1 : E) ⊗ₜ[F] (u : (v.adicCompletion F)))` from `⟨_, rfl⟩`. Establish `hw : w ∈ tensInt (F` using `F) (v.adicCompletion F) (intOE E) ((v.adicCompletionIntegers F)).toSubring := by`. Rewrite using `[hw_def]`. Conclude with `Subring.mul_mem _ (Subring.sub_mem _ (hE b) (hK _)) (hK u)`. Establish `hsw : spl w = (1, 0)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hw_def, map_mul, map_sub, spl_tmul_one, hspl, hspl]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Conclude with `hu'`. Use `show ((phi spl (RingHom.snd (v.adicCompletion F) (v.adicCompletion F)) b : (v.adicCompletion F)) - (phi spl (RingHom.snd (v.adicCompletion F) (v.adicCompletion F)) b : (v.adicCompletion F))) * (u : (v.adicCompletion F)) = 0`. Rewrite using `[sub_self, zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hx' : spl x = spl ((1 : E) ⊗ₜ[F] (((⟨_, h2⟩ : (v.adicCompletionIntegers F))) : (v.adicCompletion F)) + w * ((1 : E) ⊗ₜ[F] ((((⟨_, h1⟩ : (v.adicCompletionIntegers F)) - ⟨_, h2⟩ : (v.adicCompletionIntegers F))) : (v.adicCompletion F))))`. Rewrite using `[map_add, map_mul, hsw, hspl, hspl]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show (spl x).1 = (spl x).2 + 1 * ((spl x).1 - (spl x).2)`. Expand and normalize the polynomial expressions, which then agree.
-
-Use `show (spl x).2 = (spl x).2 + 0 * ((spl x).1 - (spl x).2)`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[spl.injective hx']`. Conclude with `Subring.add_mem _ (hK _) (Subring.mul_mem _ hw (hK _))`.
+Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sup_dir (hspl : ∀ a : (v.adicCompletion F), spl ((1 : E) ⊗ₜ[F] a) = (a, a)) (x : E ⊗[F] (v.adicCompletion F))
     (h1 : (spl x).1 ∈ (v.adicCompletionIntegers F)) (h2 : (spl x).2 ∈ (v.adicCompletionIntegers F)) :
@@ -289,7 +283,7 @@ theorem sup_dir (hspl : ∀ a : (v.adicCompletion F), spl ((1 : E) ⊗ₜ[F] a) 
   exact Subring.add_mem _ (hK _) (Subring.mul_mem _ hw (hK _))
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ v spl hspl x`. Conclude with `⟨fun hx => sub_dir spl hspl x hx, fun h => sup_dir spl hspl x h.1 h.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem main : PI.SplitIntLoc := by
   intro F E _ _ _ _ _ v spl hspl x

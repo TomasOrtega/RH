@@ -8,9 +8,9 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ}
 
 omit [StarRing E] in
 /- English proof (translation)
-Take `⟨y, hy, h⟩` from `exists_integral_multiples ℤ ℚ ({c} : Finset E)`. Establish `hi : IsIntegral ℤ ((y : E) * c)`. Use `h c (Finset.mem_singleton_self c)` as an intermediate fact. Rewrite `this` using `[zsmul_eq_mul]`. Then use the resulting hypothesis. Take `⟨k, rfl | rfl⟩` from `Int.eq_nat_or_neg y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Use `⟨k, by omega, (⟨((k : ℤ) : E) * c, (mem_integralClosure_iff ℤ E).mpr hi⟩ : 𝓞 E), ?_⟩ show ((k : ℤ) : E) * c = (k : E) * c` and prove the remaining obligations. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `⟨k, by omega, -(⟨((-(k : ℤ) : ℤ) : E) * c, (mem_integralClosure_iff ℤ E).mpr hi⟩ : 𝓞 E), ?_⟩ show -((((-(k : ℤ)) : ℤ) : E) * c) = (k : E) * c` and prove the remaining obligations. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -30,15 +30,15 @@ private lemma denom (c : E) : ∃ k : ℕ, 0 < k ∧ ∃ w : 𝓞 E, (w : E) = (
     ring
 
 /- English proof (translation)
-Establish `key : ∀ x ∈ Submodule.span E (M : Set (Fin n → E)), ∃ m : ℕ, 0 < m ∧ (m : 𝓞 E) • x ∈ M`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x h => exact ⟨1, one_pos, by simpa using h⟩`. Consider the case `zero => exact ⟨1, one_pos, by simp⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ ihx ihy`. Take `⟨a, ha, hax⟩` from `ihx`. Take `⟨b, hb, hby⟩` from `ihy`. Use `⟨a * b, Nat.mul_pos ha hb, ?_⟩` and prove the remaining obligations. Establish `e : ((a * b : ℕ) : 𝓞 E) • (x + y) = (b : 𝓞 E) • ((a : 𝓞 E) • x) + (a : 𝓞 E) • ((b : 𝓞 E) • y)`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[smul_smul, smul_smul, Nat.cast_mul, mul_comm (b : 𝓞 E), smul_add]`. Rewrite using `[e]`. Conclude with `M.add_mem (M.smul_mem _ hax) (M.smul_mem _ hby)`. Consider the case `smul c x _ ih`. Take `⟨a, ha, hax⟩` from `ih`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk, w, hw⟩` from `denom c`. Use `⟨k * a, Nat.mul_pos hk ha, ?_⟩` and prove the remaining obligations. Establish `e : ((k * a : ℕ) : 𝓞 E) • (c • x) = w • ((a : 𝓞 E) • x)`. Rewrite using `[← algebraMap_smul E ((k * a : ℕ) : 𝓞 E), ← algebraMap_smul E w, ← algebraMap_smul E (a : 𝓞 E), smul_smul, smul_smul, map_natCast, map_natCast, ← RingOfIntegers.coe_eq_algebraMap, hw]`. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form.
 
-Put the polynomial expressions in normal form. Rewrite using `[e]`. Conclude with `M.smul_mem _ hax`. Conclude with `key v (by rw [hsp]; exact Submodule.mem_top)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goal1 (M : Submodule (𝓞 E) (Fin n → E)) (hsp : Submodule.span E (M : Set (Fin n → E)) = ⊤)
     (v : Fin n → E) : ∃ m : ℕ, 0 < m ∧ (m : 𝓞 E) • v ∈ M := by

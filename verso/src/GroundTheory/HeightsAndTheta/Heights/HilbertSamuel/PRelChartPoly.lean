@@ -13,7 +13,7 @@ namespace RelChartPoly
 variable {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)] {Ω : Type*} [Field Ω]
 
 /- English proof (translation)
-Establish `h` using `monomial_mem_relSecM R y (b := e) (fun q : Σ k, ι k => if q.2 = c q.1 then e q.1 else 0) (fun k => by simp)`. Use `h using 1` and compare the differences between its conclusion and the goal. Rewrite using `[Fintype.prod_sigma]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `[pow_ite]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem chartMonomial_mem (R : Subalgebra ℤ Ω) (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (e : K → ℕ) :
     ∏ k, y ⟨k, c k⟩ ^ e k ∈ relSecM R y e := by
@@ -26,9 +26,9 @@ theorem chartMonomial_mem (R : Subalgebra ℤ Ω) (y : (Σ k, ι k) → Ω) (c :
   simp [pow_ite]
 
 /- English proof (translation)
-Establish `h` using `chartMonomial_mem R y (Function.update c p.1 p.2) (Pi.single p.1 1)`. Use `h using 1` and compare the differences between its conclusion and the goal. Rewrite using `[Finset.prod_eq_single p.1]`. Simplify using the standard rewrite rules. Introduce `k _ hk`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[hk]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem coord_mem (R : Subalgebra ℤ Ω) (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (p : Σ k, ι k) [DecidableEq K] :
     y p ∈ relSecM R y (Pi.single p.1 1) := by
@@ -41,17 +41,17 @@ theorem coord_mem (R : Subalgebra ℤ Ω) (y : (Σ k, ι k) → Ω) (c : ∀ k, 
   · simp
 
 /- English proof (translation)
-Distinguish the cases in `h0 : y ⟨p.1, c p.1⟩ = 0`. Simplify using `[h0]`. Establish `hW : ∏ k, y ⟨k, c k⟩ = (∏ k, y ⟨k, c k⟩ ^ (Pi.single p.1 (1 : ℕ) : K → ℕ) k) * ∏ k, y ⟨k, c k⟩ ^ (if k = p.1 then 0 else 1)`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← pow_add]`. Distinguish the cases in `hk : k = p.1`. Substitute `hk` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hk]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `h1 : ∏ k, y ⟨k, c k⟩ ^ (Pi.single p.1 (1 : ℕ) : K → ℕ) k = y ⟨p.1, c p.1⟩`. Rewrite using `[Finset.prod_eq_single p.1]`. Simplify using the standard rewrite rules. Introduce `k _ hk`. Simplify using `[hk]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hmem` using `mul_mem_relSecM R y (coord_mem R y c p) (chartMonomial_mem R y c (fun k => if k = p.1 then 0 else 1))`. Establish `hb : (Pi.single p.1 1 + fun k => if k = p.1 then 0 else 1 : K → ℕ) = fun _ => 1`. Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k = p.1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Substitute `hk` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hk]`. Rewrite `hmem` using `[hb]`. Rewrite using `[hW, h1, ← mul_assoc, div_mul_cancel₀ _ h0]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hmem`.
+A detailed English derivation is pending.
 -/
 theorem generator_mem (R : Subalgebra ℤ Ω) (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (p : Σ k, ι k) :
     y p / y ⟨p.1, c p.1⟩ * ∏ k, y ⟨k, c k⟩ ∈ relSecM R y (fun _ => 1) := by
@@ -86,19 +86,19 @@ theorem generator_mem (R : Subalgebra ℤ Ω) (y : (Σ k, ι k) → Ω) (c : ∀
 end RelChartPoly
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ R y c σ hσ`. Establish `hW : ∀ M : ℕ, (∏ k, y ⟨k, c k⟩) ^ M ∈ relSecM R y (fun _ => M)`. Introduce `M`. Rewrite using `[← Finset.prod_pow]`. Conclude with `RelChartPoly.chartMonomial_mem R y c (fun _ => M)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmul : ∀ {a b : ℕ} {x x' : Ω}, x ∈ relSecM R y (fun _ => a) → x' ∈ relSecM R y (fun _ => b) → x * x' ∈ relSecM R y (fun _ => a + b)` using `fun hx hx' => mul_mem_relSecM R y hx hx'`. Proceed by induction on `hσ using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨p, rfl⟩` from `hx`. Conclude with `⟨1, by simpa using RelChartPoly.generator_mem R y c p⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `algebraMap r`. Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_zero, mul_one, Algebra.algebraMap_eq_smul_one]`. Use `Submodule.smul_mem _ r ?_` and prove the remaining obligations. Simplify using `using hW 0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Consider the case `add x x' _ _ hx hx'`. Take `⟨N, hN⟩` from `hx`. Take `⟨M, hM⟩` from `hx'`. Use `⟨N + M, ?_⟩` and prove the remaining obligations. Rewrite using `[add_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `add_mem ?_ ?_` and prove the remaining obligations. Use `hmul hN (hW M)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Use `hmul hM (hW N)` as an intermediate fact.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[add_comm N M]`. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Consider the case `mul x x' _ _ hx hx'`. Take `⟨N, hN⟩` from `hx`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨M, hM⟩` from `hx'`. Use `⟨N + M, ?_⟩` and prove the remaining obligations. Use `hmul hN hM` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem RelChartPoly.proof : RelChartPoly.Statement := by
   intro K _ ι _ Ω _ R y c σ hσ

@@ -5,17 +5,17 @@ namespace DiscreteGroups.sglob.DzDig
 open Finset
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos D with hD | hD0` into its components or cases. Substitute `hD` using the available equality. Simplify using the standard rewrite rules. Break down `Nat.eq_zero_or_pos N with hN0 | hNpos` into its components or cases. Substitute `hN0` using the available equality.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Establish `hgpos : 0 < N.gcd D` using `Nat.gcd_pos_of_pos_right N hD0`. Establish `hgN : N.gcd D ∣ N` using `Nat.gcd_dvd_left N D`. Establish `hgD : N.gcd D ∣ D` using `Nat.gcd_dvd_right N D`. Establish `hE : N / N.gcd D * N.gcd D = N` using `Nat.div_mul_cancel hgN`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hEpos : 0 < N / N.gcd D` using `Nat.div_pos (Nat.le_of_dvd hNpos hgN) hgpos`. Combine the equalities or inequalities in the displayed calculation. Apply `card_le_card_of_injOn (fun u => (u * D % N, u / (N / N.gcd D)))` to reduce the goal to its premises. Introduce `u hu`. Establish `hu'` using `mem_coe.mp hu`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hu'` using `[mem_filter, mem_range]`. Simplify using `only [mem_coe, mem_product, mem_filter, mem_Ioc, mem_range]`. Use `⟨⟨⟨hu'.2.1, by omega⟩, (Nat.dvd_mod_iff hgN).mpr (dvd_mul_of_dvd_right hgD u)⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.div_lt_iff_lt_mul hEpos, mul_comm, hE]`. Conclude with `hu'.1`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u _ v _ huv`. Simplify using `only [Prod.mk.injEq] at huv`. Establish `h1 : u * D ≡ v * D [MOD N]` using `huv.1`. Establish `h2 : u % (N / N.gcd D) = v % (N / N.gcd D)` using `Nat.ModEq.cancel_right_div_gcd hNpos h1`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = (e - 1) / N.gcd D * N.gcd D := by`. Rewrite using `[card_product, Nat.Ioc_filter_dvd_card_eq_div, card_range]`. Use `_ ≤ e - 1 := Nat.div_mul_le_self _ _`.
+A detailed English derivation is pending.
 -/
 theorem cover_bound (N e D : ℕ) :
     #((range N).filter (fun u => 0 < u * D % N ∧ u * D % N < e)) ≤ e - 1 := by
@@ -50,11 +50,11 @@ theorem cover_bound (N e D : ℕ) :
     _ ≤ e - 1 := Nat.div_mul_le_self _ _
 
 /- English proof (translation)
-Establish `hb` using `Nat.mod_lt b hN`. Establish `h1 : u * (a % N + (N - b % N)) + u * (b % N) = u * (a % N) + N * u`. Establish `h0 : a % N + (N - b % N) + b % N = a % N + N` using `by omega`. Combine the equalities or inequalities in the displayed calculation. Establish `h3 : (u * (a % N + (N - b % N)) + u * (b % N)) % N = u * a % N`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite using `[h1, Nat.add_mul_mod_self_left, Nat.mul_mod_mod]`. Rewrite `h3` using `[Nat.add_mod, Nat.mul_mod_mod]`. Establish `hr` using `Nat.mod_lt (u * (a % N + (N - b % N))) hN`. Establish `hx` using `Nat.mod_lt (u * a) hN`. Break down `Nat.lt_or_ge (u * (a % N + (N - b % N)) % N + u * b % N) N with h | h` into its components or cases.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `h3` using `[Nat.mod_eq_of_lt h]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Nat.mod_eq_sub_mod h, Nat.mod_eq_of_lt (by omega)] at h3; omega`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities.
 -/
 theorem diff_mod {N a b u : ℕ} (hN : 0 < N) (hle : u * b % N ≤ u * a % N) :
     u * (a % N + (N - b % N)) % N = u * a % N - u * b % N := by
@@ -74,19 +74,17 @@ theorem diff_mod {N a b u : ℕ} (hN : 0 < N) (hle : u * b % N ≤ u * a % N) :
   · rw [Nat.mod_eq_sub_mod h, Nat.mod_eq_of_lt (by omega)] at h3; omega
 
 /- English proof (translation)
-Establish `hsub : (range N).filter (fun a => N.Coprime a) ⊆ (range n).biUnion (fun j => (range N).filter (fun u => 0 < u * (k' % N + (N - k * p ^ j % N)) % N ∧ u * (k' % N + (N - k * p ^ j % N)) % N < e) ∪ (range N).filter (fun u => 0 < u * (k * p ^ j % N + (N - k' % N)) % N ∧ u * (k * p ^ …`. Introduce `u hu`. Rewrite `hu` using `[mem_filter, mem_range]`. Take `⟨j, hj, hje⟩` from `hm u hu.1 hu.2`. Rewrite using `[mem_biUnion]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨j, mem_range.mpr hj, ?_⟩` and prove the remaining obligations. Establish `hy : p ^ j * (u * k % N) % N = u * (k * p ^ j) % N`. Rewrite using `[Nat.mul_mod_mod, show p ^ j * (u * k) = u * (k * p ^ j) by ring]`. Rewrite `hje` using `[hy]`. Establish `hb1` using `Nat.div_add_mod (u * k' % N) e`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hb2` using `Nat.div_add_mod (u * (k * p ^ j) % N) e`. Establish `hm1` using `Nat.mod_lt (u * k' % N) he`. Establish `hm2` using `Nat.mod_lt (u * (k * p ^ j) % N) he`. Rewrite `hb2` using `[hje]`. Rewrite using `[mem_union, mem_filter, mem_filter, mem_range]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Break down `lt_trichotomy (u * (k * p ^ j) % N) (u * k' % N) with h | h | h` into its components or cases. Use `left`. Rewrite using `[diff_mod hN h.le]`. Conclude with `⟨hu.1, by omega, by omega⟩`. It suffices to derive a contradiction.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hno j hj` to reduce the goal to its premises. Establish `h' : u * k' ≡ u * (k * p ^ j) [MOD N]` using `h.symm`. Conclude with `Nat.ModEq.cancel_left_of_coprime hu.2 h'`. Use `right`. Rewrite using `[diff_mod hN h.le]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `⟨hu.1, by omega, by omega⟩`. Combine the equalities or inequalities in the displayed calculation. Apply `sum_le_sum` to reduce the goal to its premises. Introduce `j _`. Combine the equalities or inequalities in the displayed calculation.
-
-Use `_ = n * (2 * (e - 1)) := by rw [sum_const, card_range, smul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem totient_le {N e n k k' p : ℕ} (hN : 0 < N) (he : 0 < e)
     (hno : ∀ j < n, ¬ k' ≡ k * p ^ j [MOD N])

@@ -24,7 +24,7 @@ variable {D : D7}
 abbrev conjProd (SS : Finset (Formalism.L2.DIV.Pl D.host.E)) : Ideal (𝓞 D.host.E) := ∏ PP ∈ SS, conjI PP.asIdeal
 
 /- English proof (translation)
-Take `⟨PP, hPP, hle⟩` from `(Ideal.IsPrime.prod_le Q.isPrime).1 h`. Establish `: PP = cP Q` using `eq_of_le fun x hx => by`. Rewrite using `[mem_cP]`. Conclude with `hle (Ideal.subset_span ⟨x, hx, rfl⟩)`. Conclude with `this ▸ hPP`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cP_mem_of_le {SS : Finset (Formalism.L2.DIV.Pl D.host.E)} {Q : HeightOneSpectrum (𝓞 D.host.E)}
     (h : conjProd SS ≤ Q.asIdeal) : cP Q ∈ SS := by
@@ -35,7 +35,7 @@ theorem cP_mem_of_le {SS : Finset (Formalism.L2.DIV.Pl D.host.E)} {Q : HeightOne
   exact this ▸ hPP
 
 /- English proof (translation)
-Rewrite using `[← Ideal.zero_eq_bot]`. Use `Finset.prod_ne_zero_iff.2 fun PP _ => ?_` and prove the remaining obligations. Rewrite using `[Ne, Ideal.zero_eq_bot, GlobalTheory.LiftIdeal.conjI_eq_map, Ideal.map_eq_bot_iff_of_injective (f := (GlobalTheory.LiftIdeal.conjO D : 𝓞 D.host.E →+* 𝓞 D.host.E)) (GlobalTheory.LiftIdeal.conjO D).injective]`. Conclude with `PP.ne_bot`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjProd_ne_bot (SS : Finset (Formalism.L2.DIV.Pl D.host.E)) : conjProd SS ≠ ⊥ := by
   rw [← Ideal.zero_eq_bot]
@@ -52,27 +52,25 @@ open GlobalTheory.IdemSupport GlobalTheory.OffIdemDen
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨Φ, hΦ⟩` from `exists_comp D`. Take `⟨⟨es, hes, rfl⟩, horth⟩` from `he`. Establish `hd : ∀ P ∈ SS, IsDelta Φ P (es P)` using `fun P hP => delta_of_isIdemAt hΦ (hes P hP)`. Establish `hdc : ∀ P ∈ SS, IsDelta Φ (cP P) (cA D (es P))` using `fun P hP => delta_conj hΦ (hd P hP)`. Establish `hE : ∀ Q, Φ (∑ P ∈ SS, es P) Q = ∑ P ∈ SS, Φ (es P) Q` using `fun Q => map_sum (evQ Φ Q) _ _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC : ∀ Q, Φ (cA D (∑ P ∈ SS, es P)) Q = ∑ P ∈ SS, Φ (cA D (es P)) Q` using `fun Q => by`. Rewrite using `[map_sum]`. Conclude with `map_sum (evQ Φ Q) _ _`. Establish `hO : ∀ Q, Φ (1 - ∑ P ∈ SS, es P - cA D (∑ P ∈ SS, es P)) Q = 1 - Φ (∑ P ∈ SS, es P) Q - Φ (cA D (∑ P ∈ SS, es P)) Q` using `fun Q => by`. Express the relevant statement in the definitionally equal form `evQ Φ Q _ = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, map_sub, map_one]`. Both sides reduce to the same expression. Establish `hprod : ∀ Q, Φ (∑ P ∈ SS, es P) Q * Φ (cA D (∑ P ∈ SS, es P)) Q = 0` using `fun Q => by`. Rewrite using `[← ev_mul, horth, ev_zero]`. Rewrite using `[hΦ.int]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `Q`. Rewrite using `[ev_mul, hΦ.inc]`. Distinguish the cases in `hQ : Q ∈ SS ∨ cP Q ∈ SS`. Establish `h0 : Φ (1 - ∑ P ∈ SS, es P - cA D (∑ P ∈ SS, es P)) Q = 0`. Rewrite using `[hO]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hQ with hQ | hQ` into its components or cases. Establish `h1 : Φ (∑ P ∈ SS, es P) Q = 1`. Rewrite using `[hE, Finset.sum_eq_single Q (fun P hP hne => (hd P hP).2.2 Q (Ne.symm hne)) (fun h => absurd hQ h), (hd Q hQ).2.1]`. Establish `h2` using `hprod Q`. Rewrite `h2` using `[h1, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, h2, sub_self, sub_zero]`. Establish `h1 : Φ (cA D (∑ P ∈ SS, es P)) Q = 1`. Rewrite using `[hC, Finset.sum_eq_single (cP Q) (fun P hP hne => (hdc P hP).2.2 Q (fun h => hne (by`. Rewrite using `[h, cP_cP])))`. Use the proof step `(fun h => absurd hQ h)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `(hdc (cP Q) hQ).2.1` as an intermediate fact. Rewrite `this` using `[cP_cP]`. Then use the resulting hypothesis. Establish `h2` using `hprod Q`. Rewrite `h2` using `[h1, mul_one]`. Rewrite using `[h1, h2, sub_zero, sub_self]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h0, zero_mul]`. Conclude with `(Q.adicCompletionIntegers D.host.E).zero_mem`. Use `push_neg at hQ`. Use `mul_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[hO, hE, hC]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `sub_mem (sub_mem (Q.adicCompletionIntegers D.host.E).one_mem (sum_mem fun P hP => delta_mem (hd P hP) Q)) (sum_mem fun P hP => delta_mem (hdc P hP) Q)`. Establish `hnle : ¬ conjProd SS ≤ Q.asIdeal` using `fun h => hQ.2 (cP_mem_of_le h)`. Take `⟨j, hj, hjQ⟩` from `Set.not_subset.1 hnle`. Take `⟨o, ho⟩` from `hx j hj`. Establish `hj0 : j ≠ 0` using `fun h => hjQ (h ▸ zero_mem _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hj0' : ((j : 𝓞 D.host.E) : D.host.E) ≠ 0` using `fun h => hj0 (RingOfIntegers.ext (h.trans rfl))`. Establish `hxe : x = (o : D.host.E) * ((j : D.host.E))⁻¹`. Rewrite using `[ho, mul_assoc, mul_inv_cancel₀ hj0', mul_one]`. Establish `hinv` using `(inv_mem_iff Q hj0).2 hjQ`. Establish `ho' : algebraMap D.host.E (Q.adicCompletion D.host.E) (o : D.host.E) ∈ Q.adicCompletionIntegers D.host.E` using `HeightOneSpectrum.coe_mem_adicCompletionIntegers Q o`.
-
-Express the relevant statement in the definitionally equal form `algebraMap D.host.E (Q.adicCompletion D.host.E) x ∈ Q.adicCompletionIntegers D.host.E`. Rewrite using `[hxe, map_mul]`. Conclude with `mul_mem ho' hinv`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finPart_mul_mem (e : AE D) (SS : Finset (Formalism.L2.DIV.Pl D.host.E)) (he : IsIdemSum e SS) (x : D.host.E)
     (hx : ∀ j ∈ conjProd SS, ∃ o : 𝓞 D.host.E, (o : D.host.E) = x * (j : D.host.E)) :
@@ -140,11 +138,9 @@ open GlobalTheory.IdemSupport
 variable {D : D7}
 
 /- English proof (translation)
-Use `GlobalTheory.Ker.SignVac.hatA_induction (p := fun u => (pairA D.host.F 0 1 ⊗ₜ[D.host.F] ((j : 𝓞 D.host.E) : D.host.E) : AE D) • u ∈ hatA S T (tens (stdL D.host.E S.rank) N)) ?_ ?_ ?_ ?_ hu` and prove the remaining obligations. Introduce `α hα y hy`. Rewrite using `[GlobalTheory.LatVac.tmul_smul_finTens, one_mul, ← Matrix.transpose_smul]`. Conclude with `GlobalTheory.Ker.SignVac.finTens_mem hα (GlobalTheory.LiftLevel.smul_mem_tens _ (fun v hv => hMN (Submodule.smul_mem_smul hj hv)) hy)`. Rewrite using `[smul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `zero_mem _`. Introduce `x y hx hy`. Rewrite using `[smul_add]`. Conclude with `add_mem hx hy`. Introduce `x hx`.
-
-Rewrite using `[smul_neg]`. Conclude with `neg_mem hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fin_smul_mem {S T : HSp D} {J : Ideal (𝓞 D.host.E)} {M N : Lt D.host.E T.rank} (hMN : J • M ≤ N)
     {j : 𝓞 D.host.E} (hj : j ∈ J) {u : WO S T} (hu : u ∈ hatA S T (tens (stdL D.host.E S.rank) M)) :
@@ -161,17 +157,15 @@ theorem fin_smul_mem {S T : HSp D} {J : Ideal (𝓞 D.host.E)} {M N : Lt D.host.
   · intro x hx; rw [smul_neg]; exact neg_mem hx
 
 /- English proof (translation)
-Introduce `D S T e SS he M N hMN u hu`. Establish `hA : ∀ o : 𝓞 D.host.E, ∀ y ∈ tens (stdL D.host.E S.rank) N, (o : D.host.E) • y ∈ tens (stdL D.host.E S.rank) N` using `fun o y hy => GlobalTheory.LiftLevel.smul_mem_tens o (fun v hv => Submodule.smul_mem _ o hv) hy`. Establish `hJ : ((conjProd SS : Ideal (𝓞 D.host.E)) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) ≠ 0` using `FractionalIdeal.coeIdeal_ne_zero.2 (conjProd_ne_bot SS)`. Establish `h1 : (1 : D.host.E) ∈ ((conjProd SS : Ideal (𝓞 D.host.E)) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) * ((conjProd SS : Ideal (𝓞 D.host.E)) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E)⁻¹`. Rewrite using `[mul_inv_cancel₀ hJ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `FractionalIdeal.one_mem_one _`. Establish `key : ((1 - e - cA D e) * incA D 1) • u ∈ hatA S T (tens (stdL D.host.E S.rank) N)`. Use `FractionalIdeal.mul_induction_on (C := fun z => ((1 - e - cA D e) * incA D z) • u ∈ hatA S T (tens (stdL D.host.E S.rank) N)) h1 ?_ ?_` and prove the remaining obligations. Introduce `i hi x hx`. Take `⟨i', hi', rfl⟩` from `(FractionalIdeal.mem_coeIdeal _).1 hi`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hxJ : ∀ j ∈ conjProd SS, ∃ o : 𝓞 D.host.E, (o : D.host.E) = x * (j : D.host.E)`. Introduce `j hj`. Take `⟨o, ho⟩` from `(FractionalIdeal.mem_one_iff _).1 ((FractionalIdeal.mem_inv_iff hJ).1 hx (algebraMap (𝓞 D.host.E) D.host.E j) ((FractionalIdeal.mem_coeIdeal _).2 ⟨j, hj, rfl⟩))`. Conclude with `⟨o, ho⟩`. Establish `hint` using `finPart_mul_mem e SS he x hxJ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : ((1 - e - cA D e) * incA D (algebraMap (𝓞 D.host.E) D.host.E i' * x)) • u = ((1 - e - cA D e) * incA D x) • (pairA D.host.F 0 1 ⊗ₜ[D.host.F] ((i' : 𝓞 D.host.E) : D.host.E) : AE D) • u`. Establish `e2 : (pairA D.host.F 0 1 ⊗ₜ[D.host.F] ((i' : 𝓞 D.host.E) : D.host.E) : AE D) = incA D ((i' : 𝓞 D.host.E) : D.host.E) * (pairA D.host.F 0 1 ⊗ₜ[D.host.F] (1 : D.host.E))`. Express the relevant statement in the definitionally equal form `_ = ((1 : AF D.host.F) ⊗ₜ[D.host.F] ((i' : 𝓞 D.host.E) : D.host.E)) * _`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_one]`. Rewrite using `[e2, mul_smul (incA D ((i' : 𝓞 D.host.E) : D.host.E)), GlobalTheory.Ker.SignVac.one_smul_hatA hu, smul_smul, mul_assoc, ← map_mul, mul_comm x]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1]`. Conclude with `GlobalTheory.LiftLevel.smul_mem_hatA_of_int hA hint (fin_smul_mem hMN hi' hu)`. Introduce `x y hx hy`. Rewrite using `[map_add, mul_add, add_smul]`. Conclude with `add_mem hx hy`.
-
-Rewrite `key` using `[map_one, mul_one]`. Rewrite using `[GlobalTheory.LiftLevel.partAt_eq_smul]`. Conclude with `key`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem partAt_off_mem : ∀ (D : D7) (S T : HSp D) (e : AE D) (SS : Finset (Formalism.L2.DIV.Pl D.host.E)), IsIdemSum e SS → ∀ (M N : Lt D.host.E T.rank), (∏ PP ∈ SS, conjI PP.asIdeal) • M ≤ N → ∀ u ∈ hatA S T (tens (stdL D.host.E S.rank) M), GlobalTheory.LiftLevel.partAt (1 - e - cA D e) u ∈ hatA S T (tens (stdL D.host.E S.rank) N) := by
   intro D S T e SS he M N hMN u hu

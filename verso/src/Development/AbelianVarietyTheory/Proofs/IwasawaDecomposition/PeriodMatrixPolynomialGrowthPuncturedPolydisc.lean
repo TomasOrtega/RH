@@ -10,7 +10,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `h1 : (1:ℝ) ≤ 1 + x` using `by linarith`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem period_growth_mono_bound (x C : ℝ) (k K : ℕ) (hx : 0 ≤ x) (hk : k ≤ K) :
     C * (1 + x) ^ k ≤ max C 0 * (1 + x) ^ K := by
@@ -21,33 +21,29 @@ theorem period_growth_mono_bound (x C : ℝ) (k K : ℕ) (hx : 0 ≤ x) (hk : k 
         mul_le_mul_of_nonneg_left (pow_le_pow_right₀ h1 hk) (le_max_right _ _)
 
 /- English proof (translation)
-Introduce `n a d τ c hτ hpos hc`. Establish `key : ∀ v : Fin d → ℝ, v ≠ 0 → ∃ (C : ℝ) (k : ℕ), ∀ s ∈ logDom n a, ‖logExp a s‖ ≤ 1 / 2 → (∀ j : Fin n, (j : ℕ) < a → |(s j).im| ≤ Real.pi) → ‖∑ i, ∑ j, (v i : ℂ) * τ s i j * (v j : ℂ)‖ ≤ C * (1 + ‖s‖) ^ k`. Introduce `v hv`. Apply `GlobalTheory.upper_half_growth n a` to reduce the goal to its premises. Establish `hij : ∀ i j, DifferentiableOn ℂ (fun s => τ s i j) (logDom n a)` using `fun i j => differentiableOn_pi.1 (differentiableOn_pi.1 hτ i) j fun_prop`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Introduce `s hs`. Conclude with `hpos s hs v hv`. Establish `e1 : ∀ (M : Fin d → Fin d → ℂ) (i : Fin d), ∑ i', ∑ j', (((Pi.single i (1:ℝ) : Fin d → ℝ) i' : ℝ) : ℂ) * M i' j' * (((Pi.single i (1:ℝ) : Fin d → ℝ) j' : ℝ) : ℂ) = M i i`. Introduce `M i`. Simplify using `[Pi.single_apply, apply_ite Complex.ofReal, ite_mul, mul_ite, Finset.sum_ite_eq']`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e2 : ∀ (M : Fin d → Fin d → ℂ) (i j : Fin d), ∑ i', ∑ j', ((((Pi.single i (1:ℝ) + Pi.single j 1 : Fin d → ℝ)) i' : ℝ) : ℂ) * M i' j' * ((((Pi.single i (1:ℝ) + Pi.single j 1 : Fin d → ℝ)) j' : ℝ) : ℂ) = M i i + M j j + M i j + M j i`. Introduce `M i j`. Simplify using `[Pi.single_apply, add_mul, mul_add, Finset.sum_add_distrib, apply_ite Complex.ofReal, ite_mul, mul_ite, Finset.sum_ite_eq']`. Expand and normalize the polynomial expressions, which then agree. Establish `ne1 : ∀ i : Fin d, (Pi.single i (1:ℝ) : Fin d → ℝ) ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i h`. Use `congrFun h i` as an intermediate fact. Simplify using `at this`. Establish `ne2 : ∀ i j : Fin d, (Pi.single i (1:ℝ) + Pi.single j 1 : Fin d → ℝ) ≠ 0`. Introduce `i j h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congrFun h i` as an intermediate fact. Simplify using `[Pi.single_apply] at this`. Apply the tactic sequence `split_ifs at this <;> linarith`. Apply the tactic sequence `have entry : ∀ i j : Fin d, ∃ (C : ℝ) (k : ℕ), 0 ≤ C ∧ ∀ s ∈ logDom n a, ‖logExp a s‖ ≤ 1 / 2 → (∀ j : Fin n, (j : ℕ) < a → |(s j).im| ≤ Real.pi) → ‖τ s i j‖ ≤ C * (1 + ‖s‖) ^ k := by`. Introduce `i j`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨C1, k1, h1⟩` from `key _ (ne2 i j)`. Take `⟨C2, k2, h2⟩` from `key _ (ne1 i)`. Take `⟨C3, k3, h3⟩` from `key _ (ne1 j)`. Use `⟨(max C1 0 + max C2 0 + max C3 0 + ‖c i j‖) / 2, max k1 (max k2 k3), by positivity, ?_⟩` and prove the remaining obligations. Introduce `s hs hl him`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `set K := max k1 (max k2 k3)`. Establish `hx : 0 ≤ ‖s‖` using `norm_nonneg _`. Establish `b1` using `(h1 s hs hl him).trans (period_growth_mono_bound ‖s‖ C1 k1 K hx (by omega))`. Establish `b2` using `(h2 s hs hl him).trans (period_growth_mono_bound ‖s‖ C2 k2 K hx (by omega))`. Establish `b3` using `(h3 s hs hl him).trans (period_growth_mono_bound ‖s‖ C3 k3 K hx (by omega))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `b1` using `[e2]`. Rewrite `b2`, `b3` using `[e1]`. Establish `hP : 1 ≤ (1 + ‖s‖) ^ K` using `one_le_pow₀ (by linarith)`. Establish `hcc : ‖c i j‖ ≤ ‖c i j‖ * (1 + ‖s‖) ^ K` using `le_mul_of_one_le_right (norm_nonneg _) hP`. Establish `hid : (2:ℂ) * τ s i j = (τ s i i + τ s j j + τ s i j + τ s j i) - τ s i i - τ s j j + c i j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← hc s hs i j]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2n : ‖(2:ℂ) * τ s i j‖ ≤ ‖τ s i i + τ s j j + τ s i j + τ s j i‖ + ‖τ s i i‖ + ‖τ s j j‖ + ‖c i j‖`. Rewrite using `[hid]`. Use `(norm_add_le _ _).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `gcongr`. Use `(norm_sub_le _ _).trans ?_` and prove the remaining obligations. Use `gcongr`. Conclude with `norm_sub_le _ _`. Rewrite `h2n` using `[norm_mul]`.
+Evaluate the numerical expressions. Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Evaluate the numerical expressions using `at h2n`. Use the polynomial consequences of the given equalities and inequalities. Use `choose Ce ke hCe hke using entry`. Use `⟨∑ i, ∑ j, Ce i j, Finset.univ.sup (fun p : Fin d × Fin d => ke p.1 p.2), ?_⟩` and prove the remaining obligations. Introduce `s hs hl him`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `set K := Finset.univ.sup (fun p : Fin d × Fin d => ke p.1 p.2)`. Establish `hx : 0 ≤ ‖s‖` using `norm_nonneg _`. Establish `hP : 0 ≤ (1 + ‖s‖) ^ K` using `by positivity`. Establish `hS : 0 ≤ ∑ i, ∑ j, Ce i j` using `Finset.sum_nonneg fun i _ => Finset.sum_nonneg fun j _ => hCe i j`. Use `(pi_norm_le_iff_of_nonneg (by positivity)).2 fun i => ?_` and prove the remaining obligations.
-
-Use `(pi_norm_le_iff_of_nonneg (by positivity)).2 fun j => ?_` and prove the remaining obligations. Establish `hk : ke i j ≤ K` using `Finset.le_sup (f := fun p : Fin d × Fin d => ke p.1 p.2) (Finset.mem_univ (i, j))`. Establish `b` using `(hke i j s hs hl him).trans (period_growth_mono_bound ‖s‖ (Ce i j) (ke i j) K hx hk)`. Rewrite `b` using `[max_eq_left (hCe i j)]`. Establish `hle : Ce i j ≤ ∑ i, ∑ j, Ce i j` using `(Finset.single_le_sum (f := fun j => Ce i j) (fun j _ => hCe i j) (Finset.mem_univ j)).trans (Finset.single_le_sum (f := fun i => ∑ j, Ce i j) (fun i _ => Finset.sum_nonneg fun j _ => hCe i j) (Finset.mem_univ i))`.
-
-Conclude with `b.trans (mul_le_mul_of_nonneg_right hle hP)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem period_matrix_polynomial_growth : ∀ (n a d : ℕ) (τ : (Fin n → ℂ) → Fin d → Fin d → ℂ) (c : Fin d → Fin d → ℂ), DifferentiableOn ℂ τ (logDom n a) → (∀ s ∈ logDom n a, ∀ v : Fin d → ℝ, v ≠ 0 → 0 < (∑ i, ∑ j, (v i : ℂ) * τ s i j * (v j : ℂ)).im) → (∀ s ∈ logDom n a, ∀ i j, τ s i j - τ s j i = c i j) → ∃ (C : ℝ) (k : ℕ), ∀ s ∈ logDom n a, ‖logExp a s‖ ≤ 1 / 2 → (∀ j : Fin n, (j : ℕ) < a → |(s j).im| ≤ Real.pi) → ‖τ s‖ ≤ C * (1 + ‖s‖) ^ k := by
   intro n a d τ c hτ hpos hc

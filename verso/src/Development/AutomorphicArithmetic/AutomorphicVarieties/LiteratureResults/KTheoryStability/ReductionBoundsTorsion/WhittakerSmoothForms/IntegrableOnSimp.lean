@@ -11,7 +11,7 @@ variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
 def simp' (q : ℕ) : Set (Fin q → ℝ) := {t | (∀ j, 0 ≤ t j) ∧ ∑ j, t j ≤ 1}
 
 /- English proof (translation)
-Establish `: simp' q = (⋂ j, {t : Fin q → ℝ | 0 ≤ t j}) ∩ {t | ∑ j, t j ≤ 1}`. Use extensionality with `t`. Simplify using `[simp']`. Rewrite using `[this]`. Conclude with `(isClosed_iInter fun j => isClosed_le continuous_const (continuous_apply j)).inter (isClosed_le (continuous_finsetSum _ fun j _ => continuous_apply j) continuous_const)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_simp' (q : ℕ) : IsClosed (simp' q) := by
   have : simp' q = (⋂ j, {t : Fin q → ℝ | 0 ≤ t j}) ∩ {t | ∑ j, t j ≤ 1} := by
@@ -21,7 +21,7 @@ theorem isClosed_simp' (q : ℕ) : IsClosed (simp' q) := by
     (isClosed_le (continuous_finsetSum _ fun j _ => continuous_apply j) continuous_const)
 
 /- English proof (translation)
-Use `(isCompact_univ_pi fun _ => isCompact_Icc (a := (0:ℝ)) (b := 1)).of_isClosed_subset (isClosed_simp' q) ?_` and prove the remaining obligations. Introduce `t ht j _`. Conclude with `⟨ht.1 j, le_trans (Finset.single_le_sum (fun i _ => ht.1 i) (Finset.mem_univ j)) ht.2⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem isCompact_simp' (q : ℕ) : IsCompact (simp' q) := by
   refine (isCompact_univ_pi fun _ => isCompact_Icc (a := (0:ℝ)) (b := 1)).of_isClosed_subset (isClosed_simp' q) ?_
@@ -29,11 +29,11 @@ theorem isCompact_simp' (q : ℕ) : IsCompact (simp' q) := by
   exact ⟨ht.1 j, le_trans (Finset.single_le_sum (fun i _ => ht.1 i) (Finset.mem_univ j)) ht.2⟩
 
 /- English proof (translation)
-Establish `e : y 0 + ∑ j, t j • (y j.succ - y 0) = ∑ i : Fin (q + 1), (Fin.cons (1 - ∑ j, t j) t : Fin (q + 1) → ℝ) i • y i`. Rewrite using `[Fin.sum_univ_succ]`. Simplify using `only [Fin.cons_zero, Fin.cons_succ, smul_sub, Finset.sum_sub_distrib, ← Finset.sum_smul, sub_smul, one_smul]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Use `hU.sum_mem (fun i _ => ?_) ?_ (fun i _ => hy i)` and prove the remaining obligations. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `only [Fin.cons_zero]`. Combine the linear relations using `[ht.2]`. Simplify using `only [Fin.cons_succ]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules.
 
-Conclude with `ht.1 j`. Rewrite using `[Fin.sum_univ_succ]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem simplex_point_mem_of_convex_of_mem_simp' {U : Set V} (hU : Convex ℝ U) {q : ℕ} {y : Fin (q + 1) → V}
     (hy : ∀ j, y j ∈ U) {t : Fin q → ℝ} (ht : t ∈ simp' q) :
@@ -55,7 +55,7 @@ private theorem simplex_point_mem_of_convex_of_mem_simp' {U : Set V} (hU : Conve
     simp
 
 /- English proof (translation)
-Establish `hg : Continuous fun t : Fin q → ℝ => y 0 + ∑ j, t j • (y j.succ - y 0)` using `by fun_prop`. Establish `hc : ContinuousOn (fun t : Fin q → ℝ => ω (y 0 + ∑ j, t j • (y j.succ - y 0))) (simp' q)` using `hω.comp hg.continuousOn fun t ht => simplex_point_mem_of_convex_of_mem_simp' hU hy ht`. Conclude with `(hc.eval_const _).integrableOn_compact (isCompact_simp' q)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integrableOn_simp {U : Set V} (hU : Convex ℝ U) {q : ℕ} {ω : V → V [⋀^Fin q]→L[ℝ] ℝ}
     (hω : ContinuousOn ω U) {y : Fin (q + 1) → V} (hy : ∀ j, y j ∈ U) :
@@ -67,7 +67,7 @@ theorem integrableOn_simp {U : Set V} (hU : Convex ℝ U) {q : ℕ} {ω : V → 
   exact (hc.eval_const _).integrableOn_compact (isCompact_simp' q)
 
 /- English proof (translation)
-Unfold `intS'`. Use `setIntegral_congr_fun (isClosed_simp' q).measurableSet fun t ht => ?_` and prove the remaining obligations. Simplify using `only [h _ (simplex_point_mem_of_convex_of_mem_simp' hU hy ht)]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem intS'_congr {U : Set V} (hU : Convex ℝ U) {q : ℕ} {ω ω' : V → V [⋀^Fin q]→L[ℝ] ℝ}
     (h : ∀ x ∈ U, ω x = ω' x) {y : Fin (q + 1) → V} (hy : ∀ j, y j ∈ U) :
@@ -77,9 +77,9 @@ theorem intS'_congr {U : Set V} (hU : Convex ℝ U) {q : ℕ} {ω ω' : V → V 
   simp only [h _ (simplex_point_mem_of_convex_of_mem_simp' hU hy ht)]
 
 /- English proof (translation)
-Unfold `intS'`. Establish `e : ∀ t : Fin q → ℝ, ((∑ i ∈ s, a i • ω i) (y 0 + ∑ j, t j • (y j.succ - y 0)) fun j => y j.succ - y 0) = ∑ i ∈ s, a i * ω i (y 0 + ∑ j, t j • (y j.succ - y 0)) (fun j => y j.succ - y 0)`. Introduce `t`. Simplify using `[Finset.sum_apply, ContinuousAlternatingMap.sum_apply]`. Repeatedly rewrite using `[e]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities.
 
-Establish `hs` using `integral_finset_sum (μ := volume.restrict (simp' q)) s fun i hi => (integrableOn_simp hU (hω i hi) hy).const_mul (a i)`. Unfold `simp' at hs`. Rewrite using `[hs]`. Repeatedly rewrite using `[integral_const_mul]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 -/
 theorem intS'_sum {U : Set V} (hU : Convex ℝ U) {q : ℕ} {ι : Type} (s : Finset ι) (a : ι → ℝ)
     (ω : ι → V → V [⋀^Fin q]→L[ℝ] ℝ) (hω : ∀ i ∈ s, ContinuousOn (ω i) U) {y : Fin (q + 1) → V}

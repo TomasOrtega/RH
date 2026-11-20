@@ -12,53 +12,45 @@ namespace GlobalTheory.CountableFibres
 open Filter Topology in
 
 /- English proof (translation)
-Use `haveI := FiniteDimensional.complete ℂ E`. Use `set rk : E → ℕ := fun z => Module.finrank ℂ (LinearMap.range (fderiv ℂ f z : E →ₗ[ℂ] F))`. Establish `hbdd : BddAbove (rk '' U)` using `⟨Module.finrank ℂ F, by`. Introduce and unpack `_ ⟨z, -, rfl⟩`. Conclude with `Submodule.finrank_le _⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨z₀, hz₀, hr⟩ : sSup (rk '' U) ∈ rk '' U` from `Nat.sSup_mem (hne.image _) hbdd`. Establish `hmax : ∀ z ∈ U, rk z ≤ rk z₀` using `fun z hz => hr ▸ le_csSup hbdd ⟨z, hz, rfl⟩`. Use `⟨z₀, hz₀, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hinj`. Use `set L := fderiv ℂ f z₀`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `set W := LinearMap.range (L : E →ₗ[ℂ] F)`. Use `haveI := FiniteDimensional.complete ℂ W`. Take `⟨P₀, hP₀⟩` from `LinearMap.exists_leftInverse_of_injective W.subtype W.ker_subtype`. Use `set P : F →L[ℂ] W := LinearMap.toContinuousLinearMap P₀`. Establish `hPL : ∀ x, P (L x) = ⟨L x, x, rfl⟩` using `fun x => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `congrArg (fun φ => φ ⟨L x, x, rfl⟩) hP₀` as an intermediate fact. Simplify `this` using `[P]`. Establish `hsurj : LinearMap.range ((P.comp L : E →L[ℂ] W) : E →ₗ[ℂ] W) = ⊤`. Rewrite using `[LinearMap.range_eq_top]`. Introduce and unpack `⟨w, x, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨x, by simp [hPL]⟩`. Establish `hg : HasStrictFDerivAt (fun x => P (f x)) (P.comp L) z₀` using `P.hasStrictFDerivAt.comp z₀ ((hf z₀ hz₀).hasStrictFDerivAt one_ne_zero)`. Take `⟨R₀, hR₀⟩` from `LinearMap.exists_rightInverse_of_surjective _ hsurj`. Use `set R : W →L[ℂ] E := LinearMap.toContinuousLinearMap R₀`. Establish `hΦ : ContinuousAt (fun z => (P.comp (fderiv ℂ f z)).comp R) z₀` using `(continuousAt_const.clm_comp ((hf z₀ hz₀).continuousAt_fderiv one_ne_zero)).clm_comp continuousAt_const`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hΦ₀ : (P.comp L).comp R = 1` using `by ext1 w`. Conclude with `congrArg (fun φ => φ w) hR₀`. Establish `hunit : ∀ᶠ z in 𝓝 z₀, IsUnit ((P.comp (fderiv ℂ f z)).comp R)` using `hΦ.eventually (Units.isOpen.mem_nhds (by show IsUnit ((P.comp L).comp R)`. Rewrite using `[hΦ₀]`. Conclude with `isUnit_one))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hW : Module.finrank ℂ W = rk z₀` using `rfl`. Establish `hker : ∀ᶠ z in 𝓝 z₀, ∀ v, P (fderiv ℂ f z v) = 0 → fderiv ℂ f z v = 0` using `by filter_upwards [hunit, hU.mem_nhds hz₀] with z hz hzU`. Take `⟨b, hb⟩` from `hz.exists_right_inv`. Establish `hran : LinearMap.range ((P.comp (fderiv ℂ f z) : E →L[ℂ] W) : E →ₗ[ℂ] W) = ⊤`. Rewrite using `[LinearMap.range_eq_top]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `w`. Use `⟨R (b w), ?_⟩` and prove the remaining obligations. Use `congrArg (fun φ : W →L[ℂ] W => φ w) hb` as an intermediate fact. Simplify using `using this`. Establish `h1` using `LinearMap.finrank_range_add_finrank_ker ((P.comp (fderiv ℂ f z) : E →L[ℂ] W) : E →ₗ[ℂ] W)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2` using `LinearMap.finrank_range_add_finrank_ker (fderiv ℂ f z : E →ₗ[ℂ] F)`. Rewrite `h1` using `[hran, finrank_top, hW]`. Establish `h3` using `hmax z hzU`. Establish `hle : LinearMap.ker (fderiv ℂ f z : E →ₗ[ℂ] F) ≤ LinearMap.ker ((P.comp (fderiv ℂ f z) : E →L[ℂ] W) : E →ₗ[ℂ] W)` using `fun v hv => by`. Simplify using `only [LinearMap.mem_ker, ContinuousLinearMap.coe_coe] at hv ⊢`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `[hv]`. Establish `heq` using `Submodule.eq_of_le_of_finrank_le hle (by simp only [rk] at h1 h3; omega)`. Introduce `v hv`. Establish `hv' : v ∈ LinearMap.ker ((P.comp (fderiv ℂ f z) : E →L[ℂ] W) : E →ₗ[ℂ] W)`. Simplify using `using hv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hv'` using `[← heq]`. Simplify using `using hv'`. Use `set K := LinearMap.ker ((P.comp L : E →L[ℂ] W) : E →ₗ[ℂ] W)`. Use `haveI : Nontrivial K := by`. Rewrite using `[Submodule.nontrivial_iff_ne_bot]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `hK`. Apply `hinj` to reduce the goal to its premises. Introduce `x y hxy`. Establish `: x - y ∈ K`. Simplify using `only [K, LinearMap.mem_ker, ContinuousLinearMap.coe_coe, ContinuousLinearMap.comp_apply, map_sub, hxy, sub_self, map_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Rewrite `this` using `[hK, Submodule.mem_bot, sub_eq_zero]`. Conclude with `this`. Use `set Ψ := hg.implicitToOpenPartialHomeomorph _ _ hsurj`. Use `set ψ : K → E := fun t => Ψ.symm (P (f z₀), t)`. Establish `hψ0 : ψ 0 = z₀` using `hg.implicitFunction_apply_image hsurj`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hψc : ContinuousAt ψ 0` using `(hg.to_implicitFunction hsurj).continuousAt`. Establish `htend : Tendsto (fun t : K => (P (f z₀), t)) (𝓝 0) (𝓝 (P (f z₀), 0))` using `tendsto_const_nhds.prodMk_nhds tendsto_id`. Establish `hlev : ∀ᶠ t in 𝓝 (0 : K), P (f (ψ t)) = P (f z₀)` using `htend.eventually (hg.map_implicitFunction_eq hsurj)`. Establish `hinv : ∀ᶠ t in 𝓝 (0 : K), (Ψ (ψ t)).2 = t`. Establish `h` using `Ψ.open_target.mem_nhds (hg.mem_implicitToOpenPartialHomeomorph_target hsurj)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `filter_upwards [htend h] with t ht`. Simplify using `only [ψ]`. Rewrite using `[Ψ.right_inv (by exact ht)]`. Establish `hdiff : ∀ᶠ t in 𝓝 (0 : K), DifferentiableAt ℂ ψ t`. Establish `hcc : K.ClosedComplemented` using `ContinuousLinearMap.ker_closedComplemented_of_finiteDimensional_range (P.comp L)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `D` to `hg.implicitFunctionDataOfComplemented _ _ hsurj hcc`. Establish `hl : ContDiffAt ℂ 1 D.leftFun D.pt` using `(P.contDiff.contDiffAt).comp z₀ (hf z₀ hz₀)`. Establish `hr : ContDiffAt ℂ 1 D.rightFun D.pt` using `by show ContDiffAt ℂ 1 (fun x => (Classical.choose hcc) (x - z₀)) z₀`. Conclude with `((Classical.choose hcc).contDiff.comp (contDiff_id.sub contDiff_const)).contDiffAt`. Establish `hp : D.prodFun D.pt = (P (f z₀), 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[ImplicitFunctionData.prodFun_apply]`. Use `show (P (f z₀), (Classical.choose hcc) (z₀ - z₀)) = _`. Rewrite using `[sub_self, map_zero]`. Establish `hcd` using `(D.contDiffAt_implicitFunction hl hr one_ne_zero).eventually (by simp)`. Rewrite `hcd` using `[hp]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `filter_upwards [htend.eventually hcd] with t ht`. Conclude with `(ht.differentiableAt one_ne_zero).comp t ((differentiableAt_const _).prodMk differentiableAt_id)`. Establish `hnear : ∀ᶠ t in 𝓝 (0 : K), ψ t ∈ U ∧ (∀ v, P (fderiv ℂ f (ψ t) v) = 0 → fderiv ℂ f (ψ t) v = 0)`. Establish `h` using `(hU.eventually_mem hz₀).and hker`. Rewrite `h` using `[← hψ0]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Conclude with `hψc.eventually h`. Take `⟨ε, hε, hball⟩` from `Metric.eventually_nhds_iff_ball.1 (hlev.and (hinv.and (hdiff.and hnear)))`. Use `set S := Metric.ball (0 : K) ε`. Establish `hderiv : ∀ t ∈ S, fderiv ℂ (fun s => f (ψ s)) t = 0`. Introduce `t ht`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨-, -, hdt, htU, hkt⟩` from `hball t ht`. Establish `hft : DifferentiableAt ℂ f (ψ t)` using `(hf _ htU).differentiableAt one_ne_zero`. Establish `hloc : (fun s => P (f (ψ s))) =ᶠ[𝓝 t] fun _ => P (f z₀)` using `Filter.mem_of_superset (Metric.isOpen_ball.mem_nhds ht) fun s hs => (hball s hs).1`. Establish `hcomp : HasFDerivAt (fun s => f (ψ s)) ((fderiv ℂ f (ψ t)).comp (fderiv ℂ ψ t)) t` using `hft.hasFDerivAt.comp t hdt.hasFDerivAt`. Establish `hcompP : HasFDerivAt (fun s => P (f (ψ s))) (P.comp ((fderiv ℂ f (ψ t)).comp (fderiv ℂ ψ t))) t` using `P.hasFDerivAt.comp t hcomp`.
-
-Establish `hzero : HasFDerivAt (fun s => P (f (ψ s))) (0 : K →L[ℂ] W) t` using `(hasFDerivAt_const (P (f z₀)) t).congr_of_eventuallyEq hloc`. Establish `h0` using `hcompP.unique hzero`. Rewrite using `[hcomp.fderiv]`. Use `ext1 v`. Apply `hkt` to reduce the goal to its premises.
-
-Use `congrArg (fun φ : K →L[ℂ] W => φ v) h0` as an intermediate fact. Simplify using `using this`. Establish `hconst : ∀ t ∈ S, f (ψ t) = f z₀`. Introduce `t ht`. Establish `hdon : DifferentiableOn ℂ (fun s => f (ψ s)) S` using `fun s hs => (((hf _ (hball s hs).2.2.2.1).differentiableAt one_ne_zero).comp s (hball s hs).2.2.1).differentiableWithinAt`.
-
-Use `Metric.isOpen_ball.is_const_of_fderiv_eq_zero (convex_ball (0 : K) ε).isPreconnected hdon (fun s hs => hderiv s hs) ht (Metric.mem_ball_self hε)` as an intermediate fact. Rewrite `this` using `[hψ0]`. Then use the resulting hypothesis. Establish `hcount : S.Countable`. Use `Set.MapsTo.countable_of_injOn (f := ψ) (t := {z' ∈ U | f z' = f z₀}) (fun t ht => ⟨(hball t ht).2.2.2.1, hconst t ht⟩) ?_ (hc z₀ hz₀)` and prove the remaining obligations. Introduce `s hs t ht hst`.
-
-Rewrite using `[← (hball s hs).2.1, ← (hball t ht).2.1]`. Simplify using `only [ψ] at hst ⊢`. Rewrite using `[hst]`. Take `⟨x, hx, hxS⟩` from `(hcount.dense_compl ℂ).inter_open_nonempty S Metric.isOpen_ball ⟨0, Metric.mem_ball_self hε⟩`. Conclude with `hxS hx`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.CountableFibres.exists_injective_fderiv {E F : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
     [NormedAddCommGroup F] [NormedSpace ℂ F] [FiniteDimensional ℂ E] [FiniteDimensional ℂ F]
@@ -213,17 +205,15 @@ theorem _root_.GlobalTheory.CountableFibres.exists_injective_fderiv {E F : Type}
   exact hxS hx
 
 /- English proof (translation)
-Set `φ : I → Module.Dual ℂ (Fin d → ℂ)` to `fun b => (LinearMap.proj b) ∘ₗ L`. Take `⟨κ, a, -, hspan, hli⟩` from `exists_linearIndependent' ℂ φ`. Establish `: Finite κ` using `hli.finite`. Set `_ : Fintype κ` to `Fintype.ofFinite κ`. Establish `hker : ∀ x, (∀ k, L x (a k) = 0) → x = 0`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `x hx`. Apply `hL` to reduce the goal to its premises. Rewrite using `[map_zero]`. Use function extensionality and compare the values at `b`. Establish `hb : φ b ∈ Submodule.span ℂ (Set.range (φ ∘ a))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite using `[hspan]`. Conclude with `Submodule.subset_span ⟨b, rfl⟩`. Establish `hle : Submodule.span ℂ (Set.range (φ ∘ a)) ≤ LinearMap.ker (Module.Dual.eval ℂ (Fin d → ℂ) x)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨k, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `hx k`. Conclude with `hle hb`. Establish `h1 : Fintype.card κ ≤ d`. Simplify using `using hli.fintype_card_le_finrank`. Establish `h2 : d ≤ Fintype.card κ`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: Function.Injective (LinearMap.funLeft ℂ ℂ a ∘ₗ L)`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Conclude with `hker x fun k => congrFun hx k`. Simplify using `using LinearMap.finrank_le_finrank_of_injective this`.
-
-Set `e : Fin d ≃ κ` to `(Fintype.equivFinOfCardEq (le_antisymm h1 h2)).symm`. Use `⟨a ∘ e, fun x hx => hker x fun k => ?_⟩` and prove the remaining obligations. Simplify using `using hx (e.symm k)`.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_rows {d : ℕ} {I : Type} (L : (Fin d → ℂ) →ₗ[ℂ] (I → ℂ))
     (hL : Function.Injective L) :
@@ -261,39 +251,31 @@ theorem exists_rows {d : ℕ} {I : Type} (L : (Fin d → ℂ) →ₗ[ℂ] (I →
 open Filter Topology in
 
 /- English proof (translation)
-Introduce `d I _ B θ hB _ hBne hdiff hfib`. Use `haveI := Fintype.ofFinite I`. Establish `hO : _root_.ReciprocityTheory.AnForm.Osgood.OsgoodStatement` using `_root_.ReciprocityTheory.AnForm.Osgood.osgood`. Unfold `_root_.ReciprocityTheory.AnForm.Osgood.OsgoodStatement at hO`. Establish `hAn : ∀ a, AnalyticOnNhd ℂ (fun z => θ z a) B` using `fun a => hO d B _ hB (hdiff a)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨z₁, hz₁⟩` from `hBne`. Choose the witnesses or unpack the hypotheses as in `⟨a₀, ha₀⟩ : ∃ a₀, θ z₁ a₀ ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `(hfib z₁ hz₁).1 (funext h)`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set U := B ∩ (fun z => θ z a₀) ⁻¹' {0}ᶜ`. Establish `hUo : IsOpen U` using `(hAn a₀).continuousOn.isOpen_inter_preimage hB isOpen_compl_singleton`. Establish `hUB : ∀ z ∈ U, z ∈ B ∧ θ z a₀ ≠ 0` using `fun z hz => hz`. Use `set ρ : (Fin d → ℂ) → I → ℂ := fun z b => θ z b / θ z a₀`. Establish `hρ : ∀ z ∈ U, ContDiffAt ℂ 1 ρ z` using `fun z hz => contDiffAt_pi.2 fun b => ((hAn b z hz.1).contDiffAt).div ((hAn a₀ z hz.1).contDiffAt) hz.2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hρc : ∀ z ∈ U, {z' ∈ U | ρ z' = ρ z}.Countable`. Introduce `z hz`. Use `(hfib z hz.1).2.mono ?_` and prove the remaining obligations. Introduce and unpack `z' ⟨hz'U, hz'⟩`. Use `⟨hz'U.1, θ z' a₀ / θ z a₀, funext fun b => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h` using `congrFun hz' b`. Simplify using `only [ρ] at h`. Establish `h1` using `hz.2`. Establish `h2` using `hz'U.2`. Simplify using `only [Set.mem_preimage, Set.mem_compl_iff, Set.mem_singleton_iff] at h1 h2`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Pi.smul_apply, smul_eq_mul]`. Clear denominators, using `at h ⊢` for the nonvanishing conditions. Take the linear combination `h`. Take `⟨z₂, hz₂, hinj⟩` from `_root_.GlobalTheory.CountableFibres.exists_injective_fderiv hUo ⟨z₁, hz₁, ha₀⟩ hρ hρc`. Use `set D := fderiv ℂ ρ z₂`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `set v : I → Module.Dual ℂ (Fin d → ℂ) := fun b => (LinearMap.proj b).comp (D : (Fin d → ℂ) →ₗ[ℂ] I → ℂ)`. Take `⟨κ, c, hc, hspan, hli⟩` from `exists_linearIndependent' ℂ v`. Use `haveI : Finite κ := Finite.of_injective c hc`. Use `haveI := Fintype.ofFinite κ`. Establish `hkill : ∀ y, (∀ k, v (c k) y = 0) → y = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Introduce `y hy`. Establish `hle : Submodule.span ℂ (Set.range (v ∘ c)) ≤ LinearMap.ker (Module.Dual.eval ℂ _ y)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `hy k`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite `hle` using `[hspan]`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_zero]`. Use function extensionality and compare the values at `b`. Conclude with `hle (Submodule.subset_span ⟨b, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcard : Fintype.card κ = d`. Apply `le_antisymm` to reduce the goal to its premises. Use `hli.fintype_card_le_finrank` as an intermediate fact. Rewrite `this` using `[Subspace.dual_finrank_eq, Module.finrank_fin_fun]`. Then use the resulting hypothesis. Set `T : (Fin d → ℂ) →ₗ[ℂ] κ → ℂ` to `LinearMap.pi fun k => v (c k)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hT : Function.Injective T`. Rewrite using `[← LinearMap.ker_eq_bot, Submodule.eq_bot_iff]`. Introduce `y hy`. Conclude with `hkill y fun k => congrFun hy k`. Use `LinearMap.finrank_le_finrank_of_injective hT` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[Module.finrank_fin_fun, Module.finrank_fintype_fun_eq_card]`. Then use the resulting hypothesis. Use `set e := Fintype.equivFinOfCardEq hcard`. Use `set a : Fin d → I := fun i => c (e.symm i)`. Use `⟨a₀, a, ⟨z₁, hz₁, ha₀⟩, fun F hF => ?_⟩` and prove the remaining obligations. Use `set π : (I → ℂ) →L[ℂ] Fin d → ℂ := ContinuousLinearMap.pi fun i => ContinuousLinearMap.proj (a i)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hG : HasStrictFDerivAt (fun z => π (ρ z)) (π.comp D) z₂` using `π.hasStrictFDerivAt.comp z₂ ((hρ z₂ hz₂).hasStrictFDerivAt one_ne_zero)`. Establish `hsurj : LinearMap.range ((π.comp D : (Fin d → ℂ) →L[ℂ] Fin d → ℂ) : (Fin d → ℂ) →ₗ[ℂ] Fin d → ℂ) = ⊤`. Rewrite using `[LinearMap.range_eq_top, ← LinearMap.injective_iff_surjective, ← LinearMap.ker_eq_bot, Submodule.eq_bot_iff]`. Introduce `y hy`. Apply `hkill y` to reduce the goal to its premises.
-
-Introduce `k`. Use `congrFun hy (e k)` as an intermediate fact. Simplify `this` using `[π, a, v]`. Establish `hN : (fun z => π (ρ z)) '' U ∈ 𝓝 (π (ρ z₂))`. Rewrite using `[← hG.map_nhds_eq_of_surj hsurj]`.
-
-Conclude with `Filter.image_mem_map (hUo.mem_nhds hz₂)`. Take `⟨ε, hε, hball⟩` from `Metric.mem_nhds_iff.1 hN`. Establish `hinf : ∀ i, (Metric.ball (π (ρ z₂) i) ε).Infinite` using `fun i hfin => by`. Take `⟨x, hx, hxc⟩` from `(hfin.countable.dense_compl ℝ).inter_open_nonempty _ Metric.isOpen_ball ⟨_, Metric.mem_ball_self hε⟩`. Conclude with `hxc hx`.
-
-Use `choose S hS hScard using fun i => (hinf i).exists_subset_card_eq (MvPolynomial.degreeOf i F + 1)`. Use `MvPolynomial.eq_zero_of_eval_zero_at_prod_finset F S (fun i => by rw [hScard i]; omega) fun x hx => ?_` and prove the remaining obligations. Establish `hxb : x ∈ Metric.ball (π (ρ z₂)) ε`. Rewrite using `[ball_pi _ hε]`. Conclude with `fun i _ => hS i (hx i)`.
-
-Take `⟨z, hzU, rfl⟩` from `hball hxb`. Conclude with `hF z hzU.1 hzU.2`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.CountableFibres.exists_independent_ratios :
     ∀ (d : ℕ) (I : Type) [Finite I] (B : Set (Fin d → ℂ)) (θ : (Fin d → ℂ) → I → ℂ), IsOpen B →

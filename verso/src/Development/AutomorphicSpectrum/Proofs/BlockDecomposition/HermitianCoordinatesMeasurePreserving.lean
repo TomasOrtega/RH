@@ -15,7 +15,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.SiegelND.Coef.TestN.CoordMeas
 
 /- English proof (translation)
-Rewrite using `[← MeasurableEquiv.map_symm, ← Measure.map_map hc e.measurable, Measure.map_map e.measurable e.symm.measurable]`. Establish `: (⇑e ∘ ⇑e.symm) = id` using `funext e.apply_symm_apply`. Rewrite using `[this, Measure.map_id]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_comp_comap {H Y Z : Type} [MeasurableSpace H] [MeasurableSpace Y] [MeasurableSpace Z]
     (e : H ≃ᵐ Y) (ν : Measure Y) {c : Y → Z} (hc : Measurable c) :
@@ -26,13 +26,11 @@ theorem map_comp_comap {H Y Z : Type} [MeasurableSpace H] [MeasurableSpace Y] [M
   rw [this, Measure.map_id]
 
 /- English proof (translation)
-Establish `hc : Measurable (fun x : (Fin n → R) × (P → K) => (Sum.elim x.1 (fun q : Fin d × P => r (x.2 q.2) q.1) : Fin n ⊕ (Fin d × P) → R))`. Use `measurable_pi_iff.2 fun i => ?_` and prove the remaining obligations. Break down `i with i | q` into its components or cases. Conclude with `(measurable_pi_apply i).comp measurable_fst`. Conclude with `(measurable_pi_apply q.1).comp (hr.comp ((measurable_pi_apply q.2).comp measurable_snd))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations.
 
-Use `symm`. Use `Measure.pi_eq fun s hs => ?_` and prove the remaining obligations. Rewrite using `[Measure.map_apply hc (MeasurableSet.univ_pi hs)]`. Establish `hset : (fun x : (Fin n → R) × (P → K) => (Sum.elim x.1 (fun q : Fin d × P => r (x.2 q.2) q.1) : Fin n ⊕ (Fin d × P) → R)) ⁻¹' Set.pi Set.univ s = (Set.pi Set.univ fun i : Fin n => s (Sum.inl i)) ×ˢ (Set.pi Set.univ fun p : P => r ⁻¹' Set.pi Set.univ fun k : Fin d => s (Sum.inr (k …`. Use extensionality with `x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Set.mem_preimage, Set.mem_pi, Set.mem_univ, forall_true_left, Set.mem_prod, Sum.forall, Sum.elim_inl, Sum.elim_inr, Prod.forall]`. Conclude with `and_congr Iff.rfl ⟨fun h p k => h k p, fun h k p => h p k⟩`. Establish `hκs : ∀ p : P, κ (r ⁻¹' Set.pi Set.univ fun k : Fin d => s (Sum.inr (k, p))) = ∏ k : Fin d, lam (s (Sum.inr (k, p)))` using `fun p => by`. Rewrite using `[← Measure.map_apply hr (MeasurableSet.univ_pi fun k => hs _), hκ, Measure.pi_pi]`. Rewrite using `[hset, Measure.prod_prod, Measure.pi_pi, Measure.pi_pi, Fintype.prod_sum_type, Fintype.prod_prod_type]`.
-
-Simplify using `only [hκs]`. Rewrite using `[Finset.prod_comm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_prod_box {R K P : Type} [MeasurableSpace R] [MeasurableSpace K] [Fintype P] {n d : ℕ}
     (lam : Measure R) [SigmaFinite lam] (κ : Measure K) [SigmaFinite κ] (r : K → Fin d → R)
@@ -75,19 +73,15 @@ namespace GlobalTheory.CompanionTheory.SiegelND.Coef.TestN
 open GlobalTheory.CompanionTheory.SiegelND.Coef.TestN.CoordMeas
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hcm R _ _ _ _ _ _ _ _ _ d b lam hlam n`. Take `⟨t1, t2, t3, t4, t5, t6, t7, -, -, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hcm R`. Establish `h2 : Module.finrank F E = 2` using `hcm.2.2.1`. Take `⟨hinv, δ, hδ, hσδ⟩` from `GlobalTheory.CompanionTheory.SW.HaarCoord.conj_facts hcm`. Use `haveI : BorelSpace (R ⊗[F] E) := ⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI : IsModuleTopology R (R ⊗[F] E) := ⟨rfl⟩`. Use `haveI : ContinuousSMul R (R ⊗[F] E) := IsModuleTopology.toContinuousSMul R _`. Use `haveI : BorelSpace (HeckeCharacterZeroLocus.SiegelWeilU.HermR R σ n) := ⟨rfl⟩`. Take `⟨hK, -, -⟩` from `GlobalTheory.CompanionTheory.SW.coord_measures_haar F E σ hcm R d b lam hlam`. Use `haveI : SigmaFinite (GlobalTheory.CompanionTheory.SW.coordK R b lam) := inferInstance`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `r : R ⊗[F] E → Fin d → R` to `fun y k => (Algebra.TensorProduct.basis R b).repr y k`. Set `Tr : (R ⊗[F] E) ≃ₜ (Fin d → R)` to `(t7 d b).homeomorph r`. Establish `hr : Measurable r` using `Tr.toMeasurableEquiv.measurable`. Establish `hκ : (GlobalTheory.CompanionTheory.SW.coordK R b lam).map r = Measure.pi fun _ => lam`. Use `map_comp_comap Tr.toMeasurableEquiv (Measure.pi fun _ => lam) (c := id) measurable_id` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[Measure.map_id]`. Conclude with `this`. Set `T` to `(GlobalTheory.CompanionTheory.SW.HaarCoord.hermCoord_isHomeomorph R hinv h2 hδ hσδ n t5 t6).homeomorph (GlobalTheory.CompanionTheory.SW.HaarCoord.hermCoord R σ n)`. Establish `hbox` using `map_prod_box (n := n) (P := {p : Fin n × Fin n // p.1 < p.2}) lam (GlobalTheory.CompanionTheory.SW.coordK R b lam) r hr hκ`. Establish `hc : Measurable (fun x : (Fin n → R) × ({p : Fin n × Fin n // p.1 < p.2} → R ⊗[F] E) => (Sum.elim x.1 (fun q : Fin d × {p : Fin n × Fin n // p.1 < p.2} => r (x.2 q.2) q.1) : Idx n d → R))`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `measurable_pi_iff.2 fun i => ?_` and prove the remaining obligations. Break down `i with i | q` into its components or cases. Conclude with `(measurable_pi_apply i).comp measurable_fst`. Conclude with `(measurable_pi_apply q.1).comp (hr.comp ((measurable_pi_apply q.2).comp measurable_snd))`. Establish `hm` using `map_comp_comap T.toMeasurableEquiv ((Measure.pi fun _ : Fin n => lam).prod (Measure.pi fun _ : {p : Fin n × Fin n // p.1 < p.2} => GlobalTheory.CompanionTheory.SW.coordK R b lam)) hc`.
-
-Rewrite `hm` using `[hbox]`. Establish `hfun : hCo R σ b = (fun x : (Fin n → R) × ({p : Fin n × Fin n // p.1 < p.2} → R ⊗[F] E) => (Sum.elim x.1 (fun q : Fin d × {p : Fin n × Fin n // p.1 < p.2} => r (x.2 q.2) q.1) : Idx n d → R)) ∘ T.toMeasurableEquiv`. Use function extensionality and compare the values at `S i`. Apply the tactic sequence `rcases i with i | q <;> rfl`. Rewrite using `[hfun]`.
-
-Conclude with `hm`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coordHerm_map_hCo : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [IsTopologicalRing R] [LocallyCompactSpace R] [SecondCountableTopology R] [T2Space R] [MeasurableSpace R] [BorelSpace R] (d : ℕ) (b : Module.Basis (Fin d) F E) (lam : Measure R), lam.IsAddHaarMeasure → ∀ n : ℕ, (GlobalTheory.CompanionTheory.SW.coordHerm R σ b lam n).map (hCo R σ b) = Measure.pi fun _ : Idx n d => lam := by
   intro F E _ _ _ _ _ σ hcm R _ _ _ _ _ _ _ _ _ d b lam hlam n

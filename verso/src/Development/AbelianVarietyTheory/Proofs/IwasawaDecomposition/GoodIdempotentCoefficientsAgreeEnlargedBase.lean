@@ -15,17 +15,17 @@ namespace GlobalTheory.Mem.R3.Rw.WeilExt
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `B B' f f' T T' w w' Z Z' hX hX' Wt Ks _ _ _ Xg tr z Wt' R' hE hf hp hG hG' hR cG hK g' g hg`. Take `⟨-, -, -, -, -, -, -, -, -, hPg, heG, -⟩` from `hR`. Establish `hB` using `hE.1`. Consider the cases of `B`. Consider the cases of `B'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data.
 
-Simplify using `only at hB`. Substitute `hB` using the available equality. Consider the cases of `hf`. Establish `hpx : w'.px = w.px` using `eq_of_heq hp`. Consider the cases of `w'`.
+Simplify by unfolding definitions. Substitute using the available equality. Split into cases according to the possible forms of the given data. Establish an intermediate fact. Split into cases according to the possible forms of the given data.
 
-Simplify using `only at hpx`. Substitute `hpx` using the available equality. Consider the cases of `hg`. Take `⟨plg, iso, hpl, hid, -, hbc⟩` from `z.pins.keep.grp`. Take `⟨plg2, iso', hpl', hid', -, hbc'⟩` from `hK.grp`.
+Simplify by unfolding definitions. Substitute using the available equality. Split into cases according to the possible forms of the given data. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `(hid' g).trans (Eq.trans ?_ (hid g).symm)` and prove the remaining obligations. Use `Eq.trans ?_ (TypesTrue.typeIdempotent_coeff_across_layers hG hG' ((z.R.eG.trans z.cG) g))` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `kv'`. Take `⟨k, v'⟩` from `kv'`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Take `⟨v, rfl⟩ : ∃ v, v' = plEquiv Z.N.naut Z'.N.naut k v` from `⟨_, (Equiv.apply_symm_apply _ v').symm⟩`. Use `show _ = ((z.R.eG.trans z.cG) g) ⟨k, (plEquiv Z.N.naut Z'.N.naut k).symm (plEquiv Z.N.naut Z'.N.naut k v)⟩`. Rewrite using `[Equiv.symm_apply_apply]`. Establish `hP : R'.Pg = z.R.Pg` using `eq_of_heq hPg`. Establish `hQ : (plg2 ⟨k, plEquiv Z.N.naut Z'.N.naut k v⟩).1 = (plg ⟨k, v⟩).1`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hpl', hpl]`. Conclude with `TypesTrue.plGw_plEquiv hG hG' k v`. Conclude with `GlobalTheory.Mem.R3.DefLatBC.bc_eq_of_heq hP z.R.eG R'.eG heG g _ _ hQ (iso ⟨k, v⟩) (iso' ⟨k, plEquiv Z.N.naut Z'.N.naut k v⟩) _ _ (hbc g ⟨k, v⟩) (hbc' g ⟨k, plEquiv Z.N.naut Z'.N.naut k v⟩)`.
+A detailed English derivation is pending.
 -/
 theorem idemSame_of_keep : ∀ {B B' : Base} {f : Fr B.toPre} {f' : Fr B'.toPre} {T : TwDat B} {T' : TwDat B'} {w : ColW B f T} {w' : ColW B' f' T'}
   {Z : w.Lt} {Z' : w'.Lt} {hX : B.fields.Ok} {hX' : B'.fields.Ok} {Wt : Set B.places.Pl}

@@ -51,16 +51,16 @@ section
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-The claim follows from `PI.PhNormUnits.UnitaryGroupMassFormula.PAdicPowerSeriesCoefficients.expMv_eq hF`.
+A detailed English derivation is pending.
 -/
 theorem expMv_eq_mvExp {σ : Type} {F : MvPowerSeries σ ℂ_[p]} (hF : MvPowerSeries.constantCoeff F = 0) :
     Formalism.MainNotions.TaylorLogMetric.expMv F = Formalism.DworkPowerSeriesWeights.mvExp F :=
   PI.PhNormUnits.UnitaryGroupMassFormula.PAdicPowerSeriesCoefficients.expMv_eq hF
 
 /- English proof (translation)
-Introduce `p _ σ f g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h0, h1⟩`. Use `⟨h0, ?_⟩` and prove the remaining obligations. Rewrite using `[← expMv_eq_mvExp h0]`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1`. Introduce and unpack `⟨h0, h1⟩`. Use `⟨h0, ?_⟩` and prove the remaining obligations. Rewrite `h1` using `[← expMv_eq_mvExp h0]`. Conclude with `h1`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem formal_equivalence_agree : SimeqAgree := by
   intro p _ σ f g
@@ -75,14 +75,14 @@ theorem formal_equivalence_agree : SimeqAgree := by
     exact h1
 
 /- English proof (translation)
-Use extensionality with `n`. Simplify using `[dX, PowerSeries.coeff_derivative, mul_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem dX_eq (f : PowerSeries ℂ_[p]) : dX f = derivative ℂ_[p] f := by
   ext n
   simp [dX, PowerSeries.coeff_derivative, mul_comm]
 
 /- English proof (translation)
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem isWq_C {W : WeierstrassCurve ℂ_[p]} {wq : PowerSeries ℂ_[p]} (h : IsWq W wq) :
     wq = 1 + C W.a₁ * X * wq + C W.a₂ * X ^ 2 * wq + C W.a₃ * X ^ 3 * wq ^ 2 +
@@ -90,7 +90,7 @@ theorem isWq_C {W : WeierstrassCurve ℂ_[p]} {wq : PowerSeries ℂ_[p]} (h : Is
   exact h
 
 /- English proof (translation)
-Use `symm`. Apply `Formalism.L2.Th1.A.CurveSer.wSer_unique` to reduce the goal to its premises. Use `⟨by simp, ?_⟩` and prove the remaining obligations. Take the linear combination `(X ^ 3 : PowerSeries ℂ_[p]) * isWq_C h`.
+Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem wSer_of_isWq {W : WeierstrassCurve ℂ_[p]} {wq : PowerSeries ℂ_[p]} (h : IsWq W wq) :
     Formalism.L2.Th1.A.wSer W = X ^ 3 * wq := by
@@ -100,7 +100,7 @@ theorem wSer_of_isWq {W : WeierstrassCurve ℂ_[p]} {wq : PowerSeries ℂ_[p]} (
   linear_combination (X ^ 3 : PowerSeries ℂ_[p]) * isWq_C h
 
 /- English proof (translation)
-Establish `h1` using `congrArg constantCoeff (isWq_C h)`. Simplify using `using h1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem cc_wq {W : WeierstrassCurve ℂ_[p]} {wq : PowerSeries ℂ_[p]} (h : IsWq W wq) :
     constantCoeff wq = 1 := by
@@ -108,15 +108,15 @@ theorem cc_wq {W : WeierstrassCurve ℂ_[p]} {wq : PowerSeries ℂ_[p]} (h : IsW
   simpa using h1
 
 /- English proof (translation)
-Establish `hw` using `wSer_of_isWq h`. Establish `hE` using `(Formalism.L2.Th1.A.CurveSer.wSer_fixed W).2`. Establish `hd` using `Formalism.L2.Th1.A.CurveSer.deriv_wSer_mul_fw W`. Establish `hfo` using `Formalism.L2.Th1.A.CurveSer.fw_mul_om W`. Establish `key : Formalism.L2.Th1.A.fw W * (-(2 : PowerSeries ℂ_[p]) * wq - X * dX wq) = wq * (C W.a₁ * X + C W.a₃ * X ^ 3 * wq - 2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `mul_left_cancel₀ (pow_ne_zero 3 (X_ne_zero (R := ℂ_[p])))` to reduce the goal to its premises. Establish `hder : derivative ℂ_[p] (X ^ 3 * wq) = 3 * X ^ 2 * wq + X ^ 3 * derivative ℂ_[p] wq`. Rewrite using `[Derivation.leibniz, Derivation.leibniz_pow, derivative_X]`. Simplify using `only [smul_eq_mul, nsmul_eq_mul]`. Use `push_cast`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Formalism.L2.Th1.A.fw, Formalism.L2.Th1.A.fu] at hd ⊢`. Rewrite `hd`, `hE`, the goal using `[hw]`. Rewrite `hd` using `[hder]`. Rewrite using `[dX_eq]`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(-X : PowerSeries ℂ_[p]) * hd + 3 * hE`. Establish `hD : constantCoeff (wq * (C W.a₁ * X + C W.a₃ * X ^ 3 * wq - 2)) ≠ 0`. Establish `h2 : constantCoeff (2 : PowerSeries ℂ_[p]) = 2` using `map_ofNat _ 2`. Simplify using `[cc_wq h, h2]`. Establish `e1 : (-(2 : PowerSeries ℂ_[p]) * wq - X * dX wq) = Formalism.L2.Th1.A.om W * (wq * (C W.a₁ * X + C W.a₃ * X ^ 3 * wq - 2))`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← key, ← mul_assoc, mul_comm (Formalism.L2.Th1.A.om W), hfo, one_mul]`. Unfold `omegaW`. Simplify using `only [PowerSeries.algebraMap_eq]`. Rewrite using `[e1, mul_assoc, PowerSeries.mul_inv_cancel _ hD, mul_one]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem omegaW_eq {W : WeierstrassCurve ℂ_[p]} {wq : PowerSeries ℂ_[p]} (h : IsWq W wq) :
     omegaW W wq = Formalism.L2.Th1.A.om W := by
@@ -148,7 +148,7 @@ theorem omegaW_eq {W : WeierstrassCurve ℂ_[p]} {wq : PowerSeries ℂ_[p]} (h :
   rw [e1, mul_assoc, PowerSeries.mul_inv_cancel _ hD, mul_one]
 
 /- English proof (translation)
-Introduce `p _ W wq h`. Unfold `flog Formalism.L2.Th1.A.logSer Formalism.L2.Th1.A.integ`. Rewrite using `[omegaW_eq h]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem formal_logarithm_agree : LogAgree := by
   intro p _ W wq h
@@ -156,9 +156,9 @@ theorem formal_logarithm_agree : LogAgree := by
   rw [omegaW_eq h]
 
 /- English proof (translation)
-Introduce `p _ g hOk`. Establish `hl : flog g.W g.wq = Formalism.L2.Th1.A.logSer g.W` using `formal_logarithm_agree p g.W g.wq hOk.2.1`. Take `⟨h0, h1, -, -⟩` from `Formalism.L2.Th1.A.logSpec ℂ_[p] g.W`. Establish `hu : IsUnit (coeff 1 (Formalism.L2.Th1.A.logSer g.W))` using `by rw [h1]; exact isUnit_one`. Establish `hs` using `Formalism.L2.Th1.A.compInvSpec ℂ_[p] _ h0 hu`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Formalism.L2.Th1.A.expSer`. Apply `hs.2.2.2.2.1 g.ex hOk.2.2.1` to reduce the goal to its premises. Rewrite using `[← hl]`. Conclude with `hOk.2.2.2`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem formal_exponential_agree : ExAgree := by
   intro p _ g hOk
@@ -172,18 +172,18 @@ theorem formal_exponential_agree : ExAgree := by
   exact hOk.2.2.2
 
 /- English proof (translation)
-Take `⟨⟨h1, h2, h3, h4, h6, -⟩, -⟩` from `hOk`. Conclude with `⟨h1, h2, h3, h4, h6⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem intModel_of_ok {g : G1 p} (hOk : g.Ok) : Formalism.L2.Th1.A.IntModel g.W := by
   obtain ⟨⟨h1, h2, h3, h4, h6, -⟩, -⟩ := hOk
   exact ⟨h1, h2, h3, h4, h6⟩
 
 /- English proof (translation)
-Introduce `p _ g hOk σ a b ha hb`. Establish `hl : flog g.W g.wq = Formalism.L2.Th1.A.logSer g.W` using `formal_logarithm_agree p g.W g.wq hOk.2.1`. Establish `he : g.ex = Formalism.L2.Th1.A.expSer g.W` using `formal_exponential_agree p g hOk`. Establish `hL` using `(Formalism.L2.Th1.A.bridgeLaw ℂ_[p] g.W (intModel_of_ok hOk)).1`. Establish `hF : MvPowerSeries.constantCoeff (Formalism.L2.Th1.A.fgl g.W) = 0` using `hL.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc` using `Formalism.L2.Th1.B.law_constantCoeff_subst2 (Formalism.L2.Th1.A.fgl g.W) hF a b ha hb`. Establish `hsum` using `Formalism.L2.Th1.B.law_subst hL a b ha hb`. Take `⟨hl0, -, -, -⟩` from `Formalism.L2.Th1.A.logSpec ℂ_[p] g.W`. Take `⟨-, -, -, hEL, -⟩` from `Formalism.L2.Th1.A.expSpec ℂ_[p] g.W`. Use `show PowerSeries.subst (PowerSeries.subst a (flog g.W g.wq) + PowerSeries.subst b (flog g.W g.wq)) g.ex = _`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hl, he, ← hsum, ← PowerSeries.subst_comp_subst_apply (HasSubst.of_constantCoeff_zero' hl0) (HasSubst.of_constantCoeff_zero hc), hEL, PowerSeries.subst_X (HasSubst.of_constantCoeff_zero hc)]`.
+A detailed English derivation is pending.
 -/
 theorem formal_addition_agree : AddAgree := by
   intro p _ g hOk σ a b ha hb
@@ -200,11 +200,11 @@ theorem formal_addition_agree : AddAgree := by
     (HasSubst.of_constantCoeff_zero hc), hEL, PowerSeries.subst_X (HasSubst.of_constantCoeff_zero hc)]
 
 /- English proof (translation)
-Establish `hl : flog (g.C • wModel g.lam g.abelian₂) g.wq = Formalism.L2.Th1.A.logSer g.W` using `formal_logarithm_agree p _ g.wq hOk.2.1`. Take `⟨hl0, -, -, -⟩` from `Formalism.L2.Th1.A.logSpec ℂ_[p] g.W`. Establish `hL : HasSubst (Formalism.L2.Th1.A.logSer g.W)` using `HasSubst.of_constantCoeff_zero' hl0`. Establish `hS` using `(Formalism.L2.Th1.B.curveSigma ℂ_[p] g.W s2).2.1`. Use `set ep : ℂ_[p] := ((g.C.u⁻¹ : ℂ_[p]ˣ) : ℂ_[p]) with hep`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hep0 : ep ≠ 0` using `Units.ne_zero _`. Establish `hlin : PowerSeries.subst (Formalism.L2.Th1.A.logSer g.W) (ep • (X : PowerSeries ℂ_[p])) = C ep * Formalism.L2.Th1.A.logSer g.W`. Rewrite using `[PowerSeries.subst_smul hL, PowerSeries.subst_X hL, smul_eq_C_mul]`. Establish `hsub : PowerSeries.subst (C ep * Formalism.L2.Th1.A.logSer g.W) (sgSer g.lam g.abelian₂) = C ep * (X * Formalism.L2.Th1.B.fExp (-(Formalism.L2.Th1.B.phW g.W s2)))`. Rewrite using `[← hlin, ← PowerSeries.subst_comp_subst_apply (HasSubst.X' (R := ℂ_[p]) |>.smul' ep) hL, ← PowerSeries.rescale_eq_subst, hR, PowerSeries.subst_mul hL, PowerSeries.subst_C, hS]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use extensionality with `n`. Simplify using `only [ePhi1, coeff_mk, PowerSeries.algebraMap_eq, hl]`. Rewrite using `[← hep, hsub, coeff_C_mul, coeff_succ_X_mul]`. Clear the denominators using the available nonvanishing facts.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem ePhi1_eq (g : G1 p) (s2 : ℂ_[p]) (hOk : g.Ok)
     (hR : PowerSeries.rescale (((g.C.u⁻¹ : ℂ_[p]ˣ) : ℂ_[p])) (sgSer g.lam g.abelian₂) =
@@ -230,11 +230,9 @@ theorem ePhi1_eq (g : G1 p) (s2 : ℂ_[p]) (hOk : g.Ok)
   field_simp
 
 /- English proof (translation)
-Introduce `p _ g s2 hOk hR`. Establish `he` using `ePhi1_eq g s2 hOk hR`. Establish `h0` using `(Formalism.L2.Th1.B.curveSigma ℂ_[p] g.W s2).1`. Establish `hn : MvPowerSeries.constantCoeff (-(Formalism.L2.Th1.B.phW g.W s2) : MvPowerSeries Unit ℂ_[p]) = 0`. Rewrite using `[map_neg, neg_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h0`. Establish `h1` using `Formalism.L2.Th1.B.constantCoeff_fExp hn`. Use `show -logMv (ePhi1 g.lam g.abelian₂ g.C g.wq) = _`. Rewrite using `[he, show logMv (Formalism.L2.Th1.B.fExp (-(Formalism.L2.Th1.B.phW g.W s2))) = PI.FglShared.logS (Formalism.L2.Th1.B.fExp (-(Formalism.L2.Th1.B.phW g.W s2))) from rfl, PI.FglShared.logS_eq_subst h1]`. Express the relevant statement in the definitionally equal form `-(Formalism.L2.Th1.B.fLog (Formalism.L2.Th1.B.fExp (-(Formalism.L2.Th1.B.phW g.W s2)))) = _`.
-
-Rewrite using `[Formalism.L2.Th1.B.fLog_fExp hn, neg_neg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem formal_phase_agree : PhAgree := by
   intro p _ g s2 hOk hR

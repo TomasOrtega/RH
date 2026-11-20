@@ -27,7 +27,7 @@ def CardStep : Prop :=
       (Nat.card (Formalism.DoubleCosetMeasures.kF O ϖ hϖ) : ℝ) ^ (n * n) * qE (Nat.card (Formalism.DoubleCosetMeasures.kF O ϖ hϖ)) 1 n
 
 /- English proof (translation)
-Unfold `qE`. Apply `Finset.prod_pos` to reduce the goal to its premises. Introduce `i hi`. Establish `hi1 : 1 ≤ i` using `(Finset.mem_Icc.mp hi).1`. Establish `: q ^ (-(i : ℤ)) < 1` using `zpow_lt_one_of_neg₀ hq (by omega)`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -40,7 +40,7 @@ theorem qE_pos {q : ℝ} (hq : 1 < q) (n : ℕ) : 0 < qE q 1 n := by
   linarith
 
 /- English proof (translation)
-Use `Formalism.DoubleCosetMeasures.P.GLRed.nontriv O ϖ hϖ hloc` as an intermediate fact. Conclude with `Finite.one_lt_card`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem card_gt_one (F : Type) [Field F] (O : Subring F) (ϖ : F) (hϖ : ϖ ∈ O)
     (hloc : Formalism.DoubleCosetMeasures.IsLocalAt O ϖ) [Finite (Formalism.DoubleCosetMeasures.kF O ϖ hϖ)] :
@@ -49,27 +49,25 @@ theorem card_gt_one (F : Type) [Field F] (O : Subring F) (ϖ : F) (hϖ : ϖ ∈ 
   exact Finite.one_lt_card
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ _ O hO ϖ hϖ hϖ0 hloc hfin a t J' hKJ hJint hJc ρ hρ χ nrm lam hlam c hc hc1 μ _ hμ ν₁ _ _ hν₁ ν₂ _ _ hν₂ J hJ`. Introduce `q`. Simplify using `only [q]`. Use `clear q`. Use `hfin` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hZ` using `Formalism.DoubleCosetMeasures.P.lemmaUSplit F a t O hO ϖ hϖ0 J' hJc (fun k hk => (hJint hk).1) ρ hρ χ nrm lam hlam c hc μ ν₁ ν₂`. Rewrite using `[hZ, hμ, hc1]`. Establish `hJv` using `Formalism.DoubleCosetMeasures.P.volJadd F O hO ϖ hϖ hϖ0 hloc hfin a ν₁ J' hKJ hJint`. Rewrite `hJv` using `[hν₁, mul_one]`. Establish `hII` using `Formalism.DoubleCosetMeasures.P.volII F O hO ϖ hϖ hϖ0 hfin t a ν₂`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hII` using `[hν₂]`. Establish `hJr` using `congrArg ENNReal.toReal hJv`. Establish `hIIr` using `congrArg ENNReal.toReal hII`. Simplify using `only [ENNReal.toReal_mul, ENNReal.toReal_pow, ENNReal.toReal_natCast, ENNReal.toReal_one] at hJr hIIr`. Establish `hI` using `h3 F O ϖ hϖ hϖ0 hloc hfin a t J' hKJ hJint J hJ`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hIr : ((J.subgroupOf (Formalism.DoubleCosetMeasures.GLint O (a + t))).index : ℝ) * (Nat.card (J' ⧸ (Formalism.DoubleCosetMeasures.congSub O ϖ a).subgroupOf J') : ℝ) * (Nat.card (Formalism.DoubleCosetMeasures.kF O ϖ hϖ) : ℝ) ^ (a * t) * (Nat.card (GL (Fin t) (Formalism.DoubleCoset …`. Conclude with `hI` after adjusting the coercions. Rewrite `hIr` using `[h4 F O ϖ hϖ hϖ0 hloc hfin t, h4 F O ϖ hϖ hϖ0 hloc hfin (a + t)]`. Establish `hq1 : (1 : ℝ) < (Nat.card (Formalism.DoubleCosetMeasures.kF O ϖ hϖ) : ℝ)`. Conclude with `card_gt_one F O ϖ hϖ hloc` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set q : ℝ := (Nat.card (Formalism.DoubleCosetMeasures.kF O ϖ hϖ) : ℝ) with hqdef`. Use `set idx : ℝ := ((J.subgroupOf (Formalism.DoubleCosetMeasures.GLint O (a + t))).index : ℝ) with hidx`. Use `set N : ℝ := (Nat.card (J' ⧸ (Formalism.DoubleCosetMeasures.congSub O ϖ a).subgroupOf J') : ℝ) with hN`. Establish `hq0 : q ≠ 0` using `by positivity`. Establish `hE1` using `(qE_pos hq1 (a + t)).ne'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hE2` using `(qE_pos hq1 t).ne'`. Establish `hpow : q ^ ((a + t) * (a + t)) = q ^ (a * a) * q ^ (t * a) * q ^ (a * t) * q ^ (t * t)`. Rewrite using `[← pow_add, ← pow_add, ← pow_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hIr` using `[hpow]`. Establish `hqa : q ^ (a * a) ≠ 0` using `pow_ne_zero _ hq0`. Establish `hqta : q ^ (t * a) ≠ 0` using `pow_ne_zero _ hq0`. Establish `hqat : q ^ (a * t) ≠ 0` using `pow_ne_zero _ hq0`. Establish `hqtt : q ^ (t * t) ≠ 0` using `pow_ne_zero _ hq0`.
+Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hIr' : idx * N * qE q 1 t = q ^ (a * a) * q ^ (t * a) * qE q 1 (a + t)`. Apply `mul_right_cancel₀ (mul_ne_zero hqat hqtt)` to reduce the goal to its premises. Take the linear combination `hIr`. Establish `h5 : idx * N = q ^ (a * a) * q ^ (t * a) * qE q 1 (a + t) * (qE q 1 t)⁻¹`. Rewrite using `[eq_mul_inv_iff_mul_eq₀ hE2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `hIr'`. Establish `e1 : (ν₁ (Formalism.DoubleCosetMeasures.Jset J')).toReal = N / q ^ (a * a)`. Rewrite using `[eq_div_iff hqa]`. Conclude with `hJr`. Establish `e2 : (ν₂ (Formalism.DoubleCosetMeasures.IIset O ϖ)).toReal = 1 / q ^ (t * a)`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[eq_div_iff hqta]`. Conclude with `hIIr`. Establish `key : idx * zetaProd q (a + t) * (ENNReal.toReal 1 * (ν₁ (Formalism.DoubleCosetMeasures.Jset J')).toReal * (ν₂ (Formalism.DoubleCosetMeasures.IIset O ϖ)).toReal) = zetaProd q t`. Unfold `zetaProd`. Rewrite using `[e1, e2, ENNReal.toReal_one]`.
-
-Combine the equalities or inequalities in the displayed calculation. Establish `key'` using `congrArg (fun x : ℝ => (x : ℂ)) key`. Rewrite using `[← key']`. Use `push_cast`. Rewrite using `[map_one, mul_one, hidx, Complex.ofReal_natCast]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem parahoricIdxZ_of (h3 : IdxStep) (h4 : CardStep) : PI.ParahoricIdxZ := by
   intro F _ _ _ _ _ _ _ O hO ϖ hϖ hϖ0 hloc hfin a t J' hKJ hJint hJc ρ hρ χ nrm lam hlam c hc hc1

@@ -5,13 +5,13 @@ open GroundTheory.Automorphic.CuspidalProjection PositivityTheory.Rg.Tf.Core Upp
 open scoped InnerProductSpace
 
 /- English proof (translation)
-Introduce `K _ _ n μ _ θ`. Take `⟨C, c, h⟩` from `θ.height_le`. Establish `hb : ∀ x : G1 K n, BddBelow (Set.range fun γ : Gam K n => AutomorphicForm.height (((γ : G1 K n) * x : G1 K n) : AdelicGLn.AdelicGL K n))` using `fun x => ⟨1, by rintro _ ⟨γ, rfl⟩; exact AutomorphicForm.one_le_height _⟩`. Use `⟨max C 0, c, le_max_right _ _, fun x => ?_⟩` and prove the remaining obligations. Establish `hmono : Monotone fun t : ℝ => max C 0 * (max t 0) ^ c` using `fun a b hab => mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (le_max_right _ _) (max_le_max hab le_rfl) c) (le_max_right _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hcont : Continuous fun t : ℝ => max C 0 * (max t 0) ^ c` using `by fun_prop`. Establish `h1 : 0 ≤ qht x` using `le_ciInf fun γ => (AutomorphicForm.height_pos _).le`. Use `hmono.map_ciInf_of_continuousAt (hcont.continuousAt) (hb x)` as an intermediate fact. Express the relevant statement in the definitionally equal form `max C 0 * (max (qht x) 0) ^ c = _ at this`. Rewrite `this` using `[max_eq_left h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[this]`. Use `le_ciInf fun γ => ?_` and prove the remaining obligations. Use `(ciInf_le (hb (θ.e x)) ⟨θ.e γ, (θ.mem_gam _).2 γ.2⟩).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `AutomorphicForm.height ((θ.e γ * θ.e x : G1 K n) : AdelicGLn.AdelicGL K n) ≤ max C 0 * (max (AutomorphicForm.height (((γ : G1 K n) * x : G1 K n) : AdelicGLn.AdelicGL K n)) 0) ^ c`. Rewrite using `[← map_mul, max_eq_left (AutomorphicForm.height_pos _).le]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `(h _).trans ?_` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right (le_max_left _ _) (pow_nonneg (AutomorphicForm.height_pos _).le _)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.K.qhtTw :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) (μ : Measure (G1 K n)) [μ.IsHaarMeasure] (θ : Twist μ),

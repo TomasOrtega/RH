@@ -8,21 +8,17 @@ open scoped ENNReal
 namespace PositivityTheory.SiegelWeilFormula.kunf
 
 /- English proof (translation)
-Establish `hAm : ∀ q, Measurable fun β => ‖A q β‖ₑ` using `fun q => (hA q).measurable.enorm`. Take `⟨S, hS_def⟩ : ∃ S : V → ℝ≥0∞, S = fun β => ∑' q, ‖A q β‖ₑ` from `⟨_, rfl⟩`. Establish `hSm : Measurable S`. Rewrite using `[hS_def]`. Conclude with `Measurable.ennreal_tsum fun q => hAm q`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hSper : ∀ (ν : Λ) β, S (β + ν) = S β`. Introduce `ν β`. Set `e : Q ≃ Q` to `⟨fun q => act q ν, fun q => act q (-ν), fun q => show act (act q ν) (-ν) = q by rw [hact, add_neg_cancel, hact0], fun q => show act (act q (-ν)) ν = q by rw [hact, neg_add_cancel, hact0]⟩`. Rewrite using `[hS_def]`. Simplify using `only [← hAact]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `e.tsum_eq (fun q => ‖A q β‖ₑ)`. Take `⟨ν₀, hν₀⟩` from `hcov 0`. Establish `hu0 : ∀ q, 0 ≤ u q` using `fun q => (norm_nonneg _).trans (hAu q _ hν₀)`. Establish `hM : (∑' q, ENNReal.ofReal (u q)) ≠ ⊤`. Rewrite using `[← ENNReal.ofReal_tsum_of_nonneg hu0 hu]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `ENNReal.ofReal_ne_top`. Establish `hmeas : ∀ ν : Λ, AEMeasurable (fun β => ‖A q₀ (ν +ᵥ β)‖ₑ) (lam.restrict 𝓖)` using `fun ν => ((hA q₀).comp (continuous_const_add (ν : V))).measurable.enorm.aemeasurable`. Establish `h1 : ∫⁻ β, ‖A q₀ β‖ₑ ∂lam ≤ ∫⁻ β in 𝓖, S β ∂lam`. Rewrite using `[h𝓖.lintegral_eq_tsum'', ← lintegral_tsum hmeas]`. Use `lintegral_mono fun β => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h5 : ∀ ν : Λ, ‖A q₀ (ν +ᵥ β)‖ₑ = ‖A (act q₀ ν) β‖ₑ` using `fun ν => by show ‖A q₀ ((ν : V) + β)‖ₑ = _`. Rewrite using `[hAact, add_comm]`. Simplify using `only [h5, hS_def]`. Conclude with `ENNReal.tsum_comp_le_tsum_of_injective hinj (fun q => ‖A q β‖ₑ)`. Establish `h2 : ∫⁻ β in 𝓖, S β ∂lam ≤ ∫⁻ β in C, S β ∂lam` using `lintegral_fd_le h𝓖 S hSper hcov`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h3 : ∫⁻ β in C, S β ∂lam ≤ ∫⁻ _ in C, (∑' q, ENNReal.ofReal (u q)) ∂lam`. Apply `lintegral_mono_ae` to reduce the goal to its premises. Rewrite using `[ae_restrict_iff (measurableSet_le hSm measurable_const)]`. Use `Filter.Eventually.of_forall fun β hβ => ?_` and prove the remaining obligations. Rewrite using `[hS_def]`.
-
-Conclude with `ENNReal.tsum_le_tsum fun q => by`. Rewrite using `[← ofReal_norm]`. Conclude with `ENNReal.ofReal_le_ofReal (hAu q β hβ)`. Rewrite `h3` using `[setLIntegral_const]`. Use `⟨(hA q₀).aestronglyMeasurable, ?_⟩` and prove the remaining obligations.
-
-Conclude with `lt_of_le_of_lt (h1.trans (h2.trans h3)) (ENNReal.mul_lt_top hM.lt_top hC.measure_lt_top)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem abs_integrable {V : Type} [AddCommGroup V] [TopologicalSpace V] [IsTopologicalAddGroup V]
     [SecondCountableTopology V] [MeasurableSpace V] [BorelSpace V] (lam : Measure V) [lam.IsAddHaarMeasure]

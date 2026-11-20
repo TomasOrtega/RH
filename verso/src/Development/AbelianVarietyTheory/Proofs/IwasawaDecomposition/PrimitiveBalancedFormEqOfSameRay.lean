@@ -5,7 +5,7 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 namespace GlobalTheory.PolFan
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use `LinearMap.ext₂ fun y z => ?_` and prove the remaining obligations. Establish `h2` using `LinearMap.congr_fun₂ (congrArg Subtype.val h) y z`. Simplify using `only [Submodule.coe_smul, LinearMap.smul_apply, smul_eq_mul] at h2`. Conclude with `mul_left_cancel₀ hg h2`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem balForms_zsmul_cancel {O : Type} [CommRing O] {bar : O → O} {X : Type} [AddCommGroup X] [Module O X]
     {g : ℤ} (hg : g ≠ 0) {a b : balForms bar X} (h : g • a = g • b) : a = b := by
@@ -16,19 +16,17 @@ theorem balForms_zsmul_cancel {O : Type} [CommRing O] {bar : O → O} {X : Type}
   exact mul_left_cancel₀ hg h2
 
 /- English proof (translation)
-Introduce `O _ bar X _ _ β β' p r hβ hβ' hp hr h`. Use `set g := Nat.gcd p r with hgdef`. Establish `hg : 0 < g` using `Nat.gcd_pos_of_pos_left r hp`. Take `⟨p₁, hp₁⟩ : g ∣ p` from `Nat.gcd_dvd_left p r`. Take `⟨r₁, hr₁⟩ : g ∣ r` from `Nat.gcd_dvd_right p r`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcop : Nat.Coprime p₁ r₁`. Use `Nat.coprime_div_gcd_div_gcd (m := p) (n := r) hg` as an intermediate fact. Rewrite `this` using `[← hgdef]`. Establish `e1 : p / g = p₁` using `by rw [hp₁, Nat.mul_div_cancel_left _ hg]`. Establish `e2 : r / g = r₁` using `by rw [hr₁, Nat.mul_div_cancel_left _ hg]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[e1, e2]`. Then use the resulting hypothesis. Establish `h1 : (p₁ : ℤ) • β = (r₁ : ℤ) • β'`. Apply `balForms_zsmul_cancel (g := (g : ℤ)) (by exact_mod_cast hg.ne')` to reduce the goal to its premises. Rewrite using `[smul_smul, smul_smul, ← Nat.cast_mul, ← Nat.cast_mul, ← hp₁, ← hr₁, natCast_zsmul, natCast_zsmul]`. Conclude with `h`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hbez : (p₁ : ℤ) * Nat.gcdA p₁ r₁ + (r₁ : ℤ) * Nat.gcdB p₁ r₁ = 1`. Rewrite using `[← Nat.gcd_eq_gcd_ab, hcop.gcd_eq_one]`. Both sides reduce to the same expression. Use `set u := Nat.gcdA p₁ r₁`. Use `set v := Nat.gcdB p₁ r₁`.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `hr1 : r₁ = 1`. Apply `hβ r₁ (u • β' + v • β)` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[add_smul, smul_smul, smul_smul, mul_comm (p₁ : ℤ) u]`. Use `_ = r₁ • (u • β' + v • β) := by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, smul_smul, mul_comm u, ← smul_smul, ← smul_add, natCast_zsmul]`. Establish `hp1 : p₁ = 1`. Apply `hβ' p₁ (u • β' + v • β)` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[add_smul, smul_smul, smul_smul, mul_comm (r₁ : ℤ) v]`.
-
-Use `_ = p₁ • (u • β' + v • β) := by`. Rewrite using `[← h1, smul_smul v, mul_comm v, ← smul_smul, ← smul_add, natCast_zsmul]`. Rewrite `h1` using `[hr1, hp1]`. Simplify using `using h1`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isPrim_ray_eq : ∀ {O : Type} [CommRing O] (bar : O → O) {X : Type} [AddCommGroup X] [Module O X]
     (β β' : balForms bar X) (p r : ℕ), IsPrim bar β → IsPrim bar β' → 0 < p → 0 < r → p • β = r • β' → β = β' := by

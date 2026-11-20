@@ -68,13 +68,11 @@ def AmpVanish (νL : X.B.I.Ginf → Measure X.B.I.Ginf) : Prop :=
   ∀ c γ ν, J2of Y u u' νL γ = 0 → grpC Y u u' c γ ν = 0
 
 /- English proof (translation)
-Establish `hJ : ∀ γ, 0 ≤ J2of Y u u' νL γ`. Introduce `γ`. Unfold `J2of`. Use `split_ifs`. Check the signs of the components of the expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Check the signs of the components of the expression. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `le_refl 0`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `c γ ν show 0 ≤ a2C Y u u' νL c γ ν`. Unfold `a2C`. Conclude with `div_nonneg (by positivity) (hJ γ)`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Introduce `γ`. Conclude with `hJ γ`. Introduce `c γ ν show ‖grpC Y u u' c γ ν‖ ^ 2 ≤ a2C Y u u' νL c γ ν * J2of Y u u' νL γ`. Unfold `a2C`. Distinguish the cases in `h0 : J2of Y u u' νL γ = 0`.
-
-Rewrite using `[h c γ ν h0, h0]`. Simplify using the standard rewrite rules. Rewrite using `[div_mul_cancel₀ _ h0]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ampInput_of_vanish (νL νB : X.B.I.Ginf → Measure X.B.I.Ginf) (ng : PN.Pts D.host.E D.R.rS → ℝ)
     (h : AmpVanish Y u u' νL) : PN.AmpInput (Y.tO u u') (NOf2 Y u u' νL νB ng) := by
@@ -120,11 +118,11 @@ def NGCut2C : Prop :=
         Formalism.L2.SG.RowsOther.NGReal (Y.tO u u') (NOf2 Y u u' νL νB ng) D.R.f A CB large₂.sc.b cSt Ire
 
 /- English proof (translation)
-Introduce `Cg cb Cw cT CT C0`. Take `⟨C1, C0n, A, CB, CSt, Cgs, CTs, h1, h2, h3, h4, hA, C'₀, Cl₀, h⟩` from `hc Cg cb Cw cT CT C0`. Take `⟨Cn, hCn, hK⟩` from `Formalism.L2.SG.RowsOther.rowNG_of_cut hR hC C1 C0n A CB CSt Cgs CTs h1 h2 h3 h4 hA`. Use `⟨Cn, hCn, C'₀, Cl₀, fun C' Cl a b D large₂ X Y u u' h0 hs hT ha => ?_⟩` and prove the remaining obligations. Take `⟨P, iP, B, cSt, e1, Irat, Ire, νL, νB, ng, _, _, hG, hdd, hN, hF, hS, hFin, hRe⟩` from `h C' Cl a b D large₂ X Y u u' h0 hs hT`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hcard` using `Formalism.MainNotions.LatticeGluingRadicals.d_card D`. Establish `key` using `hK D.host.E (TauC Y u u') _ _ _ _ (Y.tO u u') D.R.rS D.R.k (Set (TauC Y u u')) (NuC D) (NOf2 Y u u' νL νB ng) P B large₂.sc.b (2 * D.host.v) (X.B.g : ℝ) (((Tu D u : ℕ) : ℝ) * ((Tu D u' : ℕ) : ℝ)) cSt e1 Irat Ire`. Rewrite `key` using `[hcard]`. Establish `r` using `key ha hG hN hF hS hFin hRe`. Rewrite `r` using `[hdd]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `r`.
+A detailed English derivation is pending.
 -/
 theorem counting_bound_of_joint_chain (hR : PN.RowNGJoint) (hC : PN.NGChain) (hc : NGCut2C) : RowNGC := by
   intro Cg cb Cw cT CT C0

@@ -48,18 +48,18 @@ def thA (u : Weight Dw) (n : ℕ) : (E →+* ℂ) × ℕ → ℕ :=
   fun x => ((wtOf Dw (u + GlobalTheory.FlatLine.parWt Dw (shift Dw u n)) ((n / 2 : ℕ) : ℤ)).1 x).toNat
 
 /- English proof (translation)
-The claim follows from `Dvd.intro _ rfl`.
+A detailed English derivation is pending.
 -/
 theorem eight_dvd_nCol : 8 ∣ nCol Dw := Dvd.intro _ rfl
 
 /- English proof (translation)
-Unfold `nCol`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem sum_le_nCol : ∑ f : Lt1 Dw, 2 * rk f ≤ nCol Dw := by
   unfold nCol; omega
 
 /- English proof (translation)
-Introduce `la` and use `by obtain ⟨A, hA⟩ := h la exact ⟨A, fun T io e ho y => ⟨(hA T io e ho y).1, fun ha => ((hA T io e ho y).2 ha).trans (EReal.coe_le_coe_iff.2 (by linarith))⟩⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem OscLe.mono {cx : Lt1 Dw → ℕ} {b b' : ℝ} (h : OscLe Xo c p cx b) (hb : b ≤ b') : OscLe Xo c p cx b' := fun la => by
   obtain ⟨A, hA⟩ := h la
@@ -70,7 +70,7 @@ def PrimeSum (S : Finset ℕ) (e : ℕ → ℝ) (s : ℝ) : Prop :=
   (∀ q ∈ S, q.Prime) ∧ (∀ q, 0 ≤ e q) ∧ (∀ q ∉ S, e q = 0) ∧ ∑ q ∈ S, e q * Real.log q ≤ s
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by simp, fun _ => le_rfl, fun _ _ => rfl, by simp⟩`.
+Supply the required witnesses or components.
 -/
 example : PrimeSum ∅ 0 0 := ⟨by simp, fun _ => le_rfl, fun _ _ => rfl, by simp⟩
 

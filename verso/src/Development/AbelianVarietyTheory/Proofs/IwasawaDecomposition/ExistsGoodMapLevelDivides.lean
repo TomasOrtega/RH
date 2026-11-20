@@ -7,7 +7,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.LvCover
 
 /- English proof (translation)
-Use `IsPullback.of_right (h₁₂ := pullback.fst _ _) (v₁₃ := Xo.s) (h₂₂ := spMap (IntermediateField.inclusion c.le).toRingHom) ?_ ?_ (IsPullback.of_hasPullback _ _)` and prove the remaining obligations. Establish `e : fieldMap Xo h ≫ pullback.fst _ _ = pullback.fst _ _` using `pullback.lift_fst _ _ _`. Rewrite using `[e, GlobalTheory.IndefiniteRowSideFullHecke.RelativeGroupHatForm.spMap_inclusion_comp]`. Conclude with `IsPullback.of_hasPullback _ _`. Conclude with `pullback.lift_snd _ _ _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fieldMap_isPullback {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H}
     {l : Level H} (Xo : Moduli D l) {c c' : Coeff l} (h : c.F ≤ c'.F) :
@@ -25,7 +25,7 @@ end GlobalTheory.LvCover
 namespace GlobalTheory.LvCover
 
 /- English proof (translation)
-Use `haveI := c'.fin`. Use `haveI : Surjective (spMap (IntermediateField.inclusion h).toRingHom) := (GlobalTheory.LevelQuotRep.finite_etale_onto_spMap (IntermediateField.inclusion h).toRingHom).2.2`. Conclude with `MorphismProperty.of_isPullback (P := @Surjective) (fieldMap_isPullback Xo h).flip inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem fieldMap_surjective {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H}
     {l : Level H} (Xo : Moduli D l) {c c' : Coeff l} (h : c.F ≤ c'.F) : Surjective (fieldMap Xo h) := by
@@ -35,11 +35,11 @@ theorem fieldMap_surjective {E : Type} [Field E] [NumberField E] [IsCMField E] {
   exact MorphismProperty.of_isPullback (P := @Surjective) (fieldMap_isPullback Xo h).flip inferInstance
 
 /- English proof (translation)
-Introduce `E _ _ _ H D hpq l l' hd Xo Xo' c c' h Y Y'`. Take `⟨-, hN⟩` from `GlobalTheory.moduliScheme_levelMaps_heckePoints`. Take `⟨r₀, -, m, -, -, -, -, -, hF⟩` from `(hN E H D hpq).1 l' l Xo' Xo hd`. Take `⟨rF, h₁, h₂, -, -, hsF, -⟩` from `hF (GlobalTheory.IndefiniteRowSideFullHecke.RelativeGroupHatForm.lowerCoeff hd c) c rfl`. Set `c''` to `GlobalTheory.IndefiniteRowSideFullHecke.RelativeGroupHatForm.lowerCoeff hd c`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `h' : c'.F ≤ c''.F` using `h`. Use `⟨rF ≫ fieldMap Xo' h', ⟨?_, ?_, ?_⟩⟩` and prove the remaining obligations. Establish `hfst : (rF ≫ fieldMap Xo' h') ≫ pullback.fst _ _ = pullback.fst _ _ ≫ r₀`. Rewrite using `[Category.assoc, show fieldMap Xo' h' ≫ pullback.fst _ _ = pullback.fst _ _ from pullback.lift_fst _ _ _, h₁]`. Take `⟨n, -⟩` from `GlobalTheory.LevelCover.sab_comp Y.m0.toSABMap m rfl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨n', -⟩` from `GlobalTheory.LevelCover.sab_cancel Y'.m0.toSABMap n _ hfst`. Conclude with `⟨(GlobalTheory.ShFam.TwMap.reflEquiv _ _ _).symm n'⟩`. Use `haveI := fieldMap_surjective Xo' h'`. Conclude with `(rF ≫ fieldMap Xo' h').surjective`. Rewrite using `[Category.assoc, show fieldMap Xo' h' ≫ pullback.snd _ _ = pullback.snd _ _ ≫ _ from pullback.lift_snd _ _ _, ← Category.assoc, h₂, Category.assoc, GlobalTheory.IndefiniteRowSideFullHecke.RelativeGroupHatForm.spMap_inclusion_comp]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_goodMap_of_dvd : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H), 1 ≤ D.p + D.q →
     ∀ (l l' : Level H), l'.Dvd l → ∀ (Xo : Moduli D l) (Xo' : Moduli D l') (c : Coeff l) (c' : Coeff l') (h : c'.F ≤ c.F)

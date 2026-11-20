@@ -34,7 +34,7 @@ theorem conjS_apply (f : 𝓢(V, ℂ)) (x : V) : conjS f x = starRingEnd ℂ (f 
 def mulS (m f : 𝓢(V, ℂ)) : 𝓢(V, ℂ) := SchwartzMap.smulLeftCLM ℂ (m : V → ℂ) f
 
 /- English proof (translation)
-Use `congrFun (SchwartzMap.smulLeftCLM_apply (F := ℂ) m.hasTemperateGrowth f) x` as an intermediate fact. Simplify `this` using `[mulS, smul_eq_mul]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mulS_apply (m f : 𝓢(V, ℂ)) (x : V) : mulS m f x = m x * f x := by
   have := congrFun (SchwartzMap.smulLeftCLM_apply (F := ℂ) m.hasTemperateGrowth f) x
@@ -49,7 +49,7 @@ Both sides reduce to the same expression.
 theorem evS_apply (x : V) (f : 𝓢(V, ℂ)) : evS x f = f x := rfl
 
 /- English proof (translation)
-Rewrite using `[← evS_apply x, map_sum]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sum_apply {ι : Type} (s : Finset ι) (F : ι → 𝓢(V, ℂ)) (x : V) : (∑ i ∈ s, F i) x = ∑ i ∈ s, F i x := by
   rw [← evS_apply x, map_sum]; rfl
@@ -61,11 +61,11 @@ theorem trans_apply (a : V) (f : 𝓢(V, ℂ)) (x : V) : SchwartzMap.compSubCons
   simp
 
 /- English proof (translation)
-Take `⟨R, hR⟩` from `hK.isBounded.subset_closedBall 0`. Establish `h0 : (0 : ℝ) < max R 1` using `lt_max_of_lt_right one_pos`. Set `b : ContDiffBump (0 : V)` to `⟨max R 1, max R 1 + 1, h0, by linarith⟩`. Establish `h1 : HasCompactSupport (fun x => ((b x : ℝ) : ℂ))` using `b.hasCompactSupport.comp_left (g := fun r : ℝ => (r : ℂ)) (by simp)`. Use `⟨h1.toSchwartzMap (Complex.ofRealCLM.contDiff.comp b.contDiff), h1, fun x => ?_, fun x hx => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `starRingEnd ℂ ((b x : ℝ) : ℂ) = ((b x : ℝ) : ℂ)`. Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `((b x : ℝ) : ℂ) = 1`. Rewrite using `[b.one_of_mem_closedBall]`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `Metric.closedBall_subset_closedBall (le_max_left _ _) (hR hx)`.
+A detailed English derivation is pending.
 -/
 theorem exists_bump [FiniteDimensional ℝ V] (K : Set V) (hK : IsCompact K) :
     ∃ χ : 𝓢(V, ℂ), HasCompactSupport (χ : V → ℂ) ∧ (∀ x, starRingEnd ℂ (χ x) = χ x) ∧ ∀ x ∈ K, χ x = 1 := by
@@ -89,39 +89,35 @@ namespace GlobalTheory.TransConstForm
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
 
 /- English proof (translation)
-Use `set B : 𝓢(V, ℂ) → 𝓢(V, ℂ) → ℂ := fun f g => ∫ x, T f x * starRingEnd ℂ (T g x) ∂μ with hB`. Establish `hL : ∀ g, ∃ L : 𝓢(V, ℂ) →L[ℂ] ℂ, ∀ f, L f = B f g` using `fun g => by`. Take `⟨L, hL⟩` from `GlobalTheory.T.schwartz_pairing_continuous_functional V μ (T g)`. Conclude with `⟨L.comp T, fun f => by simp [hL, hB]⟩`. Use `choose L hLB using hL`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ψ, hψc, hψr, v, hsum1, hfin, M, hsumm⟩` from `GlobalTheory.T.real_compact_partition_unity V`. Take `⟨χ, hχc, hχr, hχ1⟩` from `exists_bump (tsupport (ψ : V → ℂ)) hψc`. Set `tr : V → 𝓢(V, ℂ) → 𝓢(V, ℂ)` to `fun a f => SchwartzMap.compSubConstCLM ℂ a f`. Establish `htr_apply : ∀ a f x, tr a f x = f (x - a)` using `fun a f x => trans_apply a f x`. Establish `hχψ : ∀ y, starRingEnd ℂ (χ y) * ψ y = ψ y`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `y`. Distinguish the cases in `hy : ψ y = 0`. Simplify using `[hy]`. Rewrite using `[hχr, hχ1 y (subset_tsupport _ hy), one_mul]`. Establish `hterm : ∀ h, ∃ C : ℝ, ∀ j, ‖B h (tr (v j) ψ)‖ ≤ C * ((1 + ‖v j‖) ^ M)⁻¹`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `h`. Take `⟨C, hC⟩` from `GlobalTheory.T.translation_isometry_schwartz_operator V μ T htr χ ψ h hχc M`. Use `⟨C, fun j => ?_⟩` and prove the remaining obligations. Establish `e : B h (tr (v j) ψ) = B (mulS (tr (v j) χ) h) (tr (v j) ψ)` using `(hmul (tr (v j) χ) h (mulS (tr (v j) χ) h) (tr (v j) ψ) (tr (v j) ψ) (fun x => mulS_apply _ _ x) (fun x => by simp only [htr_apply]; exact (hχψ _).symm)).symm`. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hC (v j) _ _ (fun x => by rw [mulS_apply, htr_apply]) (fun x => htr_apply _ _ x)`. Establish `hsummable : ∀ h, Summable (fun j => L (tr (v j) ψ) h)`. Introduce `h`. Take `⟨C, hC⟩` from `hterm h`. Use `Summable.of_norm_bounded (hsumm.mul_left C) (fun j => ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Rewrite using `[hLB]`. Conclude with `hC j`. Use `haveI : BarrelledSpace ℂ 𝓢(V, ℂ) := GlobalTheory.schwartzMap_barrelledSpace V`. Take `⟨en, hen⟩` from `exists_surjective_nat (Fin (Module.finrank ℝ V) → ℤ)`. Set `S : ℕ → Finset (Fin (Module.finrank ℝ V) → ℤ)` to `fun N => (Finset.range N).image en`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hS : Tendsto S atTop atTop`. Use `Filter.tendsto_atTop_finset_of_monotone (fun a b hab => ?_) (fun w => ?_)` and prove the remaining obligations. Conclude with `Finset.image_subset_image (Finset.range_subset_range.2 hab)`. Take `⟨k, rfl⟩` from `hen w`. Conclude with `⟨k + 1, Finset.mem_image_of_mem _ (Finset.mem_range.2 (Nat.lt_succ_self k))⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hlim : Tendsto (fun N h => (∑ j ∈ S N, L (tr (v j) ψ)) h) atTop (𝓝 fun h : 𝓢(V, ℂ) => ∑' j, L (tr (v j) ψ) h)`. Rewrite using `[tendsto_pi_nhds]`. Introduce `h`. Simplify using `only [ContinuousLinearMap.sum_apply]`. Conclude with `(hsummable h).hasSum.comp hS`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Use `⟨continuousLinearMapOfTendsto (fun N => ∑ j ∈ S N, L (tr (v j) ψ)) hlim, fun f g h hf hh => ?_⟩` and prove the remaining obligations. Use `show _ = linearMapOfTendsto _ _ hlim h`. Rewrite using `[linearMapOfTendsto_apply]`. Take `⟨R, hR⟩` from `hf.isCompact.isBounded.subset_closedBall 0`. Take `⟨r, hr⟩` from `hψc.isCompact.isBounded.subset_closedBall 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `set J := (hfin (R + r)).toFinset with hJ`. Establish `hout : ∀ j, j ∉ J → ∀ x, ψ (x - v j) * f x = 0`. Introduce `j hj x`. Assume the negation of the conclusion as `hne`. Establish `h1 : ψ (x - v j) ≠ 0` using `left_ne_zero_of_mul hne`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : f x ≠ 0` using `right_ne_zero_of_mul hne`. Establish `hx : ‖x‖ ≤ R` using `by simpa using hR (subset_tsupport _ h2)`. Establish `hy : ‖x - v j‖ ≤ r` using `by simpa using hr (subset_tsupport _ h1)`. Apply `hj` to reduce the goal to its premises. Rewrite using `[hJ, Set.Finite.mem_toFinset, Set.mem_setOf_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hterm_eq : ∀ j, L (tr (v j) ψ) h = B (mulS (tr (v j) ψ) f) g`. Introduce `j`. Rewrite using `[hLB]`. Establish `ea` using `hmul (conjS g) f h (tr (v j) ψ) (mulS (tr (v j) ψ) g) (fun x => by rw [hh, conjS_apply, mul_comm]) (fun x => by rw [mulS_apply, conjS_apply, Complex.conj_conj, mul_comm])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `eb` using `hmul (tr (v j) ψ) f (mulS (tr (v j) ψ) f) g (mulS (tr (v j) ψ) g) (fun x => mulS_apply _ _ x) (fun x => by rw [mulS_apply, htr_apply, hψr])`. Conclude with `ea.trans eb.symm`. Establish `hzero : ∀ j, j ∉ J → mulS (tr (v j) ψ) f = 0`. Introduce `j hj`. Use extensionality with `x`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mulS_apply, htr_apply]`. Conclude with `hout j hj x`. Establish `hsumf : ∑ j ∈ J, mulS (tr (v j) ψ) f = f`. Use extensionality with `x`. Rewrite using `[sum_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mulS_apply, htr_apply]`. Rewrite using `[← Finset.sum_mul]`. Distinguish the cases in `hfx : f x = 0`. Simplify using `[hfx]`. Establish `hs : HasSum (fun j => ψ (x - v j)) (∑ j ∈ J, ψ (x - v j))`.
-
-Use `hasSum_sum_of_ne_finset_zero (fun j hj => ?_)` and prove the remaining obligations. Use `hout j hj x` as an intermediate fact. Conclude with `(mul_eq_zero.1 this).resolve_right hfx`. Rewrite using `[← (hsum1 x).unique hs, one_mul]`. Combine the equalities or inequalities in the displayed calculation.
-
-Use `(tsum_eq_sum (fun j hj => ?_)).symm` and prove the remaining obligations. Rewrite using `[hterm_eq, hzero j hj, ← hLB, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem exists_lambda [FiniteDimensional ℝ V] [MeasurableSpace V] [BorelSpace V] (μ : Measure V) [μ.IsAddHaarMeasure]
     (T : 𝓢(V, ℂ) →L[ℂ] 𝓢(V, ℂ))
@@ -234,33 +230,31 @@ namespace GlobalTheory.TransConstForm
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
 
 /- English proof (translation)
-Take `⟨Λ, hΛ⟩` from `exists_lambda μ T htr hmul`. Use `set B : 𝓢(V, ℂ) → 𝓢(V, ℂ) → ℂ := fun f g => ∫ x, T f x * starRingEnd ℂ (T g x) ∂μ with hB`. Establish `hL : ∀ g, ∃ L : 𝓢(V, ℂ) →L[ℂ] ℂ, ∀ f, L f = B f g` using `fun g => by`. Take `⟨L, hL⟩` from `GlobalTheory.T.schwartz_pairing_continuous_functional V μ (T g)`. Conclude with `⟨L.comp T, fun f => by simp [hL, hB]⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Use `choose L hLB using hL`. Set `tr : V → 𝓢(V, ℂ) → 𝓢(V, ℂ)` to `fun a f => SchwartzMap.compSubConstCLM ℂ a f`. Establish `htr_apply : ∀ a f x, tr a f x = f (x - a)` using `fun a f x => trans_apply a f x`. Establish `hΛc : ∀ h : 𝓢(V, ℂ), HasCompactSupport (h : V → ℂ) → ∀ a, Λ (tr a h) = Λ h`. Introduce `h hh a`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨χ, hχc, hχr, hχ1⟩` from `exists_bump (tsupport (h : V → ℂ)) hh`. Establish `e1 : B h χ = Λ h` using `hΛ h χ h hh (fun x => by`. Distinguish the cases in `hx : h x = 0`. Simplify using `[hx]`. Rewrite using `[hχr, hχ1 x (subset_tsupport _ hx), mul_one])`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hh' : HasCompactSupport (tr a h : V → ℂ)`. Establish `: (tr a h : V → ℂ) = (h : V → ℂ) ∘ (Homeomorph.subRight a)`. Use function extensionality and compare the values at `x`. Simplify using `[htr_apply]`. Rewrite using `[this]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hh.comp_homeomorph _`. Establish `e2 : B (tr a h) (tr a χ) = Λ (tr a h)` using `hΛ _ _ _ hh' (fun x => by`. Rewrite using `[htr_apply, htr_apply]`. Distinguish the cases in `hx : h (x - a) = 0`. Simplify using `[hx]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hχr, hχ1 _ (subset_tsupport _ hx), mul_one])`. Establish `e3 : B h χ = B (tr a h) (tr a χ)` using `htr a (tr a h) h (tr a χ) χ (fun x => by rw [htr_apply, add_sub_cancel_right]) (fun x => by rw [htr_apply, add_sub_cancel_right])`. Rewrite using `[← e2, ← e1, e3]`. Establish `hΛt : ∀ a h, Λ (tr a h) = Λ h`. Introduce `a h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcl : IsClosed {h : 𝓢(V, ℂ) | Λ (tr a h) = Λ h}` using `isClosed_eq (Λ.continuous.comp (SchwartzMap.compSubConstCLM ℂ a).continuous) Λ.continuous`. Conclude with `closure_minimal (fun h hh => hΛc h hh a) hcl (GlobalTheory.T.schwartz_compact_support_dense V h)`. Establish `hΛt' : ∀ (a : V) (f g : 𝓢(V, ℂ)), (⇑g = fun x => f (x + a)) → Λ g = Λ f`. Introduce `a f g hg`. Establish `: g = tr (-a) f`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use extensionality with `x`. Rewrite using `[htr_apply, sub_neg_eq_add]`. Conclude with `congrFun hg x`. Rewrite using `[this, hΛt]`. Set `I : 𝓢(V, ℂ) →L[ℂ] ℂ` to `SchwartzMap.integralCLM ℂ μ`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hIa : ∀ u, I u = ∫ x, u x ∂μ` using `fun u => SchwartzMap.integralCLM_apply ℂ u`. Establish `hIt : ∀ (a : V) (f g : 𝓢(V, ℂ)), (⇑g = fun x => f (x + a)) → I g = I f`. Introduce `a f g hg`. Rewrite using `[hIa, hIa, hg]`. Conclude with `integral_add_right_eq_self (fun x => f x) a`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hI0 : I ≠ 0`. Introduce `h0`. Set `b : ContDiffBump (0 : V)` to `⟨1, 2, one_pos, one_lt_two⟩`. Establish `h1 : HasCompactSupport (fun x => ((b x : ℝ) : ℂ))` using `b.hasCompactSupport.comp_left (g := fun r : ℝ => (r : ℂ)) (by simp)`. Use `congrArg (fun F : 𝓢(V, ℂ) →L[ℂ] ℂ => F (h1.toSchwartzMap (Complex.ofRealCLM.contDiff.comp b.contDiff))) h0` as an intermediate fact.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Simplify using `only [ContinuousLinearMap.zero_apply, hIa] at this`. Express the relevant statement in the definitionally equal form `∫ x, ((b x : ℝ) : ℂ) ∂μ = 0 at this`. Rewrite `this` using `[integral_complex_ofReal, Complex.ofReal_eq_zero]`. Conclude with `(ne_of_gt (b.integral_pos (μ := μ))) this`. Take `⟨c, hc⟩` from `GlobalTheory.TransInvSchwartz.dim_le_one I Λ hIt hΛt' hI0`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `⟨c, fun f g => ?_⟩` and prove the remaining obligations. Take `⟨P, hP⟩` from `GlobalTheory.T.schwartz_pairing_continuous_functional V μ g`. Establish `hcl : IsClosed {f : 𝓢(V, ℂ) | B f g = c * ∫ x, f x * starRingEnd ℂ (g x) ∂μ}`. Establish `e : {f : 𝓢(V, ℂ) | B f g = c * ∫ x, f x * starRingEnd ℂ (g x) ∂μ} = {f | L g f = c * P f}`. Use extensionality with `f`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Set.mem_setOf_eq, hLB, hP]`. Rewrite using `[e]`. Conclude with `isClosed_eq (L g).continuous (continuous_const.mul P.continuous)`. Use `closure_minimal (fun f hf => ?_) hcl (GlobalTheory.T.schwartz_compact_support_dense V f)` and prove the remaining obligations. Use `hΛ f g (mulS f (conjS g)) hf (fun x => by rw [mulS_apply, conjS_apply])` as an intermediate fact.
-
-Use `show B f g = _`. Rewrite using `[show B f g = Λ (mulS f (conjS g)) from this, hc, ContinuousLinearMap.smul_apply, smul_eq_mul, hIa]`. Use `congr 1`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only [mulS_apply, conjS_apply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem main_of [FiniteDimensional ℝ V] [MeasurableSpace V] [BorelSpace V] (μ : Measure V) [μ.IsAddHaarMeasure]
     (T : 𝓢(V, ℂ) →L[ℂ] 𝓢(V, ℂ))
@@ -343,7 +337,7 @@ theorem main_of [FiniteDimensional ℝ V] [MeasurableSpace V] [BorelSpace V] (μ
 end GlobalTheory.TransConstForm
 
 /- English proof (translation)
-Introduce `V _ _ _ μ hμ T htr hmul`. Use `letI : MeasurableSpace V := borel V`. Use `haveI : BorelSpace V := ⟨rfl⟩`. Conclude with `GlobalTheory.TransConstForm.main_of μ T htr hmul`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.TransConstForm.eq_const_mul_l2_of_translation_invariant : ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     (μ : @MeasureTheory.Measure V (borel V)), @MeasureTheory.Measure.IsAddHaarMeasure V _ _ (borel V) μ →

@@ -3,11 +3,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open IsLocalRing MvPowerSeries UpperTheory.V.Alg
 
 /- English proof (translation)
-Establish `hne : (Submodule.torsion O (L ⧸ S)).mkQ (S.mkQ p) ≠ 0`. Introduce `h`. Rewrite `h` using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Take `⟨⟨c, hc⟩, hcp⟩` from `h`. Use `hp c (nonZeroDivisors.ne_zero hc) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Submodule.Quotient.mk_eq_zero]`. Conclude with `hcp`. Take `⟨ψ, hψ⟩` from `Module.Projective.exists_dual_ne_zero O hne`. Use `⟨ψ ∘ₗ (Submodule.torsion O (L ⧸ S)).mkQ ∘ₗ S.mkQ, fun s hs => ?_, hψ⟩` and prove the remaining obligations. Establish `: S.mkQ s = 0` using `(Submodule.Quotient.mk_eq_zero S).2 hs`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.comp_apply, this, map_zero]`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.Alg.exists_form_of_not_torsion {O L : Type} [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] [AddCommGroup L] [Module O L] [Module.Finite O L] (S : Submodule O L) (p : L)
@@ -25,13 +25,13 @@ private theorem UpperTheory.V.Alg.exists_form_of_not_torsion {O L : Type} [CommR
   simp only [LinearMap.comp_apply, this, map_zero]
 
 /- English proof (translation)
-Establish `h0 : ∀ f : A, x (DirectSum.decompose 𝒜 f 0 : A) = x f`. Introduce `f`. Proceed by induction on `f using DirectSum.Decomposition.inductionOn 𝒜 with`. Consider the case `zero => simp`. Consider the case `@homogeneous i m`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Distinguish the cases in `hi : i = 0`. Substitute `hi` using the available equality. Rewrite using `[DirectSum.decompose_of_mem_same 𝒜 m.2]`. Rewrite using `[DirectSum.decompose_of_mem_ne 𝒜 m.2 hi, map_zero, hx i hi m m.2]`. Consider the case `add a b ha hb => simp [ha, hb]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Introduce `i f hf`. Rewrite `hf`, the goal using `[RingHom.mem_ker]`. Distinguish the cases in `hi : i = 0`. Substitute `hi` using the available equality. Rewrite using `[h0, hf]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx i hi _ (DirectSum.decompose 𝒜 f i).2`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.Alg.ker_isHomogeneous {O A X : Type} [CommRing O] [CommRing A] [Algebra O A]
     [AddCommGroup X] [DecidableEq X] (𝒜 : X → Submodule O A) [GradedAlgebra 𝒜] (x : A →ₐ[O] O)
@@ -54,27 +54,25 @@ private theorem UpperTheory.V.Alg.ker_isHomogeneous {O A X : Type} [CommRing O] 
   · exact hx i hi _ (DirectSum.decompose 𝒜 f i).2
 
 /- English proof (translation)
-Introduce `O A X _ _ _ _ _ _ _ 𝒜 _ x hx j hfg ι F hF hD p hp`. Assume the negation of the conclusion as `hcon`. Use `haveI : Module.Finite O (cotLat x 𝒜 j) := Module.Finite.iff_fg.2 hfg`. Take `⟨φ, hφS, hφp⟩` from `exists_form_of_not_torsion ((cotSpan x F).comap (cotLat x 𝒜 j).subtype) ⟨p, hp⟩ (fun c hc h => hcon ⟨c, hc, h⟩)`. Establish `hq` using `ker_isHomogeneous 𝒜 x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq2 : (RingHom.ker x ^ 2).IsHomogeneous 𝒜` using `by rw [pow_two]; exact hq.mul hq`. Set `r : A →ₗ[O] A` to `LinearMap.id - Algebra.linearMap O A ∘ₗ x.toLinearMap`. Establish `hr : ∀ f, r f = f - algebraMap O A (x f)` using `fun f => rfl`. Establish `hrq : ∀ f, r f ∈ RingHom.ker x` using `fun f => by`. Rewrite using `[RingHom.mem_ker, hr, map_sub, AlgHom.commutes]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Set `T : A →ₗ[O] A ⧸ satSq x` to `(satSq x).mkQ ∘ₗ GradedAlgebra.proj 𝒜 j ∘ₗ r`. Establish `hT : ∀ f, T f = (satSq x).mkQ (DirectSum.decompose 𝒜 (r f) j : A)` using `fun f => rfl`. Establish `hTL : ∀ f, T f ∈ cotLat x 𝒜 j` using `fun f => ⟨_, ⟨(DirectSum.decompose 𝒜 (r f) j).2, hq j (hrq f)⟩, (hT f).symm⟩`. Establish `hTj : ∀ f ∈ 𝒜 j, x f = 0 → T f = (satSq x).mkQ f` using `fun f hf h0 => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hT, hr, h0, map_zero, sub_zero, DirectSum.decompose_of_mem_same 𝒜 hf]`. Establish `hTi : ∀ i, i ≠ j → ∀ f ∈ 𝒜 i, T f = 0` using `fun i hi f hf => by`. Establish `: r f ∈ 𝒜 i`. Distinguish the cases in `h0 : i = 0`. Substitute `h0` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hr]`. Conclude with `sub_mem hf (SetLike.algebraMap_mem_graded 𝒜 _)`. Rewrite using `[hr, hx i h0 f hf, map_zero, sub_zero]`. Conclude with `hf`. Rewrite using `[hT, DirectSum.decompose_of_mem_ne 𝒜 this hi, map_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hTm : ∀ f g, T (f * g) = x f • T g + x g • T f` using `fun f g => by`. Establish `e : r (f * g) = r f * r g + (x f • r g + x g • r f)`. Simplify using `only [hr, Algebra.smul_def, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hz : (satSq x).mkQ (GradedAlgebra.proj 𝒜 j (r f * r g)) = 0`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Use `⟨1, one_ne_zero, ?_⟩` and prove the remaining obligations. Rewrite using `[one_smul]`. Use `hq2 j ?_` and prove the remaining obligations. Rewrite using `[pow_two]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Conclude with `Ideal.mul_mem_mul (hrq f) (hrq g)`. Use `show (satSq x).mkQ (GradedAlgebra.proj 𝒜 j (r (f * g))) = x f • (satSq x).mkQ (GradedAlgebra.proj 𝒜 j (r g)) + x g • (satSq x).mkQ (GradedAlgebra.proj 𝒜 j (r f))`. Rewrite using `[e]`. Simplify using `only [map_add, map_smul, hz, zero_add]`. Set `T' : A →ₗ[O] cotLat x 𝒜 j` to `T.codRestrict _ hTL`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hD0 : φ ∘ₗ T' = 0`. Use `hD _ (fun f g => ?_) (fun i hi f hf => ?_) (fun i => ?_)` and prove the remaining obligations. Establish `: T' (f * g) = x f • T' g + x g • T' f` using `Subtype.ext (hTm f g)`. Simplify using `only [LinearMap.comp_apply, this, map_add, map_smul]`. Establish `: T' f = 0` using `Subtype.ext (hTi i hi f hf)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [LinearMap.comp_apply, this, map_zero]`. Use `hφS _ ?_ show T (F i) ∈ cotSpan x F` and prove the remaining obligations. Rewrite using `[hTj _ (hF i).1 (hF i).2]`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Take `⟨a, ⟨ha1, ha2⟩, rfl⟩` from `hp`.
-
-Apply `hφp` to reduce the goal to its premises. Establish `h1 : φ (T' a) = 0` using `LinearMap.congr_fun hD0 a`. Rewrite using `[← h1]`. Use `congr 1`. Conclude with `Subtype.ext (hTj a ha1 ha2).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Alg.spans_of_der :
     ∀ (O A X : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CommRing A] [Algebra O A] [AddCommGroup X] [DecidableEq X] (𝒜 : X → Submodule O A) [GradedAlgebra 𝒜] (x : A →ₐ[O] O),

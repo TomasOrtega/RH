@@ -31,9 +31,9 @@ namespace GlobalTheory.OneMapRef.Equivar
 open CategoryTheory MonObj in
 
 /- English proof (translation)
-Introduce `a ha`. Take `⟨u, hu, e'⟩` from `hc a ha`. Establish `hM : (l.M : E) ≠ 0` using `by have := l.three_le; exact_mod_cast (by omega : l.M ≠ 0)`. Establish `hadd : ∀ u v, pv X idx x (u + v) = pv X idx x u + pv X idx x v` using `fun u v => by`. Unfold `pv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[per_add]`. Both sides reduce to the same expression. Rewrite using `[h a ha, e', smul_add, ← Nat.cast_smul_eq_nsmul E, inv_smul_smul₀ hM, hadd, A.ex_add, (A.ex_ker _).2 ⟨u, hu, rfl⟩, _root_.mul_one]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem marked_congr {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Geo.Tor.Host E} {Dw : Datum H}
     {l : Geo.Tor.Level H} {Xo : Moduli Dw l} {c : Coeff l} [Algebra c.F ℂ] {r g : ℕ} {X : Data E r}
@@ -52,7 +52,7 @@ theorem marked_congr {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Geo
 variable {D : D7} {S T : HSp D} {r g g' : ℕ}
 
 /- English proof (translation)
-Substitute `hr` using the available equality. Introduce `L L' h`. Use extensionality with `v`. Conclude with `SetLike.ext_iff.1 h v`.
+Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem latW_injective (hr : T.rank = r) : Function.Injective (latW (D := D) (T := T) hr) := by
   subst hr
@@ -61,11 +61,11 @@ theorem latW_injective (hr : T.rank = r) : Function.Injective (latW (D := D) (T 
   exact SetLike.ext_iff.1 h v
 
 /- English proof (translation)
-Take `⟨-, -, -, -, hm, hk, he, -⟩` from `h`. Take `⟨-, -, -, -, hm', hk', he', -⟩` from `h'`. Use `⟨?_, hm'.1.trans hm.1.symm, hp, hm'.2.trans hm.2.symm, hk'.trans hk.symm⟩` and prove the remaining obligations. Use extensionality with `τ`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hτ`. Take `⟨ρ, hρ⟩` from `eT'.surjective ⟨τ, hτ⟩`. Establish `: τ = (eT ρ).1` using `by rw [he, ← he', hρ]`. Conclude with `this ▸ (eT ρ).2`. Introduce `hτ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨ρ, hρ⟩` from `eT.surjective ⟨τ, hτ⟩`. Establish `: τ = (eT' ρ).1` using `by rw [he', ← he, hρ]`. Conclude with `this ▸ (eT' ρ).2`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sameSp_of_isSet {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {hr : T.rank = r} {X X' : Data D.host.E r}
     {eT : D.what₂.Tau ≃ X.Ψ} {eT' : D.what₂.Tau ≃ X'.Ψ} {bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ}
@@ -86,7 +86,7 @@ theorem sameSp_of_isSet {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {hr : T
     exact this ▸ (eT' ρ).2
 
 /- English proof (translation)
-Rewrite using `[Equiv.symm_apply_eq]`. Use `Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[he', ← he, Equiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem symm_eq_of_isSet {X X' : Data D.host.E r} {eT : D.what₂.Tau ≃ X.Ψ} {eT' : D.what₂.Tau ≃ X'.Ψ}
     (he : ∀ ρ, (eT ρ).1 = tauE D ρ) (he' : ∀ ρ, (eT' ρ).1 = tauE D ρ) (τ : D.host.E →+* ℂ) (h : τ ∈ X.Ψ)
@@ -96,13 +96,13 @@ theorem symm_eq_of_isSet {X X' : Data D.host.E r} {eT : D.what₂.Tau ≃ X.Ψ} 
   rw [he', ← he, Equiv.apply_symm_apply]
 
 /- English proof (translation)
-Take `⟨-, hθ, -, hev, -, -, -, hs⟩` from `h`. Choose the witnesses or unpack the hypotheses as in `⟨z, hz⟩ : ∃ z, th z ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Take `⟨_, _, -, -, h3⟩` from `hm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `[hc] at h3`. Establish `hq : X.p0 + (r - X.p0) = r` using `by have := X.p0_le; omega`. Take `⟨⟨Lz, hL⟩, -⟩` from `GlobalTheory.Ker.zR_laws _ r X g _ hq bas idx S.rank hs hev x hx`. Take `⟨v, hv⟩` from `Lz.surjective fun _ => z`. Take `⟨σ, hσ⟩` from `GlobalTheory.RealLineAt.exists_inverse_chart hθ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hw : rePt θ hr eT (Matrix.of fun a k => σ fun ρ => v (eT ρ) k (Fin.cast hr a) : WO S T) = v`. Use function extensionality and compare the values at `τ k a`. Use `hσ.comp (fun ρ => v (eT ρ) k (Fin.cast hr (Fin.cast hr.symm a))) (eT.symm τ)` as an intermediate fact. Use `this.trans ?_` and prove the remaining obligations. Rewrite using `[Equiv.apply_symm_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use `⟨Matrix.of fun a k => σ fun ρ => v (eT ρ) k (Fin.cast hr a), Matrix.ext fun a k => hσ.fin _, ?_⟩` and prove the remaining obligations. Rewrite using `[hw, ← hL, hv]`. Conclude with `mul_ne_zero (Complex.exp_ne_zero _) (Finset.prod_ne_zero_iff.2 fun _ _ => hz)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_real_ne_zero {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {hr : T.rank = r} {X : Data D.host.E r}
     {eT : D.what₂.Tau ≃ X.Ψ} {bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ} (h : IsSet ψ θ S T hr X eT bas)
@@ -132,19 +132,19 @@ theorem exists_real_ne_zero {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {hr
 variable {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Use `letI : Algebra c.F ℂ := σ.toAlgebra`. Introduce `y y' A A' th th' hth hth' mk mk' hmk hmk' hm hm' hAm hAm'`. Establish `hX : SameSp X' X` using `sameSp_of_isSet hS hS' hp`. Establish `hsy` using `symm_eq_of_isSet hS.2.2.2.2.2.2.1 hS'.2.2.2.2.2.2.1`. Take `⟨ga, g1, g2, g3, g4, g5⟩` from `GlobalTheory.OneMapRef.RatPt.rational_points D S T r g hr ψ θ X eT bas idx hS δ hδ`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨k1, k2⟩` from `((GlobalTheory.OneMapRef.markAd_laws D H Dw T r hr ι hι a' X'.Λ hL' l).2 mk' hmk' hm').2.2.2 δ ga g1`. Establish `eL : mapL ga X'.Λ = X.Λ` using `latW_injective hr (k1.trans hL.symm)`. Establish `eX : lact ga (castFr hX.psi x') = x`. Establish `: castFr hX.psi x' = frOf hr eT (mvZ θ a' Z)`. Rewrite using `[ex']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `τ a b`. Simplify using `only [castFr, frOf]`. Rewrite using `[hsy τ.1 τ.2]`. Rewrite using `[this, g3, ex, ((GlobalTheory.OneMapRef.oneg_frames D S T r g hr ψ θ X eT bas idx hS Z hZ).2.2.2.2 a').2.2.1 δ]`. Establish `key` using `GlobalTheory.OneMapRef.anFib_move_renum D H Dw l Xo c σ r g g' X' X hX bas' idx' e' bas idx e hS'.2.2.2.2.2.2.2 hS.2.2.2.2.2.2.2 hM' hM x' hx' X'.Λ hD' ga g2 y' A' th' hth'`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `key` using `[eL, eX]`. Take `⟨A₁, th₁, r1, r2, r3⟩` from `key`. Establish `hmem : ∀ a, mvMap ga mk' a ∈ X.Λ` using `fun a => eL ▸ ⟨mk' a, hmk' a, rfl⟩`. Take `⟨m1, -, m3, -⟩` from `(GlobalTheory.OneMapRef.markAd_laws D H Dw T r hr ι hι _ X.Λ hL l).2 _ hmem k2`. Take `⟨lam, -, l2, l3⟩` from `GlobalTheory.OneMapRef.exists_scalar_of_marked _ H Dw l Xo c r g X bas idx e x X.Λ hS.2.2.2.2.2.2.2 hx hD hA y y' A A₁ mk ((GlobalTheory.OneMapRef.markAd_laws D H Dw T r hr ι hι _ X.Λ hL l).2 _ hmk hm).1 hAm (marked_congr A₁ (r2 mk' hAm') (m3 l dvd_rfl le_rfl mk hmk hm)) th th₁ h …`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨lam, l3, fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨w', hw', rfl⟩` from `(g4 w).1 hw`. Use `⟨w', hw', ?_, fun χS χT om ho f hf => ?_⟩` and prove the remaining obligations. Rewrite using `[← r3 S.rank (rePt θ hr eT' w') (rePt θ hr eT (actO S T 1 δ w')), l2]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `τ k`. Rewrite using `[(g4 w').2]`. Use `congr 1`. Use function extensionality and compare the values at `a`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [rePt]`. Rewrite using `[hsy τ.1 (hX.psi ▸ τ.2) τ.2]`. Establish `: ((1, δ * a') : GA D S × GA D T) = (1, δ) * (1, a')` using `by rw [Prod.mk_mul_mk, one_mul]`. Rewrite using `[this, map_mul, Module.End.mul_apply]`. Conclude with `g5 χS χT om ho _ (ho.om_pres _ _ hf) w'`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem compare {σ : c.F →+* ℂ} (hA : l.A = 1) {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {hr : T.rank = r}
     {ι : Dw.La →ₗ[𝓞 D.host.E] (Fin T.rank → D.host.E)} (hι : LatEmb T ι) {X X' : Data D.host.E r}
@@ -208,7 +208,7 @@ theorem compare {σ : c.F →+* ℂ} (hA : l.A = 1) {ψ : AddChar (AF D.host.F) 
     exact g5 χS χT om ho _ (ho.om_pres _ _ hf) w'
 
 /- English proof (translation)
-The claim follows from `dif_pos hx`.
+A detailed English derivation is pending.
 -/
 theorem rdU_eq {σ : c.F →+* ℂ} (U : Unf Xo c σ r) (f : Rul Xo c) (k : U.Comp) {x : Frame (U.X k).Ψ r}
     (hx : x ∈ (U.X k).dom) : rdU U f k x = @evR _ _ _ _ _ _ _ Xo c f ℂ _ σ.toAlgebra (ptC U k ⟨x, hx⟩) :=

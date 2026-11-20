@@ -8,7 +8,7 @@ namespace GlobalTheory.ParahoricLowerBlock
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Rewrite using `[IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, (Valuation.integer.integers (valuation k)).isUnit_iff_valuation_eq_one]`. Conclude with `⟨fun h => lt_of_le_of_ne x.2 h, fun h => h.ne⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem residue_eq_zero_iff_val (x : 𝒪[k]) :
     IsLocalRing.residue 𝒪[k] x = 0 ↔ valuation k (algebraMap 𝒪[k] k x) < 1 := by
@@ -17,15 +17,13 @@ theorem residue_eq_zero_iff_val (x : 𝒪[k]) :
   exact ⟨fun h => lt_of_le_of_ne x.2 h, fun h => h.ne⟩
 
 /- English proof (translation)
-Take `⟨⟨h, rfl⟩, hlow⟩` from `mem_parahoric.1 hj`. Use `set f := IsLocalRing.residue 𝒪[k]`. Use `set Hb := f.mapMatrix h.val`. Use `set Gb := f.mapMatrix (h⁻¹).val`. Establish `hz : Hb.toBlocks₂₁ = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use extensionality with `i j'`. Conclude with `(residue_eq_zero_iff_val _).2 (hlow i j')`. Establish `hHG : Hb * Gb = 1`. Simplify using `only [Hb, Gb, ← map_mul, Units.mul_inv, map_one]`. Establish `h22 : Hb.toBlocks₂₂ * Gb.toBlocks₂₂ = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `congrArg Matrix.toBlocks₂₂ hHG` as an intermediate fact. Rewrite `this` using `[← fromBlocks_toBlocks Hb, ← fromBlocks_toBlocks Gb, fromBlocks_multiply, hz]`. Establish `e : (1 : Matrix (A ⊕ D) (A ⊕ D) 𝓀[k]).toBlocks₂₂ = 1`. Use extensionality with `a b`. Simplify using `[toBlocks₂₂, Matrix.one_apply]`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify `this` using `[e]`. Use `⟨h.val.toBlocks₂₂.det, (h⁻¹).val.toBlocks₂₂.det, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression. Rewrite using `[RingHom.map_det, ← map_inv]`.
-
-Both sides reduce to the same expression. Rewrite using `[map_mul, RingHom.map_det, RingHom.map_det, ← det_mul]`. Conclude with `(congrArg det h22).trans det_one`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lower_block_det (A D : Type) [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D]
     (j : GL (A ⊕ D) k) (hj : j ∈ parahoric k A D) :
@@ -58,13 +56,13 @@ end GlobalTheory.ParahoricLowerBlock
 namespace GlobalTheory.ParahoricLowerBlock
 
 /- English proof (translation)
-Introduce `k _ _ _ _ A D _ _ _ _ ξ hξ j hj`. Take `⟨a, b, ha, hb, hab⟩` from `lower_block_det A D j hj`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Rewrite `hab` using `[zero_mul, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `zero_ne_one hab`. Use `⟨?_, fun d d' hd hd' => ?_⟩` and prove the remaining obligations. Rewrite using `[ha]`. Conclude with `(map_ne_zero_iff _ (FaithfulSMul.algebraMap_injective 𝒪[k] k)).2 ha0`. Establish `hv : valuation k (((d * d' : kˣ) : k) - 1) < 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ((d * d' : kˣ) : k) - 1 = algebraMap 𝒪[k] k (a * b - 1)`. Rewrite using `[Units.val_mul, hd, hd', ha, hb, map_sub, map_mul, map_one]`. Rewrite using `[e, ← residue_eq_zero_iff_val, map_sub, hab, map_one, sub_self]`. Use `hξ (d * d') hv` as an intermediate fact. Rewrite `this` using `[map_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrArg Units.val this` as an intermediate fact. Simplify using `using this`.
+A detailed English derivation is pending.
 -/
 theorem lower_block_tame : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (A D : Type) [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D] (ξ : kˣ →* ℂˣ), IsTame ξ →
   ∀ j ∈ parahoric k A D, (j : Matrix (A ⊕ D) (A ⊕ D) k).toBlocks₂₂.det ≠ 0 ∧

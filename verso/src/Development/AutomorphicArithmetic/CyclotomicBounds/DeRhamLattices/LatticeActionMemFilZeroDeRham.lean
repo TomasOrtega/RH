@@ -7,11 +7,11 @@ set_option maxHeartbeats 2000000
 set_option synthInstance.maxHeartbeats 400000
 
 /- English proof (translation)
-Introduce `l _ LL T Pl AI Td act hact d v`. Establish `hfil` using `(UpperTheory.KN.fil_zero_eq_range_cD_and_cD_injective l Pl AI Td (Formalism.MainNotions.ElementDenominator.qlExt l)).1`. Proceed by induction on `d using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul o b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[hact, mul_one]`. Establish `hb : (JumpDR.cD Td) b ∈ (Pl.PD (Formalism.MainNotions.ElementDenominator.qlExt l)).Fil 0` using `(hfil _).2 ⟨b, rfl⟩`. Rewrite using `[FilV.eq_1]`. Conclude with `⟨((o : ↥LL.1) • v) ⊗ₜ[ℚ_[l]] ⟨_, hb⟩, by simp⟩`. Consider the case `add x y hx hy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Treat this case separately.
 
-Rewrite using `[map_add, AddMonoidHom.add_apply]`. Conclude with `Submodule.add_mem _ hx hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.UpperTheory.KN.latticeAction_mem_filZero_deRham :
     ∀ (l : ℕ) [Fact l.Prime] (LL : FinExt l) (T : QLat LL) (Pl : LocPrime l) (AI : LocAinf l Pl) (Td : LocTied l Pl AI) (act : OD l ↥(OL LL) →+ (T.V ⊗[ℚ_[l]] Pl.R.BdR →+ T.V ⊗[ℚ_[l]] Pl.R.BdR)), (∀ (o : ↥(OL LL)) (b : Per.BdRp l) (v : T.V) (c : Pl.R.BdR), act (o ⊗ₜ[ℤ_[l]] b) (v ⊗ₜ[ℚ_[l]] c) = ((o : ↥LL.1) • v) ⊗ₜ[ℚ_[l]] (GlobalTheory.BKGal.JumpDR.cD Td b * c)) → ∀ (d : OD l ↥(OL LL)) (v : T.V), act d (v ⊗ₜ[ℚ_[l]] (1 : Pl.R.BdR)) ∈ FilV (Pl.PD (Formalism.MainNotions.ElementDenominator.qlExt l)) (LL := ↥LL.1) (V := T.V) (0) := by

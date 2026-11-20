@@ -14,11 +14,11 @@ namespace GlobalTheory.LevelRows
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hκ : IsLevelLift V β L p.1 hex.choose` using `hex.choose_spec`. Establish `hp : rTup β L (finE V hex.choose) ∈ P.H` using `by rw [hκ.2.2]; exact p.2`. Establish `hmem : hex.choose ∈ levG V β (withP L P)` using `⟨hκ.1, hκ.2.1, hp⟩`. Establish `hc : levChi V β (withP L P) hex.choose = ((P.chi p : ℂˣ) : ℂ) * levChi V β (flagL L) hex.choose`. Unfold `levChi`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[levFn_withP, extendOne_of_mem _ hp, Units.val_mul]`. Use `congr 3`. Conclude with `Subtype.ext hκ.2.2`. Establish `ha` using `levChi_ne_zero (β := β) (flagL L) hex.choose`. Use function extensionality and compare the values at `h`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions.
 
-Unfold `actG0`. Rewrite using `[dif_pos hex, hF _ hmem h, hc]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem levelType_eigenfunction_of_liftable_element {V : HSp D} {β : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D)} {L : LevDat D.host.E ℂ V.rank}
     {P : LevelP L.Pg L.r ℂ} {F : GA D V → ℂ} (hF : HasType V β (withP L P) F) (p : P.H)
@@ -42,11 +42,11 @@ variable {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hk`. Apply `hx` to reduce the goal to its premises. Establish `h0 : R.gE g x = 0`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[hg g x, map_zero]`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `v h`. Use `show actG0 _ _ _ _ _ h = 0`. Unfold `actG0`. Rewrite using `[dif_neg hk]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `: R.gE g⁻¹ (R.gE g x) = x`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Rewrite using `[← this, h0, map_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lift_of_ne_zero (R : RealDat D A Ks) (hinj : Function.Injective R.HE.e) (hg : R.models_gE)
     {x : R.HE.H} (hx : x ≠ 0) (g : G) : ∃ κ, IsLevelLift (Yc D 0) (R.βY 0) (R.dat0 R.triv) (R.eG g) κ := by
@@ -65,17 +65,17 @@ theorem exists_lift_of_ne_zero (R : RealDat D A Ks) (hinj : Function.Injective R
   rw [← this, h0, map_zero]
 
 /- English proof (translation)
-Introduce `b x`. Establish `hx : R.HE.e x ∈ R.EEat R.triv` using `hE.2.1 ▸ LinearMap.mem_range_self _ x`. Unfold `RealDat.EEat at hx ⊢`. Rewrite `hx`, the goal using `[mem_goodPart, GlobalTheory.MultMem.mem_mult_iff]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨h1, -⟩ g`. Distinguish the cases in `h0 : x = 0`. Simplify using `[h0]`. Apply `hE.1` to reduce the goal to its premises. Rewrite using `[hg, map_smul]`.
+Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `v h`. Establish `hmem : R.eG g ∈ (R.levR F b).H` using `by show R.eG.symm (R.eG g) ∈ (F.lvl b).P`. Rewrite using `[MulEquiv.symm_apply_apply]`. Conclude with `g.2`. Establish `h2` using `levelType_eigenfunction_of_liftable_element (V := Yc D 0) (β := R.βY 0) (L := R.dat0 R.triv) (P := R.levR F b) (F := R.HE.e x v) (fun κ hκ h => h1.lev v κ hκ h) ⟨R.eG g, hmem⟩ (exists_lift_of_ne_zero R hE.1 hg h0 g)`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (R.eG.symm.toMonoidHom.subgroupComap (F.lvl b).P) ⟨R.eG g, hmem⟩ = g` using `Subtype.ext (R.eG.symm_apply_apply g)`. Use `(congrFun h2 h).trans ?_` and prove the remaining obligations. Use `show D.what₂.embLL (((F.lvl b).ψ ((R.eG.symm.toMonoidHom.subgroupComap (F.lvl b).P) ⟨R.eG g, hmem⟩) : D.what₂.LLˣ) : D.what₂.LL) * _ = _`. Rewrite using `[h3]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `h`. Use `⟨⟨hx.1.aut, hx.1.cusp, fun v => ?_, hx.1.equiv, hx.1.cont⟩, hx.2⟩` and prove the remaining obligations. Establish `hP : IsPLevel (Yc D 0) (R.βY 0) (R.dat0 R.triv) (R.levR F b) (R.HE.e x v)`. Use `⟨fun κ hκ y => hx.1.lev v κ hκ y, fun p => ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg (fun z => R.HE.e z v) (h ⟨R.eG.symm p.1, p.2⟩)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hg _ x, map_smul] at h1`. Establish `h2 : R.eG (R.eG.symm p.1) = p.1` using `R.eG.apply_symm_apply p.1`. Rewrite `h1` using `[h2]`. Conclude with `h1`. Conclude with `fun κ hκ y => hP.hasType κ hκ y`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem rowsOfLevel_of_models (R : RealDat D A Ks) (F : Face D A) (hE : R.models_HE) (hg : R.models_gE) :
     GlobalTheory.IndefiniteRowSideFullHecke.TypeCharacterLevelRows.RowsOfLevel R F := by

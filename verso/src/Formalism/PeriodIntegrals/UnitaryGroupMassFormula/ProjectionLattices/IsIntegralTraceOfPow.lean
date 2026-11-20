@@ -9,20 +9,20 @@ namespace PI.Dv.GLP
 open Polynomial
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.ArithmeticCylinders.eigen_pow_eq_one M n hM μ hμ`.
+A detailed English derivation is pending.
 -/
 theorem eigen_pow_eq_one {L : Type} [Field L] {d : Type} [Fintype d] [DecidableEq d]
     (M : Matrix d d L) (n : ℕ) (hM : M ^ n = 1) (μ : L) (hμ : M.charpoly.IsRoot μ) : μ ^ n = 1 :=
   _root_.UpperTheory.Reformulated.B.ArithmeticCylinders.eigen_pow_eq_one M n hM μ hμ
 
 /- English proof (translation)
-Set `b` to `Module.finBasis K W`. Set `L` to `AlgebraicClosure K`. Set `M` to `LinearMap.toMatrix b b f`. Establish `hMn : M ^ n = 1` using `by show LinearMap.toMatrix b b f ^ n = 1`. Rewrite using `[LinearMap.toMatrix_pow, hf, LinearMap.toMatrix_one]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `M' : Matrix _ _ L` to `M.map (algebraMap K L)`. Establish `hM'n : M' ^ n = 1`. Establish `: M' ^ n = (M ^ n).map (algebraMap K L)` using `(RingHom.map_pow (algebraMap K L).mapMatrix M n).symm`. Rewrite using `[this, hMn]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `htr : algebraMap K L (LinearMap.trace K W f) = M'.trace`. Rewrite using `[LinearMap.trace_eq_matrix_trace K b]`. Conclude with `AddMonoidHom.map_trace (algebraMap K L) M`. Establish `hint : IsIntegral ℤ M'.trace`. Rewrite using `[Matrix.trace_eq_sum_roots_charpoly]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `IsIntegral.multiset_sum fun μ hμ => ?_` and prove the remaining obligations. Establish `h1 : μ ^ n = 1` using `eigen_pow_eq_one M' n hM'n μ (Polynomial.isRoot_of_mem_roots hμ)`. Conclude with `IsIntegral.of_pow hn (by rw [h1]; exact isIntegral_one)`. Rewrite `hint` using `[← htr]`. Conclude with `(isIntegral_algebraMap_iff (algebraMap K L).injective).1 hint`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIntegral_trace_of_pow {K : Type} [Field K] {W : Type} [AddCommGroup W] [Module K W]
     [FiniteDimensional K W] (f : Module.End K W) (n : ℕ) (hn : 0 < n) (hf : f ^ n = 1) :

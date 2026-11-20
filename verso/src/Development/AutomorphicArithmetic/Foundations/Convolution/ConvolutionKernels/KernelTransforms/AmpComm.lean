@@ -11,7 +11,7 @@ open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalS
 open scoped TensorProduct InnerProductSpace ComplexConjugate Pointwise
 
 /- English proof (translation)
-Establish `e : finAt w (finEmb K n u) = AdelicGLn.finiteRestrictedEquiv K n u w` using `by show (AdelicGLn.finiteRestrictedEquiv K n (AdelicGLn.prodEquiv K n (finEmb K n u)).2) w = _`. Rewrite using `[prodEquiv_finEmb]`. Rewrite using `[e]`. Conclude with `(AdelicGLn.mem_integralFiniteGL_iff_forall K n).1 hu w`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem finAt_mem_of_integral {K : Type} [Field K] [NumberField K] {n : ℕ} (w : Pl K)
     {u : AdelicGLn.FiniteAdelicGL K n} (hu : u ∈ AdelicGLn.integralFiniteGL K n) :
@@ -23,25 +23,23 @@ private theorem finAt_mem_of_integral {K : Type} [Field K] [NumberField K] {n : 
   exact (AdelicGLn.mem_integralFiniteGL_iff_forall K n).1 hu w
 
 /- English proof (translation)
-Introduce `K _ _ _ n μ _ 𝔞 hz`. Take `⟨-, -, a1, a2, -, -, -, -, hT⟩` from `UpperTheory.ConvolutionTheory.Tf.commPrj K n μ 𝔞.U`. Take `⟨hconv, -, -, -, -, -, -, -, hρ⟩` from `UpperTheory.ConvolutionTheory.Tf.opAlg K n μ 𝔞.ν (Measure.haar : Measure (AdelicGLn.FiniteAdelicGL K n))`. Establish `hA : ∀ β : TI K n, Oinf μ 𝔞.ν β ∘L prj (fixF μ 𝔞.U) = Oinf μ 𝔞.ν β * prj (fixF μ 𝔞.U)` using `fun _ => rfl`. Establish `hOP : ∀ β : TI K n, Commute (Oinf μ 𝔞.ν β) (prj (fixF μ 𝔞.U))` using `fun β => hT _ fun u _ => hρ β u`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPP : prj (fixF μ 𝔞.U) * prj (fixF μ 𝔞.U) = prj (fixF μ 𝔞.U)` using `ContinuousLinearMap.ext fun v => a2 _ (a1 v)`. Establish `hcomp : ∀ β γ : TI K n, conv 𝔞.ν β γ = conv 𝔞.ν γ β → Commute (Oinf μ 𝔞.ν β * prj (fixF μ 𝔞.U)) (Oinf μ 𝔞.ν γ * prj (fixF μ 𝔞.U))`. Introduce `β γ h`. Establish `e : ∀ β γ : TI K n, (Oinf μ 𝔞.ν β * prj (fixF μ 𝔞.U)) * (Oinf μ 𝔞.ν γ * prj (fixF μ 𝔞.U)) = Oinf μ 𝔞.ν (conv 𝔞.ν β γ) * prj (fixF μ 𝔞.U)`. Introduce `β γ`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[(hOP γ).symm.mul_mul_mul_comm, hPP, (hconv β γ).1]`. Both sides reduce to the same expression. Use `show _ * _ = _ * _`. Rewrite using `[e, e, h]`. Establish `hs` using `𝔞.smooth`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl` using `UpperTheory.ConvolutionTheory.Tf.lactSpec K n 𝔞.a₀ hs`. Take `⟨-, -, hsm, -, hmul, -⟩` from `hl`. Establish `hswap : ∀ u ∈ Subalgebra.center ℂ (UC K n), ∀ β : TI K n, SmoothT β → conv 𝔞.ν (lact u 𝔞.a₀) β = conv 𝔞.ν 𝔞.a₀ (lact u β)` using `fun u hu β hβ => (UpperTheory.ConvolutionTheory.Tf.lactConv K n 𝔞.ν 𝔞.a₀ β hs).2.2 inferInstance hβ u hu`. Establish `hHop : ∀ w ∉ 𝔞.S, ∀ (x : GL (Fin n) (w.adicCompletion K)) (β : TI K n), Commute (Oinf μ 𝔞.ν β * prj (fixF μ 𝔞.U)) (Hop μ w (GLnLocal.integralGL (w.adicCompletion K) n) x)`. Introduce `w hw x β`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hO` using `GLnLocal.isOpen_integralGL (w.adicCompletion K) n`. Establish `hC` using `GLnLocal.isCompact_integralGL (w.adicCompletion K) n`. Establish `hUc : IsCompact (𝔞.U : Set (AdelicGLn.FiniteAdelicGL K n))` using `(AdelicGLn.isCompact_integralFiniteGL K n).of_isClosed_subset (𝔞.U.isClosed_of_isOpen 𝔞.isOpen) 𝔞.le`. Establish `h1 : Commute (Oinf μ 𝔞.ν β) (Hop μ w (GLnLocal.integralGL (w.adicCompletion K) n) x)` using `(UpperTheory.ConvolutionTheory.Tf.hopBasic K n μ w _ x hO hC).2.2.2.2.1 _ fun g => hρ β _`. Establish `h2` using `(UpperTheory.ConvolutionTheory.Tf.hopLevel K n μ (Measure.haar : Measure (AdelicGLn.FiniteAdelicGL K n)) w _ x 𝔞.U hO hC 𝔞.isOpen hUc (𝔞.max w hw) fun u hu => finAt_mem_of_integral w (𝔞.le hu)).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h1.mul_left h2.symm`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hpos : (Oinf μ 𝔞.ν 𝔞.a₀).IsPositive` using `(ContinuousLinearMap.nonneg_iff_isPositive _).1 𝔞.pos`. Establish `hadj : ContinuousLinearMap.adjoint (prj (fixF μ 𝔞.U)) = prj (fixF μ 𝔞.U)` using `(isSelfAdjoint_starProjection _).adjoint_eq`. Establish `h` using `hpos.conj_adjoint (prj (fixF μ 𝔞.U))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[hadj]`. Establish `e : prj (fixF μ 𝔞.U) ∘L Oinf μ 𝔞.ν 𝔞.a₀ ∘L prj (fixF μ 𝔞.U) = 𝔞.A` using `by show prj (fixF μ 𝔞.U) * (Oinf μ 𝔞.ν 𝔞.a₀ * prj (fixF μ 𝔞.U)) = Oinf μ 𝔞.ν 𝔞.a₀ * prj (fixF μ 𝔞.U)`. Rewrite using `[← mul_assoc, ← (hOP _).eq, mul_assoc, hPP]`. Rewrite `h` using `[e]`. Conclude with `(ContinuousLinearMap.nonneg_iff_isPositive _).2 h`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Introduce `v`. Establish `e : 𝔞.A v = prj (fixF μ 𝔞.U) (Oinf μ 𝔞.ν 𝔞.a₀ v)` using `congrArg (fun S : LL μ →L[ℂ] LL μ => S v) (hOP 𝔞.a₀).eq`. Rewrite using `[e]`. Conclude with `a1 _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(AdelicGLn.isCompact_integralFiniteGL K n).of_isClosed_subset (𝔞.U.isClosed_of_isOpen 𝔞.isOpen) 𝔞.le`. Introduce `x`. Conclude with `hcomp _ _ (hswap _ (hz x.1 x.2) _ hs).symm`. Introduce `x y`. Use `hcomp _ _ ?_` and prove the remaining obligations.
-
-Rewrite using `[hswap _ (hz x.1 x.2) _ (hsm _).1, hswap _ (hz y.1 y.2) _ (hsm _).1, ← (hmul _ _).1, ← (hmul _ _).1, (Subalgebra.mem_center_iff.1 (hz x.1 x.2) (zc y.1 y.2))]`. Introduce `w hw i`. Use `⟨(hHop w hw _ _).smul_right _, fun x => (hHop w hw _ _).smul_right _⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.Tf.ampComm :
     ∀ (K : Type) [Field K] [NumberField K] [IsTotallyComplex K] (n : ℕ) (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure] (𝔞 : Amp μ),

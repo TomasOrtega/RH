@@ -5,7 +5,7 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TZero
 open Finset GlobalTheory.CompanionTheory.CoefId
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.CoefId.prod_pairs_add_eq_sum_score` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FProdPairSumsEqSumPowersetScore.lean&line=8#L8)
 -/

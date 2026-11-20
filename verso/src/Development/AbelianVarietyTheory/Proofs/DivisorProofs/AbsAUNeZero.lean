@@ -12,7 +12,7 @@ namespace GlobalTheory.ResAniso.ResProp
 open GlobalTheory.StdUnn GlobalTheory.StdUnn.Model GlobalTheory.StdUnn.LeftInvSect
 
 /- English proof (translation)
-Introduce `h0`. Use `congrArg (absA D) (mul_inv_cancel u)` as an intermediate fact. Rewrite `this` using `[map_mul, h0, zero_mul, map_one]`. Conclude with `zero_ne_one this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absAU_ne_zero {D : D7} (u : (AE D)ˣ) : absA D u ≠ 0 := by
   intro h0

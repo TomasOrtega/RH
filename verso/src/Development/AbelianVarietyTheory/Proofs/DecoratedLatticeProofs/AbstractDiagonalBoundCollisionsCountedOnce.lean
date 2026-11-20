@@ -19,31 +19,29 @@ noncomputable section
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `τ Rw I H H₁ _ _ _ _ _ _ X one Pg B A₁ A₂ hPg hA hNg hNn hG hO hC hI hB h1 h2`. Establish `hE` using `Formalism.FourierDecayAlt.P.equal_index`. Establish `hF` using `Formalism.FourierDecayAlt.P.subfamilyAlt τ Rw I H H₁ X hA`. Take `⟨_, _, hng⟩` from `Formalism.FourierDecayAlt.P.pair_split_alt τ Rw I H H₁ X hA hO hC`. Establish `hgen : X.PhiEq X.genSet = X.pairSum (X.big X.genSet) + X.pairSum (X.one X.genSet)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `Y : Formalism.FourierDecayAlt.PB.Terms τ Rw I H H₁` to `{ X with scal := fun _ _ => True }`. Take `⟨_, hg, _⟩` from `Formalism.FourierDecayAlt.P.pair_split_alt τ Rw I H H₁ Y hA hO hC`. Establish `e1 : Y.nsc Y.genSet = ∅`. Use extensionality with `p`. Simplify using `[Y, Formalism.FourierDecayAlt.PB.Terms.nsc]`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `e2 : Y.sc Y.genSet = X.one X.genSet`. Use extensionality with `p`. Simplify using `[Y, Formalism.FourierDecayAlt.PB.Terms.sc, Formalism.FourierDecayAlt.PB.Terms.one, Formalism.FourierDecayAlt.PB.Terms.allPairs, Formalism.FourierDecayAlt.PB.Terms.genSet]`. Establish `e0 : Y.pairSum ∅ = 0` using `by simp [Formalism.FourierDecayAlt.PB.Terms.pairSum]`. Rewrite `hg` using `[e1, e2, e0, add_zero]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hg`. Establish `hS : Summable (fun p : τ × τ => ‖inner ℂ (X.vec p.1) (X.vec p.2)‖)`. Establish `hv` using `hA.2.1`. Establish `hm : Summable (fun p : τ × τ => ‖X.vec p.1‖ * ‖X.vec p.2‖)` using `hv.mul_of_nonneg hv (fun _ => norm_nonneg _) (fun _ => norm_nonneg _)`. Conclude with `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) (fun p => norm_inner_le_norm _ _) hm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdisj : Disjoint (X.big X.genSet) (X.big X.ngSet)`. Rewrite using `[Set.disjoint_left]`. Introduce `p hp hq`. Conclude with `hq.1.1.2 hp.1.1.2`. Establish `hunion : X.pairAbs (X.big X.genSet) + X.pairAbs (X.big X.ngSet) = X.pairAbs (X.big X.genSet ∪ X.big X.ngSet)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Unfold `Formalism.FourierDecayAlt.PB.Terms.pairAbs`. Rewrite using `[Set.indicator_union_of_disjoint hdisj]`. Use `beta_reduce`. Rewrite using `[Summable.tsum_add (hS.indicator _) (hS.indicator _), mul_add]`. Establish `hsub : X.big X.genSet ∪ X.big X.ngSet ⊆ X.big X.nzSet`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce and unpack `p (hp | hp)`. Conclude with `⟨⟨hp.1.1.1, hp.1.2.1.1, hp.1.2.2⟩, hp.2⟩`. Conclude with `⟨⟨hp.1.1.1, hp.1.2.1.1, hp.1.2.2⟩, hp.2⟩`. Establish `hsum : X.pairAbs (X.big X.genSet) + X.pairAbs (X.big X.ngSet) ≤ B`. Rewrite using `[hunion]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(hF _ _ hsub).1.trans hB`. Establish `bg : X.pairSum (X.big X.genSet) ≤ X.pairAbs (X.big X.genSet)` using `(le_abs_self _).trans (hF _ _ le_rfl).2`. Establish `bn : X.pairSum (X.big X.ngSet) ≤ X.pairAbs (X.big X.ngSet)` using `(le_abs_self _).trans (hF _ _ le_rfl).2`. Establish `g1 : ‖X.part X.genSet‖ ^ 2 ≤ Pg * (X.pairAbs (X.big X.genSet) + A₁)`. Use `Formalism.FourierDecayAlt.P.price_of_index hE τ Rw I H H₁ X Pg X.genSet hNg hG` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `this.trans (mul_le_mul_of_nonneg_left ?_ hPg)` and prove the remaining obligations. Rewrite using `[hgen]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `g2 : ‖X.part X.ngSet‖ ^ 2 ≤ Pg * (X.pairAbs (X.big X.ngSet) + A₂)`. Use `Formalism.FourierDecayAlt.P.price_of_index hE τ Rw I H H₁ X Pg X.ngSet hNn hG` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `this.trans (mul_le_mul_of_nonneg_left ?_ hPg)` and prove the remaining obligations. Rewrite using `[hng]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hK : X.K0 - one = X.part X.genSet + X.part X.ngSet`. Unfold `Formalism.FourierDecayAlt.PB.Terms.K0`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hI]`. Normalize the expressions using the abelian group laws. Rewrite using `[hK]`. Establish `hpar : ‖X.part X.genSet + X.part X.ngSet‖ ^ 2 ≤ 2 * ‖X.part X.genSet‖ ^ 2 + 2 * ‖X.part X.ngSet‖ ^ 2`. Use `norm_add_le (X.part X.genSet) (X.part X.ngSet)` as an intermediate fact.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h0` using `norm_nonneg (X.part X.genSet + X.part X.ngSet)`. Use polynomial arithmetic with `[sq_nonneg (‖X.part X.genSet‖ - ‖X.part X.ngSet‖), norm_nonneg (X.part X.genSet), norm_nonneg (X.part X.ngSet)]`. Establish `hfin : Pg * (X.pairAbs (X.big X.genSet) + A₁) + Pg * (X.pairAbs (X.big X.ngSet) + A₂) ≤ Pg * (B + A₁ + A₂)`. Rewrite using `[← mul_add]`. Apply `mul_le_mul_of_nonneg_left _ hPg` to reduce the goal to its premises.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem diag_abstract_collisions_once :
     ∀ (τ Rw I H H₁ : Type) [Fintype I] [NormedAddCommGroup H] [InnerProductSpace ℂ H] [NormedAddCommGroup H₁] [InnerProductSpace ℂ H₁] [CompleteSpace H₁] (X : Formalism.FourierDecayAlt.PB.Terms τ Rw I H H₁) (one : H) (Pg B A₁ A₂ : ℝ), 0 ≤ Pg → X.AbsConv → X.NormExpansionOn X.genSet → X.NormExpansionOn X.ngSet → X.GGBound Pg → X.RowOrth → X.CorankPos → Formalism.L2.SG.RowsOther.IdOne X one → X.pairAbs (X.big X.nzSet) ≤ B → X.pairSum (X.one X.genSet) ≤ A₁ → X.pairSum (X.one X.ngSet) ≤ A₂ → ‖X.K0 - one‖ ^ 2 ≤ 2 * Pg * (B + A₁ + A₂) := by

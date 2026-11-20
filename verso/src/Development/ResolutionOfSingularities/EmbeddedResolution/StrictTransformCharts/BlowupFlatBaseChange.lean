@@ -11,17 +11,15 @@ open CategoryTheory AlgebraicGeometry CategoryTheory.Limits
 namespace FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-Set `_ : Algebra R S` to `φ.toAlgebra`. Establish `: Module.Flat R S` using `hφ`. Establish `hmul : ∀ x : S, φ s * x = s • x`. Introduce `x`. Rewrite using `[Algebra.smul_def, RingHom.algebraMap_toAlgebra]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hs1 : ∀ x : R, s * x = 0 → x = 0` using `(mem_nonZeroDivisors_iff.mp hs).1`. Establish `hL : Function.Injective (LinearMap.mulLeft R s)`. Introduce `a b hab`. Establish `h1 : s * a = s * b`. Simplify `hab` using `only [LinearMap.mulLeft_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2 : s * (a - b) = 0` using `by rw [mul_sub, h1, sub_self]`. Conclude with `sub_eq_zero.mp (hs1 _ h2)`. Establish `hinj : Function.Injective ((LinearMap.mulLeft R s).rTensor S)` using `Module.Flat.rTensor_preserves_injective_linearMap (M := S) _ hL`. Establish `key : ∀ t : S, φ s * t = 0 → t = 0`. Introduce `t ht`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hsmul : s • t = 0` using `by rw [← hmul t]; exact ht`. Establish `e1 : TensorProduct.tmul R s t = (0 : TensorProduct R R S)`. Establish `h3 : TensorProduct.tmul R s t = TensorProduct.tmul R (1 : R) (s • t)`. Rewrite using `[← TensorProduct.smul_tmul, smul_eq_mul, mul_one]`. Rewrite using `[h3, hsmul, TensorProduct.tmul_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e0 : ((LinearMap.mulLeft R s).rTensor S) (TensorProduct.tmul R (1 : R) t) = ((LinearMap.mulLeft R s).rTensor S) 0`. Rewrite using `[LinearMap.rTensor_tmul, map_zero, LinearMap.mulLeft_apply, mul_one]`. Conclude with `e1`. Establish `h1 : TensorProduct.tmul R (1 : R) t = (0 : TensorProduct R R S)` using `hinj e0`. Establish `h2 : (TensorProduct.lid R S) (TensorProduct.tmul R (1 : R) t) = (TensorProduct.lid R S) 0` using `by rw [h1]`.
-
-Rewrite `h2` using `[TensorProduct.lid_tmul, one_smul, map_zero]`. Then use the resulting hypothesis. Conclude with `mem_nonZeroDivisors_iff.mpr ⟨key, fun t ht => key t (by rw [mul_comm]; exact ht)⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem map_mem_nonZeroDivisors_of_flat {R S : Type u} [CommRing R] [CommRing S]
     (φ : R →+* S) (hφ : φ.Flat) {s : R} (hs : s ∈ nonZeroDivisors R) :
@@ -59,7 +57,7 @@ private theorem map_mem_nonZeroDivisors_of_flat {R S : Type u} [CommRing R] [Com
     ⟨key, fun t ht => key t (by rw [mul_comm]; exact ht)⟩
 
 /- English proof (translation)
-Take `⟨V, hVmem, hyV, hVle⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.mp Y.isBasis_affineOpens hy`. Conclude with `⟨⟨V, hVmem⟩, hyV, hVle⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem exists_affineOpen_mem_le {Y : Scheme.{u}} (y : Y) (W : Y.Opens) (hy : y ∈ W) :
     ∃ V : Y.affineOpens, y ∈ (V : Y.Opens) ∧ (V : Y.Opens) ≤ W := by
@@ -68,11 +66,11 @@ private theorem exists_affineOpen_mem_le {Y : Scheme.{u}} (y : Y) (W : Y.Opens) 
   exact ⟨⟨V, hVmem⟩, hyV, hVle⟩
 
 /- English proof (translation)
-Unfold `FunctorialResolution.Blowup.IsLocallyGeneratedByNonZeroDivisor at hD ⊢`. Introduce `y`. Take `⟨U, s, hxU, hs, hUs⟩` from `hD (f.base y)`. Take `⟨V, hyV, hVle⟩` from `EmbeddedResolution.exists_affineOpen_mem_le y (f ⁻¹ᵁ (U : X.Opens)) (show y ∈ f ⁻¹ᵁ (U : X.Opens) from hxU)`. Establish `hU2 : IsAffineOpen (U : X.Opens)` using `U.2`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hV2 : IsAffineOpen (V : Y.Opens)` using `V.2`. Establish `hflat : (Scheme.Hom.appLE f (U : X.Opens) (V : Y.Opens) hVle).hom.Flat`. Apply the tactic sequence `apply AlgebraicGeometry.Scheme.Hom.flat_appLE <;> assumption`. Use `⟨V, (Scheme.Hom.appLE f (U : X.Opens) (V : Y.Opens) hVle).hom s, hyV, ?_, ?_⟩` and prove the remaining obligations. Conclude with `_root_.FunctorialResolution.EmbeddedResolution.map_mem_nonZeroDivisors_of_flat _ hflat hs`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Scheme.IdealSheafData.comap_ideal_eq_map_appLE D f U V hVle, hUs, Ideal.map_span, Set.image_singleton]`.
+A detailed English derivation is pending.
 -/
 theorem _root_.FunctorialResolution.Blowup.IsLocallyGeneratedByNonZeroDivisor.comap_of_flat {X Y : Scheme.{u}} {D : X.IdealSheafData}
     (hD : FunctorialResolution.Blowup.IsLocallyGeneratedByNonZeroDivisor D) (f : Y ⟶ X) [AlgebraicGeometry.Flat f] :
@@ -93,13 +91,13 @@ theorem _root_.FunctorialResolution.Blowup.IsLocallyGeneratedByNonZeroDivisor.co
       Set.image_singleton]
 
 /- English proof (translation)
-Establish `e1 : (J.comap g).comap (pullback.snd π g) = (J.comap π).comap (pullback.fst π g)`. Rewrite using `[← Scheme.IdealSheafData.comap_comp, ← Scheme.IdealSheafData.comap_comp, pullback.condition]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e1]`. Conclude with `h.1.comap_of_flat (pullback.fst π g)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `W m hm`. Establish `hm' : FunctorialResolution.Blowup.IsLocallyGeneratedByNonZeroDivisor (J.comap (m ≫ g))`. Rewrite using `[Scheme.IdealSheafData.comap_comp]`. Conclude with `hm`. Take `⟨b, hb, hbuniq⟩` from `h.2 W (m ≫ g) hm'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨pullback.lift b m hb, ?_, ?_⟩` and prove the remaining obligations. Conclude with `pullback.lift_snd b m hb`. Introduce `a ha`. Use `pullback.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[pullback.lift_fst]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `hbuniq _ ?_` and prove the remaining obligations. Use `show (a ≫ pullback.fst π g) ≫ π = m ≫ g`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, ha]`. Rewrite using `[pullback.lift_snd, ha]`.
+A detailed English derivation is pending.
 -/
 theorem _root_.FunctorialResolution.Blowup.IsBlowupAlongIdealSheaf.pullback_snd_of_flat {X Y B : Scheme.{u}} {π : B ⟶ X}
     {J : X.IdealSheafData} (h : FunctorialResolution.Blowup.IsBlowupAlongIdealSheaf π J) (g : Y ⟶ X) [AlgebraicGeometry.Flat g] :
@@ -127,7 +125,7 @@ theorem _root_.FunctorialResolution.Blowup.IsBlowupAlongIdealSheaf.pullback_snd_
       · rw [pullback.lift_snd, ha]
 
 /- English proof (translation)
-Establish `h3 : FunctorialResolution.Blowup.IsBlowupAlongIdealSheaf (pullback.snd π g) (J.comap g)` using `h.pullback_snd_of_flat g`. Establish `h4` using `h3.iso_hom_comp hsq.isoPullback`. Rewrite `h4` using `[hsq.isoPullback_hom_snd]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem _root_.FunctorialResolution.Blowup.IsBlowupAlongIdealSheaf.of_isPullback_of_flat {X Y B P : Scheme.{u}} {π : B ⟶ X}
     {J : X.IdealSheafData} (h : FunctorialResolution.Blowup.IsBlowupAlongIdealSheaf π J) (g : Y ⟶ X) [AlgebraicGeometry.Flat g]
@@ -138,7 +136,7 @@ theorem _root_.FunctorialResolution.Blowup.IsBlowupAlongIdealSheaf.of_isPullback
   rwa [hsq.isoPullback_hom_snd] at h4
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `h'.exists_iso (h.pullback_snd_of_flat g)`. Establish `hc : (e.hom ≫ pullback.fst π g) ≫ π = π' ≫ g`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, he]`. Conclude with `⟨e.hom ≫ pullback.fst π g, hc, IsPullback.of_iso_pullback ⟨hc⟩ e rfl he⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem _root_.FunctorialResolution.Blowup.IsBlowupAlongIdealSheaf.exists_isPullback_of_flat {X Y B B' : Scheme.{u}} {π : B ⟶ X}
     {J : X.IdealSheafData} (h : FunctorialResolution.Blowup.IsBlowupAlongIdealSheaf π J) (g : Y ⟶ X) [AlgebraicGeometry.Flat g]

@@ -4,15 +4,15 @@ open NumberField Matrix GlobalTheory.UPel.HT GlobalTheory.UPel.HT.Gen GlobalTheo
 open scoped TensorProduct
 
 /- English proof (translation)
-Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => exact ⟨0, by simp⟩`. Consider the case `insert a T ha ih`. Take `⟨R₀, hR₀⟩` from `ih (fun q hq => hT q (Finset.mem_insert_of_mem hq))`. Establish `hap : a.Prime` using `hT a (Finset.mem_insert_self a T)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcop : IsCoprime (a : ℤ) (∏ q ∈ T, (q : ℤ))`. Use `IsCoprime.prod_right (fun q hq => ?_)` and prove the remaining obligations. Establish `hqp : q.Prime` using `hT q (Finset.mem_insert_of_mem hq)`. Establish `hne : a ≠ q` using `fun h => ha (h ▸ hq)`. Conclude with `Nat.isCoprime_iff_coprime.mpr ((Nat.coprime_primes hap hqp).mpr hne)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨u, v, huv⟩` from `hcop`. Use `⟨R₀ + v * (∏ q ∈ T, (q : ℤ)) * (f a - R₀), fun q hq => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.mp hq with rfl | hq'` into its components or cases. Use `⟨-u * (f q - R₀), ?_⟩` and prove the remaining obligations. Take the linear combination `(f q - R₀) * huv`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h1 : (q : ℤ) ∣ ∏ q ∈ T, (q : ℤ)` using `Finset.dvd_prod_of_mem (fun q : ℕ => (q : ℤ)) hq'`. Take `⟨k, hk⟩` from `h1`. Take `⟨l, hl⟩` from `hR₀ q hq'`. Use `⟨l + v * k * (f a - R₀), ?_⟩` and prove the remaining obligations. Rewrite using `[hk]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `hl`.
+A detailed English derivation is pending.
 -/
 private lemma crtPrimes (T : Finset ℕ) (hT : ∀ q ∈ T, q.Prime) (f : ℕ → ℤ) :
     ∃ R : ℤ, ∀ q ∈ T, (q : ℤ) ∣ R - f q := by
@@ -40,15 +40,15 @@ private lemma crtPrimes (T : Finset ℕ) (hT : ∀ q ∈ T, q.Prime) (f : ℕ �
       linear_combination hl
 
 /- English proof (translation)
-Proceed by induction on `M using Nat.strong_induction_on with`. Consider the case `_ M ih`. Distinguish the cases in `h1 : M = 1`. Substitute `h1` using the available equality. Conclude with `absurd ((Ideal.eq_top_iff_one P).mpr (by simpa using h)) hP.ne_top`.
+Proceed by induction. Treat this case separately. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hq : M.minFac.Prime` using `Nat.minFac_prime h1`. Take `⟨m, hm⟩` from `Nat.minFac_dvd M`. Establish `hm0 : 0 < m`. Break down `Nat.eq_zero_or_pos m with h0 | h0` into its components or cases. Rewrite `hm` using `[h0]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Conclude with `h0`. Establish `hlt : m < M`. Use `hq.two_le` as an intermediate fact. Rewrite using `[hm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hmem : ((M.minFac : A)) * (m : A) ∈ P`. Establish `: (M : A) = ((M.minFac : A)) * (m : A)` using `by conv_lhs => rw [hm]`. Use `push_cast`. Both sides reduce to the same expression.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `h` using `[this]`. Then use the resulting hypothesis. Break down `hP.mem_or_mem hmem with h2 | h2` into its components or cases. Conclude with `⟨M.minFac, hq, Nat.minFac_dvd M, h2⟩`. Take `⟨q, hq', hqm, hqP⟩` from `ih m hlt hm0 h2`. Conclude with `⟨q, hq', hqm.trans ⟨M.minFac, by rw [mul_comm]; exact hm⟩, hqP⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private lemma primeDvdOfMem {A : Type} [CommRing A] (P : Ideal A) (hP : P.IsPrime) (M : ℕ) (hM : 0 < M)
     (h : (M : A) ∈ P) : ∃ q : ℕ, q.Prime ∧ q ∣ M ∧ (q : A) ∈ P := by
@@ -79,11 +79,11 @@ private lemma primeDvdOfMem {A : Type} [CommRing A] (P : Ideal A) (hP : P.IsPrim
         exact ⟨q, hq', hqm.trans ⟨M.minFac, by rw [mul_comm]; exact hm⟩, hqP⟩
 
 /- English proof (translation)
-Establish `hpr : Prime (q : ℤ)` using `Nat.prime_iff_prime_int.mp hq`. Establish `hnd : ¬ (q : ℤ) ∣ tr - 2 * r`. Introduce `h`. Apply `hD` to reduce the goal to its premises. Establish `h2 : (q : ℤ) ∣ (tr - 2 * r) ^ 2 - 4 * (r ^ 2 - tr * r + nm)` using `dvd_sub (dvd_pow h two_ne_zero) (Dvd.dvd.mul_left hr 4)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h3 : (tr - 2 * r) ^ 2 - 4 * (r ^ 2 - tr * r + nm) = tr ^ 2 - 4 * nm` using `by ring`. Rewrite `h2` using `[h3]`. Then use the resulting hypothesis. Establish `hco : IsCoprime (q : ℤ) (tr - 2 * r)` using `(Prime.coprime_iff_not_dvd hpr).mpr hnd`. Take `⟨a, b, hab⟩` from `hco`. Use `⟨b, -a, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take the linear combination `hab`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 private lemma localInv (q : ℕ) (hq : q.Prime) (tr nm r : ℤ) (hD : ¬ (q : ℤ) ∣ tr ^ 2 - 4 * nm)
     (hr : (q : ℤ) ∣ r ^ 2 - tr * r + nm) : ∃ s : ℤ, (q : ℤ) ∣ s * (tr - 2 * r) - 1 := by
@@ -101,23 +101,21 @@ private lemma localInv (q : ℕ) (hq : q.Prime) (tr nm r : ℤ) (hD : ¬ (q : �
   linear_combination hab
 
 /- English proof (translation)
-Introduce `E _ _ bar ω tr nm _ hsum hprod M hM hloc`. Establish `hex : ∀ q : ℕ, q.Prime → q ∣ M → ∃ r s : ℤ, (q : ℤ) ∣ r ^ 2 - tr * r + nm ∧ (q : ℤ) ∣ s * (tr - 2 * r) - 1`. Introduce `q hq hqM`. Take `⟨hD, r, hr⟩` from `hloc q hq hqM`. Take `⟨s, hs⟩` from `localInv q hq tr nm r hD hr`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨r, s, hr, hs⟩`. Use `choose! r s hr hs using hex`. Establish `hT : ∀ q ∈ M.primeFactors, q.Prime` using `fun q hq => Nat.prime_of_mem_primeFactors hq`. Take `⟨R, hR⟩` from `crtPrimes M.primeFactors hT r`. Take `⟨S, hS⟩` from `crtPrimes M.primeFactors hT s`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hbar : bar ω = (tr : 𝓞 E) - ω` using `by rw [← hsum]; ring`. Use `⟨(S : 𝓞 E) * (ω - (R : 𝓞 E)), fun P hP hMP => ?_⟩` and prove the remaining obligations. Take `⟨q, hq, hqM, hqP⟩` from `primeDvdOfMem P hP.isPrime M hM hMP`. Establish `hqf : q ∈ M.primeFactors` using `Nat.mem_primeFactors.mpr ⟨hq, hqM, hM.ne'⟩`. Establish `castMem : ∀ z : ℤ, (q : ℤ) ∣ z → (z : 𝓞 E) ∈ P`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `z ⟨k, rfl⟩`. Use `push_cast`. Conclude with `Ideal.mul_mem_right _ _ hqP`. Take `⟨a, ha⟩` from `hR q hqf`. Take `⟨b, hb⟩` from `hS q hqf`.
+Move the embeddings inside the algebraic operations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `hr q hq hqM`. Take `⟨e, he⟩` from `hs q hq hqM`. Establish `h1 : (q : ℤ) ∣ S * (tr - 2 * R) - 1`. Use `⟨b * (tr - 2 * R) + e - 2 * s q * a, ?_⟩` and prove the remaining obligations. Take the linear combination `(tr - 2 * R) * hb + he - 2 * s q * ha`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : (q : ℤ) ∣ R ^ 2 - tr * R + nm`. Use `⟨a * (R + r q - tr) + c, ?_⟩` and prove the remaining obligations. Take the linear combination `(R + r q - tr) * ha + hc`. Establish `hbe : bar ((S : 𝓞 E) * (ω - (R : 𝓞 E))) = (S : 𝓞 E) * ((tr : 𝓞 E) - ω - (R : 𝓞 E))`. Rewrite using `[map_mul, map_sub, map_intCast, map_intCast, hbar]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[hbe]`. Prove the components needed by the constructor for the conclusion. Use `castMem _ h1` as an intermediate fact. Move the coercions through the operations in `at this`. Use `this using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Use `Ideal.mul_mem_left P ((S : 𝓞 E) ^ 2) (castMem _ h2)` as an intermediate fact. Move the coercions through the operations in `at this`. Use `this using 1` and compare the differences between its conclusion and the goal. Establish `hp : ω * ((tr : 𝓞 E) - ω) = (nm : 𝓞 E)` using `by rw [← hbar]; exact hprod`.
-
-Take the linear combination `(S : 𝓞 E) ^ 2 * hp`.
+Move the embeddings inside the algebraic operations. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.Seed.pIdemEx :
     IdemEx := by

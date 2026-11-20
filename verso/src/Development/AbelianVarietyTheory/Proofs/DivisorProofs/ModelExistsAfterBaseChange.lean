@@ -22,11 +22,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {B : Type} [CommRing B] {b : Base l B} {S : Scheme.{0}} {s : S ⟶ Sp B}
 
 /- English proof (translation)
-Take `⟨J, _, π, r, hr, hπ⟩` from `LevelFlat.exists_finite_quotient D M hM`. Use `⟨J, inferInstance, fun K _ _ x => ?_⟩` and prove the remaining obligations. Take `⟨β, hβ⟩` from `Spec.map_surjective (x ≫ s)`. Take `⟨-, I, -⟩` from `o.geom K x β.hom hβ.symm`. Establish `hI : ∀ a b, I.ev M a = I.ev M b ↔ π a = π b` using `fun a b => by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h : I.ev M a = I.ev M (a - b) * I.ev M b` using `by rw [← I.add, sub_add_cancel]`. Rewrite using `[hπ, h, mul_eq_right, I.ker M hM]`. Both sides reduce to the same expression. Use `⟨fun j => I.ev M (r j), fun i j hij => ?_, fun w => (I.onto M hM w).trans ⟨?_, ?_⟩⟩` and prove the remaining obligations. Use `(hI _ _).1 hij` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[hr, hr]`. Then use the resulting hypothesis. Introduce and unpack `⟨a, rfl⟩`. Conclude with `⟨π a, (hI _ _).2 (hr _)⟩`. Introduce and unpack `⟨j, rfl⟩`. Conclude with `⟨_, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem exists_enum (o : Obj D l b s) {M : ℕ} (hM : 0 < M) :
     ∃ (J : Type) (_ : Finite J), ∀ (K : Type) [Field K] [IsAlgClosed K] (x : Sp K ⟶ S),
@@ -48,9 +48,9 @@ theorem exists_enum (o : Obj D l b s) {M : ℕ} (hM : 0 < M) :
     exact ⟨_, rfl⟩
 
 /- English proof (translation)
-Take `⟨J, _, hJ⟩` from `exists_enum o hM`. Take `⟨u, hu, hu'⟩` from `hJ K x`. Take `⟨v, -, hv'⟩` from `hJ L y`. Establish `hp : ∀ j, u j ^ M = 1` using `fun j => (hu' _).2 ⟨j, rfl⟩`. Use `choose τ hτ using fun j => (hv' (g ≫ u j)).1 (by rw [← MonObj.comp_pow, hp, MonObj.comp_one])`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hτi : Function.Injective τ` using `fun i j hij => hu (TorsionRat.comp_injective ψ g hg (by rw [← hτ, ← hτ, hij]))`. Take `⟨j, rfl⟩` from `(hv' w).1 hw`. Take `⟨i, rfl⟩` from `Finite.surjective_of_injective hτi j`. Conclude with `⟨u i, hp i, (hτ i).symm⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_eq_comp (o : Obj D l b s) {M : ℕ} (hM : 0 < M) {K L : Type} [Field K] [Field L]
     [IsAlgClosed K] [IsAlgClosed L] {x : Sp K ⟶ S} {y : Sp L ⟶ S} (ψ : K →+* L) (g : Over.mk y ⟶ Over.mk x)
@@ -68,9 +68,7 @@ theorem exists_eq_comp (o : Obj D l b s) {M : ℕ} (hM : 0 < M) {K L : Type} [Fi
   exact ⟨u i, hp i, (hτ i).symm⟩
 
 /- English proof (translation)
-Use `haveI := o.proper`. Take `⟨J, _, hJ⟩` from `exists_enum o hM`. Take `⟨u, -, hu⟩` from `hJ F (spMap (algebraMap K F) ≫ x)`. Use `choose T hT using fun j => TorsionRat.exists_finset_over o.t.G x (u j)`. Use `⟨⋃ j, (T j : Set F), Set.finite_iUnion fun j => (T j).finite_toSet, fun L hL w hw => ?_⟩` and prove the remaining obligations.
-
-Take `⟨j, rfl⟩` from `(hu w).1 hw`. Conclude with `hT j L ((Set.subset_iUnion (fun j => (T j : Set F)) j).trans hL)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_finite_set (o : Obj D l b s) {M : ℕ} (hM : 0 < M) {K F : Type} [Field K] [Field F] [Algebra K F]
     [IsAlgClosed F] (x : Sp K ⟶ S) :
@@ -86,19 +84,17 @@ theorem exists_finite_set (o : Obj D l b s) {M : ℕ} (hM : 0 < M) {K F : Type} 
   exact hT j L ((Set.subset_iUnion (fun j => (T j : Set F)) j).trans hL)
 
 /- English proof (translation)
-Use `letI : Algebra k ℂ := σ.toAlgebra`. Set `F` to `algebraicClosure k ℂ`. Use `haveI : IsAlgClosed F := (algebraicClosure.isAlgClosure k ℂ).isAlgClosed`. Establish `hC : ∀ c : C, (c : ℂ) ∈ F` using `fun c => by`. Rewrite using `[mem_algebraicClosure_iff]`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : IsAlgebraic ℚ (c : ℂ)` using `(Algebra.IsAlgebraic.isAlgebraic (R := ℚ) c).algHom C.val`. Conclude with `h1.tower_top k`. Set `g : C →+* F` to `(C.val : C →+* ℂ).codRestrict F hC`. Take `⟨T, hT, hT'⟩` from `exists_finite_set o hM (K := k) (F := F) (𝟙 _)`. Take `⟨U, hU⟩` from `(Module.Finite.fg_top (R := ℚ) (M := C))`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `T' : Set F` to `T ∪ g '' U`. Use `haveI : Finite T' := (hT.union (U.finite_toSet.image g)).to_subtype`. Set `L` to `IntermediateField.adjoin k T'`. Use `haveI : FiniteDimensional k L := IntermediateField.finiteDimensional_adjoin fun x _ => (Algebra.IsAlgebraic.isAlgebraic x).isIntegral`. Establish `hg : ∀ c, g c ∈ L` using `fun c => by`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `hc : c ∈ Submodule.span ℚ (U : Set C)` using `hU ▸ Submodule.mem_top`. Proceed by induction on `hc using Submodule.span_induction with`. Consider the case `mem x hx => exact IntermediateField.subset_adjoin _ _ (Or.inr ⟨x, hx, rfl⟩)`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul q x _ hx`. Rewrite using `[Rat.smul_def, map_mul, map_ratCast]`. Conclude with `mul_mem (SubfieldClass.ratCast_mem L q) hx`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨L, inferInstance, NumberField.of_module_finite k L, algebraMap k L, g.codRestrict L hg, (algebraMap F ℂ).comp (algebraMap L F), rfl, fun c => rfl, fun w hw => ?_⟩` and prove the remaining obligations. Set `g₂ : Over.mk (spMap ((algebraMap F ℂ).comp (algebraMap L F)) ≫ spMap (algebraMap k L)) ⟶ Over.mk (spMap (algebraMap k F) ≫ 𝟙 _)` to `Over.homMk (spMap (algebraMap F ℂ)) (by`. Express the relevant statement in the definitionally equal form `spMap (algebraMap F ℂ) ≫ spMap (algebraMap k F) ≫ 𝟙 _ = spMap ((algebraMap F ℂ).comp (algebraMap L F)) ≫ spMap (algebraMap k L)`. Rewrite using `[Category.comp_id, TorsionRat.sp_comp, TorsionRat.sp_comp]`. Use the proof step `rfl)`.
-
-Take `⟨a, ha, ha'⟩` from `exists_eq_comp o hM (algebraMap F ℂ) g₂ rfl w hw`. Take `⟨q, hq⟩` from `hT' L (Set.subset_union_left.trans (IntermediateField.subset_adjoin _ _)) a ha`. Use `⟨q.left, (Over.w q).trans (Category.comp_id _), ?_⟩` and prove the remaining obligations. Establish `h1 : spMap (algebraMap F ℂ) ≫ a.left = w.left` using `congrArg CommaMorphism.left ha'`. Rewrite using `[← h1, ← hq, ← TorsionRat.sp_comp, Category.assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_field {k : Type} [Field k] [NumberField k] {s : Sp k ⟶ Sp B} (o : Obj D l b s) {M : ℕ} (hM : 0 < M)
     (σ : k →+* ℂ) (C : IntermediateField ℚ ℂ) [FiniteDimensional ℚ C] :
@@ -146,21 +142,19 @@ theorem exists_field {k : Type} [Field k] [NumberField k] {s : Sp k ⟶ Sp B} (o
   rw [← h1, ← hq, ← TorsionRat.sp_comp, Category.assoc]
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l l₂ c₂ k _ _ s o _ hA`. Take `⟨b₀, rfl⟩ : ∃ ν : KA l →+* k, s = spMap ν` from `⟨(Spec.preimage s).hom, (Spec.map_preimage s).symm⟩`. Choose the witnesses or unpack the hypotheses as in `⟨σ, hσ⟩ : ∃ σ : k →+* ℂ, ∀ a, σ (b₀ a) = a := by`. Use `letI : Algebra (KA l) k := b₀.toAlgebra`. Use `haveI : Algebra.IsAlgebraic (KA l) k := Algebra.IsAlgebraic.tower_top (K := ℚ) (KA l)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Set `τ : k →ₐ[KA l] ℂ` to `IsAlgClosed.lift`. Conclude with `⟨τ, fun a => τ.commutes a⟩`. Establish `hM : 0 < l₂.M'` using `Nat.lcm_pos (lt_of_lt_of_le (by norm_num) l₂.three_le) l₂.A_pos`. Use `haveI := c₂.fin`. Take `⟨L, _, _, i, j, σ', hi, hj, hrat⟩` from `exists_field o hM σ c₂.F`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨t', ⟨m⟩⟩` from `exists_sab (spMap i) o.t`. Set `o'` to `ModelCompare.objOfSABMap o m`. Set `T : PAT H (Sp L)` to `⟨t', ObjDim.isAbelianScheme o', _, ObjDim.smoothOfRelativeDimension o', ObjDim.sym, o'.ample, o'.ktriv⟩`. Set `j' : KA l₂ →+* L` to `j.comp (IntermediateField.inclusion c₂.le).toRingHom`. Establish `hρ : j' (baseKA l₂).ρ = i (b₀ (baseKA l).ρ)` using `σ'.injective (by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← RingHom.comp_apply σ' i, hi, hσ]`. Conclude with `hj _)`. Establish `hs : ∀ {k₁ : Type} [Field k₁] (β : L →+* k₁), spMap β ≫ spMap i ≫ spMap b₀ = spMap (β.comp (i.comp b₀))` using `fun β => by`. Rewrite using `[TorsionRat.sp_comp, TorsionRat.sp_comp]`. Take `⟨-, I, -⟩` from `o'.geom ℂ (spMap σ') _ (hs σ')`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨o₂, ho₂⟩` from `RationalTorsion.exists_obj abelianSchemeLaws_all.1 E H D l₂ (KA l₂) (baseKA l₂) L j' σ' T I (fun k₁ _ _ β _ => by`. Rewrite using `[hρ]`. Conclude with `(o'.geom k₁ (spMap β) _ (hs β)).1)`. Use the proof step `(by`. Establish `h1` using `I.ζ_prim 1 one_pos`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h2` using `(baseKA l₂).ζ_prim`. Rewrite `h2`, the goal using `[hA]`. Rewrite `h1`, `h2` using `[IsPrimitiveRoot.one_right_iff]`. Rewrite using `[h1, h2, map_one, map_one, Units.val_one])`. Use the proof step `(fun x hx => by`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨q, hq, hq'⟩` from `hrat (ObjPull.pushEquiv m.cart (Over.mk (spMap σ')) x) (by rw [← map_pow, hx, map_one])`. Use `⟨Over.homMk (m.cart.1.lift q (𝟙 _) (hq.trans (Category.id_comp _).symm)) (m.cart.1.lift_snd _ _ _), ?_⟩` and prove the remaining obligations. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `m.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Over.comp_left, ObjPull.toUnit_left', Category.assoc]`.
-
-Conclude with `(congrArg (spMap σ' ≫ ·) (m.cart.1.lift_fst _ _ _)).trans hq'`. Rewrite using `[Over.w, Over.w])`. Use `⟨L, inferInstance, inferInstance, i, j, ?_⟩` and prove the remaining obligations. Rewrite using `[TorsionRat.sp_comp]`. Conclude with `⟨o₂, ho₂ ▸ ⟨m⟩⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_obj_level : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l l₂ : Level H) (c₂ : Coeff l₂) (k : Type) [Field k] [NumberField k] (s : Sp k ⟶ Sp (KA l)) (o : Obj D l (baseKA l) s), 1 ≤ D.p + D.q → l₂.A = 1 → ∃ (k' : Type) (_ : Field k') (_ : NumberField k') (i : k →+* k') (j₂ : c₂.F →+* k') (o₂ : Obj D l₂ (baseKA l₂) (spMap j₂ ≫ spMap (IntermediateField.inclusion c₂.le).toRingHom)), Nonempty (SABMap o₂.t o.t (spMap i)) := by
   intro E _ _ _ H D l l₂ c₂ k _ _ s o _ hA

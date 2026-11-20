@@ -15,7 +15,7 @@ open scoped IntermediateField
 namespace GlobalTheory.FieldSize.WeberIn
 
 /- English proof (translation)
-Establish `h : Ideal.span {a} ≠ (0 : Ideal (𝓞 K))`. Simplify `ha` using `[Ideal.span_singleton_eq_bot]`. Use `(Ideal.finite_factors h).subset ?_` and prove the remaining obligations. Introduce `𝔭 h𝔭`. Conclude with `Ideal.dvd_span_singleton.2 h𝔭`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem finite_mem {K : Type} [Field K] [NumberField K] {a : 𝓞 K} (ha : a ≠ 0) :
     {𝔭 : HeightOneSpectrum (𝓞 K) | a ∈ 𝔭.asIdeal}.Finite := by
@@ -26,9 +26,9 @@ theorem finite_mem {K : Type} [Field K] [NumberField K] {a : 𝓞 K} (ha : a ≠
   exact Ideal.dvd_span_singleton.2 h𝔭
 
 /- English proof (translation)
-Establish `h : {I : Ideal (𝓞 K) | Ideal.absNorm I ≠ 0 ∧ Ideal.absNorm I ∈ S}.Finite`. Use `(Ideal.finite_setOf_absNorm_le (S := 𝓞 K) (S.sup id)).subset ?_` and prove the remaining obligations. Introduce `I hI`. Conclude with `Finset.le_sup (f := id) hI.2`. Use `(h.preimage (f := fun 𝔭 : HeightOneSpectrum (𝓞 K) => 𝔭.asIdeal) (fun a _ b _ hab => HeightOneSpectrum.ext hab)).subset ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `𝔭 h𝔭`. Conclude with `⟨fun h0 => 𝔭.ne_bot (Ideal.absNorm_eq_zero_iff.1 h0), h𝔭⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem finite_norm_mem {K : Type} [Field K] [NumberField K] (S : Finset ℕ) :
     {𝔭 : HeightOneSpectrum (𝓞 K) | Ideal.absNorm 𝔭.asIdeal ∈ S}.Finite := by
@@ -42,9 +42,9 @@ theorem finite_norm_mem {K : Type} [Field K] [NumberField K] (S : Finset ℕ) :
   exact ⟨fun h0 => 𝔭.ne_bot (Ideal.absNorm_eq_zero_iff.1 h0), h𝔭⟩
 
 /- English proof (translation)
-Establish `h1 : FiniteDimensional ℚ ((IntermediateField.adjoin K S).restrictScalars ℚ)` using `(inferInstance : FiniteDimensional ℚ (IntermediateField.adjoin K S))`. Establish `hle : IntermediateField.adjoin ℚ S ≤ (IntermediateField.adjoin K S).restrictScalars ℚ` using `IntermediateField.adjoin_le_iff.2 (IntermediateField.subset_adjoin K S)`. Establish `h2 : FiniteDimensional ℚ (IntermediateField.adjoin ℚ S)` using `FiniteDimensional.of_injective (IntermediateField.inclusion hle).toLinearMap (IntermediateField.inclusion_injective hle)`. Establish `h3 : FiniteDimensional ℚ ((IntermediateField.adjoin L S).restrictScalars ℚ)`. Establish `e` using `IntermediateField.restrictScalars_adjoin_eq_sup ℚ L S`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5 : FiniteDimensional ℚ (L ⊔ IntermediateField.adjoin ℚ S : IntermediateField ℚ ℂ)` using `inferInstance`. Rewrite `h5` using `[← e]`. Conclude with `h5`. Establish `h4 : FiniteDimensional ℚ (IntermediateField.adjoin L S)` using `h3`. Conclude with `NumberField.mk`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem numberField_adjoin (K L : IntermediateField ℚ ℂ) [NumberField L] (S : Set ℂ)
     [NumberField (IntermediateField.adjoin K S)] : NumberField (IntermediateField.adjoin L S) := by
@@ -64,19 +64,17 @@ theorem numberField_adjoin (K L : IntermediateField ℚ ℂ) [NumberField L] (S 
   exact NumberField.mk
 
 /- English proof (translation)
-Introduce `K L _ _ _ h h2 hd P hP n hn hR`. Take `⟨inst, S, hS⟩` from `GlobalTheory.T.principalRayPrimes_splitCompletely_weberValues K h2 hd P hP n hn`. Use `haveI := numberField_adjoin K L (weberSet P n)`. Establish `hn0 : (n : 𝓞 L) ≠ 0`. Conclude with `(show n ≠ 0 by omega)` after adjusting the coercions.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : NumberField (⊥ : IntermediateField L ℂ) := NumberField.of_module_finite L _`. Establish `hle : IntermediateField.adjoin L (weberSet P n) ≤ ⊥`. Use `GlobalTheory.Bauer.le_of_finite_split_not_split L ℂ ⊥ (IntermediateField.adjoin L (weberSet P n)) ?_` and prove the remaining obligations. Use `((finite_mem hn0).union (finite_norm_mem S)).subset ?_` and prove the remaining obligations. Introduce and unpack `𝔓 ⟨hp, -, hnot⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hc`. Simplify using `only [Set.mem_union, Set.mem_setOf_eq, not_or] at hc`. Take `⟨f, α, hN, hα, h1⟩` from `hR 𝔓 hc.1`. Establish `hf : f = 1`. Establish `hp'` using `hp`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hp'` using `[hN]`. Conclude with `hp'.eq_one_of_pow`. Substitute `hf` using the available equality. Rewrite `hN`, `hα` using `[pow_one]`. Establish `hne : 𝔓.asIdeal.comap (RingOfIntegers.mapRingHom (IntermediateField.inclusion h).toRingHom) ≠ ⊥`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `h0`. Rewrite `hN` using `[h0, Ideal.absNorm_bot]`. Conclude with `hp.ne_zero hN`. Use `haveI := 𝔓.isPrime`. Set `𝔭 : HeightOneSpectrum (𝓞 K)` to `⟨𝔓.asIdeal.comap (RingOfIntegers.mapRingHom (IntermediateField.inclusion h).toRingHom), Ideal.comap_isPrime _ _, hne⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply `hnot` to reduce the goal to its premises. Use `GlobalTheory.T.completeSplitting_compositum_degreeOnePrime K L h (weberSet P n) 𝔭 𝔓 rfl hN ?_` and prove the remaining obligations. Establish `h𝔭 : 𝔭.asIdeal = Ideal.span {α}` using `hα`. Rewrite using `[h𝔭]`. Conclude with `hS α _ hp hc.2 (by rw [← hα, ← hN]) (Ideal.mem_span_singleton.2 h1)`.
-
-Introduce `x hx`. Establish `hx'` using `hle (IntermediateField.subset_adjoin L _ hx)`. Take `⟨y, rfl⟩` from `IntermediateField.mem_bot.1 hx'`. Conclude with `y.2`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem weberSet_subset : ∀ (K L : IntermediateField ℚ ℂ) [NumberField K] [NumberField L] [IsTotallyComplex K] (h : K ≤ L), Module.finrank ℚ K = 2 → discr K < -4 → ∀ P : PeriodPair, (∀ z, z ∈ P.lattice ↔ ∃ a : 𝓞 K, ((a : K) : ℂ) = z) → ∀ n : ℕ, 3 ≤ n → GlobalTheory.IndefiniteRowSideFullHecke.RayFieldTheta.ContainsRayField (IntermediateField.inclusion h).toRingHom n → weberSet P n ⊆ L := by
   intro K L _ _ _ h h2 hd P hP n hn hR

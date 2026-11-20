@@ -15,17 +15,17 @@ namespace GlobalTheory.KFixIrr.LowMinor
 variable {P Q R S : ℕ}
 
 /- English proof (translation)
-Apply the tactic sequence `cases a <;> trivial`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sameBlock_self (a : Ix P Q) : sameBlock a a := by
   cases a <;> trivial
 
 /- English proof (translation)
-Establish `e1 : embR P Q R h k 1 = detR P Q R h ^ k` using `by simp [embR]`. Establish `e2 : actR P Q R k (Eab i j) 1 = (if i = j then Sum.elim (fun _ => (k : ℂ) + (R : ℂ) / 2) (fun _ => -((R : ℂ) / 2)) i else 0) • 1`. Rewrite using `[actR_apply]`. Simplify using `only [Eab, Matrix.single_apply, ite_smul, one_smul, zero_smul, LinearMap.sum_apply]`. Rewrite using `[Finset.sum_eq_single i (fun b _ hb => by simp [Ne.symm hb]) (by simp)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single j (fun b _ hb => by simp [Ne.symm hb]) (by simp)]`. Simplify using `only [and_self, if_true]`. Apply the tactic sequence `rcases i with a | b <;> rcases j with a' | b'`. Simplify using `only [opR, derM, mulM, LinearMap.add_apply, LinearMap.sum_apply, Module.End.mul_apply, Derivation.map_one_eq_zero]`. Simplify using `only [Sum.inl.injEq]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> simp`. Conclude with `absurd hij (by simp [sameBlock])`. Conclude with `absurd hij (by simp [sameBlock])`. Apply the tactic sequence `simp only [opR, derM, mulM, Sum.inr.injEq] split_ifs <;> simp`. Rewrite using `[← e1, actR_full, e2, map_smul, e1]`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fockAct1_detR_pow (h : P ≤ R) (k : ℕ) (i j : Ix P Q) (hij : sameBlock i j) :
     fockAct1 P Q R 0 (Eab i j) (detR P Q R h ^ k) =
@@ -50,17 +50,17 @@ theorem fockAct1_detR_pow (h : P ≤ R) (k : ℕ) (i j : Ix P Q) (hij : sameBloc
   rw [← e1, actR_full, e2, map_smul, e1]
 
 /- English proof (translation)
-Rewrite using `[fockAct1_Eab, LinearMap.sum_apply, Fintype.sum_sum_type]`. Simplify using `only [Finset.univ_eq_empty, Finset.sum_empty, zero_add]`. Apply the tactic sequence `rcases i with a | b <;> rcases j with a' | b'`. Establish `hD : ∀ c : Fin S, pderiv ((Sum.inl a, Sum.inr c) : Ln P Q 0 S) (detS P Q S h ^ k') = 0` using `fun c => by`. Rewrite using `[Derivation.leibniz_pow, SDown.pderiv_u_detS h a c]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Simplify using `only [GlobalTheory.CompactHarm.omE_nn (Sum.inl a, Sum.inr _) (Sum.inl a', Sum.inr _) rfl rfl, hD, mul_zero, neg_zero, zero_sub, Prod.mk.injEq, Sum.inl.injEq, and_true, Finset.sum_neg_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin]`. Use `split_ifs with hh`. Simplify using `only [Sum.elim_inl, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, neg_smul]`. Use `congr 2`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Conclude with `absurd hij (by simp [sameBlock])`. Conclude with `absurd hij (by simp [sameBlock])`. Establish `hsum : ∑ c : Fin S, X ((Sum.inr b, Sum.inr c) : Ln P Q 0 S) * pderiv (Sum.inr b', Sum.inr c) (detS P Q S h ^ k') = (if b = b' then (k' : ℂ) else 0) • detS P Q S h ^ k'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e : ∀ c : Fin S, X ((Sum.inr b, Sum.inr c) : Ln P Q 0 S) * pderiv (Sum.inr b', Sum.inr c) (detS P Q S h ^ k') = ((k' : Pol P Q 0 S) * detS P Q S h ^ (k' - 1)) * (X (Sum.inr b, Sum.inr c) * pderiv (Sum.inr b', Sum.inr c) (detS P Q S h))` using `fun c => by`. Rewrite using `[Derivation.leibniz_pow, nsmul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl fun c _ => e c, ← Finset.mul_sum, SDown.sum_X_pderiv_detS h b' b]`. Use `split_ifs with hb`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Break down `k' with _ | n` into its components or cases. Simplify using the standard rewrite rules. Rewrite using `[mul_assoc, ← pow_succ, Nat.add_sub_cancel, ← map_natCast (C : ℂ →+* Pol P Q 0 S), C_mul']`. Simplify using the standard rewrite rules. Simplify using `only [GlobalTheory.CompactHarm.omE_pp (Sum.inr b, Sum.inr _) (Sum.inr b', Sum.inr _) rfl rfl, Finset.sum_add_distrib, hsum, Prod.mk.injEq, Sum.inr.injEq, and_true, Finset.sum_const, Finset.card_univ, Fintype.card_fin]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Use `split_ifs with hh`. Simplify using `only [Sum.elim_inr, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, ← add_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem fockAct1_detS_pow (h : Q ≤ S) (k' : ℕ) (i j : Ix P Q) (hij : sameBlock i j) :
     fockAct1 P Q 0 S (Eab i j) (detS P Q S h ^ k') =
@@ -100,9 +100,9 @@ theorem fockAct1_detS_pow (h : Q ≤ S) (k' : ℕ) (i j : Ix P Q) (hij : sameBlo
     · simp
 
 /- English proof (translation)
-Unfold `detS`. Rewrite using `[Matrix.det_apply']`. Use `IsHomogeneous.sum _ _ _ fun σ _ => ?_` and prove the remaining obligations. Establish `h1 : (∏ i : Fin Q, (Matrix.of fun b c : Fin Q => (X (Sum.inr b, Sum.inr (Fin.castLE h c)) : Pol P Q 0 S)) (σ i) i).IsHomogeneous (∑ _i : Fin Q, 1)` using `IsHomogeneous.prod _ _ _ fun i _ => isHomogeneous_X ℂ _`. Establish `h0 : (((Equiv.Perm.sign σ : ℤˣ) : ℤ) : Pol P Q 0 S).IsHomogeneous 0`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `isHomogeneous_C (Ix P Q × Ix 0 S) (((Equiv.Perm.sign σ : ℤˣ) : ℤ) : ℂ)` as an intermediate fact. Rewrite `this` using `[map_intCast]`. Then use the resulting hypothesis. Simplify using `using h0.mul h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem detS_isHomogeneous (h : Q ≤ S) : (detS P Q S h).IsHomogeneous Q := by
   unfold detS
@@ -126,9 +126,7 @@ def wit (P Q R S : ℕ) (h : P ≤ R) (h' : Q ≤ S) (k k' : ℕ) : Pol P Q R S 
   rename (jR P Q R S) (detR P Q R h ^ k) * rename (jS P Q R S) (detS P Q S h' ^ k')
 
 /- English proof (translation)
-Unfold `wit`. Use `mul_ne_zero ?_ ?_` and prove the remaining obligations. Rewrite using `[Ne, map_eq_zero_iff _ (rename_injective _ jR_injective)]`. Conclude with `pow_ne_zero _ (detR_ne_zero P Q R h)`. Rewrite using `[Ne, map_eq_zero_iff _ (rename_injective _ jS_injective)]`.
-
-Conclude with `pow_ne_zero _ (detS_ne_zero P Q S h')`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wit_ne_zero (h : P ≤ R) (h' : Q ≤ S) (k k' : ℕ) : wit P Q R S h h' k k' ≠ 0 := by
   unfold wit
@@ -139,7 +137,7 @@ theorem wit_ne_zero (h : P ≤ R) (h' : Q ≤ S) (k k' : ℕ) : wit P Q R S h h'
     exact pow_ne_zero _ (detS_ne_zero P Q S h')
 
 /- English proof (translation)
-Unfold `wit`. Conclude with `(((GlobalTheory.CharPair.GradR.detR_isHomogeneous P Q R h).pow k).rename_isHomogeneous).mul (((detS_isHomogeneous h').pow k').rename_isHomogeneous)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem wit_isHomogeneous (h : P ≤ R) (h' : Q ≤ S) (k k' : ℕ) : (wit P Q R S h h' k k').IsHomogeneous (P * k + Q * k') := by
   unfold wit
@@ -147,15 +145,15 @@ theorem wit_isHomogeneous (h : P ≤ R) (h' : Q ≤ S) (k k' : ℕ) : (wit P Q R
     (((detS_isHomogeneous h').pow k').rename_isHomogeneous)
 
 /- English proof (translation)
-Unfold `wit`. Rewrite using `[fockAct1_Eab_mul, fockAct1_detR_pow h k i j hij, fockAct1_detS_pow h' k' i j hij, map_smul, map_smul, smul_mul_assoc, mul_smul_comm, ← add_smul]`. Use `congr 1`. Establish `hx1 : (x : ℂ) = (k : ℂ) + ((R : ℂ) - (S : ℂ)) / 2`. Establish `: x = (k : ℚ) + ((R : ℚ) - (S : ℚ)) / 2` using `by rw [← hk, cPair]; ring`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hx2 : (x : ℂ) = (k' : ℂ) - ((R : ℂ) - (S : ℂ)) / 2`. Establish `: x = (k' : ℚ) - ((R : ℚ) - (S : ℚ)) / 2` using `by rw [← hk', cPair]; ring`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `split_ifs with e`. Substitute `e` using the available equality.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Substitute using the available equality. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `i with a | b` into its components or cases. Simplify using `only [Sum.elim_inl, hx1]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Sum.elim_inr, hx2]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem fockAct1_Eab_wit (h : P ≤ R) (h' : Q ≤ S) (k k' : ℕ) (x : ℚ) (hk : x - cPair R S = k)
     (hk' : x + cPair R S = k') (i j : Ix P Q) (hij : sameBlock i j) :
@@ -178,13 +176,13 @@ theorem fockAct1_Eab_wit (h : P ≤ R) (h' : Q ≤ S) (k k' : ℕ) (x : ℚ) (hk
   · simp
 
 /- English proof (translation)
-Establish `hZs : Z = ∑ a, ∑ b, Z a b • Eab a b` using `by conv_lhs => rw [Matrix.matrix_eq_sum_single Z]`. Simplify using `only [Eab, Matrix.smul_single, smul_eq_mul, mul_one]`. Establish `term : ∀ a b : Ix P Q, Z a b • fockAct1 P Q R S (Eab a b) (wit P Q R S h h' k k') = (if a = b then Z a a * (x : ℂ) else 0) • wit P Q R S h h' k k'`. Introduce `a b`. Distinguish the cases in `hs : sameBlock a b`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[fockAct1_Eab_wit h h' k k' x hk hk' a b hs, smul_smul] split_ifs with e`. Substitute `e` using the available equality. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Establish `hab : a ≠ b` using `by rintro rfl; exact hs (sameBlock_self a)`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hZ a b hs, zero_smul, if_neg hab, zero_smul]`. Use `conv_lhs => rw [hZs]`. Simplify using `only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, term]`. Simplify using `only [ite_smul, zero_smul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite using `[← Finset.sum_smul, Matrix.trace, Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Conclude with `Finset.sum_congr rfl fun a _ => by simp [Matrix.diag, mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem fockAct1_wit (h : P ≤ R) (h' : Q ≤ S) (k k' : ℕ) (x : ℚ) (hk : x - cPair R S = k)
     (hk' : x + cPair R S = k') (Z : Mat P Q) (hZ : IsKC Z) :
@@ -214,7 +212,7 @@ end GlobalTheory.KFixIrr.LowMinor
 namespace GlobalTheory.KFixIrr
 
 /- English proof (translation)
-Introduce `P Q R S x k k' h h' _ _ hk hk'`. Rewrite using `[Submodule.ne_bot_iff]`. Use `⟨LowMinor.wit P Q R S h h' k k', ?_, LowMinor.wit_ne_zero h h' k k'⟩` and prove the remaining obligations. Rewrite using `[mem_lowOne, mem_chiOne]`. Conclude with `⟨fun Z hZ => LowMinor.fockAct1_wit h h' k k' x hk hk' Z hZ, (LowMinor.wit_isHomogeneous h h' k k').totalDegree_le⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem lowOne_minors_ne_bot : ∀ (P Q R S : ℕ) (x : ℚ) (k k' : ℕ), P ≤ R → Q ≤ S → 0 < k → 0 < k' →
     x - Formalism.BasicNotions.TH.cPair R S = k → x + Formalism.BasicNotions.TH.cPair R S = k' →

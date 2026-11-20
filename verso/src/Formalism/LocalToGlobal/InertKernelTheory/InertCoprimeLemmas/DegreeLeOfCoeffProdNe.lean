@@ -104,9 +104,9 @@ namespace AlgGrP
 variable {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ}
 
 /- English proof (translation)
-Take `⟨m, hm, hcop, hms⟩` from `hs`. Rewrite `hms` using `[B.lat0OK N N']`. Use `⟨m, hm, (Nat.Prime.coprime_iff_not_dvd (Fact.out : p.Prime)).1 hcop.symm, ?_⟩` and prove the remaining obligations. Use `hms b.1 b.2` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use function extensionality and compare the values at `τ`. Simplify using `[nsmul_eq_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem tors_of_torsPrime (B : Ker.Base D cc δ) {N N' : ℕ} {p : ℕ} [Fact p.Prime] (s : Formalism.MainNotions.TaylorLogMetric.VC D N N')
     (hs : Formalism.MainNotions.TaylorLogMetric.TorsPrime D p (Formalism.MainNotions.TaylorLogMetric.La D B.tor (Formalism.MainNotions.StandardLatticesGL3.stdL D N) (Formalism.MainNotions.StandardLatticesGL3.stdL D N')) s)
@@ -121,9 +121,9 @@ theorem tors_of_torsPrime (B : Ker.Base D cc δ) {N N' : ℕ} {p : ℕ} [Fact p.
   simp [nsmul_eq_mul]
 
 /- English proof (translation)
-Establish `hS : B.StdOK` using `Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.SO.stdOK B hcc hδ`. Establish `hQ : ∀ b : Fin N' × Fin N, CoefInMv (trM B (fun τ => s τ b.1 b.2) B.thMM) Formalism.MainNotions.TaylorLogMetric.Qbar`. Introduce `b`. Take `⟨m, hm, hpm, hms⟩` from `tors_of_torsPrime B s hs b`. Conclude with `h D cc δ B hcc hδ p hp5 hin _ m hm hpm hms`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h'` using `AlgP.coefInMv_prod (fun (b : Fin N' × Fin N) (w : D.what₂.Tau × Fin N' × Fin N → ℂ) => trM B (fun τ => s τ b.1 b.2) B.thMM (fun t => w (t, b))) (fun b => AlgP.analyticOnNhd_sel _ (AlgP.trM_analytic B hS _) (fun t => (t, b))) Formalism.MainNotions.TaylorLogMetric.Qbar (fun b => Al …`. Rewrite `h'` using `[← AlgP.U_thZero_unc]`. Conclude with `⟨AlgP.analytic_of_unc _ h'.2, fun α => AlgP.taylor_mem_of D N N' _ h'.2 _ h'.1 α⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem U_thZero_algEnt' (h : ThMMTransAlgPrime) (B : Ker.Base D cc δ) (hcc : Formalism.MainNotions.TaylorLogMetric.IsCurveIdeal D cc)
     (hδ : Formalism.MainNotions.TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ) (p : ℕ) [Fact p.Prime] (hp5 : 5 ≤ p)
@@ -143,18 +143,18 @@ theorem U_thZero_algEnt' (h : ThMMTransAlgPrime) (B : Ker.Base D cc δ) (hcc : F
   exact ⟨AlgP.analytic_of_unc _ h'.2, fun α => AlgP.taylor_mem_of D N N' _ h'.2 _ h'.1 α⟩
 
 /- English proof (translation)
-Introduce `D cc δ B hcc hδ p _ hp5 hin N N' s hs`. Conclude with `U_thZero_algEnt' h B hcc hδ p hp5 hin N N' s hs`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem algZero_of_transPrime (h : ThMMTransAlgPrime) : AlgZero := by
   intro D cc δ B hcc hδ p _ hp5 hin N N' s hs
   exact U_thZero_algEnt' h B hcc hδ p hp5 hin N N' s hs
 
 /- English proof (translation)
-Introduce `D cc δ B hcc hδ χ hχ p _ hp5 hin N N'`. Establish `h2 : ∀ s : Formalism.MainNotions.TaylorLogMetric.VC D N N', Formalism.MainNotions.TaylorLogMetric.TorsPrime D p (Formalism.MainNotions.TaylorLogMetric.La D B.tor (Formalism.MainNotions.StandardLatticesGL3.stdL D N) (Formalism.MainNotions.StandardLatticesGL3.stdL D N')) s → AlgEnt …` using `fun s hs => U_thZero_algEnt' h B hcc hδ p hp5 hin N N' s hs`. Use `⟨fun M M' hA hM hM' t ht => ?_, h2⟩` and prove the remaining obligations. Establish `: Algebra.IsAlgebraic ℚ Formalism.MainNotions.TaylorLogMetric.Qbar` using `⟨fun x => IntermediateField.isAlgebraic_iff.2 (mem_algebraicClosure_iff.1 x.2)⟩`. Set `lam : Formalism.MainNotions.TaylorLogMetric.Qbar →+* ℂ_[p]` to `(IsAlgClosed.lift : Formalism.MainNotions.TaylorLogMetric.Qbar →ₐ[ℚ] ℂ_[p]).toRingHom`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Take `⟨m, c, s, hc, hs, heq⟩` from `pairs_standard_at_p D cc δ B hcc hδ χ hχ p hp5 hin lam N N' M M' hA hM hM' t ht`. Establish `hG : ∀ k, AlgEnt D (Formalism.MainNotions.TaylorLogMetric.U D B.tor (s k) (B.thZero N N'))` using `fun k => h2 (s k) (hs k)`. Rewrite using `[heq]`. Use `⟨?_, fun α => ?_⟩` and prove the remaining obligations. Introduce `z _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `Finset.analyticAt_sum (f := fun k w => c k * Formalism.MainNotions.TaylorLogMetric.U D B.tor (s k) (B.thZero N N') w) Finset.univ fun k _ => analyticAt_const.mul ((hG k).1 z (Set.mem_univ _))`. Rewrite `h` using `[Finset.sum_fn]`. Conclude with `h`. Rewrite using `[Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.RestB.taylor_lin c _ (fun k m => (hG k).1.contDiff) α]`. Conclude with `sum_mem fun k _ => mul_mem (hc k).1 ((hG k).2 α)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem algFact_of_transPrime (h : ThMMTransAlgPrime) : AlgFact := by
   intro D cc δ B hcc hδ χ hχ p _ hp5 hin N N'

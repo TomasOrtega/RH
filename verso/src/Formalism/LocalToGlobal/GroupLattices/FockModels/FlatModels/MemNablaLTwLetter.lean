@@ -13,7 +13,7 @@ def Aa {K : Type} [Field K] {m : ℕ} (vec : Bool) (g : Matrix (Fin (m + 1)) (Fi
   if vec then g else (g⁻¹).transpose
 
 /- English proof (translation)
-Consider the cases of `vec`. Rewrite using `[Aa, Aa, if_neg Bool.false_ne_true, if_neg Bool.false_ne_true, ← Matrix.transpose_mul, Matrix.nonsing_inv_nonsing_inv g hg, Matrix.nonsing_inv_mul g hg, Matrix.transpose_one]`. Rewrite using `[Aa, Aa, if_pos rfl, if_pos rfl]`. Conclude with `Matrix.nonsing_inv_mul g hg`.
+Split into cases according to the possible forms of the given data. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Aa_inv_mul {K : Type} [Field K] {m : ℕ} (vec : Bool) (g : Matrix (Fin (m + 1)) (Fin (m + 1)) K)
     (hg : IsUnit g.det) : Aa vec g⁻¹ * Aa vec g = 1 := by
@@ -24,7 +24,7 @@ theorem Aa_inv_mul {K : Type} [Field K] {m : ℕ} (vec : Bool) (g : Matrix (Fin 
     exact Matrix.nonsing_inv_mul g hg
 
 /- English proof (translation)
-Consider the cases of `vec`. Rewrite using `[Aa, Aa, if_neg Bool.false_ne_true, if_neg Bool.false_ne_true, ← Matrix.transpose_mul, Matrix.nonsing_inv_nonsing_inv g hg, Matrix.mul_nonsing_inv g hg, Matrix.transpose_one]`. Rewrite using `[Aa, Aa, if_pos rfl, if_pos rfl]`. Conclude with `Matrix.mul_nonsing_inv g hg`.
+Split into cases according to the possible forms of the given data. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Aa_mul_inv {K : Type} [Field K] {m : ℕ} (vec : Bool) (g : Matrix (Fin (m + 1)) (Fin (m + 1)) K)
     (hg : IsUnit g.det) : Aa vec g * Aa vec g⁻¹ = 1 := by
@@ -35,7 +35,7 @@ theorem Aa_mul_inv {K : Type} [Field K] {m : ℕ} (vec : Bool) (g : Matrix (Fin 
     exact Matrix.mul_nonsing_inv g hg
 
 /- English proof (translation)
-Establish `: rowAct R (n` using `n) (1 : Matrix (Fin k) (Fin k) R) = AlgHom.id R _ := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `c`. Simplify using `[rowAct, Matrix.one_apply]`. Conclude with `congrArg (fun f => f F) this`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fl_rowAct_one (R : Type) [CommRing R] {k n : ℕ} (F : MvPolynomial (Fin k × Fin n) R) :
     rowAct R (1 : Matrix (Fin k) (Fin k) R) F = F := by
@@ -46,7 +46,7 @@ theorem fl_rowAct_one (R : Type) [CommRing R] {k n : ℕ} (F : MvPolynomial (Fin
   exact congrArg (fun f => f F) this
 
 /- English proof (translation)
-Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `only [Fin.val_last, Fin.val_zero] at this`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem last_ne_zero {m : ℕ} (hm : 1 ≤ m) : Fin.last m ≠ 0 := by
   intro h
@@ -55,9 +55,9 @@ theorem last_ne_zero {m : ℕ} (hm : 1 ≤ m) : Fin.last m ≠ 0 := by
   omega
 
 /- English proof (translation)
-Rewrite using `[rowAct_theta]`. Consider the cases of `vec`. Establish `h1 : letterWt m d false (Fin.last m) = -(d : ℤ)` using `by simp [letterWt]`. Establish `h2 : act false g = g.det • (g⁻¹).transpose`. Simplify using `only [act, Bool.false_eq_true, if_false]`.
+Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.inv_def, Ring.inverse_eq_inv', Matrix.transpose_smul, smul_smul, mul_inv_cancel₀ hg.ne_zero, one_smul]`. Rewrite using `[h1, h2, lin_smul _ _ _ hQ, map_smul, smul_smul, zpow_neg, zpow_natCast, inv_mul_cancel₀ (pow_ne_zero _ hg.ne_zero), one_smul]`. Both sides reduce to the same expression. Establish `h1 : letterWt m d true (Fin.last m) = 0` using `by simp [letterWt, last_ne_zero hm]`. Rewrite using `[h1, zpow_zero, one_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -80,13 +80,13 @@ theorem twist_theta (K : Type) [Field K] (m : ℕ) (hm : 1 ≤ m) (d : ℕ) (vec
     rfl
 
 /- English proof (translation)
-Establish `hgi : IsUnit (g⁻¹).det` using `by rw [Matrix.det_nonsing_inv]; exact hg.ringInverse`. Establish `hν : (fun t => (letterWt m d vec t - letterWt m d vec (Fin.last m)).toNat) = nuL m d vec` using `nuOf_letterWt m hm d vec`. Rewrite using `[nablaLTwMem O Kf m _ g hg, hν, ← theta_Hd O m hm d vec]`. Use `set e : ℤ := letterWt m d vec (Fin.last m) with he`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨_, ⟨P, hP, rfl⟩, hx⟩`. Use `⟨P, hP, ?_⟩` and prove the remaining obligations. Establish `hx' : map (algebraMap O Kf) (theta O m vec P) = g.det ^ e • rowAct Kf g x` using `hx`. Rewrite `hx'` using `[map_theta]`. Rewrite using `[← twist_theta Kf m hm d vec g⁻¹ hgi _ (map_Hd _ P hP), hx', map_smul, smul_smul, ← he]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : rowAct Kf g⁻¹ (rowAct Kf g x) = x`. Use `congrArg (fun f => f x) (rowActMul Kf (m + 1) (m + 1) g⁻¹ g)` as an intermediate fact. Simplify using `only [AlgHom.comp_apply] at this`. Rewrite using `[this, Matrix.mul_nonsing_inv g hg, fl_rowAct_one]`. Rewrite using `[h1, Matrix.det_nonsing_inv, Ring.inverse_eq_inv', inv_zpow, inv_mul_cancel₀ (zpow_ne_zero _ hg.ne_zero), one_smul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨P, hP, rfl⟩`. Use `⟨theta O m vec P, ⟨P, hP, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show map (algebraMap O Kf) (theta O m vec P) = _`. Rewrite using `[he, twist_theta Kf m hm d vec g hg _ (lin_Hd _ _ (map_Hd _ P hP)), lin_comp, Aa_inv_mul vec g hg, lin_one, map_theta]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_nablaLTw_letter (O Kf : Type) [CommRing O] [IsDomain O] [Field Kf] [Algebra O Kf] (m : ℕ) (hm : 1 ≤ m)
     (d : ℕ) (vec : Bool) (g : Matrix (Fin (m + 1)) (Fin (m + 1)) Kf) (hg : IsUnit g.det)
@@ -121,37 +121,35 @@ section Multi
 variable {S : Type} [Fintype S] [DecidableEq S]
 
 /- English proof (translation)
-Simplify using `only [embS, MvPolynomial.map_rename]`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_embS {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') {k : ℕ} (s : S)
     (P : MvPolynomial (Fin k) R) : map f (embS R s P) = embS R' s (map f P) := by
   simp only [embS, MvPolynomial.map_rename]
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C, ← MvPolynomial.smul_eq_C_mul, algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fl_map_smul {R K : Type} [CommRing R] [CommRing K] [Algebra R K] {σ : Type} (a : R) (F : MvPolynomial σ R) :
     map (algebraMap R K) (a • F) = a • map (algebraMap R K) F := by
   rw [MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C, ← MvPolynomial.smul_eq_C_mul, algebraMap_smul]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Unfold `tensorLat at hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately.
 
-Take `⟨F, hF, rfl⟩` from `hx`. Establish `h1` using `fun s => (hM s (F s)).1 (hF s)`. Use `choose P hP1 hP2 using h1`. Use `⟨∏ s, embS R s (P s), prod_emb_Pol d P hP1, ?_⟩` and prove the remaining obligations. Rewrite using `[map_prod, map_prod, map_prod]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Finset.prod_congr rfl` to reduce the goal to its premises. Introduce `s _`. Rewrite using `[map_embS, Lin_emb, Th0_emb, ← hP2 s]`. Consider the case `zero => exact ⟨0, Submodule.zero_mem _, by simp⟩`. Consider the case `add x y _ _ hx hy`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨F, hF, rfl⟩` from `hx`. Take `⟨G, hG, rfl⟩` from `hy`. Conclude with `⟨F + G, Submodule.add_mem _ hF hG, by simp only [map_add]⟩`. Consider the case `smul a x _ hx`. Take `⟨F, hF, rfl⟩` from `hx`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨a • F, Submodule.smul_mem _ _ hF, ?_⟩` and prove the remaining obligations. Rewrite using `[fl_map_smul, ← algebraMap_smul K a (map (algebraMap R K) F), map_smul, map_smul, algebraMap_smul]`. Introduce and unpack `⟨F, hF, rfl⟩`. Unfold `Formalism.MainNotions.G.Pol at hF`. Rewrite `hF` using `[restrictSupport_eq_span]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction.
 
-Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨μ, hμ, rfl⟩` from `hy`. Use `beta_reduce`. Rewrite using `[mono_factor, map_prod, map_prod, map_prod]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨fun s => theta K m (vec s) (lin (N s) (map (algebraMap R K) (monomial (partS μ s) 1))), fun s => (hM s _).2 ⟨_, partS_Hd R d μ hμ s, rfl⟩, ?_⟩` and prove the remaining obligations. Apply `Finset.prod_congr rfl` to reduce the goal to its premises. Introduce `s _`. Rewrite using `[map_embS, Lin_emb, Th0_emb]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => simp only [map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx`. Rewrite using `[fl_map_smul, ← algebraMap_smul K a (map (algebraMap R K) x), map_smul, map_smul, algebraMap_smul]`.
-
-Conclude with `Submodule.smul_mem _ _ hx`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tens_iff (R K : Type) [CommRing R] [CommRing K] [Algebra R K] (m : ℕ) (vec : S → Bool) (d : S → ℕ)
     (N : S → Matrix (Fin (m + 1)) (Fin (m + 1)) K)
@@ -204,7 +202,7 @@ theorem tens_iff (R K : Type) [CommRing R] [CommRing K] [Algebra R K] (m : ℕ) 
       exact Submodule.smul_mem _ _ hx
 
 /- English proof (translation)
-The claim follows from `tens_iff O Kf m vec d _ _ (fun s x => mem_nablaLTw_letter O Kf m hm (d s) (vec s) (g s) (hg s) x) x`.
+A detailed English derivation is pending.
 -/
 theorem mem_tens_nabla (O Kf : Type) [CommRing O] [IsDomain O] [Field Kf] [Algebra O Kf] (m : ℕ) (hm : 1 ≤ m)
     (vec : S → Bool) (d : S → ℕ) (g : S → Matrix (Fin (m + 1)) (Fin (m + 1)) Kf) (hg : ∀ s, IsUnit (g s).det)
@@ -214,13 +212,13 @@ theorem mem_tens_nabla (O Kf : Type) [CommRing O] [IsDomain O] [Field Kf] [Algeb
   tens_iff O Kf m vec d _ _ (fun s x => mem_nablaLTw_letter O Kf m hm (d s) (vec s) (g s) (hg s) x) x
 
 /- English proof (translation)
-Establish `h` using `tens_iff Kf Kf m vec d (fun _ => 1) (fun s => dualWeyl Kf (m + 1) (m + 1) (nuOf (letterWt m (d s) (vec s)))) (fun s x => by`. Rewrite using `[nuOf_letterWt m hm, ← theta_Hd Kf m hm]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨P, hP, rfl⟩`. Use `⟨P, hP, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[lin_one, Algebra.algebraMap_self, MvPolynomial.map_id]`. Both sides reduce to the same expression. Introduce and unpack `⟨P, hP, rfl⟩`. Use `⟨P, hP, ?_⟩` and prove the remaining obligations. Rewrite using `[lin_one, Algebra.algebraMap_self, MvPolynomial.map_id]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `rfl) x`. Rewrite using `[h]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨F, hF, rfl⟩`. Use `⟨F, hF, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Lin_one, Algebra.algebraMap_self, MvPolynomial.map_id]`. Introduce and unpack `⟨F, hF, rfl⟩`. Use `⟨F, hF, ?_⟩` and prove the remaining obligations. Rewrite using `[Lin_one, Algebra.algebraMap_self, MvPolynomial.map_id]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_tens_dw (Kf : Type) [Field Kf] (m : ℕ) (hm : 1 ≤ m) (vec : S → Bool) (d : S → ℕ)
     (x : MvPolynomial (S × (Fin (m + 1) × Fin (m + 1))) Kf) :
@@ -249,7 +247,7 @@ theorem mem_tens_dw (Kf : Type) [Field Kf] (m : ℕ) (hm : 1 ≤ m) (vec : S →
     rw [Lin_one, Algebra.algebraMap_self, MvPolynomial.map_id]
 
 /- English proof (translation)
-Rewrite `hP`, the goal using `[mem_Pol]`. Introduce `μ hμ`. Conclude with `hP μ (MvPolynomial.support_map_subset f P hμ)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem map_Pol {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') {k : ℕ} {d : S → ℕ}
     (P : MvPolynomial (S × Fin k) R) (hP : P ∈ Pol R k d) : map f P ∈ Pol R' k d := by
@@ -258,13 +256,13 @@ theorem map_Pol {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') {k : �
   exact hP μ (MvPolynomial.support_map_subset f P hμ)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, hxy⟩`. Take `⟨G, hG, rfl⟩` from `(mem_tens_nabla O Kf m hm vec d M hM y).1 hy`. Use `⟨G, hG, ?_⟩` and prove the remaining obligations. Rewrite `hxy` using `[← map_smul, ← map_smul]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `Th0_inj Kf m hm vec d _ _ (Lin_Pol _ _ hF) (Lin_Pol _ _ (Submodule.smul_mem _ c (map_Pol _ G hG))) hxy`. Establish `h2` using `congrArg (Lin (fun s => Aa (vec s) (M s))) h1`. Rewrite `h2` using `[Lin_comp, Lin_comp]`. Rewrite using `[h2]`. Simplify using `only [Aa_inv_mul _ _ (hM _)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Lin_one]`. Introduce and unpack `⟨G, hG, hFG⟩`. Use `⟨_, (mem_tens_nabla O Kf m hm vec d M hM _).2 ⟨G, hG, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `this : (fun s => Aa (vec s) (h s)⁻¹ * Aa (vec s) (M s) * Aa (vec s) (M s)⁻¹) = fun s => Aa (vec s) (h s)⁻¹`. Use function extensionality and compare the values at `s`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Matrix.mul_assoc, Aa_mul_inv _ _ (hM s), Matrix.mul_one]`. Rewrite using `[← map_smul, ← map_smul, ← hFG, Lin_comp, this]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem key_iff (O Kf : Type) [CommRing O] [IsDomain O] [Field Kf] [Algebra O Kf] (m : ℕ) (hm : 1 ≤ m)
     (vec : S → Bool) (d : S → ℕ) (h M : S → Matrix (Fin (m + 1)) (Fin (m + 1)) Kf)

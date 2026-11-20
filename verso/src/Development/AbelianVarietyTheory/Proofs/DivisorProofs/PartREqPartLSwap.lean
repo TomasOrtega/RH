@@ -18,9 +18,9 @@ variable {A : Type} {κ κ' κ₁' : Type}
 def swapV (z : κ' ⊕ κ → A) : κ ⊕ κ' → A := z ∘ Sum.swap
 
 /- English proof (translation)
-Simplify using `only [partR, partL, swapV]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply the tactic sequence `cases i <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem partR_eq_partL_swap (T : ((κ' → A) → ℂ) → (κ₁' → A) → ℂ) (Φ : (κ ⊕ κ' → A) → ℂ) (y : κ ⊕ κ₁' → A) :
     partR T Φ y = partL T (fun z : κ' ⊕ κ → A => Φ (swapV z)) (swapV y) := by
@@ -53,16 +53,16 @@ def swapH (X : Type) [TopologicalSpace X] (κ κ' : Type) : (κ' ⊕ κ → X) �
   continuous_invFun := continuous_pi fun _ => continuous_apply _
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hg.1.comp_continuous (swapH X κ κ').continuous, hg.2.comp_homeomorph (swapH X κ κ')⟩`.
+Supply the required witnesses or components.
 -/
 theorem sb_swap {X : Type} [TopologicalSpace X] {κ κ' : Type} {g : (κ ⊕ κ' → X) → ℂ} (hg : g ∈ SB (κ ⊕ κ' → X)) :
     (fun z : κ' ⊕ κ → X => g (swapV z)) ∈ SB (κ' ⊕ κ → X) :=
   ⟨hg.1.comp_continuous (swapH X κ κ').continuous, hg.2.comp_homeomorph (swapH X κ κ')⟩
 
 /- English proof (translation)
-Take `⟨PL, hPL⟩` from `hL`. Use `⟨(SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (swapCLE _ κ₁' κ)).comp (PL.comp (SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (swapCLE _ κ κ'))), fun g hg => ?_⟩` and prove the remaining obligations. Take `⟨g₁, hg₁, h⟩` from `hPL _ (sb_swap hg)`. Use `⟨fun w => g₁ (swapV w), sb_swap hg₁, fun f => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `y`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[partR_eq_partL_swap]`. Establish `hpure : (fun z : κ' ⊕ κ → AF F => pureA F (⇑f) g (swapV z)) = pureA F (⇑(SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (swapCLE _ κ κ') f)) (fun w => g (swapV w))` using `rfl`. Rewrite using `[hpure, h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem partR_of_partL {κ κ' κ₁' : Type} [Fintype κ] [Fintype κ'] [Fintype κ₁']
     (e : ((κ' → AF F) → ℂ) →ₗ[ℂ] (κ₁' → AF F) → ℂ)

@@ -7,9 +7,9 @@ namespace PositivityTheory.Lit1.GEN.X
 attribute [local instance 2000] Rep.hV2
 
 /- English proof (translation)
-Use `Nat.card_congr (e.toEquiv.subtypeEquiv fun v => ?_)` and prove the remaining obligations. Simplify using `only [Representation.mem_invariants, AddEquiv.toEquiv_eq_coe, EquivLike.coe_coe]`. Prove the components needed by the constructor for the conclusion. Introduce `hv h`. Rewrite using `[← he, hv]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `hv h`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[he, hv]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem natCard_invariants_eq_of_addEquiv {k k' H V W : Type*} [CommRing k] [CommRing k'] [Group H]
     [AddCommGroup V] {_mV : Module k V} [AddCommGroup W] {_mW : Module k' W}
@@ -28,7 +28,7 @@ theorem natCard_invariants_eq_of_addEquiv {k k' H V W : Type*} [CommRing k] [Com
 variable {G : Type} [Group G] {ℓ : ℕ}
 
 /- English proof (translation)
-Establish `h : ((r : ULift.{0} ℤ)) = ⟨r⟩` using `by ext; simp`. Use `Int.cast_smul_eq_zsmul (ULift.{0} ℤ) r x` as an intermediate fact. Rewrite `this` using `[h]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uliftInt_smul {X : Type*} [AddCommGroup X] [Module (ULift.{0} ℤ) X] (r : ℤ) (x : X) :
     (Module.toDistribMulAction.toDistribSMul.toSMul : SMul (ULift.{0} ℤ) X).smul ⟨r⟩ x = r • x := by
@@ -38,7 +38,7 @@ theorem uliftInt_smul {X : Type*} [AddCommGroup X] [Module (ULift.{0} ℤ) X] (r
   exact this
 
 /- English proof (translation)
-The claim follows from `Int.cast_smul_eq_zsmul _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem zmod_smul_eq {X : Type*} [AddCommGroup X] [Module (ZMod ℓ) X] (n : ℤ) (x : X) :
     ((n : ZMod ℓ)) • x = n • x := Int.cast_smul_eq_zsmul _ _ _

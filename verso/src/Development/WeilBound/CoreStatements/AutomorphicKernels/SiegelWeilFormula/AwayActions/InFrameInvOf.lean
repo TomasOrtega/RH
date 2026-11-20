@@ -12,7 +12,7 @@ namespace PositivityTheory.SiegelWeilFormula.KAway
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem inFrame_inv_of (d : PositivityTheory.SiegelWeilFormula.SD σ) (x : d.G) (N : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) (AE F E))
     (h : inFrame d.b x * N = 1) : inFrame d.b x⁻¹ = N := by
@@ -41,54 +41,52 @@ theorem smul_toBlocks₂₂ {n : ℕ} (e : AF F) (X : Matrix (Fin n ⊕ Fin n) (
     (e • X).toBlocks₂₂ = e • X.toBlocks₂₂ := rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[toBlocks₁₁, one_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem one_toBlocks₁₁ {n : ℕ} : (1 : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (AE F E)).toBlocks₁₁ = 1 := by
   ext i j; simp [toBlocks₁₁, one_apply]
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[toBlocks₁₂, one_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem one_toBlocks₁₂ {n : ℕ} : (1 : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (AE F E)).toBlocks₁₂ = 0 := by
   ext i j; simp [toBlocks₁₂, one_apply]
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[toBlocks₂₁, one_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem one_toBlocks₂₁ {n : ℕ} : (1 : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (AE F E)).toBlocks₂₁ = 0 := by
   ext i j; simp [toBlocks₂₁, one_apply]
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[toBlocks₂₂, one_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem one_toBlocks₂₂ {n : ℕ} : (1 : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (AE F E)).toBlocks₂₂ = 1 := by
   ext i j; simp [toBlocks₂₂, one_apply]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ d ε w hw e he x hx`. Take `⟨ε₀, hε₀⟩` from `d.ok.frame.1`. Establish `hcm : IsCMExt F E σ` using `d.ok.good.cm`. Use `set X := inFrame d.b x with hXdef`. Use `set A := X.toBlocks₁₁ with hA`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set B := X.toBlocks₁₂ with hB`. Use `set C := X.toBlocks₂₁ with hC`. Use `set D := X.toBlocks₂₂ with hD`. Establish `hXb : X = fromBlocks A B C D` using `(fromBlocks_toBlocks X).symm`. Establish `heA : e • A = e • (1 : Matrix (Fin d.n) (Fin d.n) (AE F E))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hA, ← smul_toBlocks₁₁, hx, smul_toBlocks₁₁, one_toBlocks₁₁]`. Establish `heB : e • B = 0`. Rewrite using `[hB, ← smul_toBlocks₁₂, hx, smul_toBlocks₁₂, one_toBlocks₁₂, smul_zero]`. Establish `heC : e • C = 0`. Rewrite using `[hC, ← smul_toBlocks₂₁, hx, smul_toBlocks₂₁, one_toBlocks₂₁, smul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `heD : e • D = e • (1 : Matrix (Fin d.n) (Fin d.n) (AE F E))`. Rewrite using `[hD, ← smul_toBlocks₂₂, hx, smul_toBlocks₂₂, one_toBlocks₂₂]`. Establish `hε₀2 : (ε₀ : ℤ) * (ε₀ : ℤ) = 1` using `by rw [← Units.val_mul, Int.units_mul_self, Units.val_one]`. Take `⟨t, ht, het, hunit⟩` from `free_etale_sheaf_zmod_exists_hom_sending_generator hcm (ε₀ : ℤ) hε₀2 X (isUnit_det_inFrame d x) e he heA`. Take `⟨x₁, hx₁⟩` from `exists_of_inU hε₀ (nM t) ((nM_cond_iff (cA σ).toRingHom (ε₀ : ℤ) t).2 ht)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hx₁i : inFrame d.b x₁⁻¹ = nM (-t)` using `inFrame_inv_of d x₁ _ (by`. Rewrite using `[hx₁, nM, nM, fromBlocks_multiply]`. Simplify using `[fromBlocks_one])`. Use `set A' := A - t * C with hA'`. Use `set B' := B - t * D with hB'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hY : inFrame d.b (x₁⁻¹ * x) = fromBlocks A' B' C D`. Rewrite using `[inFrame_mul, hx₁i, ← hXdef, hXb, nM, fromBlocks_multiply]`. Simplify using `[hA', hB', sub_eq_add_neg]`. Establish `h11` using `upper_block_rank_one_update (cA σ).toRingHom (ε₀ : ℤ) _ (inU_inFrame hε₀ (x₁⁻¹ * x))`. Rewrite `h11` using `[hY, toBlocks_fromBlocks₁₁, toBlocks_fromBlocks₂₁]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hA'u : IsUnit A'.det` using `hunit`. Use `set c₀ := C * A'⁻¹ with hc₀`. Use `set c := ((ε : ℤ) : AE F E) • c₀ with hcdef`. Establish `hcc` using `cond_c (cA σ).toRingHom (ε₀ : ℤ) A' C hA'u hε₀2 h11 (ε : ℤ)`. Take `⟨x₂, hx₂⟩` from `exists_of_inU hε₀ (nM c) ((nM_cond_iff (cA σ).toRingHom (ε₀ : ℤ) c).2 hcc)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hεε : ((ε : ℤ) : AE F E) * ((ε : ℤ) : AE F E) = 1`. Rewrite using `[← Int.cast_mul, ← Units.val_mul, Int.units_mul_self, Units.val_one, Int.cast_one]`. Establish `hwi : inFrame d.b w⁻¹ = fromBlocks 0 (((ε : ℤ) : AE F E) • 1) 1 0` using `inFrame_inv_of d w _ (by`. Rewrite using `[hw, fromBlocks_multiply]`. Simplify using `[smul_smul, hεε, fromBlocks_one])`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hL : inFrame d.b (w * x₂ * w⁻¹) = fromBlocks 1 0 c₀ 1`. Rewrite using `[inFrame_mul, inFrame_mul, hw, hx₂, hwi, nM, fromBlocks_multiply, fromBlocks_multiply]`. Simplify using `[hcdef, smul_smul, hεε]`. Establish `hLi : inFrame d.b (w * x₂ * w⁻¹)⁻¹ = fromBlocks 1 0 (-c₀) 1` using `inFrame_inv_of d _ _ (by`. Rewrite using `[hL, fromBlocks_multiply]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `[fromBlocks_one])`. Establish `hcA : c₀ * A' = C` using `by rw [hc₀, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hA'u, Matrix.mul_one]`. Establish `hZ : inFrame d.b ((w * x₂ * w⁻¹)⁻¹ * (x₁⁻¹ * x)) = fromBlocks A' B' 0 (D - c₀ * B')`. Rewrite using `[inFrame_mul, hLi, hY, fromBlocks_multiply]`. Simplify using `[hcA, sub_eq_add_neg, add_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨hz1, hz2⟩` from `blkUpper (cA σ).toRingHom (ε₀ : ℤ) A' B' (D - c₀ * B') (by rw [← hZ]; exact inU_inFrame hε₀ _)`. Establish `hbb` using `cond_b (cA σ).toRingHom (ε₀ : ℤ) (cA_cA hcm) A' B' (D - c₀ * B') hA'u hz1 hz2`. Take `⟨x₄, hx₄⟩` from `exists_of_inU hε₀ (nM (A'⁻¹ * B')) ((nM_cond_iff (cA σ).toRingHom (ε₀ : ℤ) _).2 hbb)`. Establish `hx₄i : inFrame d.b x₄⁻¹ = nM (-(A'⁻¹ * B'))` using `inFrame_inv_of d x₄ _ (by`. Rewrite using `[hx₄, nM, nM, fromBlocks_multiply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[fromBlocks_one])`. Establish `hx₃ : inFrame d.b ((w * x₂ * w⁻¹)⁻¹ * (x₁⁻¹ * x) * x₄⁻¹) = fromBlocks A' 0 0 (D - c₀ * B')`. Rewrite using `[inFrame_mul, hZ, hx₄i, nM, fromBlocks_multiply]`. Simplify using `[Matrix.mul_nonsing_inv_cancel_left _ _ hA'u]`. Establish `hdet` using `isUnit_det_inFrame d ((w * x₂ * w⁻¹)⁻¹ * (x₁⁻¹ * x) * x₄⁻¹)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `hdet` using `[hx₃, det_fromBlocks_zero₁₂]`. Establish `hDu : IsUnit (D - c₀ * B').det` using `isUnit_of_mul_isUnit_right hdet`. Establish `heB' : e • B' = 0` using `by rw [hB', smul_sub, ← Matrix.smul_mul, het, Matrix.zero_mul, heB, sub_zero]`. Use `⟨x₁, x₂, (w * x₂ * w⁻¹)⁻¹ * (x₁⁻¹ * x) * x₄⁻¹, x₄, t, c, A'⁻¹ * B', nonsingInvUnit A' hA'u, nonsingInvUnit (D - c₀ * B') hDu, by group, hx₁, hx₂, hx₃, hx₄, het, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hcdef, smul_comm, hc₀, ← Matrix.smul_mul, heC, Matrix.zero_mul, smul_zero]`.
-
-Rewrite using `[← Matrix.mul_smul, heB', Matrix.mul_zero]`. Express the relevant statement in the definitionally equal form `e • (A - t * C) = _`. Rewrite using `[smul_sub, ← Matrix.smul_mul, het, Matrix.zero_mul, sub_zero, heA]`. Express the relevant statement in the definitionally equal form `e • (D - c₀ * B') = _`. Rewrite using `[smul_sub, ← Matrix.mul_smul, heB', Matrix.mul_zero, sub_zero, heD]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adDecomp : PositivityTheory.SiegelWeilFormula.AdDecomp := by
   intro F E _ _ _ _ _ σ d ε w hw e he x hx

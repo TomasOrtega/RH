@@ -17,7 +17,7 @@ namespace LateralTheory.CohomologicalPurity.TubeCut
 open SumCut
 
 /- English proof (translation)
-Introduce `R _ F A E c hc' n`. Conclude with `hk R F A (fun a => (chains R).obj (E a)) _ (hc R A E c hc') n`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem LeafSum_of (hc : LeafChainsSum) (hk : LeafHKSum) : LeafSum := by
   intro R _ F A E c hc' n

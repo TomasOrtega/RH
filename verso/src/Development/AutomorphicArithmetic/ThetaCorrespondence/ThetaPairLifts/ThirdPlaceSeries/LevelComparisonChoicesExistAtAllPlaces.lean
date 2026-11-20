@@ -33,25 +33,21 @@ noncomputable section
 namespace GlobalTheory.LevCmp
 variable {D : D7}
 /- English proof (translation)
-Establish `hl : ∀ v, D.ntw.l (s v) = D.what₂.places.resChar v` using `fun v => let ⟨_, h⟩ := hs v`. Use the proof step `h.l_eq`. Establish `hQ : ∀ v v', χ v = χ v' → Q v = Q v'` using `fun v v' e => Finset.ext fun u => not_iff_not.1 (((h1 v).ram u).symm.trans (e ▸ (h1 v').ram u))`. Set `g : HChar D.host.E → ℕ → (Formalism.ConjugateSelfDual.G D.host.E D.nd.Om →* (D.what₂.LL)ˣ)` to `fun c n => @Classical.epsilon _ ⟨1⟩ fun ψ₀ => GalOf D c ψ₀ ∧ ∀ g, ψ₀ g ^ n = 1`. Set `ψ₀` to `fun v => g (χ v) (D.ntw.l (s v) ^ k v)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hψ : ∀ v, GalOf D (χ v) (ψ₀ v) ∧ ∀ g, ψ₀ v g ^ (D.ntw.l (s v) ^ k v) = 1` using `fun v => Classical.epsilon_spec (GlobalTheory.T.exists_galoisCharacter_of_finiteOrder_heckeCharacter hP.what₂.art D (χ v) _ (pow_pos (D.ntw.lPrime _).out.pos _) (hl v ▸ h2 v) (hl v ▸ h3 v))`. Establish `c4 : ∀ v, ψ₀ (D.what₂.places.conj v) = ψ₀ v` using `fun v => by simp only [ψ₀, c1, (h7 v).1, (h7 v).2]`. Establish `hd` using `fun v b (ρ : Reading (s v) (k v) b v) =>`. Set `⟨a1, a2, a3⟩` to `_root_.GlobalTheory.T.exists_galoisRep_of_twist_of_prime hP D _ (Q v) (χ v) (ψ₀ v) (D.ntw.lPrime (s v)).out (hl v ▸ h1 v) (hψ v).1`. Use the proof step `GlobalTheory.T.exists_ringClassGroup_descent_of_coeffFieldTwist D (s v) (k v) b v ρ (Q v) (ψ₀ v) (h1 v).split (h5 v) (hψ v).1.1 a1 (hψ v).2 a2 a3`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨b, ρ, ψ, hr, hp, hb, hc⟩` from `exists_data hG s Q k ψ₀ hs c1 (fun v => hQ _ _ (h7 v).1) (fun v => (h7 v).2) c4 fun v b ρ => (hd v b ρ).1`. Establish `hok` using `fun v => (hd v _ (ρ v)).2 _ (hp v)`. Use `choose ι hι using fun v => GlobalTheory.T.exists_complexEmbedding_readingFractionRing_over_coeffField D F (s v) (k v) (b v) v (ρ v)`. Establish `hlev` using `fun v hA j (hv : TwistedAt D v) =>`. Set `⟨a1, a2⟩` to `reads_of_pulls (ρ v) (hp v) (hψ v).1 (hι v)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `h8 v (b v) _ hA j hv (hl v) (hok v) _ a1 a2`. Establish `hrk : ∀ v, TwistedAt D v → GlobalTheory.TwistChoice.RankEq (s v) (b v) (Q v) (k v) (ψ v) v` using `fun v hv j j1 j2 => by`. Take `⟨j, rfl⟩ : ∃ j', j = j' + 1` from `⟨j - 1, by omega⟩`. Take `⟨a1, a2⟩` from `hlev v (GlobalTheory.MtRead.admissible_twist_of_twisting_character (hok v)) ⟨j, j2⟩ hv`. Conclude with `rank_of_levEq _ X _ _ ⟨j, j2⟩ _ a1 a2`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `C` to `GlobalTheory.TwistChoice.choiceOf s b Q k ψ hr ρ hrk`. Take `⟨tp, t1, t2⟩` from `htp C rfl`. Use `⟨C, tp, t1, t2, rfl, rfl, ⟨⟨fun a => hE.elim a, fun a => hE.elim a, fun a => hE.elim a, ⟨ψ₀, c4, hp, fun a => hE.elim a⟩, fun v x y z _ hx => (ρ v).emb_side x y z hx⟩, ⟨c1, fun v _ => (GlobalTheory.T.twistReading_induces_sideEmbedding_fixedField D _ _ _ _ (ρ v)).1, fun v _ x => ( …` and prove the remaining obligations. Establish `e' : s v' = s v` using `e`. Establish `key : k v' = k v ∧ χ v' = χ v`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `a1` using `(GlobalTheory.T.twistReading_induces_sideEmbedding_fixedField D _ _ _ _ (ρ v)).1`. Establish `a2` using `(GlobalTheory.T.twistReading_induces_sideEmbedding_fixedField D _ _ _ _ (ρ v')).1`. Establish `a3` using `(GlobalTheory.T.twistReading_induces_sideEmbedding_fixedField D _ _ _ _ ((ρ v').conj hG)).1`. Rewrite `a2`, `a3` using `[e']`. Distinguish the cases in `hbb : b v' = b v`.
+Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 
-Rewrite `a2` using `[hbb]`. Conclude with `h6 _ _ fun x hx => (a2 ⟨x, hx⟩).trans (a1 ⟨x, hx⟩).symm`. Apply the tactic sequence `have : (!b v') = b v := by revert hbb; cases b v <;> cases b v' <;> simp`. Rewrite `a3` using `[this]`. Establish `a4` using `h6 _ _ fun x hx => (a3 ⟨x, hx⟩).trans (a1 ⟨x, hx⟩).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨(h7 v').2.symm.trans a4.1, (h7 v').1.symm.trans a4.2⟩`. Conclude with `pack_pow (ρ v) (ρ v') e' (hQ _ _ key.2) key.1 (by simp only [ψ₀, e', key.1, key.2]) (hl v ▸ h3 v) (hψ v).2 (hp v) (hp v')`. Introduce `v _ u hu _ A σ hA hσ y hy`. Take `⟨-, art, ha, h⟩` from `(hψ v).1`. Establish `a1` using `h.val_eq ha (((h1 v).ram u).2 hu) hA hσ`.
-
-Establish `a2 : y = (ψ₀ v σ : D.what₂.LLˣ)` using `D.what₂.embLL.injective (by rw [hy, t2, a1, inv_inv]; rfl)`. Rewrite using `[a2]`. Conclude with `hp v σ`. Introduce `v j j1 j2 hv hA`. Take `⟨j, rfl⟩ : ∃ j', j = j' + 1` from `⟨j - 1, by omega⟩`.
-
-Take `⟨⟨a1, a2⟩, -⟩` from `hlev v hA ⟨j, j2⟩ hv`. Conclude with `⟨ι v, hι v, a1, fun κ h h' => congrArg Units.val (a2 κ h h')⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_level_comparison_choice_alt (hP : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt) (hG : IsGalois ℚ ↥D.LL0) (hE : IsEmpty D.nd.Loc) (cf : CharFrame D) (M : MtFam D) (X : NExpTied D)
     (F : TwFrameC D) (xi : D.what₂.Tup → HChar D.host.E) (χ : D.what₂.places.Pl → HChar D.host.E)
@@ -126,9 +122,9 @@ theorem exists_level_comparison_choice_alt (hP : _root_.GlobalTheory.HeightCount
     exact ⟨ι v, hι v, a1, fun κ h h' => congrArg Units.val (a2 κ h h')⟩
 variable {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {P : Pre2 K w}
 /- English proof (translation)
-Introduce `hCo hCW hHM hP hS hL`. Use `((_root_.GlobalTheory.T.nonGalois_exists_choice_alt hCo hCW hHM hP hS hL).and ((_root_.GlobalTheory.T.gPlaces_of_levelA hL).and (GlobalTheory.T.twistConductors_avoid_excludedPrimes.and ((_root_.GlobalTheory.T.badV_subset_gPl_union_qPl_of_admTw hP hL).and ((_root_.GlobalTheory.T.p …` and prove the remaining obligations. Introduce and unpack `K B f T w - - ⟨a0, a1, a2, a3, a4, a5, a6, a7⟩ P x l s hs c1`. Establish `hl : ∀ v, (Dof x).ntw.l (s v) = B.places.resChar v` using `fun v => let ⟨_, h⟩ := hs v`. Use the proof step `h.l_eq`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨C, tp, b1, b2, b3, b4, b5, b6, b7⟩` from `_root_.GlobalTheory.LevCmp.exists_level_comparison_choice_alt (D := Dof x) hP B.coeffGaloisSubfield_isGalois l.a.A.bare (cfOf x) l.mt.M l.b.Bs.exp l.b.Bs.twF w.I.xi T.psi (QOf P) T.k s hs c1 (exists_tp x) (fun v => Model.qOf_eq (P := P) v ▸ T.psi_is v) T.psi_ord P.coh.roots (fun …`. Establish `hg` using `TupTie.good_set f T (w.xi_range ▸ Set.mem_range_self ((Dof x).what₂.muTw v))`. Conclude with `⟨levEq _ _ b hA j e he (a1 P x l.toLA) (fun s' ξ => GlobalTheory.T.exists_local_unit_character_nontrivial (Dof x) (cfOf x) j _ s' ξ hg.2.1 hg.2.2) (l.mt.mt.prod v j) (l.mt.mt.para v j) (l.mt.mt.uni v j) (l.mt.mt.hyp v j) (a3 P x l v _ b ψ hA j hv hl' hok) (a4 P x l v _ b ψ hA j h …`. Take `⟨c, hc⟩` from `a0 P x l C tp b1 b2 b3 (fun v _ => congrFun b4 v) b5 fun v _ => b6 v`. Conclude with `⟨c, hc.trans b7⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem stageCExists_of_harishChandra_serN : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.HarishChandraModules → _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → SerN → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root_.GlobalTheory.HeightCounting.Up.ThirdStageExists hL := by
   intro hCo hCW hHM hP hS hL
@@ -157,7 +153,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.LevCmp.stageCExists_of_harishChandra_serN | exact _root_.GlobalTheory.LevCmp.stageCExists_of_harishChandra_serN | (intros; apply _root_.GlobalTheory.LevCmp.stageCExists_of_harishChandra_serN <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.stageCExists_of_casselmanWallach : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.HarishChandraModules → _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → SerN → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root_.GlobalTheory.HeightCounting.Up.ThirdStageExists hL := by
   first | exact @_root_.GlobalTheory.LevCmp.stageCExists_of_harishChandra_serN | exact _root_.GlobalTheory.LevCmp.stageCExists_of_harishChandra_serN | (intros; apply _root_.GlobalTheory.LevCmp.stageCExists_of_harishChandra_serN <;> assumption)

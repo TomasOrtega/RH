@@ -14,7 +14,7 @@ section Congr
 variable {O Cs : Type} [CommRing O] [AddCommGroup Cs] [Module O Cs]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem len_congr {P Q : Submodule O Cs} (h : P = Q) (Im : Submodule O Cs) :
     Module.length O (Q ⧸ Im.comap Q.subtype) = Module.length O (P ⧸ Im.comap P.subtype) := by

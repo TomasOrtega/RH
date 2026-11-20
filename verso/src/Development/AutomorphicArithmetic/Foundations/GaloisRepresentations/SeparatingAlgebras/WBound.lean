@@ -11,15 +11,13 @@ open MeasureTheory GroundTheory.Automorphic.Spherical UpperTheory.Gal.Gen
 open MvPolynomial in
 
 /- English proof (translation)
-Proceed by induction on `F using MvPolynomial.induction_on with`. Consider the case `C a`. Introduce `m`. Establish `e : ∀ x, Formalism.GradedWeylDivisibility.blockAct ℂ (n` using `n) (A x) (C a) = (C a : MvPolynomial (T × Fin k × Fin n) ℂ) := fun x => (Formalism.GradedWeylDivisibility.blockAct ℂ (n := n) (A x)).commutes a`. Simplify using `only [e]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `continuous_const`. Consider the case `add p q hp hq`. Introduce `m`. Simplify using `only [map_add, coeff_add]`. Conclude with `(hp m).add (hq m)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `mul_X p w hp`. Introduce `m`. Establish `e : ∀ x, Formalism.GradedWeylDivisibility.blockAct ℂ (A x) (X w) = ∑ b : Fin k, C (A x w.1 w.2.1 b) * X (w.1, (b, w.2.2))` using `fun x => aeval_X _ _`. Simplify using `only [map_mul, e, Finset.mul_sum, coeff_sum]`. Use `continuous_finset_sum _ fun b _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [mul_left_comm _ (C _), coeff_C_mul, coeff_mul_X']`. Distinguish the cases in `hw : ((w.1, (b, w.2.2)) : T × Fin k × Fin n) ∈ m.support`. Simplify using `only [hw, if_true]`. Conclude with `(hA _ _ _).mul (hp _)`. Simplify using `only [hw, if_false, mul_zero]`.
-
-Conclude with `continuous_const`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem continuous_coeff_blockAct' {Y : Type} [TopologicalSpace Y] {T : Type} {k n : ℕ}
     (A : Y → T → Matrix (Fin k) (Fin k) ℂ) (hA : ∀ t a b, Continuous fun x => A x t a b)
@@ -51,9 +49,9 @@ private theorem continuous_coeff_blockAct' {Y : Type} [TopologicalSpace Y] {T : 
       exact continuous_const
 
 /- English proof (translation)
-Simplify using `only [Formalism.L2.DIV.detTwK]`. Use `continuous_finset_prod _ fun τ _ => ?_` and prove the remaining obligations. Establish `e : ∀ x, detPow ℂ n (g x τ) (lam τ).detShift = ((g x τ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ).det ^ (lam τ).detShift`. Introduce `x`. Rewrite using `[detPow, Units.val_zpow_eq_zpow_val, Matrix.GeneralLinearGroup.val_det_apply]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [e]`. Establish `hc : Continuous fun x => ((g x τ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ)` using `continuous_pi fun a => continuous_pi fun b => hg τ a b`. Use `hc.matrix_det.zpow₀ _ fun x => Or.inl ?_` and prove the remaining obligations. Conclude with `(Matrix.isUnit_iff_isUnit_det _).1 (g x τ).isUnit |>.ne_zero`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem continuous_detTwK' {Y : Type} [TopologicalSpace Y] {T : Type} [Fintype T] {n : ℕ}
     (lam : T → DomWeight n) (g : Y → (T → GL (Fin n) ℂ))
@@ -74,9 +72,9 @@ private theorem continuous_detTwK' {Y : Type} [TopologicalSpace Y] {T : Type} [F
 open MvPolynomial in
 
 /- English proof (translation)
-Take `⟨s, a, ha⟩` from `GlobalTheory.IntStruct.exists_coord_eq_sum_coeff (Formalism.L2.DIV.VV ℂ lam) B i`. Establish `e : ∀ x, LinearMap.toMatrix B B (Formalism.L2.DIV.rhoK lam (g x)) i j = ∑ m : s, a m * (Formalism.L2.DIV.detTwK lam (g x) * coeff m.1 (Formalism.GradedWeylDivisibility.blockAct ℂ (fun τ => Matrix.transpose ((g x τ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ)) ((B j : Formalism.L2. …`. Introduce `x`. Rewrite using `[LinearMap.toMatrix_apply, ha]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Simplify using `only [e]`. Conclude with `continuous_finset_sum _ fun m _ => continuous_const.mul ((continuous_detTwK' lam g hg).mul (continuous_coeff_blockAct' _ (fun t a b => hg t b a) _ m.1))`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem continuous_rhoK_coeff' {Y : Type} [TopologicalSpace Y] {T : Type} [Fintype T] {n : ℕ}
     (lam : T → DomWeight n) {d : ℕ} (B : Module.Basis (Fin d) ℂ (Formalism.L2.DIV.VV ℂ lam)) (g : Y → (T → GL (Fin n) ℂ))
@@ -97,7 +95,7 @@ private theorem continuous_rhoK_coeff' {Y : Type} [TopologicalSpace Y] {T : Type
     (continuous_coeff_blockAct' _ (fun t a b => hg t b a) _ m.1))
 
 /- English proof (translation)
-Apply the tactic sequence `have h := continuous_rhoK_coeff' (T := InfinitePlace E) W B (fun x : infU E a => cAll x.1) (fun v p q => GlobalTheory.PolyRealU.continuous_entry v.embedding p q) j i`. Use `h.congr fun x => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.toMatrix_apply]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem continuous_rep_coeff {E : Type} [Field E] [NumberField E] [IsCMField E] {a : ℕ} (W : Wt E a) {d : ℕ}
     (B : Module.Basis (Fin d) ℂ W.Sp) (i j : Fin d) :
@@ -109,9 +107,7 @@ private theorem continuous_rep_coeff {E : Type} [Field E] [NumberField E] [IsCMF
   rfl
 
 /- English proof (translation)
-Introduce `E _ _ _ a W d B`. Use `haveI := GlobalTheory.InfUCompact.compactSpace_infU E a`. Establish `hc : Continuous fun x : infU E a => fun (i j : Fin d) => B.repr (W.rep x (B i)) j` using `continuous_pi fun i => continuous_pi fun j => continuous_rep_coeff W B i j`. Take `⟨C, hC⟩` from `isCompact_univ.exists_bound_of_continuousOn hc.continuousOn`. Use `⟨C, fun x i j => ?_⟩` and prove the remaining obligations.
-
-Conclude with `((norm_le_pi_norm (fun j => B.repr (W.rep x (B i)) j) j).trans (norm_le_pi_norm (fun (i j : Fin d) => B.repr (W.rep x (B i)) j) i)).trans (hC x (Set.mem_univ _))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Gen.wBound_pf :
     UpperTheory.Gal.Gen.WBound := by

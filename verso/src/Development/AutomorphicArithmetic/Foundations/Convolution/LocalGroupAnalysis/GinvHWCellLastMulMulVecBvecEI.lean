@@ -12,13 +12,13 @@ open scoped TensorProduct
 namespace UpperTheory.ConvolutionTheory.G
 
 /- English proof (translation)
-Unfold `twNorm nm`. Rewrite using `[map_list_prod, List.map_map]`. Use `congr 1`. Use `List.map_congr_left fun i hi => ?_` and prove the remaining obligations. Use `clear hi`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.comp_apply]`. Proceed by induction on `i with`. Consider the case `zero`. Use extensionality with `a b`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. By extensionality, compare the relevant components. Both sides reduce to the same expression. Treat this case separately.
 
-Consider the case `succ i ih`. Use `(congrArg (mapGL n p) (pow_succ_apply' (G := GL (Fin n) B) (mapGL n s) i δ)).trans ?_` and prove the remaining obligations. Use extensionality with `a b`. Use `congrArg (fun g : GL (Fin n) R => τ ((g : Matrix (Fin n) (Fin n) R) a b)) ih` as an intermediate fact. Use `(h _).trans (this.trans ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_succ']`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem map_twNorm {n : ℕ} {k R B : Type} [CommRing k] [CommRing R] [Algebra k R] [CommRing B]
     (p : B →+* R) (s : B →+* B) (τ : R ≃ₐ[k] R) (h : ∀ b, p (s b) = τ (p b)) (q : ℕ) (δ : GL (Fin n) B) :
@@ -42,15 +42,15 @@ private theorem map_twNorm {n : ℕ} {k R B : Type} [CommRing k] [CommRing R] [A
     rfl
 
 /- English proof (translation)
-Set `ψ : E ⊗[F] A →ₐ[F] k ⊗[F] E` to `(Algebra.TensorProduct.comm F E k).toAlgHom.comp (Algebra.TensorProduct.map (AlgHom.id F E) φ)`. Establish `hψ : ∀ x a, ψ (x ⊗ₜ a) = φ a ⊗ₜ x` using `fun x a => by simp [ψ]`. Set `p : B →+* k ⊗[F] E` to `(ψ : E ⊗[F] A →+* k ⊗[F] E).comp (e.symm : B →+* E ⊗[F] A)`. Establish `hp : ∀ z, p (e z) = ψ z` using `fun z => by simp [p]`. Establish `h1 : ∀ b, p (galOf e σ b) = ext k σ (p b)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `b`. Take `⟨z, rfl⟩` from `e.surjective b`. Establish `: galOf e σ (e z) = e (Algebra.TensorProduct.map (σ : E →ₐ[F] E) (AlgHom.id F A) z)`. Simplify using `[galOf]`. Rewrite using `[this, hp, hp]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `clear this`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x a => simp [hψ, D.ext]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨mapGL n p δ, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_twNorm p _ _ h1, hδ, cp, cp, ← Matrix.charpoly_map]`. Use `congr 1`. Use extensionality with `a b`. Express the relevant statement in the definitionally equal form `p (ι (algebraMap F A _)) = inc k (algebraMap F E _)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hι, hp, hψ, φ.commutes]`. Express the relevant statement in the definitionally equal form `_ = (1 : k) ⊗ₜ[F] algebraMap F E _`. Rewrite using `[Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem transport {n : ℕ} {F E A B k : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     [CommRing A] [Algebra F A] [CommRing B] [Algebra E B] [CommRing k] [Algebra F k]
@@ -86,11 +86,11 @@ private theorem transport {n : ℕ} {F E A B k : Type} [Field F] [NumberField F]
 end UpperTheory.ConvolutionTheory.G
 
 /- English proof (translation)
-Introduce `_ F E _ _ _ _ _ _ σ hσ n _ _ γ hγ hinf hfin`. Take `⟨a, ha, -⟩` from `nmHasse F E σ hσ n γ hγ.separable (fun v => by`. Take `⟨δ, hδ⟩` from `hfin v`. Use `transport (tensorEquiv' E v) σ (incFin E v) (fun a => ?_) (AlgHom.id F _) γ _ δ (hδ.trans ?_)` and prove the remaining obligations. Rewrite using `[tensorEquiv'_tmul, map_one, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `congr 1) (fun v => by`. Take `⟨δ, hδ⟩` from `hinf`. Use `transport (GroundTheory.Global.InfinitePlace.tensorInfiniteAdeleRingEquiv (K := F) (L := E)) σ (GroundTheory.Global.InfinitePlace.infiniteAdeleRingMap (K := F) (L := E)) (fun a => ?_) (Pi.evalAlgHom F (fun v : InfinitePlace F => v.Completion) v) γ _ δ (hδ.trans ?_)` and prove the remaining obligations. Rewrite using `[GroundTheory.Global.InfinitePlace.tensorInfiniteAdeleRingEquiv_tmul', map_one, one_mul]`.
+Both sides reduce to the same expression. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1)`. Use `⟨a, Eq.trans ?_ ha⟩` and prove the remaining obligations. Conclude with `map_twNorm (RingHom.id E) (σ : E →+* E) σ (fun _ => rfl) _ a`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.G.ginvH_wCell_last_mul_mulVec_bvec_eI :
     GlobalTheory.Published.HasseNorm → H1 := by

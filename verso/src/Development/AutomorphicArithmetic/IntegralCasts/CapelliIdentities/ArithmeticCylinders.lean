@@ -1,9 +1,9 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `L _ d _ _ M n hM μ hμ`. Establish `h1 : μ ∈ spectrum L M` using `Matrix.mem_spectrum_iff_isRoot_charpoly.mpr hμ`. Establish `h2 : μ ^ n ∈ spectrum L (M ^ n)` using `spectrum.pow_mem_pow M n h1`. Rewrite `h2` using `[hM, spectrum.mem_iff]`. Assume the negation of the conclusion as `hne`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Apply `h2` to reduce the goal to its premises. Establish `hu : IsUnit (μ ^ n - 1)` using `(sub_ne_zero.mpr hne).isUnit`. Establish `h3` using `hu.map (algebraMap L (Matrix d d L))`. Rewrite `h3` using `[map_sub, map_one]`. Then use the resulting hypothesis.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem UpperTheory.Reformulated.B.ArithmeticCylinders.eigen_pow_eq_one :
     ∀ {L : Type} [inst : Field L] {d : Type} [inst_1 : Fintype d] [inst_2 : DecidableEq d]

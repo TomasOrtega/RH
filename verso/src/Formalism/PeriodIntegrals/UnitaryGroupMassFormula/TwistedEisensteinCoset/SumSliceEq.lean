@@ -15,17 +15,17 @@ section Slice
 variable {ι : Type} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_product' (f := fun t u => F (update t k u))]`. Use `Finset.sum_nbij' (fun t => (update t k u0, t k)) (fun p => update p.1 k p.2) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `t ht`. Simplify using `only [Finset.mem_coe, Fintype.mem_piFinset, Finset.mem_product] at ht ⊢`. Use `⟨fun i => ?_, ht k⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hi : i = k`. Substitute `hi` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Function.update_of_ne hi, ht i]`. Introduce `p hp`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Finset.mem_coe, Fintype.mem_piFinset, Finset.mem_product] at hp ⊢`. Introduce `i`. Distinguish the cases in `hi : i = k`. Substitute `hi` using the available equality. Simplify using `using hp.2`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hp.1 i` using `[Function.update_of_ne hi]`. Introduce `t _`. Simplify using the standard rewrite rules. Introduce `p hp`. Simplify using `only [Finset.mem_coe, Fintype.mem_piFinset, Finset.mem_product] at hp`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `h1 : p.1 k = u0` using `by simpa using hp.1 k`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show update (update p.1 k p.2) k u0 = p.1`. Rewrite using `[Function.update_idem, ← h1, Function.update_eq_self]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t _`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_slice (k : ι) (S : ι → Finset E) (u0 : E) (F : (ι → E) → K) :
     ∑ t ∈ Fintype.piFinset S, F t =
@@ -57,7 +57,7 @@ theorem sum_slice (k : ι) (S : ι → Finset E) (u0 : E) (F : (ι → E) → K)
     simp
 
 /- English proof (translation)
-Rewrite using `[sum_slice k (update S k T) 0 F, sum_slice k (update S k T') 0 G]`. Simplify using `only [Function.update_idem, Function.update_self]`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun t _ => h t`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_slice_eq (k : ι) (S : ι → Finset E) (T T' : Finset E) (F G : (ι → E) → K) (α : K)
     (h : ∀ t : ι → E, ∑ u ∈ T, F (update t k u) = α * ∑ u ∈ T', G (update t k u)) :
@@ -68,13 +68,13 @@ theorem sum_slice_eq (k : ι) (S : ι → Finset E) (T T' : Finset E) (F G : (ι
   exact Finset.sum_congr rfl fun t _ => h t
 
 /- English proof (translation)
-Use `⟨fun u hu => ?_, fun u δ hδ => ?_⟩` and prove the remaining obligations. Simplify using `using hH.1 (update t k u) hu k`. Establish `h0 : IntAt P 0` using `⟨0, 1, fun h => P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h), by simp⟩`. Establish `e : update t k (u + δ) = update t k u + Pi.single k δ`. Use function extensionality and compare the values at `l`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `hl : l = k`. Substitute `hl` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hl]`. Use `show H (update t k (u + δ)) = H (update t k u)`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Use `hH.2 _ _ fun l => ?_` and prove the remaining obligations. Distinguish the cases in `hl : l = k`. Substitute `hl` using the available equality. Simplify using `using hδ`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h0` using `[hl]`.
+A detailed English derivation is pending.
 -/
 theorem good_slice {P : HeightOneSpectrum (𝓞 E)} {a b : ℕ} {H : (ι → E) → K} (hH : Good P a b H)
     (t : ι → E) (k : ι) : Good1 P a b (fun u => H (update t k u)) := by
@@ -103,19 +103,19 @@ variable {P : HeightOneSpectrum (𝓞 E)} (hN : NTAll) (hp : (Ideal.absNorm P.as
 include hN hp hq
 
 /- English proof (translation)
-Establish `sumV : ∀ (A' B' : ℕ) (φ : E → K), ∑ u ∈ valsQ E (qOf P) A' B', φ u = Sg P A' B' φ`. Introduce `A' B' φ`. Unfold `valsQ Sg`. Rewrite using `[Finset.sum_image]`. Introduce `i hi j _ hij`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hq : ((qOf P : ℕ) : E) ^ A' = 0`. It suffices to derive a contradiction. Establish `h2` using `pow_eq_zero_iff'.1 hq`. Establish `hq0 : qOf P = 0` using `by exact_mod_cast h2.1`. Simplify using `[hq0, h2.2] at hi`.
+Consider separately whether the proposition holds or fails. It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `(div_left_inj' hq).1 hij` after adjusting the coercions. Establish `hslice : ∀ (S : ι → Finset E) (k : ι), ∑ t ∈ Fintype.piFinset (update S k (valsQ E (qOf P) A B)), H t = ((qOf P ^ (B - b) : ℕ) : K) * ∑ t ∈ Fintype.piFinset (update S k (valsQ E (qOf P) a b)), H t` using `fun S k => sum_slice_eq k S _ _ H H _ fun t => by`. Rewrite using `[sumV, sumV, sg_stab hN hp hq hA hB (good_slice hH t k)]`. Establish `key : ∀ s : Finset ι, ∑ t ∈ Fintype.piFinset (fun _ : ι => valsQ E (qOf P) A B), H t = ((qOf P ^ (B - b) : ℕ) : K) ^ s.card * ∑ t ∈ Fintype.piFinset (fun i => if i ∈ s then valsQ E (qOf P) a b else valsQ E (qOf P) A B), H t`. Introduce `s`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.induction_on s (by simp) ?_` and prove the remaining obligations. Introduce `k s hk ih`. Rewrite using `[ih, Finset.card_insert_of_notMem hk, pow_succ, mul_assoc]`. Use `congr 1`. Establish `e1 : (fun i => if i ∈ s then valsQ E (qOf P) a b else valsQ E (qOf P) A B) = update (fun i => if i ∈ s then valsQ E (qOf P) a b else valsQ E (qOf P) A B) k (valsQ E (qOf P) A B)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = k`. Substitute `h` using the available equality. Simplify using `[hk]`. Simplify using `[h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e2 : (fun i => if i ∈ insert k s then valsQ E (qOf P) a b else valsQ E (qOf P) A B) = update (fun i => if i ∈ s then valsQ E (qOf P) a b else valsQ E (qOf P) A B) k (valsQ E (qOf P) a b)`. Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = k`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[h]`. Rewrite using `[e2]`. Use `conv_lhs => rw [e1]`. Conclude with `hslice _ k`. Simplify using `using key Finset.univ`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem sum_stab {ι : Type} [Fintype ι] [DecidableEq ι] {a b A B : ℕ} (hA : a ≤ A) (hB : b ≤ B)
     {H : (ι → E) → K} (hH : Good P a b H) :
@@ -169,9 +169,9 @@ theorem sum_stab {ι : Type} [Fintype ι] [DecidableEq ι] {a b A B : ℕ} (hA :
 
 include hK in
 /- English proof (translation)
-Unfold `RS`. Rewrite using `[sum_stab hN hp hq hA hB hH, ← mul_assoc, ← mul_pow]`. Use `congr 2`. Use `push_cast`. Establish `hqb : ((qOf P : K)) ^ B = (qOf P : K) ^ b * (qOf P : K) ^ (B - b)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Rewrite using `[← pow_add, Nat.add_sub_cancel' hB]`. Rewrite using `[hqb, mul_inv, mul_assoc, inv_mul_cancel₀ (pow_ne_zero _ hK), mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem rs_stab {ι : Type} [Fintype ι] [DecidableEq ι] {a b A B : ℕ} (hA : a ≤ A) (hB : b ≤ B)
     {H : (ι → E) → K} (hH : Good P a b H) : RS P A B H = RS P a b H := by
@@ -186,7 +186,7 @@ theorem rs_stab {ι : Type} [Fintype ι] [DecidableEq ι] {a b A B : ℕ} (hA : 
 end Stab
 
 /- English proof (translation)
-Introduce `E' K' _ _ _ P hp hq hK ι _ _ a b H hH A B hA hB`. Conclude with `rs_stab hN hp hq hK hA hB hH`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem stab_of (hN : NTAll) : StabP := by
   intro E' K' _ _ _ P hp hq hK ι _ _ a b H hH A B hA hB

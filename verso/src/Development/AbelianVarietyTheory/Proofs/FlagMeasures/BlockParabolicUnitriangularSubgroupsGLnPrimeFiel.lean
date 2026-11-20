@@ -9,7 +9,7 @@ namespace GlobalTheory.GLm.ParBasic
 variable {g : ℕ} [Fact g.Prime] {a b : ℕ}
 
 /- English proof (translation)
-Establish `hi : (i : ℕ) < a + b` using `by omega`. Establish `hj : (j : ℕ) < a + b` using `by omega`. Simplify using `only [tl, entN, hi, hj, and_self, dif_pos]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem tl_apply (M : Mt g (a + b)) (i j : Fin a) : tl a M i j = M (Fin.castAdd b i) (Fin.castAdd b j) := by
   have hi : (i : ℕ) < a + b := by omega
@@ -18,7 +18,7 @@ theorem tl_apply (M : Mt g (a + b)) (i j : Fin a) : tl a M i j = M (Fin.castAdd 
   rfl
 
 /- English proof (translation)
-Establish `hi : a + (i : ℕ) < a + b` using `by omega`. Establish `hj : a + (j : ℕ) < a + b` using `by omega`. Simplify using `only [br, entN, hi, hj, and_self, dif_pos]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem br_apply (M : Mt g (a + b)) (i j : Fin b) : br a b M i j = M (Fin.natAdd a i) (Fin.natAdd a j) := by
   have hi : a + (i : ℕ) < a + b := by omega
@@ -33,27 +33,27 @@ def ur (a b : ℕ) (M : Mt g (a + b)) : Matrix (Fin a) (Fin b) (ZMod g) :=
   fun i j => M (Fin.castAdd b i) (Fin.natAdd a j)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[tl_apply, blkM]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem tl_blkM (A : Mt g a) (B : Matrix (Fin a) (Fin b) (ZMod g)) (D : Mt g b) : tl a (blkM A B D) = A := by
   ext i j; simp [tl_apply, blkM]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[br_apply, blkM]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem br_blkM (A : Mt g a) (B : Matrix (Fin a) (Fin b) (ZMod g)) (D : Mt g b) : br a b (blkM A B D) = D := by
   ext i j; simp [br_apply, blkM]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[ur, blkM]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem ur_blkM (A : Mt g a) (B : Matrix (Fin a) (Fin b) (ZMod g)) (D : Mt g b) : ur a b (blkM A B D) = B := by
   ext i j; simp [ur, blkM]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h i j`. Conclude with `h _ _ (by simp) (by simp)`. Introduce `h i j hj hi`. Use `h ⟨i - a, by omega⟩ ⟨j, hj⟩` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `convert this using 2 <;> ext <;> simp`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem inPar_iff (M : Mt g (a + b)) :
     InPar a M ↔ ∀ (i : Fin b) (j : Fin a), M (Fin.natAdd a i) (Fin.castAdd b j) = 0 := by
@@ -66,14 +66,14 @@ theorem inPar_iff (M : Mt g (a + b)) :
     omega
 
 /- English proof (translation)
-Rewrite using `[inPar_iff]`. Introduce `i j`. Simplify using `[blkM]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem inPar_blkM (A : Mt g a) (B : Matrix (Fin a) (Fin b) (ZMod g)) (D : Mt g b) : InPar a (blkM A B D) := by
   rw [inPar_iff]
   intro i j; simp [blkM]
 
 /- English proof (translation)
-Rewrite `h` using `[inPar_iff]`. Use extensionality with `i j`. Apply the tactic sequence `refine Fin.addCases (fun i => ?_) (fun i => ?_) i <;> refine Fin.addCases (fun j => ?_) (fun j => ?_) j <;>`. Simplify using `[blkM, tl_apply, br_apply, ur, h]`.
+Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem blkM_eq {M : Mt g (a + b)} (h : InPar a M) : blkM (tl a M) (ur a b M) (br a b M) = M := by
   rw [inPar_iff] at h
@@ -82,21 +82,21 @@ theorem blkM_eq {M : Mt g (a + b)} (h : InPar a M) : blkM (tl a M) (ur a b M) (b
     simp [blkM, tl_apply, br_apply, ur, h]
 
 /- English proof (translation)
-Rewrite using `[blkM, Matrix.det_submatrix_equiv_self, Matrix.det_fromBlocks_zero₂₁]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem det_blkM (A : Mt g a) (B : Matrix (Fin a) (Fin b) (ZMod g)) (D : Mt g b) :
     (blkM A B D).det = A.det * D.det := by
   rw [blkM, Matrix.det_submatrix_equiv_self, Matrix.det_fromBlocks_zero₂₁]
 
 /- English proof (translation)
-Simplify using `only [Matrix.isUnit_iff_isUnit_det, det_blkM, IsUnit.mul_iff]`.
+Simplify using the standard rewrite rules.
 -/
 theorem isUnit_blkM (A : Mt g a) (B : Matrix (Fin a) (Fin b) (ZMod g)) (D : Mt g b) :
     IsUnit (blkM A B D) ↔ IsUnit A ∧ IsUnit D := by
   simp only [Matrix.isUnit_iff_isUnit_det, det_blkM, IsUnit.mul_iff]
 
 /- English proof (translation)
-Rewrite using `[blkM, blkM, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]`. Simplify using `[blkM]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem blkM_mul (A A' : Mt g a) (B B' : Matrix (Fin a) (Fin b) (ZMod g)) (D D' : Mt g b) :
     blkM A B D * blkM A' B' D' = blkM (A * A') (A * B' + B * D') (D * D') := by
@@ -104,7 +104,7 @@ theorem blkM_mul (A A' : Mt g a) (B B' : Matrix (Fin a) (Fin b) (ZMod g)) (D D' 
   simp [blkM]
 
 /- English proof (translation)
-Rewrite using `[← isUnit_blkM _ (ur a b x.val), blkM_eq h]`. Conclude with `x.isUnit`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_blocks (x : Gn g (a + b)) (h : InPar a (x : Mt g (a + b))) :
     IsUnit (tl a (x : Mt g (a + b))) ∧ IsUnit (br a b (x : Mt g (a + b))) := by
@@ -112,7 +112,7 @@ theorem isUnit_blocks (x : Gn g (a + b)) (h : InPar a (x : Mt g (a + b))) :
   exact x.isUnit
 
 /- English proof (translation)
-Establish `e` using `blkM_mul (tl a x) (tl a y) (ur a b x) (ur a b y) (br a b x) (br a b y)`. Rewrite `e` using `[blkM_eq hx, blkM_eq hy]`. Rewrite using `[e]`. Conclude with `⟨inPar_blkM _ _ _, tl_blkM _ _ _, br_blkM _ _ _⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem blocks_mul (x y : Mt g (a + b)) (hx : InPar a x) (hy : InPar a y) :
     InPar a (x * y) ∧ tl a (x * y) = tl a x * tl a y ∧ br a b (x * y) = br a b x * br a b y := by
@@ -122,11 +122,11 @@ theorem blocks_mul (x y : Mt g (a + b)) (hx : InPar a x) (hy : InPar a y) :
   exact ⟨inPar_blkM _ _ _, tl_blkM _ _ _, br_blkM _ _ _⟩
 
 /- English proof (translation)
-Establish `hp : ∀ x, p x → ∀ k : ℕ, p (x ^ k)` using `fun x hx k => by`. Proceed by induction on `k with`. Consider the case `zero => simpa using h1`. Consider the case `succ k ih => rw [pow_succ]`. Conclude with `hm _ _ ih hx`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨{ carrier := {x | p x}, mul_mem' := fun {x y} => hm x y, one_mem' := h1, inv_mem' := fun {x} hx => ?_ }, fun x => Iff.rfl⟩` and prove the remaining obligations. Establish `: x⁻¹ = x ^ (orderOf x - 1)`. Establish `h0` using `orderOf_pos x`. Rewrite using `[inv_eq_iff_mul_eq_one, ← pow_succ', Nat.sub_add_cancel h0, pow_orderOf_eq_one]`. Express the relevant statement in the definitionally equal form `p x⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `hp x hx _`.
+A detailed English derivation is pending.
 -/
 theorem exists_subgroup {G : Type} [Group G] [Finite G] (p : G → Prop) (h1 : p 1)
     (hm : ∀ x y, p x → p y → p (x * y)) : ∃ P : Subgroup G, ∀ x, x ∈ P ↔ p x := by
@@ -144,19 +144,19 @@ theorem exists_subgroup {G : Type} [Group G] [Finite G] (p : G → Prop) (h1 : p
   exact hp x hx _
 
 /- English proof (translation)
-Introduce `i j hj hi` and use `Matrix.one_apply_ne (by rintro rfl; omega)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem inPar_one (a n : ℕ) : InPar a (1 : Mt g n) := fun i j hj hi =>
   Matrix.one_apply_ne (by rintro rfl; omega)
 
 /- English proof (translation)
-Establish `hc : (Finset.univ : Finset (Matrix (Fin a) (Fin b) (ZMod g))).card = g ^ (a * b)`. Rewrite using `[Finset.card_univ]`. Express the relevant statement in the definitionally equal form `Fintype.card (Fin a → Fin b → ZMod g) = _`. Simplify using `[pow_mul']`. Rewrite using `[← hc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.card_bij (fun x _ => ur a b x.val) (fun _ _ => Finset.mem_univ _) ?_ ?_` and prove the remaining obligations. Introduce `x hx y hy h`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hx hy`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[← blkM_eq hx.1, ← blkM_eq hy.1, hx.2.1, hx.2.2, hy.2.1, hy.2.2, h]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `B _`. Establish `hu` using `(isUnit_blkM h₁.val B h₂.val).2 ⟨h₁.isUnit, h₂.isUnit⟩`. Use `⟨hu.unit, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, IsUnit.unit_spec]`. Conclude with `⟨inPar_blkM _ _ _, tl_blkM _ _ _, br_blkM _ _ _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Simplify using `only [IsUnit.unit_spec, ur_blkM]`.
+Simplify using the standard rewrite rules.
 -/
 theorem card_fibre (h₁ : Gn g a) (h₂ : Gn g b) :
     (Finset.univ.filter fun x : Gn g (a + b) => InPar a (x : Mt g (a + b)) ∧
@@ -179,15 +179,15 @@ theorem card_fibre (h₁ : Gn g a) (h₂ : Gn g b) :
     · simp only [IsUnit.unit_spec, ur_blkM]
 
 /- English proof (translation)
-Rewrite using `[toG, dif_pos h, IsUnit.unit_spec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem toG_val {n : ℕ} {M : Mt g n} (h : IsUnit M) : (toG M).val = M := by
   rw [toG, dif_pos h, IsUnit.unit_spec]
 
 /- English proof (translation)
-Rewrite using `[Finset.card_eq_sum_card_fiberwise (t := (Finset.univ : Finset (Gn g a × Gn g b))) (f := fun x : Gn g (a + b) => (toG (tl a x.val), toG (br a b x.val))) (fun _ _ => Finset.mem_univ _)]`. Rewrite using `[Finset.sum_congr rfl (g := fun _ => g ^ (a * b))]`. Simplify using the standard rewrite rules. Introduce and unpack `⟨h₁, h₂⟩ _`. Rewrite using `[← card_fibre h₁ h₂, Finset.filter_filter]`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `Finset.filter_congr fun x _ => and_congr_right fun hx => ?_` and prove the remaining obligations. Establish `hu` using `isUnit_blocks x hx`. Rewrite using `[Prod.mk.injEq, Units.ext_iff, Units.ext_iff, toG_val hu.1, toG_val hu.2]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_par :
     (Finset.univ.filter fun x : Gn g (a + b) => InPar a (x : Mt g (a + b))).card =
@@ -204,17 +204,17 @@ theorem card_par :
     rw [Prod.mk.injEq, Units.ext_iff, Units.ext_iff, toG_val hu.1, toG_val hu.2]
 
 /- English proof (translation)
-Introduce `_ _` and use `⟨fun h => Matrix.one_apply_ne h.ne', fun h => h ▸ Matrix.one_apply_eq _⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem isUniUp_one (n : ℕ) : IsUniUp (1 : Mt g n) := fun _ _ =>
   ⟨fun h => Matrix.one_apply_ne h.ne', fun h => h ▸ Matrix.one_apply_eq _⟩
 
 /- English proof (translation)
-Introduce `i j`. Use `⟨fun h => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hk : k < i`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[(hx i k).1 hk, zero_mul]`. Rewrite using `[(hy k j).1 (h.trans_le (not_lt.1 hk)), mul_zero]`. Introduce and unpack `rfl`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single i, (hx i i).2 rfl, (hy i i).2 rfl, mul_one]`. Introduce `k _ hk`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `lt_or_gt_of_ne hk with h | h` into its components or cases. Rewrite using `[(hx i k).1 h, zero_mul]`. Rewrite using `[(hy k i).1 h, mul_zero]`. Simplify using the standard rewrite rules.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isUniUp_mul {n : ℕ} (x y : Mt g n) (hx : IsUniUp x) (hy : IsUniUp y) : IsUniUp (x * y) := by
   intro i j
@@ -233,7 +233,7 @@ theorem isUniUp_mul {n : ℕ} (x y : Mt g n) (hx : IsUniUp x) (hy : IsUniUp y) :
     · simp
 
 /- English proof (translation)
-Introduce `g _ a b n hn`. Substitute `hn` using the available equality. Conclude with `⟨exists_subgroup _ (inPar_one _ _) fun x y hx hy => (blocks_mul _ _ hx hy).1, exists_subgroup _ (isUniUp_one _) fun x y hx hy => isUniUp_mul _ _ hx hy, isUnit_blocks, fun x y hx hy => (blocks_mul x y hx hy).2, card_fibre, card_par⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem par_basic : ∀ (g : ℕ) [Fact g.Prime] (a b n : ℕ), n = a + b → (∃ P : Subgroup (Gn g n), ∀ x, x ∈ P ↔ InPar a (x : Mt g n)) ∧ (∃ U : Subgroup (Gn g n), ∀ x, x ∈ U ↔ IsUniUp (x : Mt g n)) ∧ (∀ x : Gn g n, InPar a (x : Mt g n) → IsUnit (tl a (x : Mt g n)) ∧ IsUnit (br a b (x : Mt g n))) ∧ (∀ x y : Mt g n, InPar a x → InPar a y → tl a (x * y) = tl a x * tl a y ∧ br a b (x * y) = br a b x * br a b y) ∧ (∀ (h₁ : Gn g a) (h₂ : Gn g b), (Finset.univ.filter fun x : Gn g n => InPar a (x : Mt g n) ∧ tl a (x : Mt g n) = (h₁ : Mt g a) ∧ br a b (x : Mt g n) = (h₂ : Mt g b)).card = g ^ (a * b)) ∧ (Finset.univ.filter fun x : Gn g n => InPar a (x : Mt g n)).card = Fintype.card (Gn g a) * Fintype.card (Gn g b) * g ^ (a * b) := by
   intro g _ a b n hn

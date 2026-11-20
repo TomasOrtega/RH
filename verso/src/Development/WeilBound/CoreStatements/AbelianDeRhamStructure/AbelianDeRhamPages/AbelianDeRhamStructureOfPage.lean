@@ -6,7 +6,7 @@ import Development.WeilBound.CoreStatements.AbelianHeightsDuality.AbelianHodgeDe
 namespace AbelianDeRhamStructureFromPages.Adrs
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.Published.abelianDeRhamStructure_crystallineDeRham_of_hypotheses GlobalTheory.SmoothLift.crystallineSmoothLift_of_relations (FubiniStudyChowHeightFormula₂.Hdr.abelianHodgeDeRham_of_page P)).1`.
+A detailed English derivation is pending.
 -/
 theorem abelianDeRhamStructure_of_page (P : FubiniStudyChowHeightFormula₂.Hdr.AbelianDeRhamPage) : GlobalTheory.Published.AbelianDeRhamStructure :=
   (GlobalTheory.Published.abelianDeRhamStructure_crystallineDeRham_of_hypotheses GlobalTheory.SmoothLift.crystallineSmoothLift_of_relations

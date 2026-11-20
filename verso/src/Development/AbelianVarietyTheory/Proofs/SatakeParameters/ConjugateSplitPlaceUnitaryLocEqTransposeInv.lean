@@ -10,7 +10,7 @@ open TensorProduct
 namespace GlobalTheory.ConjLoc
 
 /- English proof (translation)
-Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul x b`. Simplify using `[SplitPlace.proj, conjAL, Algebra.TensorProduct.lift_tmul, Algebra.TensorProduct.map_tmul]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 -/
 theorem proj_conjSP {L : Type} [Field L] [NumberField L] [IsCMField L] (s : SplitPlace L) (a : AL L) :
     (GlobalTheory.TypeTame.conjSP s).proj a = s.proj (conjAL L a) := by
@@ -21,9 +21,9 @@ theorem proj_conjSP {L : Type} [Field L] [NumberField L] [IsCMField L] (s : Spli
   | add a b ha hb => simp only [map_add, ha, hb]
 
 /- English proof (translation)
-Introduce `L _ _ _ n s x`. Establish `hx : (x.1 : Matrix (Fin n) (Fin n) (AL L)) * conjT (conjAL L) (x.1 : Matrix (Fin n) (Fin n) (AL L)) = 1` using `x.2`. Establish `h1 : (s.loc n x).val * ((GlobalTheory.TypeTame.conjSP s).loc n x).val.transpose = 1`. Establish `e : ((GlobalTheory.TypeTame.conjSP s).loc n x).val.transpose = (conjT (conjAL L) (x.1 : Matrix (Fin n) (Fin n) (AL L))).map s.proj`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `proj_conjSP s _`. Establish `e' : (s.loc n x).val = (x.1 : Matrix (Fin n) (Fin n) (AL L)).map s.proj` using `rfl`. Rewrite using `[e, e', ← Matrix.map_mul, hx, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `h2` using `Units.inv_eq_of_mul_eq_one_right h1`. Rewrite using `[h2, Matrix.transpose_transpose]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem loc_conjSP : ∀ {L : Type} [Field L] [NumberField L] [IsCMField L] (n : ℕ) (s : SplitPlace L) (x : GAf L n), ((GlobalTheory.TypeTame.conjSP s).loc n x).val = ((s.loc n x)⁻¹ : GL (Fin n) (s.v.adicCompletion (maximalRealSubfield L))).val.transpose := by
   intro L _ _ _ n s x

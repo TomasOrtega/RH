@@ -15,7 +15,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.RealMult.RuleDescend
 
 /- English proof (translation)
-Use `letI := σ.toAlgebra`. Use `letI := τ.toAlgebra`. Use `haveI : Module.FaithfullyFlat R R₁ := hσ`. Use `⟨R₁ ⊗[R] R', inferInstance, Algebra.TensorProduct.includeLeftRingHom, (Algebra.TensorProduct.includeRight : R' →ₐ[R] R₁ ⊗[R] R').toRingHom, Algebra.TensorProduct.includeLeftRingHom_comp_algebraMap, ?_⟩` and prove the remaining obligations. Conclude with `Module.FaithfullyFlat.tensorProduct_mk_injective (A := R) (B := R₁) R'`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_square {R R₁ R' : Type} [CommRing R] [CommRing R₁] [CommRing R'] (σ : R →+* R₁)
     (hσ : σ.FaithfullyFlat) (τ : R →+* R') :
@@ -29,9 +29,9 @@ theorem exists_square {R R₁ R' : Type} [CommRing R] [CommRing R₁] [CommRing 
   exact Module.FaithfullyFlat.tensorProduct_mk_injective (A := R) (B := R₁) R'
 
 /- English proof (translation)
-Use `letI := σ.toAlgebra`. Use `haveI : Module.FaithfullyFlat R R₁ := hσ`. Use `⟨R₁ ⊗[R] R₁, inferInstance, Algebra.TensorProduct.includeLeftRingHom, (Algebra.TensorProduct.includeRight : R₁ →ₐ[R] R₁ ⊗[R] R₁).toRingHom, Algebra.TensorProduct.includeLeftRingHom_comp_algebraMap, fun x hx ↦ ?_⟩` and prove the remaining obligations. Use `(Algebra.IsEffective.of_faithfullyFlat R R₁ x).1 ?_` and prove the remaining obligations. Establish `: x ⊗ₜ[R] (1 : R₁) = (1 : R₁) ⊗ₜ[R] x` using `hx`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[this]`.
+A detailed English derivation is pending.
 -/
 theorem exists_equaliser {R R₁ : Type} [CommRing R] [CommRing R₁] (σ : R →+* R₁) (hσ : σ.FaithfullyFlat) :
     ∃ (T : Type) (_ : CommRing T) (a b : R₁ →+* T), a.comp σ = b.comp σ ∧ ∀ x, a x = b x → ∃ y, σ y = x := by
@@ -45,14 +45,14 @@ theorem exists_equaliser {R R₁ : Type} [CommRing R] [CommRing R₁] (σ : R �
   simp [this]
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem spMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (g.comp f) = spMap g ≫ spMap f := by
   rw [← Spec.map_comp, ← CommRingCat.ofHom_comp]
 
 /- English proof (translation)
-Apply the tactic sequence `refine RingHom.ext fun r ↦ TrivSqZeroExt.ext ?_ ?_ <;> simp [Chart.dualMapR]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dualMapR_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     Chart.dualMapR (g.comp f) = (Chart.dualMapR g).comp (Chart.dualMapR f) := by
@@ -62,7 +62,7 @@ variable {F : Type} [Field F] [NumberField F] {𝔠 : FracId F}
   {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R'']
 
 /- English proof (translation)
-Unfold `Obj.LieCorr at *`. Rewrite using `[← Category.assoc, h', Category.assoc, h, dualMapR_comp, spMap_comp, Category.assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem lieCorr_comp {σ : R →+* R'} {τ : R' →+* R''} {X : Obj F 𝔠 (Sp R)} {X' : Obj F 𝔠 (Sp R')}
     {X'' : Obj F 𝔠 (Sp R'')} {φ : X'.A.left ⟶ X.A.left} {ψ : X''.A.left ⟶ X'.A.left}
@@ -72,7 +72,7 @@ theorem lieCorr_comp {σ : R →+* R'} {τ : R' →+* R''} {X : Obj F 𝔠 (Sp R
   rw [← Category.assoc, h', Category.assoc, h, dualMapR_comp, spMap_comp, Category.assoc]
 
 /- English proof (translation)
-Use `letI := σ.toAlgebra`. Take `⟨e, he, -⟩` from `Obj.exists_lieEquiv (R' := R') h`. Conclude with `⟨_, (he v _).2 rfl, fun w hw ↦ (he v w).1 hw⟩`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem existsUnique_lieCorr {σ : R →+* R'} {X : Obj F 𝔠 (Sp R)} {X' : Obj F 𝔠 (Sp R')}
     {φ : X'.A.left ⟶ X.A.left} (h : X'.IsPullBy X (spMap σ) φ) (v : X.Lie) : ∃! v', Obj.LieCorr σ φ v v' := by
@@ -81,7 +81,7 @@ theorem existsUnique_lieCorr {σ : R →+* R'} {X : Obj F 𝔠 (Sp R)} {X' : Obj
   exact ⟨_, (he v _).2 rfl, fun w hw ↦ (he v w).1 hw⟩
 
 /- English proof (translation)
-Rewrite using `[spMap_comp]`. Conclude with `h'.comp h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPullBy_comp {σ : R →+* R'} {τ : R' →+* R''} {X : Obj F 𝔠 (Sp R)} {X' : Obj F 𝔠 (Sp R')}
     {X'' : Obj F 𝔠 (Sp R'')} {φ : X'.A.left ⟶ X.A.left} {ψ : X''.A.left ⟶ X'.A.left}
@@ -90,9 +90,9 @@ theorem isPullBy_comp {σ : R →+* R'} {τ : R' →+* R''} {X : Obj F 𝔠 (Sp 
   rw [spMap_comp]; exact h'.comp h
 
 /- English proof (translation)
-Introduce `v v'' hv`. Use `choose v' hv' using fun i ↦ (existsUnique_lieCorr h (v i)).exists`. Establish `: ∀ i, Obj.LieCorr τ ψ (v' i) (v'' i)` using `fun i ↦ by`. Take `⟨w, hw⟩` from `(existsUnique_lieCorr h' (v' i)).exists`. Rewrite using `[(existsUnique_lieCorr (isPullBy_comp h h') (v i)).unique (hv i) (lieCorr_comp (hv' i) hw)]` and apply the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hd' v' v'' this, hd v v' hv', RingHom.comp_apply]`.
+A detailed English derivation is pending.
 -/
 theorem detCorr_comp {σ : R →+* R'} {τ : R' →+* R''} {X : Obj F 𝔠 (Sp R)} {X' : Obj F 𝔠 (Sp R')}
     {X'' : Obj F 𝔠 (Sp R'')} {φ : X'.A.left ⟶ X.A.left} {ψ : X''.A.left ⟶ X'.A.left}
@@ -107,7 +107,7 @@ theorem detCorr_comp {σ : R →+* R'} {τ : R' →+* R''} {X : Obj F 𝔠 (Sp R
   rw [hd' v' v'' this, hd v v' hv', RingHom.comp_apply]
 
 /- English proof (translation)
-Use `haveI := X.invertible_detOmega`. Take `⟨a, ha⟩` from `Submodule.mem_span_singleton.1 (δ'.2.ge Submodule.mem_top : δ.1 ∈ Submodule.span R {δ'.1})`. Use `IsUnit.of_mul_eq_one_right a (eq_of_smul_eq_smul (α := X.DetOmega) fun m ↦ ?_)` and prove the remaining obligations. Take `⟨b, rfl⟩` from `Submodule.mem_span_singleton.1 (δ.2.ge Submodule.mem_top : m ∈ Submodule.span R {δ.1})`. Rewrite using `[smul_comm, mul_smul, ← h, ha, one_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_of_eq_smul {X : Obj F 𝔠 (Sp R)} (δ δ' : X.DetGen) (c : R) (h : δ'.1 = c • δ.1) : IsUnit c := by
   haveI := X.invertible_detOmega
@@ -119,7 +119,7 @@ theorem isUnit_of_eq_smul {X : Obj F 𝔠 (Sp R)} (δ δ' : X.DetGen) (c : R) (h
 variable {N : ℕ} {R₀ : Type} [CommRing R₀] {k : ℕ}
 
 /- English proof (translation)
-Take `⟨hu, ⟨α⟩⟩` from `hX`. Take `⟨α', -⟩` from `h.exists_level α`. Conclude with `⟨by simpa using hu.map σ, ⟨α'⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem levObj_of_isPullBy {σ : R →+* R'} {X : Obj F 𝔠 (Sp R)} {X' : Obj F 𝔠 (Sp R')}
     {φ : X'.A.left ⟶ X.A.left} (h : X'.IsPullBy X (spMap σ) φ) (hX : levObj 𝔠 N R X) : levObj 𝔠 N R' X' := by
@@ -133,13 +133,13 @@ def IsVal (r : Rule (levObj 𝔠 N) R₀ k) [Algebra R₀ R] (X : Obj F 𝔠 (Sp
     Obj.DetCorr (σ : R →+* R') φ δ.1 δ'.1 → r.val R' X' h' δ' = σ x
 
 /- English proof (translation)
-Use `letI : Algebra R₀ T := (a.comp (algebraMap R₀ R₁)).toAlgebra`. Set `a' : R₁ →ₐ[R₀] T` to `{ a with commutes' := fun _ ↦ rfl }`. Set `b' : R₂ →ₐ[R₀] T` to `{ b with commutes' := fun x ↦ by`. Use `RingHom.congr_fun hab (algebraMap R₀ R x)` as an intermediate fact. Simplify using `only [RingHom.comp_apply, RingHom.coe_coe, AlgHom.commutes] at this`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `this.symm }`. Take `⟨Y, ψ₁, k₁⟩` from `X₁.exists_isPullBy (spMap a)`. Establish `hY` using `isPullBy_comp h₁ k₁`. Establish `hY'` using `hY`. Rewrite `hY'` using `[hab, spMap_comp]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨ψ₂, k₂, hψ⟩` from `hY'.cancel h₂`. Take `⟨ε₁, e₁⟩` from `(k₁.existsUnique_detGen a δ₁).exists`. Take `⟨ε₂, e₂⟩` from `(k₂.existsUnique_detGen b δ₂).exists`. Establish `f₂` using `detCorr_comp h₂ k₂ d₂ e₂`. Rewrite `f₂` using `[hψ, ← hab]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `rfl : ε₁ = ε₂` from `(hY.existsUnique_detGen _ δ).unique (detCorr_comp h₁ k₁ d₁ e₁) f₂`. Establish `lY` using `levObj_of_isPullBy k₁ l₁`. Conclude with `(r.baseChange R₁ T a' X₁ l₁ Y lY ψ₁ δ₁ ε₁ k₁ e₁).symm.trans (r.baseChange R₂ T b' X₂ l₂ Y lY ψ₂ δ₂ ε₁ k₂ e₂)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem val_eq_of_square (r : Rule (levObj 𝔠 N) R₀ k) {R₁ R₂ T : Type} [CommRing R₁] [CommRing R₂] [CommRing T]
     [Algebra R₀ R] [Algebra R₀ R₁] [Algebra R₀ R₂] (σ : R →ₐ[R₀] R₁) (τ : R →ₐ[R₀] R₂)
@@ -178,7 +178,7 @@ def HasLevelCovers : Prop :=
       σ.FaithfullyFlat ∧ X'.IsPullBy X (spMap σ) φ ∧ Nonempty (X'.Level N)
 
 /- English proof (translation)
-Take `⟨R₁, _, σ, X₁, φ, hσ, hp, hl⟩` from `hN R hu X`. Use `letI : Algebra R₀ R₁ := (σ.comp (algebraMap R₀ R)).toAlgebra`. Conclude with `⟨R₁, inferInstance, inferInstance, { σ with commutes' := fun _ ↦ rfl }, X₁, φ, hσ, hp, by simpa using hu.map σ, hl⟩`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Supply the required witnesses or components.
 -/
 theorem exists_cover (hN : HasLevelCovers 𝔠 N) [Algebra R₀ R] (hu : IsUnit (N : R)) (X : Obj F 𝔠 (Sp R)) :
     ∃ (R₁ : Type) (_ : CommRing R₁) (_ : Algebra R₀ R₁) (σ : R →ₐ[R₀] R₁) (X₁ : Obj F 𝔠 (Sp R₁))
@@ -190,11 +190,9 @@ theorem exists_cover (hN : HasLevelCovers 𝔠 N) [Algebra R₀ R] (hu : IsUnit 
     by simpa using hu.map σ, hl⟩
 
 /- English proof (translation)
-Take `⟨R₁, _, _, σ, X₁, φ, hσ, hp, hl⟩` from `exists_cover (R₀ := R₀) hN hu X`. Take `⟨δ₁, d₁⟩` from `(hp.existsUnique_detGen _ δ).exists`. Take `⟨T, _, a, b, hab, hT⟩` from `exists_equaliser _ hσ`. Take `⟨x, hx⟩` from `hT _ (val_eq_of_square r σ σ a b hab hp hp hl hl d₁ d₁)`. Use `⟨x, fun R' _ _ τ X' h' φ' δ' hp' d' ↦ ?_, fun y hy ↦ hσ.injective ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨T', _, a', b', hab', hb'⟩` from `exists_square _ hσ (τ : R →+* R')`. Use `hb' ?_` and prove the remaining obligations. Rewrite using `[← val_eq_of_square r σ τ a' b' hab' hp hp' hl h' d₁ d', ← hx]`. Conclude with `RingHom.congr_fun hab' x`. Rewrite using `[hx]`.
-
-Conclude with `(hy R₁ σ X₁ hl φ δ₁ hp d₁).symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem existsUnique_isVal (hN : HasLevelCovers 𝔠 N) (r : Rule (levObj 𝔠 N) R₀ k) [Algebra R₀ R]
     (hu : IsUnit (N : R)) (X : Obj F 𝔠 (Sp R)) (δ : X.DetGen) : ∃! x, IsVal r X δ x := by
@@ -210,7 +208,7 @@ theorem existsUnique_isVal (hN : HasLevelCovers 𝔠 N) (r : Rule (levObj 𝔠 N
   · rw [hx]; exact (hy R₁ σ X₁ hl φ δ₁ hp d₁).symm
 
 /- English proof (translation)
-The claim follows from `fun R'' _ _ τ X'' h'' ψ δ'' hp d' ↦ hx R'' (τ.comp σ) X'' h'' (ψ ≫ φ) δ'' (isPullBy_comp h hp) (detCorr_comp h hp d d')`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsVal.baseChange {r : Rule (levObj 𝔠 N) R₀ k} [Algebra R₀ R] [Algebra R₀ R'] (σ : R →ₐ[R₀] R')
     {X : Obj F 𝔠 (Sp R)} {X' : Obj F 𝔠 (Sp R')} {φ : X'.A.left ⟶ X.A.left} {δ : X.DetGen} {δ' : X'.DetGen}
@@ -219,9 +217,9 @@ theorem IsVal.baseChange {r : Rule (levObj 𝔠 N) R₀ k} [Algebra R₀ R] [Alg
   hx R'' (τ.comp σ) X'' h'' (ψ ≫ φ) δ'' (isPullBy_comp h hp) (detCorr_comp h hp d d')
 
 /- English proof (translation)
-Introduce `R' _ _ σ X' h' φ ε hp d`. Establish `hu : IsUnit (σ c)` using `(isUnit_of_eq_smul δ δ' c hc).map σ`. Set `ε' : X'.DetGen` to `⟨σ c • ε.1, (Submodule.span_singleton_smul_eq hu _).trans ε.2⟩`. Establish `d' : Obj.DetCorr (σ : R →+* R') φ δ'.1 ε'.1` using `fun v v' hv ↦ by`. Express the relevant statement in the definitionally equal form `σ c • ε.1 v' = _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[d v v' hv, hc]`. Simplify using the standard rewrite rules. Rewrite using `[← r.homog R' X' h' ε ε' (σ c) rfl, hx R' σ X' h' φ ε' hp d', map_mul, map_pow]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsVal.homog {r : Rule (levObj 𝔠 N) R₀ k} [Algebra R₀ R] {X : Obj F 𝔠 (Sp R)} {δ δ' : X.DetGen} {c : R}
     (hc : δ'.1 = c • δ.1) {x : R} (hx : IsVal r X δ' x) : IsVal r X δ (c ^ k * x) := by
@@ -243,7 +241,7 @@ def descend (hN : HasLevelCovers 𝔠 N) (r : Rule (levObj 𝔠 N) R₀ k) : Rul
     ((existsUnique_isVal hN r h X δ).exists.choose_spec.baseChange σ hp d)
 
 /- English proof (translation)
-The claim follows from `(existsUnique_isVal hN r h X δ).unique (existsUnique_isVal hN r h X δ).exists.choose_spec hx`.
+A detailed English derivation is pending.
 -/
 theorem descend_val_eq (hN : HasLevelCovers 𝔠 N) (r : Rule (levObj 𝔠 N) R₀ k) [Algebra R₀ R]
     (X : Obj F 𝔠 (Sp R)) (h : IsUnit (N : R)) (δ : X.DetGen) {x : R} (hx : IsVal r X δ x) :
@@ -251,9 +249,9 @@ theorem descend_val_eq (hN : HasLevelCovers 𝔠 N) (r : Rule (levObj 𝔠 N) R�
   (existsUnique_isVal hN r h X δ).unique (existsUnique_isVal hN r h X δ).exists.choose_spec hx
 
 /- English proof (translation)
-Introduce `F _ _ _ 𝔠 N hN₁ R₀ _ k r₀ r hr`. Establish `hN : HasLevelCovers 𝔠 N` using `H F 𝔠 N hN₁`. Use `⟨descend hN r, fun R _ _ X h δ ↦ descend_val_eq hN r X h.1 δ ?_, fun R _ _ X h hX δ ↦ descend_val_eq hN r X h δ ?_⟩` and prove the remaining obligations. Conclude with `fun R' _ _ σ X' h' φ δ' hp d ↦ r.baseChange R R' σ X h X' h' φ δ δ' hp d`. Introduce `R' _ _ σ X' h' φ δ' hp d`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hX'` using `hp.isRapoport _ hX`. Rewrite using `[hr R' X' h' hX' δ']`. Conclude with `r₀.baseChange R R' σ X hX X' hX' φ δ δ' hp d`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_rule_unitObj_of_covers
     (H : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (𝔠 : FracId F) (N : ℕ), 1 ≤ N →

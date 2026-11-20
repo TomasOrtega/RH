@@ -8,7 +8,7 @@ open UpperTheory.V.Af.Smo (EigAt)
 open scoped ComplexOrder
 
 /- English proof (translation)
-Introduce `N s hs`. Use `LSeriesSummable_of_bounded_of_one_lt_re (m := 1) (fun n _ => ?_) (by linarith)` and prove the remaining obligations. Unfold `sqN`. Apply the tactic sequence `split_ifs <;> simp`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem UpperTheory.lseries_summable_sq_coeff_of_four_lt_re :
     ∀ (N : ℕ) (s : ℂ), 4 < s.re → LSeriesSummable (sqN N) s := by

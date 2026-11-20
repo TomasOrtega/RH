@@ -7,7 +7,7 @@ namespace Formalism.FourierDecayAlt.P.CutMP.Gauge.GC
 noncomputable section
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P Bs X d hH`. Establish `hOK : P.OK` using `hH.1.1`. Use `show 0 ≤ P.T * P.T'`. Conclude with `(mul_pos hOK.T_pos hOK.T'_pos).le`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem torus_parameter : GTCTT := by
   intro Wp Wq _ _ _ _ _ _ P Bs X d hH
@@ -21,7 +21,7 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Use `first`. Consider the case `rfl`. Consider the case `(simp [B.hsVec]; done)`. Consider the case `(unfold B.hsVec; rw [← WithLp.toLp_smul]; rfl)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem hsVec_smul (c : ℂ) (A : Wq →L[ℂ] Wp) : B.hsVec (c • A) = c • B.hsVec A := by
   first
@@ -30,7 +30,7 @@ theorem hsVec_smul (c : ℂ) (A : Wq →L[ℂ] Wp) : B.hsVec (c • A) = c • B
   | (unfold B.hsVec; rw [← WithLp.toLp_smul]; rfl)
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem star_mul_self_of_norm {z : ℂ} (h : ‖z‖ = 1) : star z * z = 1 := by
   calc star z * z = (starRingEnd ℂ) z * z := rfl
@@ -38,15 +38,13 @@ theorem star_mul_self_of_norm {z : ℂ} (h : ‖z‖ = 1) : star z * z = 1 := by
     _ = 1 := by rw [h]; norm_num
 
 /- English proof (translation)
-Take `⟨hs, hf⟩` from `he`. Use `⟨fun ρ => (hu ρ).1.smul (hs ρ), fun ζ hζ => ?_⟩` and prove the remaining obligations. Take `⟨hF, hO, hX⟩` from `hf ζ hζ`. Establish `hn : ∀ ρ, star (u ρ ζ) * u ρ ζ = 1` using `fun ρ => star_mul_self_of_norm ((hu ρ).2 ζ hζ)`. Use `⟨fun ρ => ?_, fun ρ ρ' => ?_, fun X hXF => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `hF ρ beta_reduce`. Simplify using `only [NF.Fib, Set.mem_setOf_eq] at h1 ⊢`. Introduce `p hp`. Rewrite using `[ContinuousLinearMap.smul_comp, ContinuousLinearMap.comp_smul, h1 p hp]`. Use `beta_reduce`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsVec_smul, hsVec_smul, inner_smul_left, inner_smul_right, hO ρ ρ']`. Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[mul_one]`. Conclude with `hn ρ`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_zero, mul_zero]`. Use `conv_lhs => rw [hX X hXF]`. Use `Finset.sum_congr rfl (fun ρ _ => ?_)` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[hsVec_smul, inner_smul_left, smul_smul]`.
-
-Use `congr 1`. Rewrite using `[show (starRingEnd ℂ) (u ρ ζ) = star (u ρ ζ) from rfl]`. Take the linear combination `(-(inner ℂ (B.hsVec (e ρ ζ)) (B.hsVec X))) * hn ρ`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem isFrameB_phase (P : M.Par) (Bs : B.RealPlaceData P.k P.r Wp Wq) (e : M.Ty P → ℂ → (Wq →L[ℂ] Wp))
     (u : M.Ty P → ℂ → ℂ) (he : IsFrameB P Bs e)
@@ -82,7 +80,7 @@ end frame
 section trans
 
 /- English proof (translation)
-Use `show ContDiffOn ℝ MA.sm (MA.ext (fun q : MA.Qp P.r P.TT => v q.1.2)) (MA.Qset P.r P.TT)`. Establish `h1 : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun x : MA.E P.r => v x.2) (MA.Qset P.r P.TT)` using `hv.comp contDiff_snd.contDiffOn (fun x hx => show P.TT < Complex.normSq x.2 from hx.2)`. Conclude with `h1.congr (fun x hx => by simp [MA.ext, hx])`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem comp_snd_mem_smSub (P : M.Par) {v : ℂ → ℂ} (hv : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) v (Ann P)) :
     (fun q : MA.Qp P.r P.TT => v q.1.2) ∈ MA.smSub P.r P.TT := by
@@ -92,7 +90,7 @@ theorem comp_snd_mem_smSub (P : M.Par) {v : ℂ → ℂ} (hv : ContDiffOn ℝ ((
   exact h1.congr (fun x hx => by simp [MA.ext, hx])
 
 /- English proof (translation)
-Unfold `fnZ MA.toSm`. Conclude with `dif_pos (comp_snd_mem_smSub P hv)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem fnZ_eq_mk (P : M.Par) {v : ℂ → ℂ} (hv : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) v (Ann P)) :
     fnZ P v = ⟨fun q => v q.1.2, comp_snd_mem_smSub P hv⟩ := by
@@ -100,13 +98,13 @@ theorem fnZ_eq_mk (P : M.Par) {v : ℂ → ℂ} (hv : ContDiffOn ℝ ((⊤ : ℕ
   exact dif_pos (comp_snd_mem_smSub P hv)
 
 /- English proof (translation)
-Distinguish the cases in `hg : g ∈ MA.smSub P.r P.TT`. Establish `hvg : (fun q : MA.Qp P.r P.TT => v q.1.2 * g q) ∈ MA.smSub P.r P.TT` using `(MA.smSub P.r P.TT).mul_mem (comp_snd_mem_smSub P hv) hg`. Rewrite using `[fnZ_eq_mk P hv]`. Unfold `MA.toSm`. Rewrite using `[dif_pos hvg, dif_pos hg]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hvg : (fun q : MA.Qp P.r P.TT => v q.1.2 * g q) ∉ MA.smSub P.r P.TT`. Introduce `h`. Apply `hg` to reduce the goal to its premises. Establish `h2` using `(MA.smSub P.r P.TT).mul_mem (comp_snd_mem_smSub P hw) h`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `q`. Establish `h3 : w q.1.2 * v q.1.2 = 1` using `hvw q.1.2 q.2.2`. Simplify using `only [Pi.mul_apply]`. Rewrite using `[← mul_assoc, h3, one_mul]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Unfold `MA.toSm`. Rewrite using `[dif_neg hvg, dif_neg hg, mul_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem toSm_mulZ (P : M.Par) {v w : ℂ → ℂ} (hv : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) v (Ann P))
     (hw : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) w (Ann P)) (hvw : ∀ ζ ∈ Ann P, w ζ * v ζ = 1)
@@ -135,7 +133,7 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `q`. Simplify using `only [rawR, hsVec_smul, inner_smul_left]`. Rewrite using `[show star (u ρ q.1.2) = (starRingEnd ℂ) (u ρ q.1.2) from rfl]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rawR_phase (P : M.Par) (μsec : ℂ → Matrix (Fin (P.k + 1)) (Fin (P.k + 1)) ℂ)
     (e : M.Ty P → ℂ → (Wq →L[ℂ] Wp)) (u : M.Ty P → ℂ → ℂ) (Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) (ρ : M.Ty P) :
@@ -146,7 +144,7 @@ theorem rawR_phase (P : M.Par) (μsec : ℂ → Matrix (Fin (P.k + 1)) (Fin (P.k
   ring
 
 /- English proof (translation)
-Establish `hs : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun ζ : ℂ => star ζ)` using `by first`. Consider the case `exact contDiff_id.star`. Consider the case `exact Complex.conjCLE.contDiff`. Consider the case `simpa using (Complex.conjCLE.contDiff (n := ((⊤ : ℕ∞) : WithTop ℕ∞)))`. Conclude with `hs.comp_contDiffOn hv`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem conj_smooth {v : ℂ → ℂ} {s : Set ℂ} (hv : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) v s) :
     ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun ζ => star (v ζ)) s := by
@@ -158,7 +156,7 @@ theorem conj_smooth {v : ℂ → ℂ} {s : Set ℂ} (hv : ContDiffOn ℝ ((⊤ :
   exact hs.comp_contDiffOn hv
 
 /- English proof (translation)
-Simplify using `only [trR]`. Rewrite using `[rawR_phase]`. Conclude with `toSm_mulZ P (conj_smooth (hu ρ).1) (hu ρ).1 (fun ζ hζ => by show u ρ ζ * star (u ρ ζ) = 1`. Rewrite using `[mul_comm]`. Conclude with `star_mul_self_of_norm ((hu ρ).2 ζ hζ)) _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trR_phase (P : M.Par) (Bs : B.RealPlaceData P.k P.r Wp Wq) (e : M.Ty P → ℂ → (Wq →L[ℂ] Wp))
     (u : M.Ty P → ℂ → ℂ)
@@ -180,7 +178,7 @@ section act
 def mulQ (P : M.Par) (x : (MA.DQ P).Pr) (f : MA.SmQ P.r P.TT) : MA.SmQ P.r P.TT := x.1 f
 
 /- English proof (translation)
-Unfold `MA.actA`. Use `(Fintype.sum_eq_single ρ (fun b hb => ?_)).trans ?_` and prove the remaining obligations. Establish `h0` using `congrArg (fun m : (MA.DQ P).Pr => m.1 (g b)) (Matrix.diagonal_apply_ne x (Ne.symm hb))`. Apply the tactic sequence `exact h0.trans (by first | rfl | simp)`. Conclude with `congrArg (fun m : (MA.DQ P).Pr => m.1 (g ρ)) (Matrix.diagonal_apply_eq x ρ)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem actA_diag (P : M.Par) (x : M.Ty P → (MA.DQ P).Pr) (g : M.Ty P → MA.SmQ P.r P.TT) (ρ : M.Ty P) :
     MA.actA P (Matrix.diagonal x : MA.A P (MA.DQ P)) g ρ = (x ρ).1 (g ρ) := by
@@ -197,7 +195,7 @@ theorem algebraMap_fst_apply (P : M.Par) (c : ℂ) (f : MA.SmQ P.r P.TT) :
     (algebraMap ℂ (MA.DQ P).Pr c).1 f = c • f := rfl
 
 /- English proof (translation)
-Establish `hk : (MA.kap P (MA.DQ P) f : MA.A P (MA.DQ P)) = Matrix.diagonal (fun π => algebraMap ℂ (MA.DQ P).Pr (f π))` using `by first`. Consider the case `rfl`. Consider the case `(ext i j; simp [MA.kap, Matrix.diagonal_apply])`. Rewrite using `[hk, actA_diag, algebraMap_fst_apply]`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem actA_kap (P : M.Par) (f : M.Ty P → ℂ) (g : M.Ty P → MA.SmQ P.r P.TT) (ρ : M.Ty P) :
     MA.actA P (MA.kap P (MA.DQ P) f) g ρ = f ρ • g ρ := by
@@ -209,7 +207,7 @@ theorem actA_kap (P : M.Par) (f : M.Ty P → ℂ) (g : M.Ty P → MA.SmQ P.r P.T
   rw [hk, actA_diag, algebraMap_fst_apply]
 
 /- English proof (translation)
-Unfold `MA.nabA`. Rewrite using `[actA_diag]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem actA_nabA (P : M.Par) (g : M.Ty P → MA.SmQ P.r P.TT) (ρ : M.Ty P) :
     MA.actA P (MA.nabA P (MA.DQ P)) g ρ =
@@ -219,7 +217,7 @@ theorem actA_nabA (P : M.Par) (g : M.Ty P → MA.SmQ P.r P.TT) (ρ : M.Ty P) :
   rfl
 
 /- English proof (translation)
-Unfold `MA.nabsA`. Rewrite using `[actA_diag]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem actA_nabsA (P : M.Par) (g : M.Ty P → MA.SmQ P.r P.TT) (ρ : M.Ty P) :
     MA.actA P (MA.nabsA P (MA.DQ P)) g ρ =
@@ -236,7 +234,7 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Unfold `KapF at hk ⊢`. Introduce `f Φ`. Use function extensionality and compare the values at `ρ`. Rewrite using `[actA_kap, trR_phase P Bs e u hu, trR_phase P Bs e u hu, hk f Φ, actA_kap, mul_smul_comm]`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem kapF_phase (P : M.Par) (Bs : B.RealPlaceData P.k P.r Wp Wq)
     (d : Q.NFData P (Q.Pr (Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π'))) (e : M.Ty P → ℂ → (Wq →L[ℂ] Wp))

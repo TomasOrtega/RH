@@ -11,11 +11,11 @@ variable (κ K A : Type) [Field κ] [Field K] [Algebra κ K] [IsPurelyInseparabl
   [Algebra κ A]
 
 /- English proof (translation)
-Use `set q := ringExpChar κ`. Establish `: ExpChar (A ⊗[κ] K) q` using `expChar_of_injective_algebraMap (algebraMap κ (A ⊗[κ] K)).injective q`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, 0, by simp⟩`. Consider the case `tmul a k`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨n, c, hc⟩` from `IsPurelyInseparable.pow_mem κ q k`. Use `⟨n, c • a ^ q ^ n, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.tmul_pow, ← hc]`. Use `show (a ^ q ^ n) ⊗ₜ[κ] (algebraMap κ K c) = (c • a ^ q ^ n) ⊗ₜ[κ] (1 : K)`. Rewrite using `[Algebra.algebraMap_eq_smul_one, TensorProduct.tmul_smul, TensorProduct.smul_tmul']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `add x y hx hy`. Take `⟨n, a, ha⟩` from `hx`. Take `⟨m, b, hb⟩` from `hy`. Use `⟨n + m, a ^ q ^ m + b ^ q ^ n, ?_⟩` and prove the remaining obligations. Rewrite using `[add_pow_expChar_pow, map_add, map_pow, map_pow, ← ha, ← hb, ← pow_mul, ← pow_mul, ← pow_add, ← pow_add, add_comm m n]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem shInsepRes_pow [Nontrivial (A ⊗[κ] K)] (y : A ⊗[κ] K) :
     ∃ n : ℕ, ∃ a : A, y ^ (ringExpChar κ) ^ n = algebraMap A (A ⊗[κ] K) a := by
@@ -39,15 +39,15 @@ theorem shInsepRes_pow [Nontrivial (A ⊗[κ] K)] (y : A ⊗[κ] K) :
 
 omit [IsPurelyInseparable κ K] in
 /- English proof (translation)
-The claim follows from `Algebra.TensorProduct.includeLeft_injective (S := A) (algebraMap κ K).injective`.
+A detailed English derivation is pending.
 -/
 theorem shInsepRes_inj : Function.Injective (algebraMap A (A ⊗[κ] K)) :=
   Algebra.TensorProduct.includeLeft_injective (S := A) (algebraMap κ K).injective
 
 /- English proof (translation)
-Use `⟨fun a ha => ?_⟩` and prove the remaining obligations. Take `⟨u, hu⟩` from `ha`. Take `⟨n, b, hb⟩` from `shInsepRes_pow κ K A (↑u⁻¹ : A ⊗[κ] K)`. Establish `hQ : (ringExpChar κ) ^ n ≠ 0` using `pow_ne_zero _ (expChar_pos κ (ringExpChar κ)).ne'`. Establish `h1 : algebraMap A (A ⊗[κ] K) (a ^ (ringExpChar κ) ^ n * b) = algebraMap A (A ⊗[κ] K) 1`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_mul, map_pow, ← hb, ← hu, ← mul_pow, Units.mul_inv, one_pow, map_one]`. Establish `h2` using `shInsepRes_inj κ K A h1`. Conclude with `(isUnit_pow_iff hQ).mp (isUnit_of_mul_isUnit_left (h2 ▸ isUnit_one))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem shInsepRes_localHom [Nontrivial (A ⊗[κ] K)] : IsLocalHom (algebraMap A (A ⊗[κ] K)) := by
   refine ⟨fun a ha => ?_⟩
@@ -62,11 +62,11 @@ theorem shInsepRes_localHom [Nontrivial (A ⊗[κ] K)] : IsLocalHom (algebraMap 
 end
 
 /- English proof (translation)
-Introduce `κ K A _ _ _ _ _ _ hA _`. Take `⟨hh, hsc⟩` from `hA`. Establish `: IsLocalRing A` using `hh.toIsLocalRing`. Establish `: IsLocalHom (algebraMap A (A ⊗[κ] K))` using `shInsepRes_localHom κ K A`. Set `_ : Algebra (IsLocalRing.ResidueField A) (IsLocalRing.ResidueField (A ⊗[κ] K))` to `(IsLocalRing.ResidueField.map (algebraMap A (A ⊗[κ] K))).toAlgebra`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `: Algebra.IsAlgebraic (IsLocalRing.ResidueField A) (IsLocalRing.ResidueField (A ⊗[κ] K))`. Prove the components needed by the constructor for the conclusion. Introduce `x`. Take `⟨y, rfl⟩` from `IsLocalRing.residue_surjective x`. Take `⟨n, a, ha⟩` from `shInsepRes_pow κ K A y`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hQ : 0 < (ringExpChar κ) ^ n` using `pow_pos (expChar_pos κ (ringExpChar κ)) _`. Use `⟨X ^ (ringExpChar κ) ^ n - C (IsLocalRing.residue A a), X_pow_sub_C_ne_zero hQ _, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_pow, aeval_X, aeval_C, ← map_pow, ha, sub_eq_zero]`. Both sides reduce to the same expression. Conclude with `Algebra.IsAlgebraic.isSepClosed (F := IsLocalRing.ResidueField A)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem SHInsepRes_of : SHInsepRes := by
   intro κ K A _ _ _ _ _ _ hA _

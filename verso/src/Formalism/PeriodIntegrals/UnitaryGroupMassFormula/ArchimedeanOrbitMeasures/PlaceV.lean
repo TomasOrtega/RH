@@ -34,21 +34,21 @@ def urM (n : ℕ) : EuclideanSpace ℝ (Fin n × Fin n × Bool) →ₗ[ℝ] Matr
     apply Complex.ext <;> simp [unrealify]
 
 /- English proof (translation)
-The claim follows from `unr_re X`.
+A detailed English derivation is pending.
 -/
 theorem ur_rl (X : Matrix (Fin n) (Fin n) ℂ) : urM n (rlM n X) = X := unr_re X
 
 /- English proof (translation)
-Use extensionality with `⟨i, j, b⟩`. Apply the tactic sequence `cases b <;> simp [rlM, urM, realifyFun, unrealify]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rl_ur (x : EuclideanSpace ℝ (Fin n × Fin n × Bool)) : rlM n (urM n x) = x := by
   ext ⟨i, j, b⟩
   cases b <;> simp [rlM, urM, realifyFun, unrealify]
 
 /- English proof (translation)
-Rewrite using `[EuclideanSpace.norm_sq_eq, Fintype.sum_prod_type]`. Unfold `frob`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Fintype.sum_bool, Complex.sq_norm, Complex.normSq_apply]`. Simplify using `[urM, unrealify, Real.norm_eq_abs, sq]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem frob_ur (x : EuclideanSpace ℝ (Fin n × Fin n × Bool)) : frob (urM n x) = ‖x‖ ^ 2 := by
   rw [EuclideanSpace.norm_sq_eq, Fintype.sum_prod_type]
@@ -104,7 +104,7 @@ def blk (S : Finset (Fin n)) (X : Matrix (Fin n) (Fin n) ℂ) : Matrix (Fin n) (
   fun i j => if i ∈ S ∧ j ∈ S then X i j else 0
 
 /- English proof (translation)
-Simplify using `[Formalism.REAL.Jm, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.conjTranspose_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lie_entry (ε : Fin n → Bool) (X : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) :
     (Xᴴ * Formalism.REAL.Jm ε + Formalism.REAL.Jm ε * X) i j =
@@ -112,9 +112,9 @@ theorem lie_entry (ε : Fin n → Bool) (X : Matrix (Fin n) (Fin n) ℂ) (i j : 
   simp [Formalism.REAL.Jm, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.conjTranspose_apply]
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `h` using `congrFun (congrFun hX i) j`. Rewrite `h`, the goal using `[lie_entry]`. Distinguish the cases in `hij : i ∈ S ∧ j ∈ S`. Establish `hji : j ∈ S ∧ i ∈ S` using `⟨hij.2, hij.1⟩`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Simplify using `only [blk, if_pos hij, if_pos hji]`. Simplify using `using h`. Establish `hji : ¬ (j ∈ S ∧ i ∈ S)` using `fun h' => hij ⟨h'.2, h'.1⟩`. Simplify using `[blk, if_neg hij, if_neg hji]`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem blk_lie (ε : Fin n → Bool) (S : Finset (Fin n)) (X : Matrix (Fin n) (Fin n) ℂ)
     (hX : Xᴴ * Formalism.REAL.Jm ε + Formalism.REAL.Jm ε * X = 0) :
@@ -136,15 +136,13 @@ section Split
 variable {n : ℕ}
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `sup_le ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨X, hX, rfl⟩`. Conclude with `skewLie_holds n ε X hX.1`. Introduce and unpack `_ ⟨X, hX, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `skewLie_holds n ε X hX.1`. Introduce `x hx set X := urM n x with hXd`. Establish `hXl : Xᴴ * Formalism.REAL.Jm ε + Formalism.REAL.Jm ε * X = 0` using `lieSkew_holds n ε x hx`. Establish `hb : blk S X ∈ subB ε S`. Use `⟨blk_lie ε S X hXl, fun i j hij => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `: ¬ (i ∈ S ∧ j ∈ S)` using `by tauto`. Simplify using `[blk, this]`. Establish `hc : X - blk S X ∈ subC ε S`. Use `⟨?_, fun i hi j hj => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.conjTranspose_sub, Matrix.sub_mul, Matrix.mul_sub, sub_add_sub_comm, hXl, blk_lie ε S X hXl, sub_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `show X i j - blk S X i j = 0`. Simplify using `[blk, hi, hj]`. Establish `e : x = rlM n (X - blk S X) + rlM n (blk S X)`. Rewrite using `[← map_add, sub_add_cancel, hXd, rl_ur]`. Rewrite using `[e]`.
-
-Conclude with `Submodule.add_mem_sup (Submodule.mem_map_of_mem hc) (Submodule.mem_map_of_mem hb)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sup_eq_gLie (ε : Fin n → Bool) (S : Finset (Fin n)) :
     (subC ε S).map (rlM n) ⊔ (subB ε S).map (rlM n) = gLie ε := by
@@ -173,9 +171,9 @@ theorem sup_eq_gLie (ε : Fin n → Bool) (S : Finset (Fin n)) :
     exact Submodule.add_mem_sup (Submodule.mem_map_of_mem hc) (Submodule.mem_map_of_mem hb)
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨A, hA, rfl⟩ _ ⟨B, hB, rfl⟩`. Rewrite using `[EuclideanSpace.inner_eq_star_dotProduct]`. Use `Finset.sum_eq_zero fun p _ => ?_` and prove the remaining obligations. Take `⟨i, j, b⟩` from `p`. Distinguish the cases in `hij : i ∈ S ∧ j ∈ S`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Establish `h0 : A i j = 0` using `hA.2 i hij.1 j hij.2`. Apply the tactic sequence `cases b <;> simp [rlM, realifyFun, h0]`. Establish `h0 : B i j = 0` using `hB.2 i j (by tauto)`. Apply the tactic sequence `cases b <;> simp [rlM, realifyFun, h0]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem orth_CB (ε : Fin n → Bool) (S : Finset (Fin n)) :
     ∀ x ∈ (subC ε S).map (rlM n), ∀ y ∈ (subB ε S).map (rlM n), inner ℝ x y = 0 := by
@@ -196,9 +194,9 @@ section Chart
 variable {n : ℕ}
 
 /- English proof (translation)
-Apply `exp_mul_of_mul_eq_zero` to reduce the goal to its premises. Use extensionality with `a b`. Rewrite using `[Matrix.mul_diagonal]`. Distinguish the cases in `hb : b ∈ S`. Simplify using `[hb]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[hb, hM a b (Or.inr hb)]`.
+Simplify using the standard rewrite rules.
 -/
 theorem exp_blk_mul_proj (S : Finset (Fin n)) (M : Matrix (Fin n) (Fin n) ℂ)
     (hM : ∀ i j, (i ∉ S ∨ j ∉ S) → M i j = 0) :
@@ -213,7 +211,7 @@ theorem exp_blk_mul_proj (S : Finset (Fin n)) (M : Matrix (Fin n) (Fin n) ℂ)
 
 set_option backward.isDefEq.respectTransparency false in
 /- English proof (translation)
-Rewrite using `[← Matrix.exp_add_of_commute M (-M) (Commute.neg_right (Commute.refl M)), add_neg_cancel, NormedSpace.exp_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exp_neg_mul_exp {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) :
     NormedSpace.exp M * NormedSpace.exp (-M) = 1 := by
@@ -222,7 +220,7 @@ theorem exp_neg_mul_exp {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) :
 
 set_option backward.isDefEq.respectTransparency false in
 /- English proof (translation)
-Rewrite using `[← Matrix.exp_add_of_commute (-M) M (Commute.neg_left (Commute.refl M)), neg_add_cancel, NormedSpace.exp_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exp_neg_mul_exp' {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) :
     NormedSpace.exp (-M) * NormedSpace.exp M = 1 := by
@@ -230,21 +228,19 @@ theorem exp_neg_mul_exp' {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) :
     NormedSpace.exp_zero]
 
 /- English proof (translation)
-Use `set P := Matrix.diagonal (fun k => if k ∈ S then (0 : ℂ) else 1) with hP`. Establish `hz : ∀ {γ : Type} [Fintype γ] (L' : EuclideanSpace ℝ γ →ₗ[ℝ] Matrix (Fin n) (Fin n) ℂ), (∀ z, frob (L' z) = ‖z‖ ^ 2) → ∀ x, L' x = 0 → x = 0`. Introduce `γ _ L' hn x hx`. Use `hn x` as an intermediate fact. Rewrite `this` using `[hx]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [frob, Matrix.zero_apply, norm_zero, ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, Finset.sum_const_zero] at this`. Conclude with `norm_eq_zero.1 (pow_eq_zero_iff (n := 2) (by norm_num) |>.1 this.symm)`. Take `⟨r1, hr1, hi1⟩` from `exp_mul_injOn (V := Unit) (LinearMap.pi fun _ => L₀) (fun _ => P) fun x hx => hz L₀ h4 x (lie_zero_of_cols ε S _ (h3 x).1 (h3 x).2 (hx ()))`. Take `⟨r2, hr2, hi2⟩` from `exp_mul_injOn (V := Unit) (LinearMap.pi fun _ => L₁) (fun _ => 1) fun x hx => hz L₁ h8 x (by simpa using hx ())`. Use `⟨min r1 r2, lt_min hr1 hr2, fun z hz' z' hz'' he => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hb1 : ∀ p : EuclideanSpace ℝ α × EuclideanSpace ℝ β, p ∈ ball 0 (min r1 r2) → p.1 ∈ ball 0 r1 ∧ p.2 ∈ ball 0 r2`. Introduce `p hp`. Rewrite `hp` using `[mem_ball_zero_iff, Prod.norm_def]`. Conclude with `⟨mem_ball_zero_iff.2 ((le_max_left _ _).trans_lt (hp.trans_le (min_le_left _ _))), mem_ball_zero_iff.2 ((le_max_right _ _).trans_lt (hp.trans_le (min_le_right _ _)))⟩`. Establish `hm : NormedSpace.exp (L₀ z.1) * NormedSpace.exp (L₁ z.2) = NormedSpace.exp (L₀ z'.1) * NormedSpace.exp (L₁ z'.2)`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congrArg (fun g : Formalism.REAL.UJ ε => ((g : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ)) he` as an intermediate fact. Simplify using `only [Subgroup.coe_mul, Units.val_mul] at this`. Rewrite `this` using `[expU_val _ _ (h3 z.1).1, expU_val _ _ (h7 z.2).1, expU_val _ _ (h3 z'.1).1, expU_val _ _ (h7 z'.2).1]`. Then use the resulting hypothesis. Establish `hblk : ∀ y, ∀ i j, (i ∉ S ∨ j ∉ S) → (-L₁ y) i j = 0` using `fun y i j hij => by`. Simplify using `[(h7 y).2 i j hij]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hx : z.1 = z'.1`. Apply `hi1 (hb1 z hz').1 (hb1 z' hz'').1` to reduce the goal to its premises. Use function extensionality and compare the values at `u`. Use `show NormedSpace.exp (L₀ z.1) * P = NormedSpace.exp (L₀ z'.1) * P`. Establish `e1 : NormedSpace.exp (L₀ z.1) = NormedSpace.exp (L₀ z'.1) * NormedSpace.exp (L₁ z'.2) * NormedSpace.exp (-L₁ z.2)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hm, Matrix.mul_assoc, exp_neg_mul_exp, Matrix.mul_one]`. Rewrite using `[e1, Matrix.mul_assoc, Matrix.mul_assoc, exp_blk_mul_proj S _ (hblk z.2), exp_blk_mul_proj S _ (h7 z'.2).2]`. Establish `hy : z.2 = z'.2`. Apply `hi2 (hb1 z hz').2 (hb1 z' hz'').2` to reduce the goal to its premises. Use function extensionality and compare the values at `u`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `show NormedSpace.exp (L₁ z.2) * 1 = NormedSpace.exp (L₁ z'.2) * 1`. Rewrite `hm` using `[hx]`. Use `congrArg (fun A => NormedSpace.exp (-L₀ z'.1) * A) hm` as an intermediate fact. Simplify using `only [← Matrix.mul_assoc, exp_neg_mul_exp', Matrix.one_mul] at this`. Rewrite using `[this]`.
-
-Conclude with `Prod.ext hx hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chart_injOn {α β : Type} [Fintype α] [Fintype β] (ε : Fin n → Bool) (S : Finset (Fin n))
     (L₀ : EuclideanSpace ℝ α →ₗ[ℝ] Matrix (Fin n) (Fin n) ℂ) (L₁ : EuclideanSpace ℝ β →ₗ[ℝ] Matrix (Fin n) (Fin n) ℂ)
@@ -301,33 +297,27 @@ theorem chart_injOn {α β : Type} [Fintype α] [Fintype β] (ε : Fin n → Boo
 end Chart
 
 /- English proof (translation)
-Introduce `n ε S hSε hgd`. Use `set m := (subC ε S).map (rlM n) with hm`. Use `set h := (subB ε S).map (rlM n) with hh`. Set `bm` to `stdOrthonormalBasis ℝ m`. Set `bh` to `stdOrthonormalBasis ℝ h`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `L0' : EuclideanSpace ℝ (Fin (Module.finrank ℝ m)) ≃ₗᵢ[ℝ] m` to `bm.repr.symm`. Set `L1' : EuclideanSpace ℝ (Fin (Module.finrank ℝ h)) ≃ₗᵢ[ℝ] h` to `bh.repr.symm`. Take `⟨r, hr, D, hDc, hD0, hDm, hdens⟩` from `hE n ε m h (sup_eq_gLie ε S) (orth_CB ε S) _ _ L0' L1' hgd`. Set `L₀ : EuclideanSpace ℝ (Fin (Module.finrank ℝ m)) →ₗ[ℝ] Matrix (Fin n) (Fin n) ℂ` to `(urM n).comp (m.subtype.comp L0'.toLinearEquiv.toLinearMap)`. Set `P₀ : Matrix (Fin n) (Fin n) ℂ →ₗ[ℝ] EuclideanSpace ℝ (Fin (Module.finrank ℝ m))` to `L0'.symm.toLinearEquiv.toLinearMap.comp ((m.orthogonalProjection : _ →L[ℝ] m).toLinearMap.comp (rlM n))`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `L₁ : EuclideanSpace ℝ (Fin (Module.finrank ℝ h)) →ₗ[ℝ] Matrix (Fin n) (Fin n) ℂ` to `(urM n).comp (h.subtype.comp L1'.toLinearEquiv.toLinearMap)`. Set `P₁ : Matrix (Fin n) (Fin n) ℂ →ₗ[ℝ] EuclideanSpace ℝ (Fin (Module.finrank ℝ h))` to `L1'.symm.toLinearEquiv.toLinearMap.comp ((h.orthogonalProjection : _ →L[ℝ] h).toLinearMap.comp (rlM n))`. Establish `hL0 : ∀ z, L₀ z = urM n (L0' z : EuclideanSpace ℝ (Fin n × Fin n × Bool))` using `fun z => rfl`. Establish `hL1 : ∀ z, L₁ z = urM n (L1' z : EuclideanSpace ℝ (Fin n × Fin n × Bool))` using `fun z => rfl`. Establish `h1 : ∀ z, P₀ (L₀ z) = z`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `z`. Use `show L0'.symm (m.orthogonalProjection (rlM n (urM n (L0' z : EuclideanSpace ℝ (Fin n × Fin n × Bool))))) = z`. Rewrite using `[rl_ur, Submodule.orthogonalProjection_mem_subspace_eq_self, LinearIsometryEquiv.symm_apply_apply]`. Establish `h2 : ∀ M, InCompl ε S M → L₀ (P₀ M) = M`. Introduce `M hM`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmem : rlM n M ∈ m` using `Submodule.mem_map_of_mem (p := subC ε S) hM`. Use `show urM n (L0' (L0'.symm (m.orthogonalProjection (rlM n M))) : EuclideanSpace ℝ (Fin n × Fin n × Bool)) = M`. Rewrite using `[LinearIsometryEquiv.apply_symm_apply, Submodule.orthogonalProjection_mem_subspace_eq_self (⟨rlM n M, hmem⟩ : m)]`. Conclude with `ur_rl M`. Establish `h3 : ∀ z, InCompl ε S (L₀ z)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z`. Take `⟨X, hX, hXe⟩` from `(L0' z).2`. Rewrite using `[hL0, ← hXe, ur_rl]`. Conclude with `hX`. Establish `h4 : ∀ z, frob (L₀ z) = ‖z‖ ^ 2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `z`. Rewrite using `[hL0, frob_ur]`. Conclude with `congrArg (· ^ 2) ((Submodule.coe_norm (L0' z)).symm.trans (L0'.norm_map z))`. Establish `h5 : ∀ z, P₁ (L₁ z) = z`. Introduce `z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show L1'.symm (h.orthogonalProjection (rlM n (urM n (L1' z : EuclideanSpace ℝ (Fin n × Fin n × Bool))))) = z`. Rewrite using `[rl_ur, Submodule.orthogonalProjection_mem_subspace_eq_self, LinearIsometryEquiv.symm_apply_apply]`. Establish `h6 : ∀ M, InBlock ε S M → L₁ (P₁ M) = M`. Introduce `M hM`. Establish `hmem : rlM n M ∈ h` using `Submodule.mem_map_of_mem (p := subB ε S) hM`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `show urM n (L1' (L1'.symm (h.orthogonalProjection (rlM n M))) : EuclideanSpace ℝ (Fin n × Fin n × Bool)) = M`. Rewrite using `[LinearIsometryEquiv.apply_symm_apply, Submodule.orthogonalProjection_mem_subspace_eq_self (⟨rlM n M, hmem⟩ : h)]`. Conclude with `ur_rl M`. Establish `h7 : ∀ z, InBlock ε S (L₁ z)`. Introduce `z`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Take `⟨X, hX, hXe⟩` from `(L1' z).2`. Rewrite using `[hL1, ← hXe, ur_rl]`. Conclude with `hX`. Establish `h8 : ∀ z, frob (L₁ z) = ‖z‖ ^ 2`. Introduce `z`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hL1, frob_ur]`. Conclude with `congrArg (· ^ 2) ((Submodule.coe_norm (L1' z)).symm.trans (L1'.norm_map z))`. Take `⟨rI, hrI, hinj⟩` from `chart_injOn ε S L₀ L₁ h3 h4 h7 h8`. Establish `hofr : ∀ z, ENNReal.ofReal (max (D z) 0) = ENNReal.ofReal (D z)`. Introduce `z`.
-
-Break down `le_total (D z) 0 with hz | hz` into its components or cases. Rewrite using `[max_eq_right hz, ENNReal.ofReal_zero, ENNReal.ofReal_of_nonpos hz]`. Rewrite using `[max_eq_left hz]`. Use `⟨_, _, inferInstance, inferInstance, L₀, P₀, L₁, P₁, min r rI, fun z => max (D z) 0, h1, h2, h3, h4, h5, h6, h7, h8, lt_min hr hrI, hDc.max continuousAt_const, ?_, hDm.max measurable_const, fun z => le_max_right _ _, ?_, hinj.mono (ball_subset_ball (min_le_right _ _)), fun A hA h …` and prove the remaining obligations. Simplify using `only`.
-
-Rewrite using `[hD0]`. Conclude with `max_eq_left hgd.2.le`. Conclude with `(continuous_expU ε (fun z : EuclideanSpace ℝ (Fin (Module.finrank ℝ m)) × EuclideanSpace ℝ (Fin (Module.finrank ℝ h)) => L₀ z.1) (L₀.continuous_of_finiteDimensional.comp continuous_fst) fun z => (h3 z.1).1).mul (continuous_expU ε (fun z : EuclideanSpace ℝ (Fin (Module.finrank ℝ m …`. Use `hdens A (hA.trans (ball_subset_ball (min_le_left _ _))) hAm` as an intermediate fact. Repeatedly rewrite using `[hofr]`.
-
-Conclude with `this`.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem placeChartV_of (hE : ExpProdU) : PlaceChartV := by
   intro n ε S hSε hgd

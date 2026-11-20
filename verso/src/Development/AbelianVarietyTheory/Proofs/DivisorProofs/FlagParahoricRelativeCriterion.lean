@@ -9,14 +9,14 @@ namespace GlobalTheory.FlagBundle.FrameChange
 variable {ι : Type} {m k : ι → ℕ} {K : Type} [Field K]
 
 /- English proof (translation)
-Introduce `τ` and use `⟨(h2 τ).1, (h2 τ).2.1, (h2 τ).2.2.1, (h1 τ).2.2.2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem par_of_top_of_zero {O : Subring K} {g : GlobalTheory.FlagBundle.Mat m K}
     (h1 : GlobalTheory.FlagBundle.Par k ⊤ g) (h2 : GlobalTheory.FlagBundle.Par 0 O g) : GlobalTheory.FlagBundle.Par k O g := fun τ =>
   ⟨(h2 τ).1, (h2 τ).2.1, (h2 τ).2.2.1, (h1 τ).2.2.2⟩
 
 /- English proof (translation)
-Introduce `hB`. Use `h.det_ne τ` as an intermediate fact. Rewrite `this` using `[Pi.mul_apply, Matrix.det_mul, Pi.inv_apply, Matrix.det_nonsing_inv, hB, Ring.inverse_zero, mul_zero]`. Conclude with `this rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_ne_of_par {O : Subring K} {A B : GlobalTheory.FlagBundle.Mat m K}
     (h : GlobalTheory.FlagBundle.Par k O (A * B⁻¹)) (τ : ι) : (B τ).det ≠ 0 := by
@@ -26,13 +26,13 @@ theorem det_ne_of_par {O : Subring K} {A B : GlobalTheory.FlagBundle.Mat m K}
   exact this rfl
 
 /- English proof (translation)
-Establish `hB : ∀ τ, (B τ).det ≠ 0` using `det_ne_of_par hAB`. Establish `hAd : ∀ τ, (A τ).det ≠ 0` using `hA.det_ne`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `par_of_top_of_zero ?_ (h1.mul hA.inv)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : A' * A⁻¹ = (A' * B⁻¹) * (A * B⁻¹)⁻¹`. Rewrite using `[GlobalTheory.FlagBundle.Mat.mul_inv_rev, GlobalTheory.FlagBundle.Mat.inv_inv hB, mul_assoc, ← mul_assoc B⁻¹, GlobalTheory.FlagBundle.Mat.inv_mul hB, one_mul]`. Rewrite using `[e]`. Conclude with `h2.mul hAB.inv`. Introduce `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e1 : A' = (A' * A⁻¹) * A` using `by rw [mul_assoc, GlobalTheory.FlagBundle.Mat.inv_mul hAd, mul_one]`. Establish `e2 : A' * B⁻¹ = (A' * A⁻¹) * (A * B⁻¹)`. Rewrite using `[mul_assoc, ← mul_assoc A⁻¹, GlobalTheory.FlagBundle.Mat.inv_mul hAd, one_mul]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(h.mono (fun τ => Nat.zero_le (k τ)) le_rfl).mul hA`. Rewrite using `[e2]`. Conclude with `(h.mono le_rfl le_top).mul hAB`.
+A detailed English derivation is pending.
 -/
 theorem par_iff (O : Subring K) (A B A' : GlobalTheory.FlagBundle.Mat m K)
     (hA : GlobalTheory.FlagBundle.Par 0 O A) (hAB : GlobalTheory.FlagBundle.Par k ⊤ (A * B⁻¹)) :

@@ -24,14 +24,14 @@ def ext (t : G.TorsionTower A) (c : primDR A) (d : Dat t c) (hs : IsSymCoc d.g) 
     ⟨d.om, fun n ↦ GlobalTheory.T.torsionTowerPresentation_cotangentPullback_res_rigidification R A p G t c d n⟩)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨d, _, _, fun _ ↦ rfl, fun _ ↦ rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem ext_isCan (t : G.TorsionTower A) (c : primDR A) (d : Dat t c) (hs : IsSymCoc d.g) :
     IsCan t c (ext t c d hs) :=
   ⟨d, _, _, fun _ ↦ rfl, fun _ ↦ rfl, rfl⟩
 
 /- English proof (translation)
-Take `⟨d⟩` from `GlobalTheory.T.nonempty_primitiveDeRhamTorsionTowerPresentation R A p G t c`. Conclude with `⟨_, ext_isCan t c d (GlobalTheory.T.isSymmetricTwoCocycle_of_additiveStructure_torsor R A hA (fv d.f) d.g d.add)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isCan (t : G.TorsionTower A) (hA : IsAbelianScheme A) (c : primDR A) : ∃ x, IsCan t c x := by
   obtain ⟨d⟩ := GlobalTheory.T.nonempty_primitiveDeRhamTorsionTowerPresentation R A p G t c
@@ -41,14 +41,14 @@ def canFun (t : G.TorsionTower A) (hA : IsAbelianScheme A) (c : primDR A) : G.Ri
   (exists_isCan t hA c).choose
 
 /- English proof (translation)
-The claim follows from `(exists_isCan t hA c).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem canFun_isCan (t : G.TorsionTower A) (hA : IsAbelianScheme A) (c : primDR A) :
     IsCan t c (canFun t hA c) :=
   (exists_isCan t hA c).choose_spec
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h ↦ GlobalTheory.T.canonicalRigidifiedExtensionOfDeRhamClass_unique R A p G t c hA _ _ (canFun_isCan t hA c) h, fun h ↦ h ▸ canFun_isCan t hA c⟩`.
+Supply the required witnesses or components.
 -/
 theorem isCan_iff (t : G.TorsionTower A) (hA : IsAbelianScheme A) (c : primDR A) (x : G.RigExt) :
     IsCan t c x ↔ canFun t hA c = x :=
@@ -64,7 +64,7 @@ def canMap (t : G.TorsionTower A) (hA : IsAbelianScheme A) : primDR A →ₗ[R] 
 end GlobalTheory.PtExt.CanMap
 
 /- English proof (translation)
-The claim follows from `fun _ _ _ _ _ _ t hA ↦ ⟨GlobalTheory.PtExt.CanMap.canMap t hA, GlobalTheory.PtExt.CanMap.isCan_iff t hA⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.PtExt.exists_canMap : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (p : ℕ) (G : PDivGroup p R)
     (t : G.TorsionTower A), IsAbelianScheme A → ∃ L : primDR A →ₗ[R] G.RigExt, ∀ c x, IsCan t c x ↔ L c = x :=

@@ -15,7 +15,7 @@ open IdeleGroup
 variable (K) in
 
 /- English proof (translation)
-Rewrite using `[normOneClassMeasure_univ]`. Conclude with `(isFundamentalDomain_normOneFundamentalDomain K (normOneMeasure K)).measure_ne_zero (NeZero.ne _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normOneClassMeasure_univ_ne_zero : normOneClassMeasure K Set.univ ≠ 0 := by
   rw [normOneClassMeasure_univ]
@@ -25,7 +25,7 @@ theorem normOneClassMeasure_univ_ne_zero : normOneClassMeasure K Set.univ ≠ 0 
 variable (K) in
 
 /- English proof (translation)
-The claim follows from `ENNReal.toReal_ne_zero.2 ⟨normOneClassMeasure_univ_ne_zero K, measure_ne_top _ _⟩`.
+A detailed English derivation is pending.
 -/
 theorem normOneClassMeasure_univ_toReal_ne_zero : (normOneClassMeasure K Set.univ).toReal ≠ 0 :=
   ENNReal.toReal_ne_zero.2 ⟨normOneClassMeasure_univ_ne_zero K, measure_ne_top _ _⟩
@@ -37,9 +37,9 @@ variable {χ : HeckeCharacter K} {τ : ℝ}
 include hτ
 
 /- English proof (translation)
-Establish `h : ∀ v, IdeleGroup.conductorExponentAt (χ.toIdele.comp IdeleGroup.ofFinite) v = 0` using `fun v ↦ (IdeleGroup.conductorExponentAt_eq_zero_iff Circle.noSmallSubgroups _ (χ.continuous_toIdele.comp IdeleGroup.continuous_ofFinite) v).2 fun x hx ↦ by`. Rewrite using `[MonoidHom.mem_ker, MonoidHom.comp_apply, MonoidHom.comp_apply, ofFinite_finiteUnitsSingle]`. Use `Circle.ext ?_` and prove the remaining obligations. Rewrite using `[hτ, ideleModule_finiteEmbedding, norm_eq_one_of_mul_eq_one x.mul_inv ((Submonoid.mem_units_iff _ _).1 hx).1 ((Submonoid.mem_units_iff _ _).1 hx).2]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[conductor, IdeleGroup.conductor]`. Simplify using `only [h, pow_zero]`. Rewrite using `[finprod_one, Ideal.one_eq_top]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem conductor_eq_top_of_forall : χ.conductor = ⊤ := by
   have h : ∀ v, IdeleGroup.conductorExponentAt (χ.toIdele.comp IdeleGroup.ofFinite) v = 0 := fun v ↦
@@ -56,7 +56,7 @@ theorem conductor_eq_top_of_forall : χ.conductor = ⊤ := by
   rw [finprod_one, Ideal.one_eq_top]
 
 /- English proof (translation)
-Use `(χ.infiniteParams_unique w (p := (0, τ)) (fun _ ↦ ⟨le_rfl, by norm_num⟩) fun a ↦ ?_).symm` and prove the remaining obligations. Simplify using `only`. Rewrite using `[infiniteComponent_apply, hτ, ideleModule_infiniteEmbedding, zpow_zero, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem infiniteParams_of_forall (w : InfinitePlace K) : χ.infiniteParams w = (0, τ) := by
   refine (χ.infiniteParams_unique w (p := (0, τ)) (fun _ ↦ ⟨le_rfl, by norm_num⟩) fun a ↦ ?_).symm
@@ -64,28 +64,26 @@ theorem infiniteParams_of_forall (w : InfinitePlace K) : χ.infiniteParams w = (
   rw [infiniteComponent_apply, hτ, ideleModule_infiniteEmbedding, zpow_zero, one_mul]
 
 /- English proof (translation)
-Rewrite using `[infiniteWeight, infiniteParams_of_forall hτ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem infiniteWeight_of_forall (w : InfinitePlace K) : χ.infiniteWeight w = 0 := by
   rw [infiniteWeight, infiniteParams_of_forall hτ]
 
 /- English proof (translation)
-Rewrite using `[infiniteTau, infiniteParams_of_forall hτ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem infiniteTau_of_forall (w : InfinitePlace K) : χ.infiniteTau w = τ := by
   rw [infiniteTau, infiniteParams_of_forall hτ]
 
 /- English proof (translation)
-Rewrite using `[infiniteSchwartz_apply]`. Simplify using `[infinitePoly, infiniteWeight_of_forall hτ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem infiniteSchwartz_zero_of_forall : χ.infiniteSchwartz 0 = 1 := by
   rw [infiniteSchwartz_apply]
   simp [infinitePoly, infiniteWeight_of_forall hτ]
 
 /- English proof (translation)
-Establish `hv : ∀ v : HeightOneSpectrum (𝓞 K), ¬ v.asIdeal ∣ χ.conductor` using `fun v h ↦ by`. Rewrite `h` using `[conductor_eq_top_of_forall hτ, Ideal.dvd_iff_le, top_le_iff]`. Conclude with `v.isPrime.ne_top h`. Unfold `finiteTestFun`. Conclude with `(finprod_congr fun v ↦ χ.finiteTest_eq_one (hv v) (by`.
-
-Rewrite using `[show (0 : FiniteAdeleRing (𝓞 K) K) v = 0 from rfl, map_zero]`. Conclude with `zero_le)).trans finprod_one`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finiteTestFun_zero_of_forall : χ.finiteTestFun 0 = 1 := by
   have hv : ∀ v : HeightOneSpectrum (𝓞 K), ¬ v.asIdeal ∣ χ.conductor := fun v h ↦ by
@@ -96,7 +94,7 @@ theorem finiteTestFun_zero_of_forall : χ.finiteTestFun 0 = 1 := by
     rw [show (0 : FiniteAdeleRing (𝓞 K) K) v = 0 from rfl, map_zero]; exact zero_le)).trans finprod_one
 
 /- English proof (translation)
-Use `show χ.infiniteSchwartz (homeomorphMixedSpace K 0) * χ.finiteTestFun 0 = 1`. Rewrite using `[homeomorphMixedSpace_apply, map_zero, infiniteSchwartz_zero_of_forall hτ, finiteTestFun_zero_of_forall hτ, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem testFunction_zero_of_forall : χ.testFunction 0 = 1 := by
   show χ.infiniteSchwartz (homeomorphMixedSpace K 0) * χ.finiteTestFun 0 = 1

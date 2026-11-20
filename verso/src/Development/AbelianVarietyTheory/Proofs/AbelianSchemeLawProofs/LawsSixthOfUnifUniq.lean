@@ -9,7 +9,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `h₁ h₂ h₃` and use `⟨GlobalTheory.T.uniformisation_degenerationData_unique h₁ h₂ h₃⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem lawsSixth_of_unifUniq : GlobalFnsSt → SecBaseChangeSt → AmpleSt → Laws6 :=
   fun h₁ h₂ h₃ => ⟨GlobalTheory.T.uniformisation_degenerationData_unique h₁ h₂ h₃⟩

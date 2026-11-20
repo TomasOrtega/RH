@@ -13,11 +13,9 @@ section Var
 variable {n' r K m : ℕ} [NeZero n'] (Fr : Frames n' r) (hk : m + 1 = r + K) {J : ℕ} (nL : ZMod J → ℕ)
 
 /- English proof (translation)
-Distinguish the cases in `hb : b.val < r`. Use `left`. Use `⟨⟨b.val, hb⟩, ?_⟩` and prove the remaining obligations. Unfold `Formalism.MainNotions.TestSideWords.plVar`. Conclude with `Prod.ext rfl (Fin.ext rfl)`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `right`. Establish `h1` using `b.isLt`. Use `⟨⟨b.val - r, by omega⟩, ?_⟩` and prove the remaining obligations. Unfold `Formalism.MainNotions.TestSideWords.noVar`. Use `Prod.ext rfl (Fin.ext ?_)` and prove the remaining obligations.
-
-Simplify using `only [Fin.val_cast, Fin.val_natAdd]`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem var_cases (x0 : TL J nL r) (b : Fin (m + 1)) :
     (∃ a : Fin r, (posOf n' (posTL Fr x0), b) = plVar Fr hk nL x0 a) ∨
@@ -46,13 +44,11 @@ variable (D : Formalism.BasicNotions.D7) (p : ℕ) [Fact p.Prime] {n' r K m : �
 include D in
 
 /- English proof (translation)
-Introduce `dPl dNo ka th thL hpos hT rho e he nu`. Establish `hDrop` using `thDrop_of hB hG th thL`. Break down `var_cases Fr hk Dt.nL x0 b with ⟨a, hv⟩ | ⟨c, hv⟩` into its components or cases. Take `⟨c1, c2, c3, rho1, rho2, hEq⟩` from `hTP p O hk Fr Dt.nL x0 hu a rho dPl dNo F`. Rewrite using `[hv, hEq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [oneT_add, oneT_smul, planeCoeff_add, planeCoeff_smul, oneT_X_mul, oneT_pderiv, planeCoeff_X_mul, planeCoeff_pderiv]`. Use `XXg_add Dt (XXg_add Dt (XXg_smul Dt c1 ?_) (XXg_smul Dt c2 ?_)) (XXg_smul Dt c3 ?_)` and prove the remaining obligations. Conclude with `hF dPl dNo ka th thL hpos (thLe_weak hT) rho1 e he nu`. Conclude with `hPE p O Dt x0 a dPl th _ thL _ hDrop _ (hF dPl dNo ka _ _ (thLUp_pos hpos) (thLe_up hT) rho1 e he nu)`. Conclude with `hPD p O Dt x0 a dPl th _ thL _ hDrop _ (hF _ dNo ka _ _ (thLUp_pos hpos) (thLe_up hT) rho2 e he nu)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨c1, c2, c3, rho1, rho2, hEq⟩` from `hTN p O hk Fr Dt.nL x0 hu c rho dPl dNo F`. Rewrite using `[hv, hEq]`. Simplify using `only [oneT_add, oneT_smul, planeCoeff_add, planeCoeff_smul, oneT_oneT]`. Use `XXg_add Dt (XXg_add Dt (XXg_smul Dt c1 ?_) (XXg_smul Dt c2 ?_)) (XXg_smul Dt c3 ?_)` and prove the remaining obligations. Conclude with `hF dPl dNo ka th thL hpos (thLe_weak hT) rho1 e he nu`.
-
-Conclude with `hNO D p O K S hR Dt x0 c _ (Or.inr (Or.inr rfl)) dPl th thL _ ka e he (fun ka1 hka e1 he1 nu1 => hF dPl dNo ka1 th thL hpos (thLe_ka hB hG hT hka) rho1 e1 he1 nu1) nu`. Conclude with `hNO D p O K S hR Dt x0 c _ (Or.inl rfl) dPl th thL _ ka e he (fun ka1 hka e1 he1 nu1 => hF dPl _ ka1 th thL hpos (thLe_ka hB hG hT hka) rho2 e1 he1 nu1) nu`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem derLev (hTP : TrDerPl) (hTN : TrDerNo) (hPD : PlDer) (hPE : PlEul) (hNO : NoOpStep) {n'' : ℕ}
     (S : UniformizedDVR p O) (hR : AdmissibleDVR p n'' O) (hB : Base Fr p Dt) (x0 : TL J Dt.nL r)
@@ -87,13 +83,11 @@ theorem derLev (hTP : TrDerPl) (hTN : TrDerNo) (hPD : PlDer) (hPE : PlEul) (hNO 
 include D in
 
 /- English proof (translation)
-Introduce `dPl dNo ka th thL hpos hT rho e he nu`. Establish `hDrop` using `thDrop_of hB hG th thL`. Break down `var_cases Fr hk Dt.nL x0 b with ⟨a, hv⟩ | ⟨c, hv⟩` into its components or cases. Take `⟨c1, c2, rho1, rho2, h0, hEq⟩` from `hTP p O hk Fr Dt.nL x0 hu a rho dPl dNo F`. Rewrite using `[hv, hEq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [oneT_add, oneT_smul, planeCoeff_add, planeCoeff_smul, oneT_X_mul, planeCoeff_X_mul]`. Use `XXg_add Dt (XXg_smul Dt c1 ?_) ?_` and prove the remaining obligations. Conclude with `hF dPl dNo ka th thL hpos (thLe_weak hT) rho1 e he nu`. Distinguish the cases in `hd : dPl x0 = 0`. Rewrite using `[h0 hd, zero_smul]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `XXg_zero Dt`. Conclude with `XXg_smul Dt c2 (hPM p O Dt x0 a dPl th _ thL _ hDrop (Nat.one_le_iff_ne_zero.2 hd) _ (hF _ dNo ka _ _ (thLUp_pos hpos) (thLe_up hT) rho2 e he nu))`. Take `⟨c1, c2, rho1, rho2, hEq⟩` from `hTN p O hk Fr Dt.nL x0 hu c rho dPl dNo F`. Rewrite using `[hv, hEq]`. Simplify using `only [oneT_add, oneT_smul, planeCoeff_add, planeCoeff_smul, oneT_oneT]`.
-
-Use `XXg_add Dt (XXg_smul Dt c1 ?_) (XXg_smul Dt c2 ?_)` and prove the remaining obligations. Conclude with `hF dPl dNo ka th thL hpos (thLe_weak hT) rho1 e he nu`. Conclude with `hNO D p O K S hR Dt x0 c _ (Or.inr (Or.inl rfl)) dPl th thL _ ka e he (fun ka1 hka e1 he1 nu1 => hF dPl _ ka1 th thL hpos (thLe_ka hB hG hT hka) rho2 e1 he1 nu1) nu`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mulLev (hTP : TrMulPl) (hTN : TrMulNo) (hPM : PlMul) (hNO : NoOpStep) {n'' : ℕ}
     (S : UniformizedDVR p O) (hR : AdmissibleDVR p n'' O) (hB : Base Fr p Dt) (x0 : TL J Dt.nL r)
@@ -129,15 +123,15 @@ def OpSteps : Prop :=
   TrDerPl ∧ TrDerNo ∧ TrMulPl ∧ TrMulNo ∧ PlDer ∧ PlEul ∧ PlMul ∧ NoOpStep ∧ GeoTop ∧ GeoTouch
 
 /- English proof (translation)
-Take `⟨hDP, hDN, hMP, hMN, hPD, hPE, hPM, hNO, hGT, hGU⟩` from `h`. Introduce `p W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ j w n' m r _ _ TT L₁ L₂ de h' x lam0 aT bT a Y cpp c0 Dp cStar K _ _ hk hrk F nb B hD loss Fp hFp s hs a' b'`. Establish `hSet` using `hD.1`. Establish `hG1 : AdmissibleDVR p n' O` using `Formalism.MainNotions.flipOneThree.admissible_dvr_of_unramified_quadratic_setting hSet`. Establish `hK : CharZero (KK O)` using `Formalism.MainNotions.G.GLWeightTheory.dvr_fraction_field_charZero (dvrOfStd hSet) hG1.prime`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFO` using `hD.2.2.1`. Establish `hV` using `hFO.2.1`. Establish `hs' : s ∈ F.TT` using `by rw [hFO.1]; exact hs`. Rewrite `hFp`, the goal using `[memAtLe_iff]`. Introduce `J _ Dt hB`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨x0, hx0, huq⟩` from `hGT F L₁ _ hV Dt.nL hB.1 hB.2.1 s hs'`. Substitute `hx0` using the available equality. Establish `hG : TouchAt F Dt x0` using `hGU F L₁ _ hV Dt.nL hB.1 hB.2.1 x0`. Establish `h1` using `derLev D p O hk F (flatDeg lam0) Y _ _ _ Dt hDP hDN hPD hPE hNO (dvrOfStd hSet) hG1 hB x0 huq hG 0 (1 / 8) loss Fp (hFp J Dt hB) b'`. Establish `h2` using `mulLev D p O hk F (flatDeg lam0) Y _ _ _ Dt hMP hMN hPM hNO (dvrOfStd hSet) hG1 hB x0 huq hG 0 (1 / 8) _ _ h1 a'`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (fun jz u => loss jz u + opCost F (posOf n' (posTL F x0)) jz u) = fun jz u => loss jz u + cost1 F (posOf n' (posTL F x0)) jz u + cost1 F (posOf n' (posTL F x0)) jz u`. Use function extensionality and compare the values at `jz u`. Rewrite using `[opCost_eq]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem oneOpStep_of (D : Formalism.BasicNotions.D7) (h : OpSteps) (C CLa : ℝ) : OneOpStep C CLa := by
   obtain ⟨hDP, hDN, hMP, hMN, hPD, hPE, hPM, hNO, hGT, hGU⟩ := h
@@ -167,7 +161,7 @@ theorem oneOpStep_of (D : Formalism.BasicNotions.D7) (h : OpSteps) (C CLa : ℝ)
   exact h2
 
 /- English proof (translation)
-Introduce `_` and use `⟨1, one_pos, fun C _ => oneOpStep_of D h C CLa⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem restOneOp_of (h : OpSteps) (D : Formalism.BasicNotions.D7) (CLa Ck Crk Cdeg : ℝ) : RestOneOp D CLa Ck Crk Cdeg :=
   fun _ => ⟨1, one_pos, fun C _ => oneOpStep_of D h C CLa⟩

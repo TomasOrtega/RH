@@ -7,19 +7,15 @@ open PositivityTheory.Rg.BcB.E1 PositivityTheory.Rg.BcB.E2
 namespace PositivityTheory.Rg.BcB.E2.P
 
 /- English proof (translation)
-Introduce `hW X ι S _ _ ν _ F f Φ σ A hFc hrep hΦ hσ hσA hE`. Establish `hfm : ∀ j, Measurable (Function.uncurry (f j))` using `fun j => (hrep j).1`. Establish `hfx : ∀ j x, Measurable (f j x)` using `fun j x => (hfm j).comp measurable_prodMk_left`. Establish `key : ∀ i x, ∀ᵐ s ∂ν, ∑ j, ∫ y, Φ i j y * conj (f j (x * y) s) ∂X.μ = σ s * conj (f i x s)`. Introduce `i x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hW X.G S ι X.μ ν (fun j y => F j (x * y)) (fun j y => f j (x * y)) (fun j => Φ i j) (fun s => σ s * conj (f i x s)) (fun j => ⟨?_, fun y => (hrep j).2 (x * y)⟩) (fun j => (hΦ i j).1.aestronglyMeasurable) (fun j => ?_) ?_ (fun h => ?_)` and prove the remaining obligations. Conclude with `(hfm j).comp ((measurable_const_mul x).prodMap measurable_id)`. Establish `hc : Continuous fun y => Φ i j y • F j (x * y)` using `(hΦ i j).1.smul ((hFc j).comp (continuous_const.mul continuous_id))`. Establish `hi` using `(hc.integrable_of_hasCompactSupport (μ := X.μ) ((hΦ i j).2.smul_right)).2`. Use `ne_of_lt (lt_of_le_of_lt (le_of_eq ?_) hi)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `lintegral_congr fun y => ?_` and prove the remaining obligations. Simplify using `[enorm_smul]`. Establish `hm : MemLp (f i x) 2 ν` using `(Lp.memLp (F i x)).ae_eq ((hrep i).2 x).symm`. Use `MemLp.of_le_mul (c := A) hm ?_ (ae_of_all _ fun s => ?_)` and prove the remaining obligations. Conclude with `(hσ.mul (Complex.continuous_conj.measurable.comp (hfx i x))).aestronglyMeasurable`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [norm_mul, Complex.norm_conj]`. Conclude with `mul_le_mul_of_nonneg_right (hσA s) (norm_nonneg _)`. Rewrite using `[hE x i h]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [(hrep i).2 x] with s hs`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[hs]`. Use `ae_all_iff.2 fun i => ?_` and prove the remaining obligations. Establish `hmeas : MeasurableSet {p : X.G × S | ∑ j, ∫ y, Φ i j y * conj (f j (p.1 * y) p.2) ∂X.μ = σ p.2 * conj (f i p.1 p.2)}`. Use `measurableSet_eq_fun ?_ ?_` and prove the remaining obligations. Use `Finset.measurable_sum _ fun j _ => ?_` and prove the remaining obligations.
-
-Establish `: StronglyMeasurable fun q : (X.G × S) × X.G => Φ i j q.2 * conj (f j (q.1.1 * q.2) q.1.2)`. Use `Measurable.stronglyMeasurable ?_` and prove the remaining obligations. Use `((hΦ i j).1.measurable.comp measurable_snd).mul (Complex.continuous_conj.measurable.comp ?_)` and prove the remaining obligations. Conclude with `(hfm j).comp ((measurable_fst.fst.mul measurable_snd).prodMk measurable_fst.snd)`. Conclude with `(this.integral_prod_right' (ν := X.μ)).measurable`.
-
-Conclude with `(hσ.comp measurable_snd).mul (Complex.continuous_conj.measurable.comp (hfm i))`. Conclude with `(Measure.ae_ae_comm hmeas).1 (ae_of_all _ fun x => key i x)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem eigae : WeakAE → EigAE := by
   intro hW X ι S _ _ ν _ F f Φ σ A hFc hrep hΦ hσ hσA hE

@@ -5,25 +5,23 @@ open Finset UpperTheory.BernoulliSumsFrobeniusOrbits Formalism.G0
 namespace UpperTheory.BernoulliSumsFrobeniusOrbits
 
 /- English proof (translation)
-Use `set g : α → ℝ := fun a => if a ∈ (univ \ S).image f then 0 else p a with hg`. Use `set h : α → ℝ := fun a => if a ∈ S.image f then 0 else 1 - p a with hh`. Establish `h1` using `Finset.prod_add g h (univ : Finset α)`. Rewrite `h1` using `[powerset_univ]`. Establish `h2 : ∏ a, (g a + h a) = pw (fun i => p (f i)) S`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.prod_subset (subset_univ ((univ : Finset β).image f)), prod_image hf.injOn]`. Rewrite using `[pw, ← prod_sdiff (subset_univ S), mul_comm]`. Use `congr 1`. Use `prod_congr rfl fun i hi => ?_` and prove the remaining obligations. Simplify using `[hg, hh, hf.eq_iff, hi]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `prod_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `hi' : i ∉ S` using `(mem_sdiff.mp hi).2`. Simplify using `[hg, hh, hf.eq_iff, hi']`. Introduce `a _ ha`. Establish `ha1 : a ∉ (univ \ S).image f` using `fun h' => ha (image_subset_image (subset_univ _) h')`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `ha2 : a ∉ S.image f` using `fun h' => ha (image_subset_image (subset_univ _) h')`. Simplify using `only [hg, hh, if_neg ha1, if_neg ha2]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← h2, h1]`. Use `sum_congr rfl fun T _ => ?_` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `split_ifs with hT`. Rewrite using `[pw]`. Use `congr 1`. Use `prod_congr rfl fun a ha => ?_` and prove the remaining obligations. Establish `: a ∉ (univ \ S).image f`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Introduce `h'`. Take `⟨i, hi, rfl⟩` from `mem_image.mp h'`. Conclude with `(mem_sdiff.mp hi).2 (hT ▸ mem_filter.mpr ⟨mem_univ _, ha⟩)`. Simplify using `only [hg, if_neg this]`. Use `prod_congr rfl fun a ha => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: a ∉ S.image f`. Introduce `h'`. Take `⟨i, hi, rfl⟩` from `mem_image.mp h'`. Rewrite `hi` using `[← hT]`. Conclude with `(mem_sdiff.mp ha).2 (mem_filter.mp hi).2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [hh, if_neg this]`. Establish `: ∃ i, ¬ (f i ∈ T ↔ i ∈ S)`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `hT (by ext i; simp [hc i])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨i, hi⟩` from `this`. Distinguish the cases in `hiS : i ∈ S`. Establish `hT' : f i ∉ T` using `fun h' => hi ⟨fun _ => hiS, fun _ => h'⟩`. Rewrite using `[prod_eq_zero (s := univ \ T) (i := f i) (by simp [hT']), mul_zero]`. Simplify using `only [hh, if_pos (mem_image_of_mem f hiS)]`.
-
-Establish `hT' : f i ∈ T`. Assume the negation of the conclusion as `h'`. Conclude with `hi ⟨fun h'' => absurd h'' h', fun h'' => absurd h'' hiS⟩`. Rewrite using `[prod_eq_zero (s := T) (i := f i) hT', zero_mul]`. Simplify using `only [hg, if_pos (mem_image_of_mem f (mem_sdiff.mpr ⟨mem_univ i, hiS⟩))]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma fibre_sum {α β : Type} [Fintype α] [Fintype β] [DecidableEq α] [DecidableEq β]
     (p : α → ℝ) (f : β → α) (hf : Function.Injective f) (S : Finset β) :
@@ -82,9 +80,9 @@ private lemma fibre_sum {α β : Type} [Fintype α] [Fintype β] [DecidableEq α
       simp only [hg, if_pos (mem_image_of_mem f (mem_sdiff.mpr ⟨mem_univ i, hiS⟩))]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Use `sum_congr rfl fun T _ => ?_` and prove the remaining obligations. Simplify using `only [ite_mul, zero_mul]`. Rewrite using `[Finset.sum_ite_eq]`. Simplify using the standard rewrite rules.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `_ = _ := by`. Rewrite using `[sum_comm]`. Use `sum_congr rfl fun S _ => ?_` and prove the remaining obligations. Rewrite using `[← sum_mul, fibre_sum p f hf S]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma marginal {α β : Type} [Fintype α] [Fintype β] [DecidableEq α] [DecidableEq β]
     (p : α → ℝ) (f : β → α) (hf : Function.Injective f) (F : Finset β → ℝ) :
@@ -103,19 +101,17 @@ private lemma marginal {α β : Type} [Fintype α] [Fintype β] [DecidableEq α]
         rw [← sum_mul, fibre_sum p f hf S]
 
 /- English proof (translation)
-Unfold `exP`. Use `Finset.sum_bij (fun S _ => S.map Fin.valEmbedding) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `S _`. Rewrite using `[mem_powerset]`. Introduce `x hx`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨i, _, rfl⟩` from `mem_map.mp hx`. Simplify using the standard rewrite rules. Introduce `S _ S' _ h`. Conclude with `Finset.map_injective _ h`. Introduce `T hT`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨univ.filter (fun i : Fin n => (i : ℕ) ∈ T), mem_univ _, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Simplify using `only [mem_map, mem_filter, mem_univ, true_and, Fin.valEmbedding_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, hi, rfl⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hi`. Introduce `hx`. Conclude with `⟨⟨x, mem_range.mp (mem_powerset.mp hT hx)⟩, hx, rfl⟩`. Introduce `S _`. Establish `e : range n \ S.map Fin.valEmbedding = (univ \ S).map Fin.valEmbedding`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `x`. Simplify using `only [mem_sdiff, mem_range, mem_map, mem_univ, true_and, Fin.valEmbedding_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hx, hx'⟩`. Conclude with `⟨⟨x, hx⟩, fun h => hx' ⟨_, h, rfl⟩, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨i, hi, rfl⟩`. Use `⟨i.2, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨j, hj, hji⟩`. Conclude with `hi (Fin.ext hji ▸ hj)`. Rewrite using `[e, prod_map, prod_map]`.
-
-Both sides reduce to the same expression.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private lemma fin_sum_eq (n : ℕ) (q : ℕ → ℝ) (F : Finset ℕ → ℝ) :
     (∑ S : Finset (Fin n), pw (fun i : Fin n => q i) S * F (S.map Fin.valEmbedding)) =
@@ -152,11 +148,11 @@ private lemma fin_sum_eq (n : ℕ) (q : ℕ → ℝ) (F : Finset ℕ → ℝ) :
     rfl
 
 /- English proof (translation)
-Unfold `exP`. Use `conv_lhs => rw [← Finset.insert_erase hm]`. Rewrite using `[Finset.sum_powerset_insert (Finset.notMem_erase _ _), Finset.sum_eq_zero, zero_add, mul_sum]`. Use `Finset.sum_congr rfl fun T hT => ?_` and prove the remaining obligations. Establish `hT' : i₀ ∉ T` using `fun h => Finset.notMem_erase _ _ (Finset.mem_powerset.1 hT h)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : insert i₀ (S.erase i₀) \ insert i₀ T = S.erase i₀ \ T`. Use extensionality with `x`. Simplify using `only [mem_sdiff, mem_insert, mem_erase]`. The claim follows by propositional logic. Rewrite using `[e, prod_insert hT']`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. The claim follows by propositional logic. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [mem_insert_self, true_and]`. Expand and normalize the polynomial expressions, which then agree. Introduce `T hT`. Establish `hT' : i₀ ∉ T` using `fun h => Finset.notMem_erase _ _ (Finset.mem_powerset.1 hT h)`. Simplify using `[ind, hT']`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma bernoulliExpectation_mem_and (q : ℕ → ℝ) {S : Finset ℕ} {i₀ : ℕ} (hm : i₀ ∈ S) (A : Finset ℕ → Prop) :
     exP q S (fun T => ind (i₀ ∈ T ∧ A T)) =
@@ -180,13 +176,13 @@ private lemma bernoulliExpectation_mem_and (q : ℕ → ℝ) {S : Finset ℕ} {i
 end UpperTheory.BernoulliSumsFrobeniusOrbits
 
 /- English proof (translation)
-Introduce `α _ _ _ p b h t ht A`. Take `⟨i, hi⟩` from `ht`. Establish `hpos : 0 < addOrderOf h` using `addOrderOf_pos h`. Establish `hlt : i % addOrderOf h < addOrderOf h` using `Nat.mod_lt _ hpos`. Establish `ht : b + (i % addOrderOf h) • h = t` using `by rw [mod_addOrderOf_nsmul, hi]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨i % addOrderOf h, hlt, ht, ?_⟩` and prove the remaining obligations. Establish `hinj : Function.Injective (fun j : Fin (addOrderOf h) => b + (j : ℕ) • h)`. Introduce `j k hjk`. Use `add_left_cancel hjk` as an intermediate fact. Conclude with `Fin.ext (nsmul_injOn_Iio_addOrderOf j.2 k.2 this)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `bernoulliExpectation_mem_and (fun i => p (b + i • h)) (mem_range.2 hlt) A`. Rewrite `h1` using `[ht]`. Rewrite using `[← h1, ← fin_sum_eq, ← marginal p _ hinj (fun S => ind (i % addOrderOf h ∈ S.map Fin.valEmbedding ∧ A (S.map Fin.valEmbedding)))]`. Use `sum_congr rfl fun T _ => ?_` and prove the remaining obligations. Establish `: t ∈ T ↔ i % addOrderOf h ∈ (univ.filter (fun i : Fin (addOrderOf h) => b + (i : ℕ) • h ∈ T)).map Fin.valEmbedding`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show i % addOrderOf h = Fin.valEmbedding (⟨_, hlt⟩ : Fin (addOrderOf h)) from rfl, Finset.mem_map']`. Simplify using `[hi]`. Simplify using `only [this]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.BernoulliSumsFrobeniusOrbits.orbit_sum :
     ∀ (α : Type) [Fintype α] [DecidableEq α] [AddCommGroup α] (p : α → ℝ) (b h t : α), (∃ i : ℕ, b + i • h = t) →

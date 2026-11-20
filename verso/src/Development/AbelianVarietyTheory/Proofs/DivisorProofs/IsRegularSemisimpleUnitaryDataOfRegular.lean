@@ -20,13 +20,13 @@ open scoped TensorProduct
 namespace GlobalTheory.ConjLevi.RegularData
 
 /- English proof (translation)
-Introduce `D V γ h`. Establish `hHN` using `(GlobalTheory.Mem.Vol.cmData_isCMExt_and_gram_isHermND _ _ D.sp.cm).2 V`. Use `⟨⟨?_, D.sp.cm.deg2, ?_, ?_⟩, ?_, GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.gram_det_isUnit V, γ.2, h⟩` and prove the remaining obligations. Use `haveI : Module.Finite (↥D.host.F) D.host.E := Module.finite_of_finrank_pos (by rw [D.sp.cm.deg2]; norm_num)`. Conclude with `⟨Algebra.FormallyEtale.of_isSeparable _ _, Algebra.FinitePresentation.of_finiteType.1 inferInstance⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `e`. Simplify using `[Formalism.BasicNotions.CMData.sig]`. Assume the negation of the conclusion as `hne push_neg at hne`. Establish `htop : (⊥ : Subalgebra (↥D.host.F) D.host.E) = ⊤`. Use `eq_top_iff.2 (fun e _ => ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.mem_bot]`. Use `(D.sp.cm.fixed e).1 (hne e)` as an intermediate fact. Simplify using `using this`. Establish `h1` using `Subalgebra.bot_eq_top_iff_finrank_eq_one.1 htop`. Rewrite `h1` using `[D.sp.cm.deg2]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions.
 
-Evaluate the numerical expressions using `at h1`. Use extensionality with `i j`. Simplify `hHN.1 i j` using `[Formalism.UG.IsHerm, Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply]`.
+By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isRegular_of_isRegSS : ∀ {D : D7} {V : HSp D} (γ : GF V), IsRegSS γ.1.1 → GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.IsRegular D.sp.cm.sig V.gram γ.1 := by
   intro D V γ h

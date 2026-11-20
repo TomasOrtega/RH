@@ -29,16 +29,16 @@ namespace GlobalTheory.PtExt.OrthPt
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-The claim follows from `Scheme.Hom.iSup_preimage_eq_top _ hW`.
+A detailed English derivation is pending.
 -/
 theorem iSup_parCov {A B : Over (Sp R)} {K : Type} {W : K → (A ⊗ B).left.Opens} (hW : ⨆ i, W i = ⊤)
     {D : Type} [CommRing D] [Algebra R D] (x : Pt A D) : ⨆ i, parCov W x i = ⊤ :=
   Scheme.Hom.iSup_preimage_eq_top _ hW
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `h`. Use `⟨i, ?_⟩` and prove the remaining obligations. Unfold `parCov at hi ⊢`. Rewrite `hi` using `[comp_whiskerRight, Over.comp_left, Scheme.Hom.comp_preimage]`. Rewrite using `[Over.comp_left, Scheme.Hom.comp_preimage]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hi`.
+A detailed English derivation is pending.
 -/
 theorem sm_parCov {A B : Over (Sp R)} {K : Type} {W : K → (A ⊗ B).left.Opens}
     {D D' E : Type} [CommRing D] [Algebra R D] [CommRing D'] [Algebra R D'] [CommRing E] [Algebra R E]
@@ -52,7 +52,7 @@ theorem sm_parCov {A B : Over (Sp R)} {K : Type} {W : K → (A ⊗ B).left.Opens
   exact hi
 
 /- English proof (translation)
-Simplify using `only [sumMul, Fintype.sum_sum_type, Sum.elim_inl, Sum.elim_inr, map_neg, neg_mul, Finset.sum_neg_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sumMul_elim {B : Over (Sp R)} {D : Type} [CommRing D] [Algebra R D] {I₁ I₂ I₃ : Type} [Fintype I₁]
     [Fintype I₂] [Fintype I₃] (d₁ : I₁ → D) (d₂ : I₂ → D) (d₃ : I₃ → D)
@@ -68,19 +68,19 @@ theorem sumMul_elim {B : Over (Sp R)} {D : Type} [CommRing D] [Algebra R D] {I�
   ring
 
 /- English proof (translation)
-Introduce `H R _ A B _ g hB hg K W hW J _ a β hβ n ha hn y hy`. Establish `hP : ∀ f : Z1 (O (dp0 R) (B.hom ≫ 𝟙 _)), CatCoh.H1.mk _ f ∈ primDR B` using `fun f ↦ by`. Establish `h : primDR B = ⊤` using `((GlobalTheory.abelianDeRham_free_baseChange_rigid H).1 R B g hB hg).1`. Rewrite using `[h]`. Discharge the goal by the elementary cases of `trivial`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition.
 
-Establish `hfv : ∀ f : Z1 (O (dp0 R) (B.hom ≫ 𝟙 _)), IsCoc (whole B) (fv f)` using `fun f ↦ (fv_isCoc_and_ev_eq R B f).1`. Establish `key : ∀ (D : Type) [CommRing D] [Algebra R D] (x : Pt A D), ∃ (m : ℕ) (d : Fin m → D) (c : Fin m → Z1 (O (dp0 R) (B.hom ≫ 𝟙 _))) (k : Fn0 (SpAlg R D ⊗ B)), IsCob (parCov W x) ((parCoc a (fun i ↦ fv (β i)) n x).add (sumMul d fun i ↦ fv (c i)).neg) k`. Introduce `D _ _ x`. Take `⟨u, hu, k₁, h₁⟩` from `GlobalTheory.T.pointwise_cocycle_on_cover_extends_up_to_coboundary R _ K (parCov W x) (iSup_parCov hW x) _ (GlobalTheory.PtExt.parCoc_isCoc R A B K W J a _ n ha (fun i ↦ hfv _) hn D x)`. Take `⟨m, d, c, k₂, h₂⟩` from `GlobalTheory.T.cocycle_spec_prod_abelian_cohomologous_sum_mul H R B g hB hg D u hu`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨m, d, c, fun E _ _ z ↦ k₁ E z + k₂ E z, ?_⟩` and prove the remaining obligations. Introduce `E _ _ E' _ _ ψ z hz`. Establish `e₁` using `h₁ E E' ψ z hz`. Establish `e₂` using `h₂ E E' ψ z (sm_whole z)`. Simplify using `only [Fn1.add, Fn1.neg] at e₁ e₂ ⊢`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_add]`. Take the linear combination `e₁ + e₂`. Use `choose m d c k hk using key`. Use `⟨fun D _ _ x ↦ ∑ j, d D x j * algebraMap R D (y ⟨_, hP (c D x j)⟩), ?_⟩` and prove the remaining obligations. Introduce `D _ _ D' _ _ φ x _`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hcob : IsCob (parCov W (spOver φ ≫ x)) (sumMul (Sum.elim (d D' (spOver φ ≫ x)) (Sum.elim (fun i ↦ -φ (d D x i)) (fun i ↦ -a i D D' φ x))) (fun i ↦ fv (Sum.elim (c D' (spOver φ ≫ x)) (Sum.elim (c D x) β) i))) (fun E _ _ z ↦ k D x E (z ≫ spOver φ ▷ B) - k D' (spOver φ ≫ x) E z)`. Introduce `E _ _ E' _ _ ψ z hz`. Establish `e₁` using `hk D' (spOver φ ≫ x) E E' ψ z hz`. Establish `e₂` using `hk D x E E' ψ (z ≫ spOver φ ▷ B) (sm_parCov φ x z hz)`. Establish `e₃` using `congrArg (fun u : Fn1 (SpAlg R D' ⊗ B) ↦ u E E' ψ z) (GlobalTheory.PtExt.parCoc_spOver R A B J a (fun i ↦ fv (β i)) n ha D D' φ x)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₄` using `congrArg (fun u : Fn1 (SpAlg R D' ⊗ B) ↦ u E E' ψ z) ((GlobalTheory.PtExt.SumMulFacts.main R D B _ (d D x) (fun i ↦ fv (c D x i))).2 D' φ)`. Rewrite using `[sumMul_elim]`. Simplify using `only [Fn1.add, Fn1.neg, Fn1.pull] at e₁ e₂ e₃ e₄`. Use `beta_reduce`. Rewrite using `[map_sub, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Take the linear combination `e₂ - e₁ + e₃ + e₄`. Establish `h0` using `GlobalTheory.T.sum_mul_hodgeFil_eq_zero_of_deRham_coboundary H R B g hB hg y hy D' _ _ _ (fun i ↦ hP _) (GlobalTheory.PtExt.isCob_whole_of_isCob_cover R _ K _ (iSup_parCov hW (spOver φ ≫ x)) _ ((GlobalTheory.PtExt.SumMulFacts.main R D' B _ _ _).1 fun i ↦ hfv _) _ hcob)`. Simplify using `only [Fintype.sum_sum_type, Sum.elim_inl, Sum.elim_inr, neg_mul, Finset.sum_neg_distrib] at h0`. Simplify using `only [map_sum, map_mul, AlgHom.commutes]`. Take the linear combination `-h0`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_isCob_of_mem_fil : GlobalTheory.Published.AbelianHodgeDeRham → ∀ (R : Type) [CommRing R] (A B : Over (Sp R)) [GrpObj B] (g : ℕ), IsAbelianScheme B → SmoothOfRelativeDimension g B.hom → ∀ (K : Type) (W : K → (A ⊗ B).left.Opens), ⨆ i, W i = ⊤ → ∀ (J : Type) [Fintype J] (a : J → Fn1 A) (β : J → Z1 (O (dp0 R) (B.hom ≫ 𝟙 _))) (hβ : ∀ i, CatCoh.H1.mk _ (β i) ∈ primDR B) (n : Fn1 (A ⊗ B)), (∀ i, IsCoc (whole A) (a i)) → IsCupCob W a (fun i ↦ fv (β i)) n → ∀ y ∈ Fil B, ∃ k : Fn0 A, IsCob (whole A) (fun D _ _ D' _ _ φ x ↦ ∑ i, a i D D' φ x * algebraMap R D' (y ⟨_, hβ i⟩)) k := by
   intro H R _ A B _ g hB hg K W hW J _ a β hβ n ha hn y hy

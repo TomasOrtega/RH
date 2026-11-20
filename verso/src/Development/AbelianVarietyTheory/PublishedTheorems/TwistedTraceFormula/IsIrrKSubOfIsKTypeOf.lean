@@ -19,13 +19,13 @@ def kFinSub (ε : Fin n → Bool) (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[�
   GlobalTheory.KFiniteVectors.kFiniteVectors ε σ
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 @[simp] theorem mem_kFinSub {ε : Fin n → Bool} {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {v : H} :
     v ∈ kFinSub ε σ ↔ IsKFin ε σ v := Iff.rfl
 
 /- English proof (translation)
-Introduce and unpack `g hg v ⟨S, hS, hv, hK⟩`. Conclude with `⟨S, hS, hK g hg v hv, hK⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem isKStableOn_kFinSub (ε : Fin n → Bool) (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) :
     IsKStableOn ε σ (kFinSub ε σ) := by
@@ -45,7 +45,7 @@ def kIsotypic (ε : Fin n → Bool) (σ : Matrix (Fin n) (Fin n) ℂ → (H →L
   ⨆ T : {T : S →ₗ[ℂ] H // IsKMapFrom ε σ S T}, LinearMap.range T.1
 
 /- English proof (translation)
-The claim follows from `le_iSup (fun T : {T : S →ₗ[ℂ] H // IsKMapFrom ε σ S T} => LinearMap.range T.1) ⟨T, hT⟩`.
+A detailed English derivation is pending.
 -/
 theorem range_le_kIsotypic {ε : Fin n → Bool} {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {S : Submodule ℂ H}
     {T : S →ₗ[ℂ] H} (hT : IsKMapFrom ε σ S T) : LinearMap.range T ≤ kIsotypic ε σ S :=
@@ -58,7 +58,7 @@ def IsLieStable (ε : Fin n → Bool) (σ : Matrix (Fin n) (Fin n) ℂ → (H �
   ∀ X, inG ε X → ∀ v ∈ S, dRep σ X v ∈ S
 
 /- English proof (translation)
-Use `⟨h.1, ?_, h.2.1, h.2.2.1⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Take `⟨v, hv, hv0, -⟩` from `h.2.2.2.1`. Conclude with `hv0 ((Submodule.mem_bot ℂ).1 hv)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isIrrKSub_of_isKTypeOf {ε : Fin n → Bool} {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {Λ : Fin n → ℝ}
     {S : Submodule ℂ H} (h : IsKTypeOf ε σ Λ S) : IsIrrKSub ε σ S := by
@@ -89,7 +89,7 @@ variable {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [Inne
   {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
 
 /- English proof (translation)
-Break down `subsingleton_or_nontrivial H with hs | hn` into its components or cases. Introduce `g₀ _`. Conclude with `⟨Set.univ, fun _ => 0, isOpen_univ, trivial, analyticOnNhd_const, fun _ _ _ => Subsingleton.elim _ _⟩`. Conclude with `(h n ε H σ hU hI).2.1 v hv`.
+Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem analytic [CompleteSpace H] (h : KFiniteVectorsUnitary) (hU : IsURepOn (UJset ε) σ)
     (hI : IsIrredOn (UJset ε) σ) {v : H} (hv : IsKFin ε σ v) : AnalyticOnUJ ε fun g => σ g v := by
@@ -99,7 +99,7 @@ theorem analytic [CompleteSpace H] (h : KFiniteVectorsUnitary) (hU : IsURepOn (U
   · exact (h n ε H σ hU hI).2.1 v hv
 
 /- English proof (translation)
-The claim follows from `(h.analytic hU hI hv).smoothOnH`.
+A detailed English derivation is pending.
 -/
 theorem smoothOnH [CompleteSpace H] (h : KFiniteVectorsUnitary) (hU : IsURepOn (UJset ε) σ)
     (hI : IsIrredOn (UJset ε) σ) {v : H} (hv : IsKFin ε σ v) :
@@ -107,7 +107,7 @@ theorem smoothOnH [CompleteSpace H] (h : KFiniteVectorsUnitary) (hU : IsURepOn (
   (h.analytic hU hI hv).smoothOnH
 
 /- English proof (translation)
-The claim follows from `(h.analytic hU hI hv).smoothVec hP hG`.
+A detailed English derivation is pending.
 -/
 theorem smoothVec_conj [CompleteSpace H] (h : KFiniteVectorsUnitary) (hU : IsURepOn (UJset ε) σ)
     (hI : IsIrredOn (UJset ε) σ) {v : H} (hv : IsKFin ε σ v)
@@ -116,7 +116,7 @@ theorem smoothVec_conj [CompleteSpace H] (h : KFiniteVectorsUnitary) (hU : IsURe
   (h.analytic hU hI hv).smoothVec hP hG
 
 /- English proof (translation)
-Use `h.smoothVec_conj hU hI hv (P := 1) (G := Jm ε) isUnit_one (by simp)` as an intermediate fact. Simplify using `only [Matrix.one_mul, inv_one, Matrix.mul_one] at this`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem smoothVec [CompleteSpace H] (h : KFiniteVectorsUnitary) (hU : IsURepOn (UJset ε) σ)
     (hI : IsIrredOn (UJset ε) σ) {v : H} (hv : IsKFin ε σ v) : SmoothVec {X | inG ε X} σ v := by
@@ -125,7 +125,7 @@ theorem smoothVec [CompleteSpace H] (h : KFiniteVectorsUnitary) (hU : IsURepOn (
   exact this
 
 /- English proof (translation)
-Establish `h1 : (1 : Matrix (Fin n) (Fin n) ℂ) ∈ UJset ε` using `by simp [UJset, Formalism.REAL.inUJ]`. Use `((h.analytic hU hI hv).analytic_exp h1 hX 0).differentiableAt` as an intermediate fact. Simplify using `only [Matrix.one_mul] at this`. Conclude with `this.hasDerivAt`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasDerivAt [CompleteSpace H] (h : KFiniteVectorsUnitary) (hU : IsURepOn (UJset ε) σ)
     (hI : IsIrredOn (UJset ε) σ) {v : H} (hv : IsKFin ε σ v) {X : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) :
@@ -136,7 +136,7 @@ theorem hasDerivAt [CompleteSpace H] (h : KFiniteVectorsUnitary) (hU : IsURepOn 
   exact this.hasDerivAt
 
 /- English proof (translation)
-The claim follows from `haveI := hσ.1 haveI := hσ.2.1 h n ε H σ hσ.2.2.1 hσ.2.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem of_isDS (h : KFiniteVectorsUnitary) {lam : Fin n → ℝ} (hσ : IsDS ε lam σ) :
     IsAdmissible ε σ ∧

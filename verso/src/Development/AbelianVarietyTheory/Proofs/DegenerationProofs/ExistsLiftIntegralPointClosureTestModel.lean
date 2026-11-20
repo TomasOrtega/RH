@@ -18,7 +18,7 @@ noncomputable section
 namespace GlobalTheory.ZH.ClosLift
 
 /- English proof (translation)
-Use `⟨?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `DenseRange (PrimeSpectrum.comap (OO p).subtype)`. Rewrite using `[PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical, (RingHom.injective_iff_ker_eq_bot _).1 (OO p).subtype_injective]`. Conclude with `bot_le`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isDominant_gPt (p : ℕ) [Fact p.Prime] : IsDominant (gPt p) := by
   refine ⟨?_⟩
@@ -28,7 +28,7 @@ theorem isDominant_gPt (p : ℕ) [Fact p.Prime] : IsDominant (gPt p) := by
   exact bot_le
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := by
@@ -37,7 +37,7 @@ theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {S : ThetaSys o Ω} {ρ : S.Real}
 
 /- English proof (translation)
-Use `⟨?_, h.1, h.2.1⟩` and prove the remaining obligations. Rewrite using `[ρ.N_eq]`. Establish `h1 : 2 ≤ ρ.n ^ ρ.k` using `ρ.n_prime.two_le.trans (Nat.le_self_pow (by have := ρ.two_le; omega) _)`. Use the polynomial consequences of the given equalities and inequalities.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem big (ρ : S.Real) (h : S.Big) : Big S.g S.N (S.r * S.N) := by
   refine ⟨?_, h.1, h.2.1⟩
@@ -46,24 +46,22 @@ theorem big (ρ : S.Real) (h : S.Big) : Big S.g S.N (S.r * S.N) := by
   nlinarith
 
 /- English proof (translation)
-The claim follows from `(spMap_comp' _ _).trans (spMap_comp' (algebraMap u.V (FractionRing u.V)) (algebraMap (FractionRing u.V) (PadicAlgCl p))).symm`.
+A detailed English derivation is pending.
 -/
 theorem gPt_j {p : ℕ} [Fact p.Prime] {y₀ : S.R →+* PadicAlgCl p} (u : ρ.UTest p y₀) :
     gPt p ≫ spMap u.j = spMap (algebraMap (FractionRing u.V) (PadicAlgCl p)) ≫ jK u.V :=
   (spMap_comp' _ _).trans (spMap_comp' (algebraMap u.V (FractionRing u.V)) (algebraMap (FractionRing u.V) (PadicAlgCl p))).symm
 
 /- English proof (translation)
-Use `set κ := spMap (algebraMap (FractionRing t.u.V) (PadicAlgCl p)) with hκ`. Establish `h1 : x ≫ Q.P.hom = (κ ≫ c.yK) ≫ U₀.ι`. Rewrite using `[hx, Category.assoc, c.yK_fac, ← Category.assoc, ← gPt_j, Category.assoc, c.fac]`. Set `a1` to `Q.cart.lift x (κ ≫ c.yK) h1`. Establish `e1 : a1 ≫ Q.a₀ = x` using `Q.cart.lift_fst _ _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : a1 ≫ pullback.snd _ _ = κ ≫ c.yK` using `Q.cart.lift_snd _ _ _`. Establish `h2 : (a1 ≫ pullback.fst _ _) ≫ ρ.P.A.hom = κ ≫ spMap t.u.yK`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, e2, Category.assoc, c.yK_u]`. Set `a2` to `t.u.cart.1.lift (a1 ≫ pullback.fst _ _) κ h2`. Establish `e3 : a2 ≫ t.u.φ = a1 ≫ pullback.fst _ _` using `t.u.cart.1.lift_fst _ _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e4 : a2 ≫ t.u.A.A.hom = κ` using `t.u.cart.1.lift_snd _ _ _`. Set `a3 : Sp (PadicAlgCl p) ⟶ pullback t.u.G.hom (jK t.u.V)` to `a2 ≫ t.u.U.gen.inv.left`. Establish `e5 : a3 ≫ pullback.snd _ _ = κ`. Rewrite using `[← e4]`. Conclude with `(Category.assoc _ _ _).trans (congrArg (a2 ≫ ·) (Over.w t.u.U.gen.inv))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e6 : a3 ≫ t.u.U.gen.hom.left = a2`. Use `(Category.assoc _ _ _).trans ((congrArg (a2 ≫ ·) ?_).trans (Category.comp_id _))` and prove the remaining obligations. Conclude with `congrArg CommaMorphism.left t.u.U.gen.inv_hom_id`. Establish `e7 : a3 ≫ tm.φ = a1`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Category.assoc, tm.φ_fst, ← e3, ← e6]`. Conclude with `(Category.assoc _ _ _).symm`. Rewrite using `[Category.assoc, tm.φ_snd, ← Category.assoc, e5, e2]`. Use `⟨a3 ≫ pullback.fst _ _, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, e5, gPt_j]`.
-
-Rewrite using `[Category.assoc, ← tm.φ_f, ← Category.assoc, e7, e1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_generic {M : RatModel o Ω} {U₀ : M.Z.Opens} {EE : M.Lat S.J} {Q : Clos ρ M U₀ EE} {p : ℕ}
     [Fact p.Prime] {y : Sp (OO p) ⟶ M.Z} {y₀ : S.R →+* PadicAlgCl p} {t : ρ.GeoTest p y₀} {c : Q.Fac y t.u}
@@ -98,23 +96,21 @@ theorem exists_generic {M : RatModel o Ω} {U₀ : M.Z.Opens} {EE : M.Lat S.J} {
   · rw [Category.assoc, ← tm.φ_f, ← Category.assoc, e7, e1]
 
 /- English proof (translation)
-Introduce `_ o Ω _ _ _ _ S ρ M U₀ EE hB Q p _ y y₀ t c tm hbig b hb hG`. Establish `hW : ⊤ ≤ b ⁻¹ᵁ (Q.P.hom ⁻¹ᵁ Q.W tm.l)`. Rewrite using `[← Scheme.Hom.comp_preimage, hb]`. Conclude with `(CrdCalc.top_le_iff y _).2 tm.mem`. Take `⟨b', hb'⟩ : ∃ b' : Sp (OO p) ⟶ (Q.P.hom ⁻¹ᵁ Q.W tm.l).toScheme, b' ≫ (Q.P.hom ⁻¹ᵁ Q.W tm.l).ι = b` from `⟨IsOpenImmersion.lift _ b (by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `(top_le_preimage_iff _ _).1 hW), IsOpenImmersion.lift_fac _ _ _⟩`. Take `⟨w', hw'⟩` from `CrdCalc.crd_exists (pull_isLB Q.isLB (Q.P.hom ⁻¹ᵁ Q.W tm.l).ι) (Q.σ tm.l) b'`. Establish `hdet : ∀ {R : Type} [CommRing R] (ψ : t.u.V →+* R), IsUnit (tm.m.map ψ).det` using `fun ψ => by`. Use `tm.unit.map ψ` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[RingHom.map_det]`. Then use the resulting hypothesis. Take `⟨w, rfl⟩ : ∃ w, w' = (tm.m.map t.u.j).mulVec w` from `⟨(tm.m.map t.u.j)⁻¹.mulVec w', by`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (hdet _), Matrix.one_mulVec]⟩`. Establish `hmap : ∀ {R : Type} [CommRing R] (ψ : OO p →+* R), Crd (Q.O1.pull (Q.P.hom ⁻¹ᵁ Q.W tm.l).ι) (Q.σ tm.l) (spMap ψ ≫ b') ((tm.m.map (ψ.comp t.u.j)).mulVec fun i => ψ (w i))` using `fun ψ => by`. Use `CrdCalc.crd_map ψ hw'` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `(congrArg _ (funext fun i => ?_)).mp this` and prove the remaining obligations. Conclude with `RingHom.map_mulVec ψ _ _ i`. Take `⟨i₀, hi₀, hne⟩` from `(GlobalTheory.T.le_preimage_openPart_iff_testCoordinates o Ω S ρ M U₀ EE hB Q p y y₀ t c tm hbig (rPt p ≫ b') (fun i => IsLocalRing.residue (OO p) (w i)) (by rw [Category.assoc, ← Category.assoc b', hb', hb]) (hmap _)).1 (by`. Rewrite using `[Category.assoc, hb']`. Conclude with `fun z _ => hG (Set.mem_univ (rPt p z)))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hu : IsUnit (w i₀)` using `(IsLocalRing.residue_ne_zero_iff_isUnit _).1 hne`. Establish `hn : 1 ≤ ‖(w i₀ : PadicAlgCl p)‖` using `not_lt.1 fun h => (not_isUnit_OO_iff _).2 h hu`. Take `⟨a, ha, haf⟩` from `exists_generic tm (gPt p ≫ b) (by rw [Category.assoc, hb])`. Establish `haf' : a ≫ tm.f = gPt p ≫ b'`. Rewrite using `[← cancel_mono (Q.P.hom ⁻¹ᵁ Q.W tm.l).ι, Category.assoc, haf, Category.assoc, hb']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨v, hv⟩` from `CrdCalc.crd_exists t.mod.isLB t.σ a`. Establish `h1` using `tm.crd _ ((OO p).subtype.comp t.u.j) a v (ha.trans (spMap_comp' _ _)) hv`. Rewrite `h1` using `[haf']`. Take `⟨κ, hκ⟩` from `CrdCalc.crd_unique h1 (hmap (OO p).subtype)`. Establish `h2 : (fun i => (OO p).subtype (w i)) = fun i => (κ : PadicAlgCl p) * v i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Matrix.mulVec_injective_iff_isUnit.2 ((Matrix.isUnit_iff_isUnit_det _).2 (hdet ((OO p).subtype.comp t.u.j))) ?_` and prove the remaining obligations. Establish `: (fun i => (κ : PadicAlgCl p) * v i) = (κ : PadicAlgCl p) • v` using `rfl`. Rewrite using `[this, Matrix.mulVec_smul]`. Conclude with `funext hκ`. Establish `h3` using `CrdCalc.crd_smul κ hv`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h3` using `[← h2]`. Take `⟨c', hc', hc''⟩` from `GlobalTheory.T.isIntegral_of_weightZeroCoordinate_dominates p t.u.V t.u.j t.u.G S.g S.N (S.r * S.N) _ t.l.q _ S.J t.σ t.cls t.mod (big ρ hbig) a _ ha h3 ⟨i₀, hi₀, fun i => ((mem_OO_iff _).1 (w i).2).trans hn⟩`. Use `⟨c', hc', ?_⟩` and prove the remaining obligations. Use `isDominant_gPt p` as an intermediate fact. Use `Q.proper` as an intermediate fact.
-
-Use `ext_of_isDominant_of_isSeparated Q.P.hom ?_ (gPt p) ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, tm.f_over, ← Category.assoc, hc', c.fac, hb]`. Rewrite using `[← Category.assoc, hc'', haf]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lift : GlobalTheory.UT.LL → ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (M : RatModel o Ω) (U₀ : M.Z.Opens) (EE : M.Lat S.J), BaseFacts S M U₀ EE → ∀ (Q : Clos ρ M U₀ EE) (p : ℕ) [Fact p.Prime] (y : Sp (OO p) ⟶ M.Z) (y₀ : S.R →+* PadicAlgCl p) (t : ρ.GeoTest p y₀) (c : Q.Fac y t.u) (tm : Q.TMap t c), S.Big → ∀ b : Sp (OO p) ⟶ Q.P.left, b ≫ Q.P.hom = y → ⊤ ≤ b ⁻¹ᵁ Q.G → ∃ c' : Sp (OO p) ⟶ t.u.G.left, c' ≫ t.u.G.hom = spMap t.u.j ∧ c' ≫ tm.f ≫ (Q.P.hom ⁻¹ᵁ Q.W tm.l).ι = b := by
   intro _ o Ω _ _ _ _ S ρ M U₀ EE hB Q p _ y y₀ t c tm hbig b hb hG

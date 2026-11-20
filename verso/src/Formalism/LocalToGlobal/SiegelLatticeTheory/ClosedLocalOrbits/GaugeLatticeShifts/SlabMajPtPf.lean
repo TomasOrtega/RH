@@ -17,9 +17,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} {X : Formalism.L2.SG.HidaSetting.HidaSetting D}
 
 /- English proof (translation)
-Take `⟨hF, hE⟩` from `T.2`. Take `⟨hL, hR⟩` from `hF ξ`. Establish `e1 : ((1 : Hinf X w), iotaF X w γ * x * (κ : Hfin X w)) = ((1 : Hinf X w), iotaF X w γ * x) * ((1 : Hinf X w), (κ : Hfin X w))` using `by simp`. Establish `e2 : ((1 : Hinf X w), iotaF X w γ * x) = (iotaI X w γ, iotaF X w γ) * ((iotaI X w γ)⁻¹, x)` using `by simp`. Establish `e3 : ((iotaI X w γ)⁻¹, x) = ((1 : Hinf X w), x) * ((iotaI X w γ)⁻¹, (1 : Hfin X w))` using `by simp`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e1, hR, e2, hL, e3, ← hE]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem col_val (hK : X.LevelSubgroupCharacter) (w : D.what₂.Word) (T : Cu X w hK) (ξ : X.Vpi w) (γ : Gam X w) (x : Hfin X w)
     (κ : Ku X w hK) :
@@ -35,29 +35,27 @@ theorem col_val (hK : X.LevelSubgroupCharacter) (w : D.what₂.Word) (T : Cu X w
   rw [e1, hR, e2, hL, e3, ← hE]
 
 /- English proof (translation)
-The claim follows from `hK.2.2.2.2 _ κ.2`.
+A detailed English derivation is pending.
 -/
 theorem norm_psiK (hK : X.LevelSubgroupCharacter) (w : D.what₂.Word) (κ : Ku X w hK) : ‖((psiK X w hK κ : ℂˣ) : ℂ)‖ = 1 :=
   hK.2.2.2.2 _ κ.2
 
 /- English proof (translation)
-Establish `hst : Formalism.L2.SG.ColsDim.StabTriv (iotaF X w) (Ku X w Y.hK)` using `Formalism.L2.SG.PoincareInHH.Cut.neatKu_of_gamUnipKu X w Y.hK (Formalism.L2.SG.PoincareInHH.Cut.latOfLattice_holds X w) (Formalism.L2.SG.PoincareInHH.Cut.gamUnipKu_holds X w Y.hK)`. Establish `hfin : Finite (Formalism.L2.SG.ColsDim.Classes (iotaF X w) (Ku X w Y.hK))`. Use `Finite.of_surjective (fun ρ : (Y.cs w).Cl => DoubleCoset.mk (iotaF X w).range (Ku X w Y.hK) ((Y.cs w).h ρ)) ?_` and prove the remaining obligations. Introduce `c`. Proceed by induction on `c using Quotient.inductionOn' with`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `h g`. Take `⟨ρ, ⟨γ, κ, hg⟩, _⟩` from `Y.colReps w g`. Use `⟨ρ, ?_⟩` and prove the remaining obligations. Use `show DoubleCoset.mk _ _ _ = DoubleCoset.mk _ _ g`. Rewrite using `[DoubleCoset.eq]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨iotaF X w γ, ⟨γ, rfl⟩, κ, κ.2, hg⟩`. Use `Fintype.ofFinite (Formalism.L2.SG.ColsDim.Classes (iotaF X w) (Ku X w Y.hK))` as an intermediate fact. Take `⟨e, he⟩` from `Formalism.L2.SG.ColsDim.columns_decomposition (Gam X w) (Hinf X w) (Hfin X w) ℂ (X.Vpi w) (iotaI X w) (iotaF X w) (Ku X w Y.hK) (psiK X w Y.hK) (piRep X w) (fun c => c.out) (fun c => DoubleCoset.out_eq' _ _ c) hst`. Take `⟨b, -⟩ : ∃ b : OrthonormalBasis (Fin (Module.finrank ℂ (X.Vpi w))) ℂ (X.Vpi w), True` from `⟨stdOrthonormalBasis ℂ (X.Vpi w), trivial⟩`. Set `ι` to `Formalism.L2.SG.ColsDim.Classes (iotaF X w) (Ku X w Y.hK) × Fin (Module.finrank ℂ (X.Vpi w))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `f : ι → Cu X w Y.hK` to `fun p => e.symm (fun c => if c = p.1 then innerₛₗ ℂ (b p.2) else 0)`. Establish `hf : ∀ p ξ, (f p : X.Vpi w →ₗ[ℂ] (Hinf X w × Hfin X w → ℂ)) ξ (1, p.1.out) = inner ℂ (b p.2) ξ`. Introduce `p ξ`. Rewrite using `[← he]`. Simplify using `only [LinearEquiv.apply_symm_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use `⟨Fintype.card ι, fun i => f ((Fintype.equivFin ι).symm i), fun ξ h => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩ : ∃ c, c = DoubleCoset.mk (iotaF X w).range (Ku X w Y.hK) h` from `⟨_, rfl⟩`. Take `⟨g, ⟨γ, rfl⟩, κ, hκ, hh⟩` from `(DoubleCoset.eq _ _ c.out h).1 (by rw [DoubleCoset.out_eq', hc])`. Take `⟨ξ', hξ'⟩ : ∃ ξ', ξ' = piRep X w (iotaI X w γ)⁻¹ ξ` from `⟨_, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hn : ‖ξ'‖ = ‖ξ‖`. Establish `h2 : inner ℂ ξ' ξ' = inner ℂ ξ ξ`. Rewrite using `[hξ']`. Conclude with `(X.piU_rep w).2.2.1 _ (hinf_le_sinf X w _ ((iotaI X w γ)⁻¹).2) ξ ξ`. Rewrite using `[norm_eq_sqrt_re_inner (𝕜 := ℂ), norm_eq_sqrt_re_inner (𝕜 := ℂ) ξ, h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hval : ∀ j, ‖(f (c, j) : X.Vpi w →ₗ[ℂ] (Hinf X w × Hfin X w → ℂ)) ξ (1, h)‖ₑ = ‖inner ℂ (b j) ξ'‖ₑ`. Introduce `j`. Rewrite using `[hh, col_val Y.hK w (f (c, j)) ξ γ c.out ⟨κ, hκ⟩, ← hξ', hf (c, j) ξ', enorm_mul, ← ofReal_norm (((psiK X w Y.hK ⟨κ, hκ⟩ : ℂˣ) : ℂ)), norm_psiK, ENNReal.ofReal_one, one_mul]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[enorm_smul, ← ofReal_norm (b j), b.orthonormal.1 j, ENNReal.ofReal_one, mul_one]`. Use `_ = ∑ j, ‖(f (c, j) : X.Vpi w →ₗ[ℂ] (Hinf X w × Hfin X w → ℂ)) ξ (1, h)‖ₑ := Finset.sum_congr rfl fun j _ => (hval j).symm`. Use `_ ≤ ∑ p : ι, ‖(f p : X.Vpi w →ₗ[ℂ] (Hinf X w × Hfin X w → ℂ)) ξ (1, h)‖ₑ := by`. Rewrite using `[Fintype.sum_prod_type]`. Conclude with `Finset.single_le_sum (f := fun c' => ∑ j, ‖(f (c', j) : X.Vpi w →ₗ[ℂ] (Hinf X w × Hfin X w → ℂ)) ξ (1, h)‖ₑ) (fun _ _ => bot_le) (Finset.mem_univ c)`.
-
-Use `_ = ∑ i, ‖(f ((Fintype.equivFin ι).symm i) : X.Vpi w →ₗ[ℂ] (Hinf X w × Hfin X w → ℂ)) ξ (1, h)‖ₑ := (Equiv.sum_comp (Fintype.equivFin ι).symm (fun p => ‖(f p : X.Vpi w →ₗ[ℂ] (Hinf X w × Hfin X w → ℂ)) ξ (1, h)‖ₑ)).symm`.
+A detailed English derivation is pending.
 -/
 theorem col_lower (Y : Full X) (w : D.what₂.Word) :
     ∃ (n : ℕ) (T : Fin n → Cu X w Y.hK), ∀ (ξ : X.Vpi w) (h : Hfin X w),
@@ -118,7 +116,7 @@ theorem col_lower (Y : Full X) (w : D.what₂.Word) :
           (fun p => ‖(f p : X.Vpi w →ₗ[ℂ] (Hinf X w × Hfin X w → ℂ)) ξ (1, h)‖ₑ)).symm
 
 /- English proof (translation)
-Use `(hT (X.Wu w x) h).trans (le_of_eq (Finset.sum_congr rfl fun i _ => ?_))` and prove the remaining obligations. Rewrite using `[Formalism.L2.SG.Pf.RegroupPf.ph_col Y.hK (Formalism.L2.SG.Pf.phWellDef_holds X w) (T i) x h k hk, enorm_mul, ← ofReal_norm (X.chi2 k), Y.hK.2.2.2.2 k hk, ENNReal.ofReal_one, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem ph_lower (Y : Full X) (w : D.what₂.Word) {n : ℕ} (T : Fin n → Cu X w Y.hK)
     (hT : ∀ (ξ : X.Vpi w) (h : Hfin X w),
@@ -130,11 +128,11 @@ theorem ph_lower (Y : Full X) (w : D.what₂.Word) {n : ℕ} (T : Fin n → Cu X
     ← ofReal_norm (X.chi2 k), Y.hK.2.2.2.2 k hk, ENNReal.ofReal_one, one_mul]
 
 /- English proof (translation)
-Introduce `D X Y u u'`. Take `⟨n, T, hT⟩` from `col_lower Y u`. Take `⟨n', T', hT'⟩` from `col_lower Y u'`. Use `⟨n, n', T, T', 1, ENNReal.one_ne_top, fun t x => ?_⟩` and prove the remaining obligations. Take `⟨h, κ, hκ, he⟩` from `term_supp Y u u' t`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `ph_lower Y u T hT x ((Y.cs u).h ((Y.cs u).base t.lam)) 1 Y.hK.1`. Establish `h2` using `ph_lower Y u' T' hT' (t.pt.1⁻¹ * x) h κ hκ`. Establish `hb : t.pt⁻¹ * (x, Formalism.L2.SG.Pf.Slab.aB Y u t.lam) = (t.pt.1⁻¹ * x, (h : X.B.I.Gf) * X.xu u' * κ)` using `Prod.ext rfl he`. Establish `ha : (x, Formalism.L2.SG.Pf.Slab.aB Y u t.lam) = (x, ((Y.cs u).h ((Y.cs u).base t.lam) : X.B.I.Gf) * X.xu u * 1)`. Rewrite using `[mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[hb, ha, one_mul]`. Conclude with `(mul_le_mul' h1 h2).trans_eq (Finset.sum_mul_sum _ _ _ _)`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pointwise_majorant_by_columns : Formalism.L2.SG.Pf.Slab.MajPtC := by
   intro D X Y u u'

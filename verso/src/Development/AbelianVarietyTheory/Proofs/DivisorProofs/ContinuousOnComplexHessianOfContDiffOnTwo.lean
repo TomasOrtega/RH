@@ -6,9 +6,9 @@ open scoped ComplexOrder
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hD : ContDiffOn ℝ 1 (fun y => fderiv ℝ g y) U` using `hg.fderiv_of_isOpen hU (by norm_num)`. Establish `h1 : ContDiffOn ℝ 1 (fun y => fderiv ℝ g y (bas n l)) U` using `hD.clm_apply contDiffOn_const`. Establish `h2 : ContDiffOn ℝ 1 (fun y => fderiv ℝ g y (Complex.I • bas n l)) U` using `hD.clm_apply contDiffOn_const`. Establish `h3 : ContDiffOn ℝ 1 (fun y => (fderiv ℝ g y (bas n l) + Complex.I * fderiv ℝ g y (Complex.I • bas n l)) / 2) U` using `(h1.add (contDiffOn_const.mul h2)).div_const 2`. Establish `e : wdb n l g = fun y => (fderiv ℝ g y (bas n l) + Complex.I * fderiv ℝ g y (Complex.I • bas n l)) / 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `fun y => rfl`. Rewrite using `[e]`. Conclude with `h3`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem contDiffOn_one_wdb_of_contDiffOn_two_isOpen {n : ℕ} {U : Set (V n)} {g : V n → ℂ}
     (hU : IsOpen U) (hg : ContDiffOn ℝ 2 g U) (l : Fin n) :
@@ -29,9 +29,9 @@ theorem contDiffOn_one_wdb_of_contDiffOn_two_isOpen {n : ℕ} {U : Set (V n)} {g
   exact h3
 
 /- English proof (translation)
-Establish `hD : ContinuousOn (fun y => fderiv ℝ g y) U` using `hg.continuousOn_fderiv_of_isOpen hU le_rfl`. Establish `h1 : ContinuousOn (fun y => fderiv ℝ g y (bas n j)) U` using `hD.clm_apply continuousOn_const`. Establish `h2 : ContinuousOn (fun y => fderiv ℝ g y (Complex.I • bas n j)) U` using `hD.clm_apply continuousOn_const`. Establish `h3 : ContinuousOn (fun y => (fderiv ℝ g y (bas n j) - Complex.I * fderiv ℝ g y (Complex.I • bas n j)) / 2) U` using `(h1.sub (continuousOn_const.mul h2)).div_const 2`. Establish `e : wd n j g = fun y => (fderiv ℝ g y (bas n j) - Complex.I * fderiv ℝ g y (Complex.I • bas n j)) / 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `fun y => rfl`. Rewrite using `[e]`. Conclude with `h3`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuousOn_wd_of_contDiffOn_one_isOpen {n : ℕ} {U : Set (V n)} {g : V n → ℂ}
     (hU : IsOpen U) (hg : ContDiffOn ℝ 1 g U) (j : Fin n) :
@@ -52,7 +52,7 @@ theorem continuousOn_wd_of_contDiffOn_one_isOpen {n : ℕ} {U : Set (V n)} {g : 
   exact h3
 
 /- English proof (translation)
-Introduce `n U φ hU hφ j l`. Establish `hc : ContDiffOn ℝ 2 (fun v => (φ v : ℂ)) U` using `Complex.ofRealCLM.contDiff.comp_contDiffOn hφ`. Establish `hb` using `contDiffOn_one_wdb_of_contDiffOn_two_isOpen hU hc l`. Simplify `continuousOn_wd_of_contDiffOn_one_isOpen hU hb j` using `only [cHess, Matrix.of_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem continuousOn_cHess_of_contDiffOn_two :
     ∀ (n : ℕ) (U : Set (V n)) (φ : V n → ℝ), IsOpen U → ContDiffOn ℝ 2 φ U → ∀ j l,

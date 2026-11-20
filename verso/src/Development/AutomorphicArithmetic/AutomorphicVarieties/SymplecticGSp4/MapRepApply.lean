@@ -26,17 +26,17 @@ def oddRoots : Finset (ℤ × ℤ) := {wAl, -wAl, wBe, -wBe, wTh, -wTh}
 def wts : Finset (ℤ × ℤ) := oddRoots ∪ {wPs, -wPs, 0}
 
 /- English proof (translation)
-Use `revert i j`. Evaluate the decidable proposition.
+Evaluate the decidable proposition. A detailed English derivation is pending.
 -/
 theorem wt_mem (i j : Fin 4) : wt i j ∈ wts := by revert i j; decide
 
 /- English proof (translation)
-Use `revert i j`. Evaluate the decidable proposition.
+Evaluate the decidable proposition. A detailed English derivation is pending.
 -/
 theorem wt_rev (i j : Fin 4) : wt j.rev i.rev = wt i j := by revert i j; decide
 
 /- English proof (translation)
-Use `revert i j`. Evaluate the decidable proposition.
+Evaluate the decidable proposition. A detailed English derivation is pending.
 -/
 theorem wt_eq_zero (i j : Fin 4) : wt i j = 0 ↔ i = j := by revert i j; decide
 
@@ -119,14 +119,14 @@ structure Ord (I : Subgroup H) (ps : Fin 4 → H → R) (s₀ : H) (r : H →* M
 end Rep
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [adj_apply, sgn, Fin.rev, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 example : IsGSp (1 : R) 1 := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [adj_apply, sgn, Fin.rev, Matrix.one_apply]
 
 /- English proof (translation)
-Use `show adj _ = -_`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [adj_apply, sgn, Xm, Fin.rev, Matrix.single_apply]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 example : Xm R ∈ sp4 R := by
   show adj _ = -_

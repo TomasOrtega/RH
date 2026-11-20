@@ -15,7 +15,7 @@ def EventuallyPoly (f : (Fin r → ℕ) → ℚ) : Prop :=
     f n = MvPolynomial.eval (fun k => (n k : ℚ)) Φ
 
 /- English proof (translation)
-Take `⟨Φ, a, h⟩` from `hf`. Take `⟨Ψ, b, h'⟩` from `hg`. Use `⟨Φ + Ψ, max a b, fun n hn => ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, ← h n (fun k => (le_max_left _ _).trans (hn k)), ← h' n (fun k => (le_max_right _ _).trans (hn k))]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem EventuallyPoly.add {f g : (Fin r → ℕ) → ℚ} (hf : EventuallyPoly f)
     (hg : EventuallyPoly g) : EventuallyPoly (fun n => f n + g n) := by
@@ -26,7 +26,7 @@ theorem EventuallyPoly.add {f g : (Fin r → ℕ) → ℚ} (hf : EventuallyPoly 
     ← h' n (fun k => (le_max_right _ _).trans (hn k))]
 
 /- English proof (translation)
-Proceed by induction on `Φ using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p n hp => simp only [map_mul, hp, aeval_X, eval_X]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem eval_aeval_coord (x : Fin r → ℚ) (p : Fin r → MvPolynomial (Fin r) ℚ)
     (Φ : MvPolynomial (Fin r) ℚ) :
@@ -37,7 +37,7 @@ theorem eval_aeval_coord (x : Fin r → ℚ) (p : Fin r → MvPolynomial (Fin r)
   | mul_X p n hp => simp only [map_mul, hp, aeval_X, eval_X]
 
 /- English proof (translation)
-Take `⟨Φ, a, h⟩` from `hf`. Use `⟨aeval (fun k => X k + C (e k : ℚ)) Φ, a, fun n hn => ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[eval_aeval_coord, h (n + e) (fun k => (hn k).trans (Nat.le_add_right _ _))]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem EventuallyPoly.shift_add {f : (Fin r → ℕ) → ℚ} (hf : EventuallyPoly f) (e : Fin r → ℕ) :
     EventuallyPoly (fun n => f (n + e)) := by
@@ -48,13 +48,13 @@ theorem EventuallyPoly.shift_add {f : (Fin r → ℕ) → ℚ} (hf : EventuallyP
   simp
 
 /- English proof (translation)
-Take `⟨Φ, a, h⟩` from `hf`. Use `⟨aeval (fun k => X k - C (e k : ℚ)) Φ, a + ∑ k, e k, fun n hn => ?_⟩` and prove the remaining obligations. Establish `he : ∀ k, a + e k ≤ n k` using `fun k => (Nat.add_le_add_left (Finset.single_le_sum (f := e) (fun _ _ => Nat.zero_le _) (Finset.mem_univ k)) a).trans (hn k)`. Establish `h1 : n = (n - e) + e`. Use function extensionality and compare the values at `k`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `he k` as an intermediate fact. Simplify using `only [Pi.add_apply, Pi.sub_apply]`. Use linear arithmetic over natural numbers and integers. Establish `h2` using `h (n - e) (fun k => by have := he k; simp only [Pi.sub_apply]; omega)`. Simplify using `only [← h1] at h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[eval_aeval_coord, h2]`. Use `congr 2`. Use function extensionality and compare the values at `k`. Use `he k` as an intermediate fact. Simplify using `only [Pi.sub_apply, map_sub, eval_X, eval_C]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Nat.cast_sub (by omega)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem EventuallyPoly.of_shift_add {f : (Fin r → ℕ) → ℚ} (e : Fin r → ℕ)
     (hf : EventuallyPoly (fun n => f (n + e))) : EventuallyPoly f := by
@@ -78,7 +78,7 @@ theorem EventuallyPoly.of_shift_add {f : (Fin r → ℕ) → ℚ} (e : Fin r →
   rw [Nat.cast_sub (by omega)]
 
 /- English proof (translation)
-Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq => simp only [map_add, hp, hq, Polynomial.eval_add]`. Consider the case `monomial n a => simp`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem eval_polynomial_aeval_X (x : Fin r → ℚ) (k : Fin r) (p : Polynomial ℚ) :
     eval x (Polynomial.aeval (X k : MvPolynomial (Fin r) ℚ) p) = p.eval (x k) := by
@@ -87,9 +87,9 @@ theorem eval_polynomial_aeval_X (x : Fin r → ℚ) (k : Fin r) (p : Polynomial 
   | monomial n a => simp
 
 /- English proof (translation)
-Rewrite using `[eval_monomial, eval_monomial]`. Use `congr 1`. Use `Finsupp.prod_congr fun j hj => ?_` and prove the remaining obligations. Establish `: j ≠ k`. Introduce and unpack `rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Simplify using `at hj`. Rewrite using `[Function.update_of_ne this]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem eval_monomial_erase (x : Fin r → ℚ) (k : Fin r) (t : ℚ) (d : Fin r →₀ ℕ) (c : ℚ) :
     eval (Function.update x k t) (monomial (d.erase k) c) = eval x (monomial (d.erase k) c) := by
@@ -102,13 +102,13 @@ theorem eval_monomial_erase (x : Fin r → ℚ) (k : Fin r) (t : ℚ) (d : Fin r
   rw [Function.update_of_ne this]
 
 /- English proof (translation)
-Proceed by induction on `Φ using MvPolynomial.induction_on' with`. Consider the case `monomial d c`. Use `⟨monomial (d.erase k) (c / (d k + 1)) * Polynomial.aeval (X k : MvPolynomial (Fin r) ℚ) (Polynomial.bernoulli (d k + 1)), fun x => ?_⟩` and prove the remaining obligations. Establish `hd : monomial d c = monomial (d.erase k) c * (X k : MvPolynomial (Fin r) ℚ) ^ d k`. Rewrite using `[X_pow_eq_monomial, monomial_mul, mul_one, Finsupp.erase_add_single]`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_mul, eval_monomial_erase, eval_polynomial_aeval_X, eval_polynomial_aeval_X, Function.update_self, add_comm (x k) 1, Polynomial.bernoulli_eval_one_add, hd, map_mul, eval_monomial, eval_monomial]`. Establish `: (d k : ℚ) + 1 ≠ 0` using `by positivity`. Simplify using `only [map_pow, eval_X, Nat.add_sub_cancel]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Expand and normalize the polynomial expressions, which then agree. Consider the case `add p q hp hq`. Take `⟨P, hP⟩` from `hp`. Take `⟨Q, hQ⟩` from `hq`. Use `⟨P + Q, fun x => ?_⟩` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_add, map_add, map_add, ← hP, ← hQ]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exists_antidifference (Φ : MvPolynomial (Fin r) ℚ) (k : Fin r) :
     ∃ Ψ : MvPolynomial (Fin r) ℚ, ∀ x : Fin r → ℚ,
@@ -136,29 +136,29 @@ theorem exists_antidifference (Φ : MvPolynomial (Fin r) ℚ) (k : Fin r) :
     ring
 
 /- English proof (translation)
-Use `choose Φ a h using hf`. Use `choose Ψ hΨ using fun k => exists_antidifference (Φ k) k`. Use `set N := ∑ k, a k with hN`. Establish `haN : ∀ k, a k ≤ N` using `fun k => Finset.single_le_sum (f := a) (fun _ _ => Nat.zero_le _) (Finset.mem_univ k)`. Establish `step : ∀ (k : Fin r) (m : Fin r → ℕ), (∀ j, N ≤ m j) → ∀ t : ℕ, N ≤ t → f (Function.update m k t) - f (Function.update m k N) = eval (fun j => ((Function.update m k t j : ℕ) : ℚ)) (Ψ k) - eval (fun j => ((Function.update m k N j : ℕ) : ℚ)) (Ψ k)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `k m hm t ht`. Proceed by induction on `t, ht using Nat.le_induction with`. Consider the case `base => simp`. Consider the case `succ t ht ih`. Establish `h1` using `h k (Function.update m k t) (fun j => by`.
+Treat this case separately. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Distinguish the cases in `hj : j = k`. Substitute `hj` using the available equality. Simplify using `using (haN j).trans ht`. Rewrite using `[Function.update_of_ne hj]`. Conclude with `(haN k).trans (hm j))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Establish `h2` using `hΨ k (fun j => ((Function.update m k t j : ℕ) : ℚ))`. Establish `e1 : Function.update m k t + Pi.single k 1 = Function.update m k (t + 1)`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = k`. Substitute `hj` using the available equality.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using the standard rewrite rules. Simplify using `[hj]`. Establish `e2 : Function.update (fun j => ((Function.update m k t j : ℕ) : ℚ)) k (((Function.update m k t k : ℕ) : ℚ) + 1) = fun j => ((Function.update m k (t + 1) j : ℕ) : ℚ)`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = k`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hj]`. Simplify using `only [e1] at h1`. Rewrite `h2` using `[e2]`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `main : ∀ s : Finset (Fin r), ∃ P : MvPolynomial (Fin r) ℚ, ∀ n : Fin r → ℕ, (∀ j, N ≤ n j) → f (fun j => if j ∈ s then n j else N) = eval (fun j => (n j : ℚ)) P`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨C (f (fun _ => N)), fun n _ => by simp⟩`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Consider the case `insert k s hk ih`. Take `⟨P, hP⟩` from `ih`. Use `⟨P + aeval (fun j => if j ∈ insert k s then X j else C (N : ℚ)) (Ψ k) - aeval (fun j => if j ∈ s then X j else C (N : ℚ)) (Ψ k), fun n hn => ?_⟩` and prove the remaining obligations. Establish `h1` using `step k (fun j => if j ∈ s then n j else N) (fun j => by split_ifs; exacts [hn j, le_rfl]) (n k) (hn k)`. Establish `e1 : Function.update (fun j => if j ∈ s then n j else N) k (n k) = fun j => if j ∈ insert k s then n j else N`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = k`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hj]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `e2 : Function.update (fun j => if j ∈ s then n j else N) k N = fun j => if j ∈ s then n j else N`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = k`. Substitute `hj` using the available equality. Simplify using `[hk]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[hj]`. Rewrite `h1` using `[e1, e2]`. Establish `e3 : ∀ u : Finset (Fin r), (fun j => eval (fun j => (n j : ℚ)) (if j ∈ u then X j else C (N : ℚ) : MvPolynomial (Fin r) ℚ)) = fun j => (((if j ∈ u then n j else N : ℕ)) : ℚ)`. Introduce `u`. Use function extensionality and compare the values at `j`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[map_sub, map_add, eval_aeval_coord, eval_aeval_coord, e3, e3, ← hP n hn]`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨P, hP⟩` from `main Finset.univ`. Conclude with `⟨P, N, fun n hn => by simpa using hP n hn⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem EventuallyPoly.of_differences {f : (Fin r → ℕ) → ℚ}
     (hf : ∀ k, EventuallyPoly (fun n => f (n + Pi.single k 1) - f n)) : EventuallyPoly f := by
@@ -247,11 +247,11 @@ section
 variable {K σ M : Type} [Field K] [AddCancelCommMonoid M] (w : σ → M)
 
 /- English proof (translation)
-Use extensionality with `d`. Rewrite using `[coeff_weightedHomogeneousComponent, coeff_X_mul', coeff_X_mul', coeff_weightedHomogeneousComponent]`. Distinguish the cases in `hi : i ∈ d.support`. Establish `hd : d = (d - Finsupp.single i 1) + Finsupp.single i 1`. Rewrite using `[tsub_add_cancel_of_le]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finsupp.single_le_iff]`. Conclude with `Nat.one_le_iff_ne_zero.2 (Finsupp.mem_support_iff.1 hi)`. Establish `hw : Finsupp.weight w d = Finsupp.weight w (d - Finsupp.single i 1) + w i` using `by conv_lhs => rw [hd]`. Rewrite using `[map_add, Finsupp.weight_single, one_smul]`. Simplify using `only [hi, if_true, hw, add_left_inj]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [hi, if_false, ite_self]`.
+A detailed English derivation is pending.
 -/
 theorem component_X_mul (i : σ) (n : M) (G : MvPolynomial σ K) :
     weightedHomogeneousComponent w (n + w i) (X i * G) =
@@ -272,9 +272,9 @@ theorem component_X_mul (i : σ) (n : M) (G : MvPolynomial σ K) :
   · simp only [hi, if_false, ite_self]
 
 /- English proof (translation)
-Rewrite `hG`, the goal using `[mem_ideal_span_X_image]`. Introduce `m hm`. Use `hG m ?_` and prove the remaining obligations. Rewrite `hm` using `[mem_support_iff, coeff_weightedHomogeneousComponent]`. Rewrite using `[mem_support_iff]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Simplify using `[h] at hm`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem component_mem_span_X (s : Set σ) (n : M) {G : MvPolynomial σ K}
     (hG : G ∈ Ideal.span (X '' s : Set (MvPolynomial σ K))) :
@@ -292,19 +292,19 @@ noncomputable def colonX (I : Ideal (MvPolynomial σ K)) (i : σ) : Ideal (MvPol
   Submodule.comap (LinearMap.mulLeft (MvPolynomial σ K) (X i)) I
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_colonX {I : Ideal (MvPolynomial σ K)} {i : σ} {G : MvPolynomial σ K} :
     G ∈ colonX I i ↔ X i * G ∈ I := Iff.rfl
 
 /- English proof (translation)
-Introduce `_ h` and use `mem_colonX.2 (I.mul_mem_left _ h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem le_colonX (I : Ideal (MvPolynomial σ K)) (i : σ) : I ≤ colonX I i :=
   fun _ h => mem_colonX.2 (I.mul_mem_left _ h)
 
 /- English proof (translation)
-Introduce `F hF n`. Rewrite using `[mem_colonX, ← component_X_mul]`. Conclude with `hI _ hF _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem component_mem_colonX {I : Ideal (MvPolynomial σ K)}
     (hI : ∀ F ∈ I, ∀ n, weightedHomogeneousComponent w n F ∈ I) (i : σ) :
@@ -314,9 +314,9 @@ theorem component_mem_colonX {I : Ideal (MvPolynomial σ K)}
   exact hI _ hF _
 
 /- English proof (translation)
-Introduce `F hF n`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 hF`. Rewrite using `[map_add]`. Use `Submodule.add_mem_sup (hI a ha n) ?_` and prove the remaining obligations. Rewrite `hb`, the goal using `[← Set.image_singleton]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `component_mem_span_X w _ n hb`.
+A detailed English derivation is pending.
 -/
 theorem component_mem_sup {I : Ideal (MvPolynomial σ K)}
     (hI : ∀ F ∈ I, ∀ n, weightedHomogeneousComponent w n F ∈ I) (i : σ) :
@@ -330,17 +330,15 @@ theorem component_mem_sup {I : Ideal (MvPolynomial σ K)}
   exact component_mem_span_X w _ n hb
 
 /- English proof (translation)
-Use `set μ : MvPolynomial σ K →ₗ[K] MvPolynomial σ K := LinearMap.mulLeft K (X i) with hμ`. Establish `hinj : Function.Injective μ` using `fun a b h => mul_left_cancel₀ (X_ne_zero i) h`. Establish `hmul : ∀ G ∈ weightedHomogeneousSubmodule K w n, X i * G ∈ weightedHomogeneousSubmodule K w (n + w i)`. Introduce `G hG`. Rewrite using `[add_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(isWeightedHomogeneous_X K w i).mul hG`. Use `haveI : Module.Finite K ↥(weightedHomogeneousSubmodule K w (n + w i) ⊓ I.restrictScalars K) := Submodule.finiteDimensional_of_le inf_le_left`. Establish `h` using `Submodule.finrank_sup_add_finrank_inf_eq (weightedHomogeneousSubmodule K w (n + w i) ⊓ I.restrictScalars K) ((weightedHomogeneousSubmodule K w n).map μ)`. Establish `e1 : (weightedHomogeneousSubmodule K w (n + w i) ⊓ I.restrictScalars K) ⊔ ((weightedHomogeneousSubmodule K w n).map μ) = weightedHomogeneousSubmodule K w (n + w i) ⊓ (I ⊔ Ideal.span {X i}).restrictScalars K`. Apply `le_antisymm` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Use `sup_le (fun F hF => ⟨hF.1, Ideal.mem_sup_left hF.2⟩) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨G, hG, rfl⟩`. Conclude with `⟨hmul G hG, Ideal.mem_sup_right (Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _))⟩`. Introduce and unpack `F ⟨hF, hF'⟩`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 (show F ∈ I ⊔ Ideal.span {X i} from hF')`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨G, rfl⟩` from `Ideal.mem_span_singleton.1 hb`. Establish `hc` using `IsWeightedHomogeneous.weightedHomogeneousComponent_same hF`. Rewrite using `[← hc, map_add, component_X_mul]`. Conclude with `Submodule.add_mem_sup ⟨weightedHomogeneousComponent_mem _ _ _, hI a ha _⟩ ⟨_, weightedHomogeneousComponent_mem _ _ _, rfl⟩`. Establish `e2 : (weightedHomogeneousSubmodule K w (n + w i) ⊓ I.restrictScalars K) ⊓ ((weightedHomogeneousSubmodule K w n).map μ) = (weightedHomogeneousSubmodule K w n ⊓ (colonX I i).restrictScalars K).map μ`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨⟨-, h2⟩, G, hG, rfl⟩`. Conclude with `⟨G, ⟨hG, h2⟩, rfl⟩`. Introduce and unpack `_ ⟨G, ⟨hG, h2⟩, rfl⟩`. Conclude with `⟨⟨hmul G hG, h2⟩, G, hG, rfl⟩`.
-
-Rewrite `h` using `[e1, e2, ← (Submodule.equivMapOfInjective μ hinj _).finrank_eq, ← (Submodule.equivMapOfInjective μ hinj _).finrank_eq]`. Conclude with `h`.
+Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_sup_add_finrank_colonX {I : Ideal (MvPolynomial σ K)}
     (hI : ∀ F ∈ I, ∀ n, weightedHomogeneousComponent w n F ∈ I) (i : σ) (n : M)
@@ -396,9 +394,9 @@ section
 variable {K σ : Type} [Field K] {r : ℕ} (col : σ → Fin r)
 
 /- English proof (translation)
-Rewrite using `[Finsupp.weight_apply, Finsupp.sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : col i = k`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[h, Ne.symm h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem weight_colour_apply (d : σ →₀ ℕ) (k : Fin r) :
     Finsupp.weight (fun i => (Pi.single (col i) 1 : Fin r → ℕ)) d k =
@@ -411,13 +409,13 @@ theorem weight_colour_apply (d : σ →₀ ℕ) (k : Fin r) :
   · simp [h, Ne.symm h]
 
 /- English proof (translation)
-Establish `hfin : {d : σ →₀ ℕ | Finsupp.weight (fun i => (Pi.single (col i) 1 : Fin r → ℕ)) d = n}.Finite`. Use `(Finsupp.finite_of_degree_le (σ := σ) (∑ k, n k)).subset fun d hd => ?_` and prove the remaining obligations. Establish `hd' : Finsupp.weight (fun i => (Pi.single (col i) 1 : Fin r → ℕ)) d = n` using `hd`. Establish `: ∑ k, n k = d.degree`. Rewrite using `[← hd']`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [weight_colour_apply]`. Rewrite using `[Finset.sum_comm]`. Simplify using `[Finsupp.degree_apply]`. Conclude with `this.ge`. Establish `hle : weightedHomogeneousSubmodule K (fun i => (Pi.single (col i) 1 : Fin r → ℕ)) n ≤ Submodule.span K ((fun d => (monomial d (1 : K) : MvPolynomial σ K)) '' {d : σ →₀ ℕ | Finsupp.weight (fun i => (Pi.single (col i) 1 : Fin r → ℕ)) d = n})`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `F hF`. Rewrite using `[F.as_sum]`. Use `Submodule.sum_mem _ fun d hd => ?_` and prove the remaining obligations. Establish `: monomial d (coeff d F) = coeff d F • (monomial d (1 : K) : MvPolynomial σ K)`. Rewrite using `[smul_monomial, smul_eq_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨d, hF (mem_support_iff.1 hd), rfl⟩)`. Use `haveI := FiniteDimensional.span_of_finite K (hfin.image (fun d => (monomial d (1 : K) : MvPolynomial σ K)))`. Conclude with `Submodule.finiteDimensional_of_le hle`.
+A detailed English derivation is pending.
 -/
 theorem finite_colourPiece [Finite σ] (n : Fin r → ℕ) :
     Module.Finite K (weightedHomogeneousSubmodule K
@@ -447,13 +445,11 @@ theorem finite_colourPiece [Finite σ] (n : Fin r → ℕ) :
   exact Submodule.finiteDimensional_of_le hle
 
 /- English proof (translation)
-Introduce `F hF`. Establish `h1 : Ideal.span (X '' {i | col i = k} : Set (MvPolynomial σ K)) ≤ I`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨i, hi, rfl⟩`. Conclude with `hk i hi`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `h1 ?_` and prove the remaining obligations. Rewrite using `[mem_ideal_span_X_image]`. Introduce `m hm`. Establish `h2` using `hF (mem_support_iff.1 hm)`. Assume the negation of the conclusion as `hcon`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `push Not at hcon`. Establish `h3` using `weight_colour_apply col m k`. Rewrite `h3` using `[h2, Finset.sum_eq_zero]`. Use linear arithmetic over natural numbers and integers. Introduce `i _ split_ifs with h`.
-
-Conclude with `hcon i h`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem colourPiece_le {I : Ideal (MvPolynomial σ K)} (k : Fin r)
     (hk : ∀ i, col i = k → X i ∈ I) (n : Fin r → ℕ) (hn : 1 ≤ n k) :
@@ -494,9 +490,9 @@ noncomputable def hilbertFun {K σ : Type} [Field K] {r : ℕ} (col : σ → Fin
     (fun i => (Pi.single (col i) 1 : Fin r → ℕ)) n ⊓ I.restrictScalars K) : ℕ) : ℚ)
 
 /- English proof (translation)
-Use `haveI := finite_colourPiece (K := K) col n`. Use `haveI := finite_colourPiece (K := K) col (n + Pi.single (col i) 1)`. Establish `h` using `finrank_sup_add_finrank_colonX (fun i => (Pi.single (col i) 1 : Fin r → ℕ)) hI i n`. Establish `h'` using `congrArg (Nat.cast : ℕ → ℚ) h`. Rewrite `h'` using `[Nat.cast_add, Nat.cast_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Unfold `hilbertFun`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem hilbertFun_add {K σ : Type} [Field K] [Finite σ] {r : ℕ} (col : σ → Fin r)
     {I : Ideal (MvPolynomial σ K)}
@@ -514,15 +510,15 @@ theorem hilbertFun_add {K σ : Type} [Field K] [Finite σ] {r : ℕ} (col : σ �
   linarith
 
 /- English proof (translation)
-Proceed by induction on `I using IsNoetherian.induction with`. Consider the case `hgt I ih`. Distinguish the cases in `h0 : ∃ k, ∀ i, col i = k → X i ∈ I`. Take `⟨k, hk⟩` from `h0`. Use `⟨0, 1, fun n hn => ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `hilbertFun`. Rewrite using `[inf_eq_left.2 (colourPiece_le col k hk n (hn k))]`. Simplify using the standard rewrite rules. Use `push Not at h0`. Establish `hsup : ∀ i, X i ∉ I → EventuallyPoly (hilbertFun col (I ⊔ Ideal.span {X i}))`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i hi`. Use `ih _ (lt_of_le_of_ne le_sup_left fun h => hi ?_) (component_mem_sup _ hI i)` and prove the remaining obligations. Rewrite using `[h]`. Conclude with `Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)`. Distinguish the cases in `h1 : ∃ i, X i ∉ I ∧ colonX I i ≠ I`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨i, hi, hne⟩` from `h1`. Establish `h2` using `ih _ (lt_of_le_of_ne (le_colonX I i) hne.symm) (component_mem_colonX _ hI i)`. Use `EventuallyPoly.of_shift_add (Pi.single (col i) 1) ?_` and prove the remaining obligations. Simplify using `only [hilbertFun_add col hI i]`. Conclude with `h2.add ((hsup i hi).shift_add _)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Use `push Not at h1`. Use `EventuallyPoly.of_differences fun k => ?_` and prove the remaining obligations. Take `⟨i, rfl, hi⟩` from `h0 k`. Simplify using `only [hilbertFun_add col hI i, h1 i hi, add_sub_cancel_left]`. Conclude with `(hsup i hi).shift_add _`.
+A detailed English derivation is pending.
 -/
 theorem eventuallyPoly_hilbertFun {K σ : Type} [Field K] [Finite σ] {r : ℕ} (col : σ → Fin r)
     (I : Ideal (MvPolynomial σ K))
@@ -562,7 +558,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj TensorProduct
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ col I hI` and use `GlobalTheory.MultiHilbert.eventuallyPoly_hilbertFun col I hI`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.exists_multigraded_hilbertPoly : ∀ (K σ : Type) [Field K] [Finite σ] (r : ℕ) (col : σ → Fin r) (I : Ideal (MvPolynomial σ K)), (∀ F ∈ I, ∀ n : Fin r → ℕ, MvPolynomial.weightedHomogeneousComponent (fun i => (Pi.single (col i) 1 : Fin r → ℕ)) n F ∈ I) → ∃ (Φ : MvPolynomial (Fin r) ℚ) (n₀ : ℕ), ∀ n : Fin r → ℕ, (∀ k, n₀ ≤ n k) → ((Module.finrank K ↥(MvPolynomial.weightedHomogeneousSubmodule K (fun i => (Pi.single (col i) 1 : Fin r → ℕ)) n) : ℕ) : ℚ) - ((Module.finrank K ↥(MvPolynomial.weightedHomogeneousSubmodule K (fun i => (Pi.single (col i) 1 : Fin r → ℕ)) n ⊓ I.restrictScalars K) : ℕ) : ℚ) = MvPolynomial.eval (fun k => (n k : ℚ)) Φ :=
   fun _ _ _ _ _ col I hI => GlobalTheory.MultiHilbert.eventuallyPoly_hilbertFun col I hI

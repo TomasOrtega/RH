@@ -10,15 +10,13 @@ open scoped LaurentSeries PowerSeries
 namespace GlobalTheory.Models
 
 /- English proof (translation)
-Establish `one : ∀ i, ∃ N, C N ∧ ∀ N', C N' → N' i ≤ N i`. Introduce `i`. Use `haveI : IsNoetherian S (P i) := isNoetherian_of_fg_of_noetherian _ (hP i)`. Take `⟨_, ⟨N, hN, rfl⟩, hmax⟩` from `set_has_maximal_iff_noetherian.2 this {Q : Submodule S (P i) | ∃ N, C N ∧ (N i).comap (P i).subtype = Q} ⟨_, N₀, h₀, rfl⟩`. Use `⟨N, hN, fun N' hN' x hx => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `hmax _ ⟨_, hsup N N' hN hN', rfl⟩`. Establish `h2 : (N i).comap (P i).subtype = (N i ⊔ N' i).comap (P i).subtype` using `(Submodule.comap_mono le_sup_left).eq_of_not_lt h1`. Establish `h3 : (⟨x, hle N' hN' i hx⟩ : P i) ∈ (N i ⊔ N' i).comap (P i).subtype` using `Submodule.mem_sup_right hx`. Rewrite `h3` using `[← h2]`. Conclude with `h3`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `all : ∀ s : Finset ι, ∃ N, C N ∧ ∀ N', C N' → ∀ i ∈ s, N' i ≤ N i`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨N₀, h₀, fun _ _ i hi => absurd hi (Finset.notMem_empty i)⟩`. Consider the case `insert a s _ ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨N, hN, h⟩` from `ih`. Take `⟨N₁, hN₁, h₁⟩` from `one a`. Use `⟨_, hsup N N₁ hN hN₁, fun N' hN' i hi => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hi with rfl | hi` into its components or cases. Conclude with `le_sup_of_le_right (h₁ N' hN')`.
-
-Conclude with `le_sup_of_le_left (h N' hN' i hi)`. Use `haveI := Fintype.ofFinite ι`. Take `⟨N, hN, h⟩` from `all Finset.univ`. Conclude with `⟨N, hN, fun N' hN' i => h N' hN' i (Finset.mem_univ i)⟩`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_greatest_of_sup_closed {S V ι : Type} [CommRing S] [IsNoetherianRing S] [AddCommGroup V]
     [Module S V] [Finite ι] (C : (ι → Submodule S V) → Prop) (P N₀ : ι → Submodule S V) (h₀ : C N₀)
@@ -55,9 +53,9 @@ theorem exists_greatest_of_sup_closed {S V ι : Type} [CommRing S] [IsNoetherian
   exact ⟨N, hN, fun N' hN' i => h N' hN' i (Finset.mem_univ i)⟩
 
 /- English proof (translation)
-Introduce `k G _ _ l n _ _ _ R F r Dt M A N₀ h₀`. Take `⟨-, hl₀, hab₀, -⟩` from `GlobalTheory.T.obj_and_abc_of_model F M A N₀ h₀`. Use `exists_greatest_of_sup_closed (fun N => M.Model A N) (fun i => sh (-(sg l Dt.h i : ℤ)) (N₀ i)) N₀ h₀ (fun i => ((hl₀ i).shift _).1) (fun N hN i => ?_) (fun N N' => GlobalTheory.T.model_sup_alt F M A N N')` and prove the remaining obligations. Take `⟨-, hl, hab, -⟩` from `GlobalTheory.T.obj_and_abc_of_model F M A N hN`. Establish `h` using `sh_le_sh (-(sg l Dt.h i : ℤ)) (GlobalTheory.T.phiGamma_lattice_families_shift_inclusion (F.D A) Dt.h Dt.w N N₀ hl hl₀ hab hab₀ i)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h` using `[sh_sh_eq, neg_add_cancel, sh_zero_eq]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem exists_largest_model : ∀ {k G : Type} [Field k] [Group G] {l n : ℕ} [Fact l.Prime] [CharP k l] [NeZero n] {R : RingPG k l} (F : DFun R n G) {r : ℕ} {Dt : TopData n r} (M : ModTh F Dt) (A : Ob k G) (N₀ : Lats k n A.m), M.Model A N₀ → ∃ N, M.Model A N ∧ ∀ N', M.Model A N' → ∀ i, N' i ≤ N i := by
   intro k G _ _ l n _ _ _ R F r Dt M A N₀ h₀

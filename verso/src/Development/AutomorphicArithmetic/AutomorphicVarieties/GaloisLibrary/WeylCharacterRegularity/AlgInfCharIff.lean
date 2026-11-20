@@ -21,7 +21,7 @@ Both sides reduce to the same expression.
 theorem piK_apply (A : T → Matrix κ κ ℂ) (f g : T → κ) : piK A f g = ∏ t, A t (f t) (g t) := rfl
 
 /- English proof (translation)
-Rewrite using `[piK_apply, ← Finset.mul_prod_erase _ _ (Finset.mem_univ t), Pi.mulSingle_eq_same]`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun s hs => by rw [Pi.mulSingle_eq_of_ne (Finset.ne_of_mem_erase hs)]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem piK_mulSingle (t : T) (A : Matrix κ κ ℂ) (f g : T → κ) :
     piK (Pi.mulSingle t A) f g = A (f t) (g t) * ∏ s ∈ Finset.univ.erase t, (1 : Matrix κ κ ℂ) (f s) (g s) := by
@@ -37,7 +37,7 @@ def intersection_update_fsHerm_neg_one (t : T) : Matrix κ κ ℂ →ₐ[ℂ] Ma
     (by simp) (fun A B => by simp [Pi.mulSingle_mul])
 
 /- English proof (translation)
-The claim follows from `piK_mulSingle t A f g`.
+A detailed English derivation is pending.
 -/
 theorem position_apply (t : T) (A : Matrix κ κ ℂ) (f g : T → κ) :
     intersection_update_fsHerm_neg_one t A f g = A (f t) (g t) * ∏ s ∈ Finset.univ.erase t, (1 : Matrix κ κ ℂ) (f s) (g s) :=
@@ -61,7 +61,7 @@ Both sides reduce to the same expression.
 theorem dmat_eq (Ξ : AlgRep E a) (X : Lie E a) : Ξ.dmat X = dOf Ξ.mat X := rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem algInfChar_iff (Ξ : AlgRep E a) (τ : E →+* ℂ) (m : Multiset ℂ) :
     UpperTheory.V.Af.AlgInfChar Ξ τ m ↔ Multiset.card m = a ∧ ∀ u : ℂ, Formalism.REAL.qdet (eOf Ξ.mat τ) (u + ((a : ℂ) - 1) / 2) =

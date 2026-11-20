@@ -3,29 +3,23 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.HeckeAlgebras.Ordi
 open GlobalTheory.CuspRep GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Hi
 
 /- English proof (translation)
-Set `R` to `MonoidAlgebra ℂ H`. Use `haveI hsim : ∀ i, IsSimpleModule R (σ i).asModule := fun i => (Representation.irreducible_iff_isSimpleModule_asModule (σ i)).mp (hσ i)`. Set `J : π.asModule →ₗ[R] ρ.asModule` to `Representation.IntertwiningMap.equivLinearMapAsModule π ρ ⟨j, fun g => LinearMap.ext (he g)⟩`. Set `s : Set (Submodule R ρ.asModule)` to `{m | ∃ i, Nonempty (m ≃ₗ[R] (σ i).asModule)}`. Use `haveI hs : ∀ m : s, IsSimpleModule R m := by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `⟨m, i, ⟨e⟩⟩`. Conclude with `IsSimpleModule.congr e`. Establish `h1 : ∀ v ∈ ⨆ (i : I) (f : {f : S i →ₗ[ℂ] V // ∀ g v, f (σ i g v) = ρ g (f v)}), LinearMap.range f.1, ρ.asModuleEquiv.symm v ∈ sSup s`. Introduce `v hv`. Use `Submodule.iSup_induction _ (motive := fun z => ρ.asModuleEquiv.symm z ∈ sSup s) hv ?_ ?_ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce `i v hv`. Use `Submodule.iSup_induction _ (motive := fun z => ρ.asModuleEquiv.symm z ∈ sSup s) hv ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `f _ ⟨t, rfl⟩`. Set `F : (σ i).asModule →ₗ[R] ρ.asModule` to `Representation.IntertwiningMap.equivLinearMapAsModule (σ i) ρ ⟨f.1, fun g => LinearMap.ext (f.2 g)⟩`. Establish `: LinearMap.range F ≤ sSup s`.
+Introduce a local definition for the expression. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Break down `LinearMap.injective_or_eq_zero F with hi | hz` into its components or cases. Conclude with `le_sSup ⟨i, ⟨(LinearEquiv.ofInjective _ hi).symm⟩⟩`. Rewrite using `[hz, LinearMap.range_zero]`. Conclude with `bot_le`. Conclude with `this ⟨(σ i).asModuleEquiv.symm t, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_zero]`. Conclude with `zero_mem _`. Introduce `a b ha hb`. Rewrite using `[map_add]`. Conclude with `add_mem ha hb`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[map_zero]`. Conclude with `zero_mem _`. Introduce `a b ha hb`. Rewrite using `[map_add]`. Conclude with `add_mem ha hb`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hJ : ∀ x, J x ∈ sSup s` using `fun x => h1 _ (h (π.asModuleEquiv x))`. Establish `hJi : Function.Injective J` using `hj`. Use `haveI : IsSemisimpleModule R (sSup s : Submodule R ρ.asModule) := by`. Rewrite using `[sSup_eq_iSup]`. Conclude with `isSemisimpleModule_biSup_of_isSemisimpleModule_submodule fun m hm => haveI := hs ⟨m, hm⟩ inferInstance`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Set `J' : π.asModule →ₗ[R] (sSup s : Submodule R ρ.asModule)` to `J.codRestrict _ hJ`. Establish `hJ' : Function.Injective J'` using `fun a b hab => hJi (congrArg Subtype.val hab)`. Use `haveI : IsSemisimpleModule R π.asModule := IsSemisimpleModule.of_injective J' hJ'`. Establish `h3 : π.asModuleEquiv.symm y ∈ sSup {m : Submodule R π.asModule | IsSimpleModule R m}`. Rewrite using `[IsSemisimpleModule.sSup_simples_eq_top]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Discharge the goal by the elementary cases of `trivial`. Rewrite `h3` using `[sSup_eq_iSup']`. Rewrite using `[← π.asModuleEquiv.apply_symm_apply y]`. Use `Submodule.iSup_induction _ (motive := fun z => π.asModuleEquiv z ∈ _) h3 ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `⟨m, hm⟩ z hz haveI : IsSimpleModule R m := hm`.
-
-Set `e0 : m ≃ₗ[R] m.map J` to `Submodule.equivMapOfInjective J hJi m`. Use `haveI : IsSimpleModule R (m.map J) := IsSimpleModule.congr e0.symm`. Establish `hle : m.map J ≤ sSup s`. Introduce and unpack `_ ⟨x, -, rfl⟩`. Conclude with `hJ x`.
-
-Take `⟨n, ⟨i, ⟨e2⟩⟩, ⟨e1⟩⟩` from `(m.map J).linearEquiv_of_le_sSup s hle`. Set `e : m ≃ₗ[R] (σ i).asModule` to `(e0.trans e1).trans e2`. Set `F` to `(Representation.IntertwiningMap.equivLinearMapAsModule (σ i) π).symm (m.subtype ∘ₗ e.symm.toLinearMap)`. Use `Submodule.mem_iSup_of_mem i (Submodule.mem_iSup_of_mem ⟨F.toLinearMap, F.isIntertwining⟩ ⟨(σ i).asModuleEquiv (e ⟨z, hz⟩), ?_⟩)` and prove the remaining obligations. Conclude with `congrArg Subtype.val (e.symm_apply_apply ⟨z, hz⟩)`.
-
-Rewrite using `[map_zero]`. Conclude with `zero_mem _`. Introduce `a b ha hb`. Rewrite using `[map_add]`. Conclude with `add_mem ha hb`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem irreducible_subrep_isotypic {H Y V : Type} {I : Type 1} {S : I → Type} [Group H] [AddCommGroup Y] [Module ℂ Y]
     [AddCommGroup V] [Module ℂ V] [∀ i, AddCommGroup (S i)] [∀ i, Module ℂ (S i)]
@@ -96,7 +90,7 @@ private theorem irreducible_subrep_isotypic {H Y V : Type} {I : Type 1} {S : I �
     rw [map_add]; exact add_mem ha hb
 
 /- English proof (translation)
-Introduce `H Y V I _ _ _ _ _ _ _ σ π ρ j hj he h y`. Conclude with `irreducible_subrep_isotypic (fun i => (σ i).ρ) (fun i => (σ i).irred) π ρ j hj he h y`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.GalN.V.isoSub :
     ∀ (H Y V : Type) (I : Type 1) [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [AddCommGroup Y] [Module ℂ Y] [AddCommGroup V] [Module ℂ V] (σ : I → SmIrr H) (π : Representation ℂ H Y) (ρ : Representation ℂ H V) (j : Y →ₗ[ℂ] V), Function.Injective j → (∀ g y, j (π g y) = ρ g (j y)) → (∀ y, j y ∈ ⨆ (i : I) (f : {f : (σ i).V →ₗ[ℂ] V // ∀ g v, f ((σ i).ρ g v) = ρ g (f v)}), LinearMap.range f.1) → ∀ y, y ∈ ⨆ (i : I) (f : {f : (σ i).V →ₗ[ℂ] Y // ∀ g v, f ((σ i).ρ g v) = π g (f v)}), LinearMap.range f.1 := by

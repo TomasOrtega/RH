@@ -4,14 +4,14 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.Res
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing Module UpperTheory.V UpperTheory.V.Base UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.X
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases i <;> simp [Raw.ps, Raw.th, lamW, muW]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem ps_eq {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c)
     (i : Fin 4) (g : G ℚ Ω) : D.ps i g = D.al g ^ lamW i * D.Psi g ^ muW i := by
   fin_cases i <;> simp [Raw.ps, Raw.th, lamW, muW]
 
 /- English proof (translation)
-Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[Raw.rbar, Raw.r0, mapRep, diagRep]`. Simplify using `[Raw.rbar, Raw.r0, mapRep, diagRep, Matrix.diagonal_apply, h]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem rbar_eq {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c)
     (g : G ℚ Ω) : D.rbar g = Matrix.diagonal fun i => residue c.O (D.ps i g : c.O) := by
@@ -22,13 +22,13 @@ private theorem rbar_eq {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ �
   · simp [Raw.rbar, Raw.r0, mapRep, diagRep, Matrix.diagonal_apply, h]
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ c D rb hrb h j g Y`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show rb (toGS Ω D.SP g) * (Y : Matrix (Fin 4) (Fin 4) (ResidueField c.O)) * rb (toGS Ω D.SP g)⁻¹ = _`. Rewrite using `[← map_inv, ← MonoidHom.comp_apply rb, ← MonoidHom.comp_apply rb, hrb, rbar_eq, rbar_eq]`. Use extensionality with `a b`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_diagonal, Matrix.diagonal_mul, Submodule.coe_smul, Matrix.smul_apply, smul_eq_mul]`. Distinguish the cases in `hab : w4 a - w4 b = j`. Establish `key : D.ps a g * D.ps b g⁻¹ = (D.al ^ j.1 * D.Psi ^ j.2) g`. Substitute `hab` using the available equality. Rewrite using `[map_inv, ps_eq, ps_eq, MonoidHom.mul_apply, MonoidHom.zpow_apply, MonoidHom.zpow_apply]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [w4, Prod.fst_sub, Prod.snd_sub, zpow_sub, div_eq_mul_inv, mul_inv]`. The two sides agree by associativity and commutativity. Rewrite using `[Raw.bar, ← key, Units.val_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hz : (Y : Matrix (Fin 4) (Fin 4) (ResidueField c.O)) a b = 0` using `(Submodule.mem_inf.1 Y.2).2 a b hab`.
+The two sides agree by associativity and commutativity. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[hz]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.X.spAct :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c) (rb : D.Gam →* M4 (ResidueField c.O)), rb.comp (toGS Ω D.SP) = D.rbar → ∀ (h : (form c.O).Normalises rb) (j : ℤ × ℤ) (g : G ℚ Ω) (Y : (form c.O).gw (ResidueField c.O) j), Alg.FormData.adRep h j (toGS Ω D.SP g) Y = Raw.bar (D.al ^ j.1 * D.Psi ^ j.2) g • Y := by

@@ -5,13 +5,13 @@ open Polynomial
 namespace GlobalTheory.AlgClosedResidueField
 
 /- English proof (translation)
-Use `IsAlgClosed.of_exists_root _ fun p hp hirr => ?_` and prove the remaining obligations. Establish `hsurj : Function.Surjective (IsLocalRing.residue O)` using `IsLocalRing.residue_surjective`. Establish `hl : p ∈ Polynomial.lifts (IsLocalRing.residue O)` using `(Polynomial.mem_lifts _).2 (Polynomial.map_surjective _ hsurj p)`. Take `⟨q, hqp, hdeg, hq⟩` from `Polynomial.lifts_and_degree_eq_and_monic hl hp`. Establish `hd : (q.map (algebraMap O K)).degree ≠ 0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hq.degree_map, hdeg]`. Conclude with `(Polynomial.degree_pos_of_irreducible hirr).ne'`. Take `⟨x, hx⟩` from `IsAlgClosed.exists_root _ hd`. Establish `hx' : q.eval₂ (algebraMap O K) x = 0`. Rewrite `hx` using `[Polynomial.IsRoot.def, Polynomial.eval_map]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hint : IsIntegral O x` using `⟨q, hq, hx'⟩`. Take `⟨y, rfl⟩` from `IsIntegrallyClosed.algebraMap_eq_of_integral hint`. Establish `hy : q.eval y = 0`. Rewrite `hx'` using `[Polynomial.eval₂_at_apply]`. Conclude with `(IsFractionRing.injective O K) (by rw [hx', map_zero])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨IsLocalRing.residue O y, ?_⟩` and prove the remaining obligations. Rewrite using `[← hqp, Polynomial.eval_map, Polynomial.eval₂_at_apply, hy, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem isAlgClosed_residueField {K : Type} [Field K] (O : ValuationSubring K) [IsAlgClosed K] :
     IsAlgClosed (IsLocalRing.ResidueField O) := by
